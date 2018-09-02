@@ -22,7 +22,7 @@ body {
 	left: 0;
 	top: 0;
 	width: 100%;
-	height: 110vh;
+	height: 100vh;
 	z-index: -10;
 	background: url("banner.png") no-repeat center center;
 	-webkit-background-size: cover;
@@ -34,9 +34,9 @@ body {
 .gradient {
 	background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 	position: relative; 
-	margin-top: 90vh;
+	margin-top: 80vh;
 	width: 100%;
-	height: 10vh;
+	height: 20vh;
 }
 
 .content {
@@ -105,7 +105,7 @@ body {
 		var obj = $(".banner");
 
 		function resizeObject() {
-			obj.height( $(window).height()*1.1);
+			obj.height( $(window).height());
 		}
 
 		$(window).resize(resizeObject);
