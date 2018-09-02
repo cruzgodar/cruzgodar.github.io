@@ -84,6 +84,17 @@ body {
 		<div class="gradient"></div>
 	</div>
 
+	<script>
+		var bg = $(".banner");
+
+		function resizeBackground() {
+			bg.height( $(window).height() + 60);
+		}
+
+		$(window).resize(resizeBackground);
+		resizeBackground();
+	</script>
+
 	<div class="content">
 		<div class="row">
 			<div class="column">
