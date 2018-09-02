@@ -86,19 +86,6 @@ body
 	clear: both;
 }
 
-/* When the screen is less than 1000px wide (i.e. on mobile), stack the columns on top of one another. */
-@media screen and (max-width: 1000px)
-{
-	.column
-	{
-		width: 70%;
-		margin-top: 3vh;
-		margin-bottom: 3vh;
-		margin-left: 15%;
-		margin-right: 15%;
-	}
-}
-
 .empty-box
 {
 	position: relative; 
@@ -114,7 +101,7 @@ body
 	color: rgb(192, 192, 192);
 	text-align: justify;
 	font-style: italic;
-	font-size: 1.5em;
+	font-size: 150%;
 }
 
 .quote-attribution
@@ -123,7 +110,23 @@ body
 	width: 100%;
 	color: rgb(92, 92, 92);
 	text-align: right;
-	font-size: 1.5em;
+	font-size: 150%;
+}
+
+
+
+/* When the screen is less than 1000px wide (e.g. on a phone in portrait mode), make some adjustments. */
+@media screen and (max-width: 1000px)
+{
+	/* Stack the columns on top of one another. */
+	.column
+	{
+		width: 70%;
+		margin-top: 3vh;
+		margin-bottom: 3vh;
+		margin-left: 15%;
+		margin-right: 15%;
+	}
 }
 
 
