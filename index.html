@@ -22,7 +22,7 @@ body {
 	left: 0;
 	top: 0;
 	width: 100%;
-	height: 100vh;
+	height: 110vh;
 	z-index: -10;
 	background: url("banner.png") no-repeat center center;
 	-webkit-background-size: cover;
@@ -105,7 +105,7 @@ body {
 		var obj = $(".banner");
 
 		function resizeObject() {
-			obj.height( $(window).height());
+			obj.height( $(window).height()*1.1);
 		}
 
 		$(window).resize(resizeObject);
