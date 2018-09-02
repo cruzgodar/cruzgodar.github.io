@@ -65,7 +65,6 @@ body
 	position: relative; 
 	margin-top: -.1vh;
 	width: 100%;
-	height: 100vh;
 }
 
 .column
@@ -86,14 +85,6 @@ body
 	clear: both;
 }
 
-.empty-box
-{
-	position: relative; 
-	margin-top: 15vh;
-	width: 100%;
-	height: 15vh;
-}
-
 .quote-text
 {
 	position: relative;
@@ -101,7 +92,7 @@ body
 	color: rgb(192, 192, 192);
 	text-align: justify;
 	font-style: italic;
-	font-size: calc(43px - 1vw)
+	font-size: calc(43px - 1vw);
 }
 
 .quote-attribution
@@ -110,7 +101,41 @@ body
 	width: 100%;
 	color: rgb(92, 92, 92);
 	text-align: right;
-	font-size: calc(43px - 1vw)
+	font-size: calc(43px - 1vw);
+}
+
+.logo
+{
+	position: relative;
+	width: 5vw;
+	height: 5vw;
+	margin-left: 47.5vw;
+	margin-right: 47.5vw;
+}
+
+.logo img
+{
+	position: absolute;
+	width: 5vw;
+	height: 5vw;
+	-webkit-transition: opacity .25s ease-in-out;
+	-moz-transition: opacity .25s ease-in-out;
+	-o-transition: opacity .25s ease-in-out;
+	transition: opacity .25s ease-in-out;
+}
+
+.logo img.top:hover
+{
+	opacity: 0;
+}
+
+.heading
+{
+	position: relative;
+	width: 100%;
+	color: rgb(0, 0, 0);
+	text-align: center;
+	font-size: calc(86px - 2vw);
 }
 
 
@@ -118,19 +143,14 @@ body
 /* When the screen is less than 1000px wide (e.g. on a phone in portrait mode), make some adjustments. */
 @media screen and (max-width: 1000px)
 {
-	html
-	{
-		font-size: 20px;
-	}
-
 	/* Stack the quote columns on top of one another. */
 	.column
 	{
-		width: 70%;
+		width: 90%;
 		margin-top: 3vh;
 		margin-bottom: 3vh;
-		margin-left: 15%;
-		margin-right: 15%;
+		margin-left: 5%;
+		margin-right: 5%;
 	}
 }
 
@@ -142,30 +162,41 @@ body
 
 
 <body>
-	<!-- Animate on scroll library -->
-	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-	<script>AOS.init({duration: 1200, once: true});</script>
-
 	<div class="banner">
 		<div class="gradient"></div>
 		<div class="content">
 			<div class="row">
-				<div class="column" data-aos="fade-down" data-aos-delay="300">
+				<div class="column" data-aos="fade-down" data-aos-delay="300" id="trigger-quotes">
 					<div class="quote-text">You can only be truly accomplished at something you love. Don’t make money the goal. Instead, pursue the things you love doing, and do them so well that people can’t take their eyes off you. All the other tangible rewards will come as a result.</div>
 					<br>
 					<div class="quote-attribution">&mdash;Maya Angelou</div>
 				</div>
-				<div class="column" data-aos="fade-down" data-aos-delay="600">
+
+				<div class="column" data-aos="fade-down" data-aos-delay="600" data-aos-anchor="#trigger-quotes">
 					<div class="quote-text">A mathematician is a blind man in a dark room looking for a black cat which isn’t there.</div>
 					<br>
 					<div class="quote-attribution">&mdash;Charles Darwin</div>
 				</div>
-				<div class="column" data-aos="fade-down" data-aos-delay="900">
+
+				<div class="column" data-aos="fade-down" data-aos-delay="900" data-aos-anchor="#trigger-quotes">
 					<div class="quote-text">I hate algebra.</div>
 					<br>
 					<div class="quote-attribution">&mdash;John Conway</div>
 				</div>
 			</div>
+
+			<div style="height: 10vh"></div>
+
+			<a href="/">
+				<div class="logo" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-quotes">
+					<img class="bottom" src="logo-hover.png" alt="Logo"/>
+					<img class="top" src="logo.png" alt="Logo"/>
+				</div>
+			</a>
+			
+			<div class="heading" data-aos="fade-up" data-aos-delay="2500" data-aos-anchor="#trigger-quotes">Reading, Writing, and Proving</div>
+
+			<div style="height: 10vh"></div>
 		</div>
 	</div>
 
@@ -181,5 +212,8 @@ body
 		resizeObject();
 	</script>
 
+	<!-- Animate on scroll library -->
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script>AOS.init({duration: 1200, once: true});</script>
 </body>
 </html>
