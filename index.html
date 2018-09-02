@@ -21,6 +21,7 @@ html
 {
 	height: 100%
 	width: 100%;
+	font-size: 16px;
 }
 
 body
@@ -29,7 +30,6 @@ body
 	padding: 0;
 	height: 100%;
 	width: 100%;
-	font-size: 100%;
 }
 
 /* Something about the before tag makes the scrolling work on mobile. */
@@ -116,9 +116,14 @@ body
 
 
 /* When the screen is less than 1000px wide (e.g. on a phone in portrait mode), make some adjustments. */
-@media screen and (max-width: 1000px)
+@media screen and (max-width: 768px)
 {
-	/* Stack the columns on top of one another. */
+	html
+	{
+		font-size: 20px;
+	}
+
+	/* Stack the quote columns on top of one another. */
 	.column
 	{
 		width: 70%;
