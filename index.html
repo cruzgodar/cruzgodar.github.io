@@ -82,7 +82,7 @@ body {
 <body>
 	<div class="banner">
 		<div class="gradient"></div>
-		<div class="content" style="transition: margin-top 999999s">
+		<div class="content">
 			<div class="row">
 				<div class="column">
 					<h2>Column 1</h2>
@@ -105,7 +105,7 @@ body {
 		var obj = $(".banner");
 
 		function resizeObject() {
-			obj.height( $(window).height());
+			obj.height( $(window).height() + 60);
 		}
 
 		$(window).resize(resizeObject);
