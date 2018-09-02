@@ -84,15 +84,16 @@ body {
 		<div class="gradient"></div>
 	</div>
 
+	<!-- Prevent image from resizing in mobile browsers when the url bar slides away -->
 	<script>
-		var bg = $(".banner");
+		var obj = $(".banner");
 
-		function resizeBackground() {
-			bg.height( $(window).height() + 60);
+		function resizeObject() {
+			obj.height( $(window).height());
 		}
 
-		$(window).resize(resizeBackground);
-		resizeBackground();
+		$(window).resize(resizeObject);
+		resizeObject();
 	</script>
 
 	<div class="content">
@@ -110,5 +111,19 @@ body {
 				<p>Some text</p>
 			</div>
 		</div>
+	</div>
+
+	<!-- Prevent gap between gradient and rest of content in mobile browsers when the url bar slides away -->
+	<script>
+		var obj = $(".content");
+
+		function resizeObject() {
+			obj.height( $(window).height());
+		}
+
+		$(window).resize(resizeObject);
+		resizeObject();
+	</script>
+
 </body>
 </html>
