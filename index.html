@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Cruz Godar</title>
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=NmPPnmeW24">
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=NmPPnmeW24">
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=NmPPnmeW24">
-	<link rel="manifest" href="/site.webmanifest?v=NmPPnmeW24">
-	<link rel="mask-icon" href="/safari-pinned-tab.svg?v=NmPPnmeW24" color="#5bbad5">
-	<link rel="shortcut icon" href="/favicon.ico?v=NmPPnmeW24">
-	<meta name="msapplication-TileColor" content="#da532c">
-	<meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
-	<meta name="theme-color" content="#ffffff">
+<title>Cruz Godar</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=NmPPnmeW24">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=NmPPnmeW24">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=NmPPnmeW24">
+<link rel="manifest" href="/site.webmanifest?v=NmPPnmeW24">
+<link rel="mask-icon" href="/safari-pinned-tab.svg?v=NmPPnmeW24" color="#5bbad5">
+<link rel="shortcut icon" href="/favicon.ico?v=NmPPnmeW24">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
+<meta name="theme-color" content="#ffffff">
+
+<!-- Animate on scroll library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+
 <style type="text/css">
-html {
+html
+{
 	height: 100%
 	width: 100%;
 }
 
-body {
+body
+{
 	margin: 0;
 	padding: 0;
 	height: 100%;
 	width: 100%;
+	font-size: 100%;
 }
 
 /* Something about the before tag makes the scrolling work on mobile. */
-.banner:before {
+.banner:before
+{
 	content: "";
 	display: block;
 	position: fixed;
@@ -41,7 +50,8 @@ body {
 	background-size: cover;
 }
 
-.gradient {
+.gradient
+{
 	background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 	position: relative; 
 	margin-top: 50vh;
@@ -49,34 +59,38 @@ body {
 	height: 50vh;
 }
 
-.content {
-	background: rgb(255, 255, 255);
+.content
+{
+	background: rgba(255, 255, 255);
 	position: relative; 
 	margin-top: -.1vh;
 	width: 100%;
 	height: 100vh;
 }
 
-.column {
+.column
+{
 	float: left;
 	width: 23.333%;
 	margin-top: 1vh;
 	margin-bottom: 1vh;
 	margin-left: 5%;
 	margin-right: 5%;
-	background: rgb(255, 255, 255);
 }
 
-.row:after {
+.row:after
+{
 	content: "";
 	margin-top: 100vh;
 	display: table;
 	clear: both;
 }
 
-/* When the screen is less than 3 inches wide (i.e. on mobile), stack the columns on top of one another. */
-@media screen and (max-width: 1000px) {
-	.column {
+/* When the screen is less than 1000px wide (i.e. on mobile), stack the columns on top of one another. */
+@media screen and (max-width: 1000px)
+{
+	.column
+	{
 		width: 70%;
 		margin-top: 3vh;
 		margin-bottom: 3vh;
@@ -85,26 +99,69 @@ body {
 	}
 }
 
+.empty-box
+{
+	position: relative; 
+	margin-top: 15vh;
+	width: 100%;
+	height: 15vh;
+}
+
+.quote-text
+{
+	position: relative;
+	width: 100%;
+	background-color: transparent;
+	color: rgb(192, 192, 192);
+	text-align: justify;
+	font-style: italic;
+	font-size: 1.5em;
+}
+
+.quote-attribution
+{
+	position: relative;
+	width: 100%;
+	background-color: transparent;
+	color: rgb(92, 92, 92);
+	text-align: right;
+	font-size: 1.5em;
+}
+
+
+
+
+
 
 
 </style>
 </head>
+
+
+
 <body>
+	<!-- Animate on scroll library -->
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script>AOS.init({duration: 1200, once: true});</script>
+
 	<div class="banner">
 		<div class="gradient"></div>
 		<div class="content">
 			<div class="row">
-				<div class="column">
-					<h2>Column 1</h2>
-					<p>Some text</p>
+				<div class="column" data-aos="fade-down" data-aos-delay="300">
+					<div class="quote-text">You can only be truly accomplished at something you love. Don’t make money the goal. Instead, pursue the things you love doing, and do them so well that people can’t take their eyes off you. All the other tangible rewards will come as a result.</div>
+					<br>
+					<div class="quote-attribution">&mdash;Maya Angelou</div>
 				</div>
-				<div class="column">
-					<h2>Column 2</h2>
-					<p>Some text</p>
+				<div class="column" data-aos="fade-down" data-aos-delay="600">
+					<div class="quote-text">A mathematician is a blind man in a dark room looking for a black cat which isn’t there.</div>
+					<br>
+					<div class="quote-attribution">&mdash;Charles Darwin</div>
 				</div>
-				<div class="column">
-					<h2>Column 3</h2>
-					<p>Some text</p>
+				<div class="column" data-aos="fade-down" data-aos-delay="900">
+					<div class="quote-text">I hate algebra.</div>
+					<br>
+					<div class="quote-attribution">&mdash;John Conway</div>
 				</div>
 			</div>
 		</div>
