@@ -172,25 +172,33 @@ body
 
 
 <body>
+	<!-- Force scroll to top of page on load -->
+	<script>
+		window.onbeforeunload = function ()
+		{
+			window.scrollTo(0, 0);
+		}
+	</script>
+
 	<div class="banner">
 		<div class="gradient"></div>
 		<div class="content">
 			<div style="height: 5vh"></div>
 
 			<div class="row">
-				<div class="column" data-aos="fade-down" data-aos-delay="300" id="trigger-quotes">
+				<div class="column" data-aos="fade-down" data-aos-delay="250" id="trigger-quotes">
 					<div class="quote-text">You can only be truly accomplished at something you love. Don’t make money the goal. Instead, pursue the things you love doing, and do them so well that people can’t take their eyes off you. All the other tangible rewards will come as a result.</div>
 					<br>
 					<div class="quote-attribution">&mdash;Maya Angelou</div>
 				</div>
 
-				<div class="column" data-aos="fade-down" data-aos-delay="600" data-aos-anchor="#trigger-quotes">
+				<div class="column" data-aos="fade-down" data-aos-delay="500" data-aos-anchor="#trigger-quotes">
 					<div class="quote-text">A mathematician is a blind man in a dark room looking for a black cat which isn’t there.</div>
 					<br>
 					<div class="quote-attribution">&mdash;Charles Darwin</div>
 				</div>
 
-				<div class="column" data-aos="fade-down" data-aos-delay="900" data-aos-anchor="#trigger-quotes">
+				<div class="column" data-aos="fade-down" data-aos-delay="750" data-aos-anchor="#trigger-quotes">
 					<div class="quote-text">I hate algebra.</div>
 					<br>
 					<div class="quote-attribution">&mdash;John Conway</div>
