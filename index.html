@@ -107,21 +107,21 @@ body
 .logo
 {
 	position: relative;
-	width: 5vw;
-	height: 5vw;
-	margin-left: 47.5vw;
-	margin-right: 47.5vw;
+	width: 100px;
+	height: 100px;
+	margin-left: calc(50vw - 50px);
+	display: inline-block;
 }
 
 .logo img
 {
 	position: absolute;
-	width: 5vw;
-	height: 5vw;
-	-webkit-transition: opacity .25s ease-in-out;
-	-moz-transition: opacity .25s ease-in-out;
-	-o-transition: opacity .25s ease-in-out;
-	transition: opacity .25s ease-in-out;
+	width: 100px;
+	height: 100px;
+	-webkit-transition: opacity .15s ease-in-out;
+	-moz-transition: opacity .15s ease-in-out;
+	-o-transition: opacity .15s ease-in-out;
+	transition: opacity .15s ease-in-out;
 }
 
 .logo img.top:hover
@@ -138,9 +138,19 @@ body
 	font-size: calc(86px - 2vw);
 }
 
+.body-text
+{
+	position: relative;
+	width: 70%;
+	margin-left: 15vw;
+	color: rgb(127, 127, 127);
+	text-align: justify;
+	font-size: calc(43px - 1vw);
+}
 
 
-/* When the screen is less than 1000px wide (e.g. on a phone in portrait mode), make some adjustments. */
+
+/* If the screen is less than 1000px wide (e.g. on a phone in portrait mode), make some adjustments. */
 @media screen and (max-width: 1000px)
 {
 	/* Stack the quote columns on top of one another. */
@@ -148,7 +158,7 @@ body
 	{
 		width: 90%;
 		margin-top: 3vh;
-		margin-bottom: 3vh;
+		margin-bottom: 7vh;
 		margin-left: 5%;
 		margin-right: 5%;
 	}
@@ -165,6 +175,8 @@ body
 	<div class="banner">
 		<div class="gradient"></div>
 		<div class="content">
+			<div style="height: 5vh"></div>
+
 			<div class="row">
 				<div class="column" data-aos="fade-down" data-aos-delay="300" id="trigger-quotes">
 					<div class="quote-text">You can only be truly accomplished at something you love. Don’t make money the goal. Instead, pursue the things you love doing, and do them so well that people can’t take their eyes off you. All the other tangible rewards will come as a result.</div>
@@ -187,16 +199,24 @@ body
 
 			<div style="height: 10vh"></div>
 
-			<a href="/">
+			<a href="">
 				<div class="logo" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-quotes">
 					<img class="bottom" src="logo-hover.png" alt="Logo"/>
 					<img class="top" src="logo.png" alt="Logo"/>
 				</div>
 			</a>
 			
+			<div style="height: 2vh"></div>
+
 			<div class="heading" data-aos="fade-up" data-aos-delay="2500" data-aos-anchor="#trigger-quotes">Reading, Writing, and Proving</div>
 
 			<div style="height: 10vh"></div>
+
+			<div class="body-text" data-aos="fade-up" data-aos-delay="3000" data-aos-anchor="#trigger-quotes">My name is Cruz Godar, and I'm an alumnus of Cal Poly, San Luis Obispo. I graduated with a bachelor's degree in mathematics, and now I am taking a gap year in Germany, learning the language and writing a novel, before returning to attend graduate school. Whether you’re here for research papers, rough drafts, or residue theory notes, you’re in the right place.</div>
+
+			<div style="height: 25vh"></div>
+
+
 		</div>
 	</div>
 
