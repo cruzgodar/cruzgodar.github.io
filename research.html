@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Research &mdash; Cruz Godar</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest?v=NmPPnmeW24">
+<link rel="mask-icon" href="/safari-pinned-tab.svg?v=NmPPnmeW24" color="#5bbad5">
+<link rel="shortcut icon" href="/favicon.ico?v=NmPPnmeW24">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
+<meta name="theme-color" content="#ffffff">
+
+<!-- Animate on scroll library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<style>
+
+html
+{
+	height: 100%
+	width: 100%;
+	font-size: 20px;
+}
+
+body
+{
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+}
+
+
+
+.logo
+{
+	width: 100px;
+	height: 100px;
+	margin: 0 auto;
+}
+
+.logo img
+{
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.logo img:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+
+
+.heading
+{
+	position: relative;
+	width: 100%;
+	color: rgb(0, 0, 0);
+	text-align: center;
+	font-size: 250%;
+}
+
+
+
+.location-text
+{
+	position: relative;
+	width: 100%;
+	color: rgb(92, 92, 92);
+	text-align: center;
+	font-size: 175%;
+}
+
+.row:after
+{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.image-link
+{
+	position: relative;
+	float: left;
+	width: 13.75vw;
+	height: 13.75vw;
+	margin-left: 15vw;
+	margin-right: -10vw;
+	margin-top: 6.5vh;
+	display: inline-block;
+}
+
+.image-link img
+{
+	position: absolute;
+	width: 13.75vw;
+	height: 13.75vw;
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.image-link img:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+.image-link-subtext
+{
+	position: relative;
+	margin-top: 15vw;
+	color: rgb(160, 160, 160);
+	text-align: center;
+	font-size: 150%;
+}
+
+
+
+.line-break
+{ 
+    margin: 0 auto;
+    width: 70vw;
+    height: 1px;
+    background: black;
+    background: -webkit-gradient(linear, 0 0, 100% 0, from(white), to(white), color-stop(50%, black));
+}
+
+
+
+.menu-image-link
+{
+	position: relative;
+	float: left;
+	width: 10vw;
+	height: 10vw;
+	margin-left: 30vw; /* 30 10 5 10 5 10 30 */
+	margin-right: -25vw;
+	display: inline-block;
+}
+
+.menu-image-link img
+{
+	position: absolute;
+	width: 10vw;
+	height: 10vw;
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.menu-image-link img:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+.menu-link-subtext
+{
+	position: relative;
+	margin-top: 11vw;
+	color: rgb(64, 64, 64);
+	text-align: center;
+	font-size: 150%;
+}
+
+
+
+/* If the screen is less than 1366px wide (e.g. on a phone in portrait mode), make some adjustments. */
+@media screen and (max-width: 1366px)
+{
+	/* Make text smaller. */
+	html
+	{
+		height: 100%
+		width: 100%;
+		font-size: 12px;
+	}
+
+	/* Put two images per row, rather than four. */
+	.image-link
+	{
+		position: relative;
+		float: left;
+		width: 30vw;
+		height: 30vw;
+		margin-left: 15vw;
+		margin-right: -5vw;
+		margin-top: 10vw;
+		display: inline-block;
+	}
+
+	.image-link img
+	{
+		position: absolute;
+		width: 30vw;
+		height: 30vw;
+		-webkit-transition: all .15s ease-in-out;
+		-moz-transition: all .15s ease-in-out;
+		-o-transition: all .15s ease-in-out;
+		transition: all .15s ease-in-out;
+		-webkit-filter: brightness(100%);
+		-moz-filter: brightness(100%);
+		-o-filter: brightness(100%);
+		filter: brightness(100%);
+	}
+
+	/* Reposition subtext. */
+	.image-link-subtext
+	{
+		position: relative;
+		margin-top: 31.25vw;
+		color: rgb(160, 160, 160);
+		text-align: center;
+		font-size: 150%;
+	}
+}
+
+</style>
+</head>
+
+
+
+<body>
+	<div style="height: 5vh"></div>
+
+	<div class="logo" data-aos="fade-in">
+		<a href="index.html">
+			<img src="logo.png" alt="Logo"/>
+		</a>
+	</div>
+
+	<div style="height: 2vh"></div>
+
+	<div class="heading" data-aos="fade-up" data-aos-delay="100">Research</div>
+
+	<div style="height: 10vh"></div>
+
+	<div class="location-text" data-aos="fade-up" data-aos-delay="200" id="trigger-cal-poly">At Cal Poly</div>
+
+	<div class="row">
+		<div class="image-link" data-aos="fade-up" data-aos-delay="50" id="trigger-cal-poly">
+			<a href="research/senior-project.pdf">
+				<img src="research.png" alt="Tropical Root System Polytopes"/>
+			</a>
+			<div class="image-link-subtext">Senior Project: Tropical Root System Polytopes</div>
+		</div>
+
+		<div class="image-link" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-cal-poly"></div>
+		<div class="image-link" data-aos="fade-up" data-aos-delay="150" data-aos-anchor="#trigger-cal-poly"></div>
+		<div class="image-link" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-cal-poly"></div>
+	</div>
+
+
+
+	<div style="height: 20vh"></div>
+	<div class="line-break" data-aos="fade-in" data-aos-once="false" data-aos-duration="500" id="trigger-menu"></div>
+	<div style="height: 5vh"></div>
+
+	<div class="row">
+		<div class="menu-image-link" data-aos="fade-up" data-aos-delay="50" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<a href="writing.html">
+				<img src="writing.png" alt="Writing"/>
+			</a>
+			<div class="menu-link-subtext">Writing</div>
+		</div>
+
+		<div class="menu-image-link" data-aos="fade-up" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<a href="notes.html">
+				<img src="notes.png" alt="Notes"/>
+			</a>
+			<div class="menu-link-subtext">Notes</div>
+		</div>
+
+		<div class="menu-image-link" data-aos="fade-up" data-aos-delay="150" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<a href="bio.html">
+				<img src="me.png" alt="Me"/>
+			</a>
+			<div class="menu-link-subtext">Me</div>
+		</div>
+	</div>
+
+	<div style="height: 20vh"></div>
+
+
+
+	<!-- Animate on scroll library -->
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script>
+		var w = window,
+		d = document,
+		e = d.documentElement,
+		g = d.getElementsByTagName('body')[0],
+		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+		//Initiate anamations when they're a third of the way up the screen.
+		AOS.init({duration: 1200, once: true, offset: y/3});
+	</script>
+</body>
+</html>

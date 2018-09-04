@@ -18,11 +18,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<style type="text/css">
+<style>
+
 html
 {
-	height: 100%
-	width: 100%;
+	height: 100vh;
+	width: 100vw;
 	font-size: 20px;
 }
 
@@ -30,9 +31,11 @@ body
 {
 	margin: 0;
 	padding: 0;
-	height: 100%;
-	width: 100%;
+	height: 100vh;
+	width: 100vw;
 }
+
+
 
 /* Something about the before tag makes the scrolling work on mobile. */
 .banner:before
@@ -42,7 +45,7 @@ body
 	position: fixed;
 	left: 0;
 	top: 0;
-	width: 100%;
+	width: 100vw;
 	height: 100vh;
 	z-index: -10;
 	background: url("banner.jpg") no-repeat center center;
@@ -59,7 +62,7 @@ body
 	position: fixed;
 	left: 0;
 	top: 0;
-	width: 100%;
+	width: 100vw;
 	height: 100vh;
 	z-index: -10;
 	background: rgb(255, 255, 255) no-repeat center center;
@@ -74,7 +77,6 @@ body
 	background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 	position: relative; 
 	margin-top: 50vh;
-	width: 100%;
 	height: 50vh;
 }
 
@@ -83,17 +85,18 @@ body
 	background: rgb(255, 255, 255);
 	position: relative; 
 	margin-top: -.1vh;
-	width: 100%;
 }
+
+
 
 .column
 {
 	float: left;
-	width: 23.333%;
+	width: 23.333vw;
 	margin-top: 1vh;
 	margin-bottom: 1vh;
-	margin-left: 5%;
-	margin-right: 5%;
+	margin-left: 5vw;
+	margin-right: 5vw;
 }
 
 .row:after
@@ -106,7 +109,6 @@ body
 .quote-text
 {
 	position: relative;
-	width: 100%;
 	color: rgb(176, 176, 176);
 	text-align: justify;
 	font-style: italic;
@@ -116,24 +118,22 @@ body
 .quote-attribution
 {
 	position: relative;
-	width: 100%;
 	color: rgb(92, 92, 92);
 	text-align: right;
 	font-size: 125%;
 }
 
+
+
 .logo
 {
-	position: relative;
 	width: 100px;
 	height: 100px;
-	margin-left: calc(50vw - 50px);
-	display: inline-block;
+	margin: 0 auto;
 }
 
 .logo img
 {
-	position: absolute;
 	width: 100px;
 	height: 100px;
 	-webkit-transition: all .15s ease-in-out;
@@ -154,24 +154,27 @@ body
 	filter: brightness(75%);
 }
 
+
+
 .heading
 {
 	position: relative;
-	width: 100%;
 	color: rgb(0, 0, 0);
 	text-align: center;
-	font-size: 200%
+	font-size: 200%;
 }
 
 .body-text
 {
 	position: relative;
-	width: 70%;
+	width: 70vw;
 	margin-left: 15vw;
 	color: rgb(127, 127, 127);
 	text-align: justify;
 	font-size: 125%;
 }
+
+
 
 .image-link
 {
@@ -208,13 +211,13 @@ body
 	filter: brightness(75%);
 }
 
-.link-subtext
+.image-link-subtext
 {
 	position: relative;
 	margin-top: 15vw;
 	color: rgb(64, 64, 64);
 	text-align: center;
-	font-size: 150%
+	font-size: 150%;
 }
 
 
@@ -225,19 +228,19 @@ body
 	/* Make text smaller. */
 	html
 	{
-		height: 100%
-		width: 100%;
+		height: 100vh;
+		width: 100vw;
 		font-size: 12px;
 	}
 
 	/* Stack the quote columns on top of one another. */
 	.column
 	{
-		width: 90%;
+		width: 90vw;
 		margin-top: 3vh;
 		margin-bottom: 3vh;
-		margin-left: 5%;
-		margin-right: 5%;
+		margin-left: 5vw;
+		margin-right: 5vw;
 	}
 
 	/* Put two images per row, rather than four. */
@@ -269,7 +272,7 @@ body
 	}
 
 	/* Reposition subtext. */
-	.link-subtext
+	.image-link-subtext
 	{
 		position: relative;
 		margin-top: 31.25vw;
@@ -313,7 +316,7 @@ body
 		<div style="height: 10vh"></div>
 
 		<div class="logo" data-aos="fade-in">
-			<a href="">
+			<a href="index.html">
 				<img src="logo.png" alt="Logo"/>
 			</a>
 		</div>
@@ -327,32 +330,32 @@ body
 		<div class="body-text" data-aos="fade-up" data-aos-delay="200">My name is Cruz Godar, and I&#x2019;m an alumnus of Cal Poly in San Luis Obispo. I graduated with a bachelor&#x2019;s degree in mathematics, and I am now taking a gap year in Germany, learning the language and writing a novel, before returning to attend graduate school. Whether you&#x2019;re here for research papers, rough drafts, or residue theory notes, you&#x2019;re in the right place.</div>
 
 		<div class="row">
-			<div class="image-link" data-aos="fade-up" id="trigger-links">
+			<div class="image-link" data-aos="fade-up" data-aos-delay="50" id="trigger-links">
 				<a href="research.html">
 					<img src="research.png" alt="Research"/>
 				</a>
-				<div class="link-subtext">Research</div>
-			</div>
-
-			<div class="image-link" data-aos="fade-up" data-aos-delay="50" data-aos-anchor="#trigger-links">
-				<a href="writing.html">
-					<img src="writing.png" alt="Writing"/>
-				</a>
-				<div class="link-subtext">Writing</div>
+				<div class="image-link-subtext">Research</div>
 			</div>
 
 			<div class="image-link" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-links">
-				<a href="notes.html">
-					<img src="notes.png" alt="Notes"/>
+				<a href="writing.html">
+					<img src="writing.png" alt="Writing"/>
 				</a>
-				<div class="link-subtext">Notes</div>
+				<div class="image-link-subtext">Writing</div>
 			</div>
 
 			<div class="image-link" data-aos="fade-up" data-aos-delay="150" data-aos-anchor="#trigger-links">
+				<a href="notes.html">
+					<img src="notes.png" alt="Notes"/>
+				</a>
+				<div class="image-link-subtext">Notes</div>
+			</div>
+
+			<div class="image-link" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-links">
 				<a href="bio.html">
 					<img src="me.png" alt="Me"/>
 				</a>
-				<div class="link-subtext">Me</div>
+				<div class="image-link-subtext">Me</div>
 			</div>
 		</div>
 
