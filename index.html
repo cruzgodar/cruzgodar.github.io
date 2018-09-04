@@ -39,13 +39,16 @@ body
 {
 	content: "";
 	display: block;
-	position: fixed;
+	position: relative;
 	left: 0;
 	top: 0;
 	width: 100%;
 	height: 100vh;
 	z-index: -10;
-	background: url("banner.png") no-repeat center center;
+	background: url("banner.png");
+	background-attachment: fixed;
+  	background-position: center;
+  	background-repeat: no-repeat;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -56,7 +59,7 @@ body
 {
 	background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 	position: relative; 
-	margin-top: 50vh;
+	margin-top: -50vh;
 	width: 100%;
 	height: 50vh;
 }
@@ -64,8 +67,8 @@ body
 .content
 {
 	background: rgb(255, 255, 255);
-	position: relative; 
-	margin-top: -.1vh;
+	position: absolute; 
+	margin-top: 2vh;
 	width: 100%;
 }
 
@@ -227,7 +230,7 @@ body
 	{
 		height: 100%
 		width: 100%;
-		font-size: 16px;
+		font-size: 12px;
 	}
 
 	/* Stack the quote columns on top of one another. */
@@ -292,9 +295,10 @@ body
 		}
 	</script>
 
-	<div class="banner"></div>
+	<div class="banner">
+		<div class="gradient"></div>
+	</div>
 
-	<div class="gradient"></div>
 	<div class="content">
 		<div style="height: 2vh"></div>
 
