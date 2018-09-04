@@ -198,10 +198,28 @@ body
 	font-size: calc(64px - 1.5vw);
 }
 
+/* Something about the before tag makes the scrolling work on mobile. */
+.page-bottom:before
+{
+	content: "";
+	display: block;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100vh;
+	z-index: -10;
+	background: rgb{255, 255, 255);
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
 
 
 /* If the screen is less than 1000px wide (e.g. on a phone in portrait mode), make some adjustments. */
-@media screen and (max-width: 1000px)
+@media only screen and (max-device-width: 1366px)
 {
 	/* Stack the quote columns on top of one another. */
 	.column
@@ -251,8 +269,6 @@ body
 		font-size: calc(43px - 1vw);
 	}
 }
-
-
 
 </style>
 </head>
@@ -344,6 +360,8 @@ body
 
 		</div>
 	</div>
+
+	<div class="page-bottom"></div>
 
 	<!-- Prevent image from resizing in mobile browsers when the url bar slides away -->
 	<script>
