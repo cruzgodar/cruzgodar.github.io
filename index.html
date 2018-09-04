@@ -15,6 +15,8 @@
 <!-- Animate on scroll library -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 <style type="text/css">
 html
@@ -219,7 +221,7 @@ body
 
 
 /* If the screen is less than 1000px wide (e.g. on a phone in portrait mode), make some adjustments. */
-@media only screen and (max-device-width: 1366px)
+@media only screen and (max-width: 1366px)
 {
 	/* Stack the quote columns on top of one another. */
 	.column
@@ -284,81 +286,79 @@ body
 		}
 	</script>
 
-	<div class="banner">
-		<div class="gradient"></div>
-		<div class="content">
-			<div style="height: 2vh"></div>
+	<div class="banner"></div>
 
-			<div class="row">
-				<div class="column" data-aos="fade-down" data-aos-delay="200" id="trigger-quotes">
-					<div class="quote-text">You can only be truly accomplished at something you love. Don’t make money the goal. Instead, pursue the things you love doing, and do them so well that people can’t take their eyes off you. All the other tangible rewards will come as a result.</div>
-					<br>
-					<div class="quote-attribution">&mdash;Maya Angelou</div>
-				</div>
+	<div class="gradient"></div>
+	<div class="content">
+		<div style="height: 2vh"></div>
 
-				<div class="column" data-aos="fade-down" data-aos-delay="400" data-aos-anchor="#trigger-quotes">
-					<div class="quote-text">A mathematician is a blind man in a dark room looking for a black cat which isn’t there.</div>
-					<br>
-					<div class="quote-attribution">&mdash;Charles Darwin</div>
-				</div>
-
-				<div class="column" data-aos="fade-down" data-aos-delay="600" data-aos-anchor="#trigger-quotes">
-					<div class="quote-text">I hate algebra.</div>
-					<br>
-					<div class="quote-attribution">&mdash;John Conway</div>
-				</div>
+		<div class="row">
+			<div class="column" data-aos="fade-down" data-aos-delay="200" id="trigger-quotes">
+				<div class="quote-text">You can only be truly accomplished at something you love. Don’t make money the goal. Instead, pursue the things you love doing, and do them so well that people can’t take their eyes off you. All the other tangible rewards will come as a result.</div>
+				<br>
+				<div class="quote-attribution">&mdash;Maya Angelou</div>
 			</div>
 
-			<div style="height: 10vh"></div>
-
-			<div class="logo" data-aos="fade-in" data-aos-delay="500" id="trigger-logo">
-				<a href="">
-					<img src="logo.png" alt="Logo"/>
-				</a>
-			</div>
-			
-			<div style="height: 2vh"></div>
-
-			<div class="heading" data-aos="fade-up" data-aos-delay="1000" data-aos-anchor="#trigger-logo">Reading, Writing, and Proving</div>
-
-			<div style="height: 5vh"></div>
-
-			<div class="body-text" data-aos="fade-up" data-aos-delay="1500" data-aos-anchor="#trigger-logo">My name is Cruz Godar, and I'm an alumnus of Cal Poly in San Luis Obispo. I graduated with a bachelor's degree in mathematics, and I am now taking a gap year in Germany, learning the language and writing a novel, before returning to attend graduate school. Whether you’re here for research papers, rough drafts, residue theory notes, or a resume, you’re in the right place.</div>
-
-			<div class="row">
-				<div class="image-link" data-aos="fade-up" data-aos-delay="2000" data-aos-anchor="#trigger-logo">
-					<a href="research.html">
-						<img src="research.png" alt="Research"/>
-					</a>
-					<div class="link-subtext">Research</div>
-				</div>
-
-				<div class="image-link" data-aos="fade-up" data-aos-delay="2050" data-aos-anchor="#trigger-logo">
-					<a href="writing.html">
-						<img src="writing.png" alt="Writing"/>
-					</a>
-					<div class="link-subtext">Writing</div>
-				</div>
-
-				<div class="image-link" data-aos="fade-up" data-aos-delay="2100" data-aos-anchor="#trigger-logo">
-					<a href="notes.html">
-						<img src="notes.png" alt="Notes"/>
-					</a>
-					<div class="link-subtext">Notes</div>
-				</div>
-
-				<div class="image-link" data-aos="fade-up" data-aos-delay="2150" data-aos-anchor="#trigger-logo">
-					<a href="bio.html">
-						<img src="me.png" alt="Me"/>
-					</a>
-					<div class="link-subtext">Me</div>
-				</div>
+			<div class="column" data-aos="fade-down" data-aos-delay="400" data-aos-anchor="#trigger-quotes">
+				<div class="quote-text">A mathematician is a blind man in a dark room looking for a black cat which isn’t there.</div>
+				<br>
+				<div class="quote-attribution">&mdash;Charles Darwin</div>
 			</div>
 
-			<div style="height: 20vh"></div>
-
-
+			<div class="column" data-aos="fade-down" data-aos-delay="600" data-aos-anchor="#trigger-quotes">
+				<div class="quote-text">I hate algebra.</div>
+				<br>
+				<div class="quote-attribution">&mdash;John Conway</div>
+			</div>
 		</div>
+
+		<div style="height: 10vh"></div>
+
+		<div class="logo" data-aos="fade-in" data-aos-delay="500" id="trigger-logo">
+			<a href="">
+				<img src="logo.png" alt="Logo"/>
+			</a>
+		</div>
+		
+		<div style="height: 2vh"></div>
+
+		<div class="heading" data-aos="fade-up" data-aos-delay="1000" data-aos-anchor="#trigger-logo">Reading, Writing, and Proving</div>
+
+		<div style="height: 5vh"></div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="1500" data-aos-anchor="#trigger-logo">My name is Cruz Godar, and I'm an alumnus of Cal Poly in San Luis Obispo. I graduated with a bachelor's degree in mathematics, and I am now taking a gap year in Germany, learning the language and writing a novel, before returning to attend graduate school. Whether you’re here for research papers, rough drafts, residue theory notes, or a resume, you’re in the right place.</div>
+
+		<div class="row">
+			<div class="image-link" data-aos="fade-up" data-aos-delay="2000" data-aos-anchor="#trigger-logo">
+				<a href="research.html">
+					<img src="research.png" alt="Research"/>
+				</a>
+				<div class="link-subtext">Research</div>
+			</div>
+
+			<div class="image-link" data-aos="fade-up" data-aos-delay="2050" data-aos-anchor="#trigger-logo">
+				<a href="writing.html">
+					<img src="writing.png" alt="Writing"/>
+				</a>
+				<div class="link-subtext">Writing</div>
+			</div>
+
+			<div class="image-link" data-aos="fade-up" data-aos-delay="2100" data-aos-anchor="#trigger-logo">
+				<a href="notes.html">
+					<img src="notes.png" alt="Notes"/>
+				</a>
+				<div class="link-subtext">Notes</div>
+			</div>
+
+			<div class="image-link" data-aos="fade-up" data-aos-delay="2150" data-aos-anchor="#trigger-logo">
+				<a href="bio.html">
+					<img src="me.png" alt="Me"/>
+				</a>
+				<div class="link-subtext">Me</div>
+			</div>
+		</div>
+
+		<div style="height: 20vh"></div>
 	</div>
 
 	<div class="page-bottom"></div>
