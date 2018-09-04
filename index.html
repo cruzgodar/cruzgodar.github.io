@@ -2,9 +2,9 @@
 <html>
 <head>
 <title>Cruz Godar</title>
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=NmPPnmeW24">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=NmPPnmeW24">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=NmPPnmeW24">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest?v=NmPPnmeW24">
 <link rel="mask-icon" href="/safari-pinned-tab.svg?v=NmPPnmeW24" color="#5bbad5">
 <link rel="shortcut icon" href="/favicon.ico?v=NmPPnmeW24">
@@ -46,6 +46,23 @@ body
 	height: 100vh;
 	z-index: -10;
 	background: url("banner.png") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.banner-white
+{
+	content: "";
+	display: block;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100vh;
+	z-index: -10;
+	background: rgb(255, 255, 255) no-repeat center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -200,23 +217,6 @@ body
 	font-size: 150%
 }
 
-/* Something about the before tag makes the scrolling work on mobile. */
-.page-bottom:before
-{
-	content: "";
-	display: block;
-	position: relative;
-	left: 0;
-	top: 0;
-	width: 100%;
-	z-index: -9;
-	background: rgb(255, 255, 255);
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
 
 
 /* If the screen is less than 1000px wide (e.g. on a phone in portrait mode), make some adjustments. */
@@ -284,15 +284,7 @@ body
 
 
 <body>
-	<!-- Force scroll to top of page on load -->
-	<script>
-		window.onbeforeunload = function ()
-		{
-			window.scrollTo(0, 0);
-		}
-	</script>
-
-	<div class="banner"></div>
+	<div id="background-image" class="banner"></div>
 
 	<div class="gradient"></div>
 	<div class="content">
@@ -367,31 +359,47 @@ body
 		<div style="height: 20vh"></div>
 	</div>
 
-	<div class="page-bottom"></div>
 
-	<!-- Prevent image from resizing in mobile browsers when the url bar slides away. -->
-	<script>
-		var obj = $(".banner");
-
-		function resizeObject() {
-			obj.height( $(window).height());
-		}
-
-		$(window).resize(resizeObject);
-		resizeObject();
-	</script>
-
+	
 	<!-- Animate on scroll library -->
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 	<script>
 		var w = window,
-	    d = document,
-	    e = d.documentElement,
-	    g = d.getElementsByTagName('body')[0],
-	    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+		d = document,
+		e = d.documentElement,
+		g = d.getElementsByTagName('body')[0],
+		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
-	    //Initiate anamations when they're a third of the way up the screen.
+		//Initiate anamations when they're a third of the way up the screen.
 		AOS.init({duration: 1200, once: true, offset: y/3});
+	</script>
+
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<!-- Change background image on mobile one the top is gone so that the user can't see the top banner at the bottom of the page. -->
+	<script>
+		$(function()
+		{
+			$(window).scroll(function ()
+			{
+				var w = window,
+				d = document,
+				e = d.documentElement,
+				g = d.getElementsByTagName('body')[0],
+				y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+				if ($(this).scrollTop() > y)
+				{
+					document.getElementById("background-image").className = "banner-white";
+				}
+
+				if ($(this).scrollTop() < y)
+				{
+					document.getElementById("background-image").className = "banner"
+				}
+			});
+		});
 	</script>
 </body>
 </html>
