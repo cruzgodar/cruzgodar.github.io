@@ -199,6 +199,13 @@ body
 
 
 
+.footer
+{
+	height: 15vh;
+}
+
+
+
 /* If the screen is less than 1366px wide (e.g. on a phone in portrait mode), make some adjustments. */
 @media screen and (max-width: 1366px)
 {
@@ -247,6 +254,12 @@ body
 		text-align: center;
 		font-size: 150%;
 	}
+
+	/* Make more room in the footer. */
+	.footer
+	{
+		height: 25vh;
+	}
 }
 
 </style>
@@ -282,7 +295,7 @@ body
 
 
 
-	<div style="height: 30vh"></div>
+	<div style="height: 20vh"></div>
 	<div class="line-break" data-aos="fade-in" data-aos-once="false" data-aos-duration="500" id="trigger-menu" data-aos-offset="0"></div>
 	<div style="height: 5vh"></div>
 
@@ -306,7 +319,7 @@ body
 		</div>
 	</div>
 
-	<div style="height: 15vh"></div>
+	<div class="footer"></div>
 
 
 
