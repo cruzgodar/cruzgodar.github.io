@@ -223,6 +223,13 @@ body
 
 
 
+.footer
+{
+	height: 15vh;
+}
+
+
+
 /* If the screen is less than 1000px wide (e.g. on a phone in portrait mode), make some adjustments. */
 @media screen and (max-width: 1366px)
 {
@@ -279,6 +286,12 @@ body
 		margin-top: 31.25vw;
 		color: rgb(64, 64, 64);
 		text-align: center;
+	}
+
+	/* Make more room in the footer. */
+	.footer
+	{
+		height: 25vh;
 	}
 }
 
@@ -360,7 +373,7 @@ body
 			</div>
 		</div>
 
-		<div style="height: 15vh"></div>
+		<div class="footer"></div>
 	</div>
 
 
