@@ -36,56 +36,14 @@ body
 	padding: 0;
 	height: 100%;
 	width: 100%;
-	background: rgb(0, 0, 0);
 }
 
 
 
-/* Something about the before tag makes the scrolling work on mobile. */
-.background-top:before
+.gradient
 {
-	content: "";
-	display: block;
-	position: fixed;
-	left: 0;
-	top: 0;
-	width: 100vw;
-	height: 100vh;
-	z-index: -10;
-	background: rgb(255, 255, 255) no-repeat center center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-.background-bottom
-{
-	content: "";
-	display: block;
-	position: fixed;
-	left: 0;
-	top: 0;
-	width: 100vw;
-	height: 100vh;
-	z-index: -10;
-	background: url("graphics/corona.png") no-repeat center center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-.gradient-white
-{
-	background: linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-	height: 10vh;
-}
-
-.gradient-black
-{
-	background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
-	height: 10vh;
+	background: linear-gradient(rgba(255, 255, 255, 1), rgba(0, 0, 0, 1));
+	height: 50vh;
 }
 
 
@@ -250,7 +208,7 @@ body
 
 <body>
 	<div class="background-top" id="background-image"></div>
-	<div style="background: rgb(255, 255, 255); height: 100vh;">
+	<div style="height: 67vh">
 		<div style="height: 5vh"></div>
 
 		<div class="logo" data-aos="fade-in" id="trigger-info">
@@ -261,7 +219,7 @@ body
 
 		<div style="height: 2vh"></div>
 
-		<div class="heading-text" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-cal-poly">Writing</div>
+		<div class="heading-text" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-info">Writing</div>
 
 		<div style="height: 10vh"></div>
 
@@ -269,41 +227,41 @@ body
 		<div class="section-text" data-aos="fade-up" data-aos-delay="2000" data-aos-anchor="#trigger-info">A city on the brink of chaos.</div>
 		<div class="section-text" data-aos="fade-up" data-aos-delay="3000" data-aos-anchor="#trigger-info">An underground insurgency.</div>
 	</div>
-
-	<div class="gradient-white"></div>
-
-	<div class="title-text" data-aos="fade-up">CORONA</div>
 	
-	
+	<div class="gradient" data-aos="fade-in" id="trigger-black"></div>
+
+	<div style="background: rgb(0, 0, 0)" data-aos="fade-in" data-aos-anchor="#trigger-black">
+		<div class="title-text" data-aos="fade-up">CORONA</div>
+		
 
 
+		<div style="height: 20vh"></div>
+		<div style="background: rgb(0, 0, 0)" data-aos="fade-in" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div class="line-break" data-aos="fade-in" data-aos-once="false" data-aos-duration="500" id="trigger-menu"></div>
+			<div style="height: 5vh"></div>
 
-	<div class="gradient-black" data-aos="fade-in" data-aos-once="false" data-aos-anchor="#trigger-menu"></div>
-	<div style="background: rgb(0, 0, 0)" data-aos="fade-in" data-aos-once="false" data-aos-anchor="#trigger-menu">
-		<div class="line-break" data-aos="fade-in" data-aos-once="false" id="trigger-menu"></div>
-		<div style="height: 5vh"></div>
+			<div class="row">
+				<div class="menu-image-link" data-aos="fade-up" data-aos-delay="50" data-aos-once="false" data-aos-anchor="#trigger-menu">
+					<a href="research.html">
+						<img src="graphics/research.png" alt="Research"/>
+					</a>
+				</div>
 
-		<div class="row">
-			<div class="menu-image-link" data-aos="fade-up" data-aos-delay="50" data-aos-once="false" data-aos-anchor="#trigger-menu">
-				<a href="research.html">
-					<img src="graphics/research.png" alt="Research"/>
-				</a>
+				<div class="menu-image-link" data-aos="fade-up" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-menu">
+					<a href="notes.html">
+						<img src="graphics/notes.png" alt="Notes"/>
+					</a>
+				</div>
+
+				<div class="menu-image-link" data-aos="fade-up" data-aos-delay="150" data-aos-once="false" data-aos-anchor="#trigger-menu">
+					<a href="bio.html">
+						<img src="graphics/me.png" alt="Me"/>
+					</a>
+				</div>
 			</div>
 
-			<div class="menu-image-link" data-aos="fade-up" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-menu">
-				<a href="notes.html">
-					<img src="graphics/notes.png" alt="Notes"/>
-				</a>
-			</div>
-
-			<div class="menu-image-link" data-aos="fade-up" data-aos-delay="150" data-aos-once="false" data-aos-anchor="#trigger-menu">
-				<a href="bio.html">
-					<img src="graphics/me.png" alt="Me"/>
-				</a>
-			</div>
+			<div class="footer"></div>
 		</div>
-
-		<div class="footer"></div>
 	</div>
 
 
@@ -319,28 +277,6 @@ body
 
 		//Initiate anamations when they're a third of the way up the screen.
 		AOS.init({duration: 1200, once: true, offset: y/3});
-	</script>
-
-	<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-	<!-- Change background image on mobile one the top is gone so that the user can't see the top banner at the bottom of the page. -->
-	<script>
-		$(function()
-		{
-			$(window).scroll(function ()
-			{
-				if ($(this).scrollTop() > 1)
-				{
-					document.getElementById("background-image").className = "background-bottom";
-				}
-
-				if ($(this).scrollTop() < 1)
-				{
-					document.getElementById("background-image").className = "background-top";
-				}
-			});
-		});
 	</script>
 </body>
 </html>
