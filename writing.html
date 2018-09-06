@@ -36,6 +36,7 @@ body
 	padding: 0;
 	height: 100%;
 	width: 100%;
+	background: rgb(255, 255, 255);
 }
 
 
@@ -382,6 +383,34 @@ body
 
 		//Initiate anamations when they're a third of the way up the screen.
 		AOS.init({duration: 1200, once: true, offset: y/3});
+	</script>
+
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<!-- Change background image on mobile one the top is gone so that the user can't see the a white background at the bottom of the page. -->
+	<script>
+		$(function()
+		{
+			$(window).scroll(function ()
+			{
+				var w = window,
+				d = document,
+				e = d.documentElement,
+				g = d.getElementsByTagName('body')[0],
+				y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+				if ($(this).scrollTop() > 2*y/3)
+				{
+					$("body").css("background", "rgb(0, 0, 0)");
+				}
+
+				if ($(this).scrollTop() < 2*y/3)
+				{
+					$("body").css("background", "rgb(255, 255, 255)");
+				}
+			});
+		});
 	</script>
 </body>
 </html>
