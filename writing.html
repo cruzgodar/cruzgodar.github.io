@@ -400,12 +400,12 @@ body
 				g = d.getElementsByTagName('body')[0],
 				y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
-				if ($(this).scrollTop() > 2*y/3)
+				if ($(this).scrollTop() > y)
 				{
 					$("body").css("background", "rgb(0, 0, 0)");
 				}
 
-				if ($(this).scrollTop() < 2*y/3)
+				if ($(this).scrollTop() < y)
 				{
 					$("body").css("background", "rgb(255, 255, 255)");
 				}
