@@ -42,8 +42,8 @@ body
 
 .gradient
 {
-	background: linear-gradient(rgba(255, 255, 255, 1), rgba(0, 0, 0, 1));
-	height: 50vh;
+	background: linear-gradient(rgb(255, 255, 255), rgb(0, 0, 0));
+	height: 20vh;
 }
 
 
@@ -116,6 +116,22 @@ body
 	color: rgb(127, 127, 127);
 	text-align: justify;
 	font-size: 125%;
+}
+
+
+
+.eclipse
+{
+	width: 50vh;
+	height: 50vh;
+	margin: 0 auto;
+}
+
+.eclipse img
+{
+	position: absolute;
+	width: 50vh;
+	height: 50vh;
 }
 
 
@@ -231,7 +247,12 @@ body
 	<div class="gradient" data-aos="fade-in" id="trigger-black"></div>
 
 	<div style="background: rgb(0, 0, 0)" data-aos="fade-in" data-aos-anchor="#trigger-black">
-		<div class="title-text" data-aos="fade-up">CORONA</div>
+
+		<div class="title-text" data-aos="fade-up" id="trigger-cover">CORONA</div>
+
+		<div class="eclipse" data-aos="fade-in" data-aos-delay="500" data-aos-anchor="#trigger-cover">
+			<img src="graphics/corona.png" alt="Corona">
+		</div>
 		
 
 
