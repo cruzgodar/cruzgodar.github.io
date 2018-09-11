@@ -209,8 +209,8 @@ body
 
 
 
-/* If the screen is less than 1366px wide (e.g. on a phone in portrait mode), make some adjustments. */
-@media screen and (max-width: 1366px)
+/* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), change the layout. */
+@media screen and (max-width: 1300px) and (orientation: portrait)
 {
 	/* Make text smaller. */
 	html
