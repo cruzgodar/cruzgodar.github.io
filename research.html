@@ -204,7 +204,7 @@ body
 
 
 
-/* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), change the layout. */
+/* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), use the mobile layout. */
 @media screen and (max-width: 1300px) and (orientation: portrait)
 {
 	/* Make text smaller. */
@@ -251,6 +251,26 @@ body
 		color: rgb(160, 160, 160);
 		text-align: center;
 		font-size: 125%;
+	}
+
+	/* Make more room in the footer. */
+	.footer
+	{
+		height: 25vh;
+	}
+}
+
+
+
+/* On the other hand, if the screen has small enough height and is in landscare, then change back to the wide layout and make everything much smaller to make more efficient use of space. */
+@media screen and (max-height: 800px) and (orientation: landscape)
+{
+	/* Make text smaller. */
+	html
+	{
+		height: 100%
+		width: 100%;
+		font-size: 12px;
 	}
 
 	/* Make more room in the footer. */
