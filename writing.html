@@ -263,45 +263,28 @@ body
 	/* Make text smaller. */
 	html
 	{
-		height: 100%
-		width: 100%;
 		font-size: 12px;
 	}
 
 	/* Make text have smaller margins so justifying doesn't look ugly. */
 	.synopsis-text
 	{
-		position: relative;
 		width: 70vw;
 		margin-left: 15vw;
-		color: rgb(160, 160, 160);
-		text-align: justify;
-		font-size: 125%;
 	}
 
 	/* Fit progress bar to synopsis text */
 	.progress-bar
 	{
 		width: 70vw;
-		height: 5vh;
 		margin-left: 15vw;
-		border: 2px solid rgb(127, 127, 127);
-		border-radius: 5px;
-		-webkit-border-radius: 5px;
-		-moz-border-radius: 5px;
-		-o-border-radius: 5px;
-		padding: 2px;
 	}
 
 	/* Widen body text just a bit so there's a difference. */
 	.body-text
 	{
-		position: relative;
 		width: 80vw;
 		margin-left: 10vw;
-		color: rgb(127, 127, 127);
-		text-align: justify;
-		font-size: 125%;
 	}
 
 	/* Make more room in the footer. */
@@ -313,14 +296,12 @@ body
 
 
 
-/* On the other hand, if the screen has small enough height and is in landscare, then change back to the wide layout and make everything much smaller to make more efficient use of space. */
+/* On the other hand, if the screen has small enough height and is in landscape, then change back to the wide layout and make everything much smaller to make more efficient use of space. */
 @media screen and (max-height: 800px) and (orientation: landscape)
 {
 	/* Make text smaller. */
 	html
 	{
-		height: 100%;
-		width: 100%;
 		font-size: 12px;
 	}
 
