@@ -21,7 +21,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-
 <style>
 
 html
@@ -51,7 +50,6 @@ a
 	content: "";
 	display: block;
 	position: fixed;
-	opacity: 1;
 	left: 0;
 	top: 0;
 	width: 100vw;
@@ -64,12 +62,37 @@ a
 	background-size: cover;
 }
 
+.banner-white
+{
+	content: "";
+	display: block;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: -10;
+	background: rgb(255, 255, 255) no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.gradient
+{
+	background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+	position: relative; 
+	margin-top: 50vh;
+	height: 50vh;
+}
+
 
 #content
 {
-	background: rgba(255, 255, 255, 0);
+	background: rgb(255, 255, 255);
 	position: relative; 
-	margin-top: 99.9vh;
+	margin-top: -.1vh;
 }
 
 
@@ -291,6 +314,7 @@ a
 
 	<div id="background-image" class="banner"></div>
 
+	<div class="gradient"></div>
 	<div id="content">
 
 		<div style="height: 5vh"></div>
@@ -591,7 +615,15 @@ a
 				g = d.getElementsByTagName('body')[0],
 				y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
-				$("#background-image").css("opacity", 1 - $(window).scrollTop() / y);
+				if ($(this).scrollTop() > y)
+				{
+					document.getElementById("background-image").className = "banner-white";
+				}
+
+				if ($(this).scrollTop() < y)
+				{
+					document.getElementById("background-image").className = "banner";
+				}
 			});
 		});
 	</script>
