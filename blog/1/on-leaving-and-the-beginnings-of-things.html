@@ -168,6 +168,43 @@ a
 
 
 
+.nav-button-left, .nav-button-right
+{
+	color: rgba(128, 128, 128, 0);
+
+	-webkit-background-clip: text;
+    background-clip: text;
+    font-size: 175%;
+
+    -webkit-transition: all .15s ease-in-out;
+    -moz-transition: all .15s ease-in-out;
+    -o-transition: all .15s ease-in-out;
+    transition: all .15s ease-in-out;
+}
+
+.nav-button-left
+{
+	background-image: -webkit-linear-gradient(right, rgba(127, 127, 127, 1), rgba(127, 127, 127, 0) 85%);
+    background-image:    -moz-linear-gradient(right, rgba(127, 127, 127, 1), rgba(127, 127, 127, 0) 85%);
+    background-image:      -o-linear-gradient(right, rgba(127, 127, 127, 1), rgba(127, 127, 127, 0) 85%);
+    background-image:         linear-gradient(to left, rgba(127, 127, 127, 1), rgba(127, 127, 127, 0) 85%);
+}
+
+.nav-button-right
+{
+	background-image: -webkit-linear-gradient(left, rgba(127, 127, 127, 1), rgba(127, 127, 127, 0) 85%);
+    background-image:    -moz-linear-gradient(left, rgba(127, 127, 127, 1), rgba(127, 127, 127, 0) 85%);
+    background-image:      -o-linear-gradient(left, rgba(127, 127, 127, 1), rgba(127, 127, 127, 0) 85%);
+    background-image:         linear-gradient(to right, rgba(127, 127, 127, 1), rgba(127, 127, 127, 0) 85%);
+}
+
+.nav-button-left:hover, .nav-button-right:hover
+{
+	color: rgba(128, 128, 128, 1);
+}
+
+
+
 .big-image-horizontal
 {
 	position: relative;
@@ -339,6 +376,16 @@ a
 		<div class="date-text" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-1">November 10, 2018</div>
 
 		<div style="height: 10vh"></div>
+
+		<div>
+			<a href="../2/nach-heidelberg.html" style="float: left; position: relative; margin-left: 30vw" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
+				<span class="nav-button-left">
+					<b>&#x3008;</b> Newer
+				</span>
+			</a>
+		</div>
+
+		<div style="height: 30vh"></div>
 
 		<div class="section-text" data-aos="fade-up" id="trigger-section-2">The Flight</div>
 
