@@ -170,7 +170,7 @@ a
 
 .nav-button-left, .nav-button-right
 {
-	color: rgba(128, 128, 128, 0);
+	color: rgba(127, 127, 127, 0);
 
 	-webkit-background-clip: text;
     background-clip: text;
@@ -180,6 +180,13 @@ a
     -moz-transition: all .15s ease-in-out;
     -o-transition: all .15s ease-in-out;
     transition: all .15s ease-in-out;
+
+    border: 2px solid rgb(127, 127, 127);
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-o-border-radius: 10px;
+	padding: 5px;
 }
 
 .nav-button-left
@@ -200,7 +207,7 @@ a
 
 .nav-button-left:hover, .nav-button-right:hover
 {
-	color: rgba(128, 128, 128, 1);
+	color: rgba(127, 127, 127, 1);
 }
 
 
@@ -346,6 +353,19 @@ a
 	}
 }
 
+
+
+/* If the user is unable to hover (on a touchscreen, for instance), remove the fade in the nav buttons. */
+@media (hover: none)
+{
+	.nav-button-left, .nav-button-right
+	{
+		color: rgba(127, 127, 127, 1);
+	}
+}
+
+
+
 </style>
 </head>
 
@@ -378,10 +398,10 @@ a
 		<div style="height: 10vh"></div>
 
 		<div>
-			<a href="../2/nach-heidelberg.html" style="float: left; position: relative; margin-left: 30vw" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
-				<span class="nav-button-left">
+			<a href="../2/nach-heidelberg.html" style="float: left; position: relative; margin-left: 30vw" data-aos="fade-right" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
+				<div class="nav-button-left">
 					<b>&#x3008;</b> Newer
-				</span>
+				</div>
 			</a>
 		</div>
 
@@ -601,7 +621,19 @@ a
 
 
 
-		<div style="height: 30vh"></div>
+		<div style="height: 20vh"></div>
+
+		<div>
+			<a href="../2/nach-heidelberg.html" style="float: left; position: relative; margin-left: 30vw" data-aos="fade-right">
+				<div class="nav-button-left">
+					<b>&#x3008;</b> Newer
+				</div>
+			</a>
+		</div>
+
+
+
+		<div style="height: 25vh"></div>
 		<div class="line-break" data-aos="fade-in" data-aos-once="false" id="trigger-comments"></div>
 		<div style="height: 5vh"></div> 
 
