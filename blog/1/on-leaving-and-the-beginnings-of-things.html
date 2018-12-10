@@ -167,19 +167,23 @@ a
 }
 
 
-
 .nav-button
 {
 	color: rgb(127, 127, 127);
+	background-color: rgb(255, 255, 255);
     font-size: 175%;
     text-align: center;
 
     width: 2.5vw;
 
     -webkit-transition: all .15s ease-in-out;
-    -moz-transition: all .15s ease-in-out;
-    -o-transition: all .15s ease-in-out;
-    transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
 
     border: 2px solid rgb(127, 127, 127);
 	border-radius: 10px;
@@ -191,7 +195,10 @@ a
 
 .nav-button:hover
 {
-	background-color: rgb(224, 224, 224);
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
 }
 
 .nav-button-left
