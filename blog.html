@@ -29,8 +29,6 @@ body
 {
 	margin: 0;
 	padding: 0;
-	height: 100%;
-	width: 100%;
 }
 
 
@@ -95,23 +93,22 @@ body
 	font-size: 125%;
 }
 
-.row:after
+
+
+.image-links
 {
-	content: "";
-	display: table;
-	clear: both;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 70vw;
+	margin: 0 auto;
 }
 
 .image-link
 {
-	position: relative;
-	float: left;
 	width: 13.75vw;
 	height: 13.75vw;
-	margin-left: 15vw;
-	margin-right: -10vw;
-	margin-top: 6.5vh;
-	display: inline-block;
 }
 
 .image-link img
@@ -148,7 +145,7 @@ body
 
 .row-break
 {
-	height: 2.5vw;
+	height: 5vw;
 }
 
 
@@ -156,7 +153,7 @@ body
 .line-break
 { 
     margin: 0 auto;
-    width: 80vw;
+    width: 70vw;
     height: 1px;
     background: black;
     background: -webkit-gradient(linear, 0 0, 100% 0, from(white), to(white), color-stop(50%, rgb(160, 160, 160)));
@@ -164,14 +161,22 @@ body
 
 
 
+.menu-image-links
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 55vw;
+	margin: 0 auto;
+}
+
 .menu-image-link
 {
 	position: relative;
 	float: left;
 	width: 10vw;
 	height: 10vw;
-	margin-left: 22.5vw; /* 30 10 5 10 5 10 30 */
-	margin-right: -17.5vw;
 	display: inline-block;
 }
 
@@ -180,6 +185,7 @@ body
 	position: absolute;
 	width: 10vw;
 	height: 10vw;
+
 	-webkit-transition: all .15s ease-in-out;
 	-moz-transition: all .15s ease-in-out;
 	-o-transition: all .15s ease-in-out;
@@ -213,9 +219,7 @@ body
 	/* Make text smaller. */
 	html
 	{
-		height: 100%
-		width: 100%;
-		font-size: 12px;
+		font-size: 16px;
 	}
 
 	/* Put two images per row, rather than four. */
@@ -223,7 +227,6 @@ body
 	{
 		width: 30vw;
 		height: 30vw;
-		margin-right: -5vw;
 		margin-top: 10vw;
 	}
 
@@ -292,22 +295,29 @@ body
 
 	<div style="height: 5vh"></div>
 
-	<div class="row">
+	<div class="image-links">
 		<div class="image-link" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-2018">
+			<a href="blog/4/a-taste-of-chaos.html">
+				<img src="blog/4/cover.png" alt="A Taste of Chaos"/>
+			</a>
+			<div class="image-link-subtext">A Taste of Chaos</div>
+		</div>
+
+		<div class="image-link" data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-2018">
 			<a href="blog/3/the-city-and-the-city.html">
 				<img src="blog/3/cover.png" alt="The City and The City"/>
 			</a>
 			<div class="image-link-subtext">The City and The City</div>
 		</div>
 
-		<div class="image-link" data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-2018">
+		<div class="image-link" data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-2018">
 			<a href="blog/2/nach-heidelberg.html">
 				<img src="blog/2/cover.png" alt="Nach Heidelberg"/>
 			</a>
 			<div class="image-link-subtext">Nach Heidelberg</div>
 		</div>
 
-		<div class="image-link" data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-2018">
+		<div class="image-link" data-aos="fade-up" data-aos-delay="700" data-aos-anchor="#trigger-2018">
 			<a href="blog/1/on-leaving-and-the-beginnings-of-things.html">
 				<img src="blog/1/cover.png" alt="On Leaving and the Beginnings of Things"/>
 			</a>
@@ -324,7 +334,7 @@ body
 	<div class="line-break" data-aos="fade-in" data-aos-once="false" data-aos-duration="500" data-aos-anchor="#trigger-menu"></div>
 	<div style="height: 5vh"></div>
 
-	<div class="row">
+	<div class="menu-image-links">
 		<div class="menu-image-link" data-aos="fade-up" data-aos-delay="50" data-aos-once="false" data-aos-anchor="#trigger-menu">
 			<a href="writing.html">
 				<img src="graphics/writing.png" alt="Writing"/>

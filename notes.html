@@ -29,8 +29,6 @@ body
 {
 	margin: 0;
 	padding: 0;
-	height: 100%;
-	width: 100%;
 }
 
 
@@ -95,23 +93,22 @@ body
 	font-size: 125%;
 }
 
-.row:after
+
+
+.image-links
 {
-	content: "";
-	display: table;
-	clear: both;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 70vw;
+	margin: 0 auto;
 }
 
 .image-link
 {
-	position: relative;
-	float: left;
 	width: 13.75vw;
 	height: 13.75vw;
-	margin-left: 15vw;
-	margin-right: -10vw;
-	margin-top: 6.5vh;
-	display: inline-block;
 }
 
 .image-link img
@@ -148,7 +145,7 @@ body
 
 .row-break
 {
-	height: 2.5vw;
+	height: 5vw;
 }
 
 
@@ -156,7 +153,7 @@ body
 .line-break
 { 
     margin: 0 auto;
-    width: 80vw;
+    width: 70vw;
     height: 1px;
     background: black;
     background: -webkit-gradient(linear, 0 0, 100% 0, from(white), to(white), color-stop(50%, rgb(160, 160, 160)));
@@ -164,15 +161,20 @@ body
 
 
 
+.menu-image-links
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 55vw;
+	margin: 0 auto;
+}
+
 .menu-image-link
 {
-	position: relative;
-	float: left;
 	width: 10vw;
 	height: 10vw;
-	margin-left: 22.5vw; /* 30 10 5 10 5 10 30 */
-	margin-right: -17.5vw;
-	display: inline-block;
 }
 
 .menu-image-link img
@@ -180,6 +182,7 @@ body
 	position: absolute;
 	width: 10vw;
 	height: 10vw;
+
 	-webkit-transition: all .15s ease-in-out;
 	-moz-transition: all .15s ease-in-out;
 	-o-transition: all .15s ease-in-out;
@@ -213,9 +216,7 @@ body
 	/* Make text smaller. */
 	html
 	{
-		height: 100%
-		width: 100%;
-		font-size: 12px;
+		font-size: 16px;
 	}
 
 	/* Put two images per row, rather than four. */
@@ -294,7 +295,9 @@ body
 
 	<div class="section-text" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-cal-poly">From Cal Poly</div>
 
-	<div class="row">
+	<div style="height: 5vh"></div>
+
+	<div class="image-links">
 		<div class="image-link" data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-cal-poly">
 			<a href="notes/linear-algebra.pdf">
 				<img src="graphics/linear-algebra.png" alt="Linear Algebra"/>
@@ -326,7 +329,7 @@ body
 
 	<div class="row-break"></div>
 
-	<div class="row">
+	<div class="image-links">
 		<div class="image-link" data-aos="fade-up" data-aos-delay="900" data-aos-anchor="#trigger-cal-poly">
 			<a href="notes/abstract-algebra.pdf">
 				<img src="graphics/abstract-algebra.png" alt="Abstract Algebra"/>
@@ -344,7 +347,7 @@ body
 	<div class="line-break" data-aos="fade-in" data-aos-once="false" data-aos-duration="500" data-aos-anchor="#trigger-menu"></div>
 	<div style="height: 5vh"></div>
 
-	<div class="row">
+	<div class="menu-image-links">
 		<div class="menu-image-link" data-aos="fade-up" data-aos-delay="50" data-aos-once="false" data-aos-anchor="#trigger-menu">
 			<a href="blog.html">
 				<img src="graphics/blog.png" alt="Blog"/>

@@ -34,8 +34,6 @@ body
 {
 	margin: 0;
 	padding: 0;
-	height: 100%;
-	width: 100%;
 }
 
 
@@ -187,16 +185,20 @@ body
 
 
 
+.image-links
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 70vw;
+	margin: 0 auto;
+}
+
 .image-link
 {
-	position: relative;
-	float: left;
 	width: 13.75vw;
 	height: 13.75vw;
-	margin-left: 15vw;
-	margin-right: -10vw;
-	margin-top: 6.5vh;
-	display: inline-block;
 }
 
 .image-link img
@@ -226,9 +228,14 @@ body
 {
 	position: relative;
 	margin-top: 15vw;
-	color: rgb(64, 64, 64);
+	color: rgb(127, 127, 127);
 	text-align: center;
-	font-size: 150%;
+	font-size: 125%;
+}
+
+.row-break
+{
+	height: 5vw;
 }
 
 
@@ -246,7 +253,7 @@ body
 	/* Make text smaller. */
 	html
 	{
-		font-size: 12px;
+		font-size: 16px;
 	}
 
 	/* Stack the quote columns on top of one another. */
@@ -351,7 +358,9 @@ body
 
 		<div class="body-text" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-1">My name is Cruz Godar, and I’m an alumnus of Cal Poly in San Luis Obispo. I graduated with a bachelor’s degree in mathematics, and I am now taking a gap year in Germany, learning the language and writing a novel, before returning to attend graduate school. Whether you’re here for research papers, rough drafts, or residue theory notes, you’re in the right place.</div>
 
-		<div class="row">
+		<div style="height: 5vh"></div>
+
+		<div class="image-links">
 			<div class="image-link" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
 				<a href="blog.html">
 					<img src="graphics/blog.png" alt="Blog"/>
@@ -383,7 +392,7 @@ body
 
 		<div class="row-break"></div>
 
-		<div class="row">
+		<div class="image-links">
 			<div class="image-link" data-aos="fade-up" data-aos-delay="700" data-aos-anchor="#trigger-section-1">
 				<a href="bio.html">
 					<img src="graphics/me.png" alt="Me"/>

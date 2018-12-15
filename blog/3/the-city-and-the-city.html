@@ -32,8 +32,6 @@ body
 {
 	margin: 0;
 	padding: 0;
-	height: 100%;
-	width: 100%;
 }
 
 a
@@ -205,13 +203,13 @@ a
 .nav-button-left
 {
 	float: left;
-	margin-left: 30vw;
+	margin-left: 15vw;
 }
 
 .nav-button-right
 {
 	float: right;
-	margin-right: 30vw;
+	margin-right: 15vw;
 }
 
 
@@ -270,7 +268,7 @@ a
 .line-break
 { 
     margin: 0 auto;
-    width: 80vw;
+    width: 70vw;
     height: 1px;
     background: black;
     background: -webkit-gradient(linear, 0 0, 100% 0, from(white), to(white), color-stop(50%, rgb(160, 160, 160)));
@@ -278,14 +276,22 @@ a
 
 
 
+.menu-image-links
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 55vw;
+	margin: 0 auto;
+}
+
 .menu-image-link
 {
 	position: relative;
 	float: left;
 	width: 10vw;
 	height: 10vw;
-	margin-left: 22.5vw;
-	margin-right: -17.5vw;
 	display: inline-block;
 }
 
@@ -294,6 +300,7 @@ a
 	position: absolute;
 	width: 10vw;
 	height: 10vw;
+
 	-webkit-transition: all .15s ease-in-out;
 	-moz-transition: all .15s ease-in-out;
 	-o-transition: all .15s ease-in-out;
@@ -327,7 +334,7 @@ a
 	/* Make text smaller. */
 	html
 	{
-		font-size: 12px;
+		font-size: 16px;
 	}
 
 	.big-image-vertical
@@ -391,6 +398,10 @@ a
 		<div style="height: 7vh"></div>
 
 		<div class="row">
+			<a href="../4/a-taste-of-chaos.html" class="nav-button-left" data-aos="fade-right" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
+				<div class="nav-button">&#x27e8;</div>
+			</a>
+
 			<a href="../2/nach-heidelberg.html" class="nav-button-right" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="#trigger-section-1">
 				<div class="nav-button">&#x27e9;</div>
 			</a>
@@ -529,7 +540,11 @@ a
 		<div style="height: 20vh"></div>
 
 		<div class="row">
-			<a href="../2/nach-heidelberg.html" class="nav-button-right" data-aos="fade-left">
+			<a href="../4/a-taste-of-chaos.html" class="nav-button-left" data-aos="fade-right" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
+				<div class="nav-button">&#x27e8;</div>
+			</a>
+
+			<a href="../2/nach-heidelberg.html" class="nav-button-right" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="#trigger-section-1">
 				<div class="nav-button">&#x27e9;</div>
 			</a>
 		</div>
@@ -551,7 +566,7 @@ a
 		<div class="line-break" data-aos="fade-in" data-aos-once="false" data-aos-duration="500" data-aos-anchor="#trigger-menu"></div>
 		<div style="height: 5vh"></div>
 
-		<div class="row">
+		<div class="menu-image-links">
 			<div class="menu-image-link" data-aos="fade-up" data-aos-delay="50" data-aos-once="false" data-aos-anchor="#trigger-menu">
 				<a href="../../writing.html">
 					<img src="../../graphics/writing.png" alt="Writing"/>

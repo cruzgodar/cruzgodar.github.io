@@ -207,10 +207,20 @@ body
 .line-break
 { 
     margin: 0 auto;
-    width: 80vw;
+    width: 70vw;
     height: 1px;
     background: black;
     background: -webkit-gradient(linear, 0 0, 100% 0, from(black), to(black), color-stop(50%, rgb(92, 92, 92)));
+}
+
+.menu-image-links
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 55vw;
+	margin: 0 auto;
 }
 
 .menu-image-link
@@ -219,8 +229,6 @@ body
 	float: left;
 	width: 10vw;
 	height: 10vw;
-	margin-left: 22.5vw; /* 30 10 5 10 5 10 30 */
-	margin-right: -17.5vw;
 	display: inline-block;
 }
 
@@ -229,6 +237,7 @@ body
 	position: absolute;
 	width: 10vw;
 	height: 10vw;
+
 	-webkit-transition: all .15s ease-in-out;
 	-moz-transition: all .15s ease-in-out;
 	-o-transition: all .15s ease-in-out;
@@ -262,7 +271,7 @@ body
 	/* Make text smaller. */
 	html
 	{
-		font-size: 12px;
+		font-size: 16px;
 	}
 
 	/* Make text have smaller margins so justifying doesn't look ugly. */
@@ -397,7 +406,7 @@ body
 	<div class="line-break" data-aos="fade-in" data-aos-once="false" data-aos-duration="500" data-aos-anchor="#trigger-menu"></div>
 	<div style="height: 5vh"></div>
 
-	<div class="row">
+	<div class="menu-image-links">
 		<div class="menu-image-link" data-aos="fade-up" data-aos-delay="50" data-aos-once="false" data-aos-anchor="#trigger-menu">
 			<a href="blog.html">
 				<img src="graphics/blog.png" alt="Blog"/>
