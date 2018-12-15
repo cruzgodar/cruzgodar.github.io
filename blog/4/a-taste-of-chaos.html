@@ -534,7 +534,7 @@ a
 		<br>
 
 		<div class="body-text" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-5">
-			Take a complex number \(z\). Just like for a Julia set, we’re going to run \(z\) through \(f(z) = z^2 + c\), but this time, rather than picking \(c\) ahead of time, we let \(c = z\), and keep it that way for the entire sequence. I haven’t seen a good explanation for this process, and the one I wrote is anything but, so here’s an example. With \(z = i\), we let \(c = z = i\), and so our function becomes \(f(z) = z^2 + i\). Now we can run \(z\) through repeatedly: \((i, i^2 + i = -1 + i, (-1 + i)^2 + i = -i, (-i)^2 + i = -1 + i, ...)\). This sequence repeats, so it stays bounded, and therefore \(i\) is in the Mandelbrot set.
+			Take a complex number \(z\). Just like for a Julia set, we’re going to run \(z\) through \(f(z) = z^2 + c\), but this time, rather than picking \(c\) ahead of time, we let \(c = z\), and keep it that way for the entire sequence. I haven’t seen a good explanation for this process, and the one I wrote is anything but, so here’s an example. With \(z = i\), we let \(c = z = i\), and so our function becomes \(f(z) = z^2 + i\). Now we can run \(z\) through repeatedly: \((i, i^2 + i = -1 + i, (-1 + i)^2 + i = -i, ...)\). If you write more terms, you'll see this sequence repeats, so it stays bounded, and therefore \(i\) is in the Mandelbrot set.
 		</div>
 
 		<br>
@@ -630,17 +630,14 @@ a
 		<div style="height: 3vh"></div>
 
 		<div class="body-text" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-6">
-			It gets better. A Julia set is the continuation of a point in the Mandelbrot set, and in <i>most</i> places, the Mandelbrot set’s glowiness is continuous &mdash; that is, if one point is bright blue, then most of the time, the points around it are bright blue, too. What that tells us is that if we trace a path through the Mandelbrot set and make a Julia set at every point along it, the resulting sequence of Julia sets will deform mostly continuously. In other words, we can make animations.
+			It gets better. A Julia set is the continuation of a point in the Mandelbrot set, and in <i>most</i> places, the Mandelbrot set’s glowiness is continuous &mdash; that is, if one point is bright blue, then most of the time, the points around it are bright blue, too. What that tells us is that if we trace a path through the Mandelbrot set and make a Julia set at every point along it, the resulting sequence of Julia sets will deform mostly continuously. Put more simply, we can make animations.
 		</div>
 
 		<div style="height: 5vw"></div>
 
 		<a href="graphics/Circle.gif">
-			<img class="big-image-vertical" style="position: absolute; z-index: 1; height: 89.5vh; margin-left: calc(50vw - 45vh)" src="graphics/Circle.gif" alt="A Julia Set Animation" data-aos="fade-in" data-aos-delay="200" data-aos-anchor="#trigger-section-6"/>
-			<img class="big-image-vertical" style="position: absolute; z-index: 3; margin-left: calc(50vw - 45vh)" src="graphics/Feather Cover.png"/>
+			<img class="big-image-vertical" src="graphics/Circle.gif" alt="A Julia Set Animation" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-6"/>
 		</a>
-
-		<div style="height: 90vh"></div>
 
 		<div style="height: 5vw"></div>
 
@@ -651,7 +648,7 @@ a
 		<br>
 
 		<div class="body-text" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-6">
-			And there’s more, of course. We can change the generating function from \(z^2 + c\) to anything else with \(z\) and \(c\) imaginable, for one. Most of them don’t produce good results, unfortunately, and I haven’t found a single one that compares to the original. But maybe I’m just sentimental.
+			And there’s more, of course. We can change the generating function from \(z^2 + c\) to anything else imaginable with \(z\) and \(c\), for one. Most of them don’t produce good results, unfortunately, and I haven’t found a single one that compares to the original. But maybe I’m just sentimental.
 		</div>
 
 		<br>
