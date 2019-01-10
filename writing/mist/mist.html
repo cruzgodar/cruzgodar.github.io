@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Halloween in January</title>
+
+<link rel="preload" href="banner.jpg" as="image">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest?v=NmPPnmeW24">
+<link rel="mask-icon" href="/safari-pinned-tab.svg?v=NmPPnmeW24" color="#5bbad5">
+<link rel="shortcut icon" href="/favicon.ico?v=NmPPnmeW24">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
+<meta name="theme-color" content="#ffffff">
+
+<!-- Animate on scroll library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<!-- MathJax -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<style>
+
+html
+{
+	font-size: 20px;
+}
+
+body
+{
+	margin: 0;
+	padding: 0;
+}
+
+a
+{
+    color: rgb(127, 192, 127);
+    text-decoration: none;
+}
+
+
+
+/* Something about the before tag makes the scrolling work on mobile. */
+.banner:before
+{
+	content: "";
+	display: block;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: -10;
+	background: url("banner.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.banner-white
+{
+	content: "";
+	display: block;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: -10;
+	background: rgb(255, 255, 255) no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.gradient
+{
+	background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+	position: relative; 
+	margin-top: 50vh;
+	height: 50vh;
+}
+
+
+#content
+{
+	background: rgb(255, 255, 255);
+	position: relative; 
+	margin-top: -.1vh;
+}
+
+
+
+.logo
+{
+	width: 100px;
+	height: 100px;
+	margin: 0 auto;
+}
+
+.logo img
+{
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.logo img:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+
+
+.heading-text
+{
+	position: relative;
+	width: 100%;
+	color: rgb(0, 0, 0);
+	text-align: center;
+	font-size: 250%;
+}
+
+.date-text
+{
+	position: relative;
+	width: 100%;
+	color: rgb(0, 0, 0);
+	text-align: center;
+	font-size: 125%;
+}
+
+.section-text
+{
+	position: relative;
+	width: 100%;
+	color: rgb(92, 92, 92);
+	text-align: center;
+	font-size: 175%;
+}
+
+.body-text
+{
+	position: relative;
+	width: 70vw;
+	margin-left: 15vw;
+	color: rgb(127, 127, 127);
+	text-align: justify;
+	text-indent: 10pt;
+	font-size: 125%;
+}
+
+
+
+.nav-button
+{
+	color: rgb(127, 127, 127);
+	background-color: rgb(255, 255, 255);
+    font-size: 175%;
+    text-align: center;
+
+    width: 2.5vw;
+
+    -webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+
+    border: 2px solid rgb(127, 127, 127);
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-o-border-radius: 10px;
+	padding: 5px;
+}
+
+.nav-button:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+.nav-button-left
+{
+	float: left;
+	margin-left: 15vw;
+}
+
+.nav-button-right
+{
+	float: right;
+	margin-right: 15vw;
+}
+
+
+
+.big-image-horizontal
+{
+	position: relative;
+	width: 70vw;
+	height: auto;
+	margin-left: 15vw;
+	display: inline-block;
+}
+
+.small-image-horizontal
+{
+	position: relative;
+	float: left;
+	width: 32.5vw;
+	height: auto;
+	margin-left: 15vw;
+	margin-right: -10vw;
+	display: inline-block;
+}
+
+.big-image-vertical
+{
+	position: relative;
+	width: 90vh;
+	height: auto;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+.small-image-vertical
+{
+	position: relative;
+	width: auto;
+	height: 50vh;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+
+
+.row:after
+{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+
+
+.line-break
+{ 
+    margin: 0 auto;
+    width: 70vw;
+    height: 1px;
+    background: black;
+    background: -webkit-gradient(linear, 0 0, 100% 0, from(white), to(white), color-stop(50%, rgb(160, 160, 160)));
+}
+
+
+
+.menu-image-links
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 55vw;
+	margin: 0 auto;
+}
+
+.menu-image-link
+{
+	position: relative;
+	float: left;
+	width: 10vw;
+	height: 10vw;
+	display: inline-block;
+}
+
+.menu-image-link img
+{
+	position: absolute;
+	width: 10vw;
+	height: 10vw;
+
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.menu-image-link img:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+
+
+.footer
+{
+	height: 15vh;
+}
+
+
+
+/* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), change the layout. */
+@media screen and (max-width: 1300px) and (orientation: portrait)
+{
+	/* Make text smaller. */
+	html
+	{
+		font-size: 12px;
+	}
+	
+	.body-text
+	{
+		width: 90vw;
+		margin-left: 5vw;
+	}
+
+	.big-image-vertical
+	{
+		width: 90vw;
+	}
+	
+	.nav-button
+	{
+		width: 6vw;
+	}
+}
+
+
+
+/* On the other hand, if the screen has small enough height and is in landscape, then change back to the wide layout and make everything much smaller to make more efficient use of space. */
+@media screen and (max-height: 800px) and (orientation: landscape)
+{
+	/* Make text smaller. */
+	html
+	{
+		font-size: 12px;
+	}
+
+	/* Make more room in the footer. */
+	.footer
+	{
+		height: 35vh;
+	}
+}
+
+
+
+</style>
+</head>
+
+
+
+<body>
+	<div id="background-image" class="banner"></div>
+
+	<div class="gradient"></div>
+	
+	<div id="content">
+		<div style="height: 5vh"></div>
+
+		<div class="logo" data-aos="fade-in" id="trigger-section-1">
+			<a href="../../index.html">
+				<img src="../../graphics/logo.png" alt="Logo"/>
+			</a>
+		</div>
+
+		<div style="height: 2vh"></div>
+
+		<div class="heading-text" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">Mist</div>
+
+		<div style="height: 2vh"></div>
+
+		<div class="date-text" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-1">January 10, 2019</div>
+
+		<div style="height: 15vh"></div>
+		
+		<div class="body-text" style="text-indent: 0pt" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-2">
+			Another dead end. Isaac swore, and regretted it.</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-2">&#x201C;I think Laura knows where we&#x2019;re supposed to go,&#x201D; Yasmin told him, the edge in her voice sharpening. &#x201C;Don&#x2019;t you, hon?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-2">Laura averted her eyes and ducked her head. &#x201C;Maybe?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-section-2">Isaac grumbled, looking around at the red rock walls. This place was unsettling. His home was so much nicer. &#x201C;No, I got it,&#x201D; he said to both of his companions, and turned around, brushing past them and trying a different tunnel. He&#x2019;d gotten down here just fine, hadn&#x2019;t he? Surely he could get out.</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="700" data-aos-anchor="#trigger-section-2">Of course, the easiest thing would be to just abandon this whole idea, send Yasmin and her daughter back to their home, and find his own path. Their destination was on the way, sure, but he would be faster alone.</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="800" data-aos-anchor="#trigger-section-2">&#x201C;I&#x2019;m just saying,&#x201D; Yasmin went on, &#x201C;that you could learn something from -- ow!&#x201D; She tripped, catching herself on a bit of rock before she could fall too far.</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="900" data-aos-anchor="#trigger-section-2">&#x201C;You okay, Mom?&#x201D; Laura asked, helping her get her balance back.</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="1000" data-aos-anchor="#trigger-section-2">&#x201C;I&#x2019;m fine,&#x201D; Yasmin replied, but on unsteady feet, Isaac didn&#x2019;t think she looked it. She was wearing heels and a wedding dress, of all things. He wondered, not for the first time, if she was really prepared to go the whole way.</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="1100" data-aos-anchor="#trigger-section-2">Yasmin spoke up from behind him. &#x201C;I don&#x2019;t think you know where you&#x2019;re going.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="1200" data-aos-anchor="#trigger-section-2">&#x201C;I said I got it.&#x201D; He regretted it immediately. Isaac never meant to be rude, and that had count for something, didn&#x2019;t it? He marched forward, faster, trying to put it out of his mind.</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="1300" data-aos-anchor="#trigger-section-2">&#x201C;Can you wait for us?&#x201D; Yasmin called after him, incredulous. &#x201C;You&#x2019;re not the only one here!&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="1400" data-aos-anchor="#trigger-section-2">Right. Isaac slowed down again, clenching his jaw. He couldn&#x2019;t talk to Yasmin like a normal human, couldn&#x2019;t lead them properly, couldn&#x2019;t find the way out. Why did this place, the heartland, have to be so complicated? It was all twists and turns -- nothing was straightforward. Isaac liked straightforward things, even if he couldn&#x2019;t be straightforward himself.</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="1500" data-aos-anchor="#trigger-section-2">He turned another corner and found himself face to face with another dead end.</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="1600" data-aos-anchor="#trigger-section-2">&#x201C;Alright,&#x201D; said Yasmin when she saw it. &#x201C;That&#x2019;s it. Laura, you lead the way.&#x201D;</div>
+
+		<br>
+
+		<div class="body-text" style="text-align: center; text-indent: 0pt" data-aos="fade-up" data-aos-delay="1700" data-aos-anchor="#trigger-section-2">- - -</div>
+
+		<br>
+
+		<div class="body-text" style="text-indent: 0pt" data-aos="fade-up" data-aos-delay="1800" data-aos-anchor="#trigger-section-2">Laura couldn&#x2019;t believe they were actually doing this. She had wanted to make the trip for weeks, but hadn&#x2019;t found the courage to say a word, and it was only when her mother had pried it from her that they&#x2019;d set out. Yasmin had been outraged that Laura hadn&#x2019;t made her wish known, and she&#x2019;d called down Isaac with all the fury of a goddess.</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="1900" data-aos-anchor="#trigger-section-2">With fury, because Isaac had already known, of course, just hadn&#x2019;t acted on it for reasons Laura didn&#x2019;t understand. She was no ordinary child, and when she had started wanting to leave, Isaac would have wanted it too, if more dully. Laura had never met him before, but Yasmin talked fondly of the many times she herself had -- the dark nights when Isaac would make the long trip to the heartland, the center of the maze, to curl up beside the hearth and hope the cold winds wouldn&#x2019;t snuff them both out. Right now Laura thought he was a bit of a cold wind himself, but he was just nervous. Laura could understand that -- she was nervous too.</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">It was good Isaac had come. They couldn&#x2019;t make the journey without him, after all. They couldn&#x2019;t make it without her or Yasmin, either, but it wasn&#x2019;t like Isaac was her father -- he didn&#x2019;t have to come along.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">She took a left on instinct, paying close attention to the curves of the cave. As they grew shallower and shallower, it became more and more difficult to tell which way led out from the center, but she hadn&#x2019;t brought them to a dead end so far. Something about the place resonated with her.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Almost there,&#x201D; she murmured. &#x201C;Should only be a few minutes, now.&#x201D;</div>
+
+		<br>
+
+		<div class="body-text" style="text-align: center; text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">- - -</div>
+
+		<br>
+
+		<div class="body-text" style="text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">This was agony. Yasmin stopped and stumbled and got another rock out of her shoe. High heels were a little hard to walk in, maybe, but they were absolutely necessary. They embodied her. They were a transformer for her beauty, stepping it down into a intensity that didn&#x2019;t blind. She could no more take them off than she could punch Isaac.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Coincidentally, she wanted to do both.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">This was the first time he had come down since Laura was born. He and Yasmin were no strangers -- they had spent short days working and long nights talking, and by now she knew him well. Isaac had always been headstrong, but clearly something had changed -- this was ridiculous. Laura should have been leading from the outset -- Isaac didn&#x2019;t even know these tunnels as well as Yasmin, let alone her daughter.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Her gaze drifted to Laura&#x2019;s frail form and refused to let go. She had grown so fast, ten years in what felt like a month. And yet Yasmin didn&#x2019;t know how long she had left.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Sometimes Laura liked to pretend she would live forever. It sounded noble, but of course Yasmin knew it was a flight of fancy. No one lived forever. Least of all her daughter. That, more than anything else, was why she had come. Because if they succeeded, Laura might not be coming back, and if they didn&#x2019;t, she might not have another chance.</div>
+
+		<br>
+
+		<div class="body-text" style="text-align: center; text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">- - -</div>
+
+		<br>
+
+		<div class="body-text" style="text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Found it!&#x201D; Laura called from ahead, and Isaac let out a pent breath. Finally. Or maybe thank goodness. He was pretty sure he could have found the exit by himself, though. Probably.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">It was a little alcove tucked into what he thought was the outside edge of the tunnel -- the curve of the maze&#x2019;s walls was too shallow for him to tell the difference. The red faded to gray, and a hole bored in the ceiling shot up into darkness. In the center, Isaac could see a pinprick of brightness, like a midnight flashlight on a mountain miles away. He wasn&#x2019;t sure he could reach it. He was never sure.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">So he turned and nodded. &#x201C;Good. I&#x2019;ll go first.&#x201D; And quailed under Yasmin&#x2019;s glare. &#x201C;Uh, should I go first, you think?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Yasmin gave him a sidelong look, but nodded. &#x201C;I think you probably should.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Isaac walked into the alcove and found the notches cut into the rock that he had used so many times before, and he began to climb. Laura followed, and when Isaac was a dozen feet up, Yasmin after her.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">There was a scrape and a grunt and the grate of stone. And again. After the third, Laura spoke up. &#x201C;Everything alright?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Of course,&#x201D; Yasmin answered, &#x201C;of course. Just need to--&#x201D; Another scrape. &#x201C;--get -- my -- footing!&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Mom, I think you need to take off your shoes.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;My shoes? No, honey, I just have to -- hnngh!&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Either leave them here or you&#x2019;re not coming!&#x201D; Isaac called, annoyed, then blinked and grimaced. &#x201C;Sorry,&#x201D; he muttered, quieter. Idiot, his mind said. He hated his mind and he hated himself. They weren&#x2019;t really all that different, and he hated that too.</div>
+
+		<br>
+
+		<div class="body-text" style="text-align: center; text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">- - -</div>
+
+		<br>
+
+		<div class="body-text" style="text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Mom.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;I know, I know. Ugh, fine.&#x201D; Yasmin kicked off her shoes, wincing, and started climbing with disgust written all over her face.</div>
+		
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;You can do it!&#x201D; Laura said, and she believed it. Her mother could do anything.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Sure enough, Yasmin began to climb, and Laura beamed, facing upwards again and following Isaac. It was going to be a long climb, and though her mother could do it, she wasn&#x2019;t all that sure about herself. In fact, she was starting to wonder if she should have dragged them all out for this in the first place. She still wanted to go, of course, wanted it so badly she thought she might explode, but what if it didn&#x2019;t work? What if they were going all this way for nothing? What if Isaac or Yasmin blamed her?</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Then again, it wasn&#x2019;t like they could turn back now. They didn&#x2019;t really have a choice, had to see it through.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura swallowed. She had been growing stronger the past month. Yasmin still saw her as a helpless child, far too weak to hold her own, but Laura was more than that now. She could make the trip without her mother if she wanted, not that it would do any good. Yasmin thought she would burn out, wouldn&#x2019;t last for long -- she never said it, but she might as well have. Laura gritted her teeth in response. She would show her mother just how far she could go.</div>
+
+		<br>
+
+		<div class="body-text" style="text-align: center; text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">- - -</div>
+
+		<br>
+
+		<div class="body-text" style="text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Yasmin didn&#x2019;t like sweating, but she could handle it. What she couldn&#x2019;t handle was her beautiful dress taking scratches and little tears from the rock walls closing in tight around her. She couldn&#x2019;t even see anything anymore, just heard the quiet rips of fabric and shuddered.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">She had tried to think otherwise, but now there was no fooling herself: she wanted to go home. Home, where fires burned warm and passions burned hot and she fit right in. Not up here in the cold and dark, where she had to strain every muscle she had just to hear her dress fall apart.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">The rock was frigid against her cold feet, and she started to appreciate the journey Isaac made a little more. He hadn&#x2019;t been down in so long, but just like her daughter growing up, that also seemed like a few weeks ago. Before Laura, he had been a regular. What had changed?</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">It hit her like a brick, and she almost lost her grip. She almost laughed, too, for it was staring her in the face -- Isaac didn&#x2019;t like Laura. Or, no, that wasn&#x2019;t quite right -- he wasn&#x2019;t comfortable around her.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Why, she had no idea. Laura was outgoing and happy and fun. Yasmin could only imagine Isaac felt there was something in between them now. And, sure, there was, but how was that a bad thing? It wasn&#x2019;t like the two of them were ever anything more than friends. It certainly didn&#x2019;t give Isaac an excuse to be rude to her, or ignore her daughter.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Another, louder tear sounded from somewhere on her back, and Yasmin groaned.</div>
+
+		<br>
+
+		<div class="body-text" style="text-align: center; text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">- - -</div>
+
+		<br>
+
+		<div class="body-text" style="text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Isaac climbed one rung at a time. He didn&#x2019;t look up, didn&#x2019;t want to see how far away he really was, just found the next slot and pushed himself a little bit closer.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Isaac was young, but he looked old, his every negative quality emphasized. His beard was scraggly, his hair balding, his nose too broad, his eyes too far apart. He doubted he would ever enjoy looking in a mirror.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Left hand and right foot, then right hand and left foot, like some half-dismembered spider with four legs. He climbed for a handful of minutes, not thinking to ask Laura or Yasmin if they needed a break until Yasmin asked for one.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">They stopped moving, holding still to the ladder. Isaac was nervous. He wanted to keep moving, not sit around and talk. Or, actually--</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Oh, that&#x2019;s... terrifying,&#x201D; Yasmin said, breaking into his thoughts. &#x201C;Don&#x2019;t look down, Laura.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura did as she was told not to, leaning to the side to see around her mother, but Isaac had to hand it to her -- she didn&#x2019;t even flinch at the unending drop. Isaac himself had made the climb many times before, and he wasn&#x2019;t scared. That much.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;So,&#x201D; Yasmin said, looking pointedly up past her daughter at Isaac. &#x201C;How close are we?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Isaac shrugged. &#x201C;A quarter of the way?&#x201D; He couldn&#x2019;t see her face, couldn&#x2019;t read her expression, but he swallowed and added, &#x201C;You can do it.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Thanks.&#x201D; He could hear a smile in her words, however curt they were, and wondered why that was so hard -- to just be himself.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Was he being himself, though? The question slipped into his mind as if it had been lingering invisible for ages. Isaac, if anyone, would know about being himself. Maybe he hadn&#x2019;t been honest, hadn&#x2019;t been true to who he really was? No, that wasn&#x2019;t it. Maybe he just didn&#x2019;t know who he was. Or maybe -- maybe he just was who he was, and that was changing.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Isaac?&#x201D; Yasmin asked. &#x201C;Hello?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Yeah?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;I said I think we&#x2019;re ready to keep going.&#x201D;</div>
+
+		<br>
+
+		<div class="body-text" style="text-align: center; text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">- - -</div>
+
+		<br>
+
+		<div class="body-text" style="text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">On second thought, maybe they should turn back. Laura didn&#x2019;t know if she could handle her mother in such obvious discomfort for much longer. Every time Yasmin grunted or growled or muttered some sequence of words that sounded nice enough but might as well have been a swear, Laura winced just a little bit harder. She had always felt others&#x2019; pain acutely, the same as she felt their joy. She had closer bonds with strangers than many couples had with one another.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Either Isaac didn&#x2019;t notice Yasmin&#x2019;s suffering or didn&#x2019;t want to, for after the break, he didn&#x2019;t say anything more. Or maybe he was scared, and not of the fall.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">If he wouldn&#x2019;t do it, Laura would. She glanced down. &#x201C;How are you doing?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;I&#x2019;ll manage,&#x201D; came the tired reply.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Sure?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">There was a lengthy pause. &#x201C;Sure.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura hesitated, then slowed down and waited a minute or two, letting Isaac get far enough up that he was safely out of earshot. She whispered to her mother, &#x201C;What&#x2019;s going on with you two? Aren&#x2019;t you supposed to be friends?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Right, we were friends. Are friends. But it&#x2019;s.. I don&#x2019;t know. It&#x2019;s been a while since Isaac came down, and I think he&#x2019;s just not used to what&#x2019;s different.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;What, me?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Oh, um.&#x201D; Yasmin stopped abruptly. &#x201C;No. I don&#x2019;t think so. I can&#x2019;t tell.&#x201D; Yasmin&#x2019;s words belied her thoughts, but her tone betrayed them.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">So her, then. Laura didn&#x2019;t care -- she didn&#x2019;t really do grudges. Still, though -- &#x201C;What&#x2019;s his problem with me?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Her mother sighed. &#x201C;Hon, I&#x2019;m asking myself the same question. I think we just need to give him some time to figure himself out.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;But he&#x2019;s being mean!&#x201D; That had been too loud, and she dropped her voice. &#x201C;You can&#x2019;t just take that.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;You&#x2019;re sweet. No, I won&#x2019;t just take it, don&#x2019;t worry. But... I know Isaac. I think he&#x2019;ll come to his senses. He came all the way down to get us, didn&#x2019;t he?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura nodded slowly. &#x201C;Yeah, I guess.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Yasmin chuckled in response. &#x201C;You know what I think?&#x201D; she whispered. &#x201C;I think he actually likes having you around, but he just doesn&#x2019;t want to say it, or doesn&#x2019;t know how.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura looked up into the darkness, Isaac&#x2019;s figure only visible as a tiny silhouette against the now-larger white circle above. &#x201C;I&#x2019;ll say,&#x201D; she muttered, a little amused.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">They climbed slowly in silence for a few more moments before Yasmin spoke again, in a smaller voice. &#x201C;You&#x2019;re sure about this.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura closed her eyes, breathing out. &#x201C;Of course I&#x2019;m sure, Mom.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;I know. I... But what if--&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;It&#x2019;s not going to happen. I promise.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;You can&#x2019;t know that.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;I can feel it. I know it&#x2019;s going to go well.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Silence reigned for a moment, and Laura didn&#x2019;t know if her mother was smiling or crying until she spoke again, thoughtful. &#x201C;Did you know Isaac has made this particular journey before?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Yeah, he came down to visit you a bunch.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;No, I mean this journey. The one we&#x2019;re on. Another mother, another daughter. All the way out to the cliff.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura paused. She hadn&#x2019;t. &#x201C;And they all failed?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;I -- well, that&#x2019;s not really the point, is it?&#x201D; Yasmin coughed, suddenly flustered, and Laura didn&#x2019;t know what to think. &#x201C;What matters is that the two of us aren&#x2019;t that special.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura looked down, frowning. &#x201C;What&#x2019;s your point?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Yasmin sighed. &#x201C;Just... do you really have to go? Really have to leave?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;If this works, I won&#x2019;t be leaving, Mom, I&#x2019;ll be with you. At home.&#x201D; She took a deep breath, feeling newfound strength flow through her. &#x201C;I have to do this. You know that -- I know you do.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">When Yasmin spoke again, her voice was thick. &#x201C;I do.&#x201D;</div>
+
+		<br>
+
+		<div class="body-text" style="text-align: center; text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">- - -</div>
+
+		<br>
+
+		<div class="body-text" style="text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">They took four more breaks over the next hour, and four times, Yasmin came within an inch of suggesting they turn back. It was hard. They had been climbing for far longer than they&#x2019;d been in the tunnels below, and her arms couldn&#x2019;t take it much longer. She started worrying she&#x2019;d slip and fall a mile, and she didn&#x2019;t even want to think about her dress.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">And then they got to the top, and Yasmin could do no more than stare.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">It was a cave, but the ceiling was so lofty it was more a cathedral. They stood on a foreign surface that looked like a spongy, pinkish sand, winding between gushing rivers all the way to the mouth of the cave beyond. Surrounded by massive, smooth white boulders growing from the floor and ceiling, that mouth loomed great and misty, still ten minutes away at the least.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Yasmin wanted to get there. She wanted to see her daughter fly out into that great void and soar, to follow her.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">But suddenly, she couldn&#x2019;t let Laura go. Yasmin didn&#x2019;t even care about how she looked anymore -- they had to go back, so that she could keep her daughter safe. How could she be sure it would work? How could she trust her daughter to bare her life before the void and live, cross the expanse to a foreign land and find shelter? And if Laura couldn&#x2019;t do that, if she was turned away or laughed at by the void, or if she couldn&#x2019;t find a home, then she would come back in death throes, if she came back at all. Isaac and Yasmin would be scuffed and bruised, but Laura&#x2019;s life was the only one on the line here. No. Better to keep her close and safe and smothered--</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Smothered? Wait, no. Where had that come from? Yasmin&#x2019;s mind started to spin, and she stared deliriously at Laura as she slumped on the sand, exhausted. Why was she so diminutive? Why was she stronger now? Who was Yasmin to hold her back from what she so clearly wanted, needed, loved?</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">The truth she had covered up an hour before hit hard. The other trips Isaac had made hadn&#x2019;t ended in success or failure -- they hadn&#x2019;t left the cliffs at all. Not on account of the mothers, sure, but even so, where had the children ended up? Dead, every one.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">No. She couldn&#x2019;t hold onto Laura forever. Both ways hurt, but only one hurt for now.</div>
+
+		<br>
+
+		<div class="body-text" style="text-align: center; text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">- - -</div>
+
+		<br>
+
+		<div class="body-text" style="text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Isaac stopped stopping himself from saying something rude and just said something nice.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Are you okay?&#x201D; he asked Yasmin, kneeling over her. &#x201C;Hello?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Hi,&#x201D; said Yasmin, smiling thinly through half-lidded eyes. &#x201C;Could you give me a hand?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Isaac breathed out, relaxing. He wouldn&#x2019;t know what he would do if something happened to her. He helped her up, and she looked herself over, gasping when she found a larger-than-normal hole in the shoulder of her dress and slapping a hand over it quickly. But when her gaze fell on Laura, looking at her mother on the brink of tears, Yasmin dropped her hand to pick her daughter up with both arms and hold her tight. &#x201C;It&#x2019;s going to be okay.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura just smiled, her eyes closed and a few tears sliding down her face. &#x201C;Thank you for coming.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Isaac watched, unable to keep himself from smiling too. Yasmin was a good person and a better mother. He was lucky to call her a friend. The sentence rang a few different ways in his head, and he almost laughed. It was true, though, wasn&#x2019;t it? It was true.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Isaac waited this time, rather than marching ahead, for nods from Yasmin and Laura, and they walked toward the light.</div>
+
+		<br>
+
+		<div class="body-text" style="text-align: center; text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">- - -</div>
+
+		<br>
+
+		<div class="body-text" style="text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura couldn&#x2019;t believe they&#x2019;d almost made it. They were taking it slow, now, letting Yasmin keep pace, and they had a chance to talk. Laura liked talking, could do it all night and never fall asleep.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;So,&#x201D; she asked Isaac, &#x201C;are you excited?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Isaac glanced back, looking a little surprised and a little uncomfortable. &#x201C;I... sure. I&#x2019;m excited. Are you?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura grinned. &#x201C;I can&#x2019;t wait.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Isaac opened his mouth a few times before laughing softly. &#x201C;You&#x2019;re a good kid,&#x201D; he said. &#x201C;I should have come down sooner. Really gotten to know you.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura shrugged. &#x201C;S&#x2019;alright. It&#x2019;s not like you were ignoring me.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Right.&#x201D; Isaac was quiet for a little while, eventually clearing his throat and speaking up again. &#x201C;I mean, I don&#x2019;t know. Maybe I was, kind of. And... I&#x2019;m sorry about that.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura looked up at him, saw the anguish on his face amid confusion and uncertainty. &#x201C;Really,&#x201D; she said, half-laughing. &#x201C;It&#x2019;s fine. I don&#x2019;t blame you, I&#x2019;d avoid me too.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;No, it&#x2019;s not--&#x201D; Isaac was obviously strained. He looked at Yasmin, who was staring back at him, and they stayed that way for a moment, watching each other. Then all the tension dropped from Isaac&#x2019;s face, and he just looked tired.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;I&#x2019;ve been way too distant,&#x201D; he said. &#x201C;I should have come down sooner. I should never have ignored either of you. I&#x2019;m sorry I&#x2019;ve been so rude.&#x201D; His expression returned to a grimace. &#x201C;Do you think we can still get along?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Yasmin just sighed. but then she smiled softly, throwing Laura a knowing look. &#x201C;I think I can. Can you?&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Yeah,&#x201D; Isaac said a bit too quickly. &#x201C;Of course. Everything&#x2019;ll go back to normal. It&#x2019;ll be just like it was before.&#x201D;</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Yasmin looked at him for a moment with a tilted gaze before shaking her head slowly. &#x201C;I don&#x2019;t know that it can be.&#x201D; Isaac&#x2019;s face fell. &#x201C;But that might not be a bad thing. Let&#x2019;s just wait and see what happens.&#x201D; With that, she wrapped Isaac in a tentative hug, half-ruined wedding dress and all. &#x201C;That sound good?&#x201D; Isaac nodded, holding tight.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura wanted nothing more than to join them, but that hug wasn&#x2019;t hers. Yet. So instead she watched and waited and eventually found herself looking out toward the misty white. It was almost time.</div>
+
+		<br>
+
+		<div class="body-text" style="text-align: center; text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">- - -</div>
+
+		<br>
+
+		<div class="body-text" style="text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Yasmin had known he would figure himself out. It was only a matter of time.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">They lapsed into silence as they crossed the rest of the island. And then, in what felt like a blink, they were nearly to the edge, the pearly while boulders separated only by a river.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">If it had been any other time on the trip, or really at all, Yasmin would have refused. The clear water rushed in from both sides of the cave, joining together and running through a gap in the boulders, pouring out into the ether. Walking through would irreparably ruin her dress. But it was already half gone, and more and more, Yasmin found she didn&#x2019;t care. In fact, she was surprised to find that she actually liked it a little. So she didn&#x2019;t make a complaint as she followed Isaac and Laura, wading through the right side of the river and onto the far bank. Both of them looked back at her, expecting protest, and she just smiled, amused. Isaac raised his eyebrows, but didn&#x2019;t say a word.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">They were all soaked. Yasmin&#x2019;s dress hung in tatters, and Laura and Isaac were similarly roughed. But there they stood, just a single line of rocks separating them from the great beyond.</div>
+
+		<br>
+
+		<div class="body-text" style="text-align: center; text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">- - -</div>
+
+		<br>
+
+		<div class="body-text" style="text-indent: 0pt" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">They climbed up onto one of the boulders, looking into the void filled with an opportunity and a pregnant silence.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura looked out with longing, wanting to bridge the gap just like she wanted to bridge her mother and Isaac.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Yasmin looked out with a curious mixture of relief and melancholy, wanting her daughter to make that bridge.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">And Isaac looked out at peace. For he knew, as they all did, that it was finally time. On every other journey he had made, the cave had closed just as they were about to jump. Not now. Now, when he looked out, he saw something in the mist, or thought he did, at least. A distant, massive silhouette standing still. Isaac almost thought it looked like Yasmin.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Laura&#x2019;s mother looked down with a steady gaze, questioning, and Laura nodded, her hair whipped back by the wind. It blew against them all, trying to force them back into the cave. They stood resolute.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">&#x201C;Okay,&#x201D; Yasmin murmured. She looked to Isaac, who looked back, firm. They were ready.</div>
+
+		<div class="body-text" data-aos="fade-in" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">The three of them joined hands, braced against the raging wind, and leapt as one out into the mist, like three doves.</div>
+
+		<div class="body-text" data-aos="fade-up" data-aos-delay="2000" data-aos-anchor="#trigger-section-2">Or three words.</div>
+		
+		
+
+
+		<div style="height: 10vh"></div>
+		<div class="line-break" data-aos="fade-in" data-aos-once="false" id="trigger-comments"></div>
+		<div style="height: 5vh"></div> 
+
+		<div id="disqus_thread" style="width: 70vw; margin: 0 auto" data-aos="fade-in" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-comments"></div>
+
+
+
+		<div style="height: 20vh"></div>
+		<div id="trigger-menu"></div>
+		<div style="height: 10vh"></div>
+
+		<div class="line-break" data-aos="fade-in" data-aos-once="false" data-aos-duration="500" data-aos-anchor="#trigger-menu"></div>
+		<div style="height: 5vh"></div>
+
+		<div class="menu-image-links">
+			<div class="menu-image-link" data-aos="fade-up" data-aos-delay="50" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="../../writing.html">
+					<img src="../../graphics/writing.png" alt="Writing"/>
+				</a>
+			</div>
+
+			<div class="menu-image-link" data-aos="fade-up" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="../../research.html">
+					<img src="../../graphics/research.png" alt="Research"/>
+				</a>
+			</div>
+
+			<div class="menu-image-link" data-aos="fade-up" data-aos-delay="150" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="../../notes.html">
+					<img src="../../graphics/notes.png" alt="Notes"/>
+				</a>
+			</div>
+
+			<div class="menu-image-link" data-aos="fade-up" data-aos-delay="200" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="../../bio.html">
+					<img src="../../graphics/me.png" alt="Bio"/>
+				</a>
+			</div>
+		</div>
+
+		<div class="footer"></div>
+	</div>
+
+
+
+	<!-- Animate on scroll library -->
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script>
+		var w = window,
+		d = document,
+		e = d.documentElement,
+		g = d.getElementsByTagName('body')[0],
+		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+		//Initiate anamations when they're a third of the way up the screen.
+		AOS.init({duration: 1200, once: true, offset: y/3});
+	</script>
+
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<!-- Change background image on mobile one the top is gone so that the user can't see the top banner at the bottom of the page. -->
+	<script>
+		$(function()
+		{
+			$(window).scroll(function ()
+			{
+				var w = window,
+				d = document,
+				e = d.documentElement,
+				g = d.getElementsByTagName('body')[0],
+				y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+				if ($(this).scrollTop() > y)
+				{
+					document.getElementById("background-image").className = "banner-white";
+				}
+
+				else
+				{
+					document.getElementById("background-image").className = "banner";
+				}
+			});
+		});
+	</script>
+
+	<script>
+		var disqus_config = function () {
+		this.page.url = "https://cruzgodar.com/blog/5/halloween-in-january.html";
+		this.page.identifier = "halloween-in-january";
+		};
+
+		(function() { // DON'T EDIT BELOW THIS LINE
+			var d = document, s = d.createElement('script');
+			s.src = 'https://cruzgodar.disqus.com/embed.js';
+			s.setAttribute('data-timestamp', +new Date());
+			(d.head || d.body).appendChild(s);
+		})();
+	</script>
+
+	<noscript>
+		Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+	</noscript>
+</body>
+</html>

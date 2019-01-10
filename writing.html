@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Writing &mdash; Cruz Godar</title>
+<title>Blog &mdash; Cruz Godar</title>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -14,9 +14,6 @@
 
 <!-- Animate on scroll library -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-<!-- Gentium Book Basic -->
-<link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -32,19 +29,6 @@ body
 {
 	margin: 0;
 	padding: 0;
-	background: rgb(255, 255, 255);
-	-webkit-transition: background-color 1.2s ease;
-	-moz-transition: background-color 1.2s ease;
-	-o-transition: background-color 1.2s ease;
-	-webkit-transition: background-color 1.2s ease;
-}
-
-
-
-.gradient
-{
-	background: linear-gradient(rgb(255, 255, 255), rgb(0, 0, 0));
-	height: 20vh;
 }
 
 
@@ -90,21 +74,11 @@ body
 	font-size: 250%;
 }
 
-.title-text
-{
-	position: relative;
-	width: 100%;
-	color: rgb(255, 255, 255);
-	text-align: center;
-	font-size: 600%;
-	font-family: 'Gentium Book Basic', serif;
-}
-
 .section-text
 {
 	position: relative;
 	width: 100%;
-	color: rgb(160, 160, 160);
+	color: rgb(92, 92, 92);
 	text-align: center;
 	font-size: 175%;
 }
@@ -119,87 +93,59 @@ body
 	font-size: 125%;
 }
 
-.synopsis-text
+
+
+.image-links
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 70vw;
+	margin: 0 auto;
+}
+
+.image-link
+{
+	width: 13.75vw;
+	height: 13.75vw;
+}
+
+.image-link img
+{
+	position: absolute;
+	width: 13.75vw;
+	height: 13.75vw;
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.image-link img:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+.image-link-subtext
 {
 	position: relative;
-	width: 50vw;
-	margin-left: 25vw;
-	color: rgb(160, 160, 160);
-	text-align: justify;
+	margin-top: 15vw;
+	color: rgb(127, 127, 127);
+	text-align: center;
 	font-size: 125%;
-	font-family: 'Gentium Book Basic', serif;
 }
 
-
-
-.eclipse
+.row-break
 {
-	width: 50vh;
-	height: 50vh;
-	margin: 0 auto;
-}
-
-.eclipse img
-{
-	position: absolute;
-	width: 50vh;
-	height: 50vh;
-}
-
-
-
-.progress-bar
-{
-	width: 50vw;
-	height: 5vh;
-	margin-left: 25vw;
-	border: 2px solid rgb(127, 127, 127);
-	border-radius: 5px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	-o-border-radius: 5px;
-	padding: 2px;
-}
-
-.progress-bar span
-{
-	width: 0%;
-	position: relative;
-	display: block;
-	height: 100%;
-	border-radius: 2px;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	-o-border-radius: 2px;
-	background-color: rgb(127, 127, 127);
-	overflow: hidden;
-	-webkit-transition: width 1.2s ease;
-    -moz-transition: width 1.2s ease;
-    -o-transition: width 1.2s ease;
-    transition: width 1.2s ease;
-}
-
-
-
-.email
-{
-	width: 300px;
-	margin: 0 auto;
-}
-
-.email img
-{
-	position: absolute;
-	width: 300px;
-}
-
-
-
-.row:after
-{
-	content: "";
-	display: table;
-	clear: both;
+	height: 5vw;
 }
 
 
@@ -210,8 +156,10 @@ body
     width: 70vw;
     height: 1px;
     background: black;
-    background: -webkit-gradient(linear, 0 0, 100% 0, from(black), to(black), color-stop(50%, rgb(92, 92, 92)));
+    background: -webkit-gradient(linear, 0 0, 100% 0, from(white), to(white), color-stop(50%, rgb(160, 160, 160)));
 }
+
+
 
 .menu-image-links
 {
@@ -274,31 +222,36 @@ body
 		font-size: 12px;
 	}
 
-	/* Make text have smaller margins so justifying doesn't look ugly. */
-	.synopsis-text
+	/* Put two images per row, rather than four. */
+	.image-link
 	{
-		width: 70vw;
-		margin-left: 15vw;
+		width: 30vw;
+		height: 30vw;
+		margin-top: 10vw;
 	}
 
-	/* Fit progress bar to synopsis text */
-	.progress-bar
+	.image-link img
 	{
-		width: 70vw;
-		margin-left: 15vw;
+		width: 30vw;
+		height: 30vw;
 	}
 
-	/* Widen body text just a bit so there's a difference. */
-	.body-text
+	/* Reposition subtext. */
+	.image-link-subtext
 	{
-		width: 80vw;
-		margin-left: 10vw;
+		margin-top: 31.25vw;
+	}
+
+	/* Make spacing even. */
+	.row-break
+	{
+		height: 0vh;
 	}
 }
 
 
 
-/* On the other hand, if the screen has small enough height and is in landscape, then change back to the wide layout and make everything much smaller to make more efficient use of space. */
+/* On the other hand, if the screen has small enough height and is in landscare, then change back to the wide layout and make everything much smaller to make more efficient use of space. */
 @media screen and (max-height: 800px) and (orientation: landscape)
 {
 	/* Make text smaller. */
@@ -310,7 +263,7 @@ body
 	/* Make more room in the footer. */
 	.footer
 	{
-		height: 30vh;
+		height: 35vh;
 	}
 }
 
@@ -320,81 +273,52 @@ body
 
 
 <body>
-	<div class="background-top" id="background-image"></div>
-	<div style="height: 100vh">
-		<div style="height: 5vh"></div>
-
-		<div class="logo" data-aos="fade-in" id="trigger-sentences">
-			<a href="index.html">
-				<img src="graphics/logo.png" alt="Logo"/>
-			</a>
-		</div>
-
-		<div style="height: 10vh"></div>
-
-		<div class="section-text" data-aos="fade-up" data-aos-delay="1000" data-aos-anchor="#trigger-sentences">A world well into its epilogue.</div>
-
-		<div style="height: 1vh"></div>
-
-		<div class="section-text" data-aos="fade-up" data-aos-delay="2000" data-aos-anchor="#trigger-sentences">A city shrouded in darkness.</div>
-
-		<div style="height: 1vh"></div>
-
-		<div class="section-text" data-aos="fade-up" data-aos-delay="3000" data-aos-anchor="#trigger-sentences">A planet colder each day.</div>
-	</div>
-
-	<div class="title-text" data-aos="fade-up" id="trigger-title">CORONA</div>
-
-	<div class="eclipse" data-aos="fade-in" data-aos-delay="600" data-aos-once="false" data-aos-anchor="#trigger-title">
-		<img src="graphics/corona.png" alt="Corona">
-	</div>
-
 	<div style="height: 5vh"></div>
-	
-	<div class="synopsis-text" data-aos="fade-up" id="trigger-synopsis">
-		Los Angeles, separated by only a thin glass dome from the hushed apocalypse without, holds tentatively to life. Political tensions mount among its Citizens, and change, in some direction, is imminent.
-	</div>
 
-	<br>
-
-	<div class="synopsis-text" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-synopsis">
-		Amelia has worked the same job for years, driven by her older brother to provide for her family as much as she can. But when she runs face-first into an old, homeless man with a secret project and a mastery of martial arts &mdash; and he agrees to teach her &mdash; she starts to grow stronger. And as she drifts away from her family, Amelia discovers the hidden forces operating against the city.
-	</div>
-
-	<br>
-
-	<div class="synopsis-text" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-synopsis">
-		Ben is kept safely tucked away in his father&#x2019;s skyscraper, insulated from the dangers of the world and taught by city-renowned instructors. It&#x2019;s stifling, and one day he can no longer bear it, sneaking out and returning unscathed. As he grows bolder, Ben begins to suspect his father of illicit dealings with strange characters, and cautiously investigates.
-	</div>
-
-	<br>
-
-	<div class="synopsis-text" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-synopsis">
-		The Earth hurtles through space, growing colder each day, the Sun long since disappeared. The human race dwindles, and the last strongholds of warmth and culture are flickering. As paths cross and secrets are revealed, life itself hangs in the balance.
-	</div>
-
-	<div style="height: 20vh"></div>
-
-	<div class="progress-bar" data-aos="fade-in" id="trigger-bar">
-		<span></span>
+	<div class="logo" data-aos="fade-in" id="trigger-section-1">
+		<a href="index.html">
+			<img src="graphics/logo.png" alt="Logo"/>
+		</a>
 	</div>
 
 	<div style="height: 2vh"></div>
 
-	<div class="body-text" style="text-align: center" data-aos="fade-in" data-aos-delay="100" data-aos-anchor="#trigger-bar">
-		34 of 52 chapters drafted
-	</div>
-
-	<div style="height: 15vh"></div>
-
-	<div class="body-text" data-aos="fade-up" id="trigger-info">
-		Corona is currently being written. The rough draft is expected to be completed in 2019, and, after editing, will be sent to a small list of alpha readers. It will then be opened up to a wider audience of beta readers. If you&#x2019;re interested in being one of these beta readers, contact the address below.
-	</div>
+	<div class="heading-text" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">Writing</div>
 
 	<div style="height: 5vh"></div>
 
-	<div class="email" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-info">
-		<img src="graphics/email.png" alt="Email Address">
+	<div class="body-text" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-1">Everything I've written, both completed and in progress (denoted with parentheses). More to come &mdash; soon, hopefully.</div>
+
+	<div style="height: 10vh"></div>
+	
+	<div class="heading-text" data-aos="fade-up" data-aos-delay="300" id="trigger-section-2">Books</div>
+
+	<div style="height: 5vh"></div>
+
+	<div class="image-links">
+		<div class="image-link" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-2">
+			<a href="writing/corona/corona.html">
+				<img src="writing/corona/cover.png" alt="Corona"/>
+			</a>
+			<div class="image-link-subtext">(Corona)</div>
+		</div>
+	</div>
+	
+	<div style="height: 15vh"></div>
+	
+	
+
+	<div class="heading-text" data-aos="fade-up" id="trigger-section-3">Short Stories</div>
+
+	<div style="height: 5vh"></div>
+
+	<div class="image-links">
+		<div class="image-link" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-3">
+			<a href="writing/mist/mist.html">
+				<img src="writing/mist/cover.png" alt="Mist"/>
+			</a>
+			<div class="image-link-subtext">Mist</div>
+		</div>
 	</div>
 
 
@@ -431,7 +355,7 @@ body
 			</a>
 		</div>
 	</div>
-	
+
 	<div class="footer"></div>
 
 
@@ -447,43 +371,6 @@ body
 
 		//Initiate anamations when they're a third of the way up the screen.
 		AOS.init({duration: 1200, once: true, offset: y/3});
-	</script>
-
-	<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-	<!-- Change background image on mobile one the top is gone so that the user can't see the a white background at the bottom of the page. -->
-	<script>
-		$(function()
-		{
-			$(window).scroll(function ()
-			{
-				var w = window,
-				d = document,
-				e = d.documentElement,
-				g = d.getElementsByTagName('body')[0],
-				y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-
-
-
-				if ($(this).scrollTop() > y/5)
-				{
-					$("body").css("background", "rgb(0, 0, 0)");
-				}
-
-				else
-				{
-					$("body").css("background", "rgb(255, 255, 255)");
-				}
-
-				
-
-				if ($(this).scrollTop() > $(".progress-bar").position().top - 2*y/3)
-				{
-					$(".progress-bar span").css("width", "65%");
-				}
-			});
-		});
 	</script>
 </body>
 </html>
