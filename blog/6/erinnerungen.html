@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Erinnerungen</title>
+
+<link rel="preload" href="banner.jpg" as="image">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest?v=NmPPnmeW24">
+<link rel="mask-icon" href="/safari-pinned-tab.svg?v=NmPPnmeW24" color="#5bbad5">
+<link rel="shortcut icon" href="/favicon.ico?v=NmPPnmeW24">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
+<meta name="theme-color" content="#ffffff">
+
+<!-- Animate on scroll library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+html
+{
+	font-size: 20px;
+}
+
+body
+{
+	margin: 0;
+	padding: 0;
+}
+
+a
+{
+    color: rgb(127, 192, 127);
+    text-decoration: none;
+}
+
+
+
+/* Something about the before tag makes the scrolling work on mobile. */
+.banner:before
+{
+	content: "";
+	display: block;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: -10;
+	background: url("banner.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.banner-white
+{
+	content: "";
+	display: block;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: -10;
+	background: rgb(255, 255, 255) no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.gradient
+{
+	background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+	position: relative; 
+	margin-top: 50vh;
+	height: 50vh;
+}
+
+
+#content
+{
+	background: rgb(255, 255, 255);
+	position: relative; 
+	margin-top: -.1vh;
+}
+
+
+
+.logo
+{
+	width: 100px;
+	height: 100px;
+	margin: 0 auto;
+}
+
+.logo img
+{
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.logo img:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+
+
+.heading-text
+{
+	position: relative;
+	width: 100%;
+	color: rgb(0, 0, 0);
+	text-align: center;
+	font-size: 250%;
+}
+
+.date-text
+{
+	position: relative;
+	width: 100%;
+	color: rgb(0, 0, 0);
+	text-align: center;
+	font-size: 125%;
+}
+
+.section-text
+{
+	position: relative;
+	width: 100%;
+	color: rgb(92, 92, 92);
+	text-align: center;
+	font-size: 175%;
+}
+
+.body-text
+{
+	position: relative;
+	width: 70vw;
+	margin-left: 15vw;
+	color: rgb(127, 127, 127);
+	text-align: justify;
+	font-size: 125%;
+}
+
+
+
+.nav-button
+{
+	color: rgb(127, 127, 127);
+	background-color: rgb(255, 255, 255);
+    font-size: 175%;
+    text-align: center;
+
+    width: 2.5vw;
+
+    -webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+
+    border: 2px solid rgb(127, 127, 127);
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-o-border-radius: 10px;
+	padding: 5px;
+}
+
+.nav-button:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+.nav-button-left
+{
+	float: left;
+	margin-left: 15vw;
+}
+
+.nav-button-right
+{
+	float: right;
+	margin-right: 15vw;
+}
+
+
+
+.big-image-horizontal
+{
+	position: relative;
+	width: 70vw;
+	height: auto;
+	margin-left: 15vw;
+	display: inline-block;
+}
+
+.small-image-horizontal
+{
+	position: relative;
+	float: left;
+	width: 32.5vw;
+	height: auto;
+	margin-left: 15vw;
+	margin-right: -10vw;
+	display: inline-block;
+}
+
+.big-image-vertical
+{
+	position: relative;
+	width: 90vh;
+	height: auto;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+.small-image-vertical
+{
+	position: relative;
+	width: auto;
+	height: 50vh;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+
+
+.row:after
+{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+
+
+.line-break
+{ 
+    margin: 0 auto;
+    width: 70vw;
+    height: 1px;
+    background: black;
+    background: -webkit-gradient(linear, 0 0, 100% 0, from(white), to(white), color-stop(50%, rgb(160, 160, 160)));
+}
+
+
+
+.menu-image-links
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 55vw;
+	margin: 0 auto;
+}
+
+.menu-image-link
+{
+	position: relative;
+	float: left;
+	width: 10vw;
+	height: 10vw;
+	display: inline-block;
+}
+
+.menu-image-link img
+{
+	position: absolute;
+	width: 10vw;
+	height: 10vw;
+
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.menu-image-link img:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+
+
+.footer
+{
+	height: 15vh;
+}
+
+
+
+/* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), change the layout. */
+@media screen and (max-width: 1300px) and (orientation: portrait)
+{
+	/* Make text smaller. */
+	html
+	{
+		font-size: 12px;
+	}
+
+	.big-image-vertical
+	{
+		width: 90vw;
+	}
+	
+	.nav-button
+	{
+		width: 6vw;
+	}
+}
+
+
+
+/* On the other hand, if the screen has small enough height and is in landscape, then change back to the wide layout and make everything much smaller to make more efficient use of space. */
+@media screen and (max-height: 800px) and (orientation: landscape)
+{
+	/* Make text smaller. */
+	html
+	{
+		font-size: 12px;
+	}
+
+	/* Make more room in the footer. */
+	.footer
+	{
+		height: 35vh;
+	}
+}
+
+
+
+</style>
+</head>
+
+
+
+<body>
+	<div id="background-image" class="banner"></div>
+
+	<div class="gradient"></div>
+	
+	<div id="content">
+		<div style="height: 5vh"></div>
+
+		<div class="logo" data-aos="fade-in" id="trigger-section-1">
+			<a href="../../index.html">
+				<img src="../../graphics/logo.png" alt="Logo"/>
+			</a>
+		</div>
+
+		<div style="height: 2vh"></div>
+
+		<div class="heading-text" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">Erinnerungen</div>
+
+		<div style="height: 2vh"></div>
+
+		<div class="date-text" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-1">January 23, 2019</div>
+
+		<div style="height: 7vh"></div>
+
+		<div class="row">
+			<a href="../5/halloween-in-january.html" class="nav-button-right" data-aos="fade-left" data-aos="fade-left" data-aos-delay="400">
+				<div class="nav-button">&#x27e9;</div>
+			</a>
+		</div>
+
+		<div style="height: 20vh"></div>
+
+		<div class="section-text" data-aos="fade-up" id="trigger-section-2">Escape Routes</div>
+
+		<div style="height: 3vh"></div>
+		
+		<div class="body-text" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-2">
+			Winter comes fast in Freiburg, and it hits like a bear. The city was blanketed in just two days, and it could be a different place all together.
+		</div>
+		
+		<div style="height: 5vw"></div>
+		
+		<div class="row">
+			<a href="source-images/winter-1.jpg">
+				<img class="small-image-horizontal" src="graphics/winter-1.jpg" alt="Winter in Freiburg, 1" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2"/>
+			</a>
+
+			<a href="source-images/winter-2.jpg">
+				<img class="small-image-horizontal" src="graphics/winter-2.jpg" alt="Winter in Freiburg, 2" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-2"/>
+			</a>
+		</div>
+		
+		<div style="height: 5vw"></div>
+
+		<a href="source-images/winter-3.jpg">
+			<img class="big-image-horizontal" src="graphics/winter-3.jpg" alt="Winter in Freiburg, 3" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-2"/>
+		</a>
+
+		<div style="height: 5vw"></div>
+		
+		<div class="body-text" data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-2">
+			But on the weekend, I took a day trip to Tübingen, a college town half the size of Freiburg and two hours away. The reason for the trip is a story unto itself &mdash; my parents and I met a German family on vacation in California a decade ago, and we saw them annualy for the next five years thereafter. Somewhere along the line they wrote down an email on an old piece of card stock, and after five more years, right as I was leaving for Germany, I tracked that card down. It took us a while to work out a date, but in the end, I found myself on a bus driving through a snowstorm in the Black Forest, heading for a family I hadn’t seen in years.
+		</div>
+		
+		<div style="height: 15vh"></div>
+		
+		
+		
+		<div class="section-text" data-aos="fade-up" id="trigger-section-3">Tag der Offenen Tür</div>
+
+		<div style="height: 3vh"></div>
+		
+		<div class="body-text" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-3">
+			I sat down with Julia, Bernhard, and their son Samuel for a traditional German brunch before heading out with just Samuel to explore the town. I found Tübingen to be a smaller, slightly more industrial version of Freiburg. The rain came in bits and pieces, more spitting than drizzling, and it gave the streets a gloom reminiscent of detective novels and late city nights.
+		</div>
+		
+		<div style="height: 5vw"></div>
+		
+		<div class="row">
+			<a href="source-images/alte-strasse.jpg">
+				<img class="small-image-horizontal" src="graphics/alte-strasse.jpg" alt="The Old and the New" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-3"/>
+			</a>
+
+			<a href="source-images/incline.jpg">
+				<img class="small-image-horizontal" src="graphics/incline.jpg" alt="Built on an Incline" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-3"/>
+			</a>
+		</div>
+		
+		<div style="height: 5vw"></div>
+		
+		<div class="body-text" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-3">
+			We took a roundabout route, seeing first the plaza where some of the markets are held (right). Near that plaza is a museum, and I’m convinced I saw the best exhibit, even though I didn’t go inside. This is a map of Tübingen &mdash; or at least the center &mdash; including the castle at the far end. Every street and many of the important buildings are labeled in Braille. It’s a remarkable sight.
+		</div>
+		
+		<div style="height: 5vw"></div>
+		
+		<a href="source-images/metal-map.jpg">
+			<img class="big-image-horizontal" src="graphics/metal-map.jpg" alt="The Metal Map" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-3"/>
+		</a>
+		
+		<div style="height: 5vw"></div>
+		
+		<div class="row">
+			<a href="source-images/tunnel.jpg">
+				<img class="small-image-horizontal" src="graphics/tunnel.jpg" alt="An Underground Tunnel" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-3"/>
+			</a>
+
+			<a href="source-images/neckar.jpg">
+				<img class="small-image-horizontal" src="graphics/neckar.jpg" alt="The Neckar" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-3"/>
+			</a>
+		</div>
+		
+		<div style="height: 5vw"></div>
+		
+		<div class="body-text" data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-3">
+			Through a tunnel and over a river &mdash; the same river, as it happens, that runs through <a href="../2/nach-heidelberg.html">Heidelberg</a>. Then into a restaurant right on the river’s edge for <i>Maultaschen</i>, a delicious ravioli-esque dish that has a fantastic name &mdash; <i>Maul</i>, a word for mouth that’s normally only used for animals, and <i>Tasche</i>, meaning bag. Mouth bags! As a popular story goes, they were originally created by monks to eat during Lent, because the dough hides the meat inside from God. I didn’t need any such excuse to eat too many.
+		</div>
+		
+		<br>
+		
+		<div class="body-text" data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-section-3">
+			Our final stop was that castle. Inside is a remarkably expensive art museum, but just like the first one, there was a remarkable sight outside, too &mdash; the city itself.
+		</div>
+		
+		<div style="height: 5vw"></div>
+		
+		<a href="source-images/tuebingen.jpg">
+			<img class="big-image-horizontal" src="graphics/tuebingen.jpg" alt="Tübingen" data-aos="fade-up" data-aos-delay="700" data-aos-anchor="#trigger-section-3"/>
+		</a>
+		
+		<div style="height: 15vh"></div>
+		
+		
+		
+		<div class="section-text" data-aos="fade-up" id="trigger-section-4">A Quiet Return</div>
+
+		<div style="height: 3vh"></div>
+		
+		<div class="body-text" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-4">
+			And then it was time to go. Samuel had English homework and had to stay home (a remarkable thing &mdash; last time I saw him, he couldn’t speak a word of English, and now he’s more fluent in it than I’ll ever be in German), but Julia and Bernhard and I headed to the bus station, stopping by the university where Bernhard works (picture not representative of the exact location &mdash; Bernhard, along with quite a few others, hates the modern look of most of the other university buildings, unlike this one).
+		</div>
+		
+		<div style="height: 5vw"></div>
+		
+		<a href="source-images/library.jpg">
+			<img class="big-image-horizontal" src="graphics/library.jpg" alt="A Library" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-4"/>
+		</a>
+		
+		<div style="height: 5vw"></div>
+		
+		<a href="source-images/zusammen.jpg">
+			<img class="big-image-horizontal" src="graphics/zusammen.jpg" alt="Together at Last" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-4"/>
+		</a>
+		
+		<div style="height: 5vw"></div>
+		
+		<div class="body-text" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-4">
+			Now I’m back. As a side note, I finished a <a href="../../writing/mist/mist.html">short story</a> in my spare time, and I’m hoping to wrte more soon. And of course, there’s only two more weekends left before I head out on the big finale of a trip up north. It’s crazy how fast the time is racing.
+		</div>
+		
+		<div style="height: 15vh"></div>
+
+
+
+		<div class="body-text" style="text-align: center" data-aos="fade-in" data-aos-duration="2400" id="trigger-song-quote">
+			<i>You don’t know where I’m going</i>
+		</div>
+
+		<div class="body-text" style="text-align: center" data-aos="fade-in" data-aos-delay="100" data-aos-duration="2400" data-aos-anchor="#trigger-song-quote">
+			<i>And you don’t know I’ve been</i>
+		</div>
+
+		<div class="body-text" style="text-align: center" data-aos="fade-in" data-aos-delay="200" data-aos-duration="2400" data-aos-anchor="#trigger-song-quote">
+			<i>But when you hear the angels singing</i>
+		</div>
+
+		<div class="body-text" style="text-align: center" data-aos="fade-in" data-aos-delay="300" data-aos-duration="2400" data-aos-anchor="#trigger-song-quote">
+			<i>I’ll be comin’ round again</i>
+		</div>
+
+		<br>
+
+		<div class="body-text" style="text-align: center" data-aos="fade-in" data-aos-delay="1500" data-aos-duration="2400" data-aos-anchor="#trigger-song-quote">
+			Houndmouth, <i>Comin’ Round Again</i>
+		</div>
+
+
+
+		<div style="height: 20vh"></div>
+
+		<div class="row">
+			<a href="../5/halloween-in-january.html" class="nav-button-right" data-aos="fade-left">
+				<div class="nav-button">&#x27e9;</div>
+			</a>
+		</div>
+
+
+
+		<div style="height: 10vh"></div>
+		<div class="line-break" data-aos="fade-in" data-aos-once="false" id="trigger-comments"></div>
+		<div style="height: 5vh"></div> 
+
+		<div id="disqus_thread" style="width: 70vw; margin: 0 auto" data-aos="fade-in" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-comments"></div>
+
+
+
+		<div style="height: 20vh"></div>
+		<div id="trigger-menu"></div>
+		<div style="height: 10vh"></div>
+
+		<div class="line-break" data-aos="fade-in" data-aos-once="false" data-aos-duration="500" data-aos-anchor="#trigger-menu"></div>
+		<div style="height: 5vh"></div>
+
+		<div class="menu-image-links">
+			<div class="menu-image-link" data-aos="fade-up" data-aos-delay="50" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="../../writing.html">
+					<img src="../../graphics/writing.png" alt="Writing"/>
+				</a>
+			</div>
+
+			<div class="menu-image-link" data-aos="fade-up" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="../../research.html">
+					<img src="../../graphics/research.png" alt="Research"/>
+				</a>
+			</div>
+
+			<div class="menu-image-link" data-aos="fade-up" data-aos-delay="150" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="../../notes.html">
+					<img src="../../graphics/notes.png" alt="Notes"/>
+				</a>
+			</div>
+
+			<div class="menu-image-link" data-aos="fade-up" data-aos-delay="200" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="../../bio.html">
+					<img src="../../graphics/me.png" alt="Bio"/>
+				</a>
+			</div>
+		</div>
+
+		<div class="footer"></div>
+	</div>
+
+
+
+	<!-- Animate on scroll library -->
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script>
+		var w = window,
+		d = document,
+		e = d.documentElement,
+		g = d.getElementsByTagName('body')[0],
+		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+		//Initiate anamations when they're a third of the way up the screen.
+		AOS.init({duration: 1200, once: true, offset: y/3});
+	</script>
+
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<!-- Change background image on mobile one the top is gone so that the user can't see the top banner at the bottom of the page. -->
+	<script>
+		$(function()
+		{
+			$(window).scroll(function ()
+			{
+				var w = window,
+				d = document,
+				e = d.documentElement,
+				g = d.getElementsByTagName('body')[0],
+				y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+				if ($(this).scrollTop() > y)
+				{
+					document.getElementById("background-image").className = "banner-white";
+				}
+
+				else
+				{
+					document.getElementById("background-image").className = "banner";
+				}
+			});
+		});
+	</script>
+
+	<script>
+		var disqus_config = function () {
+		this.page.url = "https://cruzgodar.com/blog/6/erinnerungen.html";
+		this.page.identifier = "erinnerungen";
+		};
+
+		(function() { // DON'T EDIT BELOW THIS LINE
+			var d = document, s = d.createElement('script');
+			s.src = 'https://cruzgodar.disqus.com/embed.js';
+			s.setAttribute('data-timestamp', +new Date());
+			(d.head || d.body).appendChild(s);
+		})();
+	</script>
+
+	<noscript>
+		Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+	</noscript>
+</body>
+</html>
