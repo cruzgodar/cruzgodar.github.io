@@ -17,251 +17,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link rel="stylesheet" type="text/css" href="/style/base-style.css">
 
-<style>
-
-html
-{
-	font-size: 20px;
-}
-
-body
-{
-	margin: 0;
-	padding: 0;
-}
-
-
-
-.logo
-{
-	width: 100px;
-	height: 100px;
-	margin: 0 auto;
-}
-
-.logo img
-{
-	position: absolute;
-	width: 100px;
-	height: 100px;
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
-	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
-	filter: brightness(100%);
-}
-
-.logo img:hover
-{
-	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
-	filter: brightness(75%);
-}
-
-
-
-.heading-text
-{
-	position: relative;
-	width: 100%;
-	color: rgb(0, 0, 0);
-	text-align: center;
-	font-size: 250%;
-}
-
-.section-text
-{
-	position: relative;
-	width: 100%;
-	color: rgb(92, 92, 92);
-	text-align: center;
-	font-size: 175%;
-}
-
-.body-text
-{
-	position: relative;
-	width: 70vw;
-	margin-left: 15vw;
-	color: rgb(127, 127, 127);
-	text-align: justify;
-	font-size: 125%;
-}
-
-
-
-.image-links
-{
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	width: 70vw;
-	margin: 0 auto;
-}
-
-.image-link
-{
-	width: 13.75vw;
-	height: 13.75vw;
-}
-
-.image-link img
-{
-	position: absolute;
-	width: 13.75vw;
-	height: 13.75vw;
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
-	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
-	filter: brightness(100%);
-}
-
-.image-link img:hover
-{
-	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
-	filter: brightness(75%);
-}
-
-.image-link-subtext
-{
-	position: relative;
-	margin-top: 15vw;
-	color: rgb(127, 127, 127);
-	text-align: center;
-	font-size: 125%;
-}
-
-.row-break
-{
-	height: 5vw;
-}
-
-
-
-.line-break
-{ 
-    margin: 0 auto;
-    width: 70vw;
-    height: 1px;
-    background: black;
-    background: -webkit-gradient(linear, 0 0, 100% 0, from(white), to(white), color-stop(50%, rgb(160, 160, 160)));
-}
-
-
-
-.menu-image-links
-{
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	width: 55vw;
-	margin: 0 auto;
-}
-
-.menu-image-link
-{
-	position: relative;
-	float: left;
-	width: 10vw;
-	height: 10vw;
-	display: inline-block;
-}
-
-.menu-image-link img
-{
-	position: absolute;
-	width: 10vw;
-	height: 10vw;
-
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
-	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
-	filter: brightness(100%);
-}
-
-.menu-image-link img:hover
-{
-	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
-	filter: brightness(75%);
-}
-
-
-
-.footer
-{
-	height: 15vh;
-}
-
-
-
-/* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), use the mobile layout. */
-@media screen and (max-width: 1300px) and (orientation: portrait)
-{
-	/* Make text smaller. */
-	html
-	{
-		font-size: 12px;
-	}
-
-	/* Put two images per row, rather than four. */
-	.image-link
-	{
-		width: 30vw;
-		height: 30vw;
-		margin-top: 10vw;
-	}
-
-	.image-link img
-	{
-		width: 30vw;
-		height: 30vw;
-	}
-
-	/* Reposition subtext. */
-	.image-link-subtext
-	{
-		margin-top: 31.25vw;
-	}
-}
-
-
-
-/* On the other hand, if the screen has small enough height and is in landscare, then change back to the wide layout and make everything much smaller to make more efficient use of space. */
-@media screen and (max-height: 800px) and (orientation: landscape)
-{
-	/* Make text smaller. */
-	html
-	{
-		font-size: 12px;
-	}
-
-	/* Make more room in the footer. */
-	.footer
-	{
-		height: 35vh;
-	}
-}
-
-</style>
 </head>
 
 
@@ -270,8 +27,8 @@ body
 	<div style="height: 5vh"></div>
 
 	<div class="logo" data-aos="fade-in" id="trigger-cal-poly">
-		<a href="index.html">
-			<img src="graphics/logo.png" alt="Logo"/>
+		<a href="/index.html">
+			<img src="/graphics/logo.png" alt="Logo"/>
 		</a>
 	</div>
 
@@ -289,8 +46,8 @@ body
 
 	<div class="image-links">
 		<div class="image-link" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-cal-poly">
-			<a href="research/senior-project.pdf">
-				<img src="graphics/senior-project.png" alt="Tropical Root System Polytopes"/>
+			<a href="/research/senior-project.pdf">
+				<img src="/graphics/senior-project.png" alt="Tropical Root System Polytopes"/>
 			</a>
 			<div class="image-link-subtext">Senior Project: Tropical Root System Polytopes</div>
 		</div>
@@ -319,8 +76,8 @@ body
 		</div>
 
 		<div class="menu-image-link" data-aos="fade-up" data-aos-delay="150" data-aos-once="false" data-aos-anchor="#trigger-menu">
-			<a href="notes.html">
-				<img src="graphics/notes.png" alt="Notes"/>
+			<a href="research.html">
+				<img src="graphics/research.png" alt="Research"/>
 			</a>
 		</div>
 

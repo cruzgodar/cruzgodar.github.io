@@ -20,13 +20,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link rel="stylesheet" type="text/css" href="/style/base-style.css">
 
 <style>
-
-html
-{
-	font-size: 20px;
-}
 
 body
 {
@@ -40,55 +36,6 @@ body
 }
 
 
-
-.gradient
-{
-	background: linear-gradient(rgb(255, 255, 255), rgb(0, 0, 0));
-	height: 20vh;
-}
-
-
-
-.logo
-{
-	width: 100px;
-	height: 100px;
-	margin: 0 auto;
-}
-
-.logo img
-{
-	position: absolute;
-	width: 100px;
-	height: 100px;
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
-	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
-	filter: brightness(100%);
-}
-
-.logo img:hover
-{
-	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
-	filter: brightness(75%);
-}
-
-
-
-.heading-text
-{
-	position: relative;
-	width: 100%;
-	color: rgb(0, 0, 0);
-	text-align: center;
-	font-size: 250%;
-}
 
 .title-text
 {
@@ -107,16 +54,6 @@ body
 	color: rgb(160, 160, 160);
 	text-align: center;
 	font-size: 175%;
-}
-
-.body-text
-{
-	position: relative;
-	width: 70vw;
-	margin-left: 15vw;
-	color: rgb(127, 127, 127);
-	text-align: justify;
-	font-size: 125%;
 }
 
 .synopsis-text
@@ -195,15 +132,6 @@ body
 
 
 
-.row:after
-{
-	content: "";
-	display: table;
-	clear: both;
-}
-
-
-
 .line-break
 { 
     margin: 0 auto;
@@ -213,67 +141,11 @@ body
     background: -webkit-gradient(linear, 0 0, 100% 0, from(black), to(black), color-stop(50%, rgb(92, 92, 92)));
 }
 
-.menu-image-links
-{
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	width: 55vw;
-	margin: 0 auto;
-}
-
-.menu-image-link
-{
-	position: relative;
-	float: left;
-	width: 10vw;
-	height: 10vw;
-	display: inline-block;
-}
-
-.menu-image-link img
-{
-	position: absolute;
-	width: 10vw;
-	height: 10vw;
-
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
-	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
-	filter: brightness(100%);
-}
-
-.menu-image-link img:hover
-{
-	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
-	filter: brightness(75%);
-}
-
-
-
-.footer
-{
-	height: 15vh;
-}
-
 
 
 /* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), change the layout. */
 @media screen and (max-width: 1300px) and (orientation: portrait)
 {
-	/* Make text smaller. */
-	html
-	{
-		font-size: 12px;
-	}
-
 	/* Make text have smaller margins so justifying doesn't look ugly. */
 	.synopsis-text
 	{
@@ -296,24 +168,6 @@ body
 	}
 }
 
-
-
-/* On the other hand, if the screen has small enough height and is in landscape, then change back to the wide layout and make everything much smaller to make more efficient use of space. */
-@media screen and (max-height: 800px) and (orientation: landscape)
-{
-	/* Make text smaller. */
-	html
-	{
-		font-size: 12px;
-	}
-
-	/* Make more room in the footer. */
-	.footer
-	{
-		height: 30vh;
-	}
-}
-
 </style>
 </head>
 
@@ -325,8 +179,8 @@ body
 		<div style="height: 5vh"></div>
 
 		<div class="logo" data-aos="fade-in" id="trigger-sentences">
-			<a href="../../index.html">
-				<img src="../../graphics/logo.png" alt="Logo"/>
+			<a href="/index.html">
+				<img src="/graphics/logo.png" alt="Logo"/>
 			</a>
 		</div>
 

@@ -1,0 +1,378 @@
+html
+{
+	font-size: 20px;
+}
+
+body
+{
+	margin: 0;
+	padding: 0;
+}
+
+a
+{
+    color: rgb(127, 192, 127);
+    text-decoration: none;
+}
+
+
+
+.logo
+{
+	width: 100px;
+	height: 100px;
+	margin: 0 auto;
+}
+
+.logo img
+{
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.logo img:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+
+
+.heading-text
+{
+	position: relative;
+	width: 100%;
+	color: rgb(0, 0, 0);
+	text-align: center;
+	font-size: 250%;
+}
+
+.date-text
+{
+	position: relative;
+	width: 100%;
+	color: rgb(0, 0, 0);
+	text-align: center;
+	font-size: 125%;
+}
+
+.section-text
+{
+	position: relative;
+	width: 100%;
+	color: rgb(92, 92, 92);
+	text-align: center;
+	font-size: 175%;
+}
+
+.body-text
+{
+	position: relative;
+	width: 70vw;
+	margin-left: 15vw;
+	color: rgb(127, 127, 127);
+	text-align: justify;
+	font-size: 125%;
+}
+
+
+
+.nav-button
+{
+	color: rgb(127, 127, 127);
+	background-color: rgb(255, 255, 255);
+    font-size: 175%;
+    text-align: center;
+
+    width: 2.5vw;
+
+    -webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+
+    border: 2px solid rgb(127, 127, 127);
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-o-border-radius: 10px;
+	padding: 5px;
+}
+
+.nav-button:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+.nav-button-left
+{
+	float: left;
+	margin-left: 15vw;
+}
+
+.nav-button-right
+{
+	float: right;
+	margin-right: 15vw;
+}
+
+
+
+.image-links
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 70vw;
+	margin: 0 auto;
+}
+
+.image-link
+{
+	width: 13.75vw;
+	height: 13.75vw;
+}
+
+.image-link img
+{
+	position: absolute;
+	width: 13.75vw;
+	height: 13.75vw;
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.image-link img:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+.image-link-subtext
+{
+	position: relative;
+	margin-top: 15vw;
+	color: rgb(127, 127, 127);
+	text-align: center;
+	font-size: 125%;
+}
+
+.row-break
+{
+	height: 5vw;
+}
+
+
+
+.big-image-horizontal
+{
+	position: relative;
+	width: 70vw;
+	height: auto;
+	margin-left: 15vw;
+	display: inline-block;
+}
+
+.small-image-horizontal
+{
+	position: relative;
+	float: left;
+	width: 32.5vw;
+	height: auto;
+	margin-left: 15vw;
+	margin-right: -10vw;
+	display: inline-block;
+}
+
+.big-image-vertical
+{
+	position: relative;
+	width: 90vh;
+	height: auto;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+.small-image-vertical
+{
+	position: relative;
+	width: auto;
+	height: 50vh;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+
+
+.row:after
+{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+
+
+.line-break
+{ 
+    margin: 0 auto;
+    width: 70vw;
+    height: 1px;
+    background: black;
+    background: -webkit-gradient(linear, 0 0, 100% 0, from(white), to(white), color-stop(50%, rgb(160, 160, 160)));
+}
+
+.menu-image-links
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 55vw;
+	margin: 0 auto;
+}
+
+.menu-image-link
+{
+	position: relative;
+	float: left;
+	width: 10vw;
+	height: 10vw;
+	display: inline-block;
+}
+
+.menu-image-link img
+{
+	position: absolute;
+	width: 10vw;
+	height: 10vw;
+
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.menu-image-link img:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+
+
+.footer
+{
+	height: 15vh;
+}
+
+
+
+/* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), use the mobile layout. */
+@media screen and (max-width: 1300px) and (orientation: portrait)
+{
+	/* Make text smaller. */
+	html
+	{
+		font-size: 12px;
+	}
+	
+	.body-text
+	{
+		width: 90vw;
+		margin-left: 5vw;
+	}
+	
+	
+
+	/* Put two images per row, rather than four. */
+	.image-link
+	{
+		width: 30vw;
+		height: 30vw;
+		margin-top: 10vw;
+	}
+
+	.image-link img
+	{
+		width: 30vw;
+		height: 30vw;
+	}
+
+	/* Reposition subtext. */
+	.image-link-subtext
+	{
+		margin-top: 31.25vw;
+	}
+	
+	/* Make spacing even. */
+	.row-break
+	{
+		height: 0vh;
+	}
+	
+	
+	
+	.big-image-vertical
+	{
+		width: 90vw;
+	}
+	
+	.nav-button
+	{
+		width: 6vw;
+	}
+}
+
+
+
+/* On the other hand, if the screen has small enough height and is in landscare, then change back to the wide layout and make everything much smaller to make more efficient use of space. */
+@media screen and (max-height: 800px) and (orientation: landscape)
+{
+	/* Make text smaller. */
+	html
+	{
+		font-size: 12px;
+	}
+
+	/* Make more room in the footer. */
+	.footer
+	{
+		height: 35vh;
+	}
+}
