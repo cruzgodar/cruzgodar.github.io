@@ -348,6 +348,19 @@ a
 	
 	
 	
+	.big-image-horizontal
+	{
+		width: 90vw;
+		margin-left: 5vw;
+	}
+
+	.small-image-horizontal
+	{
+		width: 42.5vw;
+		margin-left: 5vw;
+		margin-right: 0vw;
+	}
+
 	.big-image-vertical
 	{
 		width: 90vw;
