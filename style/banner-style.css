@@ -10,6 +10,9 @@
 	height: 100vh;
 	z-index: -10;
 	
+	/* This is some magic right here */
+	transform: translate3d(0, 0, 0);
+	
 	/* Place these five lines in the actual file with a url to the image */
 	background: rgb(0, 0, 0) no-repeat center center;
 	-webkit-background-size: cover;
