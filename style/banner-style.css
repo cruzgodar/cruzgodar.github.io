@@ -18,35 +18,10 @@
 	background-size: cover;
 }
 
-.banner-white
-{
-	content: "";
-	display: block;
-	position: fixed;
-	left: 0;
-	top: 0;
-	width: 100vw;
-	height: 100vh;
-	z-index: -10;
-	background: rgb(255, 255, 255) no-repeat center center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-.gradient
-{
-	background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
-	position: relative; 
-	margin-top: 50vh;
-	height: 50vh;
-}
-
 
 #content
 {
-	background: rgb(255, 255, 255);
-	position: relative; 
-	margin-top: -.1vh;
+	background: rgba(0, 0, 0, 0);
+	position: relative;
+	margin-top: 100vh;
 }
