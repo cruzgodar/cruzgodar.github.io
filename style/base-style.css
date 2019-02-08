@@ -86,6 +86,17 @@ a
 	font-size: 125%;
 }
 
+/* To be used for things like blog posts and stories. Will auotmatically reduce margin on narrow deviced */
+.content-text
+{
+	position: relative;
+	width: 70vw;
+	margin-left: 15vw;
+	color: rgb(127, 127, 127);
+	text-align: justify;
+	font-size: 125%;
+}
+
 
 
 .nav-button
@@ -312,7 +323,7 @@ a
 		font-size: 12px;
 	}
 	
-	.body-text
+	.content-text
 	{
 		width: 90vw;
 		margin-left: 5vw;
