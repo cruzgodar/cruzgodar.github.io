@@ -2,7 +2,7 @@
 
 $(function()
 {
-	$(window).scroll(function ()
+	$(window).scroll(function()
 	{
 		var w = window,
 		d = document,
