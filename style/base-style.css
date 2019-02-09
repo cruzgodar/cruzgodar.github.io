@@ -307,13 +307,6 @@ a
 
 
 
-.footer
-{
-	height: 15vh;
-}
-
-
-
 /* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), use the mobile layout. */
 @media screen and (max-width: 1300px) and (orientation: portrait)
 {
@@ -392,11 +385,5 @@ a
 	html
 	{
 		font-size: 12px;
-	}
-
-	/* Make more room in the footer. */
-	.footer
-	{
-		height: 35vh;
 	}
 }
