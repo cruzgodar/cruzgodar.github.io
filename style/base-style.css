@@ -353,7 +353,7 @@ a
 	/* Make spacing even. */
 	.row-break
 	{
-		height: 0vh;
+		height: 10vw;
 	}
 	
 	
