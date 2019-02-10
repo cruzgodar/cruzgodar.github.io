@@ -329,9 +329,15 @@ a
 	{
 		width: 30vw;
 		height: 30vw;
-		margin-top: 10vw;
+		margin-bottom: 10vw;
 	}
-
+	
+	.image-links
+	{
+		/* Cancel out the bottom row's bottom margin */
+		margin-bottom: -10vw;
+	}
+	
 	.image-link img
 	{
 		width: 30vw;
