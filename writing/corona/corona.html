@@ -28,7 +28,6 @@ body
 {
 	margin: 0;
 	padding: 0;
-	background: rgb(255, 255, 255);
 	-webkit-transition: background-color 1.2s ease;
 	-moz-transition: background-color 1.2s ease;
 	-o-transition: background-color 1.2s ease;
@@ -229,7 +228,7 @@ body
 	<div style="height: 2vh"></div>
 
 	<div class="body-text" style="text-align: center" data-aos="fade-in" data-aos-delay="100" data-aos-anchor="#trigger-bar">
-		41 of 52 chapters drafted
+		42 of 52 chapters drafted
 	</div>
 
 	<div style="height: 15vh"></div>
@@ -277,23 +276,23 @@ body
 			</a>
 		</div>
 	</div>
-
+	
 	<div style="height: 5vw"></div>
+	
+	
 
-
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 	<!-- Animate on scroll library -->
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 	<script src="/style/aos-init.js"></script>
 
-	<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-	<!-- Change background image on mobile one the top is gone so that the user can't see the a white background at the bottom of the page. -->
+	<!-- Change background color on scroll -->
 	<script>
 		$(function()
 		{
-			$(window).scroll(function ()
+			$(window).scroll(function()
 			{
 				var w = window,
 				d = document,
@@ -317,7 +316,7 @@ body
 
 				if ($(this).scrollTop() > $(".progress-bar").position().top - 2*y/3)
 				{
-					$(".progress-bar span").css("width", "79%");
+					$(".progress-bar span").css("width", "81%");
 				}
 			});
 		});
