@@ -7,6 +7,11 @@ body
 {
 	margin: 0;
 	padding: 0;
+	
+	-webkit-transition: background-color .6s ease;
+	-moz-transition: background-color .6s ease;
+	-o-transition: background-color .6s ease;
+	transition: background-color .6s ease;
 }
 
 a
@@ -52,33 +57,42 @@ a
 .heading-text
 {
 	position: relative;
-	width: 100%;
 	color: rgb(0, 0, 0);
 	text-align: center;
 	font-size: 250%;
+	
+	-webkit-transition: color .6s ease;
+	-moz-transition: color .6s ease;
+	-o-transition: color .6s ease;
+	transition: color .6s ease;
 }
 
 .date-text
 {
-	position: relative;
-	width: 100%;
 	color: rgb(0, 0, 0);
 	text-align: center;
 	font-size: 125%;
+	
+	-webkit-transition: color .6s ease;
+	-moz-transition: color .6s ease;
+	-o-transition: color .6s ease;
+	transition: color .6s ease;
 }
 
 .section-text
 {
-	position: relative;
-	width: 100%;
 	color: rgb(92, 92, 92);
 	text-align: center;
 	font-size: 175%;
+	
+	-webkit-transition: color .6s ease;
+	-moz-transition: color .6s ease;
+	-o-transition: color .6s ease;
+	transition: color .6s ease;
 }
 
 .body-text
 {
-	position: relative;
 	width: 70vw;
 	margin-left: 15vw;
 	color: rgb(127, 127, 127);
@@ -89,7 +103,6 @@ a
 /* To be used for things like blog posts and stories. Will auotmatically reduce margin on narrow deviced */
 .content-text
 {
-	position: relative;
 	width: 70vw;
 	margin-left: 15vw;
 	color: rgb(127, 127, 127);
@@ -99,16 +112,36 @@ a
 
 
 
+#theme-button
+{
+	width: 25px;
+	margin-top: -5vw;
+	margin-left: 10px;
+	margin-bottom: 5.5px;
+	
+	background-color: rgb(255, 255, 255);
+	
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-o-border-radius: 50%;
+	padding: 5px;
+	
+	cursor: pointer;
+}
+
+
+
 .nav-button
 {
 	color: rgb(127, 127, 127);
+	font-size: 175%;
+	text-align: center;
 	background-color: rgb(255, 255, 255);
-    font-size: 175%;
-    text-align: center;
-
-    width: 2.5vw;
-
-    -webkit-transition: all .15s ease-in-out;
+	width: 2.5vw;
+	
+	-webkit-transition: all .15s ease-in-out;
 	-moz-transition: all .15s ease-in-out;
 	-o-transition: all .15s ease-in-out;
 	transition: all .15s ease-in-out;
@@ -117,7 +150,7 @@ a
 	-o-filter: brightness(100%);
 	filter: brightness(100%);
 
-    border: 2px solid rgb(127, 127, 127);
+	border: 2px solid rgb(127, 127, 127);
 	border-radius: 10px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -254,13 +287,29 @@ a
 
 
 .line-break
-{ 
+{
     margin: 0 auto;
     width: 70vw;
     height: 1px;
-    background: black;
-    background: -webkit-gradient(linear, 0 0, 100% 0, from(white), to(white), color-stop(50%, rgb(160, 160, 160)));
+    background: -webkit-gradient(linear, 0 0, 100% 0, from(rgb(255, 255, 255)), to(rgb(255, 255, 255)), color-stop(50%, rgb(160, 160, 160)));
 }
+
+/* Unfortunately, gradient transitions aren't supported by any browser at the moment, so this somewhat uglier method is required. */
+.line-break-dark
+{
+	margin: 0 auto;
+    width: 70vw;
+    height: 1px;
+    background: -webkit-gradient(linear, 0 0, 100% 0, from(rgb(24, 24, 24)), to(rgb(24, 24, 24)), color-stop(50%, rgb(92, 92, 92)));
+    
+    opacity: 0;
+    -webkit-transition: opacity .6s ease;
+	-moz-transition: opacity .6s ease;
+	-o-transition: opacity .6s ease;
+    transition: opacity .6s ease;
+}
+
+
 
 .menu-image-links
 {
@@ -305,6 +354,16 @@ a
 	filter: brightness(75%);
 }
 
+
+
+/* Used on page load during the night to make it seem instantly dark */
+.no-transition
+{
+	-webkit-transition: none !important;
+	-moz-transition: none !important;
+	-o-transition: none !important;
+	transition: none !important;
+}
 
 
 /* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), use the mobile layout. */

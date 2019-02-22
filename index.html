@@ -50,29 +50,41 @@
 
 .quote-text
 {
-	position: relative;
 	color: rgb(176, 176, 176);
 	text-align: justify;
 	font-style: italic;
 	font-size: 125%;
+	
+	-webkit-transition: color .6s ease;
+	-moz-transition: color .6s ease;
+	-o-transition: color .6s ease;
+	transition: color .6s ease;
 }
 
 .quote-attribution
 {
-	position: relative;
 	color: rgb(92, 92, 92);
 	text-align: right;
 	font-size: 125%;
+	
+	-webkit-transition: color .6s ease;
+	-moz-transition: color .6s ease;
+	-o-transition: color .6s ease;
+	transition: color .6s ease;
 }
 
 
 
 .title-text
 {
-	position: relative;
 	color: rgb(0, 0, 0);
 	text-align: center;
 	font-size: 200%;
+	
+	-webkit-transition: color .6s ease;
+	-moz-transition: color .6s ease;
+	-o-transition: color .6s ease;
+	transition: color .6s ease;
 }
 
 
@@ -106,19 +118,25 @@
 		<div class="row">
 			<div class="column" data-aos="fade-down" data-aos-once="false" id="trigger-quotes">
 				<div class="quote-text">You can only be truly accomplished at something you love. Don’t make money the goal. Instead, pursue the things you love doing, and do them so well that people can’t take their eyes off you. All the other tangible rewards will come as a result.</div>
+				
 				<br>
+				
 				<div class="quote-attribution">&mdash;Maya Angelou</div>
 			</div>
 
 			<div class="column" data-aos="fade-down" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-quotes">
 				<div class="quote-text">A mathematician is a blind man in a dark room looking for a black cat which isn’t there.</div>
+				
 				<br>
+				
 				<div class="quote-attribution">&mdash;Charles Darwin</div>
 			</div>
 
 			<div class="column" data-aos="fade-down" data-aos-delay="200" data-aos-once="false" data-aos-anchor="#trigger-quotes">
 				<div class="quote-text">I hate algebra.</div>
+				
 				<br>
+				
 				<div class="quote-attribution">&mdash;John Conway</div>
 			</div>
 		</div>
@@ -133,7 +151,9 @@
 		
 		<div style="height: 2vh"></div>
 
-		<div class="title-text" data-aos="fade-up" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-section-1">Reading, Writing, and Proving</div>
+		<div data-aos="fade-up" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-section-1">
+			<div class="title-text">Reading, Writing, and Proving</div>
+		</div>
 
 		<div style="height: 5vh"></div>
 
@@ -183,9 +203,11 @@
 		</div>
 
 		<div style="height: 20vh"></div>
+		
+		<img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()" data-aos="zoom-out" data-aos-offset="0" data-aos-once="false"></img>
 	</div>
-
-
+	
+	
 
 	<!-- jQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -195,6 +217,8 @@
 	<script src="/style/aos-init.js"></script>
 	
 	<script src="/style/banner-script.js"></script>
+	
+	<script src="/style/dark-theme.js"></script>
 	
 </body>
 </html>

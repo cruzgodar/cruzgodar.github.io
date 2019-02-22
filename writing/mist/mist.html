@@ -415,7 +415,13 @@
 
 
 		<div style="height: 10vh"></div>
-		<div class="line-break" data-aos="fade-in" data-aos-once="false" id="trigger-comments"></div>
+		
+		<div data-aos="fade-in" data-aos-once="false" id="trigger-comments">
+			<div class="line-break">
+				<div class="line-break-dark"></div>
+			</div>
+		</div>
+		
 		<div style="height: 5vh"></div> 
 
 		<div id="disqus_thread" style="width: 70vw; margin: 0 auto" data-aos="fade-in" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-comments"></div>
@@ -425,7 +431,12 @@
 		<div id="trigger-menu"></div>
 		<div style="height: 30vh"></div>
 
-		<div class="line-break" data-aos="fade-in" data-aos-once="false" data-aos-duration="500" data-aos-anchor="#trigger-menu"></div>
+		<div data-aos="fade-in" data-aos-once="false" data-aos-duration="500" data-aos-anchor="#trigger-menu">
+			<div class="line-break">		
+				<div class="line-break-dark"></div>
+			</div>
+		</div>
+		
 		<div style="height: 5vw"></div>
 
 		<div class="menu-image-links">
@@ -455,9 +466,11 @@
 		</div>
 
 		<div style="height: 5vw"></div>
+		
+		<img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()" data-aos="zoom-out" data-aos-offset="0" data-aos-once="false"></img>
 	</div>
-
-
+	
+	
 
 	<!-- jQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -467,6 +480,8 @@
 	<script src="/style/aos-init.js"></script>
 	
 	<script src="/style/banner-script.js"></script>
+	
+	<script src="/style/dark-theme.js"></script>
 
 	<script>
 		var disqus_config = function() 

@@ -34,15 +34,21 @@
 
 	<div style="height: 2vh"></div>
 
-	<div class="heading-text" data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-cal-poly">Research</div>
+	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-cal-poly">
+		<div class="heading-text">Research</div>
+	</div>
 
 	<div style="height: 5vh"></div>
 
-	<div class="body-text" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-cal-poly">The papers I&#x2019;ve authored, organized by place and time. As undergraduates rarely find opportunities to do new research &mdash; and the few opportunities they do get are frequently unsuccessful &mdash; the list is short, but as I move through grad school and beyond, I expect it to steadily grow.</div>
+	<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-cal-poly">
+		<div class="body-text">The papers I&#x2019;ve authored, organized by place and time. As undergraduates rarely find opportunities to do new research &mdash; and the few opportunities they do get are frequently unsuccessful &mdash; the list is short, but as I move through grad school and beyond, I expect it to steadily grow.</div>
+	</div>
 
 	<div style="height: 10vh"></div>
 
-	<div class="section-text" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-cal-poly">At Cal Poly</div>
+	<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-cal-poly">
+		<div class="section-text">At Cal Poly</div>
+	</div>
 	
 	<div style="height: 5vh"></div>
 
@@ -60,19 +66,24 @@
 	<div id="trigger-menu"></div>
 	<div style="height: 30vh"></div>
 
-	<div class="line-break" data-aos="fade-in" data-aos-once="false" data-aos-duration="500" data-aos-anchor="#trigger-menu"></div>
+	<div data-aos="fade-in" data-aos-once="false" data-aos-duration="500" data-aos-anchor="#trigger-menu">
+		<div class="line-break">		
+			<div class="line-break-dark"></div>
+		</div>
+	</div>
+	
 	<div style="height: 5vw"></div>
 
 	<div class="menu-image-links">
 		<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-menu">
-			<a href="/blog.html">
-				<img src="/graphics/blog.png" alt="Blog"/>
-			</a>
-		</div>
-
-		<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="200" data-aos-once="false" data-aos-anchor="#trigger-menu">
 			<a href="/writing.html">
 				<img src="/graphics/writing.png" alt="Writing"/>
+			</a>
+		</div>
+		
+		<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="200" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<a href="/blog.html">
+				<img src="/graphics/blog.png" alt="Blog"/>
 			</a>
 		</div>
 
@@ -91,19 +102,18 @@
 
 	<div style="height: 5vw"></div>
 
+	<img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()" data-aos="zoom-out" data-aos-offset="0" data-aos-once="false"></img>
+	
+	
 
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 	<!-- Animate on scroll library -->
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-	<script>
-		var w = window,
-		d = document,
-		e = d.documentElement,
-		g = d.getElementsByTagName('body')[0],
-		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+	<script src="/style/aos-init.js"></script>
+	
+	<script src="/style/dark-theme.js"></script>
 
-		//Initiate anamations when they're a third of the way up the screen.
-		AOS.init({duration: 1200, once: true, offset: y/3});
-	</script>
 </body>
 </html>
