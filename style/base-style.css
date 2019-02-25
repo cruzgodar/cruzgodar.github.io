@@ -275,6 +275,27 @@ a
 	display: block;
 }
 
+.big-image-horizontal, .small-image-horizontal, .big-image-vertical, .small-image-horizontal
+{
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.big-image-horizontal:hover, .small-image-horizontal:hover, .big-image-vertical:hover, .small-image-horizontal:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+
 
 
 .row:after
