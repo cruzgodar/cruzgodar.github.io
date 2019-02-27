@@ -18,129 +18,149 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" type="text/css" href="/style/base-style.css">
+<link rel="stylesheet" type="text/css" href="/style/banner-style.css">
+
+<style>
+
+.banner:before
+{
+	background: url("/graphics/me.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+</style>
 
 </head>
 
 
 
 <body>
-	<div style="height: 5vh"></div>
+	<div id="background-image" class="banner"></div>
 
-	<div class="logo" data-aos="fade-in">
-		<a href="/index.html">
-			<img src="/graphics/logo.png" alt="Logo"/>
-		</a>
-	</div>
-
-	<div style="height: 2vh"></div>
+	<div style="height: 100vh"></div>
 	
-	
-	<div data-aos="fade-up" data-aos-delay="100">
-		<div class="heading-text">Me</div>
-	</div>
+	<div id="content">
+		<div style="height: 5vh"></div>
 
-	<div style="height: 10vh"></div>
-
-	<div data-aos="fade-up" data-aos-delay="200" id="trigger-section-1">
-		<div class="section-text">Beginnings</div>
-	</div>
-
-	<br>
-	
-	<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
-		<div class="body-text">I was born in Healdsburg, California, and moved to San Luis Obispo after just a year. I was homeschooled, and took to math at an early age &mdash; my parents tell me I understood the concept of pi as it relates to circles when I was three. I started reading the same year, and that may be why I developed <a href="https://en.wikipedia.org/wiki/Grapheme-color_synesthesia">grapheme-color synesthesia</a>, a curious, harmless condition that I consider myself fortunate to have.</div>
-	</div>
-
-	<br>
-
-	<div data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-1">
-		<div class="body-text">I gathered a working knowledge in most subjects, but in math, I thrived, learning most of (high school) algebra by the time I was eleven. I started thinking about going further, and so it was that my parents and I began to learn about how an eleven-year-old could attend community college.</div>
-	</div>
-
-	<div style="height: 10vh"></div>
-	
-	
-	
-	<div data-aos="fade-up" id="trigger-section-2">
-		<div class="section-text">University Days</div>
-	</div>
-
-	<br>
-
-	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-2">
-		<div class="body-text">In the end, it was easier than we thought. Though it limited me to eleven units a semester, I was able to register as an enrichment student at Cuesta, our local community college. Being surrounded by students ten or forty years older than me was a daunting experience, but one I adapted to quickly. Over the next four years, I took twenty-one classes, worked as a tutor, and eventually applied and was accepted to Cal Poly, the local university. I was thrilled.</div>
-	</div>
-
-	<br>
-
-	<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
-		<div class="body-text">Cal Poly was far more challenging than Cuesta, but I made it through two years of classes and research, even finding a community in the university&#x2019;s Math Lounge, which I eventually became the unofficial leader of. Toward the end of my first year, I began playing with the idea of writing a book, and I whittled an outline in my spare time over the following year. I graduated from Cal Poly in Spring 2018 with honors.</div>
-	</div>
-	
-	<br>
-	
-	<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-2">
-		<div class="body-text">I chose to take a gap year before attending grad school to travel to Germany. There, I attended a language school for a three months and traveled the country before returning and beginning preparation for grad school in the fall.</div>
-	</div>
-
-	<div style="height: 10vh"></div>
-	
-	
-
-	<div data-aos="fade-up" id="trigger-section-3">
-		<div class="section-text">This Website</div>
-	</div>
-
-	<br>
-	
-	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-3">
-		<div class="body-text">cruzgodar.com is hosted on <a href="https://pages.github.com">GitHub Pages</a>, which is a great way to host static websites for free. I wrote the code from scratch after seeing that all websites like Wordpress seem to do is charge a hefty sum just to take control away from the user. Writing a website from scratch is a great way to learn about both programming and graphic design, and it&#x2019;s a relaxing and satisfying way to spend spare time. If you&#x2019;re interested in seeing the code for this site, the repo is <a href="https://github.com/90259025/90259025.github.io">here</a>. Steal as much as you like, but consider crediting me if it&#x2019;s something big like a whole page layout.</div>
-	</div>
-
-	
-
-
-
-	<div id="trigger-menu"></div>
-	<div style="height: 30vh"></div>
-	
-	<div data-aos="fade-in" data-aos-once="false" data-aos-duration="500" data-aos-anchor="#trigger-menu">
-		<div class="line-break">		
-			<div class="line-break-dark"></div>
-		</div>
-	</div>
-	
-	<div style="height: 5vw"></div>
-	
-	<div class="menu-image-links">
-		<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-menu">
-			<a href="/writing.html">
-				<img src="/graphics/writing.png" alt="Writing"/>
+		<div class="logo" data-aos="fade-in" data-aos-once="false">
+			<a href="/index.html">
+				<img src="/graphics/logo.png" alt="Logo"/>
 			</a>
+		</div>
+
+		<div style="height: 2vh"></div>
+		
+		
+		<div data-aos="fade-up" data-aos-delay="100" data-aos-once="false">
+			<div class="heading-text">Me</div>
+		</div>
+
+		<div style="height: 10vh"></div>
+
+		<div data-aos="fade-up" data-aos-once="false" id="trigger-section-1">
+			<div class="section-text">Beginnings</div>
+		</div>
+
+		<br>
+		
+		<div data-aos="fade-up" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-section-1">
+			<div class="body-text">I was born in Healdsburg, California, and moved to San Luis Obispo after just a year. I was homeschooled, and took to math at an early age &mdash; my parents tell me I understood the concept of pi as it relates to circles when I was three. I started reading the same year, and that may be why I developed <a href="https://en.wikipedia.org/wiki/Grapheme-color_synesthesia">grapheme-color synesthesia</a>, a curious, harmless condition that I consider myself fortunate to have.</div>
+		</div>
+
+		<br>
+
+		<div data-aos="fade-up" data-aos-delay="200" data-aos-once="false" data-aos-anchor="#trigger-section-1">
+			<div class="body-text">I gathered a working knowledge in most subjects, but in math, I thrived, learning most of (high school) algebra by the time I was eleven. I started thinking about going further, and so it was that my parents and I began to learn about how an eleven-year-old could attend community college.</div>
+		</div>
+
+		<div style="height: 10vh"></div>
+		
+		
+		
+		<div data-aos="fade-up" id="trigger-section-2">
+			<div class="section-text">University Days</div>
+		</div>
+
+		<br>
+
+		<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-2">
+			<div class="body-text">In the end, it was easier than we thought. Though it limited me to eleven units a semester, I was able to register as an enrichment student at Cuesta, our local community college. Being surrounded by students ten or forty years older than me was a daunting experience, but one I adapted to quickly. Over the next four years, I took twenty-one classes, worked as a tutor, and eventually applied and was accepted to Cal Poly, the local university. I was thrilled.</div>
+		</div>
+
+		<br>
+
+		<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
+			<div class="body-text">Cal Poly was far more challenging than Cuesta, but I made it through two years of classes and research, even finding a community in the university&#x2019;s Math Lounge, which I eventually became the unofficial leader of. Toward the end of my first year, I began playing with the idea of writing a book, and I whittled an outline in my spare time over the following year. I graduated from Cal Poly in Spring 2018 with honors.</div>
 		</div>
 		
-		<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="200" data-aos-once="false" data-aos-anchor="#trigger-menu">
-			<a href="/blog.html">
-				<img src="/graphics/blog.png" alt="Blog"/>
-			</a>
+		<br>
+		
+		<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-2">
+			<div class="body-text">I chose to take a gap year before attending grad school to travel to Germany. There, I attended a language school for a three months and traveled the country before returning and beginning preparation for grad school in the fall.</div>
 		</div>
 
-		<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="300" data-aos-once="false" data-aos-anchor="#trigger-menu">
-			<a href="/research.html">
-				<img src="/graphics/research.png" alt="Research"/>
-			</a>
+		<div style="height: 10vh"></div>
+		
+		
+
+		<div data-aos="fade-up" id="trigger-section-3">
+			<div class="section-text">This Website</div>
 		</div>
 
-		<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="400" data-aos-once="false" data-aos-anchor="#trigger-menu">
-			<a href="/notes.html">
-				<img src="/graphics/notes.png" alt="Notes"/>
-			</a>
+		<br>
+		
+		<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-3">
+			<div class="body-text">cruzgodar.com is hosted on <a href="https://pages.github.com">GitHub Pages</a>, which is a great way to host static websites for free. I wrote the code from scratch after seeing that all websites like Wordpress seem to do is charge a hefty sum just to take control away from the user. Writing a website from scratch is a great way to learn about both programming and graphic design, and it&#x2019;s a relaxing and satisfying way to spend spare time. If you&#x2019;re interested in seeing the code for this site, the repo is <a href="https://github.com/90259025/90259025.github.io">here</a>. Steal as much as you like, but consider crediting me if it&#x2019;s something big like a whole page layout.</div>
 		</div>
+
+		
+
+
+
+		<div id="trigger-menu"></div>
+		<div style="height: 30vh"></div>
+		
+		<div data-aos="fade-in" data-aos-once="false" data-aos-duration="500" data-aos-anchor="#trigger-menu">
+			<div class="line-break">		
+				<div class="line-break-dark"></div>
+			</div>
+		</div>
+		
+		<div style="height: 5vw"></div>
+		
+		<div class="menu-image-links">
+			<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="/writing.html">
+					<img src="/graphics/writing.png" alt="Writing"/>
+				</a>
+			</div>
+			
+			<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="200" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="/blog.html">
+					<img src="/graphics/blog.png" alt="Blog"/>
+				</a>
+			</div>
+
+			<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="300" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="/research.html">
+					<img src="/graphics/research.png" alt="Research"/>
+				</a>
+			</div>
+
+			<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="400" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="/notes.html">
+					<img src="/graphics/notes.png" alt="Notes"/>
+				</a>
+			</div>
+		</div>
+		
+		<div style="height: 5vw"></div>
+		
+		<img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()" data-aos="zoom-out" data-aos-offset="0" data-aos-once="false"></img>
 	</div>
-	
-	<div style="height: 5vw"></div>
-	
-	<img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()" data-aos="zoom-out" data-aos-offset="0" data-aos-once="false"></img>
 	
 	
 
@@ -150,6 +170,8 @@
 	<!-- Animate on scroll library -->
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 	<script src="/style/aos-init.js"></script>
+	
+	<script src="/style/banner-script.js"></script>
 	
 	<script src="/style/dark-theme.js"></script>
 </body>
