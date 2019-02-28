@@ -44,7 +44,7 @@ a
 	filter: brightness(100%);
 }
 
-.no-touch logo img:hover
+.logo img:hover
 {
 	-webkit-filter: brightness(75%);
 	-moz-filter: brightness(75%);
@@ -158,7 +158,7 @@ a
 	padding: 5px;
 }
 
-.no-touch nav-button:hover
+.nav-button:hover
 {
 	-webkit-filter: brightness(75%);
 	-moz-filter: brightness(75%);
@@ -211,7 +211,7 @@ a
 	filter: brightness(100%);
 }
 
-.no-touch image-link img:hover
+.image-link img:hover
 {
 	-webkit-filter: brightness(75%);
 	-moz-filter: brightness(75%);
@@ -346,7 +346,7 @@ a
 	filter: brightness(100%);
 }
 
-.no-touch menu-image-link img:hover
+.menu-image-link img:hover
 {
 	-webkit-filter: brightness(75%);
 	-moz-filter: brightness(75%);
