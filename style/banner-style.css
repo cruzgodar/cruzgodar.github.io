@@ -22,6 +22,49 @@
 }
 
 
+
+.scroll-button
+{
+	color: rgb(127, 127, 127);
+	font-size: 175%;
+	text-align: center;
+	background-color: rgb(255, 255, 255);
+	width: 2.5vw;
+	position: relative;
+	margin-bottom: 10vh;
+	opacity: 1;
+	
+	align-self: flex-end;
+	
+	-webkit-transition: brightness .15s ease-in-out;
+	-moz-transition: brightness .15s ease-in-out;
+	-o-transition: brightness .15s ease-in-out;
+	transition: brightness .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+	
+	transform: rotate(90deg);
+
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-o-border-radius: 10px;
+	padding: 5px;
+}
+
+.scroll-button:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+
+
 #content
 {
 	background: rgba(0, 0, 0, 0);
