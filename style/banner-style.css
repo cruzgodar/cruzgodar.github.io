@@ -53,6 +53,8 @@
 	-moz-border-radius: 10px;
 	-o-border-radius: 10px;
 	padding: 5px;
+	
+	cursor: pointer;
 }
 
 .scroll-button:hover
