@@ -128,7 +128,18 @@ a
 	-o-border-radius: 50%;
 	padding: 5px;
 	
+	-webkit-transition: color, background-color .15s ease-in-out;
+	-moz-transition: color, background-color .15s ease-in-out;
+	-o-transition: color, background-color .15s ease-in-out;
+	transition: color, background-color .15s ease-in-out;
+	
 	cursor: pointer;
+}
+
+#theme-button:hover
+{
+	color: rgb(96, 96, 96);
+	background-color: rgb(192, 192, 192);
 }
 
 
@@ -141,10 +152,10 @@ a
 	background-color: rgb(255, 255, 255);
 	width: 2.5vw;
 	
-	-webkit-transition: background-color .15s ease-in-out;
-	-moz-transition: background-color .15s ease-in-out;
-	-o-transition: background-color .15s ease-in-out;
-	transition: background-color .15s ease-in-out;
+	-webkit-transition: color, background-color .15s ease-in-out;
+	-moz-transition: color, background-color .15s ease-in-out;
+	-o-transition: color, background-color .15s ease-in-out;
+	transition: color, background-color .15s ease-in-out;
 
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 10px;
@@ -156,7 +167,8 @@ a
 
 .nav-button:hover
 {
-	background-color: rgb(224, 224, 224);
+	color: rgb(96, 96, 96);
+	background-color: rgb(192, 192, 192);
 }
 
 .nav-button-left
