@@ -36,14 +36,10 @@
 	
 	align-self: flex-end;
 	
-	-webkit-transition: brightness .15s ease-in-out;
-	-moz-transition: brightness .15s ease-in-out;
-	-o-transition: brightness .15s ease-in-out;
-	transition: brightness .15s ease-in-out;
-	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
-	filter: brightness(100%);
+	-webkit-transition: background-color .15s ease-in-out;
+	-moz-transition: background-color .15s ease-in-out;
+	-o-transition: background-color .15s ease-in-out;
+	transition: background-color .15s ease-in-out;
 	
 	transform: rotate(90deg);
 
@@ -59,10 +55,7 @@
 
 .scroll-button:hover
 {
-	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
-	filter: brightness(75%);
+	background-color: rgb(192, 192, 192);
 }
 
 
