@@ -57,7 +57,7 @@
 	cursor: pointer;
 }
 
-.scroll-button:hover
+.no-touch scroll-button:hover
 {
 	-webkit-filter: brightness(75%);
 	-moz-filter: brightness(75%);
