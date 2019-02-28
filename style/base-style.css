@@ -141,14 +141,10 @@ a
 	background-color: rgb(255, 255, 255);
 	width: 2.5vw;
 	
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
-	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
-	filter: brightness(100%);
+	-webkit-transition: background-color .15s ease-in-out;
+	-moz-transition: background-color .15s ease-in-out;
+	-o-transition: background-color .15s ease-in-out;
+	transition: background-color .15s ease-in-out;
 
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 10px;
@@ -160,10 +156,7 @@ a
 
 .nav-button:hover
 {
-	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
-	filter: brightness(75%);
+	background-color: rgb(224, 224, 224);
 }
 
 .nav-button-left
