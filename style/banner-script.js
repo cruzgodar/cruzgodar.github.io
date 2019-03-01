@@ -7,7 +7,7 @@ $(function()
 		var w = window,
 		d = document,
 		e = d.documentElement,
-		g = d.getElementsByTagName('body')[0],
+		g = d.getElementsByTagName("body")[0],
 		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
 		scroll = $(this).scrollTop();
@@ -17,7 +17,7 @@ $(function()
 		$(".scroll-button").css("opacity", .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / y, 0) - .5 * Math.PI));
 	});
 	
-	$('.scroll-button').click(function()
+	$(".scroll-button").click(function()
 	{
 		$([document.documentElement, document.body]).animate({scrollTop: $("#content").offset().top}, 900, "swing");
 	});
