@@ -12,9 +12,12 @@ $(function()
 
 		scroll = $(this).scrollTop();
 		
-		$(".banner").css("opacity", .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / y, 0) - .5 * Math.PI));
+		if (scroll >= 0)
+		{
+			$(".banner").css("opacity", .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / y, 0) - .5 * Math.PI));
 			
-		$(".scroll-button").css("opacity", .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / y, 0) - .5 * Math.PI));
+			$(".scroll-button").css("opacity", .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / y, 0) - .5 * Math.PI));
+		}
 	});
 	
 	$(".scroll-button").click(function()
