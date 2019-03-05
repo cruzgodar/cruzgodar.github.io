@@ -279,6 +279,8 @@ body
 	
 	<div style="height: 5vw"></div>
 	
+	<img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme(1)" data-aos="zoom-out" data-aos-offset="0" data-aos-once="false"></img>
+	
 	
 
 	<!-- jQuery -->
@@ -288,6 +290,8 @@ body
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 	
 	<script src="/style/base-script.js"></script>
+	
+	<script src="/style/dark-theme.js"></script>
 
 	<!-- Change background color on scroll -->
 	<script>
@@ -305,12 +309,32 @@ body
 
 				if ($(this).scrollTop() > y/5)
 				{
+					$("body").addClass("no-transition");
 					$("body").css("background", "rgb(0, 0, 0)");
+					$("body").removeClass("no-transition");
 				}
 
 				else
 				{
-					$("body").css("background", "rgb(255, 255, 255)");
+					if (storageAvailable("localStorage"))
+					{
+						current_theme = localStorage.getItem("theme");
+						
+						if (current_theme == 0)
+						{
+							$("body").css("background", "rgb(255, 255, 255)");
+						}
+						
+						else
+						{
+							$("body").css("background", "rgb(24, 24, 24)");
+						}
+					}
+					
+					else
+					{
+						$("body").css("background", "rgb(255, 255, 255)");
+					}
 				}
 
 				
