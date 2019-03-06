@@ -1,5 +1,9 @@
 \documentclass{article}
 
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage{tikz-cd}
+
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -9,11 +13,7 @@
 \usepackage{graphicx}
 \graphicspath{{graphics/}}
 
-\usepackage{hyperref}
-
 \usepackage{scalerel}
-
-\usepackage{xcolor}
 
 \usepackage{stmaryrd}
 
@@ -22,6 +22,14 @@
 \usepackage{mdframed}
 
 \usepackage{titlesec}
+
+\usepackage{hyperref}
+
+\hypersetup
+{
+	colorlinks = true,
+	urlcolor = OliveGreen
+}
 
 \titleformat{\section}
 {\normalfont \Large \bfseries \centering}{\Roman{section} --- }{0pt}{}
@@ -63,6 +71,14 @@
 \newtheorem{exercise}{Exercise}[section]
 
 
+
+\newcommand{\fadeline}
+{
+	\noindent\begin{tikzpicture}[baseline]
+		\path[left color=white,right color=white,middle color=black]
+		(0,0) rectangle (\textwidth,.5pt);%
+	\end{tikzpicture}
+}
 
 
 \newcommand{\Span}{\textnormal{span}}
@@ -133,8 +149,6 @@
 
 \newenvironment{Corollary}
 {
-	\vspace{-.035in}
-	
 	\begin{mdframed}[backgroundcolor=CorollaryBlue!10]
 	\begin{corollary}
 }
@@ -187,11 +201,7 @@
 	
 	\vspace{.25in}
 	
-	\normalsize Math 306 and 406\\
-	
-	Professor Mendes\\
-	
-	Cal Poly, Winter 2017--Spring 2017
+	\normalsize Math 306 and Math 406 --- Professor Mendes
 \end{center}
 
 \vspace{.5in}
@@ -199,9 +209,6 @@
 
 
 
-%--------------------------------------------------
-%                  ROOT SYSTEMS
-%--------------------------------------------------
 
 \begin{center}
 	\section{Vector Spaces}
@@ -342,7 +349,7 @@
 
 \begin{center}
 	\vspace{.25in}
-	\noindent\rule{.75\linewidth}{0.4pt}
+	\fadeline
 	\vspace{.25in}
 	
 	\section{Bases and Dimension}
@@ -354,7 +361,7 @@
 
 \begin{Def}
 	
-	Vectors $v_1, ..., v_n \in V$ are \textbf{linearly independent} if $c_1 v_1 + \cdots + c_n v_n = 0$ for $c_i \in k$ implies $c_1 = \cdots = c_n = 0$, and \textbf{linearly dependent} if not (i.e. $c_1 v_1 + \cdots + c_n v_n = 0$ for some $c_i \in k$ not all zero).
+	Vectors $v_1, ..., v_n \in V$ are \textbf{linearly independent} if $c_1 v_1 + \cdots + c_n v_n = 0$ for $c_i \in k$ implies $c_1 = \cdots = c_n = 0$, and \textbf{linearly dependent} if not (that is, $c_1 v_1 + \cdots + c_n v_n = 0$ for some $c_i \in k$ not all zero).
 	
 \end{Def}
 
@@ -421,7 +428,7 @@
 		Let $\{v_1, ..., v_n\}$ and $\{w_1, ..., w_m\}$ be bases for $V$. Then by definition, $v_1 = c_1 w_1 + \cdots + c_m w_m$ for some $c_i \in k$ not all zero. Without loss of generality, assume $c_1 \neq 0$. Then $w_1 = (-c_1)^{-1}(-v_1 + c_2 w_2 + \cdots + c_m w_m) \in \Span \{v_1, w_2, ..., w_m\}$, so $\Span \{v_1, w_2, ..., w_m\} = \Span \{w_1, ..., w_m\} = V$. Repeat this process until we have $V = \Span \{v_1, ..., v_n, w_{n+1}, ..., w_m\}.$ If $n > m$, then $V = \Span \{v_1, ..., v_m\}$, but then $v_1, ..., v_n$ are not linearly independent. Thus $n \leq m$, and repeating the proof by eliminating the $v_i$ gives that $m \leq n$, so $n = m$.
 		
 	\end{Proof}
-	
+	\vspace{-.02in}
 \end{Theorem}
 
 
@@ -459,7 +466,7 @@
 
 \begin{center}
 	\vspace{.25in}
-	\noindent\rule{.75\linewidth}{0.4pt}
+	\fadeline
 	\vspace{.25in}
 	
 	\section{Linear Maps}
@@ -817,7 +824,7 @@
 		$T'$ is injective if and only if $\Null T' = \{0\}$, if and only if $(\Range T)^0 = \{0\}$, if and only if $\dim\  (\Range T)^0 = 0$, if and only if $\dim \Range T = \dim W$, if and only if $\Range T = W$.
 		
 	\end{Proof}
-	
+	\vspace{.1in}
 	\begin{Corollary}
 		
 		Let $T \in \mathcal{L}(V,W)$. Then $\dim \Range T' = \dim \Range T$.
@@ -832,7 +839,7 @@
 
 \begin{center}
 	\vspace{.25in}
-	\noindent\rule{.75\linewidth}{0.4pt}
+	\fadeline
 	\vspace{.25in}
 	
 	\section{Eigenvalues and Eigenvectors}
@@ -1018,7 +1025,7 @@
 
 \begin{center}
 	\vspace{.25in}
-	\noindent\rule{.75\linewidth}{0.4pt}
+	\fadeline
 	\vspace{.25in}
 	
 	\section{Inner Product Spaces}
@@ -1328,7 +1335,7 @@
 
 \begin{center}
 	\vspace{.25in}
-	\noindent\rule{.75\linewidth}{0.4pt}
+	\fadeline
 	\vspace{.25in}
 	
 	\section{Linear Maps and Inner Products}
@@ -1821,7 +1828,7 @@
 
 \begin{center}
 	\vspace{.25in}
-	\noindent\rule{.75\linewidth}{0.4pt}
+	\fadeline
 	\vspace{.25in}
 	
 	\section{Determinants}
@@ -1954,6 +1961,16 @@
 	\end{Proof}
 	
 \end{Theorem}
+
+
+
+\begin{center}
+	\vspace{.25in}
+	\fadeline
+	\vspace{.25in}
+	
+	\href{http://www.cruzgodar.com/notes/source/linear-algebra.tex}{Source}
+\end{center}
 
 
 

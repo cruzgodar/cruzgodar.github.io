@@ -1,5 +1,9 @@
 \documentclass{article}
 
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage{tikz-cd}
+
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -9,11 +13,7 @@
 \usepackage{graphicx}
 \graphicspath{{graphics/}}
 
-\usepackage{hyperref}
-
 \usepackage{scalerel}
-
-\usepackage{xcolor}
 
 \usepackage{stmaryrd}
 
@@ -24,6 +24,14 @@
 \usepackage{titlesec}
 
 \usepackage{blkarray}
+
+\usepackage{hyperref}
+
+\hypersetup
+{
+	colorlinks = true,
+	urlcolor = OliveGreen
+}
 
 \titleformat{\section}
 {\normalfont \Large \bfseries \centering}{\Roman{section} --- }{0pt}{}
@@ -66,6 +74,13 @@
 
 
 
+\newcommand{\fadeline}
+{
+	\noindent\begin{tikzpicture}[baseline]
+		\path[left color=white,right color=white,middle color=black]
+		(0,0) rectangle (\textwidth,.5pt);%
+	\end{tikzpicture}
+}
 
 \newcommand{\Span}{\textnormal{span}}
 \newcommand{\Null}{\textnormal{null }}
@@ -137,8 +152,6 @@
 
 \newenvironment{Corollary}
 {
-	\vspace{-.035in}
-	
 	\begin{mdframed}[backgroundcolor=CorollaryBlue!10]
 	\begin{corollary}
 }
@@ -191,11 +204,7 @@
 	
 	\vspace{.25in}
 	
-	\normalsize Math 437\\
-	
-	Professor Mendes\\
-	
-	Cal Poly, Spring 2017
+	\normalsize Math 437 --- Professor Mendes
 \end{center}
 
 \vspace{.5in}
@@ -221,7 +230,7 @@
 
 \begin{Def}
 	
-	A game is \textbf{finite} if both players have a finite number of strategies to choose from.
+	A game is \textbf{finite} if a  players have a finite number of strategies to choose from.
 	
 \end{Def}
 
@@ -483,7 +492,7 @@
 
 \begin{center}
 	\vspace{.25in}
-	\noindent\rule{.75\linewidth}{0.4pt}
+	\fadeline
 	\vspace{.25in}
 	
 	\section{Linear Programming}
@@ -666,7 +675,7 @@
 
 \begin{center}
 	\vspace{.25in}
-	\noindent\rule{.75\linewidth}{0.4pt}
+	\fadeline
 	\vspace{.25in}
 	
 	\section{Interval Games}
@@ -721,7 +730,7 @@
 
 \begin{center}
 	\vspace{.25in}
-	\noindent\rule{.75\linewidth}{0.4pt}
+	\fadeline
 	\vspace{.25in}
 	
 	\section{Utility Theory}
@@ -775,7 +784,7 @@
 
 \begin{center}
 	\vspace{.25in}
-	\noindent\rule{.75\linewidth}{0.4pt}
+	\fadeline
 	\vspace{.25in}
 	
 	\section{Nonzero-Sum Games}
@@ -940,7 +949,7 @@
 
 \begin{center}
 	\vspace{.25in}
-	\noindent\rule{.75\linewidth}{0.4pt}
+	\fadeline
 	\vspace{.25in}
 	
 	\section{Arbitration}
@@ -998,7 +1007,7 @@
 
 \begin{center}
 	\vspace{.25in}
-	\noindent\rule{.75\linewidth}{0.4pt}
+	\fadeline
 	\vspace{.25in}
 	
 	\section{\textit{n}-Player Games}
@@ -1069,6 +1078,16 @@
 	Let $s_i$ be the number of swing votes that player $i$ has (the number of coalitions that would move from losing to winning by player $i$ joining). The \textbf{Banzhaf power index} for player $i$ is $\frac{s_i}{s_1 + \cdots + s_n}$.
 	
 \end{Def}
+
+
+
+\begin{center}
+	\vspace{.25in}
+	\fadeline
+	\vspace{.25in}
+	
+	\href{http://www.cruzgodar.com/notes/source/game-theory.tex}{Source}
+\end{center}
 
 
 
