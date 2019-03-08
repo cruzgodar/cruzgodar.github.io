@@ -1,6 +1,6 @@
 html
 {
-	font-size: 16px;
+	font-size: max(calc((1.5vmin + 1.5vmax) / 2), 12px);
 }
 
 body
@@ -362,13 +362,7 @@ a
 
 /* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), use the mobile layout. */
 @media screen and (max-width: 1300px) and (orientation: portrait)
-{
-	/* Make text smaller. */
-	html
-	{
-		font-size: 12px;
-	}
-	
+{	
 	.content-text
 	{
 		width: 90vw;
@@ -432,17 +426,5 @@ a
 	.nav-button
 	{
 		width: 6vw;
-	}
-}
-
-
-
-/* On the other hand, if the screen has small enough height and is in landscare, then change back to the wide layout and make everything much smaller to make more efficient use of space. */
-@media screen and (max-height: 800px) and (orientation: landscape)
-{
-	/* Make text smaller. */
-	html
-	{
-		font-size: 12px;
 	}
 }
