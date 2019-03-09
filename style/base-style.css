@@ -1,6 +1,9 @@
+@import url("https://fonts.googleapis.com/css?family=Rubik");
+
 html
 {
 	font-size: max(calc((1.5vmin + 1.5vmax) / 2), 12px);
+	font-family: "Rubik", sans-serif;
 }
 
 body
