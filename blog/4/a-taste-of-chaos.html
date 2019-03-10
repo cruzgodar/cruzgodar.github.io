@@ -46,6 +46,15 @@
 	background-size: cover;
 }
 
+.banner-small:before
+{
+	background: url("banner-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
 </style>
 
 </head>
@@ -53,7 +62,8 @@
 
 
 <body>
-	<div id="background-image" class="banner"></div>
+	<div id="background-image" class="banner-small"></div>
+	<img id="full-res-loader" src="banner.jpg" style="display: none"></img>
 
 	<div style="height: 100vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down" data-aos-delay="3000">
 		<div class="scroll-button">&#x27e9;</div>
@@ -426,13 +436,13 @@
 				</a>
 			</div>
 
-			<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="200" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div class="menu-image-link image-link-light" data-aos="zoom-out" data-aos-delay="200" data-aos-once="false" data-aos-anchor="#trigger-menu">
 				<a href="/research.html">
 					<img src="/graphics/research.png" alt="Research"/>
 				</a>
 			</div>
 
-			<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="300" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div class="menu-image-link image-link-light" data-aos="zoom-out" data-aos-delay="300" data-aos-once="false" data-aos-anchor="#trigger-menu">
 				<a href="/notes.html">
 					<img src="/graphics/notes.png" alt="Notes"/>
 				</a>
@@ -457,6 +467,9 @@
 
 	<!-- Animate on scroll library -->
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	
+	<!-- Library to detect if images are loaded -->
+	<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
 	
 	<script src="/style/base-script.js"></script>
 	

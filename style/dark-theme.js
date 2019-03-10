@@ -52,10 +52,10 @@ function switch_theme()
 //Changes the theme, but without any transition duration.
 function switch_theme_on_load()
 {
-	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark").addClass("no-transition");
+	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark, .image-link-border").addClass("no-transition");
 	switch_theme();
-	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark")[0].offsetHeight; //Trigger a reflow, flushing the CSS changes
-	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark").removeClass("no-transition");
+	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark, .image-link-border")[0].offsetHeight; //Trigger a reflow, flushing the CSS changes
+	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark, .image-link-border").removeClass("no-transition");
 }
 
 

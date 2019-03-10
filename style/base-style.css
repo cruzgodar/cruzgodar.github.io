@@ -225,6 +225,23 @@ a
 	font-size: 125%;
 }
 
+/* Added to images with white around the edges to provide contrast. */
+.image-link-light img
+{
+	-webkit-filter: brightness(95%) !important;
+	-moz-filter: brightness(95%) !important;
+	-o-filter: brightness(95%) !important;
+	filter: brightness(95%) !important;
+}
+
+.image-link-light img:hover
+{
+	-webkit-filter: brightness(75%) !important;
+	-moz-filter: brightness(75%) !important;
+	-o-filter: brightness(75%) !important;
+	filter: brightness(75%) !important;
+}
+
 .row-break
 {
 	height: 5vw;

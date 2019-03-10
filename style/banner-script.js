@@ -22,8 +22,20 @@ $(function()
 		}
 	});
 	
+	
+	
 	$(".scroll-button").click(function()
 	{
 		$([document.documentElement, document.body]).animate({scrollTop: $("#content").offset().top}, 900, "swing");
+	});
+	
+	
+	
+	//Switch to the high-res banner when it's loaded.
+	$("#full-res-loader").imagesLoaded(function()
+	{
+		$("#background-image").removeClass("banner-small");
+		$("#background-image").addClass("banner");
+		$("#background-image")[0].offsetHeight;
 	});
 });

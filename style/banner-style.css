@@ -1,5 +1,5 @@
-/* Something about the before tag makes the scrolling work on mobile. */
-.banner:before
+/* DON'T TOUCH THE BEFORE THINGY. It has to be here, even though it makes everything worse. */
+.banner:before, .banner-small:before
 {
 	content: "";
 	position: fixed;
@@ -8,7 +8,7 @@
 	width: 100vw;
 	height: 100vh;
 	
-	/* This is some magic right here */
+	/* Some magic that prevents the banner from abruptly resizing on mobile devices on which the size of the url bar changes on scroll. */
 	transform: translate3d(0, 0, 0);
 }
 

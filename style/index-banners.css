@@ -1,4 +1,4 @@
-.banner-1:before, .banner-2:before, .banner-3:before, .banner-4:before, .banner-5:before, .banner-6:before, .banner-7:before, .banner-8:before, .banner-9:before, .banner-10:before, .banner-11:before, .banner-12:before, .banner-13:before, .banner-14:before, .banner-15:before, .banner-16:before, .banner-17:before
+.banner-1:before, .banner-1-small:before, .banner-2:before, .banner-2-small:before, .banner-3:before, .banner-3-small:before, .banner-4:before, .banner-4-small:before, .banner-5:before, .banner-5-small:before, .banner-6:before, .banner-6-small:before, .banner-7:before, .banner-7-small:before, .banner-8:before, .banner-8-small:before, .banner-9:before, .banner-9-small:before, .banner-10:before, .banner-10-small:before, .banner-11:before, .banner-11-small:before, .banner-12:before, .banner-12-small:before, .banner-13:before, .banner-13-small:before, .banner-14:before, .banner-14-small:before, .banner-15:before, .banner-15-small:before, .banner-16:before, .banner-16-small:before, .banner-17:before, .banner-17-small:before
 {
 	content: "";
 	position: fixed;
@@ -11,6 +11,8 @@
 	transform: translate3d(0, 0, 0);
 }
 
+
+
 .banner-1:before
 {
 	background: url("/graphics/banners/banner-1.jpg") no-repeat center center;
@@ -19,6 +21,17 @@
 	-o-background-size: cover;
 	background-size: cover;
 }
+
+.banner-1-small:before
+{
+	background: url("/graphics/banners/banner-1-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
 
 .banner-2:before
 {
@@ -29,6 +42,17 @@
 	background-size: cover;
 }
 
+.banner-2-small:before
+{
+	background: url("/graphics/banners/banner-2-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
+
 .banner-3:before
 {
 	background: url("/graphics/banners/banner-3.jpg") no-repeat center center;
@@ -37,6 +61,17 @@
 	-o-background-size: cover;
 	background-size: cover;
 }
+
+.banner-3-small:before
+{
+	background: url("/graphics/banners/banner-3-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
 
 .banner-4:before
 {
@@ -47,6 +82,17 @@
 	background-size: cover;
 }
 
+.banner-4-small:before
+{
+	background: url("/graphics/banners/banner-4-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
+
 .banner-5:before
 {
 	background: url("/graphics/banners/banner-5.jpg") no-repeat center center;
@@ -55,6 +101,17 @@
 	-o-background-size: cover;
 	background-size: cover;
 }
+
+.banner-5-small:before
+{
+	background: url("/graphics/banners/banner-5-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
 
 .banner-6:before
 {
@@ -65,6 +122,17 @@
 	background-size: cover;
 }
 
+.banner-6-small:before
+{
+	background: url("/graphics/banners/banner-6-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
+
 .banner-7:before
 {
 	background: url("/graphics/banners/banner-7.jpg") no-repeat center center;
@@ -73,6 +141,17 @@
 	-o-background-size: cover;
 	background-size: cover;
 }
+
+.banner-7-small:before
+{
+	background: url("/graphics/banners/banner-7-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
 
 .banner-8:before
 {
@@ -83,6 +162,17 @@
 	background-size: cover;
 }
 
+.banner-8-small:before
+{
+	background: url("/graphics/banners/banner-8-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
+
 .banner-9:before
 {
 	background: url("/graphics/banners/banner-9.jpg") no-repeat center center;
@@ -91,6 +181,17 @@
 	-o-background-size: cover;
 	background-size: cover;
 }
+
+.banner-9-small:before
+{
+	background: url("/graphics/banners/banner-9-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
 
 .banner-10:before
 {
@@ -101,6 +202,17 @@
 	background-size: cover;
 }
 
+.banner-10-small:before
+{
+	background: url("/graphics/banners/banner-10-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
+
 .banner-11:before
 {
 	background: url("/graphics/banners/banner-11.jpg") no-repeat center center;
@@ -109,6 +221,17 @@
 	-o-background-size: cover;
 	background-size: cover;
 }
+
+.banner-11-small:before
+{
+	background: url("/graphics/banners/banner-11-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
 
 .banner-12:before
 {
@@ -119,6 +242,17 @@
 	background-size: cover;
 }
 
+.banner-12-small:before
+{
+	background: url("/graphics/banners/banner-12-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
+
 .banner-13:before
 {
 	background: url("/graphics/banners/banner-13.jpg") no-repeat center center;
@@ -127,6 +261,17 @@
 	-o-background-size: cover;
 	background-size: cover;
 }
+
+.banner-13-small:before
+{
+	background: url("/graphics/banners/banner-13-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
 
 .banner-14:before
 {
@@ -137,6 +282,17 @@
 	background-size: cover;
 }
 
+.banner-14-small:before
+{
+	background: url("/graphics/banners/banner-14-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
+
 .banner-15:before
 {
 	background: url("/graphics/banners/banner-15.jpg") no-repeat center center;
@@ -145,6 +301,17 @@
 	-o-background-size: cover;
 	background-size: cover;
 }
+
+.banner-15-small:before
+{
+	background: url("/graphics/banners/banner-15-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
 
 .banner-16:before
 {
@@ -155,9 +322,29 @@
 	background-size: cover;
 }
 
+.banner-16-small:before
+{
+	background: url("/graphics/banners/banner-16-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
+
 .banner-17:before
 {
 	background: url("/graphics/banners/banner-17.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.banner-17-small:before
+{
+	background: url("/graphics/banners/banner-17-small.jpg") no-repeat center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
