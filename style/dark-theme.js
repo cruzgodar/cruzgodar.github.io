@@ -1,29 +1,21 @@
 //Changes the theme and animates elements unless no_animation = 1. Typically called without arguments.
-function switch_theme(no_animation)
+function switch_theme()
 {
-	if (typeof no_animation == "undefined")
-	{
-		no_animation = 0;
-	}
-	
 	//Light to dark
 	if (current_theme == 0)
 	{
-		if (no_animation != 1)
-		{
-			$("body").css("background-color", "rgb(24, 24, 24)");
-			
-			$(".heading-text").css("color", "rgb(255, 255, 255)");
-			$(".date-text").css("color", "rgb(255, 255, 255)");
-			$(".section-text").css("color", "rgb(164, 164, 164)");
-			
-			//index.html
-			$(".quote-text").css("color", "rgb(80, 80, 80)");
-			$(".quote-attribution").css("color", "rgb(164, 164, 164)");
-			$(".title-text").css("color", "rgb(255, 255, 255)");
-			
-			$(".line-break-dark").css("opacity", "1");
-		}
+		$("body").css("background-color", "rgb(24, 24, 24)");
+		
+		$(".heading-text").css("color", "rgb(255, 255, 255)");
+		$(".date-text").css("color", "rgb(255, 255, 255)");
+		$(".section-text").css("color", "rgb(164, 164, 164)");
+		
+		//index.html
+		$(".quote-text").css("color", "rgb(80, 80, 80)");
+		$(".quote-attribution").css("color", "rgb(164, 164, 164)");
+		$(".title-text").css("color", "rgb(255, 255, 255)");
+		
+		$(".line-break-dark").css("opacity", "1");
 		
 		current_theme = 1;
 	}
@@ -31,21 +23,18 @@ function switch_theme(no_animation)
 	//Dark to light
 	else
 	{
-		if (no_animation != 1)
-		{
-			$("body").css("background-color", "rgb(255, 255, 255)");
-			
-			$(".heading-text").css("color", "rgb(0, 0, 0)");
-			$(".date-text").css("color", "rgb(0, 0, 0)");
-			$(".section-text").css("color", "rgb(92, 92, 92)");
-			
-			//index.html
-			$(".quote-text").css("color", "rgb(176, 176, 176)");
-			$(".quote-attribution").css("color", "rgb(92, 92, 92)");
-			$(".title-text").css("color", "rgb(0, 0, 0)");
-			
-			$(".line-break-dark").css("opacity", "0");
-		}
+		$("body").css("background-color", "rgb(255, 255, 255)");
+		
+		$(".heading-text").css("color", "rgb(0, 0, 0)");
+		$(".date-text").css("color", "rgb(0, 0, 0)");
+		$(".section-text").css("color", "rgb(92, 92, 92)");
+		
+		//index.html
+		$(".quote-text").css("color", "rgb(176, 176, 176)");
+		$(".quote-attribution").css("color", "rgb(92, 92, 92)");
+		$(".title-text").css("color", "rgb(0, 0, 0)");
+		
+		$(".line-break-dark").css("opacity", "0");
 		
 		current_theme = 0;
 	}
