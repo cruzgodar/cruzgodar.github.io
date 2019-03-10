@@ -353,7 +353,7 @@ a
 
 
 
-/* Used on page load during the night to make it seem instantly dark */
+/* Used on page load when dark mode is enabled to make it seem instantly dark */
 .no-transition
 {
 	-webkit-transition: none !important;

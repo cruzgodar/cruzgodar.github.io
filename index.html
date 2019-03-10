@@ -15,8 +15,6 @@
 
 <meta name="description" content="Reading, writing, and proving. Research papers, rough drafts, and residue theory notes.">
 
-<link rel="preload" href="graphics/banner.jpg" as="image">
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -29,23 +27,16 @@
 <!-- Animate on scroll library -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
+<!-- Gentium Book Basic -->
+<link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet">
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <link rel="stylesheet" type="text/css" href="/style/base-style.css">
 <link rel="stylesheet" type="text/css" href="/style/banner-style.css">
+<link rel="stylesheet" type="text/css" href="/style/index-banners.css">
 
 <style>
-
-.banner:before
-{
-	background: url("/graphics/banner.jpg") no-repeat center center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-
 
 .column
 {
@@ -84,6 +75,20 @@
 
 
 
+.name-text
+{
+	color: rgb(255, 255, 255);
+	font-size: 15vmin;
+	font-family: "Gentium Book Basic", serif;
+	text-shadow: 0px 0px 20px rgb(0, 0, 0);
+	
+	text-align: left;
+	margin-left: 40px;
+	margin-top: 20px;
+	
+	position: fixed;
+}
+
 .title-text
 {
 	color: rgb(0, 0, 0);
@@ -116,7 +121,15 @@
 
 
 <body>
-	<div id="background-image" class="banner"></div>
+	<div id="background-image"></div>
+	
+	<div style="position: fixed" data-aos="fade-left">
+		<div class="name-text">Cruz</div>
+	</div>
+	
+	<div style="position: fixed" data-aos="fade-left" data-aos-delay="250">
+		<div class="name-text" style="margin-top: calc(15vmin + 30px)">Godar</div>
+	</div>
 	
 	<div style="height: 100vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down" data-aos-delay="3000">
 		<div class="scroll-button">&#x27e9;</div>
@@ -154,7 +167,7 @@
 		<div style="height: 10vh"></div>
 
 		<div class="logo" data-aos="fade-in" data-aos-once="false" id="trigger-section-1">
-			<a href="/index.html">
+			<a href="">
 				<img src="/graphics/logo.png" alt="Logo"/>
 			</a>
 		</div>
@@ -230,5 +243,17 @@
 	<script src="/style/banner-script.js"></script>
 	
 	<script src="/style/dark-theme.js"></script>
+	
+	<!-- Pick a random banner image -->
+	<script>
+		$(function()
+		{
+			var num_images = 17;
+			var image = Math.floor(Math.random() * num_images) + 1;
+			
+			$("#background-image").addClass("banner-" + image);
+			$("#background-image")[0].offsetHeight;
+		});
+	</script>
 </body>
 </html>
