@@ -1,29 +1,7 @@
-//Changes background image on mobile one the top is gone so that the user can't see the top banner at the bottom of the page.
-
 $(function()
-{
-	//Test scroll position on page load so that the background and other scroll-dependent things don't show on refresh.
-	var w = window,
-	d = document,
-	e = d.documentElement,
-	g = d.getElementsByTagName("body")[0],
-	y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-	
-	scroll = $(this).scrollTop();
-	
-	if (scroll >= 0)
-	{
-		$("#background-image").css("opacity", .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / y, 0) - .5 * Math.PI));
-		
-		if (scroll <= y/2)
-		{
-			$(".scroll-button").css("opacity", .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / y, 0) - .5 * Math.PI));
-			
-			$(".name-text").css("opacity", .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / y, 0) - .5 * Math.PI));
-		}
-	}
-	
-	
+{	
+	var banner_done = 0;
+	var scroll_button_done = 0;
 	
 	$(window).scroll(function()
 	{
@@ -33,17 +11,61 @@ $(function()
 		g = d.getElementsByTagName("body")[0],
 		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 	
-		scroll = $(this).scrollTop();
+		var scroll = $(this).scrollTop();
+		var opacity = 0;
 		
 		if (scroll >= 0)
 		{
-			$("#background-image").css("opacity", .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / y, 0) - .5 * Math.PI));
-			
-			if (scroll <= y/2)
+			if (scroll <= y)
 			{
-				$(".scroll-button").css("opacity", .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / y, 0) - .5 * Math.PI));
+				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / y, 0) - .5 * Math.PI);
+				$("#background-image").css("opacity", opacity);
 				
-				$(".name-text").css("opacity", .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / y, 0) - .5 * Math.PI));
+				if (opacity == 0)
+				{
+					banner_done = 1;
+				}
+				
+				else
+				{
+					banner_done = 0;
+				}
+			}
+			
+			else if (banner_done == 0)
+			{
+				$("#background-image").css("opacity", 0);
+				banner_done = 1;
+			}
+			
+			
+			
+			if (scroll <= y/3)
+			{
+				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / y, 0) - .5 * Math.PI);
+				
+				$(".scroll-button").css("opacity", opacity);
+				
+				$(".name-text").css("opacity", opacity);
+				
+				if (opacity == 0)
+				{
+					scroll_button_done = 1;
+				}
+				
+				else
+				{
+					scroll_button_done = 0;
+				}
+			}
+			
+			else if (scroll_button_done == 0)
+			{
+				$(".scroll-button").css("opacity", 0);
+				
+				$(".name-text").css("opacity", 0);
+				
+				scroll_button_done = 1;
 			}
 		}
 	});
