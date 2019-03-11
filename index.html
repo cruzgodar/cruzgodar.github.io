@@ -122,6 +122,7 @@
 
 <body>
 	<div id="background-image"></div>
+	<img id="small-loader" src="" style="display: none"></img>
 	<img id="full-res-loader" src="" style="display: none"></img>
 	
 	<div style="height: 100vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down" data-aos-delay="3000">
@@ -250,7 +251,9 @@
 			$("#background-image").addClass("banner-" + image + "-small");
 			$("#background-image")[0].offsetHeight;
 			
-			$("#background-image").imagesLoaded(function()
+			$("#small-loader").attr("src", "/graphics/banners/banner-" + image + "-small.jpg");
+			
+			$("#small-loader").imagesLoaded(function()
 			{
 				$("#full-res-loader").after("<div style='position: fixed' data-aos='fade-left'><div class='name-text'>Cruz</div></div><div style='position: fixed' data-aos='fade-left' data-aos-delay='250'><div class='name-text' style='margin-top: calc(15vmin + 30px)'>Godar</div></div>");
 			});
