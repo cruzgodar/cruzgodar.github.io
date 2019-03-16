@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Rubik");
+@import url("https://fonts.googleapis.com/css?family=Gentium+Book+Basic");
 
 html
 {
@@ -111,6 +112,16 @@ a
 	color: rgb(127, 127, 127);
 	text-align: justify;
 	font-size: 125%;
+}
+
+.song-lyrics
+{
+	width: 70vw;
+	margin-left: 15vw;
+	color: rgb(127, 127, 127);
+	text-align: center;
+	font-size: 125%;
+	font-family: "Gentium Book Basic", serif;
 }
 
 
@@ -383,7 +394,7 @@ a
 /* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), use the mobile layout. */
 @media screen and (max-width: 1300px) and (orientation: portrait)
 {	
-	.content-text
+	.content-text, .song-lyrics
 	{
 		width: 90vw;
 		margin-left: 5vw;
