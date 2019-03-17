@@ -3,14 +3,10 @@ $(function()
 	var banner_done = 0;
 	var scroll_button_done = 0;
 	
+	AOS.init({duration: 1200, once: false, offset: y/3});
+	
 	$(window).scroll(function()
 	{
-		var w = window,
-		d = document,
-		e = d.documentElement,
-		g = d.getElementsByTagName("body")[0],
-		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-	
 		var scroll = $(this).scrollTop();
 		var opacity = 0;
 		
@@ -69,6 +65,8 @@ $(function()
 			}
 		}
 	});
+	
+	//$(window).scroll();
 	
 	
 	
