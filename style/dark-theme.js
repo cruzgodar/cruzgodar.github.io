@@ -24,6 +24,8 @@ function switch_theme()
 		{
 			$(this).attr("href", $(this).attr("href").replace("?dark=1", "") + "?dark=1");
 		});
+		
+		history.replaceState({}, document.title, window.location.href.replace("?dark=1", "") + "?dark=1");
 	}
 	
 	//Dark to light
@@ -49,6 +51,9 @@ function switch_theme()
 		{
 			$(this).attr("href", $(this).attr("href").replace("?dark=1", ""));
 		});
+		
+		//Make state persist on refresh.
+		history.replaceState({}, document.title, window.location.href.replace("?dark=1", ""));
 	}
 }
 
