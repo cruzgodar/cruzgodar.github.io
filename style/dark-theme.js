@@ -1,4 +1,4 @@
-//Changes the theme and animates elements unless no_animation = 1. Typically called without arguments.
+//Changes the theme and animates elements.
 function switch_theme()
 {
 	//Light to dark
@@ -18,6 +18,12 @@ function switch_theme()
 		$(".line-break-dark").css("opacity", "1");
 		
 		current_theme = 1;
+		
+		//Make all linked pages have dark theme.
+		$("a").each(function()
+		{
+			$(this).attr("href", $(this).attr("href").replace("?dark=1", "") + "?dark=1");
+		});
 	}
 	
 	//Dark to light
@@ -37,19 +43,18 @@ function switch_theme()
 		$(".line-break-dark").css("opacity", "0");
 		
 		current_theme = 0;
-	}
-	
-	
-	
-	if (storageAvailable("localStorage"))
-	{
-		localStorage.setItem("theme", current_theme);
+		
+		//Make all linked pages have light theme.
+		$("a").each(function()
+		{
+			$(this).attr("href", $(this).attr("href").replace("?dark=1", ""));
+		});
 	}
 }
 
 
 
-//Changes the theme, but without any transition duration.
+//Changes the theme, but without any animation.
 function switch_theme_on_load()
 {
 	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark, .image-link-border").addClass("no-transition");
@@ -60,51 +65,24 @@ function switch_theme_on_load()
 
 
 
-function storageAvailable(type)
+function get_url_var(id)
 {
-	try
-	{
-		var storage = window[type],
-			x = "__storage_test__";
-		storage.setItem(x, x);
-		storage.removeItem(x);
-		return true;
-	}
-	
-	catch(e)
-	{
-		return e instanceof DOMException && (
-			// everything except Firefox
-			e.code === 22 ||
-			// Firefox
-			e.code === 1014 ||
-			// test name field too, because code might not be present
-			// everything except Firefox
-			e.name === "QuotaExceededError" ||
-			// Firefox
-			e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
-			// acknowledge QuotaExceededError only if there's something already stored
-			storage.length !== 0;
-    }
+	var svalue = location.search.match(new RegExp("[\?\&]" + id + "=([^\&]*)(\&?)","i"));
+	return svalue ? svalue[1] : svalue;
 }
 
 
 
-var current_theme = 0;
 
-if (storageAvailable("localStorage"))
+var current_theme = get_url_var("dark");
+
+if (current_theme == 1)
 {
-	current_theme = localStorage.getItem("theme");
+	current_theme = 0;
+	switch_theme_on_load();
+}
 	
-	if (current_theme == 1)
-	{
-		current_theme = 0;
-		switch_theme_on_load();
-	}
-	
-	else
-	{
-		current_theme = 0;
-		localStorage.setItem("theme", 0);
-	}
+else
+{
+	current_theme = 0;
 }

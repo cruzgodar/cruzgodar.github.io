@@ -322,21 +322,13 @@ body
 
 				else
 				{
-					if (storageAvailable("localStorage"))
+					var current_theme = get_url_var("dark");
+
+					if (current_theme == 1)
 					{
-						current_theme = localStorage.getItem("theme");
-						
-						if (current_theme == 0)
-						{
-							$("body").css("background", "rgb(255, 255, 255)");
-						}
-						
-						else
-						{
-							$("body").css("background", "rgb(24, 24, 24)");
-						}
+						$("body").css("background", "rgb(24, 24, 24)");
 					}
-					
+						
 					else
 					{
 						$("body").css("background", "rgb(255, 255, 255)");
