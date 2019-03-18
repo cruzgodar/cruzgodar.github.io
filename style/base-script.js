@@ -1,5 +1,4 @@
 //Initiate anamations when they're a third of the way up the screen.
-
 var w = window,
 d = document,
 e = d.documentElement,
@@ -7,6 +6,12 @@ g = d.getElementsByTagName("body")[0],
 y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
 AOS.init({duration: 1200, once: true, offset: y/3});
+
+
+
+//Remove the .html ending from the url for that slightly cleaner look.
+history.replaceState({}, document.title, window.location.href.replace("index.html", ""));
+history.replaceState({}, document.title, window.location.href.replace(".html", ""));
 
 
 
