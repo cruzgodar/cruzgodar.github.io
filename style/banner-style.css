@@ -17,29 +17,24 @@
 .scroll-button
 {
 	color: rgb(127, 127, 127);
-	font-size: 175%;
-	text-align: center;
 	background-color: rgb(255, 255, 255);
-	width: 2.5vh;
+	width: 20px;
 	position: relative;
 	margin-bottom: 15vh;
-	opacity: 1;
 	
 	align-self: flex-end;
-	
-	-webkit-transition: color, background-color .15s ease-in-out;
-	-moz-transition: color, background-color .15s ease-in-out;
-	-o-transition: color, background-color .15s ease-in-out;
-	transition: color, background-color .15s ease-in-out;
-	
-	transform: rotate(90deg);
 
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 10px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	-o-border-radius: 10px;
-	padding: 5px;
+	padding: 10px;
+	
+	-webkit-transition: color, background-color .15s ease-in-out;
+	-moz-transition: color, background-color .15s ease-in-out;
+	-o-transition: color, background-color .15s ease-in-out;
+	transition: color, background-color .15s ease-in-out;
 	
 	cursor: pointer;
 }
