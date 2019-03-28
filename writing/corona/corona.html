@@ -27,6 +27,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <link rel="stylesheet" type="text/css" href="/style/base-style.css">
+<link rel="stylesheet" type="text/css" href="/style/banner-style.css">
 
 <style>
 
@@ -34,10 +35,11 @@ body
 {
 	margin: 0;
 	padding: 0;
-	-webkit-transition: background-color 1.2s ease;
-	-moz-transition: background-color 1.2s ease;
-	-o-transition: background-color 1.2s ease;
-	-webkit-transition: background-color 1.2s ease;
+	
+	-webkit-transition: none !important;
+	-moz-transition: none !important;
+	-o-transition: none !important;
+	transition: none !important;
 }
 
 
@@ -50,6 +52,7 @@ body
 	text-align: center;
 	font-size: 600%;
 	font-family: "Gentium Book Basic", serif;
+	z-index: 10;
 }
 
 .section-text
@@ -80,6 +83,7 @@ body
 	width: 50vh;
 	height: 50vh;
 	margin: 0 auto;
+	opacity: 0;
 }
 
 .eclipse img
@@ -194,11 +198,17 @@ body
 		<div style="height: 1vh"></div>
 
 		<div class="section-text" data-aos="fade-up" data-aos-delay="3000" data-aos-anchor="#trigger-sentences">A planet colder each day.</div>
+		
+		<div id="banner-cover"></div>
 	</div>
 
-	<div class="title-text" data-aos="fade-up" id="trigger-title">CORONA</div>
+	
+	
+	<div id="scroll-to"></div>
 
-	<div class="eclipse" data-aos="fade-in" data-aos-delay="600" data-aos-once="false" data-aos-anchor="#trigger-title">
+	<div class="title-text" data-aos="fade-up">CORONA</div>
+
+	<div class="eclipse">
 		<img src="graphics/corona.png" alt="Corona">
 	</div>
 
@@ -307,40 +317,153 @@ body
 		g = d.getElementsByTagName('body')[0],
 		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 		
+		var background_color = 255;
+		var opacity = 0;
+		
+		var background_done = 0;
+		var scroll_button_done = 0;
+		var eclipse_done = 0;
+		
+		
+		
 		$(function()
 		{
+			var current_theme = get_url_var("dark");
+
+
+			
+			//If the user just sits at the top of the page for 4 seconds without scrolling, give them a scroll button.
+			if ($(window).scrollTop() == 0)
+			{
+				setTimeout(add_scroll_button, 7000);
+			}
+			
+			
+			
 			$(window).scroll(function()
 			{
-				if ($(this).scrollTop() > y/5)
+				var scroll = $(this).scrollTop();
+				
+				if (scroll >= 0)
 				{
-					$("body").addClass("no-transition");
-					$("body").css("background", "rgb(0, 0, 0)");
-					$("body").removeClass("no-transition");
-				}
-
-				else
-				{
-					var current_theme = get_url_var("dark");
-
-					if (current_theme == 1)
+					if (scroll <= y)
 					{
-						$("body").css("background", "rgb(24, 24, 24)");
-					}
+						var background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 2 * scroll / y, 0) - .5 * Math.PI);
 						
-					else
+						if (current_theme == 1)
+						{
+							background_color *= 24;
+						}
+							
+						else
+						{
+							background_color *= 255;
+						}
+						
+						
+						$("body").css("background-color", "rgb(" + background_color + ", " + background_color + ", " + background_color + ")");
+						
+						if (background_color == 0)
+						{
+							background_done = 1;
+						}
+						
+						else
+						{
+							background_done = 0;
+						}
+					}
+					
+					else if (background_done == 0)
 					{
-						$("body").css("background", "rgb(255, 255, 255)");
+						$("body").css("background-color", "rgb(0, 0, 0)");
+						background_done = 1;
+					}
+					
+					
+					
+					if (scroll <= y/3)
+					{
+						opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / y, 0) - .5 * Math.PI);
+						
+						$(".scroll-button").css("opacity", opacity);
+						
+						if (opacity == 0)
+						{
+							$(".scroll-button").remove();
+							scroll_button_done = 1;
+						}
+						
+						else
+						{
+							scroll_button_done = 0;
+						}
+					}
+					
+					else if (scroll_button_done == 0)
+					{
+						$(".scroll-button").remove();
+						
+						scroll_button_done = 1;
+					}
+					
+					
+					
+					if (scroll >= y/2 && scroll <= y)
+					{
+						opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 2 * (scroll - y/2) / y, 0) - .5 * Math.PI);
+						
+						$(".eclipse").css("opacity", 1 - opacity);
+						
+						if (opacity == 1)
+						{
+							eclipse_done = 1;
+						}
+						
+						else
+						{
+							eclipse_done = 0;
+						}
+					}
+					
+					else if (scroll >= y && eclipse_done == 0)
+					{
+						$(".eclipse").css("opacity", 1);
+						
+						eclipse_done = 1;
 					}
 				}
-
+				
 				
 
-				if ($(this).scrollTop() > $(".progress-bar").position().top - 2*y/3)
+				if (scroll > $(".progress-bar").position().top - 2*y/3)
 				{
 					$(".progress-bar span").css("width", "83%");
 				}
 			});
 		});
+		
+		
+		
+		//Scroll button things.
+		function add_scroll_button()
+		{
+			//Only add the scroll button if the user is still on the top of the page.
+			if ($(window).scrollTop() == 0)
+			{
+				$("#banner-cover").before("<div style='height: 60vh; display: flex; align-items: center; justify-content: center' data-aos='fade-down'><img class='scroll-button' src='/graphics/chevron.png' alt='Scroll down' onclick='scroll_down()'></img></div>");
+				
+				$("#banner-cover").remove();
+			}
+		}
+
+
+
+		//Triggered by pressing the scroll button.
+		function scroll_down()
+		{
+			$([document.documentElement, document.body]).animate({scrollTop: $("#scroll-to").offset().top}, 900, "swing");
+		}
 	</script>
 </body>
 </html>

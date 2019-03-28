@@ -122,9 +122,7 @@
 	<img id="small-loader" src="" style="display: none"></img>
 	<img id="full-res-loader" src="" style="display: none"></img>
 	
-	<div style="height: 100vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down" data-aos-delay="3000">
-		<img class="scroll-button" src="/graphics/chevron.png" alt="Scroll down"></img>
-	</div>
+	<div id="banner-cover" style="height: 100vh"></div>
 	
 	<div id="content">
 		<div style="height: 2vh"></div>
@@ -263,6 +261,18 @@
 				$("#background-image").removeClass("banner-" + image + "-small");
 				$("#background-image").addClass("banner-" + image);
 				$("#background-image")[0].offsetHeight;
+			});
+			
+			
+			
+			$(window).scroll(function()
+			{
+				scroll = $(this).scrollTop();
+				
+				if (scroll <= y/3)
+				{
+					$(".name-text").css("opacity", global_opacity);
+				}
 			});
 		});
 	</script>

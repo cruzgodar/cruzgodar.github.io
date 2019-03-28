@@ -1,5 +1,8 @@
 var banner_done = 0;
 var scroll_button_done = 0;
+var global_opacity = 0;
+
+
 
 $(function()
 {
@@ -12,12 +15,11 @@ $(function()
 	
 	scroll_update();
 	
-	
-	
-	$(".scroll-button").click(function()
+	//If the user just sits at the top of the page for 4 seconds without scrolling, give them a scroll button.
+	if ($(window).scrollTop() == 0)
 	{
-		$([document.documentElement, document.body]).animate({scrollTop: $("#content").offset().top}, 900, "swing");
-	});
+		setTimeout(add_scroll_button, 4000);
+	}
 	
 	
 	
@@ -35,16 +37,17 @@ $(function()
 function scroll_update()
 {
 	var scroll = $(window).scrollTop();
-	var opacity = 0;
+	
+	
 	
 	if (scroll >= 0)
 	{
 		if (scroll <= y)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / y, 0) - .5 * Math.PI);
-			$("#background-image").css("opacity", opacity);
+			global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / y, 0) - .5 * Math.PI);
+			$("#background-image").css("opacity", global_opacity);
 			
-			if (opacity == 0)
+			if (global_opacity == 0)
 			{
 				banner_done = 1;
 			}
@@ -65,14 +68,13 @@ function scroll_update()
 		
 		if (scroll <= y/3)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / y, 0) - .5 * Math.PI);
+			global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / y, 0) - .5 * Math.PI);
 			
-			$(".scroll-button").css("opacity", opacity);
+			$(".scroll-button").css("opacity", global_opacity);
 			
-			$(".name-text").css("opacity", opacity);
-			
-			if (opacity == 0)
+			if (global_opacity == 0)
 			{
+				$(".scroll-button").remove();
 				scroll_button_done = 1;
 			}
 			
@@ -84,11 +86,32 @@ function scroll_update()
 		
 		else if (scroll_button_done == 0)
 		{
-			$(".scroll-button").css("opacity", 0);
-			
 			$(".name-text").css("opacity", 0);
+			
+			$(".scroll-button").remove();
 			
 			scroll_button_done = 1;
 		}
 	}
+}
+
+
+
+function add_scroll_button()
+{
+	//Only add the scroll button if the user is still on the top of the page.
+	if ($(window).scrollTop() == 0)
+	{
+		$("#banner-cover").before("<div style='height: 100vh; display: flex; align-items: center; justify-content: center' data-aos='fade-down'><img class='scroll-button' src='/graphics/chevron.png' alt='Scroll down' onclick='scroll_down()'></img></div>");
+		
+		$("#banner-cover").remove();
+	}
+}
+
+
+
+//Triggered by pressing the scroll button.
+function scroll_down()
+{
+	$([document.documentElement, document.body]).animate({scrollTop: $("#content").offset().top}, 900, "swing");
 }
