@@ -255,30 +255,30 @@ body
 	<div id="trigger-menu"></div>
 	<div style="height: 30vh"></div>
 
-	<div class="line-break" data-aos="fade-in" data-aos-once="false" data-aos-duration="500" data-aos-anchor="#trigger-menu"></div>
+	<div class="line-break" data-aos="fade-in" data-aos-duration="500" data-aos-anchor="#trigger-menu"></div>
 	
 	<div style="height: 5vw"></div>
 
 	<div class="menu-image-links">
-		<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="100" data-aos-once="false" data-aos-anchor="#trigger-menu">
+		<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="100" data-aos-anchor="#trigger-menu">
 			<a href="/blog.html">
 				<img src="/graphics/blog.png" alt="Blog"/>
 			</a>
 		</div>
 
-		<div class="menu-image-link image-link-light" data-aos="zoom-out" data-aos-delay="200" data-aos-once="false" data-aos-anchor="#trigger-menu">
+		<div class="menu-image-link image-link-light" data-aos="zoom-out" data-aos-delay="200" data-aos-anchor="#trigger-menu">
 			<a href="/research.html">
 				<img src="/graphics/research.png" alt="Research"/>
 			</a>
 		</div>
 
-		<div class="menu-image-link image-link-light" data-aos="zoom-out" data-aos-delay="300" data-aos-once="false" data-aos-anchor="#trigger-menu">
+		<div class="menu-image-link image-link-light" data-aos="zoom-out" data-aos-delay="300" data-aos-anchor="#trigger-menu">
 			<a href="/notes.html">
 				<img src="/graphics/notes.png" alt="Notes"/>
 			</a>
 		</div>
 
-		<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="400" data-aos-once="false" data-aos-anchor="#trigger-menu">
+		<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="#trigger-menu">
 			<a href="/bio.html">
 				<img src="/graphics/me.png" alt="Me"/>
 			</a>
@@ -301,18 +301,16 @@ body
 
 	<!-- Change background color on scroll -->
 	<script>
+		var w = window,
+		d = document,
+		e = d.documentElement,
+		g = d.getElementsByTagName('body')[0],
+		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+		
 		$(function()
 		{
 			$(window).scroll(function()
 			{
-				var w = window,
-				d = document,
-				e = d.documentElement,
-				g = d.getElementsByTagName('body')[0],
-				y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-
-
-
 				if ($(this).scrollTop() > y/5)
 				{
 					$("body").addClass("no-transition");
