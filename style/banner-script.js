@@ -15,12 +15,6 @@ $(function()
 	
 	scroll_update();
 	
-	//If the user just sits at the top of the page for 4 seconds without scrolling, give them a scroll button.
-	if ($(window).scrollTop() == 0)
-	{
-		setTimeout(add_scroll_button, 4000);
-	}
-	
 	
 	
 	//Switch to the high-res banner when it's loaded.
@@ -29,6 +23,12 @@ $(function()
 		$("#background-image").removeClass("banner-small");
 		$("#background-image").addClass("banner");
 		$("#background-image")[0].offsetHeight;
+		
+		//If the user just sits at the top of the page for 3 seconds without scrolling after the full background is loaded, give them a scroll button.
+		if ($(window).scrollTop() == 0)
+		{
+			setTimeout(add_scroll_button, 3000);
+		}
 	});
 });
 
