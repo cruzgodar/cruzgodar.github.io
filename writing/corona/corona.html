@@ -244,7 +244,7 @@ body
 
 	<div style="height: 2vh"></div>
 
-	<div class="body-text" style="text-align: center; font-family: 'Gentium Book Basic', serif;" data-aos="fade-in" data-aos-delay="100" data-aos-anchor="#trigger-bar">
+	<div class="body-text" style="text-align: center; font-family: 'Gentium Book Basic', serif" data-aos="fade-in" data-aos-delay="100" data-aos-anchor="#trigger-bar">
 		43 of 52 chapters drafted
 	</div>
 
@@ -326,6 +326,8 @@ body
 		
 		
 		
+		AOS.init({duration: 1200, once: false, offset: y/3});
+		
 		$(function()
 		{
 			var current_theme = get_url_var("dark");
@@ -346,9 +348,9 @@ body
 				
 				if (scroll >= 0)
 				{
-					if (scroll <= y)
+					if (scroll <= 4*y/5)
 					{
-						var background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 2 * scroll / y, 0) - .5 * Math.PI);
+						var background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/4 * scroll / y, 0) - .5 * Math.PI);
 						
 						if (current_theme == 1)
 						{
@@ -409,9 +411,9 @@ body
 					
 					
 					
-					if (scroll >= y/2 && scroll <= y)
+					if (scroll >= 3*y/5 && scroll <= y)
 					{
-						opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 2 * (scroll - y/2) / y, 0) - .5 * Math.PI);
+						opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/2 * (scroll - 3*y/5) / y, 0) - .5 * Math.PI);
 						
 						$(".eclipse").css("opacity", 1 - opacity);
 						
