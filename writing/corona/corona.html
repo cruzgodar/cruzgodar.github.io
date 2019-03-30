@@ -434,6 +434,13 @@ body
 						
 						eclipse_done = 1;
 					}
+					
+					else if (scroll <= (3/5 + .1) * y && eclipse_done == 0)
+					{
+						$(".eclipse").css("opacity", 0);
+						
+						eclipse_done = 1;
+					}
 				}
 				
 				
