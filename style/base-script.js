@@ -15,6 +15,52 @@ history.replaceState({}, document.title, window.location.href.replace(".html", "
 
 
 
+//Puts the footer in at the bottom of the page, omitting one link (whatever the current page is)
+function insert_footer(omit)
+{
+    var delay = 100;
+    $("#spawn-footer").before('<div style="height: 30vh"></div> <div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-anchor="#trigger-menu"> <div class="line-break"> <div class="line-break-dark"></div> </div> </div> <div style="height: 5vw"></div> <div class="menu-image-links"></div>');
+    
+    if (omit != "writing")
+    {
+        $(".menu-image-links").append('<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-anchor="#trigger-menu"> <a href="/writing.html"> <img src="/graphics/writing.png" alt="Writing"/> </a> </div>');
+        
+        delay += 100;
+    }
+    
+    if (omit != "blog")
+    {
+        $(".menu-image-links").append('<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-anchor="#trigger-menu"> <a href="/blog.html"> <img src="/graphics/blog.png" alt="Blog"/> </a> </div>');
+        
+        delay += 100;
+    }
+    
+    if (omit != "research")
+    {
+        $(".menu-image-links").append('<div class="menu-image-link image-link-light" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-anchor="#trigger-menu"> <a href="/research.html"> <img src="/graphics/research.png" alt="Research"/> </a> </div>');
+        
+        delay += 100;
+    }
+    
+    if (omit != "notes")
+    {
+        $(".menu-image-links").append('<div class="menu-image-link image-link-light" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-anchor="#trigger-menu"> <a href="/notes.html"> <img src="/graphics/notes.png" alt="Notes"/> </a> </div>');
+        
+        delay += 100;
+    }
+    
+    if (omit != "bio")
+    {
+        $(".menu-image-links").append('<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-anchor="#trigger-menu"> <a href="/bio.html"> <img src="/graphics/me.png" alt="Me"/> </a> </div>');
+        
+        delay += 100;
+    }
+    
+    $("#spawn-footer").before('<div style="height: 5vw"></div> <img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()" data-aos="zoom-out" data-aos-offset="0" data-aos-anchor="#trigger-menu"></img> <div id="trigger-menu" style="height: 1px"></div>');
+}
+
+
+
 //Remove hover events on touchscreen devices.
 function hasTouch()
 {
