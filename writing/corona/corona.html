@@ -301,10 +301,14 @@ body
 			
 			
 			
-			$(function()
+			var refresh_id = setInterval(function()
 			{
-				insert_footer("writing");
-			});
+				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
+				{
+					insert_footer("writing");
+					clearInterval(refresh_id);
+				}
+			}, 200);
 
 
 			

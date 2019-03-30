@@ -383,7 +383,14 @@
 	<script>
 		$(function()
 		{
-			insert_footer("blog");
+			var refresh_id = setInterval(function()
+			{
+				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
+				{
+					insert_footer("blog");
+					clearInterval(refresh_id);
+				}
+			}, 200);
 		});
 	</script>
 
