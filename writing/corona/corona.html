@@ -411,9 +411,9 @@ body
 					
 					
 					
-					if (scroll >= 3*y/5 && scroll <= y)
+					if (scroll >= (3/5 + .1) * y && scroll <= 1.1*y)
 					{
-						opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/2 * (scroll - 3*y/5) / y, 0) - .5 * Math.PI);
+						opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/2 * (scroll - ((3/5 + .1) * y)) / y, 0) - .5 * Math.PI);
 						
 						$(".eclipse").css("opacity", 1 - opacity);
 						
