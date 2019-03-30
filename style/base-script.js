@@ -18,8 +18,10 @@ history.replaceState({}, document.title, window.location.href.replace(".html", "
 //Puts the footer in at the bottom of the page, omitting one link (whatever the current page is)
 function insert_footer(omit)
 {
+	var current_theme = get_url_var("dark");
     var delay = 100;
-    $("#spawn-footer").before('<div style="height: 30vh"></div> <div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-anchor="#trigger-menu"> <div class="line-break"> <div class="line-break-dark"></div> </div> </div> <div style="height: 5vw"></div> <div class="menu-image-links"></div>');
+    
+    $("#spawn-footer").before('<div style="height: 30vh"></div> <div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-anchor="#trigger-menu"> <div class="line-break"> <div class="line-break-dark" style="opacity: ' + current_theme + '"></div> </div> </div> <div style="height: 5vw"></div> <div class="menu-image-links"></div>');
     
     if (omit != "writing")
     {
