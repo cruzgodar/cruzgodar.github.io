@@ -58,7 +58,7 @@ function insert_footer(omit)
         delay += 100;
     }
     
-    $("#spawn-footer").before('<div style="height: 5vw"></div> <img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()" data-aos="zoom-out" data-aos-offset="0" data-aos-anchor="#trigger-menu"></img> <div id="trigger-menu" style="height: 1px"></div>');
+    $("#spawn-footer").before('<div style="height: 5vw"></div> <div id="trigger-menu"></div> <img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()" data-aos="zoom-out" data-aos-offset="0" data-aos-anchor="#trigger-menu"></img>');
 }
 
 
