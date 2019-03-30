@@ -5,7 +5,7 @@ e = d.documentElement,
 g = d.getElementsByTagName("body")[0],
 y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
-AOS.init({duration: 1200, once: true, offset: y/3});
+AOS.init({duration: 1200, once: true, offset: y/4});
 
 
 

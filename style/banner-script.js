@@ -9,7 +9,7 @@ $(function()
 {
 	scroll_update();
 	
-	AOS.init({duration: 1200, once: false, offset: y/3});
+	AOS.init({duration: 1200, once: false, offset: y/4});
 	
 	
 	
