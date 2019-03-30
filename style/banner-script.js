@@ -1,3 +1,4 @@
+var scroll = 0;
 var banner_done = 0;
 var scroll_button_done = 0;
 var global_opacity = 0;
@@ -6,14 +7,16 @@ var global_opacity = 0;
 
 $(function()
 {
+	scroll_update();
+	
 	AOS.init({duration: 1200, once: false, offset: y/3});
+	
+	
 	
 	$(window).scroll(function()
 	{
 		scroll_update();
 	});
-	
-	scroll_update();
 	
 	
 	
@@ -25,7 +28,7 @@ $(function()
 		$("#background-image")[0].offsetHeight;
 		
 		//If the user just sits at the top of the page for 3 seconds without scrolling after the full background is loaded, give them a scroll button.
-		if ($(window).scrollTop() == 0)
+		if (scroll == 0)
 		{
 			setTimeout(add_scroll_button, 3000);
 		}
@@ -36,9 +39,7 @@ $(function()
 
 function scroll_update()
 {
-	var scroll = $(window).scrollTop();
-	
-	
+	scroll = $(window).scrollTop();
 	
 	if (scroll >= 0)
 	{
@@ -100,7 +101,7 @@ function scroll_update()
 function add_scroll_button()
 {
 	//Only add the scroll button if the user is still on the top of the page.
-	if ($(window).scrollTop() == 0)
+	if (scroll == 0)
 	{
 		$("#banner-cover").before("<div style='height: 100vh; display: flex; align-items: center; justify-content: center' data-aos='fade-down'><img class='scroll-button' src='/graphics/chevron.png' alt='Scroll down' onclick='scroll_down()'></img></div>");
 		
