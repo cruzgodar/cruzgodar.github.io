@@ -75,13 +75,11 @@
 .name-text
 {
 	color: rgb(255, 255, 255);
-	font-size: 15vmin;
+	font-size: 17.5vmin;
 	font-family: "Gentium Book Basic", serif;
 	text-shadow: 0px 0px 20px rgb(0, 0, 0);
 	
 	text-align: left;
-	margin-left: 40px;
-	margin-top: 20px;
 	
 	position: fixed;
 }
@@ -121,6 +119,7 @@
 	<div id="background-image"></div>
 	<img id="small-loader" src="" style="display: none"></img>
 	<img id="full-res-loader" src="" style="display: none"></img>
+	<div class="name-text"></div>
 	
 	<div id="banner-cover" style="height: 100vh"></div>
 	
@@ -251,8 +250,11 @@
 			
 			$("#small-loader").imagesLoaded(function()
 			{
-				scroll_update();
-				$("#full-res-loader").after("<div style='position: fixed' data-aos='fade-left' data-aos-delay='250'><div class='name-text'>Cruz</div></div><div style='position: fixed' data-aos='fade-left' data-aos-delay='500'><div class='name-text' style='margin-top: calc(15vmin + 30px)'>Godar</div></div>");
+				var font_size = parseInt($(".name-text").css("font-size").replace("px", ""));
+				
+				$(".name-text").remove();
+				
+				$("#full-res-loader").after("<div style='position: fixed' data-aos='fade-left' data-aos-delay='250'><div class='name-text' style='margin-top: " + font_size / 8 + "px; margin-left: " + (font_size / 3 - font_size / 20) + "px'>Cruz</div></div><div style='position: fixed' data-aos='fade-left' data-aos-delay='500'><div class='name-text' style='margin-top: " + (font_size + font_size / 8) + "px; margin-left: " + (font_size / 3 - font_size / 20) + "px'>Godar</div></div>");
 			});
 			
 			$("#full-res-loader").attr("src", "/graphics/banners/banner-" + image + ".jpg");
