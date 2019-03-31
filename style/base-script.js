@@ -16,7 +16,7 @@ history.replaceState({}, document.title, window.location.href.replace(".html", "
 
 
 //Puts the footer in at the bottom of the page, omitting one link (whatever the current page is)
-function insert_footer(omit)
+function insert_footer(omit, no_theme_button = 0)
 {
 	var current_theme = get_url_var("dark");
     var delay = 100;
@@ -58,7 +58,12 @@ function insert_footer(omit)
         delay += 100;
     }
     
-    $("#spawn-footer").before('<div style="height: 5vw"></div> <div id="trigger-menu"></div> <img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()" data-aos="zoom-out" data-aos-offset="0" data-aos-anchor="#trigger-menu"></img>');
+    $("#spawn-footer").before('<div id="trigger-menu"></div> <div style="height: 5vw"></div>');
+    
+    if (no_theme_button == 0)
+    {
+        $("#spawn-footer").before('<img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()" data-aos="zoom-out" data-aos-offset="0" data-aos-anchor="#trigger-menu"></img>');
+    }
 }
 
 
