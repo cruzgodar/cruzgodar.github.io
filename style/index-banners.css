@@ -1,4 +1,4 @@
-.banner-1:before, .banner-1-small:before, .banner-2:before, .banner-2-small:before, .banner-3:before, .banner-3-small:before, .banner-4:before, .banner-4-small:before, .banner-5:before, .banner-5-small:before, .banner-6:before, .banner-6-small:before, .banner-7:before, .banner-7-small:before, .banner-8:before, .banner-8-small:before, .banner-9:before, .banner-9-small:before, .banner-10:before, .banner-10-small:before, .banner-11:before, .banner-11-small:before, .banner-12:before, .banner-12-small:before, .banner-13:before, .banner-13-small:before, .banner-14:before, .banner-14-small:before, .banner-15:before, .banner-15-small:before, .banner-16:before, .banner-16-small:before, .banner-17:before, .banner-17-small:before, .banner-18:before, .banner-18-small:before, .banner-19:before, .banner-19-small:before, .banner-20:before, .banner-20-small:before
+.banner-1:before, .banner-1-small:before, .banner-2:before, .banner-2-small:before, .banner-3:before, .banner-3-small:before, .banner-4:before, .banner-4-small:before, .banner-5:before, .banner-5-small:before, .banner-6:before, .banner-6-small:before, .banner-7:before, .banner-7-small:before, .banner-8:before, .banner-8-small:before, .banner-9:before, .banner-9-small:before, .banner-10:before, .banner-10-small:before, .banner-11:before, .banner-11-small:before, .banner-12:before, .banner-12-small:before, .banner-13:before, .banner-13-small:before, .banner-14:before, .banner-14-small:before, .banner-15:before, .banner-15-small:before, .banner-16:before, .banner-16-small:before, .banner-17:before, .banner-17-small:before, .banner-18:before, .banner-18-small:before, .banner-19:before, .banner-19-small:before, .banner-20:before, .banner-20-small:before, .banner-21:before, .banner-21-small:before
 {
 	content: "";
 	position: fixed;
@@ -405,6 +405,26 @@
 .banner-20-small:before
 {
 	background: url("/graphics/banners/banner-20-small.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
+
+.banner-21:before
+{
+	background: url("/graphics/banners/banner-21.jpg") no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.banner-21-small:before
+{
+	background: url("/graphics/banners/banner-21-small.jpg") no-repeat center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
