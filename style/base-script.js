@@ -1,9 +1,11 @@
-//Initiate anamations when they're a third of the way up the screen.
 var w = window,
 d = document,
 e = d.documentElement,
 g = d.getElementsByTagName("body")[0],
 y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+//Used by dark-theme.js to only affect links once the footer is there.
+var footer_loaded = 0;
 
 AOS.init({duration: 1200, once: true, offset: y/4});
 
@@ -64,6 +66,8 @@ function insert_footer(omit, no_theme_button = 0)
     {
         $("#spawn-footer").before('<img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()" data-aos="zoom-out" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"></img>');
     }
+    
+    footer_loaded = 1;
 }
 
 

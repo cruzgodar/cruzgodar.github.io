@@ -19,11 +19,20 @@ function switch_theme()
 		
 		current_theme = 1;
 		
-		//Make all linked pages have dark theme.
-		$("a").each(function()
+		//Make all linked pages have dark theme, but only when all the links are loaded.
+		var refresh_id = setInterval(function()
 		{
-			$(this).attr("href", $(this).attr("href").replace("?dark=1", "") + "?dark=1");
-		});
+			if (footer_loaded == 1)
+			{
+				$("a").each(function()
+				{
+					$(this).attr("href", $(this).attr("href").replace("?dark=1", "") + "?dark=1");
+				});
+				
+				clearInterval(refresh_id);
+			}
+		}, 200);
+		
 		
 		//Make state persist on refresh.
 		history.replaceState({}, document.title, window.location.href.replace("?dark=1", "") + "?dark=1");
@@ -47,11 +56,19 @@ function switch_theme()
 		
 		current_theme = 0;
 		
-		//Make all linked pages have light theme.
-		$("a").each(function()
+		//Make all linked pages have light theme, but only when all the links are loaded.
+		var refresh_id = setInterval(function()
 		{
-			$(this).attr("href", $(this).attr("href").replace("?dark=1", ""));
-		});
+			if (footer_loaded == 1)
+			{
+				$("a").each(function()
+				{
+					$(this).attr("href", $(this).attr("href").replace("?dark=1", ""));
+				});
+				
+				clearInterval(refresh_id);
+			}
+		}, 200);
 		
 		//Make state persist on refresh.
 		history.replaceState({}, document.title, window.location.href.replace("?dark=1", ""));
@@ -63,10 +80,10 @@ function switch_theme()
 //Changes the theme, but without any animation.
 function switch_theme_on_load()
 {
-	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark, .image-link-border").addClass("no-transition");
+	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark").addClass("no-transition");
 	switch_theme();
-	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark, .image-link-border")[0].offsetHeight; //Trigger a reflow, flushing the CSS changes
-	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark, .image-link-border").removeClass("no-transition");
+	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark")[0].offsetHeight; //Trigger a reflow, flushing the CSS changes
+	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark").removeClass("no-transition");
 }
 
 
