@@ -1,13 +1,91 @@
+var browser_detect =
+{
+        init: function()
+        {
+            this.browser = this.searchString(this.dataBrowser) || "Other";
+            this.version = this.searchVersion(navigator.userAgent) || this.searchVersion(navigator.appVersion) || "Unknown";
+        },
+        
+        searchString: function(data)
+        {
+            for (var i = 0; i < data.length; i++)
+            {
+                var dataString = data[i].string;
+                this.versionSearchString = data[i].subString;
+
+                if (dataString.indexOf(data[i].subString) !== -1)
+                {
+                    return data[i].identity;
+                }
+            }
+        },
+        
+        searchVersion: function (dataString)
+        {
+            var index = dataString.indexOf(this.versionSearchString);
+            
+            if (index === -1)
+            {
+                return;
+            }
+			
+			
+			
+            var rv = dataString.indexOf("rv:");
+            
+            if (this.versionSearchString === "Trident" && rv !== -1)
+            {
+                return parseFloat(dataString.substring(rv + 3));
+            }
+            
+            else
+            {
+                return parseFloat(dataString.substring(index + this.versionSearchString.length + 1));
+            }
+        },
+
+        dataBrowser:
+        [
+            {string: navigator.userAgent, subString: "Edge", identity: "MS Edge"},
+            {string: navigator.userAgent, subString: "MSIE", identity: "Explorer"},
+            {string: navigator.userAgent, subString: "Trident", identity: "Explorer"},
+            {string: navigator.userAgent, subString: "Firefox", identity: "Firefox"},
+            {string: navigator.userAgent, subString: "Opera", identity: "Opera"},  
+            {string: navigator.userAgent, subString: "OPR", identity: "Opera"},  
+
+            {string: navigator.userAgent, subString: "Chrome", identity: "Chrome"}, 
+            {string: navigator.userAgent, subString: "Safari", identity: "Safari"}       
+        ]
+    };
+    
+browser_detect.init();
+
+var browser_name = browser_detect.browser;
+
+if (browser_name == "MS Edge")
+{
+    $(".logo").before("<div class='body-text' style='text-align: center'><b>Microsoft Edge is not fully supported on this site. Using <a href='https://www.google.com/chrome/'>Chrome</a>, <a href='https://www.apple.com/safari/'>Safari</a>, <a href='https://www.mozilla.org/en-US/firefox/?v=a'>Firefox</a>, or <a href='https://www.opera.com/'>Opera</a> is highly recommended.<b></div> <div style='height: 5vh'></div>");
+}
+
+else if (browser_name == "Explorer")
+{
+    window.location.replace("https://www.cruzgodar.com/ie.html");
+}
+
+
+
 var w = window,
 d = document,
 e = d.documentElement,
 g = d.getElementsByTagName("body")[0],
 y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
+AOS.init({duration: 1200, once: true, offset: y/4});
+
+
+
 //Used by dark-theme.js to only affect links once the footer is there.
 var footer_loaded = 0;
-
-AOS.init({duration: 1200, once: true, offset: y/4});
 
 
 
@@ -18,8 +96,11 @@ history.replaceState({}, document.title, window.location.href.replace(".html", "
 
 
 //Puts the footer in at the bottom of the page, omitting one link (whatever the current page is)
-function insert_footer(omit, no_theme_button = 0)
+function insert_footer(omit, no_theme_button)
 {
+    //Required to use this archaic default parameter method so IE doesn't crash before it can say that it's IE and get redirected somewhere else.
+    no_theme_button = (typeof no_theme_button != "undefined") ? no_theme_button : 0;
+    
 	var current_theme = get_url_var("dark");
     var delay = 100;
     

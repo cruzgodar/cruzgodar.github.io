@@ -12,6 +12,12 @@
 	transform: translate3d(0, 0, 0);
 }
 
+/* Used on Edge 'cause it just can't do the nice banner effects like all the other browsers. */
+.bad-banner:before
+{
+	position: absolute;
+}
+
 
 
 .scroll-button
