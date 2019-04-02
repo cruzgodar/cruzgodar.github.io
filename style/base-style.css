@@ -230,6 +230,22 @@ a
 	filter: brightness(75%);
 }
 
+.image-link-light img
+{
+	-webkit-filter: brightness(95%);
+	-moz-filter: brightness(95%);
+	-o-filter: brightness(95%);
+	filter: brightness(95%);
+}
+
+.image-link-light img:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
 .image-link-subtext
 {
 	position: relative;
@@ -239,22 +255,49 @@ a
 	font-size: 125%;
 }
 
-/* Added to images with white around the edges to provide contrast. */
-.image-link-light img
+
+
+/* The minimalist links on the homepage */
+.index-image-link
 {
-	-webkit-filter: brightness(95%) !important;
-	-moz-filter: brightness(95%) !important;
-	-o-filter: brightness(95%) !important;
-	filter: brightness(95%) !important;
+	width: 13.75vw;
+	height: 13.75vw;
+	border-radius: 10%;
+	
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
 }
 
-.image-link-light img:hover
+.index-image-link img
 {
-	-webkit-filter: brightness(75%) !important;
-	-moz-filter: brightness(75%) !important;
-	-o-filter: brightness(75%) !important;
-	filter: brightness(75%) !important;
+	width: 6.875vw;
+	margin: 3.4375vw;
 }
+
+.index-image-link:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+.index-image-link-subtext
+{
+	position: absolute;
+	width: 13.75vw;
+	margin-top: 1.25vw;
+	color: rgb(127, 127, 127);
+	text-align: center;
+	font-size: 125%;
+}
+
 
 .row-break
 {
@@ -363,19 +406,10 @@ a
 
 .menu-image-link
 {
-	position: relative;
-	float: left;
 	width: 10vw;
 	height: 10vw;
-	display: inline-block;
-}
-
-.menu-image-link img
-{
-	position: absolute;
-	width: 10vw;
-	height: 10vw;
-
+	border-radius: 10%;
+	
 	-webkit-transition: all .15s ease-in-out;
 	-moz-transition: all .15s ease-in-out;
 	-o-transition: all .15s ease-in-out;
@@ -386,7 +420,13 @@ a
 	filter: brightness(100%);
 }
 
-.menu-image-link img:hover
+.menu-image-link img
+{
+	width: 5vw;
+	margin: 2.5vw;
+}
+
+.menu-image-link:hover
 {
 	-webkit-filter: brightness(75%);
 	-moz-filter: brightness(75%);
@@ -442,6 +482,29 @@ a
 	{
 		margin-top: 31.25vw;
 	}
+	
+	
+	
+	.index-image-link
+	{
+		width: 30vw;
+		height: 30vw;
+		margin-bottom: 10vw;
+	}
+	
+	.index-image-link img
+	{
+		width: 15vw;
+		margin: 7.5vw;
+	}
+	
+	.index-image-link-subtext
+	{
+		width: 30vw;
+		margin-top: -8.75vw;
+	}
+	
+	
 	
 	/* Make spacing even. */
 	.row-break

@@ -108,35 +108,35 @@ function insert_footer(omit, no_theme_button)
     
     if (omit != "writing")
     {
-        $(".menu-image-links").append('<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/writing.html"> <img src="/graphics/writing.png" alt="Writing"/> </a> </div>');
+        $(".menu-image-links").append('<div data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/writing.html"> <div class="menu-image-link" style="background-color: rgb(196, 244, 255)"> <img src="/graphics/writing.png"></img> </div> </a> </div>');
         
         delay += 100;
     }
     
     if (omit != "blog")
     {
-        $(".menu-image-links").append('<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/blog.html"> <img src="/graphics/blog.png" alt="Blog"/> </a> </div>');
+        $(".menu-image-links").append('<div data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/blog.html"> <div class="menu-image-link" style="background-color: rgb(255, 224, 200)"> <img src="/graphics/blog.png"></img> </div> </a> </div>');
         
         delay += 100;
     }
     
     if (omit != "research")
     {
-        $(".menu-image-links").append('<div class="menu-image-link image-link-light" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/research.html"> <img src="/graphics/research.png" alt="Research"/> </a> </div>');
+        $(".menu-image-links").append('<div data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/research.html"> <div class="menu-image-link" style="background-color: rgb(208, 200, 255)"> <img src="/graphics/research.png"></img> </div> </a> </div>');
         
         delay += 100;
     }
     
     if (omit != "notes")
     {
-        $(".menu-image-links").append('<div class="menu-image-link image-link-light" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/notes.html"> <img src="/graphics/notes.png" alt="Notes"/> </a> </div>');
+        $(".menu-image-links").append('<div data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/notes.html"> <div class="menu-image-link" style="background-color: rgb(198, 240, 198)"> <img src="/graphics/notes.png"></img> </div> </a> </div>');
         
         delay += 100;
     }
     
     if (omit != "bio")
     {
-        $(".menu-image-links").append('<div class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/bio.html"> <img src="/graphics/me.png" alt="Me"/> </a> </div>');
+        $(".menu-image-links").append('<div data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/bio.html"> <div class="menu-image-link" style="background-color: rgb(224, 224, 224)"> <img src="/graphics/me.png"></img> </div> </a> </div>');
         
         delay += 100;
     }
@@ -147,6 +147,8 @@ function insert_footer(omit, no_theme_button)
     {
         $("#spawn-footer").before('<img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()" data-aos="zoom-out" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"></img>');
     }
+    
+    
     
     footer_loaded = 1;
 }
