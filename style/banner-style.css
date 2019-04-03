@@ -37,17 +37,17 @@
 	-o-border-radius: 10px;
 	padding: 10px;
 	
-	-webkit-transition: color, background-color .15s ease-in-out;
-	-moz-transition: color, background-color .15s ease-in-out;
-	-o-transition: color, background-color .15s ease-in-out;
-	transition: color, background-color .15s ease-in-out;
+	-webkit-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	-moz-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	-o-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
 	
 	cursor: pointer;
 }
 
 .scroll-button:hover
 {
-	color: rgb(96, 96, 96);
+	border-color: rgb(96, 96, 96);
 	background-color: rgb(192, 192, 192);
 }
 
