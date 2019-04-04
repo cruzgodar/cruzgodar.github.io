@@ -57,6 +57,7 @@
 <body>
 	<div id="background-image" class="banner-small"></div>
 	<img id="full-res-loader" src="/graphics/me-banner.jpg" style="display: none"></img>
+	<img id="small-loader" src="/graphics/banner-small.jpg" style="display: none"></img>
 	
 	<div id="banner-cover" style="height: 100vh"></div>
 	
@@ -64,9 +65,7 @@
 		<div style="height: 5vh"></div>
 
 		<div class="logo" data-aos="fade-in" id="trigger-section-1">
-			<a href="/index.html">
-				<img src="/graphics/logo.png" alt="Logo"/>
-			</a>
+			<img class="link" onclick="redirect('/index.html')" src="/graphics/logo.png" alt="Logo"></img>
 		</div>
 
 		<div style="height: 2vh"></div>

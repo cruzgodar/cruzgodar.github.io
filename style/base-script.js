@@ -1,3 +1,18 @@
+//Handle when the user uses the back button.
+window.addEventListener("pageshow", function(event)
+{
+	var historyTraversal = event.persisted || 
+		(typeof window.performance != "undefined" && 
+		window.performance.navigation.type === 2);
+	
+	if (historyTraversal)
+	{
+    	document.body.style.opacity = 1;
+    }
+});
+
+
+
 ////////////////////////////// BROWSERS //////////////////////////////
 var browser_detect =
 {
@@ -63,16 +78,6 @@ browser_detect.init();
 
 var browser_name = browser_detect.browser;
 
-if (browser_name == "MS Edge")
-{
-    $(".logo").before("<div class='body-text' style='text-align: center'><b>Microsoft Edge is not fully supported on this site. Using <a href='https://www.google.com/chrome/'>Chrome</a>, <a href='https://www.apple.com/safari/'>Safari</a>, <a href='https://www.mozilla.org/en-US/firefox/?v=a'>Firefox</a>, or <a href='https://www.opera.com/'>Opera</a> is highly recommended.<b></div> <div style='height: 5vh'></div>");
-}
-
-else if (browser_name == "Explorer")
-{
-    window.location.replace("/ie.html");
-}
-
 
 
 ////////////////////////////// FOOTER //////////////////////////////
@@ -92,35 +97,35 @@ function insert_footer(omit, no_theme_button)
     
     if (omit != "writing")
     {
-        $(".menu-image-links").append('<div id="writing-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/writing.html"> <img src="/graphics/writing-glyph.png" alt="Writing"/> </a> </div>');
+        $(".menu-image-links").append('<div id="writing-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/writing.html\')" src="/graphics/writing-glyph.png" alt="Writing"></img> </div>');
         
         delay += 100;
     }
     
     if (omit != "blog")
     {
-        $(".menu-image-links").append('<div id="blog-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/blog.html"> <img src="/graphics/blog-glyph.png" alt="Blog"/> </a> </div>');
+        $(".menu-image-links").append('<div id="blog-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/blog.html\')" src="/graphics/blog-glyph.png" alt="Blog"></img> </div>');
         
         delay += 100;
     }
     
     if (omit != "research")
     {
-        $(".menu-image-links").append('<div id="research-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/research.html"> <img src="/graphics/research-glyph.png" alt="Research"/> </a> </div>');
+        $(".menu-image-links").append('<div id="research-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/research.html\')" src="/graphics/research-glyph.png" alt="Research"></img> </div>');
         
         delay += 100;
     }
     
     if (omit != "notes")
     {
-        $(".menu-image-links").append('<div id="notes-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/notes.html"> <img src="/graphics/notes-glyph.png" alt="Notes"/> </a> </div>');
+        $(".menu-image-links").append('<div id="notes-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/notes.html\')" src="/graphics/notes-glyph.png" alt="Notes"></img> </div>');
         
         delay += 100;
     }
     
     if (omit != "bio")
     {
-        $(".menu-image-links").append('<div id="bio-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/bio.html"> <img src="/graphics/me-glyph.png" alt="Me"/> </a> </div>');
+        $(".menu-image-links").append('<div id="bio-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/bio.html\')" src="/graphics/me-glyph.png" alt="Me"></img> </div>');
         
         delay += 100;
     }
@@ -147,19 +152,6 @@ function redirect(url)
         window.location.href = url + concat_url_vars();
     }, 300);
 }
-
-//Handle when the user uses the back button.
-window.addEventListener("pageshow", function(event)
-{
-	var historyTraversal = event.persisted || 
-		(typeof window.performance != "undefined" && 
-		window.performance.navigation.type === 2);
-	
-	if (historyTraversal)
-	{
-    	$("body").css("opacity", 1);
-    }
-});
 
 
 
@@ -245,29 +237,7 @@ function write_url_vars()
 
 
 
-if (url_vars["dark"] == 1)
-{
-    url_vars["dark"] = 0;
-	switch_theme_on_load();
-}
 
-if (url_vars["font"] == 1)
-{
-    url_vars["font"] = 0;
-	switch_font_on_load();
-}
-
-if (url_vars["iconstyle"] == 1)
-{
-    url_vars["iconstyle"] = 0;
-	switch_icon_style_on_load();
-}
-
-if (url_vars["nonewsection"] == 1)
-{
-    url_vars["nonewsection"] = 0;
-	switch_new_section_on_load();
-}
 
 
 
@@ -498,7 +468,7 @@ function switch_new_section_on_load()
 
 
 
-////////////////////////////// MISC //////////////////////////////
+////////////////////////////// RUNTIME //////////////////////////////
 var w = window,
 d = document,
 e = d.documentElement,
@@ -544,3 +514,46 @@ if (hasTouch())
         }
     } catch (ex) {}
 }
+
+
+
+$(function()
+{
+	//Handle IE and Edge.
+	if (browser_name == "MS Edge")
+	{
+	    $(".logo").before("<div class='body-text' style='text-align: center'><b>Microsoft Edge is not fully supported on this site. Using <a href='https://www.google.com/chrome/'>Chrome</a>, <a href='https://www.apple.com/safari/'>Safari</a>, <a href='https://www.mozilla.org/en-US/firefox/?v=a'>Firefox</a>, or <a href='https://www.opera.com/'>Opera</a> is highly recommended.<b></div> <div style='height: 5vh'></div>");
+	}
+
+	else if (browser_name == "Explorer")
+	{
+	    window.location.replace("/ie.html");
+	}
+	
+	
+	
+	//Apply settings.
+	if (url_vars["dark"] == 1)
+	{
+	    url_vars["dark"] = 0;
+		switch_theme_on_load();
+	}
+
+	if (url_vars["font"] == 1)
+	{
+	    url_vars["font"] = 0;
+		switch_font_on_load();
+	}
+
+	if (url_vars["iconstyle"] == 1)
+	{
+	    url_vars["iconstyle"] = 0;
+		switch_icon_style_on_load();
+	}
+
+	if (url_vars["nonewsection"] == 1)
+	{
+	    url_vars["nonewsection"] = 0;
+		switch_new_section_on_load();
+	}
+});

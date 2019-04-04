@@ -24,6 +24,11 @@ a
 	text-decoration: none;
 }
 
+.link
+{
+	cursor: pointer;
+}
+
 
 
 .logo

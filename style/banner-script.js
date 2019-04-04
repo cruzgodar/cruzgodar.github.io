@@ -14,15 +14,15 @@ $(function()
 	
 	
 	
-	scroll_update();
-	
 	AOS.init({duration: 1200, once: false, offset: y/4});
 	
 	
 	
-	$(window).scroll(function()
+	//Fade in the low-res banner when it's loaded.
+	$("#background-image").css("opacity", 0);
+	$("#small-loader").imagesLoaded(function()
 	{
-		scroll_update();
+		$("#background-image").animate({opacity: 1}, 300, "swing");
 	});
 	
 	
@@ -39,6 +39,13 @@ $(function()
 		{
 			setTimeout(add_scroll_button, 3000);
 		}
+	});
+	
+	
+	
+	$(window).scroll(function()
+	{
+		scroll_update();
 	});
 });
 
