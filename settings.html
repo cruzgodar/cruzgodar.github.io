@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-135923635-1"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	
+	gtag('config', 'UA-135923635-1');
+</script>
+
+<title>Settings</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest?v=NmPPnmeW24">
+<link rel="mask-icon" href="/safari-pinned-tab.svg?v=NmPPnmeW24" color="#5bbad5">
+<link rel="shortcut icon" href="/favicon.ico?v=NmPPnmeW24">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
+
+<!-- Animate on scroll library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<link rel="stylesheet" type="text/css" href="/style/base-style.css">
+
+<style>
+
+body
+{
+	overflow: hidden;
+}
+
+.apply-button
+{
+	color: rgb(127, 127, 127);
+	background-color: rgb(255, 255, 255);
+	height: 20px;
+	width: auto;
+	display: inline-block;
+	margin: auto;
+	position: relative;
+	
+	color: rgb(127, 127, 127);
+	text-align: center;
+	font-size: 125%;
+
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-o-border-radius: 10px;
+	padding: 10px;
+	
+	-webkit-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	-moz-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	-o-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	
+	cursor: pointer;
+}
+
+.apply-button:hover
+{
+	border-color: rgb(96, 96, 96);
+	background-color: rgb(192, 192, 192);
+}
+
+</style>
+
+</head>
+
+
+
+<body>
+	<div style="height: 5vh"></div>
+
+	<div data-aos="fade-up" id="trigger-section-1">
+		<div class="heading-text">Settings</div>
+	</div>
+
+	<div style="height: 5vh"></div>
+	
+	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">
+		<div class="body-text">Various toggles and customizations. Because this site doesn&#x2019;t use cookies, these persist through links, but not when the page is closed. Set a bookmark after changing the settings to preserve them!</div>
+	</div>
+
+	<div style="height: 5vh"></div>
+
+	<div id="theme-button-row" style="width: 70vw; height: 38px; margin: 0 auto; display: flex; align-items: flex-start; margin-bottom: 6px">
+		<div data-aos="zoom-out" data-aos-delay="1100" data-aos-anchor="#trigger-section-1">
+			<img class="footer-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()"></img>
+		</div>
+		
+		<div id="theme-button-text" class="body-text" style="margin: auto; margin-left: 10px" data-aos="fade-left" data-aos-delay="1900" data-aos-anchor="#trigger-section-1">Theme: light</div>
+	</div>
+	
+	<div style="height: 2vh"></div>
+	
+	<div id="font-button-row" style="width: 70vw; height: 38px; margin: 0 auto; display: flex; align-items: flex-start; margin-bottom: 6px">
+		<div data-aos="zoom-out" data-aos-delay="1200" data-aos-anchor="#trigger-section-1">
+			<img class="footer-button" src="/graphics/font.png" alt="Change Font" onclick="switch_font()"></img>
+		</div>
+		
+		<div id="font-button-text" class="body-text" style="margin: auto; margin-left: 10px" data-aos="fade-left" data-aos-delay="2000" data-aos-anchor="#trigger-section-1">Font: sans serif</div>
+	</div>
+	
+	<div style="height: 2vh"></div>
+	
+	<div id="icon-button-row" style="width: 70vw; height: 38px; margin: 0 auto; display: flex; align-items: flex-start; margin-bottom: 6px">
+		<div data-aos="zoom-out" data-aos-delay="1300" data-aos-anchor="#trigger-section-1">
+			<img class="footer-button" src="/graphics/rounded-square.png" alt="Change Icons" onclick="switch_icon_style()"></img>
+		</div>
+		
+		<div id="icon-button-text" class="body-text" style="margin: auto; margin-left: 10px" data-aos="fade-left" data-aos-delay="2100" data-aos-anchor="#trigger-section-1">Homepage icons: glyphs</div>
+	</div>
+	
+	<div style="height: 2vh"></div>
+	
+	<div id="no-new-section-button-row" style="width: 70vw; height: 38px; margin: 0 auto; display: flex; align-items: flex-start; margin-bottom: 6px">
+		<div data-aos="zoom-out" data-aos-delay="1400" data-aos-anchor="#trigger-section-1">
+			<img class="footer-button" src="/graphics/star.png" alt="Toggle New Section" onclick="switch_new_section()"></img>
+		</div>
+		
+		<div id="no-new-section-button-text" class="body-text" style="margin: auto; margin-left: 10px" data-aos="fade-left" data-aos-delay="2200" data-aos-anchor="#trigger-section-1">New additions on homepage: shown</div>
+	</div>
+	
+	<div style="height: 5vh"></div>
+	
+	
+	<div style="display: flex; justify-content: center; align-items: center">
+		<div class="apply-button" onclick="redirect('/index.html')" data-aos="zoom-out" data-aos-delay="3000" data-aos-anchor="#trigger-section-1">Confirm</div>
+	</div>
+	
+	
+	
+	
+	
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
+	<!-- Animate on scroll library -->
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	
+	<script src="/style/base-script.js"></script>
+</body>
+</html>

@@ -278,8 +278,6 @@ body
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 	
 	<script src="/style/base-script.js"></script>
-	
-	<script src="/style/dark-theme.js"></script>
 
 	<!-- Change background color on scroll -->
 	<script>
@@ -301,11 +299,7 @@ body
 		AOS.init({duration: 1200, once: false, offset: y/4});
 		
 		$(function()
-		{
-			var current_theme = get_url_var("dark");
-			
-			
-			
+		{	
 			var refresh_id = setInterval(function()
 			{
 				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
@@ -335,7 +329,7 @@ body
 					{
 						var background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/4 * scroll / y, 0) - .5 * Math.PI);
 						
-						if (current_theme == 1)
+						if (url_vars["dark"] == 1)
 						{
 							background_color *= 24;
 						}

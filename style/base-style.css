@@ -104,7 +104,7 @@ a
 	font-size: 125%;
 }
 
-/* To be used for things like blog posts and stories. Will auotmatically reduce margin on narrow deviced */
+/* To be used for things like blog posts and stories. Will auotmatically reduce margin on narrow devices */
 .content-text
 {
 	width: 70vw;
@@ -112,6 +112,12 @@ a
 	color: rgb(127, 127, 127);
 	text-align: justify;
 	font-size: 125%;
+}
+
+.writing-text
+{
+	/* Also to be used for things like blog posts and stories. Will use serif font when font mode is default. */
+	font-family: "Gentium Book Basic", serif;
 }
 
 .song-lyrics
@@ -126,10 +132,9 @@ a
 
 
 
-#theme-button
+.footer-button
 {
 	width: 25px;
-	margin-left: 10px;
 	
 	align-self: flex-end;
 	
@@ -150,7 +155,7 @@ a
 	cursor: pointer;
 }
 
-#theme-button:hover
+.footer-button:hover
 {
 	border-color: rgb(96, 96, 96);
 	background-color: rgb(192, 192, 192);
@@ -241,22 +246,6 @@ a
 	filter: brightness(75%);
 }
 
-.image-link-light img
-{
-	-webkit-filter: brightness(95%);
-	-moz-filter: brightness(95%);
-	-o-filter: brightness(95%);
-	filter: brightness(95%);
-}
-
-.image-link-light img:hover
-{
-	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
-	filter: brightness(75%);
-}
-
 .image-link-subtext
 {
 	position: relative;
@@ -266,47 +255,21 @@ a
 	font-size: 125%;
 }
 
-
-
-/* The minimalist links on the homepage */
-.index-image-link
+/* Added to images with white around the edges to provide contrast. */
+.image-link-light img
 {
-	width: 13.75vw;
-	height: 13.75vw;
-	border-radius: 10%;
-	
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
-	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
-	filter: brightness(100%);
+	-webkit-filter: brightness(95%) !important;
+	-moz-filter: brightness(95%) !important;
+	-o-filter: brightness(95%) !important;
+	filter: brightness(95%) !important;
 }
 
-.index-image-link img
+.image-link-light img:hover
 {
-	width: 6.875vw;
-	margin: 3.4375vw;
-}
-
-.index-image-link:hover
-{
-	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
-	filter: brightness(75%);
-}
-
-.index-image-link-subtext
-{
-	position: absolute;
-	width: 13.75vw;
-	margin-top: 1.25vw;
-	color: rgb(127, 127, 127);
-	text-align: center;
-	font-size: 125%;
+	-webkit-filter: brightness(75%) !important;
+	-moz-filter: brightness(75%) !important;
+	-o-filter: brightness(75%) !important;
+	filter: brightness(75%) !important;
 }
 
 
@@ -417,10 +380,19 @@ a
 
 .menu-image-link
 {
+	position: relative;
+	float: left;
 	width: 10vw;
 	height: 10vw;
-	border-radius: 10%;
-	
+	display: inline-block;
+}
+
+.menu-image-link img
+{
+	position: absolute;
+	width: 10vw;
+	height: 10vw;
+
 	-webkit-transition: all .15s ease-in-out;
 	-moz-transition: all .15s ease-in-out;
 	-o-transition: all .15s ease-in-out;
@@ -431,13 +403,7 @@ a
 	filter: brightness(100%);
 }
 
-.menu-image-link img
-{
-	width: 5vw;
-	margin: 2.5vw;
-}
-
-.menu-image-link:hover
+.menu-image-link img:hover
 {
 	-webkit-filter: brightness(75%);
 	-moz-filter: brightness(75%);
@@ -493,29 +459,6 @@ a
 	{
 		margin-top: 31.25vw;
 	}
-	
-	
-	
-	.index-image-link
-	{
-		width: 30vw;
-		height: 30vw;
-		margin-bottom: 10vw;
-	}
-	
-	.index-image-link img
-	{
-		width: 15vw;
-		margin: 7.5vw;
-	}
-	
-	.index-image-link-subtext
-	{
-		width: 30vw;
-		margin-top: -8.75vw;
-	}
-	
-	
 	
 	/* Make spacing even. */
 	.row-break

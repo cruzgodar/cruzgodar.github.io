@@ -1,3 +1,4 @@
+////////////////////////////// BROWSERS //////////////////////////////
 var browser_detect =
 {
         init: function()
@@ -69,29 +70,14 @@ if (browser_name == "MS Edge")
 
 else if (browser_name == "Explorer")
 {
-    window.location.replace("https://www.cruzgodar.com/ie.html");
+    window.location.replace("/ie.html");
 }
 
 
 
-var w = window,
-d = document,
-e = d.documentElement,
-g = d.getElementsByTagName("body")[0],
-y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-
-AOS.init({duration: 1200, once: true, offset: y/4});
-
-
-
+////////////////////////////// FOOTER //////////////////////////////
 //Used by dark-theme.js to only affect links once the footer is there.
 var footer_loaded = 0;
-
-
-
-//Remove the .html ending from the url for that slightly cleaner look.
-history.replaceState({}, document.title, window.location.href.replace("/index.html", ""));
-history.replaceState({}, document.title, window.location.href.replace(".html", ""));
 
 
 
@@ -108,35 +94,35 @@ function insert_footer(omit, no_theme_button)
     
     if (omit != "writing")
     {
-        $(".menu-image-links").append('<div data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/writing.html"> <div class="menu-image-link" style="background-color: rgb(196, 244, 255)"> <img src="/graphics/writing.png"></img> </div> </a> </div>');
+        $(".menu-image-links").append('<div id="writing-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/writing.html"> <img src="/graphics/writing-glyph.png" alt="Writing"/> </a> </div>');
         
         delay += 100;
     }
     
     if (omit != "blog")
     {
-        $(".menu-image-links").append('<div data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/blog.html"> <div class="menu-image-link" style="background-color: rgb(255, 224, 200)"> <img src="/graphics/blog.png"></img> </div> </a> </div>');
+        $(".menu-image-links").append('<div id="blog-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/blog.html"> <img src="/graphics/blog-glyph.png" alt="Blog"/> </a> </div>');
         
         delay += 100;
     }
     
     if (omit != "research")
     {
-        $(".menu-image-links").append('<div data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/research.html"> <div class="menu-image-link" style="background-color: rgb(208, 200, 255)"> <img src="/graphics/research.png"></img> </div> </a> </div>');
+        $(".menu-image-links").append('<div id="research-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/research.html"> <img src="/graphics/research-glyph.png" alt="Research"/> </a> </div>');
         
         delay += 100;
     }
     
     if (omit != "notes")
     {
-        $(".menu-image-links").append('<div data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/notes.html"> <div class="menu-image-link" style="background-color: rgb(198, 240, 198)"> <img src="/graphics/notes.png"></img> </div> </a> </div>');
+        $(".menu-image-links").append('<div id="notes-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/notes.html"> <img src="/graphics/notes-glyph.png" alt="Notes"/> </a> </div>');
         
         delay += 100;
     }
     
     if (omit != "bio")
     {
-        $(".menu-image-links").append('<div data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/bio.html"> <div class="menu-image-link" style="background-color: rgb(224, 224, 224)"> <img src="/graphics/me.png"></img> </div> </a> </div>');
+        $(".menu-image-links").append('<div id="bio-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <a href="/bio.html"> <img src="/graphics/me-glyph.png" alt="Me"/> </a> </div>');
         
         delay += 100;
     }
@@ -145,13 +131,328 @@ function insert_footer(omit, no_theme_button)
     
     if (no_theme_button == 0)
     {
-        $("#spawn-footer").before('<div style="display: flex; align-items: left; margin-bottom: 6px; justify-content: space-between"> <div data-aos="zoom-out" data-aos-offset="0"> <img id="theme-button" src="/graphics/moon.png" alt="Change Theme" onclick="switch_theme()"></img> </div> <div></div> </div>');
+        $("#spawn-footer").before('<div style="display: flex; align-items: left; margin-bottom: 6px; justify-content: space-between"> <div data-aos="zoom-out" data-aos-offset="0"> <img class="footer-button" style="margin-left: 10px" src="/graphics/gear.png" alt="Change Theme" onclick="redirect(\'/settings.html\')"></img> </div> <div></div> </div>');
     }
-    
-    
     
     footer_loaded = 1;
 }
+
+
+
+////////////////////////////// SETTINGS //////////////////////////////
+function redirect(url)
+{
+	$("body").animate({opacity: 0}, 300, "swing");
+	
+    setTimeout(function()
+    {
+        window.location.href = url + concat_url_vars();
+    }, 300);
+}
+
+var url_vars = {"dark": get_url_var("dark"), "font": get_url_var("font"), "iconstyle": get_url_var("iconstyle"), "nonewsection": get_url_var("nonewsection")};
+
+if (url_vars["dark"] != 0 && url_vars["dark"] != 1)
+{
+    url_vars["dark"] = 0;
+}
+
+if (url_vars["font"] != 0 && url_vars["font"] != 1)
+{
+    url_vars["font"] = 0;
+}
+
+if (url_vars["iconstyle"] != 0 && url_vars["iconstyle"] != 1)
+{
+    url_vars["iconstyle"] = 0;
+}
+
+if (url_vars["nonewsection"] != 0 && url_vars["nonewsection"] != 1)
+{
+    url_vars["nonewsection"] = 0;
+}
+
+
+
+function get_url_var(id)
+{
+	var svalue = location.search.match(new RegExp("[\?\&]" + id + "=([^\&]*)(\&?)","i"));
+	return svalue ? svalue[1] : svalue;
+}
+
+//Returns a string of url vars that can be attached to any url.
+function concat_url_vars()
+{
+	var first_var_written = 0;
+    var string = "";
+    var key;
+    var temp = "";
+    
+    for (var i = 0; i < 4; i++)
+    {
+    	key = Object.keys(url_vars)[i];
+    	
+    	if (url_vars[key] != 0)
+    	{
+        	if (first_var_written == 0)
+	        {
+	            string += "?" + key + "=" + url_vars[key];
+	            first_var_written = 1;
+	        }
+	        
+	        else
+	        {
+	            string += "&" + key + "=" + url_vars[key];
+	        }
+	    }
+    }
+    
+    return string;
+}
+
+function write_url_vars()
+{
+    var refresh_id = setInterval(function()
+	{
+		if (footer_loaded == 1)
+		{
+			$("a").each(function()
+			{
+				$(this).attr("href", $(this).attr("href").split("?", 1) + concat_url_vars());
+			});
+			
+			clearInterval(refresh_id);
+		}
+	}, 200);
+	
+	
+	//Make state persist on refresh.
+	history.replaceState({}, document.title, window.location.href.split("?", 1) + concat_url_vars());
+}
+
+
+
+if (url_vars["dark"] == 1)
+{
+    url_vars["dark"] = 0;
+	switch_theme_on_load();
+}
+
+if (url_vars["font"] == 1)
+{
+    url_vars["font"] = 0;
+	switch_font_on_load();
+}
+
+if (url_vars["iconstyle"] == 1)
+{
+    url_vars["iconstyle"] = 0;
+	switch_icon_style_on_load();
+}
+
+if (url_vars["nonewsection"] == 1)
+{
+    url_vars["nonewsection"] = 0;
+	switch_new_section_on_load();
+}
+
+
+
+//Changes the theme and animates elements.
+function switch_theme()
+{
+	//Light to dark
+	if (url_vars["dark"] == 0)
+	{
+		$("body").css("background-color", "rgb(24, 24, 24)");
+		
+		$(".heading-text").css("color", "rgb(255, 255, 255)");
+		$(".date-text").css("color", "rgb(255, 255, 255)");
+		$(".section-text").css("color", "rgb(164, 164, 164)");
+		
+		//index.html
+		$(".quote-text").css("color", "rgb(80, 80, 80)");
+		$(".quote-attribution").css("color", "rgb(164, 164, 164)");
+		$(".title-text").css("color", "rgb(255, 255, 255)");
+		
+		$(".line-break-dark").css("opacity", "1");
+		
+		$("#theme-button-row").animate({opacity: 0}, 300, "swing");
+		setTimeout(function()
+	    {
+ 	    	try {$("#theme-button-text").html($("#theme-button-text").html().replace("light", "dark"));}
+ 	    	catch(ex) {}
+ 	    	
+	    	$("#theme-button-row").animate({opacity: 1}, 300, "swing");
+	    }, 300);
+		
+		url_vars["dark"] = 1;
+		write_url_vars();
+	}
+	
+	//Dark to light
+	else
+	{
+		$("body").css("background-color", "rgb(255, 255, 255)");
+		
+		$(".heading-text").css("color", "rgb(0, 0, 0)");
+		$(".date-text").css("color", "rgb(0, 0, 0)");
+		$(".section-text").css("color", "rgb(92, 92, 92)");
+		
+		//index.html
+		$(".quote-text").css("color", "rgb(176, 176, 176)");
+		$(".quote-attribution").css("color", "rgb(92, 92, 92)");
+		$(".title-text").css("color", "rgb(0, 0, 0)");
+		
+		$(".line-break-dark").css("opacity", "0");
+		
+		$("#theme-button-row").animate({opacity: 0}, 300, "swing");
+		setTimeout(function()
+    	{
+	        try {$("#theme-button-text").html($("#theme-button-text").html().replace("dark", "light"));}
+	        catch(ex) {}
+	        
+		    $("#theme-button-row").animate({opacity: 1}, 300, "swing");
+		}, 300);
+		
+		url_vars["dark"] = 0;
+		write_url_vars();
+	}
+}
+
+
+
+//Changes the theme, but without any animation.
+function switch_theme_on_load()
+{
+	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark").addClass("no-transition");
+	switch_theme();
+	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark")[0].offsetHeight; //Trigger a reflow, flushing the CSS changes
+	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark").removeClass("no-transition");
+}
+
+
+
+function switch_font()
+{
+    $("body").animate({opacity: 0}, 300, "swing");
+    setTimeout(function()
+    {
+        switch_font_on_load();
+        
+        setTimeout(function()
+        {
+            $("body").animate({opacity: 1}, 300, "swing");
+        });
+    }, 300);
+}
+
+function switch_font_on_load()
+{
+    //Sans to serif
+    if (url_vars["font"] == 0)
+    {
+        try {$("#font-button-text").html($("#font-button-text").html().replace("sans serif", "serif"));}
+        catch(ex) {}
+        
+        url_vars["font"] = 1;
+        
+        write_url_vars();
+        
+        $("html").css("font-family", "'Gentium Book Basic', serif");
+    }
+    
+    //Serif to sans
+    else
+    {
+        $("#font-button-text").html($("#font-button-text").html().replace("serif", "sans serif"));
+        
+        url_vars["font"] = 0;
+        
+        write_url_vars();
+        
+        $("html").css("font-family", "'Rubik', sans-serif");
+    }
+}
+
+
+
+function switch_icon_style()
+{
+	$("#icon-button-row").animate({opacity: 0}, 300, "swing");
+	
+	setTimeout(function()
+	{
+		switch_icon_style_on_load();
+		$("#icon-button-row").animate({opacity: 1}, 300, "swing");
+	}, 300);
+}
+
+function switch_icon_style_on_load()
+{
+	//Glyphs to images
+    if (url_vars["iconstyle"] == 0)
+	{
+		try {$("#icon-button-text").html($("#icon-button-text").html().replace("glyphs", "latest subpages"));}
+		catch(ex) {}
+		
+		url_vars["iconstyle"] = 1;
+		
+        write_url_vars();
+        
+        try
+        {
+        	var refresh_id = setInterval(function()
+			{
+				if (footer_loaded == 1)
+				{
+					$("#writing-link a img").attr("src", "/graphics/writing-image.png");
+        			$("#blog-link a img").attr("src", "/graphics/blog-image.png");
+		        	$("#research-link a img").attr("src", "/graphics/research-image.png");
+		        	$("#notes-link a img").attr("src", "/graphics/notes-image.png");
+		        	$("#bio-link a img").attr("src", "/graphics/me-image.png");
+		        	
+		        	$("#research-link").addClass("image-link-light");
+		        	$("#notes-link").addClass("image-link-light");
+					
+					clearInterval(refresh_id);
+				}
+			}, 200);
+        }
+        
+        catch(ex) {}
+	}
+	
+	//Images to glyphs
+	else
+	{
+		try {$("#icon-button-text").html($("#icon-button-text").html().replace("latest subpages", "glyphs"));}
+		catch(ex) {}
+		
+		url_vars["iconstyle"] = 0;
+		
+        write_url_vars();
+        
+        //We don't need to change any actual images because glyphs are the default and the only place this setting can be changed has no image links at all.
+	}
+}
+
+
+
+////////////////////////////// MISC //////////////////////////////
+var w = window,
+d = document,
+e = d.documentElement,
+g = d.getElementsByTagName("body")[0],
+y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+AOS.init({duration: 1200, once: true, offset: y/4});
+
+
+
+//Remove the .html ending from the url for that slightly cleaner look.
+history.replaceState({}, document.title, window.location.href.replace("/index.html", ""));
+history.replaceState({}, document.title, window.location.href.replace(".html", ""));
 
 
 
