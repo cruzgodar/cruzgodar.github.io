@@ -86,11 +86,9 @@ function insert_footer(omit, no_theme_button)
 {
     //Required to use this archaic default parameter method so IE doesn't crash before it can say that it's IE and get redirected somewhere else.
     no_theme_button = (typeof no_theme_button != "undefined") ? no_theme_button : 0;
-    
-	var current_theme = get_url_var("dark");
     var delay = 100;
     
-    $("#spawn-footer").before('<div style="height: 30vh"></div> <div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <div class="line-break"> <div class="line-break-dark" style="opacity: ' + current_theme + '"></div> </div> </div> <div style="height: 5vw"></div> <div class="menu-image-links"></div>');
+    $("#spawn-footer").before('<div style="height: 30vh"></div> <div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <div class="line-break"> <div class="line-break-dark" style="opacity: ' + get_url_var("dark") + '"></div> </div> </div> <div style="height: 5vw"></div> <div class="menu-image-links"></div>');
     
     if (omit != "writing")
     {
@@ -149,6 +147,21 @@ function redirect(url)
         window.location.href = url + concat_url_vars();
     }, 300);
 }
+
+//Handle when the user uses the back button.
+window.addEventListener("pageshow", function(event)
+{
+	var historyTraversal = event.persisted || 
+		(typeof window.performance != "undefined" && 
+		window.performance.navigation.type === 2);
+	
+	if (historyTraversal)
+	{
+    	$("body").css("opacity", 1);
+    }
+});
+
+
 
 var url_vars = {"dark": get_url_var("dark"), "font": get_url_var("font"), "iconstyle": get_url_var("iconstyle"), "nonewsection": get_url_var("nonewsection")};
 
@@ -434,6 +447,52 @@ function switch_icon_style_on_load()
         write_url_vars();
         
         //We don't need to change any actual images because glyphs are the default and the only place this setting can be changed has no image links at all.
+	}
+}
+
+
+function switch_new_section()
+{
+	$("#new-section-button-row").animate({opacity: 0}, 300, "swing");
+	
+	setTimeout(function()
+	{
+		switch_new_section_on_load();
+		$("#new-section-button-row").animate({opacity: 1}, 300, "swing");
+	}, 300);
+}
+
+function switch_new_section_on_load()
+{
+	//Hide
+    if (url_vars["nonewsection"] == 0)
+	{
+		try {$("#new-section-button-text").html($("#new-section-button-text").html().replace("shown", "hidden"));}
+		catch(ex) {}
+		
+		url_vars["nonewsection"] = 1;
+		
+        write_url_vars();
+        
+        try
+        {
+        	$("#new-section").css("display", "none");
+        }
+        
+        catch(ex) {}
+	}
+	
+	//Images to glyphs
+	else
+	{
+		try {$("#new-section-button-text").html($("#new-section-button-text").html().replace("hidden", "shown"));}
+		catch(ex) {}
+		
+		url_vars["nonewsection"] = 0;
+		
+        write_url_vars();
+        
+        //Similarly to the images and glyphs, we don't need to do anything in this case.
 	}
 }
 
