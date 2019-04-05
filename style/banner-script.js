@@ -2,6 +2,7 @@ var scroll = 0;
 var banner_done = 0;
 var scroll_button_done = 0;
 var global_opacity = 0;
+var small_loader_loaded = 0;
 
 
 
@@ -25,8 +26,6 @@ $(function()
 		$("#background-image").animate({opacity: 1}, 300, "swing");
 	});
 	
-	
-	
 	//Switch to the high-res banner when it's loaded.
 	$("#full-res-loader").imagesLoaded(function()
 	{
@@ -39,6 +38,7 @@ $(function()
 		{
 			setTimeout(add_scroll_button, 3000);
 		}
+		
 	});
 	
 	

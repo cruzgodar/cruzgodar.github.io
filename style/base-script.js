@@ -1,18 +1,3 @@
-//Handle when the user uses the back button.
-window.addEventListener("pageshow", function(event)
-{
-	var historyTraversal = event.persisted || 
-		(typeof window.performance != "undefined" && 
-		window.performance.navigation.type === 2);
-	
-	if (historyTraversal)
-	{
-    	document.body.style.opacity = 1;
-    }
-});
-
-
-
 ////////////////////////////// BROWSERS //////////////////////////////
 var browser_detect =
 {
@@ -231,8 +216,11 @@ function write_url_vars()
 	}, 200);
 	
 	
-	//Make state persist on refresh.
-	history.replaceState({}, document.title, window.location.href.split("?", 1) + concat_url_vars());
+	//Make state persist on refresh, unless it's the settings page, which will just clog up the history.
+	if (!(window.location.href.includes("settings")))
+	{
+		history.replaceState({}, document.title, window.location.href.split("?", 1) + concat_url_vars());
+	}
 }
 
 
@@ -261,6 +249,7 @@ function switch_theme()
 		$(".line-break-dark").css("opacity", "1");
 		
 		$("#theme-button-row").animate({opacity: 0}, 300, "swing");
+		
 		setTimeout(function()
 	    {
  	    	try {$("#theme-button-text").html($("#theme-button-text").html().replace("light", "dark"));}
@@ -290,6 +279,7 @@ function switch_theme()
 		$(".line-break-dark").css("opacity", "0");
 		
 		$("#theme-button-row").animate({opacity: 0}, 300, "swing");
+		
 		setTimeout(function()
     	{
 	        try {$("#theme-button-text").html($("#theme-button-text").html().replace("dark", "light"));}
@@ -479,12 +469,6 @@ AOS.init({duration: 1200, once: true, offset: y/4});
 
 
 
-//Remove the .html ending from the url for that slightly cleaner look.
-history.replaceState({}, document.title, window.location.href.replace("/index.html", ""));
-history.replaceState({}, document.title, window.location.href.replace(".html", ""));
-
-
-
 //Remove hover events on touchscreen devices.
 function hasTouch()
 {
@@ -519,6 +503,27 @@ if (hasTouch())
 
 $(function()
 {
+	//Start at the top of the page to prevent banner glitches. I don't understand why, but this is the only working method I've found to reset scroll on load.
+	$([document.documentElement, document.body]).animate({scrollTop: 0});
+	
+	
+	
+	//Handle when the user uses the back button.
+	window.addEventListener("pageshow", function(event)
+	{
+		var historyTraversal = event.persisted || 
+			(typeof window.performance != "undefined" && 
+			window.performance.navigation.type === 2);
+		
+		if (historyTraversal)
+		{
+	    	document.body.style.opacity = 1;
+	    	scroll_update();
+	    }
+	});
+	
+	
+	
 	//Handle IE and Edge.
 	if (browser_name == "MS Edge")
 	{
