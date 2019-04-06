@@ -119,7 +119,7 @@ function insert_footer(omit, no_theme_button)
     
     if (no_theme_button == 0)
     {
-        $("#spawn-footer").before('<div style="display: flex; align-items: left; margin-bottom: 6px; justify-content: space-between"> <div data-aos="zoom-out" data-aos-offset="0"> <img class="footer-button" style="margin-left: 10px" src="/graphics/gear.png" alt="Change Theme" onclick="redirect(\'/settings.html\')"></img> </div> <div></div> </div>');
+        $("#spawn-footer").before('<div style="display: flex; align-items: left; margin-top: -5vw; margin-bottom: 6px; justify-content: space-between"> <div data-aos="zoom-out" data-aos-offset="0"> <img class="footer-button" style="margin-left: 10px" src="/graphics/gear.png" alt="Change Theme" onclick="redirect(\'/settings.html\')"></img> </div> <div></div> </div>');
     }
     
     footer_loaded = 1;
@@ -295,9 +295,16 @@ function switch_theme()
 
 
 
+var manual_dark_theme = 0;
 //Changes the theme, but without any animation.
 function switch_theme_on_load()
 {
+	if (manual_dark_theme == 1)
+	{
+		url_vars["dark"] = 1 - url_vars["dark"];
+		return;
+	}
+	
 	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark").addClass("no-transition");
 	switch_theme();
 	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark")[0].offsetHeight; //Trigger a reflow, flushing the CSS changes

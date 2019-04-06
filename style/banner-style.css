@@ -18,6 +18,14 @@
 	position: absolute;
 }
 
+#background-image
+{
+	-webkit-transition: background-image .3s ease;
+	-moz-transition: background-image .3s ease;
+	-o-transition: background-image .3s ease;
+	transition: background-image .3s ease;
+}
+
 
 
 .scroll-button

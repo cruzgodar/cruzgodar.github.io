@@ -276,9 +276,10 @@ body
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 	
 	<script src="/style/base-script.js"></script>
-
-	<!-- Change background color on scroll -->
+	
 	<script>
+		manual_dark_theme = 1;
+			
 		var w = window,
 		d = document,
 		e = d.documentElement,
@@ -297,7 +298,14 @@ body
 		AOS.init({duration: 1200, once: false, offset: y/4});
 		
 		$(function()
-		{	
+		{
+			if (url_vars["dark"] == 1)
+			{
+				$("body").css("background-color", "rgb(24, 24, 24)");
+			}
+			
+			
+			
 			var refresh_id = setInterval(function()
 			{
 				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
