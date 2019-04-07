@@ -32,7 +32,7 @@
 
 .banner:before
 {
-	background: url("/graphics/me-banner.jpg") no-repeat center center;
+	background: url("/graphics/me-banners/me-banner-1.jpg") no-repeat center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -41,11 +41,32 @@
 
 .banner-small:before
 {
-	background: url("/graphics/me-banner-small.jpg") no-repeat center center;
+	background: url("/graphics/me-banners/me-banner-1-small.jpg") no-repeat center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
+}
+
+@media screen and (orientation: portrait)
+{
+	.banner:before
+	{
+		background: url("/graphics/me-banners/me-banner-2.jpg") no-repeat center center;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}
+	
+	.banner-small:before
+	{
+		background: url("/graphics/me-banners/me-banner-2-small.jpg") no-repeat center center;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}
 }
 
 </style>
@@ -65,7 +86,7 @@
 		<div style="height: 5vh"></div>
 
 		<div class="logo" data-aos="fade-in" id="trigger-section-1">
-			<img class="link" onclick="redirect('/index.html')" src="/graphics/logo.png" alt="Logo"></img>
+			<img class="link" onclick="redirect('/index.html')" src="/graphics/general-icons/logo.png" alt="Logo"></img>
 		</div>
 
 		<div style="height: 2vh"></div>

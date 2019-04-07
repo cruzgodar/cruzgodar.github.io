@@ -117,7 +117,7 @@ function add_scroll_button()
 	//Only add the scroll button if the user is still on the top of the page.
 	if (scroll == 0)
 	{
-		$("#banner-cover").before("<div style='height: 100vh; display: flex; align-items: center; justify-content: center' data-aos='fade-down'><img class='scroll-button' src='/graphics/chevron.png' alt='Scroll down' onclick='scroll_down()'></img></div>");
+		$("#banner-cover").before("<div style='height: 100vh; display: flex; align-items: center; justify-content: center' data-aos='fade-down'><img class='scroll-button' src='/graphics/general-icons/chevron-down.png' alt='Scroll down' onclick='scroll_down()'></img></div>");
 		
 		$("#banner-cover").remove();
 	}

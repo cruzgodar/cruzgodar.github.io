@@ -82,35 +82,35 @@ function insert_footer(omit, no_theme_button)
     
     if (omit != "writing")
     {
-        $(".menu-image-links").append('<div id="writing-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/writing.html\')" src="/graphics/writing-glyph.png" alt="Writing"></img> </div>');
+        $(".menu-image-links").append('<div id="writing-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/writing.html\')" src="/graphics/image-links/writing-glyph.png" alt="Writing"></img> </div>');
         
         delay += 100;
     }
     
     if (omit != "blog")
     {
-        $(".menu-image-links").append('<div id="blog-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/blog.html\')" src="/graphics/blog-glyph.png" alt="Blog"></img> </div>');
+        $(".menu-image-links").append('<div id="blog-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/blog.html\')" src="/graphics/image-links/blog-glyph.png" alt="Blog"></img> </div>');
         
         delay += 100;
     }
     
     if (omit != "research")
     {
-        $(".menu-image-links").append('<div id="research-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/research.html\')" src="/graphics/research-glyph.png" alt="Research"></img> </div>');
+        $(".menu-image-links").append('<div id="research-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/research.html\')" src="/graphics/image-links/research-glyph.png" alt="Research"></img> </div>');
         
         delay += 100;
     }
     
     if (omit != "notes")
     {
-        $(".menu-image-links").append('<div id="notes-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/notes.html\')" src="/graphics/notes-glyph.png" alt="Notes"></img> </div>');
+        $(".menu-image-links").append('<div id="notes-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/notes.html\')" src="/graphics/image-links/notes-glyph.png" alt="Notes"></img> </div>');
         
         delay += 100;
     }
     
     if (omit != "bio")
     {
-        $(".menu-image-links").append('<div id="bio-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/bio.html\')" src="/graphics/me-glyph.png" alt="Me"></img> </div>');
+        $(".menu-image-links").append('<div id="bio-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/bio.html\')" src="/graphics/image-links/me-glyph.png" alt="Me"></img> </div>');
         
         delay += 100;
     }
@@ -119,7 +119,7 @@ function insert_footer(omit, no_theme_button)
     
     if (no_theme_button == 0)
     {
-        $("#spawn-footer").before('<div style="display: flex; align-items: left; margin-bottom: 6px; justify-content: space-between"> <div data-aos="zoom-out" data-aos-offset="0"> <img class="footer-button" style="margin-left: 10px" src="/graphics/gear.png" alt="Change Theme" onclick="redirect(\'/settings.html\')"></img> </div> <div></div> </div>');
+        $("#spawn-footer").before('<div style="display: flex; align-items: left; margin-bottom: 6px; justify-content: space-between"> <div data-aos="zoom-out" data-aos-offset="0"> <img class="footer-button" style="margin-left: 10px" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect(\'/settings.html\')"></img> </div> <div></div> </div>');
     }
     
     footer_loaded = 1;
@@ -366,11 +366,11 @@ function switch_icon_style_on_load()
 			{
 				if (footer_loaded == 1)
 				{
-					$("#writing-link img").attr("src", "/graphics/writing-image.png");
-        			$("#blog-link img").attr("src", "/graphics/blog-image.png");
-		        	$("#research-link img").attr("src", "/graphics/research-image.png");
-		        	$("#notes-link img").attr("src", "/graphics/notes-image.png");
-		        	$("#bio-link img").attr("src", "/graphics/me-image.png");
+					$("#writing-link img").attr("src", "/graphics/image-links/writing-image.png");
+        			$("#blog-link img").attr("src", "/graphics/image-links/blog-image.png");
+		        	$("#research-link img").attr("src", "/graphics/image-links/research-image.png");
+		        	$("#notes-link img").attr("src", "/graphics/image-links/notes-image.png");
+		        	$("#bio-link img").attr("src", "/graphics/image-links/me-image.png");
 		        	
 		        	$("#research-link").addClass("image-link-light");
 		        	$("#notes-link").addClass("image-link-light");
