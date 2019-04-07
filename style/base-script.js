@@ -140,27 +140,7 @@ function redirect(url)
 
 
 
-var url_vars = {"dark": get_url_var("dark"), "font": get_url_var("font"), "iconstyle": get_url_var("iconstyle"), "nonewsection": get_url_var("nonewsection")};
-
-if (url_vars["dark"] != 0 && url_vars["dark"] != 1)
-{
-    url_vars["dark"] = 0;
-}
-
-if (url_vars["font"] != 0 && url_vars["font"] != 1)
-{
-    url_vars["font"] = 0;
-}
-
-if (url_vars["iconstyle"] != 0 && url_vars["iconstyle"] != 1)
-{
-    url_vars["iconstyle"] = 0;
-}
-
-if (url_vars["nonewsection"] != 0 && url_vars["nonewsection"] != 1)
-{
-    url_vars["nonewsection"] = 0;
-}
+var url_vars = {};
 
 
 
@@ -386,11 +366,11 @@ function switch_icon_style_on_load()
 			{
 				if (footer_loaded == 1)
 				{
-					$("#writing-link a img").attr("src", "/graphics/writing-image.png");
-        			$("#blog-link a img").attr("src", "/graphics/blog-image.png");
-		        	$("#research-link a img").attr("src", "/graphics/research-image.png");
-		        	$("#notes-link a img").attr("src", "/graphics/notes-image.png");
-		        	$("#bio-link a img").attr("src", "/graphics/me-image.png");
+					$("#writing-link img").attr("src", "/graphics/writing-image.png");
+        			$("#blog-link img").attr("src", "/graphics/blog-image.png");
+		        	$("#research-link img").attr("src", "/graphics/research-image.png");
+		        	$("#notes-link img").attr("src", "/graphics/notes-image.png");
+		        	$("#bio-link img").attr("src", "/graphics/me-image.png");
 		        	
 		        	$("#research-link").addClass("image-link-light");
 		        	$("#notes-link").addClass("image-link-light");
@@ -545,6 +525,30 @@ $(function()
 	
 	
 	//Apply settings.
+	url_vars = {"dark": get_url_var("dark"), "font": get_url_var("font"), "iconstyle": get_url_var("iconstyle"), "nonewsection": get_url_var("nonewsection")};
+
+	if (url_vars["dark"] != 0 && url_vars["dark"] != 1)
+	{
+	    url_vars["dark"] = 0;
+	}
+
+	if (url_vars["font"] != 0 && url_vars["font"] != 1)
+	{
+	    url_vars["font"] = 0;
+	}
+
+	if (url_vars["iconstyle"] != 0 && url_vars["iconstyle"] != 1)
+	{
+	    url_vars["iconstyle"] = 0;
+	}
+
+	if (url_vars["nonewsection"] != 0 && url_vars["nonewsection"] != 1)
+	{
+	    url_vars["nonewsection"] = 0;
+	}
+	
+	
+	
 	if (url_vars["dark"] == 1)
 	{
 	    url_vars["dark"] = 0;
