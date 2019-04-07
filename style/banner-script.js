@@ -20,10 +20,10 @@ $(function()
 	
 	
 	//Fade in the low-res banner when it's loaded.
-	$("#background-image").css("opacity", 0);
+	$("body").css("opacity", 0);
 	$("#small-loader").imagesLoaded(function()
 	{
-		$("#background-image").animate({opacity: 1}, 300, "swing");
+		$("body").animate({opacity: 1}, 300, "swing");
 	});
 	
 	//Switch to the high-res banner when it's loaded.
