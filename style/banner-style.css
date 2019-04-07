@@ -15,15 +15,7 @@
 /* Used on Edge 'cause it just can't do the nice banner effects like all the other browsers. */
 .bad-banner:before
 {
-	position: absolute;
-}
-
-#background-image
-{
-	-webkit-transition: background-image .3s ease;
-	-moz-transition: background-image .3s ease;
-	-o-transition: background-image .3s ease;
-	transition: background-image .3s ease;
+	position: absolute !important;
 }
 
 

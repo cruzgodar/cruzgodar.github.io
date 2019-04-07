@@ -80,8 +80,6 @@
 	text-shadow: 0px 0px 20px rgb(0, 0, 0);
 	
 	text-align: left;
-	
-	position: fixed;
 }
 
 .title-text
@@ -278,6 +276,8 @@
 			
 			$("#small-loader").attr("src", "/graphics/index-banners/banner-" + image + "-small.jpg");
 			
+			
+				
 			$("#small-loader").imagesLoaded(function()
 			{
 				var font_size = parseInt($(".name-text").css("font-size").replace("px", ""));
@@ -285,6 +285,16 @@
 				$(".name-text").remove();
 				
 				$("#full-res-loader").after("<div style='position: fixed' data-aos='fade-left' data-aos-delay='350'><div class='name-text' style='margin-top: " + font_size / 8 + "px; margin-left: " + (font_size / 3 - font_size / 20) + "px'>Cruz</div></div><div style='position: fixed' data-aos='fade-left' data-aos-delay='600'><div class='name-text' style='margin-top: " + (font_size + font_size / 8) + "px; margin-left: " + (font_size / 3 - font_size / 20) + "px'>Godar</div></div>");
+				
+				if (url_vars["content_animation"] == 1)
+				{
+					$(".name-text").parent().removeAttr("data-aos");
+				}
+				
+				if (url_vars["banner_style"] == 1)
+				{
+					$(".name-text").parent().css("position", "absolute");
+				}
 			});
 			
 			$("#full-res-loader").attr("src", "/graphics/index-banners/banner-" + image + ".jpg");
@@ -303,7 +313,7 @@
 			{
 				scroll = $(this).scrollTop();
 				
-				if (scroll <= y/3)
+				if (scroll <= y/3 && url_vars["banner_style"] != 1)
 				{
 					$(".name-text").css("opacity", global_opacity);
 				}

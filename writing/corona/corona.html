@@ -299,7 +299,7 @@ body
 		
 		$(function()
 		{
-			if (url_vars["dark"] == 1)
+			if (url_vars["theme"] == 1)
 			{
 				$("body").css("background-color", "rgb(24, 24, 24)");
 			}
@@ -335,7 +335,7 @@ body
 					{
 						var background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/4 * scroll / y, 0) - .5 * Math.PI);
 						
-						if (url_vars["dark"] == 1)
+						if (url_vars["theme"] == 1)
 						{
 							background_color *= 24;
 						}

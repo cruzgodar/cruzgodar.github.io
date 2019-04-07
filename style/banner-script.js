@@ -20,11 +20,14 @@ $(function()
 	
 	
 	//Fade in the low-res banner when it's loaded.
-	$("body").css("opacity", 0);
-	$("#small-loader").imagesLoaded(function()
+	if (url_vars["link_animation"] != 1)
 	{
-		$("body").animate({opacity: 1}, 300, "swing");
-	});
+		$("body").css("opacity", 0);
+		$("#small-loader").imagesLoaded(function()
+		{
+			$("body").animate({opacity: 1}, 300, "swing");
+		});
+	}
 	
 	//Switch to the high-res banner when it's loaded.
 	$("#full-res-loader").imagesLoaded(function()
@@ -57,26 +60,29 @@ function scroll_update()
 	
 	if (scroll >= 0)
 	{
-		if (scroll <= y)
+		if (url_vars["banner_style"] != 1)
 		{
-			global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / y, 0) - .5 * Math.PI);
-			$("#background-image").css("opacity", global_opacity);
-			
-			if (global_opacity == 0)
+			if (scroll <= y)
 			{
+				global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / y, 0) - .5 * Math.PI);
+				$("#background-image").css("opacity", global_opacity);
+				
+				if (global_opacity == 0)
+				{
+					banner_done = 1;
+				}
+				
+				else
+				{
+					banner_done = 0;
+				}
+			}
+			
+			else if (banner_done == 0)
+			{
+				$("#background-image").css("opacity", 0);
 				banner_done = 1;
 			}
-			
-			else
-			{
-				banner_done = 0;
-			}
-		}
-		
-		else if (banner_done == 0)
-		{
-			$("#background-image").css("opacity", 0);
-			banner_done = 1;
 		}
 		
 		
@@ -101,7 +107,10 @@ function scroll_update()
 		
 		else if (scroll_button_done == 0)
 		{
-			$(".name-text").css("opacity", 0);
+			if (url_vars["banner_style"] != 1)
+			{
+				$(".name-text").css("opacity", 0);
+			}
 			
 			$(".scroll-button").remove();
 			

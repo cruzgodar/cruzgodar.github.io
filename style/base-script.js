@@ -122,6 +122,13 @@ function insert_footer(omit, no_theme_button)
         $("#spawn-footer").before('<div style="display: flex; align-items: left; margin-bottom: 6px; justify-content: space-between"> <div data-aos="zoom-out" data-aos-offset="0"> <img class="footer-button" style="margin-left: 10px" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect(\'/settings.html\')"></img> </div> <div></div> </div>');
     }
     
+    if (url_vars["content_animation"] == 1)
+	{
+		$(".line-break").parent().removeAttr("data-aos");
+		$(".menu-image-link").removeAttr("data-aos");
+		$(".footer-button").parent().removeAttr("data-aos");
+	}
+    
     footer_loaded = 1;
 }
 
@@ -130,12 +137,20 @@ function insert_footer(omit, no_theme_button)
 ////////////////////////////// SETTINGS //////////////////////////////
 function redirect(url)
 {
-	$("body").animate({opacity: 0}, 300, "swing");
+	if (url_vars["link_animation"] == 1)
+	{
+		window.location.href = url + concat_url_vars();
+	}
 	
-    setTimeout(function()
-    {
-        window.location.href = url + concat_url_vars();
-    }, 300);
+	else
+	{
+		$("body").animate({opacity: 0}, 300, "swing");
+		
+	    setTimeout(function()
+	    {
+	        window.location.href = url + concat_url_vars();
+	    }, 300);
+	}
 }
 
 
@@ -158,7 +173,7 @@ function concat_url_vars()
     var key;
     var temp = "";
     
-    for (var i = 0; i < 4; i++)
+    for (var i = 0; i < Object.keys(url_vars).length; i++)
     {
     	key = Object.keys(url_vars)[i];
     	
@@ -182,20 +197,6 @@ function concat_url_vars()
 
 function write_url_vars()
 {
-    var refresh_id = setInterval(function()
-	{
-		if (footer_loaded == 1)
-		{
-			$("a").each(function()
-			{
-				$(this).attr("href", $(this).attr("href").split("?", 1) + concat_url_vars());
-			});
-			
-			clearInterval(refresh_id);
-		}
-	}, 200);
-	
-	
 	//Make state persist on refresh, unless it's the settings page, which will just clog up the history.
 	if (!(window.location.href.includes("settings")))
 	{
@@ -205,15 +206,11 @@ function write_url_vars()
 
 
 
-
-
-
-
 //Changes the theme and animates elements.
 function switch_theme()
 {
 	//Light to dark
-	if (url_vars["dark"] == 0)
+	if (url_vars["theme"] == 0)
 	{
 		$("body").css("background-color", "rgb(24, 24, 24)");
 		
@@ -238,7 +235,7 @@ function switch_theme()
 	    	$("#theme-button-row").animate({opacity: 1}, 300, "swing");
 	    }, 300);
 		
-		url_vars["dark"] = 1;
+		url_vars["theme"] = 1;
 		write_url_vars();
 	}
 	
@@ -268,7 +265,7 @@ function switch_theme()
 		    $("#theme-button-row").animate({opacity: 1}, 300, "swing");
 		}, 300);
 		
-		url_vars["dark"] = 0;
+		url_vars["theme"] = 0;
 		write_url_vars();
 	}
 }
@@ -281,7 +278,7 @@ function switch_theme_on_load()
 {
 	if (manual_dark_theme == 1)
 	{
-		url_vars["dark"] = 1 - url_vars["dark"];
+		url_vars["theme"] = 1 - url_vars["theme"];
 		return;
 	}
 	
@@ -351,12 +348,12 @@ function switch_icon_style()
 function switch_icon_style_on_load()
 {
 	//Glyphs to images
-    if (url_vars["iconstyle"] == 0)
+    if (url_vars["icon_style"] == 0)
 	{
 		try {$("#icon-button-text").html($("#icon-button-text").html().replace("glyphs", "latest subpages"));}
 		catch(ex) {}
 		
-		url_vars["iconstyle"] = 1;
+		url_vars["icon_style"] = 1;
 		
         write_url_vars();
         
@@ -389,7 +386,7 @@ function switch_icon_style_on_load()
 		try {$("#icon-button-text").html($("#icon-button-text").html().replace("latest subpages", "glyphs"));}
 		catch(ex) {}
 		
-		url_vars["iconstyle"] = 0;
+		url_vars["icon_style"] = 0;
 		
         write_url_vars();
         
@@ -412,12 +409,12 @@ function switch_new_section()
 function switch_new_section_on_load()
 {
 	//Hide
-    if (url_vars["nonewsection"] == 0)
+    if (url_vars["no_new_section"] == 0)
 	{
 		try {$("#new-section-button-text").html($("#new-section-button-text").html().replace("shown", "hidden"));}
 		catch(ex) {}
 		
-		url_vars["nonewsection"] = 1;
+		url_vars["no_new_section"] = 1;
 		
         write_url_vars();
         
@@ -435,11 +432,135 @@ function switch_new_section_on_load()
 		try {$("#new-section-button-text").html($("#new-section-button-text").html().replace("hidden", "shown"));}
 		catch(ex) {}
 		
-		url_vars["nonewsection"] = 0;
+		url_vars["no_new_section"] = 0;
 		
         write_url_vars();
         
         //Similarly to the images and glyphs, we don't need to do anything in this case.
+	}
+}
+
+
+
+function switch_link_animation()
+{
+	$("#link-animation-button-row").animate({opacity: 0}, 300, "swing");
+	
+	setTimeout(function()
+	{
+		switch_link_animation_on_load();
+		$("#link-animation-button-row").animate({opacity: 1}, 300, "swing");
+	}, 300);
+}
+
+function switch_link_animation_on_load()
+{
+    if (url_vars["link_animation"] == 0)
+	{
+		try {$("#link-animation-button-text").html($("#link-animation-button-text").html().replace("animated", "static"));}
+		catch(ex) {}
+		
+		url_vars["link_animation"] = 1;
+		
+		console.log(url_vars);
+		
+        write_url_vars();
+	}
+	
+	else
+	{
+		try {$("#link-animation-button-text").html($("#link-animation-button-text").html().replace("static", "animated"));}
+		catch(ex) {}
+		
+		url_vars["link_animation"] = 0;
+		
+        write_url_vars();
+	}
+}
+
+
+
+function switch_content_animation()
+{
+	$("#content-animation-button-row").animate({opacity: 0}, 300, "swing");
+	
+	setTimeout(function()
+	{
+		switch_content_animation_on_load();
+		$("#content-animation-button-row").animate({opacity: 1}, 300, "swing");
+	}, 300);
+}
+
+function switch_content_animation_on_load()
+{
+    if (url_vars["content_animation"] == 0)
+	{
+		try {$("#content-animation-button-text").html($("#content-animation-button-text").html().replace("animated", "static"));}
+		catch(ex) {}
+		
+		url_vars["content_animation"] = 1;
+		
+        write_url_vars();
+        
+        try
+        {
+			$("body").find("*[data-aos]").removeAttr("data-aos");
+        }
+        
+        catch(ex) {}
+	}
+	
+	else
+	{
+		try {$("#content-animation-button-text").html($("#content-animation-button-text").html().replace("static", "animated"));}
+		catch(ex) {}
+		
+		url_vars["content_animation"] = 0;
+		
+        write_url_vars();
+	}
+}
+
+
+
+function switch_banner_style()
+{
+	$("#banner-style-button-row").animate({opacity: 0}, 300, "swing");
+	
+	setTimeout(function()
+	{
+		switch_banner_style_on_load();
+		$("#banner-style-button-row").animate({opacity: 1}, 300, "swing");
+	}, 300);
+}
+
+function switch_banner_style_on_load()
+{
+    if (url_vars["banner_style"] == 0)
+	{
+		try {$("#banner-style-button-text").html($("#banner-style-button-text").html().replace("parallax", "simple"));}
+		catch(ex) {}
+		
+		url_vars["banner_style"] = 1;
+		
+        write_url_vars();
+        
+        try
+        {
+			$("#background-image").addClass("bad-banner");
+        }
+        
+        catch(ex) {}
+	}
+	
+	else
+	{
+		try {$("#banner-style-button-text").html($("#banner-style-button-text").html().replace("simple", "parallax"));}
+		catch(ex) {}
+		
+		url_vars["banner_style"] = 0;
+		
+        write_url_vars();
 	}
 }
 
@@ -451,8 +572,6 @@ d = document,
 e = d.documentElement,
 g = d.getElementsByTagName("body")[0],
 y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-
-AOS.init({duration: 1200, once: true, offset: y/4});
 
 
 
@@ -489,9 +608,13 @@ if (hasTouch())
 
 
 $(function()
-{
+{	
 	//Start at the top of the page to prevent banner glitches. I don't understand why, but this is the only working method I've found to reset scroll on load.
 	$([document.documentElement, document.body]).animate({scrollTop: 0});
+	
+	
+	
+	AOS.init({duration: 1200, once: true, offset: y/4});
 	
 	
 	
@@ -525,11 +648,11 @@ $(function()
 	
 	
 	//Apply settings.
-	url_vars = {"dark": get_url_var("dark"), "font": get_url_var("font"), "iconstyle": get_url_var("iconstyle"), "nonewsection": get_url_var("nonewsection")};
+	url_vars = {"theme": get_url_var("theme"), "font": get_url_var("font"), "icon_style": get_url_var("icon_style"), "no_new_section": get_url_var("no_new_section"), "link_animation": get_url_var("link_animation"), "content_animation": get_url_var("content_animation"), "banner_style": get_url_var("banner_style")};
 
-	if (url_vars["dark"] != 0 && url_vars["dark"] != 1)
+	if (url_vars["theme"] != 0 && url_vars["theme"] != 1)
 	{
-	    url_vars["dark"] = 0;
+	    url_vars["theme"] = 0;
 	}
 
 	if (url_vars["font"] != 0 && url_vars["font"] != 1)
@@ -537,21 +660,36 @@ $(function()
 	    url_vars["font"] = 0;
 	}
 
-	if (url_vars["iconstyle"] != 0 && url_vars["iconstyle"] != 1)
+	if (url_vars["icon_style"] != 0 && url_vars["icon_style"] != 1)
 	{
-	    url_vars["iconstyle"] = 0;
+	    url_vars["icon_style"] = 0;
 	}
 
-	if (url_vars["nonewsection"] != 0 && url_vars["nonewsection"] != 1)
+	if (url_vars["no_new_section"] != 0 && url_vars["no_new_section"] != 1)
 	{
-	    url_vars["nonewsection"] = 0;
+	    url_vars["no_new_section"] = 0;
+	}
+	
+	if (url_vars["link_animation"] != 0 && url_vars["link_animation"] != 1)
+	{
+	    url_vars["link_animation"] = 0;
+	}
+	
+	if (url_vars["content_animation"] != 0 && url_vars["content_animation"] != 1)
+	{
+	    url_vars["content_animation"] = 0;
+	}
+	
+	if (url_vars["banner_style"] != 0 && url_vars["banner_style"] != 1)
+	{
+	    url_vars["banner_style"] = 0;
 	}
 	
 	
 	
-	if (url_vars["dark"] == 1)
+	if (url_vars["theme"] == 1)
 	{
-	    url_vars["dark"] = 0;
+	    url_vars["theme"] = 0;
 		switch_theme_on_load();
 	}
 
@@ -561,15 +699,33 @@ $(function()
 		switch_font_on_load();
 	}
 
-	if (url_vars["iconstyle"] == 1)
+	if (url_vars["icon_style"] == 1)
 	{
-	    url_vars["iconstyle"] = 0;
+	    url_vars["icon_style"] = 0;
 		switch_icon_style_on_load();
 	}
 
-	if (url_vars["nonewsection"] == 1)
+	if (url_vars["no_new_section"] == 1)
 	{
-	    url_vars["nonewsection"] = 0;
+	    url_vars["no_new_section"] = 0;
 		switch_new_section_on_load();
+	}
+	
+	if (url_vars["link_animation"] == 1)
+	{
+	    url_vars["link_animation"] = 0;
+		switch_link_animation_on_load();
+	}
+	
+	if (url_vars["content_animation"] == 1)
+	{
+	    url_vars["content_animation"] = 0;
+		switch_content_animation_on_load();
+	}
+	
+	if (url_vars["banner_style"] == 1)
+	{
+	    url_vars["banner_style"] = 0;
+		switch_banner_style_on_load();
 	}
 });
