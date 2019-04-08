@@ -347,7 +347,6 @@ a
 	background: -moz-linear-gradient(left, rgb(255,255,255) 0%, rgb(160,160,160) 50%, rgb(255,255,255) 100%); /* FF3.6-15 */
 	background: -webkit-linear-gradient(left, rgb(255,255,255) 0%,rgb(160,160,160) 50%,rgb(255,255,255) 100%); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(to right, rgb(255,255,255) 0%,rgb(160,160,160) 50%,rgb(255,255,255) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
 }
 
 /* Unfortunately, gradient transitions aren't supported by any browser at the moment, so this somewhat uglier method is required. */
@@ -362,7 +361,6 @@ a
 	background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(92,92,92) 50%, rgb(24,24,24) 100%); /* FF3.6-15 */
 	background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(92,92,92) 50%,rgb(24,24,24) 100%); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(92,92,92) 50%,rgb(24,24,24) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#181818', endColorstr='#181818',GradientType=1 ); /* IE6-9 */
     
     opacity: 0;
     -webkit-transition: opacity .6s ease;
