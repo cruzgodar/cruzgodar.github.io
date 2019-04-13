@@ -95,16 +95,78 @@ body
 
 
 
+.stage-bubbles
+{
+	width: 50vw;
+	margin-left: 25vw;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.stage-bubble
+{
+	width: 5vw;
+	height: 5vw;
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	-o-border-radius: 7px;
+	padding: 2px;
+}
+
+.stage-bubble span
+{
+	width: 0%;
+	height: 0%;
+	margin: 0 auto;
+	position: relative;
+	display: block;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	background-color: rgb(127, 127, 127);
+	overflow: hidden;
+	
+	-webkit-transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
+    -moz-transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
+    -o-transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
+    transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
+    
+    top: 50%;
+  	-webkit-transform: translateY(-50%);
+  	-ms-transform: translateY(-50%);
+  	transform: translateY(-50%);
+}
+
+.stage-bubble-subtext
+{
+	width: 10vw;
+	margin-left: -2.5vw;
+	margin-top: calc(5vw + 1vh);
+	text-align: center;
+	
+	-webkit-transition: margin-top 1.2s ease;
+    -moz-transition: margin-top 1.2s ease;
+    -o-transition: margin-top 1.2s ease;
+    transition: margin-top 1.2s ease;
+}
+
+
+
 .progress-bar
 {
 	width: calc(50vw - 8px);
 	height: 5vh;
 	margin-left: 25vw;
 	border: 2px solid rgb(127, 127, 127);
-	border-radius: 5px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	-o-border-radius: 5px;
+	border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	-o-border-radius: 7px;
 	padding: 2px;
 }
 
@@ -114,10 +176,10 @@ body
 	position: relative;
 	display: block;
 	height: 100%;
-	border-radius: 2px;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	-o-border-radius: 2px;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
 	background-color: rgb(127, 127, 127);
 	overflow: hidden;
 	-webkit-transition: width 1.2s ease;
@@ -165,6 +227,24 @@ body
 	{
 		width: 80vw;
 		margin-left: 10vw;
+	}
+	
+	.stage-bubbles
+	{
+		width: 80vw;
+		margin-left: 10vw;
+	}
+	
+	.stage-bubble
+	{
+		width: 10vw;
+		height: 10vw;
+	}
+	
+	.stage-bubble-subtext
+	{
+		margin-top: calc(10vw + 1vh);
+		width: 15vw;
 	}
 
 	/* Fit progress bar to synopsis text */
@@ -239,7 +319,59 @@ body
 	</div>
 
 	<div style="height: 20vh"></div>
-
+	
+	
+	
+	<div class="stage-bubbles" id="trigger-stage-bubbles">
+		<div class="stage-bubble" data-aos="fade-in" data-aos-anchor="#trigger-stage-bubbles">
+			<span></span>
+			<div class="body-text stage-bubble-subtext">Skeleton</div>
+		</div>
+		
+		<div class="stage-bubble" data-aos="fade-in" data-aos-delay="100" data-aos-anchor="#trigger-stage-bubbles">
+			<span></span>
+			<div class="body-text stage-bubble-subtext">Outline</div>
+		</div>
+		
+		<div class="stage-bubble" data-aos="fade-in" data-aos-delay="200" data-aos-anchor="#trigger-stage-bubbles">
+			<span></span>
+			<div class="body-text stage-bubble-subtext">Draft</div>
+		</div>
+		
+		<div class="stage-bubble" data-aos="fade-in" data-aos-delay="300" data-aos-anchor="#trigger-stage-bubbles">
+			<span></span>
+			<div class="body-text stage-bubble-subtext">Revision for Content</div>
+		</div>
+	</div>
+	
+	<div style="height: 10vh"></div>
+	
+	<div class="stage-bubbles">
+		<div class="stage-bubble" data-aos="fade-in" data-aos-delay="400" data-aos-anchor="#trigger-stage-bubbles">
+			<span></span>
+			<div class="body-text stage-bubble-subtext">Revision for Continuity</div>
+		</div>
+		
+		<div class="stage-bubble" data-aos="fade-in" data-aos-delay="500" data-aos-anchor="#trigger-stage-bubbles">
+			<span></span>
+			<div class="body-text stage-bubble-subtext">Alpha Readers</div>
+		</div>
+		
+		<div class="stage-bubble" data-aos="fade-in" data-aos-delay="600" data-aos-anchor="#trigger-stage-bubbles">
+			<span></span>
+			<div class="body-text stage-bubble-subtext">Editing</div>
+		</div>
+		
+		<div class="stage-bubble" data-aos="fade-in" data-aos-delay="700" data-aos-anchor="#trigger-stage-bubbles">
+			<span></span>
+			<div class="body-text stage-bubble-subtext">Finalization</div>
+		</div>
+	</div>
+	
+	<div style="height: 20vh"></div>
+	
+	
+	
 	<div class="progress-bar" data-aos="fade-in" id="trigger-bar">
 		<span></span>
 	</div>
@@ -288,9 +420,15 @@ body
 		var background_color = 255;
 		var opacity = 0;
 		
+		var bubbles = [];
+		var subtexts = [];
+		
 		var background_done = 0;
 		var scroll_button_done = 0;
 		var eclipse_done = 0;
+		
+		var progress_bar_done = 0;
+		var stage_bubbles_done = 0;
 		
 		
 		
@@ -426,10 +564,41 @@ body
 				}
 				
 				
-
-				if (scroll > $(".progress-bar").position().top - 2*y/3)
+				
+				if (scroll > $(".progress-bar").position().top - 3*y/4 && progress_bar_done == 0)
 				{
 					$(".progress-bar span").css("width", "83%");
+					progress_bar_done = 1;
+				}
+				
+				else if (scroll > $("#trigger-stage-bubbles").position().top - 3*y/4 && stage_bubbles_done == 0)
+				{
+					stage_bubbles_done = 1;
+					bubbles = $(".stage-bubble span");
+					subtexts = $(".stage-bubble-subtext");
+					var i;
+					
+					for (i = 0; i < 3; i++)
+					{
+						setTimeout(function(i)
+						{
+							$(bubbles[i]).css("width", "100%");
+							$(bubbles[i]).css("height", "100%");
+							$(subtexts[i]).css("margin-top", "1vh");
+						}, i * 100, i);
+					}
+					
+					i = 2;
+					$(bubbles[i]).css("background-color", "rgb(0, 0, 0)");
+					setInterval(function()
+					{
+						$(bubbles[i]).css("background-color", "rgb(127, 127, 127)");
+						
+						setTimeout(function()
+						{
+							$(bubbles[i]).css("background-color", "rgb(0, 0, 0)");
+						}, 1200);
+					}, 2400);
 				}
 			});
 		});
