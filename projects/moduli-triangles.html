@@ -84,14 +84,32 @@
 		$(function()
 		{
 			//Whenever the user mouses over the moduli space, draw a new triangle.
-			$("#moduli-space").mousemove(function(e)
+			
+			if (!hasTouch())
 			{
-				var parentOffset = $(this).offset();
-				var mouse_x = e.pageX - parentOffset.left;
-				var mouse_y = e.pageY - parentOffset.top;
-				
-				draw_triangle(mouse_x, mouse_y);
-			});
+				$("#moduli-space").mousemove(function(e)
+				{
+					var parentOffset = $(this).offset();
+					var mouse_x = e.pageX - parentOffset.left;
+					var mouse_y = e.pageY - parentOffset.top;
+					
+					draw_triangle(mouse_x, mouse_y);
+				});
+			}
+			
+			else
+			{
+				document.getElementById("moduli-space").addEventListener("touchmove", function(e)
+				{
+					e.preventDefault();
+					
+					var parentOffset = $("#moduli-space").offset();
+					var mouse_x = e.pageX - parentOffset.left;
+					var mouse_y = e.pageY - parentOffset.top;
+					
+					draw_triangle(mouse_x, mouse_y);
+				}, false);
+			}
 		});
 		
 		
