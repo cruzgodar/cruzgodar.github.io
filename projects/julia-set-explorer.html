@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-135923635-1"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	
+	gtag('config', 'UA-135923635-1');
+</script>
+
+<title>Julia Set Explorer</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest?v=NmPPnmeW24">
+<link rel="mask-icon" href="/safari-pinned-tab.svg?v=NmPPnmeW24" color="#5bbad5">
+<link rel="shortcut icon" href="/favicon.ico?v=NmPPnmeW24">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
+
+<!-- Animate on scroll library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<link rel="stylesheet" type="text/css" href="/style/base-style.css">
+
+<style>
+
+.row:after
+{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+#mandelbrot-set, #julia-set
+{
+	width: 30vw;
+	height: 30vw;
+}
+
+#mandelbrot-set
+{
+	margin-left: 15vw;
+}
+
+#julia-set
+{
+	margin-left: 10vw;
+}
+
+
+
+@media screen and (max-width: 1300px) and (orientation: portrait)
+{	
+	#mandelbrot-set, #julia-set
+	{
+		width: 50vw;
+		height: 50vw;
+		margin-left: 25vw;
+	}
+	
+	#mandelbrot-set
+	{
+		margin-bottom: 5vw;
+	}
+}
+</style>
+
+</head>
+
+
+
+<body>
+	<div style="height: 5vh"></div>
+
+	<div class="logo" data-aos="fade-in" id="trigger-section-1">
+		<img class="link" onclick="redirect('/index.html')" src="/graphics/general-icons/logo.png" alt="Logo"></img>
+	</div>
+
+	<div style="height: 2vh"></div>
+
+	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">
+		<div class="heading-text">Julia Set Explorer</div>
+	</div>
+	
+	<div style="height: 10vh"></div>
+	
+	
+	
+	<div id="container" class="row" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
+		<canvas id="mandelbrot-set"></canvas>
+		<canvas id="julia-set"></canvas>
+	</div>
+	
+	
+	
+	<div id="download-location" style="height: 10vh"></div>
+	
+	<div style="height: 20vh"></div>
+	
+	
+
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<!-- Animate on scroll library -->
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	
+	<!-- Mathjs library -->
+	<script src="https://unpkg.com/mathjs@5.9.0/dist/math.min.js"></script>
+	
+	<script src="/style/base-script.js"></script>
+	
+	<script>
+		var canvas_size;
+		
+		var persist_image = false;
+		
+		var ctx;
+		
+		$(function()
+		{
+			//Get the Mandelbrot set ready for drawing.
+			canvas_size = parseInt($("#mandelbrot-set").css("width").replace("px", ""));
+			$("#mandelbrot-set").attr({width: canvas_size, height: canvas_size});
+			
+			//Generate the Mandelbrot set.
+			draw_mandelbrot_set(50);
+			
+			//As the user scrolls around the image, make tiny Julia set previews.
+			$("#mandelbrot-set").mousemove(function(e)
+			{
+				var parentOffset = $(this).offset();
+				var mouse_x = e.pageX - parentOffset.left;
+				var mouse_y = e.pageY - parentOffset.top;
+				
+				if (persist_image == false)
+				{
+					draw_julia_set(mouse_x, mouse_y, 100, 25, false);
+				}
+			});
+			
+			//On a click, make a much larger image.
+			$("#mandelbrot-set").click(function(e)
+			{
+				var parentOffset = $(this).offset();
+				var mouse_x = e.pageX - parentOffset.left;
+				var mouse_y = e.pageY - parentOffset.top;
+				
+				persist_image = true;
+				
+				draw_julia_set(mouse_x, mouse_y, 1000, 100, true);
+			});
+			
+			$("#mandelbrot-set").mouseleave(function(e)
+			{
+				persist_image = false;
+			});
+		});
+		
+		
+		
+		function draw_mandelbrot_set(num_iters)
+		{
+			var i, j, k;
+			
+			var x, y;
+			var z, c;
+			
+			var brightness, max_brightness = 0;
+			var image = [];
+			
+			for (i = 0; i < canvas_size; i++)
+			{
+				image[i] = [];
+			}
+			
+			var ctx = document.getElementById("mandelbrot-set").getContext("2d");
+			
+			//Generate initial value map.
+			for (i = 0; i < canvas_size / 2; i++)
+			{
+				for (j = 0; j < canvas_size; j++)
+				{
+					x = ((j - canvas_size/2) / canvas_size) * 3 - .75;
+					y = (-(i - canvas_size/2) / canvas_size) * 3;
+					
+					z = math.complex(x, y);
+					c = z;
+					
+					brightness = math.exp(-math.abs(z));
+					
+					for (k = 0; k < num_iters; k++)
+					{
+						z = math.add(math.multiply(z, z), c);
+						
+						brightness += math.exp(-math.abs(z));
+						
+						if (math.abs(z) > 2)
+						{
+							break;
+						}
+					}
+					
+					if (k == num_iters)
+					{
+						brightness = 0;
+					}
+					
+					
+					
+					//Reflect the top half about the x-axis to get the bottom half.
+					image[i][j] = brightness;
+					image[canvas_size - i - 1][j] = brightness;
+					
+					if (brightness > max_brightness)
+					{
+						max_brightness = brightness;
+					}
+				}
+			}
+			
+			
+			
+			//Scale the values to bring them back into range, then write them with color.
+			for (i = 0; i < canvas_size; i++)
+			{
+				for (j = 0; j < canvas_size; j++)
+				{
+					image[i][j] = (image[i][j] / max_brightness) * 255;
+					ctx.fillStyle = "rgb(" + 0 + "," + image[i][j] + "," + image[i][j] + ")";
+					ctx.fillRect(j, i, 1, 1);
+				}
+			}
+		}
+		
+		
+		
+		function draw_julia_set(mouse_x, mouse_y, julia_size, num_iters, download)
+		{
+			//First convert to actual coordinates.
+			var a = ((mouse_x / canvas_size) - .5) * 3 - .75;
+			var b = (((canvas_size - mouse_y) / canvas_size) - .5) * 3;
+			
+			var i, j, k;
+			
+			var x, y;
+			var z, c;
+			
+			var brightness, max_brightness = 0;
+			var image = [];
+			
+			for (i = 0; i < julia_size; i++)
+			{
+				image[i] = [];
+			}
+			
+			var ctx = document.getElementById("julia-set").getContext("2d");
+			
+			c = math.complex(a, b);
+			
+			//Generate initial value map.
+			for (i = 0; i < julia_size / 2; i++)
+			{
+				for (j = 0; j < julia_size; j++)
+				{
+					x = ((j - julia_size/2) / julia_size) * 4;
+					y = (-(i - julia_size/2) / julia_size) * 4;
+					
+					z = math.complex(x, y);
+					
+					brightness = math.exp(-math.abs(z));
+					
+					for (k = 0; k < num_iters; k++)
+					{
+						z = math.add(math.multiply(z, z), c);
+						
+						brightness += math.exp(-math.abs(z));
+						
+						if (math.abs(z) > 2)
+						{
+							break;
+						}
+					}
+					
+					if (k == num_iters)
+					{
+						brightness = 0;
+					}
+					
+					
+					
+					//Reflect the top half about the origin to get the bottom half.
+					image[i][j] = brightness;
+					image[julia_size - i - 1][julia_size - j - 1] = brightness;
+					
+					if (brightness > max_brightness)
+					{
+						max_brightness = brightness;
+					}
+				}
+			}
+			
+			
+			
+			//Reset the scale of the Julia set to be drawn.
+			$("#julia-set").attr({width: julia_size, height: julia_size});
+			
+			//Scale the values to bring them back into range, then write them with color.
+			for (i = 0; i < julia_size; i++)
+			{
+				for (j = 0; j < julia_size; j++)
+				{
+					image[i][j] = (image[i][j] / max_brightness) * 255;
+					ctx.fillStyle = "rgb(" + 0 + "," + image[i][j] + "," + image[i][j] + ")";
+					ctx.fillRect(j, i, 1, 1);
+				}
+			}
+			
+			//If this is just a preview, upscale the whole drawing to be the same size as the Mandelbrot set.
+			if (download == false)
+			{
+				ctx.scale(canvas_size / julia_size, canvas_size / julia_size);
+			}
+			
+			//Otherwise, prepare the image for downloading.
+			else
+			{
+				$("#download-button").animate({opacity: 0}, 300, "swing");
+				
+				setTimeout(function()
+				{
+					$("#download-button").remove();
+					$("#download-location").after('<div id="download-button" style="display: flex; justify-content: center; align-items: center; opacity: 0"> <a href=' + document.getElementById("julia-set").toDataURL() + ' download="Julia Set.png"> <div class="text-button">Download Image</div> </a> </div>');
+					$("#download-button").animate({opacity: 1}, 300, "swing");
+				}, 300);
+			}
+		}
+	</script>
+
+</body>
+</html>
