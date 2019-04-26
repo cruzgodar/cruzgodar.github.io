@@ -365,7 +365,7 @@
 				setTimeout(function()
 				{
 					$("#download-button").remove();
-					$("#download-location").after('<div id="download-button" style="display: flex; justify-content: center; align-items: center; opacity: 0"> <a href=' + document.getElementById("julia-set").toDataURL() + ' download="' + c.format({precision: 6}) + '"> <div class="text-button">Download Image</div> </a> </div>');
+					$("#download-location").after('<div id="download-button" style="display: flex; justify-content: center; align-items: center; opacity: 0"> <a href=' + document.getElementById("julia-set").toDataURL() + ' download="' + c.format({precision: 6}) + '.png"> <div class="text-button">Download Image</div> </a> </div>');
 					$("#download-button").animate({opacity: 1}, 300, "swing");
 				}, 300);
 			}
