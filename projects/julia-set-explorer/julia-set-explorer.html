@@ -88,20 +88,24 @@
 		<div class="heading-text">Julia Set Explorer</div>
 	</div>
 	
+	<div style="height: 5vh"></div>
+	
+	<div data-aos="fade-up" data-aos-delay="200">
+		<div id="instructions" class="body-text">Hover over the Mandelbrot set to preview the corresponding Julia set. Click to generate a higher-resolution image (can take a little while on slower hardware). For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html">this blog post</a>.</div>
+	</div>
+	
 	<div style="height: 10vh"></div>
 	
 	
 	
 	<div id="container" class="row" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
-		<canvas id="mandelbrot-set"></canvas>
+		<img id="mandelbrot-set" src="mandelbrot-set.png" alt="The Mandelbrot Set"></img>
 		<canvas id="julia-set"></canvas>
 	</div>
 	
-	
-	
 	<div id="download-location" style="height: 10vh"></div>
 	
-	<div style="height: 20vh"></div>
+	<div style="height: 10vh"></div>
 	
 	
 
@@ -127,10 +131,6 @@
 		{
 			//Get the Mandelbrot set ready for drawing.
 			canvas_size = parseInt($("#mandelbrot-set").css("width").replace("px", ""));
-			$("#mandelbrot-set").attr({width: canvas_size, height: canvas_size});
-			
-			//Generate the Mandelbrot set.
-			draw_mandelbrot_set(50);
 			
 			//As the user scrolls around the image, make tiny Julia set previews.
 			if (!hasTouch())
@@ -168,6 +168,8 @@
 			//Handle touchscreens.
 			else
 			{
+				$("#instructions").html('Drag along the Mandelbrot set to preview the corresponding Julia set. Release to generate a higher-resolution image (can take a little while on slower hardware). For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html">this blog post</a>.');
+				
 				document.getElementById("mandelbrot-set").addEventListener("touchmove", function(e)
 				{
 					e.preventDefault();
@@ -191,82 +193,6 @@
 				}, false);
 			}
 		});
-		
-		
-		
-		function draw_mandelbrot_set(num_iters)
-		{
-			var i, j, k;
-			
-			var x, y;
-			var z, c;
-			
-			var brightness, max_brightness = 0;
-			var image = [];
-			
-			for (i = 0; i < canvas_size; i++)
-			{
-				image[i] = [];
-			}
-			
-			var ctx = document.getElementById("mandelbrot-set").getContext("2d");
-			
-			//Generate initial value map.
-			for (i = 0; i < canvas_size / 2; i++)
-			{
-				for (j = 0; j < canvas_size; j++)
-				{
-					x = ((j - canvas_size/2) / canvas_size) * 3 - .75;
-					y = (-(i - canvas_size/2) / canvas_size) * 3;
-					
-					z = math.complex(x, y);
-					c = z;
-					
-					brightness = math.exp(-math.abs(z));
-					
-					for (k = 0; k < num_iters; k++)
-					{
-						z = math.add(math.multiply(z, z), c);
-						
-						brightness += math.exp(-math.abs(z));
-						
-						if (math.abs(z) > 2)
-						{
-							break;
-						}
-					}
-					
-					if (k == num_iters)
-					{
-						brightness = 0;
-					}
-					
-					
-					
-					//Reflect the top half about the x-axis to get the bottom half.
-					image[i][j] = brightness;
-					image[canvas_size - i - 1][j] = brightness;
-					
-					if (brightness > max_brightness)
-					{
-						max_brightness = brightness;
-					}
-				}
-			}
-			
-			
-			
-			//Scale the values to bring them back into range, then write them with color.
-			for (i = 0; i < canvas_size; i++)
-			{
-				for (j = 0; j < canvas_size; j++)
-				{
-					image[i][j] = (image[i][j] / max_brightness) * 255;
-					ctx.fillStyle = "rgb(" + 0 + "," + image[i][j] + "," + image[i][j] + ")";
-					ctx.fillRect(j, i, 1, 1);
-				}
-			}
-		}
 		
 		
 		
