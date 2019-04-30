@@ -291,6 +291,15 @@ a
 
 
 
+/* Used for two small horizontal images side by side. */
+.image-row
+{
+	display: flex;
+	width: 70vw;
+	margin: 0 auto;
+	justify-content: space-between;
+}
+
 .big-image-horizontal
 {
 	position: relative;
@@ -298,23 +307,6 @@ a
 	height: auto;
 	margin-left: 15vw;
 	display: inline-block;
-	
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
-	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
-	filter: brightness(100%);
-}
-
-.big-image-horizontal:hover
-{
-	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
-	filter: brightness(75%);
 }
 
 .small-image-horizontal
@@ -323,8 +315,6 @@ a
 	float: left;
 	width: 32.5vw;
 	height: auto;
-	margin-left: 15vw;
-	margin-right: -10vw;
 	display: inline-block;
 }
 
@@ -346,6 +336,26 @@ a
 	margin-left: auto;
 	margin-right: auto;
 	display: block;
+}
+
+.big-image-horizontal, .small-image-horizontal, .big-image-vertical, .small-image-vertical
+{
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.big-image-horizontal:hover, .small-image-horizontal:hover, .big-image-vertical:hover, .small-image-vertical:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
 }
 
 
@@ -540,8 +550,11 @@ a
 	.small-image-horizontal
 	{
 		width: 42.5vw;
-		margin-left: 5vw;
-		margin-right: 0vw;
+	}
+	
+	.image-row
+	{
+		width: 90vw;
 	}
 
 	.big-image-vertical
