@@ -119,6 +119,12 @@ a
 	font-size: 125%;
 }
 
+.body-text .link, .content-text .link
+{
+	color: rgb(127, 192, 127);
+	text-decoration: none;
+}
+
 .writing-text
 {
 	/* Also to be used for things like blog posts and stories. Will use serif font when font mode is default. */
@@ -292,6 +298,23 @@ a
 	height: auto;
 	margin-left: 15vw;
 	display: inline-block;
+	
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
+	-webkit-filter: brightness(100%);
+	-moz-filter: brightness(100%);
+	-o-filter: brightness(100%);
+	filter: brightness(100%);
+}
+
+.big-image-horizontal:hover
+{
+	-webkit-filter: brightness(75%);
+	-moz-filter: brightness(75%);
+	-o-filter: brightness(75%);
+	filter: brightness(75%);
 }
 
 .small-image-horizontal
