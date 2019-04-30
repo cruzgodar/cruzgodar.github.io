@@ -20,14 +20,18 @@ $(function()
 	
 	
 	//Fade in the low-res banner when it's loaded.
-	if (url_vars["link_animation"] != 1)
+	$("#small-loader").imagesLoaded(function()
 	{
-		$("body").css("opacity", 0);
-		$("#small-loader").imagesLoaded(function()
+		if (url_vars["link_animation"] == 1)
+		{
+			$("body").css("opacity", 1);
+		}
+		
+		else
 		{
 			$("body").animate({opacity: 1}, 300, "swing");
-		});
-	}
+		}
+	});
 	
 	//Switch to the high-res banner when it's loaded.
 	$("#full-res-loader").imagesLoaded(function()
