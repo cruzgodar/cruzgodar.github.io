@@ -131,7 +131,7 @@ function insert_footer(omit, no_theme_button)
     
     if (no_theme_button == 0)
     {
-        $("#spawn-footer").before('<div style="display: flex; align-items: left; margin-bottom: 6px; justify-content: space-between"> <div data-aos="zoom-out" data-aos-offset="0"> <img class="footer-button" style="margin-left: 10px" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect(\'/settings.html\')"></img> </div> <div></div> </div>');
+        $("#spawn-footer").before('<div style="height: calc(4vw - 45px); min-height: 0px"></div> <div style="display: flex; align-items: left; margin-bottom: 6px; justify-content: space-between"> <div data-aos="zoom-out" data-aos-offset="0"> <img class="footer-button" style="margin-left: 10px" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect(\'/settings.html\')"></img> </div> <div></div> </div>');
     }
     
     if (url_vars["content_animation"] == 1)
