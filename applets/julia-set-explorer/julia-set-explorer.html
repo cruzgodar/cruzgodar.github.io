@@ -105,7 +105,9 @@
 	
 	<div id="download-location" style="height: 10vh"></div>
 	
-	<div style="height: 10vh"></div>
+	
+	
+	<div id="spawn-footer"></div>
 	
 	
 
@@ -129,6 +131,17 @@
 		
 		$(function()
 		{
+			var refresh_id = setInterval(function()
+			{
+				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
+				{
+					insert_footer("applets");
+					clearInterval(refresh_id);
+				}
+			}, 200);
+			
+			
+			
 			//Get the Mandelbrot set ready for drawing.
 			canvas_size = parseInt($("#mandelbrot-set").css("width").replace("px", ""));
 			
