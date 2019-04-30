@@ -78,7 +78,7 @@ function insert_footer(omit, no_theme_button)
     no_theme_button = (typeof no_theme_button != "undefined") ? no_theme_button : 0;
     var delay = 100;
     
-    $("#spawn-footer").before('<div style="height: 30vh"></div> <div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <div class="line-break"> <div class="line-break-dark" style="opacity: ' + url_vars["theme"] + '"></div> </div> </div> <div style="height: 5vw"></div> <div class="menu-image-links"></div>');
+    $("#spawn-footer").before('<div style="height: 30vh"></div> <div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <div class="line-break"> <div class="line-break-dark" style="opacity: ' + url_vars["theme"] + '"></div> </div> </div> <div style="height: 4vw"></div> <div class="menu-image-links"></div>');
     
     if (omit != "writing")
     {
@@ -90,6 +90,13 @@ function insert_footer(omit, no_theme_button)
     if (omit != "blog")
     {
         $(".menu-image-links").append('<div id="blog-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/blog.html\')" src="/graphics/image-links/blog-glyph.png" alt="Blog"></img> </div>');
+        
+        delay += 100;
+    }
+    
+    if (omit != "applets")
+    {
+        $(".menu-image-links").append('<div id="applets-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/applets.html\')" src="/graphics/image-links/applets-glyph.png" alt="Applets"></img> </div>');
         
         delay += 100;
     }
@@ -115,7 +122,12 @@ function insert_footer(omit, no_theme_button)
         delay += 100;
     }
     
-    $("#spawn-footer").before('<div id="trigger-menu"></div> <div style="height: 5vw"></div>');
+    $("#spawn-footer").before('<div id="trigger-menu"></div>');
+    
+    if (no_theme_button == 1)
+    {
+    	$("#spawn-footer").before('<div style="height: 4vw"></div>');
+    }
     
     if (no_theme_button == 0)
     {
@@ -365,6 +377,7 @@ function switch_icon_style_on_load()
 				{
 					$("#writing-link img").attr("src", "/graphics/image-links/writing-image.png");
         			$("#blog-link img").attr("src", "/graphics/image-links/blog-image.png");
+        			$("#applets-link img").attr("src", "/graphics/image-links/applets-image.png");
 		        	$("#research-link img").attr("src", "/graphics/image-links/research-image.png");
 		        	$("#notes-link img").attr("src", "/graphics/image-links/notes-image.png");
 		        	$("#bio-link img").attr("src", "/graphics/image-links/me-image.png");
