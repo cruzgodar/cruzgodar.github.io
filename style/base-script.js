@@ -235,6 +235,9 @@ function switch_theme()
 		$(".quote-attribution").css("color", "rgb(164, 164, 164)");
 		$(".title-text").css("color", "rgb(255, 255, 255)");
 		
+		$(".text-box").addClass("text-box-dark");
+		$(".text-box").css("background-color", "rgb(24, 24, 24)");
+		
 		$(".line-break-dark").css("opacity", "1");
 		
 		$("#theme-button-row").animate({opacity: 0}, 300, "swing");
@@ -265,6 +268,9 @@ function switch_theme()
 		$(".quote-attribution").css("color", "rgb(92, 92, 92)");
 		$(".title-text").css("color", "rgb(0, 0, 0)");
 		
+		$(".text-box").removeClass("text-box-dark");
+		$(".text-box").css("background-color", "rgb(255, 255, 255)");
+		
 		$(".line-break-dark").css("opacity", "0");
 		
 		$("#theme-button-row").animate({opacity: 0}, 300, "swing");
@@ -294,10 +300,10 @@ function switch_theme_on_load()
 		return;
 	}
 	
-	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark").addClass("no-transition");
+	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .text-box, .line-break-dark").addClass("no-transition");
 	switch_theme();
-	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark")[0].offsetHeight; //Trigger a reflow, flushing the CSS changes
-	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .line-break-dark").removeClass("no-transition");
+	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .text-box, .line-break-dark")[0].offsetHeight; //Trigger a reflow, flushing the CSS changes
+	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .text-box, .line-break-dark").removeClass("no-transition");
 }
 
 

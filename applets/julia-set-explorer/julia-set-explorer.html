@@ -28,6 +28,9 @@
 
 <link rel="stylesheet" type="text/css" href="/style/base-style.css">
 
+<!-- MathJax -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
 <style>
 
 .row:after
@@ -51,6 +54,13 @@
 #julia-set
 {
 	margin-left: 10vw;
+}
+
+#high-res-julia-set
+{
+	width: 90vmin;
+	height: 90vmin;
+	margin-left: calc((100vw - 90vmin) / 2);
 }
 
 
@@ -91,7 +101,7 @@
 	<div style="height: 5vh"></div>
 	
 	<div data-aos="fade-up" data-aos-delay="200">
-		<div id="instructions" class="body-text">Hover over the Mandelbrot set to preview the corresponding Julia set. Click to generate a higher-resolution image (can take a little while on slower hardware). For more information on Mandelbrot and Julia sets, have a look at <span class="link" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</span>.</div>
+		<div id="instructions" class="content-text">Hover over the Mandelbrot set to preview the corresponding Julia set. Click to generate a higher-resolution preview. For more information on Mandelbrot and Julia sets, have a look at <span class="link" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</span>.</div>
 	</div>
 	
 	<div style="height: 10vh"></div>
@@ -102,6 +112,49 @@
 		<img id="mandelbrot-set" src="graphics/mandelbrot-set.png" alt="The Mandelbrot Set"></img>
 		<canvas id="julia-set"></canvas>
 	</div>
+	
+	<div style="height: 15vh"></div>
+	
+	
+	
+	<div data-aos="fade-up" id="trigger-section-2">
+		<div class="section-text">Higher Resolution</div>
+	</div>
+	
+	<div style="height: 5vh"></div>
+	
+	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-2">
+		<div class="content-text">Enter values of \(a\) and \(b\), along with an image size in pixels, to generate a image of the Julia set for \(c = a + bi\). The values are filed in automatically when a high-resolution preview is created above, but custom values can be used. Image sizes larger than 4000 are not recommended.</div>
+	</div>
+	
+	<div style="height: 5vh"></div>
+	
+	<div style="width: 70vw; margin: 0 auto; display: flex; justify-content: space-between">
+		<div style="width: 20vw" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
+			<input id="a-input" class="text-box" type="text" style="width: 100%">
+			<div class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(a\)</div>
+		</div>
+		
+		<div style="width: 20vw" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-2">
+			<input id="b-input" class="text-box" type="text" style="width: 100%">
+			<div class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(b\)</div>
+		</div>
+		
+		<div style="width: 20vw" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-2">
+			<input id="dim-input" class="text-box" type="text" style="width: 100%">
+			<div class="body-text" style="width: 100%; margin-left: 0px; text-align: center">Image Size</div>
+		</div>
+	</div>	
+	
+	<div style="height: 5vh"></div>
+	
+	<div style="display: flex; justify-content: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="1000" data-aos-anchor="#trigger-section-2">
+		<div class="text-button" onclick="draw_high_res_julia()">Generate</div>
+	</div>
+	
+	<div style="height: 10vh"></div>
+	
+	<canvas id="high-res-julia-set"></canvas>
 	
 	<div id="download-location" style="height: 10vh"></div>
 	
@@ -123,7 +176,8 @@
 	<script src="/style/base-script.js"></script>
 	
 	<script>
-		var canvas_size;
+		var small_canvas_size;
+		var large_canvas_size;
 		
 		var persist_image = false;
 		
@@ -142,8 +196,8 @@
 			
 			
 			
-			//Get the Mandelbrot set ready for drawing.
-			canvas_size = parseInt($("#mandelbrot-set").css("width").replace("px", ""));
+			small_canvas_size = parseInt($("#mandelbrot-set").css("width").replace("px", ""));
+			large_canvas_size = parseInt($("#high-res-julia-set").css("width").replace("px", ""));
 			
 			//As the user scrolls around the image, make tiny Julia set previews.
 			if (!hasTouch())
@@ -156,20 +210,30 @@
 					
 					if (persist_image == false)
 					{
-						draw_julia_set(mouse_x, mouse_y, 100, 25, false);
+						var a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+						var b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+						
+						draw_julia_set(a, b, 100, 25, false);
 					}
 				});
 				
 				//On a click, make a much larger image.
 				$("#mandelbrot-set").click(function(e)
 				{
-					var parentOffset = $(this).offset();
+					var parentOffset = $("#mandelbrot-set").offset();
 					var mouse_x = e.pageX - parentOffset.left;
 					var mouse_y = e.pageY - parentOffset.top;
 					
-					persist_image = true;
+					var a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+					var b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
 					
-					draw_julia_set(mouse_x, mouse_y, 1000, 100, true);
+					draw_julia_set(a, b, 1000, 100, false);
+					
+					$("#a-input").val(Math.round(1000000 * a) / 1000000);
+					$("#b-input").val(Math.round(1000000 * b) / 1000000);
+					$("#dim-input").val(1000);
+					
+					persist_image = true;
 				});
 				
 				$("#mandelbrot-set").mouseleave(function(e)
@@ -181,7 +245,7 @@
 			//Handle touchscreens.
 			else
 			{
-				$("#instructions").html('Drag along the Mandelbrot set to preview the corresponding Julia set. Release to generate a higher-resolution image (can take a little while on slower hardware). For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html">this blog post</a>.');
+				$("#instructions").html('Drag along the Mandelbrot set to preview the corresponding Julia set. Release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <span class="link" onclick="redirect(\'/blog/4/a-taste-of-chaos.html\')">this blog post</span>.');
 				
 				document.getElementById("mandelbrot-set").addEventListener("touchmove", function(e)
 				{
@@ -191,7 +255,10 @@
 					var mouse_x = e.pageX - parentOffset.left;
 					var mouse_y = e.pageY - parentOffset.top;
 					
-					draw_julia_set(mouse_x, mouse_y, 100, 25, false);
+					var a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+					var b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+					
+					draw_julia_set(a, b, 100, 25, false);
 				}, false);
 				
 				document.getElementById("mandelbrot-set").addEventListener("touchend", function(e)
@@ -202,19 +269,33 @@
 					var mouse_x = e.pageX - parentOffset.left;
 					var mouse_y = e.pageY - parentOffset.top;
 					
-					draw_julia_set(mouse_x, mouse_y, 1000, 100, true);
+					var a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+					var b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+					
+					draw_julia_set(a, b, 500, 100, false);
+					
+					$("#a-input").val(Math.round(1000000 * a) / 1000000);
+					$("#b-input").val(Math.round(1000000 * b) / 1000000);
+					$("#dim-input").val(1000);
 				}, false);
 			}
 		});
 		
 		
 		
-		function draw_julia_set(mouse_x, mouse_y, julia_size, num_iters, download)
+		function draw_high_res_julia()
 		{
-			//First convert to actual coordinates.
-			var a = ((mouse_x / canvas_size) - .5) * 3 - .75;
-			var b = (((canvas_size - mouse_y) / canvas_size) - .5) * 3;
+			var a = parseFloat($("#a-input").val()) || 0;
+			var b = parseFloat($("#b-input").val()) || 0;
+			var dim = parseFloat($("#dim-input").val()) || 1000;
 			
+			draw_julia_set(a, b, dim, 100, true);
+		}
+		
+		
+		
+		function draw_julia_set(a, b, julia_size, num_iters, download)
+		{
 			var i, j, k;
 			
 			var x, y;
@@ -228,9 +309,28 @@
 				image[i] = [];
 			}
 			
-			var ctx = document.getElementById("julia-set").getContext("2d");
-			
 			c = math.complex(a, b);
+			
+			
+			
+			var ctx;
+			var canvas_size;
+			
+			if (download == false)
+			{
+				$("#julia-set").attr({width: julia_size, height: julia_size});
+				ctx = document.getElementById("julia-set").getContext("2d");
+				canvas_size = small_canvas_size;
+			}
+			
+			else
+			{
+				$("#high-res-julia-set").attr({width: julia_size, height: julia_size});
+				ctx = document.getElementById("high-res-julia-set").getContext("2d");
+				canvas_size = large_canvas_size;
+			}
+			
+			
 			
 			//Generate initial value map.
 			for (i = 0; i < julia_size / 2; i++)
@@ -266,20 +366,15 @@
 					//Reflect the top half about the origin to get the bottom half.
 					image[i][j] = brightness;
 					image[julia_size - i - 1][julia_size - j - 1] = brightness;
-					
-					if (brightness > max_brightness)
-					{
-						max_brightness = brightness;
-					}
 				}
 			}
 			
 			
 			
-			//Reset the scale of the Julia set to be drawn.
-			$("#julia-set").attr({width: julia_size, height: julia_size});
+			//Find the max brightness, throwing out the top 1% of values to avoid almost-black images with a few specks of color.
+			var brightness_array = image.flat().sort(function(a, b) {return a - b});
+			max_brightness = brightness_array[Math.round(brightness_array.length * .999)];
 			
-			//Scale the values to bring them back into range, then write them with color.
 			for (i = 0; i < julia_size; i++)
 			{
 				for (j = 0; j < julia_size; j++)
@@ -290,21 +385,18 @@
 				}
 			}
 			
-			//If this is just a preview, upscale the whole drawing to be the same size as the Mandelbrot set.
-			if (download == false)
-			{
-				ctx.scale(canvas_size / julia_size, canvas_size / julia_size);
-			}
+			ctx.scale(canvas_size / julia_size, canvas_size / julia_size);
 			
-			//Otherwise, prepare the image for downloading.
-			else
+			
+			
+			if (download == true)
 			{
 				$("#download-button").animate({opacity: 0}, 300, "swing");
 				
 				setTimeout(function()
 				{
 					$("#download-button").remove();
-					$("#download-location").after('<div id="download-button" style="display: flex; justify-content: center; align-items: center; opacity: 0"> <a href=' + document.getElementById("julia-set").toDataURL() + ' download="' + c.format({precision: 6}) + '.png"> <div class="text-button">Download Image</div> </a> </div>');
+					$("#download-location").after('<div id="download-button" style="display: flex; justify-content: center; opacity: 0; width: 70vw; margin: 0 auto"> <a href=' + document.getElementById("high-res-julia-set").toDataURL() + ' download="' + c.format({precision: 6}) + '.png"> <div class="text-button">Download Image</div> </a> </div>');
 					$("#download-button").animate({opacity: 1}, 300, "swing");
 				}, 300);
 			}

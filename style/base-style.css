@@ -397,6 +397,132 @@ a
 
 
 
+.text-box
+{
+	border: none;
+	border-radius: 0px;
+	border-bottom: 2px solid rgb(192, 192, 192);
+	outline: none;
+	background-color: rgb(255, 255, 255);
+	box-sizing: border-box;
+	
+	color: rgb(127, 127, 127);
+	font-size: 125%;
+	text-align: center;
+	
+	-webkit-transition: border-color .15s ease-in-out, color .15s ease-in-out;
+	-moz-transition: border-color .15s ease-in-out, color .15s ease-in-out;
+	-o-transition: border-color .15s ease-in-out, color .15s ease-in-out;
+	transition: border-color .15s ease-in-out, color .15s ease-in-out;
+}
+
+.text-box:focus
+{
+	border-color: rgb(127, 127, 127);
+}
+
+.text-box-dark
+{
+	border-bottom: 2px solid rgb(64, 64, 64);
+}
+
+
+
+.stage-bubbles
+{
+	width: 50vw;
+	margin-left: 25vw;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.stage-bubble
+{
+	width: 5vw;
+	height: 5vw;
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	-o-border-radius: 7px;
+	padding: 2px;
+}
+
+.stage-bubble span
+{
+	width: 0%;
+	height: 0%;
+	margin: 0 auto;
+	position: relative;
+	display: block;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	background-color: rgb(127, 127, 127);
+	overflow: hidden;
+	
+	-webkit-transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
+    -moz-transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
+    -o-transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
+    transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
+    
+    top: 50%;
+  	-webkit-transform: translateY(-50%);
+  	-ms-transform: translateY(-50%);
+  	transform: translateY(-50%);
+}
+
+.stage-bubble-subtext
+{
+	width: 17.5vw;
+	margin-left: -6.25vw;
+	margin-top: calc(5vw + 1vh);
+	text-align: center;
+	
+	-webkit-transition: margin-top 1.2s ease;
+    -moz-transition: margin-top 1.2s ease;
+    -o-transition: margin-top 1.2s ease;
+    transition: margin-top 1.2s ease;
+}
+
+
+
+.progress-bar
+{
+	width: calc(50vw - 8px);
+	height: 5vh;
+	margin-left: 25vw;
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	-o-border-radius: 7px;
+	padding: 2px;
+}
+
+.progress-bar span
+{
+	width: 0%;
+	position: relative;
+	display: block;
+	height: 100%;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	background-color: rgb(127, 127, 127);
+	overflow: hidden;
+	-webkit-transition: width 1.2s ease;
+    -moz-transition: width 1.2s ease;
+    -o-transition: width 1.2s ease;
+    transition: width 1.2s ease;
+}
+
+
+
 .row:after
 {
 	content: "";
