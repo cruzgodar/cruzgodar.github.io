@@ -227,7 +227,7 @@
 					var a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
 					var b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
 					
-					draw_julia_set(a, b, 1000, 100, false);
+					draw_julia_set(a, b, 500, 100, false);
 					
 					$("#a-input").val(Math.round(1000000 * a) / 1000000);
 					$("#b-input").val(Math.round(1000000 * b) / 1000000);
