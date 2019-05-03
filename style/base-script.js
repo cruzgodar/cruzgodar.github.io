@@ -189,7 +189,8 @@ function concat_url_vars()
     {
     	key = Object.keys(url_vars)[i];
     	
-    	if (url_vars[key] != 0)
+    	//It's necessary to write theme=0 for the following reason: if a user with a system-wide dark theme enters and attempts to change to the light theme, and this function doesn't write theme=0, the next page loaded will see url_vars["theme"] = null, assume there's no preference, and use the system setting again.
+    	if ((key != "theme" && url_vars[key] != 0) || (key == "theme"))
     	{
         	if (first_var_written == 0)
 	        {
@@ -669,37 +670,48 @@ $(function()
 	//Apply settings.
 	url_vars = {"theme": get_url_var("theme"), "font": get_url_var("font"), "icon_style": get_url_var("icon_style"), "no_new_section": get_url_var("no_new_section"), "link_animation": get_url_var("link_animation"), "content_animation": get_url_var("content_animation"), "banner_style": get_url_var("banner_style")};
 
-	if (url_vars["theme"] != 0 && url_vars["theme"] != 1)
+	if (url_vars["theme"] == null)
 	{
 	    url_vars["theme"] = 0;
+	    
+	    //Test for system-wide dark mode.
+	    if ($("html").css("background-color") == "rgb(24, 24, 24)")
+	    {
+	    	url_vars["theme"] = 1;
+	    }
 	}
-
-	if (url_vars["font"] != 0 && url_vars["font"] != 1)
+	
+	//Remove the message from the css that the user has a system-wide dark theme.
+	$("html").css("background-color", "rgba(0, 0, 0, 0)");
+	
+	
+	
+	if (url_vars["font"] == null)
 	{
 	    url_vars["font"] = 0;
 	}
 
-	if (url_vars["icon_style"] != 0 && url_vars["icon_style"] != 1)
+	if (url_vars["icon_style"] == null)
 	{
 	    url_vars["icon_style"] = 0;
 	}
 
-	if (url_vars["no_new_section"] != 0 && url_vars["no_new_section"] != 1)
+	if (url_vars["no_new_section"] == null)
 	{
 	    url_vars["no_new_section"] = 0;
 	}
 	
-	if (url_vars["link_animation"] != 0 && url_vars["link_animation"] != 1)
+	if (url_vars["link_animation"] == null)
 	{
 	    url_vars["link_animation"] = 0;
 	}
 	
-	if (url_vars["content_animation"] != 0 && url_vars["content_animation"] != 1)
+	if (url_vars["content_animation"] == null)
 	{
 	    url_vars["content_animation"] = 0;
 	}
 	
-	if (url_vars["banner_style"] != 0 && url_vars["banner_style"] != 1)
+	if (url_vars["banner_style"] == null)
 	{
 	    url_vars["banner_style"] = 0;
 	}
@@ -711,7 +723,7 @@ $(function()
 	    url_vars["theme"] = 0;
 		switch_theme_on_load();
 	}
-
+	
 	if (url_vars["font"] == 1)
 	{
 	    url_vars["font"] = 0;
