@@ -171,12 +171,6 @@ var url_vars = {};
 
 
 
-function get_url_var(id)
-{
-	var svalue = location.search.match(new RegExp("[\?\&]" + id + "=([^\&]*)(\&?)","i"));
-	return svalue ? svalue[1] : svalue;
-}
-
 //Returns a string of url vars that can be attached to any url.
 function concat_url_vars()
 {
@@ -225,7 +219,7 @@ function switch_theme()
 	//Light to dark
 	if (url_vars["theme"] == 0)
 	{
-		$("body").css("background-color", "rgb(24, 24, 24)");
+		$("html").css("background-color", "rgb(24, 24, 24)");
 		
 		$(".heading-text").css("color", "rgb(255, 255, 255)");
 		$(".date-text").css("color", "rgb(255, 255, 255)");
@@ -258,7 +252,7 @@ function switch_theme()
 	//Dark to light
 	else
 	{
-		$("body").css("background-color", "rgb(255, 255, 255)");
+		$("html").css("background-color", "rgb(255, 255, 255)");
 		
 		$(".heading-text").css("color", "rgb(0, 0, 0)");
 		$(".date-text").css("color", "rgb(0, 0, 0)");
@@ -301,10 +295,10 @@ function switch_theme_on_load()
 		return;
 	}
 	
-	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .text-box, .line-break-dark").addClass("no-transition");
+	$("html, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .text-box, .line-break-dark").addClass("no-transition");
 	switch_theme();
-	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .text-box, .line-break-dark")[0].offsetHeight; //Trigger a reflow, flushing the CSS changes
-	$("body, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .text-box, .line-break-dark").removeClass("no-transition");
+	$("html, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .text-box, .line-break-dark")[0].offsetHeight; //Trigger a reflow, flushing the CSS changes
+	$("html, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .text-box, .line-break-dark").removeClass("no-transition");
 }
 
 
