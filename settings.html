@@ -121,7 +121,7 @@
 	
 	
 	<div style="display: flex; justify-content: center; align-items: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="2600" data-aos-anchor="#trigger-section-1">
-		<div class="text-button" onclick="redirect('/index.html')">Apply</div>
+		<div id="apply-button" class="text-button" onclick="">Apply</div>
 	</div>
 	
 	<div style="height: 15vh"></div>
@@ -137,5 +137,10 @@
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 	
 	<script src="/style/base-script.js"></script>
+	
+	<!-- Figure out where to return to. -->
+	<script>
+		$("#apply-button").attr("onclick", "redirect('" + decodeURIComponent(get_url_var("return")) + "')");
+	</script>
 </body>
 </html>

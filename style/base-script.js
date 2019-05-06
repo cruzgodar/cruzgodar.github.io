@@ -149,9 +149,18 @@ function insert_footer(omit, no_theme_button)
 ////////////////////////////// SETTINGS //////////////////////////////
 function redirect(url)
 {
+	var include_return_url = 0;
+	
+	if (url == "/settings.html")
+	{
+		include_return_url = 1;
+	}
+	
+	
+	
 	if (url_vars["link_animation"] == 1)
 	{
-		window.location.href = url + concat_url_vars();
+		window.location.href = url + concat_url_vars(include_return_url);
 	}
 	
 	else
@@ -160,7 +169,7 @@ function redirect(url)
 		
 	    setTimeout(function()
 	    {
-	        window.location.href = url + concat_url_vars();
+	        window.location.href = url + concat_url_vars(include_return_url);
 	    }, 300);
 	}
 }
@@ -172,7 +181,7 @@ var url_vars = {};
 
 
 //Returns a string of url vars that can be attached to any url.
-function concat_url_vars()
+function concat_url_vars(include_return_url)
 {
 	var first_var_written = 0;
     var string = "";
@@ -199,6 +208,25 @@ function concat_url_vars()
 	    }
     }
     
+    
+    
+    //If we're going to the settings page, we need to know where we came from so we can return there later. Just don't include any current url variables.
+    if (include_return_url == 1)
+    {
+    	if (first_var_written == 0)
+	    {
+	    	string += "?return=" + encodeURIComponent(window.location.href.split("?", 1));
+	        first_var_written = 1;
+	    }
+	    
+		else
+		{
+	    	string += "&return=" + encodeURIComponent(window.location.href.split("?", 1));
+	    }
+    }
+    
+    
+    
     return string;
 }
 
@@ -207,7 +235,7 @@ function write_url_vars()
 	//Make state persist on refresh, unless it's the settings page, which will just clog up the history.
 	if (!(window.location.href.includes("settings")))
 	{
-		history.replaceState({}, document.title, window.location.href.split("?", 1) + concat_url_vars());
+		history.replaceState({}, document.title, window.location.href.split("?", 1) + concat_url_vars(0));
 	}
 }
 
