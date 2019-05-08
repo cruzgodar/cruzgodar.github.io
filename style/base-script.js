@@ -165,7 +165,7 @@ function redirect(url)
 	
 	else
 	{
-		$("body").animate({opacity: 0}, 300, "swing");
+		$("html").animate({opacity: 0}, 300, "swing");
 		
 	    setTimeout(function()
 	    {
@@ -660,7 +660,7 @@ $(function()
 	
 	
 	
-	//Handle when the user uses the back button.
+	//Fade in the opacity when the user presses the back button.
 	window.addEventListener("pageshow", function(event)
 	{
 		var historyTraversal = event.persisted || 
@@ -669,8 +669,8 @@ $(function()
 		
 		if (historyTraversal)
 		{
-	    	document.body.style.opacity = 1;
-	    	scroll_update();
+	    	$("html").animate({opacity: 1}, 300, "swing");
+	    	//scroll_update();
 	    }
 	});
 	
