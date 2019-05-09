@@ -39,11 +39,6 @@ body
 	margin: 0;
 	padding: 0;
 	opacity: 1;
-	
-	-webkit-transition: none !important;
-	-moz-transition: none !important;
-	-o-transition: none !important;
-	transition: none !important;
 }
 
 
@@ -338,7 +333,7 @@ body
 		{
 			if (url_vars["theme"] == 1)
 			{
-				$("body").css("background-color", "rgb(24, 24, 24)");
+				$("html").css("background-color", "rgb(24, 24, 24)");
 			}
 			
 			
@@ -383,7 +378,7 @@ body
 						}
 						
 						
-						$("body").css("background-color", "rgb(" + background_color + ", " + background_color + ", " + background_color + ")");
+						$("html").css("background-color", "rgb(" + background_color + ", " + background_color + ", " + background_color + ")");
 						
 						if (background_color == 0)
 						{
@@ -398,7 +393,7 @@ body
 					
 					else if (background_done == 0)
 					{
-						$("body").css("background-color", "rgb(0, 0, 0)");
+						$("html").css("background-color", "rgb(0, 0, 0)");
 						background_done = 1;
 					}
 					

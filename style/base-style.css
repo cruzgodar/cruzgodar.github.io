@@ -5,11 +5,6 @@ html
 {
 	font-size: max(calc((1.5vmin + 1.5vmax) / 2), 12px);
 	font-family: "Rubik", sans-serif;
-	
-	-webkit-transition: background-color .6s ease;
-	-moz-transition: background-color .6s ease;
-	-o-transition: background-color .6s ease;
-	transition: background-color .6s ease;
 }
 
 body
@@ -69,11 +64,6 @@ a
 	color: rgb(0, 0, 0);
 	text-align: center;
 	font-size: 250%;
-	
-	-webkit-transition: color .6s ease;
-	-moz-transition: color .6s ease;
-	-o-transition: color .6s ease;
-	transition: color .6s ease;
 }
 
 .date-text
@@ -81,11 +71,6 @@ a
 	color: rgb(0, 0, 0);
 	text-align: center;
 	font-size: 125%;
-	
-	-webkit-transition: color .6s ease;
-	-moz-transition: color .6s ease;
-	-o-transition: color .6s ease;
-	transition: color .6s ease;
 }
 
 .section-text
@@ -93,11 +78,6 @@ a
 	color: rgb(92, 92, 92);
 	text-align: center;
 	font-size: 175%;
-	
-	-webkit-transition: color .6s ease;
-	-moz-transition: color .6s ease;
-	-o-transition: color .6s ease;
-	transition: color .6s ease;
 }
 
 .body-text
@@ -559,10 +539,6 @@ a
 	background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(92,92,92) 50%,rgb(24,24,24) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     
     opacity: 0;
-    -webkit-transition: opacity .6s ease;
-	-moz-transition: opacity .6s ease;
-	-o-transition: opacity .6s ease;
-    transition: opacity .6s ease;
 }
 
 
@@ -610,16 +586,6 @@ a
 	filter: brightness(75%);
 }
 
-
-
-/* Used on page load when dark mode is enabled to make it seem instantly dark */
-.no-transition
-{
-	-webkit-transition: none !important;
-	-moz-transition: none !important;
-	-o-transition: none !important;
-	transition: none !important;
-}
 
 
 /* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), use the mobile layout. */

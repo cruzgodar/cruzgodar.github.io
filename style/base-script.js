@@ -323,10 +323,7 @@ function switch_theme_on_load()
 		return;
 	}
 	
-	$("html, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .text-box, .line-break-dark").addClass("no-transition");
 	switch_theme();
-	$("html, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .text-box, .line-break-dark")[0].offsetHeight; //Trigger a reflow, flushing the CSS changes
-	$("html, .heading-text, .date-text, .section-text, .quote-text, .quote-attribution, .title-text, .text-box, .line-break-dark").removeClass("no-transition");
 }
 
 
@@ -678,7 +675,7 @@ $(function()
 			{
 				setTimeout(function()
 				{
-	    			$("html").animate({opacity: 1}, 300, "swing");
+					$("html").animate({opacity: 1}, 300, "swing");
 	    		}, 300);
 	    	}
 	    }
