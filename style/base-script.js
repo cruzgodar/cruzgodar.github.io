@@ -669,8 +669,18 @@ $(function()
 		
 		if (historyTraversal)
 		{
-	    	$("html").animate({opacity: 1}, 300, "swing");
-	    	//scroll_update();
+			if (url_vars["link_animation"] == 1)
+			{
+				$("html").css("opacity", 1);
+			}
+			
+			else
+			{
+				setTimeout(function()
+				{
+	    			$("html").animate({opacity: 1}, 300, "swing");
+	    		}, 300);
+	    	}
 	    }
 	});
 	
