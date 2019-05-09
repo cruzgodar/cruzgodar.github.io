@@ -153,14 +153,20 @@ a
 }
 
 
+.nav-buttons
+{
+	display: flex;
+	width: 70vw;
+	margin: 0 auto;
+	justify-content: space-between;
+}
 
-.nav-button-left, .nav-button-right
+.nav-button
 {
 	color: rgb(127, 127, 127);
 	background-color: rgb(255, 255, 255);
 	height: 20px;
 	position: relative;
-	margin-bottom: 15vh;
 	opacity: 1;
 
 	border: 2px solid rgb(127, 127, 127);
@@ -178,22 +184,10 @@ a
 	cursor: pointer;
 }
 
-.nav-button-left:hover, .nav-button-right:hover
+.nav-button:hover
 {
 	border-color: rgb(96, 96, 96);
 	background-color: rgb(192, 192, 192);
-}
-
-.nav-button-left
-{
-	float: left;
-	margin-left: 15vw;
-}
-
-.nav-button-right
-{
-	float: right;
-	margin-right: 15vw;
 }
 
 
@@ -629,6 +623,13 @@ a
 	.row-break
 	{
 		height: 10vw;
+	}
+	
+	
+	
+	.nav-buttons
+	{
+		width: 90vw;
 	}
 	
 	
