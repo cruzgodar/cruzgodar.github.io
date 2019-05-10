@@ -683,6 +683,19 @@ $(function()
 	
 	
 	
+	$(window).resize(function()
+	{
+		w = window,
+		d = document,
+		e = d.documentElement,
+		g = d.getElementsByTagName("body")[0],
+		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+		
+		AOS.init({offset: y/4});
+	});
+	
+	
+	
 	//Handle IE and Edge.
 	if (browser_name == "MS Edge")
 	{

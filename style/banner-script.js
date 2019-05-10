@@ -54,6 +54,13 @@ $(function()
 	{
 		scroll_update();
 	});
+	
+	
+	
+	$(window).resize(function()
+	{
+		scroll_update();
+	});
 });
 
 
