@@ -73,6 +73,20 @@
 	text-shadow: 0px 0px 20px rgb(0, 0, 0);
 }
 
+#cruz-text
+{
+	margin-top: 2.1875vmin;
+	margin-left: 4.9583vmin;
+}
+
+#godar-text
+{
+	margin-top: 19.6875vmin;
+	margin-left: 4.9583vmin;
+}
+
+
+
 .title-text
 {
 	font-size: 200%;
@@ -278,7 +292,7 @@
 				
 				$(".name-text").remove();
 				
-				$("#full-res-loader").after("<div style='position: fixed' data-aos='fade-left' data-aos-delay='350'><div id='cruz-text' class='name-text' style='margin-top: " + font_size / 8 + "px; margin-left: " + (font_size / 3 - font_size / 20) + "px'>Cruz</div></div><div style='position: fixed' data-aos='fade-left' data-aos-delay='600'><div id='godar-text' class='name-text' style='margin-top: " + (font_size + font_size / 8) + "px; margin-left: " + (font_size / 3 - font_size / 20) + "px'>Godar</div></div>");
+				$("#full-res-loader").after("<div style='position: fixed' data-aos='fade-left' data-aos-delay='350'><div id='cruz-text' class='name-text'>Cruz</div></div><div style='position: fixed' data-aos='fade-left' data-aos-delay='600'><div id='godar-text' class='name-text'>Godar</div></div>");
 				
 				if (url_vars["content_animation"] == 1)
 				{
@@ -289,17 +303,6 @@
 				{
 					$(".name-text").parent().css("position", "absolute");
 				}
-				
-				
-				
-				//Change the margin and size of the name text whenever it's resized.
-				$(window).resize(function()
-				{
-					font_size = parseInt($(".name-text").css("font-size").replace("px", ""));
-					
-					$("#cruz-text").css({marginTop: font_size / 8, marginLeft: font_size / 3 - font_size / 20});
-					$("#godar-text").css({marginTop: font_size + font_size / 8, marginLeft: font_size / 3 - font_size / 20});
-				});
 			});
 			
 			$("#full-res-loader").attr("src", "/graphics/index-banners/banner-" + image + ".jpg");
@@ -315,6 +318,16 @@
 			
 			
 			$(window).scroll(function()
+			{
+				scroll = $(this).scrollTop();
+				
+				if (scroll <= y/3 && url_vars["banner_style"] != 1)
+				{
+					$(".name-text").css("opacity", global_opacity);
+				}
+			});
+			
+			$(window).resize(function()
 			{
 				scroll = $(this).scrollTop();
 				
