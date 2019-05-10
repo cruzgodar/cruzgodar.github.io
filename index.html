@@ -49,51 +49,35 @@
 
 .quote-text
 {
+	font-size: 125%;
 	color: rgb(176, 176, 176);
 	text-align: justify;
 	font-style: italic;
-	font-size: 125%;
-	
-	-webkit-transition: color .6s ease;
-	-moz-transition: color .6s ease;
-	-o-transition: color .6s ease;
-	transition: color .6s ease;
 }
 
 .quote-attribution
 {
+	font-size: 125%;
 	color: rgb(92, 92, 92);
 	text-align: right;
-	font-size: 125%;
-	
-	-webkit-transition: color .6s ease;
-	-moz-transition: color .6s ease;
-	-o-transition: color .6s ease;
-	transition: color .6s ease;
 }
 
 
 
 .name-text
 {
-	color: rgb(255, 255, 255);
 	font-size: 17.5vmin;
+	color: rgb(255, 255, 255);
+	text-align: left;
 	font-family: "Gentium Book Basic", serif;
 	text-shadow: 0px 0px 20px rgb(0, 0, 0);
-	
-	text-align: left;
 }
 
 .title-text
 {
+	font-size: 200%;
 	color: rgb(0, 0, 0);
 	text-align: center;
-	font-size: 200%;
-	
-	-webkit-transition: color .6s ease;
-	-moz-transition: color .6s ease;	
-	-o-transition: color .6s ease;
-	transition: color .6s ease;
 }
 
 
@@ -309,7 +293,7 @@
 				
 				
 				//Change the margin and size of the name text whenever it's resized.
-				$("#cruz-text").resize(function()
+				$(window).resize(function()
 				{
 					font_size = parseInt($(".name-text").css("font-size").replace("px", ""));
 					
