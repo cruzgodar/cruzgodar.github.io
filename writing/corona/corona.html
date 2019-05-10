@@ -123,8 +123,7 @@ body
 
 
 
-/* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), change the layout. */
-@media screen and (max-width: 1300px) and (orientation: portrait)
+@media screen and (max-aspect-ratio: 9/16)
 {
 	/* Make text have smaller margins so justifying doesn't look ugly. */
 	.synopsis-text

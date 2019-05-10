@@ -98,8 +98,7 @@
 
 
 
-/* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), change the layout. */
-@media screen and (max-width: 1300px) and (orientation: portrait)
+@media screen and (max-aspect-ratio: 9/16)
 {
 	/* Stack the quote columns on top of one another. */
 	.column
@@ -295,7 +294,7 @@
 				
 				$(".name-text").remove();
 				
-				$("#full-res-loader").after("<div style='position: fixed' data-aos='fade-left' data-aos-delay='350'><div class='name-text' style='margin-top: " + font_size / 8 + "px; margin-left: " + (font_size / 3 - font_size / 20) + "px'>Cruz</div></div><div style='position: fixed' data-aos='fade-left' data-aos-delay='600'><div class='name-text' style='margin-top: " + (font_size + font_size / 8) + "px; margin-left: " + (font_size / 3 - font_size / 20) + "px'>Godar</div></div>");
+				$("#full-res-loader").after("<div style='position: fixed' data-aos='fade-left' data-aos-delay='350'><div id='cruz-text' class='name-text' style='margin-top: " + font_size / 8 + "px; margin-left: " + (font_size / 3 - font_size / 20) + "px'>Cruz</div></div><div style='position: fixed' data-aos='fade-left' data-aos-delay='600'><div id='godar-text' class='name-text' style='margin-top: " + (font_size + font_size / 8) + "px; margin-left: " + (font_size / 3 - font_size / 20) + "px'>Godar</div></div>");
 				
 				if (url_vars["content_animation"] == 1)
 				{
@@ -306,6 +305,17 @@
 				{
 					$(".name-text").parent().css("position", "absolute");
 				}
+				
+				
+				
+				//Change the margin and size of the name text whenever it's resized.
+				$("#cruz-text").resize(function()
+				{
+					font_size = parseInt($(".name-text").css("font-size").replace("px", ""));
+					
+					$("#cruz-text").css({marginTop: font_size / 8, marginLeft: font_size / 3 - font_size / 20});
+					$("#godar-text").css({marginTop: font_size + font_size / 8, marginLeft: font_size / 3 - font_size / 20});
+				});
 			});
 			
 			$("#full-res-loader").attr("src", "/graphics/index-banners/banner-" + image + ".jpg");
