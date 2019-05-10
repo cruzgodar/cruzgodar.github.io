@@ -58,48 +58,42 @@ a
 
 
 
-.heading-text
+.heading-text, .section-text, .body-text, .date-text, .song-lyrics
 {
 	position: relative;
+	width: 70vw;
+	margin: 0 auto;
+}
+
+.heading-text
+{
+	font-size: 250%;
 	color: rgb(0, 0, 0);
 	text-align: center;
-	font-size: 250%;
 }
 
 .date-text
 {
+	font-size: 125%;
 	color: rgb(0, 0, 0);
 	text-align: center;
-	font-size: 125%;
 }
 
 .section-text
 {
+	font-size: 175%;
 	color: rgb(92, 92, 92);
 	text-align: center;
-	font-size: 175%;
 }
 
 .body-text
 {
-	width: 70vw;
-	margin-left: 15vw;
+	font-size: 125%;
 	color: rgb(127, 127, 127);
 	text-align: justify;
-	font-size: 125%;
 }
 
-/* To be used for things like blog posts and stories. Will auotmatically reduce margin on narrow devices */
-.content-text
-{
-	width: 70vw;
-	margin-left: 15vw;
-	color: rgb(127, 127, 127);
-	text-align: justify;
-	font-size: 125%;
-}
-
-.body-text .link, .content-text .link
+.body-text .link
 {
 	color: rgb(127, 192, 127);
 	text-decoration: none;
@@ -113,11 +107,9 @@ a
 
 .song-lyrics
 {
-	width: 70vw;
-	margin-left: 15vw;
+	font-size: 125%;
 	color: rgb(127, 127, 127);
 	text-align: center;
-	font-size: 125%;
 	font-family: "Gentium Book Basic", serif;
 }
 
@@ -584,11 +576,10 @@ a
 
 /* If the screen is less than 1300px wide and in portrait mode (e.g. a phone held vertically, but not horizontally), use the mobile layout. */
 @media screen and (max-width: 1300px) and (orientation: portrait)
-{	
-	.content-text, .song-lyrics
+{
+	.heading-text, .section-text, .body-text, .date-text, .song-lyrics
 	{
 		width: 90vw;
-		margin-left: 5vw;
 	}
 	
 	
@@ -596,27 +587,29 @@ a
 	/* Put two images per row, rather than four. */
 	.image-link
 	{
-		width: 30vw;
-		height: 30vw;
+		width: 40vw;
+		height: 40vw;
 		margin-bottom: 10vw;
 	}
 	
 	.image-links
 	{
+		width: 90vw;
+		
 		/* Cancel out the bottom row's bottom margin */
 		margin-bottom: -10vw;
 	}
 	
 	.image-link img
 	{
-		width: 30vw;
-		height: 30vw;
+		width: 40vw;
+		height: 40vw;
 	}
 
 	/* Reposition subtext. */
 	.image-link-subtext
 	{
-		margin-top: 31.25vw;
+		margin-top: 41.25vw;
 	}
 	
 	/* Make spacing even. */
