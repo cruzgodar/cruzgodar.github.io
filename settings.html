@@ -48,6 +48,30 @@ html
 	transition: color .6s ease;
 }
 
+.button-row
+{
+	width: 70vw;
+	height: 38px;
+	margin: 0 auto;
+	display: flex;
+	align-items: flex-start;
+}
+
+.button-text
+{
+	margin: auto;
+	margin-left: 10px;
+	text-align: left;
+}
+
+@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
+{
+	.button-row
+	{
+		width: 90vw;
+	}
+}
+
 </style>
 
 </head>
@@ -69,72 +93,72 @@ html
 
 	<div style="height: 5vh"></div>
 
-	<div id="theme-button-row" style="width: 70vw; height: 38px; margin: 0 auto; display: flex; align-items: flex-start; margin-bottom: 6px">
+	<div id="theme-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1000" data-aos-anchor="#trigger-section-1">
 			<img class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="switch_theme()"></img>
 		</div>
 		
-		<div id="theme-button-text" class="body-text" style="margin: auto; margin-left: 10px; text-align: left; width: auto" data-aos="fade-left" data-aos-delay="1000" data-aos-anchor="#trigger-section-1">Theme: light</div>
+		<div id="theme-button-text" class="body-text button-text" data-aos="fade-left" data-aos-delay="1000" data-aos-anchor="#trigger-section-1">Theme: light</div>
 	</div>
 	
 	<div style="height: 2vh"></div>
 	
-	<div id="font-button-row" style="width: 70vw; height: 38px; margin: 0 auto; display: flex; align-items: flex-start; margin-bottom: 6px">
+	<div id="font-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1100" data-aos-anchor="#trigger-section-1">
 			<img class="footer-button" src="/graphics/button-icons/font.png" alt="Change Font" onclick="switch_font()"></img>
 		</div>
 		
-		<div id="font-button-text" class="body-text" style="margin: auto; margin-left: 10px; text-align: left; width: auto" data-aos="fade-left" data-aos-delay="1100" data-aos-anchor="#trigger-section-1">Font: sans serif</div>
+		<div id="font-button-text" class="body-text button-text" data-aos="fade-left" data-aos-delay="1100" data-aos-anchor="#trigger-section-1">Font: sans serif</div>
 	</div>
 	
 	<div style="height: 2vh"></div>
 	
-	<div id="icon-button-row" style="width: 70vw; height: 38px; margin: 0 auto; display: flex; align-items: flex-start; margin-bottom: 6px">
+	<div id="icon-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1200" data-aos-anchor="#trigger-section-1">
 			<img class="footer-button" src="/graphics/button-icons/rounded-square.png" alt="Change Icons" onclick="switch_icon_style()"></img>
 		</div>
 		
-		<div id="icon-button-text" class="body-text" style="margin: auto; margin-left: 10px; text-align: left; width: auto" data-aos="fade-left" data-aos-delay="1200" data-aos-anchor="#trigger-section-1">Homepage icons: glyphs</div>
+		<div id="icon-button-text" class="body-text button-text" data-aos="fade-left" data-aos-delay="1200" data-aos-anchor="#trigger-section-1">Homepage icons: glyphs</div>
 	</div>
 	
 	<div style="height: 2vh"></div>
 	
-	<div id="new-section-button-row" style="width: 70vw; height: 38px; margin: 0 auto; display: flex; align-items: flex-start; margin-bottom: 6px">
+	<div id="new-section-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1300" data-aos-anchor="#trigger-section-1">
 			<img class="footer-button" src="/graphics/button-icons/star.png" alt="Toggle New Section" onclick="switch_new_section()"></img>
 		</div>
 		
-		<div id="new-section-button-text" class="body-text" style="margin: auto; margin-left: 10px; text-align: left; width: auto" data-aos="fade-left" data-aos-delay="1300" data-aos-anchor="#trigger-section-1">New additions on homepage: shown</div>
+		<div id="new-section-button-text" class="body-text button-text" data-aos="fade-left" data-aos-delay="1300" data-aos-anchor="#trigger-section-1">New additions on homepage: shown</div>
 	</div>
 	
 	<div style="height: 2vh"></div>
 	
-	<div id="content-animation-button-row" style="width: 70vw; height: 38px; margin: 0 auto; display: flex; align-items: flex-start; margin-bottom: 6px">
+	<div id="content-animation-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1400" data-aos-anchor="#trigger-section-1">
 			<img class="footer-button" src="/graphics/button-icons/pop.png" alt="Toggle Content Animation" onclick="switch_content_animation()"></img>
 		</div>
 		
-		<div id="content-animation-button-text" class="body-text" style="margin: auto; margin-left: 10px; text-align: left; width: auto" data-aos="fade-left" data-aos-delay="1400" data-aos-anchor="#trigger-section-1">Content: animated</div>
+		<div id="content-animation-button-text" class="body-text button-text" data-aos="fade-left" data-aos-delay="1400" data-aos-anchor="#trigger-section-1">Content: animated</div>
 	</div>
 	
 	<div style="height: 2vh"></div>
 	
-	<div id="link-animation-button-row" style="width: 70vw; height: 38px; margin: 0 auto; display: flex; align-items: flex-start; margin-bottom: 6px">
+	<div id="link-animation-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1500" data-aos-anchor="#trigger-section-1">
 			<img class="footer-button" src="/graphics/button-icons/link.png" alt="Toggle Link Animation" onclick="switch_link_animation()"></img>
 		</div>
 		
-		<div id="link-animation-button-text" class="body-text" style="margin: auto; margin-left: 10px; text-align: left; width: auto" data-aos="fade-left" data-aos-delay="1500" data-aos-anchor="#trigger-section-1">Links: animated</div>
+		<div id="link-animation-button-text" class="body-text button-text" data-aos="fade-left" data-aos-delay="1500" data-aos-anchor="#trigger-section-1">Links: animated</div>
 	</div>
 	
 	<div style="height: 2vh"></div>
 	
-	<div id="banner-style-button-row" style="width: 70vw; height: 38px; margin: 0 auto; display: flex; align-items: flex-start; margin-bottom: 6px">
+	<div id="banner-style-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1600" data-aos-anchor="#trigger-section-1">
 			<img class="footer-button" src="/graphics/button-icons/picture.png" alt="Toggle Banner Style" onclick="switch_banner_style()"></img>
 		</div>
 		
-		<div id="banner-style-button-text" class="body-text" style="margin: auto; margin-left: 10px; text-align: left; width: auto" data-aos="fade-left" data-aos-delay="1600" data-aos-anchor="#trigger-section-1">Banners: parallax</div>
+		<div id="banner-style-button-text" class="body-text button-text" data-aos="fade-left" data-aos-delay="1600" data-aos-anchor="#trigger-section-1">Banners: parallax</div>
 	</div>
 	
 	<div style="height: 5vh"></div>
