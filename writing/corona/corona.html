@@ -341,7 +341,7 @@ body
 			{
 				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
 				{
-					insert_footer("writing");
+					insert_footer("writing", 0, 1);
 					clearInterval(refresh_id);
 				}
 			}, 200);
