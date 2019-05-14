@@ -5,12 +5,18 @@ html
 {
 	font-size: max(calc((1.5vmin + 1.5vmax) / 2), 12px);
 	font-family: "Rubik", sans-serif;
+	
+	max-width: 100%;
+	overflow-x: hidden;
 }
 
 body
 {
 	margin: 0;
 	padding: 0;
+	
+	max-width: 100%;
+	overflow-x: hidden;
 }
 
 a
