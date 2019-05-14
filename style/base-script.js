@@ -195,16 +195,16 @@ function redirect(url, from_nonstandard_color)
 		{
 			setTimeout(function()
 	    	{
-	    		$("body").addClass("background-transition");
+	    		$("html, body").addClass("background-transition");
 	    		
 	    		if (url_vars["theme"] == 1)
 	    		{
-	    			$("body").css("background-color", "rgb(24, 24, 24)");
+	    			$("html, body").css("background-color", "rgb(24, 24, 24)");
 	    		}
 	    		
 	    		else
 	    		{
-	    			$("body").css("background-color", "rgb(255, 255, 255)");
+	    			$("html, body").css("background-color", "rgb(255, 255, 255)");
 	    		}
 	    		
 	    		setTimeout(function()

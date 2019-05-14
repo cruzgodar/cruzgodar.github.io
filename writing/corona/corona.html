@@ -13,6 +13,22 @@
 
 <script src="/style/dark-theme.js"></script>
 
+<script>
+	window.addEventListener("pageshow", function(event)
+	{
+		var historyTraversal = event.persisted || 
+			(typeof window.performance != "undefined" && 
+			window.performance.navigation.type === 2);
+		
+		if (historyTraversal)
+		{
+			document.documentElement.style.opacity = 0;
+			window.location.href = window.location.href;
+			location.href = location.href;
+	    }
+	});
+</script>
+
 <title>Corona</title>
 
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
