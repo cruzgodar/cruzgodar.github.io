@@ -161,6 +161,8 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 
 
 ////////////////////////////// SETTINGS //////////////////////////////
+
+//Handles virtually all links.
 function redirect(url, from_nonstandard_color)
 {
 	//Indicates whether we need to pause to change the background color. Example: the bottom of the Corona page.
@@ -177,6 +179,7 @@ function redirect(url, from_nonstandard_color)
 	
 	
 	
+	//Act like a normal link, with no transitions, if the user wants that.
 	if (url_vars["link_animation"] == 1)
 	{
 		window.location.href = url + concat_url_vars(include_return_url);
@@ -184,14 +187,25 @@ function redirect(url, from_nonstandard_color)
 	
 	else
 	{
+		//Fade out the current page's content
 		$("html").animate({opacity: 0}, 300, "swing");
 		
+		//If necessary, take the time to fade back to the default background color, whatever that is.
 		if (from_nonstandard_color == 1)
 		{
 			setTimeout(function()
 	    	{
 	    		$("body").addClass("background-transition");
-	    		$("body").css("background-color", "rgb(255, 255, 255)");
+	    		
+	    		if (url_vars["theme"] == 1)
+	    		{
+	    			$("body").css("background-color", "rgb(24, 24, 24)");
+	    		}
+	    		
+	    		else
+	    		{
+	    			$("body").css("background-color", "rgb(255, 255, 255)");
+	    		}
 	    		
 	    		setTimeout(function()
 	    		{
@@ -200,6 +214,7 @@ function redirect(url, from_nonstandard_color)
 	    	}, 300);
 		}
 		
+		//Finally, redirect to the new page.
 		else
 		{
 	    	setTimeout(function()
