@@ -38,10 +38,10 @@ a
 	position: absolute;
 	width: 100px;
 	height: 100px;
-	-webkit-transition: all .15s ease;
-	-moz-transition: all .15s ease;
-	-o-transition: all .15s ease;
-	transition: all .15s ease;
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
 	-webkit-filter: brightness(100%);
 	-moz-filter: brightness(100%);
 	-o-filter: brightness(100%);
@@ -130,10 +130,10 @@ a
 	-o-border-radius: 50%;
 	padding: 5px;
 	
-	-webkit-transition: border-color .15s ease, background-color .15s ease;
-	-moz-transition: border-color .15s ease, background-color .15s ease;
-	-o-transition: border-color .15s ease, background-color .15s ease;
-	transition: border-color .15s ease, background-color .15s ease;
+	-webkit-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	-moz-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	-o-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
 	
 	cursor: pointer;
 }
@@ -168,10 +168,10 @@ a
 	-o-border-radius: 10px;
 	padding: 10px;
 	
-	-webkit-transition: border-color .15s ease, background-color .15s ease;
-	-moz-transition: border-color .15s ease, background-color .15s ease;
-	-o-transition: border-color .15s ease, background-color .15s ease;
-	transition: border-color .15s ease, background-color .15s ease;
+	-webkit-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	-moz-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	-o-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
 	
 	cursor: pointer;
 }
@@ -205,10 +205,10 @@ a
 	position: absolute;
 	width: 13.75vw;
 	height: 13.75vw;
-	-webkit-transition: all .15s ease;
-	-moz-transition: all .15s ease;
-	-o-transition: all .15s ease;
-	transition: all .15s ease;
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
 	-webkit-filter: brightness(100%);
 	-moz-filter: brightness(100%);
 	-o-filter: brightness(100%);
@@ -306,10 +306,10 @@ a
 
 .big-image-horizontal, .small-image-horizontal, .big-image-vertical, .small-image-vertical
 {
-	-webkit-transition: all .15s ease;
-	-moz-transition: all .15s ease;
-	-o-transition: all .15s ease;
-	transition: all .15s ease;
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
 	-webkit-filter: brightness(100%);
 	-moz-filter: brightness(100%);
 	-o-filter: brightness(100%);
@@ -347,10 +347,10 @@ a
 	-o-border-radius: 10px;
 	padding: 10px;
 	
-	-webkit-transition: border-color .15s ease, background-color .15s ease;
-	-moz-transition: border-color .15s ease, background-color .15s ease;
-	-o-transition: border-color .15s ease, background-color .15s ease;
-	transition: border-color .15s ease, background-color .15s ease;
+	-webkit-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	-moz-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	-o-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
 	
 	cursor: pointer;
 }
@@ -376,10 +376,10 @@ a
 	font-size: 125%;
 	text-align: center;
 	
-	-webkit-transition: border-color .15s ease, color .15s ease;
-	-moz-transition: border-color .15s ease, color .15s ease;
-	-o-transition: border-color .15s ease, color .15s ease;
-	transition: border-color .15s ease, color .15s ease;
+	-webkit-transition: border-color .15s ease-in-out, color .15s ease-in-out;
+	-moz-transition: border-color .15s ease-in-out, color .15s ease-in-out;
+	-o-transition: border-color .15s ease-in-out, color .15s ease-in-out;
+	transition: border-color .15s ease-in-out, color .15s ease-in-out;
 }
 
 .text-box:focus
@@ -554,10 +554,10 @@ a
 	width: 8vw;
 	height: 8vw;
 
-	-webkit-transition: all .15s ease;
-	-moz-transition: all .15s ease;
-	-o-transition: all .15s ease;
-	transition: all .15s ease;
+	-webkit-transition: all .15s ease-in-out;
+	-moz-transition: all .15s ease-in-out;
+	-o-transition: all .15s ease-in-out;
+	transition: all .15s ease-in-out;
 	-webkit-filter: brightness(100%);
 	-moz-filter: brightness(100%);
 	-o-filter: brightness(100%);
@@ -577,10 +577,10 @@ a
 /* Used on pages with nonstandard background colors to fade to the default. */
 .background-transition
 {
-	-webkit-transition: background-color .45s ease !important;
-	-moz-transition: background-color .45s ease !important;
-	-o-transition: background-color .45s ease !important;
-	transition: background-color .45s ease !important;
+	-webkit-transition: background-color .45s ease-in-out !important;
+	-moz-transition: background-color .45s ease-in-out !important;
+	-o-transition: background-color .45s ease-in-out !important;
+	transition: background-color .45s ease-in-out !important;
 }
 
 

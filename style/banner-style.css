@@ -44,10 +44,10 @@ body
 	-o-border-radius: 10px;
 	padding: 10px;
 	
-	-webkit-transition: border-color .15s ease, background-color .15s ease;
-	-moz-transition: border-color .15s ease, background-color .15s ease;
-	-o-transition: border-color .15s ease, background-color .15s ease;
-	transition: border-color .15s ease, background-color .15s ease;
+	-webkit-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	-moz-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	-o-transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
+	transition: border-color .15s ease-in-out, background-color .15s ease-in-out;
 	
 	cursor: pointer;
 }
