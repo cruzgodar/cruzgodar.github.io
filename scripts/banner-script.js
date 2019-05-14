@@ -8,13 +8,6 @@ var small_loader_loaded = 0;
 
 $(function()
 {
-	if (browser_detect.browser == "MS Edge")
-	{
-		$("#background-image").addClass("bad-banner");
-	}
-	
-	
-	
 	AOS.init({duration: 1200, once: false, offset: y/4});
 	
 	

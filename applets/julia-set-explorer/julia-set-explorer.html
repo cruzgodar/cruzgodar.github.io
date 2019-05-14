@@ -11,7 +11,7 @@
 	gtag('config', 'UA-135923635-1');
 </script>
 
-<script src="/style/dark-theme.js"></script>
+<script src="/scripts/dark-theme.js"></script>
 
 <title>Julia Set Explorer</title>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -175,7 +175,7 @@
 	<!-- Mathjs library -->
 	<script src="https://unpkg.com/mathjs@5.9.0/dist/math.min.js"></script>
 	
-	<script src="/style/base-script.js"></script>
+	<script src="/scripts/base-script.js"></script>
 	
 	<script>
 		var small_canvas_size;
@@ -187,12 +187,12 @@
 		
 		$(function()
 		{
-			var refresh_id = setInterval(function()
+			var refresh_id_1 = setInterval(function()
 			{
 				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
 				{
 					insert_footer("applets");
-					clearInterval(refresh_id);
+					clearInterval(refresh_id_1);
 				}
 			}, 200);
 			
@@ -201,86 +201,96 @@
 			small_canvas_size = parseInt($("#mandelbrot-set").css("width").replace("px", ""));
 			large_canvas_size = parseInt($("#high-res-julia-set").css("width").replace("px", ""));
 			
-			//As the user scrolls around the image, make tiny Julia set previews.
-			if (!hasTouch())
-			{
-				$("#mandelbrot-set").mousemove(function(e)
-				{
-					var parentOffset = $(this).offset();
-					var mouse_x = e.pageX - parentOffset.left;
-					var mouse_y = e.pageY - parentOffset.top;
-					
-					if (persist_image == false)
-					{
-						var a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-						var b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
-						
-						draw_julia_set(a, b, 100, 25, false);
-					}
-				});
-				
-				//On a click, make a much larger image.
-				$("#mandelbrot-set").click(function(e)
-				{
-					var parentOffset = $("#mandelbrot-set").offset();
-					var mouse_x = e.pageX - parentOffset.left;
-					var mouse_y = e.pageY - parentOffset.top;
-					
-					var a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-					var b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
-					
-					draw_julia_set(a, b, 500, 100, false);
-					
-					$("#a-input").val(Math.round(1000000 * a) / 1000000);
-					$("#b-input").val(Math.round(1000000 * b) / 1000000);
-					$("#dim-input").val(1000);
-					
-					persist_image = true;
-				});
-				
-				$("#mandelbrot-set").mouseleave(function(e)
-				{
-					persist_image = false;
-				});
-			}
 			
-			//Handle touchscreens.
-			else
+			
+			//As the user scrolls around the image, make tiny Julia set previews.
+			var refresh_id_2 = setInterval(function()
 			{
-				$("#instructions").html('Drag along the Mandelbrot set to preview the corresponding Julia set. Release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <span class="link" onclick="redirect(\'/blog/4/a-taste-of-chaos.html\')">this blog post</span>.');
-				
-				document.getElementById("mandelbrot-set").addEventListener("touchmove", function(e)
+				if (typeof hasTouch != "undefined" && $.isFunction(hasTouch))
 				{
-					e.preventDefault();
+					if (!hasTouch())
+					{
+						$("#mandelbrot-set").mousemove(function(e)
+						{
+							var parentOffset = $(this).offset();
+							var mouse_x = e.pageX - parentOffset.left;
+							var mouse_y = e.pageY - parentOffset.top;
+							
+							if (persist_image == false)
+							{
+								var a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+								var b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+								
+								draw_julia_set(a, b, 100, 25, false);
+							}
+						});
+						
+						//On a click, make a much larger image.
+						$("#mandelbrot-set").click(function(e)
+						{
+							var parentOffset = $("#mandelbrot-set").offset();
+							var mouse_x = e.pageX - parentOffset.left;
+							var mouse_y = e.pageY - parentOffset.top;
+							
+							var a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+							var b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+							
+							draw_julia_set(a, b, 500, 100, false);
+							
+							$("#a-input").val(Math.round(1000000 * a) / 1000000);
+							$("#b-input").val(Math.round(1000000 * b) / 1000000);
+							$("#dim-input").val(1000);
+							
+							persist_image = true;
+						});
+						
+						$("#mandelbrot-set").mouseleave(function(e)
+						{
+							persist_image = false;
+						});
+					}
 					
-					var parentOffset = $("#mandelbrot-set").offset();
-					var mouse_x = e.pageX - parentOffset.left;
-					var mouse_y = e.pageY - parentOffset.top;
+					//Handle touchscreens.
+					else
+					{
+						$("#instructions").html('Drag along the Mandelbrot set to preview the corresponding Julia set. Release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <span class="link" onclick="redirect(\'/blog/4/a-taste-of-chaos.html\')">this blog post</span>.');
+						
+						document.getElementById("mandelbrot-set").addEventListener("touchmove", function(e)
+						{
+							e.preventDefault();
+							
+							var parentOffset = $("#mandelbrot-set").offset();
+							var mouse_x = e.pageX - parentOffset.left;
+							var mouse_y = e.pageY - parentOffset.top;
+							
+							var a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+							var b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+							
+							draw_julia_set(a, b, 100, 25, false);
+						}, false);
+						
+						document.getElementById("mandelbrot-set").addEventListener("touchend", function(e)
+						{
+							e.preventDefault();
+							
+							var parentOffset = $("#mandelbrot-set").offset();
+							var mouse_x = e.pageX - parentOffset.left;
+							var mouse_y = e.pageY - parentOffset.top;
+							
+							var a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+							var b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+							
+							draw_julia_set(a, b, 500, 100, false);
+							
+							$("#a-input").val(Math.round(1000000 * a) / 1000000);
+							$("#b-input").val(Math.round(1000000 * b) / 1000000);
+							$("#dim-input").val(1000);
+						}, false);
+					}
 					
-					var a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-					var b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
-					
-					draw_julia_set(a, b, 100, 25, false);
-				}, false);
-				
-				document.getElementById("mandelbrot-set").addEventListener("touchend", function(e)
-				{
-					e.preventDefault();
-					
-					var parentOffset = $("#mandelbrot-set").offset();
-					var mouse_x = e.pageX - parentOffset.left;
-					var mouse_y = e.pageY - parentOffset.top;
-					
-					var a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-					var b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
-					
-					draw_julia_set(a, b, 500, 100, false);
-					
-					$("#a-input").val(Math.round(1000000 * a) / 1000000);
-					$("#b-input").val(Math.round(1000000 * b) / 1000000);
-					$("#dim-input").val(1000);
-				}, false);
-			}
+					clearInterval(refresh_id_2);
+				}
+			}, 200);
 		});
 		
 		
