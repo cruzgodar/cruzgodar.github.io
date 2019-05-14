@@ -351,6 +351,12 @@ body
 				$("html").css("background-color", "rgb(24, 24, 24)");
 			}
 			
+			if (url_vars["text_contrast"] == 1)
+			{
+				$(".synopsis-text").css("color", "rgb(208, 208, 208)");
+				$(".body-text").css("color", "rgb(192, 192, 192)");
+			}
+			
 			
 			
 			var refresh_id = setInterval(function()
