@@ -1,64 +1,64 @@
 ////////////////////////////// BROWSERS //////////////////////////////
 var browser_detect =
 {
-        init: function()
-        {
-            this.browser = this.searchString(this.dataBrowser) || "Other";
-            this.version = this.searchVersion(navigator.userAgent) || this.searchVersion(navigator.appVersion) || "Unknown";
-        },
-        
-        searchString: function(data)
-        {
-            for (var i = 0; i < data.length; i++)
-            {
-                var dataString = data[i].string;
-                this.versionSearchString = data[i].subString;
+		init: function()
+		{
+			this.browser = this.searchString(this.dataBrowser) || "Other";
+			this.version = this.searchVersion(navigator.userAgent) || this.searchVersion(navigator.appVersion) || "Unknown";
+		},
+		
+		searchString: function(data)
+		{
+			for (var i = 0; i < data.length; i++)
+			{
+				var dataString = data[i].string;
+				this.versionSearchString = data[i].subString;
 
-                if (dataString.indexOf(data[i].subString) !== -1)
-                {
-                    return data[i].identity;
-                }
-            }
-        },
-        
-        searchVersion: function (dataString)
-        {
-            var index = dataString.indexOf(this.versionSearchString);
-            
-            if (index === -1)
-            {
-                return;
-            }
+				if (dataString.indexOf(data[i].subString) !== -1)
+				{
+					return data[i].identity;
+				}
+			}
+		},
+		
+		searchVersion: function (dataString)
+		{
+			var index = dataString.indexOf(this.versionSearchString);
+			
+			if (index === -1)
+			{
+				return;
+			}
 			
 			
 			
-            var rv = dataString.indexOf("rv:");
-            
-            if (this.versionSearchString === "Trident" && rv !== -1)
-            {
-                return parseFloat(dataString.substring(rv + 3));
-            }
-            
-            else
-            {
-                return parseFloat(dataString.substring(index + this.versionSearchString.length + 1));
-            }
-        },
+			var rv = dataString.indexOf("rv:");
+			
+			if (this.versionSearchString === "Trident" && rv !== -1)
+			{
+				return parseFloat(dataString.substring(rv + 3));
+			}
+			
+			else
+			{
+				return parseFloat(dataString.substring(index + this.versionSearchString.length + 1));
+			}
+		},
 
-        dataBrowser:
-        [
-            {string: navigator.userAgent, subString: "Edge", identity: "MS Edge"},
-            {string: navigator.userAgent, subString: "MSIE", identity: "Explorer"},
-            {string: navigator.userAgent, subString: "Trident", identity: "Explorer"},
-            {string: navigator.userAgent, subString: "Firefox", identity: "Firefox"},
-            {string: navigator.userAgent, subString: "Opera", identity: "Opera"},  
-            {string: navigator.userAgent, subString: "OPR", identity: "Opera"},  
+		dataBrowser:
+		[
+			{string: navigator.userAgent, subString: "Edge", identity: "MS Edge"},
+			{string: navigator.userAgent, subString: "MSIE", identity: "Explorer"},
+			{string: navigator.userAgent, subString: "Trident", identity: "Explorer"},
+			{string: navigator.userAgent, subString: "Firefox", identity: "Firefox"},
+			{string: navigator.userAgent, subString: "Opera", identity: "Opera"},  
+			{string: navigator.userAgent, subString: "OPR", identity: "Opera"},  
 
-            {string: navigator.userAgent, subString: "Chrome", identity: "Chrome"}, 
-            {string: navigator.userAgent, subString: "Safari", identity: "Safari"}       
-        ]
-    };
-    
+			{string: navigator.userAgent, subString: "Chrome", identity: "Chrome"}, 
+			{string: navigator.userAgent, subString: "Safari", identity: "Safari"}	   
+		]
+	};
+	
 browser_detect.init();
 
 var browser_name = browser_detect.browser;
@@ -74,88 +74,88 @@ var footer_loaded = 0;
 //Puts the footer in at the bottom of the page, omitting one link (whatever the current page is)
 function insert_footer(omit, no_theme_button, from_nonstandard_color)
 {
-    //Required to use this archaic default parameter method so IE doesn't crash before it can say that it's IE and get redirected somewhere else.
-    no_theme_button = (typeof no_theme_button != "undefined") ? no_theme_button : 0;
-    
-    from_nonstandard_color = (typeof from_nonstandard_color != "undefined") ? from_nonstandard_color : 0;
-    var fnc_arg;
-    
-    if (from_nonstandard_color == 1)
-    {
-    	fnc_arg = ", 1";
-    }
-    
-    else
-    {
-    	fnc_arg = "";
-    }
-    
-    var delay = 100;
-    
-    $("#spawn-footer").before('<div style="height: 30vh"></div> <div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <div class="line-break"> <div class="line-break-dark" style="opacity: ' + url_vars["theme"] + '"></div> </div> </div> <div style="height: 4vw"></div> <div class="menu-image-links"></div>');
-    
-    if (omit != "writing")
-    {
-        $(".menu-image-links").append('<div id="writing-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/writing.html\'' + fnc_arg + ')" src="/graphics/image-links/writing-glyph.png" alt="Writing"></img> </div>');
-        
-        delay += 100;
-    }
-    
-    if (omit != "blog")
-    {
-        $(".menu-image-links").append('<div id="blog-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/blog.html\'' + fnc_arg + ')" src="/graphics/image-links/blog-glyph.png" alt="Blog"></img> </div>');
-        
-        delay += 100;
-    }
-    
-    if (omit != "applets")
-    {
-        $(".menu-image-links").append('<div id="applets-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/applets.html\'' + fnc_arg + ')" src="/graphics/image-links/applets-glyph.png" alt="Applets"></img> </div>');
-        
-        delay += 100;
-    }
-    
-    if (omit != "research")
-    {
-        $(".menu-image-links").append('<div id="research-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/research.html\'' + fnc_arg + ')" src="/graphics/image-links/research-glyph.png" alt="Research"></img> </div>');
-        
-        delay += 100;
-    }
-    
-    if (omit != "notes")
-    {
-        $(".menu-image-links").append('<div id="notes-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/notes.html\'' + fnc_arg + ')" src="/graphics/image-links/notes-glyph.png" alt="Notes"></img> </div>');
-        
-        delay += 100;
-    }
-    
-    if (omit != "bio")
-    {
-        $(".menu-image-links").append('<div id="bio-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/bio.html\'' + fnc_arg + ')" src="/graphics/image-links/me-glyph.png" alt="Me"></img> </div>');
-        
-        delay += 100;
-    }
-    
-    $("#spawn-footer").before('<div id="trigger-menu"></div>');
-    
-    if (no_theme_button == 1)
-    {
-    	$("#spawn-footer").before('<div style="height: 4vw"></div>');
-    }
-    
-    if (no_theme_button == 0)
-    {
-        $("#spawn-footer").before('<div style="height: calc(4vw - 45px); min-height: 0px"></div> <div style="display: flex; align-items: left; margin-bottom: 6px; justify-content: space-between"> <div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false"> <img class="footer-button" style="margin-left: 10px" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect(\'/settings.html\'' + fnc_arg + ')"></img> </div> <div></div> </div>');
-    }
-    
-    if (url_vars["content_animation"] == 1)
+	//Required to use this archaic default parameter method so IE doesn't crash before it can say that it's IE and get redirected somewhere else.
+	no_theme_button = (typeof no_theme_button != "undefined") ? no_theme_button : 0;
+	
+	from_nonstandard_color = (typeof from_nonstandard_color != "undefined") ? from_nonstandard_color : 0;
+	var fnc_arg;
+	
+	if (from_nonstandard_color == 1)
+	{
+		fnc_arg = ", 1";
+	}
+	
+	else
+	{
+		fnc_arg = "";
+	}
+	
+	var delay = 100;
+	
+	$("#spawn-footer").before('<div style="height: 30vh"></div> <div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <div class="line-break"> <div class="line-break-dark" style="opacity: ' + url_vars["theme"] + '"></div> </div> </div> <div style="height: 4vw"></div> <div class="menu-image-links"></div>');
+	
+	if (omit != "writing")
+	{
+		$(".menu-image-links").append('<div id="writing-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/writing.html\'' + fnc_arg + ')" src="/graphics/image-links/writing-glyph.png" alt="Writing"></img> </div>');
+		
+		delay += 100;
+	}
+	
+	if (omit != "blog")
+	{
+		$(".menu-image-links").append('<div id="blog-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/blog.html\'' + fnc_arg + ')" src="/graphics/image-links/blog-glyph.png" alt="Blog"></img> </div>');
+		
+		delay += 100;
+	}
+	
+	if (omit != "applets")
+	{
+		$(".menu-image-links").append('<div id="applets-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/applets.html\'' + fnc_arg + ')" src="/graphics/image-links/applets-glyph.png" alt="Applets"></img> </div>');
+		
+		delay += 100;
+	}
+	
+	if (omit != "research")
+	{
+		$(".menu-image-links").append('<div id="research-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/research.html\'' + fnc_arg + ')" src="/graphics/image-links/research-glyph.png" alt="Research"></img> </div>');
+		
+		delay += 100;
+	}
+	
+	if (omit != "notes")
+	{
+		$(".menu-image-links").append('<div id="notes-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/notes.html\'' + fnc_arg + ')" src="/graphics/image-links/notes-glyph.png" alt="Notes"></img> </div>');
+		
+		delay += 100;
+	}
+	
+	if (omit != "bio")
+	{
+		$(".menu-image-links").append('<div id="bio-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/bio.html\'' + fnc_arg + ')" src="/graphics/image-links/me-glyph.png" alt="Me"></img> </div>');
+		
+		delay += 100;
+	}
+	
+	$("#spawn-footer").before('<div id="trigger-menu"></div>');
+	
+	if (no_theme_button == 1)
+	{
+		$("#spawn-footer").before('<div style="height: 4vw"></div>');
+	}
+	
+	if (no_theme_button == 0)
+	{
+		$("#spawn-footer").before('<div style="height: calc(4vw - 45px); min-height: 0px"></div> <div style="display: flex; align-items: left; margin-bottom: 6px; justify-content: space-between"> <div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false"> <img class="footer-button" style="margin-left: 10px" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect(\'/settings.html\'' + fnc_arg + ')"></img> </div> <div></div> </div>');
+	}
+	
+	if (url_vars["content_animation"] == 1)
 	{
 		$(".line-break").parent().removeAttr("data-aos");
 		$(".menu-image-link").removeAttr("data-aos");
 		$(".footer-button").parent().removeAttr("data-aos");
 	}
-    
-    footer_loaded = 1;
+	
+	footer_loaded = 1;
 }
 
 
@@ -194,34 +194,34 @@ function redirect(url, from_nonstandard_color)
 		if (from_nonstandard_color == 1)
 		{
 			setTimeout(function()
-	    	{
-	    		$("html, body").addClass("background-transition");
-	    		
-	    		if (url_vars["theme"] == 1)
-	    		{
-	    			$("html, body").css("background-color", "rgb(24, 24, 24)");
-	    		}
-	    		
-	    		else
-	    		{
-	    			$("html, body").css("background-color", "rgb(255, 255, 255)");
-	    		}
-	    		
-	    		setTimeout(function()
-	    		{
-	    			window.location.href = url + concat_url_vars(include_return_url);
-	    		}, 450);
-	    	}, 300);
+			{
+				$("html, body").addClass("background-transition");
+				
+				if (url_vars["theme"] == 1)
+				{
+					$("html, body").css("background-color", "rgb(24, 24, 24)");
+				}
+				
+				else
+				{
+					$("html, body").css("background-color", "rgb(255, 255, 255)");
+				}
+				
+				setTimeout(function()
+				{
+					window.location.href = url + concat_url_vars(include_return_url);
+				}, 450);
+			}, 300);
 		}
 		
 		//Finally, redirect to the new page.
 		else
 		{
-	    	setTimeout(function()
-	    	{
-	    		window.location.href = url + concat_url_vars(include_return_url);
-	    	}, 300);
-	    }
+			setTimeout(function()
+			{
+				window.location.href = url + concat_url_vars(include_return_url);
+			}, 300);
+		}
 	}
 }
 
@@ -235,50 +235,50 @@ var url_vars = {};
 function concat_url_vars(include_return_url)
 {
 	var first_var_written = 0;
-    var string = "";
-    var key;
-    var temp = "";
-    
-    for (var i = 0; i < Object.keys(url_vars).length; i++)
-    {
-    	key = Object.keys(url_vars)[i];
-    	
-    	//It's necessary to write theme=0 for the following reason: if a user with a system-wide dark theme enters and attempts to change to the light theme, and this function doesn't write theme=0, the next page loaded will see url_vars["theme"] = null, assume there's no preference, and use the system setting again.
-    	if ((key != "theme" && url_vars[key] != 0) || (key == "theme"))
-    	{
-        	if (first_var_written == 0)
-	        {
-	            string += "?" + key + "=" + url_vars[key];
-	            first_var_written = 1;
-	        }
-	        
-	        else
-	        {
-	            string += "&" + key + "=" + url_vars[key];
-	        }
-	    }
-    }
-    
-    
-    
-    //If we're going to the settings page, we need to know where we came from so we can return there later. Just don't include any current url variables.
-    if (include_return_url == 1)
-    {
-    	if (first_var_written == 0)
-	    {
-	    	string += "?return=" + encodeURIComponent(window.location.href.split("?", 1));
-	        first_var_written = 1;
-	    }
-	    
+	var string = "";
+	var key;
+	var temp = "";
+	
+	for (var i = 0; i < Object.keys(url_vars).length; i++)
+	{
+		key = Object.keys(url_vars)[i];
+		
+		//It's necessary to write theme=0 for the following reason: if a user with a system-wide dark theme enters and attempts to change to the light theme, and this function doesn't write theme=0, the next page loaded will see url_vars["theme"] = null, assume there's no preference, and use the system setting again.
+		if ((key != "theme" && url_vars[key] != 0) || (key == "theme"))
+		{
+			if (first_var_written == 0)
+			{
+				string += "?" + key + "=" + url_vars[key];
+				first_var_written = 1;
+			}
+			
+			else
+			{
+				string += "&" + key + "=" + url_vars[key];
+			}
+		}
+	}
+	
+	
+	
+	//If we're going to the settings page, we need to know where we came from so we can return there later. Just don't include any current url variables.
+	if (include_return_url == 1)
+	{
+		if (first_var_written == 0)
+		{
+			string += "?return=" + encodeURIComponent(window.location.href.split("?", 1));
+			first_var_written = 1;
+		}
+		
 		else
 		{
-	    	string += "&return=" + encodeURIComponent(window.location.href.split("?", 1));
-	    }
-    }
-    
-    
-    
-    return string;
+			string += "&return=" + encodeURIComponent(window.location.href.split("?", 1));
+		}
+	}
+	
+	
+	
+	return string;
 }
 
 function write_url_vars()
@@ -300,13 +300,35 @@ function switch_theme()
 	{
 		$("html").css("background-color", "rgb(24, 24, 24)");
 		
+		
+		
+		if (url_vars["text_contrast"] == 1)
+		{
+			
+			$(".section-text").css("color", "rgb(208, 208, 208)");
+			$(".body-text").css("color", "rgb(192, 192, 192)");
+			$(".body-text .link").css("color", "rgb(192, 256, 192)");
+			$(".song-lyrics").css("color", "rgb(192, 192, 192)");
+			$(".image-link-subtext").css("color", "rgb(192, 192, 192)");
+			$(".text-button").css("color", "rgb(64, 64, 64)");
+			
+			$(".quote-text").css("color", "rgb(168, 168, 168");
+			$(".quote-attribution").css("color", "rgb(210, 210, 210)");
+		}
+		
+		else
+		{
+			$(".section-text").css("color", "rgb(160, 160, 160)");
+			
+			$(".quote-text").css("color", "rgb(80, 80, 80)");
+			$(".quote-attribution").css("color", "rgb(164, 164, 164)");
+		}
+		
+		
+		
 		$(".heading-text").css("color", "rgb(255, 255, 255)");
 		$(".date-text").css("color", "rgb(255, 255, 255)");
-		$(".section-text").css("color", "rgb(164, 164, 164)");
 		
-		//index.html
-		$(".quote-text").css("color", "rgb(80, 80, 80)");
-		$(".quote-attribution").css("color", "rgb(164, 164, 164)");
 		$(".title-text").css("color", "rgb(255, 255, 255)");
 		
 		$(".text-box").addClass("text-box-dark");
@@ -317,12 +339,12 @@ function switch_theme()
 		$("#theme-button-row").animate({opacity: 0}, 300, "swing");
 		
 		setTimeout(function()
-	    {
- 	    	try {$("#theme-button-text").html($("#theme-button-text").html().replace("light", "dark"));}
- 	    	catch(ex) {}
- 	    	
-	    	$("#theme-button-row").animate({opacity: 1}, 300, "swing");
-	    }, 300);
+		{
+ 			try {$("#theme-button-text").html($("#theme-button-text").html().replace("light", "dark"));}
+ 			catch(ex) {}
+ 			
+			$("#theme-button-row").animate({opacity: 1}, 300, "swing");
+		}, 300);
 		
 		url_vars["theme"] = 1;
 		write_url_vars();
@@ -333,13 +355,34 @@ function switch_theme()
 	{
 		$("html").css("background-color", "rgb(255, 255, 255)");
 		
+		
+		
+		if (url_vars["text_contrast"] == 1)
+		{
+			$(".section-text").css("color", "rgb(48, 48, 48)");
+			$(".body-text").css("color", "rgb(64, 64, 64)");
+			$(".body-text .link").css("color", "rgb(64, 128, 64)");
+			$(".song-lyrics").css("color", "rgb(64, 64, 64)");
+			$(".image-link-subtext").css("color", "rgb(64, 64, 64)");
+			$(".text-button").css("color", "rgb(64, 64, 64)");
+			
+			$(".quote-text").css("color", "rgb(88, 88, 88");
+			$(".quote-attribution").css("color", "rgb(46, 46, 46)");
+		}
+		
+		else
+		{
+			$(".section-text").css("color", "rgb(96, 96, 96)");
+			
+			$(".quote-text").css("color", "rgb(176, 176, 176)");
+			$(".quote-attribution").css("color", "rgb(92, 92, 92)");
+		}
+		
+		
+		
 		$(".heading-text").css("color", "rgb(0, 0, 0)");
 		$(".date-text").css("color", "rgb(0, 0, 0)");
-		$(".section-text").css("color", "rgb(92, 92, 92)");
 		
-		//index.html
-		$(".quote-text").css("color", "rgb(176, 176, 176)");
-		$(".quote-attribution").css("color", "rgb(92, 92, 92)");
 		$(".title-text").css("color", "rgb(0, 0, 0)");
 		
 		$(".text-box").removeClass("text-box-dark");
@@ -350,11 +393,11 @@ function switch_theme()
 		$("#theme-button-row").animate({opacity: 0}, 300, "swing");
 		
 		setTimeout(function()
-    	{
-	        try {$("#theme-button-text").html($("#theme-button-text").html().replace("dark", "light"));}
-	        catch(ex) {}
-	        
-		    $("#theme-button-row").animate({opacity: 1}, 300, "swing");
+		{
+			try {$("#theme-button-text").html($("#theme-button-text").html().replace("dark", "light"));}
+			catch(ex) {}
+			
+			$("#theme-button-row").animate({opacity: 1}, 300, "swing");
 		}, 300);
 		
 		url_vars["theme"] = 0;
@@ -381,44 +424,139 @@ function switch_theme_on_load()
 
 function switch_font()
 {
-    $("body").animate({opacity: 0}, 300, "swing");
-    setTimeout(function()
-    {
-        switch_font_on_load();
-        
-        setTimeout(function()
-        {
-            $("body").animate({opacity: 1}, 300, "swing");
-        });
-    }, 300);
+	$("body").animate({opacity: 0}, 300, "swing");
+	setTimeout(function()
+	{
+		switch_font_on_load();
+		
+		setTimeout(function()
+		{
+			$("body").animate({opacity: 1}, 300, "swing");
+		});
+	}, 300);
 }
 
 function switch_font_on_load()
 {
-    //Sans to serif
-    if (url_vars["font"] == 0)
-    {
-        try {$("#font-button-text").html($("#font-button-text").html().replace("sans serif", "serif"));}
-        catch(ex) {}
-        
-        url_vars["font"] = 1;
-        
-        write_url_vars();
-        
-        $("html").css("font-family", "'Gentium Book Basic', serif");
-    }
-    
-    //Serif to sans
-    else
-    {
-        $("#font-button-text").html($("#font-button-text").html().replace("serif", "sans serif"));
-        
-        url_vars["font"] = 0;
-        
-        write_url_vars();
-        
-        $("html").css("font-family", "'Rubik', sans-serif");
-    }
+	//Sans to serif
+	if (url_vars["font"] == 0)
+	{
+		try {$("#font-button-text").html($("#font-button-text").html().replace("sans serif", "serif"));}
+		catch(ex) {}
+		
+		url_vars["font"] = 1;
+		
+		write_url_vars();
+		
+		$("html").css("font-family", "'Gentium Book Basic', serif");
+	}
+	
+	//Serif to sans
+	else
+	{
+		try {$("#font-button-text").html($("#font-button-text").html().replace("serif", "sans serif"));}
+		catch(ex) {}
+		
+		url_vars["font"] = 0;
+		
+		write_url_vars();
+		
+		$("html").css("font-family", "'Rubik', sans-serif");
+	}
+}
+
+
+
+function switch_text_contrast()
+{
+	$("#text-contrast-button-row").animate({opacity: 0}, 300, "swing");
+	
+	setTimeout(function()
+	{
+		switch_text_contrast_on_load();
+		$("#text-contrast-button-row").animate({opacity: 1}, 300, "swing");
+	}, 300);
+}
+
+function switch_text_contrast_on_load()
+{
+	//Default to high
+	if (url_vars["text_contrast"] == 0)
+	{
+		try {$("#text-contrast-button-text").html($("#text-contrast-button-text").html().replace("normal", "high"));}
+		catch(ex) {}
+		
+		url_vars["text_contrast"] = 1;
+		
+		write_url_vars();
+		
+		
+		
+		if (url_vars["theme"] == 1)
+		{
+			$(".section-text").css("color", "rgb(208, 208, 208)");
+			$(".body-text").css("color", "rgb(192, 192, 192)");
+			$(".body-text .link").css("color", "rgb(192, 256, 192)");
+			$(".song-lyrics").css("color", "rgb(192, 192, 192)");
+			$(".image-link-subtext").css("color", "rgb(192, 192, 192)");
+			$(".text-button").css("color", "rgb(64, 64, 64)");
+			
+			$(".quote-text").css("color", "rgb(168, 168, 168");
+			$(".quote-attribution").css("color", "rgb(210, 210, 210)");
+		}
+		
+		else
+		{
+			$(".section-text").css("color", "rgb(48, 48, 48)");
+			$(".body-text").css("color", "rgb(64, 64, 64)");
+			$(".body-text .link").css("color", "rgb(64, 128, 64)");
+			$(".song-lyrics").css("color", "rgb(64, 64, 64)");
+			$(".image-link-subtext").css("color", "rgb(64, 64, 64)");
+			$(".text-button").css("color", "rgb(64, 64, 64)");
+			
+			$(".quote-text").css("color", "rgb(88, 88, 88");
+			$(".quote-attribution").css("color", "rgb(46, 46, 46)");
+		}
+	}
+	
+	//High to default
+	else
+	{
+		try {$("#text-contrast-button-text").html($("#text-contrast-button-text").html().replace("high", "normal"));}
+		catch(ex) {}
+		
+		url_vars["text_contrast"] = 0;
+		
+		write_url_vars();
+		
+		
+		
+		if (url_vars["theme"] == 1)
+		{
+			$(".section-text").css("color", "rgb(160, 160, 160)");
+			$(".body-text").css("color", "rgb(127, 127, 127)");
+			$(".body-text .link").css("color", "rgb(127, 192, 127)");
+			$(".song-lyrics").css("color", "rgb(127, 127, 127)");
+			$(".image-link-subtext").css("color", "rgb(127, 127, 127)");
+			$(".text-button").css("color", "rgb(127, 127, 127)");
+			
+			$(".quote-text").css("color", "rgb(80, 80, 80");
+			$(".quote-attribution").css("color", "rgb(164, 164, 164)");
+		}
+		
+		else
+		{
+			$(".section-text").css("color", "rgb(96, 96, 96)");
+			$(".body-text").css("color", "rgb(127, 127, 127)");
+			$(".body-text .link").css("color", "rgb(127, 192, 127)");
+			$(".song-lyrics").css("color", "rgb(127, 127, 127)");
+			$(".image-link-subtext").css("color", "rgb(127, 127, 127)");
+			$(".text-button").css("color", "rgb(127, 127, 127)");
+			
+			$(".quote-text").css("color", "rgb(176, 176, 176");
+			$(".quote-attribution").css("color", "rgb(92, 92, 92)");
+		}
+	}
 }
 
 
@@ -437,37 +575,37 @@ function switch_icon_style()
 function switch_icon_style_on_load()
 {
 	//Glyphs to images
-    if (url_vars["icon_style"] == 0)
+	if (url_vars["icon_style"] == 0)
 	{
 		try {$("#icon-button-text").html($("#icon-button-text").html().replace("glyphs", "latest subpages"));}
 		catch(ex) {}
 		
 		url_vars["icon_style"] = 1;
 		
-        write_url_vars();
-        
-        try
-        {
-        	var refresh_id = setInterval(function()
+		write_url_vars();
+		
+		try
+		{
+			var refresh_id = setInterval(function()
 			{
 				if (footer_loaded == 1)
 				{
 					$("#writing-link img").attr("src", "/graphics/image-links/writing-image.png");
-        			$("#blog-link img").attr("src", "/graphics/image-links/blog-image.png");
-        			$("#applets-link img").attr("src", "/graphics/image-links/applets-image.png");
-		        	$("#research-link img").attr("src", "/graphics/image-links/research-image.png");
-		        	$("#notes-link img").attr("src", "/graphics/image-links/notes-image.png");
-		        	$("#bio-link img").attr("src", "/graphics/image-links/me-image.png");
-		        	
-		        	$("#research-link").addClass("image-link-light");
-		        	$("#notes-link").addClass("image-link-light");
+					$("#blog-link img").attr("src", "/graphics/image-links/blog-image.png");
+					$("#applets-link img").attr("src", "/graphics/image-links/applets-image.png");
+					$("#research-link img").attr("src", "/graphics/image-links/research-image.png");
+					$("#notes-link img").attr("src", "/graphics/image-links/notes-image.png");
+					$("#bio-link img").attr("src", "/graphics/image-links/me-image.png");
+					
+					$("#research-link").addClass("image-link-light");
+					$("#notes-link").addClass("image-link-light");
 					
 					clearInterval(refresh_id);
 				}
 			}, 200);
-        }
-        
-        catch(ex) {}
+		}
+		
+		catch(ex) {}
 	}
 	
 	//Images to glyphs
@@ -478,9 +616,9 @@ function switch_icon_style_on_load()
 		
 		url_vars["icon_style"] = 0;
 		
-        write_url_vars();
-        
-        //We don't need to change any actual images because glyphs are the default and the only place this setting can be changed has no image links at all.
+		write_url_vars();
+		
+		//We don't need to change any actual images because glyphs are the default and the only place this setting can be changed has no image links at all.
 	}
 }
 
@@ -499,21 +637,21 @@ function switch_new_section()
 function switch_new_section_on_load()
 {
 	//Hide
-    if (url_vars["no_new_section"] == 0)
+	if (url_vars["no_new_section"] == 0)
 	{
 		try {$("#new-section-button-text").html($("#new-section-button-text").html().replace("shown", "hidden"));}
 		catch(ex) {}
 		
 		url_vars["no_new_section"] = 1;
 		
-        write_url_vars();
-        
-        try
-        {
-        	$("#new-section").css("display", "none");
-        }
-        
-        catch(ex) {}
+		write_url_vars();
+		
+		try
+		{
+			$("#new-section").css("display", "none");
+		}
+		
+		catch(ex) {}
 	}
 	
 	//Images to glyphs
@@ -524,9 +662,9 @@ function switch_new_section_on_load()
 		
 		url_vars["no_new_section"] = 0;
 		
-        write_url_vars();
-        
-        //Similarly to the images and glyphs, we don't need to do anything in this case.
+		write_url_vars();
+		
+		//Similarly to the images and glyphs, we don't need to do anything in this case.
 	}
 }
 
@@ -545,7 +683,7 @@ function switch_link_animation()
 
 function switch_link_animation_on_load()
 {
-    if (url_vars["link_animation"] == 0)
+	if (url_vars["link_animation"] == 0)
 	{
 		try {$("#link-animation-button-text").html($("#link-animation-button-text").html().replace("animated", "static"));}
 		catch(ex) {}
@@ -554,7 +692,7 @@ function switch_link_animation_on_load()
 		
 		console.log(url_vars);
 		
-        write_url_vars();
+		write_url_vars();
 	}
 	
 	else
@@ -564,7 +702,7 @@ function switch_link_animation_on_load()
 		
 		url_vars["link_animation"] = 0;
 		
-        write_url_vars();
+		write_url_vars();
 	}
 }
 
@@ -583,21 +721,21 @@ function switch_content_animation()
 
 function switch_content_animation_on_load()
 {
-    if (url_vars["content_animation"] == 0)
+	if (url_vars["content_animation"] == 0)
 	{
 		try {$("#content-animation-button-text").html($("#content-animation-button-text").html().replace("animated", "static"));}
 		catch(ex) {}
 		
 		url_vars["content_animation"] = 1;
 		
-        write_url_vars();
-        
-        try
-        {
+		write_url_vars();
+		
+		try
+		{
 			$("body").find("*[data-aos]").removeAttr("data-aos");
-        }
-        
-        catch(ex) {}
+		}
+		
+		catch(ex) {}
 	}
 	
 	else
@@ -607,7 +745,7 @@ function switch_content_animation_on_load()
 		
 		url_vars["content_animation"] = 0;
 		
-        write_url_vars();
+		write_url_vars();
 	}
 }
 
@@ -626,21 +764,21 @@ function switch_banner_style()
 
 function switch_banner_style_on_load()
 {
-    if (url_vars["banner_style"] == 0)
+	if (url_vars["banner_style"] == 0)
 	{
 		try {$("#banner-style-button-text").html($("#banner-style-button-text").html().replace("parallax", "simple"));}
 		catch(ex) {}
 		
 		url_vars["banner_style"] = 1;
 		
-        write_url_vars();
-        
-        try
-        {
+		write_url_vars();
+		
+		try
+		{
 			$("#background-image").addClass("bad-banner");
-        }
-        
-        catch(ex) {}
+		}
+		
+		catch(ex) {}
 	}
 	
 	else
@@ -650,7 +788,7 @@ function switch_banner_style_on_load()
 		
 		url_vars["banner_style"] = 0;
 		
-        write_url_vars();
+		write_url_vars();
 	}
 }
 
@@ -668,31 +806,31 @@ y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 //Remove hover events on touchscreen devices.
 function hasTouch()
 {
-    return "ontouchstart" in document.documentElement
-           || navigator.maxTouchPoints > 0
-           || navigator.msMaxTouchPoints > 0;
+	return "ontouchstart" in document.documentElement
+		   || navigator.maxTouchPoints > 0
+		   || navigator.msMaxTouchPoints > 0;
 }
 
 if (hasTouch())
 { // remove all :hover stylesheets
-    try
-    { // prevent exception on browsers not supporting DOM styleSheets properly
-        for (var si in document.styleSheets)
-        {
-            var styleSheet = document.styleSheets[si];
-            if (!styleSheet.rules) continue;
+	try
+	{ // prevent exception on browsers not supporting DOM styleSheets properly
+		for (var si in document.styleSheets)
+		{
+			var styleSheet = document.styleSheets[si];
+			if (!styleSheet.rules) continue;
 
-            for (var ri = styleSheet.rules.length - 1; ri >= 0; ri--)
-            {
-                if (!styleSheet.rules[ri].selectorText) continue;
+			for (var ri = styleSheet.rules.length - 1; ri >= 0; ri--)
+			{
+				if (!styleSheet.rules[ri].selectorText) continue;
 
-                if (styleSheet.rules[ri].selectorText.match(':hover'))
-                {
-                    styleSheet.deleteRule(ri);
-                }
-            }
-        }
-    } catch (ex) {}
+				if (styleSheet.rules[ri].selectorText.match(':hover'))
+				{
+					styleSheet.deleteRule(ri);
+				}
+			}
+		}
+	} catch (ex) {}
 }
 
 
@@ -727,9 +865,9 @@ $(function()
 				setTimeout(function()
 				{
 					$("html").animate({opacity: 1}, 300, "swing");
-	    		}, 300);
-	    	}
-	    }
+				}, 300);
+			}
+		}
 	});
 	
 	
@@ -750,28 +888,28 @@ $(function()
 	//Handle IE and Edge.
 	if (browser_name == "MS Edge")
 	{
-	    $(".logo").before("<div class='body-text' style='text-align: center'><b>Microsoft Edge is not fully supported on this site. Using <a href='https://www.google.com/chrome/'>Chrome</a>, <a href='https://www.apple.com/safari/'>Safari</a>, <a href='https://www.mozilla.org/en-US/firefox/?v=a'>Firefox</a>, or <a href='https://www.opera.com/'>Opera</a> is highly recommended.<b></div> <div style='height: 5vh'></div>");
+		$(".logo").before("<div class='body-text' style='text-align: center'><b>Microsoft Edge is not fully supported on this site. Using <a href='https://www.google.com/chrome/'>Chrome</a>, <a href='https://www.apple.com/safari/'>Safari</a>, <a href='https://www.mozilla.org/en-US/firefox/?v=a'>Firefox</a>, or <a href='https://www.opera.com/'>Opera</a> is highly recommended.<b></div> <div style='height: 5vh'></div>");
 	}
 
 	else if (browser_name == "Explorer")
 	{
-	    window.location.replace("/ie.html");
+		window.location.replace("/ie.html");
 	}
 	
 	
 	
 	//Apply settings.
-	url_vars = {"theme": get_url_var("theme"), "font": get_url_var("font"), "icon_style": get_url_var("icon_style"), "no_new_section": get_url_var("no_new_section"), "link_animation": get_url_var("link_animation"), "content_animation": get_url_var("content_animation"), "banner_style": get_url_var("banner_style")};
+	url_vars = {"theme": get_url_var("theme"), "font": get_url_var("font"), "text_contrast": get_url_var("text_contrast"), "icon_style": get_url_var("icon_style"), "no_new_section": get_url_var("no_new_section"), "link_animation": get_url_var("link_animation"), "content_animation": get_url_var("content_animation"), "banner_style": get_url_var("banner_style")};
 
 	if (url_vars["theme"] == null)
 	{
-	    url_vars["theme"] = 0;
-	    
-	    //Test for system-wide dark mode.
-	    if ($("html").css("background-color") == "rgb(24, 24, 24)")
-	    {
-	    	url_vars["theme"] = 1;
-	    }
+		url_vars["theme"] = 0;
+		
+		//Test for system-wide dark mode.
+		if ($("html").css("background-color") == "rgb(24, 24, 24)")
+		{
+			url_vars["theme"] = 1;
+		}
 	}
 	
 	//Remove the message from the css that the user has a system-wide dark theme.
@@ -781,75 +919,86 @@ $(function()
 	
 	if (url_vars["font"] == null)
 	{
-	    url_vars["font"] = 0;
+		url_vars["font"] = 0;
+	}
+	
+	if (url_vars["text_contrast"] == null)
+	{
+		url_vars["text_contrast"] = 0;
 	}
 
 	if (url_vars["icon_style"] == null)
 	{
-	    url_vars["icon_style"] = 0;
+		url_vars["icon_style"] = 0;
 	}
 
 	if (url_vars["no_new_section"] == null)
 	{
-	    url_vars["no_new_section"] = 0;
+		url_vars["no_new_section"] = 0;
 	}
 	
 	if (url_vars["link_animation"] == null)
 	{
-	    url_vars["link_animation"] = 0;
+		url_vars["link_animation"] = 0;
 	}
 	
 	if (url_vars["content_animation"] == null)
 	{
-	    url_vars["content_animation"] = 0;
+		url_vars["content_animation"] = 0;
 	}
 	
 	if (url_vars["banner_style"] == null)
 	{
-	    url_vars["banner_style"] = 0;
+		url_vars["banner_style"] = 0;
 	}
 	
 	
 	
 	if (url_vars["theme"] == 1)
 	{
-	    url_vars["theme"] = 0;
+		url_vars["theme"] = 0;
 		switch_theme_on_load();
 	}
 	
 	if (url_vars["font"] == 1)
 	{
-	    url_vars["font"] = 0;
+		url_vars["font"] = 0;
 		switch_font_on_load();
+	}
+	
+	if (url_vars["text_contrast"] == 1)
+	{
+		url_vars["text_contrast"] = 0;
+		switch_text_contrast_on_load();
 	}
 
 	if (url_vars["icon_style"] == 1)
 	{
-	    url_vars["icon_style"] = 0;
+		url_vars["icon_style"] = 0;
 		switch_icon_style_on_load();
 	}
 
 	if (url_vars["no_new_section"] == 1)
 	{
-	    url_vars["no_new_section"] = 0;
+		url_vars["no_new_section"] = 0;
 		switch_new_section_on_load();
 	}
 	
 	if (url_vars["link_animation"] == 1)
 	{
-	    url_vars["link_animation"] = 0;
+		url_vars["link_animation"] = 0;
 		switch_link_animation_on_load();
 	}
 	
 	if (url_vars["content_animation"] == 1)
 	{
-	    url_vars["content_animation"] = 0;
+		url_vars["content_animation"] = 0;
 		switch_content_animation_on_load();
 	}
 	
 	if (url_vars["banner_style"] == 1)
 	{
-	    url_vars["banner_style"] = 0;
+		url_vars["banner_style"] = 0;
 		switch_banner_style_on_load();
 	}
 });
