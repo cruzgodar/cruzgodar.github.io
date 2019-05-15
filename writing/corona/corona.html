@@ -342,20 +342,15 @@ body
 		
 		
 		
-		AOS.init({duration: 1200, once: false, offset: y/4});
-		
 		$(function()
 		{
-			if (url_vars["theme"] == 1)
-			{
-				$("html").css("background-color", "rgb(24, 24, 24)");
-			}
-			
 			if (url_vars["text_contrast"] == 1)
 			{
 				$(".synopsis-text").css("color", "rgb(208, 208, 208)");
 				$(".body-text").css("color", "rgb(192, 192, 192)");
 			}
+			
+			AOS.init({duration: 1200, once: false, offset: y/4});
 			
 			
 			
