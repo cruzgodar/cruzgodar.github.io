@@ -15,9 +15,6 @@ $(function()
 		}
 	}
 	
-	//Remove the message from the css that the user has a system-wide dark theme.
-	$("html").css("background-color", "rgba(0, 0, 0, 0)");
-	
 	
 	
 	if (url_vars["font"] == null)
