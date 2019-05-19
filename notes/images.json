@@ -1,0 +1,31 @@
+{
+	"image-linear-algebra":
+	{
+		"webp": "graphics/linear-algebra.webp",
+		"non-webp": "graphics/linear-algebra.png"
+	},
+	
+	"image-game-theory":
+	{
+		"webp": "graphics/game-theory.webp",
+		"non-webp": "graphics/game-theory.png"
+	},
+	
+	"image-complex-analysis":
+	{
+		"webp": "graphics/complex-analysis.webp",
+		"non-webp": "graphics/complex-analysis.png"
+	},
+	
+	"image-analysis":
+	{
+		"webp": "graphics/analysis.webp",
+		"non-webp": "graphics/analysis.png"
+	},
+	
+	"image-abstract-algebra":
+	{
+		"webp": "graphics/abstract-algebra.webp",
+		"non-webp": "graphics/abstract-algebra.png"
+	}
+}

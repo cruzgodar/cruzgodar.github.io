@@ -23,10 +23,9 @@
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
 
-<!-- Animate on scroll library -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<link rel="stylesheet" type="text/css" href="/style/aos.css">
 
 <link rel="stylesheet" type="text/css" href="/style/base-style.css">
 
@@ -89,6 +88,10 @@
 
 <body>
 	<div style="height: 5vh"></div>
+	
+	<noscript>
+		<div class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</div>
+	</noscript>
 
 	<div class="logo" data-aos="fade-in" id="trigger-section-1">
 		<img class="link" onclick="redirect('/index.html')" src="/graphics/general-icons/logo.png" alt="Logo"></img>
@@ -111,7 +114,7 @@
 	
 	
 	<div id="container" class="row" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
-		<img id="mandelbrot-set" src="graphics/mandelbrot-set.png" alt="The Mandelbrot Set"></img>
+		<img id="mandelbrot-set" class="check-webp" src="" alt="The Mandelbrot Set"></img>
 		<canvas id="julia-set"></canvas>
 	</div>
 	
@@ -167,10 +170,10 @@
 	
 
 	<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+	<script src="/scripts/jquery.js"></script>
+	
 	<!-- Animate on scroll library -->
-	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script src="/scripts/aos.js"></script>
 	
 	<!-- Mathjs library -->
 	<script src="https://unpkg.com/mathjs@5.9.0/dist/math.min.js"></script>
@@ -194,20 +197,31 @@
 					insert_footer("applets");
 					clearInterval(refresh_id_1);
 				}
-			}, 200);
+			}, 50);
 			
 			
 			
-			small_canvas_size = parseInt($("#mandelbrot-set").css("width").replace("px", ""));
-			large_canvas_size = parseInt($("#high-res-julia-set").css("width").replace("px", ""));
+			//Only get the width of the Mandelbrot set has finished loading in order to get the correct value
+			var refresh_id_2 = setInterval(function()
+			{
+				if (supports_webp != null)
+				{
+					clearInterval(refresh_id_2);
+					
+					small_canvas_size = $("#mandelbrot-set").width();
+					large_canvas_size = $("#high-res-julia-set").width();
+				}
+			}, 50);
 			
 			
 			
 			//As the user scrolls around the image, make tiny Julia set previews.
-			var refresh_id_2 = setInterval(function()
+			var refresh_id_3 = setInterval(function()
 			{
 				if (typeof hasTouch != "undefined" && $.isFunction(hasTouch))
 				{
+					clearInterval(refresh_id_3);
+					
 					if (!hasTouch())
 					{
 						$("#mandelbrot-set").mousemove(function(e)
@@ -287,10 +301,8 @@
 							$("#dim-input").val(1000);
 						}, false);
 					}
-					
-					clearInterval(refresh_id_2);
 				}
-			}, 200);
+			}, 50);
 		});
 		
 		

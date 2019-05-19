@@ -1,0 +1,55 @@
+{
+	"image-writing":
+	{
+		"webp": "/graphics/image-links/writing.webp",
+		"non-webp": "/graphics/image-links/writing.png"
+	},
+	
+	"image-blog":
+	{
+		"webp": "/graphics/image-links/blog.webp",
+		"non-webp": "/graphics/image-links/blog.png"
+	},
+	
+	"image-applets":
+	{
+		"webp": "/graphics/image-links/applets.webp",
+		"non-webp": "/graphics/image-links/applets.png"
+	},
+	
+	"image-research":
+	{
+		"webp": "/graphics/image-links/research.webp",
+		"non-webp": "/graphics/image-links/research.png"
+	},
+	
+	"image-notes":
+	{
+		"webp": "/graphics/image-links/notes.webp",
+		"non-webp": "/graphics/image-links/notes.png"
+	},
+	
+	"image-bio":
+	{
+		"webp": "/graphics/image-links/bio.webp",
+		"non-webp": "/graphics/image-links/bio.png"
+	},
+	
+	"image-julia-set-explorer":
+	{
+		"webp": "/applets/julia-set-explorer/cover.webp",
+		"non-webp": "/applets/julia-set-explorer/cover.png"
+	},
+	
+	"image-on-leaving-again-and-new-beginnings":
+	{
+		"webp": "/blog/7/cover.webp",
+		"non-webp": "/blog/7/cover.png"
+	},
+	
+	"image-erinnerungen":
+	{
+		"webp": "/blog/6/cover.webp",
+		"non-webp": "/blog/6/cover.png"
+	}
+}

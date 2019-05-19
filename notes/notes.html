@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-135923635-1"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	
+	gtag('config', 'UA-135923635-1');
+</script>
+
+<script src="/scripts/dark-theme.js"></script>
+
+<title>Notes &mdash; Cruz Godar</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest?v=NmPPnmeW24">
+<link rel="mask-icon" href="/safari-pinned-tab.svg?v=NmPPnmeW24" color="#5bbad5">
+<link rel="shortcut icon" href="/favicon.ico?v=NmPPnmeW24">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<link rel="stylesheet" type="text/css" href="/style/aos.css">
+
+<link rel="stylesheet" type="text/css" href="/style/base-style.css">
+
+</head>
+
+
+
+<body>
+	<div style="height: 5vh"></div>
+	
+	<noscript>
+		<div class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</div>
+	</noscript>
+
+	<div class="logo" data-aos="fade-in" id="trigger-cal-poly">
+		<img class="link" onclick="redirect('/index.html')" src="/graphics/general-icons/logo.png" alt="Logo"></img>
+	</div>
+
+	<div style="height: 2vh"></div>
+
+	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-cal-poly">
+		<div class="heading-text">Notes</div>
+	</div>
+
+	<div style="height: 5vh"></div>
+	
+	<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-cal-poly">
+		<div class="body-text">A collection of class notes that I&#x2019;ve converted from handwriting to type. They contain nearly no course narrative, only definitions, theorems, and proofs, and while this makes them unrecommended for study on their own, they are useful as review or supplementary material. The source files are available at the end of each document.</div>
+	</div>
+	
+	<br>
+
+	<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-cal-poly">
+		<div class="body-text">The Analysis and Algebra notes are available in beta. They will be updated as sections are completed.</div>
+	</div>
+
+	<div style="height: 10vh"></div>
+
+	<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-cal-poly">
+		<div class="section-text">From Cal Poly</div>
+	</div>
+
+	<div style="height: 5vh"></div>
+
+	<div class="image-links">
+		<div class="image-link image-link-light" data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-cal-poly">
+			<img id="image-linear-algebra" class="check-webp link" onclick="redirect('/notes/pdfs/linear-algebra.pdf')" src="" alt="Linear Algebra"></img>				
+			<div class="image-link-subtext">Linear Algebra</div>
+		</div>
+
+		<div class="image-link image-link-light" data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-cal-poly">
+			<img id="image-game-theory" class="check-webp link" onclick="redirect('/notes/pdfs/game-theory.pdf')" src="" alt="Game Theory"></img>
+			<div class="image-link-subtext">Game Theory</div>
+		</div>
+
+		<div class="image-link image-link-light" data-aos="fade-up" data-aos-delay="700" data-aos-anchor="#trigger-cal-poly">
+			<img id="image-complex-analysis" class="check-webp link" onclick="redirect('/notes/pdfs/complex-analysis.pdf')" src="" alt="Complex Analysis"></img>
+			<div class="image-link-subtext">Complex Analysis</div>
+		</div>
+
+		<div class="image-link image-link-light" data-aos="fade-up" data-aos-delay="800" data-aos-anchor="#trigger-cal-poly">
+			<img id="image-analysis" class="check-webp link" onclick="redirect('/notes/pdfs/analysis.pdf')" src="" alt="Analysis"></img>
+			<div class="image-link-subtext">Analysis</div>
+		</div>
+	</div>
+
+	<div class="row-break"></div>
+
+	<div class="image-links">
+		<div class="image-link image-link-light" data-aos="fade-up" data-aos-delay="900" data-aos-anchor="#trigger-cal-poly">
+			<img id="image-abstract-algebra" class="check-webp link" onclick="redirect('/notes/pdfs/abstract-algebra.pdf')" src="" alt="Abstract Algebra"></img>
+			<div class="image-link-subtext">Abstract Algebra</div>
+		</div>
+	</div>
+
+
+	
+	<div id="spawn-footer"></div>
+	
+	
+
+	<!-- jQuery -->
+	<script src="/scripts/jquery.js"></script>
+	
+	<!-- Animate on scroll library -->
+	<script src="/scripts/aos.js"></script>
+	
+	<script src="/scripts/base-script.js"></script>
+	
+	<script>
+		$(function()
+		{
+			var refresh_id = setInterval(function()
+			{
+				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
+				{
+					insert_footer("notes");
+					clearInterval(refresh_id);
+				}
+			}, 50);
+		});
+	</script>
+	
+</body>
+</html>

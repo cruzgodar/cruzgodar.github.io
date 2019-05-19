@@ -1,0 +1,43 @@
+{
+	"image-on-leaving-again-and-new-beginnings":
+	{
+		"webp": "7/cover.webp",
+		"non-webp": "7/cover.png"
+	},
+	
+	"image-erinnerungen":
+	{
+		"webp": "6/cover.webp",
+		"non-webp": "6/cover.png"
+	},
+	
+	"image-halloween-in-january":
+	{
+		"webp": "5/cover.webp",
+		"non-webp": "5/cover.png"
+	},
+	
+	"image-a-taste-of-chaos":
+	{
+		"webp": "4/cover.webp",
+		"non-webp": "4/cover.png"
+	},
+	
+	"image-the-city-and-the-city":
+	{
+		"webp": "3/cover.webp",
+		"non-webp": "3/cover.png"
+	},
+	
+	"image-nach-heidelberg":
+	{
+		"webp": "2/cover.webp",
+		"non-webp": "2/cover.png"
+	},
+	
+	"image-on-leaving-and-the-beginnings-of-things":
+	{
+		"webp": "1/cover.webp",
+		"non-webp": "1/cover.png"
+	}
+}

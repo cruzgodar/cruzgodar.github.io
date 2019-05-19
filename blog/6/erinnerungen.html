@@ -24,44 +24,27 @@
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
 
-<!-- Animate on scroll library -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<link rel="stylesheet" type="text/css" href="/style/aos.css">
 
 <link rel="stylesheet" type="text/css" href="/style/base-style.css">
 <link rel="stylesheet" type="text/css" href="/style/banner-style.css">
-
-<style>
-
-.banner:before
-{
-	background: url("banner.jpg") no-repeat center center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-.banner-small:before
-{
-	background: url("banner-small.jpg") no-repeat center center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-</style>
 
 </head>
 
 
 
 <body>
+	<noscript>
+		<div style="height: 5vh"></div>
+		
+		<div class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</div>
+	</noscript>
+	
 	<div id="background-image" class="banner-small"></div>
-	<img id="small-loader" src="banner-small.jpg" style="display: none"></img>
-	<img id="full-res-loader" src="banner.jpg" style="display: none"></img>
+	<div id="small-loader" class="banner-small" src="" style="display: none"></div>
+	<div id="full-res-loader" class="banner" src="" style="display: none"></div>
 
 	<div id="banner-cover" style="height: 100vh"></div>
 	
@@ -89,7 +72,7 @@
 		<div class="nav-buttons" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
 			<img class="nav-button" onclick="redirect('../7/on-leaving-again-and-new-beginnings.html')" src="/graphics/general-icons/chevron-left.png" alt="Newer"></img>
 			
-			<div id="text-button" class="text-button" onclick="redirect('/blog.html')">All Posts</div>
+			<div id="text-button" class="text-button" onclick="redirect('/blog/blog.html')">All Posts</div>
 			
 			<img class="nav-button" onclick="redirect('../5/halloween-in-january.html')" src="/graphics/general-icons/chevron-right.png" alt="Older"></img>
 		</div>
@@ -111,26 +94,20 @@
 		<div style="height: 5vw"></div>
 		
 		<div class="image-row">
-			<a href="source-images/winter-1.jpg">
-				<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
-					<img class="small-image-horizontal" src="graphics/winter-1.png" alt="Winter in Freiburg, 1"></img>
-				</div>
-			</a>
-
-			<a href="source-images/winter-2.jpg">
-				<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-2">
-					<img class="small-image-horizontal" src="graphics/winter-2.png" alt="Winter in Freiburg, 2"></img>
-				</div>
-			</a>
+			<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
+				<img id="image-winter-1" class="small-image-horizontal check-webp link" src="" alt="Winter in Freiburg, 1" onclick="redirect('https://drive.google.com/uc?export=download&id=15GdJqd8QOHRY34OpLjMvvSti5JFxXpb-', 1)"></img>
+			</div>
+			
+			<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-2">
+				<img id="image-winter-2" class="small-image-horizontal check-webp link" src="" alt="Winter in Freiburg, 2" onclick="redirect('https://drive.google.com/uc?export=download&id=1CPOqxHc6VcdJlG0rF9bfIu2A5sYnM9-s', 1)"></img>
+			</div>
 		</div>
 		
 		<div style="height: 5vw"></div>
 
-		<a href="source-images/winter-3.jpg">
-			<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-2">
-				<img class="big-image-horizontal" src="graphics/winter-3.png" alt="Winter in Freiburg, 3"></img>
-			</div>
-		</a>
+		<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-2">
+			<img id="image-winter-3" class="big-image-horizontal check-webp link" src="" alt="Winter in Freiburg, 3" onclick="redirect('https://drive.google.com/uc?export=download&id=1r9ngt6tu1O5RBodaEXzpIvuxe7J2JD-_', 1)"></img>
+		</div>
 
 		<div style="height: 5vw"></div>
 		
@@ -155,17 +132,13 @@
 		<div style="height: 5vw"></div>
 		
 		<div class="image-row">
-			<a href="source-images/alte-strasse.jpg">
-				<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-3">
-					<img class="small-image-horizontal" src="graphics/alte-strasse.png" alt="The Old and the New"></img>
-				</div>
-			</a>
-
-			<a href="source-images/incline.jpg">
-				<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-3">
-					<img class="small-image-horizontal" src="graphics/incline.png" alt="Built on an Incline"></img>
-				</div>
-			</a>
+			<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-3">
+				<img id="image-alte-strasse" class="small-image-horizontal check-webp link" src="" alt="The Old and the New" onclick="redirect('https://drive.google.com/uc?export=download&id=1ZmNYn9EeWdHPOPwaq69fX61ZN8QyCOGC', 1)"></img>
+			</div>
+			
+			<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-3">
+				<img id="image-incline" class="small-image-horizontal check-webp link" src="" alt="Built on an Incline" onclick="redirect('https://drive.google.com/uc?export=download&id=1Pc1_jqi5bURmqbcV2r3D_MdHta6gNPMZ', 1)"></img>
+			</div>
 		</div>
 		
 		<div style="height: 5vw"></div>
@@ -176,26 +149,20 @@
 		
 		<div style="height: 5vw"></div>
 		
-		<a href="source-images/metal-map.jpg">
-			<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-3">
-				<img class="big-image-horizontal" src="graphics/metal-map.png" alt="The Metal Map"></img>
-			</div>
-		</a>
+		<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-3">
+			<img id="image-metal-map" class="big-image-horizontal check-webp link" src="" alt="The Metal Map" onclick="redirect('https://drive.google.com/uc?export=download&id=1ZEKedBGUC_zlxjfeJ952aX-GUoDgHnsB', 1)"></img>
+		</div>
 		
 		<div style="height: 5vw"></div>
 		
 		<div class="image-row">
-			<a href="source-images/tunnel.jpg">
-				<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-3">
-					<img class="small-image-horizontal" src="graphics/tunnel.png" alt="An Underground Tunnel"></img>
-				</div>
-			</a>
-
-			<a href="source-images/neckar.jpg">
-				<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-3">
-					<img class="small-image-horizontal" src="graphics/neckar.png" alt="The Neckar"></img>
-				</div>
-			</a>
+			<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-3">
+				<img id="image-tunnel" class="small-image-horizontal check-webp link" src="" alt="An Underground Tunnel" onclick="redirect('https://drive.google.com/uc?export=download&id=1rLl3mCKesmfsNuQf8V4MXb9OpzzmnDwC', 1)"></img>
+			</div>
+			
+			<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-3">
+				<img id="image-neckar" class="small-image-horizontal check-webp link" src="" alt="The Neckar" onclick="redirect('https://drive.google.com/uc?export=download&id=1Lnh_6uGHrA3RTL1bbMLe5FS_pXRJYLbh', 1)"></img>
+			</div>
 		</div>
 		
 		<div style="height: 5vw"></div>
@@ -212,11 +179,9 @@
 		
 		<div style="height: 5vw"></div>
 		
-		<a href="source-images/tuebingen.jpg">
-			<div data-aos="fade-up" data-aos-delay="700" data-aos-anchor="#trigger-section-3">
-				<img class="big-image-horizontal" src="graphics/tuebingen.png" alt="Tübingen"></img>
-			</div>
-		</a>
+		<div data-aos="fade-up" data-aos-delay="700" data-aos-anchor="#trigger-section-3">
+			<img id="image-tuebingen" class="big-image-horizontal check-webp link" src="" alt="Tübingen" onclick="redirect('https://drive.google.com/uc?export=download&id=1qxhdWsCxJf131WMe-keCxY6_B-6Hy_Bs', 1)"></img>
+		</div>
 		
 		<div style="height: 15vh"></div>
 		
@@ -234,19 +199,15 @@
 		
 		<div style="height: 5vw"></div>
 		
-		<a href="source-images/library.jpg">
-			<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-4">
-				<img class="big-image-horizontal" src="graphics/library.png" alt="A Library"></img>
-			</div>
-		</a>
+		<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-4">
+			<img id="image-library" class="big-image-horizontal check-webp link" src="" alt="A Library" onclick="redirect('https://drive.google.com/uc?export=download&id=1SPZIMioxonXC8GCXM5KwIcyrrDHX98eJ', 1)"></img>
+		</div>
 		
 		<div style="height: 5vw"></div>
 		
-		<a href="source-images/zusammen.jpg">
-			<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-4">
-				<img class="big-image-horizontal" src="graphics/zusammen.png" alt="Together at Last"></img>
-			</div>
-		</a>
+		<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-4">
+			<img id="image-zusammen" class="big-image-horizontal check-webp link" src="" alt="Together at Last" onclick="redirect('https://drive.google.com/uc?export=download&id=13VDmZUest4CDYJoDcjskcSzI8xfWiZLQ', 1)"></img>
+		</div>
 		
 		<div style="height: 5vw"></div>
 		
@@ -287,7 +248,7 @@
 		<div class="nav-buttons" data-aos="fade-up">
 			<img class="nav-button" onclick="redirect('../7/on-leaving-again-and-new-beginnings.html')" src="/graphics/general-icons/chevron-left.png" alt="Newer"></img>
 			
-			<div id="text-button" class="text-button" onclick="redirect('/blog.html')">All Posts</div>
+			<div id="text-button" class="text-button" onclick="redirect('/blog/blog.html')">All Posts</div>
 			
 			<img class="nav-button" onclick="redirect('../5/halloween-in-january.html')" src="/graphics/general-icons/chevron-right.png" alt="Older"></img>
 		</div>
@@ -314,13 +275,13 @@
 	
 
 	<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+	<script src="/scripts/jquery.js"></script>
+	
 	<!-- Animate on scroll library -->
-	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script src="/scripts/aos.js"></script>
 	
 	<!-- Library to detect if images are loaded -->
-	<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+	<script src="/scripts/imagesloaded.js"></script>
 	
 	<script src="/scripts/base-script.js"></script>
 	
@@ -336,7 +297,7 @@
 					insert_footer("blog");
 					clearInterval(refresh_id);
 				}
-			}, 200);
+			}, 50);
 		});
 	</script>
 

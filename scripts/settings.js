@@ -373,68 +373,6 @@ function switch_text_contrast_on_load()
 
 
 
-function switch_icon_style()
-{
-	$("#icon-button-row").animate({opacity: 0}, 300, "swing");
-	
-	setTimeout(function()
-	{
-		switch_icon_style_on_load();
-		$("#icon-button-row").animate({opacity: 1}, 300, "swing");
-	}, 300);
-}
-
-function switch_icon_style_on_load()
-{
-	//Glyphs to images
-	if (url_vars["icon_style"] == 0)
-	{
-		try {$("#icon-button-text").html($("#icon-button-text").html().replace("glyphs", "latest subpages"));}
-		catch(ex) {}
-		
-		url_vars["icon_style"] = 1;
-		
-		write_url_vars();
-		
-		try
-		{
-			var refresh_id = setInterval(function()
-			{
-				if (footer_loaded == 1)
-				{
-					$("#writing-link img").attr("src", "/graphics/image-links/writing-image.png");
-					$("#blog-link img").attr("src", "/graphics/image-links/blog-image.png");
-					$("#applets-link img").attr("src", "/graphics/image-links/applets-image.png");
-					$("#research-link img").attr("src", "/graphics/image-links/research-image.png");
-					$("#notes-link img").attr("src", "/graphics/image-links/notes-image.png");
-					$("#bio-link img").attr("src", "/graphics/image-links/me-image.png");
-					
-					$("#research-link").addClass("image-link-light");
-					$("#notes-link").addClass("image-link-light");
-					
-					clearInterval(refresh_id);
-				}
-			}, 200);
-		}
-		
-		catch(ex) {}
-	}
-	
-	//Images to glyphs
-	else
-	{
-		try {$("#icon-button-text").html($("#icon-button-text").html().replace("latest subpages", "glyphs"));}
-		catch(ex) {}
-		
-		url_vars["icon_style"] = 0;
-		
-		write_url_vars();
-		
-		//We don't need to change any actual images because glyphs are the default and the only place this setting can be changed has no image links at all.
-	}
-}
-
-
 function switch_new_section()
 {
 	$("#new-section-button-row").animate({opacity: 0}, 300, "swing");

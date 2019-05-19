@@ -24,35 +24,14 @@
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
 
-<!-- Animate on scroll library -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<link rel="stylesheet" type="text/css" href="/style/aos.css">
 
 <link rel="stylesheet" type="text/css" href="/style/base-style.css">
 <link rel="stylesheet" type="text/css" href="/style/banner-style.css">
 
 <style>
-
-.banner:before
-{
-	background: url("banner.jpg") no-repeat center center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-.banner-small:before
-{
-	background: url("banner-small.jpg") no-repeat center center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-
 
 .body-text
 {
@@ -66,9 +45,15 @@
 
 
 <body>
+	<noscript>
+		<div style="height: 5vh"></div>
+		
+		<div class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</div>
+	</noscript>
+	
 	<div id="background-image" class="banner-small"></div>
-	<img id="small-loader" src="banner-small.jpg" style="display: none"></img>
-	<img id="full-res-loader" src="banner.jpg" style="display: none"></img>
+	<div id="small-loader" class="banner-small" src="" style="display: none"></div>
+	<div id="full-res-loader" class="banner" src="" style="display: none"></div>
 
 	<div id="banner-cover" style="height: 100vh"></div>
 	
@@ -738,13 +723,13 @@
 	
 
 	<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+	<script src="/scripts/jquery.js"></script>
+	
 	<!-- Animate on scroll library -->
-	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script src="/scripts/aos.js"></script>
 	
 	<!-- Library to detect if images are loaded -->
-	<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+	<script src="/scripts/imagesloaded.js"></script>
 	
 	<script src="/scripts/base-script.js"></script>
 	
@@ -760,7 +745,7 @@
 					insert_footer("writing");
 					clearInterval(refresh_id);
 				}
-			}, 200);
+			}, 50);
 		});
 	</script>
 

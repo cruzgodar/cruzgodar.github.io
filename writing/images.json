@@ -1,0 +1,13 @@
+{
+	"image-corona":
+	{
+		"webp": "corona/cover.webp",
+		"non-webp": "corona/cover.png"
+	},
+	
+	"image-mist":
+	{
+		"webp": "mist/cover.webp",
+		"non-webp": "mist/cover.png"
+	}
+}

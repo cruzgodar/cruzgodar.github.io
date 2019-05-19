@@ -4,42 +4,69 @@ var scroll_button_done = 0;
 var global_opacity = 0;
 var small_loader_loaded = 0;
 
+var banner_extension = "";
+
 
 
 $(function()
 {
-	AOS.init({duration: 1200, once: false, offset: y/4});
+	AOS.init({duration: 1200, once: false, offset: window_height/4});
 	
 	
 	
-	//Fade in the low-res banner when it's loaded.
-	$("#small-loader").imagesLoaded(function()
+	//Set up the banner classes. We have .banner and .banner-small, the latter a low-res version to improve loading speed. If possible, we use WebP, and we add a media query to switch to the portrait version whenever possible to avoid loading parts of the image that won't be displayed.
+	var refresh_id = setInterval(function()
 	{
-		if (url_vars["link_animation"] == 1)
+		if (supports_webp != null)
 		{
-			$("body").css("opacity", 1);
-		}
+			clearInterval(refresh_id);
+			
+			if (supports_webp)
+			{
+				banner_extension = "webp";
+			}
+			
+			else
+			{
+				banner_extension = "jpg";
+			}
 		
-		else
-		{
-			$("body").animate({opacity: 1}, 300, "swing");
-		}
-	});
-	
-	//Switch to the high-res banner when it's loaded.
-	$("#full-res-loader").imagesLoaded(function()
-	{
-		$("#background-image").removeClass("banner-small");
-		$("#background-image").addClass("banner");
-		$("#background-image")[0].offsetHeight;
+			
+			
+			$("head").append('<style> .banner:before { background: url("banners/landscape.' + banner_extension + '") no-repeat center center; } .banner-small:before { background: url("banners/landscape-small.' + banner_extension + '") no-repeat center center; } .banner:before, .banner-small:before { -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; } @media screen and (max-aspect-ratio: 10/16), (max-width: 800px) { .banner:before { background: url("banners/portrait.' + banner_extension + '") no-repeat center center; } .banner-small:before { background: url("banners/portrait-small.' + banner_extension + '") no-repeat center center; } .banner:before, .banner-small:before { -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; } } </style>');
 		
-		//If the user just sits at the top of the page for 3 seconds without scrolling after the full background is loaded, give them a scroll button.
-		if (scroll == 0)
-		{
-			setTimeout(add_scroll_button, 3000);
-		}
 		
-	});
+		
+			//Fade in the low-res banner when it's loaded.
+			$("#small-loader").imagesLoaded({background: true}, function()
+			{
+				if (url_vars["link_animation"] == 1)
+				{
+					$("body").css("opacity", 1);
+				}
+				
+				else
+				{
+					$("body").animate({opacity: 1}, 300, "swing");
+				}
+			});
+			
+			//Switch to the high-res banner when it's loaded.
+			$("#full-res-loader").imagesLoaded({background: true}, function()
+			{
+				$("#background-image").removeClass("banner-small");
+				$("#background-image").addClass("banner");
+				$("#background-image")[0].offsetHeight;
+				
+				//If the user just sits at the top of the page for 3 seconds without scrolling after the full background is loaded, give them a scroll button.
+				if (scroll == 0)
+				{
+					setTimeout(add_scroll_button, 3000);
+				}
+				
+			});
+		}
+	}, 50);
 	
 	
 	
@@ -66,9 +93,9 @@ function scroll_update()
 	{
 		if (url_vars["banner_style"] != 1)
 		{
-			if (scroll <= y)
+			if (scroll <= window_height)
 			{
-				global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / y, 0) - .5 * Math.PI);
+				global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / window_height, 0) - .5 * Math.PI);
 				$("#background-image").css("opacity", global_opacity);
 				
 				if (global_opacity == 0)
@@ -91,9 +118,9 @@ function scroll_update()
 		
 		
 		
-		if (scroll <= y/3)
+		if (scroll <= window_height/3)
 		{
-			global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / y, 0) - .5 * Math.PI);
+			global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - .5 * Math.PI);
 			
 			$(".scroll-button").css("opacity", global_opacity);
 			

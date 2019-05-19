@@ -1,0 +1,7 @@
+{
+	"image-julia-set-explorer":
+	{
+		"webp": "julia-set-explorer/cover.webp",
+		"non-webp": "julia-set-explorer/cover.png"
+	}
+}

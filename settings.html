@@ -23,10 +23,9 @@
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
 
-<!-- Animate on scroll library -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<link rel="stylesheet" type="text/css" href="/style/aos.css">
 
 <link rel="stylesheet" type="text/css" href="/style/base-style.css">
 
@@ -97,6 +96,10 @@ body
 
 <body>
 	<div style="height: 5vh"></div>
+	
+	<noscript>
+		<div class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</div>
+	</noscript>
 
 	<div data-aos="fade-up" id="trigger-section-1">
 		<div class="heading-text">Settings</div>
@@ -146,24 +149,12 @@ body
 	
 	<div style="height: 2vh"></div>
 	
-	<div id="icon-button-row" class="button-row">
-		<div data-aos="zoom-out" data-aos-delay="1300" data-aos-anchor="#trigger-section-1">
-			<img class="footer-button" src="/graphics/button-icons/rounded-square.png" alt="Change Icons" onclick="switch_icon_style()"></img>
-		</div>
-		
-		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1300" data-aos-anchor="#trigger-section-1">
-			<div id="icon-button-text" class="body-text button-text">Homepage icons: glyphs</div>
-		</div>
-	</div>
-	
-	<div style="height: 2vh"></div>
-	
 	<div id="new-section-button-row" class="button-row">
-		<div data-aos="zoom-out" data-aos-delay="1400" data-aos-anchor="#trigger-section-1">
+		<div data-aos="zoom-out" data-aos-delay="1300" data-aos-anchor="#trigger-section-1">
 			<img class="footer-button" src="/graphics/button-icons/star.png" alt="Toggle New Section" onclick="switch_new_section()"></img>
 		</div>
 		
-		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1400" data-aos-anchor="#trigger-section-1">
+		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1300" data-aos-anchor="#trigger-section-1">
 			<div id="new-section-button-text" class="body-text button-text">New additions on homepage: shown</div>
 		</div>
 	</div>
@@ -171,11 +162,11 @@ body
 	<div style="height: 2vh"></div>
 	
 	<div id="content-animation-button-row" class="button-row">
-		<div data-aos="zoom-out" data-aos-delay="1500" data-aos-anchor="#trigger-section-1">
+		<div data-aos="zoom-out" data-aos-delay="1400" data-aos-anchor="#trigger-section-1">
 			<img class="footer-button" src="/graphics/button-icons/pop.png" alt="Toggle Content Animation" onclick="switch_content_animation()"></img>
 		</div>
 		
-		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1500" data-aos-anchor="#trigger-section-1">
+		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1400" data-aos-anchor="#trigger-section-1">
 			<div id="content-animation-button-text" class="body-text button-text">Content: animated</div>
 		</div>
 	</div>
@@ -183,11 +174,11 @@ body
 	<div style="height: 2vh"></div>
 	
 	<div id="link-animation-button-row" class="button-row">
-		<div data-aos="zoom-out" data-aos-delay="1600" data-aos-anchor="#trigger-section-1">
+		<div data-aos="zoom-out" data-aos-delay="1500" data-aos-anchor="#trigger-section-1">
 			<img class="footer-button" src="/graphics/button-icons/link.png" alt="Toggle Link Animation" onclick="switch_link_animation()"></img>
 		</div>
 		
-		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1600" data-aos-anchor="#trigger-section-1">
+		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1500" data-aos-anchor="#trigger-section-1">
 			<div id="link-animation-button-text" class="body-text button-text">Links: animated</div>
 		</div>
 	</div>
@@ -195,11 +186,11 @@ body
 	<div style="height: 2vh"></div>
 	
 	<div id="banner-style-button-row" class="button-row">
-		<div data-aos="zoom-out" data-aos-delay="1700" data-aos-anchor="#trigger-section-1">
+		<div data-aos="zoom-out" data-aos-delay="1600" data-aos-anchor="#trigger-section-1">
 			<img class="footer-button" src="/graphics/button-icons/picture.png" alt="Toggle Banner Style" onclick="switch_banner_style()"></img>
 		</div>
 		
-		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1700" data-aos-anchor="#trigger-section-1">
+		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1600" data-aos-anchor="#trigger-section-1">
 			<div id="banner-style-button-text" class="body-text button-text">Banners: parallax</div>
 		</div>
 	</div>
@@ -207,7 +198,7 @@ body
 	<div style="height: 5vh"></div>
 	
 	
-	<div style="display: flex; justify-content: center; align-items: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="2700" data-aos-anchor="#trigger-section-1">
+	<div style="display: flex; justify-content: center; align-items: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="2600" data-aos-anchor="#trigger-section-1">
 		<div id="apply-button" class="text-button" onclick="">Apply</div>
 	</div>
 	
@@ -218,10 +209,10 @@ body
 	
 	
 	<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="/scripts/jquery.js"></script>
 	
 	<!-- Animate on scroll library -->
-	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script src="/scripts/aos.js"></script>
 	
 	<script src="/scripts/base-script.js"></script>
 	

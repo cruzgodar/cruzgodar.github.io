@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-135923635-1"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	
+	gtag('config', 'UA-135923635-1');
+</script>
+
+<script src="/scripts/dark-theme.js"></script>
+
+<title>Applets &mdash; Cruz Godar</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest?v=NmPPnmeW24">
+<link rel="mask-icon" href="/safari-pinned-tab.svg?v=NmPPnmeW24" color="#5bbad5">
+<link rel="shortcut icon" href="/favicon.ico?v=NmPPnmeW24">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<link rel="stylesheet" type="text/css" href="/style/aos.css">
+
+<link rel="stylesheet" type="text/css" href="/style/base-style.css">
+
+</head>
+
+
+
+<body>
+	<div style="height: 5vh"></div>
+
+	<noscript>
+		<div class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</div>
+	</noscript>
+
+	<div class="logo" data-aos="fade-in" id="trigger-2019">
+		<img class="link" onclick="redirect('/index.html')" src="/graphics/general-icons/logo.png" alt="Logo"></img>
+	</div>
+
+	<div style="height: 2vh"></div>
+
+	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-2019">
+		<div class="heading-text">Applets</div>
+	</div>
+
+	<div style="height: 5vh"></div>
+
+	<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-2019">
+		<div class="body-text">Small coding projects that I&#x2019;ve made for various reasons and thought others might enjoy. Have a look at the source code if you&#x2019;re interested in how they work.</div>
+	</div>
+
+	<div style="height: 10vh"></div>
+
+	<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-2019">
+		<div class="heading-text">2019</div>
+	</div>
+	
+	<div style="height: 5vh"></div>
+
+	<div class="image-links">
+		<div class="image-link" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-2019">
+			<img id="image-julia-set-explorer" class="check-webp link" onclick="redirect('/applets/julia-set-explorer/julia-set-explorer.html')" src="" alt="Julia Set Explorer"></img>
+			<div class="image-link-subtext">Julia Set Explorer</div>
+		</div>
+	</div>
+
+
+	
+	<div id="spawn-footer"></div>
+	
+	
+
+	<!-- jQuery -->
+	<script src="/scripts/jquery.js"></script>
+	
+	<!-- Animate on scroll library -->
+	<script src="/scripts/aos.js"></script>
+	
+	<script src="/scripts/base-script.js"></script>
+	
+	<script>
+		$(function()
+		{
+			var refresh_id = setInterval(function()
+			{
+				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
+				{
+					insert_footer("applets");
+					clearInterval(refresh_id);
+				}
+			}, 50);
+		});
+	</script>
+
+</body>
+</html>

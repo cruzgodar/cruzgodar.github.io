@@ -40,10 +40,9 @@
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
 
-<!-- Animate on scroll library -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<link rel="stylesheet" type="text/css" href="/style/aos.css">
 
 <link rel="stylesheet" type="text/css" href="/style/base-style.css">
 <link rel="stylesheet" type="text/css" href="/style/banner-style.css">
@@ -181,6 +180,12 @@ body
 
 
 <body>
+	<noscript>
+		<div style="height: 5vh"></div>
+		
+		<div class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</div>
+	</noscript>
+	
 	<div class="background-top" id="background-image"></div>
 	<div style="height: 100vh">
 		<div style="height: 5vh"></div>
@@ -211,7 +216,7 @@ body
 	<div class="title-text" data-aos="fade-up">CORONA</div>
 
 	<div class="eclipse">
-		<img src="graphics/corona.png" alt="Corona">
+		<img id="image-eclipse" class="check-webp" src="" alt="Corona">
 	</div>
 
 	<div style="height: 5vh"></div>
@@ -311,21 +316,15 @@ body
 	
 
 	<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+	<script src="/scripts/jquery.js"></script>
+	
 	<!-- Animate on scroll library -->
-	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script src="/scripts/aos.js"></script>
 	
 	<script src="/scripts/base-script.js"></script>
 	
 	<script>
 		manual_dark_theme = 1;
-			
-		var w = window,
-		d = document,
-		e = d.documentElement,
-		g = d.getElementsByTagName('body')[0],
-		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 		
 		var background_color = 255;
 		var opacity = 0;
@@ -350,7 +349,7 @@ body
 				$(".body-text").css("color", "rgb(192, 192, 192)");
 			}
 			
-			AOS.init({duration: 1200, once: false, offset: y/4});
+			AOS.init({duration: 1200, once: false, offset: window_height/4});
 			
 			
 			
@@ -361,7 +360,7 @@ body
 					insert_footer("writing", 0, 1);
 					clearInterval(refresh_id);
 				}
-			}, 200);
+			}, 50);
 
 
 			
@@ -379,9 +378,9 @@ body
 				
 				if (scroll >= 0)
 				{
-					if (scroll <= 4*y/5)
+					if (scroll <= 4*window_height/5)
 					{
-						var background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/4 * scroll / y, 0) - .5 * Math.PI);
+						var background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/4 * scroll / window_height, 0) - .5 * Math.PI);
 						
 						if (url_vars["theme"] == 1)
 						{
@@ -415,9 +414,9 @@ body
 					
 					
 					
-					if (scroll <= y/3)
+					if (scroll <= window_height/3)
 					{
-						opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / y, 0) - .5 * Math.PI);
+						opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - .5 * Math.PI);
 						
 						$(".scroll-button").css("opacity", opacity);
 						
@@ -442,9 +441,9 @@ body
 					
 					
 					
-					if (scroll >= (3/5 + .1) * y && scroll <= 1.1*y)
+					if (scroll >= (3/5 + .1) * window_height && scroll <= 1.1*window_height)
 					{
-						opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/2 * (scroll - ((3/5 + .1) * y)) / y, 0) - .5 * Math.PI);
+						opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/2 * (scroll - ((3/5 + .1) * window_height)) / window_height, 0) - .5 * Math.PI);
 						
 						$(".eclipse").css("opacity", 1 - opacity);
 						
@@ -459,14 +458,14 @@ body
 						}
 					}
 					
-					else if (scroll >= y && eclipse_done == 0)
+					else if (scroll >= window_height && eclipse_done == 0)
 					{
 						$(".eclipse").css("opacity", 1);
 						
 						eclipse_done = 1;
 					}
 					
-					else if (scroll <= (3/5 + .1) * y && eclipse_done == 0)
+					else if (scroll <= (3/5 + .1) * window_height && eclipse_done == 0)
 					{
 						$(".eclipse").css("opacity", 0);
 						
@@ -476,13 +475,13 @@ body
 				
 				
 				
-				if (scroll > $(".progress-bar").position().top - 3*y/4 && progress_bar_done == 0)
+				if (scroll > $(".progress-bar").position().top - 3*window_height/4 && progress_bar_done == 0)
 				{
 					$(".progress-bar span").css("width", (100 * 48/52) + "%");
 					progress_bar_done = 1;
 				}
 				
-				else if (scroll > $("#trigger-stage-bubbles").position().top - 3*y/4 && stage_bubbles_done == 0)
+				else if (scroll > $("#trigger-stage-bubbles").position().top - 3*window_height/4 && stage_bubbles_done == 0)
 				{
 					stage_bubbles_done = 1;
 					bubbles = $(".stage-bubble span");

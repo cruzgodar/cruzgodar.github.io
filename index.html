@@ -26,10 +26,9 @@
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
 
-<!-- Animate on scroll library -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<link rel="stylesheet" type="text/css" href="/style/aos.css">
 
 <link rel="stylesheet" type="text/css" href="/style/base-style.css">
 <link rel="stylesheet" type="text/css" href="/style/banner-style.css">
@@ -113,9 +112,15 @@
 
 
 <body>
+	<noscript>
+		<div style="height: 5vh"></div>
+		
+		<div class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</div>
+	</noscript>
+	
 	<div id="background-image"></div>
-	<img id="small-loader" src="" style="display: none"></img>
-	<img id="full-res-loader" src="" style="display: none"></img>
+	<div id="small-loader" class="banner-small" src="" style="display: none"></div>
+	<div id="full-res-loader" class="banner" src="" style="display: none"></div>
 	<div class="name-text"></div>
 	
 	<div id="banner-cover" style="height: 100vh"></div>
@@ -170,22 +175,22 @@
 
 		<div class="image-links">
 			<div id="writing-link" class="image-link" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
-				<img class="link" onclick="redirect('/writing.html')" src="/graphics/image-links/writing-glyph.png" alt="Writing"></img>
+				<img id="image-writing" class="check-webp link" onclick="redirect('/writing/writing.html')" src="" alt="Writing"></img>
 				<div class="image-link-subtext">Writing</div>
 			</div>
 			
 			<div id="blog-link" class="image-link" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-1">
-				<img class="link" onclick="redirect('/blog.html')" src="/graphics/image-links/blog-glyph.png" alt="Blog"></img>
+				<img id="image-blog" class="check-webp link" onclick="redirect('/blog/blog.html')" src="" alt="Blog"></img>
 				<div class="image-link-subtext">Blog</div>
 			</div>
 			
 			<div id="applets-link" class="image-link" data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-1">
-				<img class="link" onclick="redirect('/applets.html')" src="/graphics/image-links/applets-glyph.png" alt="Applets"></img>
+				<img id="image-applets" class="check-webp link" onclick="redirect('/applets/applets.html')" src="" alt="Applets"></img>
 				<div class="image-link-subtext">Applets</div>
 			</div>
 
 			<div id="research-link" class="image-link" data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-section-1">
-				<img class="link" onclick="redirect('/research.html')" src="/graphics/image-links/research-glyph.png" alt="Research"></img>
+				<img id="image-research" class="check-webp link" onclick="redirect('/research/research.html')" src="" alt="Research"></img>
 				<div class="image-link-subtext">Research</div>
 			</div>
 		</div>
@@ -194,12 +199,12 @@
 
 		<div class="image-links">
 			<div id="notes-link" class="image-link" data-aos="fade-up" data-aos-delay="700" data-aos-anchor="#trigger-section-1">
-				<img class="link" onclick="redirect('/notes.html')" src="/graphics/image-links/notes-glyph.png" alt="Notes"></img>
+				<img id="image-notes" class="check-webp link" onclick="redirect('/notes/notes.html')" src="" alt="Notes"></img>
 				<div class="image-link-subtext">Notes</div>
 			</div>
 			
 			<div id="bio-link" class="image-link" data-aos="fade-up" data-aos-delay="800" data-aos-anchor="#trigger-section-1">
-				<img class="link" onclick="redirect('/bio.html')" src="/graphics/image-links/me-glyph.png" alt="Me"></img>
+				<img id="image-bio" class="check-webp link" onclick="redirect('/bio/bio.html')" src="" alt="Me"></img>
 				<div class="image-link-subtext">Me</div>
 			</div>
 			
@@ -227,15 +232,15 @@
 			
 			<div class="image-links" style="justify-content: space-around">
 				<div class="image-link" data-aos="zoom-out" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
-					<img class="link" onclick="redirect('/applets/julia-set-explorer/julia-set-explorer.html')" src="/applets/julia-set-explorer/cover.png" alt="Julia Set Explorer"></img>
+					<img id="image-julia-set-explorer" class="check-webp link" onclick="redirect('/applets/julia-set-explorer/julia-set-explorer.html')" src="" alt="Julia Set Explorer"></img>
 				</div>
 				
 				<div class="image-link" data-aos="zoom-out" data-aos-delay="300" data-aos-anchor="#trigger-section-2">
-					<img class="link" onclick="redirect('/blog/7/on-leaving-again-and-new-beginnings.html')" src="/blog/7/cover.png" alt="On Leaving, Again, and New Beginnings"></img>
+					<img id="image-on-leaving-again-and-new-beginnings" class="check-webp link" onclick="redirect('/blog/7/on-leaving-again-and-new-beginnings.html')" src="" alt="On Leaving, Again, and New Beginnings"></img>
 				</div>
 				
 				<div class="image-link" data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="#trigger-section-2">
-					<img class="link" onclick="redirect('/blog/6/erinnerungen.html')" src="/blog/6/cover.png" alt="Erinnerungen"></img>
+					<img id="image-erinnerungen" class="check-webp link" onclick="redirect('/blog/6/erinnerungen.html')" src="" alt="Erinnerungen"></img>
 				</div>
 			</div>
 			
@@ -258,13 +263,13 @@
 	
 
 	<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="/scripts/jquery.js"></script>
 
 	<!-- Animate on scroll library -->
-	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script src="/scripts/aos.js"></script>
 	
 	<!-- Library to detect if images are loaded -->
-	<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+	<script src="/scripts/imagesloaded.js"></script>
 	
 	<script src="/scripts/base-script.js"></script>
 	
@@ -275,45 +280,44 @@
 		$(function()
 		{
 			var num_images = 21;
-			var image = Math.floor(Math.random() * num_images) + 1;
+			var banner_index = Math.floor(Math.random() * num_images) + 1;
 			
 			footer_loaded = 1;
 			
-			$("#background-image").addClass("banner-" + image + "-small");
-			$("#background-image")[0].offsetHeight;
-			
-			$("#small-loader").attr("src", "/graphics/index-banners/banner-" + image + "-small.jpg");
 			
 			
-				
-			$("#small-loader").imagesLoaded(function()
+			//We can't modify existing :before pseudoclasses with javascript of any kind, so instead we'll make two new classes.
+			
+			var refresh_id = setInterval(function()
 			{
-				var font_size = parseInt($(".name-text").css("font-size").replace("px", ""));
-				
-				$(".name-text").remove();
-				
-				$("#full-res-loader").after("<div style='position: fixed' data-aos='fade-left' data-aos-delay='350'><div id='cruz-text' class='name-text'>Cruz</div></div><div style='position: fixed' data-aos='fade-left' data-aos-delay='600'><div id='godar-text' class='name-text'>Godar</div></div>");
-				
-				if (url_vars["content_animation"] == 1)
+				if (banner_extension != "")
 				{
-					$(".name-text").parent().removeAttr("data-aos");
+					clearInterval(refresh_id);
+					
+					$("head").append('<style> .banner:before { background: url("/graphics/index-banners/' + banner_index + '/landscape.' + banner_extension + '") no-repeat center center; } .banner-small:before { background: url("/graphics/index-banners/' + banner_index + '/landscape-small.' + banner_extension + '") no-repeat center center; } .banner:before, .banner-small:before { -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; } @media screen and (max-aspect-ratio: 10/16), (max-width: 800px) { .banner:before { background: url("/graphics/index-banners/' + banner_index + '/portrait.' + banner_extension + '") no-repeat center center; } .banner-small:before { background: url("/graphics/index-banners/' + banner_index + '/portrait-small.' + banner_extension + '") no-repeat center center; } .banner:before, .banner-small:before { -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; } } </style>');
+					
+					
+					
+					$("#small-loader").imagesLoaded({background: true}, function()
+					{
+						var font_size = parseInt($(".name-text").css("font-size").replace("px", ""));
+						
+						$(".name-text").remove();
+						
+						$("#full-res-loader").after("<div style='position: fixed' data-aos='fade-left' data-aos-delay='350'><div id='cruz-text' class='name-text'>Cruz</div></div><div style='position: fixed' data-aos='fade-left' data-aos-delay='600'><div id='godar-text' class='name-text'>Godar</div></div>");
+						
+						if (url_vars["content_animation"] == 1)
+						{
+							$(".name-text").parent().removeAttr("data-aos");
+						}
+						
+						if (url_vars["banner_style"] == 1)
+						{
+							$(".name-text").parent().css("position", "absolute");
+						}
+					});
 				}
-				
-				if (url_vars["banner_style"] == 1)
-				{
-					$(".name-text").parent().css("position", "absolute");
-				}
-			});
-			
-			$("#full-res-loader").attr("src", "/graphics/index-banners/banner-" + image + ".jpg");
-			
-			//Finally, switch to the high-res banner when it's loaded.
-			$("#full-res-loader").imagesLoaded(function()
-			{
-				$("#background-image").removeClass("banner-" + image + "-small");
-				$("#background-image").addClass("banner-" + image);
-				$("#background-image")[0].offsetHeight;
-			});
+			}, 50);
 			
 			
 			
@@ -321,7 +325,7 @@
 			{
 				scroll = $(this).scrollTop();
 				
-				if (scroll <= y/3 && url_vars["banner_style"] != 1)
+				if (scroll <= window_height/3 && url_vars["banner_style"] != 1)
 				{
 					$(".name-text").css("opacity", global_opacity);
 				}
@@ -331,7 +335,7 @@
 			{
 				scroll = $(this).scrollTop();
 				
-				if (scroll <= y/3 && url_vars["banner_style"] != 1)
+				if (scroll <= window_height/3 && url_vars["banner_style"] != 1)
 				{
 					$(".name-text").css("opacity", global_opacity);
 				}

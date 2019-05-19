@@ -1,18 +1,16 @@
 //Included on every page. Sets up variables and runs browsers.js, footer.js, navigation.js, and settings.js.
 
 
-
-var w = window,
-d = document,
-e = d.documentElement,
-g = d.getElementsByTagName("body")[0],
-y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+var window_width, window_height;
 
 //Used by dark-theme.js to only affect links once the footer is there.
 var footer_loaded = 0;
 
 //Used by weird pages like Corona if they want to work dark theme out on their own.
 var manual_dark_theme = 0;
+
+//Whether the browser supports WebP images or not. Given a boolean value when decided.
+var supports_webp = null;
 
 var url_vars = {};
 
@@ -25,7 +23,10 @@ $(function()
 	
 	
 	
-	AOS.init({duration: 1200, once: true, offset: y/4});
+	window_width = $(window).width();
+	window_height = $(window).height();
+	
+	AOS.init({duration: 1200, once: true, offset: window_height/4});
 	
 	
 	
@@ -58,20 +59,16 @@ $(function()
 	//Ensure elements always animate 1/4 of the way up the screen, whatever size that screen is.
 	$(window).resize(function()
 	{
-		w = window,
-		d = document,
-		e = d.documentElement,
-		g = d.getElementsByTagName("body")[0],
-		y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+		y = $(window).height();
 		
-		AOS.init({offset: y/4});
+		AOS.init({offset: window_height/4});
 	});
 	
 	
 	
 	$.getScript("/scripts/browsers.js");
 	
-	$.getScript("/scripts/footer.js");
+	$.getScript("/scripts/images.js");
 	
 	$.getScript("/scripts/navigation.js", function()
 	{
@@ -79,4 +76,6 @@ $(function()
 		
 		$.getScript("/scripts/settings.js");
 	});
+	
+	$.getScript("/scripts/footer.js");
 });
