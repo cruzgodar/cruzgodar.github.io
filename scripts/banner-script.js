@@ -33,37 +33,35 @@ $(function()
 		
 			
 			
-			$("head").append('<style> .banner:before { background: url("banners/landscape.' + banner_extension + '") no-repeat center center; } .banner-small:before { background: url("banners/landscape-small.' + banner_extension + '") no-repeat center center; } .banner:before, .banner-small:before { -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; } @media screen and (max-aspect-ratio: 10/16), (max-width: 800px) { .banner:before { background: url("banners/portrait.' + banner_extension + '") no-repeat center center; } .banner-small:before { background: url("banners/portrait-small.' + banner_extension + '") no-repeat center center; } .banner:before, .banner-small:before { -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; } } </style>');
-		
-		
-		
-			//Fade in the low-res banner when it's loaded.
-			$("#small-loader").imagesLoaded({background: true}, function()
-			{
-				if (url_vars["link_animation"] == 1)
-				{
-					$("body").css("opacity", 1);
-				}
-				
-				else
-				{
-					$("body").animate({opacity: 1}, 300, "swing");
-				}
-			});
+			$("head").append('<style> .banner:before { background: url("banners/landscape.' + banner_extension + '") no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; } @media screen and (max-aspect-ratio: 10/16), (max-width: 800px) { .banner:before { background: url("banners/portrait.' + banner_extension + '") no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; } } </style>');
 			
-			//Switch to the high-res banner when it's loaded.
-			$("#full-res-loader").imagesLoaded({background: true}, function()
+			
+			
+			var banner_name;
+			
+			if ($(window).width() / $(window).height() < 10/16 || $(window).width() <= 800)
 			{
-				$("#background-image").removeClass("banner-small");
-				$("#background-image").addClass("banner");
-				$("#background-image")[0].offsetHeight;
+				banner_name = "portrait." + banner_extension;
+			}
+			
+			else
+			{
+				banner_name = "landscape." + banner_extension;
+			}
+			
+			
+			
+			//Fade in once the banner has loaded.
+			$("<img/>").attr("src", "banners/" + banner_name).on("load", function()
+			{
+				$(this).remove();
+				$("body").animate({opacity: 1}, 300, "swing");
 				
-				//If the user just sits at the top of the page for 3 seconds without scrolling after the full background is loaded, give them a scroll button.
+				//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
 				if (scroll == 0)
 				{
 					setTimeout(add_scroll_button, 3000);
 				}
-				
 			});
 		}
 	}, 50);

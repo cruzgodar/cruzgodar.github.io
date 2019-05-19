@@ -1,5 +1,5 @@
 /* DON'T TOUCH THE BEFORE THINGY. It has to be here, even though it makes everything worse. */
-.banner:before, .banner-small:before
+.banner:before
 {
 	content: "";
 	position: fixed;

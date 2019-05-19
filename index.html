@@ -118,9 +118,8 @@
 		<div class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</div>
 	</noscript>
 	
-	<div id="background-image"></div>
-	<div id="small-loader" class="banner-small" src="" style="display: none"></div>
-	<div id="full-res-loader" class="banner" src="" style="display: none"></div>
+	<div id="background-image" class="banner"></div>
+	
 	<div class="name-text"></div>
 	
 	<div id="banner-cover" style="height: 100vh"></div>
@@ -294,17 +293,35 @@
 				{
 					clearInterval(refresh_id);
 					
-					$("head").append('<style> .banner:before { background: url("/graphics/index-banners/' + banner_index + '/landscape.' + banner_extension + '") no-repeat center center; } .banner-small:before { background: url("/graphics/index-banners/' + banner_index + '/landscape-small.' + banner_extension + '") no-repeat center center; } .banner:before, .banner-small:before { -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; } @media screen and (max-aspect-ratio: 10/16), (max-width: 800px) { .banner:before { background: url("/graphics/index-banners/' + banner_index + '/portrait.' + banner_extension + '") no-repeat center center; } .banner-small:before { background: url("/graphics/index-banners/' + banner_index + '/portrait-small.' + banner_extension + '") no-repeat center center; } .banner:before, .banner-small:before { -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; } } </style>');
+					$("head").append('<style> .banner:before { background: url("/graphics/index-banners/' + banner_index + '/landscape.' + banner_extension + '") no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; } @media screen and (max-aspect-ratio: 10/16), (max-width: 800px) { .banner:before { background: url("/graphics/index-banners/' + banner_index + '/portrait.' + banner_extension + '") no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; } } </style>');
 					
 					
 					
-					$("#small-loader").imagesLoaded({background: true}, function()
+					var banner_name;
+			
+					if ($(window).width() / $(window).height() < 10/16 || $(window).width() <= 800)
 					{
+						banner_name = "portrait." + banner_extension;
+					}
+					
+					else
+					{
+						banner_name = "landscape." + banner_extension;
+					}
+					
+					
+					
+					//Fade in once the banner has loaded.
+					$("<img/>").attr("src", "/graphics/index-banners/" + banner_index + "/" + banner_name).on("load", function()
+					{
+						$(this).remove();
+						$("body").animate({opacity: 1}, 300, "swing");
+						
 						var font_size = parseInt($(".name-text").css("font-size").replace("px", ""));
 						
 						$(".name-text").remove();
 						
-						$("#full-res-loader").after("<div style='position: fixed' data-aos='fade-left' data-aos-delay='350'><div id='cruz-text' class='name-text'>Cruz</div></div><div style='position: fixed' data-aos='fade-left' data-aos-delay='600'><div id='godar-text' class='name-text'>Godar</div></div>");
+						$("#background-image").after("<div style='position: fixed' data-aos='fade-left' data-aos-delay='350'><div id='cruz-text' class='name-text'>Cruz</div></div><div style='position: fixed' data-aos='fade-left' data-aos-delay='600'><div id='godar-text' class='name-text'>Godar</div></div>");
 						
 						if (url_vars["content_animation"] == 1)
 						{
@@ -314,6 +331,12 @@
 						if (url_vars["banner_style"] == 1)
 						{
 							$(".name-text").parent().css("position", "absolute");
+						}
+						
+						//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
+						if (scroll == 0)
+						{
+							setTimeout(add_scroll_button, 3000);
 						}
 					});
 				}
