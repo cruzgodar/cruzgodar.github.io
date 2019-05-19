@@ -379,7 +379,7 @@ a
 	font-size: 125%;
 	text-align: center;
 	
-	-webkit-transition: border-color .15s ease-in-out, color .15s ease-in-out;
+	-webkit-transition: border-color .3s ease-in-out, color .3s ease-in-out;
 	-moz-transition: border-color .15s ease-in-out, color .15s ease-in-out;
 	-o-transition: border-color .15s ease-in-out, color .15s ease-in-out;
 	transition: border-color .15s ease-in-out, color .15s ease-in-out;
