@@ -27,11 +27,6 @@ $(function()
 		url_vars["text_contrast"] = 0;
 	}
 
-	if (url_vars["icon_style"] == null)
-	{
-		url_vars["icon_style"] = 0;
-	}
-
 	if (url_vars["no_new_section"] == null)
 	{
 		url_vars["no_new_section"] = 0;
@@ -261,6 +256,7 @@ function switch_font_on_load()
 		write_url_vars();
 		
 		$("html").css("font-family", "'Gentium Book Basic', serif");
+		$("html").css("font-size", "max(calc((13.2 / 12) * (1.5vmin + 1.5vmax) / 2), 13.2px)");
 	}
 	
 	//Serif to sans
@@ -274,6 +270,7 @@ function switch_font_on_load()
 		write_url_vars();
 		
 		$("html").css("font-family", "'Rubik', sans-serif");
+		$("html").css("font-size", "max(calc((1.5vmin + 1.5vmax) / 2), 12px)");
 	}
 }
 
