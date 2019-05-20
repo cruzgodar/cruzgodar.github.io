@@ -59,7 +59,8 @@ $(function()
 	//Ensure elements always animate 1/4 of the way up the screen, whatever size that screen is.
 	$(window).resize(function()
 	{
-		y = $(window).height();
+		window_width = $(window).width();
+		window_height = $(window).height();
 		
 		AOS.init({offset: window_height/4});
 	});
