@@ -174,5 +174,5 @@ function add_scroll_button()
 //Triggered by pressing the scroll button.
 function scroll_down()
 {
-	$([document.documentElement, document.body]).animate({scrollTop: $("#content").offset().top}, 900, "swing");
+	$([document.documentElement, document.body]).animate({scrollTop: $("#content").offset().top}, 1200, "swing");
 }
