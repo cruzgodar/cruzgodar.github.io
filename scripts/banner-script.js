@@ -52,17 +52,25 @@ $(function()
 			
 			
 			//Fade in once the banner has loaded.
-			$("<img/>").attr("src", "banners/" + banner_name).on("load", function()
+			if (url_vars["link_animation"] == 1)
 			{
-				$(this).remove();
-				$("body").animate({opacity: 1}, 300, "swing");
-				
-				//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
-				if (scroll == 0)
+				$("body").css("opacity", 1);
+			}
+			
+			else
+			{
+				$("<img/>").attr("src", "banners/" + banner_name).on("load", function()
 				{
-					setTimeout(add_scroll_button, 3000);
-				}
-			});
+					$(this).remove();
+					$("body").animate({opacity: 1}, 300, "swing");
+					
+					//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
+					if (scroll == 0)
+					{
+						setTimeout(add_scroll_button, 3000);
+					}
+				});
+			}
 		}
 	}, 50);
 	
