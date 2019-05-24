@@ -29,10 +29,3 @@ if (url_vars["font"] == 1)
 	document.documentElement.style.fontFamily = "'Gentium Book Basic', serif";
 	document.documentElement.style.fontSize = "max(calc((13.2 / 12) * (1.5vmin + 1.5vmax) / 2), 13.2px)";
 }
-
-
-
-if (url_vars["content_animation"] == 1)
-{
-	document.querySelectorAll("[data-aos]").removeAttribute("data-aos");
-}

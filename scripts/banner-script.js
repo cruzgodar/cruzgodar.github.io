@@ -10,7 +10,10 @@ var banner_extension = "";
 
 $(function()
 {
-	AOS.init({duration: 1200, once: false, offset: window_height/4});
+	if (url_vars["content_animation"] != 1)
+	{
+		AOS.init({duration: 1200, once: false, offset: window_height/4});
+	}
 	
 	
 	

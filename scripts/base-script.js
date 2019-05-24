@@ -24,7 +24,18 @@ $(function()
 	window_width = $(window).width();
 	window_height = $(window).height();
 	
-	AOS.init({duration: 1200, once: true, offset: window_height/4});
+	
+	
+	if (url_vars["content_animation"] == 1)
+	{
+		//This attribute makes the content invisible until it's animated in, so if we're never going to do that, it has to go.
+		$("body").find("*[data-aos]").removeAttr("data-aos");
+	}
+	
+	else
+	{
+		AOS.init({duration: 1200, once: true, offset: window_height/4});
+	}
 	
 	
 	
@@ -60,7 +71,10 @@ $(function()
 		window_width = $(window).width();
 		window_height = $(window).height();
 		
-		AOS.init({offset: window_height/4});
+		if (url_vars["content_animation"] != 1)
+		{
+			AOS.init({offset: window_height/4});
+		}
 	});
 	
 	
