@@ -51,42 +51,42 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 	
 			if (omit != "writing")
 			{
-				$(".menu-image-links").append('<div id="writing-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/writing/writing.html\', 0' + fnc_arg + ')" src="/graphics/image-links/writing.' + extension + '" alt="Writing"></img> </div>');
+				$(".menu-image-links").append('<div id="writing-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/writing/writing.html\', 0' + fnc_arg + ')" src="/writing/cover.' + extension + '" alt="Writing"></img> </div>');
 				
 				delay += 100;
 			}
 			
 			if (omit != "blog")
 			{
-				$(".menu-image-links").append('<div id="blog-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/blog/blog.html\', 0' + fnc_arg + ')" src="/graphics/image-links/blog.' + extension + '" alt="Blog"></img> </div>');
+				$(".menu-image-links").append('<div id="blog-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/blog/blog.html\', 0' + fnc_arg + ')" src="/blog/cover.' + extension + '" alt="Blog"></img> </div>');
 				
 				delay += 100;
 			}
 			
 			if (omit != "applets")
 			{
-				$(".menu-image-links").append('<div id="applets-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/applets/applets.html\', 0' + fnc_arg + ')" src="/graphics/image-links/applets.' + extension + '" alt="Applets"></img> </div>');
+				$(".menu-image-links").append('<div id="applets-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/applets/applets.html\', 0' + fnc_arg + ')" src="/applets/cover.' + extension + '" alt="Applets"></img> </div>');
 				
 				delay += 100;
 			}
 			
 			if (omit != "research")
 			{
-				$(".menu-image-links").append('<div id="research-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/research/research.html\', 0' + fnc_arg + ')" src="/graphics/image-links/research.' + extension + '" alt="Research"></img> </div>');
+				$(".menu-image-links").append('<div id="research-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/research/research.html\', 0' + fnc_arg + ')" src="/research/cover.' + extension + '" alt="Research"></img> </div>');
 				
 				delay += 100;
 			}
 			
 			if (omit != "notes")
 			{
-				$(".menu-image-links").append('<div id="notes-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/notes/notes.html\', 0' + fnc_arg + ')" src="/graphics/image-links/notes.' + extension + '" alt="Notes"></img> </div>');
+				$(".menu-image-links").append('<div id="notes-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/notes/notes.html\', 0' + fnc_arg + ')" src="/notes/cover.' + extension + '" alt="Notes"></img> </div>');
 				
 				delay += 100;
 			}
 			
 			if (omit != "bio")
 			{
-				$(".menu-image-links").append('<div id="bio-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/bio/bio.html\', 0' + fnc_arg + ')" src="/graphics/image-links/bio.' + extension + '" alt="Me"></img> </div>');
+				$(".menu-image-links").append('<div id="bio-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="' + delay + '" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu"> <img class="link" onclick="redirect(\'/bio/bio.html\', 0' + fnc_arg + ')" src="/bio/cover.' + extension + '" alt="Me"></img> </div>');
 				
 				delay += 100;
 			}

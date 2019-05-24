@@ -1,38 +1,38 @@
 {
 	"image-writing":
 	{
-		"webp": "/graphics/image-links/writing.webp",
-		"non-webp": "/graphics/image-links/writing.png"
+		"webp": "/writing/cover.webp",
+		"non-webp": "/writing/cover.png"
 	},
 	
 	"image-blog":
 	{
-		"webp": "/graphics/image-links/blog.webp",
-		"non-webp": "/graphics/image-links/blog.png"
+		"webp": "/blog/cover.webp",
+		"non-webp": "/blog/cover.png"
 	},
 	
 	"image-applets":
 	{
-		"webp": "/graphics/image-links/applets.webp",
-		"non-webp": "/graphics/image-links/applets.png"
+		"webp": "/applets/cover.webp",
+		"non-webp": "/applets/cover.png"
 	},
 	
 	"image-research":
 	{
-		"webp": "/graphics/image-links/research.webp",
-		"non-webp": "/graphics/image-links/research.png"
+		"webp": "/research/cover.webp",
+		"non-webp": "/research/cover.png"
 	},
 	
 	"image-notes":
 	{
-		"webp": "/graphics/image-links/notes.webp",
-		"non-webp": "/graphics/image-links/notes.png"
+		"webp": "/notes/cover.webp",
+		"non-webp": "/notes/cover.png"
 	},
 	
 	"image-bio":
 	{
-		"webp": "/graphics/image-links/bio.webp",
-		"non-webp": "/graphics/image-links/bio.png"
+		"webp": "/bio/cover.webp",
+		"non-webp": "/bio/cover.png"
 	},
 	
 	"image-julia-set-explorer":

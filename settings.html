@@ -33,11 +33,6 @@
 
 html
 {
-	-webkit-transition: background-color .6s ease;
-	-moz-transition: background-color .6s ease;
-	-o-transition: background-color .6s ease;
-	transition: background-color .6s ease;
-	
 	max-width: 100%;
 	overflow-x: hidden;
 }
@@ -216,8 +211,14 @@ body
 	
 	<script src="/scripts/base-script.js"></script>
 	
-	<!-- Figure out where to return to. -->
 	<script>
+		//We only apply this now to prevent the dark theme from transitioning slowly on load rather than instantly.
+		$("html").css("-webkit-transition", "background-color .6s ease");
+		$("html").css("-moz-transition", "background-color .6s ease");
+		$("html").css("-o-transition", "background-color .6s ease");
+		$("html").css("transition", "background-color .6s ease");
+		
+		//Figure out where to return to.
 		$("#apply-button").attr("onclick", "redirect('" + decodeURIComponent(get_url_var("return")) + "')");
 	</script>
 </body>
