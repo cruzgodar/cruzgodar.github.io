@@ -323,7 +323,7 @@ function switch_text_contrast_on_load()
 			$(".image-link-subtext").css("color", "rgb(64, 64, 64)");
 			$(".text-button").css("color", "rgb(64, 64, 64)");
 			
-			$(".quote-text").css("color", "rgb(88, 88, 88");
+			$(".quote-text").css("color", "rgb(88, 88, 88)");
 			$(".quote-attribution").css("color", "rgb(46, 46, 46)");
 		}
 	}
@@ -477,12 +477,7 @@ function switch_content_animation_on_load()
 		
 		write_url_vars();
 		
-		try
-		{
-			$("body").find("*[data-aos]").removeAttr("data-aos");
-		}
-		
-		catch(ex) {}
+		//The actual removing of the data-aos attribute is handled in settings-head.js.
 	}
 	
 	else

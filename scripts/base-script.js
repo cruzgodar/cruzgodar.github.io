@@ -12,8 +12,6 @@ var manual_dark_theme = 0;
 //Whether the browser supports WebP images or not. Given a boolean value when decided.
 var supports_webp = null;
 
-var url_vars = {};
-
 
 
 $(function()
@@ -73,9 +71,7 @@ $(function()
 	
 	$.getScript("/scripts/navigation.js", function()
 	{
-		url_vars = {"theme": get_url_var("theme"), "font": get_url_var("font"), "text_contrast": get_url_var("text_contrast"), "no_new_section": get_url_var("no_new_section"), "link_animation": get_url_var("link_animation"), "content_animation": get_url_var("content_animation"), "banner_style": get_url_var("banner_style")};
-		
-		$.getScript("/scripts/settings.js");
+		$.getScript("/scripts/settings-body.js");
 	});
 	
 	$.getScript("/scripts/footer.js");
