@@ -120,6 +120,7 @@ a
 .footer-button
 {
 	width: 25px;
+	margin-left: 10px;
 	
 	align-self: flex-end;
 	
