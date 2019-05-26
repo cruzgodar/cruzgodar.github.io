@@ -15,6 +15,7 @@ var url_vars = {"theme": get_url_var("theme"), "font": get_url_var("font"), "tex
 if (url_vars["theme"] == 0)
 {
 	document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
+
 }
 
 else if (url_vars["theme"] == 1)
