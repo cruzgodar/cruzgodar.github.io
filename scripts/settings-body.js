@@ -2,6 +2,8 @@
 
 
 
+var settings_body_done;
+
 $(function()
 {
 	if (url_vars["theme"] == null)
@@ -96,6 +98,10 @@ $(function()
 		url_vars["banner_style"] = 0;
 		switch_banner_style_on_load();
 	}
+	
+	
+	
+	settings_body_done = 1;
 });
 
 

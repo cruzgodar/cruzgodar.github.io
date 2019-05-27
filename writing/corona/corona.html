@@ -343,11 +343,25 @@ body
 		
 		$(function()
 		{
-			if (url_vars["text_contrast"] == 1)
+			//We have to wait to apply the contrast changes, since otherwise settings_body may set the body text color after we do here, resulting in less contrast than normal.
+			var refresh_id_1 = setInterval(function()
 			{
-				$(".synopsis-text").css("color", "rgb(208, 208, 208)");
-				$(".body-text").css("color", "rgb(192, 192, 192)");
-			}
+				if (typeof settings_body_done != "undefined" && settings_body_done == 1)
+				{
+					clearInterval(refresh_id_1);
+					
+					if (url_vars["text_contrast"] == 1)
+					{
+						$(".synopsis-text").css("color", "rgb(208, 208, 208)");
+						$(".body-text").css("color", "rgb(192, 192, 192)");
+						
+						$(".email img").css("-webkit-filter", "brightness(150%)");
+						$(".email img").css("-moz-filter", "brightness(150%)");
+						$(".email img").css("-o-filter", "brightness(150%)");
+						$(".email img").css("filter", "brightness(150%)");
+					}
+				}
+			}, 50);
 			
 			if (url_vars["content_animation"] != 1)
 			{
@@ -356,12 +370,12 @@ body
 			
 			
 			
-			var refresh_id = setInterval(function()
+			var refresh_id_2 = setInterval(function()
 			{
 				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
 				{
 					insert_footer("writing", 0, 1);
-					clearInterval(refresh_id);
+					clearInterval(refresh_id_2);
 				}
 			}, 50);
 
