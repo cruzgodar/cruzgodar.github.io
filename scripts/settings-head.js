@@ -22,11 +22,3 @@ else if (url_vars["theme"] == 1)
 {
 	document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
 }
-
-
-
-if (url_vars["font"] == 1)
-{
-	document.documentElement.style.fontFamily = "'Gentium Book Basic', serif";
-	document.documentElement.style.fontSize = "max(calc((13.2 / 12) * (1.5vmin + 1.5vmax) / 2), 13.2px)";
-}

@@ -85,7 +85,10 @@ $(function()
 	
 	$.getScript("/scripts/navigation.js", function()
 	{
-		$.getScript("/scripts/settings-body.js");
+		$.getScript("/scripts/settings-body.js", function()
+		{
+			$("html").css("opacity", 1);
+		});
 	});
 	
 	$.getScript("/scripts/footer.js");
