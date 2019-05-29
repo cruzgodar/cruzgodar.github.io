@@ -124,7 +124,6 @@ function switch_theme()
 			$(".body-text .link").css("color", "rgb(192, 256, 192)");
 			$(".song-lyrics").css("color", "rgb(192, 192, 192)");
 			$(".image-link-subtext").css("color", "rgb(192, 192, 192)");
-			$(".text-button").css("color", "rgb(64, 64, 64)");
 			
 			$(".quote-text").css("color", "rgb(168, 168, 168");
 			$(".quote-attribution").css("color", "rgb(210, 210, 210)");
@@ -335,7 +334,6 @@ function switch_contrast_on_load()
 			$(".body-text .link").css("color", "rgb(192, 256, 192)");
 			$(".song-lyrics").css("color", "rgb(192, 192, 192)");
 			$(".image-link-subtext").css("color", "rgb(192, 192, 192)");
-			$(".text-button").css("color", "rgb(64, 64, 64)");
 			
 			$(".quote-text").css("color", "rgb(168, 168, 168");
 			$(".quote-attribution").css("color", "rgb(210, 210, 210)");
@@ -415,17 +413,17 @@ function switch_contrast_on_load()
 					}
 				</style>
 			`);
-		}
-		
-		try
-		{
-			$(".nav-button").each(function(index, element)
+			
+			try
 			{
-				$(this).attr("src", $(this).attr("src").replace("chevron-left", "chevron-left-dark").replace("chevron-right", "chevron-right-dark"));
-			});
+				$(".nav-button").each(function(index, element)
+				{
+					$(this).attr("src", $(this).attr("src").replace("chevron-left", "chevron-left-dark").replace("chevron-right", "chevron-right-dark"));
+				});
+			}
+			
+			catch(ex) {}
 		}
-		
-		catch(ex) {}
 	}
 	
 	//High to default
