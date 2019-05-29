@@ -148,6 +148,19 @@ function switch_theme()
 						background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(92,92,92) 50%,rgb(24,24,24) 100%);
 						background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(92,92,92) 50%,rgb(24,24,24) 100%);
 					}
+					
+					.text-box
+					{
+						background-color: rgb(24, 24, 24);
+						color: rgb(127, 127, 127);
+						border-color: rgb(127, 127, 127);
+					}
+					
+					.text-box:focus
+					{
+						border-color: rgb(192, 192, 192);
+						color: rgb(192, 192, 192);
+					}
 				</style>
 			`);
 		}
@@ -158,9 +171,6 @@ function switch_theme()
 		$(".date-text").css("color", "rgb(255, 255, 255)");
 		
 		$(".title-text").css("color", "rgb(255, 255, 255)");
-		
-		$(".text-box").addClass("text-box-dark");
-		$(".text-box").css("background-color", "rgb(24, 24, 24)");
 		
 		
 		
@@ -214,11 +224,6 @@ function switch_theme()
 		$(".date-text").css("color", "rgb(0, 0, 0)");
 		
 		$(".title-text").css("color", "rgb(0, 0, 0)");
-		
-		$(".text-box").removeClass("text-box-dark");
-		$(".text-box").css("background-color", "rgb(255, 255, 255)");
-		
-		$(".line-break-dark").css("opacity", "0");
 		
 		$("#theme-button-row").animate({opacity: 0}, 300, "swing");
 		
@@ -347,17 +352,22 @@ function switch_contrast_on_load()
 						background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(140,140,140) 50%,rgb(24,24,24) 100%);
 					}
 					
-					.line-break
-					{
-						background: rgb(255,255,255);
-						background: -moz-linear-gradient(left, rgb(255,255,255) 0%, rgb(120,120,120) 50%, rgb(255,255,255) 100%);
-						background: -webkit-linear-gradient(left, rgb(255,255,255) 0%,rgb(120,120,120) 50%,rgb(255,255,255) 100%);
-						background: linear-gradient(to right, rgb(255,255,255) 0%,rgb(120,120,120) 50%,rgb(255,255,255) 100%);
-					}
-					
 					.scroll-button
 					{
 						border-color: rgb(64, 64, 64)
+					}
+					
+					.text-box
+					{
+						border-color: rgb(192, 192, 192);
+						background-color: rgb(24, 24, 24);
+						color: rgb(192, 192, 192);
+					}
+					
+					.text-box:focus
+					{
+						border-color: rgb(255, 255, 255);
+						color: rgb(255, 255, 255);
 					}
 				</style>
 			`);
@@ -391,9 +401,31 @@ function switch_contrast_on_load()
 					{
 						border-color: rgb(64, 64, 64);
 					}
+					
+					.text-box
+					{
+						border-color: rgb(64, 64, 64);
+						color: rgb(64, 64, 64);
+					}
+					
+					.text-box:focus
+					{
+						border-color: rgb(0, 0, 0);
+						color: rgb(0, 0, 0);
+					}
 				</style>
 			`);
 		}
+		
+		try
+		{
+			$(".nav-button").each(function(index, element)
+			{
+				$(this).attr("src", $(this).attr("src").replace("chevron-left", "chevron-left-dark").replace("chevron-right", "chevron-right-dark"));
+			});
+		}
+		
+		catch(ex) {}
 	}
 	
 	//High to default
