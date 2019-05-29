@@ -116,13 +116,13 @@ body
 	
 	<div style="height: 2vh"></div>
 	
-	<div id="text-contrast-button-row" class="button-row">
+	<div id="contrast-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1200" data-aos-anchor="#trigger-section-1">
-			<img class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Text Contrast" onclick="switch_text_contrast()"></img>
+			<img class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Text Contrast" onclick="switch_contrast()"></img>
 		</div>
 		
 		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1200" data-aos-anchor="#trigger-section-1">
-			<div id="text-contrast-button-text" class="body-text button-text">Text contrast: normal</div>
+			<div id="contrast-button-text" class="body-text button-text">Contrast: normal</div>
 		</div>
 	</div>
 	
@@ -204,7 +204,33 @@ body
 		
 		setTimeout(function()
 		{
-			$("head").append('<style> .heading-text { -webkit-transition: color .6s ease; -moz-transition: color .6s ease; -o-transition: color .6s ease; transition: color .6s ease; } .section-text, .body-text, .text-button { -webkit-transition: color .3s ease; -moz-transition: color .3s ease; -o-transition: color .3s ease; transition: color .3s ease; } </style>');
+			$("head").append(`
+				<style>
+					.heading-text
+					{
+						-webkit-transition: color .6s ease;
+						-moz-transition: color .6s ease;
+						-o-transition: color .6s ease;
+						transition: color .6s ease;
+					}
+					
+					.section-text, .body-text, .text-button
+					{
+						-webkit-transition: color .3s ease;
+						-moz-transition: color .3s ease;
+						-o-transition: color .3s ease;
+						transition: color .3s ease;
+					}
+					
+					.text-button 
+					{
+						-webkit-transition: border-color .3s ease;
+						-moz-transition: border-color .3s ease;
+						-o-transition: border-color .3s ease;
+						transition: border-color .3s ease;
+					}
+				</style>
+			`);
 		}, 600);
 		
 		
@@ -226,7 +252,17 @@ body
 		
 		
 		//Figure out where to return to.
-		$("#apply-button").attr("onclick", "redirect('" + decodeURIComponent(get_url_var("return")) + "')");
+		var return_url = get_url_var("return");
+		
+		if (return_url == null)
+		{
+			$("#apply-button").attr("onclick", "redirect('/index.html')");
+		}
+		
+		else
+		{
+			$("#apply-button").attr("onclick", "redirect('" + decodeURIComponent(return_url) + "')");
+		}
 	</script>
 </body>
 </html>

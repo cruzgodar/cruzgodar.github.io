@@ -24,9 +24,9 @@ $(function()
 		url_vars["font"] = 0;
 	}
 	
-	if (url_vars["text_contrast"] == null)
+	if (url_vars["contrast"] == null)
 	{
-		url_vars["text_contrast"] = 0;
+		url_vars["contrast"] = 0;
 	}
 
 	if (url_vars["no_new_section"] == null)
@@ -63,10 +63,10 @@ $(function()
 		switch_font_on_load();
 	}
 	
-	if (url_vars["text_contrast"] == 1)
+	if (url_vars["contrast"] == 1)
 	{
-		url_vars["text_contrast"] = 0;
-		switch_text_contrast_on_load();
+		url_vars["contrast"] = 0;
+		switch_contrast_on_load();
 	}
 
 	if (url_vars["icon_style"] == 1)
@@ -116,7 +116,7 @@ function switch_theme()
 		
 		
 		
-		if (url_vars["text_contrast"] == 1)
+		if (url_vars["contrast"] == 1)
 		{
 			
 			$(".section-text").css("color", "rgb(208, 208, 208)");
@@ -128,6 +128,8 @@ function switch_theme()
 			
 			$(".quote-text").css("color", "rgb(168, 168, 168");
 			$(".quote-attribution").css("color", "rgb(210, 210, 210)");
+			
+			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(127, 127, 127)");
 		}
 		
 		else
@@ -136,6 +138,18 @@ function switch_theme()
 			
 			$(".quote-text").css("color", "rgb(80, 80, 80)");
 			$(".quote-attribution").css("color", "rgb(164, 164, 164)");
+			
+			$("head").append(`
+				<style>
+					.line-break
+					{
+						background: rgb(24,24,24);
+						background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(92,92,92) 50%, rgb(24,24,24) 100%);
+						background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(92,92,92) 50%,rgb(24,24,24) 100%);
+						background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(92,92,92) 50%,rgb(24,24,24) 100%);
+					}
+				</style>
+			`);
 		}
 		
 		
@@ -148,7 +162,7 @@ function switch_theme()
 		$(".text-box").addClass("text-box-dark");
 		$(".text-box").css("background-color", "rgb(24, 24, 24)");
 		
-		$(".line-break-dark").css("opacity", "1");
+		
 		
 		$("#theme-button-row").animate({opacity: 0}, 300, "swing");
 		
@@ -171,7 +185,7 @@ function switch_theme()
 		
 		
 		
-		if (url_vars["text_contrast"] == 1)
+		if (url_vars["contrast"] == 1)
 		{
 			$(".section-text").css("color", "rgb(48, 48, 48)");
 			$(".body-text").css("color", "rgb(64, 64, 64)");
@@ -182,6 +196,8 @@ function switch_theme()
 			
 			$(".quote-text").css("color", "rgb(88, 88, 88");
 			$(".quote-attribution").css("color", "rgb(46, 46, 46)");
+			
+			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(64, 64, 64)");
 		}
 		
 		else
@@ -282,26 +298,26 @@ function switch_font_on_load()
 
 
 
-function switch_text_contrast()
+function switch_contrast()
 {
-	$("#text-contrast-button-row").animate({opacity: 0}, 300, "swing");
+	$("#contrast-button-row").animate({opacity: 0}, 300, "swing");
 	
 	setTimeout(function()
 	{
-		switch_text_contrast_on_load();
-		$("#text-contrast-button-row").animate({opacity: 1}, 300, "swing");
+		switch_contrast_on_load();
+		$("#contrast-button-row").animate({opacity: 1}, 300, "swing");
 	}, 300);
 }
 
-function switch_text_contrast_on_load()
+function switch_contrast_on_load()
 {
 	//Default to high
-	if (url_vars["text_contrast"] == 0)
+	if (url_vars["contrast"] == 0)
 	{
-		try {$("#text-contrast-button-text").html($("#text-contrast-button-text").html().replace("normal", "high"));}
+		try {$("#contrast-button-text").html($("#contrast-button-text").html().replace("normal", "high"));}
 		catch(ex) {}
 		
-		url_vars["text_contrast"] = 1;
+		url_vars["contrast"] = 1;
 		
 		write_url_vars();
 		
@@ -318,6 +334,33 @@ function switch_text_contrast_on_load()
 			
 			$(".quote-text").css("color", "rgb(168, 168, 168");
 			$(".quote-attribution").css("color", "rgb(210, 210, 210)");
+			
+			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(127, 127, 127)");
+			
+			$("head").append(`
+				<style>
+					.line-break
+					{
+						background: rgb(24,24,24);
+						background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(140,140,140) 50%, rgb(24,24,24) 100%);
+						background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(140,140,140) 50%,rgb(24,24,24) 100%);
+						background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(140,140,140) 50%,rgb(24,24,24) 100%);
+					}
+					
+					.line-break
+					{
+						background: rgb(255,255,255);
+						background: -moz-linear-gradient(left, rgb(255,255,255) 0%, rgb(120,120,120) 50%, rgb(255,255,255) 100%);
+						background: -webkit-linear-gradient(left, rgb(255,255,255) 0%,rgb(120,120,120) 50%,rgb(255,255,255) 100%);
+						background: linear-gradient(to right, rgb(255,255,255) 0%,rgb(120,120,120) 50%,rgb(255,255,255) 100%);
+					}
+					
+					.scroll-button
+					{
+						border-color: rgb(64, 64, 64)
+					}
+				</style>
+			`);
 		}
 		
 		else
@@ -331,16 +374,35 @@ function switch_text_contrast_on_load()
 			
 			$(".quote-text").css("color", "rgb(88, 88, 88)");
 			$(".quote-attribution").css("color", "rgb(46, 46, 46)");
+			
+			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(64, 64, 64)");
+			
+			$("head").append(`
+				<style>
+					.line-break
+					{
+						background: rgb(255,255,255);
+						background: -moz-linear-gradient(left, rgb(255,255,255) 0%, rgb(120,120,120) 50%, rgb(255,255,255) 100%);
+						background: -webkit-linear-gradient(left, rgb(255,255,255) 0%,rgb(120,120,120) 50%,rgb(255,255,255) 100%);
+						background: linear-gradient(to right, rgb(255,255,255) 0%,rgb(120,120,120) 50%,rgb(255,255,255) 100%);
+					}
+					
+					.scroll-button
+					{
+						border-color: rgb(64, 64, 64);
+					}
+				</style>
+			`);
 		}
 	}
 	
 	//High to default
 	else
 	{
-		try {$("#text-contrast-button-text").html($("#text-contrast-button-text").html().replace("high", "normal"));}
+		try {$("#contrast-button-text").html($("#contrast-button-text").html().replace("high", "normal"));}
 		catch(ex) {}
 		
-		url_vars["text_contrast"] = 0;
+		url_vars["contrast"] = 0;
 		
 		write_url_vars();
 		
@@ -357,6 +419,8 @@ function switch_text_contrast_on_load()
 			
 			$(".quote-text").css("color", "rgb(80, 80, 80");
 			$(".quote-attribution").css("color", "rgb(164, 164, 164)");
+			
+			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(127, 127, 127)");
 		}
 		
 		else
@@ -370,6 +434,8 @@ function switch_text_contrast_on_load()
 			
 			$(".quote-text").css("color", "rgb(176, 176, 176");
 			$(".quote-attribution").css("color", "rgb(92, 92, 92)");
+			
+			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(127, 127, 127)");
 		}
 	}
 }
