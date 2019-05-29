@@ -70,9 +70,7 @@ $(function()
 {
 	//Handle IE and Edge.
 	if (browser_name == "MS Edge")
-	{
-		$(".logo").before("<div class='body-text' style='text-align: center'><b>Microsoft Edge is not fully supported on this site. Using <a href='https://www.google.com/chrome/'>Chrome</a>, <a href='https://www.apple.com/safari/'>Safari</a>, <a href='https://www.mozilla.org/en-US/firefox/?v=a'>Firefox</a>, or <a href='https://www.opera.com/'>Opera</a> is highly recommended.<b></div> <div style='height: 5vh'></div>");
-		
+	{		
 		try
 		{
 			$("#background-image").addClass("bad-banner");

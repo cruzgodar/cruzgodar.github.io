@@ -209,6 +209,22 @@ body
 		
 		
 		
+		//Deal with Edge.
+		var refresh_id = setInterval(function()
+		{
+			if (typeof browser_name != "undefined")
+			{
+				clearInterval(refresh_id);
+				
+				if (browser_name == "MS Edge")
+				{
+					$("#banner-style-button-row").remove();
+				}
+			}
+		});
+		
+		
+		
 		//Figure out where to return to.
 		$("#apply-button").attr("onclick", "redirect('" + decodeURIComponent(get_url_var("return")) + "')");
 	</script>
