@@ -40,7 +40,7 @@ $(function()
 				<style>
 					.banner:before
 					{
-						background: url("banners/landscape.` + banner_extension + `") no-repeat center center;
+						background: url("banners/landscape.${banner_extension}") no-repeat center center;
 						-webkit-background-size: cover;
 						-moz-background-size: cover;
 						-o-background-size: cover;
@@ -51,7 +51,7 @@ $(function()
 					{
 						.banner:before
 						{
-							background: url("banners/portrait.` + banner_extension + `") no-repeat center center;
+							background: url("banners/portrait.${banner_extension}") no-repeat center center;
 							-webkit-background-size: cover;
 							-moz-background-size: cover;
 							-o-background-size: cover;
