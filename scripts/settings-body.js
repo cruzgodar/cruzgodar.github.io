@@ -152,12 +152,12 @@ function switch_theme()
 					{
 						background-color: rgb(24, 24, 24);
 						color: rgb(127, 127, 127);
-						border-color: rgb(127, 127, 127);
+						border-color: rgb(64, 64, 64);
 					}
 					
 					.text-box:focus
 					{
-						border-color: rgb(192, 192, 192);
+						border-color: rgb(127, 127, 127);
 						color: rgb(192, 192, 192);
 					}
 				</style>
@@ -357,14 +357,14 @@ function switch_contrast_on_load()
 					
 					.text-box
 					{
-						border-color: rgb(192, 192, 192);
+						border-color: rgb(127, 127, 127);
 						background-color: rgb(24, 24, 24);
 						color: rgb(192, 192, 192);
 					}
 					
 					.text-box:focus
 					{
-						border-color: rgb(255, 255, 255);
+						border-color: rgb(192, 192, 192);
 						color: rgb(255, 255, 255);
 					}
 				</style>
@@ -402,13 +402,13 @@ function switch_contrast_on_load()
 					
 					.text-box
 					{
-						border-color: rgb(64, 64, 64);
+						border-color: rgb(127, 127, 127);
 						color: rgb(64, 64, 64);
 					}
 					
 					.text-box:focus
 					{
-						border-color: rgb(0, 0, 0);
+						border-color: rgb(64, 64, 64);
 						color: rgb(0, 0, 0);
 					}
 				</style>

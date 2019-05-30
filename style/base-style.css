@@ -408,6 +408,7 @@ a
 .text-box:focus
 {
 	border-color: rgb(127, 127, 127);
+	color: rgb(64, 64, 64);
 }
 
 
