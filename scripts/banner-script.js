@@ -42,8 +42,6 @@ $(function()
 					{
 						background: url("banners/landscape.${banner_extension}") no-repeat center center;
 						-webkit-background-size: cover;
-						-moz-background-size: cover;
-						-o-background-size: cover;
 						background-size: cover;
 					}
 					
@@ -53,8 +51,6 @@ $(function()
 						{
 							background: url("banners/portrait.${banner_extension}") no-repeat center center;
 							-webkit-background-size: cover;
-							-moz-background-size: cover;
-							-o-background-size: cover;
 							background-size: cover;
 						}
 					}

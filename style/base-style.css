@@ -42,21 +42,17 @@ a
 	position: absolute;
 	width: 100px;
 	height: 100px;
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
+	
+	-webkit-transition: -webkit-filter .15s ease-in-out;
+	transition: filter .15s ease-in-out;
+	
 	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
 	filter: brightness(100%);
 }
 
 .logo img:hover
 {
 	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
 	filter: brightness(75%);
 }
 
@@ -129,19 +125,14 @@ a
 	background-color: rgb(255, 255, 255);
 	
 	border: 2px solid rgb(127, 127, 127);
-	border-radius: 50%;
 	-webkit-border-radius: 50%;
-	-moz-border-radius: 50%;
-	-o-border-radius: 50%;
+	border-radius: 50%;
 	padding: 5px;
 	
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
+	-webkit-transition: -webkit-filter .15s ease-in-out;
+	transition: filter .15s ease-in-out;
+	
 	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
 	filter: brightness(100%);
 	
 	cursor: pointer;
@@ -150,8 +141,6 @@ a
 .footer-button:hover
 {
 	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
 	filter: brightness(75%);
 }
 
@@ -175,17 +164,12 @@ a
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 10px;
 	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	-o-border-radius: 10px;
 	padding: 10px;
 	
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
+	-webkit-transition: -webkit-filter .15s ease-in-out;
+	transition: filter .15s ease-in-out;
+	
 	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
 	filter: brightness(100%);
 	
 	cursor: pointer;
@@ -194,8 +178,6 @@ a
 .nav-button:hover
 {
 	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
 	filter: brightness(75%);
 }
 
@@ -222,21 +204,16 @@ a
 	position: absolute;
 	width: 13.75vw;
 	height: 13.75vw;
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
+	-webkit-transition: -webkit-filter .15s ease-in-out;
+	transition: filter .15s ease-in-out;
+	
 	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
 	filter: brightness(100%);
 }
 
 .image-link img:hover
 {
 	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
 	filter: brightness(75%);
 }
 
@@ -253,16 +230,12 @@ a
 .image-link-light img
 {
 	-webkit-filter: brightness(95%) !important;
-	-moz-filter: brightness(95%) !important;
-	-o-filter: brightness(95%) !important;
 	filter: brightness(95%) !important;
 }
 
 .image-link-light img:hover
 {
 	-webkit-filter: brightness(75%) !important;
-	-moz-filter: brightness(75%) !important;
-	-o-filter: brightness(75%) !important;
 	filter: brightness(75%) !important;
 }
 
@@ -323,21 +296,16 @@ a
 
 .big-image-horizontal, .small-image-horizontal, .big-image-vertical, .small-image-vertical
 {
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
+	-webkit-transition: -webkit-filter .15s ease-in-out;
+	transition: filter .15s ease-in-out;
+	
 	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
 	filter: brightness(100%);
 }
 
 .big-image-horizontal:hover, .small-image-horizontal:hover, .big-image-vertical:hover, .small-image-vertical:hover
 {
 	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
 	filter: brightness(75%);
 }
 
@@ -358,19 +326,14 @@ a
 	font-size: 125%;
 
 	border: 2px solid rgb(127, 127, 127);
-	border-radius: 10px;
 	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	-o-border-radius: 10px;
+	border-radius: 10px;
 	padding: 10px;
 	
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
+	-webkit-transition: -webkit-filter .15s ease-in-out;
+	transition: filter .15s ease-in-out;
+	
 	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
 	filter: brightness(100%);
 	
 	cursor: pointer;
@@ -379,8 +342,6 @@ a
 .text-button:hover
 {
 	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
 	filter: brightness(75%);
 }
 
@@ -400,8 +361,6 @@ a
 	text-align: center;
 	
 	-webkit-transition: border-color .3s ease-in-out, color .3s ease-in-out;
-	-moz-transition: border-color .3s ease-in-out, color .3s ease-in-out;
-	-o-transition: border-color .3s ease-in-out, color .3s ease-in-out;
 	transition: border-color .3s ease-in-out, color .3s ease-in-out;
 }
 
@@ -462,21 +421,16 @@ a
 	width: 8vw;
 	height: 8vw;
 
-	-webkit-transition: all .15s ease-in-out;
-	-moz-transition: all .15s ease-in-out;
-	-o-transition: all .15s ease-in-out;
-	transition: all .15s ease-in-out;
+	-webkit-transition: -webkit-filter .15s ease-in-out;
+	transition: filter .15s ease-in-out;
+	
 	-webkit-filter: brightness(100%);
-	-moz-filter: brightness(100%);
-	-o-filter: brightness(100%);
 	filter: brightness(100%);
 }
 
 .menu-image-link img:hover
 {
 	-webkit-filter: brightness(75%);
-	-moz-filter: brightness(75%);
-	-o-filter: brightness(75%);
 	filter: brightness(75%);
 }
 
@@ -486,8 +440,6 @@ a
 .background-transition
 {
 	-webkit-transition: background-color .45s ease-in-out !important;
-	-moz-transition: background-color .45s ease-in-out !important;
-	-o-transition: background-color .45s ease-in-out !important;
 	transition: background-color .45s ease-in-out !important;
 }
 

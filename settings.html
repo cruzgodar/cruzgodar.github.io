@@ -198,8 +198,6 @@ body
 	<script>
 		//We only apply this now to prevent the dark theme from transitioning slowly on load rather than instantly.
 		$("html").css("-webkit-transition", "background-color .6s ease");
-		$("html").css("-moz-transition", "background-color .6s ease");
-		$("html").css("-o-transition", "background-color .6s ease");
 		$("html").css("transition", "background-color .6s ease");
 		
 		setTimeout(function()
@@ -209,16 +207,12 @@ body
 					.heading-text
 					{
 						-webkit-transition: color .6s ease;
-						-moz-transition: color .6s ease;
-						-o-transition: color .6s ease;
 						transition: color .6s ease;
 					}
 					
 					.section-text, .body-text
 					{
 						-webkit-transition: color .3s ease;
-						-moz-transition: color .3s ease;
-						-o-transition: color .3s ease;
 						transition: color .3s ease;
 					}
 				</style>
