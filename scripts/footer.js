@@ -47,15 +47,33 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 		
 			
 			
-			$("#spawn-footer").before(`
-				<div style="height: 30vh"></div>
-					<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-						<div class="line-break"></div>
-					</div>
-				<div style="height: 4vw"></div>
-				
-				<div class="menu-image-links"></div>
-			`);
+			if (omit == "")
+			{
+				$("#spawn-footer").before(`
+					<div style="height: 30vh"></div>
+						<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+							<div class="line-break" style="width: 80vw"></div>
+						</div>
+					<div style="height: 4vw"></div>
+					
+					<div class="menu-image-links" style="width: 68vw"></div>
+				`);
+			}
+			
+			else
+			{
+				$("#spawn-footer").before(`
+					<div style="height: 30vh"></div>
+						<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+							<div class="line-break"></div>
+						</div>
+					<div style="height: 4vw"></div>
+					
+					<div class="menu-image-links"></div>
+				`);
+			}
+			
+			
 	
 			if (omit != "writing")
 			{
@@ -122,6 +140,8 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 				
 				delay += 100;
 			}
+			
+			
 			
 			$("#spawn-footer").before('<div id="trigger-menu"></div>');
 			
