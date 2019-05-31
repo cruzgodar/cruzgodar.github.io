@@ -3,17 +3,17 @@
 
 
 //Handles virtually all links.
-function redirect(url, to_external_site, from_nonstandard_color)
+function redirect(url, in_new_tab, from_nonstandard_color)
 {
 	//Indicates whether we need to pause to change the background color. Example: the bottom of the Corona page.
 	from_nonstandard_color = (typeof from_nonstandard_color != "undefined") ? from_nonstandard_color : 0;
 	
-	to_external_site = (typeof to_external_site != "undefined") ? to_external_site : 0;
+	in_new_tab = (typeof in_new_tab != "undefined") ? in_new_tab : 0;
 	
 	
 	
 	//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
-	if (to_external_site == 1)
+	if (in_new_tab == 1)
 	{
 		window.open(url, "_blank");
 		return;
