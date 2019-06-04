@@ -1,4 +1,4 @@
-		/* DON’T TOUCH THE BEFORE THINGY. It has to be here, even though it makes everything worse. */
+/* DON’T TOUCH THE BEFORE THINGY. It has to be here, even though it makes everything worse. */
 .banner:before
 {
 	content: "";
@@ -16,13 +16,6 @@
 .bad-banner:before
 {
 	position: absolute !important;
-}
-
-
-
-body
-{
-	opacity: 0;
 }
 
 
