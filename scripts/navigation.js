@@ -90,8 +90,7 @@ function concat_url_vars(include_return_url)
 	{
 		key = Object.keys(url_vars)[i];
 		
-		//It's necessary to write theme=0 for the following reason: if a user with a system-wide dark theme enters and attempts to change to the light theme, and this function doesn't write theme=0, the next page loaded will see url_vars["theme"] = null, assume there's no preference, and use the system setting again.
-		if ((key != "theme" && url_vars[key] != 0) || (key == "theme"))
+		if (url_vars[key] == 1 || (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] == 0 && key == "theme"))
 		{
 			if (first_var_written == 0)
 			{

@@ -9,15 +9,7 @@ $(function()
 	if (url_vars["theme"] == null)
 	{
 		url_vars["theme"] = 0;
-		
-		//Test for system-wide dark mode.
-		if ($("html").css("background-color") == "rgb(24, 24, 24)")
-		{
-			url_vars["theme"] = 1;
-		}
 	}
-	
-	
 	
 	if (url_vars["font"] == null)
 	{

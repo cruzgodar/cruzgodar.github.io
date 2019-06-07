@@ -12,6 +12,11 @@ var url_vars = {"theme": get_url_var("theme"), "font": get_url_var("font"), "con
 
 
 
+if (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] == null)
+{
+	url_vars["theme"] = 1;
+}
+
 if (url_vars["theme"] == 0)
 {
 	document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
