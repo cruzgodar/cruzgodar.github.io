@@ -99,12 +99,6 @@ a
 	text-decoration: none;
 }
 
-.writing-text
-{
-	/* Also to be used for things like blog posts and stories. Will use serif font when font mode is default. */
-	font-family: "Gentium Book Basic", serif;
-}
-
 .song-lyrics
 {
 	font-size: 125%;
