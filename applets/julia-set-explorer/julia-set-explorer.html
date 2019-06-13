@@ -66,6 +66,16 @@
 
 
 
+#mandelbrot-set, #julia-set, #high-res-julia-set
+{
+	border: 2px solid rgb(127, 127, 127);
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	padding: 2px;
+}
+
+
+
 @media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 {	
 	#mandelbrot-set, #julia-set
@@ -198,6 +208,21 @@
 					clearInterval(refresh_id_1);
 				}
 			}, 50);
+			
+			
+			
+			if (url_vars["contrast"] == 1)
+			{
+				if (url_vars["theme"] == 1)
+				{
+					$("#mandelbrot-set, #julia-set, #high-res-julia-set").css("border-color", "rgb(192, 192, 192)");
+				}
+				
+				else
+				{
+					$("#mandelbrot-set, #julia-set, #high-res-julia-set").css("border-color", "rgb(64, 64, 64)");
+				}
+			}
 			
 			
 			
