@@ -6,12 +6,12 @@
 function insert_footer(omit, no_theme_button, from_nonstandard_color)
 {
 	//We're required to use this archaic default parameter method so IE doesn't crash before it can say that it's IE and get redirected somewhere else.
-	no_theme_button = (typeof no_theme_button != "undefined") ? no_theme_button : 0;
+	no_theme_button = (typeof no_theme_button != "undefined") ? no_theme_button : false;
 	
-	from_nonstandard_color = (typeof from_nonstandard_color != "undefined") ? from_nonstandard_color : 0;
+	from_nonstandard_color = (typeof from_nonstandard_color != "undefined") ? from_nonstandard_color : false;
 	var fnc_arg;
 	
-	if (from_nonstandard_color == 1)
+	if (from_nonstandard_color)
 	{
 		fnc_arg = ", 1";
 	}
@@ -56,7 +56,7 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 						</div>
 					<div style="height: 4vw"></div>
 					
-					<div class="menu-image-links" style="width: 68vw"></div>
+					<div class="footer-image-links" style="width: 68vw"></div>
 				`);
 			}
 			
@@ -69,7 +69,7 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 						</div>
 					<div style="height: 4vw"></div>
 					
-					<div class="menu-image-links"></div>
+					<div class="footer-image-links"></div>
 				`);
 			}
 			
@@ -77,8 +77,8 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 	
 			if (omit != "writing")
 			{
-				$(".menu-image-links").append(`
-					<div id="writing-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				$(".footer-image-links").append(`
+					<div id="writing-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 						<img class="link" onclick="redirect(\'/writing/writing.html\', 0${fnc_arg})" src="/writing/cover.${extension}" alt="Writing"></img>
 					</div>
 				`);
@@ -88,8 +88,8 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 			
 			if (omit != "blog")
 			{
-				$(".menu-image-links").append(`
-					<div id="blog-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				$(".footer-image-links").append(`
+					<div id="blog-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 						<img class="link" onclick="redirect(\'/blog/blog.html\', 0${fnc_arg})" src="/blog/cover.${extension}" alt="Blog"></img>
 					</div>
 				`);
@@ -99,8 +99,8 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 			
 			if (omit != "applets")
 			{
-				$(".menu-image-links").append(`
-					<div id="applets-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				$(".footer-image-links").append(`
+					<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 						<img class="link" onclick="redirect(\'/applets/applets.html\', 0${fnc_arg})" src="/applets/cover.${extension}" alt="Applets"></img>
 					</div>
 				`);
@@ -110,8 +110,8 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 			
 			if (omit != "research")
 			{
-				$(".menu-image-links").append(`
-					<div id="research-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				$(".footer-image-links").append(`
+					<div id="research-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 						<img class="link" onclick="redirect(\'/research/research.html\', 0${fnc_arg})" src="/research/cover.${extension}" alt="Research"></img>
 					</div>
 				`);
@@ -121,8 +121,8 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 			
 			if (omit != "notes")
 			{
-				$(".menu-image-links").append(`
-					<div id="notes-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				$(".footer-image-links").append(`
+					<div id="notes-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 						<img class="link" onclick="redirect(\'/notes/notes.html\', 0${fnc_arg})" src="/notes/cover.${extension}" alt="Notes"></img>
 					</div>
 				`);
@@ -132,8 +132,8 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 			
 			if (omit != "bio")
 			{
-				$(".menu-image-links").append(`
-					<div id="bio-link" class="menu-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				$(".footer-image-links").append(`
+					<div id="bio-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 						<img class="link" onclick="redirect(\'/bio/bio.html\', 0${fnc_arg})" src="/bio/cover.${extension}" alt="Me"></img>
 					</div>
 				`);
@@ -145,12 +145,12 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 			
 			$("#spawn-footer").before('<div id="trigger-menu"></div>');
 			
-			if (no_theme_button == 1)
+			if (no_theme_button == true)
 			{
 				$("#spawn-footer").before('<div style="height: 4vw"></div>');
 			}
 			
-			if (no_theme_button == 0)
+			else if (no_theme_button == false)
 			{
 				$("#spawn-footer").before(`
 					<div style="height: calc(4vw - 45px); min-height: 0px"></div>
@@ -168,11 +168,9 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 			if (url_vars["content_animation"] == 1)
 			{
 				$(".line-break").parent().removeAttr("data-aos");
-				$(".menu-image-link").removeAttr("data-aos");
+				$(".footer-image-link").removeAttr("data-aos");
 				$(".footer-button").parent().removeAttr("data-aos");
 			}
-			
-			footer_loaded = 1;
 		}
 	}, 50);
 }

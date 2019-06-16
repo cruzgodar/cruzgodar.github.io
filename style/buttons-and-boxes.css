@@ -1,0 +1,62 @@
+/* Adds support for text buttons and text boxes. */
+
+
+
+.text-button
+{
+	color: rgb(127, 127, 127);
+	background-color: rgb(255, 255, 255);
+	height: 20px;
+	width: auto;
+	display: inline-block;
+	margin: auto;
+	position: relative;
+	
+	color: rgb(127, 127, 127);
+	text-align: center;
+	font-size: 125%;
+
+	border: 2px solid rgb(127, 127, 127);
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	padding: 10px;
+	
+	-webkit-transition: -webkit-filter .15s ease-in-out;
+	transition: filter .15s ease-in-out;
+	
+	-webkit-filter: brightness(100%);
+	filter: brightness(100%);
+	
+	cursor: pointer;
+}
+
+.text-button:hover
+{
+	-webkit-filter: brightness(75%);
+	filter: brightness(75%);
+}
+
+
+
+.text-box
+{
+	border: none;
+	border-radius: 0px;
+	border-bottom: 2px solid rgb(192, 192, 192);
+	outline: none;
+	background-color: rgb(255, 255, 255);
+	box-sizing: border-box;
+	
+	color: rgb(127, 127, 127);
+	font-size: 125%;
+	text-align: center;
+	
+	-webkit-transition: border-color .3s ease-in-out, color .3s ease-in-out;
+	transition: border-color .3s ease-in-out, color .3s ease-in-out;
+}
+
+.text-box:focus
+{
+	border-color: rgb(127, 127, 127);
+	color: rgb(64, 64, 64);
+}

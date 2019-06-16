@@ -1,3 +1,7 @@
+/* Required for every page. Provides support for the various kinds of text, the logo, and the footer. */
+
+
+
 @import url("https://fonts.googleapis.com/css?family=Rubik");
 @import url("https://fonts.googleapis.com/css?family=Gentium+Book+Basic");
 
@@ -99,14 +103,6 @@ a
 	text-decoration: none;
 }
 
-.song-lyrics
-{
-	font-size: 125%;
-	color: rgb(127, 127, 127);
-	text-align: center;
-	font-family: "Gentium Book Basic", serif;
-}
-
 
 
 .footer-button
@@ -139,232 +135,6 @@ a
 }
 
 
-.nav-buttons
-{
-	display: flex;
-	width: 70vw;
-	margin: 0 auto;
-	justify-content: space-between;
-}
-
-.nav-button
-{
-	color: rgb(127, 127, 127);
-	background-color: rgb(255, 255, 255);
-	height: 20px;
-	position: relative;
-	opacity: 1;
-
-	border: 2px solid rgb(127, 127, 127);
-	border-radius: 10px;
-	-webkit-border-radius: 10px;
-	padding: 10px;
-	
-	-webkit-transition: -webkit-filter .15s ease-in-out;
-	transition: filter .15s ease-in-out;
-	
-	-webkit-filter: brightness(100%);
-	filter: brightness(100%);
-	
-	cursor: pointer;
-}
-
-.nav-button:hover
-{
-	-webkit-filter: brightness(75%);
-	filter: brightness(75%);
-}
-
-
-
-.image-links
-{
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	width: 70vw;
-	margin: 0 auto;
-}
-
-.image-link
-{
-	width: 13.75vw;
-	height: 13.75vw;
-}
-
-.image-link img
-{
-	position: absolute;
-	width: 13.75vw;
-	height: 13.75vw;
-	-webkit-transition: -webkit-filter .15s ease-in-out;
-	transition: filter .15s ease-in-out;
-	
-	-webkit-filter: brightness(100%);
-	filter: brightness(100%);
-}
-
-.image-link img:hover
-{
-	-webkit-filter: brightness(75%);
-	filter: brightness(75%);
-}
-
-.image-link-subtext
-{
-	position: relative;
-	margin-top: 15vw;
-	color: rgb(127, 127, 127);
-	text-align: center;
-	font-size: 125%;
-}
-
-/* Added to images with white around the edges to provide contrast. */
-.image-link-light img
-{
-	-webkit-filter: brightness(95%) !important;
-	filter: brightness(95%) !important;
-}
-
-.image-link-light img:hover
-{
-	-webkit-filter: brightness(75%) !important;
-	filter: brightness(75%) !important;
-}
-
-
-.row-break
-{
-	height: 5vw;
-}
-
-
-
-/* Used for two small horizontal images side by side. */
-.image-row
-{
-	display: flex;
-	width: 70vw;
-	margin: 0 auto;
-	justify-content: space-between;
-}
-
-.big-image-horizontal
-{
-	position: relative;
-	width: 70vw;
-	height: auto;
-	margin-left: 15vw;
-	display: inline-block;
-}
-
-.small-image-horizontal
-{
-	position: relative;
-	float: left;
-	width: 32.5vw;
-	height: auto;
-	display: inline-block;
-}
-
-.big-image-vertical
-{
-	position: relative;
-	width: 90vh;
-	height: auto;
-	margin-left: auto;
-	margin-right: auto;
-	display: block;
-}
-
-.small-image-vertical
-{
-	position: relative;
-	width: auto;
-	height: 50vh;
-	margin-left: auto;
-	margin-right: auto;
-	display: block;
-}
-
-.big-image-horizontal, .small-image-horizontal, .big-image-vertical, .small-image-vertical
-{
-	-webkit-transition: -webkit-filter .15s ease-in-out;
-	transition: filter .15s ease-in-out;
-	
-	-webkit-filter: brightness(100%);
-	filter: brightness(100%);
-}
-
-.big-image-horizontal:hover, .small-image-horizontal:hover, .big-image-vertical:hover, .small-image-vertical:hover
-{
-	-webkit-filter: brightness(75%);
-	filter: brightness(75%);
-}
-
-
-
-.text-button
-{
-	color: rgb(127, 127, 127);
-	background-color: rgb(255, 255, 255);
-	height: 20px;
-	width: auto;
-	display: inline-block;
-	margin: auto;
-	position: relative;
-	
-	color: rgb(127, 127, 127);
-	text-align: center;
-	font-size: 125%;
-
-	border: 2px solid rgb(127, 127, 127);
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	padding: 10px;
-	
-	-webkit-transition: -webkit-filter .15s ease-in-out;
-	transition: filter .15s ease-in-out;
-	
-	-webkit-filter: brightness(100%);
-	filter: brightness(100%);
-	
-	cursor: pointer;
-}
-
-.text-button:hover
-{
-	-webkit-filter: brightness(75%);
-	filter: brightness(75%);
-}
-
-
-
-.text-box
-{
-	border: none;
-	border-radius: 0px;
-	border-bottom: 2px solid rgb(192, 192, 192);
-	outline: none;
-	background-color: rgb(255, 255, 255);
-	box-sizing: border-box;
-	
-	color: rgb(127, 127, 127);
-	font-size: 125%;
-	text-align: center;
-	
-	-webkit-transition: border-color .3s ease-in-out, color .3s ease-in-out;
-	transition: border-color .3s ease-in-out, color .3s ease-in-out;
-}
-
-.text-box:focus
-{
-	border-color: rgb(127, 127, 127);
-	color: rgb(64, 64, 64);
-}
-
-
 
 .row:after
 {
@@ -390,7 +160,7 @@ a
 
 
 
-.menu-image-links
+.footer-image-links
 {
 	display: flex;
 	flex-direction: row;
@@ -400,7 +170,7 @@ a
 	margin: 0 auto;
 }
 
-.menu-image-link
+.footer-image-link
 {
 	position: relative;
 	float: left;
@@ -409,7 +179,7 @@ a
 	display: inline-block;
 }
 
-.menu-image-link img
+.footer-image-link img
 {
 	position: absolute;
 	width: 8vw;
@@ -422,7 +192,7 @@ a
 	filter: brightness(100%);
 }
 
-.menu-image-link img:hover
+.footer-image-link img:hover
 {
 	-webkit-filter: brightness(75%);
 	filter: brightness(75%);
@@ -441,73 +211,7 @@ a
 
 @media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 {
-	.heading-text, .section-text, .body-text, .date-text, .song-lyrics
-	{
-		width: 90vw;
-	}
-	
-	
-
-	/* Put two images per row, rather than four. */
-	.image-link
-	{
-		width: 40vw;
-		height: 40vw;
-		margin-bottom: 10vw;
-	}
-	
-	.image-links
-	{
-		width: 90vw;
-		
-		/* Cancel out the bottom row's bottom margin */
-		margin-bottom: -10vw;
-	}
-	
-	.image-link img
-	{
-		width: 40vw;
-		height: 40vw;
-	}
-
-	/* Reposition subtext. */
-	.image-link-subtext
-	{
-		margin-top: 41.25vw;
-	}
-	
-	/* Make spacing even. */
-	.row-break
-	{
-		height: 10vw;
-	}
-	
-	
-	
-	.nav-buttons
-	{
-		width: 90vw;
-	}
-	
-	
-	
-	.big-image-horizontal
-	{
-		width: 90vw;
-		margin-left: 5vw;
-	}
-
-	.small-image-horizontal
-	{
-		width: 42.5vw;
-	}
-	
-	.image-row
-	{
-		width: 90vw;
-	}
-
-	.big-image-vertical
+	.heading-text, .section-text, .body-text, .date-text
 	{
 		width: 90vw;
 	}

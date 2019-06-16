@@ -3,11 +3,9 @@
 
 var window_width, window_height;
 
-//Used by dark-theme.js to only affect links once the footer is there.
-var footer_loaded = 0;
-
 //Used by weird pages like Corona if they want to work dark theme out on their own.
-var manual_dark_theme = 0;
+var manual_dark_theme = false
+var manual_banner = false;
 
 //Whether the browser supports WebP images or not. Given a boolean value when decided.
 var supports_webp = null;
@@ -79,17 +77,33 @@ $(function()
 	
 	
 	
-	$.getScript("/scripts/browsers.js");
-	
-	$.getScript("/scripts/images.js");
-	
-	$.getScript("/scripts/navigation.js", function()
+	$.getScript("/scripts/modernizr-webp.js", function()
 	{
-		$.getScript("/scripts/settings-body.js", function()
+		Modernizr.on("webp", function(result)
 		{
-			$("html").css("opacity", 1);
+			if (result)
+			{
+				supports_webp = true;
+			}
+			
+			else
+			{
+				supports_webp = false;
+			}
 		});
-	});
 	
-	$.getScript("/scripts/footer.js");
+		$.getScript("/scripts/browsers.js");
+		
+		$.getScript("/scripts/images.js");
+		
+		$.getScript("/scripts/navigation.js", function()
+		{
+			$.getScript("/scripts/settings-body.js", function()
+			{
+				$("html").css("opacity", 1);
+			});
+		});
+		
+		$.getScript("/scripts/footer.js");
+	});
 });

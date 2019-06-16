@@ -6,14 +6,14 @@
 function redirect(url, in_new_tab, from_nonstandard_color)
 {
 	//Indicates whether we need to pause to change the background color. Example: the bottom of the Corona page.
-	from_nonstandard_color = (typeof from_nonstandard_color != "undefined") ? from_nonstandard_color : 0;
+	from_nonstandard_color = (typeof from_nonstandard_color != "undefined") ? from_nonstandard_color : false;
 	
-	in_new_tab = (typeof in_new_tab != "undefined") ? in_new_tab : 0;
+	in_new_tab = (typeof in_new_tab != "undefined") ? in_new_tab : false;
 	
 	
 	
 	//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
-	if (in_new_tab == 1)
+	if (in_new_tab)
 	{
 		window.open(url, "_blank");
 		return;
@@ -21,11 +21,11 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 	
 	
 	
-	var include_return_url = 0;
+	var include_return_url = false;
 	
 	if (url == "/settings.html")
 	{
-		include_return_url = 1;
+		include_return_url = true;
 	}
 	
 	
@@ -42,7 +42,7 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 		$("html").animate({opacity: 0}, 300, "swing");
 		
 		//If necessary, take the time to fade back to the default background color, whatever that is.
-		if (from_nonstandard_color == 1)
+		if (from_nonstandard_color)
 		{
 			setTimeout(function()
 			{
@@ -81,7 +81,7 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 //Returns a string of url vars that can be attached to any url.
 function concat_url_vars(include_return_url)
 {
-	var first_var_written = 0;
+	var first_var_written = false;
 	var string = "";
 	var key;
 	var temp = "";
@@ -92,10 +92,10 @@ function concat_url_vars(include_return_url)
 		
 		if (url_vars[key] == 1 || (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] == 0 && key == "theme"))
 		{
-			if (first_var_written == 0)
+			if (first_var_written == false)
 			{
 				string += "?" + key + "=" + url_vars[key];
-				first_var_written = 1;
+				first_var_written = true;
 			}
 			
 			else
@@ -108,12 +108,12 @@ function concat_url_vars(include_return_url)
 	
 	
 	//If we're going to the settings page, we need to know where we came from so we can return there later. Just don't include any current url variables.
-	if (include_return_url == 1)
+	if (include_return_url)
 	{
-		if (first_var_written == 0)
+		if (first_var_written == false)
 		{
 			string += "?return=" + encodeURIComponent(window.location.href.split("?", 1));
-			first_var_written = 1;
+			first_var_written = true;
 		}
 		
 		else

@@ -1,3 +1,7 @@
+/* Provides suppport for full-page, parallax banners at the top of the page, complete with scroll buttons. Requires banners-head.js and banners-body.js. */
+
+
+
 /* DON’T TOUCH THE BEFORE THINGY. It has to be here, even though it makes everything worse. */
 .banner:before
 {

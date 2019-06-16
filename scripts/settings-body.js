@@ -93,7 +93,7 @@ $(function()
 	
 	
 	
-	settings_body_done = 1;
+	settings_body_done = true;
 });
 
 
@@ -236,7 +236,7 @@ function switch_theme()
 //Changes the theme, but without any animation.
 function switch_theme_on_load()
 {
-	if (manual_dark_theme == 1)
+	if (manual_dark_theme)
 	{
 		url_vars["theme"] = 1 - url_vars["theme"];
 		return;

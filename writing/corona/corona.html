@@ -29,6 +29,8 @@
 	});
 </script>
 
+
+
 <title>Corona</title>
 
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -42,10 +44,15 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
+
+
 <link rel="stylesheet" type="text/css" href="/style/aos.css">
 
 <link rel="stylesheet" type="text/css" href="/style/base-style.css">
-<link rel="stylesheet" type="text/css" href="/style/banner-style.css">
+
+<link rel="stylesheet" type="text/css" href="/style/banners.css">
+
+<link rel="stylesheet" type="text/css" href="/style/progress.css">
 
 <style>
 
@@ -113,55 +120,12 @@ body
 {
 	width: 50vw;
 	margin-left: 25vw;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-between;
-}
-
-.stage-bubble
-{
-	width: 5vw;
-	height: 5vw;
-	border: 2px solid rgb(127, 127, 127);
-	
-	-webkit-border-radius: 7px;
-	border-radius: 7px;
-	
-	padding: 2px;
-}
-
-.stage-bubble span
-{
-	width: 0%;
-	height: 0%;
-	margin: 0 auto;
-	position: relative;
-	display: block;
-	
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-	
-	background-color: rgb(127, 127, 127);
-	overflow: hidden;
-	
-	-webkit-transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
-	transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
-	
-	top: 50%;
-  	-webkit-transform: translateY(-50%);
-  	transform: translateY(-50%);
 }
 
 .stage-bubble-subtext
 {
 	width: 17.5vw;
 	margin-left: -6.25vw;
-	margin-top: calc(5vw + 1vh);
-	text-align: center;
-	
-	-webkit-transition: margin-top 1.2s ease;
-	transition: margin-top 1.2s ease;
 }
 
 
@@ -169,31 +133,7 @@ body
 .progress-bar
 {
 	width: calc(50vw - 8px);
-	height: 5vh;
 	margin-left: 25vw;
-	border: 2px solid rgb(127, 127, 127);
-	
-	-webkit-border-radius: 7px;
-	border-radius: 7px;
-	
-	padding: 2px;
-}
-
-.progress-bar span
-{
-	width: 0%;
-	position: relative;
-	display: block;
-	height: 100%;
-	
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-	
-	background-color: rgb(127, 127, 127);
-	overflow: hidden;
-	
-	-webkit-transition: width 1.2s ease;
-	transition: width 1.2s ease;
 }
 
 
@@ -227,15 +167,8 @@ body
 		margin-left: 10vw;
 	}
 	
-	.stage-bubble
-	{
-		width: 10vw;
-		height: 10vw;
-	}
-	
 	.stage-bubble-subtext
 	{
-		margin-top: calc(10vw + 1vh);
 		width: 25vw;
 		margin-left: -7.5vw;
 	}
@@ -243,8 +176,8 @@ body
 	/* Fit progress bar to synopsis text */
 	.progress-bar
 	{
-		width: calc(80vw - 8px);
 		margin-left: 10vw;
+		width: 80vw;
 	}
 }
 
@@ -398,7 +331,7 @@ body
 	<script src="/scripts/base-script.js"></script>
 	
 	<script>
-		manual_dark_theme = 1;
+		manual_dark_theme = true;
 		
 		var background_color = 255;
 		var opacity = 0;
@@ -406,12 +339,12 @@ body
 		var bubbles = [];
 		var subtexts = [];
 		
-		var background_done = 0;
-		var scroll_button_done = 0;
-		var eclipse_done = 0;
+		var background_done = false;
+		var scroll_button_done = false;
+		var eclipse_done = false;
 		
-		var progress_bar_done = 0;
-		var stage_bubbles_done = 0;
+		var progress_bar_done = false;
+		var stage_bubbles_done = false;
 		
 		
 		
@@ -420,7 +353,7 @@ body
 			//We have to wait to apply the contrast changes, since otherwise settings_body may set the body text color after we do here, resulting in less contrast than normal.
 			var refresh_id_1 = setInterval(function()
 			{
-				if (typeof settings_body_done != "undefined" && settings_body_done == 1)
+				if (settings_body_done != null)
 				{
 					clearInterval(refresh_id_1);
 					
@@ -476,7 +409,7 @@ body
 			{
 				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
 				{
-					insert_footer("", 0, 1);
+					insert_footer("", false, true);
 					clearInterval(refresh_id_2);
 				}
 			}, 50);
@@ -516,19 +449,19 @@ body
 						
 						if (background_color == 0)
 						{
-							background_done = 1;
+							background_done = true;
 						}
 						
 						else
 						{
-							background_done = 0;
+							background_done = false;
 						}
 					}
 					
-					else if (background_done == 0)
+					else if (background_done == false)
 					{
 						$("html").css("background-color", "rgb(0, 0, 0)");
-						background_done = 1;
+						background_done = true;
 					}
 					
 					
@@ -542,20 +475,20 @@ body
 						if (opacity == 0)
 						{
 							$(".scroll-button").remove();
-							scroll_button_done = 1;
+							scroll_button_done = true;
 						}
 						
 						else
 						{
-							scroll_button_done = 0;
+							scroll_button_done = false;
 						}
 					}
 					
-					else if (scroll_button_done == 0)
+					else if (scroll_button_done == false)
 					{
 						$(".scroll-button").remove();
 						
-						scroll_button_done = 1;
+						scroll_button_done = true;
 					}
 					
 					
@@ -568,41 +501,41 @@ body
 						
 						if (opacity == 1)
 						{
-							eclipse_done = 1;
+							eclipse_done = true;
 						}
 						
 						else
 						{
-							eclipse_done = 0;
+							eclipse_done = false;
 						}
 					}
 					
-					else if (scroll >= window_height && eclipse_done == 0)
+					else if (scroll >= window_height && eclipse_done == false)
 					{
 						$(".eclipse").css("opacity", 1);
 						
-						eclipse_done = 1;
+						eclipse_done = true;
 					}
 					
-					else if (scroll <= (3/5 + .1) * window_height && eclipse_done == 0)
+					else if (scroll <= (3/5 + .1) * window_height && eclipse_done == false)
 					{
 						$(".eclipse").css("opacity", 0);
 						
-						eclipse_done = 1;
+						eclipse_done = true;
 					}
 				}
 				
 				
 				
-				if (scroll > $(".progress-bar").position().top - 3*window_height/4 && progress_bar_done == 0)
+				if (scroll > $(".progress-bar").position().top - 3*window_height/4 && progress_bar_done == false)
 				{
 					$(".progress-bar span").css("width", (100 * 51/52) + "%");
-					progress_bar_done = 1;
+					progress_bar_done = true;
 				}
 				
-				else if (scroll > $("#trigger-stage-bubbles").position().top - 3*window_height/4 && stage_bubbles_done == 0)
+				else if (scroll > $("#trigger-stage-bubbles").position().top - 3*window_height/4 && stage_bubbles_done == false)
 				{
-					stage_bubbles_done = 1;
+					stage_bubbles_done = true;
 					bubbles = $(".stage-bubble span");
 					subtexts = $(".stage-bubble-subtext");
 					var i;

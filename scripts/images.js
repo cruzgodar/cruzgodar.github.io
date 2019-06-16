@@ -4,27 +4,22 @@
 
 $(function()
 {
-	$.getScript("/scripts/modernizr-webp.js", function()
+	var images = $(".check-webp");
+	
+	var image_type;
+	
+	if (supports_webp)
 	{
-		var images = $(".check-webp");
-		
-		var image_type = "non-webp";
-		
-		Modernizr.on("webp", function(result)
-		{
-			if (result)
-			{
-				image_type = "webp";
-				supports_webp = true;
-			}
-			
-			else
-			{
-				image_type = "non-webp";
-				supports_webp = false;
-			}
-		});
-		
+		image_type = "webp";
+	}
+	
+	else
+	{
+		image_type = "non-webp";
+	}
+	
+	try
+	{
 		$.getJSON("images.json", function(image_data)
 		{
 			var i;
@@ -34,5 +29,7 @@ $(function()
 				$(images[i]).attr("src", image_data[$(images[i]).attr("id")][image_type]);
 			}
 		});
-	});
+	}
+	
+	catch(ex) {}
 });
