@@ -36,7 +36,8 @@ self.addEventListener("fetch", function(event)
                             "/index.html", //Default
                             "/index.html?homescreen=1", //Default
                             "/?homescreen=1", //Default
-                            "/style/base-style.css"
+                            "/style/*",
+                            "/scripts/*"
                         ]);
                     })
                 );
