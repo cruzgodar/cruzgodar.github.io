@@ -455,10 +455,21 @@
 	
 	
 	<script>
-		window.addEventListener("offline", function(e)
+		setInterval(function()
 		{
-			window.location.replace("/offline.html");
-		});
+			if (window.navigator.onLine == false)
+			{
+				try
+				{
+					redirect("/offline.html");
+				}
+				
+				catch(ex)
+				{
+					window.location.href = "/offline.html";
+				}
+			}
+		}, 1000);
 	</script>
 </body>
 </html>

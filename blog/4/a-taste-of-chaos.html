@@ -461,6 +461,25 @@
 			(d.head || d.body).appendChild(s);
 		})();
 	</script>
-
+	
+	
+	
+	<script>
+		setInterval(function()
+		{
+			if (window.navigator.onLine == false)
+			{
+				try
+				{
+					redirect("/offline.html");
+				}
+				
+				catch(ex)
+				{
+					window.location.href = "/offline.html";
+				}
+			}
+		}, 1000);
+	</script>
 </body>
 </html>
