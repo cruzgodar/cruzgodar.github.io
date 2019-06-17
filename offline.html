@@ -53,25 +53,15 @@
 		<div class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</div>
 	</noscript>
 
-	<div class="logo" data-aos="fade-in" id="trigger-section-1">
-		<img class="link" onclick="redirect('/index.html')" src="/graphics/general-icons/logo.png" alt="Logo"></img>
-	</div>
-
-	<div style="height: 2vh"></div>
-
-	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">
+	<div data-aos="fade-up" id="trigger-section-1">
 		<div class="heading-text">You&#x2019;re Offline!</div>
 	</div>
 
 	<div style="height: 5vh"></div>
 
-	<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-1">
-		<div class="body-text">Seems like there&#x2019;s no internet. Even still, some features may continue to work. Possibly.</div>
+	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">
+		<div class="body-text">Seems like there&#x2019;s no internet. When you come back online, you&#x2019;ll automatically be returned to the home page.</div>
 	</div>
-
-
-	
-	<div id="spawn-footer"></div>
 	
 	
 
@@ -84,17 +74,21 @@
 	<script src="/scripts/base-script.js"></script>
 	
 	<script>
-		$(function()
+		setInterval(function()
 		{
-			var refresh_id = setInterval(function()
+			if (window.navigator.onLine)
 			{
-				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
+				try
 				{
-					insert_footer("");
-					clearInterval(refresh_id);
+					redirect("/index.html");
 				}
-			}, 50);
-		});
+				
+				catch(ex)
+				{
+					window.location.href = "/index.html";
+				}
+			}
+		}, 1000);
 	</script>
 	
 </body>
