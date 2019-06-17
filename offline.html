@@ -78,15 +78,18 @@
 		{
 			if (window.navigator.onLine)
 			{
-				try
+				$.getScript("/scripts/navigation.js", function()
 				{
-					redirect("/index.html");
-				}
-				
-				catch(ex)
-				{
-					window.location.href = "/index.html";
-				}
+					try
+					{
+						redirect("/index.html");
+					}
+					
+					catch(ex)
+					{
+						window.location.href = "/index.html";
+					}
+				});
 			}
 		}, 1000);
 	</script>
