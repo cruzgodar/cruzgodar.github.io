@@ -2,6 +2,7 @@ var CACHE_NAME = "static-cache";
 var urlsToCache =
 [
     ".",
+    "/offline.html",
     "/index.html",
     "/styles/*",
     "/scripts/*"
