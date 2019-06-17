@@ -1,11 +1,13 @@
-//After a service worker is installed and the user navigates to a different page or refreshes the current one, the service worker will begin to receive fetch events. Look, I don't know how this PWA stuff works. At all. But if this does the job, then I'm happy.
-
-
-
 self.addEventListener("fetch", function(event)
 {
     event.respondWith(caches.open("cache").then(function(cache)
     {
+        fetch(event.request.url).catch(error => 
+        {
+           //Return the offline page
+           return caches.match("/offline.html");
+        });
+        
         return cache.match(event.request).then(function(response)
         {
             console.log("Cache request: " + event.request.url);
@@ -26,6 +28,7 @@ self.addEventListener("fetch", function(event)
             {   
                 //A rejected promise - just ignore it, we're offline!   
                 console.log("Error in fetch()", event);
+                
                 event.waitUntil(
                     caches.open("cache").then(function(cache)
                     {
@@ -36,8 +39,26 @@ self.addEventListener("fetch", function(event)
                             "/index.html", //Default
                             "/index.html?homescreen=1", //Default
                             "/?homescreen=1", //Default
+                            "/offline.html",
                             "/style/*",
-                            "/scripts/*"
+                            "/scripts/*",
+                            
+                            "/graphics/general-icons/logo.png",
+                            
+                            "/writing/cover.png",
+                            "/writing/cover.webp",
+                            "/blog/cover.png",
+                            "/blog/cover.webp",
+                            "/applets/cover.png",
+                            "/applets/cover.webp",
+                            "/research/cover.png",
+                            "/research/cover.webp",
+                            "/notes/cover.png",
+                            "/notes/cover.webp",
+                            "/bio/cover.png",
+                            "/bio/cover.webp",
+                            
+                            "/graphics/button-icons/gear.png",
                         ]);
                     })
                 );

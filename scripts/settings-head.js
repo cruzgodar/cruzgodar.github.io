@@ -26,7 +26,3 @@ else if (url_vars["theme"] == 1)
 {
 	document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
 }
-
-
-
-document.documentElement.style.opacity = 0;

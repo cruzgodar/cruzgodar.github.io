@@ -37,6 +37,15 @@ $(function()
 	
 	
 	
+	//When in PWA form, disable text selection and drag-and-drop.
+	if (window.matchMedia("(display-mode: standalone)").matches)
+	{
+		$("html").css("-webkit-user-select", "none");
+		$("*").attr("draggable", "false");
+	}
+	
+	
+	
 	//Fade in the opacity when the user presses the back button.
 	window.addEventListener("pageshow", function(event)
 	{
@@ -98,10 +107,7 @@ $(function()
 		
 		$.getScript("/scripts/navigation.js", function()
 		{
-			$.getScript("/scripts/settings-body.js", function()
-			{
-				$("html").css("opacity", 1);
-			});
+			$.getScript("/scripts/settings-body.js");
 		});
 		
 		$.getScript("/scripts/footer.js");
