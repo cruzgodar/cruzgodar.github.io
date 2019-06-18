@@ -25,4 +25,14 @@ if (url_vars["theme"] == 0)
 else if (url_vars["theme"] == 1)
 {
 	document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
+	
+	var style = document.createElement("style");
+	style.type = "text/css";
+	style.innerText = `
+	    .heading-text
+	    {
+	        color: rgb(255, 255, 255);
+	    }
+	`;
+	document.head.appendChild(style);
 }
