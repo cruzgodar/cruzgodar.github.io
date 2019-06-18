@@ -1,4 +1,4 @@
-//Handles redirects and url variables.
+//Handles redirects and url variables. This script cannot be loaded in base-script, since that is async, and if the user is offline, they need access to cached scripts, which can only be accessed directly. We can't put this in the head, since then we lose access to redirect(), and by extension url variables.
 
 
 
@@ -16,6 +16,23 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 	if (in_new_tab)
 	{
 		window.open(url, "_blank");
+		return;
+	}
+	
+	
+	
+	if (window.navigator.onLine == false && !(window.location.href.includes("offline")) && url != "/offline.html")
+	{
+		try
+		{
+			redirect("/offline.html");
+		}
+			
+		catch(ex)
+		{
+			window.location.href = "/offline.html";
+		}
+		
 		return;
 	}
 	

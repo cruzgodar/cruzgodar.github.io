@@ -142,10 +142,7 @@ $(function()
 		
 		$.getScript("/scripts/images.js");
 		
-		$.getScript("/scripts/navigation.js", function()
-		{
-			$.getScript("/scripts/settings-body.js");
-		});
+		$.getScript("/scripts/settings-body.js");
 		
 		$.getScript("/scripts/footer.js");
 	});
