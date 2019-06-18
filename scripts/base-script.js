@@ -58,9 +58,23 @@ $(function()
 		try
 		{
 			$(".logo").css("margin-top", "2vh");
-			
+		}
+		
+		catch(ex) {}
+		
+		
+		
+		try
+		{	
 			$(".name-text").parent().css("margin-top", "2vh");
-			
+		}
+		
+		catch(ex) {}
+		
+		
+		
+		try
+		{	
 			$(".empty-top").css("margin-top", "2vh");
 		}
 		
