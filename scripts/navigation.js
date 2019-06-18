@@ -10,6 +10,14 @@ if (!(window.location.href.includes("offline")))
 		{
 			try
 			{
+				for (key in url_vars)
+				{
+					if (key != "theme")
+					{
+						url_vars[key] = 0;
+					}
+				}
+				
 				redirect("/offline.html");
 			}
 			
