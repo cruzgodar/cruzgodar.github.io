@@ -2,6 +2,27 @@
 
 
 
+if (!(window.location.href.includes("offline")))
+{
+	setInterval(function()
+	{
+		if (window.navigator.onLine == false)
+		{
+			try
+			{
+				redirect("/offline.html");
+			}
+			
+			catch(ex)
+			{
+				window.location.href = "/offline.html";
+			}
+		}
+	}, 500);
+}
+
+
+
 //Handles virtually all links.
 function redirect(url, in_new_tab, from_nonstandard_color)
 {
@@ -16,23 +37,6 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 	if (in_new_tab)
 	{
 		window.open(url, "_blank");
-		return;
-	}
-	
-	
-	
-	if (window.navigator.onLine == false && !(window.location.href.includes("offline")) && url != "/offline.html")
-	{
-		try
-		{
-			redirect("/offline.html");
-		}
-			
-		catch(ex)
-		{
-			window.location.href = "/offline.html";
-		}
-		
 		return;
 	}
 	

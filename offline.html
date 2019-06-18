@@ -83,18 +83,15 @@
 		{
 			if (window.navigator.onLine)
 			{
-				$.getScript("/scripts/navigation.js", function()
+				try
 				{
-					try
-					{
-						redirect("/index.html");
-					}
-					
-					catch(ex)
-					{
-						window.location.href = "/index.html";
-					}
-				});
+					redirect("/index.html");
+				}
+				
+				catch(ex)
+				{
+					window.location.href = "/index.html";
+				}
 			}
 		}, 200);
 	</script>
