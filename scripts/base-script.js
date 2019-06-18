@@ -53,6 +53,18 @@ $(function()
 				}
 			</style>
 		`);
+		
+		//Also add a little extra spacing at the top of each page to keep content from feeling too close to the top of the screen.
+		try
+		{
+			$(".logo").css("margin-top", "2vh");
+			
+			$(".name-text").parent().css("margin-top", "2vh");
+			
+			$(".empty-top").css("margin-top", "2vh");
+		}
+		
+		catch(ex) {}
 	}
 	
 	
