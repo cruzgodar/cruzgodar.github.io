@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<script src="/scripts/offline.js"></script>
+
+
+
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135923635-1"></script>
 <script>
@@ -298,26 +303,6 @@
 			s.setAttribute('data-timestamp', +new Date());
 			(d.head || d.body).appendChild(s);
 		})();
-	</script>
-	
-	
-	
-	<script>
-		setInterval(function()
-		{
-			if (window.navigator.onLine == false)
-			{
-				try
-				{
-					redirect("/offline.html");
-				}
-				
-				catch(ex)
-				{
-					window.location.href = "/offline.html";
-				}
-			}
-		}, 1000);
 	</script>
 </body>
 </html>

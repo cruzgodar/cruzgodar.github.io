@@ -3,6 +3,7 @@ var urlsToCache =
 [
     ".",
     "/offline.html",
+    "/scripts/offline.js",
     "/index.html",
     "/styles/*",
     "/scripts/*"

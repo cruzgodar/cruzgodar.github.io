@@ -2,6 +2,8 @@
 
 
 
+var footer_done = false;
+
 //Puts the footer in at the bottom of the page, omitting one link (whatever the current page is)
 function insert_footer(omit, no_theme_button, from_nonstandard_color)
 {
@@ -155,12 +157,14 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 				$("#spawn-footer").before(`
 					<div style="height: calc(4vw - 45px); min-height: 0px"></div>
 					
-					<div style="display: flex; align-items: left; margin-bottom: 6px; justify-content: space-between">
+					<div class="footer-button-container">
 						<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false">
 							<img class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect(\'/settings.html\', 0${fnc_arg})"></img>
 						</div>
 						
-						<div></div>
+						<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false">
+							<img id="pwa-button" class="footer-button" style="margin-left: 0px;" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa.html')"></img>
+						</div>
 					</div>
 				`);
 			}
@@ -173,4 +177,6 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 			}
 		}
 	}, 50);
+	
+	footer_done = true;
 }

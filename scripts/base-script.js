@@ -37,11 +37,22 @@ $(function()
 	
 	
 	
-	//When in PWA form, disable text selection and drag-and-drop.
+	//When in PWA form, disable text selection, drag-and-drop, and the PWA button itself.
 	if (window.matchMedia("(display-mode: standalone)").matches)
 	{
 		$("html").css("-webkit-user-select", "none");
 		$("*").attr("draggable", "false");
+		
+		$("head").append(`
+			<style>
+				#pwa-button
+				{
+					display: none;
+					width: 0px;
+					height: 0px;
+				}
+			</style>
+		`);
 	}
 	
 	

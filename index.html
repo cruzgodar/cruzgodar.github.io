@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<script src="/scripts/offline.js"></script>
+
+
+
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135923635-1"></script>
 <script>
@@ -266,12 +271,14 @@
 		
 		<div style="height: 10vh"></div>
 		
-		<div style="display: flex; align-items: left; margin-bottom: 6px; justify-content: space-between">
-			<div data-aos="zoom-out" data-aos-offset="0">
+		<div class="footer-button-container">
+			<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false">
 				<img class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect('/settings.html')"></img>
 			</div>
 			
-			<div></div>
+			<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false">
+				<img id="pwa-button" class="footer-button" style="margin-left: 0px" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa.html')"></img>
+			</div>
 		</div>
 	</div>
 	
@@ -289,6 +296,8 @@
 	
 	<script>
 		manual_banner = true;
+		
+		footer_done = true;
 		
 		$(function()
 		{
@@ -450,26 +459,6 @@
 				});
 			});
 		}
-	</script>
-	
-	
-	
-	<script>
-		setInterval(function()
-		{
-			if (window.navigator.onLine == false)
-			{
-				try
-				{
-					redirect("/offline.html");
-				}
-				
-				catch(ex)
-				{
-					window.location.href = "/offline.html";
-				}
-			}
-		}, 1000);
 	</script>
 </body>
 </html>

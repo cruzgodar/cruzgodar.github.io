@@ -105,6 +105,15 @@ a
 
 
 
+.footer-button-container
+{
+	width: calc(100vw - 10px);
+	display: flex;
+	align-items: left;
+	margin-bottom: 6px;
+	justify-content: space-between;
+}
+
 .footer-button
 {
 	width: 25px;
