@@ -24,18 +24,6 @@ $(function()
 	
 	
 	
-	//Required when there's a vertical scrollbar
-	$("head").append(`
-		<style>
-			.footer-button-container
-			{
-				width: ${$("body").prop("clientWidth") - 10}px;
-			}
-		</style>
-	`);
-	
-	
-	
 	if (url_vars["content_animation"] == 1)
 	{
 		//This attribute makes the content invisible until it's animated in, so if we're never going to do that, it has to go.
