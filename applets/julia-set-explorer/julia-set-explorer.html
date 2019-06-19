@@ -445,7 +445,17 @@
 			
 			//Find the max brightness, throwing out the top 1% of values to avoid almost-black images with a few specks of color.
 			var brightness_array = image.flat().sort(function(a, b) {return a - b});
-			max_brightness = brightness_array[Math.round(brightness_array.length * .9999)];
+			
+			//We throw out more if the image is just being scrolled around, since then it's critical that we don't have bright flashes of color.
+			if (julia_size == 100)
+			{
+				max_brightness = brightness_array[Math.round(brightness_array.length * .9965)];
+			}
+			
+			else
+			{
+				max_brightness = brightness_array[Math.round(brightness_array.length * .9999)];
+			}
 			
 			for (i = 0; i < julia_size; i++)
 			{
