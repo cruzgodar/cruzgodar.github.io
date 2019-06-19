@@ -162,8 +162,8 @@ function insert_footer(omit, no_theme_button, from_nonstandard_color)
 							<img class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect(\'/settings.html\', 0${fnc_arg})"></img>
 						</div>
 						
-						<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false">
-							<img id="pwa-button" class="footer-button" style="margin-left: 0px;" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa.html')"></img>
+						<div data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false">
+							<img id="pwa-button" class="footer-button" style="margin-left: 0px;" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa.html', 0${fnc_arg})"></img>
 						</div>
 					</div>
 				`);
