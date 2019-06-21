@@ -41,6 +41,8 @@ $(function()
 	if (window.matchMedia("(display-mode: standalone)").matches)
 	{
 		$("html").css("-webkit-user-select", "none");
+		$("html").css("user-select", "none");
+		$("html").css("-webkit-touch-callout", "none");
 		$("*").attr("draggable", "false");
 		
 		$("head").append(`
