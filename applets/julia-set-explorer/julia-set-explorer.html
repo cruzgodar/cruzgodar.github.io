@@ -54,27 +54,18 @@
 
 <style>
 
-.row:after
+#container
 {
-	content: "";
-	display: table;
-	clear: both;
+	display: flex;
+	justify-content: space-between;
+	width: 70vw;
+	margin-left: 15vw;
 }
 
 #mandelbrot-set, #julia-set
 {
 	width: 30vw;
 	height: 30vw;
-}
-
-#mandelbrot-set
-{
-	margin-left: 15vw;
-}
-
-#julia-set
-{
-	margin-left: 10vw;
 }
 
 #high-res-julia-set
@@ -97,12 +88,17 @@
 
 
 @media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
-{	
+{
+	#container
+	{
+		flex-direction: column;
+		margin-left: calc((100vw - (70vw + 8px)) / 2);
+	}
+	
 	#mandelbrot-set, #julia-set
 	{
-		width: 50vw;
-		height: 50vw;
-		margin-left: 25vw;
+		width: 70vw;
+		height: 70vw;
 	}
 	
 	#mandelbrot-set
@@ -144,7 +140,7 @@
 	
 	
 	
-	<div id="container" class="row" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
+	<div id="container" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
 		<img id="mandelbrot-set" class="check-webp" src="" alt="The Mandelbrot Set"></img>
 		<canvas id="julia-set"></canvas>
 	</div>
