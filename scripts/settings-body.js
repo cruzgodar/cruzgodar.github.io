@@ -4,91 +4,48 @@
 
 var settings_body_done;
 
+var url_var_functions = {
+	"animated":
+	{
+		"theme": switch_theme,
+		"font": switch_font,
+		"contrast": switch_contrast,
+		"comments": switch_comments,
+		"no_new_section": switch_new_section,
+		"link_animation": switch_link_animation,
+		"content_animation": switch_content_animation,
+		"banner_style": switch_banner_style
+	},
+	
+	"onload":
+	{
+		"theme": switch_theme_on_load,
+		"font": switch_font_on_load,
+		"contrast": switch_contrast_on_load,
+		"comments": switch_comments_on_load,
+		"no_new_section": switch_new_section_on_load,
+		"link_animation": switch_link_animation_on_load,
+		"content_animation": switch_content_animation_on_load,
+		"banner_style": switch_banner_style_on_load
+	}
+};
+
+
+
 $(function()
 {
-	if (url_vars["theme"] == null)
+	for (key in url_vars)
 	{
-		url_vars["theme"] = 0;
-	}
-	
-	if (url_vars["font"] == null)
-	{
-		url_vars["font"] = 0;
-	}
-	
-	if (url_vars["contrast"] == null)
-	{
-		url_vars["contrast"] = 0;
-	}
-
-	if (url_vars["no_new_section"] == null)
-	{
-		url_vars["no_new_section"] = 0;
-	}
-	
-	if (url_vars["link_animation"] == null)
-	{
-		url_vars["link_animation"] = 0;
-	}
-	
-	if (url_vars["content_animation"] == null)
-	{
-		url_vars["content_animation"] = 0;
-	}
-	
-	if (url_vars["banner_style"] == null)
-	{
-		url_vars["banner_style"] = 0;
-	}
-	
-	
-	
-	if (url_vars["theme"] == 1)
-	{
-		url_vars["theme"] = 0;
-		switch_theme_on_load();
-	}
-	
-	if (url_vars["font"] == 1)
-	{
-		url_vars["font"] = 0;
-		switch_font_on_load();
-	}
-	
-	if (url_vars["contrast"] == 1)
-	{
-		url_vars["contrast"] = 0;
-		switch_contrast_on_load();
-	}
-
-	if (url_vars["icon_style"] == 1)
-	{
-		url_vars["icon_style"] = 0;
-		switch_icon_style_on_load();
-	}
-
-	if (url_vars["no_new_section"] == 1)
-	{
-		url_vars["no_new_section"] = 0;
-		switch_new_section_on_load();
-	}
-	
-	if (url_vars["link_animation"] == 1)
-	{
-		url_vars["link_animation"] = 0;
-		switch_link_animation_on_load();
-	}
-	
-	if (url_vars["content_animation"] == 1)
-	{
-		url_vars["content_animation"] = 0;
-		switch_content_animation_on_load();
-	}
-	
-	if (url_vars["banner_style"] == 1)
-	{
-		url_vars["banner_style"] = 0;
-		switch_banner_style_on_load();
+		if (url_vars[key] == null)
+		{
+			url_vars[key] = 0;
+		}
+		
+		else if (url_vars[key] == 1)
+		{
+			url_vars[key] = 0;
+			url_var_functions["onload"][key]();
+		}
 	}
 	
 	
@@ -464,6 +421,51 @@ function switch_contrast_on_load()
 
 
 
+function switch_comments()
+{
+	$("#comments-button-row").animate({opacity: 0}, 300, "swing");
+	
+	setTimeout(function()
+	{
+		switch_comments_on_load();
+		$("#comments-button-row").animate({opacity: 1}, 300, "swing");
+	}, 300);
+}
+
+function switch_comments_on_load()
+{
+	if (url_vars["comments"] == 0)
+	{
+		try {$("#comments-button-text").html($("#comments-button-text").html().replace("enabled", "disabled"));}
+		catch(ex) {}
+		
+		try
+		{
+			$("#disqus_thread").prev().remove();
+			$("#disqus_thread").prev().remove();
+			$("#disqus_thread").prev().remove();
+			$("#disqus_thread").remove();
+		}
+		catch(ex) {}
+		
+		url_vars["comments"] = 1;
+		
+		write_url_vars();
+	}
+	
+	else
+	{
+		try {$("#comments-button-text").html($("#comments-button-text").html().replace("disabled", "enabled"));}
+		catch(ex) {}
+		
+		url_vars["comments"] = 0;
+		
+		write_url_vars();
+	}
+}
+
+
+
 function switch_new_section()
 {
 	$("#new-section-button-row").animate({opacity: 0}, 300, "swing");
@@ -495,7 +497,6 @@ function switch_new_section_on_load()
 		catch(ex) {}
 	}
 	
-	//Images to glyphs
 	else
 	{
 		try {$("#new-section-button-text").html($("#new-section-button-text").html().replace("hidden", "shown"));}
@@ -504,8 +505,6 @@ function switch_new_section_on_load()
 		url_vars["no_new_section"] = 0;
 		
 		write_url_vars();
-		
-		//Similarly to the images and glyphs, we don't need to do anything in this case.
 	}
 }
 
@@ -530,8 +529,6 @@ function switch_link_animation_on_load()
 		catch(ex) {}
 		
 		url_vars["link_animation"] = 1;
-		
-		console.log(url_vars);
 		
 		write_url_vars();
 	}

@@ -342,7 +342,7 @@
 
 
 
-		<div style="height: 20vh"></div>
+		<div style="height: 15vh"></div>
 
 		<div class="nav-buttons" data-aos="fade-up">
 			<img class="nav-button" onclick="redirect('../3/the-city-and-the-city.html')" src="/graphics/general-icons/chevron-left.png" alt="Newer"></img>
@@ -354,7 +354,7 @@
 
 
 
-		<div style="height: 10vh"></div>
+		<div style="height: 15vh"></div>
 		
 		<div data-aos="fade-in" data-aos-once="true" id="trigger-comments">
 			<div class="line-break"></div>
@@ -398,18 +398,24 @@
 	</script>
 
 	<script>
-		var disqus_config = function()
+		function load_disqus()
 		{
-			this.page.url = "https://cruzgodar.com/blog/2/nach-heidelberg.html";
-			this.page.identifier = "nach-heidelberg";
-		};
-
-		(function() {
 			var d = document, s = d.createElement('script');
 			s.src = 'https://cruzgodar.disqus.com/embed.js';
 			s.setAttribute('data-timestamp', +new Date());
 			(d.head || d.body).appendChild(s);
-		})();
+		}
+		
+		if (url_vars["comments"] != 1)
+		{
+			var disqus_config = function()
+			{
+				this.page.url = "https://cruzgodar.com/blog/2/nach-heidelberg.html";
+				this.page.identifier = "nach-heidelberg";
+			};
+			
+			load_disqus();
+		}
 	</script>
 </body>
 </html>
