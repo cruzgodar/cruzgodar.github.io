@@ -381,20 +381,6 @@
 	<script src="/scripts/banners-body.js"></script>
 
 	<script src="/scripts/navigation.js"></script>
-	
-	<script>
-		$(function()
-		{
-			var refresh_id = setInterval(function()
-			{
-				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
-				{
-					insert_footer("");
-					clearInterval(refresh_id);
-				}
-			}, 50);
-		});
-	</script>
 
 	<script>
 		function load_disqus()

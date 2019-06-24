@@ -123,17 +123,7 @@
 	<script src="/scripts/navigation.js"></script>
 	
 	<script>
-		$(function()
-		{
-			var refresh_id = setInterval(function()
-			{
-				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
-				{
-					insert_footer("writing");
-					clearInterval(refresh_id);
-				}
-			}, 50);
-		});
+		footer_exclusion = "writing";
 	</script>
 </body>
 </html>

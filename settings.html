@@ -230,59 +230,64 @@ body
 	<script src="/scripts/navigation.js"></script>
 	
 	<script>
-		//We only apply this now to prevent the dark theme from transitioning slowly on load rather than instantly.
-		$("html").css("-webkit-transition", "background-color .6s ease");
-		$("html").css("transition", "background-color .6s ease");
+		no_footer = true;
 		
-		setTimeout(function()
+		$(function()
 		{
-			$("head").append(`
-				<style>
-					.heading-text
-					{
-						-webkit-transition: color .6s ease;
-						transition: color .6s ease;
-					}
-					
-					.section-text, .body-text
-					{
-						-webkit-transition: color .3s ease;
-						transition: color .3s ease;
-					}
-				</style>
-			`);
-		}, 600);
-		
-		
-		
-		//Deal with Edge.
-		var refresh_id = setInterval(function()
-		{
-			if (typeof browser_name != "undefined")
+			//We only apply this now to prevent the dark theme from transitioning slowly on load rather than instantly.
+			$("html").css("-webkit-transition", "background-color .6s ease");
+			$("html").css("transition", "background-color .6s ease");
+			
+			setTimeout(function()
 			{
-				clearInterval(refresh_id);
-				
-				if (browser_name == "MS Edge")
+				$("head").append(`
+					<style>
+						.heading-text
+						{
+							-webkit-transition: color .6s ease;
+							transition: color .6s ease;
+						}
+						
+						.section-text, .body-text
+						{
+							-webkit-transition: color .3s ease;
+							transition: color .3s ease;
+						}
+					</style>
+				`);
+			}, 600);
+			
+			
+			
+			//Deal with Edge.
+			var refresh_id = setInterval(function()
+			{
+				if (typeof browser_name != "undefined")
 				{
-					$("#banner-style-button-row").remove();
+					clearInterval(refresh_id);
+					
+					if (browser_name == "MS Edge")
+					{
+						$("#banner-style-button-row").remove();
+					}
 				}
+			});
+			
+			
+			
+			//Figure out where to return to.
+			var return_url = get_url_var("return");
+			
+			if (return_url == null)
+			{
+				$("#apply-button").attr("onclick", "redirect('/index.html')");
+			}
+			
+			else
+			{
+				$("#apply-button").attr("onclick", "redirect('" + decodeURIComponent(return_url) + "')");
 			}
 		});
-		
-		
-		
-		//Figure out where to return to.
-		var return_url = get_url_var("return");
-		
-		if (return_url == null)
-		{
-			$("#apply-button").attr("onclick", "redirect('/index.html')");
-		}
-		
-		else
-		{
-			$("#apply-button").attr("onclick", "redirect('" + decodeURIComponent(return_url) + "')");
-		}
 	</script>
 </body>
 </html>

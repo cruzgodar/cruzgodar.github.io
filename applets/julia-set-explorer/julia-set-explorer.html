@@ -219,17 +219,6 @@
 		
 		$(function()
 		{
-			var refresh_id_1 = setInterval(function()
-			{
-				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
-				{
-					insert_footer("");
-					clearInterval(refresh_id_1);
-				}
-			}, 50);
-			
-			
-			
 			if (url_vars["contrast"] == 1)
 			{
 				if (url_vars["theme"] == 1)
@@ -246,11 +235,11 @@
 			
 			
 			//Only get the width of the Mandelbrot set has finished loading in order to get the correct value
-			var refresh_id_2 = setInterval(function()
+			var refresh_id_1 = setInterval(function()
 			{
 				if (supports_webp != null)
 				{
-					clearInterval(refresh_id_2);
+					clearInterval(refresh_id_1);
 					
 					small_canvas_size = $("#julia-set").width();
 					large_canvas_size = $("#high-res-julia-set").width();
@@ -260,11 +249,11 @@
 			
 			
 			//As the user scrolls around the image, make tiny Julia set previews.
-			var refresh_id_3 = setInterval(function()
+			var refresh_id_2 = setInterval(function()
 			{
 				if (typeof hasTouch != "undefined" && $.isFunction(hasTouch))
 				{
-					clearInterval(refresh_id_3);
+					clearInterval(refresh_id_2);
 					
 					if (!hasTouch())
 					{

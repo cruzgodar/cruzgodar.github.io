@@ -10,6 +10,10 @@ var manual_banner = false;
 //Whether the browser supports WebP images or not. Given a boolean value when decided.
 var supports_webp = null;
 
+var no_footer = false;
+var footer_exclusion = "";
+var footer_from_nonstandard_color = false;
+
 
 
 $(function()

@@ -769,15 +769,6 @@
 					}
 				}
 			}, 50);
-			
-			var refresh_id_2 = setInterval(function()
-			{
-				if (typeof insert_footer != "undefined" && $.isFunction(insert_footer))
-				{
-					insert_footer("");
-					clearInterval(refresh_id_2);
-				}
-			}, 50);
 		});
 	</script>
 
