@@ -2,30 +2,30 @@
 	"image-linear-algebra":
 	{
 		"webp": "graphics/linear-algebra.webp",
-		"non-webp": "graphics/linear-algebra.png"
+		"non-webp": "graphics/linear-algebra.jpg"
 	},
 	
 	"image-game-theory":
 	{
 		"webp": "graphics/game-theory.webp",
-		"non-webp": "graphics/game-theory.png"
+		"non-webp": "graphics/game-theory.jpg"
 	},
 	
 	"image-complex-analysis":
 	{
 		"webp": "graphics/complex-analysis.webp",
-		"non-webp": "graphics/complex-analysis.png"
+		"non-webp": "graphics/complex-analysis.jpg"
 	},
 	
 	"image-analysis":
 	{
 		"webp": "graphics/analysis.webp",
-		"non-webp": "graphics/analysis.png"
+		"non-webp": "graphics/analysis.jpg"
 	},
 	
 	"image-abstract-algebra":
 	{
 		"webp": "graphics/abstract-algebra.webp",
-		"non-webp": "graphics/abstract-algebra.png"
+		"non-webp": "graphics/abstract-algebra.jpg"
 	}
 }

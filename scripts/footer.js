@@ -39,7 +39,7 @@ $(function()
 			
 			else
 			{
-				extension = "png";
+				extension = "jpg";
 			}
 		
 			

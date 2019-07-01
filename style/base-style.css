@@ -188,6 +188,9 @@ a
 	width: 8vw;
 	height: 8vw;
 	display: inline-block;
+	
+	-webkit-border-radius: 10%;
+	border-radius: 10%;
 }
 
 .footer-image-link img
@@ -195,6 +198,9 @@ a
 	position: absolute;
 	width: 8vw;
 	height: 8vw;
+	
+	-webkit-border-radius: 10%;
+	border-radius: 10%;
 
 	-webkit-transition: -webkit-filter .15s ease-in-out;
 	transition: filter .15s ease-in-out;

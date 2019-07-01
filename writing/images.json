@@ -2,12 +2,12 @@
 	"image-corona":
 	{
 		"webp": "corona/cover.webp",
-		"non-webp": "corona/cover.png"
+		"non-webp": "corona/cover.jpg"
 	},
 	
 	"image-mist":
 	{
 		"webp": "mist/cover.webp",
-		"non-webp": "mist/cover.png"
+		"non-webp": "mist/cover.jpg"
 	}
 }

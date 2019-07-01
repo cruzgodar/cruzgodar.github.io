@@ -16,6 +16,9 @@
 {
 	width: 13.75vw;
 	height: 13.75vw;
+	
+	-webkit-border-radius: 10%;
+	border-radius: 10%;
 }
 
 .image-link img
@@ -23,6 +26,10 @@
 	position: absolute;
 	width: 13.75vw;
 	height: 13.75vw;
+	
+	-webkit-border-radius: 10%;
+	border-radius: 10%;
+	
 	-webkit-transition: -webkit-filter .15s ease-in-out;
 	transition: filter .15s ease-in-out;
 	
