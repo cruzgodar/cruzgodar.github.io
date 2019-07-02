@@ -41,6 +41,14 @@ $(function()
 	
 	
 	
+	//Disable the default behavior of <a> tags -- that's only there for accessibility.
+	$("body").on("click", "a", function(e)
+	{
+		e.preventDefault();
+	});
+	
+	
+	
 	//When in PWA form, disable text selection, drag-and-drop, and the PWA button itself.
 	if (window.matchMedia("(display-mode: standalone)").matches)
 	{

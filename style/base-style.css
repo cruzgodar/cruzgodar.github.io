@@ -29,11 +29,6 @@ a
 	text-decoration: none;
 }
 
-.link
-{
-	cursor: pointer;
-}
-
 
 
 .logo
@@ -97,12 +92,6 @@ a
 	font-size: 125%;
 	color: rgb(127, 127, 127);
 	text-align: justify;
-}
-
-.body-text .link
-{
-	color: rgb(127, 192, 127);
-	text-decoration: none;
 }
 
 
