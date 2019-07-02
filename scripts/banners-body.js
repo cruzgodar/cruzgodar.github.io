@@ -188,7 +188,7 @@ function add_scroll_button()
 		
 		$("#banner-cover").before(`
 			<div style="height: 100vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down">
-				<img class="scroll-button" src="/graphics/general-icons/` + chevron_name + `.png" alt="Scroll down" onclick="scroll_down()"></img>
+				<input type="image" class="scroll-button" src="/graphics/general-icons/` + chevron_name + `.png" alt="Scroll down" onclick="scroll_down()">
 			</div>
 		`);
 		

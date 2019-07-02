@@ -39,7 +39,7 @@
 	-webkit-filter: brightness(100%);
 	filter: brightness(100%);
 	
-	cursor: pointer;
+	outline: none;
 }
 
 .nav-button:hover

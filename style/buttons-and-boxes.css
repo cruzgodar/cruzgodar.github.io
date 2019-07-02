@@ -6,7 +6,7 @@
 {
 	color: rgb(127, 127, 127);
 	background-color: rgb(255, 255, 255);
-	height: 20px;
+	height: 44px;
 	width: auto;
 	display: inline-block;
 	margin: auto;
@@ -28,6 +28,7 @@
 	filter: brightness(100%);
 	
 	cursor: pointer;
+	outline: none;
 }
 
 .text-button:hover

@@ -183,7 +183,7 @@
 	<div style="height: 5vh"></div>
 	
 	<div style="display: flex; justify-content: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="1000" data-aos-anchor="#trigger-section-2">
-		<div class="text-button" onclick="draw_high_res_julia()">Generate</div>
+		<button class="text-button" type="button" onclick="draw_high_res_julia()">Generate</button>
 	</div>
 	
 	<div style="height: 10vh"></div>
@@ -466,10 +466,13 @@
 				{
 					$("#download-button").remove();
 					
+					var image_data = document.getElementById("high-res-julia-set").toDataURL();
+					var filename = c.format({precision: 6});
+					
 					$("#download-location").after(`
 						<div id="download-button" style="display: flex; justify-content: center; opacity: 0; width: 70vw; margin: 0 auto">
-							<a href=${document.getElementById("high-res-julia-set").toDataURL()} download="${c.format({precision: 6})}.png">
-								<div class="text-button">Download Image</div>
+							<a href="${image_data}" download="${filename}.png" class="real-link">
+								<button class="text-button" type="button" onclick="">Download Image</button>
 							</a>
 						</div>
 					`);

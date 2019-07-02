@@ -114,7 +114,7 @@ body
 
 	<div id="theme-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1000" data-aos-anchor="#trigger-section-1">
-			<img class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="url_var_functions['animated']['theme']()"></img>
+			<input type="image" class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="url_var_functions['animated']['theme']()">
 		</div>
 		
 		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1000" data-aos-anchor="#trigger-section-1">
@@ -126,7 +126,7 @@ body
 	
 	<div id="font-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1100" data-aos-anchor="#trigger-section-1">
-			<img class="footer-button" src="/graphics/button-icons/font.png" alt="Change Font" onclick="url_var_functions['animated']['font']()"></img>
+			<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Change Font" onclick="url_var_functions['animated']['font']()">
 		</div>
 		
 		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1100" data-aos-anchor="#trigger-section-1">
@@ -138,7 +138,7 @@ body
 	
 	<div id="contrast-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1200" data-aos-anchor="#trigger-section-1">
-			<img class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Text Contrast" onclick="url_var_functions['animated']['contrast']()"></img>
+			<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Text Contrast" onclick="url_var_functions['animated']['contrast']()">
 		</div>
 		
 		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1200" data-aos-anchor="#trigger-section-1">
@@ -150,7 +150,7 @@ body
 	
 	<div id="comments-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1300" data-aos-anchor="#trigger-section-1">
-			<img class="footer-button" src="/graphics/button-icons/comment.png" alt="Toggle Comments" onclick="url_var_functions['animated']['comments']()"></img>
+			<input type="image" class="footer-button" src="/graphics/button-icons/comment.png" alt="Toggle Comments" onclick="url_var_functions['animated']['comments']()">
 		</div>
 		
 		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1300" data-aos-anchor="#trigger-section-1">
@@ -162,7 +162,7 @@ body
 	
 	<div id="new-section-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1400" data-aos-anchor="#trigger-section-1">
-			<img class="footer-button" src="/graphics/button-icons/star.png" alt="Toggle New Section" onclick="url_var_functions['animated']['new_section']()"></img>
+			<input type="image" class="footer-button" src="/graphics/button-icons/star.png" alt="Toggle New Section" onclick="url_var_functions['animated']['no_new_section']()">
 		</div>
 		
 		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1400" data-aos-anchor="#trigger-section-1">
@@ -174,7 +174,7 @@ body
 	
 	<div id="content-animation-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1500" data-aos-anchor="#trigger-section-1">
-			<img class="footer-button" src="/graphics/button-icons/pop.png" alt="Toggle Content Animation" onclick="url_var_functions['animated']['content_animation']()"></img>
+			<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Toggle Content Animation" onclick="url_var_functions['animated']['content_animation']()">
 		</div>
 		
 		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1500" data-aos-anchor="#trigger-section-1">
@@ -186,7 +186,7 @@ body
 	
 	<div id="link-animation-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1600" data-aos-anchor="#trigger-section-1">
-			<img class="footer-button" src="/graphics/button-icons/link.png" alt="Toggle Link Animation" onclick="url_var_functions['animated']['link_animation']()"></img>
+			<input type="image" class="footer-button" src="/graphics/button-icons/link.png" alt="Toggle Link Animation" onclick="url_var_functions['animated']['link_animation']()">
 		</div>
 		
 		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1600" data-aos-anchor="#trigger-section-1">
@@ -198,7 +198,7 @@ body
 	
 	<div id="banner-style-button-row" class="button-row">
 		<div data-aos="zoom-out" data-aos-delay="1700" data-aos-anchor="#trigger-section-1">
-			<img class="footer-button" src="/graphics/button-icons/picture.png" alt="Toggle Banner Style" onclick="url_var_functions['animated']['banner_style']()"></img>
+			<input type="image" class="footer-button" src="/graphics/button-icons/picture.png" alt="Toggle Banner Style" onclick="url_var_functions['animated']['banner_style']()">
 		</div>
 		
 		<div style="margin: auto" data-aos="fade-left" data-aos-delay="1700" data-aos-anchor="#trigger-section-1">
@@ -210,7 +210,9 @@ body
 	
 	
 	<div style="display: flex; justify-content: center; align-items: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="2700" data-aos-anchor="#trigger-section-1">
-		<div id="apply-button" class="text-button" onclick="">Apply</div>
+		<a href="">
+			<button id="apply-button" class="text-button" type="button" onclick="">Apply</button>
+		</a>
 	</div>
 	
 	<div style="height: 15vh"></div>
@@ -281,11 +283,13 @@ body
 			if (return_url == null)
 			{
 				$("#apply-button").attr("onclick", "redirect('/index.html')");
+				$("#apply-button").parent().attr("href", "/index.html");
 			}
 			
 			else
 			{
 				$("#apply-button").attr("onclick", "redirect('" + decodeURIComponent(return_url) + "')");
+				$("#apply-button").parent().attr("href", decodeURIComponent(return_url));
 			}
 		});
 	</script>

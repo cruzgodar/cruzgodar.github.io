@@ -31,6 +31,35 @@ if (!(window.location.href.includes("offline")))
 
 
 
+//To keep expected functionality (open in new tab, draggable links, etc.), all elements with calls to redirect() are wrapped in <a> tags. Presses of <a> tags (without .real-link) are ignored, but to extend the functionality of url variables to the times they are used, we need to target them all and add the url variables onto them.
+$(function()
+{
+	var href;
+	var include_return_url;
+	
+	$("a").each(function(index)
+	{
+		href = $(this).attr("href");
+		
+		if (href.slice(0, 5) != "https" && href.slice(0, 4) != "data")
+		{
+			if (href == "/settings.html")
+			{
+				include_return_url = true;
+			}
+			
+			else
+			{
+				include_return_url = false;
+			}
+			
+			$(this).attr("href", href + concat_url_vars(include_return_url));
+		}
+	});
+});
+
+
+
 //Handles virtually all links.
 function redirect(url, in_new_tab, from_nonstandard_color)
 {
