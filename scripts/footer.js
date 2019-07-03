@@ -76,7 +76,7 @@ $(function()
 			{
 				$(".footer-image-links").append(`
 					<div id="writing-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-						<a href="/writing/writing.html">
+						<a href="/writing/writing.html${concat_url_vars(false)}">
 							<img onclick="redirect(\'/writing/writing.html\', 0${fnc_arg})" src="/writing/cover.${extension}" alt="Writing"></img>
 						</a>
 					</div>
@@ -89,7 +89,7 @@ $(function()
 			{
 				$(".footer-image-links").append(`
 					<div id="blog-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-						<a href="/blog/blog.html">
+						<a href="/blog/blog.html${concat_url_vars(false)}">
 							<img onclick="redirect(\'/blog/blog.html\', 0${fnc_arg})" src="/blog/cover.${extension}" alt="Blog"></img>
 						</a>
 					</div>
@@ -102,7 +102,7 @@ $(function()
 			{
 				$(".footer-image-links").append(`
 					<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-						<a href="/applets/applets.html">
+						<a href="/applets/applets.html${concat_url_vars(false)}">
 							<img onclick="redirect(\'/applets/applets.html\', 0${fnc_arg})" src="/applets/cover.${extension}" alt="Applets"></img>
 						</a>
 					</div>
@@ -115,7 +115,7 @@ $(function()
 			{
 				$(".footer-image-links").append(`
 					<div id="research-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-						<a href="/research/research.html">
+						<a href="/research/research.html${concat_url_vars(false)}">
 							<img onclick="redirect(\'/research/research.html\', 0${fnc_arg})" src="/research/cover.${extension}" alt="Research"></img>
 						</a>
 					</div>
@@ -128,7 +128,7 @@ $(function()
 			{
 				$(".footer-image-links").append(`
 					<div id="notes-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-						<a href="/notes/notes.html">
+						<a href="/notes/notes.html${concat_url_vars(false)}">
 							<img onclick="redirect(\'/notes/notes.html\', 0${fnc_arg})" src="/notes/cover.${extension}" alt="Notes"></img>
 						</a>
 					</div>
@@ -141,7 +141,7 @@ $(function()
 			{
 				$(".footer-image-links").append(`
 					<div id="bio-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-						<a href="/bio/bio.html">
+						<a href="/bio/bio.html${concat_url_vars(false)}">
 							<img onclick="redirect(\'/bio/bio.html\', 0${fnc_arg})" src="/bio/cover.${extension}" alt="Me"></img>
 						</a>
 					</div>
@@ -161,13 +161,13 @@ $(function()
 				
 				<div class="footer-button-container">
 					<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false">
-						<a href="/settings.html">
+						<a href="/settings.html${concat_url_vars(false)}">
 							<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect('/settings.html', 0${fnc_arg})">
 						</a>
 					</div>
 					
 					<div data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false">
-						<a href="/pwa.html">
+						<a href="/pwa.html${concat_url_vars(false)}">
 							<input type="image" id="pwa-button" class="footer-button" style="margin-left: 0px;" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa.html', 0${fnc_arg})">
 						</a>
 					</div>
