@@ -29,6 +29,22 @@ a
 	text-decoration: none;
 }
 
+p, h1, h2
+{
+	margin: 0;
+	padding: 0;
+}
+
+q
+{
+	font-style: italic;
+}
+
+q:before, q:after
+{
+	content: "";
+}
+
 
 
 .logo
@@ -64,6 +80,7 @@ a
 	position: relative;
 	width: 70vw;
 	margin: 0 auto;
+	font-weight: normal;
 }
 
 .heading-text

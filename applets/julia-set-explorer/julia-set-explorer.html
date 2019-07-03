@@ -117,7 +117,7 @@
 	<div style="height: 5vh"></div>
 	
 	<noscript>
-		<div class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</div>
+		<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
 	</noscript>
 
 	<div class="logo" data-aos="fade-in" id="trigger-section-1">
@@ -129,13 +129,13 @@
 	<div style="height: 2vh"></div>
 
 	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">
-		<div class="heading-text">Julia Set Explorer</div>
+		<h1 class="heading-text">Julia Set Explorer</h1>
 	</div>
 	
 	<div style="height: 5vh"></div>
 	
 	<div data-aos="fade-up" data-aos-delay="200">
-		<div id="instructions" class="body-text">Hover over the Mandelbrot set to preview the corresponding Julia set. Click to generate a higher-resolution preview. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.</div>
+		<p id="instructions" class="body-text">Hover over the Mandelbrot set to preview the corresponding Julia set. Click to generate a higher-resolution preview. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.</p>
 	</div>
 	
 	<div style="height: 10vh"></div>
@@ -152,13 +152,13 @@
 	
 	
 	<div data-aos="fade-up" id="trigger-section-2">
-		<div class="section-text">Higher Resolution</div>
+		<h2 class="section-text">Higher Resolution</h2>
 	</div>
 	
 	<div style="height: 5vh"></div>
 	
 	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-2">
-		<div class="body-text">Enter values of \(a\) and \(b\), along with an image size in pixels, to generate a image of the Julia set for \(c = a + bi\). The values are filed in automatically when a high-resolution preview is created above, but custom values can be used. Image sizes larger than 2000 are not recommended.</div>
+		<p class="body-text">Enter values of \(a\) and \(b\), along with an image size in pixels, to generate a image of the Julia set for \(c = a + bi\). The values are filed in automatically when a high-resolution preview is created above, but custom values can be used. Image sizes larger than 2000 are not recommended.</p>
 	</div>
 	
 	<div style="height: 5vh"></div>
@@ -166,17 +166,23 @@
 	<div style="width: 70vw; margin: 0 auto; display: flex; justify-content: space-between">
 		<div style="width: 20vw" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
 			<input id="a-input" class="text-box" type="number" style="width: 100%">
-			<div class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(a\)</div>
+			<label for="a-input">
+				<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(a\)</p>
+			</label>
 		</div>
 		
 		<div style="width: 20vw" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-2">
 			<input id="b-input" class="text-box" type="number" style="width: 100%">
-			<div class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(b\)</div>
+			<label for="b-input">
+				<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(b\)</p>
+			</label>
 		</div>
 		
 		<div style="width: 20vw" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-2">
 			<input id="dim-input" class="text-box" type="number" style="width: 100%">
-			<div class="body-text" style="width: 100%; margin-left: 0px; text-align: center">Image Size</div>
+			<label for="dim-input">
+				<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">Image Size</p>
+			</label>
 		</div>
 	</div>	
 	
