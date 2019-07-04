@@ -33,6 +33,10 @@ p, h1, h2
 {
 	margin: 0;
 	padding: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	
+	font-weight: normal;
 }
 
 q
@@ -80,7 +84,6 @@ q:before, q:after
 	position: relative;
 	width: 70vw;
 	margin: 0 auto;
-	font-weight: normal;
 }
 
 .heading-text
