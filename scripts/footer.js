@@ -53,7 +53,7 @@ $(function()
 						</div>
 					<div style="height: 4vw"></div>
 					
-					<div class="footer-image-links" style="width: 68vw"></div>
+					<nav class="footer-image-links" style="width: 68vw"></nav>
 				`);
 			}
 			

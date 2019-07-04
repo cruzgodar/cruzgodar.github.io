@@ -119,341 +119,363 @@
 		
 		
 		<main>
-			<div data-aos="fade-up" id="trigger-section-2">
-				<h2 class="section-text">Growing Organically</h2>
-			</div>
+			<section>
+				<div data-aos="fade-up" id="trigger-section-2">
+					<h2 class="section-text">Growing Organically</h2>
+				</div>
 
-			<br>
+				<br>
+				
+				<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-2">
+					<p class="body-text">My birthday was last week. I&#x2019;m 18, an adult in some sense, and I&#x2019;m staying in Freiburg to celebrate with friends, rather than taking off early to another city like I have the past three weeks. So, rather than a regular post, here&#x2019;s one I’ve been wanting to make for a while &mdash; an introduction to fractals.</p>
+				</div>
+
+				<br>
+
+				<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
+					<p class="body-text">I&#x2019;ve been tinkering with fractals for years now. It&#x2019;s not hard to get started &mdash; and, really, this is why they&#x2019;re so great. For such complex objects, it&#x2019;s remarkably easy to understand how they&#x2019;re made. It&#x2019;s rare that a science as abstract as math produces any kind of art, and for it to be relatively down-to-earth &mdash; well, that&#x2019;s remarkable.</p>
+				</div>
+			</section>
 			
-			<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-2">
-				<p class="body-text">My birthday was last week. I&#x2019;m 18, an adult in some sense, and I&#x2019;m staying in Freiburg to celebrate with friends, rather than taking off early to another city like I have the past three weeks. So, rather than a regular post, here&#x2019;s one I’ve been wanting to make for a while &mdash; an introduction to fractals.</p>
-			</div>
-
-			<br>
-
-			<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
-				<p class="body-text">I&#x2019;ve been tinkering with fractals for years now. It&#x2019;s not hard to get started &mdash; and, really, this is why they&#x2019;re so great. For such complex objects, it&#x2019;s remarkably easy to understand how they&#x2019;re made. It&#x2019;s rare that a science as abstract as math produces any kind of art, and for it to be relatively down-to-earth &mdash; well, that&#x2019;s remarkable.</p>
-			</div>
-
-			<div style="height: 15vh"></div>
-
-
-
-			<div data-aos="fade-up" id="trigger-section-3">
-				<h2 class="section-text">Back to Basics</h2>
-			</div>
-
-			<br>
-
-			<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-3">
-				<p class="body-text">Let&#x2019;s start with the basics. You&#x2019;ll need a very basic understanding of complex numbers, and not much else &mdash; the introduction that usually comes in high school algebra is enough. If you&#x2019;re comfortable with \(\sqrt{-1} = i\) and \(|a + bi| = a^2 + b^2\), you&#x2019;re good.</p>
-			</div>
-
-			<br>
-
-			<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-3">
-				<p class="body-text">First, Julia sets. Fix a complex number \(c\) &mdash; let’s start with \(c = 0\) to keep things simple at first &mdash; and let \(f(z) = z^2 + c\) be a function defined on the complex numbers. It&#x2019;s just like the function \(f(x) = x^2 + c\), except we can plug in complex numbers instead of just real ones. We typically denote this by writing the independent variable as \(z\) rather than \(x\). In our example, with \(c = 0\), \(f(z) = z^2\). Now, pick a \(z\) in the complex numbers and repeatedly run it through \(f\) to get the sequence \((z, f(z), f(f(z)), ...)\). If this sequence always stays bounded in magnitude (formally, there is a real number \(M\) such that every term of the seuqence has magnitude less than or equal to \(M\)), then we say that that \(z\) we chose is in the <b>Julia set corresponding to \(\mathbf{c}\)</b>, and to denote this, we color the point at \(z\) in the complex plane black. Otherwise, the sequence must have rocketed off to infinity, and we find out how fast it did. The slower the magnitudes grew, the closer they were to actually staying bounded. We reflect that by marking the point at \(z\) with something colorful &mdash; the slower the growth of the sequence, the brighter. In this way, the Julia set glows, because for the most part, numbers close to those with actually bounded sequences will come very close to staying bounded themselves.</p>
-			</div>
-
-			<br>
-
-			<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-3">
-				<p class="body-text">So, what does this look like? Well, if we stick with our example of \(c = 0\), then \(f(z) = z^2\), and clearly (maybe), that will make a bounded sequence whenever \(|z| \leq 1\) &mdash; when \(z\) is inside the unit circle. If that&#x2019;s not clear, try to convince yourself that \(|z^2| = |z|^2|\) for all complex \(z\). So the Julia set is a solid circle of radius \(1\), with glowing edges.</p>
-			</div>
-
-			<div style="height: 5vw"></div>
-
-			<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-3">
-				<a href="https://drive.google.com/uc?export=download&id=1sisTSPHQNmwFQ9nj0J0-cV8iQFQXUoKV">
-					<img id="image-julia-0" class="big-image-vertical check-webp" src="" alt="The Julia Set for c = 0" onclick="redirect('https://drive.google.com/uc?export=download&id=1sisTSPHQNmwFQ9nj0J0-cV8iQFQXUoKV', 1)"></img>
-				</a>
-			</div>
-
-			<div style="height: 5vw"></div>
-
-			<div data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-3">
-				<p class="body-text">Here, let&#x2019;s do a couple examples with concrete numbers. Note that we&#x2019;re not changing \(c\) here, just picking different values of \(z\) with \(c\) always equal to \(0\). \(z = .5i\) gives the sequence \((.5i, -.25, .125, ...)\), which is clearly bounded, so \(.5i\) is in the Julia set. Therefore, we color it black. If we look at \(-2i\), though, we get \((-2i, -4, 8, ...)\), which is clearly <i>not</i> bounded. Since it grows relatively quickly, we give it a very dark color.</p>
-			</div>
-
-			<br>
-
-			<div data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-section-3">
-				<p class="body-text">On the other hand, \(z = 1.01\) is interesting. It produces the sequence \((1.01, 1.0201, 1.04060401)\), which is more than just an interesting occurrence of Pascal’s triangle &mdash; it&#x2019;s a sequence that’s increasing very, very slowly, but still fast enough to be unbounded. Because of that, \(1.01\) is not in the Julia set, but it <i>almost</i> is, and so we mark it with a very bright color &mdash; in this case, red.</p>
-			</div>
-
-			<div style="height: 15vh"></div>
-
-
-
-			<div data-aos="fade-up" id="trigger-section-4">
-				<h2 class="section-text">Leaving the Island</h2>
-			</div>
-
-			<br>
-
-			<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-4">
-				<p class="body-text">That&#x2019;s all well and good, but what about the banner picture? A glowing circle isn&#x2019;t hard to make, and it isn&#x2019;t exactly the pinnacle of beauty. This Julia set, as it turns out, is actually one of the very few that is <i>not</i> a fractal. Let&#x2019;s turn our attention to those that are.</p>
-			</div>
-
-			<div style="height: 5vw"></div>
-
-			<div class="image-row">
-				<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-4">
-					<a href="https://drive.google.com/uc?export=download&id=1skyxNu4Ujtir2OKznR6Bhzy_87_H8dxy">
-						<img id="image-julia-.279" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = .279" onclick="redirect('https://drive.google.com/uc?export=download&id=1skyxNu4Ujtir2OKznR6Bhzy_87_H8dxy', 1)"></img>
-					</a>
-				</div>
-				
-				<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-4">
-					<a href="https://drive.google.com/uc?export=download&id=1yOmsYD6NvVjLW5I6QEn5UaZgFvQh2LGH">
-						<img id="image-julia--1.5+.1i" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = -1.5 + .1i" onclick="redirect('https://drive.google.com/uc?export=download&id=1yOmsYD6NvVjLW5I6QEn5UaZgFvQh2LGH', 1)"></img>
-					</a>
-				</div>
-			</div>
-
-			<div style="height: 5vw"></div>
 			
-			<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-4">
-				<a href="https://drive.google.com/uc?export=download&id=1wpuGcLSHhx-ETAScZK41yIj-0EhdLojs">
-					<img id="image-julia-i" class="big-image-vertical check-webp" src="" alt="The Julia Set for c = i" onclick="redirect('https://drive.google.com/uc?export=download&id=1wpuGcLSHhx-ETAScZK41yIj-0EhdLojs', 1)"></img>
-				</a>
-			</div>
-
-			<div style="height: 5vw"></div>
-
-			<div class="image-row">
-				<div data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-4">
-					<a href="https://drive.google.com/uc?export=download&id=1dz6kVPV2z0eHLvpxEqu2wVA7ffPEGcIg">
-						<img id="image-julia--.7625-.068125i" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = -.7625 - .068125i" onclick="redirect('https://drive.google.com/uc?export=download&id=1dz6kVPV2z0eHLvpxEqu2wVA7ffPEGcIg', 1)"></img>
-					</a>
-				</div>
-				
-				<div data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-section-4">
-					<a href="https://drive.google.com/uc?export=download&id=1a-i60bAZbcFX7qWOVC08VVMDGV-hpJw8">
-						<img id="image-julia--.835-.2321i" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = -.835 - .2321i" onclick="redirect('https://drive.google.com/uc?export=download&id=1a-i60bAZbcFX7qWOVC08VVMDGV-hpJw8', 1)"></img>
-					</a>
-				</div>
-			</div>
-
-			<div style="height: 5vw"></div>
-
-			<div data-aos="fade-up" data-aos-delay="700" data-aos-anchor="#trigger-section-4">
-				<p class="body-text">And here they are. Julia sets are fantastically intricate, varied, beautiful patterns. It seems to me like every one fits right in to a different obscure world culture. If you open the full-res images (click or tap), the \(c\)-value used to generate the Julia set is the filename, so you can make them yourself with an application. (Writing your own Julia set generator, by the way, is a great exercise for beginning programmers!)</p>
-			</div>
 
 			<div style="height: 15vh"></div>
 
 
+			
+			<section>
+				<div data-aos="fade-up" id="trigger-section-3">
+					<h2 class="section-text">Back to Basics</h2>
+				</div>
 
-			<div data-aos="fade-up" id="trigger-section-5">
-				<h2 class="section-text">Another Beast</h2>
-			</div>
+				<br>
 
-			<br>
+				<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-3">
+					<p class="body-text">Let&#x2019;s start with the basics. You&#x2019;ll need a very basic understanding of complex numbers, and not much else &mdash; the introduction that usually comes in high school algebra is enough. If you&#x2019;re comfortable with \(\sqrt{-1} = i\) and \(|a + bi| = a^2 + b^2\), you&#x2019;re good.</p>
+				</div>
 
-			<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-5">
-				<a href="https://drive.google.com/uc?export=download&id=19mcwfQU3aw1TiKvWfatnEMwZa14I6dsZ">
-					<img id="image-mandelbrot" class="big-image-vertical check-webp" src="" alt="The Mandelbrot Set" onclick="redirect('https://drive.google.com/uc?export=download&id=19mcwfQU3aw1TiKvWfatnEMwZa14I6dsZ', 1)"></img>
-				</a>
-			</div>
+				<br>
 
-			<div style="height: 5vw"></div>
+				<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-3">
+					<p class="body-text">First, Julia sets. Fix a complex number \(c\) &mdash; let’s start with \(c = 0\) to keep things simple at first &mdash; and let \(f(z) = z^2 + c\) be a function defined on the complex numbers. It&#x2019;s just like the function \(f(x) = x^2 + c\), except we can plug in complex numbers instead of just real ones. We typically denote this by writing the independent variable as \(z\) rather than \(x\). In our example, with \(c = 0\), \(f(z) = z^2\). Now, pick a \(z\) in the complex numbers and repeatedly run it through \(f\) to get the sequence \((z, f(z), f(f(z)), ...)\). If this sequence always stays bounded in magnitude (formally, there is a real number \(M\) such that every term of the seuqence has magnitude less than or equal to \(M\)), then we say that that \(z\) we chose is in the <b>Julia set corresponding to \(\mathbf{c}\)</b>, and to denote this, we color the point at \(z\) in the complex plane black. Otherwise, the sequence must have rocketed off to infinity, and we find out how fast it did. The slower the magnitudes grew, the closer they were to actually staying bounded. We reflect that by marking the point at \(z\) with something colorful &mdash; the slower the growth of the sequence, the brighter. In this way, the Julia set glows, because for the most part, numbers close to those with actually bounded sequences will come very close to staying bounded themselves.</p>
+				</div>
 
-			<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-5">
-				<p class="body-text">This is the Mandelbrot set. It&#x2019;s perhaps the most famous fractal, but its construction is far too often hidden away like some great secret. In reality, it&#x2019;s no more complicated than a Julia set.</p>
-			</div>
+				<br>
 
-			<br>
+				<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-3">
+					<p class="body-text">So, what does this look like? Well, if we stick with our example of \(c = 0\), then \(f(z) = z^2\), and clearly (maybe), that will make a bounded sequence whenever \(|z| \leq 1\) &mdash; when \(z\) is inside the unit circle. If that&#x2019;s not clear, try to convince yourself that \(|z^2| = |z|^2|\) for all complex \(z\). So the Julia set is a solid circle of radius \(1\), with glowing edges.</p>
+				</div>
 
-			<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-5">
-				<p class="body-text">Start by taking any complex number \(z\). Just like for a Julia set, we&#x2019;re going to run \(z\) through \(f(z) = z^2 + c\), but this time, rather than picking \(c\) ahead of time, we let \(c = z\), and keep it that way for the entire sequence. I haven&#x2019;t seen a good explanation for this process, and the previous sentence is anything but, so here&#x2019;s an example. With \(z = i\), we let \(c = z = i\), and so our function becomes \(f(z) = z^2 + i\). Now we can run \(z\) through repeatedly: \((i, i^2 + i = -1 + i, (-1 + i)^2 + i = -i, ...)\). If you write more terms, you&#x2019;ll see this sequence repeats, so it stays bounded, and therefore \(i\) is in the Mandelbrot set.</p>
-			</div>
+				<div style="height: 5vw"></div>
 
-			<br>
-
-			<div data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-5">
-				<p class="body-text">Our end result is beautifully complex. The most interesting parts aren&#x2019;t even in the set itself, but the halo around it &mdash; what&#x2019;s just shy of being inside.</p>
-			</div>
-
-			<br>
-
-			<div data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-section-5">
-				<p class="body-text">Now comes my favorite part. Think about the processes by which the Mandelbrot set and Julia sets are generated &mdash; in particular, where they overlap. Seriously, go back and try to see what at value of \(z\) the two formulas agree. It’s exactly at \(c\), right? And what about right around \(c\)? Well, we might expect that the two sets are similar, even if not identical. (Actually, we have no reason to expect this, given the fractal nature of the sets, but it turns out to be true nonetheless!) So, if we zoom into the Mandelbrot set at a point \(c\), the Julia set corresponding to \(c\) is very similar. I like to think of each Julia set as being a distillation of the Mandelbrot&#x2019;s complexity into a single pattern. And since this probably sounds like gibberish, here are some pretty pictures to explain what I mean.</p>
-			</div>
-
-			<div style="height: 5vw"></div>
-
-			<div class="image-row">
-				<div data-aos="fade-up" data-aos-delay="700" data-aos-anchor="#trigger-section-5">
-					<a href="https://drive.google.com/uc?export=download&id=1skyxNu4Ujtir2OKznR6Bhzy_87_H8dxy">
-						<img id="image-julia-.279_2" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = .279" onclick="redirect('https://drive.google.com/uc?export=download&id=1skyxNu4Ujtir2OKznR6Bhzy_87_H8dxy', 1)"></img>
+				<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-3">
+					<a href="https://drive.google.com/uc?export=download&id=1sisTSPHQNmwFQ9nj0J0-cV8iQFQXUoKV">
+						<img id="image-julia-0" class="big-image-vertical check-webp" src="" alt="The Julia Set for c = 0" onclick="redirect('https://drive.google.com/uc?export=download&id=1sisTSPHQNmwFQ9nj0J0-cV8iQFQXUoKV', 1)"></img>
 					</a>
 				</div>
+
+				<div style="height: 5vw"></div>
+
+				<div data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-3">
+					<p class="body-text">Here, let&#x2019;s do a couple examples with concrete numbers. Note that we&#x2019;re not changing \(c\) here, just picking different values of \(z\) with \(c\) always equal to \(0\). \(z = .5i\) gives the sequence \((.5i, -.25, .125, ...)\), which is clearly bounded, so \(.5i\) is in the Julia set. Therefore, we color it black. If we look at \(-2i\), though, we get \((-2i, -4, 8, ...)\), which is clearly <i>not</i> bounded. Since it grows relatively quickly, we give it a very dark color.</p>
+				</div>
+
+				<br>
+
+				<div data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-section-3">
+					<p class="body-text">On the other hand, \(z = 1.01\) is interesting. It produces the sequence \((1.01, 1.0201, 1.04060401)\), which is more than just an interesting occurrence of Pascal’s triangle &mdash; it&#x2019;s a sequence that’s increasing very, very slowly, but still fast enough to be unbounded. Because of that, \(1.01\) is not in the Julia set, but it <i>almost</i> is, and so we mark it with a very bright color &mdash; in this case, red.</p>
+				</div>
+			</section>
+			
+			
+
+			<div style="height: 15vh"></div>
+
+
+			
+			<section>
+				<div data-aos="fade-up" id="trigger-section-4">
+					<h2 class="section-text">Leaving the Island</h2>
+				</div>
+
+				<br>
+
+				<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-4">
+					<p class="body-text">That&#x2019;s all well and good, but what about the banner picture? A glowing circle isn&#x2019;t hard to make, and it isn&#x2019;t exactly the pinnacle of beauty. This Julia set, as it turns out, is actually one of the very few that is <i>not</i> a fractal. Let&#x2019;s turn our attention to those that are.</p>
+				</div>
+
+				<div style="height: 5vw"></div>
+
+				<div class="image-row">
+					<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-4">
+						<a href="https://drive.google.com/uc?export=download&id=1skyxNu4Ujtir2OKznR6Bhzy_87_H8dxy">
+							<img id="image-julia-.279" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = .279" onclick="redirect('https://drive.google.com/uc?export=download&id=1skyxNu4Ujtir2OKznR6Bhzy_87_H8dxy', 1)"></img>
+						</a>
+					</div>
+					
+					<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-4">
+						<a href="https://drive.google.com/uc?export=download&id=1yOmsYD6NvVjLW5I6QEn5UaZgFvQh2LGH">
+							<img id="image-julia--1.5+.1i" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = -1.5 + .1i" onclick="redirect('https://drive.google.com/uc?export=download&id=1yOmsYD6NvVjLW5I6QEn5UaZgFvQh2LGH', 1)"></img>
+						</a>
+					</div>
+				</div>
+
+				<div style="height: 5vw"></div>
 				
-				<div data-aos="fade-up" data-aos-delay="800" data-aos-anchor="#trigger-section-5">
-					<a href="https://drive.google.com/uc?export=download&id=1oKTMEl9cRtBdmYyIwup2_q2F2RyjqBKP">
-						<img id="image-mandelbrot-.279" class="small-image-horizontal check-webp" src="" alt="The Mandelbrot Set at .279" onclick="redirect('https://drive.google.com/uc?export=download&id=1oKTMEl9cRtBdmYyIwup2_q2F2RyjqBKP', 1)"></img>
-					</a>
-				</div>
-			</div>
-
-			<div style="height: 5vw"></div>
-
-			<div class="image-row">
-				<div data-aos="fade-up" data-aos-delay="900" data-aos-anchor="#trigger-section-5">
-					<a href="https://drive.google.com/uc?export=download&id=1dz6kVPV2z0eHLvpxEqu2wVA7ffPEGcIg">
-						<img id="image-julia--.7625-.068125i_2" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = -.7625 - .068125i" onclick="redirect('https://drive.google.com/uc?export=download&id=1dz6kVPV2z0eHLvpxEqu2wVA7ffPEGcIg', 1)"></img>
-					</a>
-				</div>
-				
-				<div data-aos="fade-up" data-aos-delay="1000" data-aos-anchor="#trigger-section-5">
-					<a href="https://drive.google.com/uc?export=download&id=1SF9c3K5CYOLRWRe_Rbxo_7kTSENp-tYR">
-						<img id="image-mandelbrot--.7625-.068125i" class="small-image-horizontal check-webp" src="" alt="The Mandelbrot Set at -.7625 - .068125i" onclick="redirect('https://drive.google.com/uc?export=download&id=1SF9c3K5CYOLRWRe_Rbxo_7kTSENp-tYR', 1)"></img>
-					</a>
-				</div>
-			</div>
-
-			<div style="height: 5vw"></div>
-
-			<div class="image-row">
-				<div data-aos="fade-up" data-aos-delay="1100" data-aos-anchor="#trigger-section-5">
-					<a href="https://drive.google.com/uc?export=download&id=1wq9kzs2X0bagOOKtm3ymnUFvk9wf2j-i">
-						<img id="image-julia--.171875-.653125i" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = -.171875 - .653125i" onclick="redirect('https://drive.google.com/uc?export=download&id=1wq9kzs2X0bagOOKtm3ymnUFvk9wf2j-i', 1)"></img>
-					</a>
-				</div>
-				
-				<div data-aos="fade-up" data-aos-delay="1200" data-aos-anchor="#trigger-section-5">
-					<a href="https://drive.google.com/uc?export=download&id=11r-_vldjCQ3vmEMbW_l1kmXrdrRaO1yb">
-						<img id="image-mandelbrot--.171875-.653125i" class="small-image-horizontal check-webp" src="" alt="The Mandelbrot Set at -.171875 - .653125i" onclick="redirect('https://drive.google.com/uc?export=download&id=11r-_vldjCQ3vmEMbW_l1kmXrdrRaO1yb', 1)"></img>
-					</a>
-				</div>
-			</div>
-
-			<div style="height: 5vw"></div>
-
-			<div class="image-row">
-				<div data-aos="fade-up" data-aos-delay="1300" data-aos-anchor="#trigger-section-5">
-					<a href="https://drive.google.com/uc?export=download&id=1DdmBCBZla0QYBfU74K2bMS-guh5Eu40o">
-						<img id="image-julia-.28+.008i" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = .28 + .008i" onclick="redirect('https://drive.google.com/uc?export=download&id=1DdmBCBZla0QYBfU74K2bMS-guh5Eu40o', 1)"></img>
-					</a>
-				</div>
-				
-				<div data-aos="fade-up" data-aos-delay="1200" data-aos-anchor="#trigger-section-5">
-					<a href="https://drive.google.com/uc?export=download&id=1gJpsvxUq4OSgHMWZT0w-7gPgv_NtNJFV">
-						<img id="image-mandelbrot-.28+.008i" class="small-image-horizontal check-webp" src="" alt="The Mandelbrot Set at .28 + .008i" onclick="redirect('https://drive.google.com/uc?export=download&id=1gJpsvxUq4OSgHMWZT0w-7gPgv_NtNJFV', 1)"></img>
-					</a>
-				</div>
-			</div>
-
-			<div style="height: 5vw"></div>
-
-			<div class="image-row">
-				<div data-aos="fade-up" data-aos-delay="1500" data-aos-anchor="#trigger-section-5">
+				<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-4">
 					<a href="https://drive.google.com/uc?export=download&id=1wpuGcLSHhx-ETAScZK41yIj-0EhdLojs">
-						<img id="image-julia-i_2" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = i" onclick="redirect('https://drive.google.com/uc?export=download&id=1wpuGcLSHhx-ETAScZK41yIj-0EhdLojs', 1)"></img>
+						<img id="image-julia-i" class="big-image-vertical check-webp" src="" alt="The Julia Set for c = i" onclick="redirect('https://drive.google.com/uc?export=download&id=1wpuGcLSHhx-ETAScZK41yIj-0EhdLojs', 1)"></img>
 					</a>
 				</div>
-				
-				<div data-aos="fade-up" data-aos-delay="1600" data-aos-anchor="#trigger-section-5">
-					<a href="https://drive.google.com/uc?export=download&id=1H0gOLI9Py2eGLbZ2Aif7w_v1j3q1tAVC">
-						<img id="image-mandelbrot-i" class="small-image-horizontal check-webp" src="" alt="The Mandelbrot Set at i" onclick="redirect('https://drive.google.com/uc?export=download&id=1H0gOLI9Py2eGLbZ2Aif7w_v1j3q1tAVC', 1)"></img>
-					</a>
-				</div>
-			</div>
 
-			<div style="height: 5vw"></div>
+				<div style="height: 5vw"></div>
 
-			<div class="image-row">
-				<div data-aos="fade-up" data-aos-delay="1700" data-aos-anchor="#trigger-section-5">
-					<a href="https://drive.google.com/uc?export=download&id=1a-i60bAZbcFX7qWOVC08VVMDGV-hpJw8">
-						<img id="image-julia--.835-.2321i_2" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = -.835 - .2321i" onclick="redirect('https://drive.google.com/uc?export=download&id=1a-i60bAZbcFX7qWOVC08VVMDGV-hpJw8', 1)"></img>
-					</a>
+				<div class="image-row">
+					<div data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-4">
+						<a href="https://drive.google.com/uc?export=download&id=1dz6kVPV2z0eHLvpxEqu2wVA7ffPEGcIg">
+							<img id="image-julia--.7625-.068125i" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = -.7625 - .068125i" onclick="redirect('https://drive.google.com/uc?export=download&id=1dz6kVPV2z0eHLvpxEqu2wVA7ffPEGcIg', 1)"></img>
+						</a>
+					</div>
+					
+					<div data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-section-4">
+						<a href="https://drive.google.com/uc?export=download&id=1a-i60bAZbcFX7qWOVC08VVMDGV-hpJw8">
+							<img id="image-julia--.835-.2321i" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = -.835 - .2321i" onclick="redirect('https://drive.google.com/uc?export=download&id=1a-i60bAZbcFX7qWOVC08VVMDGV-hpJw8', 1)"></img>
+						</a>
+					</div>
 				</div>
-				
-				<div data-aos="fade-up" data-aos-delay="1800" data-aos-anchor="#trigger-section-5">
-					<a href="https://drive.google.com/uc?export=download&id=1nozIZqhRCH9DOWwhXx66AHiX2xJEv6c5">
-						<img id="image-mandelbrot--.835-.2321i" class="small-image-horizontal check-webp link" src="" alt="The Mandelbrot Set at -.835 - .2321i" onclick="redirect('https://drive.google.com/uc?export=download&id=1nozIZqhRCH9DOWwhXx66AHiX2xJEv6c5', 1)"></img>
-					</a>
+
+				<div style="height: 5vw"></div>
+
+				<div data-aos="fade-up" data-aos-delay="700" data-aos-anchor="#trigger-section-4">
+					<p class="body-text">And here they are. Julia sets are fantastically intricate, varied, beautiful patterns. It seems to me like every one fits right in to a different obscure world culture. If you open the full-res images (click or tap), the \(c\)-value used to generate the Julia set is the filename, so you can make them yourself with an application. (Writing your own Julia set generator, by the way, is a great exercise for beginning programmers!)</p>
 				</div>
-			</div>
+			</section>
+			
+			
 
 			<div style="height: 15vh"></div>
 
 
-
-			<div data-aos="fade-up" id="trigger-section-6">
-				<h2 class="section-text">Moving Around</h2>
-			</div>
-
-			<br>
-
-			<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-6">
-				<p class="body-text">It gets better, amazingly. Another way to think of Julia sets is as continuations of points in the Mandelbrot set (think tangent planes), and in <i>most</i> places, the Mandelbrot set&#x2019;s glowiness is continuous &mdash; that is, if one point is bright blue, then most of the time, the points around it are bright blue, too. What that tells us is that if we trace a path through the Mandelbrot set and create a Julia set from every point along it, the resulting sequence of Julia sets will deform <i>mostly</i> continuously. More simply, we can make animations.</p>
-			</div>
-
-			<div style="height: 5vw"></div>
 			
-			<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-6">
-				<img class="big-image-horizontal" style="-webkit-border-radius: 25px; border-radius: 25px" src="https://drive.google.com/uc?export=download&id=1jhe1odkctCGLptl5uqjTvzbIWUS-3T3K" alt="A Julia Set Animation"></img>
-			</div>
+			<section>
+				<div data-aos="fade-up" id="trigger-section-5">
+					<h2 class="section-text">Another Beast</h2>
+				</div>
 
-			<div style="height: 5vw"></div>
+				<br>
 
-			<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-6">
-				<p class="body-text">Here we have a circular path traced out in the Mandelbrot set, passing though \(0\) &mdash; hence the momentary circular Julia set &mdash; and the result is incredible. The Julia sets are black and filled-in where the path intersects the filled-in portion of the Mandelbrot set, and bright and empty &mdash; often called <i>dust</i> &mdash; where the circle is in the bright and empty part of the Mandelbrot set. It&#x2019;s a remarkable visualization.</p>
-			</div>
+				<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-5">
+					<a href="https://drive.google.com/uc?export=download&id=19mcwfQU3aw1TiKvWfatnEMwZa14I6dsZ">
+						<img id="image-mandelbrot" class="big-image-vertical check-webp" src="" alt="The Mandelbrot Set" onclick="redirect('https://drive.google.com/uc?export=download&id=19mcwfQU3aw1TiKvWfatnEMwZa14I6dsZ', 1)"></img>
+					</a>
+				</div>
 
-			<br>
+				<div style="height: 5vw"></div>
 
-			<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-6">
-				<p class="body-text">And there&#x2019;s more, of course. We can change the generating function from \(z^2 + c\) to anything else imaginable with \(z\) and \(c\), for one. Most of them don&#x2019;t produce good results, unfortunately, and I haven&#x2019;t found a single one that compares to the original. But maybe I&#x2019;m just sentimental.</p>
-			</div>
+				<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-5">
+					<p class="body-text">This is the Mandelbrot set. It&#x2019;s perhaps the most famous fractal, but its construction is far too often hidden away like some great secret. In reality, it&#x2019;s no more complicated than a Julia set.</p>
+				</div>
 
-			<br>
+				<br>
 
-			<div data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-6">
-				<p class="body-text">The Mandelbrot set and Julia sets exhibit a behavior known as <i>chaos</i> &mdash; small changes in input can create arbitrarily large changes in output. This contrasts with what we just said about most of the Mandelbrot set being continuous, but they&#x2019;re both true at once. The Mandelbrot set is continuous in a lot of places, and chaotic in a lot of others &mdash; most notably, around the boundary of the actual set itself. And it&#x2019;s this chaos, combined with the Mandelbrot set&#x2019;s fractal nature, that makes all those zooms so interesting.</p>
-			</div>
+				<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-5">
+					<p class="body-text">Start by taking any complex number \(z\). Just like for a Julia set, we&#x2019;re going to run \(z\) through \(f(z) = z^2 + c\), but this time, rather than picking \(c\) ahead of time, we let \(c = z\), and keep it that way for the entire sequence. I haven&#x2019;t seen a good explanation for this process, and the previous sentence is anything but, so here&#x2019;s an example. With \(z = i\), we let \(c = z = i\), and so our function becomes \(f(z) = z^2 + i\). Now we can run \(z\) through repeatedly: \((i, i^2 + i = -1 + i, (-1 + i)^2 + i = -i, ...)\). If you write more terms, you&#x2019;ll see this sequence repeats, so it stays bounded, and therefore \(i\) is in the Mandelbrot set.</p>
+				</div>
+
+				<br>
+
+				<div data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-5">
+					<p class="body-text">Our end result is beautifully complex. The most interesting parts aren&#x2019;t even in the set itself, but the halo around it &mdash; what&#x2019;s just shy of being inside.</p>
+				</div>
+
+				<br>
+
+				<div data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-section-5">
+					<p class="body-text">Now comes my favorite part. Think about the processes by which the Mandelbrot set and Julia sets are generated &mdash; in particular, where they overlap. Seriously, go back and try to see what at value of \(z\) the two formulas agree. It’s exactly at \(c\), right? And what about right around \(c\)? Well, we might expect that the two sets are similar, even if not identical. (Actually, we have no reason to expect this, given the fractal nature of the sets, but it turns out to be true nonetheless!) So, if we zoom into the Mandelbrot set at a point \(c\), the Julia set corresponding to \(c\) is very similar. I like to think of each Julia set as being a distillation of the Mandelbrot&#x2019;s complexity into a single pattern. And since this probably sounds like gibberish, here are some pretty pictures to explain what I mean.</p>
+				</div>
+
+				<div style="height: 5vw"></div>
+
+				<div class="image-row">
+					<div data-aos="fade-up" data-aos-delay="700" data-aos-anchor="#trigger-section-5">
+						<a href="https://drive.google.com/uc?export=download&id=1skyxNu4Ujtir2OKznR6Bhzy_87_H8dxy">
+							<img id="image-julia-.279_2" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = .279" onclick="redirect('https://drive.google.com/uc?export=download&id=1skyxNu4Ujtir2OKznR6Bhzy_87_H8dxy', 1)"></img>
+						</a>
+					</div>
+					
+					<div data-aos="fade-up" data-aos-delay="800" data-aos-anchor="#trigger-section-5">
+						<a href="https://drive.google.com/uc?export=download&id=1oKTMEl9cRtBdmYyIwup2_q2F2RyjqBKP">
+							<img id="image-mandelbrot-.279" class="small-image-horizontal check-webp" src="" alt="The Mandelbrot Set at .279" onclick="redirect('https://drive.google.com/uc?export=download&id=1oKTMEl9cRtBdmYyIwup2_q2F2RyjqBKP', 1)"></img>
+						</a>
+					</div>
+				</div>
+
+				<div style="height: 5vw"></div>
+
+				<div class="image-row">
+					<div data-aos="fade-up" data-aos-delay="900" data-aos-anchor="#trigger-section-5">
+						<a href="https://drive.google.com/uc?export=download&id=1dz6kVPV2z0eHLvpxEqu2wVA7ffPEGcIg">
+							<img id="image-julia--.7625-.068125i_2" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = -.7625 - .068125i" onclick="redirect('https://drive.google.com/uc?export=download&id=1dz6kVPV2z0eHLvpxEqu2wVA7ffPEGcIg', 1)"></img>
+						</a>
+					</div>
+					
+					<div data-aos="fade-up" data-aos-delay="1000" data-aos-anchor="#trigger-section-5">
+						<a href="https://drive.google.com/uc?export=download&id=1SF9c3K5CYOLRWRe_Rbxo_7kTSENp-tYR">
+							<img id="image-mandelbrot--.7625-.068125i" class="small-image-horizontal check-webp" src="" alt="The Mandelbrot Set at -.7625 - .068125i" onclick="redirect('https://drive.google.com/uc?export=download&id=1SF9c3K5CYOLRWRe_Rbxo_7kTSENp-tYR', 1)"></img>
+						</a>
+					</div>
+				</div>
+
+				<div style="height: 5vw"></div>
+
+				<div class="image-row">
+					<div data-aos="fade-up" data-aos-delay="1100" data-aos-anchor="#trigger-section-5">
+						<a href="https://drive.google.com/uc?export=download&id=1wq9kzs2X0bagOOKtm3ymnUFvk9wf2j-i">
+							<img id="image-julia--.171875-.653125i" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = -.171875 - .653125i" onclick="redirect('https://drive.google.com/uc?export=download&id=1wq9kzs2X0bagOOKtm3ymnUFvk9wf2j-i', 1)"></img>
+						</a>
+					</div>
+					
+					<div data-aos="fade-up" data-aos-delay="1200" data-aos-anchor="#trigger-section-5">
+						<a href="https://drive.google.com/uc?export=download&id=11r-_vldjCQ3vmEMbW_l1kmXrdrRaO1yb">
+							<img id="image-mandelbrot--.171875-.653125i" class="small-image-horizontal check-webp" src="" alt="The Mandelbrot Set at -.171875 - .653125i" onclick="redirect('https://drive.google.com/uc?export=download&id=11r-_vldjCQ3vmEMbW_l1kmXrdrRaO1yb', 1)"></img>
+						</a>
+					</div>
+				</div>
+
+				<div style="height: 5vw"></div>
+
+				<div class="image-row">
+					<div data-aos="fade-up" data-aos-delay="1300" data-aos-anchor="#trigger-section-5">
+						<a href="https://drive.google.com/uc?export=download&id=1DdmBCBZla0QYBfU74K2bMS-guh5Eu40o">
+							<img id="image-julia-.28+.008i" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = .28 + .008i" onclick="redirect('https://drive.google.com/uc?export=download&id=1DdmBCBZla0QYBfU74K2bMS-guh5Eu40o', 1)"></img>
+						</a>
+					</div>
+					
+					<div data-aos="fade-up" data-aos-delay="1200" data-aos-anchor="#trigger-section-5">
+						<a href="https://drive.google.com/uc?export=download&id=1gJpsvxUq4OSgHMWZT0w-7gPgv_NtNJFV">
+							<img id="image-mandelbrot-.28+.008i" class="small-image-horizontal check-webp" src="" alt="The Mandelbrot Set at .28 + .008i" onclick="redirect('https://drive.google.com/uc?export=download&id=1gJpsvxUq4OSgHMWZT0w-7gPgv_NtNJFV', 1)"></img>
+						</a>
+					</div>
+				</div>
+
+				<div style="height: 5vw"></div>
+
+				<div class="image-row">
+					<div data-aos="fade-up" data-aos-delay="1500" data-aos-anchor="#trigger-section-5">
+						<a href="https://drive.google.com/uc?export=download&id=1wpuGcLSHhx-ETAScZK41yIj-0EhdLojs">
+							<img id="image-julia-i_2" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = i" onclick="redirect('https://drive.google.com/uc?export=download&id=1wpuGcLSHhx-ETAScZK41yIj-0EhdLojs', 1)"></img>
+						</a>
+					</div>
+					
+					<div data-aos="fade-up" data-aos-delay="1600" data-aos-anchor="#trigger-section-5">
+						<a href="https://drive.google.com/uc?export=download&id=1H0gOLI9Py2eGLbZ2Aif7w_v1j3q1tAVC">
+							<img id="image-mandelbrot-i" class="small-image-horizontal check-webp" src="" alt="The Mandelbrot Set at i" onclick="redirect('https://drive.google.com/uc?export=download&id=1H0gOLI9Py2eGLbZ2Aif7w_v1j3q1tAVC', 1)"></img>
+						</a>
+					</div>
+				</div>
+
+				<div style="height: 5vw"></div>
+
+				<div class="image-row">
+					<div data-aos="fade-up" data-aos-delay="1700" data-aos-anchor="#trigger-section-5">
+						<a href="https://drive.google.com/uc?export=download&id=1a-i60bAZbcFX7qWOVC08VVMDGV-hpJw8">
+							<img id="image-julia--.835-.2321i_2" class="small-image-horizontal check-webp" src="" alt="The Julia Set for c = -.835 - .2321i" onclick="redirect('https://drive.google.com/uc?export=download&id=1a-i60bAZbcFX7qWOVC08VVMDGV-hpJw8', 1)"></img>
+						</a>
+					</div>
+					
+					<div data-aos="fade-up" data-aos-delay="1800" data-aos-anchor="#trigger-section-5">
+						<a href="https://drive.google.com/uc?export=download&id=1nozIZqhRCH9DOWwhXx66AHiX2xJEv6c5">
+							<img id="image-mandelbrot--.835-.2321i" class="small-image-horizontal check-webp link" src="" alt="The Mandelbrot Set at -.835 - .2321i" onclick="redirect('https://drive.google.com/uc?export=download&id=1nozIZqhRCH9DOWwhXx66AHiX2xJEv6c5', 1)"></img>
+						</a>
+					</div>
+				</div>
+			</section>
 			
-			<br>
-
-			<div data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-section-6">
-				<p class="body-text">An update: Half a year after writing this post, I made an interactive Julia set explorer. Check it out <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="redirect('/applets/julia-set-explorer/julia-set-explorer.html')">here</a>.</p>
-			</div>
+			
 
 			<div style="height: 15vh"></div>
 
 
+			
+			<section>
+				<div data-aos="fade-up" id="trigger-section-6">
+					<h2 class="section-text">Moving Around</h2>
+				</div>
 
-			<div data-aos="fade-in" data-aos-duration="2400" id="trigger-song-quote">
-				<p class="song-lyrics">
-					<q>Lord knows I should be pushing daises</q>
-				</p>
-			</div>
+				<br>
 
-			<div data-aos="fade-in" data-aos-delay="100" data-aos-duration="2400" data-aos-anchor="#trigger-song-quote">
-				<p class="song-lyrics">
-					<q>I was six feet down, ah, but something raised me up</q>
-				</p>
-			</div>
+				<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-6">
+					<p class="body-text">It gets better, amazingly. Another way to think of Julia sets is as continuations of points in the Mandelbrot set (think tangent planes), and in <i>most</i> places, the Mandelbrot set&#x2019;s glowiness is continuous &mdash; that is, if one point is bright blue, then most of the time, the points around it are bright blue, too. What that tells us is that if we trace a path through the Mandelbrot set and create a Julia set from every point along it, the resulting sequence of Julia sets will deform <i>mostly</i> continuously. More simply, we can make animations.</p>
+				</div>
 
-			<div data-aos="fade-in" data-aos-delay="200" data-aos-duration="2400" data-aos-anchor="#trigger-song-quote">
-				<p class="song-lyrics">
-					<q>Sent back for to lift my curse</q>
-				</p>
-			</div>
+				<div style="height: 5vw"></div>
+				
+				<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-6">
+					<img class="big-image-horizontal" style="-webkit-border-radius: 25px; border-radius: 25px" src="https://drive.google.com/uc?export=download&id=1jhe1odkctCGLptl5uqjTvzbIWUS-3T3K" alt="A Julia Set Animation"></img>
+				</div>
 
-			<div data-aos="fade-in" data-aos-delay="300" data-aos-duration="2400" data-aos-anchor="#trigger-song-quote">
-				<p class="song-lyrics">
-					<q>I&#x2019;m gonna get me a taste of some chaos first</q>
-				</p>
-			</div>
+				<div style="height: 5vw"></div>
 
-			<br>
+				<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-6">
+					<p class="body-text">Here we have a circular path traced out in the Mandelbrot set, passing though \(0\) &mdash; hence the momentary circular Julia set &mdash; and the result is incredible. The Julia sets are black and filled-in where the path intersects the filled-in portion of the Mandelbrot set, and bright and empty &mdash; often called <i>dust</i> &mdash; where the circle is in the bright and empty part of the Mandelbrot set. It&#x2019;s a remarkable visualization.</p>
+				</div>
 
-			<div data-aos="fade-in" data-aos-delay="1500" data-aos-duration="2400" data-aos-anchor="#trigger-song-quote">
-				<p class="song-lyrics">Lord Huron, <i>The World Ender</i></p>
-			</div>
+				<br>
+
+				<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-6">
+					<p class="body-text">And there&#x2019;s more, of course. We can change the generating function from \(z^2 + c\) to anything else imaginable with \(z\) and \(c\), for one. Most of them don&#x2019;t produce good results, unfortunately, and I haven&#x2019;t found a single one that compares to the original. But maybe I&#x2019;m just sentimental.</p>
+				</div>
+
+				<br>
+
+				<div data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-6">
+					<p class="body-text">The Mandelbrot set and Julia sets exhibit a behavior known as <i>chaos</i> &mdash; small changes in input can create arbitrarily large changes in output. This contrasts with what we just said about most of the Mandelbrot set being continuous, but they&#x2019;re both true at once. The Mandelbrot set is continuous in a lot of places, and chaotic in a lot of others &mdash; most notably, around the boundary of the actual set itself. And it&#x2019;s this chaos, combined with the Mandelbrot set&#x2019;s fractal nature, that makes all those zooms so interesting.</p>
+				</div>
+				
+				<br>
+
+				<div data-aos="fade-up" data-aos-delay="600" data-aos-anchor="#trigger-section-6">
+					<p class="body-text">An update: Half a year after writing this post, I made an interactive Julia set explorer. Check it out <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="redirect('/applets/julia-set-explorer/julia-set-explorer.html')">here</a>.</p>
+				</div>
+			</section>
+			
+			
+
+			<div style="height: 15vh"></div>
+
+
+			
+			<section>
+				<div data-aos="fade-in" data-aos-duration="2400" id="trigger-song-quote">
+					<p class="song-lyrics">
+						<q>Lord knows I should be pushing daises</q>
+					</p>
+				</div>
+
+				<div data-aos="fade-in" data-aos-delay="100" data-aos-duration="2400" data-aos-anchor="#trigger-song-quote">
+					<p class="song-lyrics">
+						<q>I was six feet down, ah, but something raised me up</q>
+					</p>
+				</div>
+
+				<div data-aos="fade-in" data-aos-delay="200" data-aos-duration="2400" data-aos-anchor="#trigger-song-quote">
+					<p class="song-lyrics">
+						<q>Sent back for to lift my curse</q>
+					</p>
+				</div>
+
+				<div data-aos="fade-in" data-aos-delay="300" data-aos-duration="2400" data-aos-anchor="#trigger-song-quote">
+					<p class="song-lyrics">
+						<q>I&#x2019;m gonna get me a taste of some chaos first</q>
+					</p>
+				</div>
+
+				<br>
+
+				<div data-aos="fade-in" data-aos-delay="1500" data-aos-duration="2400" data-aos-anchor="#trigger-song-quote">
+					<p class="song-lyrics">Lord Huron, <i>The World Ender</i></p>
+				</div>
+			</section>
 		</main>
 
 
