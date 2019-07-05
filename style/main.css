@@ -48,6 +48,13 @@ q:before, q:after
 	content: "";
 }
 
+img
+{
+	-webkit-transform: translateZ(0);
+	-webkit-perspective: 1000;
+	-webkit-backface-visibility: hidden;
+}
+
 
 
 .logo
