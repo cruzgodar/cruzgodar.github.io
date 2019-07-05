@@ -1,4 +1,4 @@
-//Handles redirects and url variables. This script cannot be loaded in base-script, since that is async, and if the user is offline, they need access to cached scripts, which can only be accessed directly. We can't put this in the head, since then we lose access to redirect(), and by extension url variables.
+//Handles redirects and url variables. This script cannot be loaded in main.js, since that is async, and if the user is offline, they need access to cached scripts, which can only be accessed directly. We can't put this in the head, since then we lose access to redirect(), and by extension url variables.
 
 
 
