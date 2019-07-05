@@ -106,7 +106,7 @@ $(function()
 		
 		if (historyTraversal)
 		{
-			if (url_vars["link_animation"] == 1)
+			if (url_vars["content_animation"] == 1)
 			{
 				$("html").css("opacity", 1);
 			}

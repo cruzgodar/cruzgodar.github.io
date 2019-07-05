@@ -454,7 +454,16 @@
 					$("<img/>").attr("src", "/graphics/index-banners/" + banner_index + "/" + banner_name).on("load", function()
 					{
 						$(this).remove();
-						$("body").animate({opacity: 1}, 300, "swing");
+						
+						if (url_vars["content_animation"] == 1)
+						{
+							$("body").css("opacity", 1);
+						}
+						
+						else
+						{
+							$("body").animate({opacity: 1}, 300, "swing");
+						}
 						
 						var font_size = parseInt($(".name-text").css("font-size").replace("px", ""));
 						

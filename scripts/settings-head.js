@@ -14,7 +14,6 @@ var url_vars = {
 	"contrast": get_url_var("contrast"),
 	"comments": get_url_var("comments"),
 	"no_new_section": get_url_var("no_new_section"),
-	"link_animation": get_url_var("link_animation"),
 	"content_animation": get_url_var("content_animation"),
 	"banner_style": get_url_var("banner_style")
 };

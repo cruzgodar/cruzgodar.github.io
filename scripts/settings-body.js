@@ -12,7 +12,6 @@ var url_var_functions = {
 		"contrast": switch_contrast,
 		"comments": switch_comments,
 		"no_new_section": switch_new_section,
-		"link_animation": switch_link_animation,
 		"content_animation": switch_content_animation,
 		"banner_style": switch_banner_style
 	},
@@ -24,7 +23,6 @@ var url_var_functions = {
 		"contrast": switch_contrast_on_load,
 		"comments": switch_comments_on_load,
 		"no_new_section": switch_new_section_on_load,
-		"link_animation": switch_link_animation_on_load,
 		"content_animation": switch_content_animation_on_load,
 		"banner_style": switch_banner_style_on_load
 	}
@@ -204,53 +202,6 @@ function switch_theme_on_load()
 
 
 
-function switch_font()
-{
-	$("body").animate({opacity: 0}, 300, "swing");
-	setTimeout(function()
-	{
-		switch_font_on_load();
-		
-		setTimeout(function()
-		{
-			$("body").animate({opacity: 1}, 300, "swing");
-		});
-	}, 300);
-}
-
-function switch_font_on_load()
-{
-	//Sans to serif
-	if (url_vars["font"] == 0)
-	{
-		try {$("#font-button-text").html($("#font-button-text").html().replace("sans serif", "serif"));}
-		catch(ex) {}
-		
-		url_vars["font"] = 1;
-		
-		write_url_vars();
-		
-		$("html").css("font-family", "'Gentium Book Basic', serif");
-		$("html").css("font-size", "max(calc((13.2 / 12) * (1.5vmin + 1.5vmax) / 2), 13.2px)");
-	}
-	
-	//Serif to sans
-	else
-	{
-		try {$("#font-button-text").html($("#font-button-text").html().replace("serif", "sans serif"));}
-		catch(ex) {}
-		
-		url_vars["font"] = 0;
-		
-		write_url_vars();
-		
-		$("html").css("font-family", "'Rubik', sans-serif");
-		$("html").css("font-size", "max(calc((1.5vmin + 1.5vmax) / 2), 12px)");
-	}
-}
-
-
-
 function switch_contrast()
 {
 	$("#contrast-button-row").animate({opacity: 0}, 300, "swing");
@@ -421,6 +372,52 @@ function switch_contrast_on_load()
 
 
 
+function switch_font()
+{
+	$("#font-button-row").animate({opacity: 0}, 300, "swing");
+	setTimeout(function()
+	{
+		switch_font_on_load();
+		
+		setTimeout(function()
+		{
+			$("#font-button-row").animate({opacity: 1}, 300, "swing");
+		});
+	}, 300);
+}
+
+function switch_font_on_load()
+{
+	//Sans to serif
+	if (url_vars["font"] == 0)
+	{
+		try {$("#font-button-text").html($("#font-button-text").html().replace("serif on writing", "always sans serif"));}
+		catch(ex) {}
+		
+		url_vars["font"] = 1;
+		
+		write_url_vars();
+		
+		if (typeof writing_page != "undefined" && writing_page)
+		{
+			$(".body-text").css("font-family", "'PT Serif', serif");
+		}
+	}
+	
+	//Serif to sans
+	else
+	{
+		try {$("#font-button-text").html($("#font-button-text").html().replace("always sans serif", "serif on writing"));}
+		catch(ex) {}
+		
+		url_vars["font"] = 0;
+		
+		write_url_vars();
+	}
+}
+
+
+
 function switch_comments()
 {
 	$("#comments-button-row").animate({opacity: 0}, 300, "swing");
@@ -503,42 +500,6 @@ function switch_new_section_on_load()
 		catch(ex) {}
 		
 		url_vars["no_new_section"] = 0;
-		
-		write_url_vars();
-	}
-}
-
-
-
-function switch_link_animation()
-{
-	$("#link-animation-button-row").animate({opacity: 0}, 300, "swing");
-	
-	setTimeout(function()
-	{
-		switch_link_animation_on_load();
-		$("#link-animation-button-row").animate({opacity: 1}, 300, "swing");
-	}, 300);
-}
-
-function switch_link_animation_on_load()
-{
-	if (url_vars["link_animation"] == 0)
-	{
-		try {$("#link-animation-button-text").html($("#link-animation-button-text").html().replace("animated", "static"));}
-		catch(ex) {}
-		
-		url_vars["link_animation"] = 1;
-		
-		write_url_vars();
-	}
-	
-	else
-	{
-		try {$("#link-animation-button-text").html($("#link-animation-button-text").html().replace("static", "animated"));}
-		catch(ex) {}
-		
-		url_vars["link_animation"] = 0;
 		
 		write_url_vars();
 	}

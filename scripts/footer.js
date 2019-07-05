@@ -180,7 +180,7 @@ $(function()
 			{
 				$(".line-break").parent().removeAttr("data-aos");
 				$(".footer-image-link").removeAttr("data-aos");
-				$(".footer-button").parent().removeAttr("data-aos");
+				$(".footer-button").parent().parent().removeAttr("data-aos");
 			}
 		}
 	}, 50);

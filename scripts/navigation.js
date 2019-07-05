@@ -89,7 +89,7 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 	
 	
 	//Act like a normal link, with no transitions, if the user wants that.
-	if (url_vars["link_animation"] == 1)
+	if (url_vars["content_animation"] == 1)
 	{
 		window.location.href = url + concat_url_vars(include_return_url);
 	}

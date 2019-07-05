@@ -2,8 +2,7 @@
 
 
 
-@import url("https://fonts.googleapis.com/css?family=Rubik");
-@import url("https://fonts.googleapis.com/css?family=Gentium+Book+Basic");
+@import url("https://fonts.googleapis.com/css?family=Rubik|PT+Serif&display=swap");
 
 html
 {
@@ -146,6 +145,7 @@ q:before, q:after
 	filter: brightness(100%);
 	
 	cursor: pointer;
+	outline: none;
 }
 
 .footer-button:hover

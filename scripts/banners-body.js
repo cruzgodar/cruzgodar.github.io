@@ -69,7 +69,7 @@ $(function()
 		
 		
 		//Fade in once the banner has loaded.
-		if (url_vars["link_animation"] == 1)
+		if (url_vars["content_animation"] == 1)
 		{
 			$("body").css("opacity", 1);
 		}
