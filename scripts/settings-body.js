@@ -65,47 +65,50 @@ function switch_theme()
 		
 		if (url_vars["contrast"] == 1)
 		{
+			$(".section-text").css("color", "rgb(232, 232, 232)");
+			$(".body-text").css("color", "rgb(216, 216, 216)");
+			$(".body-text .link").css("color", "rgb(216, 255, 216)");
+			$(".song-lyrics").css("color", "rgb(216, 216, 216)");
+			$(".image-link-subtext").css("color", "rgb(216, 216, 216)");
 			
-			$(".section-text").css("color", "rgb(208, 208, 208)");
-			$(".body-text").css("color", "rgb(192, 192, 192)");
-			$(".body-text .link").css("color", "rgb(192, 256, 192)");
-			$(".song-lyrics").css("color", "rgb(192, 192, 192)");
-			$(".image-link-subtext").css("color", "rgb(192, 192, 192)");
-			
-			$(".quote-text").css("color", "rgb(168, 168, 168");
-			$(".quote-attribution").css("color", "rgb(210, 210, 210)");
+			$(".quote-text").css("color", "rgb(192, 192, 192");
+			$(".quote-attribution").css("color", "rgb(234, 234, 234)");
 			
 			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(127, 127, 127)");
 		}
 		
 		else
 		{
-			$(".section-text").css("color", "rgb(160, 160, 160)");
+			$(".section-text").css("color", "rgb(184, 184, 184)");
+			$(".body-text").css("color", "rgb(152, 152, 152)");
+			$(".body-text .link").css("color", "rgb(152, 216, 152)");
+			$(".song-lyrics").css("color", "rgb(152, 152, 152)");
+			$(".image-link-subtext").css("color", "rgb(152, 152, 152)");
 			
-			$(".quote-text").css("color", "rgb(80, 80, 80)");
-			$(".quote-attribution").css("color", "rgb(164, 164, 164)");
+			$(".quote-text").css("color", "rgb(104, 104, 104)");
+			$(".quote-attribution").css("color", "rgb(188, 188, 188)");
 			
 			$("head").append(`
 				<style>
 					.line-break
 					{
 						background: rgb(24,24,24);
-						background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(92,92,92) 50%, rgb(24,24,24) 100%);
-						background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(92,92,92) 50%,rgb(24,24,24) 100%);
-						background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(92,92,92) 50%,rgb(24,24,24) 100%);
+						background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(116,116,116) 50%, rgb(24,24,24) 100%);
+						background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(116,116,116) 50%,rgb(24,24,24) 100%);
+						background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(116,116,116) 50%,rgb(24,24,24) 100%);
 					}
 					
 					.text-box
 					{
 						background-color: rgb(24, 24, 24);
-						color: rgb(127, 127, 127);
-						border-color: rgb(64, 64, 64);
+						color: rgb(152, 152, 152);
+						border-color: rgb(88, 88, 88);
 					}
 					
 					.text-box:focus
 					{
-						border-color: rgb(127, 127, 127);
-						color: rgb(192, 192, 192);
+						border-color: rgb(152, 152, 152);
+						color: rgb(216, 216, 216);
 					}
 				</style>
 			`);
@@ -229,14 +232,14 @@ function switch_contrast_on_load()
 		
 		if (url_vars["theme"] == 1)
 		{
-			$(".section-text").css("color", "rgb(208, 208, 208)");
-			$(".body-text").css("color", "rgb(192, 192, 192)");
-			$(".body-text .link").css("color", "rgb(192, 256, 192)");
-			$(".song-lyrics").css("color", "rgb(192, 192, 192)");
-			$(".image-link-subtext").css("color", "rgb(192, 192, 192)");
+			$(".section-text").css("color", "rgb(232, 232, 232)");
+			$(".body-text").css("color", "rgb(216, 216, 216)");
+			$(".body-text .link").css("color", "rgb(216, 255, 216)");
+			$(".song-lyrics").css("color", "rgb(216, 216, 216)");
+			$(".image-link-subtext").css("color", "rgb(216, 216, 216)");
 			
-			$(".quote-text").css("color", "rgb(168, 168, 168");
-			$(".quote-attribution").css("color", "rgb(210, 210, 210)");
+			$(".quote-text").css("color", "rgb(192, 192, 192)");
+			$(".quote-attribution").css("color", "rgb(234, 234, 234)");
 			
 			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(127, 127, 127)");
 			
@@ -245,26 +248,26 @@ function switch_contrast_on_load()
 					.line-break
 					{
 						background: rgb(24,24,24);
-						background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(140,140,140) 50%, rgb(24,24,24) 100%);
-						background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(140,140,140) 50%,rgb(24,24,24) 100%);
-						background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(140,140,140) 50%,rgb(24,24,24) 100%);
+						background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(164,164,164) 50%, rgb(24,24,24) 100%);
+						background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(164,164,164) 50%,rgb(24,24,24) 100%);
+						background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(164,164,164) 50%,rgb(24,24,24) 100%);
 					}
 					
 					.scroll-button
 					{
-						border-color: rgb(64, 64, 64)
+						border-color: rgb(88, 88, 88)
 					}
 					
 					.text-box
 					{
-						border-color: rgb(127, 127, 127);
+						border-color: rgb(152, 152, 152);
 						background-color: rgb(24, 24, 24);
-						color: rgb(192, 192, 192);
+						color: rgb(216, 216, 216);
 					}
 					
 					.text-box:focus
 					{
-						border-color: rgb(192, 192, 192);
+						border-color: rgb(216, 216, 216);
 						color: rgb(255, 255, 255);
 					}
 				</style>
@@ -324,6 +327,10 @@ function switch_contrast_on_load()
 			
 			catch(ex) {}
 		}
+		
+		
+		
+		$(".text-button").css("color", "rgb(64, 64, 64)");
 	}
 	
 	//High to default
@@ -340,15 +347,15 @@ function switch_contrast_on_load()
 		
 		if (url_vars["theme"] == 1)
 		{
-			$(".section-text").css("color", "rgb(160, 160, 160)");
-			$(".body-text").css("color", "rgb(127, 127, 127)");
-			$(".body-text .link").css("color", "rgb(127, 192, 127)");
-			$(".song-lyrics").css("color", "rgb(127, 127, 127)");
-			$(".image-link-subtext").css("color", "rgb(127, 127, 127)");
-			$(".text-button").css("color", "rgb(127, 127, 127)");
+			$(".section-text").css("color", "rgb(184, 184, 184)");
+			$(".body-text").css("color", "rgb(152, 152, 152)");
+			$(".body-text .link").css("color", "rgb(152, 216, 152)");
+			$(".song-lyrics").css("color", "rgb(152, 152, 152)");
+			$(".image-link-subtext").css("color", "rgb(152, 152, 152)");
+			$(".text-button").css("color", "rgb(152, 152, 152)");
 			
-			$(".quote-text").css("color", "rgb(80, 80, 80");
-			$(".quote-attribution").css("color", "rgb(164, 164, 164)");
+			$(".quote-text").css("color", "rgb(104, 104, 104");
+			$(".quote-attribution").css("color", "rgb(188, 188, 188)");
 			
 			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(127, 127, 127)");
 		}
