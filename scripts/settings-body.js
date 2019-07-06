@@ -398,7 +398,7 @@ function switch_font_on_load()
 	//Sans to serif
 	if (url_vars["font"] == 0)
 	{
-		try {$("#font-button-text").html($("#font-button-text").html().replace("serif on writing", "always sans serif"));}
+		try {$("#font-button-text").html($("#font-button-text").html().replace("always sans serif", "serif on writing"));}
 		catch(ex) {}
 		
 		url_vars["font"] = 1;
@@ -414,7 +414,7 @@ function switch_font_on_load()
 	//Serif to sans
 	else
 	{
-		try {$("#font-button-text").html($("#font-button-text").html().replace("always sans serif", "serif on writing"));}
+		try {$("#font-button-text").html($("#font-button-text").html().replace("serif on writing", "always sans serif"));}
 		catch(ex) {}
 		
 		url_vars["font"] = 0;
