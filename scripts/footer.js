@@ -182,6 +182,14 @@ $(function()
 				$(".footer-image-link").removeAttr("data-aos");
 				$(".footer-button").parent().parent().removeAttr("data-aos");
 			}
+			
+			
+			
+			//If the page isn't as tall as the screen (e.g. the 404 page), move the footer to the bottom of the page.
+			if ($("body").height() < window_height)
+			{
+				$("footer").css("margin-top", window_height - $("body").height());
+			}
 		}
 	}, 50);
 	
