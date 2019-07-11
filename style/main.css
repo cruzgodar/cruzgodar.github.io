@@ -6,7 +6,7 @@
 
 html
 {
-	font-size: max(calc((1.5vmin + 1.5vmax) / 2), 12px);
+	font-size: min(max(calc((1.5vmin + 1.5vmax) / 2), 12px), 15px);
 	font-family: "Rubik", sans-serif;
 	
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -122,19 +122,9 @@ img
 
 
 
-.footer-button-container
-{
-	width: calc(100vw - 10px);
-	display: flex;
-	align-items: left;
-	margin-bottom: 6px;
-	justify-content: space-between;
-}
-
 .footer-button
 {
 	width: 25px;
-	margin-left: 10px;
 	
 	align-self: flex-end;
 	
@@ -195,6 +185,7 @@ img
 	justify-content: space-between;
 	width: 56vw;
 	margin: 0 auto;
+	margin-bottom: 5vw;
 }
 
 .footer-image-link

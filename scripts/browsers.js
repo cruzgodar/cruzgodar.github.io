@@ -82,19 +82,6 @@ $(function()
 	{
 		window.location.replace("/ie.html");
 	}
-	
-	//Chrome is weird about vertical scrollbars.
-	else if (browser_name == "Chrome")
-	{
-		$("head").append(`
-			<style>
-				.footer-button-container
-				{
-					width: ${$("body").prop("clientWidth") - 10}px;
-				}
-			</style>
-		`);
-	}
 });
 
 

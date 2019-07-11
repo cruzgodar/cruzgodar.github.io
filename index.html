@@ -340,18 +340,16 @@
 		
 		
 		<footer>
-			<div class="footer-button-container">
-				<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false">
-					<a href="/settings.html">
-						<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect('/settings.html')">
-					</a>
-				</div>
-				
-				<div data-aos="zoom-out" data-aos-delay="100" data-aos-offset="0" data-aos-once="false">
-					<a href="/pwa.html">
-						<input type="image" id="pwa-button" class="footer-button" style="margin-left: 0px" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa.html')">
-					</a>
-				</div>
+			<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false" style="position: absolute; bottom: 6.25px; left: 10px">
+				<a href="/settings.html">
+					<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect('/settings.html')">
+				</a>
+			</div>
+			
+			<div data-aos="zoom-out" data-aos-delay="100" data-aos-offset="0" data-aos-once="false" style="position: absolute; bottom: 6.25px; right: 10px">
+				<a href="/pwa.html">
+					<input type="image" id="pwa-button" class="footer-button" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa.html')">
+				</a>
 			</div>
 		</footer>
 	</div>
@@ -381,6 +379,8 @@
 		{
 			var num_images = 25;
 			var banner_index = Math.floor(Math.random() * num_images) + 1;
+			
+			console.log($("html").css("font-size"));
 			
 			
 			
