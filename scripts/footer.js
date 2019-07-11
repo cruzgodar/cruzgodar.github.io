@@ -10,7 +10,7 @@ $(function()
 
 	if (footer_from_nonstandard_color)
 	{
-		fnc_arg = ", 1";
+		fnc_arg = ", true";
 	}
 
 	else
