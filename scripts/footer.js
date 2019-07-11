@@ -152,7 +152,11 @@ $(function()
 			
 			
 			
-			$("#spawn-footer").before('<div id="trigger-menu"></div>');
+			$("#spawn-footer").before(`
+				<div style="position: relative">
+					<div id="trigger-menu" style="position: absolute; bottom: 5px"></div>
+				</div>
+			`);
 			
 			
 			
@@ -160,13 +164,13 @@ $(function()
 				<div style="height: calc(4vw - 45px); min-height: 0px"></div>
 				
 				<div style="position: relative">
-					<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false" style="position: absolute; bottom: 6.5px; left: 10px">
+					<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu" style="position: absolute; bottom: 6.5px; left: 10px">
 						<a href="/settings.html${concat_url_vars(false)}">
 							<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect('/settings.html', 0${fnc_arg})">
 						</a>
 					</div>
 					
-					<div data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" style="position: absolute; bottom: 6.5px; right: 10px">
+					<div data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu" style="position: absolute; bottom: 6.5px; right: 10px">
 						<a href="/pwa.html${concat_url_vars(false)}">
 							<input type="image" id="pwa-button" class="footer-button" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa.html', 0${fnc_arg})">
 						</a>
