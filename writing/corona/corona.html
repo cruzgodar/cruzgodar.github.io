@@ -490,152 +490,159 @@ body
 			
 			$(window).scroll(function()
 			{
-				var scroll = $(this).scrollTop();
-				
-				if (scroll >= 0)
+				scroll_update();
+			});
+		});
+		
+		
+		
+		function scroll_update()
+		{
+			var scroll = $(this).scrollTop();
+			
+			if (scroll >= 0)
+			{
+				if (scroll <= 4*window_height/5)
 				{
-					if (scroll <= 4*window_height/5)
+					var background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/4 * scroll / window_height, 0) - .5 * Math.PI);
+					
+					if (url_vars["theme"] == 1)
 					{
-						var background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/4 * scroll / window_height, 0) - .5 * Math.PI);
+						background_color *= 24;
+					}
 						
-						if (url_vars["theme"] == 1)
-						{
-							background_color *= 24;
-						}
-							
-						else
-						{
-							background_color *= 255;
-						}
-						
-						
-						$("html").css("background-color", "rgb(" + background_color + ", " + background_color + ", " + background_color + ")");
-						
-						if (background_color == 0)
-						{
-							background_done = true;
-						}
-						
-						else
-						{
-							background_done = false;
-						}
+					else
+					{
+						background_color *= 255;
 					}
 					
-					else if (background_done == false)
+					
+					$("html").css("background-color", "rgb(" + background_color + ", " + background_color + ", " + background_color + ")");
+					
+					if (background_color == 0)
 					{
-						$("html").css("background-color", "rgb(0, 0, 0)");
 						background_done = true;
 					}
 					
-					
-					
-					if (scroll <= window_height/3)
+					else
 					{
-						opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - .5 * Math.PI);
-						
-						$(".scroll-button").css("opacity", opacity);
-						
-						if (opacity == 0)
-						{
-							$(".scroll-button").remove();
-							scroll_button_done = true;
-						}
-						
-						else
-						{
-							scroll_button_done = false;
-						}
+						background_done = false;
 					}
+				}
+				
+				else if (background_done == false)
+				{
+					$("html").css("background-color", "rgb(0, 0, 0)");
+					background_done = true;
+				}
+				
+				
+				
+				if (scroll <= window_height/3)
+				{
+					opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - .5 * Math.PI);
 					
-					else if (scroll_button_done == false)
+					$(".scroll-button").css("opacity", opacity);
+					
+					if (opacity == 0)
 					{
 						$(".scroll-button").remove();
-						
 						scroll_button_done = true;
 					}
 					
-					
-					
-					if (scroll >= (3/5 + .1) * window_height && scroll <= 1.1*window_height)
+					else
 					{
-						opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/2 * (scroll - ((3/5 + .1) * window_height)) / window_height, 0) - .5 * Math.PI);
-						
-						$(".eclipse").css("opacity", 1 - opacity);
-						
-						if (opacity == 1)
-						{
-							eclipse_done = true;
-						}
-						
-						else
-						{
-							eclipse_done = false;
-						}
+						scroll_button_done = false;
 					}
+				}
+				
+				else if (scroll_button_done == false)
+				{
+					$(".scroll-button").remove();
 					
-					else if (scroll >= window_height && eclipse_done == false)
+					scroll_button_done = true;
+				}
+				
+				
+				
+				if (scroll >= (3/5 + .1) * window_height && scroll <= 1.1*window_height)
+				{
+					opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/2 * (scroll - ((3/5 + .1) * window_height)) / window_height, 0) - .5 * Math.PI);
+					
+					$(".eclipse").css("opacity", 1 - opacity);
+					
+					if (opacity == 1)
 					{
-						$(".eclipse").css("opacity", 1);
-						
 						eclipse_done = true;
 					}
 					
-					else if (scroll <= (3/5 + .1) * window_height && eclipse_done == false)
+					else
 					{
-						$(".eclipse").css("opacity", 0);
-						
-						eclipse_done = true;
+						eclipse_done = false;
 					}
 				}
 				
-				
-				
-				if (scroll > $(".progress-bar").position().top - 3*window_height/4 && progress_bar_done == false)
+				else if (scroll >= window_height && eclipse_done == false)
 				{
-					$(".progress-bar span").css("width", "100%");
-					progress_bar_done = true;
+					$(".eclipse").css("opacity", 1);
+					
+					eclipse_done = true;
 				}
 				
-				else if (scroll > $("#trigger-stage-bubbles").position().top - 3*window_height/4 && stage_bubbles_done == false)
+				else if (scroll <= (3/5 + .1) * window_height && eclipse_done == false)
 				{
-					stage_bubbles_done = true;
-					bubbles = $(".stage-bubble span");
-					subtexts = $(".stage-bubble-subtext");
-					var i;
+					$(".eclipse").css("opacity", 0);
 					
-					for (i = 0; i < 4; i++)
+					eclipse_done = true;
+				}
+			}
+			
+			
+			
+			if (scroll > $(".progress-bar").position().top - 3*window_height/4 && progress_bar_done == false)
+			{
+				$(".progress-bar span").css("width", "100%");
+				progress_bar_done = true;
+			}
+			
+			else if (scroll > $("#trigger-stage-bubbles").position().top - 3*window_height/4 && stage_bubbles_done == false)
+			{
+				stage_bubbles_done = true;
+				bubbles = $(".stage-bubble span");
+				subtexts = $(".stage-bubble-subtext");
+				var i;
+				
+				for (i = 0; i < 4; i++)
+				{
+					setTimeout(function(i)
 					{
-						setTimeout(function(i)
-						{
-							$(bubbles[i]).css("width", "100%");
-							$(bubbles[i]).css("height", "100%");
-							$(subtexts[i]).css("margin-top", "1vh");
-						}, i * 100, i);
+						$(bubbles[i]).css("width", "100%");
+						$(bubbles[i]).css("height", "100%");
+						$(subtexts[i]).css("margin-top", "1vh");
+					}, i * 100, i);
+				}
+				
+				i = 3;
+				
+				setInterval(function()
+				{
+					if (url_vars["contrast"] == 1)
+					{
+						$(bubbles[i]).css("background-color", "rgb(192, 192, 192)");
 					}
 					
-					i = 3;
-					
-					setInterval(function()
+					else
 					{
-						if (url_vars["contrast"] == 1)
-						{
-							$(bubbles[i]).css("background-color", "rgb(192, 192, 192)");
-						}
-						
-						else
-						{
-							$(bubbles[i]).css("background-color", "rgb(127, 127, 127)");
-						}
-						
-						setTimeout(function()
-						{
-							$(bubbles[i]).css("background-color", "rgb(0, 0, 0)");
-						}, 1200);
-					}, 2400);
-				}
-			});
-		});
+						$(bubbles[i]).css("background-color", "rgb(127, 127, 127)");
+					}
+					
+					setTimeout(function()
+					{
+						$(bubbles[i]).css("background-color", "rgb(0, 0, 0)");
+					}, 1200);
+				}, 2400);
+			}
+		}
 		
 		
 		
