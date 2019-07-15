@@ -7,25 +7,20 @@ var banner_extension = "";
 
 
 
-$(function()
+function load_banner()
 {
 	$(window).scroll(function()
 	{
 		scroll_update();
 	});
 	
-	
-	
 	$(window).resize(function()
 	{
 		scroll_update();
 	});
-});
-
-
-
-function load_banner()
-{
+	
+	
+	
 	if (supports_webp)
 	{
 		banner_extension = "webp";

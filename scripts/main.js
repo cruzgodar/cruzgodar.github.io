@@ -87,20 +87,6 @@ $(function()
 	
 	
 	
-	//Ensure elements always animate 1/4 of the way up the screen, whatever size that screen is.
-	$(window).resize(function()
-	{
-		window_width = $(window).width();
-		window_height = $(window).height();
-		
-		if (url_vars["content_animation"] != 1)
-		{
-			AOS.init({offset: window_height/4});
-		}
-	});
-	
-	
-	
 	$.getScript("/scripts/modernizr-webp.js", function()
 	{
 		Modernizr.on("webp", function(result)
@@ -132,6 +118,34 @@ $(function()
 
 
 
+function update_aos()
+{
+	AOS.disable;
+	
+	if (url_vars["content_animation"] == 1)
+	{
+		//This attribute makes the content invisible until it's animated in, so if we're never going to do that, it has to go.
+		$("body").find("*[data-aos]").removeAttr("data-aos");
+	}
+	
+	else
+	{
+		if (page_settings["banner_page"])
+		{
+			AOS.init({duration: 1200, once: false, offset: window_height/4});
+		}
+		
+		else
+		{
+			AOS.init({duration: 1200, once: true, offset: window_height/4});
+		}
+		
+		AOS.refreshHard();
+	}
+}
+
+
+
 function on_page_load()
 {
 	var refresh_id = setInterval(function()
@@ -154,7 +168,9 @@ function on_page_load()
 			
 			fade_in();
 			
-			init_aos();
+			update_aos();
+			
+			bind_handlers();
 			
 			insert_footer();
 			
@@ -169,6 +185,21 @@ function on_page_load()
 			remove_hover_on_touch();
 		}
 	}, 50);
+}
+
+
+
+function on_page_unload()
+{
+	//Remove any css and js that's no longer needed to prevent memory leaks.
+	$("style:not(.permanent-style)").remove();
+	$("head script:not(.permanent-script)").remove();
+	
+	
+	
+	//Unbind everything from the window. Anything important will be rebound.
+	$(window).off("scroll", "**");
+	$(window).off("resize", "**");
 }
 
 
@@ -196,24 +227,14 @@ function fade_in()
 
 
 
-function init_aos()
+function bind_handlers()
 {
-	if (url_vars["content_animation"] == 1)
+	//Ensure elements always animate 1/4 of the way up the screen, whatever size that screen is.
+	$(window).resize(function()
 	{
-		//This attribute makes the content invisible until it's animated in, so if we're never going to do that, it has to go.
-		$("body").find("*[data-aos]").removeAttr("data-aos");
-	}
-	
-	else
-	{
-		if (page_settings["banner_page"])
-		{
-			AOS.init({duration: 1200, once: false, offset: window_height/4});
-		}
+		window_width = $(window).width();
+		window_height = $(window).height();
 		
-		else
-		{
-			AOS.init({duration: 1200, once: true, offset: window_height/4});
-		}
-	}
+		update_aos();
+	});
 }

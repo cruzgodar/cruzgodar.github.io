@@ -6,6 +6,7 @@ var urlsToCache =
     "/offline.html",
     "/offline.html?theme=1",
     "/index.html",
+    "/home.html",
     "/styles/*",
     "/scripts/*"
 ];
