@@ -131,8 +131,9 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 		//Act like a normal link, with no transitions, if the user wants that.
 		if (url_vars["content_animation"] == 1)
 		{
-			//Remove any css that's no longer needed to prevent memory leaks.
+			//Remove any css and js that's no longer needed to prevent memory leaks.
 			$("style:not(.permanent-style)").remove();
+			$("head script:not(.permanent-script)").remove();
 			
 			$("body").html(data);
 			
@@ -163,7 +164,9 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 					
 					setTimeout(function()
 					{
+						//Remove any css and js that's no longer needed to prevent memory leaks.
 						$("style:not(.permanent-style)").remove();
+						$("head script:not(.permanent-script)").remove();
 						
 						$("body").html(data);
 						
@@ -177,7 +180,9 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 			{
 				setTimeout(function()
 				{
+					//Remove any css and js that's no longer needed to prevent memory leaks.
 					$("style:not(.permanent-style)").remove();
+					$("head script:not(.permanent-script)").remove();
 					
 					$("body").html(data);
 					
