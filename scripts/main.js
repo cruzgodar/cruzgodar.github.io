@@ -48,7 +48,7 @@ $(function()
 		$("*").attr("draggable", "false");
 		
 		$("head").append(`
-			<style>
+			<style class="permanent-style">
 				#pwa-button
 				{
 					display: none;
@@ -149,6 +149,8 @@ function on_page_load()
 			
 			//Set the page title.
 			$("title").html(page_settings["title"]);
+			
+			
 			
 			fade_in();
 			

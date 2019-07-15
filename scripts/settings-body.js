@@ -89,7 +89,7 @@ function switch_theme()
 			$(".quote-attribution").css("color", "rgb(188, 188, 188)");
 			
 			$("head").append(`
-				<style>
+				<style class="permanent-style">
 					.line-break
 					{
 						background: rgb(24,24,24);
@@ -244,7 +244,7 @@ function switch_contrast_on_load()
 			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(127, 127, 127)");
 			
 			$("head").append(`
-				<style>
+				<style class="permanent-style">
 					.line-break
 					{
 						background: rgb(24,24,24);
@@ -289,7 +289,7 @@ function switch_contrast_on_load()
 			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(64, 64, 64)");
 			
 			$("head").append(`
-				<style>
+				<style class="permanent-style">
 					.line-break
 					{
 						background: rgb(255,255,255);
