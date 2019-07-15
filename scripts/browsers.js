@@ -67,7 +67,18 @@ var browser_name = browser_detect.browser;
 
 $(function()
 {
-	//Handle IE and Edge.
+	//Handle IE.
+	if (browser_name == "Explorer")
+	{
+		window.location.replace("/ie.html");
+	}
+});
+
+
+
+//Deal with Edge.
+function gimp_edge()
+{
 	if (browser_name == "MS Edge")
 	{		
 		try
@@ -77,16 +88,10 @@ $(function()
 		
 		catch(ex) {}
 	}
-
-	else if (browser_name == "Explorer")
-	{
-		window.location.replace("/ie.html");
-	}
-});
+}
 
 
 
-//Remove hover events on touchscreen devices.
 function hasTouch()
 {
 	return "ontouchstart" in document.documentElement
@@ -94,28 +99,34 @@ function hasTouch()
 		   || navigator.msMaxTouchPoints > 0;
 }
 
-if (hasTouch())
+
+
+//Remove hover events on touchscreen devices.
+function remove_hover_on_touch()
 {
-	//Remove all :hover stylesheets.
-	try
+	if (hasTouch())
 	{
-		//Prevent exception on browsers not supporting DOM styleSheets properly
-		for (var si in document.styleSheets)
+		//Remove all :hover stylesheets.
+		try
 		{
-			var styleSheet = document.styleSheets[si];
-			if (!styleSheet.rules) continue;
-
-			for (var ri = styleSheet.rules.length - 1; ri >= 0; ri--)
+			//Prevent exception on browsers not supporting DOM styleSheets properly
+			for (var si in document.styleSheets)
 			{
-				if (!styleSheet.rules[ri].selectorText) continue;
+				var styleSheet = document.styleSheets[si];
+				if (!styleSheet.rules) continue;
 
-				if (styleSheet.rules[ri].selectorText.match(':hover'))
+				for (var ri = styleSheet.rules.length - 1; ri >= 0; ri--)
 				{
-					styleSheet.deleteRule(ri);
+					if (!styleSheet.rules[ri].selectorText) continue;
+
+					if (styleSheet.rules[ri].selectorText.match(':hover'))
+					{
+						styleSheet.deleteRule(ri);
+					}
 				}
 			}
 		}
+		
+		catch (ex) {}
 	}
-	
-	catch (ex) {}
 }

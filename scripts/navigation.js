@@ -1,38 +1,43 @@
-//Handles redirects and url variables. This script cannot be loaded in main.js, since that is async, and if the user is offline, they need access to cached scripts, which can only be accessed directly. We can't put this in the head, since then we lose access to redirect(), and by extension url variables.
-
-
-
-if (!(window.location.href.includes("offline")))
+function detect_offline()
 {
-	setInterval(function()
+	if (!(window.location.href.includes("offline")))
 	{
-		if (window.navigator.onLine == false)
+		var online_refresh_id = setInterval(function()
 		{
-			try
+			if (window.location.href.includes("offline"))
 			{
-				for (key in url_vars)
-				{
-					if (key != "theme")
-					{
-						url_vars[key] = 0;
-					}
-				}
-				
-				redirect("/offline.html");
+				clearInterval(online_refresh_id);
 			}
 			
-			catch(ex)
+			if (window.navigator.onLine == false)
 			{
-				window.location.href = "/offline.html";
+				try
+				{
+					for (key in url_vars)
+					{
+						if (key != "theme")
+						{
+							url_vars[key] = 0;
+						}
+					}
+					
+					redirect("/offline.html");
+				}
+				
+				catch(ex)
+				{
+					window.location.href = "/offline.html";
+				}
 			}
-		}
-	}, 500);
+		}, 500);
+	}
 }
 
 
 
-//To keep expected functionality (open in new tab, draggable links, etc.), all elements with calls to redirect() are wrapped in <a> tags. Presses of <a> tags (without .real-link) are ignored, but to extend the functionality of url variables to the times they are used, we need to target them all and add the url variables onto them.
-$(function()
+//To keep expected link functionality (open in new tab, draggable, etc.), all elements with calls to redirect() are wrapped in <a> tags. Presses of <a> tags (without .real-link) are ignored, but to extend the functionality of url variables to the times they are used, we need to target them all and add the url variables onto them.
+
+function set_links()
 {
 	var href;
 	var include_return_url;
@@ -54,6 +59,35 @@ $(function()
 			}
 			
 			$(this).attr("href", href + concat_url_vars(include_return_url));
+		}
+	});
+}
+
+
+
+$(function()
+{
+	//Fade in the opacity when the user presses the back button.
+	window.addEventListener("pageshow", function(event)
+	{
+		var historyTraversal = event.persisted || 
+			(typeof window.performance != "undefined" && 
+			window.performance.navigation.type === 2);
+		
+		if (historyTraversal)
+		{
+			if (url_vars["content_animation"] == 1)
+			{
+				$("html").css("opacity", 1);
+			}
+			
+			else
+			{
+				setTimeout(function()
+				{
+					$("html").animate({opacity: 1}, 300, "swing");
+				}, 300);
+			}
 		}
 	});
 });
@@ -88,50 +122,63 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 	
 	
 	
-	//Act like a normal link, with no transitions, if the user wants that.
-	if (url_vars["content_animation"] == 1)
+	$.get(url, function(data)
 	{
-		window.location.href = url + concat_url_vars(include_return_url);
-	}
-	
-	else
-	{
-		//Fade out the current page's content
-		$("html").animate({opacity: 0}, 300, "swing");
+		parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
 		
-		//If necessary, take the time to fade back to the default background color, whatever that is.
-		if (from_nonstandard_color)
+		
+		
+		//Act like a normal link, with no transitions, if the user wants that.
+		if (url_vars["content_animation"] == 1)
 		{
-			setTimeout(function()
-			{
-				$("html, body").addClass("background-transition");
-				
-				if (url_vars["theme"] == 1)
-				{
-					$("html, body").css("background-color", "rgb(24, 24, 24)");
-				}
-				
-				else
-				{
-					$("html, body").css("background-color", "rgb(255, 255, 255)");
-				}
-				
-				setTimeout(function()
-				{
-					window.location.href = url + concat_url_vars(include_return_url);
-				}, 450);
-			}, 300);
+			$("body").html(data);
+			
+			on_page_load();
 		}
 		
-		//Finally, redirect to the new page.
 		else
 		{
-			setTimeout(function()
+			//Fade out the current page's content
+			$("html").animate({opacity: 0}, 300, "swing");
+			
+			//If necessary, take the time to fade back to the default background color, whatever that is.
+			if (from_nonstandard_color)
 			{
-				window.location.href = url + concat_url_vars(include_return_url);
-			}, 300);
+				setTimeout(function()
+				{
+					$("html, body").addClass("background-transition");
+					
+					if (url_vars["theme"] == 1)
+					{
+						$("html, body").css("background-color", "rgb(24, 24, 24)");
+					}
+					
+					else
+					{
+						$("html, body").css("background-color", "rgb(255, 255, 255)");
+					}
+					
+					setTimeout(function()
+					{
+						$("body").html(data);
+						
+						on_page_load();
+					}, 450);
+				}, 300);
+			}
+			
+			//Finally, redirect to the new page and fade the content back in.
+			else
+			{
+				setTimeout(function()
+				{
+					$("body").html(data);
+					
+					on_page_load();
+				}, 300);
+			}
 		}
-	}
+	});
 }
 
 

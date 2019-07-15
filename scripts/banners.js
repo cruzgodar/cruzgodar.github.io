@@ -9,13 +9,23 @@ var banner_extension = "";
 
 $(function()
 {
-	if (url_vars["content_animation"] != 1)
+	$(window).scroll(function()
 	{
-		AOS.init({duration: 1200, once: false, offset: window_height/4});
-	}
+		scroll_update();
+	});
 	
 	
 	
+	$(window).resize(function()
+	{
+		scroll_update();
+	});
+});
+
+
+
+function load_banner()
+{
 	if (supports_webp)
 	{
 		banner_extension = "webp";
@@ -29,13 +39,13 @@ $(function()
 	
 	
 	//Only do banner things if the banner things are in the standard places.
-	if (manual_banner != true)
+	if (page_settings["manual_banner"] != true)
 	{
 		$("head").append(`
 			<style>
 				.banner:before
 				{
-					background: url("banners/landscape.${banner_extension}") no-repeat center center;
+					background: url("${parent_folder}banners/landscape.${banner_extension}") no-repeat center center;
 					-webkit-background-size: cover;
 					background-size: cover;
 				}
@@ -44,7 +54,7 @@ $(function()
 				{
 					.banner:before
 					{
-						background: url("banners/portrait.${banner_extension}") no-repeat center center;
+						background: url("${parent_folder}banners/portrait.${banner_extension}") no-repeat center center;
 						-webkit-background-size: cover;
 						background-size: cover;
 					}
@@ -56,7 +66,7 @@ $(function()
 		
 		var banner_name;
 		
-		if ($(window).width() / $(window).height() < 10/16 || $(window).width() <= 800)
+		if (window_width / window_height < 10/16 || window_width <= 800)
 		{
 			banner_name = "portrait." + banner_extension;
 		}
@@ -65,45 +75,23 @@ $(function()
 		{
 			banner_name = "landscape." + banner_extension;
 		}
-		
-		
-		
-		//Fade in once the banner has loaded.
-		if (url_vars["content_animation"] == 1)
+	
+	
+	
+		$("<img/>").attr("src", parent_folder + "banners/" + banner_name).on("load", function()
 		{
-			$("body").css("opacity", 1);
-		}
-		
-		else
-		{
-			$("<img/>").attr("src", "banners/" + banner_name).on("load", function()
+			$(this).remove();
+			$("html").animate({opacity: 1}, 300, "swing");
+			
+			
+			//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
+			if (scroll == 0)
 			{
-				$(this).remove();
-				$("body").animate({opacity: 1}, 300, "swing");
-				
-				//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
-				if (scroll == 0)
-				{
-					setTimeout(add_scroll_button, 3000);
-				}
-			});
-		}
+				setTimeout(add_scroll_button, 3000);
+			}
+		});
 	}
-	
-	
-	
-	$(window).scroll(function()
-	{
-		scroll_update();
-	});
-	
-	
-	
-	$(window).resize(function()
-	{
-		scroll_update();
-	});
-});
+}
 
 
 

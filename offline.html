@@ -1,114 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<div class="empty-top" style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
 
 
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-135923635-1"></script>
-<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	
-	gtag('config', 'UA-135923635-1');
-</script>
-
-<script src="/scripts/settings-head.js"></script>
+<header>
+	<div data-aos="fade-up" id="trigger-section-1">
+		<h1 class="heading-text">You&#x2019;re Offline!</h1>
+	</div>
+</header>
 
 
 
-<title>You're Offline!</title>
-
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="mask-icon" href="/safari-pinned-tab.svg?v=NmPPnmeW24" color="#5bbad5">
-<link rel="shortcut icon" href="/favicon.ico?v=NmPPnmeW24">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="msapplication-TileImage" content="/mstile-144x144.png?v=NmPPnmeW24">
-
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
-<link rel="manifest" href="/manifest.json">
-
-<meta name="theme-color" content="#ffffff">
-
-<meta name="apple-mobile-web-app-title" content="Cruz Godar">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
+<div style="height: 5vh"></div>
 
 
 
-<link rel="stylesheet" type="text/css" href="/style/aos.css">
-
-<link rel="stylesheet" type="text/css" href="/style/main.css">
-
-</head>
-
-
-
-<body>
-	<div class="empty-top" style="height: 5vh"></div>
-	
-	<noscript>
-		<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
-	</noscript>
-	
-	
-	
-	<header>
-		<div data-aos="fade-up" id="trigger-section-1">
-			<h1 class="heading-text">You&#x2019;re Offline!</h1>
+<main>
+	<section>
+		<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">
+			<p class="body-text">Seems like there&#x2019;s no internet connection. When you come back online, you&#x2019;ll automatically be returned to the homepage.</p>
 		</div>
-	</header>
-	
-	
-	
-	<div style="height: 5vh"></div>
-	
-	
-	
-	<main>
-		<section>
-			<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">
-				<p class="body-text">Seems like there&#x2019;s no internet connection. When you come back online, you&#x2019;ll automatically be returned to the homepage.</p>
-			</div>
-		</section>
-	</main>
-	
-	
+	</section>
+</main>
 
-	<!-- jQuery -->
-	<script src="/scripts/jquery.js"></script>
-	
-	<!-- Animate on scroll library -->
-	<script src="/scripts/aos.js"></script>
-	
-	<script src="/scripts/main.js"></script>
 
-	<script src="/scripts/navigation.js"></script>
-	
-	<script>
-		no_footer = true;
+
+<script>
+	page_settings = 
+	{
+		"banner_page": false,
+		"writing_page": false,
 		
-		setInterval(function()
-		{
-			if (window.navigator.onLine)
-			{
-				try
-				{
-					redirect("/index.html");
-				}
-				
-				catch(ex)
-				{
-					window.location.href = "/index.html";
-				}
-			}
-		}, 200);
-	</script>
+		"manual_banner": false,
+		"manual_dark_theme": false,
+		
+		"no_footer": true,
+		"footer_exclusion": "",
+		"footer_from_nonstandard_color": false
+	};
 	
-</body>
-</html>
+	page_settings_done = true;
+	
+	
+	
+	setInterval(function()
+	{
+		if (window.navigator.onLine)
+		{
+			try
+			{
+				redirect("/home.html");
+			}
+			
+			catch(ex)
+			{
+				window.location.href = "/home.html";
+			}
+		}
+	}, 200);
+</script>

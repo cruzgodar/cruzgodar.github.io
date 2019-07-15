@@ -3,41 +3,31 @@
 
 var window_width, window_height;
 
-//Used by weird pages like Corona if they want to work dark theme out on their own.
-var manual_dark_theme = false
-var manual_banner = false;
+var page_settings = 
+{
+	"banner_page": false,
+	
+	"manual_banner": false,
+	"manual_dark_theme": false,
+	
+	"no_footer": false,
+	"footer_exclusion": "",
+	"footer_from_nonstandard_color": false
+};
+
+var page_settings_done = false;
+
+var parent_folder = "/";
 
 //Whether the browser supports WebP images or not. Given a boolean value when decided.
 var supports_webp = null;
 
-var no_footer = false;
-var footer_exclusion = "";
-var footer_from_nonstandard_color = false;
-
 
 
 $(function()
-{	
-	//Start at the top of the page to prevent banner glitches. I don't understand why, but this is the only working method I've found to reset scroll on load.
-	$([document.documentElement, document.body]).animate({scrollTop: 0});
-	
-	
-	
+{
 	window_width = $(window).width();
 	window_height = $(window).height();
-	
-	
-	
-	if (url_vars["content_animation"] == 1)
-	{
-		//This attribute makes the content invisible until it's animated in, so if we're never going to do that, it has to go.
-		$("body").find("*[data-aos]").removeAttr("data-aos");
-	}
-	
-	else
-	{
-		AOS.init({duration: 1200, once: true, offset: window_height/4});
-	}
 	
 	
 	
@@ -97,32 +87,6 @@ $(function()
 	
 	
 	
-	//Fade in the opacity when the user presses the back button.
-	window.addEventListener("pageshow", function(event)
-	{
-		var historyTraversal = event.persisted || 
-			(typeof window.performance != "undefined" && 
-			window.performance.navigation.type === 2);
-		
-		if (historyTraversal)
-		{
-			if (url_vars["content_animation"] == 1)
-			{
-				$("html").css("opacity", 1);
-			}
-			
-			else
-			{
-				setTimeout(function()
-				{
-					$("html").animate({opacity: 1}, 300, "swing");
-				}, 300);
-			}
-		}
-	});
-	
-	
-	
 	//Ensure elements always animate 1/4 of the way up the screen, whatever size that screen is.
 	$(window).resize(function()
 	{
@@ -151,13 +115,92 @@ $(function()
 				supports_webp = false;
 			}
 		});
-	
-		$.getScript("/scripts/browsers.js");
-		
-		$.getScript("/scripts/images.js");
-		
-		$.getScript("/scripts/settings-body.js");
-		
-		$.getScript("/scripts/footer.js");
 	});
+	
+	
+	
+	var refresh_id = setInterval(function()
+	{
+		if (supports_webp != null && typeof insert_footer != "undefined" && typeof insert_images != "undefined" && typeof detect_offline != "undefined" && typeof gimp_edge != "undefined" && typeof set_links != "undefined" && typeof remove_hover_on_touch != "undefined")
+		{
+			clearInterval(refresh_id);
+			
+			redirect("/home.html");
+		}
+	}, 50);
 });
+
+
+
+function on_page_load()
+{
+	var refresh_id = setInterval(function()
+	{
+		if (page_settings_done)
+		{
+			clearInterval(refresh_id);
+			
+			page_settings_done = false;
+			
+			
+	
+			if (url_vars["content_animation"] == 1)
+			{
+				$("html").animate({opacity: 1});
+			}
+			
+			else
+			{
+				if (page_settings["banner_page"])
+				{
+					load_banner();
+				}
+				
+				else
+				{
+					$("html").animate({opacity: 1});
+				}
+			}
+			
+			
+			
+			//Start at the top of the page to prevent banner glitches.
+			window.scrollTo(0, 0);
+			
+			
+			
+			if (url_vars["content_animation"] == 1)
+			{
+				//This attribute makes the content invisible until it's animated in, so if we're never going to do that, it has to go.
+				$("body").find("*[data-aos]").removeAttr("data-aos");
+			}
+			
+			else
+			{
+				if (page_settings["banner_page"])
+				{
+					AOS.init({duration: 1200, once: false, offset: window_height/4});
+				}
+				
+				else
+				{
+					AOS.init({duration: 1200, once: true, offset: window_height/4});
+				}
+			}
+			
+			
+			
+			insert_footer();
+			
+			insert_images();
+			
+			detect_offline();
+			
+			gimp_edge();
+			
+			set_links();
+			
+			remove_hover_on_touch();
+		}
+	}, 50);
+}

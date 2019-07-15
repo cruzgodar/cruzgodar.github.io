@@ -1,55 +1,55 @@
 {
 	"image-writing":
 	{
-		"webp": "/writing/cover.webp",
-		"non-webp": "/writing/cover.jpg"
+		"webp": "writing/cover.webp",
+		"non-webp": "writing/cover.jpg"
 	},
 	
 	"image-blog":
 	{
-		"webp": "/blog/cover.webp",
-		"non-webp": "/blog/cover.jpg"
+		"webp": "blog/cover.webp",
+		"non-webp": "blog/cover.jpg"
 	},
 	
 	"image-applets":
 	{
-		"webp": "/applets/cover.webp",
-		"non-webp": "/applets/cover.jpg"
+		"webp": "applets/cover.webp",
+		"non-webp": "applets/cover.jpg"
 	},
 	
 	"image-research":
 	{
-		"webp": "/research/cover.webp",
-		"non-webp": "/research/cover.jpg"
+		"webp": "research/cover.webp",
+		"non-webp": "research/cover.jpg"
 	},
 	
 	"image-notes":
 	{
-		"webp": "/notes/cover.webp",
-		"non-webp": "/notes/cover.jpg"
+		"webp": "notes/cover.webp",
+		"non-webp": "notes/cover.jpg"
 	},
 	
 	"image-bio":
 	{
-		"webp": "/bio/cover.webp",
-		"non-webp": "/bio/cover.jpg"
+		"webp": "bio/cover.webp",
+		"non-webp": "bio/cover.jpg"
 	},
 	
 	"image-julia-set-explorer":
 	{
-		"webp": "/applets/julia-set-explorer/cover.webp",
-		"non-webp": "/applets/julia-set-explorer/cover.jpg"
+		"webp": "applets/julia-set-explorer/cover.webp",
+		"non-webp": "applets/julia-set-explorer/cover.jpg"
 	},
 	
 	"image-on-leaving-again-and-new-beginnings":
 	{
-		"webp": "/blog/7/cover.webp",
-		"non-webp": "/blog/7/cover.jpg"
+		"webp": "blog/7/cover.webp",
+		"non-webp": "blog/7/cover.jpg"
 	},
 	
 	"image-erinnerungen":
 	{
-		"webp": "/blog/6/cover.webp",
-		"non-webp": "/blog/6/cover.jpg"
+		"webp": "blog/6/cover.webp",
+		"non-webp": "blog/6/cover.jpg"
 	}
 }

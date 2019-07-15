@@ -2,7 +2,7 @@
 
 
 
-$(function()
+function insert_images()
 {
 	var images = $(".check-webp");
 	
@@ -20,16 +20,28 @@ $(function()
 	
 	try
 	{
-		$.getJSON("images.json", function(image_data)
+		$.getJSON(parent_folder + "images.json", function(image_data)
 		{
 			var i;
 			
+			var src;
+			
 			for (i = 0; i < images.length; i++)
 			{
-				$(images[i]).attr("src", image_data[$(images[i]).attr("id")][image_type]);
+				src = image_data[$(images[i]).attr("id")][image_type];
+				
+				if (src.slice(0, 5) == "https")
+				{
+					$(images[i]).attr("src", src);
+				}
+				
+				else
+				{
+					$(images[i]).attr("src", parent_folder + src);
+				}
 			}
 		});
 	}
 	
 	catch(ex) {}
-});
+}

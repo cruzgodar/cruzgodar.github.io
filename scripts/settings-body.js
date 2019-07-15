@@ -405,7 +405,7 @@ function switch_font_on_load()
 		
 		write_url_vars();
 		
-		if (typeof writing_page != "undefined" && writing_page)
+		if (page_settings["writing_page"])
 		{
 			$(".body-text").css("font-family", "'PT Serif', serif");
 		}
