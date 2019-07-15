@@ -87,7 +87,7 @@
 		<div style="height: 5vh"></div>
 		
 		<div style="display: flex; justify-content: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="1000" data-aos-anchor="#trigger-section-2">
-			<button class="text-button" type="button" onclick="draw_high_res_julia(); $('.temporary-style').remove();">Generate</button>
+			<button class="text-button" type="button" onclick="draw_high_res_julia()">Generate</button>
 		</div>
 		
 		<div style="height: 10vh"></div>
@@ -109,6 +109,8 @@
 <script>
 	page_settings = 
 	{
+		"title": "Julia Set Explorer",
+		
 		"banner_page": false,
 		"writing_page": false,
 		
@@ -142,17 +144,20 @@
 					width: 70vw;
 					margin-left: 15vw;
 				}
+				
 				#mandelbrot-set, #julia-set
 				{
 					width: 30vw;
 					height: 30vw;
 				}
+				
 				#high-res-julia-set
 				{
 					width: 90vmin;
 					height: 90vmin;
 					margin-left: calc((100vw - (90vmin + 8px)) / 2);
 				}
+				
 				#mandelbrot-set, #julia-set, #high-res-julia-set
 				{
 					border: 2px solid rgb(127, 127, 127);
@@ -160,6 +165,7 @@
 					border-radius: 15px;
 					padding: 2px;
 				}
+				
 				@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 				{
 					#container

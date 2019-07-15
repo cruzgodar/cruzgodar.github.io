@@ -143,52 +143,16 @@ function on_page_load()
 			page_settings_done = false;
 			
 			
-	
-			if (url_vars["content_animation"] == 1)
-			{
-				$("html").animate({opacity: 1});
-			}
-			
-			else
-			{
-				if (page_settings["banner_page"])
-				{
-					load_banner();
-				}
-				
-				else
-				{
-					$("html").animate({opacity: 1});
-				}
-			}
-			
-			
 			
 			//Start at the top of the page to prevent banner glitches.
 			window.scrollTo(0, 0);
 			
+			//Set the page title.
+			$("title").html(page_settings["title"]);
 			
+			fade_in();
 			
-			if (url_vars["content_animation"] == 1)
-			{
-				//This attribute makes the content invisible until it's animated in, so if we're never going to do that, it has to go.
-				$("body").find("*[data-aos]").removeAttr("data-aos");
-			}
-			
-			else
-			{
-				if (page_settings["banner_page"])
-				{
-					AOS.init({duration: 1200, once: false, offset: window_height/4});
-				}
-				
-				else
-				{
-					AOS.init({duration: 1200, once: true, offset: window_height/4});
-				}
-			}
-			
-			
+			init_aos();
 			
 			insert_footer();
 			
@@ -203,4 +167,51 @@ function on_page_load()
 			remove_hover_on_touch();
 		}
 	}, 50);
+}
+
+
+
+function fade_in()
+{
+	if (url_vars["content_animation"] == 1)
+	{
+		$("html").animate({opacity: 1});
+	}
+	
+	else
+	{
+		if (page_settings["banner_page"])
+		{
+			load_banner();
+		}
+		
+		else
+		{
+			$("html").animate({opacity: 1});
+		}
+	}
+}
+
+
+
+function init_aos()
+{
+	if (url_vars["content_animation"] == 1)
+	{
+		//This attribute makes the content invisible until it's animated in, so if we're never going to do that, it has to go.
+		$("body").find("*[data-aos]").removeAttr("data-aos");
+	}
+	
+	else
+	{
+		if (page_settings["banner_page"])
+		{
+			AOS.init({duration: 1200, once: false, offset: window_height/4});
+		}
+		
+		else
+		{
+			AOS.init({duration: 1200, once: true, offset: window_height/4});
+		}
+	}
 }
