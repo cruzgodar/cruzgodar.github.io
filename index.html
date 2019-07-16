@@ -82,27 +82,10 @@
 	
 	<script src="/scripts/comments.js"></script>
 	
+	<script src="/scripts/register-service-worker.js"></script>
 	
-	
-	<!-- Register a service worker, because why not -->
 	<script>
-		if ("serviceWorker" in navigator)
-		{
-			window.addEventListener("load", function()
-			{
-				navigator.serviceWorker.register("/service-worker.js").then(function(registration)
-				{
-					//Registration was successful
-					console.log("ServiceWorker registration successful with scope: ", registration.scope);
-				},
-				
-				function(err)
-				{
-					//Registration failed
-					console.log('ServiceWorker registration failed: ', err);
-				});
-			});
-		}
+		entry_point("/home.html");
 	</script>
 </body>
 </html>

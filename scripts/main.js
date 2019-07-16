@@ -95,19 +95,23 @@ $(function()
 			}
 		});
 	});
-	
-	
-	
+});
+
+
+
+//Waits for everything to load, then redirects to the chosen page. Any page that calls this should never be able to be accessed again without unloading the page.
+function entry_point(url)
+{
 	var refresh_id = setInterval(function()
 	{
-		if (supports_webp != null && typeof insert_footer != "undefined" && typeof insert_images != "undefined" && typeof detect_offline != "undefined" && typeof gimp_edge != "undefined" && typeof set_links != "undefined" && typeof remove_hover_on_touch != "undefined")
+		if (supports_webp != null && typeof redirect != "undefined" && typeof fade_in != "undefined" && typeof update_aos != "undefined" && typeof bind_handlers != "undefined" && typeof insert_footer != "undefined" && typeof insert_images != "undefined" && typeof apply_settings != "undefined" && typeof detect_offline != "undefined" && typeof gimp_edge != "undefined" && typeof set_links != "undefined" && typeof remove_hover_on_touch != "undefined" && typeof load_disqus != "undefined")
 		{
 			clearInterval(refresh_id);
 			
-			redirect("/home.html");
+			redirect(url);
 		}
 	}, 50);
-});
+}
 
 
 
