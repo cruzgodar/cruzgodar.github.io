@@ -68,26 +68,24 @@ function set_links()
 $(function()
 {
 	//Fade in the opacity when the user presses the back button.
-	window.addEventListener("pageshow", function(event)
+	$(window).on("popstate", function(e)
 	{
-		var historyTraversal = event.persisted || 
-			(typeof window.performance != "undefined" && 
-			window.performance.navigation.type === 2);
+		$("html, body").addClass("no-scroll");
 		
-		if (historyTraversal)
+		window.scrollTo(0, 0);
+		
+		
+		
+		var previous_page = get_url_var("page");
+		
+		if (previous_page != null)
 		{
-			if (url_vars["content_animation"] == 1)
-			{
-				$("html").css("opacity", 1);
-			}
-			
-			else
-			{
-				setTimeout(function()
-				{
-					$("html").animate({opacity: 1}, 300, "swing");
-				}, 300);
-			}
+			redirect(decodeURIComponent(previous_page), false, false, true);
+		}
+		
+		else
+		{
+			redirect("/home.html", false, false, true);
 		}
 	});
 });
@@ -95,12 +93,14 @@ $(function()
 
 
 //Handles virtually all links.
-function redirect(url, in_new_tab, from_nonstandard_color)
+function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 {
 	//Indicates whether we need to pause to change the background color. Example: the bottom of the Corona page.
 	from_nonstandard_color = (typeof from_nonstandard_color != "undefined") ? from_nonstandard_color : false;
 	
 	in_new_tab = (typeof in_new_tab != "undefined") ? in_new_tab : false;
+	
+	no_state_push = (typeof no_state_push != "undefined") ? no_state_push : false;
 	
 	
 	
@@ -138,7 +138,10 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 			on_page_unload();
 			
 			//Record the page change in the url bar and in the browser history.
-			history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+			if (no_state_push == false)
+			{
+				history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+			}
 			
 			$("body").html(data);
 			
@@ -172,7 +175,10 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 						on_page_unload();
 						
 						//Record the page change in the url bar and in the browser history.
-						history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+						if (no_state_push == false)
+						{
+							history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+						}
 						
 						$("body").html(data);
 						
@@ -189,7 +195,10 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 					on_page_unload();
 					
 					//Record the page change in the url bar and in the browser history.
-					history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+					if (no_state_push == false)
+					{
+						history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+					}
 					
 					$("body").html(data);
 					

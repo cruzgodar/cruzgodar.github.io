@@ -234,6 +234,14 @@ img
 
 
 
+.no-scroll
+{
+	height: 100vh;
+	overflow: hidden;
+}
+
+
+
 @media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 {
 	.heading-text, .section-text, .body-text, .date-text

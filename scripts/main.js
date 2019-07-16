@@ -109,7 +109,7 @@ function entry_point(url)
 		{
 			clearInterval(refresh_id);
 			
-			redirect(url);
+			redirect(url, false, false, true);
 		}
 	}, 50);
 }
@@ -161,6 +161,8 @@ function on_page_load()
 			
 			//Set the page title.
 			$("title").html(page_settings["title"]);
+			
+			$("html, body").removeClass("no-scroll");
 			
 			
 			
