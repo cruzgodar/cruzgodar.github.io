@@ -122,6 +122,10 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 	
 	
 	
+	current_url = url;
+	
+	
+	
 	$.get(url, function(data)
 	{
 		parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
@@ -132,6 +136,9 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 		if (url_vars["content_animation"] == 1)
 		{
 			on_page_unload();
+			
+			//Record the page change in the url bar and in the browser history.
+			history.pushState({}, document.title, "/" + concat_url_vars(include_return_url));
 			
 			$("body").html(data);
 			
@@ -164,6 +171,9 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 					{
 						on_page_unload();
 						
+						//Record the page change in the url bar and in the browser history.
+						history.pushState({}, document.title, "/" + concat_url_vars(include_return_url));
+						
 						$("body").html(data);
 						
 						on_page_load();
@@ -177,6 +187,9 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 				setTimeout(function()
 				{
 					on_page_unload();
+					
+					//Record the page change in the url bar and in the browser history.
+					history.pushState({}, document.title, "/" + concat_url_vars(include_return_url));
 					
 					$("body").html(data);
 					
@@ -192,10 +205,11 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 //Returns a string of url vars that can be attached to any url.
 function concat_url_vars(include_return_url)
 {
-	var first_var_written = false;
-	var string = "";
+	var string = "?page=" + encodeURIComponent(current_url);
 	var key;
 	var temp = "";
+	
+	
 	
 	for (var i = 0; i < Object.keys(url_vars).length; i++)
 	{
@@ -203,16 +217,7 @@ function concat_url_vars(include_return_url)
 		
 		if (url_vars[key] == 1 || (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] == 0 && key == "theme"))
 		{
-			if (first_var_written == false)
-			{
-				string += "?" + key + "=" + url_vars[key];
-				first_var_written = true;
-			}
-			
-			else
-			{
-				string += "&" + key + "=" + url_vars[key];
-			}
+			string += "&" + key + "=" + url_vars[key];
 		}
 	}
 	
@@ -221,16 +226,7 @@ function concat_url_vars(include_return_url)
 	//If we're going to the settings page, we need to know where we came from so we can return there later. Just don't include any current url variables.
 	if (include_return_url)
 	{
-		if (first_var_written == false)
-		{
-			string += "?return=" + encodeURIComponent(window.location.href.split("?", 1));
-			first_var_written = true;
-		}
-		
-		else
-		{
-			string += "&return=" + encodeURIComponent(window.location.href.split("?", 1));
-		}
+		string += "&return=" + get_url_var("page");
 	}
 	
 	
@@ -243,6 +239,6 @@ function write_url_vars()
 	//Make state persist on refresh, unless it's the settings page, which will just clog up the history.
 	if (!(window.location.href.includes("settings")))
 	{
-		history.replaceState({}, document.title, window.location.href.split("?", 1) + concat_url_vars(0));
+		history.replaceState({}, document.title, window.location.href.split("?", 1) + concat_url_vars(false));
 	}
 }

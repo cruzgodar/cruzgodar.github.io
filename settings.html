@@ -252,13 +252,11 @@
 		if (return_url == null)
 		{
 			$("#apply-button").attr("onclick", "redirect('/home.html')");
-			$("#apply-button").parent().attr("href", "/home.html");
 		}
 		
 		else
 		{
 			$("#apply-button").attr("onclick", "redirect('" + decodeURIComponent(return_url) + "')");
-			$("#apply-button").parent().attr("href", decodeURIComponent(return_url));
 		}
 	});
 </script>

@@ -7,6 +7,7 @@ var page_settings = {};
 
 var page_settings_done = false;
 
+var current_url = "/";
 var parent_folder = "/";
 
 //Whether the browser supports WebP images or not. Given a boolean value when decided.
@@ -160,6 +161,8 @@ function on_page_load()
 			
 			//Set the page title.
 			$("title").html(page_settings["title"]);
+			
+			
 			
 			//Add paragraph indent if necessary.
 			if (page_settings["writing_page"])
