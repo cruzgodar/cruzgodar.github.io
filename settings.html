@@ -191,8 +191,17 @@
 		
 		
 		//We only apply this now to prevent the dark theme from transitioning slowly on load rather than instantly.
-		$("html").css("-webkit-transition", "background-color .6s ease");
-		$("html").css("transition", "background-color .6s ease");
+		$("head").append(`
+			<style>
+				html
+				{
+					-webkit-transition: background-color .6s ease;
+					transition: background-color .6s ease;
+				}
+			</style>
+		`);
+		
+		
 		
 		setTimeout(function()
 		{

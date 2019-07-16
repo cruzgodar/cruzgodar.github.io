@@ -3,17 +3,7 @@
 
 var window_width, window_height;
 
-var page_settings = 
-{
-	"banner_page": false,
-	
-	"manual_banner": false,
-	"manual_dark_theme": false,
-	
-	"no_footer": false,
-	"footer_exclusion": "",
-	"footer_from_nonstandard_color": false
-};
+var page_settings = {};
 
 var page_settings_done = false;
 
@@ -167,6 +157,12 @@ function on_page_load()
 			//Set the page title.
 			$("title").html(page_settings["title"]);
 			
+			//Add paragraph indent if necessary.
+			if (page_settings["writing_page"])
+			{
+				$(".body-text").css("text-indent", "10pt");
+			}
+			
 			
 			
 			fade_in();
@@ -178,6 +174,8 @@ function on_page_load()
 			insert_footer();
 			
 			insert_images();
+			
+			apply_settings();
 			
 			detect_offline();
 			
@@ -207,9 +205,8 @@ function on_page_unload()
 	
 	
 	
-	//Unbind everything from the window. Anything important will be rebound.
-	$(window).off("scroll", "**");
-	$(window).off("resize", "**");
+	//Unbind everything transient from the window (that was bound with jQuery. This is the reason it's currently impossible to remove AOS's handlers).
+	$(window).off(".temp-handler");
 }
 
 
@@ -219,6 +216,11 @@ function fade_in()
 	if (url_vars["content_animation"] == 1)
 	{
 		$("html").animate({opacity: 1});
+		
+		if (page_settings["banner_page"])
+		{
+			load_banner();
+		}
 	}
 	
 	else

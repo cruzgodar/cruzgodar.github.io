@@ -329,7 +329,7 @@
 		//Make the eclipse image have a 1:1 aspect ratio.
 		$(".eclipse, .eclipse img").css("height", $(".eclipse").width());
 		
-		$(window).resize(function()
+		$(window).on("resize.temp-handler", function()
 		{
 			$(".eclipse, .eclipse img").css("height", $(".eclipse").width());
 		});
@@ -339,7 +339,7 @@
 		//We have to wait to apply the contrast changes, since otherwise settings_body may set the body text color after we do here, resulting in less contrast than normal.
 		var refresh_id = setInterval(function()
 		{
-			if (typeof settings_body_done != "undefined")
+			if (typeof settings_done != "undefined")
 			{
 				clearInterval(refresh_id);
 				
@@ -399,15 +399,15 @@
 		
 		
 		
-		$(window).scroll(function()
+		$(window).on("scroll.temp-handler", function()
 		{
-			scroll_update();
+			corona_scroll_update();
 		});
 	});
 	
 	
 	
-	function scroll_update()
+	function corona_scroll_update()
 	{
 		var scroll = $(this).scrollTop();
 		

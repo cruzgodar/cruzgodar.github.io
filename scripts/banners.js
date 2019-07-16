@@ -7,20 +7,23 @@ var banner_extension = "";
 
 
 
+$(function()
+{
+	$(window).on("scroll", function()
+	{
+		scroll_update();
+	});
+	
+	$(window).on("resize", function()
+	{
+		scroll_update();
+	});
+});
+
+
+
 function load_banner()
 {
-	$(window).scroll(function()
-	{
-		scroll_update();
-	});
-	
-	$(window).resize(function()
-	{
-		scroll_update();
-	});
-	
-	
-	
 	if (supports_webp)
 	{
 		banner_extension = "webp";
@@ -59,32 +62,35 @@ function load_banner()
 		
 		
 		
-		var banner_name;
-		
-		if (window_width / window_height < 10/16 || window_width <= 800)
+		if (url_vars["content_animation"] != 1)
 		{
-			banner_name = "portrait." + banner_extension;
-		}
-		
-		else
-		{
-			banner_name = "landscape." + banner_extension;
-		}
-	
-	
-	
-		$("<img/>").attr("src", parent_folder + "banners/" + banner_name).on("load", function()
-		{
-			$(this).remove();
-			$("html").animate({opacity: 1}, 300, "swing");
+			var banner_name;
 			
-			
-			//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
-			if (scroll == 0)
+			if (window_width / window_height < 10/16 || window_width <= 800)
 			{
-				setTimeout(add_scroll_button, 3000);
+				banner_name = "portrait." + banner_extension;
 			}
-		});
+			
+			else
+			{
+				banner_name = "landscape." + banner_extension;
+			}
+		
+		
+			
+			$("<img/>").attr("src", parent_folder + "banners/" + banner_name).on("load", function()
+			{
+				$(this).remove();
+				$("html").animate({opacity: 1}, 300, "swing");
+				
+				
+				//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
+				if (scroll == 0)
+				{
+					setTimeout(add_scroll_button, 3000);
+				}
+			});
+		}
 	}
 }
 
@@ -151,6 +157,12 @@ function scroll_update()
 			$(".scroll-button").remove();
 			
 			scroll_button_done = true;
+		}
+		
+		//This shouldn't be required, but it fixes a weird flickering glitch with the name text.
+		else
+		{
+			global_opacity = 0;
 		}
 	}
 }

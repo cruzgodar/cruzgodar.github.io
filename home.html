@@ -326,8 +326,6 @@
 						$("html").animate({opacity: 1}, 300, "swing");
 					}
 					
-					var font_size = parseInt($(".name-text").css("font-size").replace("px", ""));
-					
 					$(".name-text").remove();
 					
 					$("#background-image").after(`
@@ -361,7 +359,7 @@
 		
 		
 		
-		$(window).scroll(function()
+		$(window).on("scroll.temp-handler", function()
 		{
 			scroll = $(this).scrollTop();
 			
@@ -371,7 +369,7 @@
 			}
 		});
 		
-		$(window).resize(function()
+		$(window).on("resize.temp-handler", function()
 		{
 			scroll = $(this).scrollTop();
 			

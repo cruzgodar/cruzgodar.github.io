@@ -2,7 +2,7 @@
 
 
 
-var settings_body_done;
+var settings_done;
 
 var url_var_functions = {
 	"animated":
@@ -30,7 +30,32 @@ var url_var_functions = {
 
 
 
-$(function()
+function get_url_var(id)
+{
+	var svalue = location.search.match(new RegExp("[\?\&]" + id + "=([^\&]*)(\&?)","i"));
+	return svalue ? svalue[1] : svalue;
+}
+
+var url_vars = {
+	"theme": get_url_var("theme"),
+	"font": get_url_var("font"),
+	"contrast": get_url_var("contrast"),
+	"comments": get_url_var("comments"),
+	"no_new_section": get_url_var("no_new_section"),
+	"content_animation": get_url_var("content_animation"),
+	"banner_style": get_url_var("banner_style")
+};
+
+
+
+if (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] == null)
+{
+	url_vars["theme"] = 1;
+}
+
+
+
+function apply_settings()
 {
 	for (key in url_vars)
 	{
@@ -48,8 +73,8 @@ $(function()
 	
 	
 	
-	settings_body_done = true;
-});
+	settings_done = true;
+}
 
 
 
@@ -89,7 +114,7 @@ function switch_theme()
 			$(".quote-attribution").css("color", "rgb(188, 188, 188)");
 			
 			$("head").append(`
-				<style class="permanent-style">
+				<style>
 					.line-break
 					{
 						background: rgb(24,24,24);
@@ -194,7 +219,7 @@ function switch_theme()
 //Changes the theme, but without any animation.
 function switch_theme_on_load()
 {
-	if (manual_dark_theme)
+	if (page_settings["manual_dark_theme"])
 	{
 		url_vars["theme"] = 1 - url_vars["theme"];
 		return;
@@ -244,7 +269,7 @@ function switch_contrast_on_load()
 			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(127, 127, 127)");
 			
 			$("head").append(`
-				<style class="permanent-style">
+				<style>
 					.line-break
 					{
 						background: rgb(24,24,24);
@@ -289,7 +314,7 @@ function switch_contrast_on_load()
 			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(64, 64, 64)");
 			
 			$("head").append(`
-				<style class="permanent-style">
+				<style>
 					.line-break
 					{
 						background: rgb(255,255,255);
