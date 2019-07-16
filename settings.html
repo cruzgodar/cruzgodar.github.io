@@ -249,7 +249,8 @@
 		//Figure out where to return to.
 		var return_url = get_url_var("return");
 		
-		if (return_url == null)
+		//Believe it or not, it might actually be the string "null". If the page we're coming from is the root page (without index.html), it will write null into the url and then this page will get "null". Still an invalid url to return to.
+		if (return_url == null || return_url == "null")
 		{
 			$("#apply-button").attr("onclick", "redirect('/home.html')");
 		}
