@@ -769,6 +769,7 @@
 		
 		"banner_page": true,
 		"writing_page": true,
+		"comments": true,
 		
 		"manual_banner": false,
 		"manual_dark_theme": false,
@@ -782,22 +783,9 @@
 	
 	
 	
-	function load_disqus()
+	var disqus_config = function()
 	{
-		var d = document, s = d.createElement('script');
-		s.src = 'https://cruzgodar.disqus.com/embed.js';
-		s.setAttribute('data-timestamp', +new Date());
-		(d.head || d.body).appendChild(s);
-	}
-	
-	if (url_vars["comments"] != 1)
-	{
-		var disqus_config = function()
-		{
-			this.page.url = "https://cruzgodar.com/writing/mist/mist.html";
-			this.page.identifier = "mist";
-		};
-		
-		load_disqus();
-	}
+		this.page.url = "https://cruzgodar.com/writing/mist/mist.html";
+		this.page.identifier = "mist";
+	};
 </script>

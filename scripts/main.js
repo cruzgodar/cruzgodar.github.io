@@ -22,6 +22,9 @@ var parent_folder = "/";
 //Whether the browser supports WebP images or not. Given a boolean value when decided.
 var supports_webp = null;
 
+//Whether Disqus has been loaded for the first time or not. We need to use a different function if it's not the first time.
+var loaded_disqus = false;
+
 
 
 $(function()
@@ -183,6 +186,13 @@ function on_page_load()
 			set_links();
 			
 			remove_hover_on_touch();
+			
+			
+			
+			if (url_vars["comments"] != 1 && page_settings["comments"])
+			{
+				load_disqus();
+			}
 		}
 	}, 50);
 }

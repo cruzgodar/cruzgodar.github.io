@@ -47,8 +47,8 @@
 				<button id="text-button" class="text-button" type="button" onclick="redirect('/blog/blog.html')">All Posts</button>
 			</a>
 			
-			<a href="../6/erinnerungen.html">
-				<input type="image" class="nav-button" onclick="redirect('../6/erinnerungen.html')" src="/graphics/general-icons/chevron-right.png" alt="Older">
+			<a href="/blog/6/erinnerungen.html">
+				<input type="image" class="nav-button" onclick="redirect('/blog/6/erinnerungen.html')" src="/graphics/general-icons/chevron-right.png" alt="Older">
 			</a>
 		</div>
 	</header>
@@ -408,8 +408,8 @@
 			<button id="text-button" class="text-button" type="button" onclick="redirect('/blog/blog.html')">All Posts</button>
 		</a>
 		
-		<a href="../6/erinnerungen.html">
-			<input type="image" class="nav-button" onclick="redirect('../6/erinnerungen.html')" src="/graphics/general-icons/chevron-right.png" alt="Older">
+		<a href="/blog/6/erinnerungen.html">
+			<input type="image" class="nav-button" onclick="redirect('/blog/6/erinnerungen.html')" src="/graphics/general-icons/chevron-right.png" alt="Older">
 		</a>
 	</div>
 
@@ -441,6 +441,7 @@
 		
 		"banner_page": true,
 		"writing_page": false,
+		"comments": true,
 		
 		"manual_banner": false,
 		"manual_dark_theme": false,
@@ -454,22 +455,9 @@
 	
 	
 	
-	function load_disqus()
+	var disqus_config = function()
 	{
-		var d = document, s = d.createElement('script');
-		s.src = 'https://cruzgodar.disqus.com/embed.js';
-		s.setAttribute('data-timestamp', +new Date());
-		(d.head || d.body).appendChild(s);
-	}
-	
-	if (url_vars["comments"] != 1)
-	{
-		var disqus_config = function()
-		{
-			this.page.url = "https://cruzgodar.com/blog/7/on-leaving-again-and-new-beginnings.html";
-			this.page.identifier = "on-leaving-again-and-new-beginnings";
-		};
-		
-		load_disqus();
-	}
+		this.page.url = "https://cruzgodar.com/blog/7/on-leaving-again-and-new-beginnings.html";
+		this.page.identifier = "on-leaving-again-and-new-beginnings";
+	};
 </script>

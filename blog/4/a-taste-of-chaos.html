@@ -39,16 +39,16 @@
 		<div style="height: 10vh"></div>
 
 		<div class="nav-buttons" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
-			<a href="../5/halloween-in-january.html">
-				<input type="image" class="nav-button" onclick="redirect('../5/halloween-in-january.html')" src="/graphics/general-icons/chevron-left.png" alt="Newer">
+			<a href="/blog/5/halloween-in-january.html">
+				<input type="image" class="nav-button" onclick="redirect('/blog/5/halloween-in-january.html')" src="/graphics/general-icons/chevron-left.png" alt="Newer">
 			</a>
 			
 			<a href="/blog/blog.html">
 				<button id="text-button" class="text-button" type="button" onclick="redirect('/blog/blog.html')">All Posts</button>
 			</a>
 			
-			<a href="../3/the-city-and-the-city.html">
-				<input type="image" class="nav-button" onclick="redirect('../3/the-city-and-the-city.html')" src="/graphics/general-icons/chevron-right.png" alt="Older">
+			<a href="/blog/3/the-city-and-the-city.html">
+				<input type="image" class="nav-button" onclick="redirect('/blog/3/the-city-and-the-city.html')" src="/graphics/general-icons/chevron-right.png" alt="Older">
 			</a>
 		</div>
 	</header>
@@ -422,16 +422,16 @@
 	<div style="height: 15vh"></div>
 
 	<div class="nav-buttons" data-aos="fade-up">
-		<a href="../5/halloween-in-january.html">
-			<input type="image" class="nav-button" onclick="redirect('../5/halloween-in-january.html')" src="/graphics/general-icons/chevron-left.png" alt="Newer">
+		<a href="/blog/5/halloween-in-january.html">
+			<input type="image" class="nav-button" onclick="redirect('/blog/5/halloween-in-january.html')" src="/graphics/general-icons/chevron-left.png" alt="Newer">
 		</a>
 		
 		<a href="/blog/blog.html">
 			<button id="text-button" class="text-button" type="button" onclick="redirect('/blog/blog.html')">All Posts</button>
 		</a>
 		
-		<a href="../3/the-city-and-the-city.html">
-			<input type="image" class="nav-button" onclick="redirect('../3/the-city-and-the-city.html')" src="/graphics/general-icons/chevron-right.png" alt="Older">
+		<a href="/blog/3/the-city-and-the-city.html">
+			<input type="image" class="nav-button" onclick="redirect('/blog/3/the-city-and-the-city.html')" src="/graphics/general-icons/chevron-right.png" alt="Older">
 		</a>
 	</div>
 
@@ -463,6 +463,7 @@
 		
 		"banner_page": true,
 		"writing_page": false,
+		"comments": true,
 		
 		"manual_banner": false,
 		"manual_dark_theme": false,
@@ -476,22 +477,9 @@
 	
 	
 	
-	function load_disqus()
+	var disqus_config = function()
 	{
-		var d = document, s = d.createElement('script');
-		s.src = 'https://cruzgodar.disqus.com/embed.js';
-		s.setAttribute('data-timestamp', +new Date());
-		(d.head || d.body).appendChild(s);
-	}
-	
-	if (url_vars["comments"] != 1)
-	{
-		var disqus_config = function()
-		{
-			this.page.url = "https://cruzgodar.com/blog/4/a-taste-of-chaos.html";
-			this.page.identifier = "a-taste-of-chaos";
-		};
-		
-		load_disqus();
-	}
+		this.page.url = "https://cruzgodar.com/blog/4/a-taste-of-chaos.html";
+		this.page.identifier = "a-taste-of-chaos";
+	};
 </script>
