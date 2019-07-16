@@ -85,7 +85,17 @@
 	<script src="/scripts/register-service-worker.js"></script>
 	
 	<script>
-		entry_point("/home.html");
+		var start_page = get_url_var("page");
+		
+		if (start_page != null)
+		{
+			entry_point(decodeURIComponent(start_page));
+		}
+		
+		else
+		{
+			entry_point("/home.html");
+		}
 	</script>
 </body>
 </html>

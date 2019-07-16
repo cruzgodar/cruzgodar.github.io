@@ -138,7 +138,7 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 			on_page_unload();
 			
 			//Record the page change in the url bar and in the browser history.
-			history.pushState({}, document.title, "/" + concat_url_vars(include_return_url));
+			history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
 			
 			$("body").html(data);
 			
@@ -172,7 +172,7 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 						on_page_unload();
 						
 						//Record the page change in the url bar and in the browser history.
-						history.pushState({}, document.title, "/" + concat_url_vars(include_return_url));
+						history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
 						
 						$("body").html(data);
 						
@@ -189,7 +189,7 @@ function redirect(url, in_new_tab, from_nonstandard_color)
 					on_page_unload();
 					
 					//Record the page change in the url bar and in the browser history.
-					history.pushState({}, document.title, "/" + concat_url_vars(include_return_url));
+					history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
 					
 					$("body").html(data);
 					
