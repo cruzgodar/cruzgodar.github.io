@@ -95,6 +95,15 @@ $(function()
 //Handles virtually all links.
 function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 {
+	var new_page_data;
+	
+	$.get(url, function(data)
+	{
+		new_page_data = data;
+	});
+	
+	
+	
 	//Indicates whether we need to pause to change the background color. Example: the bottom of the Corona page.
 	from_nonstandard_color = (typeof from_nonstandard_color != "undefined") ? from_nonstandard_color : false;
 	
@@ -124,89 +133,96 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	
 	current_url = url;
 	
-	
-	
-	$.get(url, function(data)
+	parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
+		
+		
+		
+	//Act like a normal link, with no transitions, if the user wants that.
+	if (url_vars["content_animation"] == 1)
 	{
-		parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
-		
-		
-		
-		//Act like a normal link, with no transitions, if the user wants that.
-		if (url_vars["content_animation"] == 1)
+		var refresh_id = setInterval(function()
 		{
-			on_page_unload();
-			
-			//Record the page change in the url bar and in the browser history.
-			if (no_state_push == false)
+			if (new_page_data != null)
 			{
-				history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+				clearInterval(refresh_id);
+				
+				load_html(new_page_data, include_return_url, no_state_push);
 			}
-			
-			$("body").html(data);
-			
-			on_page_load();
+		}, 50);
+	}
+		
+	else
+	{
+		//Fade out the current page's content
+		$("html").animate({opacity: 0}, 300, "swing");
+		
+		//If necessary, take the time to fade back to the default background color, whatever that is.
+		if (from_nonstandard_color)
+		{
+			setTimeout(function()
+			{
+				$("html, body").addClass("background-transition");
+				
+				if (url_vars["theme"] == 1)
+				{
+					$("html, body").css("background-color", "rgb(24, 24, 24)");
+				}
+				
+				else
+				{
+					$("html, body").css("background-color", "rgb(255, 255, 255)");
+				}
+				
+				setTimeout(function()
+				{
+					var refresh_id = setInterval(function()
+					{
+						if (new_page_data != null)
+						{
+							clearInterval(refresh_id);
+							
+							load_html(new_page_data, include_return_url, no_state_push);
+						}
+					}, 50);
+				}, 450);
+			}, 300);
 		}
 		
+		//Finally, redirect to the new page and fade the content back in.
 		else
 		{
-			//Fade out the current page's content
-			$("html").animate({opacity: 0}, 300, "swing");
-			
-			//If necessary, take the time to fade back to the default background color, whatever that is.
-			if (from_nonstandard_color)
+			setTimeout(function()
 			{
-				setTimeout(function()
+				var refresh_id = setInterval(function()
 				{
-					$("html, body").addClass("background-transition");
-					
-					if (url_vars["theme"] == 1)
+					if (new_page_data != null)
 					{
-						$("html, body").css("background-color", "rgb(24, 24, 24)");
-					}
-					
-					else
-					{
-						$("html, body").css("background-color", "rgb(255, 255, 255)");
-					}
-					
-					setTimeout(function()
-					{
-						on_page_unload();
+						clearInterval(refresh_id);
 						
-						//Record the page change in the url bar and in the browser history.
-						if (no_state_push == false)
-						{
-							history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
-						}
-						
-						$("body").html(data);
-						
-						on_page_load();
-					}, 450);
-				}, 300);
-			}
-			
-			//Finally, redirect to the new page and fade the content back in.
-			else
-			{
-				setTimeout(function()
-				{
-					on_page_unload();
-					
-					//Record the page change in the url bar and in the browser history.
-					if (no_state_push == false)
-					{
-						history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+						load_html(new_page_data, include_return_url, no_state_push);
 					}
-					
-					$("body").html(data);
-					
-					on_page_load();
-				}, 300);
-			}
+				}, 50);
+			}, 300);
 		}
-	});
+	}
+}
+
+
+
+//Actually performs the swapping out of html data.
+function load_html(data, include_return_url, no_state_push)
+{
+	on_page_unload();
+	
+	//Record the page change in the url bar and in the browser history.
+	if (no_state_push == false)
+	{
+		history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+	}
+	
+	$("body").html(data);
+	
+	on_page_load();
 }
 
 
