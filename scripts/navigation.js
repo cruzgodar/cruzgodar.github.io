@@ -35,7 +35,7 @@ function detect_offline()
 
 
 
-//To keep expected link functionality (open in new tab, draggable, etc.), all elements with calls to redirect() are wrapped in <a> tags. Presses of <a> tags (without .real-link) are ignored, but to extend the functionality of url variables to the times they are used, we need to target them all and add the url variables onto them.
+//To keep expected link functionality (open in new tab, draggable, etc.), all elements with calls to redirect() are wrapped in <a> tags. Presses of <a> tags (without .real-link) are ignored, but to extend the functionality of url variables to the times they are used, we need to target them all and add the url variables onto them. Also, now that the website is a single page app, we need to format them correctly, too, using the page variable.
 
 function set_links()
 {
@@ -58,7 +58,23 @@ function set_links()
 				include_return_url = false;
 			}
 			
-			$(this).attr("href", href + concat_url_vars(include_return_url));
+			
+			
+			var vars = concat_url_vars(include_return_url);
+			
+			if (vars.indexOf("&") == -1)
+			{
+				vars = "";
+			}
+			
+			else
+			{
+				vars = vars.substring(vars.indexOf("&"));
+			}
+			
+			
+			
+			$(this).attr("href", "/index.html?page=" + encodeURIComponent(href) + vars);
 		}
 	});
 }
