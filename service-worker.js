@@ -7,7 +7,8 @@ var urlsToCache =
     "/home.html",
     "/index.html?page=%2Fhome.html",
     "/styles/*",
-    "/scripts/*"
+    "/scripts/*",
+    "/graphics/*"
 ];
 
 self.addEventListener("install", function(event)
