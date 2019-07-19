@@ -77,11 +77,8 @@ function apply_settings()
 			url_vars[key] = 0;
 		}
 		
-		else if (url_vars[key] == 1)
-		{
-			url_vars[key] = 0;
-			url_var_functions["onload"][key]();
-		}
+		url_vars[key] = !url_vars[key];
+		url_var_functions["onload"][key]();
 	}
 	
 	
