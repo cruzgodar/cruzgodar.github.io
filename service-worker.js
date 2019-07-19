@@ -3,10 +3,9 @@ var urlsToCache =
 [
     "/",
     ".",
-    "/offline.html",
-    "/offline.html?theme=1",
     "/index.html",
     "/home.html",
+    "/index.html?page=%2Fhome.html",
     "/styles/*",
     "/scripts/*"
 ];

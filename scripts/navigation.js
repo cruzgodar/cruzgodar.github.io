@@ -1,40 +1,3 @@
-function detect_offline()
-{
-	if (!(window.location.href.includes("offline")))
-	{
-		var online_refresh_id = setInterval(function()
-		{
-			if (window.location.href.includes("offline"))
-			{
-				clearInterval(online_refresh_id);
-			}
-			
-			if (window.navigator.onLine == false)
-			{
-				try
-				{
-					for (key in url_vars)
-					{
-						if (key != "theme")
-						{
-							url_vars[key] = 0;
-						}
-					}
-					
-					redirect("/offline.html");
-				}
-				
-				catch(ex)
-				{
-					window.location.href = "/offline.html";
-				}
-			}
-		}, 500);
-	}
-}
-
-
-
 //To keep expected link functionality (open in new tab, draggable, etc.), all elements with calls to redirect() are wrapped in <a> tags. Presses of <a> tags (without .real-link) are ignored, but to extend the functionality of url variables to the times they are used, we need to target them all and add the url variables onto them. Also, now that the website is a single page app, we need to format them correctly, too, using the page variable.
 
 function set_links()
@@ -113,9 +76,15 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 {
 	var new_page_data;
 	
+	//Start getting the new page data immediately. If that fails, though, abort the mission.
 	$.get(url, function(data)
 	{
 		new_page_data = data;
+	})
+	
+	.fail(function()
+	{
+		$("html").animate({opacity: 1}, 300, "swing");
 	});
 	
 	
@@ -169,7 +138,7 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 		
 	else
 	{
-		//Fade out the current page's content
+		//Fade out the current page's content.
 		$("html").animate({opacity: 0}, 300, "swing");
 		
 		//If necessary, take the time to fade back to the default background color, whatever that is.
