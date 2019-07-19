@@ -39,29 +39,6 @@ function load_banner()
 	//Only do banner things if the banner things are in the standard places.
 	if (page_settings["manual_banner"] != true)
 	{
-		$("head").append(`
-			<style>
-				.banner:before
-				{
-					background: url("${parent_folder}banners/landscape.${banner_extension}") no-repeat center center;
-					-webkit-background-size: cover;
-					background-size: cover;
-				}
-				
-				@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
-				{
-					.banner:before
-					{
-						background: url("${parent_folder}banners/portrait.${banner_extension}") no-repeat center center;
-						-webkit-background-size: cover;
-						background-size: cover;
-					}
-				}
-			</style>
-		`);
-		
-		
-		
 		if (url_vars["content_animation"] != 1)
 		{
 			var banner_name;
@@ -78,9 +55,32 @@ function load_banner()
 		
 		
 			
-			$("<img/>").attr("src", parent_folder + "banners/" + banner_name).on("load", function()
+			//Fetch the banner file. If that works, great! Set thr background and fade in the page. If not, that means the html was cached but the banner was not (commonly happens on the homepage). In that case, we need to abort, so we go back to the safety of the previous page.
+			$.get(parent_folder + "banners/" + banner_name)
+			
+			.done(function()
 			{
-				$(this).remove();
+				$("head").append(`
+					<style>
+						.banner:before
+						{
+							background: url("${parent_folder}banners/landscape.${banner_extension}") no-repeat center center;
+							-webkit-background-size: cover;
+							background-size: cover;
+						}
+						
+						@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
+						{
+							.banner:before
+							{
+								background: url("${parent_folder}banners/portrait.${banner_extension}") no-repeat center center;
+								-webkit-background-size: cover;
+								background-size: cover;
+							}
+						}
+					</style>
+				`);
+				
 				$("html").animate({opacity: 1}, 300, "swing");
 				
 				
@@ -89,6 +89,11 @@ function load_banner()
 				{
 					setTimeout(add_scroll_button, 3000);
 				}
+			})
+			
+			.fail(function()
+			{
+				window.history.back();
 			});
 		}
 	}
