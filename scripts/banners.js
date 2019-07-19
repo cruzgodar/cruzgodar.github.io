@@ -39,63 +39,83 @@ function load_banner()
 	//Only do banner things if the banner things are in the standard places.
 	if (page_settings["manual_banner"] != true)
 	{
-		if (url_vars["content_animation"] != 1)
+		var banner_name;
+		
+		if (window_width / window_height < 10/16 || window_width <= 800)
 		{
-			var banner_name;
+			banner_name = "portrait." + banner_extension;
+		}
+		
+		else
+		{
+			banner_name = "landscape." + banner_extension;
+		}
+		
 			
-			if (window_width / window_height < 10/16 || window_width <= 800)
+		
+		//Fetch the banner file. If that works, great! Set thr background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we go back to the safety of the previous page.
+		$.get(parent_folder + "banners/" + banner_name)
+		
+		.done(function()
+		{
+			$("head").append(`
+				<style>
+					.banner:before
+					{
+						background: url("${parent_folder}banners/landscape.${banner_extension}") no-repeat center center;
+						-webkit-background-size: cover;
+						background-size: cover;
+					}
+					
+					@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
+					{
+						.banner:before
+						{
+							background: url("${parent_folder}banners/portrait.${banner_extension}") no-repeat center center;
+							-webkit-background-size: cover;
+							background-size: cover;
+						}
+					}
+				</style>
+			`);
+			
+			
+			
+			if (url_vars["content_animation"] != 1)
 			{
-				banner_name = "portrait." + banner_extension;
+				$("html").animate({opacity: 1}, 300, "swing");
 			}
 			
 			else
 			{
-				banner_name = "landscape." + banner_extension;
+				$("html").css("opacity", 1);
 			}
-		
-		
-			
-			//Fetch the banner file. If that works, great! Set thr background and fade in the page. If not, that means the html was cached but the banner was not (commonly happens on the homepage). In that case, we need to abort, so we go back to the safety of the previous page.
-			$.get(parent_folder + "banners/" + banner_name)
-			
-			.done(function()
-			{
-				$("head").append(`
-					<style>
-						.banner:before
-						{
-							background: url("${parent_folder}banners/landscape.${banner_extension}") no-repeat center center;
-							-webkit-background-size: cover;
-							background-size: cover;
-						}
-						
-						@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
-						{
-							.banner:before
-							{
-								background: url("${parent_folder}banners/portrait.${banner_extension}") no-repeat center center;
-								-webkit-background-size: cover;
-								background-size: cover;
-							}
-						}
-					</style>
-				`);
 				
+			
+				
+			//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
+			if (scroll == 0)
+			{
+				setTimeout(add_scroll_button, 3000);
+			}
+		})
+		
+		.fail(function()
+		{
+			$("#background-image, #banner-cover").remove();
+			
+			if (url_vars["content_animation"] != 1)
+			{
 				$("html").animate({opacity: 1}, 300, "swing");
-				
-				
-				//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
-				if (scroll == 0)
-				{
-					setTimeout(add_scroll_button, 3000);
-				}
-			})
+			}
 			
-			.fail(function()
+			else
 			{
-				window.history.back();
-			});
-		}
+				$("html").css("opacity", 1);
+			}
+			
+			update_aos();
+		});
 	}
 }
 

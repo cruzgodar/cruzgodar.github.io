@@ -272,29 +272,6 @@
 			{
 				clearInterval(refresh_id_2);
 				
-				$("head").append(`
-					<style>
-						.banner:before
-						{
-							background: url("/graphics/index-banners/${banner_index}/landscape.${banner_extension}") no-repeat center center;
-							
-							-webkit-background-size: cover;
-							background-size: cover;
-						}
-						
-						@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
-						{
-							.banner:before
-							{
-								background: url("/graphics/index-banners/${banner_index}/portrait.${banner_extension}") no-repeat center center;
-								
-								-webkit-background-size: cover;
-								background-size: cover;
-							}
-						}
-					</style>
-				`);
-				
 				
 				
 				var banner_name;
@@ -312,9 +289,34 @@
 				
 				
 				//Fade in once the banner has loaded.
-				$("<img/>").attr("src", "/graphics/index-banners/" + banner_index + "/" + banner_name).on("load", function()
+				$.get("/graphics/index-banners/" + banner_index + "/" + banner_name)
+				
+				.done(function()
 				{
-					$(this).remove();
+					$("head").append(`
+						<style>
+							.banner:before
+							{
+								background: url("/graphics/index-banners/${banner_index}/landscape.${banner_extension}") no-repeat center center;
+								
+								-webkit-background-size: cover;
+								background-size: cover;
+							}
+							
+							@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
+							{
+								.banner:before
+								{
+									background: url("/graphics/index-banners/${banner_index}/portrait.${banner_extension}") no-repeat center center;
+									
+									-webkit-background-size: cover;
+									background-size: cover;
+								}
+							}
+						</style>
+					`);
+					
+					
 					
 					if (url_vars["content_animation"] == 1)
 					{
@@ -325,6 +327,8 @@
 					{
 						$("html").animate({opacity: 1}, 300, "swing");
 					}
+					
+					
 					
 					$(".name-text").remove();
 					
@@ -348,11 +352,32 @@
 						$(".name-text").parent().css("position", "absolute");
 					}
 					
+					
+					
 					//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
 					if (scroll == 0)
 					{
 						setTimeout(add_scroll_button, 3000);
 					}
+				})
+				
+				.fail(function()
+				{
+					$("#background-image, #banner-cover, .name-text").remove();
+					
+					$($("#content").children()[0]).css("height", "3vh");
+			
+					if (url_vars["content_animation"] != 1)
+					{
+						$("html").animate({opacity: 1}, 300, "swing");
+					}
+					
+					else
+					{
+						$("html").css("opacity", 1);
+					}
+					
+					update_aos();
 				});
 			}
 		}, 50);

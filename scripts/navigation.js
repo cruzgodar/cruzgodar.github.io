@@ -1,3 +1,10 @@
+var new_page_data = null;
+var get_failed = false;
+
+var redirect_refresh_id;
+
+
+
 //To keep expected link functionality (open in new tab, draggable, etc.), all elements with calls to redirect() are wrapped in <a> tags. Presses of <a> tags (without .real-link) are ignored, but to extend the functionality of url variables to the times they are used, we need to target them all and add the url variables onto them. Also, now that the website is a single page app, we need to format them correctly, too, using the page variable.
 
 function set_links()
@@ -74,7 +81,8 @@ $(function()
 //Handles virtually all links.
 function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 {
-	var new_page_data;
+	new_page_data = null;
+	get_failed = false;
 	
 	//Start getting the new page data immediately. If that fails, though, abort the mission.
 	$.get(url, function(data)
@@ -84,6 +92,9 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	
 	.fail(function()
 	{
+		clearInterval(redirect_refresh_id);
+		get_failed = true;
+		
 		$("html").animate({opacity: 1}, 300, "swing");
 	});
 	
@@ -125,15 +136,7 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	//Act like a normal link, with no transitions, if the user wants that.
 	if (url_vars["content_animation"] == 1)
 	{
-		var refresh_id = setInterval(function()
-		{
-			if (new_page_data != null)
-			{
-				clearInterval(refresh_id);
-				
-				load_html(new_page_data, include_return_url, no_state_push);
-			}
-		}, 50);
+		try_to_load_html(include_return_url, no_state_push);
 	}
 		
 	else
@@ -160,15 +163,7 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 				
 				setTimeout(function()
 				{
-					var refresh_id = setInterval(function()
-					{
-						if (new_page_data != null)
-						{
-							clearInterval(refresh_id);
-							
-							load_html(new_page_data, include_return_url, no_state_push);
-						}
-					}, 50);
+					try_to_load_html(include_return_url, no_state_push);
 				}, 450);
 			}, 300);
 		}
@@ -178,17 +173,27 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 		{
 			setTimeout(function()
 			{
-				var refresh_id = setInterval(function()
-				{
-					if (new_page_data != null)
-					{
-						clearInterval(refresh_id);
-						
-						load_html(new_page_data, include_return_url, no_state_push);
-					}
-				}, 50);
+				try_to_load_html(include_return_url, no_state_push);
 			}, 300);
 		}
+	}
+}
+
+
+
+function try_to_load_html(include_return_url, no_state_push)
+{
+	if (get_failed == false)
+	{
+		redirect_refresh_id = setInterval(function()
+		{
+			if (new_page_data != null)
+			{
+				clearInterval(redirect_refresh_id);
+				
+				load_html(new_page_data, include_return_url, no_state_push);
+			}
+		}, 50);
 	}
 }
 
