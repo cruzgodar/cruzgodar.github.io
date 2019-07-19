@@ -41,6 +41,9 @@ $(function()
 		$("html").css("-webkit-touch-callout", "none");
 		$("*").attr("draggable", "false");
 		
+		
+		
+		//Also add a little extra spacing at the top of each page to keep content from feeling too close to the top of the screen.
 		$("head").append(`
 			<style class="permanent-style">
 				#pwa-button
@@ -49,34 +52,13 @@ $(function()
 					width: 0px;
 					height: 0px;
 				}
+				
+				.logo, .name-text-container, .empty-top
+				{
+					margin-top: 2vh;
+				}
 			</style>
 		`);
-		
-		//Also add a little extra spacing at the top of each page to keep content from feeling too close to the top of the screen.
-		try
-		{
-			$(".logo").css("margin-top", "2vh");
-		}
-		
-		catch(ex) {}
-		
-		
-		
-		try
-		{	
-			$(".name-text").parent().css("margin-top", "2vh");
-		}
-		
-		catch(ex) {}
-		
-		
-		
-		try
-		{	
-			$(".empty-top").css("margin-top", "2vh");
-		}
-		
-		catch(ex) {}
 	}
 	
 	

@@ -333,23 +333,23 @@
 					$(".name-text").remove();
 					
 					$("#background-image").after(`
-						<div style="position: fixed" data-aos="fade-left" data-aos-delay="350">
+						<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="350">
 							<p id="cruz-text" class="name-text">Cruz</p>
 						</div>
 						
-						<div style="position: fixed" data-aos="fade-left" data-aos-delay="600">
+						<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="600">
 							<p id="godar-text" class="name-text">Godar</p>
 						</div>
 					`);
 					
 					if (url_vars["content_animation"] == 1)
 					{
-						$(".name-text").parent().removeAttr("data-aos");
+						$(".name-text-container").removeAttr("data-aos");
 					}
 					
 					if (url_vars["banner_style"] == 1)
 					{
-						$(".name-text").parent().css("position", "absolute");
+						$(".name-text-container").css("position", "absolute");
 					}
 					
 					
