@@ -166,7 +166,7 @@ img
 .line-break
 {
 	margin: 0 auto;
-	width: 70vw;
+	width: 80vw;
 	height: 1px;
 	
 	/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,a0a0a0+50,ffffff+100 */
@@ -184,9 +184,9 @@ img
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-between;
-	width: 56vw;
+	width: 68vw;
 	margin: 0 auto;
-	margin-bottom: 4vw;
+	margin-bottom: max(4vw, 60px);
 }
 
 .footer-image-link

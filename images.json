@@ -5,10 +5,10 @@
 		"non-webp": "writing/cover.jpg"
 	},
 	
-	"image-blog":
+	"image-teaching":
 	{
-		"webp": "blog/cover.webp",
-		"non-webp": "blog/cover.jpg"
+		"webp": "teaching/cover.webp",
+		"non-webp": "teaching/cover.jpg"
 	},
 	
 	"image-applets":
@@ -21,6 +21,12 @@
 	{
 		"webp": "research/cover.webp",
 		"non-webp": "research/cover.jpg"
+	},
+	
+	"image-blog":
+	{
+		"webp": "blog/cover.webp",
+		"non-webp": "blog/cover.jpg"
 	},
 	
 	"image-notes":

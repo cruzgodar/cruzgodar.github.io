@@ -43,11 +43,11 @@ function insert_footer()
 		$("#spawn-footer").before(`
 			<div style="height: 30vh"></div>
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-					<div class="line-break" style="width: 80vw"></div>
+					<div class="line-break" style="width: 95vw"></div>
 				</div>
 			<div style="height: 4vw"></div>
 			
-			<nav class="footer-image-links" style="width: 68vw"></nav>
+			<nav class="footer-image-links" style="width: 80vw"></nav>
 		`);
 	}
 	
@@ -69,7 +69,7 @@ function insert_footer()
 	if (page_settings["footer_exclusion"] != "writing")
 	{
 		$(".footer-image-links").append(`
-			<div id="writing-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 				<a href="/writing/writing.html${concat_url_vars(false)}">
 					<img onclick="redirect(\'/writing/writing.html\', 0${fnc_arg})" src="/writing/cover.${extension}" alt="Writing"></img>
 				</a>
@@ -79,12 +79,12 @@ function insert_footer()
 		delay += 100;
 	}
 	
-	if (page_settings["footer_exclusion"] != "blog")
+	if (page_settings["footer_exclusion"] != "teaching")
 	{
 		$(".footer-image-links").append(`
-			<div id="blog-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-				<a href="/blog/blog.html${concat_url_vars(false)}">
-					<img onclick="redirect(\'/blog/blog.html\', 0${fnc_arg})" src="/blog/cover.${extension}" alt="Blog"></img>
+			<div class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="/teaching/teaching.html${concat_url_vars(false)}">
+					<img onclick="redirect(\'/teaching/teaching.html\', 0${fnc_arg})" src="/teaching/cover.${extension}" alt="Teaching"></img>
 				</a>
 			</div>
 		`);
@@ -95,7 +95,7 @@ function insert_footer()
 	if (page_settings["footer_exclusion"] != "applets")
 	{
 		$(".footer-image-links").append(`
-			<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 				<a href="/applets/applets.html${concat_url_vars(false)}">
 					<img onclick="redirect(\'/applets/applets.html\', 0${fnc_arg})" src="/applets/cover.${extension}" alt="Applets"></img>
 				</a>
@@ -108,9 +108,22 @@ function insert_footer()
 	if (page_settings["footer_exclusion"] != "research")
 	{
 		$(".footer-image-links").append(`
-			<div id="research-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 				<a href="/research/research.html${concat_url_vars(false)}">
 					<img onclick="redirect(\'/research/research.html\', 0${fnc_arg})" src="/research/cover.${extension}" alt="Research"></img>
+				</a>
+			</div>
+		`);
+		
+		delay += 100;
+	}
+	
+	if (page_settings["footer_exclusion"] != "blog")
+	{
+		$(".footer-image-links").append(`
+			<div class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="/blog/blog.html${concat_url_vars(false)}">
+					<img onclick="redirect(\'/blog/blog.html\', 0${fnc_arg})" src="/blog/cover.${extension}" alt="Blog"></img>
 				</a>
 			</div>
 		`);
@@ -121,7 +134,7 @@ function insert_footer()
 	if (page_settings["footer_exclusion"] != "notes")
 	{
 		$(".footer-image-links").append(`
-			<div id="notes-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 				<a href="/notes/notes.html${concat_url_vars(false)}">
 					<img onclick="redirect(\'/notes/notes.html\', 0${fnc_arg})" src="/notes/cover.${extension}" alt="Notes"></img>
 				</a>
@@ -134,7 +147,7 @@ function insert_footer()
 	if (page_settings["footer_exclusion"] != "bio")
 	{
 		$(".footer-image-links").append(`
-			<div id="bio-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 				<a href="/bio/bio.html${concat_url_vars(false)}">
 					<img onclick="redirect(\'/bio/bio.html\', 0${fnc_arg})" src="/bio/cover.${extension}" alt="Me"></img>
 				</a>
