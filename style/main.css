@@ -186,7 +186,7 @@ img
 	justify-content: space-between;
 	width: 56vw;
 	margin: 0 auto;
-	margin-bottom: 4vw;
+	margin-bottom: max(4vw, 60px);
 }
 
 .footer-image-link
