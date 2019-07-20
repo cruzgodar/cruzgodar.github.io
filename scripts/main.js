@@ -25,6 +25,10 @@ $(function()
 	
 	
 	
+	set_font_size();
+	
+	
+	
 	//Disable the default behavior of <a> tags -- that's only there for accessibility.
 	$("body").on("click", "a:not(.real-link)", function(e)
 	{
@@ -79,6 +83,42 @@ $(function()
 		});
 	});
 });
+
+
+
+function set_font_size()
+{
+	var font_size = .0065 * window_width + .0065 * window_height;
+	
+	if (font_size < 13)
+	{
+		font_size = 13;
+	}
+	
+	else if (font_size > 16)
+	{
+		font_size = 16;
+	}
+	
+	$("html").css("font-size", font_size + "px");
+	
+	console.log(font_size);
+}
+
+
+
+function set_footer_margin()
+{
+	if (.04 * window_width >= 60)
+	{
+		$(".footer-image-links").css("margin-bottom", "4vw");
+	}
+	
+	else
+	{
+		$(".footer-image-links").css("margin-bottom", "60px");
+	}
+}
 
 
 
@@ -168,6 +208,8 @@ function on_page_load()
 			
 			apply_settings();
 			
+			set_footer_margin();
+			
 			gimp_edge();
 			
 			set_links();
@@ -237,5 +279,8 @@ function bind_handlers()
 		window_height = $(window).height();
 		
 		update_aos();
+		
+		set_font_size();
+		set_footer_margin();
 	});
 }
