@@ -406,7 +406,7 @@
 		//If the user just sits at the top of the page for 4 seconds without scrolling, give them a scroll button.
 		if ($(window).scrollTop() == 0)
 		{
-			setTimeout(add_scroll_button, 7000);
+			setTimeout(corona_add_scroll_button, 7000);
 		}
 		
 		
@@ -570,7 +570,7 @@
 	
 	
 	//Scroll button things.
-	function add_scroll_button()
+	function corona_add_scroll_button()
 	{
 		//Only add the scroll button if the user is still on the top of the page.
 		if ($(window).scrollTop() == 0)
@@ -590,10 +590,5 @@
 			
 			$("#banner-cover").remove();
 		}
-	}
-	//Triggered by pressing the scroll button.
-	function scroll_down()
-	{
-		$("html, body").animate({scrollTop: $("#scroll-to").offset().top}, 1200, "swing");
 	}
 </script>
