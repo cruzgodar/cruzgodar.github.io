@@ -442,7 +442,7 @@ function switch_font_on_load()
 		
 		if (page_settings["writing_page"])
 		{
-			$(".body-text").css("font-family", "'PT Serif', serif");
+			$(".body-text").css("font-family", "'Gentium Book Basic', serif");
 		}
 	}
 	

@@ -189,7 +189,14 @@ function on_page_load()
 			//Add paragraph indent if necessary.
 			if (page_settings["writing_page"])
 			{
-				$(".body-text").css("text-indent", "10pt");
+				$("head").append(`
+					<style>
+						.body-text
+						{
+							text-indent: 10pt;
+						}
+					</style>
+				`);
 			}
 			
 			
