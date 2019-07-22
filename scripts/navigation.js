@@ -163,6 +163,9 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 				
 				setTimeout(function()
 				{
+					$("body").css("background-color", "");
+					$("html, body").removeClass("background-transition");
+					
 					try_to_load_html(include_return_url, no_state_push);
 				}, 450);
 			}, 300);

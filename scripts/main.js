@@ -101,8 +101,6 @@ function set_font_size()
 	}
 	
 	$("html").css("font-size", font_size + "px");
-	
-	console.log(font_size);
 }
 
 

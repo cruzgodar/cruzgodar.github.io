@@ -4,7 +4,7 @@
 	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
 </noscript>
 
-<div class="background-top" id="background-image"></div>
+<div id="background-image"></div>
 
 <div style="height: 100vh">
 	<div style="height: 5vh"></div>
@@ -22,19 +22,19 @@
 	<div style="height: 10vh"></div>
 	
 	<div data-aos="fade-up" data-aos-delay="1000" data-aos-anchor="#trigger-sentences">
-		<h2 class="section-text">A world well into its epilogue.</h2>
+		<h2 class="hook-text">A world well into its epilogue.</h2>
 	</div>
 
 	<div style="height: 1vh"></div>
 
 	<div data-aos="fade-up" data-aos-delay="2000" data-aos-anchor="#trigger-sentences">
-		<h2 class="section-text">A city shrouded in darkness.</h2>
+		<h2 class="hook-text">A city shrouded in darkness.</h2>
 	</div>
 
 	<div style="height: 1vh"></div>
 
 	<div data-aos="fade-up" data-aos-delay="3000" data-aos-anchor="#trigger-sentences">
-		<h2 class="section-text">A planet colder each day.</h2>
+		<h2 class="hook-text">A planet colder each day.</h2>
 	</div>
 	
 	<div id="banner-cover"></div>
@@ -189,8 +189,8 @@
 	var bubbles = [];
 	var subtexts = [];
 	
-	var background_done = false;
-	var scroll_button_done = false;
+	banner_done = false;
+	scroll_button_done = false;
 	var eclipse_done = false;
 	
 	var progress_bar_done = false;
@@ -222,7 +222,7 @@
 					z-index: 10;
 				}
 				
-				.section-text
+				.hook-text
 				{
 					position: relative;
 					width: 100%;
@@ -336,7 +336,7 @@
 		
 		
 		
-		//We have to wait to apply the contrast changes, since otherwise settings_body may set the body text color after we do here, resulting in less contrast than normal.
+		//We have to wait to apply the contrast changes, since otherwise settings.js may set the body text color after we do here, resulting in less contrast than normal.
 		var refresh_id = setInterval(function()
 		{
 			if (typeof settings_done != "undefined")
@@ -347,6 +347,13 @@
 				{
 					$(".synopsis-text").css("color", "rgb(208, 208, 208)");
 					$(".body-text").css("color", "rgb(192, 192, 192)");
+					
+					if (url_vars["theme"] != 1)
+					{
+						$(".hook-text").css("color", "rgb(120, 120, 120)");
+					}
+					
+					
 					
 					$(".email img").css("-webkit-filter", "brightness(150%)");
 					$(".email img").css("filter", "brightness(150%)");
@@ -379,6 +386,11 @@
 								background: linear-gradient(to right, rgb(0,0,0) 0%,rgb(92,92,92) 50%,rgb(0,0,0) 100%);
 							}
 						</style>
+						
+						if (url_vars["theme"] == 1)
+						{
+							$(".hook-text").css("color", "rgb(120, 120, 120)");
+						}
 					`);
 				}
 			}
@@ -409,13 +421,13 @@
 	
 	function corona_scroll_update()
 	{
-		var scroll = $(this).scrollTop();
+		scroll = $(this).scrollTop();
 		
 		if (scroll >= 0)
 		{
 			if (scroll <= 4*window_height/5)
 			{
-				var background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/4 * scroll / window_height, 0) - .5 * Math.PI);
+				background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/4 * scroll / window_height, 0) - .5 * Math.PI);
 				
 				if (url_vars["theme"] == 1)
 				{
@@ -432,19 +444,19 @@
 				
 				if (background_color == 0)
 				{
-					background_done = true;
+					banner_done = true;
 				}
 				
 				else
 				{
-					background_done = false;
+					banner_done = false;
 				}
 			}
 			
-			else if (background_done == false)
+			else if (banner_done == false)
 			{
 				$("html").css("background-color", "rgb(0, 0, 0)");
-				background_done = true;
+				banner_done = true;
 			}
 			
 			
