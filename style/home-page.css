@@ -3,14 +3,17 @@
 	overflow-x: hidden;
 }
 
-.column
+.quote-row
 {
-	float: left;
-	width: 23.333%;
-	margin-top: 1%;
-	margin-bottom: 1%;
-	margin-left: 5%;
-	margin-right: 5%;
+	display: flex;
+	width: 90vw;
+	justify-content: space-between;
+	margin: 0 auto;
+}
+
+.quote-container
+{
+	width: 25vw;
 }
 
 .quote-text
@@ -65,9 +68,14 @@
 @media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 {
 	/* Stack the quote columns on top of one another. */
-	.column
+	.quote-container
 	{
 		width: 90vw;
-		margin-bottom: 6vh;
+		margin-bottom: 5vh;
+	}
+	
+	.quote-row
+	{
+		flex-direction: column;
 	}
 }

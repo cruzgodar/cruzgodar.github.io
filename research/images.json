@@ -1,7 +1,7 @@
 {
 	"image-senior-project":
 	{
-		"webp": "graphics/senior-project.webp",
-		"non-webp": "graphics/senior-project.jpg"
+		"webp": "senior-project/cover.webp",
+		"non-webp": "senior-project/cover.jpg"
 	}
 }

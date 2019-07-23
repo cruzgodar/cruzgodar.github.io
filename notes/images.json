@@ -1,31 +1,31 @@
 {
 	"image-linear-algebra":
 	{
-		"webp": "graphics/linear-algebra.webp",
-		"non-webp": "graphics/linear-algebra.jpg"
+		"webp": "cal-poly/linear-algebra/cover.webp",
+		"non-webp": "cal-poly/linear-algebra/cover.jpg"
 	},
 	
 	"image-game-theory":
 	{
-		"webp": "graphics/game-theory.webp",
-		"non-webp": "graphics/game-theory.jpg"
+		"webp": "cal-poly/game-theory/cover.webp",
+		"non-webp": "cal-poly/game-theory/cover.jpg"
 	},
 	
 	"image-complex-analysis":
 	{
-		"webp": "graphics/complex-analysis.webp",
-		"non-webp": "graphics/complex-analysis.jpg"
+		"webp": "cal-poly/complex-analysis/cover.webp",
+		"non-webp": "cal-poly/complex-analysis/cover.jpg"
 	},
 	
 	"image-analysis":
 	{
-		"webp": "graphics/analysis.webp",
-		"non-webp": "graphics/analysis.jpg"
+		"webp": "cal-poly/analysis/cover.webp",
+		"non-webp": "cal-poly/analysis/cover.jpg"
 	},
 	
 	"image-abstract-algebra":
 	{
-		"webp": "graphics/abstract-algebra.webp",
-		"non-webp": "graphics/abstract-algebra.jpg"
+		"webp": "cal-poly/abstract-algebra/cover.webp",
+		"non-webp": "cal-poly/abstract-algebra/cover.jpg"
 	}
 }

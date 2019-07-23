@@ -129,7 +129,17 @@ function entry_point(url)
 		{
 			clearInterval(refresh_id);
 			
-			redirect(url, false, false, true);
+			//If it's not an html file, it shouldn't be anywhere near redirect().
+			if (url.substring(url.lastIndexOf(".") + 1, url.length) != "html")
+			{
+				//This should really be using history.replaceState(), but that doesn't update the page to make the file show for some reason.
+				window.location.href = url;
+			}
+			
+			else
+			{
+				redirect(url, false, false, true);
+			}
 		}
 	}, 50);
 }
