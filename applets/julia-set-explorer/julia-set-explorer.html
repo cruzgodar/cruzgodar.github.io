@@ -29,7 +29,9 @@
 <main>
 	<section>
 		<div data-aos="fade-up" data-aos-delay="200">
-			<p id="instructions" class="body-text">Hover over the Mandelbrot set to preview the corresponding Julia set. Click to generate a higher-resolution preview. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.</p>
+			<p class="body-text center-if-needed">
+				<span id="instructions">Hover over the Mandelbrot set to preview the corresponding Julia set, and click to generate a higher-resolution preview. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.</span>
+			</p>
 		</div>
 		
 		<div style="height: 10vh"></div>
@@ -278,7 +280,7 @@
 				//Handle touchscreens.
 				else
 				{
-					$("#instructions").html(`Drag along the Mandelbrot set to preview the corresponding Julia set. Release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</span>.`);
+					$("#instructions").html(`Drag along the Mandelbrot set to preview the corresponding Julia set, and release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.`);
 					
 					document.getElementById("mandelbrot-set").addEventListener("touchmove", function(e)
 					{
