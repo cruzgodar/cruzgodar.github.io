@@ -88,11 +88,11 @@ $(function()
 
 function set_font_size()
 {
-	var font_size = .0065 * window_width + .0065 * window_height;
+	var font_size = .006 * window_width + .006 * window_height;
 	
-	if (font_size < 13)
+	if (font_size < 12)
 	{
-		font_size = 13;
+		font_size = 12;
 	}
 	
 	else if (font_size > 16)
@@ -217,7 +217,14 @@ function on_page_load()
 			
 			bind_handlers();
 			
-			insert_footer();
+			
+			
+			if (page_settings["no_footer"] == false)
+			{
+				insert_footer();
+			}
+			
+			
 			
 			insert_images();
 			
@@ -227,9 +234,15 @@ function on_page_load()
 			
 			gimp_edge();
 			
-			set_links();
-			
 			remove_hover_on_touch();
+			
+			
+			
+			//If there is a footer, insert_footer() will take care of it.
+			if (page_settings["no_footer"])
+			{
+				set_links();
+			}
 			
 			
 			

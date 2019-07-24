@@ -192,4 +192,8 @@ function insert_footer()
 	
 	
 	footer_done = true;
+	
+	
+	
+	set_links();
 }
