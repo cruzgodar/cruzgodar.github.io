@@ -4,12 +4,14 @@
 
 var settings_done;
 
-var url_var_functions = {
+var url_var_functions =
+{
 	"animated":
 	{
 		"theme": switch_theme,
-		"font": switch_font,
 		"contrast": switch_contrast,
+		"font": switch_font,
+		"writing_style": switch_writing_style,
 		"comments": switch_comments,
 		"no_new_section": switch_new_section,
 		"content_animation": switch_content_animation,
@@ -19,8 +21,9 @@ var url_var_functions = {
 	"onload":
 	{
 		"theme": switch_theme_on_load,
-		"font": switch_font_on_load,
 		"contrast": switch_contrast_on_load,
+		"font": switch_font_on_load,
+		"writing_style": switch_writing_style_on_load,
 		"comments": switch_comments_on_load,
 		"no_new_section": switch_new_section_on_load,
 		"content_animation": switch_content_animation_on_load,
@@ -51,8 +54,9 @@ function get_url_var(id)
 var url_vars = 
 {
 	"theme": get_url_var("theme"),
-	"font": get_url_var("font"),
 	"contrast": get_url_var("contrast"),
+	"font": get_url_var("font"),
+	"writing_style": get_url_var("writing_style"),
 	"comments": get_url_var("comments"),
 	"no_new_section": get_url_var("no_new_section"),
 	"content_animation": get_url_var("content_animation"),
@@ -453,6 +457,56 @@ function switch_font_on_load()
 		catch(ex) {}
 		
 		url_vars["font"] = 0;
+		
+		write_url_vars();
+	}
+}
+
+
+
+function switch_writing_style()
+{
+	$("#writing-style-button-row").animate({opacity: 0}, 300, "swing");
+	setTimeout(function()
+	{
+		switch_writing_style_on_load();
+		
+		setTimeout(function()
+		{
+			$("#writing-style-button-row").animate({opacity: 1}, 300, "swing");
+		});
+	}, 300);
+}
+
+function switch_writing_style_on_load()
+{
+	//Double-spaced to indented
+	if (url_vars["writing_style"] == 0)
+	{
+		try {$("#writing-style-button-text").html($("#writing-style-button-text").html().replace("double-spaced", "single-spaced and indented"));}
+		catch(ex) {}
+		
+		url_vars["writing_style"] = 1;
+		
+		write_url_vars();
+		
+		if (page_settings["writing_page"])
+		{
+			//This is a fancy way of saying $("section br").remove(), but it ensures that <br> tags in places like song lyrics won't get removed.
+			$("section div .body-text").parent().next("br").remove();
+			
+			//Add an indent on every element except the first in the section.
+			$("section div:not(:first-child) .body-text").css("text-indent", "10pt");
+		}
+	}
+	
+	//Indented to double-spaced
+	else
+	{
+		try {$("#writing-style-button-text").html($("#writing-style-button-text").html().replace("single-spaced and indented", "double-spaced"));}
+		catch(ex) {}
+		
+		url_vars["writing_style"] = 0;
 		
 		write_url_vars();
 	}
