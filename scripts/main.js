@@ -25,10 +25,6 @@ $(function()
 	
 	
 	
-	set_font_size();
-	
-	
-	
 	//Disable the default behavior of <a> tags -- that's only there for accessibility.
 	$("body").on("click", "a:not(.real-link)", function(e)
 	{
@@ -83,25 +79,6 @@ $(function()
 		});
 	});
 });
-
-
-
-function set_font_size()
-{
-	var font_size = .006 * window_width + .006 * window_height;
-	
-	if (font_size < 12)
-	{
-		font_size = 12;
-	}
-	
-	else if (font_size > 16)
-	{
-		font_size = 16;
-	}
-	
-	$("html").css("font-size", font_size + "px");
-}
 
 
 
@@ -193,21 +170,6 @@ function on_page_load()
 			$("title").html(page_settings["title"]);
 			
 			$("html, body").removeClass("no-scroll");
-			
-			
-			
-			//Add paragraph indent if necessary.
-			if (page_settings["writing_page"])
-			{
-				$("head").append(`
-					<style>
-						.body-text
-						{
-							text-indent: 10pt;
-						}
-					</style>
-				`);
-			}
 			
 			
 			
@@ -308,7 +270,6 @@ function bind_handlers()
 		
 		update_aos();
 		
-		set_font_size();
 		set_footer_margin();
 	});
 }

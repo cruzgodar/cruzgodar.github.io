@@ -18,7 +18,7 @@
 
 .quote-text
 {
-	font-size: 125%;
+	font-size: 100%;
 	color: rgb(176, 176, 176);
 	text-align: justify;
 	padding-right: .1em;
@@ -26,7 +26,7 @@
 
 .quote-attribution
 {
-	font-size: 125%;
+	font-size: 100%;
 	color: rgb(92, 92, 92);
 	text-align: right;
 }
@@ -58,7 +58,7 @@
 
 .title-text
 {
-	font-size: 200%;
+	font-size: 150%;
 	color: rgb(0, 0, 0);
 	text-align: center;
 }
