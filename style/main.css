@@ -247,13 +247,6 @@ img
 
 
 
-.no-scroll
-{
-	height: 100vh;
-	overflow: hidden;
-}
-
-
 @media screen and (min-width: 1000px)
 {
 	html

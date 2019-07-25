@@ -37,6 +37,13 @@ $(function()
 	
 	
 	
+	if ("scrollRestoration" in history)
+	{
+		history.scrollRestoration = "manual";
+	}
+	
+	
+	
 	//When in PWA form, disable text selection, drag-and-drop, and the PWA button itself.
 	if (window.matchMedia("(display-mode: standalone)").matches)
 	{
