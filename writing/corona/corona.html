@@ -169,6 +169,7 @@
 		
 		"banner_page": false,
 		"writing_page": false,
+		"math_page": false,
 		"comments": false,
 		
 		"manual_banner": false,
@@ -201,9 +202,7 @@
 	$(function()
 	{
 		$("head").append(`
-			<style>
-				@import url("https://fonts.googleapis.com/css?family=Gentium+Book+Basic&display=swap");
-				
+			<style class="temporary-style">
 				body
 				{
 					margin: 0;
@@ -362,7 +361,7 @@
 					$(".stage-bubble span, .progress-bar span").css("background-color", "rgb(192, 192, 192)");
 					
 					$("head").append(`
-						<style>
+						<style class="temporary-style">
 							.line-break
 							{
 								background: rgb(0,0,0);
@@ -377,7 +376,7 @@
 				else
 				{
 					$("head").append(`
-						<style>
+						<style class="temporary-style">
 							.line-break
 							{
 								background: rgb(0,0,0);

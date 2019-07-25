@@ -59,7 +59,7 @@ function load_banner()
 		.done(function()
 		{
 			$("head").append(`
-				<style>
+				<style class="temporary-style">
 					.banner:before
 					{
 						background: url("${parent_folder}banners/landscape.${banner_extension}") no-repeat center center;

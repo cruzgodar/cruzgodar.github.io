@@ -1,6 +1,6 @@
 function load_disqus()
 {
-	if (loaded_disqus)
+	if (scripts_loaded["disqus"])
 	{
 		DISQUS.reset({
 			reload: true,
@@ -15,6 +15,6 @@ function load_disqus()
 		s.setAttribute("data-timestamp", +new Date());
 		(d.head || d.body).appendChild(s);
 		
-		loaded_disqus = true;
+		scripts_loaded["disqus"] = true;
 	}
 }

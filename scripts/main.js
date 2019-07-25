@@ -13,8 +13,12 @@ var parent_folder = "/";
 //Whether the browser supports WebP images or not. Given a boolean value when decided.
 var supports_webp = null;
 
-//Whether Disqus has been loaded for the first time or not. We need to use a different function if it's not the first time.
-var loaded_disqus = false;
+var scripts_loaded = 
+{
+	"disqus": false,
+	"mathjs": false,
+	"mathjax": false
+}
 
 
 
@@ -200,6 +204,13 @@ function on_page_load()
 			
 			
 			
+			if (page_settings["math_page"])
+			{
+				typeset_math();
+			}
+			
+			
+			
 			//If there is a footer, insert_footer() will take care of it.
 			if (page_settings["no_footer"])
 			{
@@ -221,8 +232,8 @@ function on_page_load()
 function on_page_unload()
 {
 	//Remove any css and js that's no longer needed to prevent memory leaks.
-	$("style:not(.permanent-style)").remove();
-	$("head script:not(.permanent-script)").remove();
+	$("style.temporary-style").remove();
+	$("script.temporary-script").remove();
 	
 	
 	
@@ -272,4 +283,22 @@ function bind_handlers()
 		
 		set_footer_margin();
 	});
+}
+
+
+
+function typeset_math()
+{
+	if (scripts_loaded["mathjax"] == false)
+	{
+		$.getScript("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML", function()
+		{
+			scripts_loaded["mathjax"] = true;
+		});
+	}
+	
+	else
+	{
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+	}
 }

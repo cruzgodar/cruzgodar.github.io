@@ -223,6 +223,7 @@
 		
 		"banner_page": true,
 		"writing_page": false,
+		"math_page": false,
 		"comments": false,
 		
 		"manual_banner": true,
@@ -296,7 +297,7 @@
 				.done(function()
 				{
 					$("head").append(`
-						<style>
+						<style class="temporary-style">
 							.banner:before
 							{
 								background: url("/graphics/index-banners/${banner_index}/landscape.${banner_extension}") no-repeat center center;

@@ -115,6 +115,7 @@
 		
 		"banner_page": false,
 		"writing_page": false,
+		"math_page": true,
 		"comments": false,
 		
 		"manual_banner": false,
@@ -139,7 +140,7 @@
 	$(function()
 	{
 		$("head").append(`
-			<style>
+			<style class="temporary-style">
 				#container
 				{
 					display: flex;
@@ -193,9 +194,13 @@
 		
 		
 		
-		$.getScript("https://unpkg.com/mathjs@5.9.0/dist/math.min.js");
-		
-		$.getScript("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML");
+		if (scripts_loaded["mathjs"] == false)
+		{
+			$.getScript("https://unpkg.com/mathjs@5.9.0/dist/math.min.js", function()
+			{
+				scripts_loaded["mathjs"] == true;
+			});
+		}
 		
 		
 		

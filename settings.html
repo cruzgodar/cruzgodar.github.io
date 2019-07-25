@@ -134,6 +134,7 @@
 		
 		"banner_page": false,
 		"writing_page": false,
+		"math_page": false,
 		"comments": false,
 		
 		"manual_banner": false,
@@ -151,7 +152,7 @@
 	$(function()
 	{
 		$("head").append(`
-			<style>
+			<style class="temporary-style">
 				html
 				{
 					max-width: 100%;
@@ -194,7 +195,7 @@
 		
 		//We only apply this now to prevent the dark theme from transitioning slowly on load rather than instantly.
 		$("head").append(`
-			<style>
+			<style class="temporary-style">
 				html
 				{
 					-webkit-transition: background-color .6s ease;
@@ -208,7 +209,7 @@
 		setTimeout(function()
 		{
 			$("head").append(`
-				<style>
+				<style class="temporary-style">
 					.heading-text
 					{
 						-webkit-transition: color .6s ease;
