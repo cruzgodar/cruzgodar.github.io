@@ -254,6 +254,15 @@ img
 }
 
 
+@media screen and (min-width: 1000px)
+{
+	html
+	{
+		font-size: 18px;
+	}
+}
+
+
 
 @media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 {
