@@ -74,7 +74,7 @@ $(function()
 	
 	
 	
-	$.getScript("/scripts/modernizr-webp.js", function()
+	$.getScript("/scripts/modernizr-webp.min.js", function()
 	{
 		Modernizr.on("webp", function(result)
 		{
