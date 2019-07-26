@@ -138,13 +138,7 @@ function update_aos()
 {
 	AOS.disable;
 	
-	if (url_vars["content_animation"] == 1)
-	{
-		//This attribute makes the content invisible until it's animated in, so if we're never going to do that, it has to go.
-		$("body").find("*[data-aos]").removeAttr("data-aos");
-	}
-	
-	else
+	if (url_vars["content_animation"] != 1)
 	{
 		if (page_settings["banner_page"])
 		{

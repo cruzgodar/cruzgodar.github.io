@@ -13,7 +13,6 @@ var url_var_functions =
 		"font": switch_font,
 		"writing_style": switch_writing_style,
 		"comments": switch_comments,
-		"no_new_section": switch_new_section,
 		"content_animation": switch_content_animation,
 		"banner_style": switch_banner_style
 	},
@@ -25,7 +24,6 @@ var url_var_functions =
 		"font": switch_font_on_load,
 		"writing_style": switch_writing_style_on_load,
 		"comments": switch_comments_on_load,
-		"no_new_section": switch_new_section_on_load,
 		"content_animation": switch_content_animation_on_load,
 		"banner_style": switch_banner_style_on_load
 	}
@@ -58,7 +56,6 @@ var url_vars =
 	"font": get_url_var("font"),
 	"writing_style": get_url_var("writing_style"),
 	"comments": get_url_var("comments"),
-	"no_new_section": get_url_var("no_new_section"),
 	"content_animation": get_url_var("content_animation"),
 	"banner_style": get_url_var("banner_style")
 };
@@ -559,50 +556,6 @@ function switch_comments_on_load()
 
 
 
-function switch_new_section()
-{
-	$("#new-section-button-row").animate({opacity: 0}, 300, "swing");
-	
-	setTimeout(function()
-	{
-		switch_new_section_on_load();
-		$("#new-section-button-row").animate({opacity: 1}, 300, "swing");
-	}, 300);
-}
-
-function switch_new_section_on_load()
-{
-	//Hide
-	if (url_vars["no_new_section"] == 0)
-	{
-		try {$("#new-section-button-text").html($("#new-section-button-text").html().replace("shown", "hidden"));}
-		catch(ex) {}
-		
-		url_vars["no_new_section"] = 1;
-		
-		write_url_vars();
-		
-		try
-		{
-			$("#new-section").css("display", "none");
-		}
-		
-		catch(ex) {}
-	}
-	
-	else
-	{
-		try {$("#new-section-button-text").html($("#new-section-button-text").html().replace("hidden", "shown"));}
-		catch(ex) {}
-		
-		url_vars["no_new_section"] = 0;
-		
-		write_url_vars();
-	}
-}
-
-
-
 function switch_content_animation()
 {
 	$("#content-animation-button-row").animate({opacity: 0}, 300, "swing");
@@ -618,19 +571,20 @@ function switch_content_animation_on_load()
 {
 	if (url_vars["content_animation"] == 0)
 	{
-		try {$("#content-animation-button-text").html($("#content-animation-button-text").html().replace("animated", "static"));}
+		try {$("#content-animation-button-text").html($("#content-animation-button-text").html().replace("enabled", "disabled"));}
 		catch(ex) {}
 		
 		url_vars["content_animation"] = 1;
 		
 		write_url_vars();
 		
-		//The actual removing of the data-aos attribute is handled in settings-head.js.
+		//This attribute makes the content invisible until it's animated in, so if we're never going to do that, it has to go.
+		$("body").find("*[data-aos]").removeAttr("data-aos");
 	}
 	
 	else
 	{
-		try {$("#content-animation-button-text").html($("#content-animation-button-text").html().replace("static", "animated"));}
+		try {$("#content-animation-button-text").html($("#content-animation-button-text").html().replace("disabled", "enabled"));}
 		catch(ex) {}
 		
 		url_vars["content_animation"] = 0;
