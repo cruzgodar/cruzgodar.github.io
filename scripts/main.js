@@ -11,7 +11,7 @@ let current_url = "/";
 let parent_folder = "/";
 
 //Whether the browser supports WebP images or not. Given a boolean value when decided.
-let supports_webp = null;
+let supports_webp;
 
 let scripts_loaded = 
 {
@@ -113,7 +113,7 @@ function entry_point(url)
 {
 	var refresh_id = setInterval(function()
 	{
-		if (supports_webp != null && typeof redirect != "undefined" && typeof fade_in != "undefined" && typeof update_aos != "undefined" && typeof bind_handlers != "undefined" && typeof insert_footer != "undefined" && typeof insert_images != "undefined" && typeof apply_settings != "undefined" && typeof gimp_edge != "undefined" && typeof set_links != "undefined" && typeof remove_hover_on_touch != "undefined" && typeof load_disqus != "undefined")
+		if (typeof supports_webp != "undefined" && typeof redirect != "undefined" && typeof fade_in != "undefined" && typeof update_aos != "undefined" && typeof bind_handlers != "undefined" && typeof insert_footer != "undefined" && typeof insert_images != "undefined" && typeof apply_settings != "undefined" && typeof gimp_edge != "undefined" && typeof set_links != "undefined" && typeof remove_hover_on_touch != "undefined" && typeof load_disqus != "undefined")
 		{
 			clearInterval(refresh_id);
 			
