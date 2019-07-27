@@ -1,7 +1,7 @@
-var new_page_data = null;
-var get_failed = false;
+let new_page_data = null;
+let get_failed = false;
 
-var redirect_refresh_id;
+let redirect_refresh_id = null;
 
 
 
@@ -9,28 +9,22 @@ var redirect_refresh_id;
 
 function set_links()
 {
-	var href;
-	var include_return_url;
-	
 	$("a").each(function(index)
 	{
-		href = $(this).attr("href");
+		let href = $(this).attr("href");
 		
 		if (href.slice(0, 5) != "https" && href.slice(0, 4) != "data")
 		{
+			let include_return_url = false;
+			
 			if (href == "/settings.html")
 			{
 				include_return_url = true;
 			}
 			
-			else
-			{
-				include_return_url = false;
-			}
 			
 			
-			
-			var vars = concat_url_vars(include_return_url);
+			let vars = concat_url_vars(include_return_url);
 			
 			if (vars.indexOf("&") == -1)
 			{
@@ -56,7 +50,7 @@ $(function()
 	//Fade in the opacity when the user presses the back button.
 	$(window).on("popstate", function(e)
 	{
-		var previous_page = get_url_var("page");
+		let previous_page = get_url_var("page");
 		
 		if (previous_page != null)
 		{
@@ -112,7 +106,7 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	
 	
 	
-	var include_return_url = false;
+	let include_return_url = false;
 	
 	if (url == "/settings.html")
 	{
@@ -217,9 +211,9 @@ function load_html(data, include_return_url, no_state_push)
 //Returns a string of url vars that can be attached to any url.
 function concat_url_vars(include_return_url)
 {
-	var string = "?page=" + encodeURIComponent(current_url);
-	var key;
-	var temp = "";
+	let string = "?page=" + encodeURIComponent(current_url);
+	let key = "";
+	let temp = "";
 	
 	
 	

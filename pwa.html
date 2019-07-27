@@ -84,17 +84,20 @@
 	
 	
 	
-	$(function()
+	!function()
 	{
-		$("head").append(`
-			<style class="temporary-style">
-				#pwa-button
-				{
-					display: none;
-					width: 0px;
-					height: 0px;
-				}
-			</style>
-		`);
-	});
+		$(function()
+		{
+			$("head").append(`
+				<style class="temporary-style">
+					#pwa-button
+					{
+						display: none;
+						width: 0px;
+						height: 0px;
+					}
+				</style>
+			`);
+		});
+	}()
 </script>

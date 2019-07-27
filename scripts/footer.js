@@ -2,27 +2,22 @@
 
 
 
-var footer_done = false;
+let footer_done = false;
 
 function insert_footer()
 {
-	var fnc_arg;
+	let fnc_arg = "";
 
 	if (page_settings["footer_from_nonstandard_color"])
 	{
 		fnc_arg = ", true";
 	}
 
-	else
-	{
-		fnc_arg = "";
-	}
 
 
+	let delay = 100;
 
-	var delay = 100;
-
-	var extension;
+	let extension = "";
 
 
 

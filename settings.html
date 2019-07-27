@@ -149,118 +149,121 @@
 	
 	
 	
-	$(function()
+	!function()
 	{
-		$("head").append(`
-			<style class="temporary-style">
-				html
-				{
-					max-width: 100%;
-					overflow-x: hidden;
-				}
-
-				body
-				{
-					max-width: 100%;
-					overflow-x: hidden;
-				}
-
-				.button-row
-				{
-					width: 70vw;
-					height: 38px;
-					margin: 0 auto;
-					display: flex;
-					align-items: flex-start;
-				}
-
-				.button-text
-				{
-					margin: auto;
-					margin-left: 10px;
-					text-align: left;
-				}
-
-				@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
-				{
-					.button-row
-					{
-						width: 90vw;
-					}
-				}
-			</style>
-		`);
-		
-		
-		
-		//We only apply this now to prevent the dark theme from transitioning slowly on load rather than instantly.
-		$("head").append(`
-			<style class="temporary-style">
-				html
-				{
-					-webkit-transition: background-color .6s ease;
-					transition: background-color .6s ease;
-				}
-			</style>
-		`);
-		
-		
-		
-		setTimeout(function()
+		$(function()
 		{
 			$("head").append(`
 				<style class="temporary-style">
-					.heading-text
+					html
 					{
-						-webkit-transition: color .6s ease;
-						transition: color .6s ease;
+						max-width: 100%;
+						overflow-x: hidden;
 					}
-					
-					.section-text, .body-text
+
+					body
 					{
-						-webkit-transition: color .3s ease;
-						transition: color .3s ease;
+						max-width: 100%;
+						overflow-x: hidden;
 					}
-					
-					.text-button
+
+					.button-row
 					{
-						-webkit-transition: -webkit-filter .15s ease-in-out;
-						transition: filter .15s ease-in-out;
+						width: 70vw;
+						height: 38px;
+						margin: 0 auto;
+						display: flex;
+						align-items: flex-start;
+					}
+
+					.button-text
+					{
+						margin: auto;
+						margin-left: 10px;
+						text-align: left;
+					}
+
+					@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
+					{
+						.button-row
+						{
+							width: 90vw;
+						}
 					}
 				</style>
 			`);
-		}, 600);
-		
-		
-		
-		//Deal with Edge.
-		var refresh_id = setInterval(function()
-		{
-			if (typeof browser_name != "undefined")
+			
+			
+			
+			//We only apply this now to prevent the dark theme from transitioning slowly on load rather than instantly.
+			$("head").append(`
+				<style class="temporary-style">
+					html
+					{
+						-webkit-transition: background-color .6s ease;
+						transition: background-color .6s ease;
+					}
+				</style>
+			`);
+			
+			
+			
+			setTimeout(function()
 			{
-				clearInterval(refresh_id);
-				
-				if (browser_name == "MS Edge")
+				$("head").append(`
+					<style class="temporary-style">
+						.heading-text
+						{
+							-webkit-transition: color .6s ease;
+							transition: color .6s ease;
+						}
+						
+						.section-text, .body-text
+						{
+							-webkit-transition: color .3s ease;
+							transition: color .3s ease;
+						}
+						
+						.text-button
+						{
+							-webkit-transition: -webkit-filter .15s ease-in-out;
+							transition: filter .15s ease-in-out;
+						}
+					</style>
+				`);
+			}, 600);
+			
+			
+			
+			//Deal with Edge.
+			let refresh_id = setInterval(function()
+			{
+				if (typeof browser_name != "undefined")
 				{
-					$("#banner-style-button-row").remove();
+					clearInterval(refresh_id);
+					
+					if (browser_name == "MS Edge")
+					{
+						$("#banner-style-button-row").remove();
+					}
 				}
+			});
+			
+			
+			
+			//Figure out where to return to.
+			let return_url = get_url_var("return");
+			
+			//Believe it or not, it might actually be the string "null". If the page we're coming from is the root page (without index.html), it will write null into the url and then this page will get "null". Still an invalid url to return to.
+			if (return_url == null || return_url == "null")
+			{
+				$("#apply-button").attr("onclick", "redirect('/home.html')");
+			}
+			
+			else
+			{
+				$("#apply-button").attr("onclick", "redirect('" + decodeURIComponent(return_url) + "')");
 			}
 		});
-		
-		
-		
-		//Figure out where to return to.
-		var return_url = get_url_var("return");
-		
-		//Believe it or not, it might actually be the string "null". If the page we're coming from is the root page (without index.html), it will write null into the url and then this page will get "null". Still an invalid url to return to.
-		if (return_url == null || return_url == "null")
-		{
-			$("#apply-button").attr("onclick", "redirect('/home.html')");
-		}
-		
-		else
-		{
-			$("#apply-button").attr("onclick", "redirect('" + decodeURIComponent(return_url) + "')");
-		}
-	});
+	}()
 </script>

@@ -1,3 +1,7 @@
+let disqus_config = null;
+
+
+
 function load_disqus()
 {
 	if (scripts_loaded["disqus"])
@@ -10,7 +14,7 @@ function load_disqus()
 	
 	else
 	{
-		var d = document, s = d.createElement("script");
+		let d = document, s = d.createElement("script");
 		s.src = "https://cruzgodar.disqus.com/embed.js";
 		s.setAttribute("data-timestamp", +new Date());
 		(d.head || d.body).appendChild(s);

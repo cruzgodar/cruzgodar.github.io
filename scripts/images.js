@@ -4,9 +4,9 @@
 
 function insert_images()
 {
-	var images = $(".check-webp");
+	let images = $(".check-webp");
 	
-	var image_type;
+	let image_type = "";
 	
 	if (supports_webp)
 	{
@@ -22,11 +22,9 @@ function insert_images()
 	{
 		$.getJSON(parent_folder + "images.json", function(image_data)
 		{
-			var i;
+			let src = "";
 			
-			var src;
-			
-			for (i = 0; i < images.length; i++)
+			for (let i = 0; i < images.length; i++)
 			{
 				src = image_data[$(images[i]).attr("id")][image_type];
 				

@@ -1,19 +1,19 @@
 //Included on every page. Sets up variables and runs browsers.js, footer.js, navigation.js, and settings.js.
 
 
-var window_width, window_height;
+let window_width = null, window_height = null;
 
-var page_settings = {};
+let page_settings = {};
 
-var page_settings_done = false;
+let page_settings_done = false;
 
-var current_url = "/";
-var parent_folder = "/";
+let current_url = "/";
+let parent_folder = "/";
 
 //Whether the browser supports WebP images or not. Given a boolean value when decided.
-var supports_webp = null;
+let supports_webp = null;
 
-var scripts_loaded = 
+let scripts_loaded = 
 {
 	"disqus": false,
 	"mathjs": false,
@@ -158,7 +158,7 @@ function update_aos()
 
 function on_page_load()
 {
-	var refresh_id = setInterval(function()
+	let refresh_id = setInterval(function()
 	{
 		if (page_settings_done)
 		{

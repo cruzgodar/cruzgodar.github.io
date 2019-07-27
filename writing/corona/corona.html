@@ -184,410 +184,412 @@
 	
 	
 	
-	var background_color = 255;
-	var opacity = 0;
-	
-	var bubbles = [];
-	var subtexts = [];
-	
-	banner_done = false;
-	scroll_button_done = false;
-	var eclipse_done = false;
-	
-	var progress_bar_done = false;
-	var stage_bubbles_done = false;
-	
-	
-	
-	$(function()
+	!function()
 	{
-		$("head").append(`
-			<style class="temporary-style">
-				body
-				{
-					margin: 0;
-					padding: 0;
-				}
-				
-				.title-text
-				{
-					position: relative;
-					width: 100%;
-					color: rgb(255, 255, 255);
-					text-align: center;
-					font-size: 450%;
-					font-family: "Gentium Book Basic", serif;
-					font-weight: normal;
-					z-index: 10;
-				}
-				
-				.hook-text
-				{
-					position: relative;
-					width: 100%;
-					color: rgb(160, 160, 160);
-					text-align: center;
-					font-size: 150%;
-					font-family: "Gentium Book Basic", serif;
-				}
-				
-				.synopsis-text
-				{
-					position: relative;
-					width: 50vw;
-					margin-left: 25vw;
-					color: rgb(160, 160, 160);
-					text-align: justify;
-					font-size: 100%;
-					font-family: 'Gentium Book Basic', serif;
-				}
-				
-				.eclipse
-				{
-					width: 50vh;
-					max-width: 70vw;
-					margin: 0 auto;
-					opacity: 0;
-				}
-				
-				.eclipse img
-				{
-					position: absolute;
-					width: auto;
-					height: auto;
-				}
-				
-				.stage-bubbles
-				{
-					width: 50vw;
-					margin-left: 25vw;
-				}
-				
-				.stage-bubble-subtext
-				{
-					width: 17.5vw;
-					margin-left: -6.25vw;
-				}
-				
-				.progress-bar
-				{
-					width: calc(50vw - 8px);
-					margin-left: 25vw;
-				}
-				
-				.email
-				{
-					width: 300px;
-					margin: 0 auto;
-				}
-				
-				.email img
-				{
-					position: absolute;
-					width: 300px;
-				}
-				
-				@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
-				{
-					/* Make text have smaller margins so justifying doesn't look ugly. */
+		let background_color = 255;
+		let opacity = 0;
+		
+		let bubbles = [];
+		let subtexts = [];
+		
+		banner_done = false;
+		scroll_button_done = false;
+		let eclipse_done = false;
+		
+		let progress_bar_done = false;
+		let stage_bubbles_done = false;
+		
+		
+		
+		$(function()
+		{
+			$("head").append(`
+				<style class="temporary-style">
+					body
+					{
+						margin: 0;
+						padding: 0;
+					}
+					
+					.title-text
+					{
+						position: relative;
+						width: 100%;
+						color: rgb(255, 255, 255);
+						text-align: center;
+						font-size: 450%;
+						font-family: "Gentium Book Basic", serif;
+						font-weight: normal;
+						z-index: 10;
+					}
+					
+					.hook-text
+					{
+						position: relative;
+						width: 100%;
+						color: rgb(160, 160, 160);
+						text-align: center;
+						font-size: 150%;
+						font-family: "Gentium Book Basic", serif;
+					}
+					
 					.synopsis-text
 					{
-						width: 80vw;
-						margin-left: 10vw;
+						position: relative;
+						width: 50vw;
+						margin-left: 25vw;
+						color: rgb(160, 160, 160);
+						text-align: justify;
+						font-size: 100%;
+						font-family: 'Gentium Book Basic', serif;
 					}
 					
 					.eclipse
 					{
-						max-width: 90vw;
+						width: 50vh;
+						max-width: 70vw;
+						margin: 0 auto;
+						opacity: 0;
+					}
+					
+					.eclipse img
+					{
+						position: absolute;
+						width: auto;
+						height: auto;
 					}
 					
 					.stage-bubbles
 					{
-						width: 80vw;
-						margin-left: 10vw;
+						width: 50vw;
+						margin-left: 25vw;
 					}
 					
 					.stage-bubble-subtext
 					{
-						width: 25vw;
-						margin-left: -7.5vw;
+						width: 17.5vw;
+						margin-left: -6.25vw;
 					}
 					
-					/* Fit progress bar to synopsis text */
 					.progress-bar
 					{
-						margin-left: 10vw;
-						width: 80vw;
+						width: calc(50vw - 8px);
+						margin-left: 25vw;
 					}
-				}
-			</style>
-		`);
-		
-		
-		
-		//Make the eclipse image have a 1:1 aspect ratio.
-		$(".eclipse, .eclipse img").css("height", $(".eclipse").width());
-		
-		$(window).on("resize.temp-handler", function()
-		{
-			$(".eclipse, .eclipse img").css("height", $(".eclipse").width());
-		});
-		
-		
-		
-		//We have to wait to apply the contrast changes, since otherwise settings.js may set the body text color after we do here, resulting in less contrast than normal.
-		var refresh_id = setInterval(function()
-		{
-			if (typeof settings_done != "undefined")
-			{
-				clearInterval(refresh_id);
-				
-				if (url_vars["contrast"] == 1)
-				{
-					$(".synopsis-text").css("color", "rgb(208, 208, 208)");
-					$(".body-text").css("color", "rgb(192, 192, 192)");
 					
-					if (url_vars["theme"] != 1)
+					.email
 					{
-						$(".hook-text").css("color", "rgb(120, 120, 120)");
+						width: 300px;
+						margin: 0 auto;
 					}
 					
+					.email img
+					{
+						position: absolute;
+						width: 300px;
+					}
 					
-					
-					$(".email img").css("-webkit-filter", "brightness(150%)");
-					$(".email img").css("filter", "brightness(150%)");
-					
-					$(".stage-bubble, .progress-bar").css("border-color", "rgb(192, 192, 192)");
-					$(".stage-bubble span, .progress-bar span").css("background-color", "rgb(192, 192, 192)");
-					
-					$("head").append(`
-						<style class="temporary-style">
-							.line-break
-							{
-								background: rgb(0,0,0);
-								background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(140,140,140) 50%, rgb(0,0,0) 100%);
-								background: -webkit-linear-gradient(left, rgb(0,0,0) 0%,rgb(140,140,140) 50%,rgb(0,0,0) 100%);
-								background: linear-gradient(to right, rgb(0,0,0) 0%,rgb(140,140,140) 50%,rgb(0,0,0) 100%);
-							}
-						</style>
-					`);
-				}
-				
-				else
-				{
-					$("head").append(`
-						<style class="temporary-style">
-							.line-break
-							{
-								background: rgb(0,0,0);
-								background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(92,92,92) 50%, rgb(0,0,0) 100%);
-								background: -webkit-linear-gradient(left, rgb(0,0,0) 0%,rgb(92,92,92) 50%,rgb(0,0,0) 100%);
-								background: linear-gradient(to right, rgb(0,0,0) 0%,rgb(92,92,92) 50%,rgb(0,0,0) 100%);
-							}
-						</style>
+					@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
+					{
+						/* Make text have smaller margins so justifying doesn't look ugly. */
+						.synopsis-text
+						{
+							width: 80vw;
+							margin-left: 10vw;
+						}
 						
-						if (url_vars["theme"] == 1)
+						.eclipse
+						{
+							max-width: 90vw;
+						}
+						
+						.stage-bubbles
+						{
+							width: 80vw;
+							margin-left: 10vw;
+						}
+						
+						.stage-bubble-subtext
+						{
+							width: 25vw;
+							margin-left: -7.5vw;
+						}
+						
+						/* Fit progress bar to synopsis text */
+						.progress-bar
+						{
+							margin-left: 10vw;
+							width: 80vw;
+						}
+					}
+				</style>
+			`);
+			
+			
+			
+			//Make the eclipse image have a 1:1 aspect ratio.
+			$(".eclipse, .eclipse img").css("height", $(".eclipse").width());
+			
+			$(window).on("resize.temp-handler", function()
+			{
+				$(".eclipse, .eclipse img").css("height", $(".eclipse").width());
+			});
+			
+			
+			
+			//We have to wait to apply the contrast changes, since otherwise settings.js may set the body text color after we do here, resulting in less contrast than normal.
+			let refresh_id = setInterval(function()
+			{
+				if (settings_done)
+				{
+					clearInterval(refresh_id);
+					
+					if (url_vars["contrast"] == 1)
+					{
+						$(".synopsis-text").css("color", "rgb(208, 208, 208)");
+						$(".body-text").css("color", "rgb(192, 192, 192)");
+						
+						if (url_vars["theme"] != 1)
 						{
 							$(".hook-text").css("color", "rgb(120, 120, 120)");
 						}
-					`);
-				}
-			}
-		}, 50);
-		
-		
-		
-		if (url_vars["content_animation"] != 1)
-		{
-			AOS.init({duration: 1200, once: false, offset: window_height/4})
-		}
-		
-		//If the user just sits at the top of the page for 4 seconds without scrolling, give them a scroll button.
-		if ($(window).scrollTop() == 0)
-		{
-			setTimeout(corona_add_scroll_button, 7000);
-		}
-		
-		
-		
-		$(window).on("scroll.temp-handler", function()
-		{
-			corona_scroll_update();
-		});
-	});
-	
-	
-	
-	function corona_scroll_update()
-	{
-		scroll = $(this).scrollTop();
-		
-		if (scroll >= 0)
-		{
-			if (scroll <= 4*window_height/5)
-			{
-				background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/4 * scroll / window_height, 0) - .5 * Math.PI);
-				
-				if (url_vars["theme"] == 1)
-				{
-					background_color *= 24;
-				}
+						
+						
+						
+						$(".email img").css("-webkit-filter", "brightness(150%)");
+						$(".email img").css("filter", "brightness(150%)");
+						
+						$(".stage-bubble, .progress-bar").css("border-color", "rgb(192, 192, 192)");
+						$(".stage-bubble span, .progress-bar span").css("background-color", "rgb(192, 192, 192)");
+						
+						$("head").append(`
+							<style class="temporary-style">
+								.line-break
+								{
+									background: rgb(0,0,0);
+									background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(140,140,140) 50%, rgb(0,0,0) 100%);
+									background: -webkit-linear-gradient(left, rgb(0,0,0) 0%,rgb(140,140,140) 50%,rgb(0,0,0) 100%);
+									background: linear-gradient(to right, rgb(0,0,0) 0%,rgb(140,140,140) 50%,rgb(0,0,0) 100%);
+								}
+							</style>
+						`);
+					}
 					
-				else
+					else
+					{
+						$("head").append(`
+							<style class="temporary-style">
+								.line-break
+								{
+									background: rgb(0,0,0);
+									background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(92,92,92) 50%, rgb(0,0,0) 100%);
+									background: -webkit-linear-gradient(left, rgb(0,0,0) 0%,rgb(92,92,92) 50%,rgb(0,0,0) 100%);
+									background: linear-gradient(to right, rgb(0,0,0) 0%,rgb(92,92,92) 50%,rgb(0,0,0) 100%);
+								}
+							</style>
+							
+							if (url_vars["theme"] == 1)
+							{
+								$(".hook-text").css("color", "rgb(120, 120, 120)");
+							}
+						`);
+					}
+				}
+			}, 50);
+			
+			
+			
+			if (url_vars["content_animation"] != 1)
+			{
+				AOS.init({duration: 1200, once: false, offset: window_height/4})
+			}
+			
+			//If the user just sits at the top of the page for 4 seconds without scrolling, give them a scroll button.
+			if ($(window).scrollTop() == 0)
+			{
+				setTimeout(corona_add_scroll_button, 7000);
+			}
+			
+			
+			
+			$(window).on("scroll.temp-handler", function()
+			{
+				corona_scroll_update();
+			});
+		});
+		
+		
+		
+		function corona_scroll_update()
+		{
+			scroll = $(this).scrollTop();
+			
+			if (scroll >= 0)
+			{
+				if (scroll <= 4*window_height/5)
 				{
-					background_color *= 255;
+					background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/4 * scroll / window_height, 0) - .5 * Math.PI);
+					
+					if (url_vars["theme"] == 1)
+					{
+						background_color *= 24;
+					}
+						
+					else
+					{
+						background_color *= 255;
+					}
+					
+					
+					$("html").css("background-color", "rgb(" + background_color + ", " + background_color + ", " + background_color + ")");
+					
+					if (background_color == 0)
+					{
+						banner_done = true;
+					}
+					
+					else
+					{
+						banner_done = false;
+					}
 				}
 				
-				
-				$("html").css("background-color", "rgb(" + background_color + ", " + background_color + ", " + background_color + ")");
-				
-				if (background_color == 0)
+				else if (banner_done == false)
 				{
+					$("html").css("background-color", "rgb(0, 0, 0)");
 					banner_done = true;
 				}
 				
-				else
+				
+				
+				if (scroll <= window_height/3)
 				{
-					banner_done = false;
+					opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - .5 * Math.PI);
+					
+					$(".scroll-button").css("opacity", opacity);
+					
+					if (opacity == 0)
+					{
+						$(".scroll-button").remove();
+						scroll_button_done = true;
+					}
+					
+					else
+					{
+						scroll_button_done = false;
+					}
 				}
-			}
-			
-			else if (banner_done == false)
-			{
-				$("html").css("background-color", "rgb(0, 0, 0)");
-				banner_done = true;
-			}
-			
-			
-			
-			if (scroll <= window_height/3)
-			{
-				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - .5 * Math.PI);
 				
-				$(".scroll-button").css("opacity", opacity);
-				
-				if (opacity == 0)
+				else if (scroll_button_done == false)
 				{
 					$(".scroll-button").remove();
+					
 					scroll_button_done = true;
 				}
 				
-				else
+				
+				
+				if (scroll >= (3/5 + .1) * window_height && scroll <= 1.1*window_height)
 				{
-					scroll_button_done = false;
+					opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/2 * (scroll - ((3/5 + .1) * window_height)) / window_height, 0) - .5 * Math.PI);
+					
+					$(".eclipse").css("opacity", 1 - opacity);
+					
+					if (opacity == 1)
+					{
+						eclipse_done = true;
+					}
+					
+					else
+					{
+						eclipse_done = false;
+					}
 				}
-			}
-			
-			else if (scroll_button_done == false)
-			{
-				$(".scroll-button").remove();
 				
-				scroll_button_done = true;
-			}
-			
-			
-			
-			if (scroll >= (3/5 + .1) * window_height && scroll <= 1.1*window_height)
-			{
-				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/2 * (scroll - ((3/5 + .1) * window_height)) / window_height, 0) - .5 * Math.PI);
-				
-				$(".eclipse").css("opacity", 1 - opacity);
-				
-				if (opacity == 1)
+				else if (scroll >= window_height && eclipse_done == false)
 				{
+					$(".eclipse").css("opacity", 1);
+					
 					eclipse_done = true;
 				}
 				
-				else
+				else if (scroll <= (3/5 + .1) * window_height && eclipse_done == false)
 				{
-					eclipse_done = false;
+					$(".eclipse").css("opacity", 0);
+					
+					eclipse_done = true;
 				}
 			}
 			
-			else if (scroll >= window_height && eclipse_done == false)
+			
+			
+			if (scroll > $(".progress-bar").position().top - 3*window_height/4 && progress_bar_done == false)
 			{
-				$(".eclipse").css("opacity", 1);
-				
-				eclipse_done = true;
+				$(".progress-bar span").css("width", "100%");
+				progress_bar_done = true;
 			}
 			
-			else if (scroll <= (3/5 + .1) * window_height && eclipse_done == false)
+			else if (scroll > $("#trigger-stage-bubbles").position().top - 3*window_height/4 && stage_bubbles_done == false)
 			{
-				$(".eclipse").css("opacity", 0);
+				stage_bubbles_done = true;
+				bubbles = $(".stage-bubble span");
+				subtexts = $(".stage-bubble-subtext");
 				
-				eclipse_done = true;
-			}
-		}
-		
-		
-		
-		if (scroll > $(".progress-bar").position().top - 3*window_height/4 && progress_bar_done == false)
-		{
-			$(".progress-bar span").css("width", "100%");
-			progress_bar_done = true;
-		}
-		
-		else if (scroll > $("#trigger-stage-bubbles").position().top - 3*window_height/4 && stage_bubbles_done == false)
-		{
-			stage_bubbles_done = true;
-			bubbles = $(".stage-bubble span");
-			subtexts = $(".stage-bubble-subtext");
-			var i;
-			
-			for (i = 0; i < 4; i++)
-			{
-				setTimeout(function(i)
+				for (let i = 0; i < 4; i++)
 				{
-					$(bubbles[i]).css("width", "100%");
-					$(bubbles[i]).css("height", "100%");
-					$(subtexts[i]).css("margin-top", "1vh");
-				}, i * 100, i);
+					setTimeout(function(i)
+					{
+						$(bubbles[i]).css("width", "100%");
+						$(bubbles[i]).css("height", "100%");
+						$(subtexts[i]).css("margin-top", "1vh");
+					}, i * 100, i);
+				}
+				
+				let blinking_block = 3;
+				
+				setInterval(function()
+				{
+					if (url_vars["contrast"] == 1)
+					{
+						$(bubbles[blinking_block]).css("background-color", "rgb(192, 192, 192)");
+					}
+					
+					else
+					{
+						$(bubbles[blinking_block]).css("background-color", "rgb(127, 127, 127)");
+					}
+					
+					setTimeout(function()
+					{
+						$(bubbles[blinking_block]).css("background-color", "rgb(0, 0, 0)");
+					}, 1200);
+				}, 2400);
 			}
-			
-			i = 3;
-			
-			setInterval(function()
+		}
+		
+		
+		
+		//Scroll button things.
+		function corona_add_scroll_button()
+		{
+			//Only add the scroll button if the user is still on the top of the page.
+			if ($(window).scrollTop() == 0)
 			{
+				let chevron_name = "chevron-down";
+				
 				if (url_vars["contrast"] == 1)
 				{
-					$(bubbles[i]).css("background-color", "rgb(192, 192, 192)");
+					chevron_name += "-dark";
 				}
 				
-				else
-				{
-					$(bubbles[i]).css("background-color", "rgb(127, 127, 127)");
-				}
+				$("#banner-cover").before(`
+					<div style="height: 59vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down">
+						<img class="scroll-button" src="/graphics/general-icons/${chevron_name}.png" alt="Scroll down" onclick="scroll_down()"></img>
+					</div>
+				`);
 				
-				setTimeout(function()
-				{
-					$(bubbles[i]).css("background-color", "rgb(0, 0, 0)");
-				}, 1200);
-			}, 2400);
-		}
-	}
-	
-	
-	
-	//Scroll button things.
-	function corona_add_scroll_button()
-	{
-		//Only add the scroll button if the user is still on the top of the page.
-		if ($(window).scrollTop() == 0)
-		{
-			var chevron_name = "chevron-down";
-			
-			if (url_vars["contrast"] == 1)
-			{
-				chevron_name += "-dark";
+				$("#banner-cover").remove();
 			}
-			
-			$("#banner-cover").before(`
-				<div style="height: 59vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down">
-					<img class="scroll-button" src="/graphics/general-icons/` + chevron_name + `.png" alt="Scroll down" onclick="scroll_down()"></img>
-				</div>
-			`);
-			
-			$("#banner-cover").remove();
 		}
-	}
+	}()
 </script>

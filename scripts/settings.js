@@ -2,9 +2,29 @@
 
 
 
-var settings_done;
+let settings_done = false;
 
-var url_var_functions =
+
+
+let url_vars = 
+{
+	"theme": get_url_var("theme"),
+	"contrast": get_url_var("contrast"),
+	"font": get_url_var("font"),
+	"writing_style": get_url_var("writing_style"),
+	"comments": get_url_var("comments"),
+	"content_animation": get_url_var("content_animation"),
+	"banner_style": get_url_var("banner_style")
+};
+
+if (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] == null)
+{
+	url_vars["theme"] = 1;
+}
+
+
+
+let url_var_functions =
 {
 	"animated":
 	{
@@ -33,12 +53,14 @@ var url_var_functions =
 
 function get_url_var(id)
 {
-	var query = window.location.search.substring(1);
-	var vars = query.split("&");
+	let query = window.location.search.substring(1);
+	let vars = query.split("&");
 	
-	for (var i = 0; i < vars.length; i++)
+	let pair = [];
+	
+	for (let i = 0; i < vars.length; i++)
 	{
-		var pair = vars[i].split("=");
+		pair = vars[i].split("=");
 		
 		if (pair[0] == id)
 		{
@@ -47,24 +69,6 @@ function get_url_var(id)
 	}
 	
 	return null;
-}
-
-var url_vars = 
-{
-	"theme": get_url_var("theme"),
-	"contrast": get_url_var("contrast"),
-	"font": get_url_var("font"),
-	"writing_style": get_url_var("writing_style"),
-	"comments": get_url_var("comments"),
-	"content_animation": get_url_var("content_animation"),
-	"banner_style": get_url_var("banner_style")
-};
-
-
-
-if (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] == null)
-{
-	url_vars["theme"] = 1;
 }
 
 
@@ -418,6 +422,7 @@ function switch_contrast_on_load()
 function switch_font()
 {
 	$("#font-button-row").animate({opacity: 0}, 300, "swing");
+	
 	setTimeout(function()
 	{
 		switch_font_on_load();
@@ -464,6 +469,7 @@ function switch_font_on_load()
 function switch_writing_style()
 {
 	$("#writing-style-button-row").animate({opacity: 0}, 300, "swing");
+	
 	setTimeout(function()
 	{
 		switch_writing_style_on_load();

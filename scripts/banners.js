@@ -1,9 +1,9 @@
-var scroll = 0;
-var banner_done = false;
-var scroll_button_done = false;
-var global_opacity = 0;
+let scroll = 0;
+let banner_done = false;
+let scroll_button_done = false;
+let global_opacity = 0;
 
-var banner_extension = "";
+let banner_extension = "";
 
 
 
@@ -39,7 +39,7 @@ function load_banner()
 	//Only do banner things if the banner things are in the standard places.
 	if (page_settings["manual_banner"] != true)
 	{
-		var banner_name;
+		let banner_name = "";
 		
 		if (window_width / window_height < 10/16 || window_width <= 800)
 		{
@@ -53,7 +53,7 @@ function load_banner()
 		
 			
 		
-		//Fetch the banner file. If that works, great! Set thr background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we go back to the safety of the previous page.
+		//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we go back to the safety of the previous page.
 		$.get(parent_folder + "banners/" + banner_name)
 		
 		.done(function()
@@ -199,7 +199,7 @@ function add_scroll_button()
 	//Only add the scroll button if the user is still on the top of the page.
 	if (scroll == 0)
 	{
-		var chevron_name = "chevron-down";
+		let chevron_name = "chevron-down";
 		
 		if (url_vars["contrast"] == 1)
 		{
@@ -208,7 +208,7 @@ function add_scroll_button()
 		
 		$("#banner-cover").before(`
 			<div style="height: 100vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down">
-				<input type="image" class="scroll-button" src="/graphics/general-icons/` + chevron_name + `.png" alt="Scroll down" onclick="scroll_down()">
+				<input type="image" class="scroll-button" src="/graphics/general-icons/${chevron_name}.png" alt="Scroll down" onclick="scroll_down()">
 			</div>
 		`);
 		

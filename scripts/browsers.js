@@ -63,7 +63,7 @@ var browser_detect =
 	
 browser_detect.init();
 
-var browser_name = browser_detect.browser;
+let browser_name = browser_detect.browser;
 
 $(function()
 {
