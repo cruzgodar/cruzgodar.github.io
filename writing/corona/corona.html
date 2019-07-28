@@ -44,7 +44,7 @@
 
 <main>
 	<section>
-		<div style="height: 10vh"></div>
+		<div style="height: 20vh"></div>
 		
 		<div id="scroll-to"></div>
 
@@ -428,9 +428,9 @@
 			
 			if (scroll >= 0)
 			{
-				if (scroll <= window_height * 2/3)
+				if (scroll <= window_height / 1.25)
 				{
-					background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.5 * scroll / window_height, 0) - .5 * Math.PI);
+					background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * scroll / window_height, 0) - .5 * Math.PI);
 					
 					if (url_vars["theme"] == 1)
 					{
@@ -491,9 +491,9 @@
 				
 				
 				
-				if (scroll >= 3/5 * window_height && scroll <= window_height)
+				if (scroll >= 4/5 * window_height && scroll <= window_height * 6/5)
 				{
-					opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 4 * (scroll - (3/5 * window_height)) / window_height, 0) - .5 * Math.PI);
+					opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3.5 * (scroll - (4/5 * window_height)) / window_height, 0) - .5 * Math.PI);
 					
 					$(".eclipse").css("opacity", 1 - opacity);
 					
@@ -508,14 +508,14 @@
 					}
 				}
 				
-				else if (scroll >= window_height && eclipse_done == false)
+				else if (scroll >= 6/5 * window_height && eclipse_done == false)
 				{
 					$(".eclipse").css("opacity", 1);
 					
 					eclipse_done = true;
 				}
 				
-				else if (scroll <= 3/5 * window_height && eclipse_done == false)
+				else if (scroll <= 4/5 * window_height && eclipse_done == false)
 				{
 					$(".eclipse").css("opacity", 0);
 					
