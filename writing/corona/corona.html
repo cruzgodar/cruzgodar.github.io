@@ -44,6 +44,8 @@
 
 <main>
 	<section>
+		<div style="height: 10vh"></div>
+		
 		<div id="scroll-to"></div>
 
 		<h1 class="title-text" data-aos="fade-up">CORONA</h1>
@@ -426,9 +428,9 @@
 			
 			if (scroll >= 0)
 			{
-				if (scroll <= 4*window_height/5)
+				if (scroll <= window_height * 2/3)
 				{
-					background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/4 * scroll / window_height, 0) - .5 * Math.PI);
+					background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.5 * scroll / window_height, 0) - .5 * Math.PI);
 					
 					if (url_vars["theme"] == 1)
 					{
@@ -489,9 +491,9 @@
 				
 				
 				
-				if (scroll >= (3/5 + .1) * window_height && scroll <= 1.1*window_height)
+				if (scroll >= 3/5 * window_height && scroll <= window_height)
 				{
-					opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 5/2 * (scroll - ((3/5 + .1) * window_height)) / window_height, 0) - .5 * Math.PI);
+					opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 4 * (scroll - (3/5 * window_height)) / window_height, 0) - .5 * Math.PI);
 					
 					$(".eclipse").css("opacity", 1 - opacity);
 					
@@ -513,7 +515,7 @@
 					eclipse_done = true;
 				}
 				
-				else if (scroll <= (3/5 + .1) * window_height && eclipse_done == false)
+				else if (scroll <= 3/5 * window_height && eclipse_done == false)
 				{
 					$(".eclipse").css("opacity", 0);
 					

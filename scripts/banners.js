@@ -129,9 +129,9 @@ function scroll_update()
 	{
 		if (url_vars["banner_style"] != 1)
 		{
-			if (scroll <= window_height)
+			if (scroll <= window_height / 1.33)
 			{
-				global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / window_height, 0) - .5 * Math.PI);
+				global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * scroll / window_height, 0) - .5 * Math.PI);
 				$("#background-image").css("opacity", global_opacity);
 				
 				if (global_opacity == 0)
@@ -222,4 +222,11 @@ function add_scroll_button()
 function scroll_down()
 {
 	$("html, body").animate({scrollTop: $("#scroll-to").offset().top}, 1200, "swing");
+}
+
+
+
+function scroll_step(progress, goal)
+{
+	$("html, body").scrollTop()
 }
