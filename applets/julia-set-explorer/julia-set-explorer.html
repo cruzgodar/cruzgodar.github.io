@@ -89,7 +89,7 @@
 		<div style="height: 5vh"></div>
 		
 		<div style="display: flex; justify-content: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="1000" data-aos-anchor="#trigger-section-2">
-			<button class="text-button" type="button" onclick="draw_high_res_julia()">Generate</button>
+			<button class="text-button" type="button" id="generate-button">Generate</button>
 		</div>
 		
 		<div style="height: 10vh"></div>
@@ -220,6 +220,10 @@
 					$("#mandelbrot-set, #julia-set, #high-res-julia-set").css("border-color", "rgb(64, 64, 64)");
 				}
 			}
+			
+			
+			
+			document.querySelector("#generate-button").addEventListener("click", draw_high_res_julia);
 			
 			
 			
