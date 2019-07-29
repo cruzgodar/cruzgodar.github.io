@@ -20,20 +20,18 @@ let scripts_loaded =
 	"mathjax": false
 }
 
+let temporary_handlers =
+{
+	"scroll": [],
+	"resize": []
+}
+
 
 
 $(function()
 {
 	window_width = $(window).width();
 	window_height = $(window).height();
-	
-	
-	
-	//Disable the default behavior of <a> tags -- that's only there for accessibility.
-	$("body").on("click", "a:not(.real-link)", function(e)
-	{
-		e.preventDefault();
-	});
 	
 	
 	
@@ -203,6 +201,8 @@ function on_page_load()
 			
 			remove_hover_on_touch();
 			
+			disable_links();
+			
 			
 			
 			if (page_settings["math_page"])
@@ -238,8 +238,14 @@ function on_page_unload()
 	
 	
 	
-	//Unbind everything transient from the window (that was bound with jQuery. This is the reason it's currently impossible to remove AOS's handlers).
-	$(window).off(".temp-handler");
+	//Unbind everything transient from the window.
+	for (let key in temporary_handlers)
+	{
+		for (let j = 0; j < temporary_handlers[key].length; j++)
+		{
+			window.removeEventListener(key, temporary_handlers[key][j]);
+		}
+	}
 }
 
 
@@ -288,6 +294,21 @@ function bind_handlers()
 
 
 
+function disable_links()
+{
+	let links = document.querySelectorAll("a:not(.real-link)");
+	
+	for (let i = 0; i < links.length; i++)
+	{
+		links[i].addEventListener("click", function(e)
+		{
+			e.preventDefault();
+		});
+	}
+}
+
+
+
 function typeset_math()
 {
 	if (scripts_loaded["mathjax"] == false)
@@ -302,4 +323,19 @@ function typeset_math()
 	{
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	}
+}
+
+
+
+//Returns the type of element that was clicked on, given the click event. Used to disable clicks on links only.
+function click_origin(e)
+{
+	let target = e.target;
+	let tag = [];
+	tag.tag_name = target.tagName.toLowerCase();
+	tag.class = target.className.split(' ');
+	tag.id = target.id;
+	tag.parent = target.parentNode;
+
+    return tag;
 }

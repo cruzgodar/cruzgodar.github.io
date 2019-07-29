@@ -332,10 +332,8 @@
 			//Make the eclipse image have a 1:1 aspect ratio.
 			$(".eclipse, .eclipse img").css("height", $(".eclipse").width());
 			
-			$(window).on("resize.temp-handler", function()
-			{
-				$(".eclipse, .eclipse img").css("height", $(".eclipse").width());
-			});
+			window.addEventListener("resize", corona_resize);
+			temporary_handlers["resize"].push(corona_resize);
 			
 			
 			
@@ -414,15 +412,13 @@
 			
 			
 			
-			$(window).on("scroll.temp-handler", function()
-			{
-				corona_scroll_update();
-			});
+			window.addEventListener("scroll", corona_scroll);
+			temporary_handlers["scroll"].push(corona_scroll);
 		});
 		
 		
 		
-		function corona_scroll_update()
+		function corona_scroll()
 		{
 			scroll = $(this).scrollTop();
 			
@@ -592,6 +588,14 @@
 				
 				$("#banner-cover").remove();
 			}
+		}
+		
+		
+		
+		function corona_resize()
+		{
+			console.log("hi");
+			$(".eclipse, .eclipse img").css("height", $(".eclipse").width());
 		}
 	}()
 </script>

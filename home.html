@@ -389,25 +389,23 @@
 			
 			
 			
-			$(window).on("scroll.temp-handler", function()
-			{
-				scroll = $(this).scrollTop();
-				
-				if (scroll <= window_height/3 && url_vars["banner_style"] != 1)
-				{
-					$(".name-text").css("opacity", global_opacity);
-				}
-			});
+			window.addEventListener("scroll", homepage_scroll);
+			window.addEventListener("resize", homepage_scroll);
 			
-			$(window).on("resize.temp-handler", function()
-			{
-				scroll = $(this).scrollTop();
-				
-				if (scroll <= window_height/3 && url_vars["banner_style"] != 1)
-				{
-					$(".name-text").css("opacity", global_opacity);
-				}
-			});
+			temporary_handlers["scroll"].push(homepage_scroll);
+			temporary_handlers["resize"].push(homepage_scroll);
 		});
+		
+		
+		
+		function homepage_scroll()
+		{
+			scroll = $(window).scrollTop();
+				
+			if (scroll <= window_height/3 && url_vars["banner_style"] != 1)
+			{
+				$(".name-text").css("opacity", global_opacity);
+			}
+		}
 	}()
 </script>

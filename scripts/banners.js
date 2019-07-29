@@ -9,15 +9,8 @@ let banner_extension = "";
 
 $(function()
 {
-	$(window).on("scroll", function()
-	{
-		scroll_update();
-	});
-	
-	$(window).on("resize", function()
-	{
-		scroll_update();
-	});
+	window.addEventListener("scroll", scroll_update);
+	window.addEventListener("resize", scroll_update);
 });
 
 

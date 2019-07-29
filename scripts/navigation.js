@@ -48,7 +48,7 @@ function set_links()
 $(function()
 {
 	//Fade in the opacity when the user presses the back button.
-	$(window).on("popstate", function(e)
+	window.addEventListener("popstate", function(e)
 	{
 		let previous_page = get_url_var("page");
 		
