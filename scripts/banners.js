@@ -129,9 +129,9 @@ function scroll_update()
 	{
 		if (url_vars["banner_style"] != 1)
 		{
-			if (scroll <= window_height / 1.33)
+			if (scroll <= window_height)
 			{
-				global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * scroll / window_height, 0) - .5 * Math.PI);
+				global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / window_height, 0) - .5 * Math.PI);
 				$("#background-image").css("opacity", global_opacity);
 				
 				if (global_opacity == 0)
