@@ -582,7 +582,7 @@
 				
 				$("#banner-cover").before(`
 					<div style="height: 59vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down">
-						<img class="scroll-button" src="/graphics/general-icons/${chevron_name}.png" alt="Scroll down" onclick="scroll_down()"></img>
+						<input type="image" class="scroll-button" src="/graphics/general-icons/${chevron_name}.png" alt="Scroll down" onclick="scroll_down()">
 					</div>
 				`);
 				
@@ -594,7 +594,6 @@
 		
 		function corona_resize()
 		{
-			console.log("hi");
 			$(".eclipse, .eclipse img").css("height", $(".eclipse").width());
 		}
 	}()
