@@ -223,30 +223,38 @@ function add_scroll_button()
 
 
 
+let scroll_button_position = 0;
+let scroll_button_time = 0;
+let scroll_button_goal = 0;
+
 //Triggered by pressing the scroll button.
 function scroll_down()
 {
 	//This is relative to the top of the viewport, which is exactly what we want.
-	let goal = document.querySelector("#scroll-to").getBoundingClientRect().top;
+	scroll_button_goal = document.querySelector("#scroll-to").getBoundingClientRect().top;
 	
-	scroll_step(window.scrollY, goal, 0);
+	scroll_button_position = 0;
+	scroll_button_time = 0;
+	
+	let refresh_id = setInterval(function()
+	{
+		scroll_step(window.scrollY, scroll_button_goal, 0);
+		
+		if (scroll_button_time >= 1000)
+		{
+			clearInterval(refresh_id);
+		}
+	}, 8);
 }
 
 
 
-function scroll_step(position, goal, time)
+function scroll_step()
 {
-	if (time >= 1000)
-	{
-		return;
-	}
+	let step_distance = scroll_button_goal * .5 * (Math.sin((Math.PI * (scroll_button_time + 8) / 1000) - (Math.PI / 2)) - Math.sin((Math.PI * scroll_button_time / 1000) - (Math.PI / 2)));
 	
-	let step_distance = goal * .5 * (Math.sin((Math.PI * (time + 16) / 1000) - (Math.PI / 2)) - Math.sin((Math.PI * time / 1000) - (Math.PI / 2)));
+	scroll_button_position += step_distance;
+	scroll_button_time += 8;
 	
-	window.scrollTo(0, position + step_distance);
-	
-	setTimeout(function()
-	{
-		scroll_step(position + step_distance, goal, time + 16);
-	}, 16);
+	window.scrollTo(0, scroll_button_position);
 }
