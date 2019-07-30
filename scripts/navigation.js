@@ -67,6 +67,8 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 {
 	new_page_data = null;
 	
+	let background_color = document.documentElement.style.backgroundColor;
+	
 	//Start getting the new page data immediately. If it succeeds, we won't have to fetch it again. If it fails, though, abort the mission.
 	fetch(url)
 	
@@ -80,7 +82,12 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	.catch(function(error)
 	{
 		console.log("Failed to load new page — reversing fade-out.");
-		document.documentElement.style.opacity = 1;
+		
+		setTimeout(function()
+		{
+			document.documentElement.style.opacity = 1;
+			document.documentElement.style.backgroundColor = background_color;
+		}, 300);
 	});
 	
 	
