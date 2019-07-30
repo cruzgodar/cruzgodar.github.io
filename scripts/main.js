@@ -5,13 +5,11 @@ let window_width = null, window_height = null;
 
 let page_settings = {};
 
-let page_settings_done = false;
-
 let current_url = "/";
 let parent_folder = "/";
 
 //Whether the browser supports WebP images or not. Given a boolean value when decided.
-let supports_webp;
+let supports_webp = null;
 
 let scripts_loaded = 
 {
@@ -28,10 +26,22 @@ let temporary_handlers =
 
 
 
-$(function()
+function init()
 {
 	window_width = $(window).width();
 	window_height = $(window).height();
+	
+	
+	
+	window.addEventListener("resize", function()
+	{
+		window_width = $(window).width();
+		window_height = $(window).height();
+		
+		update_aos();
+		
+		set_footer_margin();
+	});
 	
 	
 	
@@ -69,25 +79,7 @@ $(function()
 			</style>
 		`);
 	}
-	
-	
-	
-	$.getScript("/scripts/modernizr-webp.min.js", function()
-	{
-		Modernizr.on("webp", function(result)
-		{
-			if (result)
-			{
-				supports_webp = true;
-			}
-			
-			else
-			{
-				supports_webp = false;
-			}
-		});
-	});
-});
+}
 
 
 
@@ -106,28 +98,29 @@ function set_footer_margin()
 
 
 
-//Waits for everything to load, then redirects to the chosen page. Any page that calls this should never be able to be accessed again without unloading the page.
-function entry_point(url)
+//Redirects to the chosen page. Any page that calls this should never be able to be accessed again without unloading the page.
+async function entry_point(url)
 {
-	var refresh_id = setInterval(function()
+	init();
+	
+	
+	
+	check_webp()
+	
+	.then(function()
 	{
-		if (typeof supports_webp != "undefined" && typeof redirect != "undefined" && typeof fade_in != "undefined" && typeof update_aos != "undefined" && typeof bind_handlers != "undefined" && typeof insert_footer != "undefined" && typeof insert_images != "undefined" && typeof apply_settings != "undefined" && typeof gimp_edge != "undefined" && typeof set_links != "undefined" && typeof remove_hover_on_touch != "undefined" && typeof load_disqus != "undefined")
+		//If it's not an html file, it shouldn't be anywhere near redirect().
+		if (url.substring(url.lastIndexOf(".") + 1, url.length) != "html")
 		{
-			clearInterval(refresh_id);
-			
-			//If it's not an html file, it shouldn't be anywhere near redirect().
-			if (url.substring(url.lastIndexOf(".") + 1, url.length) != "html")
-			{
-				//This should really be using history.replaceState(), but that doesn't update the page to make the file show for some reason.
-				window.location.href = url;
-			}
-			
-			else
-			{
-				redirect(url, false, false, true);
-			}
+			//This should really be using history.replaceState(), but that doesn't update the page to make the file show for some reason.
+			window.location.href = url;
 		}
-	}, 50);
+		
+		else
+		{
+			redirect(url, false, false, true);
+		}
+	});
 }
 
 
@@ -156,76 +149,62 @@ function update_aos()
 
 function on_page_load()
 {
-	let refresh_id = setInterval(function()
+	//Start at the top of the page to prevent banner glitches.
+	window.scrollTo(0, 0);
+	
+	//Set the page title.
+	$("title").html(page_settings["title"]);
+	
+	$("html, body").removeClass("no-scroll");
+	
+	
+	
+	fade_in();
+	
+	update_aos();
+	
+	
+	
+	if (page_settings["no_footer"] == false)
 	{
-		if (page_settings_done)
-		{
-			clearInterval(refresh_id);
-			
-			page_settings_done = false;
-			
-			
-			
-			//Start at the top of the page to prevent banner glitches.
-			window.scrollTo(0, 0);
-			
-			//Set the page title.
-			$("title").html(page_settings["title"]);
-			
-			$("html, body").removeClass("no-scroll");
-			
-			
-			
-			fade_in();
-			
-			update_aos();
-			
-			bind_handlers();
-			
-			
-			
-			if (page_settings["no_footer"] == false)
-			{
-				insert_footer();
-			}
-			
-			
-			
-			insert_images();
-			
-			apply_settings();
-			
-			set_footer_margin();
-			
-			gimp_edge();
-			
-			remove_hover_on_touch();
-			
-			disable_links();
-			
-			
-			
-			if (page_settings["math_page"])
-			{
-				typeset_math();
-			}
-			
-			
-			
-			//If there is a footer, insert_footer() will take care of it.
-			if (page_settings["no_footer"])
-			{
-				set_links();
-			}
-			
-			
-			
-			if (url_vars["comments"] != 1 && page_settings["comments"])
-			{
-				load_disqus();
-			}
-		}
-	}, 50);
+		insert_footer();
+	}
+	
+	
+	
+	insert_images();
+	
+	apply_settings();
+	
+	set_footer_margin();
+	
+	gimp_edge();
+	
+	remove_hover_on_touch();
+	
+	disable_links();
+	
+	
+	
+	if (page_settings["math_page"])
+	{
+		typeset_math();
+	}
+	
+	
+	
+	//If there is a footer, insert_footer() will take care of it.
+	if (page_settings["no_footer"])
+	{
+		set_links();
+	}
+	
+	
+	
+	if (url_vars["comments"] != 1 && page_settings["comments"])
+	{
+		load_disqus();
+	}
 }
 
 
@@ -278,22 +257,6 @@ function fade_in()
 
 
 
-function bind_handlers()
-{
-	//Ensure elements always animate 1/4 of the way up the screen, whatever size that screen is.
-	$(window).resize(function()
-	{
-		window_width = $(window).width();
-		window_height = $(window).height();
-		
-		update_aos();
-		
-		set_footer_margin();
-	});
-}
-
-
-
 function disable_links()
 {
 	let links = document.querySelectorAll("a:not(.real-link)");
@@ -313,9 +276,16 @@ function typeset_math()
 {
 	if (scripts_loaded["mathjax"] == false)
 	{
-		$.getScript("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML", function()
+		load_script("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML")
+		
+		.then(function()
 		{
 			scripts_loaded["mathjax"] = true;
+		})
+		
+		.catch(function(error)
+		{
+			console.error("Could not load MathJax");
 		});
 	}
 	
@@ -327,15 +297,16 @@ function typeset_math()
 
 
 
-//Returns the type of element that was clicked on, given the click event. Used to disable clicks on links only.
-function click_origin(e)
+//Loads a script with the given source and returns a promise for when it completes.
+function load_script(src)
 {
-	let target = e.target;
-	let tag = [];
-	tag.tag_name = target.tagName.toLowerCase();
-	tag.class = target.className.split(' ');
-	tag.id = target.id;
-	tag.parent = target.parentNode;
-
-    return tag;
+	return new Promise(function(resolve, reject)
+	{
+		const script = document.createElement("script");
+		document.body.appendChild(script);
+		script.onload = resolve;
+		script.onerror = reject;
+		script.async = true;
+		script.src = src;
+	});
 }

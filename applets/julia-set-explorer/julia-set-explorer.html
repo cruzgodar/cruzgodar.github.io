@@ -126,7 +126,7 @@
 		"footer_from_nonstandard_color": false
 	};
 	
-	page_settings_done = true;
+	on_page_load();
 	
 	
 	
@@ -200,9 +200,16 @@
 			
 			if (scripts_loaded["mathjs"] == false)
 			{
-				$.getScript("https://unpkg.com/mathjs@5.9.0/dist/math.min.js", function()
+				load_script("https://unpkg.com/mathjs@5.9.0/dist/math.min.js")
+				
+				.then(function()
 				{
 					scripts_loaded["mathjs"] == true;
+				})
+				
+				.catch(function(error)
+				{
+					console.error("Could not load MathJS");
 				});
 			}
 			

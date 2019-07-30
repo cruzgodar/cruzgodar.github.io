@@ -47,9 +47,9 @@ function load_banner()
 			
 		
 		//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we go back to the safety of the previous page.
-		$.get(parent_folder + "banners/" + banner_name)
+		fetch(parent_folder + "banners/" + banner_name)
 		
-		.done(function()
+		.then(function(response)
 		{
 			$("head").append(`
 				<style class="temporary-style">
@@ -93,7 +93,7 @@ function load_banner()
 			}
 		})
 		
-		.fail(function()
+		.catch(function(error)
 		{
 			$("#background-image, #banner-cover").remove();
 			

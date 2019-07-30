@@ -234,7 +234,7 @@
 		"footer_from_nonstandard_color": false
 	};
 	
-	page_settings_done = true;
+	on_page_load();
 	
 	
 	
@@ -294,9 +294,9 @@
 					
 					
 					//Fade in once the banner has loaded.
-					$.get("/graphics/index-banners/" + banner_index + "/" + banner_name)
+					fetch("/graphics/index-banners/" + banner_index + "/" + banner_name)
 					
-					.done(function()
+					.then(function(response)
 					{
 						$("head").append(`
 							<style class="temporary-style">
@@ -366,7 +366,7 @@
 						}
 					})
 					
-					.fail(function()
+					.catch(function(error)
 					{
 						$("#background-image, #banner-cover, .name-text").remove();
 						

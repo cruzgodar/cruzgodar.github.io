@@ -73,12 +73,16 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	get_failed = false;
 	
 	//Start getting the new page data immediately. If that fails, though, abort the mission.
-	$.get(url, function(data)
+	fetch(url)
+	
+	.then(response => response.text())
+	
+	.then(function(data)
 	{
 		new_page_data = data;
 	})
 	
-	.fail(function()
+	.catch(function(error)
 	{
 		clearInterval(redirect_refresh_id);
 		get_failed = true;
@@ -202,8 +206,6 @@ function load_html(data, include_return_url, no_state_push)
 	}
 	
 	$("body").html(data);
-	
-	on_page_load();
 }
 
 
