@@ -28,7 +28,7 @@
 
 		<div style="height: 5vh"></div>
 
-		<div id="theme-button-row" class="button-row">
+		<div id="theme-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out" data-aos-delay="1000" data-aos-anchor="#trigger-section-1">
 				<input type="image" class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="url_var_functions['animated']['theme']()">
 			</div>
@@ -40,7 +40,7 @@
 		
 		<div style="height: 2vh"></div>
 		
-		<div id="contrast-button-row" class="button-row">
+		<div id="contrast-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out" data-aos-delay="1100" data-aos-anchor="#trigger-section-1">
 				<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Text Contrast" onclick="url_var_functions['animated']['contrast']()">
 			</div>
@@ -52,7 +52,7 @@
 		
 		<div style="height: 2vh"></div>
 		
-		<div id="font-button-row" class="button-row">
+		<div id="font-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out" data-aos-delay="1200" data-aos-anchor="#trigger-section-1">
 				<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Change Font" onclick="url_var_functions['animated']['font']()">
 			</div>
@@ -64,7 +64,7 @@
 		
 		<div style="height: 2vh"></div>
 		
-		<div id="writing-style-button-row" class="button-row">
+		<div id="writing-style-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out" data-aos-delay="1300" data-aos-anchor="#trigger-section-1">
 				<input type="image" class="footer-button" src="/graphics/button-icons/paragraph.png" alt="Change Writing Style" onclick="url_var_functions['animated']['writing_style']()">
 			</div>
@@ -76,7 +76,7 @@
 		
 		<div style="height: 2vh"></div>
 		
-		<div id="comments-button-row" class="button-row">
+		<div id="comments-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out" data-aos-delay="1400" data-aos-anchor="#trigger-section-1">
 				<input type="image" class="footer-button" src="/graphics/button-icons/comment.png" alt="Toggle Comments" onclick="url_var_functions['animated']['comments']()">
 			</div>
@@ -88,7 +88,7 @@
 		
 		<div style="height: 2vh"></div>
 		
-		<div id="content-animation-button-row" class="button-row">
+		<div id="content-animation-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out" data-aos-delay="1500" data-aos-anchor="#trigger-section-1">
 				<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Toggle Content Animation" onclick="url_var_functions['animated']['content_animation']()">
 			</div>
@@ -100,7 +100,7 @@
 		
 		<div style="height: 2vh"></div>
 		
-		<div id="banner-style-button-row" class="button-row">
+		<div id="banner-style-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out" data-aos-delay="1600" data-aos-anchor="#trigger-section-1">
 				<input type="image" class="footer-button" src="/graphics/button-icons/picture.png" alt="Toggle Banner Style" onclick="url_var_functions['animated']['banner_style']()">
 			</div>
@@ -198,13 +198,15 @@
 			//We only apply this now to prevent the dark theme from transitioning slowly on load rather than instantly.
 			$("head").append(`
 				<style class="temporary-style">
-					html
+					.color-transition
 					{
 						-webkit-transition: background-color .6s ease;
 						transition: background-color .6s ease;
 					}
 				</style>
 			`);
+			
+			document.documentElement.classList.add("color-transition");
 			
 			
 			

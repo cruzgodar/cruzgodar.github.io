@@ -233,7 +233,7 @@ function fade_in()
 {
 	if (url_vars["content_animation"] == 1)
 	{
-		$("html").animate({opacity: 1});
+		document.documentElement.style.opacity = 1;
 		
 		if (page_settings["banner_page"])
 		{
@@ -250,7 +250,9 @@ function fade_in()
 		
 		else
 		{
-			$("html").animate({opacity: 1});
+			document.documentElement.classList.remove("animated-opacity");
+			document.documentElement.style.opacity = 1;
+			document.documentElement.classList.add("animated-opacity");
 		}
 	}
 }

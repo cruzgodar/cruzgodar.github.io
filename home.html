@@ -11,11 +11,11 @@
 <div id="banner-cover" style="height: 100vh"></div>
 	
 <div id="content">
-	<div style="height: 8vh"></div>
+	<div style="height: 6vh"></div>
 	
 	<div id="scroll-to"></div>
 	
-	<div style="height: 2vh"></div>
+	<div style="height: 4vh"></div>
 	
 	
 	
@@ -307,15 +307,7 @@
 				
 				
 				
-				if (url_vars["content_animation"] == 1)
-				{
-					$("html").css("opacity", 1);
-				}
-				
-				else
-				{
-					$("html").animate({opacity: 1}, 300, "swing");
-				}
+				document.documentElement.style.opacity = 1;
 				
 				
 				
@@ -356,15 +348,7 @@
 				
 				$($("#content").children()[0]).css("height", "3vh");
 				
-				if (url_vars["content_animation"] != 1)
-				{
-					$("html").animate({opacity: 1}, 300, "swing");
-				}
-				
-				else
-				{
-					$("html").css("opacity", 1);
-				}
+				document.documentElement.style.opacity = 1;
 				
 				update_aos();
 			});

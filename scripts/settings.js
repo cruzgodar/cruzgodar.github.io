@@ -163,19 +163,23 @@ function switch_theme()
 		
 		
 		
-		$("#theme-button-row").animate({opacity: 0}, 300, "swing");
+		try {document.querySelector("#theme-button-row").style.opacity = 0;}
+		catch(ex) {}
 		
 		setTimeout(function()
 		{
  			try {$("#theme-button-text").html($("#theme-button-text").html().replace("light", "dark"));}
  			catch(ex) {}
  			
-			$("#theme-button-row").animate({opacity: 1}, 300, "swing");
+			try {document.querySelector("#theme-button-row").style.opacity = 1;}
+			catch(ex) {}
 		}, 300);
 		
 		url_vars["theme"] = 1;
 		write_url_vars();
 	}
+	
+	
 	
 	//Dark to light
 	else
@@ -214,14 +218,16 @@ function switch_theme()
 		
 		$(".title-text").css("color", "rgb(0, 0, 0)");
 		
-		$("#theme-button-row").animate({opacity: 0}, 300, "swing");
+		try {document.querySelector("#theme-button-row").style.opacity = 0;}
+		catch(ex) {}
 		
 		setTimeout(function()
 		{
 			try {$("#theme-button-text").html($("#theme-button-text").html().replace("dark", "light"));}
 			catch(ex) {}
 			
-			$("#theme-button-row").animate({opacity: 1}, 300, "swing");
+			try {document.querySelector("#theme-button-row").style.opacity = 1;}
+			catch(ex) {}
 		}, 300);
 		
 		url_vars["theme"] = 0;
@@ -247,12 +253,12 @@ function switch_theme_on_load()
 
 function switch_contrast()
 {
-	$("#contrast-button-row").animate({opacity: 0}, 300, "swing");
+	document.querySelector("#contrast-button-row").style.opacity = 0;
 	
 	setTimeout(function()
 	{
 		switch_contrast_on_load();
-		$("#contrast-button-row").animate({opacity: 1}, 300, "swing");
+		document.querySelector("#contrast-button-row").style.opacity = 1;
 	}, 300);
 }
 
@@ -373,6 +379,8 @@ function switch_contrast_on_load()
 		$(".text-button").css("color", "rgb(64, 64, 64)");
 	}
 	
+	
+	
 	//High to default
 	else
 	{
@@ -421,7 +429,7 @@ function switch_contrast_on_load()
 
 function switch_font()
 {
-	$("#font-button-row").animate({opacity: 0}, 300, "swing");
+	document.querySelector("#font-button-row").style.opacity = 0;
 	
 	setTimeout(function()
 	{
@@ -429,7 +437,7 @@ function switch_font()
 		
 		setTimeout(function()
 		{
-			$("#font-button-row").animate({opacity: 1}, 300, "swing");
+			document.querySelector("#font-button-row").style.opacity = 1;
 		});
 	}, 300);
 }
@@ -452,6 +460,8 @@ function switch_font_on_load()
 		}
 	}
 	
+	
+	
 	//Serif to sans
 	else
 	{
@@ -468,7 +478,7 @@ function switch_font_on_load()
 
 function switch_writing_style()
 {
-	$("#writing-style-button-row").animate({opacity: 0}, 300, "swing");
+	document.querySelector("#writing-style-button-row").style.opacity = 0;
 	
 	setTimeout(function()
 	{
@@ -476,7 +486,7 @@ function switch_writing_style()
 		
 		setTimeout(function()
 		{
-			$("#writing-style-button-row").animate({opacity: 1}, 300, "swing");
+			document.querySelector("#writing-style-button-row").style.opacity = 1;
 		});
 	}, 300);
 }
@@ -503,6 +513,8 @@ function switch_writing_style_on_load()
 		}
 	}
 	
+	
+	
 	//Indented to double-spaced
 	else
 	{
@@ -519,12 +531,12 @@ function switch_writing_style_on_load()
 
 function switch_comments()
 {
-	$("#comments-button-row").animate({opacity: 0}, 300, "swing");
+	document.querySelector("#comments-button-row").style.opacity = 0;
 	
 	setTimeout(function()
 	{
 		switch_comments_on_load();
-		$("#comments-button-row").animate({opacity: 1}, 300, "swing");
+		document.querySelector("#comments-button-row").style.opacity = 1;
 	}, 300);
 }
 
@@ -549,6 +561,8 @@ function switch_comments_on_load()
 		write_url_vars();
 	}
 	
+	
+	
 	else
 	{
 		try {$("#comments-button-text").html($("#comments-button-text").html().replace("disabled", "enabled"));}
@@ -564,12 +578,12 @@ function switch_comments_on_load()
 
 function switch_content_animation()
 {
-	$("#content-animation-button-row").animate({opacity: 0}, 300, "swing");
+	document.querySelector("#content-animation-button-row").style.opacity = 0;
 	
 	setTimeout(function()
 	{
 		switch_content_animation_on_load();
-		$("#content-animation-button-row").animate({opacity: 1}, 300, "swing");
+		document.querySelector("#content-animation-button-row").style.opacity = 1;
 	}, 300);
 }
 
@@ -586,7 +600,11 @@ function switch_content_animation_on_load()
 		
 		//This attribute makes the content invisible until it's animated in, so if we're never going to do that, it has to go.
 		$("body").find("*[data-aos]").removeAttr("data-aos");
+		
+		document.documentElement.classList.remove("animated-opacity");
 	}
+	
+	
 	
 	else
 	{
@@ -596,6 +614,8 @@ function switch_content_animation_on_load()
 		url_vars["content_animation"] = 0;
 		
 		write_url_vars();
+		
+		document.documentElement.classList.add("animated-opacity");
 	}
 }
 
@@ -603,12 +623,12 @@ function switch_content_animation_on_load()
 
 function switch_banner_style()
 {
-	$("#banner-style-button-row").animate({opacity: 0}, 300, "swing");
+	document.querySelector("#banner-style-button-row").style.opacity = 0;
 	
 	setTimeout(function()
 	{
 		switch_banner_style_on_load();
-		$("#banner-style-button-row").animate({opacity: 1}, 300, "swing");
+		document.querySelector("#banner-style-button-row").style.opacity = 1;
 	}, 300);
 }
 

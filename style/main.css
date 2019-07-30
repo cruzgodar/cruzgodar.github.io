@@ -236,6 +236,15 @@ img
 
 
 
+/* Applied whenever things need an opacity animation. Usually a substitute for $().animate. */
+.animated-opacity
+{
+	-webkit-transition: opacity .3s ease-in-out;
+	transition: opacity .3s ease-in-out;
+}
+
+
+
 /* Used on pages with nonstandard background colors to fade to the default. */
 .background-transition
 {

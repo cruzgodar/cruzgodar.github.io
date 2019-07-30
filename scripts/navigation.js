@@ -81,7 +81,7 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	.catch(function(error)
 	{
 		console.log("Failed to load new page — reversing fade-out.");
-		$("html").animate({opacity: 1}, 300, "swing");
+		document.documentElement.style.opacity = 1;
 	});
 	
 	
@@ -116,6 +116,10 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	current_url = url;
 	
 	parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
+	
+	
+	
+	document.documentElement.classList.remove("color-transition");
 		
 		
 		
@@ -128,7 +132,7 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	else
 	{
 		//Fade out the current page's content.
-		$("html").animate({opacity: 0}, 300, "swing");
+		document.documentElement.style.opacity = 0;
 		
 		//If necessary, take the time to fade back to the default background color, whatever that is.
 		if (from_nonstandard_color)

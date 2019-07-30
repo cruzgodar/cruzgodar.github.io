@@ -62,15 +62,7 @@ function load_banner()
 			
 			
 			
-			if (url_vars["content_animation"] != 1)
-			{
-				$("html").animate({opacity: 1}, 300, "swing");
-			}
-			
-			else
-			{
-				$("html").css("opacity", 1);
-			}
+			document.documentElement.style.opacity = 1;
 				
 			
 				
@@ -85,15 +77,7 @@ function load_banner()
 		{
 			$("#background-image, #banner-cover").remove();
 			
-			if (url_vars["content_animation"] != 1)
-			{
-				$("html").animate({opacity: 1}, 300, "swing");
-			}
-			
-			else
-			{
-				$("html").css("opacity", 1);
-			}
+			document.documentElement.style.opacity = 1;
 			
 			update_aos();
 		});
@@ -202,12 +186,25 @@ function add_scroll_button()
 //Triggered by pressing the scroll button.
 function scroll_down()
 {
-	$("html, body").animate({scrollTop: $("#scroll-to").offset().top}, 1200, "swing");
+	let goal = $("#scroll-to").offset().top - $(window).scrollTop();
+	scroll_step($(window).scrollTop(), goal, 0);
 }
 
 
 
-function scroll_step(progress, goal)
+function scroll_step(position, goal, time)
 {
-	$("html, body").scrollTop()
+	if (time >= 1200)
+	{
+		return;
+	}
+	
+	let step_distance = goal * .5 * (Math.sin((Math.PI * (time + 16) / 1200) - (Math.PI / 2)) - Math.sin((Math.PI * time / 1200) - (Math.PI / 2)));
+	
+	$("html, body").scrollTop(position + step_distance);
+	
+	setTimeout(function()
+	{
+		scroll_step(position + step_distance, goal, time + 16);
+	}, 16);
 }

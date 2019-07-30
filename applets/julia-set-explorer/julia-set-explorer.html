@@ -174,6 +174,8 @@
 						padding: 2px;
 					}
 					
+					
+					
 					@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 					{
 						#container
@@ -442,24 +444,25 @@
 			
 			if (download)
 			{
-				$("#download-button").animate({opacity: 0}, 300, "swing");
+				try {document.querySelector("#download-button").style.opacity = 0;}
+				catch(ex) {}
 				
 				setTimeout(function()
 				{
 					$("#download-button").remove();
 					
-					let image_data = document.getElementById("high-res-julia-set").toDataURL();
+					let image_data = document.querySelector("#high-res-julia-set").toDataURL();
 					let filename = c.format({precision: 6});
 					
 					$("#download-location").after(`
-						<div id="download-button" style="display: flex; justify-content: center; opacity: 0; width: 70vw; margin: 0 auto">
+						<div id="download-button" class="animated-opacity" style="display: flex; justify-content: center; opacity: 0; width: 70vw; margin: 0 auto">
 							<a href="${image_data}" download="${filename}.png" class="real-link">
 								<button class="text-button" type="button" onclick="">Download Image</button>
 							</a>
 						</div>
 					`);
 					
-					$("#download-button").animate({opacity: 1}, 300, "swing");
+					document.querySelector("#download-button").style.opacity = 1;
 				}, 300);
 			}
 		}
