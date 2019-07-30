@@ -236,18 +236,10 @@
 			
 			
 			//Deal with Edge.
-			let refresh_id = setInterval(function()
+			if (browser_name == "MS Edge")
 			{
-				if (typeof browser_name != "undefined")
-				{
-					clearInterval(refresh_id);
-					
-					if (browser_name == "MS Edge")
-					{
-						$("#banner-style-button-row").remove();
-					}
-				}
-			});
+				$("#banner-style-button-row").remove();
+			}
 			
 			
 			

@@ -66,11 +66,13 @@ function check_webp()
 				if (result)
 				{
 					supports_webp = true;
+					banner_extension = "webp";
 				}
 				
 				else
 				{
 					supports_webp = false;
+					banner_extension = "jpg";
 				}
 				
 				resolve();

@@ -1,7 +1,4 @@
 let new_page_data = null;
-let get_failed = false;
-
-let redirect_refresh_id = null;
 
 
 
@@ -70,9 +67,8 @@ $(function()
 function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 {
 	new_page_data = null;
-	get_failed = false;
 	
-	//Start getting the new page data immediately. If that fails, though, abort the mission.
+	//Start getting the new page data immediately. If it succeeds, we won't have to fetch it again. If it fails, though, abort the mission.
 	fetch(url)
 	
 	.then(response => response.text())
@@ -84,9 +80,7 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	
 	.catch(function(error)
 	{
-		clearInterval(redirect_refresh_id);
-		get_failed = true;
-		
+		console.log("Failed to load new page — reversing fade-out.");
 		$("html").animate({opacity: 1}, 300, "swing");
 	});
 	
@@ -128,7 +122,7 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	//Act like a normal link, with no transitions, if the user wants that.
 	if (url_vars["content_animation"] == 1)
 	{
-		try_to_load_html(include_return_url, no_state_push);
+		load_html(url, include_return_url, no_state_push);
 	}
 		
 	else
@@ -158,7 +152,7 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 					$("body").css("background-color", "");
 					$("html, body").removeClass("background-transition");
 					
-					try_to_load_html(include_return_url, no_state_push);
+					load_html(url, include_return_url, no_state_push);
 				}, 450);
 			}, 300);
 		}
@@ -168,7 +162,7 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 		{
 			setTimeout(function()
 			{
-				try_to_load_html(include_return_url, no_state_push);
+				load_html(url, include_return_url, no_state_push);
 			}, 300);
 		}
 	}
@@ -176,36 +170,46 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 
 
 
-function try_to_load_html(include_return_url, no_state_push)
-{
-	if (get_failed == false)
-	{
-		redirect_refresh_id = setInterval(function()
-		{
-			if (new_page_data != null)
-			{
-				clearInterval(redirect_refresh_id);
-				
-				load_html(new_page_data, include_return_url, no_state_push);
-			}
-		}, 50);
-	}
-}
-
-
-
 //Actually performs the swapping out of html data.
-function load_html(data, include_return_url, no_state_push)
+function load_html(url, include_return_url, no_state_push)
 {
-	on_page_unload();
-	
-	//Record the page change in the url bar and in the browser history.
-	if (no_state_push == false)
+	//We got the data in time! Now we don't need to fetch it again.
+	if (new_page_data != null)
 	{
-		history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+		on_page_unload();
+		
+		//Record the page change in the url bar and in the browser history.
+		if (no_state_push == false)
+		{
+			history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+		}
+		
+		$("body").html(new_page_data);
 	}
 	
-	$("body").html(data);
+	//We didn't get it. We may never be able to, but we have to try again in case it's just the connection is just really slow. There's 
+	else
+	{
+		fetch(url)
+		
+		.then(response => response.text())
+		
+		.then(function(data)
+		{
+			on_page_unload();
+			
+			//Record the page change in the url bar and in the browser history.
+			if (no_state_push == false)
+			{
+				history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+			}
+			
+			$("body").html(new_page_data);
+		});
+		
+		//There's no need to have a .catch here -- if the fetch fails, the first fetch will reverse the fading out.
+	}
+	
 }
 
 

@@ -17,18 +17,6 @@ $(function()
 
 function load_banner()
 {
-	if (supports_webp)
-	{
-		banner_extension = "webp";
-	}
-	
-	else
-	{
-		banner_extension = "jpg";
-	}
-	
-	
-	
 	//Only do banner things if the banner things are in the standard places.
 	if (page_settings["manual_banner"] != true)
 	{
