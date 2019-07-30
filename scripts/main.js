@@ -144,7 +144,7 @@ function on_page_load()
 	window.scrollTo(0, 0);
 	
 	//Set the page title.
-	document.querySelector("title").textContent = page_settings["title"];
+	document.querySelector("title").innerHTML = page_settings["title"];
 	
 	
 	
