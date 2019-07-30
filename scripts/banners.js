@@ -5,13 +5,12 @@ let global_opacity = 0;
 
 let banner_extension = "";
 
+let scroll_button_exists = false;
 
 
-$(function()
-{
-	window.addEventListener("scroll", scroll_update);
-	window.addEventListener("resize", scroll_update);
-});
+
+window.addEventListener("scroll", scroll_update);
+window.addEventListener("resize", scroll_update);
 
 
 
@@ -34,48 +33,54 @@ function load_banner()
 		
 			
 		
-		//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we go back to the safety of the previous page.
+		//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we remove the banner entirely.
 		fetch(parent_folder + "banners/" + banner_name)
 		
 		.then(function(response)
 		{
-			$("head").append(`
-				<style class="temporary-style">
+			add_style(`
+				.banner:before
+				{
+					background: url("${parent_folder}banners/landscape.${banner_extension}") no-repeat center center;
+					-webkit-background-size: cover;
+					background-size: cover;
+				}
+				
+				@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
+				{
 					.banner:before
 					{
-						background: url("${parent_folder}banners/landscape.${banner_extension}") no-repeat center center;
+						background: url("${parent_folder}banners/portrait.${banner_extension}") no-repeat center center;
 						-webkit-background-size: cover;
 						background-size: cover;
 					}
-					
-					@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
-					{
-						.banner:before
-						{
-							background: url("${parent_folder}banners/portrait.${banner_extension}") no-repeat center center;
-							-webkit-background-size: cover;
-							background-size: cover;
-						}
-					}
-				</style>
-			`);
+				}
+			`, true);
 			
 			
 			
-			document.documentElement.style.opacity = 1;
-				
+			let img = new Image();
 			
-				
-			//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
-			if (scroll == 0)
+			img.onload = function()
 			{
-				setTimeout(add_scroll_button, 3000);
-			}
+				document.documentElement.style.opacity = 1;
+					
+				
+					
+				//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
+				if (scroll == 0)
+				{
+					setTimeout(add_scroll_button, 3000);
+				}
+			};
+			
+			img.src = parent_folder + "banners/" + banner_name;
 		})
 		
 		.catch(function(error)
 		{
-			$("#background-image, #banner-cover").remove();
+			document.querySelector("#background-image").remove();
+			document.querySelector("#banner-cover").remove();
 			
 			document.documentElement.style.opacity = 1;
 			
@@ -88,7 +93,7 @@ function load_banner()
 
 function scroll_update()
 {
-	scroll = $(window).scrollTop();
+	scroll = window.pageYOffset;
 	
 	if (scroll >= 0)
 	{
@@ -97,7 +102,9 @@ function scroll_update()
 			if (scroll <= window_height)
 			{
 				global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / window_height, 0) - .5 * Math.PI);
-				$("#background-image").css("opacity", global_opacity);
+				
+				try {document.querySelector("#background-image").style.opacity = global_opacity;}
+				catch(ex) {}
 				
 				if (global_opacity == 0)
 				{
@@ -112,7 +119,10 @@ function scroll_update()
 			
 			else if (banner_done == false)
 			{
-				$("#background-image").css("opacity", 0);
+				//We need a try block here in case the user refreshes the page and it's way low down for some reason, even though scrollRestoration should be off.
+				try {document.querySelector("#background-image").style.opacity = 0;}
+				catch(ex) {}
+				
 				banner_done = true;
 			}
 		}
@@ -123,11 +133,19 @@ function scroll_update()
 		{
 			global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - .5 * Math.PI);
 			
-			$(".scroll-button").css("opacity", global_opacity);
+			if (scroll_button_exists)
+			{
+				document.querySelector("#scroll-button").style.opacity = global_opacity;
+			}
 			
 			if (global_opacity == 0)
 			{
-				$(".scroll-button").remove();
+				if (scroll_button_exists)
+				{
+					document.querySelector("#scroll-button").remove();
+					scroll_button_exists = false;
+				}
+				
 				scroll_button_done = true;
 			}
 			
@@ -137,17 +155,30 @@ function scroll_update()
 			}
 		}
 		
+		
+		
 		else if (scroll_button_done == false)
 		{
 			if (url_vars["banner_style"] != 1)
 			{
-				$(".name-text").css("opacity", 0);
+				let elements = document.querySelectorAll(".name-text");
+				
+				for (let i = 0; i < elements.length; i++)
+				{
+					elements[i].style.opacity = 0;
+				}
 			}
 			
-			$(".scroll-button").remove();
+			if (scroll_button_exists)
+			{
+				document.querySelector("#scroll-button").remove();
+				scroll_button_exists = false;
+			}
 			
 			scroll_button_done = true;
 		}
+		
+		
 		
 		//This shouldn't be required, but it fixes a weird flickering glitch with the name text.
 		else
@@ -171,13 +202,22 @@ function add_scroll_button()
 			chevron_name += "-dark";
 		}
 		
-		$("#banner-cover").before(`
-			<div style="height: 100vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down">
-				<input type="image" class="scroll-button" src="/graphics/general-icons/${chevron_name}.png" alt="Scroll down" onclick="scroll_down()">
-			</div>
-		`);
+		//Gotta have a try block here in case the user loads a banner page then navigates to a non-banner page within 3 seconds.
 		
-		$("#banner-cover").remove();
+		try
+		{
+			document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
+				<div style="height: 100vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down">
+					<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" alt="Scroll down" onclick="scroll_down()">
+				</div>
+			`);
+			
+			scroll_button_exists = true;
+			
+			document.querySelector("#banner-cover").remove();
+		}
+		
+		catch(ex) {}
 	}
 }
 
@@ -186,22 +226,24 @@ function add_scroll_button()
 //Triggered by pressing the scroll button.
 function scroll_down()
 {
-	let goal = $("#scroll-to").offset().top - $(window).scrollTop();
-	scroll_step($(window).scrollTop(), goal, 0);
+	//This is relative to the top of the viewport, which is exactly what we want.
+	let goal = document.querySelector("#scroll-to").getBoundingClientRect().top;
+	
+	scroll_step(window.scrollY, goal, 0);
 }
 
 
 
 function scroll_step(position, goal, time)
 {
-	if (time >= 1200)
+	if (time >= 1000)
 	{
 		return;
 	}
 	
-	let step_distance = goal * .5 * (Math.sin((Math.PI * (time + 16) / 1200) - (Math.PI / 2)) - Math.sin((Math.PI * time / 1200) - (Math.PI / 2)));
+	let step_distance = goal * .5 * (Math.sin((Math.PI * (time + 16) / 1000) - (Math.PI / 2)) - Math.sin((Math.PI * time / 1000) - (Math.PI / 2)));
 	
-	$("html, body").scrollTop(position + step_distance);
+	window.scrollTo(0, position + step_distance);
 	
 	setTimeout(function()
 	{

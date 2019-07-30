@@ -4,7 +4,7 @@
 
 function insert_images()
 {
-	let images = $(".check-webp");
+	let images = document.querySelectorAll(".check-webp");
 	
 	let image_type = "";
 	
@@ -30,16 +30,16 @@ function insert_images()
 		
 		for (let i = 0; i < images.length; i++)
 		{
-			src = image_data[$(images[i]).attr("id")][image_type];
+			src = image_data[images[i].getAttribute("id")][image_type];
 			
 			if (src.slice(0, 5) == "https")
 			{
-				$(images[i]).attr("src", src);
+				images[i].setAttribute("src", src);
 			}
 			
 			else
 			{
-				$(images[i]).attr("src", parent_folder + src);
+				images[i].setAttribute("src", parent_folder + src);
 			}
 		}
 	})

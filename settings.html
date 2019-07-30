@@ -151,113 +151,104 @@
 	
 	!function()
 	{
-		$(function()
+		add_style(`
+			html
+			{
+				max-width: 100%;
+				overflow-x: hidden;
+			}
+			
+			body
+			{
+				max-width: 100%;
+				overflow-x: hidden;
+			}
+
+			.button-row
+			{
+				width: 70vw;
+				height: 38px;
+				margin: 0 auto;
+				display: flex;
+				align-items: flex-start;
+			}
+			
+			.button-text
+			{
+				margin: auto;
+				margin-left: 10px;
+				text-align: left;
+			}
+			
+			@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
+			{
+				.button-row
+				{
+					width: 90vw;
+				}
+			}
+		`, true);
+		
+		
+		
+		//We only apply this now to prevent the dark theme from transitioning slowly on load rather than instantly.
+		add_style(`
+			.color-transition
+			{
+				-webkit-transition: background-color .6s ease;
+				transition: background-color .6s ease;
+			}
+		`, true);
+		
+		document.documentElement.classList.add("color-transition");
+		
+		
+		
+		setTimeout(function()
 		{
-			$("head").append(`
-				<style class="temporary-style">
-					html
-					{
-						max-width: 100%;
-						overflow-x: hidden;
-					}
-
-					body
-					{
-						max-width: 100%;
-						overflow-x: hidden;
-					}
-
-					.button-row
-					{
-						width: 70vw;
-						height: 38px;
-						margin: 0 auto;
-						display: flex;
-						align-items: flex-start;
-					}
-
-					.button-text
-					{
-						margin: auto;
-						margin-left: 10px;
-						text-align: left;
-					}
-
-					@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
-					{
-						.button-row
-						{
-							width: 90vw;
-						}
-					}
-				</style>
-			`);
-			
-			
-			
-			//We only apply this now to prevent the dark theme from transitioning slowly on load rather than instantly.
-			$("head").append(`
-				<style class="temporary-style">
-					.color-transition
-					{
-						-webkit-transition: background-color .6s ease;
-						transition: background-color .6s ease;
-					}
-				</style>
-			`);
-			
-			document.documentElement.classList.add("color-transition");
-			
-			
-			
-			setTimeout(function()
-			{
-				$("head").append(`
-					<style class="temporary-style">
-						.heading-text
-						{
-							-webkit-transition: color .6s ease;
-							transition: color .6s ease;
-						}
-						
-						.section-text, .body-text
-						{
-							-webkit-transition: color .3s ease;
-							transition: color .3s ease;
-						}
-						
-						.text-button
-						{
-							-webkit-transition: -webkit-filter .15s ease-in-out;
-							transition: filter .15s ease-in-out;
-						}
-					</style>
-				`);
-			}, 600);
-			
-			
-			
-			//Deal with Edge.
-			if (browser_name == "MS Edge")
-			{
-				$("#banner-style-button-row").remove();
-			}
-			
-			
-			
-			//Figure out where to return to.
-			let return_url = get_url_var("return");
-			
-			//Believe it or not, it might actually be the string "null". If the page we're coming from is the root page (without index.html), it will write null into the url and then this page will get "null". Still an invalid url to return to.
-			if (return_url == null || return_url == "null")
-			{
-				$("#apply-button").attr("onclick", "redirect('/home.html')");
-			}
-			
-			else
-			{
-				$("#apply-button").attr("onclick", "redirect('" + decodeURIComponent(return_url) + "')");
-			}
-		});
+			add_style(`
+				.heading-text
+				{
+					-webkit-transition: color .6s ease;
+					transition: color .6s ease;
+				}
+				
+				.section-text, .body-text
+				{
+					-webkit-transition: color .3s ease;
+					transition: color .3s ease;
+				}
+				
+				.text-button
+				{
+					-webkit-transition: -webkit-filter .15s ease-in-out;
+					transition: filter .15s ease-in-out;
+				}
+			`, true);
+		}, 600);
+		
+		
+		
+		//Deal with Edge.
+		if (browser_name == "MS Edge")
+		{
+			document.querySelector("#banner-style-button-row").remove();
+		}
+		
+		
+		
+		//Figure out where to return to.
+		let return_url = get_url_var("return");
+		
+		//Believe it or not, it might actually be the string "null". If the page we're coming from is the root page (without index.html), it will write null into the url and then this page will get "null". Still an invalid url to return to.
+		if (return_url == null || return_url == "null")
+		{
+			document.querySelector("#apply-button").setAttribute("onclick", "redirect('/home.html')");
+		}
+		
+		else
+		{
+			document.querySelector("#apply-button").setAttribute("onclick", "redirect('" + decodeURIComponent(return_url) + "')");
+		}
 	}()
 </script>

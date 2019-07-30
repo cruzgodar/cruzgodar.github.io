@@ -65,14 +65,12 @@ browser_detect.init();
 
 let browser_name = browser_detect.browser;
 
-$(function()
+
+//IE is not welcome here.
+if (browser_name == "Explorer")
 {
-	//Handle IE.
-	if (browser_name == "Explorer")
-	{
-		window.location.replace("/ie.html");
-	}
-});
+	window.location.replace("/ie.html");
+}
 
 
 
@@ -83,7 +81,7 @@ function gimp_edge()
 	{		
 		try
 		{
-			$("#background-image").addClass("bad-banner");
+			document.querySelector("#background-image").classList.add("bad-banner");
 		}
 		
 		catch(ex) {}

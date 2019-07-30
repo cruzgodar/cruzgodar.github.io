@@ -237,83 +237,84 @@
 	on_page_load();
 	
 	
-	
 	!function()
 	{
 		footer_done = true;
 		
-		$(function()
+		
+		let num_images = 25;
+		let banner_index = Math.floor(Math.random() * num_images) + 1;
+		
+		
+		
+		if (browser_name == "MS Edge")
 		{
-			let num_images = 25;
-			let banner_index = Math.floor(Math.random() * num_images) + 1;
-			
-			
-			
-			
-			if (browser_name == "MS Edge")
-			{
-				$(".logo").before(`
-					<div class="body-text" style="text-align: center">
-						<b>Microsoft Edge is not fully supported on this site. Using <a href="https://www.google.com/chrome/">Chrome</a>, <a href="https://www.apple.com/safari/">Safari</a>, <a href="https://www.mozilla.org/en-US/firefox/?v=a">Firefox</a>, or <a href="https://www.opera.com/">Opera</a> is highly recommended.<b>
-					</div>
+			document.querySelector(".logo").insertAdjacentHTML("beforebegin", `
+				<div class="body-text" style="text-align: center">
+					<b>Microsoft Edge is not fully supported on this site. Using <a href="https://www.google.com/chrome/">Chrome</a>, <a href="https://www.apple.com/safari/">Safari</a>, <a href="https://www.mozilla.org/en-US/firefox/?v=a">Firefox</a>, or <a href="https://www.opera.com/">Opera</a> is highly recommended.<b>
+				</div>
+				
+				<div style="height: 5vh"></div>
+			`);
+		}
+		
+		
+		
+		let banner_name = "";
+		
+		if (window_width / window_height < 10/16 || window_width <= 800)
+		{
+			banner_name = "portrait." + banner_extension;
+		}
+		
+		else
+		{
+			banner_name = "landscape." + banner_extension;
+		}
+		
+		
+		
+		//Fade in once the banner has loaded.
+		fetch("/graphics/index-banners/" + banner_index + "/" + banner_name)
+		
+		.then(function(response)
+		{
+			add_style(`
+				.banner:before
+				{
+					background: url("/graphics/index-banners/${banner_index}/landscape.${banner_extension}") no-repeat center center;
 					
-					<div style="height: 5vh"></div>
-				`);
-			}
-			
-			
-			
-			let banner_name = "";
-			
-			if (window_width / window_height < 10/16 || window_width <= 800)
-			{
-				banner_name = "portrait." + banner_extension;
-			}
-			
-			else
-			{
-				banner_name = "landscape." + banner_extension;
-			}
-			
-			
-			
-			//Fade in once the banner has loaded.
-			fetch("/graphics/index-banners/" + banner_index + "/" + banner_name)
-			
-			.then(function(response)
-			{
-				$("head").append(`
-					<style class="temporary-style">
-						.banner:before
-						{
-							background: url("/graphics/index-banners/${banner_index}/landscape.${banner_extension}") no-repeat center center;
-							
-							-webkit-background-size: cover;
-							background-size: cover;
-						}
+					-webkit-background-size: cover;
+					background-size: cover;
+				}
+				
+				@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
+				{
+					.banner:before
+					{
+						background: url("/graphics/index-banners/${banner_index}/portrait.${banner_extension}") no-repeat center center;
 						
-						@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
-						{
-							.banner:before
-							{
-								background: url("/graphics/index-banners/${banner_index}/portrait.${banner_extension}") no-repeat center center;
-								
-								-webkit-background-size: cover;
-								background-size: cover;
-							}
-						}
-					</style>
-				`);
-				
-				
-				
+						-webkit-background-size: cover;
+						background-size: cover;
+					}
+				}
+			`, true);
+			
+			
+			
+			let img = new Image();
+			
+			img.onload = function()
+			{
 				document.documentElement.style.opacity = 1;
 				
 				
 				
-				$(".name-text").remove();
+				document.querySelector(".name-text").remove();
 				
-				$("#background-image").after(`
+				
+				
+				document.querySelector("#background-image").insertAdjacentHTML("afterend", `
 					<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="350">
 						<p id="cruz-text" class="name-text">Cruz</p>
 					</div>
@@ -325,12 +326,20 @@
 				
 				if (url_vars["content_animation"] == 1)
 				{
-					$(".name-text-container").removeAttr("data-aos");
+					let elements = document.querySelectorAll(".name-text-container");
+					for (let i = 0; i < elements.length; i++)
+					{
+						elements[i].removeAttribute("data-aos");
+					}
 				}
 				
 				if (url_vars["banner_style"] == 1)
 				{
-					$(".name-text-container").css("position", "absolute");
+					let elements = document.querySelectorAll(".name-text-container");
+					for (let i = 0; i < elements.length; i++)
+					{
+						elements[i].style.position = "absolute";
+					}
 				}
 				
 				
@@ -340,37 +349,45 @@
 				{
 					setTimeout(add_scroll_button, 3000);
 				}
-			})
+			};
 			
-			.catch(function(error)
-			{
-				$("#background-image, #banner-cover, .name-text").remove();
-				
-				$($("#content").children()[0]).css("height", "3vh");
-				
-				document.documentElement.style.opacity = 1;
-				
-				update_aos();
-			});
+			img.src = "/graphics/index-banners/" + banner_index + "/" + banner_name;
+		})
+		
+		.catch(function(error)
+		{
+			document.querySelector("#background-image").remove();
+			document.querySelector("#banner-cover").remove();
+			document.querySelector(".name-text").remove();
 			
+			document.querySelector("#scroll-to").previousElementSibling.style.height = "2vh";
 			
+			document.documentElement.style.opacity = 1;
 			
-			window.addEventListener("scroll", homepage_scroll);
-			window.addEventListener("resize", homepage_scroll);
-			
-			temporary_handlers["scroll"].push(homepage_scroll);
-			temporary_handlers["resize"].push(homepage_scroll);
+			update_aos();
 		});
+			
+			
+			
+		window.addEventListener("scroll", homepage_scroll);
+		window.addEventListener("resize", homepage_scroll);
+		
+		temporary_handlers["scroll"].push(homepage_scroll);
+		temporary_handlers["resize"].push(homepage_scroll);
 		
 		
 		
 		function homepage_scroll()
 		{
-			scroll = $(window).scrollTop();
+			scroll = window.scrollY;
 				
 			if (scroll <= window_height/3 && url_vars["banner_style"] != 1)
 			{
-				$(".name-text").css("opacity", global_opacity);
+				let elements = document.querySelectorAll(".name-text");
+				for (let i = 0; i < elements.length; i++)
+				{
+					elements[i].style.opacity = global_opacity;
+				}
 			}
 		}
 	}()

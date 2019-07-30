@@ -2,13 +2,33 @@ let new_page_data = null;
 
 
 
+//Fade in the opacity when the user presses the back button.
+window.addEventListener("popstate", function(e)
+{
+	let previous_page = get_url_var("page");
+		
+	if (previous_page != null)
+	{
+		redirect(decodeURIComponent(previous_page), false, false, true);
+	}
+	
+	else
+	{
+		redirect("/home.html", false, false, true);
+	}
+});
+
+
+
 //To keep expected link functionality (open in new tab, draggable, etc.), all elements with calls to redirect() are wrapped in <a> tags. Presses of <a> tags (without .real-link) are ignored, but to extend the functionality of url variables to the times they are used, we need to target them all and add the url variables onto them. Also, now that the website is a single page app, we need to format them correctly, too, using the page variable.
 
 function set_links()
 {
-	$("a").each(function(index)
+	let links = document.querySelectorAll("a");
+	
+	for (let i = 0; i < links.length; i++)
 	{
-		let href = $(this).attr("href");
+		let href = links[i].getAttribute("href");
 		
 		if (href.slice(0, 5) != "https" && href.slice(0, 4) != "data")
 		{
@@ -35,31 +55,10 @@ function set_links()
 			
 			
 			
-			$(this).attr("href", "/index.html?page=" + encodeURIComponent(href) + vars);
+			links[i].setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + vars);
 		}
-	});
+	}
 }
-
-
-
-$(function()
-{
-	//Fade in the opacity when the user presses the back button.
-	window.addEventListener("popstate", function(e)
-	{
-		let previous_page = get_url_var("page");
-		
-		if (previous_page != null)
-		{
-			redirect(decodeURIComponent(previous_page), false, false, true);
-		}
-		
-		else
-		{
-			redirect("/home.html", false, false, true);
-		}
-	});
-});
 
 
 
@@ -120,6 +119,8 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	
 	
 	document.documentElement.classList.remove("color-transition");
+	
+	
 		
 		
 		
@@ -139,22 +140,27 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 		{
 			setTimeout(function()
 			{
-				$("html, body").addClass("background-transition");
+				document.documentElement.classList.add("background-transition");
+				document.body.classList.add("background-transition");
 				
 				if (url_vars["theme"] == 1)
 				{
-					$("html, body").css("background-color", "rgb(24, 24, 24)");
+					document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
+					document.body.style.backgroundColor = "rgb(24, 24, 24)";
 				}
 				
 				else
 				{
-					$("html, body").css("background-color", "rgb(255, 255, 255)");
+					document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
+					document.body.style.backgroundColor = "rgb(255, 255, 255)";
 				}
 				
 				setTimeout(function()
 				{
-					$("body").css("background-color", "");
-					$("html, body").removeClass("background-transition");
+					document.body.style.backgroundColor = "";
+					
+					document.documentElement.classList.remove("background-transition");
+					document.body.classList.remove("background-transition");
 					
 					load_html(url, include_return_url, no_state_push);
 				}, 450);
@@ -188,10 +194,11 @@ function load_html(url, include_return_url, no_state_push)
 			history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
 		}
 		
-		$("body").html(new_page_data);
+		document.body.innerHTML = new_page_data;
+		parse_scripts();
 	}
 	
-	//We didn't get it. We may never be able to, but we have to try again in case it's just the connection is just really slow. There's 
+	//We didn't get it. We may never be able to, but we have to try again in case it's just that the connection is just really slow.
 	else
 	{
 		fetch(url)
@@ -208,12 +215,31 @@ function load_html(url, include_return_url, no_state_push)
 				history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
 			}
 			
-			$("body").html(new_page_data);
+			document.body.innerHTML = data;
+			parse_scripts();
 		});
 		
 		//There's no need to have a .catch here -- if the fetch fails, the first fetch will reverse the fading out.
 	}
+}
+
+
+
+//Right, so this is a pain. One of those things jQuery makes really easy and that you might never notice otherwise is that when using $(element).html(data), any non-external script tags in data are automatically excuted. This is great, but it doesn't happen when using element.innerHTML. Weirdly enough, though, it works with element.appendChild. Therefore, we just need to get all our script tags, and for each one, make a new tag with identical contents, append it to the body, and delete the original script.
+function parse_scripts()
+{
+	var scripts = document.querySelectorAll("script");
 	
+	for (let i = 0; i < scripts.length; i++)
+	{
+		let new_script = document.createElement("script");
+		
+		new_script.innerHTML = scripts[i].textContent;
+		
+		document.body.appendChild(new_script);
+		
+		scripts[i].remove();
+	}
 }
 
 

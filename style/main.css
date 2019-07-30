@@ -190,7 +190,7 @@ img
 
 
 
-.footer-image-links
+#footer-image-links
 {
 	display: flex;
 	flex-direction: row;
@@ -198,6 +198,7 @@ img
 	justify-content: space-between;
 	width: 56vw;
 	margin: 0 auto;
+	margin-bottom: 60px;
 }
 
 .footer-image-link

@@ -99,67 +99,120 @@ function switch_theme()
 	//Light to dark
 	if (url_vars["theme"] == 0)
 	{
-		$("html").css("background-color", "rgb(24, 24, 24)");
+		document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
 		
 		
 		
 		if (url_vars["contrast"] == 1)
 		{
-			$(".section-text").css("color", "rgb(232, 232, 232)");
-			$(".body-text").css("color", "rgb(216, 216, 216)");
-			$(".body-text .link").css("color", "rgb(216, 255, 216)");
-			$(".song-lyrics").css("color", "rgb(216, 216, 216)");
-			$(".image-link-subtext").css("color", "rgb(216, 216, 216)");
+			let elements = document.querySelectorAll(".section-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(232, 232, 232)";
+			}
 			
-			$(".quote-text").css("color", "rgb(192, 192, 192");
-			$(".quote-attribution").css("color", "rgb(234, 234, 234)");
+			elements = document.querySelectorAll(".body-text, .song-lyrics, .image-link-subtext");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(216, 216, 216)";
+			}
 			
-			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(127, 127, 127)");
+			elements = document.querySelectorAll(".body-text .link");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(216, 255, 216)";
+			}
+			
+			
+			
+			elements = document.querySelectorAll(".quote-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(192, 192, 192)";
+			}
+			
+			elements = document.querySelectorAll(".quote-attribution");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(234, 234, 234)";
+			}
+			
+			
+			
+			elements = document.querySelectorAll(".footer-button, .text-button, .nav-button");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.borderColor = "rgb(127, 127, 127)";
+			}
 		}
 		
 		else
 		{
-			$(".section-text").css("color", "rgb(184, 184, 184)");
-			$(".body-text").css("color", "rgb(152, 152, 152)");
-			$(".body-text .link").css("color", "rgb(152, 216, 152)");
-			$(".song-lyrics").css("color", "rgb(152, 152, 152)");
-			$(".image-link-subtext").css("color", "rgb(152, 152, 152)");
+			let elements = document.querySelectorAll(".section-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(184, 184, 184)";
+			}
 			
-			$(".quote-text").css("color", "rgb(104, 104, 104)");
-			$(".quote-attribution").css("color", "rgb(188, 188, 188)");
+			elements = document.querySelectorAll(".body-text, song-lyrics, .image-link-subtext");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(152, 152, 152)";
+			}
 			
-			$("head").append(`
-				<style class="temporary-style">
-					.line-break
-					{
-						background: rgb(24,24,24);
-						background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(116,116,116) 50%, rgb(24,24,24) 100%);
-						background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(116,116,116) 50%,rgb(24,24,24) 100%);
-						background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(116,116,116) 50%,rgb(24,24,24) 100%);
-					}
-					
-					.text-box
-					{
-						background-color: rgb(24, 24, 24);
-						color: rgb(152, 152, 152);
-						border-color: rgb(88, 88, 88);
-					}
-					
-					.text-box:focus
-					{
-						border-color: rgb(152, 152, 152);
-						color: rgb(216, 216, 216);
-					}
-				</style>
-			`);
+			elements = document.querySelectorAll(".body-text .link");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(152, 216, 152)";
+			}
+			
+			
+			
+			elements = document.querySelectorAll(".quote-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(104, 104, 104)";
+			}
+			
+			elements = document.querySelectorAll(".quote-attribution");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(188, 188, 188)";
+			}
+			
+			
+			
+			add_style(`
+				.line-break
+				{
+					background: rgb(24,24,24);
+					background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(116,116,116) 50%, rgb(24,24,24) 100%);
+					background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(116,116,116) 50%,rgb(24,24,24) 100%);
+					background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(116,116,116) 50%,rgb(24,24,24) 100%);
+				}
+				
+				.text-box
+				{
+					background-color: rgb(24, 24, 24);
+					color: rgb(152, 152, 152);
+					border-color: rgb(88, 88, 88);
+				}
+				
+				.text-box:focus
+				{
+					border-color: rgb(152, 152, 152);
+					color: rgb(216, 216, 216);
+				}
+			`, true);
 		}
 		
 		
 		
-		$(".heading-text").css("color", "rgb(255, 255, 255)");
-		$(".date-text").css("color", "rgb(255, 255, 255)");
-		
-		$(".title-text").css("color", "rgb(255, 255, 255)");
+		let elements = document.querySelectorAll(".heading-text, .date-text, .title-text");
+		for (let i = 0; i < elements.length; i++)
+		{
+			elements[i].style.color = "rgb(255, 255, 255)";
+		}
 		
 		
 		
@@ -168,7 +221,7 @@ function switch_theme()
 		
 		setTimeout(function()
 		{
- 			try {$("#theme-button-text").html($("#theme-button-text").html().replace("light", "dark"));}
+ 			try {document.querySelector("#theme-button-text").textContent = (document.querySelector("#theme-button-text").textContent.replace("light", "dark"));}
  			catch(ex) {}
  			
 			try {document.querySelector("#theme-button-row").style.opacity = 1;}
@@ -184,46 +237,90 @@ function switch_theme()
 	//Dark to light
 	else
 	{
-		$("html").css("background-color", "rgb(255, 255, 255)");
+		document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
 		
 		
 		
 		if (url_vars["contrast"] == 1)
 		{
-			$(".section-text").css("color", "rgb(48, 48, 48)");
-			$(".body-text").css("color", "rgb(64, 64, 64)");
-			$(".body-text .link").css("color", "rgb(64, 128, 64)");
-			$(".song-lyrics").css("color", "rgb(64, 64, 64)");
-			$(".image-link-subtext").css("color", "rgb(64, 64, 64)");
-			$(".text-button").css("color", "rgb(64, 64, 64)");
+			let elements = document.querySelectorAll(".section-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(48, 48, 48)";
+			}
 			
-			$(".quote-text").css("color", "rgb(88, 88, 88");
-			$(".quote-attribution").css("color", "rgb(46, 46, 46)");
+			elements = document.querySelectorAll(".body-text, .song-lyrics, .image-link-subtext, .text-button");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(64, 64, 64)";
+			}
 			
-			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(64, 64, 64)");
+			elements = document.querySelectorAll(".body-text .link");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(64, 128, 64)";
+			}
+			
+			
+			
+			elements = document.querySelectorAll(".quote-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(88, 88, 88)";
+			}
+			
+			elements = document.querySelectorAll(".quote-attribution");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(46, 46, 46)";
+			}
+			
+			
+			
+			elements = document.querySelectorAll(".footer-button, .text-button, .nav-button");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.borderColor = "rgb(64, 64, 64)";
+			}
 		}
 		
 		else
 		{
-			$(".section-text").css("color", "rgb(96, 96, 96)");
+			let elements = document.querySelectorAll(".section-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(96, 96, 96)";
+			}
 			
-			$(".quote-text").css("color", "rgb(176, 176, 176)");
-			$(".quote-attribution").css("color", "rgb(92, 92, 92)");
+			
+			
+			elements = document.querySelectorAll(".quote-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(176, 176, 176)";
+			}
+			
+			elements = document.querySelectorAll(".quote-attribution");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(92, 92, 92)";
+			}
 		}
 		
 		
 		
-		$(".heading-text").css("color", "rgb(0, 0, 0)");
-		$(".date-text").css("color", "rgb(0, 0, 0)");
-		
-		$(".title-text").css("color", "rgb(0, 0, 0)");
+		let elements = document.querySelectorAll(".heading-text, .date-text, .title-text");
+		for (let i = 0; i < elements.length; i++)
+		{
+			elements[i].style.color = "rgb(0, 0, 0)";
+		}
 		
 		try {document.querySelector("#theme-button-row").style.opacity = 0;}
 		catch(ex) {}
 		
 		setTimeout(function()
 		{
-			try {$("#theme-button-text").html($("#theme-button-text").html().replace("dark", "light"));}
+			try {document.querySelector("#theme-button-text").textContent = (document.querySelector("#theme-button-text").textContent.replace("dark", "light"));}
 			catch(ex) {}
 			
 			try {document.querySelector("#theme-button-row").style.opacity = 1;}
@@ -267,7 +364,7 @@ function switch_contrast_on_load()
 	//Default to high
 	if (url_vars["contrast"] == 0)
 	{
-		try {$("#contrast-button-text").html($("#contrast-button-text").html().replace("normal", "high"));}
+		try {document.querySelector("#contrast-button-text").textContent = (document.querySelector("#contrast-button-text").textContent.replace("normal", "high"));}
 		catch(ex) {}
 		
 		url_vars["contrast"] = 1;
@@ -278,105 +375,165 @@ function switch_contrast_on_load()
 		
 		if (url_vars["theme"] == 1)
 		{
-			$(".section-text").css("color", "rgb(232, 232, 232)");
-			$(".body-text").css("color", "rgb(216, 216, 216)");
-			$(".body-text .link").css("color", "rgb(216, 255, 216)");
-			$(".song-lyrics").css("color", "rgb(216, 216, 216)");
-			$(".image-link-subtext").css("color", "rgb(216, 216, 216)");
+			let elements = document.querySelectorAll(".section-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(232, 232, 232)";
+			}
 			
-			$(".quote-text").css("color", "rgb(192, 192, 192)");
-			$(".quote-attribution").css("color", "rgb(234, 234, 234)");
+			elements = document.querySelectorAll(".body-text, .song-lyrics, .image-link-subtext");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(216, 216, 216)";
+			}
 			
-			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(127, 127, 127)");
+			elements = document.querySelectorAll(".body-text .link");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(216, 255, 216)";
+			}
 			
-			$("head").append(`
-				<style class="temporary-style">
-					.line-break
-					{
-						background: rgb(24,24,24);
-						background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(164,164,164) 50%, rgb(24,24,24) 100%);
-						background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(164,164,164) 50%,rgb(24,24,24) 100%);
-						background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(164,164,164) 50%,rgb(24,24,24) 100%);
-					}
-					
-					.scroll-button
-					{
-						border-color: rgb(88, 88, 88)
-					}
-					
-					.text-box
-					{
-						border-color: rgb(152, 152, 152);
-						background-color: rgb(24, 24, 24);
-						color: rgb(216, 216, 216);
-					}
-					
-					.text-box:focus
-					{
-						border-color: rgb(216, 216, 216);
-						color: rgb(255, 255, 255);
-					}
-				</style>
-			`);
+			
+			
+			elements = document.querySelectorAll(".quote-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(192, 192, 192)";
+			}
+			
+			elements = document.querySelectorAll(".quote-attribution");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(234, 234, 234)";
+			}
+			
+			
+			
+			elements = document.querySelectorAll(".footer-button, .text-button, .nav-button");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.borderColor = "rgb(127, 127, 127)";
+			}
+			
+			
+			
+			add_style(`
+				.line-break
+				{
+					background: rgb(24,24,24);
+					background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(164,164,164) 50%, rgb(24,24,24) 100%);
+					background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(164,164,164) 50%,rgb(24,24,24) 100%);
+					background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(164,164,164) 50%,rgb(24,24,24) 100%);
+				}
+				
+				.scroll-button
+				{
+					border-color: rgb(88, 88, 88)
+				}
+				
+				.text-box
+				{
+					border-color: rgb(152, 152, 152);
+					background-color: rgb(24, 24, 24);
+					color: rgb(216, 216, 216);
+				}
+				
+				.text-box:focus
+				{
+					border-color: rgb(216, 216, 216);
+					color: rgb(255, 255, 255);
+				}
+			`, true);
 		}
 		
 		else
 		{
-			$(".section-text").css("color", "rgb(48, 48, 48)");
-			$(".body-text").css("color", "rgb(64, 64, 64)");
-			$(".body-text .link").css("color", "rgb(64, 128, 64)");
-			$(".song-lyrics").css("color", "rgb(64, 64, 64)");
-			$(".image-link-subtext").css("color", "rgb(64, 64, 64)");
-			$(".text-button").css("color", "rgb(64, 64, 64)");
-			
-			$(".quote-text").css("color", "rgb(88, 88, 88)");
-			$(".quote-attribution").css("color", "rgb(46, 46, 46)");
-			
-			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(64, 64, 64)");
-			
-			$("head").append(`
-				<style class="temporary-style">
-					.line-break
-					{
-						background: rgb(255,255,255);
-						background: -moz-linear-gradient(left, rgb(255,255,255) 0%, rgb(120,120,120) 50%, rgb(255,255,255) 100%);
-						background: -webkit-linear-gradient(left, rgb(255,255,255) 0%,rgb(120,120,120) 50%,rgb(255,255,255) 100%);
-						background: linear-gradient(to right, rgb(255,255,255) 0%,rgb(120,120,120) 50%,rgb(255,255,255) 100%);
-					}
-					
-					.scroll-button
-					{
-						border-color: rgb(64, 64, 64);
-					}
-					
-					.text-box
-					{
-						border-color: rgb(127, 127, 127);
-						color: rgb(64, 64, 64);
-					}
-					
-					.text-box:focus
-					{
-						border-color: rgb(64, 64, 64);
-						color: rgb(0, 0, 0);
-					}
-				</style>
-			`);
-			
-			try
+			let elements = document.querySelectorAll(".section-text");
+			for (let i = 0; i < elements.length; i++)
 			{
-				$(".nav-button").each(function(index, element)
-				{
-					$(this).attr("src", $(this).attr("src").replace("chevron-left", "chevron-left-dark").replace("chevron-right", "chevron-right-dark"));
-				});
+				elements[i].style.color = "rgb(48, 48, 48)";
 			}
 			
-			catch(ex) {}
+			elements = document.querySelectorAll(".body-text, .song-lyrics, .image-link-subtext, .text-button");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(64, 64, 64)";
+			}
+			
+			elements = document.querySelectorAll(".body-text .link");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(64, 128, 64)";
+			}
+			
+			
+			
+			elements = document.querySelectorAll(".quote-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(88, 88, 88)";
+			}
+			
+			elements = document.querySelectorAll(".quote-attribution");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(46, 46, 46)";
+			}
+			
+			
+			
+			elements = document.querySelectorAll(".footer-button, .text-button, .nav-button");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.borderColor = "rgb(64, 64, 64)";
+			}
+			
+			
+			
+			add_style(`
+				.line-break
+				{
+					background: rgb(255,255,255);
+					background: -moz-linear-gradient(left, rgb(255,255,255) 0%, rgb(120,120,120) 50%, rgb(255,255,255) 100%);
+					background: -webkit-linear-gradient(left, rgb(255,255,255) 0%,rgb(120,120,120) 50%,rgb(255,255,255) 100%);
+					background: linear-gradient(to right, rgb(255,255,255) 0%,rgb(120,120,120) 50%,rgb(255,255,255) 100%);
+				}
+				
+				.scroll-button
+				{
+					border-color: rgb(64, 64, 64);
+				}
+				
+				.text-box
+				{
+					border-color: rgb(127, 127, 127);
+					color: rgb(64, 64, 64);
+				}
+				
+				.text-box:focus
+				{
+					border-color: rgb(64, 64, 64);
+					color: rgb(0, 0, 0);
+				}
+			`, true);
+			
+			
+			
+			elements = document.querySelectorAll(".nav-button");
+			
+			for (i = 0; i < elements.length; i++)
+			{
+				elements[i].setAttribute("src", elements[i].getAttribute("src").replace("chevron-left", "chevron-left-dark").replace("chevron-right", "chevron-right-dark"));
+			}
 		}
 		
 		
 		
-		$(".text-button").css("color", "rgb(64, 64, 64)");
+		let elements = document.querySelectorAll(".text-button");
+		for (let i = 0; i < elements.length; i++)
+		{
+			elements[i].style.color = "rgb(64, 64, 64)";
+		}
 	}
 	
 	
@@ -384,7 +541,7 @@ function switch_contrast_on_load()
 	//High to default
 	else
 	{
-		try {$("#contrast-button-text").html($("#contrast-button-text").html().replace("high", "normal"));}
+		try {document.querySelector("#contrast-button-text").textContent = (document.querySelector("#contrast-button-text").textContent.replace("high", "normal"));}
 		catch(ex) {}
 		
 		url_vars["contrast"] = 0;
@@ -395,32 +552,129 @@ function switch_contrast_on_load()
 		
 		if (url_vars["theme"] == 1)
 		{
-			$(".section-text").css("color", "rgb(184, 184, 184)");
-			$(".body-text").css("color", "rgb(152, 152, 152)");
-			$(".body-text .link").css("color", "rgb(152, 216, 152)");
-			$(".song-lyrics").css("color", "rgb(152, 152, 152)");
-			$(".image-link-subtext").css("color", "rgb(152, 152, 152)");
-			$(".text-button").css("color", "rgb(152, 152, 152)");
+			let elements = document.querySelectorAll(".section-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(184, 184, 184)";
+			}
 			
-			$(".quote-text").css("color", "rgb(104, 104, 104");
-			$(".quote-attribution").css("color", "rgb(188, 188, 188)");
+			elements = document.querySelectorAll(".body-text, song-lyrics, .image-link-subtext");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(152, 152, 152)";
+			}
 			
-			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(127, 127, 127)");
+			elements = document.querySelectorAll(".body-text .link");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(152, 216, 152)";
+			}
+			
+			
+			
+			elements = document.querySelectorAll(".quote-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(104, 104, 104)";
+			}
+			
+			elements = document.querySelectorAll(".quote-attribution");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(188, 188, 188)";
+			}
+			
+			
+			
+			add_style(`
+				.line-break
+				{
+					background: rgb(24,24,24);
+					background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(116,116,116) 50%, rgb(24,24,24) 100%);
+					background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(116,116,116) 50%,rgb(24,24,24) 100%);
+					background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(116,116,116) 50%,rgb(24,24,24) 100%);
+				}
+				
+				.text-box
+				{
+					background-color: rgb(24, 24, 24);
+					color: rgb(152, 152, 152);
+					border-color: rgb(88, 88, 88);
+				}
+				
+				.text-box:focus
+				{
+					border-color: rgb(152, 152, 152);
+					color: rgb(216, 216, 216);
+				}
+			`, true);
+			
+			
+			
+			elements = document.querySelectorAll(".text-button");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(152, 152, 152)";
+			}
+			
+			
+			
+			elements = document.querySelectorAll(".footer-button, .text-button, .nav-button");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.borderColor = "rgb(127, 127, 127)";
+			}
 		}
 		
 		else
 		{
-			$(".section-text").css("color", "rgb(96, 96, 96)");
-			$(".body-text").css("color", "rgb(127, 127, 127)");
-			$(".body-text .link").css("color", "rgb(127, 192, 127)");
-			$(".song-lyrics").css("color", "rgb(127, 127, 127)");
-			$(".image-link-subtext").css("color", "rgb(127, 127, 127)");
-			$(".text-button").css("color", "rgb(127, 127, 127)");
+			let elements = document.querySelectorAll(".section-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(96, 96, 96)";
+			}
 			
-			$(".quote-text").css("color", "rgb(176, 176, 176");
-			$(".quote-attribution").css("color", "rgb(92, 92, 92)");
+			elements = document.querySelectorAll(".body-text, song-lyrics, .image-link-subtext");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(127, 127, 127)";
+			}
 			
-			$(".footer-button, .text-button, .nav-button").css("border-color", "rgb(127, 127, 127)");
+			elements = document.querySelectorAll(".body-text .link");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(127, 192, 127)";
+			}
+			
+			
+			
+			elements = document.querySelectorAll(".quote-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(176, 176, 176)";
+			}
+			
+			elements = document.querySelectorAll(".quote-attribution");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(92, 92, 92)";
+			}
+			
+			
+			
+			elements = document.querySelectorAll(".text-button");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(127, 127, 127)";
+			}
+			
+			
+			
+			elements = document.querySelectorAll(".footer-button, .text-button, .nav-button");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.borderColor = "rgb(127, 127, 127)";
+			}
 		}
 	}
 }
@@ -447,7 +701,7 @@ function switch_font_on_load()
 	//Sans to serif
 	if (url_vars["font"] == 0)
 	{
-		try {$("#font-button-text").html($("#font-button-text").html().replace("always sans serif", "serif on writing"));}
+		try {document.querySelector("#font-button-text").textContent = (document.querySelector("#font-button-text").textContent.replace("always sans serif", "serif on writing"));}
 		catch(ex) {}
 		
 		url_vars["font"] = 1;
@@ -456,7 +710,11 @@ function switch_font_on_load()
 		
 		if (page_settings["writing_page"])
 		{
-			$(".body-text").css("font-family", "'Gentium Book Basic', serif");
+			let elements = document.querySelectorAll(".body-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.fontFamily = "'Gentium Book Basic', serif";
+			}
 		}
 	}
 	
@@ -465,7 +723,7 @@ function switch_font_on_load()
 	//Serif to sans
 	else
 	{
-		try {$("#font-button-text").html($("#font-button-text").html().replace("serif on writing", "always sans serif"));}
+		try {document.querySelector("#font-button-text").textContent = (document.querySelector("#font-button-text").textContent.replace("serif on writing", "always sans serif"));}
 		catch(ex) {}
 		
 		url_vars["font"] = 0;
@@ -496,7 +754,7 @@ function switch_writing_style_on_load()
 	//Double-spaced to indented
 	if (url_vars["writing_style"] == 0)
 	{
-		try {$("#writing-style-button-text").html($("#writing-style-button-text").html().replace("double-spaced", "single-spaced and indented"));}
+		try {document.querySelector("#writing-style-button-text").textContent = (document.querySelector("#writing-style-button-text").textContent.replace("double-spaced", "single-spaced and indented"));}
 		catch(ex) {}
 		
 		url_vars["writing_style"] = 1;
@@ -505,11 +763,31 @@ function switch_writing_style_on_load()
 		
 		if (page_settings["writing_page"])
 		{
-			//This is a fancy way of saying $("section br").remove(), but it ensures that <br> tags in places like song lyrics won't get removed.
-			$("section div .body-text").parent().next("br").remove();
+			//This is a fancy way of saying ("section br").remove(), but it ensures that <br> tags in places like song lyrics won't get removed.
+			let elements = document.querySelectorAll("section div .body-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				//The next element might not exist, so we have to be careful.
+				try
+				{
+					let next_element = elements[i].parentNode.nextElementSibling;
+					
+					if (next_element.tagName.toLowerCase() == "br")
+					{
+						next_element.remove();
+					}
+				}
+				
+				catch(ex) {}
+			}
+			
 			
 			//Add an indent on every element except the first in the section.
-			$("section div:not(:first-child) .body-text").css("text-indent", "10pt");
+			elements = document.querySelectorAll("section div:not(:first-child) .body-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.textIndent = "10pt";
+			}
 		}
 	}
 	
@@ -518,7 +796,7 @@ function switch_writing_style_on_load()
 	//Indented to double-spaced
 	else
 	{
-		try {$("#writing-style-button-text").html($("#writing-style-button-text").html().replace("single-spaced and indented", "double-spaced"));}
+		try {document.querySelector("#writing-style-button-text").textContent = (document.querySelector("#writing-style-button-text").textContent.replace("single-spaced and indented", "double-spaced"));}
 		catch(ex) {}
 		
 		url_vars["writing_style"] = 0;
@@ -544,15 +822,15 @@ function switch_comments_on_load()
 {
 	if (url_vars["comments"] == 0)
 	{
-		try {$("#comments-button-text").html($("#comments-button-text").html().replace("enabled", "disabled"));}
+		try {document.querySelector("#comments-button-text").textContent = (document.querySelector("#comments-button-text").textContent.replace("enabled", "disabled"));}
 		catch(ex) {}
 		
 		try
 		{
-			$("#disqus_thread").prev().remove();
-			$("#disqus_thread").prev().remove();
-			$("#disqus_thread").prev().remove();
-			$("#disqus_thread").remove();
+			document.querySelector("#disqus_thread").previousElementSibling.remove();
+			document.querySelector("#disqus_thread").previousElementSibling.remove();
+			document.querySelector("#disqus_thread").previousElementSibling.remove();
+			document.querySelector("#disqus_thread").remove();
 		}
 		catch(ex) {}
 		
@@ -565,7 +843,7 @@ function switch_comments_on_load()
 	
 	else
 	{
-		try {$("#comments-button-text").html($("#comments-button-text").html().replace("disabled", "enabled"));}
+		try {document.querySelector("#comments-button-text").textContent = (document.querySelector("#comments-button-text").textContent.replace("disabled", "enabled"));}
 		catch(ex) {}
 		
 		url_vars["comments"] = 0;
@@ -591,7 +869,7 @@ function switch_content_animation_on_load()
 {
 	if (url_vars["content_animation"] == 0)
 	{
-		try {$("#content-animation-button-text").html($("#content-animation-button-text").html().replace("enabled", "disabled"));}
+		try {document.querySelector("#content-animation-button-text").textContent = (document.querySelector("#content-animation-button-text").textContent.replace("enabled", "disabled"));}
 		catch(ex) {}
 		
 		url_vars["content_animation"] = 1;
@@ -599,7 +877,11 @@ function switch_content_animation_on_load()
 		write_url_vars();
 		
 		//This attribute makes the content invisible until it's animated in, so if we're never going to do that, it has to go.
-		$("body").find("*[data-aos]").removeAttr("data-aos");
+		let elements = document.body.querySelectorAll("[data-aos]")
+		for (let i = 0; i < elements.length; i++)
+		{
+			elements[i].removeAttribute("data-aos");
+		}
 		
 		document.documentElement.classList.remove("animated-opacity");
 	}
@@ -608,7 +890,7 @@ function switch_content_animation_on_load()
 	
 	else
 	{
-		try {$("#content-animation-button-text").html($("#content-animation-button-text").html().replace("disabled", "enabled"));}
+		try {document.querySelector("#content-animation-button-text").textContent = (document.querySelector("#content-animation-button-text").textContent.replace("disabled", "enabled"));}
 		catch(ex) {}
 		
 		url_vars["content_animation"] = 0;
@@ -636,7 +918,7 @@ function switch_banner_style_on_load()
 {
 	if (url_vars["banner_style"] == 0)
 	{
-		try {$("#banner-style-button-text").html($("#banner-style-button-text").html().replace("parallax", "simple"));}
+		try {document.querySelector("#banner-style-button-text").textContent = (document.querySelector("#banner-style-button-text").textContent.replace("parallax", "simple"));}
 		catch(ex) {}
 		
 		url_vars["banner_style"] = 1;
@@ -645,7 +927,7 @@ function switch_banner_style_on_load()
 		
 		try
 		{
-			$("#background-image").addClass("bad-banner");
+			document.querySelector("#background-image").classList.add("bad-banner");
 		}
 		
 		catch(ex) {}
@@ -653,7 +935,7 @@ function switch_banner_style_on_load()
 	
 	else
 	{
-		try {$("#banner-style-button-text").html($("#banner-style-button-text").html().replace("simple", "parallax"));}
+		try {document.querySelector("#banner-style-button-text").textContent = (document.querySelector("#banner-style-button-text").textContent.replace("simple", "parallax"));}
 		catch(ex) {}
 		
 		url_vars["banner_style"] = 0;

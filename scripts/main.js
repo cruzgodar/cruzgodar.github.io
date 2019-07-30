@@ -28,19 +28,17 @@ let temporary_handlers =
 
 function init()
 {
-	window_width = $(window).width();
-	window_height = $(window).height();
+	window_width = window.innerWidth;
+	window_height = window.innerHeight;
 	
 	
 	
 	window.addEventListener("resize", function()
 	{
-		window_width = $(window).width();
-		window_height = $(window).height();
+		window_width = window.innerWidth;
+		window_height = window.innerHeight;
 		
 		update_aos();
-		
-		set_footer_margin();
 	});
 	
 	
@@ -55,45 +53,38 @@ function init()
 	//When in PWA form, disable text selection, drag-and-drop, and the PWA button itself.
 	if (window.matchMedia("(display-mode: standalone)").matches)
 	{
-		$("html").css("-webkit-user-select", "none");
-		$("html").css("user-select", "none");
-		$("html").css("-webkit-touch-callout", "none");
-		$("*").attr("draggable", "false");
+		document.documentElement.style.WebkitUserSelect = "none";
+		document.documentElement.style.userSelect = "none";
+		document.documentElement.style.WebkitTouchCallout = "none";
+		
+		let elements = document.querySelectorAll("body *");
+		for (let i = 0; i < elements.length; i++)
+		{
+			elements[i].setAttribute("draggable", "false");
+		}
+		
 		
 		
 		
 		//Also add a little extra spacing at the top of each page to keep content from feeling too close to the top of the screen.
-		$("head").append(`
-			<style class="permanent-style">
-				#pwa-button
-				{
-					display: none;
-					width: 0px;
-					height: 0px;
-				}
-				
-				.logo, .name-text-container, .empty-top
-				{
-					margin-top: 2vh;
-				}
-			</style>
-		`);
-	}
-}
-
-
-
-function set_footer_margin()
-{
-	if (.04 * window_width >= 60)
-	{
-		$(".footer-image-links").css("margin-bottom", "4vw");
+		add_style(`
+			#pwa-button
+			{
+				display: none;
+				width: 0px;
+				height: 0px;
+			}
+			
+			.logo, .name-text-container, .empty-top
+			{
+				margin-top: 2vh;
+			}
+		`, false);
 	}
 	
-	else
-	{
-		$(".footer-image-links").css("margin-bottom", "60px");
-	}
+	
+	
+	scroll_button_exists = false;
 }
 
 
@@ -153,9 +144,7 @@ function on_page_load()
 	window.scrollTo(0, 0);
 	
 	//Set the page title.
-	$("title").html(page_settings["title"]);
-	
-	$("html, body").removeClass("no-scroll");
+	document.querySelector("title").textContent = page_settings["title"];
 	
 	
 	
@@ -175,8 +164,6 @@ function on_page_load()
 	insert_images();
 	
 	apply_settings();
-	
-	set_footer_margin();
 	
 	gimp_edge();
 	
@@ -212,8 +199,11 @@ function on_page_load()
 function on_page_unload()
 {
 	//Remove any css and js that's no longer needed to prevent memory leaks.
-	$("style.temporary-style").remove();
-	$("script.temporary-script").remove();
+	let elements = document.querySelectorAll("style.temporary-style, script.temporary-script");
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].remove();
+	}
 	
 	
 	
@@ -311,4 +301,21 @@ function load_script(src)
 		script.async = true;
 		script.src = src;
 	});
+}
+
+
+
+//Adds a style tag to <head> with the given content. If temporary is true, it will be removed at the next page load.
+function add_style(content, temporary)
+{
+	let element = document.createElement("style");
+	
+	element.textContent = content;
+	
+	if (temporary)
+	{
+		element.classList.add("temporary-style");
+	}
+	
+	document.head.appendChild(element);
 }

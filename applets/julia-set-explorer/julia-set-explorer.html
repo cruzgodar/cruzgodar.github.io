@@ -141,200 +141,193 @@
 		
 		
 		
-		$(function()
+		add_style(`
+			#container
+			{
+				display: flex;
+				justify-content: space-between;
+				width: 70vw;
+				margin-left: 15vw;
+			}
+			
+			#mandelbrot-set, #julia-set
+			{
+				width: 30vw;
+				height: 30vw;
+			}
+			
+			#high-res-julia-set
+			{
+				width: 90vmin;
+				height: 90vmin;
+				margin-left: calc((100vw - (90vmin + 8px)) / 2);
+			}
+			
+			#mandelbrot-set, #julia-set, #high-res-julia-set
+			{
+				border: 2px solid rgb(127, 127, 127);
+				-webkit-border-radius: 15px;
+				border-radius: 15px;
+				padding: 2px;
+			}
+			
+			
+			
+			@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
+			{
+				#container
+				{
+					flex-direction: column;
+					margin-left: calc((100vw - (70vw + 8px)) / 2);
+				}
+				
+				#mandelbrot-set, #julia-set
+				{
+					width: 70vw;
+					height: 70vw;
+				}
+				
+				#mandelbrot-set
+				{
+					margin-bottom: 5vw;
+				}
+			}
+		`, true);
+		
+		
+		
+		if (scripts_loaded["mathjs"] == false)
 		{
-			$("head").append(`
-				<style class="temporary-style">
-					#container
-					{
-						display: flex;
-						justify-content: space-between;
-						width: 70vw;
-						margin-left: 15vw;
-					}
-					
-					#mandelbrot-set, #julia-set
-					{
-						width: 30vw;
-						height: 30vw;
-					}
-					
-					#high-res-julia-set
-					{
-						width: 90vmin;
-						height: 90vmin;
-						margin-left: calc((100vw - (90vmin + 8px)) / 2);
-					}
-					
-					#mandelbrot-set, #julia-set, #high-res-julia-set
-					{
-						border: 2px solid rgb(127, 127, 127);
-						-webkit-border-radius: 15px;
-						border-radius: 15px;
-						padding: 2px;
-					}
-					
-					
-					
-					@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
-					{
-						#container
-						{
-							flex-direction: column;
-							margin-left: calc((100vw - (70vw + 8px)) / 2);
-						}
-						
-						#mandelbrot-set, #julia-set
-						{
-							width: 70vw;
-							height: 70vw;
-						}
-						
-						#mandelbrot-set
-						{
-							margin-bottom: 5vw;
-						}
-					}
-				</style>
-			`);
+			load_script("https://unpkg.com/mathjs@5.9.0/dist/math.min.js")
 			
-			
-			
-			if (scripts_loaded["mathjs"] == false)
+			.then(function()
 			{
-				load_script("https://unpkg.com/mathjs@5.9.0/dist/math.min.js")
-				
-				.then(function()
-				{
-					scripts_loaded["mathjs"] == true;
-				})
-				
-				.catch(function(error)
-				{
-					console.error("Could not load MathJS");
-				});
+				scripts_loaded["mathjs"] == true;
+			})
+			
+			.catch(function(error)
+			{
+				console.error("Could not load MathJS");
+			});
+		}
+		
+		
+		
+		if (url_vars["contrast"] == 1)
+		{
+			if (url_vars["theme"] == 1)
+			{
+				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(192, 192, 192)";
+				document.querySelector("#julia-set").style.borderColor = "rgb(192, 192, 192)";
+				document.querySelector("#high-res-julia-set").style.borderColor = "rgb(192, 192, 192)";
 			}
 			
-			
-			
-			if (url_vars["contrast"] == 1)
-			{
-				if (url_vars["theme"] == 1)
-				{
-					$("#mandelbrot-set, #julia-set, #high-res-julia-set").css("border-color", "rgb(192, 192, 192)");
-				}
-				
-				else
-				{
-					$("#mandelbrot-set, #julia-set, #high-res-julia-set").css("border-color", "rgb(64, 64, 64)");
-				}
-			}
-			
-			
-			
-			document.querySelector("#generate-button").addEventListener("click", draw_high_res_julia);
-			
-			
-			
-			//Only get the width of the Mandelbrot set has finished loading in order to get the correct value.
-			small_canvas_size = $("#julia-set").width();
-			large_canvas_size = $("#high-res-julia-set").width();
-			
-			
-			
-			//As the user scrolls around the image, make tiny Julia set previews.
-			if (!hasTouch())
-			{
-				$("#mandelbrot-set").mousemove(function(e)
-				{
-					if (persist_image == false)
-					{
-						let parentOffset = $(this).offset();
-						
-						let mouse_x = e.pageX - parentOffset.left;
-						let mouse_y = e.pageY - parentOffset.top;
-						
-						let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-						let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
-						
-						draw_julia_set(a, b, 100, 25, false);
-					}
-				});
-				
-				//On a click, make a much larger image.
-				$("#mandelbrot-set").click(function(e)
-				{
-					let parentOffset = $("#mandelbrot-set").offset();
-					
-					let mouse_x = e.pageX - parentOffset.left;
-					let mouse_y = e.pageY - parentOffset.top;
-					
-					let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-					let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
-					
-					draw_julia_set(a, b, 500, 100, false);
-					
-					$("#a-input").val(Math.round(1000000 * a) / 1000000);
-					$("#b-input").val(Math.round(1000000 * b) / 1000000);
-					$("#dim-input").val(1000);
-					
-					persist_image = true;
-				});
-				
-				$("#mandelbrot-set").mouseleave(function(e)
-				{
-					persist_image = false;
-				});
-			}
-			
-			
-			
-			//Handle touchscreens.
 			else
 			{
-				$("#instructions").html(`Drag along the Mandelbrot set to preview the corresponding Julia set, and release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.`);
-				
-				document.getElementById("mandelbrot-set").addEventListener("touchmove", function(e)
+				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(64, 64, 64)";
+				document.querySelector("#julia-set").style.borderColor = "rgb(64, 64, 64)";
+				document.querySelector("#high-res-julia-set").style.borderColor = "rgb(64, 64, 64)";
+			}
+		}
+		
+		
+		
+		document.querySelector("#generate-button").addEventListener("click", draw_high_res_julia);
+		
+		
+		
+		//Only get the width of the Mandelbrot set has finished loading in order to get the correct value.
+		small_canvas_size = document.querySelector("#julia-set").offsetWidth;
+		large_canvas_size = document.querySelector("#high-res-julia-set").offsetWidth;
+		
+		
+		
+		//As the user scrolls around the image, make tiny Julia set previews.
+		if (!hasTouch())
+		{
+			document.querySelector("#mandelbrot-set").addEventListener("mousemove", function(e)
+			{
+				if (persist_image == false)
 				{
-					e.preventDefault();
-					
-					let parentOffset = $("#mandelbrot-set").offset();
-					let mouse_x = e.pageX - parentOffset.left;
-					let mouse_y = e.pageY - parentOffset.top;
+					let mouse_x = e.pageX - document.querySelector("#mandelbrot-set").offsetLeft;
+					let mouse_y = e.pageY - document.querySelector("#mandelbrot-set").offsetTop;
 					
 					let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
 					let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
 					
 					draw_julia_set(a, b, 100, 25, false);
-				}, false);
+				}
+			});
+			
+			//On a click, make a much larger image.
+			document.querySelector("#mandelbrot-set").addEventListener("click", function(e)
+			{
+				let mouse_x = e.pageX - document.querySelector("#mandelbrot-set").offsetLeft;
+				let mouse_y = e.pageY - document.querySelector("#mandelbrot-set").offsetTop;
 				
-				document.getElementById("mandelbrot-set").addEventListener("touchend", function(e)
-				{
-					e.preventDefault();
+				let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+				let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+				
+				draw_julia_set(a, b, 500, 100, false);
+				
+				document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
+				document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
+				document.querySelector("#dim-input").value = 1000;
+				
+				persist_image = true;
+			});
+			
+			document.querySelector("#mandelbrot-set").addEventListener("mouseleave", function(e)
+			{
+				persist_image = false;
+			});
+		}
+		
+		
+		
+		//Handle touchscreens.
+		else
+		{
+			document.querySelector("#instructions").textContent = `Drag along the Mandelbrot set to preview the corresponding Julia set, and release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.`;
+			
+			document.querySelector("#mandelbrot-set").addEventListener("touchmove", function(e)
+			{
+				e.preventDefault();
 					
-					let parentOffset = $("#mandelbrot-set").offset();
-					let mouse_x = e.pageX - parentOffset.left;
-					let mouse_y = e.pageY - parentOffset.top;
-					
-					let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-					let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
-					
-					draw_julia_set(a, b, 500, 100, false);
-					
-					$("#a-input").val(Math.round(1000000 * a) / 1000000);
-					$("#b-input").val(Math.round(1000000 * b) / 1000000);
-					$("#dim-input").val(1000);
-				}, false);
-			}
-		});
+				let mouse_x = e.pageX - document.querySelector("#mandelbrot-set").offsetLeft;
+				let mouse_y = e.pageY - document.querySelector("#mandelbrot-set").offsetTop;
+				
+				let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+				let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+				
+				draw_julia_set(a, b, 100, 25, false);
+			}, false);
+			
+			document.querySelector("#mandelbrot-set").addEventListener("touchend", function(e)
+			{
+				e.preventDefault();
+				
+				let mouse_x = e.pageX - document.querySelector("#mandelbrot-set").offsetLeft;
+				let mouse_y = e.pageY - document.querySelector("#mandelbrot-set").offsetTop;
+				
+				let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+				let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+				
+				draw_julia_set(a, b, 500, 100, false);
+				
+				document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
+				document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
+				document.querySelector("#dim-input").value = 1000;
+			}, false);
+		}
 		
 		
 		
 		function draw_high_res_julia()
 		{
-			let a = parseFloat($("#a-input").val()) || 0;
-			let b = parseFloat($("#b-input").val()) || 0;
-			let dim = parseFloat($("#dim-input").val()) || 1000;
+			let a = parseFloat(document.querySelector("#a-input").value) || 0;
+			let b = parseFloat(document.querySelector("#b-input").value) || 0;
+			let dim = parseFloat(document.querySelector("#dim-input").value) || 1000;
 			
 			draw_julia_set(a, b, dim, 100, true);
 		}
@@ -361,15 +354,19 @@
 			
 			if (download == false)
 			{
-				$("#julia-set").attr({width: julia_size, height: julia_size});
-				ctx = document.getElementById("julia-set").getContext("2d");
+				document.querySelector("#julia-set").setAttribute("width", julia_size);
+				document.querySelector("#julia-set").setAttribute("height", julia_size);
+				
+				ctx = document.querySelector("#julia-set").getContext("2d");
 				canvas_size = small_canvas_size;
 			}
 			
 			else
 			{
-				$("#high-res-julia-set").attr({width: julia_size, height: julia_size});
-				ctx = document.getElementById("high-res-julia-set").getContext("2d");
+				document.querySelector("#high-res-julia-set").setAttribute("width", julia_size);
+				document.querySelector("#high-res-julia-set").setAttribute("height", julia_size);
+				
+				ctx = document.querySelector("#high-res-julia-set").getContext("2d");
 				canvas_size = large_canvas_size;
 			}
 			
@@ -449,12 +446,13 @@
 				
 				setTimeout(function()
 				{
-					$("#download-button").remove();
+					try {document.querySelector("#download-button").remove();}
+					catch(ex) {}
 					
 					let image_data = document.querySelector("#high-res-julia-set").toDataURL();
 					let filename = c.format({precision: 6});
 					
-					$("#download-location").after(`
+					document.querySelector("#download-location").insertAdjacentHTML("afterend", `
 						<div id="download-button" class="animated-opacity" style="display: flex; justify-content: center; opacity: 0; width: 70vw; margin: 0 auto">
 							<a href="${image_data}" download="${filename}.png" class="real-link">
 								<button class="text-button" type="button" onclick="">Download Image</button>
