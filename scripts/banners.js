@@ -1,7 +1,7 @@
 let scroll = 0;
 let banner_done = false;
 let scroll_button_done = false;
-let global_opacity = 0;
+let global_opacity = 1;
 
 let banner_extension = "";
 
