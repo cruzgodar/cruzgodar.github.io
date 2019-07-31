@@ -233,12 +233,12 @@ function scroll_down()
 	//This is relative to the top of the viewport, which is exactly what we want.
 	scroll_button_goal = document.querySelector("#scroll-to").getBoundingClientRect().top;
 	
-	scroll_button_position = 0;
+	scroll_button_position = window.scrollY;
 	scroll_button_time = 0;
 	
 	let refresh_id = setInterval(function()
 	{
-		scroll_step(window.scrollY, scroll_button_goal, 0);
+		scroll_step();
 		
 		if (scroll_button_time >= 1000)
 		{
