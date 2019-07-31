@@ -345,9 +345,9 @@
 				
 				
 				//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
-				if (scroll == 0)
+				if (scroll <= window_height / 3)
 				{
-					setTimeout(add_scroll_button, 3000);
+					scroll_button_timeout = setTimeout(add_scroll_button, 3000);
 				}
 			};
 			

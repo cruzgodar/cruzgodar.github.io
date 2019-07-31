@@ -7,6 +7,8 @@ let banner_extension = "";
 
 let scroll_button_exists = false;
 
+let scroll_button_timeout = null;
+
 
 
 window.addEventListener("scroll", scroll_update);
@@ -68,9 +70,9 @@ function load_banner()
 				
 					
 				//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
-				if (scroll == 0)
+				if (scroll <= window_height / 6)
 				{
-					setTimeout(add_scroll_button, 3000);
+					scroll_button_timeout = setTimeout(add_scroll_button, 3000);
 				}
 			};
 			
@@ -93,7 +95,9 @@ function load_banner()
 
 function scroll_update()
 {
-	scroll = window.pageYOffset;
+	scroll = window.scrollY;
+	
+	
 	
 	if (scroll >= 0)
 	{
@@ -157,6 +161,14 @@ function scroll_update()
 		
 		
 		
+		else if (scroll_button_timeout != null)
+		{
+			clearTimeout(scroll_button_timeout);
+			scroll_button_timeout = null;
+		}
+		
+		
+		
 		else if (scroll_button_done == false)
 		{
 			if (url_vars["banner_style"] != 1)
@@ -193,7 +205,7 @@ function scroll_update()
 function add_scroll_button()
 {
 	//Only add the scroll button if the user is still on the top of the page.
-	if (scroll == 0)
+	if (scroll <= window_height / 3)
 	{
 		let chevron_name = "chevron-down";
 		
@@ -208,7 +220,7 @@ function add_scroll_button()
 		{
 			document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
 				<div style="height: 100vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down">
-					<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" alt="Scroll down" onclick="scroll_down()">
+					<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${global_opacity}" alt="Scroll down" onclick="scroll_down()">
 				</div>
 			`);
 			
