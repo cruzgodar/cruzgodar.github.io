@@ -242,6 +242,15 @@
 		
 		
 		
+		let mandelbrot_position = {left: 0, top: 0};
+		mandelbrot_position.left = document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
+		mandelbrot_position.top = document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
+		
+		window.addEventListener("resize", julia_resize);
+		temporary_handlers["resize"].push(julia_resize);
+		
+		
+		
 		//As the user scrolls around the image, make tiny Julia set previews.
 		if (!hasTouch())
 		{
@@ -249,8 +258,8 @@
 			{
 				if (persist_image == false)
 				{
-					let mouse_x = e.pageX - document.querySelector("#mandelbrot-set").offsetLeft;
-					let mouse_y = e.pageY - document.querySelector("#mandelbrot-set").offsetTop;
+					let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
+					let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
 					
 					let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
 					let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
@@ -262,8 +271,8 @@
 			//On a click, make a much larger image.
 			document.querySelector("#mandelbrot-set").addEventListener("click", function(e)
 			{
-				let mouse_x = e.pageX - document.querySelector("#mandelbrot-set").offsetLeft;
-				let mouse_y = e.pageY - document.querySelector("#mandelbrot-set").offsetTop;
+				let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
+				let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
 				
 				let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
 				let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
@@ -288,17 +297,25 @@
 		//Handle touchscreens.
 		else
 		{
+			let last_touch_x = 0;
+			let last_touch_y = 0;
+			
+			
+			
 			document.querySelector("#instructions").innerHTML = `Drag along the Mandelbrot set to preview the corresponding Julia set, and release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.`;
 			
 			document.querySelector("#mandelbrot-set").addEventListener("touchmove", function(e)
 			{
 				e.preventDefault();
 					
-				let mouse_x = e.pageX - document.querySelector("#mandelbrot-set").offsetLeft;
-				let mouse_y = e.pageY - document.querySelector("#mandelbrot-set").offsetTop;
+				let touch_x = e.touches[0].clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
+				let touch_y = e.touches[0].clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
 				
-				let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-				let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+				last_touch_x = touch_x;
+				last_touch_y = touch_y;
+				
+				let a = ((touch_x / small_canvas_size) - .5) * 3 - .75;
+				let b = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * 3;
 				
 				draw_julia_set(a, b, 100, 25, false);
 			}, false);
@@ -307,11 +324,8 @@
 			{
 				e.preventDefault();
 				
-				let mouse_x = e.pageX - document.querySelector("#mandelbrot-set").offsetLeft;
-				let mouse_y = e.pageY - document.querySelector("#mandelbrot-set").offsetTop;
-				
-				let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-				let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+				let a = ((last_touch_x / small_canvas_size) - .5) * 3 - .75;
+				let b = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * 3;
 				
 				draw_julia_set(a, b, 500, 100, false);
 				
@@ -465,4 +479,12 @@
 			}
 		}
 	}()
+	
+	
+	
+	function julia_resize()
+	{
+		mandelbrot_position.left = document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
+		mandelbrot_position.top = document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
+	}
 </script>
