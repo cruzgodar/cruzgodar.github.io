@@ -5,6 +5,12 @@
 		"non-webp": "corona/cover.jpg"
 	},
 	
+	"image-desolation-point":
+	{
+		"webp": "desolation-point/cover.webp",
+		"non-webp": "desolation-point/cover.jpg"
+	},
+	
 	"image-mist":
 	{
 		"webp": "mist/cover.webp",

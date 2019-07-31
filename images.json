@@ -35,6 +35,12 @@
 		"non-webp": "bio/cover.jpg"
 	},
 	
+	"image-desolation-point":
+	{
+		"webp": "writing/desolation-point/cover.webp",
+		"non-webp": "writing/desolation-point/cover.jpg"
+	},
+	
 	"image-julia-set-explorer":
 	{
 		"webp": "applets/julia-set-explorer/cover.webp",
@@ -45,11 +51,5 @@
 	{
 		"webp": "blog/7/cover.webp",
 		"non-webp": "blog/7/cover.jpg"
-	},
-	
-	"image-erinnerungen":
-	{
-		"webp": "blog/6/cover.webp",
-		"non-webp": "blog/6/cover.jpg"
 	}
 }
