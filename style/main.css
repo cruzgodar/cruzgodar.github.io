@@ -47,6 +47,12 @@ q:before, q:after
 	content: "";
 }
 
+dfn
+{
+	font-weight: bold;
+	font-style: normal;
+}
+
 img
 {
 	-webkit-transform: translateZ(0);
@@ -131,6 +137,13 @@ img
 {
 	display: inline-block;
 	text-align: justify;
+}
+
+
+
+.foreign-language
+{
+	font-style: italic;
 }
 
 
