@@ -951,19 +951,39 @@ function switch_banner_style_on_load()
 
 function switch_content_layout()
 {
-	//Yes, we really should be using html here, bot body, but html has css on it on the settings page that gets in the way of that, and this is just way way easier.
-	document.body.classList.add("animated-opacity");
-	document.body.style.opacity = 0;
+	if (layout_string == "small-screen")
+	{
+		//Yes, we really should be using html here, bot body, but html has css on it on the settings page that gets in the way of that, and this is just way way easier.
+		document.body.classList.add("animated-opacity");
+		document.body.style.opacity = 0;
+	}
+	
+	else
+	{
+		document.querySelector("#content-layout-button-row").style.opacity = 0;
+	}
+	
+	
 	
 	setTimeout(function()
 	{
 		switch_content_layout_on_load();
-		document.body.style.opacity = 1;
 		
-		setTimeout(function()
+		if (layout_string == "small-screen")
 		{
-			document.body.classList.remove("animated-opacity");
-		}, 300);
+			//Yes, we really should be using html here, bot body, but html has css on it on the settings page that gets in the way of that, and this is just way way easier.
+			document.body.style.opacity = 1;
+			
+			setTimeout(function()
+			{
+				document.body.classList.remove("animated-opacity");
+			}, 300);
+		}
+		
+		else
+		{
+			document.querySelector("#content-layout-button-row").style.opacity = 1;
+		}
 	}, 300);
 }
 
@@ -971,7 +991,7 @@ function switch_content_layout_on_load()
 {
 	if (url_vars["content_layout"] == 0)
 	{
-		try {document.querySelector("#content-layout-button-text").textContent = (document.querySelector("#content-layout-button-text").textContent.replace("automatic", "always compact"));}
+		try {document.querySelector("#content-layout-button-text").textContent = (document.querySelector("#content-layout-button-text").textContent.replace(/automatic \(.+\)/, "always compact"));}
 		catch(ex) {}
 		
 		url_vars["content_layout"] = 1;
@@ -989,7 +1009,7 @@ function switch_content_layout_on_load()
 	
 	else
 	{
-		try {document.querySelector("#content-layout-button-text").textContent = (document.querySelector("#content-layout-button-text").textContent.replace("always compact", "automatic"));}
+		try {document.querySelector("#content-layout-button-text").textContent = (document.querySelector("#content-layout-button-text").textContent.replace("always compact", `automatic (currently ${layout_string})`));}
 		catch(ex) {}
 		
 		url_vars["content_layout"] = 0;

@@ -270,7 +270,7 @@ img
 
 @media screen and (min-width: 1000px)
 {
-	html:not(.layout-override)
+	html
 	{
 		font-size: 18px;
 	}
