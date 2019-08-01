@@ -257,7 +257,7 @@ img
 
 @media screen and (min-width: 1000px)
 {
-	html
+	html:not(.layout-override)
 	{
 		font-size: 18px;
 	}
@@ -267,7 +267,7 @@ img
 
 @media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 {
-	.heading-text, .section-text, .body-text, .date-text
+	.heading-text:not(.layout-override), .section-text:not(.layout-override), .body-text:not(.layout-override), .date-text:not(.layout-override)
 	{
 		width: 90vw;
 	}
@@ -278,7 +278,7 @@ img
 /* If the user is running an operating system on dark mode, automatically set the theme to dark, unless they've chosen a theme manually. */
 @media (prefers-color-scheme: dark)
 {
-	html
+	html:not(.layout-override)
 	{
 		background-color: rgb(24, 24, 24);
 	}

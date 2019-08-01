@@ -14,7 +14,8 @@ let url_vars =
 	"writing_style": get_url_var("writing_style"),
 	"comments": get_url_var("comments"),
 	"content_animation": get_url_var("content_animation"),
-	"banner_style": get_url_var("banner_style")
+	"banner_style": get_url_var("banner_style"),
+	"content_layout": get_url_var("content_layout")
 };
 
 if (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] == null)
@@ -34,7 +35,8 @@ let url_var_functions =
 		"writing_style": switch_writing_style,
 		"comments": switch_comments,
 		"content_animation": switch_content_animation,
-		"banner_style": switch_banner_style
+		"banner_style": switch_banner_style,
+		"content_layout": switch_content_layout
 	},
 	
 	"onload":
@@ -45,7 +47,8 @@ let url_var_functions =
 		"writing_style": switch_writing_style_on_load,
 		"comments": switch_comments_on_load,
 		"content_animation": switch_content_animation_on_load,
-		"banner_style": switch_banner_style_on_load
+		"banner_style": switch_banner_style_on_load,
+		"content_layout": switch_content_layout_on_load
 	}
 };
 
@@ -941,5 +944,62 @@ function switch_banner_style_on_load()
 		url_vars["banner_style"] = 0;
 		
 		write_url_vars();
+	}
+}
+
+
+
+function switch_content_layout()
+{
+	//Yes, we really should be using html here, bot body, but html has css on it on the settings page that gets in the way of that, and this is just way way easier.
+	document.body.classList.add("animated-opacity");
+	document.body.style.opacity = 0;
+	
+	setTimeout(function()
+	{
+		switch_content_layout_on_load();
+		document.body.style.opacity = 1;
+		
+		setTimeout(function()
+		{
+			document.body.classList.remove("animated-opacity");
+		}, 300);
+	}, 300);
+}
+
+function switch_content_layout_on_load()
+{
+	if (url_vars["content_layout"] == 0)
+	{
+		try {document.querySelector("#content-layout-button-text").textContent = (document.querySelector("#content-layout-button-text").textContent.replace("automatic", "always compact"));}
+		catch(ex) {}
+		
+		url_vars["content_layout"] = 1;
+		
+		write_url_vars();
+		
+		let elements = document.querySelectorAll("*");
+		for (let i = 0; i < elements.length; i++)
+		{
+			elements[i].classList.add("layout-override");
+		}
+	}
+	
+	
+	
+	else
+	{
+		try {document.querySelector("#content-layout-button-text").textContent = (document.querySelector("#content-layout-button-text").textContent.replace("always compact", "automatic"));}
+		catch(ex) {}
+		
+		url_vars["content_layout"] = 0;
+		
+		write_url_vars();
+		
+		let elements = document.querySelectorAll("*");
+		for (let i = 0; i < elements.length; i++)
+		{
+			elements[i].classList.remove("layout-override");
+		}
 	}
 }

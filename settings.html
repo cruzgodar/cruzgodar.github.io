@@ -110,13 +110,23 @@
 			</div>
 		</div>
 		
+		<div style="height: 2vh"></div>
+		
+		<div id="content-layout-button-row" class="button-row animated-opacity">
+			<div data-aos="zoom-out" data-aos-delay="1700" data-aos-anchor="#trigger-section-1">
+				<input type="image" class="footer-button" src="/graphics/button-icons/grid.png" alt="Toggle Banner Style" onclick="url_var_functions['animated']['content_layout']()">
+			</div>
+			
+			<div style="margin: auto" data-aos="fade-left" data-aos-delay="1700" data-aos-anchor="#trigger-section-1">
+				<p id="content-layout-button-text" class="body-text button-text">Content layout: automatic</p>
+			</div>
+		</div>
+		
 		<div style="height: 5vh"></div>
 		
 		
-		<div style="display: flex; justify-content: center; align-items: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="2600" data-aos-anchor="#trigger-section-1">
-			<a href="">
-				<button id="apply-button" class="text-button" type="button">Apply</button>
-			</a>
+		<div style="display: flex; justify-content: center; align-items: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="2700" data-aos-anchor="#trigger-section-1">
+			<button id="apply-button" class="text-button" type="button">Apply</button>
 		</div>
 	</section>
 </main>
@@ -182,7 +192,7 @@
 			
 			@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 			{
-				.button-row
+				.button-row:not(.layout-override)
 				{
 					width: 90vw;
 				}

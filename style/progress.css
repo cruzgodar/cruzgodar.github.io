@@ -93,26 +93,26 @@
 
 @media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 {
-	.stage-bubbles
+	.stage-bubbles:not(.layout-override)
 	{
 		width: 90vw;
 		margin-left: 5vw;
 	}
 	
-	.stage-bubble
+	.stage-bubble:not(.layout-override)
 	{
 		width: 10vw;
 		height: 10vw;
 	}
 	
-	.stage-bubble-subtext
+	.stage-bubble-subtext:not(.layout-override)
 	{
 		margin-top: calc(10vw + 1vh);
 		width: 25vw;
 		margin-left: -7.5vw;
 	}
 	
-	.progress-bar
+	.progress-bar:not(.layout-override)
 	{
 		width: calc(80vw - 8px);
 		margin-left: 5vw;

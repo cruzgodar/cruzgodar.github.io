@@ -175,13 +175,13 @@
 			
 			@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 			{
-				#container
+				#container:not(.layout-override)
 				{
 					flex-direction: column;
 					margin-left: calc((100vw - (70vw + 8px)) / 2);
 				}
 				
-				#mandelbrot-set, #julia-set
+				#mandelbrot-set:not(.layout-override), #julia-set:not(.layout-override)
 				{
 					width: 70vw;
 					height: 70vw;

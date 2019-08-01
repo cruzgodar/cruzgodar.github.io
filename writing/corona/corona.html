@@ -288,31 +288,31 @@
 			@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 			{
 				/* Make text have smaller margins so justifying doesn't look ugly. */
-				.synopsis-text
+				.synopsis-text:not(.layout-override)
 				{
 					width: 80vw;
 					margin-left: 10vw;
 				}
 				
-				#eclipse
+				#eclipse:not(.layout-override)
 				{
 					max-width: 90vw;
 				}
 				
-				.stage-bubbles
+				.stage-bubbles:not(.layout-override)
 				{
 					width: 80vw;
 					margin-left: 10vw;
 				}
 				
-				.stage-bubble-subtext
+				.stage-bubble-subtext:not(.layout-override)
 				{
 					width: 25vw;
 					margin-left: -7.5vw;
 				}
 				
 				/* Fit progress bar to synopsis text */
-				.progress-bar
+				.progress-bar:not(.layout-override)
 				{
 					margin-left: 10vw;
 					width: 80vw;

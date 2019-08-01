@@ -77,14 +77,14 @@
 @media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 {
 	/* Put two images per row, rather than four. */
-	.image-link
+	.image-link:not(.layout-override)
 	{
 		width: 40vw;
 		height: 40vw;
 		margin-bottom: 10vw;
 	}
 	
-	.image-links
+	.image-links:not(.layout-override)
 	{
 		width: 90vw;
 		
@@ -92,20 +92,20 @@
 		margin-bottom: -10vw;
 	}
 	
-	.image-link img
+	.image-link img:not(.layout-override)
 	{
 		width: 40vw;
 		height: 40vw;
 	}
 
 	/* Reposition subtext. */
-	.image-link-subtext
+	.image-link-subtext:not(.layout-override)
 	{
 		margin-top: 41.25vw;
 	}
 	
 	/* Make spacing even. */
-	.row-break
+	.row-break:not(.layout-override)
 	{
 		height: 10vw;
 	}

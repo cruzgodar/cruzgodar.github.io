@@ -116,37 +116,37 @@
 
 @media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
 {
-	.song-lyrics
+	.song-lyrics:not(.layout-override)
 	{
 		width: 90vw;
 	}
 	
 	
 	
-	.nav-buttons
+	.nav-buttons:not(.layout-override)
 	{
 		width: 90vw;
 	}
 	
 	
 	
-	.big-image-horizontal
+	.big-image-horizontal:not(.layout-override)
 	{
 		width: 90vw;
 		margin-left: 5vw;
 	}
 
-	.small-image-horizontal
+	.small-image-horizontal:not(.layout-override)
 	{
 		width: 42.5vw;
 	}
 	
-	.image-row
+	.image-row:not(.layout-override)
 	{
 		width: 90vw;
 	}
 
-	.big-image-vertical
+	.big-image-vertical:not(.layout-override)
 	{
 		width: 90vw;
 	}
