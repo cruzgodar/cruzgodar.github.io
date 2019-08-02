@@ -451,7 +451,15 @@
 					
 					if (url_vars["theme"] == 1)
 					{
-						background_color *= 24;
+						if (url_vars["dark_theme_color"] == 1)
+						{
+							background_color = 0;
+						}
+						
+						else
+						{
+							background_color *= 24;
+						}
 					}
 						
 					else
