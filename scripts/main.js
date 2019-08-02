@@ -45,38 +45,6 @@ function init()
 	
 	
 	
-	window.addEventListener("resize", function()
-	{
-		window_width = window.innerWidth;
-		window_height = window.innerHeight;
-		
-		
-		
-		if (window_width / window_height < 10/16 || window_width <= 800)
-		{
-			layout_string = "small-screen";
-		}
-		
-		else
-		{
-			layout_string = "compact";
-		}
-		
-		
-		
-		if (url_vars["content_layout"] != 1)
-		{
-			try {document.querySelector("#content-layout-button-text").textContent = `Content layout: automatic (currently ${layout_string})`;}
-			catch(ex) {}
-		}
-		
-		
-		
-		update_aos();
-	});
-	
-	
-	
 	if ("scrollRestoration" in history)
 	{
 		history.scrollRestoration = "manual";
