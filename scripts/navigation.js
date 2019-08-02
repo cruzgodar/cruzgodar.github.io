@@ -152,8 +152,17 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 				
 				if (url_vars["theme"] == 1)
 				{
-					document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-					document.body.style.backgroundColor = "rgb(24, 24, 24)";
+					if (url_vars["dark_theme_color"] == 1)
+					{
+						document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+						document.body.style.backgroundColor = "rgb(0, 0, 0)";
+					}
+					
+					else
+					{
+						document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
+						document.body.style.backgroundColor = "rgb(24, 24, 24)";
+					}
 				}
 				
 				else

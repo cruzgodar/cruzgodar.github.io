@@ -9,6 +9,7 @@ let settings_done = false;
 let url_vars = 
 {
 	"theme": get_url_var("theme"),
+	"dark_theme_color": get_url_var("dark_theme_color"),
 	"contrast": get_url_var("contrast"),
 	"font": get_url_var("font"),
 	"writing_style": get_url_var("writing_style"),
@@ -30,6 +31,7 @@ let url_var_functions =
 	"animated":
 	{
 		"theme": switch_theme,
+		"dark_theme_color": switch_dark_theme_color,
 		"contrast": switch_contrast,
 		"font": switch_font,
 		"writing_style": switch_writing_style,
@@ -42,6 +44,7 @@ let url_var_functions =
 	"onload":
 	{
 		"theme": switch_theme_on_load,
+		"dark_theme_color": switch_dark_theme_color_on_load,
 		"contrast": switch_contrast_on_load,
 		"font": switch_font_on_load,
 		"writing_style": switch_writing_style_on_load,
@@ -51,6 +54,15 @@ let url_var_functions =
 		"content_layout": switch_content_layout_on_load
 	}
 };
+
+
+
+let dark_theme_background_color = "rgb(24, 24, 24)";
+
+if (url_vars["dark_theme_color"] == 1)
+{
+	dark_theme_background_color = "rgb(0, 0, 0)";
+}
 
 
 
@@ -102,7 +114,15 @@ function switch_theme()
 	//Light to dark
 	if (url_vars["theme"] == 0)
 	{
-		document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
+		if (url_vars["dark_theme_color"] != 1)
+		{
+			document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
+		}
+		
+		else
+		{
+			document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+		}
 		
 		
 		
@@ -185,18 +205,19 @@ function switch_theme()
 			
 			
 			
+			
 			add_style(`
 				.line-break
 				{
-					background: rgb(24,24,24);
-					background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(116,116,116) 50%, rgb(24,24,24) 100%);
-					background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(116,116,116) 50%,rgb(24,24,24) 100%);
-					background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(116,116,116) 50%,rgb(24,24,24) 100%);
+					background: ${dark_theme_background_color};
+					background: -moz-linear-gradient(left, ${dark_theme_background_color} 0%, rgb(116,116,116) 50%, ${dark_theme_background_color} 100%);
+					background: -webkit-linear-gradient(left, ${dark_theme_background_color} 0%,rgb(116,116,116) 50%,${dark_theme_background_color}) 100%);
+					background: linear-gradient(to right, ${dark_theme_background_color} 0%,rgb(116,116,116) 50%,${dark_theme_background_color} 100%);
 				}
 				
 				.text-box
 				{
-					background-color: rgb(24, 24, 24);
+					background-color: ${dark_theme_background_color};
 					color: rgb(152, 152, 152);
 					border-color: rgb(88, 88, 88);
 				}
@@ -351,6 +372,67 @@ function switch_theme_on_load()
 
 
 
+function switch_dark_theme_color()
+{
+	document.querySelector("#dark-theme-color-button-row").style.opacity = 0;
+	switch_dark_theme_color_on_load();
+	
+	setTimeout(function()
+	{
+		document.querySelector("#dark-theme-color-button-row").style.opacity = 1;
+	}, 300);
+}
+
+function switch_dark_theme_color_on_load()
+{
+	if (url_vars["dark_theme_color"] == 0)
+	{
+		setTimeout(function()
+		{
+			try {document.querySelector("#dark-theme-color-button-text").textContent = (document.querySelector("#dark-theme-color-button-text").textContent.replace("dark gray", "black"));}
+			catch(ex) {}
+		}, 300);
+		
+		url_vars["dark_theme_color"] = 1;
+		
+		write_url_vars();
+		
+		
+		
+		dark_theme_background_color = "rgb(0, 0, 0)";
+		
+		if (url_vars["theme"] == 1)
+		{
+			document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+		}
+	}
+	
+	
+	
+	else
+	{
+		setTimeout(function()
+		{
+			try {document.querySelector("#dark-theme-color-button-text").textContent = (document.querySelector("#dark-theme-color-button-text").textContent.replace("black", "dark gray"));}
+			catch(ex) {}
+		}, 300);
+		
+		url_vars["dark_theme_color"] = 0;
+		
+		write_url_vars();
+		
+		
+		dark_theme_background_color = "rgb(24, 24, 24)";
+		
+		if (url_vars["theme"] == 1)
+		{
+			document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
+		}
+	}
+}
+
+
+
 function switch_contrast()
 {
 	document.querySelector("#contrast-button-row").style.opacity = 0;
@@ -423,10 +505,10 @@ function switch_contrast_on_load()
 			add_style(`
 				.line-break
 				{
-					background: rgb(24,24,24);
-					background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(164,164,164) 50%, rgb(24,24,24) 100%);
-					background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(164,164,164) 50%,rgb(24,24,24) 100%);
-					background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(164,164,164) 50%,rgb(24,24,24) 100%);
+					background: ${dark_theme_background_color};
+					background: -moz-linear-gradient(left, ${dark_theme_background_color} 0%, rgb(164,164,164) 50%, ${dark_theme_background_color} 100%);
+					background: -webkit-linear-gradient(left, ${dark_theme_background_color} 0%,rgb(164,164,164) 50%,${dark_theme_background_color} 100%);
+					background: linear-gradient(to right, ${dark_theme_background_color} 0%,rgb(164,164,164) 50%,${dark_theme_background_color} 100%);
 				}
 				
 				.scroll-button
@@ -437,7 +519,7 @@ function switch_contrast_on_load()
 				.text-box
 				{
 					border-color: rgb(152, 152, 152);
-					background-color: rgb(24, 24, 24);
+					background-color: ${dark_theme_background_color};
 					color: rgb(216, 216, 216);
 				}
 				
@@ -592,15 +674,15 @@ function switch_contrast_on_load()
 			add_style(`
 				.line-break
 				{
-					background: rgb(24,24,24);
-					background: -moz-linear-gradient(left, rgb(24,24,24) 0%, rgb(116,116,116) 50%, rgb(24,24,24) 100%);
-					background: -webkit-linear-gradient(left, rgb(24,24,24) 0%,rgb(116,116,116) 50%,rgb(24,24,24) 100%);
-					background: linear-gradient(to right, rgb(24,24,24) 0%,rgb(116,116,116) 50%,rgb(24,24,24) 100%);
+					background: ${dark_theme_background_color};
+					background: -moz-linear-gradient(left, ${dark_theme_background_color} 0%, rgb(116,116,116) 50%, ${dark_theme_background_color} 100%);
+					background: -webkit-linear-gradient(left, ${dark_theme_background_color} 0%,rgb(116,116,116) 50%,${dark_theme_background_color} 100%);
+					background: linear-gradient(to right, ${dark_theme_background_color} 0%,rgb(116,116,116) 50%,${dark_theme_background_color} 100%);
 				}
 				
 				.text-box
 				{
-					background-color: rgb(24, 24, 24);
+					background-color: ${dark_theme_background_color};
 					color: rgb(152, 152, 152);
 					border-color: rgb(88, 88, 88);
 				}
