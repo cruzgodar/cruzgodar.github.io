@@ -218,11 +218,23 @@ function add_scroll_button()
 		
 		try
 		{
-			document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
-				<div style="height: 100vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down">
-					<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${global_opacity}" alt="Scroll down" onclick="scroll_down()">
-				</div>
-			`);
+			if (url_vars["content_animation"] == 1)
+			{
+				document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
+					<div style="height: 100vh; display: flex; align-items: center; justify-content: center">
+						<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${global_opacity}" alt="Scroll down" onclick="scroll_down()">
+					</div>
+				`);
+			}
+			
+			else
+			{
+				document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
+					<div style="height: 100vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down">
+						<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${global_opacity}" alt="Scroll down" onclick="scroll_down()">
+					</div>
+				`);
+			}
 			
 			scroll_button_exists = true;
 			
