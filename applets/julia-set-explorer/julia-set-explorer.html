@@ -135,6 +135,8 @@
 		let small_canvas_size = 0;
 		let large_canvas_size = 0;
 		
+		let mandelbrot_position = {left: 0, top: 0};
+		
 		let persist_image = false;
 		
 		let ctx = null;
@@ -239,12 +241,6 @@
 		//Only get the width of the Mandelbrot set has finished loading in order to get the correct value.
 		small_canvas_size = document.querySelector("#julia-set").offsetWidth;
 		large_canvas_size = document.querySelector("#high-res-julia-set").offsetWidth;
-		
-		
-		
-		let mandelbrot_position = {left: 0, top: 0};
-		mandelbrot_position.left = document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
-		mandelbrot_position.top = document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
 		
 		window.addEventListener("resize", julia_resize);
 		temporary_handlers["resize"].push(julia_resize);
@@ -484,7 +480,7 @@
 	
 	function julia_resize()
 	{
-		mandelbrot_position.left = document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
-		mandelbrot_position.top = document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
+		small_canvas_size = document.querySelector("#julia-set").offsetWidth;
+		large_canvas_size = document.querySelector("#high-res-julia-set").offsetWidth;
 	}
 </script>
