@@ -207,6 +207,11 @@
 				padding: 0;
 			}
 			
+			#new-banner-cover
+			{
+				height: 60vh;
+			}
+			
 			.title-text
 			{
 				position: relative;
@@ -429,7 +434,7 @@
 		//If the user just sits at the top of the page for 4 seconds without scrolling, give them a scroll button.
 		if (window.scrollY == 0)
 		{
-			setTimeout(corona_add_scroll_button, 7000);
+			setTimeout(add_scroll_button, 7000);
 		}
 		
 		
@@ -598,31 +603,6 @@
 						bubbles[blinking_block].style.backgroundColor = "rgb(0, 0, 0)";
 					}, 1200);
 				}, 2400);
-			}
-		}
-		
-		
-		
-		//Scroll button things.
-		function corona_add_scroll_button()
-		{
-			//Only add the scroll button if the user is still on the top of the page.
-			if (scroll == 0)
-			{
-				let chevron_name = "chevron-down";
-				
-				if (url_vars["contrast"] == 1)
-				{
-					chevron_name += "-dark";
-				}
-				
-				document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
-					<div style="height: 59vh; display: flex; align-items: center; justify-content: center" data-aos="fade-down">
-						<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" alt="Scroll down" onclick="scroll_down()">
-					</div>
-				`);
-				
-				document.querySelector("#banner-cover").remove();
 			}
 		}
 		
