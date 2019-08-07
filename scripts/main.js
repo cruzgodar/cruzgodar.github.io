@@ -3,6 +3,8 @@
 
 let window_width = null, window_height = null;
 
+let initial_window_height = null;
+
 let page_settings = {};
 
 let current_url = "/";
@@ -153,6 +155,8 @@ function on_page_load()
 	fade_in();
 	
 	update_aos();
+	
+	initial_window_height = window_height;
 	
 	
 	

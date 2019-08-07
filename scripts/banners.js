@@ -105,12 +105,12 @@ function scroll_update()
 		{
 			if (scroll <= window_height)
 			{
-				global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / window_height, 0) - .5 * Math.PI);
+				let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / initial_window_height, 0) - .5 * Math.PI);
 				
-				try {document.querySelector("#background-image").style.opacity = global_opacity;}
+				try {document.querySelector("#background-image").style.opacity = opacity;}
 				catch(ex) {}
 				
-				if (global_opacity == 0)
+				if (opacity == 0)
 				{
 					banner_done = true;
 				}
@@ -135,7 +135,7 @@ function scroll_update()
 		
 		if (scroll <= window_height/3)
 		{
-			global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - .5 * Math.PI);
+			global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / initial_window_height, 0) - .5 * Math.PI);
 			
 			if (scroll_button_exists)
 			{
