@@ -10,7 +10,7 @@ window.addEventListener("resize", function()
 	
 	old_layout = layout_string;
 	
-	if (window_width / window_height < 10/16 || window_width <= 800)
+	if (window_width / window_height < 9/16 || window_width <= 700)
 	{
 		layout_string = "small-screen";
 	}

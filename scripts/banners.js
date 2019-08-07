@@ -23,7 +23,7 @@ function load_banner()
 	{
 		let banner_name = "";
 		
-		if (window_width / window_height < 10/16 || window_width <= 800)
+		if (window_width / window_height < 1 || window_width <= 700)
 		{
 			banner_name = "portrait." + banner_extension;
 		}
@@ -48,7 +48,7 @@ function load_banner()
 					background-size: cover;
 				}
 				
-				@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
+				@media screen and (max-aspect-ratio: 1), (max-width: 700px)
 				{
 					.banner:before
 					{

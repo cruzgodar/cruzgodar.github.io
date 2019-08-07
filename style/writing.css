@@ -114,7 +114,7 @@
 
 
 
-@media screen and (max-aspect-ratio: 10/16), (max-width: 800px)
+@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	.song-lyrics:not(.layout-override)
 	{
