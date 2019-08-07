@@ -23,19 +23,12 @@
 }
 
 
-
-#banner-cover
-{
-	transform: translate3d(0, 0, 0);
-}
-
 #new-banner-cover
 {
 	height: 100vh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	transform: translate3d(0, 0, 0);
 }
 
 
