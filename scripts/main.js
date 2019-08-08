@@ -156,6 +156,8 @@ function on_page_load()
 	
 	update_aos();
 	
+	set_links();
+	
 	initial_window_height = window_height;
 	
 	
@@ -182,14 +184,6 @@ function on_page_load()
 	if (page_settings["math_page"])
 	{
 		typeset_math();
-	}
-	
-	
-	
-	//If there is a footer, insert_footer() will take care of it.
-	if (page_settings["no_footer"])
-	{
-		set_links();
 	}
 	
 	

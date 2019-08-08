@@ -30,7 +30,7 @@ function set_links()
 	{
 		let href = links[i].getAttribute("href");
 		
-		if (href.slice(0, 5) != "https" && href.slice(0, 4) != "data")
+		if (href.slice(0, 5) != "https" && href.slice(0, 4) != "data" && !(links[i].parentNode.classList.contains("footer-image-link")))
 		{
 			let include_return_url = false;
 			

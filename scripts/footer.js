@@ -30,19 +30,47 @@ function insert_footer()
 	{
 		extension = "jpg";
 	}
+	
+	
+	
+	let vars_no_return = concat_url_vars(false);
+			
+	if (vars_no_return.indexOf("&") == -1)
+	{
+		vars_no_return = "";
+	}
+	
+	else
+	{
+		vars_no_return = vars_no_return.substring(vars_no_return.indexOf("&"));
+	}
+	
+	
+	
+	let vars_return = concat_url_vars(true);
+			
+	if (vars_return.indexOf("&") == -1)
+	{
+		vars_return = "";
+	}
+	
+	else
+	{
+		vars_return = vars_return.substring(vars_return.indexOf("&"));
+	}
 
 	
 	
 	document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 		<div style="position: relative">
 			<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu" style="position: absolute; bottom: 6.5px; left: 10px">
-				<a href="/settings.html${concat_url_vars(false)}">
+				<a href="/index.html?page=%2Fsettings.html${vars_return}">
 					<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect('/settings.html', 0${fnc_arg})">
 				</a>
 			</div>
 			
 			<div data-aos="zoom-out" data-aos-delay="1000" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu" style="position: absolute; bottom: 6.5px; right: 10px">
-				<a href="/pwa.html${concat_url_vars(false)}">
+				<a href="/index.html?page=%2Fpwa.html${vars_no_return}">
 					<input type="image" id="pwa-button" class="footer-button" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa.html', 0${fnc_arg})">
 				</a>
 			</div>
@@ -93,7 +121,7 @@ function insert_footer()
 		
 		element.outerHTML = `
 			<div id="writing-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-				<a href="/writing/writing.html${concat_url_vars(false)}">
+				<a href="/index.html?page=%2Fwriting%2Fwriting.html${vars_no_return}">
 					<img onclick="redirect('/writing/writing.html', 0${fnc_arg})" src="/writing/cover.${extension}" alt="Writing"></img>
 				</a>
 			</div>
@@ -110,7 +138,7 @@ function insert_footer()
 		
 		element.outerHTML = `
 			<div id="blog-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-				<a href="/blog/blog.html${concat_url_vars(false)}">
+				<a href="/index.html?page=%2Fblog%2Fblog.html${vars_no_return}">
 					<img onclick="redirect('/blog/blog.html', 0${fnc_arg})" src="/blog/cover.${extension}" alt="Blog"></img>
 				</a>
 			</div>
@@ -127,7 +155,7 @@ function insert_footer()
 		
 		element.outerHTML = `
 			<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-				<a href="/applets/applets.html${concat_url_vars(false)}">
+				<a href="index.html?page=%2Fapplets%2Fapplets.html${vars_no_return}">
 					<img onclick="redirect('/applets/applets.html', 0${fnc_arg})" src="/applets/cover.${extension}" alt="Applets"></img>
 				</a>
 			</div>
@@ -144,7 +172,7 @@ function insert_footer()
 		
 		element.outerHTML = `
 			<div id="research-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-				<a href="/research/research.html${concat_url_vars(false)}">
+				<a href="/index.html?page=%2Fresearch%2Fresearch.html${vars_no_return}">
 					<img onclick="redirect('/research/research.html', 0${fnc_arg})" src="/research/cover.${extension}" alt="Research"></img>
 				</a>
 			</div>
@@ -161,7 +189,7 @@ function insert_footer()
 		
 		element.outerHTML = `
 			<div id="notes-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-				<a href="/notes/notes.html${concat_url_vars(false)}">
+				<a href="/index.html?page=%2Fnotes%2Fnotes.html${vars_no_return}">
 					<img onclick="redirect('/notes/notes.html', 0${fnc_arg})" src="/notes/cover.${extension}" alt="Notes"></img>
 				</a>
 			</div>
@@ -178,8 +206,8 @@ function insert_footer()
 		
 		element.outerHTML = `
 			<div id="bio-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-				<a href="/bio/bio.html${concat_url_vars(false)}">
-					<img onclick="redirect(\'/bio/bio.html\', 0${fnc_arg})" src="/bio/cover.${extension}" alt="Me"></img>
+				<a href="/index.html?page=%2Fbio%2Fbio.html${vars_no_return}">
+					<img onclick="redirect('/bio/bio.html', 0${fnc_arg})" src="/bio/cover.${extension}" alt="Me"></img>
 				</a>
 			</div>
 		`;
@@ -249,8 +277,4 @@ function insert_footer()
 	
 	
 	footer_done = true;
-	
-	
-	
-	set_links();
 }
