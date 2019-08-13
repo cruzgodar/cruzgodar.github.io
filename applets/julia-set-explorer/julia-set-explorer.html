@@ -135,6 +135,13 @@
 		let small_canvas_size = 0;
 		let large_canvas_size = 0;
 		
+		let small_julia_size = 75;
+		let large_julia_size = 500;
+		
+		let small_julia_iterations = 25;
+		let large_julia_iterations = 50;
+		let full_res_julia_iterations = 100;
+		
 		let mandelbrot_position = {left: 0, top: 0};
 		
 		let persist_image = false;
@@ -260,7 +267,7 @@
 					let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
 					let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
 					
-					draw_julia_set(a, b, 100, 25, false);
+					draw_julia_set(a, b, small_julia_size, small_julia_iterations, false);
 				}
 			});
 			
@@ -273,7 +280,7 @@
 				let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
 				let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
 				
-				draw_julia_set(a, b, 500, 100, false);
+				draw_julia_set(a, b, small_julia_size, large_julia_iterations, false);
 				
 				document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
 				document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
@@ -313,7 +320,7 @@
 				let a = ((touch_x / small_canvas_size) - .5) * 3 - .75;
 				let b = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * 3;
 				
-				draw_julia_set(a, b, 100, 25, false);
+				draw_julia_set(a, b, small_julia_size, small_julia_iterations, false);
 			}, false);
 			
 			document.querySelector("#mandelbrot-set").addEventListener("touchend", function(e)
@@ -323,7 +330,7 @@
 				let a = ((last_touch_x / small_canvas_size) - .5) * 3 - .75;
 				let b = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * 3;
 				
-				draw_julia_set(a, b, 500, 100, false);
+				draw_julia_set(a, b, large_julia_size, large_julia_iterations, false);
 				
 				document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
 				document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
@@ -339,7 +346,7 @@
 			let b = parseFloat(document.querySelector("#b-input").value) || 0;
 			let dim = parseFloat(document.querySelector("#dim-input").value) || 1000;
 			
-			draw_julia_set(a, b, dim, 100, true);
+			draw_julia_set(a, b, dim, full_res_julia_iterations, true);
 		}
 		
 		
@@ -394,7 +401,9 @@
 					
 					brightness = math.exp(-math.abs(z));
 					
-					for (var k = 0; k < num_iters; k++)
+					let k = 0;
+					
+					for (k = 0; k < num_iters; k++)
 					{
 						z = math.add(math.multiply(z, z), c);
 						
@@ -425,14 +434,14 @@
 			let brightness_array = image.flat().sort(function(a, b) {return a - b});
 			
 			//We throw out more if the image is just being scrolled around, since then it's critical that we don't have bright flashes of color.
-			if (julia_size == 100)
+			if (julia_size == small_julia_size)
 			{
-				max_brightness = brightness_array[Math.round(brightness_array.length * .9965)];
+				max_brightness = brightness_array[Math.round(brightness_array.length * .995) - 1];
 			}
 			
 			else
 			{
-				max_brightness = brightness_array[Math.round(brightness_array.length * .9999)];
+				max_brightness = brightness_array[Math.round(brightness_array.length * .9999) - 1];
 			}
 			
 			for (let i = 0; i < julia_size; i++)
