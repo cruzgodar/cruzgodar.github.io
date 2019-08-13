@@ -102,7 +102,7 @@
 					
 				<div id="applets-link" class="image-link" data-aos="fade-up" data-aos-delay="500" data-aos-anchor="#trigger-section-1">
 					<a href="/applets/applets.html">
-						<img id="image-applets" class="check-webp" onclick="redirect('/applets/applets.html')" src="" alt="Applets"></img>
+						<img id="image-applets" class="check-webp" onclick="redirect('/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html')" src="" alt="Applets"></img>
 					</a>
 						
 					<p class="image-link-subtext">Applets</p>
@@ -217,6 +217,13 @@
 
 
 <script>
+	if (typeof current_url == "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
 	page_settings = 
 	{
 		"title": "Cruz Godar",

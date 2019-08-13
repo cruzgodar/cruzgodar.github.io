@@ -63,6 +63,13 @@
 
 
 <script>
+	if (typeof current_url == "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
 	page_settings = 
 	{
 		"title": "Add to Home Screen",
