@@ -142,6 +142,10 @@
 		let large_julia_iterations = 50;
 		let full_res_julia_iterations = 100;
 		
+		let image = [];
+		
+		let julia_done = false;
+		
 		let mandelbrot_position = {left: 0, top: 0};
 		
 		let persist_image = false;
@@ -353,11 +357,11 @@
 		
 		function draw_julia_set(a, b, julia_size, num_iters, download)
 		{
-			let x = 0, y = 0;
-			let z = 0, c = math.complex(a, b);
+			let c = math.complex(a, b);
 			
-			let brightness, max_brightness = 0;
-			let image = [];
+			
+			
+			image = [];
 			
 			for (let i = 0; i < julia_size; i++)
 			{
@@ -368,6 +372,8 @@
 			
 			let ctx = null;
 			let canvas_size = 0;
+			
+			
 			
 			if (download == false)
 			{
@@ -389,43 +395,10 @@
 			
 			
 			
-			//Generate initial value map.
+			//Generate the brightness map.
 			for (let i = 0; i < julia_size / 2; i++)
 			{
-				for (let j = 0; j < julia_size; j++)
-				{
-					x = ((j - julia_size/2) / julia_size) * 4;
-					y = (-(i - julia_size/2) / julia_size) * 4;
-					
-					z = math.complex(x, y);
-					
-					brightness = math.exp(-math.abs(z));
-					
-					let k = 0;
-					
-					for (k = 0; k < num_iters; k++)
-					{
-						z = math.add(math.multiply(z, z), c);
-						
-						brightness += math.exp(-math.abs(z));
-						
-						if (math.abs(z) > 2)
-						{
-							break;
-						}
-					}
-					
-					if (k == num_iters)
-					{
-						brightness = 0;
-					}
-					
-					
-					
-					//Reflect the top half about the origin to get the bottom half.
-					image[i][j] = brightness;
-					image[julia_size - i - 1][julia_size - j - 1] = brightness;
-				}
+				julia_row(i, c, julia_size, num_iters);
 			}
 			
 			
@@ -434,9 +407,11 @@
 			let brightness_array = image.flat().sort(function(a, b) {return a - b});
 			
 			//We throw out more if the image is just being scrolled around, since then it's critical that we don't have bright flashes of color.
+			let max_brightness = 0;
+			
 			if (julia_size == small_julia_size)
 			{
-				max_brightness = brightness_array[Math.round(brightness_array.length * .995) - 1];
+				max_brightness = brightness_array[Math.round(brightness_array.length * .9965) - 1];
 			}
 			
 			else
@@ -483,13 +458,52 @@
 				}, 300);
 			}
 		}
+		
+		
+		function julia_row(i, c, julia_size, num_iters)
+		{
+			for (let j = 0; j < julia_size; j++)
+			{
+				let x = ((j - julia_size/2) / julia_size) * 4;
+				let y = (-(i - julia_size/2) / julia_size) * 4;
+				
+				let z = math.complex(x, y);
+				
+				let brightness = math.exp(-math.abs(z));
+				
+				let k = 0;
+				
+				for (k = 0; k < num_iters; k++)
+				{
+					z = math.add(math.multiply(z, z), c);
+					
+					brightness += math.exp(-math.abs(z));
+					
+					if (math.abs(z) > 2)
+					{
+						break;
+					}
+				}
+				
+				if (k == num_iters)
+				{
+					brightness = 0;
+				}
+				
+				
+				
+				//Reflect the top half about the origin to get the bottom half.
+				image[i][j] = brightness;
+				image[julia_size - i - 1][julia_size - j - 1] = brightness;
+			}
+		}
+		
+		
+		
+		function julia_resize()
+		{
+			small_canvas_size = document.querySelector("#julia-set").offsetWidth;
+			large_canvas_size = document.querySelector("#high-res-julia-set").offsetWidth;
+		}
 	}()
-	
-	
-	
-	function julia_resize()
-	{
-		small_canvas_size = document.querySelector("#julia-set").offsetWidth;
-		large_canvas_size = document.querySelector("#high-res-julia-set").offsetWidth;
-	}
 </script>
