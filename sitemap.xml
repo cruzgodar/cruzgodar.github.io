@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<url>
+		<loc>https://www.cruzgodar.com/</loc>
+		<lastmod>2019-08-13</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/index.html</loc>
+		<lastmod>2019-08-13</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/home.html</loc>
+		<lastmod>2019-08-13</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.5</priority>
+	</url>
+	
+	
+	
+	<url>
+		<loc>https://www.cruzgodar.com/404.html</loc>
+		<priority>0.0</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/404-real.html</loc>
+		<priority>0.0</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/pwa.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/settings.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/applets.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/julia-set-explorer/julia-set-explorer.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	
+	
+	<url>
+		<loc>https://www.cruzgodar.com/bio/bio.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	
+	
+	<url>
+		<loc>https://www.cruzgodar.com/blog/blog.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/blog/1/on-leaving-and-the-beginnings-of-things.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/blog/2/nach-heidelberg.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/blog/3/the-city-and-the-city.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/blog/4/a-taste-of-chaos.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/blog/5/halloween-in-january.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/blog/6/erinnerungen.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/blog/7/on-leaving-again-and-new-beginnings.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	
+	
+	<url>
+		<loc>https://www.cruzgodar.com/notes/notes.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	
+	
+	<url>
+		<loc>https://www.cruzgodar.com/research/research.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	
+	
+	<url>
+		<loc>https://www.cruzgodar.com/writing/writing.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/writing/corona/corona.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/writing/mist/mist.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/writing/desolation-point/desolation-point.html</loc>
+		<priority>0.5</priority>
+	</url>
+</urlset>
