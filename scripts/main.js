@@ -126,17 +126,7 @@ function update_aos()
 	
 	if (url_vars["content_animation"] != 1)
 	{
-		if (page_settings["banner_page"])
-		{
-			AOS.init({duration: 1200, once: false, offset: window_height/4});
-		}
-		
-		else
-		{
-			AOS.init({duration: 1200, once: true, offset: window_height/4});
-		}
-		
-		AOS.refreshHard();
+		AOS.init({duration: 1200, once: false, offset: window_height/4});
 	}
 }
 
