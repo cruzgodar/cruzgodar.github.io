@@ -1,4 +1,10 @@
 {
+	"image-mandelbrot-set-explorer":
+	{
+		"webp": "mandelbrot-set-explorer/cover.webp",
+		"non-webp": "mandelbrot-set-explorer/cover.jpg"
+	},
+	
 	"image-julia-set-explorer":
 	{
 		"webp": "julia-set-explorer/cover.webp",

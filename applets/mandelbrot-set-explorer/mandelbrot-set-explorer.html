@@ -16,7 +16,7 @@
 	<div style="height: 2vh"></div>
 
 	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">
-		<h1 class="heading-text">Julia Set Explorer</h1>
+		<h1 class="heading-text">Mandelbrot Set Explorer</h1>
 	</div>
 </header>
 
@@ -30,7 +30,15 @@
 	<section>
 		<div data-aos="fade-up" data-aos-delay="200">
 			<p class="body-text center-if-needed">
-				<span id="instructions">Hover over the Mandelbrot set to preview the corresponding Julia set, and click to generate a higher-resolution preview. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.</span>
+				<span id="instructions">Hover over the Mandelbrot set to view that area up close, and click to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.</span>
+			</p>
+		</div>
+		
+		<br>
+		
+		<div data-aos="fade-up" data-aos-delay="300">
+			<p class="body-text center-if-needed">
+				<span>This applet can run slowly on older hardware, especially in comparison to the <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julia set explorer</a>. Care has been taken to optimize the program, but be warned that some locations can take a long time to generate.</span>
 			</p>
 		</div>
 		
@@ -38,9 +46,9 @@
 		
 		
 		
-		<div id="container" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
+		<div id="container" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-1">
 			<img id="mandelbrot-set" class="check-webp" src="" alt="The Mandelbrot Set"></img>
-			<canvas id="julia-set"></canvas>
+			<canvas id="mandelbrot-zoom"></canvas>
 		</div>
 	</section>
 	
@@ -58,23 +66,23 @@
 		<div style="height: 5vh"></div>
 		
 		<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-2">
-			<p class="body-text">Enter values of \(a\) and \(b\), along with an image size in pixels, to generate an image of the Julia set for \(c = a + bi\). The values are filed in automatically when a high-resolution preview is created above, but custom values can also be used. Image sizes larger than 2000 are not recommended.</p>
+			<p class="body-text">Enter values of \(x\) and \(y\), along with an image size in pixels, to generate an image of the Mandelbrot set around \(x + yi\). The values are filed in automatically when a high-resolution preview is created above, but custom values can be used. Image sizes larger than 1000 are not recommended.</p>
 		</div>
 		
 		<div style="height: 5vh"></div>
 		
 		<div style="width: 70vw; margin: 0 auto; display: flex; justify-content: space-between">
 			<div style="width: 20vw" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
-				<input id="a-input" class="text-box" type="text" style="width: 100%">
-				<label for="a-input">
-					<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(a\)</p>
+				<input id="x-input" class="text-box" type="text" style="width: 100%">
+				<label for="x-input">
+					<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(x\)</p>
 				</label>
 			</div>
 			
 			<div style="width: 20vw" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-2">
-				<input id="b-input" class="text-box" type="text" style="width: 100%">
-				<label for="b-input">
-					<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(b\)</p>
+				<input id="y-input" class="text-box" type="text" style="width: 100%">
+				<label for=y-input">
+					<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(y\)</p>
 				</label>
 			</div>
 			
@@ -94,7 +102,7 @@
 		
 		<div style="height: 10vh"></div>
 		
-		<canvas id="high-res-julia-set" data-aos="fade-in" data-aos-delay="1600" data-aos-anchor="#trigger-section-2"></canvas>
+		<canvas id="high-res-mandelbrot-zoom" data-aos="fade-in" data-aos-delay="1600" data-aos-anchor="#trigger-section-2"></canvas>
 		
 		<div id="download-location" style="height: 10vh"></div>
 	</section>
@@ -118,7 +126,7 @@
 	
 	page_settings = 
 	{
-		"title": "Julia Set Explorer",
+		"title": "Mandelbrot Set Explorer",
 		
 		"banner_page": false,
 		"writing_page": false,
@@ -142,16 +150,14 @@
 		let small_canvas_size = 0;
 		let large_canvas_size = 0;
 		
-		let small_julia_size = 75;
-		let max_large_julia_size = 500;
+		let small_mandelbrot_zoom_size = 50;
+		let max_large_mandelbrot_zoom_size = 500;
 		
-		let small_julia_iterations = 25;
-		let large_julia_iterations = 50;
-		let full_res_julia_iterations = 100;
+		let small_mandelbrot_zoom_iterations = 50;
+		let large_mandelbrot_zoom_iterations = 100;
+		let full_res_mandelbrot_zoom_iterations = 100;
 		
 		let image = [];
-		
-		let mandelbrot_position = {left: 0, top: 0};
 		
 		let persist_image = false;
 		
@@ -168,20 +174,20 @@
 				margin-left: 15vw;
 			}
 			
-			#mandelbrot-set, #julia-set
+			#mandelbrot-set, #mandelbrot-zoom
 			{
 				width: 30vw;
 				height: 30vw;
 			}
 			
-			#high-res-julia-set
+			#high-res-mandelbrot-zoom
 			{
 				width: 90vmin;
 				height: 90vmin;
 				margin-left: calc((100vw - (90vmin + 8px)) / 2);
 			}
 			
-			#mandelbrot-set, #julia-set, #high-res-julia-set
+			#mandelbrot-set, #mandelbrot-zoom, #high-res-mandelbrot-zoom
 			{
 				border: 2px solid rgb(127, 127, 127);
 				-webkit-border-radius: 15px;
@@ -199,7 +205,7 @@
 					margin-left: calc((100vw - (70vw + 8px)) / 2);
 				}
 				
-				#mandelbrot-set:not(.layout-override), #julia-set:not(.layout-override)
+				#mandelbrot-set:not(.layout-override), #mandelbrot-zoom:not(.layout-override)
 				{
 					width: 70vw;
 					height: 70vw;
@@ -236,30 +242,30 @@
 			if (url_vars["theme"] == 1)
 			{
 				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(192, 192, 192)";
-				document.querySelector("#julia-set").style.borderColor = "rgb(192, 192, 192)";
-				document.querySelector("#high-res-julia-set").style.borderColor = "rgb(192, 192, 192)";
+				document.querySelector("#mandelbrot-zoom").style.borderColor = "rgb(192, 192, 192)";
+				document.querySelector("#high-res-mandelbrot-zoom").style.borderColor = "rgb(192, 192, 192)";
 			}
 			
 			else
 			{
 				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(64, 64, 64)";
-				document.querySelector("#julia-set").style.borderColor = "rgb(64, 64, 64)";
-				document.querySelector("#high-res-julia-set").style.borderColor = "rgb(64, 64, 64)";
+				document.querySelector("#mandelbrot-zoom").style.borderColor = "rgb(64, 64, 64)";
+				document.querySelector("#high-res-mandelbrot-zoom").style.borderColor = "rgb(64, 64, 64)";
 			}
 		}
 		
 		
 		
-		document.querySelector("#generate-button").addEventListener("click", draw_high_res_julia);
+		document.querySelector("#generate-button").addEventListener("click", draw_high_res_mandelbrot_zoom);
 		
 		
 		
 		//Only get the width of the Mandelbrot set has finished loading in order to get the correct value.
-		small_canvas_size = document.querySelector("#julia-set").offsetWidth;
-		large_canvas_size = document.querySelector("#high-res-julia-set").offsetWidth;
+		small_canvas_size = document.querySelector("#mandelbrot-zoom").offsetWidth;
+		large_canvas_size = document.querySelector("#high-res-mandelbrot-zoom").offsetWidth;
 		
-		window.addEventListener("resize", julia_resize);
-		temporary_handlers["resize"].push(julia_resize);
+		window.addEventListener("resize", mandelbrot_zoom_resize);
+		temporary_handlers["resize"].push(mandelbrot_zoom_resize);
 		
 		
 		
@@ -273,10 +279,10 @@
 					let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
 					let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
 					
-					let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-					let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+					let center_x = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+					let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
 					
-					draw_julia_set(a, b, small_julia_size, small_julia_iterations, false);
+					draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations, false);
 				}
 			});
 			
@@ -286,13 +292,13 @@
 				let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
 				let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
 				
-				let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-				let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+				let center_x = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+				let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
 				
-				draw_julia_set(a, b, Math.min(small_canvas_size, max_large_julia_size), large_julia_iterations, false);
+				draw_mandelbrot_zoom(center_x, center_y, Math.min(small_canvas_size, max_large_mandelbrot_zoom_size), large_mandelbrot_zoom_iterations, false);
 				
-				document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
-				document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
+				document.querySelector("#x-input").value = Math.round(1000000 * center_x) / 1000000;
+				document.querySelector("#y-input").value = Math.round(1000000 * center_y) / 1000000;
 				document.querySelector("#dim-input").value = 1000;
 				
 				persist_image = true;
@@ -314,7 +320,7 @@
 			
 			
 			
-			document.querySelector("#instructions").innerHTML = `Drag along the Mandelbrot set to preview the corresponding Julia set, and release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.`;
+			document.querySelector("#instructions").innerHTML = `Drag along the Mandelbrot set to view that area up close, and release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.`;
 			
 			document.querySelector("#mandelbrot-set").addEventListener("touchmove", function(e)
 			{
@@ -326,49 +332,48 @@
 				last_touch_x = touch_x;
 				last_touch_y = touch_y;
 				
-				let a = ((touch_x / small_canvas_size) - .5) * 3 - .75;
-				let b = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * 3;
+				let center_x = ((touch_x / small_canvas_size) - .5) * 3 - .75;
+				let center_y = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * 3;
 				
-				draw_julia_set(a, b, small_julia_size, small_julia_iterations, false);
+				draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations, false);
 			}, false);
 			
 			document.querySelector("#mandelbrot-set").addEventListener("touchend", function(e)
 			{
 				e.preventDefault();
 				
-				let a = ((last_touch_x / small_canvas_size) - .5) * 3 - .75;
-				let b = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * 3;
+				let center_x = ((last_touch_x / small_canvas_size) - .5) * 3 - .75;
+				let center_y = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * 3;
 				
-				draw_julia_set(a, b, Math.min(small_canvas_size, max_large_julia_size), large_julia_iterations, false);
+				draw_mandelbrot_zoom(center_x, center_y, Math.min(small_canvas_size, max_large_mandelbrot_zoom_size), large_mandelbrot_zoom_iterations, false);
 				
-				document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
-				document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
+				document.querySelector("#x-input").value = Math.round(1000000 * center_x) / 1000000;
+				document.querySelector("#y-input").value = Math.round(1000000 * center_y) / 1000000;
 				document.querySelector("#dim-input").value = 1000;
 			}, false);
 		}
 		
 		
 		
-		function draw_high_res_julia()
+		function draw_high_res_mandelbrot_zoom()
 		{
-			let a = parseFloat(document.querySelector("#a-input").value) || 0;
-			let b = parseFloat(document.querySelector("#b-input").value) || 0;
+			let center_x = parseFloat(document.querySelector("#x-input").value) || 0;
+			let center_y  = parseFloat(document.querySelector("#y-input").value) || 0;
 			let dim = parseFloat(document.querySelector("#dim-input").value) || 1000;
 			
-			draw_julia_set(a, b, dim, full_res_julia_iterations, true);
+			draw_mandelbrot_zoom(center_x, center_y, dim, full_res_mandelbrot_zoom_iterations, true);
 		}
 		
 		
 		
-		function draw_julia_set(a, b, julia_size, num_iters, download)
+		function draw_mandelbrot_zoom(center_x, center_y, mandelbrot_zoom_size, num_iters, download)
 		{
-			let c = math.complex(a, b);
-			
-			
+			let x = 0, y = 0;
+			let z = 0;
 			
 			image = [];
 			
-			for (let i = 0; i < julia_size; i++)
+			for (let i = 0; i < mandelbrot_zoom_size; i++)
 			{
 				image[i] = [];
 			}
@@ -378,32 +383,30 @@
 			let ctx = null;
 			let canvas_size = 0;
 			
-			
-			
 			if (download == false)
 			{
-				document.querySelector("#julia-set").setAttribute("width", julia_size);
-				document.querySelector("#julia-set").setAttribute("height", julia_size);
+				document.querySelector("#mandelbrot-zoom").setAttribute("width", mandelbrot_zoom_size);
+				document.querySelector("#mandelbrot-zoom").setAttribute("height", mandelbrot_zoom_size);
 				
-				ctx = document.querySelector("#julia-set").getContext("2d");
+				ctx = document.querySelector("#mandelbrot-zoom").getContext("2d");
 				canvas_size = small_canvas_size;
 			}
 			
 			else
 			{
-				document.querySelector("#high-res-julia-set").setAttribute("width", julia_size);
-				document.querySelector("#high-res-julia-set").setAttribute("height", julia_size);
+				document.querySelector("#high-res-mandelbrot-zoom").setAttribute("width", mandelbrot_zoom_size);
+				document.querySelector("#high-res-mandelbrot-zoom").setAttribute("height", mandelbrot_zoom_size);
 				
-				ctx = document.querySelector("#high-res-julia-set").getContext("2d");
+				ctx = document.querySelector("#high-res-mandelbrot-zoom").getContext("2d");
 				canvas_size = large_canvas_size;
 			}
 			
 			
 			
-			//Generate the brightness map.
-			for (let i = 0; i < julia_size / 2; i++)
+			//Generate initial value map.
+			for (let i = 0; i < mandelbrot_zoom_size; i++)
 			{
-				julia_row(i, c, julia_size, num_iters);
+				mandelbrot_zoom_row(i, center_x, center_y, mandelbrot_zoom_size, num_iters)
 			}
 			
 			
@@ -414,9 +417,9 @@
 			//We throw out more if the image is just being scrolled around, since then it's critical that we don't have bright flashes of color.
 			let max_brightness = 0;
 			
-			if (julia_size == small_julia_size)
+			if (mandelbrot_zoom_size == small_mandelbrot_zoom_size)
 			{
-				max_brightness = brightness_array[Math.round(brightness_array.length * .9965) - 1];
+				max_brightness = brightness_array[Math.round(brightness_array.length * .995) - 1];
 			}
 			
 			else
@@ -424,9 +427,9 @@
 				max_brightness = brightness_array[Math.round(brightness_array.length * .9999) - 1];
 			}
 			
-			for (let i = 0; i < julia_size; i++)
+			for (let i = 0; i < mandelbrot_zoom_size; i++)
 			{
-				for (let j = 0; j < julia_size; j++)
+				for (let j = 0; j < mandelbrot_zoom_size; j++)
 				{
 					image[i][j] = (image[i][j] / max_brightness) * 255;
 					ctx.fillStyle = "rgb(" + 0 + "," + image[i][j] + "," + image[i][j] + ")";
@@ -434,7 +437,7 @@
 				}
 			}
 			
-			ctx.scale(canvas_size / julia_size, canvas_size / julia_size);
+			ctx.scale(canvas_size / mandelbrot_zoom_size, canvas_size / mandelbrot_zoom_size);
 			
 			
 			
@@ -448,8 +451,8 @@
 					try {document.querySelector("#download-button").remove();}
 					catch(ex) {}
 					
-					let image_data = document.querySelector("#high-res-julia-set").toDataURL();
-					let filename = c.format({precision: 6});
+					let image_data = document.querySelector("#high-res-mandelbrot-zoom").toDataURL();
+					let filename = math.complex(center_x, center_y).format({precision: 6});
 					
 					document.querySelector("#download-location").insertAdjacentHTML("afterend", `
 						<div id="download-button" class="animated-opacity" style="display: flex; justify-content: center; opacity: 0; width: 70vw; margin: 0 auto">
@@ -465,14 +468,16 @@
 		}
 		
 		
-		function julia_row(i, c, julia_size, num_iters)
+		
+		function mandelbrot_zoom_row(i, center_x, center_y, mandelbrot_zoom_size, num_iters)
 		{
-			for (let j = 0; j < julia_size; j++)
-			{
-				let x = ((j - julia_size/2) / julia_size) * 4;
-				let y = (-(i - julia_size/2) / julia_size) * 4;
+			for (let j = 0; j < mandelbrot_zoom_size; j++)
+			{	
+				let x = ((j - mandelbrot_zoom_size/2) / mandelbrot_zoom_size) * .25 + center_x;
+				let y = (-(i - mandelbrot_zoom_size/2) / mandelbrot_zoom_size) * .25 + center_y;
 				
 				let z = math.complex(x, y);
+				let c = z;
 				
 				let brightness = math.exp(-math.abs(z));
 				
@@ -497,18 +502,16 @@
 				
 				
 				
-				//Reflect the top half about the origin to get the bottom half.
 				image[i][j] = brightness;
-				image[julia_size - i - 1][julia_size - j] = brightness;
 			}
 		}
 		
 		
 		
-		function julia_resize()
+		function mandelbrot_zoom_resize()
 		{
-			small_canvas_size = document.querySelector("#julia-set").offsetWidth;
-			large_canvas_size = document.querySelector("#high-res-julia-set").offsetWidth;
+			small_canvas_size = document.querySelector("#mandelbrot-zoom").offsetWidth;
+			large_canvas_size = document.querySelector("#high-res-mandelbrot-zoom").offsetWidth;
 		}
 	}()
 </script>
