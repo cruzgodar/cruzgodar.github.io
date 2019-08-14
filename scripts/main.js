@@ -16,7 +16,6 @@ let supports_webp = null;
 let scripts_loaded = 
 {
 	"disqus": false,
-	"mathjs": false,
 	"mathjax": false
 }
 

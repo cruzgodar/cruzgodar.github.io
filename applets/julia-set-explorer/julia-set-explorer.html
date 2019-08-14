@@ -143,7 +143,7 @@
 		let large_canvas_size = 0;
 		
 		let small_julia_size = 75;
-		let max_large_julia_size = 500;
+		let large_julia_size = 500;
 		
 		let small_julia_iterations = 25;
 		let large_julia_iterations = 50;
@@ -214,23 +214,6 @@
 		
 		
 		
-		if (scripts_loaded["mathjs"] == false)
-		{
-			load_script("https://unpkg.com/mathjs@5.9.0/dist/math.min.js")
-			
-			.then(function()
-			{
-				scripts_loaded["mathjs"] == true;
-			})
-			
-			.catch(function(error)
-			{
-				console.error("Could not load MathJS");
-			});
-		}
-		
-		
-		
 		if (url_vars["contrast"] == 1)
 		{
 			if (url_vars["theme"] == 1)
@@ -289,7 +272,7 @@
 				let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
 				let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
 				
-				draw_julia_set(a, b, Math.min(small_canvas_size, max_large_julia_size), large_julia_iterations, false);
+				draw_julia_set(a, b, large_julia_size, large_julia_iterations, false);
 				
 				document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
 				document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
@@ -339,7 +322,7 @@
 				let a = ((last_touch_x / small_canvas_size) - .5) * 3 - .75;
 				let b = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * 3;
 				
-				draw_julia_set(a, b, Math.min(small_canvas_size, max_large_julia_size), large_julia_iterations, false);
+				draw_julia_set(a, b, large_julia_size, large_julia_iterations, false);
 				
 				document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
 				document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
@@ -362,10 +345,6 @@
 		
 		function draw_julia_set(a, b, julia_size, num_iters, download)
 		{
-			let c = math.complex(a, b);
-			
-			
-			
 			image = [];
 			
 			for (let i = 0; i < julia_size; i++)
@@ -403,7 +382,7 @@
 			//Generate the brightness map.
 			for (let i = 0; i < julia_size / 2; i++)
 			{
-				julia_row(i, c, julia_size, num_iters);
+				julia_row(i, a, b, julia_size, num_iters);
 			}
 			
 			
@@ -449,7 +428,40 @@
 					catch(ex) {}
 					
 					let image_data = document.querySelector("#high-res-julia-set").toDataURL();
-					let filename = c.format({precision: 6});
+					
+					
+					
+					let filename = "";
+					
+					if (a != 0)
+					{
+						filename = document.querySelector("#a-input").value;
+						
+						if (b > 0)
+						{
+							filename += " + " + document.querySelector("#b-input").value + "i";
+						}
+						
+						else if (b < 0)
+						{
+							filename += " - " + document.querySelector("#b-input").value.substr(1) + "i";
+						}
+					}
+					
+					else
+					{
+						if (b != 0)
+						{
+							filename = document.querySelector("#b-input").value + "i";
+						}
+						
+						else
+						{
+							filename = "0";
+						}
+					}
+					
+					
 					
 					document.querySelector("#download-location").insertAdjacentHTML("afterend", `
 						<div id="download-button" class="animated-opacity" style="display: flex; justify-content: center; opacity: 0; width: 70vw; margin: 0 auto">
@@ -465,26 +477,28 @@
 		}
 		
 		
-		function julia_row(i, c, julia_size, num_iters)
+		function julia_row(i, a, b, julia_size, num_iters)
 		{
 			for (let j = 0; j < julia_size; j++)
 			{
 				let x = ((j - julia_size/2) / julia_size) * 4;
 				let y = (-(i - julia_size/2) / julia_size) * 4;
 				
-				let z = math.complex(x, y);
-				
-				let brightness = math.exp(-math.abs(z));
+				let brightness = Math.exp(-Math.sqrt(x*x + y*y));
 				
 				let k = 0;
 				
 				for (k = 0; k < num_iters; k++)
 				{
-					z = math.add(math.multiply(z, z), c);
+					let temp_x = x*x - y*y + a;
+					let temp_y = 2*x*y + b;
 					
-					brightness += math.exp(-math.abs(z));
+					x = temp_x;
+					y = temp_y;
 					
-					if (math.abs(z) > 2)
+					brightness += Math.exp(-Math.sqrt(x*x + y*y));
+					
+					if (Math.sqrt(x*x + y*y) > 2)
 					{
 						break;
 					}
