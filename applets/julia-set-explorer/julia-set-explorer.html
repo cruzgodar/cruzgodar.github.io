@@ -143,7 +143,7 @@
 		let large_canvas_size = 0;
 		
 		let small_julia_size = 75;
-		let large_julia_size = 500;
+		let max_large_julia_size = 500;
 		
 		let small_julia_iterations = 25;
 		let large_julia_iterations = 50;
@@ -291,7 +291,7 @@
 				let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
 				let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
 				
-				draw_julia_set(a, b, small_julia_size, large_julia_iterations, false);
+				draw_julia_set(a, b, Math.min(small_canvas_size, max_large_julia_size), large_julia_iterations, false);
 				
 				document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
 				document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
@@ -341,7 +341,7 @@
 				let a = ((last_touch_x / small_canvas_size) - .5) * 3 - .75;
 				let b = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * 3;
 				
-				draw_julia_set(a, b, large_julia_size, large_julia_iterations, false);
+				draw_julia_set(a, b, Math.min(small_canvas_size, max_large_julia_size), large_julia_iterations, false);
 				
 				document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
 				document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
