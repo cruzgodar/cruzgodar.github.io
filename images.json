@@ -35,6 +35,12 @@
 		"non-webp": "bio/cover.jpg"
 	},
 	
+	"image-mandelbrot-set-explorer":
+	{
+		"webp": "applets/mandelbrot-set-explorer/cover.webp",
+		"non-webp": "applets/mandelbrot-set-explorer/cover.jpg"
+	},
+	
 	"image-desolation-point":
 	{
 		"webp": "writing/desolation-point/cover.webp",
@@ -45,11 +51,5 @@
 	{
 		"webp": "applets/julia-set-explorer/cover.webp",
 		"non-webp": "applets/julia-set-explorer/cover.jpg"
-	},
-	
-	"image-on-leaving-again-and-new-beginnings":
-	{
-		"webp": "blog/7/cover.webp",
-		"non-webp": "blog/7/cover.jpg"
 	}
 }
