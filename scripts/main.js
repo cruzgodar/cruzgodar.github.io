@@ -47,6 +47,10 @@ function init()
 	
 	
 	
+	update_aos();
+	
+	
+	
 	if ("scrollRestoration" in history)
 	{
 		history.scrollRestoration = "manual";
@@ -143,8 +147,6 @@ function on_page_load()
 	
 	
 	fade_in();
-	
-	update_aos();
 	
 	set_links();
 	
