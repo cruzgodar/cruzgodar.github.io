@@ -39,7 +39,7 @@
 		
 		
 		<div id="container" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
-			<img id="mandelbrot-set" class="check-webp" src="" alt="The Mandelbrot Set"></img>
+			<canvas id="mandelbrot-set"></canvas>
 			<canvas id="mandelbrot-zoom"></canvas>
 		</div>
 	</section>
@@ -58,27 +58,13 @@
 		<div style="height: 5vh"></div>
 		
 		<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-2">
-			<p class="body-text">Enter values of \(x\) and \(y\), along with an image size in pixels, to generate an image of the Mandelbrot set around \(x + yi\). The values are filed in automatically when a high-resolution preview is created above, but custom values can be used. Image sizes larger than 1000 are not recommended.</p>
+			<p class="body-text">Enter an image size in pixels to generate a higher-resolution image of the current one above. Image sizes larger than 1000 are not recommended.</p>
 		</div>
 		
 		<div style="height: 5vh"></div>
 		
-		<div style="width: 70vw; margin: 0 auto; display: flex; justify-content: space-between">
-			<div style="width: 20vw" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
-				<input id="x-input" class="text-box" type="text" style="width: 100%">
-				<label for="x-input">
-					<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(x\)</p>
-				</label>
-			</div>
-			
-			<div style="width: 20vw" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-2">
-				<input id="y-input" class="text-box" type="text" style="width: 100%">
-				<label for=y-input">
-					<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(y\)</p>
-				</label>
-			</div>
-			
-			<div style="width: 20vw" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-2">
+		<div style="width: 20vw; margin: 0 auto; display: flex; justify-content: space-between">
+			<div style="width: 100%" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
 				<input id="dim-input" class="text-box" type="text" style="width: 100%">
 				<label for="dim-input">
 					<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">Image Size</p>
@@ -88,13 +74,13 @@
 		
 		<div style="height: 5vh"></div>
 		
-		<div style="display: flex; justify-content: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="1000" data-aos-anchor="#trigger-section-2">
+		<div style="display: flex; justify-content: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="700" data-aos-anchor="#trigger-section-2">
 			<button class="text-button" type="button" id="generate-button">Generate</button>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
-		<canvas id="high-res-mandelbrot-zoom" data-aos="fade-in" data-aos-delay="1600" data-aos-anchor="#trigger-section-2"></canvas>
+		<canvas id="high-res-mandelbrot-zoom" data-aos="fade-in" data-aos-delay="1200" data-aos-anchor="#trigger-section-2"></canvas>
 		
 		<div id="download-location" style="height: 10vh"></div>
 	</section>
@@ -139,21 +125,40 @@
 	
 	!function()
 	{
-		let small_canvas_size = 0;
-		let large_canvas_size = 0;
+		let small_canvas_size = document.querySelector("#mandelbrot-zoom").offsetWidth;
+		let large_canvas_size = document.querySelector("#high-res-mandelbrot-zoom").offsetWidth;
 		
 		let small_mandelbrot_zoom_size = 75;
-		let max_large_mandelbrot_zoom_size = 500;
+		let large_mandelbrot_zoom_size = 500;
 		
 		let small_mandelbrot_zoom_iterations = 50;
-		let large_mandelbrot_zoom_iterations = 125;
-		let full_res_mandelbrot_zoom_iterations = 150;
+		let large_mandelbrot_zoom_iterations = 100;
+		
+		//Where the current zoom is centered.
+		let anchor_x = -.75;
+		let anchor_y = 0;
+		
+		//The current parameters to pass to draw_mandelbrot_zoom, used to make high res images.
+		let current_center_x = 0;
+		let current_center_y = 0;
+		
+		let old_zoom_level = 3;
+		let new_zoom_level = .3;
+		
+		
+		
+		//When this is true, the zoom level and anchors and iteration amounts will be updated the next time a small zoom is generated. We can't just do it after a large zoom is created, since then the full res zoom will break.
+		let queue_variable_change = false;
+		
+		//For the same reasons, we need these. (barf)
+		let temp_anchor_x = 0;
+		let temp_anchor_y = 0;
+		
+		
 		
 		let image = [];
 		
 		let persist_image = false;
-		
-		let ctx = null;
 		
 		
 		
@@ -231,13 +236,26 @@
 		
 		
 		
+		document.querySelector("#mandelbrot-set").setAttribute("width", small_canvas_size);
+		document.querySelector("#mandelbrot-set").setAttribute("height", small_canvas_size);
+		
+		
+		
+		//Draw the initial Mandelbrot set.
+		let ctx = document.querySelector("#mandelbrot-set").getContext("2d");
+		
+		let img = new Image();
+		img.src = "/applets/mandelbrot-set-explorer/graphics/mandelbrot-set.png";
+		img.onload = function()
+		{
+			ctx.drawImage(img, 0, 0, small_canvas_size, small_canvas_size);
+		};
+		
+		
+		
 		document.querySelector("#generate-button").addEventListener("click", draw_high_res_mandelbrot_zoom);
 		
 		
-		
-		//Only get the width of the Mandelbrot set has finished loading in order to get the correct value.
-		small_canvas_size = document.querySelector("#mandelbrot-zoom").offsetWidth;
-		large_canvas_size = document.querySelector("#high-res-mandelbrot-zoom").offsetWidth;
 		
 		window.addEventListener("resize", mandelbrot_zoom_resize);
 		temporary_handlers["resize"].push(mandelbrot_zoom_resize);
@@ -254,8 +272,8 @@
 					let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
 					let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
 					
-					let center_x = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-					let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+					let center_x = ((mouse_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
+					let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
 					
 					draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations, false);
 				}
@@ -267,14 +285,13 @@
 				let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
 				let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
 				
-				let center_x = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-				let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+				let center_x = ((mouse_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
+				let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
 				
-				draw_mandelbrot_zoom(center_x, center_y, Math.min(small_canvas_size, max_large_mandelbrot_zoom_size), large_mandelbrot_zoom_iterations, false);
+				draw_mandelbrot_zoom(center_x, center_y, large_mandelbrot_zoom_size, large_mandelbrot_zoom_iterations, false);
 				
-				document.querySelector("#x-input").value = Math.round(1000000 * center_x) / 1000000;
-				document.querySelector("#y-input").value = Math.round(1000000 * center_y) / 1000000;
-				document.querySelector("#dim-input").value = 1000;
+				current_center_x = center_x;
+				current_center_y = center_y;
 				
 				persist_image = true;
 			});
@@ -307,8 +324,8 @@
 				last_touch_x = touch_x;
 				last_touch_y = touch_y;
 				
-				let center_x = ((touch_x / small_canvas_size) - .5) * 3 - .75;
-				let center_y = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * 3;
+				let center_x = ((touch_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
+				let center_y = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
 				
 				draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations, false);
 			}, false);
@@ -317,14 +334,13 @@
 			{
 				e.preventDefault();
 				
-				let center_x = ((last_touch_x / small_canvas_size) - .5) * 3 - .75;
-				let center_y = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * 3;
+				let center_x = ((last_touch_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
+				let center_y = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
 				
-				draw_mandelbrot_zoom(center_x, center_y, Math.min(small_canvas_size, max_large_mandelbrot_zoom_size), large_mandelbrot_zoom_iterations, false);
+				draw_mandelbrot_zoom(center_x, center_y, large_mandelbrot_zoom_size, large_mandelbrot_zoom_iterations, false);
 				
-				document.querySelector("#x-input").value = Math.round(1000000 * center_x) / 1000000;
-				document.querySelector("#y-input").value = Math.round(1000000 * center_y) / 1000000;
-				document.querySelector("#dim-input").value = 1000;
+				current_center_x = center_x;
+				current_center_y = center_y;
 			}, false);
 		}
 		
@@ -332,11 +348,8 @@
 		
 		function draw_high_res_mandelbrot_zoom()
 		{
-			let center_x = parseFloat(document.querySelector("#x-input").value) || 0;
-			let center_y  = parseFloat(document.querySelector("#y-input").value) || 0;
-			let dim = parseFloat(document.querySelector("#dim-input").value) || 1000;
-			
-			draw_mandelbrot_zoom(center_x, center_y, dim, full_res_mandelbrot_zoom_iterations, true);
+			let dim = parseInt(document.querySelector("#dim-input").value);
+			draw_mandelbrot_zoom(current_center_x, current_center_y, dim, large_mandelbrot_zoom_iterations, true);
 		}
 		
 		
@@ -355,25 +368,40 @@
 			
 			
 			
-			let ctx = null;
-			let canvas_size = 0;
-			
-			if (download == false)
+			if (queue_variable_change == true && download == false)
 			{
-				document.querySelector("#mandelbrot-zoom").setAttribute("width", mandelbrot_zoom_size);
-				document.querySelector("#mandelbrot-zoom").setAttribute("height", mandelbrot_zoom_size);
+				old_zoom_level /= 10;
+				new_zoom_level /= 10;
 				
-				ctx = document.querySelector("#mandelbrot-zoom").getContext("2d");
-				canvas_size = small_canvas_size;
+				large_mandelbrot_zoom_iterations += 150;
+				small_mandelbrot_zoom_iterations += 150;
+				
+				anchor_x = temp_anchor_x;
+				anchor_y = temp_anchor_y;
+				
+				queue_variable_change = false;
 			}
 			
-			else
+			
+			
+			let canvas_size = 0;
+			
+			if (download)
 			{
 				document.querySelector("#high-res-mandelbrot-zoom").setAttribute("width", mandelbrot_zoom_size);
 				document.querySelector("#high-res-mandelbrot-zoom").setAttribute("height", mandelbrot_zoom_size);
 				
 				ctx = document.querySelector("#high-res-mandelbrot-zoom").getContext("2d");
 				canvas_size = large_canvas_size;
+			}
+			
+			else
+			{
+				document.querySelector("#mandelbrot-zoom").setAttribute("width", mandelbrot_zoom_size);
+				document.querySelector("#mandelbrot-zoom").setAttribute("height", mandelbrot_zoom_size);
+				
+				ctx = document.querySelector("#mandelbrot-zoom").getContext("2d");
+				canvas_size = small_canvas_size;
 			}
 			
 			
@@ -413,6 +441,19 @@
 			}
 			
 			ctx.scale(canvas_size / mandelbrot_zoom_size, canvas_size / mandelbrot_zoom_size);
+			
+			
+			
+			if (mandelbrot_zoom_size == large_mandelbrot_zoom_size && download == false)
+			{
+				//Replace the old Mandelbrot set with the new zoomed one.
+				document.querySelector("#mandelbrot-set").getContext("2d").drawImage(document.querySelector("#mandelbrot-zoom"), 0, 0, small_canvas_size, small_canvas_size);
+				
+				queue_variable_change = true;
+				
+				temp_anchor_x = center_x;
+				temp_anchor_y = center_y;
+			}
 			
 			
 			
@@ -481,8 +522,8 @@
 		{
 			for (let j = 0; j < mandelbrot_zoom_size; j++)
 			{	
-				let x = ((j - mandelbrot_zoom_size/2) / mandelbrot_zoom_size) * .15 + center_x;
-				let y = (-(i - mandelbrot_zoom_size/2) / mandelbrot_zoom_size) * .15 + center_y;
+				let x = ((j - mandelbrot_zoom_size/2) / mandelbrot_zoom_size) * new_zoom_level + center_x;
+				let y = (-(i - mandelbrot_zoom_size/2) / mandelbrot_zoom_size) * new_zoom_level + center_y;
 				
 				let c_x = x;
 				let c_y = y;
