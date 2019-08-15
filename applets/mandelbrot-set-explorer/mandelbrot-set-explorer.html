@@ -260,6 +260,8 @@
 		window.addEventListener("resize", mandelbrot_zoom_resize);
 		temporary_handlers["resize"].push(mandelbrot_zoom_resize);
 		
+		setTimeout(mandelbrot_zoom_resize, 1000);
+		
 		
 		
 		//As the user scrolls around the image, make tiny Julia set previews.

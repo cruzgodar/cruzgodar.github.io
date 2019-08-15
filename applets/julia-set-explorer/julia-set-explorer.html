@@ -244,6 +244,8 @@
 		window.addEventListener("resize", julia_resize);
 		temporary_handlers["resize"].push(julia_resize);
 		
+		setTimeout(julia_resize, 1000);
+		
 		
 		
 		//As the user scrolls around the image, make tiny Julia set previews.
