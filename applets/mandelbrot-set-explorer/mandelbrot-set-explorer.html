@@ -143,7 +143,7 @@
 		let current_center_y = 0;
 		
 		let old_zoom_level = 3;
-		let new_zoom_level = .3;
+		let new_zoom_level = .6;
 		
 		
 		
@@ -370,8 +370,8 @@
 			
 			if (queue_variable_change == true && download == false)
 			{
-				old_zoom_level /= 10;
-				new_zoom_level /= 10;
+				old_zoom_level /= 5;
+				new_zoom_level /= 5;
 				
 				large_mandelbrot_zoom_iterations += 150;
 				small_mandelbrot_zoom_iterations += 150;
@@ -447,7 +447,9 @@
 			if (mandelbrot_zoom_size == large_mandelbrot_zoom_size && download == false)
 			{
 				//Replace the old Mandelbrot set with the new zoomed one.
-				document.querySelector("#mandelbrot-set").getContext("2d").drawImage(document.querySelector("#mandelbrot-zoom"), 0, 0, small_canvas_size, small_canvas_size);
+				let width = document.querySelector("#mandelbrot-set").getAttribute("width");
+				
+				document.querySelector("#mandelbrot-set").getContext("2d").drawImage(document.querySelector("#mandelbrot-zoom"), 0, 0, width, width);
 				
 				queue_variable_change = true;
 				
