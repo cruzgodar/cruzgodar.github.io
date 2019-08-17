@@ -58,7 +58,9 @@
 		<div style="height: 5vh"></div>
 		
 		<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-2">
-			<p class="body-text">Enter an image size in pixels to generate a higher-resolution image of the current one above. Image sizes larger than 1000 are not recommended.</p>
+			<p class="body-text center-if-needed">
+				<span>Enter an image size in pixels to generate a higher-resolution image of the current one above. Image sizes larger than 1000 are not recommended.</span>
+			</p>
 		</div>
 		
 		<div style="height: 5vh"></div>
@@ -350,7 +352,7 @@
 		
 		function draw_high_res_mandelbrot_zoom()
 		{
-			let dim = parseInt(document.querySelector("#dim-input").value);
+			let dim = parseInt(document.querySelector("#dim-input").value || 1000);
 			draw_mandelbrot_zoom(current_center_x, current_center_y, dim, large_mandelbrot_zoom_iterations, true);
 		}
 		
@@ -475,41 +477,9 @@
 					
 					
 					
-					let filename = "";
-					
-					if (center_x != 0)
-					{
-						filename = document.querySelector("#x-input").value;
-						
-						if (center_y > 0)
-						{
-							filename += " + " + document.querySelector("#y-input").value + "i";
-						}
-						
-						else if (center_y < 0)
-						{
-							filename += " - " + document.querySelector("#y-input").value.substr(1) + "i";
-						}
-					}
-					
-					else
-					{
-						if (center_y != 0)
-						{
-							filename = document.querySelector("#y-input").value + "i";
-						}
-						
-						else
-						{
-							filename = "0";
-						}
-					}
-					
-					
-					
 					document.querySelector("#download-location").insertAdjacentHTML("afterend", `
 						<div id="download-button" class="animated-opacity" style="display: flex; justify-content: center; opacity: 0; width: 70vw; margin: 0 auto">
-							<a href="${image_data}" download="${filename}.png" class="real-link">
+							<a href="${image_data}" download="Mandelbrot Zoom.png" class="real-link">
 								<button class="text-button" type="button" onclick="">Download Image</button>
 							</a>
 						</div>
