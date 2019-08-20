@@ -1,6 +1,7 @@
 #content
 {
 	overflow-x: hidden;
+	z-index: 10;
 }
 
 .quote-row
