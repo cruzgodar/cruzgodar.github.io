@@ -301,6 +301,11 @@
 			
 			document.querySelector("#instructions").innerHTML = `Drag along the Mandelbrot set to preview the corresponding Julia set, and release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.`;
 			
+			document.querySelector("#instructions a").addEventListener("click", function(e)
+			{
+				e.preventDefault();
+			});
+			
 			document.querySelector("#mandelbrot-set").addEventListener("touchmove", function(e)
 			{
 				e.preventDefault();
