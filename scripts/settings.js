@@ -11,6 +11,7 @@ let url_vars =
 	"theme": get_url_var("theme"),
 	"dark_theme_color": get_url_var("dark_theme_color"),
 	"contrast": get_url_var("contrast"),
+	"text_size": get_url_var("text_size"),
 	"font": get_url_var("font"),
 	"writing_style": get_url_var("writing_style"),
 	"comments": get_url_var("comments"),
@@ -33,6 +34,7 @@ let url_var_functions =
 		"theme": switch_theme,
 		"dark_theme_color": switch_dark_theme_color,
 		"contrast": switch_contrast,
+		"text_size": switch_text_size,
 		"font": switch_font,
 		"writing_style": switch_writing_style,
 		"comments": switch_comments,
@@ -46,6 +48,7 @@ let url_var_functions =
 		"theme": switch_theme_on_load,
 		"dark_theme_color": switch_dark_theme_color_on_load,
 		"contrast": switch_contrast_on_load,
+		"text_size": switch_text_size_on_load,
 		"font": switch_font_on_load,
 		"writing_style": switch_writing_style_on_load,
 		"comments": switch_comments_on_load,
@@ -245,7 +248,7 @@ function switch_theme()
 		
 		setTimeout(function()
 		{
- 			try {document.querySelector("#theme-button-text").textContent = (document.querySelector("#theme-button-text").textContent.replace("light", "dark"));}
+ 			try {document.querySelector("#theme-button-text").textContent = document.querySelector("#theme-button-text").textContent.replace("light", "dark");}
  			catch(ex) {}
  			
 			try {document.querySelector("#theme-button-row").style.opacity = 1;}
@@ -344,7 +347,7 @@ function switch_theme()
 		
 		setTimeout(function()
 		{
-			try {document.querySelector("#theme-button-text").textContent = (document.querySelector("#theme-button-text").textContent.replace("dark", "light"));}
+			try {document.querySelector("#theme-button-text").textContent = document.querySelector("#theme-button-text").textContent.replace("dark", "light");}
 			catch(ex) {}
 			
 			try {document.querySelector("#theme-button-row").style.opacity = 1;}
@@ -389,7 +392,7 @@ function switch_dark_theme_color_on_load()
 	{
 		setTimeout(function()
 		{
-			try {document.querySelector("#dark-theme-color-button-text").textContent = (document.querySelector("#dark-theme-color-button-text").textContent.replace("dark gray", "black"));}
+			try {document.querySelector("#dark-theme-color-button-text").textContent = document.querySelector("#dark-theme-color-button-text").textContent.replace("dark gray", "black");}
 			catch(ex) {}
 		}, 300);
 		
@@ -413,7 +416,7 @@ function switch_dark_theme_color_on_load()
 	{
 		setTimeout(function()
 		{
-			try {document.querySelector("#dark-theme-color-button-text").textContent = (document.querySelector("#dark-theme-color-button-text").textContent.replace("black", "dark gray"));}
+			try {document.querySelector("#dark-theme-color-button-text").textContent = document.querySelector("#dark-theme-color-button-text").textContent.replace("black", "dark gray");}
 			catch(ex) {}
 		}, 300);
 		
@@ -449,7 +452,7 @@ function switch_contrast_on_load()
 	//Default to high
 	if (url_vars["contrast"] == 0)
 	{
-		try {document.querySelector("#contrast-button-text").textContent = (document.querySelector("#contrast-button-text").textContent.replace("normal", "high"));}
+		try {document.querySelector("#contrast-button-text").textContent = document.querySelector("#contrast-button-text").textContent.replace("normal", "high");}
 		catch(ex) {}
 		
 		url_vars["contrast"] = 1;
@@ -626,7 +629,7 @@ function switch_contrast_on_load()
 	//High to default
 	else
 	{
-		try {document.querySelector("#contrast-button-text").textContent = (document.querySelector("#contrast-button-text").textContent.replace("high", "normal"));}
+		try {document.querySelector("#contrast-button-text").textContent = document.querySelector("#contrast-button-text").textContent.replace("high", "normal");}
 		catch(ex) {}
 		
 		url_vars["contrast"] = 0;
@@ -766,6 +769,73 @@ function switch_contrast_on_load()
 
 
 
+function switch_text_size()
+{
+	document.body.classList.add("animated-opacity");
+	document.body.style.opacity = 0;
+	
+	setTimeout(function()
+	{
+		switch_text_size_on_load();
+		
+		document.body.style.opacity = 1;
+		
+		setTimeout(function()
+		{
+			document.body.classList.remove("animated-opacity");
+		}, 300);
+	}, 300);
+}
+
+function switch_text_size_on_load()
+{
+	//Normal to large
+	if (url_vars["text_size"] == 0)
+	{
+		try {document.querySelector("#text-size-button-text").textContent = document.querySelector("#text-size-button-text").textContent.replace("normal", "large");}
+		catch(ex) {}
+		
+		url_vars["text_size"] = 1;
+		
+		write_url_vars();
+		
+		let element = add_style(`
+			html
+			{
+				font-size: 18px;
+			}
+			
+			@media screen and (min-width: 1000px)
+			{
+				html
+				{
+					font-size: 20px;
+				}
+			}
+		`);
+		
+		element.id = "text-size-increase";
+	}
+	
+	
+	
+	//Large to normal
+	else
+	{
+		try {document.querySelector("#text-size-button-text").textContent = document.querySelector("#text-size-button-text").textContent.replace("large", "normal");}
+		catch(ex) {}
+		
+		url_vars["text_size"] = 0;
+		
+		write_url_vars();
+		
+		try {document.querySelector("#text-size-increase").remove();}
+		catch(ex) {}
+	}
+}
+
+
+
 function switch_font()
 {
 	document.querySelector("#font-button-row").style.opacity = 0;
@@ -774,10 +844,7 @@ function switch_font()
 	{
 		switch_font_on_load();
 		
-		setTimeout(function()
-		{
-			document.querySelector("#font-button-row").style.opacity = 1;
-		});
+		document.querySelector("#font-button-row").style.opacity = 1;
 	}, 300);
 }
 
@@ -786,7 +853,7 @@ function switch_font_on_load()
 	//Sans to serif
 	if (url_vars["font"] == 0)
 	{
-		try {document.querySelector("#font-button-text").textContent = (document.querySelector("#font-button-text").textContent.replace("always sans serif", "serif on writing"));}
+		try {document.querySelector("#font-button-text").textContent = document.querySelector("#font-button-text").textContent.replace("always sans serif", "serif on writing");}
 		catch(ex) {}
 		
 		url_vars["font"] = 1;
@@ -808,7 +875,7 @@ function switch_font_on_load()
 	//Serif to sans
 	else
 	{
-		try {document.querySelector("#font-button-text").textContent = (document.querySelector("#font-button-text").textContent.replace("serif on writing", "always sans serif"));}
+		try {document.querySelector("#font-button-text").textContent = document.querySelector("#font-button-text").textContent.replace("serif on writing", "always sans serif");}
 		catch(ex) {}
 		
 		url_vars["font"] = 0;
@@ -827,10 +894,7 @@ function switch_writing_style()
 	{
 		switch_writing_style_on_load();
 		
-		setTimeout(function()
-		{
-			document.querySelector("#writing-style-button-row").style.opacity = 1;
-		});
+		document.querySelector("#writing-style-button-row").style.opacity = 1;
 	}, 300);
 }
 
@@ -839,7 +903,7 @@ function switch_writing_style_on_load()
 	//Double-spaced to indented
 	if (url_vars["writing_style"] == 0)
 	{
-		try {document.querySelector("#writing-style-button-text").textContent = (document.querySelector("#writing-style-button-text").textContent.replace("double-spaced", "single-spaced and indented"));}
+		try {document.querySelector("#writing-style-button-text").textContent = document.querySelector("#writing-style-button-text").textContent.replace("double-spaced", "single-spaced and indented");}
 		catch(ex) {}
 		
 		url_vars["writing_style"] = 1;
@@ -881,7 +945,7 @@ function switch_writing_style_on_load()
 	//Indented to double-spaced
 	else
 	{
-		try {document.querySelector("#writing-style-button-text").textContent = (document.querySelector("#writing-style-button-text").textContent.replace("single-spaced and indented", "double-spaced"));}
+		try {document.querySelector("#writing-style-button-text").textContent = document.querySelector("#writing-style-button-text").textContent.replace("single-spaced and indented", "double-spaced");}
 		catch(ex) {}
 		
 		url_vars["writing_style"] = 0;
@@ -907,7 +971,7 @@ function switch_comments_on_load()
 {
 	if (url_vars["comments"] == 0)
 	{
-		try {document.querySelector("#comments-button-text").textContent = (document.querySelector("#comments-button-text").textContent.replace("enabled", "disabled"));}
+		try {document.querySelector("#comments-button-text").textContent = document.querySelector("#comments-button-text").textContent.replace("enabled", "disabled");}
 		catch(ex) {}
 		
 		try
@@ -928,7 +992,7 @@ function switch_comments_on_load()
 	
 	else
 	{
-		try {document.querySelector("#comments-button-text").textContent = (document.querySelector("#comments-button-text").textContent.replace("disabled", "enabled"));}
+		try {document.querySelector("#comments-button-text").textContent = document.querySelector("#comments-button-text").textContent.replace("disabled", "enabled");}
 		catch(ex) {}
 		
 		url_vars["comments"] = 0;
@@ -954,7 +1018,7 @@ function switch_content_animation_on_load()
 {
 	if (url_vars["content_animation"] == 0)
 	{
-		try {document.querySelector("#content-animation-button-text").textContent = (document.querySelector("#content-animation-button-text").textContent.replace("enabled", "disabled"));}
+		try {document.querySelector("#content-animation-button-text").textContent = document.querySelector("#content-animation-button-text").textContent.replace("enabled", "disabled");}
 		catch(ex) {}
 		
 		url_vars["content_animation"] = 1;
@@ -975,7 +1039,7 @@ function switch_content_animation_on_load()
 	
 	else
 	{
-		try {document.querySelector("#content-animation-button-text").textContent = (document.querySelector("#content-animation-button-text").textContent.replace("disabled", "enabled"));}
+		try {document.querySelector("#content-animation-button-text").textContent = document.querySelector("#content-animation-button-text").textContent.replace("disabled", "enabled");}
 		catch(ex) {}
 		
 		url_vars["content_animation"] = 0;
@@ -1003,7 +1067,7 @@ function switch_banner_style_on_load()
 {
 	if (url_vars["banner_style"] == 0)
 	{
-		try {document.querySelector("#banner-style-button-text").textContent = (document.querySelector("#banner-style-button-text").textContent.replace("parallax", "simple"));}
+		try {document.querySelector("#banner-style-button-text").textContent = document.querySelector("#banner-style-button-text").textContent.replace("parallax", "simple");}
 		catch(ex) {}
 		
 		url_vars["banner_style"] = 1;
@@ -1020,7 +1084,7 @@ function switch_banner_style_on_load()
 	
 	else
 	{
-		try {document.querySelector("#banner-style-button-text").textContent = (document.querySelector("#banner-style-button-text").textContent.replace("simple", "parallax"));}
+		try {document.querySelector("#banner-style-button-text").textContent = document.querySelector("#banner-style-button-text").textContent.replace("simple", "parallax");}
 		catch(ex) {}
 		
 		url_vars["banner_style"] = 0;
@@ -1073,7 +1137,7 @@ function switch_content_layout_on_load()
 {
 	if (url_vars["content_layout"] == 0)
 	{
-		try {document.querySelector("#content-layout-button-text").textContent = (document.querySelector("#content-layout-button-text").textContent.replace(/automatic \(.+\)/, "always compact"));}
+		try {document.querySelector("#content-layout-button-text").textContent = document.querySelector("#content-layout-button-text").textContent.replace(/automatic \(.+\)/, "always compact");}
 		catch(ex) {}
 		
 		url_vars["content_layout"] = 1;
@@ -1091,7 +1155,7 @@ function switch_content_layout_on_load()
 	
 	else
 	{
-		try {document.querySelector("#content-layout-button-text").textContent = (document.querySelector("#content-layout-button-text").textContent.replace("always compact", `automatic (currently ${layout_string})`));}
+		try {document.querySelector("#content-layout-button-text").textContent = document.querySelector("#content-layout-button-text").textContent.replace("always compact", `automatic (currently ${layout_string})`);}
 		catch(ex) {}
 		
 		url_vars["content_layout"] = 0;

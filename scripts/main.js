@@ -296,7 +296,7 @@ function load_script(src)
 
 
 
-//Adds a style tag to <head> with the given content. If temporary is true, it will be removed at the next page load.
+//Adds a style tag to <head> with the given content. If temporary is true, it will be removed at the next page load. Returns the style element added.
 function add_style(content, temporary)
 {
 	let element = document.createElement("style");
@@ -309,4 +309,8 @@ function add_style(content, temporary)
 	}
 	
 	document.head.appendChild(element);
+	
+	
+	
+	return element;
 }
