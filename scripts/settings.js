@@ -809,7 +809,7 @@ function switch_text_size_on_load()
 			{
 				html
 				{
-					font-size: 20px;
+					font-size: 22px;
 				}
 			}
 		`);
