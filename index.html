@@ -22,8 +22,6 @@
 
 <link rel="manifest" href="/manifest.json">
 
-<link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic|Rubik&display=swap" rel="stylesheet">
-
 <meta name="theme-color" content="#ffffff">
 
 <meta name="apple-mobile-web-app-title" content="Cruz Godar">
@@ -32,10 +30,6 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 
-
-<link rel="stylesheet" type="text/css" href="/style/aos.min.css">
-
-<link rel="stylesheet" type="text/css" href="/style/css-bundle.min.css">
 
 </head>
 
@@ -47,7 +41,21 @@
 	<script src="/scripts/js-bundle.min.js"></script>
 	
 	<script>
-		var start_page = get_url_var("page");
+		let link = document.createElement("link");
+		link.setAttribute("rel", "stylesheet");
+		link.setAttribute("type", "text/css");
+		link.setAttribute("href", "/style/css-bundle.min.css");
+		document.head.appendChild(link);
+		
+		link = document.createElement("link");
+		link.setAttribute("rel", "stylesheet");
+		link.setAttribute("type", "text/css");
+		link.setAttribute("href", "/style/aos.min.css");
+		document.head.appendChild(link);
+		
+		
+		
+		let start_page = get_url_var("page");
 		
 		if (start_page != null)
 		{
