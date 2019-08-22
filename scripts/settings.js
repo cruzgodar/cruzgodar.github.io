@@ -778,6 +778,26 @@ function switch_text_size()
 	{
 		switch_text_size_on_load();
 		
+		if (url_vars["text_size"] == 1)
+		{
+			let element = add_style(`
+				html
+				{
+					font-size: 18px;
+				}
+				
+				@media screen and (min-width: 1000px)
+				{
+					html
+					{
+						font-size: 22px;
+					}
+				}
+			`, false);
+			
+			element.id = "text-size-increase";
+		}
+		
 		document.body.style.opacity = 1;
 		
 		setTimeout(function()
@@ -798,23 +818,6 @@ function switch_text_size_on_load()
 		url_vars["text_size"] = 1;
 		
 		write_url_vars();
-		
-		let element = add_style(`
-			html
-			{
-				font-size: 18px;
-			}
-			
-			@media screen and (min-width: 1000px)
-			{
-				html
-				{
-					font-size: 22px;
-				}
-			}
-		`);
-		
-		element.id = "text-size-increase";
 	}
 	
 	
