@@ -342,11 +342,7 @@
 				
 				if (url_vars["banner_style"] == 1)
 				{
-					let elements = document.querySelectorAll(".name-text-container");
-					for (let i = 0; i < elements.length; i++)
-					{
-						elements[i].style.position = "absolute";
-					}
+					set_element_styles(".name-text-container", "position", "absolute");
 				}
 				
 				
@@ -390,11 +386,7 @@
 				
 			if (scroll <= window_height/3 && url_vars["banner_style"] != 1)
 			{
-				let elements = document.querySelectorAll(".name-text");
-				for (let i = 0; i < elements.length; i++)
-				{
-					elements[i].style.opacity = global_opacity;
-				}
+				set_element_styles(".name-text", "opacity", global_opacity);
 			}
 		}
 	}()

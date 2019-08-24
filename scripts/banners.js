@@ -173,12 +173,7 @@ function scroll_update()
 		{
 			if (url_vars["banner_style"] != 1)
 			{
-				let elements = document.querySelectorAll(".name-text");
-				
-				for (let i = 0; i < elements.length; i++)
-				{
-					elements[i].style.opacity = 0;
-				}
+				set_element_styles(".name-text", "opacity", 0);
 			}
 			
 			if (scroll_button_exists)

@@ -1116,11 +1116,7 @@ function set_img_button_contrast()
 
 function set_writing_page_font()
 {
-	let elements = document.querySelectorAll(".body-text");
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].style.fontFamily = "'Gentium Book Basic', serif";
-	}
+	set_element_styles(".body-text", "font-family", "'Gentium Book Basic', serif");
 }
 
 
