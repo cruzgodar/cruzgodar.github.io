@@ -1,8 +1,26 @@
-//Handles the various settings' effects on the page.
+//Handles the various settings' effects on the page. Every function adds or removes a style tag that handles all the changes. Some settings, like the theme, require an animation.
 
 
 
-let settings_done = false;
+function get_url_var(id)
+{
+	let query = window.location.search.substring(1);
+	let vars = query.split("&");
+	
+	let pair = [];
+	
+	for (let i = 0; i < vars.length; i++)
+	{
+		pair = vars[i].split("=");
+		
+		if (pair[0] == id)
+		{
+			return pair[1];
+		}
+	}
+	
+	return null;
+}
 
 
 
@@ -29,33 +47,32 @@ if (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme
 
 let url_var_functions =
 {
-	"animated":
-	{
-		"theme": switch_theme,
-		"dark_theme_color": switch_dark_theme_color,
-		"contrast": switch_contrast,
-		"text_size": switch_text_size,
-		"font": switch_font,
-		"writing_style": switch_writing_style,
-		"comments": switch_comments,
-		"content_animation": switch_content_animation,
-		"banner_style": switch_banner_style,
-		"content_layout": switch_content_layout
-	},
-	
-	"onload":
-	{
-		"theme": switch_theme_on_load,
-		"dark_theme_color": switch_dark_theme_color_on_load,
-		"contrast": switch_contrast_on_load,
-		"text_size": switch_text_size_on_load,
-		"font": switch_font_on_load,
-		"writing_style": switch_writing_style_on_load,
-		"comments": switch_comments_on_load,
-		"content_animation": switch_content_animation_on_load,
-		"banner_style": switch_banner_style_on_load,
-		"content_layout": switch_content_layout_on_load
-	}
+	"theme": switch_theme,
+	"dark_theme_color": switch_dark_theme_color,
+	"contrast": switch_contrast,
+	"text_size": switch_text_size,
+	"font": switch_font,
+	"writing_style": switch_writing_style,
+	"comments": switch_comments,
+	"content_animation": switch_content_animation,
+	"banner_style": switch_banner_style,
+	"content_layout": switch_content_layout
+};
+
+
+
+let settings_texts =
+{
+	"theme": ["Theme: light", "Theme: dark"],
+	"dark_theme_color": ["Dark theme color: dark gray", "Dark theme color: black"],
+	"contrast": ["Contrast: normal", "Contrast: high"],
+	"text_size": ["Text size: normal", "Text size: large"],
+	"font": ["Font: always sans serif", "Font: serif on writing"],
+	"writing_style": ["Text on writing pages: double-spaced", "Text on writing pages: single-spaced and indented"],
+	"comments": ["Comments: enabled", "Comments: disabled"],
+	"content_animation": ["Content animation: enabled", "Content animation: disabled"],
+	"banner_style": ["Banners: parallax", "Banners: simple"],
+	"content_layout": ["Content layout: automatic (currently {})", "Content layout: always compact"]
 };
 
 
@@ -69,51 +86,29 @@ if (url_vars["dark_theme_color"] == 1)
 
 
 
-function get_url_var(id)
+for (key in url_vars)
 {
-	let query = window.location.search.substring(1);
-	let vars = query.split("&");
-	
-	let pair = [];
-	
-	for (let i = 0; i < vars.length; i++)
+	if (url_vars[key] == null)
 	{
-		pair = vars[i].split("=");
-		
-		if (pair[0] == id)
-		{
-			return pair[1];
-		}
+		url_vars[key] = 0;
 	}
 	
-	return null;
+	url_vars[key] = !url_vars[key];
+	url_var_functions[key]();
 }
 
 
-
-function apply_settings()
-{
-	for (key in url_vars)
-	{
-		if (url_vars[key] == null)
-		{
-			url_vars[key] = 0;
-		}
-		
-		url_vars[key] = !url_vars[key];
-		url_var_functions["onload"][key]();
-	}
-	
-	
-	
-	settings_done = true;
-}
 
 
 
 //Changes the theme and animates elements.
 function switch_theme()
 {
+	try {document.querySelector("#theme-button-row").style.opacity = 0;}
+	catch(ex) {}
+	
+	
+	
 	//Light to dark
 	if (url_vars["theme"] == 0)
 	{
@@ -131,114 +126,50 @@ function switch_theme()
 		
 		if (url_vars["contrast"] == 1)
 		{
-			let elements = document.querySelectorAll(".section-text");
-			for (let i = 0; i < elements.length; i++)
+			set_element_styles(".heading-text", "color", "rgb(255, 255, 255)");
+			
+			set_element_styles(".body-text", "color", "rgb(216, 216, 216)");
+			
+			set_element_styles(".text-button", "color", "rgb(64, 64, 64)");
+			
+			set_element_styles(".footer-button, .text-button", "border-color", "rgb(127, 127, 127)");
+			
+			
+			
+			setTimeout(function()
 			{
-				elements[i].style.color = "rgb(232, 232, 232)";
-			}
-			
-			elements = document.querySelectorAll(".body-text, .song-lyrics, .image-link-subtext");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(216, 216, 216)";
-			}
-			
-			elements = document.querySelectorAll(".body-text .link");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(216, 255, 216)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".quote-text");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(192, 192, 192)";
-			}
-			
-			elements = document.querySelectorAll(".quote-attribution");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(234, 234, 234)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".footer-button, .text-button, .nav-button");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.borderColor = "rgb(127, 127, 127)";
-			}
+				try {document.querySelector("#theme-adjust").remove();}
+				catch(ex) {}
+				
+				let element = add_style(get_settings_style("dark_contrast"), false);
+				
+				element.id = "theme-adjust";
+			}, 600);
 		}
+		
+		
 		
 		else
 		{
-			let elements = document.querySelectorAll(".section-text");
-			for (let i = 0; i < elements.length; i++)
+			set_element_styles(".heading-text", "color", "rgb(255, 255, 255)");
+			
+			set_element_styles(".body-text", "color", "rgb(152, 152, 152)");
+			
+			set_element_styles(".text-button", "color", "rgb(127, 127, 127)");
+			
+			set_element_styles(".footer-button, .text-button", "border-color", "rgb(127, 127, 127)");
+			
+			
+			
+			setTimeout(function()
 			{
-				elements[i].style.color = "rgb(184, 184, 184)";
-			}
-			
-			elements = document.querySelectorAll(".body-text, song-lyrics, .image-link-subtext");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(152, 152, 152)";
-			}
-			
-			elements = document.querySelectorAll(".body-text .link");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(152, 216, 152)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".quote-text");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(104, 104, 104)";
-			}
-			
-			elements = document.querySelectorAll(".quote-attribution");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(188, 188, 188)";
-			}
-			
-			
-			
-			
-			add_style(`
-				.line-break
-				{
-					background: ${dark_theme_background_color};
-					background: -moz-linear-gradient(left, ${dark_theme_background_color} 0%, rgb(116,116,116) 50%, ${dark_theme_background_color} 100%);
-					background: -webkit-linear-gradient(left, ${dark_theme_background_color} 0%,rgb(116,116,116) 50%,${dark_theme_background_color}) 100%);
-					background: linear-gradient(to right, ${dark_theme_background_color} 0%,rgb(116,116,116) 50%,${dark_theme_background_color} 100%);
-				}
+				try {document.querySelector("#theme-adjust").remove();}
+				catch(ex) {}
 				
-				.text-box
-				{
-					background-color: ${dark_theme_background_color};
-					color: rgb(152, 152, 152);
-					border-color: rgb(88, 88, 88);
-				}
+				let element = add_style(get_settings_style("dark"), false);
 				
-				.text-box:focus
-				{
-					border-color: rgb(152, 152, 152);
-					color: rgb(216, 216, 216);
-				}
-			`, true);
-		}
-		
-		
-		
-		let elements = document.querySelectorAll(".heading-text, .date-text, .title-text");
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].style.color = "rgb(255, 255, 255)";
+				element.id = "theme-adjust";
+			}, 600);
 		}
 		
 		
@@ -248,15 +179,11 @@ function switch_theme()
 		
 		setTimeout(function()
 		{
- 			try {document.querySelector("#theme-button-text").textContent = document.querySelector("#theme-button-text").textContent.replace("light", "dark");}
+ 			try {document.querySelector("#theme-button-text").textContent = settings_texts["theme"][1];}
  			catch(ex) {}
- 			
-			try {document.querySelector("#theme-button-row").style.opacity = 1;}
-			catch(ex) {}
 		}, 300);
 		
 		url_vars["theme"] = 1;
-		write_url_vars();
 	}
 	
 	
@@ -270,358 +197,204 @@ function switch_theme()
 		
 		if (url_vars["contrast"] == 1)
 		{
-			let elements = document.querySelectorAll(".section-text");
-			for (let i = 0; i < elements.length; i++)
+			set_element_styles(".heading-text", "color", "rgb(0, 0, 0)");
+			
+			set_element_styles(".body-text", "color", "rgb(64, 64, 64)");
+			
+			set_element_styles(".text-button", "color", "rgb(64, 64, 64)");
+			
+			set_element_styles(".footer-button, .text-button", "border-color", "rgb(64, 64, 64)");
+			
+			
+			
+			setTimeout(function()
 			{
-				elements[i].style.color = "rgb(48, 48, 48)";
-			}
-			
-			elements = document.querySelectorAll(".body-text, .song-lyrics, .image-link-subtext, .text-button");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(64, 64, 64)";
-			}
-			
-			elements = document.querySelectorAll(".body-text .link");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(64, 128, 64)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".quote-text");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(88, 88, 88)";
-			}
-			
-			elements = document.querySelectorAll(".quote-attribution");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(46, 46, 46)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".footer-button, .text-button, .nav-button");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.borderColor = "rgb(64, 64, 64)";
-			}
+				try {document.querySelector("#theme-adjust").remove();}
+				catch(ex) {}
+				
+				let element = add_style(get_settings_style("contrast"), false);
+				
+				element.id = "theme-adjust";
+			}, 600);
 		}
+		
+		
 		
 		else
 		{
-			let elements = document.querySelectorAll(".section-text");
-			for (let i = 0; i < elements.length; i++)
+			set_element_styles(".heading-text", "color", "rgb(0, 0, 0)");
+			
+			set_element_styles(".body-text", "color", "rgb(127, 127, 127)");
+			
+			set_element_styles(".text-button", "color", "rgb(127, 127, 127)");
+			
+			set_element_styles(".footer-button, .text-button", "border-color", "rgb(127, 127, 127)");
+			
+			
+			
+			setTimeout(function()
 			{
-				elements[i].style.color = "rgb(96, 96, 96)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".quote-text");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(176, 176, 176)";
-			}
-			
-			elements = document.querySelectorAll(".quote-attribution");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(92, 92, 92)";
-			}
+				try {document.querySelector("#theme-adjust").remove();}
+				catch(ex) {}
+			}, 600);
 		}
 		
 		
-		
-		let elements = document.querySelectorAll(".heading-text, .date-text, .title-text");
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].style.color = "rgb(0, 0, 0)";
-		}
-		
-		try {document.querySelector("#theme-button-row").style.opacity = 0;}
-		catch(ex) {}
 		
 		setTimeout(function()
 		{
-			try {document.querySelector("#theme-button-text").textContent = document.querySelector("#theme-button-text").textContent.replace("dark", "light");}
-			catch(ex) {}
-			
-			try {document.querySelector("#theme-button-row").style.opacity = 1;}
+			try {document.querySelector("#theme-button-text").textContent = settings_texts["theme"][0];}
 			catch(ex) {}
 		}, 300);
 		
 		url_vars["theme"] = 0;
-		write_url_vars();
-	}
-}
-
-
-
-//Changes the theme, but without any animation.
-function switch_theme_on_load()
-{
-	if (page_settings["manual_dark_theme"])
-	{
-		url_vars["theme"] = 1 - url_vars["theme"];
-		return;
 	}
 	
-	switch_theme();
+	
+	
+	setTimeout(function()
+	{
+		try {document.querySelector("#theme-button-row").style.opacity = 1;}
+		catch(ex) {}
+	}, 300);
+	
+	write_url_vars();
 }
+
+
 
 
 
 function switch_dark_theme_color()
 {
-	document.querySelector("#dark-theme-color-button-row").style.opacity = 0;
-	switch_dark_theme_color_on_load();
+	try {document.querySelector("#dark-theme-color-button-row").style.opacity = 0;}
+	catch(ex) {}
 	
-	setTimeout(function()
-	{
-		document.querySelector("#dark-theme-color-button-row").style.opacity = 1;
-	}, 300);
-}
-
-function switch_dark_theme_color_on_load()
-{
+	
+	
 	if (url_vars["dark_theme_color"] == 0)
 	{
-		setTimeout(function()
-		{
-			try {document.querySelector("#dark-theme-color-button-text").textContent = document.querySelector("#dark-theme-color-button-text").textContent.replace("dark gray", "black");}
-			catch(ex) {}
-		}, 300);
-		
-		url_vars["dark_theme_color"] = 1;
-		
-		write_url_vars();
-		
-		
-		
 		dark_theme_background_color = "rgb(0, 0, 0)";
 		
 		if (url_vars["theme"] == 1)
 		{
 			document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 		}
+		
+		
+		
+		setTimeout(function()
+		{
+			try {document.querySelector("#dark-theme-color-button-text").textContent = settings_texts["dark_theme_color"][1];}
+			catch(ex) {}
+		}, 300);
+		
+		url_vars["dark_theme_color"] = 1;
 	}
 	
 	
 	
 	else
 	{
-		setTimeout(function()
-		{
-			try {document.querySelector("#dark-theme-color-button-text").textContent = document.querySelector("#dark-theme-color-button-text").textContent.replace("black", "dark gray");}
-			catch(ex) {}
-		}, 300);
-		
-		url_vars["dark_theme_color"] = 0;
-		
-		write_url_vars();
-		
-		
 		dark_theme_background_color = "rgb(24, 24, 24)";
 		
 		if (url_vars["theme"] == 1)
 		{
 			document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
 		}
+		
+		
+		
+		setTimeout(function()
+		{
+			try {document.querySelector("#dark-theme-color-button-text").textContent = settings_texts["dark_theme_color"][0];}
+			catch(ex) {}
+		}, 300);
+		
+		url_vars["dark_theme_color"] = 0;
 	}
+	
+	
+	
+	setTimeout(function()
+	{
+		try {document.querySelector("#dark-theme-color-button-row").style.opacity = 1;}
+		catch(ex) {}
+	}, 300);
+	
+	write_url_vars();
 }
+
+
 
 
 
 function switch_contrast()
 {
-	document.querySelector("#contrast-button-row").style.opacity = 0;
+	try {document.querySelector("#contrast-button-row").style.opacity = 0;}
+	catch(ex) {}
 	
-	setTimeout(function()
-	{
-		switch_contrast_on_load();
-		document.querySelector("#contrast-button-row").style.opacity = 1;
-	}, 300);
-}
-
-function switch_contrast_on_load()
-{
+	
+	
 	//Default to high
 	if (url_vars["contrast"] == 0)
 	{
-		try {document.querySelector("#contrast-button-text").textContent = document.querySelector("#contrast-button-text").textContent.replace("normal", "high");}
-		catch(ex) {}
-		
-		url_vars["contrast"] = 1;
-		
-		write_url_vars();
-		
-		
-		
 		if (url_vars["theme"] == 1)
 		{
-			let elements = document.querySelectorAll(".section-text");
-			for (let i = 0; i < elements.length; i++)
+			set_element_styles(".heading-text", "color", "rgb(255, 255, 255)");
+			
+			set_element_styles(".body-text", "color", "rgb(216, 216, 216)");
+			
+			set_element_styles(".text-button", "color", "rgb(64, 64, 64)");
+			
+			set_element_styles(".footer-button, .text-button", "border-color", "rgb(127, 127, 127)");
+			
+			
+			
+			setTimeout(function()
 			{
-				elements[i].style.color = "rgb(232, 232, 232)";
-			}
-			
-			elements = document.querySelectorAll(".body-text, .song-lyrics, .image-link-subtext");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(216, 216, 216)";
-			}
-			
-			elements = document.querySelectorAll(".body-text .link");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(216, 255, 216)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".quote-text");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(192, 192, 192)";
-			}
-			
-			elements = document.querySelectorAll(".quote-attribution");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(234, 234, 234)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".footer-button, .text-button, .nav-button");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.borderColor = "rgb(127, 127, 127)";
-			}
-			
-			
-			
-			add_style(`
-				.line-break
-				{
-					background: ${dark_theme_background_color};
-					background: -moz-linear-gradient(left, ${dark_theme_background_color} 0%, rgb(164,164,164) 50%, ${dark_theme_background_color} 100%);
-					background: -webkit-linear-gradient(left, ${dark_theme_background_color} 0%,rgb(164,164,164) 50%,${dark_theme_background_color} 100%);
-					background: linear-gradient(to right, ${dark_theme_background_color} 0%,rgb(164,164,164) 50%,${dark_theme_background_color} 100%);
-				}
+				try {document.querySelector("#contrast-adjust").remove();}
+				catch(ex) {}
 				
-				.scroll-button
-				{
-					border-color: rgb(88, 88, 88)
-				}
+				let element = add_style(get_settings_style("dark_contrast"), false);
 				
-				.text-box
-				{
-					border-color: rgb(152, 152, 152);
-					background-color: ${dark_theme_background_color};
-					color: rgb(216, 216, 216);
-				}
-				
-				.text-box:focus
-				{
-					border-color: rgb(216, 216, 216);
-					color: rgb(255, 255, 255);
-				}
-			`, true);
+				element.id = "contrast-adjust";
+			}, 600);
 		}
+		
+		
 		
 		else
 		{
-			let elements = document.querySelectorAll(".section-text");
-			for (let i = 0; i < elements.length; i++)
+			set_element_styles(".heading-text", "color", "rgb(0, 0, 0)");
+			
+			set_element_styles(".body-text", "color", "rgb(64, 64, 64)");
+			
+			set_element_styles(".text-button", "color", "rgb(64, 64, 64)");
+			
+			set_element_styles(".footer-button, .text-button", "border-color", "rgb(64, 64, 64)");
+			
+			
+			
+			setTimeout(function()
 			{
-				elements[i].style.color = "rgb(48, 48, 48)";
-			}
-			
-			elements = document.querySelectorAll(".body-text, .song-lyrics, .image-link-subtext, .text-button");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(64, 64, 64)";
-			}
-			
-			elements = document.querySelectorAll(".body-text .link");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(64, 128, 64)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".quote-text");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(88, 88, 88)";
-			}
-			
-			elements = document.querySelectorAll(".quote-attribution");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(46, 46, 46)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".footer-button, .text-button, .nav-button");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.borderColor = "rgb(64, 64, 64)";
-			}
-			
-			
-			
-			add_style(`
-				.line-break
-				{
-					background: rgb(255,255,255);
-					background: -moz-linear-gradient(left, rgb(255,255,255) 0%, rgb(120,120,120) 50%, rgb(255,255,255) 100%);
-					background: -webkit-linear-gradient(left, rgb(255,255,255) 0%,rgb(120,120,120) 50%,rgb(255,255,255) 100%);
-					background: linear-gradient(to right, rgb(255,255,255) 0%,rgb(120,120,120) 50%,rgb(255,255,255) 100%);
-				}
+				try {document.querySelector("#contrast-adjust").remove();}
+				catch(ex) {}
 				
-				.scroll-button
-				{
-					border-color: rgb(64, 64, 64);
-				}
+				let element = add_style(get_settings_style("contrast"), false);
 				
-				.text-box
-				{
-					border-color: rgb(127, 127, 127);
-					color: rgb(64, 64, 64);
-				}
-				
-				.text-box:focus
-				{
-					border-color: rgb(64, 64, 64);
-					color: rgb(0, 0, 0);
-				}
-			`, true);
-			
-			
-			
-			elements = document.querySelectorAll(".nav-button");
-			
-			for (i = 0; i < elements.length; i++)
-			{
-				elements[i].setAttribute("src", elements[i].getAttribute("src").replace("chevron-left", "chevron-left-dark").replace("chevron-right", "chevron-right-dark"));
-			}
+				element.id = "contrast-adjust";
+			}, 600);
 		}
 		
 		
-		
-		let elements = document.querySelectorAll(".text-button");
-		for (let i = 0; i < elements.length; i++)
+		setTimeout(function()
 		{
-			elements[i].style.color = "rgb(64, 64, 64)";
-		}
+			try {document.querySelector("#contrast-button-text").textContent = settings_texts["contrast"][1];}
+			catch(ex) {}
+		}, 300);
+		
+		url_vars["contrast"] = 1;
 	}
 	
 	
@@ -629,143 +402,73 @@ function switch_contrast_on_load()
 	//High to default
 	else
 	{
-		try {document.querySelector("#contrast-button-text").textContent = document.querySelector("#contrast-button-text").textContent.replace("high", "normal");}
-		catch(ex) {}
-		
-		url_vars["contrast"] = 0;
-		
-		write_url_vars();
-		
-		
-		
 		if (url_vars["theme"] == 1)
 		{
-			let elements = document.querySelectorAll(".section-text");
-			for (let i = 0; i < elements.length; i++)
+			set_element_styles(".heading-text", "color", "rgb(255, 255, 255)");
+			
+			set_element_styles(".body-text", "color", "rgb(152, 152, 152)");
+			
+			set_element_styles(".text-button", "color", "rgb(127, 127, 127)");
+			
+			set_element_styles(".footer-button, .text-button", "border-color", "rgb(127, 127, 127)");
+			
+			
+			
+			setTimeout(function()
 			{
-				elements[i].style.color = "rgb(184, 184, 184)";
-			}
-			
-			elements = document.querySelectorAll(".body-text, song-lyrics, .image-link-subtext");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(152, 152, 152)";
-			}
-			
-			elements = document.querySelectorAll(".body-text .link");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(152, 216, 152)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".quote-text");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(104, 104, 104)";
-			}
-			
-			elements = document.querySelectorAll(".quote-attribution");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(188, 188, 188)";
-			}
-			
-			
-			
-			add_style(`
-				.line-break
-				{
-					background: ${dark_theme_background_color};
-					background: -moz-linear-gradient(left, ${dark_theme_background_color} 0%, rgb(116,116,116) 50%, ${dark_theme_background_color} 100%);
-					background: -webkit-linear-gradient(left, ${dark_theme_background_color} 0%,rgb(116,116,116) 50%,${dark_theme_background_color} 100%);
-					background: linear-gradient(to right, ${dark_theme_background_color} 0%,rgb(116,116,116) 50%,${dark_theme_background_color} 100%);
-				}
+				try {document.querySelector("#contrast-adjust").remove();}
+				catch(ex) {}
 				
-				.text-box
-				{
-					background-color: ${dark_theme_background_color};
-					color: rgb(152, 152, 152);
-					border-color: rgb(88, 88, 88);
-				}
+				let element = add_style(get_settings_style("dark"), false);
 				
-				.text-box:focus
-				{
-					border-color: rgb(152, 152, 152);
-					color: rgb(216, 216, 216);
-				}
-			`, true);
-			
-			
-			
-			elements = document.querySelectorAll(".text-button");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(152, 152, 152)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".footer-button, .text-button, .nav-button");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.borderColor = "rgb(127, 127, 127)";
-			}
+				element.id = "contrast-adjust";
+			}, 600);
 		}
+		
+		
 		
 		else
 		{
-			let elements = document.querySelectorAll(".section-text");
-			for (let i = 0; i < elements.length; i++)
+			set_element_styles(".heading-text", "color", "rgb(0, 0, 0)");
+			
+			set_element_styles(".body-text", "color", "rgb(127, 127, 127)");
+			
+			set_element_styles(".text-button", "color", "rgb(127, 127, 127)");
+			
+			set_element_styles(".footer-button, .text-button", "border-color", "rgb(127, 127, 127)");
+			
+			
+			
+			setTimeout(function()
 			{
-				elements[i].style.color = "rgb(96, 96, 96)";
-			}
-			
-			elements = document.querySelectorAll(".body-text, song-lyrics, .image-link-subtext");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(127, 127, 127)";
-			}
-			
-			elements = document.querySelectorAll(".body-text .link");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(127, 192, 127)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".quote-text");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(176, 176, 176)";
-			}
-			
-			elements = document.querySelectorAll(".quote-attribution");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(92, 92, 92)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".text-button");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.color = "rgb(127, 127, 127)";
-			}
-			
-			
-			
-			elements = document.querySelectorAll(".footer-button, .text-button, .nav-button");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.borderColor = "rgb(127, 127, 127)";
-			}
+				try {document.querySelector("#contrast-adjust").remove();}
+				catch(ex) {}
+			}, 600);
 		}
+		
+		
+		
+		setTimeout(function()
+		{
+			try {document.querySelector("#contrast-button-text").textContent = settings_texts["contrast"][0];}
+			catch(ex) {}
+		}, 300);
+		
+		url_vars["contrast"] = 0;
 	}
+	
+	
+	
+	setTimeout(function()
+	{
+		try {document.querySelector("#contrast-button-row").style.opacity = 1;}
+		catch(ex) {}
+	}, 300);
+	
+	write_url_vars();
 }
+
+
 
 
 
@@ -774,12 +477,16 @@ function switch_text_size()
 	document.body.classList.add("animated-opacity");
 	document.body.style.opacity = 0;
 	
-	setTimeout(function()
+	
+	
+	//Normal to large
+	if (url_vars["text_size"] == 0)
 	{
-		switch_text_size_on_load();
-		
-		if (url_vars["text_size"] == 1)
+		setTimeout(function()
 		{
+			try {document.querySelector("#text-size-adjust").remove();}
+			catch(ex) {}
+			
 			let element = add_style(`
 				html
 				{
@@ -795,82 +502,69 @@ function switch_text_size()
 				}
 			`, false);
 			
-			element.id = "text-size-increase";
-		}
+			element.id = "text-size-adjust";
+			
+			
+			
+			try {document.querySelector("#text-size-button-text").textContent = settings_texts["text_size"][1];}
+			catch(ex) {}
+		}, 300);
+			
+		url_vars["text_size"] = 1;
+	}
 		
+	else
+	{
+		setTimeout(function()
+		{
+			try {document.querySelector("#text-size-adjust").remove();}
+			catch(ex) {}
+			
+			
+			
+			try {document.querySelector("#text-size-button-text").textContent = settings_texts["text_size"][0];}
+			catch(ex) {}
+		}, 300);
+			
+		url_vars["text_size"] = 0;
+	}
+	
+	
+	
+	setTimeout(function()
+	{
 		document.body.style.opacity = 1;
-		
+			
 		setTimeout(function()
 		{
 			document.body.classList.remove("animated-opacity");
 		}, 300);
 	}, 300);
+	
+	write_url_vars();
 }
 
-function switch_text_size_on_load()
-{
-	//Normal to large
-	if (url_vars["text_size"] == 0)
-	{
-		try {document.querySelector("#text-size-button-text").textContent = document.querySelector("#text-size-button-text").textContent.replace("normal", "large");}
-		catch(ex) {}
-		
-		url_vars["text_size"] = 1;
-		
-		write_url_vars();
-	}
-	
-	
-	
-	//Large to normal
-	else
-	{
-		try {document.querySelector("#text-size-button-text").textContent = document.querySelector("#text-size-button-text").textContent.replace("large", "normal");}
-		catch(ex) {}
-		
-		url_vars["text_size"] = 0;
-		
-		write_url_vars();
-		
-		try {document.querySelector("#text-size-increase").remove();}
-		catch(ex) {}
-	}
-}
+
 
 
 
 function switch_font()
 {
-	document.querySelector("#font-button-row").style.opacity = 0;
+	try {document.querySelector("#font-button-row").style.opacity = 0;}
+	catch(ex) {}
 	
-	setTimeout(function()
-	{
-		switch_font_on_load();
-		
-		document.querySelector("#font-button-row").style.opacity = 1;
-	}, 300);
-}
-
-function switch_font_on_load()
-{
+	
+	
 	//Sans to serif
 	if (url_vars["font"] == 0)
 	{
-		try {document.querySelector("#font-button-text").textContent = document.querySelector("#font-button-text").textContent.replace("always sans serif", "serif on writing");}
-		catch(ex) {}
+		setTimeout(function()
+		{
+			try {document.querySelector("#font-button-text").textContent = settings_texts["font"][1];}
+			catch(ex) {}
+		}, 300);
 		
 		url_vars["font"] = 1;
-		
-		write_url_vars();
-		
-		if (page_settings["writing_page"])
-		{
-			let elements = document.querySelectorAll(".body-text");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.fontFamily = "'Gentium Book Basic', serif";
-			}
-		}
 	}
 	
 	
@@ -878,69 +572,47 @@ function switch_font_on_load()
 	//Serif to sans
 	else
 	{
-		try {document.querySelector("#font-button-text").textContent = document.querySelector("#font-button-text").textContent.replace("serif on writing", "always sans serif");}
-		catch(ex) {}
+		setTimeout(function()
+		{
+			try {document.querySelector("#font-button-text").textContent = settings_texts["font"][0];}
+			catch(ex) {}
+		}, 300);
 		
 		url_vars["font"] = 0;
-		
-		write_url_vars();
 	}
+	
+	
+	
+	setTimeout(function()
+	{
+		try {document.querySelector("#font-button-row").style.opacity = 1;}
+		catch(ex) {}
+	}, 300);
+	
+	write_url_vars();
 }
+
+
 
 
 
 function switch_writing_style()
 {
-	document.querySelector("#writing-style-button-row").style.opacity = 0;
+	try {document.querySelector("#writing-style-button-row").style.opacity = 0;}
+	catch(ex) {}
 	
-	setTimeout(function()
-	{
-		switch_writing_style_on_load();
-		
-		document.querySelector("#writing-style-button-row").style.opacity = 1;
-	}, 300);
-}
-
-function switch_writing_style_on_load()
-{
+	
+	
 	//Double-spaced to indented
 	if (url_vars["writing_style"] == 0)
 	{
-		try {document.querySelector("#writing-style-button-text").textContent = document.querySelector("#writing-style-button-text").textContent.replace("double-spaced", "single-spaced and indented");}
-		catch(ex) {}
+		setTimeout(function()
+		{
+			try {document.querySelector("#writing-style-button-text").textContent = settings_texts["writing_style"][1]}
+			catch(ex) {}
+		}, 300);
 		
 		url_vars["writing_style"] = 1;
-		
-		write_url_vars();
-		
-		if (page_settings["writing_page"])
-		{
-			//This is a fancy way of saying ("section br").remove(), but it ensures that <br> tags in places like song lyrics won't get removed.
-			let elements = document.querySelectorAll("section div .body-text");
-			for (let i = 0; i < elements.length; i++)
-			{
-				//The next element might not exist, so we have to be careful.
-				try
-				{
-					let next_element = elements[i].parentNode.nextElementSibling;
-					
-					if (next_element.tagName.toLowerCase() == "br")
-					{
-						next_element.remove();
-					}
-				}
-				
-				catch(ex) {}
-			}
-			
-			
-			//Add an indent on every element except the first in the section.
-			elements = document.querySelectorAll("section div:not(:first-child) .body-text");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].style.textIndent = "10pt";
-			}
-		}
 	}
 	
 	
@@ -948,153 +620,190 @@ function switch_writing_style_on_load()
 	//Indented to double-spaced
 	else
 	{
-		try {document.querySelector("#writing-style-button-text").textContent = document.querySelector("#writing-style-button-text").textContent.replace("single-spaced and indented", "double-spaced");}
-		catch(ex) {}
+		setTimeout(function()
+		{
+			try {document.querySelector("#writing-style-button-text").textContent = settings_texts["writing_style"][0];}
+			catch(ex) {}
+		}, 300);
 		
 		url_vars["writing_style"] = 0;
-		
-		write_url_vars();
 	}
+	
+	
+	
+	setTimeout(function()
+	{
+		try {document.querySelector("#writing-style-button-row").style.opacity = 1;}
+		catch(ex) {}
+	}, 300);
+	
+	write_url_vars();
 }
+
+
 
 
 
 function switch_comments()
 {
-	document.querySelector("#comments-button-row").style.opacity = 0;
+	try {document.querySelector("#comments-button-row").style.opacity = 0;}
+	catch(ex) {}
 	
-	setTimeout(function()
-	{
-		switch_comments_on_load();
-		document.querySelector("#comments-button-row").style.opacity = 1;
-	}, 300);
-}
-
-function switch_comments_on_load()
-{
+	
+	
 	if (url_vars["comments"] == 0)
 	{
-		try {document.querySelector("#comments-button-text").textContent = document.querySelector("#comments-button-text").textContent.replace("enabled", "disabled");}
-		catch(ex) {}
-		
-		try
+		setTimeout(function()
 		{
-			document.querySelector("#disqus_thread").previousElementSibling.remove();
-			document.querySelector("#disqus_thread").previousElementSibling.remove();
-			document.querySelector("#disqus_thread").previousElementSibling.remove();
-			document.querySelector("#disqus_thread").remove();
-		}
-		catch(ex) {}
+			try {document.querySelector("#comments-button-text").textContent = settings_texts["comments"][1];}
+			catch(ex) {}
+		}, 300);
 		
 		url_vars["comments"] = 1;
-		
-		write_url_vars();
 	}
 	
 	
 	
 	else
 	{
-		try {document.querySelector("#comments-button-text").textContent = document.querySelector("#comments-button-text").textContent.replace("disabled", "enabled");}
-		catch(ex) {}
+		setTimeout(function()
+		{
+			try {document.querySelector("#comments-button-text").textContent = settings_texts["comments"][0];}
+			catch(ex) {}
+		}, 300);
 		
 		url_vars["comments"] = 0;
-		
-		write_url_vars();
 	}
+	
+	
+	
+	setTimeout(function()
+	{
+		try {document.querySelector("#comments-button-row").style.opacity = 1;}
+		catch(ex) {}
+	}, 300);
+	
+	write_url_vars();
 }
+
+
 
 
 
 function switch_content_animation()
 {
-	document.querySelector("#content-animation-button-row").style.opacity = 0;
+	try {document.querySelector("#content-animation-button-row").style.opacity = 0;}
+	catch(ex) {}
 	
-	setTimeout(function()
-	{
-		switch_content_animation_on_load();
-		document.querySelector("#content-animation-button-row").style.opacity = 1;
-	}, 300);
-}
-
-function switch_content_animation_on_load()
-{
+	
+	
 	if (url_vars["content_animation"] == 0)
 	{
-		try {document.querySelector("#content-animation-button-text").textContent = document.querySelector("#content-animation-button-text").textContent.replace("enabled", "disabled");}
-		catch(ex) {}
+		document.documentElement.classList.remove("animated-opacity");
+		
+		
+		
+		setTimeout(function()
+		{
+			try {document.querySelector("#content-animation-button-text").textContent = settings_texts["content_animation"][1];}
+			catch(ex) {}
+		}, 300);
 		
 		url_vars["content_animation"] = 1;
-		
-		write_url_vars();
-		
-		//This attribute makes the content invisible until it's animated in, so if we're never going to do that, it has to go.
-		let elements = document.body.querySelectorAll("[data-aos]")
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].removeAttribute("data-aos");
-		}
-		
-		document.documentElement.classList.remove("animated-opacity");
 	}
 	
 	
 	
 	else
 	{
-		try {document.querySelector("#content-animation-button-text").textContent = document.querySelector("#content-animation-button-text").textContent.replace("disabled", "enabled");}
-		catch(ex) {}
+		document.documentElement.classList.add("animated-opacity");
+		
+		
+		
+		setTimeout(function()
+		{
+			try {document.querySelector("#content-animation-button-text").textContent = settings_texts["content_animation"][0];}
+			catch(ex) {}
+		}, 300);
 		
 		url_vars["content_animation"] = 0;
-		
-		write_url_vars();
-		
-		document.documentElement.classList.add("animated-opacity");
 	}
+	
+	
+	
+	setTimeout(function()
+	{
+		try {document.querySelector("#content-animation-button-row").style.opacity = 1;}
+		catch(ex) {}
+	}, 300);
+	
+	write_url_vars();
 }
+
+
 
 
 
 function switch_banner_style()
 {
-	document.querySelector("#banner-style-button-row").style.opacity = 0;
+	try {document.querySelector("#banner-style-button-row").style.opacity = 0;}
+	catch(ex) {}
 	
-	setTimeout(function()
-	{
-		switch_banner_style_on_load();
-		document.querySelector("#banner-style-button-row").style.opacity = 1;
-	}, 300);
-}
-
-function switch_banner_style_on_load()
-{
+	
+	
 	if (url_vars["banner_style"] == 0)
 	{
-		try {document.querySelector("#banner-style-button-text").textContent = document.querySelector("#banner-style-button-text").textContent.replace("parallax", "simple");}
+		try {document.querySelector("#banner-adjust").remove();}
 		catch(ex) {}
+		
+		let element = add_style(`
+			.banner:before
+			{
+				position: absolute !important;
+			}
+		`, false);
+		
+		element.id = "banner-adjust";
+		
+		
+		
+		setTimeout(function()
+		{
+			try {document.querySelector("#banner-style-button-text").textContent = settings_texts["banner_style"][1];}
+			catch(ex) {}
+		}, 300);
 		
 		url_vars["banner_style"] = 1;
-		
-		write_url_vars();
-		
-		try
-		{
-			document.querySelector("#background-image").classList.add("bad-banner");
-		}
-		
-		catch(ex) {}
 	}
 	
 	else
 	{
-		try {document.querySelector("#banner-style-button-text").textContent = document.querySelector("#banner-style-button-text").textContent.replace("simple", "parallax");}
+		try {document.querySelector("#banner-adjust").remove();}
 		catch(ex) {}
 		
-		url_vars["banner_style"] = 0;
 		
-		write_url_vars();
+		
+		setTimeout(function()
+		{
+			try {document.querySelector("#banner-style-button-text").textContent = settings_texts["banner_style"][0];}
+			catch(ex) {}
+		}, 300);
+		
+		url_vars["banner_style"] = 0;
 	}
+	
+	
+	
+	setTimeout(function()
+	{
+		try {document.querySelector("#banner-style-button-row").style.opacity = 1;}
+		catch(ex) {}
+	}, 300);
+	
+	write_url_vars();
 }
+
+
 
 
 
@@ -1102,25 +811,65 @@ function switch_content_layout()
 {
 	if (layout_string == "small-screen")
 	{
-		//Yes, we really should be using html here, bot body, but html has css on it on the settings page that gets in the way of that, and this is just way way easier.
+		//Yes, we really should be using html here, not body, but html has css on it on the settings page that gets in the way of that, and this is just way way easier.
 		document.body.classList.add("animated-opacity");
 		document.body.style.opacity = 0;
 	}
 	
 	else
 	{
-		document.querySelector("#content-layout-button-row").style.opacity = 0;
+		try {document.querySelector("#content-layout-button-row").style.opacity = 0;}
+		catch(ex) {}
+	}
+	
+	
+	
+	if (url_vars["content_layout"] == 0)
+	{
+		setTimeout(function()
+		{
+			let elements = document.querySelectorAll("*");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].classList.add("layout-override");
+			}
+			
+			
+			
+			try {document.querySelector("#content-layout-button-text").textContent = settings_texts["content_layout"][1];}
+			catch(ex) {}
+		}, 300);
+		
+		url_vars["content_layout"] = 1;
+	}
+	
+	
+	
+	else
+	{
+		setTimeout(function()
+		{
+			let elements = document.querySelectorAll("*");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].classList.remove("layout-override");
+			}
+			
+			
+			
+			try {document.querySelector("#content-layout-button-text").textContent = settings_texts["content_layout"][0].replace("{}", layout_string);}
+			catch(ex) {}
+		}, 300);
+		
+		url_vars["content_layout"] = 0;
 	}
 	
 	
 	
 	setTimeout(function()
 	{
-		switch_content_layout_on_load();
-		
 		if (layout_string == "small-screen")
 		{
-			//Yes, we really should be using html here, bot body, but html has css on it on the settings page that gets in the way of that, and this is just way way easier.
 			document.body.style.opacity = 1;
 			
 			setTimeout(function()
@@ -1131,44 +880,316 @@ function switch_content_layout()
 		
 		else
 		{
-			document.querySelector("#content-layout-button-row").style.opacity = 1;
+			try {document.querySelector("#content-layout-button-row").style.opacity = 1;}
+			catch(ex) {}
 		}
 	}, 300);
+	
+	write_url_vars();
 }
 
-function switch_content_layout_on_load()
+
+
+
+
+function get_settings_style(settings) 
 {
-	if (url_vars["content_layout"] == 0)
+	if (settings == "dark")
 	{
-		try {document.querySelector("#content-layout-button-text").textContent = document.querySelector("#content-layout-button-text").textContent.replace(/automatic \(.+\)/, "always compact");}
-		catch(ex) {}
-		
-		url_vars["content_layout"] = 1;
-		
-		write_url_vars();
-		
-		let elements = document.querySelectorAll("*");
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].classList.add("layout-override");
-		}
+		return `
+			.heading-text, .date-text, .title-text
+			{
+				color: rgb(255, 255, 255);
+			}
+			
+			.section-text
+			{
+				color: rgb(184, 184, 184);
+			}
+			
+			.body-text, .song-lyrics, .image-link-subtext
+			{
+				color: rgb(152, 152, 152);
+			}
+			
+			.body-text .link
+			{
+				color: rgb(152, 216, 152);
+			}
+			
+			
+			
+			.quote-text
+			{
+				color: rgb(104, 104, 104);
+			}
+			
+			.quote-attribution
+			{
+				color: rgb(188, 188, 188);
+			}
+			
+			
+			
+			.line-break
+			{
+				background: ${dark_theme_background_color};
+				background: -moz-linear-gradient(left, ${dark_theme_background_color} 0%, rgb(116,116,116) 50%, ${dark_theme_background_color} 100%);
+				background: -webkit-linear-gradient(left, ${dark_theme_background_color} 0%,rgb(116,116,116) 50%,${dark_theme_background_color}) 100%);
+				background: linear-gradient(to right, ${dark_theme_background_color} 0%,rgb(116,116,116) 50%,${dark_theme_background_color} 100%);
+			}
+			
+			.text-box
+			{
+				background-color: ${dark_theme_background_color};
+				color: rgb(152, 152, 152);
+				border-color: rgb(88, 88, 88);
+			}
+			
+			.text-box:focus
+			{
+				border-color: rgb(152, 152, 152);
+				color: rgb(216, 216, 216);
+			}
+			
+			
+			
+			.footer-button, .text-button, .nav-button
+			{
+				border-color: rgb(127, 127, 127);
+			}
+		`;
 	}
 	
 	
 	
-	else
+	else if (settings == "contrast")
 	{
-		try {document.querySelector("#content-layout-button-text").textContent = document.querySelector("#content-layout-button-text").textContent.replace("always compact", `automatic (currently ${layout_string})`);}
-		catch(ex) {}
-		
-		url_vars["content_layout"] = 0;
-		
-		write_url_vars();
-		
-		let elements = document.querySelectorAll("*");
-		for (let i = 0; i < elements.length; i++)
+		return `
+			.heading-text, .date-text, .title-text
+			{
+				color: rgb(0, 0, 0);
+			}
+			
+			.section-text
+			{
+				color: rgb(48, 48, 48);
+			}
+			
+			.body-text, .song-lyrics, .image-link-subtext, .text-button
+			{
+				color: rgb(64, 64, 64);
+			}
+			
+			.body-text .link
+			{
+				color: rgb(64, 128, 64);
+			}
+			
+			
+			
+			.quote-text
+			{
+				color: rgb(88, 88, 88);
+			}
+			
+			.quote-attribution
+			{
+				color: rgb(46, 46, 46);
+			}
+			
+			
+			
+			.line-break
+			{
+				background: rgb(255, 255, 255);
+				background: -moz-linear-gradient(left, rgb(255, 255, 255) 0%, rgb(120,120,120) 50%, rgb(255, 255, 255) 100%);
+				background: -webkit-linear-gradient(left, rgb(255, 255, 255) 0%,rgb(120,120,120) 50%,rgb(255, 255, 255)) 100%);
+				background: linear-gradient(to right, rgb(255, 255, 255) 0%,rgb(120,120,120) 50%,rgb(255, 255, 255) 100%);
+			}
+			
+			.text-box
+			{
+				background-color: rgb(255, 255, 255);
+				color: rgb(152, 152, 152);
+				border-color: rgb(88, 88, 88);
+			}
+			
+			.text-box:focus
+			{
+				border-color: rgb(152, 152, 152);
+				color: rgb(216, 216, 216);
+			}
+			
+			
+			
+			.footer-button, .text-button, .nav-button
+			{
+				border-color: rgb(64, 64, 64);
+			}
+		`;
+	}
+	
+	
+	
+	else if (settings == "dark_contrast")
+	{
+		return `
+			.heading-text, .date-text, .title-text
+			{
+				color: rgb(255, 255, 255);
+			}
+			
+			.section-text
+			{
+				color: rgb(232, 232, 232);
+			}
+			
+			.body-text, .song-lyrics, .image-link-subtext
+			{
+				color: rgb(216, 216, 216);
+			}
+			
+			.body-text .link
+			{
+				color: rgb(216, 255, 216);
+			}
+			
+			
+			
+			.quote-text
+			{
+				color: rgb(192, 192, 192);
+			}
+			
+			.quote-attribution
+			{
+				color: rgb(234, 234, 234);
+			}
+			
+			
+			
+			.line-break
+			{
+				background: ${dark_theme_background_color};
+				background: -moz-linear-gradient(left, ${dark_theme_background_color} 0%, rgb(164,164,164) 50%, ${dark_theme_background_color} 100%);
+				background: -webkit-linear-gradient(left, ${dark_theme_background_color} 0%,rgb(164,164,164) 50%,${dark_theme_background_color}) 100%);
+				background: linear-gradient(to right, ${dark_theme_background_color} 0%,rgb(164,164,164) 50%,${dark_theme_background_color} 100%);
+			}
+			
+			.text-box
+			{
+				background-color: ${dark_theme_background_color};
+				color: rgb(216, 216, 216);
+				border-color: rgb(152, 152, 152);
+			}
+			
+			.text-box:focus
+			{
+				border-color: rgb(216, 216, 216);
+				color: rgb(255, 255, 255);
+			}
+					
+			
+			
+			.footer-button, .text-button, .nav-button
+			{
+				border-color: rgb(127, 127, 127);
+			}
+		`;
+	}
+};
+
+
+
+function set_img_button_contrast()
+{
+	let elements = document.querySelectorAll(".nav-button, .scroll-button");
+	
+	for (i = 0; i < elements.length; i++)
+	{
+		elements[i].setAttribute("src", elements[i].getAttribute("src").replace("chevron-left", "chevron-left-dark").replace("chevron-right", "chevron-right-dark").replace("chevron-down", "chevron-down-dark"));
+	}
+}
+
+
+
+function set_writing_page_font()
+{
+	let elements = document.querySelectorAll(".body-text");
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].style.fontFamily = "'Gentium Book Basic', serif";
+	}
+}
+
+
+
+function set_writing_page_style()
+{
+	//This is a fancy way of saying ("section br").remove(), but it ensures that <br> tags in places like song lyrics won't get removed.
+	let elements = document.querySelectorAll("section div .body-text");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		//The next element might not exist, so we have to be careful.
+		try
 		{
-			elements[i].classList.remove("layout-override");
+			let next_element = elements[i].parentNode.nextElementSibling;
+			
+			if (next_element.tagName.toLowerCase() == "br")
+			{
+				next_element.remove();
+			}
 		}
+		
+		catch(ex) {}
+	}
+	
+	
+	//Add an indent on every element except the first in the section.
+	elements = document.querySelectorAll("section div:not(:first-child) .body-text");
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].style.textIndent = "10pt";
+	}
+}
+
+
+
+function remove_disqus()
+{
+	try
+	{
+		document.querySelector("#disqus_thread").previousElementSibling.remove();
+		document.querySelector("#disqus_thread").previousElementSibling.remove();
+		document.querySelector("#disqus_thread").previousElementSibling.remove();
+		document.querySelector("#disqus_thread").remove();
+	}
+	
+	catch(ex) {}
+}
+
+
+
+function remove_animation()
+{
+	let elements = document.body.querySelectorAll("[data-aos]")
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].removeAttribute("data-aos");
+	}
+}
+
+
+
+function override_layout()
+{
+	let elements = document.querySelectorAll("*");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].classList.add("layout-override");
 	}
 }

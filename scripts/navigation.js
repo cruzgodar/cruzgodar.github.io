@@ -210,6 +210,11 @@ function load_html(url, include_return_url, no_state_push)
 			history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
 		}
 		
+		else
+		{
+			history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+		}
+		
 		document.body.innerHTML = new_page_data;
 		parse_scripts();
 	}
@@ -227,6 +232,11 @@ function load_html(url, include_return_url, no_state_push)
 			
 			//Record the page change in the url bar and in the browser history.
 			if (no_state_push == false)
+			{
+				history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+			}
+			
+			else
 			{
 				history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
 			}
@@ -286,7 +296,6 @@ function concat_url_vars(include_return_url)
 	{
 		string += "&return=" + get_url_var("page");
 	}
-	
 	
 	
 	return string;

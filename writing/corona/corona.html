@@ -343,93 +343,85 @@
 		
 		
 		
-		//We have to wait to apply the contrast changes, since otherwise settings.js may set the body text color after we do here, resulting in less contrast than normal.
-		let refresh_id = setInterval(function()
+		
+		if (url_vars["contrast"] == 1)
 		{
-			if (settings_done)
+			let elements = document.querySelectorAll(".synopsis-text");
+			for (let i = 0; i < elements.length; i++)
 			{
-				clearInterval(refresh_id);
-				
-				if (url_vars["contrast"] == 1)
+				elements[i].style.color = "rgb(208, 208, 208)";
+			}
+			
+			elements = document.querySelectorAll(".body-text");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.color = "rgb(192, 192, 192)";
+			}
+			
+			if (url_vars["theme"] != 1)
+			{
+				let elements = document.querySelectorAll(".hook-text");
+				for (let i = 0; i < elements.length; i++)
 				{
-					let elements = document.querySelectorAll(".synopsis-text");
-					for (let i = 0; i < elements.length; i++)
-					{
-						elements[i].style.color = "rgb(208, 208, 208)";
-					}
-					
-					elements = document.querySelectorAll(".body-text");
-					for (let i = 0; i < elements.length; i++)
-					{
-						elements[i].style.color = "rgb(192, 192, 192)";
-					}
-					
-					if (url_vars["theme"] != 1)
-					{
-						let elements = document.querySelectorAll(".hook-text");
-						for (let i = 0; i < elements.length; i++)
-						{
-							elements[i].style.color = "rgb(120, 120, 120)";
-						}
-					}
-					
-					
-					
-					document.querySelector("#email img").style.WebkitFilter = "brightness(150%)";
-					document.querySelector("#email img").style.filter = "brightness(150%)";
-					
-					
-					
-					elements = document.querySelectorAll(".stage-bubble, .progress-bar");
-					for (let i = 0; i < elements.length; i++)
-					{
-						elements[i].style.borderColor = "rgb(192, 192, 192)";
-					}
-					
-					elements = document.querySelectorAll(".stage-bubble span, .progress-bar span");
-					for (let i = 0; i < elements.length; i++)
-					{
-						elements[i].style.backgroundColor = "rgb(192, 192, 192)";
-					}
-					
-					
-					
-					add_style(`
-						.line-break
-						{
-							background: rgb(0,0,0);
-							background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(140,140,140) 50%, rgb(0,0,0) 100%);
-							background: -webkit-linear-gradient(left, rgb(0,0,0) 0%,rgb(140,140,140) 50%,rgb(0,0,0) 100%);
-							background: linear-gradient(to right, rgb(0,0,0) 0%,rgb(140,140,140) 50%,rgb(0,0,0) 100%);
-						}
-					`, true);
-				}
-				
-				else
-				{
-					add_style(`
-						.line-break
-						{
-							background: rgb(0,0,0);
-							background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(92,92,92) 50%, rgb(0,0,0) 100%);
-							background: -webkit-linear-gradient(left, rgb(0,0,0) 0%,rgb(92,92,92) 50%,rgb(0,0,0) 100%);
-							background: linear-gradient(to right, rgb(0,0,0) 0%,rgb(92,92,92) 50%,rgb(0,0,0) 100%);
-						}
-					`, true);
-					
-					
-					
-					if (url_vars["theme"] == 1)
-					{
-						let elements = document.querySelectorAll(".hook-text");
-						for (let i = 0; i < elements.length; i++)
-						{
-							elements[i].style.color = "rgb(120, 120, 120)";
-						}
-					}
+					elements[i].style.color = "rgb(120, 120, 120)";
 				}
 			}
-		}, 50);
+			
+			
+			
+			document.querySelector("#email img").style.WebkitFilter = "brightness(150%)";
+			document.querySelector("#email img").style.filter = "brightness(150%)";
+			
+			
+			
+			elements = document.querySelectorAll(".stage-bubble, .progress-bar");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.borderColor = "rgb(192, 192, 192)";
+			}
+			
+			elements = document.querySelectorAll(".stage-bubble span, .progress-bar span");
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].style.backgroundColor = "rgb(192, 192, 192)";
+			}
+			
+			
+			
+			add_style(`
+				.line-break
+				{
+					background: rgb(0,0,0);
+					background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(140,140,140) 50%, rgb(0,0,0) 100%);
+					background: -webkit-linear-gradient(left, rgb(0,0,0) 0%,rgb(140,140,140) 50%,rgb(0,0,0) 100%);
+					background: linear-gradient(to right, rgb(0,0,0) 0%,rgb(140,140,140) 50%,rgb(0,0,0) 100%);
+				}
+			`, true);
+		}
+		
+		else
+		{
+			add_style(`
+				.line-break
+				{
+					background: rgb(0,0,0);
+					background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(92,92,92) 50%, rgb(0,0,0) 100%);
+					background: -webkit-linear-gradient(left, rgb(0,0,0) 0%,rgb(92,92,92) 50%,rgb(0,0,0) 100%);
+					background: linear-gradient(to right, rgb(0,0,0) 0%,rgb(92,92,92) 50%,rgb(0,0,0) 100%);
+				}
+			`, true);
+			
+			
+			
+			if (url_vars["theme"] == 1)
+			{
+				let elements = document.querySelectorAll(".hook-text");
+				for (let i = 0; i < elements.length; i++)
+				{
+					elements[i].style.color = "rgb(120, 120, 120)";
+				}
+			}
+		}
 		
 		
 		

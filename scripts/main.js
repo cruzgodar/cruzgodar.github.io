@@ -162,13 +162,43 @@ function on_page_load()
 	
 	insert_images();
 	
-	apply_settings();
-	
 	gimp_edge();
 	
 	remove_hover_on_touch();
 	
 	disable_links();
+	
+	
+	
+	if (url_vars["contrast"] == 1)
+	{
+		set_img_button_contrast();
+	}
+	
+	if (page_settings["writing_page"] && url_vars["font"] == 1)
+	{
+		set_writing_page_font();
+	}
+	
+	if (page_settings["writing_page"] && url_vars["writing_style"] == 1)
+	{
+		set_writing_page_style();
+	}
+	
+	if (url_vars["comments"] == 1)
+	{
+		remove_disqus();
+	}
+	
+	if (url_vars["content_animation"] == 1)
+	{
+		remove_animation();
+	}
+	
+	if (url_vars["content_layout"] == 1)
+	{
+		override_layout();
+	}
 	
 	
 	
@@ -292,6 +322,19 @@ function load_script(src)
 		script.async = true;
 		script.src = src;
 	});
+}
+
+
+
+//Sets a whole bunch of elements' styles at once.
+function set_element_styles(query_string, property, value)
+{
+	let elements = document.querySelectorAll(query_string);
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].style.setProperty(property, value);
+	}
 }
 
 
