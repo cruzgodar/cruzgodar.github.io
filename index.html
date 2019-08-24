@@ -65,7 +65,7 @@
 		
 		let start_page = get_url_var("page");
 		
-		if (start_page != null)
+		if (start_page != null && start_page != "%2F")
 		{
 			entry_point(decodeURIComponent(start_page));
 		}
