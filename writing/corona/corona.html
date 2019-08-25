@@ -205,132 +205,20 @@
 		let progress_bar_done = false;
 		let stage_bubbles_done = false;
 		
+		let progress_bar_pos = Infinity;
+		let stage_bubbles_pos = Infinity;
+		
+		setTimeout(function()
+		{
+			progress_bar_pos = document.querySelector(".progress-bar").offsetTop;
+			stage_bubbles_pos = document.querySelector("#trigger-stage-bubbles").offsetTop;
+		}, 1000);
 		
 		
-		add_style(`
-			body
-			{
-				margin: 0;
-				padding: 0;
-			}
-			
-			#new-banner-cover
-			{
-				height: 60vh;
-			}
-			
-			.title-text
-			{
-				position: relative;
-				width: 100%;
-				color: rgb(255, 255, 255);
-				text-align: center;
-				font-size: 450%;
-				font-family: "Gentium Book Basic", serif;
-				font-weight: normal;
-				z-index: 10;
-			}
-			
-			.hook-text
-			{
-				position: relative;
-				width: 100%;
-				color: rgb(160, 160, 160);
-				text-align: center;
-				font-size: 150%;
-				font-family: "Gentium Book Basic", serif;
-			}
-			
-			.synopsis-text
-			{
-				position: relative;
-				width: 50vw;
-				margin-left: 25vw;
-				color: rgb(160, 160, 160);
-				text-align: justify;
-				font-size: 100%;
-				font-family: 'Gentium Book Basic', serif;
-			}
-			
-			#eclipse
-			{
-				width: 50vh;
-				max-width: 70vw;
-				margin: 0 auto;
-				opacity: 0;
-			}
-			
-			#eclipse img
-			{
-				position: absolute;
-				width: auto;
-				height: auto;
-			}
-			
-			.stage-bubbles
-			{
-				width: 50vw;
-				margin-left: 25vw;
-			}
-			
-			.stage-bubble-subtext
-			{
-				width: 17.5vw;
-				margin-left: -6.25vw;
-			}
-			
-			.progress-bar
-			{
-				width: calc(50vw - 8px);
-				margin-left: 25vw;
-			}
-			
-			#email
-			{
-				width: 300px;
-				margin: 0 auto;
-			}
-			
-			#email img
-			{
-				position: absolute;
-				width: 300px;
-			}
-			
-			@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
-			{
-				/* Make text have smaller margins so justifying doesn't look ugly. */
-				.synopsis-text:not(.layout-override)
-				{
-					width: 80vw;
-					margin-left: 10vw;
-				}
-				
-				#eclipse:not(.layout-override)
-				{
-					max-width: 90vw;
-				}
-				
-				.stage-bubbles:not(.layout-override)
-				{
-					width: 80vw;
-					margin-left: 10vw;
-				}
-				
-				.stage-bubble-subtext:not(.layout-override)
-				{
-					width: 25vw;
-					margin-left: -7.5vw;
-				}
-				
-				/* Fit progress bar to synopsis text */
-				.progress-bar:not(.layout-override)
-				{
-					margin-left: 10vw;
-					width: 80vw;
-				}
-			}
-		`, true);
+		
+		add_corona_style();
+		
+		adjust_for_settings();
 		
 		
 		
@@ -341,63 +229,8 @@
 		window.addEventListener("resize", corona_resize);
 		temporary_handlers["resize"].push(corona_resize);
 		
-		
-		
-		
-		if (url_vars["contrast"] == 1)
-		{
-			set_element_styles(".synopsis-text", "color", "rgb(208, 208, 208)");
-			
-			set_element_styles(".body-text", "color", "rgb(192, 192, 192)");
-			
-			if (url_vars["theme"] != 1)
-			{
-				set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
-			}
-			
-			
-			
-			document.querySelector("#email img").style.WebkitFilter = "brightness(150%)";
-			document.querySelector("#email img").style.filter = "brightness(150%)";
-			
-			
-			
-			set_element_styles(".stage-bubble, .progress-bar", "border-color", "rgb(192, 192, 192)");
-			
-			set_element_styles(".stage-bubble span, .progress-bar span", "background-color", "rgb(192, 192, 192)");
-			
-			
-			
-			add_style(`
-				.line-break
-				{
-					background: rgb(0,0,0);
-					background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(140,140,140) 50%, rgb(0,0,0) 100%);
-					background: -webkit-linear-gradient(left, rgb(0,0,0) 0%,rgb(140,140,140) 50%,rgb(0,0,0) 100%);
-					background: linear-gradient(to right, rgb(0,0,0) 0%,rgb(140,140,140) 50%,rgb(0,0,0) 100%);
-				}
-			`, true);
-		}
-		
-		else
-		{
-			add_style(`
-				.line-break
-				{
-					background: rgb(0,0,0);
-					background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(92,92,92) 50%, rgb(0,0,0) 100%);
-					background: -webkit-linear-gradient(left, rgb(0,0,0) 0%,rgb(92,92,92) 50%,rgb(0,0,0) 100%);
-					background: linear-gradient(to right, rgb(0,0,0) 0%,rgb(92,92,92) 50%,rgb(0,0,0) 100%);
-				}
-			`, true);
-			
-			
-			
-			if (url_vars["theme"] == 1)
-			{
-				set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
-			}
-		}
+		window.addEventListener("scroll", corona_scroll);
+		temporary_handlers["scroll"].push(corona_scroll);
 		
 		
 		
@@ -409,83 +242,87 @@
 		
 		
 		
-		window.addEventListener("scroll", corona_scroll);
-		temporary_handlers["scroll"].push(corona_scroll);
-		
 		
 		
 		function corona_scroll()
 		{
 			scroll = window.scrollY;
 			
+			
+			
 			if (scroll >= 0)
 			{
-				if (scroll <= initial_window_height / 1.25)
+				update_background(scroll);
+				
+				update_scroll_button(scroll);
+				
+				update_eclipse(scroll);
+				
+				update_progress_bar(scroll);
+				
+				update_stage_bubbles(scroll);
+			}
+		}
+		
+		
+		
+		function update_background(scroll)
+		{
+			if (scroll <= initial_window_height / 1.25)
+			{
+				background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * scroll / initial_window_height, 0) - .5 * Math.PI);
+				
+				if (url_vars["theme"] == 1)
 				{
-					background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * scroll / initial_window_height, 0) - .5 * Math.PI);
-					
-					if (url_vars["theme"] == 1)
+					if (url_vars["dark_theme_color"] == 1)
 					{
-						if (url_vars["dark_theme_color"] == 1)
-						{
-							background_color = 0;
-						}
-						
-						else
-						{
-							background_color *= 24;
-						}
-					}
-						
-					else
-					{
-						background_color *= 255;
-					}
-					
-					
-					document.documentElement.style.backgroundColor = "rgb(" + background_color + ", " + background_color + ", " + background_color + ")";
-					
-					if (background_color == 0)
-					{
-						banner_done = true;
+						background_color = 0;
 					}
 					
 					else
 					{
-						banner_done = false;
+						background_color *= 24;
 					}
 				}
-				
-				else if (banner_done == false)
+					
+				else
 				{
-					document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+					background_color *= 255;
+				}
+				
+				
+				document.documentElement.style.backgroundColor = "rgb(" + background_color + ", " + background_color + ", " + background_color + ")";
+				
+				if (background_color == 0)
+				{
 					banner_done = true;
 				}
 				
-				
-				
-				if (scroll <= initial_window_height / 3)
+				else
 				{
-					opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / initial_window_height, 0) - .5 * Math.PI);
-					
-					try {document.querySelector("#scroll-button").style.opacity = opacity;}
-					catch(ex) {}
-					
-					if (opacity == 0)
-					{
-						try {document.querySelector("#scroll-button").remove();}
-						catch(ex) {}
-						
-						scroll_button_done = true;
-					}
-					
-					else
-					{
-						scroll_button_done = false;
-					}
+					banner_done = false;
 				}
+			}
+			
+			else if (banner_done == false)
+			{
+				document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+				banner_done = true;
+			}
+		}
+		
+		
+		
+		function update_scroll_button(scroll)
+		{
+			if (scroll <= initial_window_height / 3)
+			{
+				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / initial_window_height, 0) - .5 * Math.PI);
 				
-				else if (scroll_button_done == false)
+				try {document.querySelector("#scroll-button").style.opacity = opacity;}
+				catch(ex) {}
+				
+				if (opacity == 0)
 				{
 					try {document.querySelector("#scroll-button").remove();}
 					catch(ex) {}
@@ -493,52 +330,73 @@
 					scroll_button_done = true;
 				}
 				
-				
-				
-				if (scroll >= 4/5 * initial_window_height && scroll <= initial_window_height * 6/5)
+				else
 				{
-					opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3.5 * (scroll - (4/5 * initial_window_height)) / initial_window_height, 0) - .5 * Math.PI);
-					
-					document.querySelector("#eclipse").style.opacity = 1 - opacity;
-					
-					if (opacity == 1)
-					{
-						eclipse_done = true;
-					}
-					
-					else
-					{
-						eclipse_done = false;
-					}
-				}
-				
-				else if (scroll >= 6/5 * window_height && eclipse_done == false)
-				{
-					document.querySelector("#eclipse").style.opacity = 1;
-					
-					eclipse_done = true;
-				}
-				
-				else if (scroll <= 4/5 * window_height && eclipse_done == false)
-				{
-					document.querySelector("#eclipse").style.opacity = 0;
-					
-					eclipse_done = true;
+					scroll_button_done = false;
 				}
 			}
 			
+			else if (scroll_button_done == false)
+			{
+				try {document.querySelector("#scroll-button").remove();}
+				catch(ex) {}
+				
+				scroll_button_done = true;
+			}
+		}
+		
+		
+		
+		function update_eclipse(scroll)
+		{
+			if (scroll >= 4/5 * initial_window_height && scroll <= initial_window_height * 6/5)
+			{
+				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3.5 * (scroll - (4/5 * initial_window_height)) / initial_window_height, 0) - .5 * Math.PI);
+				
+				document.querySelector("#eclipse").style.opacity = 1 - opacity;
+				
+				if (opacity == 1)
+				{
+					eclipse_done = true;
+				}
+				
+				else
+				{
+					eclipse_done = false;
+				}
+			}
 			
+			else if (scroll >= 6/5 * window_height && eclipse_done == false)
+			{
+				document.querySelector("#eclipse").style.opacity = 1;
+				
+				eclipse_done = true;
+			}
 			
-			let progress_bar_pos = document.querySelector(".progress-bar").offsetTop;
-			let stage_bubbles_pos = document.querySelector("#trigger-stage-bubbles").offsetTop;
-			
+			else if (scroll <= 4/5 * window_height && eclipse_done == false)
+			{
+				document.querySelector("#eclipse").style.opacity = 0;
+				
+				eclipse_done = true;
+			}
+		}
+		
+		
+		
+		function update_progress_bar(scroll)
+		{
 			if (scroll > progress_bar_pos - 3*window_height/4 && progress_bar_done == false)
 			{
 				document.querySelector(".progress-bar span").style.width = (100 * 16/52) + "%";
 				progress_bar_done = true;
 			}
-			
-			else if (scroll > stage_bubbles_pos - 3*window_height/4 && stage_bubbles_done == false)
+		}
+		
+		
+		
+		function update_stage_bubbles(scroll)
+		{
+			if (scroll > stage_bubbles_pos - 3*window_height/4 && stage_bubbles_done == false)
 			{
 				stage_bubbles_done = true;
 				let bubbles = document.querySelectorAll(".stage-bubble span");
@@ -582,6 +440,201 @@
 		{
 			document.querySelector("#eclipse").style.height = document.querySelector("#eclipse").offsetWidth + "px";
 			document.querySelector("#eclipse img").style.height = document.querySelector("#eclipse").offsetWidth + "px";
+			
+			
+			
+			progress_bar_pos = document.querySelector(".progress-bar").offsetTop;
+			stage_bubbles_pos = document.querySelector("#trigger-stage-bubbles").offsetTop;
+		}
+		
+		
+		
+		function adjust_for_settings()
+		{
+			if (url_vars["contrast"] == 1)
+			{
+				set_element_styles(".synopsis-text", "color", "rgb(208, 208, 208)");
+				
+				set_element_styles(".body-text", "color", "rgb(192, 192, 192)");
+				
+				if (url_vars["theme"] != 1)
+				{
+					set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
+				}
+				
+				
+				
+				document.querySelector("#email img").style.WebkitFilter = "brightness(150%)";
+				document.querySelector("#email img").style.filter = "brightness(150%)";
+				
+				
+				
+				set_element_styles(".stage-bubble, .progress-bar", "border-color", "rgb(192, 192, 192)");
+				
+				set_element_styles(".stage-bubble span, .progress-bar span", "background-color", "rgb(192, 192, 192)");
+				
+				
+				
+				add_style(`
+					.line-break
+					{
+						background: rgb(0,0,0);
+						background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(140,140,140) 50%, rgb(0,0,0) 100%);
+						background: -webkit-linear-gradient(left, rgb(0,0,0) 0%,rgb(140,140,140) 50%,rgb(0,0,0) 100%);
+						background: linear-gradient(to right, rgb(0,0,0) 0%,rgb(140,140,140) 50%,rgb(0,0,0) 100%);
+					}
+				`, true);
+			}
+			
+			else
+			{
+				add_style(`
+					.line-break
+					{
+						background: rgb(0,0,0);
+						background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(92,92,92) 50%, rgb(0,0,0) 100%);
+						background: -webkit-linear-gradient(left, rgb(0,0,0) 0%,rgb(92,92,92) 50%,rgb(0,0,0) 100%);
+						background: linear-gradient(to right, rgb(0,0,0) 0%,rgb(92,92,92) 50%,rgb(0,0,0) 100%);
+					}
+				`, true);
+				
+				
+				
+				if (url_vars["theme"] == 1)
+				{
+					set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
+				}
+			}
+		}
+		
+		
+		
+		function add_corona_style()
+		{
+			add_style(`
+				body
+				{
+					margin: 0;
+					padding: 0;
+				}
+				
+				#new-banner-cover
+				{
+					height: 60vh;
+				}
+				
+				.title-text
+				{
+					position: relative;
+					width: 100%;
+					color: rgb(255, 255, 255);
+					text-align: center;
+					font-size: 450%;
+					font-family: "Gentium Book Basic", serif;
+					font-weight: normal;
+					z-index: 10;
+				}
+				
+				.hook-text
+				{
+					position: relative;
+					width: 100%;
+					color: rgb(160, 160, 160);
+					text-align: center;
+					font-size: 150%;
+					font-family: "Gentium Book Basic", serif;
+				}
+				
+				.synopsis-text
+				{
+					position: relative;
+					width: 50vw;
+					margin-left: 25vw;
+					color: rgb(160, 160, 160);
+					text-align: justify;
+					font-size: 100%;
+					font-family: 'Gentium Book Basic', serif;
+				}
+				
+				#eclipse
+				{
+					width: 50vh;
+					max-width: 70vw;
+					margin: 0 auto;
+					opacity: 0;
+				}
+				
+				#eclipse img
+				{
+					position: absolute;
+					width: auto;
+					height: auto;
+				}
+				
+				.stage-bubbles
+				{
+					width: 50vw;
+					margin-left: 25vw;
+				}
+				
+				.stage-bubble-subtext
+				{
+					width: 17.5vw;
+					margin-left: -6.25vw;
+				}
+				
+				.progress-bar
+				{
+					width: calc(50vw - 8px);
+					margin-left: 25vw;
+				}
+				
+				#email
+				{
+					width: 300px;
+					margin: 0 auto;
+				}
+				
+				#email img
+				{
+					position: absolute;
+					width: 300px;
+				}
+				
+				@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
+				{
+					/* Make text have smaller margins so justifying doesn't look ugly. */
+					.synopsis-text:not(.layout-override)
+					{
+						width: 80vw;
+						margin-left: 10vw;
+					}
+					
+					#eclipse:not(.layout-override)
+					{
+						max-width: 90vw;
+					}
+					
+					.stage-bubbles:not(.layout-override)
+					{
+						width: 80vw;
+						margin-left: 10vw;
+					}
+					
+					.stage-bubble-subtext:not(.layout-override)
+					{
+						width: 25vw;
+						margin-left: -7.5vw;
+					}
+					
+					/* Fit progress bar to synopsis text */
+					.progress-bar:not(.layout-override)
+					{
+						margin-left: 10vw;
+						width: 80vw;
+					}
+				}
+			`, true);
 		}
 	}()
 </script>

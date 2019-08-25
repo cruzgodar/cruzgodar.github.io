@@ -164,100 +164,16 @@
 		
 		
 		
-		add_style(`
-			#container
-			{
-				display: flex;
-				justify-content: space-between;
-				width: 70vw;
-				margin-left: 15vw;
-			}
-			
-			#mandelbrot-set, #mandelbrot-zoom
-			{
-				width: 30vw;
-				height: 30vw;
-			}
-			
-			#high-res-mandelbrot-zoom
-			{
-				width: 90vmin;
-				height: 90vmin;
-				margin-left: calc((100vw - (90vmin + 8px)) / 2);
-			}
-			
-			#mandelbrot-set, #mandelbrot-zoom, #high-res-mandelbrot-zoom
-			{
-				border: 2px solid rgb(127, 127, 127);
-				-webkit-border-radius: 15px;
-				border-radius: 15px;
-				padding: 2px;
-			}
-			
-			
-			
-			@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
-			{
-				#container:not(.layout-override)
-				{
-					flex-direction: column;
-					margin-left: calc((100vw - (70vw + 8px)) / 2);
-				}
-				
-				#mandelbrot-set:not(.layout-override), #mandelbrot-zoom:not(.layout-override)
-				{
-					width: 70vw;
-					height: 70vw;
-				}
-				
-				#mandelbrot-set
-				{
-					margin-bottom: 5vw;
-				}
-			}
-		`, true);
+		add_mandelbrot_style();
 		
+		adjust_for_settings();
 		
+		draw_initial_mandelbrot_set();
 		
-		if (url_vars["contrast"] == 1)
-		{
-			if (url_vars["theme"] == 1)
-			{
-				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(192, 192, 192)";
-				document.querySelector("#mandelbrot-zoom").style.borderColor = "rgb(192, 192, 192)";
-				document.querySelector("#high-res-mandelbrot-zoom").style.borderColor = "rgb(192, 192, 192)";
-			}
-			
-			else
-			{
-				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(64, 64, 64)";
-				document.querySelector("#mandelbrot-zoom").style.borderColor = "rgb(64, 64, 64)";
-				document.querySelector("#high-res-mandelbrot-zoom").style.borderColor = "rgb(64, 64, 64)";
-			}
-		}
-		
-		
-		
-		document.querySelector("#mandelbrot-set").setAttribute("width", small_canvas_size);
-		document.querySelector("#mandelbrot-set").setAttribute("height", small_canvas_size);
-		
-		
-		
-		//Draw the initial Mandelbrot set.
-		let ctx = document.querySelector("#mandelbrot-set").getContext("2d");
-		
-		let img = new Image();
-		img.src = "/applets/mandelbrot-set-explorer/graphics/mandelbrot-set.png";
-		img.onload = function()
-		{
-			ctx.drawImage(img, 0, 0, small_canvas_size, small_canvas_size);
-		};
 		
 		
 		
 		document.querySelector("#generate-button").addEventListener("click", draw_high_res_mandelbrot_zoom);
-		
-		
 		
 		window.addEventListener("resize", mandelbrot_zoom_resize);
 		temporary_handlers["resize"].push(mandelbrot_zoom_resize);
@@ -269,92 +185,15 @@
 		//As the user scrolls around the image, make tiny Julia set previews.
 		if (!hasTouch())
 		{
-			document.querySelector("#mandelbrot-set").addEventListener("mousemove", function(e)
-			{
-				if (persist_image == false)
-				{
-					let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
-					let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
-					
-					let center_x = ((mouse_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
-					let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
-					
-					draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations, false);
-				}
-			});
-			
-			//On a click, make a much larger image.
-			document.querySelector("#mandelbrot-set").addEventListener("click", function(e)
-			{
-				let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
-				let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
-				
-				let center_x = ((mouse_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
-				let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
-				
-				draw_mandelbrot_zoom(center_x, center_y, large_mandelbrot_zoom_size, large_mandelbrot_zoom_iterations, false);
-				
-				current_center_x = center_x;
-				current_center_y = center_y;
-				
-				persist_image = true;
-			});
-			
-			document.querySelector("#mandelbrot-set").addEventListener("mouseleave", function(e)
-			{
-				persist_image = false;
-			});
+			init_listeners_no_touch();
 		}
 		
-		
-		
-		//Handle touchscreens.
 		else
 		{
-			let last_touch_x = 0;
-			let last_touch_y = 0;
-			
-			
-			
-			document.querySelector("#instructions").innerHTML = `Drag along the Mandelbrot set to view that area up close, and release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.`;
-			
-			document.querySelector("#mandelbrot-set").addEventListener("touchmove", function(e)
-			{
-				e.preventDefault();
-					
-				let touch_x = e.touches[0].clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
-				let touch_y = e.touches[0].clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
-				
-				last_touch_x = touch_x;
-				last_touch_y = touch_y;
-				
-				let center_x = ((touch_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
-				let center_y = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
-				
-				draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations, false);
-			}, false);
-			
-			document.querySelector("#mandelbrot-set").addEventListener("touchend", function(e)
-			{
-				e.preventDefault();
-				
-				let center_x = ((last_touch_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
-				let center_y = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
-				
-				draw_mandelbrot_zoom(center_x, center_y, large_mandelbrot_zoom_size, large_mandelbrot_zoom_iterations, false);
-				
-				current_center_x = center_x;
-				current_center_y = center_y;
-			}, false);
+			init_listeners_touch();
 		}
 		
 		
-		
-		function draw_high_res_mandelbrot_zoom()
-		{
-			let dim = parseInt(document.querySelector("#dim-input").value || 1000);
-			draw_mandelbrot_zoom(current_center_x, current_center_y, dim, large_mandelbrot_zoom_iterations, true);
-		}
 		
 		
 		
@@ -465,28 +304,7 @@
 			
 			if (download)
 			{
-				try {document.querySelector("#download-button").style.opacity = 0;}
-				catch(ex) {}
-				
-				setTimeout(function()
-				{
-					try {document.querySelector("#download-button").remove();}
-					catch(ex) {}
-					
-					let image_data = document.querySelector("#high-res-mandelbrot-zoom").toDataURL();
-					
-					
-					
-					document.querySelector("#download-location").insertAdjacentHTML("afterend", `
-						<div id="download-button" class="animated-opacity" style="display: flex; justify-content: center; opacity: 0; width: 70vw; margin: 0 auto">
-							<a href="${image_data}" download="Mandelbrot Zoom.png" class="real-link">
-								<button class="text-button" type="button" onclick="">Download Image</button>
-							</a>
-						</div>
-					`);
-					
-					document.querySelector("#download-button").style.opacity = 1;
-				}, 300);
+				prepare_download(center_x, center_y);
 			}
 		}
 		
@@ -535,10 +353,238 @@
 		
 		
 		
+		function prepare_download(center_x, center_y)
+		{
+			try {document.querySelector("#download-button").style.opacity = 0;}
+			catch(ex) {}
+			
+			setTimeout(function()
+			{
+				try {document.querySelector("#download-button").remove();}
+				catch(ex) {}
+				
+				let image_data = document.querySelector("#high-res-mandelbrot-zoom").toDataURL();
+				
+				
+				
+				document.querySelector("#download-location").insertAdjacentHTML("afterend", `
+					<div id="download-button" class="animated-opacity" style="display: flex; justify-content: center; opacity: 0; width: 70vw; margin: 0 auto">
+						<a href="${image_data}" download="Mandelbrot Zoom.png" class="real-link">
+							<button class="text-button" type="button" onclick="">Download Image</button>
+						</a>
+					</div>
+				`);
+				
+				document.querySelector("#download-button").style.opacity = 1;
+			}, 300);
+		}
+		
+		
+		
+		function draw_high_res_mandelbrot_zoom()
+		{
+			let dim = parseInt(document.querySelector("#dim-input").value || 1000);
+			draw_mandelbrot_zoom(current_center_x, current_center_y, dim, large_mandelbrot_zoom_iterations, true);
+		}
+		
+		
+		
+		function adjust_for_settings()
+		{
+			if (url_vars["contrast"] == 1)
+			{
+				if (url_vars["theme"] == 1)
+				{
+					document.querySelector("#mandelbrot-set").style.borderColor = "rgb(192, 192, 192)";
+					document.querySelector("#mandelbrot-zoom").style.borderColor = "rgb(192, 192, 192)";
+					document.querySelector("#high-res-mandelbrot-zoom").style.borderColor = "rgb(192, 192, 192)";
+				}
+				
+				else
+				{
+					document.querySelector("#mandelbrot-set").style.borderColor = "rgb(64, 64, 64)";
+					document.querySelector("#mandelbrot-zoom").style.borderColor = "rgb(64, 64, 64)";
+					document.querySelector("#high-res-mandelbrot-zoom").style.borderColor = "rgb(64, 64, 64)";
+				}
+			}
+		}
+		
+		
+		
+		function draw_initial_mandelbrot_set()
+		{
+			document.querySelector("#mandelbrot-set").setAttribute("width", small_canvas_size);
+			document.querySelector("#mandelbrot-set").setAttribute("height", small_canvas_size);
+			
+			let ctx = document.querySelector("#mandelbrot-set").getContext("2d");
+			
+			let img = new Image();
+			img.src = "/applets/mandelbrot-set-explorer/graphics/mandelbrot-set.png";
+			img.onload = function()
+			{
+				ctx.drawImage(img, 0, 0, small_canvas_size, small_canvas_size);
+			};
+		}
+		
+		
+		
+		function init_listeners_no_touch()
+		{
+			document.querySelector("#mandelbrot-set").addEventListener("mousemove", function(e)
+			{
+				if (persist_image == false)
+				{
+					let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
+					let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
+					
+					let center_x = ((mouse_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
+					let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
+					
+					draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations, false);
+				}
+			});
+			
+			
+			
+			//On a click, make a much larger image.
+			document.querySelector("#mandelbrot-set").addEventListener("click", function(e)
+			{
+				let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
+				let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
+				
+				let center_x = ((mouse_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
+				let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
+				
+				draw_mandelbrot_zoom(center_x, center_y, large_mandelbrot_zoom_size, large_mandelbrot_zoom_iterations, false);
+				
+				current_center_x = center_x;
+				current_center_y = center_y;
+				
+				persist_image = true;
+			});
+			
+			
+			
+			document.querySelector("#mandelbrot-set").addEventListener("mouseleave", function(e)
+			{
+				persist_image = false;
+			});
+		}
+		
+		
+		
+		function init_listeners_touch()
+		{
+			let last_touch_x = 0;
+			let last_touch_y = 0;
+			
+			
+			
+			document.querySelector("#instructions").innerHTML = `Drag along the Mandelbrot set to view that area up close, and release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.`;
+			
+			document.querySelector("#instructions a").addEventListener("click", function(e)
+			{
+				e.preventDefault();
+			});
+			
+			
+			
+			document.querySelector("#mandelbrot-set").addEventListener("touchmove", function(e)
+			{
+				e.preventDefault();
+				
+				let touch_x = e.touches[0].clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
+				let touch_y = e.touches[0].clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
+				
+				last_touch_x = touch_x;
+				last_touch_y = touch_y;
+				
+				let center_x = ((touch_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
+				let center_y = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
+				
+				draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations, false);
+			}, false);
+			
+			
+			
+			document.querySelector("#mandelbrot-set").addEventListener("touchend", function(e)
+			{
+				e.preventDefault();
+				
+				let center_x = ((last_touch_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
+				let center_y = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
+				
+				draw_mandelbrot_zoom(center_x, center_y, large_mandelbrot_zoom_size, large_mandelbrot_zoom_iterations, false);
+				
+				current_center_x = center_x;
+				current_center_y = center_y;
+			}, false);
+		}
+		
+		
+		
 		function mandelbrot_zoom_resize()
 		{
 			small_canvas_size = document.querySelector("#mandelbrot-zoom").offsetWidth;
 			large_canvas_size = document.querySelector("#high-res-mandelbrot-zoom").offsetWidth;
+		}
+		
+		
+		
+		function add_mandelbrot_style()
+		{
+			add_style(`
+				#container
+				{
+					display: flex;
+					justify-content: space-between;
+					width: 70vw;
+					margin-left: 15vw;
+				}
+				
+				#mandelbrot-set, #mandelbrot-zoom
+				{
+					width: 30vw;
+					height: 30vw;
+				}
+				
+				#high-res-mandelbrot-zoom
+				{
+					width: 90vmin;
+					height: 90vmin;
+					margin-left: calc((100vw - (90vmin + 8px)) / 2);
+				}
+				
+				#mandelbrot-set, #mandelbrot-zoom, #high-res-mandelbrot-zoom
+				{
+					border: 2px solid rgb(127, 127, 127);
+					-webkit-border-radius: 15px;
+					border-radius: 15px;
+					padding: 2px;
+				}
+				
+				
+				
+				@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
+				{
+					#container:not(.layout-override)
+					{
+						flex-direction: column;
+						margin-left: calc((100vw - (70vw + 8px)) / 2);
+					}
+					
+					#mandelbrot-set:not(.layout-override), #mandelbrot-zoom:not(.layout-override)
+					{
+						width: 70vw;
+						height: 70vw;
+					}
+					
+					#mandelbrot-set
+					{
+						margin-bottom: 5vw;
+					}
+				}
+			`, true);
 		}
 	}()
 </script>

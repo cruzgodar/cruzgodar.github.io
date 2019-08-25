@@ -192,74 +192,89 @@
 	
 	!function()
 	{
-		//Set the text for all the settings.
-		let settings_query_strings = Object.keys(url_vars);
+		init_settings_texts();
 		
-		for (let i = 0; i < settings_query_strings.length - 1; i++)
+		add_settings_style();
+		
+		set_apply_button();
+		
+		
+		
+		if (browser_name == "MS Edge")
 		{
-			document.querySelector("#" + settings_query_strings[i].replace(/_/g, "-") + "-button-text").textContent = settings_texts[settings_query_strings[i]][url_vars[settings_query_strings[i]]];
+			document.querySelector("#banner-style-button-row").remove();
 		}
 		
-		document.querySelector("#content-layout-button-text").textContent = settings_texts["content_layout"][0].replace("{}", layout_string);
 		
 		
 		
-		add_style(`
-			html
+		
+		function init_settings_texts()
+		{
+			let settings_query_strings = Object.keys(url_vars);
+			
+			for (let i = 0; i < settings_query_strings.length - 1; i++)
 			{
-				max-width: 100%;
-				overflow-x: hidden;
+				document.querySelector("#" + settings_query_strings[i].replace(/_/g, "-") + "-button-text").textContent = settings_texts[settings_query_strings[i]][url_vars[settings_query_strings[i]]];
 			}
 			
-			body
+			document.querySelector("#content-layout-button-text").textContent = settings_texts["content_layout"][0].replace("{}", layout_string);
+		}
+		
+		
+		
+		function set_apply_button()
+		{
+			let return_url = get_url_var("return");
+			
+			//Believe it or not, it might actually be the string "null". If the page we're coming from is the root page (without index.html), it will write null into the url and then this page will get "null". Still an invalid url to return to.
+			if (return_url == null || return_url == "null")
 			{
-				max-width: 100%;
-				overflow-x: hidden;
-			}
-
-			.button-row
-			{
-				width: 70vw;
-				height: 38px;
-				margin: 0 auto;
-				display: flex;
-				align-items: flex-start;
+				document.querySelector("#apply-button").setAttribute("onclick", "redirect('/home.html')");
 			}
 			
-			.button-text
+			else
 			{
-				margin: auto;
-				margin-left: 10px;
-				text-align: left;
+				document.querySelector("#apply-button").setAttribute("onclick", "redirect('" + decodeURIComponent(return_url) + "')");
 			}
-			
-			@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
-			{
-				.button-row:not(.layout-override)
-				{
-					width: 90vw;
-				}
-			}
-		`, true);
+		}
 		
 		
 		
-		//We only apply this now to prevent the dark theme from transitioning slowly on load rather than instantly.
-		add_style(`
-			.color-transition
-			{
-				-webkit-transition: background-color .6s ease;
-				transition: background-color .6s ease;
-			}
-		`, true);
-		
-		document.documentElement.classList.add("color-transition");
-		
-		
-		
-		setTimeout(function()
+		function add_settings_style()
 		{
 			add_style(`
+				html
+				{
+					max-width: 100%;
+					overflow-x: hidden;
+					
+					-webkit-transition: background-color .6s ease, opacity .3s ease !important;
+					transition: background-color .6s ease, opacity .3s ease !important;
+				}
+				
+				body
+				{
+					max-width: 100%;
+					overflow-x: hidden;
+				}
+
+				.button-row
+				{
+					width: 70vw;
+					height: 38px;
+					margin: 0 auto;
+					display: flex;
+					align-items: flex-start;
+				}
+				
+				.button-text
+				{
+					margin: auto;
+					margin-left: 10px;
+					text-align: left;
+				}
+				
 				.heading-text
 				{
 					-webkit-transition: color .6s ease;
@@ -283,31 +298,15 @@
 					-webkit-transition: -webkit-filter .15s ease-in-out, border-color .6s ease;
 					transition: filter .15s ease-in-out, border-color .6s ease;
 				}
+				
+				@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
+				{
+					.button-row:not(.layout-override)
+					{
+						width: 90vw;
+					}
+				}
 			`, true);
-		}, 600);
-		
-		
-		
-		//Deal with Edge.
-		if (browser_name == "MS Edge")
-		{
-			document.querySelector("#banner-style-button-row").remove();
-		}
-		
-		
-		
-		//Figure out where to return to.
-		let return_url = get_url_var("return");
-		
-		//Believe it or not, it might actually be the string "null". If the page we're coming from is the root page (without index.html), it will write null into the url and then this page will get "null". Still an invalid url to return to.
-		if (return_url == null || return_url == "null")
-		{
-			document.querySelector("#apply-button").setAttribute("onclick", "redirect('/home.html')");
-		}
-		
-		else
-		{
-			document.querySelector("#apply-button").setAttribute("onclick", "redirect('" + decodeURIComponent(return_url) + "')");
 		}
 	}()
 </script>

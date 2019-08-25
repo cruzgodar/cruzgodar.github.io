@@ -249,12 +249,34 @@
 		footer_done = true;
 		
 		
+		
 		let num_images = 26;
 		let banner_index = Math.floor(Math.random() * num_images) + 1;
 		
 		
 		
 		if (browser_name == "MS Edge")
+		{
+			alert_on_edge();
+		}
+		
+		
+		
+		load_homepage_banner();
+			
+			
+			
+		window.addEventListener("scroll", homepage_scroll);
+		window.addEventListener("resize", homepage_scroll);
+		
+		temporary_handlers["scroll"].push(homepage_scroll);
+		temporary_handlers["resize"].push(homepage_scroll);
+		
+		
+		
+		
+		
+		function alert_on_edge()
 		{
 			document.querySelector(".logo").insertAdjacentHTML("beforebegin", `
 				<div class="body-text" style="text-align: center">
@@ -267,116 +289,111 @@
 		
 		
 		
-		let banner_name = "";
-		
-		if (window_width / window_height < 1 || window_width <= 700)
+		function load_homepage_banner()
 		{
-			banner_name = "portrait." + banner_extension;
-		}
-		
-		else
-		{
-			banner_name = "landscape." + banner_extension;
-		}
-		
-		
-		
-		//Fade in once the banner has loaded.
-		fetch("/graphics/index-banners/" + banner_index + "/" + banner_name)
-		
-		.then(function(response)
-		{
-			add_style(`
-				.banner:before
-				{
-					background: url("/graphics/index-banners/${banner_index}/landscape.${banner_extension}") no-repeat center center;
-					
-					-webkit-background-size: cover;
-					background-size: cover;
-				}
-				
-				@media screen and (max-aspect-ratio: 1), (max-width: 700px)
-				{
+			let banner_name = "";
+			
+			if (window_width / window_height < 1 || window_width <= 700)
+			{
+				banner_name = "portrait." + banner_extension;
+			}
+			
+			else
+			{
+				banner_name = "landscape." + banner_extension;
+			}
+			
+			
+			
+			//Fade in once the banner has loaded.
+			fetch("/graphics/index-banners/" + banner_index + "/" + banner_name)
+			
+			.then(function(response)
+			{
+				add_style(`
 					.banner:before
 					{
-						background: url("/graphics/index-banners/${banner_index}/portrait.${banner_extension}") no-repeat center center;
+						background: url("/graphics/index-banners/${banner_index}/landscape.${banner_extension}") no-repeat center center;
 						
 						-webkit-background-size: cover;
 						background-size: cover;
 					}
-				}
-			`, true);
+					
+					@media screen and (max-aspect-ratio: 1), (max-width: 700px)
+					{
+						.banner:before
+						{
+							background: url("/graphics/index-banners/${banner_index}/portrait.${banner_extension}") no-repeat center center;
+							
+							-webkit-background-size: cover;
+							background-size: cover;
+						}
+					}
+				`, true);
+				
+				
+				
+				let img = new Image();
+				
+				img.onload = function()
+				{
+					document.documentElement.style.opacity = 1;
+					
+					
+					
+					document.querySelector(".name-text").remove();
+					
+					
+					
+					document.querySelector("#background-image").insertAdjacentHTML("afterend", `
+						<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="350">
+							<p id="cruz-text" class="name-text">Cruz</p>
+						</div>
+						
+						<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="600">
+							<p id="godar-text" class="name-text">Godar</p>
+						</div>
+					`);
+					
+					if (url_vars["content_animation"] == 1)
+					{
+						let elements = document.querySelectorAll(".name-text-container");
+						for (let i = 0; i < elements.length; i++)
+						{
+							elements[i].removeAttribute("data-aos");
+						}
+					}
+					
+					if (url_vars["banner_style"] == 1)
+					{
+						set_element_styles(".name-text-container", "position", "absolute");
+					}
+					
+					
+					
+					//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
+					if (scroll <= window_height / 3)
+					{
+						scroll_button_timeout = setTimeout(add_scroll_button, 3000);
+					}
+				};
+				
+				img.src = "/graphics/index-banners/" + banner_index + "/" + banner_name;
+			})
 			
-			
-			
-			let img = new Image();
-			
-			img.onload = function()
+			.catch(function(error)
 			{
-				document.documentElement.style.opacity = 1;
-				
-				
-				
+				document.querySelector("#background-image").remove();
+				document.querySelector("#banner-cover").remove();
 				document.querySelector(".name-text").remove();
 				
+				document.querySelector("#scroll-to").previousElementSibling.style.height = "2vh";
 				
+				document.documentElement.style.opacity = 1;
 				
-				document.querySelector("#background-image").insertAdjacentHTML("afterend", `
-					<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="350">
-						<p id="cruz-text" class="name-text">Cruz</p>
-					</div>
-					
-					<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="600">
-						<p id="godar-text" class="name-text">Godar</p>
-					</div>
-				`);
-				
-				if (url_vars["content_animation"] == 1)
-				{
-					let elements = document.querySelectorAll(".name-text-container");
-					for (let i = 0; i < elements.length; i++)
-					{
-						elements[i].removeAttribute("data-aos");
-					}
-				}
-				
-				if (url_vars["banner_style"] == 1)
-				{
-					set_element_styles(".name-text-container", "position", "absolute");
-				}
-				
-				
-				
-				//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
-				if (scroll <= window_height / 3)
-				{
-					scroll_button_timeout = setTimeout(add_scroll_button, 3000);
-				}
-			};
-			
-			img.src = "/graphics/index-banners/" + banner_index + "/" + banner_name;
-		})
-		
-		.catch(function(error)
-		{
-			document.querySelector("#background-image").remove();
-			document.querySelector("#banner-cover").remove();
-			document.querySelector(".name-text").remove();
-			
-			document.querySelector("#scroll-to").previousElementSibling.style.height = "2vh";
-			
-			document.documentElement.style.opacity = 1;
-			
-			update_aos();
-		});
-			
-			
-			
-		window.addEventListener("scroll", homepage_scroll);
-		window.addEventListener("resize", homepage_scroll);
-		
-		temporary_handlers["scroll"].push(homepage_scroll);
-		temporary_handlers["resize"].push(homepage_scroll);
+				update_aos();
+			});
+		}
 		
 		
 		
