@@ -291,7 +291,6 @@ function concat_url_vars(include_return_url)
 	
 	
 	
-	//If we're going to the settings page, we need to know where we came from so we can return there later. Just don't include any current url variables.
 	if (include_return_url)
 	{
 		string += "&return=" + get_url_var("page");
@@ -306,6 +305,6 @@ function write_url_vars()
 	//Make state persist on refresh, unless it's the settings page, which will just clog up the history.
 	if (!(window.location.href.includes("settings")))
 	{
-		history.replaceState({}, document.title, window.location.href.split("?", 1) + concat_url_vars(false));
+		history.replaceState({}, document.title, window.location.pathname + concat_url_vars(false));
 	}
 }

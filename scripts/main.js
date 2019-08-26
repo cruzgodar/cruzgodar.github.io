@@ -1,13 +1,11 @@
-//Included on every page. Sets up variables and runs browsers.js, footer.js, navigation.js, and settings.js.
-
-
 let window_width = null, window_height = null;
 
 let initial_window_height = null;
 
 let page_settings = {};
 
-let current_url = "/";
+let current_url = decodeURIComponent(get_url_var("page"));
+
 let parent_folder = "/";
 
 //Whether the browser supports WebP images or not. Given a boolean value when decided.
