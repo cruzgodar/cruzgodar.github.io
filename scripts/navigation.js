@@ -212,7 +212,7 @@ function load_html(url, include_return_url, no_state_push)
 		
 		else
 		{
-			history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+			history.replaceState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
 		}
 		
 		document.body.innerHTML = new_page_data;
