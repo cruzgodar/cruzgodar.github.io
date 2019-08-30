@@ -5,10 +5,10 @@
 		"non-webp": "writing/cover.jpg"
 	},
 	
-	"image-blog":
+	"image-teaching":
 	{
-		"webp": "blog/cover.webp",
-		"non-webp": "blog/cover.jpg"
+		"webp": "teaching/cover.webp",
+		"non-webp": "teaching/cover.jpg"
 	},
 	
 	"image-applets":
@@ -23,16 +23,22 @@
 		"non-webp": "research/cover.jpg"
 	},
 	
+	"image-blog":
+	{
+		"webp": "blog/cover.webp",
+		"non-webp": "blog/cover.jpg"
+	},
+	
 	"image-notes":
 	{
 		"webp": "notes/cover.webp",
 		"non-webp": "notes/cover.jpg"
 	},
 	
-	"image-bio":
+	"image-about":
 	{
-		"webp": "bio/cover.webp",
-		"non-webp": "bio/cover.jpg"
+		"webp": "about/cover.webp",
+		"non-webp": "about/cover.jpg"
 	},
 	
 	"image-mandelbrot-set-explorer":

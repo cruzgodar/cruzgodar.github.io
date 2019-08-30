@@ -1,0 +1,81 @@
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+<header>
+	<div class="logo" data-aos="fade-in" id="trigger-section-1">
+		<a href="/home.html">
+			<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home.html')"></img>
+		</a>
+	</div>
+
+	<div style="height: 2vh"></div>
+
+	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">
+		<h1 class="heading-text">Math 111</h1>
+	</div>
+	
+	<div style="height: 2vh"></div>
+
+	<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-1">
+		<p class="date-text">
+			<time datetime="2019-10-01">October 1, 2019</time>
+		</p>
+	</div>
+</header>
+
+
+
+<div style="height: 10vh"></div>
+
+
+
+<main>
+	<section>
+		<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
+			<p class="body-text center-if-needed">
+				<span>This class page will launch on October 1st.</span>
+			</p>
+		</div>
+	</section>
+</main>
+
+
+
+<footer>
+	<div id="spawn-footer"></div>
+</footer>
+
+
+
+<script>
+	if (typeof current_url == "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	page_settings = 
+	{
+		"title": "Math 111",
+		
+		"banner_page": false,
+		"writing_page": false,
+		"math_page": false,
+		"comments": false,
+		
+		"manual_banner": false,
+		"manual_dark_theme": false,
+		
+		"no_footer": false,
+		"footer_exclusion": "",
+		"footer_from_nonstandard_color": false
+	};
+	
+	on_page_load();
+</script>

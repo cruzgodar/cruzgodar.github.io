@@ -90,11 +90,11 @@ function insert_footer()
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-					<div class="line-break" style="width: 80vw"></div>
+					<div class="line-break" style="width: 95vw"></div>
 				</div>
 			<div style="height: 4vw"></div>
 			
-			<nav id="footer-image-links" style="width: 68vw"></nav>
+			<nav id="footer-image-links" style="width: 80vw"></nav>
 		`);
 	}
 	
@@ -130,16 +130,16 @@ function insert_footer()
 		delay += 100;
 	}
 	
-	if (page_settings["footer_exclusion"] != "blog")
+	if (page_settings["footer_exclusion"] != "teaching")
 	{
 		let element = document.createElement("div");
 		
 		document.querySelector("#footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
-			<div id="blog-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-				<a href="/index.html?page=%2Fblog%2Fblog.html${vars_no_return}">
-					<img onclick="redirect('/blog/blog.html', 0${fnc_arg})" src="/blog/cover.${extension}" alt="Blog"></img>
+			<div id="teaching-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="/index.html?page=%2Fteaching%2Fteaching.html${vars_no_return}">
+					<img onclick="redirect('/teaching/teaching.html', 0${fnc_arg})" src="/teaching/cover.${extension}" alt="Teaching"></img>
 				</a>
 			</div>
 		`;
@@ -181,6 +181,23 @@ function insert_footer()
 		delay += 100;
 	}
 	
+	if (page_settings["footer_exclusion"] != "blog")
+	{
+		let element = document.createElement("div");
+		
+		document.querySelector("#footer-image-links").appendChild(element);
+		
+		element.outerHTML = `
+			<div id="blog-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="/index.html?page=%2Fblog%2Fblog.html${vars_no_return}">
+					<img onclick="redirect('/blog/blog.html', 0${fnc_arg})" src="/blog/cover.${extension}" alt="Blog"></img>
+				</a>
+			</div>
+		`;
+		
+		delay += 100;
+	}
+	
 	if (page_settings["footer_exclusion"] != "notes")
 	{
 		let element = document.createElement("div");
@@ -198,16 +215,16 @@ function insert_footer()
 		delay += 100;
 	}
 	
-	if (page_settings["footer_exclusion"] != "bio")
+	if (page_settings["footer_exclusion"] != "about")
 	{
 		let element = document.createElement("div");
 		
 		document.querySelector("#footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
-			<div id="bio-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-				<a href="/index.html?page=%2Fbio%2Fbio.html${vars_no_return}">
-					<img onclick="redirect('/bio/bio.html', 0${fnc_arg})" src="/bio/cover.${extension}" alt="Me"></img>
+			<div id="about-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="/index.html?page=%2Fabout%2Fabout.html${vars_no_return}">
+					<img onclick="redirect('/about/about.html', 0${fnc_arg})" src="/about/cover.${extension}" alt="About"></img>
 				</a>
 			</div>
 		`;
