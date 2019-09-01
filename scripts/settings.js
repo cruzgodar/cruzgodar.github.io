@@ -93,8 +93,11 @@ for (key in url_vars)
 		url_vars[key] = 0;
 	}
 	
-	url_vars[key] = !url_vars[key];
-	url_var_functions[key]();
+	else if (url_vars[key] == 1)
+	{
+		url_vars[key] = 0;
+		url_var_functions[key]();
+	}
 }
 
 
