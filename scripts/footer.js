@@ -90,11 +90,11 @@ function insert_footer()
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-					<div class="line-break" style="width: 95vw"></div>
+					<div class="line-break" style="width: 80vw"></div>
 				</div>
 			<div style="height: 4vw"></div>
 			
-			<nav id="footer-image-links" style="width: 80vw"></nav>
+			<nav id="footer-image-links" style="width: 68vw"></nav>
 		`);
 	}
 	
@@ -157,23 +157,6 @@ function insert_footer()
 			<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 				<a href="index.html?page=%2Fapplets%2Fapplets.html${vars_no_return}">
 					<img onclick="redirect('/applets/applets.html', 0${fnc_arg})" src="/applets/cover.${extension}" alt="Applets"></img>
-				</a>
-			</div>
-		`;
-		
-		delay += 100;
-	}
-	
-	if (page_settings["footer_exclusion"] != "research")
-	{
-		let element = document.createElement("div");
-		
-		document.querySelector("#footer-image-links").appendChild(element);
-		
-		element.outerHTML = `
-			<div id="research-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-				<a href="/index.html?page=%2Fresearch%2Fresearch.html${vars_no_return}">
-					<img onclick="redirect('/research/research.html', 0${fnc_arg})" src="/research/cover.${extension}" alt="Research"></img>
 				</a>
 			</div>
 		`;
