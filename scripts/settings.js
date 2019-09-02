@@ -86,17 +86,20 @@ if (url_vars["dark_theme_color"] == 1)
 
 
 
-for (key in url_vars)
+function init_settings()
 {
-	if (url_vars[key] == null)
+	for (key in url_vars)
 	{
-		url_vars[key] = 0;
-	}
-	
-	else if (url_vars[key] == 1)
-	{
-		url_vars[key] = 0;
-		url_var_functions[key]();
+		if (url_vars[key] == null)
+		{
+			url_vars[key] = 0;
+		}
+		
+		else if (url_vars[key] == 1)
+		{
+			url_vars[key] = 0;
+			url_var_functions[key]();
+		}
 	}
 }
 

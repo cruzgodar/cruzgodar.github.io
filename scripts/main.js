@@ -100,6 +100,7 @@ async function entry_point(url)
 	init();
 	
 	
+	init_settings();
 	
 	check_webp()
 	
