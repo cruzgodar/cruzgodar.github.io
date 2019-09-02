@@ -228,7 +228,7 @@
 			let return_url = get_url_var("return");
 			
 			//Believe it or not, it might actually be the string "null". If the page we're coming from is the root page (without index.html), it will write null into the url and then this page will get "null". Still an invalid url to return to.
-			if (return_url == null || return_url == "null")
+			if (return_url == null || return_url == "null" || return_url.includes("settings"))
 			{
 				document.querySelector("#apply-button").setAttribute("onclick", "redirect('/home.html')");
 			}
