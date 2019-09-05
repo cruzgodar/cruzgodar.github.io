@@ -30,13 +30,9 @@
 
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 10px;
-	-webkit-border-radius: 10px;
 	padding: 10px;
 	
-	-webkit-transition: -webkit-filter .15s ease-in-out;
 	transition: filter .15s ease-in-out;
-	
-	-webkit-filter: brightness(100%);
 	filter: brightness(100%);
 	
 	outline: none;
@@ -44,7 +40,6 @@
 
 .nav-button:hover
 {
-	-webkit-filter: brightness(75%);
 	filter: brightness(75%);
 }
 
@@ -99,16 +94,12 @@
 
 .big-image-horizontal, .small-image-horizontal, .big-image-vertical, .small-image-vertical
 {
-	-webkit-transition: -webkit-filter .15s ease-in-out;
 	transition: filter .15s ease-in-out;
-	
-	-webkit-filter: brightness(100%);
 	filter: brightness(100%);
 }
 
 .big-image-horizontal:hover, .small-image-horizontal:hover, .big-image-vertical:hover, .small-image-vertical:hover
 {
-	-webkit-filter: brightness(75%);
 	filter: brightness(75%);
 }
 

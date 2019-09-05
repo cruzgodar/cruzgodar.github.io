@@ -44,7 +44,6 @@ function load_banner()
 				.banner:before
 				{
 					background: url("${parent_folder}banners/landscape.${banner_extension}") no-repeat center center;
-					-webkit-background-size: cover;
 					background-size: cover;
 				}
 				
@@ -53,7 +52,6 @@ function load_banner()
 					.banner:before
 					{
 						background: url("${parent_folder}banners/portrait.${banner_extension}") no-repeat center center;
-						-webkit-background-size: cover;
 						background-size: cover;
 					}
 				}

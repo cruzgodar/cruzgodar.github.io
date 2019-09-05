@@ -57,9 +57,11 @@ dfn
 
 img
 {
-	-webkit-transform: translateZ(0);
-	-webkit-perspective: 1000;
+	transform: translateZ(0);
+	perspective: 1000;
+	
 	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
 }
 
 
@@ -77,16 +79,12 @@ img
 	width: 100px;
 	height: 100px;
 	
-	-webkit-transition: -webkit-filter .15s ease-in-out;
 	transition: filter .15s ease-in-out;
-	
-	-webkit-filter: brightness(100%);
 	filter: brightness(100%);
 }
 
 .logo img:hover
 {
-	-webkit-filter: brightness(75%);
 	filter: brightness(75%);
 }
 
@@ -159,14 +157,10 @@ img
 	background-color: rgb(255, 255, 255);
 	
 	border: 2px solid rgb(127, 127, 127);
-	-webkit-border-radius: 50%;
 	border-radius: 50%;
 	padding: 5px;
 	
-	-webkit-transition: -webkit-filter .15s ease-in-out;
 	transition: filter .15s ease-in-out;
-	
-	-webkit-filter: brightness(100%);
 	filter: brightness(100%);
 	
 	cursor: pointer;
@@ -175,7 +169,6 @@ img
 
 .footer-button:hover
 {
-	-webkit-filter: brightness(75%);
 	filter: brightness(75%);
 }
 
@@ -224,7 +217,6 @@ img
 	height: 8vw;
 	display: inline-block;
 	
-	-webkit-border-radius: 10%;
 	border-radius: 10%;
 }
 
@@ -234,19 +226,14 @@ img
 	width: 8vw;
 	height: 8vw;
 	
-	-webkit-border-radius: 10%;
 	border-radius: 10%;
 
-	-webkit-transition: -webkit-filter .15s ease-in-out;
 	transition: filter .15s ease-in-out;
-	
-	-webkit-filter: brightness(100%);
 	filter: brightness(100%);
 }
 
 .footer-image-link img:hover
 {
-	-webkit-filter: brightness(75%);
 	filter: brightness(75%);
 }
 
@@ -255,7 +242,6 @@ img
 /* Applied whenever things need an opacity animation. Usually a substitute for $().animate. */
 .animated-opacity
 {
-	-webkit-transition: opacity .3s ease-in-out;
 	transition: opacity .3s ease-in-out;
 }
 
@@ -264,7 +250,6 @@ img
 /* Used on pages with nonstandard background colors to fade to the default. */
 .background-transition
 {
-	-webkit-transition: background-color .45s ease-in-out !important;
 	transition: background-color .45s ease-in-out !important;
 }
 

@@ -44,16 +44,10 @@
 	align-self: flex-end;
 
 	border: 2px solid rgb(127, 127, 127);
-	
-	-webkit-border-radius: 10px;
 	border-radius: 10px;
-	
 	padding: 10px;
 	
-	-webkit-transition: -webkit-filter .15s ease-in-out;
 	transition: filter .15s ease-in-out;
-	
-	-webkit-filter: brightness(100%);
 	filter: brightness(100%);
 	
 	outline: none;
@@ -61,7 +55,6 @@
 
 #scroll-button:hover
 {
-	-webkit-filter: brightness(75%);
 	filter: brightness(75%);
 }
 

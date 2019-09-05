@@ -227,6 +227,15 @@ function on_page_unload()
 	
 	
 	
+	//Remove everything that's not a script from the body.
+	elements = document.querySelectorAll("body > *:not(script)");
+	for (let i = 0; i < elements.length; i++)
+	{ 
+		elements[i].remove();
+	}
+	
+	
+	
 	//Unbind everything transient from the window.
 	for (let key in temporary_handlers)
 	{

@@ -16,11 +16,9 @@
 {
 	width: 5vw;
 	height: 5vw;
+	
 	border: 2px solid rgb(127, 127, 127);
-	
-	-webkit-border-radius: 7px;
 	border-radius: 7px;
-	
 	padding: 2px;
 }
 
@@ -32,17 +30,14 @@
 	position: relative;
 	display: block;
 	
-	-webkit-border-radius: 3px;
 	border-radius: 3px;
 	
 	background-color: rgb(127, 127, 127);
 	overflow: hidden;
 	
-	-webkit-transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
 	transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
 	
 	top: 50%;
-  	-webkit-transform: translateY(-50%);
   	transform: translateY(-50%);
 }
 
@@ -53,7 +48,6 @@
 	margin-top: calc(5vw + 1vh);
 	text-align: center;
 	
-	-webkit-transition: margin-top 1.2s ease;
 	transition: margin-top 1.2s ease;
 }
 
@@ -66,7 +60,6 @@
 	margin-left: 15vw;
 	border: 2px solid rgb(127, 127, 127);
 	
-	-webkit-border-radius: 7px;
 	border-radius: 7px;
 	
 	padding: 2px;
@@ -79,13 +72,11 @@
 	display: block;
 	height: 100%;
 	
-	-webkit-border-radius: 3px;
 	border-radius: 3px;
 	
 	background-color: rgb(127, 127, 127);
 	overflow: hidden;
 	
-	-webkit-transition: width 1.2s ease;
 	transition: width 1.2s ease;
 }
 

@@ -17,7 +17,6 @@
 	width: 13.75vw;
 	height: 13.75vw;
 	
-	-webkit-border-radius: 10%;
 	border-radius: 10%;
 }
 
@@ -27,19 +26,14 @@
 	width: 13.75vw;
 	height: 13.75vw;
 	
-	-webkit-border-radius: 10%;
 	border-radius: 10%;
 	
-	-webkit-transition: -webkit-filter .15s ease-in-out;
 	transition: filter .15s ease-in-out;
-	
-	-webkit-filter: brightness(100%);
 	filter: brightness(100%);
 }
 
 .image-link img:hover
 {
-	-webkit-filter: brightness(75%);
 	filter: brightness(75%);
 }
 
@@ -55,13 +49,11 @@
 /* Added to images with white around the edges to provide contrast. */
 .image-link-light img
 {
-	-webkit-filter: brightness(95%) !important;
 	filter: brightness(95%) !important;
 }
 
 .image-link-light img:hover
 {
-	-webkit-filter: brightness(75%) !important;
 	filter: brightness(75%) !important;
 }
 

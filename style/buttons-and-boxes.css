@@ -17,14 +17,10 @@
 	font-size: 100%;
 
 	border: 2px solid rgb(127, 127, 127);
-	-webkit-border-radius: 10px;
 	border-radius: 10px;
 	padding: 10px;
 	
-	-webkit-transition: -webkit-filter .15s ease-in-out;
 	transition: filter .15s ease-in-out;
-	
-	-webkit-filter: brightness(100%);
 	filter: brightness(100%);
 	
 	cursor: pointer;
@@ -33,7 +29,6 @@
 
 .text-button:hover
 {
-	-webkit-filter: brightness(75%);
 	filter: brightness(75%);
 }
 
@@ -52,7 +47,6 @@
 	font-size: 100%;
 	text-align: center;
 	
-	-webkit-transition: border-color .3s ease-in-out, color .3s ease-in-out;
 	transition: border-color .3s ease-in-out, color .3s ease-in-out;
 }
 
