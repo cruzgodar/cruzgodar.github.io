@@ -134,6 +134,30 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	//Act like a normal link, with no transitions, if the user wants that.
 	if (url_vars["content_animation"] == 1)
 	{
+		if (from_nonstandard_color)
+		{
+			if (url_vars["theme"] == 1)
+			{
+				if (url_vars["dark_theme_color"] == 1)
+				{
+					document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+					document.body.style.backgroundColor = "rgb(0, 0, 0)";
+				}
+				
+				else
+				{
+					document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
+					document.body.style.backgroundColor = "rgb(24, 24, 24)";
+				}
+			}
+			
+			else
+			{
+				document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
+				document.body.style.backgroundColor = "rgb(255, 255, 255)";
+			}
+		}
+		
 		load_html(url, include_return_url, no_state_push);
 	}
 		
