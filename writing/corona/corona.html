@@ -455,7 +455,16 @@
 				{
 					bubbles[i].style.width = 0;
 					bubbles[i].style.height = 0;
-					subtexts[i].style.marginTop = "calc(5vw + 1vh)";
+					
+					if (layout_string == "compact")
+					{
+						subtexts[i].style.marginTop = "calc(5vw + 1vh)";
+					}
+					
+					else
+					{
+						subtexts[i].style.marginTop = "calc(10vw + 1vh)";
+					}
 				}
 			}
 		}

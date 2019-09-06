@@ -1,7 +1,5 @@
 let window_width = null, window_height = null;
 
-let initial_window_height = null;
-
 let page_settings = {};
 
 let current_url = decodeURIComponent(get_url_var("page"));
@@ -32,21 +30,7 @@ function init()
 	window_width = window.innerWidth;
 	window_height = window.innerHeight;
 	
-	if (window_width / window_height < 9/16 || window_width <= 700)
-	{
-		layout_string = "small-screen";
-	}
-	
-	else
-	{
-		layout_string = "compact";
-	}
-	
-	
-	
-	update_aos();
-	
-	
+	resize_update();
 	
 	if ("scrollRestoration" in history)
 	{
@@ -99,6 +83,8 @@ async function entry_point(url)
 {
 	init();
 	
+	AOS.init({duration: 1200, once: false, offset: window_height / 4});
+	
 	
 	init_settings();
 	
@@ -118,18 +104,6 @@ async function entry_point(url)
 			redirect(url, false, false, true);
 		}
 	});
-}
-
-
-
-function update_aos()
-{
-	AOS.disable;
-	
-	if (url_vars["content_animation"] != 1)
-	{
-		AOS.init({duration: 1200, once: false, offset: window_height/4});
-	}
 }
 
 

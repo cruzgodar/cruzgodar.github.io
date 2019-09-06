@@ -263,14 +263,6 @@
 		
 		
 		load_homepage_banner();
-			
-			
-			
-		window.addEventListener("scroll", homepage_scroll);
-		window.addEventListener("resize", homepage_scroll);
-		
-		temporary_handlers["scroll"].push(homepage_scroll);
-		temporary_handlers["resize"].push(homepage_scroll);
 		
 		
 		
@@ -389,20 +381,8 @@
 				
 				document.documentElement.style.opacity = 1;
 				
-				update_aos();
+				AOS.init({duration: 1200, once: false, offset: window_height / 4});
 			});
-		}
-		
-		
-		
-		function homepage_scroll()
-		{
-			scroll = window.scrollY;
-				
-			if (scroll <= window_height/3 && url_vars["banner_style"] != 1)
-			{
-				set_element_styles(".name-text", "opacity", global_opacity);
-			}
 		}
 	}()
 </script>

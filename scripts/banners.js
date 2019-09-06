@@ -1,7 +1,6 @@
 let scroll = 0;
 let banner_done = false;
 let scroll_button_done = false;
-let global_opacity = 1;
 
 let banner_extension = "";
 
@@ -12,7 +11,6 @@ let scroll_button_timeout = null;
 
 
 window.addEventListener("scroll", scroll_update);
-window.addEventListener("resize", scroll_update);
 
 
 
@@ -84,7 +82,7 @@ function load_banner()
 			
 			document.documentElement.style.opacity = 1;
 			
-			update_aos();
+			AOS.init({duration: 1200, once: false, offset: window_height / 4});
 		});
 	}
 }
@@ -103,7 +101,7 @@ function scroll_update()
 		{
 			if (scroll <= window_height)
 			{
-				let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / initial_window_height, 0) - .5 * Math.PI);
+				let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / window_height, 0) - .5 * Math.PI);
 				
 				try {document.querySelector("#background-image").style.opacity = opacity;}
 				catch(ex) {}
@@ -133,14 +131,28 @@ function scroll_update()
 		
 		if (scroll <= window_height/3)
 		{
-			global_opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / initial_window_height, 0) - .5 * Math.PI);
+			let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - .5 * Math.PI);
 			
 			if (scroll_button_exists)
 			{
-				document.querySelector("#scroll-button").style.opacity = global_opacity;
+				document.querySelector("#scroll-button").style.opacity = opacity;
 			}
 			
-			if (global_opacity == 0)
+			
+			
+			try
+			{
+				if (url_vars["banner_style"] != 1)
+				{
+					set_element_styles(".name-text", "opacity", opacity);
+				}
+			}
+			
+			catch(ex) {}
+			
+			
+			
+			if (opacity == 0)
 			{
 				if (scroll_button_exists)
 				{
@@ -188,7 +200,7 @@ function scroll_update()
 		//This shouldn't be required, but it fixes a weird flickering glitch with the name text.
 		else
 		{
-			global_opacity = 0;
+			opacity = 0;
 		}
 	}
 }
@@ -197,6 +209,10 @@ function scroll_update()
 
 function add_scroll_button()
 {
+	let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - .5 * Math.PI);
+	
+	
+	
 	//Only add the scroll button if the user is still on the top of the page.
 	if (scroll <= window_height / 3)
 	{
@@ -215,7 +231,7 @@ function add_scroll_button()
 			{
 				document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
 					<div id="new-banner-cover">
-						<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${global_opacity}" alt="Scroll down" onclick="scroll_down()">
+						<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="scroll_down()">
 					</div>
 				`);
 			}
@@ -224,7 +240,7 @@ function add_scroll_button()
 			{
 				document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
 					<div id="new-banner-cover" data-aos="fade-down">
-						<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${global_opacity}" alt="Scroll down" onclick="scroll_down()">
+						<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="scroll_down()">
 					</div>
 				`);
 			}
