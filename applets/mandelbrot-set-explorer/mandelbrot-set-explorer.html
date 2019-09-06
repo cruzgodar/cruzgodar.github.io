@@ -65,8 +65,8 @@
 		
 		<div style="height: 5vh"></div>
 		
-		<div style="width: 20vw; margin: 0 auto; display: flex; justify-content: space-between">
-			<div style="width: 100%" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
+		<div class="center-content">
+			<div style="width: 20vw" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
 				<input id="dim-input" class="text-box" type="text" style="width: 100%">
 				<label for="dim-input">
 					<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">Image Size</p>
@@ -76,13 +76,17 @@
 		
 		<div style="height: 5vh"></div>
 		
-		<div style="display: flex; justify-content: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="700" data-aos-anchor="#trigger-section-2">
-			<button class="text-button" type="button" id="generate-button">Generate</button>
+		<div class="center-content">
+			<div data-aos="zoom-out" data-aos-delay="700" data-aos-anchor="#trigger-section-2">
+				<button class="text-button" type="button" id="generate-button">Generate</button>
+			</div>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
-		<canvas id="high-res-mandelbrot-zoom" data-aos="fade-in" data-aos-delay="1200" data-aos-anchor="#trigger-section-2"></canvas>
+		<div class="center-content">
+			<canvas id="high-res-mandelbrot-zoom" data-aos="fade-in" data-aos-delay="1200" data-aos-anchor="#trigger-section-2"></canvas>
+		</div>
 		
 		<div id="download-location" style="height: 10vh"></div>
 	</section>
@@ -539,7 +543,7 @@
 					display: flex;
 					justify-content: space-between;
 					width: 70vw;
-					margin-left: 15vw;
+					margin: 0 auto;
 				}
 				
 				#mandelbrot-set, #mandelbrot-zoom
@@ -552,7 +556,6 @@
 				{
 					width: 90vmin;
 					height: 90vmin;
-					margin-left: calc((100vw - (90vmin + 8px)) / 2);
 				}
 				
 				#mandelbrot-set, #mandelbrot-zoom, #high-res-mandelbrot-zoom
@@ -569,7 +572,6 @@
 					#container:not(.layout-override)
 					{
 						flex-direction: column;
-						margin-left: calc((100vw - (70vw + 8px)) / 2);
 					}
 					
 					#mandelbrot-set:not(.layout-override), #mandelbrot-zoom:not(.layout-override)

@@ -88,13 +88,17 @@
 		
 		<div style="height: 5vh"></div>
 		
-		<div style="display: flex; justify-content: center; width: 70vw; margin: 0 auto" data-aos="zoom-out" data-aos-delay="1000" data-aos-anchor="#trigger-section-2">
-			<button class="text-button" type="button" id="generate-button">Generate</button>
+		<div class="center-content">
+			<div data-aos="zoom-out" data-aos-delay="1000" data-aos-anchor="#trigger-section-2">
+				<button class="text-button" type="button" id="generate-button">Generate</button>
+			</div>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
-		<canvas id="high-res-julia-set" data-aos="fade-in" data-aos-delay="1600" data-aos-anchor="#trigger-section-2"></canvas>
+		<div class="center-content">
+			<canvas id="high-res-julia-set" data-aos="fade-in" data-aos-delay="1600" data-aos-anchor="#trigger-section-2"></canvas>
+		</div>
 		
 		<div id="download-location" style="height: 10vh"></div>
 	</section>
@@ -526,7 +530,7 @@
 					display: flex;
 					justify-content: space-between;
 					width: 70vw;
-					margin-left: 15vw;
+					margin: 0 auto;
 				}
 				
 				#mandelbrot-set, #julia-set
@@ -539,7 +543,7 @@
 				{
 					width: 90vmin;
 					height: 90vmin;
-					margin-left: calc((100vw - (90vmin + 8px)) / 2);
+					margin: 0 auto;
 				}
 				
 				#mandelbrot-set, #julia-set, #high-res-julia-set
@@ -556,7 +560,6 @@
 					#container:not(.layout-override)
 					{
 						flex-direction: column;
-						margin-left: calc((100vw - (70vw + 8px)) / 2);
 					}
 					
 					#mandelbrot-set:not(.layout-override), #julia-set:not(.layout-override)

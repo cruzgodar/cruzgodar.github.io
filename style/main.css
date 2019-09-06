@@ -139,6 +139,16 @@ img
 
 
 
+/* Centers whatever's inside of it, no margins needed. For use when margin: 0 auto just won't work. */
+.center-content
+{
+	display: flex;
+	justify-content: center;
+	width: 100vw;
+}
+
+
+
 .foreign-language
 {
 	font-style: italic;
