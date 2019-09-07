@@ -17,7 +17,7 @@
 	width: 5vw;
 	height: 5vw;
 	
-	border: 2px solid rgb(127, 127, 127);
+	border: 2px solid rgb(152, 152, 152);
 	border-radius: 7px;
 	padding: 2px;
 }
@@ -32,7 +32,7 @@
 	
 	border-radius: 3px;
 	
-	background-color: rgb(127, 127, 127);
+	background-color: rgb(152, 152, 152);
 	overflow: hidden;
 	
 	transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
@@ -58,7 +58,7 @@
 	width: calc(70vw - 8px);
 	height: 5vh;
 	margin: 0 auto;
-	border: 2px solid rgb(127, 127, 127);
+	border: 2px solid rgb(152, 152, 152);
 	
 	border-radius: 7px;
 	
@@ -74,7 +74,7 @@
 	
 	border-radius: 3px;
 	
-	background-color: rgb(127, 127, 127);
+	background-color: rgb(152, 152, 152);
 	overflow: hidden;
 	
 	transition: width 1.2s ease;
