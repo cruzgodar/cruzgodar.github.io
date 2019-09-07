@@ -107,12 +107,12 @@
 		
 		<div class="stage-bubbles">
 			<div class="stage-bubble" data-aos="fade-in" data-aos-delay="400" data-aos-anchor="#trigger-stage-bubbles">
-				<span style="background-color: rgb(0, 0, 0)"></span>
+				<span></span>
 				<p class="body-text stage-bubble-subtext">Revision</p>
 			</div>
 			
 			<div class="stage-bubble" data-aos="fade-in" data-aos-delay="500" data-aos-anchor="#trigger-stage-bubbles">
-				<span></span>
+				<span style="background-color: rgb(0, 0, 0)"></span>
 				<p class="body-text stage-bubble-subtext">Prereaders</p>
 			</div>
 			
@@ -128,24 +128,8 @@
 		
 		
 		
-		<div class="progress-bar" data-aos="fade-in" id="trigger-bar">
-			<span></span>
-		</div>
-
-		<div style="height: 2vh"></div>
-
-		<div data-aos="fade-in" data-aos-delay="100" data-aos-anchor="#trigger-bar">
-			<p class="body-text" style="text-align: center">32 of 52 chapters revised</p>
-		</div>
-		
-		
-		
-		<div style="height: 15vh"></div>
-		
-		
-		
 		<div data-aos="fade-up" id="trigger-info">
-			<p class="body-text" style="color: rgb(127, 127, 127)">Corona is currently being written. After more than two years, the first draft is finally (finally!) complete, and now the revision process has begun. Content is being added, removed, and modified at a large scale to solidify the foundation of the first draft. After the revision, the manuscript will be sent to a small list of prereaders to gather feedback on the story and make further changes. If you&#x2019;re interested in being one of these prereaders, contact the address below.</p>
+			<p class="body-text">Corona is currently being written. After more than two years, the first draft is finally (finally!) complete, and now the revision process has begun. Content is being added, removed, and modified at a large scale to solidify the foundation of the first draft. After the revision, the manuscript will be sent to a small list of prereaders to gather feedback on the story and make further changes. If you&#x2019;re interested in being one of these prereaders, contact the address below.</p>
 		</div>
 
 		<div style="height: 5vh"></div>
@@ -202,17 +186,13 @@
 		scroll_button_done = false;
 		let eclipse_done = false;
 		
-		let progress_bar_done = false;
 		let stage_bubbles_done = false;
-		
-		let progress_bar_pos = Infinity;
 		let stage_bubbles_pos = Infinity;
 		
-		let blinking_block_interval = null;
+		let blinking_bubble_interval = null;
 		
 		setTimeout(function()
 		{
-			progress_bar_pos = document.querySelector(".progress-bar").offsetTop;
 			stage_bubbles_pos = document.querySelector("#trigger-stage-bubbles").offsetTop;
 		}, 1000);
 		
@@ -259,8 +239,6 @@
 				update_scroll_button(scroll);
 				
 				update_eclipse(scroll);
-				
-				update_progress_bar(scroll);
 				
 				update_stage_bubbles(scroll);
 			}
@@ -385,32 +363,18 @@
 		
 		
 		
-		function update_progress_bar(scroll)
-		{
-			if (scroll > progress_bar_pos - 3*window_height/4 && progress_bar_done == false)
-			{
-				document.querySelector(".progress-bar span").style.width = (100 * 32/52) + "%";
-				progress_bar_done = true;
-			}
-			
-			else if (scroll < progress_bar_pos - 3*window_height/4 && progress_bar_done)
-			{
-				document.querySelector(".progress-bar span").style.width = 0;
-				progress_bar_done = false;
-			}
-		}
-		
-		
-		
 		function update_stage_bubbles(scroll)
 		{
+			let num_lit_bubbles = 4;
+			let blinking_bubble = 4;
+			
 			if (scroll > stage_bubbles_pos - 3*window_height/4 && stage_bubbles_done == false)
 			{
 				stage_bubbles_done = true;
 				let bubbles = document.querySelectorAll(".stage-bubble span");
 				let subtexts = document.querySelectorAll(".stage-bubble-subtext");
 				
-				for (let i = 0; i < 4; i++)
+				for (let i = 0; i <= num_lit_bubbles; i++)
 				{
 					setTimeout(function(i)
 					{
@@ -420,23 +384,21 @@
 					}, i * 100, i);
 				}
 				
-				let blinking_block = 3;
-				
-				blinking_block_interval = setInterval(function()
+				blinking_bubble_interval = setInterval(function()
 				{
 					if (url_vars["contrast"] == 1)
 					{
-						bubbles[blinking_block].style.backgroundColor = "rgb(192, 192, 192)";
+						bubbles[blinking_bubble].style.backgroundColor = "rgb(192, 192, 192)";
 					}
 					
 					else
 					{
-						bubbles[blinking_block].style.backgroundColor = "rgb(127, 127, 127)";
+						bubbles[blinking_bubble].style.backgroundColor = "rgb(152, 152, 152)";
 					}
 					
 					setTimeout(function()
 					{
-						bubbles[blinking_block].style.backgroundColor = "rgb(0, 0, 0)";
+						bubbles[blinking_bubble].style.backgroundColor = "rgb(0, 0, 0)";
 					}, 1200);
 				}, 2400);
 			}
@@ -446,12 +408,12 @@
 			else if (scroll < stage_bubbles_pos - 3*window_height/4 && stage_bubbles_done)
 			{
 				stage_bubbles_done = false;
-				clearInterval(blinking_block_interval);
+				clearInterval(blinking_bubble_interval);
 				
 				let bubbles = document.querySelectorAll(".stage-bubble span");
 				let subtexts = document.querySelectorAll(".stage-bubble-subtext");
 				
-				for (let i = 0; i < 4; i++)
+				for (let i = 0; i <= num_lit_bubbles; i++)
 				{
 					bubbles[i].style.width = 0;
 					bubbles[i].style.height = 0;
@@ -476,9 +438,6 @@
 			document.querySelector("#eclipse").style.height = document.querySelector("#eclipse").offsetWidth + "px";
 			document.querySelector("#eclipse img").style.height = document.querySelector("#eclipse").offsetWidth + "px";
 			
-			
-			
-			progress_bar_pos = document.querySelector(".progress-bar").offsetTop;
 			stage_bubbles_pos = document.querySelector("#trigger-stage-bubbles").offsetTop;
 		}
 		
@@ -488,7 +447,7 @@
 		{
 			if (url_vars["contrast"] == 1)
 			{
-				set_element_styles(".synopsis-text", "color", "rgb(208, 208, 208)");
+				set_element_styles(".synopsis-text", "color", "rgb(192, 192, 192)");
 				
 				set_element_styles(".body-text", "color", "rgb(192, 192, 192)");
 				
@@ -503,9 +462,9 @@
 				
 				
 				
-				set_element_styles(".stage-bubble, .progress-bar", "border-color", "rgb(192, 192, 192)");
+				set_element_styles(".stage-bubble", "border-color", "rgb(192, 192, 192)");
 				
-				set_element_styles(".stage-bubble span, .progress-bar span", "background-color", "rgb(192, 192, 192)");
+				set_element_styles(".stage-bubble span", "background-color", "rgb(192, 192, 192)");
 				
 				
 				
@@ -576,7 +535,7 @@
 				{
 					position: relative;
 					width: 100%;
-					color: rgb(160, 160, 160);
+					color: rgb(152, 152, 152);
 					text-align: center;
 					font-size: 150%;
 					font-family: "Gentium Book Basic", serif;
@@ -587,10 +546,15 @@
 					position: relative;
 					width: 50vw;
 					margin: 0 auto;
-					color: rgb(160, 160, 160);
+					color: rgb(152, 152, 152);
 					text-align: justify;
 					font-size: 100%;
 					font-family: 'Gentium Book Basic', serif;
+				}
+				
+				.body-text
+				{
+					color: rgb(152, 152, 152);
 				}
 				
 				#eclipse
@@ -620,12 +584,6 @@
 					margin-left: -6.25vw;
 				}
 				
-				.progress-bar
-				{
-					width: calc(50vw - 8px);
-					margin: 0 auto;
-				}
-				
 				#email
 				{
 					width: 300px;
@@ -636,6 +594,7 @@
 				{
 					position: absolute;
 					width: 300px;
+					filter: brightness(120%);
 				}
 				
 				@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
@@ -660,12 +619,6 @@
 					{
 						width: 25vw;
 						margin-left: -7.5vw;
-					}
-					
-					/* Fit progress bar to synopsis text */
-					.progress-bar:not(.layout-override)
-					{
-						width: 80vw;
 					}
 				}
 			`, true);
