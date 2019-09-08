@@ -65,33 +65,6 @@ function set_links()
 //Handles virtually all links.
 function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 {
-	new_page_data = null;
-	
-	let background_color = document.documentElement.style.backgroundColor;
-	
-	//Start getting the new page data immediately. If it succeeds, we won't have to fetch it again. If it fails, though, abort the mission.
-	fetch(url)
-	
-	.then(response => response.text())
-	
-	.then(function(data)
-	{
-		new_page_data = data;
-	})
-	
-	.catch(function(error)
-	{
-		console.log("Failed to load new page — reversing fade-out.");
-		
-		setTimeout(function()
-		{
-			document.documentElement.style.opacity = 1;
-			document.documentElement.style.backgroundColor = background_color;
-		}, 300);
-	});
-	
-	
-	
 	//Indicates whether we need to pause to change the background color. Example: the bottom of the Corona page.
 	from_nonstandard_color = (typeof from_nonstandard_color != "undefined") ? from_nonstandard_color : false;
 	
@@ -124,49 +97,47 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
 	
 	
+	let background_color = document.documentElement.style.backgroundColor;
 	
 	document.documentElement.classList.remove("color-transition");
 	
 	
-		
-		
-		
-	//Act like a normal link, with no transitions, if the user wants that.
-	if (url_vars["content_animation"] == 1)
+	
+	
+	
+	//Get the new data and fade out the page. When both of those things are successfully done, replace the current html with the new stuff.
+	Promise.all([fetch(url), fade_out(from_nonstandard_color)])
+	
+	.then(function(response)
 	{
-		if (from_nonstandard_color)
+		return response[0].text();
+	})
+	
+	.then(function(data)
+	{
+		on_page_unload();
+		
+		//Record the page change in the url bar and in the browser history.
+		if (no_state_push == false)
 		{
-			if (url_vars["theme"] == 1)
-			{
-				if (url_vars["dark_theme_color"] == 1)
-				{
-					document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-					document.body.style.backgroundColor = "rgb(0, 0, 0)";
-				}
-				
-				else
-				{
-					document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-					document.body.style.backgroundColor = "rgb(24, 24, 24)";
-				}
-			}
-			
-			else
-			{
-				document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
-				document.body.style.backgroundColor = "rgb(255, 255, 255)";
-			}
+			history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
 		}
 		
-		load_html(url, include_return_url, no_state_push);
-	}
+		else
+		{
+			history.replaceState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+		}
 		
-	else
+		document.body.innerHTML = data;
+		parse_scripts();
+	})
+	
+	.catch(function(error)
 	{
-		//Fade out the current page's content.
-		document.documentElement.style.opacity = 0;
+		console.log("Failed to load new page -- reversing fade-out.");
 		
-		//If necessary, take the time to fade back to the default background color, whatever that is.
+		
+		
 		if (from_nonstandard_color)
 		{
 			setTimeout(function()
@@ -174,6 +145,47 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 				document.documentElement.classList.add("background-transition");
 				document.body.classList.add("background-transition");
 				
+				document.documentElement.style.backgroundColor = background_color;
+				document.body.style.backgroundColor = background_color;
+				
+				setTimeout(function()
+				{
+					document.documentElement.classList.remove("background-transition");
+					document.body.classList.remove("background-transition");
+					
+					document.body.style.backgroundColor = "";
+					
+					setTimeout(function()
+					{
+						document.documentElement.style.opacity = 1;
+					}, 300);
+				}, 450);
+			}, 750);
+		}
+		
+		
+		
+		else
+		{
+			setTimeout(function()
+			{
+				document.documentElement.style.opacity = 1;
+			}, 300);
+		}
+	});
+}
+
+
+
+function fade_out(from_nonstandard_color)
+{
+	return new Promise(function(resolve, reject)
+	{
+		//Act like a normal link, with no transitions, if the user wants that.
+		if (url_vars["content_animation"] == 1)
+		{
+			if (from_nonstandard_color)
+			{
 				if (url_vars["theme"] == 1)
 				{
 					if (url_vars["dark_theme_color"] == 1)
@@ -194,83 +206,67 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 					document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
 					document.body.style.backgroundColor = "rgb(255, 255, 255)";
 				}
-				
+			}
+			
+			resolve();
+		}
+			
+		else
+		{
+			//Fade out the current page's content.
+			document.documentElement.style.opacity = 0;
+			
+			//If necessary, take the time to fade back to the default background color, whatever that is.
+			if (from_nonstandard_color)
+			{
 				setTimeout(function()
 				{
-					document.body.style.backgroundColor = "";
+					document.documentElement.classList.add("background-transition");
+					document.body.classList.add("background-transition");
 					
-					document.documentElement.classList.remove("background-transition");
-					document.body.classList.remove("background-transition");
+					if (url_vars["theme"] == 1)
+					{
+						if (url_vars["dark_theme_color"] == 1)
+						{
+							document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+							document.body.style.backgroundColor = "rgb(0, 0, 0)";
+						}
+						
+						else
+						{
+							document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
+							document.body.style.backgroundColor = "rgb(24, 24, 24)";
+						}
+					}
 					
-					load_html(url, include_return_url, no_state_push);
-				}, 450);
-			}, 300);
-		}
-		
-		//Finally, redirect to the new page and fade the content back in.
-		else
-		{
-			setTimeout(function()
-			{
-				load_html(url, include_return_url, no_state_push);
-			}, 300);
-		}
-	}
-}
-
-
-
-//Actually performs the swapping out of html data.
-function load_html(url, include_return_url, no_state_push)
-{
-	//We got the data in time! Now we don't need to fetch it again.
-	if (new_page_data != null)
-	{
-		on_page_unload();
-		
-		//Record the page change in the url bar and in the browser history.
-		if (no_state_push == false)
-		{
-			history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
-		}
-		
-		else
-		{
-			history.replaceState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
-		}
-		
-		document.body.innerHTML = new_page_data;
-		parse_scripts();
-	}
-	
-	//We didn't get it. We may never be able to, but we have to try again in case it's just that the connection is just really slow.
-	else
-	{
-		fetch(url)
-		
-		.then(response => response.text())
-		
-		.then(function(data)
-		{
-			on_page_unload();
-			
-			//Record the page change in the url bar and in the browser history.
-			if (no_state_push == false)
-			{
-				history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+					else
+					{
+						document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
+						document.body.style.backgroundColor = "rgb(255, 255, 255)";
+					}
+					
+					setTimeout(function()
+					{
+						document.body.style.backgroundColor = "";
+						
+						document.documentElement.classList.remove("background-transition");
+						document.body.classList.remove("background-transition");
+						
+						resolve();
+					}, 450);
+				}, 300);
 			}
 			
+			//Finally, redirect to the new page and fade the content back in.
 			else
 			{
-				history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
+				setTimeout(function()
+				{
+					resolve();
+				}, 300);
 			}
-			
-			document.body.innerHTML = data;
-			parse_scripts();
-		});
-		
-		//There's no need to have a .catch here -- if the fetch fails, the first fetch will reverse the fading out.
-	}
+		}
+	});
 }
 
 
