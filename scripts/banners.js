@@ -1,5 +1,6 @@
 let scroll = 0;
 let banner_done = false;
+let banner_path = "";
 let scroll_button_done = false;
 
 let banner_extension = "";
@@ -16,75 +17,99 @@ window.addEventListener("scroll", scroll_update);
 
 function load_banner()
 {
-	//Only do banner things if the banner things are in the standard places.
-	if (page_settings["manual_banner"] != true)
+	return new Promise(function(resolve, reject)
 	{
-		let banner_name = "";
-		
-		if (window_width / window_height < 1 || window_width <= 700)
+		//Only do banner things if the banner things are in the standard places.
+		if (!(banner_pages.includes(current_url)))
 		{
-			banner_name = "portrait." + banner_extension;
+			resolve();
 		}
+		
+		
 		
 		else
 		{
-			banner_name = "landscape." + banner_extension;
-		}
-		
+			let banner_name = "";
 			
-		
-		//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we remove the banner entirely.
-		fetch(parent_folder + "banners/" + banner_name)
-		
-		.then(function(response)
-		{
-			add_style(`
-				.banner:before
-				{
-					background: url("${parent_folder}banners/landscape.${banner_extension}") no-repeat center center;
-					background-size: cover;
-				}
-				
-				@media screen and (max-aspect-ratio: 1), (max-width: 700px)
-				{
-					.banner:before
-					{
-						background: url("${parent_folder}banners/portrait.${banner_extension}") no-repeat center center;
-						background-size: cover;
-					}
-				}
-			`, true);
-			
-			
-			
-			let img = new Image();
-			
-			img.onload = function()
+			if (window_width / window_height < 1 || window_width <= 700)
 			{
-				document.documentElement.style.opacity = 1;
-					
+				banner_name = "portrait." + banner_extension;
+			}
+			
+			else
+			{
+				banner_name = "landscape." + banner_extension;
+			}
+			
 				
-					
-				//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
-				if (scroll <= window_height / 6)
+			
+			//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we remove the banner entirely.
+			banner_path = "";
+			
+			if (current_url != "/home.html")
+			{
+				banner_path = parent_folder + "banners/";
+			}
+			
+			else
+			{
+				let num_images = 27;
+				let banner_index = Math.floor(Math.random() * num_images) + 1;
+				banner_path = "/graphics/index-banners/" + banner_index + "/";
+			}
+			
+			
+			
+			fetch(banner_path + banner_name)
+			
+			.then(function(response)
+			{
+				let img = new Image();
+				
+				img.onload = function()
 				{
 					scroll_button_timeout = setTimeout(add_scroll_button, 3000);
-				}
-			};
+					
+					resolve();
+				};
+				
+				img.src = banner_path + banner_name;
+			})
 			
-			img.src = parent_folder + "banners/" + banner_name;
-		})
-		
-		.catch(function(error)
+			.catch(function(error)
+			{
+				document.querySelector("#background-image").remove();
+				document.querySelector("#banner-cover").remove();
+				
+				AOS.init({duration: 1200, once: false, offset: window_height / 4});
+				
+				//We resolve here because the page can still be loaded without the banner.
+				resolve();
+			});
+		}
+	});
+}
+
+
+
+function add_banner_style()
+{
+	add_style(`
+		.banner:before
 		{
-			document.querySelector("#background-image").remove();
-			document.querySelector("#banner-cover").remove();
-			
-			document.documentElement.style.opacity = 1;
-			
-			AOS.init({duration: 1200, once: false, offset: window_height / 4});
-		});
-	}
+			background: url("${banner_path + "landscape." + banner_extension}") no-repeat center center;
+			background-size: cover;
+		}
+		
+		@media screen and (max-aspect-ratio: 1), (max-width: 700px)
+		{
+			.banner:before
+			{
+				background: url("${banner_path + "portrait." + banner_extension}") no-repeat center center;
+				background-size: cover;
+			}
+		}
+	`, true);
 }
 
 

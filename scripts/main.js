@@ -25,6 +25,29 @@ let layout_string = "";
 
 
 
+//A list of every page that has a banner. ONLY to be used for preloading those banners. For everything else, use page_settings["banner_page"].
+let banner_pages =
+[
+	"/home.html",
+	
+	"/about/about.html",
+	
+	"/blog/1/on-leaving-and-the-beginnings-of-things.html",
+	"/blog/2/nach-heidelberg.html",
+	"/blog/3/the-city-and-the-city.html",
+	"/blog/4/a-taste-of-chaos.html",
+	"/blog/5/halloween-in-january.html",
+	"/blog/6/erinnerungen.html",
+	"/blog/7/on-leaving-again-and-new-beginnings.html",
+	
+	"/writing/mist/mist.html",
+	"/writing/desolation-point/desolation-point.html"
+];
+
+
+
+
+
 function init()
 {
 	window_width = window.innerWidth;
@@ -224,29 +247,16 @@ function on_page_unload()
 
 function fade_in()
 {
-	if (url_vars["content_animation"] == 1)
+	if (page_settings["banner_page"])
 	{
 		document.documentElement.style.opacity = 1;
-		
-		if (page_settings["banner_page"])
-		{
-			load_banner();
-		}
 	}
 	
 	else
 	{
-		if (page_settings["banner_page"])
-		{
-			load_banner();
-		}
-		
-		else
-		{
-			document.documentElement.classList.remove("animated-opacity");
-			document.documentElement.style.opacity = 1;
-			document.documentElement.classList.add("animated-opacity");
-		}
+		document.documentElement.classList.remove("animated-opacity");
+		document.documentElement.style.opacity = 1;
+		document.documentElement.classList.add("animated-opacity");
 	}
 }
 

@@ -233,7 +233,7 @@
 		"math_page": false,
 		"comments": false,
 		
-		"manual_banner": true,
+		"manual_banner": false,
 		"manual_dark_theme": false,
 		
 		"no_footer": true,
@@ -250,11 +250,6 @@
 		
 		
 		
-		let num_images = 27;
-		let banner_index = Math.floor(Math.random() * num_images) + 1;
-		
-		
-		
 		if (browser_name == "MS Edge")
 		{
 			alert_on_edge();
@@ -262,7 +257,7 @@
 		
 		
 		
-		load_homepage_banner();
+		add_name_text();
 		
 		
 		
@@ -281,108 +276,33 @@
 		
 		
 		
-		function load_homepage_banner()
+		function add_name_text()
 		{
-			let banner_name = "";
+			document.querySelector(".name-text").remove();
 			
-			if (window_width / window_height < 1 || window_width <= 700)
+			document.querySelector("#background-image").insertAdjacentHTML("afterend", `
+				<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="350">
+					<p id="cruz-text" class="name-text">Cruz</p>
+				</div>
+				
+				<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="600">
+					<p id="godar-text" class="name-text">Godar</p>
+				</div>
+			`);
+			
+			if (url_vars["content_animation"] == 1)
 			{
-				banner_name = "portrait." + banner_extension;
-			}
-			
-			else
-			{
-				banner_name = "landscape." + banner_extension;
-			}
-			
-			
-			
-			//Fade in once the banner has loaded.
-			fetch("/graphics/index-banners/" + banner_index + "/" + banner_name)
-			
-			.then(function(response)
-			{
-				add_style(`
-					.banner:before
-					{
-						background: url("/graphics/index-banners/${banner_index}/landscape.${banner_extension}") no-repeat center center;
-						
-						background-size: cover;
-					}
-					
-					@media screen and (max-aspect-ratio: 1), (max-width: 700px)
-					{
-						.banner:before
-						{
-							background: url("/graphics/index-banners/${banner_index}/portrait.${banner_extension}") no-repeat center center;
-							
-							background-size: cover;
-						}
-					}
-				`, true);
-				
-				
-				
-				let img = new Image();
-				
-				img.onload = function()
+				let elements = document.querySelectorAll(".name-text-container");
+				for (let i = 0; i < elements.length; i++)
 				{
-					document.documentElement.style.opacity = 1;
-					
-					
-					
-					document.querySelector(".name-text").remove();
-					
-					
-					
-					document.querySelector("#background-image").insertAdjacentHTML("afterend", `
-						<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="350">
-							<p id="cruz-text" class="name-text">Cruz</p>
-						</div>
-						
-						<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="600">
-							<p id="godar-text" class="name-text">Godar</p>
-						</div>
-					`);
-					
-					if (url_vars["content_animation"] == 1)
-					{
-						let elements = document.querySelectorAll(".name-text-container");
-						for (let i = 0; i < elements.length; i++)
-						{
-							elements[i].removeAttribute("data-aos");
-						}
-					}
-					
-					if (url_vars["banner_style"] == 1)
-					{
-						set_element_styles(".name-text-container", "position", "absolute");
-					}
-					
-					
-					
-					//If the user just sits for three seconds after the banner has loaded, give them a hint in the form of a scroll button.
-					if (scroll <= window_height / 3)
-					{
-						scroll_button_timeout = setTimeout(add_scroll_button, 3000);
-					}
-				};
-				
-				img.src = "/graphics/index-banners/" + banner_index + "/" + banner_name;
-			})
+					elements[i].removeAttribute("data-aos");
+				}
+			}
 			
-			.catch(function(error)
+			if (url_vars["banner_style"] == 1)
 			{
-				document.querySelector("#background-image").remove();
-				document.querySelector("#banner-cover").remove();
-				document.querySelector(".name-text").remove();
-				
-				document.querySelector("#scroll-to").previousElementSibling.style.height = "2vh";
-				
-				document.documentElement.style.opacity = 1;
-				
-				AOS.init({duration: 1200, once: false, offset: window_height / 4});
-			});
+				set_element_styles(".name-text-container", "position", "absolute");
+			}
 		}
 	}()
 </script>

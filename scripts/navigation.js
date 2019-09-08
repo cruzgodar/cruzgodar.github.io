@@ -106,7 +106,7 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	
 	
 	//Get the new data and fade out the page. When both of those things are successfully done, replace the current html with the new stuff.
-	Promise.all([fetch(url), fade_out(from_nonstandard_color)])
+	Promise.all([fetch(url), fade_out(from_nonstandard_color), load_banner()])
 	
 	.then(function(response)
 	{
@@ -128,7 +128,12 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 			history.replaceState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
 		}
 		
+		
+		
+		add_banner_style();
+		
 		document.body.innerHTML = data;
+		
 		parse_scripts();
 	})
 	
