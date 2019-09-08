@@ -7,7 +7,7 @@ window.addEventListener("popstate", function(e)
 {
 	let previous_page = get_url_var("page");
 		
-	if (previous_page != null)
+	if (previous_page != null && decodeURIComponent(previous_page) != current_url)
 	{
 		redirect(decodeURIComponent(previous_page), false, false, true);
 	}
