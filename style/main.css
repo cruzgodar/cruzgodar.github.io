@@ -280,14 +280,3 @@ img
 		width: 90vw;
 	}
 }
-
-
-
-/* If the user is running an operating system on dark mode, automatically set the theme to dark, unless they've chosen a theme manually. */
-@media (prefers-color-scheme: dark)
-{
-	html:not(.layout-override)
-	{
-		background-color: rgb(24, 24, 24);
-	}
-}
