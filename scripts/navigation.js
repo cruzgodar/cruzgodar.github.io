@@ -196,24 +196,19 @@ function fade_out(from_nonstandard_color)
 					if (url_vars["dark_theme_color"] == 1)
 					{
 						document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-						document.body.style.backgroundColor = "rgb(0, 0, 0)";
 					}
 					
 					else
 					{
 						document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-						document.body.style.backgroundColor = "rgb(24, 24, 24)";
 					}
 				}
 				
 				else
 				{
 					document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
-					document.body.style.backgroundColor = "rgb(255, 255, 255)";
 				}
 			}
-			
-			document.body.style.backgroundColor = "";
 			
 			resolve();
 		}
@@ -254,7 +249,7 @@ function fade_out(from_nonstandard_color)
 					
 					setTimeout(function()
 					{
-						
+						document.body.style.backgroundColor = "";
 						
 						document.documentElement.classList.remove("background-transition");
 						document.body.classList.remove("background-transition");
