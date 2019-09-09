@@ -213,6 +213,8 @@ function fade_out(from_nonstandard_color)
 				}
 			}
 			
+			document.body.style.backgroundColor = "";
+			
 			resolve();
 		}
 			
@@ -252,7 +254,7 @@ function fade_out(from_nonstandard_color)
 					
 					setTimeout(function()
 					{
-						document.body.style.backgroundColor = "";
+						
 						
 						document.documentElement.classList.remove("background-transition");
 						document.body.classList.remove("background-transition");
