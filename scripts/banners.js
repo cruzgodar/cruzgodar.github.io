@@ -53,7 +53,7 @@ function load_banner()
 			
 			else
 			{
-				let num_images = 27;
+				let num_images = 26;
 				let banner_index = Math.floor(Math.random() * num_images) + 1;
 				banner_path = "/graphics/index-banners/" + banner_index + "/";
 			}
