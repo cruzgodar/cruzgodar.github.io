@@ -29,6 +29,37 @@ function load_banner()
 		
 		else
 		{
+			//Set up the opacity cover.
+			let color = 255;
+			
+			if (url_vars["theme"] == 1)
+			{
+				color = 24;
+				
+				if (url_vars["dark_theme_color"] == 1)
+				{
+					color = 0;
+				}
+			}
+			
+			
+			
+			//No, I don't understand why this has to be so complicated. Just setting the background color of opacity-cover doesn't work, and neither does using the normal temporary style. Who knows.
+			try {document.querySelector("#opacity-cover-style").remove();}
+			catch(ex) {}
+			
+			let element = add_style(`
+				#opacity-cover
+				{
+					background-color: rgb(${color}, ${color}, ${color});
+				}
+			`, false);
+			
+			element.id = "opacity-cover-style";
+			
+			
+			
+			
 			let banner_name = "";
 			
 			if (window_width / window_height < 1 || window_width <= 700)
@@ -79,6 +110,7 @@ function load_banner()
 			.catch(function(error)
 			{
 				document.querySelector("#background-image").remove();
+				document.querySelector("#opacity-cover").remove();
 				document.querySelector("#banner-cover").remove();
 				
 				AOS.init({duration: 1200, once: false, offset: window_height / 4});
@@ -126,9 +158,9 @@ function scroll_update()
 		{
 			if (scroll <= window_height)
 			{
-				let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / window_height, 0) - .5 * Math.PI);
+				let opacity = .5 - .5 * Math.sin(Math.PI * Math.max(1 - scroll / window_height, 0) - .5 * Math.PI);
 				
-				try {document.querySelector("#background-image").style.opacity = opacity;}
+				try {document.querySelector("#opacity-cover").style.opacity = opacity;}
 				catch(ex) {}
 				
 				if (opacity == 0)
@@ -145,7 +177,7 @@ function scroll_update()
 			else if (banner_done == false)
 			{
 				//We need a try block here in case the user refreshes the page and it's way low down for some reason, even though scrollRestoration should be off.
-				try {document.querySelector("#background-image").style.opacity = 0;}
+				try {document.querySelector("#opacity-cover").style.opacity = 1;}
 				catch(ex) {}
 				
 				banner_done = true;
