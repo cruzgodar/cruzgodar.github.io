@@ -3,7 +3,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>https://www.cruzgodar.com/</loc>
-		<lastmod>2019-08-13</lastmod>
+		<lastmod>2019-09-13</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>1.0</priority>
 	</url>
@@ -47,6 +47,40 @@
 	
 	
 	<url>
+		<loc>https://www.cruzgodar.com/writing/writing.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/writing/corona/corona.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/writing/mist/mist.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/writing/desolation-point/desolation-point.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	
+	
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/teaching.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/111.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	
+	
+	<url>
 		<loc>https://www.cruzgodar.com/applets/applets.html</loc>
 		<priority>0.5</priority>
 	</url>
@@ -56,10 +90,8 @@
 		<priority>0.5</priority>
 	</url>
 	
-	
-	
 	<url>
-		<loc>https://www.cruzgodar.com/about/about.html</loc>
+		<loc>https://www.cruzgodar.com/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
@@ -115,29 +147,7 @@
 	
 	
 	<url>
-		<loc>https://www.cruzgodar.com/research/research.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	
-	
-	<url>
-		<loc>https://www.cruzgodar.com/writing/writing.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/writing/corona/corona.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/writing/mist/mist.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/writing/desolation-point/desolation-point.html</loc>
+		<loc>https://www.cruzgodar.com/about/about.html</loc>
 		<priority>0.5</priority>
 	</url>
 </urlset>
