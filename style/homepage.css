@@ -69,13 +69,13 @@
 @media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	/* Stack the quote columns on top of one another. */
-	.quote-container:not(.layout-override)
+	.quote-container
 	{
 		width: 90vw;
 		margin-bottom: 5vh;
 	}
 	
-	.quote-row:not(.layout-override)
+	.quote-row
 	{
 		flex-direction: column;
 	}

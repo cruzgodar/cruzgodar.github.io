@@ -22,18 +22,17 @@ function resize_update()
 	
 	if (new_window_width / new_window_height < 9/16 || new_window_width <= 700)
 	{
-		layout_string = "small-screen";
+		layout_string = "compact";
+	}
+	
+	else if (new_window_width / new_window_height > 16/9 || new_window_width => 1400)
+	{
+		layout_string = "ultrawide";
 	}
 	
 	else
 	{
-		layout_string = "compact";
-	}
-	
-	if (layout_string != old_layout && url_vars["content_layout"] != 1)
-	{
-		try {document.querySelector("#content-layout-button-text").textContent = `Content layout: automatic (currently ${layout_string})`;}
-		catch(ex) {}
+		layout_string = "default";
 	}
 	
 	

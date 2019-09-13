@@ -34,8 +34,7 @@ let url_vars =
 	"writing_style": get_url_var("writing_style"),
 	"comments": get_url_var("comments"),
 	"content_animation": get_url_var("content_animation"),
-	"banner_style": get_url_var("banner_style"),
-	"content_layout": get_url_var("content_layout")
+	"banner_style": get_url_var("banner_style")
 };
 
 if (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] == null)
@@ -55,8 +54,7 @@ let url_var_functions =
 	"writing_style": switch_writing_style,
 	"comments": switch_comments,
 	"content_animation": switch_content_animation,
-	"banner_style": switch_banner_style,
-	"content_layout": switch_content_layout
+	"banner_style": switch_banner_style
 };
 
 
@@ -71,8 +69,7 @@ let settings_texts =
 	"writing_style": ["Text on writing pages: double-spaced", "Text on writing pages: single-spaced and indented"],
 	"comments": ["Comments: enabled", "Comments: disabled"],
 	"content_animation": ["Content animation: enabled", "Content animation: disabled"],
-	"banner_style": ["Banners: parallax", "Banners: simple"],
-	"content_layout": ["Content layout: automatic (currently {})", "Content layout: always compact"]
+	"banner_style": ["Banners: parallax", "Banners: simple"]
 };
 
 
@@ -813,91 +810,6 @@ function switch_banner_style()
 
 
 
-function switch_content_layout()
-{
-	if (layout_string == "small-screen")
-	{
-		//Yes, we really should be using html here, not body, but html has css on it on the settings page that gets in the way of that, and this is just way way easier.
-		document.body.classList.add("animated-opacity");
-		document.body.style.opacity = 0;
-	}
-	
-	else
-	{
-		try {document.querySelector("#content-layout-button-row").style.opacity = 0;}
-		catch(ex) {}
-	}
-	
-	
-	
-	if (url_vars["content_layout"] == 0)
-	{
-		setTimeout(function()
-		{
-			let elements = document.querySelectorAll("*");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].classList.add("layout-override");
-			}
-			
-			
-			
-			try {document.querySelector("#content-layout-button-text").textContent = settings_texts["content_layout"][1];}
-			catch(ex) {}
-		}, 300);
-		
-		url_vars["content_layout"] = 1;
-	}
-	
-	
-	
-	else
-	{
-		setTimeout(function()
-		{
-			let elements = document.querySelectorAll("*");
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].classList.remove("layout-override");
-			}
-			
-			
-			
-			try {document.querySelector("#content-layout-button-text").textContent = settings_texts["content_layout"][0].replace("{}", layout_string);}
-			catch(ex) {}
-		}, 300);
-		
-		url_vars["content_layout"] = 0;
-	}
-	
-	
-	
-	setTimeout(function()
-	{
-		if (layout_string == "small-screen")
-		{
-			document.body.style.opacity = 1;
-			
-			setTimeout(function()
-			{
-				document.body.classList.remove("animated-opacity");
-			}, 300);
-		}
-		
-		else
-		{
-			try {document.querySelector("#content-layout-button-row").style.opacity = 1;}
-			catch(ex) {}
-		}
-	}, 300);
-	
-	write_url_vars();
-}
-
-
-
-
-
 function get_settings_style(settings) 
 {
 	if (settings == "dark")
@@ -1181,17 +1093,5 @@ function remove_animation()
 	for (let i = 0; i < elements.length; i++)
 	{
 		elements[i].removeAttribute("data-aos");
-	}
-}
-
-
-
-function override_layout()
-{
-	let elements = document.querySelectorAll("*");
-	
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].classList.add("layout-override");
 	}
 }
