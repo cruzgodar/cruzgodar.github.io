@@ -1074,7 +1074,10 @@ function set_writing_page_style()
 	
 	
 	//When in ultrawide mode, shrink the margins to 50%.
-	set_element_styles(".body-text", "width", "50vw");
+	if (layout_string == "ultrawide")
+	{
+		set_element_styles(".body-text", "width", "50vw");
+	}	
 }
 
 
