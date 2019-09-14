@@ -101,18 +101,6 @@
 /* Ultrawide layout: increase quote margins a little */
 @media screen and (min-aspect-ratio: 16/9), (min-width: 1400px)
 {
-	.quote-container
-	{
-		width: 20vw;
-	}
-	
-	.quote-row
-	{
-		width: 70vw;
-	}
-	
-	
-	
 	.newest-pages
 	{
 		width: 33.5vw !important;
