@@ -201,7 +201,7 @@
 		{
 			let settings_query_strings = Object.keys(url_vars);
 			
-			for (let i = 0; i < settings_query_strings.length - 1; i++)
+			for (let i = 0; i < settings_query_strings.length; i++)
 			{
 				document.querySelector("#" + settings_query_strings[i].replace(/_/g, "-") + "-button-text").textContent = settings_texts[settings_query_strings[i]][url_vars[settings_query_strings[i]]];
 			}
