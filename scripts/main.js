@@ -176,9 +176,14 @@ function on_page_load()
 		set_writing_page_font();
 	}
 	
-	if (page_settings["writing_page"])
+	if (page_settings["writing_page"] && url_vars["writing_style"] == 1)
 	{
 		set_writing_page_style();
+	}
+	
+	if (page_settings["writing_page"] && layout_string == "ultrawide")
+	{
+		set_writing_page_margins();
 	}
 	
 	if (url_vars["comments"] == 1)

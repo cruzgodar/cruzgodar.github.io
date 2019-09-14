@@ -37,6 +37,13 @@ function resize_update()
 	
 	
 	
+	if (old_layout != layout_string && page_settings["writing_page"])
+	{
+		set_writing_page_margins();
+	}
+	
+	
+	
 	//The banner opacity is the big sticking point, though. The solution is to increase the window height slowly and fire scroll events in rapid succession.
 	resize_time = 0;
 	
