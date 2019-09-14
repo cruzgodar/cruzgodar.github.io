@@ -176,7 +176,7 @@ function on_page_load()
 		set_writing_page_font();
 	}
 	
-	if (page_settings["writing_page"] && url_vars["writing_style"] == 1)
+	if (page_settings["writing_page"])
 	{
 		set_writing_page_style();
 	}

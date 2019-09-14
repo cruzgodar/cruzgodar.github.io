@@ -1041,32 +1041,40 @@ function set_writing_page_font()
 
 function set_writing_page_style()
 {
-	//This is a fancy way of saying ("section br").remove(), but it ensures that <br> tags in places like song lyrics won't get removed.
-	let elements = document.querySelectorAll("section div .body-text");
-	
-	for (let i = 0; i < elements.length; i++)
+	if (url_vars["writing_style"] == 1)
 	{
-		//The next element might not exist, so we have to be careful.
-		try
+		//This is a fancy way of saying ("section br").remove(), but it ensures that <br> tags in places like song lyrics won't get removed.
+		let elements = document.querySelectorAll("section div .body-text");
+		
+		for (let i = 0; i < elements.length; i++)
 		{
-			let next_element = elements[i].parentNode.nextElementSibling;
-			
-			if (next_element.tagName.toLowerCase() == "br")
+			//The next element might not exist, so we have to be careful.
+			try
 			{
-				next_element.remove();
+				let next_element = elements[i].parentNode.nextElementSibling;
+				
+				if (next_element.tagName.toLowerCase() == "br")
+				{
+					next_element.remove();
+				}
 			}
+			
+			catch(ex) {}
 		}
 		
-		catch(ex) {}
+		
+		//Add an indent on every element except the first in the section.
+		elements = document.querySelectorAll("section div:not(:first-child) .body-text");
+		for (let i = 0; i < elements.length; i++)
+		{
+			elements[i].style.textIndent = "10pt";
+		}
 	}
 	
 	
-	//Add an indent on every element except the first in the section.
-	elements = document.querySelectorAll("section div:not(:first-child) .body-text");
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].style.textIndent = "10pt";
-	}
+	
+	//When in ultrawide mode, shrink the margins to 50%.
+	set_element_styles(".body-text", "width", "50vw");
 }
 
 
