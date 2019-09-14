@@ -42,6 +42,8 @@
 {
 	margin-top: 1vh;
 	margin-bottom: calc(-1vh - 16px);
+	margin-left: -1.5vw;
+	margin-right: -1.5vw;
 	
 	color: rgb(127, 127, 127);
 	text-align: center;
