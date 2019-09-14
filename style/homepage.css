@@ -66,9 +66,17 @@
 
 
 
+.newest-pages
+{
+	width: 51.25vw;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+
+
+/* Compact layout: stack the quote columns on top of one another. */
 @media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
 {
-	/* Stack the quote columns on top of one another. */
 	.quote-container
 	{
 		width: 90vw;
@@ -78,5 +86,35 @@
 	.quote-row
 	{
 		flex-direction: column;
+	}
+	
+	
+	
+	.newest-pages
+	{
+		width: 90vw;
+	}
+}
+
+
+
+/* Ultrawide layout: increase quote margins a little */
+@media screen and (min-aspect-ratio: 16/9), (min-width: 1400px)
+{
+	.quote-container
+	{
+		width: 20vw;
+	}
+	
+	.quote-row
+	{
+		width: 70vw;
+	}
+	
+	
+	
+	.newest-pages
+	{
+		width: 33.5vw;
 	}
 }

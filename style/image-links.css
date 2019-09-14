@@ -4,27 +4,28 @@
 
 .image-links
 {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-between;
+	display: grid;
+	
+	grid-template-columns: repeat(4, 1fr);
+	
+	/* Make the rows and columns have the same spacing. */
+	grid-row-gap: 5vw;
+	grid-column-gap: 5vw;
+	
 	width: 70vw;
 	margin: 0 auto;
 }
 
 .image-link
 {
-	width: 13.75vw;
-	height: 13.75vw;
+	width: 100%;
 	
 	border-radius: 10%;
 }
 
 .image-link img
 {
-	position: absolute;
-	width: 13.75vw;
-	height: 13.75vw;
+	width: 100%;
 	
 	border-radius: 10%;
 	
@@ -39,8 +40,9 @@
 
 .image-link-subtext
 {
-	position: relative;
-	margin-top: 15vw;
+	margin-top: 1vh;
+	margin-bottom: calc(-1vh - 16px);
+	
 	color: rgb(127, 127, 127);
 	text-align: center;
 	font-size: 100%;
@@ -59,46 +61,40 @@
 
 
 
-.row-break
+@media screen and (min-width: 1000px)
 {
-	height: 5vw;
+	.image-link-subtext
+	{
+		margin-bottom: calc(-1vh - 20px);
+	}
 }
 
 
 
+/* Compact layout: reduce to two images per row. */
 @media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
 {
-	/* Put two images per row, rather than four. */
-	.image-link
-	{
-		width: 40vw;
-		height: 40vw;
-		margin-bottom: 10vw;
-	}
-	
 	.image-links
 	{
 		width: 90vw;
 		
-		/* Cancel out the bottom row's bottom margin */
-		margin-bottom: -10vw;
+		grid-template-columns: repeat(2, 1fr);
+		
+		grid-row-gap: 10vw;
+		grid-column-gap: 10vw;
 	}
-	
-	.image-link img
-	{
-		width: 40vw;
-		height: 40vw;
-	}
+}
 
-	/* Reposition subtext. */
-	.image-link-subtext
+
+
+/* Ultrawide layout: increase to six images per row. */
+@media screen and (min-aspect-ratio: 16/9), (min-width: 1400px)
+{
+	.image-links
 	{
-		margin-top: 41.25vw;
-	}
-	
-	/* Make spacing even. */
-	.row-break
-	{
-		height: 10vw;
+		grid-template-columns: repeat(6, 1fr);
+		
+		grid-row-gap: 3vw;
+		grid-column-gap: 3vw;
 	}
 }

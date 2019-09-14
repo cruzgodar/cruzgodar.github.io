@@ -101,11 +101,7 @@
 				<span></span>
 				<p class="body-text stage-bubble-subtext">Draft</p>
 			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="stage-bubbles">
+			
 			<div class="stage-bubble" data-aos="fade-in" data-aos-delay="400" data-aos-anchor="#trigger-stage-bubbles">
 				<span></span>
 				<p class="body-text stage-bubble-subtext">Revision</p>
@@ -418,14 +414,19 @@
 					bubbles[i].style.width = 0;
 					bubbles[i].style.height = 0;
 					
-					if (layout_string == "compact")
+					if (layout_string == "default")
 					{
 						subtexts[i].style.marginTop = "calc(5vw + 1vh)";
 					}
 					
-					else
+					else if (layout_string == "compact")
 					{
 						subtexts[i].style.marginTop = "calc(10vw + 1vh)";
+					}
+					
+					else
+					{
+						subtexts[i].style.marginTop = "calc(5vw + 1vh)";
 					}
 				}
 			}

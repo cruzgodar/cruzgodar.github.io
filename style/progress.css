@@ -4,18 +4,19 @@
 
 .stage-bubbles
 {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	
 	width: 70vw;
 	margin: 0 auto;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-between;
 }
 
 .stage-bubble
 {
 	width: 5vw;
 	height: 5vw;
+	
+	margin: 0 auto;
 	
 	border: 2px solid rgb(152, 152, 152);
 	border-radius: 7px;
@@ -82,6 +83,7 @@
 
 
 
+/* Compact layout: fit to the correct margins. */
 @media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	.stage-bubbles
@@ -105,5 +107,29 @@
 	.progress-bar
 	{
 		width: calc(80vw - 8px);
+	}
+}
+
+
+
+/* Ultrawide layout: put the stage bubbles on one line. */
+@media screen and (min-aspect-ratio: 16/9), (min-width: 1400px)
+{
+	.stage-bubbles
+	{
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+	}
+	
+	.stage-bubble
+	{
+		width: 5vw;
+		height: 5vw;
+	}
+	
+	.stage-bubble-subtext
+	{
+		margin-top: calc(5vw + 1vh);
+		width: 25vw;
+		margin-left: -7.5vw;
 	}
 }

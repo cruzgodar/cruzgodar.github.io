@@ -105,6 +105,7 @@
 
 
 
+/* Compact layout: fit the images to the correct margins. */
 @media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	.song-lyrics

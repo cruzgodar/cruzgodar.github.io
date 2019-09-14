@@ -25,7 +25,7 @@ function resize_update()
 		layout_string = "compact";
 	}
 	
-	else if (new_window_width / new_window_height > 16/9 || new_window_width => 1400)
+	else if (new_window_width / new_window_height > 16/9 || new_window_width >= 1400)
 	{
 		layout_string = "ultrawide";
 	}
