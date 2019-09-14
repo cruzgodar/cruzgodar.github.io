@@ -577,6 +577,8 @@
 				{
 					width: 50vw;
 					margin: 0 auto;
+					
+					grid-column-gap: calc(17.5vw - 12px);
 				}
 				
 				.stage-bubble-subtext
@@ -598,6 +600,8 @@
 					filter: brightness(120%);
 				}
 				
+				
+				
 				@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
 				{
 					/* Make text have smaller margins so justifying doesn't look ugly. */
@@ -614,12 +618,24 @@
 					.stage-bubbles
 					{
 						width: 80vw;
+						
+						grid-column-gap: calc(25vw - 12px);
 					}
 					
 					.stage-bubble-subtext
 					{
 						width: 25vw;
 						margin-left: -7.5vw;
+					}
+				}
+				
+				
+				
+				@media screen and (min-aspect-ratio: 16/9), (min-width: 1400px)
+				{
+					.stage-bubbles
+					{
+						grid-column-gap: calc(4vw - 9.6px);
 					}
 				}
 			`, true);

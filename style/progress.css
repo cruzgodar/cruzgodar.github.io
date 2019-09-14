@@ -5,7 +5,10 @@
 .stage-bubbles
 {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	
+	grid-template-columns: repeat(3, 1fr);
+	grid-column-gap: calc(27.5vw - 12px);
+	grid-row-gap: 5vw;
 	
 	width: 70vw;
 	margin: 0 auto;
@@ -15,8 +18,6 @@
 {
 	width: 5vw;
 	height: 5vw;
-	
-	margin: 0 auto;
 	
 	border: 2px solid rgb(152, 152, 152);
 	border-radius: 7px;
@@ -89,6 +90,9 @@
 	.stage-bubbles
 	{
 		width: 90vw;
+		
+		grid-column-gap: calc(30vw - 12px);
+		grid-row-gap: 10vw;
 	}
 	
 	.stage-bubble
@@ -106,7 +110,7 @@
 	
 	.progress-bar
 	{
-		width: calc(80vw - 8px);
+		width: calc(90vw - 8px);
 	}
 }
 
@@ -117,19 +121,8 @@
 {
 	.stage-bubbles
 	{
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-	}
-	
-	.stage-bubble
-	{
-		width: 5vw;
-		height: 5vw;
-	}
-	
-	.stage-bubble-subtext
-	{
-		margin-top: calc(5vw + 1vh);
-		width: 25vw;
-		margin-left: -7.5vw;
+		grid-template-columns: repeat(6, 1fr);
+		
+		grid-column-gap: calc(8vw - 9.6px);
 	}
 }
