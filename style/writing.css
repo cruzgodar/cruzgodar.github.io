@@ -75,7 +75,7 @@
 .big-image-vertical
 {
 	position: relative;
-	width: 90vh;
+	width: 50vw;
 	height: auto;
 	margin-left: auto;
 	margin-right: auto;
@@ -85,8 +85,8 @@
 .small-image-vertical
 {
 	position: relative;
-	width: auto;
-	height: 50vh;
+	width: 30vw;
+	height: auto;
 	margin-left: auto;
 	margin-right: auto;
 	display: block;
@@ -140,6 +140,35 @@
 
 	.big-image-vertical
 	{
-		width: 90vw;
+		width: 60vw;
+	}
+	
+	.small-image-vertical
+	{
+		width: 40vw;
+	}
+}
+
+
+
+/* Ultrawide layout: tone down the height of the images so that they don't fill the whole screen. */
+@media screen and (min-aspect-ratio: 16/9), (min-width: 1400px)
+{
+	.big-image-horizontal
+	{
+		width: 50vw;
+		margin-left: 25vw;
+	}
+	
+	
+	
+	.big-image-vertical
+	{
+		width: 25vw;
+	}
+	
+	.small-image-vertical
+	{
+		width: 25vw;
 	}
 }
