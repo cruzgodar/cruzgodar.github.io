@@ -68,8 +68,8 @@
 
 .newest-pages
 {
-	width: 51.25vw;
-	grid-template-columns: repeat(3, 1fr);
+	width: 51.25vw !important;
+	grid-template-columns: repeat(3, 1fr) !important;
 }
 
 
@@ -92,7 +92,7 @@
 	
 	.newest-pages
 	{
-		width: 90vw;
+		width: 90vw !important;
 	}
 }
 
@@ -115,6 +115,6 @@
 	
 	.newest-pages
 	{
-		width: 33.5vw;
+		width: 33.5vw !important;
 	}
 }
