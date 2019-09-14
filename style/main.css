@@ -264,6 +264,13 @@ img
 
 
 
+#MathJax_Message
+{
+	display: none !important;
+}
+
+
+
 @media screen and (min-width: 1000px)
 {
 	html
