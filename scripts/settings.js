@@ -75,10 +75,12 @@ let settings_texts =
 
 
 let dark_theme_background_color = "rgb(24, 24, 24)";
+let dark_theme_background_color_rgba = "rgba(24, 24, 24, ";
 
 if (url_vars["dark_theme_color"] == 1)
 {
 	dark_theme_background_color = "rgb(0, 0, 0)";
+	dark_theme_background_color_rgba = "rgba(0, 0, 0, ";
 }
 
 
@@ -141,12 +143,13 @@ function switch_theme()
 			
 			setTimeout(function()
 			{
+				let element = add_style(get_settings_style("dark_contrast"), false);
+				
 				try {document.querySelector("#theme-adjust").remove();}
 				catch(ex) {}
 				
-				let element = add_style(get_settings_style("dark_contrast"), false);
-				
-				element.id = "theme-adjust";
+				try {element.id = "theme-adjust";}
+				catch(ex) {}
 			}, 600);
 		}
 		
@@ -166,12 +169,13 @@ function switch_theme()
 			
 			setTimeout(function()
 			{
+				let element = add_style(get_settings_style("dark"), false);
+				
 				try {document.querySelector("#theme-adjust").remove();}
 				catch(ex) {}
 				
-				let element = add_style(get_settings_style("dark"), false);
-				
-				element.id = "theme-adjust";
+				try {element.id = "theme-adjust";}
+				catch(ex) {}
 			}, 600);
 		}
 		
@@ -212,12 +216,13 @@ function switch_theme()
 			
 			setTimeout(function()
 			{
+				let element = add_style(get_settings_style("contrast"), false);
+				
 				try {document.querySelector("#theme-adjust").remove();}
 				catch(ex) {}
 				
-				let element = add_style(get_settings_style("contrast"), false);
-				
-				element.id = "theme-adjust";
+				try {element.id = "theme-adjust";}
+				catch(ex) {}
 			}, 600);
 		}
 		
@@ -278,11 +283,45 @@ function switch_dark_theme_color()
 	if (url_vars["dark_theme_color"] == 0)
 	{
 		dark_theme_background_color = "rgb(0, 0, 0)";
+		dark_theme_background_color_rgba = "rgba(0, 0, 0, ";
 		
 		if (url_vars["theme"] == 1)
 		{
 			document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 		}
+		
+		
+		
+		setTimeout(function()
+		{
+			let element = null;
+			
+			if (url_vars["theme"] == 1)
+			{
+				if (url_vars["contrast"] == 1)
+				{
+					element = add_style(get_settings_style("dark_contrast"), false);
+				}
+				
+				else
+				{
+					element = add_style(get_settings_style("dark"), false);
+				}
+			}
+			
+			else if (url_vars["contrast"] == 1)
+			{
+				element = add_style(get_settings_style("contrast"), false);
+			}
+			
+			
+			
+			try {document.querySelector("#theme-adjust").remove();}
+			catch(ex) {}
+			
+			try {element.id = "theme-adjust";}
+			catch(ex) {}
+		}, 600);
 		
 		
 		
@@ -300,11 +339,45 @@ function switch_dark_theme_color()
 	else
 	{
 		dark_theme_background_color = "rgb(24, 24, 24)";
+		dark_theme_background_color_rgba = "rgba(24, 24, 24, ";
 		
 		if (url_vars["theme"] == 1)
 		{
 			document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
 		}
+		
+		
+		
+		setTimeout(function()
+		{
+			let element = null;
+			
+			if (url_vars["theme"] == 1)
+			{
+				if (url_vars["contrast"] == 1)
+				{
+					element = add_style(get_settings_style("dark_contrast"), false);
+				}
+				
+				else
+				{
+					element = add_style(get_settings_style("dark"), false);
+				}
+			}
+			
+			else if (url_vars["contrast"] == 1)
+			{
+				element = add_style(get_settings_style("contrast"), false);
+			}
+			
+			
+			
+			try {document.querySelector("#theme-adjust").remove();}
+			catch(ex) {}
+			
+			try {element.id = "theme-adjust";}
+			catch(ex) {}
+		}, 600);
 		
 		
 		
@@ -356,12 +429,13 @@ function switch_contrast()
 			
 			setTimeout(function()
 			{
+				let element = add_style(get_settings_style("dark_contrast"), false);
+				
 				try {document.querySelector("#contrast-adjust").remove();}
 				catch(ex) {}
 				
-				let element = add_style(get_settings_style("dark_contrast"), false);
-				
-				element.id = "contrast-adjust";
+				try {element.id = "contrast-adjust";}
+				catch(ex) {}
 			}, 600);
 		}
 		
@@ -381,12 +455,13 @@ function switch_contrast()
 			
 			setTimeout(function()
 			{
+				let element = add_style(get_settings_style("contrast"), false);
+				
 				try {document.querySelector("#contrast-adjust").remove();}
 				catch(ex) {}
 				
-				let element = add_style(get_settings_style("contrast"), false);
-				
-				element.id = "contrast-adjust";
+				try {element.id = "contrast-adjust";}
+				catch(ex) {}
 			}, 600);
 		}
 		
@@ -419,12 +494,13 @@ function switch_contrast()
 			
 			setTimeout(function()
 			{
+				let element = add_style(get_settings_style("dark"), false);
+				
 				try {document.querySelector("#contrast-adjust").remove();}
 				catch(ex) {}
 				
-				let element = add_style(get_settings_style("dark"), false);
-				
-				element.id = "contrast-adjust";
+				try {element.id = "contrast-adjust";}
+				catch(ex) {}
 			}, 600);
 		}
 		
@@ -759,10 +835,26 @@ function switch_banner_style()
 		try {document.querySelector("#banner-adjust").remove();}
 		catch(ex) {}
 		
+		
+		
 		let element = add_style(`
 			.banner:before
 			{
 				position: absolute !important;
+			}
+			
+			.banner:after
+			{
+				content: "";
+				position: absolute;
+				
+				width: 100vw;
+				height: 30vh;
+				margin-top: 70vh;
+				
+				background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
+				background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
+				background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 			}
 		`, false);
 		
@@ -868,6 +960,15 @@ function get_settings_style(settings)
 			{
 				border-color: rgb(152, 152, 152);
 				color: rgb(216, 216, 216);
+			}
+			
+			
+			
+			.banner:after
+			{
+				background: -moz-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%, ${dark_theme_background_color_rgba}1) 100%) !important; /* FF3.6-15 */
+				background: -webkit-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important; /* Chrome10-25,Safari5.1-6 */
+				background: linear-gradient(to bottom, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 			}
 			
 			
@@ -1006,6 +1107,15 @@ function get_settings_style(settings)
 			{
 				border-color: rgb(216, 216, 216);
 				color: rgb(255, 255, 255);
+			}
+			
+			
+			
+			.banner:after
+			{
+				background: -moz-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%, ${dark_theme_background_color_rgba}1) 100%) !important; /* FF3.6-15 */
+				background: -webkit-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important; /* Chrome10-25,Safari5.1-6 */
+				background: linear-gradient(to bottom, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 			}
 					
 			

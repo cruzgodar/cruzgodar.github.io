@@ -1,8 +1,7 @@
-/* Provides suppport for full-page, parallax banners at the top of the page, complete with scroll buttons. Requires banners-head.js and banners-body.js. */
+/* Provides suppport for full-page, parallax banners at the top of the page, complete with scroll buttons. */
 
 
 
-/* DON’T TOUCH THE BEFORE THINGY. It has to be here, even though it makes everything worse. */
 .banner:before
 {
 	content: "";
@@ -14,12 +13,6 @@
 	
 	/* Some magic that prevents the banner from abruptly resizing on mobile devices on which the size of the url bar changes on scroll. */
 	transform: translate3d(0, 0, 0);
-}
-
-/* Used on Edge 'cause it just can't do the nice banner effects like all the other browsers. */
-.bad-banner:before
-{
-	position: absolute !important;
 }
 
 

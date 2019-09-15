@@ -74,22 +74,6 @@ if (browser_name == "Explorer")
 
 
 
-//Deal with Edge.
-function gimp_edge()
-{
-	if (browser_name == "MS Edge")
-	{		
-		try
-		{
-			document.querySelector("#background-image").classList.add("bad-banner");
-		}
-		
-		catch(ex) {}
-	}
-}
-
-
-
 function hasTouch()
 {
 	return "ontouchstart" in document.documentElement
@@ -107,7 +91,7 @@ function remove_hover_on_touch()
 		//Remove all :hover stylesheets.
 		try
 		{
-			//Prevent exception on browsers not supporting DOM styleSheets properly
+			//Prevent exception on browsers not supporting DOM stylesheets properly
 			for (var si in document.styleSheets)
 			{
 				var styleSheet = document.styleSheets[si];
@@ -117,7 +101,7 @@ function remove_hover_on_touch()
 				{
 					if (!styleSheet.rules[ri].selectorText) continue;
 
-					if (styleSheet.rules[ri].selectorText.match(':hover'))
+					if (styleSheet.rules[ri].selectorText.match(":hover"))
 					{
 						styleSheet.deleteRule(ri);
 					}

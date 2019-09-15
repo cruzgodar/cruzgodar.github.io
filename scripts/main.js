@@ -158,8 +158,6 @@ function on_page_load()
 	
 	insert_images();
 	
-	gimp_edge();
-	
 	remove_hover_on_touch();
 	
 	disable_links();
