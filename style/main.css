@@ -264,6 +264,15 @@ img
 
 
 
+#disqus_thread
+{
+	width: 70vw;
+	
+	margin: 0 auto;
+}
+
+
+
 #MathJax_Message
 {
 	display: none !important;
@@ -285,6 +294,11 @@ img
 @media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	.heading-text, .section-text, .body-text, .date-text
+	{
+		width: 90vw;
+	}
+	
+	#disqus_thread
 	{
 		width: 90vw;
 	}

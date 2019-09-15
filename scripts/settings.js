@@ -1086,6 +1086,11 @@ function set_writing_page_margins()
 			{
 				width: 50vw;
 			}
+			
+			#disqus_thread
+			{
+				width: 50vw;
+			}
 		`, true);
 		
 		element.id = "writing-page-margin-adjust";
