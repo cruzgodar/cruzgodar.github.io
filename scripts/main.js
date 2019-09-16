@@ -19,7 +19,8 @@ let temporary_handlers =
 {
 	"scroll": [],
 	"resize": [],
-	"touchend": []
+	"touchend": [],
+	"touchstart": []
 }
 
 let layout_string = "";
@@ -150,9 +151,6 @@ async function entry_point(url)
 
 function on_page_load()
 {
-	//Start at the top of the page to prevent banner glitches.
-	window.scrollTo(0, 0);
-	
 	//Set the page title.
 	document.querySelector("title").innerHTML = page_settings["title"];
 	

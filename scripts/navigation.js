@@ -2,6 +2,10 @@ let new_page_data = null;
 
 
 
+let last_page_scroll = 0;
+
+
+
 //Fade in the opacity when the user presses the back button.
 window.addEventListener("popstate", function(e)
 {
@@ -9,7 +13,7 @@ window.addEventListener("popstate", function(e)
 		
 	if (previous_page != null && decodeURIComponent(previous_page) != current_url)
 	{
-		redirect(decodeURIComponent(previous_page), false, false, true);
+		redirect(decodeURIComponent(previous_page), false, false, true, true);
 	}
 	
 	else
@@ -63,7 +67,7 @@ function set_links()
 
 
 //Handles virtually all links.
-function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
+function redirect(url, in_new_tab, from_nonstandard_color, no_state_push, restore_scroll)
 {
 	//Indicates whether we need to pause to change the background color. Example: the bottom of the Corona page.
 	from_nonstandard_color = (typeof from_nonstandard_color != "undefined") ? from_nonstandard_color : false;
@@ -71,6 +75,8 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	in_new_tab = (typeof in_new_tab != "undefined") ? in_new_tab : false;
 	
 	no_state_push = (typeof no_state_push != "undefined") ? no_state_push : false;
+	
+	restore_scroll = (typeof restore_scroll != "undefined") ? restore_scroll : false;
 	
 	
 	
@@ -80,6 +86,10 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 		window.open(url, "_blank");
 		return;
 	}
+	
+	
+	
+	let temp = window.scrollY;
 	
 	
 	
@@ -108,10 +118,14 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 	//Get the new data and fade out the page. When both of those things are successfully done, replace the current html with the new stuff.
 	Promise.all([fetch(url), fade_out(from_nonstandard_color), load_banner()])
 	
+	
+	
 	.then(function(response)
 	{
 		return response[0].text();
 	})
+	
+	
 	
 	.then(function(data)
 	{
@@ -135,7 +149,24 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push)
 		document.body.innerHTML = data;
 		
 		parse_scripts();
+		
+		
+		
+		if (restore_scroll)
+		{
+			window.scrollTo(0, last_page_scroll);
+			scroll_update();
+		}
+		
+		else
+		{
+			window.scrollTo(0, 0);
+		}
+		
+		last_page_scroll = temp;
 	})
+	
+	
 	
 	.catch(function(error)
 	{

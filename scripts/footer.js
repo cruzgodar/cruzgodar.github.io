@@ -469,36 +469,20 @@ function init_floating_footer_listeners_touch()
 	
 	
 	
-	document.documentElement.addEventListener("touchend", footer_process_touch, false);
-	temporary_handlers["touchend"].push(footer_process_touch);
+	document.documentElement.addEventListener("touchend", footer_process_touchend, false);
+	temporary_handlers["touchend"].push(footer_process_touchend);
 	
-	
-	
-	document.documentElement.addEventListener("touchstart", function(e)
-	{
-		if (!(document.querySelector(".floating-footer-content").contains(e.target)))
-		{
-			if (floating_footer_is_visible)
-			{
-				document.querySelector(".floating-footer").style.opacity = 0;
-				
-				floating_footer_is_visible = false;
-				
-				setTimeout(function()
-				{
-					document.querySelector(".floating-footer").style.display = "none";
-					document.querySelector(".floating-footer-touch-target").style.display = "block";
-				}, 300);
-			}
-		}
-	}, false);
+	document.documentElement.addEventListener("touchstart", footer_process_touchstart, false);
+	temporary_handlers["touchstart"].push(footer_process_touchstart);
 }
 
 
 
-function footer_process_touch()
+function footer_process_touchend()
 {
 	let target = document.elementFromPoint(last_touch_x, last_touch_y);
+	
+	
 	
 	if (document.querySelector(".floating-footer-touch-target") == target)
 	{
@@ -513,6 +497,27 @@ function footer_process_touch()
 			{
 				document.querySelector(".floating-footer").style.opacity = 1;
 			}, 50);
+		}
+	}
+}
+
+
+
+function footer_process_touchstart(event)
+{
+	if (!(document.querySelector(".floating-footer-content").contains(event.target)))
+	{
+		if (floating_footer_is_visible)
+		{
+			document.querySelector(".floating-footer").style.opacity = 0;
+			
+			floating_footer_is_visible = false;
+			
+			setTimeout(function()
+			{
+				document.querySelector(".floating-footer").style.display = "none";
+				document.querySelector(".floating-footer-touch-target").style.display = "block";
+			}, 300);
 		}
 	}
 }
