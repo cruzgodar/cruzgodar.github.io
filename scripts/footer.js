@@ -62,7 +62,7 @@ function insert_footer()
 	
 	
 	document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
-		<div style="position: relative">
+		<div class="footer-buttons" style="position: relative">
 			<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu" style="position: absolute; bottom: 6.5px; left: 10px">
 				<a href="/index.html?page=%2Fsettings.html${vars_return}">
 					<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect('/settings.html', 0${fnc_arg})">
@@ -89,12 +89,12 @@ function insert_footer()
 	{
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
-				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<div class="line-break-container" data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 					<div class="line-break" style="width: 80vw"></div>
 				</div>
 			<div style="height: 4vw"></div>
 			
-			<nav id="footer-image-links" style="width: 68vw"></nav>
+			<nav class="footer-image-links" style="width: 68vw"></nav>
 		`);
 	}
 	
@@ -102,12 +102,12 @@ function insert_footer()
 	{
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
-				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<div class="line-break-container" data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 					<div class="line-break"></div>
 				</div>
 			<div style="height: 4vw"></div>
 			
-			<nav id="footer-image-links"></nav>
+			<nav class="footer-image-links"></nav>
 		`);
 	}
 			
@@ -117,7 +117,7 @@ function insert_footer()
 	{
 		let element = document.createElement("div");
 		
-		document.querySelector("#footer-image-links").appendChild(element);
+		document.querySelector(".footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
 			<div id="writing-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
@@ -134,7 +134,7 @@ function insert_footer()
 	{
 		let element = document.createElement("div");
 		
-		document.querySelector("#footer-image-links").appendChild(element);
+		document.querySelector(".footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
 			<div id="teaching-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
@@ -151,7 +151,7 @@ function insert_footer()
 	{
 		let element = document.createElement("div");
 		
-		document.querySelector("#footer-image-links").appendChild(element);
+		document.querySelector(".footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
 			<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
@@ -168,7 +168,7 @@ function insert_footer()
 	{
 		let element = document.createElement("div");
 		
-		document.querySelector("#footer-image-links").appendChild(element);
+		document.querySelector(".footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
 			<div id="blog-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
@@ -185,7 +185,7 @@ function insert_footer()
 	{
 		let element = document.createElement("div");
 		
-		document.querySelector("#footer-image-links").appendChild(element);
+		document.querySelector(".footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
 			<div id="notes-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
@@ -202,7 +202,7 @@ function insert_footer()
 	{
 		let element = document.createElement("div");
 		
-		document.querySelector("#footer-image-links").appendChild(element);
+		document.querySelector(".footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
 			<div id="about-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
@@ -276,5 +276,214 @@ function insert_footer()
 	
 	
 	
+	set_up_floating_footer();
+	
+	
+	
 	footer_done = true;
+}
+
+
+
+//Initializes the floating footer by copying specific parts of the normal footer.
+function set_up_floating_footer()
+{
+	let floating_footer_element = document.createElement("footer");
+	floating_footer_element.classList.add("floating-footer");
+	
+	document.body.insertBefore(floating_footer_element, document.body.firstChild);
+	
+	
+	
+	floating_footer_element.innerHTML = `
+		<div class="floating-footer-gradient"></div>
+		
+		<div class="floating-footer-content">
+			<div style="height: 30px"></div>
+		</div>
+	`;
+	
+	
+	
+	//We want all the footer image links, but we don't want the animations anchored to anything.
+	element = document.querySelector("#spawn-footer").parentNode.querySelector(".footer-image-links").cloneNode(true);
+	
+	for (let i = 0; i < element.children.length; i++)
+	{
+		element.children[i].removeAttribute("data-aos-anchor");
+	}
+	
+	document.querySelector(".floating-footer-content").appendChild(element);
+	
+	
+	
+	//Next, we want the footer buttons.
+	element = document.querySelector("#spawn-footer").parentNode.querySelector(".footer-buttons").cloneNode(true);
+	
+	for (let i = 0; i < element.children.length; i++)
+	{
+		element.children[i].removeAttribute("data-aos-anchor");
+	}
+	
+	document.querySelector(".floating-footer-content").appendChild(element);
+	
+	
+	
+	//Finally, we need to cover the bottom with a very thin strip of white to fix a strange glitch where absolutely-positioned elements always have a transparent background.
+	element = document.createElement("div");
+	
+	element.classList.add("floating-footer-button-background");
+	
+	document.querySelector(".floating-footer-content").appendChild(element);
+	
+	
+	
+	document.querySelector(".floating-footer").insertAdjacentHTML("afterend", `<div class="floating-footer-touch-target"></div>`);
+	
+	
+	
+	fit_floating_footer_to_window_width();
+	
+	window.addEventListener("resize", fit_floating_footer_to_window_width);
+	temporary_handlers["resize"].push(fit_floating_footer_to_window_width);
+	
+	
+	
+	window.addEventListener("scroll", remove_floating_footer_trigger_at_bottom);
+	temporary_handlers["scroll"].push(remove_floating_footer_trigger_at_bottom);
+	
+	
+	
+	
+	if (hasTouch())
+	{
+		init_floating_footer_listeners_touch();
+	}
+	
+	else
+	{
+		init_floating_footer_listeners_no_touch();
+	}
+}
+
+
+
+//Properly size the floating footer -- when there is a scroll bar, the right button will clip into it. Unfortunately, there is no way to solve this with CSS, as far as I'm aware.
+function fit_floating_footer_to_window_width()
+{
+	document.querySelector(".floating-footer").style.width = document.documentElement.clientWidth + "px";
+}
+
+
+
+//Remove the trigger zone when we reach the actual footer so that we don't cause any problems.
+function remove_floating_footer_trigger_at_bottom()
+{
+	if (document.querySelector(".line-break-container").classList.contains("aos-animate"))
+	{
+		document.querySelector(".floating-footer-touch-target").style.display = "none";
+		
+		if (floating_footer_is_visible)
+		{
+			document.querySelector(".floating-footer").style.opacity = 0;
+			
+			floating_footer_is_visible = false;
+			
+			setTimeout(function()
+			{
+				document.querySelector(".floating-footer").style.display = "none";
+			}, 300);
+		}
+	}
+	
+	else
+	{
+		document.querySelector(".floating-footer-touch-target").style.display = "block";
+	}
+}
+
+
+
+//When the touch target is moused over or tapped, show the footer and hide the touch target. When the mouse leaves the footer or there's a tap somewhere else, hide the footer and show the touch target again.
+let floating_footer_is_visible = false;
+
+function init_floating_footer_listeners_no_touch()
+{
+	floating_footer_is_visible = false;
+	
+	document.querySelector(".floating-footer-touch-target").addEventListener("mouseenter", function()
+	{
+		if (floating_footer_is_visible == false)
+		{
+			document.querySelector(".floating-footer").style.display = "block";
+			document.querySelector(".floating-footer-touch-target").style.display = "none";
+			
+			setTimeout(function()
+			{
+				document.querySelector(".floating-footer").style.opacity = 1;
+				
+				floating_footer_is_visible = true;
+			}, 50);
+		}
+	});
+	
+	document.querySelector(".floating-footer-content").addEventListener("mouseleave", function()
+	{
+		if (floating_footer_is_visible)
+		{
+			document.querySelector(".floating-footer").style.opacity = 0;
+			
+			floating_footer_is_visible = false;
+			
+			setTimeout(function()
+			{
+				document.querySelector(".floating-footer").style.display = "none";
+				document.querySelector(".floating-footer-touch-target").style.display = "block";
+			}, 300);
+		}
+	});
+}
+
+
+
+function init_floating_footer_listeners_touch()
+{
+	floating_footer_is_visible = false;
+	
+	document.documentElement.addEventListener("touchend", function(e)
+	{
+		if (document.querySelector(".floating-footer-touch-target") == e.target)
+		{
+			if (floating_footer_is_visible == false)
+			{
+				document.querySelector(".floating-footer").style.display = "block";
+				document.querySelector(".floating-footer-touch-target").style.display = "none";
+				
+				floating_footer_is_visible = true;
+				
+				setTimeout(function()
+				{
+					document.querySelector(".floating-footer").style.opacity = 1;
+				}, 50);
+			}
+		}
+		
+		
+		
+		else if (!(document.querySelector(".floating-footer-content").contains(e.target)))
+		{
+			if (floating_footer_is_visible)
+			{
+				document.querySelector(".floating-footer").style.opacity = 0;
+				
+				floating_footer_is_visible = false;
+				
+				setTimeout(function()
+				{
+					document.querySelector(".floating-footer").style.display = "none";
+					document.querySelector(".floating-footer-touch-target").style.display = "block";
+				}, 300);
+			}
+		}
+	}, false);
 }

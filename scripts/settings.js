@@ -852,9 +852,9 @@ function switch_banner_style()
 				height: 30vh;
 				margin-top: 70vh;
 				
-				background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
-				background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
-				background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+				background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+				background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+				background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
 			}
 		`, false);
 		
@@ -943,7 +943,6 @@ function get_settings_style(settings)
 			
 			.line-break
 			{
-				background: ${dark_theme_background_color};
 				background: -moz-linear-gradient(left, ${dark_theme_background_color} 0%, rgb(116,116,116) 50%, ${dark_theme_background_color} 100%);
 				background: -webkit-linear-gradient(left, ${dark_theme_background_color} 0%,rgb(116,116,116) 50%,${dark_theme_background_color}) 100%);
 				background: linear-gradient(to right, ${dark_theme_background_color} 0%,rgb(116,116,116) 50%,${dark_theme_background_color} 100%);
@@ -964,11 +963,18 @@ function get_settings_style(settings)
 			
 			
 			
-			.banner:after
+			.floating-footer-content, .floating-footer-button-background
 			{
-				background: -moz-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%, ${dark_theme_background_color_rgba}1) 100%) !important; /* FF3.6-15 */
-				background: -webkit-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important; /* Chrome10-25,Safari5.1-6 */
-				background: linear-gradient(to bottom, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+				background-color: ${dark_theme_background_color};
+			}
+			
+			
+			
+			.banner:after, .floating-footer-gradient
+			{
+				background: -moz-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%, ${dark_theme_background_color_rgba}1) 100%) !important;
+				background: -webkit-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important;
+				background: linear-gradient(to bottom, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important;
 			}
 			
 			
@@ -1111,11 +1117,18 @@ function get_settings_style(settings)
 			
 			
 			
-			.banner:after
+			.floating-footer-content, .floating-footer-button-background
 			{
-				background: -moz-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%, ${dark_theme_background_color_rgba}1) 100%) !important; /* FF3.6-15 */
-				background: -webkit-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important; /* Chrome10-25,Safari5.1-6 */
-				background: linear-gradient(to bottom, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+				background-color: ${dark_theme_background_color};
+			}
+			
+			
+			
+			.banner:after, .floating-footer-gradient
+			{
+				background: -moz-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%, ${dark_theme_background_color_rgba}1) 100%) !important;
+				background: -webkit-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important;
+				background: linear-gradient(to bottom, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important;
 			}
 					
 			
