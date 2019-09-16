@@ -61,7 +61,7 @@ function resize_update()
 			window_width = new_window_width;
 			window_height = new_window_height;
 			
-			scroll_update();
+			scroll_update(0);
 		}
 	}, 8);
 }
@@ -75,5 +75,5 @@ function resize_step()
 	
 	resize_time += 8;
 	
-	scroll_update();
+	scroll_update(0);
 }

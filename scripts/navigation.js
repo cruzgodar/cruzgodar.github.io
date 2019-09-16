@@ -155,7 +155,7 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push, restor
 		if (restore_scroll)
 		{
 			window.scrollTo(0, last_page_scroll);
-			scroll_update();
+			scroll_update(last_page_scroll);
 		}
 		
 		else

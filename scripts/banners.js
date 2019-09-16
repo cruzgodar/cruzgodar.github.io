@@ -11,7 +11,10 @@ let scroll_button_timeout = null;
 
 
 
-window.addEventListener("scroll", scroll_update);
+window.addEventListener("scroll", function()
+{
+	scroll_update(0);
+});
 
 
 
@@ -146,9 +149,19 @@ function add_banner_style()
 
 
 
-function scroll_update()
+function scroll_update(scroll_position_override)
 {
-	scroll = window.scrollY;
+	if (scroll_position_override == 0)
+	{
+		scroll = window.scrollY;
+	}
+	
+	else
+	{
+		scroll = scroll_position_override;
+		banner_done = false;
+		scroll_button_done = false;
+	}
 	
 	
 	
