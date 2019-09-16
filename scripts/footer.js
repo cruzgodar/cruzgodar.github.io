@@ -354,6 +354,14 @@ function set_up_floating_footer()
 	
 	
 	
+	//Idk why this is required. Occasionally the touch target will have display: none until the window is scrolled any amount.
+	setTimeout(function()
+	{
+		document.querySelector(".floating-footer-touch-target").style.display = "block";
+	}, 50);
+	
+	
+	
 	
 	if (hasTouch())
 	{
@@ -372,6 +380,15 @@ function set_up_floating_footer()
 function fit_floating_footer_to_window_width()
 {
 	document.querySelector(".floating-footer").style.width = document.documentElement.clientWidth + "px";
+	
+	//This one beats me. A window resize will cause the touch target to become visible, blocking some or all of the footer image links. If the timeout isn't here, then it will flicker on and off violently before remaining on.
+	if (floating_footer_is_visible)
+	{
+		setTimeout(function()
+		{
+			document.querySelector(".floating-footer-touch-target").style.display = "none";
+		}, 50);
+	}
 }
 
 
@@ -450,40 +467,48 @@ function init_floating_footer_listeners_touch()
 {
 	floating_footer_is_visible = false;
 	
-	document.documentElement.addEventListener("touchend", function(e)
+	
+	document.documentElement.addEventListener("touchend", footer_process_touch, false);
+	temporary_handlers["touchend"].push(footer_process_touch);
+}
+
+
+
+function footer_process_touch()
+{
+	let target = document.elementFromPoint(last_touch_x, last_touch_y);
+	
+	if (document.querySelector(".floating-footer-touch-target") == target)
 	{
-		if (document.querySelector(".floating-footer-touch-target") == e.target)
+		if (floating_footer_is_visible == false)
 		{
-			if (floating_footer_is_visible == false)
+			document.querySelector(".floating-footer").style.display = "block";
+			document.querySelector(".floating-footer-touch-target").style.display = "none";
+			
+			floating_footer_is_visible = true;
+			
+			setTimeout(function()
 			{
-				document.querySelector(".floating-footer").style.display = "block";
-				document.querySelector(".floating-footer-touch-target").style.display = "none";
-				
-				floating_footer_is_visible = true;
-				
-				setTimeout(function()
-				{
-					document.querySelector(".floating-footer").style.opacity = 1;
-				}, 50);
-			}
+				document.querySelector(".floating-footer").style.opacity = 1;
+			}, 50);
 		}
-		
-		
-		
-		else if (!(document.querySelector(".floating-footer-content").contains(e.target)))
+	}
+	
+	
+			
+	else if (!(document.querySelector(".floating-footer-content").contains(target)))
+	{
+		if (floating_footer_is_visible)
 		{
-			if (floating_footer_is_visible)
+			document.querySelector(".floating-footer").style.opacity = 0;
+			
+			floating_footer_is_visible = false;
+			
+			setTimeout(function()
 			{
-				document.querySelector(".floating-footer").style.opacity = 0;
-				
-				floating_footer_is_visible = false;
-				
-				setTimeout(function()
-				{
-					document.querySelector(".floating-footer").style.display = "none";
-					document.querySelector(".floating-footer-touch-target").style.display = "block";
-				}, 300);
-			}
+				document.querySelector(".floating-footer").style.display = "none";
+				document.querySelector(".floating-footer-touch-target").style.display = "block";
+			}, 300);
 		}
-	}, false);
+	}
 }

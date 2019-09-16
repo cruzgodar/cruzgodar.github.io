@@ -18,10 +18,27 @@ let scripts_loaded =
 let temporary_handlers =
 {
 	"scroll": [],
-	"resize": []
+	"resize": [],
+	"touchend": []
 }
 
 let layout_string = "";
+
+
+
+let last_touch_x = null, last_touch_y = null;
+
+document.documentElement.addEventListener("touchstart", function(e)
+{
+	last_touch_x = e.touches[0].clientX;
+	last_touch_y = e.touches[0].clientY;
+}, false);
+
+document.documentElement.addEventListener("touchmove", function(e)
+{
+	last_touch_x = e.touches[0].clientX;
+	last_touch_y = e.touches[0].clientY;
+}, false);
 
 
 
@@ -242,6 +259,7 @@ function on_page_unload()
 		for (let j = 0; j < temporary_handlers[key].length; j++)
 		{
 			window.removeEventListener(key, temporary_handlers[key][j]);
+			document.documentElement.removeEventListener(key, temporary_handlers[key][j]);
 		}
 	}
 }
