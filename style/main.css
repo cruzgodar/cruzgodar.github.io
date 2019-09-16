@@ -289,9 +289,7 @@ img
 	bottom: 0;
 	z-index: 110;
 	
-	height: 15vh;
-	
-	/* We can't make it 100vw, since then the footer buttons will be covered. */
+	height: 100px;
 	width: 100vw;
 }
 
