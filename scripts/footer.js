@@ -92,9 +92,9 @@ function insert_footer()
 				<div class="line-break-container" data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 					<div class="line-break" style="width: 80vw"></div>
 				</div>
-			<div style="height: 4vw"></div>
+			<div style="height: 3vw"></div>
 			
-			<nav class="footer-image-links" style="width: 68vw"></nav>
+			<nav class="footer-image-links" style="width: 63vw"></nav>
 		`);
 	}
 	
@@ -105,7 +105,7 @@ function insert_footer()
 				<div class="line-break-container" data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 					<div class="line-break"></div>
 				</div>
-			<div style="height: 4vw"></div>
+			<div style="height: 3vw"></div>
 			
 			<nav class="footer-image-links"></nav>
 		`);
