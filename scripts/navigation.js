@@ -159,6 +159,7 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push, restor
 		else
 		{
 			window.scrollTo(0, 0);
+			scroll = 0;
 		}
 		
 		last_page_scroll = temp;

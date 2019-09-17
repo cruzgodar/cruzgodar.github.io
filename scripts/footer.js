@@ -281,6 +281,13 @@ function insert_footer()
 	
 	
 	footer_done = true;
+	
+	
+	
+	if (scroll > 0)
+	{
+		window.scrollTo(0, scroll);
+	}
 }
 
 
