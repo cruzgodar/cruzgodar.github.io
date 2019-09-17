@@ -66,13 +66,6 @@ browser_detect.init();
 let browser_name = browser_detect.browser;
 
 
-//IE is not welcome here.
-if (browser_name == "Explorer")
-{
-	window.location.replace("/ie.html");
-}
-
-
 
 function hasTouch()
 {

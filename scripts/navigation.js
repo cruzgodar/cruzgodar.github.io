@@ -67,19 +67,8 @@ function set_links()
 
 
 //Handles virtually all links.
-function redirect(url, in_new_tab, from_nonstandard_color, no_state_push, restore_scroll)
+function redirect(url, in_new_tab = false, from_nonstandard_color = false, no_state_push = false, restore_scroll = false)
 {
-	//Indicates whether we need to pause to change the background color. Example: the bottom of the Corona page.
-	from_nonstandard_color = (typeof from_nonstandard_color != "undefined") ? from_nonstandard_color : false;
-	
-	in_new_tab = (typeof in_new_tab != "undefined") ? in_new_tab : false;
-	
-	no_state_push = (typeof no_state_push != "undefined") ? no_state_push : false;
-	
-	restore_scroll = (typeof restore_scroll != "undefined") ? restore_scroll : false;
-	
-	
-	
 	//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
 	if (in_new_tab)
 	{
