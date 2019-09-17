@@ -145,8 +145,7 @@ img
 {
 	display: flex;
 	justify-content: center;
-	width: 90vw;
-	margin-left: 5vw;
+	margin: 0 auto;
 }
 
 
