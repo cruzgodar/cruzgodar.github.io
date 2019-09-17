@@ -212,8 +212,20 @@
 		
 		
 		
-		//If the user just sits at the top of the page for 4 seconds without scrolling, give them a scroll button.
-		if (window.scrollY == 0)
+		//We're coming back from another page, so let's not just snap the background color abruptly.
+		if (scroll != 0)
+		{
+			document.documentElement.classList.add("background-transition");
+			
+			corona_scroll();
+			
+			setTimeout(function()
+			{
+				document.documentElement.classList.remove("background-transition");
+			}, 450);
+		}
+		
+		else
 		{
 			setTimeout(add_scroll_button, 7000);
 		}
@@ -224,10 +236,6 @@
 		
 		function corona_scroll()
 		{
-			scroll = window.scrollY;
-			
-			
-			
 			if (scroll >= 0)
 			{
 				update_background(scroll);

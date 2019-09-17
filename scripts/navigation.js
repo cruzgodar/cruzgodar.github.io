@@ -148,8 +148,6 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push, restor
 		
 		document.body.innerHTML = data;
 		
-		parse_scripts();
-		
 		
 		
 		if (restore_scroll)
@@ -164,6 +162,10 @@ function redirect(url, in_new_tab, from_nonstandard_color, no_state_push, restor
 		}
 		
 		last_page_scroll = temp;
+		
+		
+		
+		parse_scripts();
 	})
 	
 	

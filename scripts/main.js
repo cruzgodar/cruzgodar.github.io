@@ -167,6 +167,8 @@ function on_page_load()
 	if (page_settings["no_footer"] == false)
 	{
 		insert_footer();
+		
+		setTimeout(remove_floating_footer_trigger_at_bottom, 50);
 	}
 	
 	
