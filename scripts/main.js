@@ -48,7 +48,7 @@ let banner_pages =
 [
 	"/home.html",
 	
-	"/about/about.html",
+	"/bio/bio.html",
 	
 	"/blog/1/on-leaving-and-the-beginnings-of-things.html",
 	"/blog/2/nach-heidelberg.html",

@@ -1,0 +1,125 @@
+<noscript>
+	<div style="height: 5vh"></div>
+	
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+<div id="background-image" class="banner"></div>
+
+<div id="opacity-cover"></div>
+
+<div id="banner-cover" style="height: 100vh"></div>
+
+<div id="content">
+	<div id="scroll-to"></div>
+	
+	<div style="height: 5vh"></div>
+	
+	
+	
+	<header>
+		<div class="logo" data-aos="fade-in" id="trigger-section-1">
+			<a href="/home.html">
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home.html')"></img>
+			</a>
+		</div>
+
+		<div style="height: 2vh"></div>
+		
+		<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">
+			<h1 class="heading-text">Me</h1>
+		</div>
+	</header>
+	
+	
+	
+	<div style="height: 10vh"></div>
+	
+	
+	
+	<main>
+		<section>
+			<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-1">
+				<h2 class="section-text">Beginnings</h2>
+			</div>
+
+			<br>
+			
+			<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
+				<p class="body-text">I was born in Healdsburg, California, and moved to San Luis Obispo after just a year. I was homeschooled, and took to math at an early age &mdash; my parents tell me I understood the concept of pi as it relates to circles when I was three. I started reading the same year, and that may be why I developed <a href="https://en.wikipedia.org/wiki/Grapheme-color_synesthesia" onclick="redirect('https://en.wikipedia.org/wiki/Grapheme-color_synesthesia', 1)">grapheme-color synesthesia</a>, a curious, harmless condition that I consider myself fortunate to have.</p>
+			</div>
+
+			<br>
+
+			<div data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-1">
+				<p class="body-text">I gathered a working knowledge in most subjects, but in math, I thrived, learning most of (high school) algebra by the time I was eleven. I started thinking about going further, and so it was that my parents and I began to learn about how an eleven-year-old could attend community college.</p>
+			</div>
+		</section>
+		
+		
+		
+		<div style="height: 10vh"></div>
+		
+		
+		
+		<section>
+			<div data-aos="fade-up" id="trigger-section-2">
+				<h2 class="section-text">University Days</h2>
+			</div>
+
+			<br>
+
+			<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-2">
+				<p class="body-text">In the end, it was easier than we thought. Though it limited me to eleven units a semester, I was able to register as an enrichment student at Cuesta, our local community college. Being surrounded by students ten or forty years older than me was a daunting experience, but one I adapted to quickly. Over the next four years, I took twenty-one classes, worked as a tutor, and eventually applied and was accepted to Cal Poly, the local university. I was thrilled.</p>
+			</div>
+
+			<br>
+
+			<div data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
+				<p class="body-text">Cal Poly was far more challenging than Cuesta, but I made it through two years of classes and research, even finding a community in the university&#x2019;s Math Lounge. Toward the end of my first year, I began playing with the idea of writing a book, and I whittled an outline in my spare time over the following year. I graduated from Cal Poly in Spring 2018 with honors.</p>
+			</div>
+			
+			<br>
+			
+			<div data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-2">
+				<p class="body-text">I chose to take a gap year after graduating to travel to Germany, where I attended a language school for three months and traveled the country. I returned and relaxed over the following summer before packing up my life and moving to Oregon to attend grad school. So far, I&#x2019;m <em>loving</em> it here.</p>
+			</div>
+		</section>
+	</main>
+
+
+	
+	<footer>
+		<div id="spawn-footer"></div>
+	</footer>
+</div>
+
+
+
+<script>
+	if (typeof current_url == "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	page_settings = 
+	{
+		"title": "Me &mdash; Cruz Godar",
+		
+		"banner_page": true,
+		"writing_page": false,
+		"math_page": false,
+		"comments": false,
+		
+		"manual_banner": false,
+		"manual_dark_theme": false,
+		
+		"no_footer": false,
+		"footer_exclusion": "bio",
+		"footer_from_nonstandard_color": false
+	};
+	
+	on_page_load();
+</script>

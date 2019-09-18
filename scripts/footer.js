@@ -94,7 +94,7 @@ function insert_footer()
 				</div>
 			<div style="height: 3vw"></div>
 			
-			<nav class="footer-image-links" style="width: 63vw"></nav>
+			<nav class="footer-image-links" style="width: 74vw"></nav>
 		`);
 	}
 	
@@ -191,6 +191,23 @@ function insert_footer()
 			<div id="notes-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 				<a href="/index.html?page=%2Fnotes%2Fnotes.html${vars_no_return}">
 					<img onclick="redirect('/notes/notes.html', 0${fnc_arg})" src="/notes/cover.${extension}" alt="Notes"></img>
+				</a>
+			</div>
+		`;
+		
+		delay += 100;
+	}
+	
+	if (page_settings["footer_exclusion"] != "bio")
+	{
+		let element = document.createElement("div");
+		
+		document.querySelector(".footer-image-links").appendChild(element);
+		
+		element.outerHTML = `
+			<div id="about-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<a href="/index.html?page=%2Fbio%2Fbio.html${vars_no_return}">
+					<img onclick="redirect('/bio/bio.html', 0${fnc_arg})" src="/bio/cover.${extension}" alt="Me"></img>
 				</a>
 			</div>
 		`;

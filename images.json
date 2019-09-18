@@ -35,6 +35,12 @@
 		"non-webp": "notes/cover.jpg"
 	},
 	
+	"image-bio":
+	{
+		"webp": "bio/cover.webp",
+		"non-webp": "bio/cover.jpg"
+	},
+	
 	"image-about":
 	{
 		"webp": "about/cover.webp",
