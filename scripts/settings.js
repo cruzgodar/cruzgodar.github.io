@@ -145,10 +145,10 @@ function switch_theme()
 			{
 				let element = add_style(get_settings_style("dark_contrast"), false);
 				
-				try {document.querySelector("#theme-adjust").remove();}
+				try {document.querySelector("#theme-contrast-adjust").remove();}
 				catch(ex) {}
 				
-				try {element.id = "theme-adjust";}
+				try {element.id = "theme-contrast-adjust";}
 				catch(ex) {}
 			}, 600);
 		}
@@ -171,10 +171,10 @@ function switch_theme()
 			{
 				let element = add_style(get_settings_style("dark"), false);
 				
-				try {document.querySelector("#theme-adjust").remove();}
+				try {document.querySelector("#theme-contrast-adjust").remove();}
 				catch(ex) {}
 				
-				try {element.id = "theme-adjust";}
+				try {element.id = "theme-contrast-adjust";}
 				catch(ex) {}
 			}, 600);
 		}
@@ -218,10 +218,10 @@ function switch_theme()
 			{
 				let element = add_style(get_settings_style("contrast"), false);
 				
-				try {document.querySelector("#theme-adjust").remove();}
+				try {document.querySelector("#theme-contrast-adjust").remove();}
 				catch(ex) {}
 				
-				try {element.id = "theme-adjust";}
+				try {element.id = "theme-contrast-adjust";}
 				catch(ex) {}
 			}, 600);
 		}
@@ -242,7 +242,7 @@ function switch_theme()
 			
 			setTimeout(function()
 			{
-				try {document.querySelector("#theme-adjust").remove();}
+				try {document.querySelector("#theme-contrast-adjust").remove();}
 				catch(ex) {}
 			}, 600);
 		}
@@ -316,10 +316,10 @@ function switch_dark_theme_color()
 			
 			
 			
-			try {document.querySelector("#theme-adjust").remove();}
+			try {document.querySelector("#theme-contrast-adjust").remove();}
 			catch(ex) {}
 			
-			try {element.id = "theme-adjust";}
+			try {element.id = "theme-contrast-adjust";}
 			catch(ex) {}
 		}, 600);
 		
@@ -372,10 +372,10 @@ function switch_dark_theme_color()
 			
 			
 			
-			try {document.querySelector("#theme-adjust").remove();}
+			try {document.querySelector("#theme-contrast-adjust").remove();}
 			catch(ex) {}
 			
-			try {element.id = "theme-adjust";}
+			try {element.id = "theme-contrast-adjust";}
 			catch(ex) {}
 		}, 600);
 		
@@ -431,10 +431,10 @@ function switch_contrast()
 			{
 				let element = add_style(get_settings_style("dark_contrast"), false);
 				
-				try {document.querySelector("#contrast-adjust").remove();}
+				try {document.querySelector("#theme-contrast-adjust").remove();}
 				catch(ex) {}
 				
-				try {element.id = "contrast-adjust";}
+				try {element.id = "theme-contrast-adjust";}
 				catch(ex) {}
 			}, 600);
 		}
@@ -457,10 +457,10 @@ function switch_contrast()
 			{
 				let element = add_style(get_settings_style("contrast"), false);
 				
-				try {document.querySelector("#contrast-adjust").remove();}
+				try {document.querySelector("#theme-contrast-adjust").remove();}
 				catch(ex) {}
 				
-				try {element.id = "contrast-adjust";}
+				try {element.id = "theme-contrast-adjust";}
 				catch(ex) {}
 			}, 600);
 		}
@@ -496,10 +496,10 @@ function switch_contrast()
 			{
 				let element = add_style(get_settings_style("dark"), false);
 				
-				try {document.querySelector("#contrast-adjust").remove();}
+				try {document.querySelector("#theme-contrast-adjust").remove();}
 				catch(ex) {}
 				
-				try {element.id = "contrast-adjust";}
+				try {element.id = "theme-contrast-adjust";}
 				catch(ex) {}
 			}, 600);
 		}
@@ -520,7 +520,7 @@ function switch_contrast()
 			
 			setTimeout(function()
 			{
-				try {document.querySelector("#contrast-adjust").remove();}
+				try {document.querySelector("#theme-contrast-adjust").remove();}
 				catch(ex) {}
 			}, 600);
 		}
@@ -963,6 +963,28 @@ function get_settings_style(settings)
 			
 			
 			
+			.checkbox-container > input ~ .checkbox
+			{
+				background-color: ${dark_theme_background_color};
+			}
+			
+			.checkbox-container > input:hover ~ .checkbox
+			{
+				background-color: rgb(56, 56, 56);
+			}
+
+			.checkbox-container > input:checked ~ .checkbox
+			{
+				background-color: rgb(152, 152, 152);
+			}
+
+			.checkbox-container > input:checked:hover ~ .checkbox
+			{
+				background-color: rgb(120, 120, 120);
+			}
+			
+			
+			
 			.floating-footer-content, .floating-footer-button-background
 			{
 				background-color: ${dark_theme_background_color};
@@ -979,9 +1001,9 @@ function get_settings_style(settings)
 			
 			
 			
-			.footer-button, .text-button, .nav-button
+			.footer-button, .text-button, .nav-button, .checkbox-container
 			{
-				border-color: rgb(127, 127, 127);
+				border-color: rgb(152, 152, 152);
 			}
 		`;
 	}
@@ -1048,7 +1070,24 @@ function get_settings_style(settings)
 			
 			
 			
-			.footer-button, .text-button, .nav-button
+			.checkbox-container > input:hover ~ .checkbox
+			{
+				background-color: rgb(224, 224, 224);
+			}
+
+			.checkbox-container > input:checked ~ .checkbox
+			{
+				background-color: rgb(64, 64, 64);
+			}
+
+			.checkbox-container > input:checked:hover ~ .checkbox
+			{
+				background-color: rgb(96, 96, 96);
+			}
+			
+			
+			
+			.footer-button, .text-button, .nav-button, .checkbox-container
 			{
 				border-color: rgb(64, 64, 64);
 			}
@@ -1117,6 +1156,33 @@ function get_settings_style(settings)
 			
 			
 			
+			.checkbox-container
+			{
+				border-color: rgb(216, 216, 216);
+			}
+			
+			.checkbox-container > input ~ .checkbox
+			{
+				background-color: ${dark_theme_background_color};
+			}
+			
+			.checkbox-container > input:hover ~ .checkbox
+			{
+				background-color: rgb(56, 56, 56);
+			}
+
+			.checkbox-container > input:checked ~ .checkbox
+			{
+				background-color: rgb(216, 216, 216);
+			}
+
+			.checkbox-container > input:checked:hover ~ .checkbox
+			{
+				background-color: rgb(184, 184, 184);
+			}
+			
+			
+			
 			.floating-footer-content, .floating-footer-button-background
 			{
 				background-color: ${dark_theme_background_color};
@@ -1135,7 +1201,7 @@ function get_settings_style(settings)
 			
 			.footer-button, .text-button, .nav-button
 			{
-				border-color: rgb(127, 127, 127);
+				border-color: rgb(152, 152, 152);
 			}
 		`;
 	}

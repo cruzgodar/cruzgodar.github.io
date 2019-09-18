@@ -34,6 +34,82 @@
 
 
 
+.checkbox-row
+{
+	width: 70vw;
+	height: 32px;
+	margin: 0 auto;
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.checkbox-row p
+{
+	width: auto;
+}
+
+
+
+.checkbox-container
+{
+	position: relative;
+	
+	width: 24px;
+	height: 24px;
+	
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 6px;
+	padding: 2px;
+	
+	transition: border-radius .15s ease-in-out;
+}
+
+.checkbox-container:hover, .checkbox-container:hover > input, .checkbox-container:hover > input ~ .checkbox
+{
+	border-radius: 50%;
+}
+
+
+
+.checkbox-container > input
+{
+	position: absolute;
+	
+	width: calc(100% - 4px);
+	height: calc(100% - 4px);
+	
+	opacity: 0;
+	
+	cursor: pointer;
+	
+	transition: border-radius .15s ease-in-out;
+}
+
+.checkbox-container > input ~ .checkbox
+{
+	width: 100%;
+	height: 100%;
+	
+	border-radius: 2px;
+	
+	background: rgb(255, 255, 255);
+	
+	transition: background-color .3s ease-in-out, border-radius .15s ease-in-out;
+	
+	cursor: pointer;
+}
+
+.checkbox-container > input:checked ~ .checkbox
+{
+	background-color: rgb(127, 127, 127);
+}
+
+
+
+
+
 .text-box
 {
 	border: none;
