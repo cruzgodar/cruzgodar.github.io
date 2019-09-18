@@ -37,9 +37,9 @@ function resize_update()
 	
 	
 	
-	if (old_layout != layout_string && page_settings["writing_page"])
+	if (old_layout != layout_string && page_settings["small_margins_on_ultrawide"])
 	{
-		set_writing_page_margins();
+		reduce_page_margins();
 	}
 	
 	

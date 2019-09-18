@@ -196,9 +196,9 @@ function on_page_load()
 		set_writing_page_style();
 	}
 	
-	if (page_settings["writing_page"] && layout_string == "ultrawide")
+	if (page_settings["small_margins_on_ultrawide"] && layout_string == "ultrawide")
 	{
-		set_writing_page_margins();
+		reduce_page_margins();
 	}
 	
 	if (url_vars["comments"] == 1)

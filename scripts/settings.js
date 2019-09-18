@@ -1194,9 +1194,9 @@ function set_writing_page_style()
 
 
 
-function set_writing_page_margins()
+function reduce_page_margins()
 {
-	try {document.querySelector("#writing-page-margin-adjust").remove();}
+	try {document.querySelector("#ultrawide-margin-adjust").remove();}
 	catch(ex) {}
 	
 	
@@ -1205,18 +1205,13 @@ function set_writing_page_margins()
 	if (layout_string == "ultrawide")
 	{
 		let element = add_style(`
-			.body-text
-			{
-				width: 50vw;
-			}
-			
-			#disqus_thread
+			.body-text, #disqus_thread, .nav-buttons, .line-break
 			{
 				width: 50vw;
 			}
 		`, true);
 		
-		element.id = "writing-page-margin-adjust";
+		element.id = "ultrawide-margin-adjust";
 	}	
 }
 
