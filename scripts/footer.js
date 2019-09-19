@@ -420,17 +420,23 @@ function fit_floating_footer_to_window_width()
 //Remove the trigger zone when we reach the actual footer so that we don't cause any problems, and hide the footer when scrolling so that it doesn't flicker weirdly.
 function floating_footer_scroll()
 {
-	if (floating_footer_is_visible && document.querySelector(".line-break-container").classList.contains("aos-animate"))
+	if (document.querySelector(".line-break-container").classList.contains("aos-animate"))
 	{
 		document.querySelector(".floating-footer").style.opacity = 0;
 		
 		floating_footer_is_visible = false;
 		
+		document.querySelector(".floating-footer-touch-target").style.display = "none";
+		
 		setTimeout(function()
 		{
 			document.querySelector(".floating-footer").style.display = "none";
-			document.querySelector(".floating-footer-touch-target").style.display = "block";
 		}, 300);
+	}
+	
+	else if (floating_footer_is_visible == false)
+	{
+		document.querySelector(".floating-footer-touch-target").style.display = "block";
 	}
 }
 
