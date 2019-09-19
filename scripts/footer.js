@@ -373,8 +373,8 @@ function set_up_floating_footer()
 	
 	
 	
-	window.addEventListener("scroll", remove_floating_footer_trigger_at_bottom);
-	temporary_handlers["scroll"].push(remove_floating_footer_trigger_at_bottom);
+	window.addEventListener("scroll", floating_footer_scroll);
+	temporary_handlers["scroll"].push(floating_footer_scroll);
 	
 	
 	
@@ -417,29 +417,20 @@ function fit_floating_footer_to_window_width()
 
 
 
-//Remove the trigger zone when we reach the actual footer so that we don't cause any problems.
-function remove_floating_footer_trigger_at_bottom()
+//Remove the trigger zone when we reach the actual footer so that we don't cause any problems, and hide the footer when scrolling so that it doesn't flicker weirdly.
+function floating_footer_scroll()
 {
-	if (document.querySelector(".line-break-container").classList.contains("aos-animate"))
+	if (floating_footer_is_visible && document.querySelector(".line-break-container").classList.contains("aos-animate"))
 	{
-		document.querySelector(".floating-footer-touch-target").style.display = "none";
+		document.querySelector(".floating-footer").style.opacity = 0;
 		
-		if (floating_footer_is_visible)
+		floating_footer_is_visible = false;
+		
+		setTimeout(function()
 		{
-			document.querySelector(".floating-footer").style.opacity = 0;
-			
-			floating_footer_is_visible = false;
-			
-			setTimeout(function()
-			{
-				document.querySelector(".floating-footer").style.display = "none";
-			}, 300);
-		}
-	}
-	
-	else
-	{
-		document.querySelector(".floating-footer-touch-target").style.display = "block";
+			document.querySelector(".floating-footer").style.display = "none";
+			document.querySelector(".floating-footer-touch-target").style.display = "block";
+		}, 300);
 	}
 }
 

@@ -168,7 +168,7 @@ function on_page_load()
 	{
 		insert_footer();
 		
-		setTimeout(remove_floating_footer_trigger_at_bottom, 50);
+		setTimeout(floating_footer_scroll, 50);
 	}
 	
 	
