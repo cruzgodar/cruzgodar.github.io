@@ -967,20 +967,10 @@ function get_settings_style(settings)
 			{
 				background-color: ${dark_theme_background_color};
 			}
-			
-			.checkbox-container > input:hover ~ .checkbox
-			{
-				background-color: rgb(56, 56, 56);
-			}
 
 			.checkbox-container > input:checked ~ .checkbox
 			{
 				background-color: rgb(152, 152, 152);
-			}
-
-			.checkbox-container > input:checked:hover ~ .checkbox
-			{
-				background-color: rgb(120, 120, 120);
 			}
 			
 			
@@ -1069,20 +1059,10 @@ function get_settings_style(settings)
 			}
 			
 			
-			
-			.checkbox-container > input:hover ~ .checkbox
-			{
-				background-color: rgb(224, 224, 224);
-			}
 
 			.checkbox-container > input:checked ~ .checkbox
 			{
 				background-color: rgb(64, 64, 64);
-			}
-
-			.checkbox-container > input:checked:hover ~ .checkbox
-			{
-				background-color: rgb(96, 96, 96);
 			}
 			
 			
@@ -1165,20 +1145,10 @@ function get_settings_style(settings)
 			{
 				background-color: ${dark_theme_background_color};
 			}
-			
-			.checkbox-container > input:hover ~ .checkbox
-			{
-				background-color: rgb(56, 56, 56);
-			}
 
 			.checkbox-container > input:checked ~ .checkbox
 			{
 				background-color: rgb(216, 216, 216);
-			}
-
-			.checkbox-container > input:checked:hover ~ .checkbox
-			{
-				background-color: rgb(184, 184, 184);
 			}
 			
 			

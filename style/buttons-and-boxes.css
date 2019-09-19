@@ -96,7 +96,7 @@
 	
 	background: rgb(255, 255, 255);
 	
-	transition: background-color .3s ease-in-out, border-radius .15s ease-in-out;
+	transition: background-color .15s ease-in-out, border-radius .15s ease-in-out;
 	
 	cursor: pointer;
 }
