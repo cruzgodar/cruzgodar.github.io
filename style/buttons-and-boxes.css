@@ -80,6 +80,8 @@
 	width: calc(100% - 4px);
 	height: calc(100% - 4px);
 	
+	margin: 0 0 0 0;
+	
 	opacity: 0;
 	
 	cursor: pointer;
