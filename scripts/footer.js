@@ -454,7 +454,7 @@ function init_floating_footer_listeners_no_touch()
 	
 	document.querySelector(".floating-footer-touch-target").addEventListener("mouseenter", function()
 	{
-		if (floating_footer_is_visible == false)
+		if (floating_footer_is_visible == false && !(document.querySelector(".line-break-container").classList.contains("aos-animate")))
 		{
 			document.querySelector(".floating-footer").style.display = "block";
 			document.querySelector(".floating-footer-touch-target").style.display = "none";
@@ -510,7 +510,7 @@ function footer_process_touchend()
 	
 	if (document.querySelector(".floating-footer-touch-target") == target)
 	{
-		if (floating_footer_is_visible == false)
+		if (floating_footer_is_visible == false && !(document.querySelector(".line-break-container").classList.contains("aos-animate")))
 		{
 			document.querySelector(".floating-footer").style.display = "block";
 			document.querySelector(".floating-footer-touch-target").style.display = "none";
