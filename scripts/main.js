@@ -302,7 +302,11 @@ function typeset_math()
 {
 	if (scripts_loaded["mathjax"] == false)
 	{
-		load_script("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML")
+		load_script("https://polyfill.io/v3/polyfill.min.js?features=es6");
+		
+		
+		
+		load_script("https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js")
 		
 		.then(function()
 		{
@@ -317,7 +321,7 @@ function typeset_math()
 	
 	else
 	{
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+		MathJax.typeset();
 	}
 }
 
