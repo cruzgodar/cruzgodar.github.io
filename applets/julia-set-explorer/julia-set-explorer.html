@@ -7,7 +7,7 @@
 
 
 <header>
-	<div class="logo" data-aos="fade-in" id="trigger-section-1">
+	<div class="logo new-aos-section" data-aos="fade-in" id="trigger-section-1">
 		<a href="/home.html">
 			<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home.html')"></img>
 		</a>
@@ -15,7 +15,7 @@
 
 	<div style="height: 2vh"></div>
 
-	<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-1">
+	<div data-aos="fade-up">
 		<h1 class="heading-text">Julia Set Explorer</h1>
 	</div>
 </header>
@@ -28,7 +28,7 @@
 
 <main>
 	<section>
-		<div data-aos="fade-up" data-aos-delay="200">
+		<div data-aos="fade-up">
 			<p class="body-text center-if-needed">
 				<span id="instructions">Hover over the Mandelbrot set to preview the corresponding Julia set, and click to generate a higher-resolution preview. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.</span>
 			</p>
@@ -38,9 +38,11 @@
 		
 		
 		
-		<div id="container" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-1">
-			<img id="mandelbrot-set" class="check-webp" src="" alt="The Mandelbrot Set"></img>
-			<canvas id="julia-set"></canvas>
+		<div data-aos="fade-up">
+			<div id="container">
+				<img id="mandelbrot-set" class="check-webp" src="" alt="The Mandelbrot Set"></img>
+				<canvas id="julia-set"></canvas>
+			</div>
 		</div>
 	</section>
 	
@@ -51,34 +53,34 @@
 	
 	
 	<section>
-		<div data-aos="fade-up" id="trigger-section-2">
+		<div class="new-aos-section" data-aos="fade-up">
 			<h2 class="section-text">Higher Resolution</h2>
 		</div>
 		
 		<div style="height: 5vh"></div>
 		
-		<div data-aos="fade-up" data-aos-delay="100" data-aos-anchor="#trigger-section-2">
+		<div data-aos="fade-up">
 			<p class="body-text">Enter values of \(a\) and \(b\), along with an image size in pixels, to generate an image of the Julia set for \(c = a + bi\). The values are filed in automatically when a high-resolution preview is created above, but custom values can also be used. Image sizes larger than 2000 are not recommended.</p>
 		</div>
 		
 		<div style="height: 5vh"></div>
 		
 		<div style="width: 70vw; margin: 0 auto; display: flex; justify-content: space-between">
-			<div style="width: 20vw" data-aos="fade-up" data-aos-delay="200" data-aos-anchor="#trigger-section-2">
+			<div style="width: 20vw" data-aos="fade-up">
 				<input id="a-input" class="text-box" type="text" style="width: 100%">
 				<label for="a-input">
 					<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(a\)</p>
 				</label>
 			</div>
 			
-			<div style="width: 20vw" data-aos="fade-up" data-aos-delay="300" data-aos-anchor="#trigger-section-2">
+			<div style="width: 20vw" data-aos="fade-up">
 				<input id="b-input" class="text-box" type="text" style="width: 100%">
 				<label for="b-input">
 					<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">\(b\)</p>
 				</label>
 			</div>
 			
-			<div style="width: 20vw" data-aos="fade-up" data-aos-delay="400" data-aos-anchor="#trigger-section-2">
+			<div style="width: 20vw" data-aos="fade-up">
 				<input id="dim-input" class="text-box" type="text" style="width: 100%">
 				<label for="dim-input">
 					<p class="body-text" style="width: 100%; margin-left: 0px; text-align: center">Image Size</p>
@@ -89,7 +91,7 @@
 		<div style="height: 5vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="1000" data-aos-anchor="#trigger-section-2">
+			<div data-aos="zoom-out" data-aos-delay="900">
 				<button class="text-button" type="button" id="generate-button">Generate</button>
 			</div>
 		</div>
@@ -97,7 +99,7 @@
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<canvas id="high-res-julia-set" data-aos="fade-in" data-aos-delay="1600" data-aos-anchor="#trigger-section-2"></canvas>
+			<canvas id="high-res-julia-set" data-aos="fade-in" data-aos-delay="1400"></canvas>
 		</div>
 		
 		<div id="download-location" style="height: 10vh"></div>

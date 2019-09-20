@@ -160,6 +160,8 @@ function on_page_load()
 	
 	set_links();
 	
+	set_up_aos();
+	
 	initial_window_height = window_height;
 	
 	
@@ -278,6 +280,62 @@ function fade_in()
 		document.documentElement.classList.remove("animated-opacity");
 		document.documentElement.style.opacity = 1;
 		document.documentElement.classList.add("animated-opacity");
+	}
+}
+
+
+
+//Puts the proper delays and anchors on aos elements on the page. The first animated element in every section should have a class of new-aos-section.
+function set_up_aos()
+{
+	let aos_elements = document.querySelectorAll("[data-aos]");
+	
+	let current_section = 0;
+	let current_delay = 0;
+	
+	
+	
+	for (let i = 0; i < aos_elements.length; i++)
+	{
+		if (aos_elements[i].classList.contains("new-aos-section"))
+		{
+			current_section++;
+			
+			
+			
+			if (aos_elements[i].getAttribute("data-aos-delay") !== null)
+			{
+				
+				current_delay = parseInt(aos_elements[i].getAttribute("data-aos-delay"));
+			}
+			
+			else
+			{
+				current_delay = 0;
+			}
+			
+			
+			
+			aos_elements[i].id = "aos-section-" + current_section;
+		}
+		
+		else
+		{
+			if (aos_elements[i].getAttribute("data-aos-delay") !== null)
+			{
+				current_delay = parseInt(aos_elements[i].getAttribute("data-aos-delay"));
+			}
+			
+			else
+			{
+				current_delay += 100;
+			}
+			
+			
+			
+			aos_elements[i].setAttribute("data-aos-delay", current_delay);
+			aos_elements[i].setAttribute("data-aos-anchor", "#aos-section-" + current_section);
+		}
 	}
 }
 
