@@ -59,7 +59,7 @@ function fetchAndCache(url)
     
     .catch(function(error)
     {
-        alert('Request failed:', error);
+        console.error('Request failed:', error);
         //You could return a custom offline 404 page here
     });
 }
