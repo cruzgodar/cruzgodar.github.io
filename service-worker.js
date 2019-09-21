@@ -1,14 +1,17 @@
 var CACHE_NAME = "static-cache";
 var urlsToCache =
 [
-    "/",
-    ".",
-    "/index.html",
-    "/home.html",
-    "/index.html?page=%2Fhome.html",
-    "/style/*",
-    "/scripts/*",
-    "/graphics/*"
+    "./",
+    "./index.html",
+    "./home.html",
+    "./index.html?page=%2Fhome.html",
+    "./images.json",
+    
+    "./style/css-bundle.min.css",
+    "./style/aos.min.css",
+    
+    "./scripts/js-bundle.min.js",
+    "./scripts/aos.min.js"
 ];
 
 self.addEventListener("install", function(event)
