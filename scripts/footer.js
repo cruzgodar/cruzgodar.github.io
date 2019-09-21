@@ -2,8 +2,6 @@
 
 
 
-let footer_done = false;
-
 function insert_footer()
 {
 	let fnc_arg = "";
@@ -297,10 +295,7 @@ function insert_footer()
 	
 	
 	
-	footer_done = true;
-	
-	
-	
+	//If we restored a scroll position that was supposed to be in the footer, we aren't
 	if (scroll > 0)
 	{
 		window.scrollTo(0, scroll);
