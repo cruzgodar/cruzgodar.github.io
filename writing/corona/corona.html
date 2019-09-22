@@ -382,33 +382,36 @@
 				let bubbles = document.querySelectorAll(".stage-bubble span");
 				let subtexts = document.querySelectorAll(".stage-bubble-subtext");
 				
-				for (let i = 0; i <= num_lit_bubbles; i++)
+				setTimeout(function()
 				{
-					setTimeout(function(i)
+					for (let i = 0; i <= num_lit_bubbles; i++)
 					{
 						bubbles[i].style.width = "100%";
 						bubbles[i].style.height = "100%";
 						subtexts[i].style.marginTop = "1vh";
-					}, i * 100, i);
-				}
+					}
+				}, 1200);
 				
-				blinking_bubble_interval = setInterval(function()
+				setTimeout(function()
 				{
-					if (url_vars["contrast"] == 1)
+					blinking_bubble_interval = setInterval(function()
 					{
-						bubbles[blinking_bubble].style.backgroundColor = "rgb(192, 192, 192)";
-					}
-					
-					else
-					{
-						bubbles[blinking_bubble].style.backgroundColor = "rgb(152, 152, 152)";
-					}
-					
-					setTimeout(function()
-					{
-						bubbles[blinking_bubble].style.backgroundColor = "rgb(0, 0, 0)";
-					}, 1200);
-				}, 2400);
+						if (url_vars["contrast"] == 1)
+						{
+							bubbles[blinking_bubble].style.backgroundColor = "rgb(192, 192, 192)";
+						}
+						
+						else
+						{
+							bubbles[blinking_bubble].style.backgroundColor = "rgb(152, 152, 152)";
+						}
+						
+						setTimeout(function()
+						{
+							bubbles[blinking_bubble].style.backgroundColor = "rgb(0, 0, 0)";
+						}, 1200);
+					}, 2400);
+				}, 600);
 			}
 			
 			
