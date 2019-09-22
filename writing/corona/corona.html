@@ -169,8 +169,7 @@
 		"manual_dark_theme": true,
 		
 		"no_footer": false,
-		"footer_exclusion": "",
-		"footer_from_nonstandard_color": true
+		"footer_exclusion": ""
 	};
 	
 	on_page_load();
@@ -256,8 +255,17 @@
 		
 		function update_background(scroll)
 		{
-			if (scroll <= initial_window_height / 1.25)
+			if (scroll == 0)
 			{
+				background_color_changed = false;
+			}
+			
+			
+			
+			else if (scroll <= initial_window_height / 1.25)
+			{
+				background_color_changed = true;
+				
 				background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * scroll / initial_window_height, 0) - .5 * Math.PI);
 				
 				if (url_vars["theme"] == 1)

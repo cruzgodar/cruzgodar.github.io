@@ -13,12 +13,12 @@ window.addEventListener("popstate", function(e)
 		
 	if (previous_page != null && decodeURIComponent(previous_page) != current_url)
 	{
-		redirect(decodeURIComponent(previous_page), false, false, true, true);
+		redirect(decodeURIComponent(previous_page), false, true, true);
 	}
 	
 	else
 	{
-		redirect("/home.html", false, false, true);
+		redirect("/home.html", false, true);
 	}
 });
 
@@ -67,7 +67,7 @@ function set_links()
 
 
 //Handles virtually all links.
-function redirect(url, in_new_tab = false, from_nonstandard_color = false, no_state_push = false, restore_scroll = false)
+function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll = false)
 {
 	//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
 	if (in_new_tab)
@@ -105,7 +105,7 @@ function redirect(url, in_new_tab = false, from_nonstandard_color = false, no_st
 	
 	
 	//Get the new data and fade out the page. When both of those things are successfully done, replace the current html with the new stuff.
-	Promise.all([fetch(url), fade_out(from_nonstandard_color), load_banner()])
+	Promise.all([fetch(url), fade_out(), load_banner()])
 	
 	
 	
@@ -166,7 +166,7 @@ function redirect(url, in_new_tab = false, from_nonstandard_color = false, no_st
 		
 		
 		
-		if (from_nonstandard_color)
+		if (background_color_changed)
 		{
 			setTimeout(function()
 			{
@@ -205,14 +205,14 @@ function redirect(url, in_new_tab = false, from_nonstandard_color = false, no_st
 
 
 
-function fade_out(from_nonstandard_color)
+function fade_out()
 {
 	return new Promise(function(resolve, reject)
 	{
 		//Act like a normal link, with no transitions, if the user wants that.
 		if (url_vars["content_animation"] == 1)
 		{
-			if (from_nonstandard_color)
+			if (background_color_changed)
 			{
 				if (url_vars["theme"] == 1)
 				{
@@ -242,7 +242,7 @@ function fade_out(from_nonstandard_color)
 			document.documentElement.style.opacity = 0;
 			
 			//If necessary, take the time to fade back to the default background color, whatever that is.
-			if (from_nonstandard_color)
+			if (background_color_changed)
 			{
 				setTimeout(function()
 				{

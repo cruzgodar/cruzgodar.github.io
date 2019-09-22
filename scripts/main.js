@@ -25,6 +25,8 @@ let temporary_handlers =
 
 let layout_string = "";
 
+let background_color_changed = false;
+
 
 
 let last_touch_x = null, last_touch_y = null;
@@ -180,6 +182,10 @@ function on_page_load()
 	remove_hover_on_touch();
 	
 	disable_links();
+	
+	
+	
+	background_color_changed = false;
 	
 	
 	
