@@ -1,3 +1,7 @@
+let DEBUG = false;
+
+
+
 let window_width = null, window_height = null;
 
 let page_settings = {};
@@ -48,7 +52,7 @@ document.documentElement.addEventListener("touchmove", function(e)
 //A list of every page that has a banner. ONLY to be used for preloading those banners. For everything else, use page_settings["banner_page"].
 let banner_pages =
 [
-	"/home.html",
+	"/home/home.html",
 	
 	"/bio/bio.html",
 	
@@ -153,6 +157,11 @@ async function entry_point(url)
 
 function on_page_load()
 {
+	parse_page_specific_style();
+	parse_page_specific_scripts();
+	
+	
+	
 	//Set the page title.
 	document.querySelector("title").innerHTML = page_settings["title"];
 	
@@ -244,7 +253,7 @@ function on_page_load()
 function on_page_unload()
 {
 	//Remove any css and js that's no longer needed to prevent memory leaks.
-	let elements = document.querySelectorAll("style.temporary-style, script.temporary-script");
+	let elements = document.querySelectorAll("style.temporary-style, link.temporary-style, script.temporary-script");
 	for (let i = 0; i < elements.length; i++)
 	{
 		elements[i].remove();
@@ -270,6 +279,73 @@ function on_page_unload()
 			document.documentElement.removeEventListener(key, temporary_handlers[key][j]);
 		}
 	}
+}
+
+
+
+//Finds styles in a folder called "style" inside the page's folder. It first tries to find a minified file, and if it can't, it then tries to find a non-minified one so that testing can still work. The style files must have the same name as the html file.
+function parse_page_specific_style()
+{
+	let page_name = current_url.split("/");
+	page_name = page_name[page_name.length - 1];
+	page_name = page_name.split(".");
+	page_name = page_name[0];
+	
+	
+	
+	let element = document.createElement("link");
+	
+	element.setAttribute("rel", "stylesheet");
+	
+	
+	
+	if (DEBUG)
+	{
+		element.setAttribute("href", parent_folder + "style/" + page_name + ".css");
+	}
+	
+	else
+	{
+		element.setAttribute("href", parent_folder + "style/" + page_name + ".min.css");
+	}
+	
+	
+	
+	element.classList.add("temporary-style");
+	
+	document.head.appendChild(element);
+}
+
+
+
+function parse_page_specific_scripts()
+{
+	let page_name = current_url.split("/");
+	page_name = page_name[page_name.length - 1];
+	page_name = page_name.split(".");
+	page_name = page_name[0];
+	
+	
+	
+	let element = document.createElement("script");
+	
+	
+	
+	if (DEBUG)
+	{
+		element.setAttribute("src", parent_folder + "scripts/" + page_name + ".js");
+	}
+	
+	else
+	{
+		element.setAttribute("src", parent_folder + "scripts/" + page_name + ".min.js");
+	}
+	
+	
+	
+	element.classList.add("temporary-script");
+	
+	document.body.appendChild(element);
 }
 
 

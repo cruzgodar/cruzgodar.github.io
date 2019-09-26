@@ -53,14 +53,14 @@ function insert_footer()
 	document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 		<div class="footer-buttons" style="position: relative">
 			<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu" style="position: absolute; bottom: 6.5px; left: 10px">
-				<a href="/index.html?page=%2Fsettings.html${vars_return}">
-					<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect('/settings.html')">
+				<a href="/index.html?page=%2Fsettings%2Fsettings.html${vars_return}">
+					<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect('/settings/settings.html')">
 				</a>
 			</div>
 			
 			<div data-aos="zoom-out" data-aos-delay="1000" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu" style="position: absolute; bottom: 6.5px; right: 10px">
-				<a href="/index.html?page=%2Fpwa.html${vars_no_return}">
-					<input type="image" id="pwa-button" class="footer-button" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa.html')">
+				<a href="/index.html?page=%2Fpwa%2Fpwa.html${vars_no_return}">
+					<input type="image" id="pwa-button" class="footer-button" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa/pwa.html')">
 				</a>
 			</div>
 		</div>

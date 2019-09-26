@@ -1,0 +1,148 @@
+body
+{
+	margin: 0;
+	padding: 0;
+}
+
+#new-banner-cover
+{
+	height: 60vh;
+}
+
+.title-text
+{
+	position: relative;
+	width: 70vw;
+	margin: 0 auto;
+	
+	color: rgb(255, 255, 255);
+	text-align: center;
+	font-size: 450%;
+	font-family: "Gentium Book Basic", serif;
+	font-weight: normal;
+	
+	z-index: 10;
+}
+
+.hook-text
+{
+	position: relative;
+	width: 100%;
+	color: rgb(152, 152, 152);
+	text-align: center;
+	font-size: 150%;
+	font-family: "Gentium Book Basic", serif;
+}
+
+.synopsis-text
+{
+	position: relative;
+	width: 50vw;
+	margin: 0 auto;
+	color: rgb(152, 152, 152);
+	text-align: justify;
+	font-size: 100%;
+	font-family: 'Gentium Book Basic', serif;
+}
+
+.body-text
+{
+	color: rgb(152, 152, 152);
+}
+
+#eclipse
+{
+	width: 50vh;
+	max-width: 70vw;
+	margin: 0 auto;
+	opacity: 0;
+}
+
+#eclipse img
+{
+	position: absolute;
+	width: auto;
+	height: auto;
+}
+
+.stage-bubbles
+{
+	width: 50vw;
+	margin: 0 auto;
+	
+	grid-column-gap: calc(17.5vw - 12px);
+}
+
+.stage-bubble-subtext
+{
+	width: 17.5vw;
+	margin-left: -6.25vw;
+}
+
+#email
+{
+	width: 300px;
+	margin: 0 auto;
+}
+
+#email img
+{
+	position: absolute;
+	width: 300px;
+	filter: brightness(120%);
+}
+
+
+
+.floating-footer-content, .floating-footer-button-background
+{
+	background-color: rgb(0, 0, 0);
+}
+
+
+
+.banner:after, .floating-footer-gradient
+{
+	background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%) !important;
+	background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%) !important;
+	background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%) !important;
+}
+
+
+
+@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
+{
+	/* Make text have smaller margins so justifying doesn't look ugly. */
+	.synopsis-text
+	{
+		width: 80vw;
+	}
+	
+	#eclipse
+	{
+		max-width: 90vw;
+	}
+	
+	.stage-bubbles
+	{
+		width: 80vw;
+		
+		grid-column-gap: calc(25vw - 12px);
+	}
+	
+	.stage-bubble-subtext
+	{
+		width: 25vw;
+		margin-left: -7.5vw;
+	}
+}
+
+
+
+@media screen and (min-aspect-ratio: 16/9), (min-width: 1400px)
+{
+	.stage-bubbles
+	{
+		grid-column-gap: calc(4vw - 9.6px);
+	}
+}

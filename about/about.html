@@ -6,8 +6,8 @@
 
 <header>
 	<div class="logo new-aos-section" data-aos="fade-in">
-		<a href="/home.html">
-			<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home.html')"></img>
+		<a href="/home/home.html">
+			<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
 		</a>
 	</div>
 		<div style="height: 2vh"></div>
@@ -557,97 +557,4 @@
 	};
 	
 	on_page_load();
-	
-	
-	
-	!function()
-	{
-		document.querySelector("#toggle-minor-versions-checkbox").addEventListener("click", function()
-		{
-			if (document.querySelector("#toggle-minor-versions-checkbox").checked)
-			{
-				set_element_styles(".minor-version, .medium-version, .major-version", "opacity", 0);
-				
-				setTimeout(function()
-				{
-					set_element_styles(".minor-version", "display", "block");
-					
-					setTimeout(function()
-					{
-						set_element_styles(".minor-version, .medium-version, .major-version", "opacity", 1);
-						
-						AOS.init({duration: 1200, once: false, offset: window_height / 4});
-					}, 50);
-				}, 300);
-			}
-			
-			else
-			{
-				set_element_styles(".minor-version, .medium-version, .major-version", "opacity", 0);
-				
-				setTimeout(function()
-				{
-					set_element_styles(".medium-version, .major-version", "opacity", 1);
-					set_element_styles(".minor-version", "display", "none");
-					
-					AOS.init({duration: 1200, once: false, offset: window_height / 4});
-				}, 300);
-			}
-		});
-		
-		
-		
-		add_style(`
-			.major-version, .medium-version, .minor-version
-			{
-				margin-top: 20vh;
-				
-				transition: opacity .3s ease-in-out;
-			}
-			
-			
-			
-			.major-version div:first-child .heading-text
-			{
-				font-size: 350%;
-			}
-			
-			.major-version div:nth-child(-n+2) .heading-text
-			{
-				font-weight: bold;
-			}
-			
-			
-			
-			.medium-version div:first-child .section-text
-			{
-				font-size: 250%;
-			}
-			
-			.medium-version div:nth-child(-n+2) .section-text
-			{
-				font-weight: bold;
-			}
-			
-			
-			
-			.minor-version
-			{
-				display: none;
-				
-				opacity: 0;
-			}
-			
-			.minor-version div:first-child .body-text
-			{
-				font-size: 150%;
-			}
-			
-			.minor-version div:nth-child(-n+2) .body-text
-			{
-				font-weight: bold;
-				text-align: center;
-			}
-		`, true);
-	}()
 </script>

@@ -64,8 +64,8 @@
 			
 		<section>
 			<div class="new-aos-section logo" data-aos="fade-in">
-				<a href="/home.html">
-					<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home.html')"></img>
+				<a href="/home/home.html">
+					<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
 				</a>
 			</div>
 				
@@ -200,14 +200,14 @@
 	
 	<footer>
 		<div class="new-aos-section" data-aos="zoom-out" data-aos-offset="0" style="position: absolute; bottom: 6.25px; left: 10px">
-			<a href="/settings.html">
-				<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect('/settings.html')">
+			<a href="/settings/settings.html">
+				<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect('/settings/settings.html')">
 			</a>
 		</div>
 		
 		<div class="new-aos-section" data-aos="zoom-out" data-aos-offset="0" style="position: absolute; bottom: 6.25px; right: 10px">
-			<a href="/pwa.html">
-				<input type="image" id="pwa-button" class="footer-button" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa.html')">
+			<a href="/pwa/pwa.html">
+				<input type="image" id="pwa-button" class="footer-button" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa/pwa.html')">
 			</a>
 		</div>
 	</footer>
@@ -242,63 +242,4 @@
 	};
 	
 	on_page_load();
-	
-	
-	!function()
-	{
-		if (browser_name == "MS Edge")
-		{
-			alert_on_edge();
-		}
-		
-		
-		
-		add_name_text();
-		
-		
-		
-		
-		
-		function alert_on_edge()
-		{
-			document.querySelector(".logo").insertAdjacentHTML("beforebegin", `
-				<div class="body-text" style="text-align: center">
-					<strong>Microsoft Edge is not fully supported on this site. Using <a href="https://www.google.com/chrome/">Chrome</a>, <a href="https://www.apple.com/safari/">Safari</a>, <a href="https://www.mozilla.org/en-US/firefox/?v=a">Firefox</a>, or <a href="https://www.opera.com/">Opera</a> is highly recommended.<strong>
-				</div>
-				
-				<div style="height: 5vh"></div>
-			`);
-		}
-		
-		
-		
-		function add_name_text()
-		{
-			document.querySelector(".name-text").remove();
-			
-			document.querySelector("#background-image").insertAdjacentHTML("afterend", `
-				<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="350">
-					<p id="cruz-text" class="name-text">Cruz</p>
-				</div>
-				
-				<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="600">
-					<p id="godar-text" class="name-text">Godar</p>
-				</div>
-			`);
-			
-			if (url_vars["content_animation"] == 1)
-			{
-				let elements = document.querySelectorAll(".name-text-container");
-				for (let i = 0; i < elements.length; i++)
-				{
-					elements[i].removeAttribute("data-aos");
-				}
-			}
-			
-			if (url_vars["banner_style"] == 1)
-			{
-				set_element_styles(".name-text-container", "position", "absolute");
-			}
-		}
-	}()
 </script>

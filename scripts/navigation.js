@@ -18,7 +18,7 @@ window.addEventListener("popstate", function(e)
 	
 	else
 	{
-		redirect("/home.html", false, true);
+		redirect("/home/home.html", false, true);
 	}
 });
 
@@ -38,7 +38,7 @@ function set_links()
 		{
 			let include_return_url = false;
 			
-			if (href == "/settings.html")
+			if (href == "/settings/settings.html")
 			{
 				include_return_url = true;
 			}
@@ -84,7 +84,7 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 	
 	let include_return_url = false;
 	
-	if (url == "/settings.html")
+	if (url == "/settings/settings.html")
 	{
 		include_return_url = true;
 	}

@@ -80,7 +80,7 @@ function load_banner()
 			//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we remove the banner entirely.
 			banner_path = "";
 			
-			if (current_url != "/home.html")
+			if (current_url != "/home/home.html")
 			{
 				banner_path = parent_folder + "banners/";
 			}
@@ -89,7 +89,7 @@ function load_banner()
 			{
 				let num_images = 20;
 				let banner_index = Math.floor(Math.random() * num_images) + 1;
-				banner_path = "/graphics/index-banners/" + banner_index + "/";
+				banner_path = "/home/banners/" + banner_index + "/";
 			}
 			
 			
