@@ -311,9 +311,10 @@ function parse_page_specific_style()
 	
 	
 	
+	//This is kind of subtle. If we append this new style to he end of the head, then it will take precendence over settings styles, which is terrible -- for example, the homepage will render all of its custom classes like quote-text and quote-attribution incorrectly. Therefore, we need to *prepend* it, ensuring it has the lowest-possible priority.
 	element.classList.add("temporary-style");
 	
-	document.head.appendChild(element);
+	document.head.insertBefore(element, document.head.firstChild);
 }
 
 
