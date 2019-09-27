@@ -1,8 +1,8 @@
-#Navigation
+# Navigation
 
 ---
 
-##Entry points
+## Entry points
 
 When the site is first loaded, one of the *entry point* files is accessed: `index.html`, `index-testing.html`, or `404.html`. All of these load the same styles and scripts and have all the required tags in their heads, but they differ in a few ways.
 
@@ -16,7 +16,7 @@ Once the required files are loaded, the entry point files load a page. As mentio
 
 ---
 
-##Links
+## Links
 
 The `redirect()` function handles all navigatgion within the site. Any element that should act as a link has an `onclick` attribute that calls `redirect()`, but many browsers have specific features for `a` tags in particular, like opening them in a new tab. For that reason, every element that calls `redirect` must be wrapped in an `a` tag, and whenever a page is loaded, all `a` tags are found and blocked, so that they do nothing when clicked. This method gives the best of both worlds.
 
@@ -32,7 +32,7 @@ Here, `navigation.js` will automatically find the `a` tag, block it from being d
 
 ---
 
-##The `redirect()` function
+## The `redirect()` function
 
 When a link is clicked and `redirect()` is called, a number of things happen, but we will focus on the main three. After checking to see if the link should be opened in a new tab regardless (for example, a link to an external site), the `redirect()` function:
 
@@ -46,7 +46,7 @@ All three of these functions run in parallel and return promises. If all three p
 
 ---
 
-##Loading a page
+## Loading a page
 
 `on_page_load()` is the main workhorse for preparing everything on a page beyond the plain HTML. In order, it:
 
@@ -72,7 +72,7 @@ All three of these functions run in parallel and return promises. If all three p
 
 ---
 
-##Unloading a page
+## Unloading a page
 
 `on_page_unload()` does much less than `on_page_load()` — its job is simply to clean a few things up so that the next page can be loaded with a clean slate. The function:
 

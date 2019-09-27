@@ -1,20 +1,20 @@
-#The Footer
+# The Footer
 
 ---
 
-##Overview
+## Overview
 
 The purpose of the footer is to provide easy access to the main pages on the site without returning to the homepage. To that end, it's available nearly everywhere on the site, and it makes itself especially prominent at the bottom of pages.
 
 ---
 
-##The regular footer
+## The regular footer
 
 This implementation of the footer is simpler in almost every way. Using the page settings, it's dynamically inserted at the bottom of the body. When the user scrolls to within 5 pixels of the bottom, the footer animates into existence, giving links to all of the main pages on the site (unless the current page is one of those, in which case it's omitted). The footer also contains links to the settings and the progressive web app pages.
 
 ---
 
-##The floating footer
+## The floating footer
 
 Once the regular footer has been created, it's duplicated and modified to make the floating footer. This incarnation can be accessed from anywhere on the page by either hovering the mouse in the bottom 100 pixels of the screen or tapping there on a touchscreen device. Doing so will display a complete copy of the footer, and when the mouse leaves the footer or there's a tap somewhere else, the floating footer fades out. Everything to do with the floating footer has `position` set to `fixed` so that is follows the user around the page.
 

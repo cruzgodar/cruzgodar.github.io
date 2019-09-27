@@ -1,8 +1,8 @@
-#Page Structure
+# Page Structure
 
 ---
 
-##The HTML
+## The HTML
 
 Every page folder must have an HTML file that contains what will be in the body when the page is loaded. This HTML must include a short script that looks like the following:
 
@@ -59,7 +59,7 @@ The `if` statement makes every page function as an entry point (see [the doc on 
 
 ---
 
-##Images on the page
+## Images on the page
 
 Directly setting the `src` attribute of an `img` tag or the `background-image` property of anything is only appropriate in extremely rare circumstances. When an image is present, its `src` should be left empty and it should have an `id` of `image-<image-name>`, where `<image-name>` is descriptive and (obviously) not used by any other image on the page. It also must have a class of `check-webp`. To load the images, every page must include a file called `images.json`, even if that file is effectively empty. `images.json` contains keys named `image-<image-name>`, and the corresponding value is another object that contains the keys `webp` and `non-webp` and matches them with urls where the images can be found. These urls can *not* be absolute — they must either be relative, in which case `images.js` will handle finding the absolute url, or link to another site for external storage (typically Google Drive).
 
@@ -75,7 +75,7 @@ For example, if `writing/writing.html` contains an image with an `id` of `image-
 
 ---
 
-##Banners
+## Banners
 
 Pages can optionally include banners like the homepage's. This displays a fullscreen image at the top of the page when stays fixed as the user scrolls and slowly fades out as the content comes into view. To have a banner, a page must do a few things:
 
@@ -102,13 +102,13 @@ Note that this means most of the entire page is wrapped in the `content` tag. If
 
 ---
 
-##Cover images
+## Cover images
 
 If a page is a subpage of another, it almost always needs a cover image. These are the rounded-corner image links that are all over the site. Two need to be present in the page folder: one named `cover.webp` and another named `cover.jpg`. Both should be 500x500 and 85% quality, unless that quality setting noticibly detracts from the image, like in the Julia set explorer's cover. In this case, the image can be made lossless.
 
 ---
 
-##Custom scripts and styles
+## Custom scripts and styles
 
 To load custom JS or CSS on a page, create folders called `scripts` and `style` in the page folder. Each must contain two files: one nonminified file and one minified one, both named the same as the HTML file, just with a different ending. For example, if the HTML file is `/writing/corona/corona.html`, then the script files should be `/writing/corona/scripts/corona.js` and `/writing/corona/scripts/corona.min.js`.
 
@@ -127,6 +127,6 @@ This ensures that any variables defined with the `let` keyword (which should be 
 
 ---
 
-##Subpages
+## Subpages
 
 Finally, and most simply, subpages are just page folders inside other page folders. For example, the Corona page is a subpage of the writing page, so the `corona` folder is located at `/writing/corona/`.
