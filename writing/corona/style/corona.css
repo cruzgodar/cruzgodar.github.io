@@ -67,16 +67,14 @@ body
 
 .stage-bubbles
 {
-	width: 50vw;
-	margin: 0 auto;
-	
-	grid-column-gap: calc(17.5vw - 12px);
+	width: 50vw !important;
+	grid-column-gap: calc(17.5vw - 12px) !important;
 }
 
 .stage-bubble-subtext
 {
-	width: 17.5vw;
-	margin-left: -6.25vw;
+	width: 17.5vw !important;
+	margin-left: -6.25vw !important;
 }
 
 #email
@@ -125,15 +123,14 @@ body
 	
 	.stage-bubbles
 	{
-		width: 80vw;
-		
-		grid-column-gap: calc(25vw - 12px);
+		width: 80vw !important;
+		grid-column-gap: calc(25vw - 12px) !important;
 	}
 	
 	.stage-bubble-subtext
 	{
-		width: 25vw;
-		margin-left: -7.5vw;
+		width: 25vw !important;
+		margin-left: -7.5vw !important;
 	}
 }
 
@@ -143,6 +140,6 @@ body
 {
 	.stage-bubbles
 	{
-		grid-column-gap: calc(4vw - 9.6px);
+		grid-column-gap: calc(4vw - 9.6px) !important;
 	}
 }

@@ -24,7 +24,7 @@ body
 .button-text
 {
 	margin: auto;
-	margin-left: 10px;
+	margin-left: 10px !important;
 	text-align: left;
 }
 
