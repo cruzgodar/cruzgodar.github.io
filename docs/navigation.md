@@ -42,7 +42,7 @@ When a link is clicked and `redirect()` is called, a number of things happen, bu
 
 3. Starts loading the banner if the target page has one. This is why it's required to have a list of banner pages separate from the `banner_page` setting: that setting hasn't yet taken effect. Loading the banner at this point effectively gives it a 300ms grace period to load while the content fades out before any loading time will be noticible.
 
-All three of these functions run in parallel and return promises. If all three promises resolve, `redirect()` runs `on_page_unload()`, loads the new HTML into the body, and executes any scripts present in that HTML. Usually, this will only include the default setup script described in [the page structure doc](), which sets the page settings and calls `on_page_load()`. The function is only called at this point to ensure that the HTML has loaded and the page settings have been set before finishing the rest of the page setup.
+All three of these functions run in parallel and return promises. If all three promises resolve, `redirect()` runs `on_page_unload()`, loads the new HTML into the body, and executes any scripts present in that HTML. Usually, this will only include the default setup script described in [the page structure doc](https://github.com/90259025/90259025.github.io/blob/master/docs/page-structure.md), which sets the page settings and calls `on_page_load()`. The function is only called at this point to ensure that the HTML has loaded and the page settings have been set before finishing the rest of the page setup.
 
 ---
 
@@ -60,7 +60,7 @@ All three of these functions run in parallel and return promises. If all three p
 
 5. Detects all elements with an attribute of `data-aos` and automatically sets their delays and anchors so that they animate in in sequence.
 
-6. Sets up both the regular and floating footers (see [the footer doc]() for more).
+6. Sets up both the regular and floating footers (see [the footer doc](https://github.com/90259025/90259025.github.io/blob/master/docs/footer.md) for more).
 
 7. Detects if the device being used is a touchscreen, and if so, removes all `:hover` selectors from the CSS.
 

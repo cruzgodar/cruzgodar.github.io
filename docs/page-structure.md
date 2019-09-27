@@ -35,7 +35,7 @@ page_settings =
 on_page_load();
 ```
 
-The `if` statement makes every page function as an entry point (see [the doc on navigation]()), since `current_url` will only be defined if `main.js` has been loaded. The call to `on_page_load()` triggers a large amount of functions, and is also covered in [the navigation doc](). The block in the middle sets the page settings, which tell the JS how to properly render the page. Every field is required an every page.
+The `if` statement makes every page function as an entry point (see [the doc on navigation](https://github.com/90259025/90259025.github.io/blob/master/docs/navigation.md)), since `current_url` will only be defined if `main.js` has been loaded. The call to `on_page_load()` triggers a large amount of functions, and is also covered in [the navigation doc](https://github.com/90259025/90259025.github.io/blob/master/docs/navigation.md). The block in the middle sets the page settings, which tell the JS how to properly render the page. Every field is required an every page.
 
 - `title`: the title of the page. In particular, sets the text that appears on the tab in the browser.
 
@@ -81,7 +81,7 @@ Pages can optionally include banners like the homepage's. This displays a fullsc
 
 - `banner_page` must be set to `true` in the page settings.
 
-- The page's url must be added to `banner_pages`, which is defined in `main.js`. To understand why this is required, see [the doc on navigation]().
+- The page's url must be added to `banner_pages`, which is defined in `main.js`. To understand why this is required, see [the doc on navigation](https://github.com/90259025/90259025.github.io/blob/master/docs/navigation.md).
 
 - A folder named `banners` must be present in the page folder, and it must contain four files: two 1920x1440 files named `landscape.webp` and `landscape.jpg`, and two 900x1440 files named `portrait.webp` and `portrait.jpg`. The content of all four files should match, and the quality of each image should be the standard 85%.
 

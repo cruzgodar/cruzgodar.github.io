@@ -16,9 +16,8 @@ cruzgodar\.com is hosted on Github Pages — when a repository is named [usernam
 
 The site is a single page, progressive web app. The scripts and styles required for all pages are loaded once and then never again, and `index.html` contains the bare minimum in order to do that. Each page folder contains the HTML that the body should contain, and it can also contain supplementary files, like custom styles and scripts, banner images, and subpages. For more in-depth information on any of these things, take a look at the relevant section below.
 
-- The structure of pages
-- Navigation between pages
-- The footer
-- Settings
-- Progressive web app functionality
-- Versioning
+- [The structure of pages](https://github.com/90259025/90259025.github.io/blob/master/docs/page-structure.md)
+- [Navigation between pages](https://github.com/90259025/90259025.github.io/blob/master/docs/navigation.md)
+- [The footer](https://github.com/90259025/90259025.github.io/blob/master/docs/footer.md)
+- [Settings](https://github.com/90259025/90259025.github.io/blob/master/docs/settings.md)
+- [Progressive web app functionality](https://github.com/90259025/90259025.github.io/blob/master/docs/pwa.md)
