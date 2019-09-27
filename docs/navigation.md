@@ -1,6 +1,6 @@
 # Navigation
 
----
+
 
 ## Entry points
 
@@ -14,7 +14,7 @@ When the site is first loaded, one of the *entry point* files is accessed: `inde
 
 Once the required files are loaded, the entry point files load a page. As mentioned before, `404.html` always loads `/404/404.html`, but the other two differ. By default, they will load `/home/home.html`, but if the url contains a variable named `page`, the loaded page will be that value, *decoded*. For example, if the user navigates to `cruzgodar.com/index.html?page=%2Fwriting%2Fcorona%2Fcorona.html`, then the `page` variable has a value of `%2Fwriting%2Fcorona%2Fcorona.html`, and when decoded, `%2F` becomes `/`. Therefore, the initial page loaded will be `/writing/corona/corona.html`. Because navigating between pages changes the url to match this encoded format, the url of any page can be copied and shared as a link with the expected result.
 
----
+
 
 ## Links
 
@@ -30,7 +30,7 @@ It's worthwhile to note that these `a` tags' `href` attributes don't need to be 
 
 Here, `navigation.js` will automatically find the `a` tag, block it from being directly clicked, and change its `href` to `/index.html?page=%2Fwriting%2Fcorona%2Fcorona.html`. It will also append any settings to this url so that they're preserved when (for example) opening the link in a new tab.
 
----
+
 
 ## The `redirect()` function
 
@@ -44,7 +44,7 @@ When a link is clicked and `redirect()` is called, a number of things happen, bu
 
 All three of these functions run in parallel and return promises. If all three promises resolve, `redirect()` runs `on_page_unload()`, loads the new HTML into the body, and executes any scripts present in that HTML. Usually, this will only include the default setup script described in [the page structure doc](https://github.com/90259025/90259025.github.io/blob/master/docs/page-structure.md), which sets the page settings and calls `on_page_load()`. The function is only called at this point to ensure that the HTML has loaded and the page settings have been set before finishing the rest of the page setup.
 
----
+
 
 ## Loading a page
 
@@ -70,7 +70,7 @@ All three of these functions run in parallel and return promises. If all three p
 
 10. If the page setting `comments` is true, loads Disqus.
 
----
+
 
 ## Unloading a page
 

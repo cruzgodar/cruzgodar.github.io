@@ -1,6 +1,6 @@
 # Page Structure
 
----
+
 
 ## The HTML
 
@@ -57,7 +57,7 @@ The `if` statement makes every page function as an entry point (see [the doc on 
 
 - `footer_exclusion`: if the footer is present, which page shouldn't be present. The typical value is the current page if it's first level (writing, teaching, etc.), and nothing for any other pages.
 
----
+
 
 ## Images on the page
 
@@ -73,7 +73,7 @@ For example, if `writing/writing.html` contains an image with an `id` of `image-
 }
 ```
 
----
+
 
 ## Banners
 
@@ -100,13 +100,13 @@ Pages can optionally include banners like the homepage's. This displays a fullsc
 
 Note that this means most of the entire page is wrapped in the `content` tag. If all of these conditions are met, then `banners.js` will take care of the rest.
 
----
+
 
 ## Cover images
 
 If a page is a subpage of another, it almost always needs a cover image. These are the rounded-corner image links that are all over the site. Two need to be present in the page folder: one named `cover.webp` and another named `cover.jpg`. Both should be 500x500 and 85% quality, unless that quality setting noticibly detracts from the image, like in the Julia set explorer's cover. In this case, the image can be made lossless.
 
----
+
 
 ## Custom scripts and styles
 
@@ -125,7 +125,7 @@ Custom JS files should not create any global variables or redefine any functions
 
 This ensures that any variables defined with the `let` keyword (which should be all of them) can be redefined the next time the page is loaded, and similarly for functions.
 
----
+
 
 ## Subpages
 

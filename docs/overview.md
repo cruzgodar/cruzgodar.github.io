@@ -1,6 +1,6 @@
 # Overview
 
----
+
 
 ## Hosting
 
@@ -10,7 +10,7 @@ cruzgodar\.com is hosted on Github Pages — when a repository is named [usernam
 - An @ record in Google Domains with type A containing the IPs of the service that Github Pages uses for encryption.
 - A www record in Google Domains with type CNAME containing `90259025.github.io`.
 
----
+
 
 ## Synopsis
 

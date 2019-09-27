@@ -1,6 +1,6 @@
 # Settings
 
----
+
 
 The settings system allows users to customize the look and feel of the site. Some options are simply for personal preference, and others are accessibility features.
 

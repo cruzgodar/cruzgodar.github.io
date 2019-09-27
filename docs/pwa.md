@@ -1,6 +1,6 @@
 # Progressive Web App Functionality
 
----
+
 
 The site is a progressive web app. All this means is that it takes explicit control of how resources get cached, and in particular, it can be installed like a native app. Three files accomplish this:
 
