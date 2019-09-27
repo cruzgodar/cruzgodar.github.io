@@ -3,21 +3,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>https://www.cruzgodar.com/</loc>
-		<lastmod>2019-09-13</lastmod>
+		<lastmod>2019-09-26</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>1.0</priority>
 	</url>
 	
 	<url>
 		<loc>https://www.cruzgodar.com/index.html</loc>
-		<lastmod>2019-08-13</lastmod>
+		<lastmod>2019-09-26</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>1.0</priority>
 	</url>
 	
 	<url>
-		<loc>https://www.cruzgodar.com/home.html</loc>
-		<lastmod>2019-08-13</lastmod>
+		<loc>https://www.cruzgodar.com/home/home.html</loc>
+		<lastmod>2019-09-26</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.5</priority>
 	</url>
@@ -30,17 +30,17 @@
 	</url>
 	
 	<url>
-		<loc>https://www.cruzgodar.com/404-real.html</loc>
+		<loc>https://www.cruzgodar.com/404/404.html</loc>
 		<priority>0.0</priority>
 	</url>
 	
 	<url>
-		<loc>https://www.cruzgodar.com/pwa.html</loc>
+		<loc>https://www.cruzgodar.com/pwa/pwa.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
 	<url>
-		<loc>https://www.cruzgodar.com/settings.html</loc>
+		<loc>https://www.cruzgodar.com/settings/settings.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
