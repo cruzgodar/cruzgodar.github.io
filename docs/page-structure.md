@@ -2,21 +2,9 @@
 
 ---
 
-##Entry points
+##The HTML
 
-The core of every page is an HTML file containing the data that the body of the page should contain when that page is being viewed. When the site is first loaded, one of the *entry point* files is accessed: `index.html`, `index-testing.html`, or `404.html`. All of these load the same styles and scripts and have all the required tags in their heads, but they differ in a few ways.
-
-- `index.html` is intended for finished commits. It fetches a minified bundle of JS and CSS, reducing requests and decreasing the total amount of data requested. It also defers the loading of the CSS until after the page loads so that it can load in parallel with the JS.
-
-- `index-testing.html` is identical to `index.html`, just without any fancy features. It loads the CSS and JS from individual, nonminified files, it loads the CSS first like a normal website, and it also sets a `DEBUG` flag that makes all future CSS and JS requests look for a nonminified file. All of this makes it ideal for, well, *testing* — when code is added or modified, it's very inconvenient to have to minify it before its effects are visible.
-
-- `404.html` is also identical to `index.html`, but its difference is that it's loaded when the user receives a 404 error. This unavoidably causes a redirect, so it's necessary to have another entry point. It also always loads `/404/404.html`, unlike the first two pages, which can redirect to a location if it's present in the url (see [the doc on navigation]() for more).
-
----
-
-##Page settings
-
-Every page's HTML file must include a short script that looks like the following:
+Every page folder must have an HTML file that contains what will be in the body when the page is loaded. This HTML must include a short script that looks like the following:
 
 ```js
 if (typeof current_url == "undefined")
@@ -47,7 +35,7 @@ page_settings =
 on_page_load();
 ```
 
-The `if` statement makes every page function as an entry point, since `current_url` will only be defined if `main.js` has been loaded. The call to `on_page_load()` triggers a large amount of functions, and is covered in [the doc on navigation](). The block in the middle sets the page settings, which tell the JS how to properly render the page. Every field is required an every page.
+The `if` statement makes every page function as an entry point (see [the doc on navigation]()), since `current_url` will only be defined if `main.js` has been loaded. The call to `on_page_load()` triggers a large amount of functions, and is also covered in [the navigation doc](). The block in the middle sets the page settings, which tell the JS how to properly render the page. Every field is required an every page.
 
 - `title`: the title of the page. In particular, sets the text that appears on the tab in the browser.
 
@@ -73,7 +61,7 @@ The `if` statement makes every page function as an entry point, since `current_u
 
 ##Images on the page
 
-Directly setting the `src` attribute of an `img` tag or the `background-image` property of anything is only appropriate in extremely rare circumstances. When an image is present, its `src` should be left empty and it should have an `id` of `image-<image-name>`, where `<image-name>` is descriptive and (obviously) not used by any other image on the page. To load the images, every page must include a file called `images.json`, even if that file is effectively empty. `images.json` contains keys named `image-<image-name>`, and the corresponding value is another object that contains the keys `webp` and `non-webp` and matches them with urls where the images can be found. These urls can *not* be absolute — they must either be relative, in which case `images.js` will handle finding the absolute url, or link to another site for external storage (typically Google Drive).
+Directly setting the `src` attribute of an `img` tag or the `background-image` property of anything is only appropriate in extremely rare circumstances. When an image is present, its `src` should be left empty and it should have an `id` of `image-<image-name>`, where `<image-name>` is descriptive and (obviously) not used by any other image on the page. It also must have a class of `check-webp`. To load the images, every page must include a file called `images.json`, even if that file is effectively empty. `images.json` contains keys named `image-<image-name>`, and the corresponding value is another object that contains the keys `webp` and `non-webp` and matches them with urls where the images can be found. These urls can *not* be absolute — they must either be relative, in which case `images.js` will handle finding the absolute url, or link to another site for external storage (typically Google Drive).
 
 For example, if `writing/writing.html` contains an image with an `id` of `image-corona`, then the file `writing/images.json` will include
 

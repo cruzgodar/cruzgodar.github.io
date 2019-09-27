@@ -228,11 +228,6 @@ function on_page_load()
 		remove_animation();
 	}
 	
-	if (url_vars["content_layout"] == 1)
-	{
-		override_layout();
-	}
-	
 	
 	
 	if (page_settings["math_page"])
