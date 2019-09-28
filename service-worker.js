@@ -5,7 +5,7 @@ var urlsToCache =
     "./index.html",
     "./home/home.html",
     "./index.html?page=%2Fhome%2Fhome.html",
-    "./images.json",
+    "./home/images.json",
     
     "./style/css-bundle.min.css",
     "./style/aos.min.css",
