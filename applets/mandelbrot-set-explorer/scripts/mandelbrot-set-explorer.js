@@ -239,7 +239,7 @@
 			
 			
 			document.querySelector("#download-location").insertAdjacentHTML("afterend", `
-				<div id="download-button" class="animated-opacity" style="display: flex; justify-content: center; opacity: 0; width: 70vw; margin: 0 auto">
+				<div id="download-button" class="animated-opacity">
 					<a href="${image_data}" download="Mandelbrot Zoom.png" class="real-link">
 						<button class="text-button" type="button" onclick="">Download Image</button>
 					</a>

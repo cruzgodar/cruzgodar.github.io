@@ -48,6 +48,19 @@ body
 	transition: filter .15s ease-in-out, border-color .6s ease;
 }
 
+
+
+#apply-button-container
+{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 70vw;
+	margin: 0 auto;
+}
+
+
+
 @media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	.button-row
