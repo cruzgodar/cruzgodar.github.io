@@ -4,7 +4,7 @@
 	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
 </noscript>
 	
-<div id="background-image" class="banner"></div>
+<div id="banner"></div>
 
 <div id="opacity-cover"></div>
 
@@ -63,10 +63,12 @@
 			
 			
 		<section>
-			<div class="new-aos-section logo" data-aos="fade-in">
-				<a href="/home/home.html">
-					<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
-				</a>
+			<div class="new-aos-section" data-aos="fade-in">
+				<div id="logo">
+					<a href="/home/home.html">
+						<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
+					</a>
+				</div>
 			</div>
 				
 			<div style="height: 3vh"></div>
@@ -163,7 +165,7 @@
 				
 				<div style="height: 5vh"></div>
 				
-				<div class="image-links newest-pages">
+				<div id="newest-pages" class="image-links">
 					<div class="image-link" data-aos="zoom-out">
 						<a href="/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html">
 							<img id="image-mandelbrot-set-explorer" class="check-webp" onclick="redirect('/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html')" src="" alt="Mandelbrot Set Explorer"></img>

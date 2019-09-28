@@ -15,7 +15,7 @@
 	
 	function alert_on_edge()
 	{
-		document.querySelector(".logo").insertAdjacentHTML("beforebegin", `
+		document.querySelector("#logo").insertAdjacentHTML("beforebegin", `
 			<div class="body-text" style="text-align: center">
 				<strong>Microsoft Edge is not fully supported on this site. Using <a href="https://www.google.com/chrome/">Chrome</a>, <a href="https://www.apple.com/safari/">Safari</a>, <a href="https://www.mozilla.org/en-US/firefox/?v=a">Firefox</a>, or <a href="https://www.opera.com/">Opera</a> is highly recommended.<strong>
 			</div>
@@ -30,7 +30,7 @@
 	{
 		document.querySelector(".name-text").remove();
 		
-		document.querySelector("#background-image").insertAdjacentHTML("afterend", `
+		document.querySelector("#banner").insertAdjacentHTML("afterend", `
 			<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="350">
 				<p id="cruz-text" class="name-text">Cruz</p>
 			</div>

@@ -2,7 +2,7 @@
 
 
 
-.banner:before
+#banner:before
 {
 	content: "";
 	position: fixed;

@@ -299,16 +299,16 @@ function insert_footer()
 function set_up_floating_footer()
 {
 	let floating_footer_element = document.createElement("footer");
-	floating_footer_element.classList.add("floating-footer");
+	floating_footer_element.id = "floating-footer";
 	
 	document.body.insertBefore(floating_footer_element, document.body.firstChild);
 	
 	
 	
 	floating_footer_element.innerHTML = `
-		<div class="floating-footer-gradient"></div>
+		<div id="floating-footer-gradient"></div>
 		
-		<div class="floating-footer-content">
+		<div id="floating-footer-content">
 			<div style="height: 30px"></div>
 		</div>
 	`;
@@ -323,7 +323,7 @@ function set_up_floating_footer()
 		element.children[i].removeAttribute("data-aos-anchor");
 	}
 	
-	document.querySelector(".floating-footer-content").appendChild(element);
+	document.querySelector("#floating-footer-content").appendChild(element);
 	
 	
 	
@@ -335,20 +335,20 @@ function set_up_floating_footer()
 		element.children[i].removeAttribute("data-aos-anchor");
 	}
 	
-	document.querySelector(".floating-footer-content").appendChild(element);
+	document.querySelector("#floating-footer-content").appendChild(element);
 	
 	
 	
 	//Finally, we need to cover the bottom with a very thin strip of white to fix a strange glitch where absolutely-positioned elements always have a transparent background.
 	element = document.createElement("div");
 	
-	element.classList.add("floating-footer-button-background");
+	element.id = "floating-footer-button-background";
 	
-	document.querySelector(".floating-footer-content").appendChild(element);
+	document.querySelector("#floating-footer-content").appendChild(element);
 	
 	
 	
-	document.querySelector(".floating-footer").insertAdjacentHTML("afterend", `<div class="floating-footer-touch-target"></div>`);
+	document.querySelector("#floating-footer").insertAdjacentHTML("afterend", `<div id="floating-footer-touch-target"></div>`);
 	
 	
 	
@@ -367,7 +367,7 @@ function set_up_floating_footer()
 	//Idk why this is required. Occasionally the touch target will have display: none until the window is scrolled any amount.
 	setTimeout(function()
 	{
-		document.querySelector(".floating-footer-touch-target").style.display = "block";
+		document.querySelector("#floating-footer-touch-target").style.display = "block";
 	}, 50);
 	
 	
@@ -389,14 +389,14 @@ function set_up_floating_footer()
 //Properly size the floating footer -- when there is a scroll bar, the right button will clip into it. Unfortunately, there is no way to solve this with CSS, as far as I'm aware.
 function fit_floating_footer_to_window_width()
 {
-	document.querySelector(".floating-footer").style.width = document.documentElement.clientWidth + "px";
+	document.querySelector("#floating-footer").style.width = document.documentElement.clientWidth + "px";
 	
 	//This one beats me. A window resize will cause the touch target to become visible, blocking some or all of the footer image links. If the timeout isn't here, then it will flicker on and off violently before remaining on.
 	if (floating_footer_is_visible)
 	{
 		setTimeout(function()
 		{
-			document.querySelector(".floating-footer-touch-target").style.display = "none";
+			document.querySelector("#floating-footer-touch-target").style.display = "none";
 		}, 50);
 	}
 }
@@ -408,21 +408,21 @@ function floating_footer_scroll()
 {
 	if (document.querySelector(".line-break-container").classList.contains("aos-animate"))
 	{
-		document.querySelector(".floating-footer").style.opacity = 0;
+		document.querySelector("#floating-footer").style.opacity = 0;
 		
 		floating_footer_is_visible = false;
 		
-		document.querySelector(".floating-footer-touch-target").style.display = "none";
+		document.querySelector("#floating-footer-touch-target").style.display = "none";
 		
 		setTimeout(function()
 		{
-			document.querySelector(".floating-footer").style.display = "none";
+			document.querySelector("#floating-footer").style.display = "none";
 		}, 300);
 	}
 	
 	else if (floating_footer_is_visible == false)
 	{
-		document.querySelector(".floating-footer-touch-target").style.display = "block";
+		document.querySelector("#floating-footer-touch-target").style.display = "block";
 	}
 }
 
@@ -435,34 +435,34 @@ function init_floating_footer_listeners_no_touch()
 {
 	floating_footer_is_visible = false;
 	
-	document.querySelector(".floating-footer-touch-target").addEventListener("mouseenter", function()
+	document.querySelector("#floating-footer-touch-target").addEventListener("mouseenter", function()
 	{
 		if (floating_footer_is_visible == false && !(document.querySelector(".line-break-container").classList.contains("aos-animate")))
 		{
-			document.querySelector(".floating-footer").style.display = "block";
-			document.querySelector(".floating-footer-touch-target").style.display = "none";
+			document.querySelector("#floating-footer").style.display = "block";
+			document.querySelector("#floating-footer-touch-target").style.display = "none";
 			
 			setTimeout(function()
 			{
-				document.querySelector(".floating-footer").style.opacity = 1;
+				document.querySelector("#floating-footer").style.opacity = 1;
 				
 				floating_footer_is_visible = true;
 			}, 50);
 		}
 	});
 	
-	document.querySelector(".floating-footer-content").addEventListener("mouseleave", function()
+	document.querySelector("#floating-footer-content").addEventListener("mouseleave", function()
 	{
 		if (floating_footer_is_visible)
 		{
-			document.querySelector(".floating-footer").style.opacity = 0;
+			document.querySelector("#floating-footer").style.opacity = 0;
 			
 			floating_footer_is_visible = false;
 			
 			setTimeout(function()
 			{
-				document.querySelector(".floating-footer").style.display = "none";
-				document.querySelector(".floating-footer-touch-target").style.display = "block";
+				document.querySelector("#floating-footer").style.display = "none";
+				document.querySelector("#floating-footer-touch-target").style.display = "block";
 			}, 300);
 		}
 	});
@@ -491,18 +491,18 @@ function footer_process_touchend()
 	
 	
 	
-	if (document.querySelector(".floating-footer-touch-target") == target)
+	if (document.querySelector("#floating-footer-touch-target") == target)
 	{
 		if (floating_footer_is_visible == false && !(document.querySelector(".line-break-container").classList.contains("aos-animate")))
 		{
-			document.querySelector(".floating-footer").style.display = "block";
-			document.querySelector(".floating-footer-touch-target").style.display = "none";
+			document.querySelector("#floating-footer").style.display = "block";
+			document.querySelector("#floating-footer-touch-target").style.display = "none";
 			
 			floating_footer_is_visible = true;
 			
 			setTimeout(function()
 			{
-				document.querySelector(".floating-footer").style.opacity = 1;
+				document.querySelector("#floating-footer").style.opacity = 1;
 			}, 50);
 		}
 	}
@@ -512,18 +512,18 @@ function footer_process_touchend()
 
 function footer_process_touchstart(event)
 {
-	if (!(document.querySelector(".floating-footer-content").contains(event.target)))
+	if (!(document.querySelector("#floating-footer-content").contains(event.target)))
 	{
 		if (floating_footer_is_visible)
 		{
-			document.querySelector(".floating-footer").style.opacity = 0;
+			document.querySelector("#floating-footer").style.opacity = 0;
 			
 			floating_footer_is_visible = false;
 			
 			setTimeout(function()
 			{
-				document.querySelector(".floating-footer").style.display = "none";
-				document.querySelector(".floating-footer-touch-target").style.display = "block";
+				document.querySelector("#floating-footer").style.display = "none";
+				document.querySelector("#floating-footer-touch-target").style.display = "block";
 			}, 300);
 		}
 	}

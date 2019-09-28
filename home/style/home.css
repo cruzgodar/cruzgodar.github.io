@@ -66,7 +66,7 @@
 
 
 
-.newest-pages
+#newest-pages
 {
 	width: 51.25vw !important;
 	grid-template-columns: repeat(3, 1fr) !important;
@@ -90,7 +90,7 @@
 	
 	
 	
-	.newest-pages
+	#newest-pages
 	{
 		width: 90vw !important;
 	}
@@ -101,7 +101,7 @@
 /* Ultrawide layout: increase quote margins a little */
 @media screen and (min-aspect-ratio: 16/9), (min-width: 1400px)
 {
-	.newest-pages
+	#newest-pages
 	{
 		width: 33.5vw !important;
 	}

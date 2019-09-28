@@ -137,7 +137,7 @@ function load_banner()
 			
 			.catch(function(error)
 			{
-				document.querySelector("#background-image").remove();
+				document.querySelector("#banner").remove();
 				document.querySelector("#opacity-cover").remove();
 				document.querySelector("#banner-cover").remove();
 				
@@ -155,7 +155,7 @@ function load_banner()
 function add_banner_style()
 {
 	add_style(`
-		.banner:before
+		#banner:before
 		{
 			background: url("${banner_path + "landscape." + banner_extension}") no-repeat center center;
 			background-size: cover;
@@ -163,7 +163,7 @@ function add_banner_style()
 		
 		@media screen and (max-aspect-ratio: 1), (max-width: 700px)
 		{
-			.banner:before
+			#banner:before
 			{
 				background: url("${banner_path + "portrait." + banner_extension}") no-repeat center center;
 				background-size: cover;

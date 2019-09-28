@@ -12,10 +12,12 @@ function insert_header()
 	
 	
 	document.querySelector("#spawn-header").insertAdjacentHTML("afterend", `
-		<div class="new-aos-section logo" data-aos="fade-in">
-			<a href="/home/home.html">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
-			</a>
+		<div class="new-aos-section" data-aos="fade-in">
+			<div id="logo">
+				<a href="/home/home.html">
+					<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
+				</a>
+			</div>
 		</div>
 		
 		<div style="height: 2vh"></div>

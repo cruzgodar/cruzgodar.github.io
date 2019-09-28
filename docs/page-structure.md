@@ -88,7 +88,7 @@ Pages can optionally include banners like the homepage's. This displays a fullsc
 - Finally, the HTML file must include the following code immediately after the `noscript` tag:
 
 ```html
-<div id="background-image" class="banner"></div>
+<div id="banner"></div>
 
 <div id="opacity-cover"></div>
 

@@ -95,7 +95,7 @@ async function entry_point(url)
 				height: 0px;
 			}
 			
-			.logo, .name-text-container, .empty-top
+			#logo, .name-text-container, .empty-top
 			{
 				margin-top: 2vh;
 			}

@@ -975,14 +975,14 @@ function get_settings_style(settings)
 			
 			
 			
-			.floating-footer-content, .floating-footer-button-background
+			#floating-footer-content, #floating-footer-button-background
 			{
 				background-color: ${dark_theme_background_color};
 			}
 			
 			
 			
-			.banner:after, .floating-footer-gradient
+			#banner:after, #floating-footer-gradient
 			{
 				background: -moz-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%, ${dark_theme_background_color_rgba}1) 100%) !important;
 				background: -webkit-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important;
@@ -1153,14 +1153,14 @@ function get_settings_style(settings)
 			
 			
 			
-			.floating-footer-content, .floating-footer-button-background
+			#floating-footer-content, #floating-footer-button-background
 			{
 				background-color: ${dark_theme_background_color};
 			}
 			
 			
 			
-			.banner:after, .floating-footer-gradient
+			#banner:after, #floating-footer-gradient
 			{
 				background: -moz-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%, ${dark_theme_background_color_rgba}1) 100%) !important;
 				background: -webkit-linear-gradient(top, ${dark_theme_background_color_rgba}0) 0%,${dark_theme_background_color_rgba}1) 100%) !important;

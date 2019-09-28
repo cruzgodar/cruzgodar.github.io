@@ -67,14 +67,14 @@ img
 
 
 
-.logo
+#logo
 {
 	width: 100px;
 	height: 100px;
 	margin: 0 auto;
 }
 
-.logo img
+#logo img
 {
 	position: absolute;
 	width: 100px;
@@ -84,7 +84,7 @@ img
 	filter: brightness(100%);
 }
 
-.logo img:hover
+#logo img:hover
 {
 	filter: brightness(75%);
 }
@@ -249,7 +249,7 @@ img
 
 
 /* The area where the user can hover or tap to reveal the footer anywhere. */
-.floating-footer
+#floating-footer
 {
 	position: fixed;
 	bottom: 0;
@@ -261,7 +261,7 @@ img
 	transition: opacity .3s ease-in-out;
 }
 
-.floating-footer-gradient
+#floating-footer-gradient
 {
 	height: 10vh;
 	
@@ -270,13 +270,13 @@ img
 	background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
 }
 
-.floating-footer-content
+#floating-footer-content
 {
 	background-color: rgb(255, 255, 255);
 }
 
 /* Some very weird shit going on right here */
-.floating-footer-button-background
+#floating-footer-button-background
 {
 	height: 1px;
 	background-color: rgb(255, 255, 255);
@@ -284,7 +284,7 @@ img
 
 
 
-.floating-footer-touch-target
+#floating-footer-touch-target
 {
 	position: fixed;
 	bottom: 0;
