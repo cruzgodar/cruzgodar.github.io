@@ -104,28 +104,36 @@ function parse_page_specific_style()
 	
 	
 	
-	let element = document.createElement("link");
+	//Make sure there's actually something to get.
+	fetch(parent_folder + "style/" + page_name + ".css")
 	
-	element.setAttribute("rel", "stylesheet");
-	
-	
-	
-	if (DEBUG)
+	.then(function(response)
 	{
-		element.setAttribute("href", parent_folder + "style/" + page_name + ".css");
-	}
+		let element = document.createElement("link");
+		
+		element.setAttribute("rel", "stylesheet");
+		
+		
+		
+		if (DEBUG)
+		{
+			element.setAttribute("href", parent_folder + "style/" + page_name + ".css");
+		}
+		
+		else
+		{
+			element.setAttribute("href", parent_folder + "style/" + page_name + ".min.css");
+		}
+		
+		
+		
+		//This is kind of subtle. If we append this new style to he end of the head, then it will take precendence over settings styles, which is terrible -- for example, the homepage will render all of its custom classes like quote-text and quote-attribution incorrectly. Therefore, we need to *prepend* it, ensuring it has the lowest-possible priority.
+		element.classList.add("temporary-style");
+		
+		document.head.insertBefore(element, document.head.firstChild);
+	})
 	
-	else
-	{
-		element.setAttribute("href", parent_folder + "style/" + page_name + ".min.css");
-	}
-	
-	
-	
-	//This is kind of subtle. If we append this new style to he end of the head, then it will take precendence over settings styles, which is terrible -- for example, the homepage will render all of its custom classes like quote-text and quote-attribution incorrectly. Therefore, we need to *prepend* it, ensuring it has the lowest-possible priority.
-	element.classList.add("temporary-style");
-	
-	document.head.insertBefore(element, document.head.firstChild);
+	.catch(function(error) {});
 }
 
 
@@ -138,26 +146,33 @@ function parse_page_specific_scripts()
 	page_name = page_name[0];
 	
 	
+	//Make sure there's actually something to get.
+	fetch(parent_folder + "scripts/" + page_name + ".js")
 	
-	let element = document.createElement("script");
-	
-	
-	
-	if (DEBUG)
+	.then(function(response)
 	{
-		element.setAttribute("src", parent_folder + "scripts/" + page_name + ".js");
-	}
+		let element = document.createElement("script");
+		
+		
+		
+		if (DEBUG)
+		{
+			element.setAttribute("src", parent_folder + "scripts/" + page_name + ".js");
+		}
+		
+		else
+		{
+			element.setAttribute("src", parent_folder + "scripts/" + page_name + ".min.js");
+		}
+		
+		
+		
+		element.classList.add("temporary-script");
+		
+		document.body.appendChild(element);
+	})
 	
-	else
-	{
-		element.setAttribute("src", parent_folder + "scripts/" + page_name + ".min.js");
-	}
-	
-	
-	
-	element.classList.add("temporary-script");
-	
-	document.body.appendChild(element);
+	.catch(function(error) {});
 }
 
 
