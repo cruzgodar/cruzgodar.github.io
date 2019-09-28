@@ -167,6 +167,8 @@ function on_page_load()
 	
 	
 	
+	insert_header();
+	
 	fade_in();
 	
 	set_links();
