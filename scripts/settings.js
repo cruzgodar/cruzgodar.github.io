@@ -1,4 +1,4 @@
-//Handles the various settings' effects on the page. Every function adds or removes a style tag that handles all the changes. Some settings, like the theme, require an animation.
+//Handles the various settings' effects on the page. These functions typically add or remove a style tag that handles all the changes. Some settings, like the theme, require an animation.
 
 
 

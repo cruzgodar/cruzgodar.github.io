@@ -1,4 +1,4 @@
-//Inserts the footer at the bottom of the page.
+//Inserts the footer at the bottom of the page and creates the floating footer.
 
 
 

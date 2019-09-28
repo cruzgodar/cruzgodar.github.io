@@ -1,3 +1,7 @@
+//Handles all navigation between pages.
+
+
+
 let new_page_data = null;
 
 
@@ -310,6 +314,39 @@ function parse_scripts()
 		document.body.appendChild(new_script);
 		
 		scripts[i].remove();
+	}
+}
+
+
+
+function on_page_unload()
+{
+	//Remove any css and js that's no longer needed to prevent memory leaks.
+	let elements = document.querySelectorAll("style.temporary-style, link.temporary-style, script.temporary-script");
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].remove();
+	}
+	
+	
+	
+	//Remove everything that's not a script from the body.
+	elements = document.querySelectorAll("body > *:not(script)");
+	for (let i = 0; i < elements.length; i++)
+	{ 
+		elements[i].remove();
+	}
+	
+	
+	
+	//Unbind everything transient from the window.
+	for (let key in temporary_handlers)
+	{
+		for (let j = 0; j < temporary_handlers[key].length; j++)
+		{
+			window.removeEventListener(key, temporary_handlers[key][j]);
+			document.documentElement.removeEventListener(key, temporary_handlers[key][j]);
+		}
 	}
 }
 

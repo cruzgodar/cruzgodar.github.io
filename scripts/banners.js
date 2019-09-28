@@ -1,3 +1,7 @@
+//Handles loading banners, displaying them, fading them out when the user scrolls, and everything to do with scroll buttons.
+
+
+
 let scroll = 0;
 let banner_done = false;
 let banner_path = "";
@@ -8,6 +12,27 @@ let banner_extension = "";
 let scroll_button_exists = false;
 
 let scroll_button_timeout = null;
+
+
+
+//A list of every page that has a banner. ONLY to be used for preloading those banners. For everything else, use page_settings["banner_page"].
+let banner_pages =
+[
+	"/home/home.html",
+	
+	"/bio/bio.html",
+	
+	"/blog/1/on-leaving-and-the-beginnings-of-things.html",
+	"/blog/2/nach-heidelberg.html",
+	"/blog/3/the-city-and-the-city.html",
+	"/blog/4/a-taste-of-chaos.html",
+	"/blog/5/halloween-in-january.html",
+	"/blog/6/erinnerungen.html",
+	"/blog/7/on-leaving-again-and-new-beginnings.html",
+	
+	"/writing/mist/mist.html",
+	"/writing/desolation-point/desolation-point.html"
+];
 
 
 

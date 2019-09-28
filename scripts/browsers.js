@@ -2,7 +2,7 @@
 
 
 
-var browser_detect =
+let browser_detect =
 {
 	init: function()
 	{
@@ -12,7 +12,7 @@ var browser_detect =
 	
 	searchString: function(data)
 	{
-		for (var i = 0; i < data.length; i++)
+		for (let i = 0; i < data.length; i++)
 		{
 			var dataString = data[i].string;
 			this.versionSearchString = data[i].subString;
@@ -26,7 +26,7 @@ var browser_detect =
 	
 	searchVersion: function (dataString)
 	{
-		var index = dataString.indexOf(this.versionSearchString);
+		let index = dataString.indexOf(this.versionSearchString);
 		
 		if (index === -1)
 		{
@@ -35,7 +35,7 @@ var browser_detect =
 		
 		
 		
-		var rv = dataString.indexOf("rv:");
+		let rv = dataString.indexOf("rv:");
 		
 		if (this.versionSearchString === "Trident" && rv !== -1)
 		{
@@ -85,12 +85,12 @@ function remove_hover_on_touch()
 		try
 		{
 			//Prevent exception on browsers not supporting DOM stylesheets properly
-			for (var si in document.styleSheets)
+			for (let si in document.styleSheets)
 			{
-				var styleSheet = document.styleSheets[si];
+				let styleSheet = document.styleSheets[si];
 				if (!styleSheet.rules) continue;
 
-				for (var ri = styleSheet.rules.length - 1; ri >= 0; ri--)
+				for (let ri = styleSheet.rules.length - 1; ri >= 0; ri--)
 				{
 					if (!styleSheet.rules[ri].selectorText) continue;
 

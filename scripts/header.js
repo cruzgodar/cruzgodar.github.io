@@ -1,3 +1,7 @@
+//Handles creating the header.
+
+
+
 function insert_header()
 {
 	if (page_settings["no_header"])

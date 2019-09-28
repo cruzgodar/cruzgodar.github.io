@@ -1,3 +1,7 @@
+//Handles loading the comments on pages that require them.
+
+
+
 let disqus_config = null;
 
 
