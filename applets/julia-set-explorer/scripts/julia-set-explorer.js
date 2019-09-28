@@ -158,7 +158,7 @@
 				
 				brightness += Math.exp(-Math.sqrt(x*x + y*y));
 				
-				if (Math.sqrt(x*x + y*y) > 2)
+				if (x*x + y*y > 4)
 				{
 					break;
 				}
