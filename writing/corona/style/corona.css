@@ -15,7 +15,7 @@ body
 	width: 70vw;
 	margin: 0 auto;
 	
-	color: rgb(255, 255, 255);
+	color: rgb(255, 255, 255) !important;
 	text-align: center;
 	font-size: 450%;
 	font-family: "Gentium Book Basic", serif;
