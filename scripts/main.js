@@ -129,7 +129,7 @@ async function entry_point(url)
 		
 		else
 		{
-			redirect(url, false, false, true);
+			redirect(url, false, true);
 		}
 	});
 }

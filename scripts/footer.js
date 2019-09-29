@@ -5,20 +5,10 @@
 function insert_footer()
 {
 	let delay = 100;
-
-	let extension = "";
-
-
-
-	if (supports_webp)
-	{
-		extension = "webp";
-	}
 	
-	else
-	{
-		extension = "jpg";
-	}
+	
+	
+	let extension = supports_webp ? "webp" : "jpg";
 	
 	
 	
@@ -286,7 +276,7 @@ function insert_footer()
 	
 	
 	
-	//If we restored a scroll position that was supposed to be in the footer, we aren't
+	//If we restored a scroll position that was supposed to be in the footer, we won't be able to properly restore that until now.
 	if (scroll > 0)
 	{
 		window.scrollTo(0, scroll);

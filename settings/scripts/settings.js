@@ -32,7 +32,7 @@
 		
 		else
 		{
-			document.querySelector("#apply-button").setAttribute("onclick", "redirect('" + decodeURIComponent(return_url) + "', false, false, false, true)");
+			document.querySelector("#apply-button").setAttribute("onclick", "redirect('" + decodeURIComponent(return_url) + "', false, false, true)");
 		}
 	}
 }()

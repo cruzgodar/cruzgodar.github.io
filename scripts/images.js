@@ -6,17 +6,8 @@ function insert_images()
 {
 	let images = document.querySelectorAll(".check-webp");
 	
-	let image_type = "";
 	
-	if (supports_webp)
-	{
-		image_type = "webp";
-	}
-	
-	else
-	{
-		image_type = "non-webp";
-	}
+	let image_type = supports_webp ? "webp" : "non-webp";
 	
 	
 	
@@ -82,7 +73,9 @@ function check_webp()
 		.catch(function(error)
 		{
 			console.error("Could not load Modernizr");
+			
 			supports_webp = false;
+			banner_extension = "jpg";
 			
 			resolve();
 		});

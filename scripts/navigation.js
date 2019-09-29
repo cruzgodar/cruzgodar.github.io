@@ -34,36 +34,51 @@ function set_links()
 {
 	let links = document.querySelectorAll("a");
 	
+	
+	
+	let vars_no_return = concat_url_vars(false);
+			
+	if (vars_no_return.indexOf("&") == -1)
+	{
+		vars_no_return = "";
+	}
+	
+	else
+	{
+		vars_no_return = vars_no_return.substring(vars_no_return.indexOf("&"));
+	}
+	
+	
+	
+	let vars_return = concat_url_vars(true);
+	
+	if (vars_return.indexOf("&") == -1)
+	{
+		vars_return = "";
+	}
+	
+	else
+	{
+		vars_return = vars_return.substring(vars_return.indexOf("&"));
+	}
+	
+	
+	
 	for (let i = 0; i < links.length; i++)
 	{
 		let href = links[i].getAttribute("href");
 		
 		if (href.slice(0, 5) != "https" && href.slice(0, 4) != "data" && !(links[i].parentNode.classList.contains("footer-image-link")))
 		{
-			let include_return_url = false;
-			
 			if (href == "/settings/settings.html")
 			{
-				include_return_url = true;
-			}
-			
-			
-			
-			let vars = concat_url_vars(include_return_url);
-			
-			if (vars.indexOf("&") == -1)
-			{
-				vars = "";
+				links[i].setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + vars_return);
 			}
 			
 			else
 			{
-				vars = vars.substring(vars.indexOf("&"));
+				links[i].setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + vars_no_return);
 			}
-			
-			
-			
-			links[i].setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + vars);
 		}
 	}
 }
@@ -100,23 +115,20 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 	parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
 	
 	
+	
+	//We need to record this in case we can't successfully load the next page and we need to return to the current one.
 	let background_color = document.documentElement.style.backgroundColor;
 	
-	document.documentElement.classList.remove("color-transition");
 	
 	
 	
 	
-	
-	//Get the new data and fade out the page. When both of those things are successfully done, replace the current html with the new stuff.
+	//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
 	Promise.all([fetch(url), fade_out(), load_banner()])
 	
 	
 	
-	.then(function(response)
-	{
-		return response[0].text();
-	})
+	.then(response => response[0].text())
 	
 	
 	
@@ -136,8 +148,6 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 		}
 		
 		
-		
-		add_banner_style();
 		
 		document.body.innerHTML = data;
 		
@@ -170,40 +180,40 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 		
 		
 		
-		if (background_color_changed)
+		setTimeout(function()
 		{
-			setTimeout(function()
+			if (background_color_changed == false)
 			{
-				document.documentElement.classList.add("background-transition");
-				document.body.classList.add("background-transition");
-				
-				document.documentElement.style.backgroundColor = background_color;
-				document.body.style.backgroundColor = background_color;
-				
+				document.documentElement.style.opacity = 1;
+			}
+			
+			
+			
+			else
+			{
 				setTimeout(function()
 				{
-					document.documentElement.classList.remove("background-transition");
-					document.body.classList.remove("background-transition");
+					document.documentElement.classList.add("background-transition");
+					document.body.classList.add("background-transition");
 					
-					document.body.style.backgroundColor = "";
+					document.documentElement.style.backgroundColor = background_color;
+					document.body.style.backgroundColor = background_color;
 					
 					setTimeout(function()
 					{
-						document.documentElement.style.opacity = 1;
-					}, 300);
+						document.documentElement.classList.remove("background-transition");
+						document.body.classList.remove("background-transition");
+						
+						document.body.style.backgroundColor = "";
+						
+						setTimeout(function()
+						{
+							document.documentElement.style.opacity = 1;
+						}, 300);
+					}, 450);
 				}, 450);
-			}, 750);
-		}
-		
-		
-		
-		else
-		{
-			setTimeout(function()
-			{
-				document.documentElement.style.opacity = 1;
-			}, 300);
-		}
+			}
+		}, 300);
 	});
 }
 
@@ -245,10 +255,17 @@ function fade_out()
 			//Fade out the current page's content.
 			document.documentElement.style.opacity = 0;
 			
-			//If necessary, take the time to fade back to the default background color, whatever that is.
-			if (background_color_changed)
+			setTimeout(function()
 			{
-				setTimeout(function()
+				if (background_color_changed == false)
+				{
+					resolve();
+				}
+				
+				
+				
+				//If necessary, take the time to fade back to the default background color, whatever that is.
+				else
 				{
 					document.documentElement.classList.add("background-transition");
 					document.body.classList.add("background-transition");
@@ -283,17 +300,8 @@ function fade_out()
 						
 						resolve();
 					}, 450);
-				}, 300);
-			}
-			
-			//Finally, redirect to the new page and fade the content back in.
-			else
-			{
-				setTimeout(function()
-				{
-					resolve();
-				}, 300);
-			}
+				}
+			}, 300);
 		}
 	});
 }
@@ -339,7 +347,7 @@ function on_page_unload()
 	
 	
 	
-	//Unbind everything transient from the window.
+	//Unbind everything transient from the window and the html element.
 	for (let key in temporary_handlers)
 	{
 		for (let j = 0; j < temporary_handlers[key].length; j++)

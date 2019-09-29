@@ -235,6 +235,8 @@ function set_up_aos()
 			aos_elements[i].id = "aos-section-" + current_section;
 		}
 		
+		
+		
 		else
 		{
 			if (aos_elements[i].getAttribute("data-aos-delay") !== null)
@@ -296,5 +298,106 @@ function typeset_math()
 	else
 	{
 		MathJax.typeset();
+	}
+}
+
+
+
+function set_img_button_contrast()
+{
+	let elements = document.querySelectorAll(".nav-button, .scroll-button");
+	
+	for (i = 0; i < elements.length; i++)
+	{
+		elements[i].setAttribute("src", elements[i].getAttribute("src").replace("chevron-left", "chevron-left-dark").replace("chevron-right", "chevron-right-dark").replace("chevron-down", "chevron-down-dark"));
+	}
+}
+
+
+
+function set_writing_page_font()
+{
+	set_element_styles(".body-text", "font-family", "'Gentium Book Basic', serif");
+}
+
+
+
+function set_writing_page_style()
+{
+	//This is a fancy way of saying ("section br").remove(), but it ensures that <br> tags in places like song lyrics won't get removed.
+	let elements = document.querySelectorAll("section div .body-text");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		//The next element might not exist, so we have to be careful.
+		try
+		{
+			let next_element = elements[i].parentNode.nextElementSibling;
+			
+			if (next_element.tagName.toLowerCase() == "br")
+			{
+				next_element.remove();
+			}
+		}
+		
+		catch(ex) {}
+	}
+	
+	
+	//Add an indent on every element except the first in the section.
+	elements = document.querySelectorAll("section div:not(:first-child) .body-text");
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].style.textIndent = "10pt";
+	}
+}
+
+
+
+function reduce_page_margins()
+{
+	try {document.querySelector("#ultrawide-margin-adjust").remove();}
+	catch(ex) {}
+	
+	
+	
+	//When in ultrawide mode, shrink the margins to 50%.
+	if (layout_string == "ultrawide")
+	{
+		let element = add_style(`
+			.body-text, #disqus_thread, .nav-buttons, .line-break
+			{
+				width: 50vw;
+			}
+		`, true);
+		
+		element.id = "ultrawide-margin-adjust";
+	}	
+}
+
+
+
+function remove_disqus()
+{
+	try
+	{
+		document.querySelector("#disqus_thread").previousElementSibling.remove();
+		document.querySelector("#disqus_thread").previousElementSibling.remove();
+		document.querySelector("#disqus_thread").previousElementSibling.remove();
+		document.querySelector("#disqus_thread").remove();
+	}
+	
+	catch(ex) {}
+}
+
+
+
+function remove_animation()
+{
+	let elements = document.body.querySelectorAll("[data-aos]")
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].removeAttribute("data-aos");
 	}
 }

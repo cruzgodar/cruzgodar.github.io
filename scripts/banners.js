@@ -90,7 +90,7 @@ function load_banner()
 			
 			let banner_name = "";
 			
-			if (window_width / window_height < 1 || window_width <= 700)
+			if (window_width / window_height < 1)
 			{
 				banner_name = "portrait." + banner_extension;
 			}
@@ -102,7 +102,6 @@ function load_banner()
 			
 				
 			
-			//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we remove the banner entirely.
 			banner_path = "";
 			
 			if (current_url != "/home/home.html")
@@ -119,6 +118,11 @@ function load_banner()
 			
 			
 			
+			add_banner_style();
+			
+			
+			
+			//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we remove the banner entirely.
 			fetch(banner_path + banner_name)
 			
 			.then(function(response)
@@ -141,6 +145,9 @@ function load_banner()
 				document.querySelector("#opacity-cover").remove();
 				document.querySelector("#banner-cover").remove();
 				
+				
+				
+				//Since all the elements have had their offsets changed dramatically, we need to update AOS.
 				AOS.init({duration: 1200, once: false, offset: window_height / 4});
 				
 				//We resolve here because the page can still be loaded without the banner.
@@ -154,14 +161,20 @@ function load_banner()
 
 function add_banner_style()
 {
-	add_style(`
+	//We can't just use the normal temporary style, since we're calling this before on_page_unload(). And we don't want to wait until after that, since then if the banner lags even a moment in displaying, it will already be partway through fade_in().
+	try {document.querySelector("#banner-style").remove();}
+	catch(ex) {}
+	
+	
+	
+	let element = add_style(`
 		#banner:before
 		{
 			background: url("${banner_path + "landscape." + banner_extension}") no-repeat center center;
 			background-size: cover;
 		}
 		
-		@media screen and (max-aspect-ratio: 1), (max-width: 700px)
+		@media screen and (max-aspect-ratio: 1)
 		{
 			#banner:before
 			{
@@ -169,7 +182,9 @@ function add_banner_style()
 				background-size: cover;
 			}
 		}
-	`, true);
+	`, false);
+	
+	element.id = "banner-style";
 }
 
 
@@ -196,7 +211,7 @@ function scroll_update(scroll_position_override)
 		{
 			if (scroll <= window_height)
 			{
-				let opacity = .5 - .5 * Math.sin(Math.PI * Math.max(1 - scroll / window_height, 0) - .5 * Math.PI);
+				let opacity = .5 - .5 * Math.sin(Math.PI * Math.max(1 - scroll / window_height, 0) - Math.PI / 2);
 				
 				try {document.querySelector("#opacity-cover").style.opacity = opacity;}
 				catch(ex) {}
@@ -226,7 +241,7 @@ function scroll_update(scroll_position_override)
 		
 		if (scroll <= window_height/3)
 		{
-			let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - .5 * Math.PI);
+			let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
 			
 			if (scroll_button_exists)
 			{
@@ -304,7 +319,7 @@ function scroll_update(scroll_position_override)
 
 function add_scroll_button()
 {
-	let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - .5 * Math.PI);
+	let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
 	
 	
 	
@@ -318,8 +333,9 @@ function add_scroll_button()
 			chevron_name += "-dark";
 		}
 		
-		//Gotta have a try block here in case the user loads a banner page then navigates to a non-banner page within 3 seconds.
 		
+		
+		//Gotta have a try block here in case the user loads a banner page then navigates to a non-banner page within 3 seconds.
 		try
 		{
 			if (url_vars["content_animation"] == 1)
