@@ -4,7 +4,7 @@
 
 ## Hosting
 
-cruzgodar\.com is hosted on Github Pages — when a repository is named [username].github.io, it can be accessed at that address as a website. The domain cruzgodar\.com was available through Google Domains, and to connect the two, a few things are required:
+cruzgodar\.com is hosted on Github Pages — when a repository is named [username].github.io, it can be accessed at that address as a website. The domain cruzgodar\.com is provided by Google Domains, and to connect the two, a few things are required:
 
 - A file called CNAME containing the lines `cruzgodar.com` and `www.cruzgodar.com` in the Github repo.
 - An @ record in Google Domains with type A containing the IPs of the service that Github Pages uses for encryption.
