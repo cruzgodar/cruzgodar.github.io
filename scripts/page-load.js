@@ -369,7 +369,7 @@ function reduce_page_margins()
 			{
 				width: 50vw;
 			}
-		`, true);
+		`);
 		
 		element.id = "ultrawide-margin-adjust";
 	}	

@@ -149,6 +149,11 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 		
 		
 		
+		try {document.querySelectorAll(".banner-style")[1].remove();}
+		catch(ex) {}
+		
+		
+		
 		document.body.innerHTML = data;
 		
 		

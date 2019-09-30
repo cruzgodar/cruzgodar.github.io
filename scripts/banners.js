@@ -161,12 +161,6 @@ function load_banner()
 
 function add_banner_style()
 {
-	//We can't just use the normal temporary style, since we're calling this before on_page_unload(). And we don't want to wait until after that, since then if the banner lags even a moment in displaying, it will already be partway through fade_in().
-	try {document.querySelector("#banner-style").remove();}
-	catch(ex) {}
-	
-	
-	
 	let element = add_style(`
 		#banner:before
 		{
@@ -182,9 +176,9 @@ function add_banner_style()
 				background-size: cover;
 			}
 		}
-	`, false);
+	`, false, true);
 	
-	element.id = "banner-style";
+	element.className = "banner-style";
 }
 
 

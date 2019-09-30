@@ -153,7 +153,7 @@ function load_script(src)
 
 
 //Adds a style tag to <head> with the given content. If temporary is true, it will be removed at the next page load. Returns the style element added.
-function add_style(content, temporary)
+function add_style(content, temporary = true, at_beginning_of_head = false)
 {
 	let element = document.createElement("style");
 	
@@ -164,7 +164,17 @@ function add_style(content, temporary)
 		element.classList.add("temporary-style");
 	}
 	
-	document.head.appendChild(element);
+	
+	
+	if (at_beginning_of_head)
+	{
+		document.head.insertBefore(element, document.head.firstChild);
+	}
+	
+	else
+	{
+		document.head.appendChild(element);
+	}
 	
 	
 	
