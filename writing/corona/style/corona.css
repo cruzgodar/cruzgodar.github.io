@@ -6,7 +6,7 @@ body
 
 #new-banner-cover
 {
-	height: 60vh;
+	height: 60vh !important;
 }
 
 .title-text
