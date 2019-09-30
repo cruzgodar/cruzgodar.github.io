@@ -28,9 +28,6 @@ page_settings =
 	"manual_banner": false,
 	"manual_dark_theme": false,
 	
-	"no_header": false,
-	"header_text": "",
-	
 	"no_footer": false,
 	"footer_exclusion": ""
 };
@@ -55,10 +52,6 @@ The `if` statement makes every page function as an entry point (see [the doc on 
 - `manual_banner`: if the page wants `banners.js` loaded, but it doesn't want `scroll_update()` to be run. This currently isn't used by any page.
 
 - `manual_dark_theme`: if the page is complicated enough that adding the dark theme styles will break it beyond repair. If this is true, the page must handle dark theme (and contrast) on its own.
-
-- `no_header`: if the header shouldn't spawn. Used on pages that have nonstandard headers, like the Corona and settings pages.
-
-- `header_text`: if the header is spawned, what the text should say. This mostly mirrors the page title, but it can differ.
 
 - `no_footer`: if the footer shouldn't spawn. Used on pages like settings.
 
