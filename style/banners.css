@@ -2,14 +2,14 @@
 
 
 
-#banner:before
+#banner
 {
-	content: "";
 	position: fixed;
-	left: 0;
-	top: 0;
 	width: 100vw;
 	height: 100vh;
+	
+	background: url("") no-repeat center center;
+	background-size: cover;
 	
 	/* Some magic that prevents the banner from abruptly resizing on mobile devices on which the size of the url bar changes on scroll. */
 	transform: translate3d(0, 0, 0);

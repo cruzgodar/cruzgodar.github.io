@@ -838,7 +838,7 @@ function switch_banner_style()
 		
 		
 		let element = add_style(`
-			.banner:before
+			.banner
 			{
 				position: absolute !important;
 			}

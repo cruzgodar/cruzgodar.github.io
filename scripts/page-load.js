@@ -186,6 +186,7 @@ function fade_in()
 {
 	if (page_settings["banner_page"])
 	{
+		document.querySelector("#banner").style.backgroundImage = "url(" + banner_path + banner_name + ")";
 		document.documentElement.style.opacity = 1;
 	}
 	

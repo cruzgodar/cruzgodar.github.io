@@ -48,6 +48,28 @@ function resize_update()
 	
 	
 	
+	let old_banner_name = banner_name;
+	
+	if (new_window_width / new_window_height < 1)
+	{
+		banner_name = "portrait." + banner_extension;
+	}
+	
+	else
+	{
+		banner_name = "landscape." + banner_extension;
+	}
+	
+	
+	
+	if (old_banner_name != banner_name)
+	{
+		try {document.querySelector("#banner").style.backgroundImage = "url(" + banner_path + banner_name + ")";}
+		catch(ex) {}
+	}
+	
+	
+	
 	//The banner opacity is the big sticking point, though. The solution is to increase the window height slowly and fire scroll events in rapid succession.
 	resize_time = 0;
 	

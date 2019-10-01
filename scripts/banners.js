@@ -4,10 +4,11 @@
 
 let scroll = 0;
 let banner_done = false;
-let banner_path = "";
 let scroll_button_done = false;
 
 let banner_extension = "";
+let banner_name = "";
+let banner_path = "";
 
 let scroll_button_exists = false;
 
@@ -88,8 +89,6 @@ function load_banner()
 			
 			
 			
-			let banner_name = "";
-			
 			if (window_width / window_height < 1)
 			{
 				banner_name = "portrait." + banner_extension;
@@ -118,10 +117,6 @@ function load_banner()
 			
 			
 			
-			add_banner_style();
-			
-			
-			
 			//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we remove the banner entirely.
 			fetch(banner_path + banner_name)
 			
@@ -136,7 +131,15 @@ function load_banner()
 					resolve();
 				};
 				
-				img.src = banner_path + banner_name;
+				img.style.display = "hidden";
+				img.style.opacity = 0;
+				
+				document.body.appendChild(img);
+				
+				setTimeout(function()
+				{
+					img.src = banner_path + banner_name;
+				}, 20);
 			})
 			
 			.catch(function(error)
@@ -155,30 +158,6 @@ function load_banner()
 			});
 		}
 	});
-}
-
-
-
-function add_banner_style()
-{
-	let element = add_style(`
-		#banner:before
-		{
-			background: url("${banner_path + "landscape." + banner_extension}") no-repeat center center;
-			background-size: cover;
-		}
-		
-		@media screen and (max-aspect-ratio: 1)
-		{
-			#banner:before
-			{
-				background: url("${banner_path + "portrait." + banner_extension}") no-repeat center center;
-				background-size: cover;
-			}
-		}
-	`, false, true);
-	
-	element.className = "banner-style";
 }
 
 
