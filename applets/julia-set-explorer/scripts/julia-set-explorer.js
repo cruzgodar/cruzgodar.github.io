@@ -139,7 +139,7 @@
 
 	function julia_row(i, a, b, julia_size, num_iters)
 	{
-		for (let j = 0; j < julia_size; j++)
+		for (let j = 0; j < julia_size + 1; j++)
 		{
 			let x = ((j - julia_size/2) / julia_size) * 4;
 			let y = (-(i - julia_size/2) / julia_size) * 4;
