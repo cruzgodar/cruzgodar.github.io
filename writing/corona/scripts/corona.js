@@ -289,6 +289,18 @@
 	
 	function adjust_for_settings()
 	{
+		//Meet the jankiest solution ever. Putting things in the style files puts them at the top of the head, so even though they have !important, they're before the settings style, which ALSO has to have !important. It's a garbage fire.
+		add_style(`
+			#floating-footer-gradient
+			{
+				background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%) !important;
+				background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%) !important;
+				background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%) !important;
+			}
+		`);
+		
+		
+		
 		if (url_vars["contrast"] == 1)
 		{
 			set_element_styles(".synopsis-text", "color", "rgb(192, 192, 192)");
