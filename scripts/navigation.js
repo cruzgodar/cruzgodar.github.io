@@ -124,7 +124,9 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 	
 	
 	//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-	Promise.all([fetch(url), fade_out(), load_banner()])
+	
+	//A note: we append a random string to the end of the url to prevent browser caching, which can all too often cause problems. However, this is only done for the raw HTML files, not anything larger like images, so it doesn't consume too much of the user's data.
+	Promise.all([fetch(url + "?=" + Math.floor(Math.random() * 1000000)), fade_out(), load_banner()])
 	
 	
 	
