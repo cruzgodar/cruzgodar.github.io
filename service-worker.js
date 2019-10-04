@@ -1,4 +1,4 @@
-var CACHE_NAME = "v2";
+var CACHE_NAME = "static-cache";
 var urlsToCache =
 [
     "./",
@@ -45,7 +45,7 @@ self.addEventListener("fetch", function(event)
 
 function fetchAndCache(url)
 {
-    return fetch(url + "?v=" + Math.floor(Math.random() * 1000000))
+    return fetch(url)
     
     
     
@@ -58,16 +58,6 @@ function fetchAndCache(url)
         }
         
         return response;
-    })
-    
-    
-    
-    .then(function(response)
-    {
-        let new_headers = new Headers(response.headers);
-        new_headers.append("max-age", "86400"); //Only keep this resource cached for a day.
-        
-        return new Response(response.body, {status: response.status, statusText: response.statusText, headers: new_headers});
     })
     
     
