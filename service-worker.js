@@ -45,7 +45,7 @@ self.addEventListener("fetch", function(event)
 
 function fetchAndCache(url)
 {
-    return fetch(url)
+    return fetch(url + "?=" + Math.floor(Math.random() * 1000000))
     
     .then(function(response)
     {
@@ -66,7 +66,6 @@ function fetchAndCache(url)
     
     .catch(function(error)
     {
-        console.log('Request failed:', error);
-        //You could return a custom offline 404 page here
+        console.log("Request failed: ", error);
     });
 }
