@@ -270,6 +270,22 @@ function set_up_aos()
 			aos_elements[i].setAttribute("data-aos-anchor", "#aos-section-" + current_section);
 		}
 	}
+	
+	
+	
+	//Force a reflow so that the anchors' positions are recorded properly.
+	setTimeout(function()
+	{
+		for (let i = 0; i < aos_elements.length; i++)
+		{
+			//We need to actually have a function here to trigger a reflow.
+			console.log(aos_elements[i].offsetHeight);
+		}
+		
+		AOS.refreshHard();
+	
+	//We can afford to wait so long because it's unlikely the user is going to load section 2 within a second of loading the page.
+	}, 1000);
 }
 
 
