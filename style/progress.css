@@ -20,7 +20,7 @@
 	height: 5vw;
 	
 	border: 2px solid rgb(152, 152, 152);
-	border-radius: 7px;
+	border-radius: 10%;
 	padding: 2px;
 }
 
@@ -32,7 +32,7 @@
 	position: relative;
 	display: block;
 	
-	border-radius: 3px;
+	border-radius: calc(10% - 2px);
 	
 	background-color: rgb(152, 152, 152);
 	overflow: hidden;
