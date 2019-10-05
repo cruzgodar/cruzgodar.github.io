@@ -40,12 +40,12 @@ body
 
 .text-button
 {
-	transition: filter .15s ease-in-out, color .6s ease, border-color .6s ease;
+	transition: filter .15s ease-in-out, color .6s ease, border-color .6s ease !important;
 }
 
 .footer-button
 {
-	transition: filter .15s ease-in-out, border-color .6s ease;
+	transition: filter .15s ease-in-out, border-color .6s ease !important;
 }
 
 
