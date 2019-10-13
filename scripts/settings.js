@@ -572,7 +572,7 @@ function switch_text_size()
 					font-size: 18px;
 				}
 				
-				@media screen and (min-width: 1000px)
+				@media (min-width: 1000px)
 				{
 					html
 					{

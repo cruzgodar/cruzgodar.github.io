@@ -106,7 +106,7 @@
 
 
 /* Compact layout: fit the images to the correct margins. */
-@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
+@media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	.song-lyrics
 	{
@@ -152,7 +152,7 @@
 
 
 /* Ultrawide layout: tone down the height of the images so that they don't fill the whole screen. */
-@media screen and (min-aspect-ratio: 16/9), (min-width: 1400px)
+@media (min-aspect-ratio: 16/9), (min-width: 1400px)
 {
 	.big-image-horizontal
 	{

@@ -193,7 +193,7 @@ function fade_in()
 				background-size: cover;
 			}
 			
-			@media screen and (max-aspect-ratio: 1)
+			@media (max-aspect-ratio: 1/1)
 			{
 				#banner
 				{

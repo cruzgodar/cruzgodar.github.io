@@ -328,7 +328,7 @@ img
 
 
 
-@media screen and (min-width: 1000px)
+@media (min-width: 1000px)
 {
 	html
 	{
@@ -339,7 +339,7 @@ img
 
 
 /* Compact layout: reduce margins. */
-@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
+@media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	.heading-text, .section-text, .body-text, .date-text
 	{

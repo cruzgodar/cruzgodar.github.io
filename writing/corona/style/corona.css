@@ -108,7 +108,7 @@ body
 
 
 
-@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
+@media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	/* Make text have smaller margins so justifying doesn't look ugly. */
 	.synopsis-text
@@ -136,7 +136,7 @@ body
 
 
 
-@media screen and (min-aspect-ratio: 16/9), (min-width: 1400px)
+@media (min-aspect-ratio: 16/9), (min-width: 1400px)
 {
 	.stage-bubbles
 	{

@@ -75,7 +75,7 @@
 
 
 /* Compact layout: stack the quote columns on top of one another. */
-@media screen and (max-aspect-ratio: 9/16), (max-width: 700px)
+@media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	.quote-container
 	{
@@ -99,7 +99,7 @@
 
 
 /* Ultrawide layout: increase quote margins a little */
-@media screen and (min-aspect-ratio: 16/9), (min-width: 1400px)
+@media (min-aspect-ratio: 16/9), (min-width: 1400px)
 {
 	#newest-pages
 	{
