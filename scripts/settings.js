@@ -838,12 +838,12 @@ function switch_banner_style()
 		
 		
 		let element = add_style(`
-			.banner
+			#banner
 			{
 				position: absolute !important;
 			}
 			
-			.banner:after
+			#banner:after
 			{
 				content: "";
 				position: absolute;
