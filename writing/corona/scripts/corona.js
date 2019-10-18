@@ -19,7 +19,7 @@
 	
 	
 	
-	adjust_for_settings();
+	setTimeout(adjust_for_settings, 500);
 	
 	
 	
