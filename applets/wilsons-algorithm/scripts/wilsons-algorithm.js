@@ -35,7 +35,7 @@
 		
 		else
 		{
-			ctx.fillStyle = "rgb(255, 0, 0)";
+			ctx.fillStyle = "rgb(0, 0, 0)";
 		}
 		
 		ctx.fillRect(e.data[0], e.data[1], e.data[2], e.data[3]);

@@ -92,7 +92,7 @@ function wilson_step(grid_size)
 	setTimeout(function()
 	{
 		wilson_step(grid_size);
-	}, 1000);
+	}, 8);
 }
 
 
@@ -198,7 +198,10 @@ function random_walk_step()
 				draw_line(new_vertices[i][1], new_vertices[i][0], new_vertices[i + 1][1], new_vertices[i + 1][0], 0);
 			}
 			
-			postMessage([new_vertices[revert_index][1], new_vertices[revert_index][0], 1, 1, 0]);
+			
+			
+			current_row = new_vertices[revert_index][0];
+			current_column = new_vertices[revert_index][1];
 			
 			
 			
@@ -210,7 +213,7 @@ function random_walk_step()
 			//Send back the parameters that should be given to ctx.fillRect.
 			let index = new_vertices.length - 1;
 			
-			if (index > 0)
+			if (index >= 0)
 			{
 				draw_line(new_vertices[index][1], new_vertices[index][0], current_column, current_row, 1);
 			}
@@ -227,7 +230,7 @@ function random_walk_step()
 		}
 		
 		
-		for (let i = 0; i < 1000000; i++) {}
+		for (let i = 0; i < 50000000; i++) {}
 		
 		
 		random_walk_step();
