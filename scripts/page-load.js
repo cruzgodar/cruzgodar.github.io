@@ -279,7 +279,7 @@ function set_up_aos()
 		for (let i = 0; i < aos_elements.length; i++)
 		{
 			//We need to actually have a function here to trigger a reflow.
-			console.log(aos_elements[i].offsetHeight);
+			void(aos_elements[i].offsetHeight);
 		}
 		
 		AOS.refreshHard();
