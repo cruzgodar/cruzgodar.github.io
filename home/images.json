@@ -47,6 +47,14 @@
 		"non-webp": "../about/cover.jpg"
 	},
 	
+	
+	
+	"image-wilsons-algorithm":
+	{
+		"webp": "../applets/wilsons-algorithm/cover.webp",
+		"non-webp": "../applets/wilsons-algorithm/cover.jpg"
+	},
+	
 	"image-mandelbrot-set-explorer":
 	{
 		"webp": "../applets/mandelbrot-set-explorer/cover.webp",
@@ -57,11 +65,5 @@
 	{
 		"webp": "../writing/desolation-point/cover.webp",
 		"non-webp": "../writing/desolation-point/cover.jpg"
-	},
-	
-	"image-julia-set-explorer":
-	{
-		"webp": "../applets/julia-set-explorer/cover.webp",
-		"non-webp": "../applets/julia-set-explorer/cover.jpg"
 	}
 }

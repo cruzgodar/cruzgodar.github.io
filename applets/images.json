@@ -1,4 +1,10 @@
 {
+	"image-wilsons-algorithm":
+	{
+		"webp": "wilsons-algorithm/cover.webp",
+		"non-webp": "wilsons-algorithm/cover.jpg"
+	},
+	
 	"image-mandelbrot-set-explorer":
 	{
 		"webp": "mandelbrot-set-explorer/cover.webp",

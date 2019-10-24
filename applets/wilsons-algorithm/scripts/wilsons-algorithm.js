@@ -26,19 +26,19 @@
 		web_worker = new Worker("/applets/wilsons-algorithm/scripts/worker.min.js");
 	}
 	
+	
+	
 	web_worker.onmessage = function(e)
 	{
-		if (e.data[4] == 1)
+		if (e.data[0] === "done")
 		{
-			ctx.fillStyle = "rgb(255, 255, 255)";
+			prepare_download();
 		}
 		
 		else
 		{
-			ctx.fillStyle = "rgb(0, 0, 0)";
+			ctx.fillRect(e.data[0], e.data[1], e.data[2], e.data[3]);
 		}
-		
-		ctx.fillRect(e.data[0], e.data[1], e.data[2], e.data[3]);
 	}
 	
 	
@@ -59,9 +59,42 @@
 		ctx.fillStyle = "rgb(0, 0, 0)";
 		ctx.fillRect(0, 0, 2 * grid_size + 1, 2 * grid_size + 1);
 		
+		ctx.fillStyle = "rgb(255, 255, 255)";
+		
 		
 		
 		web_worker.postMessage([grid_size]);
+	}
+	
+	
+	
+	function prepare_download()
+	{
+		try
+		{
+			document.querySelector("#download-button").style.classList.add("animated-opacity");
+			document.querySelector("#download-button").style.opacity = 0;
+		}
+		
+		catch(ex) {}
+		
+		setTimeout(function()
+		{
+			try {document.querySelector("#download-button").remove();}
+			catch(ex) {}
+			
+			let image_data = document.querySelector("#grid-graph").toDataURL();
+			
+			
+			
+			document.querySelector("#download-location").insertAdjacentHTML("afterend", `
+				<div id="download-button" class="animated-opacity" data-aos="zoom-out">
+					<a href="${image_data}" download="wilson.png" class="real-link">
+						<button class="text-button" type="button" onclick="">Download Image</button>
+					</a>
+				</div>
+			`);
+		}, 300);
 	}
 
 

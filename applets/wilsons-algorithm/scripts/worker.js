@@ -19,7 +19,7 @@ let current_column = null;
 
 
 
-function draw_wilson_graph(grid_size)
+async function draw_wilson_graph(grid_size)
 {
 	edges_in_tree = [];
 	
@@ -43,64 +43,72 @@ function draw_wilson_graph(grid_size)
 	
 	
 	
-	wilson_step(grid_size);
+	while (vertices_not_in_tree.length > 0)
+	{
+		await wilson_step(grid_size);
+	}
+	
+	
+	
+	postMessage(["done"]);
 }
 
 
 
 function wilson_step(grid_size)
 {
-	new_vertices = [];
-	
-	
-	
-	//Pick a random vertex not in the graph.
-	let new_index = Math.floor(Math.random() * vertices_not_in_tree.length);
-	
-	new_vertices.push(vertices_not_in_tree[new_index]);
-	
-	
-	
-	//Now perform a loop-erased random walk starting from this vertex until we hit the tree.
-	
-	current_row = new_vertices[0][0];
-	current_column = new_vertices[0][1];
-	
-	
-	
-	random_walk_step();
-	
-	
-	
-	//Once we leave that recursion, new_vertices is full of a loop-erased random walk that ends at a point on the tree. Now we can add all the vertices and edges.
-	for (let i = 0; i < new_vertices.length - 1; i++)
+	//We need a promise so that we can have this function actually take time to run.
+	return new Promise(async function(resolve, reject)
 	{
-		let pop_index = vertex_in_array(new_vertices[i], vertices_not_in_tree);
-		vertices_not_in_tree.splice(pop_index, 1);
+		new_vertices = [];
 		
-		edges_in_tree.push([new_vertices[i], new_vertices[i + 1]]);
-	}
-	
-	
-	
-	//If there are still vertices to add, then keep adding them. Otherwise, we're done.
-	if (vertices_not_in_tree.length == 0)
-	{
-		return;
-	}
-	
-	setTimeout(function()
-	{
-		wilson_step(grid_size);
-	}, 8);
+		
+		
+		//Pick a random vertex not in the graph.
+		let new_index = Math.floor(Math.random() * vertices_not_in_tree.length);
+		
+		new_vertices.push(vertices_not_in_tree[new_index]);
+		
+		
+		
+		//Now perform a loop-erased random walk starting from this vertex until we hit the tree.
+		current_row = new_vertices[0][0];
+		current_column = new_vertices[0][1];
+		
+		random_walk();
+		
+		
+		
+		//Draw this walk.
+		for (let i = 0; i < new_vertices.length - 1; i++)
+		{
+			await draw_line(new_vertices[i][1], new_vertices[i][0], new_vertices[i + 1][1], new_vertices[i + 1][0], 8);
+		}
+		
+		
+		
+		//Once we leave that recursion, new_vertices is full of a loop-erased random walk that ends at a point on the tree. Now we can add all the vertices and edges.
+		for (let i = 0; i < new_vertices.length - 1; i++)
+		{
+			let pop_index = vertex_in_array(new_vertices[i], vertices_not_in_tree);
+			vertices_not_in_tree.splice(pop_index, 1);
+			
+			edges_in_tree.push([new_vertices[i], new_vertices[i + 1]]);
+		}
+		
+		
+		
+		resolve();
+	});
 }
 
 
 
-function random_walk_step()
+function random_walk()
 {
-	//return new Promise(function(resolve, reject)
-	
+	//Go until we hit the tree.
+	while (vertex_in_array([current_row, current_column], vertices_not_in_tree) != -1)
+	{
 		//Move either up, left, down, or right. 0 = up, 1 = left, 2 = down, and 3 = right.
 			
 		let possible_directions = [];
@@ -192,81 +200,46 @@ function random_walk_step()
 		
 		if (revert_index != -1)
 		{
-			//Erase this part of the walk from the graph.
-			for (let i = revert_index; i < new_vertices.length - 1; i++)
-			{
-				draw_line(new_vertices[i][1], new_vertices[i][0], new_vertices[i + 1][1], new_vertices[i + 1][0], 0);
-			}
-			
-			
-			
 			current_row = new_vertices[revert_index][0];
 			current_column = new_vertices[revert_index][1];
-			
-			
 			
 			new_vertices = new_vertices.slice(0, revert_index + 1);
 		}
 		
 		else
 		{
-			//Send back the parameters that should be given to ctx.fillRect.
-			let index = new_vertices.length - 1;
-			
-			if (index >= 0)
-			{
-				draw_line(new_vertices[index][1], new_vertices[index][0], current_column, current_row, 1);
-			}
-			
 			new_vertices.push([current_row, current_column]);
 		}
 		
-		
-		
-		//If we hit the tree, we're done.
-		if (vertex_in_array([current_row, current_column], vertices_not_in_tree) == -1)
-		{
-			return;
-		}
-		
-		
-		for (let i = 0; i < 50000000; i++) {}
-		
-		
-		random_walk_step();
-		
-		
-		/*
-		setTimeout(async function()
-		{
-			//await random_walk_step();
-			
-			resolve();
-		}, 5);
-		
-		resolve();
-	}); */
+	}
 }
 
 
 
-function draw_line(x_1, y_1, x_2, y_2, color)
+function draw_line(x_1, y_1, x_2, y_2, delay)
 {
-	if (x_1 == x_2)
+	return new Promise(function(resolve, reject)
 	{
-		let x = x_1;
-		let y = Math.min(y_1, y_2);
+		if (x_1 == x_2)
+		{
+			let x = x_1;
+			let y = Math.min(y_1, y_2);
+			
+			postMessage([2 * x + 1, 2 * y + 1, 1, 3]);
+		}
 		
-		postMessage([2 * x + 1, 2 * y + 1, 1, 3, color]);
-	}
-	
-	else
-	{
-		let x = Math.min(x_1, x_2);
-		let y = y_1;
+		else
+		{
+			let x = Math.min(x_1, x_2);
+			let y = y_1;
+			
+			postMessage([2 * x + 1, 2 * y + 1, 3, 1]);
+		}
 		
-		postMessage([2 * x + 1, 2 * y + 1, 3, 1, color]);
-	}
+		
+		
+		setTimeout(resolve, delay);
+	});
 }
 
 
