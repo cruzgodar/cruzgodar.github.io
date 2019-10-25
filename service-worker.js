@@ -10,7 +10,7 @@ if (workbox)
 //For non-image files, we go to the latest version on the network by default. If that's not available, then we look to the cache.
 workbox.routing.registerRoute(
 	/\.(?:html|js|css|json|xml|txt|pdf|tex|zip)$/,
-	new workbox.strategies.NetworkFirst({
+	new workbox.strategies.StaleWhileRevalidate({
 		cacheName: "main-cache",
 		plugins: [
 			new workbox.expiration.Plugin({
