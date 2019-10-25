@@ -22,7 +22,7 @@ workbox.routing.registerRoute(
 				
 				purgeOnQuotaError: true
 			})
-		],
+		]
 	})
 );
 
@@ -43,6 +43,6 @@ workbox.routing.registerRoute(
 				
 				purgeOnQuotaError: true
 			})
-		],
+		]
 	})
 );
