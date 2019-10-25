@@ -69,7 +69,7 @@
 		
 		<div class="center-content">
 			<div style="width: 20vw" data-aos="fade-up">
-				<input id="dim-input" class="text-box" type="text" style="width: 100%">
+				<input id="dim-input" class="text-box" type="text" value="1000" style="width: 100%">
 				<label for="dim-input">
 					<p class="body-text">Image Size</p>
 				</label>
@@ -90,7 +90,13 @@
 			<canvas id="high-res-mandelbrot-zoom" data-aos="fade-in" data-aos-delay="1200"></canvas>
 		</div>
 		
-		<div id="download-location" style="height: 10vh"></div>
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content">
+			<div data-aos="zoom-out" data-aos-delay="1700">
+				<button class="text-button" type="button" id="download-button">Download Image</button>
+			</div>
+		</div>
 	</section>
 </main>
 

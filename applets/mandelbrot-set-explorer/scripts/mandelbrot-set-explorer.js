@@ -45,6 +45,9 @@
 
 
 	document.querySelector("#generate-button").addEventListener("click", draw_high_res_mandelbrot_zoom);
+	document.querySelector("#download-button").addEventListener("click", prepare_download);
+	
+	
 
 	window.addEventListener("resize", mandelbrot_zoom_resize);
 	temporary_handlers["resize"].push(mandelbrot_zoom_resize);
@@ -224,30 +227,9 @@
 
 
 
-	function prepare_download(center_x, center_y)
+	function prepare_download()
 	{
-		try {document.querySelector("#download-button").style.opacity = 0;}
-		catch(ex) {}
-		
-		setTimeout(function()
-		{
-			try {document.querySelector("#download-button").remove();}
-			catch(ex) {}
-			
-			let image_data = document.querySelector("#high-res-mandelbrot-zoom").toDataURL();
-			
-			
-			
-			document.querySelector("#download-location").insertAdjacentHTML("afterend", `
-				<div id="download-button" class="animated-opacity">
-					<a href="${image_data}" download="Mandelbrot Zoom.png" class="real-link">
-						<button class="text-button" type="button" onclick="">Download Image</button>
-					</a>
-				</div>
-			`);
-			
-			document.querySelector("#download-button").style.opacity = 1;
-		}, 300);
+		window.open(document.querySelector("#high-res-mandelbrot-zoom").toDataURL(), "_blank");
 	}
 
 

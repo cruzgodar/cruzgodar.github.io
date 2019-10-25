@@ -27,17 +27,6 @@
 
 
 
-#download-button
-{
-	display: flex;
-	justify-content: center;
-	opacity: 0;
-	width: 70vw;
-	margin: 0 auto;
-}
-
-
-
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	#container

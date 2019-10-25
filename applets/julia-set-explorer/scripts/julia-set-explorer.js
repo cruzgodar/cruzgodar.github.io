@@ -25,6 +25,7 @@
 
 
 	document.querySelector("#generate-button").addEventListener("click", draw_high_res_julia);
+	document.querySelector("#download-button").addEventListener("click", prepare_download);
 
 
 
@@ -179,62 +180,9 @@
 
 
 
-	function prepare_download(a, b)
+	function prepare_download()
 	{
-		try {document.querySelector("#download-button").style.opacity = 0;}
-		catch(ex) {}
-		
-		setTimeout(function()
-		{
-			try {document.querySelector("#download-button").remove();}
-			catch(ex) {}
-			
-			let image_data = document.querySelector("#high-res-julia-set").toDataURL();
-			
-			
-			
-			let filename = "";
-			
-			if (a != 0)
-			{
-				filename = document.querySelector("#a-input").value;
-				
-				if (b > 0)
-				{
-					filename += " + " + document.querySelector("#b-input").value + "i";
-				}
-				
-				else if (b < 0)
-				{
-					filename += " - " + document.querySelector("#b-input").value.substr(1) + "i";
-				}
-			}
-			
-			else
-			{
-				if (b != 0)
-				{
-					filename = document.querySelector("#b-input").value + "i";
-				}
-				
-				else
-				{
-					filename = "0";
-				}
-			}
-			
-			
-			
-			document.querySelector("#download-location").insertAdjacentHTML("afterend", `
-				<div id="download-button" class="animated-opacity">
-					<a href="${image_data}" download="${filename}.png" class="real-link">
-						<button class="text-button" type="button" onclick="">Download Image</button>
-					</a>
-				</div>
-			`);
-			
-			document.querySelector("#download-button").style.opacity = 1;
-		}, 300);
+		window.open(document.querySelector("#high-res-julia-set").toDataURL(), "_blank");
 	}
 
 

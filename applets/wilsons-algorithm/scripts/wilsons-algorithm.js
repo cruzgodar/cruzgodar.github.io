@@ -31,17 +31,9 @@
 	
 	web_worker.onmessage = function(e)
 	{
-		if (e.data[0] === "done")
-		{
-			prepare_download();
-		}
+		ctx.fillStyle = e.data[4];
 		
-		else
-		{
-			ctx.fillStyle = e.data[4];
-			
-			ctx.fillRect(e.data[0], e.data[1], e.data[2], e.data[3]);
-		}
+		ctx.fillRect(e.data[0], e.data[1], e.data[2], e.data[3]);
 	}
 	
 	
