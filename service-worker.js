@@ -52,7 +52,7 @@ workbox.routing.registerRoute(
 //This is all well and good, but it won't cache things loaded using fetch(). Therefore, we need to do that manually.
 self.addEventListener("fetch", function(event)
 {
-	if (event.request.test(/\.(?:webp|png|jpg|jpeg|gif)$/))
+	if (/\.(?:webp|png|jpg|jpeg|gif)$/.test(event.request))
 	{
 		caches.open("image-cache").then(function(cache)
 		{
