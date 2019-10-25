@@ -29,8 +29,24 @@
 <main>
 	<section>
 		<div data-aos="fade-up">
-			<p class="body-text center-if-needed">
-				<span>Wilson&#x2019;s algorithm is a method to generate mazes. Given something called a <dfn>graph</dfn> &mdash; here, a square grid of points &mdash; it will produce what&#x2019;s called a <dfn>spanning tree</dfn>: a way to connect the points so that every point connects to every other, but without any loops. What&#x2019;s more, it creates every possible spanning tree with equal probability &mdash; essentially, the one it picks is random. Wilson&#x2019;s algorithm is the fastest known way to do this, and it&#x2019;s a beautiful thing to watch.</span>
+			<p class="body-text">
+				<span>Wilson&#x2019;s algorithm is a method to generate mazes. Given something called a <dfn>graph</dfn> &mdash; here, a square grid of points &mdash; it will produce what&#x2019;s called a <dfn>spanning tree</dfn>: a way to connect the points so that every point connects to every other, but without any loops. What&#x2019;s more, it creates every possible spanning tree with equal probability &mdash; essentially, the one it picks is random. Wilson&#x2019;s algorithm is the fastest known way to do this, and it&#x2019;s a wonderful thing to watch.</span>
+			</p>
+		</div>
+		
+		<br>
+		
+		<div data-aos="fade-up">
+			<p class="body-text">
+				<span>First, a random point \((x_0, y_0)\) in the grid is chosen. Then, starting from another random point, a <dfn>loop-erased random walk</dfn> is performed: repeatedly moving up, left, down, or right, ignoring any loops that appear, until \((x_0, y_0)\) is reached. This path is then drawn in white on the canvas below. For the next step, another random black point is chosen and a random walk begins from there, continuing until it hits any white point. This method is repeated until every point is white.</span>
+			</p>
+		</div>
+		
+		<br>
+		
+		<div data-aos="fade-up">
+			<p class="body-text">
+				<span>Once the graph is complete, it&#x2019;s filled with color, starting from the center. This isn&#x2019; part of Wilson&#x2019;s algorithm, but it provides a beautiful visualization of how places in the maze that may appear close can really be far apart.</span>
 			</p>
 		</div>
 		
@@ -48,7 +64,7 @@
 		<div style="height: 5vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="800">
+			<div data-aos="zoom-out" data-aos-delay="1000">
 				<button class="text-button" type="button" id="generate-button">Generate</button>
 			</div>
 		</div>
@@ -56,10 +72,16 @@
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<canvas id="grid-graph" data-aos="fade-in" data-aos-delay="1400"></canvas>
+			<canvas id="grid-graph" data-aos="fade-in" data-aos-delay="1500"></canvas>
 		</div>
 		
-		<div id="download-location" style="height: 10vh"></div>
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content">
+			<div data-aos="zoom-out" data-aos-delay="1000">
+				<button class="text-button" type="button" id="download-button">Download Image</button>
+			</div>
+		</div>
 	</section>
 </main>
 
@@ -81,7 +103,7 @@
 	
 	page_settings = 
 	{
-		"title": "Wilson&#2019;s Algorithm",
+		"title": "Wilson&#x2019;s Algorithm",
 		
 		"banner_page": false,
 		"writing_page": false,

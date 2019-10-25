@@ -18,13 +18,3 @@
 	display: flex;
 	justify-content: space-between;
 }
-
-
-
-#download-button
-{
-	display: flex;
-	justify-content: center;
-	width: 70vw;
-	margin: 0 auto;
-}
