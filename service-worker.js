@@ -6,11 +6,6 @@ if (workbox)
 }
 
 
-//By default, go directly to the network. We want the latest versions of everything.
-workbox.routing.registerRoute(
-	/.+/,
-	new workbox.strategies.NetworkFirst()
-);
 
 //For image files, though, we'll cache them for a week. It's not as important to have the latest versions, and they are by far the biggest use of the network.
 workbox.routing.registerRoute(
