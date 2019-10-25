@@ -46,3 +46,57 @@ workbox.routing.registerRoute(
 		]
 	})
 );
+
+
+
+//This is all well and good, but it won't cache things loaded using fetch(). Therefore, we need to do that manually.
+self.addEventListener("fetch", function(event)
+{
+	if (event.request.test(/\.(?:webp|png|jpg|jpeg|gif)$/))
+	{
+		caches.open("image-cache").then(function(cache)
+		{
+			cache.match(event.request)
+			
+			.then(function(response)
+			{
+				if (!response)
+				{
+					fetch(event.request)
+					
+					.then(function(response)
+					{
+						if (response.ok)
+						{
+							cache.put(event.request, response.clone());
+						}
+					});
+				}
+			});
+		});
+	}
+	
+	else
+	{
+		caches.open("main-cache").then(function(cache)
+		{
+			cache.match(event.request)
+			
+			.then(function(response)
+			{
+				if (!response)
+				{
+					fetch(event.request)
+					
+					.then(function(response)
+					{
+						if (response.ok)
+						{
+							cache.put(event.request, response.clone());
+						}
+					});
+				}
+			});
+		});
+	}
+});
