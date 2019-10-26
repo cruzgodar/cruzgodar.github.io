@@ -3,7 +3,7 @@
 	let small_canvas_size = document.querySelector("#mandelbrot-zoom").offsetWidth;
 	let large_canvas_size = document.querySelector("#high-res-mandelbrot-zoom").offsetWidth;
 
-	let small_mandelbrot_zoom_size = 75;
+	let small_mandelbrot_zoom_size = 100;
 	let large_mandelbrot_zoom_size = 500;
 
 	let small_mandelbrot_zoom_iterations = 50;
@@ -147,17 +147,34 @@
 			max_brightness = brightness_array[Math.round(brightness_array.length * .9999) - 1];
 		}
 		
+		
+		
+		for (let i = 0; i < mandelbrot_zoom_size; i++)
+		{		
+			image[i] = image[i].map(brightness => (brightness / max_brightness) * 255);
+		}
+		
+		
+		
+		//Copy this array into the canvas like an image.
+		let img_data = ctx.getImageData(0, 0, mandelbrot_zoom_size, mandelbrot_zoom_size);
+		let data = img_data.data;
+		
 		for (let i = 0; i < mandelbrot_zoom_size; i++)
 		{
 			for (let j = 0; j < mandelbrot_zoom_size; j++)
 			{
-				image[i][j] = (image[i][j] / max_brightness) * 255;
-				ctx.fillStyle = "rgb(" + 0 + "," + image[i][j] + "," + image[i][j] + ")";
-				ctx.fillRect(j, i, 1, 1);
+				//The index in the array of rgba values
+				let index = (4 * i * mandelbrot_zoom_size) + (4 * j);
+				
+				data[index] = 0;
+				data[index + 1] = image[i][j];
+				data[index + 2] = image[i][j];
+				data[index + 3] = 255; //No transparency.
 			}
 		}
 		
-		ctx.scale(canvas_size / mandelbrot_zoom_size, canvas_size / mandelbrot_zoom_size);
+		ctx.putImageData(img_data, 0, 0);
 		
 		
 		

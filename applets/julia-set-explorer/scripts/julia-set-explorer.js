@@ -3,16 +3,14 @@
 	let small_canvas_size = 0;
 	let large_canvas_size = 0;
 
-	let small_julia_size = 75;
+	let small_julia_size = 100;
 	let large_julia_size = 500;
 
 	let small_julia_iterations = 25;
 	let large_julia_iterations = 50;
-	let full_res_julia_iterations = 100;
+	let full_res_julia_iterations = 200;
 
 	let image = [];
-
-	let mandelbrot_position = {left: 0, top: 0};
 
 	let persist_image = false;
 
@@ -116,15 +114,34 @@
 			max_brightness = brightness_array[Math.round(brightness_array.length * .9999) - 1];
 		}
 		
+		
+		
+		for (let i = 0; i < julia_size; i++)
+		{		
+			image[i] = image[i].map(brightness => (brightness / max_brightness) * 255);
+		}
+		
+		
+		
+		//Copy this array into the canvas like an image.
+		let img_data = ctx.getImageData(0, 0, julia_size, julia_size);
+		let data = img_data.data;
+		
 		for (let i = 0; i < julia_size; i++)
 		{
 			for (let j = 0; j < julia_size; j++)
 			{
-				image[i][j] = (image[i][j] / max_brightness) * 255;
-				ctx.fillStyle = "rgb(" + 0 + "," + image[i][j] + "," + image[i][j] + ")";
-				ctx.fillRect(j, i, 1, 1);
+				//The index in the array of rgba values
+				let index = (4 * i * julia_size) + (4 * j);
+				
+				data[index] = 0;
+				data[index + 1] = image[i][j];
+				data[index + 2] = image[i][j];
+				data[index + 3] = 255; //No transparency.
 			}
 		}
+		
+		ctx.putImageData(img_data, 0, 0);
 	}
 
 
