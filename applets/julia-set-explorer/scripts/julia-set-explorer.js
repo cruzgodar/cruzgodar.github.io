@@ -125,15 +125,6 @@
 				ctx.fillRect(j, i, 1, 1);
 			}
 		}
-		
-		ctx.scale(canvas_size / julia_size, canvas_size / julia_size);
-		
-		
-		
-		if (download)
-		{
-			prepare_download(a, b);
-		}
 	}
 
 
@@ -251,7 +242,6 @@
 			
 			document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
 			document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
-			document.querySelector("#dim-input").value = 1000;
 			
 			persist_image = true;
 		});
@@ -311,7 +301,6 @@
 			
 			document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
 			document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
-			document.querySelector("#dim-input").value = 1000;
 		}, false);
 	}
 

@@ -173,13 +173,6 @@
 			temp_anchor_x = center_x;
 			temp_anchor_y = center_y;
 		}
-		
-		
-		
-		if (download)
-		{
-			prepare_download(center_x, center_y);
-		}
 	}
 
 
