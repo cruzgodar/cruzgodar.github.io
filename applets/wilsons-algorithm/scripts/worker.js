@@ -286,7 +286,23 @@ function color_graph(grid_size)
 		
 		
 		//Now start at the middle of the graph. The syntax for a path is (row, column, distance from center).
-		let active_paths = [[Math.floor(grid_size / 2), Math.floor(grid_size / 2), 0]];
+		let active_paths = [];
+		
+		if (grid_size % 2 == 1)
+		{
+			active_paths = [[Math.floor(grid_size / 2), Math.floor(grid_size / 2), 0]];
+		}
+		
+		else
+		{
+			active_paths =
+			[
+				[Math.floor(grid_size / 2) - 1, Math.floor(grid_size / 2) - 1, 0],
+				[Math.floor(grid_size / 2) - 1, Math.floor(grid_size / 2), 0],
+				[Math.floor(grid_size / 2), Math.floor(grid_size / 2) - 1, 0],
+				[Math.floor(grid_size / 2), Math.floor(grid_size / 2), 0]
+			];
+		}
 		
 		
 		
