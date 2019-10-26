@@ -4,7 +4,9 @@ onmessage = async function(e)
 	
 	await draw_wilson_graph(grid_size);
 	
-	color_graph(grid_size);
+	await color_graph(grid_size);
+	
+	postMessage(["done"]);
 }
 
 

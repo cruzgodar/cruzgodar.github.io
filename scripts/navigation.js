@@ -358,6 +358,16 @@ function on_page_unload()
 			document.documentElement.removeEventListener(key, temporary_handlers[key][j]);
 		}
 	}
+	
+	
+	
+	//Terminate any temporary web workers.
+	for (let i = 0; i < temporary_web_workers.length; i++)
+	{
+		temporary_web_workers[i].terminate();
+	}
+	
+	temporary_web_workers = [];
 }
 
 

@@ -31,6 +31,8 @@ let temporary_handlers =
 	"touchstart": []
 }
 
+let temporary_web_workers = [];
+
 let layout_string = "";
 
 let background_color_changed = false;

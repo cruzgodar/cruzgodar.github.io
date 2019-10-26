@@ -17,6 +17,8 @@
 	
 	let web_worker = null;
 	
+	let worker_is_busy = false;
+	
 	if (DEBUG)
 	{
 		web_worker = new Worker("/applets/wilsons-algorithm/scripts/worker.js");
@@ -27,13 +29,23 @@
 		web_worker = new Worker("/applets/wilsons-algorithm/scripts/worker.min.js");
 	}
 	
+	temporary_web_workers.push(web_worker);
+	
 	
 	
 	web_worker.onmessage = function(e)
 	{
-		ctx.fillStyle = e.data[4];
+		if (e.data[0] == "done")
+		{
+			worker_is_busy = false;
+		}
 		
-		ctx.fillRect(e.data[0], e.data[1], e.data[2], e.data[3]);
+		else
+		{
+			ctx.fillStyle = e.data[4];
+			
+			ctx.fillRect(e.data[0], e.data[1], e.data[2], e.data[3]);
+		}
 	}
 	
 	
@@ -42,6 +54,17 @@
 	
 	function request_wilson_graph()
 	{
+		if (worker_is_busy)
+		{
+			console.log("Worker is busy -- refusing request");
+			
+			return;
+		}
+		
+		
+		
+		worker_is_busy = true;
+		
 		grid_size = parseInt(document.querySelector("#dim-input").value || 100);
 	
 	
