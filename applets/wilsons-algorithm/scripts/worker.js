@@ -5,8 +5,6 @@ onmessage = async function(e)
 	await draw_wilson_graph(grid_size);
 	
 	await color_graph(grid_size);
-	
-	postMessage(["done"]);
 }
 
 
@@ -397,6 +395,11 @@ function color_graph(grid_size)
 		}
 		
 		distance_breaks.push(edges_by_distance.length);
+		
+		
+		
+		//No, I don't know why it has to go here. Don't ask.
+		postMessage(["done"]);
 		
 		
 		
