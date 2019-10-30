@@ -69,18 +69,6 @@
 	
 	
 	<url>
-		<loc>https://www.cruzgodar.com/teaching/teaching.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/teaching/uo/111.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	
-	
-	<url>
 		<loc>https://www.cruzgodar.com/applets/applets.html</loc>
 		<priority>0.5</priority>
 	</url>
@@ -92,6 +80,11 @@
 	
 	<url>
 		<loc>https://www.cruzgodar.com/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/wilsons-algorithm/wilsons-algorithm.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
