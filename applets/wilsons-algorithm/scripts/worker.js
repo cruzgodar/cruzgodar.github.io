@@ -43,6 +43,8 @@ function draw_wilson_graph(grid_size)
 		//Start at a random vertex.
 		let new_index = Math.floor(Math.random() * vertices_not_in_tree.length);
 		
+		postMessage([2 * vertices_not_in_tree[new_index][1] + 1, 2 * vertices_not_in_tree[new_index][0] + 1, 1, 1, "rgb(255, 255, 255)"]);
+		
 		vertices_not_in_tree.splice(new_index, 1);
 		
 		
