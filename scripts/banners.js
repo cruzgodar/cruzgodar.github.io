@@ -35,6 +35,9 @@ let banner_pages =
 	"/writing/desolation-point/desolation-point.html"
 ];
 
+//Filled in with pages when banners are preloaded so the console isn't spammed and caches aren't needlessly checked.
+let banner_pages_already_fetched = [];
+
 
 
 window.addEventListener("scroll", function()

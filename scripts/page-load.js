@@ -16,6 +16,8 @@ function on_page_load()
 	
 	fade_in();
 	
+	fetch_other_page_banners_in_background();
+	
 	set_links();
 	
 	set_up_aos();
@@ -48,7 +50,7 @@ function on_page_load()
 	
 	if (page_settings["banner_page"])
 	{
-		fetch_other_banner_in_background();
+		fetch_other_banner_size_in_background()
 	}
 	
 	if (url_vars["contrast"] == 1)
@@ -297,16 +299,42 @@ function set_up_aos()
 
 
 //Fetches the other size of banner needed for the page, so that if the page is resized, there's no lag time.
-function fetch_other_banner_in_background()
+function fetch_other_banner_size_in_background()
 {
 	if (banner_name == "landscape.webp" || banner_name == "landscape.jpg")
 	{
-		fetch(banner_path + "portrait." + banner_extension);
+		console.log("Preloading " + banner_path + "portrait." + banner_extension);
+		
+		return fetch(banner_path + "portrait." + banner_extension);
 	}
 	
 	else
 	{
-		fetch(banner_path + "landscape." + banner_extension);
+		console.log("Preloading " + banner_path + "landscape." + banner_extension);
+		
+		return fetch(banner_path + "landscape." + banner_extension);
+	}
+}
+
+
+
+//For every banner page linked to by the current page, this fetches that banner so that the waiting time between pages is minimized.
+function fetch_other_page_banners_in_background()
+{
+	let links = document.querySelectorAll("a");
+	
+	for (let i = 0; i < links.length; i++)
+	{
+		let href = links[i].getAttribute("href");
+		
+		if (banner_pages.includes(href) && !(banner_pages_already_fetched.includes(href)) && href != "/home/home.html")
+		{
+			console.log("Preloading " + href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + banner_name);
+			
+			banner_pages_already_fetched.push(href);
+			
+			fetch(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + banner_name);
+		}
 	}
 }
 
