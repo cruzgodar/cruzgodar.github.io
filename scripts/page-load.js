@@ -45,6 +45,12 @@ function on_page_load()
 	
 	
 	
+	
+	if (page_settings["banner_page"])
+	{
+		fetch_other_banner_in_background();
+	}
+	
 	if (url_vars["contrast"] == 1)
 	{
 		set_img_button_contrast();
@@ -286,6 +292,22 @@ function set_up_aos()
 	
 	//We can afford to wait so long because it's unlikely the user is going to load section 2 within a second of loading the page.
 	}, 1000);
+}
+
+
+
+//Fetches the other size of banner needed for the page, so that if the page is resized, there's no lag time.
+function fetch_other_banner_in_background()
+{
+	if (banner_name == "landscape.webp" || banner_name == "landscape.jpg")
+	{
+		fetch(banner_path + "portrait." + banner_extension);
+	}
+	
+	else
+	{
+		fetch(banner_path + "landscape." + banner_extension);
+	}
 }
 
 
