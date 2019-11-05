@@ -1,0 +1,2755 @@
+\documentclass{article}
+
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage{tikz-cd}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[margin=.75in, total={8.25in, 10.75in}, heightrounded]{geometry}
+
+\usepackage{graphicx}
+\graphicspath{{graphics/}}
+
+\usepackage{scalerel}
+
+\usepackage{stmaryrd}
+
+\usepackage{MnSymbol}
+
+\usepackage{mdframed}
+
+\usepackage{titlesec}
+
+\usepackage{blkarray}
+
+\usepackage{etex}
+
+\usepackage{hyperref}
+
+\hypersetup
+{
+	colorlinks = true,
+	urlcolor = OliveGreen
+}
+
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{\Roman{section} --- }{0pt}{}
+
+
+
+
+\definecolor{DefGreen}{rgb}{0,0.5,0}
+\definecolor{TheoremOrange}{rgb}{0.88,0.6,0.08}
+\definecolor{LemmaYellow}{rgb}{1,1,0}
+\definecolor{CorollaryBlue}{rgb}{0,0.29,0.77}
+\definecolor{ProofPurple}{rgb}{0.58,0,1}
+\definecolor{AxiomRed}{rgb}{1,0,0}
+\definecolor{CommentBlue}{rgb}{0.46,0.67,1}
+
+
+
+\usepackage{amsthm}
+
+\newtheoremstyle{colontheorem}
+	{0in}                    	% Space above
+	{.15in}                   	% Space below
+	{\normalfont}      		    % Body font
+	{}                          % Indent amount
+	{\bfseries}                 % Theorem head font
+	{:}                         % Punctuation after theorem head
+	{.5em}                      % Space after theorem head
+	{}							% Theorem head spec (can be left empty, meaning ‘normal’)
+	
+\theoremstyle{colontheorem}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{axiom}[theorem]{Axiom}
+
+\newtheorem{lemma}{Lemma}[theorem]
+\newtheorem{corollary}{Corollary}[theorem]
+
+\newtheorem{exercise}{Exercise}[section]
+
+
+
+\newcommand{\fadeline}
+{
+	\noindent\begin{tikzpicture}[baseline]
+		\path[left color=white,right color=white,middle color=black]
+		(0,0) rectangle (\textwidth,.5pt);%
+	\end{tikzpicture}
+}
+
+\newcommand{\Span}{\textnormal{span}}
+\newcommand{\Null}{\textnormal{null }}
+\newcommand{\Range}{\textnormal{range }}
+\newcommand{\T}{^\textnormal{T}}
+
+\newcommand{\Sub}{\textnormal{sub }}
+
+\newcommand{\re}{\textnormal{Re }}
+\newcommand{\im}{\textnormal{Im }}
+\newcommand{\Arg}{\textnormal{Arg }}
+\newcommand{\Log}{\textnormal{Log }}
+\newcommand{\Res}{\textnormal{Res}}
+\newcommand{\pv}{\textnormal{p.v.}}
+
+
+
+
+\newenvironment{Theorem}
+{
+	\begin{mdframed}[backgroundcolor=TheoremOrange!10]
+	\begin{theorem}
+}
+{
+	\end{theorem}
+	\end{mdframed}
+	
+	\vspace{.15in}
+}
+
+\newenvironment{Proposition}
+{
+	\begin{mdframed}[backgroundcolor=TheoremOrange!10]
+	\begin{proposition}
+}
+{
+	\end{proposition}
+	\end{mdframed}
+	
+	\vspace{.15in}
+}
+
+\newenvironment{Def}
+{
+	\begin{mdframed}[backgroundcolor=DefGreen!10]
+	\begin{definition}
+}
+{
+	\end{definition}
+	\end{mdframed}
+	
+	\vspace{.15in}
+}
+
+\newenvironment{Axiom}
+{
+	\begin{mdframed}[backgroundcolor=AxiomRed!10]
+	\begin{axiom}
+}
+{
+	\end{axiom}
+	\end{mdframed}
+	
+	\vspace{.15in}
+}
+
+\newenvironment{Lemma}
+{
+	\begin{mdframed}[backgroundcolor=LemmaYellow!10]
+	\begin{lemma}
+}
+{
+	\end{lemma}
+	\end{mdframed}
+	
+	\vspace{.03in}
+}
+
+\newenvironment{Corollary}
+{
+	\begin{mdframed}[backgroundcolor=CorollaryBlue!10]
+	\begin{corollary}
+}
+{
+	\end{corollary}
+	\end{mdframed}
+	
+	\vspace{.09in}
+}
+
+\newenvironment{Comment}
+{
+	\begin{mdframed}[backgroundcolor=CommentBlue!10]
+	\textbf{Comment:}%
+}
+{
+	\end{mdframed}
+	
+	\vspace{.15in}
+}
+
+\newenvironment{Proof}
+{
+	\begin{mdframed}[backgroundcolor=ProofPurple!10]
+	\textbf{Proof:}%
+}
+{
+	\end{mdframed}
+	
+	\vspace{.085in}
+}
+
+\newenvironment{Example}
+{
+	\begin{mdframed}
+	\textbf{Example:}%
+}
+{
+	\end{mdframed}
+	
+	\vspace{.15in}
+}
+
+
+
+\setlength{\parindent}{0pt}
+
+
+
+
+\begin{document}
+
+\vspace*{.5in}
+
+\begin{center}
+	\Huge Complex Analysis Notes\\
+	
+	\vspace{.25in}
+	
+	\Large Cruz Godar\\
+	
+	\vspace{.25in}
+	
+	\normalsize Math 408 and Math 409, taught by Dylan Retsek
+\end{center}
+
+\vspace{.5in}
+
+
+
+
+
+\begin{center}
+	\section{The Complex Numbers}
+	\vspace{.1in}
+\end{center}
+
+
+
+\begin{Def}
+	
+	The \textbf{complex numbers} are the field $\mathbb{C} = \{a + bi\ |\ a, b \in \mathbb{R}, i^2 = -1\}$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	The \textbf{modulus} of $z = a+bi$ is $|z| = \sqrt{a^2 + b^2}$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	The \textbf{distance} between $z_1$ and $z_2$ is $|z_2 - z_1|$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	The \textbf{conjugate} of $z = a+bi$ is $\overline{z} = z - bi$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	Let $z, w \in \mathbb{C}$.
+	
+	\begin{enumerate}
+		
+		\item $\overline{z + w} = \overline{z} + \overline{w}$.
+		
+		\item $\frac{z + \overline{z}}{2} = \re z$ and $\frac{z - \overline{z}}{2i} = \im z$.
+		
+		\item $z \overline{z} = |z|^2$.
+		
+	\end{enumerate}
+	
+\end{Proposition}
+
+
+
+\begin{Proposition}
+	
+	Let $z \in \mathbb{C}^*$. Then there is a unique $r \in \mathbb{R}^+$ and $\theta \in [0, 2\pi)$ such that $z = re^{i\theta}$.
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	The \textbf{argument} of $z = re^{i\theta}$ is the set $\arg z = \{\theta + 2\pi k\ |\ k \in \mathbb{Z}\}$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	The \textbf{principal argument} of $z = re^{i\theta}$, denoted $\Arg z$, is the unique element of $\arg z$ lying in $(-\pi, \pi]$. If $\tau \in \mathbb{R}$, $\arg_\tau z$ is the unique element of $\arg z$ lying in $(\tau, \tau+2\pi]$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	For $\theta \in \mathbb{R}$, $\cos \theta = \frac{e^{i\theta} + e^{-i\theta}}{2}$ and $\sin \theta = \frac{e^{i\theta} - e^{-i\theta}}{2i}$.
+	
+	\begin{Proof}
+		%
+		Let $z = e^{i\theta}$. Then $\re z = \cos \theta = \frac{z + \overline{z}}{2} = \frac{e^{i\theta} + e^{-i\theta}}{2}$, and similarly for $\im z$.
+		
+	\end{Proof}
+	
+\end{Proposition}
+
+
+
+\begin{Proposition}
+	
+	For all $\theta \in \mathbb{R}$, $(\cos \theta + i \sin \theta)^n = \cos n\theta + i \sin n\theta$.
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	The $n$ distinct \textbf{\textit{n}th roots of unity} are $1^{\frac{1}{n}} = e^{\frac{2\pi i k}{n}}$ for $k \in \{0, ..., n-1\}$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	The \textbf{primitive \textit{n}th root of unity} is $\omega_n = e^{\frac{2\pi i}{n}}$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	Let $z = re^{i\theta}$. Then $z^{\frac{1}{n}} = r^{\frac{1}{n}} e^{i \frac{\theta + 2\pi i k}{n}}$ for $k \in \{0, ..., n-1\}$.
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	The \textbf{open disk} of radius $r$ about $z_0$ is the set $\{z \in \mathbb{C}\ |\ |z - z_0| < r\}$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	An \textbf{interior point} of a set $S \subseteq \mathbb{C}$ is a point $z \in S$ such that some open disk about $z$ lies entirely inside $S$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A set $S$ is \textbf{open} if every element of $S$ is an interior point of $S$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A set $S$ is \textbf{connected} if any two points can be connected by a series of straight lines.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A \textbf{domain} is an open connected set.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A point $w \in \mathbb{C}$ is a \textbf{boundary point} of a set $S$ if every open disk about $w$ has points both in and out of $S$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	The \textbf{boundary} of a set $S$ is the set of boundary points of $S$, denoted $\partial S$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A set $S$ is \textbf{closed} if $\partial S \subseteq S$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	The \textbf{Riemann Sphere} is the unit 2-sphere in $\mathbb{R}^3$ that is homeomorphic to $\mathbb{C}$, with the projection of $z \in \mathbb{C}$ onto the sphere given by the intersection with the line through $(0, 0, 1)$ and $z = (x, y, 0)$.
+	
+\end{Def}
+
+
+
+\begin{Example}
+	%
+	Find the projection of $a+bi$ onto the Riemann Sphere.\\
+	
+	We have $x_1^2 + x_2^2 + x_3^2 = 1$, $x_1 = at$, $x_2 = bt$, and $x_3 = 1-t$ for $t \in [0, 1]$. Then $a^2 t^2 + b^2 t^2 + t^2 - 2t + 1 = 1$, so $a^2 t + b^2 t + t - 2 = 0$ (the case when $t = 0$ is trivial), and $t = \frac{2}{a^2 + b^2 + 1}$. Thus the point of intersection is
+	
+	$$
+		\left( \frac{2a}{a^2 + b^2 + 1}, \frac{2b}{a^2 + b^2 + 1}, \frac{a^2 + b^2 - 1}{a^2 + b^2 + 1} \right) \textnormal{, or equivalently, } \left( \frac{2a}{|z|^2 + 1}, \frac{2b}{|z|^2 + 1}, \frac{|z|^2 - 1}{|z|^2 + 1} \right) \textnormal{.}
+	$$
+	
+\end{Example}
+
+
+
+
+
+\begin{center}
+	\pagebreak
+	
+	\section{Complex Limits and Derivatives}
+	
+	\vspace{.1in}
+\end{center}
+
+
+
+\begin{Def}
+	
+	A sequence $(z_n)$ of complex numbers \textbf{converges} to $z \in \mathbb{C}$ if for all $\varepsilon > 0$, there is an $N \in \mathbb{N}$ such that if $n \geq N$, then $|z_n - z| < \varepsilon$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	Let $f$ be a complex function defined in a neighborhood of $z_0$. Then $\lim\limits_{z \to z_0} f(z) = w$ if for all $\varepsilon > 0$, there is a $\delta > 0$ such that if $0 < |z - z_0| < \delta$, then $|f(z) - w| < \varepsilon$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	Suppose $\lim\limits_{z \to z_0} f(z) = L$ and $\lim\limits_{z \to z_0} g(z) = M$. Then
+	
+	\begin{enumerate}
+		
+		\item $\lim\limits_{z \to z_0} (f(z) + g(z)) = L + M$.
+		
+		\item $\lim\limits_{z \to z_0} (f(z)g(z)) = LM$.
+		
+		\item $\lim\limits_{z \to z_0} \frac{f(z)}{g(z)} = \frac{L}{M}$ if $M \neq 0$.
+		
+	\end{enumerate}
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	A function $f$ is \textbf{continuous} at $z_0$ if $f(z)$ exists, $\lim\limits_{z \to z_0} f(z)$ exists, and $\lim\limits_{z \to z_0} f(z) = f(z_0)$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	Let $f : \{z \in \mathbb{C}\ |\ |z-z_0| < \varepsilon\} \longrightarrow \mathbb{C}$. The \textbf{derivative} of $f$ at $z_0$ is
+	
+	$$
+		f'(z_0) = \lim\limits_{z \to z_0} \frac{f(z) - f(z_0)}{z - z_0}\textnormal{,}
+	$$
+	
+	provided the limit exists.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	Let $f$ and $g$ be differentiable at $z_0$. Then
+	
+	\begin{enumerate}
+		
+		\item $(f+g)'(z_0) = f'(z_0) + g'(z_0)$.
+		
+		\item $(cf)'(z_0) = cf'(z_0)$.
+		
+		\item $(fg)'(z_0) = f'(z_0) g(z_0) + f(z_0) g'(z_0)$.
+		
+		\item $\left( \frac{f}{g} \right)' (z_0) = \frac{f'(z_0) g(z_0) - f(z_0) g'(z_0)}{g(z_0)^2}$.
+		
+		\item If $g$ is differentiable at $f(z_0)$, then $(g \circ f)'(z_0) = g'(f(z_0)) f'(z_0)$.
+				
+	\end{enumerate}
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	A function $f$ is \textbf{analytic} on an open set $G$ if $f'(z_0)$ exists for every $z_0 \in G$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A function $f$ is \textbf{entire} if $f$ is analytic on $\mathbb{C}$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	For sufficiently small $\varepsilon$-neighborhoods of $z_0$, $|f'(z_0)|$ is the scaling factor of the neighborhood's image and $\arg f'(z_0)$ is the rotation factor.
+	
+	\begin{Proof}
+		
+		Since $f'(z_0) = \lim\limits_{z \to z_0} \frac{f(z) - f(z_0)}{z - z_0}$, for $z \approx z_0$ (i.e. $|z - z_0| < \varepsilon$), we have $|f(z) - f(z_0)| \approx |f'(z_0)||z - z_0|$ and $\arg (f(z) - f(z_0)) - \arg(z - z_0) \approx \arg f'(z_0)$
+		.
+	\end{Proof}
+	
+\end{Proposition}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(The Cauchy-Riemann Equations)} If $f'(z_0)$ exists, then $\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}$ and $\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}$ at $z_0$, where $f(z) = f(x + iy) = u(x, y) + iv(x, y)$.
+	
+	\begin{Proof}
+		%
+		Since $f'(z_0)$ exists, $\lim\limits_{\Delta z \to 0} \frac{f(z + \Delta z) - f(z)}{\Delta z}$ exists. In particular, it has the same value if the limit is taken along the real or imaginary axes. Along the real axis, we have
+		
+		\begin{align*}
+			& \lim\limits_{\Delta z \to 0} \frac{f(z + \Delta z) - f(z)}{\Delta z}\\
+			= & \lim\limits_{\Delta x \to 0} \frac{u(x_0 + \Delta x, y_0) + iv(x_0 + \Delta x, y_0) - u(x_0, y_0) - iv(x_0, y_0)}{\Delta x}\\
+			= & \lim\limits_{\Delta x \to 0} \left( \frac{u(x_0 + \Delta x, y_0) - u(x_0, y_0)}{\Delta x} \right) + i \lim\limits_{\Delta x \to 0} \left( \frac{v(x_0 + \Delta x, y_0) - v(x_0, y_0)}{\Delta x} \right)\\
+			= & \frac{\partial u}{\partial x}(z_0) + i \frac{\partial v}{\partial x}(z_0)
+		\end{align*}
+		
+		Similarly, approaching on the imaginary axis gives us $f'(z) = \frac{\partial v}{\partial y}(z_0) - i \frac{\partial u}{\partial y}(z_0)$, so $\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}$ and $\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}$ at $z_0$.
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Proposition}
+	
+	If $f' = 0$ on a domain $G$, then $f$ is constant on $G$.
+	
+	\begin{Proof}
+		%
+		Let $z_1, z_2 \in G$. Then $0 = \frac{\partial u}{\partial x} = \frac{\partial u}{\partial y} = \frac{\partial v}{\partial x} = \frac{\partial v}{\partial y}$, so $u(x_1, y_1) = u(x_2, y_2)$ and $v(x_1, y_1) = v(x_2, y_2)$. Thus $f(z_1) = f(z_2)$.
+		
+	\end{Proof}
+	
+\end{Proposition}
+
+
+
+\begin{Proposition}
+	
+	If $f$ is analytic on a domain $G$ and $\im f$ is constant on $G$, then $f$ is constant on $G$.
+	
+	\begin{Proof}
+		%
+		If $f = u + iv$, then $f' = \frac{\partial u}{\partial x} + i\frac{\partial v}{\partial x} = \frac{\partial u}{\partial x} = \frac{\partial v}{\partial y} = 0$, so $f$ is constant.
+		
+	\end{Proof}
+	
+\end{Proposition}
+
+
+
+\begin{Proposition}
+	
+	If $f$ is analytic on a domain $G$ and $|f|$ is constant, then $f$ is constant.
+	
+\end{Proposition}
+
+
+
+\begin{Theorem}
+	
+	If $f$ is defined on a domain $G$ containing $z_0$, $\frac{\partial u}{\partial x}$, $\frac{\partial u}{\partial y}$, $\frac{\partial v}{\partial x}$, and $\frac{\partial v}{\partial y}$ are defined on all of $G$ and are continuous at $z_0$, and $\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}$ and $\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}$ at $z_0$, then $f'(z_0)$ exists.
+	
+\end{Theorem}
+
+
+
+\begin{Def}
+	
+	A real-valued function $\varphi$ is \textbf{harmonic} on a domain $G$ if all of $\varphi$'s second-order partials are continuous on $G$ and $\frac{\partial^2 \varphi}{\partial x^2} + \frac{\partial^2 \varphi}{\partial y^2} = 0$.
+	
+\end{Def}
+
+
+
+\begin{Theorem}
+	
+	If $f = u+iv$ is analytic on a domain $G$, then $u$ and $v$ are harmonic on $G$.
+	
+\end{Theorem}
+
+
+
+\begin{Example}
+	%
+	Create an analytic function $f$ with $\re f(x + iy) = xy - x + y$.\\
+	
+	The request is not impossible, since $xy - x + y$ is harmonic. Since $f$ is to be analytic, $\frac{\partial u}{\partial x} = y - 1 = \frac{\partial v}{\partial y}$ and $\frac{\partial u}{\partial y} = x + 1 = -\frac{\partial v}{\partial x}$. Thus $v(x, y) = \frac{y^2}{2} - \frac{x^2}{2} - y - x + C$. This $v$ is called the \textbf{harmonic conjugate} of $u$. 
+	
+\end{Example}
+
+
+
+
+
+\begin{center}
+	\pagebreak
+	
+	\section{Complex Elementary Functions}
+	
+	\vspace{.1in}
+\end{center}
+
+
+
+\begin{Proposition}
+	
+	$(e^z)' = e^z$.
+	
+	\begin{Proof}
+		%
+		$(e^z)' = \frac{\partial u}{\partial x} + i \frac{\partial v}{\partial x} = e^x \cos y + i e^x \sin y = e^z$.
+		
+	\end{Proof}
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	Let $z \in \mathbb{C}$. The \textbf{sine} and \textbf{cosine} of $z$ are defined by
+	
+	$$
+		\sin z = \frac{e^{iz} - e^{-iz}}{2i} \textnormal{ and } \cos z = \frac{e^{iz} + e^{-iz}}{2}\textnormal{.}
+	$$
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	Let $z, w \in \mathbb{C}$.
+	
+	\begin{enumerate}
+		
+		\item Both $\sin$ and $\cos$ are entire.
+		
+		\item $\frac{d}{dz} \left[ \sin z \right] = \cos z$ and $\frac{d}{dz} \left[ \cos z \right] = \sin z$.
+		
+		\item $\sin^2 z + \cos^2 z = 1$.
+		
+		\item $\sin^2 z = \frac{1 - \cos 2z}{2}$ and $\cos^2 z = \frac{1 + \cos 2z}{2}$.
+		
+		\item $\sin 2z = 2\sin z \cos z$.
+		
+		\item $\sin (z + w) = \sin z \cos w + \cos z \sin w$.
+		
+	\end{enumerate}
+	
+\end{Proposition}
+
+
+
+\begin{Proposition}
+	
+	The only roots of $\sin z$ are $\pi k$ for $k \in \mathbb{Z}$.
+	
+	\begin{Proof}
+		%
+		$\sin z = 0$ if and only if $e^{iz} = e^{-iz}$, if and only if $iz = -iz + 2 \pi k$, if and only if $z = \pi k$.
+		
+	\end{Proof}
+	
+\end{Proposition}
+
+
+
+\begin{Example}
+	%
+	Solve $e^z = 2 + 2i$.\\
+	
+	$2 + 2i = s \sqrt{2} \frac{1 + i}{2} = 2 \sqrt{2} e^{i \frac{\pi}{4}} = e^{\log (2 \sqrt{2}) + i \frac{\pi}{4}}$. Thus $z = \log (2 + 2i) = \log (2 \sqrt{2}) + i (\frac{\pi}{4} + 2\pi k)$ for $k \in \mathbb{Z}$. In particular, $\log$ is multivalued.
+	
+\end{Example}
+
+
+
+\begin{Def}
+	
+	Let $z \in \mathbb{C}$. $\Log z = \Log |z| + i \Arg z$, where $\Log x = \ln x$ for $x \in \mathbb{R}$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	Let $z \in \mathbb{C}$. $\log z = \Log |z| + i (\Arg z + 2 \pi k)$ for $k \in \mathbb{Z}$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	$\Log z$ is continuous on $\mathbb{C}^* \setminus \mathbb{R}^-$.
+	
+\end{Proposition}
+
+
+
+\begin{Theorem}
+	
+	$\Log z$ is analytic on $\mathbb{C}^* \setminus \mathbb{R}^-$, and $\frac{d}{dz} \left[ \Log z \right] = \frac{1}{z}$.
+	
+	\begin{Proof}
+		%
+		Let $z_0 \in \mathbb{C}^* \setminus \mathbb{R}^-$. Then
+		
+		\begin{align*}
+			\frac{d}{dz} \left[ \Log z \right] |_{z = z_0} &= \lim\limits_{z \to z_0} \frac{\Log z - \Log z_0}{z - z_0}\\
+			&= \lim\limits_{z \to z_0} \frac{w - w_0}{z - z_0}\\
+			&= \lim\limits_{z \to z_0} \frac{1}{\frac{z - z_0}{w - w_0}}.
+		\end{align*}
+		
+		This last step is valid, since if $w = w_0$, then $e^w = e^{w_0}$, so $z = z_0$, since $\Log$is branch-cut. Continuing,
+		
+		\begin{align*}
+			\frac{d}{dz} \left[ \Log z \right] |_{z = z_0} &= \lim\limits_{z \to z_0} \frac{1}{\frac{e^w - e^{w_0}}{w - w_0}}\\
+			&= \frac{1}{\frac{d}{dz} \left[ e^w \right] |_{w = w_0}}\\
+			&= \frac{1}{e^{w_0}}\\
+			&= \frac{1}{z}.
+		\end{align*}
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Comment}
+	%
+	In general, $\Log (z_1 z_2) \neq \Log z_1 + \Log z_2$ and $\Log e^z \neq z$, but $\log (z_1 z_2) = \log z_1 + \log z_2$ and $e^{\Log z} = z$.
+	
+\end{Comment}
+
+
+
+\begin{Def}
+	
+	Let $\tau \in \mathbb{R}$. $\mathcal{L}_\tau (z) = \Log |z| + i \arg _\tau (z)$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	$\mathcal{L}_\tau$ is continuous on all of $\mathbb{C}^*$ except for the ray from $0$ with angle $\tau$, analytic where it is continuous, and has derivative $\frac{d}{dz} \left[ \mathcal{L}_\tau (z) \right] = \frac{1}{z}$.
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	Let $\alpha \in \mathbb{C}$ and $z \neq 0$. $z^\alpha = e^{\alpha \log z}$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	Let $z, \alpha \in \mathbb{C}^*$. Then $z^\alpha$ is single-valued if $\alpha \in \mathbb{Z}$, finitely-valued if $\alpha \in \mathbb{Q} \setminus \mathbb{Z}$, and infintely-valued if $\alpha \in \mathbb{C} \setminus \mathbb{Q}$.
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	The \textbf{principal branch} of $z^\alpha$ is $e^{\alpha \Log z}$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	The principal branch of $z^\alpha$ is analytic on $\mathbb{C}^* \setminus \mathbb{R}^-$, and for this branch, $\frac{d}{dz} \left[ z^\alpha \right] = \frac{d}{dz} \left[ e^{\alpha \Log z} \right] = \left( e^{\alpha \Log z} \right) (\frac{\alpha}{z}) = \alpha z^{\alpha - 1}$.
+	
+\end{Proposition}
+
+
+
+
+
+\begin{center}
+	\pagebreak
+	
+	\section{Complex Integration}
+	
+	\vspace{.1in}
+\end{center}
+
+
+
+\begin{Def}
+	
+	A \textbf{curve} from $z_1$ to $z_2$ is a parametric function of the form $z(t) = x(t) + iy(t)$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	Let $z(t)$ be a parametric curve. $z'(t) = x'(t) + iy'(t)$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A \textbf{smooth arc} is a curve $\gamma$ parameterized by $z(t) = x(t) + iy(t)$ for $t \in [a, b]$ such that $z'(t)$ is continuous on $[a, b]$, $z'[t] \neq 0$ for all $t \in [a, b]$, and $z$ is injective on $[a, b]$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A \textbf{smooth closed curve} is a smooth arc such that $z$ is injective on $[a, b)$, $z(a) = z(b)$, and $z'(a) = z'(b)$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A \textbf{contour} is a collection $\Gamma$ of smooth, directed arcs such that the terminal point of $\gamma_k$ is the initial point of $\gamma_{k+1}$ for all $k$. We write $\Gamma = \gamma_1 + \cdots + \gamma_n$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	Let $f$ be defined on a smooth directed arc $\gamma$. The \textbf{Riemann sum of $f$} is $S = \displaystyle\displaystyle\sum\limits_{k = 1}^n f(c_k)(z_k - z_{k-1})$ for $z_0, ..., z_n \in \gamma$ successively and $c_k \in [z_{k-1}, z_k]$ along $\gamma$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A function $f$ is \textbf{integrable} on $\gamma$ if there is an $L \in \mathbb{C}$ such that $\lim\limits_{m(P) \to 0} S(P, \{c_k\}) = L$, where $P$ is the partition of $\gamma$ given by $z_0, ..., z_n$ and $m(P)$ is the mesh of $P$, given by $m(P) = \max \{ |z_k - z_{k-1} |\}$.
+	
+\end{Def}
+
+
+
+\begin{Theorem}
+	
+	If $f$ is continuous on $\gamma$, then $f$ is integrable on $\gamma$.
+	
+\end{Theorem}
+
+
+
+\begin{Proposition}
+	
+	If $\gamma$ is parameterized by $z(t)$ for $t \in [a, b]$, then $\int_\gamma f(z)\ \textnormal{d}z = \int_a^b f(z(t)) z'(t)\ \textnormal{d}t$.
+	
+\end{Proposition}
+
+
+
+\begin{Theorem}
+	
+	Let $D$ be a domain, $f$ a continuous function on $D$, $F$ an analytic function on $D$ with $F'(z) = f(z)$, and $\Gamma$ a contour in $D$ with initial point $z_a$ and terminal point $z_b$. Then
+	
+	$$
+		\int_\Gamma f(z)\ \textnormal{d}z = F(z_b) - F(z_a).
+	$$
+	
+	\pagebreak
+	
+	\begin{Proof}
+		%
+		For each smooth arc $\gamma$ in $\Gamma$, suppose $\gamma$ is parameterized by $z(t)$ for $t \in [a, b]$. Then $\int_\gamma f(z)\ \textnormal{d}z = \int_a^b f(z(t)) z'(t)\ \textnormal{d}t$. But $\frac{d}{dt} \left[ F(z(t)) \right] = F'(z(t)) z'(t) = f(z(t)) z'(t)$, so $\int_a^b f(z(t)) z'(t)\ \textnormal{d}t$ $= \int_a^b \frac{d}{dt} \left[ F(z(t)) \right]\ \textnormal{d}t = F(z(b)) - F(z(a))$. Thus if $\Gamma = \gamma_1 + \cdots + \gamma_n$, we have $\int_\gamma f(z)\ \textnormal{d}z = F(z_b) - F(z_a)$.
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Def}
+	
+	A \textbf{continuous deformation} of a contour $\Gamma_0$ into a contour $\Gamma_1$ is a function $z(s,t) : [0,1] \times [0,1] \longrightarrow D$, where $D$ is a domain on which both $\Gamma_0$ and $\Gamma_1$ are defined, such that $z(0,t)$ for $t \in [0,1]$ is a parameterization for $\Gamma_0$, $z(1,t)$ for $t \in [0,1]$ is a parameterization for $\Gamma_1$, and $z$ is continuous.
+	
+\end{Def}
+
+
+
+\begin{Example}
+	%
+	$z(s,t) = (s+1)e^{2\pi i t}$ is a continuous deformation of the unit circle into a circle of radius $2$.
+	
+\end{Example}
+
+
+
+\begin{Theorem}
+	
+	Suppose $f$ is analytic on $D$ and that the closed loop $\Gamma_0$ can be continuously deformed into the closed loop $\Gamma_1$, where both are in $D$. Then $\int_{\Gamma_0} f(z)\ \textnormal{d}z = \int_{\Gamma_1} f(z)\ \textnormal{d}z$.
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	If $f$ is analytic on a simply connected domain $D$ and $\Gamma \subseteq D$ is a closed loop, then $\int_\Gamma f(z)\ \textnormal{d}z = 0$, $f$ has an antiderivative on $D$, and $f$ is path-independent.
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	Suppose $f$ is analytic on a domain $D$, $z_0 \in D$, and $\Gamma \subseteq D$ is a closed loop. Then
+	
+	$$
+		\frac{1}{2 \pi i} \int_\Gamma \frac{f(z)}{z - z_0}\ \textnormal{d}z = f(z_0).
+	$$
+	
+	\begin{Proof}
+		%
+		For any $\Gamma_0 \subseteq \mathbb{C}^*$ that loops $0$, 
+		
+		\begin{align*}
+			\int_{\Gamma_0} \frac{1}{z}\ \textnormal{d}z &= \int_{|z| = 1} \frac{1}{z}\ \textnormal{d}z\\
+			&= \int_0^1 \frac{1}{e^{2 \pi i t}} (2 \pi i) e^{2 \pi i t}\ \textnormal{d}t\\
+			&= \int_0^1 2 \pi i\ \textnormal{d}t\\
+			&= 2 \pi i.
+		\end{align*}
+		
+		Now if $C_r$ is the circle of radius $r$ centered at $z_0$, then
+		
+		\begin{align*}
+			\int_{\Gamma_0} \frac{f(z)}{z - z_0}\ \textnormal{d}z &= \int_{C_r} \frac{f(z)}{z - z_0}\ \textnormal{d}z\\
+			&= \int_{C_r} \frac{f(z_0 + f(z) - f(z_0)}{z - z_0}\ \textnormal{d}z\\
+			&= \int_{C_r} \frac{f(z_0)}{z - z_0}\ \textnormal{d}z + \int_{C_r} \frac{f(z) - f(z_0)}{z - z_0}\ \textnormal{d}z\\
+			&= 2 \pi i f(z_0) + \int_{C_r} \frac{f(z) - f(z_0)}{z - z_0}\ \textnormal{d}z.
+		\end{align*}
+		
+		Now
+		
+		\begin{align*}
+			\left| \int_{C_r} \frac{f(z) - f(z_0)}{z - z_0}\ \textnormal{d}z \right| &\leq \max\limits_{z \in C_r} \left\{ \left| \frac{f(z) - f(z_0)}{z - z_0} \right| \right\} (2 \pi r)\\
+			&= \max\limits_{z \in C_r} \{ |f(z) - f(z_0)| \} (2 \pi)\textnormal{,}
+		\end{align*}
+		
+		and as $r \to 0$, $\max\limits_{z \in C_r} \{ |f(z) - f(z_0)| \} (2 \pi) \to 0$. Since the deformation is continuous,
+		
+		$$
+			\int_\Gamma \frac{f(z)}{z - z_0}\ \textnormal{d}z = 2 \pi i f(z_0).
+		$$
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	Let $f$ be analytic on and inside a positively-oriented, simple closed loop $\Gamma$. Then for any $z$ inside $\Gamma$,
+	
+	$$
+		\frac{1}{2\pi i} \int_{\Gamma} \frac{f(\zeta)}{(\zeta - z)^{n+1}}\ \textnormal{d}\zeta = f^{(n)}(z).
+	$$
+	
+	\begin{Corollary}
+		
+		If $f$ is analytic on a domain $D$, then $f^{(n)}$ exists and is analytic on $D$ for all $n \in \mathbb{N}$.
+		
+	\end{Corollary}
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	If $f$ is continuous on a domain $D$ and $\int_{\Gamma} f(z)\ \textnormal{d}z = 0$ for all closed loops $\Gamma$ in $D$, then $f$ is analytic.
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	If $f$ is entire and bounded, then $f$ is constant.
+	
+	\begin{Proof}
+		%
+		Since $f$ is bounded, there is an $M \in \mathbb{R}$ such that $|f(z)| \leq M$ for all $z \in \mathbb{C}$. Let $z \in \mathbb{C}$ be arbitrary and let $C_r$ be the positively-oriented circle of radius $r$ centered at $z$. Then
+		
+		$$
+			f'(z) = \frac{1}{2\pi i} \int_{C_r} \frac{f(\zeta)}{(\zeta - z)^2}\ \textnormal{d}\zeta \textnormal{,}
+		$$
+		
+		so
+		
+		$$
+			|f'(z)| = \frac{1}{2 \pi} \left| \int_{C_r} \frac{f(\zeta)}{(\zeta - z)^2}\ \textnormal{d}\zeta \right| \leq \left( \frac{1}{2\pi} \right) \left( \frac{M}{r^2} \right) (2 \pi r) = \frac{M}{r}.
+		$$
+		
+		Since this holds for all $r \in \mathbb{R}^+$ and $\frac{M}{r} \to 0$ as $r \to \infty$, $f'(z) = 0$. Since $z$ was arbitrary, $f' = 0$, so $f$ is constant.
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(The Fundamental Theorem of Algebra)} Every nonconstant polynomial with coefficients in $\mathbb{C}$ has a root in $\mathbb{C}$.
+	
+	\begin{Proof}
+		%
+		Let $p(z) = a_n z^n + a_{n-1} z^{n-1} + \cdots + a_1 z + a_0$ with $a_n \neq 0$ and $n \geq 1$. Suppose $p(z) \neq 0$ for any $z \in \mathbb{C}$. Now $\frac{p(z)}{z^n} = a_n + a_{n-1} \left( \frac{1}{z} \right) + \cdots + a_1 \left( \frac{1}{z^{n-1}} \right) + a_0 \left( \frac{1}{z^n} \right)$, so $\lim\limits_{z \to \infty} \frac{p(z)}{z^n} = a_n$. Thus there is a $\rho \in \mathbb{R}$ such that if $|z| > \rho$, then $\left| \frac{p(z)}{z_n} \right| > \frac{|a_n|}{2}$. Since $p(z) \neq 0$, $\frac{1}{p(z)}$ is defined for all $z \in \mathbb{C}$. If $|z| > \rho$, then $\left| \frac{1}{p(z)} \right| < \frac{2}{|z^n|\ |a_n|} < \frac{2}{\rho^n |a_n|}$, so in particular, $\frac{1}{p(z)}$ is bounded. If $|z| \leq \rho$, then $\frac{1}{p(z)}$ is still bounded, since $\frac{1}{p(z)}$ is continuous on $|z| \leq \rho$, a closed set. Thus $\frac{1}{p(z)}$ is entire and bounded, so it is constant, and therefore $p(z)$ is constant too. $\lightning$
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	Let $f$ be analytic on and inside a circle $\Gamma$ centered at $z_0$. If $\max \{ |f(z)|\ |\ z \textnormal{ inside } \Gamma \} = |f(z_0)|$, then $f$ is constant.
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	Let $\Gamma$ be a smooth closed curve and $f$ a function analytic on and inside $\Gamma$. Then $|f(z)|$ is maximized for $z$ on $\Gamma$.
+	
+\end{Theorem}
+
+
+
+
+
+\begin{center}
+	\pagebreak
+	
+	\section{Series Representations}
+	
+	\vspace{.1in}
+\end{center}
+
+
+
+\begin{Def}
+	
+	A \textbf{series} of complex numbers is a formal expression $\displaystyle\sum\limits_{j=1}^\infty b_j$. The series $\displaystyle\sum\limits_{j=1}^\infty b_j$ \textbf{converges} to $B \in \mathbb{C}$ if $\lim\limits_{n \to \infty} \displaystyle\sum\limits_{j=1}^n b_j = B$. Otherwise, $\displaystyle\sum\limits_{j=1}^\infty b_j$ \textbf{diverges}.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	If $|b_j| \leq M_j$ for all $j \in \mathbb{N}$ and $\displaystyle\sum M_j$ converges, then $\displaystyle\sum b_j$ converges.
+	
+\end{Proposition}
+
+
+
+\begin{Proposition}
+	
+	If $\lim\limits_{j \to \infty} \left| \frac{b_{j+1}}{b_j} \right| < 1$, then $\displaystyle\sum b_j$ converges, and if $\lim\limits_{j \to \infty} \left| \frac{b_{j+1}}{b_j} \right| > 1$, then $\displaystyle\sum b_j$ diverges.
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	A series $\displaystyle\sum f_n(z)$ converges \textbf{uniformly} to $f(z)$ if for all $\varepsilon > 0$, there is an $N \in \mathbb{N}$ such that if $n \geq \mathbb{N}$, then $|f(z) - f_n(z)| < \varepsilon$ for all $z \in \mathbb{C}$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	Let $f$ be analytic at $z_0$. The \textbf{Taylor series} for $f$ about $z_0$ is
+	
+	$$
+		\sum\limits_{j=0}^\infty \frac{f^{(j)}(z_0)}{j!} (z - z_0)^j.
+	$$
+	
+\end{Def}
+
+
+
+\begin{Theorem}
+	
+	Let $f$ be analytic on the open disk of radius $R$ centered at $z_0$. Then for each $z$ such that $|z - z_0| < R$,
+	
+	$$
+		f(z) = \sum\limits_{j=0}^\infty \frac{f^{(j)}(z_0)}{j!} (z - z_0)^j.
+	$$
+	
+	Moreover, the convergence is uniform on any closed subdisk of radius $r < R$.
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	A power series $\sum a_j (z - z_0)^j$ either
+	
+	\begin{enumerate}
+		
+		\item converges only for $z = z_0$,
+		
+		\item converges for $|z - z_0| < R$ for some $R \in (0, \infty)$, or
+		
+		\item converges for all $z \in \mathbb{C}$.
+		
+	\end{enumerate}
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	If $(f_n) \to f$ uniformly and the $f_n$ are continuous, then $f$ is continuous.
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	If $(f_n) \to f$ uniformly on $D \subseteq \mathbb{C}$, the $f_n$ are continuous, and $\Gamma$ is a contour in $D$, then
+	
+	$$
+		\left( \int_{\Gamma} f_n\ \textnormal{d}z \right) \to \int_{\Gamma} f\ \textnormal{d}z.
+	$$
+	
+	\begin{Proof}
+		%
+		Let $\varepsilon > 0$. Since $(f_n) \to f$ uniformly on $D$, there is an $N \in \mathbb{N}$ such that $|f_n(z) - f(z)| < \frac{\varepsilon}{\lambda(\Gamma)}$ for all $n \geq N$ and $z \in D$, where $\lambda(\Gamma)$ is the length of $\Gamma$. Thus if $n \geq N$,
+		
+		\begin{align*}
+			\left| \int_{\Gamma} f_n(z)\ \textnormal{d}z - \int_{\Gamma} f(z)\ \textnormal{d}z \right| &= \left| \int_{\Gamma} f_n(z) - f(z)\ \textnormal{d}z \right|\\
+			& \leq \int_{\Gamma} |f_n(z) - f(z)|\ \textnormal{d}z\\
+			& < \left( \frac{\varepsilon}{\lambda(\Gamma)} \right) \lambda(\Gamma)\\
+			& = \varepsilon\textnormal{,}
+		\end{align*}
+		
+		so $\left( \int_{\Gamma} f_n\ \textnormal{d}z \right) \to \int_{\Gamma} f\ \textnormal{d}z$.c
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	If $(f_n) \to f$ uniformly on a simply connected domain $D$ and the $f_n$ are analytic on $D$, then $f$ is analytic on $D$.
+	
+	\begin{Proof}
+		%
+		Let $\Gamma$ be a closed loop in $D$. Then $\int_{\Gamma} f_n(z)\ \textnormal{d}z = 0$ for all $n \in \mathbb{N}$, since each $f_n$ is analytic. Since $(\int_{\Gamma} f_n(z)\ \textnormal{d}z) = (0) \to (\int_{\Gamma} f(z)\ \textnormal{d}z)$, $\int_{\Gamma} f(z)\ \textnormal{d}z = 0$. Since $\Gamma$ was arbitrary, $\int_{\Gamma} f(z)\ \textnormal{d}z = 0$ for every closed loop in $D$. Thus $f$ is analytic on $D$.
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	If $f = \displaystyle\sum a_j (z - z_0)^j$, then $f$ is analytic wherever it converges, and $f$ is equal to its oen Taylor series (i.e. $a_j = \frac{f^{(j)}(z_0)}{j!}$).
+	
+\end{Theorem}
+
+
+
+\begin{Example}
+	%
+	If we want to express $f(z) = \frac{1}{z-3}$ as a series centered at $2$ and valid at $5i$, we cannot use a Taylor series, since $\frac{1}{z-3} = -\frac{1}{1 - (z-2)} = - \displaystyle\sum (z - 2)^j$, $|z-2| < 1$, which does not converge at $z = 5i$. Instead, we can express $f$ as a series by noticing that
+		\begin{align*}
+		\frac{1}{z-3} &= \frac{1}{(z-2) - 1}\\
+		&= \left( \frac{1}{z-2} \right) \left( \frac{1}{1 - \frac{1}{z-2}} \right)\\
+		&= \frac{1}{z-2} \sum\limits_{j=0}^\infty \left( \frac{1}{z - 2} \right)^j\\
+		&= \sum\limits_{j=0}^\infty \left( \frac{1}{z - 2} \right)^{j + 1}\textnormal{, } |z - 2| > 1.
+	\end{align*}
+	
+	Building a series in this way will always result in one convergent on an annulus $r < |z - z_0| < R$.
+	
+\end{Example}
+
+
+
+\begin{Def}
+	
+	A \textbf{Laurent series} is a series of the form
+	
+	$$
+		\sum\limits_{j=-\infty}^\infty a_j (z - z_0)^j.
+	$$
+	
+\end{Def}
+
+
+
+\begin{Theorem}
+	
+	Let $D$ be the annulus $r < |z - z_0| < R$ and let $f$ be analytic on $D$. Then on $D$, $f$ is expressible as $f(z) = \displaystyle\sum\limits_{j=-\infty}^\infty a_j (z - z_0)^j$, where the series is converges on $D$ and uniformly on any closed subannulus $r < \rho_1 \leq |z - z_0| \leq \rho_2 < R$. Moreover,
+	
+	$$
+		a_j = \frac{1}{2 \pi i} \int_C \frac{f(\zeta)}{\zeta - z_0}^{j + 1}\ \textnormal{d}\zeta\textnormal{,}
+	$$
+	
+	where $C$ is any contour in $D$ with $z_0$ in its interior.
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	If $\displaystyle\sum\limits_{j=0}^\infty a_j (z - z_0)^j$ is valid for $|z - z_0| < R$, $\displaystyle\sum\limits_{j=-\infty}^{-1} a_j (z - z_0)^j$ is valid for $r < |z - z_0|$, and $r < R$, then $\displaystyle\sum\limits_{j=-\infty}^\infty a_j (z - z_0)^j$ is valid and analytic on the annulus $r < |z - z_0| < R$.
+	
+\end{Theorem}
+
+
+
+\begin{Def}
+	
+	A point $z_0$ is a \textbf{zero of order \emph{m}} of a function $f$ if $f$ is analytic at $z_0$ and $f(z_0) = f'(z_0) = \cdots = f^{(m-1)}(z_0) = 0$, but $f^{(m)}(z_0) \neq 0$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	Let $f$ be analytic at $z_0$. Then $z_0$ is a zero of order $m$ if and only if $f(z) = (z - z_0)^m g(z)$, where $g$ is analytic at $z_0$ and $g(z_0) \neq 0$.
+	
+	\begin{Proof}
+		%
+		$(\Rightarrow)$ Since $f$ is analytic at $z_0$, $f(z) = \displaystyle\sum\limits_{j=0}^\infty a_j (z - z_0)^j$. But $a_j = \frac{f^{(j)}(z_0)}{j!}$, so $a_j = 0$ for $0 \leq j < m$. Thus $f(z) = a_m (z - z_0)^m + a_{m + 1} (z - z_0)^{m + 1} + \cdots = (z - z_0)^m (a_m + a_{m + 1} (z - z_0) + \cdots) = (z - z_0)^m g(z)$.
+		
+	\end{Proof}
+	
+\end{Proposition}
+
+
+
+\begin{Theorem}
+	
+	Suppose $f$ is analytic at $z_0$ and $f(z_0) = 0$. Then either $f(z) = 0$ on a disk centered at $z_0$, or $f(z)$ is never zero on some punctured disk $0 < |z - z_0| < R$.
+	
+\end{Theorem}
+
+
+
+\begin{Def}
+	
+	A point $z_0$ is an \textbf{isolated singularity} of a function $f$ if $f$ is analytic on a punctured disk centered $z_0$, but not at $z_0$ itself.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	Let $\displaystyle\sum\limits_{j=-\infty}^\infty a_j (z - z_0)^j$ be the Laurent series for $f$, valid on $0 < |z - z_0| < R$.
+	
+	\begin{enumerate}
+		
+		\item If $a_j = 0$ for all $j < 0$, then $z_0$ is a \textbf{removable singularity}.
+		
+		\item If $a_{-m} \neq 0$ for some $m \in \mathbb{N}$ but $a_j = 0$ for all $j < -m$, then $z_0$ is a \textbf{pole of order \emph{m}}.
+		
+		\item Otherwise, $z_0$ is an \textbf{essential singularity}.
+		
+	\end{enumerate}
+	
+\end{Def}
+
+
+
+\begin{Example}
+	%
+	\begin{enumerate}
+		
+		\item $f(z) = \frac{z^2 - 1}{z - 1}$ has a removable singularity at $z = 1$, since its Laurent expression there is $2 + (z-1)$, which has no negative powers.
+		
+		\item $g(z) = \frac{\cos z}{z^3}$ has a pole of order $3$ at $z = 0$, since its Laurent series there is $\frac{1}{z^3} \left( 1 - \frac{z^2}{2!} + \frac{z^4}{4!} + \cdots \right)$, which has $z^{-3}$ as its smallest exponent of $z$.
+		
+		\item $e^{\frac{1}{z}}$ has an essential singularity at $z = 0$, since its Laurent expansion is $1 + \frac{1}{z} + \frac{1}{2! z^2} + \frac{1}{3! z^3} + \cdots$, which has no smallest exponent.
+		
+	\end{enumerate}
+	
+\end{Example}
+
+
+
+\begin{Proposition}
+	
+	If $f$ has a removable singularity at $z_0$, then $\lim\limits_{z \to z_0} f(z) = a_0$, $f$ is bounded near $z_0$, and defining $f(z_0) = a_0$ makes $f$ analytic at $z_0$.
+	
+\end{Proposition}
+
+
+
+\begin{Proposition}
+	
+	Let $f$ have a pole of order $m$ at $z_0$. Then $f(z) = \frac{g(z)}{(z - z_0)^m}$ for some $g$ analytic at $z_0$ such that $g(z_0) \neq 0$.
+	
+	\begin{Proof}
+		%
+		Since $f$ is analytic on $0 < |z - z_0| < R$, $f(z) = \frac{a_{-m}}{(z - z_0)^m} + \frac{a_{-m + 1}}{(z - z_0)^{m - 1}} + \cdots = \frac{1}{(z - z_0)^m} (g(z))$. Since $z_0$ is a pole of order $m$, $a_{-m} \neq 0$, so $g(z_0) \neq 0$.
+		
+	\end{Proof}
+	
+\end{Proposition}
+
+
+
+\begin{Proposition}
+	
+	If $f$ has a pole of order $m$ at $z_0$, then $\lim\limits_{z \to z_0} |f(z)| = \infty$ and $(z - z_0)^m f(z)$ has a removable singularity at $z_0$.
+	
+\end{Proposition}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(Picard)} Suppose $f$ has an essential singularity at $z_0$. Then in any disk centered at $z_0$, $f$ achieves every complex value, with possibly one exception per disk.
+	
+\end{Theorem}
+
+
+
+\begin{Def}
+	
+	The \textbf{extended complex numbers} are the set $\hat{\mathbb{C}} = \mathbb{C} \cup \{\infty\}$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A \textbf{neighborhood of infinity} is an annulus $|z| > r$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A function $f$ is \textbf{analytic at infinity} if $g(w) = f(\frac{1}{w})$ is analytic or has a removable singularity at $w = 0$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A function $f$ has a \textbf{singularity at infinity} if $f(\frac{1}{w})$ has the same type of singularity at $w = 0$.
+	
+\end{Def}
+
+
+
+\begin{Example}
+	%
+	Let $f(z) = \frac{3z - 1}{z + 2}$. If we define $f(-2) = \lim\limits_{z \to -2} \frac{3z - 1}{z + 2} = \infty$ and $f(\infty) = \lim\limits_{z \to \infty} \frac{3z - 1}{z + 2} = 3$, then $f : \hat{\mathbb{C}} \longrightarrow \hat{\mathbb{C}}$ is analytic on $\mathbb{C}$. And $f$ is analytic at $\infty$, since $f(\frac{1}{w}) = \frac{\frac{3}{w} - 1}{\frac{1}{w} + 2} = \frac{3 - w}{1 + 2w}$, which is analytic at $w = 0$. Thus $f$ is analytic on $\hat{\mathbb{C}}$.
+	
+\end{Example}
+
+
+
+
+
+\begin{center}
+	\pagebreak
+	
+	\section{Residue Theory}
+	
+	\vspace{.1in}
+\end{center}
+
+
+
+\begin{Proposition}
+	
+	Let $\Gamma$ be a smooth closed curve enclosing $z_0$. Then
+	
+	$$
+		\int_\Gamma (z - z_0)^n\ \textnormal{d}z = \begin{cases}
+		2 \pi i, & n = -1\\
+		0, & n \neq -1
+		\end{cases}.
+	$$
+	
+	\begin{Proof}
+		%
+		Deform $\Gamma$ to a circle $C$ of radius $1$ centered at $z_0$. We can parameterize $C$ by $z = z_0 + e^{it}$ and $dz = ie^{it} dt$ for $t \in [0, 2\pi]$. Then
+		
+		$$
+			\int_\Gamma (z - z_0)^n\ \textnormal{d}z = \int_0^{2 \pi} i e^{(n+1) it}\ \textnormal{d}t.
+		$$
+		
+		If $n \neq -1$, this integral evaluates to $\left. \left[ \frac{i}{n + 2} e^{(n+1) it} \right] \right|_0^{2 \pi} = 0$. Otherwise, we are integrating $i$ from $0$ to $2\pi$, which results in $2 \pi i$.
+		
+	\end{Proof}
+	
+\end{Proposition}
+
+
+
+\begin{Proposition}
+	
+	Let $f$ be analytic on and inside a contour $\Gamma$, except at $z_0$. Then
+	
+	$$
+		\int_\Gamma f(z)\ \textnormal{d}z = 2 \pi i a_{-1} \textnormal{,}
+	$$
+	
+	where $a_{-1}$ is the coefficient of $(z - z_0)^{-1}$ in the Laurent expansion for $f$ about $z_0$.
+	
+	\begin{Proof}
+		%
+		We have
+		
+		$$
+			\int_\Gamma f(z)\ \textnormal{d}z = \int_\Gamma \displaystyle\sum\limits_{j = -\infty}^{\infty} a_j (z - z_0)^j\ \textnormal{d}z = 2 \pi i a_{-1}.
+		$$
+		
+	\end{Proof}
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	Let $f$ have the Laurent expansion $\displaystyle\sum\limits_{j=-\infty}^\infty a_j (z - z_0)^j$. The \textbf{residue} of $f$ at $z_0$ is $\Res(f; z) = \Res\ z_0 = a_{-1}$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	Suppose $f$ has a simple pole at $z_0$. Then $\Res\ z_0 = \lim\limits_{z \to z_0} (z - z_0) f(z)$.
+	
+\end{Proposition}
+
+
+
+\begin{Theorem}
+	
+	Suppose $f$ has a pole of order $m$ at $z_0$. Then
+	
+	$$
+		\Res\ z_0 = \lim\limits_{z \to z_0} \left( \frac{1}{(m - 1)!} \right) \left( \frac{d^{m - 1}}{dz^{m - 1}} [ (z - z_0)^m f(z) ] \right).
+	$$
+	
+\end{Theorem}
+
+
+
+\begin{Proposition}
+	
+	Suppose $f(z) = \frac{g(z)}{h(z)}$, where $g$ and $h$ are analytic at $z_0$, $g(z_0) \neq 0$, and $h(z_0) = 0$ is simple zero. Then $\Res(f; z_0) = \frac{g(z_0)}{h'(z_0)}$.
+	
+\end{Proposition}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(The Residue Theorem)} Let $\Gamma$ be a simple, positively-oriented closed contour and $f$ a function analytic on and inside $\Gamma$, except at $z_1, ..., z_n$. Then
+	
+	$$
+		\int_\Gamma f(z)\ \textnormal{d}z = 2 \pi i \displaystyle\sum\limits_{j = 1}^n \Res\ z_j.
+	$$
+	
+	\begin{Proof}
+		%
+		Continuously deform $\Gamma$ into a contour that surrounds each singularity in an arc that limits to a circle, where each is sufficiently small that no two intersect. Connect the circles with pairs of oppositely-oriented parallel lines that limit to coinciding. For example,
+		
+		\begin{center}
+			
+			\includegraphics[width=.3\linewidth]{residue_theorem_contour}
+			
+		\end{center}
+		
+		In the limit case, the line segments will cancel one another out when integrated, since they are oriented in opposite directions. The arcs will limit to circles, and then the single-singularity Residue Theorem applies to each.
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Example}
+	%
+	Compute
+	
+	$$
+		\int_0^{2 \pi} \frac{1}{(3 + 2 \cos \theta)^2}\ \textnormal{d}\theta.
+	$$
+	
+	Consider the unit circle $C$, parameterized by $z = e^{i\theta}$ and $dz = i e^{i \theta}d\theta = izd\theta$ for $\theta \in [0, 2\pi]$. Then $\cos \theta = \frac{1}{2} (e^{i \theta} + e^{-i \theta}) = \frac{1}{2} \left( z + \frac{1}{z} \right)$, so we have
+	
+	\begin{align*}
+		\int_0^{2 \pi} \frac{1}{(3 + 2 \cos \theta)^2}\ \textnormal{d}\theta &= \int_C \frac{1}{ \left(3 + z + \frac{1}{z} \right)^2} \frac{1}{iz}\ \textnormal{d}z\\
+		&= \frac{1}{i} \int_C \frac{1}{ \left( \frac{3z + z^2 + 1}{z} \right)^2} \frac{1}{z}\ \textnormal{d}z\\
+		&= \frac{1}{i} \int_C \frac{z}{ (3z + z^2 + 1)^2}\ \textnormal{d}z\\
+		&= \frac{1}{i} \int_C \frac{z}{ (z - z_1)^2 (z - z_2)^2}\ \textnormal{d}z \textnormal{,}
+	\end{align*}
+	
+	where $z_1 = -\frac{3}{2} + \frac{\sqrt{5}}{2}$ and $z_2 = -\frac{3}{2} - \frac{\sqrt{5}}{2}$. Since only $z_1$ is inside $C$,
+	
+	\begin{align*}
+		\frac{1}{i} \int_C \frac{z}{ (z - z_1)^2 (z - z_2)^2}\ \textnormal{d}z &= \left( \frac{1}{i} \right) (2 \pi i) \Res\ z_1\\
+		&= 2\pi \lim\limits_{z \to z_1} \left( \left( \frac{1}{1!} \right) \frac{d}{dz} \left[ \frac{z}{(z - z_2)^2} \right] \right)\\
+		&= 2\pi \lim\limits_{z \to z_1} \left( - \frac{z + z_2}{(z - z_2)^3} \right)\\
+		&= 2\pi \left( \frac{3}{\sqrt{5}^3} \right)\\
+		&= \frac{6\pi}{5 \sqrt{5}}.
+	\end{align*}
+	
+\end{Example}
+
+
+
+\begin{Def}
+	
+	The \textbf{principal value} of $\int_{-\infty}^{\infty} f(x)\ \textnormal{d}x$ is
+	
+	$$
+		\pv \int_{-\infty}^{\infty} f(x)\ \textnormal{d}x = \lim\limits_{\rho \to \infty} \int_{-\rho}^{\rho} f(x)\ \textnormal{d}x.
+	$$
+	
+\end{Def}
+
+
+
+\begin{Example}
+	%
+	Compute
+	
+	$$
+		\pv \int_{-\infty}^{\infty} \frac{x^2 + 1}{x^4 + 1}\ \textnormal{d}x.
+	$$
+	
+	Let $C_\rho^+$ be the upper half of the circle centered at $0$ with radius $\rho$, let $\gamma_\rho$ be the line segment from $-\rho$ to $\rho$, and let $\Gamma_\rho = C_\rho^+ + \gamma_\rho$. Then
+	
+	\begin{align*}
+			\pv \int_{-\infty}^{\infty} \frac{x^2 + 1}{x^4 + 1}\ \textnormal{d}x &= \lim\limits_{\rho \to \infty} \int_{\gamma_\rho} \frac{z^2 + 1}{z^4 + 1}\ \textnormal{d}z\\
+			&= \lim\limits_{\rho \to \infty} \int_{\Gamma_\rho} \frac{z^2 + 1}{z^4 + 1}\ \textnormal{d}z - \lim\limits_{\rho \to \infty} \int_{C_\rho^+} \frac{z^2 + 1}{z^4 + 1}\ \textnormal{d}z.
+	\end{align*}
+	
+	Now we tackle each integral separately. For the first, around $\Gamma_\rho$, we use the Residue Theorem. The roots of  $z^4 + 1$ are $e^{i\frac{\pi}{4}}$, $e^{i\frac{3\pi}{4}}$, $e^{i\frac{5\pi}{4}}$, and $e^{i\frac{7\pi}{4}}$, but only the first two will eventually be inside $\Gamma_\rho$. Therefore,
+	
+	\begin{align*}
+		\lim\limits_{\rho \to \infty} \int_{\Gamma_\rho} \frac{z^2 + 1}{z^4 + 1}\ \textnormal{d}z &= 2 \pi i (\Res\ e^{i\frac{\pi}{4}} + \Res\ e^{i\frac{3\pi}{4}})\\
+		&= 2 \pi i \left( -\frac{i}{2\sqrt{2}} - \frac{i}{2\sqrt{2}} \right)\\
+		&= \pi \sqrt{2}.
+	\end{align*}
+	
+	For the second integral, notice that
+	
+	\begin{align*}
+		\int_{C_\rho^+} \frac{z^2 + 1}{z^4 + 1}\ \textnormal{d}x &\leq \left( \max\limits_{z \in C_\rho^+} \left| \frac{z^2 + 1}{z^4 + 1} \right| \right) (\pi \rho)\\
+		&= \left( \frac{\rho^2 + 1}{\rho^4 + 1} \right) (\pi \rho) \to 0 \textnormal{ as } \rho \to \infty.
+	\end{align*}
+	
+	Thus we finally conclude that
+	
+	$$
+		\pv \int_{-\infty}^{\infty} \frac{x^2 + 1}{x^4 + 1}\ \textnormal{d}x = \pi \sqrt{2}.
+	$$
+	
+\end{Example}
+
+
+
+\begin{Theorem}
+	
+	Let $p(z)$ and $q(z)$ be polynomials in $\mathbb{C}$ with $\deg q \geq (\deg p) + 2$. Then
+	
+	$$
+		\lim\limits_{\rho \to \infty} \int_{C_\rho^+} \frac{p(z)}{q(z)}\ \textnormal{d}z = 0.
+	$$
+	
+	The theorem also holds for $C_\rho^-$.
+	
+\end{Theorem}
+
+
+
+\begin{Example}
+	%
+	Compute
+	
+	$$
+		\pv \int_{-\infty}^{\infty} \frac{\cos x}{(x^2 + 1)^2}\ \textnormal{d}x.
+	$$
+	
+	Since $\cos x = \frac{1}{2} (e^{ix} + e^{-ix})$,
+	
+	$$
+		\pv \int_{-\infty}^{\infty} \frac{\cos x}{(x^2 + 1)^2}\ \textnormal{d}x = \frac{1}{2}\ \pv \int_{-\infty}^{\infty} \frac{e^{ix}}{(x^2 + 1)^2}\ \textnormal{d}x + \frac{1}{2}\ \pv \int_{-\infty}^{\infty} \frac{e^{-ix}}{(x^2 + 1)^2}\ \textnormal{d}x.
+	$$
+	
+	The first integral can be solved by using the contour $\Gamma_1 = C_\rho^+ + \gamma_\rho$ to split the integral into two more, the first of which can be solved by the Residue Theorem and the second by showing it vanishes in the limit with a method similar to the previous example. The second is identical, except that it uses the contour $\Gamma_2 = C_\rho^- + \gamma_\rho$.
+	
+\end{Example}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(Jordan's Lemma)} If $P(z)$ and $Q(z)$ are polynomials, $Q$ has no real zeros, $\deg Q > (\deg P) + 1$, and $m > 0$, then
+	
+	$$
+		\lim\limits_{\rho \to \infty} \int_{C_\rho^+} e^{m i z} \frac{P(z)}{Q(z)}\ \textnormal{d}z = 0.
+	$$
+	
+	\begin{Proof}
+		%
+		We can parameterize $C_\rho^+$ by $z = \rho e^{it}$ for $t \in [0, \pi]$. Then
+		
+		\begin{align*}
+			\left| \int_{C_\rho^+} e^{m i z} \frac{P(z)}{Q(z)}\ \textnormal{d}z \right| &= \left| \int_0^\pi e^{m i \rho e^{it}} \frac{P(\rho e^{it})}{Q(\rho e^{it})} i \rho e^{it}\ \textnormal{d}t \right|\\
+			& \leq \int_0^\pi  \left| e^{m i \rho e^{it}} \frac{P(\rho e^{it})}{Q(\rho e^{it})} i \rho e^{it} \right|\ \textnormal{d}t.
+		\end{align*}
+		
+		Now $\left| e^{m i \rho e^{it}} \right| = \left| e^{m i \rho (\cos t + i \sin t)} \right| = \left| e^{-m \rho \sin t} \right| = e^{-m \rho \sin t}$, and $\left| \frac{P(\rho e^{it})}{Q(\rho e^{it})} i \rho e^{it} \right| = \left| \frac{\rho P(\rho e^{it})}{Q(\rho e^{it})} \right| \leq K$ for some $K \in \mathbb{R}$ as $\rho \to \infty$, since $\deg \rho P(\rho e^{it}) = (\deg P(\rho e^{it})) + 1 < \deg Q(\rho e^{it})$. Thus
+		
+		\begin{align*}
+			\int_0^\pi  \left| e^{m i \rho e^{it}} \frac{P(\rho e^{it})}{Q(\rho e^{it})} i \rho e^{it} \right|\ \textnormal{d}t & \leq K \int_0^\pi e^{-m \rho \sin t}\ \textnormal{d}t\\
+			&= 2K \int_0^{\frac{\pi}{2}} e^{-m \rho \sin t}\ \textnormal{d}t\\
+			& \leq 2K \int_0^{\frac{\pi}{2}} e^{-m \rho \frac{2}{\pi} t}\ \textnormal{d}t\\
+		\end{align*}
+		
+		This last inequality is due to the fact that $\sin t \geq \frac{2}{\pi} t$ for $t \in [0, \frac{2}{\pi}]$, as the following plot shows.
+		
+		\begin{center}
+			
+			\includegraphics[width=.3\linewidth]{line_and_sin}
+			
+		\end{center}
+		
+		Continuing, we have
+		
+		\begin{align*}
+			\leq 2K \int_0^{\frac{\pi}{2}} e^{-m \rho \frac{2}{\pi} t}\ \textnormal{d}t &= 2K \left. \left[ -\frac{\pi}{2 m \rho} e^{-m \rho \frac{2}{\pi} t} \right] \right|_0^{\frac{\pi}{2}}\\
+			&= -\frac{\pi K}{m \rho} (e^{-m \rho} - 1)\\
+			&< \frac{\pi K}{m \rho} \to 0 \textnormal{ as }\rho \to \infty.
+		\end{align*}
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(The Arc Lemma)} Let $f$ have a simple pole at $c \in \mathbb{R}$ and let $T_r$ be the arc given by $z = c + re^{i \theta}$ for $\theta \in [\theta_1, \theta_2]$. Then
+	
+	$$
+		\lim\limits_{r \to 0} \int_{T_r} f(z)\ \textnormal{d}z = i(\theta_2 - \theta_1) \Res(f; c).
+	$$
+	
+	\begin{Proof}
+		%
+		Since $f$ has a simple pole at $c$, $f(z) = \frac{a_{-1}}{z - c} + g(z)$, where $g(z) = \displaystyle\sum\limits_{j = 0}^\infty a_j (z - c)^j$ is analytic at $c$ and therefore bounded around it, say by $M$. Then
+		
+		\begin{align*}
+			\int_{T_r} f(z)\ \textnormal{d}z &= \int_{T_r} \frac{a_{-1}}{z - c}\ \textnormal{d}z + \int_{T_r} g(z)\ \textnormal{d}z\\
+			&= a_{-1} \int_{\theta_1}^{\theta_2} \frac{1}{re^{i \theta}} i re^{i \theta}\ \textnormal{d}\theta + \int_{T_r} g(z)\ \textnormal{d}z\\
+			&= i (\theta_2 - \theta_1) \Res(f; c) + \int_{T_r} g(z)\ \textnormal{d}z\\
+			& \leq i (\theta_2 - \theta_1) \Res(f; c) + \left(\max\limits_{z \in T_r} g(z) \right) (\theta_2 - \theta_1)r\\
+			& \leq i (\theta_2 - \theta_1) \Res(f; c) + M \left(\frac{\theta_2 - \theta_1}{2\pi} r\right) \to i (\theta_2 - \theta_1) \Res(f; c) \textnormal{ as } r \to 0.			
+		\end{align*}
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Example}
+	%
+	Compute
+	
+	$$
+		\pv \int_{-\infty}^{\infty} \frac{e^{ix}}{x}\ \textnormal{d}x.
+	$$
+	
+	Because there is a singularity at $0$, along the path of integration, we will need to use a more intricate contour and the Arc Lemma.
+	
+	\begin{center}
+		
+		\includegraphics[width=.3\linewidth]{arc_lemma_contour}
+		
+	\end{center}
+	
+	Let $C_\rho^+$ be the upper half-circle of radius $\rho$, oriented counter-clockwise and $S_r^+$ the upper half-circle of radius $r$, oriented clockwise. Then
+	
+	\begin{align*}
+		\pv \int_{-\infty}^{\infty} \frac{e^{ix}}{x}\ \textnormal{d}x &= \lim_{\substack{\rho \to \infty \\ r \to 0}} \left( \int_{C_\rho^+} \frac{e^{iz}}{z}\ \textnormal{d}z - \int_{S_r^+} \frac{e^{iz}}{z}\ \textnormal{d}z \right)\\
+		&= \lim\limits_{r \to 0} \int_{S_r^+} \frac{e^{iz}}{z}\ \textnormal{d}z\\
+		&= -i (0 - \pi) \Res \left( \frac{e^{iz}}{z}; 0 \right)\\
+		&= i \pi.
+	\end{align*}
+	
+\end{Example}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(The Upgraded Residue Theorem)} Let $\Gamma$ be the following contour. The inner circle has radius $\varepsilon$, the outer one $\rho$, and the red line is a traced twice, once from $\varepsilon$ to $\rho$ at argument $0$ ($\gamma_1$) and back from $\rho$ to $\varepsilon$ at argument $2\pi$ ($\gamma_2$).
+	
+	\begin{center}
+		
+		\includegraphics[width=.3\linewidth]{URT_contour}
+		
+	\end{center}
+	
+	Let $f(z) = z^\alpha \frac{P(z)}{Q(z)}$, where $\alpha \in \mathbb{R} \setminus \mathbb{Z}$, $Q$ has no zeros on $\Gamma$, and we take the branch of $z^\alpha$ with $0 < \Arg z \leq 2 \pi$. Then
+	
+	$$
+		\int_\Gamma f(z)\ \textnormal{d}z = 2 \pi i \displaystyle\sum\limits_{j = 1}^n \Res(f; z_j)\textnormal{,}
+	$$
+	
+	where the $z_j$ are the singularities of $f$ inside $\Gamma$.
+	
+\end{Theorem}
+
+
+
+\begin{Example}
+	%
+	Compute
+	
+	$$
+		\pv \int_0^\infty \frac{x^\alpha}{(x + 9)^2}\ \textnormal{d}x\textnormal{,}
+	$$
+	
+	where $\alpha \in (-1, 1) \setminus \{0\}$.\\
+	
+	We have
+	
+	\begin{align*}
+		\lim_{\substack{\rho \to \infty \\ \varepsilon \to 0}} \int_\varepsilon^\rho \frac{x^\alpha}{(x + 9)^2}\ \textnormal{d}x &= \lim_{\substack{\rho \to \infty \\ \varepsilon \to 0}} \int_{\gamma_1} \frac{z^\alpha}{(z + 9)^2}\ \textnormal{d}z\\
+		&= \lim_{\substack{\rho \to \infty \\ \varepsilon \to 0}} \left( \left( \int_{\Gamma} - \int_{C_\rho} - \int_{C_\varepsilon} - \int_{\gamma_1} \right) \left( \frac{z^\alpha}{(z + 9)^2} \right)\ \textnormal{d}z \right).
+	\end{align*}
+	
+	Now both $\int_{C_\rho}$ and $\int_{C_\varepsilon}$ limit to $0$, and $\int_{\Gamma}$ is solved with the Upgraded Residue Theorem, so we need only examine $\int_{\gamma_2}$. We have
+	
+	\begin{align*}
+		\int_{\gamma_2} \frac{z^\alpha}{(z + 9)^2}\ \textnormal{d}z &= \int_{\gamma_2} \frac{e^{\alpha \log z}}{(z + 9)^2}\ \textnormal{d}z\\
+		&= \int_{\gamma_2} \frac{e^{\alpha (\Log |z| + 2 \pi i)}}{(z + 9)^2}\ \textnormal{d}z\\
+		&= \int_\rho^\varepsilon \frac{e^{\alpha \Log |z|} e^{2 \pi i \alpha}}{(z + 9)^2}\ \textnormal{d}z\\
+		&= -e^{2 \pi i \alpha} \int_\varepsilon^\rho \frac{e^{\alpha \Log |z|}}{(z + 9)^2}\ \textnormal{d}z\\
+		&= -e^{2 \pi i \alpha} \int_{\gamma_1} \frac{z^\alpha}{(z + 9)^2}\ \textnormal{d}z.
+	\end{align*}
+	
+	Now we can solve our original integral:
+	
+	$$
+		\lim_{\substack{\rho \to \infty \\ \varepsilon \to 0}} \int_{\gamma_1} \frac{z^\alpha}{(z + 9)^2}\ \textnormal{d}z = \left( \frac{1}{1 - e^{2 \pi i \alpha}} \right) \lim_{\substack{\rho \to \infty \\ \varepsilon \to 0}} \int_\Gamma \frac{z^\alpha}{(z + 9)^2}\ \textnormal{d}z\textnormal{,}
+	$$
+	
+	which, after much calculation, simplifies to $\frac{9^{\alpha - 1} \pi \alpha}{\sin \pi \alpha}$.
+	
+\end{Example}
+
+
+
+\begin{Example}
+	%
+	Compute
+	
+	$$
+		\pv \int_0^\infty \frac{x^{\frac{1}{3}}}{x^2 - 4}\ \textnormal{d}x.
+	$$
+	
+	Because of the singularity on the positive real axis, we will need to modify our contour.
+	
+	\begin{center}
+		
+		\includegraphics[width=.3\linewidth]{URT_arc_lemma_contour}
+		
+	\end{center}
+	
+	If we label the new circle $C_\delta$, then we have a truly gargantuan computation:
+	
+	$$
+		\int_\Gamma = \int_{C_\varepsilon} + \int_\varepsilon^\delta + \int_{C_\delta^+} + \int_\delta^\rho + \int_{C_\rho} + \int_\rho^\delta + \int_{C_\delta^-} + \int_\delta^\varepsilon.
+	$$
+	
+	The only integrals we have not seen are $\int_{C_\delta^+}$ and $\int_{C_\delta^-}$. Both can be solved with the Arc Lemma: on $C_\delta^+$, for example, $\frac{z^{\frac{1}{3}}}{z^2 - 4} = \frac{e^{\frac{1}{3} \Log z}}{z^2 - 4}$, so
+	
+	$$
+		\lim\limits_{\delta \to 0} \int_{C_\delta^+} \frac{z^{\frac{1}{3}}}{z^2 - 4}\ \textnormal{d}z = -(i \pi) \Res \left( \frac{e^{\frac{1}{3} \Log z}}{z^2 - 4}; 2 \right).
+	$$
+	
+\end{Example}
+
+
+
+\begin{Def}
+	
+	A function is \textbf{meromorphic} if is analytic, except possibly at poles.
+	
+\end{Def}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(The Argument Principle)} Let $C$ be a simple, closed, positively-oriented contour and $f$ a nonzero function analytic on $C$ and meromorphic inside it. Then
+	
+	$$
+		\int_C \frac{f'(z)}{f(z)}\ \textnormal{d}z = 2 \pi i (N_0(f) - N_p(f)) \textnormal{,}
+	$$
+	
+	where $N_0(f)$ is the number of zeros of $f$ inside $C$ and $N_p(f)$ is the number of poles of $f$ inside $C$, counting multiplicity.
+	
+	\begin{Proof}
+		%
+		By the Residue Theorem,
+		
+		$$
+			\int_C \frac{f'(z)}{f(z)}\ \textnormal{d}z = 2 \pi i \displaystyle\sum\limits_{j = 1}^n \Res \left( \frac{f'}{f}; z_j \right).
+		$$
+		
+		Now all the poles of $\frac{f'}{f}$ occur at either zeros of $f$ or poles of $f'$. If $z_0$ is a zero of $f$ of order $m$, then $f(z) = (z - z_0)^m g(z)$. Then
+		
+		$$
+			\frac{f'(z)}{f(z)} = \frac{m(z - z_0)^{m - 1} g(z) + (z - z_0)^m g'(z)}{(z - z_0)^m} = \frac{m}{z - z_0} + \frac{g'(z)}{g(z)}.
+		$$
+		
+		Since $\frac{g'{z}}{g(z)}$ is analytic at $z_0$, since both $g$ and $g'$ are and $g(z_0) \neq 0$, $\Res \left( \frac{f'}{f}; z_0 \right) = \Res \left( \frac{m}{z - z_0}; z_0 \right) = m$.\\
+		
+		For a pole $z_p$ of $f$ (not $f'$) of order $k$, $f(z) = \frac{g(z)}{(z - z_p)^k}$, so
+		
+		$$
+			\frac{f'(z)}{f(z)} = \frac{(z - z_p)^k}{g(z)} \left( \frac{g'(z)(z - z_p)^k - g(z) \left( k (z - z_p)^{k - 1} \right)}{(z - z_p)^{2k}} \right) = \frac{g'(z)}{g(z)} - \frac{k}{z - z_p}.
+		$$
+		
+		Then $\Res \left( \frac{f'}{f}; z_p \right) = \Res \left( -\frac{k}{z - z_p}; z_p \right) = -k$. Since these are all the poles of $\frac{f'}{f}$,
+		
+		$$
+			\int_C \frac{f'(z)}{f(z)}\ \textnormal{d}z = 2 \pi i (N_0(f) - N_p(f)).
+		$$
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(Rouch\'e)} Suppose $f$ and $h$ are analytic on and inside a  simple, closed, positively-oriented curve $C$, and that $|h(z)| < |f(z)|$ for all $z \in C$. Then $f$ and $f + h$ ave the same number of zeros inside $C$.
+	
+	\begin{Proof}
+		%
+		Since $0 \geq |h(z)| < |f(z)|$, $f(z) \neq 0 $ for any $z \in C$. And since $|h(z)| < |f(z)|$, $f(z) + h(z) \neq 0$ either. Let $F(z) = \frac{h(z)}{f(z)}$. Then $h(z) = F(z)f(z)$, so
+		
+		\begin{align*}
+			\frac{1}{2 \pi i} \int_C \frac{f'(z) + h'(z)}{f(z) + h(z)}\ \textnormal{d}z &= \frac{1}{2 \pi i} \int_C \frac{f'(z) + (F(z)f(z))'}{f(z) + F(z)f(z)}\ \textnormal{d}z\\
+			&= \frac{1}{2 \pi i} \int_C \frac{f'(z) + F'(z)f(z) + F(z)f'(z)}{f(z)(1 + F(z))}\ \textnormal{d}z\\
+			&= \frac{1}{2 \pi i} \int_C \frac{f'(z)(1 + F(z))}{f(z)( + F(z))} + \frac{F'(z)}{1 + F(z)}\ \textnormal{d}z\\
+			&= \frac{1}{2 \pi i} \int_C \frac{f'(z)}{f(z)}\ \textnormal{d}z \textnormal{,}
+		\end{align*}
+		
+		since $1 + F(z) = \frac{f(z) + h(z)}{h(z)} \neq 0$. By The argument principle, $f$ and $f + h$ ave the same number of zeros inside $C$.
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Example}
+	%
+	How many zeros of $g(z) = z^6 + 4z - 3$ are inside $|z| = 3$?\\
+	
+	Let $f(z) = z^6$ and $h(z) = 4z - 3$. On $|z| = 3$, $|h(z)| = |4z - 3| \leq |4z| + 3 = 15 \leq |f(z)| = 3^6$. Thus $g = f + h$ has as many zeros as $f$ inside $|z| = 3$ --- six. This method gives an alternate proof of the Fundamental Theorem of Algebra.
+	
+\end{Example}
+
+
+
+
+
+\begin{center}
+	\pagebreak
+	
+	\section{Spaces of Analytic Functions}
+	
+	\vspace{.1in}
+\end{center}
+
+
+
+\begin{Def}
+	
+	An \textbf{inner product} on a complex vector space $V$ is a mapping $\left< \cdot, \cdot \right> : V \times V \longrightarrow \mathbb{C}$ such that for all $x, y, z \in \mathbb{C}$ and $\lambda \in \mathbb{C}$,
+	
+	\begin{enumerate}
+		
+		\item $\left< x, x \right> > 0$ unless $x = 0$.
+		
+		\item $\left< \lambda x + y, z \right> = \lambda \left< x, z \right> + \left< y, z \right>$.
+		
+		\item $\left< x, y \right> = \overline{\left< y, x \right>}$.
+		
+	\end{enumerate}
+	
+\end{Def}
+
+
+
+\begin{Example}
+	%
+	The set $C[0, 1] = \{f : [0, 1] \longrightarrow \mathbb{C}\ |\ f\textnormal{ is continuous} \}$ with the inner product $\left< f, g \right> = \int_0^1 f\overline{g}$ is an inner product space.
+	
+\end{Example}
+
+
+
+\begin{Proposition}
+	
+	Let $V$ be an inner product space, $x, y, z \in V$, and $\lambda \in \mathbb{C}$. Then
+	
+	\begin{enumerate}
+		
+		\item $\left< x, \lambda y \right> = \overline{\lambda} \left< x, y \right>$.
+		
+		\item $\left< x, y + z \right> = \left< x, y \right> \left< x, z \right>$.
+		
+		\item $\left< x, 0 \right> = \left< 0, x \right> = 0$.
+		
+		\item If $\left< w, y \right> = \left< w, z \right>$ for all $w \in V$, then $y = z$.
+		
+	\end{enumerate}
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	Let $x \in V$. The \textbf{norm} of $x$ is $||x||= \sqrt{\left< x, x \right>}$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	%
+	Let $x \in V$ and $\lambda \in \mathbb{C}$. Then
+	
+	\begin{enumerate}
+		
+		\item $||x|| > 0$.
+		
+		\item $||x|| = 0$ if and only if $x = 0$.
+		
+		\item $||\lambda x|| = |\lambda| \cdot ||x||$.
+		
+	\end{enumerate}
+	
+\end{Proposition}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(Cauchy-Schwarz)} Let $x, y \in V$. Then $|\left< x, y \right> | \leq ||x||\cdot||y||$, with equality if and only if $x = \lambda y$ for some $\lambda \in \mathbb{C}$.
+	
+	\begin{Proof}
+		%
+		If $x + \lambda y \neq 0$ for any $\lambda \in \mathbb{C}$, then for all $\lambda \in \mathbb{C}$,
+		
+		\begin{align*}
+			0 &< \left< x + \lambda y, x + \lambda y \right>\\
+			&= \left< x, x \right> + \left< x, \lambda y \right> + \left< \lambda y, x \right> + \left< \lambda y, \lambda y \right>\\
+			&= ||x||^2 + \overline{\lambda} \left< x, y \right> + \overline{\overline{\lambda} \left< x, y \right>} + |\lambda|^2 ||y||^2\\
+			&= ||x||^2 + 2\textnormal{Re} \left( \overline{\lambda} \left< x, y \right> \right) + |\lambda|^2 ||y||^2.
+		\end{align*}
+		
+		Consider the line in $\mathbb{C}$ passing through $0$ and $\left< x, y \right>$. There is a $\theta \in [0, \pi)$ such that every point on the line is of the form $t e^{i \theta}$ for some $t \in \mathbb{R}$. Let $\lambda = t e^{i \theta}$ be a function of $t$. Then
+		
+		\begin{align*}
+			0 &< ||x||^2 + 2\textnormal{Re} \left( t e^{-i \theta} | \left< x, y \right> | e^{i \theta} \right) + |t e^{i \theta}|^2 ||y||^2\\
+			&= ||x||^2 + 2t |\left< x, y \right> | + t^2 ||y||^2.
+		\end{align*}
+		
+		As a function of $t$, this is a quadratic with no roots, so the discriminant is negative. Thus $4 | \left< x, y \right> |^2  - 4 ||y||^2 ||x||^2 < 0$, so $| \left< x, y \right> | < ||x||\cdot||y||$.
+		
+	\end{Proof} 
+	
+\end{Theorem}
+
+
+
+\begin{Example}
+	%
+	Let $f : [0, 1] \longrightarrow \mathbb{C}$ be continuous. Then
+	
+	$$
+		\left| \int_0^1 f(t) \sin(\pi t)\ \textnormal{d}t \right| \leq \frac{1}{\sqrt{2}} \sqrt{\int_0^1 |f(t)|^2\ \textnormal{d}t}.
+	$$
+	
+\end{Example}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(The Triangle Inequality)} For all $x, y \in V$, $||x + y|| \leq ||x|| + ||y||$.
+	
+	\begin{Proof}
+		%
+		We have
+		
+		\begin{align*}
+			||x + y||^2 &= \left< x + y, x + y \right>\\
+			&= \left< x, x \right> + \left< x, y \right> + \left< y, x \right> + \left< y, y \right>\\
+			&= ||x||^2 + 2\textnormal{Re} \left( \left< x, y \right> \right) + ||y||^2\\
+			&\leq ||x||^2 + 2| \left< x, y \right> | + ||y||^2\\
+			&\leq ||x||^2 + 2||x||\cdot||y|| + ||y||^2\\
+			&= (||x|| + ||y||)^2.
+		\end{align*}
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Proposition}
+	
+	\textbf{(The Parallelogram Law)} For all $x, y \in V$, $||x + y||^2 + ||x - y||^2 = 2||x||^2 + 2||y||^2$.
+	
+\end{Proposition}
+
+
+
+\begin{Proposition}
+	
+	\textbf{(The Polarization Identity)} For all $x, y \in V$, $4 \left< x, y \right> = ||x + y||^2 - ||x - y||^2 + ||x + iy||^2 - ||x - iy||^2$.
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	The set
+	
+	$$
+		RL^2 = \left. \left\{ f(z) = \frac{p(z)}{q(z)}\ \right|\ p \textnormal{ and } q \textnormal{ are polynomials in } \mathbb{C} \textnormal{, and } q(z) \neq 0 \textnormal{ on } |z| = 1 \right\}
+	$$
+	
+	equipped with the inner product
+	
+	$$
+		\left< f, g \right> = \frac{1}{2 \pi i} \int_{|z| = 1} f(z) \overline{g(z)} \left( \frac{1}{z} \right)\ \textnormal{d}z
+	$$
+	
+	is an inner product space. The set $RH^2 = \{f \in RL^2\ |\ f \textnormal{ is analytic on } |z| < 1 \}$ is also one, using the same inner product.
+	
+\end{Def}
+
+
+
+\begin{Example}
+	%
+	Show that in $RL^2$, $\left< \frac{1}{z - \alpha}, \frac{1}{z - \beta} \right> = \frac{1}{1 - \alpha \overline{\beta}}$, where $|\alpha|, |\beta| < 1$.\\
+	
+	We have
+	
+	\begin{align*}
+		\left< \frac{1}{z - \alpha}, \frac{1}{z - \beta} \right> &= \frac{1}{2 \pi i} \int_{|z| = 1} \left( \frac{1}{z - \alpha} \right) \left( \frac{1}{\overline{z} - \overline{\beta}} \right) \left( \frac{1}{z} \right)\ \textnormal{d}z\\
+		&= \frac{1}{2 \pi i} \int_{|z| = 1} \frac{1}{(1 - z \overline{\beta})(z - \alpha)}\ \textnormal{d}z\\
+		&= \frac{1}{1 - \alpha \overline{\beta}}.
+	\end{align*}
+	
+\end{Example}
+
+
+
+\begin{Def}
+	
+	Let $V$ be a vector space. A \textbf{norm} on $V$ is a function $|| \cdot || : V \longrightarrow [0, \infty)$ such that for all $x, y \in V$ and $\lambda \in \mathbb{C}$,
+	
+	\begin{enumerate}
+		
+		\item $||x|| > 0$ unless $x = 0$.
+		
+		\item $||\lambda x|| = |\lambda| \cdot ||x||$.
+		
+		\item $||x + y|| \leq ||x|| + ||y||$.
+		
+	\end{enumerate}
+	
+\end{Def}
+
+
+
+\begin{Example}
+	%
+	A common norm equipped on $C[0, 1]$ is the \textbf{sup norm}, given by $||f||_\infty = \sup \{|f(x)\ |\ x \in [0, 1]\}$. Notice that the sup norm is not the same as the norm induced by the standard inner product on $C[0, 1]$: for example, $||\sin \pi t ||_\infty = 1$, but $||\sin \pi t|| = \frac{1}{\sqrt{2}}$.
+	
+\end{Example}
+
+
+
+\begin{Proposition}
+	
+	Not every norm induces an inner product.
+	
+	\begin{Proof}
+		%
+		Consider the following two functions $f$ and $g$ in $C[0, 1]$:
+		
+		\begin{center}
+			
+			\includegraphics[width=.3\linewidth]{norms_counterexample_1} \includegraphics[width=.3\linewidth]{norms_counterexample_2}
+			
+		\end{center}
+		
+		Then $||f + g||_\infty = ||f - g||_\infty = ||f||_\infty = ||g||_\infty = 1$. If $|| \cdot ||$ corresponded to an inner product, then by the parallelogram law, $||f + g||_\infty + ||f - g||_\infty = 2||f||_\infty + 2||g||_\infty$, but one is $2$ and the other $4$. $\lightning$
+		
+	\end{Proof}
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	A sequence $(x_n) \subseteq V$ \textbf{converges} to $x \in V$, written $(x_n) \to x$, if $\lim\limits_{n \to \infty} ||x_n - x|| = 0$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A sequence $(x_n) \subseteq V$ is \textbf{Cauchy} if for all $\varepsilon > 0$, there is an $N \in \mathbb{N}$ such that if $n, m \geq N$, then $||x_n - x_m|| < \varepsilon$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A normed vector space $V$ is \textbf{complete} if every Cauchy sequence in $V$ converges to a limit in $V$.
+	
+\end{Def}
+
+
+
+\begin{Example}
+	%
+	Neither $\mathbb{Q}$ nor $C[0, 1]$ is complete, at least with $| \cdot |$ and $\int_0^1 f\overline{g}$.
+	
+\end{Example}
+
+
+
+\begin{Def}
+	
+	A \textbf{Banach space} is a complete normed vector space.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A \textbf{Hilbert space} is a complete inner product space.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	Let $\mathcal{H}$ be an inner product space. Two vectors $x, y \in \mathcal{H}$ are \textbf{orthogonal}, written $x \perp y$, if $\left< x, y \right> = 0$.
+	
+\end{Def}
+
+
+
+\begin{Example}
+	%
+	In $RH^2$ with the standard inner product,
+	
+	\begin{align*}
+		\left< \frac{3z - 1}{z^2 + 4}, \frac{3}{3 - z} \right> &= \frac{1}{2 \pi i} \int_{|z| = 1} \frac{(3z - 1)(3)}{(z^4 + 4)(3 - \overline{z})(z)}\ \textnormal{d}z\\
+		&= \frac{1}{2 \pi i} \int_{|z| = 1} \frac{9z - 3}{(z^4 + 4)(3z - 1)}\ \textnormal{d}z\\
+		&= \Res \left( \frac{1}{3} \right)\\
+		&= 0 \textnormal{,}
+	\end{align*}
+	
+	so $f \perp g$.
+	
+\end{Example}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(Pythagorean)} Let $x, y \in \mathcal{H}$ with $x \perp y$. Then $||x + y||^2 = ||x||^2+ ||y||^2$.
+	
+	\begin{Proof}
+		%
+		We have $||x + y||^2 = \left< x + y, x + y \right> = \left< x, x \right> + \left< x, y \right> + \left< y, x \right> + \left< y, y \right> = \left< x, x \right> + \left< y, y \right> = ||x||^2 + ||y||^2$.
+		
+	\end{Proof}
+	
+	\begin{Corollary}
+		
+		Let $x_1, ..., x_n \in \mathcal{H}$ with $x_i \perp x_j$ for all $i \neq j$. Then $||x_1 + \cdots + x_n||^2 = ||x_1||^2 + \cdots + ||x_n|^2$.
+		
+	\end{Corollary}
+	
+\end{Theorem}
+
+
+
+\begin{Def}
+	
+	Vectors $e_1, ..., e_n \in \mathcal{H}$ are \textbf{orthonormal} if $||e_i|| = 1$ for all $i$ and $e_i \perp e_j$ for all $i \neq j$.
+	
+\end{Def}
+
+
+
+\begin{Example}
+	%
+	$(1, 0)$ and $(0, i)$ are orthonormal in $\mathbb{R}^2$ over $\mathbb{C}$.
+	
+\end{Example}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(Bessel's Inequality)} Let $e_1, e_2, ... \in \mathcal{H}$ be orthonormal and let $x \in \mathcal{H}$. Then
+	
+	$$
+		||x||^2 \geq \sum\limits_{j = 1}^\infty | \left< x, e_j \right> |^2.
+	$$
+	
+	\begin{Proof}
+		%
+		We have
+		
+		\begin{align*}
+			0 &\leq \left| \left| x - \displaystyle\sum\limits_{j = 1}^n \left< x, e_j \right> e_j \right| \right|^2\\
+			&= ||x||^2 - 2\textnormal{Re} \left( \displaystyle\sum\limits_{j = 1}^n \left< x, \left< x, e_j \right> e_j \right> \right) + \displaystyle\sum\limits_{j = 1}^n |\left< x, e_j \right>|^2\\
+			&= ||x||^2 - 2\sum\limits_{j = 1}^n |\left< x, e_j \right>|^2 + \displaystyle\sum\limits_{j = 1}^n |\left< x, e_j \right>|^2\\
+			&= ||x||^2 - \sum\limits_{j = 1}^n |\left< x, e_j \right>|^2.
+		\end{align*}
+		
+		Thus
+		
+		$$
+			||x||^2 \geq \sum\limits_{j = 1}^\infty | \left< x, e_j \right> |^2.
+		$$
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	Let $e_1, e_2, ... \in \mathcal{H}$ be orthonormal in a Hilbert space $\mathcal{H}$. Then the following two statements are equivalent:
+	
+	\begin{enumerate}
+		
+		\item If $\left< x, e_j \right> = 0$ for all $j$, then $x = 0$.
+		
+		\item For all $x \in \mathcal{H}$, $||x||^2 = \displaystyle\sum\limits_{j = 1}^\infty | \left< x, e_j \right> |^2$.
+		
+	\end{enumerate}
+	
+	\begin{Proof}
+		%
+		$(\Rightarrow)$ Let $x \in \mathcal{H}$ and let $y = x - \displaystyle\sum \left< x, e_j \right> e_j$. Then $\left< y , e_j \right> = 0$ for all $j$, so $y = 0$.\\
+		
+		$(\Leftarrow)$ If $\left< x, e_j \right> = 0$ for all $j$, then $||x||^2 = 0$, so $x = 0$.
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	Let $f = \displaystyle\sum\limits_{j = -\infty}^\infty a_j z^j \in RL^2 \setminus RH^2$. Then $\displaystyle\sum\limits_{j = 0}^\infty a_j z^j$ is the closest element of $RH^2$ to $f$.
+	
+\end{Theorem}
+
+
+
+\begin{Def}
+	
+	The open unit disk is $\mathbb{D} = \{z \in \mathbb{C}\ |\ |z| < 1\}$.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	\textbf{Hardy space} is
+	
+	$$
+		H^2 = \left\{ f : \mathbb{D} \longrightarrow \mathbb{C}\ \left|\ f \textnormal{ is analytic and } \displaystyle\sum\limits_{j = 0}^\infty |a_j|^2 \textnormal{ converges, where } f(z) = \displaystyle\sum\limits_{j = 0}^\infty a_j z^j \right\} \right. .
+	$$
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	$H^2$ is an inner product space with the inner product
+	
+	$$
+		\left< f, g \right> = \left< \displaystyle\sum\limits_{j = 0}^\infty a_j z^j, \displaystyle\sum\limits_{j = 0}^\infty b_j z^j \right> = \displaystyle\sum\limits_{j = 0}^\infty a_j \overline{b_j}.
+	$$
+	
+\end{Proposition}
+
+
+
+\begin{Example}
+	%
+	$0$, $z + 2z^5$, $\frac{3}{3 - z}$, and $\frac{1 - 2z}{2 - z}$ are elements of $H^2$, but $\frac{1}{6z}$ and $\frac{1}{1 - z}$ are not.
+	
+\end{Example}
+
+
+
+\begin{Proposition}
+	
+	In $H^2$, $1, z, z^2, ...$ are orthonormal.
+	
+\end{Proposition}
+
+
+
+\begin{Theorem}
+	
+	$H^2$ is complete.
+	
+	\begin{Proof}
+		%
+		Given $(f_n) \subseteq H^2$, $(f_n) = (a_{n,0} + a_{n, 1} z + a_{n, 2} z^2 + \cdots) \to A_0 + A_1 z + A_2 z^2 + \cdots \in H^2$.
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Def}
+	
+	A \textbf{reproducing kernel} is a function $K_\omega = \frac{1}{1 - \omega z}$ for $|\omega| < 1$.
+	
+\end{Def}
+
+
+
+\begin{Theorem}
+	
+	Let $f \in H^2$ and $\omega \in \mathbb{D}$. Then
+	
+	$$
+		\left< f, \frac{1}{K_\omega} \right> = f(\omega).
+	$$
+	
+	\begin{Proof}
+		%
+		We have
+		
+		\begin{align*}
+			\left< f, K_\omega \right> &= \left< f, \frac{1}{1 - \alpha z} \right>\\
+			&= \left< \sum a_j z^j, \displaystyle\sum (\alpha z)^j \right>\\
+			&= \sum a_j \alpha^j\\
+			&= f(\alpha).
+		\end{align*}
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	An alternate definition for $H^2$ is
+	
+	$$
+		H^2 = \left\{ f : \mathbb{D} \longrightarrow \mathbb{C} \textnormal{ analytic}\ \left|\ \lim\limits_{r \to 1^-} \left( \frac{1}{2 \pi} \int_0^{2 \pi} \left| f(r e^{i \theta}) \right|^2\ \textnormal{d}\theta \right) < \infty \right\} . \right.
+	$$
+	
+	\begin{Proof}
+		%
+		Let $f(z) = \displaystyle\sum a_j z^j \in H^2$. Then
+		
+		\begin{align*}
+			\frac{1}{2 \pi} \int_0^{2 \pi} \left| f(r e^{i \theta}) \right|^2\ \textnormal{d}\theta &= \frac{1}{2 \pi} \int_0^{2 \pi} \left( \displaystyle\sum\limits_{j = 0}^\infty a_j \left( re^{i \theta} \right)^j \right) \overline{\left( \displaystyle\sum\limits_{k = 0}^\infty a_k \left( re^{i \theta} \right)^k \right)}\ \textnormal{d}\theta\\
+			&= \frac{1}{2 \pi} \int_0^{2 \pi} \displaystyle\sum\limits_{j = 0}^\infty \displaystyle\sum\limits_{k = 0}^\infty a_j \overline{a_k} r^{j + k} e^{i (j - k) \theta}\ \textnormal{d}\theta\\
+			&= \sum\limits_{j = 0}^\infty \displaystyle\sum\limits_{k = 0}^\infty \left( \frac{1}{2 \pi} \int_0^{2 \pi} a_j \overline{a_k} r^{j + k} e^{i (j - k) \theta}\ \textnormal{d}\theta \right)\\
+			&= \sum\limits_{j = 0}^\infty \left( \frac{1}{2 \pi} \int_0^{2 \pi} |a_j|^2 r^{2j}\ \textnormal{d}\theta \right)\\
+			&= \sum\limits_{j = 0}^\infty |a_j|^2 r^{2j}.
+		\end{align*}
+		
+		Thus
+		
+		$$
+			||f||^2 = \lim\limits_{r \to 1^-} \left( \frac{1}{2 \pi} \int_0^{2 \pi} \left| f(r e^{i \theta}) \right|^2\ \textnormal{d}\theta \right) \textnormal{,}
+		$$
+		
+		so
+		
+		$$
+			H^2 = \left\{ f : \mathbb{D} \longrightarrow \mathbb{C} \textnormal{ analytic}\ \left|\ \lim\limits_{r \to 1^-} \left( \frac{1}{2 \pi} \int_0^{2 \pi} \left| f(r e^{i \theta}) \right|^2\ \textnormal{d}\theta \right) < \infty \right\}. \right.
+		$$
+		
+	\end{Proof}
+	
+	
+	
+	\begin{Corollary}
+		
+		$RH^2$ is a subspace of $H^2$.
+		
+	\end{Corollary}
+	
+\end{Theorem}
+
+
+
+\begin{Def}
+	
+	\textbf{Ackermann space} is
+	
+	$$
+		A^2 = \left\{ f : \mathbb{D} \longrightarrow \mathbb{C} \textnormal{ analytic}\ \left|\ \displaystyle\sum \frac{|a_j|^2}{j + 1} < \infty \right\}. \right.
+	$$
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	The set $\mathcal{D}$ is defined as
+	
+	$$
+		\mathcal{D} = \left\{ f : \mathbb{D} \longrightarrow \mathbb{C} \textnormal{ analytic}\ \left|\ \displaystyle\sum |a_j|^2 (j + 1) < \infty \right\}. \right.
+	$$
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	Let $(\beta(j))$ be a sequence. The \textbf{weighted Hardy space} corresponding to $(\beta(j))$ is
+	
+	$$
+		H^2(\beta) = \left\{ f : \mathbb{D} \longrightarrow \mathbb{C} \textnormal{ analytic}\ \left|\ \displaystyle\sum |a_j|^2 \beta(j)^2 < \infty \right\} \textnormal{,} \right.
+	$$
+	
+	equipped with the inner product
+	
+	$$
+		\left< \sum a_j z^j, \displaystyle\sum b_j z^j \right> = \displaystyle\sum a_j \overline{b_j} \beta(j)^2.
+	$$
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	A linear operator $T : \mathcal{H} \longrightarrow \mathcal{K}$ between Hilbert spaces $\mathcal{H}$ and $\mathcal{K}$ is \textbf{bounded} if $\sup\limits_{x \neq 0} \frac{||Tx||}{||x||} < \infty$. If $T$ is bounded, the \textbf{operator norm} of $T$ is $||T|| = \sup\limits_{x \neq 0} \frac{||Tx||}{||x||}$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	If $T$ is bounded, then it is continuous.
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	Let $z \in \mathbb{C}.$ The \textbf{left multiplication operator} corresponding to $z$ is $M_z : H^2 \longrightarrow H^2$, given by $M_z (f) = zf$. Since $||M_z|| = 1$, $M_z$ is continuous.
+	
+\end{Def}
+
+
+
+\begin{Def}
+	
+	Let $\mathcal{H}$ be a Hilbert space and let $T : \mathcal{H} \longrightarrow \mathcal{H}$ be bounded. The \textbf{adjoint} of $T$ is the linear operator $T^* : \mathcal{H} \longrightarrow \mathcal{H}$, defined such that $\left< Tx, y \right>  = \left< x, T^* y \right>$ for all $x, y \in \mathcal{H}$.
+	
+\end{Def}
+
+
+
+\begin{Example}
+	%
+	For $f(z) = \displaystyle\sum a_j z^j$ and $g(z) = \displaystyle\sum b_j z^j$, $\left< M_z f, g \right> = a_0 \overline{b_1} + a_1 \overline{b_2} + \cdots = \left< f, b_1 + b_2 z + \cdots \right>$. Thus $M_z^* (b_0 + b_1 z + \cdots) = b_1 + b_2 z + \cdots$. Notice that $M_z^* M_z (a_0 + a_1 z + a_2 z^2 + \cdots) = a_0 + a_1 z + a_2 z^2 + \cdots$, but $M_z M_z^* (a_0 + a_1 z + a_2 z^2 + \cdots) = a_1 z + a_2 z^2 + \cdots \neq a_0 + a_1 z + a_2 z^2 + \cdots$.
+	
+\end{Example}
+
+
+
+\begin{Def}
+	
+	Let $\varphi : \mathbb{D} \longrightarrow \mathbb{D}$ be analytic. The \textbf{multiplication operator} corresponding to $\varphi$ is $M_\varphi : H^2 \longrightarrow H^2$, defined by $M_\varphi f(z) = \varphi(z) f(z)$.
+	
+\end{Def}
+
+
+
+\begin{Proposition}
+	
+	Let $\varphi : \mathbb{D} \longrightarrow \mathbb{D}$ be analytic and let $f \in H^2$. Then $||M_\varphi f|| \leq ||f||$.
+	
+	\begin{Proof}
+		%
+		We have
+		
+		\begin{align*}
+			||M_\varphi f||^2 &= \lim\limits_{r \to 1^-} \frac{1}{2 \pi} \int_0^{2\pi} \left| (M_\varphi f) \left(re^{i \theta} \right)^2 \right|\ \textnormal{d}\theta\\
+			&= \lim\limits_{r \to 1^-} \frac{1}{2 \pi} \int_0^{2\pi} \left| \varphi \left(re^{i \theta} \right) \right|^2 \left| f \left(re^{i \theta} \right) \right|^2\ \textnormal{d}\theta\\
+			&\leq \lim\limits_{r \to 1^-} \frac{1}{2 \pi} \int_0^{2\pi} \left| f \left(re^{i \theta} \right) \right|^2\ \textnormal{d}\theta\\
+			&= ||f||^2.
+		\end{align*}
+		
+	\end{Proof}
+	
+\end{Proposition}
+
+
+
+\begin{Def}
+	
+	Let $\varphi : \mathbb{D} \longrightarrow \mathbb{D}$ be analytic and let $f \in H^2$. The \textbf{composition operator} corresponding to $\varphi$ is $C_\varphi$, defined by $C_\varphi f = f(\varphi)$. Note that it is not clear that $C_\varphi$ maps into $H^2$.
+	
+\end{Def}
+
+
+
+\begin{Theorem}
+	
+	\textbf{(Littlewood)} If $\varphi : \mathbb{D} \longrightarrow \mathbb{D}$ is analytic and $\varphi(0) = 0$, then $C_\varphi : H^2 \longrightarrow H^2$ and $||C_\varphi f|| \leq ||f||$ for all $f \in H^2$.
+	
+	\begin{Proof}
+		%
+		Let $f = \displaystyle\sum a_j z^j \in H^2$. Then $f(z) = f(0) + M_z M_z^* f$ and for all $n \in \mathbb{N}$, $\left( (M_z^*)^n f \right)(0) = a_n$. Substituting $\varphi(z)$ for $z$ in the first equation, we find that 
+		
+		\begin{align*}
+			f(\varphi(z)) &= f(\varphi(0)) + M_{\varphi(z)} \left( M_{\varphi(z)}^* (f(\varphi)) \right)\\
+			&= f(0) + M_\varphi \left( M_\varphi^* (f(\varphi)) \right).
+		\end{align*}
+		
+		Therefore,
+		
+		\begin{align*}
+			C_\varphi f &= f(0) + M_\varphi (M_\varphi^* (f(\varphi(z))))\\
+			&= f(0) + M_\varphi (M_\varphi^* (C_\varphi f(z)))\\
+			&= f(0) + M_\varphi (C_\varphi(M_z^* (f(z))).
+		\end{align*}
+		
+		Since $M_\varphi C_\varphi M_z^* f = M_\varphi M_\varphi^* f(\varphi)$ and $M_\varphi M_\varphi^* f(\varphi)$ has no constant term, $f(0)$ and $M_\varphi C_\varphi M_z^* f$ are orthogonal. Thus $||C_\varphi f||^2 = |f(0)|^2 + ||M_\varphi C_\varphi M_z^* f||^2 \leq |f(0)|^2 + ||C_\varphi M_z^* f||^2$, since $M_\varphi$ is a contraction mapping (that is, it only makes things smaller, since $|\varphi(z)| < 1$). Continuing similarly,
+		
+		\begin{align*}
+			||C_\varphi f||^2 &\leq |f(0)|^2 + |(M_z^* (f)) (0)|^2 + \cdots + \left| \left( (M_z^*)^n (f) \right) (0) \right|^2 + \left| \left| C_\varphi (M_z^*)^{n + 1} f \right| \right|^2\\
+			&= |a_0|^2 + |a_1|^2 + \cdots + |a_n|^2 + \left| \left| C_\varphi (M_z^*)^{n + 1} f \right| \right|^2.
+		\end{align*}
+		
+		Thus if $f$ is a polynomial of degree $n$, $||C_\varphi||^2 \leq ||f||^2 + 0$, so $||C_\varphi|| \leq ||f||$. Since every element of $H^2$ is the uniformly convergent limit of polynomials, $||C_\varphi|| \leq ||f||$ for all $f \in H^2$.
+		
+	\end{Proof}
+	
+\end{Theorem}
+
+
+
+\begin{Theorem}
+	
+	If $\varphi : \mathbb{D} \longrightarrow \mathbb{D}$ is analytic, then $C_\varphi : H^2 \longrightarrow H^2$, and
+	
+	$$
+		\frac{1}{\sqrt{1 - |\varphi(0)|^2}} \leq ||C_\varphi|| \leq \sqrt{\frac{1 + |\varphi(0)|}{1 - |\varphi(0)|}}.
+	$$
+	
+\end{Theorem}
+
+
+
+\begin{Comment}
+	%
+	Computing $||C_\varphi||$ exactly can be extremely difficult --- for example, $||C_\varphi||$ for $\varphi(z) = \frac{(3 + 3i)z - (9 + i)}{4z - 12}$ is not known.
+	
+\end{Comment}
+
+
+
+\begin{Comment}
+	%
+	We can find a lower bound for $||C_\varphi||$ by suping only over reproducing kernels: if we define
+	
+	$$
+		S_\varphi = \sup\limits_{\omega \in \mathbb{D}} \frac{||C_\varphi K_\omega||}{||K_\omega||}\textnormal{,}
+	$$
+	
+	then $S_\varphi \leq ||C_\varphi||$, and $S_\varphi$ is far easier to calculate.
+	
+\end{Comment}
+
+
+
+\begin{center}
+	\vspace{.25in}
+	\fadeline
+	\vspace{.45in}
+	
+	\href{http://www.cruzgodar.com/notes/cal-poly/complex-analysis/complex-analysis.zip}{Source}
+\end{center}
+
+
+
+
+
+\end{document}

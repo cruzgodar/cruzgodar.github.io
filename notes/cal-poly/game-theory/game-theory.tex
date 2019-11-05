@@ -8,7 +8,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage[margin=1in]{geometry}
+\usepackage[margin=.75in, total={8.25in, 10.75in}, heightrounded]{geometry}
 
 \usepackage{graphicx}
 \graphicspath{{graphics/}}
@@ -204,7 +204,7 @@
 	
 	\vspace{.25in}
 	
-	\normalsize Math 437 --- Professor Mendes
+	\normalsize Math 437, taught by Anthony Mendes
 \end{center}
 
 \vspace{.5in}
@@ -265,13 +265,11 @@
 	Rock-Paper-Scissors:
 	
 	$$
-	A = \begin{bmatrix}
-	
-	0 & -1 & 1\\
-	1 & 0 & -1\\
-	-1 & 1 & 0
-	
-	\end{bmatrix},
+		A = \begin{bmatrix}
+			0 & -1 & 1\\
+			1 & 0 & -1\\
+			-1 & 1 & 0
+		\end{bmatrix},
 	$$
 	
 	where rock is the first row/column, paper is the second, and scissors is the third.
@@ -305,15 +303,13 @@
 		Let $a$ and $b$ be saddle points of $A$. Then
 		
 		$$
-		\begin{bmatrix}
-		
-		& | & & | &\\
-		\textnormal{---} & a & \textnormal{---} & c & \textnormal{---}\\
-		& | & & | &\\
-		\textnormal{---} & d & \textnormal{---} & b & \textnormal{---}\\
-		& | & & | &\\
-		
-		\end{bmatrix}.
+			\begin{bmatrix}
+				& | & & | &\\
+				\textnormal{---} & a & \textnormal{---} & c & \textnormal{---}\\
+				& | & & | &\\
+				\textnormal{---} & d & \textnormal{---} & b & \textnormal{---}\\
+				& | & & | &\\
+			\end{bmatrix}.
 		$$
 		
 		Since $a$ and $b$ are saddle points, $a \leq c \leq b \leq d \leq a$, so $a = b$.
@@ -469,9 +465,15 @@
 	\begin{enumerate}
 		
 		\item Find all invertible submatrices $S$ for which $\mathbf{1}\T S^{-1} \mathbf{1} \neq 0$.
+		
 		\item For each $S$, let $v = \frac{1}{\mathbf{1}\T S^{-1} \mathbf{1}}$, $(\mathbf{x}')\T = v \mathbf{1}\T S^{-1}$, and $\mathbf{y}' = v S^{-1} \mathbf{1}$.
+		
 		\item Pad $\mathbf{x}'$ and $\mathbf{y}'$ with $0$s to create $\mathbf{x}$ and $\mathbf{y}$.
+		
 		\item If either $\mathbf{x}$ or $\mathbf{y}$ has a negative component, reject the $S$ that created them.
+		
+		\pagebreak
+		
 		\item If $\mathbf{x}\T A \geq v \mathbf{1}\T$ and $A \mathbf{y} \leq v \mathbf{1}$, then $(\mathbf{x}, \mathbf{y}, v)$ is an extreme optimal solution to $A$.
 		
 	\end{enumerate}
@@ -491,9 +493,7 @@
 
 
 \begin{center}
-	\vspace{.25in}
-	\fadeline
-	\vspace{.25in}
+	\pagebreak
 	
 	\section{Linear Programming}
 	
@@ -544,16 +544,15 @@
 		\item Create the initial tableau:
 		
 		$$
-		\begin{array}{c|ccc|ccc|c}
-		 & y_1 & \cdots & y_m & x_1 & \cdots & x_n & \\
-		 \hline
-		 x_1 & & & & & & & b_1\\
-		 \vdots & & A & & & I & & \vdots\\
-		 x_n & & & & & & & b_n\\
-		 \hline
-	   	 & -c_1 & \cdots & -c_m & 0 & \cdots & 0 & 0
-		
-		\end{array}
+			\begin{array}{c|ccc|ccc|c}
+				& y_1 & \cdots & y_m & x_1 & \cdots & x_n & \\
+				\hline
+				x_1 & & & & & & & b_1\\
+				\vdots & & A & & & I & & \vdots\\
+				x_n & & & & & & & b_n\\
+				\hline
+	   			& -c_1 & \cdots & -c_m & 0 & \cdots & 0 & 0
+			\end{array}
 		$$
 		
 		\item Find the column with the smallest entry in the bottom row and denote it column $j$. If that minimum value is nonnegative, stop.
@@ -582,7 +581,7 @@
 	\Sub & \mathbf{x}\T A \geq \mathbf{c}\T
 	\end{cases}.$\\
 	
-	Note that since every linear program can be written as a standard maximum, the definition extends to all linear programs.
+	Since every linear program can be written as a standard maximum, the definition extends to all linear programs.
 	
 \end{Def}
 
@@ -606,6 +605,8 @@
 	
 	If $\mathbf{y}$ and $\mathbf{x}$ satisfy the conditions of a linear program and its dual, respectively, and $\mathbf{c}\T \mathbf{y} = \mathbf{x}\T \mathbf{b}$, then $\mathbf{y}$ and $\mathbf{x}$ are solutions to the linear program and its dual.
 	
+	\pagebreak
+	
 	\begin{Proof}
 		%
 		We want to maximize $\mathbf{c}\T \mathbf{y}$ and $\mathbf{x}\T \mathbf{b}$. But since $\mathbf{c}\T \mathbf{y} = \mathbf{x}\T \textbf{b}$, the previous result tells us that $\mathbf{c}\T \mathbf{y}$ cannot be any larger and $\mathbf{x}\T \mathbf{b}$ cannot be any smaller. Thus $\mathbf{y}$ and $\mathbf{x}$ are solutions.
@@ -621,7 +622,6 @@
 	The Simplex Method always gives an $\mathbf{x}$ and $\mathbf{y}$ such that $\mathbf{c}\T \mathbf{y} = \mathbf{x}\T \textbf{b}$, so it can solve all linear programs.
 	
 \end{Theorem}
-
 
 
 
@@ -674,9 +674,7 @@
 
 
 \begin{center}
-	\vspace{.25in}
-	\fadeline
-	\vspace{.25in}
+	\pagebreak
 	
 	\section{Interval Games}
 	
@@ -729,9 +727,7 @@
 
 
 \begin{center}
-	\vspace{.25in}
-	\fadeline
-	\vspace{.25in}
+	\pagebreak
 	
 	\section{Utility Theory}
 	
@@ -783,9 +779,7 @@
 
 
 \begin{center}
-	\vspace{.25in}
-	\fadeline
-	\vspace{.25in}
+	\pagebreak
 	
 	\section{Nonzero-Sum Games}
 	
@@ -805,13 +799,13 @@
 \begin{Example}
 	%
 	$$
-	\begin{bmatrix}
-	
-	(-10, -10) & (5, 2)\\
-	(2, 5) & (1, 1)
-	
-	\end{bmatrix}
+		\begin{bmatrix}
+			(-10, -10) & (5, 2)\\
+			(2, 5) & (1, 1)
+		\end{bmatrix}
 	$$
+	
+	This bimatrix defines a nonzero-sum matrix game. For example, if the row player uses the first row and the column player uses the second, then the row player's payoff is $5$ and the column player's is $2$.
 	
 \end{Example}
 
@@ -870,23 +864,19 @@
 	\textbf{(The Prisoner's Dilemma)} Consider the bimatrix game
 	
 	$$
-	\begin{bmatrix}
-	
-	(R, R) & (S, T)\\
-	(T, S) & (U, U)
-	
-	\end{bmatrix}\textnormal{,}
+		\begin{bmatrix}
+			(R, R) & (S, T)\\
+			(T, S) & (U, U)
+		\end{bmatrix}\textnormal{,}
 	$$
 	
 	where $T > R > U > S$ and $R > \frac{S+T}{2}$. For instance,
 	
 	$$
-	\begin{bmatrix}
-	
-	(0, 0) & (-2, 1)\\
-	(1, -2) & (-1, -1)
-	
-	\end{bmatrix}\textnormal{.}
+		\begin{bmatrix}
+			(0, 0) & (-2, 1)\\
+			(1, -2) & (-1, -1)
+		\end{bmatrix}.
 	$$
 	
 	The game is symmetric and the only equilibrium point is $(U, U)$, but it is not Pareto-optimal.
@@ -908,35 +898,35 @@
 	Consider the bimatrix game
 	
 	$$
-	\begin{blockarray}{ccc}
-		& A & B\\
-		\begin{block}{c[cc]}
-			A & (-4, -4) & (4, 0)\\
-			B & (0, 4) & (2, 2)\\
-		\end{block}
-	\end{blockarray}\textnormal{.}
+		\begin{blockarray}{ccc}
+			& A & B\\
+			\begin{block}{c[cc]}
+				A & (-4, -4) & (4, 0)\\
+				B & (0, 4) & (2, 2)\\
+			\end{block}
+		\end{blockarray}\textnormal{.}
 	$$
 	
 	It can be shown that there are three equilibria: $(A, B)$, $(B, A)$, and $(\frac{1}{3} A + \frac{2}{3} B, \frac{1}{3} A + \frac{2}{3} B)$. The first two cannot be ESSs, since they are not symmetric. The third is, however, since
 	
 	$$
-	\begin{bmatrix}
-	\frac{1}{3} & \frac{2}{3}
-	\end{bmatrix} \begin{bmatrix}
-	-4 & 4\\
-	0 & 2
-	\end{bmatrix} \begin{bmatrix}
-	p\\
-	1 - p
-	\end{bmatrix} > \begin{bmatrix}
-	p & 1 - p
-	\end{bmatrix} \begin{bmatrix}
-	-4 & 4\\
-	0 & 2
-	\end{bmatrix} \begin{bmatrix}
-	p\\
-	1 - p
-	\end{bmatrix}
+		\begin{bmatrix}
+			\frac{1}{3} & \frac{2}{3}
+		\end{bmatrix} \begin{bmatrix}
+			-4 & 4\\
+			0 & 2
+		\end{bmatrix} \begin{bmatrix}
+			p\\
+			1 - p
+		\end{bmatrix} > \begin{bmatrix}
+			p & 1 - p
+		\end{bmatrix} \begin{bmatrix}
+			-4 & 4\\
+			0 & 2
+		\end{bmatrix} \begin{bmatrix}
+			p\\
+			1 - p
+		\end{bmatrix}
 	$$
 	
 	for all $p \neq \frac{1}{3}$, since this reduces to $\frac{8}{3} - 4p > 2 - 6p^2$, which can be shown to be true for all $p \in [0, 1] \setminus \{\frac{1}{3}\}$. 
@@ -948,9 +938,7 @@
 
 
 \begin{center}
-	\vspace{.25in}
-	\fadeline
-	\vspace{.25in}
+	\pagebreak
 	
 	\section{Arbitration}
 	
@@ -1006,9 +994,7 @@
 
 
 \begin{center}
-	\vspace{.25in}
-	\fadeline
-	\vspace{.25in}
+	\pagebreak
 	
 	\section{\textit{n}-Player Games}
 	
@@ -1059,11 +1045,11 @@
 		%
 		The purposes of the various components:
 		
-		$\frac{1}{n!} \sum\limits_{S \subseteq \{1, ..., n\}}$: average over all possible coalitions.\\
+		$\frac{1}{n!} \displaystyle\sum\limits_{S \subseteq \{1, ..., n\}}$: average over all possible coalitions.\\
 		
-		$(|S| - 1)!$ the ways a coalition can form before player $i$ joins.\\
+		$(|S| - 1)!$: the ways a coalition can form before player $i$ joins.\\
 		
-		$(n - |S|)!$ the ways a coalition can be completed after player $i$ joins.\\
+		$(n - |S|)!$: the ways a coalition can be completed after player $i$ joins.\\
 		
 		$(\nu(S) - \nu(S \setminus \{i\}))$: the utility increase due to player $i$.
 		
@@ -1084,7 +1070,7 @@
 \begin{center}
 	\vspace{.25in}
 	\fadeline
-	\vspace{.25in}
+	\vspace{.45in}
 	
 	\href{http://www.cruzgodar.com/notes/cal-poly/game-theory/game-theory.tex}{Source}
 \end{center}
