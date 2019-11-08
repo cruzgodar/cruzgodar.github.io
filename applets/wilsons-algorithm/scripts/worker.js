@@ -2,9 +2,9 @@ onmessage = async function(e)
 {
 	grid_size = e.data[0];
 	
-	await draw_wilson_graph(grid_size);
+	await draw_wilson_graph();
 	
-	await color_graph(grid_size);
+	await color_graph();
 }
 
 
@@ -21,7 +21,7 @@ let current_column = null;
 
 
 
-function draw_wilson_graph(grid_size)
+function draw_wilson_graph()
 {
 	return new Promise(async function(resolve, reject)
 	{
@@ -62,7 +62,7 @@ function draw_wilson_graph(grid_size)
 
 
 
-function wilson_step(grid_size)
+function wilson_step()
 {
 	//We need a promise so that we can have this function actually take time to run.
 	return new Promise(async function(resolve, reject)
@@ -223,7 +223,7 @@ function random_walk()
 
 
 
-function color_graph(grid_size)
+function color_graph()
 {
 	return new Promise(async function(resolve, reject)
 	{
