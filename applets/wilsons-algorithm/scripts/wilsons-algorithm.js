@@ -66,6 +66,8 @@
 		worker_is_busy = true;
 		
 		grid_size = parseInt(document.querySelector("#dim-input").value || 100);
+		
+		let maximum_speed = document.querySelector("#toggle-maximum-speed-checkbox").checked
 	
 	
 	
@@ -79,7 +81,7 @@
 		
 		
 		
-		web_worker.postMessage([grid_size]);
+		web_worker.postMessage([grid_size, maximum_speed]);
 	}
 	
 	

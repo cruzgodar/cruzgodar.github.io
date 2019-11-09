@@ -1,6 +1,7 @@
 onmessage = async function(e)
 {
 	grid_size = e.data[0];
+	maximum_speed = e.data[1];
 	
 	await draw_wilson_graph();
 	
@@ -10,6 +11,7 @@ onmessage = async function(e)
 
 
 let grid_size = null;
+let maximum_speed = null;
 
 let edges_in_tree = [];
 let vertices_not_in_tree = [];
@@ -40,18 +42,9 @@ function draw_wilson_graph()
 		
 		
 		
-		//Start at a random vertex.
-		let new_index = Math.floor(Math.random() * vertices_not_in_tree.length);
-		
-		postMessage([2 * vertices_not_in_tree[new_index][1] + 1, 2 * vertices_not_in_tree[new_index][0] + 1, 1, 1, "rgb(255, 255, 255)"]);
-		
-		vertices_not_in_tree.splice(new_index, 1);
-		
-		
-		
 		while (vertices_not_in_tree.length > 0)
 		{
-			await wilson_step(grid_size);
+			await wilson_step();
 		}
 		
 		
@@ -78,18 +71,36 @@ function wilson_step()
 		
 		
 		
-		//Now perform a loop-erased random walk starting from this vertex until we hit the tree.
+		//Now perform a loop-erased random walk starting from this vertex until we hit the tree (or if it's our first walk, until a certain length is reached).
 		current_row = new_vertices[0][0];
 		current_column = new_vertices[0][1];
 		
-		random_walk();
+		
+		
+		if (edges_in_tree.length == 0)
+		{
+			random_walk(grid_size * 2);
+		}
+		
+		else
+		{
+			random_walk();
+		}
 		
 		
 		
 		//Draw this walk.
 		for (let i = 0; i < new_vertices.length - 1; i++)
 		{
-			await draw_line(new_vertices[i][0], new_vertices[i][1], new_vertices[i + 1][0], new_vertices[i + 1][1], "rgb(255, 255, 255)", 8);
+			if (maximum_speed)
+			{
+				draw_line(new_vertices[i][0], new_vertices[i][1], new_vertices[i + 1][0], new_vertices[i + 1][1], "rgb(255, 255, 255)", 0);
+			}
+			
+			else
+			{
+				await draw_line(new_vertices[i][0], new_vertices[i][1], new_vertices[i + 1][0], new_vertices[i + 1][1], "rgb(255, 255, 255)", 8);
+			}
 		}
 		
 		
@@ -111,10 +122,11 @@ function wilson_step()
 
 
 
-function random_walk()
+//Performs a loop-erased random walk. If fixed_length == true, then rather than waiting until the walk hits the tree, it will just go until the walk is a certain length. This keeps that first walk from taking a ridiculous amount of time while still making the output graph be relatively random.
+function random_walk(fixed_length = -1)
 {
 	//Go until we hit the tree.
-	while (vertex_in_array([current_row, current_column], vertices_not_in_tree) != -1)
+	while (!(vertex_in_array([current_row, current_column], vertices_not_in_tree) == -1 || (fixed_length != -1 && new_vertices.length == fixed_length)))
 	{
 		//Move either up, left, down, or right. 0 = up, 1 = left, 2 = down, and 3 = right.
 			
