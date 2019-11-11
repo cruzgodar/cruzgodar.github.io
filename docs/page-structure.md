@@ -35,9 +35,9 @@ page_settings =
 on_page_load();
 ```
 
-The `if` statement makes every page function as an entry point (see [the doc on navigation](https://github.com/90259025/90259025.github.io/blob/master/docs/navigation.md)), since `current_url` will only be defined if `main.js` has been loaded. The call to `on_page_load()` triggers a large amount of functions, and is also covered in [the navigation doc](https://github.com/90259025/90259025.github.io/blob/master/docs/navigation.md). The block in the middle sets the page settings, which tell the JS how to properly render the page. Every field is required an every page.
+The `if` statement makes every page function as an entry point (see [the doc on navigation](https://github.com/90259025/90259025.github.io/blob/master/docs/navigation.md)), since `current_url` will only be defined if `main.js` has been loaded. The call to `on_page_load()` triggers a large number of functions, and is also covered in [the navigation doc](https://github.com/90259025/90259025.github.io/blob/master/docs/navigation.md). The block in the middle sets the page settings, which tell the JS how to properly render the page. Every field is required on every page.
 
-- `title`: the title of the page. In particular, sets the text that appears on the tab in the browser.
+- `title`: the title of the page. In particular, this sets the text that appears on the tab in the browser.
 
 - `banner_page`: whether or not the page has a banner. Covered in more detail later in this doc.
 
@@ -53,15 +53,15 @@ The `if` statement makes every page function as an entry point (see [the doc on 
 
 - `manual_dark_theme`: if the page is complicated enough that adding the dark theme styles will break it beyond repair. If this is true, the page must handle dark theme (and contrast) on its own.
 
-- `no_footer`: if the footer shouldn't spawn. Used on pages like settings.
+- `no_footer`: if the footer shouldn't spawn. Used on pages like settings. This also disables the floating footer.
 
-- `footer_exclusion`: if the footer is present, which page shouldn't be present. The typical value is the current page if it's first level (writing, teaching, etc.), and nothing for any other pages.
+- `footer_exclusion`: which page shouldn't be present in the footer, if it exists. The typical value is the current page if it's first level (writing, applets, etc.), and nothing for any other page.
 
 
 
 ## Images on the page
 
-Directly setting the `src` attribute of an `img` tag or the `background-image` property of anything is only appropriate in extremely rare circumstances. When an image is present, its `src` should be left empty and it should have an `id` of `image-<image-name>`, where `<image-name>` is descriptive and (obviously) not used by any other image on the page. It also must have a class of `check-webp`. To load the images, every page must include a file called `images.json`, even if that file is effectively empty. `images.json` contains keys named `image-<image-name>`, and the corresponding value is another object that contains the keys `webp` and `non-webp` and matches them with urls where the images can be found. These urls can *not* be absolute — they must either be relative, in which case `images.js` will handle finding the absolute url, or link to another site for external storage (typically Google Drive).
+Directly setting the `src` attribute of an `img` tag or the `background-image` property of anything is only appropriate in extremely rare circumstances. When an image is present, its `src` should be left empty and it should have an `id` of `image-<image-name>`, where `<image-name>` is descriptive and (obviously) not used by any other image on the page. It also must have a class of `check-webp`. To load the images, every page must include a file called `images.json`, even if that file is effectively empty. `images.json` contains keys named `image-<image-name>`, and the corresponding value for each is another object that contains the keys `webp` and `non-webp` and matches them with urls where the images can be found. These urls can *not* be absolute — they must either be relative, in which case `images.js` will handle finding the absolute url, or link to another site for external storage (typically Google Drive).
 
 For example, if `/writing/writing.html` contains an image with an `id` of `image-corona`, then the file `/writing/images.json` will include
 
@@ -98,7 +98,7 @@ Pages can optionally include banners like the homepage's. This displays a fullsc
 	<div id="scroll-to"></div>
 	
 	<!-- All of the normal page content -->
-</div
+</div>
 ```
 
 Note that this means most of the entire page is wrapped in the `content` tag. If all of these conditions are met, then `banners.js` will take care of the rest.
@@ -127,6 +127,8 @@ Custom JS files should not create any global variables or redefine any functions
 ```
 
 This ensures that any variables defined with the `let` keyword (which should be all of them) can be redefined the next time the page is loaded, and similarly for functions.
+
+If a page needs more JS files than the single one it is allotted (for example, it needs to run a Web Worker), then they should be stored in the `scripts` folder and called from the page's main script.
 
 
 
