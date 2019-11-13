@@ -357,13 +357,25 @@ function fetch_other_page_banners_in_background()
 	{
 		let href = links[i].getAttribute("href");
 		
-		if (banner_pages.includes(href) && !(banner_pages_already_fetched.includes(href)) && href != "/home/home.html")
+		if (banner_pages.includes(href) && !(banner_pages_already_fetched.includes(href)))
 		{
-			banner_pages_already_fetched.push(href);
+			if (!(multibanner_pages.hasOwnProperty(href)))
+			{
+				banner_pages_already_fetched.push(href);
+				
+				fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + banner_name);
+				
+				fetch_item_from_queue();
+			}
 			
-			fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + banner_name);
-			
-			fetch_item_from_queue();
+			else
+			{
+				let next_index = multibanner_pages[href]["current_banner"] % (multibanner_pages[href]["current_banner"] + 1) + 1;
+				
+				fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + next_index + "/" + banner_name);
+				
+				fetch_item_from_queue();
+			}
 		}
 	}
 }

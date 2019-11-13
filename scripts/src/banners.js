@@ -35,6 +35,16 @@ let banner_pages =
 	"/writing/desolation-point/desolation-point.html"
 ];
 
+//A list of every page that has multiple banners. Again, this is ONLY to be used for preloading those banners. For everything else, use page_settings["num_banners"].
+let multibanner_pages =
+{
+	"/home/home.html":
+	{
+		"current_banner": Math.floor(Math.random() * 20) + 1,
+		"num_banners": 20
+	}
+};
+
 //Filled in with pages when banners are preloaded so the console isn't spammed and caches aren't needlessly checked.
 let banner_pages_already_fetched = [];
 
@@ -106,16 +116,21 @@ function load_banner()
 			
 			banner_path = "";
 			
-			if (current_url != "/home/home.html")
+			if (!(multibanner_pages.hasOwnProperty(current_url)))
 			{
 				banner_path = parent_folder + "banners/";
 			}
 			
 			else
 			{
-				let num_images = 20;
-				let banner_index = Math.floor(Math.random() * num_images) + 1;
-				banner_path = "/home/banners/" + banner_index + "/";
+				multibanner_pages[current_url]["current_banner"]++;
+				
+				if (multibanner_pages[current_url]["current_banner"] == multibanner_pages[current_url]["num_banners"] + 1)
+				{
+					multibanner_pages[current_url]["current_banner"] = 1;
+				}
+				
+				banner_path = parent_folder + "banners/" + multibanner_pages[current_url]["current_banner"] + "/";
 			}
 			
 			

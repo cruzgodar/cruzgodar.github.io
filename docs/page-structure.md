@@ -19,6 +19,7 @@ page_settings =
 	"title": "",
 	
 	"banner_page": false,
+	"multibanner_page": false,
 	"writing_page": false,
 	"math_page": false,
 	"comments": false,
@@ -40,6 +41,8 @@ The `if` statement makes every page function as an entry point (see [the doc on 
 - `title`: the title of the page. In particular, this sets the text that appears on the tab in the browser.
 
 - `banner_page`: whether or not the page has a banner. Covered in more detail later in this doc.
+
+- `num_banners`: how many different banners the page has. This is `1` for every banner page but the homepage.
 
 - `writing_page`: two settings affect the font, spacing, and indentation on writing pages only. This is how those pages are identifed.
 
