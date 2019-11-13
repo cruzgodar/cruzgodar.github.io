@@ -298,21 +298,51 @@ function set_up_aos()
 
 
 
+//Gets the next item from the fetch queue.
+function fetch_item_from_queue()
+{
+	if (fetch_queue.length == 0 || currently_fetching)
+	{
+		return;
+	}
+	
+	
+	
+	currently_fetching = true;
+	
+	console.log("Now fetching " + fetch_queue[0]);
+	
+	
+	
+	fetch(fetch_queue[0])
+	
+	.then(function()
+	{
+		currently_fetching = false;
+		
+		fetch_queue.shift();
+		
+		fetch_item_from_queue();
+	})
+}
+
+
+
 //Fetches the other size of banner needed for the page, so that if the page is resized, there's no lag time.
 function fetch_other_banner_size_in_background()
 {
 	if (banner_name == "landscape.webp" || banner_name == "landscape.jpg")
 	{
-		console.log("Preloading " + banner_path + "portrait." + banner_extension);
+		fetch_queue.push(banner_path + "portrait." + banner_extension);
 		
-		return fetch(banner_path + "portrait." + banner_extension);
+		fetch_item_from_queue();
 	}
 	
 	else
 	{
-		console.log("Preloading " + banner_path + "landscape." + banner_extension);
+		fetch_queue.push(banner_path + "landscape." + banner_extension);
 		
-		return fetch(banner_path + "landscape." + banner_extension);
+		fetch_item_from_queue();
 	}
 }
 
@@ -329,11 +359,11 @@ function fetch_other_page_banners_in_background()
 		
 		if (banner_pages.includes(href) && !(banner_pages_already_fetched.includes(href)) && href != "/home/home.html")
 		{
-			console.log("Preloading " + href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + banner_name);
-			
 			banner_pages_already_fetched.push(href);
 			
-			fetch(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + banner_name);
+			fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + banner_name);
+			
+			fetch_item_from_queue();
 		}
 	}
 }

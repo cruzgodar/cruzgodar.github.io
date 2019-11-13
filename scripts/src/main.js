@@ -39,6 +39,13 @@ let background_color_changed = false;
 
 
 
+//A list of things that need to be fetched (for example, banners that need to be preloaded). The items at the start of the list get fetched first.
+let fetch_queue = [];
+
+let currently_fetching = false;
+
+
+
 let last_touch_x = null, last_touch_y = null;
 
 document.documentElement.addEventListener("touchstart", function(e)
