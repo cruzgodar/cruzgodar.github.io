@@ -1,4 +1,10 @@
 {
+	"image-abelian-sandpiles":
+	{
+		"webp": "abelian-sandpiles/cover.webp",
+		"non-webp": "abelian-sandpiles/cover.jpg"
+	},
+	
 	"image-wilsons-algorithm":
 	{
 		"webp": "wilsons-algorithm/cover.webp",
