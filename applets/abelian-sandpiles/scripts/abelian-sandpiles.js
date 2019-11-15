@@ -96,7 +96,7 @@
 	
 	function prepare_download()
 	{
-		window.open(document.querySelector("#grid-graph").toDataURL(), "_blank");
+		window.open(document.querySelector("#sandpile-graph").toDataURL(), "_blank");
 	}
 
 
