@@ -59,12 +59,13 @@ async function draw_sandpile_graph()
 			{
 				if (sandpile_graph[i][j] >= 4)
 				{
-					sandpile_graph[i][j] -= 4;
+					let num_grains_to_add = Math.floor(sandpile_graph[i][j] / 4);
+					sandpile_graph[i][j] %= 4;
 					
-					sandpile_graph[i - 1][j]++;
-					sandpile_graph[i][j + 1]++;
-					sandpile_graph[i + 1][j]++;
-					sandpile_graph[i][j - 1]++;
+					sandpile_graph[i - 1][j] += num_grains_to_add;
+					sandpile_graph[i][j + 1] += num_grains_to_add;
+					sandpile_graph[i + 1][j] += num_grains_to_add;
+					sandpile_graph[i][j - 1] += num_grains_to_add;
 					
 					some_topplings_this_run = true;
 				}
@@ -73,7 +74,7 @@ async function draw_sandpile_graph()
 		
 		
 		
-		if (step % (Math.floor(num_grains / 100)) == 0)
+		if (step % (Math.floor(num_grains / 500)) == 0)
 		{
 			if (maximum_speed)
 			{
@@ -132,24 +133,26 @@ function color_piles()
 			{
 				if (sandpile_graph[i][j] != old_sandpile_graph[i][j])
 				{
-					let brightness = sandpile_graph[i][j] / max_pile_size * 255;
+					let pile_size = sandpile_graph[i][j];
 					
-					if (sandpile_graph[i][j] == 0)
+					let brightness = pile_size / max_pile_size * 255;
+					
+					if (pile_size == 0)
 					{
 						postMessage([j, i, `rgb(0, 0, 0)`]);
 					}
 					
-					else if (sandpile_graph[i][j] == 1)
+					else if (pile_size == 1)
 					{
 						postMessage([j, i, `rgb(0, 127, 255)`]);
 					}
 					
-					else if (sandpile_graph[i][j] == 2)
+					else if (pile_size == 2)
 					{
 						postMessage([j, i, `rgb(92, 0, 255)`]);
 					}
 					
-					else if (sandpile_graph[i][j] == 3)
+					else if (pile_size == 3)
 					{
 						postMessage([j, i, `rgb(255, 255, 0)`]);
 					}
