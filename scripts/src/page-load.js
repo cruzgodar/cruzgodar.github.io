@@ -16,9 +16,7 @@ function on_page_load()
 	
 	fade_in();
 	
-	fetch_other_page_banners_in_background();
-	
-	set_links();
+	insert_images();
 	
 	set_up_aos();
 	
@@ -35,9 +33,11 @@ function on_page_load()
 	
 	
 	
-	insert_images();
+	fetch_other_page_banners_in_background();
 	
 	remove_hover_on_touch();
+	
+	set_links();
 	
 	disable_links();
 	

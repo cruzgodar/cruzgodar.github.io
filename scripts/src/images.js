@@ -4,10 +4,15 @@
 
 function insert_images()
 {
+	currently_fetching = true;
+	
+	
+	
 	let images = document.querySelectorAll(".check-webp");
 	
-	
 	let image_type = supports_webp ? "webp" : "non-webp";
+	
+	let num_images_fetched = 0;
 	
 	
 	
@@ -17,11 +22,9 @@ function insert_images()
 	
 	.then(function(image_data)
 	{
-		let src = "";
-		
 		for (let i = 0; i < images.length; i++)
 		{
-			src = image_data[images[i].getAttribute("id")][image_type];
+			let src = image_data[images[i].getAttribute("id")][image_type];
 			
 			if (src.slice(0, 5) == "https")
 			{
@@ -32,6 +35,22 @@ function insert_images()
 			{
 				images[i].setAttribute("src", parent_folder + src);
 			}
+			
+			
+			
+			images[i].onload = function()
+			{
+				num_images_fetched++;
+				
+				console.log(num_images_fetched + " of " + images.length + " fetched.");
+				
+				if (num_images_fetched == images.length)
+				{
+					currently_fetching = false;
+					
+					fetch_item_from_queue();
+				}
+			};
 		}
 	})
 	
