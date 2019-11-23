@@ -32,7 +32,7 @@
 	position: relative;
 	display: block;
 	
-	border-radius: calc(10% - 2px);
+	border-radius: calc(10% - 2.5px);
 	
 	background-color: rgb(152, 152, 152);
 	overflow: hidden;
