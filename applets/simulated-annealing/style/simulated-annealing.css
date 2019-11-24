@@ -1,0 +1,10 @@
+#annealing-graph
+{
+	width: 90vmin;
+	height: 90vmin;
+	margin: 0 auto;
+	
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 15px;
+	padding: 2px;
+}

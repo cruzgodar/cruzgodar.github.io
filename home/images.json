@@ -49,6 +49,12 @@
 	
 	
 	
+	"image-simulated-annealing":
+	{
+		"webp": "../applets/simulated-annealing/cover.webp",
+		"non-webp": "../applets/simulated-annealing/cover.jpg"
+	},
+	
 	"image-abelian-sandpiles":
 	{
 		"webp": "../applets/abelian-sandpiles/cover.webp",
@@ -59,11 +65,5 @@
 	{
 		"webp": "../applets/wilsons-algorithm/cover.webp",
 		"non-webp": "../applets/wilsons-algorithm/cover.jpg"
-	},
-	
-	"image-mandelbrot-set-explorer":
-	{
-		"webp": "../applets/mandelbrot-set-explorer/cover.webp",
-		"non-webp": "../applets/mandelbrot-set-explorer/cover.jpg"
 	}
 }

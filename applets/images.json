@@ -1,4 +1,10 @@
 {
+	"image-simulated-annealing":
+	{
+		"webp": "simulated-annealing/cover.webp",
+		"non-webp": "simulated-annealing/cover.jpg"
+	},
+	
 	"image-abelian-sandpiles":
 	{
 		"webp": "abelian-sandpiles/cover.webp",
