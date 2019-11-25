@@ -99,19 +99,26 @@ function wilson_step()
 			
 			else
 			{
-				await draw_line(new_vertices[i][0], new_vertices[i][1], new_vertices[i + 1][0], new_vertices[i + 1][1], "rgb(255, 255, 255)", 8);
+				await draw_line(new_vertices[i][0], new_vertices[i][1], new_vertices[i + 1][0], new_vertices[i + 1][1], "rgb(255, 255, 255)", 1000);
 			}
 		}
 		
 		
 		
 		//Once we leave that recursion, new_vertices is full of a loop-erased random walk that ends at a point on the tree. Now we can add all the vertices and edges.
-		for (let i = 0; i < new_vertices.length - 1; i++)
+		for (let i = 0; i < new_vertices.length; i++)
 		{
 			let pop_index = vertex_in_array(new_vertices[i], vertices_not_in_tree);
-			vertices_not_in_tree.splice(pop_index, 1);
 			
-			edges_in_tree.push([new_vertices[i], new_vertices[i + 1]]);
+			if (pop_index != -1)
+			{
+				vertices_not_in_tree.splice(pop_index, 1);
+			}
+			
+			if (i != new_vertices.length - 1)
+			{
+				edges_in_tree.push([new_vertices[i], new_vertices[i + 1]]);
+			}
 		}
 		
 		
@@ -126,10 +133,21 @@ function wilson_step()
 function random_walk(fixed_length = -1)
 {
 	//Go until we hit the tree.
-	while (!(vertex_in_array([current_row, current_column], vertices_not_in_tree) == -1 || (fixed_length != -1 && new_vertices.length == fixed_length)))
+	while (true)
 	{
+		if (vertex_in_array([current_row, current_column], vertices_not_in_tree) == -1)
+		{
+			break;
+		}
+		
+		else if (fixed_length != -1 && new_vertices.length == fixed_length)
+		{
+			break;
+		}
+		
+		
+		
 		//Move either up, left, down, or right. 0 = up, 1 = left, 2 = down, and 3 = right.
-			
 		let possible_directions = [];
 		
 		
