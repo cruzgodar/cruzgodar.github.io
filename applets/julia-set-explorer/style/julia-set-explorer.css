@@ -36,6 +36,11 @@
 	justify-content: space-between;
 }
 
+.text-box-container
+{
+	width: 20vw;
+}
+
 
 
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
@@ -54,5 +59,20 @@
 	#mandelbrot-set
 	{
 		margin-bottom: 5vw;
+	}
+}
+
+
+
+@media (min-aspect-ratio: 16/9), (min-width: 1400px)
+{
+	.text-box-row
+	{
+		width: 50vw;
+	}
+	
+	.text-box-container
+	{
+		width: 13.333vw;
 	}
 }
