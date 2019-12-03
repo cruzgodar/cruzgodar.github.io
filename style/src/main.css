@@ -296,6 +296,56 @@ img
 
 
 
+/* The area where the user can hover or tap to reveal the footer anywhere. */
+#scroll-up-button-location
+{
+	position: fixed;
+	top: 0;
+	z-index: 120;
+	
+	height: 50px;
+	width: 100vw;
+}
+
+#scroll-up-button-container
+{
+	position: fixed;
+	top: 0;
+	
+	width: 100vw;
+	height: 100px;
+	
+	z-index: 110;
+}
+
+
+
+#scroll-up-button
+{
+	color: rgb(127, 127, 127);
+	background-color: rgb(255, 255, 255);
+	width: 20px;
+	height: 5px;
+	
+	margin-top: 50px;
+
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 10px;
+	padding: 10px;
+	
+	transition: filter .15s ease-in-out;
+	filter: brightness(100%);
+	
+	outline: none;
+}
+
+#scroll-up-button:hover
+{
+	filter: brightness(75%);
+}
+
+
+
 /* Applied whenever things need an opacity animation. Usually a substitute for $().animate. */
 .animated-opacity
 {

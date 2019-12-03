@@ -33,6 +33,8 @@ function on_page_load()
 	
 	
 	
+	set_up_scroll_up_button();
+	
 	fetch_other_page_banners_in_background();
 	
 	remove_hover_on_touch();

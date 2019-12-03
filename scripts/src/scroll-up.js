@@ -1,0 +1,174 @@
+//Handles the button that drops down from the top of the screen and lets the user scroll to the top of the page.
+
+
+
+let scroll_up_button_visible = false;
+
+
+
+function set_up_scroll_up_button()
+{
+	let scroll_up_button_location_element = document.createElement("div");
+	scroll_up_button_location_element.id = "scroll-up-button-location";
+	
+	document.body.insertBefore(scroll_up_button_location_element, document.body.firstChild);
+	
+	
+	
+	if (hasTouch())
+	{
+		init_scroll_up_button_listeners_touch();
+	}
+	
+	else
+	{
+		init_scroll_up_button_listeners_no_touch();
+	}
+}
+
+
+
+function init_scroll_up_button_listeners_no_touch()
+{
+	scroll_up_button_visible = false;
+	
+	document.querySelector("#scroll-up-button-location").addEventListener("mouseenter", function()
+	{
+		if (scroll_up_button_visible == false && window.scrollY != 0)
+		{
+			let chevron_name = "chevron-up";
+			
+			if (url_vars["contrast"] == 1)
+			{
+				chevron_name += "-dark";
+			}
+			
+			
+			
+			document.querySelector("#scroll-up-button-location").insertAdjacentHTML("afterend", `
+				<div id="scroll-up-button-container">
+					<div class="center-content" data-aos="fade-down">
+						<input type="image" id="scroll-up-button" src="/graphics/general-icons/${chevron_name}.png" onclick="scroll_up()"></input>
+					</div>
+				</div>
+			`);
+			
+			scroll_up_button_visible = true;
+		}
+		
+		
+		
+		setTimeout(function()
+		{
+			document.querySelector("#scroll-up-button-container").addEventListener("mouseleave", function()
+			{
+				if (scroll_up_button_visible)
+				{
+					remove_scroll_up_button();
+				}
+			});
+		}, 100);
+	});
+}
+
+
+
+function init_scroll_up_button_listeners_touch()
+{
+	scroll_up_button_visible = false;
+	
+	
+	
+	document.documentElement.addEventListener("touchend", scroll_up_button_process_touchend, false);
+	temporary_handlers["touchend"].push(scroll_up_button_process_touchend);
+	
+	document.documentElement.addEventListener("touchstart", scroll_up_button_process_touchstart, false);
+	temporary_handlers["touchstart"].push(scroll_up_button_process_touchstart);
+}
+
+
+
+function scroll_up_button_process_touchend()
+{
+	let target = document.elementFromPoint(last_touch_x, last_touch_y);
+	
+	
+	
+	if (document.querySelector("#scroll-up-button-location") == target)
+	{
+		if (scroll_up_button_visible == false && window.scrollY != 0)
+		{
+			let chevron_name = "chevron-up";
+			
+			if (url_vars["contrast"] == 1)
+			{
+				chevron_name += "-dark";
+			}
+			
+			
+			
+			document.querySelector("#scroll-up-button-location").insertAdjacentHTML("afterend", `
+				<div id="scroll-up-button-container">
+					<div class="center-content" data-aos="fade-down">
+						<input type="image" id="scroll-up-button" src="/graphics/general-icons/${chevron_name}.png" onclick="scroll_up()"></input>
+					</div>
+				</div>
+			`)
+			
+			scroll_up_button_visible = true;
+		}
+	}
+}
+
+
+
+function scroll_up_button_process_touchstart(event)
+{
+	if (scroll_up_button_visible)
+	{
+		if (!(document.querySelector("#scroll-up-button-container").contains(event.target)))
+		{
+			remove_scroll_up_button();
+		}
+	}
+}
+
+
+
+function remove_scroll_up_button()
+{
+	document.querySelector("#scroll-up-button-container").classList.add("animated-opacity");
+	document.querySelector("#scroll-up-button-container").style.opacity = 0;
+	
+	setTimeout(function()
+	{
+		document.querySelector("#scroll-up-button-container").remove();
+		
+		scroll_up_button_visible = false;
+	}, 300);
+}
+
+
+
+//Triggered by pressing the scroll button. The variables and scroll_step() are initially defined in banners.js, so we're good to use them here.
+function scroll_up()
+{
+	remove_scroll_up_button();
+	
+	
+	
+	scroll_button_goal = -window.scrollY;
+	
+	scroll_button_position = window.scrollY;
+	scroll_button_time = 0;
+	
+	let refresh_id = setInterval(function()
+	{
+		scroll_step();
+		
+		if (scroll_button_time >= 1000)
+		{
+			clearInterval(refresh_id);
+		}
+	}, 8);
+}
