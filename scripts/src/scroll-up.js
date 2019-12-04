@@ -15,6 +15,13 @@ function set_up_scroll_up_button()
 	
 	
 	
+	fit_scroll_up_button_to_window_width();
+	
+	window.addEventListener("resize", fit_scroll_up_button_to_window_width);
+	temporary_handlers["resize"].push(fit_scroll_up_button_to_window_width);
+	
+	
+	
 	if (hasTouch())
 	{
 		init_scroll_up_button_listeners_touch();
@@ -24,6 +31,15 @@ function set_up_scroll_up_button()
 	{
 		init_scroll_up_button_listeners_no_touch();
 	}
+}
+
+
+
+//Properly place the button -- when there is a scroll bar, it will be uncentered otherwise. Unfortunately, there is no way to solve this with CSS, as far as I'm aware.
+function fit_scroll_up_button_to_window_width()
+{
+	try {document.querySelector("#scroll-up-button-container").style.width = document.documentElement.clientWidth + "px";}
+	catch(ex) {}
 }
 
 
@@ -54,6 +70,8 @@ function init_scroll_up_button_listeners_no_touch()
 			`);
 			
 			scroll_up_button_visible = true;
+			
+			fit_scroll_up_button_to_window_width();
 		}
 		
 		
@@ -116,6 +134,8 @@ function scroll_up_button_process_touchend()
 			`)
 			
 			scroll_up_button_visible = true;
+			
+			fit_scroll_up_button_to_window_width();
 		}
 	}
 }
