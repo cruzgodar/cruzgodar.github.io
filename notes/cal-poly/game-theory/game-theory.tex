@@ -42,7 +42,7 @@
 \definecolor{DefGreen}{rgb}{0,0.5,0}
 \definecolor{TheoremOrange}{rgb}{0.88,0.6,0.08}
 \definecolor{LemmaYellow}{rgb}{1,1,0}
-\definecolor{CorollaryBlue}{rgb}{0,0.29,0.77}
+\definecolor{CorollaryBlue}{rgb}{0,0.3,1}
 \definecolor{ProofPurple}{rgb}{0.58,0,1}
 \definecolor{AxiomRed}{rgb}{1,0,0}
 
@@ -66,8 +66,8 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{lemma}[theorem]{Lemma}
 
-\newtheorem{lemma}{Lemma}[theorem]
 \newtheorem{corollary}{Corollary}[theorem]
 
 \newtheorem{exercise}{Exercise}[section]
@@ -147,7 +147,7 @@
 	\end{lemma}
 	\end{mdframed}
 	
-	\vspace{.03in}
+	\vspace{.15in}
 }
 
 \newenvironment{Corollary}
@@ -159,18 +159,31 @@
 	\end{corollary}
 	\end{mdframed}
 	
-	\vspace{.09in}
+	\vspace{.15in}
+}
+
+\newenvironment{Comment}
+{
+	\begin{mdframed}[backgroundcolor=CommentBlue!10]
+	\textbf{Comment:}%
+}
+{
+	\end{mdframed}
+	
+	\vspace{.15in}
 }
 
 \newenvironment{Proof}
 {
+	\vspace{-.3in}
+	
 	\begin{mdframed}[backgroundcolor=ProofPurple!10]
 	\textbf{Proof:}%
 }
 {
 	\end{mdframed}
 	
-	\vspace{.085in}
+	\vspace{.15in}
 }
 
 \newenvironment{Example}
@@ -298,26 +311,27 @@
 	
 	All saddle points of a matrix have the same value.
 	
-	\begin{Proof}
-		%
-		Let $a$ and $b$ be saddle points of $A$. Then
-		
-		$$
-			\begin{bmatrix}
-				& | & & | &\\
-				\textnormal{---} & a & \textnormal{---} & c & \textnormal{---}\\
-				& | & & | &\\
-				\textnormal{---} & d & \textnormal{---} & b & \textnormal{---}\\
-				& | & & | &\\
-			\end{bmatrix}.
-		$$
-		
-		Since $a$ and $b$ are saddle points, $a \leq c \leq b \leq d \leq a$, so $a = b$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	Let $a$ and $b$ be saddle points of $A$. Then
+	
+	$$
+		\begin{bmatrix}
+			& | & & | &\\
+			\textnormal{---} & a & \textnormal{---} & c & \textnormal{---}\\
+			& | & & | &\\
+			\textnormal{---} & d & \textnormal{---} & b & \textnormal{---}\\
+			& | & & | &\\
+		\end{bmatrix}.
+	$$
+	
+	Since $a$ and $b$ are saddle points, $a \leq c \leq b \leq d \leq a$, so $a = b$.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -346,16 +360,17 @@
 
 \begin{Proposition}
 	
-	The value of a matrix game is unique,.
-	
-	\begin{Proof}
-		%
-		Suppose $(\mathbf{x}_1, \mathbf{y}_1, v_1)$ and $(\mathbf{x}_2, \mathbf{y}_2, v_2$ are solutions to $A$. Then $A \mathbf{y}_1 \leq v_1 \mathbf{1}$, so $\mathbf{x}_2\T A \mathbf{y}_1 \leq \mathbf{x}_2\T v_1 \mathbf{1}$, and $\mathbf{x}_2\T A \geq v_2 \mathbf{1}\T$, so $\mathbf{x}_2\T A \mathbf{y}_1 \geq v_2 \mathbf{1}\T \mathbf{y}_1$. Thus $v_2 = v_2 \mathbf{1}\T \mathbf{y}_1 \leq \mathbf{x}_2\T A \mathbf{y}_1 \leq \mathbf{x}_2\T v_1 \mathbf{1} = v_1$, so $v_2 \leq v_1$, and similarly, $v_1 \leq v_2$, so $v_1 = v_2$.
-		
-	\end{Proof}
+	The value of a matrix game is unique.
 	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	Suppose $(\mathbf{x}_1, \mathbf{y}_1, v_1)$ and $(\mathbf{x}_2, \mathbf{y}_2, v_2$ are solutions to $A$. Then $A \mathbf{y}_1 \leq v_1 \mathbf{1}$, so $\mathbf{x}_2\T A \mathbf{y}_1 \leq \mathbf{x}_2\T v_1 \mathbf{1}$, and $\mathbf{x}_2\T A \geq v_2 \mathbf{1}\T$, so $\mathbf{x}_2\T A \mathbf{y}_1 \geq v_2 \mathbf{1}\T \mathbf{y}_1$. Thus $v_2 = v_2 \mathbf{1}\T \mathbf{y}_1 \leq \mathbf{x}_2\T A \mathbf{y}_1 \leq \mathbf{x}_2\T v_1 \mathbf{1} = v_1$, so $v_2 \leq v_1$, and similarly, $v_1 \leq v_2$, so $v_1 = v_2$.
+	
+\end{Proof}
 
 
 \begin{Theorem}
@@ -378,28 +393,30 @@
 	
 	\textbf{(Equilibrium)} If row $i$ is used with positive probability in an optimal strategy $\mathbf{x}$, then the $i$th row of $A\mathbf{y}$ is the $v$, the value of $A$.
 	
-	\begin{Proof}
-		%
-		If the $i$th row of $A\mathbf{y}$ were not $v$, then the row player would earn an expected payoff of less than $v$ by playing row $i$ and would therefore never do so. $\lightning$
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	If the $i$th row of $A\mathbf{y}$ were not $v$, then the row player would earn an expected payoff of less than $v$ by playing row $i$ and would therefore never do so. $\lightning$
+	
+\end{Proof}
 
 
 \begin{Proposition}
 	
 	Let $(\mathbf{x}, \mathbf{y}, v)$ be a solution to $A$. Then $(\mathbf{x}, \mathbf{y}, v + c)$ is a solution to $A + c1$.
 	
-	\begin{Proof}
-		%
-		We have $\mathbf{x}\T (A + c1) = \mathbf{x}\T A + \mathbf{x}\T c 1 \geq v \mathbf{1}\T + c \mathbf{1}\T = (v + c) \mathbf{1}\T$, and similarly, $(A + c1) \mathbf{y} \leq \mathbf{1}$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	We have $\mathbf{x}\T (A + c1) = \mathbf{x}\T A + \mathbf{x}\T c 1 \geq v \mathbf{1}\T + c \mathbf{1}\T = (v + c) \mathbf{1}\T$, and similarly, $(A + c1) \mathbf{y} \leq \mathbf{1}$.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -591,30 +608,34 @@
 	
 	If $\mathbf{x}$ and $\mathbf{y}$ satisfy $A\mathbf{y} \leq \mathbf{b}$ and $\mathbf{x}\T A \geq \mathbf{c}\T$, then $\mathbf{c}\T \mathbf{y} \leq \mathbf{x}\T \mathbf{b}$.
 	
-	\begin{Proof}
-		%
-		We have $\mathbf{c}\T \mathbf{y} \leq \mathbf{x}\T A \mathbf{y} \leq \mathbf{x}\T \mathbf{b}$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	We have $\mathbf{c}\T \mathbf{y} \leq \mathbf{x}\T A \mathbf{y} \leq \mathbf{x}\T \mathbf{b}$.
+	
+\end{Proof}
 
 
 \begin{Theorem}
 	
 	If $\mathbf{y}$ and $\mathbf{x}$ satisfy the conditions of a linear program and its dual, respectively, and $\mathbf{c}\T \mathbf{y} = \mathbf{x}\T \mathbf{b}$, then $\mathbf{y}$ and $\mathbf{x}$ are solutions to the linear program and its dual.
 	
-	\pagebreak
-	
-	\begin{Proof}
-		%
-		We want to maximize $\mathbf{c}\T \mathbf{y}$ and $\mathbf{x}\T \mathbf{b}$. But since $\mathbf{c}\T \mathbf{y} = \mathbf{x}\T \textbf{b}$, the previous result tells us that $\mathbf{c}\T \mathbf{y}$ cannot be any larger and $\mathbf{x}\T \mathbf{b}$ cannot be any smaller. Thus $\mathbf{y}$ and $\mathbf{x}$ are solutions.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	We want to maximize $\mathbf{c}\T \mathbf{y}$ and $\mathbf{x}\T \mathbf{b}$. But since $\mathbf{c}\T \mathbf{y} = \mathbf{x}\T \textbf{b}$, the previous result tells us that $\mathbf{c}\T \mathbf{y}$ cannot
+	
+	\pagebreak
+	
+	be any larger and $\mathbf{x}\T \mathbf{b}$ cannot be any smaller. Thus $\mathbf{y}$ and $\mathbf{x}$ are solutions.
+	
+\end{Proof}
 
 
 \begin{Theorem}
@@ -629,26 +650,27 @@
 	
 	Every matrix game can be solved with a linear program.
 	
-	\begin{Proof}
-		%
-		Let $A$ be a matrix game. The column player wants a strategy $\mathbf{q}$ such that $\mathbf{1}\T \mathbf{q} = 1$, $\mathbf{q} \geq \mathbf{0}$, and $A \mathbf{q} \leq v \mathbf{1}$. Let $\mathbf{y} = \frac{\mathbf{q}}{v}$. Then we have $
-		\begin{cases}
-		\min & v\\
-		\Sub & A \mathbf{y} \leq \mathbf{1}
-		\end{cases}$, or, equivalently, $
-		\begin{cases}
-		\max & \mathbf{1}\T \mathbf{y}\\
-		\Sub & A \mathbf{y} \leq \mathbf{b}
-		\end{cases}$. Similarly, the row player wants a strategy $\mathbf{p}$ such that $\mathbf{p}\T \mathbf{1} = 1$, $\mathbf{p} \geq \mathbf{0}$, and $\mathbf{p}\T A \geq v \mathbf{1}\T$, so if $\mathbf{x} = \frac{\mathbf{p}}{v}$, we have $
-		\begin{cases}
-		\min & \mathbf{x}\T \mathbf{1}\\
-		\Sub & \mathbf{x}\T A \geq \mathbf{1}\T
-		\end{cases}$, the dual program.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Let $A$ be a matrix game. The column player wants a strategy $\mathbf{q}$ such that $\mathbf{1}\T \mathbf{q} = 1$, $\mathbf{q} \geq \mathbf{0}$, and $A \mathbf{q} \leq v \mathbf{1}$. Let $\mathbf{y} = \frac{\mathbf{q}}{v}$. Then we have $
+	\begin{cases}
+	\min & v\\
+	\Sub & A \mathbf{y} \leq \mathbf{1}
+	\end{cases}$, or, equivalently, $
+	\begin{cases}
+	\max & \mathbf{1}\T \mathbf{y}\\
+	\Sub & A \mathbf{y} \leq \mathbf{b}
+	\end{cases}$. Similarly, the row player wants a strategy $\mathbf{p}$ such that $\mathbf{p}\T \mathbf{1} = 1$, $\mathbf{p} \geq \mathbf{0}$, and $\mathbf{p}\T A \geq v \mathbf{1}\T$, so if $\mathbf{x} = \frac{\mathbf{p}}{v}$, we have $
+	\begin{cases}
+	\min & \mathbf{x}\T \mathbf{1}\\
+	\Sub & \mathbf{x}\T A \geq \mathbf{1}\T
+	\end{cases}$, the dual program.
+	
+\end{Proof}
 
 
 \begin{Theorem}
@@ -981,14 +1003,15 @@
 	
 	\textbf{(Nash, 1950)} The unique outcome that satisfies the fairness axioms is the $(x, y)$ pair on the upper-right boundary of the convex set of outcomes that maximizes $(x - x_0)(y - y_0)$, where $(x_0, y_0)$ is the status quo.
 	
-	\begin{Proof}
-		%
-		By axiom 2, let $(x_0, y_0)$ have utility $(0, 0)$ and the $(x, y)$ that maximizes $(x - x_0)(y - y_0)$ have utility $(1, 1)$. Since $xy = 1$, the convex set $C$ lies below $y = \frac{1}{x}$. Enclose $C$ in a symmetric set $D$. By axiom 3, the fair outcome for $D$ must lie on the line $y = x$, so it must be $(1, 1)$ by axiom 1. Then by axiom 4, the fair outcome for $C$ is also $(1, 1)$.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	By axiom 2, let $(x_0, y_0)$ have utility $(0, 0)$ and the $(x, y)$ that maximizes $(x - x_0)(y - y_0)$ have utility $(1, 1)$. Since $xy = 1$, the convex set $C$ lies below $y = \frac{1}{x}$. Enclose $C$ in a symmetric set $D$. By axiom 3, the fair outcome for $D$ must lie on the line $y = x$, so it must be $(1, 1)$ by axiom 1. Then by axiom 4, the fair outcome for $C$ is also $(1, 1)$.
+	
+\end{Proof}
 
 
 
@@ -1041,22 +1064,23 @@
 	x_i = \frac{1}{n!} \scaleto{\sum\limits_{S \subseteq \{1, ..., n\}}}{7ex} \hspace{-1.5em} (|S| - 1)! (n - |S|)! (\nu(S) - \nu(S \setminus \{i\}))\textnormal{.}
 	$$
 	
-	\begin{Proof}
-		%
-		The purposes of the various components:
-		
-		$\frac{1}{n!} \displaystyle\sum\limits_{S \subseteq \{1, ..., n\}}$: average over all possible coalitions.\\
-		
-		$(|S| - 1)!$: the ways a coalition can form before player $i$ joins.\\
-		
-		$(n - |S|)!$: the ways a coalition can be completed after player $i$ joins.\\
-		
-		$(\nu(S) - \nu(S \setminus \{i\}))$: the utility increase due to player $i$.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	The purposes of the various components:
+	
+	$\frac{1}{n!} \displaystyle\sum\limits_{S \subseteq \{1, ..., n\}}$: average over all possible coalitions.\\
+	
+	$(|S| - 1)!$: the ways a coalition can form before player $i$ joins.\\
+	
+	$(n - |S|)!$: the ways a coalition can be completed after player $i$ joins.\\
+	
+	$(\nu(S) - \nu(S \setminus \{i\}))$: the utility increase due to player $i$.
+	
+\end{Proof}
 
 
 \begin{Def}

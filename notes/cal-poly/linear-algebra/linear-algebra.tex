@@ -36,11 +36,15 @@
 
 
 
+\renewcommand{\baselinestretch}{1.33}
+
+
+
 
 \definecolor{DefGreen}{rgb}{0,0.5,0}
 \definecolor{TheoremOrange}{rgb}{0.88,0.6,0.08}
 \definecolor{LemmaYellow}{rgb}{1,1,0}
-\definecolor{CorollaryBlue}{rgb}{0,0.29,0.77}
+\definecolor{CorollaryBlue}{rgb}{0,0.3,1}
 \definecolor{ProofPurple}{rgb}{0.58,0,1}
 \definecolor{AxiomRed}{rgb}{1,0,0}
 
@@ -64,8 +68,8 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{lemma}[theorem]{Lemma}
 
-\newtheorem{lemma}{Lemma}[theorem]
 \newtheorem{corollary}{Corollary}[theorem]
 
 \newtheorem{exercise}{Exercise}[section]
@@ -144,7 +148,7 @@
 	\end{lemma}
 	\end{mdframed}
 	
-	\vspace{.03in}
+	\vspace{.15in}
 }
 
 \newenvironment{Corollary}
@@ -156,18 +160,31 @@
 	\end{corollary}
 	\end{mdframed}
 	
-	\vspace{.09in}
+	\vspace{.15in}
+}
+
+\newenvironment{Comment}
+{
+	\begin{mdframed}[backgroundcolor=CommentBlue!10]
+	\textbf{Comment:}%
+}
+{
+	\end{mdframed}
+	
+	\vspace{.15in}
 }
 
 \newenvironment{Proof}
 {
+	\vspace{-.3in}
+	
 	\begin{mdframed}[backgroundcolor=ProofPurple!10]
 	\textbf{Proof:}%
 }
 {
 	\end{mdframed}
 	
-	\vspace{.085in}
+	\vspace{.15in}
 }
 
 \newenvironment{Example}
@@ -246,13 +263,15 @@
 	
 	The element $0$ is unique.
 	
-	\begin{Proof}
-		%
-		Suppose there were two elements $0, 0'$ satisfying $v + 0 = v + 0' = v$ for all $v \in V$. Then $0 + 0' = 0$, but $0 + 0' = 0' + 0 = 0'$, so $0 = 0'$. 
-		
-	\end{Proof}
-	
 \end{Proposition}
+
+
+
+\begin{Proof}
+	%
+	Suppose there were two elements $0, 0'$ satisfying $v + 0 = v + 0' = v$ for all $v \in V$. Then $0 + 0' = 0$, but $0 + 0' = 0' + 0 = 0'$, so $0 = 0'$. 
+	
+\end{Proof}
 
 
 
@@ -260,39 +279,42 @@
 	
 	For each $v \in V$, $-v$ is unique.
 	
-	\begin{Proof}
-		%
-		Suppose there were two elements $-v, (-v)'$ satisfying $v + (-v) = v + (-v)' = 0$. Then $-v = -v + (v+(-v)')$, so $-v = (-v)'$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	Suppose there were two elements $-v, (-v)'$ satisfying $v + (-v) = v + (-v)' = 0$. Then $-v = -v + (v+(-v)')$, so $-v = (-v)'$.
+	
+\end{Proof}
 
 
 \begin{Proposition}
 	
 	For all $v \in V$, $0v = 0$ and $(-1)v = -v$.
 	
-	\begin{Proof}
-		%
-		We have 
-		\begin{align*}
+\end{Proposition}
+
+
+
+\begin{Proof}
+	%
+	We have 
+	
+	\begin{align*}
 		0 &= 0v + (-0v)\\
 		&= (0 + 0)v + (-0v)\\
 		&= 0v + (0 + (-0))v\\
 		&= 0v
-		\end{align*} and \begin{align*}
+	\end{align*} and \begin{align*}
 		(-1)v &= (-1)v + 0\\
 		&= (-1)v + v + (-v)\\
 		&= (-1 + 1)v + (-v)\\
 		&= -v.
-		\end{align*}
-		
-	\end{Proof}
+	\end{align*}
 	
-\end{Proposition}
-
+\end{Proof}
 
 
 \begin{Def}
@@ -302,6 +324,7 @@
 	\begin{enumerate}
 		
 		\item $u+v \in U$ for all $u,v \in U$.
+		
 		\item $cu \in U$ for all $u \in U$ and $c \in k$.
 		
 	\end{enumerate}
@@ -322,15 +345,17 @@
 	
 	$U+W$ is a direct sum if and only if the only expression of $0$ in $U+W$ is $0+0$.
 	
-	\begin{Proof}
-		%
-		$(\Rightarrow)$ If $U+W$ is direct, then since $0 = 0+0$ is one expression of $0$, it must be the only one.\\
-		
-		$(\Leftarrow)$ Let $v \in U+W$ and suppose $v = u + w = u' + w'$ for some $u, u' \in U$ and $w, w' \in W$. Then $0 = v - v = (u+w) + (u'+w') = (u-u') + (w-w')$. Thus $u-u' = w-w' = 0$, so $u = u'$ and $w = w'$. 
-		
-	\end{Proof}
-	
 \end{Proposition}
+
+
+
+\begin{Proof}
+	%
+	$(\Rightarrow)$ If $U+W$ is direct, then since $0 = 0+0$ is one expression of $0$, it must be the only one.\\
+	
+	$(\Leftarrow)$ Let $v \in U+W$ and suppose $v = u + w = u' + w'$ for some $u, u' \in U$ and $w, w' \in W$. Then $0 = v - v = (u+w) + (u'+w') = (u-u') + (w-w')$. Thus $u-u' = w-w' = 0$, so $u = u'$ and $w = w'$. 
+	
+\end{Proof}
 
 
 
@@ -338,16 +363,17 @@
 	
 	$U+W$ is a direct sum if and only if $U \cap W = \{0\}$.
 	
-	\begin{Proof}
-		%
-		$(\Rightarrow)$ Suppose $U+W$ is direct and let $v \in U \cap W$. Then $0 = v + (-v)$, so by the previous result, $v = -v = 0$.\\
-		
-		$(\Leftarrow)$ Assume $U \cap W = \{0\}$ and suppose $u + w = 0$. Then $u = -w \in W$, so $u \in U \cap W$ and is therefore $0$. Thus $u = w = 0$, so the previous proposition gives that $U + W$ is direct.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	$(\Rightarrow)$ Suppose $U+W$ is direct and let $v \in U \cap W$. Then $0 = v + (-v)$, so by the previous result, $v = -v = 0$.\\
+	
+	$(\Leftarrow)$ Assume $U \cap W = \{0\}$ and suppose $u + w = 0$. Then $u = -w \in W$, so $u \in U \cap W$ and is therefore $0$. Thus $u = w = 0$, so the previous proposition gives that $U + W$ is direct.
+	
+\end{Proof}
 
 
 
@@ -382,14 +408,15 @@
 	
 	Let $v_1, ..., v_n \in V$. Then $\Span \{v_1, ..., v_n\}$ is a subspace of $V$.
 	
-	\begin{Proof}
-		%
-		First, $0 \in \Span \{v_1, ..., v_n\}$, so the set is nonempty. Next, $(c_1 v_1 + \cdots + c_n v_n) + (d_1 v_1 + \cdots + d_n v_n) = (c_1 + d_1) v_1 + \cdots + (c_n + d_n) v_n \in \Span \{v_1, ..., v_n\}$, so the set is closed under addition, and finally, $c(c_1 v_1 + \cdots + c_n v_n) = (c c_1) v_1 + \cdots + (c c_n) v_n \in \Span \{v_1, ..., v_n\}$, so it is closed under scalar multiplication. Thus $\Span \{v_1, ..., v_n\}$ is a subspace of $V$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	First, $0 \in \Span \{v_1, ..., v_n\}$, so the set is nonempty. Next, $(c_1 v_1 + \cdots + c_n v_n) + (d_1 v_1 + \cdots + d_n v_n) = (c_1 + d_1) v_1 + \cdots + (c_n + d_n) v_n \in \Span \{v_1, ..., v_n\}$, so the set is closed under addition, and finally, $c(c_1 v_1 + \cdots + c_n v_n) = (c c_1) v_1 + \cdots + (c c_n) v_n \in \Span \{v_1, ..., v_n\}$, so it is closed under scalar multiplication. Thus $\Span \{v_1, ..., v_n\}$ is a subspace of $V$.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -412,28 +439,30 @@
 	
 	Let $V$ be a finite-dimensional vector space. If $v_1, ..., v_k \in V$ are linearly independent, then they can be extended to form a basis for $V$.
 	
-	\begin{Proof}
-		%
-		Suppose $\Span \{w_1, ..., w_n\} = V$. Then $\Span \{v_1, ..., v_k, w_1, ..., w_n\} = V$, so if \linebreak $v_1, ..., v_k, w_1, ..., w_n$ are linearly independent, then $\{v_1, ..., v_k, w_1, ..., w_n\}$ is a basis. Otherwise, $c_1 v_1 + \cdots + c_k v_k + d_1 w_1 + \cdots + d_n w_n = 0$ for some $c_i , d_i \in k$. Not all the $d_i$ can be zero, since then $v_1, ..., v_k$ would be linearly dependent, so there is some $d_j \neq 0$. Then $\Span \{v_1, ..., v_k, w_1, ..., w_{j-1}, w_{j+1}, ..., w_n\} = \Span \{v_1, ..., v_k, w_1, ..., w_n\}$, since we can create $w_j$ from the other vectors. Continue removing $w_i$ until the set is linearly independent (this will terminate, since at most we will have $v_1, ..., v_k$ once again).
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Suppose $\Span \{w_1, ..., w_n\} = V$. Then $\Span \{v_1, ..., v_k, w_1, ..., w_n\} = V$, so if \linebreak $v_1, ..., v_k, w_1, ..., w_n$ are linearly independent, then $\{v_1, ..., v_k, w_1, ..., w_n\}$ is a basis. Otherwise, $c_1 v_1 + \cdots + c_k v_k + d_1 w_1 + \cdots + d_n w_n = 0$ for some $c_i , d_i \in k$. Not all the $d_i$ can be zero, since then $v_1, ..., v_k$ would be linearly dependent, so there is some $d_j \neq 0$. Then $\Span \{v_1, ..., v_k, w_1, ..., w_{j-1}, w_{j+1}, ..., w_n\} = \Span \{v_1, ..., v_k, w_1, ..., w_n\}$, since we can create $w_j$ from the other vectors. Continue removing $w_i$ until the set is linearly independent (this will terminate, since at most we will have $v_1, ..., v_k$ once again).
+	
+\end{Proof}
 
 
 \begin{Theorem}
 	
 	Every basis for a finite-dimensional vector space has the same number of elements.
 	
-	\begin{Proof}
-		%
-		Let $\{v_1, ..., v_n\}$ and $\{w_1, ..., w_m\}$ be bases for $V$. Then by definition, $v_1 = c_1 w_1 + \cdots + c_m w_m$ for some $c_i \in k$ not all zero. Without loss of generality, assume $c_1 \neq 0$. Then $w_1 = (-c_1)^{-1}(-v_1 + c_2 w_2 + \cdots + c_m w_m) \in \Span \{v_1, w_2, ..., w_m\}$, so $\Span \{v_1, w_2, ..., w_m\} = \Span \{w_1, ..., w_m\} = V$. Repeat this process until we have $V = \Span \{v_1, ..., v_n, w_{n+1}, ..., w_m\}.$ If $n > m$, then $V = \Span \{v_1, ..., v_m\}$, but then $v_1, ..., v_n$ are not linearly independent. Thus $n \leq m$, and repeating the proof by eliminating the $v_i$ gives that $m \leq n$, so $n = m$.
-		
-	\end{Proof}
-	\vspace{-.02in}
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Let $\{v_1, ..., v_n\}$ and $\{w_1, ..., w_m\}$ be bases for $V$. Then by definition, $v_1 = c_1 w_1 + \cdots + c_m w_m$ for some $c_i \in k$ not all zero. Without loss of generality, assume $c_1 \neq 0$. Then $w_1 = (-c_1)^{-1}(-v_1 + c_2 w_2 + \cdots + c_m w_m) \in \Span \{v_1, w_2, ..., w_m\}$, so $\Span \{v_1, w_2, ..., w_m\} = \Span \{w_1, ..., w_m\} = V$. Repeat this process until we have $V = \Span \{v_1, ..., v_n, w_{n+1}, ..., w_m\}.$ If $n > m$, then $V = \Span \{v_1, ..., v_m\}$, but then $v_1, ..., v_n$ are not linearly independent. Thus $n \leq m$, and repeating the proof by eliminating the $v_i$ gives that $m \leq n$, so $n = m$.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -448,13 +477,14 @@
 	
 	If $v_1, ..., v_n \in V$ are linearly independent and $\dim V = n$, then $\{v_1, ..., v_n\}$ is a basis for $V$.
 	
-	\begin{Proof}
-		%
-		Suppose not. Extend $\{v_1, ..., v_n\}$ to form a basis for $V$. But then that basis would have more than $n$ elements. $\lightning$
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	Suppose not. Extend $\{v_1, ..., v_n\}$ to form a basis for $V$. But then that basis would have more than $n$ elements. $\lightning$
+\end{Proof}
 
 
 \begin{Proposition}
@@ -484,6 +514,7 @@
 	\begin{enumerate}
 		
 		\item For all $u, v \in V$, $T(u+v) = Tu + Tv$.
+		
 		\item For all $u \in V$ and $c \in k$, $T(cu) = cTu$.
 		
 	\end{enumerate}
@@ -506,14 +537,15 @@
 	
 	Let $\{v_1, ..., v_n\}$ be a basis for $V$ and let $w_1, ..., w_n \in W$. Then there is a unique linear map $T \in \mathcal{L}(V,W)$ such that $Tv_i = w_i$ for each $i$.
 	
-	\begin{Proof}
-		%
-		Such a $T$ exists, since we can define it by $T(c_1 v_1 + \cdots + c_n v_n) = c_1 w_1 + \cdots + c_n w_n$, and it follows that every linear map $S$ with $Sv_i = w_i$ is equal to $T$ by the properties of linear maps.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	Such a $T$ exists, since we can define it by $T(c_1 v_1 + \cdots + c_n v_n) = c_1 w_1 + \cdots + c_n w_n$, and it follows that every linear map $S$ with $Sv_i = w_i$ is equal to $T$ by the properties of linear maps.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -537,35 +569,38 @@
 	
 	\textbf{(The Fundamental Theorem of Linear Maps)} Let $T \in \mathcal{L}(V,W)$. Then $\dim V = \dim \Null T + \dim \Range T$.
 	
-	\begin{Proof}
-		%
-		Let $\{v_1, ..., v_k\}$ be a basis for $\Null T$ and extend it to $\{v_1, ..., v_n\}$ to form a basis for $V$. We claim that $\{Tv_{k+1}, ..., Tv_n\}$ is a basis for $\Range T$.\\
-		
-		Suppose $c_{k+1} Tv_{k+1} + \cdots + c_n Tv_n = 0$. Then $T(c_{k+1} v_{k+1} + \cdots + c_n v_n) = 0$, so $c_{k+1} v_{k+1} + \cdots + c_n v_n \in \Null T$. Since $\{v_1, ..., v_k\}$ is a basis for $\Null T$, $c_{k+1} v_{k+1} + \cdots + c_n v_n = c_1 v_1 + \cdots + c_k v_k$ for some $c_1, ..., c_k \in k$. Since $v_1, ..., v_n$ are linearly independent, $c_1 = \cdots = c_n = 0$, so in particular, $c_{k+1} = \cdots + c_n = 0$. Thus $Tv_{k+1}, ..., Tv_n$ are linearly independent.\\
-		
-		Let $w \in \Range T$. Then $T(c_1 v_1 + \cdots + c_n v_n) = w$ for some $c_1, ..., c_n \in k$, and since $c_1 v_1 + \cdots + c_k v_k \in \Null T$, $T(c_1 v_1 + \cdots + c_k v_k) = 0$, so $T(c_{k+1} v_{k+1} + \cdots + c_n v_n) = w$. Then $w = c_{k+1} Tv_{k+1} + \cdots + c_n Tv_n$, so $w \in \Span \{Tv_{k+1}, ..., Tv_n\}$. Thus $Tv_{k+1}, ..., Tv_n$ span $\Range T$.\\
-		
-		Thus $\{Tv_{k+1}, ..., Tv_n\}$ is a basis for $\Range T$, so in particular, $\dim \Range T = n - k$ and $\dim V = n = \dim \Null T + \dim \Range T = k + (n-k)$.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Let $\{v_1, ..., v_k\}$ be a basis for $\Null T$ and extend it to $\{v_1, ..., v_n\}$ to form a basis for $V$. We claim that $\{Tv_{k+1}, ..., Tv_n\}$ is a basis for $\Range T$.\\
+	
+	Suppose $c_{k+1} Tv_{k+1} + \cdots + c_n Tv_n = 0$. Then $T(c_{k+1} v_{k+1} + \cdots + c_n v_n) = 0$, so $c_{k+1} v_{k+1} + \cdots + c_n v_n \in \Null T$. Since $\{v_1, ..., v_k\}$ is a basis for $\Null T$, $c_{k+1} v_{k+1} + \cdots + c_n v_n = c_1 v_1 + \cdots + c_k v_k$ for some $c_1, ..., c_k \in k$. Since $v_1, ..., v_n$ are linearly independent, $c_1 = \cdots = c_n = 0$, so in particular, $c_{k+1} = \cdots + c_n = 0$. Thus $Tv_{k+1}, ..., Tv_n$ are linearly independent.\\
+	
+	Let $w \in \Range T$. Then $T(c_1 v_1 + \cdots + c_n v_n) = w$ for some $c_1, ..., c_n \in k$, and since $c_1 v_1 + \cdots + c_k v_k \in \Null T$, $T(c_1 v_1 + \cdots + c_k v_k) = 0$, so $T(c_{k+1} v_{k+1} + \cdots + c_n v_n) = w$. Then $w = c_{k+1} Tv_{k+1} + \cdots + c_n Tv_n$, so $w \in \Span \{Tv_{k+1}, ..., Tv_n\}$. Thus $Tv_{k+1}, ..., Tv_n$ span $\Range T$.\\
+	
+	Thus $\{Tv_{k+1}, ..., Tv_n\}$ is a basis for $\Range T$, so in particular, $\dim \Range T = n - k$ and $\dim V = n = \dim \Null T + \dim \Range T = k + (n-k)$.
+	
+\end{Proof}
 
 
 \begin{Proposition}
 	
 	A linear map $T \in \mathcal{L}(V,W)$ is injective if and only if $\Null T = \{0\}$.
 	
-	\begin{Proof}
-		%
-		$(\Rightarrow)$ Let $x \in \Null T$. Then $Tx = T0 = 0$, so $x = 0$, since $T$ is injective.\\
-		
-		$(\Leftarrow)$ Suppose $Tu = Tv$ for $u, v \in V$. Then $T(u-v) = 0$, so $u - v = 0$, since $\Null T = \{0\}$. Thus $T$ is injective.
-		
-	\end{Proof}
-	
 \end{Proposition}
+
+
+
+\begin{Proof}
+	%
+	$(\Rightarrow)$ Let $x \in \Null T$. Then $Tx = T0 = 0$, so $x = 0$, since $T$ is injective.\\
+	
+	$(\Leftarrow)$ Suppose $Tu = Tv$ for $u, v \in V$. Then $T(u-v) = 0$, so $u - v = 0$, since $\Null T = \{0\}$. Thus $T$ is injective.
+	
+\end{Proof}
 
 
 
@@ -573,14 +608,15 @@
 	
 	Let $T \in \mathcal{L}(V,W)$. If $\dim V > \dim W$, then $\Null T \neq 0$.
 	
-	\begin{Proof}
-		%
-		$\dim \Null T = \dim V - \dim \Range T \geq \dim V - \dim W > 0$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	$\dim \Null T = \dim V - \dim \Range T \geq \dim V - \dim W > 0$.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -595,14 +631,15 @@
 	
 	Let $T \in \mathcal{L}(V,W)$. Then $T^{-1}$ is unique.
 	
-	\begin{Proof}
-		%
-		Suppose $T^{-1}_1$ and $T^{-1}_2$ are both inverses to $T$. Then $T^{-1}_1 = T^{-1}_1 T T^{-1}_2 = T^{-1}_2$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	Suppose $T^{-1}_1$ and $T^{-1}_2$ are both inverses to $T$. Then $T^{-1}_1 = T^{-1}_1 T T^{-1}_2 = T^{-1}_2$.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -617,14 +654,15 @@
 	
 	If $\dim V = \dim W$, then $V \simeq W$.
 	
-	\begin{Proof}
-		%
-		Let $\{v_1, ..., v_n\}$ and $\{w_1, ..., w_n\}$ be bases for $V$ and $W$ and define $T \in \mathcal{L}(V,W)$ by $Tv_i = w_i$. Then $T$ is injective and surjective, so it is an isomorphism.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	Let $\{v_1, ..., v_n\}$ and $\{w_1, ..., w_n\}$ be bases for $V$ and $W$ and define $T \in \mathcal{L}(V,W)$ by $Tv_i = w_i$. Then $T$ is injective and surjective, so it is an isomorphism.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -644,6 +682,8 @@
 	$$
 	
 	where $Tv_i$ = $c_{1i} w_1 + \cdots + c_{mi} w_m$. Notice that if $v = c_1 v_1 + \cdots + c_n v_n$, then
+	
+	\pagebreak
 	
 	$$
 		M(T) \begin{bmatrix}	
@@ -692,18 +732,19 @@
 	
 	Let $V$ and $W$ be vector spaces. Then $\dim \mathcal{L}(V,W) = (\dim V)(\dim W)$.
 	
-	\begin{Proof}
-		%
-		Let $\{v_1, ..., v_n\}$ and $\{w_1, ..., w_m\}$ be bases for $V$ and $W$. We claim that $\mathcal{L}(V,W) \simeq M_{n, m}(k)$. Define $M : \mathcal{L}(V,W) \longrightarrow M_{n, m}(k)$ by sending a linear map to its matrix.\\
-		
-		$(\hookrightarrow)$ Suppose $M(T) = M(S)$. Then the columns of each are equal, so $Tv_i = Sv_i$ for all $i$. Thus $T = S$, so $M$ is injective.\\
-		
-		$(\twoheadrightarrow)$ Let $A \in M_{n, m}(k)$ and define $T \in \mathcal{L}(V,W)$ by $Tv_i = c_1 w_1 + \cdots + c_m w_m$, where the $c_j$ form the $i$th column of $A$. Then $M(T) = A$, so $M$ is surjective.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Let $\{v_1, ..., v_n\}$ and $\{w_1, ..., w_m\}$ be bases for $V$ and $W$. We claim that $\mathcal{L}(V,W) \simeq M_{n, m}(k)$. Define $M : \mathcal{L}(V,W) \longrightarrow M_{n, m}(k)$ by sending a linear map to its matrix.\\
+	
+	$(\hookrightarrow)$ Suppose $M(T) = M(S)$. Then the columns of each are equal, so $Tv_i = Sv_i$ for all $i$. Thus $T = S$, so $M$ is injective.\\
+	
+	$(\twoheadrightarrow)$ Let $A \in M_{n, m}(k)$ and define $T \in \mathcal{L}(V,W)$ by $Tv_i = c_1 w_1 + \cdots + c_m w_m$, where the $c_j$ form the $i$th column of $A$. Then $M(T) = A$, so $M$ is surjective.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -749,14 +790,15 @@
 	
 	Let $T \in \mathcal{L}(V,W)$. Then $M(T') = M(T)^\textnormal{T}$.
 	
-	\begin{Proof}
-		%
-		$M(T')_{ij}$ is the coefficient of $\varphi_{v_i}$ in $T'\varphi_{w_j} = \varphi_{w_j} T$. If $\varphi_{w_j} T = c_1 \varphi_{v_1} + \cdots + c_n \varphi_{v_n}$, then $M(T')_{ij} = c_i$. But by the definition of $\varphi_{w_j}$, $\varphi_{w_j} Tv_i$ is the coefficient of $w_j$ in the expression of $Tv_i$, which is the definition of $M(T)_{ji}$. Thus $M(T)_{ji} = M(T')_{ij}$, so $M(T') = M(T)^\textnormal{T}$.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	$M(T')_{ij}$ is the coefficient of $\varphi_{v_i}$ in $T'\varphi_{w_j} = \varphi_{w_j} T$. If $\varphi_{w_j} T = c_1 \varphi_{v_1} + \cdots + c_n \varphi_{v_n}$, then $M(T')_{ij} = c_i$. But by the definition of $\varphi_{w_j}$, $\varphi_{w_j} Tv_i$ is the coefficient of $w_j$ in the expression of $Tv_i$, which is the definition of $M(T)_{ji}$. Thus $M(T)_{ji} = M(T')_{ij}$, so $M(T') = M(T)^\textnormal{T}$.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -771,15 +813,15 @@
 	
 	Let $U$ be a subspace of $V$. Then $\dim V = \dim U + \dim U^0$.
 	
-	\pagebreak
-	
-	\begin{Proof}
-		%
-		Let $\{v_1, ..., v_k\}$ be a basis for $U$ and extend it to $\{v_1, ..., v_n\}$ to form a basis for $V$. Then $\{\varphi_{v_1}, ..., \varphi_{v_n}\}$ is a basis for $V'$, so $\varphi_{v_{k+1}}, ..., \varphi_{v_n}$ are linearly independent. Since $\Span \{\varphi_{v_{k+1}}, ..., \varphi_{v_n}\} = U^0$, $\dim U^0 = n-k$, so $\dim V = n = \dim U + \dim U^0 = k + (n - k)$.
-		
-	\end{Proof}
-	
 \end{Proposition}
+
+
+
+\begin{Proof}
+	%
+	Let $\{v_1, ..., v_k\}$ be a basis for $U$ and extend it to $\{v_1, ..., v_n\}$ to form a basis for $V$. Then $\{\varphi_{v_1}, ..., \varphi_{v_n}\}$ is a basis for $V'$, so $\varphi_{v_{k+1}}, ..., \varphi_{v_n}$ are linearly independent. Since $\Span \{\varphi_{v_{k+1}}, ..., \varphi_{v_n}\} = U^0$, $\dim U^0 = n-k$, so $\dim V = n = \dim U + \dim U^0 = k + (n - k)$.
+	
+\end{Proof}
 
 
 
@@ -787,14 +829,15 @@
 	
 	Let $T \in \mathcal{L}(V,W)$. Then $\Null T' = (\Range T)^0$.
 	
-	\begin{Proof}
-		%
-		We have $\varphi \in \Null T'$ if and only if $T'\varphi = 0$, if and only if $\varphi T = 0$, if and only if $\varphi Tv = 0$ for all $v \in V$, if and only if $\varphi w = 0$ for all $w \in \Range T$, if and only if $\varphi \in (\Range T)^0$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	We have $\varphi \in \Null T'$ if and only if $T'\varphi = 0$, if and only if $\varphi T = 0$, if and only if $\varphi Tv = 0$ for all $v \in V$, if and only if $\varphi w = 0$ for all $w \in \Range T$, if and only if $\varphi \in (\Range T)^0$.
+	
+\end{Proof}
 
 
 \begin{Proposition}
@@ -809,19 +852,23 @@
 	
 	Let $T \in \mathcal{L}(V,W)$. Then $T'$ is injective if and only if $T$ is surjective.
 	
-	\begin{Proof}
-		%
-		$T'$ is injective if and only if $\Null T' = \{0\}$, if and only if $(\Range T)^0 = \{0\}$, if and only if $\dim\  (\Range T)^0 = 0$, if and only if $\dim \Range T = \dim W$, if and only if $\Range T = W$.
-		
-	\end{Proof}
-	\vspace{.1in}
-	\begin{Corollary}
-		
-		Let $T \in \mathcal{L}(V,W)$. Then $\dim \Range T' = \dim \Range T$.
-		
-	\end{Corollary}
-	
 \end{Proposition}
+
+
+
+\begin{Proof}
+	%
+	$T'$ is injective if and only if $\Null T' = \{0\}$, if and only if $(\Range T)^0 = \{0\}$, if and only if $\dim\  (\Range T)^0 = 0$, if and only if $\dim \Range T = \dim W$, if and only if $\Range T = W$.
+	
+\end{Proof}
+
+
+
+\begin{Corollary}
+	
+	Let $T \in \mathcal{L}(V,W)$. Then $\dim \Range T' = \dim \Range T$.
+	
+\end{Corollary}
 
 
 
@@ -849,13 +896,15 @@
 	
 	Let $T \in \mathcal{L}(V)$ and $\lambda \in k$. Then $\lambda$ is an eigenvalue of $T$ if and only if $T - \lambda I$ is not invertible.
 	
-	\begin{Proof}
-		%
-		We have that $\lambda$ is an eigenvalue of $T$ if and only if $Tv = \lambda v$ for some $v \neq 0$, if and only if $(T - \lambda I)v = 0$ for some $v \neq 0$, if and only if $\Null (T - \lambda I) \neq \{0\}$, if and only if $T - \lambda I$ is not invertible.
-		
-	\end{Proof}
-	
 \end{Proposition}
+
+
+
+\begin{Proof}
+	%
+	We have that $\lambda$ is an eigenvalue of $T$ if and only if $Tv = \lambda v$ for some $v \neq 0$, if and only if $(T - \lambda I)v = 0$ for some $v \neq 0$, if and only if $\Null (T - \lambda I) \neq \{0\}$, if and only if $T - \lambda I$ is not invertible.
+	
+\end{Proof}
 
 
 
@@ -863,32 +912,33 @@
 	
 	If $\lambda_1, ..., \lambda_k$ are distinct eigenvalues of $T$, then the corresponding eigenvectors $v_1, ..., v_k$ are linearly independent.
 	
-	\begin{Proof}
-		%
-		Suppose not. Then there is a minimum $j$ for which $v_1, ..., v_j$ are linearly dependent, so $v_j = c_1 v_1 + \cdots + c_{j-1} v_{j-1}$ for some $c_1, ..., c_{j-1} \in k$. Then
-		
-		$$
-			\lambda_j v_j = \lambda_j (c_1 v_1 + \cdots + c_{j-1} v_{j-1}) = c_1 \lambda_j v_1 + \cdots + c_{j-1} \lambda_j v_{j-1}.
-		$$
-		
-		But we also have
-		
-		$$
-			\lambda_j v_j = Tv_j = T(c_1 v_1 + \cdots + c_{j-1} v_{j-1}) = c_1 \lambda_1 v_1 + \cdots + c_{j-1} \lambda_{j-1} v_{j-1},
-		$$
-		
-		so
-		
-		$$
-			c_1(\lambda_1 - \lambda_j)v_1 + \cdots + c_1(\lambda_{j-1} - \lambda_j)v_{j-1} = 0.
-		$$
-		
-		Since $j$ was minimal, $v_1, ..., v_{j_1}$ are linearly independent, so $c_i(\lambda_i - \lambda_j) = 0$ for all $i \in \{1, ..., j-1\}$. Not every $c_i = 0$, since then $v_j = 0$, so some $c_i \neq 0$, and therefore $\lambda_i = \lambda_j$. But then the eigenvalues are not distinct. $\lightning$
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Suppose not. Then there is a minimum $j$ for which $v_1, ..., v_j$ are linearly dependent, so $v_j = c_1 v_1 + \cdots + c_{j-1} v_{j-1}$ for some $c_1, ..., c_{j-1} \in k$. Then
+	
+	$$
+		\lambda_j v_j = \lambda_j (c_1 v_1 + \cdots + c_{j-1} v_{j-1}) = c_1 \lambda_j v_1 + \cdots + c_{j-1} \lambda_j v_{j-1}.
+	$$
+	
+	But we also have
+	
+	$$
+		\lambda_j v_j = Tv_j = T(c_1 v_1 + \cdots + c_{j-1} v_{j-1}) = c_1 \lambda_1 v_1 + \cdots + c_{j-1} \lambda_{j-1} v_{j-1},
+	$$
+	
+	so
+	
+	$$
+		c_1(\lambda_1 - \lambda_j)v_1 + \cdots + c_1(\lambda_{j-1} - \lambda_j)v_{j-1} = 0.
+	$$
+	
+	Since $j$ was minimal, $v_1, ..., v_{j_1}$ are linearly independent, so $c_i(\lambda_i - \lambda_j) = 0$ for all $i \in \{1, ..., j-1\}$. Not every $c_i = 0$, since then $v_j = 0$, so some $c_i \neq 0$, and therefore $\lambda_i = \lambda_j$. But then the eigenvalues are not distinct. $\lightning$
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -947,65 +997,69 @@
 	
 	Let $V$ be a vector space over an algebraically closed field $k$ with $\dim V = n$ and let $T \in \mathcal{L}(V)$. Then there is a basis for $V$ such that $M(T)$ is upper triangular.
 	
-	\begin{Proof}
-		%
-		We will proceed by induction. The base case is trivial, since every $1 \times 1$ matrix is upper triangular.\\
-		
-		Assume that every linear map in $\mathcal{L}(V)$ has such a basis if $\dim V < n$. Let $T \in \mathcal{L}(V)$ and let $\lambda$ be an eigenvalue of $T$ (This exists, since we can choose any basis for $V$ and perform elementary row operations on $M(T)$ to eliminate every element of a non-leading-zero column below the top one). Let $U = \Range (T - \lambda I)$. Then $U$ is $T$-invariant, since $T(Tv - \lambda v) = T(Tv) - \lambda (Tv) \in U$, so $T|_U \in \mathcal{L}(U)$. Since the eigenvector corresponding to $\lambda$ is an element of $\Null (T - \lambda I)$, $U \neq V$. Thus $\dim U < \dim V$, so by assumption, there is a basis $\{u_1, ..., u_k\}$ for $U$ such that $M(T|_U)$ is upper triangular. Extend this to $\{u_1, ..., u_k, v_1, ..., v_j\}$ to form a basis for $V$. Then $Tv_i = Tv_i - \lambda v_i + \lambda v_i = c_1 u_1 + \cdots + c_k u_k + \lambda v_i$ for some $c_1, ..., c_k \in k$, and so
-		
-		$$
-			M(T) = \begin{bmatrix}
-				T & *\\
-				0 & \lambda I\\
-			\end{bmatrix},
-		$$
-		
-		where $T$ is a $k \times k$ upper triangular matrix, $*$ is unspecified, $0$ is the zero matrix, and $\lambda I$ is a $j \times j$ diagonal matrix. Thus $M(T)$ is upper triangular.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	We will proceed by induction. The base case is trivial, since every $1 \times 1$ matrix is upper triangular.\\
+	
+	Assume that every linear map in $\mathcal{L}(V)$ has such a basis if $\dim V < n$. Let $T \in \mathcal{L}(V)$ and let $\lambda$ be an eigenvalue of $T$ (This exists, since we can choose any basis for $V$ and perform elementary row operations on $M(T)$ to eliminate every element of a non-leading-zero column below the top one). Let $U = \Range (T - \lambda I)$. Then $U$ is $T$-invariant, since $T(Tv - \lambda v) = T(Tv) - \lambda (Tv) \in U$, so $T|_U \in \mathcal{L}(U)$. Since the eigenvector corresponding to $\lambda$ is an element of $\Null (T - \lambda I)$, $U \neq V$. Thus $\dim U < \dim V$, so by assumption, there is a basis $\{u_1, ..., u_k\}$ for $U$ such that $M(T|_U)$ is upper triangular. Extend this to $\{u_1, ..., u_k, v_1, ..., v_j\}$ to form a basis for $V$. Then $Tv_i = Tv_i - \lambda v_i + \lambda v_i = c_1 u_1 + \cdots + c_k u_k + \lambda v_i$ for some $c_1, ..., c_k \in k$, and so
+	
+	$$
+		M(T) = \begin{bmatrix}
+			T & *\\
+			0 & \lambda I\\
+		\end{bmatrix},
+	$$
+	
+	where $T$ is a $k \times k$ upper triangular matrix, $*$ is unspecified, $0$ is the zero matrix, and $\lambda I$ is a $j \times j$ diagonal matrix. Thus $M(T)$ is upper triangular.
+	
+\end{Proof}
 
 
 \begin{Theorem}
 	
 	If $M(T)$ is upper triangular with respect to the basis $v_1, ..., v_n$ and has diagonal entries $\lambda_1, ..., \lambda_n$, then $T$ is invertible if and only if no $\lambda_i = 0$.
 	
-	\begin{Proof}
-		%
-		$(\Rightarrow)$ Assume $T^{-1}$ exists and suppose some $\lambda_i = 0$. Let $U = \Span \{v_1, ..., v_i\}$. Then $U$ is $T$-invariant, but $T|_U$ is not surjective, so it is not invertible, and therefore neither is $T$. $\lightning$\\
-		
-		$(\Leftarrow)$ It is enough to show that $\Null T = \{0\}$, so suppose $T(c_1 v_1 + \cdots + c_n v_n) = 0$. Then $c_1 Tv_1 + \cdots + c_n Tv_n = 0$. Since $Tv_i \in \Span \{v_1, ..., v_i\}$, $c_n = 0$, since $v_n appears only in Tv_n$ and $\lambda_n \neq 0$. Similarly, $c_1 = \cdots = c_{n-1} = 0$. Thus $\Null T = \{0\}$.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	$(\Rightarrow)$ Assume $T^{-1}$ exists and suppose some $\lambda_i = 0$. Let $U = \Span \{v_1, ..., v_i\}$. Then $U$ is $T$-invariant, but $T|_U$ is not surjective, so it is not invertible, and therefore neither is $T$. $\lightning$\\
+	
+	$(\Leftarrow)$ It is enough to show that $\Null T = \{0\}$, so suppose $T(c_1 v_1 + \cdots + c_n v_n) = 0$. Then $c_1 Tv_1 + \cdots + c_n Tv_n = 0$. Since $Tv_i \in \Span \{v_1, ..., v_i\}$, $c_n = 0$, since $v_n appears only in Tv_n$ and $\lambda_n \neq 0$. Similarly, $c_1 = \cdots = c_{n-1} = 0$. Thus $\Null T = \{0\}$.
+	
+\end{Proof}
 
 
 \begin{Theorem}
 	
-		If $M(T)$ is upper triangular with diagonal entries $\lambda_1, ..., \lambda_n$, then $T$ has eigenvalues $\lambda_1, ..., \lambda_n$.
-		
-		\begin{Proof}
-			%
-			If $\lambda$ is an eigenvalue of $T$, then $T - \lambda I$ is not invertible. Then $\lambda_i - \lambda = 0$ for some $i$, since
-			
-			$$
-				M(T - \lambda I) = \begin{bmatrix}
-					\lambda_1 - \lambda & * & \cdots & *\\
-					0 & \lambda_2 - \lambda & \cdots & *\\
-					\vdots & \vdots & \ddots & \vdots\\
-					0 & 0 & \cdots & \lambda_n - \lambda\\
-				\end{bmatrix}.
-			$$
-			
-			Repeat for all $i$.
-			
-		\end{Proof}
+	If $M(T)$ is upper triangular with diagonal entries $\lambda_1, ..., \lambda_n$, then $T$ has eigenvalues $\lambda_1, ..., \lambda_n$.
 	
 \end{Theorem}
+
+
+
+\begin{Proof}
+	%
+	If $\lambda$ is an eigenvalue of $T$, then $T - \lambda I$ is not invertible. Then $\lambda_i - \lambda = 0$ for some $i$, since
+	
+	$$
+		M(T - \lambda I) = \begin{bmatrix}
+			\lambda_1 - \lambda & * & \cdots & *\\
+			0 & \lambda_2 - \lambda & \cdots & *\\
+			\vdots & \vdots & \ddots & \vdots\\
+			0 & 0 & \cdots & \lambda_n - \lambda\\
+		\end{bmatrix}.
+	$$
+	
+	Repeat for all $i$.
+	
+\end{Proof}
 
 
 
@@ -1059,14 +1113,15 @@
 	
 	For all $v \in V$ and $c \in k$, $||cv|| = |c| \cdot ||v||$.
 	
-	\begin{Proof}
-		%
-		Since $||cv||^2 = \left< cv, cv \right> = c \overline{c} \left< v, v \right> = |c|^2 ||v||^2$, $||cv|| = |c| \cdot ||v||$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	Since $||cv||^2 = \left< cv, cv \right> = c \overline{c} \left< v, v \right> = |c|^2 ||v||^2$, $||cv|| = |c| \cdot ||v||$.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -1081,54 +1136,60 @@
 	
 	\textbf{(The Pythagorean Theorem)} Let $u, v \in V$ be orthogonal. Then $||u + v||^2 = ||u||^2 + ||v||^2$.
 	
-	\begin{Proof}
-		%
-		We have $||u + v||^2 = \left< u+v, u+v \right> = \left< u, u \right> + \left< u, v \right> + \left< v, u \right> + \left< v, v \right> = \left< u, u \right> + \left< v, v \right> = ||u||^2 + ||v||^2$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	We have $||u + v||^2 = \left< u+v, u+v \right> = \left< u, u \right> + \left< u, v \right> + \left< v, u \right> + \left< v, v \right> = \left< u, u \right> + \left< v, v \right> = ||u||^2 + ||v||^2$.
+	
+\end{Proof}
 
 
 \begin{Proposition}
 	
 	\textbf{(The Cauchy-Schwarz Inequality)} For all $u, v \in V$, $||u|| \cdot ||v|| \geq | \left< u, v \right> |$.
 	
-	\begin{Proof}
-		%
-		Let $c = \frac{\left< u, v \right>}{\left< v, v \right>}$. Then $||u||^2 ||v||^2 = ||u - cv + cv||^2 ||v||^2$, and since $u - cv$ is orthogonal to $cv$, $||u||^2 ||v||^2 = \left( ||u - cv||^2 + ||cv||^2 \right) ||v||^2 \geq ||cv||^2 ||v||^2 = |c|^2 ||v||^4 = | \left< u, v \right> |^2$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
 
+
+\begin{Proof}
+	%
+	Let $c = \frac{\left< u, v \right>}{\left< v, v \right>}$. Then $||u||^2 ||v||^2 = ||u - cv + cv||^2 ||v||^2$, and since $u - cv$ is orthogonal to $cv$, $||u||^2 ||v||^2 = \left( ||u - cv||^2 + ||cv||^2 \right) ||v||^2 \geq ||cv||^2 ||v||^2 = |c|^2 ||v||^4 = | \left< u, v \right> |^2$.
+	
+\end{Proof}
+
+
+
+\begin{Lemma}
+	
+	For all $z \in \mathbb{C}$, $2|z| \geq z + \overline{z}$.
+	
+\end{Lemma}
+
+
+
+\begin{Proof}
+	%
+	If $z = a+bi$, then $2|z| = 2|a+bi| = 2\sqrt{a^2 + b^2} \geq 2\sqrt{a^2} = 2a = z + \overline{z}$.
+	
+\end{Proof}
 
 \begin{Proposition}
 	
 	For all $u, v \in V$, $||u|| + ||v|| \geq ||u + v||$.
-	
-	\begin{Lemma}
-		
-		For all $z \in \mathbb{C}$, $2|z| \geq z + \overline{z}$.
-		
-		\begin{Proof}
-			%
-			If $z = a+bi$, then $2|z| = 2|a+bi| = 2\sqrt{a^2 + b^2} \geq 2\sqrt{a^2} = 2a = z + \overline{z}$.
-			
-		\end{Proof}
-		
-	\end{Lemma}
-	
-	\begin{Proof}
-		%
-		We have $\left( ||u|| + ||v|| \right)^2 = ||u||^2 + 2||u|| \cdot ||v|| + ||v||^2 \geq ||u||^2 + 2 | \left< u, v \right> | + ||v||^2 \geq ||u||^2 + \left< u, v \right> + \overline{\left< u, v \right>} + ||v||^2 = \left< u, u \right> + \left< u, v \right> + \left< v, u \right> + \left< v, v \right> = \left< u + v, u + v \right> = ||u + v||^2$.
-		
-	\end{Proof}
 
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	We have $\left( ||u|| + ||v|| \right)^2 = ||u||^2 + 2||u|| \cdot ||v|| + ||v||^2 \geq ||u||^2 + 2 | \left< u, v \right> | + ||v||^2 \geq ||u||^2 + \left< u, v \right> + \overline{\left< u, v \right>} + ||v||^2 = \left< u, u \right> + \left< u, v \right> + \left< v, u \right> + \left< v, v \right> = \left< u + v, u + v \right> = ||u + v||^2$.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -1143,27 +1204,30 @@
 	
 	If $e_1, ..., e_k \in V$ are orthonormal, then $||c_1 e_1 + \cdots + c_k e_k||^2 = |c_1|^2 + \cdots + |c_k|^2$.
 	
-	\begin{Proof}
-		%
-		We will induct upon k. The base case is obvious, since $||c_1 e_1||^2 = |c_1|^2 ||e_1||^2 = |c_1|^2$. For the induction step, assume $||c_1 e_1 + \cdots | c_k e_k||^2 = |c_1|^2 + \cdots + |c_k|^2$. Since $c_1 e_1 + \cdots + c_k e_k$ and $c_{k+1} e_{k+1}$ are orthogonal, $||c_1 e_1 + \cdots + c_{k+1} e_{k+1}||^2 = ||c_1 e_1 + \cdots + c_k e_k||^2 + ||c_{k+1} e_{k+1}||^2 = |c_1|^2 + \cdots + |c_k|^2 + |c_{k+1}|^2$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	We will induct upon k. The base case is obvious, since $||c_1 e_1||^2 = |c_1|^2 ||e_1||^2 = |c_1|^2$. For the induction step, assume $||c_1 e_1 + \cdots | c_k e_k||^2 = |c_1|^2 + \cdots + |c_k|^2$. Since $c_1 e_1 + \cdots + c_k e_k$ and $c_{k+1} e_{k+1}$ are orthogonal, $||c_1 e_1 + \cdots + c_{k+1} e_{k+1}||^2 = ||c_1 e_1 + \cdots + c_k e_k||^2 + ||c_{k+1} e_{k+1}||^2 = |c_1|^2 + \cdots + |c_k|^2 + |c_{k+1}|^2$.
+	
+\end{Proof}
 
 
 \begin{Proposition}
 	
 	Orthonormal vectors are linearly independent.
 	
-	\begin{Proof}
-		%
-		Suppose $e_1, ..., e_k \in V$ are orthonormal and $c_1 e_1 + \cdots + c_k e_k = 0$. Then $||c_1 e_1 + \cdots + c_k e_k||^2 = |c_1|^2 + \cdots + |c_k|^2 = 0$, so $c_1 = \cdots = c_k = 0$.
-		
-	\end{Proof}
-	
 \end{Proposition}
+
+
+
+\begin{Proof}
+	%
+	Suppose $e_1, ..., e_k \in V$ are orthonormal and $c_1 e_1 + \cdots + c_k e_k = 0$. Then $||c_1 e_1 + \cdots + c_k e_k||^2 = |c_1|^2 + \cdots + |c_k|^2 = 0$, so $c_1 = \cdots = c_k = 0$.
+	
+\end{Proof}
 
 
 
@@ -1171,13 +1235,15 @@
 	
 	Let $\{e_1, ..., e_n\}$ be an orthonormal basis for $V$ and let $v \in V$. Then $v = \left< v, e_1 \right> e_1 + \cdots + \left< v, e_n \right> e_n$.
 	
-	\begin{Proof}
-		%
-		If $v = c_1 e_1 + \cdots + c_n e_n$, then $\left< v, e_i \right> = \left< c_1 e_1 + \cdots + c_n e_n, e_i \right> = \left< c_i e_i, e_i \right> = c_i$.
-		
-	\end{Proof}
-	
 \end{Proposition}
+
+
+
+\begin{Proof}
+	%
+	If $v = c_1 e_1 + \cdots + c_n e_n$, then $\left< v, e_i \right> = \left< c_1 e_1 + \cdots + c_n e_n, e_i \right> = \left< c_i e_i, e_i \right> = c_i$.
+	
+\end{Proof}
 
 
 
@@ -1185,43 +1251,44 @@
 	
 	\textbf{(The Gram-Schmidt Process)} Every finite-dimensional inner product space has an orthonormal basis.
 	
-	\begin{Proof}
-		%
-		Let $\{v_1, ..., v_n\}$ be a basis for $V$. Let $e_1' = v_1$ and $e_1 = \frac{e_1'}{||e_1'||}$. Then for each $i \in \{2, ..., n\}$, let
-		
-		$$
-			e_i' = v_i - \left( \left< v_1, e_1 \right> e_1 + \cdots + \left< v_{i-1}, e_{i-1} \right> e_{i-1} \right)
-		$$ 
-		
-		and $e_i = \frac{e_i'}{||e_i'||}$. Then $\{e_1, ..., e_n\}$ is an orthonormal basis for V.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Let $\{v_1, ..., v_n\}$ be a basis for $V$. Let $e_1' = v_1$ and $e_1 = \frac{e_1'}{||e_1'||}$. Then for each $i \in \{2, ..., n\}$, let
+	
+	$$
+		e_i' = v_i - \left( \left< v_1, e_1 \right> e_1 + \cdots + \left< v_{i-1}, e_{i-1} \right> e_{i-1} \right)
+	$$ 
+	
+	and $e_i = \frac{e_i'}{||e_i'||}$. Then $\{e_1, ..., e_n\}$ is an orthonormal basis for V.
+	
+\end{Proof}
 
 
 \begin{Theorem}
 	
 	\textbf{(Riesz Representation)} Let $\varphi_u \in V'$ be defined by $\varphi_u v = \left< v, u \right>$. Then for each $T \in V'$, there is a unique $u \in V$ such that $T = \varphi_u$.
 	
-	
-	\begin{Proof}
-		%
-		Let $\{e_1, ..., e_n\}$ be an orthonormal basis for $V$ and let $u = \overline{Te_1}e_1 + \cdots + \overline{Te_n}e_n$. Then if $v = c_1 e_1 + \cdots + c_n e_n$,
-		
-		\begin{align*}
-			\varphi_u v &= \left< v, u \right>\\
-			&= \left< c_1 e_1 + \cdots + c_n e_n, \overline{Te_1}e_1 + \cdots + \overline{Te_n}e_n \right>\\
-			&= c_1 T e_1 + \cdots + c_n T e_n\\
-			&= T(c_1 e_1 + \cdots + c_n e_n)\\
-			&= Tv.
-		\end{align*}
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Let $\{e_1, ..., e_n\}$ be an orthonormal basis for $V$ and let $u = \overline{Te_1}e_1 + \cdots + \overline{Te_n}e_n$. Then if $v = c_1 e_1 + \cdots + c_n e_n$,
+	
+	\begin{align*}
+		\varphi_u v &= \left< v, u \right>\\
+		&= \left< c_1 e_1 + \cdots + c_n e_n, \overline{Te_1}e_1 + \cdots + \overline{Te_n}e_n \right>\\
+		&= c_1 T e_1 + \cdots + c_n T e_n\\
+		&= T(c_1 e_1 + \cdots + c_n e_n)\\
+		&= Tv.
+	\end{align*}
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -1244,34 +1311,38 @@
 	
 	If $U$ is a finite-dimensional subspace of $V$, then $V = U \oplus U^\perp$.
 	
-	\begin{Proof}
-		%
-		Let $\{e_1, ..., e_n\}$ be an orthonormal basis for $U$, let $v \in V$, and let $u = c_1 e_1 + \cdots + c_n e_n \in U$. Then $v = u + (v - u)$. If $v - u \in U^\perp$, this will be an expression of $v$ in $U + U^\perp$. For $v - u$ to be in $U^\perp$, $\left< v-u, e_i \right> = 0$ for all $i$, so $c_i = \left< u, e_i \right> = \left< v, e_i \right>$ for all $i$. Thus $u$ is completely determined by $v$, so the expression of $v$ as $u + (v - u)$ is unique. Thus $V = U \oplus U^\perp$.
-		
-	\end{Proof}
-	
-	\begin{Corollary}
-		
-		If $U$ is a finite-dimensional subspace of $V$, then $\dim V = \dim U + \dim U^\perp$.
-		
-	\end{Corollary}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Let $\{e_1, ..., e_n\}$ be an orthonormal basis for $U$, let $v \in V$, and let $u = c_1 e_1 + \cdots + c_n e_n \in U$. Then $v = u + (v - u)$. If $v - u \in U^\perp$, this will be an expression of $v$ in $U + U^\perp$. For $v - u$ to be in $U^\perp$, $\left< v-u, e_i \right> = 0$ for all $i$, so $c_i = \left< u, e_i \right> = \left< v, e_i \right>$ for all $i$. Thus $u$ is completely determined by $v$, so the expression of $v$ as $u + (v - u)$ is unique. Thus $V = U \oplus U^\perp$.
+	
+\end{Proof}
+
+
+
+\begin{Corollary}
+	
+	If $U$ is a finite-dimensional subspace of $V$, then $\dim V = \dim U + \dim U^\perp$.
+	
+\end{Corollary}
 
 
 \begin{Proposition}
 	
 	Let $U \subseteq V$. Then $(U^\perp)^\perp = U$.
 	
-	\begin{Proof}
-		%
-		Let $u \in U$ and $v \in U^\perp$. Then $\left< u, v \right> = 0$ by definition, so $u \in (U^\perp)^\perp$. Thus $U \subseteq (U^\perp)^\perp$. Also, $\dim U + \dim U^\perp = \dim V = \dim U^\perp + \dim (U^\perp)^\perp$, so $\dim U = \dim (U^\perp)^\perp$. Thus $U = (U^\perp)^\perp$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	Let $u \in U$ and $v \in U^\perp$. Then $\left< u, v \right> = 0$ by definition, so $u \in (U^\perp)^\perp$. Thus $U \subseteq (U^\perp)^\perp$. Also, $\dim U + \dim U^\perp = \dim V = \dim U^\perp + \dim (U^\perp)^\perp$, so $\dim U = \dim (U^\perp)^\perp$. Thus $U = (U^\perp)^\perp$.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -1307,13 +1378,15 @@
 	
 	Let $V$ be a vector space and $U$ a subspace. Then for all $v \in V$ and $u \in U$, $||v - P_U v|| \leq ||v - u||$ --- that is, the closest vector to $v$ in $U$ is $P_U v$.
 	
-	\begin{Proof}
-		%
-		Since $v - P_U v \notin U$, $v - P_U v \in U^\perp$, so $v - P_U v$ and $P_U v - u$ are orthogonal. Then $||v - u||^2 = ||v - P_U v + P_U v - u||^2 = ||v - P_U v||^2 + ||P_U v - u||^2 \geq ||v - P_U v||^2$.
-		
-	\end{Proof}
-	
 \end{Theorem}
+
+
+
+\begin{Proof}
+	%
+	Since $v - P_U v \notin U$, $v - P_U v \in U^\perp$, so $v - P_U v$ and $P_U v - u$ are orthogonal. Then $||v - u||^2 = ||v - P_U v + P_U v - u||^2 = ||v - P_U v||^2 + ||P_U v - u||^2 \geq ||v - P_U v||^2$.
+	
+\end{Proof}
 
 
 
@@ -1361,14 +1434,15 @@
 	
 	Let $\{e_1, ..., e_n\}$ and $\{f_1, ..., f_m\}$ be orthonormal bases for $V$ and $W$ and let $T \in \mathcal{L}(V, W)$. Then $M(T^*) = \overline{M(T)}^\textnormal{T}$.
 	
-	\begin{Proof}
-		%
-		The $j$th column of $M(T^*)$ is $T^* f_j$ expressed in the basis $\{e_1, ..., e_n\}$. Since this is orthonormal, $T^* f_j = \left< T^* f_j, e_1 \right> e_1 + \cdots + \left< T^* f_j, e_n \right> e_n$, so $M(T^*)_{ij} = \left< T^* f_j, e_i \right>$. But $M(T)_{ji} = \left< Te_i, f_j \right> = \left< e_i, T^* f_j \right> = \overline{\left< T^* f_j, e_i \right>} = \overline{M(T^*)_{ij}}$, so $M(T^*) = \overline{M(T)}^\textnormal{T}.$
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	The $j$th column of $M(T^*)$ is $T^* f_j$ expressed in the basis $\{e_1, ..., e_n\}$. Since this is orthonormal, $T^* f_j = \left< T^* f_j, e_1 \right> e_1 + \cdots + \left< T^* f_j, e_n \right> e_n$, so $M(T^*)_{ij} = \left< T^* f_j, e_i \right>$. But $M(T)_{ji} = \left< Te_i, f_j \right> = \left< e_i, T^* f_j \right> = \overline{\left< T^* f_j, e_i \right>} = \overline{M(T^*)_{ij}}$, so $M(T^*) = \overline{M(T)}^\textnormal{T}.$
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -1399,109 +1473,114 @@
 	
 	A linear map $T \in \mathcal{L}(V)$ is \textbf{normal} if and only for all $v \in V$, $||Tv|| = ||T^* v||$.
 	
-	\begin{Proof}
-		%
-		$(\Rightarrow)$ If $T$ is normal, then $\left< Tv, Tv \right> = \left< v, T^* T v \right> = \left< v, T T^* v \right> = \left< T^* v, T^* v \right>$.\\
-		
-		$(\Leftarrow)$ Suppose $\left< Tv, Tv \right> = \left< T^* v, T^* v \right>$ for all $v \in V$. Then $\left< TT^* v - T^* T v, v \right> = 0$ for all $v \in V$, so $TT^* - T^* T = 0$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	$(\Rightarrow)$ If $T$ is normal, then $\left< Tv, Tv \right> = \left< v, T^* T v \right> = \left< v, T T^* v \right> = \left< T^* v, T^* v \right>$.\\
+	
+	$(\Leftarrow)$ Suppose $\left< Tv, Tv \right> = \left< T^* v, T^* v \right>$ for all $v \in V$. Then $\left< TT^* v - T^* T v, v \right> = 0$ for all $v \in V$, so $TT^* - T^* T = 0$.
+	
+\end{Proof}
 
 
 \begin{Proposition}
 	
 	If $T$ is normal and $Tv = \lambda v$ for some $v \neq 0$, then $T^* v = \overline{\lambda} v$.
 	
-	\begin{Proof}
-		%
-		$(T- \lambda I)^* (T - \lambda I)$ is normal, since $(T- \lambda I)^* (T - \lambda I) = T^* T - \overline{\lambda} IT - \lambda IT + \lambda \overline{\lambda} I = (T- \lambda I)(T - \lambda I)^*$. Then $0 = ||(T - \lambda I)v|| = ||(T - \lambda I)^* v|| = ||(T^* - \overline{\lambda})v||$, so $T^* v = \overline{\lambda} v$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	$(T- \lambda I)^* (T - \lambda I)$ is normal, since $(T- \lambda I)^* (T - \lambda I) = T^* T - \overline{\lambda} IT - \lambda IT + \lambda \overline{\lambda} I = (T- \lambda I)(T - \lambda I)^*$. Then $0 = ||(T - \lambda I)v|| = ||(T - \lambda I)^* v|| = ||(T^* - \overline{\lambda})v||$, so $T^* v = \overline{\lambda} v$.
+	
+\end{Proof}
 
 
 \begin{Proposition}
 	
 	Let $T \in \mathcal{L}(V)$ be normal. If $v$ and $w$ are eigenvectors of $T$ with distinct eigenvalues $\lambda_1$ and $\lambda_2$, then $v$ and $w$ are orthogonal.
 	
-	\begin{Proof}
-		%
-		Since $\lambda_1 \neq \lambda_2$, $\lambda_1 - \lambda_2 \neq 0$. Then $(\lambda_1 - \lambda_2) \left< v, w \right> = \left< \lambda_1 v - \lambda_2 v, w \right> = \left< Tv, w \right> - \left< v, \overline{\lambda_2} w \right> = \left< Tv, w \right> - \left< v, T^* w \right> = \left< Tv, w \right> - \left< Tv, w \right> = 0$, so $\left< v, w \right> = 0$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	Since $\lambda_1 \neq \lambda_2$, $\lambda_1 - \lambda_2 \neq 0$. Then $(\lambda_1 - \lambda_2) \left< v, w \right> = \left< \lambda_1 v - \lambda_2 v, w \right> = \left< Tv, w \right> - \left< v, \overline{\lambda_2} w \right> = \left< Tv, w \right> - \left< v, T^* w \right> = \left< Tv, w \right> - \left< Tv, w \right> = 0$, so $\left< v, w \right> = 0$.
+	
+\end{Proof}
 
 
 \begin{Theorem}
 	
 	\textbf{(The Complex Spectral Theorem)} Let $V$ be a finite-dimensional vector space over $\mathbb{C}$ and let $T \in \mathcal{L}(V)$. Then $T$ is normal if and only if there is an orthonormal basis of eigenvectors of $T$ for $V$.
 	
-	\begin{Proof}
-		%
-		$(\Rightarrow)$ We will induct on $n = \dim V$. The base case is trivial, since if $\dim V = 1$ and $T \in \mathcal{L}(V)$, then any nonzero unit vector in $V$ constitutes an orthonormal basis of eigenvectors of $T$.\\
-		
-		Suppose the theorem holds for $n - 1$-dimensional vector spaces and let $T \in \mathcal{L}(V)$ be normal with $\dim V = n$. Let $\{e_1, ..., e_n\}$ be an orthonormal basis for $V$ such that $M(T)$ is upper triangular (this is possible, since the Gram-Schmidt process preserves upper triangularity). Then we have
-		
-		$$
-			M(T) = \begin{bmatrix}
-				\lambda_1 & *_{1,2} & \cdots & *_{1,n}\\
-				0 & \lambda_2 & \cdots & *_{2,n}\\
-				\vdots & \vdots & \ddots & \vdots\\
-				0 & 0 & \cdots & \lambda_n 
-			\end{bmatrix} \textnormal{,}
-		$$
-		
-		where $*_i$ is the vector of the first $i - 1$ entries in column $i$ of $M(T)$. Consider the first column of $M(T)$ and $M(T^*) = \overline{M(T)}^\textnormal{T}$. We have $Te_1 = \lambda_1 e_1$ and $T^* e_1 = \overline{\lambda_1} e_1 + \overline{*_{1,2}} e_2 + \cdots + \overline{*_{1,n}} e_n$, but $T$ is normal, so $||Te_1|| = ||T^* e_1||$. Thus $|\lambda_1|^2 = |\overline{\lambda_1}|^2 + |*_{1,2}|^2 + \cdots + |*_{1,n}|^2$, so $|*_{1,2}|^2 + \cdots + |*_{1,n}|^2 = 0$, and therefore $*_{1,2} = \cdots + *_{1,n} = 0$. Thus the first row and column of $M(T)$ are zero, except for $\lambda_1$, and similarly for $M(T^*)$. By restricting $T$ to $\Span \{e_2, ..., e_n\}$, which has dimension $n - 1$, we are done by induction.\\
-		
-		$(\Leftarrow)$ If $\{e_1, ..., e_n\}$is an orthonormal basis of eigenvectors of $T$, then
-		
-		$$
-			M(T)M(T^*) = \begin{bmatrix}
-				\lambda_1 & \cdots & 0\\
-				\vdots & \ddots & \vdots\\
-				0 & \cdots & \lambda_n
-			\end{bmatrix} \begin{bmatrix}	
-				\overline{\lambda_1} & \cdots & 0\\
-				\vdots & \ddots & \vdots\\
-				0 & \cdots & \overline{\lambda_n} 
-			\end{bmatrix} = \begin{bmatrix}
-				\overline{\lambda_1} & \cdots & 0\\
-				\vdots & \ddots & \vdots\\
-				0 & \cdots & \overline{\lambda_n} 
-			\end{bmatrix} \begin{bmatrix}
-				\lambda_1 & \cdots & 0\\
-				\vdots & \ddots & \vdots\\
-				0 & \cdots & \lambda_n
-			\end{bmatrix} = M(T^*) M(T) \textnormal{,}
-		$$
-		
-		so $T$ is normal.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	$(\Rightarrow)$ We will induct on $n = \dim V$. The base case is trivial, since if $\dim V = 1$ and $T \in \mathcal{L}(V)$, then any nonzero unit vector in $V$ constitutes an orthonormal basis of eigenvectors of $T$.\\
+	
+	Suppose the theorem holds for $n - 1$-dimensional vector spaces and let $T \in \mathcal{L}(V)$ be normal with $\dim V = n$. Let $\{e_1, ..., e_n\}$ be an orthonormal basis for $V$ such that $M(T)$ is upper triangular (this is possible, since the Gram-Schmidt process preserves upper triangularity). Then we have
+	
+	$$
+		M(T) = \begin{bmatrix}
+			\lambda_1 & *_{1,2} & \cdots & *_{1,n}\\
+			0 & \lambda_2 & \cdots & *_{2,n}\\
+			\vdots & \vdots & \ddots & \vdots\\
+			0 & 0 & \cdots & \lambda_n 
+		\end{bmatrix} \textnormal{,}
+	$$
+	
+	where $*_i$ is the vector of the first $i - 1$ entries in column $i$ of $M(T)$. Consider the first column of $M(T)$ and $M(T^*) = \overline{M(T)}^\textnormal{T}$. We have $Te_1 = \lambda_1 e_1$ and $T^* e_1 = \overline{\lambda_1} e_1 + \overline{*_{1,2}} e_2 + \cdots + \overline{*_{1,n}} e_n$, but $T$ is normal, so $||Te_1|| = ||T^* e_1||$. Thus $|\lambda_1|^2 = |\overline{\lambda_1}|^2 + |*_{1,2}|^2 + \cdots + |*_{1,n}|^2$, so $|*_{1,2}|^2 + \cdots + |*_{1,n}|^2 = 0$, and therefore $*_{1,2} = \cdots + *_{1,n} = 0$. Thus the first row and column of $M(T)$ are zero, except for $\lambda_1$, and similarly for $M(T^*)$. By restricting $T$ to $\Span \{e_2, ..., e_n\}$, which has dimension $n - 1$, we are done by induction.\\
+	
+	$(\Leftarrow)$ If $\{e_1, ..., e_n\}$is an orthonormal basis of eigenvectors of $T$, then
+	
+	$$
+		M(T)M(T^*) = \begin{bmatrix}
+			\lambda_1 & \cdots & 0\\
+			\vdots & \ddots & \vdots\\
+			0 & \cdots & \lambda_n
+		\end{bmatrix} \begin{bmatrix}	
+			\overline{\lambda_1} & \cdots & 0\\
+			\vdots & \ddots & \vdots\\
+			0 & \cdots & \overline{\lambda_n} 
+		\end{bmatrix} = \begin{bmatrix}
+			\overline{\lambda_1} & \cdots & 0\\
+			\vdots & \ddots & \vdots\\
+			0 & \cdots & \overline{\lambda_n} 
+		\end{bmatrix} \begin{bmatrix}
+			\lambda_1 & \cdots & 0\\
+			\vdots & \ddots & \vdots\\
+			0 & \cdots & \lambda_n
+		\end{bmatrix} = M(T^*) M(T) \textnormal{,}
+	$$
+	
+	so $T$ is normal.
+	
+\end{Proof}
 
 
 \begin{Theorem}
 	
-	\textbf{(Real Spectral)} Let $V$ be a finite-dimensional vector space over $\mathbb{R}$ and let $T \in \mathcal{L}(V)$. Then $T$ is self-adjoint if and only if there is an orthonormal basis of eigenvectors of $T$ with real eigenvalues.
-	
-	\begin{Proof}
-		%
-		By the Complex Spectral Theorem, there is an orthonormal basis for $V$ of eigenvectors of $T$. Since $T$ is self-adjoint, $M(T) = M(T^*) = \overline{M(T)}^\textnormal{T} = \overline{M(T)}$. Thus each $\lambda_i = \overline{\lambda_i}$, so all of $T$'s eigenvalues are real.
-		
-	\end{Proof}
+	\textbf{(The Real Spectral Theorem)} Let $V$ be a finite-dimensional vector space over $\mathbb{R}$ and let $T \in \mathcal{L}(V)$. Then $T$ is self-adjoint if and only if there is an orthonormal basis of eigenvectors of $T$ with real eigenvalues.
 
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	By the Complex Spectral Theorem, there is an orthonormal basis for $V$ of eigenvectors of $T$. Since $T$ is self-adjoint, $M(T) = M(T^*) = \overline{M(T)}^\textnormal{T} = \overline{M(T)}$. Thus each $\lambda_i = \overline{\lambda_i}$, so all of $T$'s eigenvalues are real.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -1516,14 +1595,15 @@
 	
 	Let $T \in \mathcal{L}(V)$ be self-adjoint. Then $T$ is positive if and only if every eigenvalue of $T$ is nonnegative.
 	
-	\begin{Proof}
-		%
-		Let $\{e_1, ..., e_n\}$ be an orthonormal basis for $V$ of eigenvectors of $T$ with eigenvectors $\lambda_1, ..., \lambda_n$. Then $T$ is positive if and only if $\left< T(c_1 e_1 + \cdots + c_n e_n), c_1 e_1 + \cdots + c_n e_n \right> \geq 0$ for all $c_1, ..., c_n \in k$, if and only if $\left< c_1 \lambda_1 e_1 + \cdots + c_n \lambda_n  e_n, c_1 e_1 + \cdots + c_n e_n \right> \geq 0$ for all $c_1, ..., c_n \in k$, if and only if $|c_1|^2 \lambda_1 + \cdots |c_n|^2 \lambda_n \geq 0$ for all $c_1, ..., c_n \in k$, if and only if each $\lambda_i \geq 0$ (for each $i$, choose $c_i = 1$ and $c_j = 0$ for $j \neq i$).
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	Let $\{e_1, ..., e_n\}$ be an orthonormal basis for $V$ of eigenvectors of $T$ with eigenvectors $\lambda_1, ..., \lambda_n$. Then $T$ is positive if and only if $\left< T(c_1 e_1 + \cdots + c_n e_n), c_1 e_1 + \cdots + c_n e_n \right> \geq 0$ for all $c_1, ..., c_n \in k$, if and only if $\left< c_1 \lambda_1 e_1 + \cdots + c_n \lambda_n  e_n, c_1 e_1 + \cdots + c_n e_n \right> \geq 0$ for all $c_1, ..., c_n \in k$, if and only if $|c_1|^2 \lambda_1 + \cdots |c_n|^2 \lambda_n \geq 0$ for all $c_1, ..., c_n \in k$, if and only if each $\lambda_i \geq 0$ (for each $i$, choose $c_i = 1$ and $c_j = 0$ for $j \neq i$).
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -1538,13 +1618,15 @@
 	
 	Let $T \in \mathcal{L}(V)$ be positive. Then there is a unique positive square root of $T$.
 	
-	\begin{Proof}
-		%
-		We will only show existence --- the proof of uniqueness is difficult, tedious, and unenlightening. Let $\{e_1, ..., e_n\}$ be an orthonormal basis for $V$ of eigenvectors of $T$ with eigenvectors $\lambda_1, ..., \lambda_n$. Then each $\lambda_i \geq 0$, so the map $R \in \mathcal{L}(V)$ defined by $Re_i = \sqrt{\lambda_i} e_i$ is positive, and clearly $R^2 = T$. Thus $T$ has a positive square root.
-				
-	\end{Proof}
-	
 \end{Theorem}
+
+
+
+\begin{Proof}
+	%
+	We will only show existence --- the proof of uniqueness is difficult, tedious, and unenlightening. Let $\{e_1, ..., e_n\}$ be an orthonormal basis for $V$ of eigenvectors of $T$ with eigenvectors $\lambda_1, ..., \lambda_n$. Then each $\lambda_i \geq 0$, so the map $R \in \mathcal{L}(V)$ defined by $Re_i = \sqrt{\lambda_i} e_i$ is positive, and clearly $R^2 = T$. Thus $T$ has a positive square root.
+			
+\end{Proof}
 
 
 
@@ -1568,13 +1650,15 @@
 	
 	A linear map $T \in \mathcal{L}(V)$ is an isometry if and only if $T^* T = I$.
 	
-	\begin{Proof}
-		%
-		$T$ is an isometry if and only if $\left< Tv, Tv \right> = \left< v, v \right>$ for all $v \in V$, if and only if $\left< T^* T v, v \right> - \left< Iv, v \right> = 0$ for all $v \in V$, if and only if $T^* T - I = 0$, since $T^* T - I$ is self-adjoint.
-		
-	\end{Proof}
-	
 \end{Proposition}
+
+
+
+\begin{Proof}
+	%
+	$T$ is an isometry if and only if $\left< Tv, Tv \right> = \left< v, v \right>$ for all $v \in V$, if and only if $\left< T^* T v, v \right> - \left< Iv, v \right> = 0$ for all $v \in V$, if and only if $T^* T - I = 0$, since $T^* T - I$ is self-adjoint.
+	
+\end{Proof}
 
 
 
@@ -1582,39 +1666,43 @@
 	
 	A linear map $T \in \mathcal{L}(V)$ is an isometry if and only if there is an orthonormal basis of eigenvectors of $T$ with eigenvalues $\lambda_1, ..., \lambda_n$ such that $|\lambda_i| = 1$.
 	
-	\begin{Proof}
-		%
-		$(\Rightarrow)$ If $T$ is an isometry, then it is normal, so there is an orthonormal basis of eigenvectors $\{e_1, ..., e_n\}$ with eigenvalues $\lambda_1, ..., \lambda_n$ by the Complex Spectral Theorem. Then $|\lambda_i| = ||\lambda_i e_i|| = ||Te_i|| = ||e_i|| = 1$.\\
-		
-		$(\Leftarrow)$ Let $v = c_1 e_1 + \cdots + c_n e_n \in V$. Then $||Tv|| = ||c_1 \lambda_1 e_1 + \cdots + c_n \lambda_n e_n|| = ||c_1 e_1 + \cdots + c_n e_n|| = ||v||$, so $T$ is an isometry.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	$(\Rightarrow)$ If $T$ is an isometry, then it is normal, so there is an orthonormal basis of eigenvectors $\{e_1, ..., e_n\}$ with eigenvalues $\lambda_1, ..., \lambda_n$ by the Complex Spectral Theorem. Then $|\lambda_i| = ||\lambda_i e_i|| = ||Te_i|| = ||e_i|| = 1$.\\
+	
+	\pagebreak
+	
+	$(\Leftarrow)$ Let $v = c_1 e_1 + \cdots + c_n e_n \in V$. Then $||Tv|| = ||c_1 \lambda_1 e_1 + \cdots + c_n \lambda_n e_n|| = ||c_1 e_1 + \cdots + c_n e_n|| = ||v||$, so $T$ is an isometry.
+	
+\end{Proof}
 
 
 \begin{Theorem}
 	
 	\textbf{(Polar Decomposition)} Let $T \in \mathcal{L}(V)$. Then there is an isometry $S \in \mathcal{L}(V)$ such that $T = S\sqrt{T^* T}$.
 	
-	\begin{Proof}
-		%
-		Let $\{e_1, ..., e_n\}$ be an orthonormal basis of eigenvectors of $T*T$ with eigenvalues $\lambda_1, ..., \lambda_n$ and suppose without loss of generality that $\lambda_1 = \cdots = \lambda_k = 0$. Let $\{f_1, ..., f_k\}$ be an orthonormal basis for $(\Range T)^\perp$ (the dimension is $k$ since $\dim \Range T = \dim \Null T^*$). Then define $S$ by
-		
-		$$
-			Se_i = \begin{cases} 
-				f_i, & i \leq k \\
-				\frac{1}{\sqrt{\lambda_i}}Te_i, & i > k
-			\end{cases}.
-		$$
-		
-		It follows that $S$ is an isometry and $T = S \sqrt{T^* T}$.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Let $\{e_1, ..., e_n\}$ be an orthonormal basis of eigenvectors of $T*T$ with eigenvalues $\lambda_1, ..., \lambda_n$ and suppose without loss of generality that $\lambda_1 = \cdots = \lambda_k = 0$. Let $\{f_1, ..., f_k\}$ be an orthonormal basis for $(\Range T)^\perp$ (the dimension is $k$ since $\dim \Range T = \dim \Null T^*$). Then define $S$ by
+	
+	$$
+		Se_i = \begin{cases} 
+			f_i, & i \leq k \\
+			\frac{1}{\sqrt{\lambda_i}}Te_i, & i > k
+		\end{cases}.
+	$$
+	
+	It follows that $S$ is an isometry and $T = S \sqrt{T^* T}$.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -1647,44 +1735,46 @@
 		\end{bmatrix}.
 	$$
 	
-	\begin{Proof}
-		%
-		Let $f_i = \frac{1}{\sigma_i}Te_i$ for all $i \leq k$ and extend and orthonormalize to form a basis for $W$.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Let $f_i = \frac{1}{\sigma_i}Te_i$ for all $i \leq k$ and extend and orthonormalize to form a basis for $W$.
+	
+\end{Proof}
 
 
 \begin{Theorem}
 	
 	Let $A \in M_{m \times n}(k)$. Then there are isometries $U \in M_m(k)$ and $V \in M_n(k)$ such that $A = U \Sigma V^*$, where $\Sigma \in M_{m, n}$ contains the singular values of $A$.
 	
-	\begin{Proof}
-		%
-		$$
-			\textnormal{Let}\ U = \begin{bmatrix}
-				| & & |\\
-				f_1 & \cdots & f_m\\
-				| & & |
-			\end{bmatrix},\ \Sigma = \begin{bmatrix}
-				\sigma_1 & \cdots & 0 & \cdots & 0\\
-				\vdots & \ddots & \vdots & \ddots & \vdots\\
-				0 & \cdots & \sigma_k & \cdots & 0\\
-				\vdots & \ddots & \vdots & \ddots & \vdots\\
-				0 & \cdots & 0 & \cdots & 0
-			\end{bmatrix},\ \textnormal{and}\ V = \begin{bmatrix}
-				| & & |\\
-				e_1 & \cdots & e_n\\
-				| & & |
-			\end{bmatrix}.
-		$$
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	$$
+		\textnormal{Let}\ U = \begin{bmatrix}
+			| & & |\\
+			f_1 & \cdots & f_m\\
+			| & & |
+		\end{bmatrix},\ \Sigma = \begin{bmatrix}
+			\sigma_1 & \cdots & 0 & \cdots & 0\\
+			\vdots & \ddots & \vdots & \ddots & \vdots\\
+			0 & \cdots & \sigma_k & \cdots & 0\\
+			\vdots & \ddots & \vdots & \ddots & \vdots\\
+			0 & \cdots & 0 & \cdots & 0
+		\end{bmatrix},\ \textnormal{and}\ V = \begin{bmatrix}
+			| & & |\\
+			e_1 & \cdots & e_n\\
+			| & & |
+		\end{bmatrix}.
+	$$
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -1721,36 +1811,38 @@
 	
 	Let $A \in M_n(k)$ be invertible. Then $A^+ = A^{-1}$.
 	
-	\begin{Proof}
-		%
-		Since $A$ is invertible, no entry along the diagonal of $\Sigma$ is zero, so $\Sigma^+ = \Sigma^{-1}$. Since $U$ and $V$ are isometries, $V^* V = U U^* = I$, so $AA^+ = U \Sigma V^* V \Sigma^+ U^* = U \Sigma \Sigma^+ U^* = U U^* = I$. Thus $A^+ = A^{-1}$.
-		
-	\end{Proof}
-	
 \end{Proposition}
 
+
+
+\begin{Proof}
+	%
+	Since $A$ is invertible, no entry along the diagonal of $\Sigma$ is zero, so $\Sigma^+ = \Sigma^{-1}$. Since $U$ and $V$ are isometries, $V^* V = U U^* = I$, so $AA^+ = U \Sigma V^* V \Sigma^+ U^* = U \Sigma \Sigma^+ U^* = U U^* = I$. Thus $A^+ = A^{-1}$.
+	
+\end{Proof}
 
 
 \begin{Theorem}
 	
 	Let $A \in M_{m, n}(k)$. Then the map given by $AA^+$ is the projection onto $\Range A$, so the vector $\mathbf{x}$ closest to a solution to $A\mathbf{x} = \mathbf{b}$ is $\mathbf{x} = A^+ \mathbf{b}$.
 	
-	\begin{Proof}
-		%
-		Let $\{e_1, ..., e_n\}$ be an orthonormal basis of eigenvectors of $A^* A$, let $\sigma_1, ..., \sigma_k$ be the singular values of $A$, and let $\{f_1, ..., f_m\}$ be the orthonormal basis given by the Singular Value Decomposition of $A$. Then
-		
-		\begin{align*}
-			AA^+ v &= A(\frac{1}{\sigma_1} \left< v, f_1 \right> e_1 + \cdots + \frac{1}{\sigma_k} \left< v, f_k \right> e_k)\\
-			&= \sigma_1 \left< \frac{1}{\sigma_1} \left< v, f_1 \right> e_1, e_1 \right> f_1 + \cdots + \sigma_k \left< \frac{1}{\sigma_k} \left< v, f_k \right> e_k, e_k \right> f_k\\
-			&= \left< v, f_1 \right> f_1 + \cdots + \left< v, f_k \right> f_k \textnormal{,}
-		\end{align*}
-		
-		so if $v = c_1 f_1 + \cdots + c_m f_m$, then $AA^+ v = c_1 f_1 + \cdots + c_k f_k$. Since $\Range A = \Span \{f_1, ..., f_k\}$, $AA^+ = P_{\Range A}$.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Let $\{e_1, ..., e_n\}$ be an orthonormal basis of eigenvectors of $A^* A$, let $\sigma_1, ..., \sigma_k$ be the singular values of $A$, and let $\{f_1, ..., f_m\}$ be the orthonormal basis given by the Singular Value Decomposition of $A$. Then
+	
+	\begin{align*}
+		AA^+ v &= A(\frac{1}{\sigma_1} \left< v, f_1 \right> e_1 + \cdots + \frac{1}{\sigma_k} \left< v, f_k \right> e_k)\\
+		&= \sigma_1 \left< \frac{1}{\sigma_1} \left< v, f_1 \right> e_1, e_1 \right> f_1 + \cdots + \sigma_k \left< \frac{1}{\sigma_k} \left< v, f_k \right> e_k, e_k \right> f_k\\
+		&= \left< v, f_1 \right> f_1 + \cdots + \left< v, f_k \right> f_k \textnormal{,}
+	\end{align*}
+	
+	so if $v = c_1 f_1 + \cdots + c_m f_m$, then $AA^+ v = c_1 f_1 + \cdots + c_k f_k$. Since $\Range A = \Span \{f_1, ..., f_k\}$, $AA^+ = P_{\Range A}$.
+	
+\end{Proof}
 
 
 \begin{Def}
@@ -1829,13 +1921,15 @@
 	
 	Let $\sigma$ be a permutation and $\hat{\sigma}$ be a permutation identical to $\sigma$, except with $\sigma_i$ and $\sigma_j$ interchanged. Then $\textnormal{sign } \hat{\sigma} = -\textnormal{sign } \sigma$.
 	
-	\begin{Proof}
-		%
-		Suppose $\sigma = \textnormal{--- } i \textnormal{ --- } j \textnormal{ ---}$. Then $\hat{\sigma} = \textnormal{--- } j \textnormal{ --- } i \textnormal{ ---}$. Since any inversion that does not involve either $i$ or $j$ is unchanged from $\sigma$ to $\hat{\sigma}$, we need only consider those do. Any inversion of the form $(x, i)$ or $(j, x)$ is unchanged, since if $x < i$, then $x < j$, and if $x > j$, then $x > i$. Thus we only need to consider the $x$ that lie between $i$ and $j$. Each one causes two inversions in $\hat{\sigma}$ --- $(j, x)$ and $(x, i)$ --- and therefore does not affect $\textnormal{sign } \hat{\sigma}$. But we have not accounted for the inversion $(j, i)$. Thus $\textnormal{sign } \hat{\sigma} = -\textnormal{sign } \sigma$.
-		
-	\end{Proof}
-	
 \end{Proposition}
+
+
+
+\begin{Proof}
+	%
+	Suppose $\sigma = \textnormal{--- } i \textnormal{ --- } j \textnormal{ ---}$. Then $\hat{\sigma} = \textnormal{--- } j \textnormal{ --- } i \textnormal{ ---}$. Since any inversion that does not involve either $i$ or $j$ is unchanged from $\sigma$ to $\hat{\sigma}$, we need only consider those do. Any inversion of the form $(x, i)$ or $(j, x)$ is unchanged, since if $x < i$, then $x < j$, and if $x > j$, then $x > i$. Thus we only need to consider the $x$ that lie between $i$ and $j$. Each one causes two inversions in $\hat{\sigma}$ --- $(j, x)$ and $(x, i)$ --- and therefore does not affect $\textnormal{sign } \hat{\sigma}$. But we have not accounted for the inversion $(j, i)$. Thus $\textnormal{sign } \hat{\sigma} = -\textnormal{sign } \sigma$.
+	
+\end{Proof}
 
 
 
@@ -1851,6 +1945,27 @@
 
 
 
+\begin{Lemma}
+	
+	Let $\{v_1, ..., v_n\}$ be a basis for $\mathbb{R}^n$ and let $f \in \mathcal{A}$. Then if $f(v_1, ..., v_n) = 0$, $f(w_1, ..., w_n) = 0$ for all $w_1, ..., w_n \in \mathbb{R}^n$.
+	
+\end{Lemma}
+
+
+
+\begin{Proof}
+	%
+	Expand each $w_i$ as $w_i = c_{i1} v_1 + \cdots + c_{in} v_n$. Since $f$ is linear in each coordinate, we have
+	
+	$$
+		f(w_1, ..., w_n) = f(c_{11} v_1 + \cdots + c_{1n} v_n, ..., c_{n1} v_1 + \cdots + c_{nn} v_n) = \sum c_i f(v_{i_1}, ..., v_{i_n}).
+	$$
+	
+	Now any term of this sum with some $v_{i_j} = v_{i_k}$ will have $f(v_{i_1}, ..., v_{i_n}) = -f(v_{i_1}, ..., v_{i_n}) = 0$ by the previous result, and for the rest, we can rearrange the terms to get $f(v_{i_1}, ..., v_{i_n}) = \pm (v_1, ..., v_n) = 0$. Thus $f(w_1, ..., w_n) = 0$.
+	
+\end{Proof}
+
+
 \begin{Theorem}
 	
 	The set
@@ -1861,73 +1976,60 @@
 	
 	has dimension $1$ (and therefore, one basis is $\{\det\}$).
 	
-	\begin{Lemma}
-		
-		Let $\{v_1, ..., v_n\}$ be a basis for $\mathbb{R}^n$ and let $f \in \mathcal{A}$. Then if $f(v_1, ..., v_n) = 0$, $f(w_1, ..., w_n) = 0$ for all $w_1, ..., w_n \in \mathbb{R}^n$.
-		
-		\begin{Proof}
-			%
-			Expand each $w_i$ as $w_i = c_{i1} v_1 + \cdots + c_{in} v_n$. Since $f$ is linear in each coordinate, we have
-			
-			$$
-				f(w_1, ..., w_n) = f(c_{11} v_1 + \cdots + c_{1n} v_n, ..., c_{n1} v_1 + \cdots + c_{nn} v_n) = \sum c_i f(v_{i_1}, ..., v_{i_n}).
-			$$
-			
-			Now any term of this sum with some $v_{i_j} = v_{i_k}$ will have $f(v_{i_1}, ..., v_{i_n}) = -f(v_{i_1}, ..., v_{i_n}) = 0$ by the previous result, and for the rest, we can rearrange the terms to get $f(v_{i_1}, ..., v_{i_n}) = \pm (v_1, ..., v_n) = 0$. Thus $f(w_1, ..., w_n) = 0$.
-			
-		\end{Proof}
-		
-	\end{Lemma}
-	
-	\begin{Proof}
-		%
-		Let $f, g \in \mathcal{A}$ with $g \neq 0$, let $\{v_1, ..., v_n\}$ be a basis for $\mathbb{R}^n$, and let $c = \frac{f(v_1, ..., v_n)}{g(v_1, ..., v_n)}$ ($g(v_1, ..., v_n) \neq 0$, since otherwise $g = 0$ by the lemma). Then $(f - cg)(v_1, ..., v_n = 0)$, so by the lemma, $f - cg = 0$. Thus $f = cg$, so every function in $\mathcal{A}$ is a multiple of another.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Let $f, g \in \mathcal{A}$ with $g \neq 0$, let $\{v_1, ..., v_n\}$ be a basis for $\mathbb{R}^n$, and let $c = \frac{f(v_1, ..., v_n)}{g(v_1, ..., v_n)}$ ($g(v_1, ..., v_n) \neq 0$, since otherwise $g = 0$ by the lemma). Then $(f - cg)(v_1, ..., v_n = 0)$, so by the lemma, $f - cg = 0$. Thus $f = cg$, so every function in $\mathcal{A}$ is a multiple of another.
+	
+\end{Proof}
 
 
 \begin{Theorem}
 	
 	Let $A, B \in M_{n}(k)$. Then $\det AB = (\det A)(\det B)$.
 	
-	\begin{Proof}
-		%
-		Define $f \in \mathcal{A}$ by $f(C) = \det AC$. By the previous result, there is a $c$ such that $f = c \cdot \det$. Since $f(I) = \det A$ and $f(I) = c \cdot \det I = c$, $c = \det A$. Then $f(B) = \det AB = c \cdot \det B = (\det A)(\det B)$.
-		
-	\end{Proof}
-	
 \end{Theorem}
 
+
+
+\begin{Proof}
+	%
+	Define $f \in \mathcal{A}$ by $f(C) = \det AC$. By the previous result, there is a $c$ such that $f = c \cdot \det$. Since $f(I) = \det A$ and $f(I) = c \cdot \det I = c$, $c = \det A$. Then $f(B) = \det AB = c \cdot \det B = (\det A)(\det B)$.
+	
+\end{Proof}
 
 
 \begin{Theorem}
 	
 	Let $A \in M_n(k)$ with eigenvalues $\lambda_1, ..., \lambda_n$. Then $\det A = \lambda_1 \cdots \lambda_n$.
 	
-	\begin{Proof}
-		%
-		Let $\{v_1, ..., v_n\}$ be a basis for $\mathbb{R}^n$ such that $A$ is upper triangular. Then $A = SUS^{-1}$, where
-		
-		$$
-			S = \begin{bmatrix}
-				| & & |\\
-				v_1 & \cdots & v_n\\
-				| & & |
-			\end{bmatrix} \textnormal{ and } U = \begin{bmatrix}
-				\lambda_1 & \cdots & *\\
-				\vdots & \ddots & \vdots\\
-				0 & \cdots & \lambda_n
-			\end{bmatrix}.
-		$$
-		
-		Then $\det A = \det SUS^{-1} = (\det S)(\det U)(\det S^{-1}) = \det U = \lambda_1 \cdots \lambda_n$.
-		
-	\end{Proof}
-	
 \end{Theorem}
+
+
+
+\begin{Proof}
+	%
+	Let $\{v_1, ..., v_n\}$ be a basis for $\mathbb{R}^n$ such that $A$ is upper triangular. Then $A = SUS^{-1}$, where
+	
+	$$
+		S = \begin{bmatrix}
+			| & & |\\
+			v_1 & \cdots & v_n\\
+			| & & |
+		\end{bmatrix} \textnormal{ and } U = \begin{bmatrix}
+			\lambda_1 & \cdots & *\\
+			\vdots & \ddots & \vdots\\
+			0 & \cdots & \lambda_n
+		\end{bmatrix}.
+	$$
+	
+	Then $\det A = \det SUS^{-1} = (\det S)(\det U)(\det S^{-1}) = \det U = \lambda_1 \cdots \lambda_n$.
+	
+\end{Proof}
+
 
 
 
