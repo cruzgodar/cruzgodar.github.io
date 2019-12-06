@@ -68,3 +68,11 @@ body
 		width: 90vw;
 	}
 }
+
+@media (min-aspect-ratio: 16/9), (min-width: 1400px)
+{
+	.button-row
+	{
+		width: 50vw;
+	}
+}
