@@ -275,6 +275,11 @@ img
 	background-color: rgb(255, 255, 255);
 }
 
+#floating-footer-bottom-margin
+{
+	height: 30px;
+}
+
 /* Some very weird shit going on right here */
 #floating-footer-button-background
 {

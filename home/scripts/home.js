@@ -11,6 +11,12 @@
 	
 	
 	
+	set_up_floating_footer();
+	
+	disable_links();
+	
+	
+	
 	
 	
 	function alert_on_edge()

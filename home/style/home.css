@@ -74,6 +74,30 @@
 
 
 
+#floating-footer-gradient
+{
+	display: none;
+}
+
+#floating-footer-content
+{
+	background: rgba(0, 0, 0, 0) !important;
+	height: 50px;
+}
+
+#floating-footer-bottom-margin
+{
+	display: none;
+}
+
+#floating-footer-button-background
+{
+	background-color: rgba(0, 0, 0, 0) !important;
+}
+
+
+
+
 /* Compact layout: stack the quote columns on top of one another. */
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
 {

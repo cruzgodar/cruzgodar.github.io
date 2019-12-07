@@ -68,7 +68,7 @@ function insert_footer()
 	{
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
-				<div class="line-break-container" data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 					<div class="line-break" style="width: 75vw !important"></div>
 				</div>
 			<div style="height: 3vw"></div>
@@ -81,7 +81,7 @@ function insert_footer()
 	{
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
-				<div class="line-break-container" data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
 					<div class="line-break" style="width: 65vw !important"></div>
 				</div>
 			<div style="height: 3vw"></div>
@@ -301,21 +301,26 @@ function set_up_floating_footer()
 		<div id="floating-footer-gradient"></div>
 		
 		<div id="floating-footer-content">
-			<div style="height: 30px"></div>
+			<div id="floating-footer-bottom-margin"></div>
 		</div>
 	`;
 	
 	
 	
-	//We want all the footer image links, but we don't want the animations anchored to anything.
-	element = document.querySelector("#spawn-footer").parentNode.querySelector(".footer-image-links").cloneNode(true);
-	
-	for (let i = 0; i < element.children.length; i++)
+	//We want all the footer image links, but we don't want the animations anchored to anything. We have a try block here in case this is being called from the homepage.
+	try
 	{
-		element.children[i].removeAttribute("data-aos-anchor");
+		element = document.querySelector("#spawn-footer").parentNode.querySelector(".footer-image-links").cloneNode(true);
+		
+		for (let i = 0; i < element.children.length; i++)
+		{
+			element.children[i].removeAttribute("data-aos-anchor");
+		}
+		
+		document.querySelector("#floating-footer-content").appendChild(element);
 	}
 	
-	document.querySelector("#floating-footer-content").appendChild(element);
+	catch(ex) {}
 	
 	
 	
@@ -398,7 +403,7 @@ function fit_floating_footer_to_window_width()
 //Remove the trigger zone when we reach the actual footer so that we don't cause any problems, and hide the footer when scrolling so that it doesn't flicker weirdly.
 function floating_footer_scroll()
 {
-	if (document.querySelector(".line-break-container").classList.contains("aos-animate"))
+	if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight)
 	{
 		document.querySelector("#floating-footer").style.opacity = 0;
 		
@@ -429,7 +434,7 @@ function init_floating_footer_listeners_no_touch()
 	
 	document.querySelector("#floating-footer-touch-target").addEventListener("mouseenter", function()
 	{
-		if (floating_footer_is_visible == false && !(document.querySelector(".line-break-container").classList.contains("aos-animate")))
+		if (floating_footer_is_visible == false && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight))
 		{
 			document.querySelector("#floating-footer").style.display = "block";
 			document.querySelector("#floating-footer-touch-target").style.display = "none";
@@ -485,7 +490,7 @@ function footer_process_touchend()
 	
 	if (document.querySelector("#floating-footer-touch-target") == target)
 	{
-		if (floating_footer_is_visible == false && !(document.querySelector(".line-break-container").classList.contains("aos-animate")))
+		if (floating_footer_is_visible == false && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight))
 		{
 			document.querySelector("#floating-footer").style.display = "block";
 			document.querySelector("#floating-footer-touch-target").style.display = "none";
