@@ -329,23 +329,11 @@ function add_scroll_button()
 		//Gotta have a try block here in case the user loads a banner page then navigates to a non-banner page within 3 seconds.
 		try
 		{
-			if (url_vars["content_animation"] == 1)
-			{
-				document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
-					<div id="new-banner-cover">
-						<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="scroll_down()">
-					</div>
-				`);
-			}
-			
-			else
-			{
-				document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
-					<div id="new-banner-cover" data-aos="fade-down">
-						<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="scroll_down()">
-					</div>
-				`);
-			}
+			document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
+				<div id="new-banner-cover" data-aos="fade-down">
+					<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="scroll_down()">
+				</div>
+			`);
 			
 			scroll_button_exists = true;
 			
