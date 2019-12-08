@@ -331,7 +331,7 @@ function add_scroll_button()
 		{
 			document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
 				<div id="new-banner-cover" data-aos="fade-down">
-					<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="scroll_down()">
+					<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="smooth_scroll_to('#scroll-to')">
 				</div>
 			`);
 			
@@ -342,42 +342,4 @@ function add_scroll_button()
 		
 		catch(ex) {}
 	}
-}
-
-
-
-let scroll_button_position = 0;
-let scroll_button_time = 0;
-let scroll_button_goal = 0;
-
-//Triggered by pressing the scroll button.
-function scroll_down()
-{
-	//This is relative to the top of the viewport, which is exactly what we want.
-	scroll_button_goal = document.querySelector("#scroll-to").getBoundingClientRect().top;
-	
-	scroll_button_position = window.scrollY;
-	scroll_button_time = 0;
-	
-	let refresh_id = setInterval(function()
-	{
-		scroll_step();
-		
-		if (scroll_button_time >= 1000)
-		{
-			clearInterval(refresh_id);
-		}
-	}, 8);
-}
-
-
-
-function scroll_step()
-{
-	let step_distance = scroll_button_goal * .5 * (Math.sin((Math.PI * (scroll_button_time + 8) / 1000) - (Math.PI / 2)) - Math.sin((Math.PI * scroll_button_time / 1000) - (Math.PI / 2)));
-	
-	scroll_button_position += step_distance;
-	scroll_button_time += 8;
-	
-	window.scrollTo(0, scroll_button_position);
 }

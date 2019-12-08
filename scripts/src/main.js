@@ -62,6 +62,10 @@ document.documentElement.addEventListener("touchmove", function(e)
 
 
 
+let smooth_scroll = new SmoothScroll("[data-never-use*='#']", {speed: 1000, speedAsDuration: true, easing: "easeInOutQuad", updateURL: false});
+
+
+
 
 
 //Redirects to the chosen page and sets up all the miscellaneous things that make the site work.

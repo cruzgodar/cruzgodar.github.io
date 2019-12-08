@@ -64,7 +64,7 @@ function init_scroll_up_button_listeners_no_touch()
 			document.querySelector("#scroll-up-button-location").insertAdjacentHTML("afterend", `
 				<div id="scroll-up-button-container">
 					<div class="center-content" data-aos="fade-down">
-						<input type="image" id="scroll-up-button" src="/graphics/general-icons/${chevron_name}.png" onclick="scroll_up()"></input>
+						<input type="image" id="scroll-up-button" src="/graphics/general-icons/${chevron_name}.png" onclick="smooth_scroll_to('body')"></input>
 					</div>
 				</div>
 			`);
@@ -128,7 +128,7 @@ function scroll_up_button_process_touchend()
 			document.querySelector("#scroll-up-button-location").insertAdjacentHTML("afterend", `
 				<div id="scroll-up-button-container">
 					<div class="center-content" data-aos="fade-down">
-						<input type="image" id="scroll-up-button" src="/graphics/general-icons/${chevron_name}.png" onclick="scroll_up()"></input>
+						<input type="image" id="scroll-up-button" src="/graphics/general-icons/${chevron_name}.png" onclick="smooth_scroll_to('body')"></input>
 					</div>
 				</div>
 			`)
@@ -170,25 +170,12 @@ function remove_scroll_up_button()
 
 
 
-//Triggered by pressing the scroll button. The variables and scroll_step() are initially defined in banners.js, so we're good to use them here.
-function scroll_up()
+function smooth_scroll_to(target_selector)
 {
-	remove_scroll_up_button();
+	smooth_scroll.animateScroll(document.querySelector(target_selector));
 	
-	
-	
-	scroll_button_goal = -window.scrollY;
-	
-	scroll_button_position = window.scrollY;
-	scroll_button_time = 0;
-	
-	let refresh_id = setInterval(function()
+	if (scroll_up_button_visible)
 	{
-		scroll_step();
-		
-		if (scroll_button_time >= 1000)
-		{
-			clearInterval(refresh_id);
-		}
-	}, 8);
+		remove_scroll_up_button();
+	}
 }
