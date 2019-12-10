@@ -44,7 +44,7 @@
 		{
 			ctx.fillStyle = e.data[4];
 			
-			ctx.fillRect(e.data[0], e.data[1], e.data[2], e.data[3]);
+			ctx.fillRect(e.data[0] * 5, e.data[1] * 5, e.data[2] * 5, e.data[3] * 5);
 		}
 	}
 	
@@ -71,13 +71,13 @@
 	
 	
 	
-		document.querySelector("#grid-graph").setAttribute("width", 2 * grid_size + 1);
-		document.querySelector("#grid-graph").setAttribute("height", 2 * grid_size + 1);
+		document.querySelector("#grid-graph").setAttribute("width", (2 * grid_size + 1) * 5);
+		document.querySelector("#grid-graph").setAttribute("height", (2 * grid_size + 1) * 5);
 		
 		
 		
 		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, 2 * grid_size + 1, 2 * grid_size + 1);
+		ctx.fillRect(0, 0, (2 * grid_size + 1) * 5, (2 * grid_size + 1) * 5);
 		
 		
 		

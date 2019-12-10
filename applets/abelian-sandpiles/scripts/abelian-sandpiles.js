@@ -4,6 +4,8 @@
 	
 	let ctx = document.querySelector("#sandpile-graph").getContext("2d");
 	
+	let canvas_scale_factor = 5;
+	
 	
 	
 	adjust_for_settings();
@@ -44,7 +46,7 @@
 		{
 			ctx.fillStyle = e.data[2];
 			
-			ctx.fillRect(e.data[0], e.data[1], 1, 1);
+			ctx.fillRect(e.data[0] * 5, e.data[1] * 5, 5, 5);
 		}
 	}
 	
@@ -79,13 +81,13 @@
 	
 	
 	
-		document.querySelector("#sandpile-graph").setAttribute("width", grid_size);
-		document.querySelector("#sandpile-graph").setAttribute("height", grid_size);
+		document.querySelector("#sandpile-graph").setAttribute("width", grid_size * 5);
+		document.querySelector("#sandpile-graph").setAttribute("height", grid_size * 5);
 		
 		
 		
 		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, grid_size, grid_size);
+		ctx.fillRect(0, 0, grid_size * 5, grid_size * 5);
 		
 		
 		
