@@ -1,5 +1,9 @@
 !function()
 {
+	"use strict";
+	
+	
+	
 	let grid_size = null;
 	
 	let ctx = document.querySelector("#sandpile-graph").getContext("2d");

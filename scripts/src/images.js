@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 //Tests support for WebP and replaces all images with it when possible. Otherwise, loads all images as jpg or png.
 
 

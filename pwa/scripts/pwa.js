@@ -1,5 +1,9 @@
 !function()
 {
+	"use strict";
+	
+	
+	
 	add_style(`
 		#pwa-button
 		{

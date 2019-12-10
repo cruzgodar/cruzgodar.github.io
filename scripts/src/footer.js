@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 //Inserts the footer at the bottom of the page and creates the floating footer.
 
 
@@ -310,7 +314,7 @@ function set_up_floating_footer()
 	//We want all the footer image links, but we don't want the animations anchored to anything. We have a try block here in case this is being called from the homepage.
 	try
 	{
-		element = document.querySelector("#spawn-footer").parentNode.querySelector(".footer-image-links").cloneNode(true);
+		let element = document.querySelector("#spawn-footer").parentNode.querySelector(".footer-image-links").cloneNode(true);
 		
 		for (let i = 0; i < element.children.length; i++)
 		{
@@ -325,7 +329,7 @@ function set_up_floating_footer()
 	
 	
 	//Next, we want the footer buttons.
-	element = document.querySelector("#spawn-footer").parentNode.querySelector(".footer-buttons").cloneNode(true);
+	let element = document.querySelector("#spawn-footer").parentNode.querySelector(".footer-buttons").cloneNode(true);
 	
 	for (let i = 0; i < element.children.length; i++)
 	{

@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 //Handles all navigation between pages.
 
 

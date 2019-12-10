@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 //Handles the various settings' effects on the page. These functions typically add or remove a style tag that handles all the changes. Some settings, like the theme, require an animation.
 
 
@@ -87,7 +91,7 @@ if (url_vars["dark_theme_color"] == 1)
 
 function init_settings()
 {
-	for (key in url_vars)
+	for (let key in url_vars)
 	{
 		if (url_vars[key] == null)
 		{

@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 //Handles the button that drops down from the top of the screen and lets the user scroll to the top of the page.
 
 

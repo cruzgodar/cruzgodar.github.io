@@ -1,5 +1,9 @@
 !function()
 {
+	"use strict";
+	
+	
+	
 	document.querySelector("#toggle-minor-versions-checkbox").addEventListener("click", function()
 	{
 		if (document.querySelector("#toggle-minor-versions-checkbox").checked)

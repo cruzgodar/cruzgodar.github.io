@@ -1,5 +1,11 @@
 !function()
 {
+	"use strict";
+	
+	
+	
+	let ctx = null;
+	
 	let small_canvas_size = document.querySelector("#mandelbrot-zoom").offsetWidth;
 	let large_canvas_size = document.querySelector("#high-res-mandelbrot-zoom").offsetWidth;
 

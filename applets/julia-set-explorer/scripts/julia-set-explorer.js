@@ -1,5 +1,9 @@
 !function()
 {
+	"use strict";
+	
+	
+	
 	let small_canvas_size = 0;
 	let large_canvas_size = 0;
 

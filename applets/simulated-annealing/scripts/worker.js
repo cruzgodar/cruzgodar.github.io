@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 onmessage = async function(e)
 {
 	grid_size = e.data[0];
@@ -7,8 +11,6 @@ onmessage = async function(e)
 	cooling_factor = 1 / (num_nodes * 100);
 	
 	await draw_annealing_graph();
-	
-	postMessage(["log", current_path, current_distance]);
 	
 	postMessage(["done"]);
 }
@@ -43,7 +45,7 @@ async function draw_annealing_graph()
 	
 	
 	//First, create a bunch of random nodes and draw them.
-	for (i = 0; i < num_nodes; i++)
+	for (let i = 0; i < num_nodes; i++)
 	{
 		nodes[i] = [Math.floor(Math.random() * grid_size), Math.floor(Math.random() * grid_size)];
 		
@@ -211,7 +213,7 @@ function draw_lines()
 		
 		
 		
-		for (i = 0; i < num_nodes; i++)
+		for (let i = 0; i < num_nodes; i++)
 		{
 			postMessage(["node", nodes[i][1], nodes[i][0], 4, `rgb(255, ${255 * (initial_temperature - temperature) / initial_temperature}, ${255 * (initial_temperature - temperature) / initial_temperature})`]);
 		}

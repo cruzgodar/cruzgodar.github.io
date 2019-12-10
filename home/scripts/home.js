@@ -1,5 +1,9 @@
 !function()
 {
+	"use strict";
+	
+	
+	
 	if (browser_name == "MS Edge")
 	{
 		alert_on_edge();

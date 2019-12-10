@@ -1,5 +1,9 @@
 !function()
 {
+	"use strict";
+	
+	
+	
 	init_settings_texts();
 	
 	set_apply_button();

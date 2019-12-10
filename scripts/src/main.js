@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 //The central script. Handles starting up all the machinery and also contains a few utility functions.
 
 

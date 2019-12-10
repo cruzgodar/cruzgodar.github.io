@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 onmessage = async function(e)
 {
 	grid_size = e.data[0];

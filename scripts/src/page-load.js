@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 //Takes over right where navigation.js leaves off -- this handles everything once a page has been redirected to.
 
 
@@ -19,8 +23,6 @@ function on_page_load()
 	insert_images();
 	
 	set_up_aos();
-	
-	initial_window_height = window_height;
 	
 	
 	

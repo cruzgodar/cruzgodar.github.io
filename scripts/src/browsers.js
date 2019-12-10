@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 //Detects the browser used and makes appropriate modifications.
 
 
@@ -14,7 +18,7 @@ let browser_detect =
 	{
 		for (let i = 0; i < data.length; i++)
 		{
-			var dataString = data[i].string;
+			let dataString = data[i].string;
 			this.versionSearchString = data[i].subString;
 
 			if (dataString.indexOf(data[i].subString) !== -1)
@@ -24,7 +28,7 @@ let browser_detect =
 		}
 	},
 	
-	searchVersion: function (dataString)
+	searchVersion: function(dataString)
 	{
 		let index = dataString.indexOf(this.versionSearchString);
 		

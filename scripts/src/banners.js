@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 //Handles loading banners, displaying them, fading them out when the user scrolls, and everything to do with scroll buttons.
 
 
@@ -294,14 +298,6 @@ function scroll_update(scroll_position_override)
 			}
 			
 			scroll_button_done = true;
-		}
-		
-		
-		
-		//This shouldn't be required, but it fixes a weird flickering glitch with the name text.
-		else
-		{
-			opacity = 0;
 		}
 	}
 }

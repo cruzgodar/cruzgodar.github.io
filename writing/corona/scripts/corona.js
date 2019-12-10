@@ -1,7 +1,13 @@
 !function()
 {
+	"use strict";
+	
+	
+	
 	let background_color = 255;
 	let opacity = 0;
+	
+	let initial_window_height = window_height;
 	
 	banner_done = false;
 	scroll_button_done = false;

@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 onmessage = async function(e)
 {
 	grid_size = e.data[0];
@@ -438,6 +442,8 @@ function color_graph()
 		//Now, finally, we can draw the colors.
 		for (let i = 0; i < distance_breaks.length; i++)
 		{
+			let j = 0;
+			
 			for (j = distance_breaks[i]; j < distance_breaks[i + 1] - 1; j++)
 			{
 				let rgb = HSVtoRGB(edges_by_distance[j][2] / max_distance, 1, 1);

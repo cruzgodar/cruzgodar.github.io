@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 //Handles registering the service worker, whenever that's possible.
 
 

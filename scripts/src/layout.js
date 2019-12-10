@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 //Handles everything to do with the layout and when it changes.
 
 

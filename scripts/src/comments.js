@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 //Handles loading the comments on pages that require them.
 
 
