@@ -2,7 +2,7 @@
 {
 	"use strict";
 	
-	let grid_size = 6;
+	let grid_size = 5;
 	
 	let num_solutions_found = 0;
 	
@@ -10,18 +10,66 @@
 	
 	let grid = generate_number_grid(grid_size);
 	
+	console.log(grid);
+	
+	let cages = [];
+	
 	//This is a grid_size * grid_size array that holds the index of the cage that each cell is in.
 	let cages_by_location = [];
 	
-	let cages = assign_initial_cages(grid);
+	
+	
+	let attempt_counter = 1;
+	
+	console.log("Generating initial cages...");
+	
+	//First, generate cages until we get a unique solution.
+	while (num_solutions_found != 1)
+	{
+		attempt_counter++;
+		
+		
+		
+		cages = assign_initial_cages(grid);
+		
+		solve_puzzle(cages);
+	}
+	
+	console.log(attempt_counter + " attempts required.");
 	
 	
 	
-	console.log(grid);
+	//Now expand one cage at a time until there's no longer a unique solution.
+	console.log("Expanding cages...");
+	
+	attempt_counter = 1;
+	
+	let old_cages = [];
+	
+	while (num_solutions_found == 1)
+	{
+		old_cages = cages;
+		
+		attempt_counter++;
+		
+		
+		
+		let result = expand_cages(cages);
+		
+		if (result === -1)
+		{
+			break;
+		}
+		
+		solve_puzzle(cages);
+	}
+	
+	console.log(attempt_counter + " expansions total.");
+	
+	cages = old_cages;
+	
 	console.log(cages);
 	
-	solve_puzzle(cages);
-	console.log(num_solutions_found);
 	
 	
 	
@@ -344,17 +392,221 @@
 	
 	
 	
-	//Picks the final cage in the list and destroys it, using the cells left over to merge with adjacent cages.
+	//Picks the final cage in the list and destroys it, using the cells left over to merge with an adjacent cage.
 	function expand_cages()
 	{
+		//Find the first cage that can be joined to something else.
 		let cage_to_destroy = cages.length - 1;
 		
+		while (typeof cages[cage_to_destroy][6] !== "undefined")
+		{
+			cage_to_destroy--;
+			
+			if (cage_to_destroy == -1)
+			{
+				return -1;
+			}
+		}
 		
-		//For each cell in the cage
+		
+		
+		let cage_that_grew = null;
+
+		
+		
+		//For simplicity, we're only trying to connect the first one to an adjacent cell.
+		let row = cages[cage_to_destroy][2][0][0];
+		let col = cages[cage_to_destroy][2][0][1];
+		
+		//Try left/right first.
+		if (Math.random() < .5)
+		{
+			if (row != 0 && cages_by_location[row - 1][col] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row - 1][col]))
+			{
+				cage_that_grew = cages_by_location[row - 1][col];
+			}
+			
+			else if (row != grid_size - 1 && cages_by_location[row + 1][col] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row + 1][col]))
+			{
+				cage_that_grew = cages_by_location[row + 1][col];
+			}
+			
+			else if (col != 0 && cages_by_location[row][col - 1] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row][col - 1]))
+			{
+				cage_that_grew = cages_by_location[row][col - 1];
+			}
+			
+			else if (col != grid_size - 1 && cages_by_location[row][col + 1] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row][col + 1]))
+			{
+				cage_that_grew = cages_by_location[row][col + 1];
+			}
+			
+			else
+			{
+				//Apparently this cell can't join with anything, so we're forced to mark it as unjoinable and move on.				
+				
+				cages[cage_to_destroy].push(true);
+				
+				return;
+			}
+		}
+		
+		
+		
+		//Try up/down first.
+		else
+		{
+			if (col != 0 && cages_by_location[row][col - 1] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row][col - 1]))
+			{
+				cage_that_grew = cages_by_location[row][col - 1];
+			}
+			
+			else if (col != grid_size - 1 && cages_by_location[row][col + 1] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row][col + 1]))
+			{
+				cage_that_grew = cages_by_location[row][col + 1];
+			}
+			
+			else if (row != 0 && cages_by_location[row - 1][col] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row - 1][col]))
+			{
+				cage_that_grew = cages_by_location[row - 1][col];
+			}
+			
+			else if (row != grid_size - 1 && cages_by_location[row + 1][col] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row + 1][col]))
+			{
+				cage_that_grew = cages_by_location[row + 1][col];
+			}
+			
+			else
+			{
+				//Apparently this cell can't join with anything, so we're forced to mark it as unjoinable and move on.				
+				
+				cages[cage_to_destroy].push(true);
+				
+				return;
+			}
+		}
+		
+		
+		
+		//Now we'll actually remove this cage from the list and add all the cells to the new cage.
 		for (let i = 0; i < cages[cage_to_destroy][2].length; i++)
 		{
-		
+			let row = cages[cage_to_destroy][2][i][0];
+			let col = cages[cage_to_destroy][2][i][1];
+			
+			add_cell_to_cage(row, col, cage_that_grew);
 		}
+		
+		cages.splice(cage_to_destroy, 1);
+		
+		//Finally, for all the other cages, we need to shift their numbers down by one.
+		for (let i = 0; i < grid_size; i++)
+		{
+			for (let j = 0; j < grid_size; j++)
+			{
+				if (cages_by_location[i][j] > cage_to_destroy)
+				{
+					cages_by_location[i][j]--;
+				}
+			}
+		}
+		
+		console.log("Added cage " + cage_to_destroy + " to cage " + cage_that_grew);
+	}
+	
+	
+	
+	function try_to_add_cell_to_cage(row, col, cage)
+	{
+		//There are no problems if the new cage is an addition or multiplication cell, but there could be if it's subtraction or division.
+		
+		if (cages[cage][0] === "+")
+		{
+			return true;
+		}
+		
+		
+		
+		else if (cages[cage][0] === "x")
+		{
+			return true;
+		}
+		
+		
+		
+		//The cage sum must be less than or equal to twice the max digit.
+		else if (cages[cage][0] === "-" && cages[cage][4] + grid[row][col] <= 2 * Math.max(cages[cage][3], grid[row][col]))
+		{
+			return true;
+		}
+		
+		
+		
+		//This one is finnicky. Either the new cell has to divide the quotient that's already there, or if the new digit is the biggest, then the product of all the cells in the cage must divide it.
+		else if (cages[cage][0] === ":")
+		{
+			if (grid[row][col] < cages[cage][3] && cages[cage][1] % grid[row][col] == 0)
+			{
+				return true;
+			}
+			
+			else if (grid[row][col] >= cages[cage][3] && grid[row][col] % cages[cage][5] == 0)
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	
+	function add_cell_to_cage(row, col, cage)
+	{
+		if (cages[cage][0] === "+")
+		{
+			cages[cage][1] += grid[row][col];
+		}
+		
+		
+		
+		else if (cages[cage][0] === "x")
+		{
+			cages[cage][1] *= grid[row][col];
+		}
+		
+		
+		
+		else if (cages[cage][0] === "-")
+		{
+			cages[cage][1] = 2 * Math.max(cages[cage][3], grid[row][col]) - (cages[cage][4] + grid[row][col]);
+		}
+		
+		
+		
+		else if (cages[cage][0] === ":")
+		{
+			if (grid[row][col] < cages[cage][3])
+			{
+				cages[cage][1] = cages[cage][1] / grid[row][col];
+			}
+			
+			else
+			{
+				cages[cage][1] = grid[row][col] / cages[cage][5];
+			}
+		}
+		
+		
+		
+		cages[cage][2].push([row, col]);
+		
+		cages[cage][3] = Math.max(cages[cage][3], grid[row][col]);
+		
+		cages[cage][4] += grid[row][col];
+		cages[cage][5] *= grid[row][col];
+		
+		cages_by_location[row][col] = cage;
 	}
 	
 	
@@ -477,8 +729,6 @@
 		
 		num_solutions_found = 0;
 		
-		console.log(grid, grid_possibilities, empty_cells);
-		
 		solve_puzzle_step(grid, grid_possibilities, empty_cells);
 	}
 	
@@ -489,7 +739,6 @@
 	{
 		if (empty_cells.length == 0)
 		{
-			console.log(grid);
 			num_solutions_found++;
 			
 			return true;
