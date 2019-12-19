@@ -31,7 +31,7 @@ let num_solutions_found = 0;
 
 function generate_calcudoku_grid()
 {
-	grid = generate_number_grid(grid_size);
+	grid = [];
 	
 	cages = [];
 	
@@ -44,6 +44,8 @@ function generate_calcudoku_grid()
 	//First, generate cages until we get a unique solution.
 	while (num_solutions_found != 1)
 	{
+		grid = generate_number_grid(grid_size);
+		
 		cages = assign_initial_cages(grid);
 		
 		solve_puzzle(cages);
@@ -517,6 +519,14 @@ function try_to_add_cage_to_cage(cage_to_destroy, cage_to_grow)
 	
 	//There are no problems if the new cage is an addition or multiplication cell, but there could be if it's subtraction or division.
 	
+	//This will be treated either as addition or multiplication.
+	if (cages[cage_to_grow][0] === "")
+	{
+		return true;
+	}
+	
+	
+	
 	if (cages[cage_to_grow][0] === "+")
 	{
 		return true;
@@ -561,7 +571,24 @@ function try_to_add_cage_to_cage(cage_to_destroy, cage_to_grow)
 
 function add_cage_to_cage(cage_to_destroy, cage_to_grow)
 {
-	if (cages[cage_to_grow][0] === "+")
+	if (cages[cage_to_grow][0] === "")
+	{
+		if (Math.random() < .5)
+		{
+			cages[cage_to_grow][0] = "+";
+			cages[cage_to_grow][1] += cages[cage_to_destroy][4];
+		}
+		
+		else
+		{
+			cages[cage_to_grow][0] = "x";
+			cages[cage_to_grow][1] *= cages[cage_to_destroy][5];
+		}
+	}
+	
+	
+	
+	else if (cages[cage_to_grow][0] === "+")
 	{
 		cages[cage_to_grow][1] += cages[cage_to_destroy][4];
 	}
