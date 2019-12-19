@@ -747,11 +747,24 @@ function solve_puzzle_step(grid, grid_possibilities, empty_cells)
 	
 	
 	
-	//Pick a random cell.
-	let cell = empty_cells[Math.floor(Math.random() * empty_cells.length)];
+	//Pick the cell with the fewest possibilities.
+	let min_possibilities_found = 1000;
+	let best_cell = 0;
 	
-	let row = cell[0];
-	let col = cell[1];
+	for (let i = 0; i < empty_cells.length; i++)
+	{
+		let row = empty_cells[i][0];
+		let col = empty_cells[i][1];
+		
+		if (grid_possibilities[row][col].length < min_possibilities_found)
+		{
+			min_possibilities_found = grid_possibilities[row][col].length;
+			best_cell = [row, col];
+		}
+	}
+	
+	let row = best_cell[0];
+	let col = best_cell[1];
 	
 	//If there are no possibilities for this cell, something has gone wrong.
 	if (grid_possibilities[row][col].length == 0)
