@@ -68,7 +68,7 @@
 	
 	cages = old_cages;
 	
-	console.log(cages);
+	draw_calcudoku_grid(grid, cages);
 	
 	
 	
@@ -421,22 +421,22 @@
 		//Try left/right first.
 		if (Math.random() < .5)
 		{
-			if (row != 0 && cages_by_location[row - 1][col] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row - 1][col]))
+			if (row != 0 && cages_by_location[row - 1][col] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row - 1][col]))
 			{
 				cage_that_grew = cages_by_location[row - 1][col];
 			}
 			
-			else if (row != grid_size - 1 && cages_by_location[row + 1][col] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row + 1][col]))
+			else if (row != grid_size - 1 && cages_by_location[row + 1][col] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row + 1][col]))
 			{
 				cage_that_grew = cages_by_location[row + 1][col];
 			}
 			
-			else if (col != 0 && cages_by_location[row][col - 1] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row][col - 1]))
+			else if (col != 0 && cages_by_location[row][col - 1] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row][col - 1]))
 			{
 				cage_that_grew = cages_by_location[row][col - 1];
 			}
 			
-			else if (col != grid_size - 1 && cages_by_location[row][col + 1] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row][col + 1]))
+			else if (col != grid_size - 1 && cages_by_location[row][col + 1] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row][col + 1]))
 			{
 				cage_that_grew = cages_by_location[row][col + 1];
 			}
@@ -456,22 +456,22 @@
 		//Try up/down first.
 		else
 		{
-			if (col != 0 && cages_by_location[row][col - 1] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row][col - 1]))
+			if (col != 0 && cages_by_location[row][col - 1] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row][col - 1]))
 			{
 				cage_that_grew = cages_by_location[row][col - 1];
 			}
 			
-			else if (col != grid_size - 1 && cages_by_location[row][col + 1] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row][col + 1]))
+			else if (col != grid_size - 1 && cages_by_location[row][col + 1] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row][col + 1]))
 			{
 				cage_that_grew = cages_by_location[row][col + 1];
 			}
 			
-			else if (row != 0 && cages_by_location[row - 1][col] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row - 1][col]))
+			else if (row != 0 && cages_by_location[row - 1][col] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row - 1][col]))
 			{
 				cage_that_grew = cages_by_location[row - 1][col];
 			}
 			
-			else if (row != grid_size - 1 && cages_by_location[row + 1][col] != cage_to_destroy && try_to_add_cell_to_cage(row, col, cages_by_location[row + 1][col]))
+			else if (row != grid_size - 1 && cages_by_location[row + 1][col] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row + 1][col]))
 			{
 				cage_that_grew = cages_by_location[row + 1][col];
 			}
@@ -489,13 +489,7 @@
 		
 		
 		//Now we'll actually remove this cage from the list and add all the cells to the new cage.
-		for (let i = 0; i < cages[cage_to_destroy][2].length; i++)
-		{
-			let row = cages[cage_to_destroy][2][i][0];
-			let col = cages[cage_to_destroy][2][i][1];
-			
-			add_cell_to_cage(row, col, cage_that_grew);
-		}
+		add_cage_to_cage(cage_to_destroy, cage_that_grew);
 		
 		cages.splice(cage_to_destroy, 1);
 		
@@ -516,41 +510,42 @@
 	
 	
 	
-	function try_to_add_cell_to_cage(row, col, cage)
+	function try_to_add_cage_to_cage(cage_to_destroy, cage_to_grow)
 	{
 		//There are no problems if the new cage is an addition or multiplication cell, but there could be if it's subtraction or division.
 		
-		if (cages[cage][0] === "+")
+		if (cages[cage_to_grow][0] === "+")
 		{
 			return true;
 		}
 		
 		
 		
-		else if (cages[cage][0] === "x")
+		else if (cages[cage_to_grow][0] === "x")
 		{
 			return true;
 		}
 		
 		
 		
-		//The cage sum must be less than or equal to twice the max digit.
-		else if (cages[cage][0] === "-" && cages[cage][4] + grid[row][col] <= 2 * Math.max(cages[cage][3], grid[row][col]))
+		//The new cage sum must be less than or equal to twice the max digit.
+		else if (cages[cage_to_grow][0] === "-" && cages[cage_to_grow][4] + cages[cage_to_destroy][4] <= 2 * Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]))
 		{
 			return true;
 		}
 		
 		
 		
-		//This one is finnicky. Either the new cell has to divide the quotient that's already there, or if the new digit is the biggest, then the product of all the cells in the cage must divide it.
-		else if (cages[cage][0] === ":")
+		//This one is finnicky. Either:
+		//1. cage_to_destroy contains the new max digit, in which case the product of cage_to_grow must divide the quotient of cage_to_destroy.
+		//2. or cage_to_grow contains the new max digit, in which case the product of cage_to_destroy must divide the quotient of cage_to_grow.
+		//Now we don't have easy access to the quotient of cage_to_destroy, so what we'll do in both cases is take the max digit squared over the products of both cages multiplied together. If this division is remainderless, we're golden.
+		else if (cages[cage_to_grow][0] === ":")
 		{
-			if (grid[row][col] < cages[cage][3] && cages[cage][1] % grid[row][col] == 0)
-			{
-				return true;
-			}
+			let max_digit = Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]);
+			let total_product = cages[cage_to_grow][5] * cages[cage_to_destroy][5];
 			
-			else if (grid[row][col] >= cages[cage][3] && grid[row][col] % cages[cage][5] == 0)
+			if ((max_digit * max_digit) % total_product == 0)
 			{
 				return true;
 			}
@@ -561,52 +556,55 @@
 	
 	
 	
-	function add_cell_to_cage(row, col, cage)
+	function add_cage_to_cage(cage_to_destroy, cage_to_grow)
 	{
-		if (cages[cage][0] === "+")
+		if (cages[cage_to_grow][0] === "+")
 		{
-			cages[cage][1] += grid[row][col];
+			cages[cage_to_grow][1] += cages[cage_to_destroy][4];
 		}
 		
 		
 		
-		else if (cages[cage][0] === "x")
+		else if (cages[cage_to_grow][0] === "x")
 		{
-			cages[cage][1] *= grid[row][col];
+			cages[cage_to_grow][1] *= cages[cage_to_destroy][5];
 		}
 		
 		
 		
-		else if (cages[cage][0] === "-")
+		else if (cages[cage_to_grow][0] === "-")
 		{
-			cages[cage][1] = 2 * Math.max(cages[cage][3], grid[row][col]) - (cages[cage][4] + grid[row][col]);
+			cages[cage_to_grow][1] = 2 * Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]) - (cages[cage_to_grow][4] + cages[cage_to_destroy][4]);
 		}
 		
 		
 		
-		else if (cages[cage][0] === ":")
+		else if (cages[cage_to_grow][0] === ":")
 		{
-			if (grid[row][col] < cages[cage][3])
-			{
-				cages[cage][1] = cages[cage][1] / grid[row][col];
-			}
+			let max_digit = Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]);
+			let total_product = cages[cage_to_grow][5] * cages[cage_to_destroy][5];
 			
-			else
-			{
-				cages[cage][1] = grid[row][col] / cages[cage][5];
-			}
+			cages[cage_to_grow][1] = (max_digit * max_digit) / total_product;
 		}
 		
 		
 		
-		cages[cage][2].push([row, col]);
+		cages[cage_to_grow][2] = cages[cage_to_grow][2].concat(cages[cage_to_destroy][2]);
 		
-		cages[cage][3] = Math.max(cages[cage][3], grid[row][col]);
+		cages[cage_to_grow][3] = Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]);
 		
-		cages[cage][4] += grid[row][col];
-		cages[cage][5] *= grid[row][col];
+		cages[cage_to_grow][4] += cages[cage_to_destroy][4];
+		cages[cage_to_grow][5] *= cages[cage_to_destroy][5];
 		
-		cages_by_location[row][col] = cage;
+		
+		
+		for (let i = 0; i < cages[cage_to_destroy][2].length; i++)
+		{
+			let row = cages[cage_to_destroy][2][i][0];
+			let col = cages[cage_to_destroy][2][i][1];
+			
+			cages_by_location[row][col] = cage_to_grow;
+		}
 	}
 	
 	
@@ -947,26 +945,103 @@
 	
 	
 	
-	function prepare_download()
+	function draw_calcudoku_grid()
 	{
-		window.open(document.querySelector("#annealing-graph").toDataURL(), "_blank");
-	}
-
-
-	
-	function adjust_for_settings()
-	{
-		if (url_vars["contrast"] == 1)
+		let ctx = document.querySelector("#calcudoku-grid").getContext("2d");
+		
+		
+		
+		let canvas_size = grid_size * 200;
+		
+		document.querySelector("#calcudoku-grid").setAttribute("width", canvas_size + 9);
+		document.querySelector("#calcudoku-grid").setAttribute("height", canvas_size + 9);
+		
+		ctx.clearRect(0, 0, canvas_size, canvas_size);
+		
+		
+		
+		if (url_vars["theme"] == 1)
 		{
-			if (url_vars["theme"] == 1)
+			ctx.fillStyle = "rgb(255, 255, 255)";
+		}
+		
+		else
+		{
+			ctx.fillStyle = "rgb(0, 0, 0)";
+		}
+		
+		
+		
+		//Draw the light gridlines (width 2).
+		for (let i = 0; i <= grid_size; i++)
+		{
+			ctx.fillRect(200 * i + 4, 0, 2, canvas_size + 9);
+			ctx.fillRect(0, 200 * i + 4, canvas_size + 9, 2);
+		}
+		
+		
+		
+		//Now draw the cages. For each cell of the grid, we draw a line with width 10 if an adjacent cell is part of a different cage.
+		for (let i = 0; i < grid_size; i++)
+		{
+			for (let j = 0; j < grid_size; j++)
 			{
-				document.querySelector("#annealing-graph").style.borderColor = "rgb(192, 192, 192)";
-			}
-			
-			else
-			{
-				document.querySelector("#annealing-graph").style.borderColor = "rgb(64, 64, 64)";
+				if (i == 0 || cages_by_location[i - 1][j] != cages_by_location[i][j])
+				{
+					ctx.fillRect(200 * j, 200 * i, 210, 10);
+				}
+				
+				if (i == grid_size - 1 || cages_by_location[i + 1][j] != cages_by_location[i][j])
+				{
+					ctx.fillRect(200 * j, 200 * (i + 1), 210, 10);
+				}
+				
+				if (j == 0 || cages_by_location[i][j - 1] != cages_by_location[i][j])
+				{
+					ctx.fillRect(200 * j, 200 * i, 10, 210);
+				}
+				
+				if (j == grid_size - 1 || cages_by_location[i][j + 1] != cages_by_location[i][j])
+				{
+					ctx.fillRect(200 * (j + 1), 200 * i, 10, 210);
+				}
 			}
 		}
+		
+		
+		
+		//Finally, draw the numbers. These are in 30px font, so there can be at most a 5-digit number (plus a symbol).
+		ctx.font = "30px sans-serif";
+		
+		for (let i = 0; i < cages.length; i++)
+		{
+			//Find the leftmost cell in the top row of the cage.
+			let top_left_cell = [grid_size, grid_size];
+			
+			for (let j = 0; j < cages[i][2].length; j++)
+			{
+				let row = cages[i][2][j][0];
+				let col = cages[i][2][j][1];
+				
+				if (row < top_left_cell[0])
+				{
+					top_left_cell = [row, col];
+				}
+				
+				else if (row == top_left_cell[0] && col < top_left_cell[1])
+				{
+					top_left_cell = [row, col];
+				}
+			}
+			
+			ctx.fillText(cages[i][1] + cages[i][0], 200 * top_left_cell[1] + 15, 200 * top_left_cell[0] + 40);
+		}
+	}
+	
+	
+	
+	function prepare_download()
+	{
+		window.open(document.querySelector("#calcudoku-grid").toDataURL(), "_blank");
 	}
 }()
