@@ -38,36 +38,79 @@ function generate_calcudoku_grid()
 	cages_by_location = [];
 	
 	num_solutions_found = 0;
-		
 	
+	
+	
+	let attempts = 0;	
 	
 	//First, generate cages until we get a unique solution.
 	while (num_solutions_found != 1)
 	{
-		grid = generate_number_grid(grid_size);
+		if (attempts % 5 == 0)
+		{
+			grid = generate_number_grid(grid_size);
+		}
 		
 		cages = assign_initial_cages(grid);
 		
 		solve_puzzle(cages);
+		
+		attempts++;
 	}
 	
 	
 	
-	//Now expand one cage at a time until there's no longer a unique solution.
-	while (num_solutions_found == 1)
+	postMessage(["log", "Generated grid after " + attempts + " attempts."]);
+	
+	
+	
+	//Now expand one cage at a time until it's no longer possible.
+	let expansion_history = [];
+	
+	expansion_history.push([JSON.parse(JSON.stringify(grid)), JSON.parse(JSON.stringify(cages)), JSON.parse(JSON.stringify(cages_by_location))]);
+	
+	while (expand_cages(cages) !== -1)
 	{
+		expansion_history.push([JSON.parse(JSON.stringify(grid)), JSON.parse(JSON.stringify(cages)), JSON.parse(JSON.stringify(cages_by_location))]);
+	}
+	
+	
+	
+	//Now we're going to do a sort of binary search. Testing if a grid has a unique solution is expensive, so we're going to test the halfway point, then the halfway point of whichever half we look into, and so on.
+	
+	while (expansion_history.length > 1)
+	{
+		//This skews the binary search, making it faster if the expected position of the critical point is around 1/3 of the way through the list. Good news, though -- it usually is.
+		let split_index = Math.ceil(expansion_history.length / 3);
+		
+		grid = JSON.parse(JSON.stringify(expansion_history[split_index][0]));
+		cages = JSON.parse(JSON.stringify(expansion_history[split_index][1]));
+		cages_by_location = JSON.parse(JSON.stringify(expansion_history[split_index][2]));
+		
 		postMessage([grid, cages, cages_by_location]);
 		
+		solve_puzzle(cages);
 		
-		let result = expand_cages(cages);
 		
-		if (result === -1)
+		
+		if (num_solutions_found > 1)
 		{
-			break;
+			expansion_history.splice(split_index);
 		}
 		
-		solve_puzzle(cages);
+		else
+		{
+			expansion_history.splice(0, split_index);
+		}
 	}
+	
+	
+	
+	grid = JSON.parse(JSON.stringify(expansion_history[0][0]));
+	cages = JSON.parse(JSON.stringify(expansion_history[0][1]));
+	cages_by_location = JSON.parse(JSON.stringify(expansion_history[0][2]));
+	
+	postMessage([grid, cages, cages_by_location]);
 }
 
 

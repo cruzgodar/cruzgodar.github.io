@@ -46,6 +46,11 @@
 			document.querySelector(".loading-spinner").style.opacity = 0;
 		}
 		
+		else if (e.data[0] == "log")
+		{
+			console.log(...e.data);
+		}
+		
 		else
 		{
 			grid = e.data[0];
