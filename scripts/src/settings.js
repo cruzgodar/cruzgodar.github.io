@@ -979,6 +979,14 @@ function get_settings_style(settings)
 			
 			
 			
+			.loading-spinner:after
+			{
+				border: 4px solid rgb(152, 152, 152);
+				border-color: rgb(152, 152, 152) transparent rgb(152, 152, 152) transparent;
+			}
+			
+						
+			
 			#floating-footer-content, #floating-footer-button-background
 			{
 				background-color: ${dark_theme_background_color};
@@ -1071,6 +1079,14 @@ function get_settings_style(settings)
 			
 			
 			
+			.loading-spinner:after
+			{
+				border: 4px solid rgb(64, 64, 64);
+				border-color: rgb(64, 64, 64) transparent rgb(64, 64, 64) transparent;
+			}
+			
+			
+			
 			.footer-button, .text-button, .nav-button, .checkbox-container
 			{
 				border-color: rgb(64, 64, 64);
@@ -1153,6 +1169,14 @@ function get_settings_style(settings)
 			.checkbox-container > input:checked ~ .checkbox
 			{
 				background-color: rgb(216, 216, 216);
+			}
+			
+			
+			
+			.loading-spinner:after
+			{
+				border: 4px solid rgb(216, 216, 216);
+				border-color: rgb(216, 216, 216) transparent rgb(216, 216, 216) transparent;
 			}
 			
 			

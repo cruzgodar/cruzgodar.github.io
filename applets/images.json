@@ -1,4 +1,10 @@
 {
+	"image-calcudoku-generator":
+	{
+		"webp": "calcudoku-generator/cover.webp",
+		"non-webp": "calcudoku-generator/cover.jpg"
+	},
+	
 	"image-simulated-annealing":
 	{
 		"webp": "simulated-annealing/cover.webp",

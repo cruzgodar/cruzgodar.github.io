@@ -18,7 +18,7 @@
 	<div style="height: 2vh"></div>
 	
 	<div data-aos="fade-up">
-		<h1 class="heading-text">Simulated Annealing</h1>
+		<h1 class="heading-text">Calcudoku Generator</h1>
 	</div>
 </header>
 
@@ -30,7 +30,7 @@
 	<section>
 		<div data-aos="fade-up">
 			<p class="body-text">
-				There is a very famous problem in computer science known as the <dfn>Travelling Salesman Problem:</dfn> given a list of cities and their locations on a map, what is the shortest total route that passes through all of them and ends where it begins? Although it may seem simple on the surface, the Travelling Salesman Problem is actually an example of an <a href="https://en.m.wikipedia.org/wiki/NP-hardness" onclick="redirect('https://en.m.wikipedia.org/wiki/NP-hardness', true)">NP-hard</a> problem. The technical definition of this is tricky, but it essentially means that people are relatively agreed that there is no &#x201Cquick&#x201D algorithm to solve the problem.
+				<dfn>Calcudoku</dfn> is a Sudoku-like puzzle &mdash; given an \(n \times n\) grid, fill it withn the digits \(1, ..., n\) such that no row or column contains a repeated digit, and such that each cage&#x2019;s condition is satisfied. For example, a cage with \(5+\) in a corner must have its contents sum to 5. A cage with \(2-\) is a little more complicated &mdash; it means that choosing some cell in the cage and subtracting the others results in 2. A 3-cell cage containing 5, 2, and 1 would work. \(:\) is the division operator, and works similarly to subtraction. Finally, cages with no operation at all are always \(1 \times 1\), and simply contain the number in the corner.
 			</p>
 		</div>
 		
@@ -38,55 +38,53 @@
 		
 		<div data-aos="fade-up">
 			<p class="body-text">
-				There are plenty of ways to quickly approximate it, though. One of them, called <dfn>simulated annealing</dfn>, takes inspiration from metallurgy. The algorithm starts by choosing a random path through the cities, and then it picks two cities whose order it thinks about swapping. If that makes the entire path shorter, it makes the swap. If it makes the path longer, though, it will <em>still sometimes make the swap</em>. The frequency with which it does this depends on the <dfn>temperature</dfn> of the system &mdash; just a number in the algorithm, but a number that is analogous to actual temperature in very hot metal. The algorithm&#x2019;s temperature starts at a very high level and cools down over time &mdash; shown as red nodes fading to white &mdash; and the probability that the walk becomes longer lowers with it. This seemingly chaotic strategy ensures that the algorithm doesn&#x2019;t just get stuck in a nonoptimal state where any swap will lead to a longer walk. Instead, it has the freedom to move around and try lots of different strategies at first, but as the temperature lowers, it&#x2019;s forced to stay relatively the same and only take swaps that improve its position.
+				Generating a calcudoku puzzle is no easy feat, and this algorithm is far from the fastest, but it will generate a puzzle of any given size. These vary <em>wildly</em> in difficulty, but every one is guaranteed to have a unique solution. If the puzzles are consistently too difficult, try limiting the cage size to 2 or 3 or 4.
 			</p>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
-		<div class="center-content">
-			<div style="width: 20vw" data-aos="fade-up">
-				<input id="num-nodes-input" class="text-box" type="text" style="width: 100%" value="20">
-				<label for="num-nodes-input">
-					<p class="body-text">Number of Nodes</p>
+		<div class="text-box-row">
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="grid-size-input" class="text-box" type="text" style="width: 100%" value="5">
+				<label for="grid-size-input">
+					<p class="body-text">Grid Size</p>
 				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="max-cage-size-input" class="text-box" type="text" style="width: 100%" value="">
+				<label for="max-cage-size-input">
+					<p class="body-text">Maximum Cage Size</p>
+				</label>
+			</div>
+		</div>
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content">
+			<div data-aos="zoom-out" data-aos-delay="1400">
+				<button class="text-button" type="button" id="generate-button">Generate</button>
 			</div>
 		</div>
 		
 		<div style="height: 5vh"></div>
 		
-		<div class="checkbox-row">
-			<div data-aos="zoom-out" data-aos-delay="800">
-				<div class="checkbox-container">
-					<input type="checkbox" id="toggle-maximum-speed-checkbox">
-					<div class="checkbox"></div>
-				</div>
-			</div>
-			
-			<div style="margin-left: 10px" data-aos="fade-left">
-				<p class="body-text">Maximum speed</p>
-			</div>
+		<div class="center-content">
+			<div class="loading-spinner animated-opacity"><div></div><div></div><div></div><div></div></div>
+		</div>
+		
+		<div style="height: 7.5vh"></div>
+		
+		<div class="center-content">
+			<canvas id="calcudoku-grid" data-aos="fade-in" data-aos-delay="1900"></canvas>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="1300">
-				<button class="text-button" type="button" id="generate-button">Generate</button>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="center-content">
-			<canvas id="calcudoku-grid" data-aos="fade-in" data-aos-delay="1800"></canvas>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="2300">
-				<button class="text-button" type="button" id="download-button">Download Image</button>
+			<div data-aos="zoom-out" data-aos-delay="2400">
+				<button class="text-button" type="button" id="download-button">Download</button>
 			</div>
 		</div>
 	</section>
@@ -117,7 +115,7 @@
 		"num_banners": 0,
 		
 		"writing_page": false,
-		"math_page": false,
+		"math_page": true,
 		"comments": false,
 		
 		"small_margins_on_ultrawide": true,
