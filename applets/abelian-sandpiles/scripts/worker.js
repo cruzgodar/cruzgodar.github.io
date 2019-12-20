@@ -9,8 +9,6 @@ onmessage = async function(e)
 	maximum_speed = e.data[2];
 	
 	await draw_sandpile_graph();
-	
-	postMessage(["done"]);
 }
 
 

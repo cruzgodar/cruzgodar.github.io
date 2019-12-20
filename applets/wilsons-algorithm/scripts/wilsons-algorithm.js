@@ -8,6 +8,8 @@
 	
 	let ctx = document.querySelector("#grid-graph").getContext("2d");
 	
+	let web_worker = null;
+	
 	
 	
 	adjust_for_settings();
@@ -19,56 +21,10 @@
 	
 	
 	
-	let web_worker = null;
-	
-	let worker_is_busy = false;
-	
-	if (DEBUG)
-	{
-		web_worker = new Worker("/applets/wilsons-algorithm/scripts/worker.js");
-	}
-	
-	else
-	{
-		web_worker = new Worker("/applets/wilsons-algorithm/scripts/worker.min.js");
-	}
-	
-	temporary_web_workers.push(web_worker);
-	
-	
-	
-	web_worker.onmessage = function(e)
-	{
-		if (e.data[0] == "done")
-		{
-			worker_is_busy = false;
-		}
-		
-		else
-		{
-			ctx.fillStyle = e.data[4];
-			
-			ctx.fillRect(e.data[0] * 5, e.data[1] * 5, e.data[2] * 5, e.data[3] * 5);
-		}
-	}
-	
-	
-	
 	
 	
 	function request_wilson_graph()
 	{
-		if (worker_is_busy)
-		{
-			console.log("Worker is busy -- refusing request");
-			
-			return;
-		}
-		
-		
-		
-		worker_is_busy = true;
-		
 		grid_size = parseInt(document.querySelector("#dim-input").value || 50);
 		
 		let maximum_speed = document.querySelector("#toggle-maximum-speed-checkbox").checked;
@@ -82,6 +38,32 @@
 		
 		ctx.fillStyle = "rgb(0, 0, 0)";
 		ctx.fillRect(0, 0, (2 * grid_size + 1) * 5, (2 * grid_size + 1) * 5);
+		
+		
+		
+		try {web_worker.terminate();}
+		catch(ex) {}
+		
+		if (DEBUG)
+		{
+			web_worker = new Worker("/applets/wilsons-algorithm/scripts/worker.js");
+		}
+		
+		else
+		{
+			web_worker = new Worker("/applets/wilsons-algorithm/scripts/worker.min.js");
+		}
+		
+		temporary_web_workers.push(web_worker);
+		
+		
+		
+		web_worker.onmessage = function(e)
+		{
+			ctx.fillStyle = e.data[4];
+			
+			ctx.fillRect(e.data[0] * 5, e.data[1] * 5, e.data[2] * 5, e.data[3] * 5);
+		}
 		
 		
 		

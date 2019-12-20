@@ -60,57 +60,23 @@ function generate_calcudoku_grid()
 	
 	
 	
-	postMessage(["log", "Generated grid after " + attempts + " attempts."]);
-	
-	
-	
-	//Now expand one cage at a time until it's no longer possible.
-	let expansion_history = [];
-	
-	expansion_history.push([JSON.parse(JSON.stringify(grid)), JSON.parse(JSON.stringify(cages)), JSON.parse(JSON.stringify(cages_by_location))]);
-	
-	while (expand_cages(cages) !== -1)
-	{
-		expansion_history.push([JSON.parse(JSON.stringify(grid)), JSON.parse(JSON.stringify(cages)), JSON.parse(JSON.stringify(cages_by_location))]);
-	}
+	postMessage(["log", "Generated grid after " + attempts + " attempts"]);
 	
 	
 	
 	//Now we're going to do a sort of binary search. Testing if a grid has a unique solution is expensive, so we're going to test the halfway point, then the halfway point of whichever half we look into, and so on.
 	
-	while (expansion_history.length > 1)
+	while (num_solutions_found == 1)
 	{
-		//This skews the binary search, making it faster if the expected position of the critical point is around 1/3 of the way through the list. Good news, though -- it usually is.
-		let split_index = Math.ceil(expansion_history.length / 3);
-		
-		grid = JSON.parse(JSON.stringify(expansion_history[split_index][0]));
-		cages = JSON.parse(JSON.stringify(expansion_history[split_index][1]));
-		cages_by_location = JSON.parse(JSON.stringify(expansion_history[split_index][2]));
-		
 		postMessage([grid, cages, cages_by_location]);
 		
+		if (expand_cages(cages) === -1)
+		{
+			break;
+		}
+		
 		solve_puzzle(cages);
-		
-		
-		
-		if (num_solutions_found > 1)
-		{
-			expansion_history.splice(split_index);
-		}
-		
-		else
-		{
-			expansion_history.splice(0, split_index);
-		}
 	}
-	
-	
-	
-	grid = JSON.parse(JSON.stringify(expansion_history[0][0]));
-	cages = JSON.parse(JSON.stringify(expansion_history[0][1]));
-	cages_by_location = JSON.parse(JSON.stringify(expansion_history[0][2]));
-	
-	postMessage([grid, cages, cages_by_location]);
 }
 
 
@@ -546,7 +512,7 @@ function expand_cages()
 		}
 	}
 	
-	console.log("Added cage " + cage_to_destroy + " to cage " + cage_that_grew);
+	postMessage(["log", "Added cage " + cage_to_destroy + " to cage " + cage_that_grew]);
 }
 
 
@@ -805,6 +771,93 @@ function solve_puzzle(cages)
 
 
 
+//Trims the possibilities for the cells in a + or x cage.
+function update_cage_possibilities(row, col, grid, grid_possibilities)
+{
+	let cage = cages_by_location[row][col];
+	
+	//Any cell in the cage can be at most the sum minus the current sum minus the number of cells plus 1.
+	if (cages[cage][0] === "+")
+	{
+		let current_sum = 0;
+		
+		for (let i = 0; i < cages[cage][2].length; i++)
+		{
+			let temp_row = cages[cage][2][i][0];
+			let temp_col = cages[cage][2][i][1];
+			
+			//The grid has unknown cells as 0s, so this is all good.
+			current_sum += grid[temp_row][temp_col];
+		}
+		
+		
+		
+		let max_allowable_entry = cages[cage][4] - current_sum - cages[cage][2].length + 1;
+		
+		//For each cell in the cage,
+		for (let i = 0; i < cages[cage][2].length; i++)
+		{
+			let temp_row = cages[cage][2][i][0];
+			let temp_col = cages[cage][2][i][1];
+			
+			//remove any number higher than what is allowed.
+			for (let j = max_allowable_entry + 1; j <= grid_size; j++)
+			{
+				let index = grid_possibilities[temp_row][temp_col].indexOf(j);
+				
+				if (index != -1)
+				{
+					grid_possibilities[temp_row][temp_col].splice(index, 1);
+				}
+			}
+		}
+	}
+	
+	
+	
+	//This involves a number's factorization. Again, that's a pain, so we're just going to remove numbers that don't divide the product.
+	else if (cages[cage][0] === "x")
+	{
+		let current_product = 1;
+		
+		for (let i = 0; i < cages[cage][2].length; i++)
+		{
+			let temp_row = cages[cage][2][i][0];
+			let temp_col = cages[cage][2][i][1];
+			
+			if (grid[temp_row][temp_col] != 0)
+			{
+				current_product *= grid[temp_row][temp_col];
+			}
+		}
+		
+		
+		
+		//For each cell in the cage,
+		for (let i = 0; i < cages[cage][2].length; i++)
+		{
+			let temp_row = cages[cage][2][i][0];
+			let temp_col = cages[cage][2][i][1];
+			
+			//remove any number that doesn't divide the product.
+			for (let j = 2; j <= grid_size; j++)
+			{
+				if ((cages[cage][5] / current_product) % j != 0)
+				{
+					let index = grid_possibilities[temp_row][temp_col].indexOf(j);
+					
+					if (index != -1)
+					{
+						grid_possibilities[temp_row][temp_col].splice(index, 1);
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
 //This is just like the grid generating function, except that it tries to find every solution.
 function solve_puzzle_step(grid, grid_possibilities, empty_cells)
 {
@@ -860,6 +913,8 @@ function solve_puzzle_step(grid, grid_possibilities, empty_cells)
 		{
 			continue;
 		}
+		
+		//update_cage_possibilities(row, col, new_grid, new_grid_possibilities);
 		
 		
 		

@@ -434,11 +434,6 @@ function color_graph()
 		
 		
 		
-		//No, I don't know why it has to go here. Don't ask.
-		postMessage(["done"]);
-		
-		
-		
 		//Now, finally, we can draw the colors.
 		for (let i = 0; i < distance_breaks.length; i++)
 		{

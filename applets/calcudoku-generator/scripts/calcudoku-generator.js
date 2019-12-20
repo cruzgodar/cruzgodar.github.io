@@ -12,6 +12,8 @@
 	let cages = [];
 	let cages_by_location = [];
 	
+	let web_worker = null;
+	
 	
 	
 	document.querySelector("#generate-button").addEventListener("click", request_calcudoku_grid);
@@ -19,65 +21,10 @@
 	
 	
 	
-	let web_worker = null;
-	
-	let worker_is_busy = false;
-	
-	if (DEBUG)
-	{
-		web_worker = new Worker("/applets/calcudoku-generator/scripts/worker.js");
-	}
-	
-	else
-	{
-		web_worker = new Worker("/applets/calcudoku-generator/scripts/worker.min.js");
-	}
-	
-	temporary_web_workers.push(web_worker);
-	
-	
-	
-	web_worker.onmessage = function(e)
-	{
-		if (e.data[0] == "done")
-		{
-			worker_is_busy = false;
-			
-			document.querySelector(".loading-spinner").style.opacity = 0;
-		}
-		
-		else if (e.data[0] == "log")
-		{
-			console.log(...e.data);
-		}
-		
-		else
-		{
-			grid = e.data[0];
-			cages = e.data[1];
-			cages_by_location = e.data[2];
-			
-			draw_calcudoku_grid(false);
-		}
-	}
-	
-	
-	
 	
 	
 	function request_calcudoku_grid()
 	{
-		if (worker_is_busy)
-		{
-			console.log("Worker is busy -- refusing request");
-			
-			return;
-		}
-		
-		
-		
-		worker_is_busy = true;
-		
 		grid_size = parseInt(document.querySelector("#grid-size-input").value || 5);
 		
 		let max_cage_size = parseInt(document.querySelector("#max-cage-size-input").value || 1000);
@@ -94,6 +41,47 @@
 		
 		
 		document.querySelector(".loading-spinner").style.opacity = 1;
+		
+		
+		
+		try {web_worker.terminate();}
+		catch(ex) {}
+		
+		if (DEBUG)
+		{
+			web_worker = new Worker("/applets/calcudoku-generator/scripts/worker.js");
+		}
+		
+		else
+		{
+			web_worker = new Worker("/applets/calcudoku-generator/scripts/worker.min.js");
+		}
+		
+		temporary_web_workers.push(web_worker);
+		
+		
+		
+		web_worker.onmessage = function(e)
+		{
+			if (e.data[0] == "done")
+			{
+				document.querySelector(".loading-spinner").style.opacity = 0;
+			}
+			
+			else if (e.data[0] == "log")
+			{
+				console.log(...e.data.slice(1));
+			}
+			
+			else
+			{
+				grid = e.data[0];
+				cages = e.data[1];
+				cages_by_location = e.data[2];
+				
+				draw_calcudoku_grid(false);
+			}
+		}
 		
 		
 		

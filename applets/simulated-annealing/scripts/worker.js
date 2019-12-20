@@ -11,8 +11,6 @@ onmessage = async function(e)
 	cooling_factor = 1 / (num_nodes * 100);
 	
 	await draw_annealing_graph();
-	
-	postMessage(["done"]);
 }
 
 
