@@ -78,11 +78,11 @@ function load_banner()
 			//Set up the opacity cover.
 			let color = 255;
 			
-			if (url_vars["theme"] == 1)
+			if (url_vars["theme"] === 1)
 			{
 				color = 24;
 				
-				if (url_vars["dark_theme_color"] == 1)
+				if (url_vars["dark_theme_color"] === 1)
 				{
 					color = 0;
 				}
@@ -129,7 +129,7 @@ function load_banner()
 			{
 				multibanner_pages[current_url]["current_banner"]++;
 				
-				if (multibanner_pages[current_url]["current_banner"] == multibanner_pages[current_url]["num_banners"] + 1)
+				if (multibanner_pages[current_url]["current_banner"] === multibanner_pages[current_url]["num_banners"] + 1)
 				{
 					multibanner_pages[current_url]["current_banner"] = 1;
 				}
@@ -186,7 +186,7 @@ function load_banner()
 
 function scroll_update(scroll_position_override)
 {
-	if (scroll_position_override == 0)
+	if (scroll_position_override === 0)
 	{
 		scroll = window.scrollY;
 	}
@@ -202,7 +202,7 @@ function scroll_update(scroll_position_override)
 	
 	if (scroll >= 0)
 	{
-		if (url_vars["banner_style"] != 1)
+		if (url_vars["banner_style"] !== 1)
 		{
 			if (scroll <= window_height)
 			{
@@ -211,7 +211,7 @@ function scroll_update(scroll_position_override)
 				try {document.querySelector("#opacity-cover").style.opacity = opacity;}
 				catch(ex) {}
 				
-				if (opacity == 0)
+				if (opacity === 0)
 				{
 					banner_done = true;
 				}
@@ -222,7 +222,7 @@ function scroll_update(scroll_position_override)
 				}
 			}
 			
-			else if (banner_done == false)
+			else if (banner_done === false)
 			{
 				//We need a try block here in case the user refreshes the page and it's way low down for some reason, even though scrollRestoration should be off.
 				try {document.querySelector("#opacity-cover").style.opacity = 1;}
@@ -247,7 +247,7 @@ function scroll_update(scroll_position_override)
 			
 			try
 			{
-				if (url_vars["banner_style"] != 1)
+				if (url_vars["banner_style"] !== 1)
 				{
 					set_element_styles(".name-text", "opacity", opacity);
 				}
@@ -257,7 +257,7 @@ function scroll_update(scroll_position_override)
 			
 			
 			
-			if (opacity == 0)
+			if (opacity === 0)
 			{
 				if (scroll_button_exists)
 				{
@@ -276,7 +276,7 @@ function scroll_update(scroll_position_override)
 		
 		
 		
-		else if (scroll_button_timeout != null)
+		else if (scroll_button_timeout !== null)
 		{
 			clearTimeout(scroll_button_timeout);
 			scroll_button_timeout = null;
@@ -284,9 +284,9 @@ function scroll_update(scroll_position_override)
 		
 		
 		
-		else if (scroll_button_done == false)
+		else if (scroll_button_done === false)
 		{
-			if (url_vars["banner_style"] != 1)
+			if (url_vars["banner_style"] !== 1)
 			{
 				set_element_styles(".name-text", "opacity", 0);
 			}
@@ -315,7 +315,7 @@ function add_scroll_button()
 	{
 		let chevron_name = "chevron-down";
 		
-		if (url_vars["contrast"] == 1)
+		if (url_vars["contrast"] === 1)
 		{
 			chevron_name += "-dark";
 		}

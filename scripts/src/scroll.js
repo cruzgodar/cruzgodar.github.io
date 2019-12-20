@@ -54,11 +54,11 @@ function init_scroll_up_button_listeners_no_touch()
 	
 	document.querySelector("#scroll-up-button-location").addEventListener("mouseenter", function()
 	{
-		if (scroll_up_button_visible == false && window.scrollY != 0)
+		if (scroll_up_button_visible === false && window.scrollY !== 0)
 		{
 			let chevron_name = "chevron-up";
 			
-			if (url_vars["contrast"] == 1)
+			if (url_vars["contrast"] === 1)
 			{
 				chevron_name += "-dark";
 			}
@@ -116,13 +116,13 @@ function scroll_up_button_process_touchend()
 	
 	
 	
-	if (document.querySelector("#scroll-up-button-location") == target)
+	if (document.querySelector("#scroll-up-button-location") === target)
 	{
-		if (scroll_up_button_visible == false && window.scrollY != 0)
+		if (scroll_up_button_visible === false && window.scrollY !== 0)
 		{
 			let chevron_name = "chevron-up";
 			
-			if (url_vars["contrast"] == 1)
+			if (url_vars["contrast"] === 1)
 			{
 				chevron_name += "-dark";
 			}

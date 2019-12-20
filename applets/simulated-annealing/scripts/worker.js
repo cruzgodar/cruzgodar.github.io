@@ -97,12 +97,12 @@ async function draw_annealing_graph()
 		let previous_index = transposition[0] - 1;
 		let next_index = transposition[0] + 1;
 		
-		if (previous_index == -1)
+		if (previous_index === -1)
 		{
 			previous_index = num_nodes - 1;
 		}
 		
-		if (next_index == num_nodes)
+		if (next_index === num_nodes)
 		{
 			next_index = 0;
 		}
@@ -122,12 +122,12 @@ async function draw_annealing_graph()
 		previous_index = transposition[1] - 1;
 		next_index = transposition[1] + 1;
 		
-		if (previous_index == -1)
+		if (previous_index === -1)
 		{
 			previous_index = num_nodes - 1;
 		}
 		
-		if (next_index == num_nodes)
+		if (next_index === num_nodes)
 		{
 			next_index = 0;
 		}
@@ -142,7 +142,7 @@ async function draw_annealing_graph()
 		
 		
 		//If we picked two adjacent nodes to swap, though, we'll be accidentally adding 0 twice. We'll make up for that here.
-		if (Math.abs(transposition[0] - transposition[1]) == 1 || Math.abs(transposition[0] - transposition[1]) == num_nodes - 1)
+		if (Math.abs(transposition[0] - transposition[1]) === 1 || Math.abs(transposition[0] - transposition[1]) === num_nodes - 1)
 		{
 			distance_difference += 2*euclidean_distance(current_path[transposition[0]], current_path[transposition[1]]);
 		}
@@ -179,7 +179,7 @@ async function draw_annealing_graph()
 			//Erase the old lines and draw new ones.
 			iteration++;
 			
-			if (!maximum_speed && iteration % 50 == 0)
+			if (!maximum_speed && iteration % 50 === 0)
 			{
 				await draw_lines();
 			}

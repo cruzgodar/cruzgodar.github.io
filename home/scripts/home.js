@@ -4,7 +4,7 @@
 	
 	
 	
-	if (browser_name == "MS Edge")
+	if (browser_name === "MS Edge")
 	{
 		alert_on_edge();
 	}
@@ -50,7 +50,7 @@
 			</div>
 		`);
 		
-		if (url_vars["content_animation"] == 1)
+		if (url_vars["content_animation"] === 1)
 		{
 			let elements = document.querySelectorAll(".name-text-container");
 			for (let i = 0; i < elements.length; i++)
@@ -59,7 +59,7 @@
 			}
 		}
 		
-		if (url_vars["banner_style"] == 1)
+		if (url_vars["banner_style"] === 1)
 		{
 			set_element_styles(".name-text-container", "position", "absolute");
 		}

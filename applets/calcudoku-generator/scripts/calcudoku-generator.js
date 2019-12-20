@@ -63,12 +63,12 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			if (e.data[0] == "done")
+			if (e.data[0] === "done")
 			{
 				document.querySelector(".loading-spinner").style.opacity = 0;
 			}
 			
-			else if (e.data[0] == "log")
+			else if (e.data[0] === "log")
 			{
 				console.log(...e.data.slice(1));
 			}
@@ -107,9 +107,9 @@
 		{
 			ctx.clearRect(0, 0, canvas_size, canvas_size);
 			
-			if (url_vars["theme"] == 1)
+			if (url_vars["theme"] === 1)
 			{
-				if (url_vars["contrast"] == 1)
+				if (url_vars["contrast"] === 1)
 				{
 					ctx.fillStyle = "rgb(255, 255, 255)";
 				}
@@ -122,7 +122,7 @@
 			
 			else
 			{
-				if (url_vars["contrast"] == 1)
+				if (url_vars["contrast"] === 1)
 				{
 					ctx.fillStyle = "rgb(0, 0, 0)";
 				}
@@ -154,22 +154,22 @@
 		{
 			for (let j = 0; j < grid_size; j++)
 			{
-				if (i == 0 || cages_by_location[i - 1][j] != cages_by_location[i][j])
+				if (i === 0 || cages_by_location[i - 1][j] !== cages_by_location[i][j])
 				{
 					ctx.fillRect(200 * j, 200 * i, 210, 10);
 				}
 				
-				if (i == grid_size - 1 || cages_by_location[i + 1][j] != cages_by_location[i][j])
+				if (i === grid_size - 1 || cages_by_location[i + 1][j] !== cages_by_location[i][j])
 				{
 					ctx.fillRect(200 * j, 200 * (i + 1), 210, 10);
 				}
 				
-				if (j == 0 || cages_by_location[i][j - 1] != cages_by_location[i][j])
+				if (j === 0 || cages_by_location[i][j - 1] !== cages_by_location[i][j])
 				{
 					ctx.fillRect(200 * j, 200 * i, 10, 210);
 				}
 				
-				if (j == grid_size - 1 || cages_by_location[i][j + 1] != cages_by_location[i][j])
+				if (j === grid_size - 1 || cages_by_location[i][j + 1] !== cages_by_location[i][j])
 				{
 					ctx.fillRect(200 * (j + 1), 200 * i, 10, 210);
 				}
@@ -196,7 +196,7 @@
 					top_left_cell = [row, col];
 				}
 				
-				else if (row == top_left_cell[0] && col < top_left_cell[1])
+				else if (row === top_left_cell[0] && col < top_left_cell[1])
 				{
 					top_left_cell = [row, col];
 				}
@@ -206,7 +206,7 @@
 			
 			let label = "";
 			
-			if (cages[i][0] == "x")
+			if (cages[i][0] === "x")
 			{
 				label = cages[i][1] + "\u00D7";
 			}

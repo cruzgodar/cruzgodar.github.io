@@ -30,7 +30,7 @@
 		
 		grid_size = Math.floor(Math.sqrt(num_grains));
 		
-		if (grid_size % 2 == 0)
+		if (grid_size % 2 === 0)
 		{
 			grid_size++;
 		}
@@ -62,7 +62,7 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			if (e.data[0] == "done")
+			if (e.data[0] === "done")
 			{
 				console.log("Finished");
 			}
@@ -91,9 +91,9 @@
 
 	function adjust_for_settings()
 	{
-		if (url_vars["contrast"] == 1)
+		if (url_vars["contrast"] === 1)
 		{
-			if (url_vars["theme"] == 1)
+			if (url_vars["theme"] === 1)
 			{
 				document.querySelector("#sandpile-graph").style.borderColor = "rgb(192, 192, 192)";
 			}

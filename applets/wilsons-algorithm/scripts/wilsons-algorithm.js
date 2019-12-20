@@ -81,9 +81,9 @@
 
 	function adjust_for_settings()
 	{
-		if (url_vars["contrast"] == 1)
+		if (url_vars["contrast"] === 1)
 		{
-			if (url_vars["theme"] == 1)
+			if (url_vars["theme"] === 1)
 			{
 				document.querySelector("#grid-graph").style.borderColor = "rgb(192, 192, 192)";
 			}

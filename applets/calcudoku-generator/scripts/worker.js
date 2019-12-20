@@ -29,6 +29,8 @@ let num_solutions_found = 0;
 
 
 
+
+
 function generate_calcudoku_grid()
 {
 	grid = [];
@@ -44,12 +46,9 @@ function generate_calcudoku_grid()
 	let attempts = 0;	
 	
 	//First, generate cages until we get a unique solution.
-	while (num_solutions_found != 1)
+	while (num_solutions_found !== 1)
 	{
-		if (attempts % 5 == 0)
-		{
-			grid = generate_number_grid(grid_size);
-		}
+		grid = generate_number_grid(grid_size);
 		
 		cages = assign_initial_cages(grid);
 		
@@ -64,9 +63,7 @@ function generate_calcudoku_grid()
 	
 	
 	
-	//Now we're going to do a sort of binary search. Testing if a grid has a unique solution is expensive, so we're going to test the halfway point, then the halfway point of whichever half we look into, and so on.
-	
-	while (num_solutions_found == 1)
+	while (num_solutions_found === 1)
 	{
 		postMessage([grid, cages, cages_by_location]);
 		
@@ -75,7 +72,17 @@ function generate_calcudoku_grid()
 			break;
 		}
 		
+		
+		
+		//At the end of the day, this had to happen. The algorithm gets a maximum of 5 seconds per step. If it goes over, then it gets shut down.
+		let kill_timer = setTimeout(function()
+		{
+			postMessage(["log", "Aborting..."]);
+		}, 5000);
+		
 		solve_puzzle(cages);
+		
+		//clearTimeout(kill_timer);
 	}
 }
 
@@ -133,7 +140,7 @@ function generate_number_grid()
 
 function generate_number_grid_step(grid, grid_possibilities, empty_cells)
 {
-	if (empty_cells.length == 0)
+	if (empty_cells.length === 0)
 	{
 		return grid;
 	}
@@ -147,7 +154,7 @@ function generate_number_grid_step(grid, grid_possibilities, empty_cells)
 	let col = cell[1];
 	
 	//If there are no possibilities for this cell, something has gone wrong.
-	if (grid_possibilities[row][col].length == 0)
+	if (grid_possibilities[row][col].length === 0)
 	{
 		return false;
 	}
@@ -222,7 +229,25 @@ function assign_initial_cages(grid)
 		
 		let row = cell[0];
 		let col = cell[1];
+		
+		
+		
+		//Larger grid sizes will have a hard time getting started if we don't have a lot of 1x1s to start.
+		if (Math.random() < .1)
+		{
+			cages.push(["", 0, [cell]]);
 			
+			cages_by_location[row][col] = cages.length - 1;
+			
+			index = pair_in_array(cell, uncaged_cells);
+		
+			uncaged_cells.splice(index, 1);
+			
+			continue;
+		}
+		
+		
+		
 		//Try to find an adjacent cell that's not already caged.
 		let direction_to_look = Math.random();
 		
@@ -231,7 +256,7 @@ function assign_initial_cages(grid)
 		{
 			let index_up = pair_in_array([row - 1, col], uncaged_cells);
 			
-			if (index_up != -1)
+			if (index_up !== -1)
 			{
 				cages.push(["", 0, [cell, [row - 1, col]]]);
 				
@@ -245,7 +270,7 @@ function assign_initial_cages(grid)
 			{
 				let index_down = pair_in_array([row + 1, col], uncaged_cells);
 				
-				if (index_down != -1)
+				if (index_down !== -1)
 				{
 					cages.push(["", 0, [cell, [row + 1, col]]]);
 					
@@ -270,7 +295,7 @@ function assign_initial_cages(grid)
 		{
 			let index_left = pair_in_array([row, col - 1], uncaged_cells);
 			
-			if (index_left != -1)
+			if (index_left !== -1)
 			{
 				cages.push(["", 0, [cell, [row, col - 1]]]);
 				
@@ -284,7 +309,7 @@ function assign_initial_cages(grid)
 			{
 				let index_right = pair_in_array([row, col + 1], uncaged_cells);
 				
-				if (index_right != -1)
+				if (index_right !== -1)
 				{
 					cages.push(["", 0, [cell, [row, col + 1]]]);
 					
@@ -338,7 +363,7 @@ function assign_initial_cages(grid)
 		
 		
 		
-		if (cages[i][2].length == 1)
+		if (cages[i][2].length === 1)
 		{
 			cages[i][1] = cages[i][3];
 			
@@ -365,7 +390,7 @@ function assign_initial_cages(grid)
 		
 		
 		//Division is only valid if every digit divides the max digit.
-		if (cages[i][3] % grid[cages[i][2][0][0]][cages[i][2][0][1]] == 0 && cages[i][3] % grid[cages[i][2][1][0]][cages[i][2][1][1]] == 0)
+		if (cages[i][3] % grid[cages[i][2][0][0]][cages[i][2][0][1]] === 0 && cages[i][3] % grid[cages[i][2][1][0]][cages[i][2][1][1]] === 0)
 		{
 			possible_operations.push(":");
 			
@@ -409,7 +434,7 @@ function expand_cages()
 	{
 		cage_to_destroy--;
 		
-		if (cage_to_destroy == -1)
+		if (cage_to_destroy === -1)
 		{
 			return -1;
 		}
@@ -428,22 +453,22 @@ function expand_cages()
 	//Try left/right first.
 	if (Math.random() < .5)
 	{
-		if (row != 0 && cages_by_location[row - 1][col] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row - 1][col]))
+		if (row !== 0 && cages_by_location[row - 1][col] !== cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row - 1][col]))
 		{
 			cage_that_grew = cages_by_location[row - 1][col];
 		}
 		
-		else if (row != grid_size - 1 && cages_by_location[row + 1][col] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row + 1][col]))
+		else if (row !== grid_size - 1 && cages_by_location[row + 1][col] !== cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row + 1][col]))
 		{
 			cage_that_grew = cages_by_location[row + 1][col];
 		}
 		
-		else if (col != 0 && cages_by_location[row][col - 1] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row][col - 1]))
+		else if (col !== 0 && cages_by_location[row][col - 1] !== cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row][col - 1]))
 		{
 			cage_that_grew = cages_by_location[row][col - 1];
 		}
 		
-		else if (col != grid_size - 1 && cages_by_location[row][col + 1] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row][col + 1]))
+		else if (col !== grid_size - 1 && cages_by_location[row][col + 1] !== cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row][col + 1]))
 		{
 			cage_that_grew = cages_by_location[row][col + 1];
 		}
@@ -463,22 +488,22 @@ function expand_cages()
 	//Try up/down first.
 	else
 	{
-		if (col != 0 && cages_by_location[row][col - 1] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row][col - 1]))
+		if (col !== 0 && cages_by_location[row][col - 1] !== cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row][col - 1]))
 		{
 			cage_that_grew = cages_by_location[row][col - 1];
 		}
 		
-		else if (col != grid_size - 1 && cages_by_location[row][col + 1] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row][col + 1]))
+		else if (col !== grid_size - 1 && cages_by_location[row][col + 1] !== cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row][col + 1]))
 		{
 			cage_that_grew = cages_by_location[row][col + 1];
 		}
 		
-		else if (row != 0 && cages_by_location[row - 1][col] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row - 1][col]))
+		else if (row !== 0 && cages_by_location[row - 1][col] !== cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row - 1][col]))
 		{
 			cage_that_grew = cages_by_location[row - 1][col];
 		}
 		
-		else if (row != grid_size - 1 && cages_by_location[row + 1][col] != cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row + 1][col]))
+		else if (row !== grid_size - 1 && cages_by_location[row + 1][col] !== cage_to_destroy && try_to_add_cage_to_cage(cages_by_location[row][col], cages_by_location[row + 1][col]))
 		{
 			cage_that_grew = cages_by_location[row + 1][col];
 		}
@@ -567,7 +592,7 @@ function try_to_add_cage_to_cage(cage_to_destroy, cage_to_grow)
 		let max_digit = Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]);
 		let total_product = cages[cage_to_grow][5] * cages[cage_to_destroy][5];
 		
-		if ((max_digit * max_digit) % total_product == 0)
+		if ((max_digit * max_digit) % total_product === 0)
 		{
 			return true;
 		}
@@ -720,7 +745,7 @@ function solve_puzzle(cages)
 				{
 					let index = grid_possibilities[row][col].indexOf(k);
 					
-					if (index != -1)
+					if (index !== -1)
 					{
 						grid_possibilities[row][col].splice(index, 1);
 					}
@@ -742,11 +767,11 @@ function solve_puzzle(cages)
 				//remove any number that doesn't divide the product.
 				for (let k = 2; k <= grid_size; k++)
 				{
-					if (cages[i][5] % k != 0)
+					if (cages[i][5] % k !== 0)
 					{
 						let index = grid_possibilities[row][col].indexOf(k);
 						
-						if (index != -1)
+						if (index !== -1)
 						{
 							grid_possibilities[row][col].splice(index, 1);
 						}
@@ -805,7 +830,7 @@ function update_cage_possibilities(row, col, grid, grid_possibilities)
 			{
 				let index = grid_possibilities[temp_row][temp_col].indexOf(j);
 				
-				if (index != -1)
+				if (index !== -1)
 				{
 					grid_possibilities[temp_row][temp_col].splice(index, 1);
 				}
@@ -825,7 +850,7 @@ function update_cage_possibilities(row, col, grid, grid_possibilities)
 			let temp_row = cages[cage][2][i][0];
 			let temp_col = cages[cage][2][i][1];
 			
-			if (grid[temp_row][temp_col] != 0)
+			if (grid[temp_row][temp_col] !== 0)
 			{
 				current_product *= grid[temp_row][temp_col];
 			}
@@ -842,11 +867,11 @@ function update_cage_possibilities(row, col, grid, grid_possibilities)
 			//remove any number that doesn't divide the product.
 			for (let j = 2; j <= grid_size; j++)
 			{
-				if ((cages[cage][5] / current_product) % j != 0)
+				if ((cages[cage][5] / current_product) % j !== 0)
 				{
 					let index = grid_possibilities[temp_row][temp_col].indexOf(j);
 					
-					if (index != -1)
+					if (index !== -1)
 					{
 						grid_possibilities[temp_row][temp_col].splice(index, 1);
 					}
@@ -861,7 +886,7 @@ function update_cage_possibilities(row, col, grid, grid_possibilities)
 //This is just like the grid generating function, except that it tries to find every solution.
 function solve_puzzle_step(grid, grid_possibilities, empty_cells)
 {
-	if (empty_cells.length == 0)
+	if (empty_cells.length === 0)
 	{
 		num_solutions_found++;
 		
@@ -890,7 +915,7 @@ function solve_puzzle_step(grid, grid_possibilities, empty_cells)
 	let col = best_cell[1];
 	
 	//If there are no possibilities for this cell, something has gone wrong.
-	if (grid_possibilities[row][col].length == 0)
+	if (grid_possibilities[row][col].length === 0)
 	{
 		return;
 	}
@@ -939,7 +964,7 @@ function check_cage(grid, cage)
 		let row = cages[cage][2][i][0];
 		let col = cages[cage][2][i][1];
 		
-		if (grid[row][col] == 0)
+		if (grid[row][col] === 0)
 		{
 			return true;
 		}
@@ -948,7 +973,7 @@ function check_cage(grid, cage)
 	
 	
 	//Otherwise, we need to check that the operation works.
-	if (cages[cage][0] == "+")
+	if (cages[cage][0] === "+")
 	{
 		let cage_sum = 0;
 		
@@ -960,7 +985,7 @@ function check_cage(grid, cage)
 			cage_sum += grid[row][col];
 		}
 		
-		if (cage_sum != cages[cage][1])
+		if (cage_sum !== cages[cage][1])
 		{
 			return false;
 		}
@@ -968,7 +993,7 @@ function check_cage(grid, cage)
 	
 	
 	
-	else if (cages[cage][0] == "x")
+	else if (cages[cage][0] === "x")
 	{
 		let cage_product = 1;
 		
@@ -980,7 +1005,7 @@ function check_cage(grid, cage)
 			cage_product *= grid[row][col];
 		}
 		
-		if (cage_product != cages[cage][1])
+		if (cage_product !== cages[cage][1])
 		{
 			return false;
 		}
@@ -988,7 +1013,7 @@ function check_cage(grid, cage)
 	
 	
 	
-	else if (cages[cage][0] == "-")
+	else if (cages[cage][0] === "-")
 	{
 		let cage_sum = 0;
 		
@@ -1001,7 +1026,7 @@ function check_cage(grid, cage)
 		}
 		
 		//This is equivalent to taking the max digit minus the rest.
-		if ((2 * cages[cage][3]) - cage_sum != cages[cage][1])
+		if ((2 * cages[cage][3]) - cage_sum !== cages[cage][1])
 		{
 			return false;
 		}
@@ -1009,7 +1034,7 @@ function check_cage(grid, cage)
 	
 	
 	
-	else if (cages[cage][0] == ":")
+	else if (cages[cage][0] === ":")
 	{
 		let cage_product = 1;
 		
@@ -1022,7 +1047,7 @@ function check_cage(grid, cage)
 		}
 		
 		//This is equivalent to taking the max digit divided by the rest.
-		if ((cages[cage][3] * cages[cage][3]) / cage_product != cages[cage][1])
+		if ((cages[cage][3] * cages[cage][3]) / cage_product !== cages[cage][1])
 		{
 			return false;
 		}
@@ -1047,14 +1072,14 @@ function place_digit(grid, grid_possibilities, empty_cells, row, col, digit)
 	{
 		let index = grid_possibilities[row][j].indexOf(digit);
 		
-		if (index != -1)
+		if (index !== -1)
 		{
 			grid_possibilities[row][j].splice(index, 1);
 		}
 		
 		index = grid_possibilities[j][col].indexOf(digit);
 		
-		if (index != -1)
+		if (index !== -1)
 		{
 			grid_possibilities[j][col].splice(index, 1);
 		}
@@ -1068,7 +1093,7 @@ function place_digit(grid, grid_possibilities, empty_cells, row, col, digit)
 	//This cell is no longer empty.
 	let index = pair_in_array([row, col], empty_cells);
 	
-	if (index != -1)
+	if (index !== -1)
 	{
 		empty_cells.splice(index, 1);
 	}
@@ -1080,7 +1105,7 @@ function pair_in_array(element, array)
 {
 	for (let i = 0; i < array.length; i++)
 	{
-		if (array[i][0] == element[0] && array[i][1] == element[1])
+		if (array[i][0] === element[0] && array[i][1] === element[1])
 		{
 			return i;
 		}

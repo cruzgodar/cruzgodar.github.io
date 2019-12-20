@@ -26,7 +26,7 @@ function on_page_load()
 	
 	
 	
-	if (page_settings["no_footer"] == false)
+	if (page_settings["no_footer"] === false)
 	{
 		insert_footer();
 		
@@ -57,32 +57,32 @@ function on_page_load()
 		fetch_other_banner_size_in_background()
 	}
 	
-	if (url_vars["contrast"] == 1)
+	if (url_vars["contrast"] === 1)
 	{
 		set_img_button_contrast();
 	}
 	
-	if (page_settings["writing_page"] && url_vars["font"] == 1)
+	if (page_settings["writing_page"] && url_vars["font"] === 1)
 	{
 		set_writing_page_font();
 	}
 	
-	if (page_settings["writing_page"] && url_vars["writing_style"] == 1)
+	if (page_settings["writing_page"] && url_vars["writing_style"] === 1)
 	{
 		set_writing_page_style();
 	}
 	
-	if (page_settings["small_margins_on_ultrawide"] && layout_string == "ultrawide")
+	if (page_settings["small_margins_on_ultrawide"] && layout_string === "ultrawide")
 	{
 		reduce_page_margins();
 	}
 	
-	if (url_vars["comments"] == 1)
+	if (url_vars["comments"] === 1)
 	{
 		remove_disqus();
 	}
 	
-	if (url_vars["content_animation"] == 1)
+	if (url_vars["content_animation"] === 1)
 	{
 		remove_animation();
 	}
@@ -96,7 +96,7 @@ function on_page_load()
 	
 	
 	
-	if (url_vars["comments"] != 1 && page_settings["comments"])
+	if (url_vars["comments"] !== 1 && page_settings["comments"])
 	{
 		load_disqus();
 	}
@@ -305,7 +305,7 @@ function set_up_aos()
 //Gets the next item from the fetch queue.
 function fetch_item_from_queue()
 {
-	if (fetch_queue.length == 0 || currently_fetching)
+	if (fetch_queue.length === 0 || currently_fetching)
 	{
 		return;
 	}
@@ -335,7 +335,7 @@ function fetch_item_from_queue()
 //Fetches the other size of banner needed for the page, so that if the page is resized, there's no lag time.
 function fetch_other_banner_size_in_background()
 {
-	if (banner_name == "landscape.webp" || banner_name == "landscape.jpg")
+	if (banner_name === "landscape.webp" || banner_name === "landscape.jpg")
 	{
 		fetch_queue.push(banner_path + "portrait." + banner_extension);
 		
@@ -403,7 +403,7 @@ function disable_links()
 
 function typeset_math()
 {
-	if (scripts_loaded["mathjax"] == false)
+	if (scripts_loaded["mathjax"] === false)
 	{
 		load_script("https://polyfill.io/v3/polyfill.min.js?features=es6");
 		
@@ -461,7 +461,7 @@ function set_writing_page_style()
 		{
 			let next_element = elements[i].parentNode.nextElementSibling;
 			
-			if (next_element.tagName.toLowerCase() == "br")
+			if (next_element.tagName.toLowerCase() === "br")
 			{
 				next_element.remove();
 			}
@@ -489,7 +489,7 @@ function reduce_page_margins()
 	
 	
 	//When in ultrawide mode, shrink the margins to 50%.
-	if (layout_string == "ultrawide")
+	if (layout_string === "ultrawide")
 	{
 		let element = add_style(`
 			.body-text, #disqus_thread, .nav-buttons, .line-break

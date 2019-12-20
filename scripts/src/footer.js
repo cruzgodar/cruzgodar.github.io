@@ -18,7 +18,7 @@ function insert_footer()
 	
 	let vars_no_return = concat_url_vars(false);
 			
-	if (vars_no_return.indexOf("&") == -1)
+	if (vars_no_return.indexOf("&") === -1)
 	{
 		vars_no_return = "";
 	}
@@ -32,7 +32,7 @@ function insert_footer()
 	
 	let vars_return = concat_url_vars(true);
 			
-	if (vars_return.indexOf("&") == -1)
+	if (vars_return.indexOf("&") === -1)
 	{
 		vars_return = "";
 	}
@@ -68,7 +68,7 @@ function insert_footer()
 	
 	
 	
-	if (page_settings["footer_exclusion"] == "")
+	if (page_settings["footer_exclusion"] === "")
 	{
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
@@ -96,7 +96,7 @@ function insert_footer()
 			
 			
 	
-	if (page_settings["footer_exclusion"] != "writing")
+	if (page_settings["footer_exclusion"] !== "writing")
 	{
 		let element = document.createElement("div");
 		
@@ -114,7 +114,7 @@ function insert_footer()
 	}
 	
 	/*
-	if (page_settings["footer_exclusion"] != "teaching")
+	if (page_settings["footer_exclusion"] !== "teaching")
 	{
 		let element = document.createElement("div");
 		
@@ -132,7 +132,7 @@ function insert_footer()
 	}
 	*/
 	
-	if (page_settings["footer_exclusion"] != "applets")
+	if (page_settings["footer_exclusion"] !== "applets")
 	{
 		let element = document.createElement("div");
 		
@@ -149,7 +149,7 @@ function insert_footer()
 		delay += 100;
 	}
 	
-	if (page_settings["footer_exclusion"] != "blog")
+	if (page_settings["footer_exclusion"] !== "blog")
 	{
 		let element = document.createElement("div");
 		
@@ -166,7 +166,7 @@ function insert_footer()
 		delay += 100;
 	}
 	
-	if (page_settings["footer_exclusion"] != "notes")
+	if (page_settings["footer_exclusion"] !== "notes")
 	{
 		let element = document.createElement("div");
 		
@@ -183,7 +183,7 @@ function insert_footer()
 		delay += 100;
 	}
 	
-	if (page_settings["footer_exclusion"] != "bio")
+	if (page_settings["footer_exclusion"] !== "bio")
 	{
 		let element = document.createElement("div");
 		
@@ -200,7 +200,7 @@ function insert_footer()
 		delay += 100;
 	}
 	
-	if (page_settings["footer_exclusion"] != "about")
+	if (page_settings["footer_exclusion"] !== "about")
 	{
 		let element = document.createElement("div");
 		
@@ -223,7 +223,7 @@ function insert_footer()
 	
 	
 	
-	if (url_vars["content_animation"] == 1)
+	if (url_vars["content_animation"] === 1)
 	{
 		try
 		{
@@ -421,7 +421,7 @@ function floating_footer_scroll()
 		}, 300);
 	}
 	
-	else if (floating_footer_is_visible == false)
+	else if (floating_footer_is_visible === false)
 	{
 		document.querySelector("#floating-footer-touch-target").style.display = "block";
 	}
@@ -438,7 +438,7 @@ function init_floating_footer_listeners_no_touch()
 	
 	document.querySelector("#floating-footer-touch-target").addEventListener("mouseenter", function()
 	{
-		if (floating_footer_is_visible == false && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight))
+		if (floating_footer_is_visible === false && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight))
 		{
 			document.querySelector("#floating-footer").style.display = "block";
 			document.querySelector("#floating-footer-touch-target").style.display = "none";
@@ -492,9 +492,9 @@ function footer_process_touchend()
 	
 	
 	
-	if (document.querySelector("#floating-footer-touch-target") == target)
+	if (document.querySelector("#floating-footer-touch-target") === target)
 	{
-		if (floating_footer_is_visible == false && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight))
+		if (floating_footer_is_visible === false && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight))
 		{
 			document.querySelector("#floating-footer").style.display = "block";
 			document.querySelector("#floating-footer-touch-target").style.display = "none";

@@ -62,7 +62,7 @@
 		web_worker.onmessage = function(e)
 		{
 			//A circle with arguments (x, y, r, color).
-			if (e.data[0] == "node")
+			if (e.data[0] === "node")
 			{
 				ctx.fillStyle = e.data[4];
 				
@@ -73,7 +73,7 @@
 			}
 			
 			//A line with arguments (x_1, y_1, x_2, y_2, color).
-			else if (e.data[0] == "line")
+			else if (e.data[0] === "line")
 			{
 				ctx.strokeStyle = e.data[5];
 				
@@ -83,7 +83,7 @@
 				ctx.stroke();
 			}
 			
-			else if (e.data[0] == "clear")
+			else if (e.data[0] === "clear")
 			{
 				ctx.fillStyle = "rgb(0, 0, 0)";
 				ctx.fillRect(0, 0, grid_size, grid_size);
@@ -106,9 +106,9 @@
 	
 	function adjust_for_settings()
 	{
-		if (url_vars["contrast"] == 1)
+		if (url_vars["contrast"] === 1)
 		{
-			if (url_vars["theme"] == 1)
+			if (url_vars["theme"] === 1)
 			{
 				document.querySelector("#annealing-graph").style.borderColor = "rgb(192, 192, 192)";
 			}

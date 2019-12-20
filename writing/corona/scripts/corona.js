@@ -42,7 +42,7 @@
 	
 	
 	//We're coming back from another page, so let's not just snap the background color abruptly.
-	if (scroll != 0)
+	if (scroll !== 0)
 	{
 		document.documentElement.classList.add("background-transition");
 		
@@ -83,7 +83,7 @@
 	{
 		background_color_changed = true;
 		
-		if (scroll == 0)
+		if (scroll === 0)
 		{
 			background_color_changed = false;
 		}
@@ -94,9 +94,9 @@
 		{
 			background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * scroll / initial_window_height, 0) - .5 * Math.PI);
 			
-			if (url_vars["theme"] == 1)
+			if (url_vars["theme"] === 1)
 			{
-				if (url_vars["dark_theme_color"] == 1)
+				if (url_vars["dark_theme_color"] === 1)
 				{
 					background_color = 0;
 				}
@@ -115,7 +115,7 @@
 			
 			document.documentElement.style.backgroundColor = "rgb(" + background_color + ", " + background_color + ", " + background_color + ")";
 			
-			if (background_color == 0)
+			if (background_color === 0)
 			{
 				banner_done = true;
 			}
@@ -126,7 +126,7 @@
 			}
 		}
 		
-		else if (banner_done == false)
+		else if (banner_done === false)
 		{
 			document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 			banner_done = true;
@@ -144,7 +144,7 @@
 			try {document.querySelector("#scroll-button").style.opacity = opacity;}
 			catch(ex) {}
 			
-			if (opacity == 0)
+			if (opacity === 0)
 			{
 				try {document.querySelector("#scroll-button").remove();}
 				catch(ex) {}
@@ -158,7 +158,7 @@
 			}
 		}
 		
-		else if (scroll_button_done == false)
+		else if (scroll_button_done === false)
 		{
 			try {document.querySelector("#scroll-button").remove();}
 			catch(ex) {}
@@ -177,7 +177,7 @@
 			
 			document.querySelector("#eclipse").style.opacity = 1 - opacity;
 			
-			if (opacity == 1)
+			if (opacity === 1)
 			{
 				eclipse_done = true;
 			}
@@ -188,14 +188,14 @@
 			}
 		}
 		
-		else if (scroll >= 6/5 * window_height && eclipse_done == false)
+		else if (scroll >= 6/5 * window_height && eclipse_done === false)
 		{
 			document.querySelector("#eclipse").style.opacity = 1;
 			
 			eclipse_done = true;
 		}
 		
-		else if (scroll <= 4/5 * window_height && eclipse_done == false)
+		else if (scroll <= 4/5 * window_height && eclipse_done === false)
 		{
 			document.querySelector("#eclipse").style.opacity = 0;
 			
@@ -210,7 +210,7 @@
 		let num_lit_bubbles = 4;
 		let blinking_bubble = 4;
 		
-		if (scroll > stage_bubbles_pos - 3*window_height/4 && stage_bubbles_done == false)
+		if (scroll > stage_bubbles_pos - 3*window_height/4 && stage_bubbles_done === false)
 		{
 			stage_bubbles_done = true;
 			let bubbles = document.querySelectorAll(".stage-bubble span");
@@ -230,7 +230,7 @@
 			{
 				blinking_bubble_interval = setInterval(function()
 				{
-					if (url_vars["contrast"] == 1)
+					if (url_vars["contrast"] === 1)
 					{
 						bubbles[blinking_bubble].style.backgroundColor = "rgb(192, 192, 192)";
 					}
@@ -263,12 +263,12 @@
 				bubbles[i].style.width = 0;
 				bubbles[i].style.height = 0;
 				
-				if (layout_string == "default")
+				if (layout_string === "default")
 				{
 					subtexts[i].style.marginTop = "calc(5vw + 1vh)";
 				}
 				
-				else if (layout_string == "compact")
+				else if (layout_string === "compact")
 				{
 					subtexts[i].style.marginTop = "calc(10vw + 1vh)";
 				}
@@ -307,13 +307,13 @@
 		
 		
 		
-		if (url_vars["contrast"] == 1)
+		if (url_vars["contrast"] === 1)
 		{
 			set_element_styles(".synopsis-text", "color", "rgb(192, 192, 192)");
 			
 			set_element_styles(".body-text", "color", "rgb(192, 192, 192)");
 			
-			if (url_vars["theme"] != 1)
+			if (url_vars["theme"] !== 1)
 			{
 				set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
 			}
@@ -353,7 +353,7 @@
 			
 			
 			
-			if (url_vars["theme"] == 1)
+			if (url_vars["theme"] === 1)
 			{
 				set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
 			}

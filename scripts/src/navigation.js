@@ -19,7 +19,7 @@ window.addEventListener("popstate", function(e)
 {
 	let previous_page = get_url_var("page");
 		
-	if (previous_page != null && decodeURIComponent(previous_page) != current_url)
+	if (previous_page !== null && decodeURIComponent(previous_page) !== current_url)
 	{
 		redirect(decodeURIComponent(previous_page), false, true, true);
 	}
@@ -42,7 +42,7 @@ function set_links()
 	
 	let vars_no_return = concat_url_vars(false);
 			
-	if (vars_no_return.indexOf("&") == -1)
+	if (vars_no_return.indexOf("&") === -1)
 	{
 		vars_no_return = "";
 	}
@@ -56,7 +56,7 @@ function set_links()
 	
 	let vars_return = concat_url_vars(true);
 	
-	if (vars_return.indexOf("&") == -1)
+	if (vars_return.indexOf("&") === -1)
 	{
 		vars_return = "";
 	}
@@ -72,9 +72,9 @@ function set_links()
 	{
 		let href = links[i].getAttribute("href");
 		
-		if (href.slice(0, 5) != "https" && href.slice(0, 4) != "data" && !(links[i].parentNode.classList.contains("footer-image-link")))
+		if (href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data" && !(links[i].parentNode.classList.contains("footer-image-link")))
 		{
-			if (href == "/settings/settings.html")
+			if (href === "/settings/settings.html")
 			{
 				links[i].setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + vars_return);
 			}
@@ -107,7 +107,7 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 	
 	let include_return_url = false;
 	
-	if (url == "/settings/settings.html")
+	if (url === "/settings/settings.html")
 	{
 		include_return_url = true;
 	}
@@ -143,7 +143,7 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 		on_page_unload();
 		
 		//Record the page change in the url bar and in the browser history.
-		if (no_state_push == false)
+		if (no_state_push === false)
 		{
 			history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
 		}
@@ -188,7 +188,7 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 		
 		setTimeout(function()
 		{
-			if (background_color_changed == false)
+			if (background_color_changed === false)
 			{
 				document.documentElement.style.opacity = 1;
 			}
@@ -230,13 +230,13 @@ function fade_out()
 	return new Promise(function(resolve, reject)
 	{
 		//Act like a normal link, with no transitions, if the user wants that.
-		if (url_vars["content_animation"] == 1)
+		if (url_vars["content_animation"] === 1)
 		{
 			if (background_color_changed)
 			{
-				if (url_vars["theme"] == 1)
+				if (url_vars["theme"] === 1)
 				{
-					if (url_vars["dark_theme_color"] == 1)
+					if (url_vars["dark_theme_color"] === 1)
 					{
 						document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 					}
@@ -263,7 +263,7 @@ function fade_out()
 			
 			setTimeout(function()
 			{
-				if (background_color_changed == false)
+				if (background_color_changed === false)
 				{
 					resolve();
 				}
@@ -276,9 +276,9 @@ function fade_out()
 					document.documentElement.classList.add("background-transition");
 					document.body.classList.add("background-transition");
 					
-					if (url_vars["theme"] == 1)
+					if (url_vars["theme"] === 1)
 					{
-						if (url_vars["dark_theme_color"] == 1)
+						if (url_vars["dark_theme_color"] === 1)
 						{
 							document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 							document.body.style.backgroundColor = "rgb(0, 0, 0)";
@@ -389,7 +389,7 @@ function concat_url_vars(include_return_url)
 	{
 		key = Object.keys(url_vars)[i];
 		
-		if (url_vars[key] == 1 || (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] == 0 && key == "theme"))
+		if (url_vars[key] === 1 || (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] === 0 && key === "theme"))
 		{
 			string += "&" + key + "=" + url_vars[key];
 		}

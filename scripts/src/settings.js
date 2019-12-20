@@ -17,7 +17,7 @@ function get_url_var(id)
 	{
 		pair = vars[i].split("=");
 		
-		if (pair[0] == id)
+		if (pair[0] === id)
 		{
 			return pair[1];
 		}
@@ -41,7 +41,7 @@ let url_vars =
 	"banner_style": get_url_var("banner_style")
 };
 
-if (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] == null)
+if (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] === null)
 {
 	url_vars["theme"] = 1;
 }
@@ -81,7 +81,7 @@ let settings_texts =
 let dark_theme_background_color = "rgb(24, 24, 24)";
 let dark_theme_background_color_rgba = "rgba(24, 24, 24, ";
 
-if (url_vars["dark_theme_color"] == 1)
+if (url_vars["dark_theme_color"] === 1)
 {
 	dark_theme_background_color = "rgb(0, 0, 0)";
 	dark_theme_background_color_rgba = "rgba(0, 0, 0, ";
@@ -93,12 +93,12 @@ function init_settings()
 {
 	for (let key in url_vars)
 	{
-		if (url_vars[key] == null)
+		if (url_vars[key] === null)
 		{
 			url_vars[key] = 0;
 		}
 		
-		else if (url_vars[key] == 1)
+		else if (url_vars[key] === 1)
 		{
 			url_vars[key] = 0;
 			url_var_functions[key]();
@@ -119,9 +119,9 @@ function switch_theme()
 	
 	
 	//Light to dark
-	if (url_vars["theme"] == 0)
+	if (url_vars["theme"] === 0)
 	{
-		if (url_vars["dark_theme_color"] != 1)
+		if (url_vars["dark_theme_color"] !== 1)
 		{
 			document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
 		}
@@ -133,7 +133,7 @@ function switch_theme()
 		
 		
 		
-		if (url_vars["contrast"] == 1)
+		if (url_vars["contrast"] === 1)
 		{
 			set_element_styles(".heading-text", "color", "rgb(255, 255, 255)");
 			
@@ -206,7 +206,7 @@ function switch_theme()
 		
 		
 		
-		if (url_vars["contrast"] == 1)
+		if (url_vars["contrast"] === 1)
 		{
 			set_element_styles(".heading-text", "color", "rgb(0, 0, 0)");
 			
@@ -284,12 +284,12 @@ function switch_dark_theme_color()
 	
 	
 	
-	if (url_vars["dark_theme_color"] == 0)
+	if (url_vars["dark_theme_color"] === 0)
 	{
 		dark_theme_background_color = "rgb(0, 0, 0)";
 		dark_theme_background_color_rgba = "rgba(0, 0, 0, ";
 		
-		if (url_vars["theme"] == 1)
+		if (url_vars["theme"] === 1)
 		{
 			document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 		}
@@ -300,9 +300,9 @@ function switch_dark_theme_color()
 		{
 			let element = null;
 			
-			if (url_vars["theme"] == 1)
+			if (url_vars["theme"] === 1)
 			{
-				if (url_vars["contrast"] == 1)
+				if (url_vars["contrast"] === 1)
 				{
 					element = add_style(get_settings_style("dark_contrast"), false);
 				}
@@ -313,7 +313,7 @@ function switch_dark_theme_color()
 				}
 			}
 			
-			else if (url_vars["contrast"] == 1)
+			else if (url_vars["contrast"] === 1)
 			{
 				element = add_style(get_settings_style("contrast"), false);
 			}
@@ -345,7 +345,7 @@ function switch_dark_theme_color()
 		dark_theme_background_color = "rgb(24, 24, 24)";
 		dark_theme_background_color_rgba = "rgba(24, 24, 24, ";
 		
-		if (url_vars["theme"] == 1)
+		if (url_vars["theme"] === 1)
 		{
 			document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
 		}
@@ -356,9 +356,9 @@ function switch_dark_theme_color()
 		{
 			let element = null;
 			
-			if (url_vars["theme"] == 1)
+			if (url_vars["theme"] === 1)
 			{
-				if (url_vars["contrast"] == 1)
+				if (url_vars["contrast"] === 1)
 				{
 					element = add_style(get_settings_style("dark_contrast"), false);
 				}
@@ -369,7 +369,7 @@ function switch_dark_theme_color()
 				}
 			}
 			
-			else if (url_vars["contrast"] == 1)
+			else if (url_vars["contrast"] === 1)
 			{
 				element = add_style(get_settings_style("contrast"), false);
 			}
@@ -417,9 +417,9 @@ function switch_contrast()
 	
 	
 	//Default to high
-	if (url_vars["contrast"] == 0)
+	if (url_vars["contrast"] === 0)
 	{
-		if (url_vars["theme"] == 1)
+		if (url_vars["theme"] === 1)
 		{
 			set_element_styles(".heading-text", "color", "rgb(255, 255, 255)");
 			
@@ -484,7 +484,7 @@ function switch_contrast()
 	//High to default
 	else
 	{
-		if (url_vars["theme"] == 1)
+		if (url_vars["theme"] === 1)
 		{
 			set_element_styles(".heading-text", "color", "rgb(255, 255, 255)");
 			
@@ -563,7 +563,7 @@ function switch_text_size()
 	
 	
 	//Normal to large
-	if (url_vars["text_size"] == 0)
+	if (url_vars["text_size"] === 0)
 	{
 		setTimeout(function()
 		{
@@ -639,7 +639,7 @@ function switch_font()
 	
 	
 	//Sans to serif
-	if (url_vars["font"] == 0)
+	if (url_vars["font"] === 0)
 	{
 		setTimeout(function()
 		{
@@ -687,7 +687,7 @@ function switch_writing_style()
 	
 	
 	//Double-spaced to indented
-	if (url_vars["writing_style"] == 0)
+	if (url_vars["writing_style"] === 0)
 	{
 		setTimeout(function()
 		{
@@ -734,7 +734,7 @@ function switch_comments()
 	
 	
 	
-	if (url_vars["comments"] == 0)
+	if (url_vars["comments"] === 0)
 	{
 		setTimeout(function()
 		{
@@ -780,7 +780,7 @@ function switch_content_animation()
 	
 	
 	
-	if (url_vars["content_animation"] == 0)
+	if (url_vars["content_animation"] === 0)
 	{
 		document.documentElement.classList.remove("animated-opacity");
 		
@@ -834,7 +834,7 @@ function switch_banner_style()
 	
 	
 	
-	if (url_vars["banner_style"] == 0)
+	if (url_vars["banner_style"] === 0)
 	{
 		try {document.querySelector("#banner-adjust").remove();}
 		catch(ex) {}
@@ -908,7 +908,7 @@ function switch_banner_style()
 
 function get_settings_style(settings) 
 {
-	if (settings == "dark")
+	if (settings === "dark")
 	{
 		return `
 			.heading-text, .date-text, .title-text
@@ -1012,7 +1012,7 @@ function get_settings_style(settings)
 	
 	
 	
-	else if (settings == "contrast")
+	else if (settings === "contrast")
 	{
 		return `
 			.heading-text, .date-text, .title-text
@@ -1096,7 +1096,7 @@ function get_settings_style(settings)
 	
 	
 	
-	else if (settings == "dark_contrast")
+	else if (settings === "dark_contrast")
 	{
 		return `
 			.heading-text, .date-text, .title-text

@@ -91,7 +91,7 @@
 		
 		
 		
-		if (queue_variable_change == true && download == false)
+		if (queue_variable_change === true && download === false)
 		{
 			old_zoom_level /= 5;
 			new_zoom_level /= 5;
@@ -143,7 +143,7 @@
 		//We throw out more if the image is just being scrolled around, since then it's critical that we don't have bright flashes of color.
 		let max_brightness = 0;
 		
-		if (mandelbrot_zoom_size == small_mandelbrot_zoom_size)
+		if (mandelbrot_zoom_size === small_mandelbrot_zoom_size)
 		{
 			max_brightness = brightness_array[Math.round(brightness_array.length * .995) - 1];
 		}
@@ -184,7 +184,7 @@
 		
 		
 		
-		if (mandelbrot_zoom_size == large_mandelbrot_zoom_size && download == false)
+		if (mandelbrot_zoom_size === large_mandelbrot_zoom_size && download === false)
 		{
 			//Replace the old Mandelbrot set with the new zoomed one.
 			let width = document.querySelector("#mandelbrot-set").getAttribute("width");
@@ -230,7 +230,7 @@
 				}
 			}
 			
-			if (k == num_iters)
+			if (k === num_iters)
 			{
 				brightness = 0;
 			}
@@ -260,9 +260,9 @@
 
 	function adjust_for_settings()
 	{
-		if (url_vars["contrast"] == 1)
+		if (url_vars["contrast"] === 1)
 		{
-			if (url_vars["theme"] == 1)
+			if (url_vars["theme"] === 1)
 			{
 				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(192, 192, 192)";
 				document.querySelector("#mandelbrot-zoom").style.borderColor = "rgb(192, 192, 192)";
@@ -301,7 +301,7 @@
 	{
 		document.querySelector("#mandelbrot-set").addEventListener("mousemove", function(e)
 		{
-			if (persist_image == false)
+			if (persist_image === false)
 			{
 				let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
 				let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;

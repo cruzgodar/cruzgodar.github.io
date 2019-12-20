@@ -81,7 +81,7 @@ function wilson_step()
 		
 		
 		
-		if (edges_in_tree.length == 0)
+		if (edges_in_tree.length === 0)
 		{
 			random_walk(grid_size * 2);
 		}
@@ -114,12 +114,12 @@ function wilson_step()
 		{
 			let pop_index = vertex_in_array(new_vertices[i], vertices_not_in_tree);
 			
-			if (pop_index != -1)
+			if (pop_index !== -1)
 			{
 				vertices_not_in_tree.splice(pop_index, 1);
 			}
 			
-			if (i != new_vertices.length - 1)
+			if (i !== new_vertices.length - 1)
 			{
 				edges_in_tree.push([new_vertices[i], new_vertices[i + 1]]);
 			}
@@ -133,18 +133,18 @@ function wilson_step()
 
 
 
-//Performs a loop-erased random walk. If fixed_length == true, then rather than waiting until the walk hits the tree, it will just go until the walk is a certain length. This keeps that first walk from taking a ridiculous amount of time while still making the output graph be relatively random.
+//Performs a loop-erased random walk. If fixed_length === true, then rather than waiting until the walk hits the tree, it will just go until the walk is a certain length. This keeps that first walk from taking a ridiculous amount of time while still making the output graph be relatively random.
 function random_walk(fixed_length = -1)
 {
 	//Go until we hit the tree.
 	while (true)
 	{
-		if (vertex_in_array([current_row, current_column], vertices_not_in_tree) == -1)
+		if (vertex_in_array([current_row, current_column], vertices_not_in_tree) === -1)
 		{
 			break;
 		}
 		
-		else if (fixed_length != -1 && new_vertices.length == fixed_length)
+		else if (fixed_length !== -1 && new_vertices.length === fixed_length)
 		{
 			break;
 		}
@@ -156,22 +156,22 @@ function random_walk(fixed_length = -1)
 		
 		
 		
-		if (current_row == 0 && current_column == 0)
+		if (current_row === 0 && current_column === 0)
 		{
 			possible_directions = [1, 2];
 		}
 		
-		else if (current_row == grid_size - 1 && current_column == 0)
+		else if (current_row === grid_size - 1 && current_column === 0)
 		{
 			possible_directions = [0, 1];
 		}
 		
-		else if (current_row == 0 && current_column == grid_size - 1)
+		else if (current_row === 0 && current_column === grid_size - 1)
 		{
 			possible_directions = [2, 3];
 		}
 
-		else if (current_row == grid_size - 1 && current_column == grid_size - 1)
+		else if (current_row === grid_size - 1 && current_column === grid_size - 1)
 		{
 			possible_directions = [0, 3]
 		}
@@ -179,22 +179,22 @@ function random_walk(fixed_length = -1)
 
 
 		//Edges
-		else if (current_row == 0)
+		else if (current_row === 0)
 		{
 			possible_directions = [1, 2, 3];
 		}
 			
-		else if (current_row == grid_size - 1)
+		else if (current_row === grid_size - 1)
 		{
 			possible_directions = [0, 1, 3];
 		}
 
-		else if (current_column == 0)
+		else if (current_column === 0)
 		{
 			possible_directions = [0, 1, 2];
 		}
 		
-		else if (current_column == grid_size - 1)
+		else if (current_column === grid_size - 1)
 		{
 			possible_directions = [0, 2, 3];
 		}
@@ -213,17 +213,17 @@ function random_walk(fixed_length = -1)
 		
 		
 		
-		if (direction == 0)
+		if (direction === 0)
 		{
 			current_row--;
 		}
 		
-		else if (direction == 1)
+		else if (direction === 1)
 		{
 			current_column++;
 		}
 		
-		else if (direction == 2)
+		else if (direction === 2)
 		{
 			current_row++;
 		}
@@ -239,7 +239,7 @@ function random_walk(fixed_length = -1)
 		//If not, then we need to know when we hit our own random walk -- before we can put our new vertex into the walk, we need to see if we've already been there.
 		let revert_index = vertex_in_array([current_row, current_column], new_vertices);
 		
-		if (revert_index != -1)
+		if (revert_index !== -1)
 		{
 			current_row = new_vertices[revert_index][0];
 			current_column = new_vertices[revert_index][1];
@@ -287,7 +287,7 @@ function color_graph()
 			
 			
 			//The rows are the same, so the direction is either left or right.
-			if (row_1 == row_2)
+			if (row_1 === row_2)
 			{
 				if (!(connection_directions[row_1][Math.min(column_1, column_2)].includes(1)))
 				{
@@ -324,7 +324,7 @@ function color_graph()
 		//Now start at the middle of the graph. The syntax for a path is (row, column, distance from center).
 		let active_paths = [];
 		
-		if (grid_size % 2 == 1)
+		if (grid_size % 2 === 1)
 		{
 			active_paths = [[Math.floor(grid_size / 2), Math.floor(grid_size / 2), 0]];
 		}
@@ -375,25 +375,25 @@ function color_graph()
 				
 				
 				
-				if (connection_directions[row][column].includes(0) && distance_from_center[row - 1][column] == -1)
+				if (connection_directions[row][column].includes(0) && distance_from_center[row - 1][column] === -1)
 				{
 					active_paths.push([row - 1, column, distance + 1]);
 					edges_by_distance.push([[row, column], [row - 1, column], distance]);
 				}
 				
-				if (connection_directions[row][column].includes(1) && distance_from_center[row][column + 1] == -1)
+				if (connection_directions[row][column].includes(1) && distance_from_center[row][column + 1] === -1)
 				{
 					active_paths.push([row, column + 1, distance + 1]);
 					edges_by_distance.push([[row, column], [row, column + 1], distance]);
 				}
 				
-				if (connection_directions[row][column].includes(2) && distance_from_center[row + 1][column] == -1)
+				if (connection_directions[row][column].includes(2) && distance_from_center[row + 1][column] === -1)
 				{
 					active_paths.push([row + 1, column, distance + 1]);
 					edges_by_distance.push([[row, column], [row + 1, column], distance]);
 				}
 				
-				if (connection_directions[row][column].includes(3) && distance_from_center[row][column - 1] == -1)
+				if (connection_directions[row][column].includes(3) && distance_from_center[row][column - 1] === -1)
 				{
 					active_paths.push([row, column - 1, distance + 1]);
 					edges_by_distance.push([[row, column], [row, column - 1], distance]);
@@ -466,7 +466,7 @@ function draw_line(row_1, column_1, row_2, column_2, color, delay)
 {
 	return new Promise(function(resolve, reject)
 	{
-		if (column_1 == column_2)
+		if (column_1 === column_2)
 		{
 			let x = column_1;
 			let y = Math.min(row_1, row_2);
@@ -494,7 +494,7 @@ function vertex_in_array(element, array)
 {
 	for (let i = 0; i < array.length; i++)
 	{
-		if (array[i][0] == element[0] && array[i][1] == element[1])
+		if (array[i][0] === element[0] && array[i][1] === element[1])
 		{
 			return i;
 		}

@@ -30,7 +30,7 @@ function insert_images()
 		{
 			let src = image_data[images[i].getAttribute("id")][image_type];
 			
-			if (src.slice(0, 5) == "https")
+			if (src.slice(0, 5) === "https")
 			{
 				images[i].setAttribute("src", src);
 			}
@@ -48,7 +48,7 @@ function insert_images()
 				
 				console.log(num_images_fetched + " of " + images.length + " fetched.");
 				
-				if (num_images_fetched == images.length)
+				if (num_images_fetched === images.length)
 				{
 					currently_fetching = false;
 					
