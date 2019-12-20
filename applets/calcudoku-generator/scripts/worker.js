@@ -61,29 +61,92 @@ function generate_calcudoku_grid()
 	
 	postMessage(["log", "Generated grid after " + attempts + " attempts"]);
 	
+	postMessage(["first_grid_complete"]);
 	
 	
-	while (num_solutions_found === 1)
+	
+	let cages_backup = JSON.parse(JSON.stringify(cages));
+	let cages_by_location_backup = JSON.parse(JSON.stringify(cages_by_location));
+	
+	
+	
+	while (true)
 	{
 		postMessage([grid, cages, cages_by_location]);
 		
-		if (expand_cages(cages) === -1)
+		
+		
+		let expanded_a_cage = false;
+		
+		//Go through the cages in a random order.
+		let cage_order = shuffle_array([...Array(cages.length).keys()]);
+		
+		for (let i = 0; i < cage_order.length; i++)
 		{
-			break;
+			let cage = cage_order[i];
+			
+			if (expand_cages(cage) !== -1)
+			{
+				expanded_a_cage = true;
+				
+				//Shift the rest of the cages in the cage order down
+				
+				for (let j = 0; j < cage_order.length; j++)
+				{
+					if (cage_order[j] >= cages.length)
+					{
+						cage_order[j]--;
+					}
+				}
+			}
+			
+			solve_puzzle(cages);
+			
+			if (num_solutions_found !== 1)
+			{
+				cages = JSON.parse(JSON.stringify(cages_backup));
+				cages_by_location = JSON.parse(JSON.stringify(cages_by_location_backup));
+				
+				num_solutions_found = 1;
+			}
+			
+			else
+			{
+				cages_backup = JSON.parse(JSON.stringify(cages));
+				cages_by_location_backup = JSON.parse(JSON.stringify(cages_by_location));
+			}
 		}
 		
 		
 		
-		//At the end of the day, this had to happen. The algorithm gets a maximum of 5 seconds per step. If it goes over, then it gets shut down.
-		let kill_timer = setTimeout(function()
+		if (expanded_a_cage === false)
 		{
-			postMessage(["log", "Aborting..."]);
-		}, 5000);
-		
-		solve_puzzle(cages);
-		
-		//clearTimeout(kill_timer);
+			return;
+		}
 	}
+}
+
+
+
+//Shuffles an array with the Fisher-Yates method.
+function shuffle_array(array)
+{
+	let current_index = array.length;
+
+	//While there are still elements to shuffle
+	while (current_index !== 0)
+	{
+		//Pick a remaining element.
+		let random_index = Math.floor(Math.random() * current_index);
+		current_index -= 1;
+		
+		//Swap it with the current element.
+		let temp = array[current_index];
+		array[current_index] = array[random_index];
+		array[random_index] = temp;
+	}
+	
+	return array;
 }
 
 
@@ -233,7 +296,7 @@ function assign_initial_cages(grid)
 		
 		
 		//Larger grid sizes will have a hard time getting started if we don't have a lot of 1x1s to start.
-		if (Math.random() < .1)
+		if (Math.random() < .5)
 		{
 			cages.push(["", 0, [cell]]);
 			
@@ -424,24 +487,9 @@ function assign_initial_cages(grid)
 
 
 
-//Picks the final cage in the list and destroys it, using the cells left over to merge with an adjacent cage.
-function expand_cages()
+//Destroys a cage, using the cells left over to merge with an adjacent cage.
+function expand_cages(cage_to_destroy)
 {
-	//Find the first cage that can be joined to something else.
-	let cage_to_destroy = cages.length - 1;
-	
-	while (typeof cages[cage_to_destroy][6] !== "undefined")
-	{
-		cage_to_destroy--;
-		
-		if (cage_to_destroy === -1)
-		{
-			return -1;
-		}
-	}
-	
-	
-	
 	let cage_that_grew = null;
 
 	
@@ -475,10 +523,7 @@ function expand_cages()
 		
 		else
 		{
-			//Apparently this cell can't join with anything, so we're forced to mark it as unjoinable and move on.				
-			
-			cages[cage_to_destroy].push(true);
-			
+			//Apparently this cell can't join with anything, so we're forced to move on.			
 			return;
 		}
 	}
@@ -510,10 +555,7 @@ function expand_cages()
 		
 		else
 		{
-			//Apparently this cell can't join with anything, so we're forced to mark it as unjoinable and move on.				
-			
-			cages[cage_to_destroy].push(true);
-			
+			//Apparently this cell can't join with anything, so we're forced to move on.				
 			return;
 		}
 	}

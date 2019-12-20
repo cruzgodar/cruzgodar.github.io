@@ -68,6 +68,18 @@
 				document.querySelector(".loading-spinner").style.opacity = 0;
 			}
 			
+			else if (e.data[0] === "first_grid_complete")
+			{
+				//We have a valid puzzle. The worker now gets 10 seconds to live.
+				setTimeout(function()
+				{
+					try {web_worker.terminate();}
+					catch(ex) {}
+					
+					document.querySelector(".loading-spinner").style.opacity = 0;
+				}, 10000);
+			}
+			
 			else if (e.data[0] === "log")
 			{
 				console.log(...e.data.slice(1));
