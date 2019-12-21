@@ -93,12 +93,13 @@ function init_settings()
 {
 	for (let key in url_vars)
 	{
-		if (url_vars[key] === null)
+		//These are double equals here, and that's important, but I can't quite see why. Obviously the url_vars are stored as strings and I just didn't realize that when I first coded this, but this bit of code has refused to cooperate with any modifications I make. Who knows.
+		if (url_vars[key] == null)
 		{
 			url_vars[key] = 0;
 		}
 		
-		else if (url_vars[key] === 1)
+		else if (url_vars[key] == 1)
 		{
 			url_vars[key] = 0;
 			url_var_functions[key]();
