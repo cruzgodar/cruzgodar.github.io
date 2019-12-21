@@ -42,7 +42,7 @@ function generate_calcudoku_grid()
 	
 	
 	//First, generate cages until we get a unique solution. We start with all 1x1 cages -- we'll make it much harder later.
-	grid = generate_number_grid(grid_size);
+	generate_number_grid();
 	
 	assign_initial_cages();
 	
@@ -141,10 +141,10 @@ function shuffle_array(array)
 
 
 
-//Creates a grid of numbers with side length grid_size such that no column or row contains a repeated number. 
+//Creates a grid of numbers with side length grid_size such that no column or row contains a repeated number. This is normally a very hard thing to do, becoming pretty much impossible most of the time after a side length of 10. Good news is, we can do things much more simply -- becuase we don't need a uniformly random grid.
 function generate_number_grid()
 {
-	let grid = [];
+	grid = [];
 	
 	for (let i = 0; i < grid_size; i++)
 	{
@@ -158,86 +158,129 @@ function generate_number_grid()
 	
 	
 	
-	//What possible numbers can go in each cell.
-	let grid_possibilities = [];
-	
+	//First of all, it's very easy to get A grid with no repeating digits: we'll just start with 1, ..., n in the first row, then n, 1, 2, ..., n-1 in the second, and so on.
 	for (let i = 0; i < grid_size; i++)
 	{
-		grid_possibilities[i] = [];
-		
 		for (let j = 0; j < grid_size; j++)
 		{
-			//This puts [1, 2, ..., grid_size] in each entry.
-			grid_possibilities[i][j] = [...Array(grid_size).keys()].map(x => x + 1);
+			grid[i][j] = ((j + i) % grid_size) + 1;
 		}
 	}
 	
 	
 	
-	let empty_cells = [];
+	//Now we're going to do three things: shuffle the rows, shuffle the columns, and shuffle the digits themselves. To top it all off, we'll do these three things in random order, twice each.
 	
-	for (let i = 0; i < grid_size; i++)
+	let shuffles = shuffle_array([shuffle_grid_rows, shuffle_grid_rows, shuffle_grid_columns, shuffle_grid_columns, shuffle_grid_digits, shuffle_grid_digits]);
+	
+	for (let i = 0; i < 6; i++)
 	{
-		for (let j = 0; j < grid_size; j++)
-		{
-			empty_cells.push([i, j]);
-		}
+		shuffles[i]();
 	}
-	
-	
-	
-	return generate_number_grid_step(grid, grid_possibilities, empty_cells);
 }
 
 
 
-function generate_number_grid_step(grid, grid_possibilities, empty_cells)
+function shuffle_grid_rows()
 {
-	if (empty_cells.length === 0)
+	let permutation = shuffle_array([...Array(grid_size).keys()]);
+	
+	
+	
+	let temp_grid = [];
+	
+	for (let i = 0; i < grid_size; i++)
 	{
-		return grid;
-	}
-	
-	
-	
-	//Pick a random cell.
-	let cell = empty_cells[Math.floor(Math.random() * empty_cells.length)];
-	
-	let row = cell[0];
-	let col = cell[1];
-	
-	//If there are no possibilities for this cell, something has gone wrong.
-	if (grid_possibilities[row][col].length === 0)
-	{
-		return false;
-	}
-	
-	
-	
-	//Otherwise, start trying numbers.
-	for (let i = 0; i < grid_possibilities[row][col].length; i++)
-	{
-		//This is cursed code, but it's the simplest way to clone a multidimensional array.
-		let new_grid = JSON.parse(JSON.stringify(grid));
-		let new_grid_possibilities = JSON.parse(JSON.stringify(grid_possibilities));
-		let new_empty_cells = JSON.parse(JSON.stringify(empty_cells));
+		temp_grid[i] = [];
 		
-		
-		
-		place_digit(new_grid, new_grid_possibilities, new_empty_cells, row, col, grid_possibilities[row][col][i]);
-		
-		
-		
-		let result = generate_number_grid_step(new_grid, new_grid_possibilities, new_empty_cells);
-		
-		if (result !== false)
+		for (let j = 0; j < grid_size; j++)
 		{
-			return result;
+			temp_grid[i][j] = 0;
 		}
 	}
 	
-	return false;
+	
+	
+	for (let i = 0; i < grid_size; i++)
+	{
+		temp_grid[i] = JSON.parse(JSON.stringify(grid[permutation[i]]));
+	}
+	
+	
+	
+	grid = JSON.parse(JSON.stringify(temp_grid));
 }
+
+
+
+function shuffle_grid_columns()
+{
+	let permutation = shuffle_array([...Array(grid_size).keys()]);
+	
+	
+	
+	let temp_grid = [];
+	
+	for (let i = 0; i < grid_size; i++)
+	{
+		temp_grid[i] = [];
+		
+		for (let j = 0; j < grid_size; j++)
+		{
+			temp_grid[i][j] = 0;
+		}
+	}
+	
+	
+	
+	for (let i = 0; i < grid_size; i++)
+	{
+		for (let j = 0; j < grid_size; j++)
+		{
+			temp_grid[i][j] = grid[i][permutation[j]];
+		}
+	}
+	
+	
+	
+	grid = JSON.parse(JSON.stringify(temp_grid));
+}
+
+
+
+function shuffle_grid_digits()
+{
+	let permutation = shuffle_array([...Array(grid_size).keys()]);
+	
+	
+	
+	let temp_grid = [];
+	
+	for (let i = 0; i < grid_size; i++)
+	{
+		temp_grid[i] = [];
+		
+		for (let j = 0; j < grid_size; j++)
+		{
+			temp_grid[i][j] = 0;
+		}
+	}
+	
+	
+	
+	for (let i = 0; i < grid_size; i++)
+	{
+		for (let j = 0; j < grid_size; j++)
+		{
+			temp_grid[i][j] = permutation[grid[i][j] - 1] + 1;
+		}
+	}
+	
+	
+	
+	grid = JSON.parse(JSON.stringify(temp_grid));
+}
+
 
 
 
