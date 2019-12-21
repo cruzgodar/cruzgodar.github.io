@@ -61,8 +61,11 @@ function generate_calcudoku_grid()
 	{
 		let expanded_a_cage = false;
 		
-		//Go through the cages in a random order.
+		//Go through the cages from smallest to largest, but in a random order for each size.
 		let cage_order = shuffle_array([...Array(cages.length).keys()]);
+		
+		cage_order.sort((a, b) => cages[a][2].length - cages[b][2].length);
+		
 		
 		for (let i = 0; i < cage_order.length; i++)
 		{

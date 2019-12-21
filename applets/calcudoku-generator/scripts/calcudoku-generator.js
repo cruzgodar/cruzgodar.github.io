@@ -77,15 +77,23 @@
 				clearInterval(fill_progress_bar_id);
 				
 				document.querySelector(".progress-bar").style.opacity = 0;
+				
+				console.log("Finished in time!");
 			}
 			
 			else if (e.data[0] === "first_grid_complete")
 			{
+				clearTimeout(kill_worker_timeout_id);
+				
+				
+				
 				//We have a valid puzzle. The worker now gets 2 * grid_size seconds to live.
 				kill_worker_timeout_id = setTimeout(function()
 				{
 					try {web_worker.terminate();}
 					catch(ex) {}
+					
+					console.log("Time's up -- killing worker");
 					
 					clearInterval(fill_progress_bar_id);
 					
@@ -101,6 +109,13 @@
 					
 					document.querySelector(".progress-bar span").style.width = progress_bar_width + "%";
 				}, 1000);
+				
+				
+				
+				setTimeout(function()
+				{
+					document.querySelector("#calcudoku-grid").style.opacity = 1;
+				}, 300);
 			}
 			
 			else if (e.data[0] === "log")
@@ -124,6 +139,19 @@
 		clearTimeout(kill_worker_timeout_id);
 		
 		web_worker.postMessage([grid_size, max_cage_size]);
+		
+		
+		
+		//The worker only gets 5 seconds to generate its initial grid before we kill it and try again. Fact is, some grids just don't seem to work.
+		kill_worker_timeout_id = setTimeout(function()
+		{
+			try {web_worker.terminate();}
+			catch(ex) {}
+			
+			console.log("Trying a new grid...");
+			
+			request_calcudoku_grid();
+		}, 5000);
 	}
 	
 	
