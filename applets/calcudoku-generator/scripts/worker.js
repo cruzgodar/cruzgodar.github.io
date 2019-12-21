@@ -39,27 +39,14 @@ function generate_calcudoku_grid()
 	
 	cages_by_location = [];
 	
-	num_solutions_found = 0;
 	
 	
+	//First, generate cages until we get a unique solution. We start with all 1x1 cages -- we'll make it much harder later.
+	grid = generate_number_grid(grid_size);
 	
-	let attempts = 0;	
-	
-	//First, generate cages until we get a unique solution.
-	while (num_solutions_found !== 1)
-	{
-		grid = generate_number_grid(grid_size);
-		
-		cages = assign_initial_cages(grid);
-		
-		solve_puzzle(cages);
-		
-		attempts++;
-	}
+	assign_initial_cages();
 	
 	
-	
-	postMessage(["log", "Generated grid after " + attempts + " attempts"]);
 	
 	postMessage(["first_grid_complete"]);
 	
@@ -72,10 +59,6 @@ function generate_calcudoku_grid()
 	
 	while (true)
 	{
-		postMessage([grid, cages, cages_by_location]);
-		
-		
-		
 		let expanded_a_cage = false;
 		
 		//Go through the cages in a random order.
@@ -89,8 +72,7 @@ function generate_calcudoku_grid()
 			{
 				expanded_a_cage = true;
 				
-				//Shift the rest of the cages in the cage order down
-				
+				//Shift the rest of the cages in the cage order down so that none is out of bounds.
 				for (let j = 0; j < cage_order.length; j++)
 				{
 					if (cage_order[j] >= cages.length)
@@ -102,6 +84,7 @@ function generate_calcudoku_grid()
 			
 			solve_puzzle(cages);
 			
+			//If this is no longer a unique solution, no problem! We'll just try a different cage next time. We'll just revert to our last uniquely-solvable grid and try again.
 			if (num_solutions_found !== 1)
 			{
 				cages = JSON.parse(JSON.stringify(cages_backup));
@@ -110,15 +93,19 @@ function generate_calcudoku_grid()
 				num_solutions_found = 1;
 			}
 			
+			//Great! We just merged a cage, so we have a harder puzzle, but the solution is still unique. Now we can set a checkpoint here and keep going.
 			else
 			{
 				cages_backup = JSON.parse(JSON.stringify(cages));
 				cages_by_location_backup = JSON.parse(JSON.stringify(cages_by_location));
+				
+				postMessage([grid, cages, cages_by_location]);
 			}
 		}
 		
 		
 		
+		//The program almost never ends this way, but if no cell can be expanded in the first place (this is before we've even thought about unique solutions), then there's no point in continuing.
 		if (expanded_a_cage === false)
 		{
 			return;
@@ -251,24 +238,12 @@ function generate_number_grid_step(grid, grid_possibilities, empty_cells)
 
 
 
-//Assigns cages to the graph. It begins with only 1x1 and 1x2 cages -- we'll make it harder later.
-function assign_initial_cages(grid)
+//Assigns cages to the graph. It begins with only 1x1 cages -- we'll make it harder later.
+function assign_initial_cages()
 {
-	let cages = [];
+	cages = [];
 	
-	
-	
-	let uncaged_cells = [];
-	
-	for (let i = 0; i < grid_size; i++)
-	{
-		for (let j = 0; j < grid_size; j++)
-		{
-			uncaged_cells.push([i, j]);
-		}
-	}
-	
-	
+	cages_by_location = [];
 	
 	cages_by_location = [];
 	
@@ -278,211 +253,11 @@ function assign_initial_cages(grid)
 		
 		for (let j = 0; j < grid_size; j++)
 		{
-			cages_by_location[i][j] = -1;
+			let value = grid[i][j];
+			cages.push(["", value, [[i, j]], value, value, value]);
+			cages_by_location[i][j] = cages.length - 1;
 		}
 	}
-	
-	
-	
-	while (uncaged_cells.length > 0)
-	{
-		//Pick a random cell.
-		let index = Math.floor(Math.random() * uncaged_cells.length);
-		let cell = uncaged_cells[index];
-		
-		let row = cell[0];
-		let col = cell[1];
-		
-		
-		
-		//Larger grid sizes will have a hard time getting started if we don't have a lot of 1x1s to start.
-		if (Math.random() < .5)
-		{
-			cages.push(["", 0, [cell]]);
-			
-			cages_by_location[row][col] = cages.length - 1;
-			
-			index = pair_in_array(cell, uncaged_cells);
-		
-			uncaged_cells.splice(index, 1);
-			
-			continue;
-		}
-		
-		
-		
-		//Try to find an adjacent cell that's not already caged.
-		let direction_to_look = Math.random();
-		
-		//Up/down.
-		if (direction_to_look < .5)
-		{
-			let index_up = pair_in_array([row - 1, col], uncaged_cells);
-			
-			if (index_up !== -1)
-			{
-				cages.push(["", 0, [cell, [row - 1, col]]]);
-				
-				cages_by_location[row][col] = cages.length - 1;
-				cages_by_location[row - 1][col] = cages.length - 1;
-				
-				uncaged_cells.splice(index_up, 1);
-			}
-			
-			else
-			{
-				let index_down = pair_in_array([row + 1, col], uncaged_cells);
-				
-				if (index_down !== -1)
-				{
-					cages.push(["", 0, [cell, [row + 1, col]]]);
-					
-					cages_by_location[row][col] = cages.length - 1;
-					cages_by_location[row + 1][col] = cages.length - 1;
-					
-					uncaged_cells.splice(index_down, 1);
-				}
-				
-				//Oh well -- this will just have to be a single-cell cage.
-				else
-				{
-					cages.push(["", 0, [cell]]);
-					
-					cages_by_location[row][col] = cages.length - 1;
-				}
-			}
-		}
-		
-		//Left/right.
-		else
-		{
-			let index_left = pair_in_array([row, col - 1], uncaged_cells);
-			
-			if (index_left !== -1)
-			{
-				cages.push(["", 0, [cell, [row, col - 1]]]);
-				
-				cages_by_location[row][col] = cages.length - 1;
-				cages_by_location[row][col - 1] = cages.length - 1;
-				
-				uncaged_cells.splice(index_left, 1);
-			}
-			
-			else
-			{
-				let index_right = pair_in_array([row, col + 1], uncaged_cells);
-				
-				if (index_right !== -1)
-				{
-					cages.push(["", 0, [cell, [row, col + 1]]]);
-					
-					cages_by_location[row][col] = cages.length - 1;
-					cages_by_location[row][col + 1] = cages.length - 1;
-					
-					uncaged_cells.splice(index_right, 1);
-				}
-				
-				//Oh well -- this will just have to be a single-cell cage.
-				else
-				{
-					cages.push(["", 0, [cell]]);
-					
-					cages_by_location[row][col] = cages.length - 1;
-				}
-			}
-		}
-		
-		
-		
-		//We need to get this again because cell may have moved when we removed other things.
-		index = pair_in_array(cell, uncaged_cells);
-		
-		uncaged_cells.splice(index, 1);
-	}
-	
-	
-	
-	//Now for each cage, give it a random operation.
-	for (let i = 0; i < cages.length; i++)
-	{
-		let max_digit = grid[cages[i][2][0][0]][cages[i][2][0][1]];
-		let cage_sum = grid[cages[i][2][0][0]][cages[i][2][0][1]];
-		let cage_product = grid[cages[i][2][0][0]][cages[i][2][0][1]];
-		
-		if (cages[i][2].length > 1)
-		{
-			if (grid[cages[i][2][1][0]][cages[i][2][1][1]] > max_digit)
-			{
-				max_digit = grid[cages[i][2][1][0]][cages[i][2][1][1]];
-			}
-			
-			cage_sum += grid[cages[i][2][1][0]][cages[i][2][1][1]];
-			cage_product *= grid[cages[i][2][1][0]][cages[i][2][1][1]];
-		}
-		
-		cages[i].push(max_digit);
-		cages[i].push(cage_sum);
-		cages[i].push(cage_product);
-		
-		
-		
-		if (cages[i][2].length === 1)
-		{
-			cages[i][1] = cages[i][3];
-			
-			continue;
-		}
-		
-		
-		
-		let possible_operations = ["+", "x"];
-		let possible_values = [cages[i][4]];
-		
-		possible_values.push(grid[cages[i][2][0][0]][cages[i][2][0][1]] * grid[cages[i][2][1][0]][cages[i][2][1][1]]);
-		
-		
-		
-		//Subtraction is only valid if the largest number is bigger than or equal to the sum of all the other numbers.
-		if (cages[i][4] <= 2 * cages[i][3])
-		{
-			possible_operations.push("-");
-			
-			possible_values.push(Math.abs(grid[cages[i][2][0][0]][cages[i][2][0][1]] - grid[cages[i][2][1][0]][cages[i][2][1][1]]));
-		}
-		
-		
-		
-		//Division is only valid if every digit divides the max digit.
-		if (cages[i][3] % grid[cages[i][2][0][0]][cages[i][2][0][1]] === 0 && cages[i][3] % grid[cages[i][2][1][0]][cages[i][2][1][1]] === 0)
-		{
-			possible_operations.push(":");
-			
-			possible_values.push(cages[i][3] * cages[i][3] / possible_values[1]);
-		}
-		
-		
-		//Great. Now pick a random operation and apply it -- random, unless division is possible, in which case it gets a flat 50% chance since it's so rare.
-		
-		if (possible_operations.includes(":") && Math.random() < .5)
-		{
-			let operation_index = possible_operations.indexOf(":");
-			
-			cages[i][0] = possible_operations[operation_index];
-			cages[i][1] = possible_values[operation_index];
-		}
-		
-		else
-		{
-			let operation_index = Math.floor(Math.random() * possible_operations.length);
-			
-			cages[i][0] = possible_operations[operation_index];
-			cages[i][1] = possible_values[operation_index];
-		}
-	}
-	
-	
-	
-	return cages;
 }
 
 
@@ -578,8 +353,6 @@ function expand_cages(cage_to_destroy)
 			}
 		}
 	}
-	
-	postMessage(["log", "Added cage " + cage_to_destroy + " to cage " + cage_that_grew]);
 }
 
 
@@ -647,18 +420,56 @@ function try_to_add_cage_to_cage(cage_to_destroy, cage_to_grow)
 
 function add_cage_to_cage(cage_to_destroy, cage_to_grow)
 {
+	//The other operations aren't too bad, but if a cage tries to merge with a 1x1, we need to create a new operation.
 	if (cages[cage_to_grow][0] === "")
 	{
-		if (Math.random() < .5)
+		let possible_operations = ["+", "x"];
+		let possible_values = [
+			cages[cage_to_grow][1] + cages[cage_to_destroy][4],
+			cages[cage_to_grow][1] * cages[cage_to_destroy][5]
+		];
+		
+		
+		
+		let new_max_digit = Math.max(cages[cage_to_grow][1], cages[cage_to_destroy][3]);
+		
+		
+		
+		//Subtraction is only valid if the largest number is bigger than or equal to the sum of all the other numbers.
+		if (2 * new_max_digit >= cages[cage_to_grow][1] + cages[cage_to_destroy][4])
 		{
-			cages[cage_to_grow][0] = "+";
-			cages[cage_to_grow][1] += cages[cage_to_destroy][4];
+			possible_operations.push("-");
+			
+			possible_values.push(2 * new_max_digit - (cages[cage_to_grow][1] + cages[cage_to_destroy][4]));
+		}
+		
+		
+		
+		//Division is only valid if every digit divides the max digit.
+		if ((new_max_digit * new_max_digit) % (cages[cage_to_grow][1] * cages[cage_to_destroy][5]) === 0)
+		{
+			possible_operations.push(":");
+			
+			possible_values.push((new_max_digit * new_max_digit) / (cages[cage_to_grow][1] * cages[cage_to_destroy][5]));
+		}
+		
+		
+		//Great. Now pick a random operation and apply it -- random, unless division is possible, in which case it gets a flat 50% chance since it's so rare.
+		
+		if (possible_operations.includes(":") && Math.random() < .5)
+		{
+			let operation_index = possible_operations.indexOf(":");
+			
+			cages[cage_to_grow][0] = possible_operations[operation_index];
+			cages[cage_to_grow][1] = possible_values[operation_index];
 		}
 		
 		else
 		{
-			cages[cage_to_grow][0] = "x";
-			cages[cage_to_grow][1] *= cages[cage_to_destroy][5];
+			let operation_index = Math.floor(Math.random() * possible_operations.length);
+			
+			cages[cage_to_grow][0] = possible_operations[operation_index];
+			cages[cage_to_grow][1] = possible_values[operation_index];
 		}
 	}
 	

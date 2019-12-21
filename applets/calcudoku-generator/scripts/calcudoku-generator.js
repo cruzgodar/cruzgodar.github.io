@@ -8,6 +8,11 @@
 	
 	let ctx = document.querySelector("#calcudoku-grid").getContext("2d");
 	
+	let kill_worker_timeout_id = null;
+	let fill_progress_bar_id = null;
+	
+	let progress_bar_width = 0;
+	
 	let grid = [];
 	let cages = [];
 	let cages_by_location = [];
@@ -40,7 +45,11 @@
 		
 		
 		
-		document.querySelector(".loading-spinner").style.opacity = 1;
+		document.querySelector(".progress-bar").style.opacity = 1;
+		
+		document.querySelector(".progress-bar span").style.width = 0;
+		
+		progress_bar_width = 0;
 		
 		
 		
@@ -65,19 +74,33 @@
 		{
 			if (e.data[0] === "done")
 			{
-				document.querySelector(".loading-spinner").style.opacity = 0;
+				clearInterval(fill_progress_bar_id);
+				
+				document.querySelector(".progress-bar").style.opacity = 0;
 			}
 			
 			else if (e.data[0] === "first_grid_complete")
 			{
-				//We have a valid puzzle. The worker now gets 10 seconds to live.
-				setTimeout(function()
+				//We have a valid puzzle. The worker now gets 2 * grid_size seconds to live.
+				kill_worker_timeout_id = setTimeout(function()
 				{
 					try {web_worker.terminate();}
 					catch(ex) {}
 					
-					document.querySelector(".loading-spinner").style.opacity = 0;
-				}, 10000);
+					clearInterval(fill_progress_bar_id);
+					
+					document.querySelector(".progress-bar").style.opacity = 0;
+				}, (2 * grid_size + 1) * 1000);
+				
+				
+				
+				//Fill the progress bar.
+				fill_progress_bar_id = setInterval(function()
+				{
+					progress_bar_width += 100 / (2 * grid_size);
+					
+					document.querySelector(".progress-bar span").style.width = progress_bar_width + "%";
+				}, 1000);
 			}
 			
 			else if (e.data[0] === "log")
@@ -96,6 +119,9 @@
 		}
 		
 		
+		clearInterval(fill_progress_bar_id);
+		
+		clearTimeout(kill_worker_timeout_id);
 		
 		web_worker.postMessage([grid_size, max_cage_size]);
 	}

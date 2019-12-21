@@ -20,9 +20,12 @@
 
 
 
-.loading-spinner
+.progress-bar
 {
 	opacity: 0;
+	width: 50vw !important;
+	
+	transition: opacity .3s ease-in-out;
 }
 
 
