@@ -695,93 +695,6 @@ function solve_puzzle(cages)
 
 
 
-//Trims the possibilities for the cells in a + or x cage.
-function update_cage_possibilities(row, col, grid, grid_possibilities)
-{
-	let cage = cages_by_location[row][col];
-	
-	//Any cell in the cage can be at most the sum minus the current sum minus the number of cells plus 1.
-	if (cages[cage][0] === "+")
-	{
-		let current_sum = 0;
-		
-		for (let i = 0; i < cages[cage][2].length; i++)
-		{
-			let temp_row = cages[cage][2][i][0];
-			let temp_col = cages[cage][2][i][1];
-			
-			//The grid has unknown cells as 0s, so this is all good.
-			current_sum += grid[temp_row][temp_col];
-		}
-		
-		
-		
-		let max_allowable_entry = cages[cage][4] - current_sum - cages[cage][2].length + 1;
-		
-		//For each cell in the cage,
-		for (let i = 0; i < cages[cage][2].length; i++)
-		{
-			let temp_row = cages[cage][2][i][0];
-			let temp_col = cages[cage][2][i][1];
-			
-			//remove any number higher than what is allowed.
-			for (let j = max_allowable_entry + 1; j <= grid_size; j++)
-			{
-				let index = grid_possibilities[temp_row][temp_col].indexOf(j);
-				
-				if (index !== -1)
-				{
-					grid_possibilities[temp_row][temp_col].splice(index, 1);
-				}
-			}
-		}
-	}
-	
-	
-	
-	//This involves a number's factorization. Again, that's a pain, so we're just going to remove numbers that don't divide the product.
-	else if (cages[cage][0] === "x")
-	{
-		let current_product = 1;
-		
-		for (let i = 0; i < cages[cage][2].length; i++)
-		{
-			let temp_row = cages[cage][2][i][0];
-			let temp_col = cages[cage][2][i][1];
-			
-			if (grid[temp_row][temp_col] !== 0)
-			{
-				current_product *= grid[temp_row][temp_col];
-			}
-		}
-		
-		
-		
-		//For each cell in the cage,
-		for (let i = 0; i < cages[cage][2].length; i++)
-		{
-			let temp_row = cages[cage][2][i][0];
-			let temp_col = cages[cage][2][i][1];
-			
-			//remove any number that doesn't divide the product.
-			for (let j = 2; j <= grid_size; j++)
-			{
-				if ((cages[cage][5] / current_product) % j !== 0)
-				{
-					let index = grid_possibilities[temp_row][temp_col].indexOf(j);
-					
-					if (index !== -1)
-					{
-						grid_possibilities[temp_row][temp_col].splice(index, 1);
-					}
-				}
-			}
-		}
-	}
-}
-
-
-
 //This is just like the grid generating function, except that it tries to find every solution.
 function solve_puzzle_step(grid, grid_possibilities, empty_cells)
 {
@@ -837,8 +750,6 @@ function solve_puzzle_step(grid, grid_possibilities, empty_cells)
 		{
 			continue;
 		}
-		
-		//update_cage_possibilities(row, col, new_grid, new_grid_possibilities);
 		
 		
 		
