@@ -56,6 +56,9 @@ function generate_calcudoku_grid()
 	let cages_by_location_backup = JSON.parse(JSON.stringify(cages_by_location));
 	
 	
+	encode_cages();
+	
+	
 	
 	while (true)
 	{
@@ -568,6 +571,53 @@ function add_cage_to_cage(cage_to_destroy, cage_to_grow)
 		
 		cages_by_location[row][col] = cage_to_grow;
 	}
+}
+
+
+
+//By default, we can't pass arrays to C functions. However, with the help of a library, we can pass 1D arrays, but not higher-dimensional ones. Therefore, we need to find a way to pass all of the cage data as a sequence of 1D arrays. Good news is, this isn't so bad.
+function encode_cages()
+{
+	//This contains the operations that each cage uses, where 0 corresponds to "", 1 to "+", 2 to "-", and so on.
+	let cage_operations = [];
+	
+	let cage_operations_table = {"": 0, "+": 1, "-": 2, "x": 3, ":": 4};
+	
+	//This just contains the values of each cage.
+	let cage_values = [];
+	
+	let cage_max_digits = [];
+	let cage_sums = [];
+	let cage_products = [];
+	
+	
+	
+	for (let i = 0; i < cages.length; i++)
+	{
+		cage_operations[i] = cage_operations_table[cages[i][0]];
+		
+		cage_values[i] = cages[i][1];
+		
+		cage_max_digits[i] = cages[i][3];
+		cage_sums[i] = cages[i][4];
+		cage_products[i] = cages[i][5];
+	}
+	
+	
+	
+	//Now you may be thinking that this was the easy part. After all, the most important part of the cages -- what cells actually make them up -- is buried way down deep, and every cage has a different length list of cells. However, we're good. We can just flatten cages_by_location and pass that -- it contains all the information we need to reconstruct cages on the other side.
+	
+	let cages_by_location_flat = [];
+	
+	for (let i = 0; i < grid_size; i++)
+	{
+		cages_by_location_flat = cages_by_location_flat.concat(cages_by_location[i]);
+	}
+	
+	
+	
+	//With everything in place, we can now call the C function and let it do the heavy lifting.
+	//return ccallArrays("solve_puzzle", "number", ["number", "array", "array", "array", "array", "array", "array"], [grid_size, cage_operations, cage_values, cage_max_digits, cage_sums, cage_products, cages_by_location_flat]);
 }
 
 
