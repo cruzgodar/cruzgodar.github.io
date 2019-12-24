@@ -30,7 +30,7 @@
 	<section>
 		<div data-aos="fade-up">
 			<p class="body-text">
-				<dfn>Calcudoku</dfn> is a Sudoku-like puzzle &mdash; given an \(n \times n\) grid, fill it withn the digits \(1, ..., n\) such that no row or column contains a repeated digit, and such that each cage&#x2019;s condition is satisfied. For example, a cage with \(5+\) in a corner must have its contents sum to 5. A cage with \(2-\) is a little more complicated &mdash; it means that choosing some cell in the cage and subtracting the others results in 2. A 3-cell cage containing 5, 2, and 1 would work. \(:\) is the division operator, and works similarly to subtraction. Finally, cages with no operation at all are always \(1 \times 1\), and simply contain the number in the corner.
+				<dfn>Calcudoku</dfn> is a Sudoku-like puzzle &mdash; given an \(n \times n\) grid, fill it withn the digits \(1, ..., n\) such that no row or column contains a repeated digit, and such that each cage&#x2019;s condition is satisfied. For example, a cage with \(5+\) in a corner must have its contents sum to 5. A cage with \(2-\) is a little more complicated &mdash; it means that choosing some cell in the cage and subtracting the others results in 2. So a 3-cell cage containing 5, 2, and 1 would work. Division cages are written with a colon and works similarly to subtraction. Finally, cages with no operation at all are always \(1 \times 1\), and simply contain the number in the corner.
 			</p>
 		</div>
 		
@@ -38,7 +38,7 @@
 		
 		<div data-aos="fade-up">
 			<p class="body-text">
-				Generating a calcudoku puzzle is no easy feat, and this algorithm is far from the fastest, but it will generate a puzzle of any given size. These vary <em>wildly</em> in difficulty, but every one is guaranteed to have a unique solution. If the puzzles are consistently too difficult, try limiting the cage size to 3 or 4.
+				Generating these puzzles takes time. The core of the algorithm is written in a language called WebAssembly that runs at much higher speeds than JavaScript (the standard language of the web), but even still, making a puzzle with cages as large as possible is an intensive process. The time it takes for the progress bar to complete is a guess at when the puzzle should be decent, but it is no guarantee, and for puzzles larger than \(8 \times 8\), it may not be nearly enough. For the best results, let the program run for five to ten minutes and make some tea. It&#x2019;s not that much to ask &mdash; after all, you&#x2019;re probably going to spend longer than that actually solving the puzzle.
 			</p>
 		</div>
 		

@@ -8,7 +8,7 @@
 	
 	let ctx = document.querySelector("#calcudoku-grid").getContext("2d");
 	
-	let kill_worker_timeout_id = null;
+	let clear_progress_bar_id = null;
 	let fill_progress_bar_id = null;
 	
 	let progress_bar_width = 0;
@@ -83,29 +83,24 @@
 			
 			else if (e.data[0] === "first_grid_complete")
 			{
-				clearTimeout(kill_worker_timeout_id);
+				clearTimeout(clear_progress_bar_id);
 				
 				
 				
-				//We have a valid puzzle. The worker now gets grid_size^2 seconds to live.
-				kill_worker_timeout_id = setTimeout(function()
+				//We have a valid puzzle!
+				clear_progress_bar_id = setTimeout(function()
 				{
-					try {web_worker.terminate();}
-					catch(ex) {}
-					
-					console.log("Time's up -- killing worker");
-					
 					clearInterval(fill_progress_bar_id);
 					
 					document.querySelector(".progress-bar").style.opacity = 0;
-				}, (grid_size * grid_size + 1) * 1000);
+				}, (grid_size * grid_size / 2 + 1) * 1000);
 				
 				
 				
 				//Fill the progress bar.
 				fill_progress_bar_id = setInterval(function()
 				{
-					progress_bar_width += 100 / (grid_size * grid_size);
+					progress_bar_width += 100 / (grid_size * grid_size / 2);
 					
 					document.querySelector(".progress-bar span").style.width = progress_bar_width + "%";
 				}, 1000);
@@ -134,9 +129,10 @@
 		}
 		
 		
+		
 		clearInterval(fill_progress_bar_id);
 		
-		clearTimeout(kill_worker_timeout_id);
+		clearTimeout(clear_progress_bar_id);
 		
 		web_worker.postMessage([grid_size, max_cage_size]);
 	}

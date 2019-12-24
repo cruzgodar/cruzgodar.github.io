@@ -166,15 +166,6 @@ int EMSCRIPTEN_KEEPALIVE solve_puzzle_step(int grid_size, uint32_t* grid, uint32
 	//If there are no more empty cells, then we've just found a solution.
 	if (!found_an_empty_cell)
 	{
-		for (i = 0; i < grid_size; i++)
-		{
-			for (j = 0; j < grid_size; j++)
-			{
-				printf("%i ", grid[grid_size * i + j]);
-			}
-			printf("\n");
-		}
-		
 		free(new_grid);
 		free(new_grid_possibilities);
 		
@@ -302,14 +293,7 @@ int EMSCRIPTEN_KEEPALIVE check_cage(int grid_size, uint32_t* grid, int cage_inde
 	
 	
 	//Now all we need to do is check whatever condition we have in this cell.
-	if (operation == 0)
-	{
-		printf("1x1 cell checked -- something is wrong");
-	}
-	
-	
-	
-	else if (operation == 1)
+	if (operation == 1)
 	{
 		if (cage_sum == value)
 		{

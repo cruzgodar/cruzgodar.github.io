@@ -7,9 +7,16 @@ onmessage = function(e)
 	grid_size = e.data[0];
 	max_cage_size = e.data[1];
 	
-	generate_calcudoku_grid();
-	
-	postMessage(["done"]);
+	importScripts("/applets/calcudoku-generator/scripts/solver.js");
+
+	Module["onRuntimeInitialized"] = function()
+	{
+		importScripts("/scripts/wasm-arrays.min.js");
+		
+		generate_calcudoku_grid();
+		
+		postMessage(["done"]);
+	};
 }
 
 
@@ -56,9 +63,6 @@ function generate_calcudoku_grid()
 	let cages_by_location_backup = JSON.parse(JSON.stringify(cages_by_location));
 	
 	
-	encode_cages();
-	
-	
 	
 	while (true)
 	{
@@ -88,7 +92,7 @@ function generate_calcudoku_grid()
 				}
 			}
 			
-			solve_puzzle(cages);
+			num_solutions_found = wasm_solve_puzzle(cages);
 			
 			//If this is no longer a unique solution, no problem! We'll just try a different cage next time. We'll just revert to our last uniquely-solvable grid and try again.
 			if (num_solutions_found !== 1)
@@ -576,28 +580,32 @@ function add_cage_to_cage(cage_to_destroy, cage_to_grow)
 
 
 //By default, we can't pass arrays to C functions. However, with the help of a library, we can pass 1D arrays, but not higher-dimensional ones. Therefore, we need to find a way to pass all of the cage data as a sequence of 1D arrays. Good news is, this isn't so bad.
-function encode_cages()
+function wasm_solve_puzzle()
 {
 	//This contains the operations that each cage uses, where 0 corresponds to "", 1 to "+", 2 to "-", and so on.
 	let cage_operations = [];
 	
-	let cage_operations_table = {"": 0, "+": 1, "-": 2, "x": 3, ":": 4};
+	let cage_operations_table = {"": 0, "+": 1, "x": 2, "-": 3, ":": 4};
 	
 	//This just contains the values of each cage.
 	let cage_values = [];
 	
+	let cage_lengths = [];
+	
 	let cage_max_digits = [];
 	let cage_sums = [];
 	let cage_products = [];
-	
-	
-	
+
+
+
 	for (let i = 0; i < cages.length; i++)
 	{
 		cage_operations[i] = cage_operations_table[cages[i][0]];
-		
+
 		cage_values[i] = cages[i][1];
-		
+
+		cage_lengths[i] = cages[i][2].length;
+
 		cage_max_digits[i] = cages[i][3];
 		cage_sums[i] = cages[i][4];
 		cage_products[i] = cages[i][5];
@@ -616,347 +624,8 @@ function encode_cages()
 	
 	
 	
-	//With everything in place, we can now call the C function and let it do the heavy lifting.
-	//return ccallArrays("solve_puzzle", "number", ["number", "array", "array", "array", "array", "array", "array"], [grid_size, cage_operations, cage_values, cage_max_digits, cage_sums, cage_products, cages_by_location_flat]);
-}
-
-
-
-//Finds ALL possible solutions to a given puzzle.
-function solve_puzzle(cages)
-{
-	let grid = [];
-	
-	for (let i = 0; i < grid_size; i++)
-	{
-		grid[i] = [];
-		
-		for (let j = 0; j < grid_size; j++)
-		{
-			grid[i][j] = 0;
-		}
-	}
-	
-	
-	
-	//What possible numbers can go in each cell.
-	let grid_possibilities = [];
-	
-	for (let i = 0; i < grid_size; i++)
-	{
-		grid_possibilities[i] = [];
-		
-		for (let j = 0; j < grid_size; j++)
-		{
-			//This puts [1, 2, ..., grid_size] in each entry.
-			grid_possibilities[i][j] = [...Array(grid_size).keys()].map(x => x + 1);
-		}
-	}
-	
-	
-	
-	let empty_cells = [];
-	
-	for (let i = 0; i < grid_size; i++)
-	{
-		for (let j = 0; j < grid_size; j++)
-		{
-			empty_cells.push([i, j]);
-		}
-	}
-	
-	
-	
-	//Trying everything will take forever if we don't narrow our possibilities first. This is where things get a little more complicated than just generating a random grid.
-	for (let i = 0; i < cages.length; i++)
-	{
-		//1x1 cages are easy.
-		if (cages[i][0] === "")
-		{
-			place_digit(grid, grid_possibilities, empty_cells, cages[i][2][0][0], cages[i][2][0][1], cages[i][1]);
-		}
-		
-		
-		
-		//These are integer partitions, and they're a pain in the ass. Right now, we're just going to say that any cell in the cage can be at most the sum minus the number of cells plus 1. For example, a 3-cell cage that sums to 8 can have a max entry of 6.
-		else if (cages[i][0] === "+")
-		{
-			let max_allowable_entry = cages[i][4] - cages[i][2].length + 1;
-			
-			//For each cell in the cage,
-			for (let j = 0; j < cages[i][2].length; j++)
-			{
-				let row = cages[i][2][j][0];
-				let col = cages[i][2][j][1];
-				
-				//remove any number higher than what is allowed.
-				for (let k = max_allowable_entry + 1; k <= grid_size; k++)
-				{
-					let index = grid_possibilities[row][col].indexOf(k);
-					
-					if (index !== -1)
-					{
-						grid_possibilities[row][col].splice(index, 1);
-					}
-				}
-			}
-		}
-		
-		
-		
-		//This involves a number's factorization. Again, that's a pain, so we're just going to remove numbers that don't divide the product.
-		else if (cages[i][0] === "x")
-		{
-			//For each cell in the cage,
-			for (let j = 0; j < cages[i][2].length; j++)
-			{
-				let row = cages[i][2][j][0];
-				let col = cages[i][2][j][1];
-				
-				//remove any number that doesn't divide the product.
-				for (let k = 2; k <= grid_size; k++)
-				{
-					if (cages[i][5] % k !== 0)
-					{
-						let index = grid_possibilities[row][col].indexOf(k);
-						
-						if (index !== -1)
-						{
-							grid_possibilities[row][col].splice(index, 1);
-						}
-					}
-				}
-			}
-		}
-		
-		
-		
-		//There's not much we can do for subtraction or division, unfortunately.
-	}
-	
-	
-	
-	//Okay, now the fun begins.
-	
-	num_solutions_found = 0;
-	
-	solve_puzzle_step(grid, grid_possibilities, empty_cells);
-}
-
-
-
-//This is just like the grid generating function, except that it tries to find every solution.
-function solve_puzzle_step(grid, grid_possibilities, empty_cells)
-{
-	if (empty_cells.length === 0)
-	{
-		num_solutions_found++;
-		
-		return true;
-	}
-	
-	
-	
-	//Pick the cell with the fewest possibilities.
-	let min_possibilities_found = 1000;
-	let best_cell = 0;
-	
-	for (let i = 0; i < empty_cells.length; i++)
-	{
-		let row = empty_cells[i][0];
-		let col = empty_cells[i][1];
-		
-		if (grid_possibilities[row][col].length < min_possibilities_found)
-		{
-			min_possibilities_found = grid_possibilities[row][col].length;
-			best_cell = [row, col];
-		}
-	}
-	
-	let row = best_cell[0];
-	let col = best_cell[1];
-	
-	//If there are no possibilities for this cell, something has gone wrong.
-	if (grid_possibilities[row][col].length === 0)
-	{
-		return;
-	}
-	
-	
-	
-	//Otherwise, start trying numbers.
-	for (let i = 0; i < grid_possibilities[row][col].length; i++)
-	{
-		//Again, this is cursed code, but it's the simplest way to clone a multidimensional array.
-		let new_grid = JSON.parse(JSON.stringify(grid));
-		let new_grid_possibilities = JSON.parse(JSON.stringify(grid_possibilities));
-		let new_empty_cells = JSON.parse(JSON.stringify(empty_cells));
-		
-		
-		
-		place_digit(new_grid, new_grid_possibilities, new_empty_cells, row, col, grid_possibilities[row][col][i]);
-		
-		if (check_cage(new_grid, cages_by_location[row][col]) === false)
-		{
-			continue;
-		}
-		
-		
-		
-		solve_puzzle_step(new_grid, new_grid_possibilities, new_empty_cells);
-		
-		if (num_solutions_found > 1)
-		{
-			return;
-		}
-	}
-	
-	return;
-}
-
-
-
-function check_cage(grid, cage)
-{
-	//If the cage isn't full, we don't care.
-	for (let i = 0; i < cages[cage][2].length; i++)
-	{
-		let row = cages[cage][2][i][0];
-		let col = cages[cage][2][i][1];
-		
-		if (grid[row][col] === 0)
-		{
-			return true;
-		}
-	}
-	
-	
-	
-	//Otherwise, we need to check that the operation works.
-	if (cages[cage][0] === "+")
-	{
-		let cage_sum = 0;
-		
-		for (let i = 0; i < cages[cage][2].length; i++)
-		{
-			let row = cages[cage][2][i][0];
-			let col = cages[cage][2][i][1];
-			
-			cage_sum += grid[row][col];
-		}
-		
-		if (cage_sum !== cages[cage][1])
-		{
-			return false;
-		}
-	}
-	
-	
-	
-	else if (cages[cage][0] === "x")
-	{
-		let cage_product = 1;
-		
-		for (let i = 0; i < cages[cage][2].length; i++)
-		{
-			let row = cages[cage][2][i][0];
-			let col = cages[cage][2][i][1];
-			
-			cage_product *= grid[row][col];
-		}
-		
-		if (cage_product !== cages[cage][1])
-		{
-			return false;
-		}
-	}
-	
-	
-	
-	else if (cages[cage][0] === "-")
-	{
-		let cage_sum = 0;
-		
-		for (let i = 0; i < cages[cage][2].length; i++)
-		{
-			let row = cages[cage][2][i][0];
-			let col = cages[cage][2][i][1];
-			
-			cage_sum += grid[row][col];
-		}
-		
-		//This is equivalent to taking the max digit minus the rest.
-		if ((2 * cages[cage][3]) - cage_sum !== cages[cage][1])
-		{
-			return false;
-		}
-	}
-	
-	
-	
-	else if (cages[cage][0] === ":")
-	{
-		let cage_product = 1;
-		
-		for (let i = 0; i < cages[cage][2].length; i++)
-		{
-			let row = cages[cage][2][i][0];
-			let col = cages[cage][2][i][1];
-			
-			cage_product *= grid[row][col];
-		}
-		
-		//This is equivalent to taking the max digit divided by the rest.
-		if ((cages[cage][3] * cages[cage][3]) / cage_product !== cages[cage][1])
-		{
-			return false;
-		}
-	}
-	
-	
-	
-	return true;
-}
-
-
-
-function place_digit(grid, grid_possibilities, empty_cells, row, col, digit)
-{
-	//Actually place the digit.
-	grid[row][col] = digit;
-	
-	
-	
-	//Remove this possibility from that row and column.
-	for (let j = 0; j < grid_size; j++)
-	{
-		let index = grid_possibilities[row][j].indexOf(digit);
-		
-		if (index !== -1)
-		{
-			grid_possibilities[row][j].splice(index, 1);
-		}
-		
-		index = grid_possibilities[j][col].indexOf(digit);
-		
-		if (index !== -1)
-		{
-			grid_possibilities[j][col].splice(index, 1);
-		}
-	}
-	
-	//This isn't strictly necessary, but it makes things a lot easier to see.
-	grid_possibilities[row][col] = [digit];
-	
-	
-	
-	//This cell is no longer empty.
-	let index = pair_in_array([row, col], empty_cells);
-	
-	if (index !== -1)
-	{
-		empty_cells.splice(index, 1);
-	}
+	//With everything in place, we can now call the C function and let it do the heavy lifting. We'd be fine with using HEAPU8 for everything, except for the fact that cage_values can have entries that are quite large.
+	return ccallArrays("solve_puzzle", "number", ["number", "array", "array", "array", "array", "array", "array", "array"], [grid_size, cage_operations, cage_values, cage_lengths, cage_max_digits, cage_sums, cage_products, cages_by_location_flat], {heapIn: "HEAPU32"});
 }
 
 
