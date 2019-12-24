@@ -73,11 +73,11 @@ function insert_footer()
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-					<div class="line-break" style="width: 75vw !important"></div>
+					<div class="line-break" style="width: 85vw !important"></div>
 				</div>
 			<div style="height: 3vw"></div>
 			
-			<nav class="footer-image-links" style="width: 63vw"></nav>
+			<nav class="footer-image-links" style="width: 74vw"></nav>
 		`);
 	}
 	
@@ -86,7 +86,7 @@ function insert_footer()
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
-					<div class="line-break" style="width: 65vw !important"></div>
+					<div class="line-break" style="width: 75vw !important"></div>
 				</div>
 			<div style="height: 3vw"></div>
 			
@@ -113,7 +113,7 @@ function insert_footer()
 		delay += 100;
 	}
 	
-	/*
+	
 	if (page_settings["footer_exclusion"] !== "teaching")
 	{
 		let element = document.createElement("div");
@@ -130,7 +130,7 @@ function insert_footer()
 		
 		delay += 100;
 	}
-	*/
+	
 	
 	if (page_settings["footer_exclusion"] !== "applets")
 	{

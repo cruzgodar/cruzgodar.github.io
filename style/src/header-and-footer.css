@@ -1,0 +1,193 @@
+/* Adds support for the footer, floating or not, and the scroll up button. */
+
+
+
+.footer-button
+{
+	width: 25px;
+	
+	align-self: flex-end;
+	
+	background-color: rgb(255, 255, 255);
+	
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 50%;
+	padding: 5px;
+	
+	transition: filter .15s ease-in-out;
+	filter: brightness(100%);
+	
+	cursor: pointer;
+	outline: none;
+}
+
+.footer-button:hover
+{
+	filter: brightness(75%);
+}
+
+
+
+.row:after
+{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+
+
+.line-break
+{
+	margin: 0 auto;
+	width: 70vw;
+	height: 1px;
+	
+	background: -moz-linear-gradient(left, rgb(255,255,255) 0%, rgb(160,160,160) 50%, rgb(255,255,255) 100%);
+	background: -webkit-linear-gradient(left, rgb(255,255,255) 0%,rgb(160,160,160) 50%,rgb(255,255,255) 100%);
+	background: linear-gradient(to right, rgb(255,255,255) 0%,rgb(160,160,160) 50%,rgb(255,255,255) 100%);
+}
+
+
+
+.footer-image-links
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 63vw;
+	margin: 0 auto;
+	margin-bottom: 60px;
+}
+
+.footer-image-link
+{
+	position: relative;
+	float: left;
+	width: 8vw;
+	height: 8vw;
+	display: inline-block;
+	
+	border-radius: 10%;
+}
+
+.footer-image-link img
+{
+	position: absolute;
+	width: 8vw;
+	height: 8vw;
+	
+	border-radius: 10%;
+
+	transition: filter .15s ease-in-out;
+	filter: brightness(100%);
+}
+
+.footer-image-link img:hover
+{
+	filter: brightness(75%);
+}
+
+
+
+/* The area where the user can hover or tap to reveal the footer anywhere. */
+#floating-footer
+{
+	position: fixed;
+	bottom: 0;
+	z-index: 100;
+	
+	display: none;
+	
+	opacity: 0;
+	transition: opacity .3s ease-in-out;
+}
+
+#floating-footer-gradient
+{
+	height: 10vh;
+	
+	background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+	background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+	background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+}
+
+#floating-footer-content
+{
+	background-color: rgb(255, 255, 255);
+}
+
+#floating-footer-bottom-margin
+{
+	height: 30px;
+}
+
+/* Some very weird shit going on right here */
+#floating-footer-button-background
+{
+	height: 1px;
+	background-color: rgb(255, 255, 255);
+}
+
+
+
+#floating-footer-touch-target
+{
+	position: fixed;
+	bottom: 0;
+	z-index: 110;
+	
+	height: 100px;
+	width: 100vw;
+}
+
+
+
+/* The area where the user can hover or tap to reveal the footer anywhere. */
+#scroll-up-button-location
+{
+	position: fixed;
+	top: 0;
+	z-index: 120;
+	
+	height: 50px;
+	width: 100vw;
+}
+
+#scroll-up-button-container
+{
+	position: fixed;
+	top: 0;
+	
+	width: 100vw;
+	height: 100px;
+	
+	z-index: 110;
+}
+
+
+
+#scroll-up-button
+{
+	color: rgb(127, 127, 127);
+	background-color: rgb(255, 255, 255);
+	width: 20px;
+	height: 5px;
+	
+	margin-top: 50px;
+
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 10px;
+	padding: 10px;
+	
+	transition: filter .15s ease-in-out;
+	filter: brightness(100%);
+	
+	outline: none;
+}
+
+#scroll-up-button:hover
+{
+	filter: brightness(75%);
+}
