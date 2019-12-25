@@ -69,7 +69,7 @@ int EMSCRIPTEN_KEEPALIVE solve_puzzle(int grid_size, uint32_t* cage_operations, 
 			
 			
 			
-			//Finally, we have multiplication. Here, we just remove posdsibilities that don't divide the product.
+			//Finally, we have multiplication. Here, we just remove possibilities that don't divide the product.
 			else if (cage_operations[cages_by_location_flat[grid_size * i + j]] == 2)
 			{
 				for (k = 1; k < grid_size; k++)
@@ -325,7 +325,7 @@ int EMSCRIPTEN_KEEPALIVE check_cage(int grid_size, uint32_t* grid, int cage_inde
 	
 	else if (operation == 4)
 	{
-		if ((max_digit * max_digit) / cage_product == value)
+		if ((max_digit * max_digit) % cage_product == 0 && (max_digit * max_digit) / cage_product == value)
 		{
 			return 1;
 		}
