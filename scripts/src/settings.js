@@ -41,6 +41,23 @@ let url_vars =
 	"banner_style": get_url_var("banner_style")
 };
 
+window.matchMedia("(prefers-color-scheme: dark)").addListener(function(e)
+{
+	if (e.matches && url_vars["theme"] !== 1)
+	{
+		url_vars["theme"] = 1;
+	}
+	
+	else if (!e.matches && url_vars["theme"] === 1)
+	{
+		url_vars["theme"] = 0;
+	}
+	
+	write_url_vars();
+	
+	location.reload();
+});
+
 if (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] === null)
 {
 	url_vars["theme"] = 1;
