@@ -69,6 +69,18 @@
 	
 	
 	<url>
+		<loc>https://www.cruzgodar.com/teaching/teaching.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/111/111.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	
+	
+	<url>
 		<loc>https://www.cruzgodar.com/applets/applets.html</loc>
 		<priority>0.5</priority>
 	</url>
@@ -85,6 +97,21 @@
 	
 	<url>
 		<loc>https://www.cruzgodar.com/applets/wilsons-algorithm/wilsons-algorithm.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/abelian-sandpiles/abelian-sandpiles.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/simulated-annealing/simulated-annealing.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/calcudoku-generator/calcudoku-generator.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
