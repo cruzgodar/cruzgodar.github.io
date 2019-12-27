@@ -227,9 +227,7 @@
 		
 		
 		
-		//Finally, draw the numbers. These are in 30px font, so there can be at most a 5-digit number (plus a symbol).
-		ctx.font = "30px sans-serif";
-		
+		//Finally, draw the numbers.
 		for (let i = 0; i < cages.length; i++)
 		{
 			//Find the leftmost cell in the top row of the cage.
@@ -255,17 +253,50 @@
 			
 			let label = "";
 			
-			if (cages[i][0] === "x")
+			if (cages[i][0] === "+")
+			{
+				label = cages[i][1] + "+";
+			}
+			
+			else if (cages[i][0] === "x")
 			{
 				label = cages[i][1] + "\u00D7";
 			}
 			
-			else
+			else if (cages[i][0] === "-")
 			{
-				label = cages[i][1] + cages[i][0];
+				label = cages[i][1] + "\u2013";
 			}
 			
-			ctx.fillText(label, 200 * top_left_cell[1] + 15, 200 * top_left_cell[0] + 40);
+			else if (cages[i][0] === ":")
+			{
+				label = cages[i][1] + "\uA789";
+			}
+			
+			else
+			{
+				label = cages[i][1] + "";
+			}
+			
+			
+			
+			let font_size = null;
+			
+			if (label.length <= 6)
+			{
+				ctx.font = "50px sans-serif";
+				
+				font_size = 50;
+			}
+			
+			else
+			{
+				ctx.font = (300 / label.length) + "px sans-serif";
+				
+				font_size = 300 / label.length;
+			}
+			
+			ctx.fillText(label, 200 * top_left_cell[1] + 15, 200 * top_left_cell[0] + font_size + 5);
 		}
 	}
 	
