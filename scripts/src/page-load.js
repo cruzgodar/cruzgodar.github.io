@@ -67,11 +67,6 @@ function on_page_load()
 		set_writing_page_font();
 	}
 	
-	if (page_settings["writing_page"] && url_vars["writing_style"] === 1)
-	{
-		set_writing_page_style();
-	}
-	
 	if (page_settings["small_margins_on_ultrawide"] && layout_string === "ultrawide")
 	{
 		reduce_page_margins();
@@ -434,7 +429,7 @@ function set_img_button_contrast()
 {
 	let elements = document.querySelectorAll(".nav-button, .scroll-button");
 	
-	for (i = 0; i < elements.length; i++)
+	for (let i = 0; i < elements.length; i++)
 	{
 		elements[i].setAttribute("src", elements[i].getAttribute("src").replace("chevron-left", "chevron-left-dark").replace("chevron-right", "chevron-right-dark").replace("chevron-down", "chevron-down-dark"));
 	}
@@ -445,38 +440,6 @@ function set_img_button_contrast()
 function set_writing_page_font()
 {
 	set_element_styles(".body-text", "font-family", "'Gentium Book Basic', serif");
-}
-
-
-
-function set_writing_page_style()
-{
-	//This is a fancy way of saying ("section br").remove(), but it ensures that <br> tags in places like song lyrics won't get removed.
-	let elements = document.querySelectorAll("section div .body-text");
-	
-	for (let i = 0; i < elements.length; i++)
-	{
-		//The next element might not exist, so we have to be careful.
-		try
-		{
-			let next_element = elements[i].parentNode.nextElementSibling;
-			
-			if (next_element.tagName.toLowerCase() === "br")
-			{
-				next_element.remove();
-			}
-		}
-		
-		catch(ex) {}
-	}
-	
-	
-	//Add an indent on every element except the first in the section.
-	elements = document.querySelectorAll("section div:not(:first-child) .body-text");
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].style.textIndent = "10pt";
-	}
 }
 
 

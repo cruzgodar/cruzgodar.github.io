@@ -28,7 +28,7 @@
 
 		<div id="theme-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out" data-aos-delay="1000">
-				<input type="image" class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="url_var_functions['theme']()">
+				<input type="image" class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="switch_setting('theme')">
 			</div>
 			
 			<div style="margin: auto" data-aos="fade-left" data-aos-delay="1000">
@@ -40,7 +40,7 @@
 		
 		<div id="dark-theme-color-button-row" class="button-row animated-opacity" style="">
 			<div data-aos="zoom-out">
-				<input type="image" class="footer-button" src="/graphics/button-icons/moon-stars.png" alt="Change Dark Theme Color" onclick="url_var_functions['dark_theme_color']()">
+				<input type="image" class="footer-button" src="/graphics/button-icons/moon-stars.png" alt="Change Dark Theme Color" onclick="switch_setting('dark_theme_color')">
 			</div>
 			
 			<div style="margin: auto" data-aos="fade-left" data-aos-delay="1100">
@@ -52,7 +52,7 @@
 		
 		<div id="contrast-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out">
-				<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Text Contrast" onclick="url_var_functions['contrast']()">
+				<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Text Contrast" onclick="switch_setting('contrast')">
 			</div>
 			
 			<div style="margin: auto" data-aos="fade-left" data-aos-delay="1200">
@@ -64,7 +64,7 @@
 		
 		<div id="text-size-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out">
-				<input type="image" class="footer-button" src="/graphics/button-icons/text-size.png" alt="Change Text Size" onclick="url_var_functions['text_size']()">
+				<input type="image" class="footer-button" src="/graphics/button-icons/text-size.png" alt="Change Text Size" onclick="switch_setting('text_size')">
 			</div>
 			
 			<div style="margin: auto" data-aos="fade-left" data-aos-delay="1300">
@@ -76,7 +76,7 @@
 		
 		<div id="font-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out">
-				<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Change Font" onclick="url_var_functions['font']()">
+				<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Change Font" onclick="switch_setting('font')">
 			</div>
 			
 			<div style="margin: auto" data-aos="fade-left" data-aos-delay="1400">
@@ -86,24 +86,12 @@
 		
 		<div style="height: 2vh"></div>
 		
-		<div id="writing-style-button-row" class="button-row animated-opacity">
+		<div id="comments-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out">
-				<input type="image" class="footer-button" src="/graphics/button-icons/paragraph.png" alt="Change Writing Style" onclick="url_var_functions['writing_style']()">
+				<input type="image" class="footer-button" src="/graphics/button-icons/comment.png" alt="Toggle Comments" onclick="switch_setting('comments')">
 			</div>
 			
 			<div style="margin: auto" data-aos="fade-left" data-aos-delay="1500">
-				<p id="writing-style-button-text" class="body-text button-text"></p>
-			</div>
-		</div>
-		
-		<div style="height: 2vh"></div>
-		
-		<div id="comments-button-row" class="button-row animated-opacity">
-			<div data-aos="zoom-out">
-				<input type="image" class="footer-button" src="/graphics/button-icons/comment.png" alt="Toggle Comments" onclick="url_var_functions['comments']()">
-			</div>
-			
-			<div style="margin: auto" data-aos="fade-left" data-aos-delay="1600">
 				<p id="comments-button-text" class="body-text button-text"></p>
 			</div>
 		</div>
@@ -112,10 +100,10 @@
 		
 		<div id="content-animation-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out">
-				<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Toggle Content Animation" onclick="url_var_functions['content_animation']()">
+				<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Toggle Content Animation" onclick="switch_setting('content_animation')">
 			</div>
 			
-			<div style="margin: auto" data-aos="fade-left" data-aos-delay="1700">
+			<div style="margin: auto" data-aos="fade-left" data-aos-delay="1600">
 				<p id="content-animation-button-text" class="body-text button-text"></p>
 			</div>
 		</div>
@@ -124,10 +112,10 @@
 		
 		<div id="banner-style-button-row" class="button-row animated-opacity">
 			<div data-aos="zoom-out">
-				<input type="image" class="footer-button" src="/graphics/button-icons/picture.png" alt="Toggle Banner Style" onclick="url_var_functions['banner_style']()">
+				<input type="image" class="footer-button" src="/graphics/button-icons/picture.png" alt="Toggle Banner Style" onclick="switch_setting('banner_style')">
 			</div>
 			
-			<div style="margin: auto" data-aos="fade-left" data-aos-delay="1800">
+			<div style="margin: auto" data-aos="fade-left" data-aos-delay="1700">
 				<p id="banner-style-button-text" class="body-text button-text"></p>
 			</div>
 		</div>

@@ -2,8 +2,6 @@ html
 {
 	max-width: 100%;
 	overflow-x: hidden;
-	
-	transition: background-color .6s ease, opacity .3s ease !important;
 }
 
 body
@@ -26,26 +24,6 @@ body
 	margin: auto;
 	margin-left: 10px !important;
 	text-align: left;
-}
-
-.heading-text
-{
-	transition: color .6s ease;
-}
-
-.body-text
-{
-	transition: color .6s ease;
-}
-
-.text-button
-{
-	transition: filter .15s ease-in-out, color .6s ease, border-color .6s ease !important;
-}
-
-.footer-button
-{
-	transition: filter .15s ease-in-out, border-color .6s ease !important;
 }
 
 

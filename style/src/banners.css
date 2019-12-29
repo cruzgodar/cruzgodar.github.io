@@ -17,19 +17,6 @@
 
 
 
-#opacity-cover
-{
-	position: fixed;
-	width: 100vw;
-	height: 100vh;
-	
-	opacity: 0;
-	
-	transform: translate3d(0, 0, 0);
-}
-
-
-
 #banner-cover
 {
 	height: 100vh;

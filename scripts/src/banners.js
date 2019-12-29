@@ -75,37 +75,6 @@ function load_banner()
 		
 		else
 		{
-			//Set up the opacity cover.
-			let color = 255;
-			
-			if (url_vars["theme"] === 1)
-			{
-				color = 24;
-				
-				if (url_vars["dark_theme_color"] === 1)
-				{
-					color = 0;
-				}
-			}
-			
-			
-			
-			//No, I don't understand why this has to be so complicated. Just setting the background color of opacity-cover doesn't work, and neither does using the normal temporary style. Who knows.
-			try {document.querySelector("#opacity-cover-style").remove();}
-			catch(ex) {}
-			
-			let element = add_style(`
-				#opacity-cover
-				{
-					background-color: rgb(${color}, ${color}, ${color});
-				}
-			`, false);
-			
-			element.id = "opacity-cover-style";
-			
-			
-			
-			
 			if (window_width / window_height < 1)
 			{
 				banner_name = "portrait." + banner_extension;
@@ -167,7 +136,6 @@ function load_banner()
 			.catch(function(error)
 			{
 				document.querySelector("#banner").remove();
-				document.querySelector("#opacity-cover").remove();
 				document.querySelector("#banner-cover").remove();
 				
 				
@@ -206,9 +174,9 @@ function scroll_update(scroll_position_override)
 		{
 			if (scroll <= window_height)
 			{
-				let opacity = .5 - .5 * Math.sin(Math.PI * Math.max(1 - scroll / window_height, 0) - Math.PI / 2);
+				let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / window_height, 0) - Math.PI / 2);
 				
-				try {document.querySelector("#opacity-cover").style.opacity = opacity;}
+				try {document.querySelector("#banner").style.opacity = opacity;}
 				catch(ex) {}
 				
 				if (opacity === 0)
@@ -225,7 +193,7 @@ function scroll_update(scroll_position_override)
 			else if (banner_done === false)
 			{
 				//We need a try block here in case the user refreshes the page and it's way low down for some reason, even though scrollRestoration should be off.
-				try {document.querySelector("#opacity-cover").style.opacity = 1;}
+				try {document.querySelector("#banner").style.opacity = 0;}
 				catch(ex) {}
 				
 				banner_done = true;

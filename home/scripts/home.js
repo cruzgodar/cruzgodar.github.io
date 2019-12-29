@@ -58,10 +58,5 @@
 				elements[i].removeAttribute("data-aos");
 			}
 		}
-		
-		if (url_vars["banner_style"] === 1)
-		{
-			set_element_styles(".name-text-container", "position", "absolute");
-		}
 	}
 }()
