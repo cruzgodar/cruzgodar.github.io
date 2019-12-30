@@ -189,6 +189,8 @@ function show_floating_settings()
 				</div>
 			</div>
 			
+			<div class="floating-settings-scroll-snap"></div>
+			
 			<div class="floating-settings-page">
 				<div id="font-button-row" class="floating-settings-button-row">
 					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="#theme-button-row">
@@ -229,6 +231,8 @@ function show_floating_settings()
 						<p id="banner-style-button-text" class="floating-settings-button-text"></p>
 					</div>
 				</div>
+				
+				<div style="margin-top: -6px"></div>
 			</div>
 		`;
 		

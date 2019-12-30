@@ -180,6 +180,13 @@
 	display: none;
 }
 
+.floating-settings-scroll-snap
+{
+	margin-top: -19px;
+	margin-bottom: 19px;
+	scroll-snap-align: start;
+}
+
 .floating-settings-page
 {
 	width: 100%;
@@ -189,8 +196,6 @@
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: flex-start;
-	
-	scroll-snap-align: center;
 }
 
 .floating-settings-button-row
