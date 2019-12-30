@@ -324,7 +324,7 @@ function switch_setting(setting, no_animation = false)
 		
 		for (let i = 0; i < difficult_elements.length; i++)
 		{
-			difficult_elements[i].classList.add("fast-animated-opacity");
+			difficult_elements[i].classList.add("animated-opacity");
 			
 			difficult_elements[i].style.opacity = 0;
 			
@@ -334,8 +334,8 @@ function switch_setting(setting, no_animation = false)
 				
 				setTimeout(function()
 				{
-					difficult_elements[i].classList.remove("fast-animated-opacity");
-				}, 100);
+					difficult_elements[i].classList.remove("animated-opacity");
+				}, 300);
 			}, 600);
 		}
 		

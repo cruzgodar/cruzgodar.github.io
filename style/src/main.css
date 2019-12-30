@@ -167,14 +167,6 @@ img
 
 
 
-/* When you really need something gone fast. */
-.fast-animated-opacity
-{
-	transition: opacity .1s ease-in-out;
-}
-
-
-
 /* Used on pages with nonstandard background colors to fade to the default. */
 .background-transition
 {
