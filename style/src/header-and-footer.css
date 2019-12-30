@@ -144,12 +144,93 @@
 
 
 
+#floating-settings
+{
+	position: fixed;
+	
+	bottom: 10px;
+	left: 10px;
+	
+	/* This is 39*4 + 20*3 + 9: exactly the right amount of room to have 4 buttons with 20px of spacing between them. We add the 9 so that part of the next row is visible, encouraging the user to scroll. */
+	width: 225px;
+	height: 225px;
+	
+	background-color: rgb(255, 255, 255);
+	
+	/* This matches the border radius of the buttons exactly. */
+	border-radius: 19.5px;
+	padding: 20px;
+	
+	box-shadow: 0px 0px 10px rgb(0, 0, 0);
+	
+	overflow-x: hidden;
+	overflow-y: scroll;
+	scroll-snap-type: y mandatory;
+	
+	scrollbar-width: none;
+	
+	opacity: 0;
+	transition: opacity .3s ease-in-out;
+	
+	z-index: 120;
+}
+
+#floating-settings::-webkit-scrollbar
+{
+	display: none;
+}
+
+.floating-settings-page
+{
+	width: 100%;
+	height: auto;
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	
+	scroll-snap-align: center;
+}
+
+.floating-settings-button-row
+{
+	width: 100%;
+	height: 38px;
+	margin: 0 auto;
+	
+	margin-bottom: 20px;
+	
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	
+	transition: opacity .3s ease-in-out;
+}
+
+.floating-settings-button-text-container
+{
+	margin: auto;
+	
+	margin-left: 10px;
+}
+
+.floating-settings-button-text
+{
+	text-align: left;
+	
+	color: rgb(127, 127, 127);
+}
+
+
+
+
 /* The area where the user can hover or tap to reveal the footer anywhere. */
 #scroll-up-button-location
 {
 	position: fixed;
 	top: 0;
-	z-index: 120;
+	z-index: 140;
 	
 	height: 50px;
 	width: 100vw;
@@ -163,7 +244,7 @@
 	width: 100vw;
 	height: 100px;
 	
-	z-index: 110;
+	z-index: 130;
 }
 
 
@@ -190,4 +271,14 @@
 #scroll-up-button:hover
 {
 	filter: brightness(75%);
+}
+
+
+
+@media (max-width: 300px)
+{
+	#floating-settings
+	{
+		width: calc(100vw - 20px);
+	}
 }

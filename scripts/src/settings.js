@@ -89,7 +89,7 @@ function init_settings()
 {
 	for (let key in url_vars)
 	{
-		//These are double equals here, and that's important, but I can't quite see why. Obviously the url_vars are stored as strings and I just didn't realize that when I first coded this, but this bit of code has refused to cooperate with any modifications I make. Who knows.
+		//These are double equals, and that's important, but I can't quite see why. Obviously the url_vars are stored as strings and I just didn't realize that when I first coded this, but this bit of code has refused to cooperate with any modifications I make. Who knows.
 		if (url_vars[key] == null)
 		{
 			url_vars[key] = 0;
@@ -101,6 +101,192 @@ function init_settings()
 			switch_setting(key, true);
 		}
 	}
+}
+
+
+
+let floating_settings_is_visible = false;
+
+function show_floating_settings()
+{	
+	if (floating_settings_is_visible)
+	{
+		return;
+	}
+	
+	
+	
+	floating_settings_is_visible = true;
+	
+	document.body.firstChild.insertAdjacentHTML("beforebegin", `<div id="floating-settings"></div>`);
+	
+	//I really don't like this.
+	setTimeout(function()
+	{
+		document.querySelector("#floating-settings").style.opacity = 1;
+	}, 10);
+	
+	
+	
+	if (floating_footer_is_visible)
+	{
+		document.querySelector("#floating-footer").style.opacity = 0;
+		
+		floating_footer_is_visible = false;
+		
+		setTimeout(function()
+		{
+			document.querySelector("#floating-footer").style.display = "none";
+			document.querySelector("#floating-footer-touch-target").style.display = "block";
+		}, 300);
+	}
+	
+	
+	
+	setTimeout(function()
+	{
+		//These aren't seen by set_up_aos(), so we'll do things the old-fashioned way.
+		document.querySelector("#floating-settings").innerHTML = `
+			<div class="floating-settings-page">
+				<div id="theme-button-row" class="floating-settings-button-row">
+					<div data-aos="zoom-out" data-aos-offset="0">
+						<input type="image" class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="switch_setting('theme')">
+					</div>
+					
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="0" data-aos-anchor="#theme-button-row">
+						<p id="theme-button-text" class="floating-settings-button-text"></p>
+					</div>
+				</div>
+				
+				<div id="dark-theme-color-button-row" class="floating-settings-button-row">
+					<div data-aos="zoom-out" data-aos-delay="100" data-aos-anchor="#theme-button-row">
+						<input type="image" class="footer-button" src="/graphics/button-icons/moon-stars.png" alt="Change Theme" onclick="switch_setting('dark_theme_color')">
+					</div>
+					
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="100" data-aos-anchor="#theme-button-row">
+						<p id="dark-theme-color-button-text" class="floating-settings-button-text"></p>
+					</div>
+				</div>
+				
+				<div id="contrast-button-row" class="floating-settings-button-row">
+					<div data-aos="zoom-out" data-aos-delay="200" data-aos-anchor="#theme-button-row">
+						<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Theme" onclick="switch_setting('contrast')">
+					</div>
+					
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="200" data-aos-anchor="#theme-button-row">
+						<p id="contrast-button-text" class="floating-settings-button-text"></p>
+					</div>
+				</div>
+				
+				<div id="text-size-button-row" class="floating-settings-button-row">
+					<div data-aos="zoom-out" data-aos-delay="300" data-aos-anchor="#theme-button-row">
+						<input type="image" class="footer-button" src="/graphics/button-icons/text-size.png" alt="Change Theme" onclick="switch_setting('text_size')">
+					</div>
+					
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="300" data-aos-anchor="#theme-button-row">
+						<p id="text-size-button-text" class="floating-settings-button-text"></p>
+					</div>
+				</div>
+			</div>
+			
+			<div class="floating-settings-page">
+				<div id="font-button-row" class="floating-settings-button-row">
+					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="#theme-button-row">
+						<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Change Theme" onclick="switch_setting('font')">
+					</div>
+					
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="#theme-button-row">
+						<p id="font-button-text" class="floating-settings-button-text"></p>
+					</div>
+				</div>
+				
+				<div id="comments-button-row" class="floating-settings-button-row">
+					<div data-aos="zoom-out" data-aos-delay="500" data-aos-anchor="#theme-button-row">
+						<input type="image" class="footer-button" src="/graphics/button-icons/comment.png" alt="Change Theme" onclick="switch_setting('comments')">
+					</div>
+					
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="500" data-aos-anchor="#theme-button-row">
+						<p id="comments-button-text" class="floating-settings-button-text"></p>
+					</div>
+				</div>
+				
+				<div id="content-animation-button-row" class="floating-settings-button-row">
+					<div data-aos="zoom-out" data-aos-delay="600" data-aos-anchor="#theme-button-row">
+						<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Change Theme" onclick="switch_setting('content_animation')">
+					</div>
+					
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="600" data-aos-anchor="#theme-button-row">
+						<p id="content-animation-button-text" class="floating-settings-button-text"></p>
+					</div>
+				</div>
+				
+				<div id="banner-style-button-row" class="floating-settings-button-row">
+					<div data-aos="zoom-out" data-aos-delay="700" data-aos-anchor="#theme-button-row">
+						<input type="image" class="footer-button" src="/graphics/button-icons/picture.png" alt="Change Theme" onclick="switch_setting('banner_style')">
+					</div>
+					
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="700" data-aos-anchor="#theme-button-row">
+						<p id="banner-style-button-text" class="floating-settings-button-text"></p>
+					</div>
+				</div>
+			</div>
+		`;
+		
+		let settings_query_strings = Object.keys(url_vars);
+		
+		for (let i = 0; i < settings_query_strings.length; i++)
+		{
+			document.querySelector("#" + settings_query_strings[i].replace(/_/g, "-") + "-button-text").textContent = settings_texts[settings_query_strings[i]][url_vars[settings_query_strings[i]]];
+		}
+	}, 200);
+}
+
+
+
+function hide_floating_settings()
+{
+	document.querySelector("#floating-settings").style.opacity = 0;
+	
+	setTimeout(function()
+	{
+		document.querySelector("#floating-settings").remove();
+		
+		floating_settings_is_visible = false;
+	}, 300);
+}
+
+
+
+if (hasTouch())
+{
+	document.documentElement.addEventListener("touchstart", function(e)
+	{
+		if (floating_settings_is_visible === false)
+		{
+			return;
+		}
+		
+		if (!(document.querySelector("#floating-settings").contains(e.target)))
+		{
+			hide_floating_settings();
+		}
+	});
+}
+
+else
+{
+	document.documentElement.addEventListener("mousedown", function(e)
+	{
+		if (floating_settings_is_visible === false)
+		{
+			return;
+		}
+		
+		if (!(document.querySelector("#floating-settings").contains(e.target)))
+		{
+			hide_floating_settings();
+		}
+	});
 }
 
 
@@ -138,7 +324,7 @@ function switch_setting(setting, no_animation = false)
 		
 		for (let i = 0; i < difficult_elements.length; i++)
 		{
-			difficult_elements[i].classList.add("animated-opacity");
+			difficult_elements[i].classList.add("fast-animated-opacity");
 			
 			difficult_elements[i].style.opacity = 0;
 			
@@ -148,8 +334,8 @@ function switch_setting(setting, no_animation = false)
 				
 				setTimeout(function()
 				{
-					difficult_elements[i].classList.remove("animated-opacity");
-				}, 300);
+					difficult_elements[i].classList.remove("fast-animated-opacity");
+				}, 100);
 			}, 600);
 		}
 		
@@ -244,21 +430,27 @@ function switch_theme()
 	//Light to dark
 	if (url_vars["theme"] === 0)
 	{
-		if (url_vars["dark_theme_color"] !== 1)
+		if (!page_settings["manual_dark_theme"])
 		{
-			document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-		}
-		
-		else
-		{
-			document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+			if (url_vars["dark_theme_color"] !== 1)
+			{
+				document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
+			}
+			
+			else
+			{
+				document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+			}
 		}
 		
 		
 		
 		if (url_vars["contrast"] === 1)
 		{
-			animate_theme_contrast("dark_contrast");
+			if (!page_settings["manual_dark_theme"])
+			{
+				animate_theme_contrast("dark_contrast");
+			}
 			
 			
 			
@@ -280,7 +472,10 @@ function switch_theme()
 		
 		else
 		{
-			animate_theme_contrast("dark");
+			if (!page_settings["manual_dark_theme"])
+			{
+				animate_theme_contrast("dark");
+			}
 			
 			
 			
@@ -317,13 +512,19 @@ function switch_theme()
 	//Dark to light
 	else
 	{
-		document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
+		if (!page_settings["manual_dark_theme"])
+		{
+			document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
+		}
 		
 		
 		
 		if (url_vars["contrast"] === 1)
 		{
-			animate_theme_contrast("contrast");
+			if (!page_settings["manual_dark_theme"])
+			{
+				animate_theme_contrast("contrast");
+			}
 			
 			
 			
@@ -345,7 +546,10 @@ function switch_theme()
 		
 		else
 		{
-			animate_theme_contrast("");
+			if (!page_settings["manual_dark_theme"])
+			{
+				animate_theme_contrast("");
+			}
 			
 			
 			

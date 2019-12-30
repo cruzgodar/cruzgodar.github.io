@@ -49,6 +49,8 @@ function on_page_load()
 	
 	background_color_changed = false;
 	
+	floating_settings_is_visible = false;
+	
 	
 	
 	

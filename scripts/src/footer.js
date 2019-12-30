@@ -48,7 +48,7 @@ function insert_footer()
 		<div class="footer-buttons" style="position: relative">
 			<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu" style="position: absolute; bottom: 6.25px; left: 10px">
 				<a href="/index.html?page=%2Fsettings%2Fsettings.html${vars_return}">
-					<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="redirect('/settings/settings.html')">
+					<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="show_floating_settings()">
 				</a>
 			</div>
 			
