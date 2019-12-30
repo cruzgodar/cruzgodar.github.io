@@ -1236,7 +1236,7 @@ function animate_theme_contrast(settings)
 		
 		set_element_styles(".section-text", "color", "rgb(96, 96, 96)");
 		
-		set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext", "color", "rgb(127, 127, 127)");
+		set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text", "color", "rgb(127, 127, 127)");
 		
 		set_element_styles(".body-text .link", "color", "rgb(127, 192, 127)");
 		
@@ -1277,7 +1277,7 @@ function animate_theme_contrast(settings)
 		
 		set_element_styles(".section-text", "color", "rgb(184, 184, 184)");
 		
-		set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext", "color", "rgb(152, 152, 152)");
+		set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text", "color", "rgb(152, 152, 152)");
 		
 		set_element_styles(".body-text .link", "color", "rgb(152, 216, 152)");
 		
@@ -1318,7 +1318,7 @@ function animate_theme_contrast(settings)
 		
 		set_element_styles(".section-text", "color", "rgb(48, 48, 48)");
 		
-		set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext", "color", "rgb(64, 64, 64)");
+		set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text", "color", "rgb(64, 64, 64)");
 		
 		set_element_styles(".body-text .link", "color", "rgb(64, 128, 64)");
 		
@@ -1362,6 +1362,8 @@ function animate_theme_contrast(settings)
 		set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext", "color", "rgb(216, 216, 216)");
 		
 		set_element_styles(".body-text .link", "color", "rgb(216, 255, 216)");
+		
+		set_element_styles(".floating-settings-button-text", "color", "rgb(64, 64, 64)");
 		
 		
 		
@@ -1545,6 +1547,11 @@ function get_settings_style(settings)
 				color: rgb(64, 128, 64);
 			}
 			
+			.floating-settings-button-text
+			{
+				color: rgb(64, 64, 64);
+			}
+			
 			
 			
 			.quote-text
@@ -1627,6 +1634,11 @@ function get_settings_style(settings)
 			.body-text .link
 			{
 				color: rgb(216, 255, 216);
+			}
+			
+			.floating-settings-button-text
+			{
+				color: rgb(64, 64, 64);
 			}
 			
 			
