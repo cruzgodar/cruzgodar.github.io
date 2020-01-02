@@ -151,6 +151,26 @@ function show_floating_settings()
 	setTimeout(function()
 	{
 		document.querySelector("#floating-settings").style.opacity = 1;
+		
+		//When the focus is on the floating settings, disable scrolling on the main document so that scrolling on the settings doesn't scroll anything else.
+		if (!hasTouch())
+		{
+			document.querySelector("#floating-settings").addEventListener("mouseenter", function()
+			{
+				document.documentElement.style.overflowY = "hidden";
+			});
+			
+			document.querySelector("#floating-settings").addEventListener("mouseleave", function()
+			{
+				document.documentElement.style.overflowY = "scroll";
+			});
+		}
+		
+		else
+		{
+			//We'll just remove this as soon as we get a touch event anywhere else.
+			document.documentElement.style.overflowY = "hidden";
+		}
 	}, 10);
 	
 	
@@ -277,6 +297,8 @@ function show_floating_settings()
 function hide_floating_settings()
 {
 	document.querySelector("#floating-settings").style.opacity = 0;
+	
+	document.documentElement.style.overflowY = "scroll";
 	
 	setTimeout(function()
 	{
