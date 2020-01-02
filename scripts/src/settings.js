@@ -165,12 +165,6 @@ function show_floating_settings()
 				document.documentElement.style.overflowY = "scroll";
 			});
 		}
-		
-		else
-		{
-			//We'll just remove this as soon as we get a touch event anywhere else.
-			document.documentElement.style.overflowY = "hidden";
-		}
 	}, 10);
 	
 	
