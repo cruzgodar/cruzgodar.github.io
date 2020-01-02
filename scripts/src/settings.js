@@ -101,6 +101,33 @@ function init_settings()
 			switch_setting(key, true);
 		}
 	}
+	
+	
+	
+	//This prevents things from flickering when we first load the site.
+	
+	let element = null;
+	
+	if (url_vars["theme"] === 1 && url_vars["contrast"] !== 1)
+	{
+		element = add_style(get_settings_style("dark"), false);
+	}
+	
+	else if (url_vars["theme"] !== 1 && url_vars["contrast"] === 1)
+	{
+		element = add_style(get_settings_style("contrast"), false);
+	}
+	
+	else if (url_vars["theme"] === 1 && url_vars["contrast"] === 1)
+	{
+		element = add_style(get_settings_style("dark_contrast"), false);
+	}
+	
+	try {document.querySelector("#theme-contrast-adjust").remove();}
+	catch(ex) {}
+	
+	try {element.id = "theme-contrast-adjust";}
+	catch(ex) {}
 }
 
 
