@@ -44,8 +44,8 @@ let multibanner_pages =
 {
 	"/home/home.html":
 	{
-		"current_banner": Math.floor(Math.random() * 20) + 1,
-		"num_banners": 20
+		"current_banner": Math.floor(Math.random() * 22) + 1,
+		"num_banners": 22
 	}
 };
 

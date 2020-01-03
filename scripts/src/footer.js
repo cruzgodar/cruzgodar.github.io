@@ -51,9 +51,7 @@ function insert_footer()
 			</div>
 			
 			<div data-aos="zoom-out" data-aos-delay="1000" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu" style="position: absolute; bottom: 6.25px; right: 10px">
-				<a href="/index.html?page=%2Fpwa%2Fpwa.html${vars_no_return}">
-					<input type="image" id="pwa-button" class="footer-button" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa/pwa.html')">
-				</a>
+				<input type="image" id="pwa-button" class="footer-button" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa/pwa.html')">
 			</div>
 		</div>
 	`);
