@@ -152,18 +152,10 @@ function show_floating_settings()
 	{
 		document.querySelector("#floating-settings").style.opacity = 1;
 		
-		//When the focus is on the floating settings, disable scrolling on the main document so that scrolling on the settings doesn't scroll anything else.
+		//Nontouch browsers don't do scroll snapping very well.
 		if (!hasTouch())
 		{
-			document.querySelector("#floating-settings").addEventListener("mouseenter", function()
-			{
-				document.documentElement.style.overflowY = "hidden";
-			});
-			
-			document.querySelector("#floating-settings").addEventListener("mouseleave", function()
-			{
-				document.documentElement.style.overflowY = "scroll";
-			});
+			document.querySelector("#floating-settings").style.scrollSnapType = "y proximity";
 		}
 	}, 10);
 	
