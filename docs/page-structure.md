@@ -16,19 +16,20 @@ if (typeof current_url == "undefined")
 
 page_settings = 
 {
-	"title": "",
+	"title": "Oh No!",
 	
 	"banner_page": false,
-	"multibanner_page": false,
+	"num_banners": 0,
+	
 	"writing_page": false,
 	"math_page": false,
 	"comments": false,
 	
-	"small_margins_on_ultrawide": false,
+	"small_margins_on_ultrawide": true,
 	
 	"manual_banner": false,
 	"manual_dark_theme": false,
-	
+			
 	"no_footer": false,
 	"footer_exclusion": ""
 };
@@ -38,27 +39,27 @@ on_page_load();
 
 The `if` statement makes every page function as an entry point (see [the doc on navigation](https://github.com/90259025/90259025.github.io/blob/master/docs/navigation.md)), since `current_url` will only be defined if `main.js` has been loaded. The call to `on_page_load()` triggers a large number of functions, and is also covered in [the navigation doc](https://github.com/90259025/90259025.github.io/blob/master/docs/navigation.md). The block in the middle sets the page settings, which tell the JS how to properly render the page. Every field is required on every page.
 
-- `title`: the title of the page. In particular, this sets the text that appears on the tab in the browser.
+- `title`: the title of the page. This sets the text that appears on the tab in the browser.
 
 - `banner_page`: whether or not the page has a banner. Covered in more detail later in this doc.
 
-- `num_banners`: how many different banners the page has. This is `1` for every banner page but the homepage.
+- `num_banners`: how many different banners the page has. This is `1` for every banner page but the homepage, and `0` for pages that don't have any banners at all.
 
-- `writing_page`: two settings affect the font, spacing, and indentation on writing pages only. This is how those pages are identifed.
+- `writing_page`: one setting affects the font on writing pages only. This is how those pages are identifed.
 
 - `math_page`: whether MathJax appears on the page and needs to be typeset.
 
 - `comments`: whether Disqus comments appear at the bottom of the page and need to be loaded.
 
-- `small_margins_on_ultrawide`: whether the width of text should be reduced from 70% to 50% when the layout is in ultrawide mode.
+- `small_margins_on_ultrawide`: whether the width of text should be reduced from 70% to 50% when the layout is in ultrawide mode. This is typically `false` only when the text width lines up nicely with something like the image links and shouldn't be changed.
 
 - `manual_banner`: if the page wants `banners.js` loaded, but it doesn't want `scroll_update()` to be run. This currently isn't used by any page.
 
 - `manual_dark_theme`: if the page is complicated enough that adding the dark theme styles will break it beyond repair. If this is true, the page must handle dark theme (and contrast) on its own.
 
-- `no_footer`: if the footer shouldn't spawn. Used on pages like settings. This also disables the floating footer.
+- `no_footer`: if the footer shouldn't spawn. Used on pages like the homepage. This also disables the floating footer.
 
-- `footer_exclusion`: which page shouldn't be present in the footer, if it exists. The typical value is the current page if it's first level (writing, applets, etc.), and nothing for any other page.
+- `footer_exclusion`: which page shouldn't be present in the footer, if it exists. The typical value is the current page if it's first level (writing, teaching, etc.), and nothing for any other page.
 
 
 
@@ -93,7 +94,7 @@ Pages can optionally include banners like the homepage's. This displays a fullsc
 ```html
 <div id="banner"></div>
 
-<div id="opacity-cover"></div>
+<div id="banner-gradient"></div>
 
 <div id="banner-cover"></div>
 
@@ -116,11 +117,11 @@ If one page is a subpage of another, it almost always needs a cover image. These
 
 ## Custom scripts and styles
 
-To load custom JS or CSS on a page, a page must have folders called `scripts` and `style` in the page folder. Each must contain two files: one nonminified file and one minified one, both named the same as the HTML file, just with a different ending. For example, if the HTML file is `/writing/corona/corona.html`, then the script files should be `/writing/corona/scripts/corona.js` and `/writing/corona/scripts/corona.min.js`.
+To load custom JS and CSS on a page, a page must have folders called `scripts` and `style` in the page folder. Each must contain two files: one nonminified file and one minified one, both named the same as the HTML file, just with a different ending. For example, if the HTML file is `/writing/corona/corona.html`, then the script files should be `/writing/corona/scripts/corona.js` and `/writing/corona/scripts/corona.min.js`.
 
 Custom CSS files are loaded at the *beginning* of the head, which means they have the lowest priority of any CSS, including the base bundle. If the custom CSS intends to override something from that bundle, it must flag that property with `!important`.
 
-Custom JS files should not create any global variables or redefine any functions. To make this easier, every custom JS file must be wrapped in the following code:
+Custom JS files should not create any global variables or redefine any functions. To make this easier, every custom JS file should be wrapped in the following code:
 
 ```js
 !function()
@@ -131,7 +132,7 @@ Custom JS files should not create any global variables or redefine any functions
 
 This ensures that any variables defined with the `let` keyword (which should be all of them) can be redefined the next time the page is loaded, and similarly for functions.
 
-If a page needs more JS files than the single one it is allotted (for example, it needs to run a Web Worker), then they should be stored in the `scripts` folder and called from the page's main script.
+If a page needs more JS files than the single one it is allotted (for example, it needs to run a Web Worker or some WebAssembly), then those files should also be stored in the `scripts` folder and called from the page's main script — they won't be called automatically.
 
 
 

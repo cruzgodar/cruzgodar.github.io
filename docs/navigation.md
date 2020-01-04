@@ -56,23 +56,25 @@ All three of these functions run in parallel and return promises. If all three p
 
 3. Fades in the banner or just makes the content visible on nonbanner pages.
 
-4. Fetches the other size of the current banner in the background to reduce the delay when changing the window's orientation.
+4. Detects and blocks all `a` tags on the page, and processes them as described in the previous section.
 
-5. Detects all links to banner pages and fetches those banners in the background.
+5. Detects all elements with an attribute of `data-aos` and automatically sets their delays and anchors so that they animate in in sequence.
 
-6. Detects and blocks all `a` tags on the page, and processes them as described in the previous section.
+6. Sets up both the regular and floating footers (see [the footer doc](https://github.com/90259025/90259025.github.io/blob/master/docs/footer.md) for more).
 
-7. Detects all elements with an attribute of `data-aos` and automatically sets their delays and anchors so that they animate in in sequence.
+7. Sets up the scroll up button that can be revealed at the top of the page.
 
-8. Sets up both the regular and floating footers (see [the footer doc](https://github.com/90259025/90259025.github.io/blob/master/docs/footer.md) for more).
+8. Fetches the other size of the current banner in the background to reduce the delay when changing the window's orientation.
 
-9. Detects if the device being used is a touchscreen, and if so, removes all `:hover` selectors from the CSS.
+9. Detects all links to banner pages and fetches those banners in the background.
 
-10. Applies various settings, including setting the font and layout on writing pages, disabling comments, and turning off content animation.
+10. Detects if the device being used is a touchscreen, and if so, removes all `:hover` selectors from the CSS.
 
-11. If the page setting `math_page` is true, typesets any math on the page.
+11. Applies various settings, including setting the font and layout on writing pages, disabling comments, and turning off content animation.
 
-12. If the page setting `comments` is true, loads Disqus.
+12. If the page setting `math_page` is true, typesets any math on the page.
+
+13. If the page setting `comments` is true, loads Disqus.
 
 
 

@@ -10,7 +10,7 @@ The purpose of the footer is to provide easy access to the main pages on the sit
 
 ## The regular footer
 
-This implementation of the footer is the simpler of the two in almost every way. Using the page settings, it's dynamically inserted at the bottom of the body. When the user scrolls to within 5 pixels of the bottom of the `document`, the footer animates into existence, giving links to all of the main pages on the site (unless page settings say to omit one — this is usually when the page itself appears in the footer). The footer also contains links to the settings and the progressive web app pages.
+This implementation of the footer is the simpler of the two in almost every way. Using the page settings, it's dynamically inserted at the bottom of the body. When the user scrolls to within 5 pixels of the bottom of the `document`, the footer animates into existence, giving links to all of the main pages on the site (unless page settings say to omit one — this is usually when the page itself appears in the footer). The footer also contains buttons for the settings and the progressive web app page.
 
 
 
