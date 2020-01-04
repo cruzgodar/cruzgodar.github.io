@@ -160,13 +160,11 @@ function show_floating_settings()
 			document.querySelector("#floating-settings").addEventListener("mouseenter", function()
 			{
 				document.documentElement.style.overflowY = "hidden";
-				document.body.style.overflowY = "hidden";
 			});
 			
 			document.querySelector("#floating-settings").addEventListener("mouseleave", function()
 			{
 				document.documentElement.style.overflowY = "scroll";
-				document.body.style.overflowY = "scroll";
 			});
 		}
 	}, 10);
