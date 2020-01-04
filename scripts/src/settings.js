@@ -157,6 +157,9 @@ function show_floating_settings()
 		{
 			document.querySelector("#floating-settings").style.scrollSnapType = "y proximity";
 			
+			document.documentElement.style.overflowY = "hidden";
+			document.body.style.overflowY = "scroll";
+			
 			document.querySelector("#floating-settings").addEventListener("mouseenter", function()
 			{
 				document.documentElement.style.overflowY = "hidden";
