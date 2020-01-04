@@ -215,7 +215,7 @@ function insert_footer()
 	
 	
 	
-	document.querySelector("#pwa-button").parentNode.parentNode.setAttribute("data-aos-delay", delay);
+	document.querySelector("#pwa-button").parentNode.setAttribute("data-aos-delay", delay);
 	
 	
 	
