@@ -61,8 +61,9 @@ async function draw_sandpile_graph()
 			{
 				if (sandpile_graph[i][j] >= 4)
 				{
-					let num_grains_to_add = Math.floor(sandpile_graph[i][j] / 4);
-					sandpile_graph[i][j] %= 4;
+					//This used to be /= 4 and %= 4. But this is much faster.
+					let num_grains_to_add = sandpile_graph[i][j] >> 2;
+					sandpile_graph[i][j] &= 3;
 					
 					sandpile_graph[i - 1][j] += num_grains_to_add;
 					sandpile_graph[i][j + 1] += num_grains_to_add;
