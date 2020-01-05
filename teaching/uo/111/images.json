@@ -1,1 +1,7 @@
-{}
+{
+    "image-syllabus":
+    {
+        "webp": "syllabus/cover.webp",
+        "non-webp": "syllabus/cover.jpg"
+    }
+}
