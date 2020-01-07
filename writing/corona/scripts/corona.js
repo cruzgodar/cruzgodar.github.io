@@ -207,8 +207,8 @@
 	
 	function update_stage_bubbles(scroll)
 	{
-		let num_lit_bubbles = 4;
-		let blinking_bubble = 4;
+		let num_lit_bubbles = 5;
+		let blinking_bubble = 5;
 		
 		if (scroll > stage_bubbles_pos - 3*window_height/4 && stage_bubbles_done === false)
 		{
