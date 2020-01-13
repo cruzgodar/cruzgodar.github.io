@@ -1,4 +1,10 @@
 {
+    "image-quiz-1":
+    {
+        "webp": "quizzes/1/cover.webp",
+        "non-webp": "quizzes/1/cover.jpg"
+    },
+    
     "image-written-homework-1":
     {
         "webp": "homeworks/1/cover.webp",
