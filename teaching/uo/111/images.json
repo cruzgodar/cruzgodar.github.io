@@ -1,4 +1,10 @@
 {
+    "image-written-homework-2":
+    {
+        "webp": "homeworks/2/cover.webp",
+        "non-webp": "homeworks/2/cover.jpg"
+    },
+    
     "image-wednesday-example-solutions":
     {
         "webp": "extra/wednesday-example-solutions/cover.webp",
