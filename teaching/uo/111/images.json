@@ -1,4 +1,10 @@
 {
+    "image-wednesday-example-solutions":
+    {
+        "webp": "extra/wednesday-example-solutions/cover.webp",
+        "non-webp": "extra/wednesday-example-solutions/cover.jpg"
+    },
+    
     "image-quiz-1":
     {
         "webp": "quizzes/1/cover.webp",
