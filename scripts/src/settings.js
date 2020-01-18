@@ -197,41 +197,41 @@ function show_floating_settings()
 		document.querySelector("#floating-settings").innerHTML = `
 			<div class="floating-settings-page">
 				<div id="theme-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-offset="0">
+					<div data-aos="zoom-out" data-aos-offset="0" data-aos-anchor="body">
 						<input type="image" class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="switch_setting('theme')">
 					</div>
 					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="0" data-aos-anchor="#theme-button-row">
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="0" data-aos-anchor="body">
 						<p id="theme-button-text" class="floating-settings-button-text"></p>
 					</div>
 				</div>
 				
 				<div id="dark-theme-color-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="100" data-aos-anchor="#theme-button-row">
+					<div data-aos="zoom-out" data-aos-delay="100" data-aos-anchor="body">
 						<input type="image" class="footer-button" src="/graphics/button-icons/moon-stars.png" alt="Change Theme" onclick="switch_setting('dark_theme_color')">
 					</div>
 					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="100" data-aos-anchor="#theme-button-row">
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="100" data-aos-anchor="body">
 						<p id="dark-theme-color-button-text" class="floating-settings-button-text"></p>
 					</div>
 				</div>
 				
 				<div id="contrast-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="200" data-aos-anchor="#theme-button-row">
+					<div data-aos="zoom-out" data-aos-delay="200" data-aos-anchor="body">
 						<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Theme" onclick="switch_setting('contrast')">
 					</div>
 					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="200" data-aos-anchor="#theme-button-row">
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="200" data-aos-anchor="body">
 						<p id="contrast-button-text" class="floating-settings-button-text"></p>
 					</div>
 				</div>
 				
 				<div id="text-size-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="300" data-aos-anchor="#theme-button-row">
+					<div data-aos="zoom-out" data-aos-delay="300" data-aos-anchor="body">
 						<input type="image" class="footer-button" src="/graphics/button-icons/text-size.png" alt="Change Theme" onclick="switch_setting('text_size')">
 					</div>
 					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="300" data-aos-anchor="#theme-button-row">
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="300" data-aos-anchor="body">
 						<p id="text-size-button-text" class="floating-settings-button-text"></p>
 					</div>
 				</div>
@@ -241,41 +241,41 @@ function show_floating_settings()
 			
 			<div class="floating-settings-page">
 				<div id="font-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="#theme-button-row">
+					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="body">
 						<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Change Theme" onclick="switch_setting('font')">
 					</div>
 					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="#theme-button-row">
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="body">
 						<p id="font-button-text" class="floating-settings-button-text"></p>
 					</div>
 				</div>
 				
 				<div id="comments-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="#theme-button-row">
+					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="body">
 						<input type="image" class="footer-button" src="/graphics/button-icons/comment.png" alt="Change Theme" onclick="switch_setting('comments')">
 					</div>
 					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="#theme-button-row">
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="body">
 						<p id="comments-button-text" class="floating-settings-button-text"></p>
 					</div>
 				</div>
 				
 				<div id="content-animation-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="#theme-button-row">
+					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="body">
 						<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Change Theme" onclick="switch_setting('content_animation')">
 					</div>
 					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="#theme-button-row">
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="body">
 						<p id="content-animation-button-text" class="floating-settings-button-text"></p>
 					</div>
 				</div>
 				
 				<div id="banner-style-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="#theme-button-row">
+					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="body">
 						<input type="image" class="footer-button" src="/graphics/button-icons/picture.png" alt="Change Theme" onclick="switch_setting('banner_style')">
 					</div>
 					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="#theme-button-row">
+					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="body">
 						<p id="banner-style-button-text" class="floating-settings-button-text"></p>
 					</div>
 				</div>
