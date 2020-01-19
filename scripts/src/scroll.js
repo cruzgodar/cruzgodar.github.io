@@ -67,7 +67,7 @@ function init_scroll_up_button_listeners_no_touch()
 			
 			document.querySelector("#scroll-up-button-location").insertAdjacentHTML("afterend", `
 				<div id="scroll-up-button-container">
-					<div class="center-content" data-aos="fade-down">
+					<div class="center-content" data-aos="fade-in" data-aos-duration="600">
 						<input type="image" id="scroll-up-button" src="/graphics/general-icons/${chevron_name}.png" onclick="smooth_scroll_to('body')"></input>
 					</div>
 				</div>
@@ -131,7 +131,7 @@ function scroll_up_button_process_touchend()
 			
 			document.querySelector("#scroll-up-button-location").insertAdjacentHTML("afterend", `
 				<div id="scroll-up-button-container">
-					<div class="center-content" data-aos="fade-down">
+					<div class="center-content" data-aos="fade-in" data-aos-duration="600">
 						<input type="image" id="scroll-up-button" src="/graphics/general-icons/${chevron_name}.png" onclick="smooth_scroll_to('body')"></input>
 					</div>
 				</div>
