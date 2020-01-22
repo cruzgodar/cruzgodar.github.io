@@ -35,11 +35,21 @@
 			grid_size++;
 		}
 		
-		document.querySelector("#sandpile-graph").setAttribute("width", grid_size * 5);
-		document.querySelector("#sandpile-graph").setAttribute("height", grid_size * 5);
+		
+		
+		//Make sure that there is a proper density of pixels so that the canvas doesn't look blurry.
+		
+		let canvas_pixel_size = Math.min(window_width, window_height) * .9;
+		
+		canvas_scale_factor = Math.ceil(canvas_pixel_size / grid_size);
+		
+		
+		
+		document.querySelector("#sandpile-graph").setAttribute("width", grid_size * canvas_scale_factor);
+		document.querySelector("#sandpile-graph").setAttribute("height", grid_size * canvas_scale_factor);
 		
 		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, grid_size * 5, grid_size * 5);
+		ctx.fillRect(0, 0, grid_size * canvas_scale_factor, grid_size * canvas_scale_factor);
 		
 		
 		
@@ -71,7 +81,7 @@
 			{
 				ctx.fillStyle = e.data[2];
 				
-				ctx.fillRect(e.data[0] * 5, e.data[1] * 5, 5, 5);
+				ctx.fillRect(e.data[0] * canvas_scale_factor, e.data[1] * canvas_scale_factor, canvas_scale_factor, canvas_scale_factor);
 			}
 		}
 		

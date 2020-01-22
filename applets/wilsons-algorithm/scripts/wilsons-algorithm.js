@@ -6,6 +6,8 @@
 	
 	let grid_size = null;
 	
+	let canvas_scale_factor = 5;
+	
 	let ctx = document.querySelector("#grid-graph").getContext("2d");
 	
 	let web_worker = null;
@@ -28,16 +30,26 @@
 		grid_size = parseInt(document.querySelector("#dim-input").value || 50);
 		
 		let maximum_speed = document.querySelector("#toggle-maximum-speed-checkbox").checked;
+		
+		
+		
+		//Make sure that there is a proper density of pixels so that the canvas doesn't look blurry.
+		
+		let canvas_pixel_size = Math.min(window_width, window_height) * .9;
+		
+		canvas_scale_factor = Math.ceil(canvas_pixel_size / grid_size);
+		
+		console.log(canvas_scale_factor);
 	
 	
 	
-		document.querySelector("#grid-graph").setAttribute("width", (2 * grid_size + 1) * 5);
-		document.querySelector("#grid-graph").setAttribute("height", (2 * grid_size + 1) * 5);
+		document.querySelector("#grid-graph").setAttribute("width", (2 * grid_size + 1) * canvas_scale_factor);
+		document.querySelector("#grid-graph").setAttribute("height", (2 * grid_size + 1) * canvas_scale_factor);
 		
 		
 		
 		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, (2 * grid_size + 1) * 5, (2 * grid_size + 1) * 5);
+		ctx.fillRect(0, 0, (2 * grid_size + 1) * canvas_scale_factor, (2 * grid_size + 1) * canvas_scale_factor);
 		
 		
 		
@@ -62,7 +74,7 @@
 		{
 			ctx.fillStyle = e.data[4];
 			
-			ctx.fillRect(e.data[0] * 5, e.data[1] * 5, e.data[2] * 5, e.data[3] * 5);
+			ctx.fillRect(e.data[0] * canvas_scale_factor, e.data[1] * canvas_scale_factor, e.data[2] * canvas_scale_factor, e.data[3] * canvas_scale_factor);
 		}
 		
 		
