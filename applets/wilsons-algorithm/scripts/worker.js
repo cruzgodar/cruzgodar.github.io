@@ -103,7 +103,7 @@ function wilson_step()
 			
 			else
 			{
-				await draw_line(new_vertices[i][0], new_vertices[i][1], new_vertices[i + 1][0], new_vertices[i + 1][1], "rgb(255, 255, 255)", 8);
+				await draw_line(new_vertices[i][0], new_vertices[i][1], new_vertices[i + 1][0], new_vertices[i + 1][1], "rgb(255, 255, 255)", 300 / grid_size);
 			}
 		}
 		
@@ -173,7 +173,7 @@ function random_walk(fixed_length = -1)
 
 		else if (current_row === grid_size - 1 && current_column === grid_size - 1)
 		{
-			possible_directions = [0, 3]
+			possible_directions = [0, 3];
 		}
 
 
