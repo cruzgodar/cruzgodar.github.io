@@ -25,6 +25,8 @@ let new_vertices = [];
 let current_row = null;
 let current_column = null;
 
+let last_direction = null;
+
 
 
 function draw_wilson_graph()
@@ -136,6 +138,10 @@ function wilson_step()
 //Performs a loop-erased random walk. If fixed_length === true, then rather than waiting until the walk hits the tree, it will just go until the walk is a certain length. This keeps that first walk from taking a ridiculous amount of time while still making the output graph be relatively random.
 function random_walk(fixed_length = -1)
 {
+	let last_direction = null;
+	
+	
+	
 	//Go until we hit the tree.
 	while (true)
 	{
@@ -209,7 +215,15 @@ function random_walk(fixed_length = -1)
 		
 		
 		
+		if (last_direction !== -1 && possible_directions.indexOf(last_direction) !== -1)
+		{
+			possible_directions.splice(possible_directions.indexOf(last_direction), 1);
+		}
+		
+		
+		
 		let direction = possible_directions[Math.floor(Math.random() * possible_directions.length)];
+		last_direction = direction;
 		
 		
 		
