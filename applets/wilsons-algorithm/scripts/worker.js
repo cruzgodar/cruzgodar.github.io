@@ -7,9 +7,20 @@ onmessage = async function(e)
 	grid_size = e.data[0];
 	maximum_speed = e.data[1];
 	
-	await draw_wilson_graph();
+	importScripts("/applets/wilsons-algorithm/scripts/random-walk.js");
+
+	Module["onRuntimeInitialized"] = async function()
+	{
+		postMessage(["log", "I'm alive!"]);
+		
+		importScripts("/scripts/wasm-arrays.min.js");
+		
+		//await draw_wilson_graph();
 	
-	await color_graph();
+		//await color_graph();
+		
+		postMessage(["done"]);
+	};
 }
 
 
@@ -19,6 +30,9 @@ let maximum_speed = null;
 
 let edges_in_tree = [];
 let vertices_not_in_tree = [];
+
+//This has 0s for the vertices not already in the tree and 1s for the ones that are. It's 1D so that it can be passed through to the C.
+let grid = [];
 
 let new_vertices = [];
 
@@ -43,6 +57,8 @@ function draw_wilson_graph()
 			for (let j = 0; j < grid_size; j++)
 			{
 				vertices_not_in_tree[grid_size * i + j] = [i, j];
+				
+				grid[grid_size * i + j] = 0;
 			}
 		}
 		
@@ -85,12 +101,12 @@ function wilson_step()
 		
 		if (edges_in_tree.length === 0)
 		{
-			random_walk(grid_size * 2);
+			wasm_random_walk(grid_size * 2);
 		}
 		
 		else
 		{
-			random_walk();
+			wasm_random_walk();
 		}
 		
 		
@@ -111,9 +127,13 @@ function wilson_step()
 		
 		
 		
-		//Once we leave that recursion, new_vertices is full of a loop-erased random walk that ends at a point on the tree. Now we can add all the vertices and edges.
+		//Now we can add all the vertices and edges.
 		for (let i = 0; i < new_vertices.length; i++)
 		{
+			grid[grid_size * new_vertices[i][0] + new_vertices[i][1]] = 1;
+			
+			
+			
 			let pop_index = vertex_in_array(new_vertices[i], vertices_not_in_tree);
 			
 			if (pop_index !== -1)
@@ -136,137 +156,22 @@ function wilson_step()
 
 
 //Performs a loop-erased random walk. If fixed_length === true, then rather than waiting until the walk hits the tree, it will just go until the walk is a certain length. This keeps that first walk from taking a ridiculous amount of time while still making the output graph be relatively random.
-function random_walk(fixed_length = -1)
+function wasm_random_walk(fixed_length = -1)
 {
-	let last_direction = null;
+	console.log("calling random_walk()...");
+	let return_data = ccallArrays("random_walk", "array", ["number", "array", "number", "number", "number"], [grid_size, grid, fixed_length, current_row, current_column], {heapIn: "HEAPU32", heapOut: "HEAPU32", returnArraySize: 2});
 	
+	let new_vertices = [];
 	
+	let new_vertices_ptr = return_data[0];
+	let num_new_vertices = return_data[1];
 	
-	//Go until we hit the tree.
-	while (true)
+	for (let i = 0; i < 2 * num_vertices; i++)
 	{
-		if (vertex_in_array([current_row, current_column], vertices_not_in_tree) === -1)
-		{
-			break;
-		}
-		
-		else if (fixed_length !== -1 && new_vertices.length === fixed_length)
-		{
-			break;
-		}
-		
-		
-		
-		//Move either up, left, down, or right. 0 = up, 1 = left, 2 = down, and 3 = right.
-		let possible_directions = [];
-		
-		
-		
-		if (current_row === 0 && current_column === 0)
-		{
-			possible_directions = [1, 2];
-		}
-		
-		else if (current_row === grid_size - 1 && current_column === 0)
-		{
-			possible_directions = [0, 1];
-		}
-		
-		else if (current_row === 0 && current_column === grid_size - 1)
-		{
-			possible_directions = [2, 3];
-		}
-
-		else if (current_row === grid_size - 1 && current_column === grid_size - 1)
-		{
-			possible_directions = [0, 3];
-		}
-
-
-
-		//Edges
-		else if (current_row === 0)
-		{
-			possible_directions = [1, 2, 3];
-		}
-			
-		else if (current_row === grid_size - 1)
-		{
-			possible_directions = [0, 1, 3];
-		}
-
-		else if (current_column === 0)
-		{
-			possible_directions = [0, 1, 2];
-		}
-		
-		else if (current_column === grid_size - 1)
-		{
-			possible_directions = [0, 2, 3];
-		}
-
-
-
-		//Everything else
-		else
-		{
-			possible_directions = [0, 1, 2, 3];
-		}
-		
-		
-		
-		if (last_direction !== -1 && possible_directions.indexOf(last_direction) !== -1)
-		{
-			possible_directions.splice(possible_directions.indexOf(last_direction), 1);
-		}
-		
-		
-		
-		let direction = possible_directions[Math.floor(Math.random() * possible_directions.length)];
-		last_direction = direction;
-		
-		
-		
-		if (direction === 0)
-		{
-			current_row--;
-		}
-		
-		else if (direction === 1)
-		{
-			current_column++;
-		}
-		
-		else if (direction === 2)
-		{
-			current_row++;
-		}
-		
-		else
-		{
-			current_column--;
-		}
-		
-		
-		
-		
-		//If not, then we need to know when we hit our own random walk -- before we can put our new vertex into the walk, we need to see if we've already been there.
-		let revert_index = vertex_in_array([current_row, current_column], new_vertices);
-		
-		if (revert_index !== -1)
-		{
-			current_row = new_vertices[revert_index][0];
-			current_column = new_vertices[revert_index][1];
-			
-			new_vertices = new_vertices.slice(0, revert_index + 1);
-		}
-		
-		else
-		{
-			new_vertices.push([current_row, current_column]);
-		}
-		
+		new_vertices.push(Module.HEAPU32[new_vertices_ptr / Uint32Array.BYTES_PER_ELEMENT + i]);
 	}
+	
+	console.log(new_vertices);
 }
 
 

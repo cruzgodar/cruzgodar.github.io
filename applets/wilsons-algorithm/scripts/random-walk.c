@@ -5,12 +5,12 @@
 
 
 
-void EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fixed_length, int starting_row, int starting_column);
+uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fixed_length, int starting_row, int starting_column);
 
 
 
 //Generates a loop-erased random walk that starts at a random point and connects to the graph. If fixed length is not -1, then it will make a walk until that length is reached.
-void EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fixed_length, int starting_row, int starting_column)
+uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fixed_length, int starting_row, int starting_column)
 {
 	int current_row = starting_row;
 	int current_column = starting_column;
@@ -20,15 +20,17 @@ void EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fixed_l
 	int direction;
 	int last_direction = -1;
 	
-	int* new_vertices = malloc(2 * grid_size * sizeof(int));
-	int num_new_vertices = 1;
+	uint32_t* new_vertices = malloc(1000 * 2 * sizeof(uint32_t));
+	uint32_t num_new_vertices = 1;
 	
 	//The maximum number of vertices the list can currently hold. We can always realloc this later.
-	int max_new_vertices = grid_size;
+	int max_new_vertices = 1000;
 	
 	int erased_a_loop;
 	
 	int i;
+	
+	uint32_t** return_data = malloc(2 * sizeof(uint32_t*));
 	
 	
 	
@@ -44,7 +46,7 @@ void EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fixed_l
 	//Go until we hit the tree.
 	while (1)
 	{
-		if (grid[current_row][current_column]) == 1)
+		if (grid[grid_size * current_row + current_column] == 1)
 		{
 			break;
 		}
@@ -213,8 +215,18 @@ void EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fixed_l
 			}
 		}
 		
+		
+		
+		//Now we can add this vertex to the list, but we need to make sure we have enough space to do so.
 		if (!erased_a_loop)
 		{
+			if (num_new_vertices == max_new_vertices)
+			{
+				max_new_vertices += 1000;
+				
+				new_vertices = realloc(new_vertices, 2 * max_new_vertices * sizeof(uint32_t));
+			}
+			
 			new_vertices[2 * num_new_vertices] = current_row;
 			new_vertices[2 * num_new_vertices + 1] = current_column;
 			
@@ -223,13 +235,8 @@ void EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fixed_l
 	}
 	
 	
+	return_data[0] = new_vertices;
+	return_data[1] = (uint32_t*) num_new_vertices;
 	
-	for (i = 0; i < num_new_vertices; i++)
-	{
-		printf("%i %i\n", new_vertices[2*i], new_vertices[2*i + 1]);
-	}
-	
-	
-	
-	free(new_vertices);
+	return return_data;
 }

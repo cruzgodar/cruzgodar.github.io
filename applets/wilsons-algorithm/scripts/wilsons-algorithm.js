@@ -72,6 +72,12 @@
 		
 		web_worker.onmessage = function(e)
 		{
+			if (e.data[0] === "log")
+			{
+				console.log(...e.data.slice(1));
+				return;
+			}
+			
 			ctx.fillStyle = e.data[4];
 			
 			ctx.fillRect(e.data[0] * canvas_scale_factor, e.data[1] * canvas_scale_factor, e.data[2] * canvas_scale_factor, e.data[3] * canvas_scale_factor);
