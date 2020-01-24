@@ -5,15 +5,16 @@
 
 
 
-uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fixed_length, int starting_row, int starting_column);
+uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(uint32_t grid_size, uint32_t* grid, uint32_t unused_grid_length, uint32_t fixed_length, uint32_t starting_row, uint32_t starting_column);
+void EMSCRIPTEN_KEEPALIVE free_from_js(uint32_t* ptr);
 
 
 
 //Generates a loop-erased random walk that starts at a random point and connects to the graph. If fixed length is not -1, then it will make a walk until that length is reached.
-uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fixed_length, int starting_row, int starting_column)
+uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(uint32_t grid_size, uint32_t* grid, uint32_t unused_grid_length, uint32_t fixed_length, uint32_t starting_row, uint32_t starting_column)
 {
-	int current_row = starting_row;
-	int current_column = starting_column;
+	uint32_t current_row = starting_row;
+	uint32_t current_column = starting_column;
 	
 	int possible_directions[4] = {0, 0, 0, 0};
 	int num_possible_directions;
@@ -21,7 +22,7 @@ uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fi
 	int last_direction = -1;
 	
 	uint32_t* new_vertices = malloc(1000 * 2 * sizeof(uint32_t));
-	uint32_t num_new_vertices = 1;
+	uint32_t num_new_vertices = 2;
 	
 	//The maximum number of vertices the list can currently hold. We can always realloc this later.
 	int max_new_vertices = 1000;
@@ -30,16 +31,17 @@ uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fi
 	
 	int i;
 	
-	uint32_t** return_data = malloc(2 * sizeof(uint32_t*));
+	
+	
+	srand((unsigned int) time(0) + num_new_vertices + starting_row * starting_column + starting_row - starting_column);
 	
 	
 	
-	new_vertices[0] = current_row;
-	new_vertices[1] = current_column;
+	new_vertices[0] = 0;
+	new_vertices[1] = 0;
 	
-	
-	
-	srand((unsigned int) time(0));
+	new_vertices[2] = current_row;
+	new_vertices[3] = current_column;
 	
 	
 	
@@ -51,7 +53,7 @@ uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fi
 			break;
 		}
 		
-		else if (fixed_length != -1 && num_new_vertices == fixed_length)
+		else if (fixed_length != 0 && num_new_vertices - 1 == fixed_length)
 		{
 			break;
 		}
@@ -150,7 +152,7 @@ uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fi
 			possible_directions[2] = 2;
 			possible_directions[3] = 3;
 			
-			num_possible_directions = 3;
+			num_possible_directions = 4;
 		}
 		
 		
@@ -200,7 +202,7 @@ uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fi
 		//This is the loop-erasure part: before we can put our new vertex into the walk, we need to see if we've already been there.
 		erased_a_loop = 0;
 		
-		for (i = 0; i < num_new_vertices; i++)
+		for (i = 1; i < num_new_vertices; i++)
 		{
 			if (new_vertices[2*i] == current_row && new_vertices[2*i + 1] == current_column)
 			{
@@ -235,8 +237,15 @@ uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(int grid_size, uint32_t* grid, int fi
 	}
 	
 	
-	return_data[0] = new_vertices;
-	return_data[1] = (uint32_t*) num_new_vertices;
 	
-	return return_data;
+	new_vertices[0] = num_new_vertices;
+	
+	return new_vertices;
+}
+
+
+
+void EMSCRIPTEN_KEEPALIVE free_from_js(uint32_t* ptr)
+{
+	free(ptr);
 }

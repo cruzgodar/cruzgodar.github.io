@@ -11,13 +11,11 @@ onmessage = async function(e)
 
 	Module["onRuntimeInitialized"] = async function()
 	{
-		postMessage(["log", "I'm alive!"]);
-		
 		importScripts("/scripts/wasm-arrays.min.js");
 		
-		//await draw_wilson_graph();
+		await draw_wilson_graph();
 	
-		//await color_graph();
+		await color_graph();
 		
 		postMessage(["done"]);
 	};
@@ -89,15 +87,12 @@ function wilson_step()
 		//Pick a random vertex not in the graph.
 		let new_index = Math.floor(Math.random() * vertices_not_in_tree.length);
 		
-		new_vertices.push(vertices_not_in_tree[new_index]);
+		current_row = vertices_not_in_tree[new_index][0];
+		current_column = vertices_not_in_tree[new_index][1];
 		
 		
 		
 		//Now perform a loop-erased random walk starting from this vertex until we hit the tree (or if it's our first walk, until a certain length is reached).
-		current_row = new_vertices[0][0];
-		current_column = new_vertices[0][1];
-		
-		
 		
 		if (edges_in_tree.length === 0)
 		{
@@ -156,22 +151,19 @@ function wilson_step()
 
 
 //Performs a loop-erased random walk. If fixed_length === true, then rather than waiting until the walk hits the tree, it will just go until the walk is a certain length. This keeps that first walk from taking a ridiculous amount of time while still making the output graph be relatively random.
-function wasm_random_walk(fixed_length = -1)
+function wasm_random_walk(fixed_length = 0)
 {
-	console.log("calling random_walk()...");
-	let return_data = ccallArrays("random_walk", "array", ["number", "array", "number", "number", "number"], [grid_size, grid, fixed_length, current_row, current_column], {heapIn: "HEAPU32", heapOut: "HEAPU32", returnArraySize: 2});
+	let new_vertices_ptr = ccallArrays("random_walk", "number", ["number", "array", "number", "number", "number"], [grid_size, grid, fixed_length, current_row, current_column], {heapIn: "HEAPU32"});
 	
-	let new_vertices = [];
+	//The length of the array is stored as its first element.
+	let num_new_vertices = Module.HEAPU32[new_vertices_ptr / Uint32Array.BYTES_PER_ELEMENT]
 	
-	let new_vertices_ptr = return_data[0];
-	let num_new_vertices = return_data[1];
-	
-	for (let i = 0; i < 2 * num_vertices; i++)
+	for (let i = 2; i < 2 * num_new_vertices; i += 2)
 	{
-		new_vertices.push(Module.HEAPU32[new_vertices_ptr / Uint32Array.BYTES_PER_ELEMENT + i]);
+		new_vertices.push([Module.HEAPU32[new_vertices_ptr / Uint32Array.BYTES_PER_ELEMENT + i], Module.HEAPU32[new_vertices_ptr / Uint32Array.BYTES_PER_ELEMENT + i + 1]]);
 	}
 	
-	console.log(new_vertices);
+	Module.ccall("free_from_js", null, ["number"], [new_vertices_ptr]);
 }
 
 
