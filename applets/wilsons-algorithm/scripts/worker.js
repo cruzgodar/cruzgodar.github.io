@@ -39,6 +39,9 @@ let current_column = null;
 
 let last_direction = null;
 
+let random_walk = wasm_random_walk;
+let num_short_paths_in_a_row = 0;
+
 
 
 function draw_wilson_graph()
@@ -96,12 +99,12 @@ function wilson_step()
 		
 		if (edges_in_tree.length === 0)
 		{
-			wasm_random_walk(grid_size * 2);
+			random_walk(grid_size * 2);
 		}
 		
 		else
 		{
-			wasm_random_walk();
+			random_walk();
 		}
 		
 		
@@ -164,6 +167,153 @@ function wasm_random_walk(fixed_length = 0)
 	}
 	
 	Module.ccall("free_from_js", null, ["number"], [new_vertices_ptr]);
+	
+	
+	
+	//Here's the idea. C is great when it can run by itself for a little while, but when there are tons and tons of calls back-and-forth, the overhead of WebAssembly starts to show itself. To that end, once we've had 10 random walks of length less than grid_size / 10, we'll switch to making the rest of the grapoh with js.
+	if (num_new_vertices < grid_size / 10)
+	{
+		num_short_paths_in_a_row++;
+		
+		if (num_short_paths_in_a_row == 10)
+		{
+			random_walk = js_random_walk;
+			
+			postMessage(["log", "Switching to JS..."]);
+		}
+	}
+	
+	else
+	{
+		num_short_paths_in_a_row = 0;
+	}
+}
+
+
+
+function js_random_walk(fixed_length = 0)
+{
+	new_vertices = [[current_row, current_column]];
+	
+	
+	
+	//Go until we hit the tree.
+	while (true)
+	{
+		if (grid[grid_size * current_row + current_column] === 1)
+		{
+			break;
+		}
+		
+		else if (fixed_length !== 0 && new_vertices.length === fixed_length)
+		{
+			break;
+		}
+		
+		
+		
+		//Move either up, left, down, or right. 0 = up, 1 = left, 2 = down, and 3 = right.
+		let possible_directions = [];
+		
+		
+		
+		if (current_row === 0 && current_column === 0)
+		{
+			possible_directions = [1, 2];
+		}
+		
+		else if (current_row === grid_size - 1 && current_column === 0)
+		{
+			possible_directions = [0, 1];
+		}
+		
+		else if (current_row === 0 && current_column === grid_size - 1)
+		{
+			possible_directions = [2, 3];
+		}
+
+		else if (current_row === grid_size - 1 && current_column === grid_size - 1)
+		{
+			possible_directions = [0, 3]
+		}
+
+
+
+		//Edges
+		else if (current_row === 0)
+		{
+			possible_directions = [1, 2, 3];
+		}
+			
+		else if (current_row === grid_size - 1)
+		{
+			possible_directions = [0, 1, 3];
+		}
+
+		else if (current_column === 0)
+		{
+			possible_directions = [0, 1, 2];
+		}
+		
+		else if (current_column === grid_size - 1)
+		{
+			possible_directions = [0, 2, 3];
+		}
+
+
+
+		//Everything else
+		else
+		{
+			possible_directions = [0, 1, 2, 3];
+		}
+		
+		
+		
+		let direction = possible_directions[Math.floor(Math.random() * possible_directions.length)];
+		
+		
+		
+		if (direction === 0)
+		{
+			current_row--;
+		}
+		
+		else if (direction === 1)
+		{
+			current_column++;
+		}
+		
+		else if (direction === 2)
+		{
+			current_row++;
+		}
+		
+		else
+		{
+			current_column--;
+		}
+		
+		
+		
+		
+		//If not, then we need to know when we hit our own random walk -- before we can put our new vertex into the walk, we need to see if we've already been there.
+		let revert_index = vertex_in_array([current_row, current_column], new_vertices);
+		
+		if (revert_index !== -1)
+		{
+			current_row = new_vertices[revert_index][0];
+			current_column = new_vertices[revert_index][1];
+			
+			new_vertices = new_vertices.slice(0, revert_index + 1);
+		}
+		
+		else
+		{
+			new_vertices.push([current_row, current_column]);
+		}
+		
+	}
 }
 
 

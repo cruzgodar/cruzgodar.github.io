@@ -38,8 +38,6 @@
 		let canvas_pixel_size = Math.min(window_width, window_height) * .9;
 		
 		canvas_scale_factor = Math.ceil(canvas_pixel_size / grid_size);
-		
-		console.log(canvas_scale_factor);
 	
 	
 	
