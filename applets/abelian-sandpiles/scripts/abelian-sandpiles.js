@@ -94,7 +94,15 @@
 	
 	function prepare_download()
 	{
-		window.open(document.querySelector("#sandpile-graph").toDataURL(), "_blank");
+		let link = document.createElement("a");
+		
+		link.download = "abelian-sandpiles.png";
+		
+		link.href = document.querySelector("#sandpile-graph").toDataURL();
+		
+		link.click();
+		
+		link.remove();
 	}
 
 

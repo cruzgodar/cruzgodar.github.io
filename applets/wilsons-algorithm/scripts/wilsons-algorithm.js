@@ -92,7 +92,15 @@
 	
 	function prepare_download()
 	{
-		window.open(document.querySelector("#grid-graph").toDataURL(), "_blank");
+		let link = document.createElement("a");
+		
+		link.download = "wilsons-algorithm.png";
+		
+		link.href = document.querySelector("#grid-graph").toDataURL();
+		
+		link.click();
+		
+		link.remove();
 	}
 
 

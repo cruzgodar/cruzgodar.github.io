@@ -99,7 +99,15 @@
 	
 	function prepare_download()
 	{
-		window.open(document.querySelector("#annealing-graph").toDataURL(), "_blank");
+		let link = document.createElement("a");
+		
+		link.download = "simulated-annealing.png";
+		
+		link.href = document.querySelector("#annealing-graph").toDataURL();
+		
+		link.click();
+		
+		link.remove();
 	}
 
 

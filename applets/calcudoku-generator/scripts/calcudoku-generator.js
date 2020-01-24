@@ -308,7 +308,19 @@
 		
 		draw_calcudoku_grid(true);
 		
-		window.open(document.querySelector("#calcudoku-grid").toDataURL(), "_blank");
+		
+		
+		let link = document.createElement("a");
+		
+		link.download = "calcudoku.png";
+		
+		link.href = document.querySelector("#calcudoku-grid").toDataURL();
+		
+		link.click();
+		
+		link.remove();
+		
+		
 		
 		draw_calcudoku_grid(false);
 		

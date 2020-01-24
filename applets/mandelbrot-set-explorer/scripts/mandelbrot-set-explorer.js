@@ -245,7 +245,27 @@
 
 	function prepare_download()
 	{
-		window.open(document.querySelector("#high-res-mandelbrot-zoom").toDataURL(), "_blank");
+		let link = document.createElement("a");
+		
+		
+		
+		if (current_center_y < 0)
+		{
+			link.download = current_center_x + " - " + (-current_center_y) + "i.png";
+		}
+		
+		else
+		{
+			link.download = current_center_x + " + " + current_center_y + "i.png";
+		}
+		
+		
+		
+		link.href = document.querySelector("#high-res-mandelbrot-zoom").toDataURL();
+		
+		link.click();
+		
+		link.remove();
 	}
 
 

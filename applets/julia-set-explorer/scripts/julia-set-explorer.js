@@ -4,6 +4,9 @@
 	
 	
 	
+	let last_a = 0;
+	let last_b = 0;
+	
 	let small_canvas_size = 0;
 	let large_canvas_size = 0;
 
@@ -90,6 +93,9 @@
 			
 			ctx = document.querySelector("#high-res-julia-set").getContext("2d");
 			canvas_size = large_canvas_size;
+			
+			last_a = a;
+			last_b = b;
 		}
 		
 		
@@ -194,7 +200,27 @@
 
 	function prepare_download()
 	{
-		window.open(document.querySelector("#high-res-julia-set").toDataURL(), "_blank");
+		let link = document.createElement("a");
+		
+		
+		
+		if (last_b < 0)
+		{
+			link.download = last_a + " - " + (-last_b) + "i.png";
+		}
+		
+		else
+		{
+			link.download = last_a + " + " + last_b + "i.png";
+		}
+		
+		
+		
+		link.href = document.querySelector("#high-res-julia-set").toDataURL();
+		
+		link.click();
+		
+		link.remove();
 	}
 
 
