@@ -77,6 +77,11 @@
 				console.log("Finished");
 			}
 			
+			else if (e.data[0] === "log")
+			{
+				console.log(...e.data.slice(1));
+			}
+			
 			else
 			{
 				ctx.fillStyle = e.data[2];

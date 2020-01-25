@@ -78,7 +78,7 @@
 			
 			ctx.fillStyle = e.data[4];
 			
-			ctx.fillRect(e.data[0] * canvas_scale_factor, e.data[1] * canvas_scale_factor, e.data[2] * canvas_scale_factor, e.data[3] * canvas_scale_factor);
+			ctx.fillRect(e.data[0] * canvas_scale_factor, e.data[1] * canvas_scale_factor, (e.data[2] + 1) * canvas_scale_factor, (e.data[3] + 1) * canvas_scale_factor);
 		}
 		
 		

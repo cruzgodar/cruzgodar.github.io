@@ -46,10 +46,10 @@ function insert_images()
 			{
 				num_images_fetched++;
 				
-				console.log(num_images_fetched + " of " + images.length + " fetched.");
-				
 				if (num_images_fetched === images.length)
 				{
+					console.log("Fetched " + images.length + " images on the page.");
+					
 					currently_fetching = false;
 					
 					fetch_item_from_queue();
