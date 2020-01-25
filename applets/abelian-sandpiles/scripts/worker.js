@@ -126,8 +126,6 @@ async function draw_sandpile_graph()
 		
 		if (step % Math.floor(num_grains / 500) === 0)
 		{
-			postMessage(["log", sandpile_graph[Math.floor(grid_size / 2)][Math.floor(grid_size / 2)]]);
-			
 			if (maximum_speed)
 			{
 				color_piles();
