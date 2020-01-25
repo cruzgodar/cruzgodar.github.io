@@ -8,14 +8,7 @@ onmessage = async function(e)
 	num_grains = e.data[1];
 	maximum_speed = e.data[2];
 	
-	importScripts("/applets/abelian-sandpiles/scripts/iterate.js");
-
-	Module["onRuntimeInitialized"] = async function()
-	{
-		importScripts("/scripts/wasm-arrays.min.js");
-		
-		await draw_sandpile_graph();
-	};
+	await draw_sandpile_graph();
 }
 
 
@@ -31,52 +24,132 @@ let old_sandpile_graph = [];
 
 async function draw_sandpile_graph()
 {
-	sandpile_graph = [0];
-	old_sandpile_graph = [0];
+	sandpile_graph = [];
+	old_sandpile_graph = [];
+	let additions = [];
 	
 	for (let i = 0; i < grid_size; i++)
 	{
+		sandpile_graph[i] = [];
+		old_sandpile_graph[i] = [];
+		additions[i] = [];
+		
 		for (let j = 0; j < grid_size; j++)
 		{
-			sandpile_graph[1 + grid_size * i + j] = 0;
-			old_sandpile_graph[1 + grid_size * i + j] = 0;
+			sandpile_graph[i][j] = 0;
+			old_sandpile_graph[i][j] = 0;
+			additions[i][j] = 0;
 		}
 	}
 	
-	sandpile_graph[1 + grid_size * Math.floor(grid_size / 2) + Math.floor(grid_size / 2)] = num_grains;
+	sandpile_graph[Math.floor(grid_size / 2)][Math.floor(grid_size / 2)] = num_grains;
 	
 	
 	
 	//Until there are no topplings, go through the entire graph.
 	let step = 0;
 	
-	let some_topplings_this_run = 1;
+	let some_topplings_this_run = true;
 	
 	while (some_topplings_this_run)
 	{
-		let grid_ptr = ccallArrays("iterate_sandpile", "number", ["number", "array", "number"], [grid_size, sandpile_graph, Math.floor(num_grains / 500)], {heapIn: "HEAPU32"});
+		some_topplings_this_run = false;
 		
-		//Whether this run toppled anything is stored as its first element.
-		some_topplings_this_run = Module.HEAPU32[grid_ptr / Uint32Array.BYTES_PER_ELEMENT]
-		
-		for (let i = 1; i < grid_size * grid_size + 1; i++)
+		for (let i = 1; i <= grid_size / 2; i++)
 		{
-			sandpile_graph[i] = Module.HEAPU32[grid_ptr / Uint32Array.BYTES_PER_ELEMENT + i];
+			for (let j = 1; j <= i; j++)
+			{
+				if (sandpile_graph[i][j] >= 4)
+				{
+					//>>2 is the same as /4 and &3 is the same as %4.
+					let num_grains_to_add = sandpile_graph[i][j] >> 2;
+					sandpile_graph[i][j] &= 3;
+					
+					additions[i - 1][j] += num_grains_to_add;
+					additions[i][j + 1] += num_grains_to_add;
+					additions[i + 1][j] += num_grains_to_add;
+					additions[i][j - 1] += num_grains_to_add;
+					
+					//The ones on the bottom are kinda tricky, since we can't just double their additions -- 3 of their 4 feeders are present, not 2. Instead, we just have to take care of that manually by adding another copy of the addition from above.
+					if (i === Math.floor(grid_size / 2) - 1)
+					{
+						additions[i + 1][j] += num_grains_to_add;
+					}
+					
+					some_topplings_this_run = true;
+					
+				}
+			}
 		}
 		
-		Module.ccall("free_from_js", null, ["number"], [grid_ptr]);
 		
 		
-		
-		if (maximum_speed)
+		//Now we can add the additions to the graph. However, vertices on the edges should get twice as many grains by symmetry, and the center square should get quadruple.
+		for (let i = 1; i <= grid_size / 2; i++)
 		{
-			color_piles();
+			for (let j = 1; j <= i; j++)
+			{
+				sandpile_graph[i][j] += additions[i][j];
+			}
 		}
 		
-		else
+		
+		
+		//Now we can double the entries from the diagonal. Note that we *don't* double the entries on the bottom row -- we took care of that already.
+		for (let i = 1; i <= grid_size / 2; i++)
 		{
-			await color_piles();
+			sandpile_graph[i][i] += additions[i][i];
 		}
+		
+		sandpile_graph[Math.floor(grid_size / 2)][Math.floor(grid_size / 2)] += 2 * additions[Math.floor(grid_size / 2)][Math.floor(grid_size / 2)];
+		
+		
+		
+		for (let i = 1; i <= grid_size / 2; i++)
+		{
+			for (let j = 1; j <= i; j++)
+			{
+				additions[i][j] = 0;
+			}
+		}
+		
+		
+		
+		if (some_topplings_this_run === false)
+		{
+			break;
+		}
+		
+		
+		
+		step++;
+		
+		if (step % Math.floor(num_grains / 500) === 0)
+		{
+			postMessage(["log", sandpile_graph[Math.floor(grid_size / 2)][Math.floor(grid_size / 2)]]);
+			
+			if (maximum_speed)
+			{
+				color_piles();
+			}
+			
+			else
+			{
+				await color_piles();
+			}
+		}
+	}
+	
+	
+	
+	if (maximum_speed)
+	{
+		color_piles();
+	}
+	
+	else
+	{
+		await color_piles();
 	}
 }
 
@@ -89,52 +162,52 @@ function color_piles()
 		//Find the maximum brightness so we can draw a nice picture.
 		let max_pile_size = 0;
 		
-		for (let i = 1; i < grid_size - 1; i++)
+		for (let i = 1; i <= grid_size / 2; i++)
 		{
-			for (let j = 1; j < grid_size - 1; j++)
+			for (let j = 1; j <= i; j++)
 			{
-				if (sandpile_graph[1 + grid_size * i + j] > max_pile_size)
+				if (sandpile_graph[i][j] > max_pile_size)
 				{
-					max_pile_size = sandpile_graph[1 + grid_size * i + j]
+					max_pile_size = sandpile_graph[i][j];
 				}
 			}
 		}
 		
 		
 		
-		for (let i = 1; i < grid_size - 1; i++)
+		for (let i = 1; i <= grid_size / 2; i++)
 		{
-			for (let j = 1; j < grid_size - 1; j++)
+			for (let j = 1; j <= i; j++)
 			{
-				if (sandpile_graph[1 + grid_size * i + j] !== old_sandpile_graph[1 + grid_size * i + j])
+				if (sandpile_graph[i][j] !== old_sandpile_graph[i][j])
 				{
-					let pile_size = sandpile_graph[1 + grid_size * i + j];
+					let pile_size = sandpile_graph[i][j];
 					
 					let brightness = pile_size / max_pile_size * 255;
 					
 					if (pile_size === 0)
 					{
-						postMessage([j, i, `rgb(0, 0, 0)`]);
+						draw_8_fold_pixel(j, i, `rgb(0, 0, 0)`);
 					}
 					
 					else if (pile_size === 1)
 					{
-						postMessage([j, i, `rgb(0, 127, 255)`]);
+						draw_8_fold_pixel(j, i, `rgb(0, 127, 255)`);
 					}
 					
 					else if (pile_size === 2)
 					{
-						postMessage([j, i, `rgb(92, 0, 255)`]);
+						draw_8_fold_pixel(j, i, `rgb(92, 0, 255)`);
 					}
 					
 					else if (pile_size === 3)
 					{
-						postMessage([j, i, `rgb(255, 255, 0)`]);
+						draw_8_fold_pixel(j, i, `rgb(255, 255, 0)`);
 					}
 					
 					else
 					{
-						postMessage([j, i, `rgb(${brightness}, ${brightness}, ${brightness})`]);
+						draw_8_fold_pixel(j, i, `rgb(${brightness}, ${brightness}, ${brightness})`);
 					}
 				}
 			}
@@ -142,11 +215,11 @@ function color_piles()
 		
 		
 		
-		for (let i = 1; i < grid_size - 1; i++)
+		for (let i = 1; i <= grid_size / 2; i++)
 		{
-			for (let j = 1; j < grid_size - 1; j++)
+			for (let j = 1; j <= i; j++)
 			{
-				old_sandpile_graph[1 + grid_size * i + j] = sandpile_graph[1 + grid_size * i + j];
+				old_sandpile_graph[i][j] = sandpile_graph[i][j];
 			}
 		}
 		
@@ -154,4 +227,21 @@ function color_piles()
 		
 		setTimeout(resolve, 50);
 	});
+}
+
+
+
+function draw_8_fold_pixel(x, y, color)
+{
+	postMessage([x, y, color]);
+	postMessage([grid_size - 1 - x, y, color]);
+	
+	postMessage([grid_size - 1 - y, x, color]);
+	postMessage([grid_size - 1 - y, grid_size - 1 - x, color]);
+	
+	postMessage([grid_size - 1 - x, grid_size - 1 - y, color]);
+	postMessage([x, grid_size - 1 - y, color]);
+	
+	postMessage([y, grid_size - 1 - x, color]);
+	postMessage([y, x, color]);
 }
