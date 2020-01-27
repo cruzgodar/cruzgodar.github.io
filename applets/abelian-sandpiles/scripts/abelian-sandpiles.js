@@ -28,7 +28,7 @@
 		let num_grains = parseInt(document.querySelector("#num-grains-input").value || 10000);
 		let maximum_speed = document.querySelector("#toggle-maximum-speed-checkbox").checked;
 		
-		grid_size = Math.floor(Math.sqrt(num_grains));
+		grid_size = Math.floor(Math.sqrt(num_grains)) + 2;
 		
 		if (grid_size % 2 === 0)
 		{
