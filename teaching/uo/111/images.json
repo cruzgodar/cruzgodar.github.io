@@ -7,6 +7,12 @@
     
     
     
+    "image-quiz-3":
+    {
+        "webp": "quizzes/3/cover.webp",
+        "non-webp": "quizzes/3/cover.jpg"
+    },
+    
 	"image-written-homework-3":
     {
         "webp": "homeworks/3/cover.webp",
