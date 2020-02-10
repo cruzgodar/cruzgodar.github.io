@@ -1,4 +1,12 @@
 {
+	"image-written-homework-4":
+    {
+        "webp": "homeworks/4/cover.webp",
+        "non-webp": "homeworks/4/cover.jpg"
+    },
+    
+	
+	
 	"image-midterm-1-practice-solutions":
     {
         "webp": "extra/midterm-1-practice-solutions/cover.webp",
