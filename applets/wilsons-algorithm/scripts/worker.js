@@ -6,6 +6,8 @@ onmessage = async function(e)
 {
 	grid_size = e.data[0];
 	maximum_speed = e.data[1];
+	no_borders = e.data[2];
+	reverse_generate_skeleton = e.data[3];
 	
 	importScripts("/applets/wilsons-algorithm/scripts/random-walk.js");
 
@@ -25,9 +27,14 @@ onmessage = async function(e)
 
 let grid_size = null;
 let maximum_speed = null;
+let no_borders = null;
+let reverse_generate_skeleton = null;
+
+let num_skeleton_lines = 0;
 
 let edges_in_tree = [];
 let vertices_not_in_tree = [];
+let vertices_in_tree = [];
 
 //This has 0s for the vertices not already in the tree and 1s for the ones that are. It's 1D so that it can be passed through to the C.
 let grid = [];
@@ -36,6 +43,10 @@ let new_vertices = [];
 
 let current_row = null;
 let current_column = null;
+
+let current_row_base_camp = null;
+let current_column_base_camp = null;
+let random_walk_from_endpoint_attmepts = 0;
 
 let last_direction = null;
 
@@ -67,7 +78,15 @@ function draw_wilson_graph()
 		
 		while (vertices_not_in_tree.length > 0)
 		{
-			await wilson_step();
+			if (maximum_speed)
+			{
+				wilson_step();
+			}
+			
+			else
+			{
+				await wilson_step();
+			}
 		}
 		
 		
@@ -87,24 +106,98 @@ function wilson_step()
 		
 		
 		
-		//Pick a random vertex not in the graph.
-		let new_index = Math.floor(Math.random() * vertices_not_in_tree.length);
-		
-		current_row = vertices_not_in_tree[new_index][0];
-		current_column = vertices_not_in_tree[new_index][1];
-		
-		
-		
-		//Now perform a loop-erased random walk starting from this vertex until we hit the tree (or if it's our first walk, until a certain length is reached).
-		
-		if (edges_in_tree.length === 0)
+		if (reverse_generate_skeleton)
 		{
-			random_walk(grid_size * 2);
+			//The correct way to run Wilson's algorithm is to take a random point not on the tree and so a LERW until the tree is hit. When the tree is small and the graph is large, though, this is not feasible. The effect is that graphs above 1000x1000 are pretty much impossible. To make things faster, we'll instead use this method when the usual one takes longer than 3 seconds without response. Here, we start by drawing a relatively short line, then picking a point *on* the line and making a LERW away from that.
+			
+			
+			
+			//This is a little subtle. If we've never drawn a single line, then we start somewhere pretty close to the center. Otherwise, we don't set current_row and current_column to anything, thereby leaving them as the endpoints of the previous random walk.
+			
+			if (vertices_in_tree.length === 0)
+			{
+				current_row = Math.floor(Math.random() * grid_size / 5 + 2 * grid_size / 5);
+				current_column = Math.floor(Math.random() * grid_size / 5 + 2 * grid_size / 5);
+			}
+			
+			
+			
+			js_random_walk(100);
+			
+			
+			
+			//We don't include the last vertex, since it could connect back to the tree.
+			new_vertices.splice(new_vertices.length - 1, 1);
+			
+			if (new_vertices.length < 99)
+			{
+				//If we failed to get a long enough random walk from here, there's a chance that we're inside a cage of some sort. We might need to pick a new starting location for the next run, but we want to make sure that we're giving this place a proper chance. Therefore, we'll give it 100 attempts.
+				if (random_walk_from_endpoint_attmepts < 10)
+				{
+					random_walk_from_endpoint_attmepts++;
+					
+					current_row = current_row_base_camp;
+					current_column = current_column_base_camp;
+				}
+				
+				else if (vertices_in_tree.length !== 0 && random_walk_from_endpoint_attmepts === 10)
+				{
+					random_walk_from_endpoint_attmepts = 0;
+					
+					let new_index = Math.floor(Math.random() * vertices_in_tree.length);
+					
+					current_row = vertices_in_tree[new_index][0];
+					current_column = vertices_in_tree[new_index][1];	
+				}
+				
+				
+				
+				resolve();
+				return;
+			}
+			
+			
+			
+			random_walk_from_endpoint_attmepts = 0;
+			
+			current_row_base_camp = new_vertices[new_vertices.length - 2][0];
+			current_column_base_camp = new_vertices[new_vertices.length - 2][1];
+			
+			current_row = current_row_base_camp;
+			current_column = current_column_base_camp;
+			
+			num_skeleton_lines++;
+			
+			//We need to stop doing this at some point.
+			if (num_skeleton_lines === Math.floor(grid_size / 10))
+			{
+				reverse_generate_skeleton = false;
+				
+				postMessage(["log", "Going back to regular LERWs"]);
+			}
 		}
+		
+		
 		
 		else
 		{
-			random_walk();
+			//Pick a random vertex not in the tree.
+			let new_index = Math.floor(Math.random() * vertices_not_in_tree.length);
+			
+			current_row = vertices_not_in_tree[new_index][0];
+			current_column = vertices_not_in_tree[new_index][1];	
+			
+			if (edges_in_tree.length === 0)
+			{
+				js_random_walk(grid_size * 2);
+				
+				postMessage(["log", "Got it in time!"]);
+			}
+			
+			else
+			{
+				js_random_walk();
+			}
 		}
 		
 		
@@ -137,6 +230,7 @@ function wilson_step()
 			if (pop_index !== -1)
 			{
 				vertices_not_in_tree.splice(pop_index, 1);
+				vertices_in_tree.push(new_vertices[i]);
 			}
 			
 			if (i !== new_vertices.length - 1)
@@ -170,8 +264,8 @@ function wasm_random_walk(fixed_length = 0)
 	
 	
 	
-	//Here's the idea. C is great when it can run by itself for a little while, but when there are tons and tons of calls back-and-forth, the overhead of WebAssembly starts to show itself. To that end, once we've had 10 random walks of length less than grid_size / 10, we'll switch to making the rest of the grapoh with js.
-	if (num_new_vertices < grid_size / 10)
+	//Here's the idea. C is great when it can run by itself for a little while, but when there are tons and tons of calls back-and-forth, the overhead of WebAssembly starts to show itself. To that end, once we've had 10 random walks of length less than grid_size / 10, we'll switch to making the rest of the graph with js.
+	if (reverse_generate_skeleton === false && num_new_vertices < grid_size / 10)
 	{
 		num_short_paths_in_a_row++;
 		
@@ -200,18 +294,6 @@ function js_random_walk(fixed_length = 0)
 	//Go until we hit the tree.
 	while (true)
 	{
-		if (grid[grid_size * current_row + current_column] === 1)
-		{
-			break;
-		}
-		
-		else if (fixed_length !== 0 && new_vertices.length === fixed_length)
-		{
-			break;
-		}
-		
-		
-		
 		//Move either up, left, down, or right. 0 = up, 1 = left, 2 = down, and 3 = right.
 		let possible_directions = [];
 		
@@ -239,7 +321,7 @@ function js_random_walk(fixed_length = 0)
 
 
 
-		//Edges
+		//Edges.
 		else if (current_row === 0)
 		{
 			possible_directions = [1, 2, 3];
@@ -262,7 +344,7 @@ function js_random_walk(fixed_length = 0)
 
 
 
-		//Everything else
+		//Everything else.
 		else
 		{
 			possible_directions = [0, 1, 2, 3];
@@ -313,6 +395,18 @@ function js_random_walk(fixed_length = 0)
 			new_vertices.push([current_row, current_column]);
 		}
 		
+		
+		
+		//If we hit the tree or reached the right length, we're done.
+		if (grid[grid_size * current_row + current_column] === 1)
+		{
+			break;
+		}
+		
+		else if (fixed_length !== 0 && new_vertices.length === fixed_length)
+		{
+			break;
+		}
 	}
 }
 
@@ -532,7 +626,15 @@ function draw_line(row_1, column_1, row_2, column_2, color, delay)
 			let x = column_1;
 			let y = Math.min(row_1, row_2);
 			
-			postMessage([2 * x + 1, 2 * y + 1, 1, 3, color]);
+			if (no_borders)
+			{
+				postMessage([x, y, 1, 2, color]);
+			}
+			
+			else
+			{
+				postMessage([2 * x + 1, 2 * y + 1, 1, 3, color]);
+			}
 		}
 		
 		else
@@ -540,7 +642,15 @@ function draw_line(row_1, column_1, row_2, column_2, color, delay)
 			let x = Math.min(column_1, column_2);
 			let y = row_1;
 			
-			postMessage([2 * x + 1, 2 * y + 1, 3, 1, color]);
+			if (no_borders)
+			{
+				postMessage([x, y, 2, 1, color]);
+			}
+			
+			else
+			{
+				postMessage([2 * x + 1, 2 * y + 1, 2, 1, color]);
+			}
 		}
 		
 		

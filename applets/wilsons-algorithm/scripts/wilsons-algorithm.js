@@ -6,7 +6,9 @@
 	
 	let grid_size = null;
 	
-	let canvas_scale_factor = 5;
+	let no_borders = null;
+	
+	let canvas_scale_factor = null;
 	
 	let ctx = document.querySelector("#grid-graph").getContext("2d");
 	
@@ -18,36 +20,53 @@
 
 
 
-	document.querySelector("#generate-button").addEventListener("click", request_wilson_graph);
+	document.querySelector("#generate-button").addEventListener("click", function()
+	{
+		request_wilson_graph(false);
+	});
+	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
 	
 	
 	
 	
-	function request_wilson_graph()
+	function request_wilson_graph(reverse_generate_skeleton)
 	{
 		grid_size = parseInt(document.querySelector("#dim-input").value || 50);
 		
 		let maximum_speed = document.querySelector("#toggle-maximum-speed-checkbox").checked;
 		
+		no_borders = document.querySelector("#no-borders-checkbox").checked;
+		
+		let timeout_id = null;
+		
 		
 		
 		//Make sure that there is a proper density of pixels so that the canvas doesn't look blurry.
-		
 		let canvas_pixel_size = Math.min(window_width, window_height) * .9;
 		
 		canvas_scale_factor = Math.ceil(canvas_pixel_size / grid_size);
 	
 	
-	
-		document.querySelector("#grid-graph").setAttribute("width", (2 * grid_size + 1) * canvas_scale_factor);
-		document.querySelector("#grid-graph").setAttribute("height", (2 * grid_size + 1) * canvas_scale_factor);
 		
+		if (no_borders)
+		{
+			document.querySelector("#grid-graph").setAttribute("width", grid_size * canvas_scale_factor);
+			document.querySelector("#grid-graph").setAttribute("height", grid_size * canvas_scale_factor);
+			
+			ctx.fillStyle = "rgb(0, 0, 0)";
+			ctx.fillRect(0, 0, grid_size * canvas_scale_factor, grid_size * canvas_scale_factor);
+		}
 		
-		
-		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, (2 * grid_size + 1) * canvas_scale_factor, (2 * grid_size + 1) * canvas_scale_factor);
+		else
+		{
+			document.querySelector("#grid-graph").setAttribute("width", (2 * grid_size + 1) * canvas_scale_factor);
+			document.querySelector("#grid-graph").setAttribute("height", (2 * grid_size + 1) * canvas_scale_factor);
+			
+			ctx.fillStyle = "rgb(0, 0, 0)";
+			ctx.fillRect(0, 0, (2 * grid_size + 1) * canvas_scale_factor, (2 * grid_size + 1) * canvas_scale_factor);
+		}
 		
 		
 		
@@ -72,6 +91,8 @@
 		{
 			if (e.data[0] === "log")
 			{
+				clearTimeout(timeout_id);
+				
 				console.log(...e.data.slice(1));
 				return;
 			}
@@ -83,7 +104,21 @@
 		
 		
 		
-		web_worker.postMessage([grid_size, maximum_speed]);
+		let reverse_generate_skeleton_copy = JSON.parse(JSON.stringify(reverse_generate_skeleton));
+		
+		web_worker.postMessage([grid_size, maximum_speed, no_borders, reverse_generate_skeleton]);
+		
+		
+		
+		//The worker has three seconds to draw its initial line. If it can't do that, we cancel it and spawn a new worker that reverse-generates a skeleton.
+		timeout_id = setTimeout(function()
+		{
+			console.log("Didn't draw anything within three seconds -- attempting to reverse-generate a skeleton.");
+			
+			web_worker.terminate();
+			
+			request_wilson_graph(true);
+		}, 3000);
 	}
 	
 	

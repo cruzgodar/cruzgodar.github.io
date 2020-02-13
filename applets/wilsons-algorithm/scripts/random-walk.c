@@ -48,18 +48,6 @@ uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(uint32_t grid_size, uint32_t* grid, u
 	//Go until we hit the tree.
 	while (1)
 	{
-		if (grid[grid_size * current_row + current_column] == 1)
-		{
-			break;
-		}
-		
-		else if (fixed_length != 0 && num_new_vertices - 1 == fixed_length)
-		{
-			break;
-		}
-		
-		
-		
 		//Move either up, left, down, or right. 0 = up, 1 = right, 2 = down, and 3 = left.
 		
 		//Corners:
@@ -233,6 +221,18 @@ uint32_t* EMSCRIPTEN_KEEPALIVE random_walk(uint32_t grid_size, uint32_t* grid, u
 			new_vertices[2 * num_new_vertices + 1] = current_column;
 			
 			num_new_vertices++;
+		}
+		
+		
+		
+		if (grid[grid_size * current_row + current_column] == 1)
+		{
+			break;
+		}
+		
+		else if (fixed_length != 0 && num_new_vertices - 1 == fixed_length)
+		{
+			break;
 		}
 	}
 	
