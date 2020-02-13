@@ -193,7 +193,7 @@ function wilson_step()
 				
 				if (grid_size <= 100)
 				{
-					walk_length = 100;
+					walk_length = grid_size;
 				}
 				
 				else if (grid_size <= 300)
