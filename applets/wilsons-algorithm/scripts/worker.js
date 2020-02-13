@@ -169,7 +169,7 @@ function wilson_step()
 			num_skeleton_lines++;
 			
 			//We need to stop doing this at some point.
-			if (num_skeleton_lines === Math.floor(grid_size / 10))
+			if (num_skeleton_lines === Math.floor(grid_size / 5))
 			{
 				reverse_generate_skeleton = false;
 				
@@ -189,14 +189,26 @@ function wilson_step()
 			
 			if (edges_in_tree.length === 0)
 			{
-				js_random_walk(grid_size * 2);
+				let walk_length = grid_size * 5;
+				
+				if (grid_size <= 100)
+				{
+					walk_length = 100;
+				}
+				
+				else if (grid_size <= 300)
+				{
+					walk_length = grid_size * 3;
+				}
+				
+				random_walk(walk_length);
 				
 				postMessage(["log", "Got it in time!"]);
 			}
 			
 			else
 			{
-				js_random_walk();
+				random_walk();
 			}
 		}
 		
@@ -649,7 +661,7 @@ function draw_line(row_1, column_1, row_2, column_2, color, delay)
 			
 			else
 			{
-				postMessage([2 * x + 1, 2 * y + 1, 2, 1, color]);
+				postMessage([2 * x + 1, 2 * y + 1, 3, 1, color]);
 			}
 		}
 		

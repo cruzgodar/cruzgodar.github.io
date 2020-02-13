@@ -104,21 +104,22 @@
 		
 		
 		
-		let reverse_generate_skeleton_copy = JSON.parse(JSON.stringify(reverse_generate_skeleton));
-		
 		web_worker.postMessage([grid_size, maximum_speed, no_borders, reverse_generate_skeleton]);
 		
 		
 		
 		//The worker has three seconds to draw its initial line. If it can't do that, we cancel it and spawn a new worker that reverse-generates a skeleton.
-		timeout_id = setTimeout(function()
+		if (reverse_generate_skeleton === false)
 		{
-			console.log("Didn't draw anything within three seconds -- attempting to reverse-generate a skeleton.");
-			
-			web_worker.terminate();
-			
-			request_wilson_graph(true);
-		}, 3000);
+			timeout_id = setTimeout(function()
+			{
+				console.log("Didn't draw anything within three seconds -- attempting to reverse-generate a skeleton.");
+				
+				web_worker.terminate();
+				
+				request_wilson_graph(true);
+			}, 3000);
+		}
 	}
 	
 	
