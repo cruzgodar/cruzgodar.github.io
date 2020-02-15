@@ -104,6 +104,9 @@
 		
 		
 		
+		//To build the graph from a json file located in the same directory as this script, use
+		//web_worker.postMessage([grid_size, maximum_speed, no_borders, reverse_generate_skeleton, true]);.
+		
 		web_worker.postMessage([grid_size, maximum_speed, no_borders, reverse_generate_skeleton]);
 		
 		
