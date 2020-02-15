@@ -70,6 +70,24 @@
 		
 		
 		
+		if (!reverse_generate_skeleton)
+		{
+			try
+			{
+				document.querySelector("#progress-bar").style.opacity = 0;
+				
+				setTimeout(function()
+				{
+					document.querySelector("#progress-bar").style.marginTop = 0;
+					document.querySelector("#progress-bar").style.marginBottom = 0;
+				}, 600);
+			}
+			
+			catch(ex) {}
+		}
+		
+		
+		
 		try {web_worker.terminate();}
 		catch(ex) {}
 		
@@ -97,6 +115,31 @@
 				return;
 			}
 			
+			
+			
+			if (e.data[0] === "progress")
+			{
+				document.querySelector("#progress-bar span").style.width = e.data[1] + "%";
+				
+				if (e.data[1] === 100)
+				{
+					setTimeout(function()
+					{
+						document.querySelector("#progress-bar").style.opacity = 0;
+						
+						setTimeout(function()
+						{
+							document.querySelector("#progress-bar").style.marginTop = 0;
+							document.querySelector("#progress-bar").style.marginBottom = 0;
+						}, 300);
+					}, 600);
+				}
+				
+				return;
+			}
+			
+			
+			
 			ctx.fillStyle = e.data[4];
 			
 			ctx.fillRect(e.data[0] * canvas_scale_factor, e.data[1] * canvas_scale_factor, e.data[2] * canvas_scale_factor, e.data[3] * canvas_scale_factor);
@@ -119,6 +162,18 @@
 				console.log("Didn't draw anything within three seconds -- attempting to reverse-generate a skeleton.");
 				
 				web_worker.terminate();
+				
+				
+				
+				document.querySelector("#progress-bar").style.marginTop = "5vh";
+				document.querySelector("#progress-bar").style.marginBottom = "5vh";
+				
+				setTimeout(function()
+				{
+					document.querySelector("#progress-bar").style.opacity = 1;
+				}, 600);
+				
+				
 				
 				request_wilson_graph(true);
 			}, 3000);

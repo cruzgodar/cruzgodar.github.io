@@ -65,6 +65,8 @@ let last_direction = null;
 let random_walk = wasm_random_walk;
 let num_short_paths_in_a_row = 0;
 
+let percent_step = 1;
+
 
 
 function draw_wilson_graph()
@@ -98,6 +100,15 @@ function draw_wilson_graph()
 			else
 			{
 				await wilson_step();
+			}
+			
+			
+			
+			if (vertices_in_tree.length >= (grid_size * grid_size / 100) * percent_step)
+			{
+				postMessage(["progress", percent_step]);
+				
+				percent_step++;
 			}
 		}
 		
