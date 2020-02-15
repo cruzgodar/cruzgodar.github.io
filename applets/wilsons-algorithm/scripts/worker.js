@@ -144,7 +144,7 @@ function wilson_step()
 			if (new_vertices.length < 99)
 			{
 				//If we failed to get a long enough random walk from here, there's a chance that we're inside a cage of some sort. We might need to pick a new starting location for the next run, but we want to make sure that we're giving this place a proper chance. Therefore, we'll give it 100 attempts.
-				if (random_walk_from_endpoint_attmepts < 10)
+				if (random_walk_from_endpoint_attmepts < 100)
 				{
 					random_walk_from_endpoint_attmepts++;
 					
@@ -152,7 +152,7 @@ function wilson_step()
 					current_column = current_column_base_camp;
 				}
 				
-				else if (vertices_in_tree.length !== 0 && random_walk_from_endpoint_attmepts === 10)
+				else if (vertices_in_tree.length !== 0 && random_walk_from_endpoint_attmepts === 100)
 				{
 					random_walk_from_endpoint_attmepts = 0;
 					
