@@ -13,25 +13,13 @@ onmessage = async function(e)
 
 	Module["onRuntimeInitialized"] = async function()
 	{
-		if (typeof e.data[4] !== "undefined")
-		{
-			await draw_tree_from_json();
+		importScripts("/scripts/wasm-arrays.min.js");
 		
-			await color_graph();
-			
-			postMessage(["done"]);
-		}
+		await draw_wilson_graph();
 		
-		else
-		{
-			importScripts("/scripts/wasm-arrays.min.js");
-			
-			await draw_wilson_graph();
+		await color_graph();
 		
-			await color_graph();
-			
-			postMessage(["done"]);
-		}
+		postMessage(["done"]);
 	};
 }
 
@@ -645,32 +633,6 @@ function color_graph()
 		
 		
 		resolve();
-	});
-}
-
-
-
-function draw_tree_from_json()
-{
-	return new Promise(function(resolve, reject)
-	{
-		fetch("/applets/wilsons-algorithm/scripts/edges.json")
-		
-		.then(response => response.json())
-		
-		.then(async function(data)
-		{	
-			edges_in_tree = JSON.parse(JSON.stringify(data["edges"]));
-			
-			postMessage(["log", "Got it in time! (Obviously)"]);
-			
-			for (let i = 0; i < edges_in_tree.length; i++)
-			{
-				draw_line(edges_in_tree[i][0][0], edges_in_tree[i][0][1], edges_in_tree[i][1][0], edges_in_tree[i][1][1], "rgb(255, 255, 255)", 0);
-			}
-			
-			resolve();
-		});
 	});
 }
 

@@ -86,6 +86,8 @@
 			catch(ex) {}
 		}
 		
+		document.querySelector("#progress-bar span").style.width = 0;
+		
 		
 		
 		try {web_worker.terminate();}
@@ -131,6 +133,7 @@
 						{
 							document.querySelector("#progress-bar").style.marginTop = 0;
 							document.querySelector("#progress-bar").style.marginBottom = 0;
+							document.querySelector("#progress-bar span").style.width = 0;
 						}, 300);
 					}, 600);
 				}
@@ -146,9 +149,6 @@
 		}
 		
 		
-		
-		//To build the graph from a json file located in the same directory as this script, use
-		//web_worker.postMessage([grid_size, maximum_speed, no_borders, reverse_generate_skeleton, true]);.
 		
 		web_worker.postMessage([grid_size, maximum_speed, no_borders, reverse_generate_skeleton]);
 		
