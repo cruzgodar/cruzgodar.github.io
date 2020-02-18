@@ -43,10 +43,17 @@
 		
 		
 		
-		//Make sure that there is a proper density of pixels so that the canvas doesn't look blurry.
-		let canvas_pixel_size = Math.min(window_width, window_height) * .9;
+		let canvas_dim = 2 * grid_size + 1;
 		
-		canvas_scale_factor = Math.ceil(canvas_pixel_size / grid_size);
+		if (no_borders)
+		{
+			canvas_dim = grid_size;
+		}
+		
+		//Make sure that there is a proper density of pixels so that the canvas doesn't look blurry.
+		let canvas_pixels = Math.min(window_width, window_height) * .9;
+		
+		canvas_scale_factor = Math.ceil(canvas_pixels / canvas_dim);
 	
 	
 		
