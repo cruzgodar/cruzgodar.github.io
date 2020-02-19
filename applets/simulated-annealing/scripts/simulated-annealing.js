@@ -17,6 +17,15 @@
 	
 	
 	document.querySelector("#generate-button").addEventListener("click", request_annealing_graph);
+	
+	document.querySelector("#num-nodes-input").addEventListener("keydown", function(e)
+	{
+		if (e.keyCode === 13)
+		{
+			request_annealing_graph();
+		}
+	});
+	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
 	

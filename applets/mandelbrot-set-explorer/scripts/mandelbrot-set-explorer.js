@@ -51,6 +51,15 @@
 
 
 	document.querySelector("#generate-button").addEventListener("click", draw_high_res_mandelbrot_zoom);
+	
+	document.querySelector("#dim-input").addEventListener("keydown", function(e)
+	{
+		if (e.keyCode === 13)
+		{
+			draw_high_res_mandelbrot_zoom();
+		}
+	});
+	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
 	

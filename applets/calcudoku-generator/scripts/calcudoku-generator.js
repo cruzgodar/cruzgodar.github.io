@@ -8,11 +8,6 @@
 	
 	let ctx = document.querySelector("#calcudoku-grid").getContext("2d");
 	
-	let clear_progress_bar_id = null;
-	let fill_progress_bar_id = null;
-	
-	let progress_bar_width = 0;
-	
 	let grid = [];
 	let cages = [];
 	let cages_by_location = [];
@@ -22,6 +17,20 @@
 	
 	
 	document.querySelector("#generate-button").addEventListener("click", request_calcudoku_grid);
+	
+	let elements = document.querySelectorAll("#grid-size-input, #max-cage-size-input");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].addEventListener("keydown", function(e)
+		{
+			if (e.keyCode === 13)
+			{
+				request_calcudoku_grid();
+			}
+		});
+	}
+	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
 	
@@ -34,6 +43,10 @@
 		
 		let max_cage_size = parseInt(document.querySelector("#max-cage-size-input").value || 1000);
 		
+		document.querySelector("#calcudoku-grid").style.opacity = 0;
+		
+		document.querySelector(".loading-spinner").style.opacity = 0;
+		
 		
 		
 		let canvas_size = grid_size * 200 + 9;
@@ -42,14 +55,6 @@
 		document.querySelector("#calcudoku-grid").setAttribute("height", canvas_size);
 		
 		ctx.clearRect(0, 0, canvas_size, canvas_size);
-		
-		
-		
-		document.querySelector(".progress-bar").style.opacity = 1;
-		
-		document.querySelector(".progress-bar span").style.width = 0;
-		
-		progress_bar_width = 0;
 		
 		
 		
@@ -74,43 +79,15 @@
 		{
 			if (e.data[0] === "done")
 			{
-				clearInterval(fill_progress_bar_id);
+				console.log("Finished!");
 				
-				document.querySelector(".progress-bar").style.opacity = 0;
-				
-				console.log("Finished in time!");
+				document.querySelector(".loading-spinner").style.opacity = 0;
 			}
 			
 			else if (e.data[0] === "first_grid_complete")
 			{
-				clearTimeout(clear_progress_bar_id);
-				
-				
-				
 				//We have a valid puzzle!
-				clear_progress_bar_id = setTimeout(function()
-				{
-					clearInterval(fill_progress_bar_id);
-					
-					document.querySelector(".progress-bar").style.opacity = 0;
-				}, (grid_size * grid_size / 2 + 1) * 1000);
-				
-				
-				
-				//Fill the progress bar.
-				fill_progress_bar_id = setInterval(function()
-				{
-					progress_bar_width += 100 / (grid_size * grid_size / 2);
-					
-					document.querySelector(".progress-bar span").style.width = progress_bar_width + "%";
-				}, 1000);
-				
-				
-				
-				setTimeout(function()
-				{
-					document.querySelector("#calcudoku-grid").style.opacity = 1;
-				}, 300);
+				document.querySelector("#calcudoku-grid").style.opacity = 1;
 			}
 			
 			else if (e.data[0] === "log")
@@ -130,11 +107,9 @@
 		
 		
 		
-		clearInterval(fill_progress_bar_id);
-		
-		clearTimeout(clear_progress_bar_id);
-		
 		web_worker.postMessage([grid_size, max_cage_size]);
+		
+		document.querySelector(".loading-spinner").style.opacity = 1;
 	}
 	
 	

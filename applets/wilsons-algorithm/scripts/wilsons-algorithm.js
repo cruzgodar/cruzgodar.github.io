@@ -25,6 +25,14 @@
 		request_wilson_graph(false);
 	});
 	
+	document.querySelector("#dim-input").addEventListener("keydown", function(e)
+	{
+		if (e.keyCode === 13)
+		{
+			request_wilson_graph(false);
+		}
+	});
+	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
 	

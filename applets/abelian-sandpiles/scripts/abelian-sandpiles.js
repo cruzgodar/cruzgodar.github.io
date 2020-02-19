@@ -19,6 +19,15 @@
 
 
 	document.querySelector("#generate-button").addEventListener("click", request_sandpile_graph);
+	
+	document.querySelector("#num-grains-input").addEventListener("keydown", function(e)
+	{
+		if (e.keyCode === 13)
+		{
+			request_sandpile_graph();
+		}
+	});
+	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
 	

@@ -30,6 +30,20 @@
 
 
 	document.querySelector("#generate-button").addEventListener("click", draw_high_res_julia);
+	
+	let elements = document.querySelectorAll("#a-input, #b-input, #dim-input");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].addEventListener("keydown", function(e)
+		{
+			if (e.keyCode === 13)
+			{
+				draw_high_res_julia();
+			}
+		});
+	}
+	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 
 
