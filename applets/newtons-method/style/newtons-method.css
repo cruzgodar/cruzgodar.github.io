@@ -1,0 +1,18 @@
+#grid-graph
+{
+	width: 90vmin;
+	height: 90vmin;
+	margin: 0 auto;
+	
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 15px;
+	padding: 2px;
+}
+
+
+
+.progress-bar
+{
+	width: 90vmin !important;
+	transition: opacity .3s ease-in-out, margin-top .3s ease-in-out, margin-bottom .3s ease-in-out;
+}
