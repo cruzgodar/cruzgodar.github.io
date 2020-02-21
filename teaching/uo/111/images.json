@@ -1,4 +1,18 @@
 {
+	"image-written-homework-6":
+    {
+        "webp": "homeworks/6/cover.webp",
+        "non-webp": "homeworks/6/cover.jpg"
+    },
+    
+    
+    
+	"image-quiz-5":
+    {
+        "webp": "quizzes/5/cover.webp",
+        "non-webp": "quizzes/5/cover.jpg"
+    },
+    
 	"image-written-homework-5":
     {
         "webp": "homeworks/5/cover.webp",

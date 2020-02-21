@@ -11,6 +11,7 @@
 	let canvas_scale_factor = null;
 	
 	let ctx = document.querySelector("#newtons-method-plot").getContext("2d");
+	let root_selector_ctx = document.querySelector("#root-selector").getContext("2d");
 	
 	
 	
@@ -72,6 +73,9 @@
 		
 		document.querySelector("#newtons-method-plot").setAttribute("width", canvas_size);
 		document.querySelector("#newtons-method-plot").setAttribute("height", canvas_size);
+		
+		document.querySelector("#root-selector").setAttribute("width", canvas_size);
+		document.querySelector("#root-selector").setAttribute("height", canvas_size);
 		
 		
 		
@@ -245,9 +249,9 @@
 	
 	function draw_canvas_with_smooth_edges()
 	{
-		gaussian_blur_canvas(10);
+		gaussian_blur_canvas(Math.floor(canvas_size / 50));
 		
-		gaussian_blur_canvas(5);
+		gaussian_blur_canvas(Math.floor(canvas_size / 100));
 		
 		gaussian_blur_canvas(2);
 		
