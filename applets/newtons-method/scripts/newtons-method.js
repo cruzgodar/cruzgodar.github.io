@@ -4,7 +4,7 @@
 	
 	
 	
-	let canvas_size = 1000;
+	let canvas_size = 500;
 	
 	let num_iterations = 100;
 	
@@ -14,18 +14,12 @@
 	
 	
 	
-	let polynomial = [[-1, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [1, 0]];
-	
-	let derivative = polynomial_derivative(polynomial);
-	
-	let roots = [[0, 1], [-1, 0], [0, -1], [1, 0], [.707, .707], [.707, -.707], [-.707, .707], [-.707, -.707]];
-	
 	const threshold = .01;
 	
 	let brightness_map = [];
 	let closest_roots = [];
 
-	const factorials = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600];
+	const factorials = [1, 1, 2, 6, 24, 120, 720, 5040, 40320];
 	
 	const colors =
 	[
@@ -37,14 +31,8 @@
 		[255, 0, 255],
 		[0, 255, 255],
 		
-		[255, 255, 255],
-		
 		[255, 127, 0],
-		[255, 0, 127],
-		[127, 255, 0],
-		[0, 255, 127],
-		[127, 0, 255],
-		[0, 127, 255]
+		[127, 0, 255]
 	];
 	
 	
@@ -55,7 +43,7 @@
 
 	document.querySelector("#generate-button").addEventListener("click", function()
 	{
-		draw_newtons_method_plot();
+		draw_newtons_method_plot(true);
 	});
 	
 	document.querySelector("#dim-input").addEventListener("keydown", function(e)
@@ -72,8 +60,16 @@
 	
 	
 	
-	function draw_newtons_method_plot()
+	function draw_newtons_method_plot(reduce_banding)
 	{
+		let roots = [[1, 0], [.707, .707], [0, 1], [-.707, .707], [-1, 0], [-.707, -.707], [0, -1], [.707, -.707]];
+		
+		let polynomial = polynomial_from_roots(roots);
+		
+		let derivative = polynomial_derivative(polynomial);
+		
+		
+		
 		document.querySelector("#newtons-method-plot").setAttribute("width", canvas_size);
 		document.querySelector("#newtons-method-plot").setAttribute("height", canvas_size);
 		
@@ -173,7 +169,15 @@
 		
 		
 		
-		draw_canvas_with_smooth_edges();
+		if (reduce_banding)
+		{
+			draw_canvas_with_smooth_edges();
+		}
+		
+		else
+		{
+			draw_canvas();
+		}
 	}
 	
 	
@@ -385,6 +389,51 @@
 		return derivative;
 	}
 	
+	//Returns the general form of (z - z_1) ... (z - z_n).
+	function polynomial_from_roots(roots)
+	{
+		//We start with the constant polynomial 1 and go root by root.
+		let result = [[1, 0]];
+		
+		for (let i = 0; i < roots.length; i++)
+		{
+			//First, we multiply a copy by x, shifting the terms up by 1 degree. We also multiply the original by z_i.
+			let temp = JSON.parse(JSON.stringify(result));
+			
+			temp.unshift([0, 0]);
+			
+			for (let j = 0; j < result.length; j++)
+			{
+				let new_term = complex_multiply(result[j], roots[i]);
+				
+				result[j][0] = -new_term[0];
+				result[j][1] = -new_term[1];
+			}
+			
+			result.push([0, 0]);
+			
+			//Now we put the two together.
+			for (let j = 0; j < result.length; j++)
+			{
+				result[j][0] += temp[j][0];
+				result[j][1] += temp[j][1];
+			}
+		}
+		
+		
+		
+		//Finally, we round the polynomial slightly. This is mainly to keep nonzero things from slowing down the polynomial evaluation.
+		for (let i = 0; i < result.length; i++)
+		{
+			result[i][0] = Math.round(result[i][0] * canvas_size / 4) * 4 / canvas_size;
+			result[i][1] = Math.round(result[i][1] * canvas_size / 4) * 4 / canvas_size;
+		}
+		
+		
+		
+		return result;
+	}
+	
 	
 	
 	function prepare_download()
@@ -408,12 +457,12 @@
 		{
 			if (url_vars["theme"] === 1)
 			{
-				document.querySelector("#grid-graph").style.borderColor = "rgb(192, 192, 192)";
+				document.querySelector("#newtons-method-plot").style.borderColor = "rgb(192, 192, 192)";
 			}
 			
 			else
 			{
-				document.querySelector("#grid-graph").style.borderColor = "rgb(64, 64, 64)";
+				document.querySelector("#newtons-method-plot").style.borderColor = "rgb(64, 64, 64)";
 			}
 		}
 	}
