@@ -4,7 +4,9 @@
 	
 	
 	
-	let canvas_size = 500;
+	let canvas_size = 1000;
+	
+	let num_iterations = 100;
 	
 	let canvas_scale_factor = null;
 	
@@ -22,9 +24,6 @@
 	
 	let brightness_map = [];
 	let closest_roots = [];
-	
-	let max_brightness = 0;
-	let min_brightness = Infinity;
 
 	const factorials = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600];
 	
@@ -86,13 +85,25 @@
 			
 			brightness_map[i] = [];
 			
-			
-			
 			for (let j = 0; j < canvas_size; j++)
 			{
 				brightness_map[i][j] = 0;
 				
 				closest_roots[i][j] = -1;
+			}
+		}
+		
+		
+		
+		for (let i = 0; i < canvas_size; i++)
+		{
+			for (let j = 0; j < canvas_size; j++)
+			{
+				//If we've already been here, no need to do it again.
+				if (brightness_map[i][j] !== 0)
+				{
+					continue;
+				}
 				
 				
 				
@@ -100,16 +111,26 @@
 				let y = (-(i - canvas_size/2) / canvas_size) * 4;
 				
 				let z = [x, y];
-
+				
+				//Here's the idea. As we bounce from place to place, everything we pass is on the same road we are, eventually, so we'll just keep track of everywhere where we've been and what those will eventually go to.
+				let zs_along_for_the_ride = [];
 				
 				
 				
-				for (let iteration = 0; iteration < 100; iteration++)
+				for (let iteration = 0; iteration < num_iterations; iteration++)
 				{
 					let temp = complex_multiply(complex_polynomial(polynomial, z), complex_invert(complex_polynomial(derivative, z)));
 					
 					z[0] = z[0] - temp[0];
 					z[1] = z[1] - temp[1];
+					
+					let reverse_j = Math.floor(((z[0] / 4) * canvas_size) + canvas_size/2);
+					let reverse_i = Math.floor(-(((z[1] / 4) * canvas_size) - canvas_size/2));
+					
+					if (reverse_i >= 0 && reverse_i < canvas_size && reverse_j >= 0 && reverse_j < canvas_size)
+					{
+						zs_along_for_the_ride.push([[reverse_i, reverse_j], iteration + 1]);
+					}
 					
 					
 					
@@ -122,16 +143,16 @@
 						{
 							closest_roots[i][j] = k;
 							
-							brightness_map[i][j] = Math.sqrt(iteration);
+							brightness_map[i][j] = iteration;
 							
-							if (brightness_map[i][j] > max_brightness)
-							{
-								max_brightness = brightness_map[i][j];
-							}
 							
-							if (brightness_map[i][j] < min_brightness)
+							
+							//Now we can go back and update all those free riders.
+							for (let l = 0; l < zs_along_for_the_ride.length; l++)
 							{
-								min_brightness = brightness_map[i][j];
+								brightness_map[zs_along_for_the_ride[l][0][0]][zs_along_for_the_ride[l][0][1]] = iteration - zs_along_for_the_ride[l][1];
+								
+								closest_roots[zs_along_for_the_ride[l][0][0]][zs_along_for_the_ride[l][0][1]] = k;
 							}
 							
 							
@@ -159,6 +180,32 @@
 	
 	function draw_canvas()
 	{
+		let max_brightness = 0;
+		let min_brightness = Infinity;
+		
+		
+		
+		//First, square root everything for a darker center and then find the max and min.\
+		for (let i = 0; i < canvas_size; i++)
+		{
+			for (let j = 0; j < canvas_size; j++)
+			{
+				brightness_map[i][j] = Math.sqrt(brightness_map[i][j]);
+				
+				if (brightness_map[i][j] > max_brightness)
+				{
+					max_brightness = brightness_map[i][j];
+				}
+				
+				if (brightness_map[i][j] < min_brightness)
+				{
+					min_brightness = brightness_map[i][j];
+				}
+			}	
+		}
+		
+		
+		
 		for (let i = 0; i < canvas_size; i++)
 		{
 			for (let j = 0; j < canvas_size; j++)
@@ -344,9 +391,9 @@
 	{
 		let link = document.createElement("a");
 		
-		link.download = "wilsons-algorithm.png";
+		link.download = "newtons-method.png";
 		
-		link.href = document.querySelector("#grid-graph").toDataURL();
+		link.href = document.querySelector("#newtons-method-plot").toDataURL();
 		
 		link.click();
 		
