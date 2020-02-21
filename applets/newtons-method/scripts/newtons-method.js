@@ -12,9 +12,19 @@
 	
 	
 	
-	let polynomial = [[1, 0], [0, 0], [0, 0], [0, 0], [1, 0]];
+	let polynomial = [[-1, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [1, 0]];
 	
 	let derivative = polynomial_derivative(polynomial);
+	
+	let roots = [[0, 1], [-1, 0], [0, -1], [1, 0], [.707, .707], [.707, -.707], [-.707, .707], [-.707, -.707]];
+	
+	const threshold = .01;
+	
+	let brightness_map = [];
+	let closest_roots = [];
+	
+	let max_brightness = 0;
+	let min_brightness = Infinity;
 
 	const factorials = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600];
 	
@@ -23,10 +33,19 @@
 		[255, 0, 0],
 		[0, 255, 0],
 		[0, 0, 255],
+		
 		[255, 255, 0],
 		[255, 0, 255],
 		[0, 255, 255],
-		[255, 255, 255]
+		
+		[255, 255, 255],
+		
+		[255, 127, 0],
+		[255, 0, 127],
+		[127, 255, 0],
+		[0, 255, 127],
+		[127, 0, 255],
+		[0, 127, 255]
 	];
 	
 	
@@ -59,17 +78,11 @@
 		document.querySelector("#newtons-method-plot").setAttribute("width", canvas_size);
 		document.querySelector("#newtons-method-plot").setAttribute("height", canvas_size);
 		
-		let final_guesses = [];
-		
-		let brightness_map = [];
-		
-		let max_brightness = 0;
-		
 		
 		
 		for (let i = 0; i < canvas_size; i++)
 		{
-			final_guesses[i] = [];
+			closest_roots[i] = [];
 			
 			brightness_map[i] = [];
 			
@@ -79,122 +92,155 @@
 			{
 				brightness_map[i][j] = 0;
 				
+				closest_roots[i][j] = -1;
+				
 				
 				
 				let x = ((j - canvas_size/2) / canvas_size) * 4;
 				let y = (-(i - canvas_size/2) / canvas_size) * 4;
 				
 				let z = [x, y];
-				
-				let brightness = 1;
-				
+
 				
 				
-				for (let iteration = 0; iteration < 256; iteration++)
+				
+				for (let iteration = 0; iteration < 100; iteration++)
 				{
 					let temp = complex_multiply(complex_polynomial(polynomial, z), complex_invert(complex_polynomial(derivative, z)));
 					
 					z[0] = z[0] - temp[0];
 					z[1] = z[1] - temp[1];
 					
-					brightness -= .015;
 					
-					if (brightness <= 0)
+					
+					//If we're very close a root, stop.
+					let found_a_root = false;
+					
+					for (let k = 0; k < roots.length; k++)
 					{
-						brightness = 0;
-						
-						break;
+						if (complex_magnitude([z[0] - roots[k][0], z[1] - roots[k][1]]) <= threshold * threshold)
+						{
+							closest_roots[i][j] = k;
+							
+							brightness_map[i][j] = Math.sqrt(iteration);
+							
+							if (brightness_map[i][j] > max_brightness)
+							{
+								max_brightness = brightness_map[i][j];
+							}
+							
+							if (brightness_map[i][j] < min_brightness)
+							{
+								min_brightness = brightness_map[i][j];
+							}
+							
+							
+							
+							found_a_root = true;
+							
+							break;
+						}
 					}
 					
-					
-					
-					//This is close enough.
-					if (Math.round(temp[0] * 100) === 0 && Math.round(temp[1] * 100) === 0)
+					if (found_a_root)
 					{
-						brightness_map[i][j] = brightness;
-						
 						break;
 					}
 				}
-				
-				//We round to two decimal places to make the mode calculations work.
-				z[0] = Math.round(z[0] * 100) / 100;
-				z[1] = Math.round(z[1] * 100) / 100;
-				
-				final_guesses[i][j] = z;
 			}
 		}
 		
 		
 		
-		//Now we'll find the n most common guesses and assume they're the roots.
-		let possible_roots = JSON.parse(JSON.stringify(final_guesses));
-		
-		possible_roots = possible_roots.flat();
-		
-		possible_roots.sort((a, b) => a[0] - b[0]);
-		
-		possible_roots.sort((a, b) => a[1] - b[1]);
-		
-		
-		
-		let i = 0;
-		
-		while (i < possible_roots.length)
-		{
-			let j = i;
-			let num_matches = 0;
-			
-			while (j < possible_roots.length && possible_roots[j][0] === possible_roots[i][0] && possible_roots[j][1] === possible_roots[i][1])
-			{
-				num_matches++;
-				j++;
-			}
-			
-			possible_roots[i] = [possible_roots[i], num_matches];
-			
-			possible_roots.splice(i + 1, num_matches - 1);
-			
-			i++;
-		}
-		
-		
-		
-		//Sort this list descending and pull off the top n entries.
-		possible_roots.sort((a, b) => b[1] - a[1]);
-		
-		possible_roots.splice(polynomial.length - 1);
-		
-		
-		
+		draw_canvas_with_smooth_edges();
+	}
+	
+	
+	
+	function draw_canvas()
+	{
 		for (let i = 0; i < canvas_size; i++)
 		{
 			for (let j = 0; j < canvas_size; j++)
 			{
-				let minimum_distance = Infinity;
-				let closest_root = 0;
+				brightness_map[i][j] -= min_brightness;
 				
-				//Find the root this guess is closest to.
-				for (let k = 0; k < possible_roots.length; k++)
+				brightness_map[i][j] /= (max_brightness - min_brightness);
+				
+				brightness_map[i][j] = 1 - brightness_map[i][j];
+				
+				let closest_root = closest_roots[i][j];
+				
+				if (closest_root !== -1)
 				{
-					let distance = complex_magnitude([final_guesses[i][j][0] - possible_roots[k][0][0], final_guesses[i][j][1] - possible_roots[k][0][1]]);
+					let r = colors[closest_root][0] * brightness_map[i][j];
+					let g = colors[closest_root][1] * brightness_map[i][j];
+					let b = colors[closest_root][2] * brightness_map[i][j];
 					
-					if (distance < minimum_distance)
+					ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+				}
+				
+				else
+				{
+					ctx.fillStyle = "rgb(0, 0, 0)";
+				}
+				
+				ctx.fillRect(j, i, 1, 1);
+			}
+		}
+	}
+	
+	
+	
+	function draw_canvas_with_smooth_edges()
+	{
+		gaussian_blur_canvas(10);
+		
+		gaussian_blur_canvas(5);
+		
+		gaussian_blur_canvas(2);
+		
+		draw_canvas();
+	}
+	
+	
+	
+	function gaussian_blur_canvas(blur_radius)
+	{
+		for (let i = blur_radius; i < canvas_size - blur_radius; i++)
+		{
+			for (let j = blur_radius; j < canvas_size - blur_radius; j++)
+			{
+				let brightness_sum = 0;
+				
+				//Look around with radius blur_radius. If all the pixels have the same color, then we let this pixel be the average of those colors.
+				let color_differs = false;
+				
+				for (let k = i - blur_radius; k <= i + blur_radius; k++)
+				{
+					for (let l = j - blur_radius; l <= j + blur_radius; l++)
 					{
-						minimum_distance = distance;
-						closest_root = k;
+						if (closest_roots[k][l] !== closest_roots[i][j])
+						{
+							color_differs = true;
+							break;
+						}
+						
+						brightness_sum += brightness_map[k][l];
+					}
+					
+					if (color_differs)
+					{
+						break;
 					}
 				}
 				
+				if (color_differs)
+				{
+					continue;
+				}
 				
-				
-				let r = colors[closest_root][0] * brightness_map[i][j];
-				let g = colors[closest_root][1] * brightness_map[i][j];
-				let b = colors[closest_root][2] * brightness_map[i][j];
-				
-				ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-				
-				ctx.fillRect(j, i, 1, 1);
+				brightness_map[i][j] = brightness_sum / ((2 * blur_radius + 1) * (2 * blur_radius + 1));
 			}
 		}
 	}
