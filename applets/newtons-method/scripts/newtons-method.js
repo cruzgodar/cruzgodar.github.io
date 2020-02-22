@@ -19,6 +19,9 @@
 	let brightness_map = [];
 	let closest_roots = [];
 	
+	//We keep a rolling average of 10 of these to smooth out the low-res frames.
+	let recent_max_brightnesses = [];
+	
 	const colors =
 	[
 		[255, 0, 0],
@@ -57,7 +60,7 @@
 	
 	
 	
-	function draw_newtons_method_plot(roots, reduce_banding)
+	function draw_newtons_method_plot(roots)
 	{
 		document.querySelector("#newtons-method-plot").setAttribute("width", canvas_size);
 		document.querySelector("#newtons-method-plot").setAttribute("height", canvas_size);
@@ -97,6 +100,8 @@
 				
 				let z = [x, y];
 				
+				let last_z = [0, 0];
+				
 				//Here's the idea. As we bounce from place to place, everything we pass is on the same road we are, eventually, so we'll just keep track of everywhere where we've been and what those will eventually go to.
 				let zs_along_for_the_ride = [];
 				
@@ -105,6 +110,9 @@
 				for (let iteration = 0; iteration < num_iterations; iteration++)
 				{
 					let temp = complex_multiply(complex_polynomial(roots, z), complex_invert(complex_derivative(roots, z)));
+					
+					last_z[0] = z[0];
+					last_z[1] = z[1];
 					
 					z[0] = z[0] - temp[0];
 					z[1] = z[1] - temp[1];
@@ -124,18 +132,25 @@
 					
 					for (let k = 0; k < roots.length; k++)
 					{
-						if (complex_magnitude([z[0] - roots[k][0], z[1] - roots[k][1]]) <= threshold * threshold)
+						let d_0 = complex_magnitude([z[0] - roots[k][0], z[1] - roots[k][1]]);
+						
+						if (d_0 <= threshold * threshold)
 						{
+							let d_1 = complex_magnitude([last_z[0] - roots[k][0], last_z[1] - roots[k][1]]);
+							
+							//We tweak the iteration count by a little bit to produce smooth color.
+							let brightness_adjust = (Math.log(threshold) - .5 * Math.log(d_0)) / (.5 * Math.log(d_1) - .5 * Math.log(d_0));
+							
 							closest_roots[i][j] = k;
 							
-							brightness_map[i][j] = iteration;
+							brightness_map[i][j] = iteration - brightness_adjust;
 							
 							
 							
 							//Now we can go back and update all those free riders.
 							for (let l = 0; l < zs_along_for_the_ride.length; l++)
 							{
-								brightness_map[zs_along_for_the_ride[l][0][0]][zs_along_for_the_ride[l][0][1]] = iteration - zs_along_for_the_ride[l][1];
+								brightness_map[zs_along_for_the_ride[l][0][0]][zs_along_for_the_ride[l][0][1]] = iteration - brightness_adjust - zs_along_for_the_ride[l][1];
 								
 								closest_roots[zs_along_for_the_ride[l][0][0]][zs_along_for_the_ride[l][0][1]] = k;
 							}
@@ -158,15 +173,7 @@
 		
 		
 		
-		if (reduce_banding)
-		{
-			draw_canvas_with_smooth_edges();
-		}
-		
-		else
-		{
-			draw_canvas();
-		}
+		draw_canvas();
 	}
 	
 	
@@ -183,8 +190,6 @@
 		{
 			for (let j = 0; j < canvas_size; j++)
 			{
-				brightness_map[i][j] = Math.sqrt(brightness_map[i][j]);
-				
 				if (brightness_map[i][j] > max_brightness)
 				{
 					max_brightness = brightness_map[i][j];
@@ -195,6 +200,27 @@
 					min_brightness = brightness_map[i][j];
 				}
 			}	
+		}
+		
+		
+		
+		if (canvas_size === 100)
+		{
+			recent_max_brightnesses.push(max_brightness);
+			
+			if (recent_max_brightnesses.length > 10)
+			{
+				recent_max_brightnesses.shift();
+			}
+			
+			let sum = 0;
+			
+			for (let i = 0; i < recent_max_brightnesses.length; i++)
+			{
+				sum += recent_max_brightnesses[i];
+			}
+			
+			max_brightness = sum / recent_max_brightnesses.length;
 		}
 		
 		
@@ -214,6 +240,9 @@
 				brightness_map[i][j] /= (max_brightness - min_brightness);
 				
 				brightness_map[i][j] = 1 - brightness_map[i][j];
+				
+				//This gives things a nice bit of tenebrism.
+				brightness_map[i][j] = Math.pow(brightness_map[i][j], 1 + current_roots.length / 4);
 				
 				
 				
@@ -254,64 +283,11 @@
 	
 	
 	
-	function draw_canvas_with_smooth_edges()
-	{
-		gaussian_blur_canvas(Math.floor(canvas_size / 50));
-		
-		gaussian_blur_canvas(2);
-		
-		draw_canvas();
-	}
-	
-	
-	
-	function gaussian_blur_canvas(blur_radius)
-	{
-		for (let i = blur_radius; i < canvas_size - blur_radius; i++)
-		{
-			for (let j = blur_radius; j < canvas_size - blur_radius; j++)
-			{
-				let brightness_sum = 0;
-				
-				//Look around with radius blur_radius. If all the pixels have the same color, then we let this pixel be the average of those colors.
-				let color_differs = false;
-				
-				for (let k = i - blur_radius; k <= i + blur_radius; k++)
-				{
-					for (let l = j - blur_radius; l <= j + blur_radius; l++)
-					{
-						if (closest_roots[k][l] !== closest_roots[i][j])
-						{
-							color_differs = true;
-							break;
-						}
-						
-						brightness_sum += brightness_map[k][l];
-					}
-					
-					if (color_differs)
-					{
-						break;
-					}
-				}
-				
-				if (color_differs)
-				{
-					continue;
-				}
-				
-				brightness_map[i][j] = brightness_sum / ((2 * blur_radius + 1) * (2 * blur_radius + 1));
-			}
-		}
-	}
-	
-	
-	
 	function draw_high_res_plot()
 	{
 		canvas_size = parseInt(document.querySelector("#dim-input").value || 1000);
 		
-		draw_newtons_method_plot(current_roots, true);
+		draw_newtons_method_plot(current_roots);
 		
 		prepare_download();
 	}
@@ -418,9 +394,11 @@
 		
 		current_roots.push([0, 0]);
 		
+		recent_max_brightnesses = [];
+		
 		canvas_size = 100;
 				
-		draw_newtons_method_plot(current_roots, false);
+		draw_newtons_method_plot(current_roots);
 	}
 	
 	
@@ -436,6 +414,8 @@
 			{
 				e.preventDefault();
 				
+				recent_max_brightnesses = [];
+				
 				active_marker = i;
 				
 				break;
@@ -447,9 +427,11 @@
 	{
 		if (active_marker !== -1)
 		{
+			document.body.style.WebkitUserSelect = "";
+			
 			canvas_size = 500;
 			
-			draw_newtons_method_plot(current_roots, true);
+			draw_newtons_method_plot(current_roots);
 		}
 		
 		active_marker = -1;
