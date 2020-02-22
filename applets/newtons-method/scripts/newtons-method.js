@@ -18,8 +18,6 @@
 	
 	let brightness_map = [];
 	let closest_roots = [];
-
-	const factorials = [1, 1, 2, 6, 24, 120, 720, 5040, 40320];
 	
 	const colors =
 	[
@@ -27,12 +25,12 @@
 		[0, 255, 0],
 		[0, 0, 255],
 		
-		[255, 255, 0],
-		[255, 0, 255],
 		[0, 255, 255],
+		[255, 0, 255],
+		[255, 255, 0],
 		
-		[255, 127, 0],
-		[127, 0, 255]
+		[127, 0, 255],
+		[255, 127, 0]
 	];
 	
 	
@@ -44,6 +42,7 @@
 	
 
 	document.querySelector("#add-marker-button").addEventListener("click", add_marker);
+	document.querySelector("#spread-markers-button").addEventListener("click", spread_roots);
 	
 	document.querySelector("#dim-input").addEventListener("keydown", function(e)
 	{
@@ -238,8 +237,6 @@
 	{
 		gaussian_blur_canvas(Math.floor(canvas_size / 50));
 		
-		gaussian_blur_canvas(Math.floor(canvas_size / 100));
-		
 		gaussian_blur_canvas(2);
 		
 		draw_canvas();
@@ -309,45 +306,6 @@
 		return [1/magnitude * z[0], -1/magnitude * z[1]];
 	}
 
-	//Returns z^n.
-	function complex_power(z, n)
-	{
-		if (n === 0)
-		{
-			return [1, 0];
-		}
-		
-		
-		
-		let result = [0, 0];
-		
-		for (let k = 0; k <= n; k++)
-		{
-			let coefficient = factorials[n]/(factorials[k] * factorials[n - k]) * Math.pow(z[0], k) * Math.pow(z[1], n - k);
-			
-			switch ((n - k) % 4)
-			{
-				case 0:
-					result[0] += coefficient;
-					break;
-				
-				case 1:
-					result[1] += coefficient;
-					break;
-				
-				case 2:
-					result[0] -= coefficient;
-					break;
-				
-				case 3:
-					result[1] -= coefficient;
-					break;
-			}
-		}
-		
-		return result;
-	}
-
 	//Returns f(z) for a polynomial f with given roots.
 	function complex_polynomial(roots, z)
 	{
@@ -388,19 +346,26 @@
 	
 	function init_listeners()
 	{
-		document.querySelector("#root-selector").addEventListener("touchstart", drag_start, false);
-    		document.querySelector("#root-selector").addEventListener("touchend", drag_end, false);
-	    document.querySelector("#root-selector").addEventListener("touchmove", drag_move, false);
+		document.body.addEventListener("touchstart", drag_start, false);
+    		document.body.addEventListener("touchend", drag_end, false);
+	    document.body.addEventListener("touchmove", drag_move, false);
 
-	    document.querySelector("#root-selector").addEventListener("mousedown", drag_start, false);
-	    document.querySelector("#root-selector").addEventListener("mouseup", drag_end, false);
-	    document.querySelector("#root-selector").addEventListener("mousemove", drag_move, false);
+	    document.body.addEventListener("mousedown", drag_start, false);
+	    document.body.addEventListener("mouseup", drag_end, false);
+	    document.body.addEventListener("mousemove", drag_move, false);
 	}
 	
 	
 	
 	function add_marker()
 	{
+		if (current_roots.length === colors.length)
+		{
+			return;
+		}
+		
+		
+		
 		let element = document.createElement("div");
 		element.classList.add("root-marker");
 		element.id = `root-marker-${root_markers.length}`;
@@ -408,14 +373,14 @@
 		
 		document.querySelector("#root-selector").appendChild(element);
 		
-		root_markers.push([root_selector_height / 2, root_selector_width / 2, element]);
+		root_markers.push(element);
 		
 		current_roots.push([0, 0]);
+		
+		canvas_size = 100;
+				
+		draw_newtons_method_plot(current_roots, false);
 	}
-	
-	add_marker();
-	add_marker();
-	add_marker();
 	
 	
 	
@@ -458,31 +423,90 @@
 		
 		
 		
+		let row = null;
+		let col = null;
+		
+		let rect = document.querySelector("#root-selector").getBoundingClientRect();
+		
 		if (e.type === "touchmove")
 		{
-			let rect = document.querySelector("#root-selector").getBoundingClientRect();
-			
-			let row = e.touches[0].clientY - rect.top;
-			let col = e.touches[0].clientX - rect.left;
-			
-			if (row >= 24 && row <= root_selector_height - 24 && col >= 24 && col <= root_selector_width - 24)
-			{
-				root_markers[active_marker][0] = row;
-				root_markers[active_marker][1] = col;
-				
-				root_markers[active_marker][2].style.transform = `translate3d(${col - 24}px, ${row - 24}px, 0)`;
-				
-				let x = ((col - root_selector_width/2) / root_selector_width) * 4;
-				let y = (-(row - root_selector_height/2) / root_selector_height) * 4;
-				
-				current_roots[active_marker][0] = x;
-				current_roots[active_marker][1] = y;
-				
-				canvas_size = 100;
-				
-				draw_newtons_method_plot(current_roots, false);
-			}
+			row = e.touches[0].clientY - rect.top;
+			col = e.touches[0].clientX - rect.left;
 		}
+		
+		else
+		{
+			row = e.clientY - rect.top;
+			col = e.clientX - rect.left;
+		}
+		
+		
+		
+		if (row < 24)
+		{
+			row = 24;
+		}
+		
+		if (row > root_selector_height - 24)
+		{
+			row = root_selector_height - 24;
+		}
+		
+		if (col < 24)
+		{
+			col = 24;
+		}
+		
+		if (col > root_selector_width - 24)
+		{
+			col = root_selector_width - 24;
+		}
+		
+		
+		
+		root_markers[active_marker].style.transform = `translate3d(${col - 24}px, ${row - 24}px, 0)`;
+		
+		let x = ((col - root_selector_width/2) / root_selector_width) * 4;
+		let y = (-(row - root_selector_height/2) / root_selector_height) * 4;
+		
+		current_roots[active_marker][0] = x;
+		current_roots[active_marker][1] = y;
+		
+		canvas_size = 100;
+		
+		draw_newtons_method_plot(current_roots, false);
+	}
+	
+	
+	
+	//Spreads the roots in an even radius.
+	function spread_roots()
+	{
+		for (let i = 0; i < current_roots.length; i++)
+		{
+			if (i < current_roots.length / 2 || current_roots.length % 2 === 1)
+			{
+				current_roots[i][0] = Math.cos(2 * Math.PI * 2 * i / current_roots.length);
+				current_roots[i][1] = Math.sin(2 * Math.PI * 2 * i / current_roots.length);
+			}
+			
+			else
+			{
+				current_roots[i][0] = Math.cos(2 * Math.PI * (2 * i + 1) / current_roots.length);
+				current_roots[i][1] = Math.sin(2 * Math.PI * (2 * i + 1) / current_roots.length);
+			}
+			
+			
+			
+			let row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
+			let col = Math.floor(root_selector_width * (current_roots[i][0] / 4 + .5));
+			
+			root_markers[i].style.transform = `translate3d(${col - 24}px, ${row - 24}px, 0)`;
+		}
+		
+		canvas_size = 500;
+		
+		draw_newtons_method_plot(current_roots, true);
 	}
 	
 	
@@ -515,6 +539,16 @@
 			{
 				document.querySelector("#newtons-method-plot").style.borderColor = "rgb(64, 64, 64)";
 			}
+		}
+		
+		if (!hasTouch())
+		{
+			add_style(`
+				.root-marker:hover
+				{
+					background-color: rgb(127, 127, 127);	
+				}
+			`, true);
 		}
 	}
 }()

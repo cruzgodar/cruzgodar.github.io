@@ -2,8 +2,8 @@
 {
 	position: absolute;
 	
-	width: 90vmin;
-	height: 90vmin;
+	width: 80vmin;
+	height: 80vmin;
 	margin: 0 auto;
 	
 	border: 2px solid rgb(127, 127, 127);
@@ -17,8 +17,8 @@
 {
 	position: absolute;
 	
-	width: 90vmin;
-	height: 90vmin;
+	width: 80vmin;
+	height: 80vmin;
 	margin: 0 auto;
 	
 	border: 2px solid rgba(0, 0, 0, 0);
@@ -44,6 +44,8 @@
 	
 	touch-action: none;
 	user-select: none;
+	
+	cursor: pointer;
 	
 	transition: background-color .15s ease-in-out;
 }
