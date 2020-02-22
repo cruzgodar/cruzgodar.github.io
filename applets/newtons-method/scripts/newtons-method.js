@@ -4,18 +4,17 @@
 	
 	
 	
-	let canvas_size = 500;
+	let canvas_size = null;
+	
+	let current_roots = [];
 	
 	let num_iterations = 100;
 	
-	let canvas_scale_factor = null;
-	
 	let ctx = document.querySelector("#newtons-method-plot").getContext("2d");
-	let root_selector_ctx = document.querySelector("#root-selector").getContext("2d");
 	
 	
 	
-	const threshold = .01;
+	const threshold = .05;
 	
 	let brightness_map = [];
 	let closest_roots = [];
@@ -39,19 +38,18 @@
 	
 	
 	adjust_for_settings();
+	
+	init_listeners();
+	
+	
 
-
-
-	document.querySelector("#generate-button").addEventListener("click", function()
-	{
-		draw_newtons_method_plot(true);
-	});
+	document.querySelector("#add-marker-button").addEventListener("click", add_marker);
 	
 	document.querySelector("#dim-input").addEventListener("keydown", function(e)
 	{
 		if (e.keyCode === 13)
 		{
-			request_wilson_graph(false);
+			draw_newtons_method_plot(roots, true);
 		}
 	});
 	
@@ -61,21 +59,10 @@
 	
 	
 	
-	function draw_newtons_method_plot(reduce_banding)
+	function draw_newtons_method_plot(roots, reduce_banding)
 	{
-		let roots = [[1, 0], [.707, .707], [0, 1], [-.707, .707], [-1, 0], [-.707, -.707], [0, -1], [.707, -.707]];
-		
-		let polynomial = polynomial_from_roots(roots);
-		
-		let derivative = polynomial_derivative(polynomial);
-		
-		
-		
 		document.querySelector("#newtons-method-plot").setAttribute("width", canvas_size);
 		document.querySelector("#newtons-method-plot").setAttribute("height", canvas_size);
-		
-		document.querySelector("#root-selector").setAttribute("width", canvas_size);
-		document.querySelector("#root-selector").setAttribute("height", canvas_size);
 		
 		
 		
@@ -119,7 +106,7 @@
 				
 				for (let iteration = 0; iteration < num_iterations; iteration++)
 				{
-					let temp = complex_multiply(complex_polynomial(polynomial, z), complex_invert(complex_polynomial(derivative, z)));
+					let temp = complex_multiply(complex_polynomial(roots, z), complex_invert(complex_derivative(roots, z)));
 					
 					z[0] = z[0] - temp[0];
 					z[1] = z[1] - temp[1];
@@ -361,81 +348,141 @@
 		return result;
 	}
 
-	//Returns f(z) for a polynomial f.
-	function complex_polynomial(f, z)
+	//Returns f(z) for a polynomial f with given roots.
+	function complex_polynomial(roots, z)
 	{
-		let result = [0, 0];
+		let result = [1, 0];
 		
-		for (let i = 0; i < f.length; i++)
+		for (let i = 0; i < roots.length; i++)
 		{
-			if (f[i][0] !== 0 || f[i][1] !== 0)
-			{
-				let term = complex_multiply(f[i], complex_power(z, i));
-				
-				result[0] += term[0];
-				result[1] += term[1];
-			}
+			result = complex_multiply(result, [z[0] - roots[i][0], z[1] - roots[i][1]]);
 		}
 		
 		return result;
 	}
 
-	//Returns f' for a polynomial f.
-	function polynomial_derivative(f)
+	//Approximates f'(z) for a polynomial f with given roots.
+	function complex_derivative(roots, z)
 	{
-		let derivative = [];
+		let result = complex_polynomial(roots, z);
 		
-		for (let i = 1; i < f.length; i++)
-		{
-			derivative.push([i * f[i][0], i * f[i][1]]);
-		}
+		let close_by = complex_polynomial(roots, [z[0] - .001, z[1]]);
 		
-		return derivative;
-	}
-	
-	//Returns the general form of (z - z_1) ... (z - z_n).
-	function polynomial_from_roots(roots)
-	{
-		//We start with the constant polynomial 1 and go root by root.
-		let result = [[1, 0]];
+		result[0] -= close_by[0];
+		result[1] -= close_by[1];
 		
-		for (let i = 0; i < roots.length; i++)
-		{
-			//First, we multiply a copy by x, shifting the terms up by 1 degree. We also multiply the original by z_i.
-			let temp = JSON.parse(JSON.stringify(result));
-			
-			temp.unshift([0, 0]);
-			
-			for (let j = 0; j < result.length; j++)
-			{
-				let new_term = complex_multiply(result[j], roots[i]);
-				
-				result[j][0] = -new_term[0];
-				result[j][1] = -new_term[1];
-			}
-			
-			result.push([0, 0]);
-			
-			//Now we put the two together.
-			for (let j = 0; j < result.length; j++)
-			{
-				result[j][0] += temp[j][0];
-				result[j][1] += temp[j][1];
-			}
-		}
-		
-		
-		
-		//Finally, we round the polynomial slightly. This is mainly to keep nonzero things from slowing down the polynomial evaluation.
-		for (let i = 0; i < result.length; i++)
-		{
-			result[i][0] = Math.round(result[i][0] * canvas_size / 4) * 4 / canvas_size;
-			result[i][1] = Math.round(result[i][1] * canvas_size / 4) * 4 / canvas_size;
-		}
-		
-		
+		result[0] /= .001;
+		result[1] /= .001;
 		
 		return result;
+	}
+	
+	
+	
+	let root_markers = [];
+	
+	let active_marker = -1;
+	
+	let root_selector_width = document.querySelector("#root-selector").offsetWidth;
+	let root_selector_height = document.querySelector("#root-selector").offsetHeight;
+	
+	function init_listeners()
+	{
+		document.querySelector("#root-selector").addEventListener("touchstart", drag_start, false);
+    		document.querySelector("#root-selector").addEventListener("touchend", drag_end, false);
+	    document.querySelector("#root-selector").addEventListener("touchmove", drag_move, false);
+
+	    document.querySelector("#root-selector").addEventListener("mousedown", drag_start, false);
+	    document.querySelector("#root-selector").addEventListener("mouseup", drag_end, false);
+	    document.querySelector("#root-selector").addEventListener("mousemove", drag_move, false);
+	}
+	
+	
+	
+	function add_marker()
+	{
+		let element = document.createElement("div");
+		element.classList.add("root-marker");
+		element.id = `root-marker-${root_markers.length}`;
+		element.style.transform = `translate3d(${root_selector_width / 2 - 24}px, ${root_selector_height / 2 - 24}px, 0)`;
+		
+		document.querySelector("#root-selector").appendChild(element);
+		
+		root_markers.push([root_selector_height / 2, root_selector_width / 2, element]);
+		
+		current_roots.push([0, 0]);
+	}
+	
+	add_marker();
+	add_marker();
+	add_marker();
+	
+	
+	
+	function drag_start(e)
+	{
+		active_marker = -1;
+		
+		//Figure out which marker, if any, this is referencing.
+		for (let i = 0; i < root_markers.length; i++)
+		{
+			if (e.target.id === `root-marker-${i}`)
+			{
+				e.preventDefault();
+				
+				active_marker = i;
+				
+				break;
+			}
+		}
+	}
+	
+	function drag_end(e)
+	{
+		if (active_marker !== -1)
+		{
+			canvas_size = 500;
+			
+			draw_newtons_method_plot(current_roots, true);
+		}
+		
+		active_marker = -1;
+	}
+	
+	function drag_move(e)
+	{
+		if (active_marker === -1)
+		{
+			return;
+		}
+		
+		
+		
+		if (e.type === "touchmove")
+		{
+			let rect = document.querySelector("#root-selector").getBoundingClientRect();
+			
+			let row = e.touches[0].clientY - rect.top;
+			let col = e.touches[0].clientX - rect.left;
+			
+			if (row >= 24 && row <= root_selector_height - 24 && col >= 24 && col <= root_selector_width - 24)
+			{
+				root_markers[active_marker][0] = row;
+				root_markers[active_marker][1] = col;
+				
+				root_markers[active_marker][2].style.transform = `translate3d(${col - 24}px, ${row - 24}px, 0)`;
+				
+				let x = ((col - root_selector_width/2) / root_selector_width) * 4;
+				let y = (-(row - root_selector_height/2) / root_selector_height) * 4;
+				
+				current_roots[active_marker][0] = x;
+				current_roots[active_marker][1] = y;
+				
+				canvas_size = 100;
+				
+				draw_newtons_method_plot(current_roots, false);
+			}
+		}
 	}
 	
 	
