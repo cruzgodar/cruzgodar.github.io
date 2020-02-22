@@ -31,8 +31,14 @@ let temporary_handlers =
 {
 	"scroll": [],
 	"resize": [],
+	
+	"touchstart": [],
+	"touchmove": [],
 	"touchend": [],
-	"touchstart": []
+	
+	"mousedown": [],
+	"mousemove": [],
+	"mouseup": []
 }
 
 let temporary_web_workers = [];

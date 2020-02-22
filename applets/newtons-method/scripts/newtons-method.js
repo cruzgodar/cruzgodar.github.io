@@ -43,6 +43,7 @@
 
 	document.querySelector("#add-marker-button").addEventListener("click", add_marker);
 	document.querySelector("#spread-markers-button").addEventListener("click", spread_roots);
+	document.querySelector("#generate-high-res-plot-button").addEventListener("click", draw_high_res_plot);
 	
 	document.querySelector("#dim-input").addEventListener("keydown", function(e)
 	{
@@ -51,8 +52,6 @@
 			draw_newtons_method_plot(roots, true);
 		}
 	});
-	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
 	
 	
@@ -179,7 +178,7 @@
 		
 		
 		
-		//First, square root everything for a darker center and then find the max and min.\
+		//First, square root everything for a darker center and then find the max and min.
 		for (let i = 0; i < canvas_size; i++)
 		{
 			for (let j = 0; j < canvas_size; j++)
@@ -200,6 +199,12 @@
 		
 		
 		
+		//Copy this array into the canvas like an image.
+		let img_data = ctx.getImageData(0, 0, canvas_size, canvas_size);
+		let data = img_data.data;
+		
+		
+		
 		for (let i = 0; i < canvas_size; i++)
 		{
 			for (let j = 0; j < canvas_size; j++)
@@ -210,25 +215,41 @@
 				
 				brightness_map[i][j] = 1 - brightness_map[i][j];
 				
+				
+				
+				if (!(brightness_map[i][j] >= 0) && !(brightness_map[i][j] <= 1))
+				{
+					brightness_map[i][j] = 1;
+				}
+				
+				
+				
+				//The index in the array of rgba values.
+				let index = (4 * i * canvas_size) + (4 * j);
+				
 				let closest_root = closest_roots[i][j];
 				
 				if (closest_root !== -1)
 				{
-					let r = colors[closest_root][0] * brightness_map[i][j];
-					let g = colors[closest_root][1] * brightness_map[i][j];
-					let b = colors[closest_root][2] * brightness_map[i][j];
-					
-					ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+					data[index] = colors[closest_root][0] * brightness_map[i][j];
+					data[index + 1] = colors[closest_root][1] * brightness_map[i][j];
+					data[index + 2] = colors[closest_root][2] * brightness_map[i][j];
+					data[index + 3] = 255; //No transparency.
 				}
 				
 				else
 				{
-					ctx.fillStyle = "rgb(0, 0, 0)";
+					data[index] = 0;
+					data[index + 1] = 0;
+					data[index + 2] = 0;
+					data[index + 3] = 255; //No transparency.
 				}
-				
-				ctx.fillRect(j, i, 1, 1);
 			}
 		}
+		
+		
+		
+		ctx.putImageData(img_data, 0, 0);
 	}
 	
 	
@@ -282,6 +303,17 @@
 				brightness_map[i][j] = brightness_sum / ((2 * blur_radius + 1) * (2 * blur_radius + 1));
 			}
 		}
+	}
+	
+	
+	
+	function draw_high_res_plot()
+	{
+		canvas_size = parseInt(document.querySelector("#dim-input").value || 1000);
+		
+		draw_newtons_method_plot(current_roots, true);
+		
+		prepare_download();
 	}
 	
 	
@@ -346,13 +378,22 @@
 	
 	function init_listeners()
 	{
-		document.body.addEventListener("touchstart", drag_start, false);
-    		document.body.addEventListener("touchend", drag_end, false);
-	    document.body.addEventListener("touchmove", drag_move, false);
+		document.documentElement.addEventListener("touchstart", drag_start, false);
+		document.documentElement.addEventListener("touchmove", drag_move, false);
+		document.documentElement.addEventListener("touchend", drag_end, false);
 
-	    document.body.addEventListener("mousedown", drag_start, false);
-	    document.body.addEventListener("mouseup", drag_end, false);
-	    document.body.addEventListener("mousemove", drag_move, false);
+		document.documentElement.addEventListener("mousedown", drag_start, false);
+		document.documentElement.addEventListener("mousemove", drag_move, false);
+		document.documentElement.addEventListener("mouseup", drag_end, false);
+		
+		
+		temporary_handlers["touchstart"].push(drag_start);
+		temporary_handlers["touchmove"].push(drag_move);
+		temporary_handlers["touchend"].push(drag_end);
+		
+		temporary_handlers["mousedown"].push(drag_start);
+		temporary_handlers["mousemove"].push(drag_move);
+		temporary_handlers["mouseup"].push(drag_end);
 	}
 	
 	
