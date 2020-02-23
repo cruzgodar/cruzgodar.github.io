@@ -1,4 +1,12 @@
 {
+	"image-newtons-method":
+	{
+		"webp": "newtons-method/cover.webp",
+		"non-webp": "newtons-method/cover.jpg"
+	},
+	
+	
+	
 	"image-calcudoku-generator":
 	{
 		"webp": "calcudoku-generator/cover.webp",

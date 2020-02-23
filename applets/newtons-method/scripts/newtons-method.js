@@ -14,6 +14,15 @@
 	
 	
 	
+	let root_markers = [];
+	
+	let active_marker = -1;
+	
+	let root_selector_width = document.querySelector("#root-selector").offsetWidth;
+	let root_selector_height = document.querySelector("#root-selector").offsetHeight;
+	
+	
+	
 	const threshold = .05;
 	
 	let brightness_map = [];
@@ -52,7 +61,7 @@
 	{
 		if (e.keyCode === 13)
 		{
-			draw_newtons_method_plot(roots, true);
+			draw_high_res_plot();
 		}
 	});
 	
@@ -345,13 +354,6 @@
 	
 	
 	
-	let root_markers = [];
-	
-	let active_marker = -1;
-	
-	let root_selector_width = document.querySelector("#root-selector").offsetWidth;
-	let root_selector_height = document.querySelector("#root-selector").offsetHeight;
-	
 	function init_listeners()
 	{
 		document.documentElement.addEventListener("touchstart", drag_start, false);
@@ -497,13 +499,13 @@
 		
 		canvas_size = 100;
 		
-		draw_newtons_method_plot(current_roots, false);
+		draw_newtons_method_plot(current_roots);
 	}
 	
 	
 	
 	//Spreads the roots in an even radius.
-	function spread_roots()
+	function spread_roots(high_res = true)
 	{
 		for (let i = 0; i < current_roots.length; i++)
 		{
@@ -527,9 +529,17 @@
 			root_markers[i].style.transform = `translate3d(${col - 24}px, ${row - 24}px, 0)`;
 		}
 		
-		canvas_size = 500;
+		if (high_res)
+		{
+			canvas_size = 500;
+		}
 		
-		draw_newtons_method_plot(current_roots, true);
+		else
+		{
+			canvas_size = 100;
+		}
+		
+		draw_newtons_method_plot(current_roots);
 	}
 	
 	

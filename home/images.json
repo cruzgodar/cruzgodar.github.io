@@ -49,6 +49,12 @@
 	
 	
 	
+	"image-newtons-method":
+	{
+		"webp": "../applets/newtons-method/cover.webp",
+		"non-webp": "../applets/newtons-method/cover.jpg"
+	},
+	
 	"image-calcudoku-generator":
 	{
 		"webp": "../applets/calcudoku-generator/cover.webp",
@@ -59,11 +65,5 @@
 	{
 		"webp": "../applets/simulated-annealing/cover.webp",
 		"non-webp": "../applets/simulated-annealing/cover.jpg"
-	},
-	
-	"image-abelian-sandpiles":
-	{
-		"webp": "../applets/abelian-sandpiles/cover.webp",
-		"non-webp": "../applets/abelian-sandpiles/cover.jpg"
 	}
 }
