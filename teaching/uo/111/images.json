@@ -5,6 +5,12 @@
         "non-webp": "homeworks/6/cover.jpg"
     },
     
+    "image-inverse-function-example":
+    {
+        "webp": "extra/inverse-function-example/cover.webp",
+        "non-webp": "extra/inverse-function-example/cover.jpg"
+    },
+    
     
     
 	"image-quiz-5":
@@ -35,6 +41,12 @@
     
 	
 	
+	"image-midterm-1":
+    {
+        "webp": "midterms/1/cover.webp",
+        "non-webp": "midterms/1/cover.jpg"
+    },
+    
 	"image-midterm-1-practice-solutions":
     {
         "webp": "extra/midterm-1-practice-solutions/cover.webp",
