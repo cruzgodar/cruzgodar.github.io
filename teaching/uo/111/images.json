@@ -1,4 +1,12 @@
 {
+	"image-midterm-2-practice-solutions":
+    {
+        "webp": "extra/midterm-2-practice-solutions/cover.webp",
+        "non-webp": "extra/midterm-2-practice-solutions/cover.jpg"
+    },
+    
+    
+    
 	"image-written-homework-6":
     {
         "webp": "homeworks/6/cover.webp",
