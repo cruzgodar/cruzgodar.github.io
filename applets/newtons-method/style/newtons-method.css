@@ -57,3 +57,11 @@
 {
 	background-color: rgb(127, 127, 127);
 }
+
+
+
+.progress-bar
+{
+	width: calc(80vmin - 8px) !important;
+	transition: opacity .3s ease-in-out, margin-top .3s ease-in-out, margin-bottom .3s ease-in-out;
+}

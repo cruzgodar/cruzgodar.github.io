@@ -12,6 +12,8 @@
 	
 	let ctx = document.querySelector("#newtons-method-plot").getContext("2d");
 	
+	let web_worker = null;
+	
 	
 	
 	let root_markers = [];
@@ -296,9 +298,86 @@
 	{
 		canvas_size = parseInt(document.querySelector("#dim-input").value || 1000);
 		
-		draw_newtons_method_plot(current_roots);
+		document.querySelector("#newtons-method-plot").setAttribute("width", canvas_size);
+		document.querySelector("#newtons-method-plot").setAttribute("height", canvas_size);
 		
-		prepare_download();
+		
+		
+		
+		
+		try {web_worker.terminate();}
+		catch(ex) {}
+		
+		if (DEBUG)
+		{
+			web_worker = new Worker("/applets/newtons-method/scripts/worker.js");
+		}
+		
+		else
+		{
+			web_worker = new Worker("/applets/newtons-method/scripts/worker.min.js");
+		}
+		
+		temporary_web_workers.push(web_worker);
+		
+		
+		
+		web_worker.onmessage = function(e)
+		{
+			if (e.data[0] === "progress")
+			{
+				document.querySelector("#progress-bar span").style.width = e.data[1] + "%";
+				
+				if (e.data[1] === 100)
+				{
+					setTimeout(function()
+					{
+						document.querySelector("#progress-bar").style.opacity = 0;
+						
+						setTimeout(function()
+						{
+							document.querySelector("#progress-bar").style.marginTop = 0;
+							document.querySelector("#progress-bar").style.marginBottom = 0;
+							document.querySelector("#progress-bar span").style.width = 0;
+						}, 300);
+					}, 600);
+				}
+			}
+			
+			
+			
+			else
+			{
+				let img_data = ctx.getImageData(0, 0, canvas_size, canvas_size);
+				let data = img_data.data;
+				
+				let length = e.data[1].length;
+				
+				for (let i = 0; i < length; i++)
+				{
+					data[i] = e.data[1][i];
+				}
+				
+				ctx.putImageData(img_data, 0, 0);
+				
+				prepare_download();
+			}
+		}
+		
+		
+		
+		document.querySelector("#progress-bar span").style.width = 0;
+		document.querySelector("#progress-bar").style.marginTop = "5vh";
+		document.querySelector("#progress-bar").style.marginBottom = "5vh";
+		
+		setTimeout(function()
+		{
+			document.querySelector("#progress-bar").style.opacity = 1;
+		}, 600);
+		
+		
+		
+		web_worker.postMessage([canvas_size, current_roots]);
 	}
 	
 	
