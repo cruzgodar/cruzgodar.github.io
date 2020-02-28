@@ -1,7 +1,7 @@
 #grid-graph
 {
-	width: 90vmin;
-	height: 90vmin;
+	width: 80vmin;
+	height: 80vmin;
 	margin: 0 auto;
 	
 	border: 2px solid rgb(127, 127, 127);
@@ -13,6 +13,6 @@
 
 .progress-bar
 {
-	width: 90vmin !important;
+	width: 80vmin !important;
 	transition: opacity .3s ease-in-out, margin-top .3s ease-in-out, margin-bottom .3s ease-in-out;
 }

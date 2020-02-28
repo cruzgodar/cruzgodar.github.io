@@ -59,7 +59,7 @@
 		}
 		
 		//Make sure that there is a proper density of pixels so that the canvas doesn't look blurry.
-		let canvas_pixels = Math.min(window_width, window_height) * .9;
+		let canvas_pixels = Math.min(window_width, window_height) * .8;
 		
 		canvas_scale_factor = Math.ceil(canvas_pixels / canvas_dim);
 	
