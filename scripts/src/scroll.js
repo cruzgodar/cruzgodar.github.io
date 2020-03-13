@@ -176,7 +176,7 @@ function remove_scroll_up_button()
 
 function smooth_scroll_to(target_selector)
 {
-	smooth_scroll.animateScroll(document.querySelector(target_selector));
+	document.querySelector(target_selector).scrollIntoView({behavior: "smooth"});
 	
 	if (scroll_up_button_visible)
 	{
