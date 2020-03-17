@@ -25,6 +25,8 @@
 
 	let old_zoom_level = 3;
 	let new_zoom_level = .6;
+	
+	let max_brightness_history = [];
 
 
 
@@ -149,12 +151,25 @@
 		//Find the max brightness, throwing out the very top values to avoid almost-black images with a few specks of color.
 		let brightness_array = image.flat().sort(function(a, b) {return a - b});
 		
-		//We throw out more if the image is just being scrolled around, since then it's critical that we don't have bright flashes of color.
 		let max_brightness = 0;
 		
 		if (mandelbrot_zoom_size === small_mandelbrot_zoom_size)
 		{
-			max_brightness = brightness_array[Math.round(brightness_array.length * .995) - 1];
+			max_brightness_history.push(brightness_array[Math.round(brightness_array.length * .999) - 1]);
+			
+			if (max_brightness_history.length > 10)
+			{
+				max_brightness_history.shift();
+			}
+			
+			max_brightness = 0;
+			
+			for (let i = 0; i < max_brightness_history.length; i++)
+			{
+				max_brightness += max_brightness_history[i];
+			}
+			
+			max_brightness /= max_brightness_history.length;
 		}
 		
 		else

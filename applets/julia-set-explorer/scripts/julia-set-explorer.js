@@ -16,6 +16,8 @@
 	let small_julia_iterations = 25;
 	let large_julia_iterations = 50;
 	let full_res_julia_iterations = 200;
+	
+	let max_brightness_history = [];
 
 	let image = [];
 
@@ -125,18 +127,32 @@
 		//Find the max brightness, throwing out the very top values to avoid almost-black images with a few specks of color.
 		let brightness_array = image.flat().sort(function(a, b) {return a - b});
 		
-		//We throw out more if the image is just being scrolled around, since then it's critical that we don't have bright flashes of color.
 		let max_brightness = 0;
 		
 		if (julia_size === small_julia_size)
 		{
-			max_brightness = brightness_array[Math.round(brightness_array.length * .9965) - 1];
+			max_brightness_history.push(brightness_array[Math.round(brightness_array.length * .999) - 1]);
+			
+			if (max_brightness_history.length > 10)
+			{
+				max_brightness_history.shift();
+			}
+			
+			max_brightness = 0;
+			
+			for (let i = 0; i < max_brightness_history.length; i++)
+			{
+				max_brightness += max_brightness_history[i];
+			}
+			
+			max_brightness /= max_brightness_history.length;
 		}
 		
 		else
 		{
 			max_brightness = brightness_array[Math.round(brightness_array.length * .9999) - 1];
 		}
+		
 		
 		
 		
