@@ -1,4 +1,10 @@
 {
+	"image-112":
+    {
+        "webp": "uo/112/cover.webp",
+        "non-webp": "uo/112/cover.jpg"
+    },
+    
     "image-111":
     {
         "webp": "uo/111/cover.webp",
