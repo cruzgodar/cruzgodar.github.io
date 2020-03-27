@@ -336,8 +336,6 @@ function set_up_aos()
 function fix_footer_aos_anchor()
 {
 	aos_anchor_positions[aos_elements.length - 1] = document.body.clientHeight - 10;
-	
-	console.log(aos_anchor_positions);
 }
 
 

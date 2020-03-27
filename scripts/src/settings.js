@@ -145,7 +145,26 @@ function show_floating_settings()
 	
 	floating_settings_is_visible = true;
 	
-	document.body.firstChild.insertAdjacentHTML("beforebegin", `<div id="floating-settings"></div>`);
+	document.body.firstElementChild.insertAdjacentHTML("beforebegin", `
+		<div id="floating-settings">
+			<div class="floating-settings-page">
+				<div id="theme-button-row" class="floating-settings-button-row"></div>
+				<div id="dark-theme-color-button-row" class="floating-settings-button-row"></div>
+				<div id="contrast-button-row" class="floating-settings-button-row"></div>
+				<div id="text-size-button-row" class="floating-settings-button-row"></div>
+			</div>
+			
+			<div class="floating-settings-scroll-snap"></div>
+			
+			<div class="floating-settings-page">
+				<div id="font-button-row" class="floating-settings-button-row"></div>
+				<div id="comments-button-row" class="floating-settings-button-row"></div>
+				<div id="content-animation-button-row" class="floating-settings-button-row"></div>
+				<div id="banner-style-button-row" class="floating-settings-button-row"></div>
+				<div style="margin-top: -6px"></div>
+			</div>
+		</div>
+	`);
 	
 	//I really don't like this.
 	setTimeout(function()
@@ -193,103 +212,132 @@ function show_floating_settings()
 	
 	setTimeout(function()
 	{
+		let settings_query_strings = Object.keys(url_vars);
+		
+		
+		
 		//These aren't seen by set_up_aos(), so we'll do things the old-fashioned way.
-		document.querySelector("#floating-settings").innerHTML = `
-			<div class="floating-settings-page">
-				<div id="theme-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-offset="0" data-aos-anchor="body">
-						<input type="image" class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="switch_setting('theme')">
-					</div>
-					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="0" data-aos-anchor="body">
-						<p id="theme-button-text" class="floating-settings-button-text"></p>
-					</div>
-				</div>
-				
-				<div id="dark-theme-color-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="100" data-aos-anchor="body">
-						<input type="image" class="footer-button" src="/graphics/button-icons/moon-stars.png" alt="Change Theme" onclick="switch_setting('dark_theme_color')">
-					</div>
-					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="100" data-aos-anchor="body">
-						<p id="dark-theme-color-button-text" class="floating-settings-button-text"></p>
-					</div>
-				</div>
-				
-				<div id="contrast-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="200" data-aos-anchor="body">
-						<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Theme" onclick="switch_setting('contrast')">
-					</div>
-					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="200" data-aos-anchor="body">
-						<p id="contrast-button-text" class="floating-settings-button-text"></p>
-					</div>
-				</div>
-				
-				<div id="text-size-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="300" data-aos-anchor="body">
-						<input type="image" class="footer-button" src="/graphics/button-icons/text-size.png" alt="Change Theme" onclick="switch_setting('text_size')">
-					</div>
-					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="300" data-aos-anchor="body">
-						<p id="text-size-button-text" class="floating-settings-button-text"></p>
-					</div>
-				</div>
+		document.querySelector("#theme-button-row").innerHTML = `
+			<div data-aos="zoom-out" data-aos-anchor="body">
+				<input type="image" class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="switch_setting('theme')">
 			</div>
 			
-			<div class="floating-settings-scroll-snap"></div>
-			
-			<div class="floating-settings-page">
-				<div id="font-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="body">
-						<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Change Theme" onclick="switch_setting('font')">
-					</div>
-					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="body">
-						<p id="font-button-text" class="floating-settings-button-text"></p>
-					</div>
-				</div>
-				
-				<div id="comments-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="body">
-						<input type="image" class="footer-button" src="/graphics/button-icons/comment.png" alt="Change Theme" onclick="switch_setting('comments')">
-					</div>
-					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="body">
-						<p id="comments-button-text" class="floating-settings-button-text"></p>
-					</div>
-				</div>
-				
-				<div id="content-animation-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="body">
-						<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Change Theme" onclick="switch_setting('content_animation')">
-					</div>
-					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="body">
-						<p id="content-animation-button-text" class="floating-settings-button-text"></p>
-					</div>
-				</div>
-				
-				<div id="banner-style-button-row" class="floating-settings-button-row">
-					<div data-aos="zoom-out" data-aos-delay="400" data-aos-anchor="body">
-						<input type="image" class="footer-button" src="/graphics/button-icons/picture.png" alt="Change Theme" onclick="switch_setting('banner_style')">
-					</div>
-					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-delay="400" data-aos-anchor="body">
-						<p id="banner-style-button-text" class="floating-settings-button-text"></p>
-					</div>
-				</div>
-				
-				<div style="margin-top: -6px"></div>
+			<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
+				<p id="theme-button-text" class="floating-settings-button-text">
+					${settings_texts[settings_query_strings[0]][url_vars[settings_query_strings[0]]]}
+				</p>
 			</div>
 		`;
 		
-		let settings_query_strings = Object.keys(url_vars);
 		
-		for (let i = 0; i < settings_query_strings.length; i++)
+		
+		setTimeout(function()
 		{
-			document.querySelector("#" + settings_query_strings[i].replace(/_/g, "-") + "-button-text").textContent = settings_texts[settings_query_strings[i]][url_vars[settings_query_strings[i]]];
-		}
+			document.querySelector("#dark-theme-color-button-row").innerHTML = `
+				<div data-aos="zoom-out" data-aos-anchor="body">
+					<input type="image" class="footer-button" src="/graphics/button-icons/moon-stars.png" alt="Change Theme" onclick="switch_setting('dark_theme_color')">
+				</div>
+				
+				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
+					<p id="dark-theme-color-button-text" class="floating-settings-button-text">
+						${settings_texts[settings_query_strings[1]][url_vars[settings_query_strings[1]]]}
+					</p>
+				</div>
+			`;
+		}, 100);
+		
+		
+		
+		setTimeout(function()
+		{
+			document.querySelector("#contrast-button-row").innerHTML = `
+				<div data-aos="zoom-out" data-aos-anchor="body">
+					<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Theme" onclick="switch_setting('contrast')">
+				</div>
+				
+				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
+					<p id="contrast-button-text" class="floating-settings-button-text">
+						${settings_texts[settings_query_strings[2]][url_vars[settings_query_strings[2]]]}
+					</p>
+				</div>
+			`;
+		}, 200);
+		
+		
+		
+		setTimeout(function()
+		{
+			document.querySelector("#text-size-button-row").innerHTML = `
+				<div data-aos="zoom-out" data-aos-anchor="body">
+					<input type="image" class="footer-button" src="/graphics/button-icons/text-size.png" alt="Change Theme" onclick="switch_setting('text_size')">
+				</div>
+				
+				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
+					<p id="text-size-button-text" class="floating-settings-button-text">
+						${settings_texts[settings_query_strings[3]][url_vars[settings_query_strings[3]]]}
+					</p>
+				</div>
+			`;
+		}, 300);
+		
+		
+		
+		setTimeout(function()
+		{
+			document.querySelector("#font-button-row").innerHTML = `
+				<div data-aos="zoom-out" data-aos-anchor="body">
+					<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Change Theme" onclick="switch_setting('font')">
+				</div>
+				
+				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
+					<p id="font-button-text" class="floating-settings-button-text">
+						${settings_texts[settings_query_strings[4]][url_vars[settings_query_strings[4]]]}
+					</p>
+				</div>
+			`;
+			
+			
+			
+			document.querySelector("#comments-button-row").innerHTML = `
+				<div data-aos="zoom-out" data-aos-anchor="body">
+					<input type="image" class="footer-button" src="/graphics/button-icons/comment.png" alt="Change Theme" onclick="switch_setting('comments')">
+				</div>
+				
+				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
+					<p id="comments-button-text" class="floating-settings-button-text">
+						${settings_texts[settings_query_strings[5]][url_vars[settings_query_strings[5]]]}
+					</p>
+				</div>
+			`;
+			
+			
+			
+			document.querySelector("#content-animation-button-row").innerHTML = `
+				<div data-aos="zoom-out" data-aos-anchor="body">
+					<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Change Theme" onclick="switch_setting('content_animation')">
+				</div>
+				
+				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
+					<p id="content-animation-button-text" class="floating-settings-button-text">
+						${settings_texts[settings_query_strings[6]][url_vars[settings_query_strings[6]]]}
+					</p>
+				</div>
+			`;
+			
+			
+			
+			document.querySelector("#banner-style-button-row").innerHTML = `
+				<div data-aos="zoom-out" data-aos-anchor="body">
+					<input type="image" class="footer-button" src="/graphics/button-icons/picture.png" alt="Change Theme" onclick="switch_setting('banner_style')">
+				</div>
+				
+				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
+					<p id="banner-style-button-text" class="floating-settings-button-text">
+						${settings_texts[settings_query_strings[7]][url_vars[settings_query_strings[7]]]}
+					</p>
+				</div>
+			`;
+		}, 400);
 	}, 100);
 }
 
