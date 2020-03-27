@@ -276,15 +276,14 @@ function set_up_aos()
 			
 			
 			
-			new_aos_elements[i].id = "aos-section-" + current_section;
-			
-			new_aos_elements[i].setAttribute("data-aos-anchor", "#---");
+			new_aos_elements[i].setAttribute("data-aos-offset", 1000000);
+			new_aos_elements[i].setAttribute("data-aos-delay", 0);
 			
 			
 			
 			aos_elements[current_section - 1].push([new_aos_elements[i], current_delay]);
 			
-			aos_anchor_positions[current_section - 1] = new_aos_elements[i].getBoundingClientRect().top;
+			aos_anchor_positions[current_section - 1] = new_aos_elements[i].getBoundingClientRect().top + window.scrollY;
 			
 			aos_anchors_shown[current_section - 1] = false;
 		}
@@ -305,7 +304,8 @@ function set_up_aos()
 			
 			
 			
-			new_aos_elements[i].setAttribute("data-aos-anchor", "#---");
+			new_aos_elements[i].setAttribute("data-aos-offset", 1000000);
+			new_aos_elements[i].setAttribute("data-aos-delay", 0);
 			
 			aos_elements[current_section - 1].push([new_aos_elements[i], current_delay]);
 		}
@@ -315,7 +315,23 @@ function set_up_aos()
 	
 	//At this point we have a list of all the AOS sections and their delays. Now whenever we scroll, we'll check each of the anchors to see if the scroll position is beyond the offset.
 	
+	
+	aos_resize();
 	aos_scroll();
+	
+	console.log(window_height);
+	
+	console.log(aos_elements, aos_anchor_positions);
+}
+
+
+
+function aos_resize()
+{
+	for (let i = 0; i < aos_elements.length; i++)
+	{
+		aos_anchor_positions[i] = aos_elements[i][0][0].getBoundingClientRect().top + window.scrollY;
+	}
 }
 
 
@@ -324,12 +340,12 @@ function aos_scroll()
 {
 	for (let i = 0; i < aos_elements.length; i++)
 	{
-		if (scroll + window_height >= aos_anchor_positions[i] - aos_anchor_offsets[i] && aos_anchors_shown[i] === false)
+		if (scroll + window_height >= aos_anchor_positions[i] + aos_anchor_offsets[i] && aos_anchors_shown[i] === false)
 		{
 			show_aos_section(i);
 		}
 		
-		else if (scroll + window_height < aos_anchor_positions[i] - aos_anchor_offsets[i] && aos_anchors_shown[i] === true)
+		else if (scroll + window_height < aos_anchor_positions[i] + aos_anchor_offsets[i] && aos_anchors_shown[i] === true)
 		{
 			hide_aos_section(i);
 		}
@@ -342,6 +358,16 @@ function show_aos_section(section)
 {
 	console.log("Showing section " + section);
 	
+	for (let i = 0; i < aos_elements[section].length; i++)
+	{
+		setTimeout(function()
+		{
+			aos_elements[section][i][0].setAttribute("data-aos-offset", -1000000);
+			
+			AOS.refresh();
+		}, aos_elements[section][i][1]);
+	}
+	
 	aos_anchors_shown[section] = true;
 }
 
@@ -350,6 +376,13 @@ function show_aos_section(section)
 function hide_aos_section(section)
 {
 	console.log("Hiding section " + section);
+	
+	for (let i = 0; i < aos_elements[section].length; i++)
+	{
+		aos_elements[section][i][0].setAttribute("data-aos-offset", 1000000);
+		
+		AOS.refresh();
+	}
 	
 	aos_anchors_shown[section] = false;
 }
