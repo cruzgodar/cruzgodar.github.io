@@ -67,7 +67,7 @@ function on_page_load()
 	
 	if (page_settings["banner_page"])
 	{
-		fetch_other_banner_size_in_background()
+		fetch_other_banner_size_in_background();
 	}
 	
 	if (url_vars["contrast"] === 1)
@@ -240,7 +240,7 @@ function fade_in()
 
 //In iOS 13.4, it seems Apple has miraculously fixed this nightmare. But for whatever reason, AOS is still problematic. If an element has a nonzero delay, it will be bugged, but zero-delay elements behave as usual. And so the solution is, unfortunately, to handle almost all of what AOS does manually.
 
-// This function puts the proper delays and anchors on aos elements on the page. The first animated element in every section should have a class of new-aos-section.
+//This function puts the proper delays and anchors on aos elements on the page. The first animated element in every section should have a class of new-aos-section.
 function set_up_aos()
 {
 	aos_elements = [];
@@ -326,16 +326,8 @@ function set_up_aos()
 	
 	//At this point we have a list of all the AOS sections and their delays. Now whenever we scroll, we'll check each of the anchors to see if the scroll position is beyond the offset.
 	
-	
 	aos_resize();
 	aos_scroll();
-}
-
-
-
-function fix_footer_aos_anchor()
-{
-	aos_anchor_positions[aos_elements.length - 1] = document.body.clientHeight - 10;
 }
 
 
@@ -348,6 +340,13 @@ function aos_resize()
 	}
 	
 	fix_footer_aos_anchor();
+}
+
+
+
+function fix_footer_aos_anchor()
+{
+	aos_anchor_positions[aos_elements.length - 1] = document.body.clientHeight - 10;
 }
 
 
