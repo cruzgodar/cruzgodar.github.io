@@ -225,28 +225,36 @@ function fade_in()
 
 
 
-//Puts the proper delays and anchors on aos elements on the page. The first animated element in every section should have a class of new-aos-section.
+//So, there's this bug that's plagued the site since its inception. iOS Safari eventually seems to have a memory leak and starts cutting off all transitions before they've reached their end. It gets progressively worse until quitting the app is required. It can be triggered by drag-and-dropping elements repeatedly *anywhere* in Safari, and affects all webpages with CSS transitions.
+
+//In iOS 13.4, it seems Apple has miraculously fixed this nightmare. But for whatever reason, AOS is still problematic. If an element has a nonzero delay, it will be bugged, but zero-delay elements behave as usual. And so the solution is, unfortunately, to handle almost all of what AOS does manually.
+
+// This function puts the proper delays and anchors on aos elements on the page. The first animated element in every section should have a class of new-aos-section.
 function set_up_aos()
 {
-	let aos_elements = document.querySelectorAll("[data-aos]");
+	aos_elements = [];
+	
+	let new_aos_elements = document.querySelectorAll("[data-aos]");
 	
 	let current_section = 0;
 	let current_delay = 0;
 	
 	
 	
-	for (let i = 0; i < aos_elements.length; i++)
+	for (let i = 0; i < new_aos_elements.length; i++)
 	{
-		if (aos_elements[i].classList.contains("new-aos-section"))
+		if (new_aos_elements[i].classList.contains("new-aos-section"))
 		{
+			//Create a new section.
+			aos_elements.push([]);
+			
 			current_section++;
 			
 			
 			
-			if (aos_elements[i].getAttribute("data-aos-delay") !== null)
+			if (new_aos_elements[i].getAttribute("data-aos-delay") !== null)
 			{
-				
-				current_delay = parseInt(aos_elements[i].getAttribute("data-aos-delay"));
+				current_delay = parseInt(new_aos_elements[i].getAttribute("data-aos-delay"));
 			}
 			
 			else
@@ -256,16 +264,38 @@ function set_up_aos()
 			
 			
 			
-			aos_elements[i].id = "aos-section-" + current_section;
+			if (new_aos_elements[i].getAttribute("data-aos-offset") !== null)
+			{
+				aos_anchor_offsets[current_section - 1] = parseInt(new_aos_elements[i].getAttribute("data-aos-offset"));
+			}
+			
+			else
+			{
+				aos_anchor_offsets[current_section - 1] = window_height / 4;
+			}
+			
+			
+			
+			new_aos_elements[i].id = "aos-section-" + current_section;
+			
+			new_aos_elements[i].setAttribute("data-aos-anchor", "#---");
+			
+			
+			
+			aos_elements[current_section - 1].push([new_aos_elements[i], current_delay]);
+			
+			aos_anchor_positions[current_section - 1] = new_aos_elements[i].getBoundingClientRect().top;
+			
+			aos_anchors_shown[current_section - 1] = false;
 		}
 		
 		
 		
 		else
 		{
-			if (aos_elements[i].getAttribute("data-aos-delay") !== null)
+			if (new_aos_elements[i].getAttribute("data-aos-delay") !== null)
 			{
-				current_delay = parseInt(aos_elements[i].getAttribute("data-aos-delay"));
+				current_delay = parseInt(new_aos_elements[i].getAttribute("data-aos-delay"));
 			}
 			
 			else
@@ -275,26 +305,53 @@ function set_up_aos()
 			
 			
 			
-			aos_elements[i].setAttribute("data-aos-delay", current_delay);
-			aos_elements[i].setAttribute("data-aos-anchor", "#aos-section-" + current_section);
+			new_aos_elements[i].setAttribute("data-aos-anchor", "#---");
+			
+			aos_elements[current_section - 1].push([new_aos_elements[i], current_delay]);
 		}
 	}
 	
 	
 	
-	//Force a reflow so that the anchors' positions are recorded properly.
-	setTimeout(function()
+	//At this point we have a list of all the AOS sections and their delays. Now whenever we scroll, we'll check each of the anchors to see if the scroll position is beyond the offset.
+	
+	aos_scroll();
+}
+
+
+
+function aos_scroll()
+{
+	for (let i = 0; i < aos_elements.length; i++)
 	{
-		for (let i = 0; i < aos_elements.length; i++)
+		if (scroll + window_height >= aos_anchor_positions[i] - aos_anchor_offsets[i] && aos_anchors_shown[i] === false)
 		{
-			//We need to actually have a function here to trigger a reflow.
-			void(aos_elements[i].offsetHeight);
+			show_aos_section(i);
 		}
 		
-		AOS.refreshHard();
+		else if (scroll + window_height < aos_anchor_positions[i] - aos_anchor_offsets[i] && aos_anchors_shown[i] === true)
+		{
+			hide_aos_section(i);
+		}
+	}
+}
+
+
+
+function show_aos_section(section)
+{
+	console.log("Showing section " + section);
 	
-	//We can afford to wait so long because it's unlikely the user is going to load section 2 within a second of loading the page.
-	}, 1000);
+	aos_anchors_shown[section] = true;
+}
+
+
+
+function hide_aos_section(section)
+{
+	console.log("Hiding section " + section);
+	
+	aos_anchors_shown[section] = false;
 }
 
 

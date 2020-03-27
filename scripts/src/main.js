@@ -49,6 +49,17 @@ let background_color_changed = false;
 
 
 
+//A list of lists. Each sublist starts with an anchor, then lists all the elements anchored to it in sequence, along with their delays.
+let aos_elements = [];
+
+let aos_anchor_positions = [];
+
+let aos_anchor_offsets = [];
+
+let aos_anchors_shown = [];
+
+
+
 //A list of things that need to be fetched (for example, banners that need to be preloaded). The items at the start of the list get fetched first.
 let fetch_queue = [];
 
@@ -128,6 +139,8 @@ async function entry_point(url)
 	
 	
 	AOS.init({duration: 1200, once: false, offset: window_height / 4});
+	
+	window.addEventListener("scroll", aos_scroll);
 	
 	
 	
