@@ -47,15 +47,23 @@
 			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
 		}
 		
-		document.querySelector("#banner").insertAdjacentHTML("afterend", `
-			<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="350">
-				<p id="cruz-text" class="name-text" style="opacity: ${opacity}">Cruz</p>
-			</div>
-			
-			<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-delay="600">
+		setTimeout(function()
+		{
+			document.querySelector("#banner").insertAdjacentHTML("afterend", `
+				<div class="name-text-container" style="position: fixed" data-aos="fade-left">
+					<p id="cruz-text" class="name-text" style="opacity: ${opacity}">Cruz</p>
+				</div>
+			`);
+		}, 350);
+		
+		setTimeout(function()
+		{
+			document.querySelector("#banner").insertAdjacentHTML("afterend", `
+				<div class="name-text-container" style="position: fixed" data-aos="fade-left">
 				<p id="godar-text" class="name-text" style="opacity: ${opacity}">Godar</p>
 			</div>
-		`);
+			`);
+		}, 600);
 		
 		if (url_vars["content_animation"] === 1)
 		{

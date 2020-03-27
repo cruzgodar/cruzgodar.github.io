@@ -18,11 +18,7 @@ function on_page_load()
 	
 	
 	
-	fade_in();
-	
 	insert_images();
-	
-	set_up_aos();
 	
 	
 	
@@ -32,6 +28,21 @@ function on_page_load()
 		
 		setTimeout(floating_footer_scroll, 50);
 	}
+	
+	
+	
+	set_up_aos();
+	
+	
+	
+	if (page_settings["no_footer"] === false)
+	{
+		setTimeout(fix_footer_aos_anchor, 50);
+	}
+	
+	
+	
+	fade_in();
 	
 	
 	
@@ -318,10 +329,15 @@ function set_up_aos()
 	
 	aos_resize();
 	aos_scroll();
+}
+
+
+
+function fix_footer_aos_anchor()
+{
+	aos_anchor_positions[aos_elements.length - 1] = document.body.clientHeight - 10;
 	
-	console.log(window_height);
-	
-	console.log(aos_elements, aos_anchor_positions);
+	console.log(aos_anchor_positions);
 }
 
 
@@ -332,6 +348,8 @@ function aos_resize()
 	{
 		aos_anchor_positions[i] = aos_elements[i][0][0].getBoundingClientRect().top + window.scrollY;
 	}
+	
+	fix_footer_aos_anchor();
 }
 
 
@@ -356,8 +374,6 @@ function aos_scroll()
 
 function show_aos_section(section)
 {
-	console.log("Showing section " + section);
-	
 	for (let i = 0; i < aos_elements[section].length; i++)
 	{
 		setTimeout(function()
@@ -375,8 +391,6 @@ function show_aos_section(section)
 
 function hide_aos_section(section)
 {
-	console.log("Hiding section " + section);
-	
 	for (let i = 0; i < aos_elements[section].length; i++)
 	{
 		aos_elements[section][i][0].setAttribute("data-aos-offset", 1000000);

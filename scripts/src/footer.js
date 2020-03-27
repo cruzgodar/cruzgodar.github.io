@@ -44,21 +44,9 @@ function insert_footer()
 
 	
 	
-	document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
-		<div class="footer-buttons" style="position: relative">
-			<div data-aos="zoom-out" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu" style="position: absolute; bottom: 6.25px; left: 10px">	
-				<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="show_floating_settings()">
-			</div>
-			
-			<div data-aos="zoom-out" data-aos-delay="1000" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu" style="position: absolute; bottom: 6.25px; right: 10px">
-				<input type="image" id="pwa-button" class="footer-button" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa/pwa.html')">
-			</div>
-		</div>
-	`);
-	
-	document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
+	document.querySelector("#spawn-footer").insertAdjacentHTML("beforebegin", `
 		<div style="position: relative">
-			<div id="trigger-menu" style="position: absolute; bottom: 5px"></div>
+			<div class="new-aos-section" data-aos="fade-in" data-aos-offset="0" style="position: absolute; bottom: 5px"></div>
 		</div>
 	`);
 	
@@ -68,7 +56,7 @@ function insert_footer()
 	{
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
-				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
 					<div class="line-break" style="width: 85vw !important"></div>
 				</div>
 			<div style="height: 3vw"></div>
@@ -81,7 +69,7 @@ function insert_footer()
 	{
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
-				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
 					<div class="line-break" style="width: 75vw !important"></div>
 				</div>
 			<div style="height: 3vw"></div>
@@ -99,7 +87,7 @@ function insert_footer()
 		document.querySelector(".footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
-			<div id="writing-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div id="writing-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 				<a href="/index.html?page=%2Fwriting%2Fwriting.html${vars_no_return}">
 					<img onclick="redirect('/writing/writing.html')" src="/writing/cover.${extension}" alt="Writing"></img>
 				</a>
@@ -117,7 +105,7 @@ function insert_footer()
 		document.querySelector(".footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
-			<div id="teaching-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div id="teaching-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 				<a href="/index.html?page=%2Fteaching%2Fteaching.html${vars_no_return}">
 					<img onclick="redirect('/teaching/teaching.html')" src="/teaching/cover.${extension}" alt="Teaching"></img>
 				</a>
@@ -135,7 +123,7 @@ function insert_footer()
 		document.querySelector(".footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
-			<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 				<a href="index.html?page=%2Fapplets%2Fapplets.html${vars_no_return}">
 					<img onclick="redirect('/applets/applets.html')" src="/applets/cover.${extension}" alt="Applets"></img>
 				</a>
@@ -152,7 +140,7 @@ function insert_footer()
 		document.querySelector(".footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
-			<div id="blog-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div id="blog-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 				<a href="/index.html?page=%2Fblog%2Fblog.html${vars_no_return}">
 					<img onclick="redirect('/blog/blog.html')" src="/blog/cover.${extension}" alt="Blog"></img>
 				</a>
@@ -169,7 +157,7 @@ function insert_footer()
 		document.querySelector(".footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
-			<div id="notes-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div id="notes-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 				<a href="/index.html?page=%2Fnotes%2Fnotes.html${vars_no_return}">
 					<img onclick="redirect('/notes/notes.html')" src="/notes/cover.${extension}" alt="Notes"></img>
 				</a>
@@ -186,7 +174,7 @@ function insert_footer()
 		document.querySelector(".footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
-			<div id="about-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div id="bio-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 				<a href="/index.html?page=%2Fbio%2Fbio.html${vars_no_return}">
 					<img onclick="redirect('/bio/bio.html')" src="/bio/cover.${extension}" alt="Me"></img>
 				</a>
@@ -203,7 +191,7 @@ function insert_footer()
 		document.querySelector(".footer-image-links").appendChild(element);
 		
 		element.outerHTML = `
-			<div id="about-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0" data-aos-once="false" data-aos-anchor="#trigger-menu">
+			<div id="about-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 				<a href="/index.html?page=%2Fabout%2Fabout.html${vars_no_return}">
 					<img onclick="redirect('/about/about.html')" src="/about/cover.${extension}" alt="About"></img>
 				</a>
@@ -215,52 +203,17 @@ function insert_footer()
 	
 	
 	
-	document.querySelector("#pwa-button").parentNode.setAttribute("data-aos-delay", delay);
-	
-	
-	
-	if (url_vars["content_animation"] === 1)
-	{
-		try
-		{
-			let elements = document.querySelectorAll(".line-break");
+	document.querySelector(".footer-image-links").insertAdjacentHTML("afterend", `
+		<div class="footer-buttons" style="position: relative">
+			<div data-aos="zoom-out" data-aos-delay="0" data-aos-offset="10" data-aos-once="false" style="position: absolute; bottom: 6.25px; left: 10px">	
+				<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="show_floating_settings()">
+			</div>
 			
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].parentNode.removeAttribute("data-aos");
-			}
-		}
-		
-		catch(ex) {}
-		
-		
-		
-		try
-		{
-			let elements = document.querySelectorAll(".footer-image-link");
-			
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].removeAttribute("data-aos");
-			}
-		}
-		
-		catch(ex) {}
-		
-		
-		
-		try
-		{
-			let elements = document.querySelectorAll(".footer-button");
-			
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].parentNode.parentNode.removeAttribute("data-aos");
-			}
-		}
-		
-		catch(ex) {}
-	}
+			<div data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="10" data-aos-once="false" style="position: absolute; bottom: 6.25px; right: 10px">
+				<input type="image" id="pwa-button" class="footer-button" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa/pwa.html')">
+			</div>
+		</div>
+	`);
 	
 	
 	
@@ -314,6 +267,7 @@ function set_up_floating_footer()
 		
 		for (let i = 0; i < element.children.length; i++)
 		{
+			element.children[i].removeAttribute("data-aos");
 			element.children[i].removeAttribute("data-aos-anchor");
 		}
 		
@@ -329,6 +283,7 @@ function set_up_floating_footer()
 	
 	for (let i = 0; i < element.children.length; i++)
 	{
+		element.children[i].removeAttribute("data-aos");
 		element.children[i].removeAttribute("data-aos-anchor");
 	}
 	
