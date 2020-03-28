@@ -1,4 +1,10 @@
 {
+	"image-lecture-archive":
+    {
+        "webp": "lecture-archive/cover.webp",
+        "non-webp": "lecture-archive/cover.jpg"
+    },
+    
     "image-syllabus":
     {
         "webp": "syllabus/cover.webp",
