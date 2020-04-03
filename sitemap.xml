@@ -73,6 +73,16 @@
 		<priority>0.5</priority>
 	</url>
 	
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/112/112.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/112/lecture-archive/lecture-archive.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
 	
 	
 	<url>
@@ -107,6 +117,11 @@
 	
 	<url>
 		<loc>https://www.cruzgodar.com/applets/calcudoku-generator/calcudoku-generator.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/newtons-method/newtons-method.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
