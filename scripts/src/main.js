@@ -58,6 +58,8 @@ let aos_anchor_offsets = [];
 
 let aos_anchors_shown = [];
 
+let aos_currently_animating = [];
+
 
 
 //A list of things that need to be fetched (for example, banners that need to be preloaded). The items at the start of the list get fetched first.

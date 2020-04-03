@@ -259,6 +259,8 @@ function set_up_aos()
 			//Create a new section.
 			aos_elements.push([]);
 			
+			aos_currently_animating.push([]);
+			
 			current_section++;
 			
 			
@@ -373,12 +375,14 @@ function show_aos_section(section)
 {
 	for (let i = 0; i < aos_elements[section].length; i++)
 	{
-		setTimeout(function()
+		let refresh_id = setTimeout(function()
 		{
 			aos_elements[section][i][0].setAttribute("data-aos-offset", -1000000);
 			
 			AOS.refresh();
 		}, aos_elements[section][i][1]);
+		
+		aos_currently_animating[section].push(refresh_id);
 	}
 	
 	aos_anchors_shown[section] = true;
@@ -388,6 +392,20 @@ function show_aos_section(section)
 
 function hide_aos_section(section)
 {
+	try
+	{
+		for (let i = 0; i < aos_currently_animating[section].length; i++)
+		{
+			clearTimeout(aos_currently_animating[section][i]);
+		}
+	}
+	
+	catch(ex) {}
+	
+	aos_currently_animating[section] = [];
+	
+	
+	
 	for (let i = 0; i < aos_elements[section].length; i++)
 	{
 		aos_elements[section][i][0].setAttribute("data-aos-offset", 1000000);
