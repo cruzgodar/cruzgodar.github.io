@@ -42,13 +42,18 @@
 		
 		let opacity = 0;
 		
-		if (scroll <= window_height/3)
-		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
-		}
-		
 		setTimeout(function()
 		{
+			if (scroll <= window_height/3)
+			{
+				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
+			}
+			
+			else
+			{
+				opacity = 0;
+			}
+			
 			document.querySelector("#banner").insertAdjacentHTML("afterend", `
 				<div class="name-text-container" style="position: fixed" data-aos="fade-left">
 					<p id="cruz-text" class="name-text" style="opacity: ${opacity}">Cruz</p>
@@ -58,6 +63,16 @@
 		
 		setTimeout(function()
 		{
+			if (scroll <= window_height/3)
+			{
+				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
+			}
+			
+			else
+			{
+				opacity = 0;
+			}
+			
 			document.querySelector("#banner").insertAdjacentHTML("afterend", `
 				<div class="name-text-container" style="position: fixed" data-aos="fade-left">
 				<p id="godar-text" class="name-text" style="opacity: ${opacity}">Godar</p>
@@ -68,6 +83,7 @@
 		if (url_vars["content_animation"] === 1)
 		{
 			let elements = document.querySelectorAll(".name-text-container");
+			
 			for (let i = 0; i < elements.length; i++)
 			{
 				elements[i].removeAttribute("data-aos");
