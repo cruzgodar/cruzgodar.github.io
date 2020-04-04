@@ -29,6 +29,12 @@ function set_up_scroll_up_button()
 
 	init_scroll_up_button_listeners_touch();
 	init_scroll_up_button_listeners_no_touch();
+	
+	//We need to do this manually since the button comes in after page load. We also have to assume it's there and take it away for the same reason.
+	if (currently_touch_device)
+	{
+		document.querySelector("#scroll-up-button").classList.remove("enable-hover");
+	}
 }
 
 
@@ -62,7 +68,7 @@ function init_scroll_up_button_listeners_no_touch()
 			document.querySelector("#scroll-up-button-location").insertAdjacentHTML("afterend", `
 				<div id="scroll-up-button-container">
 					<div class="center-content" data-aos="fade-in" data-aos-duration="600">
-						<input type="image" id="scroll-up-button" src="/graphics/general-icons/${chevron_name}.png" onclick="smooth_scroll_to('body')"></input>
+						<input type="image" id="scroll-up-button" src="/graphics/general-icons/${chevron_name}.png" class="enable-hover" onclick="smooth_scroll_to('body')"></input>
 					</div>
 				</div>
 			`);
