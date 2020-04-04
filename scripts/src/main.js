@@ -113,6 +113,9 @@ document.documentElement.addEventListener("mousemove", function()
 		
 		add_hover_events();
 		
+		//This seriously shouldn't be necessary.
+		disable_links();
+		
 		currently_touch_device = false;
 	}
 });
