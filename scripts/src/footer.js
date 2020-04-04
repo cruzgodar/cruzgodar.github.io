@@ -325,15 +325,8 @@ function set_up_floating_footer()
 	
 	
 	
-	if (hasTouch())
-	{
-		init_floating_footer_listeners_touch();
-	}
-	
-	else
-	{
-		init_floating_footer_listeners_no_touch();
-	}
+	init_floating_footer_listeners_touch();
+	init_floating_footer_listeners_no_touch();
 }
 
 

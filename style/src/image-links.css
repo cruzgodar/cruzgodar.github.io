@@ -33,7 +33,7 @@
 	filter: brightness(100%);
 }
 
-.image-link img:hover
+.image-link img.enable-hover:hover
 {
 	filter: brightness(75%);
 }
@@ -56,7 +56,7 @@
 	filter: brightness(95%) !important;
 }
 
-.image-link-light img:hover
+.image-link-light img.enable-hover:hover
 {
 	filter: brightness(75%) !important;
 }

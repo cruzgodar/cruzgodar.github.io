@@ -653,14 +653,11 @@
 			}
 		}
 		
-		if (!hasTouch())
-		{
-			add_style(`
-				.root-marker:hover
-				{
-					background-color: rgb(127, 127, 127);	
-				}
-			`, true);
-		}
+		add_style(`
+			.root-marker.enable-hover:hover
+			{
+				background-color: rgb(127, 127, 127);	
+			}
+		`, true);
 	}
 }()

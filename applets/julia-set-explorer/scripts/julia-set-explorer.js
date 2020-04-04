@@ -62,16 +62,8 @@
 
 
 	//As the user scrolls around the image, make tiny Julia set previews.
-	if (!hasTouch())
-	{
-		init_listeners_no_touch();
-	}
-
-	//Handle touchscreens.
-	else
-	{
-		init_listeners_touch();
-	}
+	init_listeners_no_touch();
+	init_listeners_touch();
 
 
 

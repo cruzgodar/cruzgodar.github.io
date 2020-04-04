@@ -52,7 +52,7 @@
 	outline: none;
 }
 
-#scroll-button:hover
+#scroll-button.enable-hover:hover
 {
 	filter: brightness(75%);
 }

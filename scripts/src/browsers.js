@@ -71,41 +71,30 @@ let browser_name = browser_detect.browser;
 
 
 
-function hasTouch()
+
+function remove_hover_events()
 {
-	return "ontouchstart" in document.documentElement
-		   || navigator.maxTouchPoints > 0
-		   || navigator.msMaxTouchPoints > 0;
+	let elements = document.querySelectorAll("*");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].classList.remove("enable-hover");
+	}
+	
+	console.log("Removed hover events");
 }
 
-
-
-//Remove hover events on touchscreen devices.
-function remove_hover_on_touch()
+function add_hover_events()
 {
-	if (hasTouch())
+	let elements = document.querySelectorAll("*");
+	
+	for (let i = 0; i < elements.length; i++)
 	{
-		//Remove all :hover stylesheets.
-		try
-		{
-			//Prevent exception on browsers not supporting DOM stylesheets properly
-			for (let si in document.styleSheets)
-			{
-				let styleSheet = document.styleSheets[si];
-				if (!styleSheet.rules) continue;
-
-				for (let ri = styleSheet.rules.length - 1; ri >= 0; ri--)
-				{
-					if (!styleSheet.rules[ri].selectorText) continue;
-
-					if (styleSheet.rules[ri].selectorText.match(":hover"))
-					{
-						styleSheet.deleteRule(ri);
-					}
-				}
-			}
-		}
-		
-		catch (ex) {}
+		elements[i].classList.add("enable-hover");
 	}
+	
+	console.log("Added hover events");
+	
+	//This forces the document to reflow, which is necessary for some browsers to recognize the changes.
+	
 }

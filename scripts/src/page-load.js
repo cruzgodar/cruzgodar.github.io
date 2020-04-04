@@ -50,11 +50,16 @@ function on_page_load()
 	
 	fetch_other_page_banners_in_background();
 	
-	remove_hover_on_touch();
-	
 	set_links();
 	
 	disable_links();
+	
+	
+	
+	if (currently_touch_device === false)
+	{
+		add_hover_events();
+	}
 	
 	
 	

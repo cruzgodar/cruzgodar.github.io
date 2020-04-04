@@ -172,7 +172,7 @@ function show_floating_settings()
 		document.querySelector("#floating-settings").style.opacity = 1;
 		
 		//Nontouch browsers don't do scroll snapping very well.
-		if (!hasTouch())
+		if (currently_touch_device === false)
 		{
 			document.querySelector("#floating-settings").style.scrollSnapType = "y proximity";
 			
@@ -359,37 +359,32 @@ function hide_floating_settings()
 
 
 
-if (hasTouch())
-{
-	document.documentElement.addEventListener("touchstart", function(e)
-	{
-		if (floating_settings_is_visible === false)
-		{
-			return;
-		}
-		
-		if (!(document.querySelector("#floating-settings").contains(e.target)))
-		{
-			hide_floating_settings();
-		}
-	});
-}
 
-else
+document.documentElement.addEventListener("touchstart", function(e)
 {
-	document.documentElement.addEventListener("mousedown", function(e)
+	if (floating_settings_is_visible === false)
 	{
-		if (floating_settings_is_visible === false)
-		{
-			return;
-		}
-		
-		if (!(document.querySelector("#floating-settings").contains(e.target)))
-		{
-			hide_floating_settings();
-		}
-	});
-}
+		return;
+	}
+	
+	if (!(document.querySelector("#floating-settings").contains(e.target)))
+	{
+		hide_floating_settings();
+	}
+});
+
+document.documentElement.addEventListener("mousedown", function(e)
+{
+	if (floating_settings_is_visible === false)
+	{
+		return;
+	}
+	
+	if (!(document.querySelector("#floating-settings").contains(e.target)))
+	{
+		hide_floating_settings();
+	}
+});
 
 
 

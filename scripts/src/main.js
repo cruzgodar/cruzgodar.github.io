@@ -18,6 +18,13 @@ let current_url = decodeURIComponent(get_url_var("page"));
 
 let parent_folder = "/";
 
+//Whether this is a touchscreen device on the current page. It's assumed to be false on every page until a touchstart or touchmove event is detected, at which point it's set to true.
+let currently_touch_device = true;
+
+let mousemoves_to_invalidate = 10;
+
+
+
 //Whether the browser supports WebP images or not. Given a boolean value when decided.
 let supports_webp = null;
 
@@ -71,17 +78,44 @@ let currently_fetching = false;
 
 let last_touch_x = null, last_touch_y = null;
 
-document.documentElement.addEventListener("touchstart", function(e)
-{
-	last_touch_x = e.touches[0].clientX;
-	last_touch_y = e.touches[0].clientY;
-}, false);
+document.documentElement.addEventListener("touchstart", handle_touch_event, false);
+document.documentElement.addEventListener("touchmove", handle_touch_event, false);
 
-document.documentElement.addEventListener("touchmove", function(e)
+function handle_touch_event(e)
 {
 	last_touch_x = e.touches[0].clientX;
 	last_touch_y = e.touches[0].clientY;
-}, false);
+	
+	if (currently_touch_device === false)
+	{
+		remove_hover_events();
+		
+		currently_touch_device = true;
+		
+		mousemoves_to_invalidate = 10;
+	}
+}
+
+
+
+document.documentElement.addEventListener("mousemove", function()
+{
+	if (currently_touch_device)
+	{
+		if (mousemoves_to_invalidate > 0)
+		{
+			mousemoves_to_invalidate--;
+			
+			return;
+		}
+		
+		
+		
+		add_hover_events();
+		
+		currently_touch_device = false;
+	}
+});
 
 
 

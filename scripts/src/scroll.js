@@ -26,15 +26,9 @@ function set_up_scroll_up_button()
 	
 	
 	
-	if (hasTouch())
-	{
-		init_scroll_up_button_listeners_touch();
-	}
-	
-	else
-	{
-		init_scroll_up_button_listeners_no_touch();
-	}
+
+	init_scroll_up_button_listeners_touch();
+	init_scroll_up_button_listeners_no_touch();
 }
 
 
