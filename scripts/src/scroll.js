@@ -33,7 +33,8 @@ function set_up_scroll_up_button()
 	//We need to do this manually since the button comes in after page load. We also have to assume it's there and take it away for the same reason.
 	if (currently_touch_device)
 	{
-		document.querySelector("#scroll-up-button").classList.remove("enable-hover");
+		try {document.querySelector("#scroll-up-button").classList.remove("enable-hover");}
+		catch(ex) {}
 	}
 }
 
