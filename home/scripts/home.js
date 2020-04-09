@@ -11,7 +11,18 @@
 	
 	
 	
-	add_name_text();
+	setTimeout(function()
+	{
+		if (document.fonts.check("1em GentiumBookBasic"))
+		{
+			add_name_text();
+		}
+		
+		else
+		{
+			document.fonts.onloadingdone = add_name_text;
+		}
+	}, 350);
 	
 	
 	
@@ -42,24 +53,24 @@
 		
 		let opacity = 0;
 		
-		setTimeout(function()
+		
+		if (scroll <= window_height/3)
 		{
-			if (scroll <= window_height/3)
-			{
-				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
-			}
-			
-			else
-			{
-				opacity = 0;
-			}
-			
-			document.querySelector("#banner").insertAdjacentHTML("afterend", `
-				<div class="name-text-container" style="position: fixed" data-aos="fade-left">
-					<p id="cruz-text" class="name-text" style="opacity: ${opacity}">Cruz</p>
-				</div>
-			`);
-		}, 350);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
+		}
+		
+		else
+		{
+			opacity = 0;
+		}
+		
+		document.querySelector("#banner").insertAdjacentHTML("afterend", `
+			<div class="name-text-container" style="position: fixed" data-aos="fade-left">
+				<p id="cruz-text" class="name-text" style="opacity: ${opacity}">Cruz</p>
+			</div>
+		`);
+		
+		
 		
 		setTimeout(function()
 		{
@@ -78,7 +89,9 @@
 				<p id="godar-text" class="name-text" style="opacity: ${opacity}">Godar</p>
 			</div>
 			`);
-		}, 600);
+		}, 250);
+		
+		
 		
 		if (url_vars["content_animation"] === 1)
 		{
