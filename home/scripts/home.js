@@ -20,7 +20,13 @@
 		
 		else
 		{
-			document.fonts.onloadingdone = add_name_text;
+			document.fonts.onloadingdone = function()
+			{
+				setTimeout(function()
+				{
+					add_name_text();
+				}, 200);
+			};
 		}
 	}, 350);
 	
