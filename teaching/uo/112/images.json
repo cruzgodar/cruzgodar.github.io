@@ -1,4 +1,10 @@
 {
+	"image-week-2-notes":
+    {
+        "webp": "notes/2/cover.webp",
+        "non-webp": "notes/2/cover.jpg"
+    },
+    
 	"image-homework-2":
     {
         "webp": "homework/2/cover.webp",
