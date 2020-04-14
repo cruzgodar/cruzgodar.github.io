@@ -229,6 +229,21 @@ function fade_out()
 {
 	return new Promise(function(resolve, reject)
 	{
+		try
+		{
+			hide_floating_settings();
+			
+			
+			
+			document.querySelector("#floating-footer").style.opacity = 0;
+			
+			floating_footer_is_visible = false;
+		}
+		
+		catch(ex) {}
+		
+		
+		
 		//Act like a normal link, with no transitions, if the user wants that.
 		if (url_vars["content_animation"] === 1)
 		{
