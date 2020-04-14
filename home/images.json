@@ -49,6 +49,12 @@
 	
 	
 	
+	"image-the-barnsley-fern":
+	{
+		"webp": "../applets/the-barnsley-fern/cover.webp",
+		"non-webp": "../applets/the-barnsley-fern/cover.jpg"
+	},
+	
 	"image-newtons-method":
 	{
 		"webp": "../applets/newtons-method/cover.webp",
@@ -59,11 +65,5 @@
 	{
 		"webp": "../applets/calcudoku-generator/cover.webp",
 		"non-webp": "../applets/calcudoku-generator/cover.jpg"
-	},
-	
-	"image-simulated-annealing":
-	{
-		"webp": "../applets/simulated-annealing/cover.webp",
-		"non-webp": "../applets/simulated-annealing/cover.jpg"
 	}
 }

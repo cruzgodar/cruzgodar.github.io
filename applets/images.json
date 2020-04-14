@@ -1,4 +1,10 @@
 {
+	"image-the-barnsley-fern":
+	{
+		"webp": "the-barnsley-fern/cover.webp",
+		"non-webp": "the-barnsley-fern/cover.jpg"
+	},
+	
 	"image-newtons-method":
 	{
 		"webp": "newtons-method/cover.webp",
