@@ -61,6 +61,11 @@ function on_page_load()
 		add_hover_events();
 	}
 	
+	else
+	{
+		mousemoves_to_invalidate = 100;
+	}
+	
 	
 	
 	background_color_changed = false;
