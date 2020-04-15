@@ -63,7 +63,7 @@ function on_page_load()
 	
 	else
 	{
-		mousemoves_to_invalidate = 100;
+		mousemoves_to_invalidate = 30;
 	}
 	
 	
