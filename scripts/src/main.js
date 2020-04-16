@@ -21,7 +21,7 @@ let parent_folder = "/";
 //Whether this is a touchscreen device on the current page. It's assumed to be false on every page until a touchstart or touchmove event is detected, at which point it's set to true.
 let currently_touch_device = true;
 
-let mousemoves_to_invalidate = 30;
+let last_mousemove_event = 0;
 
 
 
@@ -91,8 +91,6 @@ function handle_touch_event(e)
 		remove_hover_events();
 		
 		currently_touch_device = true;
-		
-		mousemoves_to_invalidate = 30;
 	}
 }
 
@@ -102,21 +100,21 @@ document.documentElement.addEventListener("mousemove", function()
 {
 	if (currently_touch_device)
 	{
-		if (mousemoves_to_invalidate > 0)
+		let time_between_mousemoves = Date.now() - last_mousemove_event;
+		
+		last_mousemove_event = Date.now();
+		
+		
+		
+		if (time_between_mousemoves < 50)
 		{
-			mousemoves_to_invalidate--;
+			add_hover_events();
 			
-			return;
+			//This seriously shouldn't be necessary.
+			disable_links();
+			
+			currently_touch_device = false;
 		}
-		
-		
-		
-		add_hover_events();
-		
-		//This seriously shouldn't be necessary.
-		disable_links();
-		
-		currently_touch_device = false;
 	}
 });
 
