@@ -8,6 +8,10 @@
 
 function on_page_load()
 {
+	currently_changing_page = false;
+	
+	
+	
 	parse_page_specific_style();
 	parse_page_specific_scripts();
 	

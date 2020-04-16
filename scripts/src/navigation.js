@@ -8,7 +8,7 @@
 
 let new_page_data = null;
 
-
+let currently_changing_page = false;
 
 let last_page_scroll = 0;
 
@@ -92,6 +92,16 @@ function set_links()
 //Handles virtually all links.
 function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll = false)
 {
+	if (currently_changing_page)
+	{
+		return;
+	}
+	
+	currently_changing_page = true;
+	
+	
+	
+	
 	//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
 	if (in_new_tab)
 	{
@@ -185,6 +195,8 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 		console.log("Failed to load new page -- reversing fade-out.");
 		
 		
+		
+		currently_changing_page = false;
 		
 		setTimeout(function()
 		{
