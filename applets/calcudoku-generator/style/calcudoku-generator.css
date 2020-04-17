@@ -10,15 +10,10 @@
 
 .text-box-row
 {
-	width: 45vw;
+	width: 250px;
 	margin: 0 auto;
 	display: flex;
 	justify-content: space-between;
-}
-
-.text-box-container
-{
-	width: 20vw;
 }
 
 
@@ -29,19 +24,4 @@
 	
 	opacity: 0;
 	transition: opacity .3s ease-in-out;
-}
-
-
-
-@media (min-aspect-ratio: 16/9), (min-width: 1400px)
-{
-	.text-box-row
-	{
-		width: 31.666vw;
-	}
-	
-	.text-box-container
-	{
-		width: 13.333vw;
-	}
 }

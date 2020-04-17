@@ -36,7 +36,7 @@
 	
 	function request_fern_graph()
 	{
-		let num_iterations = parseInt(document.querySelector("#num-iterations-input").value || 10000000);
+		let num_iterations = 1000 * parseInt(document.querySelector("#num-iterations-input").value || 10000);
 		
 		grid_size = Math.floor(Math.sqrt(num_iterations / 10));
 		

@@ -114,6 +114,8 @@
 
 .text-box
 {
+	width: 100px;
+	
 	border: none;
 	border-radius: 0;
 	border-bottom: 2px solid rgb(192, 192, 192);
@@ -134,9 +136,16 @@
 	color: rgb(64, 64, 64);
 }
 
+.text-box-container
+{
+	width: 100px;
+	
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 label .body-text
 {
-	width: 100%;
-	margin-left: 0;
 	text-align: center;
 }
