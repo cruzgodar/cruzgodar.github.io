@@ -146,7 +146,18 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 	
 	
 	
-	.then(response => response[0].text())
+	.then(function(response)
+	{
+		if (!response[0].ok)
+		{
+			window.location.replace("/404.html");
+		}
+		
+		else
+		{
+			return response[0].text();
+		}
+	})
 	
 	
 	
