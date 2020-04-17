@@ -104,9 +104,8 @@ document.documentElement.addEventListener("mousemove", function()
 		
 		last_mousemove_event = Date.now();
 		
-		
-		
-		if (time_between_mousemoves < 50)
+		//Checking if it's >= 3 kinda sucks, but it seems like touch devices like to fire two mousemoves in quick succession sometimes. They also like to make that delay exactly 33. Look, I hate this too, but it needs to be here.
+		if (time_between_mousemoves >= 3 && time_between_mousemoves <= 50 && time_between_mousemoves !== 33)
 		{
 			add_hover_events();
 			

@@ -212,6 +212,10 @@ function show_floating_settings()
 	
 	setTimeout(function()
 	{
+		document.querySelector("#floating-settings").scrollTop = 0;
+		
+		
+		
 		let settings_query_strings = Object.keys(url_vars);
 		
 		

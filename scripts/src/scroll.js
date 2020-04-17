@@ -83,13 +83,18 @@ function init_scroll_up_button_listeners_no_touch()
 		
 		setTimeout(function()
 		{
-			document.querySelector("#scroll-up-button-container").addEventListener("mouseleave", function()
+			try
 			{
-				if (scroll_up_button_visible)
+				document.querySelector("#scroll-up-button-container").addEventListener("mouseleave", function()
 				{
-					remove_scroll_up_button();
-				}
-			});
+					if (scroll_up_button_visible)
+					{
+						remove_scroll_up_button();
+					}
+				});
+			}
+			
+			catch(ex) {}
 		}, 100);
 	});
 }
