@@ -95,6 +95,4 @@ function add_hover_events()
 	
 	console.log("Added hover events");
 	
-	//This forces the document to reflow, which is necessary for some browsers to recognize the changes.
-	
 }

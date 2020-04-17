@@ -97,8 +97,6 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 		return;
 	}
 	
-	currently_changing_page = true;
-	
 	
 	
 	
@@ -108,6 +106,10 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 		window.open(url, "_blank");
 		return;
 	}
+	
+	
+	
+	currently_changing_page = true;
 	
 	
 	
