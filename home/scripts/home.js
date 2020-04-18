@@ -18,7 +18,7 @@
 			setTimeout(function()
 			{
 				add_name_text();
-			}, 100);
+			}, 50);
 		}
 		
 		else
@@ -28,10 +28,10 @@
 				setTimeout(function()
 				{
 					add_name_text();
-				}, 100);
+				}, 50);
 			};
 		}
-	}, 350);
+	}, 300);
 	
 	
 	
