@@ -11,27 +11,7 @@
 	
 	
 	
-	setTimeout(function()
-	{
-		if (document.fonts.check("1em GentiumBookBasic"))
-		{
-			setTimeout(function()
-			{
-				add_name_text();
-			}, 50);
-		}
-		
-		else
-		{
-			document.fonts.onloadingdone = function()
-			{
-				setTimeout(function()
-				{
-					add_name_text();
-				}, 50);
-			};
-		}
-	}, 300);
+	setTimeout(add_name_text, 350);
 	
 	
 	
