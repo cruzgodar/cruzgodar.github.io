@@ -199,7 +199,6 @@
 		
 		
 		
-		//First, square root everything for a darker center and then find the max and min.
 		for (let i = 0; i < canvas_size; i++)
 		{
 			for (let j = 0; j < canvas_size; j++)
@@ -385,6 +384,239 @@
 	
 	
 	
+	//Writes MathJax to the space underneath the graph. This is the closest I've come to writing a text adventure.
+	function update_polynomial_label(roots)
+	{
+		//This initializes the polynomial to z - z_0.
+		let coefficients = [[-roots[0][0], -roots[0][1]], [1, 0]];
+		
+		
+		
+		//I really hate this part of the algorithm, but it doesn't happen that often and doesn't need to be super crazy fast.
+		for (let i = 1; i < roots.length; i++)
+		{
+			let old_coefficients = JSON.parse(JSON.stringify(coefficients));
+			
+			//We're going to distribute (z - z_i) over the current polynomial. First, we'll do z, which shifts the degree up by 1.
+			coefficients.unshift([0, 0]);
+			
+			//Now we'll distribute -z_i over everything.
+			for (let j = 0; j < old_coefficients.length; j++)
+			{
+				let temp = complex_multiply([-roots[i][0], -roots[i][1]], old_coefficients[j]);
+				
+				coefficients[j][0] += temp[0];
+				coefficients[j][1] += temp[1];
+			}
+		}
+		
+		
+		
+		//Now we have the coefficients, but we need to convert them into MathJax.
+		let polynomial_string = "\\(f(z) = ";
+		
+		let num_terms_written = 0;
+		
+		let current_label = 1;
+		
+		
+		
+		document.querySelector("#polynomial-label-1").textContent = "";
+		document.querySelector("#polynomial-label-2").textContent = "";
+		document.querySelector("#polynomial-label-3").textContent = "";
+		
+		
+		
+		for (let i = coefficients.length - 1; i >= 0; i--)
+		{
+			let wrote_something = true;
+			
+			num_terms_written++;
+			
+			
+			
+			coefficients[i][0] = Math.round(coefficients[i][0] * 100) / 100;
+			coefficients[i][1] = Math.round(coefficients[i][1] * 100) / 100;
+			
+			
+			
+			if (coefficients[i][0] === 0 && coefficients[i][1] === 0)
+			{
+				wrote_something = false;
+				
+				num_terms_written--;
+			}
+			
+			
+			
+			else if (coefficients[i][1] === 0)
+			{
+				let coefficient = Math.abs(coefficients[i][0]);
+				
+				if (coefficient === 1 && i > 0)
+				{
+					//If this is the first term, we don't want a plus sign.
+					if (coefficients[i][0] > 0 && i === coefficients.length - 1)
+					{
+						polynomial_string += ``;
+					}
+					
+					else if (coefficients[i][0] > 0)
+					{
+						polynomial_string += ` + `;
+					}
+					
+					else if (coefficients[i][0] < 0)
+					{
+						polynomial_string += ` - `;
+					}
+				}
+				
+				else
+				{
+					//If this is the first term, we don't want a plus sign.
+					if (coefficients[i][0] > 0 && i === coefficients.length - 1)
+					{
+						polynomial_string += `${coefficient}`;
+					}
+					
+					else if (coefficients[i][0] > 0)
+					{
+						polynomial_string += ` + ${coefficient}`;
+					}
+					
+					else if (coefficients[i][0] < 0)
+					{
+						polynomial_string += ` - ${coefficient}`;
+					}
+				}
+			}
+			
+			
+			
+			else if (coefficients[i][0] === 0)
+			{
+				let coefficient = Math.abs(coefficients[i][1]);
+				
+				if (coefficient === 1 && i > 0)
+				{
+					//If this is the first term, we don't want a plus sign.
+					if (coefficients[i][1] > 0 && i === coefficients.length - 1)
+					{
+						polynomial_string += `i`;
+					}
+					
+					else if (coefficients[i][1] > 0)
+					{
+						polynomial_string += ` + i`;
+					}
+					
+					else if (coefficients[i][1] < 0)
+					{
+						polynomial_string += ` - i`;
+					}
+				}
+				
+				else
+				{
+					//If this is the first term, we don't want a plus sign.
+					if (coefficients[i][1] > 0 && i === coefficients.length - 1)
+					{
+						polynomial_string += `${coefficient}i`;
+					}
+					
+					else if (coefficients[i][1] > 0)
+					{
+						polynomial_string += ` + ${coefficient}i`;
+					}
+					
+					else if (coefficients[i][1] < 0)
+					{
+						polynomial_string += ` - ${coefficient}i`;
+					}
+				}
+			}
+			
+			
+			
+			else
+			{
+				if (i === coefficients.length - 1)
+				{
+					if (coefficients[i][1] > 0)
+					{
+						polynomial_string += `(${coefficients[i][0]} + ${coefficients[i][1]}i)`;
+					}
+					
+					else
+					{
+						polynomial_string += `(${coefficients[i][0]} - ${Math.abs(coefficients[i][1])}i)`;
+					}
+				}
+				
+				else
+				{
+					if (coefficients[i][1] > 0)
+					{
+						polynomial_string += ` + (${coefficients[i][0]} + ${coefficients[i][1]}i)`;
+					}
+					
+					else
+					{
+						polynomial_string += ` + (${coefficients[i][0]} - ${Math.abs(coefficients[i][1])}i)`;
+					}
+				}
+			}
+			
+			
+			
+			//Now we'll add the power of z.
+			if (wrote_something)
+			{
+				if (i > 1)
+				{
+					polynomial_string += `z^${i}`;
+				}
+				
+				else if (i === 1)
+				{
+					polynomial_string += `z`;
+				}
+			}
+			
+			
+			
+			if (num_terms_written === 3)
+			{
+				polynomial_string += "\\)";
+				
+				document.querySelector(`#polynomial-label-${current_label}`).textContent = polynomial_string;
+				
+				polynomial_string = "\\(";
+				
+				//This just ensures we won't do this again.
+				num_terms_written = 0;
+				
+				current_label++;
+			}
+		}
+		
+		
+		
+		if (current_label !== 4)
+		{
+			polynomial_string += "\\)";
+			
+			document.querySelector(`#polynomial-label-${current_label}`).textContent = polynomial_string;
+		}
+		
+		
+		
+		typeset_math();
+	}
+	
+	
+	
 	//Returns ||z||.
 	function complex_magnitude(z)
 	{
@@ -515,6 +747,8 @@
 			
 			canvas_size = 500;
 			
+			update_polynomial_label(current_roots);
+			
 			draw_newtons_method_plot(current_roots);
 		}
 		
@@ -620,6 +854,8 @@
 		{
 			canvas_size = 100;
 		}
+		
+		update_polynomial_label(current_roots);
 		
 		draw_newtons_method_plot(current_roots);
 	}
