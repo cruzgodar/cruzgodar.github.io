@@ -237,7 +237,7 @@
 	top: 0;
 	z-index: 140;
 	
-	height: 50px;
+	height: 25px;
 	width: 100vw;
 }
 
@@ -247,7 +247,7 @@
 	top: 0;
 	
 	width: 100vw;
-	height: 100px;
+	height: 75px;
 	
 	z-index: 130;
 }
@@ -261,7 +261,7 @@
 	width: 20px;
 	height: 5px;
 	
-	margin-top: 50px;
+	margin-top: 25px;
 
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 10px;
