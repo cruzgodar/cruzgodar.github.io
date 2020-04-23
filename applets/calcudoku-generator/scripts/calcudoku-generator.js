@@ -8,9 +8,17 @@
 	
 	let ctx = document.querySelector("#calcudoku-grid").getContext("2d");
 	
+	let total_time = 0;
+	let split_time = 0;
+	
+	let refresh_id = null;
+	
 	let grid = [];
 	let cages = [];
 	let cages_by_location = [];
+	
+	//Used to determine if we should reset the split timer.
+	let old_cages_by_location = [];
 	
 	let web_worker = null;
 	
@@ -43,18 +51,64 @@
 		
 		let max_cage_size = parseInt(document.querySelector("#max-cage-size-input").value || 1000);
 		
-		document.querySelector("#calcudoku-grid").style.opacity = 0;
-		
-		document.querySelector(".loading-spinner").style.opacity = 0;
 		
 		
+		for (let i = 0; i < grid_size; i++)
+		{
+			cages_by_location.push([]);
+			
+			for (let j = 0; j < grid_size; j++)
+			{
+				cages_by_location[i].push(0);
+			}
+		}
 		
-		let canvas_size = grid_size * 200 + 9;
 		
-		document.querySelector("#calcudoku-grid").setAttribute("width", canvas_size);
-		document.querySelector("#calcudoku-grid").setAttribute("height", canvas_size);
 		
-		ctx.clearRect(0, 0, canvas_size, canvas_size);
+		total_time = 0;
+		split_time = 0;
+		
+		document.querySelector("#total-time-clock").textContent = "0";
+		document.querySelector("#split-time-clock").textContent = "0";
+		
+		
+		
+		if (document.querySelector("#total-time-label").style.opacity == 0)
+		{
+			show_timers();
+		}
+		
+		else
+		{
+			document.querySelector("#total-time-label").style.opacity = 0;
+			document.querySelector("#total-time-clock").style.opacity = 0;
+			document.querySelector("#split-time-label").style.opacity = 0;
+			document.querySelector("#split-time-clock").style.opacity = 0;
+			
+			document.querySelector("#calcudoku-grid").style.opacity = 0;
+			
+			setTimeout(show_timers, 350);
+		}
+		
+		
+		
+		setTimeout(function()
+		{
+			let canvas_size = grid_size * 200 + 9;
+			
+			document.querySelector("#calcudoku-grid").setAttribute("width", canvas_size);
+			document.querySelector("#calcudoku-grid").setAttribute("height", canvas_size);
+			
+			ctx.clearRect(0, 0, canvas_size, canvas_size);
+		}, 300);
+		
+		
+		
+		clearInterval(refresh_id);
+		
+		refresh_id = setInterval(update_timers, 1000);
+		
+		temporary_intervals.push(refresh_id);
 		
 		
 		
@@ -77,20 +131,7 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			if (e.data[0] === "done")
-			{
-				console.log("Finished!");
-				
-				document.querySelector(".loading-spinner").style.opacity = 0;
-			}
-			
-			else if (e.data[0] === "first_grid_complete")
-			{
-				//We have a valid puzzle!
-				document.querySelector("#calcudoku-grid").style.opacity = 1;
-			}
-			
-			else if (e.data[0] === "log")
+			if (e.data[0] === "log")
 			{
 				console.log(...e.data.slice(1));
 			}
@@ -99,17 +140,142 @@
 			{
 				grid = e.data[0];
 				cages = e.data[1];
+				old_cages_by_location = JSON.parse(JSON.stringify(cages_by_location));
 				cages_by_location = e.data[2];
 				
 				draw_calcudoku_grid(false);
+				
+				
+				
+				let cages_by_locations_differ = false;
+				
+				for (let i = 0; i < grid_size; i++)
+				{
+					for (let j = 0; j < grid_size; j++)
+					{
+						if (cages_by_location[i][j] !== old_cages_by_location[i][j])
+						{
+							cages_by_locations_differ = true;
+							
+							split_time = 0;
+							
+							break;
+						}
+					}
+					
+					if (cages_by_locations_differ)
+					{
+						break;
+					}
+				}
 			}
 		}
 		
 		
 		
-		web_worker.postMessage([grid_size, max_cage_size]);
+		setTimeout(function()
+		{
+			web_worker.postMessage([grid_size, max_cage_size]);
+		}, 300);
+	}
+	
+	
+	
+	function show_timers()
+	{
+		document.querySelector("#total-time-label").style.opacity = 1;
 		
-		document.querySelector(".loading-spinner").style.opacity = 1;
+		setTimeout(function()
+		{
+			document.querySelector("#total-time-clock").style.opacity = 1;
+			
+			setTimeout(function()
+			{
+				document.querySelector("#split-time-label").style.opacity = 1;
+				
+				setTimeout(function()
+				{
+					document.querySelector("#split-time-clock").style.opacity = 1;
+					
+					setTimeout(function()
+					{
+						document.querySelector("#calcudoku-grid").style.opacity = 1;
+					}, 100);
+				}, 100);
+			}, 100);
+		}, 100);
+	}
+	
+	
+	
+	function update_timers()
+	{
+		let seconds = total_time % 60;
+		let minutes = Math.floor(total_time / 60) % 60;
+		let hours = Math.floor(total_time / 3600);
+		
+		let total_time_string = "";
+		
+		if (hours > 0)
+		{
+			total_time_string += hours + ":";
+			
+			if (minutes < 10)
+			{
+				total_time_string += "0";
+			}
+		}
+		
+		if (minutes > 0 || hours > 0)
+		{
+			total_time_string += minutes + ":";
+			
+			if (seconds < 10)
+			{
+				total_time_string += "0";
+			}
+		}
+		
+		total_time_string += seconds;
+		
+		document.querySelector("#total-time-clock").textContent = total_time_string;
+		
+		
+		
+		seconds = split_time % 60;
+		minutes = Math.floor(split_time / 60) % 60;
+		hours = Math.floor(split_time / 3600);
+		
+		let split_time_string = "";
+		
+		if (hours > 0)
+		{
+			split_time_string += hours + ":";
+			
+			if (minutes < 10)
+			{
+				total_time_string += "0";
+			}
+		}
+		
+		if (minutes > 0 || hours > 0)
+		{
+			split_time_string += minutes + ":";
+			
+			if (seconds < 10)
+			{
+				total_time_string += "0";
+			}
+		}
+		
+		split_time_string += seconds;
+		
+		document.querySelector("#split-time-clock").textContent = split_time_string;
+		
+		
+		
+		total_time++;
+		split_time++;
 	}
 	
 	

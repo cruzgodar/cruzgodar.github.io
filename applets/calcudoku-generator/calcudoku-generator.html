@@ -32,7 +32,7 @@
 	<section>
 		<div data-aos="fade-up">
 			<p class="body-text">
-				<dfn>Calcudoku</dfn> is a Sudoku-like puzzle &mdash; given an \(n \times n\) grid, fill it withn the digits \(1, ..., n\) such that no row or column contains a repeated digit, and such that each cage&#x2019;s condition is satisfied. For example, a cage with \(5+\) in a corner must have its contents sum to 5. A cage with \(2-\) is a little more complicated &mdash; it means that choosing some cell in the cage and subtracting the others results in 2. So a 3-cell cage containing 5, 2, and 1 would work. Division cages are written with a colon and works similarly to subtraction. Finally, cages with no operation at all are always \(1 \times 1\), and simply contain the number in the corner.
+				<dfn>Calcudoku</dfn> is a Sudoku-like puzzle &mdash; given an \(n \times n\) grid, fill it with the digits \(1, ..., n\) such that no row or column contains a repeated digit, and such that each cage&#x2019;s condition is satisfied. For example, a cage with \(5+\) in a corner must have its contents sum to 5. A cage with \(2-\) is a little more complicated &mdash; it means that choosing some cell in the cage and subtracting the others results in 2. So a 3-cell cage containing 5, 2, and 1 would work. Division cages are written with a colon and work similarly to subtraction. Finally, cages with no operation at all are always \(1 \times 1\), and simply contain the number in the corner.
 			</p>
 		</div>
 		
@@ -70,13 +70,27 @@
 			</div>
 		</div>
 		
-		<div style="height: 5vh"></div>
+		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div class="loading-spinner" style="opacity: 0"></div>
+			<p id="total-time-label" class="body-text">Time Elapsed</p>
 		</div>
 		
-		<div style="height: calc(5vh + 8px)"></div>
+		<div class="center-content">
+			<p id="total-time-clock" class="body-text">0</p>
+		</div>
+		
+		<br>
+		
+		<div class="center-content">
+			<p id="split-time-label" class="body-text">Since Last Change</p>
+		</div>
+		
+		<div class="center-content">
+			<p id="split-time-clock" class="body-text">0</p>
+		</div>
+		
+		<div style="height: calc(10vh + 8px)"></div>
 		
 		<div class="center-content" data-aos="fade-in" data-aos-delay="1900">
 			<canvas id="calcudoku-grid"></canvas>

@@ -14,8 +14,6 @@ onmessage = function(e)
 		importScripts("/scripts/wasm-arrays.min.js");
 		
 		generate_calcudoku_grid();
-		
-		postMessage(["done"]);
 	};
 }
 
@@ -52,10 +50,6 @@ function generate_calcudoku_grid()
 	generate_number_grid();
 	
 	assign_initial_cages();
-	
-	
-	
-	postMessage(["first_grid_complete"]);
 	
 	
 	

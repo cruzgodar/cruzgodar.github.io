@@ -405,6 +405,16 @@ function on_page_unload()
 	
 	
 	
+	//Clear any temporary intervals.
+	for (let i = 0; i < temporary_intervals.length; i++)
+	{
+		clearInterval(temporary_intervals[i]);
+	}
+	
+	temporary_intervals = [];
+	
+	
+	
 	//Terminate any temporary web workers.
 	for (let i = 0; i < temporary_web_workers.length; i++)
 	{

@@ -48,6 +48,8 @@ let temporary_handlers =
 	"mouseup": []
 }
 
+let temporary_intervals = [];
+
 let temporary_web_workers = [];
 
 let layout_string = "";

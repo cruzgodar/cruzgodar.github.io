@@ -18,10 +18,11 @@
 
 
 
-.progress-bar
+#total-time-label, #total-time-clock, #split-time-label, #split-time-clock
 {
-	width: calc(80vmin - 8px) !important;
+	text-align: center;
 	
 	opacity: 0;
+	
 	transition: opacity .3s ease-in-out;
 }
