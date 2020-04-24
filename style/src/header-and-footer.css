@@ -21,7 +21,7 @@
 	outline: none;
 }
 
-.footer-button.enable-hover:hover
+.footer-button.hover
 {
 	filter: brightness(75%);
 }
@@ -84,7 +84,7 @@
 	filter: brightness(100%);
 }
 
-.footer-image-link img.enable-hover:hover
+.footer-image-link img.hover
 {
 	filter: brightness(75%);
 }
@@ -273,7 +273,7 @@
 	outline: none;
 }
 
-#scroll-up-button.enable-hover:hover
+#scroll-up-button.hover
 {
 	filter: brightness(75%);
 }

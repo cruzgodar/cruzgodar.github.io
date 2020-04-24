@@ -38,7 +38,7 @@
 	outline: none;
 }
 
-.nav-button.enable-hover:hover
+.nav-button.hover
 {
 	filter: brightness(75%);
 }
@@ -98,7 +98,7 @@
 	filter: brightness(100%);
 }
 
-.big-image-horizontal.enable-hover:hover, .small-image-horizontal.enable-hover:hover, .big-image-vertical.enable-hover:hover, .small-image-vertical.enable-hover:hover
+.big-image-horizontal.hover, .small-image-horizontal.hover, .big-image-vertical.hover, .small-image-vertical.hover
 {
 	filter: brightness(75%);
 }

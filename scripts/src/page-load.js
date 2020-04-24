@@ -58,12 +58,7 @@ function on_page_load()
 	
 	disable_links();
 	
-	
-	
-	if (currently_touch_device === false)
-	{
-		add_hover_events();
-	}
+	set_up_hover_events();
 	
 	
 	
@@ -506,6 +501,52 @@ function fetch_other_page_banners_in_background()
 				fetch_item_from_queue();
 			}
 		}
+	}
+}
+
+
+
+//Adds a listener to every element that needs a hover event. Yes, you could use CSS for this. No, I don't want to.
+function set_up_hover_events()
+{
+	let elements = document.querySelectorAll(hover_elements);
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		add_hover_event(elements[i]);
+	}
+}
+
+
+
+function add_hover_event(element)
+{
+	element.addEventListener("mouseenter", function()
+	{
+		if (currently_touch_device === false)
+		{
+			element.classList.add("hover");
+		}
+	});
+	
+	element.addEventListener("mouseleave", function()
+	{
+		if (currently_touch_device === false)
+		{
+			element.classList.remove("hover");
+		}
+	});
+}
+
+
+
+function remove_hover_events()
+{
+	let elements = document.querySelectorAll(hover_elements);
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].classList.remove("hover");
 	}
 }
 

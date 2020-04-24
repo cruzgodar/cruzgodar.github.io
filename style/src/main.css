@@ -84,7 +84,7 @@ img
 	filter: brightness(100%);
 }
 
-#logo img.enable-hover:hover
+#logo img.hover
 {
 	filter: brightness(75%);
 }

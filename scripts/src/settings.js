@@ -223,7 +223,7 @@ function show_floating_settings()
 		//These aren't seen by set_up_aos(), so we'll do things the old-fashioned way.
 		document.querySelector("#theme-button-row").innerHTML = `
 			<div data-aos="zoom-out" data-aos-anchor="body">
-				<input type="image" class="footer-button enable-hover" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="switch_setting('theme')">
+				<input type="image" class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="switch_setting('theme')">
 			</div>
 			
 			<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -239,7 +239,7 @@ function show_floating_settings()
 		{
 			document.querySelector("#dark-theme-color-button-row").innerHTML = `
 				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button enable-hover" src="/graphics/button-icons/moon-stars.png" alt="Change Theme" onclick="switch_setting('dark_theme_color')">
+					<input type="image" class="footer-button" src="/graphics/button-icons/moon-stars.png" alt="Change Theme" onclick="switch_setting('dark_theme_color')">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -256,7 +256,7 @@ function show_floating_settings()
 		{
 			document.querySelector("#contrast-button-row").innerHTML = `
 				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button enable-hover" src="/graphics/button-icons/contrast.png" alt="Change Theme" onclick="switch_setting('contrast')">
+					<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Theme" onclick="switch_setting('contrast')">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -273,7 +273,7 @@ function show_floating_settings()
 		{
 			document.querySelector("#text-size-button-row").innerHTML = `
 				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button enable-hover" src="/graphics/button-icons/text-size.png" alt="Change Theme" onclick="switch_setting('text_size')">
+					<input type="image" class="footer-button" src="/graphics/button-icons/text-size.png" alt="Change Theme" onclick="switch_setting('text_size')">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -290,7 +290,7 @@ function show_floating_settings()
 		{
 			document.querySelector("#font-button-row").innerHTML = `
 				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button enable-hover" src="/graphics/button-icons/font.png" alt="Change Theme" onclick="switch_setting('font')">
+					<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Change Theme" onclick="switch_setting('font')">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -304,7 +304,7 @@ function show_floating_settings()
 			
 			document.querySelector("#comments-button-row").innerHTML = `
 				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button enable-hover" src="/graphics/button-icons/comment.png" alt="Change Theme" onclick="switch_setting('comments')">
+					<input type="image" class="footer-button" src="/graphics/button-icons/comment.png" alt="Change Theme" onclick="switch_setting('comments')">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -318,7 +318,7 @@ function show_floating_settings()
 			
 			document.querySelector("#content-animation-button-row").innerHTML = `
 				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button enable-hover" src="/graphics/button-icons/pop.png" alt="Change Theme" onclick="switch_setting('content_animation')">
+					<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Change Theme" onclick="switch_setting('content_animation')">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -332,7 +332,7 @@ function show_floating_settings()
 			
 			document.querySelector("#banner-style-button-row").innerHTML = `
 				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button enable-hover" src="/graphics/button-icons/picture.png" alt="Change Theme" onclick="switch_setting('banner_style')">
+					<input type="image" class="footer-button" src="/graphics/button-icons/picture.png" alt="Change Theme" onclick="switch_setting('banner_style')">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -347,15 +347,11 @@ function show_floating_settings()
 		
 		setTimeout(function()
 		{
-			//We need to do this manually since the button comes in after page load. We also have to assume it's there and take it away for the same reason.
-			if (currently_touch_device)
+			let elements = document.querySelectorAll(".floating-settings-button-row div .footer-button");
+			
+			for (let i = 0; i < elements.length; i++)
 			{
-				let elements = document.querySelectorAll(".footer-button");
-				
-				for (let i = 0; i < elements.length; i++)
-				{
-					elements[i].classList.remove("enable-hover");
-				}
+				add_hover_event(elements[i]);
 			}
 		}, 500);
 	}, 100);

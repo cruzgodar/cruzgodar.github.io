@@ -58,6 +58,33 @@ let background_color_changed = false;
 
 
 
+const hover_elements = `
+	#scroll-button,
+	
+	.text-button,
+	.checkbox-container,
+	
+	.footer-button,
+	.footer-image-link img,
+	#scroll-up-button,
+	
+	.image-link img,
+	
+	#logo img,
+	
+	.nav-button,
+	.big-image-horizontal,
+	.small-image-horizontal,
+	.big-image-vertical,
+	.small-image-vertical,
+	
+	
+	
+	.root-marker
+`;
+
+
+
 //A list of lists. Each sublist starts with an anchor, then lists all the elements anchored to it in sequence, along with their delays.
 let aos_elements = [];
 
@@ -109,11 +136,6 @@ document.documentElement.addEventListener("mousemove", function()
 		//Checking if it's >= 3 kinda sucks, but it seems like touch devices like to fire two mousemoves in quick succession sometimes. They also like to make that delay exactly 33. Look, I hate this too, but it needs to be here.
 		if (time_between_mousemoves >= 3 && time_between_mousemoves <= 50 && time_between_mousemoves !== 33)
 		{
-			add_hover_events();
-			
-			//This seriously shouldn't be necessary.
-			disable_links();
-			
 			currently_touch_device = false;
 		}
 	}

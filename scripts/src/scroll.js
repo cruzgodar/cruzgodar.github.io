@@ -29,13 +29,6 @@ function set_up_scroll_up_button()
 
 	init_scroll_up_button_listeners_touch();
 	init_scroll_up_button_listeners_no_touch();
-	
-	//We need to do this manually since the button comes in after page load. We also have to assume it's there and take it away for the same reason.
-	if (currently_touch_device)
-	{
-		try {document.querySelector("#scroll-up-button").classList.remove("enable-hover");}
-		catch(ex) {}
-	}
 }
 
 
@@ -69,7 +62,7 @@ function init_scroll_up_button_listeners_no_touch()
 			document.querySelector("#scroll-up-button-location").insertAdjacentHTML("afterend", `
 				<div id="scroll-up-button-container">
 					<div class="center-content" data-aos="fade-in" data-aos-duration="600">
-						<input type="image" id="scroll-up-button" src="/graphics/general-icons/${chevron_name}.png" class="enable-hover" onclick="smooth_scroll_to('body')"></input>
+						<input type="image" id="scroll-up-button" src="/graphics/general-icons/${chevron_name}.png" onclick="smooth_scroll_to('body')"></input>
 					</div>
 				</div>
 			`);
@@ -85,6 +78,8 @@ function init_scroll_up_button_listeners_no_touch()
 		{
 			try
 			{
+				add_hover_event(document.querySelector("#scroll-up-button"));
+				
 				document.querySelector("#scroll-up-button-container").addEventListener("mouseleave", function()
 				{
 					if (scroll_up_button_visible)
@@ -141,7 +136,13 @@ function scroll_up_button_process_touchend()
 						<input type="image" id="scroll-up-button" src="/graphics/general-icons/${chevron_name}.png" onclick="smooth_scroll_to('body')"></input>
 					</div>
 				</div>
-			`)
+			`);
+			
+			setTimeout(function()
+			{
+				try {add_hover_event(document.querySelector("#scroll-up-button"));}
+				catch(ex) {}
+			}, 100);
 			
 			scroll_up_button_visible = true;
 			

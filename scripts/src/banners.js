@@ -295,19 +295,19 @@ function add_scroll_button()
 		{
 			document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
 				<div id="new-banner-cover" data-aos="fade-down">
-					<input type="image" id="scroll-button" class="enable-hover" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="smooth_scroll_to('#scroll-to')">
+					<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="smooth_scroll_to('#scroll-to')">
 				</div>
 			`);
 			
 			scroll_button_exists = true;
 			
-			document.querySelector("#banner-cover").remove();
-			
-			//We need to do this manually since the button comes in after page load. We also have to assume it's there and take it away for the same reason.
-			if (currently_touch_device)
+			setTimeout(function()
 			{
-				document.querySelector("#scroll-button").classList.remove("enable-hover");
-			}
+				try {add_hover_event(document.querySelector("#scroll-button"));}
+				catch(ex) {}
+			}, 100);
+			
+			document.querySelector("#banner-cover").remove();
 		}
 		
 		catch(ex) {}

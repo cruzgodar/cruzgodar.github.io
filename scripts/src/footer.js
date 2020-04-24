@@ -231,6 +231,23 @@ function insert_footer()
 	
 	
 	
+	setTimeout(function()
+	{
+		try
+		{
+			let elements = document.querySelectorAll(".footer-button, .footer-image-link img");
+			
+			for (let i = 0; i < elements.length; i++)
+			{
+				add_hover_event(elements[i]);
+			}
+		}
+		
+		catch(ex) {}
+	}, 100);
+	
+	
+	
 	//If we restored a scroll position that was supposed to be in the footer, we won't be able to properly restore that until now.
 	if (scroll > 0)
 	{

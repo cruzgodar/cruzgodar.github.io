@@ -68,31 +68,3 @@ let browser_detect =
 browser_detect.init();
 
 let browser_name = browser_detect.browser;
-
-
-
-
-function remove_hover_events()
-{
-	let elements = document.querySelectorAll("*");
-	
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].classList.remove("enable-hover");
-	}
-	
-	console.log("Removed hover events");
-}
-
-function add_hover_events()
-{
-	let elements = document.querySelectorAll("*");
-	
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].classList.add("enable-hover");
-	}
-	
-	console.log("Added hover events");
-	
-}

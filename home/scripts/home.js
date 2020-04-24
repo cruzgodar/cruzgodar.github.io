@@ -17,6 +17,23 @@
 	
 	set_up_floating_footer();
 	
+	setTimeout(function()
+	{
+		try
+		{
+			let elements = document.querySelectorAll(".footer-button");
+			
+			for (let i = 0; i < elements.length; i++)
+			{
+				add_hover_event(elements[i]);
+			}
+		}
+		
+		catch(ex) {}
+	}, 100);
+	
+	
+	
 	disable_links();
 	
 	

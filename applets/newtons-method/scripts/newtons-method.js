@@ -911,7 +911,7 @@
 		}
 		
 		add_style(`
-			.root-marker.enable-hover:hover
+			.root-marker.hover
 			{
 				background-color: rgb(127, 127, 127);	
 			}
