@@ -172,7 +172,8 @@ function remove_scroll_up_button()
 	
 	setTimeout(function()
 	{
-		document.querySelector("#scroll-up-button-container").remove();
+		try {document.querySelector("#scroll-up-button-container").remove();}
+		catch(ex) {}
 		
 		scroll_up_button_visible = false;
 	}, 300);
