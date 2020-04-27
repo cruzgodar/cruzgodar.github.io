@@ -1,4 +1,10 @@
 {
+	"image-week-4-notes":
+    {
+        "webp": "notes/4/cover.webp",
+        "non-webp": "notes/4/cover.jpg"
+    },
+    
 	"image-midterm-1":
     {
         "webp": "exams/1/cover.webp",
