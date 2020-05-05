@@ -305,6 +305,9 @@
 		
 		
 		
+		document.querySelector("#progress-bar span").insertAdjacentHTML("afterend", `<span></span>`);
+		document.querySelector("#progress-bar span").remove();
+		
 		
 		
 		try {web_worker.terminate();}
@@ -340,7 +343,6 @@
 						{
 							document.querySelector("#progress-bar").style.marginTop = 0;
 							document.querySelector("#progress-bar").style.marginBottom = 0;
-							document.querySelector("#progress-bar span").style.width = 0;
 						}, 300);
 					}, 600);
 				}

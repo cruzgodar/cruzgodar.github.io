@@ -49,6 +49,12 @@
 	
 	
 	
+	"image-brownian-trees":
+	{
+		"webp": "../applets/brownian-trees/cover.webp",
+		"non-webp": "../applets/brownian-trees/cover.jpg"
+	},
+	
 	"image-the-barnsley-fern":
 	{
 		"webp": "../applets/the-barnsley-fern/cover.webp",
@@ -59,11 +65,5 @@
 	{
 		"webp": "../applets/newtons-method/cover.webp",
 		"non-webp": "../applets/newtons-method/cover.jpg"
-	},
-	
-	"image-calcudoku-generator":
-	{
-		"webp": "../applets/calcudoku-generator/cover.webp",
-		"non-webp": "../applets/calcudoku-generator/cover.jpg"
 	}
 }

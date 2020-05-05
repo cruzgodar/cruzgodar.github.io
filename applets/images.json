@@ -1,4 +1,10 @@
 {
+	"image-brownian-trees":
+	{
+		"webp": "brownian-trees/cover.webp",
+		"non-webp": "brownian-trees/cover.jpg"
+	},
+	
 	"image-the-barnsley-fern":
 	{
 		"webp": "the-barnsley-fern/cover.webp",
