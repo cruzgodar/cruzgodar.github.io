@@ -24,7 +24,7 @@ let current_brightness = 255;
 let current_row = null;
 let current_col = null;
 
-//New points will start on a cirle with this as its radius.
+//New points will start on a circle with this as its radius.
 let spawn_radius = null;
 
 const directions = [[-1, 0], [0, 1], [1, 0], [0, -1]];
@@ -57,7 +57,7 @@ function draw_brownian_tree()
 
 		spawn_radius = 5;
 		
-		pixels_per_brightness_drop = Math.ceil(grid_size * grid_size / 2750);
+		pixels_per_brightness_drop = Math.ceil(grid_size * grid_size / 3000);
 		
 		
 		
