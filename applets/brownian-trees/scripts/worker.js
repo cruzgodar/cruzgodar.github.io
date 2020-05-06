@@ -17,8 +17,6 @@ let margin = null;
 
 let brownian_tree_graph = [];
 
-let num_pixels_placed = 1;
-let pixels_per_brightness_drop = null;
 let current_brightness = 255;
 
 let current_row = null;
@@ -56,8 +54,6 @@ function draw_brownian_tree()
 		margin = 10;
 
 		spawn_radius = 5;
-		
-		pixels_per_brightness_drop = Math.ceil(grid_size * grid_size / 3000);
 		
 		
 		
@@ -110,21 +106,19 @@ function draw_brownian_tree()
 					
 					
 					
-					num_pixels_placed++;
-					
-					if (num_pixels_placed % pixels_per_brightness_drop === 0)
-					{
-						current_brightness--;
-						
-						//We raise the progress to 1.71 to keep the speed effectively constant -- this is because the fractal dimension of these trees is roughly 1.71.
-						postMessage(["progress", Math.pow((255 - current_brightness) / 255, 1.71) * 100]);
-					}
-					
-					
-					
 					if (spawn_radius * spawn_radius - (current_row - grid_size / 2) * (current_row - grid_size / 2) - (current_col - grid_size / 2) * (current_col - grid_size / 2) <= 5)
 					{
 						spawn_radius++;
+						
+						let new_brightness = Math.floor(255 * (grid_size / 2 - 10 - spawn_radius) / (grid_size / 2 - 10));
+						
+						if (new_brightness !== current_brightness)
+						{
+							current_brightness = new_brightness;
+						
+							//We raise the progress to 1.71 to keep the speed effectively constant -- this is because the fractal dimension of these trees is roughly 1.71.
+							postMessage(["progress", Math.pow((255 - current_brightness) / 255, 1.71) * 100]);
+						}
 					}
 					
 					
