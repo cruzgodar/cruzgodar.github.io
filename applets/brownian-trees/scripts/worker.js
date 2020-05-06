@@ -116,8 +116,8 @@ function draw_brownian_tree()
 					{
 						current_brightness--;
 						
-						//We square the progress to keep the speed effectively constant.
-						postMessage(["progress", (255 - current_brightness) * (255 - current_brightness) / (255 * 255) * 100]);
+						//We raise the progress to 1.71 to keep the speed effectively constant -- this is because the fractal dimension of these trees is roughly 1.71.
+						postMessage(["progress", Math.pow((255 - current_brightness) / 255, 1.71) * 100]);
 					}
 					
 					
