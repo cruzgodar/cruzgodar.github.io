@@ -49,6 +49,12 @@
 	
 	
 	
+	"image-the-kicked-rotator":
+	{
+		"webp": "../applets/the-kicked-rotator/cover.webp",
+		"non-webp": "../applets/the-kicked-rotator/cover.jpg"
+	},
+	
 	"image-brownian-trees":
 	{
 		"webp": "../applets/brownian-trees/cover.webp",
@@ -59,11 +65,5 @@
 	{
 		"webp": "../applets/the-barnsley-fern/cover.webp",
 		"non-webp": "../applets/the-barnsley-fern/cover.jpg"
-	},
-	
-	"image-newtons-method":
-	{
-		"webp": "../applets/newtons-method/cover.webp",
-		"non-webp": "../applets/newtons-method/cover.jpg"
 	}
 }
