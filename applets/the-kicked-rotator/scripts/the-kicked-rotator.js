@@ -4,31 +4,9 @@
 	
 	
 	
-	let grid_size = null;
-	
 	let ctx = document.querySelector("#kicked-rotator-graph").getContext("2d");
 	
 	let web_worker = null;
-	
-	
-	
-	let image = [];
-		
-	let unvisited_points = [];
-	
-	let num_paths = 1;
-	
-	let current_row = null;
-	let current_col = null;
-	
-	let current_p = null;
-	let current_theta = null;
-	
-	let max_iterations = null;
-	
-	let max_repetitions = 100;
-	
-	let K = null;
 	
 	
 	
@@ -53,15 +31,15 @@
 	
 	
 	
+	let k_global = 0;
 	
 	function request_kicked_rotator()
 	{
-		grid_size = parseInt(document.querySelector("#grid-size-input").value || 250);
+		let grid_size = parseInt(document.querySelector("#grid-size-input").value || 250);
 		
-		K = parseFloat(document.querySelector("#k-input").value || .6);
+		//let K = parseFloat(document.querySelector("#k-input").value || .7);
 		
-		max_iterations = grid_size * 2;
-		
+		let K = k_global;
 		
 		
 		document.querySelector("#kicked-rotator-graph").setAttribute("width", grid_size);
@@ -91,6 +69,22 @@
 		
 		web_worker.onmessage = function(e)
 		{
+			if (e.data[0] === "done")
+			{
+				prepare_download();
+				
+				k_global += .005;
+				
+				if (k_global <= 2)
+				{
+					request_kicked_rotator();
+				}
+				
+				return;
+			}
+			
+			
+			
 			let points = e.data[0];
 			let color = e.data[1];
 			
@@ -106,7 +100,7 @@
 		
 		
 		
-		web_worker.postMessage([grid_size, K, .33]);
+		web_worker.postMessage([grid_size, K]);
 	}
 	
 	

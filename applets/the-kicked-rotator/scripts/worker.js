@@ -6,7 +6,6 @@ onmessage = async function(e)
 {
 	grid_size = e.data[0];
 	K = e.data[1];
-	orbit_density = e.data[2];
 	
 	await draw_kicked_rotator();
 }
@@ -16,8 +15,6 @@ onmessage = async function(e)
 let grid_size = null;
 
 let K = null;
-
-let orbit_density = null;
 
 let image = [];
 	
@@ -31,7 +28,9 @@ let current_col = null;
 let current_p = null;
 let current_theta = null;
 
-let max_repetitions = 50;
+const max_repetitions = 50;
+
+const orbit_separation = 4;
 
 
 
@@ -57,14 +56,16 @@ function draw_kicked_rotator()
 	
 	const middle_col = Math.floor(grid_size / 2);
 	
-	for (let i = 1; i < grid_size / 2; i += 4)
+	for (let i = 1; i < grid_size / 2; i += orbit_separation)
 	{
 		let color = 6/7 * i / (grid_size / 2);
 		
 		
 		
-		//The randomness keeps a straight line artefact from appearing down the center of the image.
-		let upper_half_points_ratio = calculate_orbit(Math.floor(grid_size / 2 + i), middle_col + Math.floor(Math.random() * 5) - 2, color);
+		//This randomness keeps straight-line artefacts from appearing.
+		let rand = 0;// Math.floor(Math.random() * 7) - 3;
+		
+		let upper_half_points_ratio = calculate_orbit(Math.floor(grid_size / 2 + i), middle_col + rand, color);
 		
 		postMessage([current_orbit, color]);
 		
@@ -82,6 +83,10 @@ function draw_kicked_rotator()
 			postMessage([current_orbit, color]);
 		}
 	}
+	
+	
+	
+	postMessage(["done"]);
 }
 
 
