@@ -1,0 +1,134 @@
+<head><title>The Barnsley Fern</title></head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+<header>
+	<div class="new-aos-section" data-aos="fade-in">
+		<div id="logo">
+			<a href="/home/home.html">
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
+			</a>
+		</div>
+	</div>
+	
+	<div style="height: 2vh"></div>
+	
+	<div data-aos="fade-up">
+		<h1 class="heading-text">Brownian Trees</h1>
+	</div>
+</header>
+
+<div style="height: 5vh"></div>
+
+
+
+<main>
+	<section>
+		<div data-aos="fade-up">
+			<p class="body-text">
+				Imagine a glass of water. Each molecule is bumped constantly by the others around it, so it effectively jumps around in very short straight lines, not moving far in any direction on average. <dfn>Brownian motion</dfn> is a model for this behavior and has wide-ranging applications, one of which is the growth of crystals.
+			</p>
+		</div>
+		
+		<br>
+		
+		<div data-aos="fade-up">
+			<p class="body-text">
+				The theory of <dfn>Diffusion-limited aggregation</dfn> applies to crystals that form as the result of a substance that can only move through diffusion &mdash; think salt that&#x2019;s dissolved in water and is therefore subject to Brownian motion. When one salt molecule hits another, it sticks, and over time, this forms a crystal structure. This applet colors the salt red and the water black, and centers the starting point of the crystal. The later a salt particle joins the group, the darker it&#x2019;s colored. The resulting  construction is called a <dfn>Brownian tree</dfn>, a beautiful object that often looks more like a tree&#x2019;s roots than its canopy.
+			</p>
+		</div>
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="text-box-row">
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="k-input" class="text-box" type="text" value=".6">
+				<label for="k-input">
+					<p class="body-text">\(K\)</p>
+				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="grid-size-input" class="text-box" type="text" value="250">
+				<label for="grid-size-input">
+					<p class="body-text">Grid Size</p>
+				</label>
+			</div>
+		</div>	
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content">
+			<div data-aos="zoom-out" data-aos-delay="700">
+				<button class="text-button" type="button" id="generate-button">Generate</button>
+			</div>
+		</div>
+		
+		<div style="height: 5vh"></div>
+		
+		<div class="center-content">
+			<div id="progress-bar" class="progress-bar" style="opacity: 0">
+				<span></span>
+			</div>
+		</div>
+		
+		<div class="center-content">
+			<canvas id="kicked-rotator-graph" data-aos="fade-in" data-aos-delay="1200"></canvas>
+		</div>
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content">
+			<div data-aos="zoom-out" data-aos-delay="1700">
+				<button class="text-button" type="button" id="download-button">Download Image</button>
+			</div>
+		</div>
+	</section>
+</main>
+
+
+
+<footer>
+	<div id="spawn-footer"></div>
+</footer>
+
+
+
+<script>
+	DEBUG = true;
+	
+	if (typeof current_url === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	page_settings = 
+	{
+		"title": "Brownian Trees",
+		
+		"banner_page": false,
+		"num_banners": 0,
+		
+		"writing_page": false,
+		"math_page": true,
+		"comments": false,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"manual_banner": false,
+		"manual_dark_theme": false,
+		
+		"no_footer": false,
+		"footer_exclusion": ""
+	};
+	
+	on_page_load();
+</script>
