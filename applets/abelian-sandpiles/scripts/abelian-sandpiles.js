@@ -77,8 +77,6 @@
 		
 		temporary_web_workers.push(web_worker);
 		
-		
-		
 		web_worker.onmessage = function(e)
 		{
 			if (e.data[0] === "done")
@@ -93,9 +91,17 @@
 			
 			else
 			{
-				ctx.fillStyle = e.data[2];
+				let image = e.data[0];
 				
-				ctx.fillRect(e.data[0] * canvas_scale_factor, e.data[1] * canvas_scale_factor, canvas_scale_factor, canvas_scale_factor);
+				for (let i = 0; i < grid_size; i++)
+				{
+					for (let j = 0; j < grid_size; j++)
+					{
+						ctx.fillStyle = image[i][j];
+						
+						ctx.fillRect(j * canvas_scale_factor, i * canvas_scale_factor, canvas_scale_factor, canvas_scale_factor);
+					}
+				}
 			}
 		}
 		

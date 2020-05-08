@@ -17,6 +17,8 @@ let grid_size = null;
 let num_grains = null;
 let maximum_speed = null;
 
+let image = [];
+
 let sandpile_graph = [];
 let old_sandpile_graph = [];
 
@@ -24,18 +26,21 @@ let old_sandpile_graph = [];
 
 async function draw_sandpile_graph()
 {
+	image = [];
 	sandpile_graph = [];
 	old_sandpile_graph = [];
 	let additions = [];
 	
 	for (let i = 0; i < grid_size; i++)
 	{
+		image[i] = [];
 		sandpile_graph[i] = [];
 		old_sandpile_graph[i] = [];
 		additions[i] = [];
 		
 		for (let j = 0; j < grid_size; j++)
 		{
+			image[i][j] = "rgb(0, 0, 0)";
 			sandpile_graph[i][j] = 0;
 			old_sandpile_graph[i][j] = 0;
 			additions[i][j] = 0;
@@ -149,6 +154,10 @@ async function draw_sandpile_graph()
 	{
 		await color_piles();
 	}
+	
+	
+	
+	postMessage(["done"]);
 }
 
 
@@ -213,6 +222,10 @@ function color_piles()
 		
 		
 		
+		postMessage([image]);
+		
+		
+		
 		for (let i = 1; i <= grid_size / 2; i++)
 		{
 			for (let j = 1; j <= i; j++)
@@ -231,15 +244,15 @@ function color_piles()
 
 function draw_8_fold_pixel(x, y, color)
 {
-	postMessage([x, y, color]);
-	postMessage([grid_size - 1 - x, y, color]);
+	image[x][y] = color;
+	image[grid_size - 1 - x][y] = color;
 	
-	postMessage([grid_size - 1 - y, x, color]);
-	postMessage([grid_size - 1 - y, grid_size - 1 - x, color]);
+	image[grid_size - 1 - y][x] = color;
+	image[grid_size - 1 - y][grid_size - 1 - x] = color;
 	
-	postMessage([grid_size - 1 - x, grid_size - 1 - y, color]);
-	postMessage([x, grid_size - 1 - y, color]);
+	image[grid_size - 1 - x][grid_size - 1 - y] = color;
+	image[x][grid_size - 1 - y] = color;
 	
-	postMessage([y, grid_size - 1 - x, color]);
-	postMessage([y, x, color]);
+	image[y][grid_size - 1 - x] = color;
+	image[y][x] = color;
 }
