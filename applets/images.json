@@ -1,4 +1,10 @@
 {
+	"image-the-kicked-rotator":
+	{
+		"webp": "the-kicked-rotator/cover.webp",
+		"non-webp": "the-kicked-rotator/cover.jpg"
+	},
+	
 	"image-brownian-trees":
 	{
 		"webp": "brownian-trees/cover.webp",

@@ -31,15 +31,12 @@
 	
 	
 	
-	let k_global = 0;
 	
 	function request_kicked_rotator()
 	{
-		let grid_size = parseInt(document.querySelector("#grid-size-input").value || 250);
+		let grid_size = parseInt(document.querySelector("#grid-size-input").value || 500);
 		
-		//let K = parseFloat(document.querySelector("#k-input").value || .7);
-		
-		let K = k_global;
+		let K = parseFloat(document.querySelector("#k-input").value || .75);
 		
 		
 		document.querySelector("#kicked-rotator-graph").setAttribute("width", grid_size);
@@ -69,22 +66,6 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			if (e.data[0] === "done")
-			{
-				prepare_download();
-				
-				k_global += .005;
-				
-				if (k_global <= 2)
-				{
-					request_kicked_rotator();
-				}
-				
-				return;
-			}
-			
-			
-			
 			let points = e.data[0];
 			let color = e.data[1];
 			

@@ -56,14 +56,14 @@ function draw_kicked_rotator()
 	
 	const middle_col = Math.floor(grid_size / 2);
 	
-	for (let i = 1; i < grid_size / 2; i += orbit_separation)
+	for (let i = 1; i < grid_size / 2; i += orbit_separation + 1)
 	{
 		let color = 6/7 * i / (grid_size / 2);
 		
 		
 		
-		//This randomness keeps straight-line artefacts from appearing.
-		let rand = 0;// Math.floor(Math.random() * 7) - 3;
+		//This randomness helps keep straight-line artefacts from appearing.
+		let rand = Math.floor(Math.random() * (2 * orbit_separation + 1)) - orbit_separation;
 		
 		let upper_half_points_ratio = calculate_orbit(Math.floor(grid_size / 2 + i), middle_col + rand, color);
 		
@@ -83,10 +83,6 @@ function draw_kicked_rotator()
 			postMessage([current_orbit, color]);
 		}
 	}
-	
-	
-	
-	postMessage(["done"]);
 }
 
 

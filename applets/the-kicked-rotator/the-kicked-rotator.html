@@ -20,7 +20,7 @@
 	<div style="height: 2vh"></div>
 	
 	<div data-aos="fade-up">
-		<h1 class="heading-text">Brownian Trees</h1>
+		<h1 class="heading-text">The Kicked Rotator</h1>
 	</div>
 </header>
 
@@ -32,7 +32,7 @@
 	<section>
 		<div data-aos="fade-up">
 			<p class="body-text">
-				Imagine a glass of water. Each molecule is bumped constantly by the others around it, so it effectively jumps around in very short straight lines, not moving far in any direction on average. <dfn>Brownian motion</dfn> is a model for this behavior and has wide-ranging applications, one of which is the growth of crystals.
+				To understand this one, you&#x2019;re going to need an antigravity chamber. Pin one end of a metal bar to a wall (with a frictionless connection), and periodically give the bar a very short pulse of gravity. If the gravity&#x2019;s strength is given by a constant \(K\), then the bar will have a very strange path over time. Rather than draw that path, though, we&#x2019;re going to plot something at a higher level: a phase plot of the bar's angle and momemtum. If the bar has initial angle \(\theta\) and angular momentum \(p\), then we plot the point \((\theta, p)\). We then briefly switch on the gravity, find the new values of \(\theta\) and \(p\), and plot that point too. Repeating this for dozens or hundreds of iterations, we begin to get a sense of an <dfn>orbit</dfn> of the system. For example, if \(K = 0\), then the gravity does nothing, so the initial value of \(p\) will be the only thing modifying the angle &mdash; therefore, the orbits will be horizontal lines in phase space, since \(p\) is never changed. Since a full rotation of the bar (\(\theta = 2 \pi\)) is the same as no rotation at all, we treat the phase plot as being on a torus, which just means both \(p\) and \(\theta\) loop from \(2 \pi\) back to \(0\) as if they were on a circle. Because of this, those horizontal lines are really loops.
 			</p>
 		</div>
 		
@@ -40,7 +40,7 @@
 		
 		<div data-aos="fade-up">
 			<p class="body-text">
-				The theory of <dfn>Diffusion-limited aggregation</dfn> applies to crystals that form as the result of a substance that can only move through diffusion &mdash; think salt that&#x2019;s dissolved in water and is therefore subject to Brownian motion. When one salt molecule hits another, it sticks, and over time, this forms a crystal structure. This applet colors the salt red and the water black, and centers the starting point of the crystal. The later a salt particle joins the group, the darker it&#x2019;s colored. The resulting  construction is called a <dfn>Brownian tree</dfn>, a beautiful object that often looks more like a tree&#x2019;s roots than its canopy.
+				When \(K > 0\), though, things are more complicated. The loops are now much stranger, and eventually, as \(K\) approaches a particular number whose value is around \(.971635\), the system descends into chaos, evidenced by orbits looking more like static than lines. As \(K\) continues to increase, this butterfly effect compounds, and eventually nearly every inital condition leads to chaos. This system &mdash; called the <dfn>Kicked Rotator</dfn> &mdash; may be a hard thing to visualize, but it&#x2019;s undeniable that the picture is a beautiful one.
 			</p>
 		</div>
 		
@@ -48,14 +48,14 @@
 		
 		<div class="text-box-row">
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="k-input" class="text-box" type="text" value=".7">
+				<input id="k-input" class="text-box" type="text" value=".75">
 				<label for="k-input">
 					<p class="body-text">\(K\)</p>
 				</label>
 			</div>
 			
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="grid-size-input" class="text-box" type="text" value="250">
+				<input id="grid-size-input" class="text-box" type="text" value="500">
 				<label for="grid-size-input">
 					<p class="body-text">Grid Size</p>
 				</label>
@@ -65,7 +65,7 @@
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="700">
+			<div data-aos="zoom-out" data-aos-delay="1000">
 				<button class="text-button" type="button" id="generate-button">Generate</button>
 			</div>
 		</div>
@@ -79,13 +79,13 @@
 		</div>
 		
 		<div class="center-content">
-			<canvas id="kicked-rotator-graph" data-aos="fade-in" data-aos-delay="1200"></canvas>
+			<canvas id="kicked-rotator-graph" data-aos="fade-in" data-aos-delay="1500"></canvas>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="1700">
+			<div data-aos="zoom-out" data-aos-delay="2000">
 				<button class="text-button" type="button" id="download-button">Download Image</button>
 			</div>
 		</div>
@@ -101,8 +101,6 @@
 
 
 <script>
-	DEBUG = true;
-	
 	if (typeof current_url === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
