@@ -25,6 +25,11 @@
 	padding: 2px;
 }
 
+#instructions
+{
+	display: inline;
+}
+
 
 
 @media (max-aspect-ratio: 9/16), (max-width: 700px)

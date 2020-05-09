@@ -27,14 +27,6 @@ let banner_pages =
 	
 	"/bio/bio.html",
 	
-	"/blog/1/on-leaving-and-the-beginnings-of-things.html",
-	"/blog/2/nach-heidelberg.html",
-	"/blog/3/the-city-and-the-city.html",
-	"/blog/4/a-taste-of-chaos.html",
-	"/blog/5/halloween-in-january.html",
-	"/blog/6/erinnerungen.html",
-	"/blog/7/on-leaving-again-and-new-beginnings.html",
-	
 	"/writing/mist/mist.html",
 	"/writing/desolation-point/desolation-point.html"
 ];

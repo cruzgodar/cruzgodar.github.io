@@ -57,11 +57,11 @@ function insert_footer()
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
-					<div class="line-break" style="width: 85vw !important"></div>
+					<div class="line-break" style="width: 62.5vw !important"></div>
 				</div>
 			<div style="height: 3vw"></div>
 			
-			<nav class="footer-image-links" style="width: 74vw"></nav>
+			<nav class="footer-image-links" style="width: 52vw"></nav>
 		`);
 	}
 	
@@ -70,7 +70,7 @@ function insert_footer()
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
-					<div class="line-break" style="width: 75vw !important"></div>
+					<div class="line-break" style="width: 50vw !important"></div>
 				</div>
 			<div style="height: 3vw"></div>
 			
@@ -126,40 +126,6 @@ function insert_footer()
 			<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 				<a href="index.html?page=%2Fapplets%2Fapplets.html${vars_no_return}">
 					<img onclick="redirect('/applets/applets.html')" src="/applets/cover.${extension}" alt="Applets"></img>
-				</a>
-			</div>
-		`;
-		
-		delay += 100;
-	}
-	
-	if (page_settings["footer_exclusion"] !== "blog")
-	{
-		let element = document.createElement("div");
-		
-		document.querySelector(".footer-image-links").appendChild(element);
-		
-		element.outerHTML = `
-			<div id="blog-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-				<a href="/index.html?page=%2Fblog%2Fblog.html${vars_no_return}">
-					<img onclick="redirect('/blog/blog.html')" src="/blog/cover.${extension}" alt="Blog"></img>
-				</a>
-			</div>
-		`;
-		
-		delay += 100;
-	}
-	
-	if (page_settings["footer_exclusion"] !== "notes")
-	{
-		let element = document.createElement("div");
-		
-		document.querySelector(".footer-image-links").appendChild(element);
-		
-		element.outerHTML = `
-			<div id="notes-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-				<a href="/index.html?page=%2Fnotes%2Fnotes.html${vars_no_return}">
-					<img onclick="redirect('/notes/notes.html')" src="/notes/cover.${extension}" alt="Notes"></img>
 				</a>
 			</div>
 		`;

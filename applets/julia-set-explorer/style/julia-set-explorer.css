@@ -26,6 +26,11 @@
 	padding: 2px;
 }
 
+#instructions
+{
+	display: inline;
+}
+
 
 
 .text-box-row

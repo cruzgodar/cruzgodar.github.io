@@ -17,24 +17,6 @@
 		"non-webp": "../applets/cover.jpg"
 	},
 	
-	"image-research":
-	{
-		"webp": "../research/cover.webp",
-		"non-webp": "../research/cover.jpg"
-	},
-	
-	"image-blog":
-	{
-		"webp": "../blog/cover.webp",
-		"non-webp": "../blog/cover.jpg"
-	},
-	
-	"image-notes":
-	{
-		"webp": "../notes/cover.webp",
-		"non-webp": "../notes/cover.jpg"
-	},
-	
 	"image-bio":
 	{
 		"webp": "../bio/cover.webp",

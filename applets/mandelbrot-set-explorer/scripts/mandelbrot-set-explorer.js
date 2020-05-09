@@ -313,6 +313,13 @@
 				document.querySelector("#high-res-mandelbrot-zoom").style.borderColor = "rgb(64, 64, 64)";
 			}
 		}
+		
+		
+		
+		if (currently_touch_device)
+		{
+			document.querySelector("#instructions").innerHTML = "Drag along the Mandelbrot set to view that area up close, and release to generate a higher-resolution image.";
+		}
 	}
 
 
@@ -383,15 +390,6 @@
 	{
 		let last_touch_x = 0;
 		let last_touch_y = 0;
-		
-		
-		
-		document.querySelector("#instructions").innerHTML = `Drag along the Mandelbrot set to view that area up close, and release to generate a higher-resolution image. For more information on Mandelbrot and Julia sets, have a look at <a href="/blog/4/a-taste-of-chaos.html" onclick="redirect('/blog/4/a-taste-of-chaos.html')">this blog post</a>.`;
-		
-		document.querySelector("#instructions a").addEventListener("click", function(e)
-		{
-			e.preventDefault();
-		});
 		
 		
 		
