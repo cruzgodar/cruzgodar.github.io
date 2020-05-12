@@ -1,4 +1,10 @@
 {
+    "image-week-6-notes":
+    {
+        "webp": "notes/6/cover.webp",
+        "non-webp": "notes/6/cover.jpg"
+    },
+    
     "image-homework-5":
     {
         "webp": "homework/5/cover.webp",
@@ -6,6 +12,13 @@
     },
     
     
+    
+    
+    "image-week-5-notes":
+    {
+        "webp": "notes/5/cover.webp",
+        "non-webp": "notes/5/cover.jpg"
+    },
     
 	"image-homework-4":
     {
