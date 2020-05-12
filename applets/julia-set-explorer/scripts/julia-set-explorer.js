@@ -24,6 +24,8 @@
 	let persist_image = false;
 
 	let ctx = null;
+	
+	let web_worker = null;
 
 
 
@@ -69,7 +71,7 @@
 
 
 
-	function draw_julia_set(a, b, julia_size, num_iters, download)
+	function draw_julia_set(a, b, julia_size, num_iters)
 	{
 		image = [];
 		
@@ -85,26 +87,10 @@
 		
 		
 		
-		if (download === false)
-		{
-			document.querySelector("#julia-set").setAttribute("width", julia_size);
-			document.querySelector("#julia-set").setAttribute("height", julia_size);
-			
-			ctx = document.querySelector("#julia-set").getContext("2d");
-			canvas_size = small_canvas_size;
-		}
+		document.querySelector("#julia-set").setAttribute("width", julia_size);
+		document.querySelector("#julia-set").setAttribute("height", julia_size);
 		
-		else
-		{
-			document.querySelector("#high-res-julia-set").setAttribute("width", julia_size);
-			document.querySelector("#high-res-julia-set").setAttribute("height", julia_size);
-			
-			ctx = document.querySelector("#high-res-julia-set").getContext("2d");
-			canvas_size = large_canvas_size;
-			
-			last_a = a;
-			last_b = b;
-		}
+		ctx = document.querySelector("#julia-set").getContext("2d");
 		
 		
 		
@@ -163,12 +149,14 @@
 		{
 			for (let j = 0; j < julia_size; j++)
 			{
+				let brightness = image[i][j];
+				
 				//The index in the array of rgba values
 				let index = (4 * i * julia_size) + (4 * j);
 				
 				data[index] = 0;
-				data[index + 1] = image[i][j];
-				data[index + 2] = image[i][j];
+				data[index + 1] = brightness;
+				data[index + 2] = brightness;
 				data[index + 3] = 255; //No transparency.
 			}
 		}
@@ -250,10 +238,115 @@
 	function draw_high_res_julia()
 	{
 		let a = parseFloat(document.querySelector("#a-input").value) || 0;
-		let b = parseFloat(document.querySelector("#b-input").value) || 0;
+		let b = parseFloat(document.querySelector("#b-input").value) || 1;
 		let dim = parseFloat(document.querySelector("#dim-input").value) || 1000;
 		
-		draw_julia_set(a, b, dim, full_res_julia_iterations, true);
+		document.querySelector("#high-res-julia-set").setAttribute("width", dim);
+		document.querySelector("#high-res-julia-set").setAttribute("height", dim);
+		
+		ctx = document.querySelector("#high-res-julia-set").getContext("2d");
+		
+		last_a = a;
+		last_b = b;
+		
+		
+		
+		document.querySelector("#progress-bar span").insertAdjacentHTML("afterend", `<span></span>`);
+		document.querySelector("#progress-bar span").remove();
+		
+		
+		
+		try {web_worker.terminate();}
+		catch(ex) {}
+		
+		if (DEBUG)
+		{
+			web_worker = new Worker("/applets/julia-set-explorer/scripts/worker.js");
+		}
+		
+		else
+		{
+			web_worker = new Worker("/applets/julia-set-explorer/worker.min.js");
+		}
+		
+		temporary_web_workers.push(web_worker);
+		
+		
+		
+		web_worker.onmessage = function(e)
+		{
+			if (e.data[0] === "progress")
+			{
+				document.querySelector("#progress-bar span").style.width = e.data[1] + "%";
+				
+				if (e.data[1] === 100)
+				{
+					setTimeout(function()
+					{
+						document.querySelector("#progress-bar").style.opacity = 0;
+						
+						setTimeout(function()
+						{
+							document.querySelector("#progress-bar").style.marginTop = 0;
+							document.querySelector("#progress-bar").style.marginBottom = 0;
+						}, 300);
+					}, 600);
+				}
+			}
+			
+			
+			
+			else
+			{
+				let img_data = ctx.getImageData(0, 0, dim, dim);
+				let data = img_data.data;
+				
+				for (let i = 0; i < dim; i++)
+				{
+					for (let j = 0; j < dim; j++)
+					{
+						let brightness = e.data[0][i][j];
+						 
+						//The index in the array of rgba values
+						let index = (4 * i * dim) + (4 * j);
+						
+						data[index] = 0;
+						data[index + 1] = brightness;
+						data[index + 2] = brightness;
+						data[index + 3] = 255; //No transparency.
+					}
+				}
+				
+				ctx.putImageData(img_data, 0, 0);
+				
+				prepare_download();
+				
+				
+				
+				document.querySelector("#progress-bar").style.opacity = 0;
+				
+				setTimeout(function()
+				{
+					document.querySelector("#progress-bar").style.marginTop = 0;
+					document.querySelector("#progress-bar").style.marginBottom = 0;
+				}, 300);
+			}
+		}
+		
+		
+		
+		document.querySelector("#progress-bar span").style.width = 0;
+		document.querySelector("#progress-bar").style.marginTop = "5vh";
+		document.querySelector("#progress-bar").style.marginBottom = "5vh";
+		
+		setTimeout(function()
+		{
+			document.querySelector("#progress-bar").style.opacity = 1;
+		}, 600);
+		
+		
+		
+		web_worker.postMessage([a, b, dim, full_res_julia_iterations]);
 	}
 
 
@@ -299,7 +392,7 @@
 				let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
 				let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
 				
-				draw_julia_set(a, b, small_julia_size, small_julia_iterations, false);
+				draw_julia_set(a, b, small_julia_size, small_julia_iterations);
 			}
 		});
 		
@@ -314,7 +407,7 @@
 			let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
 			let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
 			
-			draw_julia_set(a, b, large_julia_size, large_julia_iterations, false);
+			draw_julia_set(a, b, large_julia_size, large_julia_iterations);
 			
 			document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
 			document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
@@ -352,7 +445,7 @@
 			let a = ((touch_x / small_canvas_size) - .5) * 3 - .75;
 			let b = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * 3;
 			
-			draw_julia_set(a, b, small_julia_size, small_julia_iterations, false);
+			draw_julia_set(a, b, small_julia_size, small_julia_iterations);
 		}, false);
 		
 		
@@ -364,7 +457,7 @@
 			let a = ((last_touch_x / small_canvas_size) - .5) * 3 - .75;
 			let b = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * 3;
 			
-			draw_julia_set(a, b, large_julia_size, large_julia_iterations, false);
+			draw_julia_set(a, b, large_julia_size, large_julia_iterations);
 			
 			document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
 			document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;

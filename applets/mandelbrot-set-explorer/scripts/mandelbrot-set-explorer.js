@@ -6,6 +6,8 @@
 	
 	let ctx = null;
 	
+	let web_worker = null;
+	
 	let small_canvas_size = document.querySelector("#mandelbrot-zoom").offsetWidth;
 	let large_canvas_size = document.querySelector("#high-res-mandelbrot-zoom").offsetWidth;
 
@@ -81,7 +83,7 @@
 
 
 
-	function draw_mandelbrot_zoom(center_x, center_y, mandelbrot_zoom_size, num_iters, download)
+	function draw_mandelbrot_zoom(center_x, center_y, mandelbrot_zoom_size, num_iters)
 	{
 		let x = 0, y = 0;
 		let z = 0;
@@ -95,7 +97,7 @@
 		
 		
 		
-		if (queue_variable_change === true && download === false)
+		if (queue_variable_change === true)
 		{
 			old_zoom_level /= 5;
 			new_zoom_level /= 5;
@@ -111,32 +113,19 @@
 		
 		
 		
-		let canvas_size = 0;
+		let canvas_size = 0;		
 		
-		if (download)
-		{
-			document.querySelector("#high-res-mandelbrot-zoom").setAttribute("width", mandelbrot_zoom_size);
-			document.querySelector("#high-res-mandelbrot-zoom").setAttribute("height", mandelbrot_zoom_size);
-			
-			ctx = document.querySelector("#high-res-mandelbrot-zoom").getContext("2d");
-			canvas_size = large_canvas_size;
-		}
+		document.querySelector("#mandelbrot-zoom").setAttribute("width", mandelbrot_zoom_size);
+		document.querySelector("#mandelbrot-zoom").setAttribute("height", mandelbrot_zoom_size);
 		
-		else
-		{
-			document.querySelector("#mandelbrot-zoom").setAttribute("width", mandelbrot_zoom_size);
-			document.querySelector("#mandelbrot-zoom").setAttribute("height", mandelbrot_zoom_size);
-			
-			ctx = document.querySelector("#mandelbrot-zoom").getContext("2d");
-			canvas_size = small_canvas_size;
-		}
+		ctx = document.querySelector("#mandelbrot-zoom").getContext("2d");
 		
 		
 		
 		//Generate initial value map.
 		for (let i = 0; i < mandelbrot_zoom_size; i++)
 		{
-			mandelbrot_zoom_row(i, center_x, center_y, mandelbrot_zoom_size, num_iters)
+			mandelbrot_zoom_row(i, center_x, center_y, mandelbrot_zoom_size, num_iters);
 		}
 		
 		
@@ -187,12 +176,14 @@
 		{
 			for (let j = 0; j < mandelbrot_zoom_size; j++)
 			{
+				let brightness = image[i][j];
+				
 				//The index in the array of rgba values
 				let index = (4 * i * mandelbrot_zoom_size) + (4 * j);
 				
 				data[index] = 0;
-				data[index + 1] = image[i][j];
-				data[index + 2] = image[i][j];
+				data[index + 1] = brightness;
+				data[index + 2] = brightness;
 				data[index + 3] = 255; //No transparency.
 			}
 		}
@@ -201,7 +192,7 @@
 		
 		
 		
-		if (mandelbrot_zoom_size === large_mandelbrot_zoom_size && download === false)
+		if (mandelbrot_zoom_size === large_mandelbrot_zoom_size)
 		{
 			//Replace the old Mandelbrot set with the new zoomed one.
 			let width = document.querySelector("#mandelbrot-set").getAttribute("width");
@@ -290,7 +281,110 @@
 	function draw_high_res_mandelbrot_zoom()
 	{
 		let dim = parseInt(document.querySelector("#dim-input").value || 1000);
-		draw_mandelbrot_zoom(current_center_x, current_center_y, dim, large_mandelbrot_zoom_iterations, true);
+		
+		document.querySelector("#high-res-mandelbrot-zoom").setAttribute("width", dim);
+		document.querySelector("#high-res-mandelbrot-zoom").setAttribute("height", dim);
+		
+		ctx = document.querySelector("#high-res-mandelbrot-zoom").getContext("2d");
+		
+		
+		
+		document.querySelector("#progress-bar span").insertAdjacentHTML("afterend", `<span></span>`);
+		document.querySelector("#progress-bar span").remove();
+		
+		
+		
+		try {web_worker.terminate();}
+		catch(ex) {}
+		
+		if (DEBUG)
+		{
+			web_worker = new Worker("/applets/mandelbrot-set-explorer/scripts/worker.js");
+		}
+		
+		else
+		{
+			web_worker = new Worker("/applets/mandelbrot-set-explorer/worker.min.js");
+		}
+		
+		temporary_web_workers.push(web_worker);
+		
+		
+		
+		web_worker.onmessage = function(e)
+		{
+			if (e.data[0] === "progress")
+			{
+				document.querySelector("#progress-bar span").style.width = e.data[1] + "%";
+				
+				if (e.data[1] === 100)
+				{
+					setTimeout(function()
+					{
+						document.querySelector("#progress-bar").style.opacity = 0;
+						
+						setTimeout(function()
+						{
+							document.querySelector("#progress-bar").style.marginTop = 0;
+							document.querySelector("#progress-bar").style.marginBottom = 0;
+						}, 300);
+					}, 600);
+				}
+			}
+			
+			
+			
+			else
+			{
+				let img_data = ctx.getImageData(0, 0, dim, dim);
+				let data = img_data.data;
+				
+				for (let i = 0; i < dim; i++)
+				{
+					for (let j = 0; j < dim; j++)
+					{
+						let brightness = e.data[0][i][j];
+						 
+						//The index in the array of rgba values
+						let index = (4 * i * dim) + (4 * j);
+						
+						data[index] = 0;
+						data[index + 1] = brightness;
+						data[index + 2] = brightness;
+						data[index + 3] = 255; //No transparency.
+					}
+				}
+				
+				ctx.putImageData(img_data, 0, 0);
+				
+				prepare_download();
+				
+				
+				
+				document.querySelector("#progress-bar").style.opacity = 0;
+				
+				setTimeout(function()
+				{
+					document.querySelector("#progress-bar").style.marginTop = 0;
+					document.querySelector("#progress-bar").style.marginBottom = 0;
+				}, 300);
+			}
+		}
+		
+		
+		
+		document.querySelector("#progress-bar span").style.width = 0;
+		document.querySelector("#progress-bar").style.marginTop = "5vh";
+		document.querySelector("#progress-bar").style.marginBottom = "5vh";
+		
+		setTimeout(function()
+		{
+			document.querySelector("#progress-bar").style.opacity = 1;
+		}, 600);
+		
+		
+		
+		web_worker.postMessage([current_center_x, current_center_y, dim, large_mandelbrot_zoom_iterations, new_zoom_level]);
 	}
 
 
@@ -353,7 +447,7 @@
 				let center_x = ((mouse_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
 				let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
 				
-				draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations, false);
+				draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations);
 			}
 		});
 		
@@ -368,7 +462,7 @@
 			let center_x = ((mouse_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
 			let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
 			
-			draw_mandelbrot_zoom(center_x, center_y, large_mandelbrot_zoom_size, large_mandelbrot_zoom_iterations, false);
+			draw_mandelbrot_zoom(center_x, center_y, large_mandelbrot_zoom_size, large_mandelbrot_zoom_iterations);
 			
 			current_center_x = center_x;
 			current_center_y = center_y;
@@ -406,7 +500,7 @@
 			let center_x = ((touch_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
 			let center_y = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
 			
-			draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations, false);
+			draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations);
 		}, false);
 		
 		
@@ -418,7 +512,7 @@
 			let center_x = ((last_touch_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
 			let center_y = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
 			
-			draw_mandelbrot_zoom(center_x, center_y, large_mandelbrot_zoom_size, large_mandelbrot_zoom_iterations, false);
+			draw_mandelbrot_zoom(center_x, center_y, large_mandelbrot_zoom_size, large_mandelbrot_zoom_iterations);
 			
 			current_center_x = center_x;
 			current_center_y = center_y;
