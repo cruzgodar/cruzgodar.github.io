@@ -304,7 +304,7 @@
 		
 		else
 		{
-			web_worker = new Worker("/applets/mandelbrot-set-explorer/worker.min.js");
+			web_worker = new Worker("/applets/mandelbrot-set-explorer/scripts/worker.min.js");
 		}
 		
 		temporary_web_workers.push(web_worker);

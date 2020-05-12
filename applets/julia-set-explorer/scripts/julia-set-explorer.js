@@ -266,7 +266,7 @@
 		
 		else
 		{
-			web_worker = new Worker("/applets/julia-set-explorer/worker.min.js");
+			web_worker = new Worker("/applets/julia-set-explorer/scripts/worker.min.js");
 		}
 		
 		temporary_web_workers.push(web_worker);
