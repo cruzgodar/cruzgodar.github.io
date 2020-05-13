@@ -56,12 +56,12 @@ function insert_footer()
 	{
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
-				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
-					<div class="line-break" style="width: 52.5vw !important"></div>
-				</div>
-			<div style="height: 3vw"></div>
 			
-			<nav class="footer-image-links" style="width: 41vw"></nav>
+			<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
+				<div class="line-break footer-line-break-big"></div>
+			</div>
+			
+			<nav class="footer-image-links footer-image-links-big"></nav>
 		`);
 	}
 	
@@ -69,10 +69,10 @@ function insert_footer()
 	{
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
-				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
-					<div class="line-break" style="width: 40vw !important"></div>
-				</div>
-			<div style="height: 3vw"></div>
+			
+			<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
+				<div class="line-break footer-line-break"></div>
+			</div>
 			
 			<nav class="footer-image-links"></nav>
 		`);

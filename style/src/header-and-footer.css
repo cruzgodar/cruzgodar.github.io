@@ -50,6 +50,22 @@
 
 
 
+.footer-line-break
+{
+	width: 40vw !important;
+	
+	margin-bottom: 3vw;
+}
+
+.footer-line-break-big
+{
+	width: 52.5vw !important;
+	
+	margin-bottom: 3vw;
+}
+
+
+
 .footer-image-links
 {
 	display: flex;
@@ -60,6 +76,12 @@
 	margin: 0 auto;
 	margin-bottom: 60px;
 }
+
+.footer-image-links-big
+{
+	width: 41vw;
+}
+
 
 .footer-image-link
 {
@@ -286,4 +308,49 @@
 	{
 		width: calc(100vw - 20px);
 	}
+}
+
+
+
+/* Compact layout: increase footer image link size to 12vw with gaps of 4vw in between. */
+@media (max-aspect-ratio: 9/16), (max-width: 700px)
+{
+	.footer-line-break
+	{
+		width: 55vw !important;
+		
+		margin-bottom: 4vw !important;
+	}
+
+	.footer-line-break-big
+	{
+		width: 75vw !important;
+		
+		margin-bottom: 4vw !important;
+	}
+
+
+
+	.footer-image-links
+	{
+		width: 44vw;
+	}
+
+	.footer-image-links-big
+	{
+		width: 60vw;
+	}
+
+	.footer-image-link
+	{
+		width: 12vw;
+		height: 12vw;
+	}
+
+	.footer-image-link img
+	{
+		width: 12vw;
+		height: 12vw;
+	}
+
 }
