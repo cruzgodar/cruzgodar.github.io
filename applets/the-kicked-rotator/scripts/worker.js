@@ -6,6 +6,7 @@ onmessage = async function(e)
 {
 	grid_size = e.data[0];
 	K = e.data[1];
+	orbit_separation = e.data[2];
 	
 	await draw_kicked_rotator();
 }
@@ -15,6 +16,8 @@ onmessage = async function(e)
 let grid_size = null;
 
 let K = null;
+
+let orbit_separation = null;
 
 let image = [];
 	
@@ -29,8 +32,6 @@ let current_p = null;
 let current_theta = null;
 
 const max_repetitions = 50;
-
-const orbit_separation = 4;
 
 
 

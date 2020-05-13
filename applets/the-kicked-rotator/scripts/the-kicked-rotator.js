@@ -38,6 +38,8 @@
 		
 		let K = parseFloat(document.querySelector("#k-input").value || .75);
 		
+		let orbit_separation = parseInt(document.querySelector("#orbit-separation-input").value || 3) + 1;
+		
 		
 		document.querySelector("#kicked-rotator-graph").setAttribute("width", grid_size);
 		document.querySelector("#kicked-rotator-graph").setAttribute("height", grid_size);
@@ -81,7 +83,7 @@
 		
 		
 		
-		web_worker.postMessage([grid_size, K]);
+		web_worker.postMessage([grid_size, K, orbit_separation]);
 	}
 	
 	

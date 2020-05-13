@@ -26,3 +26,13 @@
 	
 	transition: opacity .3s ease-in-out;
 }
+
+
+
+@media (max-aspect-ratio: 9/16), (max-width: 700px)
+{
+	.text-box-row
+	{
+		width: 225px;
+	}
+}
