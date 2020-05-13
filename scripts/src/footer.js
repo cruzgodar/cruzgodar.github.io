@@ -57,11 +57,11 @@ function insert_footer()
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
-					<div class="line-break" style="width: 62.5vw !important"></div>
+					<div class="line-break" style="width: 52.5vw !important"></div>
 				</div>
 			<div style="height: 3vw"></div>
 			
-			<nav class="footer-image-links" style="width: 52vw"></nav>
+			<nav class="footer-image-links" style="width: 41vw"></nav>
 		`);
 	}
 	
@@ -70,7 +70,7 @@ function insert_footer()
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
-					<div class="line-break" style="width: 50vw !important"></div>
+					<div class="line-break" style="width: 40vw !important"></div>
 				</div>
 			<div style="height: 3vw"></div>
 			
@@ -150,23 +150,6 @@ function insert_footer()
 		delay += 100;
 	}
 	
-	if (page_settings["footer_exclusion"] !== "about")
-	{
-		let element = document.createElement("div");
-		
-		document.querySelector(".footer-image-links").appendChild(element);
-		
-		element.outerHTML = `
-			<div id="about-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-				<a href="/index.html?page=%2Fabout%2Fabout.html${vars_no_return}">
-					<img onclick="redirect('/about/about.html')" src="/about/cover.${extension}" alt="About"></img>
-				</a>
-			</div>
-		`;
-		
-		delay += 100;
-	}
-	
 	
 	
 	document.querySelector(".footer-image-links").insertAdjacentHTML("afterend", `
@@ -176,7 +159,7 @@ function insert_footer()
 			</div>
 			
 			<div data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="10" data-aos-once="false" style="position: absolute; bottom: 6.25px; right: 10px">
-				<input type="image" id="pwa-button" class="footer-button" src="/graphics/button-icons/app.png" alt="Progressive Web App Info" onclick="redirect('/pwa/pwa.html')">
+				<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="redirect('/about/about.html')">
 			</div>
 		</div>
 	`);

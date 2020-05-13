@@ -160,7 +160,7 @@ async function entry_point(url)
 	
 	
 	
-	//When in PWA form, disable text selection, drag-and-drop, and the PWA button itself.
+	//When in PWA form, disable text selection and drag-and-drop.
 	if (window.matchMedia("(display-mode: standalone)").matches)
 	{
 		document.documentElement.style.WebkitUserSelect = "none";
@@ -178,13 +178,6 @@ async function entry_point(url)
 		
 		//Also add a little extra spacing at the top of each page to keep content from feeling too close to the top of the screen.
 		add_style(`
-			#pwa-button
-			{
-				display: none;
-				width: 0px;
-				height: 0px;
-			}
-			
 			#logo, .name-text-container, .empty-top
 			{
 				margin-top: 2vh;

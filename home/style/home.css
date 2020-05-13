@@ -122,9 +122,15 @@
 
 
 
-/* Ultrawide layout: increase quote margins a little */
 @media (min-aspect-ratio: 16/9), (min-width: 1400px)
 {
+	#intro-text
+	{
+		width: 45.667vw !important;
+	}
+	
+	
+	
 	#newest-pages
 	{
 		width: 33.5vw !important;

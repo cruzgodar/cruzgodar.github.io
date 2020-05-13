@@ -4,6 +4,15 @@
 	
 	
 	
+	let homepage_image_links_mode = "";
+	
+	window.addEventListener("resize", homepage_resize);
+	temporary_handlers["resize"].push(homepage_resize);
+	
+	homepage_resize();
+	
+	
+	
 	if (browser_name === "MS Edge")
 	{
 		alert_on_edge();
@@ -37,6 +46,27 @@
 	disable_links();
 	
 	
+	
+	
+	
+	function homepage_resize()
+	{
+		if (homepage_image_links_mode !== layout_string)
+		{
+			homepage_image_links_mode = layout_string;
+			
+			if (layout_string === "ultrawide")
+			{
+				document.querySelectorAll(".image-link")[0].insertAdjacentHTML("beforebegin", `<div id="empty-image-link"></div>`);
+			}
+			
+			else
+			{
+				try {document.querySelector("#empty-image-link").remove();}
+				catch(ex) {}
+			}
+		}
+	}
 	
 	
 	
