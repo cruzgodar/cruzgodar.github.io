@@ -10,7 +10,7 @@
 	
 	let canvas_scale_factor = null;
 	
-	let ctx = document.querySelector("#grid-graph").getContext("2d");
+	let ctx = document.querySelector("#output-canvas").getContext("2d");
 	
 	let web_worker = null;
 	
@@ -67,8 +67,8 @@
 		
 		if (no_borders)
 		{
-			document.querySelector("#grid-graph").setAttribute("width", grid_size * canvas_scale_factor);
-			document.querySelector("#grid-graph").setAttribute("height", grid_size * canvas_scale_factor);
+			document.querySelector("#output-canvas").setAttribute("width", grid_size * canvas_scale_factor);
+			document.querySelector("#output-canvas").setAttribute("height", grid_size * canvas_scale_factor);
 			
 			ctx.fillStyle = "rgb(0, 0, 0)";
 			ctx.fillRect(0, 0, grid_size * canvas_scale_factor, grid_size * canvas_scale_factor);
@@ -76,8 +76,8 @@
 		
 		else
 		{
-			document.querySelector("#grid-graph").setAttribute("width", (2 * grid_size + 1) * canvas_scale_factor);
-			document.querySelector("#grid-graph").setAttribute("height", (2 * grid_size + 1) * canvas_scale_factor);
+			document.querySelector("#output-canvas").setAttribute("width", (2 * grid_size + 1) * canvas_scale_factor);
+			document.querySelector("#output-canvas").setAttribute("height", (2 * grid_size + 1) * canvas_scale_factor);
 			
 			ctx.fillStyle = "rgb(0, 0, 0)";
 			ctx.fillRect(0, 0, (2 * grid_size + 1) * canvas_scale_factor, (2 * grid_size + 1) * canvas_scale_factor);
@@ -203,28 +203,10 @@
 		
 		link.download = "wilsons-algorithm.png";
 		
-		link.href = document.querySelector("#grid-graph").toDataURL();
+		link.href = document.querySelector("#output-canvas").toDataURL();
 		
 		link.click();
 		
 		link.remove();
-	}
-
-
-
-	function adjust_for_settings()
-	{
-		if (url_vars["contrast"] === 1)
-		{
-			if (url_vars["theme"] === 1)
-			{
-				document.querySelector("#grid-graph").style.borderColor = "rgb(192, 192, 192)";
-			}
-			
-			else
-			{
-				document.querySelector("#grid-graph").style.borderColor = "rgb(64, 64, 64)";
-			}
-		}
 	}
 }()

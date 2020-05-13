@@ -12,14 +12,7 @@
 	height: 30vw;
 }
 
-#high-res-julia-set
-{
-	width: 80vmin;
-	height: 80vmin;
-	margin: 0 auto;
-}
-
-#mandelbrot-set, #julia-set, #high-res-julia-set
+#mandelbrot-set, #julia-set
 {
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 15px;
@@ -39,12 +32,6 @@
 	margin: 0 auto;
 	display: flex;
 	justify-content: space-between;
-}
-
-.progress-bar
-{
-	width: calc(80vmin - 8px) !important;
-	transition: opacity .3s ease-in-out, margin-top .3s ease-in-out, margin-bottom .3s ease-in-out;
 }
 
 

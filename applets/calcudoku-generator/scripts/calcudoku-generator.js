@@ -254,7 +254,7 @@
 			
 			if (minutes < 10)
 			{
-				total_time_string += "0";
+				split_time_string += "0";
 			}
 		}
 		
@@ -264,7 +264,7 @@
 			
 			if (seconds < 10)
 			{
-				total_time_string += "0";
+				split_time_string += "0";
 			}
 		}
 		

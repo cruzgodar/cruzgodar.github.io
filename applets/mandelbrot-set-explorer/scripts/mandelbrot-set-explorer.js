@@ -9,7 +9,7 @@
 	let web_worker = null;
 	
 	let small_canvas_size = document.querySelector("#mandelbrot-zoom").offsetWidth;
-	let large_canvas_size = document.querySelector("#high-res-mandelbrot-zoom").offsetWidth;
+	let large_canvas_size = document.querySelector("#output-canvas").offsetWidth;
 
 	let small_mandelbrot_zoom_size = 100;
 	let large_mandelbrot_zoom_size = 500;
@@ -269,7 +269,7 @@
 		
 		
 		
-		link.href = document.querySelector("#high-res-mandelbrot-zoom").toDataURL();
+		link.href = document.querySelector("#output-canvas").toDataURL();
 		
 		link.click();
 		
@@ -282,10 +282,10 @@
 	{
 		let dim = parseInt(document.querySelector("#dim-input").value || 1000);
 		
-		document.querySelector("#high-res-mandelbrot-zoom").setAttribute("width", dim);
-		document.querySelector("#high-res-mandelbrot-zoom").setAttribute("height", dim);
+		document.querySelector("#output-canvas").setAttribute("width", dim);
+		document.querySelector("#output-canvas").setAttribute("height", dim);
 		
-		ctx = document.querySelector("#high-res-mandelbrot-zoom").getContext("2d");
+		ctx = document.querySelector("#output-canvas").getContext("2d");
 		
 		
 		
@@ -397,14 +397,12 @@
 			{
 				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(192, 192, 192)";
 				document.querySelector("#mandelbrot-zoom").style.borderColor = "rgb(192, 192, 192)";
-				document.querySelector("#high-res-mandelbrot-zoom").style.borderColor = "rgb(192, 192, 192)";
 			}
 			
 			else
 			{
 				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(64, 64, 64)";
 				document.querySelector("#mandelbrot-zoom").style.borderColor = "rgb(64, 64, 64)";
-				document.querySelector("#high-res-mandelbrot-zoom").style.borderColor = "rgb(64, 64, 64)";
 			}
 		}
 		
@@ -524,6 +522,6 @@
 	function mandelbrot_zoom_resize()
 	{
 		small_canvas_size = document.querySelector("#mandelbrot-zoom").offsetWidth;
-		large_canvas_size = document.querySelector("#high-res-mandelbrot-zoom").offsetWidth;
+		large_canvas_size = document.querySelector("#output-canvas").offsetWidth;
 	}
 }()

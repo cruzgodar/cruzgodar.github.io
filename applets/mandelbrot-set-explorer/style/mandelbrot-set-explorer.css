@@ -12,13 +12,7 @@
 	height: 30vw;
 }
 
-#high-res-mandelbrot-zoom
-{
-	width: 80vmin;
-	height: 80vmin;
-}
-
-#mandelbrot-set, #mandelbrot-zoom, #high-res-mandelbrot-zoom
+#mandelbrot-set, #mandelbrot-zoom
 {
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 15px;
@@ -28,14 +22,6 @@
 #instructions
 {
 	display: inline;
-}
-
-
-
-.progress-bar
-{
-	width: calc(80vmin - 8px) !important;
-	transition: opacity .3s ease-in-out, margin-top .3s ease-in-out, margin-bottom .3s ease-in-out;
 }
 
 

@@ -54,7 +54,7 @@
 
 	//Only get the width of the Mandelbrot set has finished loading in order to get the correct value.
 	small_canvas_size = document.querySelector("#julia-set").offsetWidth;
-	large_canvas_size = document.querySelector("#high-res-julia-set").offsetWidth;
+	large_canvas_size = document.querySelector("#output-canvas").offsetWidth;
 
 	window.addEventListener("resize", julia_resize);
 	temporary_handlers["resize"].push(julia_resize);
@@ -226,7 +226,7 @@
 		
 		
 		
-		link.href = document.querySelector("#high-res-julia-set").toDataURL();
+		link.href = document.querySelector("#output-canvas").toDataURL();
 		
 		link.click();
 		
@@ -241,10 +241,10 @@
 		let b = parseFloat(document.querySelector("#b-input").value) || 1;
 		let dim = parseFloat(document.querySelector("#dim-input").value) || 1000;
 		
-		document.querySelector("#high-res-julia-set").setAttribute("width", dim);
-		document.querySelector("#high-res-julia-set").setAttribute("height", dim);
+		document.querySelector("#output-canvas").setAttribute("width", dim);
+		document.querySelector("#output-canvas").setAttribute("height", dim);
 		
-		ctx = document.querySelector("#high-res-julia-set").getContext("2d");
+		ctx = document.querySelector("#output-canvas").getContext("2d");
 		
 		last_a = a;
 		last_b = b;
@@ -359,14 +359,12 @@
 			{
 				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(192, 192, 192)";
 				document.querySelector("#julia-set").style.borderColor = "rgb(192, 192, 192)";
-				document.querySelector("#high-res-julia-set").style.borderColor = "rgb(192, 192, 192)";
 			}
 			
 			else
 			{
 				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(64, 64, 64)";
 				document.querySelector("#julia-set").style.borderColor = "rgb(64, 64, 64)";
-				document.querySelector("#high-res-julia-set").style.borderColor = "rgb(64, 64, 64)";
 			}
 		}
 		
@@ -469,6 +467,6 @@
 	function julia_resize()
 	{
 		small_canvas_size = document.querySelector("#julia-set").offsetWidth;
-		large_canvas_size = document.querySelector("#high-res-julia-set").offsetWidth;
+		large_canvas_size = document.querySelector("#output-canvas").offsetWidth;
 	}
 }()

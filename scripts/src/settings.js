@@ -1379,7 +1379,7 @@ function animate_theme_contrast(settings)
 		
 		
 		
-		set_element_styles(".footer-button, .text-button, .nav-button, .checkbox-container", "border-color", "rgb(127, 127, 127)");
+		set_element_styles(".footer-button, .text-button, .nav-button, .checkbox-container, #output-canvas", "border-color", "rgb(127, 127, 127)");
 	}
 	
 	
@@ -1420,7 +1420,7 @@ function animate_theme_contrast(settings)
 		
 		
 		
-		set_element_styles(".footer-button, .text-button, .nav-button", "border-color", "rgb(152, 152, 152)");
+		set_element_styles(".footer-button, .text-button, .nav-button, #output-canvas", "border-color", "rgb(152, 152, 152)");
 	}
 	
 	
@@ -1461,7 +1461,7 @@ function animate_theme_contrast(settings)
 		
 		
 		
-		set_element_styles(".footer-button, .text-button, .nav-button", "border-color", "rgb(64, 64, 64)");
+		set_element_styles(".footer-button, .text-button, .nav-button, #output-canvas", "border-color", "rgb(64, 64, 64)");
 	}
 	
 	
@@ -1506,7 +1506,7 @@ function animate_theme_contrast(settings)
 		
 		
 		
-		set_element_styles(".footer-button, .text-button, .nav-button", "border-color", "rgb(152, 152, 152)");
+		set_element_styles(".footer-button, .text-button, .nav-button, #output-canvas", "border-color", "rgb(152, 152, 152)");
 	}
 }
 
@@ -1628,7 +1628,7 @@ function get_settings_style(settings)
 			
 			
 			
-			.footer-button, .text-button, .nav-button, .checkbox-container
+			.footer-button, .text-button, .nav-button, .checkbox-container, #output-canvas
 			{
 				border-color: rgb(152, 152, 152);
 			}
@@ -1717,7 +1717,7 @@ function get_settings_style(settings)
 			
 			
 			
-			.footer-button, .text-button, .nav-button, .checkbox-container
+			.footer-button, .text-button, .nav-button, .checkbox-container, #output-canvas
 			{
 				border-color: rgb(64, 64, 64);
 			}
@@ -1832,7 +1832,7 @@ function get_settings_style(settings)
 					
 			
 			
-			.footer-button, .text-button, .nav-button
+			.footer-button, .text-button, .nav-button, #output-canvas
 			{
 				border-color: rgb(152, 152, 152);
 			}

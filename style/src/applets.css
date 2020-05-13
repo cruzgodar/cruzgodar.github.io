@@ -1,4 +1,4 @@
-#grid-graph
+#output-canvas
 {
 	width: 80vmin;
 	height: 80vmin;
@@ -7,12 +7,14 @@
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 15px;
 	padding: 2px;
+	
+	transition: border-color .3s ease-in-out;
 }
 
 
 
-.progress-bar
+.applet-progress-bar
 {
-	width: 80vmin !important;
+	width: calc(80vmin - 8px) !important;
 	transition: opacity .3s ease-in-out, margin-top .3s ease-in-out, margin-bottom .3s ease-in-out;
 }

@@ -6,15 +6,11 @@
 	
 	let grid_size = null;
 	
-	let ctx = document.querySelector("#sandpile-graph").getContext("2d");
+	let ctx = document.querySelector("#output-canvas").getContext("2d");
 	
 	let canvas_scale_factor = 5;
 	
 	let web_worker = null;
-	
-	
-	
-	adjust_for_settings();
 
 
 
@@ -54,8 +50,8 @@
 		
 		
 		
-		document.querySelector("#sandpile-graph").setAttribute("width", grid_size * canvas_scale_factor);
-		document.querySelector("#sandpile-graph").setAttribute("height", grid_size * canvas_scale_factor);
+		document.querySelector("#output-canvas").setAttribute("width", grid_size * canvas_scale_factor);
+		document.querySelector("#output-canvas").setAttribute("height", grid_size * canvas_scale_factor);
 		
 		ctx.fillStyle = "rgb(0, 0, 0)";
 		ctx.fillRect(0, 0, grid_size * canvas_scale_factor, grid_size * canvas_scale_factor);
@@ -118,28 +114,10 @@
 		
 		link.download = "abelian-sandpiles.png";
 		
-		link.href = document.querySelector("#sandpile-graph").toDataURL();
+		link.href = document.querySelector("#output-canvas").toDataURL();
 		
 		link.click();
 		
 		link.remove();
-	}
-
-
-
-	function adjust_for_settings()
-	{
-		if (url_vars["contrast"] === 1)
-		{
-			if (url_vars["theme"] === 1)
-			{
-				document.querySelector("#sandpile-graph").style.borderColor = "rgb(192, 192, 192)";
-			}
-			
-			else
-			{
-				document.querySelector("#sandpile-graph").style.borderColor = "rgb(64, 64, 64)";
-			}
-		}
 	}
 }()

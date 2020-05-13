@@ -6,17 +6,13 @@
 	
 	let grid_size = null;
 	
-	let ctx = document.querySelector("#fern-graph").getContext("2d");
+	let ctx = document.querySelector("#output-canvas").getContext("2d");
 	
 	let web_worker = null;
 	
 	let fern_graph = [];
 	
 	
-	
-	
-	
-	adjust_for_settings();
 	
 	
 	
@@ -42,8 +38,8 @@
 		
 		
 		
-		document.querySelector("#fern-graph").setAttribute("width", grid_size);
-		document.querySelector("#fern-graph").setAttribute("height", grid_size);
+		document.querySelector("#output-canvas").setAttribute("width", grid_size);
+		document.querySelector("#output-canvas").setAttribute("height", grid_size);
 		
 		ctx.fillStyle = "rgb(0, 0, 0)";
 		ctx.fillRect(0, 0, grid_size, grid_size);
@@ -104,28 +100,10 @@
 		
 		link.download = "the-barnsley-fern.png";
 		
-		link.href = document.querySelector("#fern-graph").toDataURL();
+		link.href = document.querySelector("#output-canvas").toDataURL();
 		
 		link.click();
 		
 		link.remove();
-	}
-
-
-
-	function adjust_for_settings()
-	{
-		if (url_vars["contrast"] === 1)
-		{
-			if (url_vars["theme"] === 1)
-			{
-				document.querySelector("#fern-graph").style.borderColor = "rgb(192, 192, 192)";
-			}
-			
-			else
-			{
-				document.querySelector("#fern-graph").style.borderColor = "rgb(64, 64, 64)";
-			}
-		}
 	}
 }()
