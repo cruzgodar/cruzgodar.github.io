@@ -1,4 +1,10 @@
 {
+	"image-the-chaos-game":
+	{
+		"webp": "the-chaos-game/cover.webp",
+		"non-webp": "the-chaos-game/cover.jpg"
+	},
+	
 	"image-the-kicked-rotator":
 	{
 		"webp": "the-kicked-rotator/cover.webp",
