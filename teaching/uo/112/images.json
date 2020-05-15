@@ -5,6 +5,12 @@
         "non-webp": "notes/7/cover.jpg"
     },
     
+    "image-homework-6":
+    {
+        "webp": "homework/6/cover.webp",
+        "non-webp": "homework/6/cover.jpg"
+    },
+    
     
     
     "image-week-6-notes":
