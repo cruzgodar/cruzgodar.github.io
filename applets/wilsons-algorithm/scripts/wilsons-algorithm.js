@@ -13,10 +13,6 @@
 	let ctx = document.querySelector("#output-canvas").getContext("2d");
 	
 	let web_worker = null;
-	
-	
-	
-	adjust_for_settings();
 
 
 
