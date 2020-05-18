@@ -364,6 +364,8 @@
 				
 				ctx.putImageData(img_data, 0, 0);
 				
+				update_polynomial_label(current_roots);
+				
 				prepare_download();
 			}
 		}
@@ -749,9 +751,11 @@
 			
 			canvas_size = 500;
 			
-			update_polynomial_label(current_roots);
-			
 			draw_newtons_method_plot(current_roots);
+	
+			document.querySelector("#polynomial-label-1").textContent = "";	
+			document.querySelector("#polynomial-label-2").textContent = "";
+			document.querySelector("#polynomial-label-3").textContent = "";
 		}
 		
 		active_marker = -1;
@@ -825,6 +829,12 @@
 	//Spreads the roots in an even radius.
 	function spread_roots(high_res = true)
 	{
+		document.querySelector("#polynomial-label-1").textContent = "";
+		document.querySelector("#polynomial-label-2").textContent = "";
+		document.querySelector("#polynomial-label-3").textContent = "";
+		
+		
+		
 		for (let i = 0; i < current_roots.length; i++)
 		{
 			if (i < current_roots.length / 2 || current_roots.length % 2 === 1)
@@ -856,8 +866,6 @@
 		{
 			canvas_size = 100;
 		}
-		
-		update_polynomial_label(current_roots);
 		
 		draw_newtons_method_plot(current_roots);
 	}
