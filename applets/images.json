@@ -1,4 +1,10 @@
 {
+	"image-julia-set-mosaic":
+	{
+		"webp": "julia-set-mosaic/cover.webp",
+		"non-webp": "julia-set-mosaic/cover.jpg"
+	},
+	
 	"image-the-chaos-game":
 	{
 		"webp": "the-chaos-game/cover.webp",
