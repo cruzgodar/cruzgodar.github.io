@@ -36,7 +36,7 @@ function draw_julia_set(a, b, julia_size, num_iters)
 	
 	for (let i = 0; i < julia_size; i++)
 	{		
-		image[i] = image[i].map(brightness => (Math.min(brightness, max_brightness) / 4) * 255);
+		image[i] = image[i].map(brightness => (Math.min(brightness, max_brightness) / 3.5) * 255);
 	}
 	
 	
