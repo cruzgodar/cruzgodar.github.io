@@ -47,7 +47,7 @@
 	
 	function request_calcudoku_grid()
 	{
-		grid_size = parseInt(document.querySelector("#grid-size-input").value || 5);
+		grid_size = parseInt(document.querySelector("#grid-size-input").value || 6);
 		
 		let max_cage_size = parseInt(document.querySelector("#max-cage-size-input").value || 1000);
 		
