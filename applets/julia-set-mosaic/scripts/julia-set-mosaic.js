@@ -47,7 +47,7 @@
 	function request_julia_mosaic()
 	{
 		let julia_size = parseInt(document.querySelector("#julia-size-input").value) || 20;
-		let num_julias = parseInt(document.querySelector("#num-julias-input").value) || 200;
+		let num_julias = parseInt(document.querySelector("#num-julias-input").value) || 50;
 		
 		if (julia_size < 20)
 		{
