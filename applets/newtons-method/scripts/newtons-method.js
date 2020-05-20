@@ -20,6 +20,9 @@
 	
 	let active_marker = -1;
 	
+	//Used with the root setter.
+	let last_active_marker = -1;
+	
 	let root_selector_width = document.querySelector("#root-selector").offsetWidth;
 	let root_selector_height = document.querySelector("#root-selector").offsetHeight;
 	
@@ -690,6 +693,31 @@
 		temporary_handlers["mousedown"].push(drag_start);
 		temporary_handlers["mousemove"].push(drag_move);
 		temporary_handlers["mouseup"].push(drag_end);
+		
+		
+		
+		document.querySelector("#root-a-input").addEventListener("input", set_root);
+		document.querySelector("#root-b-input").addEventListener("input", set_root);
+		
+		document.querySelector("#root-a-input").addEventListener("keydown", function(e)
+		{
+			if (e.keyCode === 13)
+			{
+				canvas_size = 500;
+				
+				draw_newtons_method_plot(current_roots);
+			}
+		});
+		
+		document.querySelector("#root-b-input").addEventListener("keydown", function(e)
+		{
+			if (e.keyCode === 13)
+			{
+				canvas_size = 500;
+				
+				draw_newtons_method_plot(current_roots);
+			}
+		});
 	}
 	
 	
@@ -756,6 +784,10 @@
 			document.querySelector("#polynomial-label-1").textContent = "";	
 			document.querySelector("#polynomial-label-2").textContent = "";
 			document.querySelector("#polynomial-label-3").textContent = "";
+			
+			last_active_marker = active_marker;
+			
+			show_root_setter();
 		}
 		
 		active_marker = -1;
@@ -866,6 +898,37 @@
 		{
 			canvas_size = 100;
 		}
+		
+		draw_newtons_method_plot(current_roots);
+	}
+	
+	
+	
+	function show_root_setter()
+	{
+		document.querySelector("#root-a-input").value = Math.round(current_roots[last_active_marker][0] * 1000) / 1000;
+		document.querySelector("#root-b-input").value = Math.round(current_roots[last_active_marker][1] * 1000) / 1000;
+		
+		document.querySelector("#root-setter").style.pointerEvents = "auto";
+		
+		document.querySelector("#root-setter").style.opacity = 1;
+	}
+	
+	function set_root()
+	{
+		current_roots[last_active_marker][0] = parseFloat(document.querySelector("#root-a-input").value) || 0;
+		current_roots[last_active_marker][1] = parseFloat(document.querySelector("#root-b-input").value) || 0;
+		
+		
+		
+		let row = Math.floor(root_selector_height * (1 - (current_roots[last_active_marker][1] / 4 + .5)));
+		let col = Math.floor(root_selector_width * (current_roots[last_active_marker][0] / 4 + .5));
+		
+		root_markers[last_active_marker].style.transform = `translate3d(${col - 24}px, ${row - 24}px, 0)`;
+		
+		
+		
+		canvas_size = 100;
 		
 		draw_newtons_method_plot(current_roots);
 	}
