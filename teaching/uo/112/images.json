@@ -1,4 +1,12 @@
 {
+	"image-week-8-notes":
+    {
+        "webp": "notes/8/cover.webp",
+        "non-webp": "notes/8/cover.jpg"
+    },
+    
+    
+    
     "image-week-7-notes":
     {
         "webp": "notes/7/cover.webp",
