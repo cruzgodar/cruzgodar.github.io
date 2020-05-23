@@ -4,7 +4,7 @@
 	
 	
 
-	let ctx = null;
+	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
 	
 	let web_worker = null;
 
@@ -66,8 +66,6 @@
 		
 		document.querySelector("#output-canvas").setAttribute("width", image_size);
 		document.querySelector("#output-canvas").setAttribute("height", image_size);
-		
-		ctx = document.querySelector("#output-canvas").getContext("2d");
 		
 		
 		

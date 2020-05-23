@@ -90,7 +90,7 @@
 		document.querySelector("#julia-set").setAttribute("width", julia_size);
 		document.querySelector("#julia-set").setAttribute("height", julia_size);
 		
-		ctx = document.querySelector("#julia-set").getContext("2d");
+		ctx = document.querySelector("#julia-set").getContext("2d", {alpha: false});
 		
 		
 		
@@ -244,7 +244,7 @@
 		document.querySelector("#output-canvas").setAttribute("width", dim);
 		document.querySelector("#output-canvas").setAttribute("height", dim);
 		
-		ctx = document.querySelector("#output-canvas").getContext("2d");
+		ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
 		
 		last_a = a;
 		last_b = b;

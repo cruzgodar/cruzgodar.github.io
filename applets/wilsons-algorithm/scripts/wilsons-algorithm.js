@@ -10,7 +10,7 @@
 	
 	let canvas_scale_factor = null;
 	
-	let ctx = document.querySelector("#output-canvas").getContext("2d");
+	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
 	
 	let web_worker = null;
 

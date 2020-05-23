@@ -118,7 +118,7 @@
 		document.querySelector("#mandelbrot-zoom").setAttribute("width", mandelbrot_zoom_size);
 		document.querySelector("#mandelbrot-zoom").setAttribute("height", mandelbrot_zoom_size);
 		
-		ctx = document.querySelector("#mandelbrot-zoom").getContext("2d");
+		ctx = document.querySelector("#mandelbrot-zoom").getContext("2d", {alpha: false});
 		
 		
 		
@@ -197,7 +197,7 @@
 			//Replace the old Mandelbrot set with the new zoomed one.
 			let width = document.querySelector("#mandelbrot-set").getAttribute("width");
 			
-			document.querySelector("#mandelbrot-set").getContext("2d").drawImage(document.querySelector("#mandelbrot-zoom"), 0, 0, width, width);
+			document.querySelector("#mandelbrot-set").getContext("2d", {alpha: false}).drawImage(document.querySelector("#mandelbrot-zoom"), 0, 0, width, width);
 			
 			queue_variable_change = true;
 			
@@ -285,7 +285,7 @@
 		document.querySelector("#output-canvas").setAttribute("width", dim);
 		document.querySelector("#output-canvas").setAttribute("height", dim);
 		
-		ctx = document.querySelector("#output-canvas").getContext("2d");
+		ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
 		
 		
 		
@@ -421,7 +421,7 @@
 		document.querySelector("#mandelbrot-set").setAttribute("width", small_canvas_size);
 		document.querySelector("#mandelbrot-set").setAttribute("height", small_canvas_size);
 		
-		let ctx = document.querySelector("#mandelbrot-set").getContext("2d");
+		let ctx = document.querySelector("#mandelbrot-set").getContext("2d", {alpha: false});
 		
 		let img = new Image();
 		img.src = "/applets/mandelbrot-set-explorer/graphics/mandelbrot-set.png";

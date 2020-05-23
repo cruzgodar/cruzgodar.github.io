@@ -10,7 +10,7 @@
 	
 	let num_iterations = 100;
 	
-	let ctx = document.querySelector("#newtons-method-plot").getContext("2d");
+	let ctx = document.querySelector("#newtons-method-plot").getContext("2d", {alpha: false});
 	
 	let web_worker = null;
 	
