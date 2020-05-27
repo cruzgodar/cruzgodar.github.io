@@ -1,4 +1,12 @@
 {
+	"image-midterm-2-solutions":
+    {
+        "webp": "exams/2-solutions/cover.webp",
+        "non-webp": "exams/2-solutions/cover.jpg"
+    },
+    
+    
+    
 	"image-week-8-notes":
     {
         "webp": "notes/8/cover.webp",
