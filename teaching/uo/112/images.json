@@ -1,4 +1,10 @@
 {
+	"image-homework-7":
+    {
+        "webp": "homework/7/cover.webp",
+        "non-webp": "homework/7/cover.jpg"
+    },
+    
 	"image-midterm-2-solutions":
     {
         "webp": "exams/2-solutions/cover.webp",
