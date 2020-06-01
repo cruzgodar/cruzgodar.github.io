@@ -1,4 +1,12 @@
 {
+	"image-final-topics":
+    {
+        "webp": "extra/final-topics/cover.webp",
+        "non-webp": "extra/final-topics/cover.jpg"
+    },
+    
+    
+    
 	"image-homework-7":
     {
         "webp": "homework/7/cover.webp",
