@@ -7,6 +7,12 @@
     
     
     
+    "image-week-9-notes":
+    {
+        "webp": "notes/9/cover.webp",
+        "non-webp": "notes/9/cover.jpg"
+    },
+    
 	"image-homework-7":
     {
         "webp": "homework/7/cover.webp",
