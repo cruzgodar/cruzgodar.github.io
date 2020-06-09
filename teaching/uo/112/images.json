@@ -1,4 +1,12 @@
 {
+	"image-final":
+    {
+        "webp": "exams/final/cover.webp",
+        "non-webp": "exams/final/cover.jpg"
+    },
+    
+    
+    
 	"image-final-topics":
     {
         "webp": "extra/final-topics/cover.webp",
