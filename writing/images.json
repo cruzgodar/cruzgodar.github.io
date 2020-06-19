@@ -1,8 +1,8 @@
 {
-	"image-corona":
+	"image-caligo":
 	{
-		"webp": "corona/cover.webp",
-		"non-webp": "corona/cover.jpg"
+		"webp": "caligo/cover.webp",
+		"non-webp": "caligo/cover.jpg"
 	},
 	
 	"image-desolation-point":

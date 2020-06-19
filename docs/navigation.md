@@ -12,7 +12,7 @@ When the site is first loaded, one of the *entry point* files is accessed: `inde
 
 - `404.html` is also identical to `index.html`, but its difference is that it's loaded when the user receives a 404 error. This unavoidably causes a redirect, so it's necessary to have another entry point. It also *always* loads `/404/404.html`, unlike the first two pages.
 
-Once the required files are loaded, the entry point files load a page. As mentioned before, `404.html` always loads `/404/404.html`, but the other two differ. By default, they will load `/home/home.html`, but if the url contains a variable named `page`, the loaded page will be that value, *decoded*. For example, if the user navigates to `cruzgodar.com/index.html?page=%2Fwriting%2Fcorona%2Fcorona.html`, then the `page` variable has a value of `%2Fwriting%2Fcorona%2Fcorona.html`, and when decoded, `%2F` becomes `/`. Therefore, the initial page loaded will be `/writing/corona/corona.html`. Because navigating between pages changes the url to match this encoded format, the url of any page can be copied and shared as a link with the expected result.
+Once the required files are loaded, the entry point files load a page. As mentioned before, `404.html` always loads `/404/404.html`, but the other two differ. By default, they will load `/home/home.html`, but if the url contains a variable named `page`, the loaded page will be that value, *decoded*. For example, if the user navigates to `cruzgodar.com/index.html?page=%2Fwriting%2Fcaligo%2Fcaligo.html`, then the `page` variable has a value of `%2Fwriting%2Fcaligo%2Fcaligo.html`, and when decoded, `%2F` becomes `/`. Therefore, the initial page loaded will be `/writing/caligo/caligo.html`. Because navigating between pages changes the url to match this encoded format, the url of any page can be copied and shared as a link with the expected result.
 
 
 
@@ -20,15 +20,15 @@ Once the required files are loaded, the entry point files load a page. As mentio
 
 The `redirect()` function handles all navigatgion within the site. Any element that should act as a link has an `onclick` attribute that calls `redirect()`, but many browsers have specific features for `a` tags in particular, like opening them in a new tab. For that reason, every element that calls `redirect` must be wrapped in an `a` tag, and whenever a page is loaded, all `a` tags are found and blocked, so that they do nothing when clicked. This method gives the best of both worlds.
 
-It's worthwhile to note that these `a` tags' `href` attributes don't need to be converted to the `page`-variable format. For example, an image link to the Corona page could look like the following:
+It's worthwhile to note that these `a` tags' `href` attributes don't need to be converted to the `page`-variable format. For example, an image link to the Caligo page could look like the following:
 
 ```html
-<a href="/writing/corona/corona.html">
-	<img id="image-corona" class="check-webp" onclick="redirect('/writing/corona/corona.html')" src="" alt="Corona"></img>
+<a href="/writing/caligo/caligo.html">
+	<img id="image-caligo" class="check-webp" onclick="redirect('/writing/caligo/caligo.html')" src="" alt="Caligo"></img>
 </a>
 ```
 
-Here, `navigation.js` will automatically find the `a` tag, block it from being directly clicked, and change its `href` to `/index.html?page=%2Fwriting%2Fcorona%2Fcorona.html`. It will also append any settings to this url so that they're preserved when (for example) the link is opened in a new tab.
+Here, `navigation.js` will automatically find the `a` tag, block it from being directly clicked, and change its `href` to `/index.html?page=%2Fwriting%2Fcaligo%2Fcaligo.html`. It will also append any settings to this url so that they're preserved when (for example) the link is opened in a new tab.
 
 
 

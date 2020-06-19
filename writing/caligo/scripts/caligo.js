@@ -33,11 +33,11 @@
 	document.querySelector("#eclipse").style.height = document.querySelector("#eclipse").offsetWidth + "px";
 	document.querySelector("#eclipse img").style.height = document.querySelector("#eclipse").offsetWidth + "px";
 	
-	window.addEventListener("resize", corona_resize);
-	temporary_handlers["resize"].push(corona_resize);
+	window.addEventListener("resize", caligo_resize);
+	temporary_handlers["resize"].push(caligo_resize);
 	
-	window.addEventListener("scroll", corona_scroll);
-	temporary_handlers["scroll"].push(corona_scroll);
+	window.addEventListener("scroll", caligo_scroll);
+	temporary_handlers["scroll"].push(caligo_scroll);
 	
 	
 	
@@ -46,7 +46,7 @@
 	{
 		document.documentElement.classList.add("background-transition");
 		
-		corona_scroll();
+		caligo_scroll();
 		
 		setTimeout(function()
 		{
@@ -63,7 +63,7 @@
 	
 	
 	
-	function corona_scroll()
+	function caligo_scroll()
 	{
 		if (scroll >= 0)
 		{
@@ -283,7 +283,7 @@
 	
 	
 	
-	function corona_resize()
+	function caligo_resize()
 	{
 		document.querySelector("#eclipse").style.height = document.querySelector("#eclipse").offsetWidth + "px";
 		document.querySelector("#eclipse img").style.height = document.querySelector("#eclipse").offsetWidth + "px";

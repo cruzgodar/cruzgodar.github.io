@@ -67,13 +67,13 @@ The `if` statement makes every page function as an entry point (see [the doc on 
 
 Directly setting the `src` attribute of an `img` tag or the `background-image` property of anything is only appropriate in extremely rare circumstances. When an image is present, its `src` should be left empty and it should have an `id` of `image-<image-name>`, where `<image-name>` is descriptive and (obviously) not used by any other image on the page. It also must have a class of `check-webp`. To load the images, every page must include a file called `images.json`, even if that file is effectively empty. `images.json` contains keys named `image-<image-name>`, and the corresponding value for each is another object that contains the keys `webp` and `non-webp` and matches them with urls where the images can be found. These urls can *not* be absolute — they must either be relative, in which case `images.js` will handle finding the absolute url, or link to another site for external storage (typically Google Drive).
 
-For example, if `/writing/writing.html` contains an image with an `id` of `image-corona`, then the file `/writing/images.json` will include
+For example, if `/writing/writing.html` contains an image with an `id` of `image-caligo`, then the file `/writing/images.json` will include
 
 ```json
-"image-corona":
+"image-caligo":
 {
-	"webp": "corona/cover.webp",
-	"non-webp": "corona/cover.jpg"
+	"webp": "caligo/cover.webp",
+	"non-webp": "caligo/cover.jpg"
 }
 ```
 
@@ -117,7 +117,7 @@ If one page is a subpage of another, it almost always needs a cover image. These
 
 ## Custom scripts and styles
 
-To load custom JS and CSS on a page, a page must have folders called `scripts` and `style` in the page folder. Each must contain two files: one nonminified file and one minified one, both named the same as the HTML file, just with a different ending. For example, if the HTML file is `/writing/corona/corona.html`, then the script files should be `/writing/corona/scripts/corona.js` and `/writing/corona/scripts/corona.min.js`.
+To load custom JS and CSS on a page, a page must have folders called `scripts` and `style` in the page folder. Each must contain two files: one nonminified file and one minified one, both named the same as the HTML file, just with a different ending. For example, if the HTML file is `/writing/caligo/caligo.html`, then the script files should be `/writing/caligo/scripts/caligo.js` and `/writing/caligo/scripts/caligo.min.js`.
 
 Custom CSS files are loaded at the *beginning* of the head, which means they have the lowest priority of any CSS, including the base bundle. If the custom CSS intends to override something from that bundle, it must flag that property with `!important`.
 
@@ -138,4 +138,4 @@ If a page needs more JS files than the single one it is allotted (for example, i
 
 ## Subpages
 
-Finally, and most simply, subpages are just page folders inside other page folders. For example, the Corona page is a subpage of the writing page, so the `corona` folder is located at `/writing/corona/`.
+Finally, and most simply, subpages are just page folders inside other page folders. For example, the Caligo page is a subpage of the writing page, so the `caligo` folder is located at `/writing/caligo/`.
