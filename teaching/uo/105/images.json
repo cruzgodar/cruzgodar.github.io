@@ -1,8 +1,20 @@
 {
+	"image-week-1-notes":
+    {
+        "webp": "notes/1/cover.webp",
+        "non-webp": "notes/1/cover.jpg"
+    },
+    
 	"image-homework-1":
     {
         "webp": "homework/1/cover.webp",
         "non-webp": "homework/1/cover.jpg"
+    },
+    
+    "image-lecture-archive":
+    {
+        "webp": "lecture-archive/cover.webp",
+        "non-webp": "lecture-archive/cover.jpg"
     },
     
     "image-syllabus":
