@@ -4,6 +4,12 @@
         "webp": "notes/2/cover.webp",
         "non-webp": "notes/2/cover.jpg"
     },
+    
+    "image-midterm-topics":
+    {
+        "webp": "extra/midterm-topics/cover.webp",
+        "non-webp": "extra/midterm-topics/cover.jpg"
+    },
     	
     	"image-homework-3":
     {
