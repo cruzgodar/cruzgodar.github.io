@@ -5,6 +5,12 @@
         "non-webp": "notes/2/cover.jpg"
     },
     
+    	"image-midterm":
+    {
+        "webp": "exams/midterm/cover.webp",
+        "non-webp": "exams/midterm/cover.jpg"
+    },
+    
     "image-midterm-topics":
     {
         "webp": "extra/midterm-topics/cover.webp",
