@@ -8,7 +8,7 @@ onmessage = async function(e)
 	num_nodes = e.data[1];
 	maximum_speed = e.data[2];
 	
-	cooling_factor = 1 / (num_nodes * 100);
+	cooling_factor = 1 / (num_nodes * num_nodes * num_nodes);
 	
 	await draw_annealing_graph();
 }
