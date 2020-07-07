@@ -5,6 +5,12 @@
         "non-webp": "notes/3/cover.jpg"
     },
     
+    "image-homework-4":
+    {
+        "webp": "homework/4/cover.webp",
+        "non-webp": "homework/4/cover.jpg"
+    },
+    
 	"image-quiz-3":
     {
         "webp": "quizzes/3/cover.webp",
