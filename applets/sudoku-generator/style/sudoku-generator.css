@@ -7,13 +7,3 @@
 	opacity: 0;
 	transition: opacity .3s ease-in-out;
 }
-
-
-#total-time-label, #total-time-clock, #split-time-label, #split-time-clock
-{
-	text-align: center;
-	
-	opacity: 0;
-	
-	transition: opacity .3s ease-in-out;
-}

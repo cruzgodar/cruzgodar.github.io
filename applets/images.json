@@ -1,4 +1,10 @@
 {
+	"image-sudoku-generator":
+	{
+		"webp": "sudoku-generator/cover.webp",
+		"non-webp": "sudoku-generator/cover.jpg"
+	},
+	
 	"image-julia-set-mosaic":
 	{
 		"webp": "julia-set-mosaic/cover.webp",

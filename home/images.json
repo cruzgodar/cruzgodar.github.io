@@ -31,6 +31,12 @@
 	
 	
 	
+	"image-sudoku-generator":
+	{
+		"webp": "../applets/sudoku-generator/cover.webp",
+		"non-webp": "../applets/sudoku-generator/cover.jpg"
+	},
+	
 	"image-julia-set-mosaic":
 	{
 		"webp": "../applets/julia-set-mosaic/cover.webp",
@@ -41,11 +47,5 @@
 	{
 		"webp": "../applets/the-chaos-game/cover.webp",
 		"non-webp": "../applets/the-chaos-game/cover.jpg"
-	},
-	
-	"image-the-kicked-rotator":
-	{
-		"webp": "../applets/the-kicked-rotator/cover.webp",
-		"non-webp": "../applets/the-kicked-rotator/cover.jpg"
 	}
 }

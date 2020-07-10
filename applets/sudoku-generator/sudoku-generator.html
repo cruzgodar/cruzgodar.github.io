@@ -1,4 +1,4 @@
-<head><title>Calcudoku Generator</title></head>
+<head><title>Sudoku Generator</title></head>
 
 <div style="height: 5vh"></div>
 
@@ -20,7 +20,7 @@
 	<div style="height: 2vh"></div>
 	
 	<div data-aos="fade-up">
-		<h1 class="heading-text">Calcudoku Generator</h1>
+		<h1 class="heading-text">Sudoku Generator</h1>
 	</div>
 </header>
 
@@ -32,7 +32,7 @@
 	<section>
 		<div data-aos="fade-up">
 			<p class="body-text">
-				<dfn>Calcudoku</dfn> is a Sudoku-like puzzle &mdash; given an \(n \times n\) grid, fill it with the digits \(1, ..., n\) such that no row or column contains a repeated digit, and such that each cage&#x2019;s condition is satisfied. For example, a cage with \(5+\) in a corner must have its contents sum to 5. A cage with \(2-\) is a little more complicated &mdash; it means that choosing some cell in the cage and subtracting the others results in 2. So a 3-cell cage containing 5, 2, and 1 would work. Division cages are written with a colon and work similarly to subtraction. Finally, cages with no operation at all are always \(1 \times 1\), and simply contain the number in the corner.
+				About six months ago, I wrote <a href="/applets/calcudoku-generator/calcudoku-generator.html" onclick="redirect('/applets/calcudoku-generator/calcudoku-generator.html')">this thing</a> over the span of a week. Not counting the website as a whole, it was the largest coding project I&#x2019;d ever attempted, and I&#x2019;m still amazed it works. If others on the internet have written their own generators, they&#x2019;re not sharing as far as I can tell.
 			</p>
 		</div>
 		
@@ -40,28 +40,28 @@
 		
 		<div data-aos="fade-up">
 			<p class="body-text">
-				Generating these puzzles takes time. The core of the algorithm is written in a language called WebAssembly that runs at much higher speeds than JavaScript (the standard language of the web), but even still, making a puzzle with cages as large as possible is an intensive process. There's no guarantee how long it will take for a puzzle to become decently challenging, but as the output grows more difficult, the algorithm will slow down dramatically. For the best results, let the program run for five to ten minutes and make some tea. It&#x2019;s not that much to ask &mdash; after all, you&#x2019;re probably going to spend longer than that actually solving the puzzle.
+				Maybe I should have started with this applet before building that one, but the upshot of making the more complicated one first was that I made this in two hours. It&#x2019;s fast, too &mdash; there&#x2019;s very little waiting around for your puzzle. Since it uses the same code base as the calcudoku generator, though, it has no way to measure difficulty, and will always create as difficult a puzzle as possible. If you&#x2019;re going to go after one of these, good luck!
 			</p>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="1000">
+			<div data-aos="zoom-out" data-aos-delay="800">
 				<button class="text-button" type="button" id="generate-button">Generate</button>
 			</div>
 		</div>
 		
 		<div style="height: calc(10vh + 8px)"></div>
 		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="1500">
+		<div class="center-content" data-aos="fade-in" data-aos-delay="1300">
 			<canvas id="sudoku-grid"></canvas>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="2000">
+			<div data-aos="zoom-out" data-aos-delay="1800">
 				<button class="text-button" type="button" id="download-button">Download</button>
 			</div>
 		</div>
@@ -77,8 +77,6 @@
 
 
 <script>
-	DEBUG = true;
-	
 	if (typeof current_url === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
@@ -88,13 +86,13 @@
 	
 	page_settings = 
 	{
-		"title": "Calcudoku Generator",
+		"title": "Sudoku Generator",
 		
 		"banner_page": false,
 		"num_banners": 0,
 		
 		"writing_page": false,
-		"math_page": true,
+		"math_page": false,
 		"comments": false,
 		
 		"small_margins_on_ultrawide": true,

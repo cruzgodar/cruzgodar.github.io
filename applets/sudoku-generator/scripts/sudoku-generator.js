@@ -10,6 +10,8 @@
 	
 	let web_worker = null;
 	
+	let generated_first_puzzle = false;
+	
 	
 	
 	document.querySelector("#generate-button").addEventListener("click", request_sudoku_grid);
@@ -32,11 +34,23 @@
 			}
 		}
 		
-		document.querySelector("#sudoku-grid").style.opacity = 0;
 		
 		
+		if (generated_first_puzzle)
+		{
+			document.querySelector("#sudoku-grid").style.opacity = 0;
+			
+			
+			
+			setTimeout(function()
+			{
+				let canvas_size = 9 * 200 + 9;
+				
+				ctx.clearRect(0, 0, canvas_size, canvas_size);
+			}, 300);
+		}
 		
-		setTimeout(function()
+		else
 		{
 			let canvas_size = 9 * 200 + 9;
 			
@@ -44,7 +58,7 @@
 			document.querySelector("#sudoku-grid").setAttribute("height", canvas_size);
 			
 			ctx.clearRect(0, 0, canvas_size, canvas_size);
-		}, 300);
+		}
 		
 		
 		
@@ -79,15 +93,25 @@
 				draw_sudoku_grid(false);
 				
 				document.querySelector("#sudoku-grid").style.opacity = 1;
+				
+				generated_first_puzzle = true;
 			}
 		}
 		
 		
 		
-		setTimeout(function()
+		if (generated_first_puzzle)
+		{
+			setTimeout(function()
+			{
+				web_worker.postMessage([]);
+			}, 300);
+		}
+		
+		else
 		{
 			web_worker.postMessage([]);
-		}, 300);
+		}
 	}
 	
 	
