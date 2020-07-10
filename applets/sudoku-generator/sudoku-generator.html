@@ -1,0 +1,110 @@
+<head><title>Calcudoku Generator</title></head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+<header>
+	<div class="new-aos-section" data-aos="fade-in">
+		<div id="logo">
+			<a href="/home/home.html">
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
+			</a>
+		</div>
+	</div>
+	
+	<div style="height: 2vh"></div>
+	
+	<div data-aos="fade-up">
+		<h1 class="heading-text">Calcudoku Generator</h1>
+	</div>
+</header>
+
+<div style="height: 5vh"></div>
+
+
+
+<main>
+	<section>
+		<div data-aos="fade-up">
+			<p class="body-text">
+				<dfn>Calcudoku</dfn> is a Sudoku-like puzzle &mdash; given an \(n \times n\) grid, fill it with the digits \(1, ..., n\) such that no row or column contains a repeated digit, and such that each cage&#x2019;s condition is satisfied. For example, a cage with \(5+\) in a corner must have its contents sum to 5. A cage with \(2-\) is a little more complicated &mdash; it means that choosing some cell in the cage and subtracting the others results in 2. So a 3-cell cage containing 5, 2, and 1 would work. Division cages are written with a colon and work similarly to subtraction. Finally, cages with no operation at all are always \(1 \times 1\), and simply contain the number in the corner.
+			</p>
+		</div>
+		
+		<br>
+		
+		<div data-aos="fade-up">
+			<p class="body-text">
+				Generating these puzzles takes time. The core of the algorithm is written in a language called WebAssembly that runs at much higher speeds than JavaScript (the standard language of the web), but even still, making a puzzle with cages as large as possible is an intensive process. There's no guarantee how long it will take for a puzzle to become decently challenging, but as the output grows more difficult, the algorithm will slow down dramatically. For the best results, let the program run for five to ten minutes and make some tea. It&#x2019;s not that much to ask &mdash; after all, you&#x2019;re probably going to spend longer than that actually solving the puzzle.
+			</p>
+		</div>
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content">
+			<div data-aos="zoom-out" data-aos-delay="1000">
+				<button class="text-button" type="button" id="generate-button">Generate</button>
+			</div>
+		</div>
+		
+		<div style="height: calc(10vh + 8px)"></div>
+		
+		<div class="center-content" data-aos="fade-in" data-aos-delay="1500">
+			<canvas id="sudoku-grid"></canvas>
+		</div>
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content">
+			<div data-aos="zoom-out" data-aos-delay="2000">
+				<button class="text-button" type="button" id="download-button">Download</button>
+			</div>
+		</div>
+	</section>
+</main>
+
+
+
+<footer>
+	<div id="spawn-footer"></div>
+</footer>
+
+
+
+<script>
+	DEBUG = true;
+	
+	if (typeof current_url === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	page_settings = 
+	{
+		"title": "Calcudoku Generator",
+		
+		"banner_page": false,
+		"num_banners": 0,
+		
+		"writing_page": false,
+		"math_page": true,
+		"comments": false,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"manual_banner": false,
+		"manual_dark_theme": false,
+		
+		"no_footer": false,
+		"footer_exclusion": ""
+	};
+	
+	on_page_load();
+</script>
