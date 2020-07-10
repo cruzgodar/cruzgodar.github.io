@@ -4,7 +4,7 @@
 	
 	
 	
-	let ctx = document.querySelector("#sudoku-grid").getContext("2d", {alpha: false});
+	let ctx = document.querySelector("#sudoku-grid").getContext("2d");
 	
 	let grid = [];
 	

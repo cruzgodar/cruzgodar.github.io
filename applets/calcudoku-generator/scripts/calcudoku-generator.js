@@ -6,7 +6,7 @@
 	
 	let grid_size = null;
 	
-	let ctx = document.querySelector("#calcudoku-grid").getContext("2d", {alpha: false});
+	let ctx = document.querySelector("#calcudoku-grid").getContext("2d");
 	
 	let total_time = 0;
 	let split_time = 0;

@@ -357,8 +357,6 @@
 				
 				ctx.putImageData(img_data, 0, 0);
 				
-				prepare_download();
-				
 				
 				
 				document.querySelector("#progress-bar").style.opacity = 0;
