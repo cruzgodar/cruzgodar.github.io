@@ -1,4 +1,16 @@
 {
+	"image-week-4-notes":
+    {
+        "webp": "notes/4/cover.webp",
+        "non-webp": "notes/4/cover.jpg"
+    },
+    
+	"image-final-topics":
+    {
+        "webp": "extra/final-topics/cover.webp",
+        "non-webp": "extra/final-topics/cover.jpg"
+    },
+    
 	"image-quiz-5":
     {
         "webp": "quizzes/5/cover.webp",
