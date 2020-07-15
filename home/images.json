@@ -31,6 +31,12 @@
 	
 	
 	
+	"image-strange-attractors":
+	{
+		"webp": "../applets/strange-attractors/cover.webp",
+		"non-webp": "../applets/strange-attractors/cover.jpg"
+	},
+	
 	"image-sudoku-generator":
 	{
 		"webp": "../applets/sudoku-generator/cover.webp",
@@ -41,11 +47,5 @@
 	{
 		"webp": "../applets/julia-set-mosaic/cover.webp",
 		"non-webp": "../applets/julia-set-mosaic/cover.jpg"
-	},
-	
-	"image-the-chaos-game":
-	{
-		"webp": "../applets/the-chaos-game/cover.webp",
-		"non-webp": "../applets/the-chaos-game/cover.jpg"
 	}
 }

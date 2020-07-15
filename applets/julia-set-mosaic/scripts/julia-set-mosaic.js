@@ -12,7 +12,7 @@
 
 	document.querySelector("#generate-button").addEventListener("click", request_julia_mosaic);
 	
-	let elements = document.querySelectorAll("#a-input, #b-input, #dim-input");
+	let elements = document.querySelectorAll("#julia-size-input, #num-julias-input");
 	
 	for (let i = 0; i < elements.length; i++)
 	{

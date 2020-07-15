@@ -1,0 +1,162 @@
+<head><title>Strange Attractors</title></head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+<header>
+	<div class="new-aos-section" data-aos="fade-in">
+		<div id="logo">
+			<a href="/home/home.html">
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
+			</a>
+		</div>
+	</div>
+	
+	<div style="height: 2vh"></div>
+	
+	<div data-aos="fade-up">
+		<h1 class="heading-text">Strange Attractors</h1>
+	</div>
+</header>
+
+<div style="height: 5vh"></div>
+
+
+
+<main>
+	<section>
+		<div data-aos="fade-up">
+			<p class="body-text">
+				The Butterfly Effect is one of those results in physics that has percolated down to the masses &mdash; the smalest action can lead to complete unpredictability. We see it everywhere from weather forecasts to time travel stories, and yet the math behind it isn&#x2019;t as commonly known. This is perfectly understandable, but it&#x2019;s still something worth seeing.
+			</p>
+		</div>
+		
+		<br>
+		
+		<div data-aos="fade-up">
+			<p class="body-text">
+				The <dfn>Lorenz system</dfn> models atmospheric convection &mdash; the same thing the original version of the butterfly effect refers to. Constants \(\sigma\), \(\rho\), and \(\beta\) specify the particular conditions, and when they&#x2019;re chosen, a particle is placed into the system and allowed to move around. The path it traces is sometimes a simple one, converging to a specific location, but some choices of the three constants make the particle behave bizarrely &mdash; the path drawn has a fractal structure. True to the butterfly effect, two points chosen arbitrarily close together will eventually diverge completely, but the picture drawn makes it clear that those paths need not be staticky chaos &mdash; here, they&#x2019;re surprisingly beautiful. This is just one example of a strange atractor, but it&#x2019;s a classic, and it&#x2019;s not hard to see why.
+			</p>
+		</div>
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="text-box-row">
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="grid-size-input" class="text-box" type="text" value="1000">
+				<label for="grid-size-input">
+					<p class="body-text">Image Size</p>
+				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="sigma-input" class="text-box" type="text" value="10">
+				<label for="sigma-input">
+					<p class="body-text">\(\sigma\)</p>
+				</label>
+			</div>
+			
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="rho-input" class="text-box" type="text" value="28">
+				<label for="rho-input">
+					<p class="body-text">\(\rho\)</p>
+				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="beta-input" class="text-box" type="text" value="2.67">
+				<label for="beta-input">
+					<p class="body-text">\(\beta\)</p>
+				</label>
+			</div>
+		</div>
+		
+		<div style="height: 5vh"></div>
+		
+		<div class="checkbox-row">
+			<div data-aos="zoom-out" data-aos-delay="1000">
+				<div class="checkbox-container">
+					<input type="checkbox" id="toggle-maximum-speed-checkbox">
+					<div class="checkbox"></div>
+				</div>
+			</div>
+			
+			<div style="margin-left: 10px" data-aos="fade-left">
+				<p class="body-text">Maximum speed</p>
+			</div>
+		</div>
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content">
+			<div data-aos="zoom-out" data-aos-delay="1000">
+				<button class="text-button" type="button" id="generate-button">Generate</button>
+			</div>
+		</div>
+		
+		<div style="height: 5vh"></div>
+		
+		<div class="center-content">
+			<div id="progress-bar" class="progress-bar" style="opacity: 0">
+				<span></span>
+			</div>
+		</div>
+		
+		<div class="center-content" data-aos="fade-in" data-aos-delay="1500">
+			<canvas id="output-canvas"></canvas>
+		</div>
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content">
+			<div data-aos="zoom-out" data-aos-delay="2000">
+				<button class="text-button" type="button" id="download-button">Download Image</button>
+			</div>
+		</div>
+	</section>
+</main>
+
+
+
+<footer>
+	<div id="spawn-footer"></div>
+</footer>
+
+
+
+<script>
+	if (typeof current_url === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	page_settings = 
+	{
+		"title": "Strange Attractors",
+		
+		"banner_page": false,
+		"num_banners": 0,
+		
+		"writing_page": false,
+		"math_page": true,
+		"comments": false,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"manual_banner": false,
+		"manual_dark_theme": false,
+		
+		"no_footer": false,
+		"footer_exclusion": ""
+	};
+	
+	on_page_load();
+</script>

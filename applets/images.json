@@ -1,4 +1,10 @@
 {
+	"image-strange-attractors":
+	{
+		"webp": "strange-attractors/cover.webp",
+		"non-webp": "strange-attractors/cover.jpg"
+	},
+	
 	"image-sudoku-generator":
 	{
 		"webp": "sudoku-generator/cover.webp",

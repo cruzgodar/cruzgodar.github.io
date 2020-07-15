@@ -14,13 +14,18 @@
 	
 	document.querySelector("#generate-button").addEventListener("click", request_kicked_rotator);
 	
-	document.querySelector("#grid-size-input").addEventListener("keydown", function(e)
+	let elements = document.querySelectorAll("#grid-size-input, #k-input, #orbit-separation-input");
+	
+	for (let i = 0; i < elements.length; i++)
 	{
-		if (e.keyCode === 13)
+		elements[i].addEventListener("keydown", function(e)
 		{
-			request_kicked_rotator();
-		}
-	});
+			if (e.keyCode === 13)
+			{
+				request_kicked_rotator();
+			}
+		});
+	}
 	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
