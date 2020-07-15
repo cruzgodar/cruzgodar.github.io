@@ -38,6 +38,12 @@
 	filter: brightness(75%);
 }
 
+.image-link img:not(:hover):focus
+{
+	filter: brightness(75%);
+	outline: none;
+}
+
 .image-link-subtext
 {
 	margin-top: 1vh;
@@ -60,6 +66,13 @@
 {
 	filter: brightness(75%) !important;
 }
+
+.image-link-light img:not(:hover):focus
+{
+	filter: brightness(75%) !important;
+	outline: none;
+}
+
 
 
 

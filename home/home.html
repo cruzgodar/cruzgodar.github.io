@@ -67,8 +67,8 @@
 		<section>
 			<div class="new-aos-section" data-aos="fade-in">
 				<div id="logo">
-					<a href="/home/home.html">
-						<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
+					<a href="/home/home.html" tabindex="-1">
+						<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
 					</a>
 				</div>
 			</div>
@@ -91,8 +91,8 @@
 
 			<div class="image-links">
 				<div class="image-link" data-aos="fade-up">
-					<a href="/writing/writing.html">
-						<img id="image-writing" class="check-webp" onclick="redirect('/writing/writing.html')" src="" alt="Writing"></img>
+					<a href="/writing/writing.html" tabindex="-1">
+						<img id="image-writing" class="check-webp" onclick="redirect('/writing/writing.html')" src="" alt="Writing" tabindex="1"></img>
 					</a>
 						
 					<p class="image-link-subtext">Writing</p>
@@ -100,8 +100,8 @@
 				
 				
 				<div class="image-link" data-aos="fade-up">
-					<a href="/teaching/teaching.html">
-						<img id="image-teaching" class="check-webp" onclick="redirect('/teaching/teaching.html')" src="" alt="Teaching"></img>
+					<a href="/teaching/teaching.html" tabindex="-1">
+						<img id="image-teaching" class="check-webp" onclick="redirect('/teaching/teaching.html')" src="" alt="Teaching" tabindex="1"></img>
 					</a>
 						
 					<p class="image-link-subtext">Teaching</p>
@@ -109,16 +109,16 @@
 				
 					
 				<div class="image-link" data-aos="fade-up">
-					<a href="/applets/applets.html">
-						<img id="image-applets" class="check-webp" onclick="redirect('/applets/applets.html')" src="" alt="Applets"></img>
+					<a href="/applets/applets.html" tabindex="-1">
+						<img id="image-applets" class="check-webp" onclick="redirect('/applets/applets.html')" src="" alt="Applets" tabindex="1"></img>
 					</a>
 						
 					<p class="image-link-subtext">Applets</p>
 				</div>
 				
 				<div class="image-link" data-aos="fade-up">
-					<a href="/bio/bio.html">
-						<img id="image-bio" class="check-webp" onclick="redirect('/bio/bio.html')" src="" alt="Me"></img>
+					<a href="/bio/bio.html" tabindex="-1">
+						<img id="image-bio" class="check-webp" onclick="redirect('/bio/bio.html')" src="" alt="Me" tabindex="1"></img>
 					</a>
 					
 					<p class="image-link-subtext">Me</p>
@@ -148,24 +148,24 @@
 				
 				<div id="newest-pages" class="image-links">
 					<div class="image-link" data-aos="zoom-out">
-						<a href="/applets/strange-attractors/strange-attractors.html">
-							<img id="image-strange-attractors" class="check-webp" onclick="redirect('/applets/strange-attractors/strange-attractors.html')" src="" alt="Strange Attractors"></img>
+						<a href="/applets/strange-attractors/strange-attractors.html" tabindex="-1">
+							<img id="image-strange-attractors" class="check-webp" onclick="redirect('/applets/strange-attractors/strange-attractors.html')" src="" alt="Strange Attractors" tabindex="1"></img>
 						</a>
 							
 						<p class="image-link-subtext">Strange Attractors</p>
 					</div>
 					
 					<div class="image-link" data-aos="zoom-out">
-						<a href="/applets/sudoku-generator/sudoku-generator.html">
-							<img id="image-sudoku-generator" class="check-webp" onclick="redirect('/applets/sudoku-generator/sudoku-generator.html')" src="" alt="Sudoku Generator"></img>
+						<a href="/applets/sudoku-generator/sudoku-generator.html" tabindex="-1">
+							<img id="image-sudoku-generator" class="check-webp" onclick="redirect('/applets/sudoku-generator/sudoku-generator.html')" src="" alt="Sudoku Generator" tabindex="1"></img>
 						</a>
 							
 						<p class="image-link-subtext">Sudoku Generator</p>
 					</div>
 					
 					<div class="image-link" data-aos="zoom-out">
-						<a href="/applets/julia-set-mosaic/julia-set-mosaic.html">
-							<img id="image-julia-set-mosaic" class="check-webp" onclick="redirect('/applets/julia-set-mosaic/julia-set-mosaic.html')" src="" alt="A Julia Set Mosaic"></img>
+						<a href="/applets/julia-set-mosaic/julia-set-mosaic.html" tabindex="-1">
+							<img id="image-julia-set-mosaic" class="check-webp" onclick="redirect('/applets/julia-set-mosaic/julia-set-mosaic.html')" src="" alt="A Julia Set Mosaic" tabindex="1"></img>
 						</a>
 						
 						<p class="image-link-subtext">A Julia Set Mosaic</p>
@@ -185,12 +185,12 @@
 		<div id="spawn-footer"></div>
 		
 		<div class="footer-buttons">
-			<div class="new-aos-section" data-aos="zoom-out" data-aos-offset="0" style="position: absolute; bottom: 6.25px; left: 10px">
-				<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="show_floating_settings()">
+			<div class="new-aos-section focus-on-child" data-aos="zoom-out" data-aos-offset="0" style="position: absolute; bottom: 6.25px; left: 10px" tabindex="3">
+				<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="show_floating_settings()" tabindex="-1">
 			</div>
 			
-			<div class="new-aos-section" data-aos="zoom-out" data-aos-offset="0" style="position: absolute; bottom: 6.25px; right: 10px">
-				<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="redirect('/about/about.html')">
+			<div class="new-aos-section focus-on-child" data-aos="zoom-out" data-aos-offset="0" style="position: absolute; bottom: 6.25px; right: 10px" tabindex="3">
+				<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="redirect('/about/about.html')" tabindex="-1">
 			</div>
 		</div>
 	</footer>

@@ -11,8 +11,8 @@
 <header>
 	<div class="new-aos-section" data-aos="fade-in">
 		<div id="logo">
-			<a href="/home/home.html">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
+			<a href="/home/home.html" tabindex="-1">
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
 			</a>
 		</div>
 	</div>
@@ -47,8 +47,8 @@
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="800">
-				<button class="text-button" type="button" id="generate-button">Generate</button>
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="800" tabindex="1">
+				<button class="text-button" type="button" id="generate-button" tabindex="-1">Generate</button>
 			</div>
 		</div>
 		
@@ -61,8 +61,8 @@
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="1800">
-				<button class="text-button" type="button" id="download-button">Download</button>
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1800" tabindex="1">
+				<button class="text-button" type="button" id="download-button" tabindex="-1">Download</button>
 			</div>
 		</div>
 	</section>

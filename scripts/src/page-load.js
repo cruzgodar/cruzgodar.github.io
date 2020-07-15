@@ -60,6 +60,8 @@ function on_page_load()
 	
 	set_up_hover_events();
 	
+	setTimeout(set_up_weird_focus_elements, 50);
+	
 	
 	
 	background_color_changed = false;
@@ -552,6 +554,21 @@ function remove_hover_events()
 
 
 
+function set_up_weird_focus_elements()
+{
+	let elements = document.querySelectorAll(".focus-on-child");
+
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].addEventListener("focus", function()
+		{
+			elements[i].children[0].focus();
+		});
+	}
+}
+
+
+
 function disable_links()
 {
 	let links = document.querySelectorAll("a:not(.real-link)");
@@ -592,6 +609,18 @@ function typeset_math()
 	{
 		MathJax.typeset();
 	}
+	
+	
+	
+	setTimeout(function()
+	{
+		let elements = document.querySelectorAll("mjx-container");
+		
+		for (let i = 0; i < elements.length; i++)
+		{
+			elements[i].setAttribute("tabindex", -1);
+		}
+	}, 500);
 }
 
 

@@ -43,6 +43,12 @@
 	filter: brightness(75%);
 }
 
+.nav-button:not(:hover):focus
+{
+	filter: brightness(75%);
+	outline: none;
+}
+
 
 
 /* Used for two small horizontal images side by side. */
@@ -101,6 +107,12 @@
 .big-image-horizontal.hover, .small-image-horizontal.hover, .big-image-vertical.hover, .small-image-vertical.hover
 {
 	filter: brightness(75%);
+}
+
+.big-image-horizontal:not(:hover):focus, .small-image-horizontal:not(:hover):focus, .big-image-vertical:not(:hover):focus, .small-image-vertical:not(:hover):focus
+{
+	filter: brightness(75%);
+	outline: none;
 }
 
 

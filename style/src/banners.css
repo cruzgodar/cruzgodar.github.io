@@ -57,6 +57,12 @@
 	filter: brightness(75%);
 }
 
+#scroll-button:not(:hover):focus
+{
+	filter: brightness(75%);
+	outline: none;
+}
+
 
 
 #content

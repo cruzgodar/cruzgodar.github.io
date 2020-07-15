@@ -11,8 +11,8 @@
 <header>
 	<div class="new-aos-section" data-aos="fade-in">
 		<div id="logo">
-			<a href="/home/home.html">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
+			<a href="/home/home.html" tabindex="-1">
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
 			</a>
 		</div>
 	</div>
@@ -38,14 +38,14 @@
 		
 		<div class="text-box-row">
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="num-julias-input" class="text-box" type="text" value="50">
+				<input id="num-julias-input" class="text-box" type="text" value="50" tabindex="1">
 				<label for="num-julias-input">
 					<p class="body-text">Julia Sets per Side</p>
 				</label>
 			</div>
 			
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="julia-size-input" class="text-box" type="text" value="20">
+				<input id="julia-size-input" class="text-box" type="text" value="20" tabindex="1">
 				<label for="julia-size-input">
 					<p class="body-text">Julia Set Size</p>
 				</label>
@@ -55,8 +55,8 @@
 		<div style="height: 5vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="900">
-				<button class="text-button" type="button" id="generate-button">Generate</button>
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="900" tabindex="1">
+				<button class="text-button" type="button" id="generate-button" tabindex="-1">Generate</button>
 			</div>
 		</div>
 		
@@ -69,8 +69,8 @@
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="1900">
-				<button class="text-button" type="button" id="download-button">Download Image</button>
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1900" tabindex="1">
+				<button class="text-button" type="button" id="download-button" tabindex="-1">Download Image</button>
 			</div>
 		</div>
 	</section>

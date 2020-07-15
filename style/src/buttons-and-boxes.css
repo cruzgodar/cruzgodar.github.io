@@ -32,6 +32,12 @@
 	filter: brightness(75%);
 }
 
+.text-button:not(:hover):focus
+{
+	filter: brightness(75%);
+	outline: none;
+}
+
 
 
 .checkbox-row
@@ -70,6 +76,13 @@
 {
 	border-radius: 50%;
 }
+
+.checkbox-container:not(:hover):focus, .checkbox-container:not(:hover):focus > input, .checkbox-container:not(:hover):focus > input ~ .checkbox
+{
+	border-radius: 50%;
+	outline: none;
+}
+
 
 
 

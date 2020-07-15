@@ -88,8 +88,8 @@ function insert_footer()
 		
 		element.outerHTML = `
 			<div id="writing-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-				<a href="/index.html?page=%2Fwriting%2Fwriting.html${vars_no_return}">
-					<img onclick="redirect('/writing/writing.html')" src="/writing/cover.${extension}" alt="Writing"></img>
+				<a href="/index.html?page=%2Fwriting%2Fwriting.html${vars_no_return}" tabindex="-1">
+					<img onclick="redirect('/writing/writing.html')" src="/writing/cover.${extension}" alt="Writing" tabindex="2"></img>
 				</a>
 			</div>
 		`;
@@ -106,8 +106,8 @@ function insert_footer()
 		
 		element.outerHTML = `
 			<div id="teaching-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-				<a href="/index.html?page=%2Fteaching%2Fteaching.html${vars_no_return}">
-					<img onclick="redirect('/teaching/teaching.html')" src="/teaching/cover.${extension}" alt="Teaching"></img>
+				<a class="focus-on-child" href="/index.html?page=%2Fteaching%2Fteaching.html${vars_no_return}" tabindex="-1">
+					<img onclick="redirect('/teaching/teaching.html')" src="/teaching/cover.${extension}" alt="Teaching" tabindex="2"></img>
 				</a>
 			</div>
 		`;
@@ -124,8 +124,8 @@ function insert_footer()
 		
 		element.outerHTML = `
 			<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-				<a href="index.html?page=%2Fapplets%2Fapplets.html${vars_no_return}">
-					<img onclick="redirect('/applets/applets.html')" src="/applets/cover.${extension}" alt="Applets"></img>
+				<a class="focus-on-child" href="index.html?page=%2Fapplets%2Fapplets.html${vars_no_return}" tabindex="-1">
+					<img onclick="redirect('/applets/applets.html')" src="/applets/cover.${extension}" alt="Applets" tabindex="2"></img>
 				</a>
 			</div>
 		`;
@@ -141,8 +141,8 @@ function insert_footer()
 		
 		element.outerHTML = `
 			<div id="bio-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-				<a href="/index.html?page=%2Fbio%2Fbio.html${vars_no_return}">
-					<img onclick="redirect('/bio/bio.html')" src="/bio/cover.${extension}" alt="Me"></img>
+				<a class="focus-on-child" href="/index.html?page=%2Fbio%2Fbio.html${vars_no_return}" tabindex="-1">
+					<img onclick="redirect('/bio/bio.html')" src="/bio/cover.${extension}" alt="Me" tabindex="2"></img>
 				</a>
 			</div>
 		`;
@@ -154,12 +154,12 @@ function insert_footer()
 	
 	document.querySelector(".footer-image-links").insertAdjacentHTML("afterend", `
 		<div class="footer-buttons" style="position: relative">
-			<div data-aos="zoom-out" data-aos-delay="0" data-aos-offset="10" data-aos-once="false" style="position: absolute; bottom: 6.25px; left: 10px">	
-				<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="show_floating_settings()">
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="0" data-aos-offset="10" data-aos-once="false" style="position: absolute; bottom: 6.25px; left: 10px" tabindex="3">
+				<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="show_floating_settings()" tabindex="-1">
 			</div>
 			
-			<div data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="10" data-aos-once="false" style="position: absolute; bottom: 6.25px; right: 10px">
-				<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="redirect('/about/about.html')">
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="10" data-aos-once="false" style="position: absolute; bottom: 6.25px; right: 10px" tabindex="3">
+				<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="redirect('/about/about.html')" tabindex="-1">
 			</div>
 		</div>
 	`);

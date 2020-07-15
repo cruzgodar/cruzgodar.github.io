@@ -143,6 +143,25 @@ document.documentElement.addEventListener("mousemove", function()
 
 
 
+//Click the focused element when the enter key is pressed.
+document.documentElement.addEventListener("keydown", function(e)
+{
+	if (e.keyCode === 13)
+	{
+		if (document.activeElement.classList.contains("click-on-child"))
+		{
+			document.activeElement.children[0].click();
+		}
+		
+		else if (document.activeElement.tagName !== "BUTTON")
+		{
+			document.activeElement.click();
+		}
+	}
+});
+
+
+
 
 
 //Redirects to the chosen page and sets up all the miscellaneous things that make the site work.

@@ -26,6 +26,12 @@
 	filter: brightness(75%);
 }
 
+.footer-button:not(:hover):focus
+{
+	filter: brightness(75%);
+	outline: none;
+}
+
 
 
 .row:after
@@ -109,6 +115,12 @@
 .footer-image-link img.hover
 {
 	filter: brightness(75%);
+}
+
+.footer-image-link img:not(:hover):focus
+{
+	filter: brightness(75%);
+	outline: none;
 }
 
 
@@ -298,6 +310,12 @@
 #scroll-up-button.hover
 {
 	filter: brightness(75%);
+}
+
+#scroll-up-button:not(:hover):focus
+{
+	filter: brightness(75%);
+	outline: none;
 }
 
 

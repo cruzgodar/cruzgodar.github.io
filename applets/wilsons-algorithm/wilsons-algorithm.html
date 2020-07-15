@@ -11,8 +11,8 @@
 <header>
 	<div class="new-aos-section" data-aos="fade-in">
 		<div id="logo">
-			<a href="/home/home.html">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
+			<a href="/home/home.html" tabindex="-1">
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
 			</a>
 		</div>
 	</div>
@@ -56,7 +56,7 @@
 		
 		<div class="center-content">
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="dim-input" class="text-box" type="text" value="50">
+				<input id="dim-input" class="text-box" type="text" value="50" tabindex="1">
 				<label for="dim-input">
 					<p class="body-text">Graph Dimension</p>
 				</label>
@@ -67,7 +67,7 @@
 		
 		<div class="checkbox-row">
 			<div data-aos="zoom-out" data-aos-delay="1000">
-				<div class="checkbox-container">
+				<div class="checkbox-container click-on-child" tabindex="1">
 					<input type="checkbox" id="toggle-maximum-speed-checkbox">
 					<div class="checkbox"></div>
 				</div>
@@ -82,7 +82,7 @@
 		
 		<div class="checkbox-row">
 			<div data-aos="zoom-out" data-aos-delay="1500">
-				<div class="checkbox-container">
+				<div class="checkbox-container click-on-child" tabindex="1">
 					<input type="checkbox" id="no-borders-checkbox">
 					<div class="checkbox"></div>
 				</div>
@@ -96,8 +96,8 @@
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="2000">
-				<button class="text-button" type="button" id="generate-button">Generate</button>
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2000" tabindex="1">
+				<button class="text-button" type="button" id="generate-button" tabindex="-1">Generate</button>
 			</div>
 		</div>
 		
@@ -116,8 +116,8 @@
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="3000">
-				<button class="text-button" type="button" id="download-button">Download Image</button>
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="3000" tabindex="1">
+				<button class="text-button" type="button" id="download-button" tabindex="-1">Download Image</button>
 			</div>
 		</div>
 	</section>

@@ -146,7 +146,7 @@ function show_floating_settings()
 	floating_settings_is_visible = true;
 	
 	document.body.firstElementChild.insertAdjacentHTML("beforebegin", `
-		<div id="floating-settings">
+		<div id="floating-settings" tabindex="-1">
 			<div class="floating-settings-page">
 				<div id="theme-button-row" class="floating-settings-button-row"></div>
 				<div id="dark-theme-color-button-row" class="floating-settings-button-row"></div>
@@ -222,8 +222,8 @@ function show_floating_settings()
 		
 		//These aren't seen by set_up_aos(), so we'll do things the old-fashioned way.
 		document.querySelector("#theme-button-row").innerHTML = `
-			<div data-aos="zoom-out" data-aos-anchor="body">
-				<input type="image" class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="switch_setting('theme')">
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
+				<input type="image" class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="switch_setting('theme')" tabindex="-1">
 			</div>
 			
 			<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -238,8 +238,8 @@ function show_floating_settings()
 		setTimeout(function()
 		{
 			document.querySelector("#dark-theme-color-button-row").innerHTML = `
-				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button" src="/graphics/button-icons/moon-stars.png" alt="Change Theme" onclick="switch_setting('dark_theme_color')">
+				<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
+					<input type="image" class="footer-button" src="/graphics/button-icons/moon-stars.png" alt="Change Theme" onclick="switch_setting('dark_theme_color')" tabindex="-1">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -255,8 +255,8 @@ function show_floating_settings()
 		setTimeout(function()
 		{
 			document.querySelector("#contrast-button-row").innerHTML = `
-				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Theme" onclick="switch_setting('contrast')">
+				<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
+					<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Theme" onclick="switch_setting('contrast')" tabindex="-1">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -272,8 +272,8 @@ function show_floating_settings()
 		setTimeout(function()
 		{
 			document.querySelector("#text-size-button-row").innerHTML = `
-				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button" src="/graphics/button-icons/text-size.png" alt="Change Theme" onclick="switch_setting('text_size')">
+				<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
+					<input type="image" class="footer-button" src="/graphics/button-icons/text-size.png" alt="Change Theme" onclick="switch_setting('text_size')" tabindex="-1">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -289,8 +289,8 @@ function show_floating_settings()
 		setTimeout(function()
 		{
 			document.querySelector("#font-button-row").innerHTML = `
-				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Change Theme" onclick="switch_setting('font')">
+				<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
+					<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Change Theme" onclick="switch_setting('font')" tabindex="-1">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -303,8 +303,8 @@ function show_floating_settings()
 			
 			
 			document.querySelector("#comments-button-row").innerHTML = `
-				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button" src="/graphics/button-icons/comment.png" alt="Change Theme" onclick="switch_setting('comments')">
+				<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
+					<input type="image" class="footer-button" src="/graphics/button-icons/comment.png" alt="Change Theme" onclick="switch_setting('comments')" tabindex="-1">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -317,8 +317,8 @@ function show_floating_settings()
 			
 			
 			document.querySelector("#content-animation-button-row").innerHTML = `
-				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Change Theme" onclick="switch_setting('content_animation')">
+				<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
+					<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Change Theme" onclick="switch_setting('content_animation')" tabindex="-1">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -331,8 +331,8 @@ function show_floating_settings()
 			
 			
 			document.querySelector("#banner-style-button-row").innerHTML = `
-				<div data-aos="zoom-out" data-aos-anchor="body">
-					<input type="image" class="footer-button" src="/graphics/button-icons/picture.png" alt="Change Theme" onclick="switch_setting('banner_style')">
+				<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
+					<input type="image" class="footer-button" src="/graphics/button-icons/picture.png" alt="Change Theme" onclick="switch_setting('banner_style')" tabindex="-1">
 				</div>
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
@@ -353,6 +353,22 @@ function show_floating_settings()
 			{
 				add_hover_event(elements[i]);
 			}
+			
+			
+			
+			elements = document.querySelectorAll(".floating-settings-button-row .focus-on-child");
+		
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].addEventListener("focus", function()
+				{
+					elements[i].children[0].focus();
+				});
+			}
+			
+			
+			
+			document.querySelector("#floating-settings").focus();
 		}, 500);
 	}, 100);
 }

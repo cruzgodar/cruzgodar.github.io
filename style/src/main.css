@@ -89,6 +89,12 @@ img
 	filter: brightness(75%);
 }
 
+#logo img:not(:hover):focus
+{
+	filter: brightness(75%);
+	outline: none;
+}
+
 
 
 .heading-text, .section-text, .body-text, .date-text, .song-lyrics
@@ -187,6 +193,13 @@ img
 #MathJax_Message
 {
 	display: none !important;
+}
+
+
+
+*:focus
+{
+	outline: none;
 }
 
 

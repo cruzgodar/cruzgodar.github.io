@@ -11,8 +11,8 @@
 <header>
 	<div class="new-aos-section" data-aos="fade-in">
 		<div id="logo">
-			<a href="/home/home.html">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')"></img>
+			<a href="/home/home.html" tabindex="-1">
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
 			</a>
 		</div>
 	</div>
@@ -48,14 +48,14 @@
 		
 		<div class="text-box-row">
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="grid-size-input" class="text-box" type="text" value="6">
+				<input id="grid-size-input" class="text-box" type="text" value="6" tabindex="1">
 				<label for="grid-size-input">
 					<p class="body-text">Grid Size</p>
 				</label>
 			</div>
 			
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="max-cage-size-input" class="text-box" type="text" value="2">
+				<input id="max-cage-size-input" class="text-box" type="text" value="2" tabindex="1">
 				<label for="max-cage-size-input">
 					<p class="body-text">Maximum Cage Size</p>
 				</label>
@@ -65,8 +65,8 @@
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="1000">
-				<button class="text-button" type="button" id="generate-button">Generate</button>
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1000" tabindex="1">
+				<button class="text-button" type="button" id="generate-button" tabindex="-1">Generate</button>
 			</div>
 		</div>
 		
@@ -99,8 +99,8 @@
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div data-aos="zoom-out" data-aos-delay="2000">
-				<button class="text-button" type="button" id="download-button">Download</button>
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2000" tabindex="1">
+				<button class="text-button" type="button" id="download-button" tabindex="-1">Download</button>
 			</div>
 		</div>
 	</section>

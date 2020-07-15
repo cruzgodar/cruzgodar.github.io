@@ -988,6 +988,12 @@
 			{
 				background-color: rgb(127, 127, 127);	
 			}
+			
+			.root-marker:not(:hover):focus
+			{
+				background-color: rgb(127, 127, 127);
+				outline: none;
+			}
 		`, true);
 	}
 }()
