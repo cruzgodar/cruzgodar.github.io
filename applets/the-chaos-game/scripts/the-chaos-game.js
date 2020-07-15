@@ -35,6 +35,13 @@
 	
 	
 	
+	if (browser_name === "Chrome" || browser_name === "Opera")
+	{
+		alert_about_hardware_acceleration();
+	}
+	
+	
+	
 	function request_chaos_game()
 	{
 		let num_vertices = parseInt(document.querySelector("#num-vertices-input").value || 3);
@@ -110,5 +117,24 @@
 		link.click();
 		
 		link.remove();
+	}
+	
+	
+	
+	function alert_about_hardware_acceleration()
+	{
+		let elements = document.querySelector("main").children;
+		
+		elements = elements[elements.length - 1].children;
+		
+		elements[elements.length - 1].insertAdjacentHTML("afterend", `
+			<div data-aos="fade-up" style="margin-top: 10vh">
+				<p class="body-text">
+					Your browser treats canvases in a way that may make this applet stutter excessively. If this happens, try temporarily turning off hardware acceleration in the browser&#x2019;s settings.
+				</p>
+			</div>
+		`);
+		
+		aos_resize();
 	}
 }()

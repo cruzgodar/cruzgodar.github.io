@@ -39,6 +39,9 @@
 	window.addEventListener("scroll", caligo_scroll);
 	temporary_handlers["scroll"].push(caligo_scroll);
 	
+	setTimeout(caligo_resize, 500);
+	setTimeout(caligo_resize, 1000);
+	
 	
 	
 	//We're coming back from another page, so let's not just snap the background color abruptly.
