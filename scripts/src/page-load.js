@@ -536,6 +536,8 @@ function add_hover_event(element)
 		if (currently_touch_device === false)
 		{
 			element.classList.remove("hover");
+			
+			element.blur();
 		}
 	});
 }
