@@ -1274,7 +1274,7 @@ function switch_content_animation()
 		{
 			remove_animation();
 			
-			document.documentElement.classList.remove("animated-opacity");
+			document.body.classList.remove("animated-opacity");
 			
 			
 			
@@ -1309,7 +1309,7 @@ function switch_content_animation()
 		//Here, though, trying to animate the body causes problems. A more elegant solution is to use the html element itself.
 		url_vars["content_animation"] = 0;
 		
-		document.documentElement.classList.add("animated-opacity");
+		document.body.classList.add("animated-opacity");
 		
 		
 		

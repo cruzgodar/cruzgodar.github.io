@@ -229,14 +229,14 @@ function fade_in()
 			}
 		`);
 		
-		document.documentElement.style.opacity = 1;
+		document.body.style.opacity = 1;
 	}
 	
 	else
 	{
-		document.documentElement.classList.remove("animated-opacity");
-		document.documentElement.style.opacity = 1;
-		document.documentElement.classList.add("animated-opacity");
+		document.body.classList.remove("animated-opacity");
+		document.body.style.opacity = 1;
+		document.body.classList.add("animated-opacity");
 	}
 }
 

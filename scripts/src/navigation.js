@@ -215,7 +215,7 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 		{
 			if (background_color_changed === false)
 			{
-				document.documentElement.style.opacity = 1;
+				document.body.style.opacity = 1;
 			}
 			
 			
@@ -239,7 +239,7 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 						
 						setTimeout(function()
 						{
-							document.documentElement.style.opacity = 1;
+							document.body.style.opacity = 1;
 						}, 300);
 					}, 450);
 				}, 450);
@@ -299,7 +299,7 @@ function fade_out()
 		else
 		{
 			//Fade out the current page's content.
-			document.documentElement.style.opacity = 0;
+			document.body.style.opacity = 0;
 			
 			setTimeout(function()
 			{
