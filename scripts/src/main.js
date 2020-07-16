@@ -163,7 +163,7 @@ document.documentElement.addEventListener("keydown", function(e)
 
 
 //Remove focus when moving the mouse or touching anything
-document.documentElement.addEventListener("mousemove", function()
+document.documentElement.addEventListener("mousedown", function()
 {
 	document.activeElement.blur();
 });
