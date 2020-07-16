@@ -706,7 +706,14 @@ function switch_theme()
 	
 	setTimeout(function()
 	{
-		try {document.querySelector("#theme-button-row").style.opacity = 1;}
+		try
+		{
+			setTimeout(function()
+			{
+				document.querySelector("#theme-button-row").style.opacity = 1;
+			}, 50);
+		}
+		
 		catch(ex) {}
 	}, 300);
 }
@@ -860,7 +867,14 @@ function switch_dark_theme_color()
 	
 	setTimeout(function()
 	{
-		try {document.querySelector("#dark-theme-color-button-row").style.opacity = 1;}
+		try
+		{
+			setTimeout(function()
+			{
+				document.querySelector("#dark-theme-color-button-row").style.opacity = 1;
+			}, 50);
+		}
+		
 		catch(ex) {}
 	}, 300);
 }
@@ -988,7 +1002,14 @@ function switch_contrast()
 	
 	setTimeout(function()
 	{
-		try {document.querySelector("#contrast-button-row").style.opacity = 1;}
+		try
+		{
+			setTimeout(function()
+			{
+				document.querySelector("#contrast-button-row").style.opacity = 1;
+			}, 50);
+		}
+		
 		catch(ex) {}
 	}, 300);
 }
@@ -1058,12 +1079,17 @@ function switch_text_size()
 	
 	setTimeout(function()
 	{
-		document.body.style.opacity = 1;
-			
+		document.body.classList.add("animated-opacity");
+		
 		setTimeout(function()
 		{
-			document.body.classList.remove("animated-opacity");
-		}, 300);
+			document.body.style.opacity = 1;
+				
+			setTimeout(function()
+			{
+				document.body.classList.remove("animated-opacity");
+			}, 300);
+		}, 50);
 	}, 300);
 }
 
@@ -1128,12 +1154,17 @@ function switch_font()
 	{
 		setTimeout(function()
 		{
-			document.body.style.opacity = 1;
-				
+			document.body.classList.add("animated-opacity");
+		
 			setTimeout(function()
 			{
-				document.body.classList.remove("animated-opacity");
-			}, 300);
+				document.body.style.opacity = 1;
+					
+				setTimeout(function()
+				{
+					document.body.classList.remove("animated-opacity");
+				}, 300);
+			}, 50);
 		}, 300);
 	}
 	
@@ -1141,7 +1172,14 @@ function switch_font()
 	
 	setTimeout(function()
 	{
-		try {document.querySelector("#font-button-row").style.opacity = 1;}
+		try
+		{
+			setTimeout(function()
+			{
+				document.querySelector("#font-button-row").style.opacity = 1;
+			}, 50);
+		}
+		
 		catch(ex) {}
 	}, 300);
 }
@@ -1208,7 +1246,14 @@ function switch_comments()
 	
 	setTimeout(function()
 	{
-		try {document.querySelector("#comments-button-row").style.opacity = 1;}
+		try
+		{
+			setTimeout(function()
+			{
+				document.querySelector("#comments-button-row").style.opacity = 1;
+			}, 50);
+		}
+		
 		catch(ex) {}
 	}, 300);
 }
@@ -1233,12 +1278,17 @@ function switch_content_animation()
 			
 			
 			
-			document.body.style.opacity = 1;
-			
+			document.body.classList.add("animated-opacity");
+		
 			setTimeout(function()
 			{
-				document.body.classList.remove("animated-opacity");
-			}, 300);
+				document.body.style.opacity = 1;
+					
+				setTimeout(function()
+				{
+					document.body.classList.remove("animated-opacity");
+				}, 300);
+			}, 50);
 		}, 300);
 		
 		
@@ -1327,6 +1377,8 @@ function switch_banner_style()
 			url_vars["banner_style"] = 1;
 		}
 		
+		
+		
 		else
 		{
 			try {document.querySelector("#banner-adjust").remove();}
@@ -1339,17 +1391,22 @@ function switch_banner_style()
 			
 			url_vars["banner_style"] = 0;
 			
-			scroll_update(0);
+			scroll_update(window.scrollY);
 		}
 		
 		
 		
-		document.body.style.opacity = 1;
+		document.body.classList.add("animated-opacity");
 		
 		setTimeout(function()
 		{
-			document.body.classList.remove("animated-opacity");
-		}, 300);
+			document.body.style.opacity = 1;
+				
+			setTimeout(function()
+			{
+				document.body.classList.remove("animated-opacity");
+			}, 300);
+		}, 50);
 	}, 300);
 }
 

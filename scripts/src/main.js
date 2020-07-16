@@ -153,12 +153,26 @@ document.documentElement.addEventListener("keydown", function(e)
 			document.activeElement.children[0].click();
 		}
 		
-		else if (document.activeElement.tagName !== "BUTTON")
+		else if (!(document.activeElement.tagName === "BUTTON" || (document.activeElement.tagName === "INPUT" && document.activeElement.getAttribute("type") !== "button")))
 		{
 			document.activeElement.click();
 		}
 	}
 });
+
+
+
+//Remove focus when moving the mouse or touching anything
+document.documentElement.addEventListener("mousemove", function()
+{
+	document.activeElement.blur();
+});
+
+document.documentElement.addEventListener("touchstart", function()
+{
+	document.activeElement.blur();
+});
+
 
 
 
