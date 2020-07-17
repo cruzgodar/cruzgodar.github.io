@@ -31,7 +31,8 @@ let supports_webp = null;
 let scripts_loaded = 
 {
 	"disqus": false,
-	"mathjax": false
+	"mathjax": false,
+	"complexjs": false
 }
 
 let temporary_handlers =

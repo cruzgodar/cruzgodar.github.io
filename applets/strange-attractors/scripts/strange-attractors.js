@@ -74,8 +74,6 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			postMessage(e.data);
-			
 			let pixels = e.data[0];
 			
 			let rgb = e.data[1];

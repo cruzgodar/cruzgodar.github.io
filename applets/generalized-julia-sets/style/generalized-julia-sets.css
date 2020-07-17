@@ -1,0 +1,61 @@
+#container
+{
+	display: flex;
+	justify-content: space-between;
+	width: 70vw;
+	margin: 0 auto;
+}
+
+#mandelbrot-set, #julia-set
+{
+	width: 30vw;
+	height: 30vw;
+}
+
+#mandelbrot-set, #julia-set
+{
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 15px;
+	padding: 2px;
+}
+
+#instructions
+{
+	display: inline;
+}
+
+
+
+.text-box-row
+{
+	width: 400px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+}
+
+
+
+@media (max-aspect-ratio: 9/16), (max-width: 700px)
+{
+	#container
+	{
+		flex-direction: column;
+	}
+	
+	#mandelbrot-set, #julia-set
+	{
+		width: 70vw;
+		height: 70vw;
+	}
+	
+	#mandelbrot-set
+	{
+		margin-bottom: 5vw;
+	}
+	
+	.text-box-row
+	{
+		width: 350px;
+	}
+}
