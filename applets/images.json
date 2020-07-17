@@ -1,4 +1,10 @@
 {
+	"image-generalized-julia-sets":
+	{
+		"webp": "generalized-julia-sets/cover.webp",
+		"non-webp": "generalized-julia-sets/cover.jpg"
+	},
+	
 	"image-strange-attractors":
 	{
 		"webp": "strange-attractors/cover.webp",

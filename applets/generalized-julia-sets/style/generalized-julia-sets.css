@@ -34,6 +34,13 @@
 	justify-content: space-between;
 }
 
+#code-input
+{
+	width: 400px;
+	
+	font-family: "Source Code Pro", monospace;
+}
+
 
 
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
@@ -54,7 +61,7 @@
 		margin-bottom: 5vw;
 	}
 	
-	.text-box-row
+	.text-box-row, #code-input
 	{
 		width: 350px;
 	}

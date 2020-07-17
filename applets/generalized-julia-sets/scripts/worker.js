@@ -4,12 +4,36 @@
 
 onmessage = async function(e)
 {
-	await draw_julia_set(...e.data);
+	importScripts("/scripts/complex.min.js");
+	
+	let a = e.data[0];
+	let b = e.data[1];
+	let julia_size = e.data[2];
+	let num_iters = e.data[3];
+	
+	code_string = e.data[4];
+	box_size = e.data[5];
+	exposure = e.data[6];
+	escape_radius = e.data[7];
+	
+	custom_iteration_function = create_custom_iteration_function(code_string);
+	
+	await draw_julia_set(a, b, julia_size, num_iters);
 }
 
 
 
 let image = [];
+
+let custom_iteration_function = null;
+
+let code_string = "";
+
+let box_size = 4;
+
+let exposure = 1;
+
+let escape_radius = 100;
 
 
 
@@ -26,10 +50,10 @@ function draw_julia_set(a, b, julia_size, num_iters)
 		
 		
 		
-		let progress_step = Math.floor(julia_size / 20);
+		let progress_step = Math.floor(julia_size / 10);
 		
 		//Generate the brightness map.
-		for (let i = 0; i < julia_size / 2; i++)
+		for (let i = 0; i < julia_size; i++)
 		{
 			julia_row(i, a, b, julia_size, num_iters);
 			
@@ -46,7 +70,7 @@ function draw_julia_set(a, b, julia_size, num_iters)
 		//Find the max brightness, throwing out the very top values to avoid almost-black images with a few specks of color.
 		let brightness_array = image.flat().sort(function(a, b) {return a - b});
 		
-		let max_brightness = brightness_array[Math.round(brightness_array.length * .9999) - 1];
+		let max_brightness = brightness_array[Math.round(brightness_array.length * (1 - exposure/2000)) - 1];
 		
 		
 		
@@ -67,26 +91,26 @@ function draw_julia_set(a, b, julia_size, num_iters)
 
 function julia_row(i, a, b, julia_size, num_iters)
 {
-	for (let j = 0; j < julia_size + 1; j++)
+	let c = new Complex([a, b]);
+	
+	for (let j = 0; j < julia_size; j++)
 	{
-		let x = ((j - julia_size/2) / julia_size) * 4;
-		let y = (-(i - julia_size/2) / julia_size) * 4;
+		let x = ((j - julia_size/2) / julia_size) * box_size;
+		let y = (-(i - julia_size/2) / julia_size) * box_size;
 		
-		let brightness = Math.exp(-Math.sqrt(x*x + y*y));
+		let z = new Complex([x, y]);
+		
+		let brightness = Math.exp(-z.abs());
 		
 		let k = 0;
 		
 		for (k = 0; k < num_iters; k++)
 		{
-			let temp_x = x*x - y*y + a;
-			let temp_y = 2*x*y + b;
+			z = custom_iteration_function(z, c);
 			
-			x = temp_x;
-			y = temp_y;
+			brightness += Math.exp(-z.abs());
 			
-			brightness += Math.exp(-Math.sqrt(x*x + y*y));
-			
-			if (x*x + y*y > 4)
+			if (z.abs() > escape_radius)
 			{
 				break;
 			}
@@ -99,8 +123,13 @@ function julia_row(i, a, b, julia_size, num_iters)
 		
 		
 		
-		//Reflect the top half about the origin to get the bottom half.
 		image[i][j] = brightness;
-		image[julia_size - i - 1][julia_size - j] = brightness;
 	}
+}
+
+
+
+function create_custom_iteration_function(code_string)
+{
+	return new Function("z", "c", `return ${code_string}`);
 }

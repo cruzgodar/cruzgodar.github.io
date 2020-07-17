@@ -23,17 +23,28 @@
 
 	let persist_image = false;
 	
-	let custom_iteration_function = create_custom_iteration_function("c.mul(z).sin()");
+	let code_string = "";
+	let custom_iteration_function = null;
 	
-	let box_size = 10;
+	let box_size = 4;
 	
-	let exposure = 1;
+	let exposure = 5;
 	
-	let abs_cutoff = 50;
+	let escape_radius = 100;
 
 	let ctx = null;
 	
 	let web_worker = null;
+	
+	
+	
+	const presets = [
+		["z.pow(2).add(c)", 4, 1, 100],
+		["z.pow(4).add(c)", 4, 1, 100],
+		["z.sin().add(c)", 10, 2, 100],
+		["z.sin().mul(c)", 10, 1, 100],
+		["z.mul(c).sin()", 10, 1, 100]
+	];
 
 
 
@@ -58,9 +69,26 @@
 
 
 
-	document.querySelector("#generate-button").addEventListener("click", draw_high_res_julia);
+	document.querySelector("#generate-button-1").addEventListener("click", prepare_new_code);
 	
-	let elements = document.querySelectorAll("#a-input, #b-input, #dim-input");
+	let elements = document.querySelectorAll("#code-input, #box-size-input, #exposure-input, #escape-radius-input");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].addEventListener("keydown", function(e)
+		{
+			if (e.keyCode === 13)
+			{
+				prepare_new_code();
+			}
+		});
+	}
+	
+	
+	
+	document.querySelector("#generate-button-2").addEventListener("click", draw_high_res_julia);
+	
+	elements = document.querySelectorAll("#a-input, #b-input, #dim-input");
 	
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -72,6 +100,8 @@
 			}
 		});
 	}
+	
+	
 	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 
@@ -93,11 +123,24 @@
 	init_listeners_touch();
 
 	
-	setTimeout(function()
+	
+	
+	
+	function prepare_new_code()
 	{
-		draw_mandelbrot_set(1000, 100);
-	}, 500);
-
+		box_size = parseFloat(document.querySelector("#box-size-input").value || 4);
+		
+		exposure = parseFloat(document.querySelector("#exposure-input").value || 5);
+		
+		escape_radius = parseFloat(document.querySelector("#escape-radius-input").value || 100);
+		
+		code_string = document.querySelector("#code-input").value || "z.pow(2).add(c)";
+		custom_iteration_function = create_custom_iteration_function(code_string);
+		
+		draw_mandelbrot_set(500, 50);
+	}
+	
+	
 	
 	function draw_mandelbrot_set(mandelbrot_size, num_iters)
 	{
@@ -133,7 +176,7 @@
 		//Find the max brightness, throwing out the very top values to avoid almost-black images with a few specks of color.
 		let brightness_array = image.flat().sort(function(a, b) {return a - b});
 		
-		let max_brightness = brightness_array[Math.round(brightness_array.length * (1 - exposure/100)) - 1];
+		let max_brightness = brightness_array[Math.round(brightness_array.length * (1 - exposure/200)) - 1];
 		
 		
 		
@@ -158,9 +201,9 @@
 				//The index in the array of rgba values
 				let index = (4 * i * mandelbrot_size) + (4 * j);
 				
-				data[index] = 0;
-				data[index + 1] = brightness;
-				data[index + 2] = 0;
+				data[index] = brightness/3;
+				data[index + 1] = brightness/3;
+				data[index + 2] = brightness;
 				data[index + 3] = 255; //No transparency.
 			}
 		}
@@ -190,7 +233,7 @@
 				
 				brightness += Math.exp(-z.abs());
 				
-				if (z.abs() > abs_cutoff)
+				if (z.abs() > escape_radius)
 				{
 					break;
 				}
@@ -247,7 +290,7 @@
 		
 		if (julia_size === small_julia_size)
 		{
-			max_brightness_history.push(brightness_array[Math.round(brightness_array.length * (1 - exposure/100)) - 1]);
+			max_brightness_history.push(brightness_array[Math.round(brightness_array.length * (1 - exposure/200)) - 1]);
 			
 			if (max_brightness_history.length > 10)
 			{
@@ -266,7 +309,7 @@
 		
 		else
 		{
-			max_brightness = brightness_array[Math.round(brightness_array.length * (1 - exposure/1000)) - 1];
+			max_brightness = brightness_array[Math.round(brightness_array.length * (1 - exposure/2000)) - 1];
 		}
 		
 		
@@ -292,9 +335,9 @@
 				//The index in the array of rgba values
 				let index = (4 * i * julia_size) + (4 * j);
 				
-				data[index] = 0;
-				data[index + 1] = brightness;
-				data[index + 2] = 0;
+				data[index] = brightness/3;
+				data[index + 1] = brightness/3;
+				data[index + 2] = brightness;
 				data[index + 3] = 255; //No transparency.
 			}
 		}
@@ -325,7 +368,7 @@
 				
 				brightness += Math.exp(-z.abs());
 				
-				if (z.abs() > abs_cutoff)
+				if (z.abs() > escape_radius)
 				{
 					break;
 				}
@@ -453,8 +496,8 @@
 						//The index in the array of rgba values
 						let index = (4 * i * dim) + (4 * j);
 						
-						data[index] = 0;
-						data[index + 1] = brightness;
+						data[index] = brightness/3;
+						data[index + 1] = brightness/3;
 						data[index + 2] = brightness;
 						data[index + 3] = 255; //No transparency.
 					}
@@ -487,7 +530,7 @@
 		
 		
 		
-		web_worker.postMessage([a, b, dim, full_res_julia_iterations]);
+		web_worker.postMessage([a, b, dim, full_res_julia_iterations, code_string, box_size, exposure, escape_radius]);
 	}
 
 
@@ -507,13 +550,6 @@
 				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(64, 64, 64)";
 				document.querySelector("#julia-set").style.borderColor = "rgb(64, 64, 64)";
 			}
-		}
-		
-		
-		
-		if (currently_touch_device)
-		{
-			document.querySelector("#instructions").innerHTML = "Drag along the Mandelbrot set to preview the corresponding Julia set, and release to generate a higher-resolution image.";
 		}
 	}
 
