@@ -169,7 +169,7 @@ document.documentElement.addEventListener("mousedown", function()
 	document.activeElement.blur();
 });
 
-document.documentElement.addEventListener("touchstart", function()
+window.addEventListener("scroll", function()
 {
 	document.activeElement.blur();
 });
