@@ -1079,16 +1079,9 @@ function switch_text_size()
 	
 	setTimeout(function()
 	{
-		document.body.classList.add("animated-opacity");
-		
 		setTimeout(function()
 		{
 			document.body.style.opacity = 1;
-				
-			setTimeout(function()
-			{
-				document.body.classList.remove("animated-opacity");
-			}, 300);
 		}, 50);
 	}, 300);
 }
@@ -1101,7 +1094,6 @@ function switch_font()
 {
 	if (page_settings["writing_page"])
 	{
-		document.body.classList.add("animated-opacity");
 		document.body.style.opacity = 0;
 	}
 	
@@ -1154,16 +1146,9 @@ function switch_font()
 	{
 		setTimeout(function()
 		{
-			document.body.classList.add("animated-opacity");
-		
 			setTimeout(function()
 			{
 				document.body.style.opacity = 1;
-					
-				setTimeout(function()
-				{
-					document.body.classList.remove("animated-opacity");
-				}, 300);
 			}, 50);
 		}, 300);
 	}
@@ -1267,23 +1252,18 @@ function switch_content_animation()
 	if (url_vars["content_animation"] === 0)
 	{
 		//Here, we can just animate out the body as usual.	
-		document.body.classList.add("animated-opacity");
 		document.body.style.opacity = 0;
 		
 		setTimeout(function()
 		{
 			remove_animation();
 			
-			document.body.classList.remove("animated-opacity");
-			
-			
-			
 			document.body.classList.add("animated-opacity");
 		
 			setTimeout(function()
 			{
 				document.body.style.opacity = 1;
-					
+				
 				setTimeout(function()
 				{
 					document.body.classList.remove("animated-opacity");
@@ -1306,7 +1286,6 @@ function switch_content_animation()
 	
 	else
 	{
-		//Here, though, trying to animate the body causes problems. A more elegant solution is to use the html element itself.
 		url_vars["content_animation"] = 0;
 		
 		document.body.classList.add("animated-opacity");
@@ -1326,7 +1305,6 @@ function switch_content_animation()
 
 function switch_banner_style()
 {
-	document.body.classList.add("animated-opacity");
 	document.body.style.opacity = 0;
 	
 	setTimeout(function()
@@ -1396,16 +1374,9 @@ function switch_banner_style()
 		
 		
 		
-		document.body.classList.add("animated-opacity");
-		
 		setTimeout(function()
 		{
 			document.body.style.opacity = 1;
-				
-			setTimeout(function()
-			{
-				document.body.classList.remove("animated-opacity");
-			}, 300);
 		}, 50);
 	}, 300);
 }
