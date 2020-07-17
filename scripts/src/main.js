@@ -169,11 +169,6 @@ document.documentElement.addEventListener("mousedown", function()
 	document.activeElement.blur();
 });
 
-window.addEventListener("scroll", function()
-{
-	document.activeElement.blur();
-});
-
 
 
 
