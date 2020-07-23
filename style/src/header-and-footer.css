@@ -263,63 +263,6 @@
 
 
 
-
-/* The area where the user can hover or tap to reveal the footer anywhere. */
-#scroll-up-button-location
-{
-	position: fixed;
-	top: 0;
-	z-index: 140;
-	
-	height: 25px;
-	width: 100vw;
-}
-
-#scroll-up-button-container
-{
-	position: fixed;
-	top: 0;
-	
-	width: 100vw;
-	height: 75px;
-	
-	z-index: 130;
-}
-
-
-
-#scroll-up-button
-{
-	color: rgb(127, 127, 127);
-	background-color: rgb(255, 255, 255);
-	width: 20px;
-	height: 5px;
-	
-	margin-top: 25px;
-
-	border: 2px solid rgb(127, 127, 127);
-	border-radius: 10px;
-	padding: 10px;
-	
-	transition: filter .15s ease-in-out;
-	filter: brightness(100%);
-	
-	outline: none;
-}
-
-#scroll-up-button.hover
-{
-	filter: brightness(75%);
-}
-
-#scroll-up-button:not(:hover):focus
-{
-	filter: brightness(75%);
-	outline: none;
-}
-
-
-
 @media (max-width: 300px)
 {
 	#floating-settings

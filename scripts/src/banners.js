@@ -305,3 +305,10 @@ function add_scroll_button()
 		catch(ex) {}
 	}
 }
+
+
+
+function smooth_scroll_to(target_selector)
+{
+	document.querySelector(target_selector).scrollIntoView({behavior: "smooth"});
+}
