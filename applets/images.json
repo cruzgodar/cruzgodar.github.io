@@ -1,4 +1,10 @@
 {
+	"image-finite-subdivisions":
+	{
+		"webp": "finite-subdivisions/cover.webp",
+		"non-webp": "finite-subdivisions/cover.jpg"
+	},
+	
 	"image-generalized-julia-sets":
 	{
 		"webp": "generalized-julia-sets/cover.webp",
