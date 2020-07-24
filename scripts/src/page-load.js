@@ -37,6 +37,8 @@ function on_page_load()
 	
 	set_up_aos();
 	
+	setTimeout(aos_resize, 1000);
+	
 	
 	
 	if (page_settings["no_footer"] === false)
