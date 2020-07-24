@@ -26,13 +26,17 @@ let new_diffusive_mass = [];
 
 let on_boundary = [];
 
-let rho = .5;
+let cells_on_boundary = [];
+let cells_outside_flake = [];
+
+let rho = .38;
+let beta = 1.06;
+let alpha = .35;
+let theta = .112;
 let kappa = .001;
-let beta = 2.2;
-let alpha = .026;
-let theta = .2;
-let mu = .04;
-let gamma = .00001;
+let mu = .14;
+let gamma = .0006;
+let sigma = 0;
 
 let num_iterations = 10000;
 
@@ -72,29 +76,57 @@ function draw_snowflake()
 				new_diffusive_mass[i].push(0);
 				
 				on_boundary[i].push(0);
+				
+				cells_outside_flake.push([i, j]);
 			}
 		}
 		
 		let middle_row = Math.floor(grid_size / 2);
 		
-		attachment_flag[middle_row][middle_row] = 1;
+		add_cell_to_flake(middle_row, middle_row);
 		crystal_mass[middle_row][middle_row] = 1;
 		diffusive_mass[middle_row][middle_row] = 0;
 		
 		
 		
+		let step_times = [0, 0, 0, 0, 0, 0];
+		
+		
+		
 		for (let iteration = 0; iteration < num_iterations; iteration++)
 		{
-			update_boundary();
+			let start_time = Date.now();
 			
 			evaluate_diffusion_step();
 			
+			step_times[1] += Date.now() - start_time;
+			start_time = Date.now();
+			
 			evaluate_freezing_step();
 			
+			step_times[2] += Date.now() - start_time;
+			start_time = Date.now();
+			
 			evaluate_attachment_step();
+			
+			step_times[3] += Date.now() - start_time;
+			start_time = Date.now();
+			
+			evaluate_melting_step();
+			
+			step_times[4] += Date.now() - start_time;
+			start_time = Date.now();
+			
+			evaluate_noise_step();
+			
+			step_times[5] += Date.now() - start_time;
+			start_time = Date.now();
+			
+			if (iteration % 25 === 0)
+			{
+				postMessage([crystal_mass]);
+			}
 		}
-		
-		
 		
 		resolve();
 	});
@@ -102,50 +134,88 @@ function draw_snowflake()
 
 
 
-function update_boundary()
+function add_cell_to_flake(row, col)
 {
-	for (let i = 0; i < grid_size; i++)
+	attachment_flag[row][col] = 1;
+	
+	if (on_boundary[row + 1][col] === 0)
 	{
-		for (let j = 0; j < grid_size; j++)
+		on_boundary[row + 1][col] = 1;
+		cells_on_boundary.push([row + 1, col]);
+	}
+	
+	if (on_boundary[row - 1][col] === 0)
+	{
+		on_boundary[row - 1][col] = 1;
+		cells_on_boundary.push([row - 1, col]);
+	}
+	
+	if (on_boundary[row][col + 1] === 0)
+	{
+		on_boundary[row][col + 1] = 1;
+		cells_on_boundary.push([row, col + 1]);
+	}
+	
+	if (on_boundary[row][col - 1] === 0)
+	{
+		on_boundary[row][col - 1] = 1;
+		cells_on_boundary.push([row, col - 1]);
+	}
+	
+	if (col % 2 === 0)
+	{
+		if (on_boundary[row - 1][col - 1] === 0)
 		{
-			on_boundary[i][j] = 0;
+			on_boundary[row - 1][col - 1] = 1;
+			cells_on_boundary.push([row - 1, col - 1]);
+		}
+		
+		if (on_boundary[row - 1][col + 1] === 0)
+		{
+			on_boundary[row - 1][col + 1] = 1;
+			cells_on_boundary.push([row - 1, col + 1]);
 		}
 	}
 	
-	for (let i = 0; i < grid_size; i++)
+	else
 	{
-		for (let j = 0; j < grid_size; j++)
+		if (on_boundary[row + 1][col - 1] === 0)
 		{
-			if (attachment_flag[i][j] === 1)
+			on_boundary[row + 1][col - 1] = 1;
+			cells_on_boundary.push([row + 1, col - 1]);
+		}
+		
+		if (on_boundary[row + 1][col + 1] === 0)
+		{
+			on_boundary[row + 1][col + 1] = 1;
+			cells_on_boundary.push([row + 1, col + 1]);
+		}
+	}
+	
+	
+	
+	if (on_boundary[row][col] === 1)
+	{
+		on_boundary[row][col] = 0;
+		
+		for (let i = 0; i < cells_on_boundary.length; i++)
+		{
+			if (cells_on_boundary[i] === [row, col])
 			{
-				on_boundary[i + 1][j] = 1;
-				on_boundary[i - 1][j] = 1;
-				
-				on_boundary[i][j + 1] = 1;
-				on_boundary[i][j - 1] = 1;
-				
-				if (j % 2 === 0)
-				{
-					on_boundary[i - 1][j + 1] = 1;
-					on_boundary[i - 1][j - 1] = 1;
-				}
-				
-				else
-				{
-					on_boundary[i + 1][j + 1] = 1;
-					on_boundary[i + 1][j - 1] = 1;
-				}
+				cells_on_boundary.splice(i, 1);
+				break;
 			}
 		}
 	}
 	
-	for (let i = 0; i < grid_size; i++)
+	else
 	{
-		for (let j = 0; j < grid_size; j++)
+		for (let i = 0; i < cells_outside_flake.length; i++)
 		{
-			if (attachment_flag[i][j] === 1)
+			if (cells_outside_flake[i] === [row, col])
 			{
-				on_boundary[i][j] = 0;
+				cells_outside_flake.splice(i, 1);
+				break;
 			}
 		}
 	}
@@ -153,58 +223,62 @@ function update_boundary()
 
 
 
-//Step 1: diffusion
 function evaluate_diffusion_step()
 {
-	for (let i = 0; i < grid_size; i++)
+	for (let i = 0; i < cells_outside_flake.length; i++)
 	{
-		for (let j = 0; j < grid_size; j++)
+		let row = cells_outside_flake[i][0];
+		let col = cells_outside_flake[i][1];
+	
+		if (row === 0 || col === 0 || row === grid_size - 1 || col === grid_size - 1)
 		{
-			if (i === 0 || j == 0 || i === grid_size - 1 || j === grid_size - 1)
+			continue;
+		}
+		
+	
+		let neighbors = get_neighbors(row, col, true);
+		
+		let total_neighbor_diffusive_mass = 0;
+		
+		for (let j = 0; j < 7; j++)
+		{
+			total_neighbor_diffusive_mass += diffusive_mass[neighbors[j][0]][neighbors[j][1]];
+		}
+		
+		new_diffusive_mass[row][col] = total_neighbor_diffusive_mass / 7;
+	}
+	
+	
+	
+	for (let i = 0; i < cells_on_boundary.length; i++)
+	{
+		let row = cells_on_boundary[i][0];
+		let col = cells_on_boundary[i][1];
+	
+		if (row === 0 || col === 0 || row === grid_size - 1 || col === grid_size - 1)
+		{
+			continue;
+		}
+		
+	
+		let neighbors = get_neighbors(row, col, true);
+		
+		let total_neighbor_diffusive_mass = 0;
+		
+		for (let j = 0; j < 7; j++)
+		{
+			if (attachment_flag[neighbors[j][0]][neighbors[j][1]] === 1)
 			{
-				continue;
+				total_neighbor_diffusive_mass += diffusive_mass[row][col];
 			}
 			
-			
-			
-			if (attachment_flag[i][j] === 0 && on_boundary[i][j] === 0)
+			else
 			{
-				let neighbors = get_neighbors(i, j, true);
-				
-				let total_neighbor_diffusive_mass = 0;
-				
-				for (let k = 0; k < 7; k++)
-				{
-					total_neighbor_diffusive_mass += diffusive_mass[neighbors[k][0]][neighbors[k][1]];
-				}
-				
-				new_diffusive_mass[i][j] = total_neighbor_diffusive_mass / 7;
-			}
-			
-			
-			
-			else if (on_boundary[i][j] === 1)
-			{
-				let neighbors = get_neighbors(i, j, true);
-				
-				let total_neighbor_diffusive_mass = 0;
-				
-				for (let k = 0; k < 7; k++)
-				{
-					if (attachment_flag[neighbors[k][0]][neighbors[k][1]] === 1)
-					{
-						total_neighbor_diffusive_mass += diffusive_mass[i][j];
-					}
-					
-					else
-					{
-						total_neighbor_diffusive_mass += diffusive_mass[neighbors[k][0]][neighbors[k][1]];
-					}
-				}
-				
-				new_diffusive_mass[i][j] = total_neighbor_diffusive_mass / 7;
+				total_neighbor_diffusive_mass += diffusive_mass[neighbors[j][0]][neighbors[j][1]];
 			}
 		}
+		
+		new_diffusive_mass[row][col] = total_neighbor_diffusive_mass / 7;
 	}
 	
 	
@@ -216,26 +290,22 @@ function evaluate_diffusion_step()
 
 function evaluate_freezing_step()
 {
-	for (let i = 0; i < grid_size; i++)
+	for (let i = 0; i < cells_on_boundary.length; i++)
 	{
-		for (let j = 0; j < grid_size; j++)
+		let row = cells_on_boundary[i][0];
+		let col = cells_on_boundary[i][1];
+	
+		if (row === 0 || col === 0 || row === grid_size - 1 || col === grid_size - 1)
 		{
-			if (i === 0 || j == 0 || i === grid_size - 1 || j === grid_size - 1)
-			{
-				continue;
-			}
-			
-			
-			
-			if (on_boundary[i][j] === 1)
-			{
-				new_boundary_mass[i][j] = boundary_mass[i][j] + (1 - kappa) * diffusive_mass[i][j];
-				
-				new_crystal_mass[i][j] = crystal_mass[i][j] + kappa * diffusive_mass[i][j];
-				
-				new_diffusive_mass[i][j] = 0;
-			}
+			continue;
 		}
+		
+	
+		new_boundary_mass[row][col] = boundary_mass[row][col] + (1 - kappa) * diffusive_mass[row][col];
+		
+		new_crystal_mass[row][col] = crystal_mass[row][col] + kappa * diffusive_mass[row][col];
+		
+		new_diffusive_mass[i][j] = 0;
 	}
 	
 	
@@ -247,27 +317,137 @@ function evaluate_freezing_step()
 
 function evaluate_attachment_step()
 {
-	for (let i = 0; i < grid_size; i++)
+	for (let i = 0; i < cells_on_boundary.length; i++)
 	{
-		for (let j = 0; j < grid_size; j++)
+		let row = cells_on_boundary[i][0];
+		let col = cells_on_boundary[i][1];
+	
+		if (row === 0 || col === 0 || row === grid_size - 1 || col === grid_size - 1)
 		{
-			if (i === 0 || j == 0 || i === grid_size - 1 || j === grid_size - 1)
+			continue;
+		}
+		
+	
+		let num_attached_neighbors = 0;
+		
+		let neighbors = get_neighbors(row, col, false);
+		
+		for (let j = 0; j < 6; j++)
+		{
+			if (attachment_flag[neighbors[j][0]][neighbors[j][1]] === 1)
+			{
+				num_attached_neighbors++;
+			}
+		}
+		
+		
+		
+		if (num_attached_neighbors === 1 || num_attached_neighbors === 2)
+		{
+			if (boundary_mass[row][col] >= beta)
+			{
+				new_attachment_flag[row][col] = 1;
+			}
+		}
+		
+		
+		
+		else if (num_attached_neighbors === 3)
+		{
+			if (boundary_mass[row][col] >= 1)
+			{
+				new_attachment_flag[row][col] = 1;
+			}
+			
+			else if (boundary_mass[row][col] >= alpha)
+			{
+				let total_neighbor_diffusive_mass = 0;
+				
+				for (let j = 0; j < 7; j++)
+				{
+					total_neighbor_diffusive_mass += diffusive_mass[neighbors[j][0]][neighbors[j][1]];
+				}
+				
+				if (total_neighbor_diffusive_mass < theta && boundary_mass[row][col] >= alpha)
+				{
+					new_attachment_flag[row][col] = 1;
+				}
+			}
+		}
+		
+		
+		
+		else if (num_attached_neighbors >= 4)
+		{
+			new_attachment_flag[row][col] = 1;
+		}
+		
+		
+		
+		if (new_attachment_flag[row][col] === 1)
+		{
+			new_crystal_mass[row][col] = boundary_mass[row][col] + crystal_mass[row][col];
+			
+			//Typo?
+			new_boundary_mass[row][col] = 0;
+		}
+	}
+	
+	
+	
+	update_values();
+}
+
+
+
+function evaluate_melting_step()
+{
+	for (let i = 0; i < cells_on_boundary.length; i++)
+	{
+		let row = cells_on_boundary[i][0];
+		let col = cells_on_boundary[i][1];
+	
+		if (row === 0 || col === 0 || row === grid_size - 1 || col === grid_size - 1)
+		{
+			continue;
+		}
+		
+	
+		new_boundary_mass[row][col] = (1 - mu) * boundary_mass[row][col];
+		
+		new_crystal_mass[row][col] = (1 - gamma) * crystal_mass[row][col];
+		
+		new_diffusive_mass[row][col] = diffusive_mass[row][col] + mu * boundary_mass[row][col] + gamma * crystal_mass[row][col];
+	}
+	
+	
+	
+	update_values();
+}
+
+
+
+function evaluate_noise_step()
+{
+	for (let row = 0; row < grid_size; row++)
+	{
+		for (let col = 0; col < grid_size; col++)
+		{
+			if (row === 0 || col === 0 || row === grid_size - 1 || col === grid_size - 1)
 			{
 				continue;
 			}
 			
 			
 			
-			let num_attached_neighbors = 0;
-			
-			let neighbors = get_neighbors(i, j, true);
-			
-			for (let k = 0; k < 7; k++)
+			if (Math.random() < .5)
 			{
-				if (attachment_flag[neighbors[k][0]][neighbors[k][1]] === 1)
-				{
-					num_attached_neighbors++;
-				}
+				new_diffusive_mass[row][col] = (1 + sigma) * diffusive_mass[row][col];
+			}
+			
+			else
+			{
+				new_diffusive_mass[row][col] = (1 - sigma) * diffusive_mass[row][col];
 			}
 		}
 	}
@@ -281,14 +461,18 @@ function evaluate_attachment_step()
 
 function update_values()
 {
-	for (let i = 0; i < grid_size; i++)
+	for (let row = 0; row < grid_size; row++)
 	{
-		for (let j = 0; j < grid_size; j++)
+		for (let col = 0; col < grid_size; col++)
 		{
-			attachment_flag[i][j] = new_attachment_flag[i][j];
-			boundary_mass[i][j] = new_boundary_mass[i][j];
-			crystal_mass[i][j] = new_crystal_mass[i][j];
-			diffusive_mass[i][j] = new_diffusive_mass[i][j];
+			if (attachment_flag[row][col] === 0 && new_attachment_flag[row][col] === 1)
+			{
+				add_cell_to_flake(row, col);
+			}
+			
+			boundary_mass[row][col] = new_boundary_mass[row][col];
+			crystal_mass[row][col] = new_crystal_mass[row][col];
+			diffusive_mass[row][col] = new_diffusive_mass[row][col];
 		}
 	}
 }

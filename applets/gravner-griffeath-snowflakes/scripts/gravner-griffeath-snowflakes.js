@@ -14,7 +14,7 @@
 	
 	
 	
-	document.querySelector("#generate-button").addEventListener("click", request_finite_subdivisions);
+	document.querySelector("#generate-button").addEventListener("click", request_snowflake);
 	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
@@ -24,15 +24,15 @@
 	
 	function request_snowflake()
 	{
-		let grid_size = 1000;
+		let grid_size = 100;
 		
 		
 		
-		document.querySelector("#output-canvas").setAttribute("width", grid_size);
-		document.querySelector("#output-canvas").setAttribute("height", grid_size);
+		document.querySelector("#output-canvas").setAttribute("width", 2 * grid_size);
+		document.querySelector("#output-canvas").setAttribute("height", 2 * grid_size);
 		
 		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, grid_size, grid_size);
+		ctx.fillRect(0, 0, 2 * grid_size, 2 * grid_size);
 		
 		
 		
@@ -55,9 +55,33 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			ctx.fillStyle = e.data[2];
+			console.log(e.data);
 			
-			ctx.fillRect(e.data[1], e.data[0], 1, 1);
+			//Copy this array into the canvas like an image.
+			let img_data = ctx.getImageData(0, 0, grid_size, grid_size);
+			let data = img_data.data;
+			
+			for (let i = 0; i < grid_size; i++)
+			{
+				for (let j = 0; j < grid_size; j++)
+				{
+					let brightness = e.data[0][i][j] * 200;
+					
+					ctx.fillStyle = `rgb(${brightness}, ${brightness}, ${brightness})`;
+					
+					if (j % 2 === 0)
+					{
+						ctx.fillRect(2 * i, 2 * j, 2, 2);
+					}
+					
+					else
+					{
+						ctx.fillRect(2 * i + 1, 2 * j, 2, 2);
+					}
+				}
+			}
+			
+			ctx.putImageData(img_data, 0, 0);
 		}
 		
 		
