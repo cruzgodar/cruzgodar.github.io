@@ -24,7 +24,7 @@
 	
 	function request_snowflake()
 	{
-		let grid_size = 100;
+		let grid_size = 200;
 		
 		
 		
@@ -55,17 +55,23 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			console.log(e.data);
-			
-			//Copy this array into the canvas like an image.
-			let img_data = ctx.getImageData(0, 0, grid_size, grid_size);
-			let data = img_data.data;
+			if (e.data[0] === "log")
+			{
+				console.log(e.data);
+				
+				return;
+			}
 			
 			for (let i = 0; i < grid_size; i++)
 			{
 				for (let j = 0; j < grid_size; j++)
 				{
-					let brightness = e.data[0][i][j] * 200;
+					let brightness = e.data[0][i][j] * 50;
+					
+					if (brightness === 0)
+					{
+						continue;
+					}
 					
 					ctx.fillStyle = `rgb(${brightness}, ${brightness}, ${brightness})`;
 					
@@ -80,8 +86,6 @@
 					}
 				}
 			}
-			
-			ctx.putImageData(img_data, 0, 0);
 		}
 		
 		

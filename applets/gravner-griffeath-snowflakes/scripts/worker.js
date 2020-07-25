@@ -29,13 +29,13 @@ let on_boundary = [];
 let cells_on_boundary = [];
 let cells_outside_flake = [];
 
-let rho = .38;
-let beta = 1.06;
-let alpha = .35;
-let theta = .112;
-let kappa = .001;
-let mu = .14;
-let gamma = .0006;
+let rho = .5;
+let beta = 1.3;
+let alpha = .08;
+let theta = .025;
+let kappa = .003;
+let mu = .07;
+let gamma = .00005;
 let sigma = 0;
 
 let num_iterations = 10000;
@@ -122,9 +122,12 @@ function draw_snowflake()
 			step_times[5] += Date.now() - start_time;
 			start_time = Date.now();
 			
-			if (iteration % 25 === 0)
+			
+			postMessage([crystal_mass]);
+			
+			if (iteration % 100 === 0)
 			{
-				postMessage([crystal_mass]);
+				postMessage(["log", step_times]);
 			}
 		}
 		
@@ -225,6 +228,7 @@ function add_cell_to_flake(row, col)
 
 function evaluate_diffusion_step()
 {
+	//So this is the most time-intensive step, since it requires doing operations on all the non-flake cells, which is a ton. A faster and nearly as good option is to only consider cells within a certain distance of the snowflake.
 	for (let i = 0; i < cells_outside_flake.length; i++)
 	{
 		let row = cells_outside_flake[i][0];
@@ -305,7 +309,7 @@ function evaluate_freezing_step()
 		
 		new_crystal_mass[row][col] = crystal_mass[row][col] + kappa * diffusive_mass[row][col];
 		
-		new_diffusive_mass[i][j] = 0;
+		new_diffusive_mass[row][col] = 0;
 	}
 	
 	
@@ -327,12 +331,13 @@ function evaluate_attachment_step()
 			continue;
 		}
 		
+		
 	
 		let num_attached_neighbors = 0;
 		
-		let neighbors = get_neighbors(row, col, false);
+		let neighbors = get_neighbors(row, col, true);
 		
-		for (let j = 0; j < 6; j++)
+		for (let j = 0; j < 7; j++)
 		{
 			if (attachment_flag[neighbors[j][0]][neighbors[j][1]] === 1)
 			{
@@ -429,6 +434,11 @@ function evaluate_melting_step()
 
 function evaluate_noise_step()
 {
+	if (sigma === 0)
+	{
+		return;
+	}
+	
 	for (let row = 0; row < grid_size; row++)
 	{
 		for (let col = 0; col < grid_size; col++)
