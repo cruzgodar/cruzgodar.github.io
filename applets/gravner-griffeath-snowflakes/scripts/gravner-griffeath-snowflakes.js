@@ -24,7 +24,15 @@
 	
 	function request_snowflake()
 	{
-		let grid_size = 200;
+		let grid_size = parseInt(document.querySelector("#grid-size-input").value || 200);
+		
+		let rho = parseFloat(document.querySelector("#rho-input").value || .5);
+		let beta = parseFloat(document.querySelector("#beta-input").value || 1.3);
+		let alpha = parseFloat(document.querySelector("#alpha-input").value || .08);
+		let theta = parseFloat(document.querySelector("#theta-input").value || .025);
+		let kappa = parseFloat(document.querySelector("#kappa-input").value || .003);
+		let mu = parseFloat(document.querySelector("#mu-input").value || .07);
+		let gamma = parseFloat(document.querySelector("#gamma-input").value || .00005);
 		
 		
 		
@@ -62,35 +70,78 @@
 				return;
 			}
 			
+			let img_data = ctx.getImageData(0, 0, 2 * grid_size, 2 * grid_size);
+			let data = img_data.data;
+			
 			for (let i = 0; i < grid_size; i++)
 			{
 				for (let j = 0; j < grid_size; j++)
 				{
-					let brightness = e.data[0][i][j] * 50;
+					let brightness = e.data[0][j][i] * 96;
 					
 					if (brightness === 0)
 					{
 						continue;
 					}
 					
-					ctx.fillStyle = `rgb(${brightness}, ${brightness}, ${brightness})`;
-					
 					if (j % 2 === 0)
 					{
-						ctx.fillRect(2 * i, 2 * j, 2, 2);
+						let index = (4 * (2 * i) * 2 * grid_size) + (4 * (2 * j));
+						
+						data[index] = brightness;
+						data[index + 1] = brightness;
+						data[index + 2] = brightness;
+						data[index + 3] = 255;
+						data[index + 4] = brightness;
+						data[index + 5] = brightness;
+						data[index + 6] = brightness;
+						data[index + 7] = 255;
+						
+						index = (4 * (2 * i + 1) * 2 * grid_size) + (4 * (2 * j));
+						
+						data[index] = brightness;
+						data[index + 1] = brightness;
+						data[index + 2] = brightness;
+						data[index + 3] = 255;
+						data[index + 4] = brightness;
+						data[index + 5] = brightness;
+						data[index + 6] = brightness;
+						data[index + 7] = 255;
 					}
 					
 					else
 					{
-						ctx.fillRect(2 * i + 1, 2 * j, 2, 2);
+						let index = (4 * (2 * i + 1) * 2 * grid_size) + (4 * (2 * j));
+						
+						data[index] = brightness;
+						data[index + 1] = brightness;
+						data[index + 2] = brightness;
+						data[index + 3] = 255;
+						data[index + 4] = brightness;
+						data[index + 5] = brightness;
+						data[index + 6] = brightness;
+						data[index + 7] = 255;
+						
+						index = (4 * (2 * i + 2) * 2 * grid_size) + (4 * (2 * j));
+						
+						data[index] = brightness;
+						data[index + 1] = brightness;
+						data[index + 2] = brightness;
+						data[index + 3] = 255;
+						data[index + 4] = brightness;
+						data[index + 5] = brightness;
+						data[index + 6] = brightness;
+						data[index + 7] = 255;
 					}
 				}
 			}
+			
+			ctx.putImageData(img_data, 0, 0);
 		}
 		
 		
 		
-		web_worker.postMessage([grid_size]);
+		web_worker.postMessage([grid_size, rho, beta, alpha, theta, kappa, mu, gamma]);
 	}
 	
 	

@@ -6,6 +6,14 @@ onmessage = async function(e)
 {
 	grid_size = e.data[0];
 	
+	rho = e.data[1];
+	beta = e.data[2];
+	alpha = e.data[3];
+	theta = e.data[4];
+	kappa = e.data[5];
+	mu = e.data[6];
+	gamma = e.data[7];
+	
 	await draw_snowflake();
 }
 
@@ -29,16 +37,17 @@ let on_boundary = [];
 let cells_on_boundary = [];
 let cells_outside_flake = [];
 
-let rho = .5;
-let beta = 1.3;
-let alpha = .08;
-let theta = .025;
-let kappa = .003;
-let mu = .07;
-let gamma = .00005;
+let rho = .5 * (.5 + Math.random());
+let beta = 1.3 * (.5 + Math.random());
+let alpha = .08 * (.5 + Math.random());
+let theta = .025 * (.5 + Math.random());
+let kappa = .003 * (.5 + Math.random());
+let mu = .07 * (.5 + Math.random());
+let gamma = .00005 * (.5 + Math.random());
 let sigma = 0;
 
-let num_iterations = 10000;
+let max_distance = 0;
+let terminate = false;
 
 
 
@@ -89,45 +98,23 @@ function draw_snowflake()
 		
 		
 		
-		let step_times = [0, 0, 0, 0, 0, 0];
-		
-		
-		
-		for (let iteration = 0; iteration < num_iterations; iteration++)
+		while (true)
 		{
-			let start_time = Date.now();
-			
 			evaluate_diffusion_step();
-			
-			step_times[1] += Date.now() - start_time;
-			start_time = Date.now();
 			
 			evaluate_freezing_step();
 			
-			step_times[2] += Date.now() - start_time;
-			start_time = Date.now();
-			
 			evaluate_attachment_step();
-			
-			step_times[3] += Date.now() - start_time;
-			start_time = Date.now();
 			
 			evaluate_melting_step();
 			
-			step_times[4] += Date.now() - start_time;
-			start_time = Date.now();
-			
 			evaluate_noise_step();
 			
-			step_times[5] += Date.now() - start_time;
-			start_time = Date.now();
+			post_edgeless_crystal_mass();
 			
-			
-			postMessage([crystal_mass]);
-			
-			if (iteration % 100 === 0)
+			if (terminate)
 			{
-				postMessage(["log", step_times]);
+				break;
 			}
 		}
 		
@@ -140,26 +127,27 @@ function draw_snowflake()
 function add_cell_to_flake(row, col)
 {
 	attachment_flag[row][col] = 1;
+	new_attachment_flag[row][col] = 0;
 	
-	if (on_boundary[row + 1][col] === 0)
+	if (on_boundary[row + 1][col] === 0 && attachment_flag[row + 1][col] === 0 && new_attachment_flag[row + 1][col] === 0)
 	{
 		on_boundary[row + 1][col] = 1;
 		cells_on_boundary.push([row + 1, col]);
 	}
 	
-	if (on_boundary[row - 1][col] === 0)
+	if (on_boundary[row - 1][col] === 0 && attachment_flag[row - 1][col] === 0 && new_attachment_flag[row - 1][col] === 0)
 	{
 		on_boundary[row - 1][col] = 1;
 		cells_on_boundary.push([row - 1, col]);
 	}
 	
-	if (on_boundary[row][col + 1] === 0)
+	if (on_boundary[row][col + 1] === 0 && attachment_flag[row][col + 1] === 0 && new_attachment_flag[row][col + 1] === 0)
 	{
 		on_boundary[row][col + 1] = 1;
 		cells_on_boundary.push([row, col + 1]);
 	}
 	
-	if (on_boundary[row][col - 1] === 0)
+	if (on_boundary[row][col - 1] === 0 && attachment_flag[row][col - 1] === 0 && new_attachment_flag[row][col - 1] === 0)
 	{
 		on_boundary[row][col - 1] = 1;
 		cells_on_boundary.push([row, col - 1]);
@@ -167,13 +155,13 @@ function add_cell_to_flake(row, col)
 	
 	if (col % 2 === 0)
 	{
-		if (on_boundary[row - 1][col - 1] === 0)
+		if (on_boundary[row - 1][col - 1] === 0 && attachment_flag[row - 1][col - 1] === 0 && new_attachment_flag[row - 1][col - 1] === 0)
 		{
 			on_boundary[row - 1][col - 1] = 1;
 			cells_on_boundary.push([row - 1, col - 1]);
 		}
 		
-		if (on_boundary[row - 1][col + 1] === 0)
+		if (on_boundary[row - 1][col + 1] === 0 && attachment_flag[row - 1][col + 1] === 0 && new_attachment_flag[row - 1][col + 1] === 0)
 		{
 			on_boundary[row - 1][col + 1] = 1;
 			cells_on_boundary.push([row - 1, col + 1]);
@@ -182,13 +170,13 @@ function add_cell_to_flake(row, col)
 	
 	else
 	{
-		if (on_boundary[row + 1][col - 1] === 0)
+		if (on_boundary[row + 1][col - 1] === 0 && attachment_flag[row + 1][col - 1] === 0 && new_attachment_flag[row + 1][col - 1] === 0)
 		{
 			on_boundary[row + 1][col - 1] = 1;
 			cells_on_boundary.push([row + 1, col - 1]);
 		}
 		
-		if (on_boundary[row + 1][col + 1] === 0)
+		if (on_boundary[row + 1][col + 1] === 0 && attachment_flag[row + 1][col + 1] === 0 && new_attachment_flag[row + 1][col + 1] === 0)
 		{
 			on_boundary[row + 1][col + 1] = 1;
 			cells_on_boundary.push([row + 1, col + 1]);
@@ -203,9 +191,10 @@ function add_cell_to_flake(row, col)
 		
 		for (let i = 0; i < cells_on_boundary.length; i++)
 		{
-			if (cells_on_boundary[i] === [row, col])
+			if (cells_on_boundary[i][0] === row && cells_on_boundary[i][1] === col)
 			{
 				cells_on_boundary.splice(i, 1);
+				
 				break;
 			}
 		}
@@ -215,11 +204,23 @@ function add_cell_to_flake(row, col)
 	{
 		for (let i = 0; i < cells_outside_flake.length; i++)
 		{
-			if (cells_outside_flake[i] === [row, col])
+			if (cells_outside_flake[i][0] === row && cells_outside_flake[i][1] === col)
 			{
 				cells_outside_flake.splice(i, 1);
 				break;
 			}
+		}
+	}
+	
+	
+	
+	if (row - (grid_size / 2) > max_distance)
+	{
+		max_distance = row - (grid_size / 2);
+		
+		if (max_distance / (grid_size / 2) > .8)
+		{
+			terminate = true;
 		}
 	}
 }
@@ -304,7 +305,8 @@ function evaluate_freezing_step()
 			continue;
 		}
 		
-	
+		
+		
 		new_boundary_mass[row][col] = boundary_mass[row][col] + (1 - kappa) * diffusive_mass[row][col];
 		
 		new_crystal_mass[row][col] = crystal_mass[row][col] + kappa * diffusive_mass[row][col];
@@ -417,6 +419,7 @@ function evaluate_melting_step()
 			continue;
 		}
 		
+		
 	
 		new_boundary_mass[row][col] = (1 - mu) * boundary_mass[row][col];
 		
@@ -485,6 +488,39 @@ function update_values()
 			diffusive_mass[row][col] = new_diffusive_mass[row][col];
 		}
 	}
+}
+
+
+
+function post_edgeless_crystal_mass()
+{
+	let edgeless_crystal_mass = JSON.parse(JSON.stringify(crystal_mass));
+	
+	for (let i = 0; i < cells_on_boundary.length; i++)
+	{
+		let row = cells_on_boundary[i][0];
+		let col = cells_on_boundary[i][1];
+		
+		edgeless_crystal_mass[row + 1][col] *= 1.5;
+		edgeless_crystal_mass[row - 1][col] *= 1.5;
+		
+		edgeless_crystal_mass[row][col + 1] *= 1.5;
+		edgeless_crystal_mass[row][col - 1] *= 1.5;
+		
+		if (col % 2 === 0)
+		{
+			edgeless_crystal_mass[row - 1][col + 1] *= 1.5;
+			edgeless_crystal_mass[row - 1][col - 1] *= 1.5;
+		}
+		
+		else
+		{
+			edgeless_crystal_mass[row + 1][col + 1] *= 1.5;
+			edgeless_crystal_mass[row + 1][col - 1] *= 1.5;
+		}
+	}
+	
+	postMessage([edgeless_crystal_mass]);
 }
 
 

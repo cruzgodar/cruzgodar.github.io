@@ -1,4 +1,10 @@
 {
+	"image-gravner-griffeath-snowflakes":
+	{
+		"webp": "gravner-griffeath-snowflakes/cover.webp",
+		"non-webp": "gravner-griffeath-snowflakes/cover.jpg"
+	},
+	
 	"image-finite-subdivisions":
 	{
 		"webp": "finite-subdivisions/cover.webp",
