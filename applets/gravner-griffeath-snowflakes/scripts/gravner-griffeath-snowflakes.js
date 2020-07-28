@@ -16,9 +16,24 @@
 	
 	document.querySelector("#generate-button").addEventListener("click", request_snowflake);
 	
+	document.querySelector("#randomize-parameters-button").addEventListener("click", randomize_parameters);
+	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
 	
+	
+	
+	
+	function randomize_parameters()
+	{
+		document.querySelector("#rho-input").value = .9 * (Math.random() + .5);
+		document.querySelector("#beta-input").value = 1.6 * (Math.random() + .5);
+		document.querySelector("#alpha-input").value = .4 * (Math.random() + .5);
+		document.querySelector("#theta-input").value = .025 * (Math.random() + .5);
+		document.querySelector("#kappa-input").value = .0025 * (Math.random() + .5);
+		document.querySelector("#mu-input").value = .015 * (Math.random() + .5);
+		document.querySelector("#gamma-input").value = .0005 * (Math.random() + .5);
+	}
 	
 	
 	
@@ -26,13 +41,13 @@
 	{
 		let grid_size = parseInt(document.querySelector("#grid-size-input").value || 200);
 		
-		let rho = parseFloat(document.querySelector("#rho-input").value || .5);
-		let beta = parseFloat(document.querySelector("#beta-input").value || 1.3);
-		let alpha = parseFloat(document.querySelector("#alpha-input").value || .08);
+		let rho = parseFloat(document.querySelector("#rho-input").value || .635);
+		let beta = parseFloat(document.querySelector("#beta-input").value || 1.6);
+		let alpha = parseFloat(document.querySelector("#alpha-input").value || .4);
 		let theta = parseFloat(document.querySelector("#theta-input").value || .025);
-		let kappa = parseFloat(document.querySelector("#kappa-input").value || .003);
-		let mu = parseFloat(document.querySelector("#mu-input").value || .07);
-		let gamma = parseFloat(document.querySelector("#gamma-input").value || .00005);
+		let kappa = parseFloat(document.querySelector("#kappa-input").value || .0025);
+		let mu = parseFloat(document.querySelector("#mu-input").value || .015);
+		let gamma = parseFloat(document.querySelector("#gamma-input").value || .0005);
 		
 		
 		
@@ -77,7 +92,7 @@
 			{
 				for (let j = 0; j < grid_size; j++)
 				{
-					let brightness = e.data[0][j][i] * 96;
+					let brightness = e.data[0][j][i] * 127;
 					
 					if (brightness === 0)
 					{
