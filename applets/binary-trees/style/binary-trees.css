@@ -1,0 +1,84 @@
+.text-box-row
+{
+	width: 250px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	
+	transition: opacity .3s ease-in-out;
+	
+	opacity: 0;
+	pointer-events: none;
+}
+
+
+
+#binary-trees-plot
+{
+	position: absolute;
+	
+	width: 80vmin;
+	height: 80vmin;
+	margin: 0 auto;
+	
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 15px;
+	padding: 2px;
+	
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+#branch-selector
+{
+	position: absolute;
+	
+	width: 80vmin;
+	height: 80vmin;
+	margin: 0 auto;
+	
+	border: 2px solid rgba(0, 0, 0, 0);
+	border-radius: 15px;
+	padding: 2px;
+	
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+.branch-marker
+{
+	position: absolute;
+	
+	width: 40px;
+	height: 40px;
+	
+	left: 0;
+	top: 0;
+	
+	background-color: rgb(255, 255, 255);
+	border: 2px solid rgb(0, 0, 0);
+	border-radius: 50%;
+	
+	touch-action: none;
+	user-select: none;
+	-webkit-user-select: none;
+	
+	cursor: pointer;
+	
+	transition: background-color .15s ease-in-out, opacity .3s ease-in-out;
+}
+
+.branch-marker:active
+{
+	background-color: rgb(127, 127, 127);
+}
+
+
+
+@media (max-aspect-ratio: 9/16), (max-width: 700px)
+{
+	.text-box-row
+	{
+		width: 225px;
+	}
+}

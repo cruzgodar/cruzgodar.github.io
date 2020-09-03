@@ -1,4 +1,10 @@
 {
+	"image-binary-trees":
+	{
+		"webp": "binary-trees/cover.webp",
+		"non-webp": "binary-trees/cover.jpg"
+	},
+	
 	"image-gravner-griffeath-snowflakes":
 	{
 		"webp": "gravner-griffeath-snowflakes/cover.webp",
