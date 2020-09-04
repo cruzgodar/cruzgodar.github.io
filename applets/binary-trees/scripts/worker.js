@@ -17,7 +17,7 @@ onmessage = async function(e)
 let root = [];
 let branch_points = [];
 
-let num_animated_iterations = 12;
+let num_animated_iterations = 10;
 
 
 
