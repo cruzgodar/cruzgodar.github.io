@@ -5,28 +5,13 @@
 	
 	
 	let grid_size = null;
+	let scaled_grid_size = null;
 	
 	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
 	
 	let web_worker = null;
 	
-	let image = [];
-	
-	let num_iterations = 1000000;
-	
-	let variations = [];
-	
-	let variation_weights = [];
-	
-	let variation_coefficients = [];
-	
-	let variation_colors = [];
-	
-	let gamma = 2.2;
-	
-	let symmetry = null;
-	
-	
+	const variations = [variation_sinusoidal, variation_spherical, variation_swirl, variation_horseshoe, variation_polar, variation_handkerchief, variation_heart, variation_disc, variation_spiral, variation_hyperbolic, variation_diamond, variation_ex, variation_julia];
 	
 	
 	
@@ -36,19 +21,28 @@
 	
 	
 	
+	
+	
 	function draw_fractal_flame()
 	{
-		grid_size = 1000;
+		scaled_grid_size = 500;
+		grid_size = scaled_grid_size * 3;
 		
-		document.querySelector("#output-canvas").setAttribute("width", grid_size);
-		document.querySelector("#output-canvas").setAttribute("height", grid_size);
+		document.querySelector("#output-canvas").setAttribute("width", scaled_grid_size);
+		document.querySelector("#output-canvas").setAttribute("height", scaled_grid_size);
 		
 		ctx.fillStyle = "rgb(0, 0, 0)";
 		ctx.fillRect(0, 0, grid_size, grid_size);
 		
 		
 		
-		image = [];
+		let num_iterations = 1000000;
+		
+		let gamma = 2.2;
+		
+		
+		
+		let image = [];
 		
 		for (let i = 0; i < grid_size; i++)
 		{
@@ -62,11 +56,28 @@
 		
 		
 		
-		variations = [variation_sinusoidal, variation_spherical, variation_swirl, variation_horseshoe, variation_polar, variation_handkerchief, variation_heart, variation_disc, variation_spiral, variation_hyperbolic, variation_diamond, variation_ex, variation_julia];
+		let scaled_image = [];
+		
+		for (let i = 0; i < scaled_grid_size; i++)
+		{
+			scaled_image.push([]);
+			
+			for (let j = 0; j < scaled_grid_size; j++)
+			{
+				scaled_image[i].push([0, 0, 0, 0]);
+			}
+		}
 		
 		
 		
-		variation_weights = [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+		let variation_weights = [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+		
+		for (let i = 0; i < variations.length; i++)
+		{
+			variation_weights[i] = Math.random();
+		}
+		
+		
 		
 		let variation_weight_sums = [variation_weights[0]];
 		
@@ -79,7 +90,7 @@
 		
 		
 		
-		variation_coefficients = [];
+		let variation_coefficients = [];
 		
 		for (let i = 0; i < variations.length; i++)
 		{
@@ -93,17 +104,16 @@
 		
 		
 		
-		variation_colors = [];
+		let variation_colors = [];
 		
 		for (let i = 0; i < variations.length; i++)
 		{
-			variation_colors.push([Math.random() * 128 + 127, Math.random() * 128 + 127, Math.random() * 128 + 127]);
+			variation_colors.push(HSVtoRGB(Math.random(), 1, Math.random() * .5 + .5));
 		}
 		
 		
 		
-		symmetry = Math.floor(Math.random() * 3) + 2;
-		console.log(symmetry);
+		let symmetry = Math.floor(Math.random() * 3) + 2;
 		
 		
 		
@@ -190,60 +200,75 @@
 			}
 		}
 		
-		let scale_factor = Math.log(max_alpha) / max_alpha;
+		
 		
 		for (let i = 0; i < grid_size; i++)
 		{
 			for (let j = 0; j < grid_size; j++)
 			{
-				image[i][j][0] *= scale_factor;
-				image[i][j][1] *= scale_factor;
-				image[i][j][2] *= scale_factor;
+				for (let k = 0; k < 4; k++)
+				{
+					scaled_image[Math.floor(i / 3)][Math.floor(j / 3)][k] += image[i][j][k] / 9;
+				}
+			}
+		}
+		
+		
+		
+		let scale_factor = Math.log(max_alpha) / max_alpha;
+		
+		for (let i = 0; i < scaled_grid_size; i++)
+		{
+			for (let j = 0; j < scaled_grid_size; j++)
+			{
+				scaled_image[i][j][0] *= scale_factor;
+				scaled_image[i][j][1] *= scale_factor;
+				scaled_image[i][j][2] *= scale_factor;
 			}
 		}
 		
 		let max_values = [0, 0, 0];
 		
-		for (let i = 0; i < grid_size; i++)
+		for (let i = 0; i < scaled_grid_size; i++)
 		{
-			for (let j = 0; j < grid_size; j++)
+			for (let j = 0; j < scaled_grid_size; j++)
 			{
 				for (let k = 0; k < 3; k++)
 				{
-					if (image[i][j][k] > max_values[k])
+					if (scaled_image[i][j][k] > max_values[k])
 					{
-						max_values[k] = image[i][j][k];
+						max_values[k] = scaled_image[i][j][k];
 					}
 				}
 			}
 		}
 		
-		for (let i = 0; i < grid_size; i++)
+		for (let i = 0; i < scaled_grid_size; i++)
 		{
-			for (let j = 0; j < grid_size; j++)
+			for (let j = 0; j < scaled_grid_size; j++)
 			{
 				for (let k = 0; k < 3; k++)
 				{
-					image[i][j][k] = image[i][j][k] / max_values[k] * 255;
+					scaled_image[i][j][k] = scaled_image[i][j][k] / max_values[k] * 255;
 				}
 			}
 		}
 		
 		
 		
-		let img_data = ctx.getImageData(0, 0, grid_size, grid_size);
+		let img_data = ctx.getImageData(0, 0, scaled_grid_size, scaled_grid_size);
 		let data = img_data.data;
 		
-		for (let i = 0; i < grid_size; i++)
+		for (let i = 0; i < scaled_grid_size; i++)
 		{
-			for (let j = 0; j < grid_size; j++)
+			for (let j = 0; j < scaled_grid_size; j++)
 			{
 				//The index in the array of rgba values
-				let index = (4 * i * grid_size) + (4 * j);
+				let index = (4 * i * scaled_grid_size) + (4 * j);
 				
-				data[index] = image[i][j][0];
-				data[index + 1] = image[i][j][1];
-				data[index + 2] = image[i][j][2];
+				data[index] = scaled_image[i][j][0];
+				data[index + 1] = scaled_image[i][j][1];
+				data[index + 2] = scaled_image[i][j][2];
 				data[index + 3] = 255; //No transparency.
 			}
 		}
@@ -324,6 +349,31 @@
 		let omega = Math.floor(Math.random() * 2) * Math.PI;
 		
 		return [Math.sqrt(r) * Math.cos(theta / 2 + omega), Math.sqrt(r) * Math.sin(theta / 2 + omega)];
+	}
+	
+	
+	
+	function HSVtoRGB(h, s, v)
+	{
+		let r, g, b, i, f, p, q, t;
+		
+		i = Math.floor(h * 6);
+		f = h * 6 - i;
+		p = v * (1 - s);
+		q = v * (1 - f * s);
+		t = v * (1 - (1 - f) * s);
+		
+		switch (i % 6)
+		{
+			case 0: r = v, g = t, b = p; break;
+			case 1: r = q, g = v, b = p; break;
+			case 2: r = p, g = v, b = t; break;
+			case 3: r = p, g = q, b = v; break;
+			case 4: r = t, g = p, b = v; break;
+			case 5: r = v, g = p, b = q; break;
+		}
+	    
+		return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 	}
 	
 	
