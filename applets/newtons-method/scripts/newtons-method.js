@@ -26,6 +26,8 @@
 	let root_selector_width = document.querySelector("#root-selector").offsetWidth;
 	let root_selector_height = document.querySelector("#root-selector").offsetHeight;
 	
+	let root_marker_radius = 17.5;
+	
 	
 	
 	const threshold = .05;
@@ -734,7 +736,7 @@
 		let element = document.createElement("div");
 		element.classList.add("root-marker");
 		element.id = `root-marker-${root_markers.length}`;
-		element.style.transform = `translate3d(${root_selector_width / 2 - 24}px, ${root_selector_height / 2 - 24}px, 0)`;
+		element.style.transform = `translate3d(${root_selector_width / 2 - root_marker_radius}px, ${root_selector_height / 2 - root_marker_radius}px, 0)`;
 		
 		document.querySelector("#root-selector").appendChild(element);
 		
@@ -821,29 +823,29 @@
 		
 		
 		
-		if (row < 24)
+		if (row < root_marker_radius)
 		{
-			row = 24;
+			row = root_marker_radius;
 		}
 		
-		if (row > root_selector_height - 24)
+		if (row > root_selector_height - root_marker_radius)
 		{
-			row = root_selector_height - 24;
+			row = root_selector_height - root_marker_radius;
 		}
 		
-		if (col < 24)
+		if (col < root_marker_radius)
 		{
-			col = 24;
+			col = root_marker_radius;
 		}
 		
-		if (col > root_selector_width - 24)
+		if (col > root_selector_width - root_marker_radius)
 		{
-			col = root_selector_width - 24;
+			col = root_selector_width - root_marker_radius;
 		}
 		
 		
 		
-		root_markers[active_marker].style.transform = `translate3d(${col - 24}px, ${row - 24}px, 0)`;
+		root_markers[active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		
 		let x = ((col - root_selector_width/2) / root_selector_width) * 4;
 		let y = (-(row - root_selector_height/2) / root_selector_height) * 4;
@@ -886,7 +888,7 @@
 			let row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
 			let col = Math.floor(root_selector_width * (current_roots[i][0] / 4 + .5));
 			
-			root_markers[i].style.transform = `translate3d(${col - 24}px, ${row - 24}px, 0)`;
+			root_markers[i].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		}
 		
 		if (high_res)
@@ -924,7 +926,7 @@
 		let row = Math.floor(root_selector_height * (1 - (current_roots[last_active_marker][1] / 4 + .5)));
 		let col = Math.floor(root_selector_width * (current_roots[last_active_marker][0] / 4 + .5));
 		
-		root_markers[last_active_marker].style.transform = `translate3d(${col - 24}px, ${row - 24}px, 0)`;
+		root_markers[last_active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		
 		
 		
@@ -962,7 +964,7 @@
 			let row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
 			let col = Math.floor(root_selector_width * (current_roots[i][0] / 4 + .5));
 			
-			root_markers[i].style.transform = `translate3d(${col - 24}px, ${row - 24}px, 0)`;
+			root_markers[i].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		}
 	}
 

@@ -24,6 +24,8 @@
 	let branch_selector_width = document.querySelector("#branch-selector").offsetWidth;
 	let branch_selector_height = document.querySelector("#branch-selector").offsetHeight;
 	
+	let branch_marker_radius = 17.5;
+	
 	
 	
 	document.querySelector("#binary-trees-plot").setAttribute("width", canvas_size);
@@ -247,7 +249,7 @@
 			let row = (branch_points[i][0] / canvas_size) * branch_selector_height;
 			let col = (branch_points[i][1] / canvas_size) * branch_selector_width;
 			
-			branch_markers[i].style.transform = `translate3d(${col - 24}px, ${row - 24}px, 0)`;
+			branch_markers[i].style.transform = `translate3d(${col - branch_marker_radius}px, ${row - branch_marker_radius}px, 0)`;
 		}
 		
 		draw_binary_tree();
@@ -340,29 +342,29 @@
 		
 		
 		
-		if (row < 24)
+		if (row < branch_marker_radius)
 		{
-			row = 24;
+			row = branch_marker_radius;
 		}
 		
-		if (row > branch_selector_height - 24)
+		if (row > branch_selector_height - branch_marker_radius)
 		{
-			row = branch_selector_height - 24;
+			row = branch_selector_height - branch_marker_radius;
 		}
 		
-		if (col < 24)
+		if (col < branch_marker_radius)
 		{
-			col = 24;
+			col = branch_marker_radius;
 		}
 		
-		if (col > branch_selector_width - 24)
+		if (col > branch_selector_width - branch_marker_radius)
 		{
-			col = branch_selector_width - 24;
+			col = branch_selector_width - branch_marker_radius;
 		}
 		
 		
 		
-		branch_markers[active_marker].style.transform = `translate3d(${col - 24}px, ${row - 24}px, 0)`;
+		branch_markers[active_marker].style.transform = `translate3d(${col - branch_marker_radius}px, ${row - branch_marker_radius}px, 0)`;
 		
 		branch_points[active_marker][0] = (row / branch_selector_height) * canvas_size;
 		branch_points[active_marker][1] = (col / branch_selector_width) * canvas_size;
@@ -399,7 +401,7 @@
 			let row = Math.floor(branch_selector_height * branch_points[i][0] / canvas_size);
 			let col = Math.floor(branch_selector_width * branch_points[i][1] / canvas_size);
 			
-			branch_markers[i].style.transform = `translate3d(${col - 24}px, ${row - 24}px, 0)`;
+			branch_markers[i].style.transform = `translate3d(${col - branch_marker_radius}px, ${row - branch_marker_radius}px, 0)`;
 		}
 	}
 
