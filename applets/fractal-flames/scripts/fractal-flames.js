@@ -12,15 +12,19 @@
 	
 	let image = [];
 	
-	let num_iterations = 10000000;
+	let num_iterations = 1000000;
 	
-	const variations = [variation_sinusoidal, variation_spherical, variation_swirl, variation_horseshoe, variation_polar, variation_handkerchief, variation_heart, variation_disc, variation_spiral, variation_hyperbolic, variation_diamond, variation_ex, variation_julia];
+	let variations = [];
 	
-	const num_variations = variations.length;
-	
-	let variation_weights = [1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	let variation_weights = [];
 	
 	let variation_coefficients = [];
+	
+	let variation_colors = [];
+	
+	let gamma = 2.2;
+	
+	let symmetry = null;
 	
 	
 	
@@ -34,6 +38,8 @@
 	
 	function draw_fractal_flame()
 	{
+		grid_size = 1000;
+		
 		document.querySelector("#output-canvas").setAttribute("width", grid_size);
 		document.querySelector("#output-canvas").setAttribute("height", grid_size);
 		
@@ -41,8 +47,6 @@
 		ctx.fillRect(0, 0, grid_size, grid_size);
 		
 		
-		
-		grid_size = 1000;
 		
 		image = [];
 		
@@ -52,11 +56,17 @@
 			
 			for (let j = 0; j < grid_size; j++)
 			{
-				image[i].push(0);
+				image[i].push([0, 0, 0, 0]);
 			}
 		}
 		
 		
+		
+		variations = [variation_sinusoidal, variation_spherical, variation_swirl, variation_horseshoe, variation_polar, variation_handkerchief, variation_heart, variation_disc, variation_spiral, variation_hyperbolic, variation_diamond, variation_ex, variation_julia];
+		
+		
+		
+		variation_weights = [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 		
 		let variation_weight_sums = [variation_weights[0]];
 		
@@ -77,9 +87,23 @@
 			
 			for (let j = 0; j < 6; j++)
 			{
-				variation_coefficients[i].push(Math.random() * 2 - 1);
+				variation_coefficients[i].push(Math.random() - .5);
 			}
 		}
+		
+		
+		
+		variation_colors = [];
+		
+		for (let i = 0; i < variations.length; i++)
+		{
+			variation_colors.push([Math.random() * 128 + 127, Math.random() * 128 + 127, Math.random() * 128 + 127]);
+		}
+		
+		
+		
+		symmetry = Math.floor(Math.random() * 3) + 2;
+		console.log(symmetry);
 		
 		
 		
@@ -117,29 +141,95 @@
 			x = result[0];
 			y = result[1];
 			
+			
+			
+			//Add symmetry.
+			let rotation = Math.floor(Math.random() * symmetry);
+			
+			if (rotation !== 0)
+			{
+				let r = Math.sqrt(x*x + y*y);
+				let theta = Math.atan2(y, x);
+				
+				x = r * Math.cos(theta + 2 * Math.PI * rotation / symmetry);
+				y = r * Math.sin(theta + 2 * Math.PI * rotation / symmetry);
+			}
+			
+			
+			
 			let row = Math.floor((1 - y) / 2 * grid_size);
 			let col = Math.floor((1 + x) / 2 * grid_size);
 			
 			if (row >= 0 && row < grid_size && col >= 0 && col < grid_size)
 			{
-				image[row][col]++;
+				if (variations.length - symmetry > variation_index)
+				{
+					image[row][col][0] = (image[row][col][0] + variation_colors[variation_index][0]) * .5;
+					image[row][col][1] = (image[row][col][1] + variation_colors[variation_index][1]) * .5;
+					image[row][col][2] = (image[row][col][2] + variation_colors[variation_index][2]) * .5;
+				}
+				
+				image[row][col][3]++;
 			}
 		}
 		
 		
 		
-		let max_brightness = 0;
+		let max_alpha = 0;
 		
 		for (let i = 0; i < grid_size; i++)
 		{
 			for (let j = 0; j < grid_size; j++)
 			{
-				if (max_brightness > image[i][j])
+				image[i][j][3] = Math.pow(image[i][j][3], 1/gamma);
+				
+				if (image[i][j][3] > max_alpha)
 				{
-					max_brightness = image[i][j];
+					max_alpha = image[i][j][3];
 				}
 			}
 		}
+		
+		let scale_factor = Math.log(max_alpha) / max_alpha;
+		
+		for (let i = 0; i < grid_size; i++)
+		{
+			for (let j = 0; j < grid_size; j++)
+			{
+				image[i][j][0] *= scale_factor;
+				image[i][j][1] *= scale_factor;
+				image[i][j][2] *= scale_factor;
+			}
+		}
+		
+		let max_values = [0, 0, 0];
+		
+		for (let i = 0; i < grid_size; i++)
+		{
+			for (let j = 0; j < grid_size; j++)
+			{
+				for (let k = 0; k < 3; k++)
+				{
+					if (image[i][j][k] > max_values[k])
+					{
+						max_values[k] = image[i][j][k];
+					}
+				}
+			}
+		}
+		
+		for (let i = 0; i < grid_size; i++)
+		{
+			for (let j = 0; j < grid_size; j++)
+			{
+				for (let k = 0; k < 3; k++)
+				{
+					image[i][j][k] = image[i][j][k] / max_values[k] * 255;
+				}
+			}
+		}
+		
+		
 		
 		let img_data = ctx.getImageData(0, 0, grid_size, grid_size);
 		let data = img_data.data;
@@ -151,11 +241,9 @@
 				//The index in the array of rgba values
 				let index = (4 * i * grid_size) + (4 * j);
 				
-				let brightness = image[i][j] / max_brightness * 255;
-				
-				data[index] = brightness;
-				data[index + 1] = brightness;
-				data[index + 2] = brightness;
+				data[index] = image[i][j][0];
+				data[index + 1] = image[i][j][1];
+				data[index + 2] = image[i][j][2];
 				data[index + 3] = 255; //No transparency.
 			}
 		}
