@@ -5,15 +5,12 @@
 onmessage = async function(e)
 {
 	flame_function_weights = e.data[0];
-	flame_function_coefficients = e.data[1];
-	flame_function_colors = e.data[2];
-	scaled_grid_size = e.data[3];
-	num_iterations = e.data[4];
-	gamma = e.data[5];
-	symmetry = e.data[6];
-	supersampling = e.data[7];
+	scaled_grid_size = e.data[1];
+	num_iterations = e.data[2];
+	gamma = e.data[3];
+	supersampling = e.data[4];
 	
-	await draw_fractal_flames();
+	draw_fractal_flames();
 }
 
 const variations = [variation_linear, variation_sinusoidal, variation_spherical, variation_swirl, variation_horseshoe, variation_polar, variation_handkerchief, variation_heart, variation_disc, variation_spiral, variation_hyperbolic, variation_diamond, variation_ex, variation_julia];
@@ -43,13 +40,48 @@ let scaled_image = [];
 
 let average_max_rgb = 1000;
 
+//Used for temporal aliasing.
+let old_scaled_images = [];
+
 
 
 
 
 function draw_fractal_flames()
 {
+	flame_function_colors = [];
+		
+	for (let i = 0; i < flame_function_weights.length; i++)
+	{
+		flame_function_colors.push(i / flame_function_weights.length);
+	}
+	
+	
+	
 	let coefficient_to_animate = [0, 0];
+	
+	//First, find an interesting flame.
+	while (true)
+	{
+		flame_function_coefficients = [];
+		
+		for (let i = 0; i < flame_function_weights.length; i++)
+		{
+			flame_function_coefficients.push([]);
+			
+			for (let j = 0; j < 6; j++)
+			{
+				flame_function_coefficients[i].push(Math.random() - .5);
+			}
+		}
+		
+		if (draw_fractal_flame(true))
+		{
+			break;
+		}
+	}
+	
+	
 	
 	while (true)
 	{
@@ -57,24 +89,23 @@ function draw_fractal_flames()
 		coefficient_to_animate[1] = Math.floor(Math.random() * 6);
 		
 		let old_coefficient = flame_function_coefficients[coefficient_to_animate[0]][coefficient_to_animate[1]];
-		let new_coefficient = Math.random() - .5;
+		let new_coefficient = old_coefficient + (Math.random() * .25 - .125);
 		
 		for (let step = 0; step < 50; step++)
 		{
-			draw_fractal_flame();
+			draw_fractal_flame(false);
 			
 			let interpolated_step = (Math.sin(step / 50 * Math.PI - Math.PI / 2) + 1) / 2;
 			
 			flame_function_coefficients[coefficient_to_animate[0]][coefficient_to_animate[1]] = old_coefficient * (1 - interpolated_step) + new_coefficient * interpolated_step;
-			
-			return;
 		}
 	}
 }
 
 
 
-function draw_fractal_flame()
+//Draws a flame. If experimental is true, it performs a series of checks to see if the flame is an interesting one.
+function draw_fractal_flame(experimental)
 {
 	if (supersampling)
 	{
@@ -122,6 +153,8 @@ function draw_fractal_flame()
 	let r = Math.sqrt(x*x + y*y);
 	let theta = Math.atan2(y, x);
 	
+	let num_pixels_hit = 0;
+	
 	
 	for (let iteration = 0; iteration < num_iterations; iteration++)
 	{
@@ -138,6 +171,9 @@ function draw_fractal_flame()
 		
 		
 		
+		let last_x = x;
+		let last_y = y;
+		
 		x = 0;
 		y = 0;
 		
@@ -152,26 +188,25 @@ function draw_fractal_flame()
 			}
 		}
 		
+		if (experimental && Math.abs(x - last_x) < .000001 && Math.abs(y - last_y) < .000001)
+		{			
+			return false;
+		}
+		
 		
 		
 		color = (color + flame_function_colors[flame_function_index]) / 2;
 		
 		
 		
-		//Add symmetry.
-		let rotation = Math.floor(Math.random() * symmetry);
-		
-		if (rotation !== 0)
+		if (experimental && (x > 1000 || y > 1000 || x < -1000 || y < -1000))
 		{
-			let r = Math.sqrt(x*x + y*y);
-			let theta = Math.atan2(y, x);
-			
-			x = r * Math.cos(theta + 2 * Math.PI * rotation / symmetry);
-			y = r * Math.sin(theta + 2 * Math.PI * rotation / symmetry);
+			return false;
 		}
 		
 		
-		if (iteration > num_iterations * .001)
+		
+		if (iteration >= 1000)
 		{
 			let row = Math.floor((1 - y) / 2 * grid_size);
 			let col = Math.floor((1 + x) / 2 * grid_size);
@@ -185,8 +220,20 @@ function draw_fractal_flame()
 				image[row][col][2] += rgb[2];
 				
 				image[row][col][3]++;
+				
+				if (image[row][col][3] === 5)
+				{
+					num_pixels_hit++;
+				}
 			}
 		}
+	}
+	
+	
+	
+	if (experimental && num_pixels_hit < 3 * grid_size)
+	{
+		return false;
 	}
 	
 	
@@ -197,6 +244,8 @@ function draw_fractal_flame()
 	{
 		for (let j = 0; j < grid_size; j++)
 		{
+			image[i][j][3] = Math.log(image[i][j][3]);
+			
 			if (image[i][j][3] > max_alpha)
 			{
 				max_alpha = image[i][j][3];
@@ -206,29 +255,19 @@ function draw_fractal_flame()
 	
 	
 	
-	for (let i = 0; i < grid_size; i++)
-	{
-		for (let j = 0; j < grid_size; j++)
-		{
-			//image[i][j][3] = Math.log(image[i][j][3]) / Math.log(max_alpha);
-			
-			image[i][j][3] = Math.pow(image[i][j][3] / max_alpha, 1/gamma) * max_alpha;
-		}
-	}
-	
-	
 	
 	for (let i = 0; i < grid_size; i++)
 	{
 		for (let j = 0; j < grid_size; j++)
 		{
-			let scale_factor = Math.log(image[i][j][3]) / image[i][j][3];
+			let scale_factor = image[i][j][3] / max_alpha;
 			
 			image[i][j][0] *= scale_factor;
 			image[i][j][1] *= scale_factor;
 			image[i][j][2] *= scale_factor;
 		}
 	}
+	
 	
 	
 	
@@ -264,16 +303,17 @@ function draw_fractal_flame()
 		for (let j = 0; j < grid_size; j++)
 		{
 			/*
-			image[i][j][0] *= 300 / average_max_rgb;
-			image[i][j][1] *= 300 / average_max_rgb;
-			image[i][j][2] *= 300 / average_max_rgb;
-			*/
-			
 			image[i][j][0] *= 255 / max_rgb;
 			image[i][j][1] *= 255 / max_rgb;
 			image[i][j][2] *= 255 / max_rgb;
+			*/
+			
+			image[i][j][0] = 255 * Math.pow(image[i][j][0] / max_rgb, 1 / gamma);
+			image[i][j][1] = 255 * Math.pow(image[i][j][1] / max_rgb, 1 / gamma);
+			image[i][j][2] = 255 * Math.pow(image[i][j][2] / max_rgb, 1 / gamma);
 		}
 	}
+	
 	
 	
 	
@@ -301,7 +341,13 @@ function draw_fractal_flame()
 	
 	
 	
-	postMessage([scaled_image, flame_function_coefficients]);
+	postMessage([scaled_image]);
+	
+	old_scaled_images.push(JSON.parse(JSON.stringify(scaled_image)));
+	
+	
+	
+	return true;
 }
 
 

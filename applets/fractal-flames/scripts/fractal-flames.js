@@ -10,52 +10,22 @@
 	
 	
 	
-	const num_variations = 13;
-	
-	let num_flame_functions = 3;
-	
 	let flame_function_weights = [[0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
 	
-	
-	
-	let flame_function_coefficients = [];
-	
-	for (let i = 0; i < num_flame_functions; i++)
+	/*
+	for (let i = 0; i < flame_function_weights.length; i++)
 	{
-		flame_function_coefficients.push([]);
-		
-		for (let j = 0; j < 6; j++)
+		for (let j = 0; j < 14; j++)
 		{
-			flame_function_coefficients[i].push(Math.random() - .5);
+			flame_function_weights[i][j] = Math.random() * 3;
 		}
 	}
-	
-	flame_function_coefficients = [
-		[-0.681206, -0.0779465, 0.20769, 0.755065, -0.0416126, -0.262334],
-		[0.953766, 0.48396, 0.43268, -0.0542476, 0.642503, -0.995898],
-		[0.840613, -0.816191, 0.318971, -0.430402, 0.905589, 0.909402],
-		[0.960492, -0.466555, 0.215383, -0.727377, -0.126074, 0.253509]
-	];
-	
-	
-	
-	
-	
-	let flame_function_colors = [];
-		
-	for (let i = 0; i < num_flame_functions; i++)
-	{
-		flame_function_colors.push(Math.random());
-	}
-	
-	flame_function_colors = [0, .25, .5, .75];
+	*/
 	
 	
 	
 	let grid_size = null;
 	let scaled_grid_size = null;
-	
-	let symmetry = null;
 	
 	let num_iterations = null;
 
@@ -77,8 +47,7 @@
 	{
 		scaled_grid_size = parseInt(document.querySelector("#grid-size-input").value || 200);
 		num_iterations = parseInt(document.querySelector("#num-iterations-input").value || 100) * 1000;
-		gamma = parseFloat(document.querySelector("#gamma-input").value || 2.2);
-		symmetry = parseInt(document.querySelector("#symmetry-input").value || 3);
+		gamma = parseFloat(document.querySelector("#gamma-input").value || 4);
 		
 		document.querySelector("#output-canvas").setAttribute("width", scaled_grid_size);
 		document.querySelector("#output-canvas").setAttribute("height", scaled_grid_size);
@@ -108,7 +77,6 @@
 		web_worker.onmessage = function(e)
 		{
 			let scaled_image = e.data[0];
-			flame_function_coefficients = e.data[1];
 			
 			let img_data = ctx.getImageData(0, 0, scaled_grid_size, scaled_grid_size);
 			let data = img_data.data;
@@ -132,7 +100,7 @@
 		
 		
 		
-		web_worker.postMessage([flame_function_weights, flame_function_coefficients, flame_function_colors, scaled_grid_size, num_iterations, gamma, symmetry, supersampling]);
+		web_worker.postMessage([flame_function_weights, scaled_grid_size, num_iterations, gamma, supersampling]);
 	}
 	
 	
