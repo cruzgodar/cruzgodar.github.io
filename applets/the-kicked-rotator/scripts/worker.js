@@ -20,10 +20,6 @@ let K = null;
 let orbit_separation = null;
 
 let image = [];
-	
-let unvisited_points = [];
-
-let current_orbit = [];
 
 let current_row = null;
 let current_col = null;
@@ -39,8 +35,6 @@ function draw_kicked_rotator()
 {
 	image = [];
 	
-	unvisited_points = [];
-	
 	for (let i = 0; i < grid_size; i++)
 	{
 		image.push([]);
@@ -48,8 +42,6 @@ function draw_kicked_rotator()
 		for (let j = 0; j < grid_size; j++)
 		{
 			image[i].push(0);
-			
-			unvisited_points.push(grid_size * i + j);
 		}
 	}
 	
@@ -59,6 +51,20 @@ function draw_kicked_rotator()
 	
 	for (let i = 1; i < grid_size / 2; i += orbit_separation + 1)
 	{
+		image = [];
+		
+		for (let j = 0; j < grid_size; j++)
+		{
+			image.push([]);
+			
+			for (let k = 0; k < grid_size; k++)
+			{
+				image[j].push(0);
+			}
+		}
+		
+		
+		
 		let color = 6/7 * i / (grid_size / 2);
 		
 		
@@ -68,21 +74,33 @@ function draw_kicked_rotator()
 		
 		let upper_half_points_ratio = calculate_orbit(Math.floor(grid_size / 2 + i), middle_col + rand, color);
 		
-		postMessage([current_orbit, color]);
+		
+		
+		if (upper_half_points_ratio === -1)
+		{
+			continue;
+		}
 		
 		
 		
 		//Now that we've got our orbit, we can reflect it vertically and horizontally to get the other side -- but this is only necessary, and in fact only a good thing, if the orbit wasn't symmetric in the first place. We test for this by seeing if less than 45% of the points were above the half-way mark.
 		if (upper_half_points_ratio < .45)
 		{
-			for (let i = 0; i < current_orbit.length; i++)
+			for (let j = 0; j < grid_size; j++)
 			{
-				current_orbit[i][0] = grid_size - current_orbit[i][0];
-				current_orbit[i][1] = grid_size - current_orbit[i][1];
+				for (let k = 0; k < grid_size; k++)
+				{
+					if (image[j][k] !== 0)
+					{
+						image[grid_size - j - 1][grid_size - k - 1] = image[j][k];
+					}
+				}
 			}
-			
-			postMessage([current_orbit, color]);
 		}
+		
+		
+		
+		postMessage([image, color]);
 	}
 }
 
@@ -93,14 +111,12 @@ function calculate_orbit(start_row, start_col, color)
 {
 	let num_upper_half_points = 0;
 	
-	current_orbit = [];
-	
 	current_row = start_row;
 	current_col = start_col;
 	
-	if (unvisited_points.indexOf(grid_size * current_row + current_col) === -1)
+	if (image[current_row][current_col] !== 0)
 	{
-		return;
+		return -1;
 	}
 	
 	current_p = (1 - (current_row / grid_size)) * (2 * Math.PI);
@@ -109,37 +125,23 @@ function calculate_orbit(start_row, start_col, color)
 	
 	
 	//Here's the idea. We can't just terminate an orbit if the point coincides one of the places we've already been, since the rasterizing makes that happen way too often. We also don't want every orbit to go one forever though, so instead, we'll terminate an orbit if it hits enough points we've already seen in a row.
-	let num_repetitions = 0;
-	
-	
+	let num_points = 0;
 	
 	while (true)
 	{
-		let index = unvisited_points.indexOf(grid_size * current_row + current_col);
+		//Add the current point to the image.
+		image[current_row][current_col]++;
 		
-		if (index !== -1)
+		num_points++;
+		
+		if (current_row < grid_size / 2)
 		{
-			unvisited_points.splice(index, 1);
-			
-			//Add the current point to the image.
-			current_orbit.push([current_row, current_col]);
-			
-			if (current_row < grid_size / 2)
-			{
-				num_upper_half_points++;
-			}
-			
-			num_repetitions = 0;
+			num_upper_half_points++;
 		}
 		
-		else
+		if (image[current_row][current_col] === 300)
 		{
-			num_repetitions++;
-			
-			if (num_repetitions === max_repetitions)
-			{
-				break;
-			}
+			break;
 		}
 		
 		
@@ -173,5 +175,5 @@ function calculate_orbit(start_row, start_col, color)
 	
 	
 	
-	return num_upper_half_points / current_orbit.length;
+	return num_upper_half_points / num_points;
 }

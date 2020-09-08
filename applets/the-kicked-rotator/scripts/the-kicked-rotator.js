@@ -8,6 +8,10 @@
 	
 	let web_worker = null;
 	
+	let hues = [];
+	let values = [];
+	let num_writes = [];
+	
 	
 	
 	
@@ -42,6 +46,21 @@
 		let orbit_separation = parseInt(document.querySelector("#orbit-separation-input").value || 3) + 1;
 		
 		
+		
+		values = [];
+		
+		for (let i = 0; i < grid_size; i++)
+		{
+			values.push([]);
+			
+			for (let j = 0; j < grid_size; j++)
+			{
+				values[i].push(0);
+			}
+		}
+		
+		
+		
 		document.querySelector("#output-canvas").setAttribute("width", grid_size);
 		document.querySelector("#output-canvas").setAttribute("height", grid_size);
 		
@@ -69,16 +88,24 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			let points = e.data[0];
-			let color = e.data[1];
+			let value_delta = e.data[0];
+			let hue = e.data[1];
 			
-			let rgb = HSVtoRGB(color, 1, 1);
-			
-			ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-			
-			for (let i = 0; i < points.length; i++)
+			for (let i = 0; i < grid_size; i++)
 			{
-				ctx.fillRect(points[i][1], points[i][0], 1, 1);
+				for (let j = 0; j < grid_size; j++)
+				{
+					if (value_delta[i][j] > values[i][j])
+					{
+						let rgb = HSVtoRGB(hue, 1, value_delta[i][j] / 255);
+						
+						ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+						
+						ctx.fillRect(j, i, 1, 1);
+						
+						values[i][j] = value_delta[i][j];
+					}
+				}
 			}
 		}
 		
