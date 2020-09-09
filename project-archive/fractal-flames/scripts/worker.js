@@ -34,14 +34,7 @@ let supersampling = null;
 
 
 
-let image = [];
-
-let scaled_image = [];
-
 let average_max_rgb = 1000;
-
-//Used for temporal aliasing.
-let old_scaled_images = [];
 
 
 
@@ -95,6 +88,8 @@ function draw_fractal_flames()
 		{
 			draw_fractal_flame(false);
 			
+			
+			
 			let interpolated_step = (Math.sin(step / 50 * Math.PI - Math.PI / 2) + 1) / 2;
 			
 			flame_function_coefficients[coefficient_to_animate[0]][coefficient_to_animate[1]] = old_coefficient * (1 - interpolated_step) + new_coefficient * interpolated_step;
@@ -119,7 +114,7 @@ function draw_fractal_flame(experimental)
 	
 	
 	
-	image = [];
+	let image = [];
 	
 	for (let i = 0; i < grid_size; i++)
 	{
@@ -133,7 +128,7 @@ function draw_fractal_flame(experimental)
 	
 	
 	
-	scaled_image = [];
+	let scaled_image = [];
 	
 	for (let i = 0; i < scaled_grid_size; i++)
 	{
@@ -342,8 +337,6 @@ function draw_fractal_flame(experimental)
 	
 	
 	postMessage([scaled_image]);
-	
-	old_scaled_images.push(JSON.parse(JSON.stringify(scaled_image)));
 	
 	
 	
