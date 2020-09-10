@@ -36,9 +36,19 @@
 	let image_plane_right_vec = [1, 0, 0];
 	let image_plane_up_vec = [0, 1, 0];
 	
-	let image_plane_forward_vec = get_forward_vec(image_plane_right_vec, image_plane_up_vec);
+	let light_pos = [5, 5, -5];
+	let light_brightness = 1;
+	
+	let surface_color = [.5, 0, 0];
+	let surface_reflectance = 1;
+	
+	
+	
+	let image_plane_forward_vec = normalize(cross_product(image_plane_right_vec, image_plane_up_vec));
 	
 	let camera_pos = [image_plane_center_pos[0] - focal_length * image_plane_forward_vec[0], image_plane_center_pos[1] - focal_length * image_plane_forward_vec[1], image_plane_center_pos[2] - focal_length * image_plane_forward_vec[2]];
+	
+	
 	
 	let max_iterations = 32;
 	
@@ -211,7 +221,8 @@
 			
 			if (distance < epsilon)
 			{
-				color = [iteration / max_iterations * .5 + .5, 0, 0];
+				//Light the point.
+				color = calculate_shading(x, y, z);
 				break;
 			}
 			
@@ -239,21 +250,64 @@
 	
 	
 	
-	function DE_sphere(x, y, z)
+	function distance_estimator(x, y, z)
 	{
-		return Math.sqrt(x*x + y*y + z*z) - .5;
+		return DE_sphere(x, y, z);
 	}
 	
 	
 	
-	//Returns the normalized cross product of right_vec and up_vec.
-	function get_forward_vec(right_vec, up_vec)
+	function calculate_shading(x, y, z)
 	{
-		let forward_vec = [right_vec[1] * up_vec[2] - right_vec[2] * up_vec[1], right_vec[2] * up_vec[0] - right_vec[0] * up_vec[2], right_vec[0] * up_vec[1] - right_vec[1] * up_vec[0]];
+		let normal = get_normal(x, y, z);
 		
-		let magnitude = Math.sqrt(forward_vec[0] * forward_vec[0] + forward_vec[1] * forward_vec[1] + forward_vec[2] * forward_vec[2]);
+		let light_direction = normalize([light_pos[0] - x, light_pos[1] - y, light_pos[2] - z]);
 		
-		return [forward_vec[0] / magnitude, forward_vec[1] / magnitude, forward_vec[2] / magnitude];
+		let light_intensity = light_brightness * dot_product(normal, light_direction);
+		
+		return [light_intensity * surface_reflectance * surface_color[0], light_intensity * surface_reflectance * surface_color[1], light_intensity * surface_reflectance * surface_color[2]];
+	}
+	
+	
+	
+	//Approxmiates the distance estimator's gradient, which will be the surface normal.
+	function get_normal(x, y, z)
+	{
+		let e = .00001;
+		
+		let base = distance_estimator(x, y, z);
+		
+		return normalize([(distance_estimator(x + e, y, z) - base) / e, (distance_estimator(x, y + e, z) - base) / e, (distance_estimator(x, y, z + e) - base) / e]);
+	}
+	
+	
+	
+	function dot_product(vec1, vec2)
+	{
+		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
+	}
+	
+	
+	
+	function cross_product(vec1, vec2)
+	{
+		return [vec1[1] * vec2[2] - vec1[2] * vec2[1], vec1[2] * vec2[0] - vec1[0] * vec2[2], vec1[0] * vec2[1] - vec1[1] * vec2[0]];
+	}
+	
+	
+	
+	function normalize(vec)
+	{
+		let magnitude = Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
+		
+		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude];
+	}
+	
+	
+	
+	function DE_sphere(x, y, z)
+	{
+		return Math.sqrt(x*x + y*y + z*z) - .5;
 	}
 	
 	
