@@ -43,7 +43,7 @@
 		
 		let K = parseFloat(document.querySelector("#k-input").value || .75);
 		
-		let orbit_separation = parseInt(document.querySelector("#orbit-separation-input").value || 3) + 1;
+		let orbit_separation = parseInt(document.querySelector("#orbit-separation-input").value || 3);
 		
 		
 		
