@@ -8,39 +8,43 @@
 	
 	
 	
-	let image_size = 1000;
+	let image_size = 500;
 	
 	let image = [];
+	
+	let num_iterations_required = [];
 	
 	let pixels_to_anti_alias = [];
 	
 	for (let i = 0; i < image_size; i++)
 	{
 		image.push([]);
+		num_iterations_required.push([]);
 		pixels_to_anti_alias.push([]);
 		
 		for (let j = 0; j < image_size; j++)
 		{
 			image[i].push([0, 0, 0]);
-			pixels_to_anti_alias[i].push(0);
+			num_iterations_required[i].push(0);
+			pixels_to_anti_alias[i].push(false);
 		}
 	}
 	
 	
 	
-	let image_plane_center_pos = [0, 0, -1];
+	let image_plane_center_pos = [0, 1, 1];
 	
 	//The distance the actual camera is recessed from the image plane (along the negative forward vector)
 	let focal_length = 1;
 	
-	let image_plane_right_vec = [1, 0, 0];
-	let image_plane_up_vec = [0, 1, 0];
+	let image_plane_right_vec = normalize([1, 0, 0]);
+	let image_plane_up_vec = normalize([0, -.1, 1]);
 	
-	let light_pos = [5, 5, -5];
+	let light_pos = [5, 5, 5];
 	let light_brightness = 1;
 	
-	let surface_color = [.5, 0, 0];
-	let surface_reflectance = 1;
+	//An object consists of a distance estimator, a color, and a reflectance.
+	let objects = [[DE_sphere, [1, 0, 0], 1], [DE_plane, [0, .5, 0], 1]];
 	
 	
 	
@@ -50,7 +54,7 @@
 	
 	
 	
-	let max_iterations = 32;
+	let max_iterations = 50;
 	
 	//How close a ray has to be to a surface before we consider it hit.
 	let epsilon = .01;
@@ -58,14 +62,11 @@
 	//How far away a ray has to be from everything before we kill it.
 	let clipping_distance = 100;
 	
-	let fog_scaling = .001;
+	let fog_scaling = .2;
 	let fog_color = [.75, .75, 1];
 	
-	//Gives anti-aliasing...
-	let num_rays_per_pixel = 10;
-	
-	//...but only when there are at least this many iterations, since that usually indicates an edge.
-	let anti_aliasing_iteration_threshhold = .75 * max_iterations;
+	//Gives anti-aliasing, but only when there are more iterations than average, since that usually indicates an edge.
+	let num_rays_per_pixel = 8;
 	
 	
 	
@@ -82,6 +83,10 @@
 	
 	function draw_frame()
 	{
+		let anti_aliasing_iteration_threshhold = 0;
+		
+		
+		
 		//First, just get a color for every pixel.
 		for (let row = 0; row < image_size; row++)
 		{
@@ -90,10 +95,22 @@
 				let result = calculate_pixel(row, col, false);
 				
 				image[row][col] = result[0];
+				num_iterations_required[row][col] = result[1];
 				
-				
-				
-				if (result[1] > anti_aliasing_iteration_threshhold)
+				anti_aliasing_iteration_threshhold += result[1];
+			}
+		}
+		
+		
+		
+		anti_aliasing_iteration_threshhold /= (image_size * image_size);
+		
+		//Then mark which pixels need anti-aliasing.
+		for (let row = 0; row < image_size; row++)
+		{
+			for (let col = 0; col < image_size; col++)
+			{
+				if (num_iterations_required[row][col] > anti_aliasing_iteration_threshhold)
 				{
 					pixels_to_anti_alias[row][col] = true;
 					
@@ -197,11 +214,7 @@
 		ray_direction_vec[1] /= magnitude;
 		ray_direction_vec[2] /= magnitude;
 		
-		let total_distance_traveled = focal_length;
 		
-		
-		
-		let color = [fog_color[0], fog_color[1], fog_color[2]];
 		
 		//The coefficient on the march direction vector.
 		let t = 0;
@@ -217,47 +230,58 @@
 			
 			
 			//Get the distance to the scene.
-			let distance = DE_sphere(x, y, z);
+			let result = distance_estimator(x, y, z);
+			
+			let distance = result[0];
+			let object_index = result[1];
 			
 			if (distance < epsilon)
 			{
-				//Light the point.
-				color = calculate_shading(x, y, z);
-				break;
+				//Shade the point.
+				return [calculate_shading(x, y, z, object_index), iteration];
 			}
 			
 			else if (distance > clipping_distance)
 			{
-				color = [fog_color[0], fog_color[1], fog_color[2]];
-				break;
+				return [[fog_color[0], fog_color[1], fog_color[2]], iteration];
 			}
 			
 			
 			
 			t += distance;
 			
-			total_distance_traveled += distance;
-			
 			iteration++;
 		}
 		
 		
 		
-		let fog_amount = 1 - Math.exp(-total_distance_traveled * fog_scaling);
-		
-		return [[(1 - fog_amount) * color[0] + fog_amount * fog_color[0], (1 - fog_amount) * color[1] + fog_amount * fog_color[1], (1 - fog_amount) * color[2] + fog_amount * fog_color[2]], iteration];
+		return [[fog_color[0], fog_color[1], fog_color[2]], iteration];
 	}
 	
 	
 	
 	function distance_estimator(x, y, z)
 	{
-		return DE_sphere(x, y, z);
+		let min_distance = Infinity;
+		let min_index = 0;
+		
+		for (let i = 0; i < objects.length; i++)
+		{
+			let distance = objects[i][0](x, y, z);
+			
+			if (distance < min_distance)
+			{
+				min_distance = distance;
+				min_index = i;
+			}
+		}
+		
+		return [min_distance, min_index];
 	}
 	
 	
 	
-	function calculate_shading(x, y, z)
+	function calculate_shading(x, y, z, object_index)
 	{
 		let normal = get_normal(x, y, z);
 		
@@ -265,7 +289,16 @@
 		
 		let light_intensity = light_brightness * dot_product(normal, light_direction);
 		
-		return [light_intensity * surface_reflectance * surface_color[0], light_intensity * surface_reflectance * surface_color[1], light_intensity * surface_reflectance * surface_color[2]];
+		let color = [light_intensity * objects[object_index][2] * objects[object_index][1][0], light_intensity * objects[object_index][2] * objects[object_index][1][1], light_intensity * objects[object_index][2] * objects[object_index][1][2]];
+		
+		
+		
+		//Apply fog.
+		let distance_from_camera = Math.sqrt(x*x + y*y + z*z);
+		
+		let fog_amount = 1 - Math.exp(-distance_from_camera * fog_scaling);
+		
+		return [(1 - fog_amount) * color[0] + fog_amount * fog_color[0], (1 - fog_amount) * color[1] + fog_amount * fog_color[1], (1 - fog_amount) * color[2] + fog_amount * fog_color[2]];
 	}
 	
 	
@@ -275,9 +308,9 @@
 	{
 		let e = .00001;
 		
-		let base = distance_estimator(x, y, z);
+		let base = distance_estimator(x, y, z)[0];
 		
-		return normalize([(distance_estimator(x + e, y, z) - base) / e, (distance_estimator(x, y + e, z) - base) / e, (distance_estimator(x, y, z + e) - base) / e]);
+		return normalize([(distance_estimator(x + e, y, z)[0] - base) / e, (distance_estimator(x, y + e, z)[0] - base) / e, (distance_estimator(x, y, z + e)[0] - base) / e]);
 	}
 	
 	
@@ -308,6 +341,11 @@
 	function DE_sphere(x, y, z)
 	{
 		return Math.sqrt(x*x + y*y + z*z) - .5;
+	}
+	
+	function DE_plane(x, y, z)
+	{
+		return dot_product([x, y, z], [0, 0, 1]) + .5;
 	}
 	
 	
