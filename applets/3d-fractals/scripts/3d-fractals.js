@@ -43,6 +43,10 @@
 	let light_pos = [5, 5, 5];
 	let light_brightness = 1;
 	
+	let shadow_sharpness = 10;
+	
+	
+	
 	//An object consists of a distance estimator, a color, and a reflectance.
 	let objects = [[DE_sphere, [1, 0, 0], 1], [DE_plane, [0, .5, 0], 1]];
 	
@@ -235,6 +239,7 @@
 			let distance = result[0];
 			let object_index = result[1];
 			
+			//If we barely moved, we're probably at an object.
 			if (distance < epsilon)
 			{
 				//Shade the point.
@@ -287,7 +292,9 @@
 		
 		let light_direction = normalize([light_pos[0] - x, light_pos[1] - y, light_pos[2] - z]);
 		
-		let light_intensity = light_brightness * dot_product(normal, light_direction);
+		let light_intensity = light_brightness * dot_product(normal, light_direction) * calculate_shadow(x, y, z, object_index, light_direction);
+		
+		
 		
 		let color = [light_intensity * objects[object_index][2] * objects[object_index][1][0], light_intensity * objects[object_index][2] * objects[object_index][1][1], light_intensity * objects[object_index][2] * objects[object_index][1][2]];
 		
@@ -299,6 +306,54 @@
 		let fog_amount = 1 - Math.exp(-distance_from_camera * fog_scaling);
 		
 		return [(1 - fog_amount) * color[0] + fog_amount * fog_color[0], (1 - fog_amount) * color[1] + fog_amount * fog_color[1], (1 - fog_amount) * color[2] + fog_amount * fog_color[2]];
+	}
+	
+	
+	
+	function calculate_shadow(start_x, start_y, start_z, start_object_index, light_direction)
+	{
+		let t = epsilon;
+		
+		let max_t = Math.sqrt((start_x - light_pos[0])*(start_x - light_pos[0]) + (start_y - light_pos[1])*(start_y - light_pos[1]) + (start_z - light_pos[2])*(start_z - light_pos[2]));
+		
+		let shadow_amount = 1;
+		
+		let iteration = 0;
+		let max_shadow_iterations = 50;
+		
+		
+		
+		while (t < max_t && iteration < max_shadow_iterations)
+		{
+			let x = start_x + t * light_direction[0];
+			let y = start_y + t * light_direction[1];
+			let z = start_z + t * light_direction[2];
+			
+			
+			
+			//Get the distance to the scene.
+			let result = distance_estimator(x, y, z);
+			
+			let distance = result[0];
+			let object_index = result[1];
+			
+			//If we barely moved, we're probably at an object.
+			if (distance < epsilon / 4)
+			{
+				//This point is totally shadowed.
+				return 0;
+			}
+			
+			shadow_amount = Math.min(shadow_amount, shadow_sharpness * distance / t);
+			
+			t += distance;
+			
+			iteration++;
+		}
+		
+		
+		
+		return shadow_amount;
 	}
 	
 	
