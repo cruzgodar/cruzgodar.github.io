@@ -8,17 +8,21 @@
 	
 	
 	
-	let image_size = 500;
+	let image_size = 1000;
 	
 	let image = [];
+	
+	let pixels_to_anti_alias = [];
 	
 	for (let i = 0; i < image_size; i++)
 	{
 		image.push([]);
+		pixels_to_anti_alias.push([]);
 		
 		for (let j = 0; j < image_size; j++)
 		{
 			image[i].push([0, 0, 0]);
+			pixels_to_anti_alias[i].push(0);
 		}
 	}
 	
@@ -47,8 +51,11 @@
 	let fog_scaling = .001;
 	let fog_color = [.75, .75, 1];
 	
-	//Improves anti-aliasing.
-	let num_rays_per_pixel = 1;
+	//Gives anti-aliasing...
+	let num_rays_per_pixel = 10;
+	
+	//...but only when there are at least this many iterations, since that usually indicates an edge.
+	let anti_aliasing_iteration_threshhold = .75 * max_iterations;
 	
 	
 	
@@ -65,87 +72,169 @@
 	
 	function draw_frame()
 	{
+		//First, just get a color for every pixel.
 		for (let row = 0; row < image_size; row++)
 		{
 			for (let col = 0; col < image_size; col++)
 			{
-				//(u, v) gives local coordinates on the image plane (-1 <= u, v <= 1)
-				let u = col / image_size * 2 - 1;
-				let v = 1 - row / image_size * 2;
+				let result = calculate_pixel(row, col, false);
 				
-				//(x, y, z) gives global coordinates.
-				let start_x = image_plane_center_pos[0] + image_plane_right_vec[0] * u + image_plane_up_vec[0] * v;
-				let start_y = image_plane_center_pos[1] + image_plane_right_vec[1] * u + image_plane_up_vec[1] * v;
-				let start_z = image_plane_center_pos[2] + image_plane_right_vec[2] * u + image_plane_up_vec[2] * v;
+				image[row][col] = result[0];
 				
 				
 				
-				//Having the camera recessed from the image plane creates perspective, so every ray will go in a different direction.
-				let ray_direction_vec = [start_x - camera_pos[0], start_y - camera_pos[1], start_z - camera_pos[2]];
-				
-				let magnitude = Math.sqrt(ray_direction_vec[0] * ray_direction_vec[0] + ray_direction_vec[1] * ray_direction_vec[1] + ray_direction_vec[2] * ray_direction_vec[2]);
-				
-				ray_direction_vec[0] /= magnitude;
-				ray_direction_vec[1] /= magnitude;
-				ray_direction_vec[2] /= magnitude;
-				
-				let total_distance_traveled = focal_length;
-				
-				
-				
-				let color = [fog_color[0], fog_color[1], fog_color[2]];
-				
-				//The coefficient on the march direction vector.
-				let t = 0;
-				
-				let iteration = 0;
-				
-				while (iteration < max_iterations)
+				if (result[1] > anti_aliasing_iteration_threshhold)
 				{
-					let x = start_x + t * ray_direction_vec[0];
-					let y = start_y + t * ray_direction_vec[1];
-					let z = start_z + t * ray_direction_vec[2];
+					pixels_to_anti_alias[row][col] = true;
 					
-					
-					
-					//Get the distance to the scene.
-					let distance = DE_sphere(x, y, z);
-					
-					if (distance < epsilon)
+					if (row !== 0)
 					{
-						color = [iteration / max_iterations * .5 + .5, 0, 0];
-						break;
+						pixels_to_anti_alias[row - 1][col] = true;
 					}
 					
-					else if (distance > clipping_distance)
+					if (col !== 0)
 					{
-						color = [fog_color[0], fog_color[1], fog_color[2]];
-						break;
+						pixels_to_anti_alias[row][col - 1] = true;
 					}
 					
+					if (row !== image_size - 1)
+					{
+						pixels_to_anti_alias[row + 1][col] = true;
+					}
 					
-					
-					t += distance;
-					
-					total_distance_traveled += distance;
-					
-					iteration++;
+					if (col !== image_size - 1)
+					{
+						pixels_to_anti_alias[row][col + 1] = true;
+					}
 				}
-				
-				
-				
-				let fog_amount = 1 - Math.exp(-total_distance_traveled * fog_scaling);
-				
-				color[0] = (1 - fog_amount) * color[0] + fog_amount * fog_color[0];
-				color[1] = (1 - fog_amount) * color[1] + fog_amount * fog_color[1];
-				color[2] = (1 - fog_amount) * color[2] + fog_amount * fog_color[2];
-				
-				
-				
-				ctx.fillStyle = `rgb(${color[0] * 255}, ${color[1] * 255}, ${color[2] * 255})`;
-				ctx.fillRect(col, row, 1, 1);
 			}
 		}
+		
+		
+		
+		//Now perform anti-aliasing on the ones that seem to be near an edge.
+		for (let row = 0; row < image_size; row++)
+		{
+			for (let col = 0; col < image_size; col++)
+			{
+				if (pixels_to_anti_alias[row][col])
+				{
+					for (let ray_index = 1; ray_index < num_rays_per_pixel; ray_index++)
+					{
+						let result = calculate_pixel(row, col, true);
+						
+						image[row][col][0] += result[0][0];
+						image[row][col][1] += result[0][1];
+						image[row][col][2] += result[0][2];
+					}
+					
+					image[row][col][0] /= num_rays_per_pixel;
+					image[row][col][1] /= num_rays_per_pixel;
+					image[row][col][2] /= num_rays_per_pixel;
+				}
+			}
+		}
+		
+		
+		
+		//Finally, draw the image.
+		let img_data = ctx.getImageData(0, 0, image_size, image_size);
+		let data = img_data.data;
+		
+		for (let row = 0; row < image_size; row++)
+		{
+			for (let col = 0; col < image_size; col++)
+			{
+				let index = (4 * row * image_size) + (4 * col);
+				
+				data[index] = image[row][col][0] * 255;
+				data[index + 1] = image[row][col][1] * 255;
+				data[index + 2] = image[row][col][2] * 255;
+				data[index + 3] = 255;
+			}
+		}
+		
+		ctx.putImageData(img_data, 0, 0);
+	}
+	
+	
+	
+	function calculate_pixel(row, col, noise)
+	{
+		//(u, v) gives local coordinates on the image plane (-1 <= u, v <= 1)
+		let u = col / image_size * 2 - 1;
+		let v = 1 - row / image_size * 2;
+		
+		if (noise)
+		{
+			u += Math.random() * (2 / image_size);
+			v += Math.random() * (2 / image_size);
+		}
+		
+		//(x, y, z) gives global coordinates.
+		let start_x = image_plane_center_pos[0] + image_plane_right_vec[0] * u + image_plane_up_vec[0] * v;
+		let start_y = image_plane_center_pos[1] + image_plane_right_vec[1] * u + image_plane_up_vec[1] * v;
+		let start_z = image_plane_center_pos[2] + image_plane_right_vec[2] * u + image_plane_up_vec[2] * v;
+		
+		
+		
+		//Having the camera recessed from the image plane creates perspective, so every ray will go in a different direction.
+		let ray_direction_vec = [start_x - camera_pos[0], start_y - camera_pos[1], start_z - camera_pos[2]];
+		
+		let magnitude = Math.sqrt(ray_direction_vec[0] * ray_direction_vec[0] + ray_direction_vec[1] * ray_direction_vec[1] + ray_direction_vec[2] * ray_direction_vec[2]);
+		
+		ray_direction_vec[0] /= magnitude;
+		ray_direction_vec[1] /= magnitude;
+		ray_direction_vec[2] /= magnitude;
+		
+		let total_distance_traveled = focal_length;
+		
+		
+		
+		let color = [fog_color[0], fog_color[1], fog_color[2]];
+		
+		//The coefficient on the march direction vector.
+		let t = 0;
+		
+		let iteration = 0;
+		
+		while (iteration < max_iterations)
+		{
+			let x = start_x + t * ray_direction_vec[0];
+			let y = start_y + t * ray_direction_vec[1];
+			let z = start_z + t * ray_direction_vec[2];
+			
+			
+			
+			//Get the distance to the scene.
+			let distance = DE_sphere(x, y, z);
+			
+			if (distance < epsilon)
+			{
+				color = [iteration / max_iterations * .5 + .5, 0, 0];
+				break;
+			}
+			
+			else if (distance > clipping_distance)
+			{
+				color = [fog_color[0], fog_color[1], fog_color[2]];
+				break;
+			}
+			
+			
+			
+			t += distance;
+			
+			total_distance_traveled += distance;
+			
+			iteration++;
+		}
+		
+		
+		
+		let fog_amount = 1 - Math.exp(-total_distance_traveled * fog_scaling);
+		
+		return [[(1 - fog_amount) * color[0] + fog_amount * fog_color[0], (1 - fog_amount) * color[1] + fog_amount * fog_color[1], (1 - fog_amount) * color[2] + fog_amount * fog_color[2]], iteration];
 	}
 	
 	
