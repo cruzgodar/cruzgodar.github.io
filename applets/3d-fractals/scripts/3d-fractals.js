@@ -6,9 +6,16 @@
 	
 	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
 	
+	let canvas_size = document.querySelector("#output-canvas").offsetWidth;
+	
+	let currently_dragging = false;
+	
+	let mouse_x = 0;
+	let mouse_y = 0;
 	
 	
-	let image_size = 500;
+	
+	let image_size = 100;
 	
 	let image = [];
 	
@@ -32,13 +39,25 @@
 	
 	
 	
+	let theta = 3 * Math.PI / 2;
+	let phi = Math.PI / 2;
+	
+	
+	
 	let image_plane_center_pos = [0, 1, 1];
+	
+	let image_plane_forward_vec = [];
+	let image_plane_right_vec = [];
+	let image_plane_up_vec = [];
+	
+	let camera_pos = [];
 	
 	//The distance the actual camera is recessed from the image plane (along the negative forward vector)
 	let focal_length = 1;
 	
-	let image_plane_right_vec = normalize([1, 0, 0]);
-	let image_plane_up_vec = normalize([0, -.1, 1]);
+	calculate_vectors();
+	
+	
 	
 	let light_pos = [5, 5, 5];
 	let light_brightness = 1;
@@ -52,25 +71,19 @@
 	
 	
 	
-	let image_plane_forward_vec = normalize(cross_product(image_plane_right_vec, image_plane_up_vec));
-	
-	let camera_pos = [image_plane_center_pos[0] - focal_length * image_plane_forward_vec[0], image_plane_center_pos[1] - focal_length * image_plane_forward_vec[1], image_plane_center_pos[2] - focal_length * image_plane_forward_vec[2]];
-	
-	
-	
 	let max_iterations = 50;
 	
 	//How close a ray has to be to a surface before we consider it hit.
 	let epsilon = .01;
 	
 	//How far away a ray has to be from everything before we kill it.
-	let clipping_distance = 100;
+	let clipping_distance = 1000;
 	
 	let fog_scaling = .2;
 	let fog_color = [.75, .75, 1];
 	
 	//Gives anti-aliasing, but only when there are more iterations than average, since that usually indicates an edge.
-	let num_rays_per_pixel = 8;
+	let num_rays_per_pixel = 1;
 	
 	
 	
@@ -81,7 +94,28 @@
 	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
+	window.addEventListener("resize", fractals_resize);
+	setTimeout(fractals_resize, 500);
 	
+	init_listeners();
+	
+	
+	
+	function calculate_vectors()
+	{
+		//Here comes the serious math. Theta is the angle in the xy-plane and phi the angle down from the z-axis. We can use them get a normalized forward vector:
+		image_plane_forward_vec = [Math.cos(theta) * Math.sin(phi), Math.sin(theta) * Math.sin(phi), Math.cos(phi)];
+		
+		//Now the right vector needs to be constrained to the xy-plane, since otherwise the image will appear tilted. For a vector (a, b, c), the orthogonal plane that passes through the origin is ax + by + cz = 0, so we want ax + by = 0. One solution is (b, -a), and that's the one that goes to the "right" of the forward vector (when looking down).
+		image_plane_right_vec = normalize([image_plane_forward_vec[1], -image_plane_forward_vec[0], 0]);
+		
+		//Finally, the upward vector is the cross product of the previous two.
+		image_plane_up_vec = cross_product(image_plane_right_vec, image_plane_forward_vec);
+		
+		
+		
+		camera_pos = [image_plane_center_pos[0] - focal_length * image_plane_forward_vec[0], image_plane_center_pos[1] - focal_length * image_plane_forward_vec[1], image_plane_center_pos[2] - focal_length * image_plane_forward_vec[2]];
+	}
 	
 	
 	
@@ -401,6 +435,152 @@
 	function DE_plane(x, y, z)
 	{
 		return dot_product([x, y, z], [0, 0, 1]) + .5;
+	}
+	
+	
+	
+	function init_listeners()
+	{
+		document.querySelector("#output-canvas").addEventListener("mousedown", function(e)
+		{
+			currently_dragging = true;
+			
+			mouse_x = e.clientX;
+			mouse_y = e.clientY;
+		});
+		
+		
+		
+		document.querySelector("#output-canvas").addEventListener("mousemove", function(e)
+		{
+			if (currently_dragging)
+			{
+				e.preventDefault();
+				
+				
+				
+				let new_mouse_x = e.clientX;
+				let new_mouse_y = e.clientY;
+				
+				let mouse_x_delta = new_mouse_x - mouse_x;
+				let mouse_y_delta = new_mouse_y - mouse_y;
+				
+				
+				
+				theta += mouse_x_delta / canvas_size * Math.PI;
+				
+				if (theta >= 2 * Math.PI)
+				{
+					theta -= 2 * Math.PI;
+				}
+				
+				else if (theta < 0)
+				{
+					theta += 2 * Math.PI;
+				}
+				
+				
+				
+				phi -= mouse_y_delta / canvas_size * Math.PI;
+				
+				if (phi >= Math.PI)
+				{
+					phi = Math.PI
+				}
+				
+				else if (phi < 0)
+				{
+					phi = 0;
+				}
+				
+				
+				
+				mouse_x = new_mouse_x;
+				mouse_y = new_mouse_y;
+				
+				
+				
+				calculate_vectors();
+				
+				draw_frame();
+			}
+		});
+		
+		
+		
+		document.documentElement.addEventListener("mouseup", function(e)
+		{
+			currently_dragging = false;
+		});
+		
+		
+		
+		document.querySelector("#output-canvas").addEventListener("touchstart", function(e)
+		{
+			mouse_x = e.touches[0].clientX;
+			mouse_y = e.touches[0].clientY;
+		});
+		
+		
+		
+		document.querySelector("#output-canvas").addEventListener("touchmove", function(e)
+		{
+			e.preventDefault();
+			
+			
+			
+			let new_mouse_x = e.touches[0].clientX;
+			let new_mouse_y = e.touches[0].clientY;
+			
+			let mouse_x_delta = new_mouse_x - mouse_x;
+			let mouse_y_delta = new_mouse_y - mouse_y;
+			
+			
+			
+			theta += mouse_x_delta / canvas_size * Math.PI;
+			
+			if (theta >= 2 * Math.PI)
+			{
+				theta -= 2 * Math.PI;
+			}
+			
+			else if (theta < 0)
+			{
+				theta += 2 * Math.PI;
+			}
+			
+			
+			
+			phi -= mouse_y_delta / canvas_size * Math.PI;
+			
+			if (phi >= Math.PI)
+			{
+				phi = Math.PI
+			}
+			
+			else if (phi < 0)
+			{
+				phi = 0;
+			}
+			
+			
+			
+			mouse_x = new_mouse_x;
+			mouse_y = new_mouse_y;
+			
+			
+			
+			calculate_vectors();
+			
+			draw_frame();
+		});
+	}
+	
+	
+	
+	function fractals_resize()
+	{
+		canvas_size = document.querySelector("#output-canvas").offsetWidth;
 	}
 	
 	
