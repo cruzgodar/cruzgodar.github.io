@@ -13,6 +13,14 @@
 	let mouse_x = 0;
 	let mouse_y = 0;
 	
+	let moving_forward = false;
+	let moving_backward = false;
+	let moving_right = false;
+	let moving_left = false;
+	
+	let moving_speed = 0;
+	let sprinting = false;
+	
 	
 	
 	let image_size = 100;
@@ -77,7 +85,7 @@
 	let epsilon = .01;
 	
 	//How far away a ray has to be from everything before we kill it.
-	let clipping_distance = 1000;
+	let clipping_distance = 100;
 	
 	let fog_scaling = .2;
 	let fog_color = [.75, .75, 1];
@@ -90,14 +98,18 @@
 	document.querySelector("#output-canvas").setAttribute("width", image_size);
 	document.querySelector("#output-canvas").setAttribute("height", image_size);
 	
-	document.querySelector("#generate-button").addEventListener("click", draw_frame);
-	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
 	window.addEventListener("resize", fractals_resize);
 	setTimeout(fractals_resize, 500);
 	
 	init_listeners();
+	
+	
+	
+	draw_frame();
+	
+	
 	
 	
 	
@@ -574,6 +586,129 @@
 			
 			draw_frame();
 		});
+		
+		
+		
+		document.documentElement.addEventListener("keydown", function(e)
+		{
+			//W
+			if (e.keyCode === 87)
+			{
+				moving_forward = true;
+			}
+			
+			//S
+			else if (e.keyCode === 83)
+			{
+				moving_backward = true;
+			}
+			
+			//D
+			if (e.keyCode === 68)
+			{
+				moving_right = true;
+			}
+			
+			//A
+			else if (e.keyCode === 65)
+			{
+				moving_left = true;
+			}
+			
+			//Shift
+			if (e.keyCode === 16)
+			{
+				sprinting = true;
+			}
+		});
+		
+		
+		
+		document.documentElement.addEventListener("keyup", function(e)
+		{
+			//W
+			if (e.keyCode === 87)
+			{
+				moving_forward = false;
+			}
+			
+			//S
+			else if (e.keyCode === 83)
+			{
+				moving_backward = false;
+			}
+			
+			//D
+			if (e.keyCode === 68)
+			{
+				moving_right = false;
+			}
+			
+			//A
+			else if (e.keyCode === 65)
+			{
+				moving_left = false;
+			}
+			
+			//Shift
+			if (e.keyCode === 16)
+			{
+				sprinting = false;
+			}
+		});
+		
+		
+		
+		setInterval(function()
+		{
+			if (moving_forward || moving_backward || moving_right | moving_left)
+			{
+				moving_speed = distance_estimator(image_plane_center_pos[0], image_plane_center_pos[1], image_plane_center_pos[2])[0] / 30;
+				
+				if (sprinting)
+				{
+					moving_speed *= 3;
+				}
+				
+				
+				
+				if (moving_forward)
+				{
+					image_plane_center_pos[0] += moving_speed * image_plane_forward_vec[0];
+					image_plane_center_pos[1] += moving_speed * image_plane_forward_vec[1];
+					image_plane_center_pos[2] += moving_speed * image_plane_forward_vec[2];
+				}
+				
+				else if (moving_backward)
+				{
+					image_plane_center_pos[0] -= moving_speed * image_plane_forward_vec[0];
+					image_plane_center_pos[1] -= moving_speed * image_plane_forward_vec[1];
+					image_plane_center_pos[2] -= moving_speed * image_plane_forward_vec[2];
+				}
+				
+				
+				
+				if (moving_right)
+				{
+					image_plane_center_pos[0] += moving_speed * image_plane_right_vec[0];
+					image_plane_center_pos[1] += moving_speed * image_plane_right_vec[1];
+					image_plane_center_pos[2] += moving_speed * image_plane_right_vec[2];
+				}
+				
+				else if (moving_left)
+				{
+					image_plane_center_pos[0] -= moving_speed * image_plane_right_vec[0];
+					image_plane_center_pos[1] -= moving_speed * image_plane_right_vec[1];
+					image_plane_center_pos[2] -= moving_speed * image_plane_right_vec[2];
+				}
+			
+			
+			
+				calculate_vectors();
+				
+				draw_frame();
+			}
+		}, 8);
 	}
 	
 	
