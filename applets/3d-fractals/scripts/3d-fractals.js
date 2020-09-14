@@ -61,7 +61,7 @@
 	let camera_pos = [];
 	
 	//The distance the actual camera is recessed from the image plane (along the negative forward vector)
-	let focal_length = 1;
+	let focal_length = 2;
 	
 	calculate_vectors();
 	
@@ -75,7 +75,7 @@
 	
 	
 	//An object consists of a distance estimator, a color, and a reflectance.
-	let objects = [[DE_sphere, [1, 0, 0], 1], [DE_plane, [0, .5, 0], 1]];
+	let objects = [[DE_sierpinski_tetrahedron, [1, 0, 0], 1], [DE_plane, [0, .5, 0], 1]];
 	
 	
 	
@@ -316,6 +316,8 @@
 		let min_distance = Infinity;
 		let min_index = 0;
 		
+		
+		
 		for (let i = 0; i < objects.length; i++)
 		{
 			let distance = objects[i][0](x, y, z);
@@ -326,6 +328,8 @@
 				min_index = i;
 			}
 		}
+		
+		
 		
 		return [min_distance, min_index];
 	}
@@ -347,7 +351,7 @@
 		
 		
 		//Apply fog.
-		let distance_from_camera = Math.sqrt(x*x + y*y + z*z);
+		let distance_from_camera = Math.sqrt((x-image_plane_center_pos[0])*(x-image_plane_center_pos[0]) + (y-image_plane_center_pos[1])*(y-image_plane_center_pos[1]) + (z-image_plane_center_pos[2])*(z-image_plane_center_pos[2]));
 		
 		let fog_amount = 1 - Math.exp(-distance_from_camera * fog_scaling);
 		
@@ -439,14 +443,47 @@
 	
 	
 	
-	function DE_sphere(x, y, z)
+	function DE_sierpinski_tetrahedron(x, y, z)
 	{
-		return Math.sqrt(x*x + y*y + z*z) - .5;
+		let vertices = [[0, 0, 2], [0, -2, 0], [-2, 0, 0], [-2, -2, 2]];
+		
+		let num_iterations = 10;
+		
+		//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
+		for (let iteration = 0; iteration < num_iterations; iteration++)
+		{
+			let min_distance = Infinity;
+			let closest_vertex = 0;
+			
+			for (let i = 0; i < 4; i++)
+			{
+				//No need to take a square root if we're just trying to find a minimum.
+				let distance = (x - vertices[i][0])*(x - vertices[i][0]) + (y - vertices[i][1])*(y - vertices[i][1]) + (z - vertices[i][2])*(z - vertices[i][2]);
+				
+				if (distance < min_distance)
+				{
+					min_distance = distance;
+					closest_vertex = i;
+				}
+			}
+			
+			
+			
+			//This one takes a fair bit of thinking to get. Picture the 2d case, and how stretching "from the origin" doesn't have anything to do with the origin except its fixed point. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
+			x = 2*x - vertices[closest_vertex][0];
+			y = 2*y - vertices[closest_vertex][1];
+			z = 2*z - vertices[closest_vertex][2];
+		}
+		
+		
+		
+		//So at this point we've scaled up by 2x a total of num_iterations times. The final distance is therefore:
+		return Math.sqrt(x*x + y*y + z*z) * Math.pow(2, -num_iterations);
 	}
 	
 	function DE_plane(x, y, z)
 	{
-		return dot_product([x, y, z], [0, 0, 1]) + .5;
+		return dot_product([x, y, z], [0, 0, 1]) + 1;
 	}
 	
 	
