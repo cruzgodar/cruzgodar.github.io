@@ -4,7 +4,7 @@
 	
 	
 	
-	let gl = document.querySelector("#output-canvas").getContext("webgl");
+	let gl = document.querySelector("#output-canvas").getContext("experimental-webgl");
 	
 	let canvas_size = document.querySelector("#output-canvas").offsetWidth;
 	
@@ -28,7 +28,7 @@
 	
 	
 	
-	let image_size = 100;
+	let image_size = 500;
 	
 	let image_plane_center_pos = [0, 1, 1];
 	
@@ -96,6 +96,7 @@
 		varying vec2 uv;
 		
 		uniform vec3 camera_pos;
+		uniform vec3 image_plane_center_pos;
 		uniform vec3 forward_vec;
 		uniform vec3 right_vec;
 		uniform vec3 up_vec;
@@ -104,31 +105,95 @@
 		
 		
 		
-		//Constants that WebGL doesn't like being constants
-		uniform float focal_length;
-		
-		uniform float clip_distance;
-		
-		uniform int max_marches;
-		uniform float epsilon;
-		uniform vec4 fog_color;
-		
-		uniform int num_rays_per_aa_pixel;
+		const float focal_length = 2.0;
+		const float clip_distance = 100.0;
+		const int max_marches = 64;
+		const float epsilon = .01;
+		const vec4 fog_color = vec4(.75, .75, 1, 1);
+		const int num_rays_per_aa_pixel = 1;
 		
 		
 		
-		void main()
+		float distance_estimator(vec3 pos)
 		{
-			//vec3 start_pos = camera_pos;
-			//vec3 ray_direction_vec = normalize(forward_vec * focal_length + right_vec * uv.x + up_vec * uv.y);
+			return length(pos) - .5;
+		}
+		
+		
+		
+		void main(void)
+		{
+			vec3 start_pos = image_plane_center_pos + right_vec * uv.x + up_vec * uv.y;
 			
-			//vec4 color = compute_color(start_pos, ray_direction_vec);
 			
-			vec4 color = vec4(1, 0, 0, 1);
+			
+			vec3 ray_direction_vec = normalize(start_pos - camera_pos);
+			
+			
+			
+			vec4 color = fog_color;
+			
+			
+			
+			float t = 0.0;
+			
+			
+			
+			for (int iteration = 0; iteration < max_marches; iteration++)
+			{
+				vec3 pos = start_pos + t * ray_direction_vec;
+				
+				float distance = distance_estimator(pos);
+				
+				
+				
+				//
+				if (distance < epsilon)
+				{
+					color = vec4(1, 0, 0, iteration);
+					break;
+				}
+				
+				else if (distance > clip_distance)
+				{
+					break;
+				}
+				
+				
+				
+				t += distance;
+			}
+			
+			
 			
 			gl_FragColor = vec4(color.xyz, 1);
 		}
 	`;
+	
+	/*
+		
+				//Get the distance to the scene.
+				let result = distance_estimator(x, y, z);
+				
+				let distance = result[0];
+				let object_index = result[1];
+				
+				//If we barely moved, we're probably at an object.
+				if (distance < epsilon)
+				{
+					//Shade the point.
+					return [calculate_shading(x, y, z, object_index), iteration];
+				}
+				
+				else if (distance > clipping_distance)
+				{
+					return [[fog_color[0], fog_color[1], fog_color[2]], iteration];
+				}
+				
+				
+				
+				t += distance;
+	*/
 	
 	
 	
@@ -179,26 +244,14 @@
 		
 		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
 		shader_program.camera_pos_uniform = gl.getUniformLocation(shader_program, "camera_pos");
+		shader_program.image_plane_center_pos_uniform = gl.getUniformLocation(shader_program, "image_plane_center_pos");
 		shader_program.forward_vec_uniform = gl.getUniformLocation(shader_program, "forward_vec");
 		shader_program.right_vec_uniform = gl.getUniformLocation(shader_program, "right_vec");
 		shader_program.up_vec_uniform = gl.getUniformLocation(shader_program, "up_vec");
 		
 		
 		
-		//Set constants.
-		shader_program.focal_length_uniform = gl.getUniformLocation(shader_program, "focal_length");
-		shader_program.clip_distance_uniform = gl.getUniformLocation(shader_program, "clip_distance");
-		shader_program.max_marches_uniform = gl.getUniformLocation(shader_program, "max_marches");
-		shader_program.epsilon_uniform = gl.getUniformLocation(shader_program, "epsilon");
-		shader_program.fog_color_uniform = gl.getUniformLocation(shader_program, "fog_color");
-		shader_program.num_rays_per_aa_pixel_uniform = gl.getUniformLocation(shader_program, "num_rays_per_aa_pixel");
-		
-		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
-		gl.uniform1f(shader_program.clip_distance_uniform, clip_distance);
-		gl.uniform1i(shader_program.max_marches_uniform, max_marches);
-		gl.uniform1f(shader_program.epsilon_uniform, epsilon);
-		gl.uniform4fv(shader_program.fog_color_uniform, fog_color);
-		gl.uniform1i(shader_program.num_rays_per_aa_pixel_uniform, num_rays_per_aa_pixel);
+		gl.viewport(0, 0, image_size, image_size);
 		
 		
 		
@@ -230,6 +283,7 @@
 	{
 		gl.uniform1i(shader_program.image_size_uniform, image_size);
 		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
+		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
 		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
 		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
 		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
@@ -848,32 +902,32 @@
 				
 				if (moving_forward)
 				{
-					image_plane_center_pos[0] += moving_speed * image_plane_forward_vec[0];
-					image_plane_center_pos[1] += moving_speed * image_plane_forward_vec[1];
-					image_plane_center_pos[2] += moving_speed * image_plane_forward_vec[2];
+					image_plane_center_pos[0] += moving_speed * forward_vec[0];
+					image_plane_center_pos[1] += moving_speed * forward_vec[1];
+					image_plane_center_pos[2] += moving_speed * forward_vec[2];
 				}
 				
 				else if (moving_backward)
 				{
-					image_plane_center_pos[0] -= moving_speed * image_plane_forward_vec[0];
-					image_plane_center_pos[1] -= moving_speed * image_plane_forward_vec[1];
-					image_plane_center_pos[2] -= moving_speed * image_plane_forward_vec[2];
+					image_plane_center_pos[0] -= moving_speed * forward_vec[0];
+					image_plane_center_pos[1] -= moving_speed * forward_vec[1];
+					image_plane_center_pos[2] -= moving_speed * forward_vec[2];
 				}
 				
 				
 				
 				if (moving_right)
 				{
-					image_plane_center_pos[0] += moving_speed * image_plane_right_vec[0];
-					image_plane_center_pos[1] += moving_speed * image_plane_right_vec[1];
-					image_plane_center_pos[2] += moving_speed * image_plane_right_vec[2];
+					image_plane_center_pos[0] += moving_speed * right_vec[0];
+					image_plane_center_pos[1] += moving_speed * right_vec[1];
+					image_plane_center_pos[2] += moving_speed * right_vec[2];
 				}
 				
 				else if (moving_left)
 				{
-					image_plane_center_pos[0] -= moving_speed * image_plane_right_vec[0];
-					image_plane_center_pos[1] -= moving_speed * image_plane_right_vec[1];
-					image_plane_center_pos[2] -= moving_speed * image_plane_right_vec[2];
+					image_plane_center_pos[0] -= moving_speed * right_vec[0];
+					image_plane_center_pos[1] -= moving_speed * right_vec[1];
+					image_plane_center_pos[2] -= moving_speed * right_vec[2];
 				}
 			
 			
