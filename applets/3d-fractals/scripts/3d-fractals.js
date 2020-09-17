@@ -4,7 +4,7 @@
 	
 	
 	
-	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
+	let gl = document.querySelector("#output-canvas").getContext("webgl");
 	
 	let canvas_size = document.querySelector("#output-canvas").offsetWidth;
 	
@@ -23,45 +23,31 @@
 	
 	
 	
-	let image_size = 100;
-	
-	let image = [];
-	
-	let num_iterations_required = [];
-	
-	let pixels_to_anti_alias = [];
-	
-	for (let i = 0; i < image_size; i++)
-	{
-		image.push([]);
-		num_iterations_required.push([]);
-		pixels_to_anti_alias.push([]);
-		
-		for (let j = 0; j < image_size; j++)
-		{
-			image[i].push([0, 0, 0]);
-			num_iterations_required[i].push(0);
-			pixels_to_anti_alias[i].push(false);
-		}
-	}
-	
-	
-	
 	let theta = 3 * Math.PI / 2;
 	let phi = Math.PI / 2;
 	
 	
 	
+	let image_size = 100;
+	
 	let image_plane_center_pos = [0, 1, 1];
 	
-	let image_plane_forward_vec = [];
-	let image_plane_right_vec = [];
-	let image_plane_up_vec = [];
+	let forward_vec = [];
+	let right_vec = [];
+	let up_vec = [];
 	
 	let camera_pos = [];
 	
-	//The distance the actual camera is recessed from the image plane (along the negative forward vector)
-	let focal_length = 2;
+	
+	
+	const focal_length = 2;
+	const clip_distance = 100;
+	const max_marches = 64;
+	const epsilon = .01;
+	const fog_color = [.75, .75, 1, 1];
+	const num_rays_per_aa_pixel = 1;
+	
+	
 	
 	calculate_vectors();
 	
@@ -79,22 +65,6 @@
 	
 	
 	
-	let max_iterations = 50;
-	
-	//How close a ray has to be to a surface before we consider it hit.
-	let epsilon = .01;
-	
-	//How far away a ray has to be from everything before we kill it.
-	let clipping_distance = 100;
-	
-	let fog_scaling = .2;
-	let fog_color = [.75, .75, 1];
-	
-	//Gives anti-aliasing, but only when there are more iterations than average, since that usually indicates an edge.
-	let num_rays_per_pixel = 1;
-	
-	
-	
 	document.querySelector("#output-canvas").setAttribute("width", image_size);
 	document.querySelector("#output-canvas").setAttribute("height", image_size);
 	
@@ -107,7 +77,174 @@
 	
 	
 	
-	draw_frame();
+	const vertex_shader_source = `
+		attribute vec3 position;
+		varying vec2 uv;
+
+		void main(void)
+		{
+			gl_Position = vec4(position, 1.0);
+
+			// Interpolate quad coordinates in the fragment shader
+			uv = position.xy;
+		}
+	`;
+	
+	const frag_shader_source = `
+		precision mediump float;
+		
+		varying vec2 uv;
+		
+		uniform vec3 camera_pos;
+		uniform vec3 forward_vec;
+		uniform vec3 right_vec;
+		uniform vec3 up_vec;
+		
+		uniform int image_size;
+		
+		
+		
+		//Constants that WebGL doesn't like being constants
+		uniform float focal_length;
+		
+		uniform float clip_distance;
+		
+		uniform int max_marches;
+		uniform float epsilon;
+		uniform vec4 fog_color;
+		
+		uniform int num_rays_per_aa_pixel;
+		
+		
+		
+		void main()
+		{
+			//vec3 start_pos = camera_pos;
+			//vec3 ray_direction_vec = normalize(forward_vec * focal_length + right_vec * uv.x + up_vec * uv.y);
+			
+			//vec4 color = compute_color(start_pos, ray_direction_vec);
+			
+			vec4 color = vec4(1, 0, 0, 1);
+			
+			gl_FragColor = vec4(color.xyz, 1);
+		}
+	`;
+	
+	
+	
+	
+	let shader_program = null;
+	
+	function setup_webgl()
+	{
+		let vertex_shader = load_shader(gl, gl.VERTEX_SHADER, vertex_shader_source);
+		
+		let frag_shader = load_shader(gl, gl.FRAGMENT_SHADER, frag_shader_source);
+		
+		shader_program = gl.createProgram();
+		
+		gl.attachShader(shader_program, vertex_shader);
+		gl.attachShader(shader_program, frag_shader);
+		gl.linkProgram(shader_program);
+		
+		if (!gl.getProgramParameter(shader_program, gl.LINK_STATUS))
+		{
+			console.log(`Couldn't link shader program: ${gl.getShaderInfoLog(shader)}`);
+			gl.deleteProgram(shader_program);
+		}
+		
+		
+		
+		gl.useProgram(shader_program);
+		
+		
+		
+		let quad = [-1, -1, 0,   -1, 1, 0,   1, -1, 0,   1, 1, 0];
+		
+		
+		
+		let position_buffer = gl.createBuffer();
+		
+		gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
+		
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(quad), gl.STATIC_DRAW);
+		
+		shader_program.position_attribute = gl.getAttribLocation(shader_program, "position");
+		
+		gl.enableVertexAttribArray(shader_program.position_attribute);
+		
+		gl.vertexAttribPointer(shader_program.position_attribute, 3, gl.FLOAT, false, 0, 0);
+		
+		
+		
+		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
+		shader_program.camera_pos_uniform = gl.getUniformLocation(shader_program, "camera_pos");
+		shader_program.forward_vec_uniform = gl.getUniformLocation(shader_program, "forward_vec");
+		shader_program.right_vec_uniform = gl.getUniformLocation(shader_program, "right_vec");
+		shader_program.up_vec_uniform = gl.getUniformLocation(shader_program, "up_vec");
+		
+		
+		
+		//Set constants.
+		shader_program.focal_length_uniform = gl.getUniformLocation(shader_program, "focal_length");
+		shader_program.clip_distance_uniform = gl.getUniformLocation(shader_program, "clip_distance");
+		shader_program.max_marches_uniform = gl.getUniformLocation(shader_program, "max_marches");
+		shader_program.epsilon_uniform = gl.getUniformLocation(shader_program, "epsilon");
+		shader_program.fog_color_uniform = gl.getUniformLocation(shader_program, "fog_color");
+		shader_program.num_rays_per_aa_pixel_uniform = gl.getUniformLocation(shader_program, "num_rays_per_aa_pixel");
+		
+		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
+		gl.uniform1f(shader_program.clip_distance_uniform, clip_distance);
+		gl.uniform1i(shader_program.max_marches_uniform, max_marches);
+		gl.uniform1f(shader_program.epsilon_uniform, epsilon);
+		gl.uniform4fv(shader_program.fog_color_uniform, fog_color);
+		gl.uniform1i(shader_program.num_rays_per_aa_pixel_uniform, num_rays_per_aa_pixel);
+		
+		
+		
+		draw_frame();
+	}
+	
+	
+	
+	function load_shader(gl, type, source)
+	{
+		let shader = gl.createShader(type);
+		
+		gl.shaderSource(shader, source);
+		
+		gl.compileShader(shader);
+		
+		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+		{
+			console.log(`Couldn't load shader: ${gl.getProgramInfoLog(shaderProgram)}`);
+			gl.deleteShader(shader);
+		}
+		
+		return shader;
+	}
+	
+	
+	
+	function draw_frame()
+	{
+		gl.uniform1i(shader_program.image_size_uniform, image_size);
+		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
+		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
+		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
+		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
+		
+		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+	}
+	
+	
+	
+	load_script("/scripts/gl-matrix.min.js")
+	
+	.then(function()
+	{
+		setup_webgl();
+	});
 	
 	
 	
@@ -116,22 +253,22 @@
 	function calculate_vectors()
 	{
 		//Here comes the serious math. Theta is the angle in the xy-plane and phi the angle down from the z-axis. We can use them get a normalized forward vector:
-		image_plane_forward_vec = [Math.cos(theta) * Math.sin(phi), Math.sin(theta) * Math.sin(phi), Math.cos(phi)];
+		forward_vec = [Math.cos(theta) * Math.sin(phi), Math.sin(theta) * Math.sin(phi), Math.cos(phi)];
 		
 		//Now the right vector needs to be constrained to the xy-plane, since otherwise the image will appear tilted. For a vector (a, b, c), the orthogonal plane that passes through the origin is ax + by + cz = 0, so we want ax + by = 0. One solution is (b, -a), and that's the one that goes to the "right" of the forward vector (when looking down).
-		image_plane_right_vec = normalize([image_plane_forward_vec[1], -image_plane_forward_vec[0], 0]);
+		right_vec = normalize([forward_vec[1], -forward_vec[0], 0]);
 		
 		//Finally, the upward vector is the cross product of the previous two.
-		image_plane_up_vec = cross_product(image_plane_right_vec, image_plane_forward_vec);
+		up_vec = cross_product(right_vec, forward_vec);
 		
 		
 		
-		camera_pos = [image_plane_center_pos[0] - focal_length * image_plane_forward_vec[0], image_plane_center_pos[1] - focal_length * image_plane_forward_vec[1], image_plane_center_pos[2] - focal_length * image_plane_forward_vec[2]];
+		camera_pos = [image_plane_center_pos[0] - focal_length * forward_vec[0], image_plane_center_pos[1] - focal_length * forward_vec[1], image_plane_center_pos[2] - focal_length * forward_vec[2]];
 	}
 	
 	
 	
-	function draw_frame()
+	function a()
 	{
 		let anti_aliasing_iteration_threshhold = 0;
 		
