@@ -30,38 +30,22 @@
 	
 	let image_size = 500;
 	
-	let image_plane_center_pos = [0, 1, 1];
+	let image_plane_center_pos = [];
 	
 	let forward_vec = [];
 	let right_vec = [];
 	let up_vec = [];
 	
-	let camera_pos = [];
-	
-	
-	
-	const focal_length = 2;
-	const clip_distance = 100;
-	const max_marches = 64;
-	const epsilon = .01;
-	const fog_color = [.75, .75, 1, 1];
-	const num_rays_per_aa_pixel = 1;
-	
-	
-	
-	calculate_vectors();
-	
-	
+	let camera_pos = [2, 2, 2];
 	
 	let light_pos = [5, 5, 5];
 	let light_brightness = 1;
 	
-	let shadow_sharpness = 10;
+	const focal_length = 1;
 	
 	
 	
-	//An object consists of a distance estimator, a color, and a reflectance.
-	let objects = [[DE_sierpinski_tetrahedron, [1, 0, 0], 1], [DE_plane, [0, .5, 0], 1]];
+	calculate_vectors();
 	
 	
 	
@@ -91,7 +75,7 @@
 	`;
 	
 	const frag_shader_source = `
-		precision mediump float;
+		precision highp float;
 		
 		varying vec2 uv;
 		
@@ -101,15 +85,19 @@
 		uniform vec3 right_vec;
 		uniform vec3 up_vec;
 		
+		uniform vec3 light_pos;
+		uniform float light_brightness;
+		
 		uniform int image_size;
 		
 		
 		
-		const float focal_length = 2.0;
+		const float focal_length = 1.0;
 		const float clip_distance = 100.0;
 		const int max_marches = 64;
 		const float epsilon = .01;
 		const vec4 fog_color = vec4(.75, .75, 1, 1);
+		const float shadow_sharpness = 10.0;
 		const int num_rays_per_aa_pixel = 1;
 		
 		
@@ -121,19 +109,43 @@
 		
 		
 		
+		vec3 get_surface_normal(vec3 pos)
+		{
+			float e = .001;
+			
+			float base = distance_estimator(pos);
+			
+			float x_step = distance_estimator(pos + vec3(e, 0, 0));
+			float y_step = distance_estimator(pos + vec3(0, e, 0));
+			float z_step = distance_estimator(pos + vec3(0, 0, e));
+			
+			return normalize(vec3((x_step - base) / e, (y_step - base) / e, (z_step - base) / e));
+		}
+		
+		
+		
+		vec4 compute_shading(vec3 pos, int iteration)
+		{
+			vec3 surface_normal = get_surface_normal(pos);
+			
+			vec3 light_direction = normalize(light_pos - pos);
+			
+			float light_intensity = light_brightness * dot(surface_normal, light_direction);
+			
+			vec4 color = vec4(light_intensity, 0, 0, 1);
+			
+			return color;
+		}
+		
+		
+		
 		void main(void)
 		{
 			vec3 start_pos = image_plane_center_pos + right_vec * uv.x + up_vec * uv.y;
 			
-			
-			
 			vec3 ray_direction_vec = normalize(start_pos - camera_pos);
 			
-			
-			
 			vec4 color = fog_color;
-			
-			
 			
 			float t = 0.0;
 			
@@ -147,10 +159,9 @@
 				
 				
 				
-				//
 				if (distance < epsilon)
 				{
-					color = vec4(1, 0, 0, iteration);
+					color = compute_shading(pos, iteration);
 					break;
 				}
 				
@@ -169,32 +180,6 @@
 			gl_FragColor = vec4(color.xyz, 1);
 		}
 	`;
-	
-	/*
-		
-				//Get the distance to the scene.
-				let result = distance_estimator(x, y, z);
-				
-				let distance = result[0];
-				let object_index = result[1];
-				
-				//If we barely moved, we're probably at an object.
-				if (distance < epsilon)
-				{
-					//Shade the point.
-					return [calculate_shading(x, y, z, object_index), iteration];
-				}
-				
-				else if (distance > clipping_distance)
-				{
-					return [[fog_color[0], fog_color[1], fog_color[2]], iteration];
-				}
-				
-				
-				
-				t += distance;
-	*/
-	
 	
 	
 	
@@ -248,6 +233,8 @@
 		shader_program.forward_vec_uniform = gl.getUniformLocation(shader_program, "forward_vec");
 		shader_program.right_vec_uniform = gl.getUniformLocation(shader_program, "right_vec");
 		shader_program.up_vec_uniform = gl.getUniformLocation(shader_program, "up_vec");
+		shader_program.light_pos_uniform = gl.getUniformLocation(shader_program, "light_pos");
+		shader_program.light_brightness_uniform = gl.getUniformLocation(shader_program, "light_brightness");
 		
 		
 		
@@ -287,6 +274,8 @@
 		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
 		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
 		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
+		gl.uniform3fv(shader_program.light_pos_uniform, light_pos);
+		gl.uniform1f(shader_program.light_brightness_uniform, light_brightness);
 		
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 	}
@@ -317,7 +306,14 @@
 		
 		
 		
-		camera_pos = [image_plane_center_pos[0] - focal_length * forward_vec[0], image_plane_center_pos[1] - focal_length * forward_vec[1], image_plane_center_pos[2] - focal_length * forward_vec[2]];
+		image_plane_center_pos = [camera_pos[0] + focal_length * forward_vec[0], camera_pos[1] + focal_length * forward_vec[1], camera_pos[2] + focal_length * forward_vec[2]];
+	}
+	
+	
+	
+	function distance_estimator(x, y, z)
+	{
+		return Math.sqrt(x*x + y*y + z*z) - .5;
 	}
 	
 	
@@ -423,106 +419,6 @@
 		}
 		
 		ctx.putImageData(img_data, 0, 0);
-	}
-	
-	
-	
-	function calculate_pixel(row, col, noise)
-	{
-		//(u, v) gives local coordinates on the image plane (-1 <= u, v <= 1)
-		let u = col / image_size * 2 - 1;
-		let v = 1 - row / image_size * 2;
-		
-		if (noise)
-		{
-			u += Math.random() * (2 / image_size);
-			v += Math.random() * (2 / image_size);
-		}
-		
-		//(x, y, z) gives global coordinates.
-		let start_x = image_plane_center_pos[0] + image_plane_right_vec[0] * u + image_plane_up_vec[0] * v;
-		let start_y = image_plane_center_pos[1] + image_plane_right_vec[1] * u + image_plane_up_vec[1] * v;
-		let start_z = image_plane_center_pos[2] + image_plane_right_vec[2] * u + image_plane_up_vec[2] * v;
-		
-		
-		
-		//Having the camera recessed from the image plane creates perspective, so every ray will go in a different direction.
-		let ray_direction_vec = [start_x - camera_pos[0], start_y - camera_pos[1], start_z - camera_pos[2]];
-		
-		let magnitude = Math.sqrt(ray_direction_vec[0] * ray_direction_vec[0] + ray_direction_vec[1] * ray_direction_vec[1] + ray_direction_vec[2] * ray_direction_vec[2]);
-		
-		ray_direction_vec[0] /= magnitude;
-		ray_direction_vec[1] /= magnitude;
-		ray_direction_vec[2] /= magnitude;
-		
-		
-		
-		//The coefficient on the march direction vector.
-		let t = 0;
-		
-		let iteration = 0;
-		
-		while (iteration < max_iterations)
-		{
-			let x = start_x + t * ray_direction_vec[0];
-			let y = start_y + t * ray_direction_vec[1];
-			let z = start_z + t * ray_direction_vec[2];
-			
-			
-			
-			//Get the distance to the scene.
-			let result = distance_estimator(x, y, z);
-			
-			let distance = result[0];
-			let object_index = result[1];
-			
-			//If we barely moved, we're probably at an object.
-			if (distance < epsilon)
-			{
-				//Shade the point.
-				return [calculate_shading(x, y, z, object_index), iteration];
-			}
-			
-			else if (distance > clipping_distance)
-			{
-				return [[fog_color[0], fog_color[1], fog_color[2]], iteration];
-			}
-			
-			
-			
-			t += distance;
-			
-			iteration++;
-		}
-		
-		
-		
-		return [[fog_color[0], fog_color[1], fog_color[2]], iteration];
-	}
-	
-	
-	
-	function distance_estimator(x, y, z)
-	{
-		let min_distance = Infinity;
-		let min_index = 0;
-		
-		
-		
-		for (let i = 0; i < objects.length; i++)
-		{
-			let distance = objects[i][0](x, y, z);
-			
-			if (distance < min_distance)
-			{
-				min_distance = distance;
-				min_index = i;
-			}
-		}
-		
-		
-		
-		return [min_distance, min_index];
 	}
 	
 	
@@ -891,7 +787,7 @@
 		{
 			if (moving_forward || moving_backward || moving_right | moving_left)
 			{
-				moving_speed = distance_estimator(image_plane_center_pos[0], image_plane_center_pos[1], image_plane_center_pos[2])[0] / 30;
+				moving_speed = Math.max(distance_estimator(image_plane_center_pos[0], image_plane_center_pos[1], image_plane_center_pos[2]) / 60, 0);
 				
 				if (sprinting)
 				{
@@ -902,32 +798,32 @@
 				
 				if (moving_forward)
 				{
-					image_plane_center_pos[0] += moving_speed * forward_vec[0];
-					image_plane_center_pos[1] += moving_speed * forward_vec[1];
-					image_plane_center_pos[2] += moving_speed * forward_vec[2];
+					camera_pos[0] += moving_speed * forward_vec[0];
+					camera_pos[1] += moving_speed * forward_vec[1];
+					camera_pos[2] += moving_speed * forward_vec[2];
 				}
 				
 				else if (moving_backward)
 				{
-					image_plane_center_pos[0] -= moving_speed * forward_vec[0];
-					image_plane_center_pos[1] -= moving_speed * forward_vec[1];
-					image_plane_center_pos[2] -= moving_speed * forward_vec[2];
+					camera_pos[0] -= moving_speed * forward_vec[0];
+					camera_pos[1] -= moving_speed * forward_vec[1];
+					camera_pos[2] -= moving_speed * forward_vec[2];
 				}
 				
 				
 				
 				if (moving_right)
 				{
-					image_plane_center_pos[0] += moving_speed * right_vec[0];
-					image_plane_center_pos[1] += moving_speed * right_vec[1];
-					image_plane_center_pos[2] += moving_speed * right_vec[2];
+					camera_pos[0] += moving_speed * right_vec[0];
+					camera_pos[1] += moving_speed * right_vec[1];
+					camera_pos[2] += moving_speed * right_vec[2];
 				}
 				
 				else if (moving_left)
 				{
-					image_plane_center_pos[0] -= moving_speed * right_vec[0];
-					image_plane_center_pos[1] -= moving_speed * right_vec[1];
-					image_plane_center_pos[2] -= moving_speed * right_vec[2];
+					camera_pos[0] -= moving_speed * right_vec[0];
+					camera_pos[1] -= moving_speed * right_vec[1];
+					camera_pos[2] -= moving_speed * right_vec[2];
 				}
 			
 			
