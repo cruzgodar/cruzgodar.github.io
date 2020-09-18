@@ -31,6 +31,7 @@
 	
 	
 	let image_size = 500;
+	let num_sierpinski_iterations = 15;
 	
 	let image_plane_center_pos = [];
 	
@@ -45,6 +46,10 @@
 	
 	let focal_length = 2;
 	let epsilon = .01;
+	
+	let max_epsilon = .01;
+	let min_epsilon = Math.pow(2, -num_sierpinski_iterations);
+	
 	
 	
 	
@@ -89,7 +94,6 @@
 		uniform vec3 up_vec;
 		
 		uniform float focal_length;
-		uniform float epsilon;
 		
 		uniform vec3 light_pos;
 		uniform float light_brightness;
@@ -102,9 +106,7 @@
 		const int max_marches = 256;
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .2;
-		
 		const int num_sierpinski_iterations = 15;
-		
 		
 		
 		vec3 color;
@@ -196,7 +198,7 @@
 		
 		vec3 get_surface_normal(vec3 pos)
 		{
-			float e = .001;
+			float e = .00001;
 			
 			float base = distance_estimator(pos);
 			
@@ -242,6 +244,8 @@
 			
 			float t = 0.0;
 			
+			float epsilon = .00005;
+			
 			
 			
 			for (int iteration = 0; iteration < max_marches; iteration++)
@@ -249,6 +253,12 @@
 				vec3 pos = start_pos + t * ray_direction_vec;
 				
 				float distance = distance_estimator(pos);
+				
+				//This lowers the detail far away, which makes everything run nice and fast.
+				if (distance / 50.0 > epsilon)
+				{
+					epsilon = distance / 50.0;
+				}
 				
 				
 				
@@ -321,13 +331,16 @@
 		
 		
 		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
+		
 		shader_program.camera_pos_uniform = gl.getUniformLocation(shader_program, "camera_pos");
 		shader_program.image_plane_center_pos_uniform = gl.getUniformLocation(shader_program, "image_plane_center_pos");
 		shader_program.forward_vec_uniform = gl.getUniformLocation(shader_program, "forward_vec");
 		shader_program.right_vec_uniform = gl.getUniformLocation(shader_program, "right_vec");
 		shader_program.up_vec_uniform = gl.getUniformLocation(shader_program, "up_vec");
+		
 		shader_program.focal_length_uniform = gl.getUniformLocation(shader_program, "focal_length");
 		shader_program.epsilon_uniform = gl.getUniformLocation(shader_program, "epsilon");
+		
 		shader_program.light_pos_uniform = gl.getUniformLocation(shader_program, "light_pos");
 		shader_program.light_brightness_uniform = gl.getUniformLocation(shader_program, "light_brightness");
 		
@@ -364,13 +377,16 @@
 	function draw_frame()
 	{
 		gl.uniform1i(shader_program.image_size_uniform, image_size);
+		
 		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
 		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
 		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
 		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
 		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
+		
 		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
 		gl.uniform1f(shader_program.epsilon_uniform, epsilon);
+		
 		gl.uniform3fv(shader_program.light_pos_uniform, light_pos);
 		gl.uniform1f(shader_program.light_brightness_uniform, light_brightness);
 		
@@ -416,7 +432,7 @@
 		
 		
 		
-		epsilon = Math.max(Math.min(distance_to_scene / 50, .01), .00005);
+		epsilon = Math.max(Math.min(distance_to_scene / 50, max_epsilon), min_epsilon);
 		
 		image_plane_center_pos = [camera_pos[0] + focal_length * forward_vec[0], camera_pos[1] + focal_length * forward_vec[1], camera_pos[2] + focal_length * forward_vec[2]];
 	}
@@ -443,10 +459,8 @@
 	{
 		let vertices = [[0.0, 0.0, 1.0], [.942809, 0.0, -.333333], [-.471405, .816497, -.333333], [-.471405, -.816497, -.333333]];
 		
-		let num_iterations = 15;
-		
 		//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
-		for (let iteration = 0; iteration < num_iterations; iteration++)
+		for (let iteration = 0; iteration < num_sierpinski_iterations; iteration++)
 		{
 			let min_distance = Infinity;
 			let closest_vertex = 0;
@@ -474,7 +488,7 @@
 		
 		
 		//So at this point we've scaled up by 2x a total of num_iterations times. The final distance is therefore:
-		return Math.sqrt(x*x + y*y + z*z) * Math.pow(2, -num_iterations);
+		return Math.sqrt(x*x + y*y + z*z) * Math.pow(2, -num_sierpinski_iterations);
 	}
 	
 	
