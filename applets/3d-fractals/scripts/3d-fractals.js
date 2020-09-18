@@ -41,7 +41,7 @@
 	let camera_pos = [1, 1, 1];
 	
 	let light_pos = [0, 0, 5];
-	let light_brightness = 1;
+	let light_brightness = 1.25;
 	
 	let focal_length = 2;
 	let epsilon = .01;
@@ -104,7 +104,6 @@
 		const float fog_scaling = .2;
 		
 		const int num_sierpinski_iterations = 15;
-		const float num_sierpinski_iterations_exponent = 15.0;
 		
 		
 		
@@ -190,7 +189,7 @@
 			
 			
 			
-			return length(mutable_pos) * pow(.5, num_sierpinski_iterations_exponent);
+			return length(mutable_pos) * pow(.5, float(num_sierpinski_iterations));
 		}
 		
 		
@@ -218,7 +217,7 @@
 			
 			float light_intensity = light_brightness * dot(surface_normal, light_direction);
 			
-			color = color * light_intensity;
+			color = color * light_intensity * (1.0 - float(iteration) / 64.0);
 			
 			
 			
@@ -236,7 +235,8 @@
 		{
 			vec3 start_pos = image_plane_center_pos + right_vec * uv.x + up_vec * uv.y;
 			
-			vec3 ray_direction_vec = normalize(start_pos - camera_pos);
+			//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
+			vec3 ray_direction_vec = normalize(start_pos - camera_pos) * .9;
 			
 			vec3 final_color = fog_color;
 			
