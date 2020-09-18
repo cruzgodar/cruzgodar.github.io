@@ -21,10 +21,12 @@
 	let moving_speed = 0;
 	let sprinting = false;
 	
+	let distance_to_scene = 1;
 	
 	
-	let theta = 3 * Math.PI / 2;
-	let phi = Math.PI / 2;
+	
+	let theta = 5 * Math.PI / 4;
+	let phi = 2 * Math.PI / 3;
 	
 	
 	
@@ -36,12 +38,13 @@
 	let right_vec = [];
 	let up_vec = [];
 	
-	let camera_pos = [2, 2, 2];
+	let camera_pos = [1, 1, 1];
 	
-	let light_pos = [5, 5, 5];
+	let light_pos = [0, 0, 5];
 	let light_brightness = 1;
 	
-	const focal_length = 2;
+	let focal_length = 2;
+	let epsilon = .01;
 	
 	
 	
@@ -69,7 +72,7 @@
 		{
 			gl_Position = vec4(position, 1.0);
 
-			// Interpolate quad coordinates in the fragment shader
+			//Interpolate quad coordinates in the fragment shader.
 			uv = position.xy;
 		}
 	`;
@@ -85,6 +88,9 @@
 		uniform vec3 right_vec;
 		uniform vec3 up_vec;
 		
+		uniform float focal_length;
+		uniform float epsilon;
+		
 		uniform vec3 light_pos;
 		uniform float light_brightness;
 		
@@ -92,24 +98,27 @@
 		
 		
 		
-		const float focal_length = 2.0;
 		const float clip_distance = 100.0;
-		const int max_marches = 64;
-		const float epsilon = .01;
-		const vec3 fog_color = vec3(.75, .75, 1.0);
+		const int max_marches = 256;
+		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .2;
-		const float shadow_sharpness = 10.0;
-		const int max_shadow_marches = 50;
-		const int num_rays_per_aa_pixel = 1;
 		
-		const int num_sierpinski_iterations = 10;
-		const float num_sierpinski_iterations_exponent = 10.0;
+		const int num_sierpinski_iterations = 15;
+		const float num_sierpinski_iterations_exponent = 15.0;
+		
+		
+		
+		vec3 color;
+		
+		const vec3 color_1 = vec3(1.0, 1.0, 1.0);
+		const vec3 color_2 = vec3(1.0, 0.0, 0.0);
+		const vec3 color_3 = vec3(0.0, 1.0, 0.0);
+		const vec3 color_4 = vec3(0.0, 0.0, 1.0);
 		
 		
 		
 		float distance_estimator(vec3 pos)
 		{
-			
 			vec3 mutable_pos = pos;
 			
 			vec3 vertex_1 = vec3(0.0, 0.0, 1.0);
@@ -117,12 +126,13 @@
 			vec3 vertex_3 = vec3(-.471405, .816497, -.333333);
 			vec3 vertex_4 = vec3(-.471405, -.816497, -.333333);
 			
+			color = vec3(0.0, 0.0, 0.0);
+			float color_scale = .75;
 			
 			
 			//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 			for (int iteration = 0; iteration < num_sierpinski_iterations; iteration++)
 			{
-				
 				float min_distance = clip_distance;
 				vec3 closest_vertex;
 				
@@ -134,6 +144,7 @@
 				{
 					min_distance = distance;
 					closest_vertex = vertex_1;
+					color += color_scale * color_1;
 				}
 				
 				
@@ -144,6 +155,7 @@
 				{
 					min_distance = distance;
 					closest_vertex = vertex_2;
+					color += color_scale * color_2;
 				}
 				
 				
@@ -154,6 +166,7 @@
 				{
 					min_distance = distance;
 					closest_vertex = vertex_3;
+					color += color_scale * color_3;
 				}
 				
 				
@@ -164,13 +177,15 @@
 				{
 					min_distance = distance;
 					closest_vertex = vertex_4;
+					color += color_scale * color_4;
 				}
 				
 				
 				
 				//This one takes a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-				
 				mutable_pos = 2.0 * mutable_pos - closest_vertex;
+				
+				color_scale *= .25;
 			}
 			
 			
@@ -195,50 +210,15 @@
 		
 		
 		
-		float compute_shadow(vec3 start_pos, vec3 light_direction)
-		{
-			float t = 2.0 * epsilon;
-			
-			float max_t = length(light_pos - start_pos);
-			
-			float shadow_amount = 1.0;
-			
-			
-			
-			for (int iteration = 0; iteration < max_shadow_marches; iteration++)
-			{
-				vec3 pos = start_pos + t * light_direction;
-				
-				float distance = distance_estimator(pos);
-				
-				//If we barely moved, we're probably at an object. Unfortunately, curved surfaces are kind of problematic if we just leave it at that, so we need to make sure we're at least a little but away from where we started.
-				if (distance < epsilon / 2.0)
-				{
-					//This point is totally shadowed.
-					return 0.0;
-				}
-				
-				shadow_amount = min(shadow_amount, shadow_sharpness * distance / t);
-				
-				t += distance;
-			}
-			
-			
-			
-			return shadow_amount;
-		}
-		
-		
-		
 		vec3 compute_shading(vec3 pos, int iteration)
 		{
 			vec3 surface_normal = get_surface_normal(pos);
 			
 			vec3 light_direction = normalize(light_pos - pos);
 			
-			float light_intensity = light_brightness * dot(surface_normal, light_direction) * compute_shadow(pos, light_direction);
+			float light_intensity = light_brightness * dot(surface_normal, light_direction);
 			
-			vec3 color = vec3(light_intensity, 0.0, 0.0);
+			color = color * light_intensity;
 			
 			
 			
@@ -258,7 +238,7 @@
 			
 			vec3 ray_direction_vec = normalize(start_pos - camera_pos);
 			
-			vec3 color = fog_color;
+			vec3 final_color = fog_color;
 			
 			float t = 0.0;
 			
@@ -274,7 +254,7 @@
 				
 				if (distance < epsilon)
 				{
-					color = compute_shading(pos, iteration);
+					final_color = compute_shading(pos, iteration);
 					break;
 				}
 				
@@ -290,7 +270,7 @@
 			
 			
 			
-			gl_FragColor = vec4(color.xyz, 1.0);
+			gl_FragColor = vec4(final_color.xyz, 1.0);
 		}
 	`;
 	
@@ -346,6 +326,8 @@
 		shader_program.forward_vec_uniform = gl.getUniformLocation(shader_program, "forward_vec");
 		shader_program.right_vec_uniform = gl.getUniformLocation(shader_program, "right_vec");
 		shader_program.up_vec_uniform = gl.getUniformLocation(shader_program, "up_vec");
+		shader_program.focal_length_uniform = gl.getUniformLocation(shader_program, "focal_length");
+		shader_program.epsilon_uniform = gl.getUniformLocation(shader_program, "epsilon");
 		shader_program.light_pos_uniform = gl.getUniformLocation(shader_program, "light_pos");
 		shader_program.light_brightness_uniform = gl.getUniformLocation(shader_program, "light_brightness");
 		
@@ -387,10 +369,14 @@
 		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
 		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
 		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
+		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
+		gl.uniform1f(shader_program.epsilon_uniform, epsilon);
 		gl.uniform3fv(shader_program.light_pos_uniform, light_pos);
 		gl.uniform1f(shader_program.light_brightness_uniform, light_brightness);
 		
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+		
+		distance_to_scene = distance_estimator(image_plane_center_pos[0], image_plane_center_pos[1], image_plane_center_pos[2]);
 	}
 	
 	
@@ -419,14 +405,20 @@
 		
 		
 		
+		focal_length = distance_to_scene / 2;
+		
+		right_vec[0] *= focal_length;
+		right_vec[1] *= focal_length;
+		
+		up_vec[0] *= focal_length;
+		up_vec[1] *= focal_length;
+		up_vec[2] *= focal_length;
+		
+		
+		
+		epsilon = Math.max(Math.min(distance_to_scene / 50, .01), .00005);
+		
 		image_plane_center_pos = [camera_pos[0] + focal_length * forward_vec[0], camera_pos[1] + focal_length * forward_vec[1], camera_pos[2] + focal_length * forward_vec[2]];
-	}
-	
-	
-	
-	function distance_estimator(x, y, z)
-	{
-		return Math.sqrt(x*x + y*y + z*z) - .5;
 	}
 	
 	
@@ -447,11 +439,11 @@
 	
 	
 	
-	function DE_sierpinski_tetrahedron(x, y, z)
+	function distance_estimator(x, y, z)
 	{
-		let vertices = [[0, 0, 2], [0, -2, 0], [-2, 0, 0], [-2, -2, 2]];
+		let vertices = [[0.0, 0.0, 1.0], [.942809, 0.0, -.333333], [-.471405, .816497, -.333333], [-.471405, -.816497, -.333333]];
 		
-		let num_iterations = 10;
+		let num_iterations = 15;
 		
 		//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 		for (let iteration = 0; iteration < num_iterations; iteration++)
@@ -473,7 +465,7 @@
 			
 			
 			
-			//This one takes a fair bit of thinking to get. Picture the 2d case, and how stretching "from the origin" doesn't have anything to do with the origin except its fixed point. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
+			//This one takes a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
 			x = 2*x - vertices[closest_vertex][0];
 			y = 2*y - vertices[closest_vertex][1];
 			z = 2*z - vertices[closest_vertex][2];
@@ -483,11 +475,6 @@
 		
 		//So at this point we've scaled up by 2x a total of num_iterations times. The final distance is therefore:
 		return Math.sqrt(x*x + y*y + z*z) * Math.pow(2, -num_iterations);
-	}
-	
-	function DE_plane(x, y, z)
-	{
-		return dot_product([x, y, z], [0, 0, 1]) + 1;
 	}
 	
 	
@@ -536,14 +523,14 @@
 				
 				phi -= mouse_y_delta / canvas_size * Math.PI;
 				
-				if (phi >= Math.PI)
+				if (phi > Math.PI - .01)
 				{
-					phi = Math.PI
+					phi = Math.PI - .01;
 				}
 				
-				else if (phi < 0)
+				else if (phi < .01)
 				{
-					phi = 0;
+					phi = .01;
 				}
 				
 				
@@ -606,14 +593,14 @@
 			
 			phi -= mouse_y_delta / canvas_size * Math.PI;
 			
-			if (phi >= Math.PI)
+			if (phi > Math.PI - .01)
 			{
-				phi = Math.PI
+				phi = Math.PI - .01;
 			}
 			
-			else if (phi < 0)
+			else if (phi < .01)
 			{
-				phi = 0;
+				phi = .01;
 			}
 			
 			
@@ -704,16 +691,16 @@
 		{
 			if (moving_forward || moving_backward || moving_right | moving_left)
 			{
-				moving_speed = distance_estimator(image_plane_center_pos[0], image_plane_center_pos[1], image_plane_center_pos[2]) / 60;
+				moving_speed = distance_to_scene / 60;
 				
 				if (moving_speed < 0)
 				{
 					moving_speed = 0;
 				}
 				
-				if (moving_speed > .1)
+				if (moving_speed > .02)
 				{
-					moving_speed = .1;
+					moving_speed = .02;
 				}
 				
 				
@@ -743,16 +730,16 @@
 				
 				if (moving_right)
 				{
-					camera_pos[0] += moving_speed * right_vec[0];
-					camera_pos[1] += moving_speed * right_vec[1];
-					camera_pos[2] += moving_speed * right_vec[2];
+					camera_pos[0] += moving_speed * right_vec[0] / focal_length;
+					camera_pos[1] += moving_speed * right_vec[1] / focal_length;
+					camera_pos[2] += moving_speed * right_vec[2] / focal_length;
 				}
 				
 				else if (moving_left)
 				{
-					camera_pos[0] -= moving_speed * right_vec[0];
-					camera_pos[1] -= moving_speed * right_vec[1];
-					camera_pos[2] -= moving_speed * right_vec[2];
+					camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
+					camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
+					camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
 				}
 			
 			
