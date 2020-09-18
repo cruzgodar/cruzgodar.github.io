@@ -41,7 +41,7 @@
 	let light_pos = [5, 5, 5];
 	let light_brightness = 1;
 	
-	const focal_length = 1;
+	const focal_length = 2;
 	
 	
 	
@@ -92,7 +92,7 @@
 		
 		
 		
-		const float focal_length = 1.0;
+		const float focal_length = 2.0;
 		const float clip_distance = 100.0;
 		const int max_marches = 64;
 		const float epsilon = .01;
@@ -102,13 +102,80 @@
 		const int max_shadow_marches = 50;
 		const int num_rays_per_aa_pixel = 1;
 		
+		const int num_sierpinski_iterations = 10;
+		const float num_sierpinski_iterations_exponent = 10.0;
+		
 		
 		
 		float distance_estimator(vec3 pos)
 		{
 			
+			vec3 mutable_pos = pos;
 			
-			return min(distance, dot(pos, vec3(0.0, 0.0, 1.0)) + 1);
+			vec3 vertex_1 = vec3(0.0, 0.0, 1.0);
+			vec3 vertex_2 = vec3(.942809, 0.0, -.333333);
+			vec3 vertex_3 = vec3(-.471405, .816497, -.333333);
+			vec3 vertex_4 = vec3(-.471405, -.816497, -.333333);
+			
+			
+			
+			//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
+			for (int iteration = 0; iteration < num_sierpinski_iterations; iteration++)
+			{
+				
+				float min_distance = clip_distance;
+				vec3 closest_vertex;
+				
+				
+				
+				float distance = length(mutable_pos - vertex_1);
+				
+				if (distance < min_distance)
+				{
+					min_distance = distance;
+					closest_vertex = vertex_1;
+				}
+				
+				
+				
+				distance = length(mutable_pos - vertex_2);
+				
+				if (distance < min_distance)
+				{
+					min_distance = distance;
+					closest_vertex = vertex_2;
+				}
+				
+				
+				
+				distance = length(mutable_pos - vertex_3);
+				
+				if (distance < min_distance)
+				{
+					min_distance = distance;
+					closest_vertex = vertex_3;
+				}
+				
+				
+				
+				distance = length(mutable_pos - vertex_4);
+				
+				if (distance < min_distance)
+				{
+					min_distance = distance;
+					closest_vertex = vertex_4;
+				}
+				
+				
+				
+				//This one takes a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
+				
+				mutable_pos = 2.0 * mutable_pos - closest_vertex;
+			}
+			
+			
+			
+			return length(mutable_pos) * pow(.5, num_sierpinski_iterations_exponent);
 		}
 		
 		
@@ -360,130 +427,6 @@
 	function distance_estimator(x, y, z)
 	{
 		return Math.sqrt(x*x + y*y + z*z) - .5;
-	}
-	
-	
-	
-	function a()
-	{
-		let anti_aliasing_iteration_threshhold = 0;
-		
-		
-		
-		//First, just get a color for every pixel.
-		for (let row = 0; row < image_size; row++)
-		{
-			for (let col = 0; col < image_size; col++)
-			{
-				let result = calculate_pixel(row, col, false);
-				
-				image[row][col] = result[0];
-				num_iterations_required[row][col] = result[1];
-				
-				anti_aliasing_iteration_threshhold += result[1];
-			}
-		}
-		
-		
-		
-		anti_aliasing_iteration_threshhold /= (image_size * image_size);
-		
-		//Then mark which pixels need anti-aliasing.
-		for (let row = 0; row < image_size; row++)
-		{
-			for (let col = 0; col < image_size; col++)
-			{
-				if (num_iterations_required[row][col] > anti_aliasing_iteration_threshhold)
-				{
-					pixels_to_anti_alias[row][col] = true;
-					
-					if (row !== 0)
-					{
-						pixels_to_anti_alias[row - 1][col] = true;
-					}
-					
-					if (col !== 0)
-					{
-						pixels_to_anti_alias[row][col - 1] = true;
-					}
-					
-					if (row !== image_size - 1)
-					{
-						pixels_to_anti_alias[row + 1][col] = true;
-					}
-					
-					if (col !== image_size - 1)
-					{
-						pixels_to_anti_alias[row][col + 1] = true;
-					}
-				}
-			}
-		}
-		
-		
-		
-		//Now perform anti-aliasing on the ones that seem to be near an edge.
-		for (let row = 0; row < image_size; row++)
-		{
-			for (let col = 0; col < image_size; col++)
-			{
-				if (pixels_to_anti_alias[row][col])
-				{
-					for (let ray_index = 1; ray_index < num_rays_per_pixel; ray_index++)
-					{
-						let result = calculate_pixel(row, col, true);
-						
-						image[row][col][0] += result[0][0];
-						image[row][col][1] += result[0][1];
-						image[row][col][2] += result[0][2];
-					}
-					
-					image[row][col][0] /= num_rays_per_pixel;
-					image[row][col][1] /= num_rays_per_pixel;
-					image[row][col][2] /= num_rays_per_pixel;
-				}
-			}
-		}
-		
-		
-		
-		//Finally, draw the image.
-		let img_data = ctx.getImageData(0, 0, image_size, image_size);
-		let data = img_data.data;
-		
-		for (let row = 0; row < image_size; row++)
-		{
-			for (let col = 0; col < image_size; col++)
-			{
-				let index = (4 * row * image_size) + (4 * col);
-				
-				data[index] = image[row][col][0] * 255;
-				data[index + 1] = image[row][col][1] * 255;
-				data[index + 2] = image[row][col][2] * 255;
-				data[index + 3] = 255;
-			}
-		}
-		
-		ctx.putImageData(img_data, 0, 0);
-	}
-	
-	
-	
-	//Approxmiates the distance estimator's gradient, which will be the surface normal.
-	function get_normal(x, y, z)
-	{
-		let e = .00001;
-		
-		let base = distance_estimator(x, y, z)[0];
-		
-		return normalize([(distance_estimator(x + e, y, z)[0] - base) / e, (distance_estimator(x, y + e, z)[0] - base) / e, (distance_estimator(x, y, z + e)[0] - base) / e]);
-	}
-	
-	
-	
-	function dot_product(vec1, vec2)
-	{
-		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
 	}
 	
 	
