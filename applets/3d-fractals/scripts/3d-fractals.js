@@ -96,15 +96,19 @@
 		const float clip_distance = 100.0;
 		const int max_marches = 64;
 		const float epsilon = .01;
-		const vec4 fog_color = vec4(.75, .75, 1, 1);
+		const vec3 fog_color = vec3(.75, .75, 1.0);
+		const float fog_scaling = .2;
 		const float shadow_sharpness = 10.0;
+		const int max_shadow_marches = 50;
 		const int num_rays_per_aa_pixel = 1;
 		
 		
 		
 		float distance_estimator(vec3 pos)
 		{
-			return length(pos) - .5;
+			
+			
+			return min(distance, dot(pos, vec3(0.0, 0.0, 1.0)) + 1);
 		}
 		
 		
@@ -115,26 +119,68 @@
 			
 			float base = distance_estimator(pos);
 			
-			float x_step = distance_estimator(pos + vec3(e, 0, 0));
-			float y_step = distance_estimator(pos + vec3(0, e, 0));
-			float z_step = distance_estimator(pos + vec3(0, 0, e));
+			float x_step = distance_estimator(pos + vec3(e, 0.0, 0.0));
+			float y_step = distance_estimator(pos + vec3(0.0, e, 0.0));
+			float z_step = distance_estimator(pos + vec3(0.0, 0.0, e));
 			
-			return normalize(vec3((x_step - base) / e, (y_step - base) / e, (z_step - base) / e));
+			return normalize(vec3(x_step - base, y_step - base, z_step - base));
 		}
 		
 		
 		
-		vec4 compute_shading(vec3 pos, int iteration)
+		float compute_shadow(vec3 start_pos, vec3 light_direction)
+		{
+			float t = 2.0 * epsilon;
+			
+			float max_t = length(light_pos - start_pos);
+			
+			float shadow_amount = 1.0;
+			
+			
+			
+			for (int iteration = 0; iteration < max_shadow_marches; iteration++)
+			{
+				vec3 pos = start_pos + t * light_direction;
+				
+				float distance = distance_estimator(pos);
+				
+				//If we barely moved, we're probably at an object. Unfortunately, curved surfaces are kind of problematic if we just leave it at that, so we need to make sure we're at least a little but away from where we started.
+				if (distance < epsilon / 2.0)
+				{
+					//This point is totally shadowed.
+					return 0.0;
+				}
+				
+				shadow_amount = min(shadow_amount, shadow_sharpness * distance / t);
+				
+				t += distance;
+			}
+			
+			
+			
+			return shadow_amount;
+		}
+		
+		
+		
+		vec3 compute_shading(vec3 pos, int iteration)
 		{
 			vec3 surface_normal = get_surface_normal(pos);
 			
 			vec3 light_direction = normalize(light_pos - pos);
 			
-			float light_intensity = light_brightness * dot(surface_normal, light_direction);
+			float light_intensity = light_brightness * dot(surface_normal, light_direction) * compute_shadow(pos, light_direction);
 			
-			vec4 color = vec4(light_intensity, 0, 0, 1);
+			vec3 color = vec3(light_intensity, 0.0, 0.0);
 			
-			return color;
+			
+			
+			//Apply fog.
+			float distance_from_camera = length(pos - camera_pos);
+			
+			float fog_amount = 1.0 - exp(-distance_from_camera * fog_scaling);
+			
+			return (1.0 - fog_amount) * color + fog_amount * fog_color;
 		}
 		
 		
@@ -145,7 +191,7 @@
 			
 			vec3 ray_direction_vec = normalize(start_pos - camera_pos);
 			
-			vec4 color = fog_color;
+			vec3 color = fog_color;
 			
 			float t = 0.0;
 			
@@ -177,7 +223,7 @@
 			
 			
 			
-			gl_FragColor = vec4(color.xyz, 1);
+			gl_FragColor = vec4(color.xyz, 1.0);
 		}
 	`;
 	
@@ -419,78 +465,6 @@
 		}
 		
 		ctx.putImageData(img_data, 0, 0);
-	}
-	
-	
-	
-	function calculate_shading(x, y, z, object_index)
-	{
-		let normal = get_normal(x, y, z);
-		
-		let light_direction = normalize([light_pos[0] - x, light_pos[1] - y, light_pos[2] - z]);
-		
-		let light_intensity = light_brightness * dot_product(normal, light_direction) * calculate_shadow(x, y, z, object_index, light_direction);
-		
-		
-		
-		let color = [light_intensity * objects[object_index][2] * objects[object_index][1][0], light_intensity * objects[object_index][2] * objects[object_index][1][1], light_intensity * objects[object_index][2] * objects[object_index][1][2]];
-		
-		
-		
-		//Apply fog.
-		let distance_from_camera = Math.sqrt((x-image_plane_center_pos[0])*(x-image_plane_center_pos[0]) + (y-image_plane_center_pos[1])*(y-image_plane_center_pos[1]) + (z-image_plane_center_pos[2])*(z-image_plane_center_pos[2]));
-		
-		let fog_amount = 1 - Math.exp(-distance_from_camera * fog_scaling);
-		
-		return [(1 - fog_amount) * color[0] + fog_amount * fog_color[0], (1 - fog_amount) * color[1] + fog_amount * fog_color[1], (1 - fog_amount) * color[2] + fog_amount * fog_color[2]];
-	}
-	
-	
-	
-	function calculate_shadow(start_x, start_y, start_z, start_object_index, light_direction)
-	{
-		let t = epsilon;
-		
-		let max_t = Math.sqrt((start_x - light_pos[0])*(start_x - light_pos[0]) + (start_y - light_pos[1])*(start_y - light_pos[1]) + (start_z - light_pos[2])*(start_z - light_pos[2]));
-		
-		let shadow_amount = 1;
-		
-		let iteration = 0;
-		let max_shadow_iterations = 50;
-		
-		
-		
-		while (t < max_t && iteration < max_shadow_iterations)
-		{
-			let x = start_x + t * light_direction[0];
-			let y = start_y + t * light_direction[1];
-			let z = start_z + t * light_direction[2];
-			
-			
-			
-			//Get the distance to the scene.
-			let result = distance_estimator(x, y, z);
-			
-			let distance = result[0];
-			let object_index = result[1];
-			
-			//If we barely moved, we're probably at an object.
-			if (distance < epsilon / 4)
-			{
-				//This point is totally shadowed.
-				return 0;
-			}
-			
-			shadow_amount = Math.min(shadow_amount, shadow_sharpness * distance / t);
-			
-			t += distance;
-			
-			iteration++;
-		}
-		
-		
-		
-		return shadow_amount;
 	}
 	
 	
@@ -787,7 +761,19 @@
 		{
 			if (moving_forward || moving_backward || moving_right | moving_left)
 			{
-				moving_speed = Math.max(distance_estimator(image_plane_center_pos[0], image_plane_center_pos[1], image_plane_center_pos[2]) / 60, 0);
+				moving_speed = distance_estimator(image_plane_center_pos[0], image_plane_center_pos[1], image_plane_center_pos[2]) / 60;
+				
+				if (moving_speed < 0)
+				{
+					moving_speed = 0;
+				}
+				
+				if (moving_speed > .1)
+				{
+					moving_speed = .1;
+				}
+				
+				
 				
 				if (sprinting)
 				{
