@@ -30,7 +30,7 @@
 	
 	
 	
-	let image_size = 500;
+	let image_size = parseInt(document.querySelector("#dim-input").value || 500);
 	let num_sierpinski_iterations = 16;
 	
 	let image_plane_center_pos = [];
@@ -60,6 +60,7 @@
 	document.querySelector("#output-canvas").setAttribute("width", image_size);
 	document.querySelector("#output-canvas").setAttribute("height", image_size);
 	
+	document.querySelector("#dim-input").addEventListener("input", change_resolution);
 	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
 	
 	window.addEventListener("resize", fractals_resize);
@@ -101,10 +102,10 @@
 		uniform float light_brightness;
 		
 		uniform int image_size;
+		uniform int small_image_size;
 		
 		
 		
-		const int small_image_size = 500;
 		const float clip_distance = 1000.0;
 		const int max_marches = 32;
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
@@ -340,6 +341,7 @@
 		
 		
 		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
+		shader_program.small_image_size_uniform = gl.getUniformLocation(shader_program, "small_image_size");
 		
 		shader_program.camera_pos_uniform = gl.getUniformLocation(shader_program, "camera_pos");
 		shader_program.image_plane_center_pos_uniform = gl.getUniformLocation(shader_program, "image_plane_center_pos");
@@ -386,6 +388,7 @@
 	function draw_frame()
 	{
 		gl.uniform1i(shader_program.image_size_uniform, image_size);
+		gl.uniform1i(shader_program.small_image_size_uniform, image_size);
 		
 		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
 		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
@@ -432,12 +435,13 @@
 		
 		focal_length = distance_to_scene / 2;
 		
-		right_vec[0] *= focal_length;
-		right_vec[1] *= focal_length;
+		//The factor we divide by here sets the fov.
+		right_vec[0] *= focal_length / 2;
+		right_vec[1] *= focal_length / 2;
 		
-		up_vec[0] *= focal_length;
-		up_vec[1] *= focal_length;
-		up_vec[2] *= focal_length;
+		up_vec[0] *= focal_length / 2;
+		up_vec[1] *= focal_length / 2;
+		up_vec[2] *= focal_length / 2;
 		
 		
 		
@@ -826,11 +830,39 @@
 	
 	
 	
+	function change_resolution()
+	{
+		image_size = parseInt(document.querySelector("#dim-input").value || 500);
+		
+		if (image_size < 200)
+		{
+			image_size = 200;
+		}
+		
+		if (image_size > 2000)
+		{
+			image_size = 2000;
+		}
+		
+		
+		
+		gl.uniform1i(shader_program.small_image_size_uniform, image_size);
+		
+		document.querySelector("#output-canvas").setAttribute("width", image_size);
+		document.querySelector("#output-canvas").setAttribute("height", image_size);
+		
+		gl.viewport(0, 0, image_size, image_size);
+		
+		draw_frame();
+	}
+	
+	
+	
 	function prepare_download()
 	{
 		let temp = image_size;
 		
-		image_size = parseInt(document.querySelector("#dim-input").value || 2000);
+		image_size = parseInt(document.querySelector("#high-res-dim-input").value || 2000);
 		
 		document.querySelector("#output-canvas").setAttribute("width", image_size);
 		document.querySelector("#output-canvas").setAttribute("height", image_size);
