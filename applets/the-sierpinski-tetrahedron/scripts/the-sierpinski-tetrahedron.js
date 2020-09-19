@@ -13,10 +13,13 @@
 	let mouse_x = 0;
 	let mouse_y = 0;
 	
-	let moving_forward = false;
-	let moving_backward = false;
-	let moving_right = false;
-	let moving_left = false;
+	let moving_forward_keyboard = false;
+	let moving_backward_keyboard = false;
+	let moving_right_keyboard = false;
+	let moving_left_keyboard = false;
+	
+	let moving_forward_touch = false;
+	let moving_backward_touch = false;
 	
 	let moving_speed = 0;
 	let sprinting = false;
@@ -413,7 +416,7 @@
 	
 	.then(function()
 	{
-		setup_webgl();
+			setTimeout(setup_webgl, 500);
 	});
 	
 	
@@ -594,14 +597,14 @@
 			
 			if (e.touches.length === 2)
 			{
-				moving_forward = true;
-				moving_backward = false;
+				moving_forward_touch = true;
+				moving_backward_touch = false;
 			}
 			
 			else if (e.touches.length === 3)
 			{
-				moving_backward = true;
-				moving_forward = false;
+				moving_backward_touch = true;
+				moving_forward_touch = false;
 			}
 		});
 		
@@ -664,24 +667,26 @@
 			draw_frame();
 		});
 		
+		
+		
 		document.querySelector("#output-canvas").addEventListener("touchend", function(e)
 		{
 			if (e.touches.length === 2)
 			{
-				moving_forward = true;
-				moving_backward = false;
+				moving_forward_touch = true;
+				moving_backward_touch = false;
 			}
 			
 			else if (e.touches.length === 3)
 			{
-				moving_backward = true;
-				moving_forward = false;
+				moving_backward_touch = true;
+				moving_forward_touch = false;
 			}
 			
-			else if (e.touches.length === 1)
+			else
 			{
-				moving_backward = false;
-				moving_forward = false;
+				moving_backward_touch = false;
+				moving_forward_touch = false;
 			}
 		});
 
@@ -692,25 +697,25 @@
 			//W
 			if (e.keyCode === 87)
 			{
-				moving_forward = true;
+				moving_forward_keyboard = true;
 			}
 			
 			//S
 			else if (e.keyCode === 83)
 			{
-				moving_backward = true;
+				moving_backward_keyboard = true;
 			}
 			
 			//D
 			if (e.keyCode === 68)
 			{
-				moving_right = true;
+				moving_right_keyboard = true;
 			}
 			
 			//A
 			else if (e.keyCode === 65)
 			{
-				moving_left = true;
+				moving_left_keyboard = true;
 			}
 			
 			//Shift
@@ -727,25 +732,25 @@
 			//W
 			if (e.keyCode === 87)
 			{
-				moving_forward = false;
+				moving_forward_keyboard = false;
 			}
 			
 			//S
 			else if (e.keyCode === 83)
 			{
-				moving_backward = false;
+				moving_backward_keyboard = false;
 			}
 			
 			//D
 			if (e.keyCode === 68)
 			{
-				moving_right = false;
+				moving_right_keyboard = false;
 			}
 			
 			//A
 			else if (e.keyCode === 65)
 			{
-				moving_left = false;
+				moving_left_keyboard = false;
 			}
 			
 			//Shift
@@ -759,7 +764,7 @@
 		
 		setInterval(function()
 		{
-			if (moving_forward || moving_backward || moving_right | moving_left)
+			if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
 			{
 				moving_speed = distance_to_scene / 60;
 				
@@ -782,14 +787,14 @@
 				
 				
 				
-				if (moving_forward)
+				if (moving_forward_keyboard || moving_forward_touch)
 				{
 					camera_pos[0] += moving_speed * forward_vec[0];
 					camera_pos[1] += moving_speed * forward_vec[1];
 					camera_pos[2] += moving_speed * forward_vec[2];
 				}
 				
-				else if (moving_backward)
+				else if (moving_backward_keyboard || moving_backward_touch)
 				{
 					camera_pos[0] -= moving_speed * forward_vec[0];
 					camera_pos[1] -= moving_speed * forward_vec[1];
@@ -798,14 +803,14 @@
 				
 				
 				
-				if (moving_right)
+				if (moving_right_keyboard)
 				{
 					camera_pos[0] += moving_speed * right_vec[0] / focal_length;
 					camera_pos[1] += moving_speed * right_vec[1] / focal_length;
 					camera_pos[2] += moving_speed * right_vec[2] / focal_length;
 				}
 				
-				else if (moving_left)
+				else if (moving_left_keyboard)
 				{
 					camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
 					camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
