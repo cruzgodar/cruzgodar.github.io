@@ -31,7 +31,7 @@
 	
 	
 	let image_size = 500;
-	let num_sierpinski_iterations = 15;
+	let num_sierpinski_iterations = 16;
 	
 	let image_plane_center_pos = [];
 	
@@ -106,7 +106,7 @@
 		const int max_marches = 256;
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .2;
-		const int num_sierpinski_iterations = 15;
+		const int num_sierpinski_iterations = 16;
 		
 		
 		vec3 color;
@@ -128,7 +128,7 @@
 			vec3 vertex_4 = vec3(-.471405, -.816497, -.333333);
 			
 			color = vec3(0.0, 0.0, 0.0);
-			float color_scale = .75;
+			float color_scale = .3014;
 			
 			
 			//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
@@ -186,7 +186,7 @@
 				//This one takes a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
 				mutable_pos = 2.0 * mutable_pos - closest_vertex;
 				
-				color_scale *= .25;
+				color_scale *= .7;
 			}
 			
 			
@@ -244,7 +244,7 @@
 			
 			float t = 0.0;
 			
-			float epsilon = .00005;
+			float epsilon = .00002;
 			
 			
 			
@@ -519,6 +519,11 @@
 				let mouse_x_delta = new_mouse_x - mouse_x;
 				let mouse_y_delta = new_mouse_y - mouse_y;
 				
+				if (Math.abs(mouse_x_delta) > 20 || Math.abs(mouse_y_delta) > 20)
+				{
+					return;
+				}
+				
 				
 				
 				theta += mouse_x_delta / canvas_size * Math.PI;
@@ -573,6 +578,18 @@
 		{
 			mouse_x = e.touches[0].clientX;
 			mouse_y = e.touches[0].clientY;
+			
+			if (e.touches.length === 2)
+			{
+				moving_forward = true;
+				moving_backward = false;
+			}
+			
+			else if (e.touches.length === 3)
+			{
+				moving_backward = true;
+				moving_forward = false;
+			}
 		});
 		
 		
@@ -588,6 +605,11 @@
 			
 			let mouse_x_delta = new_mouse_x - mouse_x;
 			let mouse_y_delta = new_mouse_y - mouse_y;
+			
+			if (Math.abs(mouse_x_delta) > 20 || Math.abs(mouse_y_delta) > 20)
+			{
+				return;
+			}
 			
 			
 			
@@ -629,8 +651,29 @@
 			draw_frame();
 		});
 		
-		
-		
+		document.querySelector("#output-canvas").addEventListener("touchend", function(e)
+		{
+			if (e.touches.length === 2)
+			{
+				moving_forward = true;
+				moving_backward = false;
+			}
+			
+			else if (e.touches.length === 3)
+			{
+				moving_backward = true;
+				moving_forward = false;
+			}
+			
+			else
+			{
+				moving_backward = false;
+				moving_forward = false;
+			}
+		});
+
+
+
 		document.documentElement.addEventListener("keydown", function(e)
 		{
 			//W
