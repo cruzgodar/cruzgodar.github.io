@@ -1,4 +1,10 @@
 {
+	"image-the-sierpinski-tetrahedron":
+	{
+		"webp": "the-sierpinski-tetrahedron/cover.webp",
+		"non-webp": "the-sierpinski-tetrahedron/cover.jpg"
+	},
+	
 	"image-binary-trees":
 	{
 		"webp": "binary-trees/cover.webp",

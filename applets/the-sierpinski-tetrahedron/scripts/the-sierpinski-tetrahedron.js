@@ -4,7 +4,7 @@
 	
 	
 	
-	let gl = document.querySelector("#output-canvas").getContext("experimental-webgl");
+	let gl = document.querySelector("#output-canvas").getContext("webgl");
 	
 	let canvas_size = document.querySelector("#output-canvas").offsetWidth;
 	
@@ -25,8 +25,8 @@
 	
 	
 	
-	let theta = 5 * Math.PI / 4;
-	let phi = 2 * Math.PI / 3;
+	let theta = 3.2954;
+	let phi = 1.9657;
 	
 	
 	
@@ -39,7 +39,7 @@
 	let right_vec = [];
 	let up_vec = [];
 	
-	let camera_pos = [1, 1, 1];
+	let camera_pos = [4.2178, .8269, 1.9065];
 	
 	let light_pos = [0, 0, 5];
 	let light_brightness = 1.25;
@@ -60,7 +60,7 @@
 	document.querySelector("#output-canvas").setAttribute("width", image_size);
 	document.querySelector("#output-canvas").setAttribute("height", image_size);
 	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
+	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
 	
 	window.addEventListener("resize", fractals_resize);
 	setTimeout(fractals_resize, 500);
@@ -82,6 +82,8 @@
 		}
 	`;
 	
+	
+	
 	const frag_shader_source = `
 		precision highp float;
 		
@@ -102,8 +104,9 @@
 		
 		
 		
-		const float clip_distance = 100.0;
-		const int max_marches = 256;
+		const int small_image_size = 500;
+		const float clip_distance = 1000.0;
+		const int max_marches = 32;
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .2;
 		const int num_sierpinski_iterations = 16;
@@ -219,7 +222,8 @@
 			
 			float light_intensity = light_brightness * dot(surface_normal, light_direction);
 			
-			color = color * light_intensity * (1.0 - float(iteration) / 64.0);
+			//The last factor adds ambient occlusion.
+			color = color * light_intensity * max((1.0 - float(iteration) / float(max_marches)), 0.0);
 			
 			
 			
@@ -255,9 +259,14 @@
 				float distance = distance_estimator(pos);
 				
 				//This lowers the detail far away, which makes everything run nice and fast.
-				if (distance / 50.0 > epsilon)
+				if (image_size == small_image_size && distance / 100.0 > epsilon)
 				{
-					epsilon = distance / 50.0;
+					epsilon = distance / 100.0;
+				}
+				
+				else if (image_size != small_image_size && distance / 300.0 > epsilon)
+				{
+					epsilon = distance / 300.0;
 				}
 				
 				
@@ -819,14 +828,38 @@
 	
 	function prepare_download()
 	{
+		let temp = image_size;
+		
+		image_size = parseInt(document.querySelector("#dim-input").value || 2000);
+		
+		document.querySelector("#output-canvas").setAttribute("width", image_size);
+		document.querySelector("#output-canvas").setAttribute("height", image_size);
+		
+		gl.viewport(0, 0, image_size, image_size);
+		
+		draw_frame();
+		
+		
+		
 		let link = document.createElement("a");
 		
-		link.download = "gravner-griffeath-snowflakes.png";
+		link.download = "the-sierpinski-tetrahedron.png";
 		
 		link.href = document.querySelector("#output-canvas").toDataURL();
 		
 		link.click();
 		
 		link.remove();
+		
+		
+		
+		image_size = temp;
+		
+		document.querySelector("#output-canvas").setAttribute("width", image_size);
+		document.querySelector("#output-canvas").setAttribute("height", image_size);
+		
+		gl.viewport(0, 0, image_size, image_size);
+		
+		draw_frame();
 	}
 }()
