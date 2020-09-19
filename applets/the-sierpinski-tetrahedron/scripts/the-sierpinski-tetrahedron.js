@@ -674,7 +674,7 @@
 				moving_forward = false;
 			}
 			
-			else
+			else if (e.touches.length === 1)
 			{
 				moving_backward = false;
 				moving_forward = false;
