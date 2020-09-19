@@ -45,7 +45,7 @@
 	let camera_pos = [4.2178, .8269, 1.9065];
 	
 	let light_pos = [0, 0, 5];
-	let light_brightness = 1.25;
+	let light_brightness = 2;
 	
 	let focal_length = 2;
 	let epsilon = .01;
@@ -118,10 +118,18 @@
 		
 		vec3 color;
 		
-		const vec3 color_1 = vec3(1.0, 1.0, 1.0);
-		const vec3 color_2 = vec3(1.0, 0.0, 0.0);
-		const vec3 color_3 = vec3(0.0, 1.0, 0.0);
-		const vec3 color_4 = vec3(0.0, 0.0, 1.0);
+		const vec3 color_1 = vec3(1.0, 0.0, 0.0);
+		const vec3 color_2 = vec3(0.0, 1.0, 0.0);
+		const vec3 color_3 = vec3(0.0, 0.0, 1.0);
+		
+		const vec3 vertex_0 = vec3(0.0, 0.0, 1.0);
+		const vec3 vertex_1 = vec3(.942809, 0.0, -.333333);
+		const vec3 vertex_2 = vec3(-.471405, .816497, -.333333);
+		const vec3 vertex_3 = vec3(-.471405, -.816497, -.333333);
+		
+		const vec3 n1 = normalize(vertex_0 - vertex_1);
+		const vec3 n2 = normalize(vertex_0 - vertex_2);
+		const vec3 n3 = normalize(vertex_0 - vertex_3);
 		
 		
 		
@@ -129,74 +137,48 @@
 		{
 			vec3 mutable_pos = pos;
 			
-			vec3 vertex_1 = vec3(0.0, 0.0, 1.0);
-			vec3 vertex_2 = vec3(.942809, 0.0, -.333333);
-			vec3 vertex_3 = vec3(-.471405, .816497, -.333333);
-			vec3 vertex_4 = vec3(-.471405, -.816497, -.333333);
-			
-			color = vec3(0.0, 0.0, 0.0);
-			float color_scale = .3014;
+			color = vec3(1.0, 1.0, 1.0);
+			float color_scale = .5;
 			
 			
 			//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 			for (int iteration = 0; iteration < num_sierpinski_iterations; iteration++)
 			{
-				float min_distance = clip_distance;
-				vec3 closest_vertex;
+				//Fold space over on itself so that we can reference only the top vertex.
+				float t1 = dot(mutable_pos, n1);
 				
-				
-				
-				float distance = length(mutable_pos - vertex_1);
-				
-				if (distance < min_distance)
+				if (t1 < 0.0)
 				{
-					min_distance = distance;
-					closest_vertex = vertex_1;
-					color += color_scale * color_1;
+					mutable_pos -= 2.0 * t1 * n1;
+					
+					color = (1.0 - color_scale) * color + color_scale * color_1;
 				}
 				
+				float t2 = dot(mutable_pos, n2);
 				
-				
-				distance = length(mutable_pos - vertex_2);
-				
-				if (distance < min_distance)
+				if (t2 < 0.0)
 				{
-					min_distance = distance;
-					closest_vertex = vertex_2;
-					color += color_scale * color_2;
+					mutable_pos -= 2.0 * t2 * n2;
+					
+					color = (1.0 - color_scale) * color + color_scale * color_2;
 				}
 				
+				float t3 = dot(mutable_pos, n3);
 				
-				
-				distance = length(mutable_pos - vertex_3);
-				
-				if (distance < min_distance)
+				if (t3 < 0.0)
 				{
-					min_distance = distance;
-					closest_vertex = vertex_3;
-					color += color_scale * color_3;
-				}
-				
-				
-				
-				distance = length(mutable_pos - vertex_4);
-				
-				if (distance < min_distance)
-				{
-					min_distance = distance;
-					closest_vertex = vertex_4;
-					color += color_scale * color_4;
+					mutable_pos -= 2.0 * t3 * n3;
+					
+					color = (1.0 - color_scale) * color + color_scale * color_3;
 				}
 				
 				
 				
 				//This one takes a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-				mutable_pos = 2.0 * mutable_pos - closest_vertex;
+				mutable_pos = 2.0 * mutable_pos - vertex_0;
 				
-				color_scale *= .7;
+				color_scale *= .5;
 			}
-			
-			
 			
 			return length(mutable_pos) * pow(.5, float(num_sierpinski_iterations));
 		}
@@ -263,14 +245,14 @@
 				float distance = distance_estimator(pos);
 				
 				//This lowers the detail far away, which makes everything run nice and fast.
-				if (image_size == small_image_size && distance / 100.0 > epsilon)
+				if (image_size == small_image_size && distance / 150.0 > epsilon)
 				{
-					epsilon = distance / 100.0;
+					epsilon = distance / 150.0;
 				}
 				
-				else if (image_size != small_image_size && distance / 300.0 > epsilon)
+				else if (image_size != small_image_size && distance / 500.0 > epsilon)
 				{
-					epsilon = distance / 300.0;
+					epsilon = distance / 500.0;
 				}
 				
 				
@@ -361,6 +343,7 @@
 		
 		
 		gl.viewport(0, 0, image_size, image_size);
+		gl.uniform1i(shader_program.small_image_size_uniform, image_size);
 		
 		
 		
@@ -391,7 +374,6 @@
 	function draw_frame()
 	{
 		gl.uniform1i(shader_program.image_size_uniform, image_size);
-		gl.uniform1i(shader_program.small_image_size_uniform, image_size);
 		
 		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
 		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);

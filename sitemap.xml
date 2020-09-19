@@ -3,21 +3,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>https://www.cruzgodar.com/</loc>
-		<lastmod>2019-09-26</lastmod>
+		<lastmod>2020-09-19</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>1.0</priority>
 	</url>
 	
 	<url>
 		<loc>https://www.cruzgodar.com/index.html</loc>
-		<lastmod>2019-09-26</lastmod>
+		<lastmod>2020-09-19</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>1.0</priority>
 	</url>
 	
 	<url>
 		<loc>https://www.cruzgodar.com/home/home.html</loc>
-		<lastmod>2019-09-26</lastmod>
+		<lastmod>2020-09-19</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.5</priority>
 	</url>
@@ -32,11 +32,6 @@
 	<url>
 		<loc>https://www.cruzgodar.com/404/404.html</loc>
 		<priority>0.0</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/pwa/pwa.html</loc>
-		<priority>0.5</priority>
 	</url>
 	
 	
@@ -83,6 +78,16 @@
 		<priority>0.5</priority>
 	</url>
 	
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/105/105.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/105/lecture-archive/lecture-archive.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
 	
 	
 	<url>
@@ -125,54 +130,67 @@
 		<priority>0.5</priority>
 	</url>
 	
-	
-	
 	<url>
-		<loc>https://www.cruzgodar.com/blog/blog.html</loc>
+		<loc>https://www.cruzgodar.com/applets/the-barnsley-fern/the-barnsley-fern.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
 	<url>
-		<loc>https://www.cruzgodar.com/blog/1/on-leaving-and-the-beginnings-of-things.html</loc>
+		<loc>https://www.cruzgodar.com/applets/brownian-trees/brownian-trees.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
 	<url>
-		<loc>https://www.cruzgodar.com/blog/2/nach-heidelberg.html</loc>
+		<loc>https://www.cruzgodar.com/applets/the-kicked-rotator/the-kicked-rotator.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
 	<url>
-		<loc>https://www.cruzgodar.com/blog/3/the-city-and-the-city.html</loc>
+		<loc>https://www.cruzgodar.com/applets/the-chaos-game/the-chaos-game.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
 	<url>
-		<loc>https://www.cruzgodar.com/blog/4/a-taste-of-chaos.html</loc>
+		<loc>https://www.cruzgodar.com/applets/julia-set-mosaic/julia-set-mosaic.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
 	<url>
-		<loc>https://www.cruzgodar.com/blog/5/halloween-in-january.html</loc>
+		<loc>https://www.cruzgodar.com/applets/sudoku-generator/sudoku-generator.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
 	<url>
-		<loc>https://www.cruzgodar.com/blog/6/erinnerungen.html</loc>
+		<loc>https://www.cruzgodar.com/applets/strange-attractors/strange-attractors.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
 	<url>
-		<loc>https://www.cruzgodar.com/blog/7/on-leaving-again-and-new-beginnings.html</loc>
+		<loc>https://www.cruzgodar.com/applets/generalized-julia-sets/generalized-julia-sets.html</loc>
 		<priority>0.5</priority>
 	</url>
-	
-	
 	
 	<url>
-		<loc>https://www.cruzgodar.com/notes/notes.html</loc>
+		<loc>https://www.cruzgodar.com/applets/finite-subdivisions/finite-subdivisions.html</loc>
 		<priority>0.5</priority>
 	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/gravner-griffeath-snowflakes/gravner-griffeath-snowflakes.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/binary-trees/binary-trees.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/the-sierpinski-tetrahedron/the-sierpinski-tetrahedron.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	
 	
 	
 	
