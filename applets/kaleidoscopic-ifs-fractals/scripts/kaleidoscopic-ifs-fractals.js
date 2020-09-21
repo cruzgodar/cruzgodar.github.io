@@ -21,6 +21,8 @@
 	let moving_forward_touch = false;
 	let moving_backward_touch = false;
 	
+	let increasing_rotation_angle = false;
+	
 	let moving_speed = 0;
 	let sprinting = false;
 	
@@ -46,6 +48,8 @@
 	
 	let focal_length = 2;
 	let epsilon = .01;
+	
+	let rotation_angle = 0;
 	
 	
 	
@@ -133,12 +137,25 @@
 		
 		
 		
+		uniform float rotation_angle;
+		
+		
+		
+		mat3 rotation_matrix = mat3(
+			cos(rotation_angle), sin(rotation_angle), 0.0,
+			-sin(rotation_angle), cos(rotation_angle), 0.0,
+			0.0, 0.0, 1.0
+		);
+		
+		
+		
 		float distance_estimator(vec3 pos)
 		{
 			vec3 mutable_pos = pos;
 			
 			color = vec3(1.0, 1.0, 1.0);
 			float color_scale = .5;
+			
 			
 			
 			//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
@@ -171,6 +188,10 @@
 					
 					color = (1.0 - color_scale) * color + color_scale * color_3;
 				}
+				
+				
+				
+				mutable_pos = rotation_matrix * mutable_pos;
 				
 				
 				
@@ -339,6 +360,7 @@
 		shader_program.focal_length_uniform = gl.getUniformLocation(shader_program, "focal_length");
 		shader_program.epsilon_uniform = gl.getUniformLocation(shader_program, "epsilon");
 		
+		shader_program.rotation_angle_uniform = gl.getUniformLocation(shader_program, "rotation_angle");
 		
 		
 		
@@ -384,6 +406,8 @@
 		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
 		gl.uniform1f(shader_program.epsilon_uniform, epsilon);
 		
+		gl.uniform1f(shader_program.rotation_angle_uniform, rotation_angle);
+				
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 		
 		distance_to_scene = distance_estimator(image_plane_center_pos[0], image_plane_center_pos[1], image_plane_center_pos[2]);
@@ -487,6 +511,14 @@
 				y -= 2 * t3 * n3[1];
 				z -= 2 * t3 * n3[2];
 			}
+			
+			
+			
+			let temp_x = x;
+			let temp_y = y;
+			
+			x = temp_x * Math.cos(rotation_angle) - temp_y * Math.sin(rotation_angle);
+			y = temp_x * Math.sin(rotation_angle) + temp_y * Math.cos(rotation_angle);
 			
 			
 			
@@ -594,12 +626,21 @@
 			{
 				moving_forward_touch = true;
 				moving_backward_touch = false;
+				increasing_rotation_angle = false;
 			}
 			
 			else if (e.touches.length === 3)
 			{
 				moving_backward_touch = true;
 				moving_forward_touch = false;
+				increasing_rotation_angle = false;
+			}
+			
+			else if (e.touches.length === 4)
+			{
+				increasing_rotation_angle = true;
+				moving_forward_touch = false;
+				moving_backward_touch = false;
 			}
 		});
 		
@@ -670,18 +711,28 @@
 			{
 				moving_forward_touch = true;
 				moving_backward_touch = false;
+				increasing_rotation_angle = false;
 			}
 			
 			else if (e.touches.length === 3)
 			{
 				moving_backward_touch = true;
 				moving_forward_touch = false;
+				increasing_rotation_angle = false;
+			}
+			
+			else if (e.touches.length === 4)
+			{
+				increasing_rotation_angle = true;
+				moving_forward_touch = false;
+				moving_backward_touch = false;
 			}
 			
 			else
 			{
 				moving_forward_touch = false;
 				moving_backward_touch = false;
+				increasing_rotation_angle = false;
 			}
 		});
 
@@ -718,6 +769,12 @@
 			{
 				sprinting = true;
 			}
+			
+			//R
+			if (e.keyCode === 82)
+			{
+				increasing_rotation_angle = true;
+			}
 		});
 		
 		
@@ -753,13 +810,19 @@
 			{
 				sprinting = false;
 			}
+			
+			//R
+			if (e.keyCode === 82)
+			{
+				increasing_rotation_angle = false;
+			}
 		});
 		
 		
 		
 		setInterval(function()
 		{
-			if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
+			if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch || increasing_rotation_angle)
 			{
 				moving_speed = distance_to_scene / 60;
 				
@@ -810,6 +873,20 @@
 					camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
 					camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
 					camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
+				}
+				
+				
+				
+				if (increasing_rotation_angle)
+				{
+					rotation_angle += .001;
+					
+					if (rotation_angle > 2 * Math.PI)
+					{
+						rotation -= 2 * Math.PI;
+					}
+					
+					draw_frame();
 				}
 			
 			
