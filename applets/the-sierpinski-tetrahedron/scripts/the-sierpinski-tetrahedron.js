@@ -230,7 +230,7 @@
 			vec3 start_pos = image_plane_center_pos + right_vec * uv.x + up_vec * uv.y;
 			
 			//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-			vec3 ray_direction_vec = normalize(start_pos - camera_pos) * .9;
+			vec3 ray_direction_vec = normalize(start_pos - camera_pos) * .99;
 			
 			vec3 final_color = fog_color;
 			
@@ -265,7 +265,7 @@
 					break;
 				}
 				
-				else if (distance > clip_distance)
+				else if (t > clip_distance)
 				{
 					break;
 				}
@@ -385,8 +385,6 @@
 		gl.uniform1f(shader_program.epsilon_uniform, epsilon);
 		
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-		
-		distance_to_scene = distance_estimator(image_plane_center_pos[0], image_plane_center_pos[1], image_plane_center_pos[2]);
 	}
 	
 	
@@ -414,6 +412,8 @@
 		up_vec = cross_product(right_vec, forward_vec);
 		
 		
+		
+		distance_to_scene = distance_estimator(camera_pos[0], camera_pos[1], camera_pos[2]);
 		
 		focal_length = distance_to_scene / 2;
 		
