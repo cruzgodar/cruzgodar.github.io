@@ -20,7 +20,7 @@
 	<div style="height: 2vh"></div>
 	
 	<div data-aos="fade-up">
-		<h1 class="heading-text">The Sierpinski Tetrahedron</h1>
+		<h1 class="heading-text">Kaleidoscopic IFS Fractals</h1>
 	</div>
 </header>
 
@@ -32,7 +32,7 @@
 	<section>
 		<div data-aos="fade-up">
 			<p class="body-text">
-				The Sierpinski triangle is one of the most commonly-seen and easily-constructed fractals, but there&#x2019;s no reason it needs to stay flat. The same construction applied on a tetrahedron results in an object that&#x2019;s very predictable, but is still a little tricky to fully grasp without seeing it from a handful of angles.
+				In 2010, as graphics cards were becoming commonplace and raymarching was being rediscovered as a method of drawing 3D fractals, a <a href="http://www.fractalforums.com/sierpinski-gasket/kaleidoscopic-(escape-time-ifs)/" onclick="redirect('http://www.fractalforums.com/sierpinski-gasket/kaleidoscopic-(escape-time-ifs)/', true)">user on FractalForums</a> posted something that would quickly become famous. Called Kaleidoscopic IFS (iterated function system) fractals, they generalize the <a href="/applets/the-sierpinski-tetrahedron/the-sierpinski-tetrahedron.html" onclick="redirect('/applets/the-sierpinski-tetrahedron/the-sierpinski-tetrahedron.html')">Sierpinski tetrahedron</a> to the rest of the platonic solids and add rotation and scaling to create truly fascinating objects.
 			</p>
 		</div>
 		
@@ -40,7 +40,7 @@
 		
 		<div data-aos="fade-up">
 			<p class="body-text">
-				What&#x2019;s really interesting here is less the fractal and more the technique used to render it &mdash; <a href="https://9bitscience.blogspot.com/2013/07/raymarching-distance-fields_14.html" onclick="redirect('https://9bitscience.blogspot.com/2013/07/raymarching-distance-fields_14.html', true)"> raymarching</a>, an uncommon algorithm that seems tailor-made for 3D fractals. It&#x2019;s simple to write, makes detailed images, and runs fast enough to render in real time. If you find yourself interested in this sort of fractal, researching raymarching is the place to start.
+				\(\theta\) and \(\phi\) each determine rotations about the axes, and the stretch factor determines how compact the final fractal is. If you want to explore the inside of a fractal but there&#x2019;s no inside there to explore, that&#x2019;s the parameter to change.
 			</p>
 		</div>
 		
@@ -48,26 +48,83 @@
 		
 		<div data-aos="fade-up">
 			<p class="body-text">
-				Drag on the scene to look around. If you have a keyboard, you can use WASD to move around and hold shift to move faster. On a touchscreen, you can also hold with two fingers to move forward and three to move back.
-			</p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text">
-				It&#x2019;s also possible to add an amount of twisting to the fractal that puts it in the category of what many call Kaleidoscopic
+				Drag on the scene to look around. If you have a keyboard, use WASD to move around and hold shift to move faster. On a touchscreen, hold with two fingers to move forward and three to move back.
 			</p>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
-		<div class="center-content">
+		<div class="text-box-row-2">
 			<div class="text-box-container" data-aos="fade-up">
 				<input id="dim-input" class="text-box" type="text" value="500" tabindex="1">
 				<label for="dim-input">
 					<p class="body-text">Resolution</p>
 				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="scale-input" class="text-box" type="text" value="2" tabindex="1">
+				<label for="scale-input">
+					<p class="body-text">Stretch Factor</p>
+				</label>
+			</div>
+		</div>
+		
+		<div style="height: 5vh"></div>
+		
+		<div class="text-box-row-3">
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="rotation-angle-x-1-input" class="text-box" type="text" value="0" tabindex="1">
+				<label for="rotation-angle-x-1-input">
+					<p class="body-text">\(\theta_x\)</p>
+				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="rotation-angle-y-1-input" class="text-box" type="text" value="0" tabindex="1">
+				<label for="rotation-angle-y-1-input">
+					<p class="body-text">\(\theta_y\)</p>
+				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="rotation-angle-z-1-input" class="text-box" type="text" value="0" tabindex="1">
+				<label for="rotation-angle-z-1-input">
+					<p class="body-text">\(\theta_z\)</p>
+				</label>
+			</div>
+		</div>
+		
+		<div style="height: 5vh"></div>
+		
+		<div class="text-box-row-3">
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="rotation-angle-x-2-input" class="text-box" type="text" value="0" tabindex="1">
+				<label for="rotation-angle-x-2-input">
+					<p class="body-text">\(\phi_x\)</p>
+				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="rotation-angle-y-2-input" class="text-box" type="text" value="0" tabindex="1">
+				<label for="rotation-angle-y-2-input">
+					<p class="body-text">\(\phi_y\)</p>
+				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="rotation-angle-z-2-input" class="text-box" type="text" value="0" tabindex="1">
+				<label for="rotation-angle-z-2-input">
+					<p class="body-text">\(\phi_z\)</p>
+				</label>
+			</div>
+		</div>
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content">
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1400" tabindex="1">
+				<button class="text-button" type="button" id="randomize-parameters-button" tabindex="-1">Randomize Parameters</button>
 			</div>
 		</div>
 		

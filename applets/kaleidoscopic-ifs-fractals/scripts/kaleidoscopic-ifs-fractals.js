@@ -21,8 +21,6 @@
 	let moving_forward_touch = false;
 	let moving_backward_touch = false;
 	
-	let increasing_rotation_angle = false;
-	
 	let moving_speed = 0;
 	let sprinting = false;
 	
@@ -36,7 +34,7 @@
 	
 	
 	let image_size = parseInt(document.querySelector("#dim-input").value || 500);
-	let num_sierpinski_iterations = 16;
+	let num_sierpinski_iterations = 20;
 	
 	let image_plane_center_pos = [];
 	
@@ -44,18 +42,37 @@
 	let right_vec = [];
 	let up_vec = [];
 	
-	let camera_pos = [4.2178, .8269, 1.9065];
+	let camera_pos = [2.1089, .41345, .95325];
 	
 	let focal_length = 2;
 	
-	let scale = 1.5;
+	let scale = 2;
+	let scale_old = 2;
+	let scale_delta = 0;
 	
-	let rotation_angle_x_1 = Math.random() - .5;
-	let rotation_angle_y_1 = Math.random() - .5;
-	let rotation_angle_z_1 = Math.random() - .5;
-	let rotation_angle_x_2 = Math.random() - .5;
-	let rotation_angle_y_2 = Math.random() - .5;
-	let rotation_angle_z_2 = Math.random() - .5;
+	let rotation_angle_x_1 = 0;
+	let rotation_angle_y_1 = 0;
+	let rotation_angle_z_1 = 0;
+	let rotation_angle_x_2 = 0;
+	let rotation_angle_y_2 = 0;
+	let rotation_angle_z_2 = 0;
+	
+	let rotation_angle_x_1_old = 0;
+	let rotation_angle_y_1_old = 0;
+	let rotation_angle_z_1_old = 0;
+	let rotation_angle_x_2_old = 0;
+	let rotation_angle_y_2_old = 0;
+	let rotation_angle_z_2_old = 0;
+	
+	let rotation_angle_x_1_delta = 0;
+	let rotation_angle_y_1_delta = 0;
+	let rotation_angle_z_1_delta = 0;
+	let rotation_angle_x_2_delta = 0;
+	let rotation_angle_y_2_delta = 0;
+	let rotation_angle_z_2_delta = 0;
+	
+	let parameter_animation_frame = 0;
+	let parameter_animation_refresh_id = null;
 	
 	
 	
@@ -75,6 +92,19 @@
 	
 	document.querySelector("#dim-input").addEventListener("input", change_resolution);
 	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
+	
+	
+	
+	let elements = document.querySelectorAll("#scale-input, #rotation-angle-x-1-input, #rotation-angle-y-1-input, #rotation-angle-z-1-input, #rotation-angle-x-2-input, #rotation-angle-y-2-input, #rotation-angle-z-2-input");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].addEventListener("input", update_parameters);
+	}
+	
+	document.querySelector("#randomize-parameters-button").addEventListener("click", randomize_parameters);
+	
+	
 	
 	window.addEventListener("resize", fractals_resize);
 	setTimeout(fractals_resize, 500);
@@ -112,7 +142,7 @@
 		uniform float focal_length;
 		
 		const vec3 light_pos = vec3(0.0, 0.0, 5.0);
-		const float light_brightness = 1.5;
+		const float light_brightness = 2.0;
 		
 		uniform int image_size;
 		uniform int small_image_size;
@@ -123,7 +153,7 @@
 		const int max_marches = 32;
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .2;
-		const int num_sierpinski_iterations = 16;
+		const int num_sierpinski_iterations = 20;
 		
 		
 		vec3 color;
@@ -299,7 +329,7 @@
 			
 			vec3 final_color = fog_color;
 			
-			float epsilon = .001;
+			float epsilon = 1.0 / ((scale - 1.0) * (scale - 1.0)) * .0001;
 			
 			float t = 0.0;
 			
@@ -321,7 +351,6 @@
 				{
 					epsilon = distance / 500.0;
 				}
-				
 				
 				
 				
@@ -419,6 +448,8 @@
 		gl.uniform1i(shader_program.small_image_size_uniform, image_size);
 		
 		
+		
+		randomize_parameters(false);
 		
 		draw_frame();
 	}
@@ -668,11 +699,6 @@
 				let mouse_x_delta = new_mouse_x - mouse_x;
 				let mouse_y_delta = new_mouse_y - mouse_y;
 				
-				if (Math.abs(mouse_x_delta) > 20 || Math.abs(mouse_y_delta) > 20)
-				{
-					return;
-				}
-				
 				
 				
 				theta += mouse_x_delta / canvas_size * Math.PI;
@@ -732,21 +758,12 @@
 			{
 				moving_forward_touch = true;
 				moving_backward_touch = false;
-				increasing_rotation_angle = false;
 			}
 			
 			else if (e.touches.length === 3)
 			{
 				moving_backward_touch = true;
 				moving_forward_touch = false;
-				increasing_rotation_angle = false;
-			}
-			
-			else if (e.touches.length === 4)
-			{
-				increasing_rotation_angle = true;
-				moving_forward_touch = false;
-				moving_backward_touch = false;
 			}
 		});
 		
@@ -817,28 +834,18 @@
 			{
 				moving_forward_touch = true;
 				moving_backward_touch = false;
-				increasing_rotation_angle = false;
 			}
 			
 			else if (e.touches.length === 3)
 			{
 				moving_backward_touch = true;
 				moving_forward_touch = false;
-				increasing_rotation_angle = false;
-			}
-			
-			else if (e.touches.length === 4)
-			{
-				increasing_rotation_angle = true;
-				moving_forward_touch = false;
-				moving_backward_touch = false;
 			}
 			
 			else
 			{
 				moving_forward_touch = false;
 				moving_backward_touch = false;
-				increasing_rotation_angle = false;
 			}
 		});
 
@@ -875,12 +882,6 @@
 			{
 				sprinting = true;
 			}
-			
-			//R
-			if (e.keyCode === 82)
-			{
-				increasing_rotation_angle = true;
-			}
 		});
 		
 		
@@ -916,19 +917,13 @@
 			{
 				sprinting = false;
 			}
-			
-			//R
-			if (e.keyCode === 82)
-			{
-				increasing_rotation_angle = false;
-			}
 		});
 		
 		
 		
 		setInterval(function()
 		{
-			if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch || increasing_rotation_angle)
+			if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
 			{
 				moving_speed = distance_to_scene / 60;
 				
@@ -980,20 +975,6 @@
 					camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
 					camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
 				}
-				
-				
-				
-				if (increasing_rotation_angle)
-				{
-					rotation_angle_z_1 += .001;
-					
-					if (rotation_angle_x_1 >= 2 * Math.PI)
-					{
-						rotation -= 2 * Math.PI;
-					}
-					
-					draw_frame();
-				}
 			
 			
 			
@@ -1037,6 +1018,107 @@
 		gl.viewport(0, 0, image_size, image_size);
 		
 		draw_frame();
+	}
+	
+	
+	
+	function randomize_parameters(animate_change = true)
+	{
+		rotation_angle_x_1_old = rotation_angle_x_1;
+		rotation_angle_y_1_old = rotation_angle_y_1;
+		rotation_angle_z_1_old = rotation_angle_z_1;
+		rotation_angle_x_2_old = rotation_angle_x_2;
+		rotation_angle_y_2_old = rotation_angle_y_2;
+		rotation_angle_z_2_old = rotation_angle_z_2;
+		
+		rotation_angle_x_1_delta = Math.random() - .5 - rotation_angle_x_1_old;
+		rotation_angle_y_1_delta = Math.random() - .5 - rotation_angle_y_1_old;
+		rotation_angle_z_1_delta = Math.random() * 2 - 1 - rotation_angle_z_1_old;
+		rotation_angle_x_2_delta = Math.random() - .5 - rotation_angle_x_2_old;
+		rotation_angle_y_2_delta = Math.random() - .5 - rotation_angle_y_2_old;
+		rotation_angle_z_2_delta = Math.random() * 2 - 1 - rotation_angle_z_2_old;
+		
+		document.querySelector("#rotation-angle-x-1-input").value = Math.round((rotation_angle_x_1_old + rotation_angle_x_1_delta) * 1000000) / 1000000;
+		document.querySelector("#rotation-angle-y-1-input").value = Math.round((rotation_angle_y_1_old + rotation_angle_y_1_delta) * 1000000) / 1000000;
+		document.querySelector("#rotation-angle-z-1-input").value = Math.round((rotation_angle_z_1_old + rotation_angle_z_1_delta) * 1000000) / 1000000;
+		document.querySelector("#rotation-angle-x-2-input").value = Math.round((rotation_angle_x_2_old + rotation_angle_x_2_delta) * 1000000) / 1000000;
+		document.querySelector("#rotation-angle-y-2-input").value = Math.round((rotation_angle_y_2_old + rotation_angle_y_2_delta) * 1000000) / 1000000;
+		document.querySelector("#rotation-angle-z-2-input").value = Math.round((rotation_angle_z_2_old + rotation_angle_z_2_delta) * 1000000) / 1000000;
+		
+		scale_old = scale;
+		scale_delta = 0;
+		
+		
+		if (animate_change)
+		{
+			animate_parameter_change();
+		}
+		
+		else
+		{
+			rotation_angle_x_1 = rotation_angle_x_1_old + rotation_angle_x_1_delta;
+			rotation_angle_y_1 = rotation_angle_y_1_old + rotation_angle_y_1_delta;
+			rotation_angle_z_1 = rotation_angle_z_1_old + rotation_angle_z_1_delta;
+			rotation_angle_x_2 = rotation_angle_x_2_old + rotation_angle_x_2_delta;
+			rotation_angle_y_2 = rotation_angle_y_2_old + rotation_angle_y_2_delta;
+			rotation_angle_z_2 = rotation_angle_z_2_old + rotation_angle_z_2_delta;
+		}
+	}
+	
+	
+	
+	function update_parameters()
+	{
+		scale_old = scale;
+		rotation_angle_x_1_old = rotation_angle_x_1;
+		rotation_angle_y_1_old = rotation_angle_y_1;
+		rotation_angle_z_1_old = rotation_angle_z_1;
+		rotation_angle_x_2_old = rotation_angle_x_2;
+		rotation_angle_y_2_old = rotation_angle_y_2;
+		rotation_angle_z_2_old = rotation_angle_z_2;
+		
+		scale_delta = parseFloat(document.querySelector("#scale-input").value || 2) - scale_old;
+		rotation_angle_x_1_delta = (parseFloat(document.querySelector("#rotation-angle-x-1-input").value) || 0) - rotation_angle_x_1_old;
+		rotation_angle_y_1_delta = (parseFloat(document.querySelector("#rotation-angle-y-1-input").value) || 0) - rotation_angle_y_1_old;
+		rotation_angle_z_1_delta = (parseFloat(document.querySelector("#rotation-angle-z-1-input").value) || 0) - rotation_angle_z_1_old;
+		rotation_angle_x_2_delta = (parseFloat(document.querySelector("#rotation-angle-x-2-input").value) || 0) - rotation_angle_x_2_old;
+		rotation_angle_y_2_delta = (parseFloat(document.querySelector("#rotation-angle-y-2-input").value) || 0) - rotation_angle_y_2_old;
+		rotation_angle_z_2_delta = (parseFloat(document.querySelector("#rotation-angle-z-2-input").value) || 0) - rotation_angle_z_2_old;
+		
+		animate_parameter_change();
+	}
+	
+	
+	
+	function animate_parameter_change()
+	{
+		try {clearInterval(parameter_animation_refresh_id);}
+		catch(ex) {}
+		
+		parameter_animation_frame = 0;
+		
+		parameter_animation_refresh_id = setInterval(function()
+		{
+			let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 240 - Math.PI / 2) + .5;
+			
+			scale = scale_old + scale_delta * t;
+			rotation_angle_x_1 = rotation_angle_x_1_old + rotation_angle_x_1_delta * t;
+			rotation_angle_y_1 = rotation_angle_y_1_old + rotation_angle_y_1_delta * t;
+			rotation_angle_z_1 = rotation_angle_z_1_old + rotation_angle_z_1_delta * t;
+			rotation_angle_x_2 = rotation_angle_x_2_old + rotation_angle_x_2_delta * t;
+			rotation_angle_y_2 = rotation_angle_y_2_old + rotation_angle_y_2_delta * t;
+			rotation_angle_z_2 = rotation_angle_z_2_old + rotation_angle_z_2_delta * t;
+			
+			draw_frame();
+			
+			parameter_animation_frame++;
+			
+			if (parameter_animation_frame === 241)
+			{
+				try {clearInterval(parameter_animation_refresh_id);}
+				catch(ex) {}
+			}
+		}, 8);
 	}
 	
 	

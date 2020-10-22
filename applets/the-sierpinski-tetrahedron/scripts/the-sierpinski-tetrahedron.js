@@ -43,7 +43,7 @@
 	let right_vec = [];
 	let up_vec = [];
 	
-	let camera_pos = [4.2178, .8269, 1.9065];
+	let camera_pos = [2.1089, .41345, .95325];
 	
 	let focal_length = 2;
 	let epsilon = .01;
@@ -536,11 +536,6 @@
 				
 				let mouse_x_delta = new_mouse_x - mouse_x;
 				let mouse_y_delta = new_mouse_y - mouse_y;
-				
-				if (Math.abs(mouse_x_delta) > 20 || Math.abs(mouse_y_delta) > 20)
-				{
-					return;
-				}
 				
 				
 				
