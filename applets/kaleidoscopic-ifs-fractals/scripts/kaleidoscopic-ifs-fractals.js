@@ -47,9 +47,15 @@
 	let camera_pos = [4.2178, .8269, 1.9065];
 	
 	let focal_length = 2;
-	let epsilon = .01;
 	
-	let rotation_angle = 0;
+	let scale = 1.5;
+	
+	let rotation_angle_x_1 = Math.random() - .5;
+	let rotation_angle_y_1 = Math.random() - .5;
+	let rotation_angle_z_1 = Math.random() - .5;
+	let rotation_angle_x_2 = Math.random() - .5;
+	let rotation_angle_y_2 = Math.random() - .5;
+	let rotation_angle_z_2 = Math.random() - .5;
 	
 	
 	
@@ -106,7 +112,7 @@
 		uniform float focal_length;
 		
 		const vec3 light_pos = vec3(0.0, 0.0, 5.0);
-		const float light_brightness = 2.0;
+		const float light_brightness = 1.5;
 		
 		uniform int image_size;
 		uniform int small_image_size;
@@ -125,6 +131,11 @@
 		const vec3 color_1 = vec3(1.0, 0.0, 0.0);
 		const vec3 color_2 = vec3(0.0, 1.0, 0.0);
 		const vec3 color_3 = vec3(0.0, 0.0, 1.0);
+		const vec3 color_4 = vec3(1.0, 1.0, 0.0);
+		const vec3 color_5 = vec3(1.0, 0.0, 1.0);
+		const vec3 color_6 = vec3(0.0, 1.0, 1.0);
+		
+		
 		
 		const vec3 vertex_0 = vec3(0.0, 0.0, 1.0);
 		const vec3 vertex_1 = vec3(.942809, 0.0, -.333333);
@@ -137,14 +148,43 @@
 		
 		
 		
-		uniform float rotation_angle;
+		uniform float rotation_angle_x_1;
+		uniform float rotation_angle_y_1;
+		uniform float rotation_angle_z_1;
+		uniform float rotation_angle_x_2;
+		uniform float rotation_angle_y_2;
+		uniform float rotation_angle_z_2;
+		
+		uniform float scale;
 		
 		
 		
-		mat3 rotation_matrix = mat3(
-			cos(rotation_angle), sin(rotation_angle), 0.0,
-			-sin(rotation_angle), cos(rotation_angle), 0.0,
+		mat3 rotation_matrix_1 = mat3(
+			cos(rotation_angle_z_1), sin(rotation_angle_z_1), 0.0,
+			-sin(rotation_angle_z_1), cos(rotation_angle_z_1), 0.0,
 			0.0, 0.0, 1.0
+		) * mat3(
+			cos(rotation_angle_y_1), 0.0, sin(rotation_angle_y_1),
+			0.0, 1.0, 0.0,
+			-sin(rotation_angle_y_1), 0.0, cos(rotation_angle_y_1)
+		) * mat3(
+			1.0, 0.0, 0.0,
+			0.0, cos(rotation_angle_x_1), sin(rotation_angle_x_1),
+			0.0, -sin(rotation_angle_x_1), cos(rotation_angle_x_1)
+		);
+		
+		mat3 rotation_matrix_2 = mat3(
+			cos(rotation_angle_z_2), sin(rotation_angle_z_2), 0.0,
+			-sin(rotation_angle_z_2), cos(rotation_angle_z_2), 0.0,
+			0.0, 0.0, 1.0
+		) * mat3(
+			cos(rotation_angle_y_2), 0.0, sin(rotation_angle_y_2),
+			0.0, 1.0, 0.0,
+			-sin(rotation_angle_y_2), 0.0, cos(rotation_angle_y_2)
+		) * mat3(
+			1.0, 0.0, 0.0,
+			0.0, cos(rotation_angle_x_2), sin(rotation_angle_x_2),
+			0.0, -sin(rotation_angle_x_2), cos(rotation_angle_x_2)
 		);
 		
 		
@@ -191,19 +231,23 @@
 				
 				
 				
-				mutable_pos = rotation_matrix * mutable_pos;
+				mutable_pos = rotation_matrix_1 * mutable_pos;
 				
 				
 				
-				//Scale the system -- this one takes a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-				mutable_pos = 2.0 * mutable_pos - vec3(0.0, 0.0, 1.0);
+				//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
+				mutable_pos = scale*mutable_pos - (scale - 1.0)*vertex_0;
+				
+				
+				
+				mutable_pos = rotation_matrix_2 * mutable_pos;
 				
 				
 				
 				color_scale *= .5;
 			}
 			
-			return length(mutable_pos) * pow(.5, float(num_sierpinski_iterations));
+			return length(mutable_pos) * pow(1.0/scale, float(num_sierpinski_iterations));
 		}
 		
 		
@@ -255,9 +299,9 @@
 			
 			vec3 final_color = fog_color;
 			
-			float t = 0.0;
+			float epsilon = .001;
 			
-			float epsilon = .00002;
+			float t = 0.0;
 			
 			
 			
@@ -280,13 +324,14 @@
 				
 				
 				
+				
 				if (distance < epsilon)
 				{
 					final_color = compute_shading(pos, iteration);
 					break;
 				}
 				
-				else if (distance > clip_distance)
+				else if (t > clip_distance)
 				{
 					break;
 				}
@@ -358,9 +403,15 @@
 		shader_program.up_vec_uniform = gl.getUniformLocation(shader_program, "up_vec");
 		
 		shader_program.focal_length_uniform = gl.getUniformLocation(shader_program, "focal_length");
-		shader_program.epsilon_uniform = gl.getUniformLocation(shader_program, "epsilon");
 		
-		shader_program.rotation_angle_uniform = gl.getUniformLocation(shader_program, "rotation_angle");
+		shader_program.scale_uniform = gl.getUniformLocation(shader_program, "scale");
+		
+		shader_program.rotation_angle_x_1_uniform = gl.getUniformLocation(shader_program, "rotation_angle_x_1");
+		shader_program.rotation_angle_y_1_uniform = gl.getUniformLocation(shader_program, "rotation_angle_y_1");
+		shader_program.rotation_angle_z_1_uniform = gl.getUniformLocation(shader_program, "rotation_angle_z_1");
+		shader_program.rotation_angle_x_2_uniform = gl.getUniformLocation(shader_program, "rotation_angle_x_2");
+		shader_program.rotation_angle_y_2_uniform = gl.getUniformLocation(shader_program, "rotation_angle_y_2");
+		shader_program.rotation_angle_z_2_uniform = gl.getUniformLocation(shader_program, "rotation_angle_z_2");
 		
 		
 		
@@ -404,13 +455,17 @@
 		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
 		
 		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
-		gl.uniform1f(shader_program.epsilon_uniform, epsilon);
 		
-		gl.uniform1f(shader_program.rotation_angle_uniform, rotation_angle);
+		gl.uniform1f(shader_program.scale_uniform, scale);
+		
+		gl.uniform1f(shader_program.rotation_angle_x_1_uniform, rotation_angle_x_1);
+		gl.uniform1f(shader_program.rotation_angle_y_1_uniform, rotation_angle_y_1);
+		gl.uniform1f(shader_program.rotation_angle_z_1_uniform, rotation_angle_z_1);
+		gl.uniform1f(shader_program.rotation_angle_x_2_uniform, rotation_angle_x_2);
+		gl.uniform1f(shader_program.rotation_angle_y_2_uniform, rotation_angle_y_2);
+		gl.uniform1f(shader_program.rotation_angle_z_2_uniform, rotation_angle_z_2);
 				
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-		
-		distance_to_scene = distance_estimator(image_plane_center_pos[0], image_plane_center_pos[1], image_plane_center_pos[2]);
 	}
 	
 	
@@ -436,6 +491,10 @@
 		
 		//Finally, the upward vector is the cross product of the previous two.
 		up_vec = cross_product(right_vec, forward_vec);
+		
+		
+		
+		distance_to_scene = distance_estimator(camera_pos[0], camera_pos[1], camera_pos[2]);
 		
 		
 		
@@ -466,6 +525,25 @@
 	function cross_product(vec1, vec2)
 	{
 		return [vec1[1] * vec2[2] - vec1[2] * vec2[1], vec1[2] * vec2[0] - vec1[0] * vec2[2], vec1[0] * vec2[1] - vec1[1] * vec2[0]];
+	}
+	
+	
+	
+	function mat_mul(mat1, mat2)
+	{
+		return [
+			[mat1[0][0]*mat2[0][0] + mat1[0][1]*mat2[1][0] + mat1[0][2]*mat2[2][0],
+			mat1[0][0]*mat2[0][1] + mat1[0][1]*mat2[1][1] + mat1[0][2]*mat2[2][1],
+			mat1[0][0]*mat2[0][2] + mat1[0][1]*mat2[1][2] + mat1[0][2]*mat2[2][2]
+			], [
+			mat1[1][0]*mat2[0][0] + mat1[1][1]*mat2[1][0] + mat1[1][2]*mat2[2][0],
+			mat1[1][0]*mat2[0][1] + mat1[1][1]*mat2[1][1] + mat1[1][2]*mat2[2][1],
+			mat1[1][0]*mat2[0][2] + mat1[1][1]*mat2[1][2] + mat1[1][2]*mat2[2][2]
+			], [
+			mat1[2][0]*mat2[0][0] + mat1[2][1]*mat2[1][0] + mat1[2][2]*mat2[2][0],
+			mat1[2][0]*mat2[0][1] + mat1[2][1]*mat2[1][1] + mat1[2][2]*mat2[2][1],
+			mat1[2][0]*mat2[0][2] + mat1[2][1]*mat2[1][2] + mat1[2][2]*mat2[2][2]]
+			];
 	}
 	
 	
@@ -514,24 +592,52 @@
 			
 			
 			
+			//Apply the first rotation matrix.
+			
 			let temp_x = x;
 			let temp_y = y;
+			let temp_z = z;
 			
-			x = temp_x * Math.cos(rotation_angle) - temp_y * Math.sin(rotation_angle);
-			y = temp_x * Math.sin(rotation_angle) + temp_y * Math.cos(rotation_angle);
+			let mat_z = [[Math.cos(rotation_angle_z_1), -Math.sin(rotation_angle_z_1), 0], [Math.sin(rotation_angle_z_1), Math.cos(rotation_angle_z_1), 0], [0, 0, 1]];
+			let mat_y = [[Math.cos(rotation_angle_y_1), 0, -Math.sin(rotation_angle_y_1)], [0, 1, 0],[Math.sin(rotation_angle_y_1), 0, Math.cos(rotation_angle_y_1)]];
+			let mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x_1), -Math.sin(rotation_angle_x_1)], [0, Math.sin(rotation_angle_x_1), Math.cos(rotation_angle_x_1)]];
+			
+			let mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
+			
+			x = mat_total[0][0] * temp_x + mat_total[0][1] * temp_y + mat_total[0][2] * temp_z;
+			y = mat_total[1][0] * temp_x + mat_total[1][1] * temp_y + mat_total[1][2] * temp_z;
+			z = mat_total[2][0] * temp_x + mat_total[2][1] * temp_y + mat_total[2][2] * temp_z;
 			
 			
 			
 			//This one takes a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-			x = 2*x;
-			y = 2*y;
-			z = 2*z - 1;
+			x = scale * x;
+			y = scale * y;
+			z = scale * z - (scale - 1);
+			
+			
+			
+			//Apply the second rotation matrix.
+			
+			temp_x = x;
+			temp_y = y;
+			temp_z = z;
+			
+			mat_z = [[Math.cos(rotation_angle_z_2), -Math.sin(rotation_angle_z_2), 0], [Math.sin(rotation_angle_z_2), Math.cos(rotation_angle_z_2), 0], [0, 0, 1]];
+			mat_y = [[Math.cos(rotation_angle_y_2), 0, -Math.sin(rotation_angle_y_2)], [0, 1, 0],[Math.sin(rotation_angle_y_2), 0, Math.cos(rotation_angle_y_2)]];
+			mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x_2), -Math.sin(rotation_angle_x_2)], [0, Math.sin(rotation_angle_x_2), Math.cos(rotation_angle_x_2)]];
+			
+			mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
+			
+			x = mat_total[0][0] * temp_x + mat_total[0][1] * temp_y + mat_total[0][2] * temp_z;
+			y = mat_total[1][0] * temp_x + mat_total[1][1] * temp_y + mat_total[1][2] * temp_z;
+			z = mat_total[2][0] * temp_x + mat_total[2][1] * temp_y + mat_total[2][2] * temp_z;
 		}
 		
 		
 		
 		//So at this point we've scaled up by 2x a total of num_iterations times. The final distance is therefore:
-		return Math.sqrt(x*x + y*y + z*z) * Math.pow(2, -num_sierpinski_iterations);
+		return Math.sqrt(x*x + y*y + z*z) * Math.pow(scale, -num_sierpinski_iterations);
 	}
 	
 	
@@ -879,9 +985,9 @@
 				
 				if (increasing_rotation_angle)
 				{
-					rotation_angle += .001;
+					rotation_angle_z_1 += .001;
 					
-					if (rotation_angle > 2 * Math.PI)
+					if (rotation_angle_x_1 >= 2 * Math.PI)
 					{
 						rotation -= 2 * Math.PI;
 					}

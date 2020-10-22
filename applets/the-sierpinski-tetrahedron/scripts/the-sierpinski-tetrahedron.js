@@ -24,6 +24,7 @@
 	let moving_speed = 0;
 	let sprinting = false;
 	
+	let scale = 2;
 	let distance_to_scene = 1;
 	
 	
@@ -107,6 +108,8 @@
 		uniform int image_size;
 		uniform int small_image_size;
 		
+		uniform float scale;
+		
 		
 		
 		const float clip_distance = 1000.0;
@@ -175,14 +178,14 @@
 				
 				
 				//Scale the system -- this one takes a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-				mutable_pos = 2.0 * mutable_pos - vec3(0.0, 0.0, 1.0);
+				mutable_pos = scale * mutable_pos - (scale - 1.0) * vec3(0.0, 0.0, 1.0);
 				
 				
 				
 				color_scale *= .5;
 			}
 			
-			return length(mutable_pos) * pow(.5, float(num_sierpinski_iterations));
+			return length(mutable_pos) * pow(1.0/scale, float(num_sierpinski_iterations));
 		}
 		
 		
@@ -230,13 +233,15 @@
 			vec3 start_pos = image_plane_center_pos + right_vec * uv.x + up_vec * uv.y;
 			
 			//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-			vec3 ray_direction_vec = normalize(start_pos - camera_pos) * .99;
+			vec3 ray_direction_vec = normalize(start_pos - camera_pos) * .9;
 			
 			vec3 final_color = fog_color;
 			
+			float epsilon = .00002;
+			
 			float t = 0.0;
 			
-			float epsilon = .00002;
+			
 			
 			
 			
@@ -338,6 +343,7 @@
 		
 		shader_program.focal_length_uniform = gl.getUniformLocation(shader_program, "focal_length");
 		shader_program.epsilon_uniform = gl.getUniformLocation(shader_program, "epsilon");
+		shader_program.scale_uniform = gl.getUniformLocation(shader_program, "scale");
 		
 		
 		
@@ -383,6 +389,7 @@
 		
 		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
 		gl.uniform1f(shader_program.epsilon_uniform, epsilon);
+		gl.uniform1f(shader_program.scale_uniform, scale);
 		
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 	}
@@ -491,15 +498,15 @@
 			
 			
 			//This one takes a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-			x = 2*x;
-			y = 2*y;
-			z = 2*z - 1;
+			x = scale * x;
+			y = scale * y;
+			z = scale * z - (scale - 1);
 		}
 		
 		
 		
 		//So at this point we've scaled up by 2x a total of num_iterations times. The final distance is therefore:
-		return Math.sqrt(x*x + y*y + z*z) * Math.pow(2, -num_sierpinski_iterations);
+		return Math.sqrt(x*x + y*y + z*z) * Math.pow(scale, -num_sierpinski_iterations);
 	}
 	
 	
