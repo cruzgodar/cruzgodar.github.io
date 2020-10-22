@@ -1140,7 +1140,7 @@
 		
 		let link = document.createElement("a");
 		
-		link.download = "the-sierpinski-tetrahedron.png";
+		link.download = "a-kaleidoscopic-ifs-fractal.png";
 		
 		link.href = document.querySelector("#output-canvas").toDataURL();
 		
