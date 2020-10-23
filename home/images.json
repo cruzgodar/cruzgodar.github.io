@@ -31,10 +31,10 @@
 	
 	
 	
-	"image-the-sierpinski-tetrahedron":
+	"image-kaleidoscopic-ifs-fractals":
 	{
-		"webp": "../applets/the-sierpinski-tetrahedron/cover.webp",
-		"non-webp": "../applets/the-sierpinski-tetrahedron/cover.jpg"
+		"webp": "../applets/kaleidoscopic-ifs-fractals/cover.webp",
+		"non-webp": "../applets/kaleidoscopic-ifs-fractals/cover.jpg"
 	},
 	
 	"image-binary-trees":

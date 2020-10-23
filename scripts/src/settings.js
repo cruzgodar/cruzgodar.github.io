@@ -440,7 +440,7 @@ function switch_setting(setting, no_animation = false)
 				transition: color .6s ease !important;
 			}
 			
-			.text-box, .checkbox-container, .checkbox-container > input ~ .checkbox, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button
+			.text-box, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button
 			{
 				transition: background-color .6s ease, border-color .6s ease, color .6s ease !important;
 			}
@@ -1419,6 +1419,12 @@ function animate_theme_contrast(settings)
 		
 		
 		
+		set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", "rgb(255, 255, 255)");
+		
+		set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(127, 127, 127)");
+		
+		
+		
 		set_element_styles("#floating-footer-content, #floating-footer-button-background", "background-color", "rgb(255, 255, 255)");
 		
 		
@@ -1460,6 +1466,12 @@ function animate_theme_contrast(settings)
 		
 		
 		
+		set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", dark_theme_background_color);
+		
+		set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(152, 152, 152)");
+		
+		
+		
 		set_element_styles("#floating-footer-content, #floating-footer-button-background", "background-color", dark_theme_background_color);
 		
 		
@@ -1498,6 +1510,12 @@ function animate_theme_contrast(settings)
 		set_element_styles(".checkbox-container > input ~ .checkbox", "background-color", "rgb(255, 255, 255)");
 		
 		set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "rgb(64, 64, 64)");
+		
+		
+		
+		set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", "rgb(255, 255, 255)");
+		
+		set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(64, 64, 64)");
 		
 		
 		
@@ -1546,6 +1564,14 @@ function animate_theme_contrast(settings)
 		
 		
 		
+		set_element_styles(".radio-button-container", "border-color", "rgb(216, 216, 216)");
+		
+		set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", dark_theme_background_color);
+		
+		set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(216, 216, 216)");
+		
+		
+		
 		set_element_styles("#floating-footer-content, #floating-footer-button-background", "background-color", dark_theme_background_color);
 		
 		
@@ -1561,6 +1587,12 @@ function clear_weird_inline_styles()
 	set_element_styles(".checkbox-container > input ~ .checkbox", "background-color", "");
 		
 	set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "");
+	
+	
+	
+	set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", "");
+		
+	set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "");
 	
 	
 	
@@ -1642,6 +1674,18 @@ function get_settings_style(settings)
 			}
 
 			.checkbox-container > input:checked ~ .checkbox
+			{
+				background-color: rgb(152, 152, 152);
+			}
+			
+			
+			
+			.radio-button-container > input ~ .radio-button
+			{
+				background-color: ${dark_theme_background_color};
+			}
+
+			.radio-button-container > input:checked ~ .radio-button
 			{
 				background-color: rgb(152, 152, 152);
 			}
@@ -1753,6 +1797,13 @@ function get_settings_style(settings)
 			
 			
 			
+			.radio-button-container > input:checked ~ .radio-button
+			{
+				background-color: rgb(64, 64, 64);
+			}
+			
+			
+			
 			.loading-spinner:after
 			{
 				border: 2px solid rgb(64, 64, 64);
@@ -1846,6 +1897,23 @@ function get_settings_style(settings)
 			}
 
 			.checkbox-container > input:checked ~ .checkbox
+			{
+				background-color: rgb(216, 216, 216);
+			}
+			
+			
+			
+			.radio-button-container
+			{
+				border-color: rgb(216, 216, 216);
+			}
+			
+			.radio-button-container > input ~ .radio-button
+			{
+				background-color: ${dark_theme_background_color};
+			}
+
+			.radio-button-container > input:checked ~ .radio-button
 			{
 				background-color: rgb(216, 216, 216);
 			}

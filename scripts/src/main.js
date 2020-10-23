@@ -64,6 +64,7 @@ const hover_elements = `
 	
 	.text-button,
 	.checkbox-container,
+	.radio-button-container,
 	
 	.footer-button,
 	.footer-image-link img,

@@ -44,23 +44,22 @@
 	
 	let camera_pos = [2.1089, .41345, .95325];
 	
-	let polyhedron_index = 2;
+	let polyhedron_index = 0;
 	
 	let focal_length = 2;
 	
 	let light_pos = [[0, 0, 5], [5, 5, 5], [0, 0, 5]];
 	
-	let n1 = [[-0.577350,0,0.816496],        [1, 0, 0], [.707107, 0, .707107]];
-	let n2 = [[0.288675,-0.500000,0.816496], [0, 1, 0], [0, .707107, .707107]];
-	let n3 = [[0.288675,0.500000,0.816496],  [0, 0, 1], [-.707107, 0, .707107]];
-	let n4 = [[],                            [],        [0, -.707107, .707107]];
-	let n5 = [[],                            [],        []];
+	let n1 = [[-.577350, 0, .816496],  [1, 0, 0], [.707107, 0, .707107]];
+	let n2 = [[.288675, -.5, .816496], [0, 1, 0], [0, .707107, .707107]];
+	let n3 = [[.288675, .5, .816496],  [0, 0, 1], [-.707107, 0, .707107]];
+	let n4 = [[],                      [],        [0, -.707107, .707107]];
 	
 	let min_scale_factor = [1, 1.333, 1.333];
 	
-	let num_ns = [3, 3, 4, 3, 5];
+	let num_ns = [3, 3, 4];
 	
-	let scale_center = [[0, 0, 1], [1, 1, 1], [0, 0, 1]];
+	let scale_center = [[0, 0, 1], [.577350, .577350, .577350], [0, 0, 1]];
 	
 	let scale = 2;
 	let scale_old = 2;
@@ -96,11 +95,37 @@
 	
 	
 	
+	document.querySelector("#tetrahedron-radio-button").checked = true;
+	
 	document.querySelector("#output-canvas").setAttribute("width", image_size);
 	document.querySelector("#output-canvas").setAttribute("height", image_size);
 	
 	document.querySelector("#dim-input").addEventListener("input", change_resolution);
 	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
+	
+	document.querySelector("#tetrahedron-radio-button").addEventListener("input", function()
+	{
+		if (polyhedron_index !== 0)
+		{
+			change_polyhedron(0);
+		}
+	});
+	
+	document.querySelector("#cube-radio-button").addEventListener("input", function()
+	{
+		if (polyhedron_index !== 1)
+		{
+			change_polyhedron(1);
+		}
+	});
+	
+	document.querySelector("#octahedron-radio-button").addEventListener("input", function()
+	{
+		if (polyhedron_index !== 2)
+		{
+			change_polyhedron(2);
+		}
+	});
 	
 	
 	
@@ -171,8 +196,6 @@
 		const vec3 color_2 = vec3(0.0, 1.0, 0.0);
 		const vec3 color_3 = vec3(0.0, 0.0, 1.0);
 		const vec3 color_4 = vec3(1.0, 1.0, 0.0);
-		const vec3 color_5 = vec3(1.0, 0.0, 1.0);
-		const vec3 color_6 = vec3(0.0, 1.0, 1.0);
 		
 		
 		
@@ -184,7 +207,6 @@
 		uniform vec3 n2;
 		uniform vec3 n3;
 		uniform vec3 n4;
-		uniform vec3 n5;
 		
 		uniform float min_scale_factor;
 		
@@ -243,6 +265,7 @@
 			//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 			for (int iteration = 0; iteration < num_sierpinski_iterations; iteration++)
 			{
+				
 				//Fold space over on itself so that we can reference only the top vertex.
 				float t1 = dot(mutable_pos, n1);
 				
@@ -280,18 +303,6 @@
 						mutable_pos -= 2.0 * t4 * n4;
 						
 						color = (1.0 - color_scale) * color + color_scale * color_4;
-					}
-				}
-				
-				if (num_ns >= 5)
-				{
-					float t5 = dot(mutable_pos, n5);
-					
-					if (t5 < 0.0)
-					{
-						mutable_pos -= 2.0 * t5 * n5;
-						
-						color = (1.0 - color_scale) * color + color_scale * color_5;
 					}
 				}
 				
@@ -479,7 +490,6 @@
 		shader_program.n2_uniform = gl.getUniformLocation(shader_program, "n2");
 		shader_program.n3_uniform = gl.getUniformLocation(shader_program, "n3");
 		shader_program.n4_uniform = gl.getUniformLocation(shader_program, "n4");
-		shader_program.n5_uniform = gl.getUniformLocation(shader_program, "n5");
 		
 		shader_program.min_scale_factor_uniform = gl.getUniformLocation(shader_program, "min_scale_factor");
 		
@@ -547,7 +557,6 @@
 		gl.uniform3fv(shader_program.n2_uniform, n2[polyhedron_index]);
 		gl.uniform3fv(shader_program.n3_uniform, n3[polyhedron_index]);
 		gl.uniform3fv(shader_program.n4_uniform, n4[polyhedron_index]);
-		gl.uniform3fv(shader_program.n5_uniform, n5[polyhedron_index]);
 		
 		gl.uniform1f(shader_program.min_scale_factor_uniform, min_scale_factor[polyhedron_index]);
 		
@@ -1214,6 +1223,29 @@
 				catch(ex) {}
 			}
 		}, 8);
+	}
+	
+	
+	
+	function change_polyhedron(new_polyhedron_index)
+	{
+		document.querySelector("#output-canvas").classList.add("animated-opacity");
+		
+		document.querySelector("#output-canvas").style.opacity = 0;
+		
+		setTimeout(function()
+		{
+			polyhedron_index = new_polyhedron_index;
+			
+			draw_frame();
+			
+			document.querySelector("#output-canvas").style.opacity = 1;
+			
+			setTimeout(function()
+			{
+				document.querySelector("#output-canvas").classList.remove("animated-opacity");
+			});
+		}, 300);
 	}
 	
 	

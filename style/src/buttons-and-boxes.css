@@ -129,6 +129,95 @@
 
 
 
+.radio-button-row
+{
+	width: 70vw;
+	height: 32px;
+	margin: 0 auto;
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.radio-button-row p
+{
+	width: auto;
+}
+
+
+
+.radio-button-container
+{
+	position: relative;
+	
+	width: 24px;
+	height: 24px;
+	
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 50%;
+	padding: 2px;
+	
+	transition: width .15s ease-in-out, height .15s ease-in-out;
+}
+
+.radio-button-container.hover
+{
+	width: 28px;
+	height: 28px;
+}
+
+.radio-button-container:not(:hover):focus
+{
+	width: 28px;
+	height: 28px;
+	
+	outline: none;
+}
+
+
+
+
+
+.radio-button-container > input
+{
+	position: absolute;
+	
+	width: calc(100% - 4px);
+	height: calc(100% - 4px);
+	
+	margin: 0 0 0 0;
+	
+	opacity: 0;
+	
+	cursor: pointer;
+	
+	transition: width .15s ease-in-out, height .15s ease-in-out;
+}
+
+.radio-button-container > input ~ .radio-button
+{
+	width: 100%;
+	height: 100%;
+	
+	border-radius: 50%;
+	
+	background: rgb(255, 255, 255); 
+	
+	cursor: pointer;
+	
+	transition: background-color .15s ease-in-out, width .15s ease-in-out, height .15s ease-in-out;
+}
+
+.radio-button-container > input:checked ~ .radio-button
+{
+	background-color: rgb(127, 127, 127);
+}
+
+
+
+
+
 .text-box
 {
 	width: 100px;
