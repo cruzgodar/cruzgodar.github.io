@@ -34,7 +34,7 @@
 	
 	
 	let image_size = parseInt(document.querySelector("#dim-input").value || 500);
-	let num_sierpinski_iterations = 20;
+	let num_sierpinski_iterations = 16;
 	
 	let image_plane_center_pos = [];
 	
@@ -44,7 +44,23 @@
 	
 	let camera_pos = [2.1089, .41345, .95325];
 	
+	let polyhedron_index = 2;
+	
 	let focal_length = 2;
+	
+	let light_pos = [[0, 0, 5], [5, 5, 5], [0, 0, 5]];
+	
+	let n1 = [[-0.577350,0,0.816496],        [1, 0, 0], [.707107, 0, .707107]];
+	let n2 = [[0.288675,-0.500000,0.816496], [0, 1, 0], [0, .707107, .707107]];
+	let n3 = [[0.288675,0.500000,0.816496],  [0, 0, 1], [-.707107, 0, .707107]];
+	let n4 = [[],                            [],        [0, -.707107, .707107]];
+	let n5 = [[],                            [],        []];
+	
+	let min_scale_factor = [1, 1.333, 1.333];
+	
+	let num_ns = [3, 3, 4, 3, 5];
+	
+	let scale_center = [[0, 0, 1], [1, 1, 1], [0, 0, 1]];
 	
 	let scale = 2;
 	let scale_old = 2;
@@ -73,13 +89,6 @@
 	
 	let parameter_animation_frame = 0;
 	let parameter_animation_refresh_id = null;
-	
-	
-	
-	let vertices = [[0.0, 0.0, 1.0], [.942809, 0.0, -.333333], [-.471405, .816497, -.333333], [-.471405, -.816497, -.333333]];
-	let n1 = normalize([vertices[0][0] - vertices[1][0], vertices[0][1] - vertices[1][1], vertices[0][2] - vertices[1][2]]);
-	let n2 = normalize([vertices[0][0] - vertices[2][0], vertices[0][1] - vertices[2][1], vertices[0][2] - vertices[2][2]]);
-	let n3 = normalize([vertices[0][0] - vertices[3][0], vertices[0][1] - vertices[3][1], vertices[0][2] - vertices[3][2]]);
 	
 	
 	
@@ -141,7 +150,7 @@
 		
 		uniform float focal_length;
 		
-		const vec3 light_pos = vec3(0.0, 0.0, 5.0);
+		uniform vec3 light_pos;
 		const float light_brightness = 2.0;
 		
 		uniform int image_size;
@@ -153,7 +162,7 @@
 		const int max_marches = 32;
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .2;
-		const int num_sierpinski_iterations = 20;
+		const int num_sierpinski_iterations = 16;
 		
 		
 		vec3 color;
@@ -167,14 +176,17 @@
 		
 		
 		
-		const vec3 vertex_0 = vec3(0.0, 0.0, 1.0);
-		const vec3 vertex_1 = vec3(.942809, 0.0, -.333333);
-		const vec3 vertex_2 = vec3(-.471405, .816497, -.333333);
-		const vec3 vertex_3 = vec3(-.471405, -.816497, -.333333);
+		uniform vec3 scale_center;
 		
-		const vec3 n1 = normalize(vertex_0 - vertex_1);
-		const vec3 n2 = normalize(vertex_0 - vertex_2);
-		const vec3 n3 = normalize(vertex_0 - vertex_3);
+		uniform int num_ns;
+		
+		uniform vec3 n1;
+		uniform vec3 n2;
+		uniform vec3 n3;
+		uniform vec3 n4;
+		uniform vec3 n5;
+		
+		uniform float min_scale_factor;
 		
 		
 		
@@ -259,6 +271,30 @@
 					color = (1.0 - color_scale) * color + color_scale * color_3;
 				}
 				
+				if (num_ns >= 4)
+				{
+					float t4 = dot(mutable_pos, n4);
+					
+					if (t4 < 0.0)
+					{
+						mutable_pos -= 2.0 * t4 * n4;
+						
+						color = (1.0 - color_scale) * color + color_scale * color_4;
+					}
+				}
+				
+				if (num_ns >= 5)
+				{
+					float t5 = dot(mutable_pos, n5);
+					
+					if (t5 < 0.0)
+					{
+						mutable_pos -= 2.0 * t5 * n5;
+						
+						color = (1.0 - color_scale) * color + color_scale * color_5;
+					}
+				}
+				
 				
 				
 				mutable_pos = rotation_matrix_1 * mutable_pos;
@@ -266,7 +302,7 @@
 				
 				
 				//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-				mutable_pos = scale*mutable_pos - (scale - 1.0)*vertex_0;
+				mutable_pos = scale*mutable_pos - (scale - 1.0)*scale_center;
 				
 				
 				
@@ -329,7 +365,9 @@
 			
 			vec3 final_color = fog_color;
 			
-			float epsilon = 1.0 / ((scale - 1.0) * (scale - 1.0)) * .0001;
+			float normalized_scale = scale - min_scale_factor;
+			
+			float epsilon = 1.0 / (normalized_scale * normalized_scale * normalized_scale) * .00001;
 			
 			float t = 0.0;
 			
@@ -433,6 +471,20 @@
 		
 		shader_program.focal_length_uniform = gl.getUniformLocation(shader_program, "focal_length");
 		
+		shader_program.light_pos_uniform = gl.getUniformLocation(shader_program, "light_pos");
+		
+		shader_program.scale_center_uniform = gl.getUniformLocation(shader_program, "scale_center");
+		
+		shader_program.n1_uniform = gl.getUniformLocation(shader_program, "n1");
+		shader_program.n2_uniform = gl.getUniformLocation(shader_program, "n2");
+		shader_program.n3_uniform = gl.getUniformLocation(shader_program, "n3");
+		shader_program.n4_uniform = gl.getUniformLocation(shader_program, "n4");
+		shader_program.n5_uniform = gl.getUniformLocation(shader_program, "n5");
+		
+		shader_program.min_scale_factor_uniform = gl.getUniformLocation(shader_program, "min_scale_factor");
+		
+		shader_program.num_ns_uniform = gl.getUniformLocation(shader_program, "num_ns");
+		
 		shader_program.scale_uniform = gl.getUniformLocation(shader_program, "scale");
 		
 		shader_program.rotation_angle_x_1_uniform = gl.getUniformLocation(shader_program, "rotation_angle_x_1");
@@ -449,7 +501,7 @@
 		
 		
 		
-		randomize_parameters(false);
+		//randomize_parameters(false);
 		
 		draw_frame();
 	}
@@ -486,6 +538,20 @@
 		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
 		
 		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
+		
+		gl.uniform3fv(shader_program.light_pos_uniform, light_pos[polyhedron_index]);
+		
+		gl.uniform3fv(shader_program.scale_center_uniform, scale_center[polyhedron_index]);
+		
+		gl.uniform3fv(shader_program.n1_uniform, n1[polyhedron_index]);
+		gl.uniform3fv(shader_program.n2_uniform, n2[polyhedron_index]);
+		gl.uniform3fv(shader_program.n3_uniform, n3[polyhedron_index]);
+		gl.uniform3fv(shader_program.n4_uniform, n4[polyhedron_index]);
+		gl.uniform3fv(shader_program.n5_uniform, n5[polyhedron_index]);
+		
+		gl.uniform1f(shader_program.min_scale_factor_uniform, min_scale_factor[polyhedron_index]);
+		
+		gl.uniform1i(shader_program.num_ns_uniform, num_ns[polyhedron_index]);
 		
 		gl.uniform1f(shader_program.scale_uniform, scale);
 		
@@ -594,31 +660,55 @@
 		for (let iteration = 0; iteration < num_sierpinski_iterations; iteration++)
 		{
 			//Fold space over on itself so that we can reference only the top vertex.
-			let t1 = dot_product([x, y, z], n1);
+			let t1 = dot_product([x, y, z], n1[polyhedron_index]);
 			
 			if (t1 < 0)
 			{
-				x -= 2 * t1 * n1[0];
-				y -= 2 * t1 * n1[1];
-				z -= 2 * t1 * n1[2];
+				x -= 2 * t1 * n1[polyhedron_index][0];
+				y -= 2 * t1 * n1[polyhedron_index][1];
+				z -= 2 * t1 * n1[polyhedron_index][2];
 			}
 			
-			let t2 = dot_product([x, y, z], n2);
+			let t2 = dot_product([x, y, z], n2[polyhedron_index]);
 			
 			if (t2 < 0)
 			{
-				x -= 2 * t2 * n2[0];
-				y -= 2 * t2 * n2[1];
-				z -= 2 * t2 * n2[2];
+				x -= 2 * t2 * n2[polyhedron_index][0];
+				y -= 2 * t2 * n2[polyhedron_index][1];
+				z -= 2 * t2 * n2[polyhedron_index][2];
 			}
 			
-			let t3 = dot_product([x, y, z], n3);
+			let t3 = dot_product([x, y, z], n3[polyhedron_index]);
 			
 			if (t3 < 0)
 			{
-				x -= 2 * t3 * n3[0];
-				y -= 2 * t3 * n3[1];
-				z -= 2 * t3 * n3[2];
+				x -= 2 * t3 * n3[polyhedron_index][0];
+				y -= 2 * t3 * n3[polyhedron_index][1];
+				z -= 2 * t3 * n3[polyhedron_index][2];
+			}
+			
+			if (num_ns[polyhedron_index] >= 4)
+			{
+				let t4 = dot_product([x, y, z], n4[polyhedron_index]);
+				
+				if (t4 < 0)
+				{
+					x -= 2 * t4 * n4[polyhedron_index][0];
+					y -= 2 * t4 * n4[polyhedron_index][1];
+					z -= 2 * t4 * n4[polyhedron_index][2];
+				}
+			}
+			
+			if (num_ns[polyhedron_index] >= 5)
+			{
+				let t5 = dot_product([x, y, z], n5[polyhedron_index]);
+				
+				if (t5 < 0)
+				{
+					x -= 2 * t5 * n5[polyhedron_index][0];
+					y -= 2 * t5 * n5[polyhedron_index][1];
+					z -= 2 * t5 * n5[polyhedron_index][2];
+				}
 			}
 			
 			
@@ -642,9 +732,9 @@
 			
 			
 			//This one takes a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-			x = scale * x;
-			y = scale * y;
-			z = scale * z - (scale - 1);
+			x = scale * x - (scale - 1) * scale_center[polyhedron_index][0];
+			y = scale * y - (scale - 1) * scale_center[polyhedron_index][1];
+			z = scale * z - (scale - 1) * scale_center[polyhedron_index][2];
 			
 			
 			
@@ -1031,12 +1121,12 @@
 		rotation_angle_y_2_old = rotation_angle_y_2;
 		rotation_angle_z_2_old = rotation_angle_z_2;
 		
-		rotation_angle_x_1_delta = Math.random() - .5 - rotation_angle_x_1_old;
-		rotation_angle_y_1_delta = Math.random() - .5 - rotation_angle_y_1_old;
-		rotation_angle_z_1_delta = Math.random() * 2 - 1 - rotation_angle_z_1_old;
-		rotation_angle_x_2_delta = Math.random() - .5 - rotation_angle_x_2_old;
-		rotation_angle_y_2_delta = Math.random() - .5 - rotation_angle_y_2_old;
-		rotation_angle_z_2_delta = Math.random() * 2 - 1 - rotation_angle_z_2_old;
+		rotation_angle_x_1_delta = Math.random()*.75 - .375 - rotation_angle_x_1_old;
+		rotation_angle_y_1_delta = Math.random()*.75 - .375 - rotation_angle_y_1_old;
+		rotation_angle_z_1_delta = Math.random()*1.5 - .75 - rotation_angle_z_1_old;
+		rotation_angle_x_2_delta = Math.random()*.75 - .375 - rotation_angle_x_2_old;
+		rotation_angle_y_2_delta = Math.random()*.75 - .375 - rotation_angle_y_2_old;
+		rotation_angle_z_2_delta = Math.random()*1.5 - .75 - rotation_angle_z_2_old;
 		
 		document.querySelector("#rotation-angle-x-1-input").value = Math.round((rotation_angle_x_1_old + rotation_angle_x_1_delta) * 1000000) / 1000000;
 		document.querySelector("#rotation-angle-y-1-input").value = Math.round((rotation_angle_y_1_old + rotation_angle_y_1_delta) * 1000000) / 1000000;
@@ -1084,6 +1174,11 @@
 		rotation_angle_x_2_delta = (parseFloat(document.querySelector("#rotation-angle-x-2-input").value) || 0) - rotation_angle_x_2_old;
 		rotation_angle_y_2_delta = (parseFloat(document.querySelector("#rotation-angle-y-2-input").value) || 0) - rotation_angle_y_2_old;
 		rotation_angle_z_2_delta = (parseFloat(document.querySelector("#rotation-angle-z-2-input").value) || 0) - rotation_angle_z_2_old;
+		
+		if (scale_old + scale_delta < min_scale_factor[polyhedron_index] + .1)
+		{
+			scale_delta = min_scale_factor[polyhedron_index] + .1 - scale_old;
+		}
 		
 		animate_parameter_change();
 	}
