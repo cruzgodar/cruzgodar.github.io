@@ -55,7 +55,7 @@
 	let n3 = [[.288675, .5, .816496],  [0, 0, 1], [-.707107, 0, .707107]];
 	let n4 = [[],                      [],        [0, -.707107, .707107]];
 	
-	let min_scale_factor = [1, 1.333, 1.333];
+	let min_scale_factor = [1.333, 1.333, 1.333];
 	
 	let num_ns = [3, 3, 4];
 	
@@ -350,7 +350,7 @@
 			
 			vec3 light_direction = normalize(light_pos - pos);
 			
-			float light_intensity = light_brightness * dot(surface_normal, light_direction);
+			float light_intensity = light_brightness * max(dot(surface_normal, light_direction), .25 * dot(surface_normal, -light_direction));
 			
 			//The last factor adds ambient occlusion.
 			color = color * light_intensity * max((1.0 - float(iteration) / float(max_marches)), 0.0);
@@ -1024,7 +1024,7 @@
 		{
 			if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
 			{
-				moving_speed = distance_to_scene / 60;
+				moving_speed = distance_to_scene / 30;
 				
 				if (moving_speed < 0)
 				{
@@ -1081,7 +1081,7 @@
 				
 				draw_frame();
 			}
-		}, 8);
+		}, 16);
 	}
 	
 	
@@ -1203,7 +1203,7 @@
 		
 		parameter_animation_refresh_id = setInterval(function()
 		{
-			let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 240 - Math.PI / 2) + .5;
+			let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 120 - Math.PI / 2) + .5;
 			
 			scale = scale_old + scale_delta * t;
 			rotation_angle_x_1 = rotation_angle_x_1_old + rotation_angle_x_1_delta * t;
@@ -1217,12 +1217,12 @@
 			
 			parameter_animation_frame++;
 			
-			if (parameter_animation_frame === 241)
+			if (parameter_animation_frame === 121)
 			{
 				try {clearInterval(parameter_animation_refresh_id);}
 				catch(ex) {}
 			}
-		}, 8);
+		}, 16);
 	}
 	
 	
