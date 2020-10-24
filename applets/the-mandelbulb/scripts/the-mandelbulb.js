@@ -247,14 +247,14 @@
 				last_distance = distance;
 				
 				//This lowers the detail far away, which makes everything run nice and fast.
-				if (image_size == small_image_size && distance / 500.0 > epsilon)
+				if (image_size == small_image_size && distance / 300.0 > epsilon)
 				{
-					epsilon = distance / 500.0;
+					epsilon = distance / 300.0;
 				}
 				
-				else if (image_size != small_image_size && distance / 2000.0 > epsilon)
+				else if (image_size != small_image_size && distance / 1000.0 > epsilon)
 				{
-					epsilon = distance / 2000.0;
+					epsilon = distance / 1000.0;
 				}
 				
 				
