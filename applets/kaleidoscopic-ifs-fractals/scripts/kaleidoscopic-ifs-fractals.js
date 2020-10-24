@@ -1141,6 +1141,13 @@
 	
 	function randomize_parameters(animate_change = true)
 	{
+		if (currently_animating_parameters)
+		{
+			return;
+		}
+		
+		
+		
 		rotation_angle_x_1_old = rotation_angle_x_1;
 		rotation_angle_y_1_old = rotation_angle_y_1;
 		rotation_angle_z_1_old = rotation_angle_z_1;
@@ -1214,6 +1221,7 @@
 	
 	function animate_parameter_change()
 	{
+		
 		currently_animating_parameters = true;
 		
 		parameter_animation_frame = 0;
