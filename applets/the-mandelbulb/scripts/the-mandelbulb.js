@@ -904,6 +904,13 @@
 	
 	function change_power()
 	{
+		if (currently_animating_parameters)
+		{
+			return;
+		}
+		
+		
+		
 		power_old = power;
 		power_delta = (parseFloat(document.querySelector("#power-input").value) || 8) - power_old;
 		
@@ -922,6 +929,13 @@
 	
 	function switch_bulb()
 	{
+		if (currently_animating_parameters)
+		{
+			return;
+		}
+		
+		
+		
 		document.querySelector("#switch-bulb-button").style.opacity = 0;
 		
 		setTimeout(function()
