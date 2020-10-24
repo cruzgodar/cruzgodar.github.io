@@ -32,7 +32,7 @@
 	<section>
 		<div data-aos="fade-up">
 			<p class="body-text">
-				In 2010, as graphics cards were becoming commonplace, a <a href="http://www.fractalforums.com/sierpinski-gasket/kaleidoscopic-(escape-time-ifs)/" onclick="redirect('http://www.fractalforums.com/sierpinski-gasket/kaleidoscopic-(escape-time-ifs)/', true)">user on FractalForums</a> posted something that would quickly become famous. Called Kaleidoscopic IFS (iterated function system) fractals, they generalize the Sierpinski tetrahedron to the rest of the platonic solids and add rotation and scaling to create truly fascinating objects.
+				The holy grail of 3D fractals, the Mandelbulb is a landmark accomplishment. Translating the <a href="/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html" onclick="redirect('/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html')">Mandelbrot set</a> to three dimensions is impossible to do canonically, since there is no appropriate 3-dimensional number system analogous to the complex numbers. Nevertheless, Daniel White and Paul Nylander managed to use spherical coordinates to produce something spectacular in its own right, showing just what 3D fractals could be and igniting the search for more.
 			</p>
 		</div>
 		
@@ -40,15 +40,7 @@
 		
 		<div data-aos="fade-up">
 			<p class="body-text">
-				As interesting as the fractals is the technique used to render them &mdash; <a href="http://blog.hvidtfeldts.net/index.php/2011/06/distance-estimated-3d-fractals-part-i/" onclick="redirect('http://blog.hvidtfeldts.net/index.php/2011/06/distance-estimated-3d-fractals-part-i/', true)">raymarching</a>, an seldom-seen algorithm that feels tailor-made for this purpose. It&#x2019;s not hard to implement, makes detailed images, and runs fast enough to render in real time. If you find yourself interested in creating 3D fractals, researching raymarching is the place to start.
-			</p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text">
-				\(\theta\) and \(\phi\) each determine rotations about the axes, and the stretch factor determines how compact the final fractal is. If you want to explore the inside of a fractal but there&#x2019;s no inside there to explore, that&#x2019;s the parameter to change.
+				The typical Mandelbulb uses a power-8 formula, but any power larger than 1 works too. And of course, just like the Mandelbrot set has its <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julias</a>, every point in space gives rise to a Juliabulb. Use the button to see the one corresponding to your current location.
 			</p>
 		</div>
 		
@@ -62,7 +54,7 @@
 		
 		<div style="height: 10vh"></div>
 		
-		<div class="text-box-row-2">
+		<div class="text-box-row">
 			<div class="text-box-container" data-aos="fade-up">
 				<input id="dim-input" class="text-box" type="text" value="500" tabindex="1">
 				<label for="dim-input">
@@ -80,7 +72,15 @@
 		
 		<div style="height: 10vh"></div>
 		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="1000">
+		<div class="center-content">
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1100" tabindex="1">
+				<button class="text-button" type="button" id="switch-bulb-button" tabindex="-1">Switch to Juliabulb</button>
+			</div>
+		</div>
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content" data-aos="fade-in" data-aos-delay="1600">
 			<canvas id="output-canvas"></canvas>
 		</div>
 	</section>
@@ -126,8 +126,6 @@
 
 
 <script>
-	DEBUG = true;
-	
 	if (typeof current_url === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));

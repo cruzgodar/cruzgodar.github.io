@@ -786,7 +786,7 @@
 			mouse_x = e.clientX;
 			mouse_y = e.clientY;
 			
-			if (!currently_drawing)
+			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
 				window.requestAnimationFrame(draw_frame);
@@ -880,7 +880,7 @@
 			
 			
 			
-			if (!currently_drawing)
+			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
 				window.requestAnimationFrame(draw_frame);
@@ -1006,7 +1006,7 @@
 			
 			
 			
-			if (!currently_drawing)
+			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
 				window.requestAnimationFrame(draw_frame);

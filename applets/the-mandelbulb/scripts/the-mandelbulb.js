@@ -30,13 +30,13 @@
 	
 	
 	
-	let theta = 3.2954;
-	let phi = 1.9657;
+	let theta = 3.3233;
+	let phi = 2.1272;
 	
 	
 	
 	let image_size = 500;
-	let num_iterations = 24;
+	let num_iterations = 32;
 	
 	let image_plane_center_pos = [];
 	
@@ -44,9 +44,16 @@
 	let right_vec = [];
 	let up_vec = [];
 	
-	let camera_pos = [2.1089, .41345, .95325];
+	let camera_pos = [3.0191, .5918, 1.9128];
 	
-	let power = 16;
+	let power = 8;
+	let c = [0, 0, 0];
+	let julia_proportion = 0;
+	
+	let power_old = 0;
+	let power_delta = 0;
+	let julia_proportion_old = 0;
+	let julia_proportion_delta = 0;
 	
 	let focal_length = 2;
 	
@@ -68,7 +75,8 @@
 	
 	
 	
-	document.querySelector("#power-input").addEventListener("input", update_parameters);
+	document.querySelector("#power-input").addEventListener("input", change_power);
+	document.querySelector("#switch-bulb-button").addEventListener("click", switch_bulb);
 	
 	
 	
@@ -108,7 +116,7 @@
 		uniform float focal_length;
 		
 		uniform vec3 light_pos;
-		const float light_brightness = 1.75;
+		const float light_brightness = 2.0;
 		
 		uniform int image_size;
 		uniform int small_image_size;
@@ -116,18 +124,16 @@
 		
 		
 		const float clip_distance = 1000.0;
-		const int max_marches = 48;
+		const int max_marches = 64;
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .2;
-		const int num_iterations = 24;
+		const int num_iterations = 32;
 		
 		uniform float power;
+		uniform vec3 c;
+		uniform float julia_proportion;
 		
 		vec3 color;
-		
-		
-		
-		
 		
 		
 		
@@ -145,7 +151,7 @@
 			{
 				r = length(z);
 				
-				if (r > 2.0)
+				if (r > 16.0)
 				{
 					break;
 				}
@@ -162,9 +168,7 @@
 				
 				z = pow(r, power) * vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
 				
-				z += pos;
-				
-				
+				z += (1.0 - julia_proportion) * pos + julia_proportion * c;
 				
 				color = (1.0 - color_scale) * color + color_scale * abs(normalize(z));
 				
@@ -226,9 +230,11 @@
 			
 			vec3 final_color = fog_color;
 			
-			float epsilon = .000005;
+			float epsilon = .00001;
 			
 			float t = 0.0;
+			
+			float last_distance = 1000.0;
 			
 			
 			
@@ -236,17 +242,19 @@
 			{
 				vec3 pos = start_pos + t * ray_direction_vec;
 				
-				float distance = distance_estimator(pos);
+				//This prevents overstepping, and is honestly a pretty clever fix.
+				float distance = min(distance_estimator(pos), last_distance);
+				last_distance = distance;
 				
 				//This lowers the detail far away, which makes everything run nice and fast.
-				if (image_size == small_image_size && distance / 150.0 > epsilon)
-				{
-					epsilon = distance / 150.0;
-				}
-				
-				else if (image_size != small_image_size && distance / 500.0 > epsilon)
+				if (image_size == small_image_size && distance / 500.0 > epsilon)
 				{
 					epsilon = distance / 500.0;
+				}
+				
+				else if (image_size != small_image_size && distance / 2000.0 > epsilon)
+				{
+					epsilon = distance / 2000.0;
 				}
 				
 				
@@ -333,6 +341,8 @@
 		shader_program.light_pos_uniform = gl.getUniformLocation(shader_program, "light_pos");
 		
 		shader_program.power_uniform = gl.getUniformLocation(shader_program, "power");
+		shader_program.c_uniform = gl.getUniformLocation(shader_program, "c");
+		shader_program.julia_proportion_uniform = gl.getUniformLocation(shader_program, "julia_proportion");
 		
 		
 		
@@ -380,7 +390,10 @@
 		gl.uniform3fv(shader_program.light_pos_uniform, light_pos);
 		
 		gl.uniform1f(shader_program.power_uniform, power);
-				
+		gl.uniform3fv(shader_program.c_uniform, c);
+		gl.uniform1f(shader_program.julia_proportion_uniform, julia_proportion);
+		
+		
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 		
 		
@@ -517,9 +530,9 @@
 			
 			let scaled_r = Math.pow(r, power);
 			
-			mutable_z[0] = scaled_r * Math.sin(theta) * Math.cos(phi) + x;
-			mutable_z[1] = scaled_r * Math.sin(theta) * Math.sin(phi) + y;
-			mutable_z[2] = scaled_r * Math.cos(theta) + z;
+			mutable_z[0] = scaled_r * Math.sin(theta) * Math.cos(phi) + ((1 - julia_proportion) * x + julia_proportion * c[0]);
+			mutable_z[1] = scaled_r * Math.sin(theta) * Math.sin(phi) + ((1 - julia_proportion) * y + julia_proportion * c[1]);
+			mutable_z[2] = scaled_r * Math.cos(theta) + ((1 - julia_proportion) * z + julia_proportion * c[2]);
 		}
 		
 		return 0.5 * Math.log(r) * r / dr;
@@ -536,7 +549,7 @@
 			mouse_x = e.clientX;
 			mouse_y = e.clientY;
 			
-			if (!currently_drawing)
+			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
 				window.requestAnimationFrame(draw_frame);
@@ -630,7 +643,7 @@
 			
 			
 			
-			if (!currently_drawing)
+			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
 				window.requestAnimationFrame(draw_frame);
@@ -756,7 +769,7 @@
 			
 			
 			
-			if (!currently_drawing)
+			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
 				window.requestAnimationFrame(draw_frame);
@@ -889,8 +902,58 @@
 	
 	
 	
-	function update_parameters()
+	function change_power()
 	{
+		power_old = power;
+		power_delta = (parseFloat(document.querySelector("#power-input").value) || 8) - power_old;
+		
+		if (power_old + power_delta < 1)
+		{
+			power_delta = 0;
+		}
+		
+		julia_proportion_old = julia_proportion;
+		julia_proportion_delta = 0;
+		
+		animate_parameter_change();
+	}
+	
+	
+	
+	function switch_bulb()
+	{
+		document.querySelector("#switch-bulb-button").style.opacity = 0;
+		
+		setTimeout(function()
+		{
+			if (julia_proportion_old === 0)
+			{
+				document.querySelector("#switch-bulb-button").textContent = "Switch to Mandelbulb";
+			}
+			
+			else
+			{
+				document.querySelector("#switch-bulb-button").textContent = "Switch to Juliabulb";
+			}
+			
+			document.querySelector("#switch-bulb-button").style.opacity = 1;
+		}, 300);
+		
+		
+		
+		if (julia_proportion === 0)
+		{
+			c = [...camera_pos];
+		}
+		
+		
+		
+		julia_proportion_old = julia_proportion;
+		julia_proportion_delta = 1 - 2*julia_proportion_old;
+		
+		power_old = power;
+		power_delta = 0;
+		
 		animate_parameter_change();
 	}
 	
@@ -911,13 +974,8 @@
 	{
 		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 120 - Math.PI / 2) + .5;
 		
-		scale = scale_old + scale_delta * t;
-		rotation_angle_x_1 = rotation_angle_x_1_old + rotation_angle_x_1_delta * t;
-		rotation_angle_y_1 = rotation_angle_y_1_old + rotation_angle_y_1_delta * t;
-		rotation_angle_z_1 = rotation_angle_z_1_old + rotation_angle_z_1_delta * t;
-		rotation_angle_x_2 = rotation_angle_x_2_old + rotation_angle_x_2_delta * t;
-		rotation_angle_y_2 = rotation_angle_y_2_old + rotation_angle_y_2_delta * t;
-		rotation_angle_z_2 = rotation_angle_z_2_old + rotation_angle_z_2_delta * t;
+		power = power_old + power_delta * t;
+		julia_proportion = julia_proportion_old + julia_proportion_delta * t;
 		
 		parameter_animation_frame++;
 		
@@ -946,7 +1004,15 @@
 		
 		let link = document.createElement("a");
 		
-		link.download = "the-mandelbulb.png";
+		if (julia_proportion === 0)
+		{
+			link.download = "the-mandelbulb.png";
+		}
+		
+		else
+		{
+			link.download = "a-juliabulb.png";
+		}
 		
 		link.href = document.querySelector("#output-canvas").toDataURL();
 		
