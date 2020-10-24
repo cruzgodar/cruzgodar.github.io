@@ -8,8 +8,6 @@
 	
 	let canvas_size = document.querySelector("#output-canvas").offsetWidth;
 	
-	let frame_time = 1000;
-	
 	let currently_drawing = false;
 	let currently_animating_parameters = false;
 	
@@ -38,7 +36,7 @@
 	
 	
 	let image_size = 500;
-	let num_sierpinski_iterations = 16;
+	let num_iterations = 24;
 	
 	let image_plane_center_pos = [];
 	
@@ -48,47 +46,11 @@
 	
 	let camera_pos = [2.1089, .41345, .95325];
 	
-	let polyhedron_index = 0;
+	let power = 16;
 	
 	let focal_length = 2;
 	
-	let light_pos = [[0, 0, 5], [5, 5, 5], [0, 0, 5]];
-	
-	let n1 = [[-.577350, 0, .816496],  [1, 0, 0], [.707107, 0, .707107]];
-	let n2 = [[.288675, -.5, .816496], [0, 1, 0], [0, .707107, .707107]];
-	let n3 = [[.288675, .5, .816496],  [0, 0, 1], [-.707107, 0, .707107]];
-	let n4 = [[],                      [],        [0, -.707107, .707107]];
-	
-	let min_scale_factor = [1.333, 1.333, 1.333];
-	
-	let num_ns = [3, 3, 4];
-	
-	let scale_center = [[0, 0, 1], [.577350, .577350, .577350], [0, 0, 1]];
-	
-	let scale = 2;
-	let scale_old = 2;
-	let scale_delta = 0;
-	
-	let rotation_angle_x_1 = 0;
-	let rotation_angle_y_1 = 0;
-	let rotation_angle_z_1 = 0;
-	let rotation_angle_x_2 = 0;
-	let rotation_angle_y_2 = 0;
-	let rotation_angle_z_2 = 0;
-	
-	let rotation_angle_x_1_old = 0;
-	let rotation_angle_y_1_old = 0;
-	let rotation_angle_z_1_old = 0;
-	let rotation_angle_x_2_old = 0;
-	let rotation_angle_y_2_old = 0;
-	let rotation_angle_z_2_old = 0;
-	
-	let rotation_angle_x_1_delta = 0;
-	let rotation_angle_y_1_delta = 0;
-	let rotation_angle_z_1_delta = 0;
-	let rotation_angle_x_2_delta = 0;
-	let rotation_angle_y_2_delta = 0;
-	let rotation_angle_z_2_delta = 0;
+	let light_pos = [0, 0, 5];
 	
 	let parameter_animation_frame = 0;
 	
@@ -98,48 +60,15 @@
 	
 	
 	
-	document.querySelector("#tetrahedron-radio-button").checked = true;
-	
 	document.querySelector("#output-canvas").setAttribute("width", image_size);
 	document.querySelector("#output-canvas").setAttribute("height", image_size);
 	
 	document.querySelector("#dim-input").addEventListener("input", change_resolution);
 	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
 	
-	document.querySelector("#tetrahedron-radio-button").addEventListener("input", function()
-	{
-		if (polyhedron_index !== 0)
-		{
-			change_polyhedron(0);
-		}
-	});
-	
-	document.querySelector("#cube-radio-button").addEventListener("input", function()
-	{
-		if (polyhedron_index !== 1)
-		{
-			change_polyhedron(1);
-		}
-	});
-	
-	document.querySelector("#octahedron-radio-button").addEventListener("input", function()
-	{
-		if (polyhedron_index !== 2)
-		{
-			change_polyhedron(2);
-		}
-	});
 	
 	
-	
-	let elements = document.querySelectorAll("#scale-input, #rotation-angle-x-1-input, #rotation-angle-y-1-input, #rotation-angle-z-1-input, #rotation-angle-x-2-input, #rotation-angle-y-2-input, #rotation-angle-z-2-input");
-	
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].addEventListener("input", update_parameters);
-	}
-	
-	document.querySelector("#randomize-parameters-button").addEventListener("click", randomize_parameters);
+	document.querySelector("#power-input").addEventListener("input", update_parameters);
 	
 	
 	
@@ -179,7 +108,7 @@
 		uniform float focal_length;
 		
 		uniform vec3 light_pos;
-		const float light_brightness = 2.0;
+		const float light_brightness = 1.75;
 		
 		uniform int image_size;
 		uniform int small_image_size;
@@ -187,147 +116,65 @@
 		
 		
 		const float clip_distance = 1000.0;
-		const int max_marches = 32;
+		const int max_marches = 48;
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .2;
-		const int num_sierpinski_iterations = 16;
+		const int num_iterations = 24;
 		
+		uniform float power;
 		
 		vec3 color;
 		
-		const vec3 color_1 = vec3(1.0, 0.0, 0.0);
-		const vec3 color_2 = vec3(0.0, 1.0, 0.0);
-		const vec3 color_3 = vec3(0.0, 0.0, 1.0);
-		const vec3 color_4 = vec3(1.0, 1.0, 0.0);
 		
 		
 		
-		uniform vec3 scale_center;
-		
-		uniform int num_ns;
-		
-		uniform vec3 n1;
-		uniform vec3 n2;
-		uniform vec3 n3;
-		uniform vec3 n4;
-		
-		uniform float min_scale_factor;
-		
-		
-		
-		uniform float rotation_angle_x_1;
-		uniform float rotation_angle_y_1;
-		uniform float rotation_angle_z_1;
-		uniform float rotation_angle_x_2;
-		uniform float rotation_angle_y_2;
-		uniform float rotation_angle_z_2;
-		
-		uniform float scale;
-		
-		
-		
-		mat3 rotation_matrix_1 = mat3(
-			cos(rotation_angle_z_1), sin(rotation_angle_z_1), 0.0,
-			-sin(rotation_angle_z_1), cos(rotation_angle_z_1), 0.0,
-			0.0, 0.0, 1.0
-		) * mat3(
-			cos(rotation_angle_y_1), 0.0, sin(rotation_angle_y_1),
-			0.0, 1.0, 0.0,
-			-sin(rotation_angle_y_1), 0.0, cos(rotation_angle_y_1)
-		) * mat3(
-			1.0, 0.0, 0.0,
-			0.0, cos(rotation_angle_x_1), sin(rotation_angle_x_1),
-			0.0, -sin(rotation_angle_x_1), cos(rotation_angle_x_1)
-		);
-		
-		mat3 rotation_matrix_2 = mat3(
-			cos(rotation_angle_z_2), sin(rotation_angle_z_2), 0.0,
-			-sin(rotation_angle_z_2), cos(rotation_angle_z_2), 0.0,
-			0.0, 0.0, 1.0
-		) * mat3(
-			cos(rotation_angle_y_2), 0.0, sin(rotation_angle_y_2),
-			0.0, 1.0, 0.0,
-			-sin(rotation_angle_y_2), 0.0, cos(rotation_angle_y_2)
-		) * mat3(
-			1.0, 0.0, 0.0,
-			0.0, cos(rotation_angle_x_2), sin(rotation_angle_x_2),
-			0.0, -sin(rotation_angle_x_2), cos(rotation_angle_x_2)
-		);
 		
 		
 		
 		float distance_estimator(vec3 pos)
 		{
-			vec3 mutable_pos = pos;
+			vec3 z = pos;
+			
+			float r = 0.0;
+			float dr = 1.0;
 			
 			color = vec3(1.0, 1.0, 1.0);
 			float color_scale = .5;
 			
-			
-			
-			//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
-			for (int iteration = 0; iteration < num_sierpinski_iterations; iteration++)
+			for (int iteration = 0; iteration < num_iterations; iteration++)
 			{
+				r = length(z);
 				
-				//Fold space over on itself so that we can reference only the top vertex.
-				float t1 = dot(mutable_pos, n1);
-				
-				if (t1 < 0.0)
+				if (r > 2.0)
 				{
-					mutable_pos -= 2.0 * t1 * n1;
-					
-					color = (1.0 - color_scale) * color + color_scale * color_1;
+					break;
 				}
 				
-				float t2 = dot(mutable_pos, n2);
+				float theta = acos(z.z / r);
 				
-				if (t2 < 0.0)
-				{
-					mutable_pos -= 2.0 * t2 * n2;
-					
-					color = (1.0 - color_scale) * color + color_scale * color_2;
-				}
+				float phi = atan(z.y, z.x);
 				
-				float t3 = dot(mutable_pos, n3);
+				dr = pow(r, power - 1.0) * power * dr + 1.0;
 				
-				if (t3 < 0.0)
-				{
-					mutable_pos -= 2.0 * t3 * n3;
-					
-					color = (1.0 - color_scale) * color + color_scale * color_3;
-				}
+				theta = theta * power;
 				
-				if (num_ns >= 4)
-				{
-					float t4 = dot(mutable_pos, n4);
-					
-					if (t4 < 0.0)
-					{
-						mutable_pos -= 2.0 * t4 * n4;
-						
-						color = (1.0 - color_scale) * color + color_scale * color_4;
-					}
-				}
+				phi = phi * power;
+				
+				z = pow(r, power) * vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+				
+				z += pos;
 				
 				
 				
-				mutable_pos = rotation_matrix_1 * mutable_pos;
-				
-				
-				
-				//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-				mutable_pos = scale*mutable_pos - (scale - 1.0)*scale_center;
-				
-				
-				
-				mutable_pos = rotation_matrix_2 * mutable_pos;
-				
-				
+				color = (1.0 - color_scale) * color + color_scale * abs(normalize(z));
 				
 				color_scale *= .5;
 			}
 			
-			return length(mutable_pos) * pow(1.0/scale, float(num_sierpinski_iterations));
+			float max_color_component = max(max(color.x, color.y), color.z);
+			color /= max_color_component;
+			
+			return .5 * log(r) * r / dr;
 		}
 		
 		
@@ -379,9 +226,7 @@
 			
 			vec3 final_color = fog_color;
 			
-			float normalized_scale = scale - min_scale_factor;
-			
-			float epsilon = 1.0 / (normalized_scale * normalized_scale * normalized_scale) * .00001;
+			float epsilon = .000005;
 			
 			float t = 0.0;
 			
@@ -487,25 +332,7 @@
 		
 		shader_program.light_pos_uniform = gl.getUniformLocation(shader_program, "light_pos");
 		
-		shader_program.scale_center_uniform = gl.getUniformLocation(shader_program, "scale_center");
-		
-		shader_program.n1_uniform = gl.getUniformLocation(shader_program, "n1");
-		shader_program.n2_uniform = gl.getUniformLocation(shader_program, "n2");
-		shader_program.n3_uniform = gl.getUniformLocation(shader_program, "n3");
-		shader_program.n4_uniform = gl.getUniformLocation(shader_program, "n4");
-		
-		shader_program.min_scale_factor_uniform = gl.getUniformLocation(shader_program, "min_scale_factor");
-		
-		shader_program.num_ns_uniform = gl.getUniformLocation(shader_program, "num_ns");
-		
-		shader_program.scale_uniform = gl.getUniformLocation(shader_program, "scale");
-		
-		shader_program.rotation_angle_x_1_uniform = gl.getUniformLocation(shader_program, "rotation_angle_x_1");
-		shader_program.rotation_angle_y_1_uniform = gl.getUniformLocation(shader_program, "rotation_angle_y_1");
-		shader_program.rotation_angle_z_1_uniform = gl.getUniformLocation(shader_program, "rotation_angle_z_1");
-		shader_program.rotation_angle_x_2_uniform = gl.getUniformLocation(shader_program, "rotation_angle_x_2");
-		shader_program.rotation_angle_y_2_uniform = gl.getUniformLocation(shader_program, "rotation_angle_y_2");
-		shader_program.rotation_angle_z_2_uniform = gl.getUniformLocation(shader_program, "rotation_angle_z_2");
+		shader_program.power_uniform = gl.getUniformLocation(shader_program, "power");
 		
 		
 		
@@ -550,27 +377,9 @@
 		
 		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
 		
-		gl.uniform3fv(shader_program.light_pos_uniform, light_pos[polyhedron_index]);
+		gl.uniform3fv(shader_program.light_pos_uniform, light_pos);
 		
-		gl.uniform3fv(shader_program.scale_center_uniform, scale_center[polyhedron_index]);
-		
-		gl.uniform3fv(shader_program.n1_uniform, n1[polyhedron_index]);
-		gl.uniform3fv(shader_program.n2_uniform, n2[polyhedron_index]);
-		gl.uniform3fv(shader_program.n3_uniform, n3[polyhedron_index]);
-		gl.uniform3fv(shader_program.n4_uniform, n4[polyhedron_index]);
-		
-		gl.uniform1f(shader_program.min_scale_factor_uniform, min_scale_factor[polyhedron_index]);
-		
-		gl.uniform1i(shader_program.num_ns_uniform, num_ns[polyhedron_index]);
-		
-		gl.uniform1f(shader_program.scale_uniform, scale);
-		
-		gl.uniform1f(shader_program.rotation_angle_x_1_uniform, rotation_angle_x_1);
-		gl.uniform1f(shader_program.rotation_angle_y_1_uniform, rotation_angle_y_1);
-		gl.uniform1f(shader_program.rotation_angle_z_1_uniform, rotation_angle_z_1);
-		gl.uniform1f(shader_program.rotation_angle_x_2_uniform, rotation_angle_x_2);
-		gl.uniform1f(shader_program.rotation_angle_y_2_uniform, rotation_angle_y_2);
-		gl.uniform1f(shader_program.rotation_angle_z_2_uniform, rotation_angle_z_2);
+		gl.uniform1f(shader_program.power_uniform, power);
 				
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 		
@@ -682,97 +491,38 @@
 	
 	function distance_estimator(x, y, z)
 	{
-		//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
-		for (let iteration = 0; iteration < num_sierpinski_iterations; iteration++)
+		let mutable_z = [x, y, z];
+		
+		let r = 0.0;
+		let dr = 1.0;
+		
+		for (let iteration = 0; iteration < num_iterations; iteration++)
 		{
-			//Fold space over on itself so that we can reference only the top vertex.
-			let t1 = dot_product([x, y, z], n1[polyhedron_index]);
+			r = Math.sqrt(dot_product(mutable_z, mutable_z));
 			
-			if (t1 < 0)
+			if (r > 10.0)
 			{
-				x -= 2 * t1 * n1[polyhedron_index][0];
-				y -= 2 * t1 * n1[polyhedron_index][1];
-				z -= 2 * t1 * n1[polyhedron_index][2];
+				break;
 			}
 			
-			let t2 = dot_product([x, y, z], n2[polyhedron_index]);
+			let theta = Math.acos(mutable_z[2] / r);
 			
-			if (t2 < 0)
-			{
-				x -= 2 * t2 * n2[polyhedron_index][0];
-				y -= 2 * t2 * n2[polyhedron_index][1];
-				z -= 2 * t2 * n2[polyhedron_index][2];
-			}
+			let phi = Math.atan2(mutable_z[1], mutable_z[0]);
 			
-			let t3 = dot_product([x, y, z], n3[polyhedron_index]);
+			dr = Math.pow(r, power - 1.0) * power * dr + 1.0;
 			
-			if (t3 < 0)
-			{
-				x -= 2 * t3 * n3[polyhedron_index][0];
-				y -= 2 * t3 * n3[polyhedron_index][1];
-				z -= 2 * t3 * n3[polyhedron_index][2];
-			}
+			theta = theta * power;
 			
-			if (num_ns[polyhedron_index] >= 4)
-			{
-				let t4 = dot_product([x, y, z], n4[polyhedron_index]);
-				
-				if (t4 < 0)
-				{
-					x -= 2 * t4 * n4[polyhedron_index][0];
-					y -= 2 * t4 * n4[polyhedron_index][1];
-					z -= 2 * t4 * n4[polyhedron_index][2];
-				}
-			}
+			phi = phi * power;
 			
+			let scaled_r = Math.pow(r, power);
 			
-			
-			//Apply the first rotation matrix.
-			
-			let temp_x = x;
-			let temp_y = y;
-			let temp_z = z;
-			
-			let mat_z = [[Math.cos(rotation_angle_z_1), -Math.sin(rotation_angle_z_1), 0], [Math.sin(rotation_angle_z_1), Math.cos(rotation_angle_z_1), 0], [0, 0, 1]];
-			let mat_y = [[Math.cos(rotation_angle_y_1), 0, -Math.sin(rotation_angle_y_1)], [0, 1, 0],[Math.sin(rotation_angle_y_1), 0, Math.cos(rotation_angle_y_1)]];
-			let mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x_1), -Math.sin(rotation_angle_x_1)], [0, Math.sin(rotation_angle_x_1), Math.cos(rotation_angle_x_1)]];
-			
-			let mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
-			
-			x = mat_total[0][0] * temp_x + mat_total[0][1] * temp_y + mat_total[0][2] * temp_z;
-			y = mat_total[1][0] * temp_x + mat_total[1][1] * temp_y + mat_total[1][2] * temp_z;
-			z = mat_total[2][0] * temp_x + mat_total[2][1] * temp_y + mat_total[2][2] * temp_z;
-			
-			
-			
-			//This one takes a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-			x = scale * x - (scale - 1) * scale_center[polyhedron_index][0];
-			y = scale * y - (scale - 1) * scale_center[polyhedron_index][1];
-			z = scale * z - (scale - 1) * scale_center[polyhedron_index][2];
-			
-			
-			
-			//Apply the second rotation matrix.
-			
-			temp_x = x;
-			temp_y = y;
-			temp_z = z;
-			
-			mat_z = [[Math.cos(rotation_angle_z_2), -Math.sin(rotation_angle_z_2), 0], [Math.sin(rotation_angle_z_2), Math.cos(rotation_angle_z_2), 0], [0, 0, 1]];
-			mat_y = [[Math.cos(rotation_angle_y_2), 0, -Math.sin(rotation_angle_y_2)], [0, 1, 0],[Math.sin(rotation_angle_y_2), 0, Math.cos(rotation_angle_y_2)]];
-			mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x_2), -Math.sin(rotation_angle_x_2)], [0, Math.sin(rotation_angle_x_2), Math.cos(rotation_angle_x_2)]];
-			
-			mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
-			
-			x = mat_total[0][0] * temp_x + mat_total[0][1] * temp_y + mat_total[0][2] * temp_z;
-			y = mat_total[1][0] * temp_x + mat_total[1][1] * temp_y + mat_total[1][2] * temp_z;
-			z = mat_total[2][0] * temp_x + mat_total[2][1] * temp_y + mat_total[2][2] * temp_z;
+			mutable_z[0] = scaled_r * Math.sin(theta) * Math.cos(phi) + x;
+			mutable_z[1] = scaled_r * Math.sin(theta) * Math.sin(phi) + y;
+			mutable_z[2] = scaled_r * Math.cos(theta) + z;
 		}
 		
-		
-		
-		//So at this point we've scaled up by 2x a total of num_iterations times. The final distance is therefore:
-		return Math.sqrt(x*x + y*y + z*z) * Math.pow(scale, -num_sierpinski_iterations);
+		return 0.5 * Math.log(r) * r / dr;
 	}
 	
 	
@@ -1139,81 +889,8 @@
 	
 	
 	
-	function randomize_parameters(animate_change = true)
-	{
-		if (currently_animating_parameters)
-		{
-			return;
-		}
-		
-		
-		
-		rotation_angle_x_1_old = rotation_angle_x_1;
-		rotation_angle_y_1_old = rotation_angle_y_1;
-		rotation_angle_z_1_old = rotation_angle_z_1;
-		rotation_angle_x_2_old = rotation_angle_x_2;
-		rotation_angle_y_2_old = rotation_angle_y_2;
-		rotation_angle_z_2_old = rotation_angle_z_2;
-		
-		rotation_angle_x_1_delta = Math.random()*.75 - .375 - rotation_angle_x_1_old;
-		rotation_angle_y_1_delta = Math.random()*.75 - .375 - rotation_angle_y_1_old;
-		rotation_angle_z_1_delta = Math.random()*1.5 - .75 - rotation_angle_z_1_old;
-		rotation_angle_x_2_delta = Math.random()*.75 - .375 - rotation_angle_x_2_old;
-		rotation_angle_y_2_delta = Math.random()*.75 - .375 - rotation_angle_y_2_old;
-		rotation_angle_z_2_delta = Math.random()*1.5 - .75 - rotation_angle_z_2_old;
-		
-		document.querySelector("#rotation-angle-x-1-input").value = Math.round((rotation_angle_x_1_old + rotation_angle_x_1_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-y-1-input").value = Math.round((rotation_angle_y_1_old + rotation_angle_y_1_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-z-1-input").value = Math.round((rotation_angle_z_1_old + rotation_angle_z_1_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-x-2-input").value = Math.round((rotation_angle_x_2_old + rotation_angle_x_2_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-y-2-input").value = Math.round((rotation_angle_y_2_old + rotation_angle_y_2_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-z-2-input").value = Math.round((rotation_angle_z_2_old + rotation_angle_z_2_delta) * 1000000) / 1000000;
-		
-		scale_old = scale;
-		scale_delta = 0;
-		
-		
-		if (animate_change)
-		{
-			animate_parameter_change();
-		}
-		
-		else
-		{
-			rotation_angle_x_1 = rotation_angle_x_1_old + rotation_angle_x_1_delta;
-			rotation_angle_y_1 = rotation_angle_y_1_old + rotation_angle_y_1_delta;
-			rotation_angle_z_1 = rotation_angle_z_1_old + rotation_angle_z_1_delta;
-			rotation_angle_x_2 = rotation_angle_x_2_old + rotation_angle_x_2_delta;
-			rotation_angle_y_2 = rotation_angle_y_2_old + rotation_angle_y_2_delta;
-			rotation_angle_z_2 = rotation_angle_z_2_old + rotation_angle_z_2_delta;
-		}
-	}
-	
-	
-	
 	function update_parameters()
 	{
-		scale_old = scale;
-		rotation_angle_x_1_old = rotation_angle_x_1;
-		rotation_angle_y_1_old = rotation_angle_y_1;
-		rotation_angle_z_1_old = rotation_angle_z_1;
-		rotation_angle_x_2_old = rotation_angle_x_2;
-		rotation_angle_y_2_old = rotation_angle_y_2;
-		rotation_angle_z_2_old = rotation_angle_z_2;
-		
-		scale_delta = parseFloat(document.querySelector("#scale-input").value || 2) - scale_old;
-		rotation_angle_x_1_delta = (parseFloat(document.querySelector("#rotation-angle-x-1-input").value) || 0) - rotation_angle_x_1_old;
-		rotation_angle_y_1_delta = (parseFloat(document.querySelector("#rotation-angle-y-1-input").value) || 0) - rotation_angle_y_1_old;
-		rotation_angle_z_1_delta = (parseFloat(document.querySelector("#rotation-angle-z-1-input").value) || 0) - rotation_angle_z_1_old;
-		rotation_angle_x_2_delta = (parseFloat(document.querySelector("#rotation-angle-x-2-input").value) || 0) - rotation_angle_x_2_old;
-		rotation_angle_y_2_delta = (parseFloat(document.querySelector("#rotation-angle-y-2-input").value) || 0) - rotation_angle_y_2_old;
-		rotation_angle_z_2_delta = (parseFloat(document.querySelector("#rotation-angle-z-2-input").value) || 0) - rotation_angle_z_2_old;
-		
-		if (scale_old + scale_delta < min_scale_factor[polyhedron_index] + .1)
-		{
-			scale_delta = min_scale_factor[polyhedron_index] + .1 - scale_old;
-		}
-		
 		animate_parameter_change();
 	}
 	
@@ -1221,7 +898,6 @@
 	
 	function animate_parameter_change()
 	{
-		
 		currently_animating_parameters = true;
 		
 		parameter_animation_frame = 0;
@@ -1253,29 +929,6 @@
 	
 	
 	
-	function change_polyhedron(new_polyhedron_index)
-	{
-		document.querySelector("#output-canvas").classList.add("animated-opacity");
-		
-		document.querySelector("#output-canvas").style.opacity = 0;
-		
-		setTimeout(function()
-		{
-			polyhedron_index = new_polyhedron_index;
-			
-			window.requestAnimationFrame(draw_frame);
-			
-			document.querySelector("#output-canvas").style.opacity = 1;
-			
-			setTimeout(function()
-			{
-				document.querySelector("#output-canvas").classList.remove("animated-opacity");
-			});
-		}, 300);
-	}
-	
-	
-	
 	function prepare_download()
 	{
 		let temp = image_size;
@@ -1287,14 +940,13 @@
 		
 		gl.viewport(0, 0, image_size, image_size);
 		
-		//This one needs to happen immediately, since otherwise we'll only download blank images.
 		draw_frame();
 		
 		
 		
 		let link = document.createElement("a");
 		
-		link.download = "a-kaleidoscopic-ifs-fractal.png";
+		link.download = "the-mandelbulb.png";
 		
 		link.href = document.querySelector("#output-canvas").toDataURL();
 		
