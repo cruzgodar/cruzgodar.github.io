@@ -56,7 +56,7 @@
 		
 		<div data-aos="fade-up">
 			<p class="body-text">
-				Drag on the scene to look around. If you have a keyboard, use WASD to move around and hold shift to move faster. On a touchscreen, hold with two fingers to move forward and three to move back.
+				Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
 			</p>
 		</div>
 		
@@ -229,6 +229,8 @@
 
 
 <script>
+	DEBUG = true;
+	
 	if (typeof current_url === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));

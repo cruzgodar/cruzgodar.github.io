@@ -8,6 +8,11 @@
 	
 	let canvas_size = document.querySelector("#output-canvas").offsetWidth;
 	
+	let frame_time = 1000;
+	
+	let currently_drawing = false;
+	let currently_animating_parameters = false;
+	
 	let currently_dragging = false;
 	
 	let mouse_x = 0;
@@ -22,7 +27,6 @@
 	let moving_backward_touch = false;
 	
 	let moving_speed = 0;
-	let sprinting = false;
 	
 	let distance_to_scene = 1;
 	
@@ -33,7 +37,7 @@
 	
 	
 	
-	let image_size = parseInt(document.querySelector("#dim-input").value || 500);
+	let image_size = 500;
 	let num_sierpinski_iterations = 16;
 	
 	let image_plane_center_pos = [];
@@ -87,7 +91,6 @@
 	let rotation_angle_z_2_delta = 0;
 	
 	let parameter_animation_frame = 0;
-	let parameter_animation_refresh_id = null;
 	
 	
 	
@@ -511,9 +514,7 @@
 		
 		
 		
-		//randomize_parameters(false);
-		
-		draw_frame();
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
@@ -572,6 +573,22 @@
 		gl.uniform1f(shader_program.rotation_angle_z_2_uniform, rotation_angle_z_2);
 				
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+		
+		
+		
+		if (currently_animating_parameters)
+		{
+			animate_parameter_change_step();
+			
+			window.requestAnimationFrame(draw_frame);
+		}
+		
+		else if (currently_drawing)
+		{
+			update_camera_parameters();
+			
+			window.requestAnimationFrame(draw_frame);
+		}
 	}
 	
 	
@@ -708,18 +725,6 @@
 				}
 			}
 			
-			if (num_ns[polyhedron_index] >= 5)
-			{
-				let t5 = dot_product([x, y, z], n5[polyhedron_index]);
-				
-				if (t5 < 0)
-				{
-					x -= 2 * t5 * n5[polyhedron_index][0];
-					y -= 2 * t5 * n5[polyhedron_index][1];
-					z -= 2 * t5 * n5[polyhedron_index][2];
-				}
-			}
-			
 			
 			
 			//Apply the first rotation matrix.
@@ -780,6 +785,12 @@
 			
 			mouse_x = e.clientX;
 			mouse_y = e.clientY;
+			
+			if (!currently_drawing)
+			{
+				currently_drawing = true;
+				window.requestAnimationFrame(draw_frame);
+			}
 		});
 		
 		
@@ -834,8 +845,6 @@
 				
 				
 				calculate_vectors();
-				
-				draw_frame();
 			}
 		});
 		
@@ -844,12 +853,16 @@
 		document.documentElement.addEventListener("mouseup", function(e)
 		{
 			currently_dragging = false;
+			
+			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch;
 		});
 		
 		
 		
 		document.querySelector("#output-canvas").addEventListener("touchstart", function(e)
 		{
+			currently_dragging = true;
+			
 			mouse_x = e.touches[0].clientX;
 			mouse_y = e.touches[0].clientY;
 			
@@ -863,6 +876,14 @@
 			{
 				moving_backward_touch = true;
 				moving_forward_touch = false;
+			}
+			
+			
+			
+			if (!currently_drawing)
+			{
+				currently_drawing = true;
+				window.requestAnimationFrame(draw_frame);
 			}
 		});
 		
@@ -921,8 +942,6 @@
 			
 			
 			calculate_vectors();
-			
-			draw_frame();
 		});
 		
 		
@@ -945,7 +964,16 @@
 			{
 				moving_forward_touch = false;
 				moving_backward_touch = false;
+				
+				if (e.touches.length === 0)
+				{
+					currently_dragging = false;
+				}
 			}
+			
+			
+			
+			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch;
 		});
 
 
@@ -976,10 +1004,12 @@
 				moving_left_keyboard = true;
 			}
 			
-			//Shift
-			if (e.keyCode === 16)
+			
+			
+			if (!currently_drawing)
 			{
-				sprinting = true;
+				currently_drawing = true;
+				window.requestAnimationFrame(draw_frame);
 			}
 		});
 		
@@ -1011,77 +1041,65 @@
 				moving_left_keyboard = false;
 			}
 			
-			//Shift
-			if (e.keyCode === 16)
-			{
-				sprinting = false;
-			}
+			
+			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch;
 		});
-		
-		
-		
-		setInterval(function()
+	}
+	
+	
+	
+	function update_camera_parameters()
+	{
+		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
 		{
-			if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
+			moving_speed = distance_to_scene / 20;
+			
+			if (moving_speed < .000025)
 			{
-				moving_speed = distance_to_scene / 30;
-				
-				if (moving_speed < 0)
-				{
-					moving_speed = 0;
-				}
-				
-				if (moving_speed > .02)
-				{
-					moving_speed = .02;
-				}
-				
-				
-				
-				if (sprinting)
-				{
-					moving_speed *= 3;
-				}
-				
-				
-				
-				if (moving_forward_keyboard || moving_forward_touch)
-				{
-					camera_pos[0] += moving_speed * forward_vec[0];
-					camera_pos[1] += moving_speed * forward_vec[1];
-					camera_pos[2] += moving_speed * forward_vec[2];
-				}
-				
-				else if (moving_backward_keyboard || moving_backward_touch)
-				{
-					camera_pos[0] -= moving_speed * forward_vec[0];
-					camera_pos[1] -= moving_speed * forward_vec[1];
-					camera_pos[2] -= moving_speed * forward_vec[2];
-				}
-				
-				
-				
-				if (moving_right_keyboard)
-				{
-					camera_pos[0] += moving_speed * right_vec[0] / focal_length;
-					camera_pos[1] += moving_speed * right_vec[1] / focal_length;
-					camera_pos[2] += moving_speed * right_vec[2] / focal_length;
-				}
-				
-				else if (moving_left_keyboard)
-				{
-					camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
-					camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
-					camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
-				}
-			
-			
-			
-				calculate_vectors();
-				
-				draw_frame();
+				moving_speed = .000025;
 			}
-		}, 16);
+			
+			if (moving_speed > .02)
+			{
+				moving_speed = .02;
+			}
+			
+			
+			
+			if (moving_forward_keyboard || moving_forward_touch)
+			{
+				camera_pos[0] += moving_speed * forward_vec[0];
+				camera_pos[1] += moving_speed * forward_vec[1];
+				camera_pos[2] += moving_speed * forward_vec[2];
+			}
+			
+			else if (moving_backward_keyboard || moving_backward_touch)
+			{
+				camera_pos[0] -= moving_speed * forward_vec[0];
+				camera_pos[1] -= moving_speed * forward_vec[1];
+				camera_pos[2] -= moving_speed * forward_vec[2];
+			}
+			
+			
+			
+			if (moving_right_keyboard)
+			{
+				camera_pos[0] += moving_speed * right_vec[0] / focal_length;
+				camera_pos[1] += moving_speed * right_vec[1] / focal_length;
+				camera_pos[2] += moving_speed * right_vec[2] / focal_length;
+			}
+			
+			else if (moving_left_keyboard)
+			{
+				camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
+				camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
+				camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
+			}
+		
+		
+		
+			calculate_vectors();
+		}
 	}
 	
 	
@@ -1116,7 +1134,7 @@
 		
 		gl.viewport(0, 0, image_size, image_size);
 		
-		draw_frame();
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
@@ -1196,33 +1214,33 @@
 	
 	function animate_parameter_change()
 	{
-		try {clearInterval(parameter_animation_refresh_id);}
-		catch(ex) {}
+		currently_animating_parameters = true;
 		
 		parameter_animation_frame = 0;
 		
-		parameter_animation_refresh_id = setInterval(function()
+		window.requestAnimationFrame(draw_frame);
+	}
+	
+	
+	
+	function animate_parameter_change_step()
+	{
+		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 120 - Math.PI / 2) + .5;
+		
+		scale = scale_old + scale_delta * t;
+		rotation_angle_x_1 = rotation_angle_x_1_old + rotation_angle_x_1_delta * t;
+		rotation_angle_y_1 = rotation_angle_y_1_old + rotation_angle_y_1_delta * t;
+		rotation_angle_z_1 = rotation_angle_z_1_old + rotation_angle_z_1_delta * t;
+		rotation_angle_x_2 = rotation_angle_x_2_old + rotation_angle_x_2_delta * t;
+		rotation_angle_y_2 = rotation_angle_y_2_old + rotation_angle_y_2_delta * t;
+		rotation_angle_z_2 = rotation_angle_z_2_old + rotation_angle_z_2_delta * t;
+		
+		parameter_animation_frame++;
+		
+		if (parameter_animation_frame === 121)
 		{
-			let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 120 - Math.PI / 2) + .5;
-			
-			scale = scale_old + scale_delta * t;
-			rotation_angle_x_1 = rotation_angle_x_1_old + rotation_angle_x_1_delta * t;
-			rotation_angle_y_1 = rotation_angle_y_1_old + rotation_angle_y_1_delta * t;
-			rotation_angle_z_1 = rotation_angle_z_1_old + rotation_angle_z_1_delta * t;
-			rotation_angle_x_2 = rotation_angle_x_2_old + rotation_angle_x_2_delta * t;
-			rotation_angle_y_2 = rotation_angle_y_2_old + rotation_angle_y_2_delta * t;
-			rotation_angle_z_2 = rotation_angle_z_2_old + rotation_angle_z_2_delta * t;
-			
-			draw_frame();
-			
-			parameter_animation_frame++;
-			
-			if (parameter_animation_frame === 121)
-			{
-				try {clearInterval(parameter_animation_refresh_id);}
-				catch(ex) {}
-			}
-		}, 16);
+			currently_animating_parameters = false;
+		}
 	}
 	
 	
@@ -1237,7 +1255,7 @@
 		{
 			polyhedron_index = new_polyhedron_index;
 			
-			draw_frame();
+			window.requestAnimationFrame(draw_frame);
 			
 			document.querySelector("#output-canvas").style.opacity = 1;
 			
@@ -1261,7 +1279,7 @@
 		
 		gl.viewport(0, 0, image_size, image_size);
 		
-		draw_frame();
+		window.requestAnimationFrame(draw_frame);
 		
 		
 		
@@ -1284,6 +1302,6 @@
 		
 		gl.viewport(0, 0, image_size, image_size);
 		
-		draw_frame();
+		window.requestAnimationFrame(draw_frame);
 	}
 }()
