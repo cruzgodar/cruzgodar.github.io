@@ -4,8 +4,14 @@
 	
 	
 	
+	let current_a = 0;
+	let current_b = 0;
+	let current_num_iterations = 0;
+	let current_julia_size = 0;
+	
 	let last_a = 0;
 	let last_b = 0;
+	let last_julia_size = 0;
 	
 	let small_canvas_size = 0;
 	let large_canvas_size = 0;
@@ -22,7 +28,10 @@
 	let image = [];
 
 	let persist_image = false;
-
+	
+	let draw_another_frame = false;
+	let need_to_restart = true;
+	
 	let ctx = null;
 	
 	let web_worker = null;
@@ -71,11 +80,20 @@
 
 
 
-	function draw_julia_set(a, b, julia_size, num_iters)
+	function draw_julia_set()
 	{
+		if (current_a === last_a && current_b === last_b && current_julia_size === last_julia_size)
+		{
+			need_to_restart = true;
+			
+			return;
+		}
+		
+		
+		
 		image = [];
 		
-		for (let i = 0; i < julia_size; i++)
+		for (let i = 0; i < current_julia_size; i++)
 		{
 			image[i] = [];
 		}
@@ -87,17 +105,17 @@
 		
 		
 		
-		document.querySelector("#julia-set").setAttribute("width", julia_size);
-		document.querySelector("#julia-set").setAttribute("height", julia_size);
+		document.querySelector("#julia-set").setAttribute("width", current_julia_size);
+		document.querySelector("#julia-set").setAttribute("height", current_julia_size);
 		
 		ctx = document.querySelector("#julia-set").getContext("2d", {alpha: false});
 		
 		
 		
 		//Generate the brightness map.
-		for (let i = 0; i < julia_size / 2; i++)
+		for (let i = 0; i < current_julia_size / 2; i++)
 		{
-			julia_row(i, a, b, julia_size, num_iters);
+			julia_row(i, current_a, current_b, current_julia_size, current_num_iterations);
 		}
 		
 		
@@ -107,7 +125,7 @@
 		
 		let max_brightness = 0;
 		
-		if (julia_size === small_julia_size)
+		if (current_julia_size === small_julia_size)
 		{
 			max_brightness_history.push(brightness_array[Math.round(brightness_array.length * .999) - 1]);
 			
@@ -134,7 +152,7 @@
 		
 		
 		
-		for (let i = 0; i < julia_size; i++)
+		for (let i = 0; i < current_julia_size; i++)
 		{		
 			image[i] = image[i].map(brightness => (brightness / max_brightness) * 255);
 		}
@@ -142,17 +160,17 @@
 		
 		
 		//Copy this array into the canvas like an image.
-		let img_data = ctx.getImageData(0, 0, julia_size, julia_size);
+		let img_data = ctx.getImageData(0, 0, current_julia_size, current_julia_size);
 		let data = img_data.data;
 		
-		for (let i = 0; i < julia_size; i++)
+		for (let i = 0; i < current_julia_size; i++)
 		{
-			for (let j = 0; j < julia_size; j++)
+			for (let j = 0; j < current_julia_size; j++)
 			{
 				let brightness = image[i][j];
 				
 				//The index in the array of rgba values
-				let index = (4 * i * julia_size) + (4 * j);
+				let index = (4 * i * current_julia_size) + (4 * j);
 				
 				data[index] = 0;
 				data[index + 1] = brightness;
@@ -162,6 +180,24 @@
 		}
 		
 		ctx.putImageData(img_data, 0, 0);
+		
+		
+		
+		if (draw_another_frame)
+		{
+			draw_another_frame = false;
+			
+			last_a = current_a;
+			last_b = current_b;
+			last_julia_size = current_julia_size;
+			
+			window.requestAnimationFrame(draw_julia_set);
+		}
+		
+		else
+		{
+			need_to_restart = true;
+		}
 	}
 
 
@@ -385,10 +421,21 @@
 				let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
 				let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
 				
-				let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-				let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+				current_a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+				current_b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+				current_julia_size = small_julia_size;
+				current_num_iterations = small_julia_iterations;
 				
-				draw_julia_set(a, b, small_julia_size, small_julia_iterations);
+				
+				
+				draw_another_frame = true;
+				
+				if (need_to_restart)
+				{
+					need_to_restart = false;
+					
+					window.requestAnimationFrame(draw_julia_set);
+				}
 			}
 		});
 		
@@ -400,15 +447,26 @@
 			let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
 			let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
 			
-			let a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-			let b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+			current_a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+			current_b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
+			current_julia_size = large_julia_size;
+			current_num_iterations = large_julia_iterations;
 			
-			draw_julia_set(a, b, large_julia_size, large_julia_iterations);
-			
-			document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
-			document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
+			document.querySelector("#a-input").value = Math.round(1000000 * current_a) / 1000000;
+			document.querySelector("#b-input").value = Math.round(1000000 * current_b) / 1000000;
 			
 			persist_image = true;
+			
+			
+			
+			draw_another_frame = true;
+			
+			if (need_to_restart)
+			{
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_julia_set);
+			}
 		});
 		
 		
@@ -438,10 +496,21 @@
 			last_touch_x = touch_x;
 			last_touch_y = touch_y;
 			
-			let a = ((touch_x / small_canvas_size) - .5) * 3 - .75;
-			let b = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * 3;
+			current_a = ((touch_x / small_canvas_size) - .5) * 3 - .75;
+			current_b = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * 3;
+			current_julia_size = small_julia_size;
+			current_num_iterations = small_julia_iterations;
 			
-			draw_julia_set(a, b, small_julia_size, small_julia_iterations);
+			
+			
+			draw_another_frame = true;
+			
+			if (need_to_restart)
+			{
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_julia_set);
+			}
 		}, false);
 		
 		
@@ -450,13 +519,24 @@
 		{
 			e.preventDefault();
 			
-			let a = ((last_touch_x / small_canvas_size) - .5) * 3 - .75;
-			let b = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * 3;
+			current_a = ((last_touch_x / small_canvas_size) - .5) * 3 - .75;
+			current_b = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * 3;
+			current_julia_size = large_julia_size;
+			current_num_iterations = large_julia_iterations;
 			
-			draw_julia_set(a, b, large_julia_size, large_julia_iterations);
+			document.querySelector("#a-input").value = Math.round(1000000 * current_a) / 1000000;
+			document.querySelector("#b-input").value = Math.round(1000000 * current_b) / 1000000;
 			
-			document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
-			document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
+			
+			
+			draw_another_frame = true;
+			
+			if (need_to_restart)
+			{
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_julia_set);
+			}
 		}, false);
 	}
 

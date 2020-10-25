@@ -5,14 +5,19 @@
 	
 	
 	let canvas_size = null;
+	let last_canvas_size = 0;
 	
 	let current_roots = [];
+	let last_roots = [];
 	
 	let num_iterations = 100;
 	
 	let ctx = document.querySelector("#newtons-method-plot").getContext("2d", {alpha: false});
 	
 	let web_worker = null;
+	
+	let draw_another_frame = false;
+	let need_to_restart = true;
 	
 	
 	
@@ -79,8 +84,32 @@
 	
 	
 	
-	function draw_newtons_method_plot(roots)
+	function draw_newtons_method_plot()
 	{
+		if (current_roots.length === last_roots.length && canvas_size === last_canvas_size)
+		{
+			let found_a_difference = false;
+			
+			for (let i = 0; i < current_roots.length; i++)
+			{
+				if (current_roots[i][0] !== last_roots[i][0] || current_roots[i][1] !== last_roots[i][1])
+				{
+					found_a_difference = true;
+					
+					break;
+				}
+			}
+			
+			if (!found_a_difference)
+			{
+				need_to_restart = true;
+				
+				return;
+			}
+		}
+		
+		
+		
 		document.querySelector("#newtons-method-plot").setAttribute("width", canvas_size);
 		document.querySelector("#newtons-method-plot").setAttribute("height", canvas_size);
 		
@@ -128,7 +157,7 @@
 				
 				for (let iteration = 0; iteration < num_iterations; iteration++)
 				{
-					let temp = complex_multiply(complex_polynomial(roots, z), complex_invert(complex_derivative(roots, z)));
+					let temp = complex_multiply(complex_polynomial(current_roots, z), complex_invert(complex_derivative(current_roots, z)));
 					
 					last_z[0] = z[0];
 					last_z[1] = z[1];
@@ -149,13 +178,13 @@
 					//If we're very close a root, stop.
 					let found_a_root = false;
 					
-					for (let k = 0; k < roots.length; k++)
+					for (let k = 0; k < current_roots.length; k++)
 					{
-						let d_0 = complex_magnitude([z[0] - roots[k][0], z[1] - roots[k][1]]);
+						let d_0 = complex_magnitude([z[0] - current_roots[k][0], z[1] - current_roots[k][1]]);
 						
 						if (d_0 <= threshold * threshold)
 						{
-							let d_1 = complex_magnitude([last_z[0] - roots[k][0], last_z[1] - roots[k][1]]);
+							let d_1 = complex_magnitude([last_z[0] - current_roots[k][0], last_z[1] - current_roots[k][1]]);
 							
 							//We tweak the iteration count by a little bit to produce smooth color.
 							let brightness_adjust = (Math.log(threshold) - .5 * Math.log(d_0)) / (.5 * Math.log(d_1) - .5 * Math.log(d_0));
@@ -193,6 +222,23 @@
 		
 		
 		draw_canvas();
+		
+		
+		
+		if (draw_another_frame)
+		{
+			draw_another_frame = false;
+			
+			last_roots = JSON.parse(JSON.stringify(current_roots));
+			last_canvas_size = canvas_size;
+			
+			window.requestAnimationFrame(draw_newtons_method_plot);
+		}
+		
+		else
+		{
+			need_to_restart = true;
+		}
 	}
 	
 	
@@ -773,6 +819,8 @@
 		}
 	}
 	
+	
+	
 	function drag_end(e)
 	{
 		if (active_marker !== -1)
@@ -781,7 +829,18 @@
 			
 			canvas_size = 500;
 			
-			draw_newtons_method_plot(current_roots);
+			
+			
+			draw_another_frame = true;
+			
+			if (need_to_restart)
+			{
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_newtons_method_plot);
+			}
+			
+			
 	
 			document.querySelector("#polynomial-label-1").textContent = "";	
 			document.querySelector("#polynomial-label-2").textContent = "";
@@ -794,6 +853,8 @@
 		
 		active_marker = -1;
 	}
+	
+	
 	
 	function drag_move(e)
 	{
@@ -855,7 +916,16 @@
 		
 		canvas_size = 100;
 		
-		draw_newtons_method_plot(current_roots);
+		
+
+		draw_another_frame = true;
+		
+		if (need_to_restart)
+		{
+			need_to_restart = false;
+			
+			window.requestAnimationFrame(draw_newtons_method_plot);
+		}
 	}
 	
 	

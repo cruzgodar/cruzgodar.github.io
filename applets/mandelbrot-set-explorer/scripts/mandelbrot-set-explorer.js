@@ -24,6 +24,12 @@
 	//The current parameters to pass to draw_mandelbrot_zoom, used to make high res images.
 	let current_center_x = 0;
 	let current_center_y = 0;
+	let current_mandelbrot_zoom_size = 0;
+	let current_num_iterations = 0;
+	
+	let last_center_x = 0;
+	let last_center_y = 0;
+	let last_mandelbrot_zoom_size = 0;
 
 	let old_zoom_level = 3;
 	let new_zoom_level = .6;
@@ -39,7 +45,11 @@
 	let temp_anchor_x = 0;
 	let temp_anchor_y = 0;
 
-
+	
+	
+	let draw_next_frame = false;
+	
+	let need_to_restart = true;
 
 	let image = [];
 
@@ -83,14 +93,23 @@
 
 
 
-	function draw_mandelbrot_zoom(center_x, center_y, mandelbrot_zoom_size, num_iters)
+	function draw_mandelbrot_zoom()
 	{
+		if (current_center_x === last_center_x && current_center_y === last_center_y && current_mandelbrot_zoom_size === last_mandelbrot_zoom_size)
+		{
+			need_to_restart = true;
+			
+			return;
+		}
+		
+		
+		
 		let x = 0, y = 0;
 		let z = 0;
 		
 		image = [];
 		
-		for (let i = 0; i < mandelbrot_zoom_size; i++)
+		for (let i = 0; i < current_mandelbrot_zoom_size; i++)
 		{
 			image[i] = [];
 		}
@@ -115,17 +134,17 @@
 		
 		let canvas_size = 0;		
 		
-		document.querySelector("#mandelbrot-zoom").setAttribute("width", mandelbrot_zoom_size);
-		document.querySelector("#mandelbrot-zoom").setAttribute("height", mandelbrot_zoom_size);
+		document.querySelector("#mandelbrot-zoom").setAttribute("width", current_mandelbrot_zoom_size);
+		document.querySelector("#mandelbrot-zoom").setAttribute("height", current_mandelbrot_zoom_size);
 		
 		ctx = document.querySelector("#mandelbrot-zoom").getContext("2d", {alpha: false});
 		
 		
 		
 		//Generate initial value map.
-		for (let i = 0; i < mandelbrot_zoom_size; i++)
+		for (let i = 0; i < current_mandelbrot_zoom_size; i++)
 		{
-			mandelbrot_zoom_row(i, center_x, center_y, mandelbrot_zoom_size, num_iters);
+			mandelbrot_zoom_row(i, current_center_x, current_center_y, current_mandelbrot_zoom_size, current_num_iterations);
 		}
 		
 		
@@ -135,7 +154,7 @@
 		
 		let max_brightness = 0;
 		
-		if (mandelbrot_zoom_size === small_mandelbrot_zoom_size)
+		if (current_mandelbrot_zoom_size === small_mandelbrot_zoom_size)
 		{
 			max_brightness_history.push(brightness_array[Math.round(brightness_array.length * .999) - 1]);
 			
@@ -161,7 +180,7 @@
 		
 		
 		
-		for (let i = 0; i < mandelbrot_zoom_size; i++)
+		for (let i = 0; i < current_mandelbrot_zoom_size; i++)
 		{		
 			image[i] = image[i].map(brightness => (brightness / max_brightness) * 255);
 		}
@@ -169,17 +188,17 @@
 		
 		
 		//Copy this array into the canvas like an image.
-		let img_data = ctx.getImageData(0, 0, mandelbrot_zoom_size, mandelbrot_zoom_size);
+		let img_data = ctx.getImageData(0, 0, current_mandelbrot_zoom_size, current_mandelbrot_zoom_size);
 		let data = img_data.data;
 		
-		for (let i = 0; i < mandelbrot_zoom_size; i++)
+		for (let i = 0; i < current_mandelbrot_zoom_size; i++)
 		{
-			for (let j = 0; j < mandelbrot_zoom_size; j++)
+			for (let j = 0; j < current_mandelbrot_zoom_size; j++)
 			{
 				let brightness = image[i][j];
 				
 				//The index in the array of rgba values
-				let index = (4 * i * mandelbrot_zoom_size) + (4 * j);
+				let index = (4 * i * current_mandelbrot_zoom_size) + (4 * j);
 				
 				data[index] = 0;
 				data[index + 1] = brightness;
@@ -192,7 +211,7 @@
 		
 		
 		
-		if (mandelbrot_zoom_size === large_mandelbrot_zoom_size)
+		if (current_mandelbrot_zoom_size === large_mandelbrot_zoom_size)
 		{
 			//Replace the old Mandelbrot set with the new zoomed one.
 			let width = document.querySelector("#mandelbrot-set").getAttribute("width");
@@ -201,8 +220,28 @@
 			
 			queue_variable_change = true;
 			
-			temp_anchor_x = center_x;
-			temp_anchor_y = center_y;
+			temp_anchor_x = current_center_x;
+			temp_anchor_y = current_center_y;
+			
+			draw_next_frame = false;
+		}
+		
+		
+		
+		if (draw_next_frame)
+		{
+			draw_next_frame = false;
+			
+			last_center_x = current_center_x;
+			last_center_x = current_center_x;
+			last_mandelbrot_zoom_size = current_mandelbrot_zoom_size;
+			
+			window.requestAnimationFrame(draw_mandelbrot_zoom);
+		}
+		
+		else
+		{
+			need_to_restart = true;
 		}
 	}
 
@@ -440,10 +479,21 @@
 				let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
 				let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
 				
-				let center_x = ((mouse_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
-				let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
+				current_center_x = ((mouse_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
+				current_center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
+				current_mandelbrot_zoom_size = small_mandelbrot_zoom_size;
+				current_num_iterations = small_mandelbrot_zoom_iterations;
 				
-				draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations);
+				
+				
+				draw_next_frame = true;
+				
+				if (need_to_restart)
+				{
+					need_to_restart = false;
+					
+					window.requestAnimationFrame(draw_mandelbrot_zoom);
+				}
 			}
 		});
 		
@@ -455,15 +505,23 @@
 			let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
 			let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
 			
-			let center_x = ((mouse_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
-			let center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
-			
-			draw_mandelbrot_zoom(center_x, center_y, large_mandelbrot_zoom_size, large_mandelbrot_zoom_iterations);
-			
-			current_center_x = center_x;
-			current_center_y = center_y;
+			current_center_x = ((mouse_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
+			current_center_y = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
+			current_mandelbrot_zoom_size = large_mandelbrot_zoom_size;
+			current_num_iterations = large_mandelbrot_zoom_iterations;
 			
 			persist_image = true;
+			
+			
+			
+			draw_next_frame = true;
+			
+			if (need_to_restart)
+			{
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_mandelbrot_zoom);
+			}
 		});
 		
 		
@@ -493,10 +551,21 @@
 			last_touch_x = touch_x;
 			last_touch_y = touch_y;
 			
-			let center_x = ((touch_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
-			let center_y = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
+			current_center_x = ((touch_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
+			current_center_y = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
+			current_mandelbrot_zoom_size = small_mandelbrot_zoom_size;
+			current_num_iterations = small_mandelbrot_zoom_iterations;
 			
-			draw_mandelbrot_zoom(center_x, center_y, small_mandelbrot_zoom_size, small_mandelbrot_zoom_iterations);
+			
+			
+			draw_next_frame = true;
+			
+			if (need_to_restart)
+			{
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_mandelbrot_zoom);
+			}
 		}, false);
 		
 		
@@ -505,13 +574,21 @@
 		{
 			e.preventDefault();
 			
-			let center_x = ((last_touch_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
-			let center_y = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
+			current_center_x = ((last_touch_x / small_canvas_size) - .5) * old_zoom_level + anchor_x;
+			current_center_y = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * old_zoom_level + anchor_y;
+			current_mandelbrot_zoom_size = large_mandelbrot_zoom_size;
+			current_num_iterations = large_mandelbrot_zoom_iterations;
 			
-			draw_mandelbrot_zoom(center_x, center_y, large_mandelbrot_zoom_size, large_mandelbrot_zoom_iterations);
 			
-			current_center_x = center_x;
-			current_center_y = center_y;
+			
+			draw_next_frame = true;
+			
+			if (need_to_restart)
+			{
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_mandelbrot_zoom);
+			}
 		}, false);
 	}
 
