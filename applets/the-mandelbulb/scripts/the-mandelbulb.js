@@ -30,8 +30,8 @@
 	
 	
 	
-	let theta = 3.3233;
-	let phi = 2.1272;
+	let theta = 4.6601;
+	let phi = 2.272;
 	
 	
 	
@@ -44,7 +44,7 @@
 	let right_vec = [];
 	let up_vec = [];
 	
-	let camera_pos = [3.0191, .5918, 1.9128];
+	let camera_pos = [.0828, 2.17, 1.8925];
 	
 	let power = 8;
 	let c = [0, 0, 0];
@@ -904,7 +904,7 @@
 	
 	function change_power()
 	{
-		if (currently_animating_parameters)
+		if (currently_animating_parameters || document.querySelector("#power-input").value === "")
 		{
 			return;
 		}
@@ -912,7 +912,7 @@
 		
 		
 		power_old = power;
-		power_delta = (parseFloat(document.querySelector("#power-input").value) || 8) - power_old;
+		power_delta = parseFloat(document.querySelector("#power-input").value) - power_old;
 		
 		if (power_old + power_delta < 1)
 		{
