@@ -182,7 +182,6 @@
 		const float light_brightness = 2.0;
 		
 		uniform int image_size;
-		uniform int small_image_size;
 		
 		
 		
@@ -381,7 +380,7 @@
 			
 			float normalized_scale = scale - min_scale_factor;
 			
-			float epsilon = 1.0 / (normalized_scale * normalized_scale * normalized_scale) * .00001;
+			float epsilon = 1.0 / (normalized_scale * normalized_scale) * .00001;
 			
 			float t = 0.0;
 			
@@ -394,14 +393,9 @@
 				float distance = distance_estimator(pos);
 				
 				//This lowers the detail far away, which makes everything run nice and fast.
-				if (image_size == small_image_size && distance / 150.0 > epsilon)
+				if (distance / float(image_size) * 3.0 > epsilon)
 				{
-					epsilon = distance / 150.0;
-				}
-				
-				else if (image_size != small_image_size && distance / 500.0 > epsilon)
-				{
-					epsilon = distance / 500.0;
+					epsilon = distance / float(image_size) * 3.0;
 				}
 				
 				
@@ -475,7 +469,6 @@
 		
 		
 		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
-		shader_program.small_image_size_uniform = gl.getUniformLocation(shader_program, "small_image_size");
 		
 		shader_program.camera_pos_uniform = gl.getUniformLocation(shader_program, "camera_pos");
 		shader_program.image_plane_center_pos_uniform = gl.getUniformLocation(shader_program, "image_plane_center_pos");
@@ -510,7 +503,6 @@
 		
 		
 		gl.viewport(0, 0, image_size, image_size);
-		gl.uniform1i(shader_program.small_image_size_uniform, image_size);
 		
 		
 		
