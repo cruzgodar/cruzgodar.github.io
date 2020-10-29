@@ -4,11 +4,6 @@
 	
 	
 	
-	let current_a = 0;
-	let current_b = 0;
-	let current_num_iterations = 0;
-	let current_julia_size = 0;
-	
 	let last_a = 0;
 	let last_b = 0;
 	let last_julia_size = 0;
@@ -22,6 +17,11 @@
 	let small_julia_iterations = 25;
 	let large_julia_iterations = 50;
 	let full_res_julia_iterations = 200;
+	
+	let current_a = 0;
+	let current_b = 0;
+	let current_num_iterations = small_julia_iterations;
+	let current_julia_size = small_julia_size;
 	
 	let max_brightness_history = [];
 
@@ -75,6 +75,8 @@
 	//As the user scrolls around the image, make tiny Julia set previews.
 	init_listeners_no_touch();
 	init_listeners_touch();
+	
+	change_resolution();
 
 
 
@@ -89,26 +91,10 @@
 			return;
 		}
 		
-		
-		
-		image = [];
-		
-		for (let i = 0; i < current_julia_size; i++)
+		if (current_julia_size !== last_julia_size)
 		{
-			image[i] = [];
+			change_resolution();
 		}
-		
-		
-		
-		let ctx = null;
-		let canvas_size = 0;
-		
-		
-		
-		document.querySelector("#julia-set").setAttribute("width", current_julia_size);
-		document.querySelector("#julia-set").setAttribute("height", current_julia_size);
-		
-		ctx = document.querySelector("#julia-set").getContext("2d", {alpha: false});
 		
 		
 		
@@ -183,13 +169,13 @@
 		
 		
 		
+		last_a = current_a;
+		last_b = current_b;
+		last_julia_size = current_julia_size;
+		
 		if (draw_another_frame)
 		{
 			draw_another_frame = false;
-			
-			last_a = current_a;
-			last_b = current_b;
-			last_julia_size = current_julia_size;
 			
 			window.requestAnimationFrame(draw_julia_set);
 		}
@@ -240,6 +226,25 @@
 			image[i][j] = brightness;
 			image[julia_size - i - 1][julia_size - j] = brightness;
 		}
+	}
+	
+	
+	
+	function change_resolution()
+	{
+		image = [];
+		
+		for (let i = 0; i < current_julia_size; i++)
+		{
+			image[i] = [];
+		}
+		
+		
+		
+		document.querySelector("#julia-set").setAttribute("width", current_julia_size);
+		document.querySelector("#julia-set").setAttribute("height", current_julia_size);
+		
+		ctx = document.querySelector("#julia-set").getContext("2d", {alpha: false});
 	}
 
 
@@ -457,6 +462,8 @@
 			
 			persist_image = true;
 			
+			change_resolution();
+			
 			
 			
 			draw_another_frame = true;
@@ -526,6 +533,8 @@
 			
 			document.querySelector("#a-input").value = Math.round(1000000 * current_a) / 1000000;
 			document.querySelector("#b-input").value = Math.round(1000000 * current_b) / 1000000;
+			
+			change_resolution();
 			
 			
 			

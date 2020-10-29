@@ -88,6 +88,8 @@
 	//As the user scrolls around the image, make tiny Julia set previews.
 	init_listeners_no_touch();
 	init_listeners_touch();
+	
+	change_resolution();
 
 
 
@@ -102,21 +104,20 @@
 			return;
 		}
 		
-		
-		
-		let x = 0, y = 0;
-		let z = 0;
-		
-		image = [];
-		
-		for (let i = 0; i < current_mandelbrot_zoom_size; i++)
+		if (current_mandelbrot_zoom_size !== last_mandelbrot_zoom_size)
 		{
-			image[i] = [];
+			change_resolution();
 		}
 		
 		
 		
-		if (queue_variable_change === true)
+		let x = 0;
+		let y = 0;
+		let z = 0;
+		
+		
+		
+		if (queue_variable_change)
 		{
 			old_zoom_level /= 5;
 			new_zoom_level /= 5;
@@ -129,15 +130,6 @@
 			
 			queue_variable_change = false;
 		}
-		
-		
-		
-		let canvas_size = 0;		
-		
-		document.querySelector("#mandelbrot-zoom").setAttribute("width", current_mandelbrot_zoom_size);
-		document.querySelector("#mandelbrot-zoom").setAttribute("height", current_mandelbrot_zoom_size);
-		
-		ctx = document.querySelector("#mandelbrot-zoom").getContext("2d", {alpha: false});
 		
 		
 		
@@ -228,13 +220,13 @@
 		
 		
 		
+		last_center_x = current_center_x;
+		last_center_x = current_center_x;
+		last_mandelbrot_zoom_size = current_mandelbrot_zoom_size;
+		
 		if (draw_next_frame)
 		{
 			draw_next_frame = false;
-			
-			last_center_x = current_center_x;
-			last_center_x = current_center_x;
-			last_mandelbrot_zoom_size = current_mandelbrot_zoom_size;
 			
 			window.requestAnimationFrame(draw_mandelbrot_zoom);
 		}
@@ -243,6 +235,25 @@
 		{
 			need_to_restart = true;
 		}
+	}
+	
+	
+	
+	function change_resolution()
+	{
+		image = [];
+		
+		for (let i = 0; i < current_mandelbrot_zoom_size; i++)
+		{
+			image[i] = [];
+		}
+		
+		
+		
+		document.querySelector("#mandelbrot-zoom").setAttribute("width", current_mandelbrot_zoom_size);
+		document.querySelector("#mandelbrot-zoom").setAttribute("height", current_mandelbrot_zoom_size);
+		
+		ctx = document.querySelector("#mandelbrot-zoom").getContext("2d", {alpha: false});
 	}
 
 

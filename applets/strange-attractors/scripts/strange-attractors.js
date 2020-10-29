@@ -8,7 +8,9 @@
 	
 	let web_worker = null;
 	
+	let image = [];
 	
+	let brightness_scale = 10;
 	
 	
 	
@@ -47,6 +49,20 @@
 		
 		
 		
+		image = [];
+		
+		for (let i = 0; i < grid_size; i++)
+		{
+			image[i] = [];
+			
+			for (let j = 0; j < grid_size; j++)
+			{
+				image[i][j] = 0;
+			}
+		}
+		
+		
+		
 		document.querySelector("#output-canvas").setAttribute("width", grid_size);
 		document.querySelector("#output-canvas").setAttribute("height", grid_size);
 		
@@ -78,10 +94,16 @@
 			
 			let rgb = e.data[1];
 			
-			ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			
 			
 			for (let i = 0; i < pixels.length; i++)
 			{
+				image[pixels[i][0]][pixels[i][1]]++;
+				
+				let brightness_adjust = image[pixels[i][0]][pixels[i][1]] / brightness_scale;
+				
+				ctx.fillStyle = `rgb(${rgb[0] * brightness_adjust}, ${rgb[1] * brightness_adjust}, ${rgb[2] * brightness_adjust})`;
+						
 				ctx.fillRect(pixels[i][1], pixels[i][0], 1, 1);
 			}
 		}

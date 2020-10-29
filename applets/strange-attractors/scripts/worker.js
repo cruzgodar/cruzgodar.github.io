@@ -33,7 +33,7 @@ const dt = .0005;
 //Since the attractor is centered at a high z-value, we need to shift the viewport.
 const min_z = 0;
 
-let steps_per_color = 1000;
+let steps_per_color = 5000;
 let num_colors = null;
 
 let current_x = 1;
@@ -55,11 +55,11 @@ function draw_lorenz_attractor()
 		
 		let color = 0;
 		
-		num_colors = grid_size / 5;
+		num_colors = grid_size;
 		
 		
 		
-		while (color < num_colors)
+		while (steps_per_color > 0)
 		{
 			if (step === steps_per_color)
 			{
@@ -70,6 +70,8 @@ function draw_lorenz_attractor()
 				color++;
 				
 				step = 0;
+				
+				steps_per_color -= 2*Math.floor(5000 / num_colors);
 				
 				if (!maximum_speed)
 				{
