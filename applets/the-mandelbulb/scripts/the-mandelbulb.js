@@ -896,7 +896,7 @@
 	
 	function change_power()
 	{
-		if (currently_animating_parameters || document.querySelector("#power-input").value === "")
+		if (document.querySelector("#power-input").value === "")
 		{
 			return;
 		}
