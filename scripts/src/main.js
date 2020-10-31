@@ -117,6 +117,8 @@ function handle_touch_event(e)
 	last_touch_x = e.touches[0].clientX;
 	last_touch_y = e.touches[0].clientY;
 	
+	document.activeElement.blur();
+	
 	if (currently_touch_device === false)
 	{
 		remove_hover_events();
