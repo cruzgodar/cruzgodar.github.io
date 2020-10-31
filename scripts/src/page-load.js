@@ -22,10 +22,6 @@ function on_page_load()
 	
 	
 	
-	insert_images();
-	
-	
-	
 	if (page_settings["no_footer"] === false)
 	{
 		insert_footer();
@@ -51,6 +47,8 @@ function on_page_load()
 	fade_in();
 	
 	
+	
+	insert_images().then(aos_resize);
 	
 	fetch_other_page_banners_in_background();
 	
@@ -342,6 +340,8 @@ function set_up_aos()
 
 function aos_resize()
 {
+	console.log("Updated AOS anchors");
+	
 	for (let i = 0; i < aos_elements.length; i++)
 	{
 		aos_anchor_positions[i] = aos_elements[i][0][0].getBoundingClientRect().top + window.scrollY;

@@ -8,59 +8,64 @@
 
 function insert_images()
 {
-	currently_fetching = true;
-	
-	
-	
-	let images = document.querySelectorAll(".check-webp");
-	
-	let image_type = supports_webp ? "webp" : "non-webp";
-	
-	let num_images_fetched = 0;
-	
-	
-	
-	fetch(parent_folder + "images.json")
-	
-	.then(response => response.json())
-	
-	.then(function(image_data)
+	return new Promise(function(resolve, reject)
 	{
-		for (let i = 0; i < images.length; i++)
+		currently_fetching = true;
+		
+		
+		
+		let images = document.querySelectorAll(".check-webp");
+		
+		let image_type = supports_webp ? "webp" : "non-webp";
+		
+		let num_images_fetched = 0;
+		
+		
+		
+		fetch(parent_folder + "images.json")
+		
+		.then(response => response.json())
+		
+		.then(function(image_data)
 		{
-			let src = image_data[images[i].getAttribute("id")][image_type];
-			
-			if (src.slice(0, 5) === "https")
+			for (let i = 0; i < images.length; i++)
 			{
-				images[i].setAttribute("src", src);
-			}
-			
-			else
-			{
-				images[i].setAttribute("src", parent_folder + src);
-			}
-			
-			
-			
-			images[i].onload = function()
-			{
-				num_images_fetched++;
+				let src = image_data[images[i].getAttribute("id")][image_type];
 				
-				if (num_images_fetched === images.length)
+				if (src.slice(0, 5) === "https")
 				{
-					console.log("Fetched " + images.length + " images on the page.");
-					
-					currently_fetching = false;
-					
-					fetch_item_from_queue();
+					images[i].setAttribute("src", src);
 				}
-			};
-		}
-	})
-	
-	.catch(function(error)
-	{
-		console.error("Could not load images.json");
+				
+				else
+				{
+					images[i].setAttribute("src", parent_folder + src);
+				}
+				
+				
+				
+				images[i].onload = function()
+				{
+					num_images_fetched++;
+					
+					if (num_images_fetched === images.length)
+					{
+						console.log("Fetched " + images.length + " images on the page.");
+						
+						currently_fetching = false;
+						
+						fetch_item_from_queue();
+						
+						resolve();
+					}
+				};
+			}
+		})
+		
+		.catch(function(error)
+		{
+			console.error("Could not load images.json");
+		});
 	});
 }
 
