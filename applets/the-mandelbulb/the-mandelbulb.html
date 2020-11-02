@@ -40,7 +40,7 @@
 		
 		<div data-aos="fade-up">
 			<p class="body-text">
-				The typical Mandelbulb uses a power-8 formula, but any power larger than 1 works too. And of course, just like the Mandelbrot set has its <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julias</a>, every point in space gives rise to a Juliabulb. Use the button to see the one corresponding to your current location.
+				The typical Mandelbulb uses a power-8 formula, but any power larger than 1 works too. Like the <a href="/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html" onclick="redirect('/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html')">Kaleidoscopic IFS fractals</a>, we can introduce a rotation into the system for fun, and of course, just like the Mandelbrot set has its <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julias</a>, every point in space gives rise to a Juliabulb. The button shows the one corresponding to your current location.
 			</p>
 		</div>
 		
@@ -54,7 +54,7 @@
 		
 		<div style="height: 10vh"></div>
 		
-		<div class="text-box-row">
+		<div class="text-box-row-2">
 			<div class="text-box-container" data-aos="fade-up">
 				<input id="dim-input" class="text-box" type="text" value="500" tabindex="1">
 				<label for="dim-input">
@@ -70,17 +70,50 @@
 			</div>
 		</div>
 		
+		<div style="height: 5vh"></div>
+		
+		<div class="text-box-row-3">
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="rotation-angle-x-input" class="text-box" type="text" value="0" tabindex="1">
+				<label for="rotation-angle-x-input">
+					<p class="body-text">\(\theta_x\)</p>
+				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="rotation-angle-y-input" class="text-box" type="text" value="0" tabindex="1">
+				<label for="rotation-angle-y-input">
+					<p class="body-text">\(\theta_y\)</p>
+				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="rotation-angle-z-input" class="text-box" type="text" value="0" tabindex="1">
+				<label for="rotation-angle-z-input">
+					<p class="body-text">\(\theta_z\)</p>
+				</label>
+			</div>
+		</div>
+		
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1100" tabindex="1">
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1400" tabindex="1">
+				<button class="text-button" type="button" id="randomize-parameters-button" tabindex="-1">Randomize Rotation</button>
+			</div>
+		</div>
+		
+		<div style="height: 5vh"></div>
+		
+		<div class="center-content">
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1900" tabindex="1">
 				<button class="text-button" type="button" id="switch-bulb-button" tabindex="-1">Switch to Juliabulb</button>
 			</div>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="1600">
+		<div class="center-content" data-aos="fade-in" data-aos-delay="2400">
 			<canvas id="output-canvas"></canvas>
 		</div>
 	</section>

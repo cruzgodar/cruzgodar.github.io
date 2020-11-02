@@ -48,12 +48,25 @@
 	
 	let power = 8;
 	let c = [0, 0, 0];
+	
+	let rotation_angle_x = 0;
+	let rotation_angle_y = 0;
+	let rotation_angle_z = 0;
+	
 	let julia_proportion = 0;
 	
-	let power_old = 0;
+	let power_old = 8;
 	let power_delta = 0;
+	
 	let julia_proportion_old = 0;
 	let julia_proportion_delta = 0;
+	
+	let rotation_angle_x_old = 0;
+	let rotation_angle_y_old = 0;
+	let rotation_angle_z_old = 0;
+	let rotation_angle_x_delta = 0;
+	let rotation_angle_y_delta = 0;
+	let rotation_angle_z_delta = 0;
 	
 	let focal_length = 2;
 	
@@ -75,7 +88,15 @@
 	
 	
 	
-	document.querySelector("#power-input").addEventListener("input", change_power);
+	let elements = document.querySelectorAll("#power-input, #rotation-angle-x-input, #rotation-angle-y-input, #rotation-angle-z-input");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].addEventListener("input", update_parameters);
+	}
+	
+	document.querySelector("#randomize-parameters-button").addEventListener("click", randomize_parameters);
+	
 	document.querySelector("#switch-bulb-button").addEventListener("click", switch_bulb);
 	
 	
@@ -136,6 +157,28 @@
 		
 		
 		
+		uniform float rotation_angle_x;
+		uniform float rotation_angle_y;
+		uniform float rotation_angle_z;
+		
+		
+		
+		mat3 rotation_matrix = mat3(
+			cos(rotation_angle_z), sin(rotation_angle_z), 0.0,
+			-sin(rotation_angle_z), cos(rotation_angle_z), 0.0,
+			0.0, 0.0, 1.0
+		) * mat3(
+			cos(rotation_angle_y), 0.0, sin(rotation_angle_y),
+			0.0, 1.0, 0.0,
+			-sin(rotation_angle_y), 0.0, cos(rotation_angle_y)
+		) * mat3(
+			1.0, 0.0, 0.0,
+			0.0, cos(rotation_angle_x), sin(rotation_angle_x),
+			0.0, -sin(rotation_angle_x), cos(rotation_angle_x)
+		);
+		
+		
+		
 		float distance_estimator(vec3 pos)
 		{
 			vec3 z = pos;
@@ -168,6 +211,8 @@
 				z = pow(r, power) * vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
 				
 				z += (1.0 - julia_proportion) * pos + julia_proportion * c;
+				
+				z = rotation_matrix * z;
 				
 				color = (1.0 - color_scale) * color + color_scale * abs(normalize(z));
 				
@@ -335,6 +380,11 @@
 		
 		shader_program.power_uniform = gl.getUniformLocation(shader_program, "power");
 		shader_program.c_uniform = gl.getUniformLocation(shader_program, "c");
+		
+		shader_program.rotation_angle_x_uniform = gl.getUniformLocation(shader_program, "rotation_angle_x");
+		shader_program.rotation_angle_y_uniform = gl.getUniformLocation(shader_program, "rotation_angle_y");
+		shader_program.rotation_angle_z_uniform = gl.getUniformLocation(shader_program, "rotation_angle_z");
+		
 		shader_program.julia_proportion_uniform = gl.getUniformLocation(shader_program, "julia_proportion");
 		
 		
@@ -383,6 +433,11 @@
 		
 		gl.uniform1f(shader_program.power_uniform, power);
 		gl.uniform3fv(shader_program.c_uniform, c);
+		
+		gl.uniform1f(shader_program.rotation_angle_x_uniform, rotation_angle_x);
+		gl.uniform1f(shader_program.rotation_angle_y_uniform, rotation_angle_y);
+		gl.uniform1f(shader_program.rotation_angle_z_uniform, rotation_angle_z);
+		
 		gl.uniform1f(shader_program.julia_proportion_uniform, julia_proportion);
 		
 		
@@ -525,6 +580,24 @@
 			mutable_z[0] = scaled_r * Math.sin(theta) * Math.cos(phi) + ((1 - julia_proportion) * x + julia_proportion * c[0]);
 			mutable_z[1] = scaled_r * Math.sin(theta) * Math.sin(phi) + ((1 - julia_proportion) * y + julia_proportion * c[1]);
 			mutable_z[2] = scaled_r * Math.cos(theta) + ((1 - julia_proportion) * z + julia_proportion * c[2]);
+			
+			
+			
+			//Apply the rotation matrix.
+			
+			let temp_x = mutable_z[0];
+			let temp_y = mutable_z[1];
+			let temp_z = mutable_z[2];
+			
+			let mat_z = [[Math.cos(rotation_angle_z), -Math.sin(rotation_angle_z), 0], [Math.sin(rotation_angle_z), Math.cos(rotation_angle_z), 0], [0, 0, 1]];
+			let mat_y = [[Math.cos(rotation_angle_y), 0, -Math.sin(rotation_angle_y)], [0, 1, 0],[Math.sin(rotation_angle_y), 0, Math.cos(rotation_angle_y)]];
+			let mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x), -Math.sin(rotation_angle_x)], [0, Math.sin(rotation_angle_x), Math.cos(rotation_angle_x)]];
+			
+			let mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
+			
+			mutable_z[0] = mat_total[0][0] * temp_x + mat_total[0][1] * temp_y + mat_total[0][2] * temp_z;
+			mutable_z[1] = mat_total[1][0] * temp_x + mat_total[1][1] * temp_y + mat_total[1][2] * temp_z;
+			mutable_z[2] = mat_total[2][0] * temp_x + mat_total[2][1] * temp_y + mat_total[2][2] * temp_z;
 		}
 		
 		return 0.5 * Math.log(r) * r / dr;
@@ -894,15 +967,8 @@
 	
 	
 	
-	function change_power()
+	function update_parameters()
 	{
-		if (document.querySelector("#power-input").value === "")
-		{
-			return;
-		}
-		
-		
-		
 		power_old = power;
 		power_delta = parseFloat(document.querySelector("#power-input").value) - power_old;
 		
@@ -910,6 +976,18 @@
 		{
 			power_delta = 0;
 		}
+		
+		
+		
+		rotation_angle_x_old = rotation_angle_x;
+		rotation_angle_y_old = rotation_angle_y;
+		rotation_angle_z_old = rotation_angle_z;
+		
+		rotation_angle_x_delta = parseFloat(document.querySelector("#rotation-angle-x-input").value) - rotation_angle_x_old;
+		rotation_angle_y_delta = parseFloat(document.querySelector("#rotation-angle-y-input").value) - rotation_angle_y_old;
+		rotation_angle_z_delta = parseFloat(document.querySelector("#rotation-angle-z-input").value) - rotation_angle_z_old;
+		
+		
 		
 		julia_proportion_old = julia_proportion;
 		julia_proportion_delta = 0;
@@ -960,6 +1038,50 @@
 		power_old = power;
 		power_delta = 0;
 		
+		rotation_angle_x_old = rotation_angle_x;
+		rotation_angle_y_old = rotation_angle_y;
+		rotation_angle_z_old = rotation_angle_z;
+		
+		rotation_angle_x_delta = 0;
+		rotation_angle_y_delta = 0;
+		rotation_angle_z_delta = 0;
+		
+		animate_parameter_change();
+	}
+	
+	
+	
+	function randomize_parameters(animate_change = true)
+	{
+		if (currently_animating_parameters)
+		{
+			return;
+		}
+		
+		
+		
+		rotation_angle_x_old = rotation_angle_x;
+		rotation_angle_y_old = rotation_angle_y;
+		rotation_angle_z_old = rotation_angle_z;
+		
+		rotation_angle_x_delta = Math.random()*2 - 1 - rotation_angle_x_old;
+		rotation_angle_y_delta = Math.random()*2 - 1 - rotation_angle_y_old;
+		rotation_angle_z_delta = Math.random()*2 - 1 - rotation_angle_z_old;
+		
+		document.querySelector("#rotation-angle-x-input").value = Math.round((rotation_angle_x_old + rotation_angle_x_delta) * 1000000) / 1000000;
+		document.querySelector("#rotation-angle-y-input").value = Math.round((rotation_angle_y_old + rotation_angle_y_delta) * 1000000) / 1000000;
+		document.querySelector("#rotation-angle-z-input").value = Math.round((rotation_angle_z_old + rotation_angle_z_delta) * 1000000) / 1000000;
+		
+		
+		
+		julia_proportion_old = julia_proportion;
+		julia_proportion_delta = 0;
+		
+		power_old = power;
+		power_delta = 0;
+		
+		
+		
 		animate_parameter_change();
 	}
 	
@@ -982,6 +1104,10 @@
 		
 		power = power_old + power_delta * t;
 		julia_proportion = julia_proportion_old + julia_proportion_delta * t;
+		
+		rotation_angle_x = rotation_angle_x_old + rotation_angle_x_delta * t;
+		rotation_angle_y = rotation_angle_y_old + rotation_angle_y_delta * t;
+		rotation_angle_z = rotation_angle_z_old + rotation_angle_z_delta * t;
 		
 		parameter_animation_frame++;
 		
