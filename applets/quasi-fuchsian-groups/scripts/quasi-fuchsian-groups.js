@@ -4,19 +4,23 @@
 	
 	
 	
-	let canvas_size = 500;
+	let canvas_size = 200;
 	
-	let box_size = 50;
+	let box_size = 5;
 	
 	let ctx = document.querySelector("#quasi-fuchsian-groups-plot").getContext("2d", {alpha: false});
+	
+	let brightness = [];
+	let hue = [];
 	
 	let web_worker = null;
 	
 	
 	
-	let coefficients = [[[1, 0], [0, 1], [1, 0], [1, 0]], [[0, 1], [0, 1], [1, 0], [0, 1]]];
+	let coefficients = [[[0, 0], [0, 0], [0, 0], [0, 0]], [[0, 0], [0, 0], [0, 0], [0, 0]]];
 	
 	let coefficient_markers = [];
+	let coefficient_points = [];
 	
 	let active_marker = -1;
 	
@@ -26,15 +30,15 @@
 	let coefficient_marker_radius = 17.5;
 	
 	
+
+	let num_iterations = 100;
+
+	let x = 0;
+	let y = 0;
 	
-	document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_size);
-	document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_size);
-	
-	ctx.fillStyle = "rgb(0, 0, 0)";
-	ctx.fillRect(0, 0, canvas_size, canvas_size);
 	
 	
-	/*
+	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
 	
@@ -52,37 +56,6 @@
 	temporary_handlers["resize"].push(quasi_fuchsian_groups_resize);
 	
 	setTimeout(quasi_fuchsian_groups_resize, 1000);
-	*/
-	
-	
-	
-	for (let i = 0; i < 2; i++)
-	{
-		for (let j = 0; j < 4; j++)
-		{
-			for (let k = 0; k < 2; k++)
-			{
-				coefficients[i][j][k] = Math.random() - .5;	
-			}
-		}
-	}
-	
-	
-	
-	//This bizarre ordering lets us do 3 - index to reference an inverse.
-	for (let i = 1; i >= 0; i++)
-	{
-		let ax = coefficients[i][0][0];
-		let ay = coefficients[i][0][1];
-		let bx = coefficients[i][1][0];
-		let by = coefficients[i][1][1];
-		let cx = coefficients[i][2][0];
-		let cy = coefficients[i][2][1];
-		let dx = coefficients[i][3][0];
-		let dy = coefficients[i][3][1];
-		
-		coefficients.push([[dx, dy], [-bx, -by], [-cx, -cy], [ax, ay]]);
-	}
 	
 	
 	
@@ -90,19 +63,147 @@
 	
 	function draw_quasi_fuchsian_group()
 	{
+		document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_size);
+		document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_size);
+		
 		ctx.fillStyle = "rgb(0, 0, 0)";
 		ctx.fillRect(0, 0, canvas_size, canvas_size);
 		
-		ctx.fillStyle = "rgb(255, 255, 255)";
 		
 		
+		brightness = [];
+		hue = [];
+		
+		for (let i = 0; i < canvas_size; i++)
+		{
+			brightness[i] = [];
+			hue[i] = [];
+			
+			for (let j = 0; j < canvas_size; j++)
+			{
+				brightness[i][j] = 0;
+				hue[i][j] = 0;
+			}
+		}
+		
+		
+		
+		//This bizarre ordering lets us do 3 - index to reference an inverse.
+		for (let i = 1; i >= 0; i--)
+		{
+			let ax = coefficients[i][0][0];
+			let ay = coefficients[i][0][1];
+			let bx = coefficients[i][1][0];
+			let by = coefficients[i][1][1];
+			let cx = coefficients[i][2][0];
+			let cy = coefficients[i][2][1];
+			let dx = coefficients[i][3][0];
+			let dy = coefficients[i][3][1];
+			
+			coefficients.push([[dx, dy], [-bx, -by], [-cx, -cy], [ax, ay]]);
+		}
+		
+		
+		
+		for (let i = 0; i < canvas_size; i++)
+		{
+			for (let j = 0; j < canvas_size; j++)
+			{
+				x = (i / canvas_size * box_size) - box_size / 2;
+				y = box_size / 2 - (j / canvas_size * box_size);
+				
+				hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
+				
+				
+				
+				for (let iteration = 0; iteration < num_iterations; iteration++)
+				{
+					let transformation_index = Math.floor(Math.random() * 4);
+					
+					apply_transformation(transformation_index);
+					
+					
+					
+					let col = Math.floor((x + box_size / 2) / box_size * canvas_size);
+					let row = Math.floor((-y + box_size / 2) / box_size * canvas_size);
+					
+					if (row >= 0 && row < canvas_size && col >= 0 && col < canvas_size)
+					{
+						brightness[row][col]++;
+					}
+					
+					else
+					{
+						break;
+					}
+				}
+			}
+		}
+		
+		
+		
+		let brightness_sorted = brightness.flat().sort(function(a, b) {return a - b});
+		
+		let	max_brightness = Math.sqrt(brightness_sorted[Math.round(brightness_sorted.length * .9999) - 1]);
+		
+		
+		
+		let img_data = ctx.getImageData(0, 0, canvas_size, canvas_size);
+		let data = img_data.data;
+		
+		for (let i = 0; i < canvas_size; i++)
+		{
+			for (let j = 0; j < canvas_size; j++)
+			{
+				let index = (4 * i * canvas_size) + (4 * j);
+				
+				let rgb = HSVtoRGB(hue[i][j], 1, Math.min(Math.sqrt(brightness[i][j]) / max_brightness, 1)); 
+				
+				data[index] = rgb[0];
+				data[index + 1] = rgb[1];
+				data[index + 2] = rgb[2];
+				data[index + 3] = 255;
+			}
+		}
+		
+		ctx.putImageData(img_data, 0, 0);
 	}
 	
-	draw_quasi_fuchsian_group();
 	
 	
 	
-	/*
+	
+	function apply_transformation(index)
+	{
+		let ax = coefficients[index][0][0];
+		let ay = coefficients[index][0][1];
+		let bx = coefficients[index][1][0];
+		let by = coefficients[index][1][1];
+		let cx = coefficients[index][2][0];
+		let cy = coefficients[index][2][1];
+		let dx = coefficients[index][3][0];
+		let dy = coefficients[index][3][1];
+		
+		
+		
+		let num_x = ax*x - ay*y + bx;
+		let num_y = ax*y + ay*x + by;
+		
+		let den_x = cx*x - cy*y + dx;
+		let den_y = cx*y + cy*x + dy;
+		
+		let new_x = num_x*den_x + num_y*den_y;
+		let new_y = num_y*den_x - num_x*den_y;
+		
+		let magnitude = den_x*den_x + den_y*den_y;
+		
+		x = new_x / magnitude;
+		y = new_y / magnitude;
+	}
+	
+	
+	
+	
 	function init_listeners()
 	{
 		document.documentElement.addEventListener("touchstart", drag_start, false);
@@ -125,39 +226,34 @@
 	
 	
 	
-	function init_branch_markers()
+	function init_coefficient_markers()
 	{
-		root[0] = Math.floor(canvas_size * 9/10);
-		root[1] = Math.floor(canvas_size / 2);
-		
-		for (let i = 0; i < 2; i++)
+		for (let i = 0; i < 8; i++)
 		{
 			let element = document.createElement("div");
-			element.classList.add("branch-marker");
-			element.id = `branch-marker-${i}`;
+			element.classList.add("coefficient-marker");
+			element.id = `coefficient-marker-${i}`;
 			
-			document.querySelector("#branch-selector").appendChild(element);
+			document.querySelector("#coefficient-selector").appendChild(element);
 			
-			branch_markers.push(element);
-			
-			branch_points.push([0, 0]);
+			coefficient_markers.push(element);
 		}
 		
-		branch_points[0][0] = Math.floor(canvas_size * 2/3);
-		branch_points[0][1] = Math.floor(canvas_size * 3/7);
 		
-		branch_points[1][0] = Math.floor(canvas_size * 2/3);
-		branch_points[1][1] = Math.floor(canvas_size * 4/7);
 		
-		for (let i = 0; i < 2; i++)
+		for (let i = 0; i < 8; i++)
 		{
-			let row = (branch_points[i][0] / canvas_size) * branch_selector_height;
-			let col = (branch_points[i][1] / canvas_size) * branch_selector_width;
+			coefficient_points.push([Math.floor(canvas_size / 2), Math.floor(canvas_size / 2)]);
 			
-			branch_markers[i].style.transform = `translate3d(${col - branch_marker_radius}px, ${row - branch_marker_radius}px, 0)`;
+			let row = (coefficient_points[i][0] / canvas_size) * coefficient_selector_height;
+			let col = (coefficient_points[i][1] / canvas_size) * coefficient_selector_width;
+			
+			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
 		}
 		
-		draw_binary_tree();
+		
+		
+		draw_quasi_fuchsian_group();
 	}
 	
 	
@@ -167,57 +263,34 @@
 		active_marker = -1;
 		
 		//Figure out which marker, if any, this is referencing.
-		for (let i = 0; i < 2; i++)
+		for (let i = 0; i < 8; i++)
 		{
-			if (e.target.id === `branch-marker-${i}`)
+			if (e.target.id === `coefficient-marker-${i}`)
 			{
 				e.preventDefault();
 				
 				active_marker = i;
-				
-				try {web_worker.terminate();}
-				catch(ex) {}
-				
-				break;
 			}
 		}
 	}
+	
+	
 	
 	function drag_end(e)
 	{
 		if (active_marker !== -1)
 		{
-			document.body.style.WebkitUserSelect = "";
+			canvas_size = 500;
 			
-			set_element_styles(".branch-marker", "opacity", 0);
+			draw_quasi_fuchsian_group();
 			
-			
-			
-			let step = 0;
-			
-			let refresh_id = setInterval(function()
-			{
-				ctx.fillStyle = `rgba(0, 0, 0, ${step / 37})`;
-				ctx.fillRect(0, 0, canvas_size, canvas_size);
-				
-				step++;
-			}, 8);
-			
-			
-			
-			setTimeout(function()
-			{
-				clearInterval(refresh_id);
-				
-				ctx.fillStyle = "rgb(0, 0, 0)";
-				ctx.fillRect(0, 0, canvas_size, canvas_size);
-				
-				request_animated_binary_tree();
-			}, 300);
+			canvas_size = 200;
 		}
 		
 		active_marker = -1;
 	}
+	
+	
 	
 	function drag_move(e)
 	{
@@ -231,7 +304,7 @@
 		let row = null;
 		let col = null;
 		
-		let rect = document.querySelector("#branch-selector").getBoundingClientRect();
+		let rect = document.querySelector("#coefficient-selector").getBoundingClientRect();
 		
 		if (e.type === "touchmove")
 		{
@@ -247,34 +320,34 @@
 		
 		
 		
-		if (row < branch_marker_radius)
+		if (row < coefficient_marker_radius)
 		{
-			row = branch_marker_radius;
+			row = coefficient_marker_radius;
 		}
 		
-		if (row > branch_selector_height - branch_marker_radius)
+		if (row > coefficient_selector_height - coefficient_marker_radius)
 		{
-			row = branch_selector_height - branch_marker_radius;
+			row = coefficient_selector_height - coefficient_marker_radius;
 		}
 		
-		if (col < branch_marker_radius)
+		if (col < coefficient_marker_radius)
 		{
-			col = branch_marker_radius;
+			col = coefficient_marker_radius;
 		}
 		
-		if (col > branch_selector_width - branch_marker_radius)
+		if (col > coefficient_selector_width - coefficient_marker_radius)
 		{
-			col = branch_selector_width - branch_marker_radius;
+			col = coefficient_selector_width - coefficient_marker_radius;
 		}
 		
 		
 		
-		branch_markers[active_marker].style.transform = `translate3d(${col - branch_marker_radius}px, ${row - branch_marker_radius}px, 0)`;
+		coefficient_markers[active_marker].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
 		
-		branch_points[active_marker][0] = (row / branch_selector_height) * canvas_size;
-		branch_points[active_marker][1] = (col / branch_selector_width) * canvas_size;
+		coefficients[Math.floor(active_marker / 4)][active_marker % 4][0] = box_size / 2 - (row / coefficient_selector_height * box_size);
+		coefficients[Math.floor(active_marker / 4)][active_marker % 4][1] = box_size / 2 + (col / coefficient_selector_width * box_size);
 		
-		draw_binary_tree();
+		draw_quasi_fuchsian_group();
 	}
 	
 	
@@ -302,15 +375,14 @@
 		
 		let rect = document.querySelector("#coefficient-selector").getBoundingClientRect();
 		
-		for (let i = 0; i < 4; i++)
+		for (let i = 0; i < 8; i++)
 		{
-			let row = Math.floor(coefficient_selector_height * coefficients[i][0] / canvas_size);
-			let col = Math.floor(coefficient_selector_width * coefficients[i][1] / canvas_size);
+			let row = Math.floor((box_size / 2 - coefficients[Math.floor(i / 4)][i % 4][0]) / box_size * coefficient_selector_height);
+			let col = Math.floor((box_size / 2 + coefficients[Math.floor(i / 4)][i % 4][1]) / box_size * coefficient_selector_width);
 			
 			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
 		}
 	}
-	*/
 
 
 
@@ -341,5 +413,30 @@
 				outline: none;
 			}
 		`, true);
+	}
+	
+	
+	
+	function HSVtoRGB(h, s, v)
+	{
+		let r, g, b, i, f, p, q, t;
+		
+		i = Math.floor(h * 6);
+		f = h * 6 - i;
+		p = v * (1 - s);
+		q = v * (1 - f * s);
+		t = v * (1 - (1 - f) * s);
+		
+		switch (i % 6)
+		{
+			case 0: r = v, g = t, b = p; break;
+			case 1: r = q, g = v, b = p; break;
+			case 2: r = p, g = v, b = t; break;
+			case 3: r = p, g = q, b = v; break;
+			case 4: r = t, g = p, b = v; break;
+			case 5: r = v, g = p, b = q; break;
+		}
+	    
+		return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 	}
 }()
