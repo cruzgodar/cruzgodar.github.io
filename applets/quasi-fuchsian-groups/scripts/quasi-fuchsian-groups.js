@@ -4,9 +4,9 @@
 	
 	
 	
-	let canvas_size = 100;
+	let canvas_size = 200;
 	
-	let box_size = 5;
+	let box_size = 3;
 	
 	let ctx = document.querySelector("#quasi-fuchsian-groups-plot").getContext("2d", {alpha: false});
 	
@@ -17,7 +17,11 @@
 	
 	
 	
-	let coefficients = [[[1, 0], [1, 0], [1, 0], [0, 0]], [[-1, 0], [-1, 0], [-1, 0], [0, 0]], [], []];
+	let t = [[2, 0], [2, 0]];
+	
+	
+	
+	let coefficients = [[[0, 0], [0, 0], [0, 0], [0, 0]], [[0, 0], [0, 0], [0, 0], [0, 0]], [], []];
 	
 	let coefficient_markers = [];
 	let coefficient_points = [];
@@ -43,6 +47,25 @@
 	
 	
 	
+	if (scripts_loaded["complexjs"] === false)
+	{
+		load_script("/scripts/complex.min.js")
+		
+		.then(function()
+		{
+			scripts_loaded["complexjs"] = true;
+			
+			init_coefficient_markers();
+		})
+		
+		.catch(function(error)
+		{
+			console.error("Could not load ComplexJS");
+		});
+	}
+	
+	
+	
 	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 	
@@ -52,8 +75,6 @@
 	adjust_for_settings();
 	
 	init_listeners();
-	
-	init_coefficient_markers();
 	
 	
 	
@@ -93,24 +114,61 @@
 		
 		
 		
-		//Ensure that the determinants are always 1.
-		for (let i = 0; i < 2; i++)
-		{
-			let ax = coefficients[i][0][0];
-			let ay = coefficients[i][0][1];
-			let bx = coefficients[i][1][0];
-			let by = coefficients[i][1][1];
-			let cx = coefficients[i][2][0];
-			let cy = coefficients[i][2][1];
-			
-			let magnitude = ax*ax + ay*ay;
-			
-			let dx = 1 + bx*cx - by*cy;
-			let dy = bx*cy + by*cx;
-			
-			coefficients[i][3][0] = (dx*ax + dy*ay) / magnitude;
-			coefficients[i][3][1] = (dy*ax - dx*ay) / magnitude;
-		}
+		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
+		let ta = new Complex(t[0]);
+		let tb = new Complex(t[1]);
+		
+		let b = new Complex([0, 0]);
+		b = ta.mul(tb);
+		
+		let c = new Complex([0, 0]);
+		c = ta.mul(ta).add(tb.mul(tb));
+		
+		let tab = new Complex([0, 0]);
+		tab = b.sub(b.mul(b).sub(c.mul(4)).sqrt()).div(2);
+		
+		let z0 = new Complex([0, 0]);
+		z0 = tab.sub(2).mul(tb).div(tb.mul(tab).sub(ta.mul(2)).add(tab.mul(new Complex([0, 2]))));
+		
+		let temp = new Complex([0, 0]);
+		
+		
+		
+		temp = ta.div(2);
+		
+		coefficients[0][0][0] = temp.re;
+		coefficients[0][0][1] = temp.im;
+		coefficients[0][3][0] = temp.re;
+		coefficients[0][3][1] = temp.im;
+		
+		temp = ta.mul(tab).sub(tb.mul(2)).add(new Complex([0, 4])).div(tab.mul(2).add(4).mul(z0));
+		
+		coefficients[0][1][0] = temp.re;
+		coefficients[0][1][1] = temp.im;
+		
+		temp = ta.mul(tab).sub(tb.mul(2)).sub(new Complex([0, 4])).mul(z0).div(tab.mul(2).sub(4));
+		
+		coefficients[0][2][0] = temp.re;
+		coefficients[0][2][1] = temp.im;
+		
+		
+		
+		temp = tb.sub(new Complex([0, 2])).div(2);
+		
+		coefficients[1][0][0] = temp.re;
+		coefficients[1][0][1] = temp.im;
+		
+		temp = tb.div(2);
+		
+		coefficients[1][1][0] = temp.re;
+		coefficients[1][1][1] = temp.im;
+		coefficients[1][2][0] = temp.re;
+		coefficients[1][2][1] = temp.im;
+		
+		temp = tb.add(new Complex([0, 2])).div(2);
+		
+		coefficients[1][3][0] = temp.re;
+		coefficients[1][3][1] = temp.im;
 		
 		
 		
@@ -142,7 +200,16 @@
 				
 				
 				
-				for (let iteration = 0; iteration < num_iterations; iteration++)
+				for (let iteration = 0; iteration < num_iterations * .25; iteration++)
+				{
+					let transformation_index = Math.floor(Math.random() * 4);
+					
+					apply_transformation(transformation_index);
+				}
+				
+				
+				
+				for (let iteration = 0; iteration < num_iterations * .75; iteration++)
 				{
 					let transformation_index = Math.floor(Math.random() * 4);
 					
@@ -170,7 +237,7 @@
 		
 		let brightness_sorted = brightness.flat().sort(function(a, b) {return a - b});
 		
-		let	max_brightness = Math.sqrt(brightness_sorted[Math.round(brightness_sorted.length * .9999) - 1]);
+		let	max_brightness = Math.sqrt(brightness_sorted[Math.round(brightness_sorted.length * .99) - 1]);
 		
 		
 		
@@ -268,7 +335,7 @@
 	
 	function init_coefficient_markers()
 	{
-		for (let i = 0; i < 6; i++)
+		for (let i = 0; i < 2; i++)
 		{
 			let element = document.createElement("div");
 			element.classList.add("coefficient-marker");
@@ -281,7 +348,7 @@
 		
 		
 		
-		for (let i = 0; i < 6; i++)
+		for (let i = 0; i < 2; i++)
 		{
 			coefficient_points.push([Math.floor(canvas_size / 2), Math.floor(canvas_size / 2)]);
 			
@@ -303,7 +370,7 @@
 		active_marker = -1;
 		
 		//Figure out which marker, if any, this is referencing.
-		for (let i = 0; i < 6; i++)
+		for (let i = 0; i < 2; i++)
 		{
 			if (e.target.id === `coefficient-marker-${i}`)
 			{
@@ -391,8 +458,8 @@
 		
 		coefficient_markers[active_marker].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
 		
-		coefficients[Math.floor(active_marker / 3)][active_marker % 3][0] = (col / coefficient_selector_width * box_size) - box_size / 2;
-		coefficients[Math.floor(active_marker / 3)][active_marker % 3][1] = box_size / 2 - (row / coefficient_selector_height * box_size);
+		t[active_marker][0] = ((col / coefficient_selector_width * box_size) - box_size / 2) * 3;
+		t[active_marker][1] = (box_size / 2 - (row / coefficient_selector_height * box_size)) * 3;
 		
 		
 		
@@ -433,10 +500,10 @@
 		
 		let rect = document.querySelector("#coefficient-selector").getBoundingClientRect();
 		
-		for (let i = 0; i < 6; i++)
+		for (let i = 0; i < 2; i++)
 		{
-			let row = Math.floor((box_size / 2 - coefficients[Math.floor(i / 3)][i % 3][0]) / box_size * coefficient_selector_height);
-			let col = Math.floor((box_size / 2 + coefficients[Math.floor(i / 3)][i % 3][1]) / box_size * coefficient_selector_width);
+			let row = Math.floor((box_size / 2 - t[i][1]/3) / box_size * coefficient_selector_height);
+			let col = Math.floor((box_size / 2 + t[i][0]/3) / box_size * coefficient_selector_width);
 			
 			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
 		}
