@@ -4,7 +4,7 @@
 	
 	
 	
-	let canvas_size = 200;
+	let canvas_size = 100;
 	
 	let box_size = 5;
 	
@@ -17,7 +17,7 @@
 	
 	
 	
-	let coefficients = [[[0, 0], [0, 0], [0, 0], [0, 0]], [[0, 0], [0, 0], [0, 0], [0, 0]]];
+	let coefficients = [[[1, 0], [1, 0], [1, 0], [0, 0]], [[-1, 0], [-1, 0], [-1, 0], [0, 0]], [], []];
 	
 	let coefficient_markers = [];
 	let coefficient_points = [];
@@ -28,6 +28,11 @@
 	let coefficient_selector_height = document.querySelector("#coefficient-selector").offsetHeight;
 	
 	let coefficient_marker_radius = 17.5;
+	
+	
+	
+	let draw_another_frame = false;
+	let need_to_restart = true;
 	
 	
 
@@ -88,8 +93,29 @@
 		
 		
 		
-		//This bizarre ordering lets us do 3 - index to reference an inverse.
-		for (let i = 1; i >= 0; i--)
+		//Ensure that the determinants are always 1.
+		for (let i = 0; i < 2; i++)
+		{
+			let ax = coefficients[i][0][0];
+			let ay = coefficients[i][0][1];
+			let bx = coefficients[i][1][0];
+			let by = coefficients[i][1][1];
+			let cx = coefficients[i][2][0];
+			let cy = coefficients[i][2][1];
+			
+			let magnitude = ax*ax + ay*ay;
+			
+			let dx = 1 + bx*cx - by*cy;
+			let dy = bx*cy + by*cx;
+			
+			coefficients[i][3][0] = (dx*ax + dy*ay) / magnitude;
+			coefficients[i][3][1] = (dy*ax - dx*ay) / magnitude;
+		}
+		
+		
+		
+		//This weirdness lets us do 3 - index to reference an inverse.
+		for (let i = 0; i < 2; i++)
 		{
 			let ax = coefficients[i][0][0];
 			let ay = coefficients[i][0][1];
@@ -100,7 +126,7 @@
 			let dx = coefficients[i][3][0];
 			let dy = coefficients[i][3][1];
 			
-			coefficients.push([[dx, dy], [-bx, -by], [-cx, -cy], [ax, ay]]);
+			coefficients[3 - i] = [[dx, dy], [-bx, -by], [-cx, -cy], [ax, ay]];
 		}
 		
 		
@@ -167,6 +193,20 @@
 		}
 		
 		ctx.putImageData(img_data, 0, 0);
+		
+		
+		
+		if (draw_another_frame)
+		{
+			draw_another_frame = false;
+			
+			window.requestAnimationFrame(draw_quasi_fuchsian_group);
+		}
+		
+		else
+		{
+			need_to_restart = true;
+		}
 	}
 	
 	
@@ -228,7 +268,7 @@
 	
 	function init_coefficient_markers()
 	{
-		for (let i = 0; i < 8; i++)
+		for (let i = 0; i < 6; i++)
 		{
 			let element = document.createElement("div");
 			element.classList.add("coefficient-marker");
@@ -241,7 +281,7 @@
 		
 		
 		
-		for (let i = 0; i < 8; i++)
+		for (let i = 0; i < 6; i++)
 		{
 			coefficient_points.push([Math.floor(canvas_size / 2), Math.floor(canvas_size / 2)]);
 			
@@ -263,7 +303,7 @@
 		active_marker = -1;
 		
 		//Figure out which marker, if any, this is referencing.
-		for (let i = 0; i < 8; i++)
+		for (let i = 0; i < 6; i++)
 		{
 			if (e.target.id === `coefficient-marker-${i}`)
 			{
@@ -282,9 +322,16 @@
 		{
 			canvas_size = 500;
 			
-			draw_quasi_fuchsian_group();
 			
-			canvas_size = 200;
+			
+			draw_another_frame = true;
+			
+			if (need_to_restart)
+			{
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_quasi_fuchsian_group);
+			}
 		}
 		
 		active_marker = -1;
@@ -344,10 +391,21 @@
 		
 		coefficient_markers[active_marker].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
 		
-		coefficients[Math.floor(active_marker / 4)][active_marker % 4][0] = box_size / 2 - (row / coefficient_selector_height * box_size);
-		coefficients[Math.floor(active_marker / 4)][active_marker % 4][1] = box_size / 2 + (col / coefficient_selector_width * box_size);
+		coefficients[Math.floor(active_marker / 3)][active_marker % 3][0] = (col / coefficient_selector_width * box_size) - box_size / 2;
+		coefficients[Math.floor(active_marker / 3)][active_marker % 3][1] = box_size / 2 - (row / coefficient_selector_height * box_size);
 		
-		draw_quasi_fuchsian_group();
+		
+		
+		canvas_size = 100;
+		
+		draw_another_frame = true;
+		
+		if (need_to_restart)
+		{
+			need_to_restart = false;
+			
+			window.requestAnimationFrame(draw_quasi_fuchsian_group);
+		}
 	}
 	
 	
@@ -375,10 +433,10 @@
 		
 		let rect = document.querySelector("#coefficient-selector").getBoundingClientRect();
 		
-		for (let i = 0; i < 8; i++)
+		for (let i = 0; i < 6; i++)
 		{
-			let row = Math.floor((box_size / 2 - coefficients[Math.floor(i / 4)][i % 4][0]) / box_size * coefficient_selector_height);
-			let col = Math.floor((box_size / 2 + coefficients[Math.floor(i / 4)][i % 4][1]) / box_size * coefficient_selector_width);
+			let row = Math.floor((box_size / 2 - coefficients[Math.floor(i / 3)][i % 3][0]) / box_size * coefficient_selector_height);
+			let col = Math.floor((box_size / 2 + coefficients[Math.floor(i / 3)][i % 3][1]) / box_size * coefficient_selector_width);
 			
 			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
 		}
