@@ -4,7 +4,7 @@
 	
 	
 	
-	let canvas_size = 200;
+	let canvas_size = 500;
 	
 	let box_size = 3;
 	
@@ -40,7 +40,8 @@
 	
 	
 
-	let num_iterations = 100;
+	let max_depth = 12;
+	let epsilon = .0001;
 
 	let x = 0;
 	let y = 0;
@@ -184,7 +185,14 @@
 			let dx = coefficients[i][3][0];
 			let dy = coefficients[i][3][1];
 			
-			coefficients[3 - i] = [[dx, dy], [-bx, -by], [-cx, -cy], [ax, ay]];
+			coefficients[i + 2] = [[dx, dy], [-bx, -by], [-cx, -cy], [ax, ay]];
+		}
+		
+		
+		
+		for (let i = 0; i < 4; i++)
+		{
+			search_step(0, 0, i, -1, -1, 1);
 		}
 		
 		
@@ -195,41 +203,7 @@
 			{
 				x = (i / canvas_size * box_size) - box_size / 2;
 				y = box_size / 2 - (j / canvas_size * box_size);
-				
 				hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
-				
-				
-				
-				for (let iteration = 0; iteration < num_iterations * .25; iteration++)
-				{
-					let transformation_index = Math.floor(Math.random() * 4);
-					
-					apply_transformation(transformation_index);
-				}
-				
-				
-				
-				for (let iteration = 0; iteration < num_iterations * .75; iteration++)
-				{
-					let transformation_index = Math.floor(Math.random() * 4);
-					
-					apply_transformation(transformation_index);
-					
-					
-					
-					let col = Math.floor((x + box_size / 2) / box_size * canvas_size);
-					let row = Math.floor((-y + box_size / 2) / box_size * canvas_size);
-					
-					if (row >= 0 && row < canvas_size && col >= 0 && col < canvas_size)
-					{
-						brightness[row][col]++;
-					}
-					
-					else
-					{
-						break;
-					}
-				}
 			}
 		}
 		
@@ -237,7 +211,7 @@
 		
 		let brightness_sorted = brightness.flat().sort(function(a, b) {return a - b});
 		
-		let	max_brightness = Math.sqrt(brightness_sorted[Math.round(brightness_sorted.length * .99) - 1]);
+		let	max_brightness = brightness_sorted[Math.round(brightness_sorted.length * .995) - 1];
 		
 		
 		
@@ -250,7 +224,7 @@
 			{
 				let index = (4 * i * canvas_size) + (4 * j);
 				
-				let rgb = HSVtoRGB(hue[i][j], 1, Math.min(Math.sqrt(brightness[i][j]) / max_brightness, 1)); 
+				let rgb = HSVtoRGB(hue[i][j], 1, Math.min(Math.sqrt(brightness[i][j] / max_brightness), 1)); 
 				
 				data[index] = rgb[0];
 				data[index + 1] = rgb[1];
@@ -277,6 +251,44 @@
 	}
 	
 	
+	
+	function search_step(start_x, start_y, last_transformation_index, last_row, last_col, depth)
+	{
+		if (depth === max_depth)
+		{
+			return;
+		}
+		
+		for (let i = 3; i < 6; i++)
+		{
+			x = start_x;
+			y = start_y;
+			
+			let transformation_index = (last_transformation_index + i) % 4;
+			
+			apply_transformation(transformation_index);
+			
+			
+			
+			let row = Math.floor((-y + box_size / 2) / box_size * canvas_size);
+			let col = Math.floor((x + box_size / 2) / box_size * canvas_size);
+			
+			if ((x - start_x) * (x - start_x) + (y - start_y) * (y - start_y) < epsilon)
+			{
+				continue;
+			}
+			
+			if (row >= 0 && row < canvas_size && col >= 0 && col < canvas_size)
+			{
+				if (depth >= 4)
+				{
+					brightness[row][col]++;
+				}
+				
+				search_step(x, y, transformation_index, row, col, depth + 1);
+			}
+		}
+	}	
 	
 	
 	
@@ -387,7 +399,9 @@
 	{
 		if (active_marker !== -1)
 		{
-			canvas_size = 500;
+			canvas_size = 1000;
+			max_depth = 12;
+			epsilon = .000001;
 			
 			
 			
@@ -463,7 +477,9 @@
 		
 		
 		
-		canvas_size = 100;
+		canvas_size = 300;
+		max_depth = 8;
+		epsilon = .001;
 		
 		draw_another_frame = true;
 		
