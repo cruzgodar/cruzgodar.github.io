@@ -4,7 +4,7 @@
 	
 	
 	
-	let canvas_size = 500;
+	let canvas_size = 2000;
 	
 	let box_size = 3;
 	
@@ -40,8 +40,8 @@
 	
 	
 
-	let max_depth = 12;
-	let epsilon = .0001;
+	let max_depth = 1000;
+	let max_pixel_brightness = 50;
 
 	let x = 0;
 	let y = 0;
@@ -273,17 +273,14 @@
 			let row = Math.floor((-y + box_size / 2) / box_size * canvas_size);
 			let col = Math.floor((x + box_size / 2) / box_size * canvas_size);
 			
-			if ((x - start_x) * (x - start_x) + (y - start_y) * (y - start_y) < epsilon)
-			{
-				continue;
-			}
-			
 			if (row >= 0 && row < canvas_size && col >= 0 && col < canvas_size)
 			{
-				if (depth >= 4)
+				if (brightness[row][col] === max_pixel_brightness)
 				{
-					brightness[row][col]++;
+					continue;
 				}
+				
+				brightness[row][col]++;
 				
 				search_step(x, y, transformation_index, row, col, depth + 1);
 			}
@@ -400,8 +397,8 @@
 		if (active_marker !== -1)
 		{
 			canvas_size = 1000;
-			max_depth = 12;
-			epsilon = .000001;
+			max_depth = 100;
+			max_pixel_brightness = 50;
 			
 			
 			
@@ -478,8 +475,8 @@
 		
 		
 		canvas_size = 300;
-		max_depth = 8;
-		epsilon = .001;
+		max_depth = 20;
+		max_pixel_brightness = 10;
 		
 		draw_another_frame = true;
 		
