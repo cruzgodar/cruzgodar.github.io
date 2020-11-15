@@ -32,7 +32,7 @@
 	<section>
 		<div data-aos="fade-up">
 			<p class="body-text">
-				
+				Popularized in the book <a href="https://en.m.wikipedia.org/wiki/Indra%27s_Pearls_(book)" onclick="redirect('https://en.m.wikipedia.org/wiki/Indra%27s_Pearls_(book)', true)">Indra&#x2019;s Pearls</a>,  quasi-Fuchsian groups are discrete groups of conformal (i.e. angle-preserving) transformations of the complex numbers &mdash; but only ones where the limit set is contained in a Jordan curve. A more down-to-earth explanation is that a quasi-Fuchsian group contains a handful of functions, and applying those functions and their inverses repeatedly can make a given starting point converge somewhere. If we plot all of those somewheres, we often end up with a striking picture. Amazingly, the simplest case is an Apollonian net, which fills a large circle with smaller ones.
 			</p>
 		</div>
 		
@@ -42,12 +42,49 @@
 			<canvas id="quasi-fuchsian-groups-plot"></canvas>
 			<div id="coefficient-selector"></div>
 		</div>
+	</section>
+	
+	
+	
+	<div style="height: 10vh"></div>
+	
+	
+	
+	<section>
+		<div class="new-aos-section" data-aos="fade-up">
+			<h2 class="section-text">High Resolution Capture</h2>
+		</div>
 		
-		<div style="height: 10vh"></div>
+		<div style="height: 5vh"></div>
+		
+		<div class="text-box-row">
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="image-size-input" class="text-box" type="text" value="1000" tabindex="1">
+				<label for="image-size-input">
+					<p class="body-text">Image Size</p>
+				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="max-depth-input" class="text-box" type="text" value="100" tabindex="1">
+				<label for="max-depth-input">
+					<p class="body-text">Max Iterations</p>
+				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="max-pixel-brightness-input" class="text-box" type="text" value="50" tabindex="1">
+				<label for="max-pixel-brightness-input">
+					<p class="body-text">Shading Quality</p>
+				</label>
+			</div>
+		</div>
+		
+		<div style="height: 5vh"></div>
 		
 		<div class="center-content">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1200" tabindex="1">
-				<button class="text-button" type="button" id="download-button" tabindex="-1">Download Image</button>
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="800" tabindex="1">
+				<button class="text-button" type="button" id="download-button" tabindex="-1">Generate</button>
 			</div>
 		</div>
 	</section>
@@ -62,8 +99,6 @@
 
 
 <script>
-	DEBUG = true;
-	
 	if (typeof current_url === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));

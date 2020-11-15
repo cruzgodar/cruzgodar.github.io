@@ -1,18 +1,3 @@
-.text-box-row
-{
-	width: 250px;
-	margin: 0 auto;
-	display: flex;
-	justify-content: space-between;
-	
-	transition: opacity .3s ease-in-out;
-	
-	opacity: 0;
-	pointer-events: none;
-}
-
-
-
 #quasi-fuchsian-groups-plot
 {
 	position: absolute;
@@ -75,10 +60,20 @@
 
 
 
+.text-box-row
+{
+	width: 400px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+}
+
+
+
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	.text-box-row
 	{
-		width: 225px;
+		width: 350px;
 	}
 }

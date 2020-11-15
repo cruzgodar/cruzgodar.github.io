@@ -4,7 +4,7 @@
 	
 	
 	
-	let canvas_size = 2000;
+	let canvas_size = 300;
 	
 	let box_size = 3;
 	
@@ -40,11 +40,34 @@
 	
 	
 
-	let max_depth = 1000;
-	let max_pixel_brightness = 50;
+	let max_depth = 20;
+	let max_pixel_brightness = 10;
 
 	let x = 0;
 	let y = 0;
+	
+	
+	
+	document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_size);
+	document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_size);
+	
+	hue = [];
+	brightness = [];
+	
+	for (let i = 0; i < canvas_size; i++)
+	{
+		hue[i] = [];
+		brightness[i] = [];
+		
+		for (let j = 0; j < canvas_size; j++)
+		{
+			x = (i / canvas_size * box_size) - box_size / 2;
+			y = box_size / 2 - (j / canvas_size * box_size);
+			hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
+			
+			brightness[i][j] = 0;
+		}
+	}
 	
 	
 	
@@ -68,7 +91,7 @@
 	
 	
 	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
+	document.querySelector("#download-button").addEventListener("click", request_high_res_quasi_fuchsian_group);
 	
 	
 	
@@ -90,28 +113,8 @@
 	
 	function draw_quasi_fuchsian_group()
 	{
-		document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_size);
-		document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_size);
-		
 		ctx.fillStyle = "rgb(0, 0, 0)";
 		ctx.fillRect(0, 0, canvas_size, canvas_size);
-		
-		
-		
-		brightness = [];
-		hue = [];
-		
-		for (let i = 0; i < canvas_size; i++)
-		{
-			brightness[i] = [];
-			hue[i] = [];
-			
-			for (let j = 0; j < canvas_size; j++)
-			{
-				brightness[i][j] = 0;
-				hue[i][j] = 0;
-			}
-		}
 		
 		
 		
@@ -197,21 +200,9 @@
 		
 		
 		
-		for (let i = 0; i < canvas_size; i++)
-		{
-			for (let j = 0; j < canvas_size; j++)
-			{
-				x = (i / canvas_size * box_size) - box_size / 2;
-				y = box_size / 2 - (j / canvas_size * box_size);
-				hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
-			}
-		}
-		
-		
-		
 		let brightness_sorted = brightness.flat().sort(function(a, b) {return a - b});
 		
-		let	max_brightness = brightness_sorted[Math.round(brightness_sorted.length * .995) - 1];
+		let	max_brightness = brightness_sorted[brightness_sorted.length - 1];
 		
 		
 		
@@ -224,7 +215,7 @@
 			{
 				let index = (4 * i * canvas_size) + (4 * j);
 				
-				let rgb = HSVtoRGB(hue[i][j], 1, Math.min(Math.sqrt(brightness[i][j] / max_brightness), 1)); 
+				let rgb = HSVtoRGB(hue[i][j], 1, Math.pow(brightness[i][j] / max_brightness, .25)); 
 				
 				data[index] = rgb[0];
 				data[index + 1] = rgb[1];
@@ -280,12 +271,15 @@
 					continue;
 				}
 				
-				brightness[row][col]++;
+				if (depth > 10)
+				{
+					brightness[row][col]++;
+				}
 				
 				search_step(x, y, transformation_index, row, col, depth + 1);
 			}
 		}
-	}	
+	}
 	
 	
 	
@@ -386,6 +380,42 @@
 				e.preventDefault();
 				
 				active_marker = i;
+				
+				
+				
+				canvas_size = 300;
+				max_depth = 20;
+				max_pixel_brightness = 10;
+				
+				document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_size);
+				document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_size);
+				
+				hue = [];
+				brightness = [];
+				
+				for (let i = 0; i < canvas_size; i++)
+				{
+					hue[i] = [];
+					brightness[i] = [];
+					
+					for (let j = 0; j < canvas_size; j++)
+					{
+						x = (i / canvas_size * box_size) - box_size / 2;
+						y = box_size / 2 - (j / canvas_size * box_size);
+						hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
+						
+						brightness[i][j] = 0;
+					}
+				}
+				
+				draw_another_frame = true;
+			
+				if (need_to_restart)
+				{
+					need_to_restart = false;
+					
+					window.requestAnimationFrame(draw_quasi_fuchsian_group);
+				}
 			}
 		}
 	}
@@ -396,9 +426,30 @@
 	{
 		if (active_marker !== -1)
 		{
-			canvas_size = 1000;
+			canvas_size = 600;
 			max_depth = 100;
 			max_pixel_brightness = 50;
+			
+			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_size);
+			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_size);
+			
+			hue = [];
+			brightness = [];
+			
+			for (let i = 0; i < canvas_size; i++)
+			{
+				hue[i] = [];
+				brightness[i] = [];
+				
+				for (let j = 0; j < canvas_size; j++)
+				{
+					x = (i / canvas_size * box_size) - box_size / 2;
+					y = box_size / 2 - (j / canvas_size * box_size);
+					hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
+					
+					brightness[i][j] = 0;
+				}
+			}
 			
 			
 			
@@ -474,9 +525,15 @@
 		
 		
 		
-		canvas_size = 300;
-		max_depth = 20;
-		max_pixel_brightness = 10;
+		for (let i = 0; i < canvas_size; i++)
+		{
+			for (let j = 0; j < canvas_size; j++)
+			{
+				brightness[i][j] = 0;
+			}
+		}
+		
+		
 		
 		draw_another_frame = true;
 		
@@ -486,6 +543,86 @@
 			
 			window.requestAnimationFrame(draw_quasi_fuchsian_group);
 		}
+	}
+	
+	
+	
+	function request_high_res_quasi_fuchsian_group()
+	{
+		canvas_size = parseInt(document.querySelector("#image-size-input").value || 1000);
+		max_depth = parseInt(document.querySelector("#max-depth-input").value || 100);
+		max_pixel_brightness = parseInt(document.querySelector("#max-pixel-brightness-input").value || 50);
+		
+		
+		
+		hue = [];
+		brightness = [];
+		
+		for (let i = 0; i < canvas_size; i++)
+		{
+			hue[i] = [];
+			brightness[i] = [];
+			
+			for (let j = 0; j < canvas_size; j++)
+			{
+				x = (i / canvas_size * box_size) - box_size / 2;
+				y = box_size / 2 - (j / canvas_size * box_size);
+				hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
+				
+				brightness[i][j] = 0;
+			}
+		}
+		
+		
+		
+		try {web_worker.terminate();}
+		catch(ex) {}
+		
+		if (DEBUG)
+		{
+			web_worker = new Worker("/applets/quasi-fuchsian-groups/scripts/worker.js");
+		}
+		
+		else
+		{
+			web_worker = new Worker("/applets/quasi-fuchsian-groups/scripts/worker.min.js");
+		}
+		
+		temporary_web_workers.push(web_worker);
+		
+		
+		
+		web_worker.onmessage = function(e)
+		{
+			brightness = e.data[0];
+			
+			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_size);
+			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_size);
+			
+			let img_data = ctx.getImageData(0, 0, canvas_size, canvas_size);
+			let data = img_data.data;
+			
+			for (let i = 0; i < canvas_size; i++)
+			{
+				for (let j = 0; j < canvas_size; j++)
+				{
+					let index = (4 * i * canvas_size) + (4 * j);
+					
+					let rgb = HSVtoRGB(hue[i][j], 1, brightness[i][j]); 
+					
+					data[index] = rgb[0];
+					data[index + 1] = rgb[1];
+					data[index + 2] = rgb[2];
+					data[index + 3] = 255;
+				}
+			}
+			
+			ctx.putImageData(img_data, 0, 0);
+			
+			prepare_download();
+		}
+		
+		web_worker.postMessage([canvas_size, max_depth, max_pixel_brightness, box_size, coefficients]);
 	}
 	
 	

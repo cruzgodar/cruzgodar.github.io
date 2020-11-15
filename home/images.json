@@ -31,6 +31,12 @@
 	
 	
 	
+	"image-quasi-fuchsian-groups":
+	{
+		"webp": "../applets/quasi-fuchsian-groups/cover.webp",
+		"non-webp": "../applets/quasi-fuchsian-groups/cover.jpg"
+	},
+	
 	"image-the-mandelbulb":
 	{
 		"webp": "../applets/the-mandelbulb/cover.webp",
@@ -41,11 +47,5 @@
 	{
 		"webp": "../applets/kaleidoscopic-ifs-fractals/cover.webp",
 		"non-webp": "../applets/kaleidoscopic-ifs-fractals/cover.jpg"
-	},
-	
-	"image-binary-trees":
-	{
-		"webp": "../applets/binary-trees/cover.webp",
-		"non-webp": "../applets/binary-trees/cover.jpg"
 	}
 }

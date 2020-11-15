@@ -1,4 +1,10 @@
 {
+	"image-quasi-fuchsian-groups":
+	{
+		"webp": "quasi-fuchsian-groups/cover.webp",
+		"non-webp": "quasi-fuchsian-groups/cover.jpg"
+	},
+	
 	"image-the-mandelbulb":
 	{
 		"webp": "the-mandelbulb/cover.webp",
