@@ -102,13 +102,6 @@
 	
 	
 	
-	window.addEventListener("resize", quasi_fuchsian_groups_resize);
-	temporary_handlers["resize"].push(quasi_fuchsian_groups_resize);
-	
-	setTimeout(quasi_fuchsian_groups_resize, 1000);
-	
-	
-	
 	
 	
 	function draw_quasi_fuchsian_group()
@@ -360,6 +353,15 @@
 			
 			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
 		}
+		
+		
+		
+		window.addEventListener("resize", quasi_fuchsian_groups_resize);
+		temporary_handlers["resize"].push(quasi_fuchsian_groups_resize);
+		
+		quasi_fuchsian_groups_resize();
+		
+		setTimeout(quasi_fuchsian_groups_resize, 1000);
 		
 		
 		
