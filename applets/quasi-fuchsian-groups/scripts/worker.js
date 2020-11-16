@@ -108,9 +108,11 @@ function search_step(start_x, start_y, last_transformation_index, last_row, last
 			}
 			
 			brightness[row][col]++;
-			
-			search_step(x, y, transformation_index, row, col, depth + 1);
 		}
+		
+		
+		
+		search_step(x, y, transformation_index, row, col, depth + 1);
 	}
 }
 

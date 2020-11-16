@@ -277,9 +277,11 @@
 				{
 					brightness[row][col]++;
 				}
-				
-				search_step(x, y, transformation_index, row, col, depth + 1);
 			}
+			
+			
+			
+			search_step(x, y, transformation_index, row, col, depth + 1);
 		}
 	}
 	
