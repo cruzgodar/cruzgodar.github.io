@@ -6,7 +6,7 @@
 	
 	let canvas_size = 300;
 	
-	let box_size = 3;
+	let box_size = 4;
 	
 	let ctx = document.querySelector("#quasi-fuchsian-groups-plot").getContext("2d", {alpha: false});
 	
@@ -533,8 +533,8 @@
 		
 		coefficient_markers[active_marker].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
 		
-		t[active_marker][0] = ((col / coefficient_selector_width * box_size) - box_size / 2) * 3;
-		t[active_marker][1] = (box_size / 2 - (row / coefficient_selector_height * box_size)) * 3;
+		t[active_marker][0] = (col / coefficient_selector_width - .5) + 2;
+		t[active_marker][1] = (1 - row / coefficient_selector_height - .5);
 		
 		
 		
@@ -665,8 +665,8 @@
 		
 		for (let i = 0; i < 2; i++)
 		{
-			let row = Math.floor((box_size / 2 - t[i][1]/3) / box_size * coefficient_selector_height);
-			let col = Math.floor((box_size / 2 + t[i][0]/3) / box_size * coefficient_selector_width);
+			let row = Math.floor((1 - (t[i][1] + .5)) * coefficient_selector_height);
+			let col = Math.floor((t[i][0] - 2 + .5) * coefficient_selector_width);
 			
 			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
 		}
