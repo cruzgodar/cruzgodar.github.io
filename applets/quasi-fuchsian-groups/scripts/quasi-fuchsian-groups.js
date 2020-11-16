@@ -122,7 +122,16 @@
 		c = ta.mul(ta).add(tb.mul(tb));
 		
 		let tab = new Complex([0, 0]);
-		tab = b.sub(b.mul(b).sub(c.mul(4)).sqrt()).div(2);
+		
+		if (b.mul(b).sub(c.mul(4)).arg() > 0)
+		{
+			tab = b.sub(b.mul(b).sub(c.mul(4)).sqrt()).div(2);
+		}
+		
+		else
+		{
+			tab = b.add(b.mul(b).sub(c.mul(4)).sqrt()).div(2);
+		}
 		
 		let z0 = new Complex([0, 0]);
 		z0 = tab.sub(2).mul(tb).div(tb.mul(tab).sub(ta.mul(2)).add(tab.mul(new Complex([0, 2]))));
