@@ -88,6 +88,11 @@
 		});
 	}
 	
+	else
+	{
+		init_coefficient_markers();
+	}
+	
 	
 	
 	document.querySelector("#download-button").addEventListener("click", request_high_res_quasi_fuchsian_group);
