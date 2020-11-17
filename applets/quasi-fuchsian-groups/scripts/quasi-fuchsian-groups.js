@@ -90,9 +90,7 @@
 	
 	
 	
-	
 	document.querySelector("#download-button").addEventListener("click", request_high_res_quasi_fuchsian_group);
-	
 	
 	
 	
@@ -363,8 +361,6 @@
 		
 		window.addEventListener("resize", quasi_fuchsian_groups_resize);
 		temporary_handlers["resize"].push(quasi_fuchsian_groups_resize);
-		
-		quasi_fuchsian_groups_resize();
 		
 		setTimeout(quasi_fuchsian_groups_resize, 1000);
 		
