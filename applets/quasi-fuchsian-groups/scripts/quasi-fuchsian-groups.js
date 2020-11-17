@@ -344,13 +344,7 @@
 	{
 		for (let i = 0; i < 2; i++)
 		{
-			let element = document.createElement("div");
-			element.classList.add("coefficient-marker");
-			element.id = `coefficient-marker-${i}`;
-			
-			document.querySelector("#coefficient-selector").appendChild(element);
-			
-			coefficient_markers.push(element);
+			coefficient_markers.push(document.querySelector(`#coefficient-marker-${i}`));
 		}
 		
 		
