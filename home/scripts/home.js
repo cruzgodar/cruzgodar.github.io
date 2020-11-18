@@ -20,7 +20,38 @@
 	
 	
 	
-	setTimeout(add_name_text, 350);
+	if (url_vars["content_animation"] === 1)
+	{
+		let opacity = 0;
+		
+		
+		if (scroll <= window_height/3)
+		{
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
+		}
+		
+		else
+		{
+			opacity = 0;
+		}
+		
+		
+		
+		document.querySelector("#banner").insertAdjacentHTML("afterend", `
+			<div class="name-text-container" style="position: fixed">
+				<p id="cruz-text" class="name-text" style="opacity: ${opacity}">Cruz</p>
+			</div>
+			
+			<div class="name-text-container" style="position: fixed">
+				<p id="godar-text" class="name-text" style="opacity: ${opacity}">Godar</p>
+			</div>
+		`);
+	}
+	
+	else
+	{
+		setTimeout(add_name_text, 350);
+	}
 	
 	
 	
@@ -120,23 +151,15 @@
 				opacity = 0;
 			}
 			
-			document.querySelector("#banner").insertAdjacentHTML("afterend", `
-				<div class="name-text-container" style="position: fixed" data-aos="fade-left">
-				<p id="godar-text" class="name-text" style="opacity: ${opacity}">Godar</p>
-			</div>
-			`);
-		}, 250);
-		
-		
-		
-		if (url_vars["content_animation"] === 1)
-		{
-			let elements = document.querySelectorAll(".name-text-container");
 			
-			for (let i = 0; i < elements.length; i++)
+			if (url_vars["content_animation"] !== 1)
 			{
-				elements[i].removeAttribute("data-aos");
+				document.querySelector("#banner").insertAdjacentHTML("afterend", `
+					<div class="name-text-container" style="position: fixed" data-aos="fade-left">
+						<p id="godar-text" class="name-text" style="opacity: ${opacity}">Godar</p>
+					</div>
+				`);
 			}
-		}
+		}, 250);
 	}
 }()
