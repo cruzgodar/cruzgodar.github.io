@@ -39,11 +39,11 @@
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content" style="height: calc(80vmin + 8px)" data-aos="fade-in" data-aos-delay="700">
-			<canvas id="quasi-fuchsian-groups-plot"></canvas>
+			<canvas id="quasi-fuchsian-groups-plot" class="no-floating-footer"></canvas>
 			
-			<div id="coefficient-selector">
-				<div id="coefficient-marker-0" class="coefficient-marker"></div>
-				<div id="coefficient-marker-1" class="coefficient-marker"></div>
+			<div id="coefficient-selector" class="no-floating-footer">
+				<div id="coefficient-marker-0" class="coefficient-marker no-floating-footer"></div>
+				<div id="coefficient-marker-1" class="coefficient-marker no-floating-footer"></div>
 			</div>
 		</div>
 	</section>
@@ -63,21 +63,21 @@
 		
 		<div class="text-box-row">
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="image-size-input" class="text-box" type="text" value="1000" tabindex="1">
+				<input id="image-size-input" class="text-box no-floating-footer" type="text" value="1000" tabindex="1">
 				<label for="image-size-input">
 					<p class="body-text">Image Size</p>
 				</label>
 			</div>
 			
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="max-depth-input" class="text-box" type="text" value="100" tabindex="1">
+				<input id="max-depth-input" class="text-box no-floating-footer" type="text" value="100" tabindex="1">
 				<label for="max-depth-input">
 					<p class="body-text">Max Iterations</p>
 				</label>
 			</div>
 			
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="max-pixel-brightness-input" class="text-box" type="text" value="50" tabindex="1">
+				<input id="max-pixel-brightness-input" class="text-box no-floating-footer" type="text" value="50" tabindex="1">
 				<label for="max-pixel-brightness-input">
 					<p class="body-text">Shading Quality</p>
 				</label>
@@ -88,7 +88,7 @@
 		
 		<div class="center-content">
 			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="800" tabindex="1">
-				<button class="text-button" type="button" id="download-button" tabindex="-1">Generate</button>
+				<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Generate</button>
 			</div>
 		</div>
 	</section>

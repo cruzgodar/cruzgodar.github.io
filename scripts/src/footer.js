@@ -266,10 +266,6 @@ function set_up_floating_footer()
 	
 	
 	
-	document.querySelector("#floating-footer").insertAdjacentHTML("afterend", `<div id="floating-footer-touch-target"></div>`);
-	
-	
-	
 	fit_floating_footer_to_window_width();
 	
 	window.addEventListener("resize", fit_floating_footer_to_window_width);
@@ -279,14 +275,6 @@ function set_up_floating_footer()
 	
 	window.addEventListener("scroll", floating_footer_scroll);
 	temporary_handlers["scroll"].push(floating_footer_scroll);
-	
-	
-	
-	//Idk why this is required. Occasionally the touch target will have display: none until the window is scrolled any amount.
-	setTimeout(function()
-	{
-		document.querySelector("#floating-footer-touch-target").style.display = "block";
-	}, 50);
 	
 	
 	
@@ -301,15 +289,6 @@ function set_up_floating_footer()
 function fit_floating_footer_to_window_width()
 {
 	document.querySelector("#floating-footer").style.width = document.documentElement.clientWidth + "px";
-	
-	//This one beats me. A window resize will cause the touch target to become visible, blocking some or all of the footer image links. If the timeout isn't here, then it will flicker on and off violently before remaining on.
-	if (floating_footer_is_visible)
-	{
-		setTimeout(function()
-		{
-			document.querySelector("#floating-footer-touch-target").style.display = "none";
-		}, 50);
-	}
 }
 
 
@@ -319,21 +298,14 @@ function floating_footer_scroll()
 {
 	if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight)
 	{
-		document.querySelector("#floating-footer").style.opacity = 0;
-		
 		floating_footer_is_visible = false;
 		
-		document.querySelector("#floating-footer-touch-target").style.display = "none";
+		document.querySelector("#floating-footer").style.opacity = 0;
 		
 		setTimeout(function()
 		{
 			document.querySelector("#floating-footer").style.display = "none";
 		}, 300);
-	}
-	
-	else if (floating_footer_is_visible === false)
-	{
-		document.querySelector("#floating-footer-touch-target").style.display = "block";
 	}
 }
 
@@ -346,25 +318,25 @@ function init_floating_footer_listeners_no_touch()
 {
 	floating_footer_is_visible = false;
 	
-	document.querySelector("#floating-footer-touch-target").addEventListener("mouseenter", function()
+	document.body.addEventListener("mousemove", function(e)
 	{
-		if (floating_footer_is_visible === false && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight))
+		let element = document.elementFromPoint(e.clientX, e.clientY);
+		
+		if (floating_footer_is_visible === false && e.clientY >= window.innerHeight - 50 && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
 		{
+			floating_footer_is_visible = true;
+			
 			document.querySelector("#floating-footer").style.display = "block";
-			document.querySelector("#floating-footer-touch-target").style.display = "none";
 			
 			setTimeout(function()
 			{
 				document.querySelector("#floating-footer").style.opacity = 1;
-				
-				floating_footer_is_visible = true;
 			}, 50);
 		}
-	});
-	
-	document.querySelector("#floating-footer-content").addEventListener("mouseleave", function()
-	{
-		if (floating_footer_is_visible)
+		
+		
+		
+		else if (floating_footer_is_visible && e.clientY < window.innerHeight - 150)
 		{
 			document.querySelector("#floating-footer").style.opacity = 0;
 			
@@ -373,7 +345,6 @@ function init_floating_footer_listeners_no_touch()
 			setTimeout(function()
 			{
 				document.querySelector("#floating-footer").style.display = "none";
-				document.querySelector("#floating-footer-touch-target").style.display = "block";
 			}, 300);
 		}
 	});
@@ -398,24 +369,18 @@ function init_floating_footer_listeners_touch()
 
 function footer_process_touchend()
 {
-	let target = document.elementFromPoint(last_touch_x, last_touch_y);
+	let element = document.elementFromPoint(last_touch_x, last_touch_y);
 	
-	
-	
-	if (document.querySelector("#floating-footer-touch-target") === target)
+	if (floating_footer_is_visible === false && last_touch_y >= window.innerHeight - 50 && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
 	{
-		if (floating_footer_is_visible === false && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight))
+		document.querySelector("#floating-footer").style.display = "block";
+		
+		floating_footer_is_visible = true;
+		
+		setTimeout(function()
 		{
-			document.querySelector("#floating-footer").style.display = "block";
-			document.querySelector("#floating-footer-touch-target").style.display = "none";
-			
-			floating_footer_is_visible = true;
-			
-			setTimeout(function()
-			{
-				document.querySelector("#floating-footer").style.opacity = 1;
-			}, 50);
-		}
+			document.querySelector("#floating-footer").style.opacity = 1;
+		}, 50);
 	}
 }
 
@@ -423,19 +388,15 @@ function footer_process_touchend()
 
 function footer_process_touchstart(event)
 {
-	if (!(document.querySelector("#floating-footer-content").contains(event.target)))
+	if (floating_footer_is_visible && last_touch_y < window.innerHeight - 150)
 	{
-		if (floating_footer_is_visible)
+		document.querySelector("#floating-footer").style.opacity = 0;
+		
+		floating_footer_is_visible = false;
+		
+		setTimeout(function()
 		{
-			document.querySelector("#floating-footer").style.opacity = 0;
-			
-			floating_footer_is_visible = false;
-			
-			setTimeout(function()
-			{
-				document.querySelector("#floating-footer").style.display = "none";
-				document.querySelector("#floating-footer-touch-target").style.display = "block";
-			}, 300);
-		}
+			document.querySelector("#floating-footer").style.display = "none";
+		}, 300);
 	}
 }

@@ -166,18 +166,6 @@
 
 
 
-#floating-footer-touch-target
-{
-	position: fixed;
-	bottom: 0;
-	z-index: 110;
-	
-	height: 100px;
-	width: 100vw;
-}
-
-
-
 #floating-settings
 {
 	position: fixed;

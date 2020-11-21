@@ -40,8 +40,8 @@
 		
 		<div data-aos="fade-up">
 			<div id="container">
-				<img id="mandelbrot-set" class="check-webp" src="" alt="The Mandelbrot Set"></img>
-				<canvas id="julia-set"></canvas>
+				<img id="mandelbrot-set" class="check-webp no-floating-footer" src="" alt="The Mandelbrot Set"></img>
+				<canvas id="julia-set" class="no-floating-footer"></canvas>
 			</div>
 		</div>
 	</section>
@@ -67,21 +67,21 @@
 		
 		<div class="text-box-row">
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="a-input" class="text-box" type="text" value="0" tabindex="1">
+				<input id="a-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
 				<label for="a-input">
 					<p class="body-text">\(a\)</p>
 				</label>
 			</div>
 			
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="b-input" class="text-box" type="text" value="1" tabindex="1">
+				<input id="b-input" class="text-box no-floating-footer" type="text" value="1" tabindex="1">
 				<label for="b-input">
 					<p class="body-text">\(b\)</p>
 				</label>
 			</div>
 			
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="dim-input" class="text-box" type="text" value="1000" tabindex="1">
+				<input id="dim-input" class="text-box no-floating-footer" type="text" value="1000" tabindex="1">
 				<label for="dim-input">
 					<p class="body-text">Image Size</p>
 				</label>
@@ -92,7 +92,7 @@
 		
 		<div class="center-content">
 			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="900" tabindex="1">
-				<button class="text-button" type="button" id="generate-button" tabindex="-1">Generate</button>
+				<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
 			</div>
 		</div>
 		
@@ -105,14 +105,14 @@
 		</div>
 		
 		<div class="center-content" data-aos="fade-in" data-aos-delay="1400">
-			<canvas id="output-canvas"></canvas>
+			<canvas id="output-canvas" class="no-floating-footer"></canvas>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
 			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1900" tabindex="1">
-				<button class="text-button" type="button" id="download-button" tabindex="-1">Download Image</button>
+				<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download Image</button>
 			</div>
 		</div>
 	</section>
