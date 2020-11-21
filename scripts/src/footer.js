@@ -288,7 +288,15 @@ function set_up_floating_footer()
 	
 	window.addEventListener("resize", function()
 	{
-		try {floating_footer_height = document.querySelector("#floating-footer-content").offsetHeight;}
+		try
+		{
+			document.querySelector("#floating-footer").style.display = "block";
+			
+			floating_footer_height = document.querySelector("#floating-footer-content").offsetHeight;
+			
+			document.querySelector("#floating-footer").style.display = "none";
+		}
+		
 		catch(ex) {}
 	});
 	
@@ -346,12 +354,12 @@ function init_floating_footer_listeners_no_touch()
 			setTimeout(function()
 			{
 				document.querySelector("#floating-footer").style.opacity = 1;
-			}, 50);
+			}, 20);
 		}
 		
 		
 		
-		else if (floating_footer_is_visible && e.clientY < window.innerHeight - floating_footer_height)
+		else if (floating_footer_is_visible && e.clientY < window.innerHeight - floating_footer_height - 20)
 		{
 			document.querySelector("#floating-footer").style.opacity = 0;
 			
@@ -365,7 +373,10 @@ function init_floating_footer_listeners_no_touch()
 	});
 }
 
-
+document.documentElement.addEventListener("mousedown", function(e)
+{
+	//alert(`${e.clientY}, ${window.innerHeight}`);
+});
 
 function init_floating_footer_listeners_touch()
 {
@@ -395,7 +406,7 @@ function footer_process_touchend()
 		setTimeout(function()
 		{
 			document.querySelector("#floating-footer").style.opacity = 1;
-		}, 50);
+		}, 20);
 	}
 }
 
@@ -403,7 +414,7 @@ function footer_process_touchend()
 
 function footer_process_touchstart(event)
 {
-	if (floating_footer_is_visible && last_touch_y < window.innerHeight - floating_footer_height)
+	if (floating_footer_is_visible && last_touch_y < window.innerHeight - floating_footer_height - 20)
 	{
 		document.querySelector("#floating-footer").style.opacity = 0;
 		
