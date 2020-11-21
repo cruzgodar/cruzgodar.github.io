@@ -23,6 +23,8 @@ let currently_touch_device = true;
 
 let last_mousemove_event = 0;
 
+let floating_footer_height = 0;
+
 
 
 //Whether the browser supports WebP images or not. Given a boolean value when decided.

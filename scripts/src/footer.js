@@ -278,6 +278,21 @@ function set_up_floating_footer()
 	
 	
 	
+	document.querySelector("#floating-footer").style.display = "block";
+	
+	floating_footer_height = document.querySelector("#floating-footer-content").offsetHeight;
+	
+	document.querySelector("#floating-footer").style.display = "none";
+	
+	
+	
+	window.addEventListener("resize", function()
+	{
+		try {floating_footer_height = document.querySelector("#floating-footer-content").offsetHeight;}
+		catch(ex) {}
+	});
+	
+	
 	
 	init_floating_footer_listeners_touch();
 	init_floating_footer_listeners_no_touch();
@@ -336,7 +351,7 @@ function init_floating_footer_listeners_no_touch()
 		
 		
 		
-		else if (floating_footer_is_visible && e.clientY < window.innerHeight - 150)
+		else if (floating_footer_is_visible && e.clientY < window.innerHeight - floating_footer_height)
 		{
 			document.querySelector("#floating-footer").style.opacity = 0;
 			
@@ -388,7 +403,7 @@ function footer_process_touchend()
 
 function footer_process_touchstart(event)
 {
-	if (floating_footer_is_visible && last_touch_y < window.innerHeight - 150)
+	if (floating_footer_is_visible && last_touch_y < window.innerHeight - floating_footer_height)
 	{
 		document.querySelector("#floating-footer").style.opacity = 0;
 		
