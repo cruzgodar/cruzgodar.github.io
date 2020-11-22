@@ -20,6 +20,8 @@
 
 	let persist_image = false;
 	
+	let stabilize_brightness_scale = false;
+	
 	let draw_another_frame = false;
 	let need_to_restart = true;
 	
@@ -228,19 +230,38 @@
 		
 		
 		
+		let changed_brightness_scale = false;
+		
 		if (num_pixels_at_max < .1 * image_size)
 		{
 			brightness_scale -= .5;
+			
+			changed_brightness_scale = true;
 		}
 		
 		else if (num_pixels_at_max > .2 * image_size)
 		{
 			brightness_scale += .5;
+			
+			changed_brightness_scale = true;
 		}
 		
 		
 		
-		if (draw_another_frame)
+		if (stabilize_brightness_scale)
+		{
+			if (changed_brightness_scale)
+			{
+				window.requestAnimationFrame(draw_frame);
+			}
+			
+			else
+			{
+				stabilize_brightness_scale = false;
+			}
+		}
+		
+		else if (draw_another_frame)
 		{
 			draw_another_frame = false;
 			
@@ -397,6 +418,9 @@
 		
 		document.querySelector("#mandelbrot-set").addEventListener("click", function(e)
 		{
+			stabilize_brightness_scale = true;
+			window.requestAnimationFrame(draw_frame);
+			
 			persist_image = true;
 			
 			document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
@@ -458,6 +482,9 @@
 		document.querySelector("#mandelbrot-set").addEventListener("touchend", function(e)
 		{
 			e.preventDefault();
+			
+			stabilize_brightness_scale = true;
+			window.requestAnimationFrame(draw_frame);
 				
 			document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
 			document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
