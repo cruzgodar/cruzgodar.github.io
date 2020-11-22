@@ -4,37 +4,31 @@
 	
 	
 	
-	let last_a = 0;
-	let last_b = 0;
-	let last_julia_size = 0;
+	let a = 0;
+	let b = 0;
+	let image_size = 500;
+	let num_iterations = 25;
+	let brightness_scale = 10;
 	
 	let small_canvas_size = 0;
 	let large_canvas_size = 0;
 
-	let small_julia_size = 100;
-	let large_julia_size = 500;
+	let small_image_size = 1000;
 
-	let small_julia_iterations = 25;
-	let large_julia_iterations = 50;
-	let full_res_julia_iterations = 200;
-	
-	let current_a = 0;
-	let current_b = 0;
-	let current_num_iterations = small_julia_iterations;
-	let current_julia_size = small_julia_size;
+	let small_num_iterations = 50;
+	let large_num_iterations = 200;
 	
 	let max_brightness_history = [];
-
-	let image = [];
 
 	let persist_image = false;
 	
 	let draw_another_frame = false;
 	let need_to_restart = true;
 	
-	let ctx = null;
+	let gl = document.querySelector("#julia-set").getContext("webgl");
 	
-	let web_worker = null;
+	document.querySelector("#julia-set").setAttribute("width", small_image_size);
+	document.querySelector("#julia-set").setAttribute("height", small_image_size);
 
 
 
@@ -69,183 +63,202 @@
 	temporary_handlers["resize"].push(julia_resize);
 
 	setTimeout(julia_resize, 1000);
+	
+	
+	
+	const vertex_shader_source = `
+		attribute vec3 position;
+		varying vec2 uv;
+
+		void main(void)
+		{
+			gl_Position = vec4(position, 1.0);
+
+			//Interpolate quad coordinates in the fragment shader.
+			uv = position.xy;
+		}
+	`;
+	
+	
+	
+	const frag_shader_source = `
+		precision highp float;
+		
+		varying vec2 uv;
+		
+		const float box_size_halved = 2.0;
+		uniform float a;
+		uniform float b;
+		uniform float brightness_scale;
+		uniform int num_iterations;
+		
+		
+		
+		void main(void)
+		{
+			vec2 z = vec2(uv.x * box_size_halved, uv.y * box_size_halved);
+			float brightness = exp(-length(z));
+			
+			
+			
+			for (int iteration = 0; iteration < 200; iteration++)
+			{
+				if (iteration == num_iterations)
+				{
+					break;
+				}
+				
+				if (length(z) >= 2.0)
+				{
+					gl_FragColor = vec4(0.0, brightness / brightness_scale, brightness / brightness_scale, 1.0);
+					return;
+				}
+				
+				z = vec2(z.x * z.x - z.y * z.y + a, 2.0 * z.x * z.y + b);
+				
+				brightness += exp(-length(z));
+			}
+			
+			
+			
+			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+		}
+	`;
+	
+	
+	
+	let shader_program = null;
+	
+	function setup_webgl()
+	{
+		let vertex_shader = load_shader(gl, gl.VERTEX_SHADER, vertex_shader_source);
+		
+		let frag_shader = load_shader(gl, gl.FRAGMENT_SHADER, frag_shader_source);
+		
+		shader_program = gl.createProgram();
+		
+		gl.attachShader(shader_program, vertex_shader);
+		gl.attachShader(shader_program, frag_shader);
+		gl.linkProgram(shader_program);
+		
+		if (!gl.getProgramParameter(shader_program, gl.LINK_STATUS))
+		{
+			console.log(`Couldn't link shader program: ${gl.getShaderInfoLog(shader)}`);
+			gl.deleteProgram(shader_program);
+		}
+		
+		
+		
+		gl.useProgram(shader_program);
+		
+		
+		
+		let quad = [-1, -1, 0,   -1, 1, 0,   1, -1, 0,   1, 1, 0];
+		
+		
+		
+		let position_buffer = gl.createBuffer();
+		
+		gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
+		
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(quad), gl.STATIC_DRAW);
+		
+		shader_program.position_attribute = gl.getAttribLocation(shader_program, "position");
+		
+		gl.enableVertexAttribArray(shader_program.position_attribute);
+		
+		gl.vertexAttribPointer(shader_program.position_attribute, 3, gl.FLOAT, false, 0, 0);
+		
+		
+		
+		shader_program.a_uniform = gl.getUniformLocation(shader_program, "a");
+		shader_program.b_uniform = gl.getUniformLocation(shader_program, "b");
+		shader_program.num_iterations_uniform = gl.getUniformLocation(shader_program, "num_iterations");
+		shader_program.brightness_scale_uniform = gl.getUniformLocation(shader_program, "brightness_scale");
+		
+		
+		
+		gl.viewport(0, 0, image_size, image_size);
+	}
+	
+	
+	
+	function load_shader(gl, type, source)
+	{
+		let shader = gl.createShader(type);
+		
+		gl.shaderSource(shader, source);
+		
+		gl.compileShader(shader);
+		
+		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+		{
+			console.log(`Couldn't load shader: ${gl.getProgramInfoLog(shaderProgram)}`);
+			gl.deleteShader(shader);
+		}
+		
+		return shader;
+	}
+	
+	
+	
+	function draw_frame()
+	{
+		gl.uniform1f(shader_program.a_uniform, a);
+		gl.uniform1f(shader_program.b_uniform, b);
+		gl.uniform1i(shader_program.num_iterations_uniform, num_iterations);
+		gl.uniform1f(shader_program.brightness_scale_uniform, brightness_scale);
+		
+		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+		
+		
+		
+		if (draw_another_frame)
+		{
+			draw_another_frame = false;
+			
+			window.requestAnimationFrame(draw_frame);
+		}
+		
+		else
+		{
+			need_to_restart = true;
+		}
+	}
+	
+	
+	
+	load_script("/scripts/gl-matrix.min.js")
+	
+	.then(function()
+	{
+		setTimeout(setup_webgl, 500);
+	});
 
 
 
 	//As the user scrolls around the image, make tiny Julia set previews.
 	init_listeners_no_touch();
 	init_listeners_touch();
+
 	
-	change_resolution();
-
-
-
-
-
-	function draw_julia_set()
-	{
-		if (current_a === last_a && current_b === last_b && current_julia_size === last_julia_size)
+	/*
+		max_brightness_history.push(brightness_array[Math.round(brightness_array.length * .999) - 1]);
+		
+		if (max_brightness_history.length > 10)
 		{
-			need_to_restart = true;
-			
-			return;
+			max_brightness_history.shift();
 		}
 		
-		if (current_julia_size !== last_julia_size)
+		max_brightness = 0;
+		
+		for (let i = 0; i < max_brightness_history.length; i++)
 		{
-			change_resolution();
+			max_brightness += max_brightness_history[i];
 		}
 		
-		
-		
-		//Generate the brightness map.
-		for (let i = 0; i < current_julia_size / 2; i++)
-		{
-			julia_row(i, current_a, current_b, current_julia_size, current_num_iterations);
-		}
-		
-		
-		
-		//Find the max brightness, throwing out the very top values to avoid almost-black images with a few specks of color.
-		let brightness_array = image.flat().sort(function(a, b) {return a - b});
-		
-		let max_brightness = 0;
-		
-		if (current_julia_size === small_julia_size)
-		{
-			max_brightness_history.push(brightness_array[Math.round(brightness_array.length * .999) - 1]);
-			
-			if (max_brightness_history.length > 10)
-			{
-				max_brightness_history.shift();
-			}
-			
-			max_brightness = 0;
-			
-			for (let i = 0; i < max_brightness_history.length; i++)
-			{
-				max_brightness += max_brightness_history[i];
-			}
-			
-			max_brightness /= max_brightness_history.length;
-		}
-		
-		else
-		{
-			max_brightness = brightness_array[Math.round(brightness_array.length * .9999) - 1];
-		}
-		
-		
-		
-		
-		for (let i = 0; i < current_julia_size; i++)
-		{		
-			image[i] = image[i].map(brightness => (brightness / max_brightness) * 255);
-		}
-		
-		
-		
-		//Copy this array into the canvas like an image.
-		let img_data = ctx.getImageData(0, 0, current_julia_size, current_julia_size);
-		let data = img_data.data;
-		
-		for (let i = 0; i < current_julia_size; i++)
-		{
-			for (let j = 0; j < current_julia_size; j++)
-			{
-				let brightness = image[i][j];
-				
-				//The index in the array of rgba values
-				let index = (4 * i * current_julia_size) + (4 * j);
-				
-				data[index] = 0;
-				data[index + 1] = brightness;
-				data[index + 2] = brightness;
-				data[index + 3] = 255; //No transparency.
-			}
-		}
-		
-		ctx.putImageData(img_data, 0, 0);
-		
-		
-		
-		last_a = current_a;
-		last_b = current_b;
-		last_julia_size = current_julia_size;
-		
-		if (draw_another_frame)
-		{
-			draw_another_frame = false;
-			
-			window.requestAnimationFrame(draw_julia_set);
-		}
-		
-		else
-		{
-			need_to_restart = true;
-		}
-	}
-
-
-
-	function julia_row(i, a, b, julia_size, num_iters)
-	{
-		for (let j = 0; j < julia_size + 1; j++)
-		{
-			let x = ((j - julia_size/2) / julia_size) * 4;
-			let y = (-(i - julia_size/2) / julia_size) * 4;
-			
-			let brightness = Math.exp(-Math.sqrt(x*x + y*y));
-			
-			let k = 0;
-			
-			for (k = 0; k < num_iters; k++)
-			{
-				let temp_x = x*x - y*y + a;
-				let temp_y = 2*x*y + b;
-				
-				x = temp_x;
-				y = temp_y;
-				
-				brightness += Math.exp(-Math.sqrt(x*x + y*y));
-				
-				if (x*x + y*y > 4)
-				{
-					break;
-				}
-			}
-			
-			if (k === num_iters)
-			{
-				brightness = 0;
-			}
-			
-			
-			
-			//Reflect the top half about the origin to get the bottom half.
-			image[i][j] = brightness;
-			image[julia_size - i - 1][julia_size - j] = brightness;
-		}
-	}
-	
-	
-	
-	function change_resolution()
-	{
-		image = [];
-		
-		for (let i = 0; i < current_julia_size; i++)
-		{
-			image[i] = [];
-		}
-		
-		
-		
-		document.querySelector("#julia-set").setAttribute("width", current_julia_size);
-		document.querySelector("#julia-set").setAttribute("height", current_julia_size);
-		
-		ctx = document.querySelector("#julia-set").getContext("2d", {alpha: false});
-	}
+		max_brightness /= max_brightness_history.length;
+	*/
 
 
 
@@ -255,14 +268,14 @@
 		
 		
 		
-		if (last_b < 0)
+		if (b < 0)
 		{
-			link.download = last_a + " - " + (-last_b) + "i.png";
+			link.download = a + " - " + (-b) + "i.png";
 		}
 		
 		else
 		{
-			link.download = last_a + " + " + last_b + "i.png";
+			link.download = a + " + " + b + "i.png";
 		}
 		
 		
@@ -278,114 +291,16 @@
 
 	function draw_high_res_julia()
 	{
-		let a = parseFloat(document.querySelector("#a-input").value) || 0;
-		let b = parseFloat(document.querySelector("#b-input").value) || 1;
-		let dim = parseFloat(document.querySelector("#dim-input").value) || 1000;
+		a = parseFloat(document.querySelector("#a-input").value) || 0;
+		b = parseFloat(document.querySelector("#b-input").value) || 1;
+		image_size = parseFloat(document.querySelector("#dim-input").value) || 1000;
 		
 		document.querySelector("#output-canvas").setAttribute("width", dim);
 		document.querySelector("#output-canvas").setAttribute("height", dim);
 		
-		ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
-		
-		last_a = a;
-		last_b = b;
 		
 		
-		
-		document.querySelector("#progress-bar span").insertAdjacentHTML("afterend", `<span></span>`);
-		document.querySelector("#progress-bar span").remove();
-		
-		
-		
-		try {web_worker.terminate();}
-		catch(ex) {}
-		
-		if (DEBUG)
-		{
-			web_worker = new Worker("/applets/julia-set-explorer/scripts/worker.js");
-		}
-		
-		else
-		{
-			web_worker = new Worker("/applets/julia-set-explorer/scripts/worker.min.js");
-		}
-		
-		temporary_web_workers.push(web_worker);
-		
-		
-		
-		web_worker.onmessage = function(e)
-		{
-			if (e.data[0] === "progress")
-			{
-				document.querySelector("#progress-bar span").style.width = e.data[1] + "%";
-				
-				if (e.data[1] === 100)
-				{
-					setTimeout(function()
-					{
-						document.querySelector("#progress-bar").style.opacity = 0;
-						
-						setTimeout(function()
-						{
-							document.querySelector("#progress-bar").style.marginTop = 0;
-							document.querySelector("#progress-bar").style.marginBottom = 0;
-						}, 300);
-					}, 600);
-				}
-			}
-			
-			
-			
-			else
-			{
-				let img_data = ctx.getImageData(0, 0, dim, dim);
-				let data = img_data.data;
-				
-				for (let i = 0; i < dim; i++)
-				{
-					for (let j = 0; j < dim; j++)
-					{
-						let brightness = e.data[0][i][j];
-						 
-						//The index in the array of rgba values
-						let index = (4 * i * dim) + (4 * j);
-						
-						data[index] = 0;
-						data[index + 1] = brightness;
-						data[index + 2] = brightness;
-						data[index + 3] = 255; //No transparency.
-					}
-				}
-				
-				ctx.putImageData(img_data, 0, 0);
-				
-				
-				
-				document.querySelector("#progress-bar").style.opacity = 0;
-				
-				setTimeout(function()
-				{
-					document.querySelector("#progress-bar").style.marginTop = 0;
-					document.querySelector("#progress-bar").style.marginBottom = 0;
-				}, 300);
-			}
-		}
-		
-		
-		
-		document.querySelector("#progress-bar span").style.width = 0;
-		document.querySelector("#progress-bar").style.marginTop = "5vh";
-		document.querySelector("#progress-bar").style.marginBottom = "5vh";
-		
-		setTimeout(function()
-		{
-			document.querySelector("#progress-bar").style.opacity = 1;
-		}, 600);
-		
-		
-		
-		web_worker.postMessage([a, b, dim, full_res_julia_iterations]);
+		draw_frame();
 	}
 
 
@@ -418,7 +333,23 @@
 
 
 	function init_listeners_no_touch()
-	{
+	{	
+		document.querySelector("#mandelbrot-set").addEventListener("mouseenter", function(e)
+		{
+			persist_image = false;
+			
+			
+			
+			document.querySelector("#julia-set").setAttribute("width", small_image_size);
+			document.querySelector("#julia-set").setAttribute("height", small_image_size);
+			gl.viewport(0, 0, small_image_size, small_image_size);
+			
+			image_size = small_image_size;
+			num_iterations = small_num_iterations;
+		});
+		
+		
+		
 		document.querySelector("#mandelbrot-set").addEventListener("mousemove", function(e)
 		{
 			if (persist_image === false)
@@ -426,10 +357,8 @@
 				let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
 				let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
 				
-				current_a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-				current_b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
-				current_julia_size = small_julia_size;
-				current_num_iterations = small_julia_iterations;
+				a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
+				b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
 				
 				
 				
@@ -439,48 +368,16 @@
 				{
 					need_to_restart = false;
 					
-					window.requestAnimationFrame(draw_julia_set);
+					window.requestAnimationFrame(draw_frame);
 				}
 			}
 		});
 		
 		
 		
-		//On a click, make a much larger image.
 		document.querySelector("#mandelbrot-set").addEventListener("click", function(e)
 		{
-			let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
-			let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
-			
-			current_a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-			current_b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
-			current_julia_size = large_julia_size;
-			current_num_iterations = large_julia_iterations;
-			
-			document.querySelector("#a-input").value = Math.round(1000000 * current_a) / 1000000;
-			document.querySelector("#b-input").value = Math.round(1000000 * current_b) / 1000000;
-			
 			persist_image = true;
-			
-			change_resolution();
-			
-			
-			
-			draw_another_frame = true;
-			
-			if (need_to_restart)
-			{
-				need_to_restart = false;
-				
-				window.requestAnimationFrame(draw_julia_set);
-			}
-		});
-		
-		
-		
-		document.querySelector("#mandelbrot-set").addEventListener("mouseleave", function(e)
-		{
-			persist_image = false;
 		});
 	}
 
@@ -490,6 +387,21 @@
 	{
 		let last_touch_x = 0;
 		let last_touch_y = 0;
+		
+		
+		
+		document.querySelector("#mandelbrot-set").addEventListener("touchstart", function(e)
+		{
+			e.preventDefault();
+			
+			
+			document.querySelector("#julia-set").setAttribute("width", small_image_size);
+			document.querySelector("#julia-set").setAttribute("height", small_image_size);
+			gl.viewport(0, 0, small_image_size, small_image_size);
+			
+			image_size = small_image_size;
+			num_iterations = small_num_iterations;
+		}, false);
 		
 		
 		
@@ -503,10 +415,8 @@
 			last_touch_x = touch_x;
 			last_touch_y = touch_y;
 			
-			current_a = ((touch_x / small_canvas_size) - .5) * 3 - .75;
-			current_b = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * 3;
-			current_julia_size = small_julia_size;
-			current_num_iterations = small_julia_iterations;
+			a = ((touch_x / small_canvas_size) - .5) * 3 - .75;
+			b = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * 3;
 			
 			
 			
@@ -516,35 +426,7 @@
 			{
 				need_to_restart = false;
 				
-				window.requestAnimationFrame(draw_julia_set);
-			}
-		}, false);
-		
-		
-		
-		document.querySelector("#mandelbrot-set").addEventListener("touchend", function(e)
-		{
-			e.preventDefault();
-			
-			current_a = ((last_touch_x / small_canvas_size) - .5) * 3 - .75;
-			current_b = (((small_canvas_size - last_touch_y) / small_canvas_size) - .5) * 3;
-			current_julia_size = large_julia_size;
-			current_num_iterations = large_julia_iterations;
-			
-			document.querySelector("#a-input").value = Math.round(1000000 * current_a) / 1000000;
-			document.querySelector("#b-input").value = Math.round(1000000 * current_b) / 1000000;
-			
-			change_resolution();
-			
-			
-			
-			draw_another_frame = true;
-			
-			if (need_to_restart)
-			{
-				need_to_restart = false;
-				
-				window.requestAnimationFrame(draw_julia_set);
+				window.requestAnimationFrame(draw_frame);
 			}
 		}, false);
 	}
