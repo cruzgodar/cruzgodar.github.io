@@ -10,8 +10,6 @@
 	let num_iterations = 100;
 	let brightness_scale = 10;
 	
-	let num_pixels_at_max_history = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
-	
 	let small_canvas_size = 0;
 	let large_canvas_size = 0;
 

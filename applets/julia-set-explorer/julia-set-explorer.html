@@ -59,12 +59,6 @@
 		
 		<div style="height: 5vh"></div>
 		
-		<div data-aos="fade-up">
-			<p class="body-text">Enter values of \(a\) and \(b\), along with an image size in pixels, to generate an image of the Julia set for \(c = a + bi\).</p>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
 		<div class="text-box-row">
 			<div class="text-box-container" data-aos="fade-up">
 				<input id="a-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
@@ -127,8 +121,6 @@
 
 
 <script>
-	DEBUG = true;
-	
 	if (typeof current_url === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
