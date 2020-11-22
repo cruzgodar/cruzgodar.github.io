@@ -6,19 +6,19 @@
 	
 	let a = 0;
 	let b = 0;
-	let image_size = 500;
-	let num_iterations = 25;
+	let image_size = 1000;
+	let num_iterations = 100;
 	let brightness_scale = 10;
+	
+	let num_pixels_at_max_history = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
 	
 	let small_canvas_size = 0;
 	let large_canvas_size = 0;
 
 	let small_image_size = 1000;
 
-	let small_num_iterations = 50;
+	let small_num_iterations = 100;
 	let large_num_iterations = 200;
-	
-	let max_brightness_history = [];
 
 	let persist_image = false;
 	
@@ -101,17 +101,17 @@
 			
 			
 			
-			for (int iteration = 0; iteration < 200; iteration++)
+			for (int iteration = 0; iteration < 201; iteration++)
 			{
 				if (iteration == num_iterations)
 				{
-					break;
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					return;
 				}
 				
 				if (length(z) >= 2.0)
 				{
-					gl_FragColor = vec4(0.0, brightness / brightness_scale, brightness / brightness_scale, 1.0);
-					return;
+					break;
 				}
 				
 				z = vec2(z.x * z.x - z.y * z.y + a, 2.0 * z.x * z.y + b);
@@ -121,7 +121,7 @@
 			
 			
 			
-			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+			gl_FragColor = vec4(0.0, brightness / brightness_scale, brightness / brightness_scale, 1.0);
 		}
 	`;
 	
@@ -213,6 +213,35 @@
 		
 		
 		
+		let pixels = new Uint8Array(image_size * image_size * 4);
+		gl.readPixels(0, 0, image_size, image_size, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+		
+		let num_pixels_at_max = 0;
+		
+		for (let i = 0; i < image_size * image_size; i++)
+		{
+			let brightness = pixels[4 * i + 1];
+			
+			if (brightness === 255)
+			{
+				num_pixels_at_max++;
+			}
+		}
+		
+		
+		
+		if (num_pixels_at_max < .1 * image_size)
+		{
+			brightness_scale -= .5;
+		}
+		
+		else if (num_pixels_at_max > .2 * image_size)
+		{
+			brightness_scale += .5;
+		}
+		
+		
+		
 		if (draw_another_frame)
 		{
 			draw_another_frame = false;
@@ -241,24 +270,7 @@
 	init_listeners_no_touch();
 	init_listeners_touch();
 
-	
-	/*
-		max_brightness_history.push(brightness_array[Math.round(brightness_array.length * .999) - 1]);
-		
-		if (max_brightness_history.length > 10)
-		{
-			max_brightness_history.shift();
-		}
-		
-		max_brightness = 0;
-		
-		for (let i = 0; i < max_brightness_history.length; i++)
-		{
-			max_brightness += max_brightness_history[i];
-		}
-		
-		max_brightness /= max_brightness_history.length;
-	*/
+
 
 
 
@@ -291,16 +303,26 @@
 
 	function draw_high_res_julia()
 	{
-		a = parseFloat(document.querySelector("#a-input").value) || 0;
-		b = parseFloat(document.querySelector("#b-input").value) || 1;
+		a = parseFloat(document.querySelector("#a-input").value || 0);
+		b = parseFloat(document.querySelector("#b-input").value || 1);
 		image_size = parseFloat(document.querySelector("#dim-input").value) || 1000;
 		
-		document.querySelector("#output-canvas").setAttribute("width", dim);
-		document.querySelector("#output-canvas").setAttribute("height", dim);
+		document.querySelector("#julia-set").setAttribute("width", image_size);
+		document.querySelector("#julia-set").setAttribute("height", image_size);
+		gl.viewport(0, 0, image_size, image_size);
+		
+		num_iterations = large_num_iterations;
+		
+		document.querySelector("#output-canvas").setAttribute("width", image_size);
+		document.querySelector("#output-canvas").setAttribute("height", image_size);
 		
 		
 		
 		draw_frame();
+		
+		
+		
+		document.querySelector("#output-canvas").getContext("2d").drawImage(document.querySelector("#julia-set"), 0, 0);
 	}
 
 
@@ -326,7 +348,7 @@
 		
 		if (currently_touch_device)
 		{
-			document.querySelector("#instructions").innerHTML = "Drag along the Mandelbrot set to preview the corresponding Julia set, and release to generate a higher-resolution image.";
+			document.querySelector("#instructions").innerHTML = "Just drag along the Mandelbrot set to see the corresponding Julia set.";
 		}
 	}
 
@@ -378,6 +400,9 @@
 		document.querySelector("#mandelbrot-set").addEventListener("click", function(e)
 		{
 			persist_image = true;
+			
+			document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
+			document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
 		});
 	}
 
@@ -428,6 +453,16 @@
 				
 				window.requestAnimationFrame(draw_frame);
 			}
+		}, false);
+		
+		
+		
+		document.querySelector("#mandelbrot-set").addEventListener("touchend", function(e)
+		{
+			e.preventDefault();
+				
+			document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
+			document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
 		}, false);
 	}
 
