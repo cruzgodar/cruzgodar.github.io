@@ -362,13 +362,6 @@
 				document.querySelector("#julia-set").style.borderColor = "rgb(64, 64, 64)";
 			}
 		}
-		
-		
-		
-		if (currently_touch_device)
-		{
-			document.querySelector("#instructions").innerHTML = "Just drag along the Mandelbrot set to see the corresponding Julia set.";
-		}
 	}
 
 
