@@ -970,7 +970,7 @@
 	function update_parameters()
 	{
 		power_old = power;
-		power_delta = parseFloat(document.querySelector("#power-input").value) - power_old;
+		power_delta = parseFloat(document.querySelector("#power-input").value || 8) - power_old;
 		
 		if (power_old + power_delta < 1)
 		{
@@ -983,9 +983,9 @@
 		rotation_angle_y_old = rotation_angle_y;
 		rotation_angle_z_old = rotation_angle_z;
 		
-		rotation_angle_x_delta = parseFloat(document.querySelector("#rotation-angle-x-input").value) - rotation_angle_x_old;
-		rotation_angle_y_delta = parseFloat(document.querySelector("#rotation-angle-y-input").value) - rotation_angle_y_old;
-		rotation_angle_z_delta = parseFloat(document.querySelector("#rotation-angle-z-input").value) - rotation_angle_z_old;
+		rotation_angle_x_delta = parseFloat(document.querySelector("#rotation-angle-x-input").value || 0) - rotation_angle_x_old;
+		rotation_angle_y_delta = parseFloat(document.querySelector("#rotation-angle-y-input").value || 0) - rotation_angle_y_old;
+		rotation_angle_z_delta = parseFloat(document.querySelector("#rotation-angle-z-input").value || 0) - rotation_angle_z_old;
 		
 		
 		
