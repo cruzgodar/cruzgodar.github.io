@@ -26,6 +26,12 @@
 	}
 	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
+	
+	
+	
+	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+	
+	set_up_canvas_resizer();
 
 
 

@@ -12,13 +12,17 @@
 	
 	
 	
-	
-	
 	document.querySelector("#generate-button").addEventListener("click", request_snowflake);
 	
 	document.querySelector("#randomize-parameters-button").addEventListener("click", randomize_parameters);
 	
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
+	
+	
+	
+	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+	
+	set_up_canvas_resizer();
 	
 	
 	

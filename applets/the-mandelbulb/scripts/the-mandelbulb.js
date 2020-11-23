@@ -104,6 +104,19 @@
 	window.addEventListener("resize", fractals_resize);
 	setTimeout(fractals_resize, 500);
 	
+	
+	
+	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+	
+	applet_canvas_resize_callback = function()
+	{
+		canvas_size = document.querySelector("#output-canvas").offsetWidth;
+	};
+	
+	set_up_canvas_resizer();
+	
+	
+	
 	init_listeners();
 	
 	

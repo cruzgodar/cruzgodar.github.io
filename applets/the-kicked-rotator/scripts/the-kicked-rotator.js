@@ -35,6 +35,12 @@
 	
 	
 	
+	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+	
+	set_up_canvas_resizer();
+	
+	
+	
 	
 	
 	function request_kicked_rotator()

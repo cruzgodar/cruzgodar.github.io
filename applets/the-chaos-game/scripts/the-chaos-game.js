@@ -42,6 +42,14 @@
 	
 	
 	
+	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+	
+	set_up_canvas_resizer();
+	
+	
+	
+	
+	
 	function request_chaos_game()
 	{
 		let num_vertices = parseInt(document.querySelector("#num-vertices-input").value || 3);

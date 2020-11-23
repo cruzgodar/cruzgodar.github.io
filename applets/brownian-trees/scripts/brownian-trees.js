@@ -10,8 +10,6 @@
 	
 	let web_worker = null;
 	
-	let fern_graph = [];
-	
 	
 	
 	
@@ -34,6 +32,12 @@
 	{
 		alert_about_hardware_acceleration();
 	}
+	
+	
+	
+	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+	
+	set_up_canvas_resizer();
 	
 	
 	

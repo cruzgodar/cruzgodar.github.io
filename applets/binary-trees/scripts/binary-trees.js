@@ -62,6 +62,20 @@
 	
 	
 	
+	applet_canvases_to_resize = [document.querySelector("#binary-trees-plot"), document.querySelector("#branch-selector")];
+	
+	applet_canvas_resize_callback = function()
+	{
+		branch_selector_width = document.querySelector("#branch-selector").offsetWidth;
+		branch_selector_height = document.querySelector("#branch-selector").offsetHeight;
+		
+		binary_trees_resize();
+	};
+	
+	set_up_canvas_resizer();
+	
+	
+	
 	
 	
 	function draw_binary_tree()

@@ -105,6 +105,20 @@
 	
 	
 	
+	applet_canvases_to_resize = [document.querySelector("#quasi-fuchsian-groups-plot"), document.querySelector("#coefficient-selector")];
+	
+	applet_canvas_resize_callback = function()
+	{
+		coefficient_selector_width = document.querySelector("#coefficient-selector").offsetWidth;
+		coefficient_selector_height = document.querySelector("#coefficient-selector").offsetHeight;
+		
+		quasi_fuchsian_groups_resize();
+	};
+	
+	set_up_canvas_resizer();
+	
+	
+	
 	
 	
 	function draw_quasi_fuchsian_group()

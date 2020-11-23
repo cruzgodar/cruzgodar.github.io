@@ -82,6 +82,22 @@
 	
 	
 	
+	applet_canvases_to_resize = [document.querySelector("#newtons-method-plot"), document.querySelector("#root-selector")];
+	
+	applet_canvas_resize_callback = function()
+	{
+		canvas_size = document.querySelector("#newtons-method-plot").offsetWidth;
+		
+		root_selector_width = document.querySelector("#root-selector").offsetWidth;
+		root_selector_height = document.querySelector("#root-selector").offsetHeight;
+		
+		newtons_method_resize();
+	};
+	
+	set_up_canvas_resizer();
+	
+	
+	
 	
 	
 	function draw_newtons_method_plot()

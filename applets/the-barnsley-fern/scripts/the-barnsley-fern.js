@@ -37,6 +37,12 @@
 	
 	
 	
+	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+	
+	set_up_canvas_resizer();
+	
+	
+	
 	function request_fern_graph()
 	{
 		let num_iterations = 1000 * parseInt(document.querySelector("#num-iterations-input").value || 10000);

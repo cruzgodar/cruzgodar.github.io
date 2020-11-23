@@ -130,6 +130,17 @@
 	//As the user scrolls around the image, make tiny Julia set previews.
 	init_listeners_no_touch();
 	init_listeners_touch();
+	
+	
+	
+	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+	
+	applet_canvas_resize_callback = function()
+	{
+		large_canvas_size = document.querySelector("#output-canvas").offsetWidth;
+	};
+	
+	set_up_canvas_resizer();
 
 	
 	

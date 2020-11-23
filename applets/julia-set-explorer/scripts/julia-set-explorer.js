@@ -66,6 +66,17 @@
 	
 	
 	
+	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+	
+	applet_canvas_resize_callback = function()
+	{
+		large_canvas_size = document.querySelector("#output-canvas").offsetWidth;
+	};
+	
+	set_up_canvas_resizer();
+	
+	
+	
 	const vertex_shader_source = `
 		attribute vec3 position;
 		varying vec2 uv;

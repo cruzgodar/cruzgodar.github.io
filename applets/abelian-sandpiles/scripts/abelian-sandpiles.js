@@ -35,6 +35,12 @@
 	
 	
 	
+	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+	
+	set_up_canvas_resizer();
+	
+	
+	
 	function request_sandpile_graph()
 	{
 		let num_grains = parseInt(document.querySelector("#num-grains-input").value || 10000);

@@ -17,13 +17,16 @@
 {
 	position: absolute;
 	
-	width: 80vmin;
-	height: 80vmin;
+	width: 40vmin;
+	height: 40vmin;
 	margin: 0 auto;
+	margin-bottom: 40vmin;
 	
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 15px;
 	padding: 2px;
+	
+	transition: opacity .3s ease-in-out;
 	
 	user-select: none;
 	-webkit-user-select: none;
@@ -33,13 +36,16 @@
 {
 	position: absolute;
 	
-	width: 80vmin;
-	height: 80vmin;
+	width: 40vmin;
+	height: 40vmin;
 	margin: 0 auto;
+	margin-bottom: 40vmin;
 	
 	border: 2px solid rgba(0, 0, 0, 0);
 	border-radius: 15px;
 	padding: 2px;
+	
+	transition: opacity .3s ease-in-out;
 	
 	user-select: none;
 	-webkit-user-select: none;
