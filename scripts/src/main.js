@@ -185,7 +185,7 @@ async function entry_point(url)
 	window_width = window.innerWidth;
 	window_height = window.innerHeight;
 	
-	max_canvas_size = Math.min(.2 * window_width, .2 * window_height);
+	max_canvas_size = Math.min(.8 * window_width, .8 * window_height);
 	
 	resize_update();
 	

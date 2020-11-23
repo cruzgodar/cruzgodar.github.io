@@ -9,7 +9,7 @@ let max_canvas_size = null;
 
 window.addEventListener("resize", function()
 {
-	max_canvas_size = Math.min(.2 * window_width, .2 * window_height);
+	max_canvas_size = Math.min(.8 * window_width, .8 * window_height);
 });
 
 
@@ -24,11 +24,11 @@ function set_up_canvas_resizer()
 
 function resize_canvas()
 {
-	let amount_cut_off = applet_canvases_to_resize[0].getBoundingClientRect().top - max_canvas_size;
+	let amount_cut_off = applet_canvases_to_resize[0].getBoundingClientRect().top + max_canvas_size - window_height;
 	
 	
 	
-	if (amount_cut_off > 50 && canvas_is_small === false)
+	if (amount_cut_off > 20 && canvas_is_small === false)
 	{
 		canvas_is_small = true;
 		
@@ -52,7 +52,7 @@ function resize_canvas()
 	
 	
 	
-	else if (amount_cut_off < 50 && canvas_is_small === true)
+	else if (amount_cut_off < 20 && canvas_is_small === true)
 	{
 		canvas_is_small = false;
 		
