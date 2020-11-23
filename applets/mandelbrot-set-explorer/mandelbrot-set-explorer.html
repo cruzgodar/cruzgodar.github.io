@@ -1,4 +1,4 @@
-<head><title>The Mandelbulb</title></head>
+<head><title>Mandelbrot Set Explorer</title></head>
 
 <div style="height: 5vh"></div>
 
@@ -20,7 +20,7 @@
 	<div style="height: 2vh"></div>
 	
 	<div data-aos="fade-up">
-		<h1 class="heading-text">The Mandelbulb</h1>
+		<h1 class="heading-text">Mandelbrot Set Explorer</h1>
 	</div>
 </header>
 
@@ -31,89 +31,29 @@
 <main>
 	<section>
 		<div data-aos="fade-up">
-			<p class="body-text">
-				The holy grail of 3D fractals, the Mandelbulb is a landmark accomplishment. Translating the <a href="/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html" onclick="redirect('/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html')">Mandelbrot set</a> to three dimensions is impossible to do canonically, since there is no appropriate 3-dimensional number system analogous to the complex numbers. Nevertheless, Daniel White and Paul Nylander managed to use spherical coordinates to produce something spectacular in its own right, showing just what 3D fractals could be and igniting the search for more.
-			</p>
+			<p class="body-text">It&#x2019;s hard to find a fractal more famous than the Mandelbrot set. It falls into a class of fractals called <dfn>Iterated Function Systems</dfn>, which all revolve around applying functions to points repeatedly and analyzing the output. Here, those points are in the complex plane, and the function is \(f(z) = z^2 + c\), where \(c\) is fixed at the initial value of the point. For example, the point \(-i\) gives \(f(i) = (-i)^2 + i = -1 + i\) when run through the function, and then \(-1 + i\) gives \(f(-1 + i) = (-1 + i)^2 + i = -i\) again. The function will flip-flop between those two numbers forever, and what&#x2019;s relevant to us is that their magnitudes will never blow up to infinity. Starting points with that property are the ones in the Mandelbrot set, and we color them black. For all the points that do induce sequences with unbounded magnitude, we color them according to how quickly those sequence grow &mdash; bright for slow and dark for fast.</p>
 		</div>
 		
 		<br>
 		
 		<div data-aos="fade-up">
-			<p class="body-text">
-				The typical Mandelbulb uses a power-8 formula, but any power larger than 1 works too. Like the <a href="/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html" onclick="redirect('/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html')">Kaleidoscopic IFS fractals</a>, we can introduce a rotation into the system for fun, and of course, just like the Mandelbrot set has its <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julias</a>, every point in space gives rise to a Juliabulb. The button shows the one corresponding to your current location.
-			</p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text">
-				Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
-			</p>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-box-row-2">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="dim-input" class="text-box no-floating-footer" type="text" value="500" tabindex="1">
-				<label for="dim-input">
-					<p class="body-text">Resolution</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="power-input" class="text-box no-floating-footer" type="text" value="8" tabindex="1">
-				<label for="power-input">
-					<p class="body-text">Power</p>
-				</label>
-			</div>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="text-box-row-3">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="rotation-angle-x-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="rotation-angle-x-input">
-					<p class="body-text">\(\theta_x\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="rotation-angle-y-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="rotation-angle-y-input">
-					<p class="body-text">\(\theta_y\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="rotation-angle-z-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="rotation-angle-z-input">
-					<p class="body-text">\(\theta_z\)</p>
-				</label>
-			</div>
+			<p class="body-text">Of course, the Mandelbrot set is most well-known for its tiny features only visible by zooming in. Drag on the scene to look around, and use the W and S keys or touch with two or three fingers to zoom in and out.</p>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
 		<div class="center-content">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1400" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="randomize-parameters-button" tabindex="-1">Randomize Rotation</button>
-			</div>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="center-content">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1900" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="switch-bulb-button" tabindex="-1">Switch to Juliabulb</button>
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="image-size-input" class="text-box no-floating-footer" type="text" value="500" tabindex="1">
+				<label for="image-size-input">
+					<p class="body-text">Image Size</p>
+				</label>
 			</div>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="2400">
+		<div class="center-content" data-aos="fade-in" data-aos-delay="900">
 			<canvas id="output-canvas" class="no-floating-footer"></canvas>
 		</div>
 	</section>
@@ -159,8 +99,6 @@
 
 
 <script>
-	DEBUG = true;
-	
 	if (typeof current_url === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
@@ -170,7 +108,7 @@
 	
 	page_settings = 
 	{
-		"title": "The Mandelbulb",
+		"title": "Mandelbrot Set Explorer",
 		
 		"banner_page": false,
 		"num_banners": 0,

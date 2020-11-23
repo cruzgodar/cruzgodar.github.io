@@ -14,8 +14,10 @@
 	let mouse_x = 0;
 	let mouse_y = 0;
 	
+	let currently_dragging = false;
 	let zooming_in = false;
 	let zooming_out = false;
+	let pressing_shift = false;
 	
 	
 	
@@ -27,7 +29,7 @@
 	
 	
 	
-	let image_size = 1000;
+	let image_size = 500;
 	let num_iterations = 50;
 	
 	
@@ -35,7 +37,7 @@
 	document.querySelector("#output-canvas").setAttribute("width", image_size);
 	document.querySelector("#output-canvas").setAttribute("height", image_size);
 	
-	document.querySelector("#dim-input").addEventListener("input", change_resolution);
+	document.querySelector("#image-size-input").addEventListener("input", change_resolution);
 	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
 	
 	
@@ -270,8 +272,14 @@
 	{
 		document.querySelector("#output-canvas").addEventListener("mousedown", function(e)
 		{
+			e.preventDefault();
+			
+			
+			
 			mouse_x = e.clientX;
 			mouse_y = e.clientY;
+			
+			currently_dragging = true;
 			
 			if (!currently_drawing)
 			{
@@ -284,7 +292,7 @@
 		
 		document.querySelector("#output-canvas").addEventListener("mousemove", function(e)
 		{
-			if (currently_drawing)
+			if (currently_dragging)
 			{
 				e.preventDefault();
 				
@@ -308,7 +316,9 @@
 		
 		document.documentElement.addEventListener("mouseup", function(e)
 		{
-			currently_drawing = false;
+			currently_dragging = false;
+			
+			currently_drawing = currently_dragging || zooming_in || zooming_out;
 		});
 		
 		
@@ -317,6 +327,8 @@
 		{
 			mouse_x = e.touches[0].clientX;
 			mouse_y = e.touches[0].clientY;
+			
+			currently_dragging = true;
 			
 			if (e.touches.length === 2)
 			{
@@ -393,6 +405,62 @@
 				}
 			}
 		});
+		
+		
+		
+		document.documentElement.addEventListener("keydown", function(e)
+		{
+			//W
+			if (e.keyCode === 87)
+			{
+				zooming_in = true;
+				zooming_out = false;
+				
+				if (!currently_drawing)
+				{
+					currently_drawing = true;
+					
+					window.requestAnimationFrame(draw_frame);
+				}
+			}
+			
+			//S
+			else if (e.keyCode === 83)
+			{
+				zooming_in = false;
+				zooming_out = true;
+				
+				if (!currently_drawing)
+				{
+					currently_drawing = true;
+					
+					window.requestAnimationFrame(draw_frame);
+				}
+			}
+		});
+		
+		
+		
+		document.documentElement.addEventListener("keyup", function(e)
+		{
+			//W
+			if (e.keyCode === 87)
+			{
+				zooming_in = false;
+				zooming_out = false;
+				
+				currently_drawing = currently_dragging || zooming_in || zooming_out;
+			}
+			
+			//S
+			else if (e.keyCode === 83)
+			{
+				zooming_in = false;
+				zooming_out = false;
+				
+				currently_drawing = currently_dragging || zooming_in || zooming_out;
+			}
+		});
 	}
 	
 	
@@ -427,7 +495,7 @@
 	
 	function change_resolution()
 	{
-		image_size = parseInt(document.querySelector("#dim-input").value || 500);
+		image_size = parseInt(document.querySelector("#image-size-input").value || 500);
 		
 		if (image_size < 200)
 		{
@@ -457,6 +525,8 @@
 		
 		image_size = parseInt(document.querySelector("#high-res-dim-input").value || 2000);
 		
+		num_iterations += 50;
+		
 		document.querySelector("#output-canvas").setAttribute("width", image_size);
 		document.querySelector("#output-canvas").setAttribute("height", image_size);
 		
@@ -468,15 +538,7 @@
 		
 		let link = document.createElement("a");
 		
-		if (julia_proportion === 0)
-		{
-			link.download = "the-mandelbulb.png";
-		}
-		
-		else
-		{
-			link.download = "a-juliabulb.png";
-		}
+		link.download = "a-mandelbrot-zoom.png";
 		
 		link.href = document.querySelector("#output-canvas").toDataURL();
 		
@@ -487,6 +549,8 @@
 		
 		
 		image_size = temp;
+		
+		num_iterations -= 50;
 		
 		document.querySelector("#output-canvas").setAttribute("width", image_size);
 		document.querySelector("#output-canvas").setAttribute("height", image_size);
