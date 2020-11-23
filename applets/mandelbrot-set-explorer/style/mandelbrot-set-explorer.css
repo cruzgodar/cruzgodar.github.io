@@ -1,46 +1,38 @@
-#container
+#output-canvas
 {
+	touch-action: none;
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+#switch-bulb-button
+{
+	transition: filter .15s ease-in-out, opacity .3s ease-in-out;
+}
+
+.text-box-row-2, .text-box-row-3
+{
+	margin: 0 auto;
 	display: flex;
 	justify-content: space-between;
-	width: 70vw;
-	margin: 0 auto;
 }
 
-#mandelbrot-set, #mandelbrot-zoom
+.text-box-row-2
 {
-	width: 30vw;
-	height: 30vw;
+	width: 250px;
 }
 
-#mandelbrot-set, #mandelbrot-zoom
+.text-box-row-3
 {
-	border: 2px solid rgb(127, 127, 127);
-	border-radius: 15px;
-	padding: 2px;
-}
-
-#instructions
-{
-	display: inline;
+	width: 400px;
 }
 
 
 
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
-	#container
+	.text-box-row-3
 	{
-		flex-direction: column;
-	}
-	
-	#mandelbrot-set, #mandelbrot-zoom
-	{
-		width: 70vw;
-		height: 70vw;
-	}
-	
-	#mandelbrot-set
-	{
-		margin-bottom: 5vw;
+		width: 350px;
 	}
 }
