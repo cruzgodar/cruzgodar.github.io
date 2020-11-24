@@ -28,7 +28,7 @@ function resize_canvas()
 	
 	
 	
-	if (amount_cut_off > max_canvas_size * .375 && canvas_is_small === false)
+	if (amount_cut_off > max_canvas_size * .25 && canvas_is_small === false)
 	{
 		canvas_is_small = true;
 		
@@ -52,7 +52,7 @@ function resize_canvas()
 	
 	
 	
-	else if (amount_cut_off < max_canvas_size * .375 && canvas_is_small === true)
+	else if (amount_cut_off < max_canvas_size * .25 && canvas_is_small === true)
 	{
 		canvas_is_small = false;
 		
