@@ -10,14 +10,18 @@
 	
 	let currently_drawing = false;
 	let stabilize_brightness_scale = false;
+	let brightness_stabilization_direction = 0;
 	
 	let mouse_x = 0;
 	let mouse_y = 0;
+	let touch_distance = 0;
 	
 	let currently_dragging = false;
 	let zooming_in = false;
 	let zooming_out = false;
 	let pressing_shift = false;
+	
+	let was_recently_pinching = 0;
 	
 	
 	
@@ -237,19 +241,50 @@
 		
 		
 		
-		if (num_pixels_at_max < .1 * image_size)
+		let changed_brightness_scale = false;
+		
+		if (num_pixels_at_max < .1 * image_size && brightness_stabilization_direction !== 1)
 		{
 			brightness_scale -= 2;
+			
+			if (stabilize_brightness_scale)
+			{
+				brightness_stabilization_direction = -1;
+			}
+			
+			changed_brightness_scale = true;
 		}
 		
-		else if (num_pixels_at_max > .2 * image_size)
+		else if (num_pixels_at_max > .2 * image_size && brightness_stabilization_direction !== -1)
 		{
 			brightness_scale += 2;
+			
+			if (stabilize_brightness_scale)
+			{
+				brightness_stabilization_direction = 1;
+			}
+			
+			changed_brightness_scale = true;
 		}
 		
 		
 		
-		if (currently_drawing)
+		if (stabilize_brightness_scale)
+		{
+			if (changed_brightness_scale)
+			{
+				window.requestAnimationFrame(draw_frame);
+			}
+			
+			else
+			{
+				brightness_stabilization_direction = 0;
+				
+				stabilize_brightness_scale = false;
+			}
+		}
+		
+		else if (currently_drawing)
 		{
 			update_parameters();
 			
@@ -281,7 +316,7 @@
 			
 			currently_dragging = true;
 			
-			if (!currently_drawing)
+			if (!currently_drawing && !stabilize_brightness_scale)
 			{
 				currently_drawing = true;
 				window.requestAnimationFrame(draw_frame);
@@ -330,23 +365,12 @@
 			
 			currently_dragging = true;
 			
-			if (e.touches.length === 2)
-			{
-				zooming_in = true;
-				zooming_out = false;
-			}
-			
-			else if (e.touches.length === 3)
-			{
-				zooming_in = false;
-				zooming_out = true;
-			}
-			
 			
 			
 			if (!currently_drawing)
 			{
 				currently_drawing = true;
+				stabilize_brightness_scale = false;
 				
 				window.requestAnimationFrame(draw_frame);
 			}
@@ -360,13 +384,87 @@
 			
 			
 			
+			if (stabilize_brightness_scale)
+			{
+				return;
+			}
+			
+			
+			
 			let new_mouse_x = e.touches[0].clientX;
 			let new_mouse_y = e.touches[0].clientY;
+			
+			
+			
+			if (e.touches.length >= 2)
+			{
+				was_recently_pinching = 10;
+				
+				let x_distance = e.touches[0].clientX - e.touches[1].clientX;
+				let y_distance = e.touches[0].clientY - e.touches[1].clientY;
+				
+				let new_touch_distance = Math.sqrt(x_distance * x_distance + y_distance * y_distance);
+				
+				let touch_distance_delta = new_touch_distance - touch_distance;
+				
+				touch_distance = new_touch_distance;
+				
+				if (Math.abs(touch_distance_delta) > 20)
+				{
+					return;
+				}
+				
+				
+				
+				let rect = document.querySelector("#output-canvas").getBoundingClientRect();
+				
+				let touch_center_x_proportion = ((e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left) / canvas_size;
+				let touch_center_y_proportion = ((e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top) / canvas_size;
+				
+				let fixed_point_x = (touch_center_x_proportion * box_size - box_size / 2) + center_x;
+				let fixed_point_y = (box_size / 2 - touch_center_y_proportion * box_size) + center_y;
+				
+				
+				
+				let increment = touch_distance_delta / 2;
+				
+				if (zoom_level + increment >= 0)
+				{
+					box_size /= Math.pow(1.02, increment);
+					zoom_level += increment;
+					
+					num_iterations = zoom_level * 3 + 50;
+				}
+				
+				if (zoom_level < 1)
+				{
+					brightness_scale = 25;
+				}
+				
+				
+				
+				center_x = fixed_point_x - (touch_center_x_proportion * box_size - box_size / 2);
+				center_y = fixed_point_y - (box_size / 2 - touch_center_y_proportion * box_size);
+			}
+			
+			
+			
+			else
+			{
+				was_recently_pinching--;
+				
+				if (was_recently_pinching < 0)
+				{
+					was_recently_pinching = 0;
+				}
+			}
+			
+			
 			
 			let mouse_x_delta = new_mouse_x - mouse_x;
 			let mouse_y_delta = new_mouse_y - mouse_y;
 			
-			if (Math.abs(mouse_x_delta) > 100 || Math.abs(mouse_y_delta) > 100)
+			if (was_recently_pinching && (Math.abs(mouse_x_delta) > 50 || Math.abs(mouse_y_delta) > 50))
 			{
 				return;
 			}
@@ -382,28 +480,20 @@
 		
 		document.querySelector("#output-canvas").addEventListener("touchend", function(e)
 		{
-			if (e.touches.length === 2)
+			if (e.touches.length === 0)
 			{
-				zooming_in = true;
-				zooming_out = false;
+				currently_drawing = false;
 			}
 			
-			else if (e.touches.length === 3)
+			setTimeout(function()
 			{
-				zooming_in = false;
-				zooming_out = true;
-			}
-			
-			else
-			{
-				zooming_in = false;
-				zooming_out = false;
-				
-				if (e.touches.length === 0)
+				if (!currently_drawing && !stabilize_brightness_scale)
 				{
-					currently_drawing = false;
+					stabilize_brightness_scale = true;
+					
+					window.requestAnimationFrame(draw_frame);
 				}
-			}
+			}, 500);
 		});
 		
 		
@@ -419,6 +509,7 @@
 				if (!currently_drawing)
 				{
 					currently_drawing = true;
+					stabilize_brightness_scale = false;
 					
 					window.requestAnimationFrame(draw_frame);
 				}
@@ -433,6 +524,7 @@
 				if (!currently_drawing)
 				{
 					currently_drawing = true;
+					stabilize_brightness_scale = false;
 					
 					window.requestAnimationFrame(draw_frame);
 				}
@@ -475,12 +567,17 @@
 			num_iterations = zoom_level * 3 + 50;
 		}
 		
-		else if (zooming_out && zoom_level > 1)
+		else if (zooming_out && zoom_level >= 1)
 		{
 			box_size *= 1.02;
 			zoom_level--;
 			
 			num_iterations = zoom_level * 3 + 50;
+			
+			if (zoom_level < 1)
+			{
+				brightness_scale = 25;
+			}
 		}
 	}
 	
