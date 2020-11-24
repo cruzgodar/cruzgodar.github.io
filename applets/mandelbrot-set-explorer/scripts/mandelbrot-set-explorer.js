@@ -11,10 +11,12 @@
 	let currently_drawing = false;
 	let stabilize_brightness_scale = false;
 	let brightness_stabilization_direction = 0;
+	let timeout_id = null;
 	
 	let mouse_x = 0;
 	let mouse_y = 0;
 	let touch_distance = 0;
+	let wheel_cooldown = 0;
 	
 	let currently_dragging = false;
 	let zooming_in = false;
@@ -286,8 +288,6 @@
 		
 		else if (currently_drawing)
 		{
-			update_parameters();
-			
 			window.requestAnimationFrame(draw_frame);
 		}
 	}
@@ -305,279 +305,271 @@
 	
 	function init_listeners()
 	{
-		document.querySelector("#output-canvas").addEventListener("mousedown", function(e)
-		{
-			e.preventDefault();
-			
-			
-			
-			mouse_x = e.clientX;
-			mouse_y = e.clientY;
-			
-			currently_dragging = true;
-			
-			if (!currently_drawing && !stabilize_brightness_scale)
-			{
-				currently_drawing = true;
-				window.requestAnimationFrame(draw_frame);
-			}
-		});
+		document.querySelector("#output-canvas").addEventListener("mousedown", handle_mousedown_event);
 		
+		document.documentElement.addEventListener("mousemove", handle_mousemove_event);
+		temporary_handlers["mousemove"].push(handle_mousemove_event);
 		
+		document.documentElement.addEventListener("mouseup", handle_mouseup_event);
+		temporary_handlers["mouseup"].push(handle_mouseup_event);
 		
-		document.querySelector("#output-canvas").addEventListener("mousemove", function(e)
-		{
-			if (currently_dragging)
-			{
-				e.preventDefault();
-				
-				
-				
-				let new_mouse_x = e.clientX;
-				let new_mouse_y = e.clientY;
-				
-				let mouse_x_delta = new_mouse_x - mouse_x;
-				let mouse_y_delta = new_mouse_y - mouse_y;
-				
-				center_x -= mouse_x_delta / canvas_size * box_size;
-				center_y += mouse_y_delta / canvas_size * box_size;
-				
-				mouse_x = new_mouse_x;
-				mouse_y = new_mouse_y;
-			}
-		});
+		document.querySelector("#output-canvas").addEventListener("touchstart", handle_touchstart_event);
 		
+		document.querySelector("#output-canvas").addEventListener("touchmove", handle_touchmove_event);
 		
+		document.querySelector("#output-canvas").addEventListener("touchend", handle_touchend_event);
 		
-		document.documentElement.addEventListener("mouseup", function(e)
-		{
-			currently_dragging = false;
-			
-			currently_drawing = currently_dragging || zooming_in || zooming_out;
-		});
-		
-		
-		
-		document.querySelector("#output-canvas").addEventListener("touchstart", function(e)
-		{
-			mouse_x = e.touches[0].clientX;
-			mouse_y = e.touches[0].clientY;
-			
-			currently_dragging = true;
-			
-			
-			
-			if (!currently_drawing)
-			{
-				currently_drawing = true;
-				stabilize_brightness_scale = false;
-				
-				window.requestAnimationFrame(draw_frame);
-			}
-		});
-		
-		
-		
-		document.querySelector("#output-canvas").addEventListener("touchmove", function(e)
-		{
-			e.preventDefault();
-			
-			
-			
-			if (stabilize_brightness_scale)
-			{
-				return;
-			}
-			
-			
-			
-			let new_mouse_x = e.touches[0].clientX;
-			let new_mouse_y = e.touches[0].clientY;
-			
-			
-			
-			if (e.touches.length >= 2)
-			{
-				was_recently_pinching = 10;
-				
-				let x_distance = e.touches[0].clientX - e.touches[1].clientX;
-				let y_distance = e.touches[0].clientY - e.touches[1].clientY;
-				
-				let new_touch_distance = Math.sqrt(x_distance * x_distance + y_distance * y_distance);
-				
-				let touch_distance_delta = new_touch_distance - touch_distance;
-				
-				touch_distance = new_touch_distance;
-				
-				if (Math.abs(touch_distance_delta) > 20)
-				{
-					return;
-				}
-				
-				
-				
-				let rect = document.querySelector("#output-canvas").getBoundingClientRect();
-				
-				let touch_center_x_proportion = ((e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left) / canvas_size;
-				let touch_center_y_proportion = ((e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top) / canvas_size;
-				
-				let fixed_point_x = (touch_center_x_proportion * box_size - box_size / 2) + center_x;
-				let fixed_point_y = (box_size / 2 - touch_center_y_proportion * box_size) + center_y;
-				
-				
-				
-				let increment = touch_distance_delta / 2;
-				
-				if (zoom_level + increment >= 0)
-				{
-					box_size /= Math.pow(1.02, increment);
-					zoom_level += increment;
-					
-					num_iterations = zoom_level * 3 + 50;
-				}
-				
-				if (zoom_level < 1)
-				{
-					brightness_scale = 25;
-				}
-				
-				
-				
-				center_x = fixed_point_x - (touch_center_x_proportion * box_size - box_size / 2);
-				center_y = fixed_point_y - (box_size / 2 - touch_center_y_proportion * box_size);
-			}
-			
-			
-			
-			else
-			{
-				was_recently_pinching--;
-				
-				if (was_recently_pinching < 0)
-				{
-					was_recently_pinching = 0;
-				}
-			}
-			
-			
-			
-			let mouse_x_delta = new_mouse_x - mouse_x;
-			let mouse_y_delta = new_mouse_y - mouse_y;
-			
-			if (was_recently_pinching && (Math.abs(mouse_x_delta) > 50 || Math.abs(mouse_y_delta) > 50))
-			{
-				return;
-			}
-			
-			center_x -= mouse_x_delta / canvas_size * box_size;
-			center_y += mouse_y_delta / canvas_size * box_size;
-			
-			mouse_x = new_mouse_x;
-			mouse_y = new_mouse_y;
-		});
-		
-		
-		
-		document.querySelector("#output-canvas").addEventListener("touchend", function(e)
-		{
-			if (e.touches.length === 0)
-			{
-				currently_drawing = false;
-			}
-			
-			setTimeout(function()
-			{
-				if (!currently_drawing && !stabilize_brightness_scale)
-				{
-					stabilize_brightness_scale = true;
-					
-					window.requestAnimationFrame(draw_frame);
-				}
-			}, 500);
-		});
-		
-		
-		
-		document.documentElement.addEventListener("keydown", function(e)
-		{
-			//W
-			if (e.keyCode === 87)
-			{
-				zooming_in = true;
-				zooming_out = false;
-				
-				if (!currently_drawing)
-				{
-					currently_drawing = true;
-					stabilize_brightness_scale = false;
-					
-					window.requestAnimationFrame(draw_frame);
-				}
-			}
-			
-			//S
-			else if (e.keyCode === 83)
-			{
-				zooming_in = false;
-				zooming_out = true;
-				
-				if (!currently_drawing)
-				{
-					currently_drawing = true;
-					stabilize_brightness_scale = false;
-					
-					window.requestAnimationFrame(draw_frame);
-				}
-			}
-		});
-		
-		
-		
-		document.documentElement.addEventListener("keyup", function(e)
-		{
-			//W
-			if (e.keyCode === 87)
-			{
-				zooming_in = false;
-				zooming_out = false;
-				
-				currently_drawing = currently_dragging || zooming_in || zooming_out;
-			}
-			
-			//S
-			else if (e.keyCode === 83)
-			{
-				zooming_in = false;
-				zooming_out = false;
-				
-				currently_drawing = currently_dragging || zooming_in || zooming_out;
-			}
-		});
+		window.addEventListener("wheel", handle_wheel_event, {passive: false});
+		temporary_handlers["wheel"].push(handle_wheel_event);
 	}
 	
 	
 	
-	function update_parameters()
+	function handle_mousedown_event(e)
 	{
-		if (zooming_in)
+		e.preventDefault();
+		
+		mouse_x = e.clientX;
+		mouse_y = e.clientY;
+		
+		currently_dragging = true;
+		
+		if (!currently_drawing && !stabilize_brightness_scale)
 		{
-			box_size /= 1.02;
-			zoom_level++;
+			currently_drawing = true;
+			window.requestAnimationFrame(draw_frame);
+		}
+	}
+	
+	
+	
+	function handle_mousemove_event(e)
+	{
+		let new_mouse_x = e.clientX;
+		let new_mouse_y = e.clientY;
+		
+		let mouse_x_delta = new_mouse_x - mouse_x;
+		let mouse_y_delta = new_mouse_y - mouse_y;
+		
+		mouse_x = new_mouse_x;
+		mouse_y = new_mouse_y;
+		
+		
+		
+		if (currently_dragging)
+		{
+			e.preventDefault();
 			
-			num_iterations = zoom_level * 3 + 50;
+			center_x -= mouse_x_delta / canvas_size * box_size;
+			center_y += mouse_y_delta / canvas_size * box_size;
+		}
+	}
+	
+	
+	
+	function handle_mouseup_event(e)
+	{
+		currently_dragging = false;
+		
+		currently_drawing = currently_dragging;
+	}
+	
+	
+	
+	function handle_touchstart_event(e)
+	{
+		mouse_x = e.touches[0].clientX;
+		mouse_y = e.touches[0].clientY;
+		
+		currently_dragging = true;
+		
+		
+		
+		if (!currently_drawing)
+		{
+			currently_drawing = true;
+			stabilize_brightness_scale = false;
+			
+			window.requestAnimationFrame(draw_frame);
+		}
+	}
+	
+	
+	
+	function handle_touchmove_event(e)
+	{
+		e.preventDefault();
+		
+		
+		
+		if (stabilize_brightness_scale)
+		{
+			return;
 		}
 		
-		else if (zooming_out && zoom_level >= 1)
+		
+		
+		let new_mouse_x = e.touches[0].clientX;
+		let new_mouse_y = e.touches[0].clientY;
+		
+		
+		
+		if (e.touches.length >= 2)
 		{
-			box_size *= 1.02;
-			zoom_level--;
+			was_recently_pinching = 10;
 			
-			num_iterations = zoom_level * 3 + 50;
+			let x_distance = e.touches[0].clientX - e.touches[1].clientX;
+			let y_distance = e.touches[0].clientY - e.touches[1].clientY;
+			
+			let new_touch_distance = Math.sqrt(x_distance * x_distance + y_distance * y_distance);
+			
+			let touch_distance_delta = new_touch_distance - touch_distance;
+			
+			touch_distance = new_touch_distance;
+			
+			if (Math.abs(touch_distance_delta) > 20)
+			{
+				return;
+			}
+			
+			
+			
+			let rect = document.querySelector("#output-canvas").getBoundingClientRect();
+			
+			let touch_center_x_proportion = ((e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left) / canvas_size;
+			let touch_center_y_proportion = ((e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top) / canvas_size;
+			
+			let fixed_point_x = (touch_center_x_proportion * box_size - box_size / 2) + center_x;
+			let fixed_point_y = (box_size / 2 - touch_center_y_proportion * box_size) + center_y;
+			
+			
+			
+			let increment = touch_distance_delta / 2;
+			
+			if (zoom_level + increment >= 0)
+			{
+				zoom_level += increment;
+				
+				box_size = 3 / Math.pow(1.02, zoom_level);
+				
+				num_iterations = zoom_level * 3 + 50;
+			}
 			
 			if (zoom_level < 1)
 			{
 				brightness_scale = 25;
 			}
+			
+			
+			
+			center_x = fixed_point_x - (touch_center_x_proportion * box_size - box_size / 2);
+			center_y = fixed_point_y - (box_size / 2 - touch_center_y_proportion * box_size);
+		}
+		
+		
+		
+		else
+		{
+			was_recently_pinching--;
+			
+			if (was_recently_pinching < 0)
+			{
+				was_recently_pinching = 0;
+			}
+		}
+		
+		
+		
+		let mouse_x_delta = new_mouse_x - mouse_x;
+		let mouse_y_delta = new_mouse_y - mouse_y;
+		
+		if (was_recently_pinching && (Math.abs(mouse_x_delta) > 50 || Math.abs(mouse_y_delta) > 50))
+		{
+			return;
+		}
+		
+		center_x -= mouse_x_delta / canvas_size * box_size;
+		center_y += mouse_y_delta / canvas_size * box_size;
+		
+		mouse_x = new_mouse_x;
+		mouse_y = new_mouse_y;
+	}
+	
+	
+	
+	function handle_touchend_event(e)
+	{
+		if (e.touches.length === 0)
+		{
+			currently_drawing = false;
+		}
+		
+		setTimeout(function()
+		{
+			if (!currently_drawing && !stabilize_brightness_scale)
+			{
+				stabilize_brightness_scale = true;
+				
+				window.requestAnimationFrame(draw_frame);
+			}
+		}, 500);
+	}
+	
+	
+	
+	function handle_wheel_event(e)
+	{
+		if (document.elementFromPoint(mouse_x, mouse_y).id === "output-canvas")
+		{
+			e.preventDefault();
+			
+			zoom_level -= e.deltaY / 10;
+			
+			if (zoom_level < 1)
+			{
+				zoom_level = 1;
+				
+				brightness_scale = 25;
+			}
+			
+			
+			
+			let rect = document.querySelector("#output-canvas").getBoundingClientRect();
+			
+			let mouse_x_proportion = (mouse_x - rect.left) / canvas_size;
+			let mouse_y_proportion = (mouse_y - rect.top) / canvas_size;
+			
+			let fixed_point_x = (mouse_x_proportion * box_size - box_size / 2) + center_x;
+			let fixed_point_y = (box_size / 2 - mouse_y_proportion * box_size) + center_y;
+			
+			
+			
+			box_size = 3 / Math.pow(1.02, zoom_level);
+				
+			num_iterations = zoom_level * 3 + 50;
+			
+			
+			
+			center_x = fixed_point_x - (mouse_x_proportion * box_size - box_size / 2);
+			center_y = fixed_point_y - (box_size / 2 - mouse_y_proportion * box_size);
+			
+			
+			
+			window.requestAnimationFrame(draw_frame);
+			
+			
+			
+			try {clearTimeout(timeout_id);}
+			catch(ex) {}
+			
+			timeout_id = setTimeout(function()
+			{
+				stabilize_brightness_scale = true;
+				
+				brightness_stabilization_direction = 0;
+				
+				window.requestAnimationFrame(draw_frame);
+			}, 500);
 		}
 	}
 	

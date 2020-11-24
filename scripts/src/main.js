@@ -41,6 +41,7 @@ let temporary_handlers =
 {
 	"scroll": [],
 	"resize": [],
+	"wheel": [],
 	
 	"touchstart": [],
 	"touchmove": [],
