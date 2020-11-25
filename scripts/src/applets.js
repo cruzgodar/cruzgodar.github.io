@@ -45,7 +45,8 @@ function resize_canvas()
 				
 				applet_canvases_to_resize[i].style.opacity = 1;
 				
-				applet_canvas_resize_callback();
+				try {applet_canvas_resize_callback();}
+				catch(ex) {}
 			}, 300);
 		}
 	}
@@ -69,7 +70,8 @@ function resize_canvas()
 				
 				applet_canvases_to_resize[i].style.opacity = 1;
 				
-				applet_canvas_resize_callback();
+				try {applet_canvas_resize_callback();}
+				catch(ex) {}
 			}, 300);
 		}
 	}

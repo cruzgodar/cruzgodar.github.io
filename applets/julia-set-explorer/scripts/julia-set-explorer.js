@@ -190,6 +190,11 @@
 		
 		
 		gl.viewport(0, 0, image_size, image_size);
+		
+		
+		
+		init_listeners_no_touch();
+		init_listeners_touch();
 	}
 	
 	
@@ -293,12 +298,6 @@
 	{
 		setTimeout(setup_webgl, 500);
 	});
-
-
-
-	//As the user scrolls around the image, make tiny Julia set previews.
-	init_listeners_no_touch();
-	init_listeners_touch();
 
 
 
