@@ -4,15 +4,14 @@
 	
 	
 	
-	let canvas_size = null;
-	let last_canvas_size = 0;
+	let image_size = 500;
 	
 	let current_roots = [];
 	let last_roots = [];
 	
-	let num_iterations = 100;
+	let num_iterations = 50;
 	
-	let ctx = document.querySelector("#newtons-method-plot").getContext("2d", {alpha: false});
+	let gl = document.querySelector("#newtons-method-plot").getContext("webgl");
 	
 	let web_worker = null;
 	
@@ -67,7 +66,7 @@
 
 	document.querySelector("#add-marker-button").addEventListener("click", add_marker);
 	document.querySelector("#spread-markers-button").addEventListener("click", spread_roots);
-	document.querySelector("#generate-high-res-plot-button").addEventListener("click", draw_high_res_plot);
+	document.querySelector("#generate-high-res-plot-button").addEventListener("click", draw_frame);
 	
 	document.querySelector("#dim-input").addEventListener("keydown", function(e)
 	{
@@ -86,8 +85,6 @@
 	
 	applet_canvas_resize_callback = function()
 	{
-		canvas_size = document.querySelector("#newtons-method-plot").offsetWidth;
-		
 		root_selector_width = document.querySelector("#root-selector").offsetWidth;
 		root_selector_height = document.querySelector("#root-selector").offsetHeight;
 		
@@ -100,358 +97,277 @@
 	
 	
 	
-	function draw_newtons_method_plot()
-	{
-		if (current_roots.length === last_roots.length && canvas_size === last_canvas_size)
+	const vertex_shader_source = `
+		attribute vec3 position;
+		varying vec2 uv;
+
+		void main(void)
 		{
-			let found_a_difference = false;
+			gl_Position = vec4(position, 1.0);
+
+			//Interpolate quad coordinates in the fragment shader.
+			uv = position.xy;
+		}
+	`;
+	
+	
+	
+	const frag_shader_source = `
+		precision highp float;
+		
+		varying vec2 uv;
+		
+		uniform int num_iterations;
+		
+		const float brightness_scale = 20.0;
+		
+		const vec2 root_1 = vec2(1.0, 0.0);
+		const vec2 root_2 = vec2(-.5, .866);
+		const vec2 root_3 = vec2(-.5, -.866);
+		
+		const vec3 color_1 = vec3(1.0, 0.0, 0.0);
+		const vec3 color_2 = vec3(0.0, 1.0, 0.0);
+		const vec3 color_3 = vec3(0.0, 0.0, 1.0);
+		
+		const int num_roots = 3;
+		
+		const float threshhold = .05;
+		
+		
+		
+		//Returns z_1 * z_2.
+		vec2 complex_multiply(vec2 z_1, vec2 z_2)
+		{
+			return vec2(z_1.x * z_2.x - z_1.y * z_2.y, z_1.x * z_2.y + z_1.y * z_2.x);
+		}
+		
+		
+		
+		//Returns 1/z.
+		vec2 complex_invert(vec2 z)
+		{
+			float magnitude = length(z) * length(z);
 			
-			for (let i = 0; i < current_roots.length; i++)
+			return vec2(z.x / magnitude, -z.y / magnitude);
+		}
+		
+		
+		
+		//Returns f(z) for a polynomial f with given roots.
+		vec2 complex_polynomial(vec2 z)
+		{
+			vec2 result = vec2(1.0, 0.0);
+			
+			if (num_roots == 0)
 			{
-				if (current_roots[i][0] !== last_roots[i][0] || current_roots[i][1] !== last_roots[i][1])
+				return result;
+			}
+			
+			result = complex_multiply(result, z - root_1);
+			
+			
+			
+			if (num_roots == 1)
+			{
+				return result;
+			}
+			
+			result = complex_multiply(result, z - root_2);
+			
+			
+			
+			if (num_roots == 2)
+			{
+				return result;
+			}
+			
+			result = complex_multiply(result, z - root_3);
+			
+			
+			
+			return result;
+		}
+		
+		
+		
+		//Approximates f'(z) for a polynomial f with given roots.
+		vec2 complex_derivative(vec2 z)
+		{
+			return 1000.0 * (complex_polynomial(z) - complex_polynomial(z - vec2(.001, 0.0)));
+		}
+		
+		
+		
+		void main(void)
+		{
+			vec2 z = vec2(uv.x * 2.0, uv.y * 2.0);
+			vec2 last_z = vec2(0.0, 0.0);
+			
+			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+			
+			for (int iteration = 0; iteration < 51; iteration++)
+			{
+				if (iteration == num_iterations)
 				{
-					found_a_difference = true;
-					
 					break;
 				}
-			}
-			
-			if (!found_a_difference)
-			{
-				need_to_restart = true;
 				
-				return;
-			}
-		}
-		
-		
-		
-		document.querySelector("#newtons-method-plot").setAttribute("width", canvas_size);
-		document.querySelector("#newtons-method-plot").setAttribute("height", canvas_size);
-		
-		
-		
-		for (let i = 0; i < canvas_size; i++)
-		{
-			closest_roots[i] = [];
-			
-			brightness_map[i] = [];
-			
-			for (let j = 0; j < canvas_size; j++)
-			{
-				brightness_map[i][j] = 0;
+				vec2 temp = complex_multiply(complex_polynomial(z), complex_invert(complex_derivative(z)));
 				
-				closest_roots[i][j] = -1;
-			}
-		}
-		
-		
-		
-		for (let i = 0; i < canvas_size; i++)
-		{
-			for (let j = 0; j < canvas_size; j++)
-			{
-				//If we've already been here, no need to do it again.
-				if (brightness_map[i][j] !== 0)
+				last_z = z;
+				
+				z -= temp;
+				
+				
+				
+				float d_0 = length(z - root_1);
+				
+				if (num_roots >= 1 && d_0 < threshhold)
 				{
-					continue;
+					float d_1 = length(last_z - root_1);
+					
+					float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+					
+					float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+					
+					gl_FragColor = vec4(color_1 * brightness, 1.0);
+					
+					return;
 				}
 				
 				
 				
-				let x = ((j - canvas_size/2) / canvas_size) * 4;
-				let y = (-(i - canvas_size/2) / canvas_size) * 4;
+				d_0 = length(z - root_2);
 				
-				let z = [x, y];
-				
-				let last_z = [0, 0];
-				
-				//Here's the idea. As we bounce from place to place, everything we pass is on the same road we are, eventually, so we'll just keep track of everywhere where we've been and what those will eventually go to.
-				let zs_along_for_the_ride = [];
-				
-				
-				
-				for (let iteration = 0; iteration < num_iterations; iteration++)
+				if (num_roots >= 2 && d_0 < threshhold)
 				{
-					let temp = complex_multiply(complex_polynomial(current_roots, z), complex_invert(complex_derivative(current_roots, z)));
+					float d_1 = length(last_z - root_2);
 					
-					last_z[0] = z[0];
-					last_z[1] = z[1];
+					float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
 					
-					z[0] = z[0] - temp[0];
-					z[1] = z[1] - temp[1];
+					float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
 					
-					let reverse_j = Math.floor(((z[0] / 4) * canvas_size) + canvas_size/2);
-					let reverse_i = Math.floor(-(((z[1] / 4) * canvas_size) - canvas_size/2));
+					gl_FragColor = vec4(color_2 * brightness, 1.0);
 					
-					if (reverse_i >= 0 && reverse_i < canvas_size && reverse_j >= 0 && reverse_j < canvas_size)
-					{
-						zs_along_for_the_ride.push([[reverse_i, reverse_j], iteration + 1]);
-					}
+					return;
+				}
+				
+				
+				
+				d_0 = length(z - root_3);
+				
+				if (num_roots >= 2 && d_0 < threshhold)
+				{
+					float d_1 = length(last_z - root_3);
 					
+					float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
 					
+					float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
 					
-					//If we're very close a root, stop.
-					let found_a_root = false;
+					gl_FragColor = vec4(color_3 * brightness, 1.0);
 					
-					for (let k = 0; k < current_roots.length; k++)
-					{
-						let d_0 = complex_magnitude([z[0] - current_roots[k][0], z[1] - current_roots[k][1]]);
-						
-						if (d_0 <= threshold * threshold)
-						{
-							let d_1 = complex_magnitude([last_z[0] - current_roots[k][0], last_z[1] - current_roots[k][1]]);
-							
-							//We tweak the iteration count by a little bit to produce smooth color.
-							let brightness_adjust = (Math.log(threshold) - .5 * Math.log(d_0)) / (.5 * Math.log(d_1) - .5 * Math.log(d_0));
-							
-							closest_roots[i][j] = k;
-							
-							brightness_map[i][j] = iteration - brightness_adjust;
-							
-							
-							
-							//Now we can go back and update all those free riders.
-							for (let l = 0; l < zs_along_for_the_ride.length; l++)
-							{
-								brightness_map[zs_along_for_the_ride[l][0][0]][zs_along_for_the_ride[l][0][1]] = iteration - brightness_adjust - zs_along_for_the_ride[l][1];
-								
-								closest_roots[zs_along_for_the_ride[l][0][0]][zs_along_for_the_ride[l][0][1]] = k;
-							}
-							
-							
-							
-							found_a_root = true;
-							
-							break;
-						}
-					}
-					
-					if (found_a_root)
-					{
-						break;
-					}
+					return;
 				}
 			}
 		}
-		
-		
-		
-		draw_canvas();
-		
-		
-		
-		if (draw_another_frame)
-		{
-			draw_another_frame = false;
-			
-			last_roots = JSON.parse(JSON.stringify(current_roots));
-			last_canvas_size = canvas_size;
-			
-			window.requestAnimationFrame(draw_newtons_method_plot);
-		}
-		
-		else
-		{
-			need_to_restart = true;
-		}
-	}
+	`;
 	
 	
 	
-	function draw_canvas()
+	let shader_program = null;
+	
+	function setup_webgl()
 	{
-		let max_brightness = 0;
-		let min_brightness = Infinity;
+		let vertex_shader = load_shader(gl, gl.VERTEX_SHADER, vertex_shader_source);
 		
+		let frag_shader = load_shader(gl, gl.FRAGMENT_SHADER, frag_shader_source);
 		
+		shader_program = gl.createProgram();
 		
-		for (let i = 0; i < canvas_size; i++)
+		gl.attachShader(shader_program, vertex_shader);
+		gl.attachShader(shader_program, frag_shader);
+		gl.linkProgram(shader_program);
+		
+		if (!gl.getProgramParameter(shader_program, gl.LINK_STATUS))
 		{
-			for (let j = 0; j < canvas_size; j++)
-			{
-				if (brightness_map[i][j] > max_brightness)
-				{
-					max_brightness = brightness_map[i][j];
-				}
-				
-				if (brightness_map[i][j] < min_brightness)
-				{
-					min_brightness = brightness_map[i][j];
-				}
-			}	
+			console.log(`Couldn't link shader program: ${gl.getShaderInfoLog(shader)}`);
+			gl.deleteProgram(shader_program);
 		}
 		
 		
 		
-		if (canvas_size === 100)
-		{
-			recent_max_brightnesses.push(max_brightness);
-			
-			if (recent_max_brightnesses.length > 10)
-			{
-				recent_max_brightnesses.shift();
-			}
-			
-			let sum = 0;
-			
-			for (let i = 0; i < recent_max_brightnesses.length; i++)
-			{
-				sum += recent_max_brightnesses[i];
-			}
-			
-			max_brightness = sum / recent_max_brightnesses.length;
-		}
+		gl.useProgram(shader_program);
 		
 		
 		
-		//Copy this array into the canvas like an image.
-		let img_data = ctx.getImageData(0, 0, canvas_size, canvas_size);
-		let data = img_data.data;
+		let quad = [-1, -1, 0,   -1, 1, 0,   1, -1, 0,   1, 1, 0];
 		
 		
 		
-		for (let i = 0; i < canvas_size; i++)
-		{
-			for (let j = 0; j < canvas_size; j++)
-			{
-				brightness_map[i][j] -= min_brightness;
-				
-				brightness_map[i][j] /= (max_brightness - min_brightness);
-				
-				brightness_map[i][j] = 1 - brightness_map[i][j];
-				
-				//This gives things a nice bit of tenebrism.
-				brightness_map[i][j] = Math.pow(brightness_map[i][j], 1 + current_roots.length / 4);
-				
-				
-				
-				if (!(brightness_map[i][j] >= 0) && !(brightness_map[i][j] <= 1))
-				{
-					brightness_map[i][j] = 1;
-				}
-				
-				
-				
-				//The index in the array of rgba values.
-				let index = (4 * i * canvas_size) + (4 * j);
-				
-				let closest_root = closest_roots[i][j];
-				
-				if (closest_root !== -1)
-				{
-					data[index] = colors[closest_root][0] * brightness_map[i][j];
-					data[index + 1] = colors[closest_root][1] * brightness_map[i][j];
-					data[index + 2] = colors[closest_root][2] * brightness_map[i][j];
-					data[index + 3] = 255; //No transparency.
-				}
-				
-				else
-				{
-					data[index] = 0;
-					data[index + 1] = 0;
-					data[index + 2] = 0;
-					data[index + 3] = 255; //No transparency.
-				}
-			}
-		}
+		let position_buffer = gl.createBuffer();
+		
+		gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
+		
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(quad), gl.STATIC_DRAW);
+		
+		shader_program.position_attribute = gl.getAttribLocation(shader_program, "position");
+		
+		gl.enableVertexAttribArray(shader_program.position_attribute);
+		
+		gl.vertexAttribPointer(shader_program.position_attribute, 3, gl.FLOAT, false, 0, 0);
 		
 		
 		
-		ctx.putImageData(img_data, 0, 0);
+		shader_program.num_iterations_uniform = gl.getUniformLocation(shader_program, "num_iterations");
+		
+		
+		
+		gl.viewport(0, 0, image_size, image_size);
 	}
 	
 	
 	
-	function draw_high_res_plot()
+	function load_shader(gl, type, source)
 	{
-		canvas_size = parseInt(document.querySelector("#dim-input").value || 1000);
+		let shader = gl.createShader(type);
 		
-		document.querySelector("#newtons-method-plot").setAttribute("width", canvas_size);
-		document.querySelector("#newtons-method-plot").setAttribute("height", canvas_size);
+		gl.shaderSource(shader, source);
 		
+		gl.compileShader(shader);
 		
-		
-		document.querySelector("#progress-bar span").insertAdjacentHTML("afterend", `<span></span>`);
-		document.querySelector("#progress-bar span").remove();
-		
-		
-		
-		try {web_worker.terminate();}
-		catch(ex) {}
-		
-		if (DEBUG)
+		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
 		{
-			web_worker = new Worker("/applets/newtons-method/scripts/worker.js");
+			console.log(`Couldn't load shader: ${gl.getProgramInfoLog(shaderProgram)}`);
+			gl.deleteShader(shader);
 		}
 		
-		else
-		{
-			web_worker = new Worker("/applets/newtons-method/scripts/worker.min.js");
-		}
-		
-		temporary_web_workers.push(web_worker);
-		
-		
-		
-		web_worker.onmessage = function(e)
-		{
-			if (e.data[0] === "progress")
-			{
-				document.querySelector("#progress-bar span").style.width = e.data[1] + "%";
-				
-				if (e.data[1] === 100)
-				{
-					setTimeout(function()
-					{
-						document.querySelector("#progress-bar").style.opacity = 0;
-						
-						setTimeout(function()
-						{
-							document.querySelector("#progress-bar").style.marginTop = 0;
-							document.querySelector("#progress-bar").style.marginBottom = 0;
-						}, 300);
-					}, 600);
-				}
-			}
-			
-			
-			
-			else
-			{
-				let img_data = ctx.getImageData(0, 0, canvas_size, canvas_size);
-				let data = img_data.data;
-				
-				let length = e.data[1].length;
-				
-				for (let i = 0; i < length; i++)
-				{
-					data[i] = e.data[1][i];
-				}
-				
-				ctx.putImageData(img_data, 0, 0);
-				
-				update_polynomial_label(current_roots);
-				
-				prepare_download();
-			}
-		}
-		
-		
-		
-		document.querySelector("#progress-bar span").style.width = 0;
-		document.querySelector("#progress-bar").style.marginTop = "5vh";
-		document.querySelector("#progress-bar").style.marginBottom = "5vh";
-		
-		setTimeout(function()
-		{
-			document.querySelector("#progress-bar").style.opacity = 1;
-		}, 600);
-		
-		
-		
-		web_worker.postMessage([canvas_size, current_roots]);
+		return shader;
 	}
+	
+	
+	
+	function draw_frame()
+	{
+		document.querySelector("#newtons-method-plot").setAttribute("width", image_size);
+		document.querySelector("#newtons-method-plot").setAttribute("height", image_size);
+		
+		
+		
+		gl.uniform1i(shader_program.num_iterations_uniform, num_iterations);
+		
+		
+		
+		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+	}
+	
+	
+	
+	load_script("/scripts/gl-matrix.min.js")
+	
+	.then(function()
+	{
+		setTimeout(setup_webgl, 500);
+	});
 	
 	
 	
@@ -688,57 +604,6 @@
 	
 	
 	
-	//Returns ||z||.
-	function complex_magnitude(z)
-	{
-		return z[0] * z[0] + z[1] * z[1];
-	}
-
-	//Returns z_1 * z_2.
-	function complex_multiply(z_1, z_2)
-	{
-		return [z_1[0] * z_2[0] - z_1[1] * z_2[1], z_1[0] * z_2[1] + z_1[1] * z_2[0]];
-	}
-
-	//Returns 1/z.
-	function complex_invert(z)
-	{
-		let magnitude = complex_magnitude(z);
-		
-		return [1/magnitude * z[0], -1/magnitude * z[1]];
-	}
-
-	//Returns f(z) for a polynomial f with given roots.
-	function complex_polynomial(roots, z)
-	{
-		let result = [1, 0];
-		
-		for (let i = 0; i < roots.length; i++)
-		{
-			result = complex_multiply(result, [z[0] - roots[i][0], z[1] - roots[i][1]]);
-		}
-		
-		return result;
-	}
-
-	//Approximates f'(z) for a polynomial f with given roots.
-	function complex_derivative(roots, z)
-	{
-		let result = complex_polynomial(roots, z);
-		
-		let close_by = complex_polynomial(roots, [z[0] - .001, z[1]]);
-		
-		result[0] -= close_by[0];
-		result[1] -= close_by[1];
-		
-		result[0] /= .001;
-		result[1] /= .001;
-		
-		return result;
-	}
-	
-	
-	
 	function init_listeners()
 	{
 		document.documentElement.addEventListener("touchstart", drag_start, false);
@@ -767,7 +632,7 @@
 		{
 			if (e.keyCode === 13)
 			{
-				canvas_size = 500;
+				image_size = 500;
 				
 				draw_newtons_method_plot(current_roots);
 			}
@@ -777,7 +642,7 @@
 		{
 			if (e.keyCode === 13)
 			{
-				canvas_size = 500;
+				image_size = 500;
 				
 				draw_newtons_method_plot(current_roots);
 			}
@@ -808,9 +673,9 @@
 		
 		recent_max_brightnesses = [];
 		
-		canvas_size = 100;
+		image_size = 500;
 				
-		draw_newtons_method_plot(current_roots);
+		draw_frame();
 	}
 	
 	
@@ -843,7 +708,7 @@
 		{
 			document.body.style.WebkitUserSelect = "";
 			
-			canvas_size = 500;
+			image_size = 500;
 			
 			
 			
@@ -930,7 +795,7 @@
 		current_roots[active_marker][0] = x;
 		current_roots[active_marker][1] = y;
 		
-		canvas_size = 100;
+		image_size = 100;
 		
 		
 
@@ -940,7 +805,7 @@
 		{
 			need_to_restart = false;
 			
-			window.requestAnimationFrame(draw_newtons_method_plot);
+			window.requestAnimationFrame(draw_frame);
 		}
 	}
 	
@@ -979,12 +844,12 @@
 		
 		if (high_res)
 		{
-			canvas_size = 500;
+			image_size = 500;
 		}
 		
 		else
 		{
-			canvas_size = 100;
+			image_size = 100;
 		}
 		
 		draw_newtons_method_plot(current_roots);
@@ -1016,9 +881,9 @@
 		
 		
 		
-		canvas_size = 100;
+		image_size = 100;
 		
-		draw_newtons_method_plot(current_roots);
+		draw_frame();
 	}
 	
 	
