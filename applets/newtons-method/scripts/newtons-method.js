@@ -7,11 +7,8 @@
 	let image_size = 1000;
 	
 	let current_roots = [];
-	let last_roots = [];
 	
 	let gl = document.querySelector("#newtons-method-plot").getContext("webgl");
-	
-	let web_worker = null;
 	
 	let draw_another_frame = false;
 	let need_to_restart = true;
@@ -32,27 +29,8 @@
 	
 	
 	
-	const threshold = .05;
-	
-	let brightness_map = [];
-	let closest_roots = [];
-	
-	//We keep a rolling average of 10 of these to smooth out the low-res frames.
-	let recent_max_brightnesses = [];
-	
-	const colors =
-	[
-		[255, 0, 0],
-		[0, 255, 0],
-		[0, 0, 255],
-		
-		[0, 255, 255],
-		[255, 0, 255],
-		[255, 255, 0],
-		
-		[127, 0, 255],
-		[255, 127, 0]
-	];
+	let brightness_scale = 20;
+	let stabilize_brightness_scale = false;
 	
 	
 	
@@ -487,7 +465,8 @@
 		shader_program.brightness_scale_uniform = gl.getUniformLocation(shader_program, "brightness_scale");
 		
 		
-		
+		document.querySelector("#newtons-method-plot").setAttribute("width", image_size);
+		document.querySelector("#newtons-method-plot").setAttribute("height", image_size);
 		gl.viewport(0, 0, image_size, image_size);
 	}
 	
@@ -514,11 +493,6 @@
 	
 	function draw_frame()
 	{
-		document.querySelector("#newtons-method-plot").setAttribute("width", image_size);
-		document.querySelector("#newtons-method-plot").setAttribute("height", image_size);
-		
-		
-		
 		gl.uniform1i(shader_program.num_roots_uniform, current_roots.length);
 		
 		if (current_roots.length >= 1)
@@ -561,7 +535,7 @@
 			gl.uniform2fv(shader_program.root_8_uniform, current_roots[7]);
 		}
 		
-		gl.uniform1f(shader_program.brightness_scale_uniform, 20);
+		gl.uniform1f(shader_program.brightness_scale_uniform, brightness_scale);
 		
 		
 		
@@ -569,7 +543,54 @@
 		
 		
 		
-		if (draw_another_frame)
+		let pixels = new Uint8Array(image_size * image_size * 4);
+		gl.readPixels(0, 0, image_size, image_size, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+		
+		let num_pixels_at_zero = 0;
+		
+		for (let i = 0; i < image_size * image_size; i++)
+		{
+			if (pixels[4 * i] === 1 || pixels[4 * i + 1] === 1 || pixels[4 * i + 2] === 1)
+			{
+				num_pixels_at_zero++;
+			}
+		}
+		
+		
+		
+		let changed_brightness_scale = false;
+		
+		if (num_pixels_at_zero < .025 * image_size * current_roots.length)
+		{
+			brightness_scale -= .25;
+			
+			changed_brightness_scale = true;
+		}
+		
+		else if (num_pixels_at_zero > .05 * image_size * current_roots.length)
+		{
+			brightness_scale += .25;
+			
+			changed_brightness_scale = true;
+		}
+		
+		
+		
+		if (stabilize_brightness_scale)
+		{
+			if (changed_brightness_scale)
+			{
+				window.requestAnimationFrame(draw_frame);
+			}
+			
+			else
+			{
+				stabilize_brightness_scale = false;
+				need_to_restart = true;
+			}
+		}
+		
+		else if (draw_another_frame)
 		{
 			draw_another_frame = false;
 			
@@ -871,7 +892,7 @@
 	
 	function add_marker()
 	{
-		if (current_roots.length === colors.length)
+		if (current_roots.length === 8)
 		{
 			return;
 		}
@@ -889,7 +910,9 @@
 		
 		current_roots.push([0, 0]);
 		
-		recent_max_brightnesses = [];
+		brightness_scale = 20;
+		
+		stabilize_brightness_scale = true;
 		
 		window.requestAnimationFrame(draw_frame);
 	}
@@ -907,8 +930,6 @@
 			{
 				e.preventDefault();
 				
-				recent_max_brightnesses = [];
-				
 				active_marker = i;
 				
 				break;
@@ -925,6 +946,8 @@
 			document.body.style.WebkitUserSelect = "";
 			
 			
+			
+			stabilize_brightness_scale = true;
 			
 			draw_another_frame = true;
 			
@@ -1013,8 +1036,9 @@
 
 		draw_another_frame = true;
 		
-		if (need_to_restart)
+		if (stabilize_brightness_scale || need_to_restart)
 		{
+			stabilize_brightness_scale = false;
 			need_to_restart = false;
 			
 			window.requestAnimationFrame(draw_frame);
@@ -1056,6 +1080,8 @@
 		
 		
 		
+		stabilize_brightness_scale = true;
+		
 		window.requestAnimationFrame(draw_frame);
 	}
 	
@@ -1094,7 +1120,13 @@
 	{
 		image_size = parseInt(document.querySelector("#dim-input").value || 2000);
 		
+		document.querySelector("#newtons-method-plot").setAttribute("width", image_size);
+		document.querySelector("#newtons-method-plot").setAttribute("height", image_size);
+		gl.viewport(0, 0, image_size, image_size);
+		
 		draw_frame();
+		
+		
 		
 		let link = document.createElement("a");
 		
@@ -1105,6 +1137,16 @@
 		link.click();
 		
 		link.remove();
+		
+		
+		
+		image_size = 1000;
+		
+		document.querySelector("#newtons-method-plot").setAttribute("width", image_size);
+		document.querySelector("#newtons-method-plot").setAttribute("height", image_size);
+		gl.viewport(0, 0, image_size, image_size);
+		
+		draw_frame();
 	}
 	
 	
