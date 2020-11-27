@@ -4,12 +4,10 @@
 	
 	
 	
-	let image_size = 500;
+	let image_size = 1000;
 	
 	let current_roots = [];
 	let last_roots = [];
-	
-	let num_iterations = 50;
 	
 	let gl = document.querySelector("#newtons-method-plot").getContext("webgl");
 	
@@ -66,7 +64,7 @@
 
 	document.querySelector("#add-marker-button").addEventListener("click", add_marker);
 	document.querySelector("#spread-markers-button").addEventListener("click", spread_roots);
-	document.querySelector("#generate-high-res-plot-button").addEventListener("click", draw_frame);
+	document.querySelector("#generate-high-res-plot-button").addEventListener("click", prepare_download);
 	
 	document.querySelector("#dim-input").addEventListener("keydown", function(e)
 	{
@@ -117,19 +115,27 @@
 		
 		varying vec2 uv;
 		
-		uniform int num_iterations;
+		uniform int num_roots;
 		
-		const float brightness_scale = 20.0;
-		
-		const vec2 root_1 = vec2(1.0, 0.0);
-		const vec2 root_2 = vec2(-.5, .866);
-		const vec2 root_3 = vec2(-.5, -.866);
+		uniform vec2 root_1;
+		uniform vec2 root_2;
+		uniform vec2 root_3;
+		uniform vec2 root_4;
+		uniform vec2 root_5;
+		uniform vec2 root_6;
+		uniform vec2 root_7;
+		uniform vec2 root_8;
 		
 		const vec3 color_1 = vec3(1.0, 0.0, 0.0);
 		const vec3 color_2 = vec3(0.0, 1.0, 0.0);
 		const vec3 color_3 = vec3(0.0, 0.0, 1.0);
+		const vec3 color_4 = vec3(0.0, 1.0, 1.0);
+		const vec3 color_5 = vec3(1.0, 0.0, 1.0);
+		const vec3 color_6 = vec3(1.0, 1.0, 0.0);
+		const vec3 color_7 = vec3(0.5, 0.0, 1.0);
+		const vec3 color_8 = vec3(1.0, 0.5, 0.0);
 		
-		const int num_roots = 3;
+		uniform float brightness_scale;
 		
 		const float threshhold = .05;
 		
@@ -185,6 +191,51 @@
 			
 			
 			
+			if (num_roots == 3)
+			{
+				return result;
+			}
+			
+			result = complex_multiply(result, z - root_4);
+			
+			
+			
+			if (num_roots == 4)
+			{
+				return result;
+			}
+			
+			result = complex_multiply(result, z - root_5);
+			
+			
+			
+			if (num_roots == 5)
+			{
+				return result;
+			}
+			
+			result = complex_multiply(result, z - root_6);
+			
+			
+			
+			if (num_roots == 6)
+			{
+				return result;
+			}
+			
+			result = complex_multiply(result, z - root_7);
+			
+			
+			
+			if (num_roots == 7)
+			{
+				return result;
+			}
+			
+			result = complex_multiply(result, z - root_8);
+			
+			
+			
 			return result;
 		}
 		
@@ -205,13 +256,8 @@
 			
 			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 			
-			for (int iteration = 0; iteration < 51; iteration++)
+			for (int iteration = 0; iteration < 100; iteration++)
 			{
-				if (iteration == num_iterations)
-				{
-					break;
-				}
-				
 				vec2 temp = complex_multiply(complex_polynomial(z), complex_invert(complex_derivative(z)));
 				
 				last_z = z;
@@ -220,53 +266,162 @@
 				
 				
 				
-				float d_0 = length(z - root_1);
-				
-				if (num_roots >= 1 && d_0 < threshhold)
+				if (num_roots >= 1)
 				{
-					float d_1 = length(last_z - root_1);
+					float d_0 = length(z - root_1);
 					
-					float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-					
-					float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-					
-					gl_FragColor = vec4(color_1 * brightness, 1.0);
-					
-					return;
+					if (d_0 < threshhold)
+					{
+						float d_1 = length(last_z - root_1);
+						
+						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+						
+						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+						
+						gl_FragColor = vec4(color_1 * brightness, 1.0);
+						
+						return;
+					}
 				}
 				
 				
 				
-				d_0 = length(z - root_2);
-				
-				if (num_roots >= 2 && d_0 < threshhold)
+				if (num_roots >= 2)
 				{
-					float d_1 = length(last_z - root_2);
+					float d_0 = length(z - root_2);
 					
-					float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-					
-					float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-					
-					gl_FragColor = vec4(color_2 * brightness, 1.0);
-					
-					return;
+					if (d_0 < threshhold)
+					{
+						float d_1 = length(last_z - root_2);
+						
+						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+						
+						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+						
+						gl_FragColor = vec4(color_2 * brightness, 1.0);
+						
+						return;
+					}
 				}
 				
 				
 				
-				d_0 = length(z - root_3);
-				
-				if (num_roots >= 2 && d_0 < threshhold)
+				if (num_roots >= 3)
 				{
-					float d_1 = length(last_z - root_3);
+					float d_0 = length(z - root_3);
 					
-					float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+					if (d_0 < threshhold)
+					{
+						float d_1 = length(last_z - root_3);
+						
+						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+						
+						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+						
+						gl_FragColor = vec4(color_3 * brightness, 1.0);
+						
+						return;
+					}
+				}
+				
+				
+				
+				if (num_roots >= 4)
+				{
+					float d_0 = length(z - root_4);
 					
-					float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+					if (d_0 < threshhold)
+					{
+						float d_1 = length(last_z - root_4);
+						
+						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+						
+						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+						
+						gl_FragColor = vec4(color_4 * brightness, 1.0);
+						
+						return;
+					}
+				}
+				
+				
+				
+				if (num_roots >= 5)
+				{
+					float d_0 = length(z - root_5);
 					
-					gl_FragColor = vec4(color_3 * brightness, 1.0);
+					if (d_0 < threshhold)
+					{
+						float d_1 = length(last_z - root_5);
+						
+						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+						
+						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+						
+						gl_FragColor = vec4(color_5 * brightness, 1.0);
+						
+						return;
+					}
+				}
+				
+				
+				
+				if (num_roots >= 6)
+				{
+					float d_0 = length(z - root_6);
 					
-					return;
+					if (d_0 < threshhold)
+					{
+						float d_1 = length(last_z - root_6);
+						
+						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+						
+						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+						
+						gl_FragColor = vec4(color_6 * brightness, 1.0);
+						
+						return;
+					}
+				}
+				
+				
+				
+				if (num_roots >= 7)
+				{
+					float d_0 = length(z - root_7);
+					
+					if (d_0 < threshhold)
+					{
+						float d_1 = length(last_z - root_7);
+						
+						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+						
+						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+						
+						gl_FragColor = vec4(color_7 * brightness, 1.0);
+						
+						return;
+					}
+				}
+				
+				
+				
+				if (num_roots >= 8)
+				{
+					float d_0 = length(z - root_8);
+					
+					if (d_0 < threshhold)
+					{
+						float d_1 = length(last_z - root_8);
+						
+						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+						
+						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+						
+						gl_FragColor = vec4(color_8 * brightness, 1.0);
+						
+						return;
+					}
 				}
 			}
 		}
@@ -318,7 +473,18 @@
 		
 		
 		
-		shader_program.num_iterations_uniform = gl.getUniformLocation(shader_program, "num_iterations");
+		shader_program.num_roots_uniform = gl.getUniformLocation(shader_program, "num_roots");
+		
+		shader_program.root_1_uniform = gl.getUniformLocation(shader_program, "root_1");
+		shader_program.root_2_uniform = gl.getUniformLocation(shader_program, "root_2");
+		shader_program.root_3_uniform = gl.getUniformLocation(shader_program, "root_3");
+		shader_program.root_4_uniform = gl.getUniformLocation(shader_program, "root_4");
+		shader_program.root_5_uniform = gl.getUniformLocation(shader_program, "root_5");
+		shader_program.root_6_uniform = gl.getUniformLocation(shader_program, "root_6");
+		shader_program.root_7_uniform = gl.getUniformLocation(shader_program, "root_7");
+		shader_program.root_8_uniform = gl.getUniformLocation(shader_program, "root_8");
+		
+		shader_program.brightness_scale_uniform = gl.getUniformLocation(shader_program, "brightness_scale");
 		
 		
 		
@@ -353,11 +519,67 @@
 		
 		
 		
-		gl.uniform1i(shader_program.num_iterations_uniform, num_iterations);
+		gl.uniform1i(shader_program.num_roots_uniform, current_roots.length);
+		
+		if (current_roots.length >= 1)
+		{
+			gl.uniform2fv(shader_program.root_1_uniform, current_roots[0]);
+		}
+		
+		if (current_roots.length >= 2)
+		{
+			gl.uniform2fv(shader_program.root_2_uniform, current_roots[1]);
+		}
+		
+		if (current_roots.length >= 3)
+		{
+			gl.uniform2fv(shader_program.root_3_uniform, current_roots[2]);
+		}
+		
+		if (current_roots.length >= 4)
+		{
+			gl.uniform2fv(shader_program.root_4_uniform, current_roots[3]);
+		}
+		
+		if (current_roots.length >= 5)
+		{
+			gl.uniform2fv(shader_program.root_5_uniform, current_roots[4]);
+		}
+		
+		if (current_roots.length >= 6)
+		{
+			gl.uniform2fv(shader_program.root_6_uniform, current_roots[5]);
+		}
+		
+		if (current_roots.length >= 7)
+		{
+			gl.uniform2fv(shader_program.root_7_uniform, current_roots[6]);
+		}
+		
+		if (current_roots.length >= 8)
+		{
+			gl.uniform2fv(shader_program.root_8_uniform, current_roots[7]);
+		}
+		
+		gl.uniform1f(shader_program.brightness_scale_uniform, 20);
 		
 		
 		
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+		
+		
+		
+		if (draw_another_frame)
+		{
+			draw_another_frame = false;
+			
+			window.requestAnimationFrame(draw_frame);
+		}
+		
+		else
+		{
+			need_to_restart = true;
+		}
 	}
 	
 	
@@ -632,9 +854,7 @@
 		{
 			if (e.keyCode === 13)
 			{
-				image_size = 500;
-				
-				draw_newtons_method_plot(current_roots);
+				window.requestAnimationFrame(draw_frame);
 			}
 		});
 		
@@ -642,9 +862,7 @@
 		{
 			if (e.keyCode === 13)
 			{
-				image_size = 500;
-				
-				draw_newtons_method_plot(current_roots);
+				window.requestAnimationFrame(draw_frame);
 			}
 		});
 	}
@@ -673,9 +891,7 @@
 		
 		recent_max_brightnesses = [];
 		
-		image_size = 500;
-				
-		draw_frame();
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
@@ -708,8 +924,6 @@
 		{
 			document.body.style.WebkitUserSelect = "";
 			
-			image_size = 500;
-			
 			
 			
 			draw_another_frame = true;
@@ -718,7 +932,7 @@
 			{
 				need_to_restart = false;
 				
-				window.requestAnimationFrame(draw_newtons_method_plot);
+				window.requestAnimationFrame(draw_frame);
 			}
 			
 			
@@ -795,8 +1009,6 @@
 		current_roots[active_marker][0] = x;
 		current_roots[active_marker][1] = y;
 		
-		image_size = 100;
-		
 		
 
 		draw_another_frame = true;
@@ -842,17 +1054,9 @@
 			root_markers[i].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		}
 		
-		if (high_res)
-		{
-			image_size = 500;
-		}
 		
-		else
-		{
-			image_size = 100;
-		}
 		
-		draw_newtons_method_plot(current_roots);
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
@@ -881,15 +1085,17 @@
 		
 		
 		
-		image_size = 100;
-		
-		draw_frame();
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
 	
 	function prepare_download()
 	{
+		image_size = parseInt(document.querySelector("#dim-input").value || 2000);
+		
+		draw_frame();
+		
 		let link = document.createElement("a");
 		
 		link.download = "newtons-method.png";
