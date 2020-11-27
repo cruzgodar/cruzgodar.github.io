@@ -914,7 +914,10 @@
 		
 		stabilize_brightness_scale = true;
 		
-		window.requestAnimationFrame(draw_frame);
+		if (need_to_restart)
+		{
+			window.requestAnimationFrame(draw_frame);
+		}
 	}
 	
 	
@@ -1082,7 +1085,10 @@
 		
 		stabilize_brightness_scale = true;
 		
-		window.requestAnimationFrame(draw_frame);
+		if (need_to_restart)
+		{
+			window.requestAnimationFrame(draw_frame);
+		}
 	}
 	
 	
