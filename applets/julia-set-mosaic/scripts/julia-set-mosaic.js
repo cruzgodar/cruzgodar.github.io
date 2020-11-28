@@ -7,9 +7,8 @@
 	let gl = document.querySelector("#output-canvas").getContext("webgl");
 	
 	
-	let julia_sets_per_side = 100;
-	let julia_set_size = 20;
-	let image_size = 2000;
+	
+	let image_size = 500;
 	let num_iterations = 50;
 	
 	
@@ -65,44 +64,16 @@
 		
 		varying vec2 uv;
 		
-		uniform float julia_sets_per_side;
-		uniform float julia_set_size;
+		uniform sampler2D texture_sampler;
+		
 		uniform float image_size;
-		uniform int num_iterations;
 		
 		
 		
 		void main(void)
 		{
-			float a = (floor((uv.x + 1.0) / 2.0 * julia_sets_per_side) / julia_sets_per_side * 2.0 - 1.0) * 1.5 - .75;
-			float b = (floor((uv.y + 1.0) / 2.0 * julia_sets_per_side) / julia_sets_per_side * 2.0 - 1.0) * 1.5;
-			
-			vec2 z = vec2((mod((uv.x + 1.0) / 2.0 * image_size, julia_set_size) / julia_set_size * 2.0 - 1.0) * 1.5, (mod((uv.y + 1.0) / 2.0 * image_size, julia_set_size) / julia_set_size * 2.0 - 1.0) * 1.5);
-			float brightness = exp(-length(z));
-			
-			
-			
-			for (int iteration = 0; iteration < 100; iteration++)
-			{
-				if (iteration == num_iterations)
-				{
-					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-					return;
-				}
-				
-				if (length(z) >= 2.0)
-				{
-					break;
-				}
-				
-				z = vec2(z.x * z.x - z.y * z.y + a, 2.0 * z.x * z.y + b);
-				
-				brightness += exp(-length(z));
-			}
-			
-			
-			
-			gl_FragColor = vec4(0.0, brightness / 10.0, brightness / 10.0, 1.0);
+			vec4 luminance = texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0);
+			gl_FragColor = vec4(luminance.x, 0.0, 0.0, 1.0);
 		}
 	`;
 	
@@ -144,6 +115,12 @@
 		
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(quad), gl.STATIC_DRAW);
 		
+		
+		
+		let texture = load_texture();
+		
+		
+		
 		shader_program.position_attribute = gl.getAttribLocation(shader_program, "position");
 		
 		gl.enableVertexAttribArray(shader_program.position_attribute);
@@ -152,10 +129,15 @@
 		
 		
 		
-		shader_program.julia_sets_per_side_uniform = gl.getUniformLocation(shader_program, "julia_sets_per_side");
-		shader_program.julia_set_size_uniform = gl.getUniformLocation(shader_program, "julia_set_size");
+		gl.activeTexture(gl.TEXTURE0);
+		
+		gl.bindTexture(gl.TEXTURE_2D, texture);
+		
+		
+		
+		shader_program.texture_sampler_uniform = gl.getUniformLocation(shader_program, "texture_sampler");
+		
 		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
-		shader_program.num_iterations_uniform = gl.getUniformLocation(shader_program, "num_iterations");
 		
 		
 		
@@ -183,12 +165,55 @@
 	
 	
 	
-	function draw_frame()
-	{	
-		julia_sets_per_side = parseInt(document.querySelector("#num-julias-input").value || 100);
-		julia_set_size = parseInt(document.querySelector("#julia-size-input").value || 20);
-		image_size = julia_sets_per_side * julia_set_size;
+	function load_texture()
+	{
+		let texture = gl.createTexture();
+		gl.bindTexture(gl.TEXTURE_2D, texture);
 		
+		let level = 0;
+		let internal_format = gl.LUMINANCE;
+		let width = 4;
+		let height = 4;
+		let border = 0;
+		let src_format = gl.LUMINANCE;
+		let src_type = gl.UNSIGNED_BYTE;
+		
+		let image = new Uint8Array([
+			0, 32, 64, 96,
+			32, 64, 96, 128,
+			64, 96, 128, 160,
+			96, 128, 160, 192
+		]);
+		
+		gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+		
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		
+		
+		/*
+		for (let i = 0; i < image_size; i++)
+		{
+			for (let j = 0; j < image_size; j++)
+			{
+				image[(image_size * i + j) * 4] = 255;
+				image[(image_size * i + j) * 4 + 1] = 255;
+				image[(image_size * i + j) * 4 + 2] = 255;
+				image[(image_size * i + j) * 4 + 3] = 255;
+			}
+		}
+		*/
+		gl.texImage2D(gl.TEXTURE_2D, level, internal_format, width, height, border, src_format, src_type, image);
+		
+		return texture;
+	}
+	
+	
+	
+	function draw_frame()
+	{
 		document.querySelector("#output-canvas").setAttribute("width", image_size);
 		document.querySelector("#output-canvas").setAttribute("height", image_size);
 		
@@ -196,10 +221,9 @@
 		
 		
 		
-		gl.uniform1f(shader_program.julia_sets_per_side_uniform, julia_sets_per_side);
-		gl.uniform1f(shader_program.julia_set_size_uniform, julia_set_size);
-		gl.uniform1f(shader_program.image_size_uniform, julia_sets_per_side * julia_set_size);
-		gl.uniform1i(shader_program.num_iterations_uniform, num_iterations);
+		gl.uniform1f(shader_program.image_size_uniform, image_size);
+		
+		gl.uniform1i(shader_program.texture_sampler_uniform, 0);
 		
 		
 		
