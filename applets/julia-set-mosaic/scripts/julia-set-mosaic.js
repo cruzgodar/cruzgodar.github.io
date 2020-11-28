@@ -8,7 +8,7 @@
 	
 	
 	
-	let image_size = 500;
+	let image_size = 100;
 	let num_iterations = 50;
 	
 	
@@ -66,14 +66,23 @@
 		
 		uniform sampler2D texture_sampler;
 		
-		uniform float image_size;
+		uniform float pixel_step_size;
 		
 		
 		
 		void main(void)
 		{
-			vec4 luminance = texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0);
-			gl_FragColor = vec4(luminance.x, 0.0, 0.0, 1.0);
+			float total_1 = texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(0.0, pixel_step_size)).x / 4.0;
+			
+			float total_2 = texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(0.0, -pixel_step_size)).x / 4.0;
+			
+			float total_3 = texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(pixel_step_size, 0.0)).x / 4.0;
+			
+			float total_4 = texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(-pixel_step_size, 0.0)).x / 4.0;
+			
+			
+			
+			gl_FragColor = vec4(total_1 + total_2 + total_3 + total_4, 0.0, 0.0, 1.0);
 		}
 	`;
 	
@@ -137,7 +146,7 @@
 		
 		shader_program.texture_sampler_uniform = gl.getUniformLocation(shader_program, "texture_sampler");
 		
-		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
+		shader_program.pixel_step_size_uniform = gl.getUniformLocation(shader_program, "pixel_step_size");
 		
 		
 		
@@ -172,18 +181,24 @@
 		
 		let level = 0;
 		let internal_format = gl.LUMINANCE;
-		let width = 4;
-		let height = 4;
+		let width = image_size;
+		let height = image_size;
 		let border = 0;
 		let src_format = gl.LUMINANCE;
-		let src_type = gl.UNSIGNED_BYTE;
+		let src_type = gl.FLOAT;
 		
-		let image = new Uint8Array([
-			0, 32, 64, 96,
-			32, 64, 96, 128,
-			64, 96, 128, 160,
-			96, 128, 160, 192
-		]);
+		
+		
+		let image = new Float32Array(image_size * image_size);
+		
+		image[Math.floor(image_size / 2) * image_size + Math.floor(image_size / 2)] = 1000;
+		
+		
+		
+		try {let ext = gl.getExtension("OES_texture_float");}
+		catch(ex) {}
+		
+		
 		
 		gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
 		
@@ -193,18 +208,7 @@
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		
 		
-		/*
-		for (let i = 0; i < image_size; i++)
-		{
-			for (let j = 0; j < image_size; j++)
-			{
-				image[(image_size * i + j) * 4] = 255;
-				image[(image_size * i + j) * 4 + 1] = 255;
-				image[(image_size * i + j) * 4 + 2] = 255;
-				image[(image_size * i + j) * 4 + 3] = 255;
-			}
-		}
-		*/
+		
 		gl.texImage2D(gl.TEXTURE_2D, level, internal_format, width, height, border, src_format, src_type, image);
 		
 		return texture;
@@ -221,7 +225,7 @@
 		
 		
 		
-		gl.uniform1f(shader_program.image_size_uniform, image_size);
+		gl.uniform1f(shader_program.pixel_step_size_uniform, 1 / image_size);
 		
 		gl.uniform1i(shader_program.texture_sampler_uniform, 0);
 		
