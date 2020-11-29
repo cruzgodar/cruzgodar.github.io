@@ -92,49 +92,339 @@
 	
 	
 	
-	const frag_shader_source = `
-		precision highp float;
-		
-		varying vec2 uv;
-		
-		const float box_size_halved = 2.0;
-		uniform float a;
-		uniform float b;
-		uniform float brightness_scale;
-		uniform int num_iterations;
-		
-		
-		
-		void main(void)
-		{
-			vec2 z = vec2(uv.x * box_size_halved, uv.y * box_size_halved);
-			float brightness = exp(-length(z));
+	function get_frag_shader_source()
+	{
+		return `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			const float box_size_halved = 2.0;
+			uniform float a;
+			uniform float b;
+			uniform float brightness_scale;
+			uniform int num_iterations;
+			
+			const vec2 i = vec2(0.0, 1.0);
 			
 			
 			
-			for (int iteration = 0; iteration < 201; iteration++)
+			//Returns |z|.
+			float cabs(vec2 z)
 			{
-				if (iteration == num_iterations)
-				{
-					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-					return;
-				}
-				
-				if (length(z) >= 2.0)
-				{
-					break;
-				}
-				
-				z = vec2(z.x * z.x - z.y * z.y + a, 2.0 * z.x * z.y + b);
-				
-				brightness += exp(-length(z));
+				return length(z);
+			}
+			
+			float cabs(float z)
+			{
+				return abs(z);
 			}
 			
 			
 			
-			gl_FragColor = vec4(0.0, brightness / brightness_scale, brightness / brightness_scale, 1.0);
-		}
-	`;
+			//Returns |z|.
+			float carg(vec2 z)
+			{
+				return atan(z.y, z.x);
+			}
+			
+			float carg(float z)
+			{
+				if (z >= 0.0)
+				{
+					return 0.0;
+				}
+				
+				return -3.14159265;
+			}
+			
+			
+			
+			//Returns the conjugate of z.
+			vec2 cconj(vec2 z)
+			{
+				return vec2(z.x, -z.y);
+			}
+			
+			float cconj(float z)
+			{
+				return z;
+			}
+			
+			
+			
+			//Returns z / |z|.
+			vec2 csign(vec2 z)
+			{
+				return z / length(z);
+			}
+			
+			float csign(float z)
+			{
+				return sign(z);
+			}
+			
+			
+			
+			//Returns z + w.
+			vec2 cadd(vec2 z, vec2 w)
+			{
+				return z + w;
+			}
+			
+			vec2 cadd(vec2 z, float w)
+			{
+				return vec2(z.x + w, z.y);
+			}
+			
+			vec2 cadd(float z, vec2 w)
+			{
+				return vec2(z + w.x, w.y);
+			}
+			
+			float cadd(float z, float w)
+			{
+				return z + w;
+			}
+			
+			
+			
+			//Returns z - w.
+			vec2 csub(vec2 z, vec2 w)
+			{
+				return z - w;
+			}
+			
+			vec2 csub(vec2 z, float w)
+			{
+				return vec2(z.x - w, z.y);
+			}
+			
+			vec2 csub(float z, vec2 w)
+			{
+				return vec2(z - w.x, -w.y);
+			}
+			
+			float csub(float z, float w)
+			{
+				return z - w;
+			}
+			
+			
+			
+			//Returns z * w.
+			vec2 cmul(vec2 z, vec2 w)
+			{
+				return vec2(z.x * w.x - z.y * w.y, z.x * w.y + z.y + w.x);
+			}
+			
+			vec2 cmul(vec2 z, float w)
+			{
+				return z * w;
+			}
+			
+			vec2 cmul(float z, vec2 w)
+			{
+				return z * w;
+			}
+			
+			float cmul(float z, float w)
+			{
+				return z * w;
+			}
+			
+			
+			
+			//Returns z / w.
+			vec2 cdiv(vec2 z, vec2 w)
+			{
+				return vec2(z.x * w.x + z.y * w.y, -z.x * w.y + z.y + w.x) / (w.x * w.x + w.y * w.y);
+			}
+			
+			vec2 cdiv(vec2 z, float w)
+			{
+				return z / w;
+			}
+			
+			vec2 cdiv(float z, vec2 w)
+			{
+				return vec2(z * w.x, -z * w.y) / (w.x * w.x + w.y * w.y);
+			}
+			
+			float cdiv(float z, float w)
+			{
+				return z / w;
+			}
+			
+			
+			
+			//Returns z^w.
+			vec2 cpow(vec2 z, vec2 w)
+			{
+				float arg = atan(z.y, z.x);
+				float magnitude = z.x * z.x + z.y * z.y;
+				
+				float exparg = exp(-w.y * arg);
+				float magexp = pow(magnitude, w.x / 2.0);
+				float logmag = log(magnitude) * w.y / 2.0;
+				
+				float p1 = exparg * cos(w.x * arg);
+				float p2 = exparg * sin(w.x * arg);
+				
+				float q1 = magexp * cos(logmag);
+				float q2 = magexp * sin(logmag);
+				
+				return vec2(p1 * q1 - p2 * q2, q1 * p2 + p1 * q2);
+			}
+			
+			vec2 cpow(vec2 z, float w)
+			{
+				float arg = atan(z.y, z.x);
+				float magnitude = z.x * z.x + z.y * z.y;
+				
+				float magexp = pow(magnitude, w / 2.0);
+				
+				float p1 = cos(w * arg);
+				float p2 = sin(w * arg);
+				
+				return vec2(p1 * magexp, p2 * magexp);
+			}
+			
+			vec2 cpow(float z, vec2 w)
+			{
+				float zlog = log(z);
+				float zexp = exp(w.x * zlog);
+				
+				return vec2(zexp * cos(w.y * zlog), zexp * sin(w.y * zlog));
+			}
+			
+			float cpow(float z, float w)
+			{
+				return pow(z, w);
+			}
+			
+			
+			
+			//Returns sqrt(z).
+			vec2 csqrt(vec2 z)
+			{
+				return cpow(z, .5);
+			}
+			
+			vec2 csqrt(float z)
+			{
+				if (z >= 0.0)
+				{
+					return vec2(sqrt(z), 0.0);
+				}
+				
+				return vec2(0.0, sqrt(-z));
+			}
+			
+			
+			
+			//Returns e^z.
+			vec2 cexp(vec2 z)
+			{
+				return cpow(2.7182818, z);
+			}
+			
+			float cexp(float z)
+			{
+				return exp(z);
+			}
+			
+			
+			
+			//Returns log(z).
+			vec2 clog(vec2 z)
+			{
+				return vec2(.5 * log(z.x * z.x + z.y * z.y), atan(z.y, z.x));
+			}
+			
+			float clog(float z)
+			{
+				return log(z);
+			}
+			
+			
+			
+			//Returns sin(z).
+			vec2 csin(vec2 z)
+			{
+				vec2 temp = cexp(cmul(z, vec2(0.0, 1.0))) - cexp(cmul(z, vec2(0.0, -1.0)));
+				
+				return cmul(temp, vec2(0.0, -0.5));
+			}
+			
+			float csin(float z)
+			{
+				return sin(z);
+			}
+			
+			
+			
+			//Returns cos(z).
+			vec2 ccos(vec2 z)
+			{
+				vec2 temp = cexp(cmul(z, vec2(0.0, 1.0))) + cexp(cmul(z, vec2(0.0, -1.0)));
+				
+				return cmul(temp, vec2(0.0, -0.5));
+			}
+			
+			float ccos(float z)
+			{
+				return cos(z);
+			}
+			
+			
+			
+			//Returns tan(z).
+			vec2 ctan(vec2 z)
+			{
+				vec2 temp = cexp(cmul(z, vec2(0.0, 2.0)));
+				
+				return cdiv(cmul(vec2(0.0, -1.0), vec2(-1.0, 0.0) + temp), vec2(1.0, 0.0) + temp);
+			}
+			
+			float ctan(float z)
+			{
+				return tan(z);
+			}
+			
+			
+			
+			void main(void)
+			{
+				vec2 z = vec2(uv.x * box_size_halved, uv.y * box_size_halved);
+				float brightness = exp(-length(z));
+				
+				
+				
+				for (int iteration = 0; iteration < 201; iteration++)
+				{
+					if (iteration == num_iterations)
+					{
+						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+						return;
+					}
+					
+					if (length(z) >= 2.0)
+					{
+						break;
+					}
+					
+					z = vec2(z.x * z.x - z.y * z.y + a, 2.0 * z.x * z.y + b);
+					
+					brightness += exp(-length(z));
+				}
+				
+				
+				
+				gl_FragColor = vec4(0.0, brightness / brightness_scale, brightness / brightness_scale, 1.0);
+			}
+		`;
+	}
 	
 	
 	
@@ -144,7 +434,7 @@
 	{
 		let vertex_shader = load_shader(gl, gl.VERTEX_SHADER, vertex_shader_source);
 		
-		let frag_shader = load_shader(gl, gl.FRAGMENT_SHADER, frag_shader_source);
+		let frag_shader = load_shader(gl, gl.FRAGMENT_SHADER, get_frag_shader_source());
 		
 		shader_program = gl.createProgram();
 		
