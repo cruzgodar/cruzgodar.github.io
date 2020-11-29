@@ -7,13 +7,10 @@
 	let gl = document.querySelector("#output-canvas").getContext("webgl");
 	
 	
-	
-	let image_size = 100;
+	let julia_sets_per_side = 100;
+	let julia_set_size = 20;
+	let image_size = 2000;
 	let num_iterations = 50;
-	
-	let image = new Float32Array(image_size * image_size);
-	
-	image[Math.floor(image_size / 2) * image_size + Math.floor(image_size / 2)] = 10000;
 	
 	
 	
@@ -68,51 +65,44 @@
 		
 		varying vec2 uv;
 		
-		uniform sampler2D texture_sampler;
-		
-		uniform float pixel_step_size;
+		uniform float julia_sets_per_side;
+		uniform float julia_set_size;
+		uniform float image_size;
+		uniform int num_iterations;
 		
 		
 		
 		void main(void)
 		{
-			float total_1 = floor(texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(0.0, pixel_step_size)).x / 4.0);
+			float a = (floor((uv.x + 1.0) / 2.0 * julia_sets_per_side) / julia_sets_per_side * 2.0 - 1.0) * 1.5 - .75;
+			float b = (floor((uv.y + 1.0) / 2.0 * julia_sets_per_side) / julia_sets_per_side * 2.0 - 1.0) * 1.5;
 			
-			float total_2 = floor(texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(0.0, -pixel_step_size)).x / 4.0);
+			vec2 z = vec2((mod((uv.x + 1.0) / 2.0 * image_size, julia_set_size) / julia_set_size * 2.0 - 1.0) * 1.5, (mod((uv.y + 1.0) / 2.0 * image_size, julia_set_size) / julia_set_size * 2.0 - 1.0) * 1.5);
+			float brightness = exp(-length(z));
 			
-			float total_3 = floor(texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(pixel_step_size, 0.0)).x / 4.0);
 			
-			float total_4 = floor(texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(-pixel_step_size, 0.0)).x / 4.0);
 			
-			float total_here = texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0).x;
-			
-			float new_total = total_1 + total_2 + total_3 + total_4 + mod(total_here, 4.0);
-			
-			float r = floor(new_total / 65536.0);
-			
-			float g = floor((new_total - r * 65536.0) / 256.0);
-			
-			float b = floor(new_total - r * 65536.0 - g * 256.0);
-			
-			if (b == 1.0)
+			for (int iteration = 0; iteration < 100; iteration++)
 			{
-				gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+				if (iteration == num_iterations)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					return;
+				}
+				
+				if (length(z) >= 2.0)
+				{
+					break;
+				}
+				
+				z = vec2(z.x * z.x - z.y * z.y + a, 2.0 * z.x * z.y + b);
+				
+				brightness += exp(-length(z));
 			}
 			
-			else if (b == 2.0)
-			{
-				gl_FragColor = vec4(0.5, 0.0, 1.0, 1.0);
-			}
 			
-			else if (b == 3.0)
-			{
-				gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);
-			}
 			
-			else
-			{
-				gl_FragColor = vec4(r / 255.0, g / 255.0, b / 255.0, .99);
-			}
+			gl_FragColor = vec4(0.0, brightness / 10.0, brightness / 10.0, 1.0);
 		}
 	`;
 	
@@ -154,12 +144,6 @@
 		
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(quad), gl.STATIC_DRAW);
 		
-		
-		
-		let texture = load_texture();
-		
-		
-		
 		shader_program.position_attribute = gl.getAttribLocation(shader_program, "position");
 		
 		gl.enableVertexAttribArray(shader_program.position_attribute);
@@ -168,15 +152,10 @@
 		
 		
 		
-		gl.activeTexture(gl.TEXTURE0);
-		
-		gl.bindTexture(gl.TEXTURE_2D, texture);
-		
-		
-		
-		shader_program.texture_sampler_uniform = gl.getUniformLocation(shader_program, "texture_sampler");
-		
-		shader_program.pixel_step_size_uniform = gl.getUniformLocation(shader_program, "pixel_step_size");
+		shader_program.julia_sets_per_side_uniform = gl.getUniformLocation(shader_program, "julia_sets_per_side");
+		shader_program.julia_set_size_uniform = gl.getUniformLocation(shader_program, "julia_set_size");
+		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
+		shader_program.num_iterations_uniform = gl.getUniformLocation(shader_program, "num_iterations");
 		
 		
 		
@@ -204,48 +183,12 @@
 	
 	
 	
-	function load_texture()
-	{
-		let texture = gl.createTexture();
-		gl.bindTexture(gl.TEXTURE_2D, texture);
-		
-		let level = 0;
-		let internal_format = gl.LUMINANCE;
-		let width = image_size;
-		let height = image_size;
-		let border = 0;
-		let src_format = gl.LUMINANCE;
-		let src_type = gl.FLOAT;
-		
-		
-		
-		
-		
-		
-		
-		try {let ext = gl.getExtension("OES_texture_float");}
-		catch(ex) {}
-		
-		
-		
-		gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
-		
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		
-		
-		
-		gl.texImage2D(gl.TEXTURE_2D, level, internal_format, width, height, border, src_format, src_type, image);
-		
-		return texture;
-	}
-	
-	
-	
 	function draw_frame()
-	{
+	{	
+		julia_sets_per_side = parseInt(document.querySelector("#num-julias-input").value || 100);
+		julia_set_size = parseInt(document.querySelector("#julia-size-input").value || 20);
+		image_size = julia_sets_per_side * julia_set_size;
+		
 		document.querySelector("#output-canvas").setAttribute("width", image_size);
 		document.querySelector("#output-canvas").setAttribute("height", image_size);
 		
@@ -253,52 +196,14 @@
 		
 		
 		
-		gl.uniform1f(shader_program.pixel_step_size_uniform, 1 / image_size);
-		
-		gl.uniform1i(shader_program.texture_sampler_uniform, 0);
+		gl.uniform1f(shader_program.julia_sets_per_side_uniform, julia_sets_per_side);
+		gl.uniform1f(shader_program.julia_set_size_uniform, julia_set_size);
+		gl.uniform1f(shader_program.image_size_uniform, julia_sets_per_side * julia_set_size);
+		gl.uniform1i(shader_program.num_iterations_uniform, num_iterations);
 		
 		
 		
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-		
-		
-		
-		let pixels = new Uint8Array(image_size * image_size * 4);
-		gl.readPixels(0, 0, image_size, image_size, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-		
-		
-		
-		for (let i = 0; i < image_size * image_size; i++)
-		{
-			if (pixels[4 * i + 3] !== 255)
-			{
-				image[i] = 65536 * pixels[4 * i] + 256 * pixels[4 * i + 1] + pixels[4 * i + 2];
-			}
-			
-			else if (pixels[4 * i] === 255)
-			{
-				image[i] = 3;
-			}
-			
-			else if (pixels[4 * i] > 0)
-			{
-				image[i] = 2;
-			}
-			
-			else
-			{
-				image[i] = 1;
-			}
-		}
-		
-		
-		let texture = load_texture();
-		
-		gl.activeTexture(gl.TEXTURE0);
-		
-		gl.bindTexture(gl.TEXTURE_2D, texture);
-		
-		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
