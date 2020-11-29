@@ -11,6 +11,10 @@
 	let image_size = 100;
 	let num_iterations = 50;
 	
+	let image = new Float32Array(image_size * image_size);
+	
+	image[Math.floor(image_size / 2) * image_size + Math.floor(image_size / 2)] = 10000;
+	
 	
 	
 	document.querySelector("#output-canvas").setAttribute("width", image_size);
@@ -72,17 +76,43 @@
 		
 		void main(void)
 		{
-			float total_1 = texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(0.0, pixel_step_size)).x / 4.0;
+			float total_1 = floor(texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(0.0, pixel_step_size)).x / 4.0);
 			
-			float total_2 = texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(0.0, -pixel_step_size)).x / 4.0;
+			float total_2 = floor(texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(0.0, -pixel_step_size)).x / 4.0);
 			
-			float total_3 = texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(pixel_step_size, 0.0)).x / 4.0;
+			float total_3 = floor(texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(pixel_step_size, 0.0)).x / 4.0);
 			
-			float total_4 = texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(-pixel_step_size, 0.0)).x / 4.0;
+			float total_4 = floor(texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0 + vec2(-pixel_step_size, 0.0)).x / 4.0);
 			
+			float total_here = texture2D(texture_sampler, (uv + vec2(1.0, 1.0)) / 2.0).x;
 			
+			float new_total = total_1 + total_2 + total_3 + total_4 + mod(total_here, 4.0);
 			
-			gl_FragColor = vec4(total_1 + total_2 + total_3 + total_4, 0.0, 0.0, 1.0);
+			float r = floor(new_total / 65536.0);
+			
+			float g = floor((new_total - r * 65536.0) / 256.0);
+			
+			float b = floor(new_total - r * 65536.0 - g * 256.0);
+			
+			if (b == 1.0)
+			{
+				gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+			}
+			
+			else if (b == 2.0)
+			{
+				gl_FragColor = vec4(0.5, 0.0, 1.0, 1.0);
+			}
+			
+			else if (b == 3.0)
+			{
+				gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);
+			}
+			
+			else
+			{
+				gl_FragColor = vec4(r / 255.0, g / 255.0, b / 255.0, .99);
+			}
 		}
 	`;
 	
@@ -189,9 +219,7 @@
 		
 		
 		
-		let image = new Float32Array(image_size * image_size);
 		
-		image[Math.floor(image_size / 2) * image_size + Math.floor(image_size / 2)] = 1000;
 		
 		
 		
@@ -232,6 +260,45 @@
 		
 		
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+		
+		
+		
+		let pixels = new Uint8Array(image_size * image_size * 4);
+		gl.readPixels(0, 0, image_size, image_size, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+		
+		
+		
+		for (let i = 0; i < image_size * image_size; i++)
+		{
+			if (pixels[4 * i + 3] !== 255)
+			{
+				image[i] = 65536 * pixels[4 * i] + 256 * pixels[4 * i + 1] + pixels[4 * i + 2];
+			}
+			
+			else if (pixels[4 * i] === 255)
+			{
+				image[i] = 3;
+			}
+			
+			else if (pixels[4 * i] > 0)
+			{
+				image[i] = 2;
+			}
+			
+			else
+			{
+				image[i] = 1;
+			}
+		}
+		
+		
+		let texture = load_texture();
+		
+		gl.activeTexture(gl.TEXTURE0);
+		
+		gl.bindTexture(gl.TEXTURE_2D, texture);
+		
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
