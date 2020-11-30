@@ -560,11 +560,6 @@
 		
 		
 		gl.viewport(0, 0, image_size, image_size);
-		
-		
-		
-		init_listeners_no_touch();
-		init_listeners_touch();
 	}
 	
 	
@@ -667,7 +662,13 @@
 	
 	.then(function()
 	{
-		setTimeout(prepare_new_code, 500);
+		setTimeout(function()
+		{
+			prepare_new_code();
+			
+			init_listeners_no_touch();
+			init_listeners_touch();
+		}, 500);
 	});
 	
 	
@@ -707,6 +708,8 @@
 		setup_webgl(true);
 		
 		
+		
+		stabilize_brightness_scale = false;
 		
 		draw_frame();
 		
