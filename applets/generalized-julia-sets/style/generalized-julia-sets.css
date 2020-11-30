@@ -26,17 +26,28 @@
 
 
 
-.text-box-row
+.text-box-row-2, .text-box-row-3
 {
-	width: 400px;
 	margin: 0 auto;
 	display: flex;
 	justify-content: space-between;
 }
 
-#code-input
+.text-box-row-2
+{
+	width: 250px;
+}
+
+.text-box-row-3
 {
 	width: 400px;
+}
+
+
+
+#code-input
+{
+	width: 250px;
 	
 	font-family: "Source Code Pro", monospace;
 }
@@ -50,6 +61,11 @@
 		flex-direction: column;
 	}
 	
+	.text-box-row-3
+	{
+		width: 350px;
+	}
+	
 	#mandelbrot-set, #julia-set
 	{
 		width: 70vw;
@@ -59,10 +75,5 @@
 	#mandelbrot-set
 	{
 		margin-bottom: 5vw;
-	}
-	
-	.text-box-row, #code-input
-	{
-		width: 350px;
 	}
 }

@@ -49,25 +49,25 @@
 		<br>
 		
 		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span>\(z^2 + c:\) <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">z.pow(2).add(c)</span></span></p>
+			<p class="body-text center-if-needed"><span>\(z^2 + c:\) <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(cpow(z, 2.0))</span></span></p>
 		</div>
 		
 		<br>
 		
 		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span>\(z^4 + c:\) <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">z.pow(4).add(c)</span></span></p>
+			<p class="body-text center-if-needed"><span>\(z^4 + c:\) <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(cpow(z, 4.0))</span></span></p>
 		</div>
 		
 		<br>
 		
 		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span>\(\sin(z + c):\) <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">z.add(c).sin()</span></span></p>
+			<p class="body-text center-if-needed"><span>\(\sin(z + c):\) <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csin(cadd(z, c))</span></span></p>
 		</div>
 		
 		<br>
 		
 		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span>\(\sin(cz):\) <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">z.mul(c).sin()</span></span></p>
+			<p class="body-text center-if-needed"><span>\(\sin(cz):\) <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csin(cmul(z, c))</span></span></p>
 		</div>
 	</section>
 	
@@ -80,7 +80,7 @@
 	<section>
 		<div class="center-content">
 			<div class="text-box-container new-aos-section" data-aos="fade-up">
-				<input id="code-input" class="text-box no-floating-footer" type="text" value="z.pow(2).add(c)" tabindex="1">
+				<input id="code-input" class="text-box no-floating-footer" type="text" value="cadd(cpow(z, 2.0), c)" tabindex="1">
 				<label for="code-input">
 					<p class="body-text">Generating Function</p>
 				</label>
@@ -89,18 +89,11 @@
 		
 		<div style="height: 5vh"></div>
 		
-		<div class="text-box-row">
+		<div class="text-box-row-2">
 			<div class="text-box-container" data-aos="fade-up">
 				<input id="box-size-input" class="text-box no-floating-footer" type="text" value="4" tabindex="1">
 				<label for="box-size-input">
 					<p class="body-text">Viewport Size</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="exposure-input" class="text-box no-floating-footer" type="text" value="5" tabindex="1">
-				<label for="exposure-size-input">
-					<p class="body-text">Exposure</p>
 				</label>
 			</div>
 			
@@ -143,7 +136,7 @@
 		
 		<div style="height: 5vh"></div>
 		
-		<div class="text-box-row">
+		<div class="text-box-row-3">
 			<div class="text-box-container" data-aos="fade-up">
 				<input id="a-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
 				<label for="a-input">
