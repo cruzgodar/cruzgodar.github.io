@@ -15,7 +15,7 @@
 
 	let small_image_size = 1000;
 
-	let small_num_iterations = 100;
+	let small_num_iterations = 200;
 	let large_num_iterations = 200;
 
 	let persist_image = false;
