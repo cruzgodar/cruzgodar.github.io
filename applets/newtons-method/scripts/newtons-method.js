@@ -39,6 +39,8 @@
 	init_listeners();
 	
 	
+	
+	document.querySelector("#resolution-input").addEventListener("input", change_resolution);
 
 	document.querySelector("#add-marker-button").addEventListener("click", add_marker);
 	document.querySelector("#spread-markers-button").addEventListener("click", spread_roots);
@@ -560,14 +562,14 @@
 		
 		let changed_brightness_scale = false;
 		
-		if (num_pixels_at_zero < .025 * image_size * current_roots.length)
+		if (num_pixels_at_zero < .000025 * image_size * image_size * current_roots.length)
 		{
 			brightness_scale -= .25;
 			
 			changed_brightness_scale = true;
 		}
 		
-		else if (num_pixels_at_zero > .05 * image_size * current_roots.length)
+		else if (num_pixels_at_zero > .00005 * image_size * image_size * current_roots.length)
 		{
 			brightness_scale += .25;
 			
@@ -899,16 +901,24 @@
 		
 		
 		
+		let x = Math.random() * 3 - 1.5;
+		let y = Math.random() * 3 - 1.5;
+		
+		let row = Math.floor(root_selector_height * (1 - (y / 4 + .5)));
+		let col = Math.floor(root_selector_width * (x / 4 + .5));
+		
+		
+		
 		let element = document.createElement("div");
 		element.classList.add("root-marker");
 		element.id = `root-marker-${root_markers.length}`;
-		element.style.transform = `translate3d(${root_selector_width / 2 - root_marker_radius}px, ${root_selector_height / 2 - root_marker_radius}px, 0)`;
+		element.style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		
 		document.querySelector("#root-selector").appendChild(element);
 		
 		root_markers.push(element);
 		
-		current_roots.push([0, 0]);
+		current_roots.push([x, y]);
 		
 		brightness_scale = 20;
 		
@@ -1122,12 +1132,39 @@
 	
 	
 	
+	function change_resolution()
+	{
+		image_size = parseInt(document.querySelector("#resolution-input").value || 1000);
+		
+		if (image_size < 200)
+		{
+			image_size = 200;
+		}
+		
+		if (image_size > 2000)
+		{
+			image_size = 2000;
+		}
+		
+		
+		
+		document.querySelector("#newtons-method-plot").setAttribute("width", image_size);
+		document.querySelector("#newtons-method-plot").setAttribute("height", image_size);
+		
+		gl.viewport(0, 0, image_size, image_size);
+		
+		window.requestAnimationFrame(draw_frame);
+	}
+	
+	
+	
 	function prepare_download()
 	{
 		image_size = parseInt(document.querySelector("#dim-input").value || 2000);
 		
 		document.querySelector("#newtons-method-plot").setAttribute("width", image_size);
 		document.querySelector("#newtons-method-plot").setAttribute("height", image_size);
+		
 		gl.viewport(0, 0, image_size, image_size);
 		
 		draw_frame();
