@@ -378,6 +378,56 @@
 			
 			
 			
+			//Returns z^^w.
+			vec2 ctet(vec2 z, float w)
+			{
+				if (w == 0.0)
+				{
+					return vec2(1.0, 0.0);
+				}
+			
+				
+				vec2 prod = z;
+				
+				for (int i = 1; i < 10000; i++)
+				{
+					if (float(i) >= w)
+					{
+						return prod;
+					}
+					
+					prod = cpow(prod, z);
+				}
+				
+				return prod;
+			}
+			
+			float ctet(float z, float w)
+			{
+				if (w == 0.0)
+				{
+					return 1.0;
+				}
+				
+				
+				
+				float prod = z;
+				
+				for (int i = 1; i < 10000; i++)
+				{
+					if (float(i) >= w)
+					{
+						return prod;
+					}
+					
+					prod = pow(prod, z);
+				}
+				
+				return prod;
+			}
+			
+			
+			
 			//Returns sqrt(z).
 			vec2 csqrt(vec2 z)
 			{
