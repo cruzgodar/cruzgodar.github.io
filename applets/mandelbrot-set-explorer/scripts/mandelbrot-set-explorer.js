@@ -251,6 +251,8 @@
 			
 			if (stabilize_brightness_scale)
 			{
+				brightness_scale -= 8;
+				
 				brightness_stabilization_direction = -1;
 			}
 			
@@ -263,6 +265,8 @@
 			
 			if (stabilize_brightness_scale)
 			{
+				brightness_scale += 8;
+				
 				brightness_stabilization_direction = 1;
 			}
 			
@@ -523,7 +527,7 @@
 		{
 			e.preventDefault();
 			
-			zoom_level -= e.deltaY / 10;
+			zoom_level -= Math.sign(e.deltaY) * 10;
 			
 			if (zoom_level < 1)
 			{
