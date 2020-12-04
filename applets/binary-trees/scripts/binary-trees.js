@@ -243,6 +243,7 @@
 		{
 			let element = document.createElement("div");
 			element.classList.add("branch-marker");
+			element.classList.add("no-floating-footer");
 			element.id = `branch-marker-${i}`;
 			
 			document.querySelector("#branch-selector").appendChild(element);

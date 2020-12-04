@@ -904,6 +904,7 @@
 		
 		let element = document.createElement("div");
 		element.classList.add("root-marker");
+		element.classList.add("branch-marker");
 		element.id = `root-marker-${root_markers.length}`;
 		element.style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		

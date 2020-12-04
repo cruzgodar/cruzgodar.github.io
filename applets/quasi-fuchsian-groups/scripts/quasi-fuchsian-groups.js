@@ -374,6 +374,8 @@
 			let col = (coefficient_points[i][1] / canvas_size) * coefficient_selector_width;
 			
 			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
+			
+			coefficient_markers[i].classList.add("no-floating-footer");
 		}
 		
 		
