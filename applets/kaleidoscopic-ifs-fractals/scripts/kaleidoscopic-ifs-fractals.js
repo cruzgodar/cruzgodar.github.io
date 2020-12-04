@@ -161,6 +161,10 @@
 	
 	
 	
+	setTimeout(setup_webgl, 500);
+	
+	
+	
 	const vertex_shader_source = `
 		attribute vec3 position;
 		varying vec2 uv;
@@ -593,17 +597,6 @@
 			window.requestAnimationFrame(draw_frame);
 		}
 	}
-	
-	
-	
-	load_script("/scripts/gl-matrix.min.js")
-	
-	.then(function()
-	{
-		setTimeout(setup_webgl, 500);
-	});
-	
-	
 	
 	
 	

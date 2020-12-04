@@ -99,6 +99,16 @@
 	
 	
 	
+	setTimeout(function()
+	{
+		prepare_new_code();
+		
+		init_listeners_no_touch();
+		init_listeners_touch();
+	}, 500);
+	
+	
+	
 	const vertex_shader_source = `
 		attribute vec3 position;
 		varying vec2 uv;
@@ -705,21 +715,6 @@
 			need_to_restart = true;
 		}
 	}
-	
-	
-	
-	load_script("/scripts/gl-matrix.min.js")
-	
-	.then(function()
-	{
-		setTimeout(function()
-		{
-			prepare_new_code();
-			
-			init_listeners_no_touch();
-			init_listeners_touch();
-		}, 500);
-	});
 	
 	
 	

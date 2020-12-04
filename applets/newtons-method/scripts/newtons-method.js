@@ -73,6 +73,8 @@
 	
 	
 	
+	setTimeout(setup_webgl, 500);
+	
 	
 	
 	const vertex_shader_source = `
@@ -604,15 +606,6 @@
 			need_to_restart = true;
 		}
 	}
-	
-	
-	
-	load_script("/scripts/gl-matrix.min.js")
-	
-	.then(function()
-	{
-		setTimeout(setup_webgl, 500);
-	});
 	
 	
 	
