@@ -288,7 +288,7 @@ function set_up_aos()
 			
 			else
 			{
-				aos_anchor_offsets[current_section - 1] = window_height / 4;
+				aos_anchor_offsets[current_section - 1] = 100;
 			}
 			
 			

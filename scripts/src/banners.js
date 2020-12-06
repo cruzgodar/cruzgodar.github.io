@@ -133,7 +133,7 @@ function load_banner()
 				
 				
 				//Since all the elements have had their offsets changed dramatically, we need to update AOS.
-				AOS.init({duration: 1200, once: false, offset: window_height / 4});
+				AOS.init({duration: 1200, once: false, offset: 100});
 				
 				//We resolve here because the page can still be loaded without the banner.
 				resolve();

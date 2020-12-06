@@ -228,7 +228,7 @@ async function entry_point(url)
 	
 	
 	
-	AOS.init({duration: 1200, once: false, offset: window_height / 4});
+	AOS.init({duration: 1200, once: false, offset: 100});
 	
 	window.addEventListener("scroll", aos_scroll);
 	window.addEventListener("resize", aos_resize);
