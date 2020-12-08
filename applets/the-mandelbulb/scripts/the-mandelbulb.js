@@ -246,7 +246,7 @@
 		
 		vec3 get_surface_normal(vec3 pos)
 		{
-			float e = .00001;
+			float e = .000001;
 			
 			float base = distance_estimator(pos);
 			
@@ -291,7 +291,7 @@
 			
 			vec3 final_color = fog_color;
 			
-			float epsilon = .00001;
+			float epsilon = 0.0;
 			
 			float t = 0.0;
 			
@@ -888,9 +888,9 @@
 		{
 			moving_speed = distance_to_scene / 20;
 			
-			if (moving_speed < .000025)
+			if (moving_speed < .000001)
 			{
-				moving_speed = .000025;
+				moving_speed = .000001;
 			}
 			
 			if (moving_speed > .02)
