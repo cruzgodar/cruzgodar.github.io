@@ -95,7 +95,10 @@
 		elements[i].addEventListener("input", update_parameters);
 	}
 	
-	document.querySelector("#randomize-parameters-button").addEventListener("click", randomize_parameters);
+	document.querySelector("#randomize-parameters-button").addEventListener("click", function()
+	{
+		window.requestAnimationFrame(draw_frame);
+	});
 	
 	document.querySelector("#switch-bulb-button").addEventListener("click", switch_bulb);
 	
@@ -161,7 +164,7 @@
 		
 		
 		const float clip_distance = 1000.0;
-		const int max_marches = 64;
+		const int max_marches = 64; //Change to 512 to eliminate flickering in animations
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .2;
 		const int num_iterations = 32;
@@ -268,7 +271,7 @@
 			float light_intensity = light_brightness * max(dot(surface_normal, light_direction), .25 * dot(surface_normal, -light_direction));
 			
 			//The last factor adds ambient occlusion.
-			color = color * light_intensity * max((1.0 - float(iteration) / float(max_marches)), 0.0);
+			color = color * light_intensity * max(1.0 - float(iteration) / float(max_marches), 0.0);
 			
 			
 			
@@ -297,6 +300,8 @@
 			
 			float last_distance = 1000.0;
 			
+			//int slowed_down = 0;
+			
 			
 			
 			for (int iteration = 0; iteration < max_marches; iteration++)
@@ -320,6 +325,23 @@
 					final_color = compute_shading(pos, iteration);
 					break;
 				}
+				
+				//Uncomment to add aggressive understepping when close to the fractal boundary, which helps to prevent flickering but is a significant performance hit.
+				/*
+				else if (last_distance / distance > .9999 && slowed_down == 0)
+				{
+					ray_direction_vec = normalize(start_pos - camera_pos) * .125;
+					
+					slowed_down = 1;
+				}
+				
+				else if (last_distance / distance <= .9999 && slowed_down == 1)
+				{
+					ray_direction_vec = normalize(start_pos - camera_pos) * .9;
+					
+					slowed_down = 0;
+				}
+				*/
 				
 				else if (t > clip_distance)
 				{
@@ -459,6 +481,36 @@
 		
 		
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+		
+		
+		
+		//Uncomment to write to a sequence of frames for a Juliabulb animation.
+		/*
+		let link = document.createElement("a");
+		
+		link.download = `${frame}.png`;
+		
+		link.href = document.querySelector("#output-canvas").toDataURL();
+		
+		link.click();
+		
+		link.remove();
+		
+		
+		
+		c = [Math.cos(2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000), Math.cos(2 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000), Math.cos(3 * Math.PI * frame / 6000) + Math.sin(11 * 2 * Math.PI * frame / 6000)];
+		
+		julia_proportion = 1;
+		
+		frame++;
+		
+		setTimeout(function()
+		{
+			window.requestAnimationFrame(draw_frame);
+		}, 50);
+		
+		return;
+		*/
 		
 		
 		
