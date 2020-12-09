@@ -95,11 +95,7 @@
 		elements[i].addEventListener("input", update_parameters);
 	}
 	
-	document.querySelector("#randomize-parameters-button").addEventListener("click", function()
-	{
-		window.requestAnimationFrame(draw_frame);
-	});
-	
+	document.querySelector("#randomize-parameters-button").addEventListener("click", randomize_parameters);
 	document.querySelector("#switch-bulb-button").addEventListener("click", switch_bulb);
 	
 	
