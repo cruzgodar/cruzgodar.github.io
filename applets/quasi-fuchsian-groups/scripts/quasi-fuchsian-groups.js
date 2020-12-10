@@ -247,6 +247,65 @@
 		
 		
 		
+		//Uncomment to make an animation.
+		
+		/*
+		let link = document.createElement("a");
+		
+		link.download = `${frame}.png`;
+		
+		link.href = document.querySelector("#quasi-fuchsian-groups-plot").toDataURL();
+		
+		link.click();
+		
+		link.remove();
+		
+		
+		
+		let a = .25 * (Math.cos(2 * 2 * Math.PI * frame / 3000) + .2 * Math.sin(7 * 2 * Math.PI * frame / 3000)) + 2;
+		b = .25 * (1.75 * Math.sin(2 * Math.PI * frame / 3000) + .2 * Math.cos(5 * 2 * Math.PI * frame / 3000));
+		
+		t[0] = [a, b];
+		
+		a = .25 * (Math.cos(4 * 2 * Math.PI * frame / 3000) + .2 * Math.sin(5 * 2 * Math.PI * frame / 3000)) + 2;
+		b = .25 * (1.75 * Math.sin(2 * 2 * Math.PI * frame / 3000) + .2 * Math.cos(6 * 2 * Math.PI * frame / 3000));
+		
+		t[1] = [a, b];
+		
+		
+		
+		for (let i = 0; i < 2; i++)
+		{
+			let row = Math.floor((1 - (t[i][1] + .5)) * coefficient_selector_height);
+			let col = Math.floor((t[i][0] - 2 + .5) * coefficient_selector_width);
+			
+			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
+		}
+		
+		
+		
+		frame++;
+		
+		
+		
+		for (let i = 0; i < canvas_size; i++)
+		{
+			for (let j = 0; j < canvas_size; j++)
+			{
+				brightness[i][j] = 0;
+			}
+		}
+		
+		
+		
+		setTimeout(function()
+		{
+			window.requestAnimationFrame(draw_quasi_fuchsian_group);
+		}, 20);
+		*/
+
+		
+		
 		if (draw_another_frame)
 		{
 			draw_another_frame = false;
