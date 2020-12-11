@@ -605,6 +605,87 @@
 		{
 			need_to_restart = true;
 		}
+		
+		
+		//Uncomment to generate an animation.
+		/*
+		let link = document.createElement("a");
+
+		link.download = `${frame}.png`;
+		
+		link.href = document.querySelector("#newtons-method-plot").toDataURL();
+		
+		link.click();
+		
+		link.remove();
+		
+		
+		
+		current_roots[0][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		current_roots[0][1] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		
+		
+		
+		current_roots[1][0] = .5 * (Math.cos(2 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) - 1 + .5;
+		current_roots[1][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		
+		
+		
+		current_roots[2][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		current_roots[2][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		
+		
+		
+		current_roots[3][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) + 1 + .5;
+		current_roots[3][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 1 + .5;
+		
+		
+		
+		current_roots[4][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		current_roots[4][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) - 3 + .5;
+		
+		
+		
+		current_roots[5][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) - 1 + .5;
+		current_roots[5][1] = .5 * (Math.cos(7 * 2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		
+		
+		
+		current_roots[6][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		current_roots[6][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		
+		
+		
+		current_roots[7][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		current_roots[7][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) - 1 + .5;
+		
+		
+		
+		let rect = document.querySelector("#root-selector").getBoundingClientRect();
+		
+		for (let i = 0; i < current_roots.length; i++)
+		{
+			let row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
+			let col = Math.floor(root_selector_width * (current_roots[i][0] / 4 + .5));
+			
+			root_markers[i].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+		}
+		
+		
+		
+		console.log(frame, brightness_scale);
+		
+		
+		
+		frame++;
+		
+		
+		
+		setTimeout(function()
+		{
+			window.requestAnimationFrame(draw_frame);
+		}, 50);
+		*/
 	}
 	
 	
