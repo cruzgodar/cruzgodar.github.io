@@ -494,7 +494,7 @@
 		
 		
 		
-		c = [.5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)), .5 * (Math.cos(2 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)), .5 * (Math.cos(3 * Math.PI * frame / 6000) + Math.sin(11 * 2 * Math.PI * frame / 6000))];
+		c = [.5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)), .5 * (Math.cos(2 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)), .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(11 * 2 * Math.PI * frame / 6000))];
 		
 		julia_proportion = 1;
 		
