@@ -95,7 +95,10 @@
 		elements[i].addEventListener("input", update_parameters);
 	}
 	
-	document.querySelector("#randomize-parameters-button").addEventListener("click", randomize_parameters);
+	document.querySelector("#randomize-parameters-button").addEventListener("click", function()
+	{
+		window.requestAnimationFrame(draw_frame);
+	});
 	document.querySelector("#switch-bulb-button").addEventListener("click", switch_bulb);
 	
 	
@@ -164,8 +167,6 @@
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .2;
 		const int num_iterations = 32;
-		
-		uniform int antialiasing;
 		
 		uniform float power;
 		uniform vec3 c;
@@ -358,53 +359,12 @@
 		
 		void main(void)
 		{
-			if (antialiasing == 0)
-			{
-				vec3 start_pos = image_plane_center_pos + right_vec * uv.x + up_vec * uv.y;
-				
-				vec3 final_color = raymarch(start_pos);
-				
-				gl_FragColor = vec4(final_color.xyz, 1.0);
-				
-				return;
-			}
+			vec3 final_color = raymarch(image_plane_center_pos + right_vec * uv.x + up_vec * uv.y);
 			
+			//Uncomment to use 2x antialiasing.
+			//vec3 final_color = (raymarch(image_plane_center_pos + right_vec * (uv.x + .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x + .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x - .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x - .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size)))) / 4.0;
 			
-			
-			else
-			{
-				vec3 start_pos = image_plane_center_pos + right_vec * (uv.x + .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size));
-				
-				vec3 final_color = raymarch(start_pos);
-				
-				
-				
-				start_pos = image_plane_center_pos + right_vec * (uv.x - .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size));
-				
-				final_color += raymarch(start_pos);
-				
-				
-				
-				start_pos = image_plane_center_pos + right_vec * (uv.x + .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size));
-				
-				final_color += raymarch(start_pos);
-				
-				
-				
-				start_pos = image_plane_center_pos + right_vec * (uv.x - .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size));
-				
-				final_color += raymarch(start_pos);
-				
-				
-				
-				final_color /= 4.0;
-				
-				
-				
-				gl_FragColor = vec4(final_color.xyz, 1.0);
-				
-				return;
-			}
+			gl_FragColor = vec4(final_color.xyz, 1.0);
 		}
 	`;
 	
@@ -466,8 +426,6 @@
 		
 		shader_program.light_pos_uniform = gl.getUniformLocation(shader_program, "light_pos");
 		
-		shader_program.antialiasing_uniform = gl.getUniformLocation(shader_program, "antialiasing");
-		
 		shader_program.power_uniform = gl.getUniformLocation(shader_program, "power");
 		shader_program.c_uniform = gl.getUniformLocation(shader_program, "c");
 		
@@ -476,10 +434,6 @@
 		shader_program.rotation_angle_z_uniform = gl.getUniformLocation(shader_program, "rotation_angle_z");
 		
 		shader_program.julia_proportion_uniform = gl.getUniformLocation(shader_program, "julia_proportion");
-		
-		
-		
-		gl.uniform1i(shader_program.antialiasing_uniform, 0);
 		
 		
 		
@@ -562,7 +516,7 @@
 		setTimeout(function()
 		{
 			window.requestAnimationFrame(draw_frame);
-		}, 50);
+		}, 100);
 		
 		return;
 		*/
@@ -1238,11 +1192,6 @@
 		
 		image_size = parseInt(document.querySelector("#high-res-dim-input").value || 2000);
 		
-		if (document.querySelector("#antialiasing-checkbox").checked)
-		{
-			gl.uniform1i(shader_program.antialiasing_uniform, 1);
-		}
-		
 		document.querySelector("#output-canvas").setAttribute("width", image_size);
 		document.querySelector("#output-canvas").setAttribute("height", image_size);
 		
@@ -1273,8 +1222,6 @@
 		
 		
 		image_size = temp;
-		
-		gl.uniform1i(shader_program.antialiasing_uniform, 0);
 		
 		document.querySelector("#output-canvas").setAttribute("width", image_size);
 		document.querySelector("#output-canvas").setAttribute("height", image_size);
