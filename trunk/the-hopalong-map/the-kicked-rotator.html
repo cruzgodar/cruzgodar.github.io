@@ -1,0 +1,141 @@
+<head><title>The Kicked Rotator</title></head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+<header>
+	<div class="new-aos-section" data-aos="fade-in">
+		<div id="logo">
+			<a href="/home/home.html" tabindex="-1">
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
+			</a>
+		</div>
+	</div>
+	
+	<div style="height: 2vh"></div>
+	
+	<div data-aos="fade-up">
+		<h1 class="heading-text">The Kicked Rotator</h1>
+	</div>
+</header>
+
+<div style="height: 5vh"></div>
+
+
+
+<main>
+	<section>
+		<div data-aos="fade-up">
+			<p class="body-text">
+				Pour enough heat into anything and it&#x2019;ll descend into chaos. But what if we just got close &mdash; what does the boundary between order and chaos look like? It&#x2019;s a little unclear what we&#x2019;re even asking here, but it turns out math is well-equipped to provide an answer. We can see an example of this kind of boundary in the Kicked Rotator. It&#x2019;s a beautiful-looking image that resembles something like tidal flow, and in fact, that&#x2019;s not too far off. It plots the angle and momentum of a pendulum that sits in an antigravity chamber &mdash; but one where we turn the gravity on and off periodically. Loops and paths in the image here represent a change in the pendulum&#x2019;s angle and momentum over time &mdash; so if the pendulum is at a point on a red loop in the center, it will never reach a green point, no matter how much time passes. The cyan band that looks thicker than the others indicates some chaos &mdash; the pendulum is moving between many more states than a line&#x2019;s worth.
+			</p>
+		</div>
+		
+		<br>
+		
+		<div data-aos="fade-up">
+			<p class="body-text">
+				By varying the strength of the gravity, which we represent with the letter \(K\), we can alter the paths the pendulum takes. The higher \(K\) is, the more chaotic the system gets, until chaos begins to take over completely at around \(K = .97\), obliterating all structure by \(K = 2\). And so these Kicked Rotators give us a glimpse of the transition between order and chaos, with one slowly overtaking the other. It&#x2019;s a beautiful testament to the fragility of systems like these, especially when our universe is little more than a massive dynamical system itself.
+			</p>
+		</div>
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="text-box-row">
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="k-input" class="text-box no-floating-footer" type="text" value=".75" tabindex="1">
+				<label for="k-input">
+					<p class="body-text">\(K\)</p>
+				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="grid-size-input" class="text-box no-floating-footer" type="text" value="1000" tabindex="1">
+				<label for="grid-size-input">
+					<p class="body-text">Image Size</p>
+				</label>
+			</div>
+			
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="orbit-separation-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
+				<label for="orbit-separation-input">
+					<p class="body-text">Orbit Separation</p>
+				</label>
+			</div>
+		</div>	
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content">
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1000" tabindex="1">
+				<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
+			</div>
+		</div>
+		
+		<div style="height: 5vh"></div>
+		
+		<div class="center-content">
+			<div id="progress-bar" class="progress-bar" style="opacity: 0">
+				<span></span>
+			</div>
+		</div>
+		
+		<div class="center-content" data-aos="fade-in" data-aos-delay="1500">
+			<canvas id="output-canvas" class="no-floating-footer"></canvas>
+		</div>
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content">
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2000" tabindex="1">
+				<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download Image</button>
+			</div>
+		</div>
+	</section>
+</main>
+
+
+
+<footer>
+	<div id="spawn-footer"></div>
+</footer>
+
+
+
+<script>
+	DEBUG = true;
+	
+	if (typeof current_url === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	page_settings = 
+	{
+		"title": "The Kicked Rotator",
+		
+		"banner_page": false,
+		"num_banners": 0,
+		
+		"writing_page": false,
+		"math_page": true,
+		"comments": false,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"manual_banner": false,
+		"manual_dark_theme": false,
+		
+		"no_footer": false,
+		"footer_exclusion": ""
+	};
+	
+	on_page_load();
+</script>
