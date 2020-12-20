@@ -1,4 +1,10 @@
 {
+	"image-nova-fractals":
+	{
+		"webp": "nova-fractals/cover.webp",
+		"non-webp": "nova-fractals/cover.jpg"
+	},
+	
 	"image-quasi-fuchsian-groups":
 	{
 		"webp": "quasi-fuchsian-groups/cover.webp",

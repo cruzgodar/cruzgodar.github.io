@@ -8,7 +8,10 @@
 	
 	let current_roots = [];
 	
-	let gl = document.querySelector("#newtons-method-plot").getContext("webgl");
+	let a = [1, 0];
+	let c = [0, 0];
+	
+	let gl = document.querySelector("#nova-fractals-plot").getContext("webgl");
 	
 	let draw_another_frame = false;
 	let need_to_restart = true;
@@ -54,19 +57,19 @@
 		}
 	});
 	
-	window.addEventListener("resize", newtons_method_resize);
-	temporary_handlers["resize"].push(newtons_method_resize);
+	window.addEventListener("resize", nova_fractals_resize);
+	temporary_handlers["resize"].push(nova_fractals_resize);
 	
 	
 	
-	applet_canvases_to_resize = [document.querySelector("#newtons-method-plot"), document.querySelector("#root-selector")];
+	applet_canvases_to_resize = [document.querySelector("#nova-fractals-plot"), document.querySelector("#root-selector")];
 	
 	applet_canvas_resize_callback = function()
 	{
 		root_selector_width = document.querySelector("#root-selector").offsetWidth;
 		root_selector_height = document.querySelector("#root-selector").offsetHeight;
 		
-		newtons_method_resize();
+		nova_fractals_resize();
 	};
 	
 	set_up_canvas_resizer();
@@ -116,6 +119,9 @@
 		const vec3 color_6 = vec3(1.0, 1.0, 0.0);
 		const vec3 color_7 = vec3(0.5, 0.0, 1.0);
 		const vec3 color_8 = vec3(1.0, 0.5, 0.0);
+		
+		uniform vec2 a;
+		uniform vec2 c;
 		
 		uniform float brightness_scale;
 		
@@ -240,7 +246,7 @@
 			
 			for (int iteration = 0; iteration < 100; iteration++)
 			{
-				vec2 temp = complex_multiply(complex_polynomial(z), complex_invert(complex_derivative(z)));
+				vec2 temp = complex_multiply(complex_multiply(complex_polynomial(z), complex_invert(complex_derivative(z))), a) + c;
 				
 				last_z = z;
 				
@@ -466,11 +472,14 @@
 		shader_program.root_7_uniform = gl.getUniformLocation(shader_program, "root_7");
 		shader_program.root_8_uniform = gl.getUniformLocation(shader_program, "root_8");
 		
+		shader_program.a_uniform = gl.getUniformLocation(shader_program, "a");
+		shader_program.c_uniform = gl.getUniformLocation(shader_program, "c");
+		
 		shader_program.brightness_scale_uniform = gl.getUniformLocation(shader_program, "brightness_scale");
 		
 		
-		document.querySelector("#newtons-method-plot").setAttribute("width", image_size);
-		document.querySelector("#newtons-method-plot").setAttribute("height", image_size);
+		document.querySelector("#nova-fractals-plot").setAttribute("width", image_size);
+		document.querySelector("#nova-fractals-plot").setAttribute("height", image_size);
 		gl.viewport(0, 0, image_size, image_size);
 	}
 	
@@ -538,6 +547,9 @@
 		{
 			gl.uniform2fv(shader_program.root_8_uniform, current_roots[7]);
 		}
+		
+		gl.uniform2fv(shader_program.a_uniform, a);
+		gl.uniform2fv(shader_program.c_uniform, c);
 		
 		gl.uniform1f(shader_program.brightness_scale_uniform, brightness_scale);
 		
@@ -613,7 +625,7 @@
 
 		link.download = `${frame}.png`;
 		
-		link.href = document.querySelector("#newtons-method-plot").toDataURL();
+		link.href = document.querySelector("#nova-fractals-plot").toDataURL();
 		
 		link.click();
 		
@@ -966,6 +978,41 @@
 	
 	
 	
+	function set_up_a_and_c_markers()
+	{
+		let x = 1;
+		let y = 0;
+		
+		let row = Math.floor(root_selector_height * (1 - (y / 4 + .5)));
+		let col = Math.floor(root_selector_width * (x / 4 + .5));
+		
+		let element = document.createElement("div");
+		element.classList.add("root-marker");
+		element.classList.add("a-marker");
+		element.id = `root-marker-8`;
+		element.style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+		
+		document.querySelector("#root-selector").appendChild(element);
+		
+		
+		
+		x = 0;
+		y = 0;
+		
+		row = Math.floor(root_selector_height * (1 - (y / 4 + .5)));
+		col = Math.floor(root_selector_width * (x / 4 + .5));
+		
+		element = document.createElement("div");
+		element.classList.add("root-marker");
+		element.classList.add("c-marker");
+		element.id = `root-marker-9`;
+		element.style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+		
+		document.querySelector("#root-selector").appendChild(element);
+	}
+	
+	
+	
 	function add_marker()
 	{
 		if (current_roots.length === 8)
@@ -994,6 +1041,11 @@
 		
 		current_roots.push([x, y]);
 		
+		if (current_roots.length === 1)
+		{
+			set_up_a_and_c_markers();
+		}
+		
 		brightness_scale = 20;
 		
 		stabilize_brightness_scale = true;
@@ -1011,7 +1063,7 @@
 		active_marker = -1;
 		
 		//Figure out which marker, if any, this is referencing.
-		for (let i = 0; i < root_markers.length; i++)
+		for (let i = 0; i < 10; i++)
 		{
 			if (e.target.id === `root-marker-${i}`)
 			{
@@ -1111,13 +1163,38 @@
 		
 		
 		
-		root_markers[active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+		if (active_marker < 8)
+		{
+			root_markers[active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+			
+			let x = ((col - root_selector_width/2) / root_selector_width) * 4;
+			let y = (-(row - root_selector_height/2) / root_selector_height) * 4;
+			
+			current_roots[active_marker][0] = x;
+			current_roots[active_marker][1] = y;
+		}
 		
-		let x = ((col - root_selector_width/2) / root_selector_width) * 4;
-		let y = (-(row - root_selector_height/2) / root_selector_height) * 4;
+		else if (active_marker === 8)
+		{
+			document.querySelector(".a-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+			
+			let x = ((col - root_selector_width/2) / root_selector_width) * 4;
+			let y = (-(row - root_selector_height/2) / root_selector_height) * 4;
+			
+			a[0] = x;
+			a[1] = y;
+		}
 		
-		current_roots[active_marker][0] = x;
-		current_roots[active_marker][1] = y;
+		else
+		{
+			document.querySelector(".c-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+			
+			let x = ((col - root_selector_width/2) / root_selector_width) * .4;
+			let y = (-(row - root_selector_height/2) / root_selector_height) * .4;
+			
+			c[0] = x;
+			c[1] = y;
+		}
 		
 		
 
@@ -1179,8 +1256,23 @@
 	
 	function show_root_setter()
 	{
-		document.querySelector("#root-a-input").value = Math.round(current_roots[last_active_marker][0] * 1000) / 1000;
-		document.querySelector("#root-b-input").value = Math.round(current_roots[last_active_marker][1] * 1000) / 1000;
+		if (last_active_marker < 8)
+		{
+			document.querySelector("#root-a-input").value = Math.round(current_roots[last_active_marker][0] * 1000) / 1000;
+			document.querySelector("#root-b-input").value = Math.round(current_roots[last_active_marker][1] * 1000) / 1000;
+		}
+		
+		else if (last_active_marker === 8)
+		{
+			document.querySelector("#root-a-input").value = Math.round(a[0] * 1000) / 1000;
+			document.querySelector("#root-b-input").value = Math.round(a[1] * 1000) / 1000;
+		}
+		
+		else
+		{
+			document.querySelector("#root-a-input").value = Math.round(c[0] * 100000) / 100000;
+			document.querySelector("#root-b-input").value = Math.round(c[1] * 100000) / 100000;
+		}
 		
 		document.querySelector("#root-setter").style.pointerEvents = "auto";
 		
@@ -1189,15 +1281,42 @@
 	
 	function set_root()
 	{
-		current_roots[last_active_marker][0] = parseFloat(document.querySelector("#root-a-input").value) || 0;
-		current_roots[last_active_marker][1] = parseFloat(document.querySelector("#root-b-input").value) || 0;
+		if (last_active_marker < 8)
+		{
+			current_roots[last_active_marker][0] = parseFloat(document.querySelector("#root-a-input").value) || 0;
+			current_roots[last_active_marker][1] = parseFloat(document.querySelector("#root-b-input").value) || 0;
+			
+			let row = Math.floor(root_selector_height * (1 - (current_roots[last_active_marker][1] / 4 + .5)));
+			let col = Math.floor(root_selector_width * (current_roots[last_active_marker][0] / 4 + .5));
+			
+			root_markers[last_active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+		}
 		
 		
 		
-		let row = Math.floor(root_selector_height * (1 - (current_roots[last_active_marker][1] / 4 + .5)));
-		let col = Math.floor(root_selector_width * (current_roots[last_active_marker][0] / 4 + .5));
+		else if (last_active_marker === 8)
+		{
+			a[0] = parseFloat(document.querySelector("#root-a-input").value) || 0;
+			a[1] = parseFloat(document.querySelector("#root-b-input").value) || 0;
+			
+			let row = Math.floor(root_selector_height * (1 - (a[1] / 4 + .5)));
+			let col = Math.floor(root_selector_width * (a[0] / 4 + .5));
+			
+			document.querySelector(".a-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+		}
 		
-		root_markers[last_active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+		
+		
+		else
+		{
+			c[0] = parseFloat(document.querySelector("#root-a-input").value) || 0;
+			c[1] = parseFloat(document.querySelector("#root-b-input").value) || 0;
+			
+			let row = Math.floor(root_selector_height * (1 - (c[1] / .4 + .5)));
+			let col = Math.floor(root_selector_width * (c[0] / .4 + .5));
+			
+			document.querySelector(".c-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+		}
 		
 		
 		
@@ -1222,8 +1341,8 @@
 		
 		
 		
-		document.querySelector("#newtons-method-plot").setAttribute("width", image_size);
-		document.querySelector("#newtons-method-plot").setAttribute("height", image_size);
+		document.querySelector("#nova-fractals-plot").setAttribute("width", image_size);
+		document.querySelector("#nova-fractals-plot").setAttribute("height", image_size);
 		
 		gl.viewport(0, 0, image_size, image_size);
 		
@@ -1236,8 +1355,8 @@
 	{
 		image_size = parseInt(document.querySelector("#dim-input").value || 2000);
 		
-		document.querySelector("#newtons-method-plot").setAttribute("width", image_size);
-		document.querySelector("#newtons-method-plot").setAttribute("height", image_size);
+		document.querySelector("#nova-fractals-plot").setAttribute("width", image_size);
+		document.querySelector("#nova-fractals-plot").setAttribute("height", image_size);
 		
 		gl.viewport(0, 0, image_size, image_size);
 		
@@ -1247,9 +1366,9 @@
 		
 		let link = document.createElement("a");
 		
-		link.download = "newtons-method.png";
+		link.download = "a-nova-fractal.png";
 		
-		link.href = document.querySelector("#newtons-method-plot").toDataURL();
+		link.href = document.querySelector("#nova-fractals-plot").toDataURL();
 		
 		link.click();
 		
@@ -1259,8 +1378,8 @@
 		
 		image_size = 1000;
 		
-		document.querySelector("#newtons-method-plot").setAttribute("width", image_size);
-		document.querySelector("#newtons-method-plot").setAttribute("height", image_size);
+		document.querySelector("#nova-fractals-plot").setAttribute("width", image_size);
+		document.querySelector("#nova-fractals-plot").setAttribute("height", image_size);
 		gl.viewport(0, 0, image_size, image_size);
 		
 		draw_frame();
@@ -1268,7 +1387,7 @@
 	
 	
 	
-	function newtons_method_resize()
+	function nova_fractals_resize()
 	{
 		root_selector_width = document.querySelector("#root-selector").offsetWidth;
 		root_selector_height = document.querySelector("#root-selector").offsetHeight;
@@ -1282,6 +1401,20 @@
 			
 			root_markers[i].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		}
+		
+		
+		
+		let row = Math.floor(root_selector_height * (1 - (a[1] / 4 + .5)));
+		let col = Math.floor(root_selector_width * (a[0] / 4 + .5));
+		
+		document.querySelector(".a-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+		
+		
+		
+		row = Math.floor(root_selector_height * (1 - (c[1] / .4 + .5)));
+		col = Math.floor(root_selector_width * (c[0] / .4 + .5));
+		
+		document.querySelector(".c-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 	}
 
 
@@ -1292,12 +1425,12 @@
 		{
 			if (url_vars["theme"] === 1)
 			{
-				document.querySelector("#newtons-method-plot").style.borderColor = "rgb(192, 192, 192)";
+				document.querySelector("#nova-fractals-plot").style.borderColor = "rgb(192, 192, 192)";
 			}
 			
 			else
 			{
-				document.querySelector("#newtons-method-plot").style.borderColor = "rgb(64, 64, 64)";
+				document.querySelector("#nova-fractals-plot").style.borderColor = "rgb(64, 64, 64)";
 			}
 		}
 		
