@@ -8,7 +8,7 @@ __device__ float distance_estimator(float* pos, float cx, float cy, float cz, fl
 {
 	float z[3] = {pos[0], pos[1], pos[2]};
 	
-	float r = 0.0f;
+	float r = sqrtf(z[0]*z[0] + z[1]*z[1] + z[2]*z[2]);;
 	float dr = 1.0f;
 	
 	color[0] = 1.0f;
@@ -22,14 +22,10 @@ __device__ float distance_estimator(float* pos, float cx, float cy, float cz, fl
 	//32 max iterations.
 	for (int i = 0; i < 32; i++)
 	{
-		r = sqrtf(z[0]*z[0] + z[1]*z[1] + z[2]*z[2]);
-		
 		if (r > 16.0f)
 		{
 			break;
 		}
-		
-		
 		
 		float theta = 8.0 * acosf(z[2] / r);
 		
@@ -43,11 +39,11 @@ __device__ float distance_estimator(float* pos, float cx, float cy, float cz, fl
 		z[1] = factor * sinf(phi) * sinf(theta) + cy;
 		z[2] = factor * cosf(theta) + cz;
 		
-		float magnitude = sqrt(z[0]*z[0] + z[1]*z[1] + z[2]*z[2]);
+		r = sqrtf(z[0]*z[0] + z[1]*z[1] + z[2]*z[2]);
 		
-		color[0] = (1.0f - color_scale) * color[0] + color_scale * fabsf(z[0] / magnitude);
-		color[1] = (1.0f - color_scale) * color[1] + color_scale * fabsf(z[1] / magnitude);
-		color[2] = (1.0f - color_scale) * color[2] + color_scale * fabsf(z[2] / magnitude);
+		color[0] = (1.0f - color_scale) * color[0] + color_scale * fabsf(z[0] / r);
+		color[1] = (1.0f - color_scale) * color[1] + color_scale * fabsf(z[1] / r);
+		color[2] = (1.0f - color_scale) * color[2] + color_scale * fabsf(z[2] / r);
 		
 		color_scale *= .5f;
 	}
@@ -66,12 +62,8 @@ __device__ float distance_estimator(float* pos, float cx, float cy, float cz, fl
 
 
 __device__
-void raymarch(float x, float y, float cx, float cy, float cz, float* color)
+void raymarch(float x, float y, float cx, float cy, float cz, float* color, float image_size)
 {
-	float image_size = 4096.0f;
-	
-	
-	
 	//The center of the image plane is (.052368, 1.588541, 1.400874), the right vector is (-.380503, .019914, 0), and the up vector is (-.012847, -.245477, .291128).
 	
 	float start_pos[3] = {.052368f - .380503f * x - .012847f * y, 1.588541f + .019914f * x - .245477f * y, 1.400874f + .291128f * y};
@@ -115,9 +107,9 @@ void raymarch(float x, float y, float cx, float cy, float cz, float* color)
 		float distance = min(distance_estimator(pos, cx, cy, cz, color), last_distance);
 		last_distance = distance;
 		
-		if (distance / image_size * 1.5f > epsilon)
+		if (distance / image_size * 0.5f > epsilon)
 		{
-			epsilon = distance / image_size * 1.5f;
+			epsilon = distance / image_size * 0.5f;
 		}
 		
 		
@@ -225,28 +217,26 @@ void raymarch(float x, float y, float cx, float cy, float cz, float* color)
 
 
 __global__
-void generate_mandelbulb(unsigned char* image, int sector_row, int sector_col, float cx, float cy, float cz)
+void generate_mandelbulb(unsigned char* image, int sector_row, int sector_col, float cx, float cy, float cz, int image_size)
 {
 	float color[3];
 	float total_color[3] = {0.0, 0.0, 0.0};
 	
-	int image_size = 4096;
-	
-	int index = 4 * (512 * blockIdx.x + threadIdx.x);
+	int index = 4 * (256 * blockIdx.x + threadIdx.x);
 	
 	
 	
-	//Why yes, that 511 is disturbing. No, I don't have any idea why it doesn't make a gap.
+	//Why yes, that 255 is disturbing. No, I don't have any idea why it doesn't make a gap.
 	
-	float y = 1.0f - 2.0f * (float) (511 * sector_row + blockIdx.x) / (float) image_size;
+	float y = 1.0f - 2.0f * (float) (255 * sector_row + blockIdx.x) / (float) image_size;
 	
-	float x = 2.0f * (float) (511 * sector_col + threadIdx.x) / (float) image_size - 1.0f;
+	float x = 2.0f * (float) (255 * sector_col + threadIdx.x) / (float) image_size - 1.0f;
 	
 	float step = .5f / (float) image_size;
 	
 	
 	
-	raymarch(x - step, y - step, cx, cy, cz, color);
+	raymarch(x - step, y - step, cx, cy, cz, color, (float) image_size);
 	
 	total_color[0] += color[0];
 	total_color[1] += color[1];
@@ -254,7 +244,7 @@ void generate_mandelbulb(unsigned char* image, int sector_row, int sector_col, f
 	
 	
 	
-	raymarch(x + step, y - step, cx, cy, cz, color);
+	raymarch(x + step, y - step, cx, cy, cz, color, (float) image_size);
 	
 	total_color[0] += color[0];
 	total_color[1] += color[1];
@@ -262,7 +252,7 @@ void generate_mandelbulb(unsigned char* image, int sector_row, int sector_col, f
 	
 	
 	
-	raymarch(x - step, y + step, cx, cy, cz, color);
+	raymarch(x - step, y + step, cx, cy, cz, color, (float) image_size);
 	
 	total_color[0] += color[0];
 	total_color[1] += color[1];
@@ -270,7 +260,7 @@ void generate_mandelbulb(unsigned char* image, int sector_row, int sector_col, f
 	
 	
 	
-	raymarch(x + step, y + step, cx, cy, cz, color);
+	raymarch(x + step, y + step, cx, cy, cz, color, (float) image_size);
 	
 	total_color[0] += color[0];
 	total_color[1] += color[1];
@@ -299,7 +289,21 @@ void encode_image(const char* filename, std::vector<unsigned char>& image, unsig
 
 int main(void)
 {
-	int image_size = 4096;
+	int image_size;
+	
+	int starting_frame;
+	
+	
+	
+	std::cout << "Image size: 2^";
+	std::cin >> image_size;
+	
+	image_size = pow(2, image_size);
+	
+	std::cout << "Starting frame: ";
+	std::cin >> starting_frame;
+	
+	
 	
 	float cx, cy, cz;
 	
@@ -307,16 +311,31 @@ int main(void)
 	
 	char filename[9] = "0000.png";
 	
-	cudaMallocManaged(&d_image, 4 * 512 * 512 * sizeof(unsigned char));
+	cudaMallocManaged(&d_image, 4 * 256 * 256 * sizeof(unsigned char));
 	
-	int num_sectors = image_size / 512;
+	int num_sectors = image_size / 256;
 	
 	std::vector<unsigned char> image_vector;
-	image_vector.resize(image_size * image_size * 4);
+	image_vector.resize((image_size + num_sectors) * (image_size + num_sectors) * 4);
+	
+	for (int i = 0; i < (image_size + num_sectors) * (image_size + num_sectors); i++)
+	{
+		image_vector[4 * i] = 0;
+		image_vector[4 * i + 1] = 0;
+		image_vector[4 * i + 2] = 0;
+		image_vector[4 * i + 3] = 255;
+	}
 	
 	
 	
-	for (int frame = 0; frame < 6000; frame++)
+	filename[3] = (starting_frame % 10) + 48;
+	filename[2] = ((starting_frame / 10) % 10) + 48;
+	filename[1] = ((starting_frame / 100) % 10) + 48;
+	filename[0] = ((starting_frame / 1000) % 10) + 48;
+	
+	
+	
+	for (int frame = starting_frame; frame < 6000; frame++)
 	{
 		cx = .5f * (cosf(6.283185f * (float) frame / 6000.0f) + sinf(5.0f * 6.283185f * (float) frame / 6000.0f));
 		cy = .5f * (cosf(2 * 6.283185f * (float) frame / 6000.0f) + sinf(7.0f * 6.283185f * (float) frame / 6000.0f));
@@ -328,33 +347,33 @@ int main(void)
 			{
 				std::cout << "Frame " << frame << ": sector " << num_sectors * i + j + 1 << " of " << num_sectors * num_sectors << std::endl;
 				
-				generate_mandelbulb<<<512, 512>>>(d_image, i, j, cx, cy, cz);
+				generate_mandelbulb<<<256, 256>>>(d_image, i, j, cx, cy, cz, image_size);
 				
 				cudaDeviceSynchronize();
 				
-				for (int k = 0; k < 512; k++)
+				
+				
+				for (int k = 0; k < 256; k++)
 				{
-					for (int l = 0; l < 512; l++)
+					for (int l = 0; l < 256; l++)
 					{
-						int big_index = 4 * (image_size * (512 * i + k) + (512 * j + l));
-						int small_index = 4 * (512 * k + l);
+						int big_index = 4 * ((image_size + num_sectors) * (256 * i + k) + (256 * j + l));
+						int small_index = 4 * (256 * k + l);
 						
 						image_vector[big_index] = d_image[small_index];
 						image_vector[big_index + 1] = d_image[small_index + 1];
 						image_vector[big_index + 2] = d_image[small_index + 2];
-						image_vector[big_index + 3] = d_image[small_index + 3];
+						image_vector[big_index + 3] = 255;
 					}
 				}
 			}
 		}
 		
-		
-		
 		std::cout << std::endl;
 		
 		
 		
-		encode_image(filename, image_vector, image_size, image_size);
+		encode_image(filename, image_vector, image_size + num_sectors, image_size + num_sectors);
 		
 		
 		
