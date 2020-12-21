@@ -6,7 +6,7 @@
 	
 	let gl = document.querySelector("#output-canvas").getContext("webgl");
 	
-	let canvas_size = document.querySelector("#output-canvas").offsetWidth;
+	let canvas_size = Math.min(document.querySelector("#output-canvas").offsetWidth, document.querySelector("#output-canvas").offsetHeight);
 	
 	let currently_drawing = false;
 	let currently_animating_parameters = false;
@@ -36,6 +36,9 @@
 	
 	
 	let image_size = 500;
+	let image_width = 500;
+	let image_height = 500;
+	
 	let num_iterations = 32;
 	
 	let image_plane_center_pos = [];
@@ -80,8 +83,8 @@
 	
 	
 	
-	document.querySelector("#output-canvas").setAttribute("width", image_size);
-	document.querySelector("#output-canvas").setAttribute("height", image_size);
+	document.querySelector("#output-canvas").setAttribute("width", image_width);
+	document.querySelector("#output-canvas").setAttribute("height", image_height);
 	
 	document.querySelector("#dim-input").addEventListener("input", change_resolution);
 	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
@@ -109,8 +112,45 @@
 	
 	applet_canvas_resize_callback = function()
 	{
-		canvas_size = document.querySelector("#output-canvas").offsetWidth;
+		if (canvas_is_fullscreen)
+		{
+			if (aspect_ratio >= 1)
+			{
+				image_width = image_size;
+				image_height = Math.floor(image_size / aspect_ratio);
+			}
+			
+			else
+			{
+				image_width = Math.floor(image_size * aspect_ratio);
+				image_height = image_size;
+			}
+		}
+		
+		else
+		{
+			image_width = image_size;
+			image_height = image_size;
+		}
+		
+		
+		
+		canvas_size = Math.min(document.querySelector("#output-canvas").offsetWidth, document.querySelector("#output-canvas").offsetHeight);
+		
+		document.querySelector("#output-canvas").setAttribute("width", image_width);
+		document.querySelector("#output-canvas").setAttribute("height", image_height);
+		
+		gl.viewport(0, 0, image_width, image_height);
+		
+		
+		
+		
+		fractals_resize();
+		
+		window.requestAnimationFrame(draw_frame);
 	};
+	
+	applet_canvas_true_fullscreen = true;
 	
 	set_up_canvas_resizer();
 	
@@ -143,6 +183,8 @@
 		precision highp float;
 		
 		varying vec2 uv;
+		
+		uniform float aspect_ratio;
 		
 		uniform vec3 camera_pos;
 		uniform vec3 image_plane_center_pos;
@@ -356,7 +398,7 @@
 		
 		void main(void)
 		{
-			vec3 final_color = raymarch(image_plane_center_pos + right_vec * uv.x + up_vec * uv.y);
+			vec3 final_color = raymarch(image_plane_center_pos + right_vec * uv.x * aspect_ratio + up_vec * uv.y);
 			
 			//Uncomment to use 2x antialiasing.
 			//vec3 final_color = (raymarch(image_plane_center_pos + right_vec * (uv.x + .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x + .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x - .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x - .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size)))) / 4.0;
@@ -411,6 +453,8 @@
 		
 		
 		
+		shader_program.aspect_ratio_uniform = gl.getUniformLocation(shader_program, "aspect_ratio");
+		
 		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
 		
 		shader_program.camera_pos_uniform = gl.getUniformLocation(shader_program, "camera_pos");
@@ -434,7 +478,7 @@
 		
 		
 		
-		gl.viewport(0, 0, image_size, image_size);
+		gl.viewport(0, 0, image_width, image_height);
 		
 		
 		
@@ -464,6 +508,8 @@
 	
 	function draw_frame()
 	{
+		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
+		
 		gl.uniform1i(shader_program.image_size_uniform, image_size);
 		
 		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
@@ -998,7 +1044,7 @@
 	
 	function fractals_resize()
 	{
-		canvas_size = document.querySelector("#output-canvas").offsetWidth;
+		canvas_size = Math.min(document.querySelector("#output-canvas").offsetWidth, document.querySelector("#output-canvas").offsetHeight);
 	}
 	
 	
@@ -1019,12 +1065,29 @@
 		
 		
 		
-		gl.uniform1i(shader_program.small_image_size_uniform, image_size);
+		if (canvas_is_fullscreen)
+		{
+			if (aspect_ratio >= 1)
+			{
+				image_width = image_size;
+				image_height = Math.floor(image_size / aspect_ratio);
+			}
+			
+			else
+			{
+				image_width = Math.floor(image_size * aspect_ratio);
+				image_height = image_size;
+			}
+		}
 		
-		document.querySelector("#output-canvas").setAttribute("width", image_size);
-		document.querySelector("#output-canvas").setAttribute("height", image_size);
 		
-		gl.viewport(0, 0, image_size, image_size);
+		
+		gl.uniform1i(shader_program.image_size_uniform, image_size);
+		
+		document.querySelector("#output-canvas").setAttribute("width", image_width);
+		document.querySelector("#output-canvas").setAttribute("height", image_height);
+		
+		gl.viewport(0, 0, image_width, image_height);
 		
 		window.requestAnimationFrame(draw_frame);
 	}
