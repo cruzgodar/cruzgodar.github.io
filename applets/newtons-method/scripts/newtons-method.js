@@ -108,6 +108,8 @@
 	
 	setTimeout(setup_webgl, 500);
 	
+	setTimeout(newtons_method_resize, 1000);
+	
 	
 	
 	const vertex_shader_source = `

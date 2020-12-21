@@ -111,6 +111,8 @@
 	
 	setTimeout(setup_webgl, 500);
 	
+	setTimeout(nova_fractals_resize, 1000);
+	
 	
 	
 	const vertex_shader_source = `
