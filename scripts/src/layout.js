@@ -26,6 +26,8 @@ function resize_update()
 	let new_window_width = window.innerWidth;
 	let new_window_height = window.innerHeight;
 	
+	aspect_ratio = new_window_width / new_window_height;
+	
 	old_layout = layout_string;
 	
 	if (new_window_width / new_window_height < 9/16 || new_window_width <= 700)

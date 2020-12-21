@@ -10,7 +10,7 @@ let DEBUG = false;
 
 
 
-let window_width = null, window_height = null;
+let window_width = null, window_height = null, aspect_ratio = null;
 
 let page_settings = {};
 
@@ -185,6 +185,7 @@ async function entry_point(url)
 {
 	window_width = window.innerWidth;
 	window_height = window.innerHeight;
+	aspect_ratio = window_width / window_height;
 	
 	resize_update();
 	

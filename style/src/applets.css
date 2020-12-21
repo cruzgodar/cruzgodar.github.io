@@ -11,7 +11,7 @@
 	transition: opacity .3s ease-in-out, border-color .3s ease-in-out;
 }
 
-.fullscreen-canvas
+.true-fullscreen-canvas
 {
 	width: 100vw !important;
 	height: 100vh !important;
@@ -19,6 +19,29 @@
 	border: none !important;
 	border-radius: 0 !important;
 	padding: 0 !important;
+}
+
+.letterboxed-fullscreen-canvas
+{
+	width: 100vmin !important;
+	height: 100vmin !important;
+	
+	border: none !important;
+	border-radius: 0 !important;
+	padding: 0 !important;
+}
+
+.letterboxed-canvas-background
+{
+	width: 100vw;
+	height: calc((100vh - 100vmin) / 2);
+	
+	background-color: rgb(0, 0, 0);
+}
+
+.black-background
+{
+	background-color: rgb(0, 0, 0) !important;
 }
 
 
