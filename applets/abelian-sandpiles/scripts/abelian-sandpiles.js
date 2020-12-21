@@ -37,6 +37,8 @@
 	
 	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
 	
+	applet_canvas_true_fullscreen = false;
+	
 	set_up_canvas_resizer();
 	
 	
@@ -57,7 +59,7 @@
 		
 		//Make sure that there is a proper density of pixels so that the canvas doesn't look blurry.
 		
-		let canvas_pixel_size = Math.min(window_width, window_height) * .8;
+		let canvas_pixel_size = Math.min(window_width, window_height);
 		
 		canvas_scale_factor = Math.ceil(canvas_pixel_size / grid_size);
 		

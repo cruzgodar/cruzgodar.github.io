@@ -13,14 +13,20 @@
 
 
 
+.applet-canvas-container
+{
+	height: calc(50vmin + 8px);
+}
+
+
+
 #binary-trees-plot
 {
 	position: absolute;
 	
-	width: 40vmin;
-	height: 40vmin;
+	width: 50vmin;
+	height: 50vmin;
 	margin: 0 auto;
-	margin-bottom: 40vmin;
 	
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 15px;
@@ -36,10 +42,9 @@
 {
 	position: absolute;
 	
-	width: 40vmin;
-	height: 40vmin;
+	width: 50vmin;
+	height: 50vmin;
 	margin: 0 auto;
-	margin-bottom: 40vmin;
 	
 	border: 2px solid rgba(0, 0, 0, 0);
 	border-radius: 15px;

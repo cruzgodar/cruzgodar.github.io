@@ -22,8 +22,10 @@ function set_up_canvas_resizer()
 {
 	for (let i = 0; i < applet_canvases_to_resize.length; i++)
 	{
-		applet_canvases_to_resize[i].addEventListener("click", function()
+		applet_canvases_to_resize[i].addEventListener("click", function(e)
 		{
+			e.preventDefault();
+			
 			if (Date.now() - last_tap_time < 500)
 			{
 				switch_canvas_fullscreen();
@@ -41,6 +43,11 @@ function set_up_canvas_resizer()
 			}, 500);
 		});
 	}
+	
+	
+	
+	window.addEventListener("resize", fullscreen_canvas_resize);
+	temporary_handlers["resize"].push(fullscreen_canvas_resize);
 }
 
 
@@ -79,6 +86,9 @@ function switch_canvas_fullscreen()
 				{
 					applet_canvases_to_resize[i].classList.add("true-fullscreen-canvas");
 					
+					//We do this to accomodate weirdly-set-up applets like the ones with draggable inputs, since they rely on their canvas container to keep the content below flowing properly.
+					document.querySelector(".applet-canvas-container").classList.add("black-background");
+					
 					try {applet_canvas_resize_callback();}
 					catch(ex) {}
 					
@@ -104,20 +114,16 @@ function switch_canvas_fullscreen()
 				
 				
 				
-				if (aspect_ratio < 1)
-				{
-					document.querySelector(".applet-canvas-container").insertAdjacentHTML("beforebegin", `<div class="letterboxed-canvas-background"></div>`);
-					document.querySelector(".applet-canvas-container").insertAdjacentHTML("afterend", `<div class="letterboxed-canvas-background"></div>`);
-					
-					window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top - (window_height - applet_canvases_to_resize[0].offsetHeight) / 2);
-				}
+				//One of these is for vertical aspect ratios and the other is for horizontal ones, but we add both in case the user resizes the window while in applet is fullscreen.
 				
-				else
-				{
-					window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top);
-					
-					document.querySelector(".applet-canvas-container").classList.add("black-background");
-				}
+				document.querySelector(".applet-canvas-container").insertAdjacentHTML("beforebegin", `<div class="letterboxed-canvas-background"></div>`);
+				document.querySelector(".applet-canvas-container").insertAdjacentHTML("afterend", `<div class="letterboxed-canvas-background"></div>`);
+				
+				document.querySelector(".applet-canvas-container").classList.add("black-background");
+				
+				
+				
+				fullscreen_canvas_resize();
 			}
 			
 			
@@ -198,4 +204,51 @@ function switch_canvas_fullscreen()
 			}, 300);
 		}, 300);
 	}
+}
+
+
+
+function fullscreen_canvas_resize()
+{
+	if (!canvas_is_fullscreen)
+	{
+		return;
+	}
+	
+	
+	
+	if (aspect_ratio < 1 && !applet_canvas_true_fullscreen)
+	{
+		window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top - (window_height - applet_canvases_to_resize[0].offsetHeight) / 2);
+	}
+	
+	else
+	{
+		window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top);
+	}
+	
+	
+	
+	try {applet_canvas_resize_callback();}
+	catch(ex) {}
+	
+	
+	
+	setTimeout(function()
+	{
+		if (aspect_ratio < 1 && !applet_canvas_true_fullscreen)
+		{
+			window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top - (window_height - applet_canvases_to_resize[0].offsetHeight) / 2);
+		}
+		
+		else
+		{
+			window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top);
+		}
+		
+		
+		
+		try {applet_canvas_resize_callback();}
+		catch(ex) {}
+	}, 500);
 }

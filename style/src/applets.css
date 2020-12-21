@@ -41,6 +41,9 @@
 
 .black-background
 {
+	width: 100vw !important;
+	height: 100vh !important;
+	
 	background-color: rgb(0, 0, 0) !important;
 }
 

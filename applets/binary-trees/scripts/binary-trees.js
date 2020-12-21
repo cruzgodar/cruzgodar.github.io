@@ -4,7 +4,8 @@
 	
 	
 	
-	let canvas_size = 2000;
+	let canvas_width = 2000;
+	let canvas_height = 2000;
 	
 	let root = [];
 	let branch_points = [];
@@ -28,11 +29,11 @@
 	
 	
 	
-	document.querySelector("#binary-trees-plot").setAttribute("width", canvas_size);
-	document.querySelector("#binary-trees-plot").setAttribute("height", canvas_size);
+	document.querySelector("#binary-trees-plot").setAttribute("width", canvas_width);
+	document.querySelector("#binary-trees-plot").setAttribute("height", canvas_height);
 	
 	ctx.fillStyle = "rgb(0, 0, 0)";
-	ctx.fillRect(0, 0, canvas_size, canvas_size);
+	ctx.fillRect(0, 0, canvas_width, canvas_height);
 	
 	
 	
@@ -66,11 +67,66 @@
 	
 	applet_canvas_resize_callback = function()
 	{
+		try {web_worker.terminate();}
+		catch(ex) {}
+		
+		set_element_styles(".branch-marker", "opacity", 1);
+		
+		
+		
+		if (canvas_is_fullscreen)
+		{
+			if (aspect_ratio >= 1)
+			{
+				canvas_width = 2000;
+				canvas_height = Math.floor(2000 / aspect_ratio);
+			}
+			
+			else
+			{
+				canvas_width = Math.floor(2000 * aspect_ratio);
+				canvas_height = 2000;
+			}
+		}
+		
+		else
+		{
+			canvas_width = 2000;
+			canvas_height = 2000;
+		}
+		
+		
+		
 		branch_selector_width = document.querySelector("#branch-selector").offsetWidth;
 		branch_selector_height = document.querySelector("#branch-selector").offsetHeight;
 		
+		
+		
+		document.querySelector("#binary-trees-plot").setAttribute("width", canvas_width);
+		document.querySelector("#binary-trees-plot").setAttribute("height", canvas_height);
+		
+		ctx.fillStyle = "rgb(0, 0, 0)";
+		ctx.fillRect(0, 0, canvas_width, canvas_height);
+		
+		
+		
+		root[0] = Math.floor(canvas_height * 9/10);
+		root[1] = Math.floor(canvas_width / 2);
+		
+		branch_points[0][0] = Math.floor(canvas_height * 2/3);
+		branch_points[0][1] = Math.floor(canvas_width * 3/7);
+		
+		branch_points[1][0] = Math.floor(canvas_height * 2/3);
+		branch_points[1][1] = Math.floor(canvas_width * 4/7);
+		
+		
+		
 		binary_trees_resize();
+		
+		draw_binary_tree();
 	};
+	
+	applet_canvas_true_fullscreen = true;
 	
 	set_up_canvas_resizer();
 	
@@ -81,7 +137,7 @@
 	function draw_binary_tree()
 	{
 		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, canvas_size, canvas_size);
+		ctx.fillRect(0, 0, canvas_width, canvas_height);
 		
 		
 		
@@ -236,8 +292,8 @@
 	
 	function init_branch_markers()
 	{
-		root[0] = Math.floor(canvas_size * 9/10);
-		root[1] = Math.floor(canvas_size / 2);
+		root[0] = Math.floor(canvas_height * 9/10);
+		root[1] = Math.floor(canvas_width / 2);
 		
 		for (let i = 0; i < 2; i++)
 		{
@@ -253,16 +309,16 @@
 			branch_points.push([0, 0]);
 		}
 		
-		branch_points[0][0] = Math.floor(canvas_size * 2/3);
-		branch_points[0][1] = Math.floor(canvas_size * 3/7);
+		branch_points[0][0] = Math.floor(canvas_height * 2/3);
+		branch_points[0][1] = Math.floor(canvas_width * 3/7);
 		
-		branch_points[1][0] = Math.floor(canvas_size * 2/3);
-		branch_points[1][1] = Math.floor(canvas_size * 4/7);
+		branch_points[1][0] = Math.floor(canvas_height * 2/3);
+		branch_points[1][1] = Math.floor(canvas_width * 4/7);
 		
 		for (let i = 0; i < 2; i++)
 		{
-			let row = (branch_points[i][0] / canvas_size) * branch_selector_height;
-			let col = (branch_points[i][1] / canvas_size) * branch_selector_width;
+			let row = (branch_points[i][0] / canvas_height) * branch_selector_height;
+			let col = (branch_points[i][1] / canvas_width) * branch_selector_width;
 			
 			branch_markers[i].style.transform = `translate3d(${col - branch_marker_radius}px, ${row - branch_marker_radius}px, 0)`;
 		}
@@ -308,7 +364,7 @@
 			let refresh_id = setInterval(function()
 			{
 				ctx.fillStyle = `rgba(0, 0, 0, ${step / 37})`;
-				ctx.fillRect(0, 0, canvas_size, canvas_size);
+				ctx.fillRect(0, 0, canvas_width, canvas_height);
 				
 				step++;
 			}, 8);
@@ -320,7 +376,7 @@
 				clearInterval(refresh_id);
 				
 				ctx.fillStyle = "rgb(0, 0, 0)";
-				ctx.fillRect(0, 0, canvas_size, canvas_size);
+				ctx.fillRect(0, 0, canvas_width, canvas_height);
 				
 				request_animated_binary_tree();
 			}, 300);
@@ -381,8 +437,8 @@
 		
 		branch_markers[active_marker].style.transform = `translate3d(${col - branch_marker_radius}px, ${row - branch_marker_radius}px, 0)`;
 		
-		branch_points[active_marker][0] = (row / branch_selector_height) * canvas_size;
-		branch_points[active_marker][1] = (col / branch_selector_width) * canvas_size;
+		branch_points[active_marker][0] = (row / branch_selector_height) * canvas_height;
+		branch_points[active_marker][1] = (col / branch_selector_width) * canvas_width;
 		
 		draw_binary_tree();
 	}
@@ -413,8 +469,8 @@
 		
 		for (let i = 0; i < 2; i++)
 		{
-			let row = Math.floor(branch_selector_height * branch_points[i][0] / canvas_size);
-			let col = Math.floor(branch_selector_width * branch_points[i][1] / canvas_size);
+			let row = Math.floor(branch_selector_height * branch_points[i][0] / canvas_height);
+			let col = Math.floor(branch_selector_width * branch_points[i][1] / canvas_width);
 			
 			branch_markers[i].style.transform = `translate3d(${col - branch_marker_radius}px, ${row - branch_marker_radius}px, 0)`;
 		}
