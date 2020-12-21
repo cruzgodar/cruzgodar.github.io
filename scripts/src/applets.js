@@ -135,7 +135,7 @@ function switch_canvas_fullscreen()
 					aos_resize();
 				}
 				
-				window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top);
+				window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top + 1);
 				
 				fullscreen_canvas_locked_scroll = window.scrollY;
 			}
@@ -263,12 +263,12 @@ function fullscreen_canvas_resize()
 	
 	if (aspect_ratio < 1 && !applet_canvas_true_fullscreen)
 	{
-		window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top - (window_height - applet_canvases_to_resize[0].offsetHeight) / 2);
+		window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top - (window_height - applet_canvases_to_resize[0].offsetHeight) / 2 + 1);
 	}
 	
 	else
 	{
-		window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top);
+		window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top + 1);
 	}
 	
 	fullscreen_canvas_locked_scroll = window.scrollY;
@@ -284,12 +284,12 @@ function fullscreen_canvas_resize()
 	{
 		if (aspect_ratio < 1 && !applet_canvas_true_fullscreen)
 		{
-			window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top - (window_height - applet_canvases_to_resize[0].offsetHeight) / 2);
+			window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top - (window_height - applet_canvases_to_resize[0].offsetHeight) / 2 + 1);
 		}
 		
 		else
 		{
-			window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top);
+			window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top + 1);
 		}
 		
 		fullscreen_canvas_locked_scroll = window.scrollY;
