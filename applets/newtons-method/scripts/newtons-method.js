@@ -1293,10 +1293,33 @@
 	{
 		image_size = parseInt(document.querySelector("#dim-input").value || 2000);
 		
-		document.querySelector("#newtons-method-plot").setAttribute("width", image_size);
-		document.querySelector("#newtons-method-plot").setAttribute("height", image_size);
+		if (canvas_is_fullscreen)
+		{
+			if (aspect_ratio >= 1)
+			{
+				image_width = image_size;
+				image_height = Math.floor(image_size / aspect_ratio);
+			}
+			
+			else
+			{
+				image_width = Math.floor(image_size * aspect_ratio);
+				image_height = image_size;
+			}
+		}
 		
-		gl.viewport(0, 0, image_size, image_size);
+		else
+		{
+			image_width = image_size;
+			image_height = image_size;
+		}
+		
+		
+		
+		document.querySelector("#newtons-method-plot").setAttribute("width", image_width);
+		document.querySelector("#newtons-method-plot").setAttribute("height", image_height);
+		
+		gl.viewport(0, 0, image_width, image_height);
 		
 		draw_frame();
 		
@@ -1316,9 +1339,33 @@
 		
 		image_size = 1000;
 		
-		document.querySelector("#newtons-method-plot").setAttribute("width", image_size);
-		document.querySelector("#newtons-method-plot").setAttribute("height", image_size);
-		gl.viewport(0, 0, image_size, image_size);
+		if (canvas_is_fullscreen)
+		{
+			if (aspect_ratio >= 1)
+			{
+				image_width = image_size;
+				image_height = Math.floor(image_size / aspect_ratio);
+			}
+			
+			else
+			{
+				image_width = Math.floor(image_size * aspect_ratio);
+				image_height = image_size;
+			}
+		}
+		
+		else
+		{
+			image_width = image_size;
+			image_height = image_size;
+		}
+		
+		
+		
+		document.querySelector("#newtons-method-plot").setAttribute("width", image_width);
+		document.querySelector("#newtons-method-plot").setAttribute("height", image_height);
+		
+		gl.viewport(0, 0, image_width, image_height);
 		
 		draw_frame();
 	}

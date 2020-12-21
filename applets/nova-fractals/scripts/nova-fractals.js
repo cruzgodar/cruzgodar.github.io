@@ -1318,6 +1318,8 @@
 		document.querySelector("#root-setter").style.opacity = 1;
 	}
 	
+	
+	
 	function set_root()
 	{
 		if (last_active_marker < 8)
@@ -1411,10 +1413,33 @@
 	{
 		image_size = parseInt(document.querySelector("#dim-input").value || 2000);
 		
-		document.querySelector("#nova-fractals-plot").setAttribute("width", image_size);
-		document.querySelector("#nova-fractals-plot").setAttribute("height", image_size);
+		if (canvas_is_fullscreen)
+		{
+			if (aspect_ratio >= 1)
+			{
+				image_width = image_size;
+				image_height = Math.floor(image_size / aspect_ratio);
+			}
+			
+			else
+			{
+				image_width = Math.floor(image_size * aspect_ratio);
+				image_height = image_size;
+			}
+		}
 		
-		gl.viewport(0, 0, image_size, image_size);
+		else
+		{
+			image_width = image_size;
+			image_height = image_size;
+		}
+		
+		
+		
+		document.querySelector("#nova-fractals-plot").setAttribute("width", image_width);
+		document.querySelector("#nova-fractals-plot").setAttribute("height", image_height);
+		
+		gl.viewport(0, 0, image_width, image_height);
 		
 		draw_frame();
 		
@@ -1434,9 +1459,33 @@
 		
 		image_size = 1000;
 		
-		document.querySelector("#nova-fractals-plot").setAttribute("width", image_size);
-		document.querySelector("#nova-fractals-plot").setAttribute("height", image_size);
-		gl.viewport(0, 0, image_size, image_size);
+		if (canvas_is_fullscreen)
+		{
+			if (aspect_ratio >= 1)
+			{
+				image_width = image_size;
+				image_height = Math.floor(image_size / aspect_ratio);
+			}
+			
+			else
+			{
+				image_width = Math.floor(image_size * aspect_ratio);
+				image_height = image_size;
+			}
+		}
+		
+		else
+		{
+			image_width = image_size;
+			image_height = image_size;
+		}
+		
+		
+		
+		document.querySelector("#nova-fractals-plot").setAttribute("width", image_width);
+		document.querySelector("#nova-fractals-plot").setAttribute("height", image_height);
+		
+		gl.viewport(0, 0, image_width, image_height);
 		
 		draw_frame();
 	}
@@ -1459,14 +1508,14 @@
 		
 		
 		let row = Math.floor(root_selector_height * (1 - (a[1] / 4 + .5)));
-		let col = Math.floor(root_selector_width * (a[0] / 4 + .5));
+		let col = Math.floor(root_selector_width * (a[0] / (image_width / image_height) / 4 + .5));
 		
 		document.querySelector(".a-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		
 		
 		
 		row = Math.floor(root_selector_height * (1 - (c[1] / .4 + .5)));
-		col = Math.floor(root_selector_width * (c[0] / .4 + .5));
+		col = Math.floor(root_selector_width * (c[0] / (image_width / image_height) / .4 + .5));
 		
 		document.querySelector(".c-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 	}
