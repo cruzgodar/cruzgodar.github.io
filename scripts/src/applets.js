@@ -187,6 +187,11 @@ function switch_canvas_fullscreen()
 			{
 				elements[i].addEventListener("click", function(e)
 				{
+					if (!canvas_is_fullscreen)
+					{
+						return;
+					}
+					
 					e.preventDefault();
 					
 					let time_diff = Date.now() - last_tap_time;
@@ -212,6 +217,11 @@ function switch_canvas_fullscreen()
 				
 				elements[i].addEventListener("touchstart", function(e)
 				{
+					if (!canvas_is_fullscreen)
+					{
+						return;
+					}
+					
 					e.preventDefault();
 				});
 				
@@ -219,6 +229,11 @@ function switch_canvas_fullscreen()
 				
 				elements[i].addEventListener("touchend", function(e)
 				{
+					if (!canvas_is_fullscreen)
+					{
+						return;
+					}
+					
 					e.preventDefault();
 					
 					let time_diff = Date.now() - last_tap_time;

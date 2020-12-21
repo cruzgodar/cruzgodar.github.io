@@ -5,6 +5,8 @@
 	
 	
 	let canvas_size = 300;
+	let canvas_width = 300;
+	let canvas_height = 300;
 	
 	let box_size = 4;
 	
@@ -48,21 +50,21 @@
 	
 	
 	
-	document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_size);
-	document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_size);
+	document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_width);
+	document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_height);
 	
 	hue = [];
 	brightness = [];
 	
-	for (let i = 0; i < canvas_size; i++)
+	for (let i = 0; i < canvas_height; i++)
 	{
 		hue[i] = [];
 		brightness[i] = [];
 		
-		for (let j = 0; j < canvas_size; j++)
+		for (let j = 0; j < canvas_width; j++)
 		{
-			x = (i / canvas_size * box_size) - box_size / 2;
-			y = box_size / 2 - (j / canvas_size * box_size);
+			x = (i / canvas_height * box_size) - box_size / 2;
+			y = box_size / 2 - (j / canvas_width * box_size);
 			hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
 			
 			brightness[i][j] = 0;
@@ -109,11 +111,57 @@
 	
 	applet_canvas_resize_callback = function()
 	{
-		coefficient_selector_width = document.querySelector("#coefficient-selector").offsetWidth;
-		coefficient_selector_height = document.querySelector("#coefficient-selector").offsetHeight;
+		if (canvas_is_fullscreen)
+		{
+			if (aspect_ratio >= 1)
+			{
+				canvas_width = canvas_size;
+				canvas_height = Math.floor(canvas_size / aspect_ratio);
+			}
+			
+			else
+			{
+				canvas_width = Math.floor(canvas_size * aspect_ratio);
+				canvas_height = canvas_size;
+			}
+		}
+		
+		else
+		{
+			canvas_width = canvas_size;
+			canvas_height = canvas_size;
+		}
+		
+		
+		
+		for (let i = 0; i < canvas_height; i++)
+		{
+			hue[i] = [];
+			brightness[i] = [];
+			
+			for (let j = 0; j < canvas_width; j++)
+			{
+				x = (i / canvas_height * box_size) - box_size / 2;
+				y = box_size / 2 - (j / canvas_width * box_size);
+				hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
+				
+				brightness[i][j] = 0;
+			}
+		}
+		
+		
+		
+		document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_width);
+		document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_height);
+		
+		
 		
 		quasi_fuchsian_groups_resize();
+		
+		draw_quasi_fuchsian_group();
 	};
+	
+	applet_canvas_true_fullscreen = true;
 	
 	set_up_canvas_resizer();
 	
@@ -124,7 +172,7 @@
 	function draw_quasi_fuchsian_group()
 	{
 		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, canvas_size, canvas_size);
+		ctx.fillRect(0, 0, canvas_width, canvas_height);
 		
 		
 		
@@ -225,14 +273,14 @@
 		
 		
 		
-		let img_data = ctx.getImageData(0, 0, canvas_size, canvas_size);
+		let img_data = ctx.getImageData(0, 0, canvas_width, canvas_height);
 		let data = img_data.data;
 		
-		for (let i = 0; i < canvas_size; i++)
+		for (let i = 0; i < canvas_height; i++)
 		{
-			for (let j = 0; j < canvas_size; j++)
+			for (let j = 0; j < canvas_width; j++)
 			{
-				let index = (4 * i * canvas_size) + (4 * j);
+				let index = (4 * i * canvas_width) + (4 * j);
 				
 				let rgb = HSVtoRGB(hue[i][j], 1, Math.pow(brightness[i][j] / max_brightness, .25)); 
 				
@@ -339,10 +387,10 @@
 			
 			
 			
-			let row = Math.floor((-y + box_size / 2) / box_size * canvas_size);
-			let col = Math.floor((x + box_size / 2) / box_size * canvas_size);
+			let row = Math.floor((-y + box_size / 2) / box_size * canvas_height);
+			let col = Math.floor((x / (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_width);
 			
-			if (row >= 0 && row < canvas_size && col >= 0 && col < canvas_size)
+			if (row >= 0 && row < canvas_height && col >= 0 && col < canvas_width)
 			{
 				if (brightness[row][col] === max_pixel_brightness)
 				{
@@ -427,10 +475,10 @@
 		
 		for (let i = 0; i < 2; i++)
 		{
-			coefficient_points.push([Math.floor(canvas_size / 2), Math.floor(canvas_size / 2)]);
+			coefficient_points.push([Math.floor(canvas_height / 2), Math.floor(canvas_width / 2)]);
 			
-			let row = (coefficient_points[i][0] / canvas_size) * coefficient_selector_height;
-			let col = (coefficient_points[i][1] / canvas_size) * coefficient_selector_width;
+			let row = (coefficient_points[i][0] / canvas_height) * coefficient_selector_height;
+			let col = (coefficient_points[i][1] / (canvas_width / canvas_height) / canvas_width) * coefficient_selector_width;
 			
 			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
 			
@@ -467,24 +515,48 @@
 				
 				
 				canvas_size = 300;
+				
+				if (canvas_is_fullscreen)
+				{
+					if (aspect_ratio >= 1)
+					{
+						canvas_width = canvas_size;
+						canvas_height = Math.floor(canvas_size / aspect_ratio);
+					}
+					
+					else
+					{
+						canvas_width = Math.floor(canvas_size * aspect_ratio);
+						canvas_height = canvas_size;
+					}
+				}
+				
+				else
+				{
+					canvas_width = canvas_size;
+					canvas_height = canvas_size;
+				}
+				
+				
+				
 				max_depth = 20;
 				max_pixel_brightness = 10;
 				
-				document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_size);
-				document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_size);
+				document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_width);
+				document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_height);
 				
 				hue = [];
 				brightness = [];
 				
-				for (let i = 0; i < canvas_size; i++)
+				for (let i = 0; i < canvas_height; i++)
 				{
 					hue[i] = [];
 					brightness[i] = [];
 					
-					for (let j = 0; j < canvas_size; j++)
+					for (let j = 0; j < canvas_width; j++)
 					{
-						x = (i / canvas_size * box_size) - box_size / 2;
-						y = box_size / 2 - (j / canvas_size * box_size);
+						x = (i / canvas_height * box_size) - box_size / 2;
+						y = box_size / 2 - (j / canvas_width * box_size);
 						hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
 						
 						brightness[i][j] = 0;
@@ -509,25 +581,49 @@
 	{
 		if (active_marker !== -1)
 		{
-			canvas_size = 600;
+			canvas_size = 1000;
+			
+			if (canvas_is_fullscreen)
+			{
+				if (aspect_ratio >= 1)
+				{
+					canvas_width = canvas_size;
+					canvas_height = Math.floor(canvas_size / aspect_ratio);
+				}
+				
+				else
+				{
+					canvas_width = Math.floor(canvas_size * aspect_ratio);
+					canvas_height = canvas_size;
+				}
+			}
+			
+			else
+			{
+				canvas_width = canvas_size;
+				canvas_height = canvas_size;
+			}
+			
+			
+			
 			max_depth = 100;
 			max_pixel_brightness = 50;
 			
-			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_size);
-			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_size);
+			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_width);
+			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_height);
 			
 			hue = [];
 			brightness = [];
 			
-			for (let i = 0; i < canvas_size; i++)
+			for (let i = 0; i < canvas_height; i++)
 			{
 				hue[i] = [];
 				brightness[i] = [];
 				
-				for (let j = 0; j < canvas_size; j++)
+				for (let j = 0; j < canvas_width; j++)
 				{
-					x = (i / canvas_size * box_size) - box_size / 2;
-					y = box_size / 2 - (j / canvas_size * box_size);
+					x = (i / canvas_height * box_size) - box_size / 2;
+					y = box_size / 2 - (j / canvas_width * box_size);
 					hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
 					
 					brightness[i][j] = 0;
@@ -608,9 +704,9 @@
 		
 		
 		
-		for (let i = 0; i < canvas_size; i++)
+		for (let i = 0; i < canvas_height; i++)
 		{
-			for (let j = 0; j < canvas_size; j++)
+			for (let j = 0; j < canvas_width; j++)
 			{
 				brightness[i][j] = 0;
 			}
@@ -641,15 +737,15 @@
 		hue = [];
 		brightness = [];
 		
-		for (let i = 0; i < canvas_size; i++)
+		for (let i = 0; i < canvas_height; i++)
 		{
 			hue[i] = [];
 			brightness[i] = [];
 			
-			for (let j = 0; j < canvas_size; j++)
+			for (let j = 0; j < canvas_width; j++)
 			{
-				x = (i / canvas_size * box_size) - box_size / 2;
-				y = box_size / 2 - (j / canvas_size * box_size);
+				x = (i / canvas_height * box_size) - box_size / 2;
+				y = box_size / 2 - (j / canvas_width * box_size);
 				hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
 				
 				brightness[i][j] = 0;
@@ -682,14 +778,14 @@
 			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_size);
 			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_size);
 			
-			let img_data = ctx.getImageData(0, 0, canvas_size, canvas_size);
+			let img_data = ctx.getImageData(0, 0, canvas_width, canvas_height);
 			let data = img_data.data;
 			
-			for (let i = 0; i < canvas_size; i++)
+			for (let i = 0; i < canvas_height; i++)
 			{
-				for (let j = 0; j < canvas_size; j++)
+				for (let j = 0; j < canvas_width; j++)
 				{
-					let index = (4 * i * canvas_size) + (4 * j);
+					let index = (4 * i * canvas_width) + (4 * j);
 					
 					let rgb = HSVtoRGB(hue[i][j], 1, brightness[i][j]); 
 					
@@ -731,8 +827,6 @@
 		coefficient_selector_width = document.querySelector("#coefficient-selector").offsetWidth;
 		coefficient_selector_height = document.querySelector("#coefficient-selector").offsetHeight;
 		
-		let rect = document.querySelector("#coefficient-selector").getBoundingClientRect();
-		
 		for (let i = 0; i < 2; i++)
 		{
 			let row = Math.floor((1 - (t[i][1] + .5)) * coefficient_selector_height);
@@ -740,6 +834,8 @@
 			
 			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
 		}
+		
+		draw_quasi_fuchsian_group();
 	}
 
 
