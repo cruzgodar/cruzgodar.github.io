@@ -18,7 +18,7 @@
 	let small_image_size = 1000;
 
 	let small_num_iterations = 200;
-	let large_num_iterations = 500;
+	let large_num_iterations = 200;
 	
 	let box_size = 4;
 	let escape_radius = 100;
@@ -76,8 +76,7 @@
 	document.querySelector("#download-button").addEventListener("click", prepare_download);
 
 
-
-	//Only get the width of the Mandelbrot set has finished loading in order to get the correct value.
+	
 	small_canvas_size = document.querySelector("#julia-set").offsetWidth;
 	large_canvas_size = document.querySelector("#output-canvas").offsetWidth;
 
@@ -94,6 +93,8 @@
 	{
 		large_canvas_size = document.querySelector("#output-canvas").offsetWidth;
 	};
+	
+	applet_canvas_true_fullscreen = false;
 	
 	set_up_canvas_resizer();
 	
@@ -831,7 +832,7 @@
 		document.querySelector("#output-canvas").setAttribute("height", image_size);
 		
 		
-		
+				
 		draw_frame();
 		
 		

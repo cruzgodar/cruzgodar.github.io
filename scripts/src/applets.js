@@ -178,6 +178,68 @@ function switch_canvas_fullscreen()
 				
 				fullscreen_canvas_resize();
 			}, 300);
+			
+			
+			
+			let elements = document.querySelectorAll(".applet-canvas-container, .letterboxed-canvas-background");
+			
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].addEventListener("click", function(e)
+				{
+					e.preventDefault();
+					
+					let time_diff = Date.now() - last_tap_time;
+					
+					if (time_diff < 300 && time_diff > 50)
+					{
+						switch_canvas_fullscreen();
+					}
+					
+					last_tap_time = Date.now();
+					
+					document.body.style.userSelect = "none";
+					document.body.style.WebkitUserSelect = "none";
+					
+					setTimeout(function()
+					{
+						document.body.style.userSelect = "auto";
+						document.body.style.WebkitUserSelect = "auto";
+					}, 500);
+				});
+				
+				
+				
+				elements[i].addEventListener("touchstart", function(e)
+				{
+					e.preventDefault();
+				});
+				
+				
+				
+				elements[i].addEventListener("touchend", function(e)
+				{
+					e.preventDefault();
+					
+					let time_diff = Date.now() - last_tap_time;
+					
+					if (time_diff < 300 && time_diff > 50)
+					{
+						switch_canvas_fullscreen();
+					}
+					
+					last_tap_time = Date.now();
+					
+					document.body.style.userSelect = "none";
+					document.body.style.WebkitUserSelect = "none";
+					
+					setTimeout(function()
+					{
+						document.body.style.userSelect = "auto";
+						document.body.style.WebkitUserSelect = "auto";
+					}, 500);
+				});
+			}
 		}, 300);
 	}
 	
