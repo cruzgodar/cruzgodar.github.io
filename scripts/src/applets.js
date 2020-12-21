@@ -1,78 +1,125 @@
-let canvas_is_small = true;
+let canvas_is_fullscreen = false;
+
+let canvas_is_animating = false;
 
 //Set when an applet loads to makes its canvases automatically resize.
 let applet_canvases_to_resize = [];
 
 let applet_canvas_resize_callback = null;
 
-let max_canvas_size = null;
+let last_tap_time = 0;
 
-window.addEventListener("resize", function()
-{
-	max_canvas_size = Math.min(.8 * window_width, .8 * window_height);
-});
+let fullscreen_canvas_timeout_id = null;
+
+let fullscreen_canvas_old_scroll = 0;
 
 
 
 function set_up_canvas_resizer()
 {
-	window.addEventListener("scroll", resize_canvas);
-	temporary_handlers["scroll"].push(resize_canvas);
+	for (let i = 0; i < applet_canvases_to_resize.length; i++)
+	{
+		applet_canvases_to_resize[i].addEventListener("click", function()
+		{
+			if (Date.now() - last_tap_time < 500)
+			{
+				switch_canvas_fullscreen();
+			}
+			
+			last_tap_time = Date.now();
+		});
+	}
 }
 
 
 
-function resize_canvas()
+function switch_canvas_fullscreen()
 {
-	let amount_cut_off = applet_canvases_to_resize[0].getBoundingClientRect().top + max_canvas_size - window_height;
-	
-	
-	
-	if (amount_cut_off > max_canvas_size * .25 && canvas_is_small === false)
+	if (!canvas_is_fullscreen)
 	{
-		canvas_is_small = true;
-		
-		for (let i = 0; i < applet_canvases_to_resize.length; i++)
+		if (canvas_is_animating)
 		{
-			applet_canvases_to_resize[i].style.opacity = 0;
+			return;
+		}
+		
+		
+		
+		canvas_is_fullscreen = true;
+		
+		canvas_is_animating = true;
+		
+		
+		
+		document.body.style.opacity = 0;
+		
+		setTimeout(function()
+		{
+			document.documentElement.style.overflowY = "hidden";
 			
-			setTimeout(function()
+			fullscreen_canvas_old_scroll = window.scrollY;
+			
+			window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top);
+			
+			for (let i = 0; i < applet_canvases_to_resize.length; i++)
 			{
-				applet_canvases_to_resize[i].style.width = "40vmin";
-				applet_canvases_to_resize[i].style.height = "40vmin";
-				
-				applet_canvases_to_resize[i].style.marginBottom = "40vmin";
-				
-				applet_canvases_to_resize[i].style.opacity = 1;
+				applet_canvases_to_resize[i].classList.add("fullscreen-canvas");
 				
 				try {applet_canvas_resize_callback();}
 				catch(ex) {}
+				
+				aos_resize();
+			}
+			
+			document.body.style.opacity = 1;
+			
+			setTimeout(function()
+			{
+				canvas_is_animating = false;
 			}, 300);
-		}
+		}, 300);
 	}
 	
 	
 	
-	else if (amount_cut_off < max_canvas_size * .25 && canvas_is_small === true)
+	else
 	{
-		canvas_is_small = false;
-		
-		for (let i = 0; i < applet_canvases_to_resize.length; i++)
+		if (canvas_is_animating)
 		{
-			applet_canvases_to_resize[i].style.opacity = 0;
+			return;
+		}
+		
+		
+		
+		canvas_is_fullscreen = false;
+		
+		canvas_is_animating = true;
+		
+		
+		
+		document.body.style.opacity = 0;
+		
+		setTimeout(function()
+		{
+			document.documentElement.style.overflowY = "visible";
 			
-			setTimeout(function()
+			window.scroll(0, fullscreen_canvas_old_scroll);
+			
+			for (let i = 0; i < applet_canvases_to_resize.length; i++)
 			{
-				applet_canvases_to_resize[i].style.width = "80vmin";
-				applet_canvases_to_resize[i].style.height = "80vmin";
-				
-				applet_canvases_to_resize[i].style.marginBottom = "0";
-				
-				applet_canvases_to_resize[i].style.opacity = 1;
+				applet_canvases_to_resize[i].classList.remove("fullscreen-canvas");
 				
 				try {applet_canvas_resize_callback();}
 				catch(ex) {}
+				
+				aos_resize();
+			}
+			
+			document.body.style.opacity = 1;
+			
+			setTimeout(function()
+			{
+				canvas_is_animating = false;
 			}, 300);
-		}
+		}, 300);
 	}
 }

@@ -1,15 +1,24 @@
 #output-canvas
 {
-	width: 40vmin;
-	height: 40vmin;
+	width: 50vmin;
+	height: 50vmin;
 	margin: 0 auto;
-	margin-bottom: 40vmin;
 	
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 15px;
 	padding: 2px;
 	
 	transition: opacity .3s ease-in-out, border-color .3s ease-in-out;
+}
+
+.fullscreen-canvas
+{
+	width: 100vw !important;
+	height: 100vh !important;
+	
+	border: none !important;
+	border-radius: 0 !important;
+	padding: 0 !important;
 }
 
 

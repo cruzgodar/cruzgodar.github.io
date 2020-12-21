@@ -287,7 +287,7 @@ function add_scroll_button()
 		{
 			document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
 				<div id="new-banner-cover" data-aos="fade-down">
-					<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="smooth_scroll_to('#scroll-to')">
+					<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="smooth_scroll_to(document.querySelector('#scroll-to'))">
 				</div>
 			`);
 			
@@ -308,7 +308,7 @@ function add_scroll_button()
 
 
 
-function smooth_scroll_to(target_selector)
+function smooth_scroll_to(target_element)
 {
-	document.querySelector(target_selector).scrollIntoView({behavior: "smooth"});
+	target_element.scrollIntoView({behavior: "smooth"});
 }
