@@ -6,7 +6,9 @@
 	
 	let gl = document.querySelector("#output-canvas").getContext("webgl");
 	
-	let canvas_size = document.querySelector("#output-canvas").offsetWidth;
+	let canvas_width = document.querySelector("#output-canvas").offsetWidth;
+	let canvas_height = document.querySelector("#output-canvas").offsetHeight;
+	let canvas_size = Math.min(canvas_width, canvas_height);
 	
 	let currently_drawing = false;
 	let stabilize_brightness_scale = false;
@@ -36,12 +38,15 @@
 	
 	
 	let image_size = 500;
+	let image_width = 500;
+	let image_height = 500;
+	
 	let num_iterations = 50;
 	
 	
 	
-	document.querySelector("#output-canvas").setAttribute("width", image_size);
-	document.querySelector("#output-canvas").setAttribute("height", image_size);
+	document.querySelector("#output-canvas").setAttribute("width", image_width);
+	document.querySelector("#output-canvas").setAttribute("height", image_height);
 	
 	document.querySelector("#image-size-input").addEventListener("input", change_resolution);
 	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
@@ -57,8 +62,47 @@
 	
 	applet_canvas_resize_callback = function()
 	{
-		canvas_size = document.querySelector("#output-canvas").offsetWidth;
+		if (canvas_is_fullscreen)
+		{
+			if (aspect_ratio >= 1)
+			{
+				image_width = image_size;
+				image_height = Math.floor(image_size / aspect_ratio);
+			}
+			
+			else
+			{
+				image_width = Math.floor(image_size * aspect_ratio);
+				image_height = image_size;
+			}
+		}
+		
+		else
+		{
+			image_width = image_size;
+			image_height = image_size;
+		}
+		
+		
+		
+		canvas_width = document.querySelector("#output-canvas").offsetWidth;
+		canvas_height = document.querySelector("#output-canvas").offsetHeight;
+		canvas_size = Math.min(canvas_width, canvas_height);
+		
+		document.querySelector("#output-canvas").setAttribute("width", image_width);
+		document.querySelector("#output-canvas").setAttribute("height", image_height);
+		
+		gl.viewport(0, 0, image_width, image_height);
+		
+		
+		
+		
+		fractals_resize();
+		
+		window.requestAnimationFrame(draw_frame);
 	};
+	
+	applet_canvas_true_fullscreen = true;
 	
 	set_up_canvas_resizer();
 	
@@ -92,6 +136,8 @@
 		
 		varying vec2 uv;
 		
+		uniform float aspect_ratio;
+		
 		uniform float box_size_halved;
 		uniform float center_x;
 		uniform float center_y;
@@ -102,7 +148,7 @@
 		
 		void main(void)
 		{
-			vec2 z = vec2(uv.x * box_size_halved + center_x, uv.y * box_size_halved + center_y);
+			vec2 z = vec2(uv.x * aspect_ratio * box_size_halved + center_x, uv.y * box_size_halved + center_y);
 			float brightness = exp(-length(z));
 			
 			float a = z.x;
@@ -180,6 +226,8 @@
 		
 		
 		
+		shader_program.aspect_ratio_uniform = gl.getUniformLocation(shader_program, "aspect_ratio");
+		
 		shader_program.box_size_halved_uniform = gl.getUniformLocation(shader_program, "box_size_halved");
 		shader_program.center_x_uniform = gl.getUniformLocation(shader_program, "center_x");
 		shader_program.center_y_uniform = gl.getUniformLocation(shader_program, "center_y");
@@ -188,7 +236,7 @@
 		
 		
 		
-		gl.viewport(0, 0, image_size, image_size);
+		gl.viewport(0, 0, image_width, image_height);
 		
 		
 		
@@ -218,6 +266,8 @@
 	
 	function draw_frame()
 	{
+		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
+		
 		gl.uniform1f(shader_program.box_size_halved_uniform, box_size / 2);
 		gl.uniform1f(shader_program.center_x_uniform, center_x);
 		gl.uniform1f(shader_program.center_y_uniform, center_y);
@@ -435,10 +485,10 @@
 			
 			let rect = document.querySelector("#output-canvas").getBoundingClientRect();
 			
-			let touch_center_x_proportion = ((e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left) / canvas_size;
-			let touch_center_y_proportion = ((e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top) / canvas_size;
+			let touch_center_x_proportion = ((e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left) / canvas_width;
+			let touch_center_y_proportion = ((e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top) / canvas_height;
 			
-			let fixed_point_x = (touch_center_x_proportion * box_size - box_size / 2) + center_x;
+			let fixed_point_x = (touch_center_x_proportion * box_size - box_size / 2) * image_width / image_height + center_x;
 			let fixed_point_y = (box_size / 2 - touch_center_y_proportion * box_size) + center_y;
 			
 			
@@ -461,7 +511,7 @@
 			
 			
 			
-			center_x = fixed_point_x - (touch_center_x_proportion * box_size - box_size / 2);
+			center_x = fixed_point_x - (touch_center_x_proportion * box_size - box_size / 2) * image_width / image_height;
 			center_y = fixed_point_y - (box_size / 2 - touch_center_y_proportion * box_size);
 		}
 		
@@ -535,10 +585,10 @@
 			
 			let rect = document.querySelector("#output-canvas").getBoundingClientRect();
 			
-			let mouse_x_proportion = (mouse_x - rect.left) / canvas_size;
-			let mouse_y_proportion = (mouse_y - rect.top) / canvas_size;
+			let mouse_x_proportion = (mouse_x - rect.left) / canvas_width;
+			let mouse_y_proportion = (mouse_y - rect.top) / canvas_height;
 			
-			let fixed_point_x = (mouse_x_proportion * box_size - box_size / 2) + center_x;
+			let fixed_point_x = (mouse_x_proportion * box_size - box_size / 2) * image_width / image_height + center_x;
 			let fixed_point_y = (box_size / 2 - mouse_y_proportion * box_size) + center_y;
 			
 			
@@ -549,7 +599,7 @@
 			
 			
 			
-			center_x = fixed_point_x - (mouse_x_proportion * box_size - box_size / 2);
+			center_x = fixed_point_x - (mouse_x_proportion * box_size - box_size / 2) * image_width / image_height;
 			center_y = fixed_point_y - (box_size / 2 - mouse_y_proportion * box_size);
 			
 			
@@ -576,7 +626,9 @@
 	
 	function fractals_resize()
 	{
-		canvas_size = document.querySelector("#output-canvas").offsetWidth;
+		canvas_width = document.querySelector("#output-canvas").offsetWidth;
+		canvas_height = document.querySelector("#output-canvas").offsetHeight;
+		canvas_size = Math.min(canvas_width, canvas_height);
 	}
 	
 	
@@ -597,10 +649,27 @@
 		
 		
 		
-		document.querySelector("#output-canvas").setAttribute("width", image_size);
-		document.querySelector("#output-canvas").setAttribute("height", image_size);
+		if (canvas_is_fullscreen)
+		{
+			if (aspect_ratio >= 1)
+			{
+				image_width = image_size;
+				image_height = Math.floor(image_size / aspect_ratio);
+			}
+			
+			else
+			{
+				image_width = Math.floor(image_size * aspect_ratio);
+				image_height = image_size;
+			}
+		}
 		
-		gl.viewport(0, 0, image_size, image_size);
+		
+		
+		document.querySelector("#output-canvas").setAttribute("width", image_width);
+		document.querySelector("#output-canvas").setAttribute("height", image_height);
+		
+		gl.viewport(0, 0, image_width, image_height);
 		
 		window.requestAnimationFrame(draw_frame);
 	}
