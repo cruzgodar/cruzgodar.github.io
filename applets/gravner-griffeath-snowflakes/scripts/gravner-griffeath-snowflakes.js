@@ -22,6 +22,8 @@
 	
 	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
 	
+	applet_canvas_true_fullscreen = false;
+	
 	set_up_canvas_resizer();
 	
 	
@@ -169,7 +171,7 @@
 	{
 		let link = document.createElement("a");
 		
-		link.download = "gravner-griffeath-snowflakes.png";
+		link.download = "a-gravner-griffeath-snowflake.png";
 		
 		link.href = document.querySelector("#output-canvas").toDataURL();
 		
