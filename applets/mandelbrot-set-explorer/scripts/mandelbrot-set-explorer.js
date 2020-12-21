@@ -409,8 +409,8 @@
 		{
 			e.preventDefault();
 			
-			center_x -= mouse_x_delta / canvas_size * box_size;
-			center_y += mouse_y_delta / canvas_size * box_size;
+			center_x -= mouse_x_delta / canvas_height * box_size;
+			center_y += mouse_y_delta / canvas_height * box_size;
 		}
 	}
 	
@@ -537,8 +537,8 @@
 			return;
 		}
 		
-		center_x -= mouse_x_delta / canvas_size * box_size;
-		center_y += mouse_y_delta / canvas_size * box_size;
+		center_x -= mouse_x_delta / canvas_height * box_size;
+		center_y += mouse_y_delta / canvas_height * box_size;
 		
 		mouse_x = new_mouse_x;
 		mouse_y = new_mouse_y;
