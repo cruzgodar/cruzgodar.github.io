@@ -111,6 +111,8 @@
 	
 	applet_canvas_resize_callback = function()
 	{
+		canvas_size = 300;
+		
 		if (canvas_is_fullscreen)
 		{
 			if (aspect_ratio >= 1)
