@@ -272,6 +272,15 @@ void generate_mandelbulb(unsigned char* image, int sector_row, int sector_col, f
 	image[index + 1] = min(total_color[1] / 4.0f * 255.0f, 255.0f);
 	image[index + 2] = min(total_color[2] / 4.0f * 255.0f, 255.0f);
 	image[index + 3] = 255;
+	
+	
+	
+	if (image[index] == 255.0f && image[index + 1] == 255.0f && image[index + 2] == 255.0f)
+	{
+		image[index] = 0.0f;
+		image[index + 1] = 0.0f;
+		image[index + 2] = 0.0f;
+	}
 }
 
 
