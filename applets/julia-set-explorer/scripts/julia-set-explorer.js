@@ -234,12 +234,12 @@
 		
 		
 		
-		let pixels = new Uint8Array(image_size * image_size * 4);
-		gl.readPixels(0, 0, image_size, image_size, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+		let pixels = new Uint8Array(image_width * image_height * 4);
+		gl.readPixels(0, 0, image_width, image_height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
 		
 		let num_pixels_at_max = 0;
 		
-		for (let i = 0; i < image_size * image_size; i++)
+		for (let i = 0; i < image_width * image_height; i++)
 		{
 			let brightness = pixels[4 * i + 1];
 			

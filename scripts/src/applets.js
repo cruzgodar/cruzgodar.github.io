@@ -163,7 +163,7 @@ function switch_canvas_fullscreen()
 					aos_resize();
 				}
 				
-				window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top + 1);
+				window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top + 2);
 				
 				fullscreen_canvas_locked_scroll = window.scrollY;
 			}
@@ -186,10 +186,11 @@ function switch_canvas_fullscreen()
 				
 				//One of these is for vertical aspect ratios and the other is for horizontal ones, but we add both in case the user resizes the window while in applet is fullscreen.
 				
-				document.querySelector(".applet-canvas-container").insertAdjacentHTML("beforebegin", `<div class="letterboxed-canvas-background"></div>`);
-				document.querySelector(".applet-canvas-container").insertAdjacentHTML("afterend", `<div class="letterboxed-canvas-background"></div>`);
+				document.querySelector(".applet-canvas-container").insertAdjacentHTML("beforebegin", `<div class="letterboxed-canvas-background no-floating-footer"></div>`);
+				document.querySelector(".applet-canvas-container").insertAdjacentHTML("afterend", `<div class="letterboxed-canvas-background no-floating-footer"></div>`);
 				
 				document.querySelector(".applet-canvas-container").classList.add("black-background");
+				document.querySelector(".applet-canvas-container").classList.add("no-floating-footer");
 				
 				
 				
@@ -385,12 +386,12 @@ function fullscreen_canvas_resize()
 	
 	if (aspect_ratio < 1 && !applet_canvas_true_fullscreen)
 	{
-		window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top - (window_height - applet_canvases_to_resize[0].offsetHeight) / 2 + 1);
+		window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top - (window_height - applet_canvases_to_resize[0].offsetHeight) / 2 + 2);
 	}
 	
 	else
 	{
-		window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top + 1);
+		window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top + 2);
 	}
 	
 	fullscreen_canvas_locked_scroll = window.scrollY;
@@ -406,12 +407,12 @@ function fullscreen_canvas_resize()
 	{
 		if (aspect_ratio < 1 && !applet_canvas_true_fullscreen)
 		{
-			window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top - (window_height - applet_canvases_to_resize[0].offsetHeight) / 2 + 1);
+			window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top - (window_height - applet_canvases_to_resize[0].offsetHeight) / 2 + 2);
 		}
 		
 		else
 		{
-			window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top + 1);
+			window.scroll(0, window.scrollY + applet_canvases_to_resize[0].getBoundingClientRect().top + 2);
 		}
 		
 		fullscreen_canvas_locked_scroll = window.scrollY;

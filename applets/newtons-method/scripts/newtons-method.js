@@ -589,8 +589,8 @@
 		
 		
 		
-		let pixels = new Uint8Array(image_size * image_size * 4);
-		gl.readPixels(0, 0, image_size, image_size, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+		let pixels = new Uint8Array(image_width * image_height * 4);
+		gl.readPixels(0, 0, image_width, image_height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
 		
 		let num_pixels_at_zero = 0;
 		
@@ -606,14 +606,14 @@
 		
 		let changed_brightness_scale = false;
 		
-		if (num_pixels_at_zero < .000025 * image_size * image_size * current_roots.length)
+		if (num_pixels_at_zero < .000025 * image_width * image_height * current_roots.length)
 		{
 			brightness_scale -= .25;
 			
 			changed_brightness_scale = true;
 		}
 		
-		else if (num_pixels_at_zero > .00005 * image_size * image_size * current_roots.length)
+		else if (num_pixels_at_zero > .00005 * image_width * image_height * current_roots.length)
 		{
 			brightness_scale += .25;
 			
@@ -1027,6 +1027,7 @@
 		
 		let element = document.createElement("div");
 		element.classList.add("root-marker");
+		element.classList.add("no-floating-footer");
 		element.id = `root-marker-${root_markers.length}`;
 		element.style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		
