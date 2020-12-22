@@ -594,7 +594,7 @@
 		
 		let num_pixels_at_zero = 0;
 		
-		for (let i = 0; i < image_size * image_size; i++)
+		for (let i = 0; i < image_width * image_height; i++)
 		{
 			if (pixels[4 * i] === 1 || pixels[4 * i + 1] === 1 || pixels[4 * i + 2] === 1)
 			{
@@ -606,7 +606,7 @@
 		
 		let changed_brightness_scale = false;
 		
-		if (num_pixels_at_zero < .000025 * image_width * image_height * current_roots.length)
+		if (num_pixels_at_zero < .000025 * image_width * image_height * current_roots.length && brightness_scale > .25)
 		{
 			brightness_scale -= .25;
 			

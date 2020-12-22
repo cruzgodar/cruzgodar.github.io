@@ -617,7 +617,7 @@
 		
 		let changed_brightness_scale = false;
 		
-		if (num_pixels_at_zero < .000025 * image_width * image_height * current_roots.length)
+		if (num_pixels_at_zero < .000025 * image_width * image_height * current_roots.length && brightness_scale > .25)
 		{
 			brightness_scale -= .25;
 			
