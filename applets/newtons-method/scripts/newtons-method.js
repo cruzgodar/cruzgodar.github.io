@@ -132,7 +132,8 @@
 		
 		varying vec2 uv;
 		
-		uniform float aspect_ratio;
+		uniform float aspect_ratio_x;
+		uniform float aspect_ratio_y;
 		
 		uniform int num_roots;
 		
@@ -270,7 +271,7 @@
 		
 		void main(void)
 		{
-			vec2 z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+			vec2 z = vec2(uv.x * aspect_ratio_x * 2.0, uv.y / aspect_ratio_y * 2.0);
 			vec2 last_z = vec2(0.0, 0.0);
 			
 			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
@@ -492,7 +493,8 @@
 		
 		
 		
-		shader_program.aspect_ratio_uniform = gl.getUniformLocation(shader_program, "aspect_ratio");
+		shader_program.aspect_ratio_x_uniform = gl.getUniformLocation(shader_program, "aspect_ratio_x");
+		shader_program.aspect_ratio_y_uniform = gl.getUniformLocation(shader_program, "aspect_ratio_y");
 		
 		shader_program.num_roots_uniform = gl.getUniformLocation(shader_program, "num_roots");
 		
@@ -537,7 +539,19 @@
 	
 	function draw_frame()
 	{
-		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
+		if (image_width >= image_height)
+		{
+			gl.uniform1f(shader_program.aspect_ratio_x_uniform, image_width / image_height);
+			gl.uniform1f(shader_program.aspect_ratio_y_uniform, 1);
+		}
+		
+		else
+		{
+			gl.uniform1f(shader_program.aspect_ratio_x_uniform, 1);
+			gl.uniform1f(shader_program.aspect_ratio_y_uniform, image_width / image_height);
+		}
+		
+		
 		
 		gl.uniform1i(shader_program.num_roots_uniform, current_roots.length);
 		
@@ -1020,8 +1034,20 @@
 		let x = Math.random() * 3 - 1.5;
 		let y = Math.random() * 3 - 1.5;
 		
-		let row = Math.floor(root_selector_height * (1 - (y / 4 + .5)));
-		let col = Math.floor(root_selector_width * (x / (image_width / image_height) / 4 + .5));
+		let row = 0;
+		let col = 0;
+		
+		if (image_width >= image_height)
+		{
+			row = Math.floor(root_selector_height * (1 - (y / 4 + .5)));
+			col = Math.floor(root_selector_width * (x / (image_width / image_height) / 4 + .5));
+		}
+		
+		else
+		{
+			row = Math.floor(root_selector_height * (1 - (y * (image_width / image_height) / 4 + .5)));
+			col = Math.floor(root_selector_width * (x / 4 + .5));
+		}
 		
 		
 		
@@ -1156,8 +1182,20 @@
 		
 		root_markers[active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		
-		let x = ((col - root_selector_width/2) / root_selector_width) * 4 * (image_width / image_height);
-		let y = (-(row - root_selector_height/2) / root_selector_height) * 4;
+		let x = 0;
+		let y = 0;
+		
+		if (image_width >= image_height)
+		{
+			x = ((col - root_selector_width/2) / root_selector_width) * 4 * (image_width / image_height);
+			y = (-(row - root_selector_height/2) / root_selector_height) * 4;
+		}
+		
+		else
+		{
+			x = ((col - root_selector_width/2) / root_selector_width) * 4;
+			y = (-(row - root_selector_height/2) / root_selector_height) * 4 / (image_width / image_height);
+		}
 		
 		current_roots[active_marker][0] = x;
 		current_roots[active_marker][1] = y;
@@ -1202,8 +1240,20 @@
 			
 			
 			
-			let row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
-			let col = Math.floor(root_selector_width * (current_roots[i][0] / (image_width / image_height) / 4 + .5));
+			let row = 0;
+			let col = 0;
+			
+			if (image_width >= image_height)
+			{
+				row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
+				col = Math.floor(root_selector_width * (current_roots[i][0] / (image_width / image_height) / 4 + .5));
+			}
+			
+			else
+			{
+				row = Math.floor(root_selector_height * (1 - (current_roots[i][1] * (image_width / image_height) / 4 + .5)));
+				col = Math.floor(root_selector_width * (current_roots[i][0] / 4 + .5));
+			}
 			
 			root_markers[i].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		}
@@ -1230,15 +1280,28 @@
 		document.querySelector("#root-setter").style.opacity = 1;
 	}
 	
+	
+	
 	function set_root()
 	{
 		current_roots[last_active_marker][0] = parseFloat(document.querySelector("#root-a-input").value) || 0;
 		current_roots[last_active_marker][1] = parseFloat(document.querySelector("#root-b-input").value) || 0;
 		
 		
+		let row = 0;
+		let col = 0;
 		
-		let row = Math.floor(root_selector_height * (1 - (current_roots[last_active_marker][1] / 4 + .5)));
-		let col = Math.floor(root_selector_width * (current_roots[last_active_marker][0] / (image_width / image_height) / 4 + .5));
+		if (image_width >= image_height)
+		{
+			row = Math.floor(root_selector_height * (1 - (current_roots[last_active_marker][1] / 4 + .5)));
+			col = Math.floor(root_selector_width * (current_roots[last_active_marker][0] / (image_width / image_height) / 4 + .5));
+		}
+		
+		else
+		{
+			row = Math.floor(root_selector_height * (1 - (current_roots[last_active_marker][1] * (image_width / image_height) / 4 + .5)));
+			col = Math.floor(root_selector_width * (current_roots[last_active_marker][0] / 4 + .5));
+		}
 		
 		root_markers[last_active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		
@@ -1380,12 +1443,86 @@
 		root_selector_width = document.querySelector("#root-selector").offsetWidth;
 		root_selector_height = document.querySelector("#root-selector").offsetHeight;
 		
+		let changed_a_root = false;
+		
 		for (let i = 0; i < current_roots.length; i++)
 		{
-			let row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
-			let col = Math.floor(root_selector_width * (current_roots[i][0] / (image_width / image_height) / 4 + .5));
+			let row = 0;
+			let col = 0;
+			
+			if (image_width >= image_height)
+			{
+				row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
+				col = Math.floor(root_selector_width * (current_roots[i][0] / (image_width / image_height) / 4 + .5));
+			}
+			
+			else
+			{
+				row = Math.floor(root_selector_height * (1 - (current_roots[i][1] * (image_width / image_height) / 4 + .5)));
+				col = Math.floor(root_selector_width * (current_roots[i][0] / 4 + .5));
+			}
+			
+			
+			
+			if (row < root_marker_radius)
+			{
+				row = root_marker_radius;
+				
+				changed_a_root = true;
+			}
+			
+			if (row > root_selector_height - root_marker_radius)
+			{
+				row = root_selector_height - root_marker_radius;
+				
+				changed_a_root = true;
+			}
+			
+			if (col < root_marker_radius)
+			{
+				col = root_marker_radius;
+				
+				changed_a_root = true;
+			}
+			
+			if (col > root_selector_width - root_marker_radius)
+			{
+				col = root_selector_width - root_marker_radius;
+				
+				changed_a_root = true;
+			}
+			
+			
 			
 			root_markers[i].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+			
+			
+			if (changed_a_root)
+			{
+				let x = 0;
+				let y = 0;
+				
+				if (image_width >= image_height)
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * 4 * (image_width / image_height);
+					y = (-(row - root_selector_height/2) / root_selector_height) * 4;
+				}
+				
+				else
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * 4;
+					y = (-(row - root_selector_height/2) / root_selector_height) * 4 / (image_width / image_height);
+				}
+				
+				current_roots[active_marker][0] = x;
+				current_roots[active_marker][1] = y;
+			}
+		}
+		
+		
+		if (changed_a_root)
+		{
+			window.requestAnimationFrame(draw_frame);
 		}
 	}
 
