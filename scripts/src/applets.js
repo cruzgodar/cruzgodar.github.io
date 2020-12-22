@@ -1,3 +1,5 @@
+let used_fullscreen_for_first_time = false;
+
 let canvas_is_fullscreen = false;
 
 let canvas_is_animating = false;
@@ -79,6 +81,20 @@ function set_up_canvas_resizer()
 		});
 	}
 	
+	
+	
+	if (used_fullscreen_for_first_time)
+	{
+		try
+		{
+			document.querySelector("#fullscreen-message").parentNode.previousElementSibling.remove();
+			document.querySelector("#fullscreen-message").parentNode.remove();
+			
+			aos_resize();
+		}
+		
+		catch(ex) {}
+	}
 	
 	
 	window.addEventListener("resize", fullscreen_canvas_resize);
@@ -254,6 +270,23 @@ function switch_canvas_fullscreen()
 						document.body.style.WebkitUserSelect = "auto";
 					}, 500);
 				});
+			}
+			
+			
+			
+			if (!used_fullscreen_for_first_time)
+			{
+				used_fullscreen_for_first_time = true;
+				
+				try
+				{
+					document.querySelector("#fullscreen-message").parentNode.previousElementSibling.remove();
+					document.querySelector("#fullscreen-message").parentNode.remove();
+					
+					aos_resize();
+				}
+				
+				catch(ex) {}
 			}
 		}, 300);
 	}

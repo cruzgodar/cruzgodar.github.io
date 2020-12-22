@@ -49,6 +49,30 @@
 
 
 
+#fullscreen-message
+{
+	width: calc(50vmin + 8px);
+	height: 50px;
+	margin: 0 auto;
+	
+	display: flex;
+	
+	align-items: center;
+	justify-content: center;
+	
+	background-color: rgb(127, 127, 127);
+	border-radius: 15px;
+}
+
+#fullscreen-message .body-text
+{
+	color: rgb(255, 255, 255) !important;
+	width: 100%;
+	text-align: center;
+}
+
+
+
 .applet-progress-bar
 {
 	width: calc(50vmin - 8px) !important;
