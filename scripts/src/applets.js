@@ -96,6 +96,18 @@ function set_up_canvas_resizer()
 		catch(ex) {}
 	}
 	
+	else if (currently_touch_device)
+	{
+		try
+		{
+			document.querySelector("#fullscreen-message p").textContent = "Double-tap canvas to enter fullscreen";
+			
+			aos_resize();
+		}
+		
+		catch(ex) {}
+	}
+	
 	
 	window.addEventListener("resize", fullscreen_canvas_resize);
 	temporary_handlers["resize"].push(fullscreen_canvas_resize);
