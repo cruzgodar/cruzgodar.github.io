@@ -801,7 +801,7 @@
 			prepare_download();
 		}
 		
-		web_worker.postMessage([canvas_size, max_depth, max_pixel_brightness, box_size, coefficients]);
+		web_worker.postMessage([canvas_width, canvas_height, max_depth, max_pixel_brightness, box_size, coefficients]);
 	}
 	
 	

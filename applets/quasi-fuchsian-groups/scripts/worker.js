@@ -4,19 +4,21 @@
 
 onmessage = async function(e)
 {
-	canvas_size = e.data[0];
-	max_depth = e.data[1];
-	max_pixel_brightness = e.data[2];
-	box_size = e.data[3];
+	canvas_width = e.data[0];
+	canvas_height = e.data[1];
+	max_depth = e.data[2];
+	max_pixel_brightness = e.data[3];
+	box_size = e.data[4];
 	
-	coefficients = e.data[4];
+	coefficients = e.data[5];
 	
 	await draw_quasi_fuchsian_group();
 }
 
 
 
-let canvas_size = null;
+let canvas_width = null;
+let canvas_height = null;
 let max_depth = null;
 let max_pixel_brightness = null;
 let box_size = null;
@@ -36,11 +38,11 @@ function draw_quasi_fuchsian_group()
 	{
 		brightness = [];
 		
-		for (let i = 0; i < canvas_size; i++)
+		for (let i = 0; i < canvas_height; i++)
 		{
 			brightness[i] = [];
 			
-			for (let j = 0; j < canvas_size; j++)
+			for (let j = 0; j < canvas_width; j++)
 			{
 				brightness[i][j] = 0;
 			}
@@ -59,9 +61,9 @@ function draw_quasi_fuchsian_group()
 		
 		let	max_brightness = brightness_sorted[Math.round(brightness_sorted.length * .999) - 1];
 		
-		for (let i = 0; i < canvas_size; i++)
+		for (let i = 0; i < canvas_height; i++)
 		{
-			for (let j = 0; j < canvas_size; j++)
+			for (let j = 0; j < canvas_width; j++)
 			{
 				brightness[i][j] = Math.min(Math.sqrt(brightness[i][j] / max_brightness), 1);
 			}
@@ -97,10 +99,10 @@ function search_step(start_x, start_y, last_transformation_index, last_row, last
 		
 		
 		
-		let row = Math.floor((-y + box_size / 2) / box_size * canvas_size);
-		let col = Math.floor((x + box_size / 2) / box_size * canvas_size);
+		let row = Math.floor((-y + box_size / 2) / box_size * canvas_height);
+		let col = Math.floor((x / (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_width);
 		
-		if (row >= 0 && row < canvas_size && col >= 0 && col < canvas_size)
+		if (row >= 0 && row < canvas_height && col >= 0 && col < canvas_width)
 		{
 			if (brightness[row][col] === max_pixel_brightness)
 			{
