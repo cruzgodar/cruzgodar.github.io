@@ -99,8 +99,22 @@ function search_step(start_x, start_y, last_transformation_index, last_row, last
 		
 		
 		
-		let row = Math.floor((-y + box_size / 2) / box_size * canvas_height);
-		let col = Math.floor((x / (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_width);
+		let row = 0;
+		let col = 0;
+		
+		if (canvas_width >= canvas_height)
+		{
+			row = Math.floor((-y + box_size / 2) / box_size * canvas_height);
+			col = Math.floor((x / (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_width);
+		}
+		
+		else
+		{
+			row = Math.floor((-y * (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_height);
+			col = Math.floor((x + box_size / 2) / box_size * canvas_width);
+		}
+		
+		
 		
 		if (row >= 0 && row < canvas_height && col >= 0 && col < canvas_width)
 		{

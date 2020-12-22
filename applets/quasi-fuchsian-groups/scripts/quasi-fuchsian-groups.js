@@ -388,9 +388,22 @@
 			apply_transformation(transformation_index);
 			
 			
+			let row = 0;
+			let col = 0;
 			
-			let row = Math.floor((-y + box_size / 2) / box_size * canvas_height);
-			let col = Math.floor((x / (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_width);
+			if (canvas_width >= canvas_height)
+			{
+				row = Math.floor((-y + box_size / 2) / box_size * canvas_height);
+				col = Math.floor((x / (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_width);
+			}
+			
+			else
+			{
+				row = Math.floor((-y * (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_height);
+				col = Math.floor((x + box_size / 2) / box_size * canvas_width);
+			}
+			
+			
 			
 			if (row >= 0 && row < canvas_height && col >= 0 && col < canvas_width)
 			{
@@ -479,8 +492,21 @@
 		{
 			coefficient_points.push([Math.floor(canvas_height / 2), Math.floor(canvas_width / 2)]);
 			
-			let row = (coefficient_points[i][0] / canvas_height) * coefficient_selector_height;
-			let col = (coefficient_points[i][1] / (canvas_width / canvas_height) / canvas_width) * coefficient_selector_width;
+			let row = 0;
+			let col = 0;
+			
+			if (canvas_width >= canvas_height)
+			{
+				row = (coefficient_points[i][0] / canvas_height) * coefficient_selector_height;
+				col = (coefficient_points[i][1] / (canvas_width / canvas_height) / canvas_width) * coefficient_selector_width;
+			}
+			
+			else
+			{
+				row = (coefficient_points[i][0] * (canvas_width / canvas_height) / canvas_height) * coefficient_selector_height;
+				col = (coefficient_points[i][1] / canvas_width) * coefficient_selector_width;
+
+			}
 			
 			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
 			
@@ -736,6 +762,29 @@
 		
 		
 		
+		if (canvas_is_fullscreen)
+		{
+			if (aspect_ratio >= 1)
+			{
+				canvas_width = canvas_size;
+				canvas_height = Math.floor(canvas_size / aspect_ratio);
+			}
+			
+			else
+			{
+				canvas_width = Math.floor(canvas_size * aspect_ratio);
+				canvas_height = canvas_size;
+			}
+		}
+		
+		else
+		{
+			canvas_width = canvas_size;
+			canvas_height = canvas_size;
+		}
+		
+		
+		
 		hue = [];
 		brightness = [];
 		
@@ -777,8 +826,8 @@
 		{
 			brightness = e.data[0];
 			
-			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_size);
-			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_size);
+			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_width);
+			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_height);
 			
 			let img_data = ctx.getImageData(0, 0, canvas_width, canvas_height);
 			let data = img_data.data;
