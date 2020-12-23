@@ -94,13 +94,13 @@
 
 .c-marker
 {
-	background-color: rgb(127, 255, 255);
+	background-color: rgb(127, 192, 255);
 	
 }
 
 .c-marker:active
 {
-	background-color: rgb(64, 127, 127);
+	background-color: rgb(64, 96, 127);
 }
 
 
