@@ -345,7 +345,7 @@ function init_floating_footer_listeners_no_touch()
 	{
 		let element = document.elementFromPoint(e.clientX, e.clientY);
 		
-		if (floating_footer_is_visible === false && e.clientY >= window.innerHeight - 50 && e.clientY >= window.innerHeight - floating_footer_height && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
+		if (floating_footer_is_visible === false && e.clientY >= window.innerHeight - 75 && e.clientY >= window.innerHeight - floating_footer_height && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
 		{
 			floating_footer_is_visible = true;
 			
@@ -373,11 +373,6 @@ function init_floating_footer_listeners_no_touch()
 	});
 }
 
-document.documentElement.addEventListener("mousedown", function(e)
-{
-	//alert(`${e.clientY}, ${window.innerHeight}`);
-});
-
 function init_floating_footer_listeners_touch()
 {
 	floating_footer_is_visible = false;
@@ -397,7 +392,7 @@ function footer_process_touchend()
 {
 	let element = document.elementFromPoint(last_touch_x, last_touch_y);
 	
-	if (floating_footer_is_visible === false && last_touch_y >= window.innerHeight - 50 && last_touch_y >= window.innerHeight - floating_footer_height && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
+	if (floating_footer_is_visible === false && last_touch_y >= window.innerHeight - 75 && last_touch_y >= window.innerHeight - floating_footer_height && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
 	{
 		document.querySelector("#floating-footer").style.display = "block";
 		
