@@ -1,18 +1,3 @@
-.text-box-row
-{
-	width: 250px;
-	margin: 0 auto;
-	display: flex;
-	justify-content: space-between;
-	
-	transition: opacity .3s ease-in-out;
-	
-	opacity: 0;
-	pointer-events: none;
-}
-
-
-
 .applet-canvas-container
 {
 	height: calc(50vmin + 8px);
@@ -82,14 +67,4 @@
 .branch-marker:active
 {
 	background-color: rgb(127, 127, 127);
-}
-
-
-
-@media (max-aspect-ratio: 9/16), (max-width: 700px)
-{
-	.text-box-row
-	{
-		width: 225px;
-	}
 }

@@ -4,9 +4,9 @@
 	
 	
 	
-	let image_size = 1000;
-	let image_width = 1000;
-	let image_height = 1000;
+	let image_size = 4000;
+	let image_width = 4000;
+	let image_height = 4000;
 	
 	let current_roots = [];
 	
@@ -29,9 +29,11 @@
 	
 	let root_marker_radius = 17.5;
 	
+	let frame = 3846;
 	
 	
-	let brightness_scale = 20;
+	
+	let brightness_scale = 18.45;
 	let stabilize_brightness_scale = false;
 	
 	
@@ -539,6 +541,63 @@
 	
 	function draw_frame()
 	{
+		current_roots[0][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		current_roots[0][1] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		
+		
+		
+		current_roots[1][0] = .5 * (Math.cos(2 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) - 1 + .5;
+		current_roots[1][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		
+		
+		
+		current_roots[2][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		current_roots[2][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		
+		
+		
+		current_roots[3][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) + 1 + .5;
+		current_roots[3][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 1 + .5;
+		
+		
+		
+		current_roots[4][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		current_roots[4][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) - 3 + .5;
+		
+		
+		
+		current_roots[5][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) - 1 + .5;
+		current_roots[5][1] = .5 * (Math.cos(7 * 2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		
+		
+		
+		current_roots[6][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		current_roots[6][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		
+		
+		
+		current_roots[7][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		current_roots[7][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) - 1 + .5;
+		
+		
+		
+		let rect = document.querySelector("#root-selector").getBoundingClientRect();
+		
+		for (let i = 0; i < current_roots.length; i++)
+		{
+			let row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
+			let col = Math.floor(root_selector_width * (current_roots[i][0] / 4 + .5));
+			
+			root_markers[i].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+		}
+		
+		
+		
+		console.log(frame, Math.round(brightness_scale * 100) / 100);
+		
+		
+		
+		
 		if (image_width >= image_height)
 		{
 			gl.uniform1f(shader_program.aspect_ratio_x_uniform, image_width / image_height);
@@ -620,22 +679,22 @@
 		
 		let changed_brightness_scale = false;
 		
-		if (num_pixels_at_zero < .000025 * image_width * image_height * current_roots.length && brightness_scale > .25)
+		if (num_pixels_at_zero < .000025 * image_width * image_height * current_roots.length && brightness_scale > .05)
 		{
-			brightness_scale -= .25;
+			brightness_scale -= .05;
 			
 			changed_brightness_scale = true;
 		}
 		
 		else if (num_pixels_at_zero > .00005 * image_width * image_height * current_roots.length)
 		{
-			brightness_scale += .25;
+			brightness_scale += .05;
 			
 			changed_brightness_scale = true;
 		}
 		
 		
-		
+		/*
 		if (stabilize_brightness_scale)
 		{
 			if (changed_brightness_scale)
@@ -661,10 +720,10 @@
 		{
 			need_to_restart = true;
 		}
-		
+		*/
 		
 		//Uncomment to generate an animation.
-		/*
+		
 		let link = document.createElement("a");
 
 		link.download = `${frame}.png`;
@@ -677,62 +736,6 @@
 		
 		
 		
-		current_roots[0][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 3 + .5;
-		current_roots[0][1] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) + 1 + .5;
-		
-		
-		
-		current_roots[1][0] = .5 * (Math.cos(2 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) - 1 + .5;
-		current_roots[1][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) + 1 + .5;
-		
-		
-		
-		current_roots[2][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) + 1 + .5;
-		current_roots[2][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) + 1 + .5;
-		
-		
-		
-		current_roots[3][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) + 1 + .5;
-		current_roots[3][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 1 + .5;
-		
-		
-		
-		current_roots[4][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) + 1 + .5;
-		current_roots[4][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) - 3 + .5;
-		
-		
-		
-		current_roots[5][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) - 1 + .5;
-		current_roots[5][1] = .5 * (Math.cos(7 * 2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 3 + .5;
-		
-		
-		
-		current_roots[6][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) - 3 + .5;
-		current_roots[6][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) - 3 + .5;
-		
-		
-		
-		current_roots[7][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) - 3 + .5;
-		current_roots[7][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) - 1 + .5;
-		
-		
-		
-		let rect = document.querySelector("#root-selector").getBoundingClientRect();
-		
-		for (let i = 0; i < current_roots.length; i++)
-		{
-			let row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
-			let col = Math.floor(root_selector_width * (current_roots[i][0] / 4 + .5));
-			
-			root_markers[i].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
-		}
-		
-		
-		
-		console.log(frame, brightness_scale);
-		
-		
-		
 		frame++;
 		
 		
@@ -740,8 +743,7 @@
 		setTimeout(function()
 		{
 			window.requestAnimationFrame(draw_frame);
-		}, 50);
-		*/
+		}, 300);
 	}
 	
 	
@@ -1063,13 +1065,13 @@
 		
 		current_roots.push([x, y]);
 		
-		brightness_scale = 20;
+		//brightness_scale = 30;
 		
 		stabilize_brightness_scale = true;
 		
 		if (need_to_restart)
 		{
-			window.requestAnimationFrame(draw_frame);
+			//window.requestAnimationFrame(draw_frame);
 		}
 	}
 	
@@ -1218,6 +1220,9 @@
 	//Spreads the roots in an even radius.
 	function spread_roots(high_res = true)
 	{
+		window.requestAnimationFrame(draw_frame);
+		return;
+		
 		document.querySelector("#polynomial-label-1").textContent = "";
 		document.querySelector("#polynomial-label-2").textContent = "";
 		document.querySelector("#polynomial-label-3").textContent = "";

@@ -2,11 +2,42 @@
 
 
 
+.text-boxes, .text-buttons
+{
+	display: grid;
+	
+	justify-content: center;
+	align-items: center;
+	
+	/* Make the rows and columns have the same spacing. */
+	grid-row-gap: 5vw;
+	grid-column-gap: 5vw;
+	
+	width: 70vw;
+	margin: 0 auto;
+}
+
+.text-boxes
+{
+	/* 6 boxes per row. */
+	grid-template-columns: repeat(auto-fit, 7.5vw);
+}
+
+.text-buttons
+{
+	/* 3 buttons per row. */
+	grid-template-columns: repeat(auto-fit, 20vw);
+}
+
+
+
+
+
 .text-button
 {
 	color: rgb(127, 127, 127);
 	background-color: rgb(255, 255, 255);
-	height: 44px;
+	height: auto;
 	width: auto;
 	display: inline-block;
 	margin: auto;
@@ -220,7 +251,7 @@
 
 .text-box
 {
-	width: 100px;
+	width: 100%;
 	
 	border: none;
 	border-radius: 0;
@@ -254,4 +285,61 @@
 label .body-text
 {
 	text-align: center;
+}
+
+
+
+.text-boxes .text-box-container, .text-buttons .text-button
+{
+	width: 100%;
+}
+
+
+
+
+
+@media (max-aspect-ratio: 9/16), (max-width: 700px)
+{
+	.text-boxes, .text-buttons
+	{
+		width: 90vw;
+	}
+	
+	.text-boxes
+	{
+		/* 4 boxes per row. */
+		grid-template-columns: repeat(auto-fit, 18.75vw);
+	}
+
+	.text-buttons
+	{
+		/* 2 buttons per row. */
+		grid-template-columns: repeat(auto-fit, 40vw);
+		
+		grid-row-gap: 10vw;
+		grid-column-gap: 10vw;
+	}
+}
+
+
+
+@media (min-aspect-ratio: 16/9), (min-width: 1400px)
+{
+	.text-boxes, .text-buttons
+	{
+		grid-row-gap: 3vw;
+		grid-column-gap: 3vw;
+	}
+	
+	.text-boxes
+	{
+		/* 8 boxes per row. */
+		grid-template-columns: repeat(auto-fit, 6.125vw);
+	}
+
+	.text-buttons
+	{
+		/* 4 buttons per row. */
+		grid-template-columns: repeat(auto-fit, 15.25vw);
+	}
 }

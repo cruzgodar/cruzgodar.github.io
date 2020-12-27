@@ -75,6 +75,6 @@
 
 .applet-progress-bar
 {
-	width: calc(50vmin - 8px) !important;
+	width: 50vmin !important;
 	transition: opacity .3s ease-in-out, margin-top .3s ease-in-out, margin-bottom .3s ease-in-out;
 }

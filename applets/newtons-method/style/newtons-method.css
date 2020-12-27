@@ -1,10 +1,5 @@
-.text-box-row
+#root-setter
 {
-	width: 250px;
-	margin: 0 auto;
-	display: flex;
-	justify-content: space-between;
-	
 	transition: opacity .3s ease-in-out;
 	
 	opacity: 0;
@@ -84,10 +79,5 @@
 	#polynomial-label-1, #polynomial-label-2, #polynomial-label-3
 	{
 		font-size: 10px;
-	}
-	
-	.text-box-row
-	{
-		width: 225px;
 	}
 }

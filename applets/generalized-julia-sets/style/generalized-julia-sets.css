@@ -26,25 +26,6 @@
 
 
 
-.text-box-row-2, .text-box-row-3
-{
-	margin: 0 auto;
-	display: flex;
-	justify-content: space-between;
-}
-
-.text-box-row-2
-{
-	width: 250px;
-}
-
-.text-box-row-3
-{
-	width: 400px;
-}
-
-
-
 #code-input
 {
 	width: 250px;
@@ -59,11 +40,6 @@
 	#container
 	{
 		flex-direction: column;
-	}
-	
-	.text-box-row-3
-	{
-		width: 350px;
 	}
 	
 	#mandelbrot-set, #julia-set
