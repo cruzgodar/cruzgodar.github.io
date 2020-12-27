@@ -435,3 +435,46 @@ function fullscreen_canvas_scroll()
 	
 	window.scroll(0, fullscreen_canvas_locked_scroll);
 }
+
+
+
+//Makes linked text buttons have the same height.
+function equalize_text_buttons()
+{
+	let elements = document.querySelectorAll(".linked-text-button");
+	
+	let heights = [];
+	
+	let max_height = 0;
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].style.height = "auto";
+		
+		heights.push(elements[i].offsetHeight);
+		
+		if (heights[i] > max_height)
+		{
+			max_height = heights[i];
+		}
+	}
+	
+	
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		if (heights[i] < max_height)
+		{
+			elements[i].style.height = max_height + "px";
+		}
+	}
+	
+	
+	
+	elements = document.querySelectorAll(".text-button:not(.linked-text-button)");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].parentNode.style.margin = "0 auto";
+	}
+}

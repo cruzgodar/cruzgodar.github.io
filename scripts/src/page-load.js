@@ -58,6 +58,8 @@ function on_page_load()
 	
 	set_up_hover_events();
 	
+	set_up_equalize_text_buttons();
+	
 	setTimeout(set_up_weird_focus_elements, 50);
 	
 	
@@ -567,6 +569,16 @@ function set_up_weird_focus_elements()
 			elements[i].children[0].focus();
 		});
 	}
+}
+
+
+
+function set_up_equalize_text_buttons()
+{
+	window.addEventListener("resize", equalize_text_buttons);
+	temporary_handlers["resize"].push(equalize_text_buttons);
+	
+	equalize_text_buttons();
 }
 
 
