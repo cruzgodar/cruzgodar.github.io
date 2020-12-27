@@ -39,8 +39,8 @@
 {
 	color: rgb(127, 127, 127);
 	background-color: rgb(255, 255, 255);
-	height: auto;
-	width: auto;
+	height: fit-content;
+	width: fit-content;
 	display: inline-block;
 	margin: auto;
 	position: relative;
@@ -69,11 +69,6 @@
 {
 	filter: brightness(75%);
 	outline: none;
-}
-
-.text-button:not(.linked-text-button)
-{
-	width: fit-content;
 }
 
 

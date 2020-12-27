@@ -441,15 +441,31 @@ function fullscreen_canvas_scroll()
 //Makes linked text buttons have the same height.
 function equalize_text_buttons()
 {
-	let elements = document.querySelectorAll(".linked-text-button");
+	let elements = document.querySelectorAll(".text-button");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].parentNode.style.margin = "0 auto";
+	}
+	
+	
+	
+	elements = document.querySelectorAll(".linked-text-button");
 	
 	let heights = [];
 	
 	let max_height = 0;
 	
+	let widths = [];
+	
+	let max_width = 0;
+	
 	for (let i = 0; i < elements.length; i++)
 	{
-		elements[i].style.height = "auto";
+		elements[i].style.height = "fit-content";
+		
+		elements[i].style.width = "fit-content";
+		
 		
 		heights.push(elements[i].offsetHeight);
 		
@@ -457,24 +473,51 @@ function equalize_text_buttons()
 		{
 			max_height = heights[i];
 		}
-	}
-	
-	
-	
-	for (let i = 0; i < elements.length; i++)
-	{
-		if (heights[i] < max_height)
+		widths.push(elements[i].offsetWidth);
+		
+		if (widths[i] > max_width)
 		{
-			elements[i].style.height = max_height + "px";
+			max_width = widths[i];
 		}
 	}
 	
 	
 	
-	elements = document.querySelectorAll(".text-button:not(.linked-text-button)");
-	
-	for (let i = 0; i < elements.length; i++)
+	setTimeout(function()
 	{
-		elements[i].parentNode.style.margin = "0 auto";
-	}
+		for (let i = 0; i < elements.length; i++)
+		{
+			heights.push(elements[i].offsetHeight);
+			
+			if (heights[i] > max_height)
+			{
+				max_height = heights[i];
+			}
+			
+			
+			
+			
+			widths.push(elements[i].offsetWidth);
+			
+			if (widths[i] > max_width)
+			{
+				max_width = widths[i];
+			}
+		}
+		
+		
+		
+		for (let i = 0; i < elements.length; i++)
+		{
+			if (heights[i] < max_height)
+			{
+				elements[i].style.height = max_height + "px";
+			}
+			
+			if (widths[i] < max_width)
+			{
+				elements[i].style.width = max_width + "px";
+			}
+		}
+	}, 50);
 }
