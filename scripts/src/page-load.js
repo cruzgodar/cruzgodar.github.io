@@ -578,7 +578,7 @@ function set_up_equalize_text_buttons()
 	window.addEventListener("resize", equalize_text_buttons);
 	temporary_handlers["resize"].push(equalize_text_buttons);
 	
-	equalize_text_buttons();
+	setTimeout(equalize_text_buttons, 50);
 }
 
 

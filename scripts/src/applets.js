@@ -438,7 +438,7 @@ function fullscreen_canvas_scroll()
 
 
 
-//Makes linked text buttons have the same height.
+//Makes linked text buttons have the same width and height.
 function equalize_text_buttons()
 {
 	let elements = document.querySelectorAll(".text-button");
@@ -460,22 +460,20 @@ function equalize_text_buttons()
 	
 	let max_width = 0;
 	
+	
+	
 	for (let i = 0; i < elements.length; i++)
 	{
-		elements[i].style.height = "fit-content";
-		
-		elements[i].style.width = "fit-content";
-		
-		
 		heights.push(elements[i].offsetHeight);
 		
-		if (heights[i] > max_height)
+		if (heights[i] > max_height && (elements[i].style.height === "fit-content" || elements[i].style.height === ""))
 		{
 			max_height = heights[i];
 		}
+		
 		widths.push(elements[i].offsetWidth);
 		
-		if (widths[i] > max_width)
+		if (widths[i] > max_width && (elements[i].style.width === "fit-content" || elements[i].style.width === ""))
 		{
 			max_width = widths[i];
 		}
@@ -483,41 +481,28 @@ function equalize_text_buttons()
 	
 	
 	
-	setTimeout(function()
+	for (let i = 0; i < elements.length; i++)
 	{
-		for (let i = 0; i < elements.length; i++)
+		if (heights[i] < max_height)
 		{
-			heights.push(elements[i].offsetHeight);
-			
-			if (heights[i] > max_height)
-			{
-				max_height = heights[i];
-			}
-			
-			
-			
-			
-			widths.push(elements[i].offsetWidth);
-			
-			if (widths[i] > max_width)
-			{
-				max_width = widths[i];
-			}
+			elements[i].style.height = max_height + "px";
+		}
+		
+		else
+		{
+			elements[i].style.height = "fit-content";
 		}
 		
 		
 		
-		for (let i = 0; i < elements.length; i++)
+		if (widths[i] < max_width)
 		{
-			if (heights[i] < max_height)
-			{
-				elements[i].style.height = max_height + "px";
-			}
-			
-			if (widths[i] < max_width)
-			{
-				elements[i].style.width = max_width + "px";
-			}
+			elements[i].style.width = max_width + "px";
 		}
-	}, 50);
+		
+		else
+		{
+			elements[i].style.width = "fit-content";
+		}
+	}
 }
