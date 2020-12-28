@@ -13,7 +13,7 @@
 	let a = [1, 0];
 	let c = [0, 0];
 	
-	let gl = document.querySelector("#nova-fractals-plot").getContext("webgl");
+	let gl = document.querySelector("#secant-method-plot").getContext("webgl");
 	
 	let draw_another_frame = false;
 	let need_to_restart = true;
@@ -55,16 +55,25 @@
 	{
 		if (e.keyCode === 13)
 		{
-			draw_high_res_plot();
+			stabilize_brightness_scale = true;
+			
+			draw_another_frame = true;
+			
+			if (need_to_restart)
+			{
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_frame);
+			}
 		}
 	});
 	
-	window.addEventListener("resize", nova_fractals_resize);
-	temporary_handlers["resize"].push(nova_fractals_resize);
+	window.addEventListener("resize", secant_method_resize);
+	temporary_handlers["resize"].push(secant_method_resize);
 	
 	
 	
-	applet_canvases_to_resize = [document.querySelector("#nova-fractals-plot"), document.querySelector("#root-selector")];
+	applet_canvases_to_resize = [document.querySelector("#secant-method-plot"), document.querySelector("#root-selector")];
 	
 	applet_canvas_resize_callback = function()
 	{
@@ -91,14 +100,14 @@
 		
 		
 		
-		document.querySelector("#nova-fractals-plot").setAttribute("width", image_width);
-		document.querySelector("#nova-fractals-plot").setAttribute("height", image_height);
+		document.querySelector("#secant-method-plot").setAttribute("width", image_width);
+		document.querySelector("#secant-method-plot").setAttribute("height", image_height);
 		
 		gl.viewport(0, 0, image_width, image_height);
 		
 		
 		
-		nova_fractals_resize();
+		secant_method_resize();
 		
 		window.requestAnimationFrame(draw_frame);
 	};
@@ -111,7 +120,7 @@
 	
 	setTimeout(setup_webgl, 500);
 	
-	setTimeout(nova_fractals_resize, 1000);
+	setTimeout(secant_method_resize, 1000);
 	
 	
 	
@@ -263,14 +272,6 @@
 			
 			
 			return result;
-		}
-		
-		
-		
-		//Approximates f'(z) for a polynomial f with given roots.
-		vec2 complex_derivative(vec2 z)
-		{
-			return 1000.0 * (complex_polynomial(z) - complex_polynomial(z - vec2(.001, 0.0)));
 		}
 		
 		
@@ -519,8 +520,8 @@
 		shader_program.brightness_scale_uniform = gl.getUniformLocation(shader_program, "brightness_scale");
 		
 		
-		document.querySelector("#nova-fractals-plot").setAttribute("width", image_width);
-		document.querySelector("#nova-fractals-plot").setAttribute("height", image_height);
+		document.querySelector("#secant-method-plot").setAttribute("width", image_width);
+		document.querySelector("#secant-method-plot").setAttribute("height", image_height);
 		gl.viewport(0, 0, image_width, image_height);
 	}
 	
@@ -645,7 +646,7 @@
 			changed_brightness_scale = true;
 		}
 		
-		
+		//console.log(brightness_scale);
 		
 		if (stabilize_brightness_scale)
 		{
@@ -680,7 +681,7 @@
 
 		link.download = `${frame}.png`;
 		
-		link.href = document.querySelector("#nova-fractals-plot").toDataURL();
+		link.href = document.querySelector("#secant-method-plot").toDataURL();
 		
 		link.click();
 		
@@ -1537,8 +1538,8 @@
 		
 		
 		
-		document.querySelector("#nova-fractals-plot").setAttribute("width", image_width);
-		document.querySelector("#nova-fractals-plot").setAttribute("height", image_height);
+		document.querySelector("#secant-method-plot").setAttribute("width", image_width);
+		document.querySelector("#secant-method-plot").setAttribute("height", image_height);
 		
 		gl.viewport(0, 0, image_width, image_height);
 		
@@ -1574,8 +1575,8 @@
 		
 		
 		
-		document.querySelector("#nova-fractals-plot").setAttribute("width", image_width);
-		document.querySelector("#nova-fractals-plot").setAttribute("height", image_height);
+		document.querySelector("#secant-method-plot").setAttribute("width", image_width);
+		document.querySelector("#secant-method-plot").setAttribute("height", image_height);
 		
 		gl.viewport(0, 0, image_width, image_height);
 		
@@ -1585,9 +1586,9 @@
 		
 		let link = document.createElement("a");
 		
-		link.download = "a-nova-fractal.png";
+		link.download = "the-secant-method.png";
 		
-		link.href = document.querySelector("#nova-fractals-plot").toDataURL();
+		link.href = document.querySelector("#secant-method-plot").toDataURL();
 		
 		link.click();
 		
@@ -1620,8 +1621,8 @@
 		
 		
 		
-		document.querySelector("#nova-fractals-plot").setAttribute("width", image_width);
-		document.querySelector("#nova-fractals-plot").setAttribute("height", image_height);
+		document.querySelector("#secant-method-plot").setAttribute("width", image_width);
+		document.querySelector("#secant-method-plot").setAttribute("height", image_height);
 		
 		gl.viewport(0, 0, image_width, image_height);
 		
@@ -1630,7 +1631,7 @@
 	
 	
 	
-	function nova_fractals_resize()
+	function secant_method_resize()
 	{
 		root_selector_width = document.querySelector("#root-selector").offsetWidth;
 		root_selector_height = document.querySelector("#root-selector").offsetHeight;
@@ -1885,12 +1886,12 @@
 		{
 			if (url_vars["theme"] === 1)
 			{
-				document.querySelector("#nova-fractals-plot").style.borderColor = "rgb(192, 192, 192)";
+				document.querySelector("#secant-method-plot").style.borderColor = "rgb(192, 192, 192)";
 			}
 			
 			else
 			{
-				document.querySelector("#nova-fractals-plot").style.borderColor = "rgb(64, 64, 64)";
+				document.querySelector("#secant-method-plot").style.borderColor = "rgb(64, 64, 64)";
 			}
 		}
 		
