@@ -79,10 +79,6 @@
 	
 	
 	
-	calculate_vectors();
-	
-	
-	
 	document.querySelector("#output-canvas").setAttribute("width", image_width);
 	document.querySelector("#output-canvas").setAttribute("height", image_height);
 	
@@ -139,6 +135,12 @@
 		
 		document.querySelector("#output-canvas").setAttribute("width", image_width);
 		document.querySelector("#output-canvas").setAttribute("height", image_height);
+		
+		
+		
+		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
+		
+		gl.uniform1i(shader_program.image_size_uniform, image_size);
 		
 		gl.viewport(0, 0, image_width, image_height);
 		
@@ -215,25 +217,7 @@
 		
 		
 		
-		uniform float rotation_angle_x;
-		uniform float rotation_angle_y;
-		uniform float rotation_angle_z;
-		
-		
-		
-		mat3 rotation_matrix = mat3(
-			cos(rotation_angle_z), sin(rotation_angle_z), 0.0,
-			-sin(rotation_angle_z), cos(rotation_angle_z), 0.0,
-			0.0, 0.0, 1.0
-		) * mat3(
-			cos(rotation_angle_y), 0.0, sin(rotation_angle_y),
-			0.0, 1.0, 0.0,
-			-sin(rotation_angle_y), 0.0, cos(rotation_angle_y)
-		) * mat3(
-			1.0, 0.0, 0.0,
-			0.0, cos(rotation_angle_x), sin(rotation_angle_x),
-			0.0, -sin(rotation_angle_x), cos(rotation_angle_x)
-		);
+		uniform mat3 rotation_matrix;
 		
 		
 		
@@ -241,7 +225,7 @@
 		{
 			vec3 z = pos;
 			
-			float r = 0.0;
+			float r = length(z);
 			float dr = 1.0;
 			
 			color = vec3(1.0, 1.0, 1.0);
@@ -249,8 +233,6 @@
 			
 			for (int iteration = 0; iteration < num_iterations; iteration++)
 			{
-				r = length(z);
-				
 				if (r > 16.0)
 				{
 					break;
@@ -262,23 +244,24 @@
 				
 				dr = pow(r, power - 1.0) * power * dr + 1.0;
 				
-				theta = theta * power;
+				theta *= power;
 				
-				phi = phi * power;
+				phi *= power;
 				
 				z = pow(r, power) * vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
 				
-				z += (1.0 - julia_proportion) * pos + julia_proportion * c;
+				z += mix(pos, c, julia_proportion);
 				
 				z = rotation_matrix * z;
 				
-				color = (1.0 - color_scale) * color + color_scale * abs(normalize(z));
+				r = length(z);
+				
+				color = mix(color, abs(z / r), color_scale);
 				
 				color_scale *= .5;
 			}
 			
-			float max_color_component = max(max(color.x, color.y), color.z);
-			color /= max_color_component;
+			color /= max(max(color.x, color.y), color.z);
 			
 			return .5 * log(r) * r / dr;
 		}
@@ -287,13 +270,11 @@
 		
 		vec3 get_surface_normal(vec3 pos)
 		{
-			float e = .000001;
-			
 			float base = distance_estimator(pos);
 			
-			float x_step = distance_estimator(pos + vec3(e, 0.0, 0.0));
-			float y_step = distance_estimator(pos + vec3(0.0, e, 0.0));
-			float z_step = distance_estimator(pos + vec3(0.0, 0.0, e));
+			float x_step = distance_estimator(pos + vec3(.000001, 0.0, 0.0));
+			float y_step = distance_estimator(pos + vec3(0.0, .000001, 0.0));
+			float z_step = distance_estimator(pos + vec3(0.0, 0.0, .000001));
 			
 			return normalize(vec3(x_step - base, y_step - base, z_step - base));
 		}
@@ -306,7 +287,9 @@
 			
 			vec3 light_direction = normalize(light_pos - pos);
 			
-			float light_intensity = light_brightness * max(dot(surface_normal, light_direction), .25 * dot(surface_normal, -light_direction));
+			float dot_product = dot(surface_normal, light_direction);
+			
+			float light_intensity = light_brightness * max(dot_product, -.25 * dot_product);
 			
 			//The last factor adds ambient occlusion.
 			color = color * light_intensity * max(1.0 - float(iteration) / float(max_marches), 0.0);
@@ -318,7 +301,7 @@
 			
 			float fog_amount = 1.0 - exp(-distance_from_camera * fog_scaling);
 			
-			return (1.0 - fog_amount) * color + fog_amount * fog_color;
+			return mix(color, fog_color, fog_amount);
 		}
 		
 		
@@ -470,15 +453,40 @@
 		shader_program.power_uniform = gl.getUniformLocation(shader_program, "power");
 		shader_program.c_uniform = gl.getUniformLocation(shader_program, "c");
 		
-		shader_program.rotation_angle_x_uniform = gl.getUniformLocation(shader_program, "rotation_angle_x");
-		shader_program.rotation_angle_y_uniform = gl.getUniformLocation(shader_program, "rotation_angle_y");
-		shader_program.rotation_angle_z_uniform = gl.getUniformLocation(shader_program, "rotation_angle_z");
+		shader_program.rotation_matrix_uniform = gl.getUniformLocation(shader_program, "rotation_matrix");
 		
 		shader_program.julia_proportion_uniform = gl.getUniformLocation(shader_program, "julia_proportion");
 		
 		
 		
+		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
+		
+		gl.uniform1i(shader_program.image_size_uniform, image_size);
+		
+		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
+		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
+		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
+		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
+		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
+		
+		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
+		
+		gl.uniformMatrix3fv(shader_program.rotation_matrix_uniform, false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
+		
+		gl.uniform3fv(shader_program.light_pos_uniform, light_pos);
+		
+		gl.uniform1f(shader_program.power_uniform, power);
+		gl.uniform3fv(shader_program.c_uniform, c);
+		
+		gl.uniform1f(shader_program.julia_proportion_uniform, julia_proportion);
+		
+		
+		
 		gl.viewport(0, 0, image_width, image_height);
+		
+		
+		
+		calculate_vectors();
 		
 		
 		
@@ -508,30 +516,6 @@
 	
 	function draw_frame()
 	{
-		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
-		
-		gl.uniform1i(shader_program.image_size_uniform, image_size);
-		
-		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
-		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
-		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
-		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
-		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
-		
-		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
-		
-		gl.uniform3fv(shader_program.light_pos_uniform, light_pos);
-		
-		gl.uniform1f(shader_program.power_uniform, power);
-		gl.uniform3fv(shader_program.c_uniform, c);
-		
-		gl.uniform1f(shader_program.rotation_angle_x_uniform, rotation_angle_x);
-		gl.uniform1f(shader_program.rotation_angle_y_uniform, rotation_angle_y);
-		gl.uniform1f(shader_program.rotation_angle_z_uniform, rotation_angle_z);
-		
-		gl.uniform1f(shader_program.julia_proportion_uniform, julia_proportion);
-		
-		
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 		
 		
@@ -551,6 +535,8 @@
 		
 		
 		c = [.5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)), .5 * (Math.cos(2 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)), .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(11 * 2 * Math.PI * frame / 6000))];
+		
+		gl.uniform3fv(shader_program.c_uniform, c);
 		
 		julia_proportion = 1;
 		
@@ -613,6 +599,16 @@
 		
 		
 		image_plane_center_pos = [camera_pos[0] + focal_length * forward_vec[0], camera_pos[1] + focal_length * forward_vec[1], camera_pos[2] + focal_length * forward_vec[2]];
+		
+		
+		
+		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
+		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
+		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
+		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
+		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
+		
+		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
 	}
 	
 	
@@ -670,7 +666,7 @@
 		{
 			r = Math.sqrt(dot_product(mutable_z, mutable_z));
 			
-			if (r > 10.0)
+			if (r > 16.0)
 			{
 				break;
 			}
@@ -1089,12 +1085,18 @@
 		
 		
 		
-		gl.uniform1i(shader_program.image_size_uniform, image_size);
-		
 		document.querySelector("#output-canvas").setAttribute("width", image_width);
 		document.querySelector("#output-canvas").setAttribute("height", image_height);
 		
+		
+		
+		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
+		
+		gl.uniform1i(shader_program.image_size_uniform, image_size);
+		
 		gl.viewport(0, 0, image_width, image_height);
+		
+		
 		
 		window.requestAnimationFrame(draw_frame);
 	}
@@ -1162,6 +1164,8 @@
 		if (julia_proportion === 0)
 		{
 			c = [...camera_pos];
+			
+			gl.uniform3fv(shader_program.c_uniform, c);
 		}
 		
 		
@@ -1242,6 +1246,22 @@
 		rotation_angle_x = rotation_angle_x_old + rotation_angle_x_delta * t;
 		rotation_angle_y = rotation_angle_y_old + rotation_angle_y_delta * t;
 		rotation_angle_z = rotation_angle_z_old + rotation_angle_z_delta * t;
+		
+		
+		
+		let mat_z = [[Math.cos(rotation_angle_z), -Math.sin(rotation_angle_z), 0], [Math.sin(rotation_angle_z), Math.cos(rotation_angle_z), 0], [0, 0, 1]];
+		let mat_y = [[Math.cos(rotation_angle_y), 0, -Math.sin(rotation_angle_y)], [0, 1, 0],[Math.sin(rotation_angle_y), 0, Math.cos(rotation_angle_y)]];
+		let mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x), -Math.sin(rotation_angle_x)], [0, Math.sin(rotation_angle_x), Math.cos(rotation_angle_x)]];
+		
+		let mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
+		
+		gl.uniformMatrix3fv(shader_program.rotation_matrix_uniform, false, [...(mat_total[0]), ...(mat_total[1]), ...(mat_total[2])]);
+		
+		gl.uniform1f(shader_program.power_uniform, power);
+		
+		gl.uniform1f(shader_program.julia_proportion_uniform, julia_proportion);
+		
+		
 		
 		parameter_animation_frame++;
 		

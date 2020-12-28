@@ -95,10 +95,6 @@
 	
 	
 	
-	calculate_vectors();
-	
-	
-	
 	document.querySelector("#tetrahedron-radio-button").checked = true;
 	
 	document.querySelector("#output-canvas").setAttribute("width", image_width);
@@ -182,6 +178,12 @@
 		
 		document.querySelector("#output-canvas").setAttribute("width", image_width);
 		document.querySelector("#output-canvas").setAttribute("height", image_height);
+		
+		
+		
+		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
+		
+		gl.uniform1i(shader_program.image_size_uniform, image_size);
 		
 		gl.viewport(0, 0, image_width, image_height);
 		
@@ -269,44 +271,12 @@
 		
 		
 		
-		uniform float rotation_angle_x_1;
-		uniform float rotation_angle_y_1;
-		uniform float rotation_angle_z_1;
-		uniform float rotation_angle_x_2;
-		uniform float rotation_angle_y_2;
-		uniform float rotation_angle_z_2;
-		
 		uniform float scale;
 		
 		
 		
-		mat3 rotation_matrix_1 = mat3(
-			cos(rotation_angle_z_1), sin(rotation_angle_z_1), 0.0,
-			-sin(rotation_angle_z_1), cos(rotation_angle_z_1), 0.0,
-			0.0, 0.0, 1.0
-		) * mat3(
-			cos(rotation_angle_y_1), 0.0, sin(rotation_angle_y_1),
-			0.0, 1.0, 0.0,
-			-sin(rotation_angle_y_1), 0.0, cos(rotation_angle_y_1)
-		) * mat3(
-			1.0, 0.0, 0.0,
-			0.0, cos(rotation_angle_x_1), sin(rotation_angle_x_1),
-			0.0, -sin(rotation_angle_x_1), cos(rotation_angle_x_1)
-		);
-		
-		mat3 rotation_matrix_2 = mat3(
-			cos(rotation_angle_z_2), sin(rotation_angle_z_2), 0.0,
-			-sin(rotation_angle_z_2), cos(rotation_angle_z_2), 0.0,
-			0.0, 0.0, 1.0
-		) * mat3(
-			cos(rotation_angle_y_2), 0.0, sin(rotation_angle_y_2),
-			0.0, 1.0, 0.0,
-			-sin(rotation_angle_y_2), 0.0, cos(rotation_angle_y_2)
-		) * mat3(
-			1.0, 0.0, 0.0,
-			0.0, cos(rotation_angle_x_2), sin(rotation_angle_x_2),
-			0.0, -sin(rotation_angle_x_2), cos(rotation_angle_x_2)
-		);
+		uniform mat3 rotation_matrix_1;
+		uniform mat3 rotation_matrix_2;
 		
 		
 		
@@ -330,7 +300,7 @@
 				{
 					mutable_pos -= 2.0 * t1 * n1;
 					
-					color = (1.0 - color_scale) * color + color_scale * color_1;
+					color = mix(color, color_1, color_scale);
 				}
 				
 				float t2 = dot(mutable_pos, n2);
@@ -339,7 +309,7 @@
 				{
 					mutable_pos -= 2.0 * t2 * n2;
 					
-					color = (1.0 - color_scale) * color + color_scale * color_2;
+					color = mix(color, color_2, color_scale);
 				}
 				
 				float t3 = dot(mutable_pos, n3);
@@ -348,7 +318,7 @@
 				{
 					mutable_pos -= 2.0 * t3 * n3;
 					
-					color = (1.0 - color_scale) * color + color_scale * color_3;
+					color = mix(color, color_3, color_scale);
 				}
 				
 				if (num_ns >= 4)
@@ -359,7 +329,7 @@
 					{
 						mutable_pos -= 2.0 * t4 * n4;
 						
-						color = (1.0 - color_scale) * color + color_scale * color_4;
+						color = mix(color, color_4, color_scale);
 					}
 				}
 				
@@ -370,7 +340,7 @@
 				
 				
 				//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-				mutable_pos = scale*mutable_pos - (scale - 1.0)*scale_center;
+				mutable_pos = scale * mutable_pos - (scale - 1.0) * scale_center;
 				
 				
 				
@@ -381,6 +351,8 @@
 				color_scale *= .5;
 			}
 			
+			
+			
 			return length(mutable_pos) * pow(1.0/scale, float(num_sierpinski_iterations));
 		}
 		
@@ -388,13 +360,11 @@
 		
 		vec3 get_surface_normal(vec3 pos)
 		{
-			float e = .00001;
-			
 			float base = distance_estimator(pos);
 			
-			float x_step = distance_estimator(pos + vec3(e, 0.0, 0.0));
-			float y_step = distance_estimator(pos + vec3(0.0, e, 0.0));
-			float z_step = distance_estimator(pos + vec3(0.0, 0.0, e));
+			float x_step = distance_estimator(pos + vec3(.00001, 0.0, 0.0));
+			float y_step = distance_estimator(pos + vec3(0.0, .00001, 0.0));
+			float z_step = distance_estimator(pos + vec3(0.0, 0.0, .00001));
 			
 			return normalize(vec3(x_step - base, y_step - base, z_step - base));
 		}
@@ -407,7 +377,9 @@
 			
 			vec3 light_direction = normalize(light_pos - pos);
 			
-			float light_intensity = light_brightness * max(dot(surface_normal, light_direction), .25 * dot(surface_normal, -light_direction));
+			float dot_product = dot(surface_normal, light_direction);
+			
+			float light_intensity = light_brightness * max(dot_product, -.25 * dot_product);
 			
 			//The last factor adds ambient occlusion.
 			color = color * light_intensity * max((1.0 - float(iteration) / float(max_marches)), 0.0);
@@ -415,11 +387,7 @@
 			
 			
 			//Apply fog.
-			float distance_from_camera = length(pos - camera_pos);
-			
-			float fog_amount = 1.0 - exp(-distance_from_camera * fog_scaling);
-			
-			return (1.0 - fog_amount) * color + fog_amount * fog_color;
+			return mix(color, fog_color, 1.0 - exp(-length(pos - camera_pos) * fog_scaling));
 		}
 		
 		
@@ -550,12 +518,44 @@
 		
 		shader_program.scale_uniform = gl.getUniformLocation(shader_program, "scale");
 		
-		shader_program.rotation_angle_x_1_uniform = gl.getUniformLocation(shader_program, "rotation_angle_x_1");
-		shader_program.rotation_angle_y_1_uniform = gl.getUniformLocation(shader_program, "rotation_angle_y_1");
-		shader_program.rotation_angle_z_1_uniform = gl.getUniformLocation(shader_program, "rotation_angle_z_1");
-		shader_program.rotation_angle_x_2_uniform = gl.getUniformLocation(shader_program, "rotation_angle_x_2");
-		shader_program.rotation_angle_y_2_uniform = gl.getUniformLocation(shader_program, "rotation_angle_y_2");
-		shader_program.rotation_angle_z_2_uniform = gl.getUniformLocation(shader_program, "rotation_angle_z_2");
+		shader_program.rotation_matrix_1_uniform = gl.getUniformLocation(shader_program, "rotation_matrix_1");
+		shader_program.rotation_matrix_2_uniform = gl.getUniformLocation(shader_program, "rotation_matrix_2");
+		
+		
+		
+		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
+		
+		gl.uniform1i(shader_program.image_size_uniform, image_size);
+		
+		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
+		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
+		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
+		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
+		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
+		
+		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
+		
+		gl.uniform3fv(shader_program.light_pos_uniform, light_pos[polyhedron_index]);
+		
+		gl.uniform3fv(shader_program.scale_center_uniform, scale_center[polyhedron_index]);
+		
+		gl.uniform3fv(shader_program.n1_uniform, n1[polyhedron_index]);
+		gl.uniform3fv(shader_program.n2_uniform, n2[polyhedron_index]);
+		gl.uniform3fv(shader_program.n3_uniform, n3[polyhedron_index]);
+		gl.uniform3fv(shader_program.n4_uniform, n4[polyhedron_index]);
+		
+		gl.uniform1f(shader_program.min_scale_factor_uniform, min_scale_factor[polyhedron_index]);
+		
+		gl.uniform1i(shader_program.num_ns_uniform, num_ns[polyhedron_index]);
+		
+		gl.uniform1f(shader_program.scale_uniform, scale);
+		
+		gl.uniformMatrix3fv(shader_program.rotation_matrix_1_uniform, false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
+		gl.uniformMatrix3fv(shader_program.rotation_matrix_2_uniform, false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
+		
+		
+		
+		calculate_vectors();
 		
 		
 		
@@ -588,41 +588,7 @@
 	
 	
 	function draw_frame()
-	{
-		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
-		
-		gl.uniform1i(shader_program.image_size_uniform, image_size);
-		
-		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
-		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
-		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
-		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
-		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
-		
-		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
-		
-		gl.uniform3fv(shader_program.light_pos_uniform, light_pos[polyhedron_index]);
-		
-		gl.uniform3fv(shader_program.scale_center_uniform, scale_center[polyhedron_index]);
-		
-		gl.uniform3fv(shader_program.n1_uniform, n1[polyhedron_index]);
-		gl.uniform3fv(shader_program.n2_uniform, n2[polyhedron_index]);
-		gl.uniform3fv(shader_program.n3_uniform, n3[polyhedron_index]);
-		gl.uniform3fv(shader_program.n4_uniform, n4[polyhedron_index]);
-		
-		gl.uniform1f(shader_program.min_scale_factor_uniform, min_scale_factor[polyhedron_index]);
-		
-		gl.uniform1i(shader_program.num_ns_uniform, num_ns[polyhedron_index]);
-		
-		gl.uniform1f(shader_program.scale_uniform, scale);
-		
-		gl.uniform1f(shader_program.rotation_angle_x_1_uniform, rotation_angle_x_1);
-		gl.uniform1f(shader_program.rotation_angle_y_1_uniform, rotation_angle_y_1);
-		gl.uniform1f(shader_program.rotation_angle_z_1_uniform, rotation_angle_z_1);
-		gl.uniform1f(shader_program.rotation_angle_x_2_uniform, rotation_angle_x_2);
-		gl.uniform1f(shader_program.rotation_angle_y_2_uniform, rotation_angle_y_2);
-		gl.uniform1f(shader_program.rotation_angle_z_2_uniform, rotation_angle_z_2);
-				
+	{		
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 		
 		
@@ -674,6 +640,16 @@
 		
 		
 		image_plane_center_pos = [camera_pos[0] + focal_length * forward_vec[0], camera_pos[1] + focal_length * forward_vec[1], camera_pos[2] + focal_length * forward_vec[2]];
+		
+		
+		
+		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
+		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
+		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
+		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
+		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
+		
+		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
 	}
 	
 	
@@ -1191,12 +1167,18 @@
 		
 		
 		
-		gl.uniform1i(shader_program.image_size_uniform, image_size);
-		
 		document.querySelector("#output-canvas").setAttribute("width", image_width);
 		document.querySelector("#output-canvas").setAttribute("height", image_height);
 		
+		
+		
+		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
+		
+		gl.uniform1i(shader_program.image_size_uniform, image_size);
+		
 		gl.viewport(0, 0, image_width, image_height);
+		
+		
 		
 		window.requestAnimationFrame(draw_frame);
 	}
@@ -1285,7 +1267,6 @@
 	
 	function animate_parameter_change()
 	{
-		
 		currently_animating_parameters = true;
 		
 		parameter_animation_frame = 0;
@@ -1307,6 +1288,32 @@
 		rotation_angle_y_2 = rotation_angle_y_2_old + rotation_angle_y_2_delta * t;
 		rotation_angle_z_2 = rotation_angle_z_2_old + rotation_angle_z_2_delta * t;
 		
+		
+		
+		gl.uniform1f(shader_program.scale_uniform, scale);
+		
+		
+		
+		let mat_z = [[Math.cos(rotation_angle_z_1), -Math.sin(rotation_angle_z_1), 0], [Math.sin(rotation_angle_z_1), Math.cos(rotation_angle_z_1), 0], [0, 0, 1]];
+		let mat_y = [[Math.cos(rotation_angle_y_1), 0, -Math.sin(rotation_angle_y_1)], [0, 1, 0],[Math.sin(rotation_angle_y_1), 0, Math.cos(rotation_angle_y_1)]];
+		let mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x_1), -Math.sin(rotation_angle_x_1)], [0, Math.sin(rotation_angle_x_1), Math.cos(rotation_angle_x_1)]];
+		
+		let mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
+		
+		gl.uniformMatrix3fv(shader_program.rotation_matrix_1_uniform, false, [...(mat_total[0]), ...(mat_total[1]), ...(mat_total[2])]);
+		
+		
+		
+		mat_z = [[Math.cos(rotation_angle_z_2), -Math.sin(rotation_angle_z_2), 0], [Math.sin(rotation_angle_z_2), Math.cos(rotation_angle_z_2), 0], [0, 0, 1]];
+		mat_y = [[Math.cos(rotation_angle_y_2), 0, -Math.sin(rotation_angle_y_2)], [0, 1, 0],[Math.sin(rotation_angle_y_2), 0, Math.cos(rotation_angle_y_2)]];
+		mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x_2), -Math.sin(rotation_angle_x_2)], [0, Math.sin(rotation_angle_x_2), Math.cos(rotation_angle_x_2)]];
+		
+		mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
+		
+		gl.uniformMatrix3fv(shader_program.rotation_matrix_2_uniform, false, [...(mat_total[0]), ...(mat_total[1]), ...(mat_total[2])]);
+		
+		
+		
 		parameter_animation_frame++;
 		
 		if (parameter_animation_frame === 121)
@@ -1326,6 +1333,23 @@
 		setTimeout(function()
 		{
 			polyhedron_index = new_polyhedron_index;
+			
+			
+			
+			gl.uniform3fv(shader_program.light_pos_uniform, light_pos[polyhedron_index]);
+			
+			gl.uniform3fv(shader_program.scale_center_uniform, scale_center[polyhedron_index]);
+			
+			gl.uniform3fv(shader_program.n1_uniform, n1[polyhedron_index]);
+			gl.uniform3fv(shader_program.n2_uniform, n2[polyhedron_index]);
+			gl.uniform3fv(shader_program.n3_uniform, n3[polyhedron_index]);
+			gl.uniform3fv(shader_program.n4_uniform, n4[polyhedron_index]);
+			
+			gl.uniform1f(shader_program.min_scale_factor_uniform, min_scale_factor[polyhedron_index]);
+			
+			gl.uniform1i(shader_program.num_ns_uniform, num_ns[polyhedron_index]);
+			
+			
 			
 			window.requestAnimationFrame(draw_frame);
 			
