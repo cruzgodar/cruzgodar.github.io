@@ -1020,6 +1020,13 @@
 
 		document.documentElement.addEventListener("keydown", function(e)
 		{
+			if (document.activeElement.tagName === "INPUT")
+			{
+				return;
+			}
+			
+			
+			
 			//W
 			if (e.keyCode === 87)
 			{
@@ -1258,13 +1265,13 @@
 		rotation_angle_y_2_old = rotation_angle_y_2;
 		rotation_angle_z_2_old = rotation_angle_z_2;
 		
-		scale_delta = parseFloat(document.querySelector("#scale-input").value || 2) - scale_old;
-		rotation_angle_x_1_delta = (parseFloat(document.querySelector("#rotation-angle-x-1-input").value) || 0) - rotation_angle_x_1_old;
-		rotation_angle_y_1_delta = (parseFloat(document.querySelector("#rotation-angle-y-1-input").value) || 0) - rotation_angle_y_1_old;
-		rotation_angle_z_1_delta = (parseFloat(document.querySelector("#rotation-angle-z-1-input").value) || 0) - rotation_angle_z_1_old;
-		rotation_angle_x_2_delta = (parseFloat(document.querySelector("#rotation-angle-x-2-input").value) || 0) - rotation_angle_x_2_old;
-		rotation_angle_y_2_delta = (parseFloat(document.querySelector("#rotation-angle-y-2-input").value) || 0) - rotation_angle_y_2_old;
-		rotation_angle_z_2_delta = (parseFloat(document.querySelector("#rotation-angle-z-2-input").value) || 0) - rotation_angle_z_2_old;
+		scale_delta = (parseFloat(document.querySelector("#scale-input").value || 2) || 2) - scale_old;
+		rotation_angle_x_1_delta = (parseFloat(document.querySelector("#rotation-angle-x-1-input").value || 0) || 0) - rotation_angle_x_1_old;
+		rotation_angle_y_1_delta = (parseFloat(document.querySelector("#rotation-angle-y-1-input").value || 0) || 0) - rotation_angle_y_1_old;
+		rotation_angle_z_1_delta = (parseFloat(document.querySelector("#rotation-angle-z-1-input").value || 0) || 0) - rotation_angle_z_1_old;
+		rotation_angle_x_2_delta = (parseFloat(document.querySelector("#rotation-angle-x-2-input").value || 0) || 0) - rotation_angle_x_2_old;
+		rotation_angle_y_2_delta = (parseFloat(document.querySelector("#rotation-angle-y-2-input").value || 0) || 0) - rotation_angle_y_2_old;
+		rotation_angle_z_2_delta = (parseFloat(document.querySelector("#rotation-angle-z-2-input").value || 0) || 0) - rotation_angle_z_2_old;
 		
 		if (scale_old + scale_delta < min_scale_factor[polyhedron_index] + .1)
 		{
