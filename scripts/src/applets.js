@@ -464,16 +464,19 @@ function equalize_text_buttons()
 	
 	for (let i = 0; i < elements.length; i++)
 	{
+		elements[i].style.height = "fit-content";
+		elements[i].style.width = "fit-content";
+		
 		heights.push(elements[i].offsetHeight);
 		
-		if (heights[i] > max_height && (elements[i].style.height === "fit-content" || elements[i].style.height === ""))
+		if (heights[i] > max_height)
 		{
 			max_height = heights[i];
 		}
 		
 		widths.push(elements[i].offsetWidth);
 		
-		if (widths[i] > max_width && (elements[i].style.width === "fit-content" || elements[i].style.width === ""))
+		if (widths[i] > max_width)
 		{
 			max_width = widths[i];
 		}
