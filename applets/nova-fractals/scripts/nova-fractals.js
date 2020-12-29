@@ -55,7 +55,16 @@
 	{
 		if (e.keyCode === 13)
 		{
-			draw_high_res_plot();
+			stabilize_brightness_scale = true;
+			
+			draw_another_frame = true;
+			
+			if (need_to_restart)
+			{
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_frame);
+			}
 		}
 	});
 	

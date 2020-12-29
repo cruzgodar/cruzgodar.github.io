@@ -4,9 +4,9 @@
 	
 	
 	
-	let image_size = 4000;
-	let image_width = 4000;
-	let image_height = 4000;
+	let image_size = 1000;
+	let image_width = 1000;
+	let image_height = 1000;
 	
 	let current_roots = [];
 	
@@ -29,11 +29,9 @@
 	
 	let root_marker_radius = 17.5;
 	
-	let frame = 3846;
 	
 	
-	
-	let brightness_scale = 18.45;
+	let brightness_scale = 20;
 	let stabilize_brightness_scale = false;
 	
 	
@@ -54,7 +52,16 @@
 	{
 		if (e.keyCode === 13)
 		{
-			draw_high_res_plot();
+			stabilize_brightness_scale = true;
+			
+			draw_another_frame = true;
+			
+			if (need_to_restart)
+			{
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_frame);
+			}
 		}
 	});
 	
@@ -541,6 +548,7 @@
 	
 	function draw_frame()
 	{
+		/*
 		current_roots[0][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 3 + .5;
 		current_roots[0][1] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) + 1 + .5;
 		
@@ -594,6 +602,7 @@
 		
 		
 		console.log(frame, Math.round(brightness_scale * 100) / 100);
+		*/
 		
 		
 		
@@ -679,22 +688,22 @@
 		
 		let changed_brightness_scale = false;
 		
-		if (num_pixels_at_zero < .000025 * image_width * image_height * current_roots.length && brightness_scale > .05)
+		if (num_pixels_at_zero < .000025 * image_width * image_height * current_roots.length && brightness_scale > .25)
 		{
-			brightness_scale -= .05;
+			brightness_scale -= .25;
 			
 			changed_brightness_scale = true;
 		}
 		
 		else if (num_pixels_at_zero > .00005 * image_width * image_height * current_roots.length)
 		{
-			brightness_scale += .05;
+			brightness_scale += .25;
 			
 			changed_brightness_scale = true;
 		}
 		
 		
-		/*
+		
 		if (stabilize_brightness_scale)
 		{
 			if (changed_brightness_scale)
@@ -720,10 +729,10 @@
 		{
 			need_to_restart = true;
 		}
-		*/
+		
 		
 		//Uncomment to generate an animation.
-		
+		/*
 		let link = document.createElement("a");
 
 		link.download = `${frame}.png`;
@@ -744,6 +753,7 @@
 		{
 			window.requestAnimationFrame(draw_frame);
 		}, 300);
+		*/
 	}
 	
 	
@@ -1065,13 +1075,13 @@
 		
 		current_roots.push([x, y]);
 		
-		//brightness_scale = 30;
+		brightness_scale = 20;
 		
 		stabilize_brightness_scale = true;
 		
 		if (need_to_restart)
 		{
-			//window.requestAnimationFrame(draw_frame);
+			window.requestAnimationFrame(draw_frame);
 		}
 	}
 	
@@ -1220,9 +1230,6 @@
 	//Spreads the roots in an even radius.
 	function spread_roots(high_res = true)
 	{
-		window.requestAnimationFrame(draw_frame);
-		return;
-		
 		document.querySelector("#polynomial-label-1").textContent = "";
 		document.querySelector("#polynomial-label-2").textContent = "";
 		document.querySelector("#polynomial-label-3").textContent = "";
