@@ -115,6 +115,10 @@
 			vec2 z = vec2(uv.x * box_size_halved, uv.y * box_size_halved);
 			float brightness = exp(-length(z));
 			
+			vec3 color = vec3(0.0, 0.0, 0.0);
+			
+			float color_scale = .25;
+			
 			
 			
 			for (int iteration = 0; iteration < 201; iteration++)
@@ -133,11 +137,15 @@
 				z = vec2(z.x * z.x - z.y * z.y + a, 2.0 * z.x * z.y + b);
 				
 				brightness += exp(-length(z));
+				
+				color = mix(color, vec3(abs(z.x) / 2.0, abs(z.y) / 2.0, abs(atan(z.y, z.x) / 3.141593)), color_scale);
+				
+				color_scale *= .25;
 			}
 			
 			
 			
-			gl_FragColor = vec4(0.0, brightness / brightness_scale, brightness / brightness_scale, 1.0);
+			gl_FragColor = vec4(brightness / brightness_scale * normalize(color), 1.0);
 		}
 	`;
 	
@@ -241,9 +249,7 @@
 		
 		for (let i = 0; i < image_size * image_size; i++)
 		{
-			let brightness = pixels[4 * i + 1];
-			
-			if (brightness === 255)
+			if (pixels[4 * i] === 255 || pixels[4 * i + 1] === 255 || pixels[4 * i + 2] === 255)
 			{
 				num_pixels_at_max++;
 			}
@@ -253,14 +259,14 @@
 		
 		let changed_brightness_scale = false;
 		
-		if (num_pixels_at_max < .1 * image_size)
+		if (num_pixels_at_max < 1.5 * image_size)
 		{
 			brightness_scale -= .5;
 			
 			changed_brightness_scale = true;
 		}
 		
-		else if (num_pixels_at_max > .2 * image_size)
+		else if (num_pixels_at_max > 2 * image_size)
 		{
 			brightness_scale += .5;
 			
