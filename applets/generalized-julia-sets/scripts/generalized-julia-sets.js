@@ -554,7 +554,7 @@
 						return;
 					}
 					
-					if (length(z) >= escape_radius)
+					if (z.x*z.x + z.y*z.y >= escape_radius*escape_radius)
 					{
 						break;
 					}
@@ -680,11 +680,16 @@
 		
 		if (num_pixels_at_max < 1.5 * image_size && brightness_scale > .25 && brightness_stabilization_direction !== 1)
 		{
-			brightness_scale -= .5;
-			
 			if (stabilize_brightness_scale)
 			{
+				brightness_scale -= .5;
+				
 				brightness_stabilization_direction = -1;
+			}
+			
+			else
+			{
+				brightness_scale -= .5 / (a*a + b*b + 2);
 			}
 			
 			changed_brightness_scale = true;
@@ -692,11 +697,16 @@
 		
 		else if (num_pixels_at_max > 2 * image_size && brightness_stabilization_direction !== -1)
 		{
-			brightness_scale += .5;
-			
 			if (stabilize_brightness_scale)
 			{
+				brightness_scale += .5;
+				
 				brightness_stabilization_direction = 1;
+			}
+			
+			else
+			{
+				brightness_scale += .5 / (a*a + b*b + 2);
 			}
 			
 			changed_brightness_scale = true;
