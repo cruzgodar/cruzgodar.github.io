@@ -154,9 +154,7 @@
 			float a = z.x;
 			float b = z.y;
 			
-			vec3 color = vec3(0.0, 0.0, 0.0);
-			
-			float color_scale = .25;
+			vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
 			
 			
 			
@@ -176,15 +174,11 @@
 				z = vec2(z.x * z.x - z.y * z.y + a, 2.0 * z.x * z.y + b);
 				
 				brightness += exp(-length(z));
-				
-				color = mix(color, vec3(abs(z.x) / 2.0, abs(z.y) / 2.0, abs(atan(z.y, z.x) / 3.141593)), color_scale);
-				
-				color_scale *= .25;
 			}
 			
 			
 			
-			gl_FragColor = vec4(brightness / brightness_scale * normalize(color), 1.0);
+			gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
 		}
 	`;
 	
@@ -311,7 +305,7 @@
 			
 			if (stabilize_brightness_scale)
 			{
-				brightness_scale -= 8;
+				brightness_scale -= 4;
 				
 				brightness_stabilization_direction = -1;
 			}
@@ -325,7 +319,7 @@
 			
 			if (stabilize_brightness_scale)
 			{
-				brightness_scale += 8;
+				brightness_scale += 4;
 				
 				brightness_stabilization_direction = 1;
 			}
