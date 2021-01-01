@@ -646,7 +646,7 @@
 			changed_brightness_scale = true;
 		}
 		
-		//console.log(brightness_scale);
+		
 		
 		if (stabilize_brightness_scale)
 		{

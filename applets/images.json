@@ -1,4 +1,12 @@
 {
+	"image-the-secant-method":
+	{
+		"webp": "the-secant-method/cover.webp",
+		"non-webp": "the-secant-method/cover.jpg"
+	},
+	
+	
+	
 	"image-nova-fractals":
 	{
 		"webp": "nova-fractals/cover.webp",

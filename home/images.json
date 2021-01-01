@@ -31,6 +31,12 @@
 	
 	
 	
+	"image-the-secant-method":
+	{
+		"webp": "../applets/the-secant-method/cover.webp",
+		"non-webp": "../applets/the-secant-method/cover.jpg"
+	},
+	
 	"image-nova-fractals":
 	{
 		"webp": "../applets/nova-fractals/cover.webp",
@@ -41,11 +47,5 @@
 	{
 		"webp": "../applets/quasi-fuchsian-groups/cover.webp",
 		"non-webp": "../applets/quasi-fuchsian-groups/cover.jpg"
-	},
-	
-	"image-the-mandelbulb":
-	{
-		"webp": "../applets/the-mandelbulb/cover.webp",
-		"non-webp": "../applets/the-mandelbulb/cover.jpg"
 	}
 }
