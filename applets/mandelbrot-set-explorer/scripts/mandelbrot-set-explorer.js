@@ -301,11 +301,11 @@
 		
 		if (num_pixels_at_max < 1.5 * image_size && brightness_stabilization_direction !== 1)
 		{
-			brightness_scale -= 2;
+			brightness_scale -= .5 / (center_x * center_x + center_y * center_y);
 			
 			if (stabilize_brightness_scale)
 			{
-				brightness_scale -= 4;
+				brightness_scale -= 1 / (center_x * center_x + center_y * center_y);
 				
 				brightness_stabilization_direction = -1;
 			}
@@ -315,11 +315,11 @@
 		
 		else if (num_pixels_at_max > 2 * image_size && brightness_stabilization_direction !== -1)
 		{
-			brightness_scale += 2;
+			brightness_scale += .5 / (center_x * center_x + center_y * center_y);
 			
 			if (stabilize_brightness_scale)
 			{
-				brightness_scale += 4;
+				brightness_scale += 1 / (center_x * center_x + center_y * center_y);
 				
 				brightness_stabilization_direction = 1;
 			}
