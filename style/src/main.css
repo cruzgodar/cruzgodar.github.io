@@ -28,6 +28,18 @@ a
 {
 	color: rgb(127, 192, 127);
 	text-decoration: none;
+	transition: color .15s ease-in-out;
+}
+
+a.hover
+{
+	color: rgb(192, 255, 192);
+}
+
+a:not(:hover):focus
+{
+	color: rgb(192, 255, 192);
+	outline: none;
 }
 
 p, h1, h2

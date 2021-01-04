@@ -63,6 +63,8 @@ let background_color_changed = false;
 
 
 const hover_elements = `
+	a,
+	
 	#scroll-button,
 	
 	.text-button,

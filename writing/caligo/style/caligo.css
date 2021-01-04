@@ -50,6 +50,11 @@ body
 	color: rgb(152, 152, 152);
 }
 
+.heading-text
+{
+	color: rgb(255, 255, 255) !important;
+}
+
 #eclipse
 {
 	width: 50vh;
@@ -65,30 +70,20 @@ body
 	height: auto;
 }
 
-.stage-bubbles
+.chapter-link
 {
-	width: 50vw !important;
-	grid-column-gap: calc(17.5vw - 12px) !important;
-}
-
-.stage-bubble-subtext
-{
-	width: 17.5vw !important;
-	margin-left: -6.25vw !important;
-}
-
-#email
-{
-	width: 300px;
+	position: relative;
+	width: 50vw;
 	margin: 0 auto;
+	text-align: justify;
+	font-size: 125%;
 }
 
-#email img
+.interlude-link
 {
-	position: absolute;
-	width: 300px;
-	filter: brightness(120%);
+	text-align: center;
 }
+
 
 
 
@@ -111,7 +106,7 @@ body
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	/* Make text have smaller margins so justifying doesn't look ugly. */
-	.synopsis-text
+	.synopsis-text, .chapter-link
 	{
 		width: 80vw;
 	}

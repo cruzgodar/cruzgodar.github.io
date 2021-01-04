@@ -13,16 +13,6 @@
 	scroll_button_done = false;
 	let eclipse_done = false;
 	
-	let stage_bubbles_done = false;
-	let stage_bubbles_pos = Infinity;
-	
-	let blinking_bubble_interval = null;
-	
-	setTimeout(function()
-	{
-		stage_bubbles_pos = document.querySelector(".stage-bubbles").offsetTop;
-	}, 1000);
-	
 	
 	
 	setTimeout(adjust_for_settings, 500);
@@ -75,8 +65,6 @@
 			update_scroll_button(scroll);
 			
 			update_eclipse(scroll);
-			
-			update_stage_bubbles(scroll);
 		}
 	}
 	
@@ -208,90 +196,10 @@
 	
 	
 	
-	function update_stage_bubbles(scroll)
-	{
-		let num_lit_bubbles = 5;
-		let blinking_bubble = 5;
-		
-		if (scroll > stage_bubbles_pos - 3*window_height/4 && stage_bubbles_done === false)
-		{
-			stage_bubbles_done = true;
-			let bubbles = document.querySelectorAll(".stage-bubble span");
-			let subtexts = document.querySelectorAll(".stage-bubble-subtext");
-			
-			setTimeout(function()
-			{
-				for (let i = 0; i <= num_lit_bubbles; i++)
-				{
-					bubbles[i].style.width = "100%";
-					bubbles[i].style.height = "100%";
-					subtexts[i].style.marginTop = "1vh";
-				}
-			}, 1200);
-			
-			setTimeout(function()
-			{
-				blinking_bubble_interval = setInterval(function()
-				{
-					if (url_vars["contrast"] === 1)
-					{
-						bubbles[blinking_bubble].style.backgroundColor = "rgb(192, 192, 192)";
-					}
-					
-					else
-					{
-						bubbles[blinking_bubble].style.backgroundColor = "rgb(152, 152, 152)";
-					}
-					
-					setTimeout(function()
-					{
-						bubbles[blinking_bubble].style.backgroundColor = "rgb(0, 0, 0)";
-					}, 1200);
-				}, 2400);
-			}, 600);
-		}
-		
-		
-		
-		else if (scroll < stage_bubbles_pos - 3*window_height/4 && stage_bubbles_done)
-		{
-			stage_bubbles_done = false;
-			clearInterval(blinking_bubble_interval);
-			
-			let bubbles = document.querySelectorAll(".stage-bubble span");
-			let subtexts = document.querySelectorAll(".stage-bubble-subtext");
-			
-			for (let i = 0; i <= num_lit_bubbles; i++)
-			{
-				bubbles[i].style.width = 0;
-				bubbles[i].style.height = 0;
-				
-				if (layout_string === "default")
-				{
-					subtexts[i].style.marginTop = "calc(5vw + 1vh)";
-				}
-				
-				else if (layout_string === "compact")
-				{
-					subtexts[i].style.marginTop = "calc(10vw + 1vh)";
-				}
-				
-				else
-				{
-					subtexts[i].style.marginTop = "calc(5vw + 1vh)";
-				}
-			}
-		}
-	}
-	
-	
-	
 	function caligo_resize()
 	{
 		document.querySelector("#eclipse").style.height = document.querySelector("#eclipse").offsetWidth + "px";
 		document.querySelector("#eclipse img").style.height = document.querySelector("#eclipse").offsetWidth + "px";
-		
-		stage_bubbles_pos = document.querySelector(".stage-bubbles").offsetTop;
 	}
 	
 	
