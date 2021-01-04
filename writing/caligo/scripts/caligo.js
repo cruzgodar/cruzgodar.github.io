@@ -205,7 +205,7 @@
 		
 		let max_width = 0;
 		
-		let elements = document.querySelectorAll(".chapter-link");
+		let elements = document.querySelectorAll(".chapter-link a");
 		
 		for (let i = 0; i < elements.length; i++)
 		{
@@ -216,6 +216,8 @@
 				max_width = width;
 			}
 		}
+		
+		elements = document.querySelectorAll(".chapter-link");
 		
 		for (let i = 0; i < elements.length; i++)
 		{
