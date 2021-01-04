@@ -319,6 +319,11 @@ function set_up_aos()
 			else
 			{
 				current_delay += 100;
+				
+				if (current_delay > 2000)
+				{
+					current_delay = 2000;
+				}
 			}
 			
 			

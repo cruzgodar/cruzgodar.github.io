@@ -1149,6 +1149,8 @@ function switch_font()
 			setTimeout(function()
 			{
 				document.body.style.opacity = 1;
+				
+				aos_resize();
 			}, 50);
 		}, 300);
 	}
@@ -1162,6 +1164,8 @@ function switch_font()
 			setTimeout(function()
 			{
 				document.querySelector("#font-button-row").style.opacity = 1;
+				
+				aos_resize();
 			}, 50);
 		}
 		

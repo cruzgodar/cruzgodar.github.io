@@ -200,6 +200,27 @@
 	{
 		document.querySelector("#eclipse").style.height = document.querySelector("#eclipse").offsetWidth + "px";
 		document.querySelector("#eclipse img").style.height = document.querySelector("#eclipse").offsetWidth + "px";
+		
+		
+		
+		let max_width = 0;
+		
+		let elements = document.querySelectorAll(".chapter-link");
+		
+		for (let i = 0; i < elements.length; i++)
+		{
+			let width = elements[i].offsetWidth;
+			
+			if (width > max_width)
+			{
+				max_width = width;
+			}
+		}
+		
+		for (let i = 0; i < elements.length; i++)
+		{
+			elements[i].style.width = max_width + "px";
+		}
 	}
 	
 	
