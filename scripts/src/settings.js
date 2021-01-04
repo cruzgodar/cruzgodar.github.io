@@ -1111,7 +1111,7 @@ function switch_font()
 		{
 			if (page_settings["writing_page"])
 			{
-				set_element_styles(".body-text", "font-family", "'Gentium Book Basic', serif");
+				set_element_styles(".body-text, .heading-text", "font-family", "'Gentium Book Basic', serif");
 			}
 			
 			try {document.querySelector("#font-button-text").textContent = settings_texts["font"][1];}
@@ -1130,7 +1130,7 @@ function switch_font()
 		{
 			if (page_settings["writing_page"])
 			{
-				set_element_styles(".body-text", "font-family", "'Rubik', sans-serif");
+				set_element_styles(".body-text, .heading-text", "font-family", "'Rubik', sans-serif");
 			}
 			
 			try {document.querySelector("#font-button-text").textContent = settings_texts["font"][0];}

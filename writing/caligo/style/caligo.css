@@ -53,6 +53,8 @@ body
 .heading-text
 {
 	color: rgb(255, 255, 255) !important;
+	
+	font-family: 'Gentium Book Basic', serif;
 }
 
 #eclipse
@@ -77,6 +79,8 @@ body
 	margin: 0 auto;
 	text-align: justify;
 	font-size: 125%;
+	
+	font-family: 'Gentium Book Basic', serif;
 }
 
 .interlude-link

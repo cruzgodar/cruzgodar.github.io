@@ -658,7 +658,7 @@ function set_img_button_contrast()
 
 function set_writing_page_font()
 {
-	set_element_styles(".body-text", "font-family", "'Gentium Book Basic', serif");
+	set_element_styles(".body-text, .heading-text", "font-family", "'Gentium Book Basic', serif");
 }
 
 
