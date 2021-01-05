@@ -115,37 +115,37 @@
 					<div style="height: 3vh"></div>
 					
 					<div data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%">Nick</p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Nick</p>
 					</div>
 					
 					<div style="height: 1vh"></div>
 					
 					<div data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%">Joel</p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Joel</p>
 					</div>
 					
 					<div style="height: 1vh"></div>
 					
 					<div data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%">Aly</p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Aly</p>
 					</div>
 					
 					<div style="height: 1vh"></div>
 					
 					<div data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%">Rene</p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Rene</p>
 					</div>
 					
 					<div style="height: 1vh"></div>
 					
 					<div data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%">Delilah</p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Delilah</p>
 					</div>
 					
 					<div style="height: 1vh"></div>
 					
 					<div data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%">and my Mom and Dad</p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">and my Mom and Dad</p>
 					</div>
 				`);
 				
@@ -214,25 +214,25 @@
 					<div style="height: 20vh"></div>
 					
 					<div class="new-aos-section" data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%"><em>And I walked up from the shoreline</em></p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw"><em>And I walked up from the shoreline</em></p>
 					</div>
 					
 					<div data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%"><em>To a city shining bright</em></p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw"><em>To a city shining bright</em></p>
 					</div>
 					
 					<div data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%"><em>And I walked the streets of that lovely place</em></p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw"><em>And I walked the streets of that lovely place</em></p>
 					</div>
 					
 					<div data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%"><em>&#x2019;Til the coming of the night</em></p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw"><em>&#x2019;Til the coming of the night</em></p>
 					</div>
 					
 					<br>
 					
 					<div data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%">Blitzen Trapper, <em>Across the River</em></p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Blitzen Trapper, <em>Across the River</em></p>
 					</div>
 				`);
 				
