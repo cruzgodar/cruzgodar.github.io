@@ -133,7 +133,7 @@
 					<div style="height: 1vh"></div>
 					
 					<div data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Rene</p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Renee</p>
 					</div>
 					
 					<div style="height: 1vh"></div>
