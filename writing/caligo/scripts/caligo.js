@@ -23,6 +23,8 @@
 	document.querySelector("#eclipse").style.height = document.querySelector("#eclipse").offsetWidth + "px";
 	document.querySelector("#eclipse img").style.height = document.querySelector("#eclipse").offsetWidth + "px";
 	
+	document.querySelector("#prologue-link").addEventListener("click", show_prereaders);
+	
 	window.addEventListener("resize", caligo_resize);
 	temporary_handlers["resize"].push(caligo_resize);
 	
@@ -53,6 +55,213 @@
 	}
 	
 	
+	
+	
+	function show_prereaders()
+	{
+		document.body.style.opacity = 0;
+		
+		setTimeout(function()
+		{
+			let element = document.createElement("div");
+			
+			element.classList.add("black-background");
+			
+			element.addEventListener("touchstart", function(e)
+			{
+				e.preventDefault();
+			});
+			
+			element.addEventListener("touchend", function(e)
+			{
+				e.preventDefault();
+			});
+			
+			
+			
+			document.body.appendChild(element);
+			
+			
+			
+			element.appendChild(document.createElement("div"));
+			
+			
+			
+			document.documentElement.style.overflowY = "hidden";
+			document.body.style.overflowY = "hidden";
+			
+			document.body.style.userSelect = "none";
+			document.body.style.WebkitUserSelect = "none";
+			
+			
+			
+			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + 2);
+			
+			
+			
+			document.body.style.opacity = 1;
+			
+			
+			
+			setTimeout(function()
+			{
+				element.firstChild.insertAdjacentHTML("afterend", `
+					<div style="height: 20vh"></div>
+					
+					<div class="new-aos-section" data-aos="fade-up">
+						<p class="synopsis-text" style="text-align: center">This book is dedicated to its prereaders.</p>
+					</div>
+					
+					<div style="height: 3vh"></div>
+					
+					<div data-aos="fade-up">
+						<p class="synopsis-text" style="text-align: center">Nick</p>
+					</div>
+					
+					<div style="height: 1vh"></div>
+					
+					<div data-aos="fade-up">
+						<p class="synopsis-text" style="text-align: center">Joel</p>
+					</div>
+					
+					<div style="height: 1vh"></div>
+					
+					<div data-aos="fade-up">
+						<p class="synopsis-text" style="text-align: center">Aly</p>
+					</div>
+					
+					<div style="height: 1vh"></div>
+					
+					<div data-aos="fade-up">
+						<p class="synopsis-text" style="text-align: center">Rene</p>
+					</div>
+					
+					<div style="height: 1vh"></div>
+					
+					<div data-aos="fade-up">
+						<p class="synopsis-text" style="text-align: center">Delilah</p>
+					</div>
+					
+					<div style="height: 1vh"></div>
+					
+					<div data-aos="fade-up">
+						<p class="synopsis-text" style="text-align: center">and my Mom and Dad</p>
+					</div>
+				`);
+				
+				setTimeout(function()
+				{
+					set_up_aos();
+					show_aos_section(12);
+					
+					setTimeout(show_lyrics, 5000);
+				}, 50);
+			}, 600);
+		}, 300);
+	}
+	
+	
+	
+	function show_lyrics()
+	{
+		document.body.style.opacity = 0;
+		
+		setTimeout(function()
+		{
+			let element = document.createElement("div");
+			
+			element.classList.add("black-background");
+			
+			element.addEventListener("touchstart", function(e)
+			{
+				e.preventDefault();
+			});
+			
+			element.addEventListener("touchend", function(e)
+			{
+				e.preventDefault();
+			});
+			
+			
+			
+			document.body.appendChild(element);
+			
+			
+			
+			element.appendChild(document.createElement("div"));
+			
+			
+			
+			document.documentElement.style.overflowY = "hidden";
+			document.body.style.overflowY = "hidden";
+			
+			document.body.style.userSelect = "none";
+			document.body.style.WebkitUserSelect = "none";
+			
+			
+			
+			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + 2);
+			
+			
+			
+			document.body.style.opacity = 1;
+			
+			
+			
+			setTimeout(function()
+			{
+				element.firstChild.insertAdjacentHTML("afterend", `
+					<div style="height: 20vh"></div>
+					
+					<div class="new-aos-section" data-aos="fade-up">
+						<p class="synopsis-text" style="text-align: center"><em>And I walked up from the shoreline</em></p>
+					</div>
+					
+					<div data-aos="fade-up">
+						<p class="synopsis-text" style="text-align: center"><em>To a city shining bright</em></p>
+					</div>
+					
+					<div data-aos="fade-up">
+						<p class="synopsis-text" style="text-align: center"><em>And I walked the streets of that lovely place</em></p>
+					</div>
+					
+					<div data-aos="fade-up">
+						<p class="synopsis-text" style="text-align: center"><em>&#x2019;Til the coming of the night</em></p>
+					</div>
+					
+					<br>
+					
+					<div data-aos="fade-up">
+						<p class="synopsis-text" style="text-align: center">Blitzen Trapper, <em>Across the River</em></p>
+					</div>
+				`);
+				
+				setTimeout(function()
+				{
+					set_up_aos();
+					show_aos_section(13);
+					
+					setTimeout(function()
+					{
+						document.body.style.opacity = 0;
+						
+						setTimeout(function()
+						{
+							document.documentElement.style.overflowY = "visible";
+							document.body.style.overflowY = "visible";
+							
+							document.body.style.userSelect = "auto";
+							document.body.style.WebkitUserSelect = "auto";
+							
+							
+							
+							redirect("/writing/caligo/chapters/p.html");
+						}, 1000);
+					}, 5000);
+				}, 50);
+			}, 600);
+		}, 300);
+	}
 	
 	
 	

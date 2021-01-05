@@ -91,7 +91,7 @@
 	
 	<section>
 		<div class="chapter-link interlude-link new-aos-section" data-aos="fade-up">
-			<a href="/writing/caligo/chapters/0.html" onclick="redirect('/writing/caligo/chapters/p.html')">Prologue</a>
+			<a id="prologue-link" href="/writing/caligo/chapters/0.html">Prologue</a>
 		</div>
 		
 		
@@ -501,6 +501,8 @@
 
 
 <script>
+	DEBUG = true;
+	
 	if (typeof current_url === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));

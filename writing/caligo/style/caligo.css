@@ -90,6 +90,17 @@ body
 
 
 
+.black-background
+{
+	width: 100vw;
+	height: 100vh;
+	
+	background-color: rgb(0, 0, 0);
+	
+	z-index: 100;
+}
+
+
 
 #floating-footer-content, #floating-footer-button-background
 {
