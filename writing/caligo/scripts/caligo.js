@@ -109,7 +109,7 @@
 					<div style="height: 20vh"></div>
 					
 					<div class="new-aos-section" data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%">This book is dedicated to its prereaders.</p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">This book is dedicated to its prereaders.</p>
 					</div>
 					
 					<div style="height: 3vh"></div>
