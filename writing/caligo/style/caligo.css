@@ -90,10 +90,10 @@ body
 
 
 
-.black-background
+.caligo-black-background
 {
 	width: 100vw;
-	height: 100vh;
+	height: 200vh;
 	
 	background-color: rgb(0, 0, 0);
 	

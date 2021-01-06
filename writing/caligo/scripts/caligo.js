@@ -65,7 +65,7 @@
 		{
 			let element = document.createElement("div");
 			
-			element.classList.add("black-background");
+			element.classList.add("caligo-black-background");
 			
 			element.addEventListener("touchstart", function(e)
 			{
@@ -95,7 +95,7 @@
 			
 			
 			
-			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + 2);
+			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + window_height / 2 + 2);
 			
 			
 			
@@ -106,10 +106,10 @@
 			setTimeout(function()
 			{
 				element.firstChild.insertAdjacentHTML("afterend", `
-					<div style="height: 20vh"></div>
+					<div style="height: 70vh"></div>
 					
 					<div class="new-aos-section" data-aos="fade-up">
-						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">This book is dedicated to its prereaders.</p>
+						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Caligo is dedicated to its prereaders.</p>
 					</div>
 					
 					<div style="height: 3vh"></div>
@@ -170,7 +170,7 @@
 		{
 			let element = document.createElement("div");
 			
-			element.classList.add("black-background");
+			element.classList.add("caligo-black-background");
 			
 			element.addEventListener("touchstart", function(e)
 			{
@@ -200,7 +200,7 @@
 			
 			
 			
-			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + 2);
+			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + window_height / 2 + 2);
 			
 			
 			
@@ -211,7 +211,7 @@
 			setTimeout(function()
 			{
 				element.firstChild.insertAdjacentHTML("afterend", `
-					<div style="height: 20vh"></div>
+					<div style="height: 70vh"></div>
 					
 					<div class="new-aos-section" data-aos="fade-up">
 						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw"><em>And I walked up from the shoreline</em></p>
