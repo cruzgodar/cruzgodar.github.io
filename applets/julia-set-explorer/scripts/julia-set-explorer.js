@@ -7,7 +7,7 @@
 	let a = 0;
 	let b = 0;
 	let image_size = 1000;
-	let num_iterations = 100;
+	let num_iterations = 200;
 	let brightness_scale = 10;
 	
 	let small_canvas_size = 0;
@@ -16,7 +16,7 @@
 	let small_image_size = 1000;
 
 	let small_num_iterations = 200;
-	let large_num_iterations = 200;
+	let large_num_iterations = 1000;
 
 	let persist_image = false;
 	
@@ -122,7 +122,7 @@
 			
 			
 			
-			for (int iteration = 0; iteration < 201; iteration++)
+			for (int iteration = 0; iteration < 1001; iteration++)
 			{
 				if (iteration == num_iterations)
 				{
@@ -313,8 +313,6 @@
 					document.querySelector("#julia-set").setAttribute("height", image_size);
 					gl.viewport(0, 0, image_size, image_size);
 					
-					num_iterations = large_num_iterations;
-					
 					document.querySelector("#output-canvas").setAttribute("width", image_size);
 					document.querySelector("#output-canvas").setAttribute("height", image_size);
 					
@@ -323,6 +321,18 @@
 					document.querySelector("#output-canvas").getContext("2d").drawImage(document.querySelector("#julia-set"), 0, 0);
 					
 					drawing_big_canvas = false;
+					
+					num_iterations = small_num_iterations;
+					
+					brightness_scale = 5;
+					
+					
+					
+					draw_another_frame = false;
+					
+					need_to_restart = true;
+					
+					return;
 				}
 			}
 		}
@@ -373,6 +383,8 @@
 	{
 		a = parseFloat(document.querySelector("#a-input").value || 0);
 		b = parseFloat(document.querySelector("#b-input").value || 1);
+		
+		num_iterations = large_num_iterations;
 		
 		
 		
