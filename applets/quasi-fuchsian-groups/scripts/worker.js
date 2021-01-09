@@ -69,6 +69,22 @@ function draw_quasi_fuchsian_group()
 			}
 		}
 		
+		
+		
+		//Run a pass to remove any isolated pixels.
+		for (let i = 1; i < canvas_height - 1; i++)
+		{
+			for (let j = 1; j < canvas_width - 1; j++)
+			{
+				if (brightness[i][j] !== 0 && brightness[i - 1][j] === 0 && brightness[i - 1][j + 1] === 0 && brightness[i][j + 1] === 0 && brightness[i + 1][j + 1] === 0 && brightness[i + 1][j] === 0 && brightness[i + 1][j - 1] === 0 && brightness[i][j - 1] === 0 && brightness[i - 1][j - 1] === 0)
+				{
+					brightness[i][j] = 0;
+				}
+			}
+		}
+		
+		
+		
 		postMessage([brightness]);
 		
 		

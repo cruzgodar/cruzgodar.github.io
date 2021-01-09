@@ -275,6 +275,23 @@
 		
 		
 		
+		//Run a pass to remove any isolated pixels.
+		if (canvas_size !== 300)
+		{
+			for (let i = 1; i < canvas_height - 1; i++)
+			{
+				for (let j = 1; j < canvas_width - 1; j++)
+				{
+					if (brightness[i][j] !== 0 && brightness[i - 1][j] === 0 && brightness[i - 1][j + 1] === 0 && brightness[i][j + 1] === 0 && brightness[i + 1][j + 1] === 0 && brightness[i + 1][j] === 0 && brightness[i + 1][j - 1] === 0 && brightness[i][j - 1] === 0 && brightness[i - 1][j - 1] === 0)
+					{
+						brightness[i][j] = 0;
+					}
+				}
+			}
+		}
+		
+		
+		
 		let img_data = ctx.getImageData(0, 0, canvas_width, canvas_height);
 		let data = img_data.data;
 		
@@ -412,7 +429,7 @@
 					continue;
 				}
 				
-				if (depth > 10)
+				if (depth > 10 || canvas_size !== 300)
 				{
 					brightness[row][col]++;
 				}
