@@ -41,7 +41,7 @@ function draw_chaos_game()
 			
 			for (let j = 0; j < grid_size; j++)
 			{
-				image[i].push(0);
+				image[i].push([0, 0, 0]);
 			}
 		}
 		
@@ -93,21 +93,39 @@ function draw_chaos_game()
 			current_row = Math.floor((current_row + vertices[attractor_vertex][0]) / 2);
 			current_col = Math.floor((current_col + vertices[attractor_vertex][1]) / 2);
 			
-			image[current_row][current_col]++;
 			
-			if (image[current_row][current_col] === 255)
+			
+			let new_hue = (Math.atan2(current_col - grid_size / 2, current_row - grid_size / 2) + Math.PI) / (2 * Math.PI);
+			
+			let new_saturation = ((current_row - grid_size / 2) * (current_row - grid_size / 2) + (current_col - grid_size / 2) * (current_col - grid_size / 2)) / (grid_size * grid_size / 13);
+			
+			let current_color = HSVtoRGB(new_hue, new_saturation, 1);
+			
+			current_color[0] /= 255;
+			current_color[1] /= 255;
+			current_color[2] /= 255;
+			
+			
+			
+			for (let i = 0; i < 3; i++)
 			{
-				num_pixels_at_max++;
+				image[current_row][current_col][i] += 8 * current_color[i];
 				
-				if (num_pixels_at_max / (grid_size * grid_size) > .004)
+				if (image[current_row][current_col][i] >= 255)
 				{
-					break;
+					num_pixels_at_max++;
+					
+					image[current_row][current_col][i] = 255;
+					
+					if (num_pixels_at_max / (grid_size * grid_size) > .004)
+					{
+						postMessage([image]);
+						
+						resolve();
+						
+						return;
+					}
 				}
-			}
-			
-			else if (image[current_row][current_col] > 255)
-			{
-				image[current_row][current_col] = 255;
 			}
 			
 			
@@ -123,4 +141,29 @@ function draw_chaos_game()
 		
 		resolve();
 	});
+}
+
+
+
+function HSVtoRGB(h, s, v)
+{
+	let r, g, b, i, f, p, q, t;
+	
+	i = Math.floor(h * 6);
+	f = h * 6 - i;
+	p = v * (1 - s);
+	q = v * (1 - f * s);
+	t = v * (1 - (1 - f) * s);
+	
+	switch (i % 6)
+	{
+		case 0: r = v, g = t, b = p; break;
+		case 1: r = q, g = v, b = p; break;
+		case 2: r = p, g = v, b = t; break;
+		case 3: r = p, g = q, b = v; break;
+		case 4: r = t, g = p, b = v; break;
+		case 5: r = v, g = p, b = q; break;
+	}
+    
+	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }

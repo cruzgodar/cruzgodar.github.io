@@ -99,9 +99,9 @@
 					//The index in the array of rgba values
 					let index = (4 * i * grid_size) + (4 * j);
 					
-					data[index] = image[i][j];
-					data[index + 1] = image[i][j];
-					data[index + 2] = 0;
+					data[index] = image[i][j][0];
+					data[index + 1] = image[i][j][1];
+					data[index + 2] = image[i][j][2];
 					data[index + 3] = 255; //No transparency.
 				}
 			}
