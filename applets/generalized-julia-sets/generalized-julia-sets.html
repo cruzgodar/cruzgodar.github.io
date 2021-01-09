@@ -49,25 +49,39 @@
 		<br>
 		
 		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span>\(z^2 + c:\) <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(cpow(z, 2.0))</span></span></p>
+			<p class="body-text center-if-needed"><span>Classical Mandelbrot: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(cpow(z, 2.0))</span></span></p>
 		</div>
 		
 		<br>
 		
 		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span>\(z^4 + c:\) <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(cpow(z, 4.0))</span></span></p>
+			<p class="body-text center-if-needed"><span>Varied exponent: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(cpow(z, 4.0))</span></span></p>
 		</div>
 		
 		<br>
 		
 		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span>\(\sin(z + c):\) <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csin(cadd(z, c))</span></span></p>
+			<p class="body-text center-if-needed"><span>Trig example: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csin(cmul(z, c))</span></span></p>
 		</div>
 		
 		<br>
 		
 		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span>\(\sin(cz):\) <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csin(cmul(z, c))</span></span></p>
+			<p class="body-text center-if-needed"><span>Rational map example:</span></p>
+		</div>
+		
+		<div data-aos="fade-up">
+			<p class="body-text center-if-needed"><span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(csub(cpow(z, 2.0), cmul(.05, cpow(z, -2.0))), c)</span></p>
+		</div>
+		
+		<br>
+		
+		<div data-aos="fade-up">
+			<p class="body-text center-if-needed"><span>Creating a complex number from scratch:</span></p>
+		</div>
+		
+		<div data-aos="fade-up">
+			<p class="body-text center-if-needed"><span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(csub(cpow(z, 2.0), vec2(0.0, cmul(.05, cpow(z, -2.0).y))), c)</span></p>
 		</div>
 	</section>
 	
