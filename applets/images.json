@@ -1,4 +1,36 @@
 {
+	"image-julia-set-explorer-best-of":
+	{
+		"webp": "julia-set-explorer/cover.webp",
+		"non-webp": "julia-set-explorer/cover.jpg"
+	},
+	
+	"image-wilsons-algorithm-best-of":
+	{
+		"webp": "wilsons-algorithm/cover.webp",
+		"non-webp": "wilsons-algorithm/cover.jpg"
+	},
+	
+	"image-the-mandelbulb-best-of":
+	{
+		"webp": "the-mandelbulb/cover.webp",
+		"non-webp": "the-mandelbulb/cover.jpg"
+	},
+	
+	"image-quasi-fuchsian-groups-best-of":
+	{
+		"webp": "quasi-fuchsian-groups/cover.webp",
+		"non-webp": "quasi-fuchsian-groups/cover.jpg"
+	},
+	
+	"image-nova-fractals-best-of":
+	{
+		"webp": "nova-fractals/cover.webp",
+		"non-webp": "nova-fractals/cover.jpg"
+	},
+	
+	
+	
 	"image-the-secant-method":
 	{
 		"webp": "the-secant-method/cover.webp",
