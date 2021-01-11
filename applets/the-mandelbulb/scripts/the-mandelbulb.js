@@ -306,7 +306,7 @@
 			
 			
 			//Apply fog.
-			float distance_from_camera = length(pos - camera_pos);
+			float distance_from_camera = distance(pos, camera_pos);
 			
 			float fog_amount = 1.0 - exp(-distance_from_camera * fog_scaling);
 			

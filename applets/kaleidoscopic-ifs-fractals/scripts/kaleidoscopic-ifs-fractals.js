@@ -396,7 +396,7 @@
 			
 			
 			//Apply fog.
-			return mix(color, fog_color, 1.0 - exp(-length(pos - camera_pos) * fog_scaling));
+			return mix(color, fog_color, 1.0 - exp(-distance(pos, camera_pos) * fog_scaling));
 		}
 		
 		
