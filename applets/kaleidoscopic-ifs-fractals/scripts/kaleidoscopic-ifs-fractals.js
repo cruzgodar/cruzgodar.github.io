@@ -42,6 +42,7 @@
 	let image_height = 500;
 	
 	let small_image_size = 500;
+	let large_image_size = 1000;
 	
 	let num_sierpinski_iterations = 16;
 	
@@ -104,7 +105,11 @@
 	document.querySelector("#output-canvas").setAttribute("width", image_width);
 	document.querySelector("#output-canvas").setAttribute("height", image_height);
 	
-	document.querySelector("#dim-input").addEventListener("input", change_resolution);
+	document.querySelector("#dim-input").addEventListener("input", function()
+	{
+		change_resolution(0);
+	});
+	
 	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
 	
 	document.querySelector("#tetrahedron-radio-button").addEventListener("input", function()
@@ -205,7 +210,7 @@
 	
 	
 	
-	setTimeout(setup_webgl, 500);
+	setTimeout(setup_webgl, 1000);
 	
 	
 	
@@ -833,6 +838,8 @@
 			{
 				currently_drawing = true;
 				
+				draw_start_time = Date.now();
+				
 				image_size = small_image_size;
 				
 				change_resolution(image_size);
@@ -900,7 +907,7 @@
 		
 		
 		
-		document.documentElement.addEventListener("mouseup", function(e)
+		document.querySelector("#output-canvas").addEventListener("mouseup", function(e)
 		{
 			currently_dragging = false;
 			
@@ -908,9 +915,7 @@
 			
 			if (!currently_drawing && (Date.now() - draw_start_time > 300))
 			{
-				small_image_size = image_size;
-				
-				image_size *= 2;
+				image_size = large_image_size;
 				
 				change_resolution(image_size);
 				
@@ -946,6 +951,8 @@
 			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
+				
+				draw_start_time = Date.now();
 				
 				image_size = small_image_size;
 				
@@ -1047,9 +1054,7 @@
 			
 			if (!currently_drawing && (Date.now() - draw_start_time > 300))
 			{
-				small_image_size = image_size;
-				
-				image_size *= 2;
+				image_size = large_image_size;
 				
 				change_resolution(image_size);
 				
@@ -1063,7 +1068,7 @@
 
 		document.documentElement.addEventListener("keydown", function(e)
 		{
-			if (document.activeElement.tagName === "INPUT")
+			if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
 			{
 				return;
 			}
@@ -1099,6 +1104,8 @@
 			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
+				
+				draw_start_time = Date.now();
 				
 				image_size = small_image_size;
 				
@@ -1143,9 +1150,7 @@
 			
 			if (!currently_drawing && (Date.now() - draw_start_time > 300))
 			{
-				small_image_size = image_size;
-				
-				image_size *= 2;
+				image_size = large_image_size;
 				
 				change_resolution(image_size);
 				
@@ -1236,6 +1241,9 @@
 			{
 				image_size = 2000;
 			}
+			
+			small_image_size = image_size;
+			large_image_size = image_size * 2;
 		}
 		
 		else
@@ -1289,6 +1297,17 @@
 		
 		
 		
+		if (image_size !== small_image_size)
+		{
+			image_size = small_image_size;
+			
+			gl.uniform1i(shader_program.antialiasing_uniform, 0);
+			
+			change_resolution(image_size);
+		}
+		
+		
+		
 		rotation_angle_x_1_old = rotation_angle_x_1;
 		rotation_angle_y_1_old = rotation_angle_y_1;
 		rotation_angle_z_1_old = rotation_angle_z_1;
@@ -1334,6 +1353,17 @@
 	
 	function update_parameters()
 	{
+		if (image_size !== small_image_size)
+		{
+			image_size = small_image_size;
+			
+			gl.uniform1i(shader_program.antialiasing_uniform, 0);
+			
+			change_resolution(image_size);
+		}
+		
+		
+		
 		scale_old = scale;
 		rotation_angle_x_1_old = rotation_angle_x_1;
 		rotation_angle_y_1_old = rotation_angle_y_1;
@@ -1421,6 +1451,17 @@
 	
 	function change_polyhedron(new_polyhedron_index)
 	{
+		if (image_size !== small_image_size)
+		{
+			image_size = small_image_size;
+			
+			gl.uniform1i(shader_program.antialiasing_uniform, 0);
+			
+			change_resolution(image_size);
+		}
+		
+		
+		
 		document.querySelector("#output-canvas").classList.add("animated-opacity");
 		
 		document.querySelector("#output-canvas").style.opacity = 0;
@@ -1470,6 +1511,8 @@
 		
 		gl.viewport(0, 0, image_size, image_size);
 		
+		gl.uniform1i(shader_program.antialiasing_uniform, 1);
+		
 		//This one needs to happen immediately, since otherwise we'll only download blank images.
 		draw_frame();
 		
@@ -1493,6 +1536,8 @@
 		document.querySelector("#output-canvas").setAttribute("height", image_size);
 		
 		gl.viewport(0, 0, image_size, image_size);
+		
+		gl.uniform1i(shader_program.antialiasing_uniform, 0);
 		
 		draw_frame();
 	}

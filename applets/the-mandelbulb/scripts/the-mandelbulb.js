@@ -42,6 +42,7 @@
 	let image_height = 500;
 	
 	let small_image_size = 500;
+	let large_image_size = 1000;
 	
 	let num_iterations = 32;
 	
@@ -86,7 +87,11 @@
 	document.querySelector("#output-canvas").setAttribute("width", image_width);
 	document.querySelector("#output-canvas").setAttribute("height", image_height);
 	
-	document.querySelector("#dim-input").addEventListener("input", change_resolution);
+	document.querySelector("#dim-input").addEventListener("input", function()
+	{
+		change_resolution(0);
+	});
+	
 	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
 	
 	
@@ -166,7 +171,7 @@
 	
 	
 	
-	setTimeout(setup_webgl, 500);
+	setTimeout(setup_webgl, 1000);
 	
 	
 	
@@ -734,14 +739,14 @@
 		{
 			currently_dragging = true;
 			
-			draw_start_time = Date.now();
-			
 			mouse_x = e.clientX;
 			mouse_y = e.clientY;
 			
 			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
+				
+				draw_start_time = Date.now();
 				
 				image_size = small_image_size;
 				
@@ -810,7 +815,7 @@
 		
 		
 		
-		document.documentElement.addEventListener("mouseup", function(e)
+		document.querySelector("#output-canvas").addEventListener("mouseup", function(e)
 		{
 			currently_dragging = false;
 			
@@ -818,9 +823,7 @@
 			
 			if (!currently_drawing && (Date.now() - draw_start_time > 300))
 			{
-				small_image_size = image_size;
-				
-				image_size *= 2;
+				image_size = large_image_size;
 				
 				change_resolution(image_size);
 				
@@ -835,8 +838,6 @@
 		document.querySelector("#output-canvas").addEventListener("touchstart", function(e)
 		{
 			currently_dragging = true;
-			
-			draw_start_time = Date.now();
 			
 			mouse_x = e.touches[0].clientX;
 			mouse_y = e.touches[0].clientY;
@@ -858,6 +859,8 @@
 			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
+				
+				draw_start_time = Date.now();
 				
 				image_size = small_image_size;
 				
@@ -959,9 +962,7 @@
 			
 			if (!currently_drawing && (Date.now() - draw_start_time > 300))
 			{
-				small_image_size = image_size;
-				
-				image_size *= 2;
+				image_size = large_image_size;
 				
 				change_resolution(image_size);
 				
@@ -975,14 +976,10 @@
 
 		document.documentElement.addEventListener("keydown", function(e)
 		{
-			if (document.activeElement.tagName === "INPUT")
+			if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
 			{
 				return;
 			}
-			
-			
-			
-			draw_start_time = Date.now();
 			
 			
 			
@@ -1015,6 +1012,8 @@
 			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
+				
+				draw_start_time = Date.now();
 				
 				image_size = small_image_size;
 				
@@ -1059,9 +1058,7 @@
 			
 			if (!currently_drawing && (Date.now() - draw_start_time > 300))
 			{
-				small_image_size = image_size;
-				
-				image_size *= 2;
+				image_size = large_image_size;
 				
 				change_resolution(image_size);
 				
@@ -1152,6 +1149,9 @@
 			{
 				image_size = 2000;
 			}
+			
+			small_image_size = image_size;
+			large_image_size = image_size * 2;
 		}
 		
 		else
@@ -1198,6 +1198,17 @@
 	
 	function update_parameters()
 	{
+		if (image_size !== small_image_size)
+		{
+			image_size = small_image_size;
+			
+			gl.uniform1i(shader_program.antialiasing_uniform, 0);
+			
+			change_resolution(image_size);
+		}
+		
+		
+		
 		power_old = power;
 		power_delta = (parseFloat(document.querySelector("#power-input").value || 8) || 8) - power_old;
 		
@@ -1228,6 +1239,17 @@
 	
 	function switch_bulb()
 	{
+		if (image_size !== small_image_size)
+		{
+			image_size = small_image_size;
+			
+			gl.uniform1i(shader_program.antialiasing_uniform, 0);
+			
+			change_resolution(image_size);
+		}
+		
+		
+		
 		if (currently_animating_parameters)
 		{
 			return;
@@ -1287,6 +1309,17 @@
 		if (currently_animating_parameters)
 		{
 			return;
+		}
+		
+		
+		
+		if (image_size !== small_image_size)
+		{
+			image_size = small_image_size;
+			
+			gl.uniform1i(shader_program.antialiasing_uniform, 0);
+			
+			change_resolution(image_size);
 		}
 		
 		
