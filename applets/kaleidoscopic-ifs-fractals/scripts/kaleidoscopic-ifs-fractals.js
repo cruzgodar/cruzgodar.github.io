@@ -42,7 +42,7 @@
 	let image_height = 500;
 	
 	let small_image_size = 500;
-	let large_image_size = 1000;
+	let large_image_size = 1500;
 	
 	let num_sierpinski_iterations = 16;
 	
@@ -210,7 +210,7 @@
 	
 	
 	
-	setTimeout(setup_webgl, 1000);
+	setTimeout(setup_webgl, 500);
 	
 	
 	
@@ -248,8 +248,6 @@
 		const float light_brightness = 2.0;
 		
 		uniform int image_size;
-		
-		uniform int antialiasing;
 		
 		
 		
@@ -457,19 +455,12 @@
 		
 		void main(void)
 		{
-			if (antialiasing == 1)
-			{
-				vec3 final_color = (raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size)))) / 4.0;
+			//Uncomment to use 2x antialiasing.
+			//vec3 final_color = (raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size)))) / 4.0;
 				
-				gl_FragColor = vec4(final_color.xyz, 1.0);
-			}
+			vec3 final_color = raymarch(image_plane_center_pos + right_vec * uv.x * aspect_ratio + up_vec * uv.y);
 			
-			else
-			{
-				vec3 final_color = raymarch(image_plane_center_pos + right_vec * uv.x * aspect_ratio + up_vec * uv.y);
-				
-				gl_FragColor = vec4(final_color.xyz, 1.0);
-			}
+			gl_FragColor = vec4(final_color.xyz, 1.0);
 		}
 	`;
 	
@@ -519,6 +510,10 @@
 		
 		
 		
+		calculate_vectors();
+		
+		
+		
 		shader_program.aspect_ratio_uniform = gl.getUniformLocation(shader_program, "aspect_ratio");
 		
 		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
@@ -548,8 +543,6 @@
 		
 		shader_program.rotation_matrix_1_uniform = gl.getUniformLocation(shader_program, "rotation_matrix_1");
 		shader_program.rotation_matrix_2_uniform = gl.getUniformLocation(shader_program, "rotation_matrix_2");
-		
-		shader_program.antialiasing_uniform = gl.getUniformLocation(shader_program, "antialiasing");
 		
 		
 		
@@ -582,12 +575,6 @@
 		
 		gl.uniformMatrix3fv(shader_program.rotation_matrix_1_uniform, false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
 		gl.uniformMatrix3fv(shader_program.rotation_matrix_2_uniform, false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
-		
-		gl.uniform1i(shader_program.antialiasing_uniform, 0);
-		
-		
-		
-		calculate_vectors();
 		
 		
 		
@@ -844,8 +831,6 @@
 				
 				change_resolution(image_size);
 				
-				gl.uniform1i(shader_program.antialiasing_uniform, 0);
-				
 				window.requestAnimationFrame(draw_frame);
 			}
 		});
@@ -919,8 +904,6 @@
 				
 				change_resolution(image_size);
 				
-				gl.uniform1i(shader_program.antialiasing_uniform, 1);
-				
 				window.requestAnimationFrame(draw_frame);
 			}
 		});
@@ -957,8 +940,6 @@
 				image_size = small_image_size;
 				
 				change_resolution(image_size);
-				
-				gl.uniform1i(shader_program.antialiasing_uniform, 0);
 				
 				window.requestAnimationFrame(draw_frame);
 			}
@@ -1058,8 +1039,6 @@
 				
 				change_resolution(image_size);
 				
-				gl.uniform1i(shader_program.antialiasing_uniform, 1);
-				
 				window.requestAnimationFrame(draw_frame);
 			}
 		});
@@ -1111,8 +1090,6 @@
 				
 				change_resolution(image_size);
 				
-				gl.uniform1i(shader_program.antialiasing_uniform, 0);
-				
 				window.requestAnimationFrame(draw_frame);
 			}
 		});
@@ -1153,8 +1130,6 @@
 				image_size = large_image_size;
 				
 				change_resolution(image_size);
-				
-				gl.uniform1i(shader_program.antialiasing_uniform, 1);
 				
 				window.requestAnimationFrame(draw_frame);
 			}
@@ -1243,7 +1218,7 @@
 			}
 			
 			small_image_size = image_size;
-			large_image_size = image_size * 2;
+			large_image_size = image_size * 3;
 		}
 		
 		else
@@ -1301,8 +1276,6 @@
 		{
 			image_size = small_image_size;
 			
-			gl.uniform1i(shader_program.antialiasing_uniform, 0);
-			
 			change_resolution(image_size);
 		}
 		
@@ -1356,8 +1329,6 @@
 		if (image_size !== small_image_size)
 		{
 			image_size = small_image_size;
-			
-			gl.uniform1i(shader_program.antialiasing_uniform, 0);
 			
 			change_resolution(image_size);
 		}
@@ -1455,8 +1426,6 @@
 		{
 			image_size = small_image_size;
 			
-			gl.uniform1i(shader_program.antialiasing_uniform, 0);
-			
 			change_resolution(image_size);
 		}
 		
@@ -1511,8 +1480,6 @@
 		
 		gl.viewport(0, 0, image_size, image_size);
 		
-		gl.uniform1i(shader_program.antialiasing_uniform, 1);
-		
 		//This one needs to happen immediately, since otherwise we'll only download blank images.
 		draw_frame();
 		
@@ -1536,8 +1503,6 @@
 		document.querySelector("#output-canvas").setAttribute("height", image_size);
 		
 		gl.viewport(0, 0, image_size, image_size);
-		
-		gl.uniform1i(shader_program.antialiasing_uniform, 0);
 		
 		draw_frame();
 	}
