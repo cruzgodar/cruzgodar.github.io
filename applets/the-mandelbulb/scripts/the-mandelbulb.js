@@ -13,6 +13,8 @@
 	
 	let currently_dragging = false;
 	
+	let draw_start_time = 0;
+	
 	let mouse_x = 0;
 	let mouse_y = 0;
 	
@@ -38,6 +40,8 @@
 	let image_size = 500;
 	let image_width = 500;
 	let image_height = 500;
+	
+	let small_image_size = 500;
 	
 	let num_iterations = 32;
 	
@@ -200,6 +204,8 @@
 		const float light_brightness = 2.0;
 		
 		uniform int image_size;
+		
+		uniform int antialiasing;
 		
 		
 		
@@ -381,12 +387,19 @@
 		
 		void main(void)
 		{
-			vec3 final_color = raymarch(image_plane_center_pos + right_vec * uv.x * aspect_ratio + up_vec * uv.y);
+			if (antialiasing == 1)
+			{
+				vec3 final_color = (raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size)))) / 4.0;
+				
+				gl_FragColor = vec4(final_color.xyz, 1.0);
+			}
 			
-			//Uncomment to use 2x antialiasing.
-			//vec3 final_color = (raymarch(image_plane_center_pos + right_vec * (uv.x + .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x + .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x - .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x - .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size)))) / 4.0;
-			
-			gl_FragColor = vec4(final_color.xyz, 1.0);
+			else
+			{
+				vec3 final_color = raymarch(image_plane_center_pos + right_vec * uv.x * aspect_ratio + up_vec * uv.y);
+				
+				gl_FragColor = vec4(final_color.xyz, 1.0);
+			}
 		}
 	`;
 	
@@ -457,6 +470,8 @@
 		
 		shader_program.julia_proportion_uniform = gl.getUniformLocation(shader_program, "julia_proportion");
 		
+		shader_program.antialiasing_uniform = gl.getUniformLocation(shader_program, "antialiasing");
+		
 		
 		
 		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
@@ -479,6 +494,8 @@
 		gl.uniform3fv(shader_program.c_uniform, c);
 		
 		gl.uniform1f(shader_program.julia_proportion_uniform, julia_proportion);
+		
+		gl.uniform1i(shader_program.antialiasing_uniform, 0);
 		
 		
 		
@@ -717,12 +734,21 @@
 		{
 			currently_dragging = true;
 			
+			draw_start_time = Date.now();
+			
 			mouse_x = e.clientX;
 			mouse_y = e.clientY;
 			
 			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
+				
+				image_size = small_image_size;
+				
+				change_resolution(image_size);
+				
+				gl.uniform1i(shader_program.antialiasing_uniform, 0);
+				
 				window.requestAnimationFrame(draw_frame);
 			}
 		});
@@ -789,6 +815,19 @@
 			currently_dragging = false;
 			
 			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch;
+			
+			if (!currently_drawing && (Date.now() - draw_start_time > 300))
+			{
+				small_image_size = image_size;
+				
+				image_size *= 2;
+				
+				change_resolution(image_size);
+				
+				gl.uniform1i(shader_program.antialiasing_uniform, 1);
+				
+				window.requestAnimationFrame(draw_frame);
+			}
 		});
 		
 		
@@ -796,6 +835,8 @@
 		document.querySelector("#output-canvas").addEventListener("touchstart", function(e)
 		{
 			currently_dragging = true;
+			
+			draw_start_time = Date.now();
 			
 			mouse_x = e.touches[0].clientX;
 			mouse_y = e.touches[0].clientY;
@@ -817,6 +858,13 @@
 			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
+				
+				image_size = small_image_size;
+				
+				change_resolution(image_size);
+				
+				gl.uniform1i(shader_program.antialiasing_uniform, 0);
+				
 				window.requestAnimationFrame(draw_frame);
 			}
 		});
@@ -908,6 +956,19 @@
 			
 			
 			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch;
+			
+			if (!currently_drawing && (Date.now() - draw_start_time > 300))
+			{
+				small_image_size = image_size;
+				
+				image_size *= 2;
+				
+				change_resolution(image_size);
+				
+				gl.uniform1i(shader_program.antialiasing_uniform, 1);
+				
+				window.requestAnimationFrame(draw_frame);
+			}
 		});
 
 
@@ -918,6 +979,10 @@
 			{
 				return;
 			}
+			
+			
+			
+			draw_start_time = Date.now();
 			
 			
 			
@@ -950,6 +1015,13 @@
 			if (!currently_drawing && !currently_animating_parameters)
 			{
 				currently_drawing = true;
+				
+				image_size = small_image_size;
+				
+				change_resolution(image_size);
+				
+				gl.uniform1i(shader_program.antialiasing_uniform, 0);
+				
 				window.requestAnimationFrame(draw_frame);
 			}
 		});
@@ -984,6 +1056,19 @@
 			
 			
 			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch;
+			
+			if (!currently_drawing && (Date.now() - draw_start_time > 300))
+			{
+				small_image_size = image_size;
+				
+				image_size *= 2;
+				
+				change_resolution(image_size);
+				
+				gl.uniform1i(shader_program.antialiasing_uniform, 1);
+				
+				window.requestAnimationFrame(draw_frame);
+			}
 		});
 	}
 	
@@ -1052,18 +1137,26 @@
 	
 	
 	
-	function change_resolution()
+	function change_resolution(new_image_size = 0)
 	{
-		image_size = parseInt(document.querySelector("#dim-input").value || 500);
-		
-		if (image_size < 200)
+		if (new_image_size === 0)
 		{
-			image_size = 200;
+			image_size = parseInt(document.querySelector("#dim-input").value || 500);
+			
+			if (image_size < 200)
+			{
+				image_size = 200;
+			}
+			
+			if (image_size > 2000)
+			{
+				image_size = 2000;
+			}
 		}
 		
-		if (image_size > 2000)
+		else
 		{
-			image_size = 2000;
+			image_size = new_image_size;
 		}
 		
 		
@@ -1284,6 +1377,8 @@
 		
 		gl.viewport(0, 0, image_size, image_size);
 		
+		gl.uniform1i(shader_program.antialiasing_uniform, 1);
+		
 		draw_frame();
 		
 		
@@ -1314,6 +1409,8 @@
 		document.querySelector("#output-canvas").setAttribute("height", image_size);
 		
 		gl.viewport(0, 0, image_size, image_size);
+		
+		gl.uniform1i(shader_program.antialiasing_uniform, 0);
 		
 		draw_frame();
 	}
