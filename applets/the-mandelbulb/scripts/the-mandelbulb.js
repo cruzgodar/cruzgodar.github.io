@@ -1255,7 +1255,7 @@
 		
 		let mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
 		
-		gl.uniformMatrix3fv(shader_program.rotation_matrix_uniform, false, [...(mat_total[0]), ...(mat_total[1]), ...(mat_total[2])]);
+		gl.uniformMatrix3fv(shader_program.rotation_matrix_uniform, false, [mat_total[0][0], mat_total[1][0], mat_total[2][0], mat_total[0][1], mat_total[1][1], mat_total[2][1], mat_total[0][2], mat_total[1][2], mat_total[2][2]]);
 		
 		gl.uniform1f(shader_program.power_uniform, power);
 		
