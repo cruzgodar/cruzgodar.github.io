@@ -134,6 +134,12 @@
     
     
     
+    "image-quiz-1":
+    {
+        "webp": "quizzes/1/cover.webp",
+        "non-webp": "quizzes/1/cover.jpg"
+    },
+    
 	"image-week-1-notes":
     {
         "webp": "notes/1/cover.webp",
