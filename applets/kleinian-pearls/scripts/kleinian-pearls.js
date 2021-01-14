@@ -29,22 +29,23 @@
 	let moving_speed = 0;
 	
 	let distance_to_scene = 1;
+	let last_distance_to_scene = 1;
 	
 	
 	
-	let theta = 5.9073;
-	let phi = 2.5403;
+	let theta = Math.PI / 2;
+	let phi = Math.PI / 2;
 	
 	
 	
-	let image_size = 500;
-	let image_width = 500;
-	let image_height = 500;
+	let image_size = 300;
+	let image_width = 300;
+	let image_height = 300;
 	
-	let small_image_size = 500;
-	let large_image_size = 1500;
+	let small_image_size = 300;
+	let large_image_size = 900;
 	
-	let num_iterations = 32;
+	let num_iterations = 48;
 	
 	let image_plane_center_pos = [];
 	
@@ -54,29 +55,25 @@
 	
 	
 	
-	let camera_pos = [2.9683, 1.4486, 1.7404];
+	let camera_pos = [3.98, .25, .95];
+
+
+	let klein_r = 1.902;
+	let klein_i = .042;
 	
-	let power = 8;
-	let c = [0, 0, 0];
+	let box_size = 1.0;
 	
-	let rotation_angle_x = 0;
-	let rotation_angle_y = 0;
-	let rotation_angle_z = 0;
+	let rotate_factor = 6.0;
 	
-	let julia_proportion = 0;
+	let klein_r_old = 1.902;
+	let klein_r_delta = 1.902;
+	let klein_i_old = .042;
+	let klein_i_delta = .042;
 	
-	let power_old = 8;
-	let power_delta = 0;
+	let box_size_old = 1.0;
+	let box_size_delta = 1.0;
 	
-	let julia_proportion_old = 0;
-	let julia_proportion_delta = 0;
 	
-	let rotation_angle_x_old = 0;
-	let rotation_angle_y_old = 0;
-	let rotation_angle_z_old = 0;
-	let rotation_angle_x_delta = 0;
-	let rotation_angle_y_delta = 0;
-	let rotation_angle_z_delta = 0;
 	
 	let focal_length = 2;
 	
@@ -98,7 +95,7 @@
 	
 	
 	
-	let elements = document.querySelectorAll("#power-input, #rotation-angle-x-input, #rotation-angle-y-input, #rotation-angle-z-input");
+	let elements = document.querySelectorAll("#klein-r-input, #klein-i-input, #box-size-input");
 	
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -106,7 +103,6 @@
 	}
 	
 	document.querySelector("#randomize-parameters-button").addEventListener("click", randomize_parameters);
-	document.querySelector("#switch-bulb-button").addEventListener("click", switch_bulb);
 	
 	
 	
@@ -218,42 +214,26 @@
 		const int max_marches = 128; //Change to 512 to eliminate flickering in animations
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .1;
-		const int num_iterations = 32;
-		
-		uniform float power;
-		uniform vec3 c;
-		uniform float julia_proportion;
-		
-		vec3 color;
+		const int num_iterations = 48;
 		
 		
 		
-		uniform mat3 rotation_matrix;
+		uniform float klein_r;
+		uniform float klein_i;
 		
-		
-		
-		const float klein_r = 1.902;
-		const float klein_i = 0.042;
-		
-		const float box_size = 1.0;
-		
-		const int do_inversion = 0;
-		const int four_gen = 0;
+		uniform float box_size;
 		
 		const vec3 inversion_center = vec3(0.0, 0.0, 0.0);
 		const vec3 re_center = vec3(0.0, 0.0, 0.0);
 		const float inversion_radius = 1.0;
 		
-		const float rotate_factor = 5.0;
+		uniform float rotate_factor;
 		
 		
 		
-		vec3 wrap(vec3 x, vec3 a, vec3 s)
-		{
-			x -= s;
-			
-			return (x - a * floor(x / a)) + s;
-		}
+		vec3 color;
+		
+		
 		
 		vec2 wrap(vec2 x, vec2 a, vec2 s)
 		{
@@ -295,20 +275,12 @@
 			{
 				z.x = z.x + b / a * z.y;
 				
-				if (four_gen == 1)
-				{
-					z = wrap(z, vec3(2.0 * box_size, a, 2.0 * box_size), vec3(-box_size, 0.0, -box_size));
-				}
-				
-				else
-				{
-					z.xz = wrap(z.xz, vec2(2.0 * box_size, 2.0 * box_size), vec2(-box_size, -box_size));
-				}
+				z.xz = wrap(z.xz, vec2(2.0 * box_size, 2.0 * box_size), vec2(-box_size, -box_size));
 				
 				z.x = z.x - b / a * z.y;
 
 				//If above the separation line, rotate by 180 deg about (-b/2, a/2)
-				if  (z.y >= a * (0.5 + f * 0.25 * sign(z.x + b * 0.5) * (1.0 - exp(-rotate_factor * abs(z.x + b * 0.5)))))
+				if (z.y >= a * (0.5 + f * 0.25 * sign(z.x + b * 0.5) * (1.0 - exp(-rotate_factor * abs(z.x + b * 0.5)))))
 				{
 					z = vec3(-b, a, 0.0) - z;
 					//z.xy = vec2(-b, a) - z.xy;
@@ -336,7 +308,7 @@
 			
 			
 			
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 5; i++)
 			{
 				float y = min(z.y, a - z.y);
 				
@@ -367,26 +339,7 @@
 		{
 			vec3 p = pos.xzy;
 			
-			if (do_inversion == 1)
-			{
-				p = p - inversion_center - re_center;
-				
-				float r = length(p);
-				
-				float r2 = r * r;
-				
-				p = (inversion_radius * inversion_radius / r2) * p + inversion_center;
-				
-				float de = jos_kleinian(p);
-				
-				de = r2 * de / (inversion_radius * inversion_radius + r * de);
-				return de;
-			}
-			
-			else
-			{
-				return jos_kleinian(p);
-			}
+			return jos_kleinian(p);
 		}
 		
 		
@@ -455,9 +408,9 @@
 				last_distance = distance;
 				
 				//This lowers the detail far away, which makes everything run nice and fast.
-				if (distance / float(image_size) * 5.0 > epsilon)
+				if (distance / float(image_size) * 1.5 > epsilon)
 				{
-					epsilon = distance / float(image_size) * 5.0;
+					epsilon = distance / float(image_size) * 1.5;
 				}
 				
 				
@@ -578,12 +531,12 @@
 		
 		shader_program.light_pos_uniform = gl.getUniformLocation(shader_program, "light_pos");
 		
-		shader_program.power_uniform = gl.getUniformLocation(shader_program, "power");
-		shader_program.c_uniform = gl.getUniformLocation(shader_program, "c");
+		shader_program.klein_r_uniform = gl.getUniformLocation(shader_program, "klein_r");
+		shader_program.klein_i_uniform = gl.getUniformLocation(shader_program, "klein_i");
 		
-		shader_program.rotation_matrix_uniform = gl.getUniformLocation(shader_program, "rotation_matrix");
+		shader_program.box_size_uniform = gl.getUniformLocation(shader_program, "box_size");
 		
-		shader_program.julia_proportion_uniform = gl.getUniformLocation(shader_program, "julia_proportion");
+		shader_program.rotate_factor_uniform = gl.getUniformLocation(shader_program, "rotate_factor");
 		
 		
 		
@@ -603,10 +556,12 @@
 		
 		gl.uniform3fv(shader_program.light_pos_uniform, light_pos);
 		
-		gl.uniform1f(shader_program.power_uniform, power);
-		gl.uniform3fv(shader_program.c_uniform, c);
+		gl.uniform1f(shader_program.klein_r_uniform, klein_r);
+		gl.uniform1f(shader_program.klein_i_uniform, klein_i);
 		
-		gl.uniform1f(shader_program.julia_proportion_uniform, julia_proportion);
+		gl.uniform1f(shader_program.box_size_uniform, box_size);
+		
+		gl.uniform1f(shader_program.rotate_factor_uniform, rotate_factor);
 		
 		
 		
@@ -705,7 +660,7 @@
 		up_vec = cross_product(right_vec, forward_vec);
 		
 		
-		
+		last_distance_to_scene = distance_to_scene;
 		distance_to_scene = distance_estimator(camera_pos[0], camera_pos[1], camera_pos[2]);
 		
 		
@@ -781,41 +736,106 @@
 	
 	function distance_estimator(x, y, z)
 	{
-		let mutable_z = [x, y, z];
+		let mutable_z = [x, z, y];
 		
-		let k = 0;
+		let lz = [mutable_z[0] + 1, mutable_z[1] + 1, mutable_z[2] + 1];
+		let llz = [mutable_z[0] - 1, mutable_z[1] - 1, mutable_z[2] - 1];
 		
-		let r2 = 0;
+		let DE = 1000;
+		let DF = 1;
 		
-		let scale = 1;
+		let a = klein_r;
+		let b = klein_i;
 		
-		let orb = 1000;
+		let f = Math.sign(b);
 		
 		
 		
-		
-		for (let i = 0; i < 12; i++)
+		for (let i = 0; i < num_iterations; i++) 
 		{
-			mutable_z[0] = 2 * (mutable_z[0]/2 + .5 - Math.floor(mutable_z[0]/2 + .5)) - 1;
-			mutable_z[1] = 2 * (mutable_z[1]/2 + .5 - Math.floor(mutable_z[1]/2 + .5)) - 1;
-			mutable_z[2] = 2 * (mutable_z[2]/2 + .5 - Math.floor(mutable_z[2]/2 + .5)) - 1;
+			mutable_z[0] = mutable_z[0] + b / a * mutable_z[1];
 			
-			r2 = mutable_z[0]*mutable_z[0] + mutable_z[1]*mutable_z[1] + mutable_z[2]*mutable_z[2];
 			
-			k = Math.max(1.052 / r2, 1.0);
 			
-			mutable_z[0] *= k;
-			mutable_z[1] *= k;
-			mutable_z[2] *= k;
+			//z.xz = wrap(z.xz, vec2(2.0 * box_size, 2.0 * box_size), vec2(-box_size, -box_size));
+			mutable_z[0] += box_size;
+			mutable_z[2] += box_size;
 			
-			scale *= k;
+			mutable_z[0] = mutable_z[0] - 2 * box_size * Math.floor(mutable_z[0] / (2 * box_size)) - box_size;
+			mutable_z[2] = mutable_z[2] - 2 * box_size * Math.floor(mutable_z[2] / (2 * box_size)) - box_size;
 			
-			orb = Math.min(orb, r2);
+			
+			
+			mutable_z[0] = mutable_z[0] - b / a * mutable_z[1];
+
+			//If above the separation line, rotate by 180 deg about (-b/2, a/2)
+			if (mutable_z[1] >= a * (0.5 + f * 0.25 * Math.sign(mutable_z[0] + b * 0.5) * (1.0 - Math.exp(-rotate_factor * Math.abs(mutable_z[0] + b * 0.5)))))
+			{
+				//z = vec3(-b, a, 0.0) - z;
+				mutable_z[0] = -b - mutable_z[0];
+				mutable_z[1] = a - mutable_z[1];
+				mutable_z[2] = -mutable_z[2];
+			}
+			
+			
+			
+			//trans_a(z, DF, a, b);
+			let iR = 1.0 / dot_product(mutable_z, mutable_z);
+			
+			mutable_z[0] *= -iR;
+			mutable_z[1] *= -iR;
+			mutable_z[2] *= -iR;
+			
+			mutable_z[0] = -b - mutable_z[0];
+			mutable_z[1] = a + mutable_z[1];
+			
+			DF *= iR;
+			
+			
+			
+			if ((mutable_z[0] - llz[0])*(mutable_z[0] - llz[0]) + (mutable_z[1] - llz[1])*(mutable_z[1] - llz[1]) + (mutable_z[2] - llz[2])*(mutable_z[2] - llz[2]) < .0000001)
+			{
+				break;
+			}
+			
+			llz[0] = lz[0];
+			llz[1] = lz[1];
+			llz[2] = lz[2];
+			
+			lz[0] = mutable_z[0];
+			lz[1] = mutable_z[1];
+			lz[2] = mutable_z[2];
 		}
 		
-		return .1;
 		
-		return 0.25 * Math.abs(mutable_z[2]) / scale;
+		
+		for (let i = 0; i < 5; i++)
+		{
+			let y_2 = Math.min(mutable_z[1], a - mutable_z[1]);
+			
+			DE = Math.min(DE, Math.min(y_2, 1.0) / Math.max(DF, 1.0));
+			
+			
+			
+			let iR = 1.0 / dot_product(mutable_z, mutable_z);
+			
+			mutable_z[0] *= -iR;
+			mutable_z[1] *= -iR;
+			mutable_z[2] *= -iR;
+			
+			mutable_z[0] = -b - mutable_z[0];
+			mutable_z[1] = a + mutable_z[1];
+			
+			DF *= iR;
+		}
+		
+		
+
+		let y_2 = Math.min(mutable_z[1], a - mutable_z[1]);
+		
+		DE = Math.min(DE, Math.min(y_2, 1.0) / Math.max(DF, 1.0));
+
+		return DE;
 	}
 	
 	
@@ -1150,11 +1170,17 @@
 	{
 		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
 		{
-			moving_speed = distance_to_scene / 20;
-			
-			if (moving_speed < .00001)
+			//This smoothes things out a bit.
+			if (distance_to_scene < 1.2 * last_distance_to_scene)
 			{
-				moving_speed = .00001;
+				moving_speed = distance_to_scene / 100;
+			}
+			
+			
+			
+			if (moving_speed < .000001)
+			{
+				moving_speed = .000001;
 			}
 			
 			if (moving_speed > .02)
@@ -1213,7 +1239,7 @@
 	{
 		if (new_image_size === 0)
 		{
-			image_size = parseInt(document.querySelector("#dim-input").value || 500);
+			image_size = parseInt(document.querySelector("#dim-input").value || 300);
 			
 			if (image_size < 200)
 			{
@@ -1282,93 +1308,16 @@
 		
 		
 		
-		power_old = power;
-		power_delta = (parseFloat(document.querySelector("#power-input").value || 8) || 8) - power_old;
+		klein_r_old = klein_r;
+		klein_r_delta = (parseFloat(document.querySelector("#klein-r-input").value || 2) || 2) - klein_r_old;
 		
-		if (power_old + power_delta < 1)
-		{
-			power_delta = 0;
-		}
+		klein_i_old = klein_i;
+		klein_i_delta = (parseFloat(document.querySelector("#klein-i-input").value || 0) || 0) - klein_i_old;
 		
-		
-		
-		rotation_angle_x_old = rotation_angle_x;
-		rotation_angle_y_old = rotation_angle_y;
-		rotation_angle_z_old = rotation_angle_z;
-		
-		rotation_angle_x_delta = parseFloat(document.querySelector("#rotation-angle-x-input").value || 0) || 0 - rotation_angle_x_old;
-		rotation_angle_y_delta = parseFloat(document.querySelector("#rotation-angle-y-input").value || 0) || 0 - rotation_angle_y_old;
-		rotation_angle_z_delta = parseFloat(document.querySelector("#rotation-angle-z-input").value || 0) || 0 - rotation_angle_z_old;
+		box_size_old = box_size;
+		box_size_delta = (parseFloat(document.querySelector("#box-size-input").value || 1) || 1) - box_size_old;
 		
 		
-		
-		julia_proportion_old = julia_proportion;
-		julia_proportion_delta = 0;
-		
-		animate_parameter_change();
-	}
-	
-	
-	
-	function switch_bulb()
-	{
-		if (image_size !== small_image_size)
-		{
-			image_size = small_image_size;
-			
-			change_resolution(image_size);
-		}
-		
-		
-		
-		if (currently_animating_parameters)
-		{
-			return;
-		}
-		
-		
-		
-		document.querySelector("#switch-bulb-button").style.opacity = 0;
-		
-		setTimeout(function()
-		{
-			if (julia_proportion_old === 0)
-			{
-				document.querySelector("#switch-bulb-button").textContent = "Switch to Mandelbulb";
-			}
-			
-			else
-			{
-				document.querySelector("#switch-bulb-button").textContent = "Switch to Juliabulb";
-			}
-			
-			document.querySelector("#switch-bulb-button").style.opacity = 1;
-		}, 300);
-		
-		
-		
-		if (julia_proportion === 0)
-		{
-			c = [...camera_pos];
-			
-			gl.uniform3fv(shader_program.c_uniform, c);
-		}
-		
-		
-		
-		julia_proportion_old = julia_proportion;
-		julia_proportion_delta = 1 - 2*julia_proportion_old;
-		
-		power_old = power;
-		power_delta = 0;
-		
-		rotation_angle_x_old = rotation_angle_x;
-		rotation_angle_y_old = rotation_angle_y;
-		rotation_angle_z_old = rotation_angle_z;
-		
-		rotation_angle_x_delta = 0;
-		rotation_angle_y_delta = 0;
-		rotation_angle_z_delta = 0;
 		
 		animate_parameter_change();
 	}
@@ -1393,25 +1342,20 @@
 		
 		
 		
-		rotation_angle_x_old = rotation_angle_x;
-		rotation_angle_y_old = rotation_angle_y;
-		rotation_angle_z_old = rotation_angle_z;
+		klein_r_old = klein_r;
+		klein_r_delta = Math.random()*.1 - .075 + 2 - klein_r_old;
 		
-		rotation_angle_x_delta = Math.random()*2 - 1 - rotation_angle_x_old;
-		rotation_angle_y_delta = Math.random()*2 - 1 - rotation_angle_y_old;
-		rotation_angle_z_delta = Math.random()*2 - 1 - rotation_angle_z_old;
+		klein_i_old = klein_i;
+		klein_i_delta = Math.random()*.1 - .05 - klein_i_old;
 		
-		document.querySelector("#rotation-angle-x-input").value = Math.round((rotation_angle_x_old + rotation_angle_x_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-y-input").value = Math.round((rotation_angle_y_old + rotation_angle_y_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-z-input").value = Math.round((rotation_angle_z_old + rotation_angle_z_delta) * 1000000) / 1000000;
+		box_size_old = box_size;
+		box_size_delta = Math.random()*.2 - .1 + 1 - box_size_old;
 		
 		
 		
-		julia_proportion_old = julia_proportion;
-		julia_proportion_delta = 0;
-		
-		power_old = power;
-		power_delta = 0;
+		document.querySelector("#klein-r-input").value = Math.round((klein_r_old + klein_r_delta) * 1000000) / 1000000;
+		document.querySelector("#klein-i-input").value = Math.round((klein_i_old + klein_i_delta) * 1000000) / 1000000;
+		document.querySelector("#box-size-input").value = Math.round((box_size_old + box_size_delta) * 1000000) / 1000000;
 		
 		
 		
@@ -1435,26 +1379,17 @@
 	{
 		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 120 - Math.PI / 2) + .5;
 		
-		power = power_old + power_delta * t;
-		julia_proportion = julia_proportion_old + julia_proportion_delta * t;
+		klein_r = klein_r_old + klein_r_delta * t;
+		klein_i = klein_i_old + klein_i_delta * t;
 		
-		rotation_angle_x = rotation_angle_x_old + rotation_angle_x_delta * t;
-		rotation_angle_y = rotation_angle_y_old + rotation_angle_y_delta * t;
-		rotation_angle_z = rotation_angle_z_old + rotation_angle_z_delta * t;
+		box_size = box_size_old + box_size_delta * t;
 		
 		
 		
-		let mat_z = [[Math.cos(rotation_angle_z), -Math.sin(rotation_angle_z), 0], [Math.sin(rotation_angle_z), Math.cos(rotation_angle_z), 0], [0, 0, 1]];
-		let mat_y = [[Math.cos(rotation_angle_y), 0, -Math.sin(rotation_angle_y)], [0, 1, 0],[Math.sin(rotation_angle_y), 0, Math.cos(rotation_angle_y)]];
-		let mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x), -Math.sin(rotation_angle_x)], [0, Math.sin(rotation_angle_x), Math.cos(rotation_angle_x)]];
+		gl.uniform1f(shader_program.klein_r_uniform, klein_r);
+		gl.uniform1f(shader_program.klein_i_uniform, klein_i);
 		
-		let mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
-		
-		gl.uniformMatrix3fv(shader_program.rotation_matrix_uniform, false, [mat_total[0][0], mat_total[1][0], mat_total[2][0], mat_total[0][1], mat_total[1][1], mat_total[2][1], mat_total[0][2], mat_total[1][2], mat_total[2][2]]);
-		
-		gl.uniform1f(shader_program.power_uniform, power);
-		
-		gl.uniform1f(shader_program.julia_proportion_uniform, julia_proportion);
+		gl.uniform1f(shader_program.box_size_uniform, box_size);
 		
 		
 		
@@ -1485,15 +1420,7 @@
 		
 		let link = document.createElement("a");
 		
-		if (julia_proportion === 0)
-		{
-			link.download = "the-mandelbulb.png";
-		}
-		
-		else
-		{
-			link.download = "a-juliabulb.png";
-		}
+		link.download = "kleinian-pearls.png";
 		
 		link.href = document.querySelector("#output-canvas").toDataURL();
 		

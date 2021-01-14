@@ -31,6 +31,12 @@
 	
 	
 	
+	"image-kleinian-pearls":
+	{
+		"webp": "kleinian-pearls/cover.webp",
+		"non-webp": "kleinian-pearls/cover.jpg"
+	},
+	
 	"image-the-secant-method":
 	{
 		"webp": "the-secant-method/cover.webp",
