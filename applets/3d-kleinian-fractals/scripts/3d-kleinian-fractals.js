@@ -32,8 +32,8 @@
 	
 	
 	
-	let theta = 1.6979;
-	let phi = 2.0878;
+	let theta = 5.9073;
+	let phi = 2.5403;
 	
 	
 	
@@ -52,7 +52,9 @@
 	let right_vec = [];
 	let up_vec = [];
 	
-	let camera_pos = [1.9756, 2.747, 1.1575];
+	
+	
+	let camera_pos = [2.9683, 1.4486, 1.7404];
 	
 	let power = 8;
 	let c = [0, 0, 0];
@@ -206,16 +208,16 @@
 		uniform float focal_length;
 		
 		uniform vec3 light_pos;
-		const float light_brightness = 2.0;
+		const float light_brightness = 3.0;
 		
 		uniform int image_size;
 		
 		
 		
 		const float clip_distance = 1000.0;
-		const int max_marches = 64; //Change to 512 to eliminate flickering in animations
+		const int max_marches = 128; //Change to 512 to eliminate flickering in animations
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
-		const float fog_scaling = .2;
+		const float fog_scaling = .1;
 		const int num_iterations = 32;
 		
 		uniform float power;
@@ -275,12 +277,17 @@
 		{
 			vec3 lz = z + vec3(1.0), llz = z + vec3(-1.0);
 			
-			float DE = 10000000000.0;
+			float DE = 1000.0;
 			float DF = 1.0;
 			
 			float a = klein_r, b = klein_i;
 			
 			float f = sign(b);
+			
+			color = vec3(1.0, 1.0, 1.0);
+			float color_scale = .5;
+			
+			
 			
 			for (int i = 0; i < num_iterations; i++) 
 			{
@@ -301,26 +308,33 @@
 				//If above the separation line, rotate by 180 deg about (-b/2, a/2)
 				if  (z.y >= a * (0.5 + f * 0.25 * sign(z.x + b * 0.5) * (1.0 - exp(-3.2 * abs(z.x + b * 0.5)))))
 				{
-					z = vec3(-b, a, 0.0) - z; //z.xy = vec2(-b, a) - z.xy;
+					z = vec3(-b, a, 0.0) - z;
+					//z.xy = vec2(-b, a) - z.xy;
 				}
-
+				
 				
 
 				//Apply transformation a
 				trans_a(z, DF, a, b);
 				
-				if (dot(z - llz, z - llz) < .000001)
+				if (dot(z - llz, z - llz) < .00000001)
 				{
 					break;
 				}
 				
 				llz = lz;
 				lz = z;
+				
+				
+				
+				color = mix(color, abs(z), color_scale);
+				
+				color_scale *= .5;
 			}
 			
 			
 			
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < 10; i++)
 			{
 				float y = min(z.y, a - z.y);
 				
@@ -334,6 +348,12 @@
 			float y = min(z.y, a - z.y);
 
 			DE = min(DE, min(y, 1.0) / max(DF, 1.0));
+			
+			
+			
+			color /= max(max(color.x, color.y), color.z);
+			
+			
 
 			return DE;
 		}
@@ -343,7 +363,7 @@
 
 		float distance_estimator(vec3 pos)
 		{
-			vec3 p = pos;
+			vec3 p = pos.xzy;
 			
 			color = vec3(1.0, 1.0, 1.0);
 			
@@ -412,7 +432,7 @@
 		vec3 raymarch(vec3 start_pos)
 		{
 			//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-			vec3 ray_direction_vec = normalize(start_pos - camera_pos) * .9;
+			vec3 ray_direction_vec = normalize(start_pos - camera_pos) * .125;
 			
 			vec3 final_color = fog_color;
 			
@@ -422,7 +442,7 @@
 			
 			float last_distance = 1000.0;
 			
-			//int slowed_down = 0;
+			int slowed_down = 0;
 			
 			
 			
@@ -449,21 +469,20 @@
 				}
 				
 				//Uncomment to add aggressive understepping when close to the fractal boundary, which helps to prevent flickering but is a significant performance hit.
-				/*
-				else if (last_distance / distance > .9999 && slowed_down == 0)
+				
+				else if (last_distance / distance > .999 && slowed_down == 0)
 				{
 					ray_direction_vec = normalize(start_pos - camera_pos) * .125;
 					
 					slowed_down = 1;
 				}
 				
-				else if (last_distance / distance <= .9999 && slowed_down == 1)
+				else if (last_distance / distance <= .999 && slowed_down == 1)
 				{
-					ray_direction_vec = normalize(start_pos - camera_pos) * .9;
+					//ray_direction_vec = normalize(start_pos - camera_pos) * .9;
 					
 					slowed_down = 0;
 				}
-				*/
 				
 				else if (t > clip_distance)
 				{
@@ -689,7 +708,7 @@
 		
 		
 		
-		focal_length = distance_to_scene / 2;
+		focal_length = distance_to_scene / 20;
 		
 		//The factor we divide by here sets the fov.
 		right_vec[0] *= focal_length / 2;
