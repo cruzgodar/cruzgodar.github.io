@@ -145,7 +145,19 @@
 		
 		
 		
-		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
+		if (image_width >= image_height)
+		{
+			gl.uniform1f(shader_program.aspect_ratio_x_uniform, image_width / image_height);
+			gl.uniform1f(shader_program.aspect_ratio_y_uniform, 1);
+		}
+		
+		else
+		{
+			gl.uniform1f(shader_program.aspect_ratio_x_uniform, 1);
+			gl.uniform1f(shader_program.aspect_ratio_y_uniform, image_width / image_height);
+		}
+		
+		
 		
 		gl.uniform1i(shader_program.image_size_uniform, image_size);
 		
@@ -193,7 +205,8 @@
 		
 		varying vec2 uv;
 		
-		uniform float aspect_ratio;
+		uniform float aspect_ratio_x;
+		uniform float aspect_ratio_y;
 		
 		uniform vec3 camera_pos;
 		uniform vec3 image_plane_center_pos;
@@ -461,7 +474,7 @@
 			//Uncomment to use 2x antialiasing.
 			//vec3 final_color = (raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size)))) / 4.0;
 			
-			vec3 final_color = raymarch(image_plane_center_pos + right_vec * uv.x * aspect_ratio + up_vec * uv.y);
+			vec3 final_color = raymarch(image_plane_center_pos + right_vec * uv.x * aspect_ratio_x + up_vec * uv.y / aspect_ratio_y);
 				
 			gl_FragColor = vec4(final_color.xyz, 1.0);
 		}
@@ -517,7 +530,8 @@
 		
 		
 		
-		shader_program.aspect_ratio_uniform = gl.getUniformLocation(shader_program, "aspect_ratio");
+		shader_program.aspect_ratio_x_uniform = gl.getUniformLocation(shader_program, "aspect_ratio_x");
+		shader_program.aspect_ratio_y_uniform = gl.getUniformLocation(shader_program, "aspect_ratio_y");
 		
 		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
 		
@@ -540,7 +554,19 @@
 		
 		
 		
-		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
+		if (image_width >= image_height)
+		{
+			gl.uniform1f(shader_program.aspect_ratio_x_uniform, image_width / image_height);
+			gl.uniform1f(shader_program.aspect_ratio_y_uniform, 1);
+		}
+		
+		else
+		{
+			gl.uniform1f(shader_program.aspect_ratio_x_uniform, 1);
+			gl.uniform1f(shader_program.aspect_ratio_y_uniform, image_width / image_height);
+		}
+		
+		
 		
 		gl.uniform1i(shader_program.image_size_uniform, image_size);
 		
@@ -1284,7 +1310,19 @@
 		
 		
 		
-		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
+		if (image_width >= image_height)
+		{
+			gl.uniform1f(shader_program.aspect_ratio_x_uniform, image_width / image_height);
+			gl.uniform1f(shader_program.aspect_ratio_y_uniform, 1);
+		}
+		
+		else
+		{
+			gl.uniform1f(shader_program.aspect_ratio_x_uniform, 1);
+			gl.uniform1f(shader_program.aspect_ratio_y_uniform, image_width / image_height);
+		}
+		
+		
 		
 		gl.uniform1i(shader_program.image_size_uniform, image_size);
 		
