@@ -244,6 +244,8 @@
 		const vec3 re_center = vec3(0.0, 0.0, 0.0);
 		const float inversion_radius = 1.0;
 		
+		const float rotate_factor = 5.0;
+		
 		
 		
 		vec3 wrap(vec3 x, vec3 a, vec3 s)
@@ -295,7 +297,7 @@
 				
 				if (four_gen == 1)
 				{
-					z = wrap(z, vec3(2.0 * box_size, a, 2.0 * box_size), vec3(-box_size, 0.0, - box_size));
+					z = wrap(z, vec3(2.0 * box_size, a, 2.0 * box_size), vec3(-box_size, 0.0, -box_size));
 				}
 				
 				else
@@ -306,7 +308,7 @@
 				z.x = z.x - b / a * z.y;
 
 				//If above the separation line, rotate by 180 deg about (-b/2, a/2)
-				if  (z.y >= a * (0.5 + f * 0.25 * sign(z.x + b * 0.5) * (1.0 - exp(-3.2 * abs(z.x + b * 0.5)))))
+				if  (z.y >= a * (0.5 + f * 0.25 * sign(z.x + b * 0.5) * (1.0 - exp(-rotate_factor * abs(z.x + b * 0.5)))))
 				{
 					z = vec3(-b, a, 0.0) - z;
 					//z.xy = vec2(-b, a) - z.xy;
@@ -317,7 +319,7 @@
 				//Apply transformation a
 				trans_a(z, DF, a, b);
 				
-				if (dot(z - llz, z - llz) < .00000001)
+				if (dot(z - llz, z - llz) < .0000001)
 				{
 					break;
 				}
@@ -365,8 +367,6 @@
 		{
 			vec3 p = pos.xzy;
 			
-			color = vec3(1.0, 1.0, 1.0);
-			
 			if (do_inversion == 1)
 			{
 				p = p - inversion_center - re_center;
@@ -395,9 +395,9 @@
 		{
 			float base = distance_estimator(pos);
 			
-			float x_step = distance_estimator(pos + vec3(.000001, 0.0, 0.0));
-			float y_step = distance_estimator(pos + vec3(0.0, .000001, 0.0));
-			float z_step = distance_estimator(pos + vec3(0.0, 0.0, .000001));
+			float x_step = distance_estimator(pos + vec3(.0001, 0.0, 0.0));
+			float y_step = distance_estimator(pos + vec3(0.0, .0001, 0.0));
+			float z_step = distance_estimator(pos + vec3(0.0, 0.0, .0001));
 			
 			return normalize(vec3(x_step - base, y_step - base, z_step - base));
 		}
@@ -432,7 +432,7 @@
 		vec3 raymarch(vec3 start_pos)
 		{
 			//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-			vec3 ray_direction_vec = normalize(start_pos - camera_pos) * .125;
+			vec3 ray_direction_vec = normalize(start_pos - camera_pos) * .9;
 			
 			vec3 final_color = fog_color;
 			
@@ -455,9 +455,9 @@
 				last_distance = distance;
 				
 				//This lowers the detail far away, which makes everything run nice and fast.
-				if (distance / float(image_size) * 1.5 > epsilon)
+				if (distance / float(image_size) * 5.0 > epsilon)
 				{
-					epsilon = distance / float(image_size) * 1.5;
+					epsilon = distance / float(image_size) * 5.0;
 				}
 				
 				
@@ -470,6 +470,7 @@
 				
 				//Uncomment to add aggressive understepping when close to the fractal boundary, which helps to prevent flickering but is a significant performance hit.
 				
+				
 				else if (last_distance / distance > .999 && slowed_down == 0)
 				{
 					ray_direction_vec = normalize(start_pos - camera_pos) * .125;
@@ -479,10 +480,11 @@
 				
 				else if (last_distance / distance <= .999 && slowed_down == 1)
 				{
-					//ray_direction_vec = normalize(start_pos - camera_pos) * .9;
+					ray_direction_vec = normalize(start_pos - camera_pos) * .9;
 					
 					slowed_down = 0;
 				}
+				
 				
 				else if (t > clip_distance)
 				{
