@@ -120,6 +120,12 @@
     
     
     
+    "image-quiz-2":
+    {
+        "webp": "quizzes/2/cover.webp",
+        "non-webp": "quizzes/2/cover.jpg"
+    },
+    
 	"image-week-2-notes":
     {
         "webp": "notes/2/cover.webp",
