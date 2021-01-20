@@ -60,6 +60,8 @@
 	
 	let power = 8;
 	let c = [0, 0, 0];
+	let c_old = [0, 0, 0];
+	let c_delta = [0, 0, 0];
 	
 	let rotation_angle_x = 0;
 	let rotation_angle_y = 0;
@@ -94,13 +96,15 @@
 	document.querySelector("#dim-input").addEventListener("input", function()
 	{
 		change_resolution(0);
+		
+		window.requestAnimationFrame(draw_frame);
 	});
 	
 	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
 	
 	
 	
-	let elements = document.querySelectorAll("#power-input, #rotation-angle-x-input, #rotation-angle-y-input, #rotation-angle-z-input");
+	let elements = document.querySelectorAll("#power-input, #rotation-angle-x-input, #rotation-angle-y-input, #rotation-angle-z-input, #c-x-input, #c-y-input, #c-z-input");
 	
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -872,13 +876,16 @@
 			
 			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_up_keyboard || moving_down_keyboard || moving_forward_touch || moving_backward_touch;
 			
-			if (!currently_drawing && (Date.now() - draw_start_time > 300))
+			if (!currently_drawing)
 			{
-				image_size = large_image_size;
-				
-				change_resolution(image_size);
-				
-				window.requestAnimationFrame(draw_frame);
+				if (Date.now() - draw_start_time > 300)
+				{
+					image_size = large_image_size;
+					
+					change_resolution(image_size);
+					
+					window.requestAnimationFrame(draw_frame);
+				}
 			}
 		});
 		
@@ -1016,13 +1023,16 @@
 			
 			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_up_keyboard || moving_down_keyboard || moving_forward_touch || moving_backward_touch;
 			
-			if (!currently_drawing && (Date.now() - draw_start_time > 300))
+			if (!currently_drawing)
 			{
-				image_size = large_image_size;
-				
-				change_resolution(image_size);
-				
-				window.requestAnimationFrame(draw_frame);
+				if (Date.now() - draw_start_time > 300)
+				{
+					image_size = large_image_size;
+					
+					change_resolution(image_size);
+					
+					window.requestAnimationFrame(draw_frame);
+				}
 			}
 		});
 
@@ -1132,13 +1142,16 @@
 			
 			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_up_keyboard || moving_down_keyboard || moving_forward_touch || moving_backward_touch;
 			
-			if (!currently_drawing && (Date.now() - draw_start_time > 300))
+			if (!currently_drawing)
 			{
-				image_size = large_image_size;
-				
-				change_resolution(image_size);
-				
-				window.requestAnimationFrame(draw_frame);
+				if (Date.now() - draw_start_time > 300)
+				{
+					image_size = large_image_size;
+					
+					change_resolution(image_size);
+					
+					window.requestAnimationFrame(draw_frame);
+				}
 			}
 		});
 	}
@@ -1256,6 +1269,12 @@
 				
 				
 				
+				document.querySelector("#c-x-input").value = Math.round(c[0] * 1000000) / 1000000;
+				document.querySelector("#c-y-input").value = Math.round(c[1] * 1000000) / 1000000;
+				document.querySelector("#c-z-input").value = Math.round(c[2] * 1000000) / 1000000;
+				
+				
+				
 				gl.uniform3fv(shader_program.c_uniform, c);
 			}
 		
@@ -1340,25 +1359,12 @@
 		gl.uniform1i(shader_program.image_size_uniform, image_size);
 		
 		gl.viewport(0, 0, image_width, image_height);
-		
-		
-		
-		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
 	
 	function update_parameters()
 	{
-		if (image_size !== small_image_size)
-		{
-			image_size = small_image_size;
-			
-			change_resolution(image_size);
-		}
-		
-		
-		
 		power_old = power;
 		power_delta = (parseFloat(document.querySelector("#power-input").value || 8) || 8) - power_old;
 		
@@ -1373,31 +1379,35 @@
 		rotation_angle_y_old = rotation_angle_y;
 		rotation_angle_z_old = rotation_angle_z;
 		
-		rotation_angle_x_delta = parseFloat(document.querySelector("#rotation-angle-x-input").value || 0) || 0 - rotation_angle_x_old;
-		rotation_angle_y_delta = parseFloat(document.querySelector("#rotation-angle-y-input").value || 0) || 0 - rotation_angle_y_old;
-		rotation_angle_z_delta = parseFloat(document.querySelector("#rotation-angle-z-input").value || 0) || 0 - rotation_angle_z_old;
+		rotation_angle_x_delta = (parseFloat(document.querySelector("#rotation-angle-x-input").value || 0) || 0) - rotation_angle_x_old;
+		rotation_angle_y_delta = (parseFloat(document.querySelector("#rotation-angle-y-input").value || 0) || 0) - rotation_angle_y_old;
+		rotation_angle_z_delta = (parseFloat(document.querySelector("#rotation-angle-z-input").value || 0) || 0) - rotation_angle_z_old;
+		
+		
+		
+		c_old[0] = c[0];
+		c_old[1] = c[1];
+		c_old[2] = c[2];
+		
+		c_delta[0] = (parseFloat(document.querySelector("#c-x-input").value || 0) || 0) - c_old[0];
+		c_delta[1] = (parseFloat(document.querySelector("#c-y-input").value || 0) || 0) - c_old[1];
+		c_delta[2] = (parseFloat(document.querySelector("#c-z-input").value || 0) || 0) - c_old[2];
 		
 		
 		
 		julia_proportion_old = julia_proportion;
 		julia_proportion_delta = 0;
 		
-		animate_parameter_change();
+		if (!currently_animating_parameters)
+		{
+			animate_parameter_change();
+		}
 	}
 	
 	
 	
 	function switch_bulb()
 	{
-		if (image_size !== small_image_size)
-		{
-			image_size = small_image_size;
-			
-			change_resolution(image_size);
-		}
-		
-		
-		
 		if (currently_animating_parameters)
 		{
 			return;
@@ -1464,6 +1474,14 @@
 		rotation_angle_y_delta = 0;
 		rotation_angle_z_delta = 0;
 		
+		c_old[0] = c[0];
+		c_old[1] = c[1];
+		c_old[2] = c[2];
+		
+		c_delta[0] = 0;
+		c_delta[1] = 0;
+		c_delta[2] = 0;
+		
 		animate_parameter_change();
 	}
 	
@@ -1516,15 +1534,6 @@
 		
 		
 		
-		if (image_size !== small_image_size)
-		{
-			image_size = small_image_size;
-			
-			change_resolution(image_size);
-		}
-		
-		
-		
 		rotation_angle_x_old = rotation_angle_x;
 		rotation_angle_y_old = rotation_angle_y;
 		rotation_angle_z_old = rotation_angle_z;
@@ -1539,6 +1548,16 @@
 		
 		
 		
+		c_old[0] = c[0];
+		c_old[1] = c[1];
+		c_old[2] = c[2];
+		
+		c_delta[0] = 0;
+		c_delta[1] = 0;
+		c_delta[2] = 0;
+		
+		
+		
 		julia_proportion_old = julia_proportion;
 		julia_proportion_delta = 0;
 		
@@ -1547,7 +1566,10 @@
 		
 		
 		
-		animate_parameter_change();
+		if (!currently_animating_parameters)
+		{
+			animate_parameter_change();
+		}
 	}
 	
 	
@@ -1565,6 +1587,15 @@
 	
 	function animate_parameter_change_step()
 	{
+		if (image_size !== small_image_size)
+		{
+			image_size = small_image_size;
+			
+			change_resolution(image_size);
+		}
+		
+		
+		
 		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 120 - Math.PI / 2) + .5;
 		
 		power = power_old + power_delta * t;
@@ -1573,6 +1604,10 @@
 		rotation_angle_x = rotation_angle_x_old + rotation_angle_x_delta * t;
 		rotation_angle_y = rotation_angle_y_old + rotation_angle_y_delta * t;
 		rotation_angle_z = rotation_angle_z_old + rotation_angle_z_delta * t;
+		
+		c[0] = c_old[0] + c_delta[0] * t;
+		c[1] = c_old[1] + c_delta[1] * t;
+		c[2] = c_old[2] + c_delta[2] * t;
 		
 		
 		
@@ -1587,6 +1622,8 @@
 		gl.uniform1f(shader_program.power_uniform, power);
 		
 		gl.uniform1f(shader_program.julia_proportion_uniform, julia_proportion);
+		
+		gl.uniform3fv(shader_program.c_uniform, c);
 		
 		
 		
