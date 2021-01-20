@@ -117,6 +117,14 @@
 	
 	
 	
+	setTimeout(function()
+	{
+		document.querySelector("#switch-bulb-button").textContent = "Switch to Juliabulb";
+	}, 100);
+	
+	
+	
+	
 	window.addEventListener("resize", fractals_resize);
 	setTimeout(fractals_resize, 500);
 	
