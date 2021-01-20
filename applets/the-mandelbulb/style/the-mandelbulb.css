@@ -5,7 +5,7 @@
 	-webkit-user-select: none;
 }
 
-#switch-bulb-button
+#switch-bulb-button, #switch-movement-button
 {
 	transition: filter .15s ease-in-out, opacity .3s ease-in-out;
 }

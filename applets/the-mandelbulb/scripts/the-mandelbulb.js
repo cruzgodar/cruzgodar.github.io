@@ -22,9 +22,13 @@
 	let moving_backward_keyboard = false;
 	let moving_right_keyboard = false;
 	let moving_left_keyboard = false;
+	let moving_up_keyboard = false;
+	let moving_down_keyboard = false;
 	
 	let moving_forward_touch = false;
 	let moving_backward_touch = false;
+	
+	let moving_pos = true;
 	
 	let moving_speed = 0;
 	
@@ -105,6 +109,7 @@
 	
 	document.querySelector("#randomize-parameters-button").addEventListener("click", randomize_parameters);
 	document.querySelector("#switch-bulb-button").addEventListener("click", switch_bulb);
+	document.querySelector("#switch-movement-button").addEventListener("click", switch_movement);
 	
 	
 	
@@ -224,6 +229,8 @@
 		
 		uniform int image_size;
 		
+		uniform int draw_sphere;
+		
 		
 		
 		const float clip_distance = 1000.0;
@@ -286,7 +293,23 @@
 			
 			color /= max(max(color.x, color.y), color.z);
 			
-			return .5 * log(r) * r / dr;
+			
+			
+			float distance_1 = .5 * log(r) * r / dr;
+			float distance_2 = length(pos - c) - .05;
+			
+			
+			
+			if (distance_2 < distance_1 && draw_sphere == 1)
+			{
+				color = vec3(1.0, 1.0, 1.0);
+				
+				return distance_2;
+			}
+			
+			
+			
+			return distance_1;
 		}
 		
 		
@@ -485,6 +508,8 @@
 		
 		shader_program.julia_proportion_uniform = gl.getUniformLocation(shader_program, "julia_proportion");
 		
+		shader_program.draw_sphere_uniform = gl.getUniformLocation(shader_program, "draw_sphere");
+		
 		
 		
 		if (image_width >= image_height)
@@ -519,6 +544,8 @@
 		gl.uniform3fv(shader_program.c_uniform, c);
 		
 		gl.uniform1f(shader_program.julia_proportion_uniform, julia_proportion);
+		
+		gl.uniform1i(shader_program.draw_sphere_uniform, 0);
 		
 		
 		
@@ -638,6 +665,7 @@
 		
 		
 		
+		
 		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
 		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
 		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
@@ -742,7 +770,9 @@
 			mutable_z[2] = mat_total[2][0] * temp_x + mat_total[2][1] * temp_y + mat_total[2][2] * temp_z;
 		}
 		
-		return 0.5 * Math.log(r) * r / dr;
+		
+		
+		return Math.min(0.5 * Math.log(r) * r / dr, Math.sqrt((x - c[0])*(x - c[0]) + (y - c[1])*(y - c[1]) + (1 - c[2])*(z - c[2])) - .05);
 	}
 	
 	
@@ -780,6 +810,13 @@
 				
 				
 				
+				if (!moving_pos)
+				{
+					return;
+				}
+				
+				
+				
 				let new_mouse_x = e.clientX;
 				let new_mouse_y = e.clientY;
 				
@@ -789,6 +826,10 @@
 				
 				
 				theta += mouse_x_delta / canvas_size * Math.PI;
+					
+				phi -= mouse_y_delta / canvas_size * Math.PI;
+				
+				
 				
 				if (theta >= 2 * Math.PI)
 				{
@@ -801,8 +842,6 @@
 				}
 				
 				
-				
-				phi -= mouse_y_delta / canvas_size * Math.PI;
 				
 				if (phi > Math.PI - .01)
 				{
@@ -831,7 +870,7 @@
 		{
 			currently_dragging = false;
 			
-			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch;
+			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_up_keyboard || moving_down_keyboard || moving_forward_touch || moving_backward_touch;
 			
 			if (!currently_drawing && (Date.now() - draw_start_time > 300))
 			{
@@ -888,6 +927,13 @@
 			
 			
 			
+			if (!moving_pos)
+			{
+				return;
+			}
+			
+			
+			
 			let new_mouse_x = e.touches[0].clientX;
 			let new_mouse_y = e.touches[0].clientY;
 			
@@ -902,6 +948,10 @@
 			
 			
 			theta += mouse_x_delta / canvas_size * Math.PI;
+				
+			phi -= mouse_y_delta / canvas_size * Math.PI;
+			
+			
 			
 			if (theta >= 2 * Math.PI)
 			{
@@ -914,8 +964,6 @@
 			}
 			
 			
-			
-			phi -= mouse_y_delta / canvas_size * Math.PI;
 			
 			if (phi > Math.PI - .01)
 			{
@@ -966,7 +1014,7 @@
 			
 			
 			
-			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch;
+			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_up_keyboard || moving_down_keyboard || moving_forward_touch || moving_backward_touch;
 			
 			if (!currently_drawing && (Date.now() - draw_start_time > 300))
 			{
@@ -982,7 +1030,7 @@
 
 		document.documentElement.addEventListener("keydown", function(e)
 		{
-			if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
+			if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65 || e.keyCode === 16 || e.keyCode === 32))
 			{
 				return;
 			}
@@ -1011,6 +1059,18 @@
 			else if (e.keyCode === 65)
 			{
 				moving_left_keyboard = true;
+			}
+			
+			//Space
+			else if (e.keyCode === 32)
+			{
+				moving_up_keyboard = true;
+			}
+			
+			//Shift
+			else if (e.keyCode === 16)
+			{
+				moving_down_keyboard = true;
 			}
 			
 			
@@ -1057,8 +1117,20 @@
 				moving_left_keyboard = false;
 			}
 			
+			//Space
+			else if (e.keyCode === 32)
+			{
+				moving_up_keyboard = false;
+			}
 			
-			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch;
+			//Shift
+			else if (e.keyCode === 16)
+			{
+				moving_down_keyboard = false;
+			}
+			
+			
+			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_up_keyboard || moving_down_keyboard || moving_forward_touch || moving_backward_touch;
 			
 			if (!currently_drawing && (Date.now() - draw_start_time > 300))
 			{
@@ -1075,7 +1147,7 @@
 	
 	function update_camera_parameters()
 	{
-		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
+		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_up_keyboard || moving_down_keyboard || moving_forward_touch || moving_backward_touch)
 		{
 			moving_speed = distance_to_scene / 20;
 			
@@ -1091,34 +1163,100 @@
 			
 			
 			
-			if (moving_forward_keyboard || moving_forward_touch)
+			if (moving_pos)
 			{
-				camera_pos[0] += moving_speed * forward_vec[0];
-				camera_pos[1] += moving_speed * forward_vec[1];
-				camera_pos[2] += moving_speed * forward_vec[2];
+				if (moving_forward_keyboard || moving_forward_touch)
+				{
+					camera_pos[0] += moving_speed * forward_vec[0];
+					camera_pos[1] += moving_speed * forward_vec[1];
+					camera_pos[2] += moving_speed * forward_vec[2];
+				}
+				
+				else if (moving_backward_keyboard || moving_backward_touch)
+				{
+					camera_pos[0] -= moving_speed * forward_vec[0];
+					camera_pos[1] -= moving_speed * forward_vec[1];
+					camera_pos[2] -= moving_speed * forward_vec[2];
+				}
+				
+				
+				
+				if (moving_right_keyboard)
+				{
+					camera_pos[0] += moving_speed * right_vec[0] / focal_length;
+					camera_pos[1] += moving_speed * right_vec[1] / focal_length;
+					camera_pos[2] += moving_speed * right_vec[2] / focal_length;
+				}
+				
+				else if (moving_left_keyboard)
+				{
+					camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
+					camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
+					camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
+				}
+				
+				
+				
+				if (moving_up_keyboard)
+				{
+					camera_pos[2] += moving_speed;
+				}
+				
+				else if (moving_down_keyboard)
+				{
+					camera_pos[2] -= moving_speed;
+				}
 			}
 			
-			else if (moving_backward_keyboard || moving_backward_touch)
+			
+			
+			else
 			{
-				camera_pos[0] -= moving_speed * forward_vec[0];
-				camera_pos[1] -= moving_speed * forward_vec[1];
-				camera_pos[2] -= moving_speed * forward_vec[2];
-			}
-			
-			
-			
-			if (moving_right_keyboard)
-			{
-				camera_pos[0] += moving_speed * right_vec[0] / focal_length;
-				camera_pos[1] += moving_speed * right_vec[1] / focal_length;
-				camera_pos[2] += moving_speed * right_vec[2] / focal_length;
-			}
-			
-			else if (moving_left_keyboard)
-			{
-				camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
-				camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
-				camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
+				if (moving_forward_keyboard || moving_forward_touch)
+				{
+					c[0] += .2 * moving_speed * forward_vec[0];
+					c[1] += .2 * moving_speed * forward_vec[1];
+					c[2] += .2 * moving_speed * forward_vec[2];
+				}
+				
+				else if (moving_backward_keyboard || moving_backward_touch)
+				{
+					c[0] -= .2 * moving_speed * forward_vec[0];
+					c[1] -= .2 * moving_speed * forward_vec[1];
+					c[2] -= .2 * moving_speed * forward_vec[2];
+				}
+				
+				
+				
+				if (moving_right_keyboard)
+				{
+					c[0] += .2 * moving_speed * right_vec[0] / focal_length;
+					c[1] += .2 * moving_speed * right_vec[1] / focal_length;
+					c[2] += .2 * moving_speed * right_vec[2] / focal_length;
+				}
+				
+				else if (moving_left_keyboard)
+				{
+					c[0] -= .2 * moving_speed * right_vec[0] / focal_length;
+					c[1] -= .2 * moving_speed * right_vec[1] / focal_length;
+					c[2] -= .2 * moving_speed * right_vec[2] / focal_length;
+				}
+				
+				
+				
+				if (moving_up_keyboard)
+				{
+					c[2] += .2 * moving_speed;
+				}
+				
+				else if (moving_down_keyboard)
+				{
+					c[2] -= .2 * moving_speed;
+				}
+				
+				
+				
+				gl.uniform3fv(shader_program.c_uniform, c);
 			}
 		
 		
@@ -1288,9 +1426,26 @@
 		
 		if (julia_proportion === 0)
 		{
-			c = [...camera_pos];
-			
 			gl.uniform3fv(shader_program.c_uniform, c);
+			
+			if (!moving_pos)
+			{
+				gl.uniform1i(shader_program.draw_sphere_uniform, 1);
+			}
+			
+			setTimeout(function()
+			{
+				document.querySelector("#switch-movement-button").style.opacity = 1;
+			}, 300);
+		}
+		
+		else
+		{
+			moving_pos = true;
+			
+			gl.uniform1i(shader_program.draw_sphere_uniform, 0);
+			
+			document.querySelector("#switch-movement-button").style.opacity = 0;
 		}
 		
 		
@@ -1310,6 +1465,44 @@
 		rotation_angle_z_delta = 0;
 		
 		animate_parameter_change();
+	}
+	
+	
+	
+	function switch_movement()
+	{
+		moving_pos = !moving_pos;
+		
+		
+		
+		document.querySelector("#switch-movement-button").style.opacity = 0;
+		
+		setTimeout(function()
+		{
+			if (moving_pos)
+			{
+				document.querySelector("#switch-movement-button").textContent = "Change Juliabulb";
+			}
+			
+			else
+			{
+				document.querySelector("#switch-movement-button").textContent = "Move Camera";
+			}
+			
+			document.querySelector("#switch-movement-button").style.opacity = 1;
+		}, 300);
+		
+		
+		
+		if (moving_pos)
+		{
+			gl.uniform1i(shader_program.draw_sphere_uniform, 0);
+		}
+		
+		else
+		{
+			gl.uniform1i(shader_program.draw_sphere_uniform, 1);
+		}
 	}
 	
 	
