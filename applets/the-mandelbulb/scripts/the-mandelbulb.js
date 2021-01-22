@@ -784,7 +784,7 @@
 		
 		
 		
-		return Math.min(0.5 * Math.log(r) * r / dr, Math.sqrt((x - c[0])*(x - c[0]) + (y - c[1])*(y - c[1]) + (1 - c[2])*(z - c[2])) - .05);
+		return 0.5 * Math.log(r) * r / dr;
 	}
 	
 	
