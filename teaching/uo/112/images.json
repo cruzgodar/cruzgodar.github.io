@@ -106,6 +106,12 @@
     
     
     
+    "image-quiz-3":
+    {
+        "webp": "quizzes/3/cover.webp",
+        "non-webp": "quizzes/3/cover.jpg"
+    },
+    
 	"image-week-3-notes":
     {
         "webp": "notes/3/cover.webp",
