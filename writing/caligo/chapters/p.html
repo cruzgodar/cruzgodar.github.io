@@ -174,7 +174,7 @@
 			</div>
 			
 			<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
-				<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="redirect('/writing/caligo/chapters/1.html')">Next Chapter</button>
+				<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="show_part_title()">Next Chapter</button>
 			</div>
 		</div>
 	</section>
@@ -215,6 +215,125 @@
 		"no_footer": false,
 		"footer_exclusion": ""
 	};
+	
+	
+	
+	add_style(`
+		.caligo-black-background
+		{
+			width: 100vw;
+			height: 200vh;
+			
+			background-color: rgb(0, 0, 0);
+			
+			z-index: 100;
+		}
+		
+		.part-text
+		{
+			position: relative;
+			margin: 0 auto;
+			color: rgb(255, 255, 255);
+			text-align: center;
+			font-family: 'Gentium Book Basic', serif;
+		}
+	`);
+	
+	
+	
+	function show_part_title()
+	{
+		document.body.style.opacity = 0;
+		
+		setTimeout(function()
+		{
+			let element = document.createElement("div");
+			
+			element.classList.add("caligo-black-background");
+			
+			element.addEventListener("touchstart", function(e)
+			{
+				e.preventDefault();
+			});
+			
+			element.addEventListener("touchend", function(e)
+			{
+				e.preventDefault();
+			});
+			
+			
+			
+			document.body.appendChild(element);
+			
+			
+			
+			element.appendChild(document.createElement("div"));
+			
+			
+			
+			document.documentElement.style.overflowY = "hidden";
+			document.body.style.overflowY = "hidden";
+			
+			document.body.style.userSelect = "none";
+			document.body.style.WebkitUserSelect = "none";
+			
+			
+			
+			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + window_height / 2 + 2);
+			
+			
+			
+			document.body.style.opacity = 1;
+			
+			
+			
+			setTimeout(function()
+			{
+				background_color_changed = true;
+				
+				document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+				
+				element.firstChild.insertAdjacentHTML("afterend", `
+					<div style="height: 75vh"></div>
+					
+					<div class="new-aos-section" data-aos="fade-up">
+						<p class="part-text" style="text-align: center; font-size: 200%; width: 90vw">Part I</p>
+					</div>
+					
+					<div style="height: 3vh"></div>
+					
+					<div data-aos="fade-up" data-aos-delay="100">
+						<p class="part-text" style="text-align: center; font-size: 400%; width: 90vw">Cesium</p>
+					</div>
+				`);
+				
+				setTimeout(function()
+				{
+					set_up_aos();
+					
+					show_aos_section(2);
+					
+					setTimeout(function()
+					{
+						document.body.style.opacity = 0;
+						
+						setTimeout(function()
+						{
+							document.documentElement.style.overflowY = "visible";
+							document.body.style.overflowY = "visible";
+							
+							document.body.style.userSelect = "auto";
+							document.body.style.WebkitUserSelect = "auto";
+							
+							redirect('/writing/caligo/chapters/1.html');
+						}, 600);
+					}, 5000);
+				}, 50);
+			}, 1200);
+		}, 600);
+	}
+	
+	
 	
 	on_page_load();
 </script>
