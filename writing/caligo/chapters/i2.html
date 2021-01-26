@@ -355,13 +355,13 @@
 					<div style="height: 75vh"></div>
 					
 					<div class="new-aos-section" data-aos="fade-up">
-						<p class="part-text" style="text-align: center; font-size: 200%; width: 90vw">Part III</p>
+						<p class="part-text" style="text-align: center; font-size: 200%; width: 90vw; opacity: 0">Part III</p>
 					</div>
 					
 					<div style="height: 3vh"></div>
 					
 					<div data-aos="fade-up" data-aos-delay="100">
-						<p class="part-text" style="text-align: center; font-size: 400%; width: 90vw">Ice</p>
+						<p class="part-text" style="text-align: center; font-size: 400%; width: 90vw; opacity: 0">Ice</p>
 					</div>
 				`);
 				
@@ -370,6 +370,8 @@
 					set_up_aos();
 					
 					show_aos_section(3);
+					
+					set_element_styles(".part-text", "opacity", 1);
 					
 					setTimeout(function()
 					{
@@ -385,7 +387,7 @@
 							
 							redirect('/writing/caligo/chapters/25.html');
 						}, 600);
-					}, 5000);
+					}, 3000);
 				}, 50);
 			}, 1200);
 		}, 600);
