@@ -4,15 +4,15 @@
 	
 	
 	
-	let code_string = "var test = 2; test = ((test+3) + 2*(2/(1+(!1))))";
+	let code_string = "var test; input(test); print(1 + 1);";
+	
+	let code = [];
 	
 	let code_lines = [];
 	
 	let new_code_lines = [];
 	
-	let variables = [];
-	
-	let code = [];
+	let variables = {};
 	
 	
 	
@@ -32,7 +32,7 @@
 	
 	let current_line_index = 0;
 	
-	let operations = ["+", "-", "*", "/", "%", "&", "|", "!"];
+	let operations = ["+", "-", "*", "/", "%", "&", "|", "!", "?", "~", "<", ">", "[", "]"];
 	
 	
 	
@@ -46,6 +46,10 @@
 		prepare_code_string();
 		
 		console.log(code_lines);
+		
+		convert_code();
+		
+		console.log(code_lines);
 	}
 	
 	
@@ -56,6 +60,11 @@
 		code_string = code_string.replace(/ /g, "");
 		code_string = code_string.replace(/\n/g, "");
 		
+		code_string = code_string.replace(/==/g, "?");
+		code_string = code_string.replace(/!=/g, "~");
+		code_string = code_string.replace(/<=/g, "[");
+		code_string = code_string.replace(/>=/g, "]");
+		
 		code_lines = code_string.split(";");
 		
 		
@@ -63,18 +72,19 @@
 		parse_index = 0;
 		
 		
+		
 		//Parse variable declarations
 		while (parse_index < code_lines.length)
 		{
 			if (code_lines[parse_index].slice(0, 4) === "var.")
 			{
-				num_user_variables++;
-				
 				if (code_lines[parse_index].indexOf("=") !== -1)
 				{
 					let temp = code_lines[parse_index].split("=");
 					
-					variables.push(temp[0].slice(4));
+					variables[`${temp[0].slice(4)}`] = num_user_variables;
+					
+					num_user_variables++;
 					
 					code_lines.splice(parse_index + 1, 0, temp[0].slice(4) + "=" + temp[1]);
 					
@@ -85,6 +95,10 @@
 				
 				else
 				{
+					variables[`${code_lines[parse_index].slice(4)}`] = num_user_variables;
+					
+					num_user_variables++;
+					
 					parse_index++;
 				}
 			}
@@ -102,13 +116,46 @@
 		//Parse expressions. There are only four places an expression can occur: after an = or in a print, if, or while statement.
 		while (parse_index < code_lines.length)
 		{
+			while (code_lines[parse_index] === "")
+			{
+				code_lines.splice(parse_index, 1);
+			}
+			
+			if (parse_index >= code_lines.length)
+			{
+				break;
+			}
+			
+			
+			
 			new_code_lines = [];
 			
 			current_temp_variable = 0;
 			
 			
 			
-			if (code_lines[parse_index].slice(0, 6) === "print(")
+			let found_an_operation = false;
+			
+			for (let i = 0; i < operations.length; i++)
+			{
+				if (code_lines[parse_index].includes(operations[i]))
+				{
+					found_an_operation = true;
+					
+					break;
+				}
+			}
+			
+			if (!found_an_operation)
+			{
+				parse_index++;
+				
+				continue;
+			}
+			
+			
+			
+			if (code_lines[parse_index].slice(0, 6) === "print(" && code_lines[parse_index][6] !== '"')
 			{
 				prepare_expression(code_lines[parse_index].slice(6, code_lines[parse_index].length - 1));
 				
@@ -177,7 +224,7 @@
 				
 				parse_index++;
 				
-				code_lines.splice(parse_index, 1, "if");
+				code_lines.splice(parse_index, 1, "while");
 				
 				parse_index++;
 				
@@ -194,27 +241,6 @@
 			//Assignment
 			else if (code_lines[parse_index].indexOf("=") !== -1)
 			{
-				let found_an_operation = false;
-				
-				for (let i = 0; i < operations.length; i++)
-				{
-					if (code_lines[parse_index].includes(operations[i]))
-					{
-						found_an_operation = true;
-						
-						break;
-					}
-				}
-				
-				if (!found_an_operation)
-				{
-					parse_index++;
-					
-					continue;
-				}
-				
-				
-				
 				prepare_expression(code_lines[parse_index].split("=")[1]);
 				
 				for (let i = 0; i < new_code_lines.length; i++)
@@ -243,10 +269,6 @@
 				parse_index++;
 			}
 		}
-		
-		
-		
-		convert_code();
 	}
 	
 	
@@ -316,11 +338,12 @@
 				let lengths = find_token_lengths(expression, i);
 				
 				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable}&${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}&_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
 				
-				current_temp_variable++;
+				current_temp_variable += 2;
 			}
 		}
 		
@@ -334,11 +357,12 @@
 				let lengths = find_token_lengths(expression, i);
 				
 				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable}|${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}|_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
 				
-				current_temp_variable++;
+				current_temp_variable += 2;
 			}
 		}
 		
@@ -352,11 +376,12 @@
 				let lengths = find_token_lengths(expression, i);
 				
 				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable}*${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}*_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
 				
-				current_temp_variable++;
+				current_temp_variable += 2;
 			}
 			
 			else if (expression[i] === "/")
@@ -365,11 +390,12 @@
 				let lengths = find_token_lengths(expression, i);
 				
 				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable}/${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}/_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
 				
-				current_temp_variable++;
+				current_temp_variable += 2;
 			}
 			
 			else if (expression[i] === "%")
@@ -378,11 +404,12 @@
 				let lengths = find_token_lengths(expression, i);
 				
 				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable}%${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}%_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
 				
-				current_temp_variable++;
+				current_temp_variable += 2;
 			}
 		}
 		
@@ -396,11 +423,12 @@
 				let lengths = find_token_lengths(expression, i);
 				
 				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable}+${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}+_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
 				
-				current_temp_variable++;
+				current_temp_variable += 2;
 			}
 			
 			else if (expression[i] === "-")
@@ -409,11 +437,101 @@
 				let lengths = find_token_lengths(expression, i);
 				
 				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable}-${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}-_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
 				
-				current_temp_variable++;
+				current_temp_variable += 2;
+			}
+		}
+		
+		
+		
+		for (let i = 0; i < expression.length; i++)
+		{
+			if (expression[i] === "?")
+			{
+				//Multiply the things to the left and right of this.
+				let lengths = find_token_lengths(expression, i);
+				
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}?_${current_temp_variable}`);
+				
+				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
+				
+				current_temp_variable += 2;
+			}
+			
+			else if (expression[i] === "~")
+			{
+				//Multiply the things to the left and right of this.
+				let lengths = find_token_lengths(expression, i);
+				
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}~_${current_temp_variable}`);
+				
+				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
+				
+				current_temp_variable += 2;
+			}
+			
+			else if (expression[i] === "<")
+			{
+				//Multiply the things to the left and right of this.
+				let lengths = find_token_lengths(expression, i);
+				
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}<_${current_temp_variable}`);
+				
+				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
+				
+				current_temp_variable += 2;
+			}
+			
+			else if (expression[i] === ">")
+			{
+				//Multiply the things to the left and right of this.
+				let lengths = find_token_lengths(expression, i);
+				
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}>_${current_temp_variable}`);
+				
+				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
+				
+				current_temp_variable += 2;
+			}
+			
+			else if (expression[i] === "[")
+			{
+				//Multiply the things to the left and right of this.
+				let lengths = find_token_lengths(expression, i);
+				
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}[_${current_temp_variable}`);
+				
+				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
+				
+				current_temp_variable += 2;
+			}
+			
+			else if (expression[i] === "]")
+			{
+				//Multiply the things to the left and right of this.
+				let lengths = find_token_lengths(expression, i);
+				
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}]_${current_temp_variable}`);
+				
+				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
+				
+				current_temp_variable += 2;
 			}
 		}
 	}
@@ -461,12 +579,100 @@
 		
 		
 		
-		write_pass(1);
+		code.push(get_pass_block([]));
 		
-		write_start_binary_operation(5, 2);
+		current_line_index++;
 		
-		write_end_binary_operation(5, 2);
 		
+		
+		//Finish setting up the variables.
+		for (let i = 0; i < num_temp_variables; i++)
+		{
+			variables[`_${i}`] = num_user_variables + i;
+		}
+		
+		variables["_c"] = num_user_variables + num_temp_variables;
+		
+		
+		
+		for (parse_index = 0; parse_index < code_lines.length; parse_index++)
+		{
+			if (code_lines[parse_index].slice(0, 4) === "var.")
+			{
+				continue;
+			}
+			
+			
+			
+			else if (code_lines[parse_index].slice(0, 6) === "print(")
+			{
+				if (code_lines[parse_index][6] === '"')
+				{
+					write_print_string_block(code_lines[parse_index].slice(7, code_lines[parse_index].length - 2));
+				}
+				
+				else
+				{
+					write_print_variable_block(variables[code_lines[parse_index].slice(6, code_lines[parse_index].length - 1)]);
+				}
+			}
+			
+			
+			
+			else if (code_lines[parse_index].slice(0, 6) === "input(")
+			{
+				write_input_block(variables[code_lines[parse_index].slice(6, code_lines[parse_index].length - 1)]);
+			}
+			
+			
+			
+			else if (code_lines[parse_index].indexOf("=") !== -1)
+			{
+				let operation_index = code_lines[parse_index].indexOf("=");
+				
+				write_assignment_block(variables[code_lines[parse_index].slice(0, operation_index)], code_lines[parse_index].slice(operation_index + 1, code_lines[parse_index].length));
+			}
+			
+			
+			
+			else if (code_lines[parse_index].indexOf("!") !== -1)
+			{
+				write_not_block(variables[code_lines[parse_index].slice(0, code_lines[parse_index].length - 1)]);
+			}
+			
+			
+			
+			//All that's left is the other operations.
+			else
+			{
+				//First, we need to find the operation.
+				let operation_index = 0;
+				
+				for (let i = 0; i < code_lines[parse_index].length; i++)
+				{
+					let found_operation = false;
+					
+					for (let j = 0; j < operations.length; j++)
+					{
+						if (code_lines[parse_index][i] === operations[j])
+						{
+							found_operation = true;
+							
+							break;
+						}
+					}
+					
+					if (found_operation)
+					{
+						operation_index = i;
+						
+						break;
+					}
+				}
+				
+				write_operation_block(variables[code_lines[parse_index].slice(0, operation_index)], variables[code_lines[parse_index].slice(operation_index + 1, code_lines[parse_index].length)], code_lines[parse_index][operation_index]);
+			}
+		}
 		
 		
 		output_code();
@@ -489,21 +695,24 @@
 	
 	
 	//Writes vertical pipes for as many variables as there are.
-	function write_pass(num_lines)
+	function get_pass_block(exclude_indices)
 	{
-		for (let i = 0; i < num_lines; i++)
+		let current_line = "";
+		
+		for (let i = 0; i < num_total_variables; i++)
 		{
-			let current_line = "";
+			if (exclude_indices.includes(i))
+			{
+				current_line += " ";
+			}
 			
-			for (let j = 0; j < num_total_variables; j++)
+			else
 			{
 				current_line += "|";
 			}
-			
-			code.push(current_line);
-			
-			current_line_index++;
 		}
+		
+		return current_line;
 	}
 	
 	
@@ -649,7 +858,15 @@
 		
 		for (let i = 0; i < var_1_index; i++)
 		{
-			current_line += "|";
+			if (i === var_2_index)
+			{
+				current_line += " ";
+			}
+			
+			else
+			{
+				current_line += "|";
+			}
 		}
 		
 		current_line += "/";
@@ -697,6 +914,255 @@
 		
 		
 		code.push(current_line);
+		
+		current_line_index++;
+	}
+	
+	
+	
+	function write_assignment_block(var_index, value)
+	{
+		if (value[0] >= "0" && value <= "9")
+		{
+			write_start_unary_operation(var_index);
+			
+			
+			
+			let num_digits = 1;
+			
+			let negative = value < 0;
+			
+			value = Math.abs(value);
+			
+			if (value !== 0)
+			{
+				num_digits = Math.floor(Math.log10(value)) + 1;
+			}
+			
+			let digits = [];
+			
+			for (let i = 0; i < num_digits; i++)
+			{
+				digits += value % 10;
+				
+				value = Math.floor(value / 10);
+			}
+			
+			
+			
+			let pass_block = get_pass_block([var_index]);
+			
+			code.push(pass_block + "  |");
+			code.push(pass_block + "  #");
+			
+			for (let i = 0; i < num_digits; i++)
+			{
+				code.push(pass_block + `  ${digits[num_digits - i - 1]}`);
+			}
+			
+			code.push(pass_block + "  |");
+			
+			current_line_index += num_digits + 3;
+			
+			
+			
+			if (negative)
+			{
+				code.push(pass_block + "  *--\\");
+				code.push(pass_block + "  |  |");
+				code.push(pass_block + "  #  |");
+				code.push(pass_block + "  0  |");
+				code.push(pass_block + "  |  |");
+				code.push(pass_block + " [-]-/");
+				code.push(pass_block + "  |");
+				
+				current_line_index += 7;
+			}
+			
+			
+			
+			write_end_unary_operation(var_index);
+			
+			code.push(get_pass_block([]));
+			
+			current_line_index++;
+		}
+		
+		
+		
+		else
+		{
+			let var_index_2 = variables[value];
+			
+			write_start_binary_operation(var_index, var_index_2);
+			
+			
+			
+			let pass_block = get_pass_block([var_index, var_index_2]);
+			
+			code.push(pass_block + "  |  |");
+			code.push(pass_block + `  /--*`);
+			code.push(pass_block + "  |  |");
+			
+			current_line_index += 3;
+			
+			
+			
+			write_end_binary_operation(var_index, var_index_2);
+			
+			code.push(get_pass_block([]));
+			
+			current_line_index++;
+		}
+	}
+	
+	
+	
+	function write_not_block(var_index)
+	{
+		write_start_unary_operation(var_index);
+		
+		
+		
+		let pass_block = get_pass_block([var_index]);
+		
+		code.push(pass_block + "  |");
+		code.push(pass_block + "  *-#0-\\");
+		code.push(pass_block + "  |    |");
+		code.push(pass_block + " [=]---/");
+		code.push(pass_block + "  |");
+		
+		current_line_index += 5;
+		
+		
+		
+		write_end_unary_operation(var_index);
+		
+		code.push(get_pass_block([]));
+		
+		current_line_index++;
+	}
+	
+	
+	
+	function write_print_variable_block(var_index)
+	{
+		write_start_unary_operation(var_index);
+		
+		
+		
+		let pass_block = get_pass_block([var_index]);
+		
+		code.push(pass_block + "  |");
+		code.push(pass_block + "  $");
+		code.push(pass_block + "  #");
+		code.push(pass_block + "  |");
+		
+		current_line_index += 4;
+		
+		
+		
+		write_end_unary_operation(var_index);
+		
+		code.push(get_pass_block([]));
+		
+		current_line_index++;
+	}
+	
+	
+	
+	function write_print_string_block(message)
+	{
+		write_start_unary_operation(num_total_variables - 1);
+		
+		
+		
+		let pass_block = get_pass_block([num_total_variables - 1]);
+		
+		code.push(pass_block + "  |");
+		code.push(pass_block + `  *-$"${message}"`);
+		code.push(pass_block + "  |");
+		
+		current_line_index += 3;
+		
+		
+		
+		write_end_unary_operation(num_total_variables - 1);
+		
+		code.push(get_pass_block([]));
+		
+		current_line_index++;
+	}
+	
+	
+	
+	function write_input_block(var_index)
+	{
+		write_start_unary_operation(var_index);
+		
+		
+		
+		let pass_block = get_pass_block([var_index]);
+		
+		code.push(pass_block + "  |");
+		code.push(pass_block + "  #");
+		code.push(pass_block + "  ?");
+		code.push(pass_block + "  |");
+		
+		current_line_index += 4;
+		
+		
+		
+		write_end_unary_operation(var_index);
+		
+		code.push(get_pass_block([]));
+		
+		current_line_index++;
+	}
+	
+	
+	
+	function write_operation_block(var_index_1, var_index_2, operation)
+	{
+		if (operation === "|")
+		{
+			operation = "o";
+		}
+		
+		else if (operation === "?")
+		{
+			operation = "=";
+		}
+		
+		else if (operation === "[")
+		{
+			operation = "L";
+		}
+		
+		else if (operation === "]")
+		{
+			operation = "G";
+		}
+		
+		
+		
+		write_start_binary_operation(var_index_1, var_index_2);
+		
+		
+		
+		let pass_block = get_pass_block([var_index_1, var_index_2]);
+		
+		code.push(pass_block + "  |  |");
+		code.push(pass_block + ` [${operation}]-*`);
+		code.push(pass_block + "  |  |");
+		
+		current_line_index += 3;
+		
+		
+		
+		write_end_binary_operation(var_index_1, var_index_2);
+		
+		code.push(get_pass_block([]));
 		
 		current_line_index++;
 	}
