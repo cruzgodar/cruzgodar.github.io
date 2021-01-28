@@ -4,7 +4,7 @@
 	
 	
 	
-	let code_string = "var test; print(1 + 1 + 1); if (1) { test = test + 1; if (1) {test = test + 1;}; }; print(test);";
+	let code_string = "var test; test = 1; print(1 + 1 + 1); while (1) { test = test + 1; while (test) { print(test); }; }; print(test);";
 	
 	let code = [];
 	
@@ -13,6 +13,9 @@
 	let new_code_lines = [];
 	
 	let block_starting_line_indices = [];
+	
+	//0 for if and 1 for while.
+	let block_types = [];
 	
 	let variables = {};
 	
@@ -47,11 +50,9 @@
 		//Clean up the code string
 		prepare_code_string();
 		
-		console.log(code_lines);
-		
 		convert_code();
 		
-		console.log(code_lines);
+		output_code();
 	}
 	
 	
@@ -631,14 +632,36 @@
 			
 			else if (code_lines[parse_index].slice(0, 2) === "if")
 			{
+				block_types.push(0);
+				
 				write_start_if_block();
+			}
+			
+			
+			
+			else if (code_lines[parse_index].slice(0, 5) === "while")
+			{
+				block_types.push(1);
+				
+				write_start_while_block();
 			}
 			
 			
 			
 			else if (code_lines[parse_index] === "}")
 			{
-				write_end_if_block();
+				let type = block_types[block_types.length - 1];
+				block_types.pop();
+				
+				if (type === 0)
+				{
+					write_end_if_block();
+				}
+				
+				else
+				{
+					write_end_while_block();
+				}
 			}
 			
 			
@@ -690,9 +713,6 @@
 				write_operation_block(variables[code_lines[parse_index].slice(0, operation_index)], variables[code_lines[parse_index].slice(operation_index + 1, code_lines[parse_index].length)], code_lines[parse_index][operation_index]);
 			}
 		}
-		
-		
-		output_code();
 	}
 	
 	
@@ -941,50 +961,89 @@
 	{
 		if (value[0] >= "0" && value <= "9")
 		{
-			write_start_unary_operation(var_index);
+			let num_digits = value.length;
 			
-			
-			
-			let num_digits = 1;
-			
-			let negative = value < 0;
-			
-			value = Math.abs(value);
-			
-			if (value !== 0)
+			//If the value is positive, we can do this inline.
+			if (parseInt(value) >= 0)
 			{
-				num_digits = Math.floor(Math.log10(value)) + 1;
-			}
-			
-			let digits = [];
-			
-			for (let i = 0; i < num_digits; i++)
-			{
-				digits += value % 10;
+				let current_line = "";
 				
-				value = Math.floor(value / 10);
+				for (let j = 0; j < var_index; j++)
+				{
+					current_line += "|";
+				}
+				
+				
+				
+				current_line += "#";
+				
+				
+				
+				for (let j = var_index; j < num_total_variables - 1; j++)
+				{
+					current_line += "|";
+				}
+				
+				
+				
+				code.push(current_line);
+				
+				current_line_index++;
+				
+				
+				
+				for (let i = 0; i < num_digits; i++)
+				{
+					let current_line = "";
+					
+					for (let j = 0; j < var_index; j++)
+					{
+						current_line += "|";
+					}
+					
+					
+					
+					current_line += value[i];
+					
+					
+					
+					for (let j = var_index; j < num_total_variables - 1; j++)
+					{
+						current_line += "|";
+					}
+					
+					
+					
+					code.push(current_line);
+					
+					current_line_index++;
+				}
 			}
 			
 			
 			
-			let pass_block = get_pass_block([var_index]);
-			
-			code.push(pass_block + "  |");
-			code.push(pass_block + "  #");
-			
-			for (let i = 0; i < num_digits; i++)
+			else
 			{
-				code.push(pass_block + `  ${digits[num_digits - i - 1]}`);
-			}
-			
-			code.push(pass_block + "  |");
-			
-			current_line_index += num_digits + 3;
-			
-			
-			
-			if (negative)
-			{
+				write_start_unary_operation(var_index);
+				
+				
+				
+				let pass_block = get_pass_block([var_index]);
+				
+				code.push(pass_block + "  |");
+				code.push(pass_block + "  #");
+				
+				for (let i = 0; i < num_digits; i++)
+				{
+					code.push(pass_block + `  ${digits[num_digits - i - 1]}`);
+				}
+				
+				code.push(pass_block + "  |");
+				
+				current_line_index += num_digits + 3;
+				
+				
+				
 				code.push(pass_block + "  *--\\");
 				code.push(pass_block + "  |  |");
 				code.push(pass_block + "  #  |");
@@ -994,11 +1053,13 @@
 				code.push(pass_block + "  |");
 				
 				current_line_index += 7;
+				
+				
+				
+				write_end_unary_operation(var_index);
 			}
 			
 			
-			
-			write_end_unary_operation(var_index);
 			
 			code.push(get_pass_block([]));
 			
@@ -1064,22 +1125,57 @@
 	
 	function write_print_variable_block(var_index)
 	{
-		write_start_unary_operation(var_index);
+		let current_line = "";
+		
+		for (let j = 0; j < var_index; j++)
+		{
+			current_line += "|";
+		}
 		
 		
 		
-		let pass_block = get_pass_block([var_index]);
-		
-		code.push(pass_block + "  |");
-		code.push(pass_block + "  $");
-		code.push(pass_block + "  #");
-		code.push(pass_block + "  |");
-		
-		current_line_index += 4;
+		current_line += "$";
 		
 		
 		
-		write_end_unary_operation(var_index);
+		for (let j = var_index; j < num_total_variables - 1; j++)
+		{
+			current_line += "|";
+		}
+		
+		
+		
+		code.push(current_line);
+		
+		current_line_index++;
+		
+		
+		
+		current_line = "";
+		
+		for (let j = 0; j < var_index; j++)
+		{
+			current_line += "|";
+		}
+		
+		
+		
+		current_line += "#";
+		
+		
+		
+		for (let j = var_index; j < num_total_variables - 1; j++)
+		{
+			current_line += "|";
+		}
+		
+		
+		
+		code.push(current_line);
+		
+		current_line_index++;
+		
+		
 		
 		code.push(get_pass_block([]));
 		
@@ -1115,22 +1211,57 @@
 	
 	function write_input_block(var_index)
 	{
-		write_start_unary_operation(var_index);
+		let current_line = "";
+		
+		for (let j = 0; j < var_index; j++)
+		{
+			current_line += "|";
+		}
 		
 		
 		
-		let pass_block = get_pass_block([var_index]);
-		
-		code.push(pass_block + "  |");
-		code.push(pass_block + "  #");
-		code.push(pass_block + "  ?");
-		code.push(pass_block + "  |");
-		
-		current_line_index += 4;
+		current_line += "#";
 		
 		
 		
-		write_end_unary_operation(var_index);
+		for (let j = var_index; j < num_total_variables - 1; j++)
+		{
+			current_line += "|";
+		}
+		
+		
+		
+		code.push(current_line);
+		
+		current_line_index++;
+		
+		
+		
+		current_line = "";
+		
+		for (let j = 0; j < var_index; j++)
+		{
+			current_line += "|";
+		}
+		
+		
+		
+		current_line += "?";
+		
+		
+		
+		for (let j = var_index; j < num_total_variables - 1; j++)
+		{
+			current_line += "|";
+		}
+		
+		
+		
+		code.push(current_line);
+		
+		current_line_index++;
+		
+		
 		
 		code.push(get_pass_block([]));
 		
@@ -1537,6 +1668,316 @@
 			code.push(current_line);
 			
 			current_line_index++;
+		}
+		
+		
+		
+		code.push(get_pass_block([]));
+		
+		current_line_index++;
+	}
+	
+	
+	
+	function write_start_while_block()
+	{
+		//A while loop is just an if statement with a goto at the end.
+		
+		block_starting_line_indices.push(current_line_index);
+		
+		
+		
+		for (let i = 0; i < num_total_variables; i++)
+		{
+			let current_line = "";
+			
+			for (let j = 0; j < i; j++)
+			{
+				current_line += "|";
+			}
+			
+			
+			
+			current_line += "V";
+			
+			
+			
+			for (let j = 0; j < num_total_variables - i - 1; j++)
+			{
+				current_line += "+";
+			}
+			
+			
+			
+			code.push(current_line);
+			
+			current_line_index++;
+		}
+		
+		
+		
+		code.push(get_pass_block([]));
+		
+		current_line_index++;
+		
+		
+		
+		write_start_if_block();
+	}
+	
+	
+	function write_end_while_block()
+	{
+		//Place the reflecter that leads back to the top of the loop.
+		for (let i = 0; i < num_total_variables; i++)
+		{
+			let current_line = "";
+			
+			
+			
+			for (let j = 0; j < i; j++)
+			{
+				current_line += " ";
+			}
+			
+			
+			
+			current_line += "\\";
+			
+			
+			
+			for (let j = 0; j < num_total_variables - i - 1; j++)
+			{
+				current_line += "+";
+			}
+			
+			
+			
+			code.push(current_line);
+			
+			current_line_index++;
+		}
+		
+		
+		
+		code.push("");
+			
+		current_line_index++;
+		
+		
+		
+		//Construct the path that is taken when the loop condition is false. This is almost verbatim the end if block, but the rejoining can be made slightly cleaner and the crossing of paths need to be handled.
+		let target_width = 0;
+		
+		let start_index = block_starting_line_indices[block_starting_line_indices.length - 1];
+		block_starting_line_indices.pop();
+		
+		for (let i = start_index; i < current_line_index; i++)
+		{
+			if (code[i].length >= target_width)
+			{
+				target_width = code[i].length;
+			}
+		}
+		
+		target_width++;
+		
+		
+		
+		//Now we'll install a pathway outside going down.
+		for (let i = start_index; i < start_index + num_total_variables; i++)
+		{
+			let extend_width = target_width - code[i].length;
+			
+			let add_on_string = "";
+			
+			for (let j = 0; j < extend_width; j++)
+			{
+				add_on_string += "-";
+			}
+			
+			for (let j = 0; j < i - start_index; j++)
+			{
+				add_on_string += "+";
+			}
+			
+			add_on_string += "\\";
+			
+			code[i] += add_on_string;
+		}
+		
+		
+		
+		for (let i = start_index + num_total_variables; i < current_line_index; i++)
+		{
+			let extend_width = target_width - code[i].length;
+			
+			let add_on_string = "";
+			
+			for (let j = 0; j < extend_width; j++)
+			{
+				add_on_string += " ";
+			}
+			
+			for (let j = 0; j < num_total_variables; j++)
+			{
+				add_on_string += "|";
+			}
+			
+			code[i] += add_on_string;
+		}
+		
+		
+		
+		//Now we'll start adding new lines to merge all of this back in.
+		for (let i = 0; i < num_total_variables; i++)
+		{
+			let current_line = "";
+			
+			for (let j = 0; j < i; j++)
+			{
+				current_line += "|";
+			}
+			
+			
+			
+			current_line += "/";
+			
+			
+			
+			for (let j = 0; j < target_width - 1; j++)
+			{
+				current_line += "-";
+			}
+			
+			
+			
+			current_line += "/";
+			
+			
+			
+			for (let j = 0; j < num_total_variables - i - 1; j++)
+			{
+				current_line += "|";
+			}
+			
+			
+			
+			code.push(current_line);
+			
+			current_line_index++;
+		}
+		
+		
+		
+		//At this point all that's left is to make the path that goes from the end of the loop back to the start.
+		target_width = 0;
+		
+		start_index = block_starting_line_indices[block_starting_line_indices.length - 1];
+		block_starting_line_indices.pop();
+		
+		//The exit path ends after where we are, and we don't care about that.
+		let end_index = current_line_index - 2*num_total_variables - 1;
+		
+		for (let i = start_index; i < end_index; i++)
+		{
+			if (code[i].length >= target_width)
+			{
+				target_width = code[i].length;
+			}
+		}
+		
+		target_width++;
+		
+		
+		
+		//Now we'll install a pathway outside going down.
+		for (let i = start_index; i < start_index + num_total_variables; i++)
+		{
+			let extend_width = target_width - code[i].length;
+			
+			let add_on_string = "";
+			
+			for (let j = 0; j < extend_width; j++)
+			{
+				add_on_string += "-";
+			}
+			
+			for (let j = 0; j < i - start_index; j++)
+			{
+				add_on_string += "+";
+			}
+			
+			add_on_string += "\\";
+			
+			code[i] += add_on_string;
+		}
+		
+		
+		
+		for (let i = start_index + num_total_variables; i < end_index; i++)
+		{
+			let extend_width = target_width - code[i].length;
+			
+			let add_on_string = "";
+			
+			for (let j = 0; j < extend_width; j++)
+			{
+				add_on_string += " ";
+			}
+			
+			for (let j = 0; j < num_total_variables; j++)
+			{
+				add_on_string += "|";
+			}
+			
+			code[i] += add_on_string;
+		}
+		
+		
+		
+		//Finally, we'll install the crossing path.
+		for (let i = end_index; i < end_index + num_total_variables; i++)
+		{
+			let current_line = code[i].slice(0, num_total_variables);
+			
+			for (let j = num_total_variables; j < target_width - num_total_variables - 1; j++)
+			{
+				current_line += "-";
+			}
+			
+			
+			
+			for (let j = 0; j < num_total_variables; j++)
+			{
+				current_line += "+";
+			}
+			
+			
+			
+			current_line += "-";
+			
+			
+			
+			for (let j = 0; j < i - end_index; j++)
+			{
+				current_line += "-";
+			}
+			
+			
+			
+			current_line += "/";
+			
+			
+			
+			for (let j = 0; j < num_total_variables - (i - end_index) - 1; j++)
+			{
+				current_line += "|";
+			}
+			
+			
+			
+			code[i] = current_line;
 		}
 		
 		
