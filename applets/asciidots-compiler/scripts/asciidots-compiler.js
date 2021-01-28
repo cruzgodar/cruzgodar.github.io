@@ -4,7 +4,7 @@
 	
 	
 	
-	let code_string = "var test; input(test); print(1 + 1);";
+	let code_string = "var test; input(test); print(1 + 1 + 1 + 1 + 1); if";
 	
 	let code = [];
 	
@@ -626,6 +626,13 @@
 			
 			
 			
+			else if (code_lines[parse_index].slice(0, 2) === "if")
+			{
+				write_start_if_block();
+			}
+			
+			
+			
 			else if (code_lines[parse_index].indexOf("=") !== -1)
 			{
 				let operation_index = code_lines[parse_index].indexOf("=");
@@ -1161,6 +1168,244 @@
 		
 		
 		write_end_binary_operation(var_index_1, var_index_2);
+		
+		code.push(get_pass_block([]));
+		
+		current_line_index++;
+	}
+	
+	
+	
+	function write_start_if_block()
+	{
+		//Set up the loop-around.
+		for (let i = 0; i < num_total_variables; i++)
+		{
+			let current_line = get_pass_block([]);
+			
+			
+			
+			let num_spaces = (num_total_variables - i) * 2 + 1;
+			
+			for (let j = 0; j < num_spaces; j++)
+			{
+				current_line += " ";
+			}
+			
+			
+			
+			current_line += "/";
+			
+			
+			
+			for (let j = 0; j < i; j++)
+			{
+				current_line += "-+";
+			}
+			
+			
+			
+			for (let j = 0; j < num_total_variables - i; j++)
+			{
+				current_line += "-";
+			}
+			
+			
+			
+			current_line += "\\";
+			
+			
+			
+			for (let j = 0; j < i; j++)
+			{
+				current_line += "|";
+			}
+			
+			
+			
+			code.push(current_line);
+			
+			current_line_index++;
+		}
+		
+		
+		
+		//Now construct the main track.
+		for (let i = 0; i < num_total_variables; i++)
+		{
+			let current_line = "";
+			
+			
+			
+			for (let j = 0; j < i; j++)
+			{
+				current_line += " ";
+			}
+			
+			
+			
+			current_line += "\\";
+			
+			
+			
+			for (let j = 0; j < num_total_variables - i - 1; j++)
+			{
+				current_line += "+";
+			}
+			
+			
+			
+			if (i === num_total_variables - 1)
+			{
+				current_line += "-*-";
+			}
+			
+			else
+			{
+				current_line += "---";
+			}
+			
+			
+			
+			for (let j = 0; j < num_total_variables; j++)
+			{
+				if (j === i)
+				{
+					current_line += "~-";
+				}
+				
+				else
+				{
+					current_line += "+-";
+				}
+			}
+			
+			
+			
+			for (let j = 0; j < num_total_variables; j++)
+			{
+				current_line += "+";
+			}
+			
+			
+			
+			code.push(current_line);
+			
+			current_line_index++;
+		}
+		
+		
+		
+		//Now construct the conditional splitter.
+		
+		let current_line = "";
+		
+		for (let j = 0; j < num_total_variables + 1; j++)
+		{
+			current_line += " ";
+		}
+		
+		for (let j = 0; j < num_total_variables + 1; j++)
+		{
+			current_line += "| ";
+		}
+		
+		for (let j = 0; j < num_total_variables; j++)
+		{
+			current_line += "|";
+		}
+		
+		code.push(current_line);
+		
+		current_line_index++;
+		
+		
+		
+		current_line = "";
+		
+		for (let j = 0; j < num_total_variables + 1; j++)
+		{
+			current_line += " ";
+		}
+		
+		current_line += "\\";
+		
+		for (let j = 0; j < num_total_variables; j++)
+		{
+			current_line += "-*";
+		}
+		
+		current_line += " ";
+		
+		for (let j = 0; j < num_total_variables; j++)
+		{
+			current_line += "|";
+		}
+		
+		code.push(current_line);
+		
+		current_line_index++;
+		
+		
+		
+		current_line = "";
+		
+		for (let j = 0; j < 3 * num_total_variables + 3; j++)
+		{
+			current_line += " ";
+		}
+		
+		for (let j = 0; j < num_total_variables; j++)
+		{
+			current_line += "|";
+		}
+		
+		code.push(current_line);
+		
+		current_line_index++;
+		
+		
+		
+		//Reroute the variable track to its usual position.
+		for (let i = 0; i < num_total_variables; i++)
+		{
+			let current_line = "";
+			
+			for (let j = 0; j < i; j++)
+			{
+				current_line += "|";
+			}
+			
+			
+			
+			current_line += "/";
+			
+			
+			
+			for (let j = 0; j < 3 * num_total_variables + 2; j++)
+			{
+				current_line += "-";
+			}
+			
+			
+			
+			current_line += "/";
+			
+			
+			
+			for (let j = 0; j < num_total_variables - i - 1; j++)
+			{
+				current_line += "|";
+			}
+			
+			
+			
+			code.push(current_line);
+			
+			current_line_index++;
+		}
+		
+		
 		
 		code.push(get_pass_block([]));
 		
