@@ -4,7 +4,37 @@
 	
 	
 	
-	let code_string = "var test; test = 1; print(1 + 1 + 1); while (1) { test = test + 1; while (test) { print(test); }; }; print(test);";
+	let code_string = `
+		var num;
+		var divisor;
+		var prime;
+		
+		while (num < 100)
+		{
+			num = num + 2;
+			
+			divisor = 1;
+			
+			prime = 1;
+			
+			while (divisor <= num / 2)
+			{
+				divisor = divisor + 2;
+				
+				if (num % divisor == 0)
+				{
+					prime = 0;
+					
+					divisor = 1;
+				}
+			}
+			
+			if (prime)
+			{
+				print(num);
+			}
+		}
+	`;
 	
 	let code = [];
 	
@@ -62,6 +92,7 @@
 		code_string = code_string.replace(/var /g, "var.");
 		code_string = code_string.replace(/{/g, ";");
 		code_string = code_string.replace(/ /g, "");
+		code_string = code_string.replace(/\t/g, "");
 		code_string = code_string.replace(/\n/g, ";");
 		
 		code_string = code_string.replace(/==/g, "?");
@@ -109,7 +140,7 @@
 			
 			else
 			{
-				break;
+				parse_index++;
 			}
 		}
 		
@@ -713,6 +744,20 @@
 				write_operation_block(variables[code_lines[parse_index].slice(0, operation_index)], variables[code_lines[parse_index].slice(operation_index + 1, code_lines[parse_index].length)], code_lines[parse_index][operation_index]);
 			}
 		}
+		
+		
+		
+		//Now we'll write a return line and leave.
+		current_line = "";
+		
+		for (let i = 0; i < num_total_variables; i++)
+		{
+			current_line += "&";
+		}
+		
+		code.push(current_line);
+		
+		current_line_index++;
 	}
 	
 	
@@ -817,7 +862,11 @@
 	{
 		if (var_1_index === var_2_index)
 		{
-			console.log("Indices cannot be the same in a binary operation!");
+			console.log("Indices cannot be the same in a binary operation:", var_1_index, var_2_index);
+			
+			console.log("Code line:", code_lines[parse_index]);
+			
+			console.log("Ascii line:", code[current_line_index]);
 		}
 		
 		
@@ -866,7 +915,15 @@
 		
 		for (let i = var_2_index + 1; i < num_total_variables; i++)
 		{
-			current_line += "+";
+			if (i === var_1_index)
+			{
+				current_line += "-";
+			}
+			
+			else
+			{
+				current_line += "+";
+			}
 		}
 		
 		//For this second one, we need to go five out, and there will be a crossing.
@@ -886,7 +943,11 @@
 	{
 		if (var_1_index === var_2_index)
 		{
-			console.log("Indices cannot be the same in a binary operation!");
+			console.log("Indices cannot be the same in a binary operation:", var_1_index, var_2_index);
+			
+			console.log("Code line:", code_lines[parse_index]);
+			
+			console.log("Ascii line:", code[current_line_index]);
 		}
 		
 		
@@ -1079,7 +1140,7 @@
 			let pass_block = get_pass_block([var_index, var_index_2]);
 			
 			code.push(pass_block + "  |  |");
-			code.push(pass_block + `  /--*`);
+			code.push(pass_block + "  /--*");
 			code.push(pass_block + "  |  |");
 			
 			current_line_index += 3;
