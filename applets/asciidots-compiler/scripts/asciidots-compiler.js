@@ -38,6 +38,9 @@
 	
 	let code = [];
 	
+	let code_width = 0;
+	let code_height = 0;
+	
 	let code_lines = [];
 	
 	let new_code_lines = [];
@@ -48,6 +51,8 @@
 	let block_types = [];
 	
 	let variables = {};
+	
+	let character_elements = [];
 	
 	
 	
@@ -71,7 +76,39 @@
 	
 	
 	
+	window.addEventListener("resize", asciidots_resize);
+	temporary_handlers["resize"].push(asciidots_resize);
+	
+	
+	
 	js_to_asciidots();
+	
+	
+	
+	interpret_asciidots();
+	
+	
+	
+	function interpret_asciidots()
+	{
+		let active_elements = [];
+		
+		for (let i = 0; i < code_height; i++)
+		{
+			for (let j = 0; j < code[i].length; j++)
+			{
+				if (character_elements[i][j].textContent === "." || character_elements[i][j].textContent === "•")
+				{
+					active_elements.push([i, j]);
+				}
+			}
+		}
+		
+		for (let i = 0; i < active_elements.length; i++)
+		{
+			character_elements[active_elements[i][0]][active_elements[i][1]].style.color = "rgb(192, 0, 0)";
+		}
+	}
 	
 	
 	
@@ -748,6 +785,10 @@
 		
 		
 		//Now we'll write a return line and leave.
+		write_synchronize_block();
+		
+		
+		
 		current_line = "";
 		
 		for (let i = 0; i < num_total_variables; i++)
@@ -764,14 +805,58 @@
 	
 	function output_code()
 	{
-		let output = "";
+		code_width = 0;
 		
 		for (let i = 0; i < code.length; i++)
 		{
-			output += code[i] + "\n";
+			if (code[i].length > code_width)
+			{
+				code_width = code[i].length;
+			}
 		}
 		
-		console.log(output);
+		code_height = code.length;
+		
+		
+		
+		document.querySelector("#asciidots").textContent = "";
+		
+		let width_string = .7 * window.innerWidth * 172/104 / code_width + "px";
+		
+		if (layout_string === "compact")
+		{
+			width_string = .9 * window.innerWidth * 172/104 / code_width + "px";
+		}
+		
+		for (let i = 0; i < code.length; i++)
+		{
+			let element = document.createElement("p");
+			
+			element.classList.add("body-text");
+			element.classList.add("asciidots-code");
+			element.style.fontSize = width_string;
+			
+			
+			
+			let text = "";
+			
+			character_elements.push([]);
+			
+			for (let j = 0; j < code[i].length; j++)
+			{
+				let subelement = document.createElement("span");
+				
+				subelement.textContent = code[i][j];
+				
+				element.appendChild(subelement);
+				
+				character_elements[i].push(subelement);
+			}
+			
+			
+			
+			document.querySelector("#asciidots").appendChild(element);
+		}
 	}
 	
 	
@@ -1247,6 +1332,10 @@
 	
 	function write_print_string_block(message)
 	{
+		write_synchronize_block();
+		
+		
+		
 		write_start_unary_operation(num_total_variables - 1);
 		
 		
@@ -2046,5 +2135,221 @@
 		code.push(get_pass_block([]));
 		
 		current_line_index++;
+	}
+	
+	
+	
+	//Writes a block that waits for all dots to arrive before proceeding.
+	function write_synchronize_block()
+	{
+		let target_width = 3 * num_total_variables + 1;
+		
+		//Split the lines.
+		for (let i = 0; i < num_total_variables; i++)
+		{
+			let current_line = "";
+			
+			for (let j = 0; j < i; j++)
+			{
+				current_line += "|";
+			}
+			
+			current_line += "*";
+			
+			for (let j = 0; j < num_total_variables - i - 1; j++)
+			{
+				current_line += "+";
+			}
+			
+			for (let j = num_total_variables; j < target_width - 1; j++)
+			{
+				current_line += "-";
+			}
+			
+			
+			
+			if (i === 0)
+			{
+				current_line += "-\\";
+			}
+			
+			else
+			{
+				current_line += "[+]";
+			}
+			
+			
+			
+			code.push(current_line);
+			
+			current_line_index++;
+			
+			
+			
+			current_line = get_pass_block([]);
+			
+			for (let j = num_total_variables; j < target_width; j++)
+			{
+				current_line += " ";
+			}
+			
+			current_line += "|";
+			
+			
+			code.push(current_line);
+			
+			current_line_index++;
+		}
+		
+		
+		
+		for (let i = 0; i < num_total_variables; i++)
+		{
+			let current_line = "";
+			
+			for (let j = 0; j < num_total_variables - i - 1; j++)
+			{
+				current_line += "|";
+			}
+			
+			current_line += "\\";
+			
+			for (let j = 0; j < 2 * (num_total_variables - i - 1); j++)
+			{
+				current_line += "-";
+			}
+			
+			current_line += "\\";
+			
+			for (let j = 0; j < i; j++)
+			{
+				current_line += "  |";
+			}
+			
+			
+			
+			if (i === 0)
+			{
+				current_line += "  #";
+			}
+			
+			else if (i === 1)
+			{
+				current_line += "  0";
+			}
+			
+			else
+			{
+				current_line += "  |";
+			}
+			
+			
+			
+			code.push(current_line);
+			
+			current_line_index++;
+		}
+		
+		
+		
+		for (let i = 0; i < num_total_variables; i++)
+		{
+			let current_line = "";
+			
+			for (let j = 0; j < i; j++)
+			{
+				current_line += " | ";
+			}
+			
+			current_line += "[+]";
+			
+			for (let j = 0; j < num_total_variables - i - 1; j++)
+			{
+				current_line += "-+-";
+			}
+			
+			current_line += "-*";
+			
+			
+			
+			code.push(current_line);
+			
+			current_line_index++;
+			
+			
+			
+			current_line = "";
+			
+			for (let j = 0; j < num_total_variables; j++)
+			{
+				current_line += " | ";
+			}
+			
+			if (i !== num_total_variables - 1)
+			{
+				current_line += " |";
+			}
+			
+			
+			
+			code.push(current_line);
+			
+			current_line_index++;
+		}
+		
+		
+		
+		for (let i = 0; i < num_total_variables; i++)
+		{
+			let current_line = "";
+			
+			for (let j = 0; j < i; j++)
+			{
+				current_line += "|";
+			}
+			
+			current_line += "/";
+			
+			for (let j = 0; j < 2 * i; j++)
+			{
+				current_line += "-";
+			}
+			
+			current_line += "/";
+			
+			for (let j = 0; j < num_total_variables - i - 1; j++)
+			{
+				current_line += "  |";
+			}
+			
+			
+			
+			code.push(current_line);
+			
+			current_line_index++;
+		}
+		
+		
+		
+		code.push(get_pass_block([]));
+		
+		current_line_index++;
+	}
+	
+	
+	
+	function asciidots_resize()
+	{
+		let width_string = .7 * window.innerWidth * 172/104 / code_width + "px";
+		
+		if (layout_string === "compact")
+		{
+			width_string = .9 * window.innerWidth * 172/104 / code_width + "px";
+		}
+		
+		for (let i = 0; i < code.length; i++)
+		{
+			document.querySelector(`#row-${i}`).style.fontSize = width_string;
+		}
 	}
 }()
