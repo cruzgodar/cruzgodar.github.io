@@ -76,6 +76,10 @@
 	
 	
 	
+	let web_worker = null;
+	
+	
+	
 	window.addEventListener("resize", asciidots_resize);
 	temporary_handlers["resize"].push(asciidots_resize);
 	
@@ -83,7 +87,9 @@
 	
 	js_to_asciidots();
 	
+	//code = [" . ", " | ", "-*-", " | "];
 	
+	//output_code();
 	
 	interpret_asciidots();
 	
@@ -91,23 +97,45 @@
 	
 	function interpret_asciidots()
 	{
+		try {web_worker.terminate();}
+		catch(ex) {}
+		
+		if (DEBUG)
+		{
+			web_worker = new Worker("/applets/asciidots-compiler/scripts/worker.js");
+		}
+		
+		else
+		{
+			web_worker = new Worker("/applets/asciidots-compiler/scripts/worker.min.js");
+		}
+		
 		let active_elements = [];
 		
-		for (let i = 0; i < code_height; i++)
+		temporary_web_workers.push(web_worker);
+		
+		web_worker.onmessage = function(e)
 		{
-			for (let j = 0; j < code[i].length; j++)
+			if (e.data[1])
 			{
-				if (character_elements[i][j].textContent === "." || character_elements[i][j].textContent === "•")
+				for (let i = 0; i < e.data[0].length; i++)
 				{
-					active_elements.push([i, j]);
+					character_elements[e.data[0][i][0]][e.data[0][i][1]].classList.add("active");
+				}
+			}
+			
+			else
+			{
+				for (let i = 0; i < e.data[0].length; i++)
+				{
+					character_elements[e.data[0][i][0]][e.data[0][i][1]].classList.remove("active");
 				}
 			}
 		}
 		
-		for (let i = 0; i < active_elements.length; i++)
-		{
-			character_elements[active_elements[i][0]][active_elements[i][1]].style.color = "rgb(192, 0, 0)";
-		}
+		
+		
+		web_worker.postMessage([code]);
 	}
 	
 	
@@ -827,6 +855,12 @@
 		{
 			width_string = .9 * window.innerWidth * 172/104 / code_width + "px";
 		}
+		
+		
+		
+		character_elements = [];
+		
+		
 		
 		for (let i = 0; i < code.length; i++)
 		{
@@ -1786,7 +1820,7 @@
 			
 			
 			
-			current_line += "V";
+			current_line += "v";
 			
 			
 			
@@ -1848,7 +1882,7 @@
 			
 			
 			
-			current_line += "V";
+			current_line += "v";
 			
 			
 			

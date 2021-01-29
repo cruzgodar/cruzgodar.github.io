@@ -4,3 +4,8 @@
 	
 	white-space: pre;
 }
+
+.active
+{
+	color: rgb(192, 0, 0);
+}
