@@ -63,6 +63,12 @@
     
     
     
+    "image-quiz-5":
+    {
+        "webp": "quizzes/5/cover.webp",
+        "non-webp": "quizzes/5/cover.jpg"
+    },
+    
     "image-week-6-notes":
     {
         "webp": "notes/6/cover.webp",
@@ -77,6 +83,11 @@
     
     
     
+    "image-quiz-4":
+    {
+        "webp": "quizzes/4/cover.webp",
+        "non-webp": "quizzes/4/cover.jpg"
+    },
     
     "image-week-5-notes":
     {
