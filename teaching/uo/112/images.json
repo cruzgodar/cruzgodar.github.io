@@ -49,6 +49,12 @@
     
     
     
+    "image-quiz-6":
+    {
+        "webp": "quizzes/6/cover.webp",
+        "non-webp": "quizzes/6/cover.jpg"
+    },
+    
     "image-week-7-notes":
     {
         "webp": "notes/7/cover.webp",
