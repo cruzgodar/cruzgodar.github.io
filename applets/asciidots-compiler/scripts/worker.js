@@ -18,10 +18,12 @@ let new_active_elements = [];
 
 let active_conditionals = [];
 
+let active_operations = [];
+
 let valid_up_tokens = ["|", "+", "/", "\\", "v", "^", "<", ">", "*", "~", "!", "#", "@", "$", "&", ":", ";", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-let valid_right_tokens = ["-", "+", "/", "\\", "(", ")", "v", "^", "<", ">", "*", "~", "#", "@", "$", "&", ":", ";", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+let valid_right_tokens = ["-", "+", "/", "\\", "(", ")", "v", "^", "<", ">", "*", "~", "#", "@", "$", "&", ":", ";", "[", "{", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 let valid_down_tokens = ["|", "+", "/", "\\", "v", "^", "<", ">", "*", "#", "@", "$", "&", ":", ";", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-let valid_left_tokens = ["-", "+", "/", "\\", "(", ")", "v", "^", "<", ">", "*", "~", "#", "@", "$", "&", ":", ";", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+let valid_left_tokens = ["-", "+", "/", "\\", "(", ")", "v", "^", "<", ">", "*", "~", "#", "@", "$", "&", ":", ";", "]", "}", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 let operations = ["+", "-", "*", "/", "%", "^", "&", "o", "x", ">", "G", "<", "L", "=", "!"];
 
@@ -66,15 +68,15 @@ function animate_asciidots()
 		
 		
 		
-		postMessage([active_elements, true]);
+		postMessage([active_elements, 1]);
 		
 		
 		
 		while (true)
 		{
-			await sleep(200);
+			await sleep(5);
 			
-			postMessage([active_elements, false]);
+			postMessage([active_elements, 0]);
 			
 			
 			
@@ -93,6 +95,8 @@ function animate_asciidots()
 			for (let i = 0; i < active_elements.length; i++)
 			{
 				let move_ability = can_move(active_elements[i][0], active_elements[i][1], active_elements[i][4]);
+				
+				
 				
 				if (move_ability === 1)
 				{
@@ -118,14 +122,20 @@ function animate_asciidots()
 					}
 				}
 				
+				
+				
 				else if (move_ability === 2)
 				{
 					active_elements[i][0] += direction[active_elements[i][4]][0];
 					active_elements[i][1] += direction[active_elements[i][4]][1];
 					
-					//parse_operation(i, code[active_elements[i][0]][active_elements[i][1]]);
+					if (active_elements[i][4] % 2 === 1)
+					{
+						active_elements[i][0] += direction[active_elements[i][4]][0];
+						active_elements[i][1] += direction[active_elements[i][4]][1];
+					}
 					
-					new_active_elements.push(active_elements[i]);
+					parse_operation(i, code[active_elements[i][0]][active_elements[i][1]]);
 				}
 			}
 			
@@ -133,7 +143,7 @@ function animate_asciidots()
 			
 			active_elements = JSON.parse(JSON.stringify(new_active_elements));
 			
-			postMessage([active_elements, true]);
+			postMessage([active_elements, 1]);
 		}
 		
 		
@@ -151,7 +161,7 @@ function can_move(row, col, direction)
 	{
 		if (row > 0)
 		{
-			if (col > 0 && col < code[row].length - 1 && operations.includes(code[row - 1][col]) && ((code[row - 1][col - 1] === "[" && code[row - 1][col + 1] === "]") || (code[row - 1][col - 1] === "{" && code[row - 1][col + 1] === "}")))
+			if (col > 0 && col < code[row - 1].length - 1 && operations.includes(code[row - 1][col]) && ((code[row - 1][col - 1] === "[" && code[row - 1][col + 1] === "]") || (code[row - 1][col - 1] === "{" && code[row - 1][col + 1] === "}")))
 			{
 				return 2;
 			}
@@ -191,7 +201,7 @@ function can_move(row, col, direction)
 	{
 		if (row < code.length - 1)
 		{
-			if (col > 0 && col < code[row].length - 1 && operations.includes(code[row + 1][col]) && ((code[row + 1][col - 1] === "[" && code[row + 1][col + 1] === "]") || (code[row + 1][col - 1] === "{" && code[row + 1][col + 1] === "}")))
+			if (col > 0 && col < code[row + 1].length - 1 && operations.includes(code[row + 1][col]) && ((code[row + 1][col - 1] === "[" && code[row + 1][col + 1] === "]") || (code[row + 1][col - 1] === "{" && code[row + 1][col + 1] === "}")))
 			{
 				return 2;
 			}
@@ -398,6 +408,8 @@ function parse_token(index, token)
 						new_active_elements.push([active_conditionals[i][0], active_conditionals[i][1], active_conditionals[i][2], active_conditionals[i][3], 0]);
 					}
 					
+					postMessage([[[active_elements[index][0], active_elements[index][1]]], 0]);
+					
 					active_conditionals.splice(i, 1);
 					
 					break;
@@ -409,6 +421,8 @@ function parse_token(index, token)
 			if (!found_conditional)
 			{
 				active_conditionals.push([active_elements[index][0], active_elements[index][1], 0, 0, 0, active_elements[index][3]]);
+				
+				postMessage([[[active_elements[index][0], active_elements[index][1]]], 3]);
 			}
 			
 			
@@ -438,6 +452,8 @@ function parse_token(index, token)
 						new_active_elements.push([active_elements[index][0], active_elements[index][1], active_elements[index][2], active_elements[index][3], 0]);
 					}
 					
+					postMessage([[[active_elements[index][0], active_elements[index][1]]], 0]);
+					
 					active_conditionals.splice(i, 1);
 					
 					break;
@@ -449,6 +465,8 @@ function parse_token(index, token)
 			if (!found_conditional)
 			{
 				active_conditionals.push([active_elements[index][0], active_elements[index][1], active_elements[index][2], active_elements[index][3], active_elements[index][4], 0]);
+				
+				postMessage([[[active_elements[index][0], active_elements[index][1]]], 3]);
 			}
 			
 			
@@ -545,9 +563,180 @@ function parse_token(index, token)
 	
 	
 	
+	else if (token === "$")
+	{
+		active_elements[index][0] += direction[active_elements[index][4]][0];
+		active_elements[index][1] += direction[active_elements[index][4]][1];
+		
+		if (code[active_elements[index][0]][active_elements[index][1]] === "#")
+		{
+			postMessage([active_elements[index][3], "console"]);
+		}
+		
+		else if (code[active_elements[index][0]][active_elements[index][1]] === "@")
+		{
+			postMessage([active_elements[index][2], "console"]);
+		}
+	}
+	
+	
+	
 	else if (token === "&")
 	{
 		return -1;
+	}
+}
+
+
+
+function parse_operation(index, token)
+{
+	let found_operation = false;
+	
+	
+	
+	//This is the dominant dot.
+	if ((code[active_elements[index][0]][active_elements[index][1] - 1] === "[" && active_elements[index][4] % 2 === 0) || (code[active_elements[index][0]][active_elements[index][1] - 1] === "{" && active_elements[index][4] % 2 === 1))
+	{
+		//If there's already a dot waiting, do the operation and send the new dot out.
+		for (let i = 0; i < active_operations.length; i++)
+		{
+			if (active_operations[i][0] === active_elements[index][0] && active_operations[i][1] === active_elements[index][1])
+			{
+				found_operation = true;
+				
+				new_active_elements.push([active_elements[index][0], active_elements[index][1], active_elements[index][2], operation_output(active_elements[index][3], active_operations[i][5], token), active_elements[index][4]]);
+				
+				postMessage([[[active_elements[index][0], active_elements[index][1]]], 0]);
+				
+				active_operations.splice(i, 1);
+				
+				break;
+			}
+		}
+		
+		
+		
+		//If not, store this one. It's dominant, so its values get written.
+		if (!found_operation)
+		{
+			active_operations.push([active_elements[index][0], active_elements[index][1], active_elements[index][2], active_elements[index][3], active_elements[index][4], active_elements[index][3]]);
+			
+			postMessage([[[active_elements[index][0], active_elements[index][1]]], 2]);
+		}
+	}
+	
+	
+	
+	//This is not the dominant dot.
+	else
+	{
+		//If there's already a dot waiting, do the operation and send the new dot out.
+		for (let i = 0; i < active_operations.length; i++)
+		{
+			if (active_operations[i][0] === active_elements[index][0] && active_operations[i][1] === active_elements[index][1])
+			{
+				found_operation = true;
+				
+				new_active_elements.push([active_operations[i][0], active_operations[i][1], active_operations[i][2], operation_output(active_operations[i][5], active_elements[index][3], token), active_operations[i][4]]);
+				
+				postMessage([[[active_elements[index][0], active_elements[index][1]]], 0]);
+				
+				active_operations.splice(i, 1);
+				
+				break;
+			}
+		}
+		
+		
+		
+		//If not, store this one. It's not dominant, so its values don't get written.
+		if (!found_operation)
+		{
+			active_operations.push([active_elements[index][0], active_elements[index][1], 0, 0, 0, active_elements[index][3]]);
+			
+			postMessage([[[active_elements[index][0], active_elements[index][1]]], 2]);
+		}
+	}
+}
+
+
+
+function operation_output(input_1, input_2, token)
+{
+	if (token === "+")
+	{
+		return input_1 + input_2;
+	}
+	
+	else if (token === "-")
+	{
+		return input_1 - input_2;
+	}
+	
+	else if (token === "*")
+	{
+		return input_1 * input_2;
+	}
+	
+	else if (token === "/")
+	{
+		return input_1 / input_2;
+	}
+	
+	else if (token === "%")
+	{
+		return input_1 % input_2;
+	}
+	
+	else if (token === "^")
+	{
+		return Math.pow(input_1, input_2);
+	}
+	
+	else if (token === "&")
+	{
+		return (input_1 && input_2) ? 1 : 0;
+	}
+	
+	else if (token === "o")
+	{
+		return (input_1 || input_2) ? 1 : 0;
+	}
+	
+	else if (token === "x")
+	{
+		return ((input_1 || input_2) && !(input_1 && input_2)) ? 1 : 0;
+	}
+	
+	else if (token === ">")
+	{
+		return (input_1 > input_2) ? 1 : 0;
+	}
+	
+	else if (token === "G")
+	{
+		return (input_1 >= input_2) ? 1 : 0;
+	}
+	
+	else if (token === "<")
+	{
+		return (input_1 < input_2) ? 1 : 0;
+	}
+	
+	else if (token === "L")
+	{
+		return (input_1 <= input_2) ? 1 : 0;
+	}
+	
+	else if (token === "=")
+	{
+		return (input_1 === input_2) ? 1 : 0;
+	}
+	
+	else if (token === "!")
+	{
+		return (input_1 !== input_2) ? 1 : 0;
 	}
 }
 

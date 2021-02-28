@@ -5,7 +5,7 @@
 	
 	
 	let code_string = `
-		var num;
+		var num = 1;
 		var divisor;
 		var prime;
 		
@@ -25,11 +25,11 @@
 				{
 					prime = 0;
 					
-					divisor = 1;
+					divisor = num;
 				}
 			}
 			
-			if (prime)
+			if (prime == 1)
 			{
 				print(num);
 			}
@@ -87,9 +87,9 @@
 	
 	js_to_asciidots();
 	
-	//code = [" . ", " | ", "-*-", " | "];
+	console.log(code_lines);
 	
-	//output_code();
+	output_code();
 	
 	interpret_asciidots();
 	
@@ -110,25 +110,48 @@
 			web_worker = new Worker("/applets/asciidots-compiler/scripts/worker.min.js");
 		}
 		
-		let active_elements = [];
-		
 		temporary_web_workers.push(web_worker);
+		
+		
 		
 		web_worker.onmessage = function(e)
 		{
-			if (e.data[1])
+			if (e.data[1] === 1)
 			{
 				for (let i = 0; i < e.data[0].length; i++)
 				{
-					character_elements[e.data[0][i][0]][e.data[0][i][1]].classList.add("active");
+					character_elements[e.data[0][i][0]][e.data[0][i][1]].classList.add("red");
 				}
+			}
+			
+			else if (e.data[1] === 2)
+			{
+				for (let i = 0; i < e.data[0].length; i++)
+				{
+					character_elements[e.data[0][i][0]][e.data[0][i][1]].classList.add("green");
+				}
+			}
+			
+			else if (e.data[1] === 3)
+			{
+				for (let i = 0; i < e.data[0].length; i++)
+				{
+					character_elements[e.data[0][i][0]][e.data[0][i][1]].classList.add("blue");
+				}
+			}
+			
+			else if (e.data[1] === "console")
+			{
+				console.log(e.data[0]);
 			}
 			
 			else
 			{
 				for (let i = 0; i < e.data[0].length; i++)
 				{
-					character_elements[e.data[0][i][0]][e.data[0][i][1]].classList.remove("active");
+					character_elements[e.data[0][i][0]][e.data[0][i][1]].classList.remove("red");
+					character_elements[e.data[0][i][0]][e.data[0][i][1]].classList.remove("green");
+					character_elements[e.data[0][i][0]][e.data[0][i][1]].classList.remove("blue");
 				}
 			}
 		}
@@ -291,11 +314,11 @@
 				
 				parse_index += new_code_lines.length;
 				
-				code_lines.splice(parse_index, 1, `_c=${current_temp_variable - 1}`);
+				code_lines.splice(parse_index, 1, `_c=_${current_temp_variable - 1}`);
 				
 				parse_index++;
 				
-				code_lines.splice(parse_index, 1, "if");
+				code_lines.splice(parse_index, 0, "if");
 				
 				parse_index++;
 				
@@ -311,6 +334,12 @@
 			
 			else if (code_lines[parse_index].slice(0, 6) === "while(")
 			{
+				code_lines.splice(parse_index, 0, "while-start");
+				
+				parse_index++;
+				
+				
+				
 				prepare_expression(code_lines[parse_index].slice(6, code_lines[parse_index].length - 1));
 				
 				for (let i = 0; i < new_code_lines.length; i++)
@@ -320,11 +349,11 @@
 				
 				parse_index += new_code_lines.length;
 				
-				code_lines.splice(parse_index, 1, `_c=${current_temp_variable - 1}`);
+				code_lines.splice(parse_index, 1, `_c=_${current_temp_variable - 1}`);
 				
 				parse_index++;
 				
-				code_lines.splice(parse_index, 1, "while");
+				code_lines.splice(parse_index, 0, "while");
 				
 				parse_index++;
 				
@@ -437,8 +466,8 @@
 				//Multiply the things to the left and right of this.
 				let lengths = find_token_lengths(expression, i);
 				
-				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}&_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
@@ -456,8 +485,8 @@
 				//Multiply the things to the left and right of this.
 				let lengths = find_token_lengths(expression, i);
 				
-				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}|_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
@@ -475,8 +504,8 @@
 				//Multiply the things to the left and right of this.
 				let lengths = find_token_lengths(expression, i);
 				
-				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}*_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
@@ -489,8 +518,8 @@
 				//Multiply the things to the left and right of this.
 				let lengths = find_token_lengths(expression, i);
 				
-				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}/_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
@@ -503,8 +532,8 @@
 				//Multiply the things to the left and right of this.
 				let lengths = find_token_lengths(expression, i);
 				
-				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}%_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
@@ -522,8 +551,8 @@
 				//Multiply the things to the left and right of this.
 				let lengths = find_token_lengths(expression, i);
 				
-				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}+_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
@@ -536,8 +565,8 @@
 				//Multiply the things to the left and right of this.
 				let lengths = find_token_lengths(expression, i);
 				
-				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}-_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
@@ -555,8 +584,8 @@
 				//Multiply the things to the left and right of this.
 				let lengths = find_token_lengths(expression, i);
 				
-				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}?_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
@@ -569,8 +598,8 @@
 				//Multiply the things to the left and right of this.
 				let lengths = find_token_lengths(expression, i);
 				
-				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}~_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
@@ -583,8 +612,8 @@
 				//Multiply the things to the left and right of this.
 				let lengths = find_token_lengths(expression, i);
 				
-				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}<_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
@@ -597,8 +626,8 @@
 				//Multiply the things to the left and right of this.
 				let lengths = find_token_lengths(expression, i);
 				
-				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}>_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
@@ -611,8 +640,8 @@
 				//Multiply the things to the left and right of this.
 				let lengths = find_token_lengths(expression, i);
 				
-				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}[_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
@@ -625,8 +654,8 @@
 				//Multiply the things to the left and right of this.
 				let lengths = find_token_lengths(expression, i);
 				
-				new_code_lines.push(`_${current_temp_variable}=${expression.slice(lengths[0], i)}`);
-				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable}=${expression.slice(i + 1, lengths[1] + 1)}`);
+				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}]_${current_temp_variable}`);
 				
 				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
@@ -728,9 +757,20 @@
 			
 			else if (code_lines[parse_index].slice(0, 2) === "if")
 			{
+				write_synchronize_block();
+				
 				block_types.push(0);
 				
 				write_start_if_block();
+			}
+			
+			
+			
+			else if (code_lines[parse_index].slice(0, 11) === "while-start")
+			{
+				write_synchronize_block();
+				
+				write_pre_while_block();
 			}
 			
 			
@@ -864,11 +904,13 @@
 		
 		for (let i = 0; i < code.length; i++)
 		{
-			let element = document.createElement("p");
+			let element = document.createElement("h1");
 			
-			element.classList.add("body-text");
+			element.classList.add("heading-text");
 			element.classList.add("asciidots-code");
 			element.style.fontSize = width_string;
+			
+			element.id = "row-" + i;
 			
 			
 			
@@ -1863,10 +1905,8 @@
 	
 	
 	
-	function write_start_while_block()
+	function write_pre_while_block()
 	{
-		//A while loop is just an if statement with a goto at the end.
-		
 		block_starting_line_indices.push(current_line_index);
 		
 		
@@ -1903,9 +1943,13 @@
 		code.push(get_pass_block([]));
 		
 		current_line_index++;
-		
-		
-		
+	}
+	
+	
+	
+	function write_start_while_block()
+	{
+		//A while loop is just an if statement with a goto at the end.
 		write_start_if_block();
 	}
 	
@@ -2374,11 +2418,11 @@
 	
 	function asciidots_resize()
 	{
-		let width_string = .7 * window.innerWidth * 172/104 / code_width + "px";
+		let width_string = .07 * window.innerWidth * 172/104 / code_width + "px";
 		
 		if (layout_string === "compact")
 		{
-			width_string = .9 * window.innerWidth * 172/104 / code_width + "px";
+			width_string = .09 * window.innerWidth * 172/104 / code_width + "px";
 		}
 		
 		for (let i = 0; i < code.length; i++)
