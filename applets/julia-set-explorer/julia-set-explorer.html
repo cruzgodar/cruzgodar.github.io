@@ -31,52 +31,72 @@
 <main>
 	<section>
 		<div data-aos="fade-up">
-			<p class="body-text">The <a href="/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html" onclick="redirect('/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html')">Mandelbrot set</a>, maybe the most famous fractal ever discovered, has a family of closely related fractals &mdash; children, so to speak. Where the Mandelbrot set iterates the function \(f(z) = z^2 + c\) with \(c\) chosen as the starting \(z\)-value, Julia sets choose \(c\) beforehand and use it regardless of the starting \(z\)-value. This means that points close to \(c\) will look similar to the Mandelbrot set at that point, while the resemblance fades farther away. To emphasize that resemblance, this applet uses the Mandelbrot set to choose \(c\). Drag or hover on the Mandelbrot set to see the corresponding Julia set, and let go or click to lock it in place and apply autoexposure.</p>
+			<p class="body-text">It&#x2019;s hard to find a fractal more famous than the Mandelbrot set. It falls into a class of fractals called <dfn>Iterated Function Systems</dfn>, which all revolve around applying functions to points repeatedly and analyzing the output. Here, those points are in the complex plane, and the function is \(f(z) = z^2 + c\), where \(c\) is fixed at the initial value of the point. For example, the point \(-i\) gives \(f(i) = (-i)^2 + i = -1 + i\) when run through the function, and then \(-1 + i\) gives \(f(-1 + i) = (-1 + i)^2 + i = -i\) again. The function will flip-flop between those two numbers forever, and what&#x2019;s relevant to us is that their magnitudes will never blow up to infinity. Starting points with that property are the ones in the Mandelbrot set, and we color them black. For all the points that do induce sequences with unbounded magnitude, we color them according to how quickly those sequence grow &mdash; bright for slow and dark for fast.</p>
+		</div>
+		
+		<br>
+		
+		<div data-aos="fade-up">
+			<p class="body-text">Using the same \(c\) for every point results in a related type of fractal called a <dfn>Julia Set</dfn>, which resembles the Mandelbrot set at that point. Drag or hover on the Mandelbrot set to pick a Julia set after clicking the button, and click or release to explore that Julia set.</p>
+		</div>
+		
+		<br>
+		
+		<div data-aos="fade-up">
+			<p class="body-text">Of course, the Mandelbrot set and its Julias are most well-known for their tiny features only visible by zooming in. Drag on the scene to look around, and use the scroll wheel or pinch to zoom.</p>
 		</div>
 		
 		<div style="height: 10vh"></div>
 		
+		<div class="text-boxes">
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="image-size-input" class="text-box no-floating-footer" type="text" value="500" tabindex="1">
+				<label for="image-size-input">
+					<p class="body-text">Image Size</p>
+				</label>
+			</div>
+		</div>
 		
+		<div style="height: 10vh"></div>
 		
-		<div data-aos="fade-up">
-			<div id="container">
-				<img id="mandelbrot-set" class="check-webp no-floating-footer" src="" alt="The Mandelbrot Set"></img>
-				<canvas id="julia-set" class="no-floating-footer"></canvas>
+		<div class="text-buttons">
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1000" tabindex="1">
+				<button class="text-button no-floating-footer" type="button" id="switch-julia-mode-button" tabindex="-1">Pick Julia Set</button>
+			</div>
+		</div>
+		
+		<div style="height: 10vh"></div>
+		
+		<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="1500">
+			<canvas id="output-canvas" class="no-floating-footer"></canvas>
+		</div>
+		
+		<div style="height: 5vh"></div>
+		
+		<div class="center-content" data-aos="fade-in" data-aos-delay="1500">
+			<div id="fullscreen-message">
+				<p class="body-text">Double-click canvas to enter fullscreen</p>
 			</div>
 		</div>
 	</section>
 	
 	
 	
-	<div style="height: 15vh"></div>
+	<div style="height: 10vh"></div>
 	
 	
 	
 	<section>
 		<div class="new-aos-section" data-aos="fade-up">
-			<h2 class="section-text">Higher Resolution</h2>
+			<h2 class="section-text">High Resolution Capture</h2>
 		</div>
 		
 		<div style="height: 5vh"></div>
 		
 		<div class="text-boxes">
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="a-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="a-input">
-					<p class="body-text">\(a\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="b-input" class="text-box no-floating-footer" type="text" value="1" tabindex="1">
-				<label for="b-input">
-					<p class="body-text">\(b\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="dim-input" class="text-box no-floating-footer" type="text" value="2000" tabindex="1">
-				<label for="dim-input">
+				<input id="high-res-dim-input" class="text-box no-floating-footer" type="text" value="2000" tabindex="1">
+				<label for="high-res-dim-input">
 					<p class="body-text">Image Size</p>
 				</label>
 			</div>
@@ -85,30 +105,8 @@
 		<div style="height: 5vh"></div>
 		
 		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="900" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="1400">
-			<canvas id="output-canvas" class="no-floating-footer"></canvas>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="1400">
-			<div id="fullscreen-message">
-				<p class="body-text">Double-click canvas to enter fullscreen</p>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1900" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download Image</button>
+			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="600" tabindex="1">
+				<button class="text-button no-floating-footer" type="button" id="generate-high-res-image-button" tabindex="-1">Generate</button>
 			</div>
 		</div>
 	</section>

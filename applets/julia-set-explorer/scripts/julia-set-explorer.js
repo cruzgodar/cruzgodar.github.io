@@ -4,67 +4,109 @@
 	
 	
 	
-	let a = 0;
-	let b = 0;
-	let image_size = 1000;
-	let num_iterations = 200;
-	let brightness_scale = 10;
+	let gl = document.querySelector("#output-canvas").getContext("webgl");
 	
-	let small_canvas_size = 0;
-	let large_canvas_size = 0;
-
-	let small_image_size = 1000;
-
-	let small_num_iterations = 200;
-	let large_num_iterations = 1000;
-
-	let persist_image = false;
+	let canvas_width = document.querySelector("#output-canvas").offsetWidth;
+	let canvas_height = document.querySelector("#output-canvas").offsetHeight;
+	let canvas_size = Math.min(canvas_width, canvas_height);
 	
-	let drawing_big_canvas = false;
-	
+	let currently_drawing = false;
 	let stabilize_brightness_scale = false;
 	let brightness_stabilization_direction = 0;
+	let timeout_id = null;
 	
-	let draw_another_frame = false;
-	let need_to_restart = true;
+	let mouse_x = 0;
+	let mouse_y = 0;
+	let touch_distance = 0;
+	let wheel_cooldown = 0;
 	
-	let gl = document.querySelector("#julia-set").getContext("webgl");
+	let currently_dragging = false;
+	let zooming_in = false;
+	let zooming_out = false;
+	let pressing_shift = false;
 	
-	document.querySelector("#julia-set").setAttribute("width", small_image_size);
-	document.querySelector("#julia-set").setAttribute("height", small_image_size);
-
-
-
-	adjust_for_settings();
-
-
-
-	document.querySelector("#generate-button").addEventListener("click", draw_high_res_julia);
+	let was_recently_pinching = 0;
 	
-	let elements = document.querySelectorAll("#a-input, #b-input, #dim-input");
+	let julia_mode = 0;
 	
-	for (let i = 0; i < elements.length; i++)
+	
+	
+	let center_x = -.75;
+	let center_y = 0;
+	let a = 0;
+	let b = 0;
+	let box_size = 3;
+	let zoom_level = 0;
+	let brightness_scale = 13;
+	
+	
+	
+	let image_size = 500;
+	let image_width = 500;
+	let image_height = 500;
+	
+	let num_iterations = 200;
+	
+	
+	
+	document.querySelector("#output-canvas").setAttribute("width", image_width);
+	document.querySelector("#output-canvas").setAttribute("height", image_height);
+	
+	document.querySelector("#image-size-input").addEventListener("input", change_resolution);
+	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
+	
+	document.querySelector("#switch-julia-mode-button").addEventListener("click", function()
 	{
-		elements[i].addEventListener("keydown", function(e)
+		document.querySelector("#switch-julia-mode-button").style.opacity = 0;
+		
+		setTimeout(function()
 		{
-			if (e.keyCode === 13)
+			if (julia_mode === 2)
 			{
-				draw_high_res_julia();
+				document.querySelector("#switch-julia-mode-button").textContent = "Return to Mandelbrot Set";
 			}
-		});
-	}
+			
+			else if (julia_mode === 0)
+			{
+				document.querySelector("#switch-julia-mode-button").textContent = "Pick Julia Set";
+				
+				document.querySelector("#switch-julia-mode-button").style.opacity = 1;
+			}
+		}, 300);
+		
+		
+		
+		if (julia_mode === 0)
+		{
+			julia_mode = 2;
+			a = 0;
+			b = 0;
+		}
+		
+		else if (julia_mode === 1)
+		{
+			julia_mode = 0;
+			
+			center_x = -.75;
+			center_y = 0;
+			box_size = 3;
+			zoom_level = 0;
+			brightness_scale = 13;
+		}
+		
+		stabilize_brightness_scale = true;
+		
+		if (!currently_drawing)
+		{
+			currently_drawing = true;
+			window.requestAnimationFrame(draw_frame);
+		}
+	});
 	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
-
-
 	
-	small_canvas_size = document.querySelector("#julia-set").offsetWidth;
-	large_canvas_size = document.querySelector("#output-canvas").offsetWidth;
-
-	window.addEventListener("resize", julia_resize);
-	temporary_handlers["resize"].push(julia_resize);
-
-	setTimeout(julia_resize, 1000);
+	
+	window.addEventListener("resize", fractals_resize);
+	setTimeout(fractals_resize, 500);
 	
 	
 	
@@ -72,12 +114,53 @@
 	
 	applet_canvas_resize_callback = function()
 	{
-		large_canvas_size = document.querySelector("#output-canvas").offsetWidth;
+		if (canvas_is_fullscreen)
+		{
+			if (aspect_ratio >= 1)
+			{
+				image_width = image_size;
+				image_height = Math.floor(image_size / aspect_ratio);
+			}
+			
+			else
+			{
+				image_width = Math.floor(image_size * aspect_ratio);
+				image_height = image_size;
+			}
+		}
+		
+		else
+		{
+			image_width = image_size;
+			image_height = image_size;
+		}
+		
+		
+		
+		canvas_width = document.querySelector("#output-canvas").offsetWidth;
+		canvas_height = document.querySelector("#output-canvas").offsetHeight;
+		canvas_size = Math.min(canvas_width, canvas_height);
+		
+		document.querySelector("#output-canvas").setAttribute("width", image_width);
+		document.querySelector("#output-canvas").setAttribute("height", image_height);
+		
+		gl.viewport(0, 0, image_width, image_height);
+		
+		
+		
+		
+		fractals_resize();
+		
+		window.requestAnimationFrame(draw_frame);
 	};
 	
-	applet_canvas_true_fullscreen = false;
+	applet_canvas_true_fullscreen = true;
 	
 	set_up_canvas_resizer();
+	
+	
+	
+	init_listeners();
 	
 	
 	
@@ -105,44 +188,154 @@
 		
 		varying vec2 uv;
 		
-		const float box_size_halved = 2.0;
+		uniform float aspect_ratio;
+		
+		uniform float box_size_halved;
 		uniform float a;
 		uniform float b;
+		uniform float center_x;
+		uniform float center_y;
 		uniform float brightness_scale;
 		uniform int num_iterations;
+		
+		uniform int julia_mode;
 		
 		
 		
 		void main(void)
 		{
-			vec2 z = vec2(uv.x * box_size_halved, uv.y * box_size_halved);
+			vec2 z = vec2(uv.x * aspect_ratio * box_size_halved + center_x, uv.y * box_size_halved + center_y);
+			vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
 			float brightness = exp(-length(z));
 			
-			vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
 			
 			
-			
-			for (int iteration = 0; iteration < 1001; iteration++)
+			if (julia_mode == 0)
 			{
-				if (iteration == num_iterations)
+				vec2 c = z;
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
 				{
-					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-					return;
+					if (iteration == num_iterations)
+					{
+						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+						return;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					
+					brightness += exp(-length(z));
 				}
 				
-				if (z.x*z.x + z.y*z.y >= 8.0)
-				{
-					break;
-				}
 				
-				z = vec2(z.x * z.x - z.y * z.y + a, 2.0 * z.x * z.y + b);
-				
-				brightness += exp(-length(z));
+				gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
 			}
 			
 			
 			
-			gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+			else if (julia_mode == 1)
+			{
+				vec2 c = vec2(a, b);
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
+				{
+					if (iteration == num_iterations)
+					{
+						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+						return;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					
+					brightness += exp(-length(z));
+				}
+				
+				
+				gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+			}
+			
+			
+			
+			else
+			{
+				vec2 c = z;
+				
+				bool broken = false;
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
+				{
+					if (iteration == num_iterations)
+					{
+						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+						
+						broken = true;
+						
+						break;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					
+					brightness += exp(-length(z));
+				}
+				
+				
+				
+				if (!broken)
+				{
+					gl_FragColor = vec4(.5 * brightness / brightness_scale * color, 1.0);
+				}
+				
+				
+				
+				z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+				color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				brightness = exp(-length(z));
+				
+				broken = false;
+				
+				c = vec2(a, b);
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
+				{
+					if (iteration == num_iterations)
+					{
+						gl_FragColor.xyz /= 4.0;
+						
+						broken = true;
+						
+						break;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					
+					brightness += exp(-length(z));
+				}
+				
+				if (!broken)
+				{
+					gl_FragColor += vec4(brightness / brightness_scale * color, 0.0);
+				}
+			}
 		}
 	`;
 	
@@ -192,19 +385,25 @@
 		
 		
 		
+		shader_program.aspect_ratio_uniform = gl.getUniformLocation(shader_program, "aspect_ratio");
+		
+		shader_program.box_size_halved_uniform = gl.getUniformLocation(shader_program, "box_size_halved");
+		shader_program.center_x_uniform = gl.getUniformLocation(shader_program, "center_x");
+		shader_program.center_y_uniform = gl.getUniformLocation(shader_program, "center_y");
 		shader_program.a_uniform = gl.getUniformLocation(shader_program, "a");
 		shader_program.b_uniform = gl.getUniformLocation(shader_program, "b");
-		shader_program.num_iterations_uniform = gl.getUniformLocation(shader_program, "num_iterations");
 		shader_program.brightness_scale_uniform = gl.getUniformLocation(shader_program, "brightness_scale");
+		shader_program.num_iterations_uniform = gl.getUniformLocation(shader_program, "num_iterations");
+		
+		shader_program.julia_mode_uniform = gl.getUniformLocation(shader_program, "julia_mode");
 		
 		
 		
-		gl.viewport(0, 0, image_size, image_size);
+		gl.viewport(0, 0, image_width, image_height);
 		
 		
 		
-		init_listeners_no_touch();
-		init_listeners_touch();
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
@@ -230,21 +429,32 @@
 	
 	function draw_frame()
 	{
+		currently_drawing = false;
+		
+		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
+		
+		gl.uniform1f(shader_program.box_size_halved_uniform, box_size / 2);
+		gl.uniform1f(shader_program.center_x_uniform, center_x);
+		gl.uniform1f(shader_program.center_y_uniform, center_y);
 		gl.uniform1f(shader_program.a_uniform, a);
 		gl.uniform1f(shader_program.b_uniform, b);
-		gl.uniform1i(shader_program.num_iterations_uniform, num_iterations);
 		gl.uniform1f(shader_program.brightness_scale_uniform, brightness_scale);
+		gl.uniform1i(shader_program.num_iterations_uniform, num_iterations);
+		
+		gl.uniform1i(shader_program.julia_mode_uniform, julia_mode);
+		
+		
 		
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 		
 		
 		
-		let pixels = new Uint8Array(image_size * image_size * 4);
-		gl.readPixels(0, 0, image_size, image_size, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+		let pixels = new Uint8Array(image_width * image_height * 4);
+		gl.readPixels(0, 0, image_width, image_height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
 		
 		let num_pixels_at_max = 0;
 		
-		for (let i = 0; i < image_size * image_size; i++)
+		for (let i = 0; i < image_width * image_height; i++)
 		{
 			if (pixels[4 * i] === 255 || pixels[4 * i + 1] === 255 || pixels[4 * i + 2] === 255)
 			{
@@ -256,35 +466,36 @@
 		
 		let changed_brightness_scale = false;
 		
-		if (num_pixels_at_max < 1.5 * image_size && brightness_stabilization_direction !== 1)
+		let denom = center_x * center_x + center_y * center_y + 2;
+		
+		if (julia_mode !== 0)
 		{
+			denom = a*a + b*b + 2;
+		}
+		
+		if (num_pixels_at_max < 2 * image_size && brightness_stabilization_direction !== 1 && brightness_scale > 1 / denom)
+		{
+			brightness_scale -= .5 / denom;
+			
 			if (stabilize_brightness_scale)
 			{
-				brightness_scale -= .5;
+				brightness_scale -= .5 / denom;
 				
 				brightness_stabilization_direction = -1;
-			}
-			
-			else
-			{
-				brightness_scale -= .5 / (a*a + b*b + 2);
 			}
 			
 			changed_brightness_scale = true;
 		}
 		
-		else if (num_pixels_at_max > 2 * image_size && brightness_stabilization_direction !== -1)
+		else if (num_pixels_at_max > 4 * image_size && brightness_stabilization_direction !== -1)
 		{
+			brightness_scale += .5 / denom;
+			
 			if (stabilize_brightness_scale)
 			{
-				brightness_scale += .5;
+				brightness_scale += .5 / denom;
 				
 				brightness_stabilization_direction = 1;
-			}
-			
-			else
-			{
-				brightness_scale += .5 / (a*a + b*b + 2);
 			}
 			
 			changed_brightness_scale = true;
@@ -304,251 +515,460 @@
 				brightness_stabilization_direction = 0;
 				
 				stabilize_brightness_scale = false;
-				
-				if (drawing_big_canvas)
-				{
-					image_size = parseFloat(document.querySelector("#dim-input").value) || 1000;
-					
-					document.querySelector("#julia-set").setAttribute("width", image_size);
-					document.querySelector("#julia-set").setAttribute("height", image_size);
-					gl.viewport(0, 0, image_size, image_size);
-					
-					document.querySelector("#output-canvas").setAttribute("width", image_size);
-					document.querySelector("#output-canvas").setAttribute("height", image_size);
-					
-					draw_frame();
-					
-					document.querySelector("#output-canvas").getContext("2d").drawImage(document.querySelector("#julia-set"), 0, 0);
-					
-					drawing_big_canvas = false;
-					
-					num_iterations = small_num_iterations;
-					
-					brightness_scale = 5;
-					
-					
-					
-					draw_another_frame = false;
-					
-					need_to_restart = true;
-					
-					return;
-				}
 			}
 		}
 		
-		else if (draw_another_frame)
+		else if (currently_drawing)
 		{
-			draw_another_frame = false;
-			
 			window.requestAnimationFrame(draw_frame);
+		}
+	}
+	
+	
+	
+	function init_listeners()
+	{
+		document.querySelector("#output-canvas").addEventListener("mousedown", handle_mousedown_event);
+		
+		document.documentElement.addEventListener("mousemove", handle_mousemove_event);
+		temporary_handlers["mousemove"].push(handle_mousemove_event);
+		
+		document.documentElement.addEventListener("mouseup", handle_mouseup_event);
+		temporary_handlers["mouseup"].push(handle_mouseup_event);
+		
+		document.querySelector("#output-canvas").addEventListener("touchstart", handle_touchstart_event);
+		
+		document.querySelector("#output-canvas").addEventListener("touchmove", handle_touchmove_event);
+		
+		document.querySelector("#output-canvas").addEventListener("touchend", handle_touchend_event);
+		
+		window.addEventListener("wheel", handle_wheel_event, {passive: false});
+		temporary_handlers["wheel"].push(handle_wheel_event);
+	}
+	
+	
+	
+	function handle_mousedown_event(e)
+	{
+		e.preventDefault();
+		
+		mouse_x = e.clientX;
+		mouse_y = e.clientY;
+		
+		if (julia_mode !== 2)
+		{
+			currently_dragging = true;
 		}
 		
 		else
 		{
-			need_to_restart = true;
+			julia_mode = 1;
+			
+			center_x = 0;
+			center_y = 0;
+			box_size = 4;
+			zoom_level = 0;
+			
+			stabilize_brightness_scale = true;
+			
+			document.querySelector("#switch-julia-mode-button").style.opacity = 1;
 		}
+		
+		if (!currently_drawing)
+		{
+			currently_drawing = true;
+			stabilize_brightness_scale = true;
+			
+			window.requestAnimationFrame(draw_frame);
+		}
+	}
+	
+	
+	
+	function handle_mousemove_event(e)
+	{
+		let new_mouse_x = e.clientX;
+		let new_mouse_y = e.clientY;
+		
+		let mouse_x_delta = new_mouse_x - mouse_x;
+		let mouse_y_delta = new_mouse_y - mouse_y;
+		
+		mouse_x = new_mouse_x;
+		mouse_y = new_mouse_y;
+		
+		if (document.elementFromPoint(mouse_x, mouse_y) !== document.querySelector("#output-canvas"))
+		{
+			return;
+		}
+		
+		
+		
+		if (julia_mode !== 2)
+		{
+			if (currently_dragging)
+			{
+				e.preventDefault();
+				
+				center_x -= mouse_x_delta / canvas_height * box_size;
+				center_y += mouse_y_delta / canvas_height * box_size;
+				
+				if (!currently_drawing)
+				{
+					currently_drawing = true;
+					stabilize_brightness_scale = false;
+					
+					window.requestAnimationFrame(draw_frame);
+				}
+			}
+		}
+		
+		else
+		{
+			e.preventDefault();
+			
+			let local_mouse_x = mouse_x - document.querySelector("#output-canvas").getBoundingClientRect().left;
+			let local_mouse_y = mouse_y - document.querySelector("#output-canvas").getBoundingClientRect().top;
+			
+			a = ((local_mouse_x / canvas_width) - .5) * box_size + center_x;
+			b = (((canvas_height - local_mouse_y) / canvas_height) - .5) * box_size + center_y;
+			
+			if (!currently_drawing)
+			{
+				currently_drawing = true;
+				stabilize_brightness_scale = false;
+				
+				window.requestAnimationFrame(draw_frame);
+			}
+		}
+	}
+	
+	
+	
+	function handle_mouseup_event(e)
+	{
+		currently_dragging = false;
+		
+		currently_drawing = currently_dragging;
+	}
+	
+	
+	
+	function handle_touchstart_event(e)
+	{
+		mouse_x = e.touches[0].clientX;
+		mouse_y = e.touches[0].clientY;
+		
+		currently_dragging = true;
+		
+		
+		
+		if (!currently_drawing)
+		{
+			currently_drawing = true;
+			stabilize_brightness_scale = false;
+			
+			window.requestAnimationFrame(draw_frame);
+		}
+	}
+	
+	
+	
+	function handle_touchmove_event(e)
+	{
+		e.preventDefault();
+		
+		
+		
+		if (stabilize_brightness_scale)
+		{
+			return;
+		}
+		
+		
+		
+		let new_mouse_x = e.touches[0].clientX;
+		let new_mouse_y = e.touches[0].clientY;
+		
+		
+		
+		if (e.touches.length >= 2)
+		{
+			was_recently_pinching = 10;
+			
+			let x_distance = e.touches[0].clientX - e.touches[1].clientX;
+			let y_distance = e.touches[0].clientY - e.touches[1].clientY;
+			
+			let new_touch_distance = Math.sqrt(x_distance * x_distance + y_distance * y_distance);
+			
+			let touch_distance_delta = new_touch_distance - touch_distance;
+			
+			touch_distance = new_touch_distance;
+			
+			if (Math.abs(touch_distance_delta) > 20)
+			{
+				return;
+			}
+			
+			
+			
+			let rect = document.querySelector("#output-canvas").getBoundingClientRect();
+			
+			let touch_center_x_proportion = ((e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left) / canvas_width;
+			let touch_center_y_proportion = ((e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top) / canvas_height;
+			
+			let fixed_point_x = (touch_center_x_proportion * box_size - box_size / 2) * image_width / image_height + center_x;
+			let fixed_point_y = (box_size / 2 - touch_center_y_proportion * box_size) + center_y;
+			
+			
+			
+			let increment = touch_distance_delta / 2;
+			
+			if (zoom_level + increment >= 0)
+			{
+				zoom_level += increment;
+				
+				box_size = 3 / Math.pow(1.02, zoom_level);
+				
+				num_iterations = zoom_level * 3 + 200;
+			}
+			
+			
+			
+			center_x = fixed_point_x - (touch_center_x_proportion * box_size - box_size / 2) * image_width / image_height;
+			center_y = fixed_point_y - (box_size / 2 - touch_center_y_proportion * box_size);
+		}
+		
+		
+		
+		else
+		{
+			was_recently_pinching--;
+			
+			if (was_recently_pinching < 0)
+			{
+				was_recently_pinching = 0;
+			}
+		}
+		
+		
+		
+		let mouse_x_delta = new_mouse_x - mouse_x;
+		let mouse_y_delta = new_mouse_y - mouse_y;
+		
+		if (was_recently_pinching && (Math.abs(mouse_x_delta) > 50 || Math.abs(mouse_y_delta) > 50))
+		{
+			return;
+		}
+		
+		mouse_x = new_mouse_x;
+		mouse_y = new_mouse_y;
+		
+		if (julia_mode !== 2)
+		{
+			center_x -= mouse_x_delta / canvas_height * box_size;
+			center_y += mouse_y_delta / canvas_height * box_size;
+		}
+		
+		else
+		{
+			let local_mouse_x = mouse_x - document.querySelector("#output-canvas").getBoundingClientRect().left;
+			let local_mouse_y = mouse_y - document.querySelector("#output-canvas").getBoundingClientRect().top;
+			
+			a = ((local_mouse_x / canvas_width) - .5) * box_size + center_x;
+			b = (((canvas_height - local_mouse_y) / canvas_height) - .5) * box_size + center_y;
+		}
+		
+		if (!currently_drawing)
+		{
+			currently_drawing = true;
+			stabilize_brightness_scale = false;
+			
+			window.requestAnimationFrame(draw_frame);
+		}
+	}
+	
+	
+	
+	function handle_touchend_event(e)
+	{
+		if (e.touches.length === 0)
+		{
+			currently_drawing = false;
+			
+			if (julia_mode === 2)
+			{
+				julia_mode = 1;
+				
+				center_x = 0;
+				center_y = 0;
+				box_size = 4;
+				zoom_level = 0;
+				
+				document.querySelector("#switch-julia-mode-button").style.opacity = 1;
+			}
+		}
+		
+		stabilize_brightness_scale = true;
+		
+		setTimeout(function()
+		{
+			if (!currently_drawing)
+			{
+				window.requestAnimationFrame(draw_frame);
+			}
+		}, 200);
+	}
+	
+	
+	
+	function handle_wheel_event(e)
+	{
+		if (document.elementFromPoint(mouse_x, mouse_y).id === "output-canvas")
+		{
+			e.preventDefault();
+			
+			zoom_level -= Math.sign(e.deltaY) * 10;
+			
+			if (zoom_level < 1)
+			{
+				zoom_level = 1;
+				
+				brightness_scale = 13;
+			}
+			
+			
+			
+			let rect = document.querySelector("#output-canvas").getBoundingClientRect();
+			
+			let mouse_x_proportion = (mouse_x - rect.left) / canvas_width;
+			let mouse_y_proportion = (mouse_y - rect.top) / canvas_height;
+			
+			let fixed_point_x = (mouse_x_proportion * box_size - box_size / 2) * image_width / image_height + center_x;
+			let fixed_point_y = (box_size / 2 - mouse_y_proportion * box_size) + center_y;
+			
+			
+			
+			box_size = 3 / Math.pow(1.02, zoom_level);
+				
+			num_iterations = zoom_level * 3 + 200;
+			
+			
+			
+			center_x = fixed_point_x - (mouse_x_proportion * box_size - box_size / 2) * image_width / image_height;
+			center_y = fixed_point_y - (box_size / 2 - mouse_y_proportion * box_size);
+			
+			
+			
+			window.requestAnimationFrame(draw_frame);
+			
+			
+			
+			try {clearTimeout(timeout_id);}
+			catch(ex) {}
+			
+			timeout_id = setTimeout(function()
+			{
+				stabilize_brightness_scale = true;
+				
+				brightness_stabilization_direction = 0;
+				
+				window.requestAnimationFrame(draw_frame);
+			}, 500);
+		}
+	}
+	
+	
+	
+	function fractals_resize()
+	{
+		canvas_width = document.querySelector("#output-canvas").offsetWidth;
+		canvas_height = document.querySelector("#output-canvas").offsetHeight;
+		canvas_size = Math.min(canvas_width, canvas_height);
+	}
+	
+	
+	
+	function change_resolution()
+	{
+		image_size = parseInt(document.querySelector("#image-size-input").value || 500);
+		
+		if (image_size < 200)
+		{
+			image_size = 200;
+		}
+		
+		if (image_size > 2000)
+		{
+			image_size = 2000;
+		}
+		
+		
+		
+		if (canvas_is_fullscreen)
+		{
+			if (aspect_ratio >= 1)
+			{
+				image_width = image_size;
+				image_height = Math.floor(image_size / aspect_ratio);
+			}
+			
+			else
+			{
+				image_width = Math.floor(image_size * aspect_ratio);
+				image_height = image_size;
+			}
+		}
+		
+		
+		
+		document.querySelector("#output-canvas").setAttribute("width", image_width);
+		document.querySelector("#output-canvas").setAttribute("height", image_height);
+		
+		gl.viewport(0, 0, image_width, image_height);
+		
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
 	
 	function prepare_download()
 	{
+		let temp = image_size;
+		
+		image_size = parseInt(document.querySelector("#high-res-dim-input").value || 2000);
+		
+		num_iterations += 50;
+		
+		document.querySelector("#output-canvas").setAttribute("width", image_size);
+		document.querySelector("#output-canvas").setAttribute("height", image_size);
+		
+		gl.viewport(0, 0, image_size, image_size);
+		
+		draw_frame();
+		
+		
+		
 		let link = document.createElement("a");
 		
-		
-		
-		if (b < 0)
-		{
-			link.download = a + " - " + (-b) + "i.png";
-		}
-		
-		else
-		{
-			link.download = a + " + " + b + "i.png";
-		}
-		
-		
+		link.download = "a-mandelbrot-zoom.png";
 		
 		link.href = document.querySelector("#output-canvas").toDataURL();
 		
 		link.click();
 		
 		link.remove();
-	}
-
-
-
-	function draw_high_res_julia()
-	{
-		a = parseFloat(document.querySelector("#a-input").value || 0);
-		b = parseFloat(document.querySelector("#b-input").value || 1);
-		
-		num_iterations = large_num_iterations;
 		
 		
 		
-		drawing_big_canvas = true;
+		image_size = temp;
 		
-		stabilize_brightness_scale = true;
+		num_iterations -= 50;
 		
+		document.querySelector("#output-canvas").setAttribute("width", image_size);
+		document.querySelector("#output-canvas").setAttribute("height", image_size);
 		
+		gl.viewport(0, 0, image_size, image_size);
 		
-		draw_another_frame = true;
-		
-		if (need_to_restart)
-		{
-			need_to_restart = false;
-			
-			window.requestAnimationFrame(draw_frame);
-		}
-	}
-
-
-
-	function adjust_for_settings()
-	{
-		if (url_vars["contrast"] === 1)
-		{
-			if (url_vars["theme"] === 1)
-			{
-				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(192, 192, 192)";
-				document.querySelector("#julia-set").style.borderColor = "rgb(192, 192, 192)";
-			}
-			
-			else
-			{
-				document.querySelector("#mandelbrot-set").style.borderColor = "rgb(64, 64, 64)";
-				document.querySelector("#julia-set").style.borderColor = "rgb(64, 64, 64)";
-			}
-		}
-	}
-
-
-
-	function init_listeners_no_touch()
-	{	
-		document.querySelector("#mandelbrot-set").addEventListener("mouseenter", function(e)
-		{
-			persist_image = false;
-			
-			
-			
-			document.querySelector("#julia-set").setAttribute("width", small_image_size);
-			document.querySelector("#julia-set").setAttribute("height", small_image_size);
-			gl.viewport(0, 0, small_image_size, small_image_size);
-			
-			image_size = small_image_size;
-			num_iterations = small_num_iterations;
-		});
-		
-		
-		
-		document.querySelector("#mandelbrot-set").addEventListener("mousemove", function(e)
-		{
-			if (persist_image === false)
-			{
-				let mouse_x = e.clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
-				let mouse_y = e.clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
-				
-				a = ((mouse_x / small_canvas_size) - .5) * 3 - .75;
-				b = (((small_canvas_size - mouse_y) / small_canvas_size) - .5) * 3;
-				
-				
-				
-				draw_another_frame = true;
-				
-				if (need_to_restart)
-				{
-					need_to_restart = false;
-					
-					window.requestAnimationFrame(draw_frame);
-				}
-			}
-		});
-		
-		
-		
-		document.querySelector("#mandelbrot-set").addEventListener("click", function(e)
-		{
-			stabilize_brightness_scale = true;
-			window.requestAnimationFrame(draw_frame);
-			
-			persist_image = true;
-			
-			document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
-			document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
-		});
-	}
-
-
-
-	function init_listeners_touch()
-	{
-		let last_touch_x = 0;
-		let last_touch_y = 0;
-		
-		
-		
-		document.querySelector("#mandelbrot-set").addEventListener("touchstart", function(e)
-		{
-			e.preventDefault();
-			
-			
-			document.querySelector("#julia-set").setAttribute("width", small_image_size);
-			document.querySelector("#julia-set").setAttribute("height", small_image_size);
-			gl.viewport(0, 0, small_image_size, small_image_size);
-			
-			image_size = small_image_size;
-			num_iterations = small_num_iterations;
-		}, false);
-		
-		
-		
-		document.querySelector("#mandelbrot-set").addEventListener("touchmove", function(e)
-		{
-			e.preventDefault();
-				
-			let touch_x = e.touches[0].clientX - document.querySelector("#mandelbrot-set").getBoundingClientRect().left;
-			let touch_y = e.touches[0].clientY - document.querySelector("#mandelbrot-set").getBoundingClientRect().top;
-			
-			last_touch_x = touch_x;
-			last_touch_y = touch_y;
-			
-			a = ((touch_x / small_canvas_size) - .5) * 3 - .75;
-			b = (((small_canvas_size - touch_y) / small_canvas_size) - .5) * 3;
-			
-			
-			
-			draw_another_frame = true;
-			
-			if (need_to_restart)
-			{
-				need_to_restart = false;
-				
-				window.requestAnimationFrame(draw_frame);
-			}
-		}, false);
-		
-		
-		
-		document.querySelector("#mandelbrot-set").addEventListener("touchend", function(e)
-		{
-			e.preventDefault();
-			
-			stabilize_brightness_scale = true;
-			window.requestAnimationFrame(draw_frame);
-				
-			document.querySelector("#a-input").value = Math.round(1000000 * a) / 1000000;
-			document.querySelector("#b-input").value = Math.round(1000000 * b) / 1000000;
-		}, false);
-	}
-
-
-
-	function julia_resize()
-	{
-		small_canvas_size = document.querySelector("#julia-set").offsetWidth;
-		large_canvas_size = document.querySelector("#output-canvas").offsetWidth;
+		draw_frame();
 	}
 }()

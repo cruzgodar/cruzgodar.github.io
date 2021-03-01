@@ -1,46 +1,11 @@
-#container
+#output-canvas
 {
-	display: flex;
-	justify-content: space-between;
-	width: 70vw;
-	margin: 0 auto;
+	touch-action: none;
+	user-select: none;
+	-webkit-user-select: none;
 }
 
-#mandelbrot-set, #julia-set
+#switch-julia-mode-button
 {
-	width: 30vw;
-	height: 30vw;
-}
-
-#mandelbrot-set, #julia-set
-{
-	border: 2px solid rgb(127, 127, 127);
-	border-radius: 15px;
-	padding: 2px;
-}
-
-#instructions
-{
-	display: inline;
-}
-
-
-
-@media (max-aspect-ratio: 9/16), (max-width: 700px)
-{
-	#container
-	{
-		flex-direction: column;
-	}
-	
-	#mandelbrot-set, #julia-set
-	{
-		width: 70vw;
-		height: 70vw;
-	}
-	
-	#mandelbrot-set
-	{
-		margin-bottom: 5vw;
-	}
+	transition: filter .15s ease-in-out, opacity .3s ease-in-out;
 }
