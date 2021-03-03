@@ -74,6 +74,7 @@
 	
 	document.querySelector("#resolution-input").addEventListener("input", change_resolution);
 	document.querySelector("#exposure-input").addEventListener("input", change_exposure);
+	document.querySelector("#escape-radius-input").addEventListener("input", change_escape_radius);
 	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
 	
 	document.querySelector("#switch-julia-mode-button").addEventListener("click", function()
@@ -1405,6 +1406,22 @@
 	function change_exposure()
 	{
 		exposure = parseFloat(document.querySelector("#exposure-input").value || 1);
+		
+		if (!currently_drawing)
+		{
+			currently_drawing = true;
+			stabilize_brightness_scale = true;
+			brightness_stabilization_direction = 0;
+			
+			window.requestAnimationFrame(draw_frame);
+		}
+	}
+	
+	
+	
+	function change_escape_radius()
+	{
+		escape_radius = parseFloat(document.querySelector("#escape-radius-input").value || 1);
 		
 		if (!currently_drawing)
 		{
