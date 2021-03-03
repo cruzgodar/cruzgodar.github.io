@@ -609,7 +609,7 @@
 			{
 				e.preventDefault();
 				
-				center_x -= mouse_x_delta / canvas_height * box_size;
+				center_x -= mouse_x_delta / canvas_width * box_size;
 				center_y += mouse_y_delta / canvas_height * box_size;
 				
 				if (!currently_drawing)
@@ -765,7 +765,7 @@
 		
 		if (julia_mode !== 2)
 		{
-			center_x -= mouse_x_delta / canvas_height * box_size;
+			center_x -= mouse_x_delta / canvas_width * box_size;
 			center_y += mouse_y_delta / canvas_height * box_size;
 		}
 		
