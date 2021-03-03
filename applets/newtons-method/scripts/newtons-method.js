@@ -1027,10 +1027,9 @@
 		document.documentElement.addEventListener("mousedown", handle_mousedown_event, false);
 		document.documentElement.addEventListener("mousemove", handle_mousemove_event, false);
 		document.documentElement.addEventListener("mouseup", handle_mouseup_event, false);
-		/*
+		
 		window.addEventListener("wheel", handle_wheel_event, {passive: false});
 		temporary_handlers["wheel"].push(handle_wheel_event);
-		*/
 		
 		temporary_handlers["touchstart"].push(handle_touchstart_event);
 		temporary_handlers["touchmove"].push(handle_touchmove_event);
@@ -1180,20 +1179,20 @@
 	
 	function handle_mousemove_event(e)
 	{
+		let new_mouse_x = e.clientX;
+		let new_mouse_y = e.clientY;
+		
+		let mouse_x_delta = new_mouse_x - mouse_x;
+		let mouse_y_delta = new_mouse_y - mouse_y;
+		
+		mouse_x = new_mouse_x;
+		mouse_y = new_mouse_y;
+		
 		if (currently_dragging)
 		{
 			e.preventDefault();
 			
-			let new_mouse_x = e.clientX;
-			let new_mouse_y = e.clientY;
-			
-			let mouse_x_delta = new_mouse_x - mouse_x;
-			let mouse_y_delta = new_mouse_y - mouse_y;
-			
-			mouse_x = new_mouse_x;
-			mouse_y = new_mouse_y;
-			
-			center_x -= mouse_x_delta / root_selector_width * box_size;
+			center_x -= mouse_x_delta / root_selector_height * box_size;
 			center_y += mouse_y_delta / root_selector_height * box_size;
 			
 			update_root_markers();
@@ -1424,7 +1423,7 @@
 			mouse_x = new_mouse_x;
 			mouse_y = new_mouse_y;
 			
-			center_x -= mouse_x_delta / root_selector_width * box_size;
+			center_x -= mouse_x_delta / root_selector_height * box_size;
 			center_y += mouse_y_delta / root_selector_height * box_size;
 			
 			update_root_markers();
@@ -1522,7 +1521,7 @@
 	
 	function handle_wheel_event(e)
 	{
-		if (document.elementFromPoint(mouse_x, mouse_y).id === "root-selector")
+		if (document.elementFromPoint(mouse_x, mouse_y).id === "root-selector" || document.elementFromPoint(mouse_x, mouse_y).classList.contains("root-marker"))
 		{
 			e.preventDefault();
 			
