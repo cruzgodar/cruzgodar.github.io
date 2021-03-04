@@ -74,6 +74,32 @@
 
 
 
+.a-marker
+{
+	background-color: rgb(255, 127, 127);
+	
+}
+
+.a-marker:active
+{
+	background-color: rgb(127, 64, 64);
+}
+
+
+
+.c-marker
+{
+	background-color: rgb(127, 192, 255);
+	
+}
+
+.c-marker:active
+{
+	background-color: rgb(64, 96, 127);
+}
+
+
+
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	#polynomial-label-1, #polynomial-label-2, #polynomial-label-3
