@@ -8,12 +8,12 @@
 	let image_width = 1000;
 	let image_height = 1000;
 	
-	let current_roots = [];
-	
 	let a = [1, 0];
 	let c = [0, 0];
 	
-	let gl = document.querySelector("#secant-method-plot").getContext("webgl");
+	let current_roots = [];
+	
+	let gl = document.querySelector("#newtons-method-plot").getContext("webgl");
 	
 	let draw_another_frame = false;
 	let need_to_restart = true;
@@ -37,11 +37,23 @@
 	let brightness_scale = 20;
 	let stabilize_brightness_scale = false;
 	
+	let center_x = 0;
+	let center_y = 0;
+	let box_size = 4;
+	let zoom_level = 0;
+	let currently_dragging = false;
+	let was_recently_pinching = 0;
+	let touch_distance = 0;
+	let mouse_x = 0;
+	let mouse_y = 0;
+	
+	let timeout_id = null;
+	
 	
 	
 	adjust_for_settings();
 	
-	init_listeners();
+	setTimeout(init_listeners, 500);
 	
 	
 	
@@ -68,12 +80,12 @@
 		}
 	});
 	
-	window.addEventListener("resize", secant_method_resize);
-	temporary_handlers["resize"].push(secant_method_resize);
+	window.addEventListener("resize", newtons_method_resize);
+	temporary_handlers["resize"].push(newtons_method_resize);
 	
 	
 	
-	applet_canvases_to_resize = [document.querySelector("#secant-method-plot"), document.querySelector("#root-selector")];
+	applet_canvases_to_resize = [document.querySelector("#newtons-method-plot"), document.querySelector("#root-selector")];
 	
 	applet_canvas_resize_callback = function()
 	{
@@ -100,18 +112,18 @@
 		
 		
 		
-		document.querySelector("#secant-method-plot").setAttribute("width", image_width);
-		document.querySelector("#secant-method-plot").setAttribute("height", image_height);
+		document.querySelector("#newtons-method-plot").setAttribute("width", image_width);
+		document.querySelector("#newtons-method-plot").setAttribute("height", image_height);
 		
 		gl.viewport(0, 0, image_width, image_height);
 		
 		
 		
-		secant_method_resize();
+		newtons_method_resize();
 		
 		window.requestAnimationFrame(draw_frame);
 	};
-			
+	
 	applet_canvas_true_fullscreen = true;
 	
 	set_up_canvas_resizer();
@@ -120,7 +132,7 @@
 	
 	setTimeout(setup_webgl, 500);
 	
-	setTimeout(secant_method_resize, 1000);
+	setTimeout(newtons_method_resize, 1000);
 	
 	
 	
@@ -146,6 +158,10 @@
 		
 		uniform float aspect_ratio_x;
 		uniform float aspect_ratio_y;
+		
+		uniform float box_size_halved;
+		uniform float center_x;
+		uniform float center_y;
 		
 		uniform int num_roots;
 		
@@ -276,9 +292,17 @@
 		
 		
 		
+		//Approximates f'(z) for a polynomial f with given roots.
+		vec2 complex_derivative(vec2 z)
+		{
+			return 1000.0 * (complex_polynomial(z) - complex_polynomial(z - vec2(.001, 0.0)));
+		}
+		
+		
+		
 		void main(void)
 		{
-			vec2 z = vec2(uv.x * aspect_ratio_x * 2.0, uv.y / aspect_ratio_y * 2.0);
+			vec2 z = vec2(uv.x * aspect_ratio_x * box_size_halved + center_x, uv.y / aspect_ratio_y * box_size_halved + center_y);
 			vec2 last_z = vec2(0.0, 0.0);
 			
 			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
@@ -503,6 +527,10 @@
 		shader_program.aspect_ratio_x_uniform = gl.getUniformLocation(shader_program, "aspect_ratio_x");
 		shader_program.aspect_ratio_y_uniform = gl.getUniformLocation(shader_program, "aspect_ratio_y");
 		
+		shader_program.box_size_halved_uniform = gl.getUniformLocation(shader_program, "box_size_halved");
+		shader_program.center_x_uniform = gl.getUniformLocation(shader_program, "center_x");
+		shader_program.center_y_uniform = gl.getUniformLocation(shader_program, "center_y");
+		
 		shader_program.num_roots_uniform = gl.getUniformLocation(shader_program, "num_roots");
 		
 		shader_program.root_1_uniform = gl.getUniformLocation(shader_program, "root_1");
@@ -520,8 +548,9 @@
 		shader_program.brightness_scale_uniform = gl.getUniformLocation(shader_program, "brightness_scale");
 		
 		
-		document.querySelector("#secant-method-plot").setAttribute("width", image_width);
-		document.querySelector("#secant-method-plot").setAttribute("height", image_height);
+		document.querySelector("#newtons-method-plot").setAttribute("width", image_width);
+		document.querySelector("#newtons-method-plot").setAttribute("height", image_height);
+		
 		gl.viewport(0, 0, image_width, image_height);
 	}
 	
@@ -548,6 +577,65 @@
 	
 	function draw_frame()
 	{
+		/*
+		current_roots[0][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		current_roots[0][1] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		
+		
+		
+		current_roots[1][0] = .5 * (Math.cos(2 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) - 1 + .5;
+		current_roots[1][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		
+		
+		
+		current_roots[2][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		current_roots[2][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		
+		
+		
+		current_roots[3][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) + 1 + .5;
+		current_roots[3][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 1 + .5;
+		
+		
+		
+		current_roots[4][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) + 1 + .5;
+		current_roots[4][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) - 3 + .5;
+		
+		
+		
+		current_roots[5][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) - 1 + .5;
+		current_roots[5][1] = .5 * (Math.cos(7 * 2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		
+		
+		
+		current_roots[6][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		current_roots[6][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		
+		
+		
+		current_roots[7][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) - 3 + .5;
+		current_roots[7][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) - 1 + .5;
+		
+		
+		
+		let rect = document.querySelector("#root-selector").getBoundingClientRect();
+		
+		for (let i = 0; i < current_roots.length; i++)
+		{
+			let row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
+			let col = Math.floor(root_selector_width * (current_roots[i][0] / 4 + .5));
+			
+			root_markers[i].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+		}
+		
+		
+		
+		console.log(frame, Math.round(brightness_scale * 100) / 100);
+		*/
+		
+		
+		
+		
 		if (image_width >= image_height)
 		{
 			gl.uniform1f(shader_program.aspect_ratio_x_uniform, image_width / image_height);
@@ -559,6 +647,13 @@
 			gl.uniform1f(shader_program.aspect_ratio_x_uniform, 1);
 			gl.uniform1f(shader_program.aspect_ratio_y_uniform, image_width / image_height);
 		}
+		
+		
+		
+		gl.uniform1f(shader_program.box_size_halved_uniform, box_size / 2);
+		
+		gl.uniform1f(shader_program.center_x_uniform, center_x);
+		gl.uniform1f(shader_program.center_y_uniform, center_y);
 		
 		
 		
@@ -605,7 +700,7 @@
 		}
 		
 		gl.uniform2fv(shader_program.a_uniform, a);
-		gl.uniform2fv(shader_program.c_uniform, c);
+		gl.uniform2f(shader_program.c_uniform, c[0] / 20, c[1] / 20);
 		
 		gl.uniform1f(shader_program.brightness_scale_uniform, brightness_scale);
 		
@@ -681,67 +776,11 @@
 
 		link.download = `${frame}.png`;
 		
-		link.href = document.querySelector("#secant-method-plot").toDataURL();
+		link.href = document.querySelector("#newtons-method-plot").toDataURL();
 		
 		link.click();
 		
 		link.remove();
-		
-		
-		
-		current_roots[0][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 3 + .5;
-		current_roots[0][1] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) + 1 + .5;
-		
-		
-		
-		current_roots[1][0] = .5 * (Math.cos(2 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) - 1 + .5;
-		current_roots[1][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) + 1 + .5;
-		
-		
-		
-		current_roots[2][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) + 1 + .5;
-		current_roots[2][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) + 1 + .5;
-		
-		
-		
-		current_roots[3][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) + 1 + .5;
-		current_roots[3][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 1 + .5;
-		
-		
-		
-		current_roots[4][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) + 1 + .5;
-		current_roots[4][1] = .5 * (Math.cos(5 * 2 * Math.PI * frame / 6000) + Math.sin(2 * Math.PI * frame / 6000)) - 3 + .5;
-		
-		
-		
-		current_roots[5][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) - 1 + .5;
-		current_roots[5][1] = .5 * (Math.cos(7 * 2 * Math.PI * frame / 6000) + Math.sin(2 * 2 * Math.PI * frame / 6000)) - 3 + .5;
-		
-		
-		
-		current_roots[6][0] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(3 * 2 * Math.PI * frame / 6000)) - 3 + .5;
-		current_roots[6][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) - 3 + .5;
-		
-		
-		
-		current_roots[7][0] = .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)) - 3 + .5;
-		current_roots[7][1] = .5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)) - 1 + .5;
-		
-		
-		
-		let rect = document.querySelector("#root-selector").getBoundingClientRect();
-		
-		for (let i = 0; i < current_roots.length; i++)
-		{
-			let row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
-			let col = Math.floor(root_selector_width * (current_roots[i][0] / 4 + .5));
-			
-			root_markers[i].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
-		}
-		
-		
-		
-		console.log(frame, brightness_scale);
 		
 		
 		
@@ -752,7 +791,7 @@
 		setTimeout(function()
 		{
 			window.requestAnimationFrame(draw_frame);
-		}, 50);
+		}, 300);
 		*/
 	}
 	
@@ -993,22 +1032,24 @@
 	
 	function init_listeners()
 	{
-		document.documentElement.addEventListener("touchstart", drag_start, false);
-		document.documentElement.addEventListener("touchmove", drag_move, false);
-		document.documentElement.addEventListener("touchend", drag_end, false);
-
-		document.documentElement.addEventListener("mousedown", drag_start, false);
-		document.documentElement.addEventListener("mousemove", drag_move, false);
-		document.documentElement.addEventListener("mouseup", drag_end, false);
+		document.documentElement.addEventListener("touchstart", handle_touchstart_event, false);
+		document.documentElement.addEventListener("touchmove", handle_touchmove_event, false);
+		document.documentElement.addEventListener("touchend", handle_touchend_event, false);
 		
+		document.documentElement.addEventListener("mousedown", handle_mousedown_event, false);
+		document.documentElement.addEventListener("mousemove", handle_mousemove_event, false);
+		document.documentElement.addEventListener("mouseup", handle_mouseup_event, false);
 		
-		temporary_handlers["touchstart"].push(drag_start);
-		temporary_handlers["touchmove"].push(drag_move);
-		temporary_handlers["touchend"].push(drag_end);
+		window.addEventListener("wheel", handle_wheel_event, {passive: false});
+		temporary_handlers["wheel"].push(handle_wheel_event);
 		
-		temporary_handlers["mousedown"].push(drag_start);
-		temporary_handlers["mousemove"].push(drag_move);
-		temporary_handlers["mouseup"].push(drag_end);
+		temporary_handlers["touchstart"].push(handle_touchstart_event);
+		temporary_handlers["touchmove"].push(handle_touchmove_event);
+		temporary_handlers["touchend"].push(handle_touchend_event);
+		
+		temporary_handlers["mousedown"].push(handle_mousedown_event);
+		temporary_handlers["mousemove"].push(handle_mousemove_event);
+		temporary_handlers["mouseup"].push(handle_mouseup_event);
 		
 		
 		
@@ -1044,14 +1085,14 @@
 		
 		if (image_width >= image_height)
 		{
-			row = Math.floor(root_selector_height * (1 - (y / 4 + .5)));
-			col = Math.floor(root_selector_width * (x / (image_width / image_height) / 4 + .5));
+			row = Math.floor(root_selector_height * (1 - ((y - center_y) / box_size + .5)));
+			col = Math.floor(root_selector_width * ((x - center_x) / (image_width / image_height) / box_size + .5));
 		}
 		
 		else
 		{
-			row = Math.floor(root_selector_height * (1 - (y * (image_width / image_height) / 4 + .5)));
-			col = Math.floor(root_selector_width * (x / 4 + .5));
+			row = Math.floor(root_selector_height * (1 - ((y - center_y) * (image_width / image_height) / box_size + .5)));
+			col = Math.floor(root_selector_width * ((x - center_x) / box_size + .5));
 		}
 		
 		
@@ -1072,14 +1113,14 @@
 		
 		if (image_width >= image_height)
 		{
-			row = Math.floor(root_selector_height * (1 - (y / 4 + .5)));
-			col = Math.floor(root_selector_width * (x / (image_width / image_height) / 4 + .5));
+			row = Math.floor(root_selector_height * (1 - ((y - center_y) / box_size + .5)));
+			col = Math.floor(root_selector_width * ((x - center_x) / (image_width / image_height) / box_size + .5));
 		}
 		
 		else
 		{
-			row = Math.floor(root_selector_height * (1 - (y * (image_width / image_height) / 4 + .5)));
-			col = Math.floor(root_selector_width * (x / 4 + .5));
+			row = Math.floor(root_selector_height * (1 - ((y - center_y) * (image_width / image_height) / box_size + .5)));
+			col = Math.floor(root_selector_width * ((x - center_x) / box_size + .5));
 		}
 		
 		element = document.createElement("div");
@@ -1111,14 +1152,14 @@
 		
 		if (image_width >= image_height)
 		{
-			row = Math.floor(root_selector_height * (1 - (y / 4 + .5)));
-			col = Math.floor(root_selector_width * (x / (image_width / image_height) / 4 + .5));
+			row = Math.floor(root_selector_height * (1 - ((y - center_y) / box_size + .5)));
+			col = Math.floor(root_selector_width * ((x - center_x) / (image_width / image_height) / box_size + .5));
 		}
 		
 		else
 		{
-			row = Math.floor(root_selector_height * (1 - (y * (image_width / image_height) / 4 + .5)));
-			col = Math.floor(root_selector_width * (x / 4 + .5));
+			row = Math.floor(root_selector_height * (1 - ((y - center_y) * (image_width / image_height) / box_size + .5)));
+			col = Math.floor(root_selector_width * ((x - center_x) / box_size + .5));
 		}
 		
 		
@@ -1152,7 +1193,7 @@
 	
 	
 	
-	function drag_start(e)
+	function handle_mousedown_event(e)
 	{
 		active_marker = -1;
 		
@@ -1168,30 +1209,23 @@
 				break;
 			}
 		}
+		
+		if (e.target.id === "root-selector")
+		{
+			currently_dragging = true;
+			
+			mouse_x = e.clientX;
+			mouse_y = e.clientY;
+		}
 	}
 	
 	
 	
-	function drag_end(e)
+	function handle_mouseup_event(e)
 	{
 		if (active_marker !== -1)
 		{
 			document.body.style.WebkitUserSelect = "";
-			
-			
-			
-			stabilize_brightness_scale = true;
-			
-			draw_another_frame = true;
-			
-			if (need_to_restart)
-			{
-				need_to_restart = false;
-				
-				window.requestAnimationFrame(draw_frame);
-			}
-			
-			
 	
 			document.querySelector("#polynomial-label-1").textContent = "";	
 			document.querySelector("#polynomial-label-2").textContent = "";
@@ -1203,139 +1237,529 @@
 		}
 		
 		active_marker = -1;
+		
+		currently_dragging = false;
+		
+		stabilize_brightness_scale = true;
+		
+		draw_another_frame = true;
+		
+		if (need_to_restart)
+		{
+			need_to_restart = false;
+			
+			window.requestAnimationFrame(draw_frame);
+		}
 	}
 	
 	
 	
-	function drag_move(e)
+	function handle_mousemove_event(e)
 	{
-		if (active_marker === -1)
+		let new_mouse_x = e.clientX;
+		let new_mouse_y = e.clientY;
+		
+		let mouse_x_delta = new_mouse_x - mouse_x;
+		let mouse_y_delta = new_mouse_y - mouse_y;
+		
+		mouse_x = new_mouse_x;
+		mouse_y = new_mouse_y;
+		
+		if (currently_dragging)
 		{
-			return;
-		}
-		
-		
-		
-		let row = null;
-		let col = null;
-		
-		let rect = document.querySelector("#root-selector").getBoundingClientRect();
-		
-		if (e.type === "touchmove")
-		{
-			row = e.touches[0].clientY - rect.top;
-			col = e.touches[0].clientX - rect.left;
-		}
-		
-		else
-		{
-			row = e.clientY - rect.top;
-			col = e.clientX - rect.left;
-		}
-		
-		
-		
-		if (row < root_marker_radius)
-		{
-			row = root_marker_radius;
-		}
-		
-		if (row > root_selector_height - root_marker_radius)
-		{
-			row = root_selector_height - root_marker_radius;
-		}
-		
-		if (col < root_marker_radius)
-		{
-			col = root_marker_radius;
-		}
-		
-		if (col > root_selector_width - root_marker_radius)
-		{
-			col = root_selector_width - root_marker_radius;
-		}
-		
-		
-		
-		if (active_marker < 8)
-		{
-			root_markers[active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+			e.preventDefault();
 			
-			let x = 0;
-			let y = 0;
+			center_x -= mouse_x_delta / root_selector_height * box_size;
+			center_y += mouse_y_delta / root_selector_height * box_size;
 			
-			if (image_width >= image_height)
+			update_root_markers();
+			
+			draw_another_frame = true;
+			
+			if (need_to_restart)
 			{
-				x = ((col - root_selector_width/2) / root_selector_width) * 4 * (image_width / image_height);
-				y = (-(row - root_selector_height/2) / root_selector_height) * 4;
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_frame);
+			}
+		}
+		
+		
+		
+		else if (active_marker !== -1)
+		{
+			let row = null;
+			let col = null;
+			
+			let rect = document.querySelector("#root-selector").getBoundingClientRect();
+			
+			if (e.type === "touchmove")
+			{
+				row = e.touches[0].clientY - rect.top;
+				col = e.touches[0].clientX - rect.left;
 			}
 			
 			else
 			{
-				x = ((col - root_selector_width/2) / root_selector_width) * 4;
-				y = (-(row - root_selector_height/2) / root_selector_height) * 4 / (image_width / image_height);
+				row = e.clientY - rect.top;
+				col = e.clientX - rect.left;
 			}
 			
-			current_roots[active_marker][0] = x;
-			current_roots[active_marker][1] = y;
-		}
-		
-		else if (active_marker === 8)
-		{
-			document.querySelector(".a-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 			
-			let x = 0;
-			let y = 0;
 			
-			if (image_width >= image_height)
+			if (row < root_marker_radius)
 			{
-				x = ((col - root_selector_width/2) / root_selector_width) * 4 * (image_width / image_height);
-				y = (-(row - root_selector_height/2) / root_selector_height) * 4;
+				row = root_marker_radius;
+			}
+			
+			if (row > root_selector_height - root_marker_radius)
+			{
+				row = root_selector_height - root_marker_radius;
+			}
+			
+			if (col < root_marker_radius)
+			{
+				col = root_marker_radius;
+			}
+			
+			if (col > root_selector_width - root_marker_radius)
+			{
+				col = root_selector_width - root_marker_radius;
+			}
+			
+			
+			
+			if (active_marker < 8)
+			{
+				root_markers[active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+				
+				let x = 0;
+				let y = 0;
+				
+				if (image_width >= image_height)
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size * (image_width / image_height) + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size + center_y;
+				}
+				
+				else
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size / (image_width / image_height) + center_y;
+				}
+				
+				current_roots[active_marker][0] = x;
+				current_roots[active_marker][1] = y;
+			}
+			
+			else if (active_marker === 8)
+			{
+				document.querySelector(".a-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+				
+				let x = 0;
+				let y = 0;
+				
+				if (image_width >= image_height)
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size * (image_width / image_height) + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size + center_y;
+				}
+				
+				else
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size / (image_width / image_height) + center_y;
+				}
+				
+				a[0] = x;
+				a[1] = y;
 			}
 			
 			else
 			{
-				x = ((col - root_selector_width/2) / root_selector_width) * 4;
-				y = (-(row - root_selector_height/2) / root_selector_height) * 4 / (image_width / image_height);
+				document.querySelector(".c-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+				
+				let x = 0;
+				let y = 0;
+				
+				if (image_width >= image_height)
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size * (image_width / image_height) + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size + center_y;
+				}
+				
+				else
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size / (image_width / image_height) + center_y;
+				}
+				
+				c[0] = x;
+				c[1] = y;
 			}
 			
-			a[0] = x;
-			a[1] = y;
-		}
-		
-		else
-		{
-			document.querySelector(".c-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 			
-			let x = 0;
-			let y = 0;
-			
-			if (image_width >= image_height)
-			{
-				x = ((col - root_selector_width/2) / root_selector_width) * .4 * (image_width / image_height);
-				y = (-(row - root_selector_height/2) / root_selector_height) * .4;
-			}
-			
-			else
-			{
-				x = ((col - root_selector_width/2) / root_selector_width) * .4;
-				y = (-(row - root_selector_height/2) / root_selector_height) * .4 / (image_width / image_height);
-			}
-			
-			c[0] = x;
-			c[1] = y;
-		}
-		
-		
 
+			draw_another_frame = true;
+			
+			if (stabilize_brightness_scale || need_to_restart)
+			{
+				stabilize_brightness_scale = false;
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_frame);
+			}
+		}
+	}
+	
+	
+	
+	function handle_touchstart_event(e)
+	{
+		active_marker = -1;
+		
+		//Figure out which marker, if any, this is referencing.
+		for (let i = 0; i < 10; i++)
+		{
+			if (e.target.id === `root-marker-${i}`)
+			{
+				e.preventDefault();
+				
+				active_marker = i;
+				
+				break;
+			}
+		}
+		
+		if (e.target.id === "root-selector")
+		{
+			currently_dragging = true;
+			
+			mouse_x = e.touches[0].clientX;
+			mouse_y = e.touches[0].clientY;
+		}
+	}
+	
+	
+	
+	function handle_touchend_event(e)
+	{
+		if (active_marker !== -1)
+		{
+			document.body.style.WebkitUserSelect = "";
+			
+			document.querySelector("#polynomial-label-1").textContent = "";	
+			document.querySelector("#polynomial-label-2").textContent = "";
+			document.querySelector("#polynomial-label-3").textContent = "";
+			
+			last_active_marker = active_marker;
+			
+			show_root_setter();
+		}
+		
+		active_marker = -1;
+		
+		currently_dragging = false;
+		
+		stabilize_brightness_scale = true;
+		
 		draw_another_frame = true;
 		
-		if (stabilize_brightness_scale || need_to_restart)
+		if (need_to_restart)
 		{
-			stabilize_brightness_scale = false;
 			need_to_restart = false;
 			
 			window.requestAnimationFrame(draw_frame);
+		}
+	}
+	
+	
+	
+	function handle_touchmove_event(e)
+	{
+		if (currently_dragging)
+		{
+			e.preventDefault();
+			
+			let new_mouse_x = e.touches[0].clientX;
+			let new_mouse_y = e.touches[0].clientY;
+			
+			if (e.touches.length >= 2)
+			{
+				was_recently_pinching = 10;
+				
+				let x_distance = e.touches[0].clientX - e.touches[1].clientX;
+				let y_distance = e.touches[0].clientY - e.touches[1].clientY;
+				
+				let new_touch_distance = Math.sqrt(x_distance * x_distance + y_distance * y_distance);
+				
+				let touch_distance_delta = new_touch_distance - touch_distance;
+				
+				touch_distance = new_touch_distance;
+				
+				if (Math.abs(touch_distance_delta) > 20)
+				{
+					return;
+				}
+				
+				
+				
+				let rect = document.querySelector("#root-selector").getBoundingClientRect();
+				
+				let touch_center_x_proportion = ((e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left) / root_selector_width;
+				let touch_center_y_proportion = ((e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top) / root_selector_height;
+				
+				let fixed_point_x = (touch_center_x_proportion * box_size - box_size / 2) * image_width / image_height + center_x;
+				let fixed_point_y = (box_size / 2 - touch_center_y_proportion * box_size) + center_y;
+				
+				
+				
+				let increment = touch_distance_delta / 2;
+				
+				if (zoom_level + increment >= -150 && zoom_level + increment <= 150)
+				{
+					zoom_level += increment;
+					
+					box_size = 4 / Math.pow(1.02, zoom_level);
+				}
+				
+				
+				
+				center_x = fixed_point_x - (touch_center_x_proportion * box_size - box_size / 2) * image_width / image_height;
+				center_y = fixed_point_y - (box_size / 2 - touch_center_y_proportion * box_size);
+			}
+			
+			
+			
+			else
+			{
+				was_recently_pinching--;
+				
+				if (was_recently_pinching < 0)
+				{
+					was_recently_pinching = 0;
+				}
+			}
+			
+			
+			
+			let mouse_x_delta = new_mouse_x - mouse_x;
+			let mouse_y_delta = new_mouse_y - mouse_y;
+			
+			mouse_x = new_mouse_x;
+			mouse_y = new_mouse_y;
+			
+			center_x -= mouse_x_delta / root_selector_height * box_size;
+			center_y += mouse_y_delta / root_selector_height * box_size;
+			
+			update_root_markers();
+			
+			draw_another_frame = true;
+			
+			if (need_to_restart)
+			{
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_frame);
+			}
+		}
+		
+		
+		
+		else if (active_marker !== -1)
+		{
+			let row = null;
+			let col = null;
+			
+			let rect = document.querySelector("#root-selector").getBoundingClientRect();
+			
+			if (e.type === "touchmove")
+			{
+				row = e.touches[0].clientY - rect.top;
+				col = e.touches[0].clientX - rect.left;
+			}
+			
+			else
+			{
+				row = e.clientY - rect.top;
+				col = e.clientX - rect.left;
+			}
+			
+			
+			
+			if (row < root_marker_radius)
+			{
+				row = root_marker_radius;
+			}
+			
+			if (row > root_selector_height - root_marker_radius)
+			{
+				row = root_selector_height - root_marker_radius;
+			}
+			
+			if (col < root_marker_radius)
+			{
+				col = root_marker_radius;
+			}
+			
+			if (col > root_selector_width - root_marker_radius)
+			{
+				col = root_selector_width - root_marker_radius;
+			}
+			
+			
+			
+			if (active_marker < 8)
+			{
+				root_markers[active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+				
+				let x = 0;
+				let y = 0;
+				
+				if (image_width >= image_height)
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size * (image_width / image_height) + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size + center_y;
+				}
+				
+				else
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size / (image_width / image_height) + center_y;
+				}
+				
+				current_roots[active_marker][0] = x;
+				current_roots[active_marker][1] = y;
+			}
+			
+			else if (active_marker === 8)
+			{
+				document.querySelector(".a-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+				
+				let x = 0;
+				let y = 0;
+				
+				if (image_width >= image_height)
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size * (image_width / image_height) + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size + center_y;
+				}
+				
+				else
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size / (image_width / image_height) + center_y;
+				}
+				
+				a[0] = x;
+				a[1] = y;
+			}
+			
+			else
+			{
+				document.querySelector(".c-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+				
+				let x = 0;
+				let y = 0;
+				
+				if (image_width >= image_height)
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size * (image_width / image_height) + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size + center_y;
+				}
+				
+				else
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size / (image_width / image_height) + center_y;
+				}
+				
+				c[0] = x;
+				c[1] = y;
+			}
+			
+			
+
+			draw_another_frame = true;
+			
+			if (stabilize_brightness_scale || need_to_restart)
+			{
+				stabilize_brightness_scale = false;
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_frame);
+			}
+		}
+	}
+	
+	
+	
+	function handle_wheel_event(e)
+	{
+		if (document.elementFromPoint(mouse_x, mouse_y).id === "root-selector" || document.elementFromPoint(mouse_x, mouse_y).classList.contains("root-marker"))
+		{
+			e.preventDefault();
+			
+			zoom_level -= Math.sign(e.deltaY) * 10;
+			
+			if (zoom_level < -150)
+			{
+				zoom_level = -150;
+			}
+			
+			if (zoom_level > 150)
+			{
+				zoom_level = 150;
+			}
+			
+			
+			
+			let rect = document.querySelector("#root-selector").getBoundingClientRect();
+			
+			let mouse_x_proportion = (mouse_x - rect.left) / root_selector_width;
+			let mouse_y_proportion = (mouse_y - rect.top) / root_selector_height;
+			
+			let fixed_point_x = (mouse_x_proportion * box_size - box_size / 2) * image_width / image_height + center_x;
+			let fixed_point_y = (box_size / 2 - mouse_y_proportion * box_size) + center_y;
+			
+			
+			
+			box_size = 3 / Math.pow(1.02, zoom_level);
+			
+			
+			
+			center_x = fixed_point_x - (mouse_x_proportion * box_size - box_size / 2) * image_width / image_height;
+			center_y = fixed_point_y - (box_size / 2 - mouse_y_proportion * box_size);
+			
+			
+			
+			update_root_markers();
+			
+			
+			
+			draw_another_frame = true;
+			
+			if (need_to_restart)
+			{
+				stabilize_brightness_scale = false;
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_frame);
+			}
+			
+			
+			
+			try {clearTimeout(timeout_id);}
+			catch(ex) {}
+			
+			timeout_id = setTimeout(function()
+			{
+				stabilize_brightness_scale = true;
+				
+				need_to_restart = false;
+				
+				window.requestAnimationFrame(draw_frame);
+			}, 500);
 		}
 	}
 	
@@ -1371,14 +1795,14 @@
 			
 			if (image_width >= image_height)
 			{
-				row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
-				col = Math.floor(root_selector_width * (current_roots[i][0] / (image_width / image_height) / 4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((current_roots[i][1] - center_y) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((current_roots[i][0] - center_x) / (image_width / image_height) / box_size + .5));
 			}
 			
 			else
 			{
-				row = Math.floor(root_selector_height * (1 - (current_roots[i][1] * (image_width / image_height) / 4 + .5)));
-				col = Math.floor(root_selector_width * (current_roots[i][0] / 4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((current_roots[i][1] - center_y) * (image_width / image_height) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((current_roots[i][0] - center_x) / box_size + .5));
 			}
 			
 			root_markers[i].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
@@ -1435,20 +1859,18 @@
 			
 			if (image_width >= image_height)
 			{
-				row = Math.floor(root_selector_height * (1 - (current_roots[last_active_marker][1] / 4 + .5)));
-				col = Math.floor(root_selector_width * (current_roots[last_active_marker][0] / (image_width / image_height) / 4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((current_roots[last_active_marker][1] - center_y) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((current_roots[last_active_marker][0] - center_x) / (image_width / image_height) / box_size + .5));
 			}
 			
 			else
 			{
-				row = Math.floor(root_selector_height * (1 - (current_roots[last_active_marker][1] * (image_width / image_height) / 4 + .5)));
-				col = Math.floor(root_selector_width * (current_roots[last_active_marker][0] / 4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((current_roots[last_active_marker][1] - center_y) * (image_width / image_height) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((current_roots[last_active_marker][0] - center_x) / box_size + .5));
 			}
 			
 			root_markers[last_active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		}
-		
-		
 		
 		else if (last_active_marker === 8)
 		{
@@ -1460,20 +1882,18 @@
 			
 			if (image_width >= image_height)
 			{
-				row = Math.floor(root_selector_height * (1 - (a[1] / 4 + .5)));
-				col = Math.floor(root_selector_width * (a[0] / (image_width / image_height) / 4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((a[1] - center_y) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((a[0] - center_x) / (image_width / image_height) / box_size + .5));
 			}
 			
 			else
 			{
-				row = Math.floor(root_selector_height * (1 - (a[1] * (image_width / image_height) / 4 + .5)));
-				col = Math.floor(root_selector_width * (a[0] / 4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((a[1] - center_y) * (image_width / image_height) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((a[0] - center_x) / box_size + .5));
 			}
 			
 			document.querySelector(".a-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		}
-		
-		
 		
 		else
 		{
@@ -1485,14 +1905,14 @@
 			
 			if (image_width >= image_height)
 			{
-				row = Math.floor(root_selector_height * (1 - (c[1] / .4 + .5)));
-				col = Math.floor(root_selector_width * (c[0] / (image_width / image_height) / .4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((c[1] - center_y) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((c[0] - center_x) / (image_width / image_height) / box_size + .5));
 			}
 			
 			else
 			{
-				row = Math.floor(root_selector_height * (1 - (c[1] * (image_width / image_height) / .4 + .5)));
-				col = Math.floor(root_selector_width * (c[0] / .4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((c[1] - center_y) * (image_width / image_height) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((c[0] - center_x) / box_size + .5));
 			}
 			
 			document.querySelector(".c-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
@@ -1538,8 +1958,8 @@
 		
 		
 		
-		document.querySelector("#secant-method-plot").setAttribute("width", image_width);
-		document.querySelector("#secant-method-plot").setAttribute("height", image_height);
+		document.querySelector("#newtons-method-plot").setAttribute("width", image_width);
+		document.querySelector("#newtons-method-plot").setAttribute("height", image_height);
 		
 		gl.viewport(0, 0, image_width, image_height);
 		
@@ -1575,8 +1995,8 @@
 		
 		
 		
-		document.querySelector("#secant-method-plot").setAttribute("width", image_width);
-		document.querySelector("#secant-method-plot").setAttribute("height", image_height);
+		document.querySelector("#newtons-method-plot").setAttribute("width", image_width);
+		document.querySelector("#newtons-method-plot").setAttribute("height", image_height);
 		
 		gl.viewport(0, 0, image_width, image_height);
 		
@@ -1586,9 +2006,9 @@
 		
 		let link = document.createElement("a");
 		
-		link.download = "the-secant-method.png";
+		link.download = "newtons-method.png";
 		
-		link.href = document.querySelector("#secant-method-plot").toDataURL();
+		link.href = document.querySelector("#newtons-method-plot").toDataURL();
 		
 		link.click();
 		
@@ -1621,8 +2041,8 @@
 		
 		
 		
-		document.querySelector("#secant-method-plot").setAttribute("width", image_width);
-		document.querySelector("#secant-method-plot").setAttribute("height", image_height);
+		document.querySelector("#newtons-method-plot").setAttribute("width", image_width);
+		document.querySelector("#newtons-method-plot").setAttribute("height", image_height);
 		
 		gl.viewport(0, 0, image_width, image_height);
 		
@@ -1631,13 +2051,18 @@
 	
 	
 	
-	function secant_method_resize()
+	function newtons_method_resize()
 	{
 		root_selector_width = document.querySelector("#root-selector").offsetWidth;
 		root_selector_height = document.querySelector("#root-selector").offsetHeight;
 		
-		let changed_a_root = false;
-		
+		update_root_markers();
+	}
+	
+	
+	
+	function update_root_markers()
+	{
 		for (let i = 0; i < current_roots.length; i++)
 		{
 			let row = 0;
@@ -1645,148 +2070,39 @@
 			
 			if (image_width >= image_height)
 			{
-				row = Math.floor(root_selector_height * (1 - (current_roots[i][1] / 4 + .5)));
-				col = Math.floor(root_selector_width * (current_roots[i][0] / (image_width / image_height) / 4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((current_roots[i][1] - center_y) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((current_roots[i][0] - center_x) / (image_width / image_height) / box_size + .5));
 			}
 			
 			else
 			{
-				row = Math.floor(root_selector_height * (1 - (current_roots[i][1] * (image_width / image_height) / 4 + .5)));
-				col = Math.floor(root_selector_width * (current_roots[i][0] / 4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((current_roots[i][1] - center_y) * (image_width / image_height) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((current_roots[i][0] - center_x) / box_size + .5));
 			}
-			
-			
-			
-			if (row < root_marker_radius)
-			{
-				row = root_marker_radius;
-				
-				changed_a_root = true;
-			}
-			
-			if (row > root_selector_height - root_marker_radius)
-			{
-				row = root_selector_height - root_marker_radius;
-				
-				changed_a_root = true;
-			}
-			
-			if (col < root_marker_radius)
-			{
-				col = root_marker_radius;
-				
-				changed_a_root = true;
-			}
-			
-			if (col > root_selector_width - root_marker_radius)
-			{
-				col = root_selector_width - root_marker_radius;
-				
-				changed_a_root = true;
-			}
-			
-			
 			
 			root_markers[i].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
-			
-			
-			
-			if (changed_a_root)
-			{
-				let x = 0;
-				let y = 0;
-				
-				if (image_width >= image_height)
-				{
-					x = ((col - root_selector_width/2) / root_selector_width) * 4 * (image_width / image_height);
-					y = (-(row - root_selector_height/2) / root_selector_height) * 4;
-				}
-				
-				else
-				{
-					x = ((col - root_selector_width/2) / root_selector_width) * 4;
-					y = (-(row - root_selector_height/2) / root_selector_height) * 4 / (image_width / image_height);
-				}
-				
-				current_roots[i][0] = x;
-				current_roots[i][1] = y;
-			}
 		}
 		
 		
+		
 		try
-		{	
+		{
 			let row = 0;
 			let col = 0;
 			
 			if (image_width >= image_height)
 			{
-				row = Math.floor(root_selector_height * (1 - (a[1] / 4 + .5)));
-				col = Math.floor(root_selector_width * (a[0] / (image_width / image_height) / 4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((a[1] - center_y) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((a[0] - center_x) / (image_width / image_height) / box_size + .5));
 			}
 			
 			else
 			{
-				row = Math.floor(root_selector_height * (1 - (a[1] * (image_width / image_height) / 4 + .5)));
-				col = Math.floor(root_selector_width * (a[0] / 4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((a[1] - center_y) * (image_width / image_height) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((a[0] - center_x) / box_size + .5));
 			}
-			
-			
-			
-			if (row < root_marker_radius)
-			{
-				row = root_marker_radius;
-				
-				changed_a_root = true;
-			}
-			
-			if (row > root_selector_height - root_marker_radius)
-			{
-				row = root_selector_height - root_marker_radius;
-				
-				changed_a_root = true;
-			}
-			
-			if (col < root_marker_radius)
-			{
-				col = root_marker_radius;
-				
-				changed_a_root = true;
-			}
-			
-			if (col > root_selector_width - root_marker_radius)
-			{
-				col = root_selector_width - root_marker_radius;
-				
-				changed_a_root = true;
-			}
-			
-			
 			
 			document.querySelector(".a-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
-			
-			
-			
-			if (changed_a_root)
-			{
-				let x = 0;
-				let y = 0;
-				
-				if (image_width >= image_height)
-				{
-					x = ((col - root_selector_width/2) / root_selector_width) * 4 * (image_width / image_height);
-					y = (-(row - root_selector_height/2) / root_selector_height) * 4;
-				}
-				
-				else
-				{
-					x = ((col - root_selector_width/2) / root_selector_width) * 4;
-					y = (-(row - root_selector_height/2) / root_selector_height) * 4 / (image_width / image_height);
-				}
-				
-				a[0] = x;
-				a[1] = y;
-			}
 		}
 		
 		catch(ex) {}
@@ -1800,82 +2116,20 @@
 			
 			if (image_width >= image_height)
 			{
-				row = Math.floor(root_selector_height * (1 - (c[1] / .4 + .5)));
-				col = Math.floor(root_selector_width * (c[0] / (image_width / image_height) / .4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((c[1] - center_y) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((c[0] - center_x) / (image_width / image_height) / box_size + .5));
 			}
 			
 			else
 			{
-				row = Math.floor(root_selector_height * (1 - (c[1] * (image_width / image_height) / .4 + .5)));
-				col = Math.floor(root_selector_width * (c[0] / .4 + .5));
+				row = Math.floor(root_selector_height * (1 - ((c[1] - center_y) * (image_width / image_height) / box_size + .5)));
+				col = Math.floor(root_selector_width * ((c[0] - center_x) / box_size + .5));
 			}
-			
-			
-			
-			if (row < root_marker_radius)
-			{
-				row = root_marker_radius;
-				
-				changed_a_root = true;
-			}
-			
-			if (row > root_selector_height - root_marker_radius)
-			{
-				row = root_selector_height - root_marker_radius;
-				
-				changed_a_root = true;
-			}
-			
-			if (col < root_marker_radius)
-			{
-				col = root_marker_radius;
-				
-				changed_a_root = true;
-			}
-			
-			if (col > root_selector_width - root_marker_radius)
-			{
-				col = root_selector_width - root_marker_radius;
-				
-				changed_a_root = true;
-			}
-			
-			
 			
 			document.querySelector(".c-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
-			
-			
-			
-			if (changed_a_root)
-			{
-				let x = 0;
-				let y = 0;
-				
-				if (image_width >= image_height)
-				{
-					x = ((col - root_selector_width/2) / root_selector_width) * .4 * (image_width / image_height);
-					y = (-(row - root_selector_height/2) / root_selector_height) * .4;
-				}
-				
-				else
-				{
-					x = ((col - root_selector_width/2) / root_selector_width) * .4;
-					y = (-(row - root_selector_height/2) / root_selector_height) * .4 / (image_width / image_height);
-				}
-				
-				c[0] = x;
-				c[1] = y;
-			}
 		}
 		
 		catch(ex) {}
-		
-		
-		
-		if (changed_a_root)
-		{
-			window.requestAnimationFrame(draw_frame);
-		}
 	}
 
 
@@ -1886,12 +2140,12 @@
 		{
 			if (url_vars["theme"] === 1)
 			{
-				document.querySelector("#secant-method-plot").style.borderColor = "rgb(192, 192, 192)";
+				document.querySelector("#newtons-method-plot").style.borderColor = "rgb(192, 192, 192)";
 			}
 			
 			else
 			{
-				document.querySelector("#secant-method-plot").style.borderColor = "rgb(64, 64, 64)";
+				document.querySelector("#newtons-method-plot").style.borderColor = "rgb(64, 64, 64)";
 			}
 		}
 		
