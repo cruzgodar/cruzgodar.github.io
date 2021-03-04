@@ -1419,7 +1419,7 @@
 		active_marker = -1;
 		
 		//Figure out which marker, if any, this is referencing.
-		for (let i = 0; i < root_markers.length; i++)
+		for (let i = 0; i < 10; i++)
 		{
 			if (e.target.id === `root-marker-${i}`)
 			{
@@ -1609,25 +1609,74 @@
 			
 			
 			
-			root_markers[active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
-			
-			let x = 0;
-			let y = 0;
-			
-			if (image_width >= image_height)
+			if (active_marker < 8)
 			{
-				x = ((col - root_selector_width/2) / root_selector_width) * box_size * (image_width / image_height) + center_x;
-				y = (-(row - root_selector_height/2) / root_selector_height) * box_size + center_y;
+				root_markers[active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+				
+				let x = 0;
+				let y = 0;
+				
+				if (image_width >= image_height)
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size * (image_width / image_height) + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size + center_y;
+				}
+				
+				else
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size / (image_width / image_height) + center_y;
+				}
+				
+				current_roots[active_marker][0] = x;
+				current_roots[active_marker][1] = y;
+			}
+			
+			else if (active_marker === 8)
+			{
+				document.querySelector(".a-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+				
+				let x = 0;
+				let y = 0;
+				
+				if (image_width >= image_height)
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size * (image_width / image_height) + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size + center_y;
+				}
+				
+				else
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size / (image_width / image_height) + center_y;
+				}
+				
+				a[0] = x;
+				a[1] = y;
 			}
 			
 			else
 			{
-				x = ((col - root_selector_width/2) / root_selector_width) * box_size + center_x;
-				y = (-(row - root_selector_height/2) / root_selector_height) * box_size / (image_width / image_height) + center_y;
+				document.querySelector(".c-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+				
+				let x = 0;
+				let y = 0;
+				
+				if (image_width >= image_height)
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size * (image_width / image_height) + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size + center_y;
+				}
+				
+				else
+				{
+					x = ((col - root_selector_width/2) / root_selector_width) * box_size + center_x;
+					y = (-(row - root_selector_height/2) / root_selector_height) * box_size / (image_width / image_height) + center_y;
+				}
+				
+				c[0] = x;
+				c[1] = y;
 			}
-			
-			current_roots[active_marker][0] = x;
-			current_roots[active_marker][1] = y;
 			
 			
 
@@ -1843,7 +1892,7 @@
 				col = Math.floor(root_selector_width * ((a[0] - center_x) / box_size + .5));
 			}
 			
-			root_markers[last_active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+			document.querySelector(".a-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		}
 		
 		else
@@ -1866,7 +1915,7 @@
 				col = Math.floor(root_selector_width * ((c[0] - center_x) / box_size + .5));
 			}
 			
-			root_markers[last_active_marker].style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
+			document.querySelector(".c-marker").style.transform = `translate3d(${col - root_marker_radius}px, ${row - root_marker_radius}px, 0)`;
 		}
 		
 		

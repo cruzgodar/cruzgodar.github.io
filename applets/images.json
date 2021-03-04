@@ -11,6 +11,12 @@
 		"non-webp": "wilsons-algorithm/cover.jpg"
 	},
 	
+	"image-newtons-method-best-of":
+	{
+		"webp": "newtons-method/cover.webp",
+		"non-webp": "newtons-method/cover.jpg"
+	},
+	
 	"image-the-mandelbulb-best-of":
 	{
 		"webp": "the-mandelbulb/cover.webp",
@@ -21,12 +27,6 @@
 	{
 		"webp": "quasi-fuchsian-groups/cover.webp",
 		"non-webp": "quasi-fuchsian-groups/cover.jpg"
-	},
-	
-	"image-nova-fractals-best-of":
-	{
-		"webp": "nova-fractals/cover.webp",
-		"non-webp": "nova-fractals/cover.jpg"
 	},
 	
 	
@@ -44,12 +44,6 @@
 	},
 	
 	
-	
-	"image-nova-fractals":
-	{
-		"webp": "nova-fractals/cover.webp",
-		"non-webp": "nova-fractals/cover.jpg"
-	},
 	
 	"image-quasi-fuchsian-groups":
 	{

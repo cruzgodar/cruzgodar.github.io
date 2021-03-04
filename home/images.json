@@ -43,9 +43,9 @@
 		"non-webp": "../applets/the-secant-method/cover.jpg"
 	},
 	
-	"image-nova-fractals":
+	"image-quasi-fuchsian-groups":
 	{
-		"webp": "../applets/nova-fractals/cover.webp",
-		"non-webp": "../applets/nova-fractals/cover.jpg"
+		"webp": "../applets/quasi-fuchsian-groups/cover.webp",
+		"non-webp": "../applets/quasi-fuchsian-groups/cover.jpg"
 	}
 }
