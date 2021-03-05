@@ -309,7 +309,7 @@
 			
 			for (int iteration = 0; iteration < 100; iteration++)
 			{
-				vec2 temp = complex_multiply(complex_multiply(complex_polynomial(z), complex_multiply(z - last_z, complex_invert(complex_polynomial(z) - complex_polynomial(last_z)))), a) + c;
+				vec2 temp = complex_multiply(complex_polynomial(z), complex_invert(complex_derivative(z)));
 				
 				last_z = z;
 				
