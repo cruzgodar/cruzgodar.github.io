@@ -4,9 +4,9 @@
 	
 	
 	
-	let image_size = 1000;
-	let image_width = 1000;
-	let image_height = 1000;
+	let image_size = 500;
+	let image_width = 500;
+	let image_height = 500;
 	
 	let a = [1, 0];
 	let c = [0, 0];
@@ -1927,7 +1927,7 @@
 	
 	function change_resolution()
 	{
-		image_size = parseInt(document.querySelector("#resolution-input").value || 1000);
+		image_size = parseInt(document.querySelector("#resolution-input").value || 500);
 		
 		if (image_size < 200)
 		{
@@ -1970,6 +1970,8 @@
 	
 	function prepare_download()
 	{
+		let old_image_size = image_size;
+		
 		image_size = parseInt(document.querySelector("#dim-input").value || 2000);
 		
 		if (canvas_is_fullscreen)
@@ -2016,7 +2018,7 @@
 		
 		
 		
-		image_size = 1000;
+		image_size = old_image_size;
 		
 		if (canvas_is_fullscreen)
 		{
