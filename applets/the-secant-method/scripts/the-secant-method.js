@@ -1516,7 +1516,7 @@
 				
 				let increment = touch_distance_delta / 2;
 				
-				if (zoom_level + increment >= -500 && zoom_level + increment <= 150)
+				if (zoom_level + increment >= -300 && zoom_level + increment <= 300)
 				{
 					zoom_level += increment;
 					
@@ -1702,14 +1702,14 @@
 			
 			zoom_level -= Math.sign(e.deltaY) * 10;
 			
-			if (zoom_level < -500)
+			if (zoom_level < -300)
 			{
-				zoom_level = -500;
+				zoom_level = -300;
 			}
 			
-			if (zoom_level > 150)
+			if (zoom_level > 300)
 			{
-				zoom_level = 150;
+				zoom_level = 300;
 			}
 			
 			
