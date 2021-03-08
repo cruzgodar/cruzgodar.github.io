@@ -9,6 +9,10 @@
 		var divisor;
 		var prime;
 		
+		print(2 + 0);
+		
+		print(3 + 0);
+		
 		while (num < 100)
 		{
 			num = num + 2;
@@ -338,8 +342,6 @@
 				
 				parse_index++;
 				
-				
-				
 				prepare_expression(code_lines[parse_index].slice(6, code_lines[parse_index].length - 1));
 				
 				for (let i = 0; i < new_code_lines.length; i++)
@@ -522,7 +524,7 @@
 				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}/_${current_temp_variable}`);
 				
-				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
+				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable + 1}` + expression.slice(lengths[1] + 1, expression.length);
 				
 				current_temp_variable += 2;
 			}
@@ -536,7 +538,7 @@
 				new_code_lines.push(`_${current_temp_variable + 1}=${expression.slice(lengths[0], i)}`);
 				new_code_lines.push(`_${current_temp_variable + 1}%_${current_temp_variable}`);
 				
-				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable}` + expression.slice(lengths[1] + 1, expression.length);
+				expression = expression.slice(0, lengths[0]) + `_${current_temp_variable + 1}` + expression.slice(lengths[1] + 1, expression.length);
 				
 				current_temp_variable += 2;
 			}
