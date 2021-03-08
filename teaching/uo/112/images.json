@@ -27,10 +27,10 @@
         "non-webp": "homework/7/cover.jpg"
     },
     
-	"image-midterm-2-solutions":
+	"image-quiz-7":
     {
-        "webp": "exams/2-solutions/cover.webp",
-        "non-webp": "exams/2-solutions/cover.jpg"
+        "webp": "quizzes/7/cover.webp",
+        "non-webp": "quizzes/7/cover.jpg"
     },
     
     
