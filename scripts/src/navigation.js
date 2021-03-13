@@ -343,9 +343,9 @@ function fade_out()
 						
 						document.documentElement.classList.remove("background-transition");
 						document.body.classList.remove("background-transition");
-						
-						resolve();
 					}, 450);
+					
+					resolve();
 				}
 			}, 300);
 		}
