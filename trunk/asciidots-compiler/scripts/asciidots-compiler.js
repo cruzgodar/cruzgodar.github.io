@@ -13,6 +13,8 @@
 		
 		print(3 + 0);
 		
+		print("hello");
+		
 		while (num < 100)
 		{
 			num = num + 2;
@@ -737,7 +739,7 @@
 			
 			else if (code_lines[parse_index].slice(0, 6) === "print(")
 			{
-				if (code_lines[parse_index][6] === '"')
+				if (code_lines[parse_index][6] === '"' || code_lines[parse_index][6] === "'")
 				{
 					write_print_string_block(code_lines[parse_index].slice(7, code_lines[parse_index].length - 2));
 				}

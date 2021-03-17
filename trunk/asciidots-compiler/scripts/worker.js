@@ -577,6 +577,24 @@ function parse_token(index, token)
 		{
 			postMessage([active_elements[index][2], "console"]);
 		}
+		
+		else if (code[active_elements[index][0]][active_elements[index][1]] === "'" || code[active_elements[index][0]][active_elements[index][1]] === '"')
+		{
+			active_elements[index][0] += direction[active_elements[index][4]][0];
+			active_elements[index][1] += direction[active_elements[index][4]][1];
+			
+			let str = "";
+			
+			while (code[active_elements[index][0]][active_elements[index][1]] !== "'" && code[active_elements[index][0]][active_elements[index][1]] !== '"')
+			{
+				str += code[active_elements[index][0]][active_elements[index][1]];
+				
+				active_elements[index][0] += direction[active_elements[index][4]][0];
+				active_elements[index][1] += direction[active_elements[index][4]][1];
+			}
+			
+			postMessage([str, "console"]);
+		}
 	}
 	
 	
