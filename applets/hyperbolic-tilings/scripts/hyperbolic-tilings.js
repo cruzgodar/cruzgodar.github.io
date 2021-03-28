@@ -208,13 +208,20 @@
 			angle_2 = temp;
 		}
 		
-		console.log(angle_1, angle_2);
+		
 		
 		ctx.lineWidth = 20;
 		ctx.strokeStyle = "rgb(0, 0, 255)";
 		ctx.beginPath();
 		ctx.arc(col, row, radius_scaled, angle_1, angle_2, true);
 		ctx.stroke();
+	}
+	
+	
+	
+	function draw_polygon(x_1, y_1, x_2, y_2, num_sides)
+	{
+		
 	}
 	
 	
