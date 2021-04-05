@@ -31,6 +31,13 @@ function on_page_load()
 	
 	
 	
+	if (layout_string === "ultrawide")
+	{
+		create_multicols();
+	}
+	
+	
+	
 	set_up_aos();
 	
 	setTimeout(aos_resize, 1000);
@@ -86,7 +93,7 @@ function on_page_load()
 		set_writing_page_font();
 	}
 	
-	if (page_settings["small_margins_on_ultrawide"] && layout_string === "ultrawide")
+	if (layout_string === "ultrawide" && page_settings["small_margins_on_ultrawide"])
 	{
 		reduce_page_margins();
 	}
