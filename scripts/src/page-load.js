@@ -287,7 +287,14 @@ function show_title_page(text_to_draw)
 		
 		setTimeout(function()
 		{
-			let text = new Vara("#vara-container", parent_folder + "/vara-font.json", [{text: text_to_draw, fontSize: 1.5 * window_width / text_to_draw.length, duration: 5000, strokeWidth: .5, textAlign: "center"}]);
+			let color = "black";
+			
+			if (url_vars["theme"] === 1)
+			{
+				color = "white";
+			}
+			
+			let text = new Vara("#vara-container", parent_folder + "/vara-font.json", [{text: text_to_draw, fontSize: 1.5 * window_width / text_to_draw.length, duration: 5000, strokeWidth: .5, textAlign: "center", color: color}]);
 			
 			text.animationEnd(function(id, object)
 			{
