@@ -51,7 +51,7 @@ function resize_update()
 	
 	
 	
-	if (old_layout !== layout_string && page_settings["small_margins_on_ultrawide"])
+	if (old_layout !== layout_string && "small_margins_on_ultrawide" in page_settings && page_settings["small_margins_on_ultrawide"])
 	{
 		reduce_page_margins();
 	}

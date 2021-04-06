@@ -52,7 +52,7 @@ function insert_footer()
 	
 	
 	
-	if (page_settings["footer_exclusion"] === "")
+	if ("footer_exclusion" in page_settings && page_settings["footer_exclusion"] === "")
 	{
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
@@ -80,7 +80,7 @@ function insert_footer()
 			
 			
 	
-	if (page_settings["footer_exclusion"] !== "writing")
+	if (!("footer_exclusion" in page_settings && page_settings["footer_exclusion"] === "writing"))
 	{
 		let element = document.createElement("div");
 		
@@ -98,7 +98,7 @@ function insert_footer()
 	}
 	
 	
-	if (page_settings["footer_exclusion"] !== "teaching")
+	if  (!("footer_exclusion" in page_settings && page_settings["footer_exclusion"] === "teaching"))
 	{
 		let element = document.createElement("div");
 		
@@ -116,7 +116,7 @@ function insert_footer()
 	}
 	
 	
-	if (page_settings["footer_exclusion"] !== "applets")
+	if  (!("footer_exclusion" in page_settings && page_settings["footer_exclusion"] === "applets"))
 	{
 		let element = document.createElement("div");
 		
@@ -133,7 +133,7 @@ function insert_footer()
 		delay += 100;
 	}
 	
-	if (page_settings["footer_exclusion"] !== "bio")
+	if  (!("footer_exclusion" in page_settings && page_settings["footer_exclusion"] === "bio"))
 	{
 		let element = document.createElement("div");
 		

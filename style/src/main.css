@@ -209,6 +209,14 @@ img
 
 
 
+#vara-container
+{
+	margin: 0 auto;
+	height: 100vh;
+}
+
+
+
 *:focus
 {
 	outline: none;

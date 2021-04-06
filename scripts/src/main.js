@@ -12,6 +12,28 @@ let DEBUG = false;
 
 let window_width = null, window_height = null, aspect_ratio = null;
 
+/*
+	Defaults:
+	
+	"title": "",
+	
+	"banner_page": false,
+	"num_banners": 0,
+	
+	"title_page_text": "",
+	
+	"writing_page": false,
+	"math_page": false,
+	"comments": false,
+	
+	"small_margins_on_ultrawide": false,
+	
+	"manual_banner": false,
+	"manual_dark_theme": false,
+	
+	"no_footer": false,
+	"footer_exclusion": ""
+*/
 let page_settings = {};
 
 let current_url = decodeURIComponent(get_url_var("page"));

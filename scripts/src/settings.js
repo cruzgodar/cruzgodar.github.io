@@ -559,7 +559,7 @@ function switch_theme()
 	//Light to dark
 	if (url_vars["theme"] === 0)
 	{
-		if (!page_settings["manual_dark_theme"])
+		if (!("manual_dark_theme" in page_settings && page_settings["manual_dark_theme"]))
 		{
 			if (url_vars["dark_theme_color"] !== 1)
 			{
@@ -601,7 +601,7 @@ function switch_theme()
 		
 		else
 		{
-			if (!page_settings["manual_dark_theme"])
+			if (!("manual_dark_theme" in page_settings && page_settings["manual_dark_theme"]))
 			{
 				animate_theme_contrast("dark");
 			}
@@ -641,7 +641,7 @@ function switch_theme()
 	//Dark to light
 	else
 	{
-		if (!page_settings["manual_dark_theme"])
+		if (!("manual_dark_theme" in page_settings && page_settings["manual_dark_theme"]))
 		{
 			document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
 		}
@@ -675,7 +675,7 @@ function switch_theme()
 		
 		else
 		{
-			if (!page_settings["manual_dark_theme"])
+			if (!("manual_dark_theme" in page_settings && page_settings["manual_dark_theme"]))
 			{
 				animate_theme_contrast("");
 			}
@@ -1092,7 +1092,7 @@ function switch_text_size()
 
 function switch_font()
 {
-	if (page_settings["writing_page"])
+	if ("writing_page" in page_settings && page_settings["writing_page"])
 	{
 		document.body.style.opacity = 0;
 	}
@@ -1109,7 +1109,7 @@ function switch_font()
 	{
 		setTimeout(function()
 		{
-			if (page_settings["writing_page"])
+			if ("writing_page" in page_settings && page_settings["writing_page"])
 			{
 				set_element_styles(".body-text, .heading-text", "font-family", "'Gentium Book Basic', serif");
 			}
@@ -1128,7 +1128,7 @@ function switch_font()
 	{
 		setTimeout(function()
 		{
-			if (page_settings["writing_page"])
+			if ("writing_page" in page_settings && page_settings["writing_page"])
 			{
 				set_element_styles(".body-text, .heading-text", "font-family", "'Rubik', sans-serif");
 			}
@@ -1142,7 +1142,7 @@ function switch_font()
 	
 	
 	
-	if (page_settings["writing_page"])
+	if ("writing_page" in page_settings && page_settings["writing_page"])
 	{
 		setTimeout(function()
 		{
@@ -1184,7 +1184,7 @@ function switch_comments()
 	
 	if (url_vars["comments"] === 0)
 	{
-		if (page_settings["comments"])
+		if ("comments" in page_settings && page_settings["comments"])
 		{
 			//Unfortunately, we can't just use the animated-opacity class -- this needs !important.
 			

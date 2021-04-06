@@ -20,9 +20,9 @@ function on_page_load()
 	//Set the page title.
 	document.querySelector("title").innerHTML = page_settings["title"];
 	
+	console.log(page_settings);
 	
-	
-	if (page_settings["no_footer"] === false)
+	if (!("no_footer" in page_settings && page_settings["no_footer"]))
 	{
 		insert_footer();
 		
@@ -44,7 +44,7 @@ function on_page_load()
 	
 	
 	
-	if (page_settings["no_footer"] === false)
+	if (!("no_footer" in page_settings && page_settings["no_footer"]))
 	{
 		setTimeout(fix_footer_aos_anchor, 50);
 	}
@@ -52,6 +52,13 @@ function on_page_load()
 	
 	
 	fade_in();
+	
+	
+	
+	if ("title_page_text" in page_settings && page_settings["title_page_text"] !== "")
+	{
+		show_title_page(page_settings["title_page_text"]);
+	}
 	
 	
 	
@@ -78,7 +85,7 @@ function on_page_load()
 	
 	
 	
-	if (page_settings["banner_page"])
+	if ("banner_page" in page_settings && page_settings["banner_page"])
 	{
 		fetch_other_banner_size_in_background();
 	}
@@ -88,12 +95,12 @@ function on_page_load()
 		set_img_button_contrast();
 	}
 	
-	if (page_settings["writing_page"] && url_vars["font"] === 1)
+	if ("writing_page" in page_settings && page_settings["writing_page"] && url_vars["font"] === 1)
 	{
 		set_writing_page_font();
 	}
 	
-	if (layout_string === "ultrawide" && page_settings["small_margins_on_ultrawide"])
+	if (layout_string === "ultrawide" && "small_margins_on_ultrawide" in page_settings && page_settings["small_margins_on_ultrawide"])
 	{
 		reduce_page_margins();
 	}
@@ -110,14 +117,14 @@ function on_page_load()
 	
 	
 	
-	if (page_settings["math_page"])
+	if ("math_page" in page_settings && page_settings["math_page"])
 	{
 		typeset_math();
 	}
 	
 	
 	
-	if (url_vars["comments"] !== 1 && page_settings["comments"])
+	if (url_vars["comments"] !== 1 && "comments" in page_settings && page_settings["comments"])
 	{
 		load_disqus();
 	}
@@ -217,7 +224,7 @@ function parse_page_specific_scripts()
 
 function fade_in()
 {
-	if (page_settings["banner_page"])
+	if ("banner_page" in page_settings && page_settings["banner_page"])
 	{
 		add_style(`
 			#banner
@@ -245,6 +252,22 @@ function fade_in()
 		document.body.style.opacity = 1;
 		document.body.classList.add("animated-opacity");
 	}
+}
+
+
+
+//Displays an animated block of text (usually an equation).
+function show_title_page(text_to_draw)
+{
+	return new Promise(function(resolve, reject)
+	{
+		let text = new Vara("#vara-container", "/scripts/vara-font.json", [{text: text_to_draw, fontSize: 50, duration: 1200, strokeWidth: 2}]);
+		
+		text.animationEnd(function(id, object)
+		{
+			resolve();
+		});
+	});
 }
 
 
