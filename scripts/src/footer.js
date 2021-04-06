@@ -52,7 +52,7 @@ function insert_footer()
 	
 	
 	
-	if ("footer_exclusion" in page_settings && page_settings["footer_exclusion"] === "")
+	if (!("footer_exclusion" in page_settings && page_settings["footer_exclusion"] !== ""))
 	{
 		document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 			<div style="height: 30vh"></div>
