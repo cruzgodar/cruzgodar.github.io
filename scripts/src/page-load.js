@@ -6,7 +6,7 @@
 
 
 
-function on_page_load()
+async function on_page_load()
 {
 	currently_changing_page = false;
 	
@@ -20,7 +20,7 @@ function on_page_load()
 	//Set the page title.
 	document.querySelector("title").innerHTML = page_settings["title"];
 	
-	console.log(page_settings);
+	
 	
 	if (!("no_footer" in page_settings && page_settings["no_footer"]))
 	{
@@ -34,6 +34,17 @@ function on_page_load()
 	if (layout_string === "ultrawide")
 	{
 		create_multicols();
+	}
+	
+	
+	
+	if ("title_page_text" in page_settings && page_settings["title_page_text"] !== "")
+	{
+		document.body.classList.remove("animated-opacity");
+		document.body.style.opacity = 1;
+		document.body.classList.add("animated-opacity");
+		
+		await show_title_page(page_settings["title_page_text"]);
 	}
 	
 	
@@ -52,13 +63,6 @@ function on_page_load()
 	
 	
 	fade_in();
-	
-	
-	
-	if ("title_page_text" in page_settings && page_settings["title_page_text"] !== "")
-	{
-		show_title_page(page_settings["title_page_text"]);
-	}
 	
 	
 	
@@ -257,16 +261,63 @@ function fade_in()
 
 
 //Displays an animated block of text (usually an equation).
+let title_pages_seen = [];
+
 function show_title_page(text_to_draw)
 {
 	return new Promise(function(resolve, reject)
 	{
-		let text = new Vara("#vara-container", "/scripts/vara-font.json", [{text: text_to_draw, fontSize: 50, duration: 1200, strokeWidth: 2}]);
-		
-		text.animationEnd(function(id, object)
+		if (title_pages_seen.includes(current_url))
 		{
+			document.querySelector("#vara-container").remove();
+			
 			resolve();
-		});
+			return;
+		}
+		
+		
+		
+		document.documentElement.style.overflowY = "hidden";
+		document.body.style.overflowY = "hidden";
+		
+		document.body.style.userSelect = "none";
+		document.body.style.WebkitUserSelect = "none";
+		
+		
+		
+		setTimeout(function()
+		{
+			let text = new Vara("#vara-container", parent_folder + "/vara-font.json", [{text: text_to_draw, fontSize: 1.5 * window_width / text_to_draw.length, duration: 5000, strokeWidth: .5, textAlign: "center"}]);
+			
+			text.animationEnd(function(id, object)
+			{
+				setTimeout(function()
+				{
+					document.body.style.opacity = 0;
+					
+					setTimeout(function()
+					{
+						document.querySelector("#vara-container").remove();
+						
+						
+						
+						document.documentElement.style.overflowY = "visible";
+						document.body.style.overflowY = "visible";
+						
+						document.body.style.userSelect = "auto";
+						document.body.style.WebkitUserSelect = "auto";
+						
+						
+						
+						title_pages_seen.push(current_url);
+						
+						
+						
+						resolve();
+					}, 300);
+				}, 500);
+			});
+		}, 300);
 	});
 }
 
