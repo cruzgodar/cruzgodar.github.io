@@ -18,7 +18,7 @@ workbox.routing.registerRoute(
 				maxEntries: 200,
 				
 				//Cache for a maximum of a week.
-				maxAgeSeconds: 30 * 24 * 60 * 60,
+				maxAgeSeconds: 7 * 24 * 60 * 60,
 				
 				purgeOnQuotaError: true
 			})
