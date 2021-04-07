@@ -298,7 +298,7 @@ function show_title_page(text_to_draw)
 				color = "white";
 			}
 			
-			let text = new Vara("#vara-container", parent_folder + "/vara-font.json", [{text: text_to_draw, fontSize: 1.5 * window_width / text_to_draw.length, duration: 4000, strokeWidth: .5, textAlign: "center", color: color}]);
+			let text = new Vara("#vara-container", parent_folder + "/vara-font.json", [{text: text_to_draw, fontSize: 1.25 * window_width / text_to_draw.length, duration: 4000, strokeWidth: .5, textAlign: "center", color: color}]);
 			
 			text.animationEnd(function(id, object)
 			{
