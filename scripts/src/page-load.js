@@ -44,7 +44,7 @@ async function on_page_load()
 		document.body.style.opacity = 1;
 		document.body.classList.add("animated-opacity");
 		
-		await show_title_page(page_settings["title_page_text"]);
+		await Promise.any([show_title_page(page_settings["title_page_text"]), listen_for_click()]);
 	}
 	
 	
@@ -263,6 +263,8 @@ function fade_in()
 //Displays an animated block of text (usually an equation).
 let title_pages_seen = [];
 
+let vara_canceled = false;
+
 function show_title_page(text_to_draw)
 {
 	return new Promise(function(resolve, reject)
@@ -274,6 +276,8 @@ function show_title_page(text_to_draw)
 			resolve();
 			return;
 		}
+		
+		vara_canceled = false;
 		
 		
 		
@@ -298,12 +302,33 @@ function show_title_page(text_to_draw)
 			
 			text.animationEnd(function(id, object)
 			{
+				if (vara_canceled)
+				{
+					return;
+				}
+				
+				
+				
 				setTimeout(function()
 				{
+					if (vara_canceled)
+					{
+						return;
+					}
+					
+					
+					
 					document.body.style.opacity = 0;
 					
 					setTimeout(function()
 					{
+						if (vara_canceled)
+						{
+							return;
+						}
+						
+						
+						
 						document.querySelector("#vara-container").remove();
 						
 						
@@ -325,6 +350,42 @@ function show_title_page(text_to_draw)
 				}, 500);
 			});
 		}, 300);
+	});
+}
+
+
+
+function listen_for_click()
+{
+	return new Promise(function(resolve, reject)
+	{
+		document.querySelector("#vara-container").addEventListener("click", function()
+		{
+			vara_canceled = true;
+			
+			document.body.style.opacity = 0;
+			
+			setTimeout(function()
+			{
+				document.querySelector("#vara-container").remove();
+				
+				
+				
+				document.documentElement.style.overflowY = "visible";
+				document.body.style.overflowY = "visible";
+				
+				document.body.style.userSelect = "auto";
+				document.body.style.WebkitUserSelect = "auto";
+				
+				
+				
+				title_pages_seen.push(current_url);
+				
+				
+				
+				resolve();
+			}, 300);
+		});
 	});
 }
 
