@@ -22,6 +22,17 @@ async function on_page_load()
 	
 	
 	
+	if ("title_page_text" in page_settings && page_settings["title_page_text"] !== "")
+	{
+		document.body.classList.remove("animated-opacity");
+		document.body.style.opacity = 1;
+		document.body.classList.add("animated-opacity");
+		
+		await Promise.any([show_title_page(page_settings["title_page_text"]), listen_for_click()]);
+	}
+	
+	
+	
 	if (!("no_footer" in page_settings && page_settings["no_footer"]))
 	{
 		insert_footer();
@@ -34,17 +45,6 @@ async function on_page_load()
 	if (layout_string === "ultrawide")
 	{
 		create_multicols();
-	}
-	
-	
-	
-	if ("title_page_text" in page_settings && page_settings["title_page_text"] !== "")
-	{
-		document.body.classList.remove("animated-opacity");
-		document.body.style.opacity = 1;
-		document.body.classList.add("animated-opacity");
-		
-		await Promise.any([show_title_page(page_settings["title_page_text"]), listen_for_click()]);
 	}
 	
 	
