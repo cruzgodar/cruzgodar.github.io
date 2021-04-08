@@ -439,7 +439,7 @@ function concat_url_vars(include_return_url)
 	{
 		key = Object.keys(url_vars)[i];
 		
-		if (url_vars[key] === 1 || (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] === 0 && key === "theme"))
+		if (url_vars[key] !== 0 || (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] === 0 && key === "theme"))
 		{
 			string += "&" + key + "=" + url_vars[key];
 		}

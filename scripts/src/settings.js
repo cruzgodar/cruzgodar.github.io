@@ -37,7 +37,8 @@ let url_vars =
 	"font": get_url_var("font"),
 	"comments": get_url_var("comments"),
 	"content_animation": get_url_var("content_animation"),
-	"banner_style": get_url_var("banner_style")
+	"banner_style": get_url_var("banner_style"),
+	"title_pages_seen": get_url_var("title_pages_seen")
 };
 
 window.matchMedia("(prefers-color-scheme: dark)").addListener(function(e)
@@ -203,8 +204,13 @@ function show_floating_settings()
 		
 		setTimeout(function()
 		{
-			document.querySelector("#floating-footer").style.display = "none";
-			document.querySelector("#floating-footer-touch-target").style.display = "block";
+			try
+			{
+				document.querySelector("#floating-footer").style.display = "none";
+				document.querySelector("#floating-footer-touch-target").style.display = "block";
+			}
+			
+			catch(ex) {}
 		}, 300);
 	}
 	
@@ -710,7 +716,8 @@ function switch_theme()
 		{
 			setTimeout(function()
 			{
-				document.querySelector("#theme-button-row").style.opacity = 1;
+				try {document.querySelector("#theme-button-row").style.opacity = 1;}
+				catch(ex) {}
 			}, 50);
 		}
 		

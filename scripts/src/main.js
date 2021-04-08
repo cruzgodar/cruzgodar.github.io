@@ -114,6 +114,16 @@ const hover_elements = `
 
 
 
+let title_page_ids =
+{
+	"/teaching/uo/111/111.html": 0,
+	"/teaching/uo/112/112.html": 1,
+	"/teaching/uo/105/105.html": 2,
+	"/teaching/uo/252/252.html": 3
+};
+
+
+
 //A list of lists. Each sublist starts with an anchor, then lists all the elements anchored to it in sequence, along with their delays.
 let aos_elements = [];
 

@@ -24,11 +24,26 @@ async function on_page_load()
 	
 	if ("title_page_text" in page_settings && page_settings["title_page_text"] !== "")
 	{
-		document.body.classList.remove("animated-opacity");
-		document.body.style.opacity = 1;
-		document.body.classList.add("animated-opacity");
+		if (url_vars["content_animation"] === 1 || ((url_vars["title_pages_seen"] >> title_page_ids[current_url]) & 1))
+		{
+			document.querySelector("#vara-container").remove();
+		}
 		
-		await Promise.any([show_title_page(page_settings["title_page_text"]), listen_for_click()]);
+		else
+		{
+			document.body.classList.remove("animated-opacity");
+			document.body.style.opacity = 1;
+			document.body.classList.add("animated-opacity");
+			
+			await Promise.any([show_title_page(page_settings["title_page_text"]), listen_for_click()]);
+			
+			if (!((url_vars["title_pages_seen"] >> title_page_ids[current_url]) & 1))
+			{
+				url_vars["title_pages_seen"] += (1 << title_page_ids[current_url]);
+				
+				write_url_vars();
+			}
+		}
 	}
 	
 	
@@ -261,22 +276,12 @@ function fade_in()
 
 
 //Displays an animated block of text (usually an equation).
-let title_pages_seen = [];
-
 let vara_canceled = false;
 
 function show_title_page(text_to_draw)
 {
 	return new Promise(function(resolve, reject)
 	{
-		if (title_pages_seen.includes(current_url))
-		{
-			document.querySelector("#vara-container").remove();
-			
-			resolve();
-			return;
-		}
-		
 		vara_canceled = false;
 		
 		
@@ -341,10 +346,6 @@ function show_title_page(text_to_draw)
 						
 						
 						
-						title_pages_seen.push(current_url);
-						
-						
-						
 						resolve();
 					}, 300);
 				}, 500);
@@ -376,10 +377,6 @@ function listen_for_click()
 				
 				document.body.style.userSelect = "auto";
 				document.body.style.WebkitUserSelect = "auto";
-				
-				
-				
-				title_pages_seen.push(current_url);
 				
 				
 				
@@ -535,6 +532,13 @@ function aos_scroll()
 
 function show_aos_section(section)
 {
+	if (url_vars["content_animation"] === 1)
+	{
+		return;
+	}
+	
+	
+	
 	for (let i = 0; i < aos_elements[section].length; i++)
 	{
 		let refresh_id = setTimeout(function()
