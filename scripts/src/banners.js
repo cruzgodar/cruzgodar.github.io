@@ -109,7 +109,7 @@ function load_banner()
 				
 				img.onload = function()
 				{
-					scroll_button_timeout = setTimeout(add_scroll_button, 5000);
+					scroll_button_timeout = setTimeout(add_scroll_button, 2500);
 					
 					resolve();
 				};
