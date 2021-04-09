@@ -292,6 +292,11 @@ function show_title_page(text_to_draw)
 		document.body.style.userSelect = "none";
 		document.body.style.WebkitUserSelect = "none";
 		
+		document.querySelector("#vara-container").addEventListener("touchmove", function(e)
+		{
+			e.preventDefault();
+		});
+		
 		
 		
 		setTimeout(function()
