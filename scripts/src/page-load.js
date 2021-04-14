@@ -27,6 +27,8 @@ async function on_page_load()
 		if (url_vars["content_animation"] === 1 || ((url_vars["title_pages_seen"] >> title_page_ids[current_url]) & 1))
 		{
 			document.querySelector("#vara-container").remove();
+			
+			document.querySelector("#cancel-vara-text").remove();
 		}
 		
 		else
@@ -35,7 +37,16 @@ async function on_page_load()
 			document.body.style.opacity = 1;
 			document.body.classList.add("animated-opacity");
 			
+			
+			
 			await Promise.any([show_title_page(page_settings["title_page_text"]), listen_for_click()]);
+			
+			
+			
+			document.documentElement.removeEventListener("mousemove", show_cancel_vara_text_no_touch);
+			document.documentElement.removeEventListener("touchmove", show_cancel_vara_text_touch);
+			
+			
 			
 			if (!((url_vars["title_pages_seen"] >> title_page_ids[current_url]) & 1))
 			{
@@ -278,6 +289,8 @@ function fade_in()
 //Displays an animated block of text (usually an equation).
 let vara_canceled = false;
 
+let cancel_vara_text_shown = false;
+
 function show_title_page(text_to_draw)
 {
 	return new Promise(function(resolve, reject)
@@ -368,12 +381,14 @@ function listen_for_click()
 		document.querySelector("#vara-container").addEventListener("click", function()
 		{
 			vara_canceled = true;
-			
+		
 			document.body.style.opacity = 0;
 			
 			setTimeout(function()
 			{
 				document.querySelector("#vara-container").remove();
+				
+				document.querySelector("#cancel-vara-text").remove();
 				
 				
 				
@@ -388,7 +403,58 @@ function listen_for_click()
 				resolve();
 			}, 300);
 		});
+		
+		
+		
+		setTimeout(function()
+		{
+			cancel_vara_text_shown = false;
+			
+			document.documentElement.addEventListener("mousemove", show_cancel_vara_text_no_touch);
+			document.documentElement.addEventListener("touchmove", show_cancel_vara_text_touch);
+		}, 1000);
 	});
+}
+
+
+
+function show_cancel_vara_text_no_touch()
+{
+	if (cancel_vara_text_shown)
+	{
+		return;
+	}
+	
+	cancel_vara_text_shown = true;
+	
+	
+	
+	try
+	{
+		document.querySelector("#cancel-vara-text").textContent = "Click animation to skip";
+		
+		document.querySelector("#cancel-vara-text").style.opacity = 1;
+	}
+	
+	catch(ex) {}
+}
+
+
+
+function show_cancel_vara_text_touch()
+{
+	if (cancel_vara_text_shown)
+	{
+		return;
+	}
+	
+	cancel_vara_text_shown = true;
+	
+	
+	
+	document.querySelector("#cancel-vara-text").textContent = "Tap animation to skip";
+	
+	document.querySelector("#cancel-vara-text").style.opacity = 1;
 }
 
 
