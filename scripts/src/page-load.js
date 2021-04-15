@@ -114,7 +114,6 @@ async function on_page_load()
 	
 	
 	
-	
 	if ("banner_page" in page_settings && page_settings["banner_page"])
 	{
 		fetch_other_banner_size_in_background();
@@ -144,8 +143,6 @@ async function on_page_load()
 	{
 		remove_animation();
 	}
-	
-	
 	
 	if ("math_page" in page_settings && page_settings["math_page"])
 	{
@@ -808,6 +805,82 @@ function set_up_equalize_text_buttons()
 	temporary_handlers["resize"].push(equalize_text_buttons);
 	
 	setTimeout(equalize_text_buttons, 50);
+	
+	setTimeout(equalize_text_buttons, 500);
+}
+
+
+
+//Makes linked text buttons have the same width and height.
+function equalize_text_buttons()
+{
+	let elements = document.querySelectorAll(".text-button");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].parentNode.style.margin = "0 auto";
+	}
+	
+	
+	
+	elements = document.querySelectorAll(".linked-text-button");
+	
+	let heights = [];
+	
+	let max_height = 0;
+	
+	let widths = [];
+	
+	let max_width = 0;
+	
+	
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].style.height = "fit-content";
+		elements[i].style.width = "fit-content";
+		
+		heights.push(elements[i].offsetHeight);
+		
+		if (heights[i] > max_height)
+		{
+			max_height = heights[i];
+		}
+		
+		widths.push(elements[i].offsetWidth);
+		
+		if (widths[i] > max_width)
+		{
+			max_width = widths[i];
+		}
+	}
+	
+	
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		if (heights[i] < max_height)
+		{
+			elements[i].style.height = max_height + "px";
+		}
+		
+		else
+		{
+			elements[i].style.height = "fit-content";
+		}
+		
+		
+		
+		if (widths[i] < max_width)
+		{
+			elements[i].style.width = max_width + "px";
+		}
+		
+		else
+		{
+			elements[i].style.width = "fit-content";
+		}
+	}
 }
 
 
