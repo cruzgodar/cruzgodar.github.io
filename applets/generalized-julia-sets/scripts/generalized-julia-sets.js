@@ -912,11 +912,11 @@
 		
 		
 		
-		applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+		Applets.canvases_to_resize = [document.querySelector("#output-canvas")];
 		
-		applet_canvas_resize_callback = function()
+		Applets.canvas_resize_callback = function()
 		{
-			if (canvas_is_fullscreen)
+			if (Applets.canvas_is_fullscreen)
 			{
 				if (aspect_ratio >= 1)
 				{
@@ -956,9 +956,9 @@
 			window.requestAnimationFrame(draw_frame);
 		};
 		
-		applet_canvas_true_fullscreen = true;
+		Applets.canvas_true_fullscreen = true;
 		
-		set_up_canvas_resizer();
+		Applets.set_up_canvas_resizer();
 		
 		
 		

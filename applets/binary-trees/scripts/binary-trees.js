@@ -63,9 +63,9 @@
 	
 	
 	
-	applet_canvases_to_resize = [document.querySelector("#binary-trees-plot"), document.querySelector("#branch-selector")];
+	Applets.canvases_to_resize = [document.querySelector("#binary-trees-plot"), document.querySelector("#branch-selector")];
 	
-	applet_canvas_resize_callback = function()
+	Applets.canvas_resize_callback = function()
 	{
 		try {web_worker.terminate();}
 		catch(ex) {}
@@ -74,7 +74,7 @@
 		
 		
 		
-		if (canvas_is_fullscreen)
+		if (Applets.canvas_is_fullscreen)
 		{
 			if (aspect_ratio >= 1)
 			{
@@ -126,9 +126,9 @@
 		draw_binary_tree();
 	};
 	
-	applet_canvas_true_fullscreen = true;
+	Applets.canvas_true_fullscreen = true;
 	
-	set_up_canvas_resizer();
+	Applets.set_up_canvas_resizer();
 	
 	
 	

@@ -107,13 +107,13 @@
 	
 	
 	
-	applet_canvases_to_resize = [document.querySelector("#quasi-fuchsian-groups-plot"), document.querySelector("#coefficient-selector")];
+	Applets.canvases_to_resize = [document.querySelector("#quasi-fuchsian-groups-plot"), document.querySelector("#coefficient-selector")];
 	
-	applet_canvas_resize_callback = function()
+	Applets.canvas_resize_callback = function()
 	{
 		canvas_size = 300;
 		
-		if (canvas_is_fullscreen)
+		if (Applets.canvas_is_fullscreen)
 		{
 			if (aspect_ratio >= 1)
 			{
@@ -163,9 +163,9 @@
 		draw_quasi_fuchsian_group();
 	};
 	
-	applet_canvas_true_fullscreen = true;
+	Applets.canvas_true_fullscreen = true;
 	
-	set_up_canvas_resizer();
+	Applets.set_up_canvas_resizer();
 	
 	
 	
