@@ -61,9 +61,12 @@ async function on_page_load()
 	
 	if (!("no_footer" in page_settings && page_settings["no_footer"]))
 	{
-		insert_footer();
+		Footer.insert();
 		
-		setTimeout(floating_footer_scroll, 50);
+		setTimeout(() =>
+		{
+			Footer.Floating.on_scroll();
+		}, 50);
 	}
 	
 	

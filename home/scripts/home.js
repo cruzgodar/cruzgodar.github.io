@@ -55,7 +55,9 @@
 	
 	
 	
-	set_up_floating_footer();
+	Footer.Floating.insert();
+	
+	
 	
 	setTimeout(function()
 	{

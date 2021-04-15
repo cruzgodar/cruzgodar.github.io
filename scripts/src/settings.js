@@ -159,7 +159,7 @@ function show_floating_settings()
 				<div id="font-button-row" class="floating-settings-button-row"></div>
 				<div id="content-animation-button-row" class="floating-settings-button-row"></div>
 				<div id="banner-style-button-row" class="floating-settings-button-row"></div>
-				<div style="margin-top: -6px"></div>
+				<div style="margin-top: -17px"></div>
 			</div>
 		</div>
 	`);
@@ -193,11 +193,11 @@ function show_floating_settings()
 	
 	
 	
-	if (floating_footer_is_visible)
+	if (Footer.Floating.is_visible)
 	{
 		document.querySelector("#floating-footer").style.opacity = 0;
 		
-		floating_footer_is_visible = false;
+		Footer.Floating.is_visible = false;
 		
 		setTimeout(function()
 		{
@@ -312,7 +312,7 @@ function show_floating_settings()
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
 					<p id="content-animation-button-text" class="floating-settings-button-text">
-						${settings_texts[settings_query_strings[6]][url_vars[settings_query_strings[6]]]}
+						${settings_texts[settings_query_strings[5]][url_vars[settings_query_strings[5]]]}
 					</p>
 				</div>
 			`;
@@ -326,7 +326,7 @@ function show_floating_settings()
 				
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
 					<p id="banner-style-button-text" class="floating-settings-button-text">
-						${settings_texts[settings_query_strings[7]][url_vars[settings_query_strings[7]]]}
+						${settings_texts[settings_query_strings[6]][url_vars[settings_query_strings[6]]]}
 					</p>
 				</div>
 			`;

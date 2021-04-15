@@ -262,7 +262,7 @@ function fade_out()
 			
 			document.querySelector("#floating-footer").style.opacity = 0;
 			
-			floating_footer_is_visible = false;
+			Footer.Floating.is_visible = false;
 		}
 		
 		catch(ex) {}
