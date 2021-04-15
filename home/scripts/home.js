@@ -25,9 +25,9 @@
 		let opacity = 0;
 		
 		
-		if (scroll <= window_height/3)
+		if (scroll <= Page.Layout.window_height/3)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 		}
 		
 		else
@@ -84,11 +84,11 @@
 	
 	function homepage_resize()
 	{
-		if (homepage_image_links_mode !== layout_string)
+		if (homepage_image_links_mode !== Page.Layout.layout_string)
 		{
-			homepage_image_links_mode = layout_string;
+			homepage_image_links_mode = Page.Layout.layout_string;
 			
-			if (layout_string === "ultrawide")
+			if (Page.Layout.layout_string === "ultrawide")
 			{
 				document.querySelectorAll(".image-link")[0].insertAdjacentHTML("beforebegin", `<div id="empty-image-link"></div>`);
 			}
@@ -123,9 +123,9 @@
 		let opacity = 0;
 		
 		
-		if (scroll <= window_height/3)
+		if (scroll <= Page.Layout.window_height/3)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 		}
 		
 		else
@@ -143,9 +143,9 @@
 		
 		setTimeout(function()
 		{
-			if (scroll <= window_height/3)
+			if (scroll <= Page.Layout.window_height/3)
 			{
-				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
+				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 			}
 			
 			else

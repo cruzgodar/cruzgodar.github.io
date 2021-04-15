@@ -73,7 +73,7 @@ let Banners =
 			
 			else
 			{
-				if (window_width / window_height < 1)
+				if (Page.Layout.aspect_ratio < 1)
 				{
 					this.file_name = "portrait." + Images.file_extension;
 				}
@@ -173,9 +173,9 @@ let Banners =
 		{
 			if (url_vars["banner_style"] !== 1)
 			{
-				if (scroll <= window_height)
+				if (scroll <= Page.Layout.window_height)
 				{
-					let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / window_height, 0) - Math.PI / 2);
+					let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 					
 					try {document.querySelector("#banner").style.opacity = opacity;}
 					catch(ex) {}
@@ -203,9 +203,9 @@ let Banners =
 			
 			
 			
-			if (scroll <= window_height/3)
+			if (scroll <= Page.Layout.window_height/3)
 			{
-				let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
+				let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 				
 				if (this.ScrollButton.exists)
 				{
@@ -339,12 +339,12 @@ let Banners =
 		
 		insert: function()
 		{
-			let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
+			let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 			
 			
 			
 			//Only add the scroll button if the user is still on the top of the page.
-			if (scroll <= window_height / 3)
+			if (scroll <= Page.Layout.window_height / 3)
 			{
 				let chevron_name = "chevron-down";
 				

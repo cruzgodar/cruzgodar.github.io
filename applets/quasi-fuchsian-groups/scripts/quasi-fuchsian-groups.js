@@ -115,15 +115,15 @@
 		
 		if (Applets.Canvases.is_fullscreen)
 		{
-			if (aspect_ratio >= 1)
+			if (Page.Layout.aspect_ratio >= 1)
 			{
 				canvas_width = canvas_size;
-				canvas_height = Math.floor(canvas_size / aspect_ratio);
+				canvas_height = Math.floor(canvas_size / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				canvas_width = Math.floor(canvas_size * aspect_ratio);
+				canvas_width = Math.floor(canvas_size * Page.Layout.aspect_ratio);
 				canvas_height = canvas_size;
 			}
 		}
@@ -563,15 +563,15 @@
 				
 				if (Applets.Canvases.is_fullscreen)
 				{
-					if (aspect_ratio >= 1)
+					if (Page.Layout.aspect_ratio >= 1)
 					{
 						canvas_width = canvas_size;
-						canvas_height = Math.floor(canvas_size / aspect_ratio);
+						canvas_height = Math.floor(canvas_size / Page.Layout.aspect_ratio);
 					}
 					
 					else
 					{
-						canvas_width = Math.floor(canvas_size * aspect_ratio);
+						canvas_width = Math.floor(canvas_size * Page.Layout.aspect_ratio);
 						canvas_height = canvas_size;
 					}
 				}
@@ -630,15 +630,15 @@
 			
 			if (Applets.Canvases.is_fullscreen)
 			{
-				if (aspect_ratio >= 1)
+				if (Page.Layout.aspect_ratio >= 1)
 				{
 					canvas_width = canvas_size;
-					canvas_height = Math.floor(canvas_size / aspect_ratio);
+					canvas_height = Math.floor(canvas_size / Page.Layout.aspect_ratio);
 				}
 				
 				else
 				{
-					canvas_width = Math.floor(canvas_size * aspect_ratio);
+					canvas_width = Math.floor(canvas_size * Page.Layout.aspect_ratio);
 					canvas_height = canvas_size;
 				}
 			}
@@ -781,15 +781,15 @@
 		
 		if (Applets.Canvases.is_fullscreen)
 		{
-			if (aspect_ratio >= 1)
+			if (Page.Layout.aspect_ratio >= 1)
 			{
 				canvas_width = canvas_size;
-				canvas_height = Math.floor(canvas_size / aspect_ratio);
+				canvas_height = Math.floor(canvas_size / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				canvas_width = Math.floor(canvas_size * aspect_ratio);
+				canvas_width = Math.floor(canvas_size * Page.Layout.aspect_ratio);
 				canvas_height = canvas_size;
 			}
 		}

@@ -179,10 +179,10 @@ let Footer =
 		
 		
 		//If the page isn't as tall as the screen (e.g. the 404 page), move the footer to the bottom of the page.
-		if (document.body.clientHeight < window_height)
+		if (document.body.clientHeight < Page.Layout.window_height)
 		{
 			document.querySelector("#spawn-footer").insertAdjacentHTML("beforebegin", `
-				<div style="height: ${window_height - document.body.clientHeight}px"></div>
+				<div style="height: ${Page.Layout.window_height - document.body.clientHeight}px"></div>
 			`);
 		}
 		
@@ -221,6 +221,8 @@ let Footer =
 	Floating:
 	{
 		is_visible: false,
+		
+		height: 0,
 		
 		//Initializes the floating footer by copying specific parts of the normal footer.
 		insert: function()
@@ -300,7 +302,7 @@ let Footer =
 			
 			document.querySelector("#floating-footer").style.display = "block";
 			
-			floating_footer_height = document.querySelector("#floating-footer-content").offsetHeight;
+			this.height = document.querySelector("#floating-footer-content").offsetHeight;
 			
 			document.querySelector("#floating-footer").style.display = "none";
 			
@@ -321,7 +323,7 @@ let Footer =
 			{
 				document.querySelector("#floating-footer").style.display = "block";
 				
-				floating_footer_height = document.querySelector("#floating-footer-content").offsetHeight;
+				this.height = document.querySelector("#floating-footer-content").offsetHeight;
 				
 				document.querySelector("#floating-footer").style.display = "none";
 			}
@@ -361,7 +363,7 @@ let Footer =
 			{
 				let element = document.elementFromPoint(e.clientX, e.clientY);
 				
-				if (this.is_visible === false && e.clientY >= window.innerHeight - 75 && e.clientY >= window.innerHeight - floating_footer_height && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
+				if (this.is_visible === false && e.clientY >= window.innerHeight - 75 && e.clientY >= window.innerHeight - this.height && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
 				{
 					this.is_visible = true;
 					
@@ -375,7 +377,7 @@ let Footer =
 				
 				
 				
-				else if (this.is_visible && e.clientY < window.innerHeight - floating_footer_height - 20)
+				else if (this.is_visible && e.clientY < window.innerHeight - this.height - 20)
 				{
 					document.querySelector("#floating-footer").style.opacity = 0;
 					
@@ -414,7 +416,7 @@ let Footer =
 		{
 			let element = document.elementFromPoint(last_touch_x, last_touch_y);
 			
-			if (this.is_visible === false && last_touch_y >= window.innerHeight - 75 && last_touch_y >= window.innerHeight - floating_footer_height && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
+			if (this.is_visible === false && last_touch_y >= window.innerHeight - 75 && last_touch_y >= window.innerHeight - this.height && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
 			{
 				document.querySelector("#floating-footer").style.display = "block";
 				
@@ -431,7 +433,7 @@ let Footer =
 
 		process_touchstart: function(event)
 		{
-			if (this.is_visible && last_touch_y < window.innerHeight - floating_footer_height - 20)
+			if (this.is_visible && last_touch_y < window.innerHeight - this.height - 20)
 			{
 				document.querySelector("#floating-footer").style.opacity = 0;
 				

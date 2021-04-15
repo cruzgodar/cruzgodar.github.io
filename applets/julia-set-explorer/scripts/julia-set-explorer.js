@@ -116,15 +116,15 @@
 	{
 		if (Applets.Canvases.is_fullscreen)
 		{
-			if (aspect_ratio >= 1)
+			if (Page.Layout.aspect_ratio >= 1)
 			{
 				image_width = image_size;
-				image_height = Math.floor(image_size / aspect_ratio);
+				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				image_width = Math.floor(image_size * aspect_ratio);
+				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
 				image_height = image_size;
 			}
 		}
@@ -906,15 +906,15 @@
 		
 		if (Applets.Canvases.is_fullscreen)
 		{
-			if (aspect_ratio >= 1)
+			if (Page.Layout.aspect_ratio >= 1)
 			{
 				image_width = image_size;
-				image_height = Math.floor(image_size / aspect_ratio);
+				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				image_width = Math.floor(image_size * aspect_ratio);
+				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
 				image_height = image_size;
 			}
 		}

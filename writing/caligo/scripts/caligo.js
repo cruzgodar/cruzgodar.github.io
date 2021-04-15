@@ -7,10 +7,10 @@
 	let background_color = 255;
 	let opacity = 0;
 	
-	let initial_window_height = window_height;
+	let initial_window_height = Page.Layout.window_height;
 	
-	banner_done = false;
-	scroll_button_done = false;
+	Banners.done_loading = false;
+	Banners.ScrollButton.done_loading = false;
 	let eclipse_done = false;
 	
 	
@@ -51,7 +51,7 @@
 	
 	else
 	{
-		setTimeout(add_scroll_button, 7000);
+		setTimeout(Banners.ScrollButton.insert, 7000);
 	}
 	
 	
@@ -95,7 +95,7 @@
 			
 			
 			
-			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + window_height / 2 + 2);
+			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + Page.Layout.window_height / 2 + 2);
 			
 			
 			
@@ -200,7 +200,7 @@
 			
 			
 			
-			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + window_height / 2 + 2);
+			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + Page.Layout.window_height / 2 + 2);
 			
 			
 			
@@ -317,19 +317,19 @@
 			
 			if (background_color === 0)
 			{
-				banner_done = true;
+				Banners.done_loading = true;
 			}
 			
 			else
 			{
-				banner_done = false;
+				Banners.done_loading = false;
 			}
 		}
 		
-		else if (banner_done === false)
+		else if (Banners.done_loading === false)
 		{
 			document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-			banner_done = true;
+			Banners.done_loading = true;
 		}
 	}
 	
@@ -349,21 +349,21 @@
 				try {document.querySelector("#scroll-button").remove();}
 				catch(ex) {}
 				
-				scroll_button_done = true;
+				Banners.ScrollButton.done_loading = true;
 			}
 			
 			else
 			{
-				scroll_button_done = false;
+				Banners.ScrollButton.done_loading = false;
 			}
 		}
 		
-		else if (scroll_button_done === false)
+		else if (Banners.ScrollButton.done_loading === false)
 		{
 			try {document.querySelector("#scroll-button").remove();}
 			catch(ex) {}
 			
-			scroll_button_done = true;
+			Banners.ScrollButton.done_loading = true;
 		}
 	}
 	
@@ -388,14 +388,14 @@
 			}
 		}
 		
-		else if (scroll >= 6/5 * window_height && eclipse_done === false)
+		else if (scroll >= 6/5 * initial_window_height && eclipse_done === false)
 		{
 			document.querySelector("#eclipse").style.opacity = 1;
 			
 			eclipse_done = true;
 		}
 		
-		else if (scroll <= 4/5 * window_height && eclipse_done === false)
+		else if (scroll <= 4/5 * initial_window_height && eclipse_done === false)
 		{
 			document.querySelector("#eclipse").style.opacity = 0;
 			

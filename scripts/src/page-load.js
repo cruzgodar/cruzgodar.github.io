@@ -71,9 +71,9 @@ async function on_page_load()
 	
 	
 	
-	if (layout_string === "ultrawide")
+	if (Page.Layout.layout_string === "ultrawide")
 	{
-		create_multicols();
+		Page.Layout.Multicols.create();
 	}
 	
 	
@@ -132,7 +132,7 @@ async function on_page_load()
 		set_writing_page_font();
 	}
 	
-	if (layout_string === "ultrawide" && "small_margins_on_ultrawide" in page_settings && page_settings["small_margins_on_ultrawide"])
+	if (Page.Layout.layout_string === "ultrawide" && "small_margins_on_ultrawide" in page_settings && page_settings["small_margins_on_ultrawide"])
 	{
 		reduce_page_margins();
 	}
@@ -309,7 +309,7 @@ function show_title_page(text_to_draw)
 				color = "white";
 			}
 			
-			let text = new Vara("#vara-container", parent_folder + "/vara-font.json", [{text: text_to_draw, fontSize: page_settings["title_page_text_size"] * window_width / text_to_draw.length, duration: 4000, strokeWidth: .5, textAlign: "center", color: color}]);
+			let text = new Vara("#vara-container", parent_folder + "/vara-font.json", [{text: text_to_draw, fontSize: page_settings["title_page_text_size"] * Page.Layout.window_width / text_to_draw.length, duration: 4000, strokeWidth: .5, textAlign: "center", color: color}]);
 			
 			text.animationEnd(function(id, object)
 			{
@@ -575,12 +575,12 @@ function aos_scroll()
 {
 	for (let i = 0; i < aos_elements.length; i++)
 	{
-		if (scroll + window_height >= aos_anchor_positions[i] + aos_anchor_offsets[i] && aos_anchors_shown[i] === false)
+		if (scroll + Page.Layout.window_height >= aos_anchor_positions[i] + aos_anchor_offsets[i] && aos_anchors_shown[i] === false)
 		{
 			show_aos_section(i);
 		}
 		
-		else if (scroll + window_height < aos_anchor_positions[i] + aos_anchor_offsets[i] && aos_anchors_shown[i] === true)
+		else if (scroll + Page.Layout.window_height < aos_anchor_positions[i] + aos_anchor_offsets[i] && aos_anchors_shown[i] === true)
 		{
 			hide_aos_section(i);
 		}
@@ -905,7 +905,7 @@ function reduce_page_margins()
 	
 	
 	//When in ultrawide mode, shrink the margins to 50%.
-	if (layout_string === "ultrawide")
+	if (Page.Layout.layout_string === "ultrawide")
 	{
 		let element = add_style(`
 			.body-text, .nav-buttons, .line-break

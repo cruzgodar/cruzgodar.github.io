@@ -9,10 +9,8 @@
 let DEBUG = false;
 
 
+
 let scroll = 0;
-
-
-let window_width = null, window_height = null, aspect_ratio = null;
 
 /*
 	Defaults:
@@ -46,8 +44,6 @@ let currently_touch_device = true;
 
 let last_mousemove_event = 0;
 
-let floating_footer_height = 0;
-
 
 
 let scripts_loaded = 
@@ -74,8 +70,6 @@ let temporary_handlers =
 let temporary_intervals = [];
 
 let temporary_web_workers = [];
-
-let layout_string = "";
 
 let background_color_changed = false;
 
@@ -214,11 +208,16 @@ document.documentElement.addEventListener("mousedown", function()
 //Redirects to the chosen page and sets up all the miscellaneous things that make the site work.
 async function entry_point(url)
 {
-	window_width = window.innerWidth;
-	window_height = window.innerHeight;
-	aspect_ratio = window_width / window_height;
+	Page.Layout.window_width = window.innerWidth;
+	Page.Layout.window_height = window.innerHeight;
+	Page.Layout.aspect_ratio = Page.Layout.window_width / Page.Layout.window_height;
 	
-	resize_update();
+	window.addEventListener("resize", () =>
+	{
+		Page.Layout.on_resize();
+	});
+	
+	Page.Layout.on_resize();
 	
 	
 	

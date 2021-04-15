@@ -59,7 +59,7 @@
 		
 		//Make sure that there is a proper density of pixels so that the canvas doesn't look blurry.
 		
-		let canvas_pixel_size = Math.min(window_width, window_height);
+		let canvas_pixel_size = Math.min(Page.Layout.window_width, Page.Layout.window_height);
 		
 		canvas_scale_factor = Math.ceil(canvas_pixel_size / grid_size);
 		

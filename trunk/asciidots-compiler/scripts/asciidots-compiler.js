@@ -895,7 +895,7 @@
 		
 		let width_string = .7 * window.innerWidth * 172/104 / code_width + "px";
 		
-		if (layout_string === "compact")
+		if (Page.Layout.layout_string === "compact")
 		{
 			width_string = .9 * window.innerWidth * 172/104 / code_width + "px";
 		}
@@ -2424,7 +2424,7 @@
 	{
 		let width_string = .07 * window.innerWidth * 172/104 / code_width + "px";
 		
-		if (layout_string === "compact")
+		if (Page.Layout.layout_string === "compact")
 		{
 			width_string = .09 * window.innerWidth * 172/104 / code_width + "px";
 		}

@@ -20,6 +20,11 @@
 
 
 
+//This goes here because it's first to be included.
+let Page = {};
+
+
+
 let Applets =
 {
 	Canvases:
@@ -408,7 +413,7 @@ let Applets =
 			
 			
 			
-			if (aspect_ratio < 1 && !this.true_fullscreen)
+			if (Page.Layout.aspect_ratio < 1 && !this.true_fullscreen)
 			{
 				window.scroll(0, window.scrollY + this.to_resize[0].getBoundingClientRect().top - (window_height - this.to_resize[0].offsetHeight) / 2 + 2);
 			}
@@ -429,7 +434,7 @@ let Applets =
 			
 			setTimeout(() =>
 			{
-				if (aspect_ratio < 1 && !this.true_fullscreen)
+				if (Page.Layout.aspect_ratio < 1 && !this.true_fullscreen)
 				{
 					window.scroll(0, window.scrollY + this.to_resize[0].getBoundingClientRect().top - (window_height - this.to_resize[0].offsetHeight) / 2 + 2);
 				}

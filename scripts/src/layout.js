@@ -1,239 +1,273 @@
+/*
+	Page
+		...
+		
+		Layout: methods for handling layout changes.
+			
+			on_resize: updates the banner opacity and anything else that needs changing when the window resizes.
+			
+			resize_step: updates the banner opacity gradually so there aren't abrupt opacity changes when next scrolling.
+			
+			Multicols: methods to split image link pages into multiple columns in the ultrawide layout.
+				
+				create: arranges the image links into multiple columns.
+				
+				remove: reverts to the standard layout.
+	
+*/
+
+
+
 "use strict";
 
 
 
-//Handles everything to do with the layout and when it changes.
-
-
-
-let old_layout = "";
-
-
-
-window.addEventListener("resize", resize_update);
-
-
-
-//Yes, I know this is weird. But it's the only way I know to make banner opacity work smoothly.
-
-let resize_time = 0;
-let new_window_width = 0, new_window_height = 0;
-let window_width_step_distance = 0, window_height_step_distance = 0;
-
-let multicol_texts = [];
-let multicol_image_links = [];
-let multicol_ref = null;
-
-function resize_update()
+Page.Layout =
 {
-	//Everything here can be done immediately.
-	let new_window_width = window.innerWidth;
-	let new_window_height = window.innerHeight;
+	layout_string: "",
 	
-	aspect_ratio = new_window_width / new_window_height;
+	old_layout_string: "",
 	
-	old_layout = layout_string;
 	
-	if (new_window_width / new_window_height < 9/16 || new_window_width <= 700)
+
+	window_width: 0,
+	window_height: 0,
+	aspect_ratio: 1,
+	
+	new_window_width: 0,
+	new_window_height: 0,
+	
+	
+	
+	window_width_step_distance: 0,
+	window_height_step_distance: 0,
+	
+	resize_time: 0,
+	
+	
+	
+	on_resize: function()
 	{
-		layout_string = "compact";
-	}
-	
-	else if (new_window_width / new_window_height > 16/9 || new_window_width >= 1400)
-	{
-		layout_string = "ultrawide";
-	}
-	
-	else
-	{
-		layout_string = "default";
-	}
-	
-	
-	
-	if (old_layout !== layout_string && "small_margins_on_ultrawide" in page_settings && page_settings["small_margins_on_ultrawide"])
-	{
-		reduce_page_margins();
-	}
-	
-	
-	
-	if (old_layout !== layout_string && layout_string === "ultrawide")
-	{
-		create_multicols();
-	}
-	
-	else if (old_layout !== layout_string && old_layout === "ultrawide")
-	{
-		remove_multicols();
-	}
-	
-	
-	
-	for (let i = 0; i < multicol_texts.length; i++)
-	{
-		multicol_texts[i].style.marginLeft = multicol_ref.getBoundingClientRect().left + "px";
-		multicol_image_links[i].style.marginLeft = multicol_ref.getBoundingClientRect().left + "px";
-	}
-	
-	
-	
-	if (new_window_width / new_window_height < 1)
-	{
-		Banners.file_name = "portrait." + Banners.file_extension;
-	}
-	
-	else
-	{
-		Banners.file_name = "landscape." + Banners.file_extension;
-	}
-	
-	
-	
-	//The banner opacity is the big sticking point, though. The solution is to increase the window height slowly and fire scroll events in rapid succession.
-	resize_time = 0;
-	
-	window_width_step_distance = (new_window_height - window_height) * (8 / 300);
-	window_height_step_distance = (new_window_height - window_height) * (8 / 300);
-	
-	let refresh_id = setInterval(function()
-	{
-		resize_step();
+		//Everything here can be done immediately.
+		this.new_window_width = window.innerWidth;
+		this.new_window_height = window.innerHeight;
 		
-		if (resize_time >= 300)
+		this.aspect_ratio = this.new_window_width / this.new_window_height;
+		
+		this.old_layout_string = this.layout_string;
+		
+		if (this.new_window_width / this.new_window_height < 9/16 || this.new_window_width <= 700)
 		{
-			clearInterval(refresh_id);
-			
-			window_width = new_window_width;
-			window_height = new_window_height;
-			
-			Banners.on_scroll(0);
+			this.layout_string = "compact";
 		}
-	}, 8);
-}
-
-
-
-function resize_step()
-{
-	window_width += window_width_step_distance;
-	window_height += window_height_step_distance;
-	
-	resize_time += 8;
-	
-	Banners.on_scroll(0);
-}
-
-
-
-function create_multicols()
-{
-	let parents = document.querySelectorAll(".multicol-block");
-	
-	if (parents.length === 0)
-	{
-		return;
-	}
-	
-	multicol_texts = [];
-	multicol_image_links = []
-	
-	for (let i = 0; i < parents.length; i++)
-	{
-		if (parents[i].querySelector(".image-links").children.length <= 3)
+		
+		else if (this.new_window_width / this.new_window_height > 16/9 || this.new_window_width >= 1400)
 		{
-			if (i < parents.length - 1 && parents[i + 1].querySelector(".image-links").children.length <= 3)
+			this.layout_string = "ultrawide";
+		}
+		
+		else
+		{
+			this.layout_string = "default";
+		}
+		
+		
+		
+		if (this.old_layout_string !== this.layout_string && "small_margins_on_ultrawide" in page_settings && page_settings["small_margins_on_ultrawide"])
+		{
+			reduce_page_margins();
+		}
+		
+		
+		
+		if (this.old_layout_string !== this.layout_string && this.layout_string === "ultrawide")
+		{
+			this.Multicols.create();
+		}
+		
+		else if (this.old_layout_string !== this.layout_string && this.old_layout_string === "ultrawide")
+		{
+			this.Multicols.remove();
+		}
+		
+		
+		
+		for (let i = 0; i < this.Multicols.texts.length; i++)
+		{
+			this.Multicols.texts[i].style.marginLeft = this.Multicols.reference.getBoundingClientRect().left + "px";
+			this.Multicols.image_links[i].style.marginLeft = this.Multicols.reference.getBoundingClientRect().left + "px";
+		}
+		
+		
+		
+		if (this.aspect_ratio < 1)
+		{
+			Banners.file_name = "portrait." + Images.file_extension;
+		}
+		
+		else
+		{
+			Banners.file_name = "landscape." + Images.file_extension;
+		}
+		
+		
+		
+		//The banner opacity is the big sticking point, though. The solution is to increase the window height slowly and fire scroll events in rapid succession.
+		this.resize_time = 0;
+		
+		this.window_width_step_distance = (this.new_window_height - this.window_height) * (8 / 300);
+		this.window_height_step_distance = (this.new_window_height - this.window_height) * (8 / 300);
+		
+		let refresh_id = setInterval(() =>
+		{
+			this.resize_step();
+			
+			if (this.resize_time >= 300)
 			{
-				let container = document.createElement("div");
+				clearInterval(refresh_id);
 				
-				container.classList.add("image-links-double-column-container");
+				this.window_width = this.new_window_width;
+				this.window_height = this.new_window_height;
 				
-				parents[i].parentNode.insertBefore(container, parents[i]);
-				
-				multicol_ref = parents[i].querySelector(".image-links");
-				
-				container.appendChild(parents[i]);
-				container.appendChild(parents[i + 1]);
-				
-				let element = parents[i + 1].querySelector(".new-aos-section");
-				element.classList.remove("new-aos-section");
-				element.classList.add("old-new-aos-section");
-				
-				i++;
+				Banners.on_scroll(0);
+			}
+		}, 8);
+	},
+
+
+
+	resize_step: function()
+	{
+		this.window_width += this.window_width_step_distance;
+		this.window_height += this.window_height_step_distance;
+		
+		this.resize_time += 8;
+		
+		Banners.on_scroll(0);
+	},
+
+
+
+	Multicols:
+	{
+		texts: [],
+		image_links: [],
+		reference: null,
+		
+		
+		
+		create: function()
+		{
+			let parents = document.querySelectorAll(".multicol-block");
+			
+			if (parents.length === 0)
+			{
+				return;
+			}
+			
+			this.texts = [];
+			this.image_links = [];
+			
+			for (let i = 0; i < parents.length; i++)
+			{
+				if (parents[i].querySelector(".image-links").children.length <= 3)
+				{
+					if (i < parents.length - 1 && parents[i + 1].querySelector(".image-links").children.length <= 3)
+					{
+						let container = document.createElement("div");
+						
+						container.classList.add("image-links-double-column-container");
+						
+						parents[i].parentNode.insertBefore(container, parents[i]);
+						
+						this.reference = parents[i].querySelector(".image-links");
+						
+						container.appendChild(parents[i]);
+						container.appendChild(parents[i + 1]);
+						
+						let element = parents[i + 1].querySelector(".new-aos-section");
+						element.classList.remove("new-aos-section");
+						element.classList.add("old-new-aos-section");
+						
+						i++;
+					}
+					
+					
+					
+					else if (i >= 1 && parents[i - 1].querySelector(".image-links").children.length <= 3)
+					{
+						this.texts.push(parents[i].querySelector(".section-text, .heading-text"));
+						
+						this.image_links.push(parents[i].querySelector(".image-links"));
+						
+						this.texts[this.texts.length - 1].classList.add("multicol-text");
+						this.texts[this.texts.length - 1].style.marginLeft = this.reference.getBoundingClientRect().left + "px";
+						
+						this.image_links[this.image_links.length - 1].style.gridRowGap = "1.5vw";
+						this.image_links[this.image_links.length - 1].style.gridColumnGap = "1.5vw";
+						
+						this.image_links[this.image_links.length - 1].style.width = "62.5vw";
+						this.image_links[this.image_links.length - 1].style.marginLeft = this.reference.getBoundingClientRect().left + "px";
+					}
+				}
+			}
+		},
+
+
+
+		remove: function()
+		{
+			let containers = document.querySelectorAll(".image-links-double-column-container");
+			
+			if (containers.length === 0)
+			{
+				return;
 			}
 			
 			
 			
-			else if (i >= 1 && parents[i - 1].querySelector(".image-links").children.length <= 3)
+			for (let i = 0; i < this.texts.length; i++)
 			{
-				multicol_texts.push(parents[i].querySelector(".section-text, .heading-text"));
+				this.texts[i].style.marginLeft = "";
 				
-				multicol_image_links.push(parents[i].querySelector(".image-links"));
 				
-				multicol_texts[multicol_texts.length - 1].classList.add("multicol-text");
-				multicol_texts[multicol_texts.length - 1].style.marginLeft = multicol_ref.getBoundingClientRect().left + "px";
 				
-				multicol_image_links[multicol_image_links.length - 1].style.gridRowGap = "1.5vw";
-				multicol_image_links[multicol_image_links.length - 1].style.gridColumnGap = "1.5vw";
+				this.image_links[i].style.width = "";
 				
-				multicol_image_links[multicol_image_links.length - 1].style.width = "62.5vw";
-				multicol_image_links[multicol_image_links.length - 1].style.marginLeft = multicol_ref.getBoundingClientRect().left + "px";
+				this.image_links[i].style.gridRowGap = "";
+				this.image_links[i].style.gridColumnGap = "";
+				
+				this.image_links[i].style.marginLeft = "";
+			}
+			
+			
+			
+			this.texts = [];
+			this.image_links = [];
+			this.reference = null;
+			
+			
+			
+			for (let i = 0; i < containers.length; i++)
+			{
+				//Remove the container but keep the children.
+				while (containers[i].firstChild)
+				{
+					containers[i].parentNode.insertBefore(containers[i].firstChild, containers[i]);
+				}
+				
+				containers[i].remove();
+			}
+			
+			
+			
+			let elements = document.querySelectorAll(".old-new-aos-section");
+			
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].classList.remove("old-new-aos-section");
+				elements[i].classList.add("new-aos-section");
 			}
 		}
 	}
-}
-
-
-
-function remove_multicols()
-{
-	let containers = document.querySelectorAll(".image-links-double-column-container");
-	
-	if (containers.length === 0)
-	{
-		return;
-	}
-	
-	
-	
-	for (let i = 0; i < multicol_texts.length; i++)
-	{
-		multicol_texts[i].style.marginLeft = "";
-		
-		
-		
-		multicol_image_links[i].style.width = "";
-		
-		multicol_image_links[i].style.gridRowGap = "";
-		multicol_image_links[i].style.gridColumnGap = "";
-		
-		multicol_image_links[i].style.marginLeft = "";
-	}
-	
-	multicol_texts = [];
-	multicol_image_links = [];
-	multicol_ref = null;
-	
-	
-	
-	for (let i = 0; i < containers.length; i++)
-	{
-		//Remove the container but keep the children.
-		while (containers[i].firstChild)
-		{
-			containers[i].parentNode.insertBefore(containers[i].firstChild, containers[i]);
-		}
-		
-		containers[i].remove();
-	}
-	
-	
-	
-	let elements = document.querySelectorAll(".old-new-aos-section");
-	
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].classList.remove("old-new-aos-section");
-		elements[i].classList.add("new-aos-section");
-	}
-}
+};

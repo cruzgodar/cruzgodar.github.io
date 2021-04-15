@@ -185,7 +185,7 @@ function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll
 		if (restore_scroll)
 		{
 			window.scrollTo(0, last_page_scroll);
-			scroll_update(last_page_scroll);
+			Banners.on_scroll(last_page_scroll);
 		}
 		
 		else

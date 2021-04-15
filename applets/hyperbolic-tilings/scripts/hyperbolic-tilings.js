@@ -76,15 +76,15 @@
 		
 		if (Applets.Canvases.is_fullscreen)
 		{
-			if (aspect_ratio >= 1)
+			if (Page.Layout.aspect_ratio >= 1)
 			{
 				canvas_width = 2000;
-				canvas_height = Math.floor(2000 / aspect_ratio);
+				canvas_height = Math.floor(2000 / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				canvas_width = Math.floor(2000 * aspect_ratio);
+				canvas_width = Math.floor(2000 * Page.Layout.aspect_ratio);
 				canvas_height = 2000;
 			}
 		}

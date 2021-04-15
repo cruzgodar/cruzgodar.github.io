@@ -1210,6 +1210,8 @@ function switch_content_animation()
 		//This is a little messy, but it's better than the alternative. Removing every single data-aos attribute is way too destructive to undo, so instead, we'll just refresh the page.
 		last_page_scroll = window.scrollY;
 		
+		console.log(current_url);
+		
 		redirect(current_url, false, true, true);
 	}
 }
