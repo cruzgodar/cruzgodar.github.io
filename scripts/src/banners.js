@@ -6,6 +6,10 @@
 		
 		on_scroll: run whenever the user scrolls to update banner and scroll button opacity.
 		
+		fetch_other_size_in_background: fetches the portrait orientation if the current one is landscape or landscape if the current one is portrait, so that changing the screen orientation can load the new banner immediately.
+		
+		fetch_other_page_banners_in_background: fetches the current orientation of every adjacent page's banner, so that load times are reduced.
+		
 		ScrollButton: methods for handling the button that appears after a few seconds in case the user doesn't know to scroll down.
 		
 			insert: creates and animates in the scroll button.
@@ -264,6 +268,60 @@ let Banners =
 				}
 				
 				this.ScrollButton.done_loading = true;
+			}
+		}
+	},
+	
+	
+	
+	//Fetches the other size of banner needed for the page, so that if the page is resized, there's no lag time.
+	fetch_other_size_in_background: function()
+	{
+		if (this.file_name === "landscape.webp" || this.file_name === "landscape.jpg")
+		{
+			fetch_queue.push(this.file_path + "portrait." + this.file_extension);
+			
+			fetch_item_from_queue();
+		}
+		
+		else
+		{
+			fetch_queue.push(this.file_path + "landscape." + this.file_extension);
+			
+			fetch_item_from_queue();
+		}
+	},
+
+
+
+	//For every banner page linked to by the current page, this fetches that banner so that the waiting time between pages is minimized.
+	fetch_other_page_banners_in_background: function()
+	{
+		let links = document.querySelectorAll("a");
+		
+		for (let i = 0; i < links.length; i++)
+		{
+			let href = links[i].getAttribute("href");
+			
+			if (this.preloadable_pages.includes(href) && !(this.pages_already_fetched.includes(href)))
+			{
+				if (!(this.multibanner_pages.hasOwnProperty(href)))
+				{
+					this.pages_already_fetched.push(href);
+					
+					fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + this.file_name);
+					
+					fetch_item_from_queue();
+				}
+				
+				else
+				{
+					let next_index = this.multibanner_pages[href]["current_banner"] % (this.multibanner_pages[href]["current_banner"] + 1) + 1;
+					
+					fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + next_index + "/" + this.file_name);
+					
+					fetch_item_from_queue();
+				}
 			}
 		}
 	},

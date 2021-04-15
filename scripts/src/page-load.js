@@ -94,7 +94,7 @@ async function on_page_load()
 	
 	insert_images().then(aos_resize);
 	
-	fetch_other_page_banners_in_background();
+	Banners.fetch_other_page_banners_in_background();
 	
 	set_links();
 	
@@ -116,7 +116,7 @@ async function on_page_load()
 	
 	if ("banner_page" in page_settings && page_settings["banner_page"])
 	{
-		fetch_other_banner_size_in_background();
+		Banners.fetch_other_size_in_background();
 	}
 	
 	if (url_vars["contrast"] === 1)
@@ -678,60 +678,6 @@ function fetch_item_from_queue()
 		
 		fetch_item_from_queue();
 	})
-}
-
-
-
-//Fetches the other size of banner needed for the page, so that if the page is resized, there's no lag time.
-function fetch_other_banner_size_in_background()
-{
-	if (Banners.file_name === "landscape.webp" || Banners.file_name === "landscape.jpg")
-	{
-		fetch_queue.push(Banners.file_path + "portrait." + Banners.file_extension);
-		
-		fetch_item_from_queue();
-	}
-	
-	else
-	{
-		fetch_queue.push(Banners.file_path + "landscape." + Banners.file_extension);
-		
-		fetch_item_from_queue();
-	}
-}
-
-
-
-//For every banner page linked to by the current page, this fetches that banner so that the waiting time between pages is minimized.
-function fetch_other_page_banners_in_background()
-{
-	let links = document.querySelectorAll("a");
-	
-	for (let i = 0; i < links.length; i++)
-	{
-		let href = links[i].getAttribute("href");
-		
-		if (Banners.preloadable_pages.includes(href) && !(Banners.pages_already_fetched.includes(href)))
-		{
-			if (!(Banners.multibanner_pages.hasOwnProperty(href)))
-			{
-				Banners.pages_already_fetched.push(href);
-				
-				fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + Banners.file_name);
-				
-				fetch_item_from_queue();
-			}
-			
-			else
-			{
-				let next_index = Banners.multibanner_pages[href]["current_banner"] % (Banners.multibanner_pages[href]["current_banner"] + 1) + 1;
-				
-				fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + next_index + "/" + Banners.file_name);
-				
-				fetch_item_from_queue();
-			}
-		}
-	}
 }
 
 
