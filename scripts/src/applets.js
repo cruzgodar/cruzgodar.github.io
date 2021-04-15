@@ -8,11 +8,17 @@
 			
 			switch_fullscreen: toggles between the default and fullscreen view for the current canvas.
 			
-			fullscreen_resize: run whenever the canvas is in the fullscreen view and the window is resized to update a few variables.
+			fullscreen_on_resize: run whenever the canvas is in the fullscreen view and the window is resized to update a few variables.
 			
-			fullscreen_scroll: run whenever the canvas is in the fullscreen view and the page is scrolled to update a few variables.
+			fullscreen_on_scroll: run whenever the canvas is in the fullscreen view and the page is scrolled to update a few variables.
 	
 */
+
+
+
+"use strict";
+
+
 
 let Applets =
 {
@@ -127,11 +133,11 @@ let Applets =
 			}
 			
 			
-			window.addEventListener("resize", this.fullscreen_resize);
-			temporary_handlers["resize"].push(this.fullscreen_resize);
+			window.addEventListener("resize", this.fullscreen_on_resize);
+			temporary_handlers["resize"].push(this.fullscreen_on_resize);
 			
-			window.addEventListener("scroll", this.fullscreen_scroll);
-			temporary_handlers["scroll"].push(this.fullscreen_scroll);
+			window.addEventListener("scroll", this.fullscreen_on_scroll);
+			temporary_handlers["scroll"].push(this.fullscreen_on_scroll);
 		},
 
 
@@ -212,7 +218,7 @@ let Applets =
 						
 						
 						
-						this.fullscreen_resize();
+						this.fullscreen_on_resize();
 					}
 					
 					
@@ -223,7 +229,7 @@ let Applets =
 					{
 						this.is_animating = false;
 						
-						this.fullscreen_resize();
+						this.fullscreen_on_resize();
 					}, 300);
 					
 					
@@ -393,7 +399,7 @@ let Applets =
 
 
 
-		fullscreen_resize: function()
+		fullscreen_on_resize: function()
 		{
 			if (!this.is_fullscreen)
 			{
@@ -444,7 +450,7 @@ let Applets =
 
 
 
-		fullscreen_scroll: function()
+		fullscreen_on_scroll: function()
 		{
 			if (!this.is_fullscreen)
 			{
@@ -454,4 +460,4 @@ let Applets =
 			window.scroll(0, this.fullscreen_locked_scroll);
 		}
 	}
-}
+};

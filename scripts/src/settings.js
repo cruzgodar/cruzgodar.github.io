@@ -1380,7 +1380,7 @@ function switch_banner_style()
 			
 			url_vars["banner_style"] = 0;
 			
-			scroll_update(window.scrollY);
+			Banners.on_scroll(window.scrollY);
 		}
 		
 		

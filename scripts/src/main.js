@@ -9,6 +9,8 @@
 let DEBUG = false;
 
 
+let scroll = 0;
+
 
 let window_width = null, window_height = null, aspect_ratio = null;
 
@@ -223,6 +225,11 @@ async function entry_point(url)
 	
 	resize_update();
 	
+	window.addEventListener("scroll", function()
+	{
+		Banners.on_scroll(0);
+	});
+	
 	if ("scrollRestoration" in history)
 	{
 		history.scrollRestoration = "manual";
@@ -257,7 +264,7 @@ async function entry_point(url)
 	
 	
 	
-	scroll_button_exists = false;
+	Banners.ScrollButton.exists = false;
 	
 	
 	

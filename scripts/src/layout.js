@@ -80,12 +80,12 @@ function resize_update()
 	
 	if (new_window_width / new_window_height < 1)
 	{
-		banner_name = "portrait." + banner_extension;
+		Banners.file_name = "portrait." + Banners.file_extension;
 	}
 	
 	else
 	{
-		banner_name = "landscape." + banner_extension;
+		Banners.file_name = "landscape." + Banners.file_extension;
 	}
 	
 	
@@ -107,7 +107,7 @@ function resize_update()
 			window_width = new_window_width;
 			window_height = new_window_height;
 			
-			scroll_update(0);
+			Banners.on_scroll(0);
 		}
 	}, 8);
 }
@@ -121,7 +121,7 @@ function resize_step()
 	
 	resize_time += 8;
 	
-	scroll_update(0);
+	Banners.on_scroll(0);
 }
 
 

@@ -256,7 +256,7 @@ function fade_in()
 		add_style(`
 			#banner
 			{
-				background: url(${banner_path}landscape.${banner_extension}) no-repeat center center;
+				background: url(${Banners.file_path}landscape.${Banners.file_extension}) no-repeat center center;
 				background-size: cover;
 			}
 			
@@ -264,7 +264,7 @@ function fade_in()
 			{
 				#banner
 				{
-					background: url(${banner_path}portrait.${banner_extension}) no-repeat center center;
+					background: url(${Banners.file_path}portrait.${Banners.file_extension}) no-repeat center center;
 					background-size: cover;
 				}
 			}
@@ -685,16 +685,16 @@ function fetch_item_from_queue()
 //Fetches the other size of banner needed for the page, so that if the page is resized, there's no lag time.
 function fetch_other_banner_size_in_background()
 {
-	if (banner_name === "landscape.webp" || banner_name === "landscape.jpg")
+	if (Banners.file_name === "landscape.webp" || Banners.file_name === "landscape.jpg")
 	{
-		fetch_queue.push(banner_path + "portrait." + banner_extension);
+		fetch_queue.push(Banners.file_path + "portrait." + Banners.file_extension);
 		
 		fetch_item_from_queue();
 	}
 	
 	else
 	{
-		fetch_queue.push(banner_path + "landscape." + banner_extension);
+		fetch_queue.push(Banners.file_path + "landscape." + Banners.file_extension);
 		
 		fetch_item_from_queue();
 	}
@@ -711,22 +711,22 @@ function fetch_other_page_banners_in_background()
 	{
 		let href = links[i].getAttribute("href");
 		
-		if (banner_pages.includes(href) && !(banner_pages_already_fetched.includes(href)))
+		if (Banners.preloadable_pages.includes(href) && !(Banners.pages_already_fetched.includes(href)))
 		{
-			if (!(multibanner_pages.hasOwnProperty(href)))
+			if (!(Banners.multibanner_pages.hasOwnProperty(href)))
 			{
-				banner_pages_already_fetched.push(href);
+				Banners.pages_already_fetched.push(href);
 				
-				fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + banner_name);
+				fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + Banners.file_name);
 				
 				fetch_item_from_queue();
 			}
 			
 			else
 			{
-				let next_index = multibanner_pages[href]["current_banner"] % (multibanner_pages[href]["current_banner"] + 1) + 1;
+				let next_index = Banners.multibanner_pages[href]["current_banner"] % (Banners.multibanner_pages[href]["current_banner"] + 1) + 1;
 				
-				fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + next_index + "/" + banner_name);
+				fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + next_index + "/" + Banners.file_name);
 				
 				fetch_item_from_queue();
 			}

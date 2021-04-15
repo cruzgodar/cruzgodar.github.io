@@ -85,13 +85,13 @@ function check_webp()
 				if (result)
 				{
 					supports_webp = true;
-					banner_extension = "webp";
+					Banners.file_extension = "webp";
 				}
 				
 				else
 				{
 					supports_webp = false;
-					banner_extension = "jpg";
+					Banners.file_extension = "jpg";
 				}
 				
 				resolve();
@@ -103,7 +103,7 @@ function check_webp()
 			console.error("Could not load Modernizr");
 			
 			supports_webp = false;
-			banner_extension = "jpg";
+			Banners.file_extension = "jpg";
 			
 			resolve();
 		});
