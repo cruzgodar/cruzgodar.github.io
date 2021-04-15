@@ -95,7 +95,7 @@ async function on_page_load()
 	
 	
 	
-	insert_images().then(aos_resize);
+	Images.insert().then(aos_resize);
 	
 	Banners.fetch_other_page_banners_in_background();
 	
@@ -247,7 +247,7 @@ function fade_in()
 		add_style(`
 			#banner
 			{
-				background: url(${Banners.file_path}landscape.${Banners.file_extension}) no-repeat center center;
+				background: url(${Banners.file_path}landscape.${Images.file_extension}) no-repeat center center;
 				background-size: cover;
 			}
 			
@@ -255,7 +255,7 @@ function fade_in()
 			{
 				#banner
 				{
-					background: url(${Banners.file_path}portrait.${Banners.file_extension}) no-repeat center center;
+					background: url(${Banners.file_path}portrait.${Images.file_extension}) no-repeat center center;
 					background-size: cover;
 				}
 			}

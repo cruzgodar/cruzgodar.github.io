@@ -28,10 +28,6 @@ let Footer =
 		
 		
 		
-		let extension = supports_webp ? "webp" : "jpg";
-		
-		
-		
 		let vars_no_return = concat_url_vars(false);
 				
 		if (vars_no_return.indexOf("&") === -1)
@@ -105,7 +101,7 @@ let Footer =
 			element.outerHTML = `
 				<div id="writing-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 					<a href="/index.html?page=%2Fwriting%2Fwriting.html${vars_no_return}" tabindex="-1">
-						<img onclick="redirect('/writing/writing.html')" src="/writing/cover.${extension}" alt="Writing" tabindex="2"></img>
+						<img onclick="redirect('/writing/writing.html')" src="/writing/cover.${Images.file_extension}" alt="Writing" tabindex="2"></img>
 					</a>
 				</div>
 			`;
@@ -123,7 +119,7 @@ let Footer =
 			element.outerHTML = `
 				<div id="teaching-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 					<a class="focus-on-child" href="/index.html?page=%2Fteaching%2Fteaching.html${vars_no_return}" tabindex="-1">
-						<img onclick="redirect('/teaching/teaching.html')" src="/teaching/cover.${extension}" alt="Teaching" tabindex="2"></img>
+						<img onclick="redirect('/teaching/teaching.html')" src="/teaching/cover.${Images.file_extension}" alt="Teaching" tabindex="2"></img>
 					</a>
 				</div>
 			`;
@@ -141,7 +137,7 @@ let Footer =
 			element.outerHTML = `
 				<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 					<a class="focus-on-child" href="index.html?page=%2Fapplets%2Fapplets.html${vars_no_return}" tabindex="-1">
-						<img onclick="redirect('/applets/applets.html')" src="/applets/cover.${extension}" alt="Applets" tabindex="2"></img>
+						<img onclick="redirect('/applets/applets.html')" src="/applets/cover.${Images.file_extension}" alt="Applets" tabindex="2"></img>
 					</a>
 				</div>
 			`;
@@ -158,7 +154,7 @@ let Footer =
 			element.outerHTML = `
 				<div id="bio-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 					<a class="focus-on-child" href="/index.html?page=%2Fbio%2Fbio.html${vars_no_return}" tabindex="-1">
-						<img onclick="redirect('/bio/bio.html')" src="/bio/cover.${extension}" alt="Me" tabindex="2"></img>
+						<img onclick="redirect('/bio/bio.html')" src="/bio/cover.${Images.file_extension}" alt="Me" tabindex="2"></img>
 					</a>
 				</div>
 			`;

@@ -50,9 +50,6 @@ let floating_footer_height = 0;
 
 
 
-//Whether the browser supports WebP images or not. Given a boolean value when decided.
-let supports_webp = null;
-
 let scripts_loaded = 
 {
 	"mathjax": false,
@@ -285,7 +282,7 @@ async function entry_point(url)
 	
 	
 	
-	check_webp()
+	Images.check_webp_support()
 	
 	.then(function()
 	{

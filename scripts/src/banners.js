@@ -28,7 +28,6 @@ let Banners =
 {
 	done_loading: false,
 
-	file_extension: "",
 	file_name: "",
 	file_path: "",
 
@@ -76,12 +75,12 @@ let Banners =
 			{
 				if (window_width / window_height < 1)
 				{
-					this.file_name = "portrait." + this.file_extension;
+					this.file_name = "portrait." + Images.file_extension;
 				}
 				
 				else
 				{
-					this.file_name = "landscape." + this.file_extension;
+					this.file_name = "landscape." + Images.file_extension;
 				}
 				
 					
@@ -279,14 +278,14 @@ let Banners =
 	{
 		if (this.file_name === "landscape.webp" || this.file_name === "landscape.jpg")
 		{
-			fetch_queue.push(this.file_path + "portrait." + this.file_extension);
+			fetch_queue.push(this.file_path + "portrait." + Images.file_extension);
 			
 			fetch_item_from_queue();
 		}
 		
 		else
 		{
-			fetch_queue.push(this.file_path + "landscape." + this.file_extension);
+			fetch_queue.push(this.file_path + "landscape." + Images.file_extension);
 			
 			fetch_item_from_queue();
 		}
