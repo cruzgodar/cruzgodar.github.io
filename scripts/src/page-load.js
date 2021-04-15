@@ -134,11 +134,6 @@ async function on_page_load()
 		reduce_page_margins();
 	}
 	
-	if (url_vars["comments"] === 1)
-	{
-		remove_disqus();
-	}
-	
 	if (url_vars["content_animation"] === 1)
 	{
 		remove_animation();
@@ -147,13 +142,6 @@ async function on_page_load()
 	if ("math_page" in page_settings && page_settings["math_page"])
 	{
 		typeset_math();
-	}
-	
-	
-	
-	if (url_vars["comments"] !== 1 && "comments" in page_settings && page_settings["comments"])
-	{
-		load_disqus();
 	}
 }
 
@@ -917,7 +905,7 @@ function reduce_page_margins()
 	if (layout_string === "ultrawide")
 	{
 		let element = add_style(`
-			.body-text, #disqus_thread, .nav-buttons, .line-break
+			.body-text, .nav-buttons, .line-break
 			{
 				width: 50vw;
 			}
@@ -925,21 +913,6 @@ function reduce_page_margins()
 		
 		element.id = "ultrawide-margin-adjust";
 	}	
-}
-
-
-
-function remove_disqus()
-{
-	try
-	{
-		document.querySelector("#disqus_thread").previousElementSibling.remove();
-		document.querySelector("#disqus_thread").previousElementSibling.remove();
-		document.querySelector("#disqus_thread").previousElementSibling.remove();
-		document.querySelector("#disqus_thread").remove();
-	}
-	
-	catch(ex) {}
 }
 
 

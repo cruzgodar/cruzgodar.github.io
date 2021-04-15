@@ -26,7 +26,6 @@ let window_width = null, window_height = null, aspect_ratio = null;
 	
 	"writing_page": false,
 	"math_page": false,
-	"comments": false,
 	
 	"small_margins_on_ultrawide": false,
 	
@@ -56,7 +55,6 @@ let supports_webp = null;
 
 let scripts_loaded = 
 {
-	"disqus": false,
 	"mathjax": false,
 	"complexjs": false
 }

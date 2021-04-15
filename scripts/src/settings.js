@@ -35,7 +35,6 @@ let url_vars =
 	"contrast": get_url_var("contrast"),
 	"text_size": get_url_var("text_size"),
 	"font": get_url_var("font"),
-	"comments": get_url_var("comments"),
 	"content_animation": get_url_var("content_animation"),
 	"banner_style": get_url_var("banner_style"),
 	"title_pages_seen": get_url_var("title_pages_seen")
@@ -68,7 +67,6 @@ let settings_texts =
 	"contrast": ["Contrast: normal", "Contrast: high"],
 	"text_size": ["Text size: normal", "Text size: large"],
 	"font": ["Font: always sans serif", "Font: serif on writing"],
-	"comments": ["Comments: enabled", "Comments: disabled"],
 	"content_animation": ["Content animation: enabled", "Content animation: disabled"],
 	"banner_style": ["Banners: parallax", "Banners: simple"]
 };
@@ -152,14 +150,13 @@ function show_floating_settings()
 				<div id="theme-button-row" class="floating-settings-button-row"></div>
 				<div id="dark-theme-color-button-row" class="floating-settings-button-row"></div>
 				<div id="contrast-button-row" class="floating-settings-button-row"></div>
-				<div id="text-size-button-row" class="floating-settings-button-row"></div>
 			</div>
 			
 			<div class="floating-settings-scroll-snap"></div>
 			
 			<div class="floating-settings-page">
+				<div id="text-size-button-row" class="floating-settings-button-row"></div>
 				<div id="font-button-row" class="floating-settings-button-row"></div>
-				<div id="comments-button-row" class="floating-settings-button-row"></div>
 				<div id="content-animation-button-row" class="floating-settings-button-row"></div>
 				<div id="banner-style-button-row" class="floating-settings-button-row"></div>
 				<div style="margin-top: -6px"></div>
@@ -302,20 +299,6 @@ function show_floating_settings()
 				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
 					<p id="font-button-text" class="floating-settings-button-text">
 						${settings_texts[settings_query_strings[4]][url_vars[settings_query_strings[4]]]}
-					</p>
-				</div>
-			`;
-			
-			
-			
-			document.querySelector("#comments-button-row").innerHTML = `
-				<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
-					<input type="image" class="footer-button" src="/graphics/button-icons/comment.png" alt="Change Theme" onclick="switch_setting('comments')" tabindex="-1">
-				</div>
-				
-				<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
-					<p id="comments-button-text" class="floating-settings-button-text">
-						${settings_texts[settings_query_strings[5]][url_vars[settings_query_strings[5]]]}
 					</p>
 				</div>
 			`;
@@ -515,11 +498,6 @@ function switch_setting(setting, no_animation = false)
 	else if (setting === "font")
 	{
 		switch_font();
-	}
-	
-	else if (setting === "comments")
-	{
-		switch_comments();
 	}
 	
 	else if (setting === "content_animation")
@@ -1173,80 +1151,6 @@ function switch_font()
 				document.querySelector("#font-button-row").style.opacity = 1;
 				
 				aos_resize();
-			}, 50);
-		}
-		
-		catch(ex) {}
-	}, 300);
-}
-
-
-
-function switch_comments()
-{
-	try {document.querySelector("#comments-button-row").style.opacity = 0;}
-	catch(ex) {}
-	
-	
-	
-	if (url_vars["comments"] === 0)
-	{
-		if ("comments" in page_settings && page_settings["comments"])
-		{
-			//Unfortunately, we can't just use the animated-opacity class -- this needs !important.
-			
-			let element = document.querySelector("#disqus_thread");
-			
-			element.previousElementSibling.previousElementSibling.previousElementSibling.style.setProperty("transition", "opacity .3s ease-in-out", "important");
-			element.previousElementSibling.previousElementSibling.style.setProperty("transition", "opacity .3s ease-in-out", "important");
-			element.previousElementSibling.style.setProperty("transition", "opacity .3s ease-in-out", "important");
-			element.style.setProperty("transition", "opacity .3s ease-in-out", "important");
-			
-			
-			
-			element.previousElementSibling.previousElementSibling.previousElementSibling.style.opacity = 0;
-			element.previousElementSibling.previousElementSibling.style.opacity = 0;
-			element.previousElementSibling.style.opacity = 0;
-			element.style.opacity = 0;
-
-			
-			
-			setTimeout(remove_disqus, 300);
-		}
-		
-		
-		
-		setTimeout(function()
-		{
-			try {document.querySelector("#comments-button-text").textContent = settings_texts["comments"][1];}
-			catch(ex) {}
-		}, 300);
-		
-		url_vars["comments"] = 1;
-	}
-	
-	
-	
-	else
-	{
-		setTimeout(function()
-		{
-			try {document.querySelector("#comments-button-text").textContent = settings_texts["comments"][0];}
-			catch(ex) {}
-		}, 300);
-		
-		url_vars["comments"] = 0;
-	}
-	
-	
-	
-	setTimeout(function()
-	{
-		try
-		{
-			setTimeout(function()
-			{
-				document.querySelector("#comments-button-row").style.opacity = 1;
 			}, 50);
 		}
 		
