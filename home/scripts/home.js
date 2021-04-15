@@ -13,7 +13,7 @@
 	
 	
 	
-	if (browser_name === "MS Edge")
+	if (Browser.name === "MS Edge")
 	{
 		alert_on_edge();
 	}

@@ -225,10 +225,18 @@ async function entry_point(url)
 	
 	resize_update();
 	
+	
+	
+	Browser.detect();
+	
+	
+	
 	window.addEventListener("scroll", function()
 	{
 		Banners.on_scroll(0);
 	});
+	
+	
 	
 	if ("scrollRestoration" in history)
 	{

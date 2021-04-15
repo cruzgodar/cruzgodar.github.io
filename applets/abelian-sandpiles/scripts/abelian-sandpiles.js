@@ -28,7 +28,7 @@
 	
 	
 	
-	if (browser_name === "Chrome" || browser_name === "Opera")
+	if (Browser.name === "Chrome" || Browser.name === "Opera")
 	{
 		alert_about_hardware_acceleration();
 	}
