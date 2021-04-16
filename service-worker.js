@@ -17,8 +17,8 @@ workbox.routing.registerRoute(
 				//Cache up to 200 images.
 				maxEntries: 200,
 				
-				//Cache for a maximum of a week.
-				maxAgeSeconds: 7 * 24 * 60 * 60,
+				//Cache for a maximum of a day.
+				maxAgeSeconds: 24 * 60 * 60,
 				
 				purgeOnQuotaError: true
 			})
