@@ -8,7 +8,7 @@
 
 async function on_page_load()
 {
-	currently_changing_page = false;
+	Page.Navigation.currently_changing_page = false;
 	
 	
 	
@@ -52,7 +52,7 @@ async function on_page_load()
 			{
 				url_vars["title_pages_seen"] += (1 << title_page_ids[current_url]);
 				
-				write_url_vars();
+				Page.Navigation.write_url_vars();
 			}
 		}
 	}
@@ -145,6 +145,25 @@ async function on_page_load()
 	if ("math_page" in page_settings && page_settings["math_page"])
 	{
 		typeset_math();
+	}
+}
+
+
+
+//Right, so this is a pain. One of those things jQuery makes really easy and that you might never notice otherwise is that when using $(element).html(data), any non-external script tags in data are automatically excuted. This is great, but it doesn't happen when using element.innerHTML. Weirdly enough, though, it works with element.appendChild. Therefore, we just need to get all our script tags, and for each one, make a new tag with identical contents, append it to the body, and delete the original script.
+function parse_script_tags()
+{
+	var scripts = document.querySelectorAll("script");
+	
+	for (let i = 0; i < scripts.length; i++)
+	{
+		let new_script = document.createElement("script");
+		
+		new_script.innerHTML = scripts[i].textContent;
+		
+		document.body.appendChild(new_script);
+		
+		scripts[i].remove();
 	}
 }
 
@@ -816,6 +835,30 @@ function equalize_text_buttons()
 		else
 		{
 			elements[i].style.width = "fit-content";
+		}
+	}
+}
+
+
+
+//To keep expected link functionality (open in new tab, draggable, etc.), all elements with calls to redirect() are wrapped in <a> tags. Presses of <a> tags (without .real-link) are ignored, but to extend the functionality of url variables to the times they are used, we need to target them all and add the url variables onto them. Also, since the website is a single page app, we need to format them correctly, too, using the page variable.
+function set_links()
+{
+	let links = document.querySelectorAll("a");
+	
+	
+	
+	let url_vars_suffix = Page.Navigation.concat_url_vars();
+	
+	
+	
+	for (let i = 0; i < links.length; i++)
+	{
+		let href = links[i].getAttribute("href");
+		
+		if (href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data" && !(links[i].parentNode.classList.contains("footer-image-link")))
+		{
+			links[i].setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + url_vars_suffix);
 		}
 	}
 }

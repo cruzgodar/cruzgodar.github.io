@@ -255,7 +255,7 @@
 							
 							
 							
-							redirect("/writing/caligo/chapters/p.html");
+							Page.Navigation.redirect("/writing/caligo/chapters/p.html");
 						}, 1000);
 					}, 5000);
 				}, 50);

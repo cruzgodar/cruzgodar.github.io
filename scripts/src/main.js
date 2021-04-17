@@ -266,6 +266,34 @@ async function entry_point(url)
 	
 	
 	
+	//Fade in the opacity when the user presses the back button.
+	window.addEventListener("popstate", function(e)
+	{
+		let previous_page = get_url_var("page");
+			
+		if (previous_page !== null && decodeURIComponent(previous_page) !== current_url)
+		{
+			Page.Navigation.redirect(decodeURIComponent(previous_page), false, true, true);
+		}
+		
+		else
+		{
+			Page.Navigation.redirect("/home/home.html", false, true);
+		}
+	});
+	
+	
+	
+	if ("serviceWorker" in navigator)
+	{
+		window.addEventListener("load", function()
+		{
+			navigator.serviceWorker.register("/service-worker.js");
+		});
+	}
+	
+	
+	
 	Banners.ScrollButton.exists = false;
 	
 	
@@ -294,7 +322,7 @@ async function entry_point(url)
 		
 		else
 		{
-			redirect(url, false, true);
+			Page.Navigation.redirect(url, false, true);
 		}
 	});
 }

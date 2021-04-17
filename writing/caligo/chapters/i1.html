@@ -12,7 +12,7 @@
 	<div class="new-aos-section" data-aos="fade-in">
 		<div id="logo">
 			<a href="/home/home.html" tabindex="-1">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="Page.Navigation.redirect('/home/home.html')" tabindex="1"></img>
 			</a>
 		</div>
 	</div>
@@ -394,7 +394,7 @@
 	<section>
 		<div class="text-buttons">
 			<div class="focus-on-child new-aos-section" data-aos="zoom-out" tabindex="1">
-				<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="redirect('/writing/caligo/chapters/10.html')">Previous Chapter</button>
+				<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="Page.Navigation.redirect('/writing/caligo/chapters/10.html')">Previous Chapter</button>
 			</div>
 			
 			<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
@@ -406,7 +406,7 @@
 		
 		<div class="text-buttons">
 			<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
-				<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="redirect('/writing/caligo/caligo.html')">All Chapters</button>
+				<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="Page.Navigation.redirect('/writing/caligo/caligo.html')">All Chapters</button>
 			</div>
 		</div>
 	</section>
@@ -548,7 +548,7 @@
 							document.body.style.userSelect = "auto";
 							document.body.style.WebkitUserSelect = "auto";
 							
-							redirect('/writing/caligo/chapters/11.html');
+							Page.Navigation.redirect('/writing/caligo/chapters/11.html');
 						}, 600);
 					}, 3000);
 				}, 50);

@@ -517,7 +517,7 @@ function switch_setting(setting, no_animation = false)
 	
 	
 	
-	write_url_vars();
+	Page.Navigation.write_url_vars();
 	
 	
 	
@@ -1212,7 +1212,7 @@ function switch_content_animation()
 		
 		console.log(current_url);
 		
-		redirect(current_url, false, true, true);
+		Page.Navigation.redirect(current_url, false, true, true);
 	}
 }
 

@@ -28,31 +28,7 @@ let Footer =
 		
 		
 		
-		let vars_no_return = concat_url_vars(false);
-				
-		if (vars_no_return.indexOf("&") === -1)
-		{
-			vars_no_return = "";
-		}
-		
-		else
-		{
-			vars_no_return = vars_no_return.substring(vars_no_return.indexOf("&"));
-		}
-		
-		
-		
-		let vars_return = concat_url_vars(true);
-				
-		if (vars_return.indexOf("&") === -1)
-		{
-			vars_return = "";
-		}
-		
-		else
-		{
-			vars_return = vars_return.substring(vars_return.indexOf("&"));
-		}
+		let url_vars_suffix = Page.Navigation.concat_url_vars();
 
 		
 		
@@ -100,8 +76,8 @@ let Footer =
 			
 			element.outerHTML = `
 				<div id="writing-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-					<a href="/index.html?page=%2Fwriting%2Fwriting.html${vars_no_return}" tabindex="-1">
-						<img onclick="redirect('/writing/writing.html')" src="/writing/cover.${Images.file_extension}" alt="Writing" tabindex="2"></img>
+					<a href="/index.html?page=%2Fwriting%2Fwriting.html${url_vars_suffix}" tabindex="-1">
+						<img onclick="Page.Navigation.redirect('/writing/writing.html')" src="/writing/cover.${Images.file_extension}" alt="Writing" tabindex="2"></img>
 					</a>
 				</div>
 			`;
@@ -118,8 +94,8 @@ let Footer =
 			
 			element.outerHTML = `
 				<div id="teaching-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-					<a class="focus-on-child" href="/index.html?page=%2Fteaching%2Fteaching.html${vars_no_return}" tabindex="-1">
-						<img onclick="redirect('/teaching/teaching.html')" src="/teaching/cover.${Images.file_extension}" alt="Teaching" tabindex="2"></img>
+					<a class="focus-on-child" href="/index.html?page=%2Fteaching%2Fteaching.html${url_vars_suffix}" tabindex="-1">
+						<img onclick="Page.Navigation.redirect('/teaching/teaching.html')" src="/teaching/cover.${Images.file_extension}" alt="Teaching" tabindex="2"></img>
 					</a>
 				</div>
 			`;
@@ -136,8 +112,8 @@ let Footer =
 			
 			element.outerHTML = `
 				<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-					<a class="focus-on-child" href="index.html?page=%2Fapplets%2Fapplets.html${vars_no_return}" tabindex="-1">
-						<img onclick="redirect('/applets/applets.html')" src="/applets/cover.${Images.file_extension}" alt="Applets" tabindex="2"></img>
+					<a class="focus-on-child" href="index.html?page=%2Fapplets%2Fapplets.html${url_vars_suffix}" tabindex="-1">
+						<img onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Images.file_extension}" alt="Applets" tabindex="2"></img>
 					</a>
 				</div>
 			`;
@@ -153,8 +129,8 @@ let Footer =
 			
 			element.outerHTML = `
 				<div id="bio-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-					<a class="focus-on-child" href="/index.html?page=%2Fbio%2Fbio.html${vars_no_return}" tabindex="-1">
-						<img onclick="redirect('/bio/bio.html')" src="/bio/cover.${Images.file_extension}" alt="Me" tabindex="2"></img>
+					<a class="focus-on-child" href="/index.html?page=%2Fbio%2Fbio.html${url_vars_suffix}" tabindex="-1">
+						<img onclick="Page.Navigation.redirect('/bio/bio.html')" src="/bio/cover.${Images.file_extension}" alt="Me" tabindex="2"></img>
 					</a>
 				</div>
 			`;
@@ -171,7 +147,7 @@ let Footer =
 				</div>
 				
 				<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="10" data-aos-once="false" style="position: absolute; bottom: 6.25px; right: 10px" tabindex="3">
-					<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="redirect('/about/about.html')" tabindex="-1">
+					<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="Page.Navigation.redirect('/about/about.html')" tabindex="-1">
 				</div>
 			</div>
 		`);

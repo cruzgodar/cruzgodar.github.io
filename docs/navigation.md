@@ -24,7 +24,7 @@ It's worthwhile to note that these `a` tags' `href` attributes don't need to be 
 
 ```html
 <a href="/writing/caligo/caligo.html">
-	<img id="image-caligo" class="check-webp" onclick="redirect('/writing/caligo/caligo.html')" src="" alt="Caligo"></img>
+	<img id="image-caligo" class="check-webp" onclick="Page.Navigation.redirect('/writing/caligo/caligo.html')" src="" alt="Caligo"></img>
 </a>
 ```
 
