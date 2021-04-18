@@ -592,7 +592,7 @@ function aos_scroll()
 			show_aos_section(i);
 		}
 		
-		else if (scroll + window_height < aos_anchor_positions[i] + aos_anchor_offsets[i] && aos_anchors_shown[i] === true)
+		else if (scroll + window_height < aos_anchor_positions[i] - aos_anchor_offsets[i] && aos_anchors_shown[i] === true)
 		{
 			hide_aos_section(i);
 		}
