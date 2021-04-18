@@ -890,7 +890,7 @@ Page.Load =
 			let bound_function = this.equalize.bind(this);
 			
 			window.addEventListener("resize", bound_function);
-			Site.temporary_handlers["resize"].push(bound_function);
+			Page.temporary_handlers["resize"].push(bound_function);
 			
 			setTimeout(() =>
 			{

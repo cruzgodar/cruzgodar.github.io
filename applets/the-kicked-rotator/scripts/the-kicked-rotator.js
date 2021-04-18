@@ -35,11 +35,11 @@
 	
 	
 	
-	Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
+	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
 	
-	Applets.Canvases.true_fullscreen = false;
+	Page.Applets.Canvases.true_fullscreen = false;
 	
-	Applets.Canvases.set_up_resizer();
+	Page.Applets.Canvases.set_up_resizer();
 	
 	
 	

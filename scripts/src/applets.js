@@ -25,7 +25,7 @@ let Page = {};
 
 
 
-let Applets =
+Page.Applets =
 {
 	Canvases:
 	{

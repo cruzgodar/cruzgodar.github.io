@@ -85,11 +85,11 @@
 	
 	
 	
-	Applets.Canvases.to_resize = [document.querySelector("#newtons-method-plot"), document.querySelector("#root-selector")];
+	Page.Applets.Canvases.to_resize = [document.querySelector("#newtons-method-plot"), document.querySelector("#root-selector")];
 	
-	Applets.Canvases.resize_callback = function()
+	Page.Applets.Canvases.resize_callback = function()
 	{
-		if (Applets.Canvases.is_fullscreen)
+		if (Page.Applets.Canvases.is_fullscreen)
 		{
 			if (Page.Layout.aspect_ratio >= 1)
 			{
@@ -124,9 +124,9 @@
 		window.requestAnimationFrame(draw_frame);
 	};
 	
-	Applets.Canvases.true_fullscreen = true;
+	Page.Applets.Canvases.true_fullscreen = true;
 	
-	Applets.Canvases.set_up_resizer();
+	Page.Applets.Canvases.set_up_resizer();
 	
 	
 	
@@ -1941,7 +1941,7 @@
 		
 		
 		
-		if (Applets.Canvases.is_fullscreen)
+		if (Page.Applets.Canvases.is_fullscreen)
 		{
 			if (Page.Layout.aspect_ratio >= 1)
 			{
@@ -1974,7 +1974,7 @@
 		
 		image_size = parseInt(document.querySelector("#dim-input").value || 2000);
 		
-		if (Applets.Canvases.is_fullscreen)
+		if (Page.Applets.Canvases.is_fullscreen)
 		{
 			if (Page.Layout.aspect_ratio >= 1)
 			{
@@ -2020,7 +2020,7 @@
 		
 		image_size = old_image_size;
 		
-		if (Applets.Canvases.is_fullscreen)
+		if (Page.Applets.Canvases.is_fullscreen)
 		{
 			if (Page.Layout.aspect_ratio >= 1)
 			{

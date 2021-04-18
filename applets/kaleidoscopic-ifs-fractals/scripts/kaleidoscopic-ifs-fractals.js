@@ -156,11 +156,11 @@
 	
 	
 	
-	Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
+	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
 	
-	Applets.Canvases.resize_callback = function()
+	Page.Applets.Canvases.resize_callback = function()
 	{
-		if (Applets.Canvases.is_fullscreen)
+		if (Page.Applets.Canvases.is_fullscreen)
 		{
 			if (Page.Layout.aspect_ratio >= 1)
 			{
@@ -216,9 +216,9 @@
 		window.requestAnimationFrame(draw_frame);
 	};
 	
-	Applets.Canvases.true_fullscreen = true;
+	Page.Applets.Canvases.true_fullscreen = true;
 	
-	Applets.Canvases.set_up_resizer();
+	Page.Applets.Canvases.set_up_resizer();
 	
 	
 	
@@ -1254,7 +1254,7 @@
 		
 		
 		
-		if (Applets.Canvases.is_fullscreen)
+		if (Page.Applets.Canvases.is_fullscreen)
 		{
 			if (Page.Layout.aspect_ratio >= 1)
 			{
