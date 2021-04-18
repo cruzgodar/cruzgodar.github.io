@@ -149,7 +149,7 @@ function handle_touch_event(e)
 	
 	if (currently_touch_device === false)
 	{
-		remove_hover_events();
+		Page.Load.HoverEvents.remove();
 		
 		currently_touch_device = true;
 	}
@@ -214,10 +214,10 @@ async function entry_point(url)
 	
 	window.addEventListener("resize", () =>
 	{
-		Page.Layout.on_resize();
+		Page.Load.AOS.on_resize();
 	});
 	
-	Page.Layout.on_resize();
+	Page.Load.AOS.on_resize();
 	
 	
 	
@@ -300,8 +300,15 @@ async function entry_point(url)
 	
 	AOS.init({duration: 1200, once: false, offset: 100});
 	
-	window.addEventListener("scroll", aos_scroll);
-	window.addEventListener("resize", aos_resize);
+	window.addEventListener("scroll", () =>
+	{
+		Page.Load.AOS.on_scroll();
+	});
+	
+	window.addEventListener("resize", () =>
+	{
+		Page.Load.AOS.on_resize();
+	});
 	
 	
 	
@@ -372,6 +379,36 @@ function add_style(content, temporary = true, at_beginning_of_head = false)
 	
 	
 	return element;
+}
+
+
+
+//Gets the next item from the fetch queue.
+function fetch_item_from_queue()
+{
+	if (fetch_queue.length === 0 || currently_fetching)
+	{
+		return;
+	}
+	
+	
+	
+	currently_fetching = true;
+	
+	console.log("Now fetching " + fetch_queue[0]);
+	
+	
+	
+	fetch(fetch_queue[0])
+	
+	.then(function()
+	{
+		currently_fetching = false;
+		
+		fetch_queue.shift();
+		
+		fetch_item_from_queue();
+	})
 }
 
 

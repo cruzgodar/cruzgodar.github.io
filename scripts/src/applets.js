@@ -119,7 +119,7 @@ let Applets =
 					document.querySelector("#fullscreen-message").parentNode.previousElementSibling.remove();
 					document.querySelector("#fullscreen-message").parentNode.remove();
 					
-					aos_resize();
+					Page.Load.AOS.on_resize();
 				}
 				
 				catch(ex) {}
@@ -131,7 +131,7 @@ let Applets =
 				{
 					document.querySelector("#fullscreen-message p").textContent = "Double-tap canvas to enter fullscreen";
 					
-					aos_resize();
+					Page.Load.AOS.on_resize();
 				}
 				
 				catch(ex) {}
@@ -189,7 +189,7 @@ let Applets =
 							try {this.resize_callback();}
 							catch(ex) {}
 							
-							aos_resize();
+							Page.Load.AOS.on_resize();
 						}
 						
 						window.scroll(0, window.scrollY + this.to_resize[0].getBoundingClientRect().top + 2);
@@ -208,7 +208,7 @@ let Applets =
 							try {this.resize_callback();}
 							catch(ex) {}
 							
-							aos_resize();
+							Page.Load.AOS.on_resize();
 						}
 						
 						
@@ -325,7 +325,7 @@ let Applets =
 							document.querySelector("#fullscreen-message").parentNode.previousElementSibling.remove();
 							document.querySelector("#fullscreen-message").parentNode.remove();
 							
-							aos_resize();
+							Page.Load.AOS.on_resize();
 						}
 						
 						catch(ex) {}
@@ -389,7 +389,7 @@ let Applets =
 						
 						
 						
-						aos_resize();
+						Page.Load.AOS.on_resize();
 					}
 					
 					document.body.style.opacity = 1;

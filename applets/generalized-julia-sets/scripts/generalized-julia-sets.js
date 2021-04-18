@@ -94,7 +94,7 @@
 				
 				document.querySelector("#switch-julia-mode-button").style.opacity = 1;
 				
-				equalize_text_buttons();
+				Page.Load.TextButtons.equalize();
 			}
 		}, 300);
 		
@@ -970,7 +970,7 @@
 			{
 				document.querySelector("#switch-julia-mode-button").textContent = "Pick Julia Set";
 				
-				equalize_text_buttons();
+				Page.Load.TextButtons.equalize();
 				
 				document.querySelector("#switch-julia-mode-button").style.opacity = 1;
 			}, 300);
@@ -1044,7 +1044,7 @@
 			
 			stabilize_brightness_scale = true;
 			
-			equalize_text_buttons();
+			Page.Load.TextButtons.equalize();
 			
 			document.querySelector("#switch-julia-mode-button").style.opacity = 1;
 		}
@@ -1280,7 +1280,7 @@
 				box_size = 4;
 				zoom_level = 0;
 				
-				equalize_text_buttons();
+				Page.Load.TextButtons.equalize();
 				
 				document.querySelector("#switch-julia-mode-button").style.opacity = 1;
 			}

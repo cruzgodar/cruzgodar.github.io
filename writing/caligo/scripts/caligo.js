@@ -151,8 +151,8 @@
 				
 				setTimeout(function()
 				{
-					set_up_aos();
-					show_aos_section(12);
+					Page.Load.AOS.load();
+					Page.Load.AOS.show_section(12);
 					
 					setTimeout(show_lyrics, 5000);
 				}, 50);
@@ -238,8 +238,8 @@
 				
 				setTimeout(function()
 				{
-					set_up_aos();
-					show_aos_section(13);
+					Page.Load.AOS.load();
+					Page.Load.AOS.show_section(13);
 					
 					setTimeout(function()
 					{

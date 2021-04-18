@@ -1025,7 +1025,7 @@
 		
 		
 		
-		typeset_math();
+		Page.Load.Math.typeset();
 	}
 	
 	

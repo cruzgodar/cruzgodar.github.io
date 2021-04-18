@@ -8,11 +8,13 @@
 			
 			redirect: loads a new page.
 			
-			fade_out: handles the process of fading out the opcaity, including edge cases like the background color being weird or the new page failing to load.
-			
 			concat_url_vars: returns a string of url variables that can be appended to any url.
 			
 			write_url_vars: does exactly that.
+		
+		Unload: methods for deconstructing the current page.
+			
+			fade_out: handles the process of fading out the opacity, including edge cases like the background color being weird or the new page failing to load.
 	
 */
 
@@ -69,16 +71,12 @@ Page.Navigation =
 		
 		
 		
-		
-		
 		//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-		
-		//A note: we append a random string to the end of the url to prevent browser caching, which can all too often cause problems. However, this is only done for the raw HTML files, not anything larger like images, so it doesn't consume too much of the user's data.
-		Promise.all([fetch(url), this.fade_out(), Banners.load()])
+		Promise.all([fetch(url), Page.Unload.fade_out(), Banners.load()])
 		
 		
 		
-		.then(function(response)
+		.then((response) =>
 		{
 			if (!response[0].ok)
 			{
@@ -93,12 +91,13 @@ Page.Navigation =
 		
 		
 		
-		.then(function(data)
+		.then((data) =>
 		{
-			this.on_page_unload();
+			Page.unload();
 			
 			//Record the page change in the url bar and in the browser history.
-			if (no_state_push === false)
+			
+			if (!no_state_push)
 			{
 				history.pushState({}, document.title, "/index.html" + this.concat_url_vars());
 			}
@@ -130,20 +129,22 @@ Page.Navigation =
 			
 			
 			
-			parse_script_tags();
+			Page.Load.parse_script_tags();
 		})
 		
 		
 		
-		.catch(function(error)
+		.catch((error) =>
 		{
+			console.error(error.message);
+			
 			console.log("Failed to load new page -- reversing fade-out.");
 			
 			
 			
 			this.currently_changing_page = false;
 			
-			setTimeout(function()
+			setTimeout(() =>
 			{
 				if (background_color_changed === false)
 				{
@@ -154,7 +155,7 @@ Page.Navigation =
 				
 				else
 				{
-					setTimeout(function()
+					setTimeout(() =>
 					{
 						document.documentElement.classList.add("background-transition");
 						document.body.classList.add("background-transition");
@@ -162,14 +163,14 @@ Page.Navigation =
 						document.documentElement.style.backgroundColor = background_color;
 						document.body.style.backgroundColor = background_color;
 						
-						setTimeout(function()
+						setTimeout(() =>
 						{
 							document.documentElement.classList.remove("background-transition");
 							document.body.classList.remove("background-transition");
 							
 							document.body.style.backgroundColor = "";
 							
-							setTimeout(function()
+							setTimeout(() =>
 							{
 								document.body.style.opacity = 1;
 							}, 300);
@@ -182,9 +183,46 @@ Page.Navigation =
 
 
 
+	//Returns a string of url vars that can be attached to any url.
+	concat_url_vars: function()
+	{
+		let string = "?page=" + encodeURIComponent(current_url);
+		let key = "";
+		let temp = "";
+		
+		
+		
+		for (let i = 0; i < Object.keys(url_vars).length; i++)
+		{
+			key = Object.keys(url_vars)[i];
+			
+			if (url_vars[key] !== 0 || (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] === 0 && key === "theme"))
+			{
+				string += "&" + key + "=" + url_vars[key];
+			}
+		}
+		
+		
+		
+		return string;
+	},
+	
+	
+
+	write_url_vars: function()
+	{
+		//Make the current state persist on refresh.
+		history.replaceState({}, document.title, window.location.pathname + this.concat_url_vars());
+	}
+};
+
+
+
+Page.Unload =
+{
 	fade_out: function()
 	{
-		return new Promise(function(resolve, reject)
+		return new Promise((resolve, reject) =>
 		{
 			try
 			{
@@ -235,7 +273,7 @@ Page.Navigation =
 				//Fade out the current page's content.
 				document.body.style.opacity = 0;
 				
-				setTimeout(function()
+				setTimeout(() =>
 				{
 					if (background_color_changed === false)
 					{
@@ -271,7 +309,7 @@ Page.Navigation =
 							document.body.style.backgroundColor = "rgb(255, 255, 255)";
 						}
 						
-						setTimeout(function()
+						setTimeout(() =>
 						{
 							document.body.style.backgroundColor = "";
 							
@@ -284,91 +322,58 @@ Page.Navigation =
 				}, 300);
 			}
 		});
-	},
-	
-	
-	
-	on_page_unload: function()
-	{
-		//Remove any css and js that's no longer needed to prevent memory leaks.
-		let elements = document.querySelectorAll("style.temporary-style, link.temporary-style, script.temporary-script");
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].remove();
-		}
-		
-		
-		
-		//Remove everything that's not a script from the body.
-		elements = document.querySelectorAll("body > *:not(script)");
-		for (let i = 0; i < elements.length; i++)
-		{ 
-			elements[i].remove();
-		}
-		
-		
-		
-		//Unbind everything transient from the window and the html element.
-		for (let key in temporary_handlers)
-		{
-			for (let j = 0; j < temporary_handlers[key].length; j++)
-			{
-				window.removeEventListener(key, temporary_handlers[key][j]);
-				document.documentElement.removeEventListener(key, temporary_handlers[key][j]);
-			}
-		}
-		
-		
-		
-		//Clear any temporary intervals.
-		for (let i = 0; i < temporary_intervals.length; i++)
-		{
-			clearInterval(temporary_intervals[i]);
-		}
-		
-		temporary_intervals = [];
-		
-		
-		
-		//Terminate any temporary web workers.
-		for (let i = 0; i < temporary_web_workers.length; i++)
-		{
-			temporary_web_workers[i].terminate();
-		}
-		
-		temporary_web_workers = [];
-	},
-
-
-
-	//Returns a string of url vars that can be attached to any url.
-	concat_url_vars: function()
-	{
-		let string = "?page=" + encodeURIComponent(current_url);
-		let key = "";
-		let temp = "";
-		
-		
-		
-		for (var i = 0; i < Object.keys(url_vars).length; i++)
-		{
-			key = Object.keys(url_vars)[i];
-			
-			if (url_vars[key] !== 0 || (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] === 0 && key === "theme"))
-			{
-				string += "&" + key + "=" + url_vars[key];
-			}
-		}
-		
-		
-		return string;
-	},
-	
-	
-
-	write_url_vars: function()
-	{
-		//Make the current state persist on refresh.
-		history.replaceState({}, document.title, window.location.pathname + this.concat_url_vars());
 	}
 };
+
+
+
+Page.unload = function()
+{
+	//Remove any css and js that's no longer needed to prevent memory leaks.
+	let elements = document.querySelectorAll("style.temporary-style, link.temporary-style, script.temporary-script");
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].remove();
+	}
+	
+	
+	
+	//Remove everything that's not a script from the body.
+	elements = document.querySelectorAll("body > *:not(script)");
+	for (let i = 0; i < elements.length; i++)
+	{ 
+		elements[i].remove();
+	}
+	
+	
+	
+	//Unbind everything transient from the window and the html element.
+	for (let key in temporary_handlers)
+	{
+		for (let j = 0; j < temporary_handlers[key].length; j++)
+		{
+			window.removeEventListener(key, temporary_handlers[key][j]);
+			document.documentElement.removeEventListener(key, temporary_handlers[key][j]);
+		}
+	}
+	
+	
+	
+	//Clear any temporary intervals.
+	for (let i = 0; i < temporary_intervals.length; i++)
+	{
+		clearInterval(temporary_intervals[i]);
+	}
+	
+	temporary_intervals = [];
+	
+	
+	
+	//Terminate any temporary web workers.
+	for (let i = 0; i < temporary_web_workers.length; i++)
+	{
+		temporary_web_workers[i].terminate();
+	}
+	
+	temporary_web_workers = [];
+}

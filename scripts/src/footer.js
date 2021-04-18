@@ -176,7 +176,7 @@ let Footer =
 				
 				for (let i = 0; i < elements.length; i++)
 				{
-					add_hover_event(elements[i]);
+					Page.Load.HoverEvents.add(elements[i]);
 				}
 			}
 			

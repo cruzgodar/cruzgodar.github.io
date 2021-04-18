@@ -150,11 +150,6 @@ function show_floating_settings()
 				<div id="theme-button-row" class="floating-settings-button-row"></div>
 				<div id="dark-theme-color-button-row" class="floating-settings-button-row"></div>
 				<div id="contrast-button-row" class="floating-settings-button-row"></div>
-			</div>
-			
-			<div class="floating-settings-scroll-snap"></div>
-			
-			<div class="floating-settings-page">
 				<div id="text-size-button-row" class="floating-settings-button-row"></div>
 				<div id="font-button-row" class="floating-settings-button-row"></div>
 				<div id="content-animation-button-row" class="floating-settings-button-row"></div>
@@ -340,7 +335,7 @@ function show_floating_settings()
 			
 			for (let i = 0; i < elements.length; i++)
 			{
-				add_hover_event(elements[i]);
+				Page.Load.HoverEvents.add(elements[i]);
 			}
 			
 			
@@ -1135,7 +1130,7 @@ function switch_font()
 			{
 				document.body.style.opacity = 1;
 				
-				aos_resize();
+				Page.Load.AOS.on_resize();
 			}, 50);
 		}, 300);
 	}
@@ -1150,7 +1145,7 @@ function switch_font()
 			{
 				document.querySelector("#font-button-row").style.opacity = 1;
 				
-				aos_resize();
+				Page.Load.AOS.on_resize();
 			}, 50);
 		}
 		
@@ -1296,6 +1291,60 @@ function switch_banner_style()
 			document.body.style.opacity = 1;
 		}, 50);
 	}, 300);
+}
+
+
+
+function set_img_button_contrast()
+{
+	let elements = document.querySelectorAll(".nav-button, .scroll-button");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].setAttribute("src", elements[i].getAttribute("src").replace("chevron-left", "chevron-left-dark").replace("chevron-right", "chevron-right-dark").replace("chevron-down", "chevron-down-dark"));
+	}
+}
+
+
+
+function set_writing_page_font()
+{
+	set_element_styles(".body-text, .heading-text", "font-family", "'Gentium Book Basic', serif");
+}
+
+
+
+function reduce_page_margins()
+{
+	try {document.querySelector("#ultrawide-margin-adjust").remove();}
+	catch(ex) {}
+	
+	
+	
+	//When in ultrawide mode, shrink the margins to 50%.
+	if (Page.Layout.layout_string === "ultrawide")
+	{
+		let element = add_style(`
+			.body-text, .nav-buttons, .line-break
+			{
+				width: 50vw;
+			}
+		`);
+		
+		element.id = "ultrawide-margin-adjust";
+	}	
+}
+
+
+
+function remove_animation()
+{
+	let elements = document.body.querySelectorAll("[data-aos]")
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].removeAttribute("data-aos");
+	}
 }
 
 

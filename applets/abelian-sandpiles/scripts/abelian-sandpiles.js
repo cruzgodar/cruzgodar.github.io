@@ -152,6 +152,6 @@
 			</div>
 		`);
 		
-		aos_resize();
+		Page.Load.AOS.on_resize();
 	}
 }()

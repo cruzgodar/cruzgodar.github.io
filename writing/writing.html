@@ -12,7 +12,7 @@
 	<div class="new-aos-section" data-aos="fade-in">
 		<div id="logo">
 			<a href="/home/home.html" tabindex="-1">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="Page.Navigation.redirect('/home/home.html')" tabindex="1"></img>
 			</a>
 		</div>
 	</div>
@@ -55,7 +55,7 @@
 		<div class="image-links">
 			<div class="image-link" data-aos="fade-up">
 				<a href="/writing/caligo/caligo.html" tabindex="-1">
-					<img id="image-caligo" class="check-webp no-floating-footer" onclick="redirect('/writing/caligo/caligo.html')" src="" alt="Caligo" tabindex="1"></img>
+					<img id="image-caligo" class="check-webp no-floating-footer" onclick="Page.Navigation.redirect('/writing/caligo/caligo.html')" src="" alt="Caligo" tabindex="1"></img>
 				</a>
 					
 				<p class="image-link-subtext">Caligo</p>
@@ -75,7 +75,7 @@
 		<div class="image-links">
 			<div class="image-link" data-aos="fade-up">
 				<a href="/writing/desolation-point/desolation-point.html" tabindex="-1">
-					<img id="image-desolation-point" class="check-webp no-floating-footer" onclick="redirect('/writing/desolation-point/desolation-point.html')" src="" alt="Desolation Point" tabindex="1"></img>
+					<img id="image-desolation-point" class="check-webp no-floating-footer" onclick="Page.Navigation.redirect('/writing/desolation-point/desolation-point.html')" src="" alt="Desolation Point" tabindex="1"></img>
 				</a>
 					
 				<p class="image-link-subtext">Desolation Point</p>
@@ -83,7 +83,7 @@
 			
 			<div class="image-link" data-aos="fade-up">
 				<a href="/writing/mist/mist.html" tabindex="-1">
-					<img id="image-mist" class="check-webp no-floating-footer" onclick="redirect('/writing/mist/mist.html')" src="" alt="Mist" tabindex="1"></img>
+					<img id="image-mist" class="check-webp no-floating-footer" onclick="Page.Navigation.redirect('/writing/mist/mist.html')" src="" alt="Mist" tabindex="1"></img>
 				</a>
 					
 				<p class="image-link-subtext">Mist</p>
@@ -115,5 +115,5 @@
 		"footer_exclusion": "writing"
 	};
 	
-	on_page_load();
+	Page.load();
 </script>

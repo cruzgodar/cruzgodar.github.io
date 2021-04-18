@@ -368,7 +368,7 @@ let Banners =
 					
 					setTimeout(() =>
 					{
-						try {add_hover_event(document.querySelector("#scroll-button"));}
+						try {Page.Load.HoverEvents.add(document.querySelector("#scroll-button"));}
 						catch(ex) {}
 					}, 100);
 					
