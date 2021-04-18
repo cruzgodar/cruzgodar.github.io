@@ -1,8 +1,14 @@
+/*
+	
+	Page: one of the highest-level objects. Contains methods for loading and unloading the page, as well as all of the fundamental properties that various subobjects.
+	
+	Site: the other highest-level object. Contains properties and methods that extend beyond the current page.
+	
+*/
+
+
+
 "use strict";
-
-
-
-//The central script. Handles starting up all the machinery and also contains a few utility functions.
 
 
 
@@ -10,7 +16,11 @@ let DEBUG = false;
 
 
 
-let scroll = 0;
+let Site = {};
+
+
+
+Page.scroll = 0;
 
 /*
 	Defaults:
@@ -21,6 +31,7 @@ let scroll = 0;
 	"num_banners": 0,
 	
 	"title_page_text": "",
+	"title_page_text_size": .1,
 	
 	"writing_page": false,
 	"math_page": false,
@@ -33,26 +44,22 @@ let scroll = 0;
 	"no_footer": false,
 	"footer_exclusion": ""
 */
-let page_settings = {};
 
-let current_url = decodeURIComponent(get_url_var("page"));
+Page.settings = {};
 
-let parent_folder = "/";
+Page.url = decodeURIComponent(get_url_var("page"));
 
-//Whether this is a touchscreen device on the current page. It's assumed to be false on every page until a touchstart or touchmove event is detected, at which point it's set to true.
-let currently_touch_device = true;
-
-let last_mousemove_event = 0;
+Page.parent_folder = "/";
 
 
 
-let scripts_loaded = 
+Site.scripts_loaded = 
 {
 	"mathjax": false,
 	"complexjs": false
 }
 
-let temporary_handlers =
+Page.temporary_handlers =
 {
 	"scroll": [],
 	"resize": [],
@@ -67,9 +74,9 @@ let temporary_handlers =
 	"mouseup": []
 }
 
-let temporary_intervals = [];
+Page.temporary_intervals = [];
 
-let temporary_web_workers = [];
+Page.temporary_web_workers = [];
 
 let background_color_changed = false;
 
@@ -147,11 +154,11 @@ function handle_touch_event(e)
 	
 	document.activeElement.blur();
 	
-	if (currently_touch_device === false)
+	if (!Page.Interaction.currently_touch_device)
 	{
 		Page.Load.HoverEvents.remove();
 		
-		currently_touch_device = true;
+		Page.Interaction.currently_touch_device = true;
 	}
 }
 
@@ -159,16 +166,16 @@ function handle_touch_event(e)
 
 document.documentElement.addEventListener("mousemove", function()
 {
-	if (currently_touch_device)
+	if (Page.Interaction.currently_touch_device)
 	{
-		let time_between_mousemoves = Date.now() - last_mousemove_event;
+		let time_between_mousemoves = Date.now() - Page.Interaction.last_mousemove_event;
 		
-		last_mousemove_event = Date.now();
+		Page.Interaction.last_mousemove_event = Date.now();
 		
 		//Checking if it's >= 3 kinda sucks, but it seems like touch devices like to fire two mousemoves in quick succession sometimes. They also like to make that delay exactly 33. Look, I hate this too, but it needs to be here.
 		if (time_between_mousemoves >= 3 && time_between_mousemoves <= 50 && time_between_mousemoves !== 33)
 		{
-			currently_touch_device = false;
+			Page.Interaction.currently_touch_device = false;
 		}
 	}
 });
@@ -271,7 +278,7 @@ async function entry_point(url)
 	{
 		let previous_page = get_url_var("page");
 			
-		if (previous_page !== null && decodeURIComponent(previous_page) !== current_url)
+		if (previous_page !== null && decodeURIComponent(previous_page) !== Page.url)
 		{
 			Page.Navigation.redirect(decodeURIComponent(previous_page), false, true, true);
 		}

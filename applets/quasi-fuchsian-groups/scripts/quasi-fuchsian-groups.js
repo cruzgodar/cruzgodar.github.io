@@ -73,13 +73,13 @@
 	
 	
 	
-	if (scripts_loaded["complexjs"] === false)
+	if (!Site.scripts_loaded["complexjs"])
 	{
 		load_script("/scripts/complex.min.js")
 		
 		.then(function()
 		{
-			scripts_loaded["complexjs"] = true;
+			Site.scripts_loaded["complexjs"] = true;
 			
 			init_coefficient_markers();
 		})
@@ -485,13 +485,13 @@
 		document.documentElement.addEventListener("mouseup", drag_end, false);
 		
 		
-		temporary_handlers["touchstart"].push(drag_start);
-		temporary_handlers["touchmove"].push(drag_move);
-		temporary_handlers["touchend"].push(drag_end);
+		Page.temporary_handlers["touchstart"].push(drag_start);
+		Page.temporary_handlers["touchmove"].push(drag_move);
+		Page.temporary_handlers["touchend"].push(drag_end);
 		
-		temporary_handlers["mousedown"].push(drag_start);
-		temporary_handlers["mousemove"].push(drag_move);
-		temporary_handlers["mouseup"].push(drag_end);
+		Page.temporary_handlers["mousedown"].push(drag_start);
+		Page.temporary_handlers["mousemove"].push(drag_move);
+		Page.temporary_handlers["mouseup"].push(drag_end);
 	}
 	
 	
@@ -533,7 +533,7 @@
 		
 		
 		window.addEventListener("resize", quasi_fuchsian_groups_resize);
-		temporary_handlers["resize"].push(quasi_fuchsian_groups_resize);
+		Page.temporary_handlers["resize"].push(quasi_fuchsian_groups_resize);
 		
 		setTimeout(quasi_fuchsian_groups_resize, 1000);
 		
@@ -835,7 +835,7 @@
 			web_worker = new Worker("/applets/quasi-fuchsian-groups/scripts/worker.min.js");
 		}
 		
-		temporary_web_workers.push(web_worker);
+		Page.temporary_web_workers.push(web_worker);
 		
 		
 		

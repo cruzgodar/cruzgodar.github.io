@@ -108,7 +108,7 @@
 		
 		refresh_id = setInterval(update_timers, 1000);
 		
-		temporary_intervals.push(refresh_id);
+		Page.temporary_intervals.push(refresh_id);
 		
 		
 		
@@ -125,7 +125,7 @@
 			web_worker = new Worker("/applets/calcudoku-generator/scripts/worker.min.js");
 		}
 		
-		temporary_web_workers.push(web_worker);
+		Page.temporary_web_workers.push(web_worker);
 		
 		
 		

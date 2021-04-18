@@ -50,7 +50,7 @@
 	
 	
 	window.addEventListener("resize", binary_trees_resize);
-	temporary_handlers["resize"].push(binary_trees_resize);
+	Page.temporary_handlers["resize"].push(binary_trees_resize);
 	
 	setTimeout(binary_trees_resize, 1000);
 	
@@ -325,7 +325,7 @@
 			web_worker = new Worker("/applets/binary-trees/scripts/worker.min.js");
 		}
 		
-		temporary_web_workers.push(web_worker);
+		Page.temporary_web_workers.push(web_worker);
 		
 		
 		
@@ -370,13 +370,13 @@
 		document.documentElement.addEventListener("mouseup", drag_end, false);
 		
 		
-		temporary_handlers["touchstart"].push(drag_start);
-		temporary_handlers["touchmove"].push(drag_move);
-		temporary_handlers["touchend"].push(drag_end);
+		Page.temporary_handlers["touchstart"].push(drag_start);
+		Page.temporary_handlers["touchmove"].push(drag_move);
+		Page.temporary_handlers["touchend"].push(drag_end);
 		
-		temporary_handlers["mousedown"].push(drag_start);
-		temporary_handlers["mousemove"].push(drag_move);
-		temporary_handlers["mouseup"].push(drag_end);
+		Page.temporary_handlers["mousedown"].push(drag_start);
+		Page.temporary_handlers["mousemove"].push(drag_move);
+		Page.temporary_handlers["mouseup"].push(drag_end);
 	}
 	
 	

@@ -4,6 +4,7 @@
 		
 		...
 		
+		
 		Navigation: methods for navigating between pages.
 			
 			redirect: loads a new page.
@@ -60,9 +61,9 @@ Page.Navigation =
 		
 		
 		
-		current_url = url;
+		Page.url = url;
 		
-		parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
+		Page.parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
 		
 		
 		
@@ -122,7 +123,7 @@ Page.Navigation =
 			else
 			{
 				window.scrollTo(0, 0);
-				scroll = 0;
+				Page.scroll = 0;
 			}
 			
 			this.last_page_scroll = temp;
@@ -186,7 +187,7 @@ Page.Navigation =
 	//Returns a string of url vars that can be attached to any url.
 	concat_url_vars: function()
 	{
-		let string = "?page=" + encodeURIComponent(current_url);
+		let string = "?page=" + encodeURIComponent(Page.url);
 		let key = "";
 		let temp = "";
 		
@@ -348,32 +349,32 @@ Page.unload = function()
 	
 	
 	//Unbind everything transient from the window and the html element.
-	for (let key in temporary_handlers)
+	for (let key in Page.temporary_handlers)
 	{
-		for (let j = 0; j < temporary_handlers[key].length; j++)
+		for (let j = 0; j < Page.temporary_handlers[key].length; j++)
 		{
-			window.removeEventListener(key, temporary_handlers[key][j]);
-			document.documentElement.removeEventListener(key, temporary_handlers[key][j]);
+			window.removeEventListener(key, Page.temporary_handlers[key][j]);
+			document.documentElement.removeEventListener(key, Page.temporary_handlers[key][j]);
 		}
 	}
 	
 	
 	
 	//Clear any temporary intervals.
-	for (let i = 0; i < temporary_intervals.length; i++)
+	for (let i = 0; i < Page.temporary_intervals.length; i++)
 	{
-		clearInterval(temporary_intervals[i]);
+		clearInterval(Page.temporary_intervals[i]);
 	}
 	
-	temporary_intervals = [];
+	Page.temporary_intervals = [];
 	
 	
 	
 	//Terminate any temporary web workers.
-	for (let i = 0; i < temporary_web_workers.length; i++)
+	for (let i = 0; i < Page.temporary_web_workers.length; i++)
 	{
-		temporary_web_workers[i].terminate();
+		Page.temporary_web_workers[i].terminate();
 	}
 	
-	temporary_web_workers = [];
+	Page.temporary_web_workers = [];
 }

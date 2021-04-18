@@ -39,7 +39,7 @@ let Images =
 			
 			
 			
-			fetch(parent_folder + "images.json")
+			fetch(Page.parent_folder + "images.json")
 			
 			.then(response => response.json())
 			
@@ -56,7 +56,7 @@ let Images =
 					
 					else
 					{
-						images[i].setAttribute("src", parent_folder + src);
+						images[i].setAttribute("src", Page.parent_folder + src);
 					}
 					
 					

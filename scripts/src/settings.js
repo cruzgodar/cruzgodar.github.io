@@ -538,7 +538,7 @@ function switch_theme()
 	//Light to dark
 	if (url_vars["theme"] === 0)
 	{
-		if (!("manual_dark_theme" in page_settings && page_settings["manual_dark_theme"]))
+		if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
 		{
 			if (url_vars["dark_theme_color"] !== 1)
 			{
@@ -555,7 +555,7 @@ function switch_theme()
 		
 		if (url_vars["contrast"] === 1)
 		{
-			if (!page_settings["manual_dark_theme"])
+			if (!Page.settings["manual_dark_theme"])
 			{
 				animate_theme_contrast("dark_contrast");
 			}
@@ -580,7 +580,7 @@ function switch_theme()
 		
 		else
 		{
-			if (!("manual_dark_theme" in page_settings && page_settings["manual_dark_theme"]))
+			if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
 			{
 				animate_theme_contrast("dark");
 			}
@@ -620,7 +620,7 @@ function switch_theme()
 	//Dark to light
 	else
 	{
-		if (!("manual_dark_theme" in page_settings && page_settings["manual_dark_theme"]))
+		if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
 		{
 			document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
 		}
@@ -629,7 +629,7 @@ function switch_theme()
 		
 		if (url_vars["contrast"] === 1)
 		{
-			if (!page_settings["manual_dark_theme"])
+			if (!Page.settings["manual_dark_theme"])
 			{
 				animate_theme_contrast("contrast");
 			}
@@ -654,7 +654,7 @@ function switch_theme()
 		
 		else
 		{
-			if (!("manual_dark_theme" in page_settings && page_settings["manual_dark_theme"]))
+			if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
 			{
 				animate_theme_contrast("");
 			}
@@ -1072,7 +1072,7 @@ function switch_text_size()
 
 function switch_font()
 {
-	if ("writing_page" in page_settings && page_settings["writing_page"])
+	if ("writing_page" in Page.settings && Page.settings["writing_page"])
 	{
 		document.body.style.opacity = 0;
 	}
@@ -1089,7 +1089,7 @@ function switch_font()
 	{
 		setTimeout(function()
 		{
-			if ("writing_page" in page_settings && page_settings["writing_page"])
+			if ("writing_page" in Page.settings && Page.settings["writing_page"])
 			{
 				set_element_styles(".body-text, .heading-text", "font-family", "'Gentium Book Basic', serif");
 			}
@@ -1108,7 +1108,7 @@ function switch_font()
 	{
 		setTimeout(function()
 		{
-			if ("writing_page" in page_settings && page_settings["writing_page"])
+			if ("writing_page" in Page.settings && Page.settings["writing_page"])
 			{
 				set_element_styles(".body-text, .heading-text", "font-family", "'Rubik', sans-serif");
 			}
@@ -1122,7 +1122,7 @@ function switch_font()
 	
 	
 	
-	if ("writing_page" in page_settings && page_settings["writing_page"])
+	if ("writing_page" in Page.settings && Page.settings["writing_page"])
 	{
 		setTimeout(function()
 		{

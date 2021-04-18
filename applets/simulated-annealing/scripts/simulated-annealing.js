@@ -70,7 +70,7 @@
 			web_worker = new Worker("/applets/simulated-annealing/scripts/worker.min.js");
 		}
 		
-		temporary_web_workers.push(web_worker);
+		Page.temporary_web_workers.push(web_worker);
 		
 		
 		

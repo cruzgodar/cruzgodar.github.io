@@ -81,7 +81,7 @@
 	});
 	
 	window.addEventListener("resize", newtons_method_resize);
-	temporary_handlers["resize"].push(newtons_method_resize);
+	Page.temporary_handlers["resize"].push(newtons_method_resize);
 	
 	
 	
@@ -1041,15 +1041,15 @@
 		document.documentElement.addEventListener("mouseup", handle_mouseup_event, false);
 		
 		window.addEventListener("wheel", handle_wheel_event, {passive: false});
-		temporary_handlers["wheel"].push(handle_wheel_event);
+		Page.temporary_handlers["wheel"].push(handle_wheel_event);
 		
-		temporary_handlers["touchstart"].push(handle_touchstart_event);
-		temporary_handlers["touchmove"].push(handle_touchmove_event);
-		temporary_handlers["touchend"].push(handle_touchend_event);
+		Page.temporary_handlers["touchstart"].push(handle_touchstart_event);
+		Page.temporary_handlers["touchmove"].push(handle_touchmove_event);
+		Page.temporary_handlers["touchend"].push(handle_touchend_event);
 		
-		temporary_handlers["mousedown"].push(handle_mousedown_event);
-		temporary_handlers["mousemove"].push(handle_mousemove_event);
-		temporary_handlers["mouseup"].push(handle_mouseup_event);
+		Page.temporary_handlers["mousedown"].push(handle_mousedown_event);
+		Page.temporary_handlers["mousemove"].push(handle_mousemove_event);
+		Page.temporary_handlers["mouseup"].push(handle_mouseup_event);
 		
 		
 		

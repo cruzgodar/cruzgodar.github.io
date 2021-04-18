@@ -60,7 +60,7 @@
 			web_worker = new Worker("/applets/fractal-flames/scripts/worker.min.js");
 		}
 		
-		temporary_web_workers.push(web_worker);
+		Page.temporary_web_workers.push(web_worker);
 		
 		
 		

@@ -1,20 +1,25 @@
 /*
 	
-	Banners: methods for loading banners, displaying them, fading them out when the user scrolls, and everything to do with scroll buttons.
-	
-		load: loads and displays the banner for the current page.
+	Page:
 		
-		on_scroll: run whenever the user scrolls to update banner and scroll button opacity.
+		...
 		
-		fetch_other_size_in_background: fetches the portrait orientation if the current one is landscape or landscape if the current one is portrait, so that changing the screen orientation can load the new banner immediately.
 		
-		fetch_other_page_banners_in_background: fetches the current orientation of every adjacent page's banner, so that load times are reduced.
+		Banner: methods for loading banners, displaying them, fading them out when the user scrolls, and everything to do with scroll buttons.
 		
-		ScrollButton: methods for handling the button that appears after a few seconds in case the user doesn't know to scroll down.
-		
-			insert: creates and animates in the scroll button.
+			load: loads and displays the banner for the current page.
 			
-			animate_to: smoothly animates the screen to scroll to a given element.
+			on_scroll: run whenever the user scrolls to update banner and scroll button opacity.
+			
+			fetch_other_size_in_background: fetches the portrait orientation if the current one is landscape or landscape if the current one is portrait, so that changing the screen orientation can load the new banner immediately.
+			
+			fetch_other_page_banners_in_background: fetches the current orientation of every adjacent page's banner, so that load times are reduced.
+			
+			ScrollButton: methods for handling the button that appears after a few seconds in case the user doesn't know to scroll down.
+			
+				insert: creates and animates in the scroll button.
+				
+				animate_to: smoothly animates the screen to scroll to a given element.
 	
 */
 
@@ -64,7 +69,7 @@ Page.Banner =
 		return new Promise((resolve, reject) =>
 		{
 			//Only do banner things if the banner things are in the standard places.
-			if (!(this.preloadable_pages.includes(current_url)))
+			if (!(this.preloadable_pages.includes(Page.url)))
 			{
 				resolve();
 			}
@@ -87,21 +92,21 @@ Page.Banner =
 				
 				this.file_path = "";
 				
-				if (!(this.multibanner_pages.hasOwnProperty(current_url)))
+				if (!(this.multibanner_pages.hasOwnProperty(Page.url)))
 				{
-					this.file_path = parent_folder + "banners/";
+					this.file_path = Page.parent_folder + "banners/";
 				}
 				
 				else
 				{
-					this.multibanner_pages[current_url]["current_banner"]++;
+					this.multibanner_pages[Page.url]["current_banner"]++;
 					
-					if (this.multibanner_pages[current_url]["current_banner"] === this.multibanner_pages[current_url]["num_banners"] + 1)
+					if (this.multibanner_pages[Page.url]["current_banner"] === this.multibanner_pages[Page.url]["num_banners"] + 1)
 					{
-						this.multibanner_pages[current_url]["current_banner"] = 1;
+						this.multibanner_pages[Page.url]["current_banner"] = 1;
 					}
 					
-					this.file_path = parent_folder + "banners/" + this.multibanner_pages[current_url]["current_banner"] + "/";
+					this.file_path = Page.parent_folder + "banners/" + this.multibanner_pages[Page.url]["current_banner"] + "/";
 				}
 				
 				
@@ -157,25 +162,25 @@ Page.Banner =
 	{
 		if (scroll_position_override === 0)
 		{
-			scroll = window.scrollY;
+			Page.scroll = window.scrollY;
 		}
 		
 		else
 		{
-			scroll = scroll_position_override;
+			Page.scroll = scroll_position_override;
 			this.done_loading = false;
 			this.ScrollButton.done_loading = false;
 		}
 		
 		
 		
-		if (scroll >= 0)
+		if (Page.scroll >= 0)
 		{
 			if (url_vars["banner_style"] !== 1)
 			{
-				if (scroll <= Page.Layout.window_height)
+				if (Page.scroll <= Page.Layout.window_height)
 				{
-					let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - scroll / Page.Layout.window_height, 0) - Math.PI / 2);
+					let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 					
 					try {document.querySelector("#banner").style.opacity = opacity;}
 					catch(ex) {}
@@ -203,9 +208,9 @@ Page.Banner =
 			
 			
 			
-			if (scroll <= Page.Layout.window_height/3)
+			if (Page.scroll <= Page.Layout.window_height/3)
 			{
-				let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / Page.Layout.window_height, 0) - Math.PI / 2);
+				let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 				
 				if (this.ScrollButton.exists)
 				{

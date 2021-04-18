@@ -90,7 +90,7 @@
 			web_worker = new Worker("/applets/the-kicked-rotator/scripts/worker.min.js");
 		}
 		
-		temporary_web_workers.push(web_worker);
+		Page.temporary_web_workers.push(web_worker);
 		
 		
 		

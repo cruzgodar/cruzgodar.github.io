@@ -9,8 +9,8 @@
 	
 	let initial_window_height = Page.Layout.window_height;
 	
-	Banners.done_loading = false;
-	Banners.ScrollButton.done_loading = false;
+	Page.Banner.done_loading = false;
+	Page.Banner.ScrollButton.done_loading = false;
 	let eclipse_done = false;
 	
 	
@@ -26,10 +26,10 @@
 	document.querySelector("#prologue-link").addEventListener("click", show_prereaders);
 	
 	window.addEventListener("resize", caligo_resize);
-	temporary_handlers["resize"].push(caligo_resize);
+	Page.temporary_handlers["resize"].push(caligo_resize);
 	
 	window.addEventListener("scroll", caligo_scroll);
-	temporary_handlers["scroll"].push(caligo_scroll);
+	Page.temporary_handlers["scroll"].push(caligo_scroll);
 	
 	setTimeout(caligo_resize, 500);
 	setTimeout(caligo_resize, 1000);
@@ -51,7 +51,7 @@
 	
 	else
 	{
-		setTimeout(Banners.ScrollButton.insert, 7000);
+		setTimeout(Page.Banner.ScrollButton.insert, 7000);
 	}
 	
 	
@@ -95,7 +95,7 @@
 			
 			
 			
-			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + Page.Layout.window_height / 2 + 2);
+			window.scroll(0, Page.scroll + element.getBoundingClientRect().top + Page.Layout.window_height / 2 + 2);
 			
 			
 			
@@ -200,7 +200,7 @@
 			
 			
 			
-			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + Page.Layout.window_height / 2 + 2);
+			window.scroll(0, Page.scroll + element.getBoundingClientRect().top + Page.Layout.window_height / 2 + 2);
 			
 			
 			
@@ -267,32 +267,32 @@
 	
 	function caligo_scroll()
 	{
-		if (scroll >= 0)
+		if (Page.scroll >= 0)
 		{
-			update_background(scroll);
+			update_background();
 			
-			update_scroll_button(scroll);
+			update_scroll_button();
 			
-			update_eclipse(scroll);
+			update_eclipse();
 		}
 	}
 	
 	
 	
-	function update_background(scroll)
+	function update_background()
 	{
 		background_color_changed = true;
 		
-		if (scroll === 0)
+		if (Page.scroll === 0)
 		{
 			background_color_changed = false;
 		}
 		
 		
 		
-		else if (scroll <= initial_window_height / 1.25)
+		else if (Page.scroll <= initial_window_height / 1.25)
 		{
-			background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * scroll / initial_window_height, 0) - .5 * Math.PI);
+			background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * Page.scroll / initial_window_height, 0) - .5 * Math.PI);
 			
 			if (url_vars["theme"] === 1)
 			{
@@ -317,29 +317,29 @@
 			
 			if (background_color === 0)
 			{
-				Banners.done_loading = true;
+				Page.Banner.done_loading = true;
 			}
 			
 			else
 			{
-				Banners.done_loading = false;
+				Page.Banner.done_loading = false;
 			}
 		}
 		
-		else if (Banners.done_loading === false)
+		else if (Page.Banner.done_loading === false)
 		{
 			document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-			Banners.done_loading = true;
+			Page.Banner.done_loading = true;
 		}
 	}
 	
 	
 	
-	function update_scroll_button(scroll)
+	function update_scroll_button()
 	{
-		if (scroll <= initial_window_height / 3)
+		if (Page.scroll <= initial_window_height / 3)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / initial_window_height, 0) - .5 * Math.PI);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / initial_window_height, 0) - .5 * Math.PI);
 			
 			try {document.querySelector("#scroll-button").style.opacity = opacity;}
 			catch(ex) {}
@@ -349,31 +349,31 @@
 				try {document.querySelector("#scroll-button").remove();}
 				catch(ex) {}
 				
-				Banners.ScrollButton.done_loading = true;
+				Page.Banner.ScrollButton.done_loading = true;
 			}
 			
 			else
 			{
-				Banners.ScrollButton.done_loading = false;
+				Page.Banner.ScrollButton.done_loading = false;
 			}
 		}
 		
-		else if (Banners.ScrollButton.done_loading === false)
+		else if (Page.Banner.ScrollButton.done_loading === false)
 		{
 			try {document.querySelector("#scroll-button").remove();}
 			catch(ex) {}
 			
-			Banners.ScrollButton.done_loading = true;
+			Page.Banner.ScrollButton.done_loading = true;
 		}
 	}
 	
 	
 	
-	function update_eclipse(scroll)
+	function update_eclipse()
 	{
-		if (scroll >= 4/5 * initial_window_height && scroll <= initial_window_height * 6/5)
+		if (Page.scroll >= 4/5 * initial_window_height && Page.scroll <= initial_window_height * 6/5)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3.5 * (scroll - (4/5 * initial_window_height)) / initial_window_height, 0) - .5 * Math.PI);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3.5 * (Page.scroll - (4/5 * initial_window_height)) / initial_window_height, 0) - .5 * Math.PI);
 			
 			document.querySelector("#eclipse").style.opacity = 1 - opacity;
 			

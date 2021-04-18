@@ -13,6 +13,10 @@
 				create: arranges the image links into multiple columns.
 				
 				remove: reverts to the standard layout.
+		
+		
+		
+		Interaction: methods for dealing with mouse vs touch iteraction.
 	
 */
 
@@ -73,7 +77,7 @@ Page.Layout =
 		
 		
 		
-		if (this.old_layout_string !== this.layout_string && "small_margins_on_ultrawide" in page_settings && page_settings["small_margins_on_ultrawide"])
+		if (this.old_layout_string !== this.layout_string && "small_margins_on_ultrawide" in Page.settings && Page.settings["small_margins_on_ultrawide"])
 		{
 			reduce_page_margins();
 		}
@@ -270,4 +274,14 @@ Page.Layout =
 			}
 		}
 	}
+};
+
+
+
+Page.Interaction =
+{
+	//Whether this is a touchscreen device on the current page. It's assumed to be false on every page until a touchstart or touchmove event is detected, at which point it's set to true.
+	currently_touch_device: true,
+	
+	last_mousemove_event: 0
 };

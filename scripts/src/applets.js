@@ -1,4 +1,4 @@
-/*
+/*	
 	
 	Applets: methods required by multiple applet pages.
 	
@@ -125,7 +125,7 @@ let Applets =
 				catch(ex) {}
 			}
 			
-			else if (currently_touch_device)
+			else if (Page.Interaction.currently_touch_device)
 			{
 				try
 				{
@@ -139,10 +139,10 @@ let Applets =
 			
 			
 			window.addEventListener("resize", this.fullscreen_on_resize);
-			temporary_handlers["resize"].push(this.fullscreen_on_resize);
+			Page.temporary_handlers["resize"].push(this.fullscreen_on_resize);
 			
 			window.addEventListener("scroll", this.fullscreen_on_scroll);
-			temporary_handlers["scroll"].push(this.fullscreen_on_scroll);
+			Page.temporary_handlers["scroll"].push(this.fullscreen_on_scroll);
 		},
 
 

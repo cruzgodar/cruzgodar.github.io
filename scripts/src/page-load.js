@@ -6,6 +6,7 @@
 		
 		...
 		
+		
 		Load: methods for preparing a page to be displayed.
 			
 			parse_script_tags: runs the script tags in the html -- typically, these set the page settings and invoke Page.load.
@@ -15,10 +16,62 @@
 			parse_custom_scripts: runs the scripts in the scripts folder, if it exists.
 			
 			fade_in: animates in the opacity.
-		
+			
+			
+			
 			TitleText: methods for displaying animated text with vara.js.
 				
+				prepare: gets the necessary machinery set up.
 				
+				show: animates some text in.
+				
+			
+			
+			AOS: methods for handling content animation.
+				
+				load: initializes all of the anchors and elements.
+				
+				show_section: manually reveals a section.
+				
+				hide_section: manually hides a section.
+			
+			
+			
+			HoverEvents: methods for setting up the hover events that the site uses.
+				
+				set_up: adds all the event listeners necessary.
+				
+				add: manually adds a hover event.
+				
+				remove: removes all hover events.
+			
+			
+			
+			FocusEvents: methods for handling focus events that aren't dealt with automatically.
+				
+				set_up_weird_elements: initializes elements who need focus passed to their children.
+			
+			
+			
+			TextButtons: methods for manipulating text buttons.
+				
+				set_up: resizes text buttons whenever the window is resized.
+				
+				equalize: makes all linked text buttons have the same width and height for a more symmetric appearance.
+			
+			
+			
+			Links: methods for handling links on the page.
+				
+				set: turns all links' urls into single page app urls with a page variable and adds on the url variables.
+				
+				disable: makes all links do nothing when pressed, allowing the redirect function to take effect.
+			
+			
+			
+			Math: methods for handling MathJax on the page.
+				
+				typeset: compiles MathJax into Latex.
 	
 */
 
@@ -40,24 +93,24 @@ Page.load = async function()
 	
 	
 	//Set the page title.
-	document.querySelector("title").innerHTML = page_settings["title"];
+	document.querySelector("title").innerHTML = this.settings["title"];
 	
 	
 	
-	if ("title_page_text" in page_settings && page_settings["title_page_text"] !== "")
+	if ("title_page_text" in this.settings && this.settings["title_page_text"] !== "")
 	{
 		await this.Load.TitleText.prepare();
 	}
 	
 	
 	
-	if (!("no_footer" in page_settings && page_settings["no_footer"]))
+	if (!("no_footer" in this.settings && this.settings["no_footer"]))
 	{
-		Footer.insert();
+		this.Footer.load();
 		
 		setTimeout(() =>
 		{
-			Footer.Floating.on_scroll();
+			this.Footer.Floating.on_scroll();
 		}, 50);
 	}
 	
@@ -79,7 +132,7 @@ Page.load = async function()
 	
 	
 	
-	if (!("no_footer" in page_settings && page_settings["no_footer"]))
+	if (!("no_footer" in this.settings && this.settings["no_footer"]))
 	{
 		setTimeout(() =>
 		{
@@ -121,9 +174,9 @@ Page.load = async function()
 	
 	
 	
-	if ("banner_page" in page_settings && page_settings["banner_page"])
+	if ("banner_page" in this.settings && this.settings["banner_page"])
 	{
-		Page.Banner.fetch_other_size_in_background();
+		this.Banner.fetch_other_size_in_background();
 	}
 	
 	if (url_vars["contrast"] === 1)
@@ -131,12 +184,12 @@ Page.load = async function()
 		set_img_button_contrast();
 	}
 	
-	if ("writing_page" in page_settings && page_settings["writing_page"] && url_vars["font"] === 1)
+	if ("writing_page" in this.settings && this.settings["writing_page"] && url_vars["font"] === 1)
 	{
 		set_writing_page_font();
 	}
 	
-	if (this.Layout.layout_string === "ultrawide" && "small_margins_on_ultrawide" in page_settings && page_settings["small_margins_on_ultrawide"])
+	if (this.Layout.layout_string === "ultrawide" && "small_margins_on_ultrawide" in this.settings && this.settings["small_margins_on_ultrawide"])
 	{
 		reduce_page_margins();
 	}
@@ -146,7 +199,7 @@ Page.load = async function()
 		remove_animation();
 	}
 	
-	if ("math_page" in page_settings && page_settings["math_page"])
+	if ("math_page" in this.settings && this.settings["math_page"])
 	{
 		this.Load.Math.typeset();
 	}
@@ -178,7 +231,7 @@ Page.Load =
 	//Finds styles in a folder called "style" inside the page's folder. It first tries to find a minified file, and if it can't, it then tries to find a non-minified one so that testing can still work. The style files must have the same name as the html file.
 	parse_custom_style: function()
 	{
-		let page_name = current_url.split("/");
+		let page_name = Page.url.split("/");
 		page_name = page_name[page_name.length - 1];
 		page_name = page_name.split(".");
 		page_name = page_name[0];
@@ -188,7 +241,7 @@ Page.Load =
 		try
 		{
 			//Make sure there's actually something to get.
-			fetch(parent_folder + "style/" + page_name + ".css")
+			fetch(Page.parent_folder + "style/" + page_name + ".css")
 			
 			.then((response) =>
 			{
@@ -200,12 +253,12 @@ Page.Load =
 				
 				if (DEBUG)
 				{
-					element.setAttribute("href", parent_folder + "style/" + page_name + ".css");
+					element.setAttribute("href", Page.parent_folder + "style/" + page_name + ".css");
 				}
 				
 				else
 				{
-					element.setAttribute("href", parent_folder + "style/" + page_name + ".min.css");
+					element.setAttribute("href", Page.parent_folder + "style/" + page_name + ".min.css");
 				}
 				
 				
@@ -224,7 +277,7 @@ Page.Load =
 
 	parse_custom_scripts: function()
 	{
-		let page_name = current_url.split("/");
+		let page_name = Page.url.split("/");
 		page_name = page_name[page_name.length - 1];
 		page_name = page_name.split(".");
 		page_name = page_name[0];
@@ -234,7 +287,7 @@ Page.Load =
 		try
 		{
 			//Make sure there's actually something to get.
-			fetch(parent_folder + "scripts/" + page_name + ".js")
+			fetch(Page.parent_folder + "scripts/" + page_name + ".js")
 			
 			.then((response) =>
 			{
@@ -244,12 +297,12 @@ Page.Load =
 				
 				if (DEBUG)
 				{
-					element.setAttribute("src", parent_folder + "scripts/" + page_name + ".js");
+					element.setAttribute("src", Page.parent_folder + "scripts/" + page_name + ".js");
 				}
 				
 				else
 				{
-					element.setAttribute("src", parent_folder + "scripts/" + page_name + ".min.js");
+					element.setAttribute("src", Page.parent_folder + "scripts/" + page_name + ".min.js");
 				}
 				
 				
@@ -267,7 +320,7 @@ Page.Load =
 
 	fade_in: function()
 	{
-		if ("banner_page" in page_settings && page_settings["banner_page"])
+		if ("banner_page" in Page.settings && Page.settings["banner_page"])
 		{
 			add_style(`
 				#banner
@@ -309,7 +362,7 @@ Page.Load =
 		
 		prepare: async function()
 		{
-			if (url_vars["content_animation"] === 1 || ((url_vars["title_pages_seen"] >> title_page_ids[current_url]) & 1))
+			if (url_vars["content_animation"] === 1 || ((url_vars["title_pages_seen"] >> title_page_ids[Page.url]) & 1))
 			{
 				document.querySelector("#vara-container").remove();
 				
@@ -324,7 +377,7 @@ Page.Load =
 				
 				
 				
-				await Promise.any([this.show(page_settings["title_page_text"]), this.listen_for_click()]);
+				await Promise.any([this.show(Page.settings["title_page_text"]), this.listen_for_click()]);
 				
 				
 				
@@ -333,9 +386,9 @@ Page.Load =
 				
 				
 				
-				if (!((url_vars["title_pages_seen"] >> title_page_ids[current_url]) & 1))
+				if (!((url_vars["title_pages_seen"] >> title_page_ids[Page.url]) & 1))
 				{
-					url_vars["title_pages_seen"] += (1 << title_page_ids[current_url]);
+					url_vars["title_pages_seen"] += (1 << title_page_ids[Page.url]);
 					
 					Page.Navigation.write_url_vars();
 				}
@@ -374,7 +427,7 @@ Page.Load =
 						color = "white";
 					}
 					
-					let text = new Vara("#vara-container", parent_folder + "/vara-font.json", [{text: text_to_draw, fontSize: page_settings["title_page_text_size"] * Page.Layout.window_width / text_to_draw.length, duration: 4000, strokeWidth: .5, textAlign: "center", color: color}]);
+					let text = new Vara("#vara-container", Page.parent_folder + "/vara-font.json", [{text: text_to_draw, fontSize: Page.settings["title_page_text_size"] * Page.Layout.window_width / text_to_draw.length, duration: 4000, strokeWidth: .5, textAlign: "center", color: color}]);
 					
 					text.animationEnd((id, object) =>
 					{
@@ -573,7 +626,7 @@ Page.Load =
 					
 					aos_elements[current_section - 1].push([new_aos_elements[i], current_delay]);
 					
-					aos_anchor_positions[current_section - 1] = new_aos_elements[i].getBoundingClientRect().top + window.scrollY;
+					aos_anchor_positions[current_section - 1] = new_aos_elements[i].getBoundingClientRect().top + Page.scroll;
 					
 					aos_anchors_shown[current_section - 1] = false;
 				}
@@ -622,7 +675,7 @@ Page.Load =
 			
 			for (let i = 0; i < aos_elements.length; i++)
 			{
-				aos_anchor_positions[i] = aos_elements[i][0][0].getBoundingClientRect().top + window.scrollY;
+				aos_anchor_positions[i] = aos_elements[i][0][0].getBoundingClientRect().top + Page.scroll;
 			}
 			
 			this.fix_footer_anchor();
@@ -641,12 +694,12 @@ Page.Load =
 		{
 			for (let i = 0; i < aos_elements.length; i++)
 			{
-				if (scroll + Page.Layout.window_height >= aos_anchor_positions[i] + aos_anchor_offsets[i] && aos_anchors_shown[i] === false)
+				if (Page.scroll + Page.Layout.window_height >= aos_anchor_positions[i] + aos_anchor_offsets[i] && aos_anchors_shown[i] === false)
 				{
 					this.show_section(i);
 				}
 				
-				else if (scroll + Page.Layout.window_height < aos_anchor_positions[i] + aos_anchor_offsets[i] && aos_anchors_shown[i] === true)
+				else if (Page.scroll + Page.Layout.window_height < aos_anchor_positions[i] + aos_anchor_offsets[i] && aos_anchors_shown[i] === true)
 				{
 					this.hide_section(i);
 				}
@@ -729,7 +782,7 @@ Page.Load =
 		{
 			element.addEventListener("mouseenter", () =>
 			{
-				if (currently_touch_device === false)
+				if (Page.Interaction.currently_touch_device === false)
 				{
 					element.classList.add("hover");
 				}
@@ -737,7 +790,7 @@ Page.Load =
 			
 			element.addEventListener("mouseleave", () =>
 			{
-				if (currently_touch_device === false)
+				if (Page.Interaction.currently_touch_device === false)
 				{
 					element.classList.remove("hover");
 					
@@ -786,7 +839,7 @@ Page.Load =
 			let bound_function = this.equalize.bind(this);
 			
 			window.addEventListener("resize", bound_function);
-			temporary_handlers["resize"].push(bound_function);
+			Site.temporary_handlers["resize"].push(bound_function);
 			
 			setTimeout(() =>
 			{
@@ -922,7 +975,7 @@ Page.Load =
 	{
 		typeset: function()
 		{
-			if (scripts_loaded["mathjax"] === false)
+			if (!Site.scripts_loaded["mathjax"])
 			{
 				load_script("https://polyfill.io/v3/polyfill.min.js?features=es6");
 				
@@ -932,7 +985,7 @@ Page.Load =
 				
 				.then(function()
 				{
-					scripts_loaded["mathjax"] = true;
+					Site.scripts_loaded["mathjax"] = true;
 				})
 				
 				.catch(function(error)

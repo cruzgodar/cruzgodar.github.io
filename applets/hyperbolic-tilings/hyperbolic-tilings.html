@@ -72,14 +72,14 @@
 <script>
 	DEBUG = true;
 	
-	if (typeof current_url === "undefined")
+	if (typeof Page === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	
 	
-	page_settings = 
+	Page.settings = 
 	{
 		"title": "Hyperbolic Tilings",
 		

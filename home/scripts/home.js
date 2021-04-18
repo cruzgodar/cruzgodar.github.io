@@ -7,7 +7,7 @@
 	let homepage_image_links_mode = "";
 	
 	window.addEventListener("resize", homepage_resize);
-	temporary_handlers["resize"].push(homepage_resize);
+	Page.temporary_handlers["resize"].push(homepage_resize);
 	
 	homepage_resize();
 	
@@ -25,9 +25,9 @@
 		let opacity = 0;
 		
 		
-		if (scroll <= Page.Layout.window_height/3)
+		if (Page.scroll <= Page.Layout.window_height/3)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / Page.Layout.window_height, 0) - Math.PI / 2);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 		}
 		
 		else
@@ -55,7 +55,7 @@
 	
 	
 	
-	Footer.Floating.insert();
+	Page.Footer.Floating.load();
 	
 	
 	
@@ -123,9 +123,9 @@
 		let opacity = 0;
 		
 		
-		if (scroll <= Page.Layout.window_height/3)
+		if (Page.scroll <= Page.Layout.window_height/3)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / Page.Layout.window_height, 0) - Math.PI / 2);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 		}
 		
 		else
@@ -143,9 +143,9 @@
 		
 		setTimeout(function()
 		{
-			if (scroll <= Page.Layout.window_height/3)
+			if (Page.scroll <= Page.Layout.window_height/3)
 			{
-				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / Page.Layout.window_height, 0) - Math.PI / 2);
+				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 			}
 			
 			else

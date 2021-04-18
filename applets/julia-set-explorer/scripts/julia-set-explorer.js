@@ -531,10 +531,10 @@
 		document.querySelector("#output-canvas").addEventListener("mousedown", handle_mousedown_event);
 		
 		document.documentElement.addEventListener("mousemove", handle_mousemove_event);
-		temporary_handlers["mousemove"].push(handle_mousemove_event);
+		Page.temporary_handlers["mousemove"].push(handle_mousemove_event);
 		
 		document.documentElement.addEventListener("mouseup", handle_mouseup_event);
-		temporary_handlers["mouseup"].push(handle_mouseup_event);
+		Page.temporary_handlers["mouseup"].push(handle_mouseup_event);
 		
 		document.querySelector("#output-canvas").addEventListener("touchstart", handle_touchstart_event);
 		
@@ -543,7 +543,7 @@
 		document.querySelector("#output-canvas").addEventListener("touchend", handle_touchend_event);
 		
 		window.addEventListener("wheel", handle_wheel_event, {passive: false});
-		temporary_handlers["wheel"].push(handle_wheel_event);
+		Page.temporary_handlers["wheel"].push(handle_wheel_event);
 	}
 	
 	

@@ -20,9 +20,9 @@
 
 
 
-let Footer =
+Page.Footer =
 {
-	insert: function()
+	load: function()
 	{
 		let delay = 100;
 		
@@ -40,7 +40,7 @@ let Footer =
 		
 		
 		
-		if (!("footer_exclusion" in page_settings && page_settings["footer_exclusion"] !== ""))
+		if (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] !== ""))
 		{
 			document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 				<div style="height: 30vh"></div>
@@ -68,7 +68,7 @@ let Footer =
 				
 				
 		
-		if (!("footer_exclusion" in page_settings && page_settings["footer_exclusion"] === "writing"))
+		if (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "writing"))
 		{
 			let element = document.createElement("div");
 			
@@ -86,7 +86,7 @@ let Footer =
 		}
 		
 		
-		if  (!("footer_exclusion" in page_settings && page_settings["footer_exclusion"] === "teaching"))
+		if  (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "teaching"))
 		{
 			let element = document.createElement("div");
 			
@@ -104,7 +104,7 @@ let Footer =
 		}
 		
 		
-		if  (!("footer_exclusion" in page_settings && page_settings["footer_exclusion"] === "applets"))
+		if  (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "applets"))
 		{
 			let element = document.createElement("div");
 			
@@ -121,7 +121,7 @@ let Footer =
 			delay += 100;
 		}
 		
-		if  (!("footer_exclusion" in page_settings && page_settings["footer_exclusion"] === "bio"))
+		if  (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "bio"))
 		{
 			let element = document.createElement("div");
 			
@@ -164,7 +164,7 @@ let Footer =
 		
 		
 		
-		this.Floating.insert();
+		this.Floating.load();
 		
 		
 		
@@ -186,9 +186,9 @@ let Footer =
 		
 		
 		//If we restored a scroll position that was supposed to be in the footer, we won't be able to properly restore that until now.
-		if (scroll > 0)
+		if (Page.scroll > 0)
 		{
-			window.scrollTo(0, scroll);
+			window.scrollTo(0, Page.scroll);
 		}
 	},
 	
@@ -200,8 +200,10 @@ let Footer =
 		
 		height: 0,
 		
+		
+		
 		//Initializes the floating footer by copying specific parts of the normal footer.
-		insert: function()
+		load: function()
 		{
 			let floating_footer_element = document.createElement("footer");
 			floating_footer_element.id = "floating-footer";
@@ -263,7 +265,7 @@ let Footer =
 			let bound_function = this.on_resize.bind(this);
 			
 			window.addEventListener("resize", bound_function);
-			temporary_handlers["resize"].push(bound_function);
+			Page.temporary_handlers["resize"].push(bound_function);
 			
 			bound_function();
 			
@@ -272,7 +274,7 @@ let Footer =
 			let bound_function_2 = this.on_scroll.bind(this);
 			
 			window.addEventListener("scroll", bound_function_2);
-			temporary_handlers["scroll"].push(bound_function_2);
+			Page.temporary_handlers["scroll"].push(bound_function_2);
 			
 			
 			
@@ -378,12 +380,12 @@ let Footer =
 			let bound_function = this.process_touchstart.bind(this);
 			
 			document.documentElement.addEventListener("touchstart", bound_function, false);
-			temporary_handlers["touchstart"].push(bound_function);
+			Page.temporary_handlers["touchstart"].push(bound_function);
 			
 			let bound_function_2 = this.process_touchend.bind(this);
 			
 			document.documentElement.addEventListener("touchend", bound_function_2, false);
-			temporary_handlers["touchend"].push(bound_function_2);
+			Page.temporary_handlers["touchend"].push(bound_function_2);
 		},
 
 

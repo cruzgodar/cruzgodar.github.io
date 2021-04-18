@@ -78,7 +78,7 @@
 			web_worker = new Worker("/applets/gravner-griffeath-snowflakes/scripts/worker.min.js");
 		}
 		
-		temporary_web_workers.push(web_worker);
+		Page.temporary_web_workers.push(web_worker);
 		
 		
 		

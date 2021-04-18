@@ -87,7 +87,7 @@
 	
 	
 	window.addEventListener("resize", asciidots_resize);
-	temporary_handlers["resize"].push(asciidots_resize);
+	Page.temporary_handlers["resize"].push(asciidots_resize);
 	
 	
 	
@@ -116,7 +116,7 @@
 			web_worker = new Worker("/applets/asciidots-compiler/scripts/worker.min.js");
 		}
 		
-		temporary_web_workers.push(web_worker);
+		Page.temporary_web_workers.push(web_worker);
 		
 		
 		
