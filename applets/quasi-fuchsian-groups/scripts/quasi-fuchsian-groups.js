@@ -73,13 +73,13 @@
 	
 	
 	
-	if (scripts_loaded["complexjs"] === false)
+	if (!Site.scripts_loaded["complexjs"])
 	{
-		load_script("/scripts/complex.min.js")
+		Site.load_script("/scripts/complex.min.js")
 		
 		.then(function()
 		{
-			scripts_loaded["complexjs"] = true;
+			Site.scripts_loaded["complexjs"] = true;
 			
 			init_coefficient_markers();
 		})
@@ -107,23 +107,23 @@
 	
 	
 	
-	applet_canvases_to_resize = [document.querySelector("#quasi-fuchsian-groups-plot"), document.querySelector("#coefficient-selector")];
+	Page.Applets.Canvases.to_resize = [document.querySelector("#quasi-fuchsian-groups-plot"), document.querySelector("#coefficient-selector")];
 	
-	applet_canvas_resize_callback = function()
+	Page.Applets.Canvases.resize_callback = function()
 	{
 		canvas_size = 300;
 		
-		if (canvas_is_fullscreen)
+		if (Page.Applets.Canvases.is_fullscreen)
 		{
-			if (aspect_ratio >= 1)
+			if (Page.Layout.aspect_ratio >= 1)
 			{
 				canvas_width = canvas_size;
-				canvas_height = Math.floor(canvas_size / aspect_ratio);
+				canvas_height = Math.floor(canvas_size / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				canvas_width = Math.floor(canvas_size * aspect_ratio);
+				canvas_width = Math.floor(canvas_size * Page.Layout.aspect_ratio);
 				canvas_height = canvas_size;
 			}
 		}
@@ -163,9 +163,9 @@
 		draw_quasi_fuchsian_group();
 	};
 	
-	applet_canvas_true_fullscreen = true;
+	Page.Applets.Canvases.true_fullscreen = true;
 	
-	set_up_canvas_resizer();
+	Page.Applets.Canvases.set_up_resizer();
 	
 	
 	
@@ -485,13 +485,13 @@
 		document.documentElement.addEventListener("mouseup", drag_end, false);
 		
 		
-		temporary_handlers["touchstart"].push(drag_start);
-		temporary_handlers["touchmove"].push(drag_move);
-		temporary_handlers["touchend"].push(drag_end);
+		Page.temporary_handlers["touchstart"].push(drag_start);
+		Page.temporary_handlers["touchmove"].push(drag_move);
+		Page.temporary_handlers["touchend"].push(drag_end);
 		
-		temporary_handlers["mousedown"].push(drag_start);
-		temporary_handlers["mousemove"].push(drag_move);
-		temporary_handlers["mouseup"].push(drag_end);
+		Page.temporary_handlers["mousedown"].push(drag_start);
+		Page.temporary_handlers["mousemove"].push(drag_move);
+		Page.temporary_handlers["mouseup"].push(drag_end);
 	}
 	
 	
@@ -533,7 +533,7 @@
 		
 		
 		window.addEventListener("resize", quasi_fuchsian_groups_resize);
-		temporary_handlers["resize"].push(quasi_fuchsian_groups_resize);
+		Page.temporary_handlers["resize"].push(quasi_fuchsian_groups_resize);
 		
 		setTimeout(quasi_fuchsian_groups_resize, 1000);
 		
@@ -561,17 +561,17 @@
 				
 				canvas_size = 300;
 				
-				if (canvas_is_fullscreen)
+				if (Page.Applets.Canvases.is_fullscreen)
 				{
-					if (aspect_ratio >= 1)
+					if (Page.Layout.aspect_ratio >= 1)
 					{
 						canvas_width = canvas_size;
-						canvas_height = Math.floor(canvas_size / aspect_ratio);
+						canvas_height = Math.floor(canvas_size / Page.Layout.aspect_ratio);
 					}
 					
 					else
 					{
-						canvas_width = Math.floor(canvas_size * aspect_ratio);
+						canvas_width = Math.floor(canvas_size * Page.Layout.aspect_ratio);
 						canvas_height = canvas_size;
 					}
 				}
@@ -628,17 +628,17 @@
 		{
 			canvas_size = 1000;
 			
-			if (canvas_is_fullscreen)
+			if (Page.Applets.Canvases.is_fullscreen)
 			{
-				if (aspect_ratio >= 1)
+				if (Page.Layout.aspect_ratio >= 1)
 				{
 					canvas_width = canvas_size;
-					canvas_height = Math.floor(canvas_size / aspect_ratio);
+					canvas_height = Math.floor(canvas_size / Page.Layout.aspect_ratio);
 				}
 				
 				else
 				{
-					canvas_width = Math.floor(canvas_size * aspect_ratio);
+					canvas_width = Math.floor(canvas_size * Page.Layout.aspect_ratio);
 					canvas_height = canvas_size;
 				}
 			}
@@ -779,17 +779,17 @@
 		
 		
 		
-		if (canvas_is_fullscreen)
+		if (Page.Applets.Canvases.is_fullscreen)
 		{
-			if (aspect_ratio >= 1)
+			if (Page.Layout.aspect_ratio >= 1)
 			{
 				canvas_width = canvas_size;
-				canvas_height = Math.floor(canvas_size / aspect_ratio);
+				canvas_height = Math.floor(canvas_size / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				canvas_width = Math.floor(canvas_size * aspect_ratio);
+				canvas_width = Math.floor(canvas_size * Page.Layout.aspect_ratio);
 				canvas_height = canvas_size;
 			}
 		}
@@ -835,7 +835,7 @@
 			web_worker = new Worker("/applets/quasi-fuchsian-groups/scripts/worker.min.js");
 		}
 		
-		temporary_web_workers.push(web_worker);
+		Page.temporary_web_workers.push(web_worker);
 		
 		
 		
@@ -910,9 +910,9 @@
 
 	function adjust_for_settings()
 	{
-		if (url_vars["contrast"] === 1)
+		if (Site.Settings.url_vars["contrast"] === 1)
 		{
-			if (url_vars["theme"] === 1)
+			if (Site.Settings.url_vars["theme"] === 1)
 			{
 				document.querySelector("#quasi-fuchsian-groups-plot").style.borderColor = "rgb(192, 192, 192)";
 			}
@@ -923,7 +923,7 @@
 			}
 		}
 		
-		add_style(`
+		Site.add_style(`
 			.coefficient-marker.hover
 			{
 				background-color: rgb(127, 127, 127);	

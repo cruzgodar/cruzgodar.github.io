@@ -50,41 +50,41 @@
 	
 	
 	window.addEventListener("resize", binary_trees_resize);
-	temporary_handlers["resize"].push(binary_trees_resize);
+	Page.temporary_handlers["resize"].push(binary_trees_resize);
 	
 	setTimeout(binary_trees_resize, 1000);
 	
 	
 	
-	if (browser_name === "Chrome" || browser_name === "Opera")
+	if (Browser.name === "Chrome" || Browser.name === "Opera")
 	{
 		alert_about_hardware_acceleration();
 	}
 	
 	
 	
-	applet_canvases_to_resize = [document.querySelector("#binary-trees-plot"), document.querySelector("#branch-selector")];
+	Page.Applets.Canvases.to_resize = [document.querySelector("#binary-trees-plot"), document.querySelector("#branch-selector")];
 	
-	applet_canvas_resize_callback = function()
+	Page.Applets.Canvases.resize_callback = function()
 	{
 		try {web_worker.terminate();}
 		catch(ex) {}
 		
-		set_element_styles(".branch-marker", "opacity", 1);
+		Page.set_element_styles(".branch-marker", "opacity", 1);
 		
 		
 		
-		if (canvas_is_fullscreen)
+		if (Page.Applets.Canvases.is_fullscreen)
 		{
-			if (aspect_ratio >= 1)
+			if (Page.Layout.aspect_ratio >= 1)
 			{
 				canvas_width = 2000;
-				canvas_height = Math.floor(2000 / aspect_ratio);
+				canvas_height = Math.floor(2000 / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				canvas_width = Math.floor(2000 * aspect_ratio);
+				canvas_width = Math.floor(2000 * Page.Layout.aspect_ratio);
 				canvas_height = 2000;
 			}
 		}
@@ -126,9 +126,9 @@
 		draw_binary_tree();
 	};
 	
-	applet_canvas_true_fullscreen = true;
+	Page.Applets.Canvases.true_fullscreen = true;
 	
-	set_up_canvas_resizer();
+	Page.Applets.Canvases.set_up_resizer();
 	
 	
 	draw_poincare_disc();
@@ -325,7 +325,7 @@
 			web_worker = new Worker("/applets/binary-trees/scripts/worker.min.js");
 		}
 		
-		temporary_web_workers.push(web_worker);
+		Page.temporary_web_workers.push(web_worker);
 		
 		
 		
@@ -335,7 +335,7 @@
 			{
 				setTimeout(function()
 				{
-					set_element_styles(".branch-marker", "opacity", 1);
+					Page.set_element_styles(".branch-marker", "opacity", 1);
 				}, 500);
 				
 				return;
@@ -370,13 +370,13 @@
 		document.documentElement.addEventListener("mouseup", drag_end, false);
 		
 		
-		temporary_handlers["touchstart"].push(drag_start);
-		temporary_handlers["touchmove"].push(drag_move);
-		temporary_handlers["touchend"].push(drag_end);
+		Page.temporary_handlers["touchstart"].push(drag_start);
+		Page.temporary_handlers["touchmove"].push(drag_move);
+		Page.temporary_handlers["touchend"].push(drag_end);
 		
-		temporary_handlers["mousedown"].push(drag_start);
-		temporary_handlers["mousemove"].push(drag_move);
-		temporary_handlers["mouseup"].push(drag_end);
+		Page.temporary_handlers["mousedown"].push(drag_start);
+		Page.temporary_handlers["mousemove"].push(drag_move);
+		Page.temporary_handlers["mouseup"].push(drag_end);
 	}
 	
 	
@@ -444,7 +444,7 @@
 		{
 			document.body.style.WebkitUserSelect = "";
 			
-			set_element_styles(".branch-marker", "opacity", 0);
+			Page.set_element_styles(".branch-marker", "opacity", 0);
 			
 			
 			
@@ -569,9 +569,9 @@
 
 	function adjust_for_settings()
 	{
-		if (url_vars["contrast"] === 1)
+		if (Site.Settings.url_vars["contrast"] === 1)
 		{
-			if (url_vars["theme"] === 1)
+			if (Site.Settings.url_vars["theme"] === 1)
 			{
 				document.querySelector("#binary-trees-plot").style.borderColor = "rgb(192, 192, 192)";
 			}
@@ -582,7 +582,7 @@
 			}
 		}
 		
-		add_style(`
+		Site.add_style(`
 			.branch-marker.hover
 			{
 				background-color: rgb(127, 127, 127);	
@@ -612,6 +612,6 @@
 			</div>
 		`);
 		
-		aos_resize();
+		Page.Load.AOS.on_resize();
 	}
 }()

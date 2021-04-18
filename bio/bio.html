@@ -23,7 +23,7 @@
 		<div class="new-aos-section" data-aos="fade-in">
 			<div id="logo">
 				<a href="/home/home.html" tabindex="-1">
-					<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
+					<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="Page.Navigation.redirect('/home/home.html')" tabindex="1"></img>
 				</a>
 			</div>
 		</div>
@@ -48,7 +48,7 @@
 			<br>
 			
 			<div data-aos="fade-up">
-				<p class="body-text">I was born in Healdsburg, California, grew up in San Luis Obispo, was homeschooled, and took to math at an early age &mdash; apparently I understood how pi relates to circles when I was three. I started reading around that time, and that may be why I developed <a href="https://en.wikipedia.org/wiki/Grapheme-color_synesthesia" onclick="redirect('https://en.wikipedia.org/wiki/Grapheme-color_synesthesia', 1)">grapheme-color synesthesia</a>, a harmless condition that I&#x2019;ve come to appreciate having.</p>
+				<p class="body-text">I was born in Healdsburg, California, grew up in San Luis Obispo, was homeschooled, and took to math at an early age &mdash; apparently I understood how pi relates to circles when I was three. I started reading around that time, and that may be why I developed <a href="https://en.wikipedia.org/wiki/Grapheme-color_synesthesia" onclick="Page.Navigation.redirect('https://en.wikipedia.org/wiki/Grapheme-color_synesthesia', 1)">grapheme-color synesthesia</a>, a harmless condition that I&#x2019;ve come to appreciate having.</p>
 			</div>
 
 			<br>
@@ -99,14 +99,14 @@
 
 
 <script>
-	if (typeof current_url === "undefined")
+	if (typeof Page === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	
 	
-	page_settings = 
+	Page.settings = 
 	{
 		"title": "Me &mdash; Cruz Godar",
 		
@@ -118,5 +118,5 @@
 		"footer_exclusion": "bio"
 	};
 	
-	on_page_load();
+	Page.load();
 </script>

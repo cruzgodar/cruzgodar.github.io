@@ -12,7 +12,7 @@
 	<div class="new-aos-section" data-aos="fade-in">
 		<div id="logo">
 			<a href="/home/home.html" tabindex="-1">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="Page.Navigation.redirect('/home/home.html')" tabindex="1"></img>
 			</a>
 		</div>
 	</div>
@@ -31,7 +31,7 @@
 <main>
 	<section>
 		<div data-aos="fade-up">
-			<p class="body-text">The <a href="/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html" onclick="redirect('/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html')">Mandelbrot set</a> and <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julia sets</a> share a close relationship: the Julia set with parameter \(c\) &#x201C;looks like&#x201D; the Mandelbrot set at \(z = c\). But just how close is that resemblance? Something we might try is picking a bunch of points in the complex plane and drawing a small Julia set at every one. We&#x2019;d expect to get something vaguely resembling the Mandelbrot set &mdash; but it&#x2019;s remarkable just how accurate that picture is.</p>
+			<p class="body-text">The <a href="/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html" onclick="Page.Navigation.redirect('/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html')">Mandelbrot set</a> and <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="Page.Navigation.redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julia sets</a> share a close relationship: the Julia set with parameter \(c\) &#x201C;looks like&#x201D; the Mandelbrot set at \(z = c\). But just how close is that resemblance? Something we might try is picking a bunch of points in the complex plane and drawing a small Julia set at every one. We&#x2019;d expect to get something vaguely resembling the Mandelbrot set &mdash; but it&#x2019;s remarkable just how accurate that picture is.</p>
 		</div>
 		
 		<div style="height: 5vh"></div>
@@ -93,14 +93,14 @@
 
 
 <script>
-	if (typeof current_url === "undefined")
+	if (typeof Page === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	
 	
-	page_settings = 
+	Page.settings = 
 	{
 		"title": "A Julia Set Mosaic",
 		
@@ -109,5 +109,5 @@
 		"small_margins_on_ultrawide": true
 	};
 	
-	on_page_load();
+	Page.load();
 </script>

@@ -68,7 +68,7 @@
 			<div class="new-aos-section" data-aos="fade-in">
 				<div id="logo">
 					<a href="/home/home.html" tabindex="-1">
-						<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
+						<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="Page.Navigation.redirect('/home/home.html')" tabindex="1"></img>
 					</a>
 				</div>
 			</div>
@@ -92,7 +92,7 @@
 			<div class="image-links">
 				<div class="image-link" data-aos="fade-up">
 					<a href="/writing/writing.html" tabindex="-1">
-						<img id="image-writing" class="check-webp no-floating-footer" onclick="redirect('/writing/writing.html')" src="" alt="Writing" tabindex="1"></img>
+						<img id="image-writing" class="check-webp no-floating-footer" onclick="Page.Navigation.redirect('/writing/writing.html')" src="" alt="Writing" tabindex="1"></img>
 					</a>
 						
 					<p class="image-link-subtext">Writing</p>
@@ -101,7 +101,7 @@
 				
 				<div class="image-link" data-aos="fade-up">
 					<a href="/teaching/teaching.html" tabindex="-1">
-						<img id="image-teaching" class="check-webp no-floating-footer" onclick="redirect('/teaching/teaching.html')" src="" alt="Teaching" tabindex="1"></img>
+						<img id="image-teaching" class="check-webp no-floating-footer" onclick="Page.Navigation.redirect('/teaching/teaching.html')" src="" alt="Teaching" tabindex="1"></img>
 					</a>
 						
 					<p class="image-link-subtext">Teaching</p>
@@ -110,7 +110,7 @@
 					
 				<div class="image-link" data-aos="fade-up">
 					<a href="/applets/applets.html" tabindex="-1">
-						<img id="image-applets" class="check-webp no-floating-footer" onclick="redirect('/applets/applets.html')" src="" alt="Applets" tabindex="1"></img>
+						<img id="image-applets" class="check-webp no-floating-footer" onclick="Page.Navigation.redirect('/applets/applets.html')" src="" alt="Applets" tabindex="1"></img>
 					</a>
 						
 					<p class="image-link-subtext">Applets</p>
@@ -118,7 +118,7 @@
 				
 				<div class="image-link" data-aos="fade-up">
 					<a href="/bio/bio.html" tabindex="-1">
-						<img id="image-bio" class="check-webp no-floating-footer" onclick="redirect('/bio/bio.html')" src="" alt="Me" tabindex="1"></img>
+						<img id="image-bio" class="check-webp no-floating-footer" onclick="Page.Navigation.redirect('/bio/bio.html')" src="" alt="Me" tabindex="1"></img>
 					</a>
 					
 					<p class="image-link-subtext">Me</p>
@@ -149,7 +149,7 @@
 				<div id="newest-pages" class="image-links">
 					<div class="image-link" data-aos="zoom-out">
 						<a href="/applets/kleinian-pearls/kleinian-pearls.html" tabindex="-1">
-							<img id="image-kleinian-pearls" class="check-webp no-floating-footer" onclick="redirect('/applets/kleinian-pearls/kleinian-pearls.html')" src="" alt="Kleinian Pearls" tabindex="1"></img>
+							<img id="image-kleinian-pearls" class="check-webp no-floating-footer" onclick="Page.Navigation.redirect('/applets/kleinian-pearls/kleinian-pearls.html')" src="" alt="Kleinian Pearls" tabindex="1"></img>
 						</a>
 						
 						<p class="image-link-subtext">Kleinian Pearls</p>
@@ -157,7 +157,7 @@
 					
 					<div class="image-link" data-aos="zoom-out">
 						<a href="/applets/the-secant-method/the-secant-method.html" tabindex="-1">
-							<img id="image-the-secant-method" class="check-webp no-floating-footer" onclick="redirect('/applets/the-secant-method/the-secant-method.html')" src="" alt="The Secant Method" tabindex="1"></img>
+							<img id="image-the-secant-method" class="check-webp no-floating-footer" onclick="Page.Navigation.redirect('/applets/the-secant-method/the-secant-method.html')" src="" alt="The Secant Method" tabindex="1"></img>
 						</a>
 							
 						<p class="image-link-subtext">The Secant Method</p>
@@ -165,7 +165,7 @@
 					
 					<div class="image-link" data-aos="zoom-out">
 						<a href="/applets/quasi-fuchsian-groups/quasi-fuchsian-groups.html" tabindex="-1">
-							<img id="image-quasi-fuchsian-groups" class="check-webp no-floating-footer" onclick="redirect('/applets/quasi-fuchsian-groups/quasi-fuchsian-groups.html')" src="" alt="Quasi-Fuchsian Groups" tabindex="1"></img>
+							<img id="image-quasi-fuchsian-groups" class="check-webp no-floating-footer" onclick="Page.Navigation.redirect('/applets/quasi-fuchsian-groups/quasi-fuchsian-groups.html')" src="" alt="Quasi-Fuchsian Groups" tabindex="1"></img>
 						</a>
 						
 						<p class="image-link-subtext">Quasi-Fuchsian Groups</p>
@@ -186,11 +186,11 @@
 		
 		<div class="footer-buttons">
 			<div class="new-aos-section focus-on-child" data-aos="zoom-out" data-aos-offset="0" style="position: absolute; bottom: 6.25px; left: 10px" tabindex="3">
-				<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="show_floating_settings()" tabindex="-1">
+				<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="Site.Settings.Floating.show()" tabindex="-1">
 			</div>
 			
 			<div class="new-aos-section focus-on-child" data-aos="zoom-out" data-aos-offset="0" style="position: absolute; bottom: 6.25px; right: 10px" tabindex="3">
-				<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="redirect('/about/about.html')" tabindex="-1">
+				<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="Page.Navigation.redirect('/about/about.html')" tabindex="-1">
 			</div>
 		</div>
 	</footer>
@@ -199,14 +199,14 @@
 
 
 <script>
-	if (typeof current_url === "undefined")
+	if (typeof Page === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	
 	
-	page_settings = 
+	Page.settings = 
 	{
 		"title": "Cruz Godar",
 		
@@ -216,5 +216,5 @@
 		"no_footer": true
 	};
 	
-	on_page_load();
+	Page.load();
 </script>

@@ -12,7 +12,7 @@
 	<div class="new-aos-section" data-aos="fade-in">
 		<div id="logo">
 			<a href="/home/home.html" tabindex="-1">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="Page.Navigation.redirect('/home/home.html')" tabindex="1"></img>
 			</a>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 	<section>
 		<div data-aos="fade-up">
 			<p class="body-text">
-				The <a href="/applets/the-barnsley-fern/the-barnsley-fern.html" onclick="redirect('/applets/the-barnsley-fern/the-barnsley-fern.html')">Barnsley fern</a> is an example of math imitating nature through careful engineering. There are plenty of constructions that show engineering isn&#x2019;t always required, though &mdash; binary trees, for example, follow an incredibly simple rule: start with two branches, and add two smaller ones at every end, respecting the angle the original two made. The result is what looks remarkably like an elm tree, especially when it&#x2019;s colored the right way. It&#x2019;s hard to imagine a more accessible fractal, and yet it&#x2019;s still a captivating thing to watch.</span>
+				The <a href="/applets/the-barnsley-fern/the-barnsley-fern.html" onclick="Page.Navigation.redirect('/applets/the-barnsley-fern/the-barnsley-fern.html')">Barnsley fern</a> is an example of math imitating nature through careful engineering. There are plenty of constructions that show engineering isn&#x2019;t always required, though &mdash; binary trees, for example, follow an incredibly simple rule: start with two branches, and add two smaller ones at every end, respecting the angle the original two made. The result is what looks remarkably like an elm tree, especially when it&#x2019;s colored the right way. It&#x2019;s hard to imagine a more accessible fractal, and yet it&#x2019;s still a captivating thing to watch.</span>
 			</p>
 		</div>
 		
@@ -70,19 +70,19 @@
 
 
 <script>
-	if (typeof current_url === "undefined")
+	if (typeof Page === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	
 	
-	page_settings = 
+	Page.settings = 
 	{
 		"title": "Binary Trees",
 		
 		"small_margins_on_ultrawide": true
 	};
 	
-	on_page_load();
+	Page.load();
 </script>

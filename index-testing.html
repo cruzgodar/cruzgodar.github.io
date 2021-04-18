@@ -88,7 +88,9 @@
 	
 	
 	
-	<script src="/scripts/src/browsers.js"></script>
+	<script src="/scripts/src/applets.js"></script>
+	
+	<script src="/scripts/src/browser.js"></script>
 	
 	<script src="/scripts/src/footer.js"></script>
 	
@@ -102,12 +104,6 @@
 	
 	<script src="/scripts/src/banners.js"></script>
 	
-	<script src="/scripts/src/comments.js"></script>
-	
-	<script src="/scripts/src/applets.js"></script>
-	
-	<script src="/scripts/src/register-service-worker.js"></script>
-	
 	<script src="/scripts/src/main.js"></script>
 	
 	<script src="/scripts/src/page-load.js"></script>
@@ -115,16 +111,14 @@
 	<script>
 		DEBUG = true;
 		
-		
-		
-		if (typeof current_url !== "undefined" && current_url !== null && current_url !== "null")
+		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")
 		{
-			entry_point(current_url);
+			Site.load(Page.url);
 		}
 		
 		else
 		{
-			entry_point("/home/home.html");
+			Site.load("/home/home.html");
 		}
 	</script>
 </body>

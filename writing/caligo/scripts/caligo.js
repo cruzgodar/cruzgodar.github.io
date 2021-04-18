@@ -7,10 +7,10 @@
 	let background_color = 255;
 	let opacity = 0;
 	
-	let initial_window_height = window_height;
+	let initial_window_height = Page.Layout.window_height;
 	
-	banner_done = false;
-	scroll_button_done = false;
+	Page.Banner.done_loading = false;
+	Page.Banner.ScrollButton.done_loading = false;
 	let eclipse_done = false;
 	
 	
@@ -26,10 +26,10 @@
 	document.querySelector("#prologue-link").addEventListener("click", show_prereaders);
 	
 	window.addEventListener("resize", caligo_resize);
-	temporary_handlers["resize"].push(caligo_resize);
+	Page.temporary_handlers["resize"].push(caligo_resize);
 	
 	window.addEventListener("scroll", caligo_scroll);
-	temporary_handlers["scroll"].push(caligo_scroll);
+	Page.temporary_handlers["scroll"].push(caligo_scroll);
 	
 	setTimeout(caligo_resize, 500);
 	setTimeout(caligo_resize, 1000);
@@ -51,7 +51,7 @@
 	
 	else
 	{
-		setTimeout(add_scroll_button, 7000);
+		setTimeout(Page.Banner.ScrollButton.insert, 7000);
 	}
 	
 	
@@ -95,7 +95,7 @@
 			
 			
 			
-			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + window_height / 2 + 2);
+			window.scroll(0, Page.scroll + element.getBoundingClientRect().top + Page.Layout.window_height / 2 + 2);
 			
 			
 			
@@ -151,8 +151,8 @@
 				
 				setTimeout(function()
 				{
-					set_up_aos();
-					show_aos_section(12);
+					Page.Load.AOS.load();
+					Page.Load.AOS.show_section(12);
 					
 					setTimeout(show_lyrics, 5000);
 				}, 50);
@@ -200,7 +200,7 @@
 			
 			
 			
-			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + window_height / 2 + 2);
+			window.scroll(0, Page.scroll + element.getBoundingClientRect().top + Page.Layout.window_height / 2 + 2);
 			
 			
 			
@@ -238,8 +238,8 @@
 				
 				setTimeout(function()
 				{
-					set_up_aos();
-					show_aos_section(13);
+					Page.Load.AOS.load();
+					Page.Load.AOS.show_section(13);
 					
 					setTimeout(function()
 					{
@@ -255,7 +255,7 @@
 							
 							
 							
-							redirect("/writing/caligo/chapters/p.html");
+							Page.Navigation.redirect("/writing/caligo/chapters/p.html");
 						}, 1000);
 					}, 5000);
 				}, 50);
@@ -267,36 +267,36 @@
 	
 	function caligo_scroll()
 	{
-		if (scroll >= 0)
+		if (Page.scroll >= 0)
 		{
-			update_background(scroll);
+			update_background();
 			
-			update_scroll_button(scroll);
+			update_scroll_button();
 			
-			update_eclipse(scroll);
+			update_eclipse();
 		}
 	}
 	
 	
 	
-	function update_background(scroll)
+	function update_background()
 	{
-		background_color_changed = true;
+		Page.background_color_changed = true;
 		
-		if (scroll === 0)
+		if (Page.scroll === 0)
 		{
-			background_color_changed = false;
+			Page.background_color_changed = false;
 		}
 		
 		
 		
-		else if (scroll <= initial_window_height / 1.25)
+		else if (Page.scroll <= initial_window_height / 1.25)
 		{
-			background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * scroll / initial_window_height, 0) - .5 * Math.PI);
+			background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * Page.scroll / initial_window_height, 0) - .5 * Math.PI);
 			
-			if (url_vars["theme"] === 1)
+			if (Site.Settings.url_vars["theme"] === 1)
 			{
-				if (url_vars["dark_theme_color"] === 1)
+				if (Site.Settings.url_vars["dark_theme_color"] === 1)
 				{
 					background_color = 0;
 				}
@@ -317,29 +317,29 @@
 			
 			if (background_color === 0)
 			{
-				banner_done = true;
+				Page.Banner.done_loading = true;
 			}
 			
 			else
 			{
-				banner_done = false;
+				Page.Banner.done_loading = false;
 			}
 		}
 		
-		else if (banner_done === false)
+		else if (Page.Banner.done_loading === false)
 		{
 			document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-			banner_done = true;
+			Page.Banner.done_loading = true;
 		}
 	}
 	
 	
 	
-	function update_scroll_button(scroll)
+	function update_scroll_button()
 	{
-		if (scroll <= initial_window_height / 3)
+		if (Page.scroll <= initial_window_height / 3)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / initial_window_height, 0) - .5 * Math.PI);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / initial_window_height, 0) - .5 * Math.PI);
 			
 			try {document.querySelector("#scroll-button").style.opacity = opacity;}
 			catch(ex) {}
@@ -349,31 +349,31 @@
 				try {document.querySelector("#scroll-button").remove();}
 				catch(ex) {}
 				
-				scroll_button_done = true;
+				Page.Banner.ScrollButton.done_loading = true;
 			}
 			
 			else
 			{
-				scroll_button_done = false;
+				Page.Banner.ScrollButton.done_loading = false;
 			}
 		}
 		
-		else if (scroll_button_done === false)
+		else if (Page.Banner.ScrollButton.done_loading === false)
 		{
 			try {document.querySelector("#scroll-button").remove();}
 			catch(ex) {}
 			
-			scroll_button_done = true;
+			Page.Banner.ScrollButton.done_loading = true;
 		}
 	}
 	
 	
 	
-	function update_eclipse(scroll)
+	function update_eclipse()
 	{
-		if (scroll >= 4/5 * initial_window_height && scroll <= initial_window_height * 6/5)
+		if (Page.scroll >= 4/5 * initial_window_height && Page.scroll <= initial_window_height * 6/5)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3.5 * (scroll - (4/5 * initial_window_height)) / initial_window_height, 0) - .5 * Math.PI);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3.5 * (Page.scroll - (4/5 * initial_window_height)) / initial_window_height, 0) - .5 * Math.PI);
 			
 			document.querySelector("#eclipse").style.opacity = 1 - opacity;
 			
@@ -388,14 +388,14 @@
 			}
 		}
 		
-		else if (scroll >= 6/5 * window_height && eclipse_done === false)
+		else if (scroll >= 6/5 * initial_window_height && eclipse_done === false)
 		{
 			document.querySelector("#eclipse").style.opacity = 1;
 			
 			eclipse_done = true;
 		}
 		
-		else if (scroll <= 4/5 * window_height && eclipse_done === false)
+		else if (scroll <= 4/5 * initial_window_height && eclipse_done === false)
 		{
 			document.querySelector("#eclipse").style.opacity = 0;
 			
@@ -439,7 +439,7 @@
 	function adjust_for_settings()
 	{
 		//Meet the jankiest solution ever. Putting things in the style files puts them at the top of the head, so even though they have !important, they're before the settings style, which ALSO has to have !important. It's a garbage fire.
-		add_style(`
+		Site.add_style(`
 			#floating-footer-gradient
 			{
 				background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%) !important;
@@ -450,15 +450,15 @@
 		
 		
 		
-		if (url_vars["contrast"] === 1)
+		if (Site.Settings.url_vars["contrast"] === 1)
 		{
-			set_element_styles(".synopsis-text", "color", "rgb(192, 192, 192)");
+			Page.set_element_styles(".synopsis-text", "color", "rgb(192, 192, 192)");
 			
-			set_element_styles(".body-text", "color", "rgb(192, 192, 192)");
+			Page.set_element_styles(".body-text", "color", "rgb(192, 192, 192)");
 			
-			if (url_vars["theme"] !== 1)
+			if (Site.Settings.url_vars["theme"] !== 1)
 			{
-				set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
+				Page.set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
 			}
 			
 			
@@ -467,13 +467,13 @@
 			
 			
 			
-			set_element_styles(".stage-bubble", "border-color", "rgb(192, 192, 192)");
+			Page.set_element_styles(".stage-bubble", "border-color", "rgb(192, 192, 192)");
 			
-			set_element_styles(".stage-bubble span", "background-color", "rgb(192, 192, 192)");
+			Page.set_element_styles(".stage-bubble span", "background-color", "rgb(192, 192, 192)");
 			
 			
 			
-			add_style(`
+			Site.add_style(`
 				.line-break
 				{
 					background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(140,140,140) 50%, rgb(0,0,0) 100%);
@@ -485,7 +485,7 @@
 		
 		else
 		{
-			add_style(`
+			Site.add_style(`
 				.line-break
 				{
 					background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(92,92,92) 50%, rgb(0,0,0) 100%);
@@ -496,9 +496,9 @@
 			
 			
 			
-			if (url_vars["theme"] === 1)
+			if (Site.Settings.url_vars["theme"] === 1)
 			{
-				set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
+				Page.set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
 			}
 		}
 	}

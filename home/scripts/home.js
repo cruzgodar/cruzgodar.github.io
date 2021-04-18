@@ -7,27 +7,27 @@
 	let homepage_image_links_mode = "";
 	
 	window.addEventListener("resize", homepage_resize);
-	temporary_handlers["resize"].push(homepage_resize);
+	Page.temporary_handlers["resize"].push(homepage_resize);
 	
 	homepage_resize();
 	
 	
 	
-	if (browser_name === "MS Edge")
+	if (Browser.name === "MS Edge")
 	{
 		alert_on_edge();
 	}
 	
 	
 	
-	if (url_vars["content_animation"] === 1)
+	if (Site.Settings.url_vars["content_animation"] === 1)
 	{
 		let opacity = 0;
 		
 		
-		if (scroll <= window_height/3)
+		if (Page.scroll <= Page.Layout.window_height/3)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 		}
 		
 		else
@@ -55,7 +55,9 @@
 	
 	
 	
-	set_up_floating_footer();
+	Page.Footer.Floating.load();
+	
+	
 	
 	setTimeout(function()
 	{
@@ -65,7 +67,7 @@
 			
 			for (let i = 0; i < elements.length; i++)
 			{
-				add_hover_event(elements[i]);
+				Page.Load.HoverEvents.add(elements[i]);
 			}
 		}
 		
@@ -74,7 +76,7 @@
 	
 	
 	
-	disable_links();
+	Page.Load.Links.disable();
 	
 	
 	
@@ -82,11 +84,11 @@
 	
 	function homepage_resize()
 	{
-		if (homepage_image_links_mode !== layout_string)
+		if (homepage_image_links_mode !== Page.Layout.layout_string)
 		{
-			homepage_image_links_mode = layout_string;
+			homepage_image_links_mode = Page.Layout.layout_string;
 			
-			if (layout_string === "ultrawide")
+			if (Page.Layout.layout_string === "ultrawide")
 			{
 				document.querySelectorAll(".image-link")[0].insertAdjacentHTML("beforebegin", `<div id="empty-image-link"></div>`);
 			}
@@ -121,9 +123,9 @@
 		let opacity = 0;
 		
 		
-		if (scroll <= window_height/3)
+		if (Page.scroll <= Page.Layout.window_height/3)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 		}
 		
 		else
@@ -141,9 +143,9 @@
 		
 		setTimeout(function()
 		{
-			if (scroll <= window_height/3)
+			if (Page.scroll <= Page.Layout.window_height/3)
 			{
-				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / window_height, 0) - Math.PI / 2);
+				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 			}
 			
 			else
@@ -152,7 +154,7 @@
 			}
 			
 			
-			if (url_vars["content_animation"] !== 1)
+			if (Site.Settings.url_vars["content_animation"] !== 1)
 			{
 				document.querySelector("#banner").insertAdjacentHTML("afterend", `
 					<div class="name-text-container" style="position: fixed" data-aos="fade-left">

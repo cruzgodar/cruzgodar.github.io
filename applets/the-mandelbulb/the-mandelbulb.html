@@ -12,7 +12,7 @@
 	<div class="new-aos-section" data-aos="fade-in">
 		<div id="logo">
 			<a href="/home/home.html" tabindex="-1">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="Page.Navigation.redirect('/home/home.html')" tabindex="1"></img>
 			</a>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 	<section>
 		<div data-aos="fade-up">
 			<p class="body-text">
-				The holy grail of 3D fractals, the Mandelbulb is a landmark accomplishment. Translating the <a href="/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html" onclick="redirect('/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html')">Mandelbrot set</a> to three dimensions is impossible to do canonically, since there is no appropriate 3-dimensional number system analogous to the complex numbers. Nevertheless, Daniel White and Paul Nylander managed to use spherical coordinates to produce something spectacular in its own right, showing just what 3D fractals could be and igniting the search for more.
+				The holy grail of 3D fractals, the Mandelbulb is a landmark accomplishment. Translating the <a href="/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html" onclick="Page.Navigation.redirect('/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html')">Mandelbrot set</a> to three dimensions is impossible to do canonically, since there is no appropriate 3-dimensional number system analogous to the complex numbers. Nevertheless, Daniel White and Paul Nylander managed to use spherical coordinates to produce something spectacular in its own right, showing just what 3D fractals could be and igniting the search for more.
 			</p>
 		</div>
 		
@@ -40,7 +40,7 @@
 		
 		<div data-aos="fade-up">
 			<p class="body-text">
-				The typical Mandelbulb uses a power-8 formula, but any power larger than 1 works too. Like the <a href="/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html" onclick="redirect('/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html')">Kaleidoscopic IFS fractals</a>, we can introduce a rotation into the system for fun, and of course, just like the Mandelbrot set has its <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julias</a>, every point in space gives rise to a Juliabulb. The third button lets you change the \(c\) parameter used to generate the Juliabulb, indicated by the white dot.
+				The typical Mandelbulb uses a power-8 formula, but any power larger than 1 works too. Like the <a href="/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html" onclick="Page.Navigation.redirect('/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html')">Kaleidoscopic IFS fractals</a>, we can introduce a rotation into the system for fun, and of course, just like the Mandelbrot set has its <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="Page.Navigation.redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julias</a>, every point in space gives rise to a Juliabulb. The third button lets you change the \(c\) parameter used to generate the Juliabulb, indicated by the white dot.
 			</p>
 		</div>
 		
@@ -184,14 +184,14 @@
 
 
 <script>
-	if (typeof current_url === "undefined")
+	if (typeof Page === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	
 	
-	page_settings = 
+	Page.settings = 
 	{
 		"title": "The Mandelbulb",
 		
@@ -200,5 +200,5 @@
 		"small_margins_on_ultrawide": true
 	};
 	
-	on_page_load();
+	Page.load();
 </script>

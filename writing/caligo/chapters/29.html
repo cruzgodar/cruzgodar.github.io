@@ -329,14 +329,14 @@
 
 
 <script>
-	if (typeof current_url === "undefined")
+	if (typeof Page === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	
 	
-	page_settings = 
+	Page.settings = 
 	{
 		"title": "Caligo: Whiplash",
 		
@@ -345,5 +345,5 @@
 		"small_margins_on_ultrawide": true
 	};
 	
-	on_page_load();
+	Page.load();
 </script>

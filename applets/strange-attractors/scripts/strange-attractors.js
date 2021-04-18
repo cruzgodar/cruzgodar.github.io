@@ -33,11 +33,11 @@
 	
 	
 	
-	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
 	
-	applet_canvas_true_fullscreen = false;
+	Page.Applets.Canvases.true_fullscreen = false;
 	
-	set_up_canvas_resizer();
+	Page.Applets.Canvases.set_up_resizer();
 	
 	
 	
@@ -92,7 +92,7 @@
 			web_worker = new Worker("/applets/strange-attractors/scripts/worker.min.js");
 		}
 		
-		temporary_web_workers.push(web_worker);
+		Page.temporary_web_workers.push(web_worker);
 		
 		
 		

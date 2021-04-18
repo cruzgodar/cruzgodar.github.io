@@ -156,21 +156,21 @@
 	
 	
 	
-	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
 	
-	applet_canvas_resize_callback = function()
+	Page.Applets.Canvases.resize_callback = function()
 	{
-		if (canvas_is_fullscreen)
+		if (Page.Applets.Canvases.is_fullscreen)
 		{
-			if (aspect_ratio >= 1)
+			if (Page.Layout.aspect_ratio >= 1)
 			{
 				image_width = image_size;
-				image_height = Math.floor(image_size / aspect_ratio);
+				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				image_width = Math.floor(image_size * aspect_ratio);
+				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
 				image_height = image_size;
 			}
 		}
@@ -216,9 +216,9 @@
 		window.requestAnimationFrame(draw_frame);
 	};
 	
-	applet_canvas_true_fullscreen = true;
+	Page.Applets.Canvases.true_fullscreen = true;
 	
-	set_up_canvas_resizer();
+	Page.Applets.Canvases.set_up_resizer();
 	
 	
 	
@@ -1254,17 +1254,17 @@
 		
 		
 		
-		if (canvas_is_fullscreen)
+		if (Page.Applets.Canvases.is_fullscreen)
 		{
-			if (aspect_ratio >= 1)
+			if (Page.Layout.aspect_ratio >= 1)
 			{
 				image_width = image_size;
-				image_height = Math.floor(image_size / aspect_ratio);
+				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				image_width = Math.floor(image_size * aspect_ratio);
+				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
 				image_height = image_size;
 			}
 		}

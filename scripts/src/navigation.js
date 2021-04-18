@@ -1,379 +1,334 @@
+/*
+	
+	Page:
+		
+		...
+		
+		
+		Navigation: methods for navigating between pages.
+			
+			redirect: loads a new page.
+			
+			concat_url_vars: returns a string of url variables that can be appended to any url.
+			
+			write_url_vars: does exactly that.
+		
+		Unload: methods for deconstructing the current page.
+			
+			fade_out: handles the process of fading out the opacity, including edge cases like the background color being weird or the new page failing to load.
+	
+*/
+
+
+
 "use strict";
 
 
 
-//Handles all navigation between pages.
-
-
-
-let new_page_data = null;
-
-let currently_changing_page = false;
-
-let last_page_scroll = 0;
-
-
-
-//Fade in the opacity when the user presses the back button.
-window.addEventListener("popstate", function(e)
+Page.Navigation =
 {
-	let previous_page = get_url_var("page");
-		
-	if (previous_page !== null && decodeURIComponent(previous_page) !== current_url)
-	{
-		redirect(decodeURIComponent(previous_page), false, true, true);
-	}
-	
-	else
-	{
-		redirect("/home/home.html", false, true);
-	}
-});
+	currently_changing_page: false,
 
-
-
-//To keep expected link functionality (open in new tab, draggable, etc.), all elements with calls to redirect() are wrapped in <a> tags. Presses of <a> tags (without .real-link) are ignored, but to extend the functionality of url variables to the times they are used, we need to target them all and add the url variables onto them. Also, now that the website is a single page app, we need to format them correctly, too, using the page variable.
-
-function set_links()
-{
-	let links = document.querySelectorAll("a");
+	last_page_scroll: 0,
 	
 	
 	
-	let vars_no_return = concat_url_vars(false);
-			
-	if (vars_no_return.indexOf("&") === -1)
+	//Handles virtually all links.
+	redirect: function(url, in_new_tab = false, no_state_push = false, restore_scroll = false)
 	{
-		vars_no_return = "";
-	}
-	
-	else
-	{
-		vars_no_return = vars_no_return.substring(vars_no_return.indexOf("&"));
-	}
-	
-	
-	
-	let vars_return = concat_url_vars(true);
-	
-	if (vars_return.indexOf("&") === -1)
-	{
-		vars_return = "";
-	}
-	
-	else
-	{
-		vars_return = vars_return.substring(vars_return.indexOf("&"));
-	}
-	
-	
-	
-	for (let i = 0; i < links.length; i++)
-	{
-		let href = links[i].getAttribute("href");
-		
-		if (href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data" && !(links[i].parentNode.classList.contains("footer-image-link")))
+		if (this.currently_changing_page)
 		{
-			if (href === "/settings/settings.html")
+			return;
+		}
+		
+		
+		
+		
+		//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
+		if (in_new_tab)
+		{
+			window.open(url, "_blank");
+			return;
+		}
+		
+		
+		
+		this.currently_changing_page = true;
+		
+		
+		
+		let temp = window.scrollY;
+		
+		
+		
+		Page.url = url;
+		
+		Page.parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
+		
+		
+		
+		//We need to record this in case we can't successfully load the next page and we need to return to the current one.
+		let background_color = document.documentElement.style.backgroundColor;
+		
+		
+		
+		//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
+		Promise.all([fetch(url), Page.Unload.fade_out(), Page.Banner.load()])
+		
+		
+		
+		.then((response) =>
+		{
+			if (!response[0].ok)
 			{
-				links[i].setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + vars_return);
+				window.location.replace("/404.html");
 			}
 			
 			else
 			{
-				links[i].setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + vars_no_return);
+				return response[0].text();
 			}
-		}
-	}
-}
-
-
-
-//Handles virtually all links.
-function redirect(url, in_new_tab = false, no_state_push = false, restore_scroll = false)
-{
-	if (currently_changing_page)
-	{
-		return;
-	}
-	
-	
-	
-	
-	//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
-	if (in_new_tab)
-	{
-		window.open(url, "_blank");
-		return;
-	}
-	
-	
-	
-	currently_changing_page = true;
-	
-	
-	
-	let temp = window.scrollY;
-	
-	
-	
-	let include_return_url = false;
-	
-	if (url === "/settings/settings.html")
-	{
-		include_return_url = true;
-	}
-	
-	
-	
-	current_url = url;
-	
-	parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
-	
-	
-	
-	//We need to record this in case we can't successfully load the next page and we need to return to the current one.
-	let background_color = document.documentElement.style.backgroundColor;
-	
-	
-	
-	
-	
-	//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-	
-	//A note: we append a random string to the end of the url to prevent browser caching, which can all too often cause problems. However, this is only done for the raw HTML files, not anything larger like images, so it doesn't consume too much of the user's data.
-	Promise.all([fetch(url), fade_out(), load_banner()])
-	
-	
-	
-	.then(function(response)
-	{
-		if (!response[0].ok)
+		})
+		
+		
+		
+		.then((data) =>
 		{
-			window.location.replace("/404.html");
-		}
-		
-		else
-		{
-			return response[0].text();
-		}
-	})
-	
-	
-	
-	.then(function(data)
-	{
-		on_page_unload();
-		
-		//Record the page change in the url bar and in the browser history.
-		if (no_state_push === false)
-		{
-			history.pushState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
-		}
-		
-		else
-		{
-			history.replaceState({}, document.title, "/index.html" + concat_url_vars(include_return_url));
-		}
-		
-		
-		
-		document.body.innerHTML = data;
-		
-		
-		
-		if (restore_scroll)
-		{
-			window.scrollTo(0, last_page_scroll);
-			scroll_update(last_page_scroll);
-		}
-		
-		else
-		{
-			window.scrollTo(0, 0);
-			scroll = 0;
-		}
-		
-		last_page_scroll = temp;
-		
-		
-		
-		parse_scripts();
-	})
-	
-	
-	
-	.catch(function(error)
-	{
-		console.log("Failed to load new page -- reversing fade-out.");
-		
-		
-		
-		currently_changing_page = false;
-		
-		setTimeout(function()
-		{
-			if (background_color_changed === false)
+			Page.unload();
+			
+			//Record the page change in the url bar and in the browser history.
+			
+			if (!no_state_push)
 			{
-				document.body.style.opacity = 1;
+				history.pushState({}, document.title, "/index.html" + this.concat_url_vars());
 			}
-			
-			
 			
 			else
 			{
-				setTimeout(function()
+				history.replaceState({}, document.title, "/index.html" + this.concat_url_vars());
+			}
+			
+			
+			
+			document.body.innerHTML = data;
+			
+			
+			
+			if (restore_scroll)
+			{
+				window.scrollTo(0, this.last_page_scroll);
+				Page.Banner.on_scroll(this.last_page_scroll);
+			}
+			
+			else
+			{
+				window.scrollTo(0, 0);
+				Page.scroll = 0;
+			}
+			
+			this.last_page_scroll = temp;
+			
+			
+			
+			Page.Load.parse_script_tags();
+		})
+		
+		
+		
+		.catch((error) =>
+		{
+			console.error(error.message);
+			
+			console.log("Failed to load new page -- reversing fade-out.");
+			
+			
+			
+			this.currently_changing_page = false;
+			
+			setTimeout(() =>
+			{
+				if (!Page.background_color_changed)
 				{
-					document.documentElement.classList.add("background-transition");
-					document.body.classList.add("background-transition");
-					
-					document.documentElement.style.backgroundColor = background_color;
-					document.body.style.backgroundColor = background_color;
-					
-					setTimeout(function()
+					document.body.style.opacity = 1;
+				}
+				
+				
+				
+				else
+				{
+					setTimeout(() =>
 					{
-						document.documentElement.classList.remove("background-transition");
-						document.body.classList.remove("background-transition");
+						document.documentElement.classList.add("background-transition");
+						document.body.classList.add("background-transition");
 						
-						document.body.style.backgroundColor = "";
+						document.documentElement.style.backgroundColor = background_color;
+						document.body.style.backgroundColor = background_color;
 						
-						setTimeout(function()
+						setTimeout(() =>
 						{
-							document.body.style.opacity = 1;
-						}, 300);
+							document.documentElement.classList.remove("background-transition");
+							document.body.classList.remove("background-transition");
+							
+							document.body.style.backgroundColor = "";
+							
+							setTimeout(() =>
+							{
+								document.body.style.opacity = 1;
+							}, 300);
+						}, 450);
 					}, 450);
-				}, 450);
-			}
-		}, 300);
-	});
-}
+				}
+			}, 300);
+		});
+	},
 
 
 
-function fade_out()
-{
-	return new Promise(function(resolve, reject)
+	//Returns a string of url vars that can be attached to any url.
+	concat_url_vars: function()
 	{
-		try
+		let string = "?page=" + encodeURIComponent(Page.url);
+		let key = "";
+		let temp = "";
+		
+		
+		
+		for (let i = 0; i < Object.keys(Site.Settings.url_vars).length; i++)
 		{
-			hide_floating_settings();
+			key = Object.keys(Site.Settings.url_vars)[i];
 			
-			
-			
-			document.querySelector("#floating-footer").style.opacity = 0;
-			
-			floating_footer_is_visible = false;
+			if (Site.Settings.url_vars[key] !== 0 || (window.matchMedia("(prefers-color-scheme: dark)").matches && Site.Settings.url_vars["theme"] === 0 && key === "theme"))
+			{
+				string += "&" + key + "=" + Site.Settings.url_vars[key];
+			}
 		}
 		
-		catch(ex) {}
 		
 		
-		
-		//Act like a normal link, with no transitions, if the user wants that.
-		if (url_vars["content_animation"] === 1)
+		return string;
+	},
+	
+	
+
+	write_url_vars: function()
+	{
+		//Make the current state persist on refresh.
+		history.replaceState({}, document.title, window.location.pathname + this.concat_url_vars());
+	}
+};
+
+
+
+Page.Unload =
+{
+	fade_out: function()
+	{
+		return new Promise((resolve, reject) =>
 		{
-			if (background_color_changed)
+			try
 			{
-				if (url_vars["theme"] === 1)
-				{
-					if (url_vars["dark_theme_color"] === 1)
-					{
-						document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-					}
-					
-					else
-					{
-						document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-					}
-				}
+				hide_floating_settings();
 				
-				else
-				{
-					document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
-				}
+				
+				
+				document.querySelector("#floating-footer").style.opacity = 0;
+				
+				Footer.Floating.is_visible = false;
 			}
 			
-			resolve();
-		}
+			catch(ex) {}
 			
-		else
-		{
-			//Fade out the current page's content.
-			document.body.style.opacity = 0;
 			
-			setTimeout(function()
+			
+			//Act like a normal link, with no transitions, if the user wants that.
+			if (Site.Settings.url_vars["content_animation"] === 1)
 			{
-				if (background_color_changed === false)
+				if (Page.background_color_changed)
 				{
-					resolve();
-				}
-				
-				
-				
-				//If necessary, take the time to fade back to the default background color, whatever that is.
-				else
-				{
-					document.documentElement.classList.add("background-transition");
-					document.body.classList.add("background-transition");
-					
-					if (url_vars["theme"] === 1)
+					if (Site.Settings.url_vars["theme"] === 1)
 					{
-						if (url_vars["dark_theme_color"] === 1)
+						if (Site.Settings.url_vars["dark_theme_color"] === 1)
 						{
 							document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-							document.body.style.backgroundColor = "rgb(0, 0, 0)";
 						}
 						
 						else
 						{
 							document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-							document.body.style.backgroundColor = "rgb(24, 24, 24)";
 						}
 					}
 					
 					else
 					{
 						document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
-						document.body.style.backgroundColor = "rgb(255, 255, 255)";
+					}
+				}
+				
+				resolve();
+			}
+				
+				
+				
+			else
+			{
+				//Fade out the current page's content.
+				document.body.style.opacity = 0;
+				
+				setTimeout(() =>
+				{
+					if (Page.background_color_changed === false)
+					{
+						resolve();
 					}
 					
-					setTimeout(function()
-					{
-						document.body.style.backgroundColor = "";
-						
-						document.documentElement.classList.remove("background-transition");
-						document.body.classList.remove("background-transition");
-					}, 450);
 					
-					resolve();
-				}
-			}, 300);
-		}
-	});
-}
-
-
-
-//Right, so this is a pain. One of those things jQuery makes really easy and that you might never notice otherwise is that when using $(element).html(data), any non-external script tags in data are automatically excuted. This is great, but it doesn't happen when using element.innerHTML. Weirdly enough, though, it works with element.appendChild. Therefore, we just need to get all our script tags, and for each one, make a new tag with identical contents, append it to the body, and delete the original script.
-function parse_scripts()
-{
-	var scripts = document.querySelectorAll("script");
-	
-	for (let i = 0; i < scripts.length; i++)
-	{
-		let new_script = document.createElement("script");
-		
-		new_script.innerHTML = scripts[i].textContent;
-		
-		document.body.appendChild(new_script);
-		
-		scripts[i].remove();
+					
+					//If necessary, take the time to fade back to the default background color, whatever that is.
+					else
+					{
+						document.documentElement.classList.add("background-transition");
+						document.body.classList.add("background-transition");
+						
+						if (Site.Settings.url_vars["theme"] === 1)
+						{
+							if (Site.Settings.url_vars["dark_theme_color"] === 1)
+							{
+								document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+								document.body.style.backgroundColor = "rgb(0, 0, 0)";
+							}
+							
+							else
+							{
+								document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
+								document.body.style.backgroundColor = "rgb(24, 24, 24)";
+							}
+						}
+						
+						else
+						{
+							document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
+							document.body.style.backgroundColor = "rgb(255, 255, 255)";
+						}
+						
+						setTimeout(() =>
+						{
+							document.body.style.backgroundColor = "";
+							
+							document.documentElement.classList.remove("background-transition");
+							document.body.classList.remove("background-transition");
+						}, 450);
+						
+						resolve();
+					}
+				}, 300);
+			}
+		});
 	}
-}
+};
 
 
 
-function on_page_unload()
+Page.unload = function()
 {
 	//Remove any css and js that's no longer needed to prevent memory leaks.
 	let elements = document.querySelectorAll("style.temporary-style, link.temporary-style, script.temporary-script");
@@ -394,73 +349,32 @@ function on_page_unload()
 	
 	
 	//Unbind everything transient from the window and the html element.
-	for (let key in temporary_handlers)
+	for (let key in Page.temporary_handlers)
 	{
-		for (let j = 0; j < temporary_handlers[key].length; j++)
+		for (let j = 0; j < Page.temporary_handlers[key].length; j++)
 		{
-			window.removeEventListener(key, temporary_handlers[key][j]);
-			document.documentElement.removeEventListener(key, temporary_handlers[key][j]);
+			window.removeEventListener(key, Page.temporary_handlers[key][j]);
+			document.documentElement.removeEventListener(key, Page.temporary_handlers[key][j]);
 		}
 	}
 	
 	
 	
 	//Clear any temporary intervals.
-	for (let i = 0; i < temporary_intervals.length; i++)
+	for (let i = 0; i < Page.temporary_intervals.length; i++)
 	{
-		clearInterval(temporary_intervals[i]);
+		clearInterval(Page.temporary_intervals[i]);
 	}
 	
-	temporary_intervals = [];
+	Page.temporary_intervals = [];
 	
 	
 	
 	//Terminate any temporary web workers.
-	for (let i = 0; i < temporary_web_workers.length; i++)
+	for (let i = 0; i < Page.temporary_web_workers.length; i++)
 	{
-		temporary_web_workers[i].terminate();
+		Page.temporary_web_workers[i].terminate();
 	}
 	
-	temporary_web_workers = [];
-}
-
-
-
-//Returns a string of url vars that can be attached to any url.
-function concat_url_vars(include_return_url)
-{
-	let string = "?page=" + encodeURIComponent(current_url);
-	let key = "";
-	let temp = "";
-	
-	
-	
-	for (var i = 0; i < Object.keys(url_vars).length; i++)
-	{
-		key = Object.keys(url_vars)[i];
-		
-		if (url_vars[key] !== 0 || (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] === 0 && key === "theme"))
-		{
-			string += "&" + key + "=" + url_vars[key];
-		}
-	}
-	
-	
-	
-	if (include_return_url)
-	{
-		string += "&return=" + get_url_var("page");
-	}
-	
-	
-	return string;
-}
-
-function write_url_vars()
-{
-	//Make state persist on refresh, unless it's the settings page, which will just clog up the history.
-	if (!(window.location.href.includes("settings")))
-	{
-		history.replaceState({}, document.title, window.location.pathname + concat_url_vars(false));
-	}
+	Page.temporary_web_workers = [];
 }

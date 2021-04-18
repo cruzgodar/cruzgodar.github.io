@@ -94,7 +94,7 @@
 				
 				document.querySelector("#switch-julia-mode-button").style.opacity = 1;
 				
-				equalize_text_buttons();
+				Page.Load.TextButtons.equalize();
 			}
 		}, 300);
 		
@@ -912,21 +912,21 @@
 		
 		
 		
-		applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+		Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
 		
-		applet_canvas_resize_callback = function()
+		Page.Applets.Canvases.resize_callback = function()
 		{
-			if (canvas_is_fullscreen)
+			if (Page.Applets.Canvases.is_fullscreen)
 			{
-				if (aspect_ratio >= 1)
+				if (Page.Layout.aspect_ratio >= 1)
 				{
 					image_width = image_size;
-					image_height = Math.floor(image_size / aspect_ratio);
+					image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
 				}
 				
 				else
 				{
-					image_width = Math.floor(image_size * aspect_ratio);
+					image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
 					image_height = image_size;
 				}
 			}
@@ -956,9 +956,9 @@
 			window.requestAnimationFrame(draw_frame);
 		};
 		
-		applet_canvas_true_fullscreen = true;
+		Page.Applets.Canvases.true_fullscreen = true;
 		
-		set_up_canvas_resizer();
+		Page.Applets.Canvases.set_up_resizer();
 		
 		
 		
@@ -970,7 +970,7 @@
 			{
 				document.querySelector("#switch-julia-mode-button").textContent = "Pick Julia Set";
 				
-				equalize_text_buttons();
+				Page.Load.TextButtons.equalize();
 				
 				document.querySelector("#switch-julia-mode-button").style.opacity = 1;
 			}, 300);
@@ -1004,10 +1004,10 @@
 		document.querySelector("#output-canvas").addEventListener("mousedown", handle_mousedown_event);
 		
 		document.documentElement.addEventListener("mousemove", handle_mousemove_event);
-		temporary_handlers["mousemove"].push(handle_mousemove_event);
+		Page.temporary_handlers["mousemove"].push(handle_mousemove_event);
 		
 		document.documentElement.addEventListener("mouseup", handle_mouseup_event);
-		temporary_handlers["mouseup"].push(handle_mouseup_event);
+		Page.temporary_handlers["mouseup"].push(handle_mouseup_event);
 		
 		document.querySelector("#output-canvas").addEventListener("touchstart", handle_touchstart_event);
 		
@@ -1016,7 +1016,7 @@
 		document.querySelector("#output-canvas").addEventListener("touchend", handle_touchend_event);
 		
 		window.addEventListener("wheel", handle_wheel_event, {passive: false});
-		temporary_handlers["wheel"].push(handle_wheel_event);
+		Page.temporary_handlers["wheel"].push(handle_wheel_event);
 	}
 	
 	
@@ -1044,7 +1044,7 @@
 			
 			stabilize_brightness_scale = true;
 			
-			equalize_text_buttons();
+			Page.Load.TextButtons.equalize();
 			
 			document.querySelector("#switch-julia-mode-button").style.opacity = 1;
 		}
@@ -1280,7 +1280,7 @@
 				box_size = 4;
 				zoom_level = 0;
 				
-				equalize_text_buttons();
+				Page.Load.TextButtons.equalize();
 				
 				document.querySelector("#switch-julia-mode-button").style.opacity = 1;
 			}
@@ -1384,17 +1384,17 @@
 		
 		
 		
-		if (canvas_is_fullscreen)
+		if (Page.Applets.Canvases.is_fullscreen)
 		{
-			if (aspect_ratio >= 1)
+			if (Page.Layout.aspect_ratio >= 1)
 			{
 				image_width = image_size;
-				image_height = Math.floor(image_size / aspect_ratio);
+				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				image_width = Math.floor(image_size * aspect_ratio);
+				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
 				image_height = image_size;
 			}
 		}

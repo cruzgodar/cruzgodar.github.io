@@ -24,7 +24,7 @@ It's worthwhile to note that these `a` tags' `href` attributes don't need to be 
 
 ```html
 <a href="/writing/caligo/caligo.html">
-	<img id="image-caligo" class="check-webp" onclick="redirect('/writing/caligo/caligo.html')" src="" alt="Caligo"></img>
+	<img id="image-caligo" class="check-webp" onclick="Page.Navigation.redirect('/writing/caligo/caligo.html')" src="" alt="Caligo"></img>
 </a>
 ```
 
@@ -42,7 +42,7 @@ When a link is clicked and `redirect()` is called, a number of things happen, bu
 
 3. Starts loading the banner if the target page has one. This is why it's required to have a list of banner pages separate from the `banner_page` setting: that setting hasn't yet taken effect. Loading the banner at this point effectively gives it a 300ms grace period to load while the content fades out before any loading time will be noticible. Of course, that banner was probably already preloaded on the previous page, so unless that page was visited for a very short time, this grace period shouldn't be necessary.
 
-All three of these functions run in parallel and return promises. If all three promises resolve, `redirect()` runs `on_page_unload()`, loads the new HTML into the body, and executes any scripts present in that HTML. Usually, this will only include the default setup script described in [the page structure doc](https://github.com/90259025/90259025.github.io/blob/master/docs/page-structure.md), which sets the page settings and calls `on_page_load()`. The function is only called at this point to ensure that the HTML has loaded and the page settings have been set before finishing the rest of the page setup.
+All three of these functions run in parallel and return promises. If all three promises resolve, `redirect()` runs `on_page_unload()`, loads the new HTML into the body, and executes any scripts present in that HTML. Usually, this will only include the default setup script described in [the page structure doc](https://github.com/90259025/90259025.github.io/blob/master/docs/page-structure.md), which sets the page settings and calls `Page.load()`. The function is only called at this point to ensure that the HTML has loaded and the page settings have been set before finishing the rest of the page setup.
 
 
 

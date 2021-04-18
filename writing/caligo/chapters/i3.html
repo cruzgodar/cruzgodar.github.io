@@ -12,7 +12,7 @@
 	<div class="new-aos-section" data-aos="fade-in">
 		<div id="logo">
 			<a href="/home/home.html" tabindex="-1">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
+				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="Page.Navigation.redirect('/home/home.html')" tabindex="1"></img>
 			</a>
 		</div>
 	</div>
@@ -308,7 +308,7 @@
 	<section>
 		<div class="text-buttons">
 			<div class="focus-on-child new-aos-section" data-aos="zoom-out" tabindex="1">
-				<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="redirect('/writing/caligo/chapters/34.html')">Previous Chapter</button>
+				<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="Page.Navigation.redirect('/writing/caligo/chapters/34.html')">Previous Chapter</button>
 			</div>
 			
 			<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
@@ -320,7 +320,7 @@
 		
 		<div class="text-buttons">
 			<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
-				<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="redirect('/writing/caligo/caligo.html')">All Chapters</button>
+				<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="Page.Navigation.redirect('/writing/caligo/caligo.html')">All Chapters</button>
 			</div>
 		</div>
 	</section>
@@ -335,14 +335,14 @@
 
 
 <script>
-	if (typeof current_url === "undefined")
+	if (typeof Page === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	
 	
-	page_settings = 
+	Page.settings = 
 	{
 		"title": "Caligo: Interlude III",
 		
@@ -353,7 +353,7 @@
 	
 	
 	
-	add_style(`
+	Site.add_style(`
 		.caligo-black-background
 		{
 			width: 100vw;
@@ -414,7 +414,7 @@
 			
 			
 			
-			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + window_height / 2 + 2);
+			window.scroll(0, window.scrollY + element.getBoundingClientRect().top + Page.Layout.window_height / 2 + 2);
 			
 			
 			
@@ -424,7 +424,7 @@
 			
 			setTimeout(function()
 			{
-				background_color_changed = true;
+				Page.background_color_changed = true;
 				
 				document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 				
@@ -444,11 +444,11 @@
 				
 				setTimeout(function()
 				{
-					set_up_aos();
+					Page.Load.AOS.load();
 					
-					show_aos_section(3);
+					Page.Load.AOS.show_section(3);
 					
-					set_element_styles(".part-text", "opacity", 1);
+					Page.set_element_styles(".part-text", "opacity", 1);
 					
 					setTimeout(function()
 					{
@@ -462,7 +462,7 @@
 							document.body.style.userSelect = "auto";
 							document.body.style.WebkitUserSelect = "auto";
 							
-							redirect('/writing/caligo/chapters/35.html');
+							Page.Navigation.redirect('/writing/caligo/chapters/35.html');
 						}, 600);
 					}, 3000);
 				}, 50);
@@ -472,5 +472,5 @@
 	
 	
 	
-	on_page_load();
+	Page.load();
 </script>

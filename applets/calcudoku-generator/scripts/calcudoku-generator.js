@@ -108,7 +108,7 @@
 		
 		refresh_id = setInterval(update_timers, 1000);
 		
-		temporary_intervals.push(refresh_id);
+		Page.temporary_intervals.push(refresh_id);
 		
 		
 		
@@ -125,7 +125,7 @@
 			web_worker = new Worker("/applets/calcudoku-generator/scripts/worker.min.js");
 		}
 		
-		temporary_web_workers.push(web_worker);
+		Page.temporary_web_workers.push(web_worker);
 		
 		
 		
@@ -297,9 +297,9 @@
 		{
 			ctx.clearRect(0, 0, canvas_size, canvas_size);
 			
-			if (url_vars["theme"] === 1)
+			if (Site.Settings.url_vars["theme"] === 1)
 			{
-				if (url_vars["contrast"] === 1)
+				if (Site.Settings.url_vars["contrast"] === 1)
 				{
 					ctx.fillStyle = "rgb(255, 255, 255)";
 				}
@@ -312,7 +312,7 @@
 			
 			else
 			{
-				if (url_vars["contrast"] === 1)
+				if (Site.Settings.url_vars["contrast"] === 1)
 				{
 					ctx.fillStyle = "rgb(0, 0, 0)";
 				}

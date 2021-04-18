@@ -28,18 +28,18 @@
 	
 	
 	
-	if (browser_name === "Chrome" || browser_name === "Opera")
+	if (Browser.name === "Chrome" || Browser.name === "Opera")
 	{
 		alert_about_hardware_acceleration();
 	}
 	
 	
 	
-	applet_canvases_to_resize = [document.querySelector("#output-canvas")];
+	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
 	
-	applet_canvas_true_fullscreen = false;
+	Page.Applets.Canvases.true_fullscreen = false;
 	
-	set_up_canvas_resizer();
+	Page.Applets.Canvases.set_up_resizer();
 	
 	
 	
@@ -59,7 +59,7 @@
 		
 		//Make sure that there is a proper density of pixels so that the canvas doesn't look blurry.
 		
-		let canvas_pixel_size = Math.min(window_width, window_height);
+		let canvas_pixel_size = Math.min(Page.Layout.window_width, Page.Layout.window_height);
 		
 		canvas_scale_factor = Math.ceil(canvas_pixel_size / grid_size);
 		
@@ -86,7 +86,7 @@
 			web_worker = new Worker("/applets/abelian-sandpiles/scripts/worker.min.js");
 		}
 		
-		temporary_web_workers.push(web_worker);
+		Page.temporary_web_workers.push(web_worker);
 		
 		web_worker.onmessage = function(e)
 		{
@@ -152,6 +152,6 @@
 			</div>
 		`);
 		
-		aos_resize();
+		Page.Load.AOS.on_resize();
 	}
 }()
