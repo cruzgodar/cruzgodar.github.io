@@ -720,7 +720,7 @@ Page.Load =
 					this.show_section(i);
 				}
 				
-				else if (Page.scroll + Page.Layout.window_height < this.anchor_positions[i] + this.anchor_offsets[i] && this.anchors_shown[i] === true)
+				else if (Page.scroll + Page.Layout.window_height < this.anchor_positions[i] - this.anchor_offsets[i]/2 && this.anchors_shown[i] === true)
 				{
 					this.hide_section(i);
 				}
