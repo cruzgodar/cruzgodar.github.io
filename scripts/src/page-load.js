@@ -170,7 +170,7 @@ Page.load = async function()
 	
 	Page.background_color_changed = false;
 	
-	floating_settings_is_visible = false;
+	Site.Settings.Floating.visible = false;
 	
 	
 	
@@ -179,24 +179,24 @@ Page.load = async function()
 		this.Banner.fetch_other_size_in_background();
 	}
 	
-	if (url_vars["contrast"] === 1)
+	if (Site.Settings.url_vars["contrast"] === 1)
 	{
-		set_img_button_contrast();
+		Site.Settings.set_img_button_contrast();
 	}
 	
-	if ("writing_page" in this.settings && this.settings["writing_page"] && url_vars["font"] === 1)
+	if ("writing_page" in this.settings && this.settings["writing_page"] && Site.Settings.url_vars["font"] === 1)
 	{
-		set_writing_page_font();
+		Site.Settings.set_writing_page_font();
 	}
 	
 	if (this.Layout.layout_string === "ultrawide" && "small_margins_on_ultrawide" in this.settings && this.settings["small_margins_on_ultrawide"])
 	{
-		reduce_page_margins();
+		Site.Settings.reduce_page_margins();
 	}
 	
-	if (url_vars["content_animation"] === 1)
+	if (Site.Settings.url_vars["content_animation"] === 1)
 	{
-		remove_animation();
+		Site.Settings.remove_animation();
 	}
 	
 	if ("math_page" in this.settings && this.settings["math_page"])
@@ -370,7 +370,7 @@ Page.Load =
 		
 		prepare: async function()
 		{
-			if (url_vars["content_animation"] === 1 || ((url_vars["title_pages_seen"] >> this.page_ids[Page.url]) & 1))
+			if (Site.Settings.url_vars["content_animation"] === 1 || ((Site.Settings.url_vars["title_pages_seen"] >> this.page_ids[Page.url]) & 1))
 			{
 				document.querySelector("#vara-container").remove();
 				
@@ -394,9 +394,9 @@ Page.Load =
 				
 				
 				
-				if (!((url_vars["title_pages_seen"] >> this.page_ids[Page.url]) & 1))
+				if (!((Site.Settings.url_vars["title_pages_seen"] >> this.page_ids[Page.url]) & 1))
 				{
-					url_vars["title_pages_seen"] += (1 << this.page_ids[Page.url]);
+					Site.Settings.url_vars["title_pages_seen"] += (1 << this.page_ids[Page.url]);
 					
 					Page.Navigation.write_url_vars();
 				}
@@ -430,7 +430,7 @@ Page.Load =
 				{
 					let color = "black";
 					
-					if (url_vars["theme"] === 1)
+					if (Site.Settings.url_vars["theme"] === 1)
 					{
 						color = "white";
 					}
@@ -731,7 +731,7 @@ Page.Load =
 
 		show_section: function(section)
 		{
-			if (url_vars["content_animation"] === 1)
+			if (Site.Settings.url_vars["content_animation"] === 1)
 			{
 				return;
 			}

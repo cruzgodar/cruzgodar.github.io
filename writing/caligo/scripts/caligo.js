@@ -294,9 +294,9 @@
 		{
 			background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * Page.scroll / initial_window_height, 0) - .5 * Math.PI);
 			
-			if (url_vars["theme"] === 1)
+			if (Site.Settings.url_vars["theme"] === 1)
 			{
-				if (url_vars["dark_theme_color"] === 1)
+				if (Site.Settings.url_vars["dark_theme_color"] === 1)
 				{
 					background_color = 0;
 				}
@@ -450,15 +450,15 @@
 		
 		
 		
-		if (url_vars["contrast"] === 1)
+		if (Site.Settings.url_vars["contrast"] === 1)
 		{
-			Site.set_element_styles(".synopsis-text", "color", "rgb(192, 192, 192)");
+			Page.set_element_styles(".synopsis-text", "color", "rgb(192, 192, 192)");
 			
-			Site.set_element_styles(".body-text", "color", "rgb(192, 192, 192)");
+			Page.set_element_styles(".body-text", "color", "rgb(192, 192, 192)");
 			
-			if (url_vars["theme"] !== 1)
+			if (Site.Settings.url_vars["theme"] !== 1)
 			{
-				Site.set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
+				Page.set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
 			}
 			
 			
@@ -467,9 +467,9 @@
 			
 			
 			
-			Site.set_element_styles(".stage-bubble", "border-color", "rgb(192, 192, 192)");
+			Page.set_element_styles(".stage-bubble", "border-color", "rgb(192, 192, 192)");
 			
-			Site.set_element_styles(".stage-bubble span", "background-color", "rgb(192, 192, 192)");
+			Page.set_element_styles(".stage-bubble span", "background-color", "rgb(192, 192, 192)");
 			
 			
 			
@@ -496,9 +496,9 @@
 			
 			
 			
-			if (url_vars["theme"] === 1)
+			if (Site.Settings.url_vars["theme"] === 1)
 			{
-				Site.set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
+				Page.set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
 			}
 		}
 	}

@@ -15,15 +15,15 @@
 	{
 		if (document.querySelector("#toggle-minor-versions-checkbox").checked)
 		{
-			Site.set_element_styles(".minor-version, .medium-version, .major-version", "opacity", 0);
+			Page.set_element_styles(".minor-version, .medium-version, .major-version", "opacity", 0);
 			
 			setTimeout(function()
 			{
-				Site.set_element_styles(".minor-version", "display", "block");
+				Page.set_element_styles(".minor-version", "display", "block");
 				
 				setTimeout(function()
 				{
-					Site.set_element_styles(".minor-version, .medium-version, .major-version", "opacity", 1);
+					Page.set_element_styles(".minor-version, .medium-version, .major-version", "opacity", 1);
 					
 					Page.Load.AOS.on_resize();
 				}, 50);
@@ -32,12 +32,12 @@
 		
 		else
 		{
-			Site.set_element_styles(".minor-version, .medium-version, .major-version", "opacity", 0);
+			Page.set_element_styles(".minor-version, .medium-version, .major-version", "opacity", 0);
 			
 			setTimeout(function()
 			{
-				Site.set_element_styles(".medium-version, .major-version", "opacity", 1);
-				Site.set_element_styles(".minor-version", "display", "none");
+				Page.set_element_styles(".medium-version, .major-version", "opacity", 1);
+				Page.set_element_styles(".minor-version", "display", "none");
 				
 				setTimeout(() =>
 				{

@@ -20,7 +20,7 @@
 	
 	
 	
-	if (url_vars["content_animation"] === 1)
+	if (Site.Settings.url_vars["content_animation"] === 1)
 	{
 		let opacity = 0;
 		
@@ -154,7 +154,7 @@
 			}
 			
 			
-			if (url_vars["content_animation"] !== 1)
+			if (Site.Settings.url_vars["content_animation"] !== 1)
 			{
 				document.querySelector("#banner").insertAdjacentHTML("afterend", `
 					<div class="name-text-container" style="position: fixed" data-aos="fade-left">

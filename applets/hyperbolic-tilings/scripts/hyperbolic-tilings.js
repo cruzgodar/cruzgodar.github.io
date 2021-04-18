@@ -70,7 +70,7 @@
 		try {web_worker.terminate();}
 		catch(ex) {}
 		
-		Site.set_element_styles(".branch-marker", "opacity", 1);
+		Page.set_element_styles(".branch-marker", "opacity", 1);
 		
 		
 		
@@ -335,7 +335,7 @@
 			{
 				setTimeout(function()
 				{
-					Site.set_element_styles(".branch-marker", "opacity", 1);
+					Page.set_element_styles(".branch-marker", "opacity", 1);
 				}, 500);
 				
 				return;
@@ -444,7 +444,7 @@
 		{
 			document.body.style.WebkitUserSelect = "";
 			
-			Site.set_element_styles(".branch-marker", "opacity", 0);
+			Page.set_element_styles(".branch-marker", "opacity", 0);
 			
 			
 			
@@ -569,9 +569,9 @@
 
 	function adjust_for_settings()
 	{
-		if (url_vars["contrast"] === 1)
+		if (Site.Settings.url_vars["contrast"] === 1)
 		{
-			if (url_vars["theme"] === 1)
+			if (Site.Settings.url_vars["theme"] === 1)
 			{
 				document.querySelector("#binary-trees-plot").style.borderColor = "rgb(192, 192, 192)";
 			}

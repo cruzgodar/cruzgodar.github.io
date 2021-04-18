@@ -143,7 +143,7 @@ Page.Footer =
 		document.querySelector(".footer-image-links").insertAdjacentHTML("afterend", `
 			<div class="footer-buttons" style="position: relative">
 				<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="0" data-aos-offset="10" data-aos-once="false" style="position: absolute; bottom: 6.25px; left: 10px" tabindex="3">
-					<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="show_floating_settings()" tabindex="-1">
+					<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="Site.Settings.Floating.show()" tabindex="-1">
 				</div>
 				
 				<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="10" data-aos-once="false" style="position: absolute; bottom: 6.25px; right: 10px" tabindex="3">

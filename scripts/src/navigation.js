@@ -117,7 +117,7 @@ Page.Navigation =
 			if (restore_scroll)
 			{
 				window.scrollTo(0, this.last_page_scroll);
-				scroll_update(this.last_page_scroll);
+				Page.Banner.on_scroll(this.last_page_scroll);
 			}
 			
 			else
@@ -193,13 +193,13 @@ Page.Navigation =
 		
 		
 		
-		for (let i = 0; i < Object.keys(url_vars).length; i++)
+		for (let i = 0; i < Object.keys(Site.Settings.url_vars).length; i++)
 		{
-			key = Object.keys(url_vars)[i];
+			key = Object.keys(Site.Settings.url_vars)[i];
 			
-			if (url_vars[key] !== 0 || (window.matchMedia("(prefers-color-scheme: dark)").matches && url_vars["theme"] === 0 && key === "theme"))
+			if (Site.Settings.url_vars[key] !== 0 || (window.matchMedia("(prefers-color-scheme: dark)").matches && Site.Settings.url_vars["theme"] === 0 && key === "theme"))
 			{
-				string += "&" + key + "=" + url_vars[key];
+				string += "&" + key + "=" + Site.Settings.url_vars[key];
 			}
 		}
 		
@@ -241,13 +241,13 @@ Page.Unload =
 			
 			
 			//Act like a normal link, with no transitions, if the user wants that.
-			if (url_vars["content_animation"] === 1)
+			if (Site.Settings.url_vars["content_animation"] === 1)
 			{
 				if (Page.background_color_changed)
 				{
-					if (url_vars["theme"] === 1)
+					if (Site.Settings.url_vars["theme"] === 1)
 					{
-						if (url_vars["dark_theme_color"] === 1)
+						if (Site.Settings.url_vars["dark_theme_color"] === 1)
 						{
 							document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 						}
@@ -289,9 +289,9 @@ Page.Unload =
 						document.documentElement.classList.add("background-transition");
 						document.body.classList.add("background-transition");
 						
-						if (url_vars["theme"] === 1)
+						if (Site.Settings.url_vars["theme"] === 1)
 						{
-							if (url_vars["dark_theme_color"] === 1)
+							if (Site.Settings.url_vars["dark_theme_color"] === 1)
 							{
 								document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 								document.body.style.backgroundColor = "rgb(0, 0, 0)";

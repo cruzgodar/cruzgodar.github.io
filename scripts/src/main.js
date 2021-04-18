@@ -45,8 +45,6 @@ Page.scroll = 0;
 
 Page.settings = {};
 
-Page.url = decodeURIComponent(get_url_var("page"));
-
 Page.parent_folder = "/";
 
 
@@ -71,6 +69,17 @@ Page.temporary_intervals = [];
 Page.temporary_web_workers = [];
 
 Page.background_color_changed = false;
+
+//Sets a whole bunch of elements' styles at once.
+Page.set_element_styles = function(query_string, property, value)
+{
+	let elements = document.querySelectorAll(query_string);
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].style.setProperty(property, value);
+	}
+}
 
 
 
@@ -152,7 +161,7 @@ let Site =
 		//Fade in the opacity when the user presses the back button.
 		window.addEventListener("popstate", (e) =>
 		{
-			let previous_page = get_url_var("page");
+			let previous_page = Site.Settings.get_url_var("page");
 				
 			if (previous_page !== null && decodeURIComponent(previous_page) !== Page.url)
 			{
@@ -195,7 +204,9 @@ let Site =
 		
 		
 		
-		init_settings();
+		Site.Settings.set_up();
+		
+		Site.Settings.Floating.load();
 		
 		
 		
@@ -262,19 +273,6 @@ let Site =
 		
 		
 		return element;
-	},
-	
-	
-	
-	//Sets a whole bunch of elements' styles at once.
-	set_element_styles: function(query_string, property, value)
-	{
-		let elements = document.querySelectorAll(query_string);
-		
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].style.setProperty(property, value);
-		}
 	},
 	
 	
@@ -398,5 +396,13 @@ let Site =
 				this.currently_touch_device = true;
 			}
 		}
-	}
-}
+	},
+	
+	
+	
+	Settings: Settings
+};
+
+
+
+Page.url = decodeURIComponent(Site.Settings.get_url_var("page"));

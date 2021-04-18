@@ -176,7 +176,7 @@ Page.Banner =
 		
 		if (Page.scroll >= 0)
 		{
-			if (url_vars["banner_style"] !== 1)
+			if (Site.Settings.url_vars["banner_style"] !== 1)
 			{
 				if (Page.scroll <= Page.Layout.window_height)
 				{
@@ -221,9 +221,9 @@ Page.Banner =
 				
 				try
 				{
-					if (url_vars["banner_style"] !== 1)
+					if (Site.Settings.url_vars["banner_style"] !== 1)
 					{
-						Site.set_element_styles(".name-text", "opacity", opacity);
+						Page.set_element_styles(".name-text", "opacity", opacity);
 					}
 				}
 				
@@ -260,9 +260,9 @@ Page.Banner =
 			
 			else if (this.ScrollButton.done_loading === false)
 			{
-				if (url_vars["banner_style"] !== 1)
+				if (Site.Settings.url_vars["banner_style"] !== 1)
 				{
-					Site.set_element_styles(".name-text", "opacity", 0);
+					Page.set_element_styles(".name-text", "opacity", 0);
 				}
 				
 				if (this.ScrollButton.exists)
@@ -353,7 +353,7 @@ Page.Banner =
 			{
 				let chevron_name = "chevron-down";
 				
-				if (url_vars["contrast"] === 1)
+				if (Site.Settings.url_vars["contrast"] === 1)
 				{
 					chevron_name += "-dark";
 				}

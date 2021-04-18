@@ -910,9 +910,9 @@
 
 	function adjust_for_settings()
 	{
-		if (url_vars["contrast"] === 1)
+		if (Site.Settings.url_vars["contrast"] === 1)
 		{
-			if (url_vars["theme"] === 1)
+			if (Site.Settings.url_vars["theme"] === 1)
 			{
 				document.querySelector("#quasi-fuchsian-groups-plot").style.borderColor = "rgb(192, 192, 192)";
 			}
