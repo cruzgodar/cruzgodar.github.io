@@ -1281,7 +1281,7 @@ function switch_banner_style()
 			
 			url_vars["banner_style"] = 0;
 			
-			Banners.on_scroll(window.scrollY);
+			Page.Banner.on_scroll(window.scrollY);
 		}
 		
 		

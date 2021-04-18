@@ -102,12 +102,12 @@ Page.Layout =
 		
 		if (this.aspect_ratio < 1)
 		{
-			Banners.file_name = "portrait." + Images.file_extension;
+			Page.Banner.file_name = "portrait." + Images.file_extension;
 		}
 		
 		else
 		{
-			Banners.file_name = "landscape." + Images.file_extension;
+			Page.Banner.file_name = "landscape." + Images.file_extension;
 		}
 		
 		
@@ -129,7 +129,7 @@ Page.Layout =
 				this.window_width = this.new_window_width;
 				this.window_height = this.new_window_height;
 				
-				Banners.on_scroll(0);
+				Page.Banner.on_scroll(0);
 			}
 		}, 8);
 	},
@@ -143,7 +143,7 @@ Page.Layout =
 		
 		this.resize_time += 8;
 		
-		Banners.on_scroll(0);
+		Page.Banner.on_scroll(0);
 	},
 
 

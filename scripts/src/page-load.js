@@ -98,7 +98,7 @@ Page.load = async function()
 		this.Load.AOS.on_resize();
 	});
 	
-	Banners.fetch_other_page_banners_in_background();
+	Page.Banner.fetch_other_page_banners_in_background();
 	
 	this.Load.Links.set();
 	
@@ -123,7 +123,7 @@ Page.load = async function()
 	
 	if ("banner_page" in page_settings && page_settings["banner_page"])
 	{
-		Banners.fetch_other_size_in_background();
+		Page.Banner.fetch_other_size_in_background();
 	}
 	
 	if (url_vars["contrast"] === 1)
@@ -272,7 +272,7 @@ Page.Load =
 			add_style(`
 				#banner
 				{
-					background: url(${Banners.file_path}landscape.${Images.file_extension}) no-repeat center center;
+					background: url(${Page.Banner.file_path}landscape.${Images.file_extension}) no-repeat center center;
 					background-size: cover;
 				}
 				
@@ -280,7 +280,7 @@ Page.Load =
 				{
 					#banner
 					{
-						background: url(${Banners.file_path}portrait.${Images.file_extension}) no-repeat center center;
+						background: url(${Page.Banner.file_path}portrait.${Images.file_extension}) no-repeat center center;
 						background-size: cover;
 					}
 				}

@@ -72,7 +72,7 @@ Page.Navigation =
 		
 		
 		//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-		Promise.all([fetch(url), Page.Unload.fade_out(), Banners.load()])
+		Promise.all([fetch(url), Page.Unload.fade_out(), Page.Banner.load()])
 		
 		
 		

@@ -227,7 +227,7 @@ async function entry_point(url)
 	
 	window.addEventListener("scroll", function()
 	{
-		Banners.on_scroll(0);
+		Page.Banner.on_scroll(0);
 	});
 	
 	
@@ -294,7 +294,7 @@ async function entry_point(url)
 	
 	
 	
-	Banners.ScrollButton.exists = false;
+	Page.Banner.ScrollButton.exists = false;
 	
 	
 	

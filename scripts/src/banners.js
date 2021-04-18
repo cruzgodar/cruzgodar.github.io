@@ -24,7 +24,7 @@
 
 
 
-let Banners =
+Page.Banner =
 {
 	done_loading: false,
 
@@ -360,7 +360,7 @@ let Banners =
 				{
 					document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
 						<div id="new-banner-cover" data-aos="fade-down">
-							<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="Banners.ScrollButton.animate_to(document.querySelector('#scroll-to'))">
+							<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="Page.Banner.ScrollButton.animate_to(document.querySelector('#scroll-to'))">
 						</div>
 					`);
 					
