@@ -2151,7 +2151,7 @@
 			}
 		}
 		
-		add_style(`
+		Site.add_style(`
 			.root-marker.hover
 			{
 				background-color: rgb(127, 127, 127);	

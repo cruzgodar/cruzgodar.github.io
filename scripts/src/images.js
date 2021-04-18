@@ -27,7 +27,7 @@ let Images =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			currently_fetching = true;
+			Site.Fetch.busy = true;
 			
 			
 			
@@ -69,9 +69,9 @@ let Images =
 						{
 							console.log("Fetched " + images.length + " images on the page.");
 							
-							currently_fetching = false;
+							Site.Fetch.busy = false;
 							
-							fetch_item_from_queue();
+							Site.Fetch.get_next_item_from_queue();
 							
 							resolve();
 						}
@@ -93,7 +93,7 @@ let Images =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			load_script("/scripts/modernizr-webp.min.js")
+			Site.load_script("/scripts/modernizr-webp.min.js")
 			
 			.then(() =>
 			{

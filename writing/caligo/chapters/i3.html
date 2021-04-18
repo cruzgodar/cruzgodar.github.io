@@ -353,7 +353,7 @@
 	
 	
 	
-	add_style(`
+	Site.add_style(`
 		.caligo-black-background
 		{
 			width: 100vw;
@@ -424,7 +424,7 @@
 			
 			setTimeout(function()
 			{
-				background_color_changed = true;
+				Page.background_color_changed = true;
 				
 				document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 				
@@ -448,7 +448,7 @@
 					
 					Page.Load.AOS.show_section(3);
 					
-					set_element_styles(".part-text", "opacity", 1);
+					Site.set_element_styles(".part-text", "opacity", 1);
 					
 					setTimeout(function()
 					{

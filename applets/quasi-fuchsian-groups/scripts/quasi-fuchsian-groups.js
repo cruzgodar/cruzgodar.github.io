@@ -75,7 +75,7 @@
 	
 	if (!Site.scripts_loaded["complexjs"])
 	{
-		load_script("/scripts/complex.min.js")
+		Site.load_script("/scripts/complex.min.js")
 		
 		.then(function()
 		{
@@ -923,7 +923,7 @@
 			}
 		}
 		
-		add_style(`
+		Site.add_style(`
 			.coefficient-marker.hover
 			{
 				background-color: rgb(127, 127, 127);	

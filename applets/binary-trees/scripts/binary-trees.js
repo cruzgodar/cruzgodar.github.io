@@ -70,7 +70,7 @@
 		try {web_worker.terminate();}
 		catch(ex) {}
 		
-		set_element_styles(".branch-marker", "opacity", 1);
+		Site.set_element_styles(".branch-marker", "opacity", 1);
 		
 		
 		
@@ -244,7 +244,7 @@
 			{
 				setTimeout(function()
 				{
-					set_element_styles(".branch-marker", "opacity", 1);
+					Site.set_element_styles(".branch-marker", "opacity", 1);
 				}, 500);
 				
 				return;
@@ -355,7 +355,7 @@
 		{
 			document.body.style.WebkitUserSelect = "";
 			
-			set_element_styles(".branch-marker", "opacity", 0);
+			Site.set_element_styles(".branch-marker", "opacity", 0);
 			
 			
 			
@@ -493,7 +493,7 @@
 			}
 		}
 		
-		add_style(`
+		Site.add_style(`
 			.branch-marker.hover
 			{
 				background-color: rgb(127, 127, 127);	

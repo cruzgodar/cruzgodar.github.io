@@ -113,12 +113,12 @@
 		
 		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")
 		{
-			entry_point(Page.url);
+			Site.load(Page.url);
 		}
 		
 		else
 		{
-			entry_point("/home/home.html");
+			Site.load("/home/home.html");
 		}
 	</script>
 </body>

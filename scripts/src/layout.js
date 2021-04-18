@@ -275,13 +275,3 @@ Page.Layout =
 		}
 	}
 };
-
-
-
-Page.Interaction =
-{
-	//Whether this is a touchscreen device on the current page. It's assumed to be false on every page until a touchstart or touchmove event is detected, at which point it's set to true.
-	currently_touch_device: true,
-	
-	last_mousemove_event: 0
-};

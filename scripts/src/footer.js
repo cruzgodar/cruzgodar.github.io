@@ -392,9 +392,9 @@ Page.Footer =
 
 		process_touchend: function()
 		{
-			let element = document.elementFromPoint(last_touch_x, last_touch_y);
+			let element = document.elementFromPoint(Site.Interaction.last_touch_x, Site.Interaction.last_touch_y);
 			
-			if (this.is_visible === false && last_touch_y >= window.innerHeight - 75 && last_touch_y >= window.innerHeight - this.height && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
+			if (this.is_visible === false && Site.Interaction.last_touch_y >= window.innerHeight - 75 && Site.Interaction.last_touch_y >= window.innerHeight - this.height && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
 			{
 				document.querySelector("#floating-footer").style.display = "block";
 				
@@ -411,7 +411,7 @@ Page.Footer =
 
 		process_touchstart: function(event)
 		{
-			if (this.is_visible && last_touch_y < window.innerHeight - this.height - 20)
+			if (this.is_visible && Site.Interaction.last_touch_y < window.innerHeight - this.height - 20)
 			{
 				document.querySelector("#floating-footer").style.opacity = 0;
 				

@@ -168,7 +168,7 @@ Page.load = async function()
 	
 	
 	
-	background_color_changed = false;
+	Page.background_color_changed = false;
 	
 	floating_settings_is_visible = false;
 	
@@ -322,7 +322,7 @@ Page.Load =
 	{
 		if ("banner_page" in Page.settings && Page.settings["banner_page"])
 		{
-			add_style(`
+			Site.add_style(`
 				#banner
 				{
 					background: url(${Page.Banner.file_path}landscape.${Images.file_extension}) no-repeat center center;
@@ -358,11 +358,19 @@ Page.Load =
 
 		cancel_message_shown: false,
 		
+		page_ids:
+		{
+			"/teaching/uo/111/111.html": 0,
+			"/teaching/uo/112/112.html": 1,
+			"/teaching/uo/105/105.html": 2,
+			"/teaching/uo/252/252.html": 3
+		},
+		
 		
 		
 		prepare: async function()
 		{
-			if (url_vars["content_animation"] === 1 || ((url_vars["title_pages_seen"] >> title_page_ids[Page.url]) & 1))
+			if (url_vars["content_animation"] === 1 || ((url_vars["title_pages_seen"] >> this.page_ids[Page.url]) & 1))
 			{
 				document.querySelector("#vara-container").remove();
 				
@@ -386,9 +394,9 @@ Page.Load =
 				
 				
 				
-				if (!((url_vars["title_pages_seen"] >> title_page_ids[Page.url]) & 1))
+				if (!((url_vars["title_pages_seen"] >> this.page_ids[Page.url]) & 1))
 				{
-					url_vars["title_pages_seen"] += (1 << title_page_ids[Page.url]);
+					url_vars["title_pages_seen"] += (1 << this.page_ids[Page.url]);
 					
 					Page.Navigation.write_url_vars();
 				}
@@ -566,6 +574,19 @@ Page.Load =
 	
 	AOS:
 	{
+		//A list of lists. Each sublist starts with an anchor, then lists all the elements anchored to it in sequence, along with their delays.
+		elements: [],
+
+		anchor_positions: [],
+
+		anchor_offsets: [],
+
+		anchors_shown: [],
+
+		currently_animating: [],
+		
+		
+		
 		//So, there's this bug that's plagued the site since its inception. iOS Safari eventually seems to have a memory leak and starts cutting off all transitions before they've reached their end. It gets progressively worse until quitting the app is required. It can be triggered by drag-and-dropping elements repeatedly *anywhere* in Safari, and affects all webpages with CSS transitions.
 
 		//In iOS 13.4, it seems Apple has miraculously fixed this nightmare. But for whatever reason, AOS is still problematic. If an element has a nonzero delay, it will be bugged, but zero-delay elements behave as usual. And so the solution is, unfortunately, to handle almost all of what AOS does manually.
@@ -573,31 +594,31 @@ Page.Load =
 		//This function puts the proper delays and anchors on aos elements on the page. The first animated element in every section should have a class of new-aos-section.
 		load: function()
 		{
-			aos_elements = [];
+			this.elements = [];
 			
-			let new_aos_elements = document.querySelectorAll("[data-aos]");
+			let new_elements = document.querySelectorAll("[data-aos]");
 			
 			let current_section = 0;
 			let current_delay = 0;
 			
 			
 			
-			for (let i = 0; i < new_aos_elements.length; i++)
+			for (let i = 0; i < new_elements.length; i++)
 			{
-				if (new_aos_elements[i].classList.contains("new-aos-section"))
+				if (new_elements[i].classList.contains("new-aos-section"))
 				{
 					//Create a new section.
-					aos_elements.push([]);
+					this.elements.push([]);
 					
-					aos_currently_animating.push([]);
+					this.currently_animating.push([]);
 					
 					current_section++;
 					
 					
 					
-					if (new_aos_elements[i].getAttribute("data-aos-delay") !== null)
+					if (new_elements[i].getAttribute("data-aos-delay") !== null)
 					{
-						current_delay = parseInt(new_aos_elements[i].getAttribute("data-aos-delay"));
+						current_delay = parseInt(new_elements[i].getAttribute("data-aos-delay"));
 					}
 					
 					else
@@ -607,37 +628,37 @@ Page.Load =
 					
 					
 					
-					if (new_aos_elements[i].getAttribute("data-aos-offset") !== null)
+					if (new_elements[i].getAttribute("data-aos-offset") !== null)
 					{
-						aos_anchor_offsets[current_section - 1] = parseInt(new_aos_elements[i].getAttribute("data-aos-offset"));
+						this.anchor_offsets[current_section - 1] = parseInt(new_elements[i].getAttribute("data-aos-offset"));
 					}
 					
 					else
 					{
-						aos_anchor_offsets[current_section - 1] = 100;
+						this.anchor_offsets[current_section - 1] = 100;
 					}
 					
 					
 					
-					new_aos_elements[i].setAttribute("data-aos-offset", 1000000);
-					new_aos_elements[i].setAttribute("data-aos-delay", 0);
+					new_elements[i].setAttribute("data-aos-offset", 1000000);
+					new_elements[i].setAttribute("data-aos-delay", 0);
 					
 					
 					
-					aos_elements[current_section - 1].push([new_aos_elements[i], current_delay]);
+					this.elements[current_section - 1].push([new_elements[i], current_delay]);
 					
-					aos_anchor_positions[current_section - 1] = new_aos_elements[i].getBoundingClientRect().top + Page.scroll;
+					this.anchor_positions[current_section - 1] = new_elements[i].getBoundingClientRect().top + Page.scroll;
 					
-					aos_anchors_shown[current_section - 1] = false;
+					this.anchors_shown[current_section - 1] = false;
 				}
 				
 				
 				
 				else
 				{
-					if (new_aos_elements[i].getAttribute("data-aos-delay") !== null)
+					if (new_elements[i].getAttribute("data-aos-delay") !== null)
 					{
-						current_delay = parseInt(new_aos_elements[i].getAttribute("data-aos-delay"));
+						current_delay = parseInt(new_elements[i].getAttribute("data-aos-delay"));
 					}
 					
 					else
@@ -652,10 +673,10 @@ Page.Load =
 					
 					
 					
-					new_aos_elements[i].setAttribute("data-aos-offset", 1000000);
-					new_aos_elements[i].setAttribute("data-aos-delay", 0);
+					new_elements[i].setAttribute("data-aos-offset", 1000000);
+					new_elements[i].setAttribute("data-aos-delay", 0);
 					
-					aos_elements[current_section - 1].push([new_aos_elements[i], current_delay]);
+					this.elements[current_section - 1].push([new_elements[i], current_delay]);
 				}
 			}
 			
@@ -673,9 +694,9 @@ Page.Load =
 		{
 			console.log("Updated AOS anchors");
 			
-			for (let i = 0; i < aos_elements.length; i++)
+			for (let i = 0; i < this.elements.length; i++)
 			{
-				aos_anchor_positions[i] = aos_elements[i][0][0].getBoundingClientRect().top + Page.scroll;
+				this.anchor_positions[i] = this.elements[i][0][0].getBoundingClientRect().top + Page.scroll;
 			}
 			
 			this.fix_footer_anchor();
@@ -685,21 +706,21 @@ Page.Load =
 
 		fix_footer_anchor: function()
 		{
-			aos_anchor_positions[aos_elements.length - 1] = document.body.clientHeight - 10;
+			this.anchor_positions[this.elements.length - 1] = document.body.clientHeight - 10;
 		},
 
 
 
 		on_scroll: function()
 		{
-			for (let i = 0; i < aos_elements.length; i++)
+			for (let i = 0; i < this.elements.length; i++)
 			{
-				if (Page.scroll + Page.Layout.window_height >= aos_anchor_positions[i] + aos_anchor_offsets[i] && aos_anchors_shown[i] === false)
+				if (Page.scroll + Page.Layout.window_height >= this.anchor_positions[i] + this.anchor_offsets[i] && this.anchors_shown[i] === false)
 				{
 					this.show_section(i);
 				}
 				
-				else if (Page.scroll + Page.Layout.window_height < aos_anchor_positions[i] + aos_anchor_offsets[i] && aos_anchors_shown[i] === true)
+				else if (Page.scroll + Page.Layout.window_height < this.anchor_positions[i] + this.anchor_offsets[i] && this.anchors_shown[i] === true)
 				{
 					this.hide_section(i);
 				}
@@ -717,19 +738,19 @@ Page.Load =
 			
 			
 			
-			for (let i = 0; i < aos_elements[section].length; i++)
+			for (let i = 0; i < this.elements[section].length; i++)
 			{
 				let refresh_id = setTimeout(() =>
 				{
-					aos_elements[section][i][0].setAttribute("data-aos-offset", -1000000);
+					this.elements[section][i][0].setAttribute("data-aos-offset", -1000000);
 					
 					AOS.refresh();
-				}, aos_elements[section][i][1]);
+				}, this.elements[section][i][1]);
 				
-				aos_currently_animating[section].push(refresh_id);
+				this.currently_animating[section].push(refresh_id);
 			}
 			
-			aos_anchors_shown[section] = true;
+			this.anchors_shown[section] = true;
 		},
 
 
@@ -738,26 +759,26 @@ Page.Load =
 		{
 			try
 			{
-				for (let i = 0; i < aos_currently_animating[section].length; i++)
+				for (let i = 0; i < this.currently_animating[section].length; i++)
 				{
-					clearTimeout(aos_currently_animating[section][i]);
+					clearTimeout(this.currently_animating[section][i]);
 				}
 			}
 			
 			catch(ex) {}
 			
-			aos_currently_animating[section] = [];
+			this.currently_animating[section] = [];
 			
 			
 			
-			for (let i = 0; i < aos_elements[section].length; i++)
+			for (let i = 0; i < this.elements[section].length; i++)
 			{
-				aos_elements[section][i][0].setAttribute("data-aos-offset", 1000000);
+				this.elements[section][i][0].setAttribute("data-aos-offset", 1000000);
 				
 				AOS.refresh();
 			}
 			
-			aos_anchors_shown[section] = false;
+			this.anchors_shown[section] = false;
 		}
 	},
 
@@ -765,10 +786,40 @@ Page.Load =
 	
 	HoverEvents:
 	{
+		element_selectors: `
+			a,
+			
+			#scroll-button,
+			
+			.text-button,
+			.checkbox-container,
+			.radio-button-container,
+			
+			.footer-button,
+			.footer-image-link img,
+			#scroll-up-button,
+			
+			.image-link img,
+			
+			#logo img,
+			
+			.nav-button,
+			.big-image-horizontal,
+			.small-image-horizontal,
+			.big-image-vertical,
+			.small-image-vertical,
+			
+			
+			
+			.root-marker
+		`,
+		
+		
+		
 		//Adds a listener to every element that needs a hover event. Yes, you could use CSS for this. No, I don't want to.
 		set_up: function()
 		{
-			let elements = document.querySelectorAll(hover_elements);
+			let elements = document.querySelectorAll(this.element_selectors);
 			
 			for (let i = 0; i < elements.length; i++)
 			{
@@ -782,7 +833,7 @@ Page.Load =
 		{
 			element.addEventListener("mouseenter", () =>
 			{
-				if (Page.Interaction.currently_touch_device === false)
+				if (Site.Interaction.currently_touch_device === false)
 				{
 					element.classList.add("hover");
 				}
@@ -790,7 +841,7 @@ Page.Load =
 			
 			element.addEventListener("mouseleave", () =>
 			{
-				if (Page.Interaction.currently_touch_device === false)
+				if (Site.Interaction.currently_touch_device === false)
 				{
 					element.classList.remove("hover");
 					
@@ -803,7 +854,7 @@ Page.Load =
 
 		remove: function()
 		{
-			let elements = document.querySelectorAll(hover_elements);
+			let elements = document.querySelectorAll(this.element_selectors);
 			
 			for (let i = 0; i < elements.length; i++)
 			{
@@ -977,11 +1028,11 @@ Page.Load =
 		{
 			if (!Site.scripts_loaded["mathjax"])
 			{
-				load_script("https://polyfill.io/v3/polyfill.min.js?features=es6");
+				Site.load_script("https://polyfill.io/v3/polyfill.min.js?features=es6");
 				
 				
 				
-				load_script("https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js")
+				Site.load_script("https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js")
 				
 				.then(function()
 				{

@@ -223,7 +223,7 @@ Page.Banner =
 				{
 					if (url_vars["banner_style"] !== 1)
 					{
-						set_element_styles(".name-text", "opacity", opacity);
+						Site.set_element_styles(".name-text", "opacity", opacity);
 					}
 				}
 				
@@ -262,7 +262,7 @@ Page.Banner =
 			{
 				if (url_vars["banner_style"] !== 1)
 				{
-					set_element_styles(".name-text", "opacity", 0);
+					Site.set_element_styles(".name-text", "opacity", 0);
 				}
 				
 				if (this.ScrollButton.exists)
@@ -283,16 +283,16 @@ Page.Banner =
 	{
 		if (this.file_name === "landscape.webp" || this.file_name === "landscape.jpg")
 		{
-			fetch_queue.push(this.file_path + "portrait." + Images.file_extension);
+			Site.Fetch.queue.push(this.file_path + "portrait." + Images.file_extension);
 			
-			fetch_item_from_queue();
+			Site.Fetch.get_next_item_from_queue();
 		}
 		
 		else
 		{
-			fetch_queue.push(this.file_path + "landscape." + Images.file_extension);
+			Site.Fetch.queue.push(this.file_path + "landscape." + Images.file_extension);
 			
-			fetch_item_from_queue();
+			Site.Fetch.get_next_item_from_queue();
 		}
 	},
 
@@ -313,18 +313,18 @@ Page.Banner =
 				{
 					this.pages_already_fetched.push(href);
 					
-					fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + this.file_name);
+					Site.Fetch.queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + this.file_name);
 					
-					fetch_item_from_queue();
+					Site.Fetch.get_next_item_from_queue();
 				}
 				
 				else
 				{
 					let next_index = this.multibanner_pages[href]["current_banner"] % (this.multibanner_pages[href]["current_banner"] + 1) + 1;
 					
-					fetch_queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + next_index + "/" + this.file_name);
+					Site.Fetch.queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + next_index + "/" + this.file_name);
 					
-					fetch_item_from_queue();
+					Site.Fetch.get_next_item_from_queue();
 				}
 			}
 		}

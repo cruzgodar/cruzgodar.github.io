@@ -125,7 +125,7 @@ let Applets =
 				catch(ex) {}
 			}
 			
-			else if (Page.Interaction.currently_touch_device)
+			else if (Site.Interaction.currently_touch_device)
 			{
 				try
 				{

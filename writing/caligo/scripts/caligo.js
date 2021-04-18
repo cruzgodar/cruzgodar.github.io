@@ -281,11 +281,11 @@
 	
 	function update_background()
 	{
-		background_color_changed = true;
+		Page.background_color_changed = true;
 		
 		if (Page.scroll === 0)
 		{
-			background_color_changed = false;
+			Page.background_color_changed = false;
 		}
 		
 		
@@ -439,7 +439,7 @@
 	function adjust_for_settings()
 	{
 		//Meet the jankiest solution ever. Putting things in the style files puts them at the top of the head, so even though they have !important, they're before the settings style, which ALSO has to have !important. It's a garbage fire.
-		add_style(`
+		Site.add_style(`
 			#floating-footer-gradient
 			{
 				background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%) !important;
@@ -452,13 +452,13 @@
 		
 		if (url_vars["contrast"] === 1)
 		{
-			set_element_styles(".synopsis-text", "color", "rgb(192, 192, 192)");
+			Site.set_element_styles(".synopsis-text", "color", "rgb(192, 192, 192)");
 			
-			set_element_styles(".body-text", "color", "rgb(192, 192, 192)");
+			Site.set_element_styles(".body-text", "color", "rgb(192, 192, 192)");
 			
 			if (url_vars["theme"] !== 1)
 			{
-				set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
+				Site.set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
 			}
 			
 			
@@ -467,13 +467,13 @@
 			
 			
 			
-			set_element_styles(".stage-bubble", "border-color", "rgb(192, 192, 192)");
+			Site.set_element_styles(".stage-bubble", "border-color", "rgb(192, 192, 192)");
 			
-			set_element_styles(".stage-bubble span", "background-color", "rgb(192, 192, 192)");
+			Site.set_element_styles(".stage-bubble span", "background-color", "rgb(192, 192, 192)");
 			
 			
 			
-			add_style(`
+			Site.add_style(`
 				.line-break
 				{
 					background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(140,140,140) 50%, rgb(0,0,0) 100%);
@@ -485,7 +485,7 @@
 		
 		else
 		{
-			add_style(`
+			Site.add_style(`
 				.line-break
 				{
 					background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(92,92,92) 50%, rgb(0,0,0) 100%);
@@ -498,7 +498,7 @@
 			
 			if (url_vars["theme"] === 1)
 			{
-				set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
+				Site.set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
 			}
 		}
 	}

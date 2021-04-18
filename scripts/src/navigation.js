@@ -147,7 +147,7 @@ Page.Navigation =
 			
 			setTimeout(() =>
 			{
-				if (background_color_changed === false)
+				if (!Page.background_color_changed)
 				{
 					document.body.style.opacity = 1;
 				}
@@ -243,7 +243,7 @@ Page.Unload =
 			//Act like a normal link, with no transitions, if the user wants that.
 			if (url_vars["content_animation"] === 1)
 			{
-				if (background_color_changed)
+				if (Page.background_color_changed)
 				{
 					if (url_vars["theme"] === 1)
 					{
@@ -276,7 +276,7 @@ Page.Unload =
 				
 				setTimeout(() =>
 				{
-					if (background_color_changed === false)
+					if (Page.background_color_changed === false)
 					{
 						resolve();
 					}
