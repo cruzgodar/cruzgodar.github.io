@@ -833,7 +833,7 @@ Page.Load =
 		{
 			element.addEventListener("mouseenter", () =>
 			{
-				if (Site.Interaction.currently_touch_device === false)
+				if (!Site.Interaction.currently_touch_device)
 				{
 					element.classList.add("hover");
 				}
@@ -841,7 +841,7 @@ Page.Load =
 			
 			element.addEventListener("mouseleave", () =>
 			{
-				if (Site.Interaction.currently_touch_device === false)
+				if (!Site.Interaction.currently_touch_device)
 				{
 					element.classList.remove("hover");
 					

@@ -320,7 +320,7 @@ let Site =
 	Interaction:
 	{
 		//Whether this is a touchscreen device on the current page. It's assumed to be false on every page until a touchstart or touchmove event is detected, at which point it's set to true.
-		currently_touch_device: true,
+		currently_touch_device: false,
 		
 		last_mousemove_event: 0,
 		
@@ -331,8 +331,10 @@ let Site =
 		
 		set_up_listeners: function()
 		{
-			document.documentElement.addEventListener("touchstart", this.handle_touch_event, false);
-			document.documentElement.addEventListener("touchmove", this.handle_touch_event, false);
+			let bound_function = this.handle_touch_event.bind(this);
+			
+			document.documentElement.addEventListener("touchstart", bound_function, false);
+			document.documentElement.addEventListener("touchmove", bound_function, false);
 
 
 
