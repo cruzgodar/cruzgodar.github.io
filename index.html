@@ -87,9 +87,9 @@
 		document.head.appendChild(link);
 		
 		
-		if (typeof current_url !== "undefined" && current_url !== null && current_url !== "null")
+		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")
 		{
-			Site.load(current_url);
+			Site.load(Page.url);
 		}
 		
 		else
