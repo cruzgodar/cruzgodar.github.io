@@ -33,11 +33,23 @@ Page.Components =
 	
 	
 	
+	get_footer: function(args)
+	{
+		return `
+			<footer>
+				<div id="spawn-footer"></div>
+			</footer>
+		`;
+	},
+	
+	
+	
 	decode: function(html)
 	{
 		const commands =
 		{
-			"!header": Page.Components.get_header
+			"!header": Page.Components.get_header,
+			"!footer": Page.Components.get_footer
 		};
 		
 		
