@@ -110,7 +110,7 @@ Page.Navigation =
 			
 			
 			
-			document.body.innerHTML = data;
+			document.body.innerHTML = Page.Components.decode(data);
 			
 			
 			
