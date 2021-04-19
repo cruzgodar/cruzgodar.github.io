@@ -116,23 +116,23 @@ Page.load = async function()
 	
 	
 	
-	Page.Layout.on_resize();
-	
-	
-	
-	if (this.Layout.layout_string === "ultrawide")
-	{
-		this.Layout.Multicols.create();
-	}
-	
-	
-	
 	this.Load.AOS.load();
 	
 	setTimeout(() =>
 	{
 		this.Load.AOS.on_resize();
 	}, 1000);
+	
+	
+	
+	Page.Layout.Multicols.active = false;
+	
+	Page.Layout.on_resize();
+	
+	if (this.Layout.layout_string === "ultrawide")
+	{
+		this.Layout.Multicols.create();
+	}
 	
 	
 	
