@@ -45,6 +45,8 @@ Page.scroll = 0;
 
 Page.settings = {};
 
+Page.url = decodeURIComponent(Settings.get_url_var("page"));
+
 Page.parent_folder = "/";
 
 
@@ -404,7 +406,3 @@ let Site =
 	
 	Settings: Settings
 };
-
-
-
-Page.url = decodeURIComponent(Site.Settings.get_url_var("page"));

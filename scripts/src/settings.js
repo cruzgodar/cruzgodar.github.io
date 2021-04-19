@@ -68,12 +68,12 @@ let Settings =
 		{
 			if (e.matches && this.url_vars["theme"] !== 1)
 			{
-				this.toggle_setting("theme");
+				this.toggle("theme");
 			}
 			
 			else if (!e.matches && this.url_vars["theme"] === 1)
 			{
-				this.toggle_setting("theme");
+				this.toggle("theme");
 			}
 		});
 
@@ -101,7 +101,7 @@ let Settings =
 			else if (this.url_vars[key] == 1)
 			{
 				this.url_vars[key] = 0;
-				this.toggle_setting(key, true);
+				this.toggle(key, true);
 			}
 		}
 		
