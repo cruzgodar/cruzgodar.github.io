@@ -4,8 +4,10 @@
 
 Page.Components =
 {
-	get_header: function(title)
+	get_header: function(args)
 	{
+		let title = args.join(" ");
+		
 		return `
 			<header>
 				<div class="new-aos-section" data-aos="fade-in">
@@ -55,7 +57,7 @@ Page.Components =
 				
 				let command = lines[i].split(";")[0].split(" ");
 				
-				let component = commands[command[0]](...(command.slice(1)));
+				let component = commands[command[0]](command.slice(1));
 				
 				lines[i] = component;
 			}
