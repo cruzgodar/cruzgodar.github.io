@@ -344,12 +344,12 @@ Page.Banner =
 		
 		insert: function()
 		{
-			let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * scroll / Page.Layout.window_height, 0) - Math.PI / 2);
+			let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 			
 			
 			
 			//Only add the scroll button if the user is still on the top of the page.
-			if (scroll <= Page.Layout.window_height / 3)
+			if (Page.scroll <= Page.Layout.window_height / 3)
 			{
 				let chevron_name = "chevron-down";
 				
