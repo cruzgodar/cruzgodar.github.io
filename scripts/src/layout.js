@@ -154,6 +154,8 @@ Page.Layout =
 
 	Multicols:
 	{
+		active: false,
+		
 		texts: [],
 		image_links: [],
 		reference: null,
@@ -162,6 +164,15 @@ Page.Layout =
 		
 		create: function()
 		{
+			if (this.active)
+			{
+				return;
+			}
+			
+			this.active = true;
+			
+			
+			
 			let parents = document.querySelectorAll(".multicol-block");
 			
 			if (parents.length === 0)
@@ -221,6 +232,15 @@ Page.Layout =
 
 		remove: function()
 		{
+			if (!this.active)
+			{
+				return;
+			}
+			
+			this.active = false;
+			
+			
+			
 			let containers = document.querySelectorAll(".image-links-double-column-container");
 			
 			if (containers.length === 0)
