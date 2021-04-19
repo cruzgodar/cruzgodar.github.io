@@ -116,6 +116,10 @@ Page.load = async function()
 	
 	
 	
+	Page.Layout.on_resize();
+	
+	
+	
 	if (this.Layout.layout_string === "ultrawide")
 	{
 		this.Layout.Multicols.create();

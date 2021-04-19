@@ -105,6 +105,8 @@ let Site =
 		window.addEventListener("resize", () =>
 		{
 			Page.Load.AOS.on_resize();
+			
+			Page.Layout.on_resize();
 		});
 		
 		Page.Load.AOS.on_resize();
