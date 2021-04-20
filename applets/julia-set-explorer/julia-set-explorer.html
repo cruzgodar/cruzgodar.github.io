@@ -14,21 +14,16 @@
 
 <main>
 	<section>
-		<div data-aos="fade-up">
-			<p class="body-text">It&#x2019;s hard to find a fractal more famous than the Mandelbrot set. It falls into a class of fractals called <dfn>Iterated Function Systems</dfn>, which all revolve around applying functions to points repeatedly and analyzing the output. Here, those points are in the complex plane, and the function is \(f(z) = z^2 + c\), where \(c\) is fixed at the initial value of the point. For example, the point \(-i\) gives \(f(i) = (-i)^2 + i = -1 + i\) when run through the function, and then \(-1 + i\) gives \(f(-1 + i) = (-1 + i)^2 + i = -i\) again. The function will flip-flop between those two numbers forever, and what&#x2019;s relevant to us is that their magnitudes will never blow up to infinity. Starting points with that property are the ones in the Mandelbrot set, and we color them black. For all the points that do induce sequences with unbounded magnitude, we color them according to how quickly those sequence grow &mdash; bright for slow and dark for fast.</p>
-		</div>
+		!begin-text-block
+			
+			It&#x2019;s hard to find a fractal more famous than the Mandelbrot set. It falls into a class of fractals called <dfn>Iterated Function Systems</dfn>, which all revolve around applying functions to points repeatedly and analyzing the output. Here, those points are in the complex plane, and the function is \(f(z) = z^2 + c\), where \(c\) is fixed at the initial value of the point. For example, the point \(-i\) gives \(f(i) = (-i)^2 + i = -1 + i\) when run through the function, and then \(-1 + i\) gives \(f(-1 + i) = (-1 + i)^2 + i = -i\) again. The function will flip-flop between those two numbers forever, and what&#x2019;s relevant to us is that their magnitudes will never blow up to infinity. Starting points with that property are the ones in the Mandelbrot set, and we color them black. For all the points that do induce sequences with unbounded magnitude, we color them according to how quickly those sequence grow &mdash; bright for slow and dark for fast.
+			
+			Using the same \(c\) for every point results in a related type of fractal called a <dfn>Julia Set</dfn>, which resembles the Mandelbrot set at that point. Drag or hover on the Mandelbrot set to pick a Julia set after clicking the button, and click or release to explore that Julia set.
+			
+			Of course, the Mandelbrot set and its Julias are most well-known for their tiny features only visible by zooming in. Drag on the scene to look around, and use the scroll wheel or pinch to zoom.
 		
-		<br>
+		!end-text-block
 		
-		<div data-aos="fade-up">
-			<p class="body-text">Using the same \(c\) for every point results in a related type of fractal called a <dfn>Julia Set</dfn>, which resembles the Mandelbrot set at that point. Drag or hover on the Mandelbrot set to pick a Julia set after clicking the button, and click or release to explore that Julia set.</p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text">Of course, the Mandelbrot set and its Julias are most well-known for their tiny features only visible by zooming in. Drag on the scene to look around, and use the scroll wheel or pinch to zoom.</p>
-		</div>
 		
 		<div style="height: 10vh"></div>
 		

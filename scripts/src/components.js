@@ -4,6 +4,10 @@
 
 Page.Components =
 {
+	need_new_aos_section: false,
+	
+	
+	
 	get_header: function(args)
 	{
 		let title = args.join(" ");
@@ -44,16 +48,23 @@ Page.Components =
 	
 	
 	
-	get_text: function(args)
+	get_text: function(args, new_aos_section)
 	{
-		let text = args.slice(2).join(" ");
+		let aos_section_segment = "";
 		
-		console.log(text);
+		if (new_aos_section)
+		{
+			aos_section_segment = ` class="new-aos-section"`;
+		}
+		
+		
 		
 		if (args[0] === "h")
 		{
+			let text = args.slice(1).join(" ");
+			
 			return `
-				<div data-aos="fade-up">
+				<div${aos_section_segment} data-aos="fade-up">
 					<h1 class="section-text">
 						${text}
 					</h1>
@@ -63,8 +74,10 @@ Page.Components =
 		
 		else if (args[0] === "s")
 		{
+			let text = args.slice(1).join(" ");
+			
 			return `
-				<div data-aos="fade-up">
+				<div${aos_section_segment} data-aos="fade-up">
 					<h2 class="section-text">
 						${text}
 					</h2>
@@ -74,11 +87,13 @@ Page.Components =
 		
 		else
 		{
+			let text = args.slice(2).join(" ");
+			
 			//Only this one gets the line break at the end.
 			if (args[1] === "j")
 			{
 				return `
-					<div data-aos="fade-up">
+					<div${aos_section_segment} data-aos="fade-up">
 						<p class="body-text">
 							${text}
 						</p>
@@ -92,7 +107,7 @@ Page.Components =
 			else
 			{
 				return `
-					<div data-aos="fade-up">
+					<div${aos_section_segment} data-aos="fade-up">
 						<p class="body-text center-if-needed">
 							<span>
 								${text}
@@ -115,6 +130,8 @@ Page.Components =
 			"!text": Page.Components.get_text
 		};
 		
+		let new_aos_section = false;
+		
 		
 		
 		let lines = html.replace(/\t/g, "").replace(/    /g, "").replace(/\r/g, "").split("\n");
@@ -127,7 +144,48 @@ Page.Components =
 			{
 				let words = lines[i].split(" ");
 				
-				lines[i] = commands[words[0]](words.slice(1));
+				if (words[0] === "!begin-text-block")
+				{
+					lines[i] = "";
+					
+					i += 2;
+					
+					words = lines[i].split(" ");
+					
+					while (words[0] !== "!end-text-block")
+					{
+						lines[i] = this.get_text(["b", "j"].concat(words));
+						
+						i += 2;
+						
+						words = lines[i].split(" ");
+					}
+					
+					lines[i] = "";
+				}
+				
+				
+				
+				else if (words[0] === "!section")
+				{
+					new_aos_section = true;
+					
+					lines[i] = "";
+				}
+				
+				
+				
+				else if (words[0] === "!text")
+				{
+					lines[i] = this.get_text(words.slice(1), new_aos_section);
+				}
+				
+				
+				
+				else
+				{
+					lines[i] = commands[words[0]](words.slice(1));
+				}
 			}
 		}
 		

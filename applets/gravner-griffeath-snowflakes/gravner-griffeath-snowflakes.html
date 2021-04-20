@@ -14,51 +14,21 @@
 
 <main>
 	<section>
-		<div data-aos="fade-up">
-			<p class="body-text">
-				In 2007, two mathematicians collaborated to <a href="http://psoup.math.wisc.edu/papers/h2l.pdf" onclick="Page.Navigation.redirect('http://psoup.math.wisc.edu/papers/h2l.pdf', true)">create a detailed model</a> for snowflake generation. In contrast to other models for crystal growth like <a href="/applets/brownian-trees/brownian-trees.html" onclick="Page.Navigation.redirect('/applets/brownian-trees/brownian-trees.html')">diffusion-limited aggregation</a>, this one simulates a striking level of detail, all the way down to the diffusion of water vapor in the air. It even has a massive selection of parameters that allow for careful fine-tuning:
-			</p>
-		</div>
+		!begin-text-block
 		
-		<br>
+			In 2007, two mathematicians collaborated to <a href="http://psoup.math.wisc.edu/papers/h2l.pdf" onclick="Page.Navigation.redirect('http://psoup.math.wisc.edu/papers/h2l.pdf', true)">create a detailed model</a> for snowflake generation. In contrast to other models for crystal growth like <a href="/applets/brownian-trees/brownian-trees.html" onclick="Page.Navigation.redirect('/applets/brownian-trees/brownian-trees.html')">diffusion-limited aggregation</a>, this one simulates a striking level of detail, all the way down to the diffusion of water vapor in the air. It even has a massive selection of parameters that allow for careful fine-tuning:
+			
+			\(\rho\): the density of water vapor in the air. Higher values will produce faster-growing, more intricate flakes.
+			
+			\(\beta\): the difficulty of water vapor to attach to the flake when not surrounded by much ice. Higher values will produce more plate-like, less intricate flakes.
+			
+			\(\kappa\): the amount of vapor that freezes directly before even attaching to the flake. Higher values will produce flakes with thinner main branches and more side branches.
+			
+			\(\mu\): the tendency of ice on the boundary of the flake to revert back to vapor. Higher values will produce flakes with less detail and more mass distributed far from the center.
+			
+			\(\alpha\), \(\theta\), and \(\gamma\) affect the process in more complicated ways that are somewhat out of the scope of a blurb this short. If you&#x2019;re interested, check out the paper and mess with their values here!
 		
-		<div data-aos="fade-up">
-			<p class="body-text">
-				\(\rho\): the density of water vapor in the air. Higher values will produce faster-growing, more intricate flakes.
-			</p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text">
-				\(\beta\): the difficulty of water vapor to attach to the flake when not surrounded by much ice. Higher values will produce more plate-like, less intricate flakes.
-			</p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text">
-				\(\kappa\): the amount of vapor that freezes directly before even attaching to the flake. Higher values will produce flakes with thinner main branches and more side branches.
-			</p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text">
-				\(\mu\): the tendency of ice on the boundary of the flake to revert back to vapor. Higher values will produce flakes with less detail and more mass distributed far from the center.
-			</p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text">
-				\(\alpha\), \(\theta\), and \(\gamma\) affect the process in more complicated ways that are somewhat out of the scope of a blurb this short. If you&#x2019;re interested, check out the paper and mess with their values here!
-			</p>
-		</div>
+		!end-text-block
 		
 		<div style="height: 10vh"></div>
 		
