@@ -472,6 +472,8 @@ Page.Load =
 								
 								document.querySelector("#vara-container").remove();
 								
+								document.querySelector("#cancel-vara-text").remove();
+								
 								
 								
 								document.documentElement.style.overflowY = "visible";

@@ -1,23 +1,23 @@
 {
-	"image-final":
+	"final":
     {
         "webp": "exams/final/cover.webp",
         "non-webp": "exams/final/cover.jpg"
     },
     
-	"image-week-4-notes":
+	"week-4-notes":
     {
         "webp": "notes/4/cover.webp",
         "non-webp": "notes/4/cover.jpg"
     },
     
-	"image-final-topics":
+	"final-topics":
     {
         "webp": "extra/final-topics/cover.webp",
         "non-webp": "extra/final-topics/cover.jpg"
     },
     
-	"image-quiz-5":
+	"quiz-5":
     {
         "webp": "quizzes/5/cover.webp",
         "non-webp": "quizzes/5/cover.jpg"
@@ -25,31 +25,31 @@
     
     
     
-	"image-week-3-notes":
+	"week-3-notes":
     {
         "webp": "notes/3/cover.webp",
         "non-webp": "notes/3/cover.jpg"
     },
     
-    "image-homework-5":
+    "homework-5":
     {
         "webp": "homework/5/cover.webp",
         "non-webp": "homework/5/cover.jpg"
     },
     
-    "image-quiz-4":
+    "quiz-4":
     {
         "webp": "quizzes/4/cover.webp",
         "non-webp": "quizzes/4/cover.jpg"
     },
     
-    "image-homework-4":
+    "homework-4":
     {
         "webp": "homework/4/cover.webp",
         "non-webp": "homework/4/cover.jpg"
     },
     
-	"image-quiz-3":
+	"quiz-3":
     {
         "webp": "quizzes/3/cover.webp",
         "non-webp": "quizzes/3/cover.jpg"
@@ -57,31 +57,31 @@
     
     
     
-	"image-week-2-notes":
+	"week-2-notes":
     {
         "webp": "notes/2/cover.webp",
         "non-webp": "notes/2/cover.jpg"
     },
     
-    	"image-midterm":
+    	"midterm":
     {
         "webp": "exams/midterm/cover.webp",
         "non-webp": "exams/midterm/cover.jpg"
     },
     
-    "image-midterm-topics":
+    "midterm-topics":
     {
         "webp": "extra/midterm-topics/cover.webp",
         "non-webp": "extra/midterm-topics/cover.jpg"
     },
     	
-    	"image-homework-3":
+    	"homework-3":
     {
         "webp": "homework/3/cover.webp",
         "non-webp": "homework/3/cover.jpg"
     },
     
-	"image-quiz-2":
+	"quiz-2":
     {
         "webp": "quizzes/2/cover.webp",
         "non-webp": "quizzes/2/cover.jpg"
@@ -89,37 +89,37 @@
     
     
     
-	"image-week-1-notes":
+	"week-1-notes":
     {
         "webp": "notes/1/cover.webp",
         "non-webp": "notes/1/cover.jpg"
     },
     
-    "image-quiz-1":
+    "quiz-1":
     {
         "webp": "quizzes/1/cover.webp",
         "non-webp": "quizzes/1/cover.jpg"
     },
     
-    "image-homework-2":
+    "homework-2":
     {
         "webp": "homework/2/cover.webp",
         "non-webp": "homework/2/cover.jpg"
     },
     
-	"image-homework-1":
+	"homework-1":
     {
         "webp": "homework/1/cover.webp",
         "non-webp": "homework/1/cover.jpg"
     },
     
-    "image-lecture-archive":
+    "lecture-archive":
     {
         "webp": "lecture-archive/cover.webp",
         "non-webp": "lecture-archive/cover.jpg"
     },
     
-    "image-syllabus":
+    "syllabus":
     {
         "webp": "syllabus/cover.webp",
         "non-webp": "syllabus/cover.jpg"

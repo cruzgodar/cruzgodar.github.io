@@ -123,16 +123,43 @@ Page.Components =
 	
 	get_image_link: function(args)
 	{
-		let file_path = Page.parent_folder + args[0];
+		let file_path = args[0];
 		
-		let subtext = args.slice(1).join(" ");
+		if (file_path[0] !== "/")
+		{
+			file_path = Page.parent_folder + args[0];
+		}
+		
+		
+		
+		let subtext = "";
+		
+		
+		
+		let light_text = "";
+		
+		if (args[1] === "l")
+		{
+			light_text = " image-link-light";
+			
+			subtext = args.slice(2).join(" ");
+		}
+		
+		else
+		{
+			subtext = args.slice(1).join(" ");
+		}
+		
+		
 		
 		let id = args[0].split(".")[0].split("/");
 		
 		id = id[id.length - 1];
 		
+		
+		
 		return `
-			<div class="image-link" data-aos="fade-up">
+			<div class="image-link${light_text}" data-aos="fade-up">
 				<a href="${file_path}" tabindex="-1">
 					<img data-image-id="${id}" class="check-webp no-floating-footer" onclick="Page.Navigation.redirect('${file_path}')" src="" alt="${subtext}" tabindex="1"></img>
 				</a>

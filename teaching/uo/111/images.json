@@ -1,5 +1,5 @@
 {
-	"image-written-homework-7":
+	"written-homework-7":
     {
         "webp": "homeworks/7/cover.webp",
         "non-webp": "homeworks/7/cover.jpg"
@@ -7,13 +7,13 @@
     
     
     
-    "image-midterm-2":
+    "midterm-2":
     {
         "webp": "exams/2/cover.webp",
         "non-webp": "exams/2/cover.jpg"
     },
     
-	"image-midterm-2-practice-solutions":
+	"midterm-2-practice-solutions":
     {
         "webp": "extra/midterm-2-practice-solutions/cover.webp",
         "non-webp": "extra/midterm-2-practice-solutions/cover.jpg"
@@ -21,13 +21,13 @@
     
     
     
-	"image-written-homework-6":
+	"written-homework-6":
     {
         "webp": "homeworks/6/cover.webp",
         "non-webp": "homeworks/6/cover.jpg"
     },
     
-    "image-inverse-function-example":
+    "inverse-function-example":
     {
         "webp": "extra/inverse-function-example/cover.webp",
         "non-webp": "extra/inverse-function-example/cover.jpg"
@@ -35,13 +35,13 @@
     
     
     
-	"image-quiz-5":
+	"quiz-5":
     {
         "webp": "quizzes/5/cover.webp",
         "non-webp": "quizzes/5/cover.jpg"
     },
     
-	"image-written-homework-5":
+	"written-homework-5":
     {
         "webp": "homeworks/5/cover.webp",
         "non-webp": "homeworks/5/cover.jpg"
@@ -49,13 +49,13 @@
     
     
     
-	"image-quiz-4":
+	"quiz-4":
     {
         "webp": "quizzes/4/cover.webp",
         "non-webp": "quizzes/4/cover.jpg"
     },
     
-	"image-written-homework-4":
+	"written-homework-4":
     {
         "webp": "homeworks/4/cover.webp",
         "non-webp": "homeworks/4/cover.jpg"
@@ -63,13 +63,13 @@
     
 	
 	
-	"image-midterm-1":
+	"midterm-1":
     {
         "webp": "exams/1/cover.webp",
         "non-webp": "exams/1/cover.jpg"
     },
     
-	"image-midterm-1-practice-solutions":
+	"midterm-1-practice-solutions":
     {
         "webp": "extra/midterm-1-practice-solutions/cover.webp",
         "non-webp": "extra/midterm-1-practice-solutions/cover.jpg"
@@ -77,13 +77,13 @@
     
     
     
-    "image-quiz-3":
+    "quiz-3":
     {
         "webp": "quizzes/3/cover.webp",
         "non-webp": "quizzes/3/cover.jpg"
     },
     
-	"image-written-homework-3":
+	"written-homework-3":
     {
         "webp": "homeworks/3/cover.webp",
         "non-webp": "homeworks/3/cover.jpg"
@@ -91,19 +91,19 @@
     
     
     
-    "image-quiz-2":
+    "quiz-2":
     {
         "webp": "quizzes/2/cover.webp",
         "non-webp": "quizzes/2/cover.jpg"
     },
     
-    "image-written-homework-2":
+    "written-homework-2":
     {
         "webp": "homeworks/2/cover.webp",
         "non-webp": "homeworks/2/cover.jpg"
     },
     
-    "image-wednesday-example-solutions":
+    "wednesday-example-solutions":
     {
         "webp": "extra/wednesday-example-solutions/cover.webp",
         "non-webp": "extra/wednesday-example-solutions/cover.jpg"
@@ -111,19 +111,19 @@
     
     
     
-    "image-quiz-1":
+    "quiz-1":
     {
         "webp": "quizzes/1/cover.webp",
         "non-webp": "quizzes/1/cover.jpg"
     },
     
-    "image-written-homework-1":
+    "written-homework-1":
     {
         "webp": "homeworks/1/cover.webp",
         "non-webp": "homeworks/1/cover.jpg"
     },
     
-    "image-syllabus":
+    "syllabus":
     {
         "webp": "syllabus/cover.webp",
         "non-webp": "syllabus/cover.jpg"
