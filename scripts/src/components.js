@@ -142,6 +142,8 @@ Page.Components =
 		{
 			if (lines[i][0] === "!")
 			{
+				console.log(lines[i]);
+				
 				let words = lines[i].split(" ");
 				
 				if (words[0] === "!begin-text-block")
