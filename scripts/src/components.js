@@ -44,17 +44,80 @@ Page.Components =
 	
 	
 	
+	get_text: function(args)
+	{
+		let text = args.slice(2).join(" ");
+		
+		console.log(text);
+		
+		if (args[0] === "h")
+		{
+			return `
+				<div data-aos="fade-up">
+					<h1 class="section-text">
+						${text}
+					</h1>
+				</div>
+			`;
+		}
+		
+		else if (args[0] === "s")
+		{
+			return `
+				<div data-aos="fade-up">
+					<h2 class="section-text">
+						${text}
+					</h2>
+				</div>
+			`;
+		}
+		
+		else
+		{
+			//Only this one gets the line break at the end.
+			if (args[1] === "j")
+			{
+				return `
+					<div data-aos="fade-up">
+						<p class="body-text">
+							${text}
+						</p>
+					</div>
+					
+					<br>
+				`;
+			}
+			
+			//Center if needed
+			else
+			{
+				return `
+					<div data-aos="fade-up">
+						<p class="body-text center-if-needed">
+							<span>
+								${text}
+							</span>
+						</p>
+					</div>
+				`;
+			}
+		}
+	},
+	
+	
+	
 	decode: function(html)
 	{
 		const commands =
 		{
 			"!header": Page.Components.get_header,
-			"!footer": Page.Components.get_footer
+			"!footer": Page.Components.get_footer,
+			"!text": Page.Components.get_text
 		};
 		
 		
 		
-		let lines = html.replace(/\t/g, "").replace(/    /g, "").split("\n");
+		let lines = html.replace(/\t/g, "").replace(/    /g, "").replace(/\r/g, "").split("\n");
 		
 		
 		
@@ -62,16 +125,9 @@ Page.Components =
 		{
 			if (lines[i][0] === "!")
 			{
-				if (lines[i].indexOf(";") === -1)
-				{
-					console.error(`Missing semicolon on line ${i}!`);
-				}
+				let words = lines[i].split(" ");
 				
-				let command = lines[i].split(";")[0].split(" ");
-				
-				let component = commands[command[0]](command.slice(1));
-				
-				lines[i] = component;
+				lines[i] = commands[words[0]](words.slice(1));
 			}
 		}
 		
