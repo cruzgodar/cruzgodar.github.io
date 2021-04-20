@@ -13,6 +13,21 @@
 	
 	
 	
+	let element = document.querySelectorAll(".image-links")[1];
+	
+	element.id = "newest-pages";
+	
+	let children = element.querySelectorAll(".image-link");
+	
+	for (let i = 0; i < children.length; i++)
+	{
+		children[i].setAttribute("data-aos", "zoom-out");
+	}
+	
+	
+	
+	
+	
 	if (Browser.name === "MS Edge")
 	{
 		alert_on_edge();

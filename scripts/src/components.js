@@ -65,7 +65,7 @@ Page.Components =
 			
 			return `
 				<div${aos_section_segment} data-aos="fade-up">
-					<h1 class="section-text">
+					<h1 class="heading-text">
 						${text}
 					</h1>
 				</div>
@@ -121,13 +121,35 @@ Page.Components =
 	
 	
 	
+	get_image_link: function(args)
+	{
+		let file_path = Page.parent_folder + args[0];
+		
+		let subtext = args.slice(1).join(" ");
+		
+		let id = args[0].split(".")[0].split("/");
+		
+		id = id[id.length - 1];
+		
+		return `
+			<div class="image-link" data-aos="fade-up">
+				<a href="${file_path}" tabindex="-1">
+					<img data-image-id="${id}" class="check-webp no-floating-footer" onclick="Page.Navigation.redirect('${file_path}')" src="" alt="${subtext}" tabindex="1"></img>
+				</a>
+				
+				<p class="image-link-subtext">${subtext}</p>
+			</div>
+		`;
+	},
+	
+	
+	
 	decode: function(html)
 	{
 		const commands =
 		{
 			"!header": Page.Components.get_header,
-			"!footer": Page.Components.get_footer,
-			"!text": Page.Components.get_text
+			"!footer": Page.Components.get_footer
 		};
 		
 		let new_aos_section = false;
@@ -142,9 +164,9 @@ Page.Components =
 		{
 			if (lines[i][0] === "!")
 			{
-				console.log(lines[i]);
-				
 				let words = lines[i].split(" ");
+				
+				
 				
 				if (words[0] === "!begin-text-block")
 				{
@@ -164,6 +186,28 @@ Page.Components =
 					}
 					
 					lines[i] = "";
+				}
+				
+				
+				
+				else if (words[0] === "!begin-image-links")
+				{
+					lines[i] = `<div class="image-links">`;
+					
+					i += 2;
+					
+					words = lines[i].split(" ");
+					
+					while (words[0] !== "!end-image-links")
+					{
+						lines[i] = this.get_image_link(words);
+						
+						i += 2;
+						
+						words = lines[i].split(" ");
+					}
+					
+					lines[i] = `</div>`;
 				}
 				
 				

@@ -47,7 +47,7 @@ let Images =
 			{
 				for (let i = 0; i < images.length; i++)
 				{
-					let src = image_data[images[i].getAttribute("id")][image_type];
+					let src = image_data[images[i].getAttribute("data-image-id")][image_type];
 					
 					if (src.slice(0, 5) === "https")
 					{

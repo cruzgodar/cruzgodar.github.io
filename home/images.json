@@ -1,29 +1,29 @@
 {
-	"image-writing":
+	"writing":
 	{
 		"webp": "../writing/cover.webp",
 		"non-webp": "../writing/cover.jpg"
 	},
 	
-	"image-teaching":
+	"teaching":
 	{
 		"webp": "../teaching/cover.webp",
 		"non-webp": "../teaching/cover.jpg"
 	},
 	
-	"image-applets":
+	"applets":
 	{
 		"webp": "../applets/cover.webp",
 		"non-webp": "../applets/cover.jpg"
 	},
 	
-	"image-bio":
+	"bio":
 	{
 		"webp": "../bio/cover.webp",
 		"non-webp": "../bio/cover.jpg"
 	},
 	
-	"image-about":
+	"about":
 	{
 		"webp": "../about/cover.webp",
 		"non-webp": "../about/cover.jpg"
@@ -31,19 +31,19 @@
 	
 	
 	
-	"image-kleinian-pearls":
+	"kleinian-pearls":
 	{
 		"webp": "../applets/kleinian-pearls/cover.webp",
 		"non-webp": "../applets/kleinian-pearls/cover.jpg"
 	},
 	
-	"image-the-secant-method":
+	"the-secant-method":
 	{
 		"webp": "../applets/the-secant-method/cover.webp",
 		"non-webp": "../applets/the-secant-method/cover.jpg"
 	},
 	
-	"image-quasi-fuchsian-groups":
+	"quasi-fuchsian-groups":
 	{
 		"webp": "../applets/quasi-fuchsian-groups/cover.webp",
 		"non-webp": "../applets/quasi-fuchsian-groups/cover.jpg"
