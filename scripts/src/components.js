@@ -37,13 +37,26 @@ Page.Components =
 	
 	
 	
-	get_footer: function(args)
+	get_footer: function(banner)
 	{
-		return `
-			<footer>
-				<div id="spawn-footer"></div>
-			</footer>
-		`;
+		if (banner)
+		{
+			return `
+					<footer>
+						<div id="spawn-footer"></div>
+					</footer>
+				</div>
+			`;
+		}
+		
+		else
+		{
+			return `
+				<footer>
+					<div id="spawn-footer"></div>
+				</footer>
+			`;
+		}
 	},
 	
 	
@@ -171,15 +184,133 @@ Page.Components =
 	
 	
 	
+	get_banner: function()
+	{
+		return `
+			<div id="banner"></div>
+			
+			<div id="banner-gradient"></div>
+
+			<div id="banner-cover"></div>
+
+			<div id="content">
+				<div id="scroll-to"></div>
+				
+				<div style="height: 5vh"></div>
+		`;
+	},
+	
+	
+	
+	get_about_page_version: function(args)
+	{
+		let version_string = "medium-version";
+		let version_text = "section-text";
+		
+		let numbers = args[0].split(".");
+		
+		if (numbers.length === 3)
+		{
+			version_string = "minor-version";
+			version_text = "body-text";
+		}
+		
+		else if (numbers[1] === "0")
+		{
+			version_string = "major-version";
+			version_text = "heading-text";
+		}
+		
+		
+		
+		let text = args.slice(1).join(" ");
+		
+		text = text.split(":");
+		
+		let description = text[1].slice(1);
+		
+		
+		
+		if (text.length === 3)
+		{
+			let datetime = text[2];
+			
+			text = text[0];
+			
+			let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+			
+			let numbers = datetime.split("-");
+			
+			let year = parseInt(numbers[0]);
+			
+			let month = months[parseInt(numbers[1]) - 1];
+			
+			let day = parseInt(numbers[2]);
+			
+			
+		
+			return `
+				<div class="${version_string}">
+					<div class="new-aos-section" data-aos="fade-up">
+						<h2 class="${version_text}">${args[0]}</h2>
+					</div>
+					
+					<div data-aos="fade-up">
+						<h2 class="${version_text}">${text}</h2>
+					</div>
+					
+					<br>
+					
+					<div data-aos="fade-up">
+						<p class="body-text center-if-needed"><span>${description}</span></p>
+					</div>
+					
+					<br>
+					
+					<div data-aos="fade-up">
+						<p class="body-text center-if-needed">
+							<span>
+								<time datetime="${datetime}">${month} ${day}, ${year}</time>
+							</span>
+						</p>
+					</div>
+				</div>
+			`;
+		}
+		
+		
+		
+		else
+		{
+			text = text[0];
+			
+			return `
+				<div class="${version_string}">
+					<div class="new-aos-section" data-aos="fade-up">
+						<h2 class="${version_text}">${args[0]}</h2>
+					</div>
+					
+					<div data-aos="fade-up">
+						<h2 class="${version_text}">${text}</h2>
+					</div>
+					
+					<br>
+					
+					<div data-aos="fade-up">
+						<p class="body-text center-if-needed"><span>${description}</span></p>
+					</div>
+				</div>
+			`;
+		}
+	},
+	
+	
+	
 	decode: function(html)
 	{
-		const commands =
-		{
-			"!header": Page.Components.get_header,
-			"!footer": Page.Components.get_footer
-		};
-		
 		let new_aos_section = false;
+		
+		let banner = false;
 		
 		
 		
@@ -192,8 +323,6 @@ Page.Components =
 			if (lines[i][0] === "!")
 			{
 				let words = lines[i].split(" ");
-				
-				
 				
 				if (words[0] === "!begin-text-block")
 				{
@@ -255,9 +384,32 @@ Page.Components =
 				
 				
 				
-				else
+				else if (words[0] === "!banner")
 				{
-					lines[i] = commands[words[0]](words.slice(1));
+					banner = true;
+					
+					lines[i] = this.get_banner();
+				}
+				
+				
+				
+				else if (words[0] === "!footer")
+				{
+					lines[i] = this.get_footer(banner);
+				}
+				
+				
+				
+				else if (words[0] === "!header")
+				{
+					lines[i] = this.get_header(words.slice(1));
+				}
+				
+				
+				
+				else if (words[0] === "!version")
+				{
+					lines[i] = this.get_about_page_version(words.slice(1));
 				}
 			}
 		}
