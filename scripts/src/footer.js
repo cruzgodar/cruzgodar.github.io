@@ -43,8 +43,6 @@ Page.Footer =
 		if (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] !== ""))
 		{
 			document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
-				<div style="height: 30vh"></div>
-				
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
 					<div class="line-break footer-line-break-big"></div>
 				</div>
@@ -56,8 +54,6 @@ Page.Footer =
 		else
 		{
 			document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
-				<div style="height: 30vh"></div>
-				
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
 					<div class="line-break footer-line-break"></div>
 				</div>

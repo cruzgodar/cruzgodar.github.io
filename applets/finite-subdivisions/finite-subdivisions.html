@@ -12,74 +12,70 @@
 
 
 
-<main>
-	<section>
-		!text b j This one isn&#x2019;t too complicated! Draw a polygon and connect its center of mass to every vertex, splitting it into triangles. Do the same thing for every triangle, and repeat until you have a beautiful, crystal-like spiderweb. This is called <dfn>barycentric subdivision</dfn>, and similarly to the <a href="/applets/strange-attractors/strange-attractors.html" onclick="Page.Navigation.redirect('/applets/strange-attractors/strange-attractors.html')">strange attractors</a> applet, it&#x2019;s only one kind of finite subdivision, but it&#x2019;s one of the most picturesque.
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-boxes">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="num-vertices-input" class="text-box no-floating-footer" type="text" value="6" tabindex="1">
-				<label for="num-vertices-input">
-					<p class="body-text">Vertices</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="num-iterations-input" class="text-box no-floating-footer" type="text" value="5" tabindex="1">
-				<label for=""num-iterations-input">
-					<p class="body-text">Iterations</p>
-				</label>
-			</div>
+!text b j This one isn&#x2019;t too complicated! Draw a polygon and connect its center of mass to every vertex, splitting it into triangles. Do the same thing for every triangle, and repeat until you have a beautiful, crystal-like spiderweb. This is called <dfn>barycentric subdivision</dfn>, and similarly to the <a href="/applets/strange-attractors/strange-attractors.html" onclick="Page.Navigation.redirect('/applets/strange-attractors/strange-attractors.html')">strange attractors</a> applet, it&#x2019;s only one kind of finite subdivision, but it&#x2019;s one of the most picturesque.
+
+<div style="height: 10vh"></div>
+
+<div class="text-boxes">
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="num-vertices-input" class="text-box no-floating-footer" type="text" value="6" tabindex="1">
+		<label for="num-vertices-input">
+			<p class="body-text">Vertices</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="num-iterations-input" class="text-box no-floating-footer" type="text" value="5" tabindex="1">
+		<label for=""num-iterations-input">
+			<p class="body-text">Iterations</p>
+		</label>
+	</div>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="checkbox-row">
+	<div data-aos="zoom-out" data-aos-delay="900">
+		<div class="checkbox-container click-on-child" tabindex="1">
+			<input type="checkbox" id="toggle-maximum-speed-checkbox" class="no-floating-footer">
+			<div class="checkbox no-floating-footer"></div>
 		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="checkbox-row">
-			<div data-aos="zoom-out" data-aos-delay="900">
-				<div class="checkbox-container click-on-child" tabindex="1">
-					<input type="checkbox" id="toggle-maximum-speed-checkbox" class="no-floating-footer">
-					<div class="checkbox no-floating-footer"></div>
-				</div>
-			</div>
-			
-			<div style="margin-left: 10px" data-aos="fade-left">
-				<p class="body-text">Maximum speed</p>
-			</div>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1400" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="1900">
-			<canvas id="output-canvas" class="no-floating-footer"></canvas>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="1900">
-			<div id="fullscreen-message">
-				<p class="body-text">Double-click canvas to enter fullscreen</p>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2400" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download Image</button>
-			</div>
-		</div>
-	</section>
-</main>
+	</div>
+	
+	<div style="margin-left: 10px" data-aos="fade-left">
+		<p class="body-text">Maximum speed</p>
+	</div>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1400" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="1900">
+	<canvas id="output-canvas" class="no-floating-footer"></canvas>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="center-content" data-aos="fade-in" data-aos-delay="1900">
+	<div id="fullscreen-message">
+		<p class="body-text">Double-click canvas to enter fullscreen</p>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2400" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download Image</button>
+	</div>
+</div>
 
 
 

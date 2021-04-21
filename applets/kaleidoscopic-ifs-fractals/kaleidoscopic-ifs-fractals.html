@@ -12,179 +12,171 @@
 
 
 
-<main>
-	<section>
-		!begin-text-block
-			
-			In 2010, as graphics cards were becoming commonplace, a <a href="http://www.fractalforums.com/sierpinski-gasket/kaleidoscopic-(escape-time-ifs)/" onclick="Page.Navigation.redirect('http://www.fractalforums.com/sierpinski-gasket/kaleidoscopic-(escape-time-ifs)/', true)">user on FractalForums</a> posted something that would quickly become famous. Called Kaleidoscopic IFS (iterated function system) fractals, they generalize the Sierpinski tetrahedron to the rest of the platonic solids and add rotation and scaling to create truly fascinating objects.
-			
-			As interesting as the fractals is the technique used to render them &mdash; <a href="http://blog.hvidtfeldts.net/index.php/2011/06/distance-estimated-3d-fractals-part-i/" onclick="Page.Navigation.redirect('http://blog.hvidtfeldts.net/index.php/2011/06/distance-estimated-3d-fractals-part-i/', true)">raymarching</a>, an seldom-seen algorithm that&#x2019;s ideal for this purpose. It&#x2019;s not hard to implement, makes detailed images, and runs fast enough to render in real time. If you find yourself interested in creating 3D fractals, researching raymarching is the place to start.
-			
-			\(\theta\) and \(\phi\) each determine rotations about the axes, and the stretch factor determines how compact the final fractal is. If you want to explore the inside of a fractal but there&#x2019;s no inside there to explore, that&#x2019;s the parameter to change.
-			
-			Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
-		
-		!end-text-block
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="radio-button-row">
-			<div data-aos="zoom-out">
-				<div class="radio-button-container click-on-child" tabindex="1">
-					<input type="radio" name="polyhedron-index-selector" id="tetrahedron-radio-button" class="no-floating-footer">
-					<div class="radio-button no-floating-footer"></div>
-				</div>
-			</div>
-			
-			<div style="margin-left: 10px" data-aos="fade-left">
-				<p class="body-text">Tetrahedron</p>
-			</div>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="radio-button-row">
-			<div data-aos="zoom-out">
-				<div class="radio-button-container click-on-child" tabindex="1">
-					<input type="radio" name="polyhedron-index-selector" id="cube-radio-button" class="no-floating-footer">
-					<div class="radio-button no-floating-footer"></div>
-				</div>
-			</div>
-			
-			<div style="margin-left: 10px" data-aos="fade-left">
-				<p class="body-text">Cube</p>
-			</div>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="radio-button-row">
-			<div data-aos="zoom-out">
-				<div class="radio-button-container click-on-child" tabindex="1">
-					<input type="radio" name="polyhedron-index-selector" id="octahedron-radio-button" class="no-floating-footer">
-					<div class="radio-button no-floating-footer"></div>
-				</div>
-			</div>
-			
-			<div style="margin-left: 10px" data-aos="fade-left">
-				<p class="body-text">Octahedron</p>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-boxes">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="dim-input" class="text-box no-floating-footer" type="text" value="500" tabindex="1">
-				<label for="dim-input">
-					<p class="body-text">Resolution</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="scale-input" class="text-box no-floating-footer" type="text" value="2" tabindex="1">
-				<label for="scale-input">
-					<p class="body-text">Stretch Factor</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="rotation-angle-x-1-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="rotation-angle-x-1-input">
-					<p class="body-text">\(\theta_x\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="rotation-angle-y-1-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="rotation-angle-y-1-input">
-					<p class="body-text">\(\theta_y\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="rotation-angle-z-1-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="rotation-angle-z-1-input">
-					<p class="body-text">\(\theta_z\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="rotation-angle-x-2-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="rotation-angle-x-2-input">
-					<p class="body-text">\(\phi_x\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="rotation-angle-y-2-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="rotation-angle-y-2-input">
-					<p class="body-text">\(\phi_y\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="rotation-angle-z-2-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="rotation-angle-z-2-input">
-					<p class="body-text">\(\phi_z\)</p>
-				</label>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2100" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="randomize-parameters-button" tabindex="-1">Randomize Parameters</button>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="2600">
-			<canvas id="output-canvas" class="no-floating-footer"></canvas>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="2600">
-			<div id="fullscreen-message">
-				<p class="body-text">Double-click canvas to enter fullscreen</p>
-			</div>
-		</div>
-	</section>
+!begin-text-block
 	
+	In 2010, as graphics cards were becoming commonplace, a <a href="http://www.fractalforums.com/sierpinski-gasket/kaleidoscopic-(escape-time-ifs)/" onclick="Page.Navigation.redirect('http://www.fractalforums.com/sierpinski-gasket/kaleidoscopic-(escape-time-ifs)/', true)">user on FractalForums</a> posted something that would quickly become famous. Called Kaleidoscopic IFS (iterated function system) fractals, they generalize the Sierpinski tetrahedron to the rest of the platonic solids and add rotation and scaling to create truly fascinating objects.
 	
+	As interesting as the fractals is the technique used to render them &mdash; <a href="http://blog.hvidtfeldts.net/index.php/2011/06/distance-estimated-3d-fractals-part-i/" onclick="Page.Navigation.redirect('http://blog.hvidtfeldts.net/index.php/2011/06/distance-estimated-3d-fractals-part-i/', true)">raymarching</a>, an seldom-seen algorithm that&#x2019;s ideal for this purpose. It&#x2019;s not hard to implement, makes detailed images, and runs fast enough to render in real time. If you find yourself interested in creating 3D fractals, researching raymarching is the place to start.
 	
-	<div style="height: 10vh"></div>
+	\(\theta\) and \(\phi\) each determine rotations about the axes, and the stretch factor determines how compact the final fractal is. If you want to explore the inside of a fractal but there&#x2019;s no inside there to explore, that&#x2019;s the parameter to change.
 	
-	
-	
-	<section>
-		<div class="new-aos-section" data-aos="fade-up">
-			<h2 class="section-text">High Resolution Capture</h2>
+	Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
+
+!end-text-block
+
+<div style="height: 10vh"></div>
+
+<div class="radio-button-row">
+	<div data-aos="zoom-out">
+		<div class="radio-button-container click-on-child" tabindex="1">
+			<input type="radio" name="polyhedron-index-selector" id="tetrahedron-radio-button" class="no-floating-footer">
+			<div class="radio-button no-floating-footer"></div>
 		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="text-boxes">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="high-res-dim-input" class="text-box no-floating-footer" type="text" value="2000" tabindex="1">
-				<label for="high-res-dim-input">
-					<p class="body-text">Image Size</p>
-				</label>
-			</div>
+	</div>
+	
+	<div style="margin-left: 10px" data-aos="fade-left">
+		<p class="body-text">Tetrahedron</p>
+	</div>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="radio-button-row">
+	<div data-aos="zoom-out">
+		<div class="radio-button-container click-on-child" tabindex="1">
+			<input type="radio" name="polyhedron-index-selector" id="cube-radio-button" class="no-floating-footer">
+			<div class="radio-button no-floating-footer"></div>
 		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="600" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="generate-high-res-image-button" tabindex="-1">Generate</button>
-			</div>
+	</div>
+	
+	<div style="margin-left: 10px" data-aos="fade-left">
+		<p class="body-text">Cube</p>
+	</div>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="radio-button-row">
+	<div data-aos="zoom-out">
+		<div class="radio-button-container click-on-child" tabindex="1">
+			<input type="radio" name="polyhedron-index-selector" id="octahedron-radio-button" class="no-floating-footer">
+			<div class="radio-button no-floating-footer"></div>
 		</div>
-	</section>
-</main>
+	</div>
+	
+	<div style="margin-left: 10px" data-aos="fade-left">
+		<p class="body-text">Octahedron</p>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="text-boxes">
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="dim-input" class="text-box no-floating-footer" type="text" value="500" tabindex="1">
+		<label for="dim-input">
+			<p class="body-text">Resolution</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="scale-input" class="text-box no-floating-footer" type="text" value="2" tabindex="1">
+		<label for="scale-input">
+			<p class="body-text">Stretch Factor</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="rotation-angle-x-1-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
+		<label for="rotation-angle-x-1-input">
+			<p class="body-text">\(\theta_x\)</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="rotation-angle-y-1-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
+		<label for="rotation-angle-y-1-input">
+			<p class="body-text">\(\theta_y\)</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="rotation-angle-z-1-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
+		<label for="rotation-angle-z-1-input">
+			<p class="body-text">\(\theta_z\)</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="rotation-angle-x-2-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
+		<label for="rotation-angle-x-2-input">
+			<p class="body-text">\(\phi_x\)</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="rotation-angle-y-2-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
+		<label for="rotation-angle-y-2-input">
+			<p class="body-text">\(\phi_y\)</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="rotation-angle-z-2-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
+		<label for="rotation-angle-z-2-input">
+			<p class="body-text">\(\phi_z\)</p>
+		</label>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2100" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="randomize-parameters-button" tabindex="-1">Randomize Parameters</button>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="2600">
+	<canvas id="output-canvas" class="no-floating-footer"></canvas>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="center-content" data-aos="fade-in" data-aos-delay="2600">
+	<div id="fullscreen-message">
+		<p class="body-text">Double-click canvas to enter fullscreen</p>
+	</div>
+</div>
+
+
+
+!section
+
+
+
+!text s High Resolution Capture
+
+<div style="height: 5vh"></div>
+
+<div class="text-boxes">
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="high-res-dim-input" class="text-box no-floating-footer" type="text" value="2000" tabindex="1">
+		<label for="high-res-dim-input">
+			<p class="body-text">Image Size</p>
+		</label>
+	</div>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="600" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="generate-high-res-image-button" tabindex="-1">Generate</button>
+	</div>
+</div>
 
 
 

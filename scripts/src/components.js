@@ -8,12 +8,21 @@ Page.Components =
 	
 	
 	
-	get_header: function(args)
+	get_header: function(args, banner)
 	{
 		let title = args.join(" ");
 		
+		let height_adjust = "";
+		
+		if (banner)
+		{
+			height_adjust = ` style="margin-bottom: 10vh"`;
+		}
+		
+		
+		
 		return `
-			<header>
+			<header${height_adjust}>
 				<div class="new-aos-section" data-aos="fade-in">
 					<div id="logo">
 						<a href="/home/home.html" tabindex="-1">
@@ -28,10 +37,9 @@ Page.Components =
 					<h1 class="heading-text">${title}</h1>
 				</div>
 			</header>
-				
-				
-				
-			<div style="height: 5vh"></div>
+			
+			<main>
+				<section>
 		`;
 	},
 	
@@ -42,6 +50,9 @@ Page.Components =
 		if (banner)
 		{
 			return `
+						</section>
+					</main>
+					
 					<footer>
 						<div id="spawn-footer"></div>
 					</footer>
@@ -52,11 +63,25 @@ Page.Components =
 		else
 		{
 			return `
+					</section>
+				</main>
+				
 				<footer>
 					<div id="spawn-footer"></div>
 				</footer>
 			`;
 		}
+	},
+	
+	
+	
+	get_section: function()
+	{
+		return `
+			</section>
+			
+			<section>
+		`;
 	},
 	
 	
@@ -372,7 +397,7 @@ Page.Components =
 				{
 					new_aos_section = true;
 					
-					lines[i] = "";
+					lines[i] = this.get_section();
 				}
 				
 				
@@ -402,7 +427,7 @@ Page.Components =
 				
 				else if (words[0] === "!header")
 				{
-					lines[i] = this.get_header(words.slice(1));
+					lines[i] = this.get_header(words.slice(1), banner);
 				}
 				
 				

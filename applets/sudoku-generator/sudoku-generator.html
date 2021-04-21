@@ -12,39 +12,35 @@
 
 
 
-<main>
-	<section>
-		!begin-text-block
-			
-			About six months ago, I wrote <a href="/applets/calcudoku-generator/calcudoku-generator.html" onclick="Page.Navigation.redirect('/applets/calcudoku-generator/calcudoku-generator.html')">this thing</a> over the span of a week. Not counting the website as a whole, it was the largest coding project I&#x2019;d ever attempted, and I&#x2019;m still amazed it works. If others on the internet have written their own generators, they&#x2019;re not sharing as far as I can tell.
-			
-			Maybe I should have started with this applet before building that one, but the upshot of making the more complicated one first was this only took two hours. Since it uses the same code base as the calcudoku generator, it has no way to measure difficulty, and will always create as difficult a puzzle as possible &mdash; but at least it&#x2019;s quite a bit faster!
-		
-		!end-text-block
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="800" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="1300">
-			<canvas id="sudoku-grid" class="no-floating-footer"></canvas>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1800" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download</button>
-			</div>
-		</div>
-	</section>
-</main>
+!begin-text-block
+	
+	About six months ago, I wrote <a href="/applets/calcudoku-generator/calcudoku-generator.html" onclick="Page.Navigation.redirect('/applets/calcudoku-generator/calcudoku-generator.html')">this thing</a> over the span of a week. Not counting the website as a whole, it was the largest coding project I&#x2019;d ever attempted, and I&#x2019;m still amazed it works. If others on the internet have written their own generators, they&#x2019;re not sharing as far as I can tell.
+	
+	Maybe I should have started with this applet before building that one, but the upshot of making the more complicated one first was this only took two hours. Since it uses the same code base as the calcudoku generator, it has no way to measure difficulty, and will always create as difficult a puzzle as possible &mdash; but at least it&#x2019;s quite a bit faster!
+
+!end-text-block
+
+<div style="height: 10vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="800" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="center-content" data-aos="fade-in" data-aos-delay="1300">
+	<canvas id="sudoku-grid" class="no-floating-footer"></canvas>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1800" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download</button>
+	</div>
+</div>
 
 
 

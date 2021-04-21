@@ -128,9 +128,15 @@
 
 
 
-.multicol-block:not(:last-of-type)
+.multicol-block
 {
-	margin-bottom: 15vh;
+	margin-top: 10vh;
+}
+
+/* This is equivalent to :first-of-class if it existed. */
+.multicol-block ~ .multicol-block
+{
+	margin-top: 0;
 }
 
 .image-links-double-column-container .section-text, .image-links-double-column-container .heading-text

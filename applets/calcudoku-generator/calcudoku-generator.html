@@ -12,77 +12,73 @@
 
 
 
-<main>
-	<section>
-		!begin-text-block
-		
-			<dfn>Calcudoku</dfn> is a variation on Sudoku &mdash; given an \(n \times n\) grid, fill it with the digits \(1, ..., n\) so that no row or column contains a repeated digit, and so that every cage&#x2019;s condition is satisfied. A cage with 5+ in a corner needs its contents to sum to 5, for example. A 2- cage is a little more complicated &mdash; it means that choosing some cell in the cage and subtracting the others results in 2 &mdash; so a 3-cell cage containing 5, 2, and 1 would work, for instance. Division cages are written with a colon and work the same. Finally, some cages have no operation at all. They&#x2019;re always \(1 \times 1\), and simply contain the number in their corner.
-			
-			The core of the algorithm is written in a language called WebAssembly that runs much faster than JavaScript &mdash; the standard language of the web &mdash; but even still, generating these puzzles takes time. They&#x2019;re built by successive modifications that each make the puzzle slightly harder, so the longer you wait, the more challenging the final result will be. For the best results, let the program run for five to ten minutes and make some tea. It&#x2019;s not too much to ask &mdash; after all, you&#x2019;re probably going to spend longer than that actually solving the puzzle.
-		
-		!end-text-block
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-boxes">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="grid-size-input" class="text-box no-floating-footer" type="text" value="6" tabindex="1">
-				<label for="grid-size-input">
-					<p class="body-text">Grid Size</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="max-cage-size-input" class="text-box no-floating-footer" type="text" value="2" tabindex="1">
-				<label for="max-cage-size-input">
-					<p class="body-text">Maximum Cage Size</p>
-				</label>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1000" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="center-content">
-			<p id="total-time-label" class="body-text">Time Elapsed</p>
-		</div>
-		
-		<div class="center-content">
-			<p id="total-time-clock" class="body-text">0</p>
-		</div>
-		
-		<br>
-		
-		<div class="center-content">
-			<p id="split-time-label" class="body-text">Since Last Change</p>
-		</div>
-		
-		<div class="center-content">
-			<p id="split-time-clock" class="body-text">0</p>
-		</div>
-		
-		<div style="height: calc(10vh + 8px)"></div>
-		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="1500">
-			<canvas id="calcudoku-grid" class="no-floating-footer"></canvas>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2000" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download</button>
-			</div>
-		</div>
-	</section>
-</main>
+!begin-text-block
+
+	<dfn>Calcudoku</dfn> is a variation on Sudoku &mdash; given an \(n \times n\) grid, fill it with the digits \(1, ..., n\) so that no row or column contains a repeated digit, and so that every cage&#x2019;s condition is satisfied. A cage with 5+ in a corner needs its contents to sum to 5, for example. A 2- cage is a little more complicated &mdash; it means that choosing some cell in the cage and subtracting the others results in 2 &mdash; so a 3-cell cage containing 5, 2, and 1 would work, for instance. Division cages are written with a colon and work the same. Finally, some cages have no operation at all. They&#x2019;re always \(1 \times 1\), and simply contain the number in their corner.
+	
+	The core of the algorithm is written in a language called WebAssembly that runs much faster than JavaScript &mdash; the standard language of the web &mdash; but even still, generating these puzzles takes time. They&#x2019;re built by successive modifications that each make the puzzle slightly harder, so the longer you wait, the more challenging the final result will be. For the best results, let the program run for five to ten minutes and make some tea. It&#x2019;s not too much to ask &mdash; after all, you&#x2019;re probably going to spend longer than that actually solving the puzzle.
+
+!end-text-block
+
+<div style="height: 10vh"></div>
+
+<div class="text-boxes">
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="grid-size-input" class="text-box no-floating-footer" type="text" value="6" tabindex="1">
+		<label for="grid-size-input">
+			<p class="body-text">Grid Size</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="max-cage-size-input" class="text-box no-floating-footer" type="text" value="2" tabindex="1">
+		<label for="max-cage-size-input">
+			<p class="body-text">Maximum Cage Size</p>
+		</label>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1000" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="center-content">
+	<p id="total-time-label" class="body-text">Time Elapsed</p>
+</div>
+
+<div class="center-content">
+	<p id="total-time-clock" class="body-text">0</p>
+</div>
+
+<br>
+
+<div class="center-content">
+	<p id="split-time-label" class="body-text">Since Last Change</p>
+</div>
+
+<div class="center-content">
+	<p id="split-time-clock" class="body-text">0</p>
+</div>
+
+<div style="height: calc(10vh + 8px)"></div>
+
+<div class="center-content" data-aos="fade-in" data-aos-delay="1500">
+	<canvas id="calcudoku-grid" class="no-floating-footer"></canvas>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2000" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download</button>
+	</div>
+</div>
 
 
 

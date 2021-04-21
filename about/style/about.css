@@ -1,6 +1,6 @@
 .major-version, .medium-version, .minor-version
 {
-	margin-top: 20vh;
+	margin-top: 15vh;
 	
 	transition: opacity .3s ease-in-out;
 }

@@ -12,73 +12,69 @@
 
 
 
-<main>
-	<section>
-		!begin-text-block
-			
-			The <dfn>Travelling Salesman Problem:</dfn> is a famous one. Given a list of cities and their locations on a map, what is the shortest total route that passes through all of them and ends where it begins? Although it may seem simple on the surface, it&#x2019;s is actually an example of an <a href="https://en.m.wikipedia.org/wiki/NP-hardness" onclick="Page.Navigation.redirect('https://en.m.wikipedia.org/wiki/NP-hardness', true)">NP-hard</a> problem. Nailing down exactly what that means is tricky, but roughly speaking, most people are mostly agreed that there&#x2019;s no &#x201Cquick&#x201D algorithm to solve the problem.
-			
-			There are plenty of ways to quickly approximate it, though. One of them, called <dfn>simulated annealing</dfn>, takes inspiration from metallurgy. The algorithm starts by choosing a random path through the cities, and then it picks two cities at random and thinks about swapping them. It always does if that swap makes the entire path shorter, but even if it makes the path longer, <em>it still sometimes makes the swap</em>. The chance that it does depends on the <dfn>temperature</dfn> of the system &mdash; a number in the algorithm that&#x2019;s analogous to actual temperature in very hot metal. The algorithm&#x2019;s temperature starts very large and cools down over time &mdash; shown as red nodes fading to white &mdash; and the probability that the walk becomes longer lowers with it. This seemingly chaotic strategy ensures that the algorithm doesn&#x2019;t just get stuck in a nonoptimal state where any swap will lead to a longer walk, but there are still shorter paths possible. Instead, it has the freedom to move around and try lots of different strategies at first, but as the temperature lowers, it&#x2019;s forced to stay relatively still and only take swaps that improve its position.
-		
-		!end-text-block
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-boxes">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="num-nodes-input" class="text-box no-floating-footer" type="text" value="20" tabindex="1">
-				<label for="num-nodes-input">
-					<p class="body-text">Nodes</p>
-				</label>
-			</div>
+!begin-text-block
+	
+	The <dfn>Travelling Salesman Problem:</dfn> is a famous one. Given a list of cities and their locations on a map, what is the shortest total route that passes through all of them and ends where it begins? Although it may seem simple on the surface, it&#x2019;s is actually an example of an <a href="https://en.m.wikipedia.org/wiki/NP-hardness" onclick="Page.Navigation.redirect('https://en.m.wikipedia.org/wiki/NP-hardness', true)">NP-hard</a> problem. Nailing down exactly what that means is tricky, but roughly speaking, most people are mostly agreed that there&#x2019;s no &#x201Cquick&#x201D algorithm to solve the problem.
+	
+	There are plenty of ways to quickly approximate it, though. One of them, called <dfn>simulated annealing</dfn>, takes inspiration from metallurgy. The algorithm starts by choosing a random path through the cities, and then it picks two cities at random and thinks about swapping them. It always does if that swap makes the entire path shorter, but even if it makes the path longer, <em>it still sometimes makes the swap</em>. The chance that it does depends on the <dfn>temperature</dfn> of the system &mdash; a number in the algorithm that&#x2019;s analogous to actual temperature in very hot metal. The algorithm&#x2019;s temperature starts very large and cools down over time &mdash; shown as red nodes fading to white &mdash; and the probability that the walk becomes longer lowers with it. This seemingly chaotic strategy ensures that the algorithm doesn&#x2019;t just get stuck in a nonoptimal state where any swap will lead to a longer walk, but there are still shorter paths possible. Instead, it has the freedom to move around and try lots of different strategies at first, but as the temperature lowers, it&#x2019;s forced to stay relatively still and only take swaps that improve its position.
+
+!end-text-block
+
+<div style="height: 10vh"></div>
+
+<div class="text-boxes">
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="num-nodes-input" class="text-box no-floating-footer" type="text" value="20" tabindex="1">
+		<label for="num-nodes-input">
+			<p class="body-text">Nodes</p>
+		</label>
+	</div>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="checkbox-row">
+	<div data-aos="zoom-out" data-aos-delay="800">
+		<div class="checkbox-container click-on-child" tabindex="1">
+			<input type="checkbox" id="toggle-maximum-speed-checkbox" class="no-floating-footer">
+			<div class="checkbox no-floating-footer"></div>
 		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="checkbox-row">
-			<div data-aos="zoom-out" data-aos-delay="800">
-				<div class="checkbox-container click-on-child" tabindex="1">
-					<input type="checkbox" id="toggle-maximum-speed-checkbox" class="no-floating-footer">
-					<div class="checkbox no-floating-footer"></div>
-				</div>
-			</div>
-			
-			<div style="margin-left: 10px" data-aos="fade-left">
-				<p class="body-text">Maximum speed</p>
-			</div>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1300" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="1800">
-			<canvas id="output-canvas" class="no-floating-footer"></canvas>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="1800">
-			<div id="fullscreen-message">
-				<p class="body-text">Double-click canvas to enter fullscreen</p>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2300" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download Image</button>
-			</div>
-		</div>
-	</section>
-</main>
+	</div>
+	
+	<div style="margin-left: 10px" data-aos="fade-left">
+		<p class="body-text">Maximum speed</p>
+	</div>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1300" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="1800">
+	<canvas id="output-canvas" class="no-floating-footer"></canvas>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="center-content" data-aos="fade-in" data-aos-delay="1800">
+	<div id="fullscreen-message">
+		<p class="body-text">Double-click canvas to enter fullscreen</p>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2300" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download Image</button>
+	</div>
+</div>
 
 
 

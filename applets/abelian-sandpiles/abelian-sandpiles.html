@@ -12,73 +12,69 @@
 
 
 
-<main>
-	<section>
-		!begin-text-block
-			
-			Draw a grid and start dropping sand grains in the center square. As soon as you get to four grains, the pile topples, spilling one grain into each of the four surrounding squares. By the time you&#x2019;ve dropped fifteen grains in the center, you&#x2019;ll have five piles of three grains each. The next grain topples the center pile, and then each of the surrounding four topple themselves. Four of those grains end up back in the center, where they topple again, and then the system is stable again. If we start with a massive number of grains in the center, the pattern that&#x2019;s eventually produced is surprisingly complex. Amazingly, when we have more than one pile that will topple at the same time, the order we topple the has no effect on the final outcome. Because of this, the model is called <dfn>Abelian</dfn>.
-			
-			Piles with no grains are colored black, piles with one colored blue, those with two colored purple, and those with three colored yellow. Any pile with more than three grains is colored white.
-		
-		!end-text-block
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-boxes">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="num-grains-input" class="text-box no-floating-footer" type="text" value="10000" tabindex="1">
-				<label for="num-grains-input">
-					<p class="body-text">Grains</p>
-				</label>
-			</div>
+!begin-text-block
+	
+	Draw a grid and start dropping sand grains in the center square. As soon as you get to four grains, the pile topples, spilling one grain into each of the four surrounding squares. By the time you&#x2019;ve dropped fifteen grains in the center, you&#x2019;ll have five piles of three grains each. The next grain topples the center pile, and then each of the surrounding four topple themselves. Four of those grains end up back in the center, where they topple again, and then the system is stable again. If we start with a massive number of grains in the center, the pattern that&#x2019;s eventually produced is surprisingly complex. Amazingly, when we have more than one pile that will topple at the same time, the order we topple the has no effect on the final outcome. Because of this, the model is called <dfn>Abelian</dfn>.
+	
+	Piles with no grains are colored black, piles with one colored blue, those with two colored purple, and those with three colored yellow. Any pile with more than three grains is colored white.
+
+!end-text-block
+
+<div style="height: 10vh"></div>
+
+<div class="text-boxes">
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="num-grains-input" class="text-box no-floating-footer" type="text" value="10000" tabindex="1">
+		<label for="num-grains-input">
+			<p class="body-text">Grains</p>
+		</label>
+	</div>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="checkbox-row">
+	<div data-aos="zoom-out" data-aos-delay="900">
+		<div class="checkbox-container click-on-child" tabindex="1">
+			<input type="checkbox" id="toggle-maximum-speed-checkbox" class="no-floating-footer">
+			<div class="checkbox no-floating-footer"></div>
 		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="checkbox-row">
-			<div data-aos="zoom-out" data-aos-delay="900">
-				<div class="checkbox-container click-on-child" tabindex="1">
-					<input type="checkbox" id="toggle-maximum-speed-checkbox" class="no-floating-footer">
-					<div class="checkbox no-floating-footer"></div>
-				</div>
-			</div>
-			
-			<div style="margin-left: 10px" data-aos="fade-left">
-				<p class="body-text">Maximum speed</p>
-			</div>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1400" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="1900">
-			<canvas id="output-canvas" class="no-floating-footer"></canvas>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="1900">
-			<div id="fullscreen-message">
-				<p class="body-text">Double-click canvas to enter fullscreen</p>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2400" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download Image</button>
-			</div>
-		</div>
-	</section>
-</main>
+	</div>
+	
+	<div style="margin-left: 10px" data-aos="fade-left">
+		<p class="body-text">Maximum speed</p>
+	</div>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1400" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="1900">
+	<canvas id="output-canvas" class="no-floating-footer"></canvas>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="center-content" data-aos="fade-in" data-aos-delay="1900">
+	<div id="fullscreen-message">
+		<p class="body-text">Double-click canvas to enter fullscreen</p>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2400" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download Image</button>
+	</div>
+</div>
 
 
 

@@ -12,119 +12,115 @@
 
 
 
-<main>
-	<section>
-		!begin-text-block
-		
-			In 2007, two mathematicians collaborated to <a href="http://psoup.math.wisc.edu/papers/h2l.pdf" onclick="Page.Navigation.redirect('http://psoup.math.wisc.edu/papers/h2l.pdf', true)">create a detailed model</a> for snowflake generation. In contrast to other models for crystal growth like <a href="/applets/brownian-trees/brownian-trees.html" onclick="Page.Navigation.redirect('/applets/brownian-trees/brownian-trees.html')">diffusion-limited aggregation</a>, this one simulates a striking level of detail, all the way down to the diffusion of water vapor in the air. It even has a massive selection of parameters that allow for careful fine-tuning:
-			
-			\(\rho\): the density of water vapor in the air. Higher values will produce faster-growing, more intricate flakes.
-			
-			\(\beta\): the difficulty of water vapor to attach to the flake when not surrounded by much ice. Higher values will produce more plate-like, less intricate flakes.
-			
-			\(\kappa\): the amount of vapor that freezes directly before even attaching to the flake. Higher values will produce flakes with thinner main branches and more side branches.
-			
-			\(\mu\): the tendency of ice on the boundary of the flake to revert back to vapor. Higher values will produce flakes with less detail and more mass distributed far from the center.
-			
-			\(\alpha\), \(\theta\), and \(\gamma\) affect the process in more complicated ways that are somewhat out of the scope of a blurb this short. If you&#x2019;re interested, check out the paper and mess with their values here!
-		
-		!end-text-block
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-boxes">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="grid-size-input" class="text-box no-floating-footer" type="text" value="200" tabindex="1">
-				<label for="grid-size-input">
-					<p class="body-text">Image Size</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="rho-input" class="text-box no-floating-footer" type="text" value=".635" tabindex="1">
-				<label for="rho-input">
-					<p class="body-text">\(\rho\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="beta-input" class="text-box no-floating-footer" type="text" value="1.6" tabindex="1">
-				<label for="beta-input">
-					<p class="body-text">\(\beta\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="alpha-input" class="text-box no-floating-footer" type="text" value=".4" tabindex="1">
-				<label for="alpha-input">
-					<p class="body-text">\(\alpha\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="theta-input" class="text-box no-floating-footer" type="text" value=".025" tabindex="1">
-				<label for="theta-input">
-					<p class="body-text">\(\theta\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="kappa-input" class="text-box no-floating-footer" type="text" value=".0025" tabindex="1">
-				<label for="kappa-input">
-					<p class="body-text">\(\kappa\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="mu-input" class="text-box no-floating-footer" type="text" value=".015" tabindex="1">
-				<label for="mu-input">
-					<p class="body-text">\(\mu\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="gamma-input" class="text-box no-floating-footer" type="text" value=".0005" tabindex="1">
-				<label for="gamma-input">
-					<p class="body-text">\(\gamma\)</p>
-				</label>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1400" tabindex="1">
-				<button class="text-button linked-text-button no-floating-footer" type="button" id="randomize-parameters-button" tabindex="-1">Randomize Parameters</button>
-			</div>
-			
-			<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
-				<button class="text-button linked-text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="2000">
-			<canvas id="output-canvas" class="no-floating-footer"></canvas>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="2000">
-			<div id="fullscreen-message">
-				<p class="body-text">Double-click canvas to enter fullscreen</p>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2500" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download Image</button>
-			</div>
-		</div>
-	</section>
-</main>
+!begin-text-block
+
+	In 2007, two mathematicians collaborated to <a href="http://psoup.math.wisc.edu/papers/h2l.pdf" onclick="Page.Navigation.redirect('http://psoup.math.wisc.edu/papers/h2l.pdf', true)">create a detailed model</a> for snowflake generation. In contrast to other models for crystal growth like <a href="/applets/brownian-trees/brownian-trees.html" onclick="Page.Navigation.redirect('/applets/brownian-trees/brownian-trees.html')">diffusion-limited aggregation</a>, this one simulates a striking level of detail, all the way down to the diffusion of water vapor in the air. It even has a massive selection of parameters that allow for careful fine-tuning:
+	
+	\(\rho\): the density of water vapor in the air. Higher values will produce faster-growing, more intricate flakes.
+	
+	\(\beta\): the difficulty of water vapor to attach to the flake when not surrounded by much ice. Higher values will produce more plate-like, less intricate flakes.
+	
+	\(\kappa\): the amount of vapor that freezes directly before even attaching to the flake. Higher values will produce flakes with thinner main branches and more side branches.
+	
+	\(\mu\): the tendency of ice on the boundary of the flake to revert back to vapor. Higher values will produce flakes with less detail and more mass distributed far from the center.
+	
+	\(\alpha\), \(\theta\), and \(\gamma\) affect the process in more complicated ways that are somewhat out of the scope of a blurb this short. If you&#x2019;re interested, check out the paper and mess with their values here!
+
+!end-text-block
+
+<div style="height: 10vh"></div>
+
+<div class="text-boxes">
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="grid-size-input" class="text-box no-floating-footer" type="text" value="200" tabindex="1">
+		<label for="grid-size-input">
+			<p class="body-text">Image Size</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="rho-input" class="text-box no-floating-footer" type="text" value=".635" tabindex="1">
+		<label for="rho-input">
+			<p class="body-text">\(\rho\)</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="beta-input" class="text-box no-floating-footer" type="text" value="1.6" tabindex="1">
+		<label for="beta-input">
+			<p class="body-text">\(\beta\)</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="alpha-input" class="text-box no-floating-footer" type="text" value=".4" tabindex="1">
+		<label for="alpha-input">
+			<p class="body-text">\(\alpha\)</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="theta-input" class="text-box no-floating-footer" type="text" value=".025" tabindex="1">
+		<label for="theta-input">
+			<p class="body-text">\(\theta\)</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="kappa-input" class="text-box no-floating-footer" type="text" value=".0025" tabindex="1">
+		<label for="kappa-input">
+			<p class="body-text">\(\kappa\)</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="mu-input" class="text-box no-floating-footer" type="text" value=".015" tabindex="1">
+		<label for="mu-input">
+			<p class="body-text">\(\mu\)</p>
+		</label>
+	</div>
+	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="gamma-input" class="text-box no-floating-footer" type="text" value=".0005" tabindex="1">
+		<label for="gamma-input">
+			<p class="body-text">\(\gamma\)</p>
+		</label>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1400" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" id="randomize-parameters-button" tabindex="-1">Randomize Parameters</button>
+	</div>
+	
+	<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="2000">
+	<canvas id="output-canvas" class="no-floating-footer"></canvas>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="center-content" data-aos="fade-in" data-aos-delay="2000">
+	<div id="fullscreen-message">
+		<p class="body-text">Double-click canvas to enter fullscreen</p>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2500" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download Image</button>
+	</div>
+</div>
 
 
 

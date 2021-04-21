@@ -12,154 +12,144 @@
 
 
 
-<main>
-	<section>
-		!begin-text-block
-			
-			This one&#x2019;s been a long time coming. The first applet I ever made for the site was a <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="Page.Navigation.redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julia set explorer</a>, and although it took me months to learn how to optimize it to a reasonable speed, even the first version was a huge step forward in the kind of fractal generating code I&#x2019;d written up to that point. It wasn&#x2019;t what I&#x2019;d made the applet for, but it was fun to mess with the code behind the scenes and make Julia sets from different generating functions. I thought about making new applets out of some of them, but it was never worth copying all the code over just for a slight variation on a theme. What I needed was an applet that allowed for near-complete control over its own code &mdash; and so here we are at last.
-			
-			The large text box contains the function that&#x2019;s iterated to create the Mandelbrot and Julia sets. It&#x2019;s written with a proper complex number library, which means the performance is slightly worse than the original Julia set explorer applet, but the tradeoff&#x2019;s worth it. The other boxes are for parameters that modify the output &mdash; how much of the set can be seen and how far away from zero a number has to get before the applet decides it&#x2019;s never going to come back down.
-			
-			This is far from the most user-friendly applet, but hopefully you can get something out of it. Here are some functions to get started &mdash; see if you can find some interesting ones yourself!
-		
-		!end-text-block
-		
-		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span>Classical Mandelbrot: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(cpow(z, 2.0), c)</span></span></p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span>Varied exponent: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(cpow(z, 4.0), c)</span></span></p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span>Trig example: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csin(cmul(z, c))</span></span></p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span>Rational map example:</span></p>
-		</div>
-		
-		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(csub(cpow(z, 2.0), cmul(.05, cpow(z, -2.0))), c)</span></p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span>Creating a complex number from scratch:</span></p>
-		</div>
-		
-		<div data-aos="fade-up">
-			<p class="body-text center-if-needed"><span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(csub(cpow(z, 2.0), vec2(0.0, cmul(.05, cpow(z, -2.0).y))), c)</span></p>
-		</div>
-	</section>
+!begin-text-block
 	
+	This one&#x2019;s been a long time coming. The first applet I ever made for the site was a <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="Page.Navigation.redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julia set explorer</a>, and although it took me months to learn how to optimize it to a reasonable speed, even the first version was a huge step forward in the kind of fractal generating code I&#x2019;d written up to that point. It wasn&#x2019;t what I&#x2019;d made the applet for, but it was fun to mess with the code behind the scenes and make Julia sets from different generating functions. I thought about making new applets out of some of them, but it was never worth copying all the code over just for a slight variation on a theme. What I needed was an applet that allowed for near-complete control over its own code &mdash; and so here we are at last.
 	
+	The large text box contains the function that&#x2019;s iterated to create the Mandelbrot and Julia sets. It&#x2019;s written with a proper complex number library, which means the performance is slightly worse than the original Julia set explorer applet, but the tradeoff&#x2019;s worth it. The other boxes are for parameters that modify the output &mdash; how much of the set can be seen and how far away from zero a number has to get before the applet decides it&#x2019;s never going to come back down.
 	
-	<div style="height: 15vh"></div>
+	This is far from the most user-friendly applet, but hopefully you can get something out of it. Here are some functions to get started &mdash; see if you can find some interesting ones yourself!
+
+!end-text-block
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Classical Mandelbrot: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(cpow(z, 2.0), c)</span></span></p>
+</div>
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Varied exponent: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(cpow(z, 4.0), c)</span></span></p>
+</div>
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Trig example: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csin(cmul(z, c))</span></span></p>
+</div>
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Rational map example:</span></p>
+</div>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(csub(cpow(z, 2.0), cmul(.05, cpow(z, -2.0))), c)</span></p>
+</div>
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Creating a complex number from scratch:</span></p>
+</div>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(csub(cpow(z, 2.0), vec2(0.0, cmul(.05, cpow(z, -2.0).y))), c)</span></p>
+</div>
+
+
+
+!section
+
+
+
+<div class="center-content">
+	<div class="text-box-container new-aos-section" data-aos="fade-up">
+		<input id="code-input" class="text-box no-floating-footer" type="text" value="cadd(cpow(z, 2.0), c)" tabindex="1">
+		<label for="code-input">
+			<p class="body-text">Generating Function</p>
+		</label>
+	</div>
+</div>	
+
+<div style="height: 5vh"></div>
+
+<div class="text-boxes">
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="resolution-input" class="text-box no-floating-footer" type="text" value="500" tabindex="1">
+		<label for="resolution-input">
+			<p class="body-text" style="font-size: 90%">Resolution</p>
+		</label>
+	</div>
 	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="exposure-input" class="text-box no-floating-footer" type="text" value="1" tabindex="1">
+		<label for="exposure-input">
+			<p class="body-text" style="font-size: 90%">Exposure</p>
+		</label>
+	</div>
 	
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="escape-radius-input" class="text-box no-floating-footer" type="text" value="100" tabindex="1">
+		<label for="escape-radius-input">
+			<p class="body-text" style="font-size: 90%">Escape Radius</p>
+		</label>
+	</div>
+</div>
+
+<div style="height: 7.5vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="800" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
+	</div>
 	
-	<section>
-		<div class="center-content">
-			<div class="text-box-container new-aos-section" data-aos="fade-up">
-				<input id="code-input" class="text-box no-floating-footer" type="text" value="cadd(cpow(z, 2.0), c)" tabindex="1">
-				<label for="code-input">
-					<p class="body-text">Generating Function</p>
-				</label>
-			</div>
-		</div>	
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="text-boxes">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="resolution-input" class="text-box no-floating-footer" type="text" value="500" tabindex="1">
-				<label for="resolution-input">
-					<p class="body-text" style="font-size: 90%">Resolution</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="exposure-input" class="text-box no-floating-footer" type="text" value="1" tabindex="1">
-				<label for="exposure-input">
-					<p class="body-text" style="font-size: 90%">Exposure</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="escape-radius-input" class="text-box no-floating-footer" type="text" value="100" tabindex="1">
-				<label for="escape-radius-input">
-					<p class="body-text" style="font-size: 90%">Escape Radius</p>
-				</label>
-			</div>
-		</div>
-		
-		<div style="height: 7.5vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="800" tabindex="1">
-				<button class="text-button linked-text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
-			</div>
-			
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="900" tabindex="1">
-				<button class="text-button linked-text-button no-floating-footer" type="button" id="switch-julia-mode-button" tabindex="-1">Pick Julia Set</button>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="center-content applet-canvas-container" id="container" data-aos="fade-in" data-aos-delay="1400">
-			<canvas id="output-canvas" class="no-floating-footer"></canvas>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="1400">
-			<div id="fullscreen-message">
-				<p class="body-text">Double-click canvas to enter fullscreen</p>
-			</div>
-		</div>
-	</section>
-	
-	
-	
-	<div style="height: 10vh"></div>
-	
-	
-	
-	<section>
-		<div class="new-aos-section" data-aos="fade-up">
-			<h2 class="section-text">High Resolution Capture</h2>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="text-boxes">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="high-res-dim-input" class="text-box no-floating-footer" type="text" value="2000" tabindex="1">
-				<label for="high-res-dim-input">
-					<p class="body-text">Image Size</p>
-				</label>
-			</div>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="600" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="generate-high-res-image-button" tabindex="-1">Generate</button>
-			</div>
-		</div>
-	</section>
-</main>
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="900" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" id="switch-julia-mode-button" tabindex="-1">Pick Julia Set</button>
+	</div>
+</div>
+
+<div style="height: 10vh"></div>
+
+<div class="center-content applet-canvas-container" id="container" data-aos="fade-in" data-aos-delay="1400">
+	<canvas id="output-canvas" class="no-floating-footer"></canvas>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="center-content" data-aos="fade-in" data-aos-delay="1400">
+	<div id="fullscreen-message">
+		<p class="body-text">Double-click canvas to enter fullscreen</p>
+	</div>
+</div>
+
+
+
+!section
+
+
+
+!text s High Resolution Capture
+
+<div style="height: 5vh"></div>
+
+<div class="text-boxes">
+	<div class="text-box-container" data-aos="fade-up">
+		<input id="high-res-dim-input" class="text-box no-floating-footer" type="text" value="2000" tabindex="1">
+		<label for="high-res-dim-input">
+			<p class="body-text">Image Size</p>
+		</label>
+	</div>
+</div>
+
+<div style="height: 5vh"></div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="600" tabindex="1">
+		<button class="text-button no-floating-footer" type="button" id="generate-high-res-image-button" tabindex="-1">Generate</button>
+	</div>
+</div>
 
 
 
