@@ -194,7 +194,7 @@ let Site =
 		
 		
 		
-		AOS.init({duration: 1200, once: false, offset: 100});
+		AOS.init({duration: 1200, once: false, offset: 70});
 		
 		window.addEventListener("scroll", () =>
 		{
