@@ -83,6 +83,6 @@
 
 .applet-canvas-container
 {
-	margin-top: 10vh;
-	margin-bottom: 5vh;
+	margin-top: 10vh !important;
+	margin-bottom: 5vh !important;
 }
