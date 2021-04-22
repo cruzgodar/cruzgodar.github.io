@@ -388,27 +388,48 @@ Page.Components =
 	
 	
 	
-	get_checkbox: function(args, first)
+	get_checkbox: function(args)
 	{
 		let id = args[0];
 		
 		let text = args.slice(1).join(" ");
 		
-		let delay_string = "";
-		
-		if (first)
-		{
-			delay_string = ` data-aos-delay-increase="500"`;
-		}
-		
 		
 		
 		return `
 			<div class="checkbox-row">
-				<div data-aos="zoom-out"${delay_string}>
+				<div data-aos="zoom-out">
 					<div class="checkbox-container click-on-child" tabindex="1">
 						<input type="checkbox" id="${id}-checkbox" class="no-floating-footer">
 						<div class="checkbox no-floating-footer"></div>
+					</div>
+				</div>
+				
+				<div style="margin-left: 10px" data-aos="fade-left">
+					<p class="body-text">${text}</p>
+				</div>
+			</div>
+		`;
+	},
+	
+	
+	
+	get_radio_button: function(args)
+	{
+		let name = args[0];
+		
+		let id = args[1];
+		
+		let text = args.slice(2).join(" ");
+		
+		
+		
+		return `
+			<div class="radio-button-row">
+				<div data-aos="zoom-out">
+					<div class="radio-button-container click-on-child" tabindex="1">
+						<input type="radio" name="${name}" id="${id}-radio-button" class="no-floating-footer">
+						<div class="radio-button no-floating-footer"></div>
 					</div>
 				</div>
 				
@@ -426,8 +447,6 @@ Page.Components =
 		let new_aos_section = false;
 		
 		let banner = false;
-		
-		let first_checkbox = true;
 		
 		
 		
@@ -581,9 +600,14 @@ Page.Components =
 				
 				else if (words[0] === "!checkbox")
 				{
-					lines[i] = this.get_checkbox(words.slice(1), first_checkbox);
-					
-					first_checkbox = false;
+					lines[i] = this.get_checkbox(words.slice(1));
+				}
+				
+				
+				
+				else if (words[0] === "!radio-button")
+				{
+					lines[i] = this.get_radio_button(words.slice(1));
 				}
 			}
 		}
