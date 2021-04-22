@@ -126,8 +126,8 @@
 		
 		
 		document.querySelector("#progress-bar span").style.width = 0;
-		document.querySelector("#progress-bar").style.marginTop = "5vh";
-		document.querySelector("#progress-bar").style.marginBottom = "5vh";
+		document.querySelector("#progress-bar").style.marginTop = "10vh";
+		document.querySelector("#progress-bar").style.marginBottom = "-5vh";
 		
 		setTimeout(function()
 		{

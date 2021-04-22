@@ -442,6 +442,23 @@ Page.Components =
 	
 	
 	
+	get_canvas: function()
+	{
+		return `
+			<div class="center-content applet-canvas-container" data-aos="zoom-out" data-aos-delay-increase="500">
+				<canvas id="output-canvas" class="no-floating-footer"></canvas>
+			</div>
+
+			<div class="center-content" data-aos="fade-in">
+				<div id="fullscreen-message">
+					<p class="body-text">Double-click canvas to enter fullscreen</p>
+				</div>
+			</div>
+		`;
+	},
+	
+	
+	
 	decode: function(html)
 	{
 		let new_aos_section = false;
@@ -608,6 +625,13 @@ Page.Components =
 				else if (words[0] === "!radio-button")
 				{
 					lines[i] = this.get_radio_button(words.slice(1));
+				}
+				
+				
+				
+				else if (words[0] === "!canvas")
+				{
+					lines[i] = this.get_canvas(words.slice(1));
 				}
 			}
 		}

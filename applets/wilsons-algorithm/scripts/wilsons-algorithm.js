@@ -99,6 +99,7 @@
 				{
 					document.querySelector("#progress-bar").style.marginTop = 0;
 					document.querySelector("#progress-bar").style.marginBottom = 0;
+					document.querySelector("#progress-bar").style.height = 0;
 				}, 600);
 			}
 			
@@ -153,6 +154,7 @@
 						{
 							document.querySelector("#progress-bar").style.marginTop = 0;
 							document.querySelector("#progress-bar").style.marginBottom = 0;
+							document.querySelector("#progress-bar").style.height = 0;
 						}, 300);
 					}, 600);
 				}
@@ -184,8 +186,9 @@
 				
 				
 				
-				document.querySelector("#progress-bar").style.marginTop = "5vh";
-				document.querySelector("#progress-bar").style.marginBottom = "5vh";
+				document.querySelector("#progress-bar").style.marginTop = "10vh";
+				document.querySelector("#progress-bar").style.marginBottom = "-5vh";
+				document.querySelector("#progress-bar").style.height = "5vh";
 				
 				setTimeout(function()
 				{
