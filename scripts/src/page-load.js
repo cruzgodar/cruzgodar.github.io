@@ -662,7 +662,17 @@ Page.Load =
 				
 				else
 				{
-					if (new_elements[i].getAttribute("data-aos-delay") !== null)
+					if (new_elements[i].getAttribute("data-aos-delay-increase") !== null)
+					{
+						current_delay += parseInt(new_elements[i].getAttribute("data-aos-delay-increase"));
+						
+						if (current_delay > 2000)
+						{
+							current_delay = 2000;
+						}
+					}
+					
+					else if (new_elements[i].getAttribute("data-aos-delay") !== null)
 					{
 						current_delay = parseInt(new_elements[i].getAttribute("data-aos-delay"));
 					}

@@ -5,6 +5,11 @@
 	transition: opacity .3s ease-in-out;
 }
 
+.major-version .body-text, .medium-version .body-text, .minor-version .body-text
+{
+	width: 50vw;
+}
+
 
 
 .major-version div:first-child .heading-text
@@ -47,4 +52,24 @@
 {
 	font-weight: bold;
 	text-align: center;
+}
+
+
+
+@media (max-aspect-ratio: 9/16), (max-width: 700px)
+{
+	.major-version .body-text, .medium-version .body-text, .minor-version .body-text
+	{
+		width: 70vw;
+	}
+}
+
+
+
+@media (min-aspect-ratio: 16/9), (min-width: 1400px)
+{
+	.major-version .body-text, .medium-version .body-text, .minor-version .body-text
+	{
+		width: 30vw;
+	}
 }

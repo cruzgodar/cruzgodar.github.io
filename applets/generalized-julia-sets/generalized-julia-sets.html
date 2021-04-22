@@ -62,6 +62,8 @@
 
 !section
 
+!text s 
+
 
 
 !begin-text-boxes
@@ -84,17 +86,15 @@
 
 
 
-<div style="height: 7.5vh"></div>
-
-<div class="text-buttons">
-	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="800" tabindex="1">
-		<button class="text-button linked-text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
-	</div>
+!begin-text-buttons
 	
-	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="900" tabindex="1">
-		<button class="text-button linked-text-button no-floating-footer" type="button" id="switch-julia-mode-button" tabindex="-1">Pick Julia Set</button>
-	</div>
-</div>
+	generate l Generate
+	
+	switch-julia-mode l Pick Julia Set
+	
+!end-text-buttons
+
+
 
 <div style="height: 10vh"></div>
 
@@ -124,13 +124,13 @@
 	
 !end-text-boxes
 
-<div style="height: 5vh"></div>
 
-<div class="text-buttons">
-	<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="600" tabindex="1">
-		<button class="text-button no-floating-footer" type="button" id="generate-high-res-image-button" tabindex="-1">Generate</button>
-	</div>
-</div>
+
+!begin-text-buttons
+	
+	generate-high-res-image Generate
+	
+!end-text-buttons
 
 
 

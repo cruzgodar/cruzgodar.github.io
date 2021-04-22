@@ -351,6 +351,43 @@ Page.Components =
 	
 	
 	
+	get_text_button: function(args, first)
+	{
+		let id = args[0];
+		
+		let text = args.slice(1).join(" ");
+		
+		
+		
+		let linked_string = "";
+		
+		if (args[1] === "l")
+		{
+			linked_string = " linked-text-button";
+			
+			text = args.slice(2).join(" ");
+		}
+		
+		
+		
+		let delay_string = "";
+		
+		if (first)
+		{
+			delay_string = ` data-aos-delay-increase="500"`;
+		}
+		
+		
+		
+		return `
+			<div class="focus-on-child" data-aos="zoom-out"${delay_string} tabindex="1">
+				<button class="text-button${linked_string} no-floating-footer" type="button" id="${id}-button" tabindex="-1">${text}</button>
+			</div>
+		`;
+	},
+	
+	
+	
 	decode: function(html)
 	{
 		let new_aos_section = false;
@@ -474,6 +511,32 @@ Page.Components =
 						i += 2;
 						
 						words = lines[i].split(" ");
+					}
+					
+					lines[i] = `</div>`;
+				}
+				
+				
+				
+				else if (words[0] === "!begin-text-buttons")
+				{
+					lines[i] = `<div class="text-buttons">`;
+					
+					i += 2;
+					
+					let first = true;
+					
+					words = lines[i].split(" ");
+					
+					while (words[0] !== "!end-text-buttons")
+					{
+						lines[i] = this.get_text_button(words, first);
+						
+						i += 2;
+						
+						words = lines[i].split(" ");
+						
+						first = false;
 					}
 					
 					lines[i] = `</div>`;
