@@ -708,8 +708,6 @@ Page.Load =
 
 		on_resize: function()
 		{
-			console.log("Updated AOS anchors");
-			
 			for (let i = 0; i < this.elements.length; i++)
 			{
 				this.anchor_positions[i] = this.elements[i][0][0].getBoundingClientRect().top + Page.scroll;
