@@ -20,6 +20,8 @@
 	
 	grid-row-gap: 2.5vw;
 	grid-column-gap: 2.5vw;
+	
+	margin-top: 10vh;
 }
 
 .text-buttons
@@ -29,6 +31,8 @@
 	
 	grid-row-gap: 5vw;
 	grid-column-gap: 5vw;
+	
+	margin-top: 10vh;
 }
 
 
@@ -78,6 +82,8 @@
 	width: 70vw;
 	height: 32px;
 	margin: 0 auto;
+	
+	margin-top: 5vh;
 	
 	display: flex;
 	align-items: center;
@@ -167,6 +173,8 @@
 	width: 70vw;
 	height: 32px;
 	margin: 0 auto;
+	
+	margin-top: 5vh;
 	
 	display: flex;
 	align-items: center;

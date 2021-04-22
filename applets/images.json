@@ -1,43 +1,11 @@
 {
-	"image-julia-set-explorer-best-of":
-	{
-		"webp": "julia-set-explorer/cover.webp",
-		"non-webp": "julia-set-explorer/cover.jpg"
-	},
-	
-	"image-wilsons-algorithm-best-of":
-	{
-		"webp": "wilsons-algorithm/cover.webp",
-		"non-webp": "wilsons-algorithm/cover.jpg"
-	},
-	
-	"image-newtons-method-best-of":
-	{
-		"webp": "newtons-method/cover.webp",
-		"non-webp": "newtons-method/cover.jpg"
-	},
-	
-	"image-the-mandelbulb-best-of":
-	{
-		"webp": "the-mandelbulb/cover.webp",
-		"non-webp": "the-mandelbulb/cover.jpg"
-	},
-	
-	"image-quasi-fuchsian-groups-best-of":
-	{
-		"webp": "quasi-fuchsian-groups/cover.webp",
-		"non-webp": "quasi-fuchsian-groups/cover.jpg"
-	},
-	
-	
-	
-	"image-kleinian-pearls":
+	"kleinian-pearls":
 	{
 		"webp": "kleinian-pearls/cover.webp",
 		"non-webp": "kleinian-pearls/cover.jpg"
 	},
 	
-	"image-the-secant-method":
+	"the-secant-method":
 	{
 		"webp": "the-secant-method/cover.webp",
 		"non-webp": "the-secant-method/cover.jpg"
@@ -45,91 +13,91 @@
 	
 	
 	
-	"image-quasi-fuchsian-groups":
+	"quasi-fuchsian-groups":
 	{
 		"webp": "quasi-fuchsian-groups/cover.webp",
 		"non-webp": "quasi-fuchsian-groups/cover.jpg"
 	},
 	
-	"image-the-mandelbulb":
+	"the-mandelbulb":
 	{
 		"webp": "the-mandelbulb/cover.webp",
 		"non-webp": "the-mandelbulb/cover.jpg"
 	},
 	
-	"image-kaleidoscopic-ifs-fractals":
+	"kaleidoscopic-ifs-fractals":
 	{
 		"webp": "kaleidoscopic-ifs-fractals/cover.webp",
 		"non-webp": "kaleidoscopic-ifs-fractals/cover.jpg"
 	},
 	
-	"image-binary-trees":
+	"binary-trees":
 	{
 		"webp": "binary-trees/cover.webp",
 		"non-webp": "binary-trees/cover.jpg"
 	},
 	
-	"image-gravner-griffeath-snowflakes":
+	"gravner-griffeath-snowflakes":
 	{
 		"webp": "gravner-griffeath-snowflakes/cover.webp",
 		"non-webp": "gravner-griffeath-snowflakes/cover.jpg"
 	},
 	
-	"image-finite-subdivisions":
+	"finite-subdivisions":
 	{
 		"webp": "finite-subdivisions/cover.webp",
 		"non-webp": "finite-subdivisions/cover.jpg"
 	},
 	
-	"image-generalized-julia-sets":
+	"generalized-julia-sets":
 	{
 		"webp": "generalized-julia-sets/cover.webp",
 		"non-webp": "generalized-julia-sets/cover.jpg"
 	},
 	
-	"image-strange-attractors":
+	"strange-attractors":
 	{
 		"webp": "strange-attractors/cover.webp",
 		"non-webp": "strange-attractors/cover.jpg"
 	},
 	
-	"image-sudoku-generator":
+	"sudoku-generator":
 	{
 		"webp": "sudoku-generator/cover.webp",
 		"non-webp": "sudoku-generator/cover.jpg"
 	},
 	
-	"image-julia-set-mosaic":
+	"julia-set-mosaic":
 	{
 		"webp": "julia-set-mosaic/cover.webp",
 		"non-webp": "julia-set-mosaic/cover.jpg"
 	},
 	
-	"image-the-chaos-game":
+	"the-chaos-game":
 	{
 		"webp": "the-chaos-game/cover.webp",
 		"non-webp": "the-chaos-game/cover.jpg"
 	},
 	
-	"image-the-kicked-rotator":
+	"the-kicked-rotator":
 	{
 		"webp": "the-kicked-rotator/cover.webp",
 		"non-webp": "the-kicked-rotator/cover.jpg"
 	},
 	
-	"image-brownian-trees":
+	"brownian-trees":
 	{
 		"webp": "brownian-trees/cover.webp",
 		"non-webp": "brownian-trees/cover.jpg"
 	},
 	
-	"image-the-barnsley-fern":
+	"the-barnsley-fern":
 	{
 		"webp": "the-barnsley-fern/cover.webp",
 		"non-webp": "the-barnsley-fern/cover.jpg"
 	},
 	
-	"image-newtons-method":
+	"newtons-method":
 	{
 		"webp": "newtons-method/cover.webp",
 		"non-webp": "newtons-method/cover.jpg"
@@ -137,31 +105,31 @@
 	
 	
 	
-	"image-calcudoku-generator":
+	"calcudoku-generator":
 	{
 		"webp": "calcudoku-generator/cover.webp",
 		"non-webp": "calcudoku-generator/cover.jpg"
 	},
 	
-	"image-simulated-annealing":
+	"simulated-annealing":
 	{
 		"webp": "simulated-annealing/cover.webp",
 		"non-webp": "simulated-annealing/cover.jpg"
 	},
 	
-	"image-abelian-sandpiles":
+	"abelian-sandpiles":
 	{
 		"webp": "abelian-sandpiles/cover.webp",
 		"non-webp": "abelian-sandpiles/cover.jpg"
 	},
 	
-	"image-wilsons-algorithm":
+	"wilsons-algorithm":
 	{
 		"webp": "wilsons-algorithm/cover.webp",
 		"non-webp": "wilsons-algorithm/cover.jpg"
 	},
 	
-	"image-julia-set-explorer":
+	"julia-set-explorer":
 	{
 		"webp": "julia-set-explorer/cover.webp",
 		"non-webp": "julia-set-explorer/cover.jpg"

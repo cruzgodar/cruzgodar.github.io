@@ -8,178 +8,83 @@
 
 
 
-<header>
-	<div class="new-aos-section" data-aos="fade-in">
-		<div id="logo">
-			<a href="/home/home.html" tabindex="-1">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="Page.Navigation.redirect('/home/home.html')" tabindex="1"></img>
-			</a>
-		</div>
-	</div>
-	
-	<div style="height: 2vh"></div>
-	
-	<div data-aos="fade-up">
-		<h1 class="heading-text">The Mandelbulb</h1>
-	</div>
-</header>
-
-<div style="height: 5vh"></div>
+!header The Mandelbulb
 
 
 
-<main>
-	<section>
-		<div data-aos="fade-up">
-			<p class="body-text">
-				The holy grail of 3D fractals, the Mandelbulb is a landmark accomplishment. Translating the <a href="/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html" onclick="Page.Navigation.redirect('/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html')">Mandelbrot set</a> to three dimensions is impossible to do canonically, since there is no appropriate 3-dimensional number system analogous to the complex numbers. Nevertheless, Daniel White and Paul Nylander managed to use spherical coordinates to produce something spectacular in its own right, showing just what 3D fractals could be and igniting the search for more.
-			</p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text">
-				The typical Mandelbulb uses a power-8 formula, but any power larger than 1 works too. Like the <a href="/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html" onclick="Page.Navigation.redirect('/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html')">Kaleidoscopic IFS fractals</a>, we can introduce a rotation into the system for fun, and of course, just like the Mandelbrot set has its <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="Page.Navigation.redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julias</a>, every point in space gives rise to a Juliabulb. The third button lets you change the \(c\) parameter used to generate the Juliabulb, indicated by the white dot.
-			</p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text">
-				Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
-			</p>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-boxes">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="dim-input" class="text-box no-floating-footer" type="text" value="500" tabindex="1">
-				<label for="dim-input">
-					<p class="body-text">Resolution</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="power-input" class="text-box no-floating-footer" type="text" value="8" tabindex="1">
-				<label for="power-input">
-					<p class="body-text">Power</p>
-				</label>
-			</div>
-		
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="rotation-angle-x-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="rotation-angle-x-input">
-					<p class="body-text">\(\theta_x\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="rotation-angle-y-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="rotation-angle-y-input">
-					<p class="body-text">\(\theta_y\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="rotation-angle-z-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="rotation-angle-z-input">
-					<p class="body-text">\(\theta_z\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="c-x-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="c-x-input">
-					<p class="body-text">\(c_x\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="c-y-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="c-y-input">
-					<p class="body-text">\(c_y\)</p>
-				</label>
-			</div>
-			
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="c-z-input" class="text-box no-floating-footer" type="text" value="0" tabindex="1">
-				<label for="c-z-input">
-					<p class="body-text">\(c_z\)</p>
-				</label>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="1400" tabindex="1">
-				<button class="text-button linked-text-button no-floating-footer" type="button" id="randomize-parameters-button" tabindex="-1">Randomize Rotation</button>
-			</div>
-		
-			<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
-				<button class="text-button linked-text-button no-floating-footer" type="button" id="switch-bulb-button" tabindex="-1">Switch to Mandelbulb</button>
-			</div>
-			
-			<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
-				<button class="text-button linked-text-button no-floating-footer" type="button" id="switch-movement-button" style="opacity: 0" tabindex="-1">Change Juliabulb</button>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="2000">
-			<canvas id="output-canvas" class="no-floating-footer"></canvas>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="2000">
-			<div id="fullscreen-message">
-				<p class="body-text">Double-click canvas to enter fullscreen</p>
-			</div>
-		</div>
-	</section>
+!begin-text-block
 	
+	The holy grail of 3D fractals, the Mandelbulb is a landmark accomplishment. Translating the <a href="/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html" onclick="Page.Navigation.redirect('/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html')">Mandelbrot set</a> to three dimensions is impossible to do canonically, since there is no appropriate 3-dimensional number system analogous to the complex numbers. Nevertheless, Daniel White and Paul Nylander managed to use spherical coordinates to produce something spectacular in its own right, showing just what 3D fractals could be and igniting the search for more.
 	
+	The typical Mandelbulb uses a power-8 formula, but any power larger than 1 works too. Like the <a href="/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html" onclick="Page.Navigation.redirect('/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html')">Kaleidoscopic IFS fractals</a>, we can introduce a rotation into the system for fun, and of course, just like the Mandelbrot set has its <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="Page.Navigation.redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julias</a>, every point in space gives rise to a Juliabulb. The third button lets you change the \(c\) parameter used to generate the Juliabulb, indicated by the white dot.
 	
-	<div style="height: 10vh"></div>
+	Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
 	
-	
-	
-	<section>
-		<div class="new-aos-section" data-aos="fade-up">
-			<h2 class="section-text">High Resolution Capture</h2>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="text-boxes">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="high-res-dim-input" class="text-box no-floating-footer" type="text" value="2000" tabindex="1">
-				<label for="high-res-dim-input">
-					<p class="body-text">Image Size</p>
-				</label>
-			</div>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="600" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="generate-high-res-image-button" tabindex="-1">Generate</button>
-			</div>
-		</div>
-	</section>
-</main>
+!end-text-block
 
 
 
-<footer>
-	<div id="spawn-footer"></div>
-</footer>
+!begin-text-boxes
+	
+	dim 500 Resolution
+	
+	power 8 Power
+	
+	rotation-angle-x 0 \(\theta_x\)
+	
+	rotation-angle-y 0 \(\theta_y\)
+	
+	rotation-angle-z 0 \(\theta_z\)
+	
+	c-x 0 \(c_x\)
+	
+	c-y 0 \(c_y\)
+	
+	c-z 0 \(c_z\)
+	
+!end-text-boxes
+
+
+
+!begin-text-buttons
+	
+	randomize-parameters l Randomize Rotation
+	
+	switch-bulb l Switch to Mandelbulb
+	
+	switch-movement l Change Juliabulb
+	
+!end-text-buttons
+
+
+
+!canvas
+
+
+
+!section
+
+!text s High Resolution Capture
+
+
+
+!begin-text-boxes
+	
+	high-res-dim 2000 Image Size
+	
+!end-text-boxes
+
+
+
+!begin-text-buttons
+	
+	generate-high-res-image Generate
+	
+!end-text-buttons
+
+
+
+!footer
 
 
 

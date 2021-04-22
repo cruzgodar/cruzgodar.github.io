@@ -662,7 +662,17 @@ Page.Load =
 				
 				else
 				{
-					if (new_elements[i].getAttribute("data-aos-delay") !== null)
+					if (new_elements[i].getAttribute("data-aos-delay-increase") !== null)
+					{
+						current_delay += parseInt(new_elements[i].getAttribute("data-aos-delay-increase"));
+						
+						if (current_delay > 2000)
+						{
+							current_delay = 2000;
+						}
+					}
+					
+					else if (new_elements[i].getAttribute("data-aos-delay") !== null)
 					{
 						current_delay = parseInt(new_elements[i].getAttribute("data-aos-delay"));
 					}
@@ -698,8 +708,6 @@ Page.Load =
 
 		on_resize: function()
 		{
-			console.log("Updated AOS anchors");
-			
 			for (let i = 0; i < this.elements.length; i++)
 			{
 				this.anchor_positions[i] = this.elements[i][0][0].getBoundingClientRect().top + Page.scroll;

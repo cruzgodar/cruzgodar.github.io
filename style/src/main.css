@@ -24,6 +24,25 @@ body
 	-webkit-text-size-adjust: 100%;
 }
 
+
+
+header
+{
+	margin-bottom: 5vh;
+}
+
+section:not(:last-of-type)
+{
+	margin-bottom: 15vh;
+}
+
+footer
+{
+	margin-top: 25vh;
+}
+
+
+
 a
 {
 	color: rgb(127, 192, 127);

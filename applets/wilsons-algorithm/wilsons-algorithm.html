@@ -8,142 +8,65 @@
 
 
 
-<header>
-	<div class="new-aos-section" data-aos="fade-in">
-		<div id="logo">
-			<a href="/home/home.html" tabindex="-1">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="Page.Navigation.redirect('/home/home.html')" tabindex="1"></img>
-			</a>
-		</div>
-	</div>
+!header Wilson&#x2019;s Algorithm
+
+
+
+!begin-text-block
 	
-	<div style="height: 2vh"></div>
+	Ever wanted to make your own maze? If you&#x2019;ve tried, you might find it&#x2019;s not as easy as you might think. Draw just one long path, and it&#x2019;s too easy; draw lots of small ones and you&#x2019;ll often run into the same problem. If even a small maze is tricky to make, a massive one seems downright impossible &mdash; and yet pick up any puzzle book for children and you&#x2019;ll see pages upon pages of them. How do they do it?
 	
-	<div data-aos="fade-up">
-		<h1 class="heading-text">Wilson&#x2019;s Algorithm</h1>
+	Enter Wilson&#x2019;s Algorithm. It&#x2019;s a method that makes maze-making as easy as following a recipe, and what&#x2019;s more, it produces a truly random one &mdash; every possible maze of a given size has the same chance of being created.
+	
+	It&#x2019;s not too hard to describe the algorithm. Draw a square grid of black dots and pick a random one to color white. Now pick another random black dot to start from and color it white too. From this black dot, take a single step in a random direction, coloring the new dot white and drawing a line between the two dots. Now take a single step from that dot, draw another line, and so on. You'll end up with a white path drawing a squiggle across the grid. There are two things that you need to watch out for: first, if you walk back into your own path, like a failed game of snake, don&#x2019;t make a loop &mdash; instead, backtrack along your path until you&#x2019;re back at the dot that you were trying to color white for a second time. As you backtrack, turn every white dot you pass back to black, erase all the lines you pass over, and then start again from the new end of the path.
+	
+	The other thing to watch out for is hitting the single white dot you selected at the very start. When you do, stop drawing your path, pick a new black point, and start again. This time, stop not just when you hit the first white dot, but when you hit any of the white dots along the old path, too. Keep this up until every dot is white, and you&#x2019;ll have yourself a maze.
+
+!end-text-block
+
+
+
+!begin-text-boxes
+	
+	dim 50 Grid Size
+	
+!end-text-boxes
+
+
+
+!checkbox toggle-maximum-speed Maximum speed
+
+!checkbox no-borders Don&#x2019;t draw black borders
+
+
+
+!begin-text-buttons
+	
+	generate Generate
+	
+!end-text-buttons
+
+
+
+<div class="center-content">
+	<div id="progress-bar" class="progress-bar applet-progress-bar" style="opacity: 0; height: 0">
+		<span></span>
 	</div>
-</header>
+</div>
 
-<div style="height: 5vh"></div>
-
-
-
-<main>
-	<section>
-		<div data-aos="fade-up">
-			<p class="body-text">
-				Ever wanted to make your own maze? If you&#x2019;ve tried, you might find it&#x2019;s not as easy as you might think. Draw just one long path, and it&#x2019;s too easy; draw lots of small ones and you&#x2019;ll often run into the same problem. If even a small maze is tricky to make, a massive one seems downright impossible &mdash; and yet pick up any puzzle book for children and you&#x2019;ll see pages upon pages of them. How do they do it?
-			</p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text">
-				Enter Wilson&#x2019;s Algorithm. It&#x2019;s a method that makes maze-making as easy as following a recipe, and what&#x2019;s more, it produces a truly random one &mdash; every possible maze of a given size has the same chance of being created.
-			</p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text">
-				It&#x2019;s not too hard to describe the algorithm. Draw a square grid of black dots and pick a random one to color white. Now pick another random black dot to start from and color it white too. From this black dot, take a single step in a random direction, coloring the new dot white and drawing a line between the two dots. Now take a single step from that dot, draw another line, and so on. You'll end up with a white path drawing a squiggle across the grid. There are two things that you need to watch out for: first, if you walk back into your own path, like a failed game of snake, don&#x2019;t make a loop &mdash; instead, backtrack along your path until you&#x2019;re back at the dot that you were trying to color white for a second time. As you backtrack, turn every white dot you pass back to black, erase all the lines you pass over, and then start again from the new end of the path.
-			</p>
-		</div>
-		
-		<br>
-		
-		<div data-aos="fade-up">
-			<p class="body-text">
-				The other thing to watch out for is hitting the single white dot you selected at the very start. When you do, stop drawing your path, pick a new black point, and start again. This time, stop not just when you hit the first white dot, but when you hit any of the white dots along the old path, too. Keep this up until every dot is white, and you&#x2019;ll have yourself a maze.
-			</p>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-boxes">
-			<div class="text-box-container" data-aos="fade-up">
-				<input id="dim-input" class="text-box no-floating-footer" type="text" value="50" tabindex="1">
-				<label for="dim-input">
-					<p class="body-text">Graph Dimension</p>
-				</label>
-			</div>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="checkbox-row">
-			<div data-aos="zoom-out" data-aos-delay="1100">
-				<div class="checkbox-container click-on-child" tabindex="1">
-					<input type="checkbox" id="toggle-maximum-speed-checkbox" class="no-floating-footer">
-					<div class="checkbox no-floating-footer"></div>
-				</div>
-			</div>
-			
-			<div style="margin-left: 10px" data-aos="fade-left">
-				<p class="body-text">Maximum speed</p>
-			</div>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="checkbox-row">
-			<div data-aos="zoom-out" data-aos-delay="1600">
-				<div class="checkbox-container click-on-child" tabindex="1">
-					<input type="checkbox" id="no-borders-checkbox" class="no-floating-footer">
-					<div class="checkbox no-floating-footer"></div>
-				</div>
-			</div>
-			
-			<div style="margin-left: 10px" data-aos="fade-left">
-				<p class="body-text">Don&#x2019;t draw black borders</p>
-			</div>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="2100" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="generate-button" tabindex="-1">Generate</button>
-			</div>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="center-content">
-			<div id="progress-bar" class="progress-bar applet-progress-bar" style="opacity: 0">
-				<span></span>
-			</div>
-		</div>
-		
-		<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay="2600">
-			<canvas id="output-canvas" class="no-floating-footer"></canvas>
-		</div>
-		
-		<div style="height: 5vh"></div>
-		
-		<div class="center-content" data-aos="fade-in" data-aos-delay="2600">
-			<div id="fullscreen-message">
-				<p class="body-text">Double-click canvas to enter fullscreen</p>
-			</div>
-		</div>
-		
-		<div style="height: 10vh"></div>
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="3000" tabindex="1">
-				<button class="text-button no-floating-footer" type="button" id="download-button" tabindex="-1">Download Image</button>
-			</div>
-		</div>
-	</section>
-</main>
+!canvas
 
 
 
-<footer>
-	<div id="spawn-footer"></div>
-</footer>
+!begin-text-buttons
+	
+	download Download Image
+	
+!end-text-buttons
+
+
+
+!footer
 
 
 

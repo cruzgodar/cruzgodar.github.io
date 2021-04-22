@@ -29,7 +29,9 @@
 	
 	let julia_mode = 0;
 	
-	let code_string = "cadd(cmul(z, z), c)";
+	let code_string = "cadd(cpow(z, 2.0), c)";
+	
+	document.querySelector("#code-input").value = code_string;
 	
 	
 	

@@ -1,17 +1,17 @@
 {
-	"image-caligo":
+	"caligo":
 	{
 		"webp": "caligo/cover.webp",
 		"non-webp": "caligo/cover.jpg"
 	},
 	
-	"image-desolation-point":
+	"desolation-point":
 	{
 		"webp": "desolation-point/cover.webp",
 		"non-webp": "desolation-point/cover.jpg"
 	},
 	
-	"image-mist":
+	"mist":
 	{
 		"webp": "mist/cover.webp",
 		"non-webp": "mist/cover.jpg"

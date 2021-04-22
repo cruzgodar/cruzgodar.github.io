@@ -1,5 +1,5 @@
 {
-	"image-final":
+	"final":
     {
         "webp": "exams/final/cover.webp",
         "non-webp": "exams/final/cover.jpg"
@@ -7,7 +7,7 @@
     
     
     
-	"image-week-10-notes":
+	"week-10-notes":
     {
         "webp": "notes/10/cover.webp",
         "non-webp": "notes/10/cover.jpg"
@@ -15,19 +15,19 @@
     
     
     
-    "image-week-9-notes":
+    "week-9-notes":
     {
         "webp": "notes/9/cover.webp",
         "non-webp": "notes/9/cover.jpg"
     },
     
-	"image-homework-7":
+	"homework-7":
     {
         "webp": "homework/7/cover.webp",
         "non-webp": "homework/7/cover.jpg"
     },
     
-	"image-quiz-7":
+	"quiz-7":
     {
         "webp": "quizzes/7/cover.webp",
         "non-webp": "quizzes/7/cover.jpg"
@@ -35,13 +35,13 @@
     
     
     
-	"image-week-8-notes":
+	"week-8-notes":
     {
         "webp": "notes/8/cover.webp",
         "non-webp": "notes/8/cover.jpg"
     },
     
-    "image-midterm-2":
+    "midterm-2":
     {
         "webp": "exams/2/cover.webp",
         "non-webp": "exams/2/cover.jpg"
@@ -49,19 +49,19 @@
     
     
     
-    "image-quiz-6":
+    "quiz-6":
     {
         "webp": "quizzes/6/cover.webp",
         "non-webp": "quizzes/6/cover.jpg"
     },
     
-    "image-week-7-notes":
+    "week-7-notes":
     {
         "webp": "notes/7/cover.webp",
         "non-webp": "notes/7/cover.jpg"
     },
     
-    "image-homework-6":
+    "homework-6":
     {
         "webp": "homework/6/cover.webp",
         "non-webp": "homework/6/cover.jpg"
@@ -69,19 +69,19 @@
     
     
     
-    "image-quiz-5":
+    "quiz-5":
     {
         "webp": "quizzes/5/cover.webp",
         "non-webp": "quizzes/5/cover.jpg"
     },
     
-    "image-week-6-notes":
+    "week-6-notes":
     {
         "webp": "notes/6/cover.webp",
         "non-webp": "notes/6/cover.jpg"
     },
     
-    "image-homework-5":
+    "homework-5":
     {
         "webp": "homework/5/cover.webp",
         "non-webp": "homework/5/cover.jpg"
@@ -89,19 +89,19 @@
     
     
     
-    "image-quiz-4":
+    "quiz-4":
     {
         "webp": "quizzes/4/cover.webp",
         "non-webp": "quizzes/4/cover.jpg"
     },
     
-    "image-week-5-notes":
+    "week-5-notes":
     {
         "webp": "notes/5/cover.webp",
         "non-webp": "notes/5/cover.jpg"
     },
     
-	"image-homework-4":
+	"homework-4":
     {
         "webp": "homework/4/cover.webp",
         "non-webp": "homework/4/cover.jpg"
@@ -109,13 +109,13 @@
     
     
     
-	"image-week-4-notes":
+	"week-4-notes":
     {
         "webp": "notes/4/cover.webp",
         "non-webp": "notes/4/cover.jpg"
     },
     
-	"image-midterm-1":
+	"midterm-1":
     {
         "webp": "exams/1/cover.webp",
         "non-webp": "exams/1/cover.jpg"
@@ -129,19 +129,19 @@
     
     
     
-    "image-quiz-3":
+    "quiz-3":
     {
         "webp": "quizzes/3/cover.webp",
         "non-webp": "quizzes/3/cover.jpg"
     },
     
-	"image-week-3-notes":
+	"week-3-notes":
     {
         "webp": "notes/3/cover.webp",
         "non-webp": "notes/3/cover.jpg"
     },
     
-	"image-homework-3":
+	"homework-3":
     {
         "webp": "homework/3/cover.webp",
         "non-webp": "homework/3/cover.jpg"
@@ -149,19 +149,19 @@
     
     
     
-    "image-quiz-2":
+    "quiz-2":
     {
         "webp": "quizzes/2/cover.webp",
         "non-webp": "quizzes/2/cover.jpg"
     },
     
-	"image-week-2-notes":
+	"week-2-notes":
     {
         "webp": "notes/2/cover.webp",
         "non-webp": "notes/2/cover.jpg"
     },
     
-	"image-homework-2":
+	"homework-2":
     {
         "webp": "homework/2/cover.webp",
         "non-webp": "homework/2/cover.jpg"
@@ -169,33 +169,33 @@
     
     
     
-    "image-quiz-1":
+    "quiz-1":
     {
         "webp": "quizzes/1/cover.webp",
         "non-webp": "quizzes/1/cover.jpg"
     },
     
-	"image-week-1-notes":
+	"week-1-notes":
     {
         "webp": "notes/1/cover.webp",
         "non-webp": "notes/1/cover.jpg"
     },
     
-	"image-homework-1":
+	"homework-1":
     {
         "webp": "homework/1/cover.webp",
         "non-webp": "homework/1/cover.jpg"
     },
     
-	"image-lecture-archive":
+	"lecture-archive":
     {
         "webp": "lecture-archive/cover.webp",
         "non-webp": "lecture-archive/cover.jpg"
     },
     
-    "image-syllabus":
+    "syllabus":
     {
         "webp": "syllabus/cover.webp",
         "non-webp": "syllabus/cover.jpg"
     }
-}
+	}
