@@ -331,6 +331,26 @@ Page.Components =
 	
 	
 	
+	get_text_box: function(args)
+	{
+		let id = args[0];
+		
+		let value = args[1];
+		
+		let text = args.slice(2).join(" ");
+		
+		return `
+			<div class="text-box-container" data-aos="fade-up">
+				<input id="${id}-input" class="text-box no-floating-footer" type="text" value="${value}" tabindex="1">
+				<label for="${id}-input">
+					<p class="body-text">${text}</p>
+				</label>
+			</div>
+		`;
+	},
+	
+	
+	
 	decode: function(html)
 	{
 		let new_aos_section = false;
@@ -435,6 +455,28 @@ Page.Components =
 				else if (words[0] === "!version")
 				{
 					lines[i] = this.get_about_page_version(words.slice(1));
+				}
+				
+				
+				
+				else if (words[0] === "!begin-text-boxes")
+				{
+					lines[i] = `<div class="text-boxes">`;
+					
+					i += 2;
+					
+					words = lines[i].split(" ");
+					
+					while (words[0] !== "!end-text-boxes")
+					{
+						lines[i] = this.get_text_box(words);
+						
+						i += 2;
+						
+						words = lines[i].split(" ");
+					}
+					
+					lines[i] = `</div>`;
 				}
 			}
 		}

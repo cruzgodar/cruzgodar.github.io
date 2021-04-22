@@ -14,23 +14,17 @@
 
 !text b j The <a href="/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html" onclick="Page.Navigation.redirect('/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html')">Mandelbrot set</a> and <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="Page.Navigation.redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julia sets</a> share a close relationship: the Julia set with parameter \(c\) &#x201C;looks like&#x201D; the Mandelbrot set at \(z = c\). But just how close is that resemblance? Something we might try is picking a bunch of points in the complex plane and drawing a small Julia set at every one. We&#x2019;d expect to get something vaguely resembling the Mandelbrot set &mdash; but it&#x2019;s remarkable just how accurate that picture is.
 
-<div style="height: 5vh"></div>
 
-<div class="text-boxes">
-	<div class="text-box-container" data-aos="fade-up">
-		<input id="num-julias-input" class="text-box no-floating-footer" type="text" value="100" tabindex="1">
-		<label for="num-julias-input">
-			<p class="body-text">Sets per Side</p>
-		</label>
-	</div>
+
+!begin-text-boxes
 	
-	<div class="text-box-container" data-aos="fade-up">
-		<input id="julia-size-input" class="text-box no-floating-footer" type="text" value="20" tabindex="1">
-		<label for="julia-size-input">
-			<p class="body-text">Set Size</p>
-		</label>
-	</div>
-</div>
+	num-julias 100 Sets per Side
+	
+	julia-size 20 Set Size
+	
+!end-text-boxes
+
+
 
 <div style="height: 5vh"></div>
 
