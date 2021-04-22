@@ -388,11 +388,46 @@ Page.Components =
 	
 	
 	
+	get_checkbox: function(args, first)
+	{
+		let id = args[0];
+		
+		let text = args.slice(1).join(" ");
+		
+		let delay_string = "";
+		
+		if (first)
+		{
+			delay_string = ` data-aos-delay-increase="500"`;
+		}
+		
+		
+		
+		return `
+			<div class="checkbox-row">
+				<div data-aos="zoom-out"${delay_string}>
+					<div class="checkbox-container click-on-child" tabindex="1">
+						<input type="checkbox" id="${id}-checkbox" class="no-floating-footer">
+						<div class="checkbox no-floating-footer"></div>
+					</div>
+				</div>
+				
+				<div style="margin-left: 10px" data-aos="fade-left">
+					<p class="body-text">${text}</p>
+				</div>
+			</div>
+		`;
+	},
+	
+	
+	
 	decode: function(html)
 	{
 		let new_aos_section = false;
 		
 		let banner = false;
+		
+		let first_checkbox = true;
 		
 		
 		
@@ -540,6 +575,15 @@ Page.Components =
 					}
 					
 					lines[i] = `</div>`;
+				}
+				
+				
+				
+				else if (words[0] === "!checkbox")
+				{
+					lines[i] = this.get_checkbox(words.slice(1), first_checkbox);
+					
+					first_checkbox = false;
 				}
 			}
 		}
