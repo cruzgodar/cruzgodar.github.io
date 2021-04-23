@@ -121,6 +121,12 @@
         "non-webp": "exams/1/cover.jpg"
     },
     
+    "practice-midterm-1-solutions":
+    {
+        "webp": "extra/practice-midterm-1-solutions/cover.webp",
+        "non-webp": "extra/practice-midterm-1-solutions/cover.jpg"
+    },
+    
     "practice-midterm-1":
     {
         "webp": "extra/practice-midterm-1/cover.webp",
