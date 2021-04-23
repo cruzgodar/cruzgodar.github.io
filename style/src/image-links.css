@@ -133,8 +133,12 @@
 	margin-top: 10vh;
 }
 
-/* This is equivalent to :first-of-class if it existed. */
-.multicol-block ~ .multicol-block
+.image-links-double-column-container .multicol-block
+{
+	margin-top: 10vh;
+}
+
+section ~ section .image-links-double-column-container .multicol-block
 {
 	margin-top: 0;
 }
@@ -152,11 +156,6 @@
 	
 	grid-row-gap: 1.5vw;
 	grid-column-gap: 1.5vw;
-}
-
-.image-links-double-column-container > div
-{
-	display: none;
 }
 
 .multicol-text
