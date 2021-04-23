@@ -322,7 +322,6 @@ Page.Applets =
 						
 						try
 						{
-							document.querySelector("#fullscreen-message").parentNode.previousElementSibling.remove();
 							document.querySelector("#fullscreen-message").parentNode.remove();
 							
 							Page.Load.AOS.on_resize();
