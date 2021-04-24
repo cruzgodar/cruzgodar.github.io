@@ -24,6 +24,8 @@ let Settings =
 	dark_theme_background_color: "rgb(24, 24, 24)",
 	dark_theme_background_color_rgba: "rgba(24, 24, 24, ",
 	
+	gradient_suffix: "-0-0",
+	
 	
 	
 	get_url_var: function(id)
@@ -157,44 +159,12 @@ let Settings =
 				{
 					transition: background-color .6s ease, border-color .6s ease, color .6s ease !important;
 				}
-			`);
-			
-			
-			
-			//These elements have properties that cannot be animated. To get around this, we'll animate them out and then back in later. It's not perfect, but it's the best we can do without making 8 copies of each element and fading the correct one in as necessary.
-			let difficult_elements = document.querySelectorAll(".line-break, #banner-gradient");
-			
-			for (let i = 0; i < difficult_elements.length; i++)
-			{
-				difficult_elements[i].classList.add("animated-opacity");
 				
-				difficult_elements[i].style.opacity = 0;
-				
-				setTimeout(() =>
+				.line-break
 				{
-					difficult_elements[i].style.opacity = 1;
-					
-					setTimeout(() =>
-					{
-						difficult_elements[i].classList.remove("animated-opacity");
-					}, 300);
-				}, 600);
-			}
-			
-			
-			
-			//These are pseudoelements. They cannot be selected by JS and therefore cannot be animated at all. Cool. The only option we have is to make them invisible in the css, and then later remove that style.
-			let element_2 = Site.add_style(`
-				.loading-spinner:after
-				{
-					opacity: 0 !important;
+					transition: .6s ease !important;
 				}
 			`);
-			
-			setTimeout(() =>
-			{
-				element_2.remove();
-			}, 600);
 		}
 		
 		
@@ -1066,6 +1036,8 @@ let Settings =
 
 	animate_theme_contrast: function(settings)
 	{
+		let new_gradient_suffix = "-0-0";
+		
 		if (settings === "")
 		{
 			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(0, 0, 0)");
@@ -1156,6 +1128,10 @@ let Settings =
 			
 			
 			Page.set_element_styles(".footer-button, .text-button, .nav-button, #output-canvas", "border-color", "rgb(152, 152, 152)");
+			
+			
+			
+			new_gradient_suffix = `-1-0`;
 		}
 		
 		
@@ -1203,6 +1179,10 @@ let Settings =
 			
 			
 			Page.set_element_styles(".footer-button, .text-button, .nav-button, #output-canvas", "border-color", "rgb(64, 64, 64)");
+			
+			
+			
+			new_gradient_suffix = `-0-1`;
 		}
 		
 		
@@ -1256,7 +1236,19 @@ let Settings =
 			
 			
 			Page.set_element_styles(".footer-button, .text-button, .nav-button, #output-canvas", "border-color", "rgb(152, 152, 152)");
+			
+			
+			
+			new_gradient_suffix = `-1-1`;
 		}
+		
+		console.log(`New suffix: ${new_gradient_suffix}`);
+		
+		//These elements have properties that cannot be animated. To get around this, every elemnt has 6 copies of itself -- one for each combination of theme and contrast. Here, we animate the new one in and the old one out.
+		Page.set_element_styles(`.line-break${this.gradient_suffix}`, "opacity", 0);
+		Page.set_element_styles(`.line-break${new_gradient_suffix}`, "opacity", 1);
+		
+		this.gradient_suffix = new_gradient_suffix;
 	},
 
 
@@ -1322,13 +1314,6 @@ let Settings =
 				}
 				
 				
-				
-				.line-break
-				{
-					background: -moz-linear-gradient(left, ${this.dark_theme_background_color} 0%, rgb(116,116,116) 50%, ${this.dark_theme_background_color} 100%);
-					background: -webkit-linear-gradient(left, ${this.dark_theme_background_color} 0%,rgb(116,116,116) 50%,${this.dark_theme_background_color}) 100%);
-					background: linear-gradient(to right, ${this.dark_theme_background_color} 0%,rgb(116,116,116) 50%,${this.dark_theme_background_color} 100%);
-				}
 				
 				.text-box
 				{
@@ -1397,6 +1382,13 @@ let Settings =
 				{
 					border-color: rgb(152, 152, 152);
 				}
+				
+				
+				
+				.line-break-1-0
+				{
+					opacity: 1;
+				}
 			`;
 		}
 		
@@ -1443,14 +1435,6 @@ let Settings =
 				}
 				
 				
-				
-				.line-break
-				{
-					background: rgb(255, 255, 255);
-					background: -moz-linear-gradient(left, rgb(255, 255, 255) 0%, rgb(120,120,120) 50%, rgb(255, 255, 255) 100%);
-					background: -webkit-linear-gradient(left, rgb(255, 255, 255) 0%,rgb(120,120,120) 50%,rgb(255, 255, 255)) 100%);
-					background: linear-gradient(to right, rgb(255, 255, 255) 0%,rgb(120,120,120) 50%,rgb(255, 255, 255) 100%);
-				}
 				
 				.text-box
 				{
@@ -1540,14 +1524,6 @@ let Settings =
 				
 				
 				
-				.line-break
-				{
-					background: ${this.dark_theme_background_color};
-					background: -moz-linear-gradient(left, ${this.dark_theme_background_color} 0%, rgb(164,164,164) 50%, ${this.dark_theme_background_color} 100%);
-					background: -webkit-linear-gradient(left, ${this.dark_theme_background_color} 0%,rgb(164,164,164) 50%,${this.dark_theme_background_color}) 100%);
-					background: linear-gradient(to right, ${this.dark_theme_background_color} 0%,rgb(164,164,164) 50%,${this.dark_theme_background_color} 100%);
-				}
-				
 				.text-box
 				{
 					background-color: ${this.dark_theme_background_color};
@@ -1624,6 +1600,11 @@ let Settings =
 				.footer-button, .text-button, .nav-button, #output-canvas
 				{
 					border-color: rgb(152, 152, 152);
+				}
+				
+				.line-break-1-1
+				{
+					opacity: 1;
 				}
 			`;
 		}

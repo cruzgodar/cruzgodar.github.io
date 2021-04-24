@@ -47,11 +47,47 @@
 {
 	margin: 0 auto;
 	width: 70vw;
+	margin-left: 15vw;
 	height: 1px;
 	
-	background: -moz-linear-gradient(left, rgb(255,255,255) 0%, rgb(160,160,160) 50%, rgb(255,255,255) 100%);
-	background: -webkit-linear-gradient(left, rgb(255,255,255) 0%,rgb(160,160,160) 50%,rgb(255,255,255) 100%);
-	background: linear-gradient(to right, rgb(255,255,255) 0%,rgb(160,160,160) 50%,rgb(255,255,255) 100%);
+	position: absolute;
+}
+
+.line-break-0-0
+{
+	background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgb(160,160,160) 50%, rgba(255,255,255,0) 100%);
+	background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgb(160,160,160) 50%,rgba(255,255,255,0) 100%);
+	background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgb(160,160,160) 50%,rgba(255,255,255,0) 100%);
+	
+	opacity: 1;
+}
+
+.line-break-1-0
+{
+	background: -moz-linear-gradient(left, rgba(24, 24, 24, 0) 0%, rgb(116,116,116) 50%, rgba(24, 24, 24, 0) 100%);
+	background: -webkit-linear-gradient(left, rgba(24, 24, 24, 0) 0%,rgb(116,116,116) 50%,rgba(24, 24, 24, 0) 100%);
+	background: linear-gradient(to right, rgba(24, 24, 24, 0) 0%,rgb(116,116,116) 50%,rgba(24, 24, 24, 0) 100%);
+	
+	opacity: 0
+}
+
+.line-break-0-1
+{
+	background: rgb(255, 255, 255);
+	background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgb(120,120,120) 50%, rgba(255,255,255,0) 100%);
+	background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgb(120,120,120) 50%,rgba(255,255,255,0) 100%);
+	background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgb(120,120,120) 50%,rgba(255,255,255,0) 100%);
+	
+	opacity: 0
+}
+
+.line-break-1-1
+{
+	background: -moz-linear-gradient(left, rgba(24, 24, 24, 0) 0%, rgb(164, 164, 164) 50%, rgba(24, 24, 24, 0) 100%);
+	background: -webkit-linear-gradient(left, rgba(24, 24, 24, 0) 0%,rgb(164, 164, 164) 50%,rgba(24, 24, 24, 0) 100%);
+	background: linear-gradient(to right, rgba(24, 24, 24, 0) 0%,rgb(164, 164, 164) 50%,rgba(24, 24, 24, 0) 100%);
+	
+	opacity: 0
 }
 
 
@@ -60,12 +96,16 @@
 {
 	width: 40vw !important;
 	
+	margin-left: 30vw;
+	
 	margin-bottom: 3vw;
 }
 
 .footer-line-break-big
 {
 	width: 52.5vw !important;
+	
+	margin-left: 23.75vw;
 	
 	margin-bottom: 3vw;
 }

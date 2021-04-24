@@ -278,6 +278,11 @@ img
 		width: 90vw;
 	}
 	
+	.line-break
+	{
+		margin-left: 5vw;
+	}
+	
 	#disqus_thread
 	{
 		width: 90vw;

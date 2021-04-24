@@ -44,8 +44,15 @@ Page.Footer =
 		{
 			document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
-					<div class="line-break footer-line-break-big"></div>
+					<div class="line-break line-break-0-0 footer-line-break-big"></div>
+					<div class="line-break line-break-1-0 footer-line-break-big"></div>
+					<div class="line-break line-break-2-0 footer-line-break-big"></div>
+					<div class="line-break line-break-0-1 footer-line-break-big"></div>
+					<div class="line-break line-break-1-1 footer-line-break-big"></div>
+					<div class="line-break line-break-2-1 footer-line-break-big"></div>
 				</div>
+				
+				<div style="height: 3vw"></div>
 				
 				<nav class="footer-image-links footer-image-links-big"></nav>
 			`);
@@ -55,8 +62,15 @@ Page.Footer =
 		{
 			document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
-					<div class="line-break footer-line-break"></div>
+					<div class="line-break line-break-0-0 footer-line-break"></div>
+					<div class="line-break line-break-1-0 footer-line-break"></div>
+					<div class="line-break line-break-2-0 footer-line-break"></div>
+					<div class="line-break line-break-0-1 footer-line-break"></div>
+					<div class="line-break line-break-1-1 footer-line-break"></div>
+					<div class="line-break line-break-2-1 footer-line-break"></div>
 				</div>
+				
+				<div style="height: 3vw"></div>
 				
 				<nav class="footer-image-links"></nav>
 			`);

@@ -459,6 +459,18 @@ Page.Components =
 	
 	
 	
+	get_line_break: function()
+	{
+		return `
+			<div class="line-break line-break-0-0"></div>
+			<div class="line-break line-break-1-0"></div>
+			<div class="line-break line-break-0-1"></div>
+			<div class="line-break line-break-1-1"></div>
+		`;
+	},
+	
+	
+	
 	decode: function(html)
 	{
 		let new_aos_section = false;
@@ -632,6 +644,13 @@ Page.Components =
 				else if (words[0] === "!canvas")
 				{
 					lines[i] = this.get_canvas(words.slice(1));
+				}
+				
+				
+				
+				else if (words[0] === "!line-break")
+				{
+					lines[i] = this.get_line_break();
 				}
 			}
 		}
