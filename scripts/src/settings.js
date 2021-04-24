@@ -1242,8 +1242,6 @@ let Settings =
 			new_gradient_suffix = `-1-1`;
 		}
 		
-		console.log(`New suffix: ${new_gradient_suffix}`);
-		
 		//These elements have properties that cannot be animated. To get around this, every elemnt has 6 copies of itself -- one for each combination of theme and contrast. Here, we animate the new one in and the old one out.
 		Page.set_element_styles(`.line-break${this.gradient_suffix}`, "opacity", 0);
 		Page.set_element_styles(`.line-break${new_gradient_suffix}`, "opacity", 1);
