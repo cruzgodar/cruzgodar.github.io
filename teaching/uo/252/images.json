@@ -101,6 +101,12 @@
         "non-webp": "notes/5/cover.jpg"
     },
     
+    "midterm-1-solutions":
+    {
+        "webp": "exams/1-solutions/cover.webp",
+        "non-webp": "exams/1-solutions/cover.jpg"
+    },
+    
 	"homework-4":
     {
         "webp": "homework/4/cover.webp",
