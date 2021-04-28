@@ -29,6 +29,7 @@
 	
 	let root_selector_width = document.querySelector("#root-selector").offsetWidth;
 	let root_selector_height = document.querySelector("#root-selector").offsetHeight;
+	let root_selector_size = Math.min(root_selector_width, root_selector_height);
 	
 	let root_marker_radius = 17.5;
 	
@@ -1032,8 +1033,8 @@
 		{
 			e.preventDefault();
 			
-			center_x -= mouse_x_delta / root_selector_height * box_size;
-			center_y += mouse_y_delta / root_selector_height * box_size;
+			center_x -= mouse_x_delta / root_selector_size * box_size;
+			center_y += mouse_y_delta / root_selector_size * box_size;
 			
 			update_root_markers();
 			
@@ -1308,8 +1309,8 @@
 			mouse_x = new_mouse_x;
 			mouse_y = new_mouse_y;
 			
-			center_x -= mouse_x_delta / root_selector_height * box_size;
-			center_y += mouse_y_delta / root_selector_height * box_size;
+			center_x -= mouse_x_delta / root_selector_size * box_size;
+			center_y += mouse_y_delta / root_selector_size * box_size;
 			
 			update_root_markers();
 			
@@ -1810,6 +1811,7 @@
 	{
 		root_selector_width = document.querySelector("#root-selector").offsetWidth;
 		root_selector_height = document.querySelector("#root-selector").offsetHeight;
+		root_selector_size = Math.min(root_selector_width, root_selector_height);
 		
 		update_root_markers();
 	}
