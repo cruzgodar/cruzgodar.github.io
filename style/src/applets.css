@@ -86,3 +86,9 @@
 	margin-top: 10vh !important;
 	margin-bottom: 5vh !important;
 }
+
+.applet-canvas-container.black-background
+{
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}

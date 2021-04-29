@@ -414,7 +414,7 @@ Page.Applets =
 			
 			if (Page.Layout.aspect_ratio < 1 && !this.true_fullscreen)
 			{
-				window.scroll(0, window.scrollY + this.to_resize[0].getBoundingClientRect().top - (window_height - this.to_resize[0].offsetHeight) / 2 + 2);
+				window.scroll(0, window.scrollY + this.to_resize[0].getBoundingClientRect().top - (Page.Layout.window_height - this.to_resize[0].offsetHeight) / 2 + 2);
 			}
 			
 			else
@@ -435,7 +435,7 @@ Page.Applets =
 			{
 				if (Page.Layout.aspect_ratio < 1 && !this.true_fullscreen)
 				{
-					window.scroll(0, window.scrollY + this.to_resize[0].getBoundingClientRect().top - (window_height - this.to_resize[0].offsetHeight) / 2 + 2);
+					window.scroll(0, window.scrollY + this.to_resize[0].getBoundingClientRect().top - (Page.Layout.window_height - this.to_resize[0].offsetHeight) / 2 + 2);
 				}
 				
 				else
