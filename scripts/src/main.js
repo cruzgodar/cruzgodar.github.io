@@ -113,6 +113,13 @@ let Site =
 		
 		
 		
+		setInterval(() =>
+		{
+			window.dispatchEvent(new Event("resize"));
+		}, 1000);
+		
+		
+		
 		Browser.detect();
 		
 		
@@ -194,7 +201,7 @@ let Site =
 		
 		
 		
-		AOS.init({duration: 1200, once: false, offset: 70});
+		AOS.init({duration: 1200, once: false, offset: Math.min(100, Page.Layout.window_height / 10)});
 		
 		window.addEventListener("scroll", () =>
 		{
