@@ -150,20 +150,6 @@ Page.Footer =
 		
 		
 		
-		document.querySelector(".footer-image-links").insertAdjacentHTML("afterend", `
-			<div class="footer-buttons" style="position: relative">
-				<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="0" data-aos-offset="10" data-aos-once="false" style="position: absolute; bottom: 6.25px; left: 10px" tabindex="3">
-					<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Change Theme" onclick="Site.Settings.Floating.show()" tabindex="-1">
-				</div>
-				
-				<div class="focus-on-child" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="10" data-aos-once="false" style="position: absolute; bottom: 6.25px; right: 10px" tabindex="3">
-					<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="Page.Navigation.redirect('/about/about.html')" tabindex="-1">
-				</div>
-			</div>
-		`);
-		
-		
-		
 		//If the page isn't as tall as the screen (e.g. the 404 page), move the footer to the bottom of the page.
 		if (document.body.clientHeight < Page.Layout.window_height)
 		{
@@ -175,23 +161,6 @@ Page.Footer =
 		
 		
 		this.Floating.load();
-		
-		
-		
-		setTimeout(() =>
-		{
-			try
-			{
-				let elements = document.querySelectorAll(".footer-button, .footer-image-link img");
-				
-				for (let i = 0; i < elements.length; i++)
-				{
-					Page.Load.HoverEvents.add(elements[i]);
-				}
-			}
-			
-			catch(ex) {}
-		}, 100);
 		
 		
 		
@@ -208,7 +177,13 @@ Page.Footer =
 	{
 		is_visible: false,
 		
-		height: 0,
+		last_scroll: -1,
+		
+		scroll_direction: 0,
+		
+		current_offset: -43.75,
+		
+		currently_animating: false,
 		
 		
 		
@@ -223,215 +198,118 @@ Page.Footer =
 			
 			
 			floating_footer_element.innerHTML = `
-				<div id="floating-footer-gradient"></div>
-				
-				<div id="floating-footer-content">
-					<div id="floating-footer-bottom-margin"></div>
+				<div class="footer-buttons">
+					<div id="expand-footer-button" class="focus-on-child" tabindex="100">
+						<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Settings" onclick="Site.Settings.Floating.show()" tabindex="-1">
+					</div>
 				</div>
 			`;
 			
 			
 			
-			//We want all the footer image links, but we don't want the animations anchored to anything. We have a try block here in case this is being called from the homepage.
-			try
+			this.last_scroll = window.scrollY;
+			
+			if (!Site.Interaction.currently_touch_device)
 			{
-				let element = document.querySelector("#spawn-footer").parentNode.querySelector(".footer-image-links").cloneNode(true);
-				
-				for (let i = 0; i < element.children.length; i++)
-				{
-					element.children[i].removeAttribute("data-aos");
-					element.children[i].removeAttribute("data-aos-anchor");
-				}
-				
-				document.querySelector("#floating-footer-content").appendChild(element);
-			}
-			
-			catch(ex) {}
-			
-			
-			
-			//Next, we want the footer buttons.
-			let element = document.querySelector("#spawn-footer").parentNode.querySelector(".footer-buttons").cloneNode(true);
-			
-			for (let i = 0; i < element.children.length; i++)
-			{
-				element.children[i].removeAttribute("data-aos");
-				element.children[i].removeAttribute("data-aos-anchor");
-			}
-			
-			document.querySelector("#floating-footer-content").appendChild(element);
-			
-			
-			
-			//Finally, we need to cover the bottom with a very thin strip of white to fix a strange glitch where absolutely-positioned elements always have a transparent background.
-			element = document.createElement("div");
-			
-			element.id = "floating-footer-button-background";
-			
-			document.querySelector("#floating-footer-content").appendChild(element);
-			
-			
-			
-			let bound_function = this.on_resize.bind(this);
-			
-			window.addEventListener("resize", bound_function);
-			Page.temporary_handlers["resize"].push(bound_function);
-			
-			bound_function();
-			
-			
-			
-			let bound_function_2 = this.on_scroll.bind(this);
-			
-			window.addEventListener("scroll", bound_function_2);
-			Page.temporary_handlers["scroll"].push(bound_function_2);
-			
-			
-			
-			document.querySelector("#floating-footer").style.display = "block";
-			
-			this.height = document.querySelector("#floating-footer-content").offsetHeight;
-			
-			document.querySelector("#floating-footer").style.display = "none";
-			
-			
-			
-			this.init_listeners_touch();
-			this.init_listeners_no_touch();
-		},
-
-
-
-		//Properly size the floating footer -- when there is a scroll bar, the right button will clip into it. Unfortunately, there is no way to solve this with CSS, as far as I'm aware.
-		on_resize: function()
-		{
-			document.querySelector("#floating-footer").style.width = document.documentElement.clientWidth + "px";
-			
-			try
-			{
-				document.querySelector("#floating-footer").style.display = "block";
-				
-				this.height = document.querySelector("#floating-footer-content").offsetHeight;
-				
-				document.querySelector("#floating-footer").style.display = "none";
-			}
-			
-			catch(ex) {}
-		},
-
-
-
-		//Remove the trigger zone when we reach the actual footer so that we don't cause any problems, and hide the footer when scrolling so that it doesn't flicker weirdly.
-		on_scroll: function()
-		{
-			if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight)
-			{
-				this.is_visible = false;
-				
-				document.querySelector("#floating-footer").style.opacity = 0;
-				
-				setTimeout(() =>
-				{
-					document.querySelector("#floating-footer").style.display = "none";
-				}, 300);
-			}
-		},
-
-
-
-		//When the touch target is moused over or tapped, show the footer and hide the touch target. When the mouse leaves the footer or there's a tap somewhere else, hide the footer and show the touch target again.
-
-		init_listeners_no_touch: function()
-		{
-			this.is_visible = false;
-			
-			
-			
-			document.body.addEventListener("mousemove", (e) =>
-			{
-				let element = document.elementFromPoint(e.clientX, e.clientY);
-				
-				if (this.is_visible === false && e.clientY >= window.innerHeight - 75 && e.clientY >= window.innerHeight - this.height && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
-				{
-					this.is_visible = true;
-					
-					document.querySelector("#floating-footer").style.display = "block";
-					
-					setTimeout(() =>
-					{
-						document.querySelector("#floating-footer").style.opacity = 1;
-					}, 20);
-				}
-				
-				
-				
-				else if (this.is_visible && e.clientY < window.innerHeight - this.height - 20)
-				{
-					document.querySelector("#floating-footer").style.opacity = 0;
-					
-					this.is_visible = false;
-					
-					setTimeout(() =>
-					{
-						document.querySelector("#floating-footer").style.display = "none";
-					}, 300);
-				}
-			});
-		},
-		
-		
-
-		init_listeners_touch: function()
-		{
-			this.is_visible = false;
-			
-			
-			
-			let bound_function = this.process_touchstart.bind(this);
-			
-			document.documentElement.addEventListener("touchstart", bound_function, false);
-			Page.temporary_handlers["touchstart"].push(bound_function);
-			
-			let bound_function_2 = this.process_touchend.bind(this);
-			
-			document.documentElement.addEventListener("touchend", bound_function_2, false);
-			Page.temporary_handlers["touchend"].push(bound_function_2);
-		},
-
-
-
-		process_touchend: function()
-		{
-			let element = document.elementFromPoint(Site.Interaction.last_touch_x, Site.Interaction.last_touch_y);
-			
-			if (this.is_visible === false && Site.Interaction.last_touch_y >= window.innerHeight - 75 && Site.Interaction.last_touch_y >= window.innerHeight - this.height && !(window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && element.classList.contains("no-floating-footer") === false)
-			{
-				document.querySelector("#floating-footer").style.display = "block";
+				this.current_offset = 6.25;
 				
 				this.is_visible = true;
-				
-				setTimeout(() =>
-				{
-					document.querySelector("#floating-footer").style.opacity = 1;
-				}, 20);
 			}
+			
+			document.querySelector("#expand-footer-button").style.bottom = `${this.current_offset}px`;
+			
+			
+			
+			let bound_function = this.on_scroll.bind(this);
+			
+			window.addEventListener("scroll", bound_function);
+			
+			Page.temporary_handlers["scroll"].push(bound_function);
 		},
-
-
-
-		process_touchstart: function(event)
+		
+		
+		
+		on_scroll: function()
 		{
-			if (this.is_visible && Site.Interaction.last_touch_y < window.innerHeight - this.height - 20)
+			if (!Site.Interaction.currently_touch_device)
 			{
-				document.querySelector("#floating-footer").style.opacity = 0;
+				return;
+			}
+			
+			
+			
+			
+			if (this.last_scroll < 0)
+			{
+				this.last_scroll = window.scrollY;
+				
+				return;
+			}
+			
+			
+			
+			let new_scroll = window.scrollY;
+			
+			let scroll_delta = new_scroll - this.last_scroll;
+			
+			this.last_scroll = new_scroll;
+			
+			
+			
+			this.current_offset -= scroll_delta;
+				
+			if (this.current_offset < -43.75)
+			{
+				this.current_offset = -43.75;
 				
 				this.is_visible = false;
-				
-				setTimeout(() =>
-				{
-					document.querySelector("#floating-footer").style.display = "none";
-				}, 300);
 			}
+			
+			if (this.current_offset > 6.25)
+			{
+				this.current_offset = 6.25;
+				
+				this.is_visible = true;
+			}
+			
+			
+			
+			//If we're at the bottom of the page, animate the button.
+			if (window.scrollY > document.body.scrollHeight - Page.Layout.window_height - 5)
+			{
+				this.animate_in();
+			}
+			
+			
+			
+			else if (!this.currently_animating)
+			{
+				document.querySelector("#expand-footer-button").style.bottom = `${this.current_offset}px`;
+			}
+		},
+		
+		
+		
+		animate_in: function()
+		{
+			this.currently_animating = true;
+			
+			document.querySelector("#expand-footer-button").style.transition = "bottom .3s ease-out";
+			
+			document.querySelector("#expand-footer-button").style.bottom = "6.25px";
+			
+			this.current_offset = 6.25;
+			
+			this.is_visible = true;
+			
+			
+			
+			setTimeout(() =>
+			{
+				document.querySelector("#expand-footer-button").style.transition = "";
+				
+				this.currently_animating = false;
+			}, 300);
 		}
 	}
 };

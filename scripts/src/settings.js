@@ -1702,26 +1702,6 @@ let Settings =
 			
 			
 			
-			if (Page.Footer.Floating.is_visible)
-			{
-				document.querySelector("#floating-footer").style.opacity = 0;
-				
-				Page.Footer.Floating.is_visible = false;
-				
-				setTimeout(() =>
-				{
-					try
-					{
-						document.querySelector("#floating-footer").style.display = "none";
-						document.querySelector("#floating-footer-touch-target").style.display = "block";
-					}
-					
-					catch(ex) {}
-				}, 300);
-			}
-			
-			
-			
 			setTimeout(() =>
 			{
 				document.querySelector("#floating-settings").scrollTop = 0;

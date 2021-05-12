@@ -331,7 +331,9 @@ let Site =
 	Interaction:
 	{
 		//Whether this is a touchscreen device on the current page. It's assumed to be false on every page until a touchstart or touchmove event is detected, at which point it's set to true.
-		currently_touch_device: false,
+		currently_touch_device: (("ontouchstart" in window) ||
+     (navigator.maxTouchPoints > 0) ||
+     (navigator.msMaxTouchPoints > 0)),
 		
 		last_mousemove_event: 0,
 		
@@ -361,6 +363,13 @@ let Site =
 					if (time_between_mousemoves >= 3 && time_between_mousemoves <= 50 && time_between_mousemoves !== 33)
 					{
 						this.currently_touch_device = false;
+						
+						
+						
+						if (!Page.Footer.Floating.is_visible)
+						{
+							Page.Footer.Floating.animate_in();
+						}
 					}
 				}
 			});
