@@ -231,7 +231,7 @@ Page.Footer =
 		
 		on_scroll: function()
 		{
-			if (!Site.Interaction.currently_touch_device)
+			if (!Site.Interaction.currently_touch_device || this.currently_animating || window.scrollY > document.body.scrollHeight - Page.Layout.window_height)
 			{
 				return;
 			}
@@ -275,14 +275,14 @@ Page.Footer =
 			
 			
 			//If we're at the bottom of the page, animate the button.
-			if (window.scrollY > document.body.scrollHeight - Page.Layout.window_height - 5)
+			if (window.scrollY > document.body.scrollHeight - Page.Layout.window_height - 20 && this.current_offset < 6)
 			{
 				this.animate_in();
 			}
 			
 			
 			
-			else if (!this.currently_animating)
+			else
 			{
 				document.querySelector("#expand-footer-button").style.bottom = `${this.current_offset}px`;
 			}
@@ -292,24 +292,50 @@ Page.Footer =
 		
 		animate_in: function()
 		{
+			if (this.currently_animating)
+			{
+				return;
+			}
+			
+			
+			
 			this.currently_animating = true;
-			
-			document.querySelector("#expand-footer-button").style.transition = "bottom .3s ease-out";
-			
-			document.querySelector("#expand-footer-button").style.bottom = "6.25px";
 			
 			this.current_offset = 6.25;
 			
-			this.is_visible = true;
+			document.querySelector("#expand-footer-button").style.opacity = 0;
+			
+			document.querySelector("#expand-footer-button").style.transform = "scale(1.2)";
+			
+			document.querySelector("#expand-footer-button").style.bottom = "6.25px";
 			
 			
 			
 			setTimeout(() =>
 			{
-				document.querySelector("#expand-footer-button").style.transition = "";
+				document.querySelector("#expand-footer-button").style.setProperty("transition", "opacity .6s ease-out, transform .6s ease-out", "important");
 				
-				this.currently_animating = false;
-			}, 300);
+				
+				
+				document.querySelector("#expand-footer-button").style.opacity = 1;
+				
+				document.querySelector("#expand-footer-button").style.transform = "scale(1)";
+				
+				this.is_visible = true;
+				
+				
+				
+				setTimeout(() =>
+				{
+					document.querySelector("#expand-footer-button").style.setProperty("transition", "");
+					
+					this.current_offset = 6.25;
+					
+					this.last_scroll = -1;
+					
+					this.currently_animating = false;
+				}, 600);
+			}, 10);
 		}
 	}
 };
