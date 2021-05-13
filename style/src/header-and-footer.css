@@ -284,12 +284,16 @@
 	{
 		width: 55vw !important;
 		
+		margin-left: 22.5vw;
+		
 		margin-bottom: 4vw !important;
 	}
 
 	.footer-line-break-big
 	{
 		width: 75vw !important;
+		
+		margin-left: 12.5vw;
 		
 		margin-bottom: 4vw !important;
 	}

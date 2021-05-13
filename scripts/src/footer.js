@@ -46,10 +46,8 @@ Page.Footer =
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
 					<div class="line-break line-break-0-0 footer-line-break-big"></div>
 					<div class="line-break line-break-1-0 footer-line-break-big"></div>
-					<div class="line-break line-break-2-0 footer-line-break-big"></div>
 					<div class="line-break line-break-0-1 footer-line-break-big"></div>
 					<div class="line-break line-break-1-1 footer-line-break-big"></div>
-					<div class="line-break line-break-2-1 footer-line-break-big"></div>
 				</div>
 				
 				<div style="height: 3vw"></div>
@@ -64,10 +62,8 @@ Page.Footer =
 				<div data-aos="fade-in" data-aos-duration="500" data-aos-offset="0">
 					<div class="line-break line-break-0-0 footer-line-break"></div>
 					<div class="line-break line-break-1-0 footer-line-break"></div>
-					<div class="line-break line-break-2-0 footer-line-break"></div>
 					<div class="line-break line-break-0-1 footer-line-break"></div>
 					<div class="line-break line-break-1-1 footer-line-break"></div>
-					<div class="line-break line-break-2-1 footer-line-break"></div>
 				</div>
 				
 				<div style="height: 3vw"></div>
@@ -239,7 +235,7 @@ Page.Footer =
 			
 			
 			
-			if (this.last_scroll < 0)
+			if (this.last_scroll <= 0)
 			{
 				this.last_scroll = window.scrollY;
 				
@@ -251,6 +247,22 @@ Page.Footer =
 			let new_scroll = window.scrollY;
 			
 			let scroll_delta = new_scroll - this.last_scroll;
+			
+			//Only restrict the speed if we're not near the bottom of the page, since there it's critical that we get the button all the way up.
+			if (scroll_delta > 0 && window.scrollY > document.body.scrollHeight - Page.Layout.window_height - 150)
+			{
+				scroll_delta = -scroll_delta;
+			}
+			
+			else
+			{
+				scroll_delta = Math.max(-10, Math.min(scroll_delta, 10))
+			}
+			
+			//Interpolates from .15 at -43.75 to 1 at -18.75 to .15 at at 6.25.
+			scroll_delta *= (Math.cos(2 * Math.PI * (this.current_offset + 43.75) / 50 + Math.PI) + 1.33) / 2.33;
+			
+			
 			
 			this.last_scroll = new_scroll;
 			
@@ -274,18 +286,7 @@ Page.Footer =
 			
 			
 			
-			//If we're at the bottom of the page, animate the button.
-			if (window.scrollY > document.body.scrollHeight - Page.Layout.window_height - 20 && this.current_offset < 6)
-			{
-				this.animate_in();
-			}
-			
-			
-			
-			else
-			{
-				document.querySelector("#expand-footer-button").style.bottom = `${this.current_offset}px`;
-			}
+			document.querySelector("#expand-footer-button").style.bottom = `${this.current_offset}px`;
 		},
 		
 		
