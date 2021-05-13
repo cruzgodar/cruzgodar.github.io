@@ -181,6 +181,8 @@ Page.Footer =
 		
 		currently_animating: false,
 		
+		menu_is_open: false,
+		
 		
 		
 		//Initializes the floating footer by copying specific parts of the normal footer.
@@ -195,8 +197,20 @@ Page.Footer =
 			
 			floating_footer_element.innerHTML = `
 				<div class="footer-buttons">
-					<div id="expand-footer-button" class="focus-on-child" tabindex="100">
-						<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Settings" onclick="Site.Settings.Floating.show()" tabindex="-1">
+					<div id="show-footer-menu-button" class="footer-menu-button focus-on-child" tabindex="100">
+						<input type="image" class="footer-button" src="/graphics/button-icons/chevron.png" alt="Options" onclick="Page.Footer.Floating.show_menu()" tabindex="-1">
+					</div>
+					
+					<div id="about-button" class="footer-menu-button focus-on-child" tabindex="103">
+						<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="Page.Navigation.redirect('/about/about.html')" tabindex="-1">
+					</div>
+					
+					<div id="sitemap-button" class="footer-menu-button focus-on-child" tabindex="102">
+						<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Options" onclick="Page.Navigation.redirect('/sitemap/sitemap.html')" tabindex="-1">
+					</div>
+					
+					<div id="settings-button" class="footer-menu-button focus-on-child" tabindex="101">
+						<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Options" onclick="Site.Settings.Floating.show()" tabindex="-1">
 					</div>
 				</div>
 			`;
@@ -212,7 +226,9 @@ Page.Footer =
 				this.is_visible = true;
 			}
 			
-			document.querySelector("#expand-footer-button").style.bottom = `${this.current_offset}px`;
+			
+			
+			document.querySelector("#show-footer-menu-button").style.bottom = `${this.current_offset}px`;
 			
 			
 			
@@ -286,7 +302,7 @@ Page.Footer =
 			
 			
 			
-			document.querySelector("#expand-footer-button").style.bottom = `${this.current_offset}px`;
+			document.querySelector("#show-footer-menu-button").style.bottom = `${this.current_offset}px`;
 		},
 		
 		
@@ -304,39 +320,141 @@ Page.Footer =
 			
 			this.current_offset = 6.25;
 			
-			document.querySelector("#expand-footer-button").style.opacity = 0;
-			
-			document.querySelector("#expand-footer-button").style.transform = "scale(1.2)";
-			
-			document.querySelector("#expand-footer-button").style.bottom = "6.25px";
 			
 			
-			
-			setTimeout(() =>
+			try
 			{
-				document.querySelector("#expand-footer-button").style.setProperty("transition", "opacity .6s ease-out, transform .6s ease-out", "important");
+				document.querySelector("#show-footer-menu-button").style.opacity = 0;
 				
+				document.querySelector("#show-footer-menu-button").style.transform = "scale(1.2)";
 				
-				
-				document.querySelector("#expand-footer-button").style.opacity = 1;
-				
-				document.querySelector("#expand-footer-button").style.transform = "scale(1)";
-				
-				this.is_visible = true;
+				document.querySelector("#show-footer-menu-button").style.bottom = "6.25px";
 				
 				
 				
 				setTimeout(() =>
 				{
-					document.querySelector("#expand-footer-button").style.setProperty("transition", "");
+					document.querySelector("#show-footer-menu-button").style.transition = "opacity .6s ease-out, transform .6s ease-out";
 					
-					this.current_offset = 6.25;
+					document.querySelector("#show-footer-menu-button").style.opacity = 1;
 					
-					this.last_scroll = -1;
+					document.querySelector("#show-footer-menu-button").style.transform = "scale(1)";
 					
-					this.currently_animating = false;
-				}, 600);
-			}, 10);
+					this.is_visible = true;
+					
+					
+					
+					setTimeout(() =>
+					{
+						document.querySelector("#show-footer-menu-button").style.transition = "";
+						
+						this.current_offset = 6.25;
+						
+						this.last_scroll = -1;
+						
+						this.currently_animating = false;
+					}, 600);
+				}, 10);
+			}
+			
+			catch(ex) {}
+		},
+		
+		
+		
+		show_menu: function()
+		{
+			document.querySelector("#settings-button").style.left = "10px";
+			
+			document.querySelector("#show-footer-menu-button").style.transition = "opacity .3s ease";
+			
+			document.querySelector("#show-footer-menu-button").style.opacity = 0;
+			
+			setTimeout(() =>
+			{
+				document.querySelector("#sitemap-button").style.left = "10px";
+				
+				setTimeout(() =>
+				{
+					document.querySelector("#about-button").style.left = "10px";
+					
+					this.menu_is_visible = true;
+				}, 50);
+			}, 50);
+			
+			
+			
+			let bound_function = this.hide_menu.bind(this);
+			
+			document.documentElement.addEventListener("touchstart", bound_function);
+			document.documentElement.addEventListener("touchmove", bound_function);
+			document.documentElement.addEventListener("mousedown", bound_function);
+			
+			Page.temporary_handlers["touchstart"].push(bound_function);
+			Page.temporary_handlers["touchmove"].push(bound_function);
+			Page.temporary_handlers["mousedown"].push(bound_function);
+		},
+		
+		
+		
+		hide_menu: function(e)
+		{
+			if (!this.menu_is_visible)
+			{
+				return;
+			}
+			
+			
+			
+			let x = 0;
+			let y = 0;
+			
+			
+			
+			try
+			{
+				x = e.clientX;
+				y = e.clientY;
+			}
+			
+			catch(ex) {}
+			
+			
+			
+			try
+			{
+				x = e.touches[0].clientX;
+				y = e.touches[0].clientY;
+			}
+			
+			catch(ex) {}
+			
+			
+			
+			if (document.elementFromPoint(x, y).parentNode.classList.contains("footer-menu-button"))
+			{
+				return;
+			}
+			
+			
+			
+			document.querySelector("#settings-button").style.left = "-40px";
+			
+			document.querySelector("#show-footer-menu-button").style.transition = "opacity .3s ease";
+			
+			document.querySelector("#show-footer-menu-button").style.opacity = 1;
+			
+			setTimeout(() =>
+			{
+				document.querySelector("#sitemap-button").style.left = "-40px";
+				
+				setTimeout(() =>
+				{
+					document.querySelector("#about-button").style.left = "-40px";
+					
+					this.menu_is_visible = false;
+				}, 50);
+			}, 50);
 		}
 	}
 };

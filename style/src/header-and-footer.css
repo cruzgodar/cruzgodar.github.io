@@ -173,11 +173,35 @@
 	z-index: 100;
 }
 
-#expand-footer-button
+.footer-menu-button
 {
 	position: absolute;
 	bottom: 6.25px;
 	left: 10px;
+}
+
+#show-footer-menu-button
+{
+	z-index: 101;
+}
+
+#about-button, #sitemap-button, #settings-button
+{
+	z-index: 102;
+	
+	left: -40px;
+	
+	transition: left .3s ease;
+}
+
+#about-button
+{
+	bottom: 96.75px;
+}
+
+#sitemap-button
+{
+	bottom: 51.5px;
 }
 
 
