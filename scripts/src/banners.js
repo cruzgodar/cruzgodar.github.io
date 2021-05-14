@@ -80,12 +80,12 @@ Page.Banner =
 			{
 				if (Page.Layout.aspect_ratio < 1)
 				{
-					this.file_name = "portrait." + Images.file_extension;
+					this.file_name = "portrait." + Page.Images.file_extension;
 				}
 				
 				else
 				{
-					this.file_name = "landscape." + Images.file_extension;
+					this.file_name = "landscape." + Page.Images.file_extension;
 				}
 				
 					
@@ -283,14 +283,14 @@ Page.Banner =
 	{
 		if (this.file_name === "landscape.webp" || this.file_name === "landscape.jpg")
 		{
-			Site.Fetch.queue.push(this.file_path + "portrait." + Images.file_extension);
+			Site.Fetch.queue.push(this.file_path + "portrait." + Page.Images.file_extension);
 			
 			Site.Fetch.get_next_item_from_queue();
 		}
 		
 		else
 		{
-			Site.Fetch.queue.push(this.file_path + "landscape." + Images.file_extension);
+			Site.Fetch.queue.push(this.file_path + "landscape." + Page.Images.file_extension);
 			
 			Site.Fetch.get_next_item_from_queue();
 		}

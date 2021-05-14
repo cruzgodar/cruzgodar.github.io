@@ -150,7 +150,7 @@ Page.load = async function()
 	
 	
 	
-	Images.insert().then(() =>
+	Page.Images.insert().then(() =>
 	{
 		this.Load.AOS.on_resize();
 	});
@@ -329,7 +329,7 @@ Page.Load =
 			Site.add_style(`
 				#banner
 				{
-					background: url(${Page.Banner.file_path}landscape.${Images.file_extension}) no-repeat center center;
+					background: url(${Page.Banner.file_path}landscape.${Page.Images.file_extension}) no-repeat center center;
 					background-size: cover;
 				}
 				
@@ -337,7 +337,7 @@ Page.Load =
 				{
 					#banner
 					{
-						background: url(${Page.Banner.file_path}portrait.${Images.file_extension}) no-repeat center center;
+						background: url(${Page.Banner.file_path}portrait.${Page.Images.file_extension}) no-repeat center center;
 						background-size: cover;
 					}
 				}

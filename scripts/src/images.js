@@ -14,7 +14,7 @@
 
 
 
-let Images =
+Page.Images =
 {
 	//Whether the browser supports WebP images or not. Given a boolean value when decided.
 	webp_support: null,
@@ -39,6 +39,10 @@ let Images =
 			
 			
 			
+			let file_path =
+			
+			
+			
 			fetch(Page.parent_folder + "images.json")
 			
 			.then(response => response.json())
@@ -49,7 +53,7 @@ let Images =
 				{
 					let src = image_data[images[i].getAttribute("data-image-id")][image_type];
 					
-					if (src.slice(0, 5) === "https")
+					if (src.slice(0, 5) === "https" || src[0] === "/")
 					{
 						images[i].setAttribute("src", src);
 					}

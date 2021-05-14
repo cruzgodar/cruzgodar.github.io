@@ -221,7 +221,7 @@ let Site =
 		
 		
 		
-		Images.check_webp_support()
+		Page.Images.check_webp_support()
 		
 		.then(() =>
 		{

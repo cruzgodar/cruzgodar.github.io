@@ -183,6 +183,8 @@
 #show-footer-menu-button
 {
 	z-index: 101;
+	
+	transition: opacity .3s ease;
 }
 
 #about-button, #sitemap-button, #settings-button
@@ -191,17 +193,24 @@
 	
 	left: -40px;
 	
-	transition: left .3s ease;
+	transition: left .3s ease, opacity .3s ease;
 }
 
 #about-button
 {
-	bottom: 96.75px;
+	bottom: 104.25px;
 }
 
 #sitemap-button
 {
-	bottom: 51.5px;
+	bottom: 55.25px;
+}
+
+#floating-footer-writing-link, #floating-footer-teaching-link, #floating-footer-applets-link, #floating-footer-bio-link
+{
+	transition: left .3s ease;
+	
+	z-index: 105;
 }
 
 

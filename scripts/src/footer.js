@@ -83,7 +83,7 @@ Page.Footer =
 			element.outerHTML = `
 				<div id="writing-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 					<a href="/index.html?page=%2Fwriting%2Fwriting.html${url_vars_suffix}" tabindex="-1">
-						<img onclick="Page.Navigation.redirect('/writing/writing.html')" src="/writing/cover.${Images.file_extension}" alt="Writing" tabindex="2"></img>
+						<img onclick="Page.Navigation.redirect('/writing/writing.html')" src="/writing/cover.${Page.Images.file_extension}" alt="Writing" tabindex="2"></img>
 					</a>
 				</div>
 			`;
@@ -101,7 +101,7 @@ Page.Footer =
 			element.outerHTML = `
 				<div id="teaching-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 					<a class="focus-on-child" href="/index.html?page=%2Fteaching%2Fteaching.html${url_vars_suffix}" tabindex="-1">
-						<img onclick="Page.Navigation.redirect('/teaching/teaching.html')" src="/teaching/cover.${Images.file_extension}" alt="Teaching" tabindex="2"></img>
+						<img onclick="Page.Navigation.redirect('/teaching/teaching.html')" src="/teaching/cover.${Page.Images.file_extension}" alt="Teaching" tabindex="2"></img>
 					</a>
 				</div>
 			`;
@@ -119,7 +119,7 @@ Page.Footer =
 			element.outerHTML = `
 				<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 					<a class="focus-on-child" href="index.html?page=%2Fapplets%2Fapplets.html${url_vars_suffix}" tabindex="-1">
-						<img onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Images.file_extension}" alt="Applets" tabindex="2"></img>
+						<img onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="2"></img>
 					</a>
 				</div>
 			`;
@@ -136,7 +136,7 @@ Page.Footer =
 			element.outerHTML = `
 				<div id="bio-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 					<a class="focus-on-child" href="/index.html?page=%2Fbio%2Fbio.html${url_vars_suffix}" tabindex="-1">
-						<img onclick="Page.Navigation.redirect('/bio/bio.html')" src="/bio/cover.${Images.file_extension}" alt="Me" tabindex="2"></img>
+						<img onclick="Page.Navigation.redirect('/bio/bio.html')" src="/bio/cover.${Page.Images.file_extension}" alt="Me" tabindex="2"></img>
 					</a>
 				</div>
 			`;
@@ -183,6 +183,8 @@ Page.Footer =
 		
 		menu_is_open: false,
 		
+		image_links_is_open: false,
+		
 		
 		
 		//Initializes the floating footer by copying specific parts of the normal footer.
@@ -201,16 +203,44 @@ Page.Footer =
 						<input type="image" class="footer-button" src="/graphics/button-icons/chevron.png" alt="Options" onclick="Page.Footer.Floating.show_menu()" tabindex="-1">
 					</div>
 					
+					
+					
 					<div id="about-button" class="footer-menu-button focus-on-child" tabindex="103">
 						<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="Page.Navigation.redirect('/about/about.html')" tabindex="-1">
 					</div>
 					
 					<div id="sitemap-button" class="footer-menu-button focus-on-child" tabindex="102">
-						<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Options" onclick="Page.Navigation.redirect('/sitemap/sitemap.html')" tabindex="-1">
+						<input type="image" class="footer-button" src="/graphics/button-icons/sitemap.png" alt="Options" onclick="Page.Footer.Floating.show_image_links()" tabindex="-1">
 					</div>
 					
 					<div id="settings-button" class="footer-menu-button focus-on-child" tabindex="101">
 						<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Options" onclick="Site.Settings.Floating.show()" tabindex="-1">
+					</div>
+					
+					
+					
+					<div id="floating-footer-writing-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 6.25px">
+						<a href="/writing/writing.html" tabindex="-1">
+							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/writing/writing.html')" src="/writing/cover.${Page.Images.file_extension}" alt="Writing" tabindex="1"></img>
+						</a>
+					</div>
+					
+					<div id="floating-footer-teaching-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 55.25px">
+						<a href="/teaching/teaching.html" tabindex="-1">
+							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/teaching/teaching.html')" src="/teaching/cover.${Page.Images.file_extension}" alt="Teaching" tabindex="1"></img>
+						</a>
+					</div>
+					
+					<div id="floating-footer-applets-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 104.25px">
+						<a href="/applets/applets.html" tabindex="-1">
+							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="1"></img>
+						</a>
+					</div>
+					
+					<div id="floating-footer-bio-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 153.25px">
+						<a href="/bio/bio.html" tabindex="-1">
+							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/bio/bio.html')" src="/bio/cover.${Page.Images.file_extension}" alt="Bio" tabindex="1"></img>
+						</a>
 					</div>
 				</div>
 			`;
@@ -346,7 +376,7 @@ Page.Footer =
 					
 					setTimeout(() =>
 					{
-						document.querySelector("#show-footer-menu-button").style.transition = "";
+						document.querySelector("#show-footer-menu-button").style.transition = "opacity .3s ease";
 						
 						this.current_offset = 6.25;
 						
@@ -366,8 +396,6 @@ Page.Footer =
 		{
 			document.querySelector("#settings-button").style.left = "10px";
 			
-			document.querySelector("#show-footer-menu-button").style.transition = "opacity .3s ease";
-			
 			document.querySelector("#show-footer-menu-button").style.opacity = 0;
 			
 			setTimeout(() =>
@@ -378,7 +406,7 @@ Page.Footer =
 				{
 					document.querySelector("#about-button").style.left = "10px";
 					
-					this.menu_is_visible = true;
+					this.menu_is_open = true;
 				}, 50);
 			}, 50);
 			
@@ -399,7 +427,7 @@ Page.Footer =
 		
 		hide_menu: function(e)
 		{
-			if (!this.menu_is_visible)
+			if (!this.menu_is_open)
 			{
 				return;
 			}
@@ -440,9 +468,10 @@ Page.Footer =
 			
 			document.querySelector("#settings-button").style.left = "-40px";
 			
-			document.querySelector("#show-footer-menu-button").style.transition = "opacity .3s ease";
-			
-			document.querySelector("#show-footer-menu-button").style.opacity = 1;
+			if (!this.image_links_is_open)
+			{
+				document.querySelector("#show-footer-menu-button").style.opacity = 1;
+			}
 			
 			setTimeout(() =>
 			{
@@ -452,9 +481,130 @@ Page.Footer =
 				{
 					document.querySelector("#about-button").style.left = "-40px";
 					
-					this.menu_is_visible = false;
+					this.menu_is_open = false;
+					
+					setTimeout(() =>
+					{
+						//This is called when showing the image links, so we might need to reset the opacity.
+						document.querySelector("#settings-button").style.opacity = 1;
+						document.querySelector("#sitemap-button").style.opacity = 1;
+						document.querySelector("#about-button").style.opacity = 1;
+					}, 300);
 				}, 50);
 			}, 50);
-		}
+		},
+		
+		
+		
+		show_image_links: function()
+		{
+			document.querySelector("#floating-footer-writing-link").style.left = "10px";
+			
+			document.querySelector("#settings-button").style.opacity = 0;
+			
+			setTimeout(() =>
+			{
+				document.querySelector("#floating-footer-teaching-link").style.left = "10px";
+			
+				document.querySelector("#sitemap-button").style.opacity = 0;
+				
+				setTimeout(() =>
+				{
+					document.querySelector("#floating-footer-applets-link").style.left = "10px";
+				
+					document.querySelector("#about-button").style.opacity = 0;
+					
+					setTimeout(() =>
+					{
+						document.querySelector("#floating-footer-bio-link").style.left = "10px";
+						
+						this.image_links_is_open = true;
+						
+						setTimeout(() =>
+						{
+							this.hide_menu();
+						}, 300);
+					}, 50);
+				}, 50);
+			}, 50);
+			
+			
+			
+			let bound_function = this.hide_image_links.bind(this);
+			
+			document.documentElement.addEventListener("touchstart", bound_function);
+			document.documentElement.addEventListener("touchmove", bound_function);
+			document.documentElement.addEventListener("mousedown", bound_function);
+			
+			Page.temporary_handlers["touchstart"].push(bound_function);
+			Page.temporary_handlers["touchmove"].push(bound_function);
+			Page.temporary_handlers["mousedown"].push(bound_function);
+		},
+		
+		
+		
+		hide_image_links: function(e)
+		{
+			if (!this.image_links_is_open)
+			{
+				return;
+			}
+			
+			
+			
+			let x = 0;
+			let y = 0;
+			
+			
+			
+			try
+			{
+				x = e.clientX;
+				y = e.clientY;
+			}
+			
+			catch(ex) {}
+			
+			
+			
+			try
+			{
+				x = e.touches[0].clientX;
+				y = e.touches[0].clientY;
+			}
+			
+			catch(ex) {}
+			
+			
+			
+			if (document.elementFromPoint(x, y).parentNode.parentNode.classList.contains("footer-menu-image-link"))
+			{
+				return;
+			}
+			
+			
+			
+			document.querySelector("#floating-footer-writing-link").style.left = "-40px";
+			
+			setTimeout(() =>
+			{
+				document.querySelector("#floating-footer-teaching-link").style.left = "-40px";
+				
+				//This one looks better with a slight delay.
+				document.querySelector("#show-footer-menu-button").style.opacity = 1;
+				
+				setTimeout(() =>
+				{
+					document.querySelector("#floating-footer-applets-link").style.left = "-40px";
+					
+					setTimeout(() =>
+					{
+						document.querySelector("#floating-footer-bio-link").style.left = "-40px";
+						
+						this.image_links_is_open = false;
+					}, 50);
+				}, 50);
+			}, 50);
+		},
 	}
 };

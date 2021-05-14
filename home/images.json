@@ -1,51 +1,51 @@
 {
 	"writing":
 	{
-		"webp": "../writing/cover.webp",
-		"non-webp": "../writing/cover.jpg"
+		"webp": "/writing/cover.webp",
+		"non-webp": "/writing/cover.jpg"
 	},
 	
 	"teaching":
 	{
-		"webp": "../teaching/cover.webp",
-		"non-webp": "../teaching/cover.jpg"
+		"webp": "/teaching/cover.webp",
+		"non-webp": "/teaching/cover.jpg"
 	},
 	
 	"applets":
 	{
-		"webp": "../applets/cover.webp",
-		"non-webp": "../applets/cover.jpg"
+		"webp": "/applets/cover.webp",
+		"non-webp": "/applets/cover.jpg"
 	},
 	
 	"bio":
 	{
-		"webp": "../bio/cover.webp",
-		"non-webp": "../bio/cover.jpg"
+		"webp": "/bio/cover.webp",
+		"non-webp": "/bio/cover.jpg"
 	},
 	
 	"about":
 	{
-		"webp": "../about/cover.webp",
-		"non-webp": "../about/cover.jpg"
+		"webp": "/about/cover.webp",
+		"non-webp": "/about/cover.jpg"
 	},
 	
 	
 	
 	"kleinian-pearls":
 	{
-		"webp": "../applets/kleinian-pearls/cover.webp",
-		"non-webp": "../applets/kleinian-pearls/cover.jpg"
+		"webp": "/applets/kleinian-pearls/cover.webp",
+		"non-webp": "/applets/kleinian-pearls/cover.jpg"
 	},
 	
 	"the-secant-method":
 	{
-		"webp": "../applets/the-secant-method/cover.webp",
-		"non-webp": "../applets/the-secant-method/cover.jpg"
+		"webp": "/applets/the-secant-method/cover.webp",
+		"non-webp": "/applets/the-secant-method/cover.jpg"
 	},
 	
 	"quasi-fuchsian-groups":
 	{
-		"webp": "../applets/quasi-fuchsian-groups/cover.webp",
-		"non-webp": "../applets/quasi-fuchsian-groups/cover.jpg"
+		"webp": "/applets/quasi-fuchsian-groups/cover.webp",
+		"non-webp": "/applets/quasi-fuchsian-groups/cover.jpg"
 	}
 }

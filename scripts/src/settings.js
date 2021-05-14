@@ -1714,15 +1714,17 @@ let Settings =
 					document.querySelector("#sitemap-button").style.opacity = 0;
 					document.querySelector("#settings-button").style.opacity = 0;
 					
-					document.querySelector("#about-button").style.left = "-40px";
-					document.querySelector("#sitemap-button").style.left = "-40px";
-					document.querySelector("#settings-button").style.left = "-40px";
-					
 					setTimeout(() =>
 					{
-						document.querySelector("#about-button").style.opacity = 1;
-					document.querySelector("#sitemap-button").style.opacity = 1;
-					document.querySelector("#settings-button").style.opacity = 1;
+						document.querySelector("#about-button").style.left = "-40px";
+						document.querySelector("#sitemap-button").style.left = "-40px";
+						document.querySelector("#settings-button").style.left = "-40px";
+						setTimeout(() =>
+						{
+							document.querySelector("#about-button").style.opacity = 1;
+							document.querySelector("#sitemap-button").style.opacity = 1;
+							document.querySelector("#settings-button").style.opacity = 1;
+						}, 300);
 					}, 300);
 				}, 300);
 				
