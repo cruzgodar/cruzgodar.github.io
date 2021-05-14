@@ -9,7 +9,10 @@
 	window.addEventListener("resize", homepage_resize);
 	Page.temporary_handlers["resize"].push(homepage_resize);
 	
-	homepage_resize();
+	setTimeout(() =>
+	{
+		homepage_resize();
+	}, 500);
 	
 	
 	
