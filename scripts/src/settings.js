@@ -17,8 +17,7 @@ let Settings =
 		"contrast": ["Contrast: normal", "Contrast: high"],
 		"text_size": ["Text size: normal", "Text size: large"],
 		"font": ["Font: always sans serif", "Font: serif on writing"],
-		"content_animation": ["Content animation: enabled", "Content animation: disabled"],
-		"banner_style": ["Banners: parallax", "Banners: simple"]
+		"content_animation": ["Content animation: enabled", "Content animation: disabled"]
 	},
 	
 	dark_theme_background_color: "rgb(24, 24, 24)",
@@ -60,7 +59,6 @@ let Settings =
 			"text_size": this.get_url_var("text_size"),
 			"font": this.get_url_var("font"),
 			"content_animation": this.get_url_var("content_animation"),
-			"banner_style": this.get_url_var("banner_style"),
 			"title_pages_seen": this.get_url_var("title_pages_seen")
 		};
 		
@@ -171,7 +169,49 @@ let Settings =
 		
 		if (setting === "theme")
 		{
-			this.toggle_theme();
+			if (this.url_vars["theme"] === 1 && this.url_vars["dark_theme_color"] !== 1)
+			{
+				this.toggle_dark_theme_color();
+				
+				if (!no_animation)
+				{
+					setTimeout(() =>
+					{
+						try {Page.Footer.Floating.show_settings_text("Theme: black");}
+						catch(ex) {}
+					}, 600);
+				}
+			}
+			
+			else if (this.url_vars["theme"] === 1 && this.url_vars["dark_theme_color"] === 1)
+			{
+				this.toggle_theme();
+				
+				if (!no_animation)
+				{
+					setTimeout(() =>
+					{
+						this.toggle_dark_theme_color();
+						
+						try {Page.Footer.Floating.show_settings_text("Theme: light");}
+				 		catch(ex) {}
+					}, 600);
+				}
+			}
+			
+			else
+			{
+				this.toggle_theme();
+				
+				if (!no_animation)
+				{
+					setTimeout(() =>
+					{
+						try {Page.Footer.Floating.show_settings_text("Theme: dark");}
+						catch(ex) {}
+					}, 600);
+				}
+			}
 		}
 		
 		else if (setting === "dark_theme_color")
@@ -199,11 +239,6 @@ let Settings =
 			this.toggle_content_animation();
 		}
 		
-		else if (setting === "banner_style")
-		{
-			this.toggle_banner_style();
-		}
-		
 		else
 		{
 			console.log("Unknown setting");
@@ -229,11 +264,6 @@ let Settings =
 	//Changes the theme and animates elements.
 	toggle_theme: function()
 	{
-		try {document.querySelector("#theme-button-row").style.opacity = 0;}
-		catch(ex) {}
-		
-		
-		
 		//Light to dark
 		if (this.url_vars["theme"] === 0)
 		{
@@ -302,15 +332,6 @@ let Settings =
 			
 			
 			
-			try {document.querySelector("#theme-button-row").style.opacity = 0;}
-			catch(ex) {}
-			
-			setTimeout(() =>
-			{
-	 			try {document.querySelector("#theme-button-text").textContent = this.texts["theme"][1];}
-	 			catch(ex) {}
-			}, 300);
-			
 			this.url_vars["theme"] = 1;
 		}
 		
@@ -371,41 +392,14 @@ let Settings =
 			
 			
 			
-			setTimeout(() =>
-			{
-				try {document.querySelector("#theme-button-text").textContent = this.texts["theme"][0];}
-				catch(ex) {}
-			}, 300);
-			
 			this.url_vars["theme"] = 0;
 		}
-		
-		
-		
-		setTimeout(() =>
-		{
-			try
-			{
-				setTimeout(() =>
-				{
-					try {document.querySelector("#theme-button-row").style.opacity = 1;}
-					catch(ex) {}
-				}, 50);
-			}
-			
-			catch(ex) {}
-		}, 300);
 	},
 
 
 
 	toggle_dark_theme_color: function()
 	{
-		try {document.querySelector("#dark-theme-color-button-row").style.opacity = 0;}
-		catch(ex) {}
-		
-		
-		
 		if (this.url_vars["dark_theme_color"] === 0)
 		{
 			this.dark_theme_background_color = "rgb(0, 0, 0)";
@@ -462,12 +456,6 @@ let Settings =
 			}, 600);
 			
 			
-			
-			setTimeout(() =>
-			{
-				try {document.querySelector("#dark-theme-color-button-text").textContent = this.texts["dark_theme_color"][1];}
-				catch(ex) {}
-			}, 300);
 			
 			this.url_vars["dark_theme_color"] = 1;
 		}
@@ -531,40 +519,14 @@ let Settings =
 			
 			
 			
-			setTimeout(() =>
-			{
-				try {document.querySelector("#dark-theme-color-button-text").textContent = this.texts["dark_theme_color"][0];}
-				catch(ex) {}
-			}, 300);
-			
 			this.url_vars["dark_theme_color"] = 0;
 		}
-		
-		
-		
-		setTimeout(() =>
-		{
-			try
-			{
-				setTimeout(() =>
-				{
-					document.querySelector("#dark-theme-color-button-row").style.opacity = 1;
-				}, 50);
-			}
-			
-			catch(ex) {}
-		}, 300);
 	},
 
 
 
 	toggle_contrast: function()
 	{
-		try {document.querySelector("#contrast-button-row").style.opacity = 0;}
-		catch(ex) {}
-		
-		
-		
 		//Default to high
 		if (this.url_vars["contrast"] === 0)
 		{
@@ -611,11 +573,12 @@ let Settings =
 			}
 			
 			
+			
 			setTimeout(() =>
 			{
-				try {document.querySelector("#contrast-button-text").textContent = this.texts["contrast"][1];}
+				try {Page.Footer.Floating.show_settings_text("Contrast: high");}
 				catch(ex) {}
-			}, 300);
+			}, 650);
 			
 			this.url_vars["contrast"] = 1;
 		}
@@ -666,27 +629,12 @@ let Settings =
 			
 			setTimeout(() =>
 			{
-				try {document.querySelector("#contrast-button-text").textContent = this.texts["contrast"][0];}
+				try {Page.Footer.Floating.show_settings_text("Contrast: normal");}
 				catch(ex) {}
-			}, 300);
+			}, 650);
 			
 			this.url_vars["contrast"] = 0;
 		}
-		
-		
-		
-		setTimeout(() =>
-		{
-			try
-			{
-				setTimeout(() =>
-				{
-					document.querySelector("#contrast-button-row").style.opacity = 1;
-				}, 50);
-			}
-			
-			catch(ex) {}
-		}, 300);
 	},
 
 
@@ -725,8 +673,11 @@ let Settings =
 				
 				
 				
-				try {document.querySelector("#text-size-button-text").textContent = this.texts["text_size"][1];}
-				catch(ex) {}
+				setTimeout(() =>
+				{
+					try {Page.Footer.Floating.show_settings_text("Text size: large");}
+				 	catch(ex) {}
+				}, 300);
 			}, 300);
 				
 			this.url_vars["text_size"] = 1;
@@ -741,8 +692,11 @@ let Settings =
 				
 				
 				
-				try {document.querySelector("#text-size-button-text").textContent = this.texts["text_size"][0];}
-				catch(ex) {}
+				setTimeout(() =>
+				{
+					try {Page.Footer.Floating.show_settings_text("Text size: normal");}
+				 	catch(ex) {}
+				}, 300);
 			}, 300);
 				
 			this.url_vars["text_size"] = 0;
@@ -770,11 +724,6 @@ let Settings =
 		
 		
 		
-		try {document.querySelector("#font-button-row").style.opacity = 0;}
-		catch(ex) {}
-		
-		
-		
 		//Sans to serif
 		if (this.url_vars["font"] === 0)
 		{
@@ -785,8 +734,10 @@ let Settings =
 					Page.set_element_styles(".body-text, .heading-text", "font-family", "'Gentium Book Basic', serif");
 				}
 				
-				try {document.querySelector("#font-button-text").textContent = this.texts["font"][1];}
-				catch(ex) {}
+				
+				
+				try {Page.Footer.Floating.show_settings_text("Font: serif on writing");}
+			 	catch(ex) {}
 			}, 300);
 			
 			this.url_vars["font"] = 1;
@@ -804,8 +755,10 @@ let Settings =
 					Page.set_element_styles(".body-text, .heading-text", "font-family", "'Rubik', sans-serif");
 				}
 				
-				try {document.querySelector("#font-button-text").textContent = this.texts["font"][0];}
-				catch(ex) {}
+				
+				
+				try {Page.Footer.Floating.show_settings_text("Font: always sans serif");}
+		 		catch(ex) {}
 			}, 300);
 			
 			this.url_vars["font"] = 0;
@@ -825,23 +778,6 @@ let Settings =
 				}, 50);
 			}, 300);
 		}
-		
-		
-		
-		setTimeout(() =>
-		{
-			try
-			{
-				setTimeout(() =>
-				{
-					document.querySelector("#font-button-row").style.opacity = 1;
-					
-					Page.Load.AOS.on_resize();
-				}, 50);
-			}
-			
-			catch(ex) {}
-		}, 300);
 	},
 
 
@@ -874,9 +810,11 @@ let Settings =
 			
 			setTimeout(() =>
 			{
-				try {document.querySelector("#content-animation-button-text").textContent = this.texts["content_animation"][1];}
-				catch(ex) {}
-			}, 300);
+				try {Page.Footer.Floating.show_settings_text("Content animation: disabled");}
+		 		catch(ex) {}
+		 	}, 600);
+		 	
+		 	
 			
 			this.url_vars["content_animation"] = 1;
 		}
@@ -896,86 +834,6 @@ let Settings =
 			
 			Page.Navigation.redirect(Page.url, false, true, true);
 		}
-	},
-
-
-
-	toggle_banner_style: function()
-	{
-		document.body.style.opacity = 0;
-		
-		setTimeout(() =>
-		{
-			if (this.url_vars["banner_style"] === 0)
-			{
-				try {document.querySelector("#banner-adjust").remove();}
-				catch(ex) {}
-				
-				
-				
-				let element = Site.add_style(`
-					#banner, .name-text-container
-					{
-						position: absolute !important;
-					}
-					
-					#banner-gradient
-					{
-						content: "";
-						position: absolute;
-						
-						width: 100vw;
-						height: 30vh;
-						margin-top: 70vh;
-						
-						background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-						background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
-						background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
-					}
-				`, false);
-				
-				element.id = "banner-adjust";
-				
-				
-				
-				//If we don't do this, the banner will be stuck at whatever opacity it was at before.
-				try {document.querySelector("#banner").style.opacity = 1;}
-				catch(ex) {}
-				
-				Page.set_element_styles(".name-text", "opacity", 1);
-				
-				
-				
-				try {document.querySelector("#banner-style-button-text").textContent = this.texts["banner_style"][1];}
-				catch(ex) {}
-				
-				this.url_vars["banner_style"] = 1;
-			}
-			
-			
-			
-			else
-			{
-				try {document.querySelector("#banner-adjust").remove();}
-				catch(ex) {}
-				
-				try {document.querySelector("#banner-style-button-text").textContent = this.texts["banner_style"][0];}
-				catch(ex) {}
-			
-			
-				
-				this.url_vars["banner_style"] = 0;
-				
-				Page.Banner.on_scroll(window.scrollY);
-			}
-			
-			
-			
-			setTimeout(() =>
-			{
-				document.body.style.opacity = 1;
-			}, 50);
-		}, 300);
 	},
 
 
@@ -1605,288 +1463,6 @@ let Settings =
 					opacity: 1;
 				}
 			`;
-		}
-	},
-	
-	
-	
-	Floating:
-	{
-		visible: false,
-		
-		
-		
-		load: function()
-		{
-			document.documentElement.addEventListener("touchstart", (e) =>
-			{
-				if (!this.visible)
-				{
-					return;
-				}
-				
-				if (!(document.querySelector("#floating-settings").contains(e.target)))
-				{
-					this.hide();
-				}
-			});
-
-			document.documentElement.addEventListener("mousedown", (e) =>
-			{
-				if (!this.visible)
-				{
-					return;
-				}
-				
-				if (!(document.querySelector("#floating-settings").contains(e.target)))
-				{
-					this.hide();
-				}
-			});
-		},
-		
-		
-		
-		show: function()
-		{	
-			if (this.visible)
-			{
-				return;
-			}
-			
-			
-			
-			this.visible = true;
-			
-			document.body.firstElementChild.insertAdjacentHTML("beforebegin", `
-				<div id="floating-settings" tabindex="-1">
-					<div class="floating-settings-page">
-						<div id="theme-button-row" class="floating-settings-button-row"></div>
-						<div id="dark-theme-color-button-row" class="floating-settings-button-row"></div>
-						<div id="contrast-button-row" class="floating-settings-button-row"></div>
-						<div id="text-size-button-row" class="floating-settings-button-row"></div>
-						<div id="font-button-row" class="floating-settings-button-row"></div>
-						<div id="content-animation-button-row" class="floating-settings-button-row"></div>
-						<div id="banner-style-button-row" class="floating-settings-button-row"></div>
-						<div style="margin-top: -17px"></div>
-					</div>
-				</div>
-			`);
-			
-			
-			
-			//I really don't like this.
-			setTimeout(() =>
-			{
-				document.querySelector("#floating-settings").style.opacity = 1;
-				
-				//Nontouch browsers don't do scroll snapping very well.
-				if (!Site.Interaction.currently_touch_device)
-				{
-					document.documentElement.style.overflowY = "hidden";
-					document.body.style.overflowY = "scroll";
-					
-					document.querySelector("#floating-settings").addEventListener("mouseenter", () =>
-					{
-						document.documentElement.style.overflowY = "hidden";
-						document.body.style.overflowY = "scroll";
-					});
-					
-					document.querySelector("#floating-settings").addEventListener("mouseleave", () =>
-					{
-						document.documentElement.style.overflowY = "scroll";
-						document.body.style.overflowY = "hidden";
-					});
-				}
-			}, 10);
-			
-			
-			
-			setTimeout(() =>
-			{
-				document.querySelector("#floating-settings").scrollTop = 0;
-				
-				
-				
-				setTimeout(() =>
-				{
-					document.querySelector("#about-button").style.opacity = 0;
-					document.querySelector("#sitemap-button").style.opacity = 0;
-					document.querySelector("#settings-button").style.opacity = 0;
-					
-					setTimeout(() =>
-					{
-						document.querySelector("#about-button").style.left = "-40px";
-						document.querySelector("#sitemap-button").style.left = "-40px";
-						document.querySelector("#settings-button").style.left = "-40px";
-						setTimeout(() =>
-						{
-							document.querySelector("#about-button").style.opacity = 1;
-							document.querySelector("#sitemap-button").style.opacity = 1;
-							document.querySelector("#settings-button").style.opacity = 1;
-						}, 300);
-					}, 300);
-				}, 300);
-				
-				
-				
-				let query_strings = Object.keys(Site.Settings.url_vars);
-				
-				
-				
-				//These aren't seen by set_up_aos(), so we'll do things the old-fashioned way.
-				document.querySelector("#theme-button-row").innerHTML = `
-					<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
-						<input type="image" class="footer-button" src="/graphics/button-icons/moon.png" alt="Change Theme" onclick="Site.Settings.toggle('theme')" tabindex="-1">
-					</div>
-					
-					<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
-						<p id="theme-button-text" class="floating-settings-button-text">
-							${Site.Settings.texts[query_strings[0]][Site.Settings.url_vars[query_strings[0]]]}
-						</p>
-					</div>
-				`;
-				
-				
-				
-				setTimeout(() =>
-				{
-					document.querySelector("#dark-theme-color-button-row").innerHTML = `
-						<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
-							<input type="image" class="footer-button" src="/graphics/button-icons/moon-stars.png" alt="Change Theme" onclick="Site.Settings.toggle('dark_theme_color')" tabindex="-1">
-						</div>
-						
-						<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
-							<p id="dark-theme-color-button-text" class="floating-settings-button-text">
-								${Site.Settings.texts[query_strings[1]][Site.Settings.url_vars[query_strings[1]]]}
-							</p>
-						</div>
-					`;
-				}, 100);
-				
-				
-				
-				setTimeout(() =>
-				{
-					document.querySelector("#contrast-button-row").innerHTML = `
-						<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
-							<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Change Theme" onclick="Site.Settings.toggle('contrast')" tabindex="-1">
-						</div>
-						
-						<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
-							<p id="contrast-button-text" class="floating-settings-button-text">
-								${Site.Settings.texts[query_strings[2]][Site.Settings.url_vars[query_strings[2]]]}
-							</p>
-						</div>
-					`;
-				}, 200);
-				
-				
-				
-				setTimeout(() =>
-				{
-					document.querySelector("#text-size-button-row").innerHTML = `
-						<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
-							<input type="image" class="footer-button" src="/graphics/button-icons/text-size.png" alt="Change Theme" onclick="Site.Settings.toggle('text_size')" tabindex="-1">
-						</div>
-						
-						<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
-							<p id="text-size-button-text" class="floating-settings-button-text">
-								${Site.Settings.texts[query_strings[3]][Site.Settings.url_vars[query_strings[3]]]}
-							</p>
-						</div>
-					`;
-				}, 300);
-				
-				
-				
-				setTimeout(() =>
-				{
-					document.querySelector("#font-button-row").innerHTML = `
-						<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
-							<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Change Theme" onclick="Site.Settings.toggle('font')" tabindex="-1">
-						</div>
-						
-						<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
-							<p id="font-button-text" class="floating-settings-button-text">
-								${Site.Settings.texts[query_strings[4]][Site.Settings.url_vars[query_strings[4]]]}
-							</p>
-						</div>
-					`;
-					
-					
-					
-					document.querySelector("#content-animation-button-row").innerHTML = `
-						<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
-							<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Change Theme" onclick="Site.Settings.toggle('content_animation')" tabindex="-1">
-						</div>
-						
-						<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
-							<p id="content-animation-button-text" class="floating-settings-button-text">
-								${Site.Settings.texts[query_strings[5]][Site.Settings.url_vars[query_strings[5]]]}
-							</p>
-						</div>
-					`;
-					
-					
-					
-					document.querySelector("#banner-style-button-row").innerHTML = `
-						<div class="focus-on-child" data-aos="zoom-out" data-aos-anchor="body" tabindex="2">
-							<input type="image" class="footer-button" src="/graphics/button-icons/picture.png" alt="Change Theme" onclick="Site.Settings.toggle('banner_style')" tabindex="-1">
-						</div>
-						
-						<div class="floating-settings-button-text-container" data-aos="fade-left" data-aos-anchor="body">
-							<p id="banner-style-button-text" class="floating-settings-button-text">
-								${Site.Settings.texts[query_strings[6]][Site.Settings.url_vars[query_strings[6]]]}
-							</p>
-						</div>
-					`;
-				}, 400);
-				
-				
-				
-				setTimeout(() =>
-				{
-					let elements = document.querySelectorAll(".floating-settings-button-row div .footer-button");
-					
-					for (let i = 0; i < elements.length; i++)
-					{
-						Page.Load.HoverEvents.add(elements[i]);
-					}
-					
-					
-					
-					elements = document.querySelectorAll(".floating-settings-button-row .focus-on-child");
-				
-					for (let i = 0; i < elements.length; i++)
-					{
-						elements[i].addEventListener("focus", () =>
-						{
-							elements[i].children[0].focus();
-						});
-					}
-					
-					
-					
-					document.querySelector("#floating-settings").focus();
-				}, 500);
-			}, 100);
-		},
-
-
-
-		hide: function()
-		{
-			document.querySelector("#floating-settings").style.opacity = 0;
-			
-			document.documentElement.style.overflowY = "scroll";
-			
-			setTimeout(() =>
-			{
-				document.querySelector("#floating-settings").remove();
-				
-				this.visible = false;
-			}, 300);
 		}
 	}
 };

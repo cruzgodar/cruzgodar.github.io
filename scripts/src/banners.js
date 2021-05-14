@@ -176,34 +176,31 @@ Page.Banner =
 		
 		if (Page.scroll >= 0)
 		{
-			if (Site.Settings.url_vars["banner_style"] !== 1)
+			if (Page.scroll <= Page.Layout.window_height)
 			{
-				if (Page.scroll <= Page.Layout.window_height)
-				{
-					let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
-					
-					try {document.querySelector("#banner").style.opacity = opacity;}
-					catch(ex) {}
-					
-					if (opacity === 0)
-					{
-						this.done_loading = true;
-					}
-					
-					else
-					{
-						this.done_loading = false;
-					}
-				}
+				let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 				
-				else if (!this.done_loading)
+				try {document.querySelector("#banner").style.opacity = opacity;}
+				catch(ex) {}
+				
+				if (opacity === 0)
 				{
-					//We need a try block here in case the user refreshes the page and it's way low down for some reason, even though scrollRestoration should be off.
-					try {document.querySelector("#banner").style.opacity = 0;}
-					catch(ex) {}
-					
 					this.done_loading = true;
 				}
+				
+				else
+				{
+					this.done_loading = false;
+				}
+			}
+			
+			else if (!this.done_loading)
+			{
+				//We need a try block here in case the user refreshes the page and it's way low down for some reason, even though scrollRestoration should be off.
+				try {document.querySelector("#banner").style.opacity = 0;}
+				catch(ex) {}
+				
+				this.done_loading = true;
 			}
 			
 			
@@ -214,17 +211,15 @@ Page.Banner =
 				
 				if (this.ScrollButton.exists)
 				{
-					document.querySelector("#scroll-button").style.opacity = opacity;
+					try {document.querySelector("#scroll-button").style.opacity = opacity;}
+					catch(ex) {}
 				}
 				
 				
 				
 				try
 				{
-					if (Site.Settings.url_vars["banner_style"] !== 1)
-					{
-						Page.set_element_styles(".name-text", "opacity", opacity);
-					}
+					Page.set_element_styles(".name-text", "opacity", opacity);
 				}
 				
 				catch(ex) {}
@@ -250,7 +245,7 @@ Page.Banner =
 			
 			
 			
-			else if (this.ScrollButton.timeout_id !== null)
+			else if (this.ScrollButton.timeout_id !== null && Page.scroll <= 2*Page.Layout.window_height/3)
 			{
 				clearTimeout(this.ScrollButton.timeout_id);
 				this.ScrollButton.timeout_id = null;
@@ -260,10 +255,7 @@ Page.Banner =
 			
 			else if (this.ScrollButton.done_loading === false)
 			{
-				if (Site.Settings.url_vars["banner_style"] !== 1)
-				{
-					Page.set_element_styles(".name-text", "opacity", 0);
-				}
+				Page.set_element_styles(".name-text", "opacity", 0);
 				
 				if (this.ScrollButton.exists)
 				{

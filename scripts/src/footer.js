@@ -185,6 +185,11 @@ Page.Footer =
 		
 		image_links_is_open: false,
 		
+		settings_is_open: false,
+		
+		timeout_id_1: null,
+		timeout_id_2: null,
+		
 		
 		
 		//Initializes the floating footer by copying specific parts of the normal footer.
@@ -214,7 +219,7 @@ Page.Footer =
 					</div>
 					
 					<div id="settings-button" class="footer-menu-button focus-on-child" tabindex="101">
-						<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Options" onclick="Site.Settings.Floating.show()" tabindex="-1">
+						<input type="image" class="footer-button" src="/graphics/button-icons/gear.png" alt="Options" onclick="Page.Footer.Floating.show_settings()" tabindex="-1">
 					</div>
 					
 					
@@ -242,8 +247,42 @@ Page.Footer =
 							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/bio/bio.html')" src="/bio/cover.${Page.Images.file_extension}" alt="Bio" tabindex="1"></img>
 						</a>
 					</div>
+					
+					
+					
+					<p id="settings-text" class="body-text" style="opacity: 0"></p>
+					
+					<div id="content-animation-button" class="footer-menu-button focus-on-child" tabindex="101">
+						<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Options" onclick="Site.Settings.toggle('content_animation')" tabindex="-1">
+					</div>
+					
+					<div id="font-button" class="footer-menu-button focus-on-child" tabindex="101">
+						<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Options" onclick="Site.Settings.toggle('font')" tabindex="-1">
+					</div>
+					
+					<div id="text-size-button" class="footer-menu-button focus-on-child" tabindex="101">
+						<input type="image" class="footer-button" src="/graphics/button-icons/text-size.png" alt="Options" onclick="Site.Settings.toggle('text_size')" tabindex="-1">
+					</div>
+					
+					<div id="contrast-button" class="footer-menu-button focus-on-child" tabindex="102">
+						<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Options" onclick="Site.Settings.toggle('contrast')" tabindex="-1">
+					</div>
+					
+					<div id="theme-button" class="footer-menu-button focus-on-child" tabindex="103">
+						<input type="image" class="footer-button" src="/graphics/button-icons/moon.png" alt="About" onclick="Site.Settings.toggle('theme')" tabindex="-1">
+					</div>
 				</div>
 			`;
+			
+			
+			
+			setTimeout(() =>
+			{
+				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-writing-link img"));
+				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-teaching-link img"));
+				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-applets-link img"));
+				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-bio-link img"));
+			}, 50);
 			
 			
 			
@@ -606,5 +645,199 @@ Page.Footer =
 				}, 50);
 			}, 50);
 		},
+		
+		
+		
+		show_settings: function()
+		{
+			document.querySelector("#theme-button").style.left = "10px";
+			
+			document.querySelector("#settings-button").style.opacity = 0;
+			
+			setTimeout(() =>
+			{
+				document.querySelector("#contrast-button").style.left = "10px";
+			
+				document.querySelector("#sitemap-button").style.opacity = 0;
+				
+				setTimeout(() =>
+				{
+					document.querySelector("#text-size-button").style.left = "10px";
+				
+					document.querySelector("#about-button").style.opacity = 0;
+					
+					setTimeout(() =>
+					{
+						document.querySelector("#font-button").style.left = "10px";
+						
+						setTimeout(() =>
+						{
+							document.querySelector("#content-animation-button").style.left = "10px";
+							
+							this.settings_is_open = true;
+							
+							setTimeout(() =>
+							{
+								this.hide_menu();
+							}, 300);
+						}, 50);
+					}, 50);
+				}, 50);
+			}, 50);
+			
+			
+			
+			let bound_function = this.hide_settings.bind(this);
+			
+			document.documentElement.addEventListener("touchstart", bound_function);
+			document.documentElement.addEventListener("touchmove", bound_function);
+			document.documentElement.addEventListener("mousedown", bound_function);
+			
+			Page.temporary_handlers["touchstart"].push(bound_function);
+			Page.temporary_handlers["touchmove"].push(bound_function);
+			Page.temporary_handlers["mousedown"].push(bound_function);
+		},
+		
+		
+		
+		hide_settings: function(e)
+		{
+			if (!this.settings_is_open)
+			{
+				return;
+			}
+			
+			
+			
+			let x = 0;
+			let y = 0;
+			
+			
+			
+			try
+			{
+				x = e.clientX;
+				y = e.clientY;
+			}
+			
+			catch(ex) {}
+			
+			
+			
+			try
+			{
+				x = e.touches[0].clientX;
+				y = e.touches[0].clientY;
+			}
+			
+			catch(ex) {}
+			
+			
+			
+			if (document.elementFromPoint(x, y).parentNode.classList.contains("footer-menu-button"))
+			{
+				return;
+			}
+			
+			
+			
+			document.querySelector("#theme-button").style.left = "-40px";
+			
+			document.querySelector("#show-footer-menu-button").style.opacity = 1;
+			
+			setTimeout(() =>
+			{
+				document.querySelector("#contrast-button").style.left = "-40px";
+				
+				setTimeout(() =>
+				{
+					document.querySelector("#text-size-button").style.left = "-40px";
+					
+					setTimeout(() =>
+					{
+						document.querySelector("#font-button").style.left = "-40px";
+						
+						setTimeout(() =>
+						{
+							document.querySelector("#content-animation-button").style.left = "-40px";
+							
+							this.settings_is_open = false;
+						}, 50);
+					}, 50);
+				}, 50);
+			}, 50);
+		},
+		
+		
+		
+		show_settings_text: function(text)
+		{
+			if (document.querySelector("#settings-text").style.opacity == 0)
+			{
+				document.querySelector("#settings-text").style.display = "block";
+				
+				document.querySelector("#settings-text").textContent = text;
+				
+				setTimeout(() =>
+				{
+					document.querySelector("#settings-text").style.opacity = 1;
+					
+					
+					
+					try {clearTimeout(this.timeout_id_1)}
+					catch(ex) {}
+					
+					try {clearTimeout(this.timeout_id_2)}
+					catch(ex) {}
+					
+					this.timeout_id_1 = setTimeout(() =>
+					{
+						document.querySelector("#settings-text").style.opacity = 0;
+						
+						this.timeout_id_2 = setTimeout(() =>
+						{
+							document.querySelector("#settings-text").style.display = "none";
+						}, 300);
+					}, 1800);
+				}, 10);
+			}
+			
+			
+			
+			else
+			{
+				document.querySelector("#settings-text").style.opacity = 0;
+				
+				setTimeout(() =>
+				{
+					document.querySelector("#settings-text").style.display = "block";
+					
+					document.querySelector("#settings-text").textContent = text;
+					
+					setTimeout(() =>
+					{
+						document.querySelector("#settings-text").style.opacity = 1;
+						
+						
+						
+						try {clearTimeout(this.timeout_id_1)}
+						catch(ex) {}
+						
+						try {clearTimeout(this.timeout_id_2)}
+						catch(ex) {}
+						
+						this.timeout_id_1 = setTimeout(() =>
+						{
+							document.querySelector("#settings-text").style.opacity = 0;
+							
+							this.timeout_id_2 = setTimeout(() =>
+							{
+								document.querySelector("#settings-text").style.display = "none";
+							}, 300);
+						}, 1800);
+					}, 10);
+				}, 300);
+			}
+		}
 	}
 };

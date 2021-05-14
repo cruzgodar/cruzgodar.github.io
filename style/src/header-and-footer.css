@@ -206,11 +206,55 @@
 	bottom: 55.25px;
 }
 
+
+
 #floating-footer-writing-link, #floating-footer-teaching-link, #floating-footer-applets-link, #floating-footer-bio-link
 {
 	transition: left .3s ease;
 	
 	z-index: 105;
+}
+
+
+
+#theme-button, #contrast-button, #text-size-button, #font-button, #content-animation-button
+{
+	z-index: 105;
+	
+	left: -40px;
+	
+	transition: left .3s ease, opacity .3s ease;
+}
+
+#contrast-button
+{
+	bottom: 55.25px;
+}
+
+#text-size-button
+{
+	bottom: 104.25px;
+}
+
+#font-button
+{
+	bottom: 153.25px;
+}
+
+#content-animation-button
+{
+	bottom: 202.25px;
+}
+
+#settings-text
+{
+	bottom: 262.25px;
+	left: 10px;
+	
+	opacity: 0;
+	display: none;
+	
+	transition: opacity .3s ease-in-out;
 }
 
 
@@ -317,7 +361,7 @@
 	{
 		width: 55vw !important;
 		
-		margin-left: 22.5vw;
+		margin-left: 22.5vw !important;
 		
 		margin-bottom: 4vw !important;
 	}
@@ -326,7 +370,7 @@
 	{
 		width: 75vw !important;
 		
-		margin-left: 12.5vw;
+		margin-left: 12.5vw !important;
 		
 		margin-bottom: 4vw !important;
 	}

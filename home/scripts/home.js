@@ -105,7 +105,7 @@
 			
 			if (Page.Layout.layout_string === "ultrawide")
 			{
-				document.querySelectorAll(".image-link")[0].insertAdjacentHTML("beforebegin", `<div id="empty-image-link"></div>`);
+				document.querySelectorAll(".image-link")[4].insertAdjacentHTML("beforebegin", `<div id="empty-image-link"></div>`);
 			}
 			
 			else

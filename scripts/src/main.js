@@ -217,8 +217,6 @@ let Site =
 		
 		Site.Settings.set_up();
 		
-		Site.Settings.Floating.load();
-		
 		
 		
 		Page.Images.check_webp_support()
