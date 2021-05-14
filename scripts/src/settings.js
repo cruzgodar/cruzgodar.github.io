@@ -68,12 +68,20 @@ let Settings =
 		{
 			if (e.matches && this.url_vars["theme"] !== 1)
 			{
-				this.toggle("theme");
+				this.toggle_theme();
 			}
 			
 			else if (!e.matches && this.url_vars["theme"] === 1)
 			{
-				this.toggle("theme");
+				this.toggle_theme();
+				
+				if (this.url_vars["dark_theme_color"] === 1)
+				{
+					setTimeout(() =>
+					{
+						this.toggle_dark_theme_color();
+					}, 600);
+				}
 			}
 		});
 

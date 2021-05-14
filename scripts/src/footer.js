@@ -341,7 +341,15 @@ Page.Footer =
 			
 			else
 			{
-				scroll_delta = Math.max(-10, Math.min(scroll_delta, 10))
+				if (scroll_delta > 0)
+				{
+					scroll_delta = Math.max(2, Math.min(scroll_delta, 10))
+				}
+				
+				else
+				{
+					scroll_delta = Math.max(-10, Math.min(scroll_delta, -2))
+				}
 			}
 			
 			//Interpolates from .15 at -43.75 to 1 at -18.75 to .15 at at 6.25.
