@@ -47,6 +47,18 @@
         "non-webp": "exams/2/cover.jpg"
     },
     
+    "practice-midterm-2":
+    {
+        "webp": "extra/practice-midterm-2/cover.webp",
+        "non-webp": "extra/practice-midterm-2/cover.jpg"
+    },
+    
+    "trig-formulas":
+    {
+        "webp": "extra/trig-formulas/cover.webp",
+        "non-webp": "extra/trig-formulas/cover.jpg"
+    },
+    
     
     
     "quiz-6":
