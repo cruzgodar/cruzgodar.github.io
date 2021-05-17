@@ -13,8 +13,6 @@
 		
 		print(3 + 0);
 		
-		print("hello");
-		
 		while (num < 100)
 		{
 			num = num + 2;

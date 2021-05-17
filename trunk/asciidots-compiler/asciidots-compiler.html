@@ -8,23 +8,7 @@
 
 
 
-<header>
-	<div class="new-aos-section" data-aos="fade-in">
-		<div id="logo">
-			<a href="/home/home.html" tabindex="-1">
-				<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="redirect('/home/home.html')" tabindex="1"></img>
-			</a>
-		</div>
-	</div>
-	
-	<div style="height: 2vh"></div>
-	
-	<div data-aos="fade-up">
-		<h1 class="heading-text">AsciiDots Compiler</h1>
-	</div>
-</header>
-
-<div style="height: 5vh"></div>
+!header AsciiDots Compiler
 
 
 
@@ -45,32 +29,19 @@
 <script>
 	DEBUG = true;
 	
-	if (typeof current_url === "undefined")
+	if (typeof Page === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	
 	
-	page_settings = 
+	Page.settings = 
 	{
 		"title": "Abelian Sandpiles",
 		
-		"banner_page": false,
-		"num_banners": 0,
-		
-		"writing_page": false,
-		"math_page": false,
-		"comments": false,
-		
-		"small_margins_on_ultrawide": true,
-		
-		"manual_banner": false,
-		"manual_dark_theme": false,
-		
-		"no_footer": false,
-		"footer_exclusion": ""
+		"small_margins_on_ultrawide": true
 	};
 	
-	on_page_load();
+	Page.load();
 </script>
