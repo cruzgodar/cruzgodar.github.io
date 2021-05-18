@@ -9,5 +9,11 @@
 	{
 		"webp": "graphics/light.webp",
 		"non-webp": "graphics/light.png"
+	},
+	
+	"flame":
+	{
+		"webp": "graphics/flame.webp",
+		"non-webp": "graphics/flame.jpg"
 	}
 }

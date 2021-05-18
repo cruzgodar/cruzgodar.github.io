@@ -1,4 +1,10 @@
 {
+	"intro":
+	{
+		"webp": "caracore/cover.webp",
+		"non-webp": "caracore/cover.jpg"
+	},
+	
 	"caligo":
 	{
 		"webp": "caligo/cover.webp",

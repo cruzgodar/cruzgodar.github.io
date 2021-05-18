@@ -1,62 +1,141 @@
-#earth-dark, #earth-light
+html
 {
-	position: fixed;
-	width: 90vh;
-	left: calc(50vw - 45vh);
-	top: 5vh;
+	transition: background-color .6s ease !important;
+}
+
+.title-text
+{
+	position: relative;
+	width: 70vw;
 	margin: 0 auto;
-	opacity: 0;
+	
+	color: rgb(255, 255, 255) !important;
+	text-align: center;
+	font-size: 450%;
+	font-family: "Gentium Book Basic", serif;
+	font-weight: normal;
 	
 	z-index: 10;
 }
 
-
-
-#spacer
+.synopsis-text
 {
-	height: 200vh;
+	position: relative;
+	width: 50vw;
+	margin: 0 auto;
+	color: rgb(152, 152, 152);
+	text-align: justify;
+	font-size: 100%;
+	font-family: 'Gentium Book Basic', serif;
 }
 
-
-
-#gradient
+.body-text
 {
-	background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
-	
-	position: fixed;
-	bottom: -25vh;
-	left: 0;
-	width: 100vw;
-	height: 25vh;
-	
-	z-index: 20;
-	
-	transition: bottom .45s ease;
+	color: rgb(152, 152, 152) !important;
 }
 
-#blackspace
+#flame-container
 {
+	width: 50vh;
+	height: 50vh;
+	margin: 0 auto;
+	
+	opacity: 0;
+}
+
+#flame-container img
+{
+	position: absolute;
+	width: 50vh;
+}
+
+#flame-cover
+{
+	position: absolute;
+	width: 50vh;
+	height: 50vh;
+	
 	background-color: rgb(0, 0, 0);
 	
-	position: fixed;
-	bottom: -125vh;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
+	z-index: 10;
 	
-	z-index: 20;
+	transition: height 1.2s ease-in-out;
+}
+
+#flame-gradient-container
+{
+	position: absolute;
+	width: 50vh;
+	height: 60vh;
 	
-	transition: bottom .45s ease;
+	z-index: 10;
+}
+
+#flame-gradient
+{
+	width: 50vh;
+	height: 10vh;
+	
+	background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+	
+	transition: opacity .3s ease-in-out;
+}
+
+#flame-gradient-space
+{
+	height: 50vh;
+	
+	transition: height 1.2s ease-in-out;
 }
 
 
 
 @media (max-aspect-ratio: 1/1)
 {
-	#earth-dark, #earth-light
+	#flame-container
 	{
-		width: 90vw;
-		left: 5vw;
-		top: calc(50vh - 45vw);
+		width: 50vw;
+		height: 50vw;
+		margin-left: 25vw;
+	}
+	
+	#flame-container img
+	{
+		width: 50vw;
+		height: 50vw;
+	}
+	
+	#flame-cover
+	{
+		width: 50vw;
+		height: 50vw;
+	}
+	
+	#flame-gradient-container
+	{
+		width: 50vw;
+		height: 60vw;
+	}
+	
+	#flame-gradient
+	{
+		width: 50vw;
+		height: 10vw;
+	}
+	
+	#flame-gradient-space
+	{
+		height: 50vw;
+	}
+}
+
+
+
+@media (max-aspect-ratio: 9/16), (max-width: 700px)
+{
+	/* Make text have smaller margins so justifying doesn't look ugly. */
+	.synopsis-text
+	{
+		width: 80vw;
 	}
 }

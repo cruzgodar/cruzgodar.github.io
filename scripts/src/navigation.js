@@ -110,6 +110,15 @@ Page.Navigation =
 			
 			
 			
+			//Restore the ability to scroll in case it was removed.
+			document.documentElement.style.overflowY = "visible";
+			document.body.style.overflowY = "visible";
+			
+			document.body.style.userSelect = "auto";
+			document.body.style.WebkitUserSelect = "auto";
+			
+			
+			
 			document.body.innerHTML = Page.Components.decode(data);
 			
 			

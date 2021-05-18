@@ -31,6 +31,12 @@
 	
 	
 	
+	"intro":
+	{
+		"webp": "/writing/caracore/cover.webp",
+		"non-webp": "/writing/caracore/cover.jpg"
+	},
+	
 	"kleinian-pearls":
 	{
 		"webp": "/applets/kleinian-pearls/cover.webp",
@@ -41,11 +47,5 @@
 	{
 		"webp": "/applets/the-secant-method/cover.webp",
 		"non-webp": "/applets/the-secant-method/cover.jpg"
-	},
-	
-	"quasi-fuchsian-groups":
-	{
-		"webp": "/applets/quasi-fuchsian-groups/cover.webp",
-		"non-webp": "/applets/quasi-fuchsian-groups/cover.jpg"
 	}
 }
