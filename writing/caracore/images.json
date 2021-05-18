@@ -1,7 +1,13 @@
 {
-	"eclipse":
+	"earth-dark":
 	{
-		"webp": "graphics/eclipse.webp",
-		"non-webp": "graphics/eclipse.jpg"
+		"webp": "graphics/dark.webp",
+		"non-webp": "graphics/dark.png"
+	},
+	
+	"earth-light":
+	{
+		"webp": "graphics/light.webp",
+		"non-webp": "graphics/light.png"
 	}
 }
