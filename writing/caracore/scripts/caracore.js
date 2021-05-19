@@ -6,6 +6,8 @@
 	
 	Page.background_color_changed = true;
 	
+	document.querySelector("main").style.display = "block";
+	
 	document.querySelector("#show-footer-menu-button").style.bottom = "-43.75px";
 	
 	setTimeout(() =>
