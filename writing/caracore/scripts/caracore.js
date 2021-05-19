@@ -6,6 +6,8 @@
 	
 	Page.background_color_changed = true;
 	
+	document.querySelector("#show-footer-menu-button").style.bottom = "-43.75px";
+	
 	setTimeout(() =>
 	{
 		document.querySelector("#flame-container").style.opacity = 1;
@@ -18,11 +20,6 @@
 			document.querySelector("#flame-gradient").style.opacity = 0;
 			
 			Page.Load.AOS.on_resize();
-			
-			setTimeout(() =>
-			{
-				document.querySelector("#show-footer-menu-button").style.opacity = 1;
-			}, 1000);
 		}, 1000);
 	}, 1000);
 }()

@@ -120,6 +120,76 @@
 	{
 		document.querySelector("#container").style.opacity = 0;
 		
+		let start_time = Date.now();
+		
+		document.querySelector("#container").addEventListener("touchstart", (e) =>
+		{
+			start_time = Date.now();
+			
+			e.preventDefault();
+		});
+		
+		document.querySelector("#container").addEventListener("touchmove", (e) =>
+		{
+			e.preventDefault();
+		});
+		
+		document.querySelector("#container").addEventListener("touchend", (e) =>
+		{
+			e.preventDefault();
+			
+			if (Date.now() - start_time < 300)
+			{
+				document.querySelector(".character-text-container").style.opacity = 0;
+				
+				setTimeout(() =>
+				{
+					Page.Navigation.redirect("/writing/caracore/caracore.html");
+				}, 300);
+			}
+		});
+		
+		
+		
+		document.querySelector("#container").addEventListener("mousedown", (e) =>
+		{
+			start_time = Date.now();
+			
+			e.preventDefault();
+		});
+		
+		document.querySelector("#container").addEventListener("mousemove", (e) =>
+		{
+			e.preventDefault();
+		});
+		
+		document.querySelector("#container").addEventListener("mouseup", (e) =>
+		{
+			e.preventDefault();
+			
+			if (Date.now() - start_time < 300)
+			{
+				document.querySelector(".character-text-container").style.opacity = 0;
+				
+				setTimeout(() =>
+				{
+					Page.Navigation.redirect("/writing/caracore/caracore.html");
+				}, 300);
+			}
+		});
+		
+		
+		
+		document.querySelector("#container").addEventListener("scroll", (e) =>
+		{
+			e.preventDefault();
+		});
+		
+		document.querySelector("#container").addEventListener("wheel", (e) =>
+		{
+			e.preventDefault();
+		});
+		
 		setTimeout(() =>
 		{
 			show_character_text_1();
