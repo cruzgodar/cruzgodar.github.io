@@ -90,6 +90,13 @@ html
 
 
 
+#show-footer-menu-button
+{
+	opacity: 0;
+}
+
+
+
 @media (max-aspect-ratio: 1/1)
 {
 	#flame-container

@@ -18,6 +18,11 @@
 			document.querySelector("#flame-gradient").style.opacity = 0;
 			
 			Page.Load.AOS.on_resize();
+			
+			setTimeout(() =>
+			{
+				document.querySelector("#show-footer-menu-button").style.opacity = 1;
+			}, 1000);
 		}, 1000);
 	}, 1000);
 }()

@@ -168,7 +168,7 @@
 			setTimeout(() =>
 			{
 				show_character_text_2();
-			}, 4000);
+			}, 5000);
 		}, 50);
 	}
 	
@@ -214,7 +214,7 @@
 				setTimeout(() =>
 				{
 					show_character_text_3();
-				}, 4000);
+				}, 5000);
 			}, 50);
 		}, 900);
 	}
@@ -257,7 +257,7 @@
 					{
 						Page.Navigation.redirect("/writing/caracore/caracore.html");
 					}, 300);
-				}, 4000);
+				}, 3000);
 			}, 50);
 		}, 900);
 	}
