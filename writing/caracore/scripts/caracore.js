@@ -6,9 +6,11 @@
 	
 	Page.background_color_changed = true;
 	
-	document.querySelector("main").style.display = "block";
+	document.querySelector("#hidden").style.display = "block";
 	
-	document.querySelector("#show-footer-menu-button").style.bottom = "-43.75px";
+	document.querySelector("#spawn-footer").previousElementSibling.remove();
+	
+	
 	
 	setTimeout(() =>
 	{
@@ -22,6 +24,12 @@
 			document.querySelector("#flame-gradient").style.opacity = 0;
 			
 			Page.Load.AOS.on_resize();
+			
+			setTimeout(() =>
+			{
+				try {document.querySelector("#show-footer-menu-button-opacity-adjust").remove();}
+				catch(ex) {}
+			}, 2000);
 		}, 1000);
 	}, 1000);
 }()

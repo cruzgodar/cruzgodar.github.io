@@ -718,7 +718,10 @@ Page.Load =
 
 		fix_footer_anchor: function()
 		{
-			this.anchor_positions[this.elements.length - 1] = document.body.clientHeight - 10;
+			if (!("no_footer" in Page.settings && Page.settings["no_footer"]))
+			{
+				this.anchor_positions[this.elements.length - 1] = document.body.clientHeight - 10;
+			}
 		},
 
 

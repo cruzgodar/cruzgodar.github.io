@@ -142,6 +142,15 @@
 			{
 				document.querySelector(".character-text-container").style.opacity = 0;
 				
+				let element = Site.add_style(`
+					#show-footer-menu-button
+					{
+						opacity: 0 !important;
+					}
+				`, false);
+				
+				element.id = "show-footer-menu-button-opacity-adjust";
+				
 				setTimeout(() =>
 				{
 					Page.Navigation.redirect("/writing/caracore/caracore.html");
@@ -170,6 +179,15 @@
 			if (Date.now() - start_time < 300)
 			{
 				document.querySelector(".character-text-container").style.opacity = 0;
+				
+				let element = Site.add_style(`
+					#show-footer-menu-button
+					{
+						opacity: 0 !important;
+					}
+				`, false);
+				
+				element.id = "show-footer-menu-button-opacity-adjust";
 				
 				setTimeout(() =>
 				{
@@ -218,13 +236,13 @@
 				
 				<br>
 				
-				<div data-aos="fade-up">
+				<div data-aos="fade-up" data-aos-delay="100">
 					<p class="body-text" style="color: rgb(255, 225, 191)">A student, trapped on a train bound for hope.</p>
 				</div>
 				
 				<br>
 				
-				<div data-aos="fade-up">
+				<div data-aos="fade-up" data-aos-delay="200">
 					<p class="body-text" style="color: rgb(191, 226, 255)">A scientist, surrounded by a cutthroat troupe.</p>
 				</div>
 			</div>
@@ -232,14 +250,8 @@
 		
 		setTimeout(() =>
 		{
-			Page.Load.AOS.load();
-			Page.Load.AOS.show_section(0);
-			
-			setTimeout(() =>
-			{
-				show_character_text_2();
-			}, 5000);
-		}, 50);
+			show_character_text_2();
+		}, 5000);
 	}
 	
 	
@@ -264,13 +276,13 @@
 					
 					<br>
 					
-					<div data-aos="fade-up">
+					<div data-aos="fade-up" data-aos-delay="100">
 						<p class="body-text" style="color: rgb(191, 196, 255)">Two brothers at odds.</p>
 					</div>
 					
 					<br>
 					
-					<div data-aos="fade-up">
+					<div data-aos="fade-up" data-aos-delay="200">
 						<p class="body-text" style="color: rgb(248, 255, 191)">A creature barely passing as human.</p>
 					</div>
 				</div>
@@ -278,14 +290,8 @@
 			
 			setTimeout(() =>
 			{
-				Page.Load.AOS.load();
-				Page.Load.AOS.show_section(0);
-				
-				setTimeout(() =>
-				{
-					show_character_text_3();
-				}, 5000);
-			}, 50);
+				show_character_text_3();
+			}, 5000);
 		}, 900);
 	}
 	
@@ -316,19 +322,22 @@
 			
 			setTimeout(() =>
 			{
-				Page.Load.AOS.load();
-				Page.Load.AOS.show_section(0);
+				document.querySelector(".character-text-container").style.opacity = 0;
+				
+				let element = Site.add_style(`
+					#show-footer-menu-button
+					{
+						opacity: 0 !important;
+					}
+				`, false);
+				
+				element.id = "show-footer-menu-button-opacity-adjust";
 				
 				setTimeout(() =>
 				{
-					document.querySelector(".character-text-container").style.opacity = 0;
-					
-					setTimeout(() =>
-					{
-						Page.Navigation.redirect("/writing/caracore/caracore.html");
-					}, 300);
-				}, 3000);
-			}, 50);
+					Page.Navigation.redirect("/writing/caracore/caracore.html");
+				}, 300);
+			}, 3000);
 		}, 900);
 	}
 }()

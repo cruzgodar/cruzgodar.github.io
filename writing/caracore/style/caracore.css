@@ -3,6 +3,11 @@ html
 	transition: background-color .6s ease !important;
 }
 
+footer
+{
+	margin-top: 0;
+}
+
 .title-text
 {
 	position: relative;
