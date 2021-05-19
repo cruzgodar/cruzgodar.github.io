@@ -307,7 +307,7 @@
 					<div style="height: 30vh"></div>
 					
 					<div class="new-aos-section" data-aos="fade-up">
-						<p class="body-text" style="color: rgb(255, 255, 255)">An abandoned child, and a chasing vengance.</p>
+						<p class="body-text" style="color: rgb(255, 255, 255)">An abandoned child, and a chasing vengeance.</p>
 					</div>
 				</div>
 			`);
