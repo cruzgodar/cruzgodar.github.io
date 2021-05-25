@@ -41,6 +41,12 @@
         "non-webp": "notes/8/cover.jpg"
     },
     
+    "midterm-2-solutions":
+    {
+        "webp": "exams/2-solutions/cover.webp",
+        "non-webp": "exams/2-solutions/cover.jpg"
+    },
+    
     "midterm-2":
     {
         "webp": "exams/2/cover.webp",
