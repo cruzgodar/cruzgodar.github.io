@@ -7,6 +7,12 @@
     
     
     
+    "practice-final":
+    {
+        "webp": "extra/practice-final/cover.webp",
+        "non-webp": "extra/practice-final/cover.jpg"
+    },
+    
 	"week-10-notes":
     {
         "webp": "notes/10/cover.webp",
