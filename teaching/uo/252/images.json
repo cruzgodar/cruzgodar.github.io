@@ -7,6 +7,12 @@
     
     
     
+    "practice-final-solutions":
+    {
+        "webp": "extra/practice-final-solutions/cover.webp",
+        "non-webp": "extra/practice-final-solutions/cover.jpg"
+    },
+    
     "practice-final":
     {
         "webp": "extra/practice-final/cover.webp",
