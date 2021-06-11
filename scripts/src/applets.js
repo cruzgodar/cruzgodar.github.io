@@ -38,8 +38,6 @@ Page.Applets =
 
 		//True to fill the entire screen (which will strech the aspect ratio unless there's specific code to account for that), and false to letterbox.
 		true_fullscreen: false,
-		
-		used_fullscreen_for_first_time: false,
 
 		resize_callback: null,
 
@@ -48,94 +46,30 @@ Page.Applets =
 		fullscreen_old_scroll: 0,
 		fullscreen_locked_scroll: 0,
 		
+		old_footer_button_offset: 0,
+		
 		
 		
 		set_up_resizer: function()
 		{
-			for (let i = 0; i < this.to_resize.length; i++)
+			let element = document.createElement("input");
+			
+			element.type = "image";
+			element.id = "enter-fullscreen-button";
+			element.src = "/graphics/general-icons/enter-fullscreen.png";
+			element.alt = "Enter Fullscreen";
+			element.setAttribute("onclick", "Page.Applets.Canvases.switch_fullscreen()");
+			element.setAttribute("tabindex", "-1");
+			
+			document.querySelector("#output-canvas-container").appendChild(element);
+			
+			Page.Load.HoverEvents.add(element);
+			
+			element.addEventListener("touchend", () =>
 			{
-				this.to_resize[i].addEventListener("click", (e) =>
-				{
-					e.preventDefault();
-					
-					let time_diff = Date.now() - this.last_tap_time;
-					
-					if (time_diff < 300 && time_diff > 50)
-					{
-						this.switch_fullscreen();
-					}
-					
-					this.last_tap_time = Date.now();
-					
-					document.body.style.userSelect = "none";
-					document.body.style.WebkitUserSelect = "none";
-					
-					setTimeout(() =>
-					{
-						document.body.style.userSelect = "auto";
-						document.body.style.WebkitUserSelect = "auto";
-					}, 500);
-				});
-				
-				
-				
-				this.to_resize[i].addEventListener("touchstart", (e) =>
-				{
-					e.preventDefault();
-				});
-				
-				
-				
-				this.to_resize[i].addEventListener("touchend", (e) =>
-				{
-					e.preventDefault();
-					
-					let time_diff = Date.now() - this.last_tap_time;
-					
-					if (time_diff < 300 && time_diff > 50)
-					{
-						this.switch_fullscreen();
-					}
-					
-					this.last_tap_time = Date.now();
-					
-					document.body.style.userSelect = "none";
-					document.body.style.WebkitUserSelect = "none";
-					
-					setTimeout(() =>
-					{
-						document.body.style.userSelect = "auto";
-						document.body.style.WebkitUserSelect = "auto";
-					}, 500);
-				});
-			}
+				Page.Applets.Canvases.switch_fullscreen();
+			});
 			
-			
-			
-			if (this.used_fullscreen_for_first_time)
-			{
-				try
-				{
-					document.querySelector("#fullscreen-message").parentNode.previousElementSibling.remove();
-					document.querySelector("#fullscreen-message").parentNode.remove();
-					
-					Page.Load.AOS.on_resize();
-				}
-				
-				catch(ex) {}
-			}
-			
-			else if (Site.Interaction.currently_touch_device)
-			{
-				try
-				{
-					document.querySelector("#fullscreen-message p").textContent = "Double-tap canvas to enter fullscreen";
-					
-					Page.Load.AOS.on_resize();
-				}
-				
-				catch(ex) {}
-			}
 			
 			
 			window.addEventListener("resize", this.fullscreen_on_resize);
@@ -143,6 +77,10 @@ Page.Applets =
 			
 			window.addEventListener("scroll", this.fullscreen_on_scroll);
 			Page.temporary_handlers["scroll"].push(this.fullscreen_on_scroll);
+			
+			let bound_function = this.handle_keypress_event.bind(this);
+			document.documentElement.addEventListener("keydown", bound_function);
+			Page.temporary_handlers["keydown"].push(this.fullscreen_on_scroll);
 		},
 
 
@@ -168,6 +106,39 @@ Page.Applets =
 				
 				setTimeout(() =>
 				{
+					try {document.querySelector("#enter-fullscreen-button").remove();}
+					catch(ex) {}
+					
+					
+					
+					let element = document.createElement("input");
+					
+					element.type = "image";
+					element.id = "exit-fullscreen-button";
+					element.src = "/graphics/general-icons/exit-fullscreen.png";
+					element.alt = "Exit Fullscreen";
+					element.setAttribute("onclick", "Page.Applets.Canvases.switch_fullscreen()");
+					element.setAttribute("tabindex", "-1");
+					
+					document.body.appendChild(element);
+					
+					Page.Load.HoverEvents.add(element);
+					
+					element.addEventListener("touchend", () =>
+					{
+						Page.Applets.Canvases.switch_fullscreen();
+					});
+					
+					
+					
+					this.old_footer_button_offset = Page.Footer.Floating.current_offset;
+					
+					Page.Footer.Floating.current_offset = -43.75;
+					
+					document.querySelector("#show-footer-menu-button").style.bottom = "-43.75px";
+					
+					
+					
 					document.documentElement.style.overflowY = "hidden";
 					document.body.style.overflowY = "hidden";
 					
@@ -236,99 +207,6 @@ Page.Applets =
 						
 						this.fullscreen_on_resize();
 					}, 300);
-					
-					
-					
-					let elements = document.querySelectorAll(".applet-canvas-container, .letterboxed-canvas-background");
-					
-					for (let i = 0; i < elements.length; i++)
-					{
-						elements[i].addEventListener("click", (e) =>
-						{
-							if (!this.is_fullscreen)
-							{
-								return;
-							}
-							
-							e.preventDefault();
-							
-							let time_diff = Date.now() - this.last_tap_time;
-							
-							if (time_diff < 300 && time_diff > 50)
-							{
-								this.switch_fullscreen();
-							}
-							
-							this.last_tap_time = Date.now();
-							
-							document.body.style.userSelect = "none";
-							document.body.style.WebkitUserSelect = "none";
-							
-							setTimeout(() =>
-							{
-								document.body.style.userSelect = "auto";
-								document.body.style.WebkitUserSelect = "auto";
-							}, 500);
-						});
-						
-						
-						
-						elements[i].addEventListener("touchstart", (e) =>
-						{
-							if (!this.is_fullscreen)
-							{
-								return;
-							}
-							
-							e.preventDefault();
-						});
-						
-						
-						
-						elements[i].addEventListener("touchend", (e) =>
-						{
-							if (!this.is_fullscreen)
-							{
-								return;
-							}
-							
-							e.preventDefault();
-							
-							let time_diff = Date.now() - this.last_tap_time;
-							
-							if (time_diff < 300 && time_diff > 50)
-							{
-								this.switch_fullscreen();
-							}
-							
-							this.last_tap_time = Date.now();
-							
-							document.body.style.userSelect = "none";
-							document.body.style.WebkitUserSelect = "none";
-							
-							setTimeout(() =>
-							{
-								document.body.style.userSelect = "auto";
-								document.body.style.WebkitUserSelect = "auto";
-							}, 500);
-						});
-					}
-					
-					
-					
-					if (!this.used_fullscreen_for_first_time)
-					{
-						this.used_fullscreen_for_first_time = true;
-						
-						try
-						{
-							document.querySelector("#fullscreen-message").parentNode.remove();
-							
-							Page.Load.AOS.on_resize();
-						}
-						
-						catch(ex) {}
-					}
 				}, 300);
 			}
 			
@@ -359,6 +237,37 @@ Page.Applets =
 					
 					
 					window.scroll(0, this.fullscreen_old_scroll);
+					
+					
+					
+					try {document.querySelector("#exit-fullscreen-button").remove();}
+					catch(ex) {}
+					
+					
+					
+					let element = document.createElement("input");
+					
+					element.type = "image";
+					element.id = "enter-fullscreen-button";
+					element.src = "/graphics/general-icons/enter-fullscreen.png";
+					element.alt = "Enter Fullscreen";
+					element.setAttribute("onclick", "Page.Applets.Canvases.switch_fullscreen()");
+					element.setAttribute("tabindex", "-1");
+					
+					document.querySelector("#output-canvas-container").appendChild(element);
+					
+					Page.Load.HoverEvents.add(element);
+					
+					element.addEventListener("touchend", () =>
+					{
+						Page.Applets.Canvases.switch_fullscreen();
+					});
+					
+					
+					
+					Page.Footer.Floating.current_offset = this.old_footer_button_offset;
+					
+					document.querySelector("#show-footer-menu-button").style.bottom = this.old_footer_button_offset + "px";
 					
 					
 					
@@ -462,6 +371,16 @@ Page.Applets =
 			}
 			
 			window.scroll(0, this.fullscreen_locked_scroll);
+		},
+		
+		
+		
+		handle_keypress_event: function(e)
+		{
+			if (e.keyCode === 27 && this.is_fullscreen)
+			{
+				this.switch_fullscreen();
+			}
 		}
 	}
 };

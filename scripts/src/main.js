@@ -63,7 +63,9 @@ Page.temporary_handlers =
 	
 	"mousedown": [],
 	"mousemove": [],
-	"mouseup": []
+	"mouseup": [],
+	
+	"keydown": []
 }
 
 Page.temporary_intervals = [];

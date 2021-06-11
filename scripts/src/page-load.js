@@ -814,6 +814,9 @@ Page.Load =
 			.footer-image-link img,
 			#scroll-up-button,
 			
+			#enter-fullscreen-button,
+			#exit-fullscreen-button,
+			
 			.image-link img,
 			
 			#logo img,

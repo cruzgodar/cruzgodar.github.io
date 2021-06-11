@@ -446,12 +446,8 @@ Page.Components =
 	{
 		return `
 			<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay-increase="500">
-				<canvas id="output-canvas" class="no-floating-footer"></canvas>
-			</div>
-
-			<div class="center-content" data-aos="fade-in">
-				<div id="fullscreen-message">
-					<p class="body-text">Double-click canvas to enter fullscreen</p>
+				<div id="output-canvas-container">
+					<canvas id="output-canvas" class="no-floating-footer"></canvas>
 				</div>
 			</div>
 		`;
@@ -643,7 +639,7 @@ Page.Components =
 				
 				else if (words[0] === "!canvas")
 				{
-					lines[i] = this.get_canvas(words.slice(1));
+					lines[i] = this.get_canvas();
 				}
 				
 				

@@ -88,6 +88,8 @@
 	
 	let parameter_animation_frame = 0;
 	
+	let frame = 0;
+	
 	
 	
 	document.querySelector("#output-canvas").setAttribute("width", image_width);
@@ -594,33 +596,18 @@
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 		
 		
-		
-		//Uncomment to write to a sequence of frames for a Juliabulb animation.
 		/*
-		let link = document.createElement("a");
+		theta = 2 * Math.PI * (frame + 450) / 900;
 		
-		link.download = `${frame}.png`;
+		camera_pos = [2.17 * Math.cos(2 * Math.PI * frame / 900), 2.17 * Math.sin(2 * Math.PI * frame / 900), 1.8925];
 		
-		link.href = document.querySelector("#output-canvas").toDataURL();
+		calculate_vectors();
 		
-		link.click();
-		
-		link.remove();
-		
-		
-		
-		c = [.5 * (Math.cos(2 * Math.PI * frame / 6000) + Math.sin(5 * 2 * Math.PI * frame / 6000)), .5 * (Math.cos(2 * 2 * Math.PI * frame / 6000) + Math.sin(7 * 2 * Math.PI * frame / 6000)), .5 * (Math.cos(3 * 2 * Math.PI * frame / 6000) + Math.sin(11 * 2 * Math.PI * frame / 6000))];
-		
-		gl.uniform3fv(shader_program.c_uniform, c);
-		
-		julia_proportion = 1;
+		update_camera_parameters();
 		
 		frame++;
 		
-		setTimeout(function()
-		{
-			window.requestAnimationFrame(draw_frame);
-		}, 100);
+		window.requestAnimationFrame(draw_frame);
 		
 		return;
 		*/

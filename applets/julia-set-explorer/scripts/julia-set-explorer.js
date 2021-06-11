@@ -106,6 +106,7 @@
 	
 	
 	window.addEventListener("resize", fractals_resize);
+	Page.temporary_handlers["resize"].push(fractals_resize);
 	setTimeout(fractals_resize, 500);
 	
 	

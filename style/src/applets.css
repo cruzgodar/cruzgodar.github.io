@@ -49,30 +49,6 @@
 
 
 
-#fullscreen-message
-{
-	width: calc(50vmin + 8px);
-	height: 50px;
-	margin: 0 auto;
-	
-	display: flex;
-	
-	align-items: center;
-	justify-content: center;
-	
-	background-color: rgb(127, 127, 127);
-	border-radius: 15px;
-}
-
-#fullscreen-message .body-text
-{
-	color: rgb(255, 255, 255) !important;
-	width: 100%;
-	text-align: center;
-}
-
-
-
 .applet-progress-bar
 {
 	width: 50vmin !important;
@@ -91,4 +67,61 @@
 {
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
+}
+
+
+
+#output-canvas-container
+{
+	position: relative;
+}
+
+
+
+#enter-fullscreen-button, #exit-fullscreen-button
+{
+	width: 15px;
+	
+	background-color: rgb(255, 255, 255);
+	
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 25%;
+	padding: 5px;
+	
+	z-index: 100;
+	
+	transition: filter .15s ease-in-out;
+	filter: brightness(100%);
+	
+	cursor: pointer;
+	outline: none;
+}
+
+#enter-fullscreen-button.hover, #exit-fullscreen-button.hover
+{
+	filter: brightness(75%);
+}
+
+#enter-fullscreen-button:not(:hover):focus, #exit-fullscreen-button:not(:hover):focus
+{
+	filter: brightness(75%);
+	outline: none;
+}
+
+#enter-fullscreen-button
+{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	
+	z-index: 100;
+}
+
+#exit-fullscreen-button
+{
+	position: fixed;
+	right: 10px;
+	top: 10px;
+	
+	z-index: 100;
 }
