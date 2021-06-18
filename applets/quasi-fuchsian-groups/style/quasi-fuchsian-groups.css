@@ -1,3 +1,16 @@
+#output-canvas-container
+{
+	position: absolute;
+	width: calc(50vmin + 8px);
+}
+
+#output-canvas-container.fullscreen
+{
+	width: 100%;
+}
+
+
+
 #quasi-fuchsian-groups-plot
 {
 	position: absolute;

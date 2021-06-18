@@ -106,6 +106,10 @@ Page.Applets =
 				
 				setTimeout(() =>
 				{
+					document.querySelector("#output-canvas-container").classList.add("fullscreen");
+					
+					
+					
 					try {document.querySelector("#enter-fullscreen-button").remove();}
 					catch(ex) {}
 					
@@ -231,6 +235,10 @@ Page.Applets =
 				
 				setTimeout(() =>
 				{
+					document.querySelector("#output-canvas-container").classList.remove("fullscreen");
+					
+					
+					
 					document.documentElement.style.overflowY = "visible";
 					document.body.style.overflowY = "visible";
 					
