@@ -910,7 +910,7 @@
 		
 		gl = output_canvas.getContext("webgl");
 		
-		document.querySelector(".applet-canvas-container").appendChild(output_canvas);
+		document.querySelector("#output-canvas-container").appendChild(output_canvas);
 		
 		
 		
