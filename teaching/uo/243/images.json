@@ -217,6 +217,12 @@
     
     
     
+    "homework-1-solutions":
+    {
+        "webp": "homework/1-solutions/cover.webp",
+        "non-webp": "homework/1-solutions/cover.jpg"
+    },
+    
     "quiz-1":
     {
         "webp": "quizzes/1/cover.webp",
@@ -246,4 +252,4 @@
         "webp": "syllabus/cover.webp",
         "non-webp": "syllabus/cover.jpg"
     }
-	}
+}
