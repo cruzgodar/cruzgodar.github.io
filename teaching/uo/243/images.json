@@ -19,10 +19,10 @@
         "non-webp": "quizzes/4/cover.jpg"
     },
     
-    "midterm-1-solutions":
+    "midterm-solutions":
     {
-        "webp": "exams/1-solutions/cover.webp",
-        "non-webp": "exams/1-solutions/cover.jpg"
+        "webp": "exams/midterm-solutions/cover.webp",
+        "non-webp": "exams/midterm-solutions/cover.jpg"
     },
     
 	"homework-4":
