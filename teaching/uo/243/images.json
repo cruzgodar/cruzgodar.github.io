@@ -47,6 +47,12 @@
     
     
     
+    "homework-3-solutions":
+    {
+        "webp": "homework/3-solutions/cover.webp",
+        "non-webp": "homework/3-solutions/cover.jpg"
+    },
+    
     "quiz-3":
     {
         "webp": "quizzes/3/cover.webp",
