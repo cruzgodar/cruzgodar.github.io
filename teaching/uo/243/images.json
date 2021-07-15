@@ -33,6 +33,12 @@
     
     
     
+    "homework-4-solutions":
+    {
+        "webp": "homework/4-solutions/cover.webp",
+        "non-webp": "homework/4-solutions/cover.jpg"
+    },
+    
 	"week-4-notes":
     {
         "webp": "notes/4/cover.webp",
