@@ -3,8 +3,12 @@ let Wilson =
 	canvas: null,
 	
 	ctx: null,
+	gl: null,
 	
 	img_data: null,
+	
+	shader_program: null,
+	texture: null,
 	
 	canvas_width: null,
 	canvas_height: null,
@@ -23,6 +27,8 @@ let Wilson =
 		{
 			world_width, world_height: 
 			world_center_x, world_center_y:
+			
+			renderer: "cpu", "gpu", "hybrid"
 		}
 	*/
 	
@@ -30,12 +36,8 @@ let Wilson =
 	{
 		this.canvas = canvas;
 		
-		this.ctx = this.canvas.getContext("2d");
-		
 		this.canvas_width = parseInt(this.canvas.getAttribute("width"));
 		this.canvas_height = parseInt(this.canvas.getAttribute("height"));
-		
-		this.img_data = this.ctx.getImageData(0, 0, this.canvas_width, this.canvas_height);
 		
 		
 		
@@ -61,6 +63,20 @@ let Wilson =
 		if (typeof options.world_center_y !== "undefined")
 		{
 			this.world_center_y = options.world_center_y;
+		}
+		
+		
+		
+		if (typeof options.renderer === "undefined" || options.renderer === "cpu")
+		{
+			this.ctx = this.canvas.getContext("2d");
+			
+			this.img_data = this.ctx.getImageData(0, 0, this.canvas_width, this.canvas_height);
+		}
+		
+		else
+		{
+			this.init_webgl();
 		}
 	},
 	
@@ -104,8 +120,8 @@ let Wilson =
 		const width = this.canvas_width;
 		const height = this.canvas_height;
 		
-		let img_data = this.ctx.getImageData(0, 0, width, height);
-		let data = img_data.data;
+		this.img_data = this.ctx.getImageData(0, 0, width, height);
+		data = this.img_data.data;
 		
 		for (let i = 0; i < height; i++)
 		{
@@ -120,6 +136,139 @@ let Wilson =
 			}
 		}
 		
-		this.ctx.putImageData(img_data, 0, 0);
+		this.ctx.putImageData(this.img_data, 0, 0);
+	},
+	
+	
+	
+	//Gets WebGL started for the canvas.
+	init_webgl: function()
+	{
+		this.gl = this.canvas.getContext("webgl");
+		
+		const vertex_shader_source = `
+			attribute vec3 position;
+			varying vec2 uv;
+
+			void main(void)
+			{
+				gl_Position = vec4(position, 1.0);
+
+				//Interpolate quad coordinates in the fragment shader.
+				uv = position.xy;
+			}
+		`;
+		
+		const frag_shader_source = `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			uniform sampler2D u_texture;
+			
+			
+			
+			void main(void)
+			{
+				gl_FragColor = texture2D(u_texture, uv);
+			}
+		`;
+		
+		const quad = [-1, -1, 0,   -1, 1, 0,   1, -1, 0,   1, 1, 0];
+		
+		
+		
+		let vertex_shader = load_shader(this.gl, this.gl.VERTEX_SHADER, vertex_shader_source);
+		
+		let frag_shader = load_shader(this.gl, this.gl.FRAGMENT_SHADER, frag_shader_source);
+		
+		this.shader_program = this.gl.createProgram();
+		
+		this.gl.attachShader(this.shader_program, vertex_shader);
+		this.gl.attachShader(this.shader_program, frag_shader);
+		this.gl.linkProgram(this.shader_program);
+		
+		if (!this.gl.getProgramParameter(this.shader_program, this.gl.LINK_STATUS))
+		{
+			console.log(`[Wilson] Couldn't link shader program: ${this.gl.getShaderInfoLog(shader)}`);
+			gl.deleteProgram(this.shader_program);
+		}
+		
+		this.gl.useProgram(this.shader_program);
+		
+		let position_buffer = this.gl.createBuffer();
+		
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, position_buffer);
+		
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(quad), this.gl.STATIC_DRAW);
+		
+		this.shader_program.position_attribute = this.gl.getAttribLocation(this.shader_program, "position");
+		
+		this.gl.enableVertexAttribArray(this.shader_program.position_attribute);
+		
+		this.gl.vertexAttribPointer(this.shader_program.position_attribute, 3, this.gl.FLOAT, false, 0, 0);
+		
+		this.gl.viewport(0, 0, this.canvas_width, this.canvas_height);
+		
+		
+		
+		//Turn off mipmapping, since in general we won't have power of two canvases.
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+		
+		this.gl.disable(this.gl.DEPTH_TEST);
+		
+		
+		
+		this.texture = this.gl.createTexture();
+		this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+		
+		const level = 0;
+		const internal_format = this.gl.RGBA;
+		const width = 1;
+		const height = 1;
+		const border = 0;
+		const src_format = this.gl.RGBA;
+		const src_type = this.gl.UNSIGNED_BYTE;
+		const image_data = new Uint8Array([255, 0, 255, 255]);
+		this.gl.texImage2D(this.gl.TEXTURE_2D, level, internal_format, width, height, border, src_format, src_type, image_data);
+		
+		
+		
+		this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+		let tex_loc = this.gl.getUniformLocation(this.shader_program, "u_texture");
+		
+		this.gl.uniform1i(this.tex_loc, 1);
+		
+		
+		
+		this.gl.drawArrays(this.gl.TRIANGLE_FAN, 0, 4);
+		
+		
+		
+		function load_shader(gl, type, source)
+		{
+			let shader = gl.createShader(type);
+			
+			gl.shaderSource(shader, source);
+			
+			gl.compileShader(shader);
+			
+			if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+			{
+				console.log(`[Wilson] Couldn't load shader: ${gl.getProgramInfoLog(shaderProgram)}`);
+				gl.deleteShader(shader);
+			}
+			
+			return shader;
+		}
+	},
+	
+	
+	
+	draw_frame_hybrid: function(image)
+	{
+		
 	}
 };
