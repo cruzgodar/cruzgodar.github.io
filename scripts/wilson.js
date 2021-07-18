@@ -170,7 +170,7 @@ let Wilson =
 			
 			void main(void)
 			{
-				gl_FragColor = texture2D(u_texture, uv);
+				gl_FragColor = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
 			}
 		`;
 		
@@ -212,26 +212,20 @@ let Wilson =
 		
 		
 		
-		//Turn off mipmapping, since in general we won't have power of two canvases.
-		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
-		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
-		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
-		
-		this.gl.disable(this.gl.DEPTH_TEST);
-		
-		
+		this.gl.pixelStorei(this.gl.UNPACK_ALIGNMENT, 1);
+		this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, 1);
 		
 		this.texture = this.gl.createTexture();
 		this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
 		
 		const level = 0;
-		const internal_format = this.gl.RGBA;
-		const width = 1;
-		const height = 1;
+		const internal_format = this.gl.RGB;
+		const width = 3;
+		const height = 3;
 		const border = 0;
-		const src_format = this.gl.RGBA;
+		const src_format = this.gl.RGB;
 		const src_type = this.gl.UNSIGNED_BYTE;
-		const image_data = new Uint8Array([255, 0, 255, 255]);
+		const image_data = Uint8Array.from([255, 0, 0, 0, 255, 0, 0, 0, 255, 255, 255, 0, 255, 0, 255, 0, 255, 255, 255, 255, 255, 0, 0, 0, 127, 127, 127]);
 		this.gl.texImage2D(this.gl.TEXTURE_2D, level, internal_format, width, height, border, src_format, src_type, image_data);
 		
 		
@@ -243,7 +237,17 @@ let Wilson =
 		
 		
 		
-		this.gl.drawArrays(this.gl.TRIANGLE_FAN, 0, 4);
+		//Turn off mipmapping, since in general we won't have power of two canvases.
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
+		
+		this.gl.disable(this.gl.DEPTH_TEST);
+		
+		
+		
+		this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
 		
 		
 		
