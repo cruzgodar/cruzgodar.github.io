@@ -72,11 +72,15 @@ let Wilson =
 			this.ctx = this.canvas.getContext("2d");
 			
 			this.img_data = this.ctx.getImageData(0, 0, this.canvas_width, this.canvas_height);
+			
+			this.draw_frame = this.draw_frame_cpu;
 		}
 		
 		else
 		{
 			this.init_webgl();
+			
+			this.draw_frame = this.draw_frame_hybrid;
 		}
 	},
 	
@@ -114,29 +118,23 @@ let Wilson =
 	
 	draw_frame: null,
 	
-	//Draws an entire frame to a cpu canvas by directly modifying the canvas data. Tends to be significantly faster than looping fillRect, **when the whole canvas needs to be updated**. If that's not the case, sticking to fillRect is generally a better idea. Here, image is a width*height array, where each element is a length-3 array of the form [r, g, b].
+	//Draws an entire frame to a cpu canvas by directly modifying the canvas data. Tends to be significantly faster than looping fillRect, **when the whole canvas needs to be updated**. If that's not the case, sticking to fillRect is generally a better idea. Here, image is a width * height * 4 Uint8ClampedArray, with each sequence of 4 elements corresponding to rgba values.
 	draw_frame_cpu: function(image)
 	{
 		const width = this.canvas_width;
 		const height = this.canvas_height;
 		
-		this.img_data = this.ctx.getImageData(0, 0, width, height);
-		data = this.img_data.data;
+		this.ctx.putImageData(new ImageData(image, width, height), 0, 0);
+	},
+	
+	
+	
+	//Draws an entire frame to the canvas by converting the frame to a WebGL texture and displaying that. In some cases, this can slightly increase drawing performance, and some browsers can also handle larger WebGL canvases than cpu ones (e.g. iOS Safari). For these reasons, it's recommended to default to this rendering method unless there is a specific reason to avoid WebGL.
+	draw_frame_hybrid: function(image)
+	{
+		this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.canvas_width, this.canvas_height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image);
 		
-		for (let i = 0; i < height; i++)
-		{
-			for (let j = 0; j < width; j++)
-			{
-				//The index in the array of rgba values
-				let index = (4 * i * width) + (4 * j);
-				
-				data[index] = image[i][j][0];
-				data[index + 1] = image[i][j][1];
-				data[index + 2] = image[i][j][2];
-			}
-		}
-		
-		this.ctx.putImageData(this.img_data, 0, 0);
+		this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
 	},
 	
 	
@@ -218,16 +216,6 @@ let Wilson =
 		this.texture = this.gl.createTexture();
 		this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
 		
-		const level = 0;
-		const internal_format = this.gl.RGB;
-		const width = 3;
-		const height = 3;
-		const border = 0;
-		const src_format = this.gl.RGB;
-		const src_type = this.gl.UNSIGNED_BYTE;
-		const image_data = Uint8Array.from([255, 0, 0, 0, 255, 0, 0, 0, 255, 255, 255, 0, 255, 0, 255, 0, 255, 255, 255, 255, 255, 0, 0, 0, 127, 127, 127]);
-		this.gl.texImage2D(this.gl.TEXTURE_2D, level, internal_format, width, height, border, src_format, src_type, image_data);
-		
 		
 		
 		this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
@@ -247,10 +235,6 @@ let Wilson =
 		
 		
 		
-		this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-		
-		
-		
 		function load_shader(gl, type, source)
 		{
 			let shader = gl.createShader(type);
@@ -267,12 +251,5 @@ let Wilson =
 			
 			return shader;
 		}
-	},
-	
-	
-	
-	draw_frame_hybrid: function(image)
-	{
-		
 	}
 };
