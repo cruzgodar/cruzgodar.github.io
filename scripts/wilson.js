@@ -20,8 +20,6 @@ class Wilson
 	output_canvas_container = null;
 	use_draggables = false;
 	
-	paddings = [];
-	
 	
 	
 	/*
@@ -257,31 +255,20 @@ class Wilson
 			
 			
 			
-			let computed_style = window.getComputedStyle(this.output_canvas_container);
+			let computed_style = window.getComputedStyle(this.canvas);
 			
-			let width = parseInt(computed_style.getPropertyValue("width"));
-			let height = parseInt(computed_style.getPropertyValue("height"));
+			let width = this.parent.clientWidth - parseFloat(computed_style.paddingLeft) - parseFloat(computed_style.paddingRight);
+			let height = this.parent.clientHeight - parseFloat(computed_style.paddingTop) - parseFloat(computed_style.paddingBottom);
 			
-			let computed_style_2 = window.getComputedStyle(this.canvas);
+			this.draggables.container.style.width = (width + 2 * this.draggables.draggable_radius) + "px";
+			this.draggables.container.style.height = (height + 2 * this.draggables.draggable_radius) + "px";
 			
-			this.paddings = [parseInt(computed_style_2.getPropertyValue("padding-left")), parseInt(computed_style_2.getPropertyValue("padding-right")), parseInt(computed_style_2.getPropertyValue("padding-top")), parseInt(computed_style_2.getPropertyValue("padding-bottom"))];
+			this.draggables.container_width = width + 2 * this.draggables.draggable_radius;
+			this.draggables.container_height = height + 2 * this.draggables.draggable_radius;
 			
-			if (width > height)
-			{
-				this.draggables.container.style.width = (height + this.paddings[0] + this.paddings[1]) + "px";
-				this.draggables.container.style.height = (height + this.paddings[2] + this.paddings[3]) + "px";
-				
-				//Nightmare fuel.
-				this.draggables.container.style.marginLeft = (height - width + this.paddings[0]) + "px";
-			}
 			
-			else
-			{
-				this.draggables.container.style.width = (width + this.paddings[0] + this.paddings[1]) + "px";
-				this.draggables.container.style.height = (width + this.paddings[2] + this.paddings[3]) + "px";
-				
-				this.draggables.container.style.marginLeft = this.paddings[0] + "px";
-			}
+			
+			this.container.style.marginTop = (parseFloat(computed_style.borderTopWidth) + parseFloat(computed_style.paddingTop) - this.draggable_radius) + "px";
 		}
 	}
 	
@@ -576,7 +563,7 @@ class Wilson
 		
 		num_draggables: 0,
 		
-		draggable_radius: 17.5,
+		draggable_radius: 14.5,
 		
 		active_draggable: -1,
 		
@@ -944,36 +931,20 @@ class Wilson
 		
 		on_resize()
 		{
-			let computed_style = window.getComputedStyle(this.parent.output_canvas_container);
+			let computed_style = window.getComputedStyle(this.parent.canvas);
 			
-			let width = parseInt(computed_style.getPropertyValue("width"));
-			let height = parseInt(computed_style.getPropertyValue("height"));
+			let width = this.parent.canvas.clientWidth - parseFloat(computed_style.paddingLeft) - parseFloat(computed_style.paddingRight);
+			let height = this.parent.canvas.clientHeight - parseFloat(computed_style.paddingTop) - parseFloat(computed_style.paddingBottom);
 			
-			let computed_style_2 = window.getComputedStyle(this.parent.canvas);
+			this.container.style.width = (width + 2 * this.draggable_radius) + "px";
+			this.container.style.height = (height + 2 * this.draggable_radius) + "px";
 			
-			this.parent.paddings = [parseInt(computed_style_2.getPropertyValue("padding-left")), parseInt(computed_style_2.getPropertyValue("padding-right")), parseInt(computed_style_2.getPropertyValue("padding-top")), parseInt(computed_style_2.getPropertyValue("padding-bottom"))];
-			
-			if (width > height)
-			{
-				this.container.style.width = (height + this.parent.paddings[0] + this.parent.paddings[1]) + "px";
-				this.container.style.height = (height + this.parent.paddings[2] + this.parent.paddings[3]) + "px";
-				
-				//Nightmare fuel.
-				this.container.style.marginLeft = (height - width + this.parent.paddings[0]) + "px";
-			}
-			
-			else
-			{
-				this.container.style.width = (width + this.parent.paddings[0] + this.parent.paddings[1]) + "px";
-				this.container.style.height = (width + this.parent.paddings[2] + this.parent.paddings[3]) + "px";
-				
-				this.container.style.marginLeft = this.parent.paddings[0] + "px";
-			}
+			this.container_width = width + 2 * this.draggable_radius;
+			this.container_height = height + 2 * this.draggable_radius;
 			
 			
 			
-			this.container_width = this.container.offsetWidth;
-			this.container_height = this.container.offsetHeight;
+			this.container.style.marginTop = (parseFloat(computed_style.borderTopWidth) + parseFloat(computed_style.paddingTop) - this.draggable_radius) + "px";
 			
 			
 			
@@ -985,13 +956,13 @@ class Wilson
 				if (this.parent.world_width >= this.parent.world_height)
 				{
 					row = Math.floor(this.container_height * (1 - ((this.world_coordinates[i][1] - this.parent.center_y) / this.parent.world_size + .5)));
-					col = Math.floor(this.container_width * ((this.world_coordinates[i][0] - this.parent.center_x) / (this.parent.world_width / this.parent.world_height) / this.parent.world_size + .5)) + this.parent.paddings[0];
+					col = Math.floor(this.container_width * ((this.world_coordinates[i][0] - this.parent.center_x) / (this.parent.world_width / this.parent.world_height) / this.parent.world_size + .5));
 				}
 				
 				else
 				{
 					row = Math.floor(this.container_height * (1 - ((this.world_coordinates[i][1] - this.parent.center_y) * (this.parent.world_width / this.parent.world_height) / this.parent.world_size + .5)));
-					col = Math.floor(this.parent.world_width * ((this.world_coordinates[i][0] - this.parent.center_x) / this.parent.world_size + .5)) + this.parent.paddings[0];
+					col = Math.floor(this.parent.world_width * ((this.world_coordinates[i][0] - this.parent.center_x) / this.parent.world_size + .5));
 				}
 				
 				this.draggables[i].style.transform = `translate3d(${col - this.draggable_radius}px, ${row - this.draggable_radius}px, 0)`;
