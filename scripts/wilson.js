@@ -20,6 +20,8 @@ class Wilson
 	output_canvas_container = null;
 	use_draggables = false;
 	
+	paddings = [];
+	
 	
 	
 	/*
@@ -260,19 +262,25 @@ class Wilson
 			let width = parseInt(computed_style.getPropertyValue("width"));
 			let height = parseInt(computed_style.getPropertyValue("height"));
 			
+			let computed_style_2 = window.getComputedStyle(this.canvas);
+			
+			this.paddings = [parseInt(computed_style_2.getPropertyValue("padding-left")), parseInt(computed_style_2.getPropertyValue("padding-right")), parseInt(computed_style_2.getPropertyValue("padding-top")), parseInt(computed_style_2.getPropertyValue("padding-bottom"))];
+			
 			if (width > height)
 			{
-				this.draggables.container.style.width = computed_style.getPropertyValue("height");
-				this.draggables.container.style.height = computed_style.getPropertyValue("height");
+				this.draggables.container.style.width = (height + this.paddings[0] + this.paddings[1]) + "px";
+				this.draggables.container.style.height = (height + this.paddings[2] + this.paddings[3]) + "px";
 				
 				//Nightmare fuel.
-				this.draggables.container.style.marginLeft = (height - width) + "px";
+				this.draggables.container.style.marginLeft = (height - width + this.paddings[0]) + "px";
 			}
 			
 			else
 			{
-				this.draggables.container.style.width = computed_style.getPropertyValue("width");
-				this.draggables.container.style.height = computed_style.getPropertyValue("width");
+				this.draggables.container.style.width = (width + this.paddings[0] + this.paddings[1]) + "px";
+				this.draggables.container.style.height = (width + this.paddings[2] + this.paddings[3]) + "px";
+				
+				this.draggables.container.style.marginLeft = this.paddings[0] + "px";
 			}
 		}
 	}
@@ -941,19 +949,25 @@ class Wilson
 			let width = parseInt(computed_style.getPropertyValue("width"));
 			let height = parseInt(computed_style.getPropertyValue("height"));
 			
+			let computed_style_2 = window.getComputedStyle(this.parent.canvas);
+			
+			this.parent.paddings = [parseInt(computed_style_2.getPropertyValue("padding-left")), parseInt(computed_style_2.getPropertyValue("padding-right")), parseInt(computed_style_2.getPropertyValue("padding-top")), parseInt(computed_style_2.getPropertyValue("padding-bottom"))];
+			
 			if (width > height)
 			{
-				this.container.style.width = computed_style.getPropertyValue("height");
-				this.container.style.height = computed_style.getPropertyValue("height");
+				this.container.style.width = (height + this.parent.paddings[0] + this.parent.paddings[1]) + "px";
+				this.container.style.height = (height + this.parent.paddings[2] + this.parent.paddings[3]) + "px";
 				
 				//Nightmare fuel.
-				this.container.style.marginLeft = (height - width) + "px";
+				this.container.style.marginLeft = (height - width + this.parent.paddings[0]) + "px";
 			}
 			
 			else
 			{
-				this.container.style.width = computed_style.getPropertyValue("width");
-				this.container.style.height = computed_style.getPropertyValue("width");
+				this.container.style.width = (width + this.parent.paddings[0] + this.parent.paddings[1]) + "px";
+				this.container.style.height = (width + this.parent.paddings[2] + this.parent.paddings[3]) + "px";
+				
+				this.container.style.marginLeft = this.parent.paddings[0] + "px";
 			}
 			
 			
@@ -971,13 +985,13 @@ class Wilson
 				if (this.parent.world_width >= this.parent.world_height)
 				{
 					row = Math.floor(this.container_height * (1 - ((this.world_coordinates[i][1] - this.parent.center_y) / this.parent.world_size + .5)));
-					col = Math.floor(this.container_width * ((this.world_coordinates[i][0] - this.parent.center_x) / (this.parent.world_width / this.parent.world_height) / this.parent.world_size + .5));
+					col = Math.floor(this.container_width * ((this.world_coordinates[i][0] - this.parent.center_x) / (this.parent.world_width / this.parent.world_height) / this.parent.world_size + .5)) + this.parent.paddings[0];
 				}
 				
 				else
 				{
 					row = Math.floor(this.container_height * (1 - ((this.world_coordinates[i][1] - this.parent.center_y) * (this.parent.world_width / this.parent.world_height) / this.parent.world_size + .5)));
-					col = Math.floor(this.parent.world_width * ((this.world_coordinates[i][0] - this.parent.center_x) / this.parent.world_size + .5));
+					col = Math.floor(this.parent.world_width * ((this.world_coordinates[i][0] - this.parent.center_x) / this.parent.world_size + .5)) + this.parent.paddings[0];
 				}
 				
 				this.draggables[i].style.transform = `translate3d(${col - this.draggable_radius}px, ${row - this.draggable_radius}px, 0)`;
