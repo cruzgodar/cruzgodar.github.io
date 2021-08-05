@@ -11,40 +11,19 @@
 	transition: opacity .3s ease-in-out, border-color .3s ease-in-out;
 }
 
-.true-fullscreen-canvas
-{
-	width: 100vw !important;
-	height: calc(100vh + 4px) !important;
-	
-	border: none !important;
-	border-radius: 0 !important;
-	padding: 0 !important;
-}
 
-.letterboxed-fullscreen-canvas
-{
-	width: 100vmin !important;
-	height: calc(100vmin + 4px) !important;
-	
-	border: none !important;
-	border-radius: 0 !important;
-	padding: 0 !important;
-}
 
-.letterboxed-canvas-background
+.draggables-container
 {
-	width: 100vw;
-	height: calc((100vh - 100vmin) / 2 + 4px);
+	width: 50vmin;
+	height: 50vmin;
+	margin: 0 auto;
 	
-	background-color: rgb(0, 0, 0);
-}
-
-.black-background
-{
-	width: 100vw !important;
-	height: calc(100vh + 4px) !important;
+	border: 2px solid rgba(0, 0, 0, 0);
+	border-radius: 15px;
+	padding: 2px;
 	
-	background-color: rgb(0, 0, 0) !important;
+	transition: opacity .3s ease-in-out;
 }
 
 
@@ -53,75 +32,18 @@
 {
 	width: 50vmin !important;
 	transition: opacity .3s ease-in-out, margin-top .3s ease-in-out, margin-bottom .3s ease-in-out;
-}
+}			
 
 
 
-.applet-canvas-container
+.wilson-applet-canvas-container
 {
 	margin-top: 10vh !important;
 	margin-bottom: 5vh !important;
 }
 
-.applet-canvas-container.black-background
+.wilson-applet-canvas-container.black-background
 {
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
-}
-
-
-
-#output-canvas-container
-{
-	position: relative;
-}
-
-
-
-#enter-fullscreen-button, #exit-fullscreen-button
-{
-	width: 15px;
-	
-	background-color: rgb(255, 255, 255);
-	
-	border: 2px solid rgb(127, 127, 127);
-	border-radius: 25%;
-	padding: 5px;
-	
-	z-index: 100;
-	
-	transition: filter .15s ease-in-out;
-	filter: brightness(100%);
-	
-	cursor: pointer;
-	outline: none;
-}
-
-#enter-fullscreen-button.hover, #exit-fullscreen-button.hover
-{
-	filter: brightness(75%);
-}
-
-#enter-fullscreen-button:not(:hover):focus, #exit-fullscreen-button:not(:hover):focus
-{
-	filter: brightness(75%);
-	outline: none;
-}
-
-#enter-fullscreen-button
-{
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	
-	z-index: 100;
-}
-
-#exit-fullscreen-button
-{
-	position: fixed;
-	right: 10px;
-	top: 10px;
-	
-	z-index: 100;
 }

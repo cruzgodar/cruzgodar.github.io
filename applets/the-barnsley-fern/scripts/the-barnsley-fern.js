@@ -4,15 +4,26 @@
 	
 	
 	
-	let grid_size = null;
-	
-	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
+	let num_iterations = 10000000;
+	let grid_size = 1000;
 	
 	let web_worker = null;
 	
 	let fern_graph = [];
 	
 	
+	
+	document.querySelector("#output-canvas").setAttribute("width", grid_size);
+	document.querySelector("#output-canvas").setAttribute("height", grid_size);
+	
+	
+	
+	let options =
+	{
+		renderer: "hybrid"
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 	
 	
 	
@@ -26,7 +37,10 @@
 		}
 	});
 	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
+	document.querySelector("#download-button").addEventListener("click", function(e)
+	{
+		wilson.download_frame("the-barnsley-fern.png");
+	});
 	
 	
 	
@@ -37,27 +51,15 @@
 	
 	
 	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
-	
-	Page.Applets.Canvases.true_fullscreen = false;
-	
-	Page.Applets.Canvases.set_up_resizer();
-	
-	
-	
 	function request_fern_graph()
 	{
-		let num_iterations = 1000 * parseInt(document.querySelector("#num-iterations-input").value || 10000);
+		num_iterations = 1000 * parseInt(document.querySelector("#num-iterations-input").value || 10000);
 		
 		grid_size = Math.floor(Math.sqrt(num_iterations / 10));
 		
 		
 		
-		document.querySelector("#output-canvas").setAttribute("width", grid_size);
-		document.querySelector("#output-canvas").setAttribute("height", grid_size);
-		
-		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, grid_size, grid_size);
+		wilson.change_canvas_size(grid_size, grid_size);
 		
 		
 		
@@ -80,46 +82,12 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			fern_graph = e.data[0];
-			
-			let img_data = ctx.getImageData(0, 0, grid_size, grid_size);
-			let data = img_data.data;
-			
-			for (let i = 0; i < grid_size; i++)
-			{
-				for (let j = 0; j < grid_size; j++)
-				{
-					//The index in the array of rgba values
-					let index = (4 * i * grid_size) + (4 * j);
-					
-					data[index] = 0;
-					data[index + 1] = e.data[0][i][j];
-					data[index + 2] = 0;
-					data[index + 3] = 255; //No transparency.
-				}
-			}
-			
-			ctx.putImageData(img_data, 0, 0);
+			wilson.render.draw_frame(e.data[0]);
 		}
 		
 		
 		
 		web_worker.postMessage([grid_size, num_iterations]);
-	}
-	
-	
-	
-	function prepare_download()
-	{
-		let link = document.createElement("a");
-		
-		link.download = "the-barnsley-fern.png";
-		
-		link.href = document.querySelector("#output-canvas").toDataURL();
-		
-		link.click();
-		
-		link.remove();
 	}
 	
 	

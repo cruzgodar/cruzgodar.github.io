@@ -1,0 +1,52 @@
+/* Tomorrow Night Eighties Theme */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+/* https://jmblog.github.io/color-themes-for-google-code-highlightjs */
+.hljs-comment{
+  color: #999999;
+}
+.hljs-punctuation,.hljs-tag{
+  color: #66cccc;
+}
+.hljs-tag .hljs-attr,.hljs-tag .hljs-name{
+  color: #66cccc;
+}
+.hljs-attribute,.hljs-doctag,.hljs-keyword,.hljs-meta .hljs-keyword,.hljs-name,.hljs-selector-tag{
+  color: #f2777a;
+}
+.hljs-deletion,.hljs-number,.hljs-quote,.hljs-selector-class,.hljs-selector-id,.hljs-template-tag,.hljs-type{
+  color: #66cccc;
+}
+.hljs-string
+{
+	color: #99cc99;
+}
+.hljs-section,.hljs-title{
+  color: #ffcc66;
+}
+.hljs-link,.hljs-operator,.hljs-regexp,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-symbol,.hljs-template-variable,.hljs-variable{
+  color: #cc99cc;
+}
+.hljs-literal{
+  color: #66cccc;
+}
+.hljs-addition,.hljs-built_in,.hljs-bullet,.hljs-code{
+  color: #6699cc;
+}
+.hljs-meta{
+  color: #66cccc;
+}
+.hljs-meta .hljs-string{
+  color: #99cc99;
+}
+
+pre code {
+  display: block;
+  overflow-x:auto;
+  background: rgb(44, 44, 44);
+  color: #cccccc;
+  font-family: Menlo, Monaco, Consolas, monospace;
+  line-height: 1.5;
+  padding: 10px;
+  border: 2px solid rgb(127, 127, 127);
+  border-radius: 15px;
+}

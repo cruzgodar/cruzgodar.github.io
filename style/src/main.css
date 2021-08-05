@@ -87,6 +87,16 @@ dfn
 	font-style: normal;
 }
 
+pre code
+{
+	position: relative;
+	width: 70vw;
+	margin: 0 auto;
+	tab-size: 4;
+}
+
+
+
 img
 {
 	transform: translateZ(0);
@@ -273,7 +283,7 @@ img
 /* Compact layout: reduce margins. */
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
-	.heading-text, .section-text, .body-text, .date-text, .line-break
+	.heading-text, .section-text, .body-text, .date-text, .line-break, pre code
 	{
 		width: 90vw;
 	}

@@ -4,13 +4,10 @@
 	
 	
 	
-	let gl = document.querySelector("#output-canvas").getContext("webgl");
+	let wilson = null;
 	
-	
-	let julia_sets_per_side = 100;
-	let julia_set_size = 20;
 	let image_size = 2000;
-	let num_iterations = 50;
+	const num_iterations = 50;
 	
 	
 	
@@ -19,51 +16,10 @@
 	
 	
 	
-	let elements = document.querySelectorAll("#num-julias-input, #julia-size-input");
-	
-	for (let i = 0; i < elements.length; i++)
+	document.querySelector("#download-button").addEventListener("click", function(e)
 	{
-		elements[i].addEventListener("keydown", function(e)
-		{
-			if (e.keyCode === 13)
-			{
-				draw_frame();
-			}
-		});
-	}
-	
-	
-	
-	document.querySelector("#generate-button").addEventListener("click", draw_frame);
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
-	
-	
-	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
-	
-	Page.Applets.Canvases.true_fullscreen = false;
-	
-	Page.Applets.Canvases.set_up_resizer();
-	
-	
-	
-	setTimeout(setup_webgl, 500);
-	
-	
-	
-	const vertex_shader_source = `
-		attribute vec3 position;
-		varying vec2 uv;
-
-		void main(void)
-		{
-			gl_Position = vec4(position, 1.0);
-
-			//Interpolate quad coordinates in the fragment shader.
-			uv = position.xy;
-		}
-	`;
-	
+		wilson.download_frame("a-julia-set-mosaic.png");
+	});
 	
 	
 	const frag_shader_source = `
@@ -116,119 +72,73 @@
 	
 	
 	
-	let shader_program = null;
-	
-	function setup_webgl()
+	setTimeout(() =>
 	{
-		let vertex_shader = load_shader(gl, gl.VERTEX_SHADER, vertex_shader_source);
-		
-		let frag_shader = load_shader(gl, gl.FRAGMENT_SHADER, frag_shader_source);
-		
-		shader_program = gl.createProgram();
-		
-		gl.attachShader(shader_program, vertex_shader);
-		gl.attachShader(shader_program, frag_shader);
-		gl.linkProgram(shader_program);
-		
-		if (!gl.getProgramParameter(shader_program, gl.LINK_STATUS))
+		let options =
 		{
-			console.log(`Couldn't link shader program: ${gl.getShaderInfoLog(shader)}`);
-			gl.deleteProgram(shader_program);
+			renderer: "gpu",
+			
+			shader: frag_shader_source,
+			
+			
+			
+			use_fullscreen: false,
+			
+			canvases_to_resize: [document.querySelector("#output-canvas")],
+			
+			use_fullscreen_button: true,
+			
+			enter_fullscreen_button_image_path: "/graphics/general-icons/enter-fullscreen.png",
+			exit_fullscreen_button_image_path: "/graphics/general-icons/exit-fullscreen.png"
+		};
+		
+		wilson = new Wilson(document.querySelector("#output-canvas"), options);
+		
+		
+		
+		wilson.render.init_uniforms(["julia_sets_per_side", "julia_set_size", "image_size", "num_iterations"]);
+		
+		
+		
+		let elements = document.querySelectorAll("#num-julias-input, #julia-size-input");
+		
+		for (let i = 0; i < elements.length; i++)
+		{
+			elements[i].addEventListener("keydown", function(e)
+			{
+				if (e.keyCode === 13)
+				{
+					draw_frame();
+				}
+			});
 		}
 		
 		
 		
-		gl.useProgram(shader_program);
-		
-		
-		
-		let quad = [-1, -1, 0,   -1, 1, 0,   1, -1, 0,   1, 1, 0];
-		
-		
-		
-		let position_buffer = gl.createBuffer();
-		
-		gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
-		
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(quad), gl.STATIC_DRAW);
-		
-		shader_program.position_attribute = gl.getAttribLocation(shader_program, "position");
-		
-		gl.enableVertexAttribArray(shader_program.position_attribute);
-		
-		gl.vertexAttribPointer(shader_program.position_attribute, 3, gl.FLOAT, false, 0, 0);
-		
-		
-		
-		shader_program.julia_sets_per_side_uniform = gl.getUniformLocation(shader_program, "julia_sets_per_side");
-		shader_program.julia_set_size_uniform = gl.getUniformLocation(shader_program, "julia_set_size");
-		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
-		shader_program.num_iterations_uniform = gl.getUniformLocation(shader_program, "num_iterations");
-		
-		
-		
-		gl.viewport(0, 0, image_size, image_size);
-	}
-	
-	
-	
-	function load_shader(gl, type, source)
-	{
-		let shader = gl.createShader(type);
-		
-		gl.shaderSource(shader, source);
-		
-		gl.compileShader(shader);
-		
-		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-		{
-			console.log(`Couldn't load shader: ${gl.getProgramInfoLog(shaderProgram)}`);
-			gl.deleteShader(shader);
-		}
-		
-		return shader;
-	}
+		document.querySelector("#generate-button").addEventListener("click", draw_frame);
+	}, 500);
 	
 	
 	
 	function draw_frame()
 	{	
-		julia_sets_per_side = parseInt(document.querySelector("#num-julias-input").value || 100);
-		julia_set_size = parseInt(document.querySelector("#julia-size-input").value || 20);
+		let julia_sets_per_side = parseInt(document.querySelector("#num-julias-input").value || 100);
+		let julia_set_size = parseInt(document.querySelector("#julia-size-input").value || 20);
 		image_size = julia_sets_per_side * julia_set_size;
 		
-		document.querySelector("#output-canvas").setAttribute("width", image_size);
-		document.querySelector("#output-canvas").setAttribute("height", image_size);
-		
-		gl.viewport(0, 0, image_size, image_size);
 		
 		
-		
-		gl.uniform1f(shader_program.julia_sets_per_side_uniform, julia_sets_per_side);
-		gl.uniform1f(shader_program.julia_set_size_uniform, julia_set_size);
-		gl.uniform1f(shader_program.image_size_uniform, julia_sets_per_side * julia_set_size);
-		gl.uniform1i(shader_program.num_iterations_uniform, num_iterations);
+		wilson.change_canvas_size(image_size, image_size);
 		
 		
 		
-		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-	}
-	
-	
-	
-	function prepare_download()
-	{
-		//Go figure, man.
-		draw_frame();
+		wilson.gl.uniform1f(wilson.uniforms["julia_sets_per_side"], julia_sets_per_side);
+		wilson.gl.uniform1f(wilson.uniforms["julia_set_size"], julia_set_size);
+		wilson.gl.uniform1f(wilson.uniforms["image_size"], image_size);
+		wilson.gl.uniform1i(wilson.uniforms["num_iterations"], num_iterations);
 		
-		let link = document.createElement("a");
 		
-		link.download = "a-julia-set-mosaic.png";
 		
-		link.href = document.querySelector("#output-canvas").toDataURL();
-		
-		link.click();
-		
-		link.remove();
+		wilson.render.draw_frame();
 	}
 }()

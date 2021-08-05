@@ -15,9 +15,11 @@ onmessage = async function(e)
 let grid_size = null;
 let num_iterations = null;
 
-let fern_graph = [];
+let fern_graph = null;
 
-const transformation_coefficients =
+let randomization_coefficients = [.1, .1, .1, .1, .5, .5];
+
+let transformation_coefficients =
 [
 	[0, 0, 0, .16, 0, 0],
 	[.85, .04, -.04, .85, 0, 1.6],
@@ -40,15 +42,13 @@ function draw_fern()
 {
 	return new Promise(function(resolve, reject)
 	{
-		fern_graph = [];
-			
+		fern_graph = new Uint8ClampedArray(grid_size * grid_size * 4);
+		
 		for (let i = 0; i < grid_size; i++)
 		{
-			fern_graph[i] = [];
-			
 			for (let j = 0; j < grid_size; j++)
 			{
-				fern_graph[i][j] = 0;
+				fern_graph[4 * (grid_size * i + j) + 3] = 255;
 			}
 		}
 		
@@ -103,7 +103,7 @@ function draw_fern()
 			
 			row = Math.floor(grid_size * (1 - row));
 			
-			fern_graph[row][col]++;
+			fern_graph[4 * (grid_size * row + col) + 1]++;
 		}
 		
 		

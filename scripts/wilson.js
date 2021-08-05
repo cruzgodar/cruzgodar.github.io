@@ -113,6 +113,13 @@ class Wilson
 		
 		
 		
+		if (typeof options.canvases_to_resize === "undefined")
+		{
+			options.canvases_to_resize = [this.canvas];
+		}
+		
+		
+		
 		if (typeof options.world_width !== "undefined")
 		{
 			this.world_width = options.world_width;
@@ -226,10 +233,6 @@ class Wilson
 			
 			
 			
-			this.fullscreen.auto_rearrange_canvases = typeof options.auto_rearrange_canvases === "undefined" ? true : options.auto_rearrange_canvases;
-			
-			
-			
 			this.fullscreen.use_fullscreen_button = typeof options.use_fullscreen_button === "undefined" ? true : options.use_fullscreen_button;
 			
 			
@@ -271,6 +274,31 @@ class Wilson
 	
 	arrange_canvases(options)
 	{
+		if (document.querySelectorAll("#wilson-style").length === 0)
+		{
+			let element = document.createElement("style");
+			
+			element.textContent = `
+				.wilson-output-canvas-container
+				{
+					position: relative;
+				}
+				
+				.wilson-center-content
+				{
+					display: flex;
+					justify-content: center;
+					margin: 0 auto;
+				}
+			`;
+			
+			element.id = "wilson-style";
+			
+			document.head.appendChild(element);
+		}
+		
+		
+		
 		let applet_canvas_container = document.createElement("div");
 		
 		applet_canvas_container.classList.add("wilson-applet-canvas-container");
@@ -1072,8 +1100,6 @@ class Wilson
 
 		//Contains the output canvas, along with anything attached to it (e.g. draggables containers)
 		canvases_to_resize: [],
-		
-		auto_rearrange_canvases: true,
 
 		//True to fill the entire screen (which will strech the aspect ratio unless there's specific code to account for that), and false to letterbox.
 		true_fullscreen: false,

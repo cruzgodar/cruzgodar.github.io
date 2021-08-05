@@ -1,7 +1,7 @@
 #output-canvas-container
 {
 	position: absolute;
-	width: calc(50vmin + 8px);
+	width: fit-content;
 }
 
 #output-canvas-container.fullscreen

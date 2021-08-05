@@ -73,6 +73,19 @@
 		
 		
 		
+		let options =
+		{
+			world_width: 3,
+			world_height: 3,
+			
+			world_center_x: 0,
+			world_center_y: 0
+		};
+		
+		Wilson.init(document.querySelector("#output-canvas"), options);
+		
+		
+		
 		try {web_worker.terminate();}
 		catch(ex) {}
 		
