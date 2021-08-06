@@ -99,41 +99,150 @@
 	
 	let wilson_3 = new Wilson(document.querySelector("#output-canvas-3"), options_3);
 	
-	let draggable = wilson_3.draggables.add(0, 1);
+	let draggable_3 = wilson_3.draggables.add(0, 1);
 	
 	
 	
 	
-	let large_resolution = 500;
-	let small_resolution = 100;
+	let large_resolution_3 = 500;
+	let small_resolution_3 = 100;
 	
 	document.querySelector("#resolution-3-input").addEventListener("input", () =>
 	{
-		large_resolution = parseInt(document.querySelector("#resolution-3-input").value || 500);
-		small_resolution = Math.floor(large_resolution / 5);
+		large_resolution_3 = parseInt(document.querySelector("#resolution-3-input").value || 500);
+		small_resolution_3 = Math.floor(large_resolution_3 / 5);
 	});
 	
 	
 	
-	wilson_3.change_canvas_size(small_resolution, small_resolution);
-	wilson_3.render.draw_frame(generate_julia_set_1(wilson_3, 0, 1, small_resolution));
+	wilson_3.change_canvas_size(small_resolution_3, small_resolution_3);
+	wilson_3.render.draw_frame(generate_julia_set_1(wilson_3, 0, 1, small_resolution_3));
 	
 	
 	
 	function on_grab_3(active_draggable, x, y, event)
 	{
-		wilson_3.change_canvas_size(small_resolution, small_resolution);
+		wilson_3.change_canvas_size(small_resolution_3, small_resolution_3);
 	}
 
 	function on_drag_3(active_draggable, x, y, event)
 	{
-		wilson_3.render.draw_frame(generate_julia_set_1(wilson_3, x, y, small_resolution));
+		wilson_3.render.draw_frame(generate_julia_set_1(wilson_3, x, y, small_resolution_3));
 	}
 
 	function on_release_3(active_draggable, x, y, event)
 	{
-		wilson_3.change_canvas_size(large_resolution, large_resolution);
-		wilson_3.render.draw_frame(generate_julia_set_1(wilson_3, x, y, large_resolution));
+		wilson_3.change_canvas_size(large_resolution_3, large_resolution_3);
+		wilson_3.render.draw_frame(generate_julia_set_1(wilson_3, x, y, large_resolution_3));
+	}
+	
+	
+	
+	/////////////////////////////////////////
+	
+	
+	
+	let frag_shader_source_4 = `
+		precision highp float;
+		
+		varying vec2 uv;
+		
+		uniform float a;
+		uniform float b;
+		uniform float brightness_scale;
+		
+		
+		
+		void main(void)
+		{
+			vec2 z = vec2(uv.x * 2.0, uv.y * 2.0);
+			vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+			float brightness = exp(-length(z));
+			
+			
+			
+			vec2 c = vec2(a, b);
+			
+			for (int iteration = 0; iteration < 50; iteration++)
+			{
+				if (iteration == 49)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					return;
+				}
+				
+				if (length(z) >= 2.0)
+				{
+					break;
+				}
+				
+				z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+				
+				brightness += exp(-length(z));
+			}
+			
+			
+			gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+		}
+	`;
+
+
+
+	let options_4 =
+	{
+		renderer: "gpu",
+		
+		shader: frag_shader_source_4,
+		
+		canvas_width: 500,
+		canvas_height: 500,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0,
+		
+		
+		
+		use_draggables: true,
+		
+		draggables_mousemove_callback: on_drag_4,
+		
+		draggables_touchmove_callback: on_drag_4
+	};
+
+
+
+	let wilson_4 = new Wilson(document.querySelector("#output-canvas"), options_4);
+
+	wilson_4.render.init_uniforms(["a", "b", "brightness_scale"]);
+
+	let draggable_4 = wilson_4.draggables.add(0, 1);
+	
+	
+	
+	let resolution_4 = 1000;
+
+	document.querySelector("#resolution-4-input").addEventListener("input", () =>
+	{
+		resolution_4 = parseInt(document.querySelector("#resolution-4-input").value || 1000);
+		wilson_4.change_canvas_size(resolution_4, resolution_4);
+		wilson_4.render.draw_frame();
+	});
+
+	//Render the inital frame.
+	wilson_4.change_canvas_size(resolution_4, resolution_4);
+	wilson_4.render.draw_frame();
+
+
+
+	function on_drag_4(active_draggable, x, y, event)
+	{
+		wilson_4.gl.uniform1f(wilson_4.uniforms["a"], x);
+		wilson_4.gl.uniform1f(wilson_4.uniforms["b"], y);
+		wilson_4.gl.uniform1f(wilson_4.uniforms["brightness_scale"], 10);
+		
+		wilson_4.render.draw_frame();
 	}
 	
 	

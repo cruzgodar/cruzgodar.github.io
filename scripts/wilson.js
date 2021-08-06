@@ -112,7 +112,15 @@ class Wilson
 		
 		
 		
-		console.log(`[Wilson] Registered a ${this.canvas_width}x${this.canvas_height} canvas`);
+		if (this.canvas.id !== "")
+		{
+			console.log(`[Wilson] Registered a ${this.canvas_width}x${this.canvas_height} canvas with ID ${this.canvas.id}`);
+		}
+		
+		else
+		{
+			console.log(`[Wilson] Registered a ${this.canvas_width}x${this.canvas_height} canvas`);
+		}
 		
 		
 		
@@ -344,6 +352,12 @@ class Wilson
 			this.draggables.container = document.createElement("div");
 			
 			this.draggables.container.classList.add("wilson-draggables-container");
+			
+			this.draggables.container.setAttribute("data-aos", "fade-in");
+			
+			this.draggables.container.setAttribute("data-aos-delay-increase", "0");
+			
+			this.canvas.setAttribute("data-aos-delay-increase", "0");
 			
 			applet_canvas_container.appendChild(this.draggables.container);
 			

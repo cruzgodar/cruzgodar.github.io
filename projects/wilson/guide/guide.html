@@ -14,7 +14,7 @@
 
 !begin-text-block
 	
-	In this guide, we&#x2019;ll use Wilson to create the Julia set explorer featured on the main page. We&#x2019;ll do this one step at a time, starting with the simplest and most stripped-down version possible and gradually adding features. In every JS code block, properties and methods defined by Wilson are bolded &mdash; click on one to pull up its documentation.
+	Welcome! In this guide, we&#x2019;ll use Wilson to create the Julia set explorer featured on the main page. We&#x2019;ll do this one step at a time, starting with the simplest and most stripped-down version possible and gradually adding features. In every JS code block, properties and methods defined by Wilson are bolded &mdash; click on one to pull up its documentation.
 	
 	First, some background: a Julia set is a famous type of fractal closely related to the Mandelbrot set. Unlike the Mandelbrot, though, there are infinitely many Julia sets, each one corresponding to a different complex number. Because of this, Julia set applets often focus on generating different Julia sets rather than zooms of a single one, and this is where we&#x2019;ll start too. Right now, let&#x2019;s not worry about interactivity: we&#x2019;ll just have the user enter the complex number \(c\) and display the Julia set corresponding to it.
 	
@@ -51,7 +51,7 @@
 
 !begin-text-block
 	
-	This obviously doesn&#x2019;t look too great. The displayed canvases and input fields on this page will be styled, but the CSS will be omitted for brevity.
+	This obviously doesn&#x2019;t look too great without any added CSS. The displayed canvases and input fields on this page will be styled, but the CSS will be omitted for brevity.
 	
 	On the JS side, we need to tell Wilson we want it to work with this canvas.
 	
@@ -61,10 +61,10 @@
 
 <pre><code class="language-js" data-aos="fade-up">let options =
 {
-&#9;canvas_width: 500,
-&#9;canvas_height: 500,
+&#9;renderer: "cpu",
 &#9;
-&#9;renderer: "cpu"
+&#9;canvas_width: 500,
+&#9;canvas_height: 500
 };
 
 let wilson = new Wilson(document.querySelector("#output-canvas"), options);
@@ -78,9 +78,7 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 &#9;wilson.change_canvas_size(resolution, resolution);
 &#9;
 &#9;//Do something with a and b
-});
-
-</code></pre>
+});</code></pre>
 
 
 
@@ -100,10 +98,10 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 
 <pre><code class="language-js" data-aos="fade-up">let options =
 {
+&#9;renderer: "cpu",
+&#9;
 &#9;canvas_width: 500,
 &#9;canvas_height: 500,
-&#9;
-&#9;renderer: "cpu",
 &#9;
 &#9;world_width: 4,
 &#9;world_height: 4,
@@ -168,6 +166,7 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 &#9;
 &#9;//Now we need to create the actual pixel data in a Uint8ClampedArray to pass to Wilson.
 &#9;let image_data = new Uint8ClampedArray(resolution * resolution * 4);
+&#9;
 &#9;for (let i = 0; i &lt; resolution * resolution; i++)
 &#9;{
 &#9;&#9;image_data[4 * i] = 0; //Red
@@ -244,7 +243,7 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 
 !begin-text-block
 	
-	This is a great start, but we have a lot more to do. The first and easiest change to make is to modify the renderer. We currently have the line <code>renderer: "cpu"</code> in our options, which means that when we pass Wilson our pixel data, it gets copied into the canvas by JavaScript. A slightly better alternative is to render the canvas with WebGL and pass in the pixel data as a texture. This can marginally increase performance, and on some browers, it also increases the maximum possible canvas size. WebGL might sound a little daunting, and rightfully so, but we don&#x2019;t actually have to interface with it all right now. Just replacing that line in the options with <code>renderer: "hybrid"</code> is enough to change everything necessary on the backend.
+	This is a great start, but we have a lot more to do. The first and easiest change to make is to modify the renderer. We currently have the line <code>renderer: "cpu"</code> in our options, which means that when we pass Wilson our pixel data, it gets copied into the canvas by JavaScript. A slightly better alternative is to render the canvas with WebGL and pass in the pixel data as a texture. This can marginally increase performance, and on some browers, it also increases the maximum possible canvas size. Hearing the word WebGL might make you a little nervous, and rightfully so, but we don&#x2019;t actually have to interface with it at all right now. Just replacing that line in the options with <code>renderer: "hybrid"</code> is enough to change everything necessary on the backend.
 	
 !end-text-block
 
@@ -252,10 +251,10 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 
 <pre><code class="language-js" data-aos="fade-up">let options =
 {
+&#9;renderer: "hybrid",
+&#9;
 &#9;canvas_width: 500,
 &#9;canvas_height: 500,
-&#9;
-&#9;renderer: "hybrid",
 &#9;
 &#9;world_width: 4,
 &#9;world_height: 4,
@@ -299,7 +298,7 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 
 !begin-text-block
 	
-	Since every Julia set corresponds to a unique complex number \(c\), we should be able to use the canvas for choosing \(c\) and displaying its Julia set at the same time. Wilson provides a type of element for this, called a &#x201C;draggable&#x201D;. We can add any number of them to a canvas, but right now, we only need one. To get these set up, we first need to modify our options once again. After that, we can add a draggable at any time.
+	Since every Julia set corresponds to a unique complex number \(c\), we should be able to use the canvas for choosing \(c\) and displaying its Julia set at the same time. Wilson provides a type of element for this, called a draggable. We can add any number of them to a canvas, but right now, we only need one. To get this set up, we just need to modify our options once again &mdash; after that, we can add a draggable at any time.
 	
 !end-text-block
 
@@ -307,10 +306,10 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 
 <pre><code class="language-js" data-aos="fade-up">let options =
 {
+&#9;renderer: "hybrid",
+&#9;
 &#9;canvas_width: 500,
 &#9;canvas_height: 500,
-&#9;
-&#9;renderer: "hybrid",
 &#9;
 &#9;world_width: 4,
 &#9;world_height: 4,
@@ -334,7 +333,7 @@ let draggable = wilson.draggables.add(0, 1);</code></pre>
 	
 	We now have a little while circle that can be freely dragged around the canvas. The style can be customized by modifying <code>.wilson-draggable</code>, but let&#x2019;s just stick with the default. The element is returned from <code>wilson.draggables.add</code> and also has a class of <code>wilson-draggable-0</code> if we want to reference it in the future. Note that <code>wilson.draggables.add</code> accepts world coordinates, not canvas ones.
 	
-	Now we have to actually do something with this draggable, which is accomplished by passing callback functions in the Wilson options. The index of the current draggable being moved is passed to the callback, as well as the world coordinates and the original event that was captured in case we need to do anything with that. Here, we&#s2019;d like to have callbacks for grabbing the draggable, moving it, and letting it go &mdash; we&#x2019;ll render low resolution frames while dragging so that the framerate stays high, then a single higher resolution frame when we let go.
+	Now we have to actually do something with this draggable, which is accomplished by passing callback functions in the Wilson options. The index of the current draggable being moved is passed to the callback, as well as the world coordinates and the original event that was captured in case we need to do anything with that. Here, we&#x2019;d like to have callbacks for grabbing the draggable, moving it, and letting it go &mdash; we&#x2019;ll render low resolution frames while moving so that the framerate stays high, then a single higher resolution frame when we let go.
 	
 	We&#x2019;ll no longer need the input fields for \(a\) and \(b\) &mdash; just the one for resolution. It&#x2019;d be a little awkward to have to press the generate button just to change the resolution, so instead we&#x2019;ll add a listener to that field and update the variables as needed.
 	
@@ -344,10 +343,10 @@ let draggable = wilson.draggables.add(0, 1);</code></pre>
 
 <pre><code class="language-js" data-aos="fade-up">let options =
 {
+&#9;renderer: "hybrid",
+&#9;
 &#9;canvas_width: 500,
 &#9;canvas_height: 500,
-&#9;
-&#9;renderer: "hybrid",
 &#9;
 &#9;world_width: 4,
 &#9;world_height: 4,
@@ -400,7 +399,7 @@ function on_drag(active_draggable, x, y, event)
 &#9;wilson.render.draw_frame(generate_julia_set(x, y, small_resolution));
 }
 
-function on_release_3(active_draggable, x, y, event)
+function on_release(active_draggable, x, y, event)
 {
 &#9;wilson.change_canvas_size(large_resolution, large_resolution);
 &#9;wilson.render.draw_frame(generate_julia_set(x, y, large_resolution));
@@ -444,47 +443,211 @@ function on_release_3(active_draggable, x, y, event)
 
 
 
-<pre><code class="language-glsl" data-aos="fade-up">precision highp float;
+<pre><code class="language-glsl" data-aos="fade-up">let frag_shader_source = `
+&#9;precision highp float;
+&#9;
+&#9;varying vec2 uv;
+&#9;
+&#9;uniform float a;
+&#9;uniform float b;
+&#9;uniform float brightness_scale;
+&#9;
+&#9;
+&#9;
+&#9;void main(void)
+&#9;{
+&#9;&#9;vec2 z = vec2(uv.x * 2.0, uv.y * 2.0);
+&#9;&#9;vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+&#9;&#9;float brightness = exp(-length(z));
+&#9;&#9;
+&#9;&#9;
+&#9;&#9;
+&#9;&#9;vec2 c = vec2(a, b);
+&#9;&#9;
+&#9;&#9;for (int iteration = 0; iteration &lt; 50; iteration++)
+&#9;&#9;{
+&#9;&#9;&#9;if (iteration == 49)
+&#9;&#9;&#9;{
+&#9;&#9;&#9;&#9;gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+&#9;&#9;&#9;&#9;return;
+&#9;&#9;&#9;}
+&#9;&#9;&#9;
+&#9;&#9;&#9;if (length(z) >= 2.0)
+&#9;&#9;&#9;{
+&#9;&#9;&#9;&#9;break;
+&#9;&#9;&#9;}
+&#9;&#9;&#9;
+&#9;&#9;&#9;z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+&#9;&#9;&#9;
+&#9;&#9;&#9;brightness += exp(-length(z));
+&#9;&#9;}
+&#9;&#9;
+&#9;&#9;
+&#9;&#9;gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+&#9;}
+`;</code></pre>
 
-varying vec2 uv;
-
-uniform float box_size_halved;
-uniform float a;
-uniform float b;
-uniform float brightness_scale;
 
 
+<br>
 
-void main(void)
+!begin-text-block
+	
+	While a full tutorial for GLSL is outside the scope of this guide, let&#x2019;s touch on some of the important points from this shader in particular.
+	
+	<code>precision highp float</code>: this should go at the start of every shader since it maximizes precision. <code>mediump</code> can also be used, but for a math applet, that tends to be a bad idea &mdash; WebGL doesn&#x2019;t even support doubles, so we need all the precision we can get.
+	
+	<code>varying vec2 uv</code>: here, <code>varying</code> means varying from pixel to pixel. This is the variable that gives the position of the current pixel, on a scale from -1 to 1 in both the x and y directions, and when using Wilson, the variable name <code>uv</code> must be used. Looking through the rest of the shader, we can see <code>int</code>, <code>float</code>, and other C-like variable declarations, along with <code>vec2</code> and <code>vec3</code>. These last two are effectively float arrays with multiplication and addition given componentwise. The maximum size is a <code>vec4</code>, and there are 2&ndash;4 dimensional matrices available, too. In general, math should be done with vectors whenever possible, though optimizing GLSL is its own topic.
+	
+	<code>uniform float a</code>: as opposed to a varying, a uniform is a value that is the same across all the pixels, but can be changed frame-to-frame without reloading the entire shader. Once we&#x2019;ve given Wilson this shader, we&#x2019;ll have to tell it where the uniforms are.
+	
+	<code>vec2 z = vec2(uv.x * 2.0, uv.y * 2.0)</code>: scales to world coordinates. Note that <code>vec2</code> is a constructor as well as a type, and that we can access the components of <code>uv</code> with <code>uv.x</code>. More complicated syntax is possible, called <em>swizzling</em>: <code>uv.xyyx</code> gets a <code>vec4</code> whose first and last elements are <code>uv.x</code> and whose middle two are <code>uv.y</code>.
+	
+	<code>length</code>, <code>normalize</code>, <code>abs</code>, etc.: GLSL has a large number of built-in functions for performing operations on vectors. Before writing some potentially inefficient code to handle a common operation, check if it&#2019;s natively implemented first.
+	
+	<code>gl_FragColor</code>: this is how we actually set the pixel color &mdash; the data is given as a <code>vec4</code> corresponding to the RGBA values on a scale of 0&ndash;1.
+	
+	The color choice at the start is just something I came up with through trial and error, and creates a palette I think looks nice &mdash; definitely better than the uniform cyan we had before.
+	
+	This should be enough to get started writing your own shaders. Remember &mdash; test your code every handful of lines, or you&#x2019;ll have a painful debugging process ahead of you!
+	
+	Now we need to add the shader in the options, and we also have to tell Wilson where the uniforms are so we can change them. This is done with a single function call.
+	
+!end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let options =
 {
-	vec2 z = vec2(uv.x * 2.0, uv.y * 2.0);
-	vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-	float brightness = exp(-length(z));
+&#9;renderer: "gpu",
+&#9;
+&#9;shader: frag_shader_source,
+&#9;
+&#9;canvas_width: 500,
+&#9;canvas_height: 500,
+&#9;
+&#9;world_width: 4,
+&#9;world_height: 4,
+&#9;world_center_x: 0,
+&#9;world_center_y: 0,
+&#9;
+&#9;
+&#9;
+&#9;use_draggables: true,
+&#9;
+&#9;draggables_mousemove_callback: on_drag,
+&#9;
+&#9;draggables_touchmove_callback: on_drag
+};
+
+
+
+let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+
+wilson.render.init_uniforms(["a", "b", "brightness_scale"]);
 	
+let draggable = wilson.draggables.add(0, 1);</code></pre>
+
+
+
+<br>
+
+!begin-text-block
 	
+	A few other things need to change. We no longer need <code>generate_julia_set</code>, since that computation will be done on the GPU. Similarly, we also no longer pass anything to <code>wilson.render.draw_frame</code>. The performance increase will be large enough that 1000 is now a reasonable resolution for most users, and that&#x2019;s high enough that we won&#x2019;t bother with raising the resolution when we let the draggable go. Finally, we need to actually set those uniforms.
 	
-	vec2 c = vec2(a, b);
+!end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let resolution = 1000;
+
+document.querySelector("#resolution-input").addEventListener("input", () =>
+{
+&#9;resolution = parseInt(document.querySelector("#resolution-input").value || 1000);
+&#9;wilson.change_canvas_size(resolution, resolution);
+&#9;wilson.render.draw_frame();
+});
+
+//Render the inital frame.
+wilson.change_canvas_size(resolution, resolution);
+wilson.render.draw_frame();
+
+
+
+function on_drag(active_draggable, x, y, event)
+{
+&#9;wilson.gl.uniform1f(wilson.uniforms["a"], x);
+&#9;wilson.gl.uniform1f(wilson.uniforms["b"], y);
+&#9;wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], 10);
+&#9;
+&#9;wilson.render.draw_frame();
+}</code></pre>
+
+
+
+<br>
+
+!begin-text-block
 	
-	for (int iteration = 0; iteration &lt; 50; iteration++)
-	{
-		if (iteration == 49)
-		{
-			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-			return;
-		}
-		
-		if (length(z) >= 2.0)
-		{
-			break;
-		}
-		
-		z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-		
-		brightness += exp(-length(z));
-	}
+	The name of the function that sets the uniforms changes depending on the type of the variable: For a single <code>float</code>, it&#x2019;s <code>uniform1f</code>, but for an <code>int</code>, it would be <code>uniform1i</code>. Vectors can be set in two ways: to give a <code>vec2</code> a value of <code>a</code> in its first coordinate and <code>b</code> in its second, we can use <code>uniform2f(wilson.uniforms["var_name"], a, b)</code> or <code>uniform2fv(wilson.uniforms["var_name"], [a, b])</code>.
 	
+	Hopefully WebGL doesn&#x2019;t seem quite so scary anymore! If you haven&#x2019;t been copying the code into your own project so far, now is a great time to start &mdash; experimenting with the shader is a great way to get familiar with GLSL.
 	
-	gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+!end-text-block
+
+
+
+<br>
+
+
+
+!begin-text-boxes
+	
+	resolution-4 1000 Resolution
+	
+!end-text-boxes
+
+
+
+<canvas id="output-canvas-4" class="output-canvas" data-aos="fade-up"></canvas>
+
+
+
+!section
+
+!text s Hidden Canvases
+
+<br>
+
+!begin-text-block
+	
+	Hopefully the performance increase is apparent! At the time of writing, my computer can only handle about a 300x300 CPU-driven canvas before it starts to drop below 60fps, but a 5000x5000 GPU-driven one is still silky smooth.
+	
+	One problem you probably noticed with the CPU canvas was a rapid fluctuation in brightness due to a high variation in the value of the brightest pixel. Here, we have a different problem &mdash; there&#x2019;s no way to automatically control the brightness at all. One option is to try a value, then see how many pixels are at max brightness and slightly adjust the brightness scale on the next frame. This is expensive, though, and if the brightness changes suddenly, it will take a while to catch up. A better solution is to render a second canvas with the same shader at a very low resolution &mdash; say 100x100 &mdash; and no brightness scale at all. Then we can read off the max brightness from that canvas and use it for the output one.
+	
+	This process is simple &mdash; all we have to do is register a second canvas with Wilson and give it a similar set of options.
+	
+!end-text-block
+
+
+
+<pre><code class="language-html" data-aos="fade-up">&lt;input id="resolution-input" type="text" value="1000"&gt;
+&lt;label for="resolution-input"&gt;
+&#9;&lt;p&gt;Resolution&lt;/p&gt;
+&lt;/label&gt;
+
+&lt;canvas id="hidden-canvas"&gt&lt;/canvas&gt;
+
+&lt;canvas id="output-canvas"&gt&lt;/canvas&gt;</code></pre>
+
+
+
+<pre><code class="language-css" data-aos="fade-up">#hidden-canvas
+{
+&#9;position: absolute;
+&#9;right: -100;
+&#9;bottom: -100;
 }</code></pre>
 
 
