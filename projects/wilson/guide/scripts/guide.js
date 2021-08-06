@@ -163,9 +163,9 @@
 			
 			vec2 c = vec2(a, b);
 			
-			for (int iteration = 0; iteration < 50; iteration++)
+			for (int iteration = 0; iteration < 100; iteration++)
 			{
-				if (iteration == 49)
+				if (iteration == 99)
 				{
 					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 					return;
@@ -194,8 +194,8 @@
 		
 		shader: frag_shader_source_4,
 		
-		canvas_width: 500,
-		canvas_height: 500,
+		canvas_width: 1000,
+		canvas_height: 1000,
 		
 		world_width: 4,
 		world_height: 4,
@@ -213,7 +213,7 @@
 
 
 
-	let wilson_4 = new Wilson(document.querySelector("#output-canvas"), options_4);
+	let wilson_4 = new Wilson(document.querySelector("#output-canvas-4"), options_4);
 
 	wilson_4.render.init_uniforms(["a", "b", "brightness_scale"]);
 
@@ -231,7 +231,12 @@
 	});
 
 	//Render the inital frame.
+	wilson_4.gl.uniform1f(wilson_4.uniforms["a"], 0);
+	wilson_4.gl.uniform1f(wilson_4.uniforms["b"], 1);
+	wilson_4.gl.uniform1f(wilson_4.uniforms["brightness_scale"], 10);
+	
 	wilson_4.change_canvas_size(resolution_4, resolution_4);
+	
 	wilson_4.render.draw_frame();
 
 
@@ -251,12 +256,121 @@
 	
 	
 	
+	let options_5 =
+	{
+		renderer: "gpu",
+		
+		shader: frag_shader_source_4,
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0,
+		
+		
+		
+		use_draggables: true,
+		
+		draggables_mousemove_callback: on_drag_5,
+		
+		draggables_touchmove_callback: on_drag_5
+	};
+	
+	let options_hidden_5 =
+	{
+		renderer: "gpu",
+		
+		shader: frag_shader_source_4,
+		
+		canvas_width: 100,
+		canvas_height: 100,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0
+	};
+	
+	
+	
+	let wilson_5 = new Wilson(document.querySelector("#output-canvas-5"), options_5);
+
+	wilson_5.render.init_uniforms(["a", "b", "brightness_scale"]);
+
+	let draggable_5 = wilson_5.draggables.add(0, 1);
+	
+	
+	
+	let wilson_hidden_5 = new Wilson(document.querySelector("#hidden-canvas-5"), options_hidden_5);
+	
+	wilson_hidden_5.render.init_uniforms(["a", "b", "brightness_scale"]);
+	
+	
+	
+	let resolution_5 = 1000;
+	
+	let resolution_hidden = 100;
+
+	document.querySelector("#resolution-5-input").addEventListener("input", () =>
+	{
+		resolution_5 = parseInt(document.querySelector("#resolution-5-input").value || 1000);
+		wilson_5.change_canvas_size(resolution_5, resolution_5);
+		
+		draw_julia_set(a_5, b_5);
+	});
+	
+	function on_drag_5(active_draggable, x, y, event)
+	{
+		draw_julia_set_5(x, y);
+	}
+
+
+
+	function draw_julia_set_5(a, b)
+	{
+		wilson_hidden_5.gl.uniform1f(wilson_hidden_5.uniforms["a"], a);
+		wilson_hidden_5.gl.uniform1f(wilson_hidden_5.uniforms["b"], b);
+		wilson_hidden_5.gl.uniform1f(wilson_hidden_5.uniforms["brightness_scale"], 20);
+		
+		wilson_hidden_5.render.draw_frame();
+		
+		
+		
+		let pixel_data = wilson_hidden_5.render.get_pixel_data();
+		
+		let brightnesses = new Uint8Array(resolution_hidden * resolution_hidden);
+		
+		for (let i = 0; i < resolution_hidden * resolution_hidden; i++)
+		{
+			brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
+		}
+		
+		brightnesses.sort((a, b) => a - b);
+		
+		let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .99)] / 255 * 15;
+		
+		wilson_5.gl.uniform1f(wilson_5.uniforms["a"], a);
+		wilson_5.gl.uniform1f(wilson_5.uniforms["b"], b);
+		wilson_5.gl.uniform1f(wilson_5.uniforms["brightness_scale"], brightness_scale);
+		
+		wilson_5.render.draw_frame();
+	}
+	
+	
+	
+	/////////////////////////////////////////
+	
+	
+	
 	function generate_julia_set_1(wilson, a, b, resolution)
 	{
 		let brightnesses = new Array(resolution * resolution);
 		let max_brightness = 0;
 		let brightness_scale = 1.5;
-		const num_iterations = 50;
+		const num_iterations = 100;
 		
 		for (let i = 0; i < resolution; i++)
 		{

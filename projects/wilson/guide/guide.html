@@ -90,7 +90,7 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 	
 	Those initial values of 500 are just placeholders &mdash; we change them whenever the generate button is pressed. Now we just need to write a function that generates a Julia set given these parameters. For that function, we&#x2019;ll need to convert between pixel coordinates on the canvas and complex numbers in the plane. This is a common enough occurance in math applets that Wilson has built-in functions for handling it: we need to add information in the options about the &#x201C;world coordinates&#x201D;, as Wilson calls them, and then we can call <code>wilson.utils.interpolate.canvas_to_world</code> and <code>wilson.utils.interpolate.world_to_canvas</code>, which convert between pairs (row, col) of canvas coordinates and (x, y) of world coordinates. Note that <code>row</code> increases from top to bottom, while <code>y</code> does the opposite.
 	
-	The algorithm to color a single point \(z_0\) of the Julia set corresponding to \(c = a + bi\) is relatively simple: with \(f(z) = z^2 + c\), we let \(z_1 = f(z_0)\), \(z_2 = f(z_1)\), and so on. If the \(z_n\) grow without bound, then the point \(z_0\) is <em>not</em> in the Julia set, and we give it a color based on how quickly it grew. If the \(z_n\) stay bounded, then \(z_0\) is in the set, and we color it black. In practice, we pick a maximum value for \(n\), say 50, and see if the sequence is smaller than a certain bound after that many iterations. It can be shown that if the magnitude of any \(z_n\) is ever larger than 2, then the subsequent terms will grow without bound, so that&#x2019;s the typical threshhold to measure against.
+	The algorithm to color a single point \(z_0\) of the Julia set corresponding to \(c = a + bi\) is relatively simple: with \(f(z) = z^2 + c\), we let \(z_1 = f(z_0)\), \(z_2 = f(z_1)\), and so on. If the \(z_n\) grow without bound, then the point \(z_0\) is <em>not</em> in the Julia set, and we give it a color based on how quickly it grew. If the \(z_n\) stay bounded, then \(z_0\) is in the set, and we color it black. In practice, we pick a maximum value for \(n\), say 100, and see if the sequence is smaller than a certain bound after that many iterations. It can be shown that if the magnitude of any \(z_n\) is ever larger than 2, then the subsequent terms will grow without bound, so that&#x2019;s the typical threshhold to measure against.
 	
 !end-text-block
 
@@ -116,7 +116,7 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 &#9;let brightnesses = new Array(resolution * resolution);
 &#9;let max_brightness = 0;
 &#9;let brightness_scale = 1.5;
-&#9;const num_iterations = 50;
+&#9;const num_iterations = 100;
 &#9;
 &#9;for (let i = 0; i &lt; resolution; i++)
 &#9;{
@@ -464,9 +464,9 @@ function on_release(active_draggable, x, y, event)
 &#9;&#9;
 &#9;&#9;vec2 c = vec2(a, b);
 &#9;&#9;
-&#9;&#9;for (int iteration = 0; iteration &lt; 50; iteration++)
+&#9;&#9;for (int iteration = 0; iteration &lt; 100; iteration++)
 &#9;&#9;{
-&#9;&#9;&#9;if (iteration == 49)
+&#9;&#9;&#9;if (iteration == 99)
 &#9;&#9;&#9;{
 &#9;&#9;&#9;&#9;gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 &#9;&#9;&#9;&#9;return;
@@ -523,8 +523,8 @@ function on_release(active_draggable, x, y, event)
 &#9;
 &#9;shader: frag_shader_source,
 &#9;
-&#9;canvas_width: 500,
-&#9;canvas_height: 500,
+&#9;canvas_width: 1000,
+&#9;canvas_height: 1000,
 &#9;
 &#9;world_width: 4,
 &#9;world_height: 4,
@@ -569,8 +569,13 @@ document.querySelector("#resolution-input").addEventListener("input", () =>
 &#9;wilson.render.draw_frame();
 });
 
-//Render the inital frame.
+
+wilson.gl.uniform1f(wilson.uniforms["a"], 0);
+wilson.gl.uniform1f(wilson.uniforms["b"], 1);
+wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], 10);
+
 wilson.change_canvas_size(resolution, resolution);
+
 wilson.render.draw_frame();
 
 
@@ -641,7 +646,7 @@ function on_drag(active_draggable, x, y, event)
 
 &lt;canvas id="output-canvas"&gt&lt;/canvas&gt;</code></pre>
 
-
+<br>
 
 <pre><code class="language-css" data-aos="fade-up">#hidden-canvas
 {
@@ -649,6 +654,58 @@ function on_drag(active_draggable, x, y, event)
 &#9;right: -100;
 &#9;bottom: -100;
 }</code></pre>
+
+<br>
+
+<pre><code class="language-js" data-aos="fade-up">let options_hidden =
+{
+&#9;renderer: "gpu",
+&#9;
+&#9;shader: frag_shader_source,
+&#9;
+&#9;canvas_width: 100,
+&#9;canvas_height: 100,
+&#9;
+&#9;world_width: 4,
+&#9;world_height: 4,
+&#9;world_center_x: 0,
+&#9;world_center_y: 0
+};
+
+
+
+let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
+
+wilson_hidden.render.init_uniforms(["a", "b", "brightness_scale"]);
+
+
+
+function draw_julia_set(a, b)
+{
+&#9;wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["a"], a);
+&#9;wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["b"], b);
+&#9;
+&#9;//Like range in a photo, the brightness will get clipped if we let it go above 1. Therefore, we divide by a large number to make sure that doesn&#x2019;t happen.
+&#9;//Too large and everything will get compressed into too few dark values instead, so we need to pick a brightness scale in the middle.
+&#9;wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 100);
+&#9;
+&#9;wilson_hidden.render.draw_frame();
+}
+</code></pre>
+
+
+
+!begin-text-boxes
+	
+	resolution-5 1000 Resolution
+	
+!end-text-boxes
+
+
+
+<canvas id="hidden-canvas-5" class="output-canvas hidden-canvas"></canvas>
+
+<canvas id="output-canvas-5" class="output-canvas" data-aos="fade-up"></canvas>
 
 
 

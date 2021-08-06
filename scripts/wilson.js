@@ -665,6 +665,17 @@ class Wilson
 			{
 				this.parent.uniforms[variable_names[i]] = this.parent.gl.getUniformLocation(this.shader_program, variable_names[i]);
 			}
+		},
+		
+		
+		
+		get_pixel_data()
+		{
+			let pixels = new Uint8Array(this.parent.canvas_width * this.parent.canvas_height * 4);
+			
+			this.parent.gl.readPixels(0, 0, this.parent.canvas_width, this.parent.canvas_height, this.parent.gl.RGBA, this.parent.gl.UNSIGNED_BYTE, pixels);
+			
+			return pixels;
 		}
 	};
 	
