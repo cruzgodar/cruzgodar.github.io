@@ -324,7 +324,7 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 
 let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 
-let draggable = wilson.draggables.add(0, 1)</code></pre>
+let draggable = wilson.draggables.add(0, 1);</code></pre>
 
 
 
@@ -426,13 +426,66 @@ function on_release_3(active_draggable, x, y, event)
 
 !section
 
-!text s WebGL
+!text s Parallelizing
+
+<br>
 
 !begin-text-block
 	
-	Now we&#x2019;re getting somewhere! There are a handful of features we could build in next, but we&#x2019;re overdue for one in particular: 
+	Now we&#x2019;re getting somewhere! There are a handful of features we could build in next, but we&#x2019;re overdue for one in particular: moving the math onto the GPU. This is called <em>parallelizing</em>, and it&#x2019;s not something that&#x2019;s possible for every applet: every pixel will be processed independently of every other, so information cannot be shared between them. For example, an applet that renders an iterated function system by tracking the orbit of a single point across millions of iterations will not lend itself well to parallelization. A Julia sets, on the other hand, is a perfect candidate.
+	
+	The technology for GPU-based applets on the web is called WebGL. Traditionally, it&#x2019;s used for 3D applets and games that use raster graphics. Wilson does <em>not</em> support any of that &mdash; if you need high-performance raster graphics, look to something like <a href="https://threejs.org" onclick="Page.Navigation.redirect('https://threejs.org', true)">three.js</a> instead. What Wilson provides is a stripped-down environment where getting WebGL working only requires a fragment shader, something that is normally not easy.
+	
+	Writing that fragment shader can be challenging, though &mdash; it&#x2019;s not written in JavaScript, but rather in a language called GLSL that&#x2019;s very unforgiving &mdash; writing a number as 3 instead of 3.0 or 3. will most likely cause the entire program to crash with a generic error message and no ability to debug. Writing GLSL is an exerise in extreme caution and frequent testing, but the upshot is massively improved performance &mdash; it&#x2019;s not at all uncommon to see a 10x jump in the number of pixels that can be rendered per frame, though this of course depends on the relative power of the CPU and the GPU. If your applet is parallelizable, you should at least try to get it working in GLSL.
+	
+	To get started, we&#x2019;ll change the renderer setting once again, this time to <code>renderer: "gpu"</code>. After that, we need to write our shader, tell Wilson what uniforms (i.e. parameters) the shader has, and then change some of our existing code to set those variables properly. Let&#x2019;s take this one step at a time, starting with the shader.
 	
 !end-text-block
+
+
+
+<pre><code class="language-glsl" data-aos="fade-up">precision highp float;
+
+varying vec2 uv;
+
+uniform float box_size_halved;
+uniform float a;
+uniform float b;
+uniform float brightness_scale;
+
+
+
+void main(void)
+{
+	vec2 z = vec2(uv.x * 2.0, uv.y * 2.0);
+	vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+	float brightness = exp(-length(z));
+	
+	
+	
+	vec2 c = vec2(a, b);
+	
+	for (int iteration = 0; iteration &lt; 50; iteration++)
+	{
+		if (iteration == 49)
+		{
+			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+			return;
+		}
+		
+		if (length(z) >= 2.0)
+		{
+			break;
+		}
+		
+		z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+		
+		brightness += exp(-length(z));
+	}
+	
+	
+	gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+}</code></pre>
 
 
 
