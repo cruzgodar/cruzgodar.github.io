@@ -324,7 +324,7 @@
 	
 	let resolution_5 = 1000;
 	
-	let resolution_hidden = 100;
+	let resolution_hidden_5 = 100;
 
 	document.querySelector("#resolution-5-input").addEventListener("input", () =>
 	{
@@ -359,16 +359,16 @@
 		
 		let pixel_data = wilson_hidden_5.render.get_pixel_data();
 		
-		let brightnesses = new Uint8Array(resolution_hidden * resolution_hidden);
+		let brightnesses = new Uint8Array(resolution_hidden_5 * resolution_hidden_5);
 		
-		for (let i = 0; i < resolution_hidden * resolution_hidden; i++)
+		for (let i = 0; i < resolution_hidden_5 * resolution_hidden_5; i++)
 		{
 			brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
 		}
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .99)] / 255 * 15;
+		let brightness_scale = brightnesses[Math.floor(resolution_hidden_5 * resolution_hidden_5 * .98)] / 255 * 17;
 		
 		wilson_5.gl.uniform1f(wilson_5.uniforms["a"], a_5);
 		wilson_5.gl.uniform1f(wilson_5.uniforms["b"], b_5);
