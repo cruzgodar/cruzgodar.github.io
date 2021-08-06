@@ -169,9 +169,9 @@
 			
 			vec2 c = vec2(a, b);
 			
-			for (int iteration = 0; iteration < 100; iteration++)
+			for (int iteration = 0; iteration < 200; iteration++)
 			{
-				if (iteration == 99)
+				if (iteration == 199)
 				{
 					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 					return;
@@ -283,7 +283,6 @@
 		use_draggables: true,
 		
 		draggables_mousemove_callback: on_drag_5,
-		
 		draggables_touchmove_callback: on_drag_5
 	};
 	
@@ -337,7 +336,7 @@
 		resolution_5 = parseInt(document.querySelector("#resolution-5-input").value || 1000);
 		wilson_5.change_canvas_size(resolution_5, resolution_5);
 		
-		draw_julia_set();
+		draw_julia_set_5();
 	});
 	
 	function on_drag_5(active_draggable, x, y, event)
@@ -374,7 +373,7 @@
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightness_scale = brightnesses[Math.floor(resolution_hidden_5 * resolution_hidden_5 * .98)] / 255 * 17;
+		let brightness_scale = brightnesses[Math.floor(resolution_hidden_5 * resolution_hidden_5 * .98)] / 255 * 20;
 		
 		wilson_5.gl.uniform1f(wilson_5.uniforms["a"], a_5);
 		wilson_5.gl.uniform1f(wilson_5.uniforms["b"], b_5);
@@ -408,8 +407,9 @@
 		use_draggables: true,
 		
 		draggables_mousemove_callback: on_drag_6,
-		
 		draggables_touchmove_callback: on_drag_6,
+		
+		
 		
 		use_fullscreen: true,
 		
@@ -464,7 +464,7 @@
 		resolution_6 = parseInt(document.querySelector("#resolution-6-input").value || 1000);
 		wilson_6.change_canvas_size(resolution_6, resolution_6);
 		
-		draw_julia_set();
+		draw_julia_set_6();
 	});
 	
 	function on_drag_6(active_draggable, x, y, event)
@@ -501,13 +501,229 @@
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightness_scale = brightnesses[Math.floor(resolution_hidden_6 * resolution_hidden_6 * .98)] / 255 * 17;
+		let brightness_scale = brightnesses[Math.floor(resolution_hidden_6 * resolution_hidden_6 * .98)] / 255 * 20;
 		
 		wilson_6.gl.uniform1f(wilson_6.uniforms["a"], a_6);
 		wilson_6.gl.uniform1f(wilson_6.uniforms["b"], b_6);
 		wilson_6.gl.uniform1f(wilson_6.uniforms["brightness_scale"], brightness_scale);
 		
 		wilson_6.render.draw_frame();
+	}
+	
+	
+	
+	/////////////////////////////////////////
+	
+	
+	
+	let frag_shader_source_7 = `
+		precision highp float;
+		
+		varying vec2 uv;
+		
+		uniform float aspect_ratio;
+		
+		uniform float a;
+		uniform float b;
+		uniform float brightness_scale;
+		
+		
+		
+		void main(void)
+		{
+			vec2 z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+			vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+			float brightness = exp(-length(z));
+			
+			
+			
+			vec2 c = vec2(a, b);
+			
+			for (int iteration = 0; iteration < 200; iteration++)
+			{
+				if (iteration == 199)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					return;
+				}
+				
+				if (length(z) >= 10.0)
+				{
+					break;
+				}
+				
+				z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+				
+				brightness += exp(-length(z));
+			}
+			
+			
+			gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+		}
+	`;
+	
+	
+	
+	let options_7 =
+	{
+		renderer: "gpu",
+		
+		shader: frag_shader_source_7,
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0,
+		
+		
+		
+		use_draggables: true,
+		
+		draggables_mousemove_callback: on_drag_7,
+		draggables_touchmove_callback: on_drag_7,
+		
+		
+		
+		use_fullscreen: true,
+		
+		true_fullscreen: true,
+		
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_image_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_image_path: "/graphics/general-icons/exit-fullscreen.png",
+		
+		switch_fullscreen_callback: change_aspect_ratio_7
+	};
+	
+	let options_hidden_7 =
+	{
+		renderer: "gpu",
+		
+		shader: frag_shader_source_7,
+		
+		canvas_width: 100,
+		canvas_height: 100,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0
+	};
+	
+	
+	
+	let wilson_7 = new Wilson(document.querySelector("#output-canvas-7"), options_7);
+
+	wilson_7.render.init_uniforms(["aspect_ratio", "a", "b", "brightness_scale"]);
+
+	let draggable_7 = wilson_7.draggables.add(0, 1);
+	
+	Page.Load.AOS.elements[6].push([wilson_7.draggables.container, Page.Load.AOS.elements[6][Page.Load.AOS.elements[7].length - 1][1]]);
+	
+	window.addEventListener("resize", change_aspect_ratio_7);
+	Page.temporary_handlers["resize"].push(change_aspect_ratio_7);
+	
+	
+	
+	let wilson_hidden_7 = new Wilson(document.querySelector("#hidden-canvas-7"), options_hidden_7);
+	
+	wilson_hidden_7.render.init_uniforms(["aspect_ratio", "a", "b", "brightness_scale"]);
+	
+	
+	
+	let a_7 = 0;
+	let b_7 = 1;
+	
+	let resolution_7 = 1000;
+	
+	let resolution_hidden_7 = 100;
+
+	document.querySelector("#resolution-7-input").addEventListener("input", () =>
+	{
+		resolution_7 = parseInt(document.querySelector("#resolution-7-input").value || 1000);
+		wilson_7.change_canvas_size(resolution_7, resolution_7);
+		
+		draw_julia_set_7();
+	});
+	
+	function on_drag_7(active_draggable, x, y, event)
+	{
+		a_7 = x;
+		b_7 = y;
+		
+		draw_julia_set_7();
+	}
+	
+	//Render the first frame.
+	wilson_7.gl.uniform1f(wilson_7.uniforms["aspect_ratio"], 1);
+	wilson_hidden_7.gl.uniform1f(wilson_hidden_7.uniforms["aspect_ratio"], 1);
+	draw_julia_set_7();
+
+
+
+	function draw_julia_set_7()
+	{
+		wilson_hidden_7.gl.uniform1f(wilson_hidden_7.uniforms["a"], a_7);
+		wilson_hidden_7.gl.uniform1f(wilson_hidden_7.uniforms["b"], b_7);
+		wilson_hidden_7.gl.uniform1f(wilson_hidden_7.uniforms["brightness_scale"], 20);
+		
+		wilson_hidden_7.render.draw_frame();
+		
+		
+		
+		let pixel_data = wilson_hidden_7.render.get_pixel_data();
+		
+		let brightnesses = new Uint8Array(resolution_hidden_7 * resolution_hidden_7);
+		
+		for (let i = 0; i < resolution_hidden_7 * resolution_hidden_7; i++)
+		{
+			brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
+		}
+		
+		brightnesses.sort((a, b) => a - b);
+		
+		let brightness_scale = brightnesses[Math.floor(resolution_hidden_7 * resolution_hidden_7 * .98)] / 255 * 20;
+		
+		wilson_7.gl.uniform1f(wilson_7.uniforms["a"], a_7);
+		wilson_7.gl.uniform1f(wilson_7.uniforms["b"], b_7);
+		wilson_7.gl.uniform1f(wilson_7.uniforms["brightness_scale"], brightness_scale);
+		
+		wilson_7.render.draw_frame();
+	}
+	
+	
+	
+	function change_aspect_ratio_7()
+	{
+		if (wilson_7.fullscreen.currently_fullscreen)
+		{
+			let aspect_ratio = window.innerWidth / window.innerHeight;
+			
+			if (aspect_ratio >= 1)
+			{
+				wilson_7.change_canvas_size(resolution_7, Math.floor(resolution_7 / aspect_ratio));
+			}
+			
+			else
+			{
+				wilson_7.change_canvas_size(Math.floor(resolution_7 * aspect_ratio), resolution_7);
+			}
+			
+			wilson_7.gl.uniform1f(wilson_7.uniforms["aspect_ratio"], aspect_ratio);
+		}
+		
+		else
+		{
+			wilson_7.change_canvas_size(resolution_7, resolution_7);
+			
+			wilson_7.gl.uniform1f(wilson_7.uniforms["aspect_ratio"], 1);
+		}
+		
+		draw_julia_set_7();
 	}
 	
 	

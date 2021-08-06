@@ -465,9 +465,9 @@ function on_release(active_draggable, x, y, event)
 &#9;&#9;
 &#9;&#9;vec2 c = vec2(a, b);
 &#9;&#9;
-&#9;&#9;for (int iteration = 0; iteration &lt; 100; iteration++)
+&#9;&#9;for (int iteration = 0; iteration &lt; 200; iteration++)
 &#9;&#9;{
-&#9;&#9;&#9;if (iteration == 99)
+&#9;&#9;&#9;if (iteration == 199)
 &#9;&#9;&#9;{
 &#9;&#9;&#9;&#9;gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 &#9;&#9;&#9;&#9;return;
@@ -737,7 +737,7 @@ function draw_julia_set()
 &#9;
 &#9;brightnesses.sort((a, b) => a - b);
 &#9;
-&#9;let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)] / 255 * 17;
+&#9;let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)] / 255 * 20;
 &#9;
 &#9;wilson.gl.uniform1f(wilson.uniforms["a"], a);
 &#9;wilson.gl.uniform1f(wilson.uniforms["b"], b);
@@ -832,6 +832,165 @@ function draw_julia_set()
 
 <canvas id="output-canvas-6" class="output-canvas" data-aos="fade-up"></canvas>
 <canvas id="hidden-canvas-6" class="hidden-canvas"></canvas>
+
+
+
+!section
+
+!text s True Fullscreen
+
+<br>
+
+!begin-text-block
+	
+	This is definitely an improvement, but if you play with it a little, you&#x2019;ll quickly realize it&#x2019;s not actually doing that much differently &mdash; the canvas is still a square, and we can&#x2019;t move the draggable outside of it. The output fits inside of that square nicely, but if the applet wasn&#x2019;t dark around the edges, the border would be much more apparent. To actually take advantage of the all the screen space available, we&#x2019;ll need to modify our shader and Wilson&#x2019;s options.
+	
+!end-text-block
+
+
+
+<pre><code class="language-glsl" data-aos="fade-up">let frag_shader_source = `
+&#9;precision highp float;
+&#9;
+&#9;varying vec2 uv;
+&#9;
+&#9;uniform float aspect_ratio;
+&#9;
+&#9;uniform float a;
+&#9;uniform float b;
+&#9;uniform float brightness_scale;
+&#9;
+&#9;
+&#9;
+&#9;void main(void)
+&#9;{
+&#9;&#9;vec2 z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+&#9;&#9;
+&#9;&#9;...
+&#9;}
+`;</code></pre>
+
+<br>
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;...
+&#9;
+&#9;use_fullscreen: true,
+&#9;
+&#9;true_fullscreen: true,
+&#9;
+&#9;use_fullscreen_button: true,
+&#9;
+&#9;enter_fullscreen_button_image_path: "/path/to/enter-fullscreen.png",
+&#9;exit_fullscreen_button_image_path: "/path/to/exit-fullscreen.png"
+};
+
+...
+
+wilson.render.init_uniforms(["aspect_ratio", "a", "b", "brightness_scale"]);
+wilson_hidden.render.init_uniforms(["aspect_ratio", "a", "b", "brightness_scale"]);
+
+//Render the first frame.
+wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
+wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], 1);
+draw_julia_set();</code></pre>
+
+
+
+<br>
+
+!begin-text-block
+	
+	Now we&#x2019;re prepared for a canvas that isn&#x2019;t square, but we need to actually resize the canvas whenever we enter or exit fullscreen. We can update the options once again to add a callback function that&#x2019;s called whenever this happens, and on our end, we can add a listener to resize the canvas whenever the window is resized.
+	
+!end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;...
+&#9;
+&#9;use_fullscreen: true,
+&#9;
+&#9;true_fullscreen: true,
+&#9;
+&#9;use_fullscreen_button: true,
+&#9;
+&#9;enter_fullscreen_button_image_path: "/path/to/enter-fullscreen.png",
+&#9;exit_fullscreen_button_image_path: "/path/to/exit-fullscreen.png",
+&#9;
+&#9;switch_fullscreen_callback: change_aspect_ratio
+};
+
+...
+
+function change_aspect_ratio()
+{
+	if (wilson.fullscreen.currently_fullscreen)
+	{
+		let aspect_ratio = window.innerWidth / window.innerHeight;
+		
+		if (aspect_ratio >= 1)
+		{
+			wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+		}
+		
+		else
+		{
+			wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+		}
+		
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
+	}
+	
+	else
+	{
+		wilson.change_canvas_size(resolution, resolution);
+		
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
+	}
+}
+
+window.addEventListener("resize", change_aspect_ratio);</code></pre>
+
+
+
+<br>
+
+!begin-text-block
+	
+	Note that it would be a bad idea to resize the hidden canvas along with the visible one here &mdash; if we did that, we&#2019;d get more dark pixels in narrow aspect ratios, so the brightness scale would jump up unnaturally when we entered fullscreen or narrowed the window.
+	
+!end-text-block
+
+
+
+!begin-text-boxes
+	
+	resolution-7 1000 Resolution
+	
+!end-text-boxes
+
+
+
+<canvas id="output-canvas-7" class="output-canvas" data-aos="fade-up"></canvas>
+<canvas id="hidden-canvas-7" class="hidden-canvas"></canvas>
+
+
+
+!section
+
+!text s Interactivity
+
+<br>
+
+!begin-text-block
+	
+	Now <em>this</em> is a Julia set explorer! We could publish this as-is, but there&#x2019;s one last improvement we can make: adding the ability to pan and zoom into the fractals. This is the only part of Wilson that we haven&#x2019;t discussed yet, and it will require slightly more work on our end than the others, since panning and zooming aren&#x2019;t the only possible effects we could want from interacting with the canvas.
+	
+!end-text-block
 
 
 

@@ -118,7 +118,7 @@ let Site =
 		setInterval(() =>
 		{
 			window.dispatchEvent(new Event("resize"));
-		}, 1000);
+		}, 5000);
 		
 		
 		

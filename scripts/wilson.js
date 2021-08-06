@@ -78,7 +78,7 @@ class Wilson
 			enter_fullscreen_button_image_path
 			exit_fullscreen_button_image_path
 			
-			resize_callback
+			switch_fullscreen_callback
 		}
 	*/
 	
@@ -262,6 +262,10 @@ class Wilson
 			
 			this.fullscreen.enter_fullscreen_button_image_path = options.enter_fullscreen_button_image_path;
 			this.fullscreen.exit_fullscreen_button_image_path = options.exit_fullscreen_button_image_path;
+			
+			
+			
+			this.fullscreen.switch_fullscreen_callback = typeof options.switch_fullscreen_callback === "undefined" ? false : options.switch_fullscreen_callback;
 			
 			
 						
@@ -1150,7 +1154,7 @@ class Wilson
 		//True to fill the entire screen (which will strech the aspect ratio unless there's specific code to account for that), and false to letterbox.
 		true_fullscreen: false,
 
-		resize_callback: null,
+		switch_fullscreen_callback: null,
 
 		fullscreen_old_scroll: 0,
 		fullscreen_locked_scroll: 0,
@@ -1418,7 +1422,7 @@ class Wilson
 							//We do this to accomodate weirdly-set-up applets like the ones with draggable inputs, since they rely on their canvas container to keep the content below flowing properly.
 							this.parent.canvas.parentNode.parentNode.classList.add("wilson-black-background");
 							
-							try {this.resize_callback();}
+							try {this.switch_fullscreen_callback();}
 							catch(ex) {}
 							
 							Page.Load.AOS.on_resize();
@@ -1437,7 +1441,7 @@ class Wilson
 						{
 							this.canvases_to_resize[i].classList.add("wilson-letterboxed-fullscreen-canvas");
 							
-							try {this.resize_callback();}
+							try {this.switch_fullscreen_callback();}
 							catch(ex) {}
 							
 							Page.Load.AOS.on_resize();
@@ -1568,7 +1572,7 @@ class Wilson
 						
 						
 						
-						try {this.resize_callback();}
+						try {this.switch_fullscreen_callback();}
 						catch(ex) {}
 						
 						
@@ -1620,11 +1624,6 @@ class Wilson
 			
 			
 			
-			try {this.resize_callback();}
-			catch(ex) {}
-			
-			
-			
 			setTimeout(() =>
 			{
 				if (window.innerWidth / window.innerHeight < 1 && !this.true_fullscreen)
@@ -1638,11 +1637,6 @@ class Wilson
 				}
 				
 				this.fullscreen_locked_scroll = window.scrollY;
-				
-				
-				
-				try {this.resize_callback();}
-				catch(ex) {}
 			}, 500);
 		},
 
