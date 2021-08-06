@@ -101,6 +101,11 @@
 	
 	let draggable_3 = wilson_3.draggables.add(0, 1);
 	
+	wilson_3.draggables.container.setAttribute("data-aos-offset", 1000000);
+	wilson_3.draggables.container.setAttribute("data-aos-delay", 0);
+	
+	Page.Load.AOS.elements[2].push([wilson_3.draggables.container, Page.Load.AOS.elements[2][Page.Load.AOS.elements[2].length - 1][1]]);
+	
 	
 	
 	
@@ -219,6 +224,8 @@
 
 	let draggable_4 = wilson_4.draggables.add(0, 1);
 	
+	Page.Load.AOS.elements[3].push([wilson_4.draggables.container, Page.Load.AOS.elements[3][Page.Load.AOS.elements[3].length - 1][1]]);
+	
 	
 	
 	let resolution_4 = 1000;
@@ -302,6 +309,8 @@
 
 	let draggable_5 = wilson_5.draggables.add(0, 1);
 	
+	Page.Load.AOS.elements[4].push([wilson_5.draggables.container, Page.Load.AOS.elements[4][Page.Load.AOS.elements[4].length - 1][1]]);
+	
 	
 	
 	let wilson_hidden_5 = new Wilson(document.querySelector("#hidden-canvas-5"), options_hidden_5);
@@ -309,6 +318,9 @@
 	wilson_hidden_5.render.init_uniforms(["a", "b", "brightness_scale"]);
 	
 	
+	
+	let a_5 = 0;
+	let b_5 = 1;
 	
 	let resolution_5 = 1000;
 	
@@ -319,20 +331,26 @@
 		resolution_5 = parseInt(document.querySelector("#resolution-5-input").value || 1000);
 		wilson_5.change_canvas_size(resolution_5, resolution_5);
 		
-		draw_julia_set(a_5, b_5);
+		draw_julia_set();
 	});
 	
 	function on_drag_5(active_draggable, x, y, event)
 	{
-		draw_julia_set_5(x, y);
+		a_5 = x;
+		b_5 = y;
+		
+		draw_julia_set_5();
 	}
+	
+	//Render the first frame.
+	draw_julia_set_5();
 
 
 
-	function draw_julia_set_5(a, b)
+	function draw_julia_set_5()
 	{
-		wilson_hidden_5.gl.uniform1f(wilson_hidden_5.uniforms["a"], a);
-		wilson_hidden_5.gl.uniform1f(wilson_hidden_5.uniforms["b"], b);
+		wilson_hidden_5.gl.uniform1f(wilson_hidden_5.uniforms["a"], a_5);
+		wilson_hidden_5.gl.uniform1f(wilson_hidden_5.uniforms["b"], b_5);
 		wilson_hidden_5.gl.uniform1f(wilson_hidden_5.uniforms["brightness_scale"], 20);
 		
 		wilson_hidden_5.render.draw_frame();
@@ -352,8 +370,8 @@
 		
 		let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .99)] / 255 * 15;
 		
-		wilson_5.gl.uniform1f(wilson_5.uniforms["a"], a);
-		wilson_5.gl.uniform1f(wilson_5.uniforms["b"], b);
+		wilson_5.gl.uniform1f(wilson_5.uniforms["a"], a_5);
+		wilson_5.gl.uniform1f(wilson_5.uniforms["b"], b_5);
 		wilson_5.gl.uniform1f(wilson_5.uniforms["brightness_scale"], brightness_scale);
 		
 		wilson_5.render.draw_frame();

@@ -353,11 +353,9 @@ class Wilson
 			
 			this.draggables.container.classList.add("wilson-draggables-container");
 			
-			this.draggables.container.setAttribute("data-aos", "fade-in");
+			this.draggables.container.setAttribute("data-aos", "fade-up");
 			
 			this.draggables.container.setAttribute("data-aos-delay-increase", "0");
-			
-			this.canvas.setAttribute("data-aos-delay-increase", "0");
 			
 			applet_canvas_container.appendChild(this.draggables.container);
 			
@@ -863,11 +861,16 @@ class Wilson
 			//Figure out which marker, if any, this is referencing.
 			for (let i = 0; i < this.num_draggables; i++)
 			{
-				if (e.target.className.includes(`wilson-draggable-${i}`))
+				if (e.target.className.includes(`wilson-draggable-${i}`) && e.target.parentNode === this.container)
 				{
 					e.preventDefault();
 					
 					this.active_draggable = i;
+					
+					this.currently_dragging = true;
+					
+					this.mouse_x = e.clientX;
+					this.mouse_y = e.clientY;
 					
 					try {this.mousedown_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]), e)}
 					catch(ex) {}
@@ -875,11 +878,6 @@ class Wilson
 					break;
 				}
 			}
-			
-			this.currently_dragging = true;
-			
-			this.mouse_x = e.clientX;
-			this.mouse_y = e.clientY;
 		},
 		
 		
@@ -905,18 +903,22 @@ class Wilson
 		
 		handle_mousemove_event(e)
 		{
-			let new_mouse_x = e.clientX;
-			let new_mouse_y = e.clientY;
-			
-			let mouse_x_delta = new_mouse_x - this.mouse_x;
-			let mouse_y_delta = new_mouse_y - this.mouse_y;
-			
-			this.mouse_x = new_mouse_x;
-			this.mouse_y = new_mouse_y;
-			
 			if (this.currently_dragging && this.active_draggable !== -1)
 			{
 				e.preventDefault();
+				
+				
+				
+				let new_mouse_x = e.clientX;
+				let new_mouse_y = e.clientY;
+				
+				let mouse_x_delta = new_mouse_x - this.mouse_x;
+				let mouse_y_delta = new_mouse_y - this.mouse_y;
+				
+				this.mouse_x = new_mouse_x;
+				this.mouse_y = new_mouse_y;
+				
+				
 				
 				let rect = this.container.getBoundingClientRect();
 				
@@ -983,11 +985,16 @@ class Wilson
 			//Figure out which marker, if any, this is referencing.
 			for (let i = 0; i < this.num_draggables; i++)
 			{
-				if (e.target.className.includes(`wilson-draggable-${i}`))
+				if (e.target.className.includes(`wilson-draggable-${i}`) && e.target.parentNode === this.container)
 				{
 					e.preventDefault();
 					
 					this.active_draggable = i;
+					
+					this.currently_dragging = true;
+					
+					this.mouse_x = e.touches[0].clientX;
+					this.mouse_y = e.touches[0].clientY;
 					
 					try {this.touchstart_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]), e)}
 					catch(ex) {}
@@ -995,11 +1002,6 @@ class Wilson
 					break;
 				}
 			}
-			
-			this.currently_dragging = true;
-			
-			this.mouse_x = e.touches[0].clientX;
-			this.mouse_y = e.touches[0].clientY;
 		},
 		
 		
@@ -1029,10 +1031,13 @@ class Wilson
 			{
 				e.preventDefault();
 				
+				this.mouse_x = e.touches[0].clientX;
+				this.mouse_y = e.touches[0].clientY;
+				
 				let rect = this.container.getBoundingClientRect();
 				
-				let row = e.touches[0].clientY - rect.top;
-				let col = e.touches[0].clientX - rect.left;
+				let row = this.mouse_y - rect.top;
+				let col = this.mouse_x - rect.left;
 				
 				
 				
