@@ -1,0 +1,83 @@
+<head><title>Wilson: Applets Made Easy</title></head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Wilson: Applets Made Easy
+
+
+
+!text b j Wilson is a lightweight JavaScript library for creating interactive applets. It handles boilerplate tasks like capturing mouse and touch input, makes parallelized gpu-based applets as easy as writing a shader, and even provides a robust and customizable fullscreen toolkit. All of this streamlines your work and simplifies your applets, letting you focus on the code that matters.
+
+
+
+!text b c [Finished julia set canvas]
+
+
+
+<div style="height: 20vh"></div>
+
+
+
+<div class="container">
+	<div class="wilson-section">
+		!text s Guide
+
+		<br>
+
+		!text b c Learn the main features of Wilson by creating the above Julia set explorer from scratch, one step at a time.
+
+		!begin-text-buttons
+			
+			guide Explore
+			
+		!end-text-buttons
+	</div>
+	
+	
+	
+	<div class="wilson-section">
+		!text s Docs
+
+		<br>
+
+		!text b c View the full documentation.
+
+		!begin-text-buttons
+			
+			docs Browse
+			
+		!end-text-buttons
+	</div>
+</div>
+
+
+
+!footer
+
+
+
+<script>
+	DEBUG = true;
+	
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Wilson: Applets Made Easy",
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>

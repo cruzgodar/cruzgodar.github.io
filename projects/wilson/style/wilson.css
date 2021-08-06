@@ -1,0 +1,46 @@
+.container
+{
+	width: 70vw;
+	margin: 0 auto;
+	
+	display: flex;
+	flex-direction: row;
+	
+	justify-content: space-between;
+}
+
+.container .wilson-section, .container .body-text, .container .section-text, .container .text-buttons
+{
+	width: 30vw;
+}
+
+.container .text-buttons
+{
+	margin-top: 5vh;
+}
+
+
+
+@media (max-aspect-ratio: 9/16), (max-width: 700px)
+{
+	.container
+	{
+		width: 90vw;
+		margin: 0 auto;
+		
+		display: flex;
+		flex-direction: column;
+		
+		justify-content: space-between;
+	}
+
+	.container .wilson-section, .container .body-text, .container .section-text, .container .text-buttons
+	{
+		width: 90vw;
+	}
+	
+	.container .wilson-section:first-child
+	{
+		margin-bottom: 15vh;
+	}
+}
