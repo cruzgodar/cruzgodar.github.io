@@ -128,6 +128,7 @@
 	function on_grab_3(active_draggable, x, y, event)
 	{
 		wilson_3.change_canvas_size(small_resolution_3, small_resolution_3);
+		wilson_3.render.draw_frame(generate_julia_set_1(wilson_3, x, y, small_resolution_3));
 	}
 
 	function on_drag_3(active_draggable, x, y, event)
@@ -176,7 +177,7 @@
 					return;
 				}
 				
-				if (length(z) >= 2.0)
+				if (length(z) >= 10.0)
 				{
 					break;
 				}
@@ -319,6 +320,11 @@
 	
 	
 	
+	wilson_5.canvas.parentNode.parentNode.style.setProperty("margin-bottom", 0, "important");
+	wilson_hidden_5.canvas.parentNode.parentNode.style.setProperty("margin-top", 0, "important");
+	
+	
+	
 	let a_5 = 0;
 	let b_5 = 1;
 	
@@ -375,6 +381,133 @@
 		wilson_5.gl.uniform1f(wilson_5.uniforms["brightness_scale"], brightness_scale);
 		
 		wilson_5.render.draw_frame();
+	}
+	
+	
+	
+	/////////////////////////////////////////
+	
+	
+	
+	let options_6 =
+	{
+		renderer: "gpu",
+		
+		shader: frag_shader_source_4,
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0,
+		
+		
+		
+		use_draggables: true,
+		
+		draggables_mousemove_callback: on_drag_6,
+		
+		draggables_touchmove_callback: on_drag_6,
+		
+		use_fullscreen: true,
+		
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_image_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_image_path: "/graphics/general-icons/exit-fullscreen.png"
+	};
+	
+	let options_hidden_6 =
+	{
+		renderer: "gpu",
+		
+		shader: frag_shader_source_4,
+		
+		canvas_width: 100,
+		canvas_height: 100,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0
+	};
+	
+	
+	
+	let wilson_6 = new Wilson(document.querySelector("#output-canvas-6"), options_6);
+
+	wilson_6.render.init_uniforms(["a", "b", "brightness_scale"]);
+
+	let draggable_6 = wilson_6.draggables.add(0, 1);
+	
+	Page.Load.AOS.elements[5].push([wilson_6.draggables.container, Page.Load.AOS.elements[5][Page.Load.AOS.elements[5].length - 1][1]]);
+	
+	
+	
+	let wilson_hidden_6 = new Wilson(document.querySelector("#hidden-canvas-6"), options_hidden_6);
+	
+	wilson_hidden_6.render.init_uniforms(["a", "b", "brightness_scale"]);
+	
+	
+	
+	let a_6 = 0;
+	let b_6 = 1;
+	
+	let resolution_6 = 1000;
+	
+	let resolution_hidden_6 = 100;
+
+	document.querySelector("#resolution-6-input").addEventListener("input", () =>
+	{
+		resolution_6 = parseInt(document.querySelector("#resolution-6-input").value || 1000);
+		wilson_6.change_canvas_size(resolution_6, resolution_6);
+		
+		draw_julia_set();
+	});
+	
+	function on_drag_6(active_draggable, x, y, event)
+	{
+		a_6 = x;
+		b_6 = y;
+		
+		draw_julia_set_6();
+	}
+	
+	//Render the first frame.
+	draw_julia_set_6();
+
+
+
+	function draw_julia_set_6()
+	{
+		wilson_hidden_6.gl.uniform1f(wilson_hidden_6.uniforms["a"], a_6);
+		wilson_hidden_6.gl.uniform1f(wilson_hidden_6.uniforms["b"], b_6);
+		wilson_hidden_6.gl.uniform1f(wilson_hidden_6.uniforms["brightness_scale"], 20);
+		
+		wilson_hidden_6.render.draw_frame();
+		
+		
+		
+		let pixel_data = wilson_hidden_6.render.get_pixel_data();
+		
+		let brightnesses = new Uint8Array(resolution_hidden_6 * resolution_hidden_6);
+		
+		for (let i = 0; i < resolution_hidden_6 * resolution_hidden_6; i++)
+		{
+			brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
+		}
+		
+		brightnesses.sort((a, b) => a - b);
+		
+		let brightness_scale = brightnesses[Math.floor(resolution_hidden_6 * resolution_hidden_6 * .98)] / 255 * 17;
+		
+		wilson_6.gl.uniform1f(wilson_6.uniforms["a"], a_6);
+		wilson_6.gl.uniform1f(wilson_6.uniforms["b"], b_6);
+		wilson_6.gl.uniform1f(wilson_6.uniforms["brightness_scale"], brightness_scale);
+		
+		wilson_6.render.draw_frame();
 	}
 	
 	

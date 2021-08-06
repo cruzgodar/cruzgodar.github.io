@@ -87,6 +87,11 @@ dfn
 	font-style: normal;
 }
 
+code
+{
+	font-family: Menlo, Monaco, Consolas, monospace;
+}
+
 pre code
 {
 	position: relative;

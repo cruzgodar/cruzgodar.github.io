@@ -84,8 +84,6 @@
 			
 			use_fullscreen: true,
 			
-			canvases_to_resize: [document.querySelector("#output-canvas")],
-			
 			use_fullscreen_button: true,
 			
 			enter_fullscreen_button_image_path: "/graphics/general-icons/enter-fullscreen.png",

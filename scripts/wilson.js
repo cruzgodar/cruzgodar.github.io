@@ -244,7 +244,7 @@ class Wilson
 			
 			
 			
-			this.fullscreen.use_fullscreen_button = typeof options.use_fullscreen_button === "undefined" ? true : options.use_fullscreen_button;
+			this.fullscreen.use_fullscreen_button = typeof options.use_fullscreen_button === "undefined" ? false : options.use_fullscreen_button;
 			
 			
 			
@@ -1240,6 +1240,12 @@ class Wilson
 				let element = document.createElement("style");
 				
 				element.textContent = `
+					.wilson-applet-canvas-container.wilson-fullscreen
+					{
+						margin-top: 0 !important;
+						margin-bottom: 0 !important;
+					}
+					
 					.wilson-true-fullscreen-canvas
 					{
 						width: 100vw !important;
@@ -1318,15 +1324,17 @@ class Wilson
 			
 			
 			
-			window.addEventListener("resize", this.on_resize);
-			Page.temporary_handlers["resize"].push(this.on_resize);
+			let on_resize_bound = this.on_resize.bind(this);
+			window.addEventListener("resize", on_resize_bound);
+			Page.temporary_handlers["resize"].push(on_resize_bound);
 			
-			window.addEventListener("scroll", this.on_scroll);
-			Page.temporary_handlers["scroll"].push(this.on_scroll);
+			let on_scroll_bound = this.on_scroll.bind(this);
+			window.addEventListener("scroll", on_scroll_bound);
+			Page.temporary_handlers["scroll"].push(on_scroll_bound);
 			
-			let bound_function = this.handle_keypress_event.bind(this);
-			document.documentElement.addEventListener("keydown", bound_function);
-			Page.temporary_handlers["keydown"].push(this.on_scroll);
+			let on_keypress_bound = this.on_keypress.bind(this);
+			document.documentElement.addEventListener("keydown", on_keypress_bound);
+			Page.temporary_handlers["keydown"].push(on_keypress_bound);
 		},
 
 
@@ -1353,6 +1361,7 @@ class Wilson
 				setTimeout(() =>
 				{
 					this.parent.canvas.classList.add("wilson-fullscreen");
+					this.parent.canvas.parentNode.parentNode.classList.add("wilson-fullscreen");
 					
 					
 					
@@ -1491,6 +1500,7 @@ class Wilson
 				setTimeout(() =>
 				{
 					this.parent.canvas.parentNode.classList.remove("wilson-fullscreen");
+					this.parent.canvas.parentNode.parentNode.classList.remove("wilson-fullscreen");
 					
 					
 					
@@ -1650,7 +1660,7 @@ class Wilson
 		
 		
 		
-		handle_keypress_event(e)
+		on_keypress(e)
 		{
 			if (e.keyCode === 27 && this.currently_fullscreen)
 			{

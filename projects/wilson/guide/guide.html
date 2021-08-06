@@ -392,6 +392,7 @@ wilson.render.draw_frame(generate_julia_set(0, 1, small_resolution));
 function on_grab(active_draggable, x, y, event)
 {
 &#9;wilson.change_canvas_size(small_resolution, small_resolution);
+&#9;wilson.render.draw_frame(generate_julia_set(x, y, small_resolution));
 }
 
 function on_drag(active_draggable, x, y, event)
@@ -536,7 +537,6 @@ function on_release(active_draggable, x, y, event)
 &#9;use_draggables: true,
 &#9;
 &#9;draggables_mousemove_callback: on_drag,
-&#9;
 &#9;draggables_touchmove_callback: on_drag
 };
 
@@ -650,9 +650,10 @@ function on_drag(active_draggable, x, y, event)
 
 <pre><code class="language-css" data-aos="fade-up">#hidden-canvas
 {
-&#9;position: absolute;
-&#9;right: -100;
-&#9;bottom: -100;
+&#9;position: fixed;
+&#9;left: -100px;
+&#9;width: 10px;
+&#9;height: 10px;
 }</code></pre>
 
 <br>
@@ -769,7 +770,7 @@ function draw_julia_set()
 
 <div id="container" style="position: relative">
 	<canvas id="output-canvas-5" class="output-canvas" data-aos="fade-up"></canvas>
-	<canvas id="hidden-canvas-5" class="output-canvas hidden-canvas" data-aos="fade-up" data-aos-delay-increase="0"></canvas>
+	<canvas id="hidden-canvas-5" class="output-canvas hidden-canvas-superimposed" data-aos="fade-up" data-aos-delay-increase="0"></canvas>
 </div>
 
 
@@ -782,9 +783,55 @@ function draw_julia_set()
 
 !begin-text-block
 	
-	Next on the list is making better use of screen space. While JavaScript has a built-in fullscreen API, it is often problematic for use with applets -- it streches the content to fill the screen whether we want it to or not, and for interactive applets, it&#x2019;s effectively unusable on mobile, since swiping down always exits fullscreen. Wilson provides its own fullscreen toolkit to help with this &mdash; let&#x2019;s have a look at how it works.
+	Next on the list is making better use of screen space. While JavaScript has a built-in fullscreen API, it&#x2019;s often problematic for use with applets -- it streches the content to fill the screen whether we want it to or not, and it renders any interactivity effectively unusable on mobile, since swiping down always exits fullscreen. Wilson provides its own toolkit to help with this &mdash; let&#x2019;s have a look at how it works.
+	
+	As usual, we need to update the options. The bare minimum is adding <code>use_fullscreen: true</code>, but on its own, we have to handle entering and exiting fullscreen on our own using <code>wilson.fullscreen.switch_fullscreen()</code>. Instead, we can add the line <code>use_fullscreen_button: true</code>, and Wilson will place a small button in the top-right of our canvas that enters or exits fullscreen when pressed. We also need to tell Wilson where the icons for that button are located &mdash; we can use our own icons, but let&#x2019;s stick with the deafults.
 	
 !end-text-block
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;renderer: "gpu",
+&#9;
+&#9;shader: frag_shader_source,
+&#9;
+&#9;canvas_width: 1000,
+&#9;canvas_height: 1000,
+&#9;
+&#9;world_width: 4,
+&#9;world_height: 4,
+&#9;world_center_x: 0,
+&#9;world_center_y: 0,
+&#9;
+&#9;
+&#9;
+&#9;use_draggables: true,
+&#9;
+&#9;draggables_mousemove_callback: on_drag,
+&#9;draggables_touchmove_callback: on_drag,
+&#9;
+&#9;
+&#9;
+&#9;use_fullscreen: true,
+&#9;
+&#9;use_fullscreen_button: true,
+&#9;
+&#9;enter_fullscreen_button_image_path: "/path/to/enter-fullscreen.png",
+&#9;exit_fullscreen_button_image_path: "/path/to/exit-fullscreen.png"
+};</code></pre>
+
+
+
+!begin-text-boxes
+	
+	resolution-6 1000 Resolution
+	
+!end-text-boxes
+
+
+
+<canvas id="output-canvas-6" class="output-canvas" data-aos="fade-up"></canvas>
+<canvas id="hidden-canvas-6" class="hidden-canvas"></canvas>
 
 
 
