@@ -90,9 +90,11 @@ dfn
 pre code
 {
 	position: relative;
-	width: 70vw;
+	width: calc(70vw - 24px);
 	margin: 0 auto;
 	tab-size: 4;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
 }
 
 
@@ -283,9 +285,14 @@ img
 /* Compact layout: reduce margins. */
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
-	.heading-text, .section-text, .body-text, .date-text, .line-break, pre code
+	.heading-text, .section-text, .body-text, .date-text, .line-break
 	{
 		width: 90vw;
+	}
+	
+	pre code
+	{
+		width: calc(90vw - 24px);
 	}
 	
 	.line-break

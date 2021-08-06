@@ -6,12 +6,12 @@
 	
 	document.querySelector("#guide-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("guide/guide.html");
+		Page.Navigation.redirect("/projects/wilson/guide/guide.html");
 	});
 	
 	document.querySelector("#docs-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("docs/docs.html");
+		Page.Navigation.redirect("/projects/wilson/docs/docs.html");
 	});
 	
 	

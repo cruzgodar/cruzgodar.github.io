@@ -82,7 +82,7 @@
 			
 			
 			
-			use_fullscreen: false,
+			use_fullscreen: true,
 			
 			canvases_to_resize: [document.querySelector("#output-canvas")],
 			

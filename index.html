@@ -78,6 +78,8 @@
 	
 	<script src="/scripts/vara.min.js"></script>
 	
+	<script src="/scripts/highlight.min.js"></script>
+	
 	<script src="/scripts/js-bundle.min.js"></script>
 	
 	<script src="/scripts/wilson.js"></script>
@@ -93,6 +95,12 @@
 		link.setAttribute("rel", "stylesheet");
 		link.setAttribute("type", "text/css");
 		link.setAttribute("href", "/style/aos.min.css");
+		document.head.appendChild(link);
+		
+		link = document.createElement("link");
+		link.setAttribute("rel", "stylesheet");
+		link.setAttribute("type", "text/css");
+		link.setAttribute("href", "/style/highlight.min.css");
 		document.head.appendChild(link);
 		
 		link = document.createElement("link");

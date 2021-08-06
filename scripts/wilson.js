@@ -86,8 +86,11 @@ class Wilson
 	{
 		this.canvas = canvas;
 		
-		this.canvas_width = parseInt(this.canvas.getAttribute("width"));
-		this.canvas_height = parseInt(this.canvas.getAttribute("height"));
+		this.canvas_width = typeof options.canvas_width === "undefined" ? parseInt(this.canvas.getAttribute("width")) : options.canvas_width;
+		this.canvas_height = typeof options.canvas_height === "undefined" ? parseInt(this.canvas.getAttribute("height")) : options.canvas_height;
+		
+		this.canvas.setAttribute("width", this.canvas_width);
+		this.canvas.setAttribute("height", this.canvas_height);
 		
 		
 		
