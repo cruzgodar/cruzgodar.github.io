@@ -285,6 +285,14 @@ class Wilson
 				.wilson-output-canvas-container
 				{
 					position: relative;
+					-webkit-user-select: none;
+					user-select: none;
+				}
+				
+				.wilson-applet-canvas-container
+				{
+					-webkit-user-select: none;
+					user-select: none;
 				}
 				
 				.wilson-center-content
@@ -697,7 +705,7 @@ class Wilson
 				element.textContent = `
 					.wilson-output-canvas-container
 					{
-						position: absolute;
+						position: relative;
 						width: fit-content;
 					}
 
@@ -710,8 +718,8 @@ class Wilson
 					{
 						position: absolute;
 						
-						user-select: none;
 						-webkit-user-select: none;
+						user-select: none;
 					}
 
 					.wilson-draggable
@@ -729,8 +737,9 @@ class Wilson
 						border-radius: 50%;
 						
 						touch-action: none;
-						user-select: none;
+						-webkit-touch-callout: none;
 						-webkit-user-select: none;
+						user-select: none;
 						
 						cursor: pointer;
 						
@@ -814,6 +823,10 @@ class Wilson
 			this.world_coordinates.push([x, y]);
 			
 			this.container.appendChild(element);
+			
+			
+			
+			return element;
 		},
 		
 		
@@ -831,7 +844,7 @@ class Wilson
 					
 					this.active_draggable = i;
 					
-					try {this.mousedown_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]))}
+					try {this.mousedown_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]), e)}
 					catch(ex) {}
 					
 					break;
@@ -854,7 +867,7 @@ class Wilson
 				
 				this.last_active_draggable = this.active_draggable;
 				
-				try {this.mouseup_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]))}
+				try {this.mouseup_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]), e)}
 				catch(ex) {}
 			}
 			
@@ -931,7 +944,7 @@ class Wilson
 				
 				
 				
-				try {this.mousemove_callback(this.active_draggable, x, y)}
+				try {this.mousemove_callback(this.active_draggable, x, y, e)}
 				catch(ex) {}
 			}
 		},
@@ -951,7 +964,7 @@ class Wilson
 					
 					this.active_draggable = i;
 					
-					try {this.touchstart_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]))}
+					try {this.touchstart_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]), e)}
 					catch(ex) {}
 					
 					break;
@@ -974,7 +987,7 @@ class Wilson
 				
 				this.last_active_draggable = this.active_draggable;
 				
-				try {this.touchend_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]))}
+				try {this.touchend_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]), e)}
 				catch(ex) {}
 			}
 			
@@ -1042,7 +1055,7 @@ class Wilson
 				
 				
 				
-				try {this.mousemove_callback(this.active_draggable, x, y)}
+				try {this.touchmove_callback(this.active_draggable, x, y, e)}
 				catch(ex) {}
 			}
 		},
@@ -1854,8 +1867,6 @@ class Wilson
 			
 			e.preventDefault();
 			
-			this.mouse_x = e.touches[0].clientX;
-			this.mouse_y = e.touches[0].clientY;
 			
 			
 			

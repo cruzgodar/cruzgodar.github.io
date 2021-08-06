@@ -880,6 +880,11 @@ let Settings =
 				{
 					width: 50vw;
 				}
+				
+				pre code
+				{
+					width: calc(50vw - 24px);
+				}
 			`);
 			
 			element.id = "ultrawide-margin-adjust";

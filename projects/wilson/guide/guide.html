@@ -16,7 +16,7 @@
 	
 	In this guide, we&#x2019;ll use Wilson to create the Julia set explorer featured on the main page. We&#x2019;ll do this one step at a time, starting with the simplest and most stripped-down version possible and gradually adding features. In every JS code block, properties and methods defined by Wilson are bolded &mdash; click on one to pull up its documentation.
 	
-	First, some background: a Julia set is a famous type of fractal closely related to the Mandelbrot set. Unlike the Mandelbrot, though, there are infinitely many Julia sets, each one corresponding to a complex number \(c\). Because of this, Julia set explorer applets often focus on generating different Julia sets rather than zooms of a single one, and this is where we&#x2019;ll start too. Right now, let&#x2019;s not worry about interactivity: we&#x2019;ll just have the user enter the complex number \(c\) and display the Julia set corresponding to it.
+	First, some background: a Julia set is a famous type of fractal closely related to the Mandelbrot set. Unlike the Mandelbrot, though, there are infinitely many Julia sets, each one corresponding to a different complex number. Because of this, Julia set applets often focus on generating different Julia sets rather than zooms of a single one, and this is where we&#x2019;ll start too. Right now, let&#x2019;s not worry about interactivity: we&#x2019;ll just have the user enter the complex number \(c\) and display the Julia set corresponding to it.
 	
 	Once we&#x2019;ve included wilson.js, we need to make a canvas and some input fields in the HTML.
 	
@@ -51,7 +51,7 @@
 
 !begin-text-block
 	
-	This obviously doesn&#x2019;t look too great, and the displayed canvases on this page will be styled, but the CSS will be omitted for brevity.
+	This obviously doesn&#x2019;t look too great. The displayed canvases and input fields on this page will be styled, but the CSS will be omitted for brevity.
 	
 	On the JS side, we need to tell Wilson we want it to work with this canvas.
 	
@@ -92,7 +92,7 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 	
 	Those initial values of 500 are just placeholders &mdash; we change them whenever the generate button is pressed. Now we just need to write a function that generates a Julia set given these parameters. For that function, we&#x2019;ll need to convert between pixel coordinates on the canvas and complex numbers in the plane. This is a common enough occurance in math applets that Wilson has built-in functions for handling it: we need to add information in the options about the &#x201C;world coordinates&#x201D;, as Wilson calls them, and then we can call <code>wilson.utils.interpolate.canvas_to_world</code> and <code>wilson.utils.interpolate.world_to_canvas</code>, which convert between pairs (row, col) of canvas coordinates and (x, y) of world coordinates. Note that <code>row</code> increases from top to bottom, while <code>y</code> does the opposite.
 	
-	The algorithm to color a single point \(z_0\) of the Julia set corresponding to \(c = a + bi\) is relatively simple: with \(f(z) = z^2 + c\), we let \(z_1 = f(z_0)\), \(z_2 = f(z_1)\), and so on. If the \(z_n\) grow without bound, the point is <em>not</em> in the Julia set, and we give the point \(z_0\) a color based on how quickly it grew. If the \(z_n\) stay bounded, then we color \(z_0\) black. In practice, we pick a maximum value for \(n\), say 50, and see if the sequence is smaller than a certain bound after that many iterations. It can be shown that if the magnitude of \(z\) is ever larger than 2, then it will grow without bound, so that&#x2019;s the typical threshhold to measure against.
+	The algorithm to color a single point \(z_0\) of the Julia set corresponding to \(c = a + bi\) is relatively simple: with \(f(z) = z^2 + c\), we let \(z_1 = f(z_0)\), \(z_2 = f(z_1)\), and so on. If the \(z_n\) grow without bound, then the point \(z_0\) is <em>not</em> in the Julia set, and we give it a color based on how quickly it grew. If the \(z_n\) stay bounded, then \(z_0\) is in the set, and we color it black. In practice, we pick a maximum value for \(n\), say 50, and see if the sequence is smaller than a certain bound after that many iterations. It can be shown that if the magnitude of any \(z_n\) is ever larger than 2, then the subsequent terms will grow without bound, so that&#x2019;s the typical threshhold to measure against.
 	
 !end-text-block
 
@@ -113,7 +113,7 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 
 <br>
 
-<pre><code class="language-js" data-aos="fade-up">function generate_julia_set(wilson, a, b, resolution)
+<pre><code class="language-js" data-aos="fade-up">function generate_julia_set(a, b, resolution)
 {
 &#9;let brightnesses = new Array(resolution * resolution);
 &#9;let max_brightness = 0;
@@ -189,8 +189,26 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 &#9;
 &#9;wilson.change_canvas_size(resolution, resolution);
 &#9;
-&#9;wilson.render.draw_frame(generate_julia_set(wilson, a, b, resolution));
+&#9;wilson.render.draw_frame(generate_julia_set(a, b, resolution));
 });</code></pre>
+
+
+
+<br>
+
+
+
+!begin-text-block
+	
+	The weirdness with the exponentials is a technique to reduce color banding &mdash; if we just used the raw iteration numbers for brightness values, we'd see stripes of different brightness wherever that number increased or decreased by one. Basing the color partly on the values of the \(z_n\) introduces dithering &mdash; just enough noise that the color bands are blurred out.
+	
+	The only other thing to explain is the brightness scale variable. When we make Julia set renders, there will typically be a handful of pixels that are significanly brighter than the rest, resulting in a much darker image overall. This is hard to exactly counteract without sorting the list of brightnesses and picking one a little bit down from the top, but that requires a massive sort every frame. Instead, we can get a good result by just finding a factor experimentally that gets the majority of the pixels in full range of 0&ndash;255.
+	
+	With that explanation out of the way, let&#x2019;s see how the applet turned out!
+	
+!end-text-block
+
+
 
 <br>
 
@@ -221,6 +239,200 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 !section
 
 !text s A Different Renderer
+
+<br>
+
+!begin-text-block
+	
+	This is a great start, but we have a lot more to do. The first and easiest change to make is to modify the renderer. We currently have the line <code>renderer: "cpu"</code> in our options, which means that when we pass Wilson our pixel data, it gets copied into the canvas by JavaScript. A slightly better alternative is to render the canvas with WebGL and pass in the pixel data as a texture. This can marginally increase performance, and on some browers, it also increases the maximum possible canvas size. WebGL might sound a little daunting, and rightfully so, but we don&#x2019;t actually have to interface with it all right now. Just replacing that line in the options with <code>renderer: "hybrid"</code> is enough to change everything necessary on the backend.
+	
+!end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;canvas_width: 500,
+&#9;canvas_height: 500,
+&#9;
+&#9;renderer: "hybrid",
+&#9;
+&#9;world_width: 4,
+&#9;world_height: 4,
+&#9;world_center_x: 0,
+&#9;world_center_y: 0
+};</code></pre>
+
+
+
+<br>
+
+!begin-text-boxes
+	
+	a-2 0 \(a\)
+	
+	b-2 1 \(b\)
+	
+	resolution-2 500 Resolution
+	
+!end-text-boxes
+
+
+
+!begin-text-buttons
+	
+	generate-2 Generate
+	
+!end-text-buttons
+
+
+
+<canvas id="output-canvas-2" class="output-canvas" data-aos="fade-up"></canvas>
+
+
+
+!section
+
+!text s Draggables
+
+<br>
+
+!begin-text-block
+	
+	Since every Julia set corresponds to a unique complex number \(c\), we should be able to use the canvas for choosing \(c\) and displaying its Julia set at the same time. Wilson provides a type of element for this, called a &#x201C;draggable&#x201D;. We can add any number of them to a canvas, but right now, we only need one. To get these set up, we first need to modify our options once again. After that, we can add a draggable at any time.
+	
+!end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;canvas_width: 500,
+&#9;canvas_height: 500,
+&#9;
+&#9;renderer: "hybrid",
+&#9;
+&#9;world_width: 4,
+&#9;world_height: 4,
+&#9;world_center_x: 0,
+&#9;world_center_y: 0,
+&#9;
+&#9;
+&#9;
+&#9;use_draggables: true
+};
+
+let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+
+let draggable = wilson.draggables.add(0, 1)</code></pre>
+
+
+
+<br>
+
+!begin-text-block
+	
+	We now have a little while circle that can be freely dragged around the canvas. The style can be customized by modifying <code>.wilson-draggable</code>, but let&#x2019;s just stick with the default. The element is returned from <code>wilson.draggables.add</code> and also has a class of <code>wilson-draggable-0</code> if we want to reference it in the future. Note that <code>wilson.draggables.add</code> accepts world coordinates, not canvas ones.
+	
+	Now we have to actually do something with this draggable, which is accomplished by passing callback functions in the Wilson options. The index of the current draggable being moved is passed to the callback, as well as the world coordinates and the original event that was captured in case we need to do anything with that. Here, we&#s2019;d like to have callbacks for grabbing the draggable, moving it, and letting it go &mdash; we&#x2019;ll render low resolution frames while dragging so that the framerate stays high, then a single higher resolution frame when we let go.
+	
+	We&#x2019;ll no longer need the input fields for \(a\) and \(b\) &mdash; just the one for resolution. It&#x2019;d be a little awkward to have to press the generate button just to change the resolution, so instead we&#x2019;ll add a listener to that field and update the variables as needed.
+	
+!end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;canvas_width: 500,
+&#9;canvas_height: 500,
+&#9;
+&#9;renderer: "hybrid",
+&#9;
+&#9;world_width: 4,
+&#9;world_height: 4,
+&#9;world_center_x: 0,
+&#9;world_center_y: 0,
+&#9;
+&#9;
+&#9;
+&#9;use_draggables: true,
+&#9;
+&#9;draggables_mousedown_callback: on_grab,
+&#9;draggables_mousemove_callback: on_drag,
+&#9;draggables_mouseup_callback: on_release,
+&#9;
+&#9;draggables_touchstart_callback: on_grab,
+&#9;draggables_touchmove_callback: on_drag,
+&#9;draggables_touchend_callback: on_release
+};
+
+
+
+let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+let draggable = wilson.draggables.add(0, 1);
+
+
+
+let large_resolution = 500;
+let small_resolution = 100;
+
+document.querySelector("#resolution-input").addEventListener("input", () =>
+{
+&#9;large_resolution = parseInt(document.querySelector("#resolution-input").value || 500);
+&#9;small_resolution = Math.floor(large_resolution / 5);
+});
+
+//Render the inital frame.
+wilson.change_canvas_size(small_resolution, small_resolution);
+wilson.render.draw_frame(generate_julia_set(0, 1, small_resolution));
+
+
+
+function on_grab(active_draggable, x, y, event)
+{
+&#9;wilson.change_canvas_size(small_resolution, small_resolution);
+}
+
+function on_drag(active_draggable, x, y, event)
+{
+&#9;wilson.render.draw_frame(generate_julia_set(x, y, small_resolution));
+}
+
+function on_release_3(active_draggable, x, y, event)
+{
+&#9;wilson.change_canvas_size(large_resolution, large_resolution);
+&#9;wilson.render.draw_frame(generate_julia_set(x, y, large_resolution));
+}</code></pre>
+
+
+
+<br>
+
+
+
+!begin-text-boxes
+	
+	resolution-3 500 Resolution
+	
+!end-text-boxes
+
+
+
+<canvas id="output-canvas-3" class="output-canvas" data-aos="fade-up"></canvas>
+
+
+
+!section
+
+!text s WebGL
+
+!begin-text-block
+	
+	Now we&#x2019;re getting somewhere! There are a handful of features we could build in next, but we&#x2019;re overdue for one in particular: 
+	
+!end-text-block
 
 
 

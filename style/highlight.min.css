@@ -40,6 +40,7 @@
 }
 
 pre code {
+  font-size: 15px;
   display: block;
   overflow-x:auto;
   background: rgb(44, 44, 44);

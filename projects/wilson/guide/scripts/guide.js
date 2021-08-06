@@ -25,14 +25,120 @@
 	
 	document.querySelector("#generate-1-button").addEventListener("click", () =>
 	{
-		let a = parseFloat(document.querySelector("#a-1-input").value);
-		let b = parseFloat(document.querySelector("#b-1-input").value);
-		let resolution = parseInt(document.querySelector("#resolution-1-input").value);
+		let a = parseFloat(document.querySelector("#a-1-input").value || 0);
+		let b = parseFloat(document.querySelector("#b-1-input").value || 1);
+		let resolution = parseInt(document.querySelector("#resolution-1-input").value || 500);
 		
 		wilson_1.change_canvas_size(resolution, resolution);
 		
 		wilson_1.render.draw_frame(generate_julia_set_1(wilson_1, a, b, resolution));
 	});
+	
+	
+	
+	/////////////////////////////////////////
+	
+	
+	
+	let options_2 =
+	{
+		canvas_width: 500,
+		canvas_height: 500,
+		
+		renderer: "hybrid",
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0
+	};
+	
+	let wilson_2 = new Wilson(document.querySelector("#output-canvas-2"), options_2);
+	
+	document.querySelector("#generate-2-button").addEventListener("click", () =>
+	{
+		let a = parseFloat(document.querySelector("#a-2-input").value || 0);
+		let b = parseFloat(document.querySelector("#b-2-input").value || 1);
+		let resolution = parseInt(document.querySelector("#resolution-2-input").value || 500);
+		
+		wilson_2.change_canvas_size(resolution, resolution);
+		
+		wilson_2.render.draw_frame(generate_julia_set_1(wilson_2, a, b, resolution));
+	});
+	
+	
+	
+	/////////////////////////////////////////
+	
+	
+	
+	let options_3 =
+	{
+		canvas_width: 500,
+		canvas_height: 500,
+		
+		renderer: "hybrid",
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0,
+		
+		
+		
+		use_draggables: true,
+		
+		draggables_mousedown_callback: on_grab_3,
+		draggables_mousemove_callback: on_drag_3,
+		draggables_mouseup_callback: on_release_3,
+		
+		draggables_touchstart_callback: on_grab_3,
+		draggables_touchmove_callback: on_drag_3,
+		draggables_touchend_callback: on_release_3
+	};
+	
+	let wilson_3 = new Wilson(document.querySelector("#output-canvas-3"), options_3);
+	
+	let draggable = wilson_3.draggables.add(0, 1);
+	
+	
+	
+	
+	let large_resolution = 500;
+	let small_resolution = 100;
+	
+	document.querySelector("#resolution-3-input").addEventListener("input", () =>
+	{
+		large_resolution = parseInt(document.querySelector("#resolution-3-input").value || 500);
+		small_resolution = Math.floor(large_resolution / 5);
+	});
+	
+	
+	
+	wilson_3.change_canvas_size(small_resolution, small_resolution);
+	wilson_3.render.draw_frame(generate_julia_set_1(wilson_3, 0, 1, small_resolution));
+	
+	
+	
+	function on_grab_3(active_draggable, x, y, event)
+	{
+		wilson_3.change_canvas_size(small_resolution, small_resolution);
+	}
+
+	function on_drag_3(active_draggable, x, y, event)
+	{
+		wilson_3.render.draw_frame(generate_julia_set_1(wilson_3, x, y, small_resolution));
+	}
+
+	function on_release_3(active_draggable, x, y, event)
+	{
+		wilson_3.change_canvas_size(large_resolution, large_resolution);
+		wilson_3.render.draw_frame(generate_julia_set_1(wilson_3, x, y, large_resolution));
+	}
+	
+	
+	
+	/////////////////////////////////////////
 	
 	
 	
