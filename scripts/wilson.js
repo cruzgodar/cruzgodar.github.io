@@ -45,6 +45,7 @@ class Wilson
 			mousedown_callback
 			mouseup_callback
 			mousemove_callback
+			mousedrag_callback
 			
 			touchstart_callback
 			touchend_callback
@@ -209,6 +210,7 @@ class Wilson
 		this.input.mousedown_callback = typeof options.mousedown_callback === "undefined" ? null : options.mousedown_callback;
 		this.input.mouseup_callback = typeof options.mouseup_callback === "undefined" ? null : options.mouseup_callback;
 		this.input.mousemove_callback = typeof options.mousemove_callback === "undefined" ? null : options.mousemove_callback;
+		this.input.mousedrag_callback = typeof options.mousedrag_callback === "undefined" ? null : options.mousedrag_callback;
 		
 		this.input.touchstart_callback = typeof options.touchstart_callback === "undefined" ? null : options.touchstart_callback;
 		this.input.touchend_callback = typeof options.touchend_callback === "undefined" ? null : options.touchend_callback;
@@ -820,6 +822,10 @@ class Wilson
 		//Add a new draggable.
 		add(x, y)
 		{
+			this.parent.world_size = Math.max(this.parent.world_width, this.parent.world_height);
+			
+			
+			
 			//First convert to page coordinates.
 			let row = 0;
 			let col = 0;
@@ -834,6 +840,28 @@ class Wilson
 			{
 				row = Math.floor(this.restricted_height * (1 - ((y - this.parent.world_center_y) * (this.parent.world_width / this.parent.world_height) / this.parent.world_size + .5))) + this.draggable_radius;
 				col = Math.floor(this.restricted_width * ((x - this.parent.world_center_x) / this.parent.world_size + .5)) + this.draggable_radius;
+			}
+			
+			
+			
+			if (row < this.draggable_radius)
+			{
+				row = this.draggable_radius;
+			}
+			
+			if (row > this.container_height - this.draggable_radius)
+			{
+				row = this.container_height - this.draggable_radius;
+			}
+			
+			if (col < this.draggable_radius)
+			{
+				col = this.draggable_radius;
+			}
+			
+			if (col > this.container_width - this.draggable_radius)
+			{
+				col = this.container_width - this.draggable_radius;
 			}
 			
 			
@@ -955,6 +983,10 @@ class Wilson
 				
 				
 				
+				this.parent.world_size = Math.max(this.parent.world_width, this.parent.world_height);
+				
+				
+				
 				let x = 0;
 				let y = 0;
 				
@@ -1069,6 +1101,10 @@ class Wilson
 				
 				
 				
+				this.parent.world_size = Math.max(this.parent.world_width, this.parent.world_height);
+				
+				
+				
 				let x = 0;
 				let y = 0;
 				
@@ -1096,6 +1132,59 @@ class Wilson
 		
 		
 		
+		recalculate_locations()
+		{
+			for (let i = 0; i < this.num_draggables; i++)
+			{
+				this.parent.world_size = Math.max(this.parent.world_width, this.parent.world_height);
+				
+				
+				
+				let row = 0;
+				let col = 0;
+				
+				if (this.parent.world_width >= this.parent.world_height)
+				{
+					row = Math.floor(this.restricted_height * (1 - ((this.world_coordinates[i][1] - this.parent.world_center_y) / this.parent.world_size + .5))) + this.draggable_radius;
+					col = Math.floor(this.restricted_width * ((this.world_coordinates[i][0] - this.parent.world_center_x) / (this.parent.world_width / this.parent.world_height) / this.parent.world_size + .5)) + this.draggable_radius;
+				}
+				
+				else
+				{
+					row = Math.floor(this.restricted_height * (1 - ((this.world_coordinates[i][1] - this.parent.world_center_y) * (this.parent.world_width / this.parent.world_height) / this.parent.world_size + .5))) + this.draggable_radius;
+					col = Math.floor(this.restricted_width * ((this.world_coordinates[i][0] - this.parent.world_center_x) / this.parent.world_size + .5)) + this.draggable_radius;
+				}
+				
+				
+				
+				if (row < this.draggable_radius)
+				{
+					row = this.draggable_radius;
+				}
+				
+				if (row > this.container_height - this.draggable_radius)
+				{
+					row = this.container_height - this.draggable_radius;
+				}
+				
+				if (col < this.draggable_radius)
+				{
+					col = this.draggable_radius;
+				}
+				
+				if (col > this.container_width - this.draggable_radius)
+				{
+					col = this.container_width - this.draggable_radius;
+				}
+				
+				
+				
+				this.draggables[i].style.transform = `translate3d(${col - this.draggable_radius}px, ${row - this.draggable_radius}px, 0)`;
+			}
+		},
+		
+		
+		
 		on_resize()
 		{
 			let computed_style = window.getComputedStyle(this.parent.canvas);
@@ -1118,25 +1207,7 @@ class Wilson
 			
 			
 			
-			for (let i = 0; i < this.num_draggables; i++)
-			{
-				let row = 0;
-				let col = 0;
-				
-				if (this.parent.world_width >= this.parent.world_height)
-				{
-					row = Math.floor(this.restricted_height * (1 - ((this.world_coordinates[i][1] - this.parent.world_center_y) / this.parent.world_size + .5))) + this.draggable_radius;
-					col = Math.floor(this.restricted_width * ((this.world_coordinates[i][0] - this.parent.world_center_x) / (this.parent.world_width / this.parent.world_height) / this.parent.world_size + .5)) + this.draggable_radius;
-				}
-				
-				else
-				{
-					row = Math.floor(this.restricted_height * (1 - ((this.world_coordinates[i][1] - this.parent.world_center_y) * (this.parent.world_width / this.parent.world_height) / this.parent.world_size + .5))) + this.draggable_radius;
-					col = Math.floor(this.restricted_width * ((this.world_coordinates[i][0] - this.parent.world_center_x) / this.parent.world_size + .5)) + this.draggable_radius;
-				}
-				
-				this.draggables[i].style.transform = `translate3d(${col - this.draggable_radius}px, ${row - this.draggable_radius}px, 0)`;
-			}
+			this.recalculate_locations();
 		}
 	};
 	
@@ -1678,13 +1749,23 @@ class Wilson
 		mouse_x: null,
 		mouse_y: null,
 		
-		touch_distance: 0,
+		//These are stored before converting to world coordinates. This prevents problems that occur when using callbacks that reference the world coordinates to change those world coordinates.
+		last_row_1: -1,
+		last_col_1: -1,
+		
+		last_row_2: -1,
+		last_col_2: -1,
+		
+		touch_distance: -1,
+		
+		currently_dragging: false,
 		
 		
 		
 		mousedown_callback: null,
 		mouseup_callback: null,
 		mousemove_callback: null,
+		mousedrag_callback: null,
 		
 		touchstart_callback: null,
 		touchup_callback: null,
@@ -1749,10 +1830,22 @@ class Wilson
 			
 			
 			
-			e.preventDefault();
-			
 			this.mouse_x = e.clientX;
 			this.mouse_y = e.clientY;
+			
+			this.currently_dragging = true;
+			
+			
+			
+			let rect = this.parent.canvas.getBoundingClientRect();
+			
+			let row = (this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
+			let col = (this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
+			
+			let world_coordinates = this.parent.utils.interpolate.canvas_to_world(row, col);
+			
+			this.last_row_1 = row;
+			this.last_col_1 = col;
 			
 			
 			
@@ -1761,17 +1854,9 @@ class Wilson
 				return;
 			}
 			
+			e.preventDefault();
 			
-			
-			let rect = this.parent.canvas.getBoundingClientRect();
-			
-			let row = this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding;
-			let col = this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding;
-			
-			if (row >= 0 && row < rect.height - 2 * (this.parent.top_border + this.parent.top_padding) && col >= 0 && col < rect.width - 2 * (this.parent.left_border + this.parent.left_padding))
-			{
-				this.mousedown_callback(row, col, e);
-			}
+			this.mousedown_callback(...world_coordinates, e);
 		},
 		
 		
@@ -1790,6 +1875,8 @@ class Wilson
 			this.mouse_x = e.clientX;
 			this.mouse_y = e.clientY;
 			
+			this.currently_dragging = false;
+			
 			
 			
 			if (this.mouseup_callback === null)
@@ -1801,13 +1888,15 @@ class Wilson
 			
 			let rect = this.parent.canvas.getBoundingClientRect();
 			
-			let row = this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding;
-			let col = this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding;
+			let row = (this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
+			let col = (this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
 			
-			if (row >= 0 && row < rect.height - 2 * (this.parent.top_border + this.parent.top_padding) && col >= 0 && col < rect.width - 2 * (this.parent.left_border + this.parent.left_padding))
-			{
-				this.mouseup_callback(row, col, e);
-			}
+			let world_coordinates = this.parent.utils.interpolate.canvas_to_world(row, col);
+			
+			this.mouseup_callback(...world_coordinates, e);
+			
+			this.last_row_1 = row;
+			this.last_col_1 = col;
 		},
 		
 		
@@ -1823,33 +1912,39 @@ class Wilson
 			
 			e.preventDefault();
 			
-			let new_mouse_x = e.clientX;
-			let new_mouse_y = e.clientY;
+			this.mouse_x = e.clientX;
+			this.mouse_y = e.clientY;
 			
-			let col_delta = new_mouse_x - this.mouse_x;
-			let row_delta = new_mouse_y - this.mouse_y;
-			
-			this.mouse_x = new_mouse_x;
-			this.mouse_y = new_mouse_y;
-			
-			
-			
-			if (this.mousemove_callback === null)
-			{
-				return;
-			}
 			
 			
 			
 			let rect = this.parent.canvas.getBoundingClientRect();
 			
-			let row = this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding;
-			let col = this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding;
+			let row = (this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
+			let col = (this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
 			
-			if (row >= 0 && row < rect.height - 2 * (this.parent.top_border + this.parent.top_padding) && col >= 0 && col < rect.width - 2 * (this.parent.left_border + this.parent.left_padding))
+			let world_coordinates = this.parent.utils.interpolate.canvas_to_world(row, col);
+			
+			
+			
+			let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
+			
+			
+			
+			if (this.mousedrag_callback !== null && this.currently_dragging)
 			{
-				this.mousemove_callback(row, col, row_delta, col_delta, e);
+				this.mousedrag_callback(...world_coordinates, world_coordinates[0] - last_world_coordinates[0], world_coordinates[1] - last_world_coordinates[1], e);
 			}
+			
+			else if (this.mousemove_callback !== null && !this.currently_dragging)
+			{
+				this.mousemove_callback(...world_coordinates, world_coordinates[0] - last_world_coordinates[0], world_coordinates[1] - last_world_coordinates[1], e);
+			}
+			
+			
+			
+			this.last_row_1 = row;
+			this.last_col_1 = col;
 		},
 		
 		
@@ -1863,10 +1958,20 @@ class Wilson
 			
 			
 			
-			e.preventDefault();
-			
 			this.mouse_x = e.touches[0].clientX;
 			this.mouse_y = e.touches[0].clientY;
+			
+			
+			
+			let rect = this.parent.canvas.getBoundingClientRect();
+			
+			let row = (this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
+			let col = (this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
+			
+			let world_coordinates = this.parent.utils.interpolate.canvas_to_world(row, col);
+			
+			this.last_row_1 = row;
+			this.last_col_1 = col;
 			
 			
 			
@@ -1877,15 +1982,9 @@ class Wilson
 			
 			
 			
-			let rect = this.parent.canvas.getBoundingClientRect();
+			e.preventDefault();
 			
-			let row = this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding;
-			let col = this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding;
-			
-			if (row >= 0 && row < rect.height - 2 * (this.parent.top_border + this.parent.top_padding) && col >= 0 && col < rect.width - 2 * (this.parent.left_border + this.parent.left_padding))
-			{
-				this.touchstart_callback(row, col, e);
-			}
+			this.touchstart_callback(...world_coordinates, e);
 		},
 		
 		
@@ -1897,12 +1996,9 @@ class Wilson
 				return;
 			}
 			
-			
-			
 			e.preventDefault();
 			
-			
-			
+			this.touch_distance = -1;
 			
 			if (this.touchend_callback === null)
 			{
@@ -1911,15 +2007,9 @@ class Wilson
 			
 			
 			
-			let rect = this.parent.canvas.getBoundingClientRect();
+			let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
 			
-			let row = this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding;
-			let col = this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding;
-			
-			if (row >= 0 && row < rect.height - 2 * (this.parent.top_border + this.parent.top_padding) && col >= 0 && col < rect.width - 2 * (this.parent.left_border + this.parent.left_padding))
-			{
-				this.touchend_callback(row, col, e);
-			}
+			this.touchend_callback(...last_world_coordinates, e);
 		},
 		
 		
@@ -1943,35 +2033,43 @@ class Wilson
 			
 			if (e.touches.length >= 2 && this.pinch_callback !== null)
 			{
-				let x_delta = e.touches[0].clientX - e.touches[1].clientX;
-				let y_delta = e.touches[0].clientY - e.touches[1].clientY;
+				let row_1 = (e.touches[0].clientY - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
+				let col_1 = (e.touches[0].clientX - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
+				
+				let row_2 = (e.touches[1].clientY - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
+				let col_2 = (e.touches[1].clientX - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
+				
+				let world_coordinates_1 = this.parent.utils.interpolate.canvas_to_world(row_1, col_1);
+				let world_coordinates_2 = this.parent.utils.interpolate.canvas_to_world(row_2, col_2);
+				
+				let x_distance = world_coordinates_1[0] - world_coordinates_2[0];
+				let y_distance = world_coordinates_1[1] - world_coordinates_2[1];
 				
 				let new_touch_distance = Math.sqrt(x_distance * x_distance + y_distance * y_distance);
 				
 				let touch_distance_delta = new_touch_distance - this.touch_distance;
 				
+				
+				
+				let center_x = (world_coordinates_1[0] + world_coordinates_2[0]) / 2;
+				let center_y = (world_coordinates_1[1] + world_coordinates_2[1]) / 2;
+				
+				
+				
+				if (this.touch_distance !== -1)
+				{
+					this.pinch_callback(center_x, center_y, new_touch_distance, touch_distance_delta, e);
+				}
+				
+				
+				
 				this.touch_distance = new_touch_distance;
-				
-				
-				
-				let touch_center_row = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top - this.parent.top_border - this.parent.top_padding;
-				let touch_center_col = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left - this.parent.left_border - this.parent.left_padding;
-				
-				
-				
-				this.pinch_callback(touch_center_row, touch_center_col, touch_distance_delta, e);
 			}
 			
 			
 			
-			let new_mouse_x = e.touches[0].clientX;
-			let new_mouse_y = e.touches[0].clientY;
-			
-			let col_delta = new_mouse_x - this.mouse_x;
-			let row_delta = new_mouse_y - this.mouse_y;
-			
-			this.mouse_x = new_mouse_x;
-			this.mouse_y = new_mouse_y;
+			this.mouse_x = e.touches[0].clientX;
+			this.mouse_y = e.touches[0].clientY;
 			
 			
 			
@@ -1982,13 +2080,21 @@ class Wilson
 			
 			
 			
-			let row = this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding;
-			let col = this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding;
+			let row = (this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
+			let col = (this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
 			
-			if (row >= 0 && row < rect.height - 2 * (this.parent.top_border + this.parent.top_padding) && col >= 0 && col < rect.width - 2 * (this.parent.left_border + this.parent.left_padding))
-			{
-				this.touchmove_callback(row, col, row_delta, col_delta, e);
-			}
+			let world_coordinates = this.parent.utils.interpolate.canvas_to_world(row, col);
+			
+			let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
+			
+			
+			
+			this.touchmove_callback(...world_coordinates, world_coordinates[0] - last_world_coordinates[0], world_coordinates[1] - last_world_coordinates[1], e);
+			
+			
+			
+			this.last_row_1 = row;
+			this.last_col_1 = col;
 		},
 		
 		
@@ -2000,21 +2106,28 @@ class Wilson
 				return;
 			}
 			
-			
-			
 			e.preventDefault();
 			
+			let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
 			
+			this.wheel_callback(...last_world_coordinates, e.deltaY, e);
+		},
+		
+		
+		
+		//Returns what the world center should be to make zooms look correct.
+		get_zoomed_world_center(fixed_point_x, fixed_point_y, new_world_width, new_world_height)
+		{
+			let mouse_x_proportion = (fixed_point_x - this.parent.world_center_x) / this.parent.world_width;
+			let mouse_y_proportion = (fixed_point_y - this.parent.world_center_y) / this.parent.world_height;
 			
-			let rect = this.parent.canvas.getBoundingClientRect();
+			let new_fixed_point_x = mouse_x_proportion * new_world_width;
+			let new_fixed_point_y = mouse_y_proportion * new_world_height;
 			
-			let row = this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding;
-			let col = this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding;
+			let zoomed_center_x = fixed_point_x - new_fixed_point_x;
+			let zoomed_center_y = fixed_point_y - new_fixed_point_y;
 			
-			if (row >= 0 && row < rect.height - 2 * (this.parent.top_border + this.parent.top_padding) && col >= 0 && col < rect.width - 2 * (this.parent.left_border + this.parent.left_padding))
-			{
-				this.wheel_callback(row, col, e.deltaY, e);
-			}
+			return [zoomed_center_x, zoomed_center_y];
 		}
 	}
 	

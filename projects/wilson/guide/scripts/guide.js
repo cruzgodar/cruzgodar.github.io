@@ -36,6 +36,74 @@
 	
 	
 	
+	function generate_julia_set_1(wilson, a, b, resolution)
+	{
+		let brightnesses = new Array(resolution * resolution);
+		let max_brightness = 0;
+		let brightness_scale = 1.5;
+		const num_iterations = 100;
+		
+		for (let i = 0; i < resolution; i++)
+		{
+			for (let j = 0; j < resolution; j++)
+			{
+				let world_coordinates = wilson.utils.interpolate.canvas_to_world(i, j);
+				let x = world_coordinates[0];
+				let y = world_coordinates[1];
+				
+				//This helps remove color banding.
+				let brightness = Math.exp(-Math.sqrt(x*x + y*y));
+				
+				let k = 0;
+				
+				for (k = 0; k < num_iterations; k++)
+				{
+					//z = z^2 + c = (x^2 - y^2 + a) + (2xy + b)i
+					let temp = x*x - y*y + a;
+					y = 2*x*y + b;
+					x = temp;
+					
+					brightness += Math.exp(-Math.sqrt(x*x + y*y));
+					
+					if (x*x + y*y > 4)
+					{
+						break;
+					}
+				}
+				
+				if (k === num_iterations)
+				{
+					//Color this pixel black.
+					brightnesses[resolution * i + j] = 0;
+				}
+				
+				else
+				{
+					brightnesses[resolution * i + j] = brightness;
+					
+					if (brightness > max_brightness)
+					{
+						max_brightness = brightness;
+					}
+				}
+			}
+		}
+		
+		//Now we need to create the actual pixel data in a Uint8ClampedArray to pass to Wilson.
+		let image_data = new Uint8ClampedArray(resolution * resolution * 4);
+		for (let i = 0; i < resolution * resolution; i++)
+		{
+			image_data[4 * i] = 0; //Red
+			image_data[4 * i + 1] = brightness_scale * brightnesses[i] / max_brightness * 255; //Green
+			image_data[4 * i + 2] = brightness_scale * brightnesses[i] / max_brightness * 255; //Blue
+			image_data[4 * i + 3] = 255; //Alpha
+		}
+		
+		return image_data;
+	}
+	
+	
+	
 	/////////////////////////////////////////
 	
 	
@@ -531,7 +599,18 @@
 		
 		void main(void)
 		{
-			vec2 z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+			vec2 z;
+			
+			if (aspect_ratio > 1.0)
+			{
+				z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+			}
+			
+			else
+			{
+				z = vec2(uv.x * 2.0, uv.y / aspect_ratio * 2.0);
+			}
+			
 			vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
 			float brightness = exp(-length(z));
 			
@@ -622,7 +701,7 @@
 
 	let draggable_7 = wilson_7.draggables.add(0, 1);
 	
-	Page.Load.AOS.elements[6].push([wilson_7.draggables.container, Page.Load.AOS.elements[6][Page.Load.AOS.elements[7].length - 1][1]]);
+	Page.Load.AOS.elements[6].push([wilson_7.draggables.container, Page.Load.AOS.elements[6][Page.Load.AOS.elements[6].length - 1][1]]);
 	
 	window.addEventListener("resize", change_aspect_ratio_7);
 	Page.temporary_handlers["resize"].push(change_aspect_ratio_7);
@@ -732,69 +811,335 @@
 	
 	
 	
-	function generate_julia_set_1(wilson, a, b, resolution)
-	{
-		let brightnesses = new Array(resolution * resolution);
-		let max_brightness = 0;
-		let brightness_scale = 1.5;
-		const num_iterations = 100;
+	let frag_shader_source_8 = `
+		precision highp float;
 		
-		for (let i = 0; i < resolution; i++)
+		varying vec2 uv;
+		
+		uniform float aspect_ratio;
+		
+		uniform float center_x;
+		uniform float center_y;
+		uniform float box_size;
+		
+		uniform float a;
+		uniform float b;
+		uniform float brightness_scale;
+		
+		
+		
+		void main(void)
 		{
-			for (let j = 0; j < resolution; j++)
+			vec2 z;
+			
+			if (aspect_ratio > 1.0)
 			{
-				let world_coordinates = wilson.utils.interpolate.canvas_to_world(i, j);
-				let x = world_coordinates[0];
-				let y = world_coordinates[1];
-				
-				//This helps remove color banding.
-				let brightness = Math.exp(-Math.sqrt(x*x + y*y));
-				
-				let k = 0;
-				
-				for (k = 0; k < num_iterations; k++)
-				{
-					//z = z^2 + c = (x^2 - y^2 + a) + (2xy + b)i
-					let temp = x*x - y*y + a;
-					y = 2*x*y + b;
-					x = temp;
-					
-					brightness += Math.exp(-Math.sqrt(x*x + y*y));
-					
-					if (x*x + y*y > 4)
-					{
-						break;
-					}
-				}
-				
-				if (k === num_iterations)
-				{
-					//Color this pixel black.
-					brightnesses[resolution * i + j] = 0;
-				}
-				
-				else
-				{
-					brightnesses[resolution * i + j] = brightness;
-					
-					if (brightness > max_brightness)
-					{
-						max_brightness = brightness;
-					}
-				}
+				z = vec2(uv.x * aspect_ratio * box_size + center_x, uv.y * box_size + center_y);
 			}
+			
+			else
+			{
+				z = vec2(uv.x * box_size + center_x, uv.y / aspect_ratio * box_size + center_y);
+			}
+			
+			vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+			float brightness = exp(-length(z));
+			
+			
+			
+			vec2 c = vec2(a, b);
+			
+			for (int iteration = 0; iteration < 200; iteration++)
+			{
+				if (iteration == 199)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					return;
+				}
+				
+				if (length(z) >= 10.0)
+				{
+					break;
+				}
+				
+				z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+				
+				brightness += exp(-length(z));
+			}
+			
+			
+			gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
 		}
+	`;
+	
+	
+	
+	let options_8 =
+	{
+		renderer: "gpu",
 		
-		//Now we need to create the actual pixel data in a Uint8ClampedArray to pass to Wilson.
-		let image_data = new Uint8ClampedArray(resolution * resolution * 4);
-		for (let i = 0; i < resolution * resolution; i++)
+		shader: frag_shader_source_8,
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0,
+		
+		
+		
+		use_draggables: true,
+		
+		draggables_mousemove_callback: on_drag_8,
+		draggables_touchmove_callback: on_drag_8,
+		
+		
+		
+		use_fullscreen: true,
+		
+		true_fullscreen: true,
+		
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_image_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_image_path: "/graphics/general-icons/exit-fullscreen.png",
+		
+		switch_fullscreen_callback: change_aspect_ratio_8,
+		
+		
+		
+		mousedrag_callback: on_drag_canvas_8,
+		touchmove_callback: on_drag_canvas_8,
+		
+		wheel_callback: on_wheel_canvas_8
+	};
+	
+	let options_hidden_8 =
+	{
+		renderer: "gpu",
+		
+		shader: frag_shader_source_8,
+		
+		canvas_width: 100,
+		canvas_height: 100,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0
+	};
+	
+	
+	
+	let wilson_8 = new Wilson(document.querySelector("#output-canvas-8"), options_8);
+
+	wilson_8.render.init_uniforms(["aspect_ratio", "center_x", "center_y", "box_size", "a", "b", "brightness_scale"]);
+
+	let draggable_8 = wilson_8.draggables.add(0, 1);
+	
+	Page.Load.AOS.elements[7].push([wilson_8.draggables.container, Page.Load.AOS.elements[7][Page.Load.AOS.elements[7].length - 1][1]]);
+	
+	window.addEventListener("resize", change_aspect_ratio_8);
+	Page.temporary_handlers["resize"].push(change_aspect_ratio_8);
+	
+	
+	
+	let wilson_hidden_8 = new Wilson(document.querySelector("#hidden-canvas-8"), options_hidden_8);
+	
+	wilson_hidden_8.render.init_uniforms(["aspect_ratio", "center_x", "center_y", "box_size", "a", "b", "brightness_scale"]);
+	
+	
+	
+	let a_8 = 0;
+	let b_8 = 1;
+	
+	let aspect_ratio = 1;
+	
+	let zoom_level = 0;
+	
+	let resolution_8 = 1000;
+	
+	let resolution_hidden_8 = 100;
+	
+	
+
+	document.querySelector("#resolution-8-input").addEventListener("input", () =>
+	{
+		resolution_8 = parseInt(document.querySelector("#resolution-8-input").value || 1000);
+		wilson_8.change_canvas_size(resolution_8, resolution_8);
+		
+		draw_julia_set_8();
+	});
+	
+	
+	
+	function on_drag_8(active_draggable, x, y, event)
+	{
+		a_8 = x;
+		b_8 = y;
+		
+		draw_julia_set_8();
+	}
+	
+	
+	
+	//Render the first frame.
+	wilson_8.gl.uniform1f(wilson_8.uniforms["aspect_ratio"], 1);
+	wilson_8.gl.uniform1f(wilson_8.uniforms["center_x"], 0);
+	wilson_8.gl.uniform1f(wilson_8.uniforms["center_y"], 0);
+	wilson_8.gl.uniform1f(wilson_8.uniforms["box_size"], 2);
+	
+	wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["aspect_ratio"], 1);
+	wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_x"], 0);
+	wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_y"], 0);
+	wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["box_size"], 2);
+	
+	draw_julia_set_8();
+
+
+
+	function draw_julia_set_8()
+	{
+		wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["a"], a_8);
+		wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["b"], b_8);
+		wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["brightness_scale"], 20);
+		
+		wilson_hidden_8.render.draw_frame();
+		
+		
+		
+		let pixel_data = wilson_hidden_8.render.get_pixel_data();
+		
+		let brightnesses = new Uint8Array(resolution_hidden_8 * resolution_hidden_8);
+		
+		for (let i = 0; i < resolution_hidden_8 * resolution_hidden_8; i++)
 		{
-			image_data[4 * i] = 0; //Red
-			image_data[4 * i + 1] = brightness_scale * brightnesses[i] / max_brightness * 255; //Green
-			image_data[4 * i + 2] = brightness_scale * brightnesses[i] / max_brightness * 255; //Blue
-			image_data[4 * i + 3] = 255; //Alpha
+			brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
 		}
 		
-		return image_data;
+		brightnesses.sort((a, b) => a - b);
+		
+		let brightness_scale = brightnesses[Math.floor(resolution_hidden_8 * resolution_hidden_8 * .98)] / 255 * 20;
+		
+		wilson_8.gl.uniform1f(wilson_8.uniforms["a"], a_8);
+		wilson_8.gl.uniform1f(wilson_8.uniforms["b"], b_8);
+		wilson_8.gl.uniform1f(wilson_8.uniforms["brightness_scale"], brightness_scale);
+		
+		wilson_8.render.draw_frame();
+	}
+	
+	
+	
+	function change_aspect_ratio_8()
+	{
+		if (wilson_8.fullscreen.currently_fullscreen)
+		{
+			aspect_ratio = window.innerWidth / window.innerHeight;
+			
+			if (aspect_ratio >= 1)
+			{
+				wilson_8.change_canvas_size(resolution_8, Math.floor(resolution_8 / aspect_ratio));
+				
+				wilson_8.world_width = 4 * Math.pow(2, zoom_level);
+				wilson_8.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+			}
+			
+			else
+			{
+				wilson_8.change_canvas_size(Math.floor(resolution_8 * aspect_ratio), resolution_8);
+				
+				wilson_8.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
+				wilson_8.world_height = 4 * Math.pow(2, zoom_level);
+			}
+			
+			wilson_8.gl.uniform1f(wilson_8.uniforms["aspect_ratio"], aspect_ratio);
+		}
+		
+		else
+		{
+			aspect_ratio = 1;
+			
+			wilson_8.change_canvas_size(resolution_8, resolution_8);
+			
+			wilson_8.world_width = 4 * Math.pow(2, zoom_level);
+			wilson_8.world_height = 4 * Math.pow(2, zoom_level);
+			
+			wilson_8.gl.uniform1f(wilson_8.uniforms["aspect_ratio"], 1);
+		}
+		
+		draw_julia_set_8();
+	}
+	
+	
+	
+	function on_drag_canvas_8(x, y, x_delta, y_delta, event)
+	{
+		wilson_8.world_center_x -= x_delta;
+		wilson_8.world_center_y -= y_delta;
+		
+		wilson_8.gl.uniform1f(wilson_8.uniforms["center_x"], wilson_8.world_center_x);
+		wilson_8.gl.uniform1f(wilson_8.uniforms["center_y"], wilson_8.world_center_y);
+		
+		wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_x"], wilson_8.world_center_x);
+		wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_y"], wilson_8.world_center_y);
+		
+		draw_julia_set_8();
+		
+		wilson_8.draggables.recalculate_locations();
+	}
+	
+	
+	
+	function on_wheel_canvas_8(x, y, scroll_amount, event)
+	{
+		scroll_amount = Math.min(Math.max(scroll_amount, -.5), .5);
+		
+		zoom_level += scroll_amount;
+		
+		if (aspect_ratio >= 1)
+		{
+			let new_world_center = wilson_8.input.get_zoomed_world_center(x, y, 4 * Math.pow(2, zoom_level), 4 * Math.pow(2, zoom_level) / aspect_ratio);
+			
+			wilson_8.world_width = 4 * Math.pow(2, zoom_level);
+			wilson_8.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+			
+			wilson_8.world_center_x = new_world_center[0];
+			wilson_8.world_center_y = new_world_center[1];
+			
+			
+			
+			wilson_8.gl.uniform1f(wilson_8.uniforms["center_x"], wilson_8.world_center_x);
+			wilson_8.gl.uniform1f(wilson_8.uniforms["center_y"], wilson_8.world_center_y);
+			wilson_8.gl.uniform1f(wilson_8.uniforms["box_size"], wilson_8.world_width / 2);
+			
+			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_x"], wilson_8.world_center_x);
+			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_y"], wilson_8.world_center_y);
+			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["box_size"], wilson_hidden_8.world_width / 2);
+		}
+		
+		else
+		{
+			let new_world_center = wilson_8.input.get_zoomed_world_center(x, y, 4 * Math.pow(2, zoom_level) * aspect_ratio, 4 * Math.pow(2, zoom_level));
+			
+			wilson_8.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
+			wilson_8.world_height = 4 * Math.pow(2, zoom_level);
+			
+			wilson_8.world_center_x = new_world_center[0];
+			wilson_8.world_center_y = new_world_center[1];
+			
+			wilson_8.gl.uniform1f(wilson_8.uniforms["center_x"], wilson_8.world_center_x);
+			wilson_8.gl.uniform1f(wilson_8.uniforms["center_y"], wilson_8.world_center_y);
+			wilson_8.gl.uniform1f(wilson_8.uniforms["box_size"], wilson_8.world_height / 2);
+			
+			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_x"], wilson_8.world_center_x);
+			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_y"], wilson_8.world_center_y);
+			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["box_size"], wilson_hidden_8.world_height / 2);
+		}
+		
+		draw_julia_set_8();
+		
+		wilson_8.draggables.recalculate_locations();
 	}
 }()

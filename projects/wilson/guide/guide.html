@@ -199,7 +199,7 @@ document.querySelector("#generate-button").addEventListener("click", () =>
 
 !begin-text-block
 	
-	The weirdness with the exponentials is a technique to reduce color banding &mdash; if we just used the raw iteration numbers for brightness values, we'd see stripes of different brightness wherever that number increased or decreased by one. Basing the color partly on the values of the \(z_n\) introduces dithering &mdash; just enough noise that the color bands are blurred out.
+	The weirdness with the exponentials is a technique to reduce color banding &mdash; if we just used the raw iteration numbers for brightness values, we&#x2019;d see stripes of different brightness wherever that number increased or decreased by one. Basing the color partly on the values of the \(z_n\) introduces dithering &mdash; just enough noise that the color bands are blurred out.
 	
 	The only other thing to explain is the brightness scale variable. When we make Julia set renders, there will typically be a handful of pixels that are significanly brighter than the rest, resulting in a much darker image overall. This is hard to exactly counteract without sorting the list of brightnesses and picking one a little bit down from the top, but that requires a massive sort every frame. Instead, we can get a good result by just finding a factor experimentally that gets the majority of the pixels in full range of 0&ndash;255.
 	
@@ -331,7 +331,7 @@ let draggable = wilson.draggables.add(0, 1);</code></pre>
 
 !begin-text-block
 	
-	We now have a little while circle that can be freely dragged around the canvas. The style can be customized by modifying <code>.wilson-draggable</code>, but let&#x2019;s just stick with the default. The element is returned from <code>wilson.draggables.add</code> and also has a class of <code>wilson-draggable-0</code> if we want to reference it in the future. Note that <code>wilson.draggables.add</code> accepts world coordinates, not canvas ones.
+	We now have a little white circle that can be freely dragged around the canvas. The style can be customized by modifying <code>.wilson-draggable</code>, but let&#x2019;s just stick with the default. The element is returned from <code>wilson.draggables.add</code> and also has a class of <code>wilson-draggable-0</code> if we want to reference it in the future. Note that <code>wilson.draggables.add</code> accepts world coordinates, not canvas ones.
 	
 	Now we have to actually do something with this draggable, which is accomplished by passing callback functions in the Wilson options. The index of the current draggable being moved is passed to the callback, as well as the world coordinates and the original event that was captured in case we need to do anything with that. Here, we&#x2019;d like to have callbacks for grabbing the draggable, moving it, and letting it go &mdash; we&#x2019;ll render low resolution frames while moving so that the framerate stays high, then a single higher resolution frame when we let go.
 	
@@ -436,7 +436,7 @@ function on_release(active_draggable, x, y, event)
 	
 	The technology for GPU-based applets on the web is called WebGL. Traditionally, it&#x2019;s used for 3D applets and games that use raster graphics. Wilson does <em>not</em> support any of that &mdash; if you need high-performance raster graphics, look to something like <a href="https://threejs.org" onclick="Page.Navigation.redirect('https://threejs.org', true)">three.js</a> instead. What Wilson provides is a stripped-down environment where getting WebGL working only requires a fragment shader, something that is normally not easy.
 	
-	Writing that fragment shader can be challenging, though &mdash; it&#x2019;s not written in JavaScript, but rather in a language called GLSL that&#x2019;s very unforgiving &mdash; writing a number as 3 instead of 3.0 or 3. will most likely cause the entire program to crash with a generic error message and no ability to debug. Writing GLSL is an exerise in extreme caution and frequent testing, but the upshot is massively improved performance &mdash; it&#x2019;s not at all uncommon to see a 10x jump in the number of pixels that can be rendered per frame, though this of course depends on the relative power of the CPU and the GPU. If your applet is parallelizable, you should at least try to get it working in GLSL.
+	Writing that fragment shader can be challenging, though &mdash; it&#x2019;s not written in JavaScript, but rather in a language called GLSL that&#x2019;s very unforgiving &mdash; writing a number as 3 instead of 3.0 or 3. will most likely cause the entire program to crash with a generic error message and no ability to debug. Writing GLSL is an exercise in extreme caution and frequent testing, but the upshot is massively improved performance &mdash; it&#x2019;s not at all uncommon to see a 10x jump in the number of pixels that can be rendered per frame, though this of course depends on the relative power of the CPU and the GPU. If your applet is parallelizable, you should at least try to get it working in GLSL.
 	
 	To get started, we&#x2019;ll change the renderer setting once again, this time to <code>renderer: "gpu"</code>. After that, we need to write our shader, tell Wilson what uniforms (i.e. parameters) the shader has, and then change some of our existing code to set those variables properly. Let&#x2019;s take this one step at a time, starting with the shader.
 	
@@ -864,7 +864,17 @@ function draw_julia_set()
 &#9;
 &#9;void main(void)
 &#9;{
-&#9;&#9;vec2 z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+&#9;&#9;vec2 z;
+&#9;&#9;
+&#9;&#9;if (aspect_ratio > 1.0)
+&#9;&#9;{
+&#9;&#9;&#9;z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+&#9;&#9;}
+&#9;&#9;
+&#9;&#9;else
+&#9;&#9;{
+&#9;&#9;&#9;z = vec2(uv.x * 2.0, uv.y / aspect_ratio * 2.0);
+&#9;&#9;}
 &#9;&#9;
 &#9;&#9;...
 &#9;}
@@ -928,29 +938,31 @@ draw_julia_set();</code></pre>
 
 function change_aspect_ratio()
 {
-	if (wilson.fullscreen.currently_fullscreen)
-	{
-		let aspect_ratio = window.innerWidth / window.innerHeight;
-		
-		if (aspect_ratio >= 1)
-		{
-			wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
-		}
-		
-		else
-		{
-			wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
-		}
-		
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
-	}
-	
-	else
-	{
-		wilson.change_canvas_size(resolution, resolution);
-		
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
-	}
+&#9;if (wilson.fullscreen.currently_fullscreen)
+&#9;{
+&#9;&#9;let aspect_ratio = window.innerWidth / window.innerHeight;
+&#9;&#9;
+&#9;&#9;if (aspect_ratio >= 1)
+&#9;&#9;{
+&#9;&#9;&#9;wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+&#9;&#9;}
+&#9;&#9;
+&#9;&#9;else
+&#9;&#9;{
+&#9;&#9;&#9;wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+&#9;&#9;}
+&#9;&#9;
+&#9;&#9;wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
+&#9;}
+&#9;
+&#9;else
+&#9;{
+&#9;&#9;wilson.change_canvas_size(resolution, resolution);
+&#9;&#9;
+&#9;&#9;wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
+&#9;}
+&#9;
+&#9;draw_julia_set();
 }
 
 window.addEventListener("resize", change_aspect_ratio);</code></pre>
@@ -988,9 +1000,78 @@ window.addEventListener("resize", change_aspect_ratio);</code></pre>
 
 !begin-text-block
 	
-	Now <em>this</em> is a Julia set explorer! We could publish this as-is, but there&#x2019;s one last improvement we can make: adding the ability to pan and zoom into the fractals. This is the only part of Wilson that we haven&#x2019;t discussed yet, and it will require slightly more work on our end than the others, since panning and zooming aren&#x2019;t the only possible effects we could want from interacting with the canvas.
+	Now <em>this</em> is a Julia set explorer! We could call this done this as-is, but there&#x2019;s one last improvement we can make: adding the ability to pan and zoom into the fractals. This is the only part of Wilson that we haven&#x2019;t discussed yet, and it will require slightly more work on our end than the others, since panning and zooming aren&#x2019;t the only possible effects we could want from interacting with the canvas.
+	
+	Panning is easier, so let&#x2019;s start with that. As you can probably predict by now, we attach callbacks in the options that fire when different kinds of interaction with the canvas take place, just like with draggables. The mouse movement callbacks are separated into <code>mousemove</code> and <code>mousedrag</code> &mdash; the first is called when the mouse is not being clicked, and the second when it is. We&#x2019;re going for something akin to Google Maps here, so we&#x2019;ll use <code>mousedrag</code>. For touchscreens, there&#x2019;s only one event for movement, since it&#x2019;s not possible to drag without touching the screen. The <code>touchmove</code> callback is used, but it shouldn#&x2019;t be used for pinch gestures &mdash; we&#x2019;ll handle those later.
 	
 !end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;...
+&#9;
+&#9;mousedrag_callback: on_drag_canvas,
+&#9;touchmove_callback: on_drag_canvas
+};
+
+...
+
+on_drag_canvas(x, y, x_delta, y_delta, event)
+{
+	wilson.world_center_x += x_delta;
+	wilson.world_center_y += y_delta;
+}</code></pre>
+
+
+
+<br>
+
+!begin-text-block
+	
+	We still need to change the shader, but we&#x2019;ll get to that in a moment. Right now, let&#x2019;s set up the zoom callbacks.
+	
+!end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;...
+&#9;
+&#9;mousedrag_callback: on_drag_canvas,
+&#9;touchmove_callback: on_drag_canvas,
+&#9;
+&#9;pinch_callback: on_pinch_canvas,
+&#9;wheel_callback: on_wheel_canvas
+};
+
+...
+
+function on_drag_canvas(x, y, x_delta, y_delta, event)
+{
+&#9;wilson.world_center_x += x_delta;
+&#9;wilson.world_center_y += y_delta;
+}
+
+function on_pinch_canvas
+{
+
+}</code></pre>
+
+
+
+!begin-text-boxes
+	
+	resolution-8 1000 Resolution
+	
+!end-text-boxes
+
+
+
+<canvas id="output-canvas-8" class="output-canvas" data-aos="fade-up"></canvas>
+<canvas id="hidden-canvas-8" class="hidden-canvas"></canvas>
 
 
 
