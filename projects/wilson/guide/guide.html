@@ -728,7 +728,7 @@ function draw_julia_set()
 &#9;
 &#9;let pixel_data = wilson_hidden.render.get_pixel_data();
 &#9;
-&#9;let brightnesses = new Uint8Array(resolution_hidden * resolution_hidden);
+&#9;let brightnesses = new Array(resolution_hidden * resolution_hidden);
 &#9;
 &#9;for (let i = 0; i &lt; resolution_hidden * resolution_hidden; i++)
 &#9;{
@@ -737,7 +737,7 @@ function draw_julia_set()
 &#9;
 &#9;brightnesses.sort((a, b) => a - b);
 &#9;
-&#9;let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)] / 255 * 20;
+&#9;let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)] / 255 * 18;
 &#9;
 &#9;wilson.gl.uniform1f(wilson.uniforms["a"], a);
 &#9;wilson.gl.uniform1f(wilson.uniforms["b"], b);

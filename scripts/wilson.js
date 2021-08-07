@@ -1756,9 +1756,9 @@ class Wilson
 		last_row_2: -1,
 		last_col_2: -1,
 		
-		touch_distance: -1,
-		
 		currently_dragging: false,
+		
+		was_pinching: false,
 		
 		
 		
@@ -1998,7 +1998,19 @@ class Wilson
 			
 			e.preventDefault();
 			
+			
+			
 			this.touch_distance = -1;
+			
+			this.last_row_2 = -1;
+			this.last_col_2 = -1;
+			
+			if (e.touches.length === 0)
+			{
+				this.was_pinching = false;
+			}
+			
+			
 			
 			if (this.touchend_callback === null)
 			{
@@ -2007,9 +2019,12 @@ class Wilson
 			
 			
 			
-			let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
-			
-			this.touchend_callback(...last_world_coordinates, e);
+			if (this.last_row_1 !== -1)
+			{
+				let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
+				
+				this.touchend_callback(...last_world_coordinates, e);
+			}
 		},
 		
 		
@@ -2033,6 +2048,10 @@ class Wilson
 			
 			if (e.touches.length >= 2 && this.pinch_callback !== null)
 			{
+				this.was_pinching = true;
+				
+				
+				
 				let row_1 = (e.touches[0].clientY - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
 				let col_1 = (e.touches[0].clientX - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
 				
@@ -2045,9 +2064,7 @@ class Wilson
 				let x_distance = world_coordinates_1[0] - world_coordinates_2[0];
 				let y_distance = world_coordinates_1[1] - world_coordinates_2[1];
 				
-				let new_touch_distance = Math.sqrt(x_distance * x_distance + y_distance * y_distance);
-				
-				let touch_distance_delta = new_touch_distance - this.touch_distance;
+				let touch_distance = Math.sqrt(x_distance * x_distance + y_distance * y_distance);
 				
 				
 				
@@ -2056,14 +2073,34 @@ class Wilson
 				
 				
 				
-				if (this.touch_distance !== -1)
+				let last_world_coordinates_1 = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
+				let last_world_coordinates_2 = this.parent.utils.interpolate.canvas_to_world(this.last_row_2, this.last_col_2);
+				
+				let last_x_distance = last_world_coordinates_1[0] - last_world_coordinates_2[0];
+				let last_y_distance = last_world_coordinates_1[1] - last_world_coordinates_2[1];
+				
+				let last_touch_distance = Math.sqrt(last_x_distance * last_x_distance + last_y_distance * last_y_distance);
+				
+				
+				if (this.last_row_2 !== -1)
 				{
-					this.pinch_callback(center_x, center_y, new_touch_distance, touch_distance_delta, e);
+					this.pinch_callback(center_x, center_y, touch_distance - last_touch_distance, e);
 				}
 				
 				
 				
-				this.touch_distance = new_touch_distance;
+				this.last_row_1 = row_1;
+				this.last_col_1 = col_1;
+				
+				this.last_row_2 = row_2;
+				this.last_col_2 = col_2;
+			}
+			
+			
+			
+			else if (this.was_pinching)
+			{
+				return;
 			}
 			
 			
@@ -2108,9 +2145,12 @@ class Wilson
 			
 			e.preventDefault();
 			
-			let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
-			
-			this.wheel_callback(...last_world_coordinates, e.deltaY, e);
+			if (this.last_row_1 !== -1)
+			{
+				let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
+				
+				this.wheel_callback(...last_world_coordinates, e.deltaY, e);
+			}
 		},
 		
 		

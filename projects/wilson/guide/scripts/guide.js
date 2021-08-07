@@ -432,7 +432,7 @@
 		
 		let pixel_data = wilson_hidden_5.render.get_pixel_data();
 		
-		let brightnesses = new Uint8Array(resolution_hidden_5 * resolution_hidden_5);
+		let brightnesses = new Array(resolution_hidden_5 * resolution_hidden_5);
 		
 		for (let i = 0; i < resolution_hidden_5 * resolution_hidden_5; i++)
 		{
@@ -441,7 +441,7 @@
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightness_scale = brightnesses[Math.floor(resolution_hidden_5 * resolution_hidden_5 * .98)] / 255 * 20;
+		let brightness_scale = brightnesses[Math.floor(resolution_hidden_5 * resolution_hidden_5 * .98)] / 255 * 18;
 		
 		wilson_5.gl.uniform1f(wilson_5.uniforms["a"], a_5);
 		wilson_5.gl.uniform1f(wilson_5.uniforms["b"], b_5);
@@ -560,7 +560,7 @@
 		
 		let pixel_data = wilson_hidden_6.render.get_pixel_data();
 		
-		let brightnesses = new Uint8Array(resolution_hidden_6 * resolution_hidden_6);
+		let brightnesses = new Array(resolution_hidden_6 * resolution_hidden_6);
 		
 		for (let i = 0; i < resolution_hidden_6 * resolution_hidden_6; i++)
 		{
@@ -569,7 +569,7 @@
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightness_scale = brightnesses[Math.floor(resolution_hidden_6 * resolution_hidden_6 * .98)] / 255 * 20;
+		let brightness_scale = brightnesses[Math.floor(resolution_hidden_6 * resolution_hidden_6 * .98)] / 255 * 18;
 		
 		wilson_6.gl.uniform1f(wilson_6.uniforms["a"], a_6);
 		wilson_6.gl.uniform1f(wilson_6.uniforms["b"], b_6);
@@ -756,7 +756,7 @@
 		
 		let pixel_data = wilson_hidden_7.render.get_pixel_data();
 		
-		let brightnesses = new Uint8Array(resolution_hidden_7 * resolution_hidden_7);
+		let brightnesses = new Array(resolution_hidden_7 * resolution_hidden_7);
 		
 		for (let i = 0; i < resolution_hidden_7 * resolution_hidden_7; i++)
 		{
@@ -765,7 +765,7 @@
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightness_scale = brightnesses[Math.floor(resolution_hidden_7 * resolution_hidden_7 * .98)] / 255 * 20;
+		let brightness_scale = brightnesses[Math.floor(resolution_hidden_7 * resolution_hidden_7 * .98)] / 255 * 18;
 		
 		wilson_7.gl.uniform1f(wilson_7.uniforms["a"], a_7);
 		wilson_7.gl.uniform1f(wilson_7.uniforms["b"], b_7);
@@ -913,7 +913,8 @@
 		mousedrag_callback: on_drag_canvas_8,
 		touchmove_callback: on_drag_canvas_8,
 		
-		wheel_callback: on_wheel_canvas_8
+		wheel_callback: on_wheel_canvas_8,
+		pinch_callback: on_pinch_canvas_8
 	};
 	
 	let options_hidden_8 =
@@ -957,7 +958,7 @@
 	
 	let aspect_ratio = 1;
 	
-	let zoom_level = 0;
+	let zoom_level_8 = 0;
 	
 	let resolution_8 = 1000;
 	
@@ -1012,7 +1013,7 @@
 		
 		let pixel_data = wilson_hidden_8.render.get_pixel_data();
 		
-		let brightnesses = new Uint8Array(resolution_hidden_8 * resolution_hidden_8);
+		let brightnesses = new Array(resolution_hidden_8 * resolution_hidden_8);
 		
 		for (let i = 0; i < resolution_hidden_8 * resolution_hidden_8; i++)
 		{
@@ -1021,7 +1022,9 @@
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightness_scale = brightnesses[Math.floor(resolution_hidden_8 * resolution_hidden_8 * .98)] / 255 * 20;
+		
+		
+		let brightness_scale = brightnesses[Math.floor(resolution_hidden_8 * resolution_hidden_8 * .98)] / 255 * 18;
 		
 		wilson_8.gl.uniform1f(wilson_8.uniforms["a"], a_8);
 		wilson_8.gl.uniform1f(wilson_8.uniforms["b"], b_8);
@@ -1042,16 +1045,16 @@
 			{
 				wilson_8.change_canvas_size(resolution_8, Math.floor(resolution_8 / aspect_ratio));
 				
-				wilson_8.world_width = 4 * Math.pow(2, zoom_level);
-				wilson_8.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+				wilson_8.world_width = 4 * Math.pow(2, zoom_level_8);
+				wilson_8.world_height = 4 * Math.pow(2, zoom_level_8) / aspect_ratio;
 			}
 			
 			else
 			{
 				wilson_8.change_canvas_size(Math.floor(resolution_8 * aspect_ratio), resolution_8);
 				
-				wilson_8.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
-				wilson_8.world_height = 4 * Math.pow(2, zoom_level);
+				wilson_8.world_width = 4 * Math.pow(2, zoom_level_8) * aspect_ratio;
+				wilson_8.world_height = 4 * Math.pow(2, zoom_level_8);
 			}
 			
 			wilson_8.gl.uniform1f(wilson_8.uniforms["aspect_ratio"], aspect_ratio);
@@ -1063,8 +1066,8 @@
 			
 			wilson_8.change_canvas_size(resolution_8, resolution_8);
 			
-			wilson_8.world_width = 4 * Math.pow(2, zoom_level);
-			wilson_8.world_height = 4 * Math.pow(2, zoom_level);
+			wilson_8.world_width = 4 * Math.pow(2, zoom_level_8);
+			wilson_8.world_height = 4 * Math.pow(2, zoom_level_8);
 			
 			wilson_8.gl.uniform1f(wilson_8.uniforms["aspect_ratio"], 1);
 		}
@@ -1076,8 +1079,24 @@
 	
 	function on_drag_canvas_8(x, y, x_delta, y_delta, event)
 	{
-		wilson_8.world_center_x -= x_delta;
-		wilson_8.world_center_y -= y_delta;
+		if (aspect_ratio >= 1)
+		{
+			wilson_8.world_center_x -= x_delta * aspect_ratio;
+			wilson_8.world_center_y -= y_delta * aspect_ratio;
+		}
+		
+		else
+		{
+			wilson_8.world_center_x -= x_delta / aspect_ratio;
+			wilson_8.world_center_y -= y_delta / aspect_ratio;
+		}
+		
+		
+		
+		wilson_8.world_center_x = Math.min(Math.max(wilson_8.world_center_x, -2), 2);
+		wilson_8.world_center_y = Math.min(Math.max(wilson_8.world_center_y, -2), 2);
+		
+		
 		
 		wilson_8.gl.uniform1f(wilson_8.uniforms["center_x"], wilson_8.world_center_x);
 		wilson_8.gl.uniform1f(wilson_8.uniforms["center_y"], wilson_8.world_center_y);
@@ -1096,14 +1115,48 @@
 	{
 		scroll_amount = Math.min(Math.max(scroll_amount, -.5), .5);
 		
-		zoom_level += scroll_amount;
+		zoom_level_8 += scroll_amount;
 		
+		if (zoom_level_8 >= 1)
+		{
+			zoom_level_8 = 1;
+		}
+		
+		zoom_canvas_8(x, y);
+	}
+	
+	function on_pinch_canvas_8(x, y, touch_distance_delta, event)
+	{
 		if (aspect_ratio >= 1)
 		{
-			let new_world_center = wilson_8.input.get_zoomed_world_center(x, y, 4 * Math.pow(2, zoom_level), 4 * Math.pow(2, zoom_level) / aspect_ratio);
+			zoom_level_8 -= touch_distance_delta / wilson_8.world_width * 10;
+		}
+		
+		else
+		{
+			zoom_level_8 -= touch_distance_delta / wilson_8.world_height * 10;
+		}
+		
+		
+		
+		if (zoom_level_8 >= 1)
+		{
+			zoom_level_8 = 1;
+		}
+		
+		zoom_canvas_8(x, y);
+	}
+	
+	
+	
+	function zoom_canvas_8(fixed_point_x, fixed_point_y, zoom_amount)
+	{
+		if (aspect_ratio >= 1)
+		{
+			let new_world_center = wilson_8.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level_8), 4 * Math.pow(2, zoom_level_8) / aspect_ratio);
 			
-			wilson_8.world_width = 4 * Math.pow(2, zoom_level);
-			wilson_8.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+			wilson_8.world_width = 4 * Math.pow(2, zoom_level_8);
+			wilson_8.world_height = 4 * Math.pow(2, zoom_level_8) / aspect_ratio;
 			
 			wilson_8.world_center_x = new_world_center[0];
 			wilson_8.world_center_y = new_world_center[1];
@@ -1116,15 +1169,15 @@
 			
 			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_x"], wilson_8.world_center_x);
 			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_y"], wilson_8.world_center_y);
-			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["box_size"], wilson_hidden_8.world_width / 2);
+			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["box_size"], wilson_8.world_width / 2);
 		}
 		
 		else
 		{
-			let new_world_center = wilson_8.input.get_zoomed_world_center(x, y, 4 * Math.pow(2, zoom_level) * aspect_ratio, 4 * Math.pow(2, zoom_level));
+			let new_world_center = wilson_8.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level_8) * aspect_ratio, 4 * Math.pow(2, zoom_level_8));
 			
-			wilson_8.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
-			wilson_8.world_height = 4 * Math.pow(2, zoom_level);
+			wilson_8.world_width = 4 * Math.pow(2, zoom_level_8) * aspect_ratio;
+			wilson_8.world_height = 4 * Math.pow(2, zoom_level_8);
 			
 			wilson_8.world_center_x = new_world_center[0];
 			wilson_8.world_center_y = new_world_center[1];
@@ -1135,7 +1188,7 @@
 			
 			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_x"], wilson_8.world_center_x);
 			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_y"], wilson_8.world_center_y);
-			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["box_size"], wilson_hidden_8.world_height / 2);
+			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["box_size"], wilson_8.world_height / 2);
 		}
 		
 		draw_julia_set_8();
