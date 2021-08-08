@@ -14,9 +14,9 @@
 
 !begin-text-block
 	
-	Hopefully the performance increase is apparent! At the time of writing, my computer can only handle about a 300x300 CPU-driven canvas before it starts to drop below 60fps, but a 5000x5000 GPU-driven one is still silky smooth.
+	Hopefully the performance increase is apparent! At the time of writing, my computer can only handle about a 500x500 CPU-driven canvas before it starts to drop below 60fps, but a 5000x5000 GPU-driven one is still silky smooth.
 	
-	One problem you probably noticed with the CPU canvas was a rapid fluctuation in brightness due to a high variation in the value of the brightest pixel. Here, we have a different problem &mdash; there&#x2019;s no way to automatically control the brightness at all. One option is to try a value, then see how many pixels are at max brightness and slightly adjust the brightness scale on the next frame. This is expensive, though, and if the brightness changes suddenly, it will take a while to catch up. A better solution is to render a second canvas with the same shader at a very low resolution &mdash; say 100x100 &mdash; and no brightness scale at all. Then we can read off the max brightness from that canvas and use it for the output one.
+	One problem you probably noticed with the CPU canvas was a rapid fluctuation in brightness due to a high variation in the value of the brightest pixel. Now we have a different problem &mdash; there&#x2019;s not a clear way to automatically control the brightness at all. One option is to try a value, then see how many pixels are at max brightness and slightly adjust the brightness scale on the next frame. This is expensive, though, and if the brightness changes suddenly, it will take a while to catch up. A better solution is to render a second canvas with the same shader at a very low resolution &mdash; say 100x100 &mdash; and no brightness scale at all. Then we can read off the max brightness from that canvas and use it for the output one.
 	
 	This process is simple &mdash; all we have to do is register a second canvas with Wilson and give it a similar set of options.
 	
@@ -52,52 +52,32 @@
 &#9;shader: frag_shader_source,
 &#9;
 &#9;canvas_width: 100,
-&#9;canvas_height: 100,
-&#9;
-&#9;world_width: 4,
-&#9;world_height: 4,
-&#9;world_center_x: 0,
-&#9;world_center_y: 0
+&#9;canvas_height: 100
 };
 
 
 
 let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
 
-wilson_hidden.render.init_uniforms(["a", "b", "brightness_scale"]);
+wilson_hidden.render.init_uniforms(["a", "b", "brightness_scale"]);</code></pre>
 
+<br>
 
-
-let a = 0;
-let b = 1;
-
-let resolution = 1000;
-
-let resolution_hidden = 100;
-
-document.querySelector("#resolution-input").addEventListener("input", () =>
+<pre><code class="language-js" data-aos="fade-up">function draw_julia_set(timestamp)
 {
-&#9;resolution = parseInt(document.querySelector("#resolution-input").value || 1000);
-&#9;wilson.change_canvas_size(resolution, resolution);
+&#9;let time_elapsed = timestamp - last_timestamp;
 &#9;
-&#9;draw_julia_set();
-});
-
-function on_drag(active_draggable, x, y, event)
-{
-&#9;a = x;
-&#9;b = y;
+&#9;last_timestamp = timestamp;
 &#9;
-&#9;draw_julia_set();
-}
-
-//Render the first frame.
-draw_julia_set();
-
-
-
-function draw_julia_set()
-{
+&#9;
+&#9;
+&#9;if (time_elapsed === 0)
+&#9;{
+&#9;&#9;	return;
+&#9;}
+&#9;
+&#9;
+&#9;
 &#9;wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["a"], a);
 &#9;wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["b"], b);
 &#9;
@@ -126,6 +106,10 @@ function draw_julia_set()
 &#9;
 &#9;let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)] / 255 * 18;
 &#9;
+brightness_scale = Math.max(brightness_scale, .1);
+&#9;
+&#9;
+&#9;
 &#9;wilson.gl.uniform1f(wilson.uniforms["a"], a);
 &#9;wilson.gl.uniform1f(wilson.uniforms["b"], b);
 &#9;wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
@@ -149,15 +133,15 @@ function draw_julia_set()
 
 !begin-text-boxes
 	
-	resolution-5 1000 Resolution
+	resolution 1000 Resolution
 	
 !end-text-boxes
 
 
 
 <div id="container" style="position: relative">
-	<canvas id="output-canvas-5" class="output-canvas" data-aos="fade-up"></canvas>
-	<canvas id="hidden-canvas-5" class="output-canvas hidden-canvas-superimposed" data-aos="fade-up" data-aos-delay-increase="0"></canvas>
+	<canvas id="output-canvas" class="output-canvas" data-aos="fade-up"></canvas>
+	<canvas id="hidden-canvas" class="output-canvas hidden-canvas-superimposed" data-aos="fade-up" data-aos-delay-increase="0"></canvas>
 </div>
 
 

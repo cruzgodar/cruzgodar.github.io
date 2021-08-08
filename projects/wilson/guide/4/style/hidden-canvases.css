@@ -1,0 +1,43 @@
+.hidden-canvas
+{
+	position: fixed;
+	left: -100px;
+	width: 100px;
+	height: 100px;
+}
+
+#container
+{
+	position: relative;
+	width: 50vmin;
+	height: 50vmin;
+	margin: 0 auto;
+}
+
+#container .hidden-canvas-superimposed
+{
+	position: absolute;
+	width: 10vmin;
+	height: 10vmin;
+	
+	border: none;
+	padding: 4px;
+	
+	margin-left: -25vmin;
+	
+	z-index: 3;
+}
+
+#container .output-canvas
+{
+	position: absolute;
+	
+	margin-left: -25vmin;
+	
+	z-index: 1;
+}
+
+#container .wilson-draggables-container
+{
+	z-index: 5;
+}
