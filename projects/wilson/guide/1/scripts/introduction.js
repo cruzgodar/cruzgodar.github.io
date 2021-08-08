@@ -11,10 +11,10 @@
 	{
 		let options =
 		{
+			renderer: "cpu",
+			
 			canvas_width: 500,
 			canvas_height: 500,
-			
-			renderer: "cpu",
 			
 			world_width: 4,
 			world_height: 4,
@@ -118,10 +118,10 @@
 	{
 		let options =
 		{
+			renderer: "hybrid",
+			
 			canvas_width: 500,
 			canvas_height: 500,
-			
-			renderer: "hybrid",
 			
 			world_width: 4,
 			world_height: 4,
@@ -230,7 +230,7 @@
 	
 	
 	
-	document.querySelector("#next-chapter-button").addEventListener("click", () =>
+	document.querySelector("#next-part-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/2/draggables.html");
 	});

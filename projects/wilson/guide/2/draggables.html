@@ -1,0 +1,200 @@
+<head><title>Part 2: Draggables</title></head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Part 2: Draggables
+
+
+
+!begin-text-block
+	
+	Since every Julia set corresponds to a unique complex number \(c\), we should be able to use the canvas for choosing \(c\) and displaying its Julia set at the same time. Wilson provides a type of element for this, called a draggable. We can add any number of them to a canvas, but right now, we only need one. To get this set up, we just need to modify our options once again &mdash; after that, we can add a draggable at any time.
+	
+!end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;renderer: "hybrid",
+&#9;
+&#9;canvas_width: 500,
+&#9;canvas_height: 500,
+&#9;
+&#9;world_width: 4,
+&#9;world_height: 4,
+&#9;world_center_x: 0,
+&#9;world_center_y: 0,
+&#9;
+&#9;
+&#9;
+&#9;use_draggables: true
+};
+
+let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+
+let draggable = wilson.draggables.add(0, 1);</code></pre>
+
+
+
+<br>
+
+!begin-text-block
+	
+	We now have a little white circle that can be freely dragged around the canvas. The style can be customized by modifying <code>.wilson-draggable</code>, but let&#x2019;s just stick with the default. The element is returned from <code>wilson.draggables.add</code> and also has a class of <code>wilson-draggable-0</code> if we want to reference it in the future. Note that <code>wilson.draggables.add</code> accepts world coordinates, not canvas ones.
+	
+	Now we have to actually do something with this draggable, which is accomplished by passing callback functions in the Wilson options. The index of the current draggable being moved is passed to the callback, as well as the world coordinates and the original event that was captured in case we need to do anything with that. Here, we&#x2019;d like to have callbacks for grabbing the draggable, moving it, and letting it go &mdash; we&#x2019;ll render low resolution frames while moving so that the framerate stays high, then a single higher resolution frame when we let go.
+	
+	We&#x2019;ll no longer need the input fields for \(a\) and \(b\) &mdash; just the one for resolution. It&#x2019;d be a little awkward to have to press the generate button just to change the resolution, so instead we&#x2019;ll add a listener to that field and update the variables as needed.
+	
+!end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;renderer: "hybrid",
+&#9;
+&#9;canvas_width: 500,
+&#9;canvas_height: 500,
+&#9;
+&#9;world_width: 4,
+&#9;world_height: 4,
+&#9;world_center_x: 0,
+&#9;world_center_y: 0,
+&#9;
+&#9;
+&#9;
+&#9;use_draggables: true,
+&#9;
+&#9;draggables_mousedown_callback: on_grab,
+&#9;draggables_mousemove_callback: on_drag,
+&#9;draggables_mouseup_callback: on_release,
+&#9;
+&#9;draggables_touchstart_callback: on_grab,
+&#9;draggables_touchmove_callback: on_drag,
+&#9;draggables_touchend_callback: on_release
+};
+
+
+
+let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+let draggable = wilson.draggables.add(0, 1);
+
+
+
+let resolution_input_element = document.querySelector("#resolution-input");
+
+let large_resolution = 500;
+let small_resolution = 100;
+
+resolution_input_element.addEventListener("input", () =>
+{
+&#9;large_resolution = parseInt(document.querySelector("#resolution-input").value || 500);
+&#9;small_resolution = Math.floor(large_resolution / 5);
+});
+
+
+
+let download_button_element = document.querySelector("#download-button");
+
+download_button_element.addEventListener("click", () =>
+{
+&#9;wilson.download_frame("a-julia-set.png");
+});
+
+
+
+//Render the inital frame.
+wilson.change_canvas_size(small_resolution, small_resolution);
+wilson.render.draw_frame(generate_julia_set(0, 1, small_resolution));
+
+
+
+function on_grab(active_draggable, x, y, event)
+{
+&#9;wilson.change_canvas_size(small_resolution, small_resolution);
+&#9;wilson.render.draw_frame(generate_julia_set(x, y, small_resolution));
+}
+
+function on_drag(active_draggable, x, y, event)
+{
+&#9;wilson.render.draw_frame(generate_julia_set(x, y, small_resolution));
+}
+
+function on_release(active_draggable, x, y, event)
+{
+&#9;wilson.change_canvas_size(large_resolution, large_resolution);
+&#9;wilson.render.draw_frame(generate_julia_set(x, y, large_resolution));
+}</code></pre>
+
+
+
+<br>
+
+
+
+!begin-text-boxes
+	
+	resolution 500 Resolution
+	
+!end-text-boxes
+
+
+
+<canvas id="output-canvas" class="output-canvas" data-aos="fade-up"></canvas>
+
+
+
+!begin-text-buttons
+	
+	download Download
+	
+!end-text-buttons
+
+
+
+!section
+
+!text b j You can view the code for this page <a href="/projects/wilson/guide/2/scripts/draggables.js">here</a>. In the next section, we&#x2019;ll move the math for this applet onto the GPU, dramatically improving performance.
+
+!begin-text-buttons
+	
+	previous-part Part 1: Introduction
+	
+	next-part Part 3: Parallelizing
+	
+!end-text-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Part 2: Draggables",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>
