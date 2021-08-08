@@ -237,9 +237,9 @@
 			
 			vec2 c = vec2(a, b);
 			
-			for (int iteration = 0; iteration < 200; iteration++)
+			for (int iteration = 0; iteration < 100; iteration++)
 			{
-				if (iteration == 199)
+				if (iteration == 99)
 				{
 					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 					return;
@@ -601,7 +601,7 @@
 		{
 			vec2 z;
 			
-			if (aspect_ratio > 1.0)
+			if (aspect_ratio >= 1.0)
 			{
 				z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
 			}
@@ -618,9 +618,9 @@
 			
 			vec2 c = vec2(a, b);
 			
-			for (int iteration = 0; iteration < 200; iteration++)
+			for (int iteration = 0; iteration < 100; iteration++)
 			{
-				if (iteration == 199)
+				if (iteration == 99)
 				{
 					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 					return;
@@ -785,11 +785,17 @@
 			if (aspect_ratio >= 1)
 			{
 				wilson_7.change_canvas_size(resolution_7, Math.floor(resolution_7 / aspect_ratio));
+				
+				wilson_7.world_width = 4 * aspect_ratio;
+				wilson_7.world_height = 4;
 			}
 			
 			else
 			{
 				wilson_7.change_canvas_size(Math.floor(resolution_7 * aspect_ratio), resolution_7);
+				
+				wilson_7.world_width = 4;
+				wilson_7.world_height = 4 / aspect_ratio;
 			}
 			
 			wilson_7.gl.uniform1f(wilson_7.uniforms["aspect_ratio"], aspect_ratio);
@@ -798,6 +804,9 @@
 		else
 		{
 			wilson_7.change_canvas_size(resolution_7, resolution_7);
+			
+			wilson_7.world_width = 4;
+			wilson_7.world_height = 4;
 			
 			wilson_7.gl.uniform1f(wilson_7.uniforms["aspect_ratio"], 1);
 		}
@@ -820,7 +829,7 @@
 		
 		uniform float center_x;
 		uniform float center_y;
-		uniform float box_size;
+		uniform float world_size;
 		
 		uniform float a;
 		uniform float b;
@@ -834,12 +843,12 @@
 			
 			if (aspect_ratio > 1.0)
 			{
-				z = vec2(uv.x * aspect_ratio * box_size + center_x, uv.y * box_size + center_y);
+				z = vec2(uv.x * aspect_ratio * world_size + center_x, uv.y * world_size + center_y);
 			}
 			
 			else
 			{
-				z = vec2(uv.x * box_size + center_x, uv.y / aspect_ratio * box_size + center_y);
+				z = vec2(uv.x * world_size + center_x, uv.y / aspect_ratio * world_size + center_y);
 			}
 			
 			vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
@@ -849,9 +858,9 @@
 			
 			vec2 c = vec2(a, b);
 			
-			for (int iteration = 0; iteration < 200; iteration++)
+			for (int iteration = 0; iteration < 100; iteration++)
 			{
-				if (iteration == 199)
+				if (iteration == 99)
 				{
 					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 					return;
@@ -936,7 +945,7 @@
 	
 	let wilson_8 = new Wilson(document.querySelector("#output-canvas-8"), options_8);
 
-	wilson_8.render.init_uniforms(["aspect_ratio", "center_x", "center_y", "box_size", "a", "b", "brightness_scale"]);
+	wilson_8.render.init_uniforms(["aspect_ratio", "center_x", "center_y", "world_size", "a", "b", "brightness_scale"]);
 
 	let draggable_8 = wilson_8.draggables.add(0, 1);
 	
@@ -949,14 +958,14 @@
 	
 	let wilson_hidden_8 = new Wilson(document.querySelector("#hidden-canvas-8"), options_hidden_8);
 	
-	wilson_hidden_8.render.init_uniforms(["aspect_ratio", "center_x", "center_y", "box_size", "a", "b", "brightness_scale"]);
+	wilson_hidden_8.render.init_uniforms(["aspect_ratio", "center_x", "center_y", "world_size", "a", "b", "brightness_scale"]);
 	
 	
 	
 	let a_8 = 0;
 	let b_8 = 1;
 	
-	let aspect_ratio = 1;
+	let aspect_ratio_8 = 1;
 	
 	let zoom_level_8 = 0;
 	
@@ -976,6 +985,14 @@
 	
 	
 	
+	document.querySelector("#download-8-button").addEventListener("click", () =>
+	{
+		let download_resolution = parseInt(document.querySelector("#download-resolution-8-input").value || 2000);
+		wilson_8.download_frame("a-julia-set.png", download_resolution);
+	});
+	
+	
+	
 	function on_drag_8(active_draggable, x, y, event)
 	{
 		a_8 = x;
@@ -990,12 +1007,12 @@
 	wilson_8.gl.uniform1f(wilson_8.uniforms["aspect_ratio"], 1);
 	wilson_8.gl.uniform1f(wilson_8.uniforms["center_x"], 0);
 	wilson_8.gl.uniform1f(wilson_8.uniforms["center_y"], 0);
-	wilson_8.gl.uniform1f(wilson_8.uniforms["box_size"], 2);
+	wilson_8.gl.uniform1f(wilson_8.uniforms["world_size"], 2);
 	
 	wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["aspect_ratio"], 1);
 	wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_x"], 0);
 	wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_y"], 0);
-	wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["box_size"], 2);
+	wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["world_size"], 2);
 	
 	draw_julia_set_8();
 
@@ -1039,30 +1056,30 @@
 	{
 		if (wilson_8.fullscreen.currently_fullscreen)
 		{
-			aspect_ratio = window.innerWidth / window.innerHeight;
+			aspect_ratio_8 = window.innerWidth / window.innerHeight;
 			
-			if (aspect_ratio >= 1)
+			if (aspect_ratio_8 >= 1)
 			{
-				wilson_8.change_canvas_size(resolution_8, Math.floor(resolution_8 / aspect_ratio));
+				wilson_8.change_canvas_size(resolution_8, Math.floor(resolution_8 / aspect_ratio_8));
 				
-				wilson_8.world_width = 4 * Math.pow(2, zoom_level_8);
-				wilson_8.world_height = 4 * Math.pow(2, zoom_level_8) / aspect_ratio;
+				wilson_8.world_width = 4 * Math.pow(2, zoom_level_8) * aspect_ratio_8;
+				wilson_8.world_height = 4 * Math.pow(2, zoom_level_8);
 			}
 			
 			else
 			{
-				wilson_8.change_canvas_size(Math.floor(resolution_8 * aspect_ratio), resolution_8);
+				wilson_8.change_canvas_size(Math.floor(resolution_8 * aspect_ratio_8), resolution_8);
 				
-				wilson_8.world_width = 4 * Math.pow(2, zoom_level_8) * aspect_ratio;
-				wilson_8.world_height = 4 * Math.pow(2, zoom_level_8);
+				wilson_8.world_width = 4 * Math.pow(2, zoom_level_8);
+				wilson_8.world_height = 4 * Math.pow(2, zoom_level_8) / aspect_ratio_8;
 			}
 			
-			wilson_8.gl.uniform1f(wilson_8.uniforms["aspect_ratio"], aspect_ratio);
+			wilson_8.gl.uniform1f(wilson_8.uniforms["aspect_ratio"], aspect_ratio_8);
 		}
 		
 		else
 		{
-			aspect_ratio = 1;
+			aspect_ratio_8 = 1;
 			
 			wilson_8.change_canvas_size(resolution_8, resolution_8);
 			
@@ -1079,24 +1096,11 @@
 	
 	function on_drag_canvas_8(x, y, x_delta, y_delta, event)
 	{
-		if (aspect_ratio >= 1)
-		{
-			wilson_8.world_center_x -= x_delta * aspect_ratio;
-			wilson_8.world_center_y -= y_delta * aspect_ratio;
-		}
-		
-		else
-		{
-			wilson_8.world_center_x -= x_delta / aspect_ratio;
-			wilson_8.world_center_y -= y_delta / aspect_ratio;
-		}
-		
-		
+		wilson_8.world_center_x -= x_delta;
+		wilson_8.world_center_y -= y_delta;
 		
 		wilson_8.world_center_x = Math.min(Math.max(wilson_8.world_center_x, -2), 2);
 		wilson_8.world_center_y = Math.min(Math.max(wilson_8.world_center_y, -2), 2);
-		
-		
 		
 		wilson_8.gl.uniform1f(wilson_8.uniforms["center_x"], wilson_8.world_center_x);
 		wilson_8.gl.uniform1f(wilson_8.uniforms["center_y"], wilson_8.world_center_y);
@@ -1117,17 +1121,16 @@
 		
 		zoom_level_8 += scroll_amount;
 		
-		if (zoom_level_8 >= 1)
-		{
-			zoom_level_8 = 1;
-		}
+		zoom_level_8 = Math.min(zoom_level_8, 1);
 		
 		zoom_canvas_8(x, y);
 	}
 	
+	
+	
 	function on_pinch_canvas_8(x, y, touch_distance_delta, event)
 	{
-		if (aspect_ratio >= 1)
+		if (aspect_ratio_8 >= 1)
 		{
 			zoom_level_8 -= touch_distance_delta / wilson_8.world_width * 10;
 		}
@@ -1137,58 +1140,55 @@
 			zoom_level_8 -= touch_distance_delta / wilson_8.world_height * 10;
 		}
 		
-		
-		
-		if (zoom_level_8 >= 1)
-		{
-			zoom_level_8 = 1;
-		}
+		zoom_level_8 = Math.min(zoom_level_8, 1);
 		
 		zoom_canvas_8(x, y);
 	}
 	
 	
 	
-	function zoom_canvas_8(fixed_point_x, fixed_point_y, zoom_amount)
+	function zoom_canvas_8(fixed_point_x, fixed_point_y)
 	{
-		if (aspect_ratio >= 1)
+		if (aspect_ratio_8 >= 1)
 		{
-			let new_world_center = wilson_8.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level_8), 4 * Math.pow(2, zoom_level_8) / aspect_ratio);
+			let new_world_center = wilson_8.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level_8) * aspect_ratio_8, 4 * Math.pow(2, zoom_level_8));
 			
-			wilson_8.world_width = 4 * Math.pow(2, zoom_level_8);
-			wilson_8.world_height = 4 * Math.pow(2, zoom_level_8) / aspect_ratio;
-			
-			wilson_8.world_center_x = new_world_center[0];
-			wilson_8.world_center_y = new_world_center[1];
-			
-			
-			
-			wilson_8.gl.uniform1f(wilson_8.uniforms["center_x"], wilson_8.world_center_x);
-			wilson_8.gl.uniform1f(wilson_8.uniforms["center_y"], wilson_8.world_center_y);
-			wilson_8.gl.uniform1f(wilson_8.uniforms["box_size"], wilson_8.world_width / 2);
-			
-			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_x"], wilson_8.world_center_x);
-			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_y"], wilson_8.world_center_y);
-			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["box_size"], wilson_8.world_width / 2);
-		}
-		
-		else
-		{
-			let new_world_center = wilson_8.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level_8) * aspect_ratio, 4 * Math.pow(2, zoom_level_8));
-			
-			wilson_8.world_width = 4 * Math.pow(2, zoom_level_8) * aspect_ratio;
+			wilson_8.world_width = 4 * Math.pow(2, zoom_level_8) * aspect_ratio_8;
 			wilson_8.world_height = 4 * Math.pow(2, zoom_level_8);
 			
 			wilson_8.world_center_x = new_world_center[0];
 			wilson_8.world_center_y = new_world_center[1];
 			
+			
+			
 			wilson_8.gl.uniform1f(wilson_8.uniforms["center_x"], wilson_8.world_center_x);
 			wilson_8.gl.uniform1f(wilson_8.uniforms["center_y"], wilson_8.world_center_y);
-			wilson_8.gl.uniform1f(wilson_8.uniforms["box_size"], wilson_8.world_height / 2);
+			wilson_8.gl.uniform1f(wilson_8.uniforms["world_size"], wilson_8.world_height / 2);
 			
 			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_x"], wilson_8.world_center_x);
 			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_y"], wilson_8.world_center_y);
-			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["box_size"], wilson_8.world_height / 2);
+			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["world_size"], wilson_8.world_height / 2);
+		}
+		
+		
+		
+		else
+		{
+			let new_world_center = wilson_8.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level_8), 4 * Math.pow(2, zoom_level_8) / aspect_ratio_8);
+			
+			wilson_8.world_width = 4 * Math.pow(2, zoom_level_8);
+			wilson_8.world_height = 4 * Math.pow(2, zoom_level_8) / aspect_ratio_8;
+			
+			wilson_8.world_center_x = new_world_center[0];
+			wilson_8.world_center_y = new_world_center[1];
+			
+			wilson_8.gl.uniform1f(wilson_8.uniforms["center_x"], wilson_8.world_center_x);
+			wilson_8.gl.uniform1f(wilson_8.uniforms["center_y"], wilson_8.world_center_y);
+			wilson_8.gl.uniform1f(wilson_8.uniforms["world_size"], wilson_8.world_width / 2);
+			
+			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_x"], wilson_8.world_center_x);
+			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["center_y"], wilson_8.world_center_y);
+			wilson_hidden_8.gl.uniform1f(wilson_hidden_8.uniforms["world_size"], wilson_8.world_width / 2);
 		}
 		
 		draw_julia_set_8();
