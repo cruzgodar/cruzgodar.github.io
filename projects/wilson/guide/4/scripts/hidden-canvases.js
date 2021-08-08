@@ -145,7 +145,6 @@
 	
 	
 	//Render the inital frame.
-	wilson.change_canvas_size(resolution, resolution);
 	window.requestAnimationFrame(draw_julia_set);
 	
 	
@@ -201,6 +200,7 @@
 		
 		brightnesses.sort((a, b) => a - b);
 		
+		//Both the .98 and 18 here were found experimentally.
 		let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)] / 255 * 18;
 		
 		brightness_scale = Math.max(brightness_scale, .1);
@@ -218,11 +218,11 @@
 	
 	document.querySelector("#previous-part-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/1/introduction.html");
+		Page.Navigation.redirect("/projects/wilson/guide/3/parallelizing.html");
 	});
 	
 	document.querySelector("#next-part-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/3/parallelizing.html");
+		Page.Navigation.redirect("/projects/wilson/guide/5/fullscreen.html");
 	});
 }()

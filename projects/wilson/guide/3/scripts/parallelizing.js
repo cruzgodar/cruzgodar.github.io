@@ -125,7 +125,6 @@
 	
 	
 	//Render the inital frame.
-	wilson.change_canvas_size(resolution, resolution);
 	window.requestAnimationFrame(draw_julia_set);
 
 

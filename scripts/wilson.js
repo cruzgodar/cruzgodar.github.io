@@ -75,8 +75,8 @@ class Wilson
 			
 			use_fullscreen_button
 			
-			enter_fullscreen_button_image_path
-			exit_fullscreen_button_image_path
+			enter_fullscreen_button_icon_path
+			exit_fullscreen_button_icon_path
 			
 			switch_fullscreen_callback
 		}
@@ -247,20 +247,20 @@ class Wilson
 			
 			
 			
-			if (this.fullscreen.use_fullscreen_button && typeof options.enter_fullscreen_button_image_path === "undefined")
+			if (this.fullscreen.use_fullscreen_button && typeof options.enter_fullscreen_button_icon_path === "undefined")
 			{
 				console.error("Missing path to Enter Fullscreen button image");
 			}
 			
-			if (this.fullscreen.use_fullscreen_button && typeof options.exit_fullscreen_button_image_path === "undefined")
+			if (this.fullscreen.use_fullscreen_button && typeof options.exit_fullscreen_button_icon_path === "undefined")
 			{
 				console.error("Missing path to Exit Fullscreen button image");
 			}
 			
 			
 			
-			this.fullscreen.enter_fullscreen_button_image_path = options.enter_fullscreen_button_image_path;
-			this.fullscreen.exit_fullscreen_button_image_path = options.exit_fullscreen_button_image_path;
+			this.fullscreen.enter_fullscreen_button_icon_path = options.enter_fullscreen_button_icon_path;
+			this.fullscreen.exit_fullscreen_button_icon_path = options.exit_fullscreen_button_icon_path;
 			
 			
 			
@@ -1172,8 +1172,8 @@ class Wilson
 		
 		use_fullscreen_button: true,
 		
-		enter_fullscreen_button_image_path: null,
-		exit_fullscreen_button_image_path: null,
+		enter_fullscreen_button_icon_path: null,
+		exit_fullscreen_button_icon_path: null,
 		
 		
 		
@@ -1316,7 +1316,7 @@ class Wilson
 				
 				this.enter_fullscreen_button.type = "image";
 				this.enter_fullscreen_button.classList.add("wilson-enter-fullscreen-button");
-				this.enter_fullscreen_button.src = this.enter_fullscreen_button_image_path;
+				this.enter_fullscreen_button.src = this.enter_fullscreen_button_icon_path;
 				this.enter_fullscreen_button.alt = "Enter Fullscreen";
 				this.enter_fullscreen_button.setAttribute("tabindex", "-1");
 				
@@ -1382,7 +1382,7 @@ class Wilson
 					
 					this.exit_fullscreen_button.type = "image";
 					this.exit_fullscreen_button.classList.add("wilson-exit-fullscreen-button");
-					this.exit_fullscreen_button.src = this.exit_fullscreen_button_image_path;
+					this.exit_fullscreen_button.src = this.exit_fullscreen_button_icon_path;
 					this.exit_fullscreen_button.alt = "Exit Fullscreen";
 					this.exit_fullscreen_button.setAttribute("tabindex", "-1");
 					
@@ -1538,7 +1538,7 @@ class Wilson
 					
 					this.enter_fullscreen_button.type = "image";
 					this.enter_fullscreen_button.classList.add("wilson-enter-fullscreen-button");
-					this.enter_fullscreen_button.src = this.enter_fullscreen_button_image_path;
+					this.enter_fullscreen_button.src = this.enter_fullscreen_button_icon_path;
 					this.enter_fullscreen_button.alt = "Enter Fullscreen";
 					this.enter_fullscreen_button.setAttribute("tabindex", "-1");
 					

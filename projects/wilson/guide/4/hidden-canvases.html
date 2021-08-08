@@ -104,6 +104,7 @@ wilson_hidden.render.init_uniforms(["a", "b", "brightness_scale"]);</code></pre>
 &#9;
 &#9;brightnesses.sort((a, b) => a - b);
 &#9;
+&#9;//Both the .98 and 18 here were found experimentally.
 &#9;let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)] / 255 * 18;
 &#9;
 brightness_scale = Math.max(brightness_scale, .1);
@@ -156,7 +157,7 @@ brightness_scale = Math.max(brightness_scale, .1);
 
 !section
 
-!text b j You can view the code for this page <a href="/projects/wilson/guide/3/scripts/parallelizing.js">here</a>. In the next section, we&#x2019;ll add a second, hidden canvas that we can leverage to efficiently find a good brightness scale.
+!text b j You can view the code for this page <a href="/projects/wilson/guide/4/scripts/hidden-canvases.js">here</a>. In the next section, we&#x2019;ll add the ability to run the applet in fullscreen, leveraging as much screen space as possible.
 
 !begin-text-buttons
 	
