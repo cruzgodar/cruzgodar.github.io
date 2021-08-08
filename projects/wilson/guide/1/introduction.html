@@ -1,0 +1,362 @@
+<head><title>Wilson: A Guide</title></head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header 1: Introduction
+
+
+
+!begin-text-block
+	
+	Welcome! In this guide, we&#x2019;ll use Wilson to create the Julia set explorer featured on the main page. We&#x2019;ll do this one step at a time, starting with the simplest and most stripped-down version possible and gradually adding features. In every JS code block, properties and methods defined by Wilson are bolded &mdash; click on one to pull up its documentation.
+	
+	First, some background: a Julia set is a famous type of fractal closely related to the Mandelbrot set. Unlike the Mandelbrot, though, there are infinitely many Julia sets, each one corresponding to a different complex number. Because of this, Julia set applets often focus on generating different Julia sets rather than zooms of a single one, and this is where we&#x2019;ll start too. Right now, let&#x2019;s not worry about interactivity: we&#x2019;ll just have the user enter the complex number \(c\) and display the Julia set corresponding to it.
+	
+	Once we&#x2019;ve included wilson.js, we need to make a canvas and some input fields in the HTML.
+	
+!end-text-block
+
+
+
+<pre><code class="language-html" data-aos="fade-up">&lt;input id="a-input" type="text" value="0"&gt;
+&lt;label for="a-input"&gt;
+&#9;&lt;p&gt;a&lt;/p&gt;
+&lt;/label&gt;
+
+&lt;input id="b-input" type="text" value="1"&gt;
+&lt;label for="b-input"&gt;
+&#9;&lt;p&gt;b&lt;/p&gt;
+&lt;/label&gt;
+
+&lt;input id="resolution-input" type="text" value="500"&gt;
+&lt;label for="resolution-input"&gt;
+&#9;&lt;p&gt;Resolution&lt;/p&gt;
+&lt;/label&gt;
+
+&lt;button id="generate-button" type="button"&gt;Generate&lt;/button&gt;
+
+&lt;canvas id="output-canvas"&gt&lt;/canvas&gt;</code></pre>
+
+
+
+<br>
+
+
+
+!begin-text-block
+	
+	This obviously doesn&#x2019;t look too great without any added CSS. The displayed canvases and input fields on this page will be styled, but the CSS will be omitted for brevity.
+	
+	On the JS side, we need to tell Wilson we want it to work with this canvas.
+	
+!end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;renderer: "cpu",
+&#9;
+&#9;canvas_width: 500,
+&#9;canvas_height: 500
+};
+
+let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+
+
+
+let a_input_element = document.querySelector("#a-input");
+let b_input_element = document.querySelector("#b-input");
+let resolution_input_element = document.querySelector("#resolution-input");
+
+let generate_button_element = document.querySelector("#generate-button");
+
+generate_button_element.addEventListener("click", () =>
+{
+&#9;let a = parseFloat(a_input_element.value || 0);
+&#9;let b = parseFloat(b_input_element.value || 1);
+&#9;let resolution = parseInt(resolution_input_element.value || 500);
+&#9;
+&#9;wilson.change_canvas_size(resolution, resolution);
+&#9;
+&#9;//Do something with a and b.
+});</code></pre>
+
+
+
+<br>
+
+
+
+!begin-text-block
+	
+	Those initial values of 500 are just placeholders &mdash; they&#x2019;re changed whenever the generate button is pressed. Now we just need to write a function that generates a Julia set given these parameters. The first step for that function will be to convert between pixel coordinates on the canvas and complex numbers in the plane, and this is a common enough occurance in math applets that Wilson has built-in functions for handling it: we need to add information in the options about the &#x201C;world coordinates&#x201D;, as Wilson calls them, and then we can call <code>wilson.utils.interpolate.canvas_to_world</code> and <code>wilson.utils.interpolate.world_to_canvas</code>, which convert between pairs (row, col) of canvas coordinates and (x, y) of world coordinates. Note that <code>row</code> increases from top to bottom, while <code>y</code> does the opposite.
+	
+	The algorithm to color a single point \(z_0\) of the Julia set corresponding to \(c = a + bi\) is relatively simple: with \(f(z) = z^2 + c\), we let \(z_1 = f(z_0)\), \(z_2 = f(z_1)\), and so on. If the \(z_n\) grow without bound, then the point \(z_0\) is <em>not</em> in the Julia set, and we give it a color based on how quickly it grew. If the \(z_n\) stay bounded, then \(z_0\) is in the set, and we color it black. In practice, we pick a maximum value for \(n\), say 100, and see if the sequence is smaller than a certain bound after that many iterations. It can be shown that if the magnitude of any \(z_n\) is ever larger than 2, then the subsequent terms will grow without bound, so that&#x2019;s the typical threshhold to measure against.
+	
+!end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;renderer: "cpu",
+&#9;
+&#9;canvas_width: 500,
+&#9;canvas_height: 500,
+&#9;
+&#9;world_width: 4,
+&#9;world_height: 4,
+&#9;world_center_x: 0,
+&#9;world_center_y: 0
+};</code></pre>
+
+<br>
+
+<pre><code class="language-js" data-aos="fade-up">function generate_julia_set(a, b, resolution)
+{
+&#9;let brightnesses = new Array(resolution * resolution);
+&#9;let max_brightness = 0;
+&#9;let brightness_scale = 1.5;
+&#9;const num_iterations = 100;
+&#9;
+&#9;for (let i = 0; i &lt; resolution; i++)
+&#9;{
+&#9;&#9;for (let j = 0; j &lt; resolution; j++)
+&#9;&#9;{
+&#9;&#9;&#9;let world_coordinates = wilson.utils.interpolate.canvas_to_world(i, j);
+&#9;&#9;&#9;let x = world_coordinates[0];
+&#9;&#9;&#9;let y = world_coordinates[1];
+&#9;&#9;&#9;
+&#9;&#9;&#9;//This helps remove color banding.
+&#9;&#9;&#9;let brightness = Math.exp(-Math.sqrt(x*x + y*y));
+&#9;&#9;&#9;
+&#9;&#9;&#9;let k = 0;
+&#9;&#9;&#9;
+&#9;&#9;&#9;for (k = 0; k &lt; num_iterations; k++)
+&#9;&#9;&#9;{
+&#9;&#9;&#9;&#9;//z = z^2 + c = (x^2 - y^2 + a) + (2xy + b)i
+&#9;&#9;&#9;&#9;let temp = x*x - y*y + a;
+&#9;&#9;&#9;&#9;y = 2*x*y + b;
+&#9;&#9;&#9;&#9;x = temp;
+&#9;&#9;&#9;&#9;
+&#9;&#9;&#9;&#9;brightness += Math.exp(-Math.sqrt(x*x + y*y));
+&#9;&#9;&#9;&#9;
+&#9;&#9;&#9;&#9;if (x*x + y*y > 4)
+&#9;&#9;&#9;&#9;{
+&#9;&#9;&#9;&#9;&#9;break;
+&#9;&#9;&#9;&#9;}
+&#9;&#9;&#9;}
+&#9;&#9;&#9;
+&#9;&#9;&#9;if (k === num_iterations)
+&#9;&#9;&#9;{
+&#9;&#9;&#9;&#9;//Color this pixel black.
+&#9;&#9;&#9;&#9;brightnesses[resolution * i + j] = 0;
+&#9;&#9;&#9;}
+&#9;&#9;&#9;
+&#9;&#9;&#9;else
+&#9;&#9;&#9;{
+&#9;&#9;&#9;&#9;brightnesses[resolution * i + j] = brightness;
+&#9;&#9;&#9;&#9;
+&#9;&#9;&#9;&#9;if (brightness > max_brightness)
+&#9;&#9;&#9;&#9;{
+&#9;&#9;&#9;&#9;&#9;max_brightness = brightness;
+&#9;&#9;&#9;&#9;}
+&#9;&#9;&#9;}
+&#9;&#9;}
+&#9;}
+&#9;
+&#9;//Now we need to create the actual pixel data in a Uint8ClampedArray to pass to Wilson.
+&#9;let image_data = new Uint8ClampedArray(resolution * resolution * 4);
+&#9;
+&#9;for (let i = 0; i &lt; resolution * resolution; i++)
+&#9;{
+&#9;&#9;image_data[4 * i] = 0; //Red
+&#9;&#9;image_data[4 * i + 1] = brightness_scale * brightnesses[i] / max_brightness * 255; //Green
+&#9;&#9;image_data[4 * i + 2] = brightness_scale * brightnesses[i] / max_brightness * 255; //Blue
+&#9;&#9;image_data[4 * i + 3] = 255; //Alpha
+&#9;}
+&#9;
+&#9;return image_data;
+}</code></pre>
+
+<br>
+
+<pre><code class="language-js" data-aos="fade-up">let a_input_element = document.querySelector("#a-input");
+let b_input_element = document.querySelector("#b-input");
+let resolution_input_element = document.querySelector("#resolution-input");
+
+let generate_button_element = document.querySelector("#generate-button");
+
+generate_button_element.addEventListener("click", () =>
+{
+&#9;let a = parseFloat(a_input_element.value || 0);
+&#9;let b = parseFloat(b_input_element.value || 1);
+&#9;let resolution = parseInt(resolution_input_element.value || 500);
+&#9;
+&#9;wilson.change_canvas_size(resolution, resolution);
+&#9;
+&#9;window.requestAnimationFrame(() => wilson.render.draw_frame(generate_julia_set(a, b, resolution)));
+});</code></pre>
+
+
+
+<br>
+
+
+
+!begin-text-block
+	
+	The weirdness with the exponentials is a technique to reduce color banding &mdash; if we just used the raw iteration numbers for brightness values, we&#x2019;d see stripes of different brightness wherever that number increased or decreased by one. Basing the color partly on the values of the \(z_n\) introduces dithering &mdash; just enough noise that the color bands are blurred out.
+	
+	The brightness scale variable is a value that I found experimentally. When we make Julia set renders, there will typically be a handful of pixels that are significanly brighter than the rest, resulting in a much darker image overall. This is hard to exactly counteract without sorting the list of brightnesses and picking one a little bit down from the top &mdash; and we&#x2019;ll get there eventually &mdash; but right now, that would require a massive sort every frame. Instead, we can get a good result by just finding a factor experimentally that gets the majority of the pixels in full range of 0&ndash;255.
+	
+	If you&#x2019;re not famaliar with <code>window.requestAnimationFrame</code>, it calls the function we pass it on the first frame when the page can handle it. Nothing else on this page is going to impact performance to make this important, but later on we&#x2019;ll need it to keep our code from rendering multiple frames within a one-frame interval, needlessly impacting performance. Because of that, it&#x2019;s good practice to always use <code>requestAnimationFrame</code>.
+	
+	With all that explanation out of the way, let&#x2019;s see how the applet turned out!
+	
+!end-text-block
+
+
+
+<br>
+
+!begin-text-boxes
+	
+	a-1 0 \(a\)
+	
+	b-1 1 \(b\)
+	
+	resolution-1 500 Resolution
+	
+!end-text-boxes
+
+
+
+!begin-text-buttons
+	
+	generate-1 Generate
+	
+!end-text-buttons
+
+
+
+<canvas id="output-canvas-1" class="output-canvas" data-aos="fade-up"></canvas>
+
+
+
+!section
+
+!text s A Different Renderer
+
+<br>
+
+!begin-text-block
+	
+	This is a great start, but we have a lot more to do, and the first and easiest change to make is to modify the renderer. We currently have the line <code>renderer: "cpu"</code> in our options, which means that when we pass Wilson our pixel data, it gets copied into the canvas by JavaScript. A slightly better alternative is to render the canvas with WebGL and pass in the pixel data as a texture. This can marginally increase performance, and on some browers, it also increases the maximum possible canvas size. Hearing the word WebGL might make you a little nervous, and maybe rightfully so, but we don&#x2019;t actually have to interface with it at all right now. Just replacing that line in the options with <code>renderer: "hybrid"</code> is enough to change everything necessary on the backend.
+	
+	As another improvement, let&#x2019;s add a button to download the current state of the canvas at a specified resolution &mdash; we need a better way to get the applet&#x2019;s output than taking a screenshot.
+	
+!end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;renderer: "hybrid",
+&#9;
+&#9;canvas_width: 500,
+&#9;canvas_height: 500,
+&#9;
+&#9;world_width: 4,
+&#9;world_height: 4,
+&#9;world_center_x: 0,
+&#9;world_center_y: 0
+};</code></pre>
+
+<br>
+
+<pre><code class="language-js" data-aos="fade-up">let download_button_element = document.querySelector("#download-button");
+
+download_button_element.addEventListener("click", () =>
+{
+&#9;wilson.download_frame("a-julia-set.png");
+});</code></pre>
+
+
+
+<br>
+
+!begin-text-boxes
+	
+	a-2 0 \(a\)
+	
+	b-2 1 \(b\)
+	
+	resolution-2 500 Resolution
+	
+!end-text-boxes
+
+
+
+!begin-text-buttons
+	
+	generate-2 Generate
+	
+!end-text-buttons
+
+
+
+<canvas id="output-canvas-2" class="output-canvas" data-aos="fade-up"></canvas>
+
+
+
+!begin-text-buttons
+	
+	download-2 Download
+	
+!end-text-buttons
+
+
+
+!section
+
+!text b j You can view the code for this page <a href="/projects/wilson/guide/1/scripts/introduction.js">here</a>. In the next section, we&#x2019;ll add the first bit of interactivity to our applet, in the form of a draggable selector for \(c\).
+
+!begin-text-buttons
+	
+	next-chapter 2: Draggables
+	
+!end-text-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Wilson: A Guide",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>
