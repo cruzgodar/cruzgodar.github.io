@@ -12,8 +12,8 @@
 	{
 		renderer: "hybrid",
 		
-		canvas_width: 500,
-		canvas_height: 500,
+		canvas_width: 1000,
+		canvas_height: 1000,
 		
 		world_width: 4,
 		world_height: 4,
@@ -48,14 +48,24 @@
 	
 	
 	
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let large_resolution = 1000;
+	let small_resolution = 200;
 	
-	let large_resolution = 500;
-	let small_resolution = 100;
+	let a = 0;
+	let b = 1;
+	
+	let resolution = 200;
+	let last_resolution = 0;
+	
+	let last_timestamp = -1;
+	
+	
+	
+	let resolution_input_element = document.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
-		large_resolution = parseInt(resolution_input_element.value || 500);
+		large_resolution = parseInt(resolution_input_element.value || 1000);
 		small_resolution = Math.floor(large_resolution / 5);
 	});
 	
@@ -72,25 +82,39 @@
 	
 	//Draw the initial frame.
 	wilson.change_canvas_size(small_resolution, small_resolution);
-	wilson.render.draw_frame(generate_julia_set(0, 1, small_resolution));
+	window.requestAnimationFrame(draw_julia_set);
 	
 	
 	
 	function on_grab(active_draggable, x, y, event)
 	{
 		wilson.change_canvas_size(small_resolution, small_resolution);
-		wilson.render.draw_frame(generate_julia_set(x, y, small_resolution));
+		
+		a = x;
+		b = y;
+		resolution = small_resolution;
+		
+		window.requestAnimationFrame(draw_julia_set);
 	}
 
 	function on_drag(active_draggable, x, y, event)
 	{
-		wilson.render.draw_frame(generate_julia_set(x, y, small_resolution));
+		a = x;
+		b = y;
+		resolution = small_resolution;
+		
+		window.requestAnimationFrame(draw_julia_set);
 	}
 
 	function on_release(active_draggable, x, y, event)
 	{
 		wilson.change_canvas_size(large_resolution, large_resolution);
-		wilson.render.draw_frame(generate_julia_set(x, y, large_resolution));
+		
+		a = x;
+		b = y;
+		resolution = large_resolution;
+		
+		window.requestAnimationFrame(draw_julia_set);
 	}
 	
 	
@@ -159,6 +183,28 @@
 		}
 		
 		return image_data;
+	}
+	
+	
+	
+	function draw_julia_set(timestamp)
+	{
+		let time_elapsed = timestamp - last_timestamp;
+		
+		last_timestamp = timestamp;
+		
+		
+		
+		if (time_elapsed === 0 && last_resolution === resolution)
+		{
+			return;
+		}
+		
+		last_resolution = resolution;
+		
+		
+		
+		wilson.render.draw_frame(generate_julia_set(a, b, resolution));
 	}
 	
 	
