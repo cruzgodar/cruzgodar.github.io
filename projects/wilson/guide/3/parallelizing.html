@@ -113,9 +113,7 @@
 
 let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 
-wilson.render.init_uniforms(["a", "b", "brightness_scale"]);
-	
-let draggable = wilson.draggables.add(0, 1);</code></pre>
+wilson.render.init_uniforms(["a", "b", "brightness_scale"]);</code></pre>
 
 
 
@@ -129,37 +127,22 @@ let draggable = wilson.draggables.add(0, 1);</code></pre>
 
 
 
-<pre><code class="language-js" data-aos="fade-up">let options =
-{
-&#9;renderer: "gpu",
-&#9;
-&#9;shader: frag_shader_source,
-&#9;
-&#9;canvas_width: 1000,
-&#9;canvas_height: 1000,
-&#9;
-&#9;world_width: 4,
-&#9;world_height: 4,
-&#9;world_center_x: 0,
-&#9;world_center_y: 0,
-&#9;
-&#9;
-&#9;
-&#9;use_draggables: true,
-&#9;
-&#9;draggables_mousemove_callback: on_drag,
-&#9;draggables_touchmove_callback: on_drag
-};</code></pre>
-
-<br>
-
-<pre><code class="language-js" data-aos="fade-up">let resolution_input_element = document.querySelector("#resolution-input");
+<pre><code class="language-js" data-aos="fade-up">let a = 0;
+let b = 1;
 
 let resolution = 1000;
+
+let last_timestamp = -1;
+
+
+
+let resolution_input_element = document.querySelector("#resolution-input");
 
 resolution_input_element.addEventListener("input", () =>
 {
 &#9;resolution = parseInt(resolution_input_element.value || 1000);
+&#9;
+&#9;wilson.change_canvas_size(resolution, resolution);
 });
 
 
@@ -174,20 +157,38 @@ download_button_element.addEventListener("click", () =>
 
 
 //Render the inital frame.
-wilson.gl.uniform1f(wilson.uniforms["a"], 0);
-wilson.gl.uniform1f(wilson.uniforms["b"], 1);
-wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], 10);
-
 wilson.change_canvas_size(resolution, resolution);
-
-wilson.render.draw_frame();
+window.requestAnimationFrame(draw_julia_set);
 
 
 
 function on_drag(active_draggable, x, y, event)
 {
-&#9;wilson.gl.uniform1f(wilson.uniforms["a"], x);
-&#9;wilson.gl.uniform1f(wilson.uniforms["b"], y);
+&#9;a = x;
+&#9;b = y;
+&#9;
+&#9;window.requestAnimationFrame(draw_julia_set);
+}
+
+
+
+function draw_julia_set(timestamp)
+{
+&#9;let time_elapsed = timestamp - last_timestamp;
+&#9;
+&#9;last_timestamp = timestamp;
+&#9;
+&#9;
+&#9;
+&#9;if (time_elapsed === 0)
+&#9;{
+&#9;&#9;	return;
+&#9;}
+&#9;
+&#9;
+&#9;
+&#9;wilson.gl.uniform1f(wilson.uniforms["a"], a);
+&#9;wilson.gl.uniform1f(wilson.uniforms["b"], b);
 &#9;wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], 10);
 &#9;
 &#9;wilson.render.draw_frame();

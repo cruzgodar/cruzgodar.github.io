@@ -86,6 +86,15 @@
 	
 	
 	
+	let a = 0;
+	let b = 1;
+	
+	let resolution = 1000;
+	
+	let last_timestamp = -1;
+	
+	
+	
 	wilson.draggables.container.setAttribute("data-aos-offset", 1000000);
 	wilson.draggables.container.setAttribute("data-aos-delay", 0);
 	
@@ -97,11 +106,11 @@
 	
 	let resolution_input_element = document.querySelector("#resolution-input");
 	
-	let resolution = 1000;
-	
 	resolution_input_element.addEventListener("input", () =>
 	{
 		resolution = parseInt(resolution_input_element.value || 1000);
+		
+		wilson.change_canvas_size(resolution, resolution);
 	});
 	
 	
@@ -116,20 +125,38 @@
 	
 	
 	//Render the inital frame.
-	wilson.gl.uniform1f(wilson.uniforms["a"], 0);
-	wilson.gl.uniform1f(wilson.uniforms["b"], 1);
-	wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], 10);
-	
 	wilson.change_canvas_size(resolution, resolution);
-	
-	wilson.render.draw_frame();
+	window.requestAnimationFrame(draw_julia_set);
 
 
 
 	function on_drag(active_draggable, x, y, event)
 	{
-		wilson.gl.uniform1f(wilson.uniforms["a"], x);
-		wilson.gl.uniform1f(wilson.uniforms["b"], y);
+		a = x;
+		b = y;
+		
+		window.requestAnimationFrame(draw_julia_set);
+	}
+	
+	
+	
+	function draw_julia_set(timestamp)
+	{
+		let time_elapsed = timestamp - last_timestamp;
+		
+		last_timestamp = timestamp;
+		
+		
+		
+		if (time_elapsed === 0)
+		{
+			return;
+		}
+		
+		
+		
+		wilson.gl.uniform1f(wilson.uniforms["a"], a);
+		wilson.gl.uniform1f(wilson.uniforms["b"], b);
 		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], 10);
 		
 		wilson.render.draw_frame();
