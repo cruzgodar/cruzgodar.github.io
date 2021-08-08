@@ -97,7 +97,7 @@ let small_resolution = 100;
 
 resolution_input_element.addEventListener("input", () =>
 {
-&#9;large_resolution = parseInt(document.querySelector("#resolution-input").value || 500);
+&#9;large_resolution = parseInt(resolution_input_element.value || 500);
 &#9;small_resolution = Math.floor(large_resolution / 5);
 });
 
@@ -167,9 +167,9 @@ function on_release(active_draggable, x, y, event)
 
 !begin-text-buttons
 	
-	previous-part Part 1: Introduction
+	previous-part l Part 1: Introduction
 	
-	next-part Part 3: Parallelizing
+	next-part l Part 3: Parallelizing
 	
 !end-text-buttons
 
