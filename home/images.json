@@ -31,6 +31,13 @@
 	
 	
 	
+	
+	"wilson":
+	{
+		"webp": "/projects/wilson/cover.webp",
+		"non-webp": "/projects/wilson/cover.jpg"
+	},
+	
 	"intro":
 	{
 		"webp": "/writing/caracore/cover.webp",
@@ -41,11 +48,5 @@
 	{
 		"webp": "/applets/kleinian-pearls/cover.webp",
 		"non-webp": "/applets/kleinian-pearls/cover.jpg"
-	},
-	
-	"the-secant-method":
-	{
-		"webp": "/applets/the-secant-method/cover.webp",
-		"non-webp": "/applets/the-secant-method/cover.jpg"
 	}
 }
