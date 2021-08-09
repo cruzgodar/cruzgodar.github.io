@@ -100,12 +100,12 @@ Page.Navigation =
 			
 			if (!no_state_push)
 			{
-				history.pushState({}, document.title, "/index.html" + this.concat_url_vars());
+				history.pushState({}, document.title, url + this.concat_url_vars());
 			}
 			
 			else
 			{
-				history.replaceState({}, document.title, "/index.html" + this.concat_url_vars());
+				history.replaceState({}, document.title, url + this.concat_url_vars());
 			}
 			
 			
@@ -196,9 +196,11 @@ Page.Navigation =
 	//Returns a string of url vars that can be attached to any url.
 	concat_url_vars: function()
 	{
-		let string = "?page=" + encodeURIComponent(Page.url);
+		let string = "";
 		let key = "";
 		let temp = "";
+		
+		let found_first_key = false;
 		
 		
 		
@@ -208,7 +210,17 @@ Page.Navigation =
 			
 			if (Site.Settings.url_vars[key] !== 0 || (window.matchMedia("(prefers-color-scheme: dark)").matches && Site.Settings.url_vars["theme"] === 0 && key === "theme"))
 			{
-				string += "&" + key + "=" + Site.Settings.url_vars[key];
+				if (found_first_key)
+				{
+					string += "&" + key + "=" + Site.Settings.url_vars[key];
+				}
+				
+				else
+				{
+					string += "?" + key + "=" + Site.Settings.url_vars[key];
+					
+					found_first_key = true;
+				}
 			}
 		}
 		
