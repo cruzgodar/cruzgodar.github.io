@@ -1,4 +1,12 @@
 {
+	"wilson":
+	{
+		"webp": "/projects/wilson/cover.webp",
+		"non-webp": "/projects/wilson/cover.jpg"
+	},
+	
+	
+	
 	"kleinian-pearls":
 	{
 		"webp": "kleinian-pearls/cover.webp",
