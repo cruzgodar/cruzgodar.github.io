@@ -24,7 +24,7 @@
 
 !begin-text-block
 	
-	Welcome! In this guide, we&#x2019;ll use Wilson to create the Julia set explorer featured on the main page. We&#x2019;ll do this one step at a time, starting with the simplest and most stripped-down version possible and gradually adding features. You might want to have the <a href="/projects/wilson/docs/docs.html" onclick="redirect('/projects/wilson/docs/docs.html', true)">documentation</a> open while going through this.
+	Welcome! In this guide, we&#x2019;ll use Wilson to create the Julia set explorer featured on the main page. We&#x2019;ll do this one step at a time, starting with the simplest and most stripped-down version possible and gradually adding features. You might want to have the <a href="/projects/wilson/docs/docs.html" onclick="Page.Navigation.redirect('/projects/wilson/docs/docs.html', true)">documentation</a> open while going through this.
 	
 	First, some background: a Julia set is a famous type of fractal closely related to the Mandelbrot set. Unlike the Mandelbrot, though, there are infinitely many Julia sets, each one corresponding to a different complex number. Because of this, Julia set applets often focus on generating different Julia sets rather than zooms of a single one, and this is where we&#x2019;ll start too. Right now, let&#x2019;s not worry about interactivity: we&#x2019;ll just have the user enter the complex number \(c\) and display the Julia set corresponding to it.
 	
