@@ -14,7 +14,7 @@
 
 !begin-text-block
 	
-	Welcome! In this guide, we&#x2019;ll use Wilson to create the Julia set explorer featured on the main page. We&#x2019;ll do this one step at a time, starting with the simplest and most stripped-down version possible and gradually adding features. In every JS code block, properties and methods defined by Wilson are bolded &mdash; click on one to pull up its documentation.
+	Welcome! In this guide, we&#x2019;ll use Wilson to create the Julia set explorer featured on the main page. We&#x2019;ll do this one step at a time, starting with the simplest and most stripped-down version possible and gradually adding features. You might want to have the <a href="/projects/wilson/docs/docs.html" onclick="redirect('/projects/wilson/docs/docs.html', true)">documentation</a> open while going through this.
 	
 	First, some background: a Julia set is a famous type of fractal closely related to the Mandelbrot set. Unlike the Mandelbrot, though, there are infinitely many Julia sets, each one corresponding to a different complex number. Because of this, Julia set applets often focus on generating different Julia sets rather than zooms of a single one, and this is where we&#x2019;ll start too. Right now, let&#x2019;s not worry about interactivity: we&#x2019;ll just have the user enter the complex number \(c\) and display the Julia set corresponding to it.
 	
@@ -263,7 +263,7 @@ generate_button_element.addEventListener("click", () =>
 	
 	This is a great start, but we have a lot more to do, and the first and easiest change to make is to modify the renderer. We currently have the line <code>renderer: "cpu"</code> in our options, which means that when we pass Wilson our pixel data, it gets copied into the canvas by JavaScript. A slightly better alternative is to render the canvas with WebGL and pass in the pixel data as a texture. This can marginally increase performance, and on some browers, it also increases the maximum possible canvas size. Hearing the word WebGL might make you a little nervous, and maybe rightfully so, but we don&#x2019;t actually have to interface with it at all right now. Just replacing that line in the options with <code>renderer: "hybrid"</code> is enough to change everything necessary on the backend.
 	
-	As another improvement, let&#x2019;s add a button to download the current state of the canvas at a specified resolution &mdash; we need a better way to get the applet&#x2019;s output than taking a screenshot.
+	As another improvement, let&#x2019;s add a button to download the current state of the canvas &mdash; we need a better way to get the applet&#x2019;s output than taking a screenshot.
 	
 !end-text-block
 

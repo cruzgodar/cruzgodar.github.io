@@ -514,4 +514,11 @@
 	{
 		Page.Navigation.redirect("/projects/wilson/docs/docs.html");
 	});
+	
+	
+	
+	document.querySelector("#download-button").addEventListener("click", () =>
+	{
+		Page.Navigation.redirect("https://github.com/90259025/wilson/releases/tag/v1.0", true);
+	});
 }()

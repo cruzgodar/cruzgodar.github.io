@@ -1378,22 +1378,25 @@ class Wilson
 					
 					
 					
-					this.exit_fullscreen_button = document.createElement("input");
-					
-					this.exit_fullscreen_button.type = "image";
-					this.exit_fullscreen_button.classList.add("wilson-exit-fullscreen-button");
-					this.exit_fullscreen_button.src = this.exit_fullscreen_button_icon_path;
-					this.exit_fullscreen_button.alt = "Exit Fullscreen";
-					this.exit_fullscreen_button.setAttribute("tabindex", "-1");
-					
-					document.body.appendChild(this.exit_fullscreen_button);
-					
-					Page.Load.HoverEvents.add(this.exit_fullscreen_button);
-					
-					this.exit_fullscreen_button.addEventListener("click", () =>
+					if (this.use_fullscreen_button)
 					{
-						this.switch_fullscreen();
-					});
+						this.exit_fullscreen_button = document.createElement("input");
+						
+						this.exit_fullscreen_button.type = "image";
+						this.exit_fullscreen_button.classList.add("wilson-exit-fullscreen-button");
+						this.exit_fullscreen_button.src = this.exit_fullscreen_button_icon_path;
+						this.exit_fullscreen_button.alt = "Exit Fullscreen";
+						this.exit_fullscreen_button.setAttribute("tabindex", "-1");
+						
+						document.body.appendChild(this.exit_fullscreen_button);
+						
+						Page.Load.HoverEvents.add(this.exit_fullscreen_button);
+						
+						this.exit_fullscreen_button.addEventListener("click", () =>
+						{
+							this.switch_fullscreen();
+						});
+					}
 					
 					
 					
@@ -1534,22 +1537,25 @@ class Wilson
 					
 					
 					
-					this.enter_fullscreen_button = document.createElement("input");
-					
-					this.enter_fullscreen_button.type = "image";
-					this.enter_fullscreen_button.classList.add("wilson-enter-fullscreen-button");
-					this.enter_fullscreen_button.src = this.enter_fullscreen_button_icon_path;
-					this.enter_fullscreen_button.alt = "Enter Fullscreen";
-					this.enter_fullscreen_button.setAttribute("tabindex", "-1");
-					
-					this.parent.canvas.parentNode.appendChild(this.enter_fullscreen_button);
-					
-					Page.Load.HoverEvents.add(this.enter_fullscreen_button);
-					
-					this.enter_fullscreen_button.addEventListener("click", () =>
+					if (this.use_fullscreen_button)
 					{
-						this.switch_fullscreen();
-					});
+						this.enter_fullscreen_button = document.createElement("input");
+						
+						this.enter_fullscreen_button.type = "image";
+						this.enter_fullscreen_button.classList.add("wilson-enter-fullscreen-button");
+						this.enter_fullscreen_button.src = this.enter_fullscreen_button_icon_path;
+						this.enter_fullscreen_button.alt = "Enter Fullscreen";
+						this.enter_fullscreen_button.setAttribute("tabindex", "-1");
+						
+						this.parent.canvas.parentNode.appendChild(this.enter_fullscreen_button);
+						
+						Page.Load.HoverEvents.add(this.enter_fullscreen_button);
+						
+						this.enter_fullscreen_button.addEventListener("click", () =>
+						{
+							this.switch_fullscreen();
+						});
+					}
 					
 					
 					
