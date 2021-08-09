@@ -341,13 +341,6 @@
 		
 		
 		
-		wilson.draggables.container.setAttribute("data-aos-offset", 1000000);
-		wilson.draggables.container.setAttribute("data-aos-delay", 0);
-		
-		Page.Load.AOS.elements[1].splice(Page.Load.AOS.elements[1].length - 2, 0, [wilson.draggables.container, Page.Load.AOS.elements[1][Page.Load.AOS.elements[1].length - 2][1]]);
-		
-		Page.Load.AOS.show_section(1);
-		
 		wilson.canvas.parentNode.parentNode.style.setProperty("margin-bottom", 0, "important");
 		wilson_hidden.canvas.parentNode.parentNode.style.setProperty("margin-top", 0, "important");
 		

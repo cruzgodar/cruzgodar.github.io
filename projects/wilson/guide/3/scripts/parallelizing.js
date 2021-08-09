@@ -95,15 +95,6 @@
 	
 	
 	
-	wilson.draggables.container.setAttribute("data-aos-offset", 1000000);
-	wilson.draggables.container.setAttribute("data-aos-delay", 0);
-	
-	Page.Load.AOS.elements[0].splice(Page.Load.AOS.elements[0].length - 2, 0, [wilson.draggables.container, Page.Load.AOS.elements[0][Page.Load.AOS.elements[0].length - 2][1]]);
-	
-	Page.Load.AOS.show_section(0);
-	
-	
-	
 	let resolution_input_element = document.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>

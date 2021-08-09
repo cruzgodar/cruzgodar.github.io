@@ -14,7 +14,7 @@
 
 !begin-text-block
 	
-	Now we&#x2019;re starting to get somewhere! There are a handful of features we could build in next, but we&#x2019;re overdue for one in particular: moving the math onto the GPU. This is called <em>parallelizing</em>, and it&#x2019;s not something that&#x2019;s possible for every applet: every pixel will be processed independently of every other, so information cannot be shared between them. For example, an applet that renders an iterated function system by tracking the orbit of a single point across millions of iterations will not lend itself well to parallelization. A Julia set, on the other hand, is a perfect candidate.
+	There are a handful of features we could build in next, but we&#x2019;re overdue for one in particular: moving the math onto the GPU. This is called <em>parallelizing</em>, and it&#x2019;s not something that&#x2019;s possible for every applet: every pixel will be processed independently of every other, so information cannot be shared between them. For example, an applet that renders an iterated function system by tracking the orbit of a single point across millions of iterations will not lend itself well to parallelization. A Julia set, on the other hand, is a perfect candidate.
 	
 	The technology for GPU-based applets on the web is called WebGL &mdash; traditionally, it&#x2019;s used for 3D applets and games that use raster graphics. Wilson does <em>not</em> support any of that &mdash; if you need high-performance raster graphics, look to something like <a href="https://threejs.org" onclick="Page.Navigation.redirect('https://threejs.org', true)">three.js</a> instead. What Wilson provides is a stripped-down environment where getting WebGL to work only requires a fragment shader, something that normally takes hundreds of lines of boilerplate.
 	
@@ -219,7 +219,9 @@ function draw_julia_set(timestamp)
 
 
 
-<canvas id="output-canvas" class="output-canvas" data-aos="fade-up"></canvas>
+<div data-aos="fade-up">
+	<canvas id="output-canvas" class="output-canvas"></canvas>
+</div>
 
 
 
@@ -233,7 +235,15 @@ function draw_julia_set(timestamp)
 
 !section
 
-!text b j You can view the code for this page <a href="/projects/wilson/guide/3/scripts/parallelizing.js">here</a>. In the next section, we&#x2019;ll add a second, hidden canvas that we can leverage to efficiently find a good brightness scale.
+!begin-text-block
+	
+	Hopefully the performance increase is apparent! At the time of writing, my computer can only handle about a 500x500 CPU-driven canvas before it starts to drop below 60fps, but a 5000x5000 GPU-driven one is still silky smooth. In the next section, we&#x2019;ll add a second, hidden canvas that we can leverage to efficiently find a good brightness scale.
+	
+	You can view the code for this page <a href="/projects/wilson/guide/3/scripts/parallelizing.js">here</a>.
+
+!end-text-block
+
+
 
 !begin-text-buttons
 	

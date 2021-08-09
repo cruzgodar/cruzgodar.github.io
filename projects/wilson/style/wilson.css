@@ -1,46 +1,43 @@
-.container
+.hidden-canvas
 {
-	width: 70vw;
+	position: fixed;
+	left: -100px;
+	width: 100px;
+	height: 100px;
+}
+
+#container
+{
+	position: relative;
+	width: 50vmin;
+	height: 50vmin;
 	margin: 0 auto;
-	
-	display: flex;
-	flex-direction: row;
-	
-	justify-content: space-between;
 }
 
-.container .wilson-section, .container .body-text, .container .section-text, .container .text-buttons
+#container .hidden-canvas-superimposed
 {
-	width: 30vw;
-}
-
-.container .text-buttons
-{
-	margin-top: 5vh;
-}
-
-
-
-@media (max-aspect-ratio: 9/16), (max-width: 700px)
-{
-	.container
-	{
-		width: 90vw;
-		margin: 0 auto;
-		
-		display: flex;
-		flex-direction: column;
-		
-		justify-content: space-between;
-	}
-
-	.container .wilson-section, .container .body-text, .container .section-text, .container .text-buttons
-	{
-		width: 90vw;
-	}
+	position: absolute;
+	width: 15vmin;
+	height: 15vmin;
 	
-	.container .wilson-section:first-child
-	{
-		margin-bottom: 15vh;
-	}
+	border: none;
+	padding: 4px;
+	
+	margin-left: -25vmin;
+	
+	z-index: 3;
+}
+
+#container .output-canvas
+{
+	position: absolute;
+	
+	margin-left: -25vmin;
+	
+	z-index: 1;
+}
+
+#container .wilson-draggables-container
+{
+	z-index: 5;
 }

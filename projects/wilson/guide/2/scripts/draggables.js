@@ -39,15 +39,6 @@
 	
 	
 	
-	wilson.draggables.container.setAttribute("data-aos-offset", 1000000);
-	wilson.draggables.container.setAttribute("data-aos-delay", 0);
-	
-	Page.Load.AOS.elements[0].splice(Page.Load.AOS.elements[0].length - 2, 0, [wilson.draggables.container, Page.Load.AOS.elements[0][Page.Load.AOS.elements[0].length - 2][1]]);
-	
-	Page.Load.AOS.show_section(0);
-	
-	
-	
 	let large_resolution = 1000;
 	let small_resolution = 200;
 	
@@ -211,7 +202,7 @@
 	
 	document.querySelector("#previous-part-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/1/introduction.html");
+		Page.Navigation.redirect("/projects/wilson/guide/1/getting-started.html");
 	});
 	
 	document.querySelector("#next-part-button").addEventListener("click", () =>

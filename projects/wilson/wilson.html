@@ -28,45 +28,85 @@
 
 
 
-!text b c [Finished julia set canvas]
+!begin-text-boxes
+	
+	resolution 1000 Resolution
+	
+!end-text-boxes
+
+
+<div data-aos="fade-up">
+	<canvas id="output-canvas" class="output-canvas"></canvas>
+	<canvas id="hidden-canvas" class="hidden-canvas"></canvas>
+</div>
 
 
 
-<div style="height: 20vh"></div>
+!text b j Try dragging on the canvas to move the scene, pinching on a touchscreen or scrolling to zoom, and dragging the white dot to change the Julia set.
 
 
 
-<div class="container">
-	<div class="wilson-section">
-		!text s Guide
+!section
 
-		<br>
+!text s Guide
 
-		!text b c Learn the main features of Wilson by creating the above Julia set explorer from scratch, one step at a time.
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="fade-up" tabindex="1">
-				<button class="text-button linked-text-button" no-floating-footer" type="button" id="guide-button" tabindex="-1">Explore</button>
-			</div>
-		</div>
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed">
+		<span>
+			Learn the main features of Wilson by creating the above Julia set explorer from scratch, one step at a time.
+		</span>
+	</p>
+</div>
+
+<div class="text-buttons">
+	<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" id="part-1-button" tabindex="-1">Part 1: Getting Started</button>
 	</div>
 	
+	<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" id="part-2-button" tabindex="-1">Part 2: Draggables</button>
+	</div>
 	
+	<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" id="part-3-button" tabindex="-1">Part 3: Parallelizing</button>
+	</div>
 	
-	<div class="wilson-section">
-		!text s Docs
-
-		<br>
-
-		!text b c View the complete documentation.
-		
-		<div class="text-buttons">
-			<div class="focus-on-child" data-aos="fade-up" tabindex="1">
-				<button class="text-button linked-text-button" no-floating-footer" type="button" id="docs-button" tabindex="-1">Browse</button>
-			</div>
-		</div>
+	<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" id="part-4-button" tabindex="-1">Part 4: Hidden Canvases</button>
+	</div>
+	
+	<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" id="part-5-button" tabindex="-1">Part 5: Fullscreen</button>
+	</div>
+	
+	<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" id="part-6-button" tabindex="-1">Part 6: Interactivity</button>
 	</div>
 </div>
+
+
+
+!section
+
+!text s Docs
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed">
+		<span>
+			View the complete documentation.
+		</span>
+	</p>
+</div>
+
+!begin-text-buttons
+	
+	docs Browse
+	
+!end-text-buttons
 
 
 

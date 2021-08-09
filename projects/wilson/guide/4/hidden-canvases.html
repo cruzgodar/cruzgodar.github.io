@@ -14,8 +14,6 @@
 
 !begin-text-block
 	
-	Hopefully the performance increase is apparent! At the time of writing, my computer can only handle about a 500x500 CPU-driven canvas before it starts to drop below 60fps, but a 5000x5000 GPU-driven one is still silky smooth.
-	
 	One problem you probably noticed with the CPU canvas was a rapid fluctuation in brightness due to a high variation in the value of the brightest pixel. Now we have a different problem &mdash; there&#x2019;s not a clear way to automatically control the brightness at all. One option is to try a value, then see how many pixels are at max brightness and slightly adjust the brightness scale on the next frame. This is expensive, though, and if the brightness changes suddenly, it will take a while to catch up. A better solution is to render a second canvas with the same shader at a very low resolution &mdash; say 100x100 &mdash; and no brightness scale at all. Then we can read off the max brightness from that canvas and use it for the output one.
 	
 	This process is simple &mdash; all we have to do is register a second canvas with Wilson and give it a similar set of options.
@@ -140,9 +138,9 @@ brightness_scale = Math.max(brightness_scale, .1);
 
 
 
-<div id="container" style="position: relative">
-	<canvas id="output-canvas" class="output-canvas" data-aos="fade-up"></canvas>
-	<canvas id="hidden-canvas" class="output-canvas hidden-canvas-superimposed" data-aos="fade-up" data-aos-delay-increase="0"></canvas>
+<div id="container" style="position: relative" data-aos="fade-up">
+	<canvas id="output-canvas" class="output-canvas"></canvas>
+	<canvas id="hidden-canvas" class="output-canvas hidden-canvas-superimposed"></canvas>
 </div>
 
 
@@ -157,7 +155,15 @@ brightness_scale = Math.max(brightness_scale, .1);
 
 !section
 
-!text b j You can view the code for this page <a href="/projects/wilson/guide/4/scripts/hidden-canvases.js">here</a>. In the next section, we&#x2019;ll add the ability to run the applet in fullscreen, leveraging as much screen space as possible.
+!begin-text-block
+	
+	In the next section, we&#x2019;ll add the ability to run the applet in fullscreen, leveraging as much screen space as possible.
+	
+	You can view the code for this page <a href="/projects/wilson/guide/4/scripts/hidden-canvases.js">here</a>.
+	
+!end-text-block
+
+
 
 !begin-text-buttons
 	

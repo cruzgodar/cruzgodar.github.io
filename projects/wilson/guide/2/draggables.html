@@ -205,7 +205,9 @@ function on_release(active_draggable, x, y, event)
 
 
 
-<canvas id="output-canvas" class="output-canvas" data-aos="fade-up"></canvas>
+<div data-aos="fade-up">
+	<canvas id="output-canvas" class="output-canvas"></canvas>
+</div>
 
 
 
@@ -219,11 +221,19 @@ function on_release(active_draggable, x, y, event)
 
 !section
 
-!text b j You can view the code for this page <a href="/projects/wilson/guide/2/scripts/draggables.js">here</a>. In the next section, we&#x2019;ll move the math for this applet onto the GPU, dramatically improving performance.
+!begin-text-block
+	
+	We&#x2019;re making progress! In the next section, we&#x2019;ll move the math for this applet onto the GPU, dramatically improving performance.
+
+	You can view the code for this page <a href="/projects/wilson/guide/2/scripts/draggables.js">here</a>. 
+	
+!end-text-block
+
+
 
 !begin-text-buttons
 	
-	previous-part l Part 1: Introduction
+	previous-part l Part 1: Getting Started
 	
 	next-part l Part 3: Parallelizing
 	

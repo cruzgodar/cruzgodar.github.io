@@ -17,8 +17,8 @@
 #container .hidden-canvas-superimposed
 {
 	position: absolute;
-	width: 10vmin;
-	height: 10vmin;
+	width: 15vmin;
+	height: 15vmin;
 	
 	border: none;
 	padding: 4px;
