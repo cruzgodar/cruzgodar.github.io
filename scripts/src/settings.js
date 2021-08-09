@@ -881,6 +881,11 @@ let Settings =
 					width: 50vw;
 				}
 				
+				.body-text.narrow
+				{
+					width: 40vw;
+				}
+				
 				pre code
 				{
 					width: calc(50vw - 24px);

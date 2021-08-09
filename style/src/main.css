@@ -152,6 +152,11 @@ img
 	margin: 0 auto;
 }
 
+.body-text.narrow
+{
+	width: 60vw;
+}
+
 .heading-text
 {
 	font-size: 175%;
@@ -294,6 +299,11 @@ img
 	.heading-text, .section-text, .body-text, .date-text, .line-break
 	{
 		width: 90vw;
+	}
+	
+	.body-text.narrow
+	{
+		width: 80vw;
 	}
 	
 	pre code

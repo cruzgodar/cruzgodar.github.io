@@ -30,10 +30,10 @@ class Wilson
 	/*
 		options:
 		{
+			renderer: "cpu", "hybrid", "gpu"
+			
 			world_width, world_height
 			world_center_x, world_center_y
-			
-			renderer: "cpu", "hybrid", "gpu"
 			
 			shader
 			
