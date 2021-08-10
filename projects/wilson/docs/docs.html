@@ -41,6 +41,8 @@
 
 	<code>shader</code>: a fragment shader for a WebGL canvas. Ignored unless <code>render</code> is <code>"gpu"</code>.
 
+	<code>canvas_width, canvas_height</code>: the width and height of the canvas in pixels. Can be left undefined, but if so, the canvas element needs to have its width and height properties defined.
+
 	<code>world_width, world_height</code>: the width and height of the space (i.e. "world") the canvas is representing. For use with interpolation functions and callbacks. Default to <code>2</code> to match WebGL.
 
 	<code>world_center_x, world_center_y</code>: the coordinates that the center pixel of the canvas represents, similarly to <code>world_width</code> and <code>world_height</code>. Default to <code>0</code>.

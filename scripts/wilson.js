@@ -32,6 +32,8 @@ class Wilson
 		{
 			renderer: "cpu", "hybrid", "gpu"
 			
+			canvas_width, canvas_height
+			
 			world_width, world_height
 			world_center_x, world_center_y
 			
