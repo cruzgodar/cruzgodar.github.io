@@ -4,208 +4,40 @@
 	
 	
 	
-	let gl = document.querySelector("#output-canvas").getContext("webgl");
-	
-	let canvas_width = document.querySelector("#output-canvas").offsetWidth;
-	let canvas_height = document.querySelector("#output-canvas").offsetHeight;
-	let canvas_size = Math.min(canvas_width, canvas_height);
-	
-	let currently_drawing = false;
-	let stabilize_brightness_scale = false;
-	let brightness_stabilization_direction = 0;
-	let timeout_id = null;
-	
-	let mouse_x = 0;
-	let mouse_y = 0;
-	let touch_distance = 0;
-	let wheel_cooldown = 0;
-	
-	let currently_dragging = false;
-	let zooming_in = false;
-	let zooming_out = false;
-	let pressing_shift = false;
-	
-	let was_recently_pinching = 0;
-	
-	let julia_mode = 0;
-	
-	
-	
-	let center_x = -.75;
-	let center_y = 0;
-	let a = 0;
-	let b = 0;
-	let box_size = 3;
-	let zoom_level = 0;
-	let brightness_scale = 13;
-	
-	
-	
-	let image_size = 500;
-	let image_width = 500;
-	let image_height = 500;
-	
-	let num_iterations = 200;
-	
-	
-	
-	document.querySelector("#output-canvas").setAttribute("width", image_width);
-	document.querySelector("#output-canvas").setAttribute("height", image_height);
-	
-	document.querySelector("#image-size-input").addEventListener("input", change_resolution);
-	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
-	
-	document.querySelector("#switch-julia-mode-button").addEventListener("click", function()
-	{
-		document.querySelector("#switch-julia-mode-button").style.opacity = 0;
-		
-		setTimeout(function()
-		{
-			if (julia_mode === 2)
-			{
-				document.querySelector("#switch-julia-mode-button").textContent = "Return to Mandelbrot Set";
-			}
-			
-			else if (julia_mode === 0)
-			{
-				document.querySelector("#switch-julia-mode-button").textContent = "Pick Julia Set";
-				
-				document.querySelector("#switch-julia-mode-button").style.opacity = 1;
-			}
-		}, 300);
-		
-		
-		
-		if (julia_mode === 0)
-		{
-			julia_mode = 2;
-			a = 0;
-			b = 0;
-		}
-		
-		else if (julia_mode === 1)
-		{
-			julia_mode = 0;
-			
-			center_x = -.75;
-			center_y = 0;
-			box_size = 3;
-			zoom_level = 0;
-			brightness_scale = 13;
-		}
-		
-		stabilize_brightness_scale = true;
-		
-		if (!currently_drawing)
-		{
-			currently_drawing = true;
-			window.requestAnimationFrame(draw_frame);
-		}
-	});
-	
-	
-	
-	window.addEventListener("resize", fractals_resize);
-	Page.temporary_handlers["resize"].push(fractals_resize);
-	setTimeout(fractals_resize, 500);
-	
-	
-	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
-	
-	Page.Applets.Canvases.resize_callback = function()
-	{
-		if (Page.Applets.Canvases.is_fullscreen)
-		{
-			if (Page.Layout.aspect_ratio >= 1)
-			{
-				image_width = image_size;
-				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
-			}
-			
-			else
-			{
-				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
-				image_height = image_size;
-			}
-		}
-		
-		else
-		{
-			image_width = image_size;
-			image_height = image_size;
-		}
-		
-		
-		
-		canvas_width = document.querySelector("#output-canvas").offsetWidth;
-		canvas_height = document.querySelector("#output-canvas").offsetHeight;
-		canvas_size = Math.min(canvas_width, canvas_height);
-		
-		document.querySelector("#output-canvas").setAttribute("width", image_width);
-		document.querySelector("#output-canvas").setAttribute("height", image_height);
-		
-		gl.viewport(0, 0, image_width, image_height);
-		
-		
-		
-		
-		fractals_resize();
-		
-		window.requestAnimationFrame(draw_frame);
-	};
-	
-	Page.Applets.Canvases.true_fullscreen = true;
-	
-	Page.Applets.Canvases.set_up_resizer();
-	
-	
-	
-	init_listeners();
-	
-	
-	
-	setTimeout(setup_webgl, 500);
-	
-	
-	
-	const vertex_shader_source = `
-		attribute vec3 position;
-		varying vec2 uv;
-
-		void main(void)
-		{
-			gl_Position = vec4(position, 1.0);
-
-			//Interpolate quad coordinates in the fragment shader.
-			uv = position.xy;
-		}
-	`;
-	
-	
-	
-	const frag_shader_source = `
+	let frag_shader_source = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
+		uniform int julia_mode;
+		
 		uniform float aspect_ratio;
 		
-		uniform float box_size_halved;
+		uniform float world_center_x;
+		uniform float world_center_y;
+		uniform float world_size;
+		
 		uniform float a;
 		uniform float b;
-		uniform float center_x;
-		uniform float center_y;
-		uniform float brightness_scale;
 		uniform int num_iterations;
-		
-		uniform int julia_mode;
+		uniform float brightness_scale;
 		
 		
 		
 		void main(void)
 		{
-			vec2 z = vec2(uv.x * aspect_ratio * box_size_halved + center_x, uv.y * box_size_halved + center_y);
+			vec2 z;
+			
+			if (aspect_ratio >= 1.0)
+			{
+				z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
+			}
+			
+			else
+			{
+				z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
+			}
+			
 			vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
 			float brightness = exp(-length(z));
 			
@@ -339,637 +171,551 @@
 			}
 		}
 	`;
-	
-	
-	
-	let shader_program = null;
-	
-	function setup_webgl()
+
+
+
+	let options =
 	{
-		let vertex_shader = load_shader(gl, gl.VERTEX_SHADER, vertex_shader_source);
+		renderer: "gpu",
 		
-		let frag_shader = load_shader(gl, gl.FRAGMENT_SHADER, frag_shader_source);
+		shader: frag_shader_source,
 		
-		shader_program = gl.createProgram();
+		canvas_width: 1000,
+		canvas_height: 1000,
 		
-		gl.attachShader(shader_program, vertex_shader);
-		gl.attachShader(shader_program, frag_shader);
-		gl.linkProgram(shader_program);
-		
-		if (!gl.getProgramParameter(shader_program, gl.LINK_STATUS))
-		{
-			console.log(`Couldn't link shader program: ${gl.getShaderInfoLog(shader)}`);
-			gl.deleteProgram(shader_program);
-		}
+		world_width: 4,
+		world_height: 4,
+		world_center_x: -.75,
+		world_center_y: 0,
 		
 		
 		
-		gl.useProgram(shader_program);
+		use_fullscreen: true,
 		
-		
-		
-		let quad = [-1, -1, 0,   -1, 1, 0,   1, -1, 0,   1, 1, 0];
-		
-		
-		
-		let position_buffer = gl.createBuffer();
-		
-		gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
-		
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(quad), gl.STATIC_DRAW);
-		
-		shader_program.position_attribute = gl.getAttribLocation(shader_program, "position");
-		
-		gl.enableVertexAttribArray(shader_program.position_attribute);
-		
-		gl.vertexAttribPointer(shader_program.position_attribute, 3, gl.FLOAT, false, 0, 0);
-		
-		
-		
-		shader_program.aspect_ratio_uniform = gl.getUniformLocation(shader_program, "aspect_ratio");
-		
-		shader_program.box_size_halved_uniform = gl.getUniformLocation(shader_program, "box_size_halved");
-		shader_program.center_x_uniform = gl.getUniformLocation(shader_program, "center_x");
-		shader_program.center_y_uniform = gl.getUniformLocation(shader_program, "center_y");
-		shader_program.a_uniform = gl.getUniformLocation(shader_program, "a");
-		shader_program.b_uniform = gl.getUniformLocation(shader_program, "b");
-		shader_program.brightness_scale_uniform = gl.getUniformLocation(shader_program, "brightness_scale");
-		shader_program.num_iterations_uniform = gl.getUniformLocation(shader_program, "num_iterations");
-		
-		shader_program.julia_mode_uniform = gl.getUniformLocation(shader_program, "julia_mode");
-		
-		
-		
-		gl.viewport(0, 0, image_width, image_height);
-		
-		
-		
-		window.requestAnimationFrame(draw_frame);
-	}
+		true_fullscreen: true,
 	
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+		
+		switch_fullscreen_callback: change_aspect_ratio,
+		
+		
+		
+		mousedown_callback: on_grab_canvas,
+		touchstart_callback: on_grab_canvas,
+		
+		mousemove_callback: on_hover_canvas,
+		mousedrag_callback: on_drag_canvas,
+		touchmove_callback: on_drag_canvas,
+		
+		mouseup_callback: on_release_canvas,
+		touchend_callback: on_release_canvas,
+		
+		wheel_callback: on_wheel_canvas,
+		pinch_callback: on_pinch_canvas
+	};
 	
-	
-	function load_shader(gl, type, source)
+	let options_hidden =
 	{
-		let shader = gl.createShader(type);
+		renderer: "gpu",
 		
-		gl.shaderSource(shader, source);
+		shader: frag_shader_source,
 		
-		gl.compileShader(shader);
-		
-		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-		{
-			console.log(`Couldn't load shader: ${gl.getProgramInfoLog(shaderProgram)}`);
-			gl.deleteShader(shader);
-		}
-		
-		return shader;
-	}
+		canvas_width: 100,
+		canvas_height: 100
+	};
 	
 	
 	
-	function draw_frame()
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+
+	wilson.render.init_uniforms(["julia_mode", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "brightness_scale"]);
+	
+	
+	
+	let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
+	
+	wilson_hidden.render.init_uniforms(["julia_mode", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "brightness_scale"]);
+	
+	
+	
+	let julia_mode = 0;
+	
+	let aspect_ratio = 1;
+	
+	let num_iterations = 100;
+	
+	let zoom_level = 0;
+	
+	let past_brightness_scales = [];
+	
+	let a = 0;
+	let b = 1;
+	
+	let resolution = 1000;
+	let resolution_hidden = 100;
+	
+	let fixed_point_x = 0;
+	let fixed_point_y = 0;
+	
+	let next_pan_velocity_x = 0;
+	let next_pan_velocity_y = 0;
+	let next_zoom_velocity = 0;
+	
+	let pan_velocity_x = 0;
+	let pan_velocity_y = 0;
+	let zoom_velocity = 0;
+	
+	const pan_friction = .96;
+	const pan_velocity_start_threshhold = .005;
+	const pan_velocity_stop_threshhold = .0005;
+	
+	const zoom_friction = .93;
+	const zoom_velocity_start_threshhold = .01;
+	const zoom_velocity_stop_threshhold = .001;
+	
+	let last_timestamp = -1;
+	
+	
+
+	let resolution_input_element = document.querySelector("#resolution-input");
+	
+	resolution_input_element.addEventListener("input", () =>
 	{
-		currently_drawing = false;
+		resolution = parseInt(resolution_input_element.value || 1000);
 		
-		gl.uniform1f(shader_program.aspect_ratio_uniform, image_width / image_height);
-		
-		gl.uniform1f(shader_program.box_size_halved_uniform, box_size / 2);
-		gl.uniform1f(shader_program.center_x_uniform, center_x);
-		gl.uniform1f(shader_program.center_y_uniform, center_y);
-		gl.uniform1f(shader_program.a_uniform, a);
-		gl.uniform1f(shader_program.b_uniform, b);
-		gl.uniform1f(shader_program.brightness_scale_uniform, brightness_scale);
-		gl.uniform1i(shader_program.num_iterations_uniform, num_iterations);
-		
-		gl.uniform1i(shader_program.julia_mode_uniform, julia_mode);
-		
-		
-		
-		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-		
-		
-		
-		let pixels = new Uint8Array(image_width * image_height * 4);
-		gl.readPixels(0, 0, image_width, image_height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-		
-		let num_pixels_at_max = 0;
-		
-		for (let i = 0; i < image_width * image_height; i++)
-		{
-			if (pixels[4 * i] === 255 || pixels[4 * i + 1] === 255 || pixels[4 * i + 2] === 255)
-			{
-				num_pixels_at_max++;
-			}
-		}
-		
-		
-		
-		let changed_brightness_scale = false;
-		
-		let denom = center_x * center_x + center_y * center_y + 2;
-		
-		if (julia_mode !== 0)
-		{
-			denom = a*a + b*b + 2;
-		}
-		
-		if (num_pixels_at_max < 2 * image_size && brightness_stabilization_direction !== 1 && brightness_scale > 1 / denom)
-		{
-			brightness_scale -= .5 / denom;
-			
-			if (stabilize_brightness_scale)
-			{
-				brightness_scale -= .5 / denom;
-				
-				brightness_stabilization_direction = -1;
-			}
-			
-			changed_brightness_scale = true;
-		}
-		
-		else if (num_pixels_at_max > 4 * image_size && brightness_stabilization_direction !== -1)
-		{
-			brightness_scale += .5 / denom;
-			
-			if (stabilize_brightness_scale)
-			{
-				brightness_scale += .5 / denom;
-				
-				brightness_stabilization_direction = 1;
-			}
-			
-			changed_brightness_scale = true;
-		}
-		
-		
-		
-		if (stabilize_brightness_scale)
-		{
-			if (changed_brightness_scale)
-			{
-				window.requestAnimationFrame(draw_frame);
-			}
-			
-			else
-			{
-				brightness_stabilization_direction = 0;
-				
-				stabilize_brightness_scale = false;
-			}
-		}
-		
-		else if (currently_drawing)
-		{
-			window.requestAnimationFrame(draw_frame);
-		}
-	}
+		wilson.change_canvas_size(resolution, resolution);
+	});
 	
 	
 	
-	function init_listeners()
+	let download_button_element = document.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", () =>
 	{
-		document.querySelector("#output-canvas").addEventListener("mousedown", handle_mousedown_event);
-		
-		document.documentElement.addEventListener("mousemove", handle_mousemove_event);
-		Page.temporary_handlers["mousemove"].push(handle_mousemove_event);
-		
-		document.documentElement.addEventListener("mouseup", handle_mouseup_event);
-		Page.temporary_handlers["mouseup"].push(handle_mouseup_event);
-		
-		document.querySelector("#output-canvas").addEventListener("touchstart", handle_touchstart_event);
-		
-		document.querySelector("#output-canvas").addEventListener("touchmove", handle_touchmove_event);
-		
-		document.querySelector("#output-canvas").addEventListener("touchend", handle_touchend_event);
-		
-		window.addEventListener("wheel", handle_wheel_event, {passive: false});
-		Page.temporary_handlers["wheel"].push(handle_wheel_event);
-	}
+		wilson.download_frame("a-julia-set.png");
+	});
 	
 	
 	
-	function handle_mousedown_event(e)
+	let switch_julia_mode_button_element = document.querySelector("#switch-julia-mode-button");
+	
+	switch_julia_mode_button_element.addEventListener("click", function()
 	{
-		e.preventDefault();
-		
-		mouse_x = e.clientX;
-		mouse_y = e.clientY;
-		
-		if (julia_mode !== 2)
-		{
-			currently_dragging = true;
-		}
-		
-		else
-		{
-			julia_mode = 1;
-			
-			center_x = 0;
-			center_y = 0;
-			box_size = 4;
-			zoom_level = 0;
-			
-			stabilize_brightness_scale = true;
-			
-			document.querySelector("#switch-julia-mode-button").style.opacity = 1;
-		}
-		
-		if (!currently_drawing)
-		{
-			currently_drawing = true;
-			stabilize_brightness_scale = true;
-			
-			window.requestAnimationFrame(draw_frame);
-		}
-	}
-	
-	
-	
-	function handle_mousemove_event(e)
-	{
-		let new_mouse_x = e.clientX;
-		let new_mouse_y = e.clientY;
-		
-		let mouse_x_delta = new_mouse_x - mouse_x;
-		let mouse_y_delta = new_mouse_y - mouse_y;
-		
-		mouse_x = new_mouse_x;
-		mouse_y = new_mouse_y;
-		
-		if (document.elementFromPoint(mouse_x, mouse_y) !== document.querySelector("#output-canvas"))
-		{
-			return;
-		}
-		
-		
-		
-		if (julia_mode !== 2)
-		{
-			if (currently_dragging)
-			{
-				e.preventDefault();
-				
-				center_x -= mouse_x_delta / canvas_height * box_size;
-				center_y += mouse_y_delta / canvas_height * box_size;
-				
-				if (!currently_drawing)
-				{
-					currently_drawing = true;
-					stabilize_brightness_scale = false;
-					
-					window.requestAnimationFrame(draw_frame);
-				}
-			}
-		}
-		
-		else
-		{
-			e.preventDefault();
-			
-			let local_mouse_x = mouse_x - document.querySelector("#output-canvas").getBoundingClientRect().left;
-			let local_mouse_y = mouse_y - document.querySelector("#output-canvas").getBoundingClientRect().top;
-			
-			a = ((local_mouse_x / canvas_width) - .5) * box_size + center_x;
-			b = (((canvas_height - local_mouse_y) / canvas_height) - .5) * box_size + center_y;
-			
-			if (!currently_drawing)
-			{
-				currently_drawing = true;
-				stabilize_brightness_scale = false;
-				
-				window.requestAnimationFrame(draw_frame);
-			}
-		}
-	}
-	
-	
-	
-	function handle_mouseup_event(e)
-	{
-		currently_dragging = false;
-		
-		currently_drawing = currently_dragging;
-	}
-	
-	
-	
-	function handle_touchstart_event(e)
-	{
-		mouse_x = e.touches[0].clientX;
-		mouse_y = e.touches[0].clientY;
-		
-		currently_dragging = true;
-		
-		
-		
-		if (!currently_drawing)
-		{
-			currently_drawing = true;
-			stabilize_brightness_scale = false;
-			
-			window.requestAnimationFrame(draw_frame);
-		}
-	}
-	
-	
-	
-	function handle_touchmove_event(e)
-	{
-		e.preventDefault();
-		
-		
-		
-		if (stabilize_brightness_scale)
-		{
-			return;
-		}
-		
-		
-		
-		let new_mouse_x = e.touches[0].clientX;
-		let new_mouse_y = e.touches[0].clientY;
-		
-		
-		
-		if (e.touches.length >= 2)
-		{
-			was_recently_pinching = 10;
-			
-			let x_distance = e.touches[0].clientX - e.touches[1].clientX;
-			let y_distance = e.touches[0].clientY - e.touches[1].clientY;
-			
-			let new_touch_distance = Math.sqrt(x_distance * x_distance + y_distance * y_distance);
-			
-			let touch_distance_delta = new_touch_distance - touch_distance;
-			
-			touch_distance = new_touch_distance;
-			
-			if (Math.abs(touch_distance_delta) > 20)
-			{
-				return;
-			}
-			
-			
-			
-			let rect = document.querySelector("#output-canvas").getBoundingClientRect();
-			
-			let touch_center_x_proportion = ((e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left) / canvas_width;
-			let touch_center_y_proportion = ((e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top) / canvas_height;
-			
-			let fixed_point_x = (touch_center_x_proportion * box_size - box_size / 2) * image_width / image_height + center_x;
-			let fixed_point_y = (box_size / 2 - touch_center_y_proportion * box_size) + center_y;
-			
-			
-			
-			let increment = touch_distance_delta / 2;
-			
-			if (zoom_level + increment >= 0)
-			{
-				zoom_level += increment;
-				
-				box_size = 3 / Math.pow(1.02, zoom_level);
-				
-				num_iterations = zoom_level * 3 + 200;
-			}
-			
-			
-			
-			center_x = fixed_point_x - (touch_center_x_proportion * box_size - box_size / 2) * image_width / image_height;
-			center_y = fixed_point_y - (box_size / 2 - touch_center_y_proportion * box_size);
-		}
-		
-		
-		
-		else
-		{
-			was_recently_pinching--;
-			
-			if (was_recently_pinching < 0)
-			{
-				was_recently_pinching = 0;
-			}
-		}
-		
-		
-		
-		let mouse_x_delta = new_mouse_x - mouse_x;
-		let mouse_y_delta = new_mouse_y - mouse_y;
-		
-		if (was_recently_pinching && (Math.abs(mouse_x_delta) > 50 || Math.abs(mouse_y_delta) > 50))
-		{
-			return;
-		}
-		
-		mouse_x = new_mouse_x;
-		mouse_y = new_mouse_y;
-		
-		if (julia_mode !== 2)
-		{
-			center_x -= mouse_x_delta / canvas_height * box_size;
-			center_y += mouse_y_delta / canvas_height * box_size;
-		}
-		
-		else
-		{
-			let local_mouse_x = mouse_x - document.querySelector("#output-canvas").getBoundingClientRect().left;
-			let local_mouse_y = mouse_y - document.querySelector("#output-canvas").getBoundingClientRect().top;
-			
-			a = ((local_mouse_x / canvas_width) - .5) * box_size + center_x;
-			b = (((canvas_height - local_mouse_y) / canvas_height) - .5) * box_size + center_y;
-		}
-		
-		if (!currently_drawing)
-		{
-			currently_drawing = true;
-			stabilize_brightness_scale = false;
-			
-			window.requestAnimationFrame(draw_frame);
-		}
-	}
-	
-	
-	
-	function handle_touchend_event(e)
-	{
-		if (e.touches.length === 0)
-		{
-			currently_drawing = false;
-			
-			if (julia_mode === 2)
-			{
-				julia_mode = 1;
-				
-				center_x = 0;
-				center_y = 0;
-				box_size = 4;
-				zoom_level = 0;
-				
-				document.querySelector("#switch-julia-mode-button").style.opacity = 1;
-			}
-		}
-		
-		stabilize_brightness_scale = true;
+		switch_julia_mode_button_element.style.opacity = 0;
 		
 		setTimeout(function()
 		{
-			if (!currently_drawing)
+			if (julia_mode === 2)
 			{
-				window.requestAnimationFrame(draw_frame);
-			}
-		}, 200);
-	}
-	
-	
-	
-	function handle_wheel_event(e)
-	{
-		if (document.elementFromPoint(mouse_x, mouse_y).id === "output-canvas")
-		{
-			e.preventDefault();
-			
-			zoom_level -= Math.sign(e.deltaY) * 10;
-			
-			if (zoom_level < 1)
-			{
-				zoom_level = 1;
-				
-				brightness_scale = 13;
+				switch_julia_mode_button_element.textContent = "Return to Mandelbrot Set";
 			}
 			
-			
-			
-			let rect = document.querySelector("#output-canvas").getBoundingClientRect();
-			
-			let mouse_x_proportion = (mouse_x - rect.left) / canvas_width;
-			let mouse_y_proportion = (mouse_y - rect.top) / canvas_height;
-			
-			let fixed_point_x = (mouse_x_proportion * box_size - box_size / 2) * image_width / image_height + center_x;
-			let fixed_point_y = (box_size / 2 - mouse_y_proportion * box_size) + center_y;
-			
-			
-			
-			box_size = 3 / Math.pow(1.02, zoom_level);
-				
-			num_iterations = zoom_level * 3 + 200;
-			
-			
-			
-			center_x = fixed_point_x - (mouse_x_proportion * box_size - box_size / 2) * image_width / image_height;
-			center_y = fixed_point_y - (box_size / 2 - mouse_y_proportion * box_size);
-			
-			
-			
-			window.requestAnimationFrame(draw_frame);
-			
-			
-			
-			try {clearTimeout(timeout_id);}
-			catch(ex) {}
-			
-			timeout_id = setTimeout(function()
+			else if (julia_mode === 0)
 			{
-				stabilize_brightness_scale = true;
+				switch_julia_mode_button_element.textContent = "Pick Julia Set";
 				
-				brightness_stabilization_direction = 0;
-				
-				window.requestAnimationFrame(draw_frame);
-			}, 500);
+				switch_julia_mode_button_element.style.opacity = 1;
+			}
+		}, 300);
+		
+		
+		
+		if (julia_mode === 0)
+		{
+			julia_mode = 2;
+			
+			a = 0;
+			b = 0;
+			
+			pan_velocity_x = 0;
+			pan_velocity_y = 0;
+			zoom_velocity = 0;
+			
+			next_pan_velocity_x = 0;
+			next_pan_velocity_y = 0;
+			next_zoom_velocity = 0;
+			
+			past_brightness_scales = [];
+			
+			window.requestAnimationFrame(draw_julia_set);
+		}
+		
+		else if (julia_mode === 1)
+		{
+			julia_mode = 0;
+			
+			wilson.world_center_x = -.75;
+			wilson.world_center_y = 0;
+			wilson.world_width = 4;
+			wilson.world_height = 4;
+			zoom_level = 0;
+			
+			past_brightness_scales = [];
+			
+			window.requestAnimationFrame(draw_julia_set);
+		}
+	});
+	
+	
+	
+	//Render the inital frame.
+	wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
+	wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], 1);
+	
+	window.requestAnimationFrame(draw_julia_set);
+	
+	
+	
+	function on_grab_canvas(x, y, event)
+	{
+		pan_velocity_x = 0;
+		pan_velocity_y = 0;
+		zoom_velocity = 0;
+		
+		next_pan_velocity_x = 0;
+		next_pan_velocity_y = 0;
+		next_zoom_velocity = 0;
+		
+		
+		
+		if (julia_mode === 2 && event.type === "mousedown")
+		{
+			julia_mode = 1;
+			
+			wilson.world_center_x = 0;
+			wilson.world_center_y = 0;
+			wilson.world_width = 4;
+			wilson.world_height = 4;
+			zoom_level = 0;
+			
+			past_brightness_scales = [];
+			
+			switch_julia_mode_button_element.style.opacity = 1;
+			
+			window.requestAnimationFrame(draw_julia_set);
 		}
 	}
 	
 	
 	
-	function fractals_resize()
+	function on_drag_canvas(x, y, x_delta, y_delta, event)
 	{
-		canvas_width = document.querySelector("#output-canvas").offsetWidth;
-		canvas_height = document.querySelector("#output-canvas").offsetHeight;
-		canvas_size = Math.min(canvas_width, canvas_height);
+		if (julia_mode === 2 && event.type === "touchmove")
+		{
+			a = x;
+			b = y;
+		}
+		
+		else
+		{
+			wilson.world_center_x -= x_delta;
+			wilson.world_center_y -= y_delta;
+			
+			next_pan_velocity_x = -x_delta;
+			next_pan_velocity_y = -y_delta;
+			
+			wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
+			wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
+		}
+		
+		window.requestAnimationFrame(draw_julia_set);
 	}
 	
 	
 	
-	function change_resolution()
+	function on_hover_canvas(x, y, x_delta, y_delta, event)
 	{
-		image_size = parseInt(document.querySelector("#image-size-input").value || 500);
-		
-		if (image_size < 200)
+		if (julia_mode === 2 && event.type === "mousemove")
 		{
-			image_size = 200;
+			a = x;
+			b = y;
+			
+			window.requestAnimationFrame(draw_julia_set);
+		}
+	}
+	
+	
+	
+	function on_release_canvas(x, y, event)
+	{
+		if (julia_mode === 2 && event.type === "touchend")
+		{
+			julia_mode = 1;
+			
+			wilson.world_center_x = 0;
+			wilson.world_center_y = 0;
+			wilson.world_width = 4;
+			wilson.world_height = 4;
+			zoom_level = 0;
+			
+			past_brightness_scales = [];
+			
+			switch_julia_mode_button_element.style.opacity = 1;
+			
+			window.requestAnimationFrame(draw_julia_set);
 		}
 		
-		if (image_size > 2000)
+		else
 		{
-			image_size = 2000;
-		}
-		
-		
-		
-		if (Page.Applets.Canvases.is_fullscreen)
-		{
-			if (Page.Layout.aspect_ratio >= 1)
+			if (Math.sqrt(next_pan_velocity_x * next_pan_velocity_x + next_pan_velocity_y * next_pan_velocity_y) >= pan_velocity_start_threshhold * Math.min(wilson.world_width, wilson.world_height))
 			{
-				image_width = image_size;
-				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
+				pan_velocity_x = next_pan_velocity_x;
+				pan_velocity_y = next_pan_velocity_y;
+			}
+			
+			if (Math.abs(next_zoom_velocity) >= zoom_velocity_start_threshhold)
+			{
+				zoom_velocity = next_zoom_velocity;
+			}
+		}
+		
+		window.requestAnimationFrame(draw_julia_set);
+	}
+	
+	
+	
+	function on_wheel_canvas(x, y, scroll_amount, event)
+	{
+		if (julia_mode === 2)
+		{
+			return;
+		}
+		
+		
+		
+		scroll_amount = Math.min(Math.max(scroll_amount, -.5), .5);
+		
+		zoom_level += scroll_amount;
+		
+		zoom_level = Math.min(zoom_level, 1);
+		
+		fixed_point_x = x;
+		fixed_point_y = y;
+		
+		zoom_canvas();
+	}
+	
+	
+	
+	function on_pinch_canvas(x, y, touch_distance_delta, event)
+	{
+		if (julia_mode === 2)
+		{
+			return;
+		}
+		
+		
+		
+		if (aspect_ratio >= 1)
+		{
+			zoom_level -= touch_distance_delta / wilson.world_width * 10;
+			
+			next_zoom_velocity = -touch_distance_delta / wilson.world_width * 10;
+		}
+		
+		else
+		{
+			zoom_level -= touch_distance_delta / wilson.world_height * 10;
+			
+			next_zoom_velocity = -touch_distance_delta / wilson.world_height * 10;
+		}
+		
+		zoom_level = Math.min(zoom_level, 1);
+		
+		fixed_point_x = x;
+		fixed_point_y = y;
+		
+		zoom_canvas();
+	}
+	
+	
+	
+	function zoom_canvas()
+	{
+		if (aspect_ratio >= 1)
+		{
+			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level) * aspect_ratio, 4 * Math.pow(2, zoom_level));
+			
+			wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
+			wilson.world_height = 4 * Math.pow(2, zoom_level);
+			
+			wilson.world_center_x = new_world_center[0];
+			wilson.world_center_y = new_world_center[1];
+		}
+		
+		else
+		{
+			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level), 4 * Math.pow(2, zoom_level) / aspect_ratio);
+			
+			wilson.world_width = 4 * Math.pow(2, zoom_level);
+			wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+			
+			wilson.world_center_x = new_world_center[0];
+			wilson.world_center_y = new_world_center[1];
+		}
+		
+		num_iterations = (-zoom_level * 30) + 200;
+		
+		window.requestAnimationFrame(draw_julia_set);
+	}
+
+
+
+	function draw_julia_set(timestamp)
+	{
+		let time_elapsed = timestamp - last_timestamp;
+		
+		last_timestamp = timestamp;
+		
+		
+		
+		if (time_elapsed === 0)
+		{
+			return;
+		}
+		
+		
+		
+		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["julia_mode"], julia_mode);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_x"], wilson.world_center_x);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_y"], wilson.world_center_y);
+		
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
+		
+		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["num_iterations"], num_iterations);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["a"], a);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["b"], b);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 20 * (Math.abs(zoom_level) + 1));
+		
+		wilson_hidden.render.draw_frame();
+		
+		
+		
+		let pixel_data = wilson_hidden.render.get_pixel_data();
+		
+		let brightnesses = new Array(resolution_hidden * resolution_hidden);
+		
+		for (let i = 0; i < resolution_hidden * resolution_hidden; i++)
+		{
+			brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
+		}
+		
+		brightnesses.sort((a, b) => a - b);
+		
+		let brightness_scale = (brightnesses[Math.floor(resolution_hidden * resolution_hidden * .96)] + brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)]) / 255 * 15 * (Math.abs(zoom_level / 2) + 1);
+		
+		past_brightness_scales.push(brightness_scale);
+		
+		let denom = past_brightness_scales.length;
+		
+		if (denom > 10)
+		{
+			past_brightness_scales.shift();
+		}
+		
+		brightness_scale = Math.max(past_brightness_scales.reduce((a, b) => a + b) / denom, .5);
+		
+		
+		
+		wilson.gl.uniform1i(wilson.uniforms["julia_mode"], julia_mode);
+		
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
+		
+		wilson.gl.uniform1f(wilson.uniforms["world_center_x"], wilson.world_center_x);
+		wilson.gl.uniform1f(wilson.uniforms["world_center_y"], wilson.world_center_y);
+		
+		wilson.gl.uniform1f(wilson.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
+		
+		wilson.gl.uniform1i(wilson.uniforms["num_iterations"], num_iterations);
+		wilson.gl.uniform1f(wilson.uniforms["a"], a);
+		wilson.gl.uniform1f(wilson.uniforms["b"], b);
+		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
+		
+		wilson.render.draw_frame();
+		
+		
+		
+		if (pan_velocity_x !== 0 || pan_velocity_y !== 0 || zoom_velocity !== 0)
+		{
+			wilson.world_center_x += pan_velocity_x;
+			wilson.world_center_y += pan_velocity_y;
+			
+			wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
+			wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
+			
+			
+			
+			pan_velocity_x *= pan_friction;
+			pan_velocity_y *= pan_friction;
+			
+			if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) < pan_velocity_stop_threshhold * Math.min(wilson.world_width, wilson.world_height))
+			{
+				pan_velocity_x = 0;
+				pan_velocity_y = 0;
+			}
+			
+			
+			
+			zoom_level += zoom_velocity;
+			
+			zoom_level = Math.min(zoom_level, 1);
+			
+			zoom_canvas(fixed_point_x, fixed_point_y);
+			
+			zoom_velocity *= zoom_friction;
+			
+			if (Math.abs(zoom_velocity) < zoom_velocity_stop_threshhold)
+			{
+				zoom_velocity = 0;
+			}
+			
+			
+			
+			window.requestAnimationFrame(draw_julia_set);
+		}
+	}
+	
+	
+	
+	function change_aspect_ratio()
+	{
+		if (wilson.fullscreen.currently_fullscreen)
+		{
+			aspect_ratio = window.innerWidth / window.innerHeight;
+			
+			if (aspect_ratio >= 1)
+			{
+				wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+				
+				wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
+				wilson.world_height = 4 * Math.pow(2, zoom_level);
 			}
 			
 			else
 			{
-				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
-				image_height = image_size;
+				wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+				
+				wilson.world_width = 4 * Math.pow(2, zoom_level);
+				wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
 			}
 		}
 		
+		else
+		{
+			aspect_ratio = 1;
+			
+			wilson.change_canvas_size(resolution, resolution);
+			
+			wilson.world_width = 4 * Math.pow(2, zoom_level);
+			wilson.world_height = 4 * Math.pow(2, zoom_level);
+		}
 		
-		
-		document.querySelector("#output-canvas").setAttribute("width", image_width);
-		document.querySelector("#output-canvas").setAttribute("height", image_height);
-		
-		gl.viewport(0, 0, image_width, image_height);
-		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(draw_julia_set);
 	}
-	
-	
-	
-	function prepare_download()
-	{
-		let temp = image_size;
-		
-		image_size = parseInt(document.querySelector("#high-res-dim-input").value || 2000);
-		
-		num_iterations += 50;
-		
-		document.querySelector("#output-canvas").setAttribute("width", image_size);
-		document.querySelector("#output-canvas").setAttribute("height", image_size);
-		
-		gl.viewport(0, 0, image_size, image_size);
-		
-		draw_frame();
-		
-		
-		
-		let link = document.createElement("a");
-		
-		link.download = "a-mandelbrot-zoom.png";
-		
-		link.href = document.querySelector("#output-canvas").toDataURL();
-		
-		link.click();
-		
-		link.remove();
-		
-		
-		
-		image_size = temp;
-		
-		num_iterations -= 50;
-		
-		document.querySelector("#output-canvas").setAttribute("width", image_size);
-		document.querySelector("#output-canvas").setAttribute("height", image_size);
-		
-		gl.viewport(0, 0, image_size, image_size);
-		
-		draw_frame();
-	}
+
+	window.addEventListener("resize", change_aspect_ratio);
+	Page.temporary_handlers["resize"].push(change_aspect_ratio);
 }()

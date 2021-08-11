@@ -11,6 +11,14 @@
 	transition: opacity .3s ease-in-out, border-color .3s ease-in-out;
 }
 
+.hidden-canvas
+{
+	position: fixed;
+	left: -100px;
+	width: 10px;
+	height: 10px;
+}
+
 .true-fullscreen-canvas
 {
 	width: 100vw !important;

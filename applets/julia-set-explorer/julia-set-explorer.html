@@ -36,7 +36,7 @@
 
 !begin-text-boxes
 	
-	image-size 500 Resolution
+	resolution 500 Resolution
 	
 !end-text-boxes
 
@@ -50,25 +50,16 @@
 
 
 
-!canvas
-
-
-
-!section
-
-!text s High Resolution Capture
-
-!begin-text-boxes
-	
-	high-res-dim 2000 Image Size
-	
-!end-text-boxes
+<div data-aos="fade-up">
+	<canvas id="output-canvas" class="output-canvas"></canvas>
+	<canvas id="hidden-canvas" class="hidden-canvas"></canvas>
+</div>
 
 
 
 !begin-text-buttons
 	
-	generate-high-res-image Generate
+	download Download
 	
 !end-text-buttons
 
