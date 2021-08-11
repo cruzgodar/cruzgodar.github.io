@@ -222,20 +222,17 @@ class Wilson
 		
 		
 		
-		if (typeof options.use_draggables !== "undefined" && options.use_draggables)
-		{
-			this.use_draggables = true;
-			
-			this.draggables.mousedown_callback = typeof options.draggables_mousedown_callback === "undefined" ? null : options.draggables_mousedown_callback;
-			this.draggables.mouseup_callback = typeof options.draggables_mouseup_callback === "undefined" ? null : options.draggables_mouseup_callback;
-			this.draggables.mousemove_callback = typeof options.draggables_mousemove_callback === "undefined" ? null : options.draggables_mousemove_callback;
-			
-			this.draggables.touchstart_callback = typeof options.draggables_touchstart_callback === "undefined" ? null : options.draggables_touchstart_callback;
-			this.draggables.touchend_callback = typeof options.draggables_touchend_callback === "undefined" ? null : options.draggables_touchend_callback;
-			this.draggables.touchmove_callback = typeof options.draggables_touchmove_callback === "undefined" ? null : options.draggables_touchmove_callback;
-			
-			this.draggables.init();
-		}
+		this.use_draggables = true;
+		
+		this.draggables.mousedown_callback = typeof options.draggables_mousedown_callback === "undefined" ? null : options.draggables_mousedown_callback;
+		this.draggables.mouseup_callback = typeof options.draggables_mouseup_callback === "undefined" ? null : options.draggables_mouseup_callback;
+		this.draggables.mousemove_callback = typeof options.draggables_mousemove_callback === "undefined" ? null : options.draggables_mousemove_callback;
+		
+		this.draggables.touchstart_callback = typeof options.draggables_touchstart_callback === "undefined" ? null : options.draggables_touchstart_callback;
+		this.draggables.touchend_callback = typeof options.draggables_touchend_callback === "undefined" ? null : options.draggables_touchend_callback;
+		this.draggables.touchmove_callback = typeof options.draggables_touchmove_callback === "undefined" ? null : options.draggables_touchmove_callback;
+		
+		this.draggables.init();
 		
 		
 		
@@ -352,40 +349,38 @@ class Wilson
 		
 		
 		
-		if (typeof options.use_draggables !== "undefined" && options.use_draggables)
-		{
-			this.draggables.container = document.createElement("div");
-			
-			this.draggables.container.classList.add("wilson-draggables-container");
-			
-			this.draggables.container.setAttribute("data-aos", "fade-up");
-			
-			this.draggables.container.setAttribute("data-aos-delay-increase", "0");
-			
-			applet_canvas_container.appendChild(this.draggables.container);
-			
-			this.fullscreen.canvases_to_resize.push(this.draggables.container);
-			
-			
-			
-			let computed_style = window.getComputedStyle(this.canvas);
-			
-			let width = this.canvas.clientWidth - parseFloat(computed_style.paddingLeft) - parseFloat(computed_style.paddingRight);
-			let height = this.canvas.clientHeight - parseFloat(computed_style.paddingTop) - parseFloat(computed_style.paddingBottom);
-			
-			this.draggables.container.style.width = (width + 2 * this.draggables.draggable_radius) + "px";
-			this.draggables.container.style.height = (height + 2 * this.draggables.draggable_radius) + "px";
-			
-			this.draggables.container_width = width + 2 * this.draggables.draggable_radius;
-			this.draggables.container_height = height + 2 * this.draggables.draggable_radius;
-			
-			this.draggables.restricted_width = width;
-			this.draggables.restricted_height = height;
-			
-			
-			
-			this.draggables.container.style.marginTop = (parseFloat(computed_style.borderTopWidth) + parseFloat(computed_style.paddingTop) - this.draggables.draggable_radius) + "px";
-		}
+	
+		this.draggables.container = document.createElement("div");
+		
+		this.draggables.container.classList.add("wilson-draggables-container");
+		
+		this.draggables.container.setAttribute("data-aos", "fade-up");
+		
+		this.draggables.container.setAttribute("data-aos-delay-increase", "0");
+		
+		applet_canvas_container.appendChild(this.draggables.container);
+		
+		this.fullscreen.canvases_to_resize.push(this.draggables.container);
+		
+		
+		
+		let computed_style = window.getComputedStyle(this.canvas);
+		
+		let width = this.canvas.clientWidth - parseFloat(computed_style.paddingLeft) - parseFloat(computed_style.paddingRight);
+		let height = this.canvas.clientHeight - parseFloat(computed_style.paddingTop) - parseFloat(computed_style.paddingBottom);
+		
+		this.draggables.container.style.width = (width + 2 * this.draggables.draggable_radius) + "px";
+		this.draggables.container.style.height = (height + 2 * this.draggables.draggable_radius) + "px";
+		
+		this.draggables.container_width = width + 2 * this.draggables.draggable_radius;
+		this.draggables.container_height = height + 2 * this.draggables.draggable_radius;
+		
+		this.draggables.restricted_width = width;
+		this.draggables.restricted_height = height;
+		
+		
+		
+		this.draggables.container.style.marginTop = (parseFloat(computed_style.borderTopWidth) + parseFloat(computed_style.paddingTop) - this.draggables.draggable_radius) + "px";
 		
 		
 		
