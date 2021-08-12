@@ -4,24 +4,49 @@
 	
 	
 	
+	let options =
+	{
+		renderer: "cpu",
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		
+		
+		use_fullscreen: true,
+	
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	
+	
 	let grid_size = null;
 	
 	let no_borders = null;
 	
 	let canvas_scale_factor = null;
 	
-	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
-	
 	let web_worker = null;
 
+	
+	
+	let generate_button_element = document.querySelector("#generate-button");
 
-
-	document.querySelector("#generate-button").addEventListener("click", function()
+	generate_button_element.addEventListener("click", () =>
 	{
 		request_wilson_graph(false);
 	});
 	
-	document.querySelector("#dim-input").addEventListener("keydown", function(e)
+	
+	
+	let grid_size_input_element = document.querySelector("#grid-size-input");
+	
+	grid_size_input_element.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -29,27 +54,34 @@
 		}
 	});
 	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
+	
+	
+	let download_button_element = document.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", () =>
+	{
+		wilson.download_frame("wilsons-algorithm.png");
+	});
 	
 	
 	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
+	let maximum_speed_checkbox_element = document.querySelector("#toggle-maximum-speed-checkbox");
 	
-	Page.Applets.Canvases.true_fullscreen = false;
+	let no_borders_checkbox_element = document.querySelector("#no-borders-checkbox");
 	
-	Page.Applets.Canvases.set_up_resizer();
+	let progress_bar_element = document.querySelector("#progress-bar");
 	
-	
+	let progress_bar_child_element = document.querySelector("#progress-bar span");
 	
 	
 	
 	function request_wilson_graph(reverse_generate_skeleton)
 	{
-		grid_size = parseInt(document.querySelector("#dim-input").value || 50);
+		grid_size = parseInt(grid_size_input_element.value || 50);
 		
-		let maximum_speed = document.querySelector("#toggle-maximum-speed-checkbox").checked;
+		let maximum_speed = maximum_speed_checkbox_element.checked;
 		
-		no_borders = document.querySelector("#no-borders-checkbox").checked;
+		no_borders = no_borders_checkbox_element.checked;
 		
 		let timeout_id = null;
 		
@@ -71,20 +103,18 @@
 		
 		if (no_borders)
 		{
-			document.querySelector("#output-canvas").setAttribute("width", grid_size * canvas_scale_factor);
-			document.querySelector("#output-canvas").setAttribute("height", grid_size * canvas_scale_factor);
+			wilson.change_canvas_size(grid_size * canvas_scale_factor, grid_size * canvas_scale_factor);
 			
-			ctx.fillStyle = "rgb(0, 0, 0)";
-			ctx.fillRect(0, 0, grid_size * canvas_scale_factor, grid_size * canvas_scale_factor);
+			wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			wilson.ctx.fillRect(0, 0, grid_size * canvas_scale_factor, grid_size * canvas_scale_factor);
 		}
 		
 		else
 		{
-			document.querySelector("#output-canvas").setAttribute("width", (2 * grid_size + 1) * canvas_scale_factor);
-			document.querySelector("#output-canvas").setAttribute("height", (2 * grid_size + 1) * canvas_scale_factor);
+			wilson.change_canvas_size((2 * grid_size + 1) * canvas_scale_factor, (2 * grid_size + 1) * canvas_scale_factor);
 			
-			ctx.fillStyle = "rgb(0, 0, 0)";
-			ctx.fillRect(0, 0, (2 * grid_size + 1) * canvas_scale_factor, (2 * grid_size + 1) * canvas_scale_factor);
+			wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			wilson.ctx.fillRect(0, 0, (2 * grid_size + 1) * canvas_scale_factor, (2 * grid_size + 1) * canvas_scale_factor);
 		}
 		
 		
@@ -93,13 +123,13 @@
 		{
 			try
 			{
-				document.querySelector("#progress-bar").style.opacity = 0;
+				progress_bar_element.style.opacity = 0;
 				
-				setTimeout(function()
+				setTimeout(() =>
 				{
-					document.querySelector("#progress-bar").style.marginTop = 0;
-					document.querySelector("#progress-bar").style.marginBottom = 0;
-					document.querySelector("#progress-bar").style.height = 0;
+					progress_bar_element.style.marginTop = 0;
+					progress_bar_element.style.marginBottom = 0;
+					progress_bar_element.style.height = 0;
 				}, 600);
 			}
 			
@@ -142,19 +172,19 @@
 			
 			if (e.data[0] === "progress")
 			{
-				document.querySelector("#progress-bar span").style.width = e.data[1] + "%";
+				progress_bar_child_element.style.width = e.data[1] + "%";
 				
 				if (e.data[1] === 100)
 				{
-					setTimeout(function()
+					setTimeout(() =>
 					{
-						document.querySelector("#progress-bar").style.opacity = 0;
+						progress_bar_element.style.opacity = 0;
 						
-						setTimeout(function()
+						setTimeout(() =>
 						{
-							document.querySelector("#progress-bar").style.marginTop = 0;
-							document.querySelector("#progress-bar").style.marginBottom = 0;
-							document.querySelector("#progress-bar").style.height = 0;
+							progress_bar_element.style.marginTop = 0;
+							progress_bar_element.style.marginBottom = 0;
+							progress_bar_element.style.height = 0;
 						}, 300);
 					}, 600);
 				}
@@ -164,9 +194,9 @@
 			
 			
 			
-			ctx.fillStyle = e.data[4];
+			wilson.ctx.fillStyle = e.data[4];
 			
-			ctx.fillRect(e.data[0] * canvas_scale_factor, e.data[1] * canvas_scale_factor, e.data[2] * canvas_scale_factor, e.data[3] * canvas_scale_factor);
+			wilson.ctx.fillRect(e.data[0] * canvas_scale_factor, e.data[1] * canvas_scale_factor, e.data[2] * canvas_scale_factor, e.data[3] * canvas_scale_factor);
 		}
 		
 		
@@ -176,9 +206,9 @@
 		
 		
 		//The worker has three seconds to draw its initial line. If it can't do that, we cancel it and spawn a new worker that reverse-generates a skeleton.
-		if (reverse_generate_skeleton === false)
+		if (!reverse_generate_skeleton)
 		{
-			timeout_id = setTimeout(function()
+			timeout_id = setTimeout(() =>
 			{
 				console.log("Didn't draw anything within three seconds -- attempting to reverse-generate a skeleton.");
 				
@@ -186,13 +216,13 @@
 				
 				
 				
-				document.querySelector("#progress-bar").style.marginTop = "10vh";
-				document.querySelector("#progress-bar").style.marginBottom = "-5vh";
-				document.querySelector("#progress-bar").style.height = "5vh";
+				progress_bar_element.style.marginTop = "10vh";
+				progress_bar_element.style.marginBottom = "-5vh";
+				progress_bar_element.style.height = "5vh";
 				
-				setTimeout(function()
+				setTimeout(() =>
 				{
-					document.querySelector("#progress-bar").style.opacity = 1;
+					progress_bar_element.style.opacity = 1;
 				}, 600);
 				
 				
@@ -200,20 +230,5 @@
 				request_wilson_graph(true);
 			}, 3000);
 		}
-	}
-	
-	
-	
-	function prepare_download()
-	{
-		let link = document.createElement("a");
-		
-		link.download = "wilsons-algorithm.png";
-		
-		link.href = document.querySelector("#output-canvas").toDataURL();
-		
-		link.click();
-		
-		link.remove();
 	}
 }()
