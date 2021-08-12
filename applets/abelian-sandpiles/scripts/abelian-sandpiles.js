@@ -4,19 +4,44 @@
 	
 	
 	
-	let grid_size = null;
+	let options =
+	{
+		renderer: "cpu",
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		
+		
+		use_fullscreen: true,
 	
-	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	
+	
+	let grid_size = null;
 	
 	let canvas_scale_factor = 5;
 	
 	let web_worker = null;
-
-
-
-	document.querySelector("#generate-button").addEventListener("click", request_sandpile_graph);
 	
-	document.querySelector("#num-grains-input").addEventListener("keydown", function(e)
+	
+	
+	let generate_button_element = document.querySelector("#generate-button");
+
+	generate_button_element.addEventListener("click", request_sandpile_graph);
+	
+	
+	
+	let num_grains_input_element = document.querySelector("#num-grains-input");
+	
+	num_grains_input_element.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -24,7 +49,18 @@
 		}
 	});
 	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
+	
+	
+	let download_button_element = document.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", () =>
+	{
+		wilson.download_frame("an-abelian-sandpile.png");
+	});
+	
+	
+	
+	let maximum_speed_checkbox_element = document.querySelector("#toggle-maximum-speed-checkbox");
 	
 	
 	
@@ -35,18 +71,11 @@
 	
 	
 	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
-	
-	Page.Applets.Canvases.true_fullscreen = false;
-	
-	Page.Applets.Canvases.set_up_resizer();
-	
-	
-	
 	function request_sandpile_graph()
 	{
-		let num_grains = parseInt(document.querySelector("#num-grains-input").value || 10000);
-		let maximum_speed = document.querySelector("#toggle-maximum-speed-checkbox").checked;
+		let num_grains = parseInt(num_grains_input_element.value || 10000);
+		
+		let maximum_speed = maximum_speed_checkbox_element.checked;
 		
 		grid_size = Math.floor(Math.sqrt(num_grains)) + 2;
 		
@@ -65,24 +94,10 @@
 		
 		
 		
-		document.querySelector("#output-canvas").setAttribute("width", grid_size * canvas_scale_factor);
-		document.querySelector("#output-canvas").setAttribute("height", grid_size * canvas_scale_factor);
+		wilson.change_canvas_size(grid_size * canvas_scale_factor, grid_size * canvas_scale_factor);
 		
-		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, grid_size * canvas_scale_factor, grid_size * canvas_scale_factor);
-		
-		
-		
-		let options =
-		{
-			world_width: 3,
-			world_height: 3,
-			
-			world_center_x: 0,
-			world_center_y: 0
-		};
-		
-		Wilson.init(document.querySelector("#output-canvas"), options);
+		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilson.ctx.fillRect(0, 0, grid_size * canvas_scale_factor, grid_size * canvas_scale_factor);
 		
 		
 		
@@ -121,9 +136,9 @@
 				{
 					for (let j = 0; j < grid_size; j++)
 					{
-						ctx.fillStyle = image[i][j];
+						wilson.ctx.fillStyle = image[i][j];
 						
-						ctx.fillRect(j * canvas_scale_factor, i * canvas_scale_factor, canvas_scale_factor, canvas_scale_factor);
+						wilson.ctx.fillRect(j * canvas_scale_factor, i * canvas_scale_factor, canvas_scale_factor, canvas_scale_factor);
 					}
 				}
 			}
@@ -132,21 +147,6 @@
 		
 		
 		web_worker.postMessage([grid_size, num_grains, maximum_speed]);
-	}
-	
-	
-	
-	function prepare_download()
-	{
-		let link = document.createElement("a");
-		
-		link.download = "abelian-sandpiles.png";
-		
-		link.href = document.querySelector("#output-canvas").toDataURL();
-		
-		link.click();
-		
-		link.remove();
 	}
 	
 	

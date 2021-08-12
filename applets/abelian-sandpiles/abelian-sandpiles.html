@@ -29,6 +29,8 @@
 	Draw a grid and start dropping sand grains in the center square. As soon as you get to four grains, the pile topples, spilling one grain into each of the four surrounding squares. By the time you&#x2019;ve dropped fifteen grains in the center, you&#x2019;ll have five piles of three grains each. The next grain topples the center pile, and then each of the surrounding four topple themselves. Four of those grains end up back in the center, where they topple again, and then the system is stable again. If we start with a massive number of grains in the center, the pattern that&#x2019;s eventually produced is surprisingly complex. Amazingly, when we have more than one pile that will topple at the same time, the order we topple the has no effect on the final outcome. Because of this, the model is called <dfn>Abelian</dfn>.
 	
 	Piles with no grains are colored black, piles with one colored blue, those with two colored purple, and those with three colored yellow. Any pile with more than three grains is colored white.
+	
+	This applet was made with <a href="/projects/wilson/wilson.html" onclick="Page.Navigation.redirect('/projects/wilson/wilson.html')">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.
 
 !end-text-block
 
@@ -71,8 +73,6 @@
 
 
 <script>
-	DEBUG = true;
-	
 	if (typeof Page === "undefined")
 	{
 		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
