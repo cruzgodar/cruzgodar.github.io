@@ -445,10 +445,8 @@ Page.Components =
 	get_canvas: function()
 	{
 		return `
-			<div class="center-content applet-canvas-container" data-aos="fade-in" data-aos-delay-increase="500">
-				<div id="output-canvas-container">
-					<canvas id="output-canvas" class="no-floating-footer"></canvas>
-				</div>
+			<div data-aos="fade-up">
+				<canvas id="output-canvas" class="output-canvas"></canvas>
 			</div>
 		`;
 	},

@@ -47,7 +47,7 @@ async function draw_annealing_graph()
 	{
 		nodes[i] = [Math.floor(Math.random() * grid_size), Math.floor(Math.random() * grid_size)];
 		
-		postMessage(["node", nodes[i][1], nodes[i][0], 4, "rgb(255, 0, 0)"]);
+		postMessage([0, nodes[i][1], nodes[i][0], 4, "rgb(255, 0, 0)"]);
 	}
 	
 	
@@ -62,12 +62,12 @@ async function draw_annealing_graph()
 	
 	for (let i = 0; i < num_nodes - 1; i++)
 	{
-		postMessage(["line", nodes[i][1], nodes[i][0], nodes[i + 1][1], nodes[i + 1][0], "rgb(255, 0, 0)"]);
+		postMessage([1, nodes[i][1], nodes[i][0], nodes[i + 1][1], nodes[i + 1][0], "rgb(255, 0, 0)"]);
 		
 		current_distance += euclidean_distance(i, i + 1);
 	}
 	
-	postMessage(["line", nodes[num_nodes - 1][1], nodes[num_nodes - 1][0], nodes[0][1], nodes[0][0], "rgb(255, 0, 0)"]);
+	postMessage([1, nodes[num_nodes - 1][1], nodes[num_nodes - 1][0], nodes[0][1], nodes[0][0], "rgb(255, 0, 0)"]);
 	
 	current_distance += euclidean_distance(num_nodes - 1, 0);
 	
@@ -207,23 +207,23 @@ function draw_lines()
 {
 	return new Promise(function(resolve, reject)
 	{
-		postMessage(["clear"]);
+		postMessage([2]);
 		
 		
 		
 		for (let i = 0; i < num_nodes; i++)
 		{
-			postMessage(["node", nodes[i][1], nodes[i][0], 4, `rgb(255, ${255 * (initial_temperature - temperature) / initial_temperature}, ${255 * (initial_temperature - temperature) / initial_temperature})`]);
+			postMessage([0, nodes[i][1], nodes[i][0], 4, `rgb(255, ${255 * (initial_temperature - temperature) / initial_temperature}, ${255 * (initial_temperature - temperature) / initial_temperature})`]);
 		}
 		
 		
 		
 		for (let i = 0; i < num_nodes - 1; i++)
 		{
-			postMessage(["line", nodes[current_path[i]][1], nodes[current_path[i]][0], nodes[current_path[i + 1]][1], nodes[current_path[i + 1]][0], `rgb(255, ${255 * (initial_temperature - temperature) / initial_temperature}, ${255 * (initial_temperature - temperature) / initial_temperature})`]);
+			postMessage([1, nodes[current_path[i]][1], nodes[current_path[i]][0], nodes[current_path[i + 1]][1], nodes[current_path[i + 1]][0], `rgb(255, ${255 * (initial_temperature - temperature) / initial_temperature}, ${255 * (initial_temperature - temperature) / initial_temperature})`]);
 		}
 		
-		postMessage(["line", nodes[current_path[num_nodes - 1]][1], nodes[current_path[num_nodes - 1]][0], nodes[current_path[0]][1], nodes[current_path[0]][0], `rgb(255, ${255 * (initial_temperature - temperature) / initial_temperature}, ${255 * (initial_temperature - temperature) / initial_temperature})`]);
+		postMessage([1, nodes[current_path[num_nodes - 1]][1], nodes[current_path[num_nodes - 1]][0], nodes[current_path[0]][1], nodes[current_path[0]][0], `rgb(255, ${255 * (initial_temperature - temperature) / initial_temperature}, ${255 * (initial_temperature - temperature) / initial_temperature})`]);
 		
 		
 		
