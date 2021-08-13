@@ -260,7 +260,7 @@
 	
 	function on_wheel_canvas(x, y, scroll_amount, event)
 	{
-		scroll_amount = Math.min(Math.max(scroll_amount, -.5), .5);
+		scroll_amount /= 100;
 		
 		zoom_level += scroll_amount;
 		

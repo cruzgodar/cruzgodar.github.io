@@ -226,9 +226,7 @@ let last_timestamp = -1;</code></pre>
 
 <pre><code class="language-js" data-aos="fade-up">function on_wheel_canvas(x, y, scroll_amount, event)
 {
-&#9;scroll_amount = Math.min(Math.max(scroll_amount, -.5), .5);
-&#9;
-&#9;zoom_level += scroll_amount;
+&#9;zoom_level += scroll_amount / 100;
 &#9;
 &#9;zoom_level = Math.min(zoom_level, 1);
 &#9;
@@ -260,7 +258,7 @@ function on_pinch_canvas(x, y, touch_distance_delta, event)
 
 !begin-text-block
 	
-	We haven&#x2019;t defined <code>zoom_canvas</code> yet, but the idea here is fairly straightforward. Wheel events can vary wildly in reported scroll amount &mdash; just comparing two of my computers, iOS Safari with a trackpad reports continuous scroll amounts that are typically between -1 and 1, while Firefox on Windows with a discrete scroll wheel reports exclusively 192 and -192. Clamping the scroll amounts is a good way to handle this discrepancy without writing different code for different browsers.
+	We haven&#x2019;t defined <code>zoom_canvas</code> yet, but the idea here is fairly straightforward. Wheel events can vary wildly in reported scroll amount &mdash; just comparing two of my computers, iOS Safari with a trackpad reports continuous scroll amounts that are typically between -1 and 1, while Firefox on Windows with a discrete scroll wheel reports exclusively 192 and -192. Dividing the scroll amounts by 100 seemed to be a good way to handle this discrepancy without writing different code for different browsers.
 	
 	On the touchscreen side, <code>touch_distance_delta</code> is the difference between two distances &mdash; the current pinch and the last one &mdash; as measured in world coordinates. As with the drag callbacks, there&#x2019;s some complicated stuff going on behind the scenes to ensure that this value is correct even if the last pinch distance was measured relative to different world coordinates. The multiplication by 10 is an experimental value that I found worked well &mdash; ideally, we want the world coordinates at the touch points to always remain the same, so that it feels as much as possible like pinching is physically moving the scene. That&#x2019;s not always possible in practice, but this comes pretty close.
 
