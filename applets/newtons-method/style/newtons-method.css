@@ -1,125 +1,29 @@
-#output-canvas-container
-{
-	position: absolute;
-	width: fit-content;
-}
-
-#output-canvas-container.fullscreen
-{
-	width: 100%;
-}
-
-
-
 #root-setter
 {
 	transition: opacity .3s ease-in-out;
-	
-	opacity: 0;
-	pointer-events: none;
-	
-	margin-top: 5vh;
-	margin-bottom: 5vh;
 }
-
-
-
-#newtons-method-plot
-{
-	position: absolute;
-	
-	width: 50vmin;
-	height: 50vmin;
-	margin: 0 auto;
-	
-	border: 2px solid rgb(127, 127, 127);
-	border-radius: 15px;
-	padding: 2px;
-	
-	transition: opacity .3s ease-in-out;
-	
-	user-select: none;
-	-webkit-user-select: none;
-}
-
-#root-selector
-{
-	position: absolute;
-	
-	width: 50vmin;
-	height: 50vmin;
-	margin: 0 auto;
-	
-	border: 2px solid rgba(0, 0, 0, 0);
-	border-radius: 15px;
-	padding: 2px;
-	
-	transition: opacity .3s ease-in-out;
-	
-	user-select: none;
-	-webkit-user-select: none;
-}
-
-.root-marker
-{
-	position: absolute;
-	
-	width: 25px;
-	height: 25px;
-	
-	left: 0;
-	top: 0;
-	
-	background-color: rgb(255, 255, 255);
-	border: 2px solid rgb(0, 0, 0);
-	border-radius: 50%;
-	
-	touch-action: none;
-	user-select: none;
-	-webkit-user-select: none;
-	
-	cursor: pointer;
-	
-	transition: background-color .15s ease-in-out;
-}
-
-.root-marker:active
-{
-	background-color: rgb(127, 127, 127);
-}
-
 
 
 .a-marker
 {
-	background-color: rgb(255, 127, 127);
+	background-color: rgb(255, 127, 127) !important;
 	
 }
 
 .a-marker:active
 {
-	background-color: rgb(127, 64, 64);
+	background-color: rgb(127, 64, 64) !important;
 }
 
 
 
 .c-marker
 {
-	background-color: rgb(127, 192, 255);
+	background-color: rgb(127, 192, 255) !important;
 	
 }
 
 .c-marker:active
 {
-	background-color: rgb(64, 96, 127);
-}
-
-
-
-@media (max-aspect-ratio: 9/16), (max-width: 700px)
-{
-	#polynomial-label-1, #polynomial-label-2, #polynomial-label-3
-	{
-		font-size: 10px;
-	}
+	background-color: rgb(64, 96, 127) !important;
 }

@@ -4,9 +4,19 @@
 	
 	
 	
-	let grid_size = null;
+	let options =
+	{
+		renderer: "cpu",
+		
+		canvas_width: 1000,
+		canvas_height: 1000
+	};
 	
-	let ctx = document.querySelector("#calcudoku-grid").getContext("2d");
+	let wilson = new Wilson(document.querySelector("#calcudoku-grid"), options);
+	
+	
+	
+	let grid_size = null;
 	
 	let total_time = 0;
 	let split_time = 0;
@@ -24,32 +34,58 @@
 	
 	
 	
-	document.querySelector("#generate-button").addEventListener("click", request_calcudoku_grid);
+	let generate_button_element = document.querySelector("#generate-button");
+
+	generate_button_element.addEventListener("click", request_calcudoku_grid);
 	
-	let elements = document.querySelectorAll("#grid-size-input, #max-cage-size-input");
 	
-	for (let i = 0; i < elements.length; i++)
+	
+	let grid_size_input_element = document.querySelector("#grid-size-input");
+	
+	grid_size_input_element.addEventListener("keydown", function(e)
 	{
-		elements[i].addEventListener("keydown", function(e)
+		if (e.keyCode === 13)
 		{
-			if (e.keyCode === 13)
-			{
-				request_calcudoku_grid();
-			}
-		});
-	}
-	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
+			request_calcudoku_grid();
+		}
+	});
 	
 	
+	
+	let max_cage_size_input_element = document.querySelector("#max-cage-size-input");
+	
+	max_cage_size_input_element.addEventListener("keydown", function(e)
+	{
+		if (e.keyCode === 13)
+		{
+			request_calcudoku_grid();
+		}
+	});
+	
+	
+	
+	let download_button_element = document.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", () =>
+	{
+		wilson.download_frame("a-calcudoku-puzzle.png");
+	});
+	
+	
+	
+	let total_time_clock_element = document.querySelector("#total-time-clock");
+	let split_time_clock_element = document.querySelector("#split-time-clock");
+	
+	let total_time_label_element = document.querySelector("#total-time-label");
+	let split_time_label_element = document.querySelector("#split-time-label");
 	
 	
 	
 	function request_calcudoku_grid()
 	{
-		grid_size = parseInt(document.querySelector("#grid-size-input").value || 6);
+		grid_size = parseInt(grid_size_input_element.value || 6);
 		
-		let max_cage_size = parseInt(document.querySelector("#max-cage-size-input").value || 1000);
+		let max_cage_size = parseInt(max_cage_size_input_element.value || 1000);
 		
 		
 		
@@ -68,8 +104,8 @@
 		total_time = 0;
 		split_time = 0;
 		
-		document.querySelector("#total-time-clock").textContent = "0";
-		document.querySelector("#split-time-clock").textContent = "0";
+		total_time_clock_element.textContent = "0";
+		split_time_clock_element.textContent = "0";
 		
 		
 		
@@ -80,12 +116,12 @@
 		
 		else
 		{
-			document.querySelector("#total-time-label").style.opacity = 0;
-			document.querySelector("#total-time-clock").style.opacity = 0;
-			document.querySelector("#split-time-label").style.opacity = 0;
-			document.querySelector("#split-time-clock").style.opacity = 0;
+			total_time_label_element.style.opacity = 0;
+			total_time_clock_element.style.opacity = 0;
+			split_time_label_element.style.opacity = 0;
+			split_time_clock_element.style.opacity = 0;
 			
-			document.querySelector("#calcudoku-grid").style.opacity = 0;
+			wilson.canvas.style.opacity = 0;
 			
 			setTimeout(show_timers, 350);
 		}
@@ -96,10 +132,9 @@
 		{
 			let canvas_size = grid_size * 200 + 9;
 			
-			document.querySelector("#calcudoku-grid").setAttribute("width", canvas_size);
-			document.querySelector("#calcudoku-grid").setAttribute("height", canvas_size);
+			wilson.change_canvas_size(canvas_size, canvas_size);
 			
-			ctx.clearRect(0, 0, canvas_size, canvas_size);
+			wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
 		}, 300);
 		
 		
@@ -183,23 +218,23 @@
 	
 	function show_timers()
 	{
-		document.querySelector("#total-time-label").style.opacity = 1;
+		total_time_label_element.style.opacity = 1;
 		
 		setTimeout(function()
 		{
-			document.querySelector("#total-time-clock").style.opacity = 1;
+			total_time_clock_element.style.opacity = 1;
 			
 			setTimeout(function()
 			{
-				document.querySelector("#split-time-label").style.opacity = 1;
+				split_time_label_element.style.opacity = 1;
 				
 				setTimeout(function()
 				{
-					document.querySelector("#split-time-clock").style.opacity = 1;
+					split_time_clock_element.style.opacity = 1;
 					
 					setTimeout(function()
 					{
-						document.querySelector("#calcudoku-grid").style.opacity = 1;
+						wilson.canvas.style.opacity = 1;
 					}, 100);
 				}, 100);
 			}, 100);
@@ -238,7 +273,7 @@
 		
 		total_time_string += seconds;
 		
-		document.querySelector("#total-time-clock").textContent = total_time_string;
+		total_time_clock_element.textContent = total_time_string;
 		
 		
 		
@@ -270,7 +305,7 @@
 		
 		split_time_string += seconds;
 		
-		document.querySelector("#split-time-clock").textContent = split_time_string;
+		split_time_clock_element.textContent = split_time_string;
 		
 		
 		
@@ -288,25 +323,25 @@
 		
 		if (print_mode)
 		{
-			ctx.fillStyle = "rgb(255, 255, 255)";
-			ctx.fillRect(0, 0, canvas_size, canvas_size);
-			ctx.fillStyle = "rgb(0, 0, 0)";
+			wilson.ctx.fillStyle = "rgb(255, 255, 255)";
+			wilson.ctx.fillRect(0, 0, canvas_size, canvas_size);
+			wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		}
 		
 		else
 		{
-			ctx.clearRect(0, 0, canvas_size, canvas_size);
+			wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
 			
 			if (Site.Settings.url_vars["theme"] === 1)
 			{
 				if (Site.Settings.url_vars["contrast"] === 1)
 				{
-					ctx.fillStyle = "rgb(255, 255, 255)";
+					wilson.ctx.fillStyle = "rgb(255, 255, 255)";
 				}
 				
 				else
 				{
-					ctx.fillStyle = "rgb(192, 192, 192)";
+					wilson.ctx.fillStyle = "rgb(192, 192, 192)";
 				}
 			}
 			
@@ -314,12 +349,12 @@
 			{
 				if (Site.Settings.url_vars["contrast"] === 1)
 				{
-					ctx.fillStyle = "rgb(0, 0, 0)";
+					wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 				}
 				
 				else
 				{
-					ctx.fillStyle = "rgb(64, 64, 64)";
+					wilson.ctx.fillStyle = "rgb(64, 64, 64)";
 				}
 			}
 		}
@@ -333,8 +368,8 @@
 		//Draw the light gridlines (width 2).
 		for (let i = 0; i <= grid_size; i++)
 		{
-			ctx.fillRect(200 * i + 4, 0, 2, canvas_size + 9);
-			ctx.fillRect(0, 200 * i + 4, canvas_size + 9, 2);
+			wilson.ctx.fillRect(200 * i + 4, 0, 2, canvas_size + 9);
+			wilson.ctx.fillRect(0, 200 * i + 4, canvas_size + 9, 2);
 		}
 		
 		
@@ -346,22 +381,22 @@
 			{
 				if (i === 0 || cages_by_location[i - 1][j] !== cages_by_location[i][j])
 				{
-					ctx.fillRect(200 * j, 200 * i, 210, 10);
+					wilson.ctx.fillRect(200 * j, 200 * i, 210, 10);
 				}
 				
 				if (i === grid_size - 1 || cages_by_location[i + 1][j] !== cages_by_location[i][j])
 				{
-					ctx.fillRect(200 * j, 200 * (i + 1), 210, 10);
+					wilson.ctx.fillRect(200 * j, 200 * (i + 1), 210, 10);
 				}
 				
 				if (j === 0 || cages_by_location[i][j - 1] !== cages_by_location[i][j])
 				{
-					ctx.fillRect(200 * j, 200 * i, 10, 210);
+					wilson.ctx.fillRect(200 * j, 200 * i, 10, 210);
 				}
 				
 				if (j === grid_size - 1 || cages_by_location[i][j + 1] !== cages_by_location[i][j])
 				{
-					ctx.fillRect(200 * (j + 1), 200 * i, 10, 210);
+					wilson.ctx.fillRect(200 * (j + 1), 200 * i, 10, 210);
 				}
 			}
 		}
@@ -425,46 +460,19 @@
 			
 			if (label.length <= 6)
 			{
-				ctx.font = "50px sans-serif";
+				wilson.ctx.font = "50px sans-serif";
 				
 				font_size = 50;
 			}
 			
 			else
 			{
-				ctx.font = (300 / label.length) + "px sans-serif";
+				wilson.ctx.font = (300 / label.length) + "px sans-serif";
 				
 				font_size = 300 / label.length;
 			}
 			
-			ctx.fillText(label, 200 * top_left_cell[1] + 15, 200 * top_left_cell[0] + font_size + 5);
+			wilson.ctx.fillText(label, 200 * top_left_cell[1] + 15, 200 * top_left_cell[0] + font_size + 5);
 		}
-	}
-	
-	
-	
-	function prepare_download()
-	{
-		document.querySelector("#calcudoku-grid").style.opacity = 0;
-		
-		draw_calcudoku_grid(true);
-		
-		
-		
-		let link = document.createElement("a");
-		
-		link.download = "calcudoku.png";
-		
-		link.href = document.querySelector("#calcudoku-grid").toDataURL();
-		
-		link.click();
-		
-		link.remove();
-		
-		
-		
-		draw_calcudoku_grid(false);
-		
-		document.querySelector("#calcudoku-grid").style.opacity = 1;
 	}
 }()

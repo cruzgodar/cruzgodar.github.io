@@ -489,7 +489,7 @@ function on_release_canvas(x, y, event)
 &#9;
 &#9;if (Math.abs(next_zoom_velocity) >= zoom_velocity_start_threshhold)
 &#9;{
-&#9;zoom_velocity = next_zoom_velocity;
+&#9;&#9;zoom_velocity = next_zoom_velocity;
 &#9;}
 &#9;
 &#9;window.requestAnimationFrame(draw_julia_set);
@@ -507,7 +507,29 @@ function on_release_canvas(x, y, event)
 
 
 
-<pre><code class="language-js" data-aos="fade-up">function on_pinch_canvas(x, y, touch_distance_delta, event)
+<pre><code class="language-js" data-aos="fade-up">function on_wheel_canvas(x, y, scroll_amount, event)
+{
+&#9;fixed_point_x = x;
+&#9;fixed_point_y = y;
+&#9;
+&#9;if (Math.abs(scroll_amount / 100) &lt; .3)
+&#9;{
+&#9;&#9;zoom_level += scroll_amount / 100;
+&#9;&#9;
+&#9;&#9;zoom_level = Math.min(zoom_level, 1);
+&#9;}
+&#9;
+&#9;else
+&#9;{
+&#9;&#9;zoom_velocity += Math.sign(scroll_amount) * .05;
+&#9;}
+&#9;
+&#9;zoom_canvas(x, y);
+}
+
+
+
+function on_pinch_canvas(x, y, touch_distance_delta, event)
 {
 &#9;if (aspect_ratio >= 1)
 &#9;{
@@ -537,7 +559,7 @@ function on_release_canvas(x, y, event)
 
 !begin-text-block
 	
-	We do the same thing for zooming, but only with pinching, since scroll wheels don&#x2019;t naturally lend themselves to having inertia. We also don&#x2019;t have divide by a factor related to world size, since <code>zoom_level</code> is unitless.
+	We do the same thing for zooming. We don&#x2019;t have divide by a factor related to world size, since <code>zoom_level</code> is unitless. The two scroll wheel cases are a way to differentiate continuous ones (like trackpads) from discrete ones. Here, continuous scrolling will directly translate to zooming, just like pinching, while discrete scrolling will only add velocity, giving it a bouncing effect.
 
 !end-text-block
 

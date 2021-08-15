@@ -944,14 +944,22 @@
 		
 		function on_wheel_canvas(x, y, scroll_amount, event)
 		{
-			zoom_level += scroll_amount / 100;
-			
-			zoom_level = Math.min(zoom_level, 1);
-			
 			fixed_point_x = x;
 			fixed_point_y = y;
 			
-			zoom_canvas();
+			if (Math.abs(scroll_amount / 100) < .3)
+			{
+				zoom_level += scroll_amount / 100;
+				
+				zoom_level = Math.min(zoom_level, 1);
+			}
+			
+			else
+			{
+				zoom_velocity += Math.sign(scroll_amount) * .05;
+			}
+			
+			zoom_canvas(x, y);
 		}
 		
 		

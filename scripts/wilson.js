@@ -1610,6 +1610,8 @@ class Wilson
 					
 					
 					
+					this.fullscreen_components_container.classList.remove("wilson-true-fullscreen-canvas");
+					
 					for (let i = 0; i < this.canvases_to_resize.length; i++)
 					{
 						this.canvases_to_resize[i].classList.remove("wilson-true-fullscreen-canvas");
