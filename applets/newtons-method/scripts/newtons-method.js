@@ -509,7 +509,7 @@
 	
 	download_button_element.addEventListener("click", () =>
 	{
-		wilson.download_frame("a-julia-set.png");
+		wilson.download_frame("newtons-method.png");
 	});
 	
 	
