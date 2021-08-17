@@ -633,7 +633,7 @@
 			current_roots[last_active_root - 2][0] = parseFloat(root_a_input_element.value || 0);
 			current_roots[last_active_root - 2][1] = parseFloat(root_b_input_element.value || 0);
 			
-			wilson.draggables.world_coordinates[1] = [current_roots[last_active_root - 2][0], current_roots[last_active_root - 2][1]];
+			wilson.draggables.world_coordinates[last_active_root - 2] = [current_roots[last_active_root - 2][0], current_roots[last_active_root - 2][1]];
 		}
 		
 		
@@ -850,7 +850,7 @@
 		
 		wilson.gl.uniform2fv(wilson.uniforms["a"], a);
 		wilson.gl.uniform2f(wilson.uniforms["c"], c[0] / 10, c[1] / 10);
-		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], 30);
+		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], 20);
 		
 		wilson.render.draw_frame();
 		
