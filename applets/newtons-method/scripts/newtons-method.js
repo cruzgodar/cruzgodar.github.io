@@ -197,145 +197,145 @@
 						
 						return;
 					}
-				}
-				
-				
-				
-				if (num_roots >= 2)
-				{
-					float d_0 = length(z - root_2);
 					
-					if (d_0 < threshhold)
-					{
-						float d_1 = length(last_z - root_2);
-						
-						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-						
-						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-						
-						gl_FragColor = vec4(color_2 * brightness, 1.0);
-						
-						return;
-					}
-				}
-				
-				
-				
-				if (num_roots >= 3)
-				{
-					float d_0 = length(z - root_3);
 					
-					if (d_0 < threshhold)
-					{
-						float d_1 = length(last_z - root_3);
-						
-						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-						
-						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-						
-						gl_FragColor = vec4(color_3 * brightness, 1.0);
-						
-						return;
-					}
-				}
-				
-				
-				
-				if (num_roots >= 4)
-				{
-					float d_0 = length(z - root_4);
 					
-					if (d_0 < threshhold)
+					if (num_roots >= 2)
 					{
-						float d_1 = length(last_z - root_4);
+						float d_0 = length(z - root_2);
 						
-						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+						if (d_0 < threshhold)
+						{
+							float d_1 = length(last_z - root_2);
+							
+							float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+							
+							float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+							
+							gl_FragColor = vec4(color_2 * brightness, 1.0);
+							
+							return;
+						}
 						
-						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
 						
-						gl_FragColor = vec4(color_4 * brightness, 1.0);
 						
-						return;
-					}
-				}
-				
-				
-				
-				if (num_roots >= 5)
-				{
-					float d_0 = length(z - root_5);
-					
-					if (d_0 < threshhold)
-					{
-						float d_1 = length(last_z - root_5);
-						
-						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-						
-						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-						
-						gl_FragColor = vec4(color_5 * brightness, 1.0);
-						
-						return;
-					}
-				}
-				
-				
-				
-				if (num_roots >= 6)
-				{
-					float d_0 = length(z - root_6);
-					
-					if (d_0 < threshhold)
-					{
-						float d_1 = length(last_z - root_6);
-						
-						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-						
-						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-						
-						gl_FragColor = vec4(color_6 * brightness, 1.0);
-						
-						return;
-					}
-				}
-				
-				
-				
-				if (num_roots >= 7)
-				{
-					float d_0 = length(z - root_7);
-					
-					if (d_0 < threshhold)
-					{
-						float d_1 = length(last_z - root_7);
-						
-						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-						
-						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-						
-						gl_FragColor = vec4(color_7 * brightness, 1.0);
-						
-						return;
-					}
-				}
-				
-				
-				
-				if (num_roots >= 8)
-				{
-					float d_0 = length(z - root_8);
-					
-					if (d_0 < threshhold)
-					{
-						float d_1 = length(last_z - root_8);
-						
-						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-						
-						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-						
-						gl_FragColor = vec4(color_8 * brightness, 1.0);
-						
-						return;
+						if (num_roots >= 3)
+						{
+							float d_0 = length(z - root_3);
+							
+							if (d_0 < threshhold)
+							{
+								float d_1 = length(last_z - root_3);
+								
+								float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+								
+								float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+								
+								gl_FragColor = vec4(color_3 * brightness, 1.0);
+								
+								return;
+							}
+							
+							
+							
+							if (num_roots >= 4)
+							{
+								float d_0 = length(z - root_4);
+								
+								if (d_0 < threshhold)
+								{
+									float d_1 = length(last_z - root_4);
+									
+									float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+									
+									float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+									
+									gl_FragColor = vec4(color_4 * brightness, 1.0);
+									
+									return;
+								}
+								
+								
+								
+								if (num_roots >= 5)
+								{
+									float d_0 = length(z - root_5);
+									
+									if (d_0 < threshhold)
+									{
+										float d_1 = length(last_z - root_5);
+										
+										float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+										
+										float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+										
+										gl_FragColor = vec4(color_5 * brightness, 1.0);
+										
+										return;
+									}
+									
+									
+									
+									if (num_roots >= 6)
+									{
+										float d_0 = length(z - root_6);
+										
+										if (d_0 < threshhold)
+										{
+											float d_1 = length(last_z - root_6);
+											
+											float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+											
+											float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+											
+											gl_FragColor = vec4(color_6 * brightness, 1.0);
+											
+											return;
+										}
+										
+										
+										
+										if (num_roots >= 7)
+										{
+											float d_0 = length(z - root_7);
+											
+											if (d_0 < threshhold)
+											{
+												float d_1 = length(last_z - root_7);
+												
+												float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+												
+												float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+												
+												gl_FragColor = vec4(color_7 * brightness, 1.0);
+												
+												return;
+											}
+											
+											
+											
+											if (num_roots >= 8)
+											{
+												float d_0 = length(z - root_8);
+												
+												if (d_0 < threshhold)
+												{
+													float d_1 = length(last_z - root_8);
+													
+													float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+													
+													float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+													
+													gl_FragColor = vec4(color_8 * brightness, 1.0);
+													
+													return;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 			}
