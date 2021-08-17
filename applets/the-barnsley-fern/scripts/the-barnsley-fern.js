@@ -4,6 +4,27 @@
 	
 	
 	
+	let options =
+	{
+		renderer: "hybrid",
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		
+		
+		use_fullscreen: true,
+	
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	
+	
 	let num_iterations = 10000000;
 	let grid_size = 1000;
 	
@@ -13,31 +34,27 @@
 	
 	
 	
-	document.querySelector("#output-canvas").setAttribute("width", grid_size);
-	document.querySelector("#output-canvas").setAttribute("height", grid_size);
+	let generate_button_element = document.querySelector("#generate-button");
+
+	generate_button_element.addEventListener("click", request_fern);
 	
 	
 	
-	let options =
-	{
-		renderer: "hybrid"
-	};
+	let num_iterations_input_element = document.querySelector("#num-iterations-input");
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
-	
-	
-	
-	document.querySelector("#generate-button").addEventListener("click", request_fern_graph);
-	
-	document.querySelector("#num-iterations-input").addEventListener("keydown", function(e)
+	num_iterations_input_element.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
-			request_fern_graph();
+			request_fern();
 		}
 	});
 	
-	document.querySelector("#download-button").addEventListener("click", function(e)
+	
+	
+	let download_button_element = document.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", () =>
 	{
 		wilson.download_frame("the-barnsley-fern.png");
 	});
@@ -51,9 +68,9 @@
 	
 	
 	
-	function request_fern_graph()
+	function request_fern()
 	{
-		num_iterations = 1000 * parseInt(document.querySelector("#num-iterations-input").value || 10000);
+		num_iterations = 1000 * parseInt(num_iterations_input_element.value || 10000);
 		
 		grid_size = Math.floor(Math.sqrt(num_iterations / 10));
 		
