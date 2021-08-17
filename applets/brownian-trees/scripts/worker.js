@@ -55,7 +55,7 @@ function draw_brownian_tree()
 		brownian_tree_graph[Math.floor(grid_size / 2)][Math.floor(grid_size / 2)] = 1;
 		color[Math.floor(grid_size / 2)][Math.floor(grid_size / 2)] = [255, 255, 255];
 		
-		postMessage([Math.floor(grid_size / 2), Math.floor(grid_size / 2), `rgb(255, 255, 255)`]);
+		postMessage([2, Math.floor(grid_size / 2), Math.floor(grid_size / 2), `rgb(255, 255, 255)`]);
 		
 		
 		
@@ -97,8 +97,6 @@ function draw_brownian_tree()
 					possible_directions.push(3);
 				}
 				
-				//postMessage(["log", current_col, current_row, possible_directions]);
-				
 				
 				
 				let direction = possible_directions[Math.floor(Math.random() * possible_directions.length)];
@@ -116,7 +114,7 @@ function draw_brownian_tree()
 					
 					color[current_row][current_col] = [.9925 * color[new_row][new_col][0] + .0075 * new_color[0], .9925 * color[new_row][new_col][1] + .0075 * new_color[1], .9925 * color[new_row][new_col][2] + .0075 * new_color[2]];
 					
-					postMessage([current_col, current_row, `rgb(${current_brightness / 255 * color[current_row][current_col][0]}, ${current_brightness / 255 * color[current_row][current_col][1]}, ${current_brightness / 255 * color[current_row][current_col][2]})`]);
+					postMessage([2, current_col, current_row, `rgb(${current_brightness / 255 * color[current_row][current_col][0]}, ${current_brightness / 255 * color[current_row][current_col][1]}, ${current_brightness / 255 * color[current_row][current_col][2]})`]);
 					
 					
 					
@@ -131,7 +129,7 @@ function draw_brownian_tree()
 						
 						if (progress > progress_threshhold)
 						{
-							postMessage(["progress", progress_threshhold]);
+							postMessage([0, progress_threshhold]);
 							
 							progress_threshhold += 5;
 						}
@@ -149,11 +147,11 @@ function draw_brownian_tree()
 		
 		
 		
-		postMessage(["progress", 100]);
+		postMessage([0, 100]);
 		
-		setTimeout(function()
+		setTimeout(() =>
 		{
-			postMessage(["done"]);
+			postMessage([1]);
 		}, 500);
 		
 		

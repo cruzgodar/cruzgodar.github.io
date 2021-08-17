@@ -4,19 +4,42 @@
 	
 	
 	
-	let grid_size = null;
+	let options =
+	{
+		renderer: "cpu",
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		
+		
+		use_fullscreen: true,
 	
-	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	
+	
+	let grid_size = null;
 	
 	let web_worker = null;
 	
 	
 	
+	let generate_button_element = document.querySelector("#generate-button");
+
+	generate_button_element.addEventListener("click", request_brownian_tree);
 	
 	
-	document.querySelector("#generate-button").addEventListener("click", request_brownian_tree);
 	
-	document.querySelector("#grid-size-input").addEventListener("keydown", function(e)
+	let grid_size_input_element = document.querySelector("#grid-size-input");
+	
+	grid_size_input_element.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -24,7 +47,19 @@
 		}
 	});
 	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
+	
+	
+	let download_button_element = document.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", () =>
+	{
+		wilson.download_frame("a-brownian-tree.png");
+	});
+	
+	
+	
+	let progress_bar_element = document.querySelector("#progress-bar");
+	let progress_bar_innards_element = document.querySelector("#progress-bar span");
 	
 	
 	
@@ -35,30 +70,20 @@
 	
 	
 	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
-	
-	Page.Applets.Canvases.true_fullscreen = false;
-	
-	Page.Applets.Canvases.set_up_resizer();
-	
-	
-	
 	function request_brownian_tree()
 	{
-		let grid_size = parseInt(document.querySelector("#grid-size-input").value || 1000);
+		let grid_size = parseInt(grid_size_input_element.value || 1000);
+		
+		wilson.change_canvas_size(grid_size, grid_size);
+		
+		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilson.ctx.fillRect(0, 0, grid_size, grid_size);
 		
 		
 		
-		document.querySelector("#output-canvas").setAttribute("width", grid_size);
-		document.querySelector("#output-canvas").setAttribute("height", grid_size);
-		
-		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, grid_size, grid_size);
-		
-		
-		
-		document.querySelector("#progress-bar span").insertAdjacentHTML("afterend", `<span></span>`);
-		document.querySelector("#progress-bar span").remove();
+		progress_bar_innards_element.insertAdjacentHTML("afterend", `<span></span>`);
+		progress_bar_innards_element.remove();
+		progress_bar_innards_element = document.querySelector("#progress-bar span");
 		
 		
 		
@@ -81,20 +106,20 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			if (e.data[0] === "progress")
+			if (e.data[0] === 0)
 			{
-				document.querySelector("#progress-bar span").style.width = e.data[1] + "%";
+				progress_bar_innards_element.style.width = e.data[1] + "%";
 				
 				if (e.data[1] === 100)
 				{
-					setTimeout(function()
+					setTimeout(() =>
 					{
-						document.querySelector("#progress-bar").style.opacity = 0;
+						progress_bar_element.style.opacity = 0;
 						
-						setTimeout(function()
+						setTimeout(() =>
 						{
-							document.querySelector("#progress-bar").style.marginTop = 0;
-							document.querySelector("#progress-bar").style.marginBottom = 0;
+							progress_bar_element.style.marginTop = 0;
+							progress_bar_element.style.marginBottom = 0;
 						}, 300);
 					}, 600);
 				}
@@ -102,14 +127,14 @@
 			
 			
 			
-			else if (e.data[0] === "done")
+			else if (e.data[0] === 1)
 			{
-				document.querySelector("#progress-bar").style.opacity = 0;
+				progress_bar_element.style.opacity = 0;
 				
-				setTimeout(function()
+				setTimeout(() =>
 				{
-					document.querySelector("#progress-bar").style.marginTop = 0;
-					document.querySelector("#progress-bar").style.marginBottom = 0;
+					progress_bar_element.style.marginTop = 0;
+					progress_bar_element.style.marginBottom = 0;
 				}, 300);
 			}
 			
@@ -117,41 +142,26 @@
 			
 			else
 			{
-				ctx.fillStyle = e.data[2];
+				wilson.ctx.fillStyle = e.data[3];
 				
-				ctx.fillRect(e.data[0], e.data[1], 1, 1);
+				wilson.ctx.fillRect(e.data[1], e.data[2], 1, 1);
 			}
 		}
 		
 		
 		
-		document.querySelector("#progress-bar span").style.width = 0;
-		document.querySelector("#progress-bar").style.marginTop = "10vh";
-		document.querySelector("#progress-bar").style.marginBottom = "-5vh";
+		progress_bar_innards_element.style.width = 0;
+		progress_bar_element.style.marginTop = "10vh";
+		progress_bar_element.style.marginBottom = "-5vh";
 		
-		setTimeout(function()
+		setTimeout(() =>
 		{
-			document.querySelector("#progress-bar").style.opacity = 1;
+			progress_bar_element.style.opacity = 1;
 		}, 600);
 		
 		
 		
 		web_worker.postMessage([grid_size]);
-	}
-	
-	
-	
-	function prepare_download()
-	{
-		let link = document.createElement("a");
-		
-		link.download = "brownian-tree.png";
-		
-		link.href = document.querySelector("#output-canvas").toDataURL();
-		
-		link.click();
-		
-		link.remove();
 	}
 	
 	
