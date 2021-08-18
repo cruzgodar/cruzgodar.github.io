@@ -4,7 +4,26 @@
 	
 	
 	
-	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
+	let options =
+	{
+		renderer: "cpu",
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		
+		
+		use_fullscreen: true,
+	
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	
 	
 	let web_worker = null;
 	
@@ -15,65 +34,81 @@
 	
 	
 	
+	let generate_button_element = document.querySelector("#generate-button");
+
+	generate_button_element.addEventListener("click", request_kicked_rotator);
 	
-	document.querySelector("#generate-button").addEventListener("click", request_kicked_rotator);
 	
-	let elements = document.querySelectorAll("#grid-size-input, #k-input, #orbit-separation-input");
 	
-	for (let i = 0; i < elements.length; i++)
+	let grid_size_input_element = document.querySelector("#grid-size-input");
+	
+	let k_input_element = document.querySelector("#k-input");
+	
+	let orbit_separation_input_element = document.querySelector("#orbit-separation-input");
+	
+	
+	
+	grid_size_input_element.addEventListener("keydown", function(e)
 	{
-		elements[i].addEventListener("keydown", function(e)
+		if (e.keyCode === 13)
 		{
-			if (e.keyCode === 13)
-			{
-				request_kicked_rotator();
-			}
-		});
-	}
+			request_kicked_rotator();
+		}
+	});
 	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
+	k_input_element.addEventListener("keydown", function(e)
+	{
+		if (e.keyCode === 13)
+		{
+			request_kicked_rotator();
+		}
+	});
+	
+	orbit_separation_input_element.addEventListener("keydown", function(e)
+	{
+		if (e.keyCode === 13)
+		{
+			request_kicked_rotator();
+		}
+	});
 	
 	
 	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
+	let download_button_element = document.querySelector("#download-button");
 	
-	Page.Applets.Canvases.true_fullscreen = false;
-	
-	Page.Applets.Canvases.set_up_resizer();
-	
-	
+	download_button_element.addEventListener("click", () =>
+	{
+		wilson.download_frame("a-kicked-rotator.png");
+	});
 	
 	
 	
 	function request_kicked_rotator()
 	{
-		let grid_size = parseInt(document.querySelector("#grid-size-input").value || 500);
+		let grid_size = parseInt(grid_size_input_element.value || 500);
 		
-		let K = parseFloat(document.querySelector("#k-input").value || .75);
+		let K = parseFloat(k_input_element.value || .75);
 		
-		let orbit_separation = parseInt(document.querySelector("#orbit-separation-input").value || 3);
+		let orbit_separation = parseInt(orbit_separation_input_element.value || 3);
 		
 		
 		
-		values = [];
+		values = new Array(grid_size * grid_size);
 		
 		for (let i = 0; i < grid_size; i++)
 		{
-			values.push([]);
-			
 			for (let j = 0; j < grid_size; j++)
 			{
-				values[i].push(0);
+				values[grid_size * i + j] = 0;
 			}
 		}
 		
 		
 		
-		document.querySelector("#output-canvas").setAttribute("width", grid_size);
-		document.querySelector("#output-canvas").setAttribute("height", grid_size);
+		wilson.change_canvas_size(grid_size, grid_size);
 		
-		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, grid_size, grid_size);
+		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilson.ctx.fillRect(0, 0, grid_size, grid_size);
 		
 		
 		
@@ -103,15 +138,15 @@
 			{
 				for (let j = 0; j < grid_size; j++)
 				{
-					if (value_delta[i][j] > values[i][j])
+					if (value_delta[grid_size * i + j] > values[grid_size * i + j])
 					{
-						let rgb = HSVtoRGB(hue, 1, value_delta[i][j] / 255);
+						let rgb = wilson.utils.hsv_to_rgb(hue, 1, value_delta[grid_size * i + j] / 255);
 						
-						ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+						wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 						
-						ctx.fillRect(j, i, 1, 1);
+						wilson.ctx.fillRect(j, i, 1, 1);
 						
-						values[i][j] = value_delta[i][j];
+						values[grid_size * i + j] = value_delta[grid_size * i + j];
 					}
 				}
 			}
@@ -120,45 +155,5 @@
 		
 		
 		web_worker.postMessage([grid_size, K, orbit_separation]);
-	}
-	
-	
-	
-	function HSVtoRGB(h, s, v)
-	{
-		let r, g, b, i, f, p, q, t;
-		
-		i = Math.floor(h * 6);
-		f = h * 6 - i;
-		p = v * (1 - s);
-		q = v * (1 - f * s);
-		t = v * (1 - (1 - f) * s);
-		
-		switch (i % 6)
-		{
-			case 0: r = v, g = t, b = p; break;
-			case 1: r = q, g = v, b = p; break;
-			case 2: r = p, g = v, b = t; break;
-			case 3: r = p, g = q, b = v; break;
-			case 4: r = t, g = p, b = v; break;
-			case 5: r = v, g = p, b = q; break;
-		}
-	    
-		return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-	}
-	
-	
-	
-	function prepare_download()
-	{
-		let link = document.createElement("a");
-		
-		link.download = "kicked-rotator.png";
-		
-		link.href = document.querySelector("#output-canvas").toDataURL();
-		
-		link.click();
-		
-		link.remove();
 	}
 }()

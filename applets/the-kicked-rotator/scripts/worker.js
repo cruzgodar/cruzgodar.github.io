@@ -33,33 +33,17 @@ const max_repetitions = 50;
 
 function draw_kicked_rotator()
 {
-	image = [];
-	
-	for (let i = 0; i < grid_size; i++)
-	{
-		image.push([]);
-		
-		for (let j = 0; j < grid_size; j++)
-		{
-			image[i].push(0);
-		}
-	}
-	
-	
-	
 	const middle_col = Math.floor(grid_size / 2);
 	
 	for (let i = 1; i < grid_size / 2; i += orbit_separation + 1)
 	{
-		image = [];
+		image = new Array(grid_size * grid_size);
 		
 		for (let j = 0; j < grid_size; j++)
 		{
-			image.push([]);
-			
 			for (let k = 0; k < grid_size; k++)
 			{
-				image[j].push(0);
+				image[grid_size * j + k] = 0;
 			}
 		}
 		
@@ -90,9 +74,9 @@ function draw_kicked_rotator()
 			{
 				for (let k = 0; k < grid_size; k++)
 				{
-					if (image[j][k] !== 0)
+					if (image[grid_size * j + k] !== 0)
 					{
-						image[grid_size - j - 1][grid_size - k - 1] = image[j][k];
+						image[grid_size * (grid_size - j - 1) + grid_size - k - 1] = image[grid_size * j + k];
 					}
 				}
 			}
@@ -114,7 +98,7 @@ function calculate_orbit(start_row, start_col, color)
 	current_row = start_row;
 	current_col = start_col;
 	
-	if (image[current_row][current_col] !== 0)
+	if (image[grid_size * current_row + current_col] !== 0)
 	{
 		return -1;
 	}
@@ -130,7 +114,7 @@ function calculate_orbit(start_row, start_col, color)
 	while (true)
 	{
 		//Add the current point to the image.
-		image[current_row][current_col]++;
+		image[grid_size * current_row + current_col]++;
 		
 		num_points++;
 		
@@ -139,7 +123,7 @@ function calculate_orbit(start_row, start_col, color)
 			num_upper_half_points++;
 		}
 		
-		if (image[current_row][current_col] === 300)
+		if (image[grid_size * current_row + current_col] === 300)
 		{
 			break;
 		}
