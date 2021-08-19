@@ -61,6 +61,11 @@ Page.Navigation =
 		
 		
 		
+		if (!no_state_push)
+		{
+			Site.last_pages.push(Page.url);
+		}
+		
 		Page.url = url;
 		
 		Page.parent_folder = url.slice(0, url.lastIndexOf("/") + 1);

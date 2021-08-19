@@ -95,6 +95,8 @@ let Site =
 		"complexjs": false
 	},
 	
+	last_pages: [],
+	
 	
 	
 	//Redirects to the chosen page and sets up all the miscellaneous things that make the site work.
@@ -174,11 +176,11 @@ let Site =
 		//Fade in the opacity when the user presses the back button.
 		window.addEventListener("popstate", (e) =>
 		{
-			let previous_page = Site.Settings.get_url_var("page");
-				
-			if (previous_page !== null && decodeURIComponent(previous_page) !== Page.url)
+			let index = Site.last_pages.length - 1;
+			
+			if (index !== -1 && Site.last_pages[index] !== Page.url)
 			{
-				Page.Navigation.redirect(decodeURIComponent(previous_page), false, true, true);
+				Page.Navigation.redirect(Site.last_pages.pop(), false, true, true);
 			}
 			
 			else
