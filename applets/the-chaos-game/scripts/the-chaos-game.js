@@ -4,67 +4,81 @@
 	
 	
 	
-	let grid_size = null;
+	let options =
+	{
+		renderer: "cpu",
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		
+		
+		use_fullscreen: true,
 	
-	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	
+	
+	let grid_size = null;
 	
 	let web_worker = null;
 	
-	let image = [];
+	
+	
+	let generate_button_element = document.querySelector("#generate-button");
+
+	generate_button_element.addEventListener("click", request_chaos_game);
 	
 	
 	
+	let grid_size_input_element = document.querySelector("#grid-size-input");
+	
+	let num_vertices_input_element = document.querySelector("#num-vertices-input");
 	
 	
-	document.querySelector("#generate-button").addEventListener("click", request_chaos_game);
 	
-	let elements = document.querySelectorAll("#grid-size-input, #num-vertices-input");
-	
-	for (let i = 0; i < elements.length; i++)
+	grid_size_input_element.addEventListener("keydown", (e) =>
 	{
-		elements[i].addEventListener("keydown", function(e)
+		if (e.keyCode === 13)
 		{
-			if (e.keyCode === 13)
-			{
-				request_chaos_game();
-			}
-		});
-	}
+			request_chaos_game();
+		}
+	});
 	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
-	
-	
-	
-	if (Browser.name === "Chrome" || Browser.name === "Opera")
+	num_vertices_input_element.addEventListener("keydown", (e) =>
 	{
-		alert_about_hardware_acceleration();
-	}
+		if (e.keyCode === 13)
+		{
+			request_chaos_game();
+		}
+	});
 	
 	
 	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
+	let download_button_element = document.querySelector("#download-button");
 	
-	Page.Applets.Canvases.true_fullscreen = false;
-	
-	Page.Applets.Canvases.set_up_resizer();
-	
-	
+	download_button_element.addEventListener("click", () =>
+	{
+		wilson.download_frame("a-chaos-game.png");
+	});
 	
 	
 	
 	function request_chaos_game()
 	{
-		let num_vertices = parseInt(document.querySelector("#num-vertices-input").value || 3);
+		let num_vertices = parseInt(num_vertices_input_element.value || 5);
 		
-		grid_size = parseInt(document.querySelector("#grid-size-input").value || 1000);
+		grid_size = parseInt(grid_size_input_element.value || 1000);
 		
 		
 		
-		document.querySelector("#output-canvas").setAttribute("width", grid_size);
-		document.querySelector("#output-canvas").setAttribute("height", grid_size);
-		
-		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, grid_size, grid_size);
+		wilson.change_canvas_size(grid_size, grid_size);
 		
 		
 		
@@ -87,64 +101,11 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			image = e.data[0];
-			
-			let img_data = ctx.getImageData(0, 0, grid_size, grid_size);
-			let data = img_data.data;
-			
-			for (let i = 0; i < grid_size; i++)
-			{
-				for (let j = 0; j < grid_size; j++)
-				{
-					//The index in the array of rgba values
-					let index = (4 * i * grid_size) + (4 * j);
-					
-					data[index] = image[i][j][0];
-					data[index + 1] = image[i][j][1];
-					data[index + 2] = image[i][j][2];
-					data[index + 3] = 255; //No transparency.
-				}
-			}
-			
-			ctx.putImageData(img_data, 0, 0);
+			wilson.render.draw_frame(e.data[0]);
 		}
 		
 		
 		
 		web_worker.postMessage([num_vertices, grid_size]);
-	}
-	
-	
-	
-	function prepare_download()
-	{
-		let link = document.createElement("a");
-		
-		link.download = "the-chaos-game.png";
-		
-		link.href = document.querySelector("#output-canvas").toDataURL();
-		
-		link.click();
-		
-		link.remove();
-	}
-	
-	
-	
-	function alert_about_hardware_acceleration()
-	{
-		let elements = document.querySelector("main").children;
-		
-		elements = elements[elements.length - 1].children;
-		
-		elements[elements.length - 1].insertAdjacentHTML("afterend", `
-			<div data-aos="fade-up" style="margin-top: 10vh">
-				<p class="body-text">
-					Your browser treats canvases in a way that may make this applet stutter excessively. If this happens, try temporarily turning off hardware acceleration in the browser&#x2019;s settings.
-				</p>
-			</div>
-		`);
-		
-		Page.Load.AOS.on_resize();
 	}
 }()

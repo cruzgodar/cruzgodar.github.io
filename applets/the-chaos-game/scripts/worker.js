@@ -31,17 +31,19 @@ let num_pixels_at_max = 0;
 
 function draw_chaos_game()
 {
-	return new Promise(function(resolve, reject)
+	return new Promise((resolve, reject) =>
 	{
-		image = [];
-			
+		image = new Uint8ClampedArray(grid_size * grid_size * 4);
+		
 		for (let i = 0; i < grid_size; i++)
 		{
-			image.push([]);
-			
 			for (let j = 0; j < grid_size; j++)
 			{
-				image[i].push([0, 0, 0]);
+				image[4 * (grid_size * i + j)] = 0;
+				image[4 * (grid_size * i + j) + 1] = 0;
+				image[4 * (grid_size * i + j) + 2] = 0;
+				
+				image[4 * (grid_size * i + j) + 3] = 255;
 			}
 		}
 		
@@ -109,13 +111,13 @@ function draw_chaos_game()
 			
 			for (let i = 0; i < 3; i++)
 			{
-				image[current_row][current_col][i] += 8 * current_color[i];
+				image[4 * (grid_size * current_row + current_col) + i] += 8 * current_color[i];
 				
-				if (image[current_row][current_col][i] >= 255)
+				if (image[4 * (grid_size * current_row + current_col) + i] >= 255)
 				{
 					num_pixels_at_max++;
 					
-					image[current_row][current_col][i] = 255;
+					image[4 * (grid_size * current_row + current_col) + i] = 255;
 					
 					if (num_pixels_at_max / (grid_size * grid_size) > .004)
 					{

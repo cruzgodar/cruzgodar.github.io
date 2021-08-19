@@ -61,13 +61,6 @@
 	
 	
 	
-	if (Browser.name === "Chrome" || Browser.name === "Opera")
-	{
-		alert_about_hardware_acceleration();
-	}
-	
-	
-	
 	function request_fern()
 	{
 		num_iterations = 1000 * parseInt(num_iterations_input_element.value || 10000);
@@ -105,24 +98,5 @@
 		
 		
 		web_worker.postMessage([grid_size, num_iterations]);
-	}
-	
-	
-	
-	function alert_about_hardware_acceleration()
-	{
-		let elements = document.querySelector("main").children;
-		
-		elements = elements[elements.length - 1].children;
-		
-		elements[elements.length - 1].insertAdjacentHTML("afterend", `
-			<div data-aos="fade-up" style="margin-top: 10vh">
-				<p class="body-text">
-					Your browser treats canvases in a way that may make this applet stutter excessively. If this happens, try temporarily turning off hardware acceleration in the browser&#x2019;s settings.
-				</p>
-			</div>
-		`);
-		
-		Page.Load.AOS.on_resize();
 	}
 }()
