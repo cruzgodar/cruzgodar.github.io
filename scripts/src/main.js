@@ -244,11 +244,17 @@ let Site =
 	
 	
 	//Loads a script with the given source and returns a promise for when it completes.
-	load_script: function(src)
+	load_script: function(src, is_module = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			const script = document.createElement("script");
+			
+			if (is_module)
+			{
+				script.setAttribute("type", "module");
+			}
+			
 			document.body.appendChild(script);
 			script.onload = resolve;
 			script.onerror = reject;
