@@ -35,7 +35,7 @@
 	
 	let generate_button_element = document.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", request_sandpile_graph);
+	generate_button_element.addEventListener("click", request_sandpile);
 	
 	
 	
@@ -45,7 +45,7 @@
 	{
 		if (e.keyCode === 13)
 		{
-			request_sandpile_graph();
+			request_sandpile();
 		}
 	});
 	
@@ -71,7 +71,7 @@
 	
 	
 	
-	function request_sandpile_graph()
+	function request_sandpile()
 	{
 		let num_grains = parseInt(num_grains_input_element.value || 10000);
 		
