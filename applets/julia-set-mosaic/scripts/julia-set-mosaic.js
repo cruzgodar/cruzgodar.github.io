@@ -4,24 +4,6 @@
 	
 	
 	
-	let wilson = null;
-	
-	let image_size = 2000;
-	const num_iterations = 50;
-	
-	
-	
-	document.querySelector("#output-canvas").setAttribute("width", image_size);
-	document.querySelector("#output-canvas").setAttribute("height", image_size);
-	
-	
-	
-	document.querySelector("#download-button").addEventListener("click", function(e)
-	{
-		wilson.download_frame("a-julia-set-mosaic.png");
-	});
-	
-	
 	const frag_shader_source = `
 		precision highp float;
 		
@@ -72,56 +54,76 @@
 	
 	
 	
-	setTimeout(() =>
+	let options =
 	{
-		let options =
+		renderer: "gpu",
+		
+		shader: frag_shader_source,
+		
+		canvas_width: 2000,
+		canvas_height: 2000,
+		
+		
+		
+		use_fullscreen: true,
+		
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	wilson.render.init_uniforms(["julia_sets_per_side", "julia_set_size", "image_size", "num_iterations"]);
+	
+	
+	
+	let image_size = 2000;
+	const num_iterations = 50;
+	
+	
+	
+	let generate_button_element = document.querySelector("#generate-button");
+
+	generate_button_element.addEventListener("click", draw_frame);
+	
+	
+	
+	let num_julias_input_element = document.querySelector("#num-julias-input");
+	let julia_size_input_element = document.querySelector("#julia-size-input");
+	
+	num_julias_input_element.addEventListener("keydown", function(e)
+	{
+		if (e.keyCode === 13)
 		{
-			renderer: "gpu",
-			
-			shader: frag_shader_source,
-			
-			
-			
-			use_fullscreen: true,
-			
-			use_fullscreen_button: true,
-			
-			enter_fullscreen_button_image_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_image_path: "/graphics/general-icons/exit-fullscreen.png"
-		};
-		
-		wilson = new Wilson(document.querySelector("#output-canvas"), options);
-		
-		
-		
-		wilson.render.init_uniforms(["julia_sets_per_side", "julia_set_size", "image_size", "num_iterations"]);
-		
-		
-		
-		let elements = document.querySelectorAll("#num-julias-input, #julia-size-input");
-		
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].addEventListener("keydown", function(e)
-			{
-				if (e.keyCode === 13)
-				{
-					draw_frame();
-				}
-			});
+			draw_frame();
 		}
-		
-		
-		
-		document.querySelector("#generate-button").addEventListener("click", draw_frame);
-	}, 500);
+	});
+	
+	julia_size_input_element.addEventListener("keydown", function(e)
+	{
+		if (e.keyCode === 13)
+		{
+			draw_frame();
+		}
+	});
+	
+	
+	
+	let download_button_element = document.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", () =>
+	{
+		wilson.download_frame("a-julia-set-mosaic.png");
+	});
 	
 	
 	
 	function draw_frame()
 	{	
-		let julia_sets_per_side = parseInt(document.querySelector("#num-julias-input").value || 100);
-		let julia_set_size = parseInt(document.querySelector("#julia-size-input").value || 20);
+		let julia_sets_per_side = parseInt(num_julias_input_element.value || 100);
+		let julia_set_size = parseInt(julia_size_input_element.value || 20);
 		image_size = julia_sets_per_side * julia_set_size;
 		
 		

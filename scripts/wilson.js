@@ -1438,7 +1438,8 @@ class Wilson
 					
 					Page.Footer.Floating.current_offset = -43.75;
 					
-					document.querySelector("#show-footer-menu-button").style.bottom = "-43.75px";
+					try {document.querySelector("#show-footer-menu-button").style.bottom = "-43.75px";}
+					catch(ex) {}
 					
 					
 					
@@ -1606,7 +1607,8 @@ class Wilson
 					
 					Page.Footer.Floating.current_offset = this.old_footer_button_offset;
 					
-					document.querySelector("#show-footer-menu-button").style.bottom = this.old_footer_button_offset + "px";
+					try {document.querySelector("#show-footer-menu-button").style.bottom = this.old_footer_button_offset + "px";}
+					catch(ex) {}
 					
 					
 					
@@ -2185,16 +2187,17 @@ class Wilson
 			this.render.draw_frame();
 		}
 		
-		
-		
-		let link = document.createElement("a");
-		
-		link.download = filename;
-		
-		link.href = this.canvas.toDataURL();
-		
-		link.click();
-		
-		link.remove();
+		this.canvas.toBlob((blob) => 
+		{
+			let link = document.createElement("a");
+			
+			link.download = filename;
+			
+			link.href = window.URL.createObjectURL(blob);
+			
+			link.click();
+			
+			link.remove();
+		});
 	}
 };
