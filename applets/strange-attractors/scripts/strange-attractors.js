@@ -4,7 +4,26 @@
 	
 	
 	
-	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
+	let options =
+	{
+		renderer: "cpu",
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		
+		
+		use_fullscreen: true,
+	
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	
 	
 	let web_worker = null;
 	
@@ -14,68 +33,99 @@
 	
 	
 	
-	document.querySelector("#generate-button").addEventListener("click", request_lorenz_attractor);
+	let generate_button_element = document.querySelector("#generate-button");
+
+	generate_button_element.addEventListener("click", request_lorenz_attractor);
 	
-	let elements = document.querySelectorAll("#grid-size-input, #sigma-input, #rho-input, #beta-input");
 	
-	for (let i = 0; i < elements.length; i++)
+	
+	let grid_size_input_element = document.querySelector("#grid-size-input");
+	
+	let sigma_input_element = document.querySelector("#sigma-input");
+	
+	let rho_input_element = document.querySelector("#rho-input");
+	
+	let beta_input_element = document.querySelector("#beta-input");
+	
+	
+	
+	grid_size_input_element.addEventListener("keydown", (e) =>
 	{
-		elements[i].addEventListener("keydown", function(e)
+		if (e.keyCode === 13)
 		{
-			if (e.keyCode === 13)
-			{
-				request_lorenz_attractor();
-			}
-		});
-	}
+			request_lorenz_attractor();
+		}
+	});
 	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
+	sigma_input_element.addEventListener("keydown", (e) =>
+	{
+		if (e.keyCode === 13)
+		{
+			request_lorenz_attractor();
+		}
+	});
+	
+	rho_input_element.addEventListener("keydown", (e) =>
+	{
+		if (e.keyCode === 13)
+		{
+			request_lorenz_attractor();
+		}
+	});
+	
+	beta_input_element.addEventListener("keydown", (e) =>
+	{
+		if (e.keyCode === 13)
+		{
+			request_lorenz_attractor();
+		}
+	});
 	
 	
 	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
+	let download_button_element = document.querySelector("#download-button");
 	
-	Page.Applets.Canvases.true_fullscreen = false;
+	download_button_element.addEventListener("click", () =>
+	{
+		wilson.download_frame("a-lorenz-attractor.png");
+	});
 	
-	Page.Applets.Canvases.set_up_resizer();
 	
 	
+	let maximum_speed_checkbox_element = document.querySelector("#toggle-maximum-speed-checkbox");
 	
 	
 	
 	function request_lorenz_attractor()
 	{
-		let grid_size = parseInt(document.querySelector("#grid-size-input").value || 1000);
+		let grid_size = parseInt(grid_size_input_element.value || 1000);
 		
-		let sigma = parseFloat(document.querySelector("#sigma-input").value || 10);
+		let sigma = parseFloat(sigma_input_element.value || 10);
 		
-		let rho = parseFloat(document.querySelector("#rho-input").value || 28);
+		let rho = parseFloat(rho_input_element.value || 28);
 		
-		let beta = parseFloat(document.querySelector("#beta-input").value || 8/3);
+		let beta = parseFloat(beta_input_element.value || 2.666667);
 		
-		let maximum_speed = document.querySelector("#toggle-maximum-speed-checkbox").checked;
+		let maximum_speed = maximum_speed_checkbox_element.checked;
 		
 		
 		
-		image = [];
+		wilson.change_canvas_size(grid_size, grid_size);
+		
+		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilson.ctx.fillRect(0, 0, grid_size, grid_size);
+		
+		
+		
+		image = new Array(grid_size * grid_size);
 		
 		for (let i = 0; i < grid_size; i++)
 		{
-			image[i] = [];
-			
 			for (let j = 0; j < grid_size; j++)
 			{
-				image[i][j] = 0;
+				image[grid_size * i + j] = 0;
 			}
 		}
-		
-		
-		
-		document.querySelector("#output-canvas").setAttribute("width", grid_size);
-		document.querySelector("#output-canvas").setAttribute("height", grid_size);
-		
-		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, grid_size, grid_size);
 		
 		
 		
@@ -106,33 +156,18 @@
 			
 			for (let i = 0; i < pixels.length; i++)
 			{
-				image[pixels[i][0]][pixels[i][1]]++;
+				image[grid_size * pixels[i][0] + pixels[i][1]]++;
 				
-				let brightness_adjust = image[pixels[i][0]][pixels[i][1]] / brightness_scale;
+				let brightness_adjust = image[grid_size * pixels[i][0] + pixels[i][1]] / brightness_scale;
 				
-				ctx.fillStyle = `rgb(${rgb[0] * brightness_adjust}, ${rgb[1] * brightness_adjust}, ${rgb[2] * brightness_adjust})`;
+				wilson.ctx.fillStyle = `rgb(${rgb[0] * brightness_adjust}, ${rgb[1] * brightness_adjust}, ${rgb[2] * brightness_adjust})`;
 						
-				ctx.fillRect(pixels[i][1], pixels[i][0], 1, 1);
+				wilson.ctx.fillRect(pixels[i][1], pixels[i][0], 1, 1);
 			}
 		}
 		
 		
 		
 		web_worker.postMessage([grid_size, sigma, rho, beta, maximum_speed]);
-	}
-	
-	
-	
-	function prepare_download()
-	{
-		let link = document.createElement("a");
-		
-		link.download = "strange-attractor.png";
-		
-		link.href = document.querySelector("#output-canvas").toDataURL();
-		
-		link.click();
-		
-		link.remove();
 	}
 }()
