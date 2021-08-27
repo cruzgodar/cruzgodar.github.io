@@ -161,7 +161,7 @@ let Settings =
 					transition: color .6s ease !important;
 				}
 				
-				.text-box, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button
+				.text-box, .text-field, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button
 				{
 					transition: background-color .6s ease, border-color .6s ease, color .6s ease !important;
 				}
@@ -940,6 +940,14 @@ let Settings =
 			
 			
 			
+			Page.set_element_styles(".text-field", "background-color", "rgb(255, 255, 255)");
+			
+			Page.set_element_styles(".text-field", "color", "rgb(127, 127, 127)");
+			
+			Page.set_element_styles(".text-field", "border-color", "rgb(192, 192, 192)");
+			
+			
+			
 			Page.set_element_styles(".checkbox-container > input ~ .checkbox", "background-color", "rgb(255, 255, 255)");
 			
 			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "rgb(127, 127, 127)");
@@ -984,6 +992,14 @@ let Settings =
 			Page.set_element_styles(".text-box", "color", "rgb(152, 152, 152)");
 			
 			Page.set_element_styles(".text-box", "border-color", "rgb(88, 88, 88)");
+			
+			
+			
+			Page.set_element_styles(".text-field", "background-color", this.dark_theme_background_color);
+			
+			Page.set_element_styles(".text-field", "color", "rgb(152, 152, 152)");
+			
+			Page.set_element_styles(".text-field", "border-color", "rgb(88, 88, 88)");
 			
 			
 			
@@ -1038,6 +1054,14 @@ let Settings =
 			
 			
 			
+			Page.set_element_styles(".text-field", "background-color", "rgb(255, 255, 255)");
+			
+			Page.set_element_styles(".text-field", "color", "rgb(64, 64, 64)");
+			
+			Page.set_element_styles(".text-field", "border-color", "rgb(96, 96, 96)");
+			
+			
+			
 			Page.set_element_styles(".checkbox-container > input ~ .checkbox", "background-color", "rgb(255, 255, 255)");
 			
 			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "rgb(64, 64, 64)");
@@ -1088,6 +1112,14 @@ let Settings =
 			Page.set_element_styles(".text-box", "color", "rgb(216, 216, 216)");
 			
 			Page.set_element_styles(".text-box", "border-color", "rgb(152, 152, 152)");
+			
+			
+			
+			Page.set_element_styles(".text-field", "background-color", this.dark_theme_background_color);
+			
+			Page.set_element_styles(".text-field", "color", "rgb(216, 216, 216)");
+			
+			Page.set_element_styles(".text-field", "border-color", "rgb(152, 152, 152)");
 			
 			
 			
@@ -1146,6 +1178,14 @@ let Settings =
 		Page.set_element_styles(".text-box", "color", "");
 		
 		Page.set_element_styles(".text-box", "border-color", "");
+		
+		
+		
+		Page.set_element_styles(".text-field", "background-color", "");
+		
+		Page.set_element_styles(".text-field", "color", "");
+		
+		Page.set_element_styles(".text-field", "border-color", "");
 	},
 
 
@@ -1197,6 +1237,21 @@ let Settings =
 				}
 				
 				.text-box:focus
+				{
+					border-color: rgb(152, 152, 152);
+					color: rgb(216, 216, 216);
+				}
+				
+				
+				
+				.text-field
+				{
+					background-color: ${this.dark_theme_background_color};
+					color: rgb(152, 152, 152);
+					border-color: rgb(88, 88, 88);
+				}
+				
+				.text-field:focus
 				{
 					border-color: rgb(152, 152, 152);
 					color: rgb(216, 216, 216);
@@ -1324,6 +1379,21 @@ let Settings =
 				}
 				
 				
+				
+				.text-field
+				{
+					background-color: rgb(255, 255, 255);
+					color: rgb(64, 64, 64);
+					border-color: rgb(96, 96, 96);
+				}
+				
+				.text-field:focus
+				{
+					border-color: rgb(48, 48, 48);
+					color: rgb(0, 0, 0);
+				}
+				
+				
 
 				.checkbox-container > input:checked ~ .checkbox
 				{
@@ -1406,6 +1476,21 @@ let Settings =
 				}
 				
 				.text-box:focus
+				{
+					border-color: rgb(216, 216, 216);
+					color: rgb(255, 255, 255);
+				}
+				
+				
+				
+				.text-field
+				{
+					background-color: ${this.dark_theme_background_color};
+					color: rgb(216, 216, 216);
+					border-color: rgb(152, 152, 152);
+				}
+				
+				.text-field:focus
 				{
 					border-color: rgb(216, 216, 216);
 					color: rgb(255, 255, 255);

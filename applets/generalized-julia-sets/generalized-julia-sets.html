@@ -30,7 +30,9 @@
 	
 	The large text box contains the function that&#x2019;s iterated to create the Mandelbrot and Julia sets. It&#x2019;s written with a proper complex number library, which means the performance is slightly worse than the original Julia set explorer applet, but the tradeoff&#x2019;s worth it. The other boxes are for parameters that modify the output &mdash; how much of the set can be seen and how far away from zero a number has to get before the applet decides it&#x2019;s never going to come back down.
 	
-	This is far from the most user-friendly applet, but hopefully you can get something out of it. Here are some functions to get started &mdash; see if you can find some interesting ones yourself!
+	This is far from the most user-friendly applet, but hopefully you can get something out of it. Below are some functions to get started &mdash; see if you can find some interesting ones yourself!
+	
+	This applet was made with <a href="/projects/wilson/wilson.html" onclick="Page.Navigation.redirect('/projects/wilson/wilson.html')">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.
 
 !end-text-block
 
@@ -72,19 +74,22 @@
 
 
 
-!section
-
-!text s 
+<div style="height: 10vh"></div>
 
 
 
-!begin-text-boxes
-	
-	code  Generating Function
-	
-!end-text-boxes
+<div class="center-content" data-aos="fade-up">
+	<div class="text-field-container">
+		<textarea cols="16" rows="4" name="code-textarea" id="code-textarea" class="text-field" style="font-family: 'Source Code Pro', monospace"></textarea>
+		<label for="code-textarea"><p class="body-text">Generating Function</p></label>
+	</div>
+</div>
+
+
 
 <div style="height: -5vh"></div>
+
+
 
 !begin-text-boxes
 	
@@ -92,7 +97,7 @@
 	
 	exposure 1 Exposure
 	
-	escape-radius 100 Escape Radius
+	num-iterations 200 Iterations
 	
 !end-text-boxes
 
@@ -108,25 +113,18 @@
 
 
 
-!canvas
+<div id="canvas-location">
 
-
-
-!section
-
-!text s High Resolution Capture
-
-!begin-text-boxes
-	
-	high-res-dim 2000 Image Size
-	
-!end-text-boxes
+<div data-aos="fade-up">
+	<canvas id="output-canvas" class="output-canvas"></canvas>
+	<canvas id="hidden-canvas" class="hidden-canvas"></canvas>
+</div>
 
 
 
 !begin-text-buttons
 	
-	generate-high-res-image Generate
+	download Download
 	
 !end-text-buttons
 

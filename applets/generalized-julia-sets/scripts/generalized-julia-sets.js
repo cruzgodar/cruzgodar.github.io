@@ -50,7 +50,7 @@
 	
 	
 	
-	let code_input_element = document.querySelector("#code-input");
+	let code_input_element = document.querySelector("#code-textarea");
 	
 	code_input_element.value = "cadd(cpow(z, 2.0), c)";
 	
@@ -158,6 +158,10 @@
 			window.requestAnimationFrame(draw_julia_set);
 		}
 	});
+	
+	
+	
+	let canvas_location_element = document.querySelector("#canvas-location");
 	
 	
 	
@@ -775,6 +779,23 @@
 			canvas_width: 100,
 			canvas_height: 100
 		};
+		
+		
+		
+		try
+		{
+			wilson.output_canvas_container.parentNode.remove();
+			wilson_hidden.output_canvas_container.parentNode.remove();
+			
+			canvas_location_element.insertAdjacentHTML("beforebegin", `
+				<div>
+					<canvas id="output-canvas" class="output-canvas"></canvas>
+					<canvas id="hidden-canvas" class="hidden-canvas"></canvas>
+				</div>
+			`);
+		}
+		
+		catch(ex) {}
 		
 		
 		
