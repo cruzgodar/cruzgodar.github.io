@@ -16,7 +16,7 @@ onmessage = function(e)
 
 
 
-//Rralistically this is never going to change, but since this code is adapted from the calcudoku applet's, it's easier to just leave this variable as-is.
+//Realistically this is never going to change, but since this code is adapted from the calcudoku applet's, it's easier to just leave this variable as-is.
 let grid_size = 9;
 
 let grid = [];

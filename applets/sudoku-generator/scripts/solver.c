@@ -40,7 +40,7 @@ int EMSCRIPTEN_KEEPALIVE solve_puzzle(uint8_t* grid, int grid_length)
 	
 	
 	
-	//Now it's time to trim some obviously false possibilities to reduce them number of things we need to check in the end. For every nonzero cell, we'll remove that possibility from its row, column, and minigrid.
+	//Now it's time to trim some obviously false possibilities to reduce the number of things we need to check in the end. For every nonzero cell, we'll remove that possibility from its row, column, and minigrid.
 	for (i = 0; i < grid_size; i++)
 	{
 		for (j = 0; j < grid_size; j++)
