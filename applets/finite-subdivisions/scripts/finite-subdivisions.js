@@ -4,70 +4,95 @@
 	
 	
 	
-	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
+	let options =
+	{
+		renderer: "cpu",
+		
+		canvas_width: 3000,
+		canvas_height: 3000,
+		
+		
+		
+		use_fullscreen: true,
+	
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	
 	
 	let web_worker = null;
 	
 	let image = [];
 	
+
+	
+	let generate_button_element = document.querySelector("#generate-button");
+
+	generate_button_element.addEventListener("click", request_finite_subdivisions);
 	
 	
 	
+	let num_vertices_input_element = document.querySelector("#num-vertices-input");
 	
-	document.querySelector("#generate-button").addEventListener("click", request_finite_subdivisions);
-	
-	let elements = document.querySelectorAll("#num-vertices-input, #num-iterations-input");
-	
-	for (let i = 0; i < elements.length; i++)
+	num_vertices_input_element.addEventListener("keydown", (e) =>
 	{
-		elements[i].addEventListener("keydown", function(e)
+		if (e.keyCode === 13)
 		{
-			if (e.keyCode === 13)
-			{
-				request_finite_subdivisions();
-			}
-		});
-	}
-	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
+			request_finite_subdivisions();
+		}
+	});
 	
 	
 	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
+	let num_iterations_input_element = document.querySelector("#num-iterations-input");
 	
-	Page.Applets.Canvases.true_fullscreen = false;
+	num_iterations_input_element.addEventListener("keydown", (e) =>
+	{
+		if (e.keyCode === 13)
+		{
+			request_finite_subdivisions();
+		}
+	});
 	
-	Page.Applets.Canvases.set_up_resizer();
 	
 	
+	let download_button_element = document.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", () =>
+	{
+		wilson.download_frame("a-finite-subdivision.png");
+	});
+	
+	
+	
+	let maximum_speed_checkbox_element = document.querySelector("#toggle-maximum-speed-checkbox");
 	
 	
 	
 	function request_finite_subdivisions()
 	{
-		let num_vertices = parseInt(document.querySelector("#num-vertices-input").value || 5);
-		let num_iterations = parseInt(document.querySelector("#num-iterations-input").value || 5);
+		let num_vertices = parseInt(num_vertices_input_element.value || 5);
+		let num_iterations = parseInt(num_iterations_input_element.value || 5);
 		
-		if (num_iterations > 9)
-		{
-			num_iterations = 9;
-		}
+		num_iterations = Math.min(num_iterations, 9);
 		
 		let grid_size = 3000;
 		
-		let maximum_speed = document.querySelector("#toggle-maximum-speed-checkbox").checked;
+		let maximum_speed = maximum_speed_checkbox_element.checked;
 		
 		
 		
-		document.querySelector("#output-canvas").setAttribute("width", grid_size);
-		document.querySelector("#output-canvas").setAttribute("height", grid_size);
-		
-		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, grid_size, grid_size);
+		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilson.ctx.fillRect(0, 0, grid_size, grid_size);
 		
 		
 		
-		ctx.lineWidth = 10 - num_iterations;
+		wilson.ctx.lineWidth = 10 - num_iterations;
 		
 		
 		
@@ -90,31 +115,16 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			ctx.strokeStyle = e.data[4];
+			wilson.ctx.strokeStyle = e.data[4];
 			
-			ctx.beginPath();
-			ctx.moveTo(e.data[1], e.data[0]);
-			ctx.lineTo(e.data[3], e.data[2]);
-			ctx.stroke();
+			wilson.ctx.beginPath();
+			wilson.ctx.moveTo(e.data[1], e.data[0]);
+			wilson.ctx.lineTo(e.data[3], e.data[2]);
+			wilson.ctx.stroke();
 		}
 		
 		
 		
 		web_worker.postMessage([num_vertices, num_iterations, grid_size, maximum_speed]);
-	}
-	
-	
-	
-	function prepare_download()
-	{
-		let link = document.createElement("a");
-		
-		link.download = "finite-subdivisions.png";
-		
-		link.href = document.querySelector("#output-canvas").toDataURL();
-		
-		link.click();
-		
-		link.remove();
 	}
 }()

@@ -4,7 +4,27 @@
 	
 	
 	
-	let ctx = document.querySelector("#output-canvas").getContext("2d", {alpha: false});
+	
+	let options =
+	{
+		renderer: "cpu",
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		
+		
+		use_fullscreen: true,
+	
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	
 	
 	let web_worker = null;
 	
@@ -12,56 +32,67 @@
 	
 	
 	
-	document.querySelector("#generate-button").addEventListener("click", request_snowflake);
-	
-	document.querySelector("#randomize-parameters-button").addEventListener("click", randomize_parameters);
-	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
+	let generate_button_element = document.querySelector("#generate-button");
+
+	generate_button_element.addEventListener("click", request_snowflake);
 	
 	
 	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
-	
-	Page.Applets.Canvases.true_fullscreen = false;
-	
-	Page.Applets.Canvases.set_up_resizer();
+	let randomize_parameters_button_element = document.querySelector("#randomize-parameters-button");
+
+	randomize_parameters_button_element.addEventListener("click", randomize_parameters);
 	
 	
+	
+	let download_button_element = document.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", () =>
+	{
+		wilson.download_frame("a-gravner-griffeath-snowflake.png");
+	});
+	
+	
+	
+	let grid_size_input_element = document.querySelector("#grid-size-input");
+	let rho_input_element = document.querySelector("#rho-input");
+	let beta_input_element = document.querySelector("#beta-input");
+	let alpha_input_element = document.querySelector("#alpha-input");
+	let theta_input_element = document.querySelector("#theta-input");
+	let kappa_input_element = document.querySelector("#kappa-input");
+	let mu_input_element = document.querySelector("#mu-input");
+	let gamma_input_element = document.querySelector("#gamma-input");
 	
 	
 	
 	function randomize_parameters()
 	{
-		document.querySelector("#rho-input").value = .9 * (Math.random() + .5);
-		document.querySelector("#beta-input").value = 1.6 * (Math.random() + .5);
-		document.querySelector("#alpha-input").value = .4 * (Math.random() + .5);
-		document.querySelector("#theta-input").value = .025 * (Math.random() + .5);
-		document.querySelector("#kappa-input").value = .0025 * (Math.random() + .5);
-		document.querySelector("#mu-input").value = .015 * (Math.random() + .5);
-		document.querySelector("#gamma-input").value = .0005 * (Math.random() + .5);
+		rho_input_element.value = .9 * (Math.random() + .5);
+		beta_input_element.value = 1.6 * (Math.random() + .5);
+		alpha_input_element.value = .4 * (Math.random() + .5);
+		theta_input_element.value = .025 * (Math.random() + .5);
+		kappa_input_element.value = .0025 * (Math.random() + .5);
+		mu_input_element.value = .015 * (Math.random() + .5);
+		gamma_input_element.value = .0005 * (Math.random() + .5);
 	}
 	
 	
 	
 	function request_snowflake()
 	{
-		let grid_size = parseInt(document.querySelector("#grid-size-input").value || 200);
+		let grid_size = parseInt(grid_size_input_element.value || 200);
 		
-		let rho = parseFloat(document.querySelector("#rho-input").value || .635);
-		let beta = parseFloat(document.querySelector("#beta-input").value || 1.6);
-		let alpha = parseFloat(document.querySelector("#alpha-input").value || .4);
-		let theta = parseFloat(document.querySelector("#theta-input").value || .025);
-		let kappa = parseFloat(document.querySelector("#kappa-input").value || .0025);
-		let mu = parseFloat(document.querySelector("#mu-input").value || .015);
-		let gamma = parseFloat(document.querySelector("#gamma-input").value || .0005);
+		let rho = parseFloat(rho_input_element.value || .635);
+		let beta = parseFloat(beta_input_element.value || 1.6);
+		let alpha = parseFloat(alpha_input_element.value || .4);
+		let theta = parseFloat(theta_input_element.value || .025);
+		let kappa = parseFloat(kappa_input_element.value || .0025);
+		let mu = parseFloat(mu_input_element.value || .015);
+		let gamma = parseFloat(gamma_input_element.value || .0005);
 		
+		wilson.change_canvas_size(2 * grid_size, 2 * grid_size);
 		
-		
-		document.querySelector("#output-canvas").setAttribute("width", 2 * grid_size);
-		document.querySelector("#output-canvas").setAttribute("height", 2 * grid_size);
-		
-		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, 2 * grid_size, 2 * grid_size);
+		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilson.ctx.fillRect(0, 0, 2 * grid_size, 2 * grid_size);
 		
 		
 		
@@ -84,14 +115,7 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			if (e.data[0] === "log")
-			{
-				console.log(e.data);
-				
-				return;
-			}
-			
-			let img_data = ctx.getImageData(0, 0, 2 * grid_size, 2 * grid_size);
+			let img_data = wilson.ctx.getImageData(0, 0, 2 * grid_size, 2 * grid_size);
 			let data = img_data.data;
 			
 			for (let i = 0; i < grid_size; i++)
@@ -157,26 +181,11 @@
 				}
 			}
 			
-			ctx.putImageData(img_data, 0, 0);
+			wilson.ctx.putImageData(img_data, 0, 0);
 		}
 		
 		
 		
 		web_worker.postMessage([grid_size, rho, beta, alpha, theta, kappa, mu, gamma]);
-	}
-	
-	
-	
-	function prepare_download()
-	{
-		let link = document.createElement("a");
-		
-		link.download = "a-gravner-griffeath-snowflake.png";
-		
-		link.href = document.querySelector("#output-canvas").toDataURL();
-		
-		link.click();
-		
-		link.remove();
 	}
 }()
