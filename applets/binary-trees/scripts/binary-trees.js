@@ -4,55 +4,66 @@
 	
 	
 	
-	let canvas_width = 2000;
-	let canvas_height = 2000;
+	let options =
+	{
+		renderer: "cpu",
+		
+		canvas_width: 2000,
+		canvas_height: 2000,
+		
+		
+		
+		use_draggables: true,
+		
+		draggables_mousedown_callback: on_grab_draggable,
+		draggables_touchstart_callback: on_grab_draggable,
+		
+		draggables_mousemove_callback: on_drag_draggable,
+		draggables_touchmove_callback: on_drag_draggable,
+		
+		draggables_mouseup_callback: on_release_draggable,
+		draggables_touchend_callback: on_release_draggable,
+		
+		
+		
+		use_fullscreen: true,
+		
+		true_fullscreen: true,
+	
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+		
+		switch_fullscreen_callback: change_aspect_ratio
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	
 	
 	let root = [];
 	let branch_points = [];
 	
 	let num_preview_iterations = 5;
 	
-	let ctx = document.querySelector("#binary-trees-plot").getContext("2d", {alpha: false});
-	
 	let web_worker = null;
 	
-	
-	
-	let branch_markers = [];
-	
-	let active_marker = -1;
-	
-	let branch_selector_width = document.querySelector("#branch-selector").offsetWidth;
-	let branch_selector_height = document.querySelector("#branch-selector").offsetHeight;
-	
-	let branch_marker_radius = 17.5;
+	wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+	wilson.ctx.fillRect(0, 0, wilson.canvas_width, wilson.canvas_height);
 	
 	
 	
-	document.querySelector("#binary-trees-plot").setAttribute("width", canvas_width);
-	document.querySelector("#binary-trees-plot").setAttribute("height", canvas_height);
+	let download_button_element = document.querySelector("#download-button");
 	
-	ctx.fillStyle = "rgb(0, 0, 0)";
-	ctx.fillRect(0, 0, canvas_width, canvas_height);
-	
-	
-	
-	document.querySelector("#download-button").addEventListener("click", prepare_download);
+	download_button_element.addEventListener("click", () =>
+	{
+		wilson.download_frame("a-binary-tree.png");
+	});
 	
 	
-	
-	adjust_for_settings();
-	
-	init_listeners();
 	
 	init_branch_markers();
-	
-	
-	
-	window.addEventListener("resize", binary_trees_resize);
-	Page.temporary_handlers["resize"].push(binary_trees_resize);
-	
-	setTimeout(binary_trees_resize, 1000);
 	
 	
 	
@@ -63,81 +74,10 @@
 	
 	
 	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#binary-trees-plot"), document.querySelector("#branch-selector")];
-	
-	Page.Applets.Canvases.resize_callback = function()
-	{
-		try {web_worker.terminate();}
-		catch(ex) {}
-		
-		Page.set_element_styles(".branch-marker", "opacity", 1);
-		
-		
-		
-		if (Page.Applets.Canvases.is_fullscreen)
-		{
-			if (Page.Layout.aspect_ratio >= 1)
-			{
-				canvas_width = 2000;
-				canvas_height = Math.floor(2000 / Page.Layout.aspect_ratio);
-			}
-			
-			else
-			{
-				canvas_width = Math.floor(2000 * Page.Layout.aspect_ratio);
-				canvas_height = 2000;
-			}
-		}
-		
-		else
-		{
-			canvas_width = 2000;
-			canvas_height = 2000;
-		}
-		
-		
-		
-		branch_selector_width = document.querySelector("#branch-selector").offsetWidth;
-		branch_selector_height = document.querySelector("#branch-selector").offsetHeight;
-		
-		
-		
-		document.querySelector("#binary-trees-plot").setAttribute("width", canvas_width);
-		document.querySelector("#binary-trees-plot").setAttribute("height", canvas_height);
-		
-		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, canvas_width, canvas_height);
-		
-		
-		
-		root[0] = Math.floor(canvas_height * 9/10);
-		root[1] = Math.floor(canvas_width / 2);
-		
-		branch_points[0][0] = Math.floor(canvas_height * 2/3);
-		branch_points[0][1] = Math.floor(canvas_width * 3/7);
-		
-		branch_points[1][0] = Math.floor(canvas_height * 2/3);
-		branch_points[1][1] = Math.floor(canvas_width * 4/7);
-		
-		
-		
-		binary_trees_resize();
-		
-		draw_binary_tree();
-	};
-	
-	Page.Applets.Canvases.true_fullscreen = true;
-	
-	Page.Applets.Canvases.set_up_resizer();
-	
-	
-	
-	
-	
 	function draw_binary_tree()
 	{
-		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, canvas_width, canvas_height);
+		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilson.ctx.fillRect(0, 0, wilson.canvas_width, wilson.canvas_height);
 		
 		
 		
@@ -163,12 +103,12 @@
 			
 			
 			
-			ctx.lineWidth = 20 * scale + 1;
+			wilson.ctx.lineWidth = 20 * scale + 1;
 			
 			let r = Math.sqrt(scale) * 139;
 			let g = Math.sqrt(scale) * 69 + (1 - Math.sqrt(scale)) * 128;
 			let b = Math.sqrt(scale) * 19;
-			ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
+			wilson.ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
 			
 			
 			
@@ -179,10 +119,10 @@
 				let end_x = starting_points[i][1] + distances[0] * scale * Math.cos(angles[2*i]);
 				let end_y = starting_points[i][0] + distances[0] * scale * Math.sin(angles[2*i]);
 				
-				ctx.beginPath();
-				ctx.moveTo(start_x, start_y);
-				ctx.lineTo(end_x, end_y);
-				ctx.stroke();
+				wilson.ctx.beginPath();
+				wilson.ctx.moveTo(start_x, start_y);
+				wilson.ctx.lineTo(end_x, end_y);
+				wilson.ctx.stroke();
 				
 				new_starting_points.push([end_y, end_x]);
 				
@@ -196,10 +136,10 @@
 				end_x = starting_points[i][1] + distances[1] * scale * Math.cos(angles[2*i + 1]);
 				end_y = starting_points[i][0] + distances[1] * scale * Math.sin(angles[2*i + 1]);
 				
-				ctx.beginPath();
-				ctx.moveTo(start_x, start_y);
-				ctx.lineTo(end_x, end_y);
-				ctx.stroke();
+				wilson.ctx.beginPath();
+				wilson.ctx.moveTo(start_x, start_y);
+				wilson.ctx.lineTo(end_x, end_y);
+				wilson.ctx.stroke();
 				
 				new_starting_points.push([end_y, end_x]);
 				
@@ -242,9 +182,9 @@
 		{
 			if (e.data[0] === "done")
 			{
-				setTimeout(function()
+				setTimeout(() =>
 				{
-					Page.set_element_styles(".branch-marker", "opacity", 1);
+					Page.set_element_styles(".wilson-draggable", "opacity", 1);
 				}, 500);
 				
 				return;
@@ -252,13 +192,13 @@
 			
 			
 			
-			ctx.strokeStyle = e.data[4];
-			ctx.lineWidth = e.data[5];
+			wilson.ctx.strokeStyle = e.data[4];
+			wilson.ctx.lineWidth = e.data[5];
 			
-			ctx.beginPath();
-			ctx.moveTo(e.data[0], e.data[1]);
-			ctx.lineTo(e.data[2], e.data[3]);
-			ctx.stroke();
+			wilson.ctx.beginPath();
+			wilson.ctx.moveTo(e.data[0], e.data[1]);
+			wilson.ctx.lineTo(e.data[2], e.data[3]);
+			wilson.ctx.stroke();
 		}
 		
 		
@@ -268,243 +208,126 @@
 	
 	
 	
-	function init_listeners()
-	{
-		document.documentElement.addEventListener("touchstart", drag_start, false);
-		document.documentElement.addEventListener("touchmove", drag_move, false);
-		document.documentElement.addEventListener("touchend", drag_end, false);
-
-		document.documentElement.addEventListener("mousedown", drag_start, false);
-		document.documentElement.addEventListener("mousemove", drag_move, false);
-		document.documentElement.addEventListener("mouseup", drag_end, false);
-		
-		
-		Page.temporary_handlers["touchstart"].push(drag_start);
-		Page.temporary_handlers["touchmove"].push(drag_move);
-		Page.temporary_handlers["touchend"].push(drag_end);
-		
-		Page.temporary_handlers["mousedown"].push(drag_start);
-		Page.temporary_handlers["mousemove"].push(drag_move);
-		Page.temporary_handlers["mouseup"].push(drag_end);
-	}
-	
-	
-	
 	function init_branch_markers()
 	{
-		root[0] = Math.floor(canvas_height * 9/10);
-		root[1] = Math.floor(canvas_width / 2);
+		wilson.draggables.add(-1/7, -1/3);
+		wilson.draggables.add(1/7, -1/3);
 		
-		for (let i = 0; i < 2; i++)
-		{
-			let element = document.createElement("div");
-			element.classList.add("branch-marker");
-			element.classList.add("no-floating-footer");
-			element.id = `branch-marker-${i}`;
-			
-			document.querySelector("#branch-selector").appendChild(element);
-			
-			branch_markers.push(element);
-			
-			branch_points.push([0, 0]);
-		}
 		
-		branch_points[0][0] = Math.floor(canvas_height * 2/3);
-		branch_points[0][1] = Math.floor(canvas_width * 3/7);
 		
-		branch_points[1][0] = Math.floor(canvas_height * 2/3);
-		branch_points[1][1] = Math.floor(canvas_width * 4/7);
+		root = wilson.utils.interpolate.world_to_canvas(0, -4/5);
 		
-		for (let i = 0; i < 2; i++)
-		{
-			let row = (branch_points[i][0] / canvas_height) * branch_selector_height;
-			let col = (branch_points[i][1] / canvas_width) * branch_selector_width;
-			
-			branch_markers[i].style.transform = `translate3d(${col - branch_marker_radius}px, ${row - branch_marker_radius}px, 0)`;
-		}
+		branch_points[0] = wilson.utils.interpolate.world_to_canvas(-1/7, -1/3);
+		branch_points[1] = wilson.utils.interpolate.world_to_canvas(1/7, -1/3);
+		
+		
 		
 		draw_binary_tree();
 	}
 	
 	
 	
-	function drag_start(e)
+	function on_grab_draggable(active_draggable, x, y, event)
 	{
-		active_marker = -1;
+		try {web_worker.terminate();}
+		catch(ex) {}
 		
-		//Figure out which marker, if any, this is referencing.
-		for (let i = 0; i < 2; i++)
-		{
-			if (e.target.id === `branch-marker-${i}`)
-			{
-				e.preventDefault();
-				
-				active_marker = i;
-				
-				try {web_worker.terminate();}
-				catch(ex) {}
-				
-				break;
-			}
-		}
-	}
-	
-	function drag_end(e)
-	{
-		if (active_marker !== -1)
-		{
-			document.body.style.WebkitUserSelect = "";
-			
-			Page.set_element_styles(".branch-marker", "opacity", 0);
-			
-			
-			
-			let step = 0;
-			
-			let refresh_id = setInterval(function()
-			{
-				ctx.fillStyle = `rgba(0, 0, 0, ${step / 37})`;
-				ctx.fillRect(0, 0, canvas_width, canvas_height);
-				
-				step++;
-			}, 8);
-			
-			
-			
-			setTimeout(function()
-			{
-				clearInterval(refresh_id);
-				
-				ctx.fillStyle = "rgb(0, 0, 0)";
-				ctx.fillRect(0, 0, canvas_width, canvas_height);
-				
-				request_animated_binary_tree();
-			}, 300);
-		}
+		Page.set_element_styles(".wilson-draggable", "opacity", 1);
 		
-		active_marker = -1;
-	}
-	
-	function drag_move(e)
-	{
-		if (active_marker === -1)
-		{
-			return;
-		}
-		
-		
-		
-		let row = null;
-		let col = null;
-		
-		let rect = document.querySelector("#branch-selector").getBoundingClientRect();
-		
-		if (e.type === "touchmove")
-		{
-			row = e.touches[0].clientY - rect.top;
-			col = e.touches[0].clientX - rect.left;
-		}
-		
-		else
-		{
-			row = e.clientY - rect.top;
-			col = e.clientX - rect.left;
-		}
-		
-		
-		
-		if (row < branch_marker_radius)
-		{
-			row = branch_marker_radius;
-		}
-		
-		if (row > branch_selector_height - branch_marker_radius)
-		{
-			row = branch_selector_height - branch_marker_radius;
-		}
-		
-		if (col < branch_marker_radius)
-		{
-			col = branch_marker_radius;
-		}
-		
-		if (col > branch_selector_width - branch_marker_radius)
-		{
-			col = branch_selector_width - branch_marker_radius;
-		}
-		
-		
-		
-		branch_markers[active_marker].style.transform = `translate3d(${col - branch_marker_radius}px, ${row - branch_marker_radius}px, 0)`;
-		
-		branch_points[active_marker][0] = (row / branch_selector_height) * canvas_height;
-		branch_points[active_marker][1] = (col / branch_selector_width) * canvas_width;
+		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilson.ctx.fillRect(0, 0, wilson.canvas_width, wilson.canvas_height);
 		
 		draw_binary_tree();
 	}
 	
 	
 	
-	function prepare_download()
+	function on_drag_draggable(active_draggable, x, y, event)
 	{
-		let link = document.createElement("a");
+		branch_points[active_draggable] = wilson.utils.interpolate.world_to_canvas(x, y);
 		
-		link.download = "binary-trees.png";
-		
-		link.href = document.querySelector("#binary-trees-plot").toDataURL();
-		
-		link.click();
-		
-		link.remove();
+		draw_binary_tree();
 	}
 	
 	
 	
-	function binary_trees_resize()
+	function on_release_draggable(active_draggable, x, y, event)
 	{
-		branch_selector_width = document.querySelector("#branch-selector").offsetWidth;
-		branch_selector_height = document.querySelector("#branch-selector").offsetHeight;
+		document.body.style.WebkitUserSelect = "";
 		
-		let rect = document.querySelector("#branch-selector").getBoundingClientRect();
+		Page.set_element_styles(".wilson-draggable", "opacity", 0);
 		
-		for (let i = 0; i < 2; i++)
+		
+		
+		let step = 0;
+		
+		let refresh_id = setInterval(() =>
 		{
-			let row = Math.floor(branch_selector_height * branch_points[i][0] / canvas_height);
-			let col = Math.floor(branch_selector_width * branch_points[i][1] / canvas_width);
+			let alpha = step / 37;
+			wilson.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
+			wilson.ctx.fillRect(0, 0, wilson.canvas_width, wilson.canvas_height);
 			
-			branch_markers[i].style.transform = `translate3d(${col - branch_marker_radius}px, ${row - branch_marker_radius}px, 0)`;
-		}
-	}
-
-
-
-	function adjust_for_settings()
-	{
-		if (Site.Settings.url_vars["contrast"] === 1)
+			step++;
+		}, 8);
+		
+		
+		
+		setTimeout(() =>
 		{
-			if (Site.Settings.url_vars["theme"] === 1)
+			clearInterval(refresh_id);
+			
+			wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			wilson.ctx.fillRect(0, 0, wilson.canvas_width, wilson.canvas_height);
+			
+			request_animated_binary_tree();
+		}, 300);
+	}
+	
+	
+	
+	function change_aspect_ratio()
+	{
+		try {web_worker.terminate();}
+		catch(ex) {}
+		
+		Page.set_element_styles(".wilson-draggable", "opacity", 1);
+		
+		
+		
+		if (wilson.fullscreen.currently_fullscreen)
+		{
+			if (Page.Layout.aspect_ratio >= 1)
 			{
-				document.querySelector("#binary-trees-plot").style.borderColor = "rgb(192, 192, 192)";
+				wilson.change_canvas_size(2000, 2000 / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				document.querySelector("#binary-trees-plot").style.borderColor = "rgb(64, 64, 64)";
+				wilson.change_canvas_size(2000 * Page.Layout.aspect_ratio, 2000);
 			}
 		}
 		
-		Site.add_style(`
-			.branch-marker.hover
-			{
-				background-color: rgb(127, 127, 127);	
-			}
-			
-			.branch-marker:not(:hover):focus
-			{
-				background-color: rgb(127, 127, 127);
-				outline: none;
-			}
-		`, true);
+		else
+		{
+			wilson.change_canvas_size(2000, 2000);
+		}
+		
+		
+		
+		wilson.draggables.recalculate_locations();
+		
+		
+		
+		root = wilson.utils.interpolate.world_to_canvas(0, -4/5);
+		
+		
+		
+		branch_points[0] = wilson.utils.interpolate.world_to_canvas(...wilson.draggables.world_coordinates[0]);
+		branch_points[1] = wilson.utils.interpolate.world_to_canvas(...wilson.draggables.world_coordinates[1]);
+		
+		
+		
+		draw_binary_tree();
 	}
 	
 	
