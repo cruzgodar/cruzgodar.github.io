@@ -4,245 +4,7 @@
 	
 	
 	
-	let gl = document.querySelector("#output-canvas").getContext("webgl");
-	
-	let canvas_size = Math.min(document.querySelector("#output-canvas").offsetWidth, document.querySelector("#output-canvas").offsetHeight);
-	
-	let currently_drawing = false;
-	let currently_animating_parameters = false;
-	
-	let currently_dragging = false;
-	
-	let draw_start_time = 0;
-	
-	let mouse_x = 0;
-	let mouse_y = 0;
-	
-	let moving_forward_keyboard = false;
-	let moving_backward_keyboard = false;
-	let moving_right_keyboard = false;
-	let moving_left_keyboard = false;
-	
-	let moving_forward_touch = false;
-	let moving_backward_touch = false;
-	
-	let moving_speed = 0;
-	
-	let distance_to_scene = 1;
-	
-	
-	
-	let theta = 3.2954;
-	let phi = 1.9657;
-	
-	
-	
-	let image_size = 500;
-	let image_width = 500;
-	let image_height = 500;
-	
-	let small_image_size = 500;
-	let large_image_size = 1500;
-	
-	let num_sierpinski_iterations = 16;
-	
-	let image_plane_center_pos = [];
-	
-	let forward_vec = [];
-	let right_vec = [];
-	let up_vec = [];
-	
-	let camera_pos = [2.1089, .41345, .95325];
-	
-	let polyhedron_index = 0;
-	
-	let focal_length = 2;
-	
-	let light_pos = [[0, 0, 5], [5, 5, 5], [0, 0, 5]];
-	
-	let n1 = [[-.577350, 0, .816496],  [1, 0, 0], [.707107, 0, .707107]];
-	let n2 = [[.288675, -.5, .816496], [0, 1, 0], [0, .707107, .707107]];
-	let n3 = [[.288675, .5, .816496],  [0, 0, 1], [-.707107, 0, .707107]];
-	let n4 = [[],                      [],        [0, -.707107, .707107]];
-	
-	let min_scale_factor = [1.333, 1.333, 1.333];
-	
-	let num_ns = [3, 3, 4];
-	
-	let scale_center = [[0, 0, 1], [.577350, .577350, .577350], [0, 0, 1]];
-	
-	let scale = 2;
-	let scale_old = 2;
-	let scale_delta = 0;
-	
-	let rotation_angle_x_1 = 0;
-	let rotation_angle_y_1 = 0;
-	let rotation_angle_z_1 = 0;
-	let rotation_angle_x_2 = 0;
-	let rotation_angle_y_2 = 0;
-	let rotation_angle_z_2 = 0;
-	
-	let rotation_angle_x_1_old = 0;
-	let rotation_angle_y_1_old = 0;
-	let rotation_angle_z_1_old = 0;
-	let rotation_angle_x_2_old = 0;
-	let rotation_angle_y_2_old = 0;
-	let rotation_angle_z_2_old = 0;
-	
-	let rotation_angle_x_1_delta = 0;
-	let rotation_angle_y_1_delta = 0;
-	let rotation_angle_z_1_delta = 0;
-	let rotation_angle_x_2_delta = 0;
-	let rotation_angle_y_2_delta = 0;
-	let rotation_angle_z_2_delta = 0;
-	
-	let parameter_animation_frame = 0;
-	
-	
-	
-	document.querySelector("#tetrahedron-radio-button").checked = true;
-	
-	document.querySelector("#output-canvas").setAttribute("width", image_width);
-	document.querySelector("#output-canvas").setAttribute("height", image_height);
-	
-	document.querySelector("#dim-input").addEventListener("input", function()
-	{
-		change_resolution(0);
-	});
-	
-	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
-	
-	document.querySelector("#tetrahedron-radio-button").addEventListener("input", function()
-	{
-		if (polyhedron_index !== 0)
-		{
-			change_polyhedron(0);
-		}
-	});
-	
-	document.querySelector("#cube-radio-button").addEventListener("input", function()
-	{
-		if (polyhedron_index !== 1)
-		{
-			change_polyhedron(1);
-		}
-	});
-	
-	document.querySelector("#octahedron-radio-button").addEventListener("input", function()
-	{
-		if (polyhedron_index !== 2)
-		{
-			change_polyhedron(2);
-		}
-	});
-	
-	
-	
-	let elements = document.querySelectorAll("#scale-input, #rotation-angle-x-1-input, #rotation-angle-y-1-input, #rotation-angle-z-1-input, #rotation-angle-x-2-input, #rotation-angle-y-2-input, #rotation-angle-z-2-input");
-	
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].addEventListener("input", update_parameters);
-	}
-	
-	document.querySelector("#randomize-parameters-button").addEventListener("click", randomize_parameters);
-	
-	
-	
-	window.addEventListener("resize", fractals_resize);
-	Page.temporary_handlers["resize"].push(fractals_resize);
-	setTimeout(fractals_resize, 500);
-	
-	init_listeners();
-	
-	
-	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
-	
-	Page.Applets.Canvases.resize_callback = function()
-	{
-		if (Page.Applets.Canvases.is_fullscreen)
-		{
-			if (Page.Layout.aspect_ratio >= 1)
-			{
-				image_width = image_size;
-				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
-			}
-			
-			else
-			{
-				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
-				image_height = image_size;
-			}
-		}
-		
-		else
-		{
-			image_width = image_size;
-			image_height = image_size;
-		}
-		
-		
-		
-		canvas_size = Math.min(document.querySelector("#output-canvas").offsetWidth, document.querySelector("#output-canvas").offsetHeight);
-		
-		document.querySelector("#output-canvas").setAttribute("width", image_width);
-		document.querySelector("#output-canvas").setAttribute("height", image_height);
-		
-		
-		
-		if (image_width >= image_height)
-		{
-			gl.uniform1f(shader_program.aspect_ratio_x_uniform, image_width / image_height);
-			gl.uniform1f(shader_program.aspect_ratio_y_uniform, 1);
-		}
-		
-		else
-		{
-			gl.uniform1f(shader_program.aspect_ratio_x_uniform, 1);
-			gl.uniform1f(shader_program.aspect_ratio_y_uniform, image_width / image_height);
-		}
-		
-		
-		
-		gl.uniform1i(shader_program.image_size_uniform, image_size);
-		
-		gl.viewport(0, 0, image_width, image_height);
-		
-		
-		
-		
-		fractals_resize();
-		
-		window.requestAnimationFrame(draw_frame);
-	};
-	
-	Page.Applets.Canvases.true_fullscreen = true;
-	
-	Page.Applets.Canvases.set_up_resizer();
-	
-	
-	
-	setTimeout(setup_webgl, 500);
-	
-	
-	
-	const vertex_shader_source = `
-		attribute vec3 position;
-		varying vec2 uv;
-
-		void main(void)
-		{
-			gl_Position = vec4(position, 1.0);
-
-			//Interpolate quad coordinates in the fragment shader.
-			uv = position.xy;
-		}
-	`;
-	
-	
-	
-	const frag_shader_source = `
+	let frag_shader_source = `
 		precision highp float;
 		
 		varying vec2 uv;
@@ -480,162 +242,282 @@
 	
 	
 	
-	let shader_program = null;
-	
-	function setup_webgl()
+	let options =
 	{
-		let vertex_shader = load_shader(gl, gl.VERTEX_SHADER, vertex_shader_source);
+		renderer: "gpu",
 		
-		let frag_shader = load_shader(gl, gl.FRAGMENT_SHADER, frag_shader_source);
+		shader: frag_shader_source,
 		
-		shader_program = gl.createProgram();
+		canvas_width: 500,
+		canvas_height: 500,
 		
-		gl.attachShader(shader_program, vertex_shader);
-		gl.attachShader(shader_program, frag_shader);
-		gl.linkProgram(shader_program);
 		
-		if (!gl.getProgramParameter(shader_program, gl.LINK_STATUS))
+		
+		use_fullscreen: true,
+		
+		true_fullscreen: true,
+	
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+		
+		switch_fullscreen_callback: change_resolution,
+		
+		
+		
+		mousedown_callback: on_grab_canvas,
+		touchstart_callback: on_grab_canvas,
+		
+		mousedrag_callback: on_drag_canvas,
+		touchmove_callback: on_drag_canvas,
+		
+		mouseup_callback: on_release_canvas,
+		touchend_callback: on_release_canvas
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "scale_center", "n1", "n2", "n3", "n4", "min_scale_factor", "num_ns", "scale", "rotation_matrix_1", "rotation_matrix_2"]);
+	
+	
+	
+	
+	
+	let currently_drawing = false;
+	let currently_animating_parameters = false;
+	
+	let currently_dragging = false;
+	
+	let draw_start_time = 0;
+	
+	let mouse_x = 0;
+	let mouse_y = 0;
+	
+	let moving_forward_keyboard = false;
+	let moving_backward_keyboard = false;
+	let moving_right_keyboard = false;
+	let moving_left_keyboard = false;
+	
+	let moving_forward_touch = false;
+	let moving_backward_touch = false;
+	
+	let moving_speed = 0;
+	
+	let distance_to_scene = 1;
+	
+	let last_timestamp = -1;
+	
+	
+	
+	let theta = 3.2954;
+	let phi = 1.9657;
+	
+	
+	
+	let image_size = 500;
+	let image_width = 500;
+	let image_height = 500;
+	
+	let num_sierpinski_iterations = 16;
+	
+	let image_plane_center_pos = [];
+	
+	let forward_vec = [];
+	let right_vec = [];
+	let up_vec = [];
+	
+	let camera_pos = [2.1089, .41345, .95325];
+	
+	let polyhedron_index = 0;
+	
+	let focal_length = 2;
+	
+	let light_pos = [[0, 0, 5], [5, 5, 5], [0, 0, 5]];
+	
+	let n1 = [[-.577350, 0, .816496],  [1, 0, 0], [.707107, 0, .707107]];
+	let n2 = [[.288675, -.5, .816496], [0, 1, 0], [0, .707107, .707107]];
+	let n3 = [[.288675, .5, .816496],  [0, 0, 1], [-.707107, 0, .707107]];
+	let n4 = [[],                      [],        [0, -.707107, .707107]];
+	
+	let min_scale_factor = [1.333, 1.333, 1.333];
+	
+	let num_ns = [3, 3, 4];
+	
+	let scale_center = [[0, 0, 1], [.577350, .577350, .577350], [0, 0, 1]];
+	
+	let scale = 2;
+	let scale_old = 2;
+	let scale_delta = 0;
+	
+	let rotation_angle_x_1 = 0;
+	let rotation_angle_y_1 = 0;
+	let rotation_angle_z_1 = 0;
+	let rotation_angle_x_2 = 0;
+	let rotation_angle_y_2 = 0;
+	let rotation_angle_z_2 = 0;
+	
+	let rotation_angle_x_1_old = 0;
+	let rotation_angle_y_1_old = 0;
+	let rotation_angle_z_1_old = 0;
+	let rotation_angle_x_2_old = 0;
+	let rotation_angle_y_2_old = 0;
+	let rotation_angle_z_2_old = 0;
+	
+	let rotation_angle_x_1_delta = 0;
+	let rotation_angle_y_1_delta = 0;
+	let rotation_angle_z_1_delta = 0;
+	let rotation_angle_x_2_delta = 0;
+	let rotation_angle_y_2_delta = 0;
+	let rotation_angle_z_2_delta = 0;
+	
+	let parameter_animation_frame = 0;
+	
+	
+	
+	let resolution_input_element = document.querySelector("#resolution-input");
+	
+	resolution_input_element.addEventListener("input", change_resolution);
+	
+	
+	
+	let download_button_element = document.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", () =>
+	{
+		wilson.download_frame("a-kaleidoscopic-ifs-fractal.png");
+	});
+	
+	
+	
+	let tetrahedron_radio_button_element = document.querySelector("#tetrahedron-radio-button");
+	let cube_radio_button_element = document.querySelector("#cube-radio-button");
+	let octahedron_radio_button_element = document.querySelector("#octahedron-radio-button");
+	
+	tetrahedron_radio_button_element.checked = true;
+	
+	tetrahedron_radio_button_element.addEventListener("input", () =>
+	{
+		if (polyhedron_index !== 0)
 		{
-			console.log(`Couldn't link shader program: ${gl.getShaderInfoLog(shader)}`);
-			gl.deleteProgram(shader_program);
+			change_polyhedron(0);
 		}
-		
-		
-		
-		gl.useProgram(shader_program);
-		
-		
-		
-		let quad = [-1, -1, 0,   -1, 1, 0,   1, -1, 0,   1, 1, 0];
-		
-		
-		
-		let position_buffer = gl.createBuffer();
-		
-		gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
-		
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(quad), gl.STATIC_DRAW);
-		
-		shader_program.position_attribute = gl.getAttribLocation(shader_program, "position");
-		
-		gl.enableVertexAttribArray(shader_program.position_attribute);
-		
-		gl.vertexAttribPointer(shader_program.position_attribute, 3, gl.FLOAT, false, 0, 0);
-		
-		
-		
-		calculate_vectors();
-		
-		
-		
-		shader_program.aspect_ratio_x_uniform = gl.getUniformLocation(shader_program, "aspect_ratio_x");
-		shader_program.aspect_ratio_y_uniform = gl.getUniformLocation(shader_program, "aspect_ratio_y");
-		
-		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
-		
-		shader_program.camera_pos_uniform = gl.getUniformLocation(shader_program, "camera_pos");
-		shader_program.image_plane_center_pos_uniform = gl.getUniformLocation(shader_program, "image_plane_center_pos");
-		shader_program.forward_vec_uniform = gl.getUniformLocation(shader_program, "forward_vec");
-		shader_program.right_vec_uniform = gl.getUniformLocation(shader_program, "right_vec");
-		shader_program.up_vec_uniform = gl.getUniformLocation(shader_program, "up_vec");
-		
-		shader_program.focal_length_uniform = gl.getUniformLocation(shader_program, "focal_length");
-		
-		shader_program.light_pos_uniform = gl.getUniformLocation(shader_program, "light_pos");
-		
-		shader_program.scale_center_uniform = gl.getUniformLocation(shader_program, "scale_center");
-		
-		shader_program.n1_uniform = gl.getUniformLocation(shader_program, "n1");
-		shader_program.n2_uniform = gl.getUniformLocation(shader_program, "n2");
-		shader_program.n3_uniform = gl.getUniformLocation(shader_program, "n3");
-		shader_program.n4_uniform = gl.getUniformLocation(shader_program, "n4");
-		
-		shader_program.min_scale_factor_uniform = gl.getUniformLocation(shader_program, "min_scale_factor");
-		
-		shader_program.num_ns_uniform = gl.getUniformLocation(shader_program, "num_ns");
-		
-		shader_program.scale_uniform = gl.getUniformLocation(shader_program, "scale");
-		
-		shader_program.rotation_matrix_1_uniform = gl.getUniformLocation(shader_program, "rotation_matrix_1");
-		shader_program.rotation_matrix_2_uniform = gl.getUniformLocation(shader_program, "rotation_matrix_2");
-		
-		
-		
-		if (image_width >= image_height)
+	});
+	
+	cube_radio_button_element.addEventListener("input", () =>
+	{
+		if (polyhedron_index !== 1)
 		{
-			gl.uniform1f(shader_program.aspect_ratio_x_uniform, image_width / image_height);
-			gl.uniform1f(shader_program.aspect_ratio_y_uniform, 1);
+			change_polyhedron(1);
 		}
-		
-		else
+	});
+	
+	octahedron_radio_button_element.addEventListener("input", () =>
+	{
+		if (polyhedron_index !== 2)
 		{
-			gl.uniform1f(shader_program.aspect_ratio_x_uniform, 1);
-			gl.uniform1f(shader_program.aspect_ratio_y_uniform, image_width / image_height);
+			change_polyhedron(2);
 		}
-		
-		
-		
-		gl.uniform1i(shader_program.image_size_uniform, image_size);
-		
-		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
-		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
-		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
-		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
-		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
-		
-		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
-		
-		gl.uniform3fv(shader_program.light_pos_uniform, light_pos[polyhedron_index]);
-		
-		gl.uniform3fv(shader_program.scale_center_uniform, scale_center[polyhedron_index]);
-		
-		gl.uniform3fv(shader_program.n1_uniform, n1[polyhedron_index]);
-		gl.uniform3fv(shader_program.n2_uniform, n2[polyhedron_index]);
-		gl.uniform3fv(shader_program.n3_uniform, n3[polyhedron_index]);
-		gl.uniform3fv(shader_program.n4_uniform, n4[polyhedron_index]);
-		
-		gl.uniform1f(shader_program.min_scale_factor_uniform, min_scale_factor[polyhedron_index]);
-		
-		gl.uniform1i(shader_program.num_ns_uniform, num_ns[polyhedron_index]);
-		
-		gl.uniform1f(shader_program.scale_uniform, scale);
-		
-		gl.uniformMatrix3fv(shader_program.rotation_matrix_1_uniform, false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
-		gl.uniformMatrix3fv(shader_program.rotation_matrix_2_uniform, false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
-		
-		
-		
-		gl.viewport(0, 0, image_width, image_height);
-		
-		
-		
-		window.requestAnimationFrame(draw_frame);
+	});
+	
+	
+	
+	let scale_input_element = document.querySelector("#scale-input");
+	
+	let rotation_angle_x_1_input_element = document.querySelector("#rotation-angle-x-1-input");
+	let rotation_angle_y_1_input_element = document.querySelector("#rotation-angle-y-1-input");
+	let rotation_angle_z_1_input_element = document.querySelector("#rotation-angle-z-1-input");
+	
+	let rotation_angle_x_2_input_element = document.querySelector("#rotation-angle-x-2-input");
+	let rotation_angle_y_2_input_element = document.querySelector("#rotation-angle-y-2-input");
+	let rotation_angle_z_2_input_element = document.querySelector("#rotation-angle-z-2-input");
+	
+	let elements = [scale_input_element, rotation_angle_x_1_input_element, rotation_angle_y_1_input_element, rotation_angle_z_1_input_element, rotation_angle_x_2_input_element, rotation_angle_y_2_input_element, rotation_angle_z_2_input_element];
+	
+	/*
+	for (let i = 0; i < 7; i++)
+	{
+		elements[i].addEventListener("input", update_parameters);
+	}
+	*/
+	
+	
+	
+	let randomize_parameters_button_element = document.querySelector("#randomize-parameters-button");
+	
+	//randomize_parameters_button_element.addEventListener("click", randomize_parameters);
+	
+	
+	
+	calculate_vectors();
+	
+	
+	
+	if (image_width >= image_height)
+	{
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], image_width / image_height);
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], 1);
 	}
 	
-	
-	
-	function load_shader(gl, type, source)
+	else
 	{
-		let shader = gl.createShader(type);
-		
-		gl.shaderSource(shader, source);
-		
-		gl.compileShader(shader);
-		
-		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-		{
-			console.log(`Couldn't load shader: ${gl.getProgramInfoLog(shaderProgram)}`);
-			gl.deleteShader(shader);
-		}
-		
-		return shader;
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], 1);
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], image_width / image_height);
 	}
 	
+	wilson.gl.uniform1i(wilson.uniforms["image_size"], image_size);
+	
+	wilson.gl.uniform3fv(wilson.uniforms["camera_pos"], camera_pos);
+	wilson.gl.uniform3fv(wilson.uniforms["image_plane_center_pos"], image_plane_center_pos);
+	wilson.gl.uniform3fv(wilson.uniforms["light_pos"], light_pos[polyhedron_index]);
+	wilson.gl.uniform3fv(wilson.uniforms["scale_center"], scale_center[polyhedron_index]);
+	
+	wilson.gl.uniform3fv(wilson.uniforms["forward_vec"], forward_vec);
+	wilson.gl.uniform3fv(wilson.uniforms["right_vec"], right_vec);
+	wilson.gl.uniform3fv(wilson.uniforms["up_vec"], up_vec);
+	
+	wilson.gl.uniform1f(wilson.uniforms["focal_length"], focal_length);
+	
+	wilson.gl.uniform3fv(wilson.uniforms["n1"], n1[polyhedron_index]);
+	wilson.gl.uniform3fv(wilson.uniforms["n2"], n2[polyhedron_index]);
+	wilson.gl.uniform3fv(wilson.uniforms["n3"], n3[polyhedron_index]);
+	wilson.gl.uniform3fv(wilson.uniforms["n4"], n4[polyhedron_index]);
+	
+	wilson.gl.uniform1f(wilson.uniforms["min_scale_factor"], min_scale_factor[polyhedron_index]);
+	
+	wilson.gl.uniform1i(wilson.uniforms["num_ns"], num_ns[polyhedron_index]);
+	
+	wilson.gl.uniform1f(wilson.uniforms["scale"], scale);
+	
+	wilson.gl.uniformMatrix3fv(wilson.uniforms["rotation_matrix_1"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
+	wilson.gl.uniformMatrix3fv(wilson.uniforms["rotation_matrix_2"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
 	
 	
-	function draw_frame()
-	{		
-		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+	
+	console.log(image_width / image_height, image_size, camera_pos, image_plane_center_pos, light_pos, scale_center[polyhedron_index], forward_vec, right_vec, up_vec, focal_length, n1[polyhedron_index], n2[polyhedron_index], n3[polyhedron_index], n4[polyhedron_index], min_scale_factor[polyhedron_index], num_ns[polyhedron_index], scale);
+	
+	
+	
+	window.requestAnimationFrame(draw_frame);
+	
+	
+	
+	function draw_frame(timestamp)
+	{
+		let time_elapsed = timestamp - last_timestamp;
+		
+		last_timestamp = timestamp;
+		
+		
+		
+		if (time_elapsed === 0)
+		{
+			return;
+		}
+		
+		
+		
+		wilson.render.draw_frame();
 		
 		
 		
@@ -689,13 +571,14 @@
 		
 		
 		
-		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
-		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
-		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
-		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
-		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
+		wilson.gl.uniform3fv(wilson.uniforms["camera_pos"], camera_pos);
+		wilson.gl.uniform3fv(wilson.uniforms["image_plane_center_pos"], image_plane_center_pos);
 		
-		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
+		wilson.gl.uniform3fv(wilson.uniforms["forward_vec"], forward_vec);
+		wilson.gl.uniform3fv(wilson.uniforms["right_vec"], right_vec);
+		wilson.gl.uniform3fv(wilson.uniforms["up_vec"], up_vec);
+		
+		wilson.gl.uniform1f(wilson.uniforms["focal_length"], focal_length);
 	}
 	
 	
@@ -719,16 +602,16 @@
 		return [
 			[mat1[0][0]*mat2[0][0] + mat1[0][1]*mat2[1][0] + mat1[0][2]*mat2[2][0],
 			mat1[0][0]*mat2[0][1] + mat1[0][1]*mat2[1][1] + mat1[0][2]*mat2[2][1],
-			mat1[0][0]*mat2[0][2] + mat1[0][1]*mat2[1][2] + mat1[0][2]*mat2[2][2]
-			], [
-			mat1[1][0]*mat2[0][0] + mat1[1][1]*mat2[1][0] + mat1[1][2]*mat2[2][0],
+			mat1[0][0]*mat2[0][2] + mat1[0][1]*mat2[1][2] + mat1[0][2]*mat2[2][2]],
+			
+			[mat1[1][0]*mat2[0][0] + mat1[1][1]*mat2[1][0] + mat1[1][2]*mat2[2][0],
 			mat1[1][0]*mat2[0][1] + mat1[1][1]*mat2[1][1] + mat1[1][2]*mat2[2][1],
-			mat1[1][0]*mat2[0][2] + mat1[1][1]*mat2[1][2] + mat1[1][2]*mat2[2][2]
-			], [
-			mat1[2][0]*mat2[0][0] + mat1[2][1]*mat2[1][0] + mat1[2][2]*mat2[2][0],
+			mat1[1][0]*mat2[0][2] + mat1[1][1]*mat2[1][2] + mat1[1][2]*mat2[2][2]],
+			
+			[mat1[2][0]*mat2[0][0] + mat1[2][1]*mat2[1][0] + mat1[2][2]*mat2[2][0],
 			mat1[2][0]*mat2[0][1] + mat1[2][1]*mat2[1][1] + mat1[2][2]*mat2[2][1],
 			mat1[2][0]*mat2[0][2] + mat1[2][1]*mat2[1][2] + mat1[2][2]*mat2[2][2]]
-			];
+		];
 	}
 	
 	
@@ -839,104 +722,58 @@
 	
 	
 	
-	function init_listeners()
+	function on_grab_canvas(x, y, event)
 	{
-		document.querySelector("#output-canvas").addEventListener("mousedown", function(e)
+		//Do something with inertia
+	}
+	
+	
+	
+	function on_drag_canvas(x, y, x_delta, y_delta, event)
+	{
+		theta += x_delta * Math.PI / 2;
+		
+		if (theta >= 2 * Math.PI)
 		{
-			currently_dragging = true;
-			
-			mouse_x = e.clientX;
-			mouse_y = e.clientY;
-			
-			if (!currently_drawing && !currently_animating_parameters)
-			{
-				currently_drawing = true;
-				
-				draw_start_time = Date.now();
-				
-				image_size = small_image_size;
-				
-				change_resolution(image_size);
-				
-				window.requestAnimationFrame(draw_frame);
-			}
-		});
+			theta -= 2 * Math.PI;
+		}
 		
-		
-		
-		document.querySelector("#output-canvas").addEventListener("mousemove", function(e)
+		else if (theta < 0)
 		{
-			if (currently_dragging)
-			{
-				e.preventDefault();
-				
-				
-				
-				let new_mouse_x = e.clientX;
-				let new_mouse_y = e.clientY;
-				
-				let mouse_x_delta = new_mouse_x - mouse_x;
-				let mouse_y_delta = new_mouse_y - mouse_y;
-				
-				
-				
-				theta += mouse_x_delta / canvas_size * Math.PI;
-				
-				if (theta >= 2 * Math.PI)
-				{
-					theta -= 2 * Math.PI;
-				}
-				
-				else if (theta < 0)
-				{
-					theta += 2 * Math.PI;
-				}
-				
-				
-				
-				phi -= mouse_y_delta / canvas_size * Math.PI;
-				
-				if (phi > Math.PI - .01)
-				{
-					phi = Math.PI - .01;
-				}
-				
-				else if (phi < .01)
-				{
-					phi = .01;
-				}
-				
-				
-				
-				mouse_x = new_mouse_x;
-				mouse_y = new_mouse_y;
-				
-				
-				
-				calculate_vectors();
-			}
-		});
+			theta += 2 * Math.PI;
+		}
 		
 		
 		
-		document.querySelector("#output-canvas").addEventListener("mouseup", function(e)
+		phi += y_delta * Math.PI / 2;
+		
+		if (phi > Math.PI - .01)
 		{
-			currently_dragging = false;
-			
-			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch;
-			
-			if (!currently_drawing && (Date.now() - draw_start_time > 300))
-			{
-				image_size = large_image_size;
-				
-				change_resolution(image_size);
-				
-				window.requestAnimationFrame(draw_frame);
-			}
-		});
+			phi = Math.PI - .01;
+		}
+		
+		else if (phi < .01)
+		{
+			phi = .01;
+		}
 		
 		
 		
+		calculate_vectors();
+		
+		window.requestAnimationFrame(draw_frame);
+	}
+	
+	
+	
+	function on_release_canvas(x, y, event)
+	{
+		//Do something else with inertia
+	}
+	
+	
+	
+	/*
 		document.querySelector("#output-canvas").addEventListener("touchstart", function(e)
 		{
 			currently_dragging = true;
@@ -971,64 +808,6 @@
 				window.requestAnimationFrame(draw_frame);
 			}
 		});
-		
-		
-		
-		document.querySelector("#output-canvas").addEventListener("touchmove", function(e)
-		{
-			e.preventDefault();
-			
-			
-			
-			let new_mouse_x = e.touches[0].clientX;
-			let new_mouse_y = e.touches[0].clientY;
-			
-			let mouse_x_delta = new_mouse_x - mouse_x;
-			let mouse_y_delta = new_mouse_y - mouse_y;
-			
-			if (Math.abs(mouse_x_delta) > 20 || Math.abs(mouse_y_delta) > 20)
-			{
-				return;
-			}
-			
-			
-			
-			theta += mouse_x_delta / canvas_size * Math.PI;
-			
-			if (theta >= 2 * Math.PI)
-			{
-				theta -= 2 * Math.PI;
-			}
-			
-			else if (theta < 0)
-			{
-				theta += 2 * Math.PI;
-			}
-			
-			
-			
-			phi -= mouse_y_delta / canvas_size * Math.PI;
-			
-			if (phi > Math.PI - .01)
-			{
-				phi = Math.PI - .01;
-			}
-			
-			else if (phi < .01)
-			{
-				phi = .01;
-			}
-			
-			
-			
-			mouse_x = new_mouse_x;
-			mouse_y = new_mouse_y;
-			
-			
-			
-			calculate_vectors();
-		});
-		
 		
 		
 		document.querySelector("#output-canvas").addEventListener("touchend", function(e)
@@ -1069,99 +848,91 @@
 				window.requestAnimationFrame(draw_frame);
 			}
 		});
-
-
-
-		document.documentElement.addEventListener("keydown", function(e)
+	*/
+	
+	
+	
+	function handle_keydown_event(e)
+	{
+		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
 		{
-			if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
-			{
-				return;
-			}
-			
-			
-			
-			//W
-			if (e.keyCode === 87)
-			{
-				moving_forward_keyboard = true;
-			}
-			
-			//S
-			else if (e.keyCode === 83)
-			{
-				moving_backward_keyboard = true;
-			}
-			
-			//D
-			if (e.keyCode === 68)
-			{
-				moving_right_keyboard = true;
-			}
-			
-			//A
-			else if (e.keyCode === 65)
-			{
-				moving_left_keyboard = true;
-			}
-			
-			
-			
-			if (!currently_drawing && !currently_animating_parameters)
-			{
-				currently_drawing = true;
-				
-				draw_start_time = Date.now();
-				
-				image_size = small_image_size;
-				
-				change_resolution(image_size);
-				
-				window.requestAnimationFrame(draw_frame);
-			}
-		});
+			return;
+		}
 		
 		
 		
-		document.documentElement.addEventListener("keyup", function(e)
+		//W
+		if (e.keyCode === 87)
 		{
-			//W
-			if (e.keyCode === 87)
-			{
-				moving_forward_keyboard = false;
-			}
-			
-			//S
-			else if (e.keyCode === 83)
-			{
-				moving_backward_keyboard = false;
-			}
-			
-			//D
-			if (e.keyCode === 68)
-			{
-				moving_right_keyboard = false;
-			}
-			
-			//A
-			else if (e.keyCode === 65)
-			{
-				moving_left_keyboard = false;
-			}
-			
-			
-			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch;
-			
-			if (!currently_drawing && (Date.now() - draw_start_time > 300))
-			{
-				image_size = large_image_size;
-				
-				change_resolution(image_size);
-				
-				window.requestAnimationFrame(draw_frame);
-			}
-		});
+			moving_forward_keyboard = true;
+		}
+		
+		//S
+		else if (e.keyCode === 83)
+		{
+			moving_backward_keyboard = true;
+		}
+		
+		//D
+		if (e.keyCode === 68)
+		{
+			moving_right_keyboard = true;
+		}
+		
+		//A
+		else if (e.keyCode === 65)
+		{
+			moving_left_keyboard = true;
+		}
+		
+		
+		
+		window.requestAnimationFrame(draw_frame);
 	}
+	
+	
+	
+	function handle_keyup_event(e)
+	{
+		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
+		{
+			return;
+		}
+		
+		
+		
+		//W
+		if (e.keyCode === 87)
+		{
+			moving_forward_keyboard = false;
+		}
+		
+		//S
+		else if (e.keyCode === 83)
+		{
+			moving_backward_keyboard = false;
+		}
+		
+		//D
+		if (e.keyCode === 68)
+		{
+			moving_right_keyboard = false;
+		}
+		
+		//A
+		else if (e.keyCode === 65)
+		{
+			moving_left_keyboard = false;
+		}
+	}
+	
+	
+	
+	document.documentElement.addEventListener("keydown", handle_keydown_event);
+	Page.temporary_handlers["keydown"].push(handle_keydown_event);
+	
+	document.documentElement.addEventListener("keyup", handle_keyup_event);
+	Page.temporary_handlers["keydown"].push(handle_keyup_event);
 	
 	
 	
@@ -1169,17 +940,7 @@
 	{
 		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
 		{
-			moving_speed = distance_to_scene / 20;
-			
-			if (moving_speed < .000025)
-			{
-				moving_speed = .000025;
-			}
-			
-			if (moving_speed > .02)
-			{
-				moving_speed = .02;
-			}
+			moving_speed = Math.min(Math.max(.000025, distance_to_scene / 20), .02);
 			
 			
 			
@@ -1221,41 +982,13 @@
 	
 	
 	
-	function fractals_resize()
+	function change_resolution()
 	{
-		canvas_size = Math.min(document.querySelector("#output-canvas").offsetWidth, document.querySelector("#output-canvas").offsetHeight);
-	}
-	
-	
-	
-	function change_resolution(new_image_size = 0)
-	{
-		if (new_image_size === 0)
-		{
-			image_size = parseInt(document.querySelector("#dim-input").value || 500);
-			
-			if (image_size < 200)
-			{
-				image_size = 200;
-			}
-			
-			if (image_size > 2000)
-			{
-				image_size = 2000;
-			}
-			
-			small_image_size = image_size;
-			large_image_size = image_size * 3;
-		}
-		
-		else
-		{
-			image_size = new_image_size;
-		}
+		image_size = Math.max(100, parseInt(resolution_input_element.value || 500));
 		
 		
 		
-		if (Page.Applets.Canvases.is_fullscreen)
+		if (wilson.fullscreen.currently_fullscreen)
 		{
 			if (Page.Layout.aspect_ratio >= 1)
 			{
@@ -1272,26 +1005,23 @@
 		
 		
 		
-		document.querySelector("#output-canvas").setAttribute("width", image_width);
-		document.querySelector("#output-canvas").setAttribute("height", image_height);
+		wilson.change_canvas_size(image_width, image_height);
 		
 		
 		
 		if (image_width >= image_height)
 		{
-			gl.uniform1f(shader_program.aspect_ratio_x_uniform, image_width / image_height);
-			gl.uniform1f(shader_program.aspect_ratio_y_uniform, 1);
+			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], image_width / image_height);
+			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], 1);
 		}
 		
 		else
 		{
-			gl.uniform1f(shader_program.aspect_ratio_x_uniform, 1);
-			gl.uniform1f(shader_program.aspect_ratio_y_uniform, image_width / image_height);
+			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], 1);
+			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], image_width / image_height);
 		}
 		
-		gl.uniform1i(shader_program.image_size_uniform, image_size);
-		
-		gl.viewport(0, 0, image_width, image_height);
+		wilson.gl.uniform1i(wilson.uniforms["image_size"], image_size);
 		
 		
 		
@@ -1299,7 +1029,7 @@
 	}
 	
 	
-	
+	/*
 	function randomize_parameters(animate_change = true)
 	{
 		if (currently_animating_parameters)
@@ -1504,43 +1234,5 @@
 		}, 300);
 	}
 	
-	
-	
-	function prepare_download()
-	{
-		let temp = image_size;
-		
-		image_size = parseInt(document.querySelector("#high-res-dim-input").value || 2000);
-		
-		document.querySelector("#output-canvas").setAttribute("width", image_size);
-		document.querySelector("#output-canvas").setAttribute("height", image_size);
-		
-		gl.viewport(0, 0, image_size, image_size);
-		
-		//This one needs to happen immediately, since otherwise we'll only download blank images.
-		draw_frame();
-		
-		
-		
-		let link = document.createElement("a");
-		
-		link.download = "a-kaleidoscopic-ifs-fractal.png";
-		
-		link.href = document.querySelector("#output-canvas").toDataURL();
-		
-		link.click();
-		
-		link.remove();
-		
-		
-		
-		image_size = temp;
-		
-		document.querySelector("#output-canvas").setAttribute("width", image_size);
-		document.querySelector("#output-canvas").setAttribute("height", image_size);
-		
-		gl.viewport(0, 0, image_size, image_size);
-		
-		draw_frame();
-	}
+	*/
 }()
