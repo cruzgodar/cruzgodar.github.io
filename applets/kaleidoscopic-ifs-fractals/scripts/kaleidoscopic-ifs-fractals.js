@@ -31,7 +31,7 @@
 		const int max_marches = 32;
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .2;
-		const int num_sierpinski_iterations = 16;
+		const int max_iterations = 24;
 		
 		
 		vec3 color;
@@ -52,11 +52,9 @@
 		uniform vec3 n3;
 		uniform vec3 n4;
 		
-		uniform float min_scale_factor;
 		
 		
-		
-		uniform float scale;
+		const float scale = 2.0;
 		
 		
 		
@@ -75,9 +73,8 @@
 			
 			
 			//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
-			for (int iteration = 0; iteration < num_sierpinski_iterations; iteration++)
+			for (int iteration = 0; iteration < max_iterations; iteration++)
 			{
-				
 				//Fold space over on itself so that we can reference only the top vertex.
 				float t1 = dot(mutable_pos, n1);
 				
@@ -138,7 +135,7 @@
 			
 			
 			
-			return length(mutable_pos) * pow(1.0/scale, float(num_sierpinski_iterations));
+			return length(mutable_pos) * pow(1.0/scale, float(max_iterations));
 		}
 		
 		
@@ -147,9 +144,9 @@
 		{
 			float base = distance_estimator(pos);
 			
-			float x_step = distance_estimator(pos + vec3(.00001, 0.0, 0.0));
-			float y_step = distance_estimator(pos + vec3(0.0, .00001, 0.0));
-			float z_step = distance_estimator(pos + vec3(0.0, 0.0, .00001));
+			float x_step = distance_estimator(pos + vec3(.000001, 0.0, 0.0));
+			float y_step = distance_estimator(pos + vec3(0.0, .000001, 0.0));
+			float z_step = distance_estimator(pos + vec3(0.0, 0.0, .000001));
 			
 			return normalize(vec3(x_step - base, y_step - base, z_step - base));
 		}
@@ -184,9 +181,7 @@
 			
 			vec3 final_color = fog_color;
 			
-			float normalized_scale = scale - min_scale_factor;
-			
-			float epsilon = 1.0 / (normalized_scale * normalized_scale) * .00001;
+			float epsilon = .0000001;
 			
 			float t = 0.0;
 			
@@ -278,7 +273,7 @@
 	
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 	
-	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "scale_center", "n1", "n2", "n3", "n4", "min_scale_factor", "num_ns", "scale", "rotation_matrix_1", "rotation_matrix_2"]);
+	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "scale_center", "n1", "n2", "n3", "n4", "num_ns", "rotation_matrix_1", "rotation_matrix_2"]);
 	
 	
 	
@@ -342,7 +337,9 @@
 	let image_width = 500;
 	let image_height = 500;
 	
-	let num_sierpinski_iterations = 16;
+	let num_sierpinski_iterations = 24;
+	
+	const scale = 2.0;
 	
 	let image_plane_center_pos = [];
 	
@@ -363,15 +360,9 @@
 	let n3 = [[.288675, .5, .816496],  [0, 0, 1], [-.707107, 0, .707107]];
 	let n4 = [[],                      [],        [0, -.707107, .707107]];
 	
-	let min_scale_factor = [1.333, 1.333, 1.333];
-	
 	let num_ns = [3, 3, 4];
 	
 	let scale_center = [[0, 0, 1], [.577350, .577350, .577350], [0, 0, 1]];
-	
-	let scale = 2;
-	let scale_old = 2;
-	let scale_delta = 0;
 	
 	let rotation_angle_x_1 = 0;
 	let rotation_angle_y_1 = 0;
@@ -445,8 +436,6 @@
 	
 	
 	
-	let scale_input_element = document.querySelector("#scale-input");
-	
 	let rotation_angle_x_1_input_element = document.querySelector("#rotation-angle-x-1-input");
 	let rotation_angle_y_1_input_element = document.querySelector("#rotation-angle-y-1-input");
 	let rotation_angle_z_1_input_element = document.querySelector("#rotation-angle-z-1-input");
@@ -455,9 +444,9 @@
 	let rotation_angle_y_2_input_element = document.querySelector("#rotation-angle-y-2-input");
 	let rotation_angle_z_2_input_element = document.querySelector("#rotation-angle-z-2-input");
 	
-	let elements = [scale_input_element, rotation_angle_x_1_input_element, rotation_angle_y_1_input_element, rotation_angle_z_1_input_element, rotation_angle_x_2_input_element, rotation_angle_y_2_input_element, rotation_angle_z_2_input_element];
+	let elements = [rotation_angle_x_1_input_element, rotation_angle_y_1_input_element, rotation_angle_z_1_input_element, rotation_angle_x_2_input_element, rotation_angle_y_2_input_element, rotation_angle_z_2_input_element];
 	
-	for (let i = 0; i < 7; i++)
+	for (let i = 0; i < 6; i++)
 	{
 		elements[i].addEventListener("input", update_parameters);
 	}
@@ -504,11 +493,7 @@
 	wilson.gl.uniform3fv(wilson.uniforms["n3"], n3[polyhedron_index]);
 	wilson.gl.uniform3fv(wilson.uniforms["n4"], n4[polyhedron_index]);
 	
-	wilson.gl.uniform1f(wilson.uniforms["min_scale_factor"], min_scale_factor[polyhedron_index]);
-	
 	wilson.gl.uniform1i(wilson.uniforms["num_ns"], num_ns[polyhedron_index]);
-	
-	wilson.gl.uniform1f(wilson.uniforms["scale"], scale);
 	
 	wilson.gl.uniformMatrix3fv(wilson.uniforms["rotation_matrix_1"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
 	wilson.gl.uniformMatrix3fv(wilson.uniforms["rotation_matrix_2"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
@@ -1057,7 +1042,7 @@
 	
 	function update_camera_parameters()
 	{
-		moving_speed = Math.min(Math.max(.000025, distance_to_scene / 20), .02);
+		moving_speed = Math.min(Math.max(.000001, distance_to_scene / 20), .02);
 		
 		
 		
@@ -1192,8 +1177,6 @@
 		rotation_angle_y_2_input_element.value = Math.round((rotation_angle_y_2_old + rotation_angle_y_2_delta) * 1000000) / 1000000;
 		rotation_angle_z_2_input_element.value = Math.round((rotation_angle_z_2_old + rotation_angle_z_2_delta) * 1000000) / 1000000;
 		
-		scale_old = scale;
-		scale_delta = 0;
 		
 		
 		if (animate_change)
@@ -1216,16 +1199,6 @@
 	
 	function update_parameters()
 	{
-		if (image_size !== small_image_size)
-		{
-			image_size = small_image_size;
-			
-			change_resolution(image_size);
-		}
-		
-		
-		
-		scale_old = scale;
 		rotation_angle_x_1_old = rotation_angle_x_1;
 		rotation_angle_y_1_old = rotation_angle_y_1;
 		rotation_angle_z_1_old = rotation_angle_z_1;
@@ -1233,18 +1206,12 @@
 		rotation_angle_y_2_old = rotation_angle_y_2;
 		rotation_angle_z_2_old = rotation_angle_z_2;
 		
-		scale_delta = (parseFloat(scale_input_element.value || 2) || 2) - scale_old;
 		rotation_angle_x_1_delta = (parseFloat(rotation_angle_x_1_input_element.value || 0) || 0) - rotation_angle_x_1_old;
 		rotation_angle_y_1_delta = (parseFloat(rotation_angle_y_1_input_element.value || 0) || 0) - rotation_angle_y_1_old;
 		rotation_angle_z_1_delta = (parseFloat(rotation_angle_z_1_input_element.value || 0) || 0) - rotation_angle_z_1_old;
 		rotation_angle_x_2_delta = (parseFloat(rotation_angle_x_2_input_element.value || 0) || 0) - rotation_angle_x_2_old;
 		rotation_angle_y_2_delta = (parseFloat(rotation_angle_y_2_input_element.value || 0) || 0) - rotation_angle_y_2_old;
 		rotation_angle_z_2_delta = (parseFloat(rotation_angle_z_2_input_element.value || 0) || 0) - rotation_angle_z_2_old;
-		
-		if (scale_old + scale_delta < min_scale_factor[polyhedron_index] + .1)
-		{
-			scale_delta = min_scale_factor[polyhedron_index] + .1 - scale_old;
-		}
 		
 		animate_parameter_change();
 	}
@@ -1269,17 +1236,12 @@
 	{
 		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 120 - Math.PI / 2) + .5;
 		
-		scale = scale_old + scale_delta * t;
 		rotation_angle_x_1 = rotation_angle_x_1_old + rotation_angle_x_1_delta * t;
 		rotation_angle_y_1 = rotation_angle_y_1_old + rotation_angle_y_1_delta * t;
 		rotation_angle_z_1 = rotation_angle_z_1_old + rotation_angle_z_1_delta * t;
 		rotation_angle_x_2 = rotation_angle_x_2_old + rotation_angle_x_2_delta * t;
 		rotation_angle_y_2 = rotation_angle_y_2_old + rotation_angle_y_2_delta * t;
 		rotation_angle_z_2 = rotation_angle_z_2_old + rotation_angle_z_2_delta * t;
-		
-		
-		
-		wilson.gl.uniform1f(wilson.uniforms["scale"], scale);
 		
 		
 		
@@ -1315,20 +1277,11 @@
 	
 	function change_polyhedron(new_polyhedron_index)
 	{
-		if (image_size !== small_image_size)
-		{
-			image_size = small_image_size;
-			
-			change_resolution(image_size);
-		}
-		
-		
-		
 		wilson.canvas.classList.add("animated-opacity");
 		
 		wilson.canvas.style.opacity = 0;
 		
-		setTimeout(function()
+		setTimeout(() =>
 		{
 			polyhedron_index = new_polyhedron_index;
 			
@@ -1342,8 +1295,6 @@
 			wilson.gl.uniform3fv(wilson.uniforms["n2"], n2[polyhedron_index]);
 			wilson.gl.uniform3fv(wilson.uniforms["n3"], n3[polyhedron_index]);
 			wilson.gl.uniform3fv(wilson.uniforms["n4"], n4[polyhedron_index]);
-			
-			wilson.gl.uniform1f(wilson.uniforms["min_scale_factor"], min_scale_factor[polyhedron_index]);
 			
 			wilson.gl.uniform1i(wilson.uniforms["num_ns"], num_ns[polyhedron_index]);
 			
