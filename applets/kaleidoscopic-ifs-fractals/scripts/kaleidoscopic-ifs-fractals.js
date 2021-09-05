@@ -315,6 +315,16 @@
 	let theta = 3.2954;
 	let phi = 1.9657;
 	
+	let next_theta_velocity = 0;
+	let next_phi_velocity = 0;
+	
+	let theta_velocity = 0;
+	let phi_velocity = 0;
+	
+	const pan_friction = .94;
+	const pan_velocity_start_threshhold = .005;
+	const pan_velocity_stop_threshhold = .0005;
+	
 	
 	
 	let image_size = 500;
@@ -530,6 +540,53 @@
 			
 			window.requestAnimationFrame(draw_frame);
 		}
+		
+		else if (theta_velocity !== 0 || phi_velocity !== 0)
+		{
+			theta += theta_velocity;
+			phi += phi_velocity;
+			
+			
+			
+			if (theta >= 2 * Math.PI)
+			{
+				theta -= 2 * Math.PI;
+			}
+			
+			else if (theta < 0)
+			{
+				theta += 2 * Math.PI;
+			}
+			
+			
+			
+			if (phi > Math.PI - .01)
+			{
+				phi = Math.PI - .01;
+			}
+			
+			else if (phi < .01)
+			{
+				phi = .01;
+			}
+			
+			
+			
+			theta_velocity *= pan_friction;
+			phi_velocity *= pan_friction;
+			
+			if (Math.sqrt(theta_velocity * theta_velocity + phi_velocity * phi_velocity) < pan_velocity_stop_threshhold)
+			{
+				theta_velocity = 0;
+				phi_velocity = 0;
+			}
+			
+			
+			
+			update_camera_parameters();
+			
+			window.requestAnimationFrame(draw_frame);
+		}
 	}
 	
 	
@@ -720,7 +777,13 @@
 	
 	function on_grab_canvas(x, y, event)
 	{
-		//Do something with inertia
+		next_theta_velocity = 0;
+		next_phi_velocity = 0;
+		
+		theta_velocity = 0;
+		phi_velocity = 0;
+		
+		
 		
 		if (event.type === "touchstart")
 		{
@@ -764,6 +827,8 @@
 		
 		theta += x_delta * Math.PI / 2;
 		
+		next_theta_velocity = x_delta * Math.PI / 2;
+		
 		if (theta >= 2 * Math.PI)
 		{
 			theta -= 2 * Math.PI;
@@ -777,6 +842,8 @@
 		
 		
 		phi += y_delta * Math.PI / 2;
+		
+		next_phi_velocity = y_delta * Math.PI / 2;
 		
 		if (phi > Math.PI - .01)
 		{
@@ -805,6 +872,12 @@
 			moving_backward_touch = false;
 			
 			was_moving_touch = true;
+		}
+		
+		if (((event.type === "touchend" && event.touches,length === 0) || event.type === "mouseup") && (Math.sqrt(next_theta_velocity * next_theta_velocity + next_phi_velocity * next_phi_velocity) >= pan_velocity_start_threshhold))
+		{
+			theta_velocity = next_theta_velocity;
+			phi_velocity = next_phi_velocity;
 		}
 	}
 	
