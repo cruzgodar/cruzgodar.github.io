@@ -306,6 +306,17 @@
 	
 	let moving_speed = 0;
 	
+	
+	
+	let next_move_velocity = [0, 0, 0];
+	
+	let move_velocity = [0, 0, 0];
+	
+	const move_friction = .94;
+	const move_velocity_stop_threshhold = .0005;
+	
+	
+	
 	let distance_to_scene = 1;
 	
 	let last_timestamp = -1;
@@ -527,21 +538,25 @@
 		
 		
 		
+		let need_new_frame = false;
+		
+		
+		
 		if (currently_animating_parameters)
 		{
 			animate_parameter_change_step();
 			
-			window.requestAnimationFrame(draw_frame);
+			need_new_frame = true;
 		}
 		
-		else if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
+		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
 		{
 			update_camera_parameters();
 			
-			window.requestAnimationFrame(draw_frame);
+			need_new_frame = true;
 		}
 		
-		else if (theta_velocity !== 0 || phi_velocity !== 0)
+		if (theta_velocity !== 0 || phi_velocity !== 0)
 		{
 			theta += theta_velocity;
 			phi += phi_velocity;
@@ -583,8 +598,39 @@
 			
 			
 			
-			update_camera_parameters();
+			calculate_vectors();
 			
+			need_new_frame = true;
+		}
+		
+		if (move_velocity[0] !== 0 || move_velocity[1] !== 0 || move_velocity[2] !== 0)
+		{
+			camera_pos[0] += move_velocity[0];
+			camera_pos[1] += move_velocity[1];
+			camera_pos[2] += move_velocity[2];
+			
+			move_velocity[0] *= move_friction;
+			move_velocity[1] *= move_friction;
+			move_velocity[2] *= move_friction;
+			
+			if (Math.sqrt(move_velocity[0] * move_velocity[0] + move_velocity[1] * move_velocity[1] + move_velocity[2] * move_velocity[2]) < move_velocity_stop_threshhold * moving_speed)
+			{
+				move_velocity[0] = 0;
+				move_velocity[1] = 0;
+				move_velocity[2] = 0;
+			}
+			
+			
+			
+			calculate_vectors();
+				
+			need_new_frame = true;
+		}
+		
+		
+		
+		if (need_new_frame)
+		{
 			window.requestAnimationFrame(draw_frame);
 		}
 	}
@@ -792,6 +838,14 @@
 				moving_forward_touch = true;
 				moving_backward_touch = false;
 				
+				move_velocity[0] = 0;
+				move_velocity[1] = 0;
+				move_velocity[2] = 0;
+				
+				next_move_velocity[0] = 0;
+				next_move_velocity[1] = 0;
+				next_move_velocity[2] = 0;
+				
 				window.requestAnimationFrame(draw_frame);
 			}
 			
@@ -799,6 +853,14 @@
 			{
 				moving_forward_touch = false;
 				moving_backward_touch = true;
+				
+				move_velocity[0] = 0;
+				move_velocity[1] = 0;
+				move_velocity[2] = 0;
+				
+				next_move_velocity[0] = 0;
+				next_move_velocity[1] = 0;
+				next_move_velocity[2] = 0;
 				
 				window.requestAnimationFrame(draw_frame);
 			}
@@ -872,6 +934,17 @@
 			moving_backward_touch = false;
 			
 			was_moving_touch = true;
+			
+			if (move_velocity[0] === 0 && move_velocity[1] === 0 && move_velocity[2] === 0)
+			{
+				move_velocity[0] = next_move_velocity[0];
+				move_velocity[1] = next_move_velocity[1];
+				move_velocity[2] = next_move_velocity[2];
+				
+				next_move_velocity[0] = 0;
+				next_move_velocity[1] = 0;
+				next_move_velocity[2] = 0;
+			}
 		}
 		
 		if (((event.type === "touchend" && event.touches,length === 0) || event.type === "mouseup") && (Math.sqrt(next_theta_velocity * next_theta_velocity + next_phi_velocity * next_phi_velocity) >= pan_velocity_start_threshhold))
@@ -889,6 +962,11 @@
 		{
 			return;
 		}
+		
+		
+		
+		next_move_velocity = [0, 0, 0];
+		move_velocity = [0, 0, 0];
 		
 		
 		
@@ -929,6 +1007,16 @@
 		{
 			return;
 		}
+		
+		
+		
+		move_velocity[0] = next_move_velocity[0];
+		move_velocity[1] = next_move_velocity[1];
+		move_velocity[2] = next_move_velocity[2];
+		
+		next_move_velocity[0] = 0;
+		next_move_velocity[1] = 0;
+		next_move_velocity[2] = 0;
 		
 		
 		
@@ -973,6 +1061,10 @@
 		
 		
 		
+		let old_camera_pos = [...camera_pos];
+		
+		
+		
 		if (moving_forward_keyboard || moving_forward_touch)
 		{
 			camera_pos[0] += moving_speed * forward_vec[0];
@@ -1002,6 +1094,12 @@
 			camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
 			camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
 		}
+		
+		
+		
+		next_move_velocity[0] = camera_pos[0] - old_camera_pos[0];
+		next_move_velocity[1] = camera_pos[1] - old_camera_pos[1];
+		next_move_velocity[2] = camera_pos[2] - old_camera_pos[2];
 		
 		
 		
