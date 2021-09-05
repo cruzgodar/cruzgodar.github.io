@@ -302,6 +302,8 @@
 	let moving_forward_touch = false;
 	let moving_backward_touch = false;
 	
+	let was_moving_touch = false;
+	
 	let moving_speed = 0;
 	
 	let distance_to_scene = 1;
@@ -434,18 +436,16 @@
 	
 	let elements = [scale_input_element, rotation_angle_x_1_input_element, rotation_angle_y_1_input_element, rotation_angle_z_1_input_element, rotation_angle_x_2_input_element, rotation_angle_y_2_input_element, rotation_angle_z_2_input_element];
 	
-	/*
 	for (let i = 0; i < 7; i++)
 	{
 		elements[i].addEventListener("input", update_parameters);
 	}
-	*/
 	
 	
 	
 	let randomize_parameters_button_element = document.querySelector("#randomize-parameters-button");
 	
-	//randomize_parameters_button_element.addEventListener("click", randomize_parameters);
+	randomize_parameters_button_element.addEventListener("click", randomize_parameters);
 	
 	
 	
@@ -494,10 +494,6 @@
 	
 	
 	
-	console.log(image_width / image_height, image_size, camera_pos, image_plane_center_pos, light_pos, scale_center[polyhedron_index], forward_vec, right_vec, up_vec, focal_length, n1[polyhedron_index], n2[polyhedron_index], n3[polyhedron_index], n4[polyhedron_index], min_scale_factor[polyhedron_index], num_ns[polyhedron_index], scale);
-	
-	
-	
 	window.requestAnimationFrame(draw_frame);
 	
 	
@@ -528,7 +524,7 @@
 			window.requestAnimationFrame(draw_frame);
 		}
 		
-		else if (currently_drawing)
+		else if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
 		{
 			update_camera_parameters();
 			
@@ -725,12 +721,47 @@
 	function on_grab_canvas(x, y, event)
 	{
 		//Do something with inertia
+		
+		if (event.type === "touchstart")
+		{
+			if (event.touches.length === 2)
+			{
+				moving_forward_touch = true;
+				moving_backward_touch = false;
+				
+				window.requestAnimationFrame(draw_frame);
+			}
+			
+			else if (event.touches.length === 3)
+			{
+				moving_forward_touch = false;
+				moving_backward_touch = true;
+				
+				window.requestAnimationFrame(draw_frame);
+			}
+			
+			else
+			{
+				moving_forward_touch = false;
+				moving_backward_touch = false;
+			}
+			
+			was_moving_touch = false;
+		}
 	}
 	
 	
 	
 	function on_drag_canvas(x, y, x_delta, y_delta, event)
 	{
+		if (event.type === "touchmove" && was_moving_touch)
+		{
+			was_moving_touch = false;
+			return;
+		}
+		
+		
+		
 		theta += x_delta * Math.PI / 2;
 		
 		if (theta >= 2 * Math.PI)
@@ -768,87 +799,14 @@
 	
 	function on_release_canvas(x, y, event)
 	{
-		//Do something else with inertia
+		if (event.type === "touchend")
+		{
+			moving_forward_touch = false;
+			moving_backward_touch = false;
+			
+			was_moving_touch = true;
+		}
 	}
-	
-	
-	
-	/*
-		document.querySelector("#output-canvas").addEventListener("touchstart", function(e)
-		{
-			currently_dragging = true;
-			
-			mouse_x = e.touches[0].clientX;
-			mouse_y = e.touches[0].clientY;
-			
-			if (e.touches.length === 2)
-			{
-				moving_forward_touch = true;
-				moving_backward_touch = false;
-			}
-			
-			else if (e.touches.length === 3)
-			{
-				moving_backward_touch = true;
-				moving_forward_touch = false;
-			}
-			
-			
-			
-			if (!currently_drawing && !currently_animating_parameters)
-			{
-				currently_drawing = true;
-				
-				draw_start_time = Date.now();
-				
-				image_size = small_image_size;
-				
-				change_resolution(image_size);
-				
-				window.requestAnimationFrame(draw_frame);
-			}
-		});
-		
-		
-		document.querySelector("#output-canvas").addEventListener("touchend", function(e)
-		{
-			if (e.touches.length === 2)
-			{
-				moving_forward_touch = true;
-				moving_backward_touch = false;
-			}
-			
-			else if (e.touches.length === 3)
-			{
-				moving_backward_touch = true;
-				moving_forward_touch = false;
-			}
-			
-			else
-			{
-				moving_forward_touch = false;
-				moving_backward_touch = false;
-				
-				if (e.touches.length === 0)
-				{
-					currently_dragging = false;
-				}
-			}
-			
-			
-			
-			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch;
-			
-			if (!currently_drawing && (Date.now() - draw_start_time > 300))
-			{
-				image_size = large_image_size;
-				
-				change_resolution(image_size);
-				
-				window.requestAnimationFrame(draw_frame);
-			}
-		});
-	*/
 	
 	
 	
@@ -938,46 +896,43 @@
 	
 	function update_camera_parameters()
 	{
-		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
+		moving_speed = Math.min(Math.max(.000025, distance_to_scene / 20), .02);
+		
+		
+		
+		if (moving_forward_keyboard || moving_forward_touch)
 		{
-			moving_speed = Math.min(Math.max(.000025, distance_to_scene / 20), .02);
-			
-			
-			
-			if (moving_forward_keyboard || moving_forward_touch)
-			{
-				camera_pos[0] += moving_speed * forward_vec[0];
-				camera_pos[1] += moving_speed * forward_vec[1];
-				camera_pos[2] += moving_speed * forward_vec[2];
-			}
-			
-			else if (moving_backward_keyboard || moving_backward_touch)
-			{
-				camera_pos[0] -= moving_speed * forward_vec[0];
-				camera_pos[1] -= moving_speed * forward_vec[1];
-				camera_pos[2] -= moving_speed * forward_vec[2];
-			}
-			
-			
-			
-			if (moving_right_keyboard)
-			{
-				camera_pos[0] += moving_speed * right_vec[0] / focal_length;
-				camera_pos[1] += moving_speed * right_vec[1] / focal_length;
-				camera_pos[2] += moving_speed * right_vec[2] / focal_length;
-			}
-			
-			else if (moving_left_keyboard)
-			{
-				camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
-				camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
-				camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
-			}
-		
-		
-		
-			calculate_vectors();
+			camera_pos[0] += moving_speed * forward_vec[0];
+			camera_pos[1] += moving_speed * forward_vec[1];
+			camera_pos[2] += moving_speed * forward_vec[2];
 		}
+		
+		else if (moving_backward_keyboard || moving_backward_touch)
+		{
+			camera_pos[0] -= moving_speed * forward_vec[0];
+			camera_pos[1] -= moving_speed * forward_vec[1];
+			camera_pos[2] -= moving_speed * forward_vec[2];
+		}
+		
+		
+		
+		if (moving_right_keyboard)
+		{
+			camera_pos[0] += moving_speed * right_vec[0] / focal_length;
+			camera_pos[1] += moving_speed * right_vec[1] / focal_length;
+			camera_pos[2] += moving_speed * right_vec[2] / focal_length;
+		}
+		
+		else if (moving_left_keyboard)
+		{
+			camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
+			camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
+			camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
+		}
+		
+		
+		
+		calculate_vectors();
 	}
 	
 	
@@ -1001,6 +956,12 @@
 				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
 				image_height = image_size;
 			}
+		}
+		
+		else
+		{
+			image_width = image_size;
+			image_height = image_size;
 		}
 		
 		
@@ -1029,21 +990,12 @@
 	}
 	
 	
-	/*
+	
 	function randomize_parameters(animate_change = true)
 	{
 		if (currently_animating_parameters)
 		{
 			return;
-		}
-		
-		
-		
-		if (image_size !== small_image_size)
-		{
-			image_size = small_image_size;
-			
-			change_resolution(image_size);
 		}
 		
 		
@@ -1062,12 +1014,12 @@
 		rotation_angle_y_2_delta = Math.random()*.75 - .375 - rotation_angle_y_2_old;
 		rotation_angle_z_2_delta = Math.random()*1.5 - .75 - rotation_angle_z_2_old;
 		
-		document.querySelector("#rotation-angle-x-1-input").value = Math.round((rotation_angle_x_1_old + rotation_angle_x_1_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-y-1-input").value = Math.round((rotation_angle_y_1_old + rotation_angle_y_1_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-z-1-input").value = Math.round((rotation_angle_z_1_old + rotation_angle_z_1_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-x-2-input").value = Math.round((rotation_angle_x_2_old + rotation_angle_x_2_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-y-2-input").value = Math.round((rotation_angle_y_2_old + rotation_angle_y_2_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-z-2-input").value = Math.round((rotation_angle_z_2_old + rotation_angle_z_2_delta) * 1000000) / 1000000;
+		rotation_angle_x_1_input_element.value = Math.round((rotation_angle_x_1_old + rotation_angle_x_1_delta) * 1000000) / 1000000;
+		rotation_angle_y_1_input_element.value = Math.round((rotation_angle_y_1_old + rotation_angle_y_1_delta) * 1000000) / 1000000;
+		rotation_angle_z_1_input_element.value = Math.round((rotation_angle_z_1_old + rotation_angle_z_1_delta) * 1000000) / 1000000;
+		rotation_angle_x_2_input_element.value = Math.round((rotation_angle_x_2_old + rotation_angle_x_2_delta) * 1000000) / 1000000;
+		rotation_angle_y_2_input_element.value = Math.round((rotation_angle_y_2_old + rotation_angle_y_2_delta) * 1000000) / 1000000;
+		rotation_angle_z_2_input_element.value = Math.round((rotation_angle_z_2_old + rotation_angle_z_2_delta) * 1000000) / 1000000;
 		
 		scale_old = scale;
 		scale_delta = 0;
@@ -1110,13 +1062,13 @@
 		rotation_angle_y_2_old = rotation_angle_y_2;
 		rotation_angle_z_2_old = rotation_angle_z_2;
 		
-		scale_delta = (parseFloat(document.querySelector("#scale-input").value || 2) || 2) - scale_old;
-		rotation_angle_x_1_delta = (parseFloat(document.querySelector("#rotation-angle-x-1-input").value || 0) || 0) - rotation_angle_x_1_old;
-		rotation_angle_y_1_delta = (parseFloat(document.querySelector("#rotation-angle-y-1-input").value || 0) || 0) - rotation_angle_y_1_old;
-		rotation_angle_z_1_delta = (parseFloat(document.querySelector("#rotation-angle-z-1-input").value || 0) || 0) - rotation_angle_z_1_old;
-		rotation_angle_x_2_delta = (parseFloat(document.querySelector("#rotation-angle-x-2-input").value || 0) || 0) - rotation_angle_x_2_old;
-		rotation_angle_y_2_delta = (parseFloat(document.querySelector("#rotation-angle-y-2-input").value || 0) || 0) - rotation_angle_y_2_old;
-		rotation_angle_z_2_delta = (parseFloat(document.querySelector("#rotation-angle-z-2-input").value || 0) || 0) - rotation_angle_z_2_old;
+		scale_delta = (parseFloat(scale_input_element.value || 2) || 2) - scale_old;
+		rotation_angle_x_1_delta = (parseFloat(rotation_angle_x_1_input_element.value || 0) || 0) - rotation_angle_x_1_old;
+		rotation_angle_y_1_delta = (parseFloat(rotation_angle_y_1_input_element.value || 0) || 0) - rotation_angle_y_1_old;
+		rotation_angle_z_1_delta = (parseFloat(rotation_angle_z_1_input_element.value || 0) || 0) - rotation_angle_z_1_old;
+		rotation_angle_x_2_delta = (parseFloat(rotation_angle_x_2_input_element.value || 0) || 0) - rotation_angle_x_2_old;
+		rotation_angle_y_2_delta = (parseFloat(rotation_angle_y_2_input_element.value || 0) || 0) - rotation_angle_y_2_old;
+		rotation_angle_z_2_delta = (parseFloat(rotation_angle_z_2_input_element.value || 0) || 0) - rotation_angle_z_2_old;
 		
 		if (scale_old + scale_delta < min_scale_factor[polyhedron_index] + .1)
 		{
@@ -1130,11 +1082,14 @@
 	
 	function animate_parameter_change()
 	{
-		currently_animating_parameters = true;
-		
-		parameter_animation_frame = 0;
-		
-		window.requestAnimationFrame(draw_frame);
+		if (!currently_animating_parameters)
+		{
+			currently_animating_parameters = true;
+			
+			parameter_animation_frame = 0;
+			
+			window.requestAnimationFrame(draw_frame);
+		}
 	}
 	
 	
@@ -1153,7 +1108,7 @@
 		
 		
 		
-		gl.uniform1f(shader_program.scale_uniform, scale);
+		wilson.gl.uniform1f(wilson.uniforms["scale"], scale);
 		
 		
 		
@@ -1163,7 +1118,7 @@
 		
 		let mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
 		
-		gl.uniformMatrix3fv(shader_program.rotation_matrix_1_uniform, false, [mat_total[0][0], mat_total[1][0], mat_total[2][0], mat_total[0][1], mat_total[1][1], mat_total[2][1], mat_total[0][2], mat_total[1][2], mat_total[2][2]]);
+		wilson.gl.uniformMatrix3fv(wilson.uniforms["rotation_matrix_1"], false, [mat_total[0][0], mat_total[1][0], mat_total[2][0], mat_total[0][1], mat_total[1][1], mat_total[2][1], mat_total[0][2], mat_total[1][2], mat_total[2][2]]);
 		
 		
 		
@@ -1173,7 +1128,7 @@
 		
 		mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
 		
-		gl.uniformMatrix3fv(shader_program.rotation_matrix_2_uniform, false, [mat_total[0][0], mat_total[1][0], mat_total[2][0], mat_total[0][1], mat_total[1][1], mat_total[2][1], mat_total[0][2], mat_total[1][2], mat_total[2][2]]);
+		wilson.gl.uniformMatrix3fv(wilson.uniforms["rotation_matrix_2"], false, [mat_total[0][0], mat_total[1][0], mat_total[2][0], mat_total[0][1], mat_total[1][1], mat_total[2][1], mat_total[0][2], mat_total[1][2], mat_total[2][2]]);
 		
 		
 		
@@ -1198,9 +1153,9 @@
 		
 		
 		
-		document.querySelector("#output-canvas").classList.add("animated-opacity");
+		wilson.canvas.classList.add("animated-opacity");
 		
-		document.querySelector("#output-canvas").style.opacity = 0;
+		wilson.canvas.style.opacity = 0;
 		
 		setTimeout(function()
 		{
@@ -1208,31 +1163,29 @@
 			
 			
 			
-			gl.uniform3fv(shader_program.light_pos_uniform, light_pos[polyhedron_index]);
+			wilson.gl.uniform3fv(wilson.uniforms["light_pos"], light_pos[polyhedron_index]);
 			
-			gl.uniform3fv(shader_program.scale_center_uniform, scale_center[polyhedron_index]);
+			wilson.gl.uniform3fv(wilson.uniforms["scale_center"], scale_center[polyhedron_index]);
 			
-			gl.uniform3fv(shader_program.n1_uniform, n1[polyhedron_index]);
-			gl.uniform3fv(shader_program.n2_uniform, n2[polyhedron_index]);
-			gl.uniform3fv(shader_program.n3_uniform, n3[polyhedron_index]);
-			gl.uniform3fv(shader_program.n4_uniform, n4[polyhedron_index]);
+			wilson.gl.uniform3fv(wilson.uniforms["n1"], n1[polyhedron_index]);
+			wilson.gl.uniform3fv(wilson.uniforms["n2"], n2[polyhedron_index]);
+			wilson.gl.uniform3fv(wilson.uniforms["n3"], n3[polyhedron_index]);
+			wilson.gl.uniform3fv(wilson.uniforms["n4"], n4[polyhedron_index]);
 			
-			gl.uniform1f(shader_program.min_scale_factor_uniform, min_scale_factor[polyhedron_index]);
+			wilson.gl.uniform1f(wilson.uniforms["min_scale_factor"], min_scale_factor[polyhedron_index]);
 			
-			gl.uniform1i(shader_program.num_ns_uniform, num_ns[polyhedron_index]);
+			wilson.gl.uniform1i(wilson.uniforms["num_ns"], num_ns[polyhedron_index]);
 			
 			
 			
 			window.requestAnimationFrame(draw_frame);
 			
-			document.querySelector("#output-canvas").style.opacity = 1;
+			wilson.canvas.style.opacity = 1;
 			
-			setTimeout(function()
+			setTimeout(() =>
 			{
-				document.querySelector("#output-canvas").classList.remove("animated-opacity");
+				wilson.canvas.classList.remove("animated-opacity");
 			});
 		}, 300);
 	}
-	
-	*/
 }()
