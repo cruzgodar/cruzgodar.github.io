@@ -1166,12 +1166,12 @@
 		rotation_angle_y_2_old = rotation_angle_y_2;
 		rotation_angle_z_2_old = rotation_angle_z_2;
 		
-		rotation_angle_x_1_delta = Math.random()*.75 - .375 - rotation_angle_x_1_old;
-		rotation_angle_y_1_delta = Math.random()*.75 - .375 - rotation_angle_y_1_old;
-		rotation_angle_z_1_delta = Math.random()*1.5 - .75 - rotation_angle_z_1_old;
-		rotation_angle_x_2_delta = Math.random()*.75 - .375 - rotation_angle_x_2_old;
-		rotation_angle_y_2_delta = Math.random()*.75 - .375 - rotation_angle_y_2_old;
-		rotation_angle_z_2_delta = Math.random()*1.5 - .75 - rotation_angle_z_2_old;
+		rotation_angle_x_1_delta = Math.random()*.375 - .1875 - rotation_angle_x_1_old;
+		rotation_angle_y_1_delta = Math.random()*.375 - .1875 - rotation_angle_y_1_old;
+		rotation_angle_z_1_delta = Math.random()*.75 - .375 - rotation_angle_z_1_old;
+		rotation_angle_x_2_delta = Math.random()*.375 - .1875 - rotation_angle_x_2_old;
+		rotation_angle_y_2_delta = Math.random()*.375 - .1875 - rotation_angle_y_2_old;
+		rotation_angle_z_2_delta = Math.random()*.75 - .375 - rotation_angle_z_2_old;
 		
 		rotation_angle_x_1_input_element.value = Math.round((rotation_angle_x_1_old + rotation_angle_x_1_delta) * 1000000) / 1000000;
 		rotation_angle_y_1_input_element.value = Math.round((rotation_angle_y_1_old + rotation_angle_y_1_delta) * 1000000) / 1000000;
