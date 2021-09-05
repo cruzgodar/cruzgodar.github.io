@@ -995,13 +995,16 @@
 		
 		
 		
-		move_velocity[0] = next_move_velocity[0];
-		move_velocity[1] = next_move_velocity[1];
-		move_velocity[2] = next_move_velocity[2];
-		
-		next_move_velocity[0] = 0;
-		next_move_velocity[1] = 0;
-		next_move_velocity[2] = 0;
+		if (move_velocity[0] === 0 && move_velocity[1] === 0 && move_velocity[2] === 0)
+		{
+			move_velocity[0] = next_move_velocity[0];
+			move_velocity[1] = next_move_velocity[1];
+			move_velocity[2] = next_move_velocity[2];
+			
+			next_move_velocity[0] = 0;
+			next_move_velocity[1] = 0;
+			next_move_velocity[2] = 0;
+		}
 		
 		
 		
