@@ -4,225 +4,7 @@
 	
 	
 	
-	let gl = document.querySelector("#output-canvas").getContext("webgl");
-	
-	let canvas_size = Math.min(document.querySelector("#output-canvas").offsetWidth, document.querySelector("#output-canvas").offsetHeight);
-	
-	let currently_drawing = false;
-	let currently_animating_parameters = false;
-	
-	let currently_dragging = false;
-	
-	let draw_start_time = 0;
-	
-	let mouse_x = 0;
-	let mouse_y = 0;
-	
-	let moving_forward_keyboard = false;
-	let moving_backward_keyboard = false;
-	let moving_right_keyboard = false;
-	let moving_left_keyboard = false;
-	let moving_up_keyboard = false;
-	let moving_down_keyboard = false;
-	
-	let moving_forward_touch = false;
-	let moving_backward_touch = false;
-	
-	let moving_pos = true;
-	
-	let moving_speed = 0;
-	
-	let distance_to_scene = 1;
-	
-	
-	
-	let theta = 4.6601;
-	let phi = 2.272;
-	
-	
-	
-	let image_size = 500;
-	let image_width = 500;
-	let image_height = 500;
-	
-	let small_image_size = 500;
-	let large_image_size = 1500;
-	
-	let num_iterations = 32;
-	
-	let image_plane_center_pos = [];
-	
-	let forward_vec = [];
-	let right_vec = [];
-	let up_vec = [];
-	
-	let camera_pos = [.0828, 2.17, 1.8925];
-	
-	let power = 8;
-	let c = [0, 0, 0];
-	let c_old = [0, 0, 0];
-	let c_delta = [0, 0, 0];
-	
-	let rotation_angle_x = 0;
-	let rotation_angle_y = 0;
-	let rotation_angle_z = 0;
-	
-	let julia_proportion = 0;
-	
-	let power_old = 8;
-	let power_delta = 0;
-	
-	let julia_proportion_old = 0;
-	let julia_proportion_delta = 0;
-	
-	let rotation_angle_x_old = 0;
-	let rotation_angle_y_old = 0;
-	let rotation_angle_z_old = 0;
-	let rotation_angle_x_delta = 0;
-	let rotation_angle_y_delta = 0;
-	let rotation_angle_z_delta = 0;
-	
-	let focal_length = 2;
-	
-	let light_pos = [0, 0, 5];
-	
-	let parameter_animation_frame = 0;
-	
-	let frame = 0;
-	
-	
-	
-	document.querySelector("#output-canvas").setAttribute("width", image_width);
-	document.querySelector("#output-canvas").setAttribute("height", image_height);
-	
-	document.querySelector("#dim-input").addEventListener("input", function()
-	{
-		change_resolution(0);
-		
-		window.requestAnimationFrame(draw_frame);
-	});
-	
-	document.querySelector("#generate-high-res-image-button").addEventListener("click", prepare_download);
-	
-	
-	
-	let elements = document.querySelectorAll("#power-input, #rotation-angle-x-input, #rotation-angle-y-input, #rotation-angle-z-input, #c-x-input, #c-y-input, #c-z-input");
-	
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].addEventListener("input", update_parameters);
-	}
-	
-	document.querySelector("#randomize-parameters-button").addEventListener("click", randomize_parameters);
-	document.querySelector("#switch-bulb-button").addEventListener("click", switch_bulb);
-	document.querySelector("#switch-movement-button").addEventListener("click", switch_movement);
-	
-	
-	
-	setTimeout(function()
-	{
-		document.querySelector("#switch-bulb-button").textContent = "Switch to Juliabulb";
-	}, 100);
-	
-	
-	
-	
-	window.addEventListener("resize", fractals_resize);
-	setTimeout(fractals_resize, 500);
-	
-	
-	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#output-canvas")];
-	
-	Page.Applets.Canvases.resize_callback = function()
-	{
-		if (Page.Applets.Canvases.is_fullscreen)
-		{
-			if (Page.Layout.aspect_ratio >= 1)
-			{
-				image_width = image_size;
-				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
-			}
-			
-			else
-			{
-				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
-				image_height = image_size;
-			}
-		}
-		
-		else
-		{
-			image_width = image_size;
-			image_height = image_size;
-		}
-		
-		
-		
-		canvas_size = Math.min(document.querySelector("#output-canvas").offsetWidth, document.querySelector("#output-canvas").offsetHeight);
-		
-		document.querySelector("#output-canvas").setAttribute("width", image_width);
-		document.querySelector("#output-canvas").setAttribute("height", image_height);
-		
-		
-		
-		if (image_width >= image_height)
-		{
-			gl.uniform1f(shader_program.aspect_ratio_x_uniform, image_width / image_height);
-			gl.uniform1f(shader_program.aspect_ratio_y_uniform, 1);
-		}
-		
-		else
-		{
-			gl.uniform1f(shader_program.aspect_ratio_x_uniform, 1);
-			gl.uniform1f(shader_program.aspect_ratio_y_uniform, image_width / image_height);
-		}
-		
-		
-		
-		gl.uniform1i(shader_program.image_size_uniform, image_size);
-		
-		gl.viewport(0, 0, image_width, image_height);
-		
-		
-		
-		fractals_resize();
-		
-		
-		
-		window.requestAnimationFrame(draw_frame);
-	};
-	
-	Page.Applets.Canvases.true_fullscreen = true;
-	
-	Page.Applets.Canvases.set_up_resizer();
-	
-	
-	
-	init_listeners();
-	
-	
-	
-	setTimeout(setup_webgl, 500);
-	
-	
-	
-	const vertex_shader_source = `
-		attribute vec3 position;
-		varying vec2 uv;
-
-		void main(void)
-		{
-			gl_Position = vec4(position, 1.0);
-
-			//Interpolate quad coordinates in the fragment shader.
-			uv = position.xy;
-		}
-	`;
-	
-	
-	
-	const frag_shader_source = `
+	let frag_shader_source = `
 		precision highp float;
 		
 		varying vec2 uv;
@@ -251,17 +33,17 @@
 		const int max_marches = 64; //Change to 512 to eliminate flickering in animations
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .2;
-		const int num_iterations = 32;
+		const int max_iterations = 32;
 		
-		uniform float power;
-		uniform vec3 c;
-		uniform float julia_proportion;
 		
 		vec3 color;
 		
 		
-		
 		uniform mat3 rotation_matrix;
+		
+		uniform float power;
+		uniform vec3 c;
+		uniform float julia_proportion;
 		
 		
 		
@@ -275,7 +57,7 @@
 			color = vec3(1.0, 1.0, 1.0);
 			float color_scale = .5;
 			
-			for (int iteration = 0; iteration < num_iterations; iteration++)
+			for (int iteration = 0; iteration < max_iterations; iteration++)
 			{
 				if (r > 16.0)
 				{
@@ -352,16 +134,12 @@
 			float light_intensity = light_brightness * max(dot_product, -.25 * dot_product);
 			
 			//The last factor adds ambient occlusion.
-			color = color * light_intensity * max(1.0 - float(iteration) / float(max_marches), 0.0);
+			color = color * light_intensity * max((1.0 - float(iteration) / float(max_marches)), 0.0);
 			
 			
 			
 			//Apply fog.
-			float distance_from_camera = distance(pos, camera_pos);
-			
-			float fog_amount = 1.0 - exp(-distance_from_camera * fog_scaling);
-			
-			return mix(color, fog_color, fog_amount);
+			return mix(color, fog_color, 1.0 - exp(-distance(pos, camera_pos) * fog_scaling));
 		}
 		
 		
@@ -443,174 +221,292 @@
 		{
 			//Uncomment to use 2x antialiasing.
 			//vec3 final_color = (raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size)))) / 4.0;
-			
-			vec3 final_color = raymarch(image_plane_center_pos + right_vec * uv.x * aspect_ratio_x + up_vec * uv.y / aspect_ratio_y);
 				
+			vec3 final_color = raymarch(image_plane_center_pos + right_vec * uv.x * aspect_ratio_x + up_vec * uv.y / aspect_ratio_y);
+			
 			gl_FragColor = vec4(final_color.xyz, 1.0);
 		}
 	`;
 	
 	
 	
-	let shader_program = null;
-	
-	function setup_webgl()
+	let options =
 	{
-		let vertex_shader = load_shader(gl, gl.VERTEX_SHADER, vertex_shader_source);
+		renderer: "gpu",
 		
-		let frag_shader = load_shader(gl, gl.FRAGMENT_SHADER, frag_shader_source);
+		shader: frag_shader_source,
 		
-		shader_program = gl.createProgram();
-		
-		gl.attachShader(shader_program, vertex_shader);
-		gl.attachShader(shader_program, frag_shader);
-		gl.linkProgram(shader_program);
-		
-		if (!gl.getProgramParameter(shader_program, gl.LINK_STATUS))
-		{
-			console.log(`Couldn't link shader program: ${gl.getShaderInfoLog(shader)}`);
-			gl.deleteProgram(shader_program);
-		}
+		canvas_width: 500,
+		canvas_height: 500,
 		
 		
 		
-		gl.useProgram(shader_program);
+		use_fullscreen: true,
+		
+		true_fullscreen: true,
+	
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+		
+		switch_fullscreen_callback: change_resolution,
 		
 		
 		
-		let quad = [-1, -1, 0,   -1, 1, 0,   1, -1, 0,   1, 1, 0];
+		mousedown_callback: on_grab_canvas,
+		touchstart_callback: on_grab_canvas,
 		
+		mousedrag_callback: on_drag_canvas,
+		touchmove_callback: on_drag_canvas,
 		
-		
-		let position_buffer = gl.createBuffer();
-		
-		gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
-		
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(quad), gl.STATIC_DRAW);
-		
-		shader_program.position_attribute = gl.getAttribLocation(shader_program, "position");
-		
-		gl.enableVertexAttribArray(shader_program.position_attribute);
-		
-		gl.vertexAttribPointer(shader_program.position_attribute, 3, gl.FLOAT, false, 0, 0);
-		
-		
-		
-		calculate_vectors();
-		
-		
-		
-		shader_program.aspect_ratio_x_uniform = gl.getUniformLocation(shader_program, "aspect_ratio_x");
-		shader_program.aspect_ratio_y_uniform = gl.getUniformLocation(shader_program, "aspect_ratio_y");
-		
-		shader_program.image_size_uniform = gl.getUniformLocation(shader_program, "image_size");
-		
-		shader_program.camera_pos_uniform = gl.getUniformLocation(shader_program, "camera_pos");
-		shader_program.image_plane_center_pos_uniform = gl.getUniformLocation(shader_program, "image_plane_center_pos");
-		shader_program.forward_vec_uniform = gl.getUniformLocation(shader_program, "forward_vec");
-		shader_program.right_vec_uniform = gl.getUniformLocation(shader_program, "right_vec");
-		shader_program.up_vec_uniform = gl.getUniformLocation(shader_program, "up_vec");
-		
-		shader_program.focal_length_uniform = gl.getUniformLocation(shader_program, "focal_length");
-		
-		shader_program.light_pos_uniform = gl.getUniformLocation(shader_program, "light_pos");
-		
-		shader_program.power_uniform = gl.getUniformLocation(shader_program, "power");
-		shader_program.c_uniform = gl.getUniformLocation(shader_program, "c");
-		
-		shader_program.rotation_matrix_uniform = gl.getUniformLocation(shader_program, "rotation_matrix");
-		
-		shader_program.julia_proportion_uniform = gl.getUniformLocation(shader_program, "julia_proportion");
-		
-		shader_program.draw_sphere_uniform = gl.getUniformLocation(shader_program, "draw_sphere");
-		
-		
-		
-		if (image_width >= image_height)
-		{
-			gl.uniform1f(shader_program.aspect_ratio_x_uniform, image_width / image_height);
-			gl.uniform1f(shader_program.aspect_ratio_y_uniform, 1);
+		mouseup_callback: on_release_canvas,
+		touchend_callback: on_release_canvas
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "draw_sphere", "power", "c", "julia_proportion", "rotation_matrix"]);
+	
+	
+	
+	
+	
+	let currently_drawing = false;
+	let currently_animating_parameters = false;
+	
+	let currently_dragging = false;
+	
+	let draw_start_time = 0;
+	
+	let mouse_x = 0;
+	let mouse_y = 0;
+	
+	let moving_forward_keyboard = false;
+	let moving_backward_keyboard = false;
+	let moving_right_keyboard = false;
+	let moving_left_keyboard = false;
+	
+	let moving_forward_touch = false;
+	let moving_backward_touch = false;
+	
+	let was_moving_touch = false;
+	
+	let moving_speed = 0;
+	
+	
+	
+	let next_move_velocity = [0, 0, 0];
+	
+	let move_velocity = [0, 0, 0];
+	
+	const move_friction = .94;
+	const move_velocity_stop_threshhold = .0005;
+	
+	
+	
+	let distance_to_scene = 1;
+	
+	let last_timestamp = -1;
+	
+	
+	
+	let theta = 4.6601;
+	let phi = 2.272;
+	
+	let next_theta_velocity = 0;
+	let next_phi_velocity = 0;
+	
+	let theta_velocity = 0;
+	let phi_velocity = 0;
+	
+	const pan_friction = .94;
+	const pan_velocity_start_threshhold = .005;
+	const pan_velocity_stop_threshhold = .0005;
+	
+	
+	
+	let image_size = 500;
+	let image_width = 500;
+	let image_height = 500;
+	
+	let num_iterations = 32;
+	
+	let image_plane_center_pos = [];
+	
+	let forward_vec = [];
+	let right_vec = [];
+	let up_vec = [];
+	
+	let camera_pos = [.0828, 2.17, 1.8925];
+	
+	let focal_length = 2;
+	
+	let light_pos = [0, 0, 5];
+	
+	let power = 8;
+	let c = [0, 0, 0];
+	let c_old = [0, 0, 0];
+	let c_delta = [0, 0, 0];
+	
+	let rotation_angle_x = 0;
+	let rotation_angle_y = 0;
+	let rotation_angle_z = 0;
+	
+	let julia_proportion = 0;
+	let moving_pos = 1;
+	
+	let power_old = 8;
+	let power_delta = 0;
+	
+	let julia_proportion_old = 0;
+	let julia_proportion_delta = 0;
+	
+	let rotation_angle_x_old = 0;
+	let rotation_angle_y_old = 0;
+	let rotation_angle_z_old = 0;
+	let rotation_angle_x_delta = 0;
+	let rotation_angle_y_delta = 0;
+	let rotation_angle_z_delta = 0;
+	
+	let parameter_animation_frame = 0;
+	
+	
+	
+	let resolution_input_element = document.querySelector("#resolution-input");
+	
+	resolution_input_element.addEventListener("input", change_resolution);
+	
+	
+	
+	let download_button_element = document.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", () =>
+	{
+		if (julia_proportion === 0)
+		{	
+			wilson.download_frame("the-mandelbulb.png");
 		}
 		
 		else
 		{
-			gl.uniform1f(shader_program.aspect_ratio_x_uniform, 1);
-			gl.uniform1f(shader_program.aspect_ratio_y_uniform, image_width / image_height);
+			wilson.download_frame("a-juliabulb.png");
 		}
-		
-		
-		
-		gl.uniform1i(shader_program.image_size_uniform, image_size);
-		
-		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
-		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
-		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
-		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
-		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
-		
-		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
-		
-		gl.uniformMatrix3fv(shader_program.rotation_matrix_uniform, false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
-		
-		gl.uniform3fv(shader_program.light_pos_uniform, light_pos);
-		
-		gl.uniform1f(shader_program.power_uniform, power);
-		gl.uniform3fv(shader_program.c_uniform, c);
-		
-		gl.uniform1f(shader_program.julia_proportion_uniform, julia_proportion);
-		
-		gl.uniform1i(shader_program.draw_sphere_uniform, 0);
-		
-		
-		
-		gl.viewport(0, 0, image_width, image_height);
-		
-		
-		
-		window.requestAnimationFrame(draw_frame);
+	});
+	
+	
+	
+	let rotation_angle_x_input_element = document.querySelector("#rotation-angle-x-input");
+	let rotation_angle_y_input_element = document.querySelector("#rotation-angle-y-input");
+	let rotation_angle_z_input_element = document.querySelector("#rotation-angle-z-input");
+	
+	let c_x_input_element = document.querySelector("#c-x-input");
+	let c_y_input_element = document.querySelector("#c-y-input");
+	let c_z_input_element = document.querySelector("#c-z-input");
+	
+	let power_input_element = document.querySelector("#power-input");
+	
+	let elements = [rotation_angle_x_input_element, rotation_angle_y_input_element, rotation_angle_z_input_element, c_x_input_element, c_y_input_element, c_z_input_element, power_input_element];
+	
+	for (let i = 0; i < 7; i++)
+	{
+		elements[i].addEventListener("input", update_parameters);
 	}
 	
 	
 	
-	function load_shader(gl, type, source)
+	let randomize_rotation_button_element = document.querySelector("#randomize-rotation-button");
+	
+	randomize_rotation_button_element.addEventListener("click", randomize_rotation);
+	
+	
+	
+	let randomize_c_button_element = document.querySelector("#randomize-c-button");
+	
+	randomize_c_button_element.addEventListener("click", randomize_c);
+	
+	
+	
+	let switch_bulb_button_element = document.querySelector("#switch-bulb-button");
+	
+	switch_bulb_button_element.addEventListener("click", switch_bulb);
+	
+	
+	
+	let switch_movement_button_element = document.querySelector("#switch-movement-button");
+	
+	switch_movement_button_element.addEventListener("click", switch_movement);
+	
+	switch_movement_button_element.style.opacity = 0;
+	
+	
+	
+	Page.Load.TextButtons.equalize();
+	
+	
+	
+	calculate_vectors();
+	
+	
+	
+	if (image_width >= image_height)
 	{
-		let shader = gl.createShader(type);
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], image_width / image_height);
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], 1);
+	}
+	
+	else
+	{
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], 1);
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], image_width / image_height);
+	}
+	
+	wilson.gl.uniform1i(wilson.uniforms["image_size"], image_size);
+	
+	wilson.gl.uniform3fv(wilson.uniforms["camera_pos"], camera_pos);
+	wilson.gl.uniform3fv(wilson.uniforms["image_plane_center_pos"], image_plane_center_pos);
+	wilson.gl.uniform3fv(wilson.uniforms["light_pos"], light_pos);
+	
+	wilson.gl.uniform3fv(wilson.uniforms["forward_vec"], forward_vec);
+	wilson.gl.uniform3fv(wilson.uniforms["right_vec"], right_vec);
+	wilson.gl.uniform3fv(wilson.uniforms["up_vec"], up_vec);
+	
+	wilson.gl.uniform1f(wilson.uniforms["focal_length"], focal_length);
+	
+	wilson.gl.uniform1i(wilson.uniforms["draw_sphere"], 0);
+	
+	wilson.gl.uniform1f(wilson.uniforms["power"], 8);
+	wilson.gl.uniform3fv(wilson.uniforms["c"], c);
+	wilson.gl.uniform1f(wilson.uniforms["julia_proportion"], 0);
+	
+	wilson.gl.uniformMatrix3fv(wilson.uniforms["rotation_matrix"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
+	
+	
+	
+	window.requestAnimationFrame(draw_frame);
+	
+	
+	
+	function draw_frame(timestamp)
+	{
+		let time_elapsed = timestamp - last_timestamp;
 		
-		gl.shaderSource(shader, source);
+		last_timestamp = timestamp;
 		
-		gl.compileShader(shader);
 		
-		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+		
+		if (time_elapsed === 0)
 		{
-			console.log(`Couldn't load shader: ${gl.getProgramInfoLog(shaderProgram)}`);
-			gl.deleteShader(shader);
+			return;
 		}
 		
-		return shader;
-	}
-	
-	
-	
-	function draw_frame()
-	{
-		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 		
 		
-		/*
-		theta = 2 * Math.PI * (frame + 450) / 900;
+		wilson.render.draw_frame();
 		
-		camera_pos = [2.17 * Math.cos(2 * Math.PI * frame / 900), 2.17 * Math.sin(2 * Math.PI * frame / 900), 1.8925];
 		
-		calculate_vectors();
 		
-		update_camera_parameters();
-		
-		frame++;
-		
-		window.requestAnimationFrame(draw_frame);
-		
-		return;
-		*/
+		let need_new_frame = false;
 		
 		
 		
@@ -618,13 +514,109 @@
 		{
 			animate_parameter_change_step();
 			
-			window.requestAnimationFrame(draw_frame);
+			need_new_frame = true;
 		}
 		
-		else if (currently_drawing)
+		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
 		{
 			update_camera_parameters();
 			
+			need_new_frame = true;
+		}
+		
+		if (theta_velocity !== 0 || phi_velocity !== 0)
+		{
+			theta += theta_velocity;
+			phi += phi_velocity;
+			
+			
+			
+			if (theta >= 2 * Math.PI)
+			{
+				theta -= 2 * Math.PI;
+			}
+			
+			else if (theta < 0)
+			{
+				theta += 2 * Math.PI;
+			}
+			
+			
+			
+			if (phi > Math.PI - .01)
+			{
+				phi = Math.PI - .01;
+			}
+			
+			else if (phi < .01)
+			{
+				phi = .01;
+			}
+			
+			
+			
+			theta_velocity *= pan_friction;
+			phi_velocity *= pan_friction;
+			
+			if (Math.sqrt(theta_velocity * theta_velocity + phi_velocity * phi_velocity) < pan_velocity_stop_threshhold)
+			{
+				theta_velocity = 0;
+				phi_velocity = 0;
+			}
+			
+			
+			
+			calculate_vectors();
+			
+			need_new_frame = true;
+		}
+		
+		if (move_velocity[0] !== 0 || move_velocity[1] !== 0 || move_velocity[2] !== 0)
+		{
+			if (moving_pos)
+			{	
+				camera_pos[0] += move_velocity[0];
+				camera_pos[1] += move_velocity[1];
+				camera_pos[2] += move_velocity[2];
+			}
+			
+			else
+			{
+				c[0] += move_velocity[0];
+				c[1] += move_velocity[1];
+				c[2] += move_velocity[2];
+				
+				c_x_input_element.value = Math.round((c[0]) * 1000000) / 1000000;
+				c_y_input_element.value = Math.round((c[1]) * 1000000) / 1000000;
+				c_z_input_element.value = Math.round((c[2]) * 1000000) / 1000000;
+				
+				wilson.gl.uniform3fv(wilson.uniforms["c"], c);
+			}
+			
+			
+			
+			move_velocity[0] *= move_friction;
+			move_velocity[1] *= move_friction;
+			move_velocity[2] *= move_friction;
+			
+			if (Math.sqrt(move_velocity[0] * move_velocity[0] + move_velocity[1] * move_velocity[1] + move_velocity[2] * move_velocity[2]) < move_velocity_stop_threshhold * moving_speed)
+			{
+				move_velocity[0] = 0;
+				move_velocity[1] = 0;
+				move_velocity[2] = 0;
+			}
+			
+			
+			
+			calculate_vectors();
+				
+			need_new_frame = true;
+		}
+		
+		
+		
+		if (need_new_frame)
+		{
 			window.requestAnimationFrame(draw_frame);
 		}
 	}
@@ -664,14 +656,14 @@
 		
 		
 		
+		wilson.gl.uniform3fv(wilson.uniforms["camera_pos"], camera_pos);
+		wilson.gl.uniform3fv(wilson.uniforms["image_plane_center_pos"], image_plane_center_pos);
 		
-		gl.uniform3fv(shader_program.camera_pos_uniform, camera_pos);
-		gl.uniform3fv(shader_program.image_plane_center_pos_uniform, image_plane_center_pos);
-		gl.uniform3fv(shader_program.forward_vec_uniform, forward_vec);
-		gl.uniform3fv(shader_program.right_vec_uniform, right_vec);
-		gl.uniform3fv(shader_program.up_vec_uniform, up_vec);
+		wilson.gl.uniform3fv(wilson.uniforms["forward_vec"], forward_vec);
+		wilson.gl.uniform3fv(wilson.uniforms["right_vec"], right_vec);
+		wilson.gl.uniform3fv(wilson.uniforms["up_vec"], up_vec);
 		
-		gl.uniform1f(shader_program.focal_length_uniform, focal_length);
+		wilson.gl.uniform1f(wilson.uniforms["focal_length"], focal_length);
 	}
 	
 	
@@ -695,16 +687,16 @@
 		return [
 			[mat1[0][0]*mat2[0][0] + mat1[0][1]*mat2[1][0] + mat1[0][2]*mat2[2][0],
 			mat1[0][0]*mat2[0][1] + mat1[0][1]*mat2[1][1] + mat1[0][2]*mat2[2][1],
-			mat1[0][0]*mat2[0][2] + mat1[0][1]*mat2[1][2] + mat1[0][2]*mat2[2][2]
-			], [
-			mat1[1][0]*mat2[0][0] + mat1[1][1]*mat2[1][0] + mat1[1][2]*mat2[2][0],
+			mat1[0][0]*mat2[0][2] + mat1[0][1]*mat2[1][2] + mat1[0][2]*mat2[2][2]],
+			
+			[mat1[1][0]*mat2[0][0] + mat1[1][1]*mat2[1][0] + mat1[1][2]*mat2[2][0],
 			mat1[1][0]*mat2[0][1] + mat1[1][1]*mat2[1][1] + mat1[1][2]*mat2[2][1],
-			mat1[1][0]*mat2[0][2] + mat1[1][1]*mat2[1][2] + mat1[1][2]*mat2[2][2]
-			], [
-			mat1[2][0]*mat2[0][0] + mat1[2][1]*mat2[1][0] + mat1[2][2]*mat2[2][0],
+			mat1[1][0]*mat2[0][2] + mat1[1][1]*mat2[1][2] + mat1[1][2]*mat2[2][2]],
+			
+			[mat1[2][0]*mat2[0][0] + mat1[2][1]*mat2[1][0] + mat1[2][2]*mat2[2][0],
 			mat1[2][0]*mat2[0][1] + mat1[2][1]*mat2[1][1] + mat1[2][2]*mat2[2][1],
 			mat1[2][0]*mat2[0][2] + mat1[2][1]*mat2[1][2] + mat1[2][2]*mat2[2][2]]
-			];
+		];
 	}
 	
 	
@@ -776,546 +768,359 @@
 	
 	
 	
-	function init_listeners()
+	function on_grab_canvas(x, y, event)
 	{
-		document.querySelector("#output-canvas").addEventListener("mousedown", function(e)
+		next_theta_velocity = 0;
+		next_phi_velocity = 0;
+		
+		theta_velocity = 0;
+		phi_velocity = 0;
+		
+		
+		
+		if (event.type === "touchstart")
 		{
-			currently_dragging = true;
-			
-			mouse_x = e.clientX;
-			mouse_y = e.clientY;
-			
-			if (!currently_drawing && !currently_animating_parameters)
-			{
-				currently_drawing = true;
-				
-				draw_start_time = Date.now();
-				
-				image_size = small_image_size;
-				
-				change_resolution(image_size);
-				
-				window.requestAnimationFrame(draw_frame);
-			}
-		});
-		
-		
-		
-		document.querySelector("#output-canvas").addEventListener("mousemove", function(e)
-		{
-			if (currently_dragging)
-			{
-				e.preventDefault();
-				
-				
-				
-				if (!moving_pos)
-				{
-					return;
-				}
-				
-				
-				
-				let new_mouse_x = e.clientX;
-				let new_mouse_y = e.clientY;
-				
-				let mouse_x_delta = new_mouse_x - mouse_x;
-				let mouse_y_delta = new_mouse_y - mouse_y;
-				
-				
-				
-				theta += mouse_x_delta / canvas_size * Math.PI;
-					
-				phi -= mouse_y_delta / canvas_size * Math.PI;
-				
-				
-				
-				if (theta >= 2 * Math.PI)
-				{
-					theta -= 2 * Math.PI;
-				}
-				
-				else if (theta < 0)
-				{
-					theta += 2 * Math.PI;
-				}
-				
-				
-				
-				if (phi > Math.PI - .01)
-				{
-					phi = Math.PI - .01;
-				}
-				
-				else if (phi < .01)
-				{
-					phi = .01;
-				}
-				
-				
-				
-				mouse_x = new_mouse_x;
-				mouse_y = new_mouse_y;
-				
-				
-				
-				calculate_vectors();
-			}
-		});
-		
-		
-		
-		document.querySelector("#output-canvas").addEventListener("mouseup", function(e)
-		{
-			currently_dragging = false;
-			
-			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_up_keyboard || moving_down_keyboard || moving_forward_touch || moving_backward_touch;
-			
-			if (!currently_drawing)
-			{
-				if (Date.now() - draw_start_time > 300)
-				{
-					image_size = large_image_size;
-					
-					change_resolution(image_size);
-					
-					window.requestAnimationFrame(draw_frame);
-				}
-			}
-		});
-		
-		
-		
-		document.querySelector("#output-canvas").addEventListener("touchstart", function(e)
-		{
-			currently_dragging = true;
-			
-			mouse_x = e.touches[0].clientX;
-			mouse_y = e.touches[0].clientY;
-			
-			if (e.touches.length === 2)
+			if (event.touches.length === 2)
 			{
 				moving_forward_touch = true;
 				moving_backward_touch = false;
-			}
-			
-			else if (e.touches.length === 3)
-			{
-				moving_backward_touch = true;
-				moving_forward_touch = false;
-			}
-			
-			
-			
-			if (!currently_drawing && !currently_animating_parameters)
-			{
-				currently_drawing = true;
 				
-				draw_start_time = Date.now();
+				move_velocity[0] = 0;
+				move_velocity[1] = 0;
+				move_velocity[2] = 0;
 				
-				image_size = small_image_size;
-				
-				change_resolution(image_size);
+				next_move_velocity[0] = 0;
+				next_move_velocity[1] = 0;
+				next_move_velocity[2] = 0;
 				
 				window.requestAnimationFrame(draw_frame);
 			}
-		});
-		
-		
-		
-		document.querySelector("#output-canvas").addEventListener("touchmove", function(e)
-		{
-			e.preventDefault();
 			
-			
-			
-			if (!moving_pos)
+			else if (event.touches.length === 3)
 			{
-				return;
-			}
-			
-			
-			
-			let new_mouse_x = e.touches[0].clientX;
-			let new_mouse_y = e.touches[0].clientY;
-			
-			let mouse_x_delta = new_mouse_x - mouse_x;
-			let mouse_y_delta = new_mouse_y - mouse_y;
-			
-			if (Math.abs(mouse_x_delta) > 20 || Math.abs(mouse_y_delta) > 20)
-			{
-				return;
-			}
-			
-			
-			
-			theta += mouse_x_delta / canvas_size * Math.PI;
-				
-			phi -= mouse_y_delta / canvas_size * Math.PI;
-			
-			
-			
-			if (theta >= 2 * Math.PI)
-			{
-				theta -= 2 * Math.PI;
-			}
-			
-			else if (theta < 0)
-			{
-				theta += 2 * Math.PI;
-			}
-			
-			
-			
-			if (phi > Math.PI - .01)
-			{
-				phi = Math.PI - .01;
-			}
-			
-			else if (phi < .01)
-			{
-				phi = .01;
-			}
-			
-			
-			
-			mouse_x = new_mouse_x;
-			mouse_y = new_mouse_y;
-			
-			
-			
-			calculate_vectors();
-		});
-		
-		
-		
-		document.querySelector("#output-canvas").addEventListener("touchend", function(e)
-		{
-			if (e.touches.length === 2)
-			{
-				moving_forward_touch = true;
-				moving_backward_touch = false;
-			}
-			
-			else if (e.touches.length === 3)
-			{
-				moving_backward_touch = true;
 				moving_forward_touch = false;
+				moving_backward_touch = true;
+				
+				move_velocity[0] = 0;
+				move_velocity[1] = 0;
+				move_velocity[2] = 0;
+				
+				next_move_velocity[0] = 0;
+				next_move_velocity[1] = 0;
+				next_move_velocity[2] = 0;
+				
+				window.requestAnimationFrame(draw_frame);
 			}
 			
 			else
 			{
 				moving_forward_touch = false;
 				moving_backward_touch = false;
-				
-				if (e.touches.length === 0)
-				{
-					currently_dragging = false;
-				}
 			}
 			
-			
-			
-			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_up_keyboard || moving_down_keyboard || moving_forward_touch || moving_backward_touch;
-			
-			if (!currently_drawing)
-			{
-				if (Date.now() - draw_start_time > 300)
-				{
-					image_size = large_image_size;
-					
-					change_resolution(image_size);
-					
-					window.requestAnimationFrame(draw_frame);
-				}
-			}
-		});
-
-
-
-		document.documentElement.addEventListener("keydown", function(e)
-		{
-			if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65 || e.keyCode === 16 || e.keyCode === 32))
-			{
-				return;
-			}
-			
-			
-			
-			//W
-			if (e.keyCode === 87)
-			{
-				moving_forward_keyboard = true;
-			}
-			
-			//S
-			else if (e.keyCode === 83)
-			{
-				moving_backward_keyboard = true;
-			}
-			
-			//D
-			if (e.keyCode === 68)
-			{
-				moving_right_keyboard = true;
-			}
-			
-			//A
-			else if (e.keyCode === 65)
-			{
-				moving_left_keyboard = true;
-			}
-			
-			//Space
-			else if (e.keyCode === 32)
-			{
-				moving_up_keyboard = true;
-			}
-			
-			//Shift
-			else if (e.keyCode === 16)
-			{
-				moving_down_keyboard = true;
-			}
-			
-			
-			
-			if (!currently_drawing && !currently_animating_parameters)
-			{
-				currently_drawing = true;
-				
-				draw_start_time = Date.now();
-				
-				image_size = small_image_size;
-				
-				change_resolution(image_size);
-				
-				window.requestAnimationFrame(draw_frame);
-			}
-		});
-		
-		
-		
-		document.documentElement.addEventListener("keyup", function(e)
-		{
-			//W
-			if (e.keyCode === 87)
-			{
-				moving_forward_keyboard = false;
-			}
-			
-			//S
-			else if (e.keyCode === 83)
-			{
-				moving_backward_keyboard = false;
-			}
-			
-			//D
-			if (e.keyCode === 68)
-			{
-				moving_right_keyboard = false;
-			}
-			
-			//A
-			else if (e.keyCode === 65)
-			{
-				moving_left_keyboard = false;
-			}
-			
-			//Space
-			else if (e.keyCode === 32)
-			{
-				moving_up_keyboard = false;
-			}
-			
-			//Shift
-			else if (e.keyCode === 16)
-			{
-				moving_down_keyboard = false;
-			}
-			
-			
-			currently_drawing = currently_dragging || moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_up_keyboard || moving_down_keyboard || moving_forward_touch || moving_backward_touch;
-			
-			if (!currently_drawing)
-			{
-				if (Date.now() - draw_start_time > 300)
-				{
-					image_size = large_image_size;
-					
-					change_resolution(image_size);
-					
-					window.requestAnimationFrame(draw_frame);
-				}
-			}
-		});
+			was_moving_touch = false;
+		}
 	}
+	
+	
+	
+	function on_drag_canvas(x, y, x_delta, y_delta, event)
+	{
+		if (event.type === "touchmove" && was_moving_touch)
+		{
+			was_moving_touch = false;
+			return;
+		}
+		
+		
+		
+		theta += x_delta * Math.PI / 2;
+		
+		next_theta_velocity = x_delta * Math.PI / 2;
+		
+		if (theta >= 2 * Math.PI)
+		{
+			theta -= 2 * Math.PI;
+		}
+		
+		else if (theta < 0)
+		{
+			theta += 2 * Math.PI;
+		}
+		
+		
+		
+		phi += y_delta * Math.PI / 2;
+		
+		next_phi_velocity = y_delta * Math.PI / 2;
+		
+		if (phi > Math.PI - .01)
+		{
+			phi = Math.PI - .01;
+		}
+		
+		else if (phi < .01)
+		{
+			phi = .01;
+		}
+		
+		
+		
+		calculate_vectors();
+		
+		window.requestAnimationFrame(draw_frame);
+	}
+	
+	
+	
+	function on_release_canvas(x, y, event)
+	{
+		if (event.type === "touchend")
+		{
+			moving_forward_touch = false;
+			moving_backward_touch = false;
+			
+			was_moving_touch = true;
+			
+			if (move_velocity[0] === 0 && move_velocity[1] === 0 && move_velocity[2] === 0)
+			{
+				move_velocity[0] = next_move_velocity[0];
+				move_velocity[1] = next_move_velocity[1];
+				move_velocity[2] = next_move_velocity[2];
+				
+				next_move_velocity[0] = 0;
+				next_move_velocity[1] = 0;
+				next_move_velocity[2] = 0;
+			}
+		}
+		
+		if (((event.type === "touchend" && event.touches,length === 0) || event.type === "mouseup") && (Math.sqrt(next_theta_velocity * next_theta_velocity + next_phi_velocity * next_phi_velocity) >= pan_velocity_start_threshhold))
+		{
+			theta_velocity = next_theta_velocity;
+			phi_velocity = next_phi_velocity;
+		}
+	}
+	
+	
+	
+	function handle_keydown_event(e)
+	{
+		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
+		{
+			return;
+		}
+		
+		
+		
+		next_move_velocity = [0, 0, 0];
+		move_velocity = [0, 0, 0];
+		
+		
+		
+		//W
+		if (e.keyCode === 87)
+		{
+			moving_forward_keyboard = true;
+		}
+		
+		//S
+		else if (e.keyCode === 83)
+		{
+			moving_backward_keyboard = true;
+		}
+		
+		//D
+		if (e.keyCode === 68)
+		{
+			moving_right_keyboard = true;
+		}
+		
+		//A
+		else if (e.keyCode === 65)
+		{
+			moving_left_keyboard = true;
+		}
+		
+		
+		
+		window.requestAnimationFrame(draw_frame);
+	}
+	
+	
+	
+	function handle_keyup_event(e)
+	{
+		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
+		{
+			return;
+		}
+		
+		
+		
+		if (move_velocity[0] === 0 && move_velocity[1] === 0 && move_velocity[2] === 0)
+		{
+			move_velocity[0] = next_move_velocity[0];
+			move_velocity[1] = next_move_velocity[1];
+			move_velocity[2] = next_move_velocity[2];
+			
+			next_move_velocity[0] = 0;
+			next_move_velocity[1] = 0;
+			next_move_velocity[2] = 0;
+		}
+		
+		
+		
+		//W
+		if (e.keyCode === 87)
+		{
+			moving_forward_keyboard = false;
+		}
+		
+		//S
+		else if (e.keyCode === 83)
+		{
+			moving_backward_keyboard = false;
+		}
+		
+		//D
+		if (e.keyCode === 68)
+		{
+			moving_right_keyboard = false;
+		}
+		
+		//A
+		else if (e.keyCode === 65)
+		{
+			moving_left_keyboard = false;
+		}
+	}
+	
+	
+	
+	document.documentElement.addEventListener("keydown", handle_keydown_event);
+	Page.temporary_handlers["keydown"].push(handle_keydown_event);
+	
+	document.documentElement.addEventListener("keyup", handle_keyup_event);
+	Page.temporary_handlers["keydown"].push(handle_keyup_event);
 	
 	
 	
 	function update_camera_parameters()
 	{
-		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_up_keyboard || moving_down_keyboard || moving_forward_touch || moving_backward_touch)
+		moving_speed = Math.min(Math.max(.000001, distance_to_scene / 20), .02);
+		
+		
+		
+		if (moving_pos)
 		{
-			moving_speed = distance_to_scene / 20;
+			let old_camera_pos = [...camera_pos];
 			
-			if (moving_speed < .000001)
+			
+			
+			if (moving_forward_keyboard || moving_forward_touch)
 			{
-				moving_speed = .000001;
+				camera_pos[0] += moving_speed * forward_vec[0];
+				camera_pos[1] += moving_speed * forward_vec[1];
+				camera_pos[2] += moving_speed * forward_vec[2];
 			}
 			
-			if (moving_speed > .02)
+			else if (moving_backward_keyboard || moving_backward_touch)
 			{
-				moving_speed = .02;
-			}
-			
-			
-			
-			if (moving_pos)
-			{
-				if (moving_forward_keyboard || moving_forward_touch)
-				{
-					camera_pos[0] += moving_speed * forward_vec[0];
-					camera_pos[1] += moving_speed * forward_vec[1];
-					camera_pos[2] += moving_speed * forward_vec[2];
-				}
-				
-				else if (moving_backward_keyboard || moving_backward_touch)
-				{
-					camera_pos[0] -= moving_speed * forward_vec[0];
-					camera_pos[1] -= moving_speed * forward_vec[1];
-					camera_pos[2] -= moving_speed * forward_vec[2];
-				}
-				
-				
-				
-				if (moving_right_keyboard)
-				{
-					camera_pos[0] += moving_speed * right_vec[0] / focal_length;
-					camera_pos[1] += moving_speed * right_vec[1] / focal_length;
-					camera_pos[2] += moving_speed * right_vec[2] / focal_length;
-				}
-				
-				else if (moving_left_keyboard)
-				{
-					camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
-					camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
-					camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
-				}
-				
-				
-				
-				if (moving_up_keyboard)
-				{
-					camera_pos[2] += moving_speed;
-				}
-				
-				else if (moving_down_keyboard)
-				{
-					camera_pos[2] -= moving_speed;
-				}
+				camera_pos[0] -= moving_speed * forward_vec[0];
+				camera_pos[1] -= moving_speed * forward_vec[1];
+				camera_pos[2] -= moving_speed * forward_vec[2];
 			}
 			
 			
 			
-			else
+			if (moving_right_keyboard)
 			{
-				if (moving_forward_keyboard || moving_forward_touch)
-				{
-					c[0] += .2 * moving_speed * forward_vec[0];
-					c[1] += .2 * moving_speed * forward_vec[1];
-					c[2] += .2 * moving_speed * forward_vec[2];
-				}
-				
-				else if (moving_backward_keyboard || moving_backward_touch)
-				{
-					c[0] -= .2 * moving_speed * forward_vec[0];
-					c[1] -= .2 * moving_speed * forward_vec[1];
-					c[2] -= .2 * moving_speed * forward_vec[2];
-				}
-				
-				
-				
-				if (moving_right_keyboard)
-				{
-					c[0] += .2 * moving_speed * right_vec[0] / focal_length;
-					c[1] += .2 * moving_speed * right_vec[1] / focal_length;
-					c[2] += .2 * moving_speed * right_vec[2] / focal_length;
-				}
-				
-				else if (moving_left_keyboard)
-				{
-					c[0] -= .2 * moving_speed * right_vec[0] / focal_length;
-					c[1] -= .2 * moving_speed * right_vec[1] / focal_length;
-					c[2] -= .2 * moving_speed * right_vec[2] / focal_length;
-				}
-				
-				
-				
-				if (moving_up_keyboard)
-				{
-					c[2] += .2 * moving_speed;
-				}
-				
-				else if (moving_down_keyboard)
-				{
-					c[2] -= .2 * moving_speed;
-				}
-				
-				
-				
-				document.querySelector("#c-x-input").value = Math.round(c[0] * 1000000) / 1000000;
-				document.querySelector("#c-y-input").value = Math.round(c[1] * 1000000) / 1000000;
-				document.querySelector("#c-z-input").value = Math.round(c[2] * 1000000) / 1000000;
-				
-				
-				
-				gl.uniform3fv(shader_program.c_uniform, c);
+				camera_pos[0] += moving_speed * right_vec[0] / focal_length;
+				camera_pos[1] += moving_speed * right_vec[1] / focal_length;
+				camera_pos[2] += moving_speed * right_vec[2] / focal_length;
 			}
-		
-		
-		
-			calculate_vectors();
+			
+			else if (moving_left_keyboard)
+			{
+				camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
+				camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
+				camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
+			}	
+			
+			
+			
+			next_move_velocity[0] = camera_pos[0] - old_camera_pos[0];
+			next_move_velocity[1] = camera_pos[1] - old_camera_pos[1];
+			next_move_velocity[2] = camera_pos[2] - old_camera_pos[2];
 		}
-	}
-	
-	
-	
-	function fractals_resize()
-	{
-		canvas_size = Math.min(document.querySelector("#output-canvas").offsetWidth, document.querySelector("#output-canvas").offsetHeight);
-	}
-	
-	
-	
-	function change_resolution(new_image_size = 0)
-	{
-		if (new_image_size === 0)
-		{
-			image_size = parseInt(document.querySelector("#dim-input").value || 500);
-			
-			if (image_size < 200)
-			{
-				image_size = 200;
-			}
-			
-			if (image_size > 2000)
-			{
-				image_size = 2000;
-			}
-			
-			small_image_size = image_size;
-			large_image_size = image_size * 3;
-		}
+		
+		
 		
 		else
 		{
-			image_size = new_image_size;
+			let old_c = [...c];
+			
+			if (moving_forward_keyboard || moving_forward_touch)
+			{
+				c[0] += .5 * moving_speed * forward_vec[0];
+				c[1] += .5 * moving_speed * forward_vec[1];
+				c[2] += .5 * moving_speed * forward_vec[2];
+			}
+			
+			else if (moving_backward_keyboard || moving_backward_touch)
+			{
+				c[0] -= .5 * moving_speed * forward_vec[0];
+				c[1] -= .5 * moving_speed * forward_vec[1];
+				c[2] -= .5 * moving_speed * forward_vec[2];
+			}
+			
+			
+			
+			if (moving_right_keyboard)
+			{
+				c[0] += .5 * moving_speed * right_vec[0] / focal_length;
+				c[1] += .5 * moving_speed * right_vec[0] / focal_length;
+				c[2] += .5 * moving_speed * right_vec[0] / focal_length;
+			}
+			
+			else if (moving_left_keyboard)
+			{
+				c[0] -= .5 * moving_speed * right_vec[0] / focal_length;
+				c[1] -= .5 * moving_speed * right_vec[0] / focal_length;
+				c[2] -= .5 * moving_speed * right_vec[0] / focal_length;
+			}
+			
+			
+			
+			c_x_input_element.value = Math.round((c[0]) * 1000000) / 1000000;
+			c_y_input_element.value = Math.round((c[1]) * 1000000) / 1000000;
+			c_z_input_element.value = Math.round((c[2]) * 1000000) / 1000000;
+			
+			
+			
+			wilson.gl.uniform3fv(wilson.uniforms["c"], c);
+			
+			
+			
+			next_move_velocity[0] = c[0] - old_c[0];
+			next_move_velocity[1] = c[1] - old_c[1];
+			next_move_velocity[2] = c[2] - old_c[2];
 		}
 		
 		
 		
-		if (Page.Applets.Canvases.is_fullscreen)
+		calculate_vectors();
+	}
+	
+	
+	
+	function change_resolution()
+	{
+		image_size = Math.max(100, parseInt(resolution_input_element.value || 500));
+		
+		
+		
+		if (wilson.fullscreen.currently_fullscreen)
 		{
 			if (Page.Layout.aspect_ratio >= 1)
 			{
@@ -1330,42 +1135,44 @@
 			}
 		}
 		
+		else
+		{
+			image_width = image_size;
+			image_height = image_size;
+		}
 		
 		
-		document.querySelector("#output-canvas").setAttribute("width", image_width);
-		document.querySelector("#output-canvas").setAttribute("height", image_height);
+		
+		wilson.change_canvas_size(image_width, image_height);
 		
 		
 		
 		if (image_width >= image_height)
 		{
-			gl.uniform1f(shader_program.aspect_ratio_x_uniform, image_width / image_height);
-			gl.uniform1f(shader_program.aspect_ratio_y_uniform, 1);
+			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], image_width / image_height);
+			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], 1);
 		}
 		
 		else
 		{
-			gl.uniform1f(shader_program.aspect_ratio_x_uniform, 1);
-			gl.uniform1f(shader_program.aspect_ratio_y_uniform, image_width / image_height);
+			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], 1);
+			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], image_width / image_height);
 		}
 		
+		wilson.gl.uniform1i(wilson.uniforms["image_size"], image_size);
 		
 		
-		gl.uniform1i(shader_program.image_size_uniform, image_size);
 		
-		gl.viewport(0, 0, image_width, image_height);
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
 	
-	function update_parameters()
+	function randomize_rotation(animate_change = true)
 	{
-		power_old = power;
-		power_delta = (parseFloat(document.querySelector("#power-input").value || 8) || 8) - power_old;
-		
-		if (power_old + power_delta < 1)
+		if (currently_animating_parameters)
 		{
-			power_delta = 0;
+			return;
 		}
 		
 		
@@ -1374,9 +1181,13 @@
 		rotation_angle_y_old = rotation_angle_y;
 		rotation_angle_z_old = rotation_angle_z;
 		
-		rotation_angle_x_delta = (parseFloat(document.querySelector("#rotation-angle-x-input").value || 0) || 0) - rotation_angle_x_old;
-		rotation_angle_y_delta = (parseFloat(document.querySelector("#rotation-angle-y-input").value || 0) || 0) - rotation_angle_y_old;
-		rotation_angle_z_delta = (parseFloat(document.querySelector("#rotation-angle-z-input").value || 0) || 0) - rotation_angle_z_old;
+		rotation_angle_x_delta = Math.random()*2 - 1 - rotation_angle_x_old;
+		rotation_angle_y_delta = Math.random()*2 - 1 - rotation_angle_y_old;
+		rotation_angle_z_delta = Math.random()*2 - 1 - rotation_angle_z_old;
+		
+		rotation_angle_x_input_element.value = Math.round((rotation_angle_x_old + rotation_angle_x_delta) * 1000000) / 1000000;
+		rotation_angle_y_input_element.value = Math.round((rotation_angle_y_old + rotation_angle_y_delta) * 1000000) / 1000000;
+		rotation_angle_z_input_element.value = Math.round((rotation_angle_z_old + rotation_angle_z_delta) * 1000000) / 1000000;
 		
 		
 		
@@ -1384,18 +1195,187 @@
 		c_old[1] = c[1];
 		c_old[2] = c[2];
 		
-		c_delta[0] = (parseFloat(document.querySelector("#c-x-input").value || 0) || 0) - c_old[0];
-		c_delta[1] = (parseFloat(document.querySelector("#c-y-input").value || 0) || 0) - c_old[1];
-		c_delta[2] = (parseFloat(document.querySelector("#c-z-input").value || 0) || 0) - c_old[2];
+		c_delta[0] = 0;
+		c_delta[1] = 0;
+		c_delta[2] = 0;
 		
 		
 		
 		julia_proportion_old = julia_proportion;
 		julia_proportion_delta = 0;
 		
-		if (!currently_animating_parameters)
+		power_old = power;
+		power_delta = 0;
+		
+		
+		
+		if (animate_change)
 		{
 			animate_parameter_change();
+		}
+		
+		else
+		{
+			rotation_angle_x = rotation_angle_x_old + rotation_angle_x_delta;
+			rotation_angle_y = rotation_angle_y_old + rotation_angle_y_delta;
+			rotation_angle_z = rotation_angle_z_old + rotation_angle_z_delta;
+		}
+	}
+	
+	
+	
+	function randomize_c(animate_change = true)
+	{
+		if (currently_animating_parameters)
+		{
+			return;
+		}
+		
+		
+		
+		rotation_angle_x_old = rotation_angle_x;
+		rotation_angle_y_old = rotation_angle_y;
+		rotation_angle_z_old = rotation_angle_z;
+		
+		rotation_angle_x_delta = 0;
+		rotation_angle_y_delta = 0;
+		rotation_angle_z_delta = 0;
+		
+		
+		
+		c_old[0] = c[0];
+		c_old[1] = c[1];
+		c_old[2] = c[2];
+		
+		c_delta[0] = Math.random()*1.5 - .75 - c_old[0];
+		c_delta[1] = Math.random()*1.5 - .75 - c_old[1];
+		c_delta[2] = Math.random()*1.5 - .75 - c_old[2];
+		
+		c_x_input_element.value = Math.round((c_old[0] + c_delta[0]) * 1000000) / 1000000;
+		c_y_input_element.value = Math.round((c_old[1] + c_delta[1]) * 1000000) / 1000000;
+		c_z_input_element.value = Math.round((c_old[2] + c_delta[2]) * 1000000) / 1000000;
+		
+		
+		
+		julia_proportion_old = julia_proportion;
+		julia_proportion_delta = 0;
+		
+		power_old = power;
+		power_delta = 0;
+		
+		
+		
+		if (animate_change)
+		{
+			animate_parameter_change();
+		}
+		
+		else
+		{
+			c[0] = c_old[0] + c_delta[0];
+			c[1] = c_old[1] + c_delta[1];
+			c[2] = c_old[2] + c_delta[2];
+		}
+	}
+	
+	
+	
+	function update_parameters()
+	{
+		rotation_angle_x_old = rotation_angle_x;
+		rotation_angle_y_old = rotation_angle_y;
+		rotation_angle_z_old = rotation_angle_z;
+		
+		rotation_angle_x_delta = (parseFloat(rotation_angle_x_input_element.value || 0) || 0) - rotation_angle_x_old;
+		rotation_angle_y_delta = (parseFloat(rotation_angle_y_input_element.value || 0) || 0) - rotation_angle_y_old;
+		rotation_angle_z_delta = (parseFloat(rotation_angle_z_input_element.value || 0) || 0) - rotation_angle_z_old;
+		
+		
+		
+		c_old[0] = c[0];
+		c_old[1] = c[1];
+		c_old[2] = c[2];
+		
+		c_delta[0] = (parseFloat(c_x_input_element.value || 0) || 0) - c_old[0];
+		c_delta[1] = (parseFloat(c_y_input_element.value || 0) || 0) - c_old[1];
+		c_delta[2] = (parseFloat(c_z_input_element.value || 0) || 0) - c_old[2];
+		
+		
+		
+		power_old = power;
+		power_delta = (parseFloat(power_input_element.value || 0) || 0) - power_old;
+		
+		
+		
+		julia_proportion_old = julia_proportion;
+		julia_proportion_delta = 0;
+		
+		
+		
+		animate_parameter_change();
+	}
+	
+	
+	
+	function animate_parameter_change()
+	{
+		if (!currently_animating_parameters)
+		{
+			currently_animating_parameters = true;
+			
+			parameter_animation_frame = 0;
+			
+			window.requestAnimationFrame(draw_frame);
+		}
+	}
+	
+	
+	
+	function animate_parameter_change_step()
+	{
+		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 120 - Math.PI / 2) + .5;
+		
+		rotation_angle_x = rotation_angle_x_old + rotation_angle_x_delta * t;
+		rotation_angle_y = rotation_angle_y_old + rotation_angle_y_delta * t;
+		rotation_angle_z = rotation_angle_z_old + rotation_angle_z_delta * t;
+		
+		
+		
+		let mat_z = [[Math.cos(rotation_angle_z), -Math.sin(rotation_angle_z), 0], [Math.sin(rotation_angle_z), Math.cos(rotation_angle_z), 0], [0, 0, 1]];
+		let mat_y = [[Math.cos(rotation_angle_y), 0, -Math.sin(rotation_angle_y)], [0, 1, 0],[Math.sin(rotation_angle_y), 0, Math.cos(rotation_angle_y)]];
+		let mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x), -Math.sin(rotation_angle_x)], [0, Math.sin(rotation_angle_x), Math.cos(rotation_angle_x)]];
+		
+		let mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
+		
+		wilson.gl.uniformMatrix3fv(wilson.uniforms["rotation_matrix"], false, [mat_total[0][0], mat_total[1][0], mat_total[2][0], mat_total[0][1], mat_total[1][1], mat_total[2][1], mat_total[0][2], mat_total[1][2], mat_total[2][2]]);
+		
+		
+		
+		c[0] = c_old[0] + c_delta[0] * t;
+		c[1] = c_old[1] + c_delta[1] * t;
+		c[2] = c_old[2] + c_delta[2] * t;
+		
+		wilson.gl.uniform3fv(wilson.uniforms["c"], c);
+		
+		
+		
+		power = power_old + power_delta * t;
+		
+		wilson.gl.uniform1f(wilson.uniforms["power"], power);
+		
+		
+		
+		julia_proportion = julia_proportion_old + julia_proportion_delta * t;
+		
+		wilson.gl.uniform1f(wilson.uniforms["julia_proportion"], julia_proportion);
+		
+		
+		
+		parameter_animation_frame++;
+		
+		if (parameter_animation_frame === 121)
+		{
+			currently_animating_parameters = false;
 		}
 	}
 	
@@ -1410,37 +1390,39 @@
 		
 		
 		
-		document.querySelector("#switch-bulb-button").style.opacity = 0;
+		switch_bulb_button_element.style.opacity = 0;
 		
-		setTimeout(function()
+		setTimeout(() =>
 		{
 			if (julia_proportion_old === 0)
 			{
-				document.querySelector("#switch-bulb-button").textContent = "Switch to Mandelbulb";
+				switch_bulb_button_element.textContent = "Switch to Mandelbulb";
 			}
 			
 			else
 			{
-				document.querySelector("#switch-bulb-button").textContent = "Switch to Juliabulb";
+				switch_bulb_button_element.textContent = "Switch to Juliabulb";
 			}
 			
-			document.querySelector("#switch-bulb-button").style.opacity = 1;
+			Page.Load.TextButtons.equalize();
+			
+			switch_bulb_button_element.style.opacity = 1;
 		}, 300);
 		
 		
 		
 		if (julia_proportion === 0)
 		{
-			gl.uniform3fv(shader_program.c_uniform, c);
+			wilson.gl.uniform3fv(wilson.uniforms["c"], c);
 			
 			if (!moving_pos)
 			{
-				gl.uniform1i(shader_program.draw_sphere_uniform, 1);
+				wilson.gl.uniform1i(wilson.uniforms["draw_sphere"], 1);
 			}
 			
-			setTimeout(function()
+			setTimeout(() =>
 			{
-				document.querySelector("#switch-movement-button").style.opacity = 1;
+				switch_movement_button_element.style.opacity = 1;
 			}, 300);
 		}
 		
@@ -1448,9 +1430,9 @@
 		{
 			moving_pos = true;
 			
-			gl.uniform1i(shader_program.draw_sphere_uniform, 0);
+			wilson.gl.uniform1i(wilson.uniforms["draw_sphere"], 0);
 			
-			document.querySelector("#switch-movement-button").style.opacity = 0;
+			switch_movement_button_element.style.opacity = 0;
 		}
 		
 		
@@ -1488,192 +1470,35 @@
 		
 		
 		
-		document.querySelector("#switch-movement-button").style.opacity = 0;
+		switch_movement_button_element.style.opacity = 0;
 		
-		setTimeout(function()
+		setTimeout(() =>
 		{
 			if (moving_pos)
 			{
-				document.querySelector("#switch-movement-button").textContent = "Change Juliabulb";
+				switch_movement_button_element.textContent = "Change Juliabulb";
 			}
 			
 			else
 			{
-				document.querySelector("#switch-movement-button").textContent = "Move Camera";
+				switch_movement_button_element.textContent = "Move Camera";
 			}
 			
-			document.querySelector("#switch-movement-button").style.opacity = 1;
+			Page.Load.TextButtons.equalize();
+			
+			switch_movement_button_element.style.opacity = 1;
 		}, 300);
 		
 		
 		
 		if (moving_pos)
 		{
-			gl.uniform1i(shader_program.draw_sphere_uniform, 0);
+			wilson.gl.uniform1i(wilson.uniforms["draw_sphere"], 0);
 		}
 		
 		else
 		{
-			gl.uniform1i(shader_program.draw_sphere_uniform, 1);
+			wilson.gl.uniform1i(wilson.uniforms["draw_sphere"], 1);
 		}
-	}
-	
-	
-	
-	function randomize_parameters(animate_change = true)
-	{
-		if (currently_animating_parameters)
-		{
-			return;
-		}
-		
-		
-		
-		rotation_angle_x_old = rotation_angle_x;
-		rotation_angle_y_old = rotation_angle_y;
-		rotation_angle_z_old = rotation_angle_z;
-		
-		rotation_angle_x_delta = Math.random()*2 - 1 - rotation_angle_x_old;
-		rotation_angle_y_delta = Math.random()*2 - 1 - rotation_angle_y_old;
-		rotation_angle_z_delta = Math.random()*2 - 1 - rotation_angle_z_old;
-		
-		document.querySelector("#rotation-angle-x-input").value = Math.round((rotation_angle_x_old + rotation_angle_x_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-y-input").value = Math.round((rotation_angle_y_old + rotation_angle_y_delta) * 1000000) / 1000000;
-		document.querySelector("#rotation-angle-z-input").value = Math.round((rotation_angle_z_old + rotation_angle_z_delta) * 1000000) / 1000000;
-		
-		
-		
-		c_old[0] = c[0];
-		c_old[1] = c[1];
-		c_old[2] = c[2];
-		
-		c_delta[0] = 0;
-		c_delta[1] = 0;
-		c_delta[2] = 0;
-		
-		
-		
-		julia_proportion_old = julia_proportion;
-		julia_proportion_delta = 0;
-		
-		power_old = power;
-		power_delta = 0;
-		
-		
-		
-		if (!currently_animating_parameters)
-		{
-			animate_parameter_change();
-		}
-	}
-	
-	
-	
-	function animate_parameter_change()
-	{
-		currently_animating_parameters = true;
-		
-		parameter_animation_frame = 0;
-		
-		window.requestAnimationFrame(draw_frame);
-	}
-	
-	
-	
-	function animate_parameter_change_step()
-	{
-		if (image_size !== small_image_size)
-		{
-			image_size = small_image_size;
-			
-			change_resolution(image_size);
-		}
-		
-		
-		
-		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 120 - Math.PI / 2) + .5;
-		
-		power = power_old + power_delta * t;
-		julia_proportion = julia_proportion_old + julia_proportion_delta * t;
-		
-		rotation_angle_x = rotation_angle_x_old + rotation_angle_x_delta * t;
-		rotation_angle_y = rotation_angle_y_old + rotation_angle_y_delta * t;
-		rotation_angle_z = rotation_angle_z_old + rotation_angle_z_delta * t;
-		
-		c[0] = c_old[0] + c_delta[0] * t;
-		c[1] = c_old[1] + c_delta[1] * t;
-		c[2] = c_old[2] + c_delta[2] * t;
-		
-		
-		
-		let mat_z = [[Math.cos(rotation_angle_z), -Math.sin(rotation_angle_z), 0], [Math.sin(rotation_angle_z), Math.cos(rotation_angle_z), 0], [0, 0, 1]];
-		let mat_y = [[Math.cos(rotation_angle_y), 0, -Math.sin(rotation_angle_y)], [0, 1, 0],[Math.sin(rotation_angle_y), 0, Math.cos(rotation_angle_y)]];
-		let mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x), -Math.sin(rotation_angle_x)], [0, Math.sin(rotation_angle_x), Math.cos(rotation_angle_x)]];
-		
-		let mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
-		
-		gl.uniformMatrix3fv(shader_program.rotation_matrix_uniform, false, [mat_total[0][0], mat_total[1][0], mat_total[2][0], mat_total[0][1], mat_total[1][1], mat_total[2][1], mat_total[0][2], mat_total[1][2], mat_total[2][2]]);
-		
-		gl.uniform1f(shader_program.power_uniform, power);
-		
-		gl.uniform1f(shader_program.julia_proportion_uniform, julia_proportion);
-		
-		gl.uniform3fv(shader_program.c_uniform, c);
-		
-		
-		
-		parameter_animation_frame++;
-		
-		if (parameter_animation_frame === 121)
-		{
-			currently_animating_parameters = false;
-		}
-	}
-	
-	
-	
-	function prepare_download()
-	{
-		let temp = image_size;
-		
-		image_size = parseInt(document.querySelector("#high-res-dim-input").value || 2000);
-		
-		document.querySelector("#output-canvas").setAttribute("width", image_size);
-		document.querySelector("#output-canvas").setAttribute("height", image_size);
-		
-		gl.viewport(0, 0, image_size, image_size);
-		
-		draw_frame();
-		
-		
-		
-		let link = document.createElement("a");
-		
-		if (julia_proportion === 0)
-		{
-			link.download = "the-mandelbulb.png";
-		}
-		
-		else
-		{
-			link.download = "a-juliabulb.png";
-		}
-		
-		link.href = document.querySelector("#output-canvas").toDataURL();
-		
-		link.click();
-		
-		link.remove();
-		
-		
-		
-		image_size = temp;
-		
-		document.querySelector("#output-canvas").setAttribute("width", image_size);
-		document.querySelector("#output-canvas").setAttribute("height", image_size);
-		
-		gl.viewport(0, 0, image_size, image_size);
-		
-		draw_frame();
 	}
 }()

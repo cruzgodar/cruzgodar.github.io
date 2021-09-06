@@ -34,13 +34,15 @@
 	
 	Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
 	
+	This applet was made with <a href="/projects/wilson/wilson.html" onclick="Page.Navigation.redirect('/projects/wilson/wilson.html')">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.
+	
 !end-text-block
 
 
 
 !begin-text-boxes
 	
-	dim 500 Resolution
+	resolution 500 Resolution
 	
 	power 8 Power
 	
@@ -62,11 +64,15 @@
 
 !begin-text-buttons
 	
-	randomize-parameters l Randomize Rotation
+	randomize-rotation l Randomize Rotation
 	
-	switch-bulb l Switch to Mandelbulb
+	randomize-c l Randomize \(c\)
+	
+	switch-bulb l Switch to Juliabulb
 	
 	switch-movement l Change Juliabulb
+	
+	phantom l Switch to Mandelbulb
 	
 !end-text-buttons
 
@@ -76,23 +82,9 @@
 
 
 
-!section
-
-!text s High Resolution Capture
-
-
-
-!begin-text-boxes
-	
-	high-res-dim 2000 Image Size
-	
-!end-text-boxes
-
-
-
 !begin-text-buttons
 	
-	generate-high-res-image Generate
+	download Download
 	
 !end-text-buttons
 
