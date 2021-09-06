@@ -21,7 +21,7 @@
 		uniform float focal_length;
 		
 		uniform vec3 light_pos;
-		const float light_brightness = 2.0;
+		const float light_brightness = 1.5;
 		
 		uniform int image_size;
 		
@@ -30,9 +30,10 @@
 		
 		
 		const float clip_distance = 1000.0;
-		const int max_marches = 64; //Change to 512 to eliminate flickering in animations
+		uniform int max_marches;
+		uniform float step_factor;
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
-		const float fog_scaling = .2;
+		const float fog_scaling = .1;
 		const int max_iterations = 32;
 		
 		
@@ -147,7 +148,7 @@
 		vec3 raymarch(vec3 start_pos)
 		{
 			//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-			vec3 ray_direction_vec = normalize(start_pos - camera_pos) * .9;
+			vec3 ray_direction_vec = normalize(start_pos - camera_pos) * .9 / step_factor;
 			
 			vec3 final_color = fog_color;
 			
@@ -161,8 +162,15 @@
 			
 			
 			
-			for (int iteration = 0; iteration < max_marches; iteration++)
+			for (int iteration = 0; iteration < 1024; iteration++)
 			{
+				if (iteration == max_marches)
+				{
+					break;
+				}
+				
+				
+				
 				vec3 pos = start_pos + t * ray_direction_vec;
 				
 				//This prevents overstepping, and is honestly a pretty clever fix.
@@ -221,12 +229,8 @@
 		{
 			//Uncomment to use 2x antialiasing.
 			//vec3 final_color = (raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size)))) / 4.0;
-				
-			//vec3 final_color = raymarch(image_plane_center_pos + right_vec * uv.x * aspect_ratio_x + up_vec * uv.y / aspect_ratio_y);
 			
-			//gl_FragColor = vec4(final_color.xyz, 1.0);
-			
-			gl_FragColor = vec4((uv + vec2(1.0, 1.0)) / 2.0, 1.0, 1.0);
+			gl_FragColor = vec4(raymarch(image_plane_center_pos + right_vec * uv.x * aspect_ratio_x + up_vec * uv.y / aspect_ratio_y), 1.0);
 		}
 	`;
 	
@@ -268,103 +272,7 @@
 	
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 	
-	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "draw_sphere", "power", "c", "julia_proportion", "rotation_matrix"]);
-	
-	
-	
-	const framebuffer = wilson.gl.createFramebuffer();
-	
-	const texture = wilson.gl.createTexture();
-	
-	wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, texture);
-	wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvas_width, wilson.canvas_width, 0, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, null);
-	
-	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_MAG_FILTER, wilson.gl.NEAREST);
-	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_MIN_FILTER, wilson.gl.NEAREST);
-	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_WRAP_S, wilson.gl.CLAMP_TO_EDGE);
-	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_WRAP_T, wilson.gl.CLAMP_TO_EDGE);
-	
-	wilson.gl.disable(wilson.gl.DEPTH_TEST);
-	
-	wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, framebuffer);
-	wilson.gl.framebufferTexture2D(wilson.gl.FRAMEBUFFER, wilson.gl.COLOR_ATTACHMENT0, wilson.gl.TEXTURE_2D, texture, 0);
-	
-	
-	
-	const vertex_shader_source_2 = `
-		attribute vec3 position;
-		varying vec2 uv;
-
-		void main(void)
-		{
-			gl_Position = vec4(position, 1.0);
-
-			//Interpolate quad coordinates in the fragment shader.
-			uv = position.xy;
-		}
-	`;
-	
-	const frag_shader_source_2 = `
-		precision highp float;
-		
-		varying vec2 uv;
-		
-		uniform sampler2D u_texture;
-		
-		
-		
-		void main(void)
-		{
-			gl_FragColor = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
-		}
-	`;
-	
-	
-	
-	let vertex_shader_2 = load_shader(wilson.gl, wilson.gl.VERTEX_SHADER, vertex_shader_source_2);
-	
-	let frag_shader_2 = load_shader(wilson.gl, wilson.gl.FRAGMENT_SHADER, frag_shader_source_2);
-	
-	let shader_program_2 = wilson.gl.createProgram();
-	
-	wilson.gl.attachShader(shader_program_2, vertex_shader_2);
-	wilson.gl.attachShader(shader_program_2, frag_shader_2);
-	
-	wilson.gl.linkProgram(shader_program_2);
-	wilson.gl.useProgram(shader_program_2);
-	
-	let position_buffer_2 = wilson.gl.createBuffer();
-	
-	wilson.gl.bindBuffer(wilson.gl.ARRAY_BUFFER, position_buffer_2);
-	
-	const quad = [-1, -1, 0,   -1, 1, 0,   1, -1, 0,   1, 1, 0];
-	wilson.gl.bufferData(wilson.gl.ARRAY_BUFFER, new Float32Array(quad), wilson.gl.STATIC_DRAW);
-	
-	shader_program_2.position_attribute = wilson.gl.getAttribLocation(shader_program_2, "position");
-	
-	wilson.gl.enableVertexAttribArray(shader_program_2.position_attribute);
-	
-	wilson.gl.vertexAttribPointer(shader_program_2.position_attribute, 3, wilson.gl.FLOAT, false, 0, 0);
-	
-	wilson.gl.viewport(0, 0, wilson.canvas_width, wilson.canvas_height);
-	
-	function load_shader(gl, type, source)
-	{
-		let shader = gl.createShader(type);
-		
-		gl.shaderSource(shader, source);
-		
-		gl.compileShader(shader);
-		
-		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-		{
-			console.error(`Couldn't load shader: ${gl.getProgramInfoLog(shaderProgram)}`);
-			gl.deleteShader(shader);
-		}
-		
-		return shader;
-	}
-	
+	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "draw_sphere", "power", "c", "julia_proportion", "rotation_matrix", "max_marches", "step_factor"]);
 	
 	
 	
@@ -429,6 +337,8 @@
 	
 	let num_iterations = 32;
 	
+	let max_marches = 100;
+	
 	let image_plane_center_pos = [];
 	
 	let forward_vec = [];
@@ -476,10 +386,28 @@
 	
 	
 	
+	let view_distance_input_element = document.querySelector("#view-distance-input");
+	
+	view_distance_input_element.addEventListener("input", () =>
+	{
+		max_marches = Math.max(parseInt(view_distance_input_element.value || 100), 32);
+		
+		wilson.gl.uniform1i(wilson.uniforms["max_marches"], max_marches);
+		
+		window.requestAnimationFrame(draw_frame);
+	});
+	
+	
+	
 	let download_button_element = document.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
+		wilson.gl.uniform1i(wilson.uniforms["max_marches"], 1024);
+		wilson.gl.uniform1f(wilson.uniforms["step_factor"], 12);
+		
+		
+		
 		if (julia_proportion === 0)
 		{	
 			wilson.download_frame("the-mandelbulb.png");
@@ -489,6 +417,11 @@
 		{
 			wilson.download_frame("a-juliabulb.png");
 		}
+		
+		
+		
+		wilson.gl.uniform1i(wilson.uniforms["max_marches"], max_marches);
+		wilson.gl.uniform1f(wilson.uniforms["step_factor"], 1);
 	});
 	
 	
@@ -578,6 +511,9 @@
 	
 	wilson.gl.uniformMatrix3fv(wilson.uniforms["rotation_matrix"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
 	
+	wilson.gl.uniform1i(wilson.uniforms["max_marches"], max_marches);
+	wilson.gl.uniform1f(wilson.uniforms["step_factor"], 1);
+	
 	
 	
 	window.requestAnimationFrame(draw_frame);
@@ -598,17 +534,6 @@
 		}
 		
 		
-		
-		wilson.gl.useProgram(wilson.render.shader_program);
-		
-		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, framebuffer);
-		
-		wilson.render.draw_frame();
-		
-		wilson.gl.useProgram(shader_program_2);
-		
-		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, null);
-		wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, texture);
 		
 		wilson.render.draw_frame();
 		
