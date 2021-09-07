@@ -4,18 +4,63 @@
 	
 	
 	
-	let canvas_size = 300;
-	let canvas_width = 300;
-	let canvas_height = 300;
+	let small_image_size = 500;
+	let large_image_size = 1500;
+	
+	
+	
+	let options =
+	{
+		renderer: "hybrid",
+		
+		canvas_width: small_image_size,
+		canvas_height: small_image_size,
+		
+		world_width: 1,
+		world_height: 4,
+		world_center_x: 2,
+		world_center_y: 0,
+		
+		
+		
+		use_draggables: true,
+		
+		draggables_mousedown_callback: on_grab_draggable,
+		draggables_touchstart_callback: on_grab_draggable,
+		
+		draggables_mousemove_callback: on_drag_draggable,
+		draggables_touchmove_callback: on_drag_draggable,
+		
+		draggables_mouseup_callback: on_release_draggable,
+		draggables_touchend_callback: on_release_draggable,
+		
+		
+		
+		use_fullscreen: true,
+		
+		true_fullscreen: true,
+	
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+		
+		switch_fullscreen_callback: change_aspect_ratio
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	
+	
+	let image_size = small_image_size;
+	let image_width = small_image_size;
+	let image_height = small_image_size;
 	
 	let box_size = 4;
 	
-	let ctx = document.querySelector("#quasi-fuchsian-groups-plot").getContext("2d", {alpha: false});
-	
-	let brightness = [];
-	let hue = [];
-	
 	let web_worker = null;
+	
+	let last_timestamp = -1;
 	
 	
 	
@@ -24,16 +69,6 @@
 	
 	
 	let coefficients = [[[0, 0], [0, 0], [0, 0], [0, 0]], [[0, 0], [0, 0], [0, 0], [0, 0]], [], []];
-	
-	let coefficient_markers = [];
-	let coefficient_points = [];
-	
-	let active_marker = -1;
-	
-	let coefficient_selector_width = document.querySelector("#coefficient-selector").offsetWidth;
-	let coefficient_selector_height = document.querySelector("#coefficient-selector").offsetHeight;
-	
-	let coefficient_marker_radius = 17.5;
 	
 	
 	
@@ -50,26 +85,11 @@
 	
 	
 	
-	document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_width);
-	document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_height);
+	let hue = null;
+	let brightness = null;
+	let image = null;
 	
-	hue = [];
-	brightness = [];
-	
-	for (let i = 0; i < canvas_height; i++)
-	{
-		hue[i] = [];
-		brightness[i] = [];
-		
-		for (let j = 0; j < canvas_width; j++)
-		{
-			x = (i / canvas_height * box_size) - box_size / 2;
-			y = box_size / 2 - (j / canvas_width * box_size);
-			hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
-			
-			brightness[i][j] = 0;
-		}
-	}
+	regenerate_hue_and_brightness();
 	
 	
 	
@@ -77,14 +97,14 @@
 	{
 		Site.load_script("/scripts/complex.min.js")
 		
-		.then(function()
+		.then(() =>
 		{
 			Site.scripts_loaded["complexjs"] = true;
 			
-			init_coefficient_markers();
+			init_draggables();
 		})
 		
-		.catch(function(error)
+		.catch((error) =>
 		{
 			console.error("Could not load ComplexJS");
 		});
@@ -92,95 +112,49 @@
 	
 	else
 	{
-		init_coefficient_markers();
+		init_draggables();
 	}
 	
 	
 	
-	document.querySelector("#download-button").addEventListener("click", request_high_res_quasi_fuchsian_group);
+	let resolution_input_element = document.querySelector("#resolution-input");
 	
-	
-	
-	adjust_for_settings();
-	
-	init_listeners();
-	
-	
-	
-	Page.Applets.Canvases.to_resize = [document.querySelector("#quasi-fuchsian-groups-plot"), document.querySelector("#coefficient-selector")];
-	
-	Page.Applets.Canvases.resize_callback = function()
+	resolution_input_element.addEventListener("input", () =>
 	{
-		canvas_size = 300;
+		small_image_size = Math.max(parseInt(resolution_input_element.value || 500), 100);
 		
-		if (Page.Applets.Canvases.is_fullscreen)
-		{
-			if (Page.Layout.aspect_ratio >= 1)
-			{
-				canvas_width = canvas_size;
-				canvas_height = Math.floor(canvas_size / Page.Layout.aspect_ratio);
-			}
-			
-			else
-			{
-				canvas_width = Math.floor(canvas_size * Page.Layout.aspect_ratio);
-				canvas_height = canvas_size;
-			}
-		}
+		large_image_size = small_image_size * 3;
 		
-		else
-		{
-			canvas_width = canvas_size;
-			canvas_height = canvas_size;
-		}
-		
-		
-		
-		for (let i = 0; i < canvas_height; i++)
-		{
-			hue[i] = [];
-			brightness[i] = [];
-			
-			for (let j = 0; j < canvas_width; j++)
-			{
-				x = (i / canvas_height * box_size) - box_size / 2;
-				y = box_size / 2 - (j / canvas_width * box_size);
-				hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
-				
-				brightness[i][j] = 0;
-			}
-		}
-		
-		
-		
-		document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_width);
-		document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_height);
-		
-		
-		
-		quasi_fuchsian_groups_resize();
-		
-		draw_quasi_fuchsian_group();
-	};
+		change_aspect_ratio();
+	});
 	
-	Page.Applets.Canvases.true_fullscreen = true;
 	
-	Page.Applets.Canvases.set_up_resizer();
+	
+	let download_button_element = document.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", request_high_res_frame);
 	
 	
 	
 	
-	
-	function draw_quasi_fuchsian_group()
+	function draw_frame(timestamp)
 	{
-		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.fillRect(0, 0, canvas_width, canvas_height);
+		let time_elapsed = timestamp - last_timestamp;
+		
+		last_timestamp = timestamp;
+		
+		
+		
+		if (time_elapsed === 0)
+		{
+			return;
+		}
 		
 		
 		
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
-		let ta = new Complex(t[0]);
-		let tb = new Complex(t[1]);
+		let ta = new Complex(wilson.draggables.world_coordinates[0][0], wilson.draggables.world_coordinates[0][1]);
+		let tb = new Complex(wilson.draggables.world_coordinates[1][0], wilson.draggables.world_coordinates[1][1]);
 		
 		let b = new Complex([0, 0]);
 		b = ta.mul(tb);
@@ -269,22 +243,22 @@
 		
 		
 		
-		let brightness_sorted = brightness.flat().sort(function(a, b) {return a - b});
+		let brightness_sorted = brightness.slice().sort((a, b) => a - b);
 		
 		let	max_brightness = brightness_sorted[brightness_sorted.length - 1];
 		
 		
 		
 		//Run a pass to remove any isolated pixels.
-		if (canvas_size !== 300)
+		if (image_size !== small_image_size)
 		{
-			for (let i = 1; i < canvas_height - 1; i++)
+			for (let i = 1; i < image_height - 1; i++)
 			{
-				for (let j = 1; j < canvas_width - 1; j++)
+				for (let j = 1; j < image_width - 1; j++)
 				{
-					if (brightness[i][j] !== 0 && brightness[i - 1][j] === 0 && brightness[i - 1][j + 1] === 0 && brightness[i][j + 1] === 0 && brightness[i + 1][j + 1] === 0 && brightness[i + 1][j] === 0 && brightness[i + 1][j - 1] === 0 && brightness[i][j - 1] === 0 && brightness[i - 1][j - 1] === 0)
+					if (brightness[image_width * i + j] !== 0 && brightness[image_width * (i - 1) + j] === 0 && brightness[image_width * (i - 1) + (j + 1)] === 0 && brightness[image_width * i + (j + 1)] === 0 && brightness[image_width * (i + 1) + (j + 1)] === 0 && brightness[image_width * (i + 1) + j] === 0 && brightness[image_width * (i + 1) + (j - 1)] === 0 && brightness[image_width * i + (j - 1)] === 0 && brightness[image_width * (i - 1) + (j - 1)] === 0)
 					{
-						brightness[i][j] = 0;
+						brightness[image_width * i + j] = 0;
 					}
 				}
 			}
@@ -292,98 +266,22 @@
 		
 		
 		
-		let img_data = ctx.getImageData(0, 0, canvas_width, canvas_height);
-		let data = img_data.data;
-		
-		for (let i = 0; i < canvas_height; i++)
+		for (let i = 0; i < image_height; i++)
 		{
-			for (let j = 0; j < canvas_width; j++)
+			for (let j = 0; j < image_width; j++)
 			{
-				let index = (4 * i * canvas_width) + (4 * j);
+				let index = (4 * i * image_width) + (4 * j);
 				
-				let rgb = HSVtoRGB(hue[i][j], 1, Math.pow(brightness[i][j] / max_brightness, .25)); 
+				let rgb = wilson.utils.hsv_to_rgb(hue[image_width * i + j], 1, Math.pow(brightness[image_width * i + j] / max_brightness, .25)); 
 				
-				data[index] = rgb[0];
-				data[index + 1] = rgb[1];
-				data[index + 2] = rgb[2];
-				data[index + 3] = 255;
+				image[index] = rgb[0];
+				image[index + 1] = rgb[1];
+				image[index + 2] = rgb[2];
+				image[index + 3] = 255;
 			}
 		}
 		
-		ctx.putImageData(img_data, 0, 0);
-		
-		
-		
-		//Uncomment to make an animation.
-		
-		/*
-		let link = document.createElement("a");
-		
-		link.download = `${frame}.png`;
-		
-		link.href = document.querySelector("#quasi-fuchsian-groups-plot").toDataURL();
-		
-		link.click();
-		
-		link.remove();
-		
-		
-		
-		let a = .25 * (Math.cos(2 * 2 * Math.PI * frame / 3000) + .2 * Math.sin(7 * 2 * Math.PI * frame / 3000)) + 2;
-		b = .25 * (1.75 * Math.sin(2 * Math.PI * frame / 3000) + .2 * Math.cos(5 * 2 * Math.PI * frame / 3000));
-		
-		t[0] = [a, b];
-		
-		a = .25 * (Math.cos(4 * 2 * Math.PI * frame / 3000) + .2 * Math.sin(5 * 2 * Math.PI * frame / 3000)) + 2;
-		b = .25 * (1.75 * Math.sin(2 * 2 * Math.PI * frame / 3000) + .2 * Math.cos(6 * 2 * Math.PI * frame / 3000));
-		
-		t[1] = [a, b];
-		
-		
-		
-		for (let i = 0; i < 2; i++)
-		{
-			let row = Math.floor((1 - (t[i][1] + .5)) * coefficient_selector_height);
-			let col = Math.floor((t[i][0] - 2 + .5) * coefficient_selector_width);
-			
-			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
-		}
-		
-		
-		
-		frame++;
-		
-		
-		
-		for (let i = 0; i < canvas_size; i++)
-		{
-			for (let j = 0; j < canvas_size; j++)
-			{
-				brightness[i][j] = 0;
-			}
-		}
-		
-		
-		
-		setTimeout(function()
-		{
-			window.requestAnimationFrame(draw_quasi_fuchsian_group);
-		}, 20);
-		*/
-
-		
-		
-		if (draw_another_frame)
-		{
-			draw_another_frame = false;
-			
-			window.requestAnimationFrame(draw_quasi_fuchsian_group);
-		}
-		
-		else
-		{
-			need_to_restart = true;
-		}
+		wilson.render.draw_frame(image);
 	}
 	
 	
@@ -408,30 +306,30 @@
 			let row = 0;
 			let col = 0;
 			
-			if (canvas_width >= canvas_height)
+			if (image_width >= image_height)
 			{
-				row = Math.floor((-y + box_size / 2) / box_size * canvas_height);
-				col = Math.floor((x / (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_width);
+				row = Math.floor((-y + box_size / 2) / box_size * image_height);
+				col = Math.floor((x / (image_width / image_height) + box_size / 2) / box_size * image_width);
 			}
 			
 			else
 			{
-				row = Math.floor((-y * (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_height);
-				col = Math.floor((x + box_size / 2) / box_size * canvas_width);
+				row = Math.floor((-y * (image_width / image_height) + box_size / 2) / box_size * image_height);
+				col = Math.floor((x + box_size / 2) / box_size * image_width);
 			}
 			
 			
 			
-			if (row >= 0 && row < canvas_height && col >= 0 && col < canvas_width)
+			if (row >= 0 && row < image_height && col >= 0 && col < image_width)
 			{
-				if (brightness[row][col] === max_pixel_brightness)
+				if (brightness[image_width * row + col] === max_pixel_brightness)
 				{
 					continue;
 				}
 				
-				if (depth > 10 || canvas_size !== 300)
+				if (depth > 10 || image_size !== small_image_size)
 				{
-					brightness[row][col]++;
+					brightness[image_width * row + col]++;
 				}
 			}
 			
@@ -473,352 +371,145 @@
 	
 	
 	
-	
-	function init_listeners()
+	function init_draggables()
 	{
-		document.documentElement.addEventListener("touchstart", drag_start, false);
-		document.documentElement.addEventListener("touchmove", drag_move, false);
-		document.documentElement.addEventListener("touchend", drag_end, false);
-
-		document.documentElement.addEventListener("mousedown", drag_start, false);
-		document.documentElement.addEventListener("mousemove", drag_move, false);
-		document.documentElement.addEventListener("mouseup", drag_end, false);
+		wilson.draggables.add(2, 0);
+		wilson.draggables.add(2, 0);
 		
-		
-		Page.temporary_handlers["touchstart"].push(drag_start);
-		Page.temporary_handlers["touchmove"].push(drag_move);
-		Page.temporary_handlers["touchend"].push(drag_end);
-		
-		Page.temporary_handlers["mousedown"].push(drag_start);
-		Page.temporary_handlers["mousemove"].push(drag_move);
-		Page.temporary_handlers["mouseup"].push(drag_end);
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
 	
-	function init_coefficient_markers()
+	function on_grab_draggable(active_draggable, x, y, event)
 	{
-		for (let i = 0; i < 2; i++)
+		image_size = small_image_size;
+		
+		if (wilson.fullscreen.currently_fullscreen)
 		{
-			coefficient_markers.push(document.querySelector(`#coefficient-marker-${i}`));
-		}
-		
-		
-		
-		for (let i = 0; i < 2; i++)
-		{
-			coefficient_points.push([Math.floor(canvas_height / 2), Math.floor(canvas_width / 2)]);
-			
-			let row = 0;
-			let col = 0;
-			
-			if (canvas_width >= canvas_height)
+			if (Page.Layout.aspect_ratio >= 1)
 			{
-				row = (coefficient_points[i][0] / canvas_height) * coefficient_selector_height;
-				col = (coefficient_points[i][1] / (canvas_width / canvas_height) / canvas_width) * coefficient_selector_width;
+				image_width = image_size;
+				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				row = (coefficient_points[i][0] * (canvas_width / canvas_height) / canvas_height) * coefficient_selector_height;
-				col = (coefficient_points[i][1] / canvas_width) * coefficient_selector_width;
-
+				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
+				image_height = image_size;
 			}
-			
-			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
-			
-			coefficient_markers[i].classList.add("no-floating-footer");
-		}
-		
-		
-		
-		window.addEventListener("resize", quasi_fuchsian_groups_resize);
-		Page.temporary_handlers["resize"].push(quasi_fuchsian_groups_resize);
-		
-		setTimeout(quasi_fuchsian_groups_resize, 1000);
-		
-		
-		
-		draw_quasi_fuchsian_group();
-	}
-	
-	
-	
-	function drag_start(e)
-	{
-		active_marker = -1;
-		
-		//Figure out which marker, if any, this is referencing.
-		for (let i = 0; i < 2; i++)
-		{
-			if (e.target.id === `coefficient-marker-${i}`)
-			{
-				e.preventDefault();
-				
-				active_marker = i;
-				
-				
-				
-				canvas_size = 300;
-				
-				if (Page.Applets.Canvases.is_fullscreen)
-				{
-					if (Page.Layout.aspect_ratio >= 1)
-					{
-						canvas_width = canvas_size;
-						canvas_height = Math.floor(canvas_size / Page.Layout.aspect_ratio);
-					}
-					
-					else
-					{
-						canvas_width = Math.floor(canvas_size * Page.Layout.aspect_ratio);
-						canvas_height = canvas_size;
-					}
-				}
-				
-				else
-				{
-					canvas_width = canvas_size;
-					canvas_height = canvas_size;
-				}
-				
-				
-				
-				max_depth = 20;
-				max_pixel_brightness = 10;
-				
-				document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_width);
-				document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_height);
-				
-				hue = [];
-				brightness = [];
-				
-				for (let i = 0; i < canvas_height; i++)
-				{
-					hue[i] = [];
-					brightness[i] = [];
-					
-					for (let j = 0; j < canvas_width; j++)
-					{
-						x = (i / canvas_height * box_size) - box_size / 2;
-						y = box_size / 2 - (j / canvas_width * box_size);
-						hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
-						
-						brightness[i][j] = 0;
-					}
-				}
-				
-				draw_another_frame = true;
-			
-				if (need_to_restart)
-				{
-					need_to_restart = false;
-					
-					window.requestAnimationFrame(draw_quasi_fuchsian_group);
-				}
-			}
-		}
-	}
-	
-	
-	
-	function drag_end(e)
-	{
-		if (active_marker !== -1)
-		{
-			canvas_size = 1000;
-			
-			if (Page.Applets.Canvases.is_fullscreen)
-			{
-				if (Page.Layout.aspect_ratio >= 1)
-				{
-					canvas_width = canvas_size;
-					canvas_height = Math.floor(canvas_size / Page.Layout.aspect_ratio);
-				}
-				
-				else
-				{
-					canvas_width = Math.floor(canvas_size * Page.Layout.aspect_ratio);
-					canvas_height = canvas_size;
-				}
-			}
-			
-			else
-			{
-				canvas_width = canvas_size;
-				canvas_height = canvas_size;
-			}
-			
-			
-			
-			max_depth = 100;
-			max_pixel_brightness = 50;
-			
-			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_width);
-			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_height);
-			
-			hue = [];
-			brightness = [];
-			
-			for (let i = 0; i < canvas_height; i++)
-			{
-				hue[i] = [];
-				brightness[i] = [];
-				
-				for (let j = 0; j < canvas_width; j++)
-				{
-					x = (i / canvas_height * box_size) - box_size / 2;
-					y = box_size / 2 - (j / canvas_width * box_size);
-					hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
-					
-					brightness[i][j] = 0;
-				}
-			}
-			
-			
-			
-			draw_another_frame = true;
-			
-			if (need_to_restart)
-			{
-				need_to_restart = false;
-				
-				window.requestAnimationFrame(draw_quasi_fuchsian_group);
-			}
-		}
-		
-		active_marker = -1;
-	}
-	
-	
-	
-	function drag_move(e)
-	{
-		if (active_marker === -1)
-		{
-			return;
-		}
-		
-		
-		
-		let row = null;
-		let col = null;
-		
-		let rect = document.querySelector("#coefficient-selector").getBoundingClientRect();
-		
-		if (e.type === "touchmove")
-		{
-			row = e.touches[0].clientY - rect.top;
-			col = e.touches[0].clientX - rect.left;
 		}
 		
 		else
 		{
-			row = e.clientY - rect.top;
-			col = e.clientX - rect.left;
+			image_width = image_size;
+			image_height = image_size;
 		}
 		
 		
 		
-		if (row < coefficient_marker_radius)
-		{
-			row = coefficient_marker_radius;
-		}
+		max_depth = 20;
+		max_pixel_brightness = 10;
 		
-		if (row > coefficient_selector_height - coefficient_marker_radius)
-		{
-			row = coefficient_selector_height - coefficient_marker_radius;
-		}
+		wilson.change_canvas_size(image_width, image_height);
 		
-		if (col < coefficient_marker_radius)
-		{
-			col = coefficient_marker_radius;
-		}
-		
-		if (col > coefficient_selector_width - coefficient_marker_radius)
-		{
-			col = coefficient_selector_width - coefficient_marker_radius;
-		}
+		regenerate_hue_and_brightness();
 		
 		
 		
-		coefficient_markers[active_marker].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
-		
-		t[active_marker][0] = (col / coefficient_selector_width - .5) + 2;
-		t[active_marker][1] = (1 - row / coefficient_selector_height - .5);
-		
-		
-		
-		for (let i = 0; i < canvas_height; i++)
-		{
-			for (let j = 0; j < canvas_width; j++)
-			{
-				brightness[i][j] = 0;
-			}
-		}
-		
-		
-		
-		draw_another_frame = true;
-		
-		if (need_to_restart)
-		{
-			need_to_restart = false;
-			
-			window.requestAnimationFrame(draw_quasi_fuchsian_group);
-		}
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
 	
-	function request_high_res_quasi_fuchsian_group()
+	function on_release_draggable(active_draggable, x, y, event)
 	{
-		canvas_size = parseInt(document.querySelector("#image-size-input").value || 1000);
+		image_size = large_image_size;
+		
+		if (wilson.fullscreen.currently_fullscreen)
+		{
+			if (Page.Layout.aspect_ratio >= 1)
+			{
+				image_width = image_size;
+				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
+			}
+			
+			else
+			{
+				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
+				image_height = image_size;
+			}
+		}
+		
+		else
+		{
+			image_width = image_size;
+			image_height = image_size;
+		}
+		
+		
+		
+		max_depth = 100;
+		max_pixel_brightness = 50;
+		
+		wilson.change_canvas_size(image_width, image_height);
+		
+		regenerate_hue_and_brightness();
+		
+		
+		
+		window.requestAnimationFrame(draw_frame);
+	}
+	
+	
+	
+	function on_drag_draggable(active_draggable, x, y, event)
+	{
+		for (let i = 0; i < image_height; i++)
+		{
+			for (let j = 0; j < image_width; j++)
+			{
+				brightness[image_width * i + j] = 0;
+			}
+		}
+		
+		window.requestAnimationFrame(draw_frame);
+	}
+	
+	
+	
+	function request_high_res_frame()
+	{
+		image_size = parseInt(document.querySelector("#high-res-resolution-input").value || 1000);
 		max_depth = parseInt(document.querySelector("#max-depth-input").value || 100);
 		max_pixel_brightness = parseInt(document.querySelector("#max-pixel-brightness-input").value || 50);
 		
 		
 		
-		if (Page.Applets.Canvases.is_fullscreen)
+		if (wilson.fullscreen.currently_fullscreen)
 		{
 			if (Page.Layout.aspect_ratio >= 1)
 			{
-				canvas_width = canvas_size;
-				canvas_height = Math.floor(canvas_size / Page.Layout.aspect_ratio);
+				image_width = image_size;
+				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				canvas_width = Math.floor(canvas_size * Page.Layout.aspect_ratio);
-				canvas_height = canvas_size;
+				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
+				image_height = image_size;
 			}
 		}
 		
 		else
 		{
-			canvas_width = canvas_size;
-			canvas_height = canvas_size;
+			image_width = image_size;
+			image_height = image_size;
 		}
 		
 		
 		
-		hue = [];
-		brightness = [];
-		
-		for (let i = 0; i < canvas_height; i++)
-		{
-			hue[i] = [];
-			brightness[i] = [];
-			
-			for (let j = 0; j < canvas_width; j++)
-			{
-				x = (i / canvas_height * box_size) - box_size / 2;
-				y = box_size / 2 - (j / canvas_width * box_size);
-				hue[i][j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
-				
-				brightness[i][j] = 0;
-			}
-		}
+		regenerate_hue_and_brightness();
 		
 		
 		
@@ -843,122 +534,85 @@
 		{
 			brightness = e.data[0];
 			
-			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("width", canvas_width);
-			document.querySelector("#quasi-fuchsian-groups-plot").setAttribute("height", canvas_height);
+			wilson.change_canvas_size(image_width, image_height);
 			
-			let img_data = ctx.getImageData(0, 0, canvas_width, canvas_height);
-			let data = img_data.data;
-			
-			for (let i = 0; i < canvas_height; i++)
+			for (let i = 0; i < image_height; i++)
 			{
-				for (let j = 0; j < canvas_width; j++)
+				for (let j = 0; j < image_width; j++)
 				{
-					let index = (4 * i * canvas_width) + (4 * j);
+					let index = (4 * i * image_width) + (4 * j);
 					
-					let rgb = HSVtoRGB(hue[i][j], 1, brightness[i][j]); 
+					let rgb = wilson.utils.hsv_to_rgb(hue[image_width * i + j], 1, brightness[image_width * i + j]); 
 					
-					data[index] = rgb[0];
-					data[index + 1] = rgb[1];
-					data[index + 2] = rgb[2];
-					data[index + 3] = 255;
+					image[index] = rgb[0];
+					image[index + 1] = rgb[1];
+					image[index + 2] = rgb[2];
+					image[index + 3] = 255;
 				}
 			}
 			
-			ctx.putImageData(img_data, 0, 0);
+			wilson.render.draw_frame(image);
 			
-			prepare_download();
+			wilson.download_frame("a-quasi-fuchsian-group.png");
 		}
 		
-		web_worker.postMessage([canvas_width, canvas_height, max_depth, max_pixel_brightness, box_size, coefficients]);
+		web_worker.postMessage([image_width, image_height, max_depth, max_pixel_brightness, box_size, coefficients]);
 	}
 	
 	
 	
-	
-	function prepare_download()
+	function regenerate_hue_and_brightness()
 	{
-		let link = document.createElement("a");
+		hue = new Array(image_width * image_height);
+		brightness = new Array(image_width * image_height);
+		image = new Uint8ClampedArray(image_width * image_height * 4);
 		
-		link.download = "a-quasi-fuchsian-group.png";
-		
-		link.href = document.querySelector("#quasi-fuchsian-groups-plot").toDataURL();
-		
-		link.click();
-		
-		link.remove();
-	}
-	
-	
-	
-	function quasi_fuchsian_groups_resize()
-	{
-		coefficient_selector_width = document.querySelector("#coefficient-selector").offsetWidth;
-		coefficient_selector_height = document.querySelector("#coefficient-selector").offsetHeight;
-		
-		for (let i = 0; i < 2; i++)
+		for (let i = 0; i < image_height; i++)
 		{
-			let row = Math.floor((1 - (t[i][1] + .5)) * coefficient_selector_height);
-			let col = Math.floor((t[i][0] - 2 + .5) * coefficient_selector_width);
-			
-			coefficient_markers[i].style.transform = `translate3d(${col - coefficient_marker_radius}px, ${row - coefficient_marker_radius}px, 0)`;
-		}
-		
-		draw_quasi_fuchsian_group();
-	}
-
-
-
-	function adjust_for_settings()
-	{
-		if (Site.Settings.url_vars["contrast"] === 1)
-		{
-			if (Site.Settings.url_vars["theme"] === 1)
+			for (let j = 0; j < image_width; j++)
 			{
-				document.querySelector("#quasi-fuchsian-groups-plot").style.borderColor = "rgb(192, 192, 192)";
+				x = (i / image_height * box_size) - box_size / 2;
+				y = box_size / 2 - (j / image_width * box_size);
+				hue[image_width * i + j] = (Math.atan2(-y, -x) + Math.PI) / (2 * Math.PI);
+				
+				brightness[image_width * i + j] = 0;
+			}
+		}
+	}
+	
+	
+	
+	function change_aspect_ratio()
+	{
+		image_size = small_image_size;
+		
+		if (wilson.fullscreen.currently_fullscreen)
+		{
+			if (Page.Layout.aspect_ratio >= 1)
+			{
+				image_width = image_size;
+				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
 			}
 			
 			else
 			{
-				document.querySelector("#quasi-fuchsian-groups-plot").style.borderColor = "rgb(64, 64, 64)";
+				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
+				image_height = image_size;
 			}
 		}
 		
-		Site.add_style(`
-			.coefficient-marker.hover
-			{
-				background-color: rgb(127, 127, 127);	
-			}
-			
-			.coefficient-marker:not(:hover):focus
-			{
-				background-color: rgb(127, 127, 127);
-				outline: none;
-			}
-		`, true);
-	}
-	
-	
-	
-	function HSVtoRGB(h, s, v)
-	{
-		let r, g, b, i, f, p, q, t;
-		
-		i = Math.floor(h * 6);
-		f = h * 6 - i;
-		p = v * (1 - s);
-		q = v * (1 - f * s);
-		t = v * (1 - (1 - f) * s);
-		
-		switch (i % 6)
+		else
 		{
-			case 0: r = v, g = t, b = p; break;
-			case 1: r = q, g = v, b = p; break;
-			case 2: r = p, g = v, b = t; break;
-			case 3: r = p, g = q, b = v; break;
-			case 4: r = t, g = p, b = v; break;
-			case 5: r = v, g = p, b = q; break;
+			image_width = image_size;
+			image_height = image_size;
 		}
-	    
-		return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+		
+		
+		
+		wilson.change_canvas_size(image_width, image_height);
+		
+		regenerate_hue_and_brightness();
+		
+		window.requestAnimationFrame(draw_frame);
 	}
 }()

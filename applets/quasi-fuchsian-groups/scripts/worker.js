@@ -36,15 +36,13 @@ function draw_quasi_fuchsian_group()
 {
 	return new Promise(async function(resolve, reject)
 	{
-		brightness = [];
+		brightness = new Array(canvas_width * canvas_height);
 		
 		for (let i = 0; i < canvas_height; i++)
 		{
-			brightness[i] = [];
-			
 			for (let j = 0; j < canvas_width; j++)
 			{
-				brightness[i][j] = 0;
+				brightness[canvas_width * i + j] = 0;
 			}
 		}
 		
@@ -65,7 +63,7 @@ function draw_quasi_fuchsian_group()
 		{
 			for (let j = 0; j < canvas_width; j++)
 			{
-				brightness[i][j] = Math.min(Math.sqrt(brightness[i][j] / max_brightness), 1);
+				brightness[canvas_width * i + j] = Math.min(Math.sqrt(brightness[canvas_width * i + j] / max_brightness), 1);
 			}
 		}
 		
@@ -76,9 +74,9 @@ function draw_quasi_fuchsian_group()
 		{
 			for (let j = 1; j < canvas_width - 1; j++)
 			{
-				if (brightness[i][j] !== 0 && brightness[i - 1][j] === 0 && brightness[i - 1][j + 1] === 0 && brightness[i][j + 1] === 0 && brightness[i + 1][j + 1] === 0 && brightness[i + 1][j] === 0 && brightness[i + 1][j - 1] === 0 && brightness[i][j - 1] === 0 && brightness[i - 1][j - 1] === 0)
+				if (brightness[canvas_width * i + j] !== 0 && brightness[canvas_width * (i - 1) + j] === 0 && brightness[canvas_width * (i - 1) + (j + 1)] === 0 && brightness[canvas_width * i + (j + 1)] === 0 && brightness[canvas_width * (i + 1) + (j + 1)] === 0 && brightness[canvas_width * (i + 1) + j] === 0 && brightness[canvas_width * (i + 1) + (j - 1)] === 0 && brightness[canvas_width * i + (j - 1)] === 0 && brightness[canvas_width * (i - 1) + (j - 1)] === 0)
 				{
-					brightness[i][j] = 0;
+					brightness[canvas_width * i + j] = 0;
 				}
 			}
 		}
@@ -134,12 +132,12 @@ function search_step(start_x, start_y, last_transformation_index, last_row, last
 		
 		if (row >= 0 && row < canvas_height && col >= 0 && col < canvas_width)
 		{
-			if (brightness[row][col] === max_pixel_brightness)
+			if (brightness[canvas_width * row + col] === max_pixel_brightness)
 			{
 				continue;
 			}
 			
-			brightness[row][col]++;
+			brightness[canvas_width * row + col]++;
 		}
 		
 		

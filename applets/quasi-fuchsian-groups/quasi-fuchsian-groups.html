@@ -26,18 +26,23 @@
 
 
 
-!text b j Popularized in the book <a href="https://en.m.wikipedia.org/wiki/Indra%27s_Pearls_(book)" onclick="Page.Navigation.redirect('https://en.m.wikipedia.org/wiki/Indra%27s_Pearls_(book)', true)">Indra&#x2019;s Pearls</a>, quasi-Fuchsian groups are discrete groups of conformal (i.e. angle-preserving) transformations of the complex numbers &mdash; but only ones where the limit set is contained in a Jordan curve. A more down-to-earth explanation is that a quasi-Fuchsian group contains a handful of functions, and applying those functions and their inverses repeatedly can make a given starting point converge somewhere. If we plot all of those somewheres, we often end up with a striking picture &mdash; even the simplest case is an Apollonian net, a fractal created by filling a large circle with smaller ones.
-
-<div class="center-content applet-canvas-container" style="height: calc(50vmin + 8px)" data-aos="fade-in" data-aos-delay="700">
-	<div id="output-canvas-container">
-		<canvas id="quasi-fuchsian-groups-plot" class="no-floating-footer"></canvas>
-	</div>
+!begin-text-block
 	
-	<div id="coefficient-selector" class="no-floating-footer">
-		<div id="coefficient-marker-0" class="coefficient-marker no-floating-footer"></div>
-		<div id="coefficient-marker-1" class="coefficient-marker no-floating-footer"></div>
-	</div>
-</div>
+	Popularized in the book <a href="https://en.m.wikipedia.org/wiki/Indra%27s_Pearls_(book)" onclick="Page.Navigation.redirect('https://en.m.wikipedia.org/wiki/Indra%27s_Pearls_(book)', true)">Indra&#x2019;s Pearls</a>, quasi-Fuchsian groups are discrete groups of conformal (i.e. angle-preserving) transformations of the complex numbers &mdash; but only ones where the limit set is contained in a Jordan curve. A more down-to-earth explanation is that a quasi-Fuchsian group contains a handful of functions, and applying those functions and their inverses repeatedly can make a given starting point converge somewhere. If we plot all of those somewheres, we often end up with a striking picture &mdash; even the simplest case is an Apollonian net, a fractal created by filling a large circle with smaller ones.
+	
+	This applet was made with <a href="/projects/wilson/wilson.html" onclick="Page.Navigation.redirect('/projects/wilson/wilson.html')">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.
+	
+!end-text-block
+
+
+
+!begin-text-boxes
+	
+	resolution 500 Resolution
+	
+!end-text-boxes
+
+!canvas
 
 
 
@@ -55,7 +60,7 @@
 
 !begin-text-boxes
 	
-	image-size 1000 Image Size
+	high-res-resolution 1000 Resolution
 	
 	max-depth 100 Iterations
 	
@@ -67,7 +72,7 @@
 
 !begin-text-buttons
 	
-	download Download Image
+	download Download
 	
 !end-text-buttons
 
