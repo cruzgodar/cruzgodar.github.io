@@ -147,7 +147,7 @@
 		//Approximates f'(z) for a polynomial f with given roots.
 		vec2 cderiv(vec2 z)
 		{
-			return 20.0 * (cpoly(z) - cpoly(z - vec2(.05, 0.0)));
+			return 20.0 * (cpoly(z + vec2(.025, 0.0)) - cpoly(z - vec2(.025, 0.0)));
 		}
 		
 		
@@ -414,6 +414,12 @@
 	
 	
 	
+	let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
+	
+	wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "num_roots", "root_1", "root_2", "root_3", "root_4", "root_5", "root_6", "root_7", "root_8", "a", "c", "brightness_scale"]);
+	
+	
+	
 	let a = [1, 0];
 	let c = [0, 0];
 	
@@ -432,6 +438,7 @@
 	let past_brightness_scales = [];
 	
 	let resolution = 500;
+	let resolution_hidden = 100;
 	
 	let fixed_point_x = 0;
 	let fixed_point_y = 0;
@@ -835,6 +842,55 @@
 		
 		
 		
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], aspect_ratio);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_x"], wilson.world_center_x);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_y"], wilson.world_center_y);
+		
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
+		
+		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["num_roots"], num_roots);
+		
+		for (let i = 0; i < num_roots; i++)
+		{
+			wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms[`root_${i + 1}`], current_roots[i]);
+		}
+		
+		wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms["a"], a);
+		wilson_hidden.gl.uniform2f(wilson_hidden.uniforms["c"], c[0] / 10, c[1] / 10);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 30);
+		
+		wilson_hidden.render.draw_frame();
+		
+		
+		
+		let pixel_data = wilson_hidden.render.get_pixel_data();
+		
+		let brightnesses = new Array(resolution_hidden * resolution_hidden);
+		
+		for (let i = 0; i < resolution_hidden * resolution_hidden; i++)
+		{
+			brightnesses[i] = Math.max(Math.max(pixel_data[4 * i], pixel_data[4 * i + 1]), pixel_data[4 * i + 2]);
+		}
+		
+		brightnesses.sort((a, b) => a - b);
+		
+		let brightness_scale = Math.min(10000 / (brightnesses[Math.floor(resolution_hidden * resolution_hidden * .96)] + brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)]), 200);
+		
+		past_brightness_scales.push(brightness_scale);
+		
+		let denom = past_brightness_scales.length;
+		
+		if (denom > 10)
+		{
+			past_brightness_scales.shift();
+		}
+		
+		brightness_scale = Math.max(past_brightness_scales.reduce((a, b) => a + b) / denom, .5);
+		
+		
+		
+		
+		
 		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
 		wilson.gl.uniform1f(wilson.uniforms["world_center_x"], wilson.world_center_x);
 		wilson.gl.uniform1f(wilson.uniforms["world_center_y"], wilson.world_center_y);
@@ -850,7 +906,7 @@
 		
 		wilson.gl.uniform2fv(wilson.uniforms["a"], a);
 		wilson.gl.uniform2f(wilson.uniforms["c"], c[0] / 10, c[1] / 10);
-		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], 20);
+		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
 		
 		wilson.render.draw_frame();
 		
