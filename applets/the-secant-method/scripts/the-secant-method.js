@@ -17,23 +17,9 @@
 		
 		uniform int num_roots;
 		
-		uniform vec2 root_1;
-		uniform vec2 root_2;
-		uniform vec2 root_3;
-		uniform vec2 root_4;
-		uniform vec2 root_5;
-		uniform vec2 root_6;
-		uniform vec2 root_7;
-		uniform vec2 root_8;
+		uniform vec2 roots[8];
 		
-		const vec3 color_1 = vec3(1.0, 0.0, 0.0);
-		const vec3 color_2 = vec3(0.0, 1.0, 0.0);
-		const vec3 color_3 = vec3(0.0, 0.0, 1.0);
-		const vec3 color_4 = vec3(0.0, 1.0, 1.0);
-		const vec3 color_5 = vec3(1.0, 0.0, 1.0);
-		const vec3 color_6 = vec3(1.0, 1.0, 0.0);
-		const vec3 color_7 = vec3(0.5, 0.0, 1.0);
-		const vec3 color_8 = vec3(1.0, 0.5, 0.0);
+		uniform vec3 colors[8];
 		
 		uniform vec2 a;
 		uniform vec2 c;
@@ -67,79 +53,15 @@
 		{
 			vec2 result = vec2(1.0, 0.0);
 			
-			if (num_roots == 0)
+			for (int i = 0; i <= 8; i++)
 			{
-				return result;
+				if (i == num_roots)
+				{
+					return result;
+				}
+				
+				result = cmul(result, z - roots[i]);
 			}
-			
-			result = cmul(result, z - root_1);
-			
-			
-			
-			if (num_roots == 1)
-			{
-				return result;
-			}
-			
-			result = cmul(result, z - root_2);
-			
-			
-			
-			if (num_roots == 2)
-			{
-				return result;
-			}
-			
-			result = cmul(result, z - root_3);
-			
-			
-			
-			if (num_roots == 3)
-			{
-				return result;
-			}
-			
-			result = cmul(result, z - root_4);
-			
-			
-			
-			if (num_roots == 4)
-			{
-				return result;
-			}
-			
-			result = cmul(result, z - root_5);
-			
-			
-			
-			if (num_roots == 5)
-			{
-				return result;
-			}
-			
-			result = cmul(result, z - root_6);
-			
-			
-			
-			if (num_roots == 6)
-			{
-				return result;
-			}
-			
-			result = cmul(result, z - root_7);
-			
-			
-			
-			if (num_roots == 7)
-			{
-				return result;
-			}
-			
-			result = cmul(result, z - root_8);
-			
-			
-			
-			return result;
 		}
 		
 		
@@ -181,161 +103,26 @@
 				
 				
 				
-				if (num_roots >= 1)
+				for (int i = 0; i <= 8; i++)
 				{
-					float d_0 = length(z - root_1);
+					if (i == num_roots)
+					{
+						break;
+					}
+					
+					float d_0 = length(z - roots[i]);
 					
 					if (d_0 < threshhold)
 					{
-						float d_1 = length(last_z - root_1);
+						float d_1 = length(last_z - roots[i]);
 						
 						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
 						
 						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
 						
-						gl_FragColor = vec4(color_1 * brightness, 1.0);
+						gl_FragColor = vec4(colors[i] * brightness, 1.0);
 						
 						return;
-					}
-					
-					
-					
-					if (num_roots >= 2)
-					{
-						float d_0 = length(z - root_2);
-						
-						if (d_0 < threshhold)
-						{
-							float d_1 = length(last_z - root_2);
-							
-							float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-							
-							float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-							
-							gl_FragColor = vec4(color_2 * brightness, 1.0);
-							
-							return;
-						}
-						
-						
-						
-						if (num_roots >= 3)
-						{
-							float d_0 = length(z - root_3);
-							
-							if (d_0 < threshhold)
-							{
-								float d_1 = length(last_z - root_3);
-								
-								float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-								
-								float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-								
-								gl_FragColor = vec4(color_3 * brightness, 1.0);
-								
-								return;
-							}
-							
-							
-							
-							if (num_roots >= 4)
-							{
-								float d_0 = length(z - root_4);
-								
-								if (d_0 < threshhold)
-								{
-									float d_1 = length(last_z - root_4);
-									
-									float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-									
-									float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-									
-									gl_FragColor = vec4(color_4 * brightness, 1.0);
-									
-									return;
-								}
-								
-								
-								
-								if (num_roots >= 5)
-								{
-									float d_0 = length(z - root_5);
-									
-									if (d_0 < threshhold)
-									{
-										float d_1 = length(last_z - root_5);
-										
-										float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-										
-										float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-										
-										gl_FragColor = vec4(color_5 * brightness, 1.0);
-										
-										return;
-									}
-									
-									
-									
-									if (num_roots >= 6)
-									{
-										float d_0 = length(z - root_6);
-										
-										if (d_0 < threshhold)
-										{
-											float d_1 = length(last_z - root_6);
-											
-											float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-											
-											float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-											
-											gl_FragColor = vec4(color_6 * brightness, 1.0);
-											
-											return;
-										}
-										
-										
-										
-										if (num_roots >= 7)
-										{
-											float d_0 = length(z - root_7);
-											
-											if (d_0 < threshhold)
-											{
-												float d_1 = length(last_z - root_7);
-												
-												float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-												
-												float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-												
-												gl_FragColor = vec4(color_7 * brightness, 1.0);
-												
-												return;
-											}
-											
-											
-											
-											if (num_roots >= 8)
-											{
-												float d_0 = length(z - root_8);
-												
-												if (d_0 < threshhold)
-												{
-													float d_1 = length(last_z - root_8);
-													
-													float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-													
-													float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-													
-													gl_FragColor = vec4(color_8 * brightness, 1.0);
-													
-													return;
-												}
-											}
-										}
-									}
-								}
-							}
-						}
 					}
 				}
 			}
@@ -410,13 +197,13 @@
 	
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 
-	wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "num_roots", "root_1", "root_2", "root_3", "root_4", "root_5", "root_6", "root_7", "root_8", "a", "c", "brightness_scale"]);
+	wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "num_roots", "roots", "colors", "a", "c", "brightness_scale"]);
 	
 	
 	
 	let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
 	
-	wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "num_roots", "root_1", "root_2", "root_3", "root_4", "root_5", "root_6", "root_7", "root_8", "a", "c", "brightness_scale"]);
+	wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "num_roots", "roots", "colors", "a", "c", "brightness_scale"]);
 	
 	
 	
@@ -536,6 +323,10 @@
 	//Render the inital frame.
 	wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
 	
+	wilson.gl.uniform3fv(wilson.uniforms["colors"], [1, 0, 0,   0, 1, 0,   0, 0, 1,   0, 1, 1,   1, 0, 1,   1, 1, 0,   .5, 0, 1,   1, .5, 0]);
+	
+	wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], [1, 0, 0,   0, 1, 0,   0, 0, 1,   0, 1, 1,   1, 0, 1,   1, 1, 0,   .5, 0, 1,   1, .5, 0]);
+	
 	window.requestAnimationFrame(draw_newtons_method);
 	
 	
@@ -554,7 +345,8 @@
 		
 		wilson.draggables.add(x, y)
 		
-		current_roots.push([x, y]);
+		current_roots.push(x);
+		current_roots.push(y);
 		
 		num_roots++;
 		
@@ -573,6 +365,7 @@
 		
 		num_roots--;
 		
+		current_roots.pop();
 		current_roots.pop();
 		
 		wilson.draggables.draggables[num_roots + 2].remove();
@@ -593,17 +386,17 @@
 		{
 			if (i < num_roots / 2 || num_roots % 2 === 1)
 			{
-				current_roots[i][0] = Math.cos(2 * Math.PI * 2 * i / num_roots);
-				current_roots[i][1] = Math.sin(2 * Math.PI * 2 * i / num_roots);
+				current_roots[2 * i] = Math.cos(2 * Math.PI * 2 * i / num_roots);
+				current_roots[2 * i + 1] = Math.sin(2 * Math.PI * 2 * i / num_roots);
 			}
 			
 			else
 			{
-				current_roots[i][0] = Math.cos(2 * Math.PI * (2 * i + 1) / num_roots);
-				current_roots[i][1] = Math.sin(2 * Math.PI * (2 * i + 1) / num_roots);
+				current_roots[2 * i] = Math.cos(2 * Math.PI * (2 * i + 1) / num_roots);
+				current_roots[2 * i + 1] = Math.sin(2 * Math.PI * (2 * i + 1) / num_roots);
 			}
 			
-			wilson.draggables.world_coordinates[i + 2] = [current_roots[i][0], current_roots[i][1]];
+			wilson.draggables.world_coordinates[i + 2] = [current_roots[2 * i], current_roots[2 * i + 1]];
 		}
 		
 		window.requestAnimationFrame(draw_newtons_method);
@@ -640,7 +433,7 @@
 			current_roots[last_active_root - 2][0] = parseFloat(root_a_input_element.value || 0);
 			current_roots[last_active_root - 2][1] = parseFloat(root_b_input_element.value || 0);
 			
-			wilson.draggables.world_coordinates[last_active_root - 2] = [current_roots[last_active_root - 2][0], current_roots[last_active_root - 2][1]];
+			wilson.draggables.world_coordinates[last_active_root - 2] = [current_roots[2 * (last_active_root - 2)], current_roots[2 * (last_active_root - 2) + 1]];
 		}
 		
 		
@@ -787,7 +580,8 @@
 		
 		else
 		{
-			current_roots[active_draggable - 2] = [x, y];
+			current_roots[2 * (active_draggable - 2)] = x;
+			current_roots[2 * (active_draggable - 2) + 1] = y;
 		}
 		
 		window.requestAnimationFrame(draw_newtons_method);
@@ -817,8 +611,8 @@
 			
 			else
 			{
-				root_a_input_element.value = Math.round(current_roots[last_active_root - 2][0] * 1000) / 1000;
-				root_b_input_element.value = Math.round(current_roots[last_active_root - 2][1] * 1000) / 1000;
+				root_a_input_element.value = Math.round(current_roots[2 * (last_active_root - 2)] * 1000) / 1000;
+				root_b_input_element.value = Math.round(current_roots[2 * (last_active_root - 2) + 1] * 1000) / 1000;
 			}
 			
 			root_setter_element.style.opacity = 1;
@@ -850,10 +644,7 @@
 		
 		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["num_roots"], num_roots);
 		
-		for (let i = 0; i < num_roots; i++)
-		{
-			wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms[`root_${i + 1}`], current_roots[i]);
-		}
+		wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms["roots"], current_roots);
 		
 		wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms["a"], a);
 		wilson_hidden.gl.uniform2f(wilson_hidden.uniforms["c"], c[0] / 10, c[1] / 10);
@@ -899,10 +690,7 @@
 		
 		wilson.gl.uniform1i(wilson.uniforms["num_roots"], num_roots);
 		
-		for (let i = 0; i < num_roots; i++)
-		{
-			wilson.gl.uniform2fv(wilson.uniforms[`root_${i + 1}`], current_roots[i]);
-		}
+		wilson.gl.uniform2fv(wilson.uniforms["roots"], current_roots);
 		
 		wilson.gl.uniform2fv(wilson.uniforms["a"], a);
 		wilson.gl.uniform2f(wilson.uniforms["c"], c[0] / 10, c[1] / 10);
