@@ -15,19 +15,17 @@
 		uniform float world_center_y;
 		uniform float world_size;
 		
-		uniform int num_roots;
 		
-		
-		uniform vec2 roots[100];
-		
-		uniform vec3 colors[100];
+		uniform vec3 colors[4];
 		
 		uniform vec2 a;
 		uniform vec2 c;
 		
 		uniform float brightness_scale;
 		
-		const float threshhold = .05;
+		const float threshhold = .01;
+		
+		const vec2 i = vec2(0.0, 1.0);
 		
 		
 		
@@ -435,7 +433,7 @@
 		//Returns f(z) for a polynomial f with given roots.
 		vec2 f(vec2 z)
 		{
-			return ccos(z);
+			return csin(cinv(z));
 		}
 		
 		
@@ -468,7 +466,7 @@
 			
 			
 			
-			for (int iteration = 0; iteration < 100; iteration++)
+			for (int iteration = 0; iteration < 200; iteration++)
 			{
 				vec2 temp = cmul(cmul(f(z), cinv(cderiv(z))), a) + c;
 				
@@ -480,27 +478,29 @@
 				
 				
 				
-				for (int i = 0; i <= 100; i++)
+				float d_0 = length(last_z - z);
+				
+				if (d_0 < threshhold)
 				{
-					if (i == num_roots)
-					{
-						break;
-					}
+					float d_1 = length(old_z - last_z);
 					
-					float d_0 = length(last_z - z);
+					float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
 					
-					if (d_0 < threshhold)
-					{
-						float d_1 = length(old_z - last_z);
-						
-						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-						
-						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-						
-						gl_FragColor = vec4(colors[i] * brightness, 1.0);
-						
-						return;
-					}
+					float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+					
+					vec2 theoretical_root = floor(z / (threshhold / 3.0)) * threshhold / 3.0;
+					
+					float c0 = sin(theoretical_root.x * 7.239846) + cos(theoretical_root.x * 2.945387) + 2.0;
+					
+					float c1 = sin(theoretical_root.y * 5.918445) + cos(theoretical_root.y * .987235) + 2.0;
+					
+					float c2 = sin(theoretical_root.x * 1.023974) + cos(theoretical_root.x * 9.130874) + 2.0;
+					
+					float c3 = sin(theoretical_root.y * 3.258342) + cos(theoretical_root.y * 4.20957) + 2.0;
+					
+					gl_FragColor = vec4((c0 * colors[0] + c1 * colors[1] + c2 * colors[2] + c3 * colors[3]) / (c0 + c1 + c2 + c3) * brightness, 1.0);
+					
+					return;
 				}
 			}
 		}
@@ -571,24 +571,18 @@
 	
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 
-	wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "num_roots", "roots", "colors", "a", "c", "brightness_scale"]);
+	wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
 	
 	
 	
 	let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
 	
-	wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "num_roots", "roots", "colors", "a", "c", "brightness_scale"]);
+	wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
 	
 	
 	
 	let a = [1, 0];
 	let c = [0, 0];
-	
-	let current_roots = [-3.14, 0, 0, 0, 3.14, 0];
-	
-	let last_active_root = 0;
-	
-	let num_roots = 3;
 	
 	let aspect_ratio = 1;
 	
@@ -624,9 +618,9 @@
 	
 	
 	
-	let colors = new Array(300);
+	let colors = new Array(12);
 	
-	for (let i = 0; i < 300; i++)
+	for (let i = 0; i < 12; i++)
 	{
 		colors[i] = Math.random();
 	}
@@ -834,10 +828,6 @@
 		
 		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
 		
-		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["num_roots"], num_roots);
-		
-		wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms["roots"], current_roots.flat());
-		
 		
 		wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms["a"], a);
 		wilson_hidden.gl.uniform2f(wilson_hidden.uniforms["c"], c[0] / 10, c[1] / 10);
@@ -880,10 +870,6 @@
 		wilson.gl.uniform1f(wilson.uniforms["world_center_y"], wilson.world_center_y);
 		
 		wilson.gl.uniform1f(wilson.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
-		
-		wilson.gl.uniform1i(wilson.uniforms["num_roots"], num_roots);
-		
-		wilson.gl.uniform2fv(wilson.uniforms["roots"], current_roots.flat());
 		
 		wilson.gl.uniform2fv(wilson.uniforms["a"], a);
 		wilson.gl.uniform2f(wilson.uniforms["c"], c[0] / 10, c[1] / 10);
