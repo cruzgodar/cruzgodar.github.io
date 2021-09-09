@@ -435,7 +435,7 @@
 		//Returns f(z) for a polynomial f with given roots.
 		vec2 f(vec2 z)
 		{
-			return csin(z);
+			return ccos(z);
 		}
 		
 		
@@ -452,6 +452,7 @@
 		{
 			vec2 z;
 			vec2 last_z = vec2(0.0, 0.0);
+			vec2 old_z = vec2(0.0, 0.0);
 			
 			if (aspect_ratio >= 1.0)
 			{
@@ -471,6 +472,8 @@
 			{
 				vec2 temp = cmul(cmul(f(z), cinv(cderiv(z))), a) + c;
 				
+				old_z = last_z;
+				
 				last_z = z;
 				
 				z -= temp;
@@ -484,11 +487,11 @@
 						break;
 					}
 					
-					float d_0 = length(z - roots[i]);
+					float d_0 = length(last_z - z);
 					
 					if (d_0 < threshhold)
 					{
-						float d_1 = length(last_z - roots[i]);
+						float d_1 = length(old_z - last_z);
 						
 						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
 						
