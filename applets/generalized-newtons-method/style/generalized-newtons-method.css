@@ -27,3 +27,10 @@
 {
 	background-color: rgb(64, 96, 127) !important;
 }
+
+#code-input
+{
+	width: 250px;
+	
+	font-family: "Source Code Pro", monospace;
+}

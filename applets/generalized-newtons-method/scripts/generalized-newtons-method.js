@@ -433,7 +433,7 @@
 		//Returns f(z) for a polynomial f with given roots.
 		vec2 f(vec2 z)
 		{
-			return csin(cinv(z));
+			return cmul(csin(z), csin(cmul(z, i)));
 		}
 		
 		
@@ -636,6 +636,16 @@
 	element.classList.add("c-marker");
 	
 	
+	
+	let generate_button_element = document.querySelector("#download-button");
+	
+	generate_button_element.addEventListener("click", () =>
+	{
+		wilson.download_frame("newtons-method.png");
+	});
+	
+	
+	
 
 	let resolution_input_element = document.querySelector("#resolution-input");
 	
@@ -649,7 +659,7 @@
 	});
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = document.querySelector("#generate-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
