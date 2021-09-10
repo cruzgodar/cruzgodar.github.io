@@ -31,6 +31,11 @@
 	
 	
 	
+	"newtons-method-extended":
+	{
+		"webp": "/applets/newtons-method-extended/cover.webp",
+		"non-webp": "/applets/newtons-method-extended/cover.jpg"
+	},
 	
 	"wilson":
 	{
@@ -42,11 +47,5 @@
 	{
 		"webp": "/writing/caracore/cover.webp",
 		"non-webp": "/writing/caracore/cover.jpg"
-	},
-	
-	"kleinian-pearls":
-	{
-		"webp": "/applets/kleinian-pearls/cover.webp",
-		"non-webp": "/applets/kleinian-pearls/cover.jpg"
 	}
 }

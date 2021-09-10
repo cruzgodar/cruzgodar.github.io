@@ -7,6 +7,12 @@
 	
 	
 	
+	"newtons-method-extended":
+	{
+		"webp": "newtons-method-extended/cover.webp",
+		"non-webp": "newtons-method-extended/cover.jpg"
+	},
+	
 	"kleinian-pearls":
 	{
 		"webp": "kleinian-pearls/cover.webp",

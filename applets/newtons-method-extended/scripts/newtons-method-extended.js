@@ -61,7 +61,7 @@
 	
 	let code_input_element = document.querySelector("#code-textarea");
 	
-	code_input_element.value = "csin(z)";
+	code_input_element.value = "cmul(csin(z), csin(cmul(z, i)))";
 	
 	
 	
@@ -125,7 +125,7 @@
 	
 	function use_new_code()
 	{
-		let generating_code = code_input_element.value || "csin(z)";
+		let generating_code = code_input_element.value || "cmul(csin(z), csin(cmul(z, i)))";
 		
 		
 		
@@ -648,8 +648,8 @@
 			canvas_width: 500,
 			canvas_height: 500,
 			
-			world_width: 6,
-			world_height: 6,
+			world_width: 12,
+			world_height: 12,
 			world_center_x: 0,
 			world_center_y: 0,
 			
@@ -731,7 +731,7 @@
 		
 		past_brightness_scales = [];
 		
-		zoom_level = 1;
+		zoom_level = 2;
 		
 		next_pan_velocity_x = 0;
 		next_pan_velocity_y = 0;
