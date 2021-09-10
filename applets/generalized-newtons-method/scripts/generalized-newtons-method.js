@@ -4,580 +4,8 @@
 	
 	
 	
-	let frag_shader_source = `
-		precision highp float;
-		
-		varying vec2 uv;
-		
-		uniform float aspect_ratio;
-		
-		uniform float world_center_x;
-		uniform float world_center_y;
-		uniform float world_size;
-		
-		
-		uniform vec3 colors[4];
-		
-		uniform vec2 a;
-		uniform vec2 c;
-		
-		uniform float brightness_scale;
-		
-		const float threshhold = .01;
-		
-		const vec2 i = vec2(0.0, 1.0);
-		
-		
-		
-		//Returns |z|.
-		float cabs(vec2 z)
-		{
-			return length(z);
-		}
-		
-		float cabs(float z)
-		{
-			return abs(z);
-		}
-		
-		
-		
-		//Returns |z|.
-		float carg(vec2 z)
-		{
-			if (z.x == 0.0)
-			{
-				if (z.y >= 0.0)
-				{
-					return 1.57079632;
-				}
-				
-				return -1.57079632;
-			}
-			
-			return atan(z.y, z.x);
-		}
-		
-		float carg(float z)
-		{
-			if (z >= 0.0)
-			{
-				return 0.0;
-			}
-			
-			return 3.14159265;
-		}
-		
-		
-		
-		//Returns the conjugate of z.
-		vec2 cconj(vec2 z)
-		{
-			return vec2(z.x, -z.y);
-		}
-		
-		float cconj(float z)
-		{
-			return z;
-		}
-		
-		
-		
-		//Returns z / |z|.
-		vec2 csign(vec2 z)
-		{
-			if (length(z) == 0.0)
-			{
-				return vec2(0.0, 0.0);
-			}
-			
-			return z / length(z);
-		}
-		
-		float csign(float z)
-		{
-			return sign(z);
-		}
-		
-		
-		
-		
-		//Returns z + w.
-		vec2 cadd(vec2 z, vec2 w)
-		{
-			return z + w;
-		}
-		
-		vec2 cadd(vec2 z, float w)
-		{
-			return vec2(z.x + w, z.y);
-		}
-		
-		vec2 cadd(float z, vec2 w)
-		{
-			return vec2(z + w.x, w.y);
-		}
-		
-		float cadd(float z, float w)
-		{
-			return z + w;
-		}
-		
-		
-		
-		//Returns z - w.
-		vec2 csub(vec2 z, vec2 w)
-		{
-			return z - w;
-		}
-		
-		vec2 csub(vec2 z, float w)
-		{
-			return vec2(z.x - w, z.y);
-		}
-		
-		vec2 csub(float z, vec2 w)
-		{
-			return vec2(z - w.x, -w.y);
-		}
-		
-		float csub(float z, float w)
-		{
-			return z - w;
-		}
-		
-		
-		
-		//Returns z * w.
-		vec2 cmul(vec2 z, vec2 w)
-		{
-			return vec2(z.x * w.x - z.y * w.y, z.x * w.y + z.y * w.x);
-		}
-		
-		vec2 cmul(vec2 z, float w)
-		{
-			return z * w;
-		}
-		
-		vec2 cmul(float z, vec2 w)
-		{
-			return z * w;
-		}
-		
-		float cmul(float z, float w)
-		{
-			return z * w;
-		}
-		
-		
-		
-		//Returns z / w.
-		vec2 cdiv(vec2 z, vec2 w)
-		{
-			if (length(w) == 0.0)
-			{
-				return vec2(1.0, 0.0);
-			}
-			
-			return vec2(z.x * w.x + z.y * w.y, -z.x * w.y + z.y * w.x) / (w.x * w.x + w.y * w.y);
-		}
-		
-		vec2 cdiv(vec2 z, float w)
-		{
-			if (w == 0.0)
-			{
-				return vec2(1.0, 0.0);
-			}
-			
-			return z / w;
-		}
-		
-		vec2 cdiv(float z, vec2 w)
-		{
-			if (length(w) == 0.0)
-			{
-				return vec2(1.0, 0.0);
-			}
-			
-			return vec2(z * w.x, -z * w.y) / (w.x * w.x + w.y * w.y);
-		}
-		
-		float cdiv(float z, float w)
-		{
-			if (w == 0.0)
-			{
-				return 1.0;
-			}
-			
-			return z / w;
-		}
-		
-		
-		
-		//Returns 1/z.
-		vec2 cinv(vec2 z)
-		{
-			float magnitude = z.x*z.x + z.y*z.y;
-			
-			return vec2(z.x / magnitude, -z.y / magnitude);
-		}
-		
-		float cinv(float z)
-		{
-			if (z == 0.0)
-			{
-				return 1.0;
-			}
-			
-			return 1.0 / z;
-		}
-		
-		
-		
-		//Returns z^w.
-		vec2 cpow(vec2 z, vec2 w)
-		{
-			float arg = carg(z);
-			float magnitude = z.x * z.x + z.y * z.y;
-			
-			float exparg = exp(-w.y * arg);
-			float magexp = pow(magnitude, w.x / 2.0);
-			float logmag = log(magnitude) * w.y / 2.0;
-			
-			float p1 = exparg * cos(w.x * arg);
-			float p2 = exparg * sin(w.x * arg);
-			
-			float q1 = magexp * cos(logmag);
-			float q2 = magexp * sin(logmag);
-			
-			return vec2(p1 * q1 - p2 * q2, q1 * p2 + p1 * q2);
-		}
-		
-		vec2 cpow(vec2 z, float w)
-		{
-			float arg = carg(z);
-			float magnitude = z.x * z.x + z.y * z.y;
-			
-			float magexp = pow(magnitude, w / 2.0);
-			
-			float p1 = cos(w * arg);
-			float p2 = sin(w * arg);
-			
-			return vec2(p1 * magexp, p2 * magexp);
-		}
-		
-		vec2 cpow(float z, vec2 w)
-		{
-			if (z == 0.0)
-			{
-				return vec2(0.0, 0.0);
-			}
-			
-			float zlog = log(z);
-			float zexp = exp(w.x * zlog);
-			
-			return vec2(zexp * cos(w.y * zlog), zexp * sin(w.y * zlog));
-		}
-		
-		float cpow(float z, float w)
-		{
-			return pow(z, w);
-		}
-		
-		
-		
-		//Returns z^^w.
-		vec2 ctet(vec2 z, float w)
-		{
-			if (w == 0.0)
-			{
-				return vec2(1.0, 0.0);
-			}
-		
-			
-			vec2 prod = z;
-			
-			for (int i = 1; i < 10000; i++)
-			{
-				if (float(i) >= w)
-				{
-					return prod;
-				}
-				
-				prod = cpow(prod, z);
-			}
-			
-			return prod;
-		}
-		
-		float ctet(float z, float w)
-		{
-			if (w == 0.0)
-			{
-				return 1.0;
-			}
-			
-			
-			
-			float prod = z;
-			
-			for (int i = 1; i < 10000; i++)
-			{
-				if (float(i) >= w)
-				{
-					return prod;
-				}
-				
-				prod = pow(prod, z);
-			}
-			
-			return prod;
-		}
-		
-		
-		
-		//Returns sqrt(z).
-		vec2 csqrt(vec2 z)
-		{
-			return cpow(z, .5);
-		}
-		
-		vec2 csqrt(float z)
-		{
-			if (z >= 0.0)
-			{
-				return vec2(sqrt(z), 0.0);
-			}
-			
-			return vec2(0.0, sqrt(-z));
-		}
-		
-		
-		
-		//Returns e^z.
-		vec2 cexp(vec2 z)
-		{
-			return cpow(2.7182818, z);
-		}
-		
-		float cexp(float z)
-		{
-			return exp(z);
-		}
-		
-		
-		
-		//Returns log(z).
-		vec2 clog(vec2 z)
-		{
-			return vec2(.5 * log(z.x * z.x + z.y * z.y), carg(z));
-		}
-		
-		float clog(float z)
-		{
-			if (z == 0.0)
-			{
-				return 0.0;
-			}
-			
-			return log(z);
-		}
-		
-		
-		
-		//Returns sin(z).
-		vec2 csin(vec2 z)
-		{
-			vec2 temp = cexp(cmul(z, vec2(0.0, 1.0))) - cexp(cmul(z, vec2(0.0, -1.0)));
-			
-			return cmul(temp, vec2(0.0, -0.5));
-		}
-		
-		float csin(float z)
-		{
-			return sin(z);
-		}
-		
-		
-		
-		//Returns cos(z).
-		vec2 ccos(vec2 z)
-		{
-			vec2 temp = cexp(cmul(z, vec2(0.0, 1.0))) + cexp(cmul(z, vec2(0.0, -1.0)));
-			
-			return cmul(temp, vec2(0.0, -0.5));
-		}
-		
-		float ccos(float z)
-		{
-			return cos(z);
-		}
-		
-		
-		
-		//Returns tan(z).
-		vec2 ctan(vec2 z)
-		{
-			vec2 temp = cexp(cmul(z, vec2(0.0, 2.0)));
-			
-			return cdiv(cmul(vec2(0.0, -1.0), vec2(-1.0, 0.0) + temp), vec2(1.0, 0.0) + temp);
-		}
-		
-		float ctan(float z)
-		{
-			return tan(z);
-		}
-		
-		
-		
-		//Returns f(z) for a polynomial f with given roots.
-		vec2 f(vec2 z)
-		{
-			return cmul(csin(z), csin(cmul(z, i)));
-		}
-		
-		
-		
-		//Approximates f'(z) for a polynomial f with given roots.
-		vec2 cderiv(vec2 z)
-		{
-			return 20.0 * (f(z + vec2(.025, 0.0)) - f(z - vec2(.025, 0.0)));
-		}
-		
-		
-		
-		void main(void)
-		{
-			vec2 z;
-			vec2 last_z = vec2(0.0, 0.0);
-			vec2 old_z = vec2(0.0, 0.0);
-			
-			if (aspect_ratio >= 1.0)
-			{
-				z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
-			}
-			
-			else
-			{
-				z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
-			}
-			
-			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-			
-			
-			
-			for (int iteration = 0; iteration < 200; iteration++)
-			{
-				vec2 temp = cmul(cmul(f(z), cinv(cderiv(z))), a) + c;
-				
-				old_z = last_z;
-				
-				last_z = z;
-				
-				z -= temp;
-				
-				
-				
-				float d_0 = length(last_z - z);
-				
-				if (d_0 < threshhold)
-				{
-					float d_1 = length(old_z - last_z);
-					
-					float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
-					
-					float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
-					
-					vec2 theoretical_root = floor(z / (threshhold / 3.0)) * threshhold / 3.0;
-					
-					float c0 = sin(theoretical_root.x * 7.239846) + cos(theoretical_root.x * 2.945387) + 2.0;
-					
-					float c1 = sin(theoretical_root.y * 5.918445) + cos(theoretical_root.y * .987235) + 2.0;
-					
-					float c2 = sin(theoretical_root.x * 1.023974) + cos(theoretical_root.x * 9.130874) + 2.0;
-					
-					float c3 = sin(theoretical_root.y * 3.258342) + cos(theoretical_root.y * 4.20957) + 2.0;
-					
-					gl_FragColor = vec4((c0 * colors[0] + c1 * colors[1] + c2 * colors[2] + c3 * colors[3]) / (c0 + c1 + c2 + c3) * brightness, 1.0);
-					
-					return;
-				}
-			}
-		}
-	`;
-	
-
-
-	let options =
-	{
-		renderer: "gpu",
-		
-		shader: frag_shader_source,
-		
-		canvas_width: 500,
-		canvas_height: 500,
-		
-		world_width: 3,
-		world_height: 3,
-		world_center_x: 0,
-		world_center_y: 0,
-		
-		
-		
-		use_draggables: true,
-		
-		draggables_mousemove_callback: on_drag_draggable,
-		draggables_touchmove_callback: on_drag_draggable,
-		
-		
-		
-		use_fullscreen: true,
-		
-		true_fullscreen: true,
-	
-		use_fullscreen_button: true,
-		
-		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
-		
-		switch_fullscreen_callback: change_aspect_ratio,
-		
-		
-		
-		mousedown_callback: on_grab_canvas,
-		touchstart_callback: on_grab_canvas,
-		
-		mousedrag_callback: on_drag_canvas,
-		touchmove_callback: on_drag_canvas,
-		
-		mouseup_callback: on_release_canvas,
-		touchend_callback: on_release_canvas,
-		
-		wheel_callback: on_wheel_canvas,
-		pinch_callback: on_pinch_canvas
-	};
-	
-	let options_hidden =
-	{
-		renderer: "gpu",
-		
-		shader: frag_shader_source,
-		
-		canvas_width: 100,
-		canvas_height: 100
-	};
-	
-	
-	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
-
-	wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
-	
-	
-	
-	let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
-	
-	wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
+	let wilson = null;
+	let wilson_hidden = null;
 	
 	
 	
@@ -620,29 +48,21 @@
 	
 	let colors = new Array(12);
 	
-	for (let i = 0; i < 12; i++)
-	{
-		colors[i] = Math.random();
-	}
+	generate_new_palette();
 	
 	
 	
-	let element = wilson.draggables.add(1, 0);
 	
-	element.classList.add("a-marker");
 	
-	element = wilson.draggables.add(0, 0);
+	let code_input_element = document.querySelector("#code-textarea");
 	
-	element.classList.add("c-marker");
+	code_input_element.value = "csin(z)";
 	
 	
 	
-	let generate_button_element = document.querySelector("#download-button");
+	let generate_button_element = document.querySelector("#generate-button");
 	
-	generate_button_element.addEventListener("click", () =>
-	{
-		wilson.download_frame("newtons-method.png");
-	});
+	generate_button_element.addEventListener("click", use_new_code);
 	
 	
 	
@@ -659,12 +79,20 @@
 	});
 	
 	
-	let download_button_element = document.querySelector("#generate-button");
+	let download_button_element = document.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
 		wilson.download_frame("newtons-method.png");
 	});
+	
+	
+	
+	let canvas_location_element = document.querySelector("#canvas-location");
+	
+	
+	
+	use_new_code();
 	
 	
 	
@@ -676,6 +104,680 @@
 	
 	window.requestAnimationFrame(draw_newtons_method);
 	
+	
+	
+	function use_new_code()
+	{
+		let generating_code = code_input_element.value || "csin(z)";
+		
+		
+		
+		let frag_shader_source = `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			uniform float aspect_ratio;
+			
+			uniform float world_center_x;
+			uniform float world_center_y;
+			uniform float world_size;
+			
+			
+			uniform vec3 colors[4];
+			
+			uniform vec2 a;
+			uniform vec2 c;
+			
+			uniform float brightness_scale;
+			
+			const float threshhold = .01;
+			
+			const vec2 i = vec2(0.0, 1.0);
+			
+			
+			
+			//Returns |z|.
+			float cabs(vec2 z)
+			{
+				return length(z);
+			}
+			
+			float cabs(float z)
+			{
+				return abs(z);
+			}
+			
+			
+			
+			//Returns |z|.
+			float carg(vec2 z)
+			{
+				if (z.x == 0.0)
+				{
+					if (z.y >= 0.0)
+					{
+						return 1.57079632;
+					}
+					
+					return -1.57079632;
+				}
+				
+				return atan(z.y, z.x);
+			}
+			
+			float carg(float z)
+			{
+				if (z >= 0.0)
+				{
+					return 0.0;
+				}
+				
+				return 3.14159265;
+			}
+			
+			
+			
+			//Returns the conjugate of z.
+			vec2 cconj(vec2 z)
+			{
+				return vec2(z.x, -z.y);
+			}
+			
+			float cconj(float z)
+			{
+				return z;
+			}
+			
+			
+			
+			//Returns z / |z|.
+			vec2 csign(vec2 z)
+			{
+				if (length(z) == 0.0)
+				{
+					return vec2(0.0, 0.0);
+				}
+				
+				return z / length(z);
+			}
+			
+			float csign(float z)
+			{
+				return sign(z);
+			}
+			
+			
+			
+			
+			//Returns z + w.
+			vec2 cadd(vec2 z, vec2 w)
+			{
+				return z + w;
+			}
+			
+			vec2 cadd(vec2 z, float w)
+			{
+				return vec2(z.x + w, z.y);
+			}
+			
+			vec2 cadd(float z, vec2 w)
+			{
+				return vec2(z + w.x, w.y);
+			}
+			
+			float cadd(float z, float w)
+			{
+				return z + w;
+			}
+			
+			
+			
+			//Returns z - w.
+			vec2 csub(vec2 z, vec2 w)
+			{
+				return z - w;
+			}
+			
+			vec2 csub(vec2 z, float w)
+			{
+				return vec2(z.x - w, z.y);
+			}
+			
+			vec2 csub(float z, vec2 w)
+			{
+				return vec2(z - w.x, -w.y);
+			}
+			
+			float csub(float z, float w)
+			{
+				return z - w;
+			}
+			
+			
+			
+			//Returns z * w.
+			vec2 cmul(vec2 z, vec2 w)
+			{
+				return vec2(z.x * w.x - z.y * w.y, z.x * w.y + z.y * w.x);
+			}
+			
+			vec2 cmul(vec2 z, float w)
+			{
+				return z * w;
+			}
+			
+			vec2 cmul(float z, vec2 w)
+			{
+				return z * w;
+			}
+			
+			float cmul(float z, float w)
+			{
+				return z * w;
+			}
+			
+			
+			
+			//Returns z / w.
+			vec2 cdiv(vec2 z, vec2 w)
+			{
+				if (length(w) == 0.0)
+				{
+					return vec2(1.0, 0.0);
+				}
+				
+				return vec2(z.x * w.x + z.y * w.y, -z.x * w.y + z.y * w.x) / (w.x * w.x + w.y * w.y);
+			}
+			
+			vec2 cdiv(vec2 z, float w)
+			{
+				if (w == 0.0)
+				{
+					return vec2(1.0, 0.0);
+				}
+				
+				return z / w;
+			}
+			
+			vec2 cdiv(float z, vec2 w)
+			{
+				if (length(w) == 0.0)
+				{
+					return vec2(1.0, 0.0);
+				}
+				
+				return vec2(z * w.x, -z * w.y) / (w.x * w.x + w.y * w.y);
+			}
+			
+			float cdiv(float z, float w)
+			{
+				if (w == 0.0)
+				{
+					return 1.0;
+				}
+				
+				return z / w;
+			}
+			
+			
+			
+			//Returns 1/z.
+			vec2 cinv(vec2 z)
+			{
+				float magnitude = z.x*z.x + z.y*z.y;
+				
+				return vec2(z.x / magnitude, -z.y / magnitude);
+			}
+			
+			float cinv(float z)
+			{
+				if (z == 0.0)
+				{
+					return 1.0;
+				}
+				
+				return 1.0 / z;
+			}
+			
+			
+			
+			//Returns z^w.
+			vec2 cpow(vec2 z, vec2 w)
+			{
+				float arg = carg(z);
+				float magnitude = z.x * z.x + z.y * z.y;
+				
+				float exparg = exp(-w.y * arg);
+				float magexp = pow(magnitude, w.x / 2.0);
+				float logmag = log(magnitude) * w.y / 2.0;
+				
+				float p1 = exparg * cos(w.x * arg);
+				float p2 = exparg * sin(w.x * arg);
+				
+				float q1 = magexp * cos(logmag);
+				float q2 = magexp * sin(logmag);
+				
+				return vec2(p1 * q1 - p2 * q2, q1 * p2 + p1 * q2);
+			}
+			
+			vec2 cpow(vec2 z, float w)
+			{
+				float arg = carg(z);
+				float magnitude = z.x * z.x + z.y * z.y;
+				
+				float magexp = pow(magnitude, w / 2.0);
+				
+				float p1 = cos(w * arg);
+				float p2 = sin(w * arg);
+				
+				return vec2(p1 * magexp, p2 * magexp);
+			}
+			
+			vec2 cpow(float z, vec2 w)
+			{
+				if (z == 0.0)
+				{
+					return vec2(0.0, 0.0);
+				}
+				
+				float zlog = log(z);
+				float zexp = exp(w.x * zlog);
+				
+				return vec2(zexp * cos(w.y * zlog), zexp * sin(w.y * zlog));
+			}
+			
+			float cpow(float z, float w)
+			{
+				return pow(z, w);
+			}
+			
+			
+			
+			//Returns z^^w.
+			vec2 ctet(vec2 z, float w)
+			{
+				if (w == 0.0)
+				{
+					return vec2(1.0, 0.0);
+				}
+			
+				
+				vec2 prod = z;
+				
+				for (int i = 1; i < 10000; i++)
+				{
+					if (float(i) >= w)
+					{
+						return prod;
+					}
+					
+					prod = cpow(prod, z);
+				}
+				
+				return prod;
+			}
+			
+			float ctet(float z, float w)
+			{
+				if (w == 0.0)
+				{
+					return 1.0;
+				}
+				
+				
+				
+				float prod = z;
+				
+				for (int i = 1; i < 10000; i++)
+				{
+					if (float(i) >= w)
+					{
+						return prod;
+					}
+					
+					prod = pow(prod, z);
+				}
+				
+				return prod;
+			}
+			
+			
+			
+			//Returns sqrt(z).
+			vec2 csqrt(vec2 z)
+			{
+				return cpow(z, .5);
+			}
+			
+			vec2 csqrt(float z)
+			{
+				if (z >= 0.0)
+				{
+					return vec2(sqrt(z), 0.0);
+				}
+				
+				return vec2(0.0, sqrt(-z));
+			}
+			
+			
+			
+			//Returns e^z.
+			vec2 cexp(vec2 z)
+			{
+				return cpow(2.7182818, z);
+			}
+			
+			float cexp(float z)
+			{
+				return exp(z);
+			}
+			
+			
+			
+			//Returns log(z).
+			vec2 clog(vec2 z)
+			{
+				return vec2(.5 * log(z.x * z.x + z.y * z.y), carg(z));
+			}
+			
+			float clog(float z)
+			{
+				if (z == 0.0)
+				{
+					return 0.0;
+				}
+				
+				return log(z);
+			}
+			
+			
+			
+			//Returns sin(z).
+			vec2 csin(vec2 z)
+			{
+				vec2 temp = cexp(cmul(z, vec2(0.0, 1.0))) - cexp(cmul(z, vec2(0.0, -1.0)));
+				
+				return cmul(temp, vec2(0.0, -0.5));
+			}
+			
+			float csin(float z)
+			{
+				return sin(z);
+			}
+			
+			
+			
+			//Returns cos(z).
+			vec2 ccos(vec2 z)
+			{
+				vec2 temp = cexp(cmul(z, vec2(0.0, 1.0))) + cexp(cmul(z, vec2(0.0, -1.0)));
+				
+				return cmul(temp, vec2(0.0, -0.5));
+			}
+			
+			float ccos(float z)
+			{
+				return cos(z);
+			}
+			
+			
+			
+			//Returns tan(z).
+			vec2 ctan(vec2 z)
+			{
+				vec2 temp = cexp(cmul(z, vec2(0.0, 2.0)));
+				
+				return cdiv(cmul(vec2(0.0, -1.0), vec2(-1.0, 0.0) + temp), vec2(1.0, 0.0) + temp);
+			}
+			
+			float ctan(float z)
+			{
+				return tan(z);
+			}
+			
+			
+			
+			//Returns f(z) for a polynomial f with given roots.
+			vec2 f(vec2 z)
+			{
+				return ${generating_code};
+			}
+			
+			
+			
+			//Approximates f'(z) for a polynomial f with given roots.
+			vec2 cderiv(vec2 z)
+			{
+				return 5.0 * (f(z + vec2(.1, 0.0)) - f(z - vec2(.1, 0.0)));
+			}
+			
+			
+			
+			void main(void)
+			{
+				vec2 z;
+				vec2 last_z = vec2(0.0, 0.0);
+				vec2 old_z = vec2(0.0, 0.0);
+				
+				if (aspect_ratio >= 1.0)
+				{
+					z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
+				}
+				
+				else
+				{
+					z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
+				}
+				
+				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+				
+				
+				
+				for (int iteration = 0; iteration < 200; iteration++)
+				{
+					vec2 temp = cmul(cmul(f(z), cinv(cderiv(z))), a) + c;
+					
+					old_z = last_z;
+					
+					last_z = z;
+					
+					z -= temp;
+					
+					
+					
+					//If we're slowing down, it's reasonably safe to assume that we're near a root.
+					
+					float d_0 = length(last_z - z);
+					
+					if (d_0 < threshhold)
+					{
+						float d_1 = length(old_z - last_z);
+						
+						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+						
+						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+						
+						//Round to a square grid so that basin colors are consistent.
+						vec2 theoretical_root = floor(z / (threshhold / 3.0)) * threshhold / 3.0;
+						
+						float c0 = sin(theoretical_root.x * 7.239846) + cos(theoretical_root.x * 2.945387) + 2.0;
+						
+						float c1 = sin(theoretical_root.y * 5.918445) + cos(theoretical_root.y * .987235) + 2.0;
+						
+						float c2 = sin((theoretical_root.x + theoretical_root.y) * 1.023974) + cos((theoretical_root.x + theoretical_root.y) * 9.130874) + 2.0;
+						
+						float c3 = sin((theoretical_root.x - theoretical_root.y) * 3.258342) + cos((theoretical_root.x - theoretical_root.y) * 4.20957) + 2.0;
+						
+						//Pick an interpolated color between the 4 that we chose earlier.
+						gl_FragColor = vec4((c0 * colors[0] + c1 * colors[1] + c2 * colors[2] + c3 * colors[3]) / (c0 + c1 + c2 + c3) * brightness, 1.0);
+						
+						return;
+					}
+				}
+			}
+		`;
+		
+
+
+		let options =
+		{
+			renderer: "gpu",
+			
+			shader: frag_shader_source,
+			
+			canvas_width: 500,
+			canvas_height: 500,
+			
+			world_width: 3,
+			world_height: 3,
+			world_center_x: 0,
+			world_center_y: 0,
+			
+			
+			
+			use_draggables: true,
+			
+			draggables_mousemove_callback: on_drag_draggable,
+			draggables_touchmove_callback: on_drag_draggable,
+			
+			
+			
+			use_fullscreen: true,
+			
+			true_fullscreen: true,
+		
+			use_fullscreen_button: true,
+			
+			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+			
+			switch_fullscreen_callback: change_aspect_ratio,
+			
+			
+			
+			mousedown_callback: on_grab_canvas,
+			touchstart_callback: on_grab_canvas,
+			
+			mousedrag_callback: on_drag_canvas,
+			touchmove_callback: on_drag_canvas,
+			
+			mouseup_callback: on_release_canvas,
+			touchend_callback: on_release_canvas,
+			
+			wheel_callback: on_wheel_canvas,
+			pinch_callback: on_pinch_canvas
+		};
+		
+		let options_hidden =
+		{
+			renderer: "gpu",
+			
+			shader: frag_shader_source,
+			
+			canvas_width: 100,
+			canvas_height: 100
+		};
+		
+		
+		
+		try
+		{
+			wilson.output_canvas_container.parentNode.remove();
+			wilson_hidden.output_canvas_container.parentNode.remove();
+			
+			canvas_location_element.insertAdjacentHTML("beforebegin", `
+				<div>
+					<canvas id="output-canvas" class="output-canvas"></canvas>
+					<canvas id="hidden-canvas" class="hidden-canvas"></canvas>
+				</div>
+			`);
+		}
+		
+		catch(ex) {}
+		
+		
+		
+		wilson = new Wilson(document.querySelector("#output-canvas"), options);
+
+		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
+		
+		
+		
+		wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
+		
+		wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
+		
+		
+		
+		past_brightness_scales = [];
+		
+		zoom_level = 0;
+		
+		next_pan_velocity_x = 0;
+		next_pan_velocity_y = 0;
+		next_zoom_velocity = 0;
+		
+		pan_velocity_x = 0;
+		pan_velocity_y = 0;
+		zoom_velocity = 0;
+		
+		
+		
+		let element = wilson.draggables.add(1, 0);
+	
+		element.classList.add("a-marker");
+		
+		element = wilson.draggables.add(0, 0);
+		
+		element.classList.add("c-marker");
+		
+		
+		
+		//Render the inital frame.
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], 1);
+		
+		wilson.gl.uniform3fv(wilson.uniforms["colors"], colors);
+		wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], colors);
+		
+		
+		
+		window.requestAnimationFrame(draw_newtons_method);
+	}
+	
+	
+	
+	//Pick 4 colors, each with a bright, medium, and dim component. Each of these colors will be interpolated between based on the target x and y coordinates of the attractive root, forming a quadrilateral in the color plane. Since these 4 corner points are brightish but not overly so and decently saturated, this process almost always produces a pleasing palette.
+	function generate_new_palette()
+	{
+		for (let i = 0; i < 4; i++)
+		{
+			let components = [Math.random() * .5 + .5, Math.random() * .75 + .0625, Math.random() * .5];
+			
+			let indices = [0, 1, 2];
+			
+			
+			
+			let rand = Math.floor(Math.random() * 3);
+			
+			colors[4*i] = components[rand];
+			
+			components.splice(rand, 1);
+			
+			
+			
+			rand = Math.floor(Math.random() * 2);
+			
+			colors[4*i + 1] = components[rand];
+			
+			components.splice(rand, 1);
+			
+			
+			
+			colors[4*i + 2] = components[0];
+		}
+	}
 	
 	
 	
