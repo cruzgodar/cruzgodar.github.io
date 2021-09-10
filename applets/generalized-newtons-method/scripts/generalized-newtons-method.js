@@ -16,12 +16,14 @@
 	
 	let num_iterations = 100;
 	
-	let zoom_level = 0;
+	let zoom_level = 1;
 	
 	let past_brightness_scales = [];
 	
 	let resolution = 500;
 	let resolution_hidden = 100;
+	
+	let derivative_precision = 20;
 	
 	let fixed_point_x = 0;
 	let fixed_point_y = 0;
@@ -44,11 +46,14 @@
 	
 	let last_timestamp = -1;
 	
+	let currently_animating_parameters = false;
+	let parameter_animation_frame = 0;
 	
 	
-	let colors = new Array(12);
 	
-	generate_new_palette();
+	let colors = null;
+	let color_deltas = new Array(12);
+	let old_colors = new Array(12);
 	
 	
 	
@@ -57,6 +62,12 @@
 	let code_input_element = document.querySelector("#code-textarea");
 	
 	code_input_element.value = "csin(z)";
+	
+	
+	
+	let randomize_palette_button = document.querySelector("#randomize-palette-button");
+	
+	randomize_palette_button.addEventListener("click", animate_palette_change);
 	
 	
 	
@@ -79,6 +90,22 @@
 	});
 	
 	
+	
+	let derivative_precision_input_element = document.querySelector("#derivative-precision-input");
+	
+	derivative_precision_input_element.addEventListener("input", () =>
+	{
+		derivative_precision = parseFloat(derivative_precision_input_element.value || 20);
+		
+		wilson.gl.uniform1f(wilson.uniforms["derivative_precision"], derivative_precision);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["derivative_precision"], derivative_precision);
+		
+		window.requestAnimationFrame(draw_newtons_method);
+	});
+	
+	
+	
+	
 	let download_button_element = document.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
@@ -93,16 +120,6 @@
 	
 	
 	use_new_code();
-	
-	
-	
-	//Render the inital frame.
-	wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
-	
-	wilson.gl.uniform3fv(wilson.uniforms["colors"], colors);
-	wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], colors);
-	
-	window.requestAnimationFrame(draw_newtons_method);
 	
 	
 	
@@ -122,6 +139,8 @@
 			uniform float world_center_x;
 			uniform float world_center_y;
 			uniform float world_size;
+			
+			uniform float derivative_precision;
 			
 			
 			uniform vec3 colors[4];
@@ -549,7 +568,7 @@
 			//Approximates f'(z) for a polynomial f with given roots.
 			vec2 cderiv(vec2 z)
 			{
-				return 5.0 * (f(z + vec2(.1, 0.0)) - f(z - vec2(.1, 0.0)));
+				return derivative_precision * (f(z + vec2(1.0 / (2.0*derivative_precision), 0.0)) - f(z - vec2(1.0 / (2.0*derivative_precision), 0.0)));
 			}
 			
 			
@@ -629,8 +648,8 @@
 			canvas_width: 500,
 			canvas_height: 500,
 			
-			world_width: 3,
-			world_height: 3,
+			world_width: 6,
+			world_height: 6,
 			world_center_x: 0,
 			world_center_y: 0,
 			
@@ -700,19 +719,19 @@
 		
 		wilson = new Wilson(document.querySelector("#output-canvas"), options);
 
-		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
+		wilson.render.init_uniforms(["aspect_ratio", "derivative_precision", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
 		
 		
 		
 		wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
 		
-		wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
+		wilson_hidden.render.init_uniforms(["aspect_ratio", "derivative_precision", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
 		
 		
 		
 		past_brightness_scales = [];
 		
-		zoom_level = 0;
+		zoom_level = 1;
 		
 		next_pan_velocity_x = 0;
 		next_pan_velocity_y = 0;
@@ -734,9 +753,16 @@
 		
 		
 		
+		colors = generate_new_palette();
+		
+		
+		
 		//Render the inital frame.
 		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
 		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], 1);
+		
+		wilson.gl.uniform1f(wilson.uniforms["derivative_precision"], derivative_precision);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["derivative_precision"], derivative_precision);
 		
 		wilson.gl.uniform3fv(wilson.uniforms["colors"], colors);
 		wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], colors);
@@ -751,31 +777,91 @@
 	//Pick 4 colors, each with a bright, medium, and dim component. Each of these colors will be interpolated between based on the target x and y coordinates of the attractive root, forming a quadrilateral in the color plane. Since these 4 corner points are brightish but not overly so and decently saturated, this process almost always produces a pleasing palette.
 	function generate_new_palette()
 	{
+		let new_colors = new Array(12);
+		
+		let hue = 0;
+		
+		let restrictions = [];
+		
+		let restriction_width = .1;
+		
+		
+		
 		for (let i = 0; i < 4; i++)
 		{
-			let components = [Math.random() * .5 + .5, Math.random() * .75 + .0625, Math.random() * .5];
+			hue = Math.random() * (1 - i * 2 * restriction_width);
 			
-			let indices = [0, 1, 2];
+			for (let j = 0; j < i; j++)
+			{
+				if (hue > restrictions[j])
+				{
+					hue += restriction_width*2;
+				}
+			}
 			
+			restrictions[i] = hue - restriction_width;
 			
+			restrictions.sort();
 			
-			let rand = Math.floor(Math.random() * 3);
-			
-			colors[4*i] = components[rand];
-			
-			components.splice(rand, 1);
-			
-			
-			
-			rand = Math.floor(Math.random() * 2);
-			
-			colors[4*i + 1] = components[rand];
-			
-			components.splice(rand, 1);
+			console.log(hue);
 			
 			
 			
-			colors[4*i + 2] = components[0];
+			let rgb = wilson.utils.hsv_to_rgb(hue, Math.random() * .25 + .75, Math.random() * .25 + .75);
+			
+			new_colors[3*i] = rgb[0] / 255;
+			new_colors[3*i + 1] = rgb[1] / 255;
+			new_colors[3*i + 2] = rgb[2] / 255;
+		}
+		
+		return new_colors;
+	}
+	
+	
+	
+	function animate_palette_change()
+	{
+		if (!currently_animating_parameters)
+		{
+			currently_animating_parameters = true;
+			
+			parameter_animation_frame = 0;
+			
+			
+			
+			let new_colors = generate_new_palette();
+			old_colors = [...colors];
+			
+			for (let i = 0; i < 12; i++)
+			{
+				color_deltas[i] = new_colors[i] - colors[i];
+			}
+			
+			window.requestAnimationFrame(draw_newtons_method);
+		}
+	}
+	
+	
+	
+	function animate_palette_change_step()
+	{
+		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 30 - Math.PI / 2) + .5;
+		
+		for (let i = 0; i < 12; i++)
+		{
+			colors[i] = old_colors[i] + color_deltas[i]*t;
+		}
+		
+		wilson.gl.uniform3fv(wilson.uniforms["colors"], colors);
+		wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], colors);
+		
+		
+		
+		parameter_animation_frame++;
+		
+		if (parameter_animation_frame === 31)
+		{
+			currently_animating_parameters = false;
 		}
 	}
 	
@@ -991,6 +1077,17 @@
 		
 		
 		
+		let need_new_frame = false;
+		
+		if (currently_animating_parameters)
+		{
+			animate_palette_change_step();
+			
+			need_new_frame = true;
+		}
+		
+		
+		
 		if (pan_velocity_x !== 0 || pan_velocity_y !== 0 || zoom_velocity !== 0)
 		{
 			wilson.world_center_x += pan_velocity_x;
@@ -1022,9 +1119,16 @@
 			
 			
 			
-			window.requestAnimationFrame(draw_newtons_method);
+			need_new_frame = true;
 			
 			wilson.draggables.recalculate_locations();
+		}
+		
+		
+		
+		if (need_new_frame)
+		{
+			window.requestAnimationFrame(draw_newtons_method);
 		}
 	}
 	
