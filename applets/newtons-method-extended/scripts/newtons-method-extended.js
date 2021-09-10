@@ -751,6 +751,9 @@
 		
 		element.classList.add("c-marker");
 		
+		a = [1, 0];
+		c = [0, 0];
+		
 		
 		
 		colors = generate_new_palette();
