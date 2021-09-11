@@ -2060,14 +2060,6 @@ class Wilson
 				{
 					this.pinch_callback(center_x, center_y, touch_distance - last_touch_distance, e);
 				}
-				
-				
-				
-				this.last_row_1 = row_1;
-				this.last_col_1 = col_1;
-				
-				this.last_row_2 = row_2;
-				this.last_col_2 = col_2;
 			}
 			
 			
@@ -2100,7 +2092,44 @@ class Wilson
 			
 			
 			
-			this.touchmove_callback(...world_coordinates, world_coordinates[0] - last_world_coordinates[0], world_coordinates[1] - last_world_coordinates[1], e);
+			if (e.touches.length === 1)
+			{
+				this.touchmove_callback(...world_coordinates, world_coordinates[0] - last_world_coordinates[0], world_coordinates[1] - last_world_coordinates[1], e);
+			}
+			
+			else
+			{
+				//Only fire a touchmove event if both touches are moving in a similar direction.
+				let x_delta_1 = world_coordinates[0] - last_world_coordinates[0];
+				let y_delta_1 = world_coordinates[1] - last_world_coordinates[1];
+				
+				
+				
+				let mouse_x_2 = e.touches[1].clientX;
+				let mouse_y_2 = e.touches[1].clientY;
+				
+				let row_2 = (mouse_y_2 - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
+			let col_2 = (mouse_x_2 - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
+				
+				let world_coordinates_2 = this.parent.utils.interpolate.canvas_to_world(row_2, col_2);
+				
+				let last_world_coordinates_2 = this.parent.utils.interpolate.canvas_to_world(this.last_row_2, this.last_col_2);
+				
+				let x_delta_2 = world_coordinates_2[0] - last_world_coordinates_2[0];
+				let y_delta_2 = world_coordinates_2[1] - last_world_coordinates_2[1];
+				
+				
+				
+				if (Math.abs(x_delta_1 - x_delta_2) / this.parent.world_width < .005 && Math.abs(y_delta_1 - y_delta_2) / this.parent.world_height < .005)
+				{
+					this.touchmove_callback((world_coordinates[0] + world_coordinates_2[0]) / 2, (world_coordinates[1] + world_coordinates_2[1]) / 2, (x_delta_1 + x_delta_2) / 2, (y_delta_1 + y_delta_2) / 2, e);
+				}
+				
+				
+				
+				this.last_row_2 = row_2;
+				this.last_col_2 = col_2;
+			}
 			
 			
 			

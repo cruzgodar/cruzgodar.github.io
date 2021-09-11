@@ -39,8 +39,8 @@
 	let zoom_velocity = 0;
 	
 	const pan_friction = .96;
-	const pan_velocity_start_threshhold = .005;
-	const pan_velocity_stop_threshhold = .0005;
+	const pan_velocity_start_threshhold = .0025;
+	const pan_velocity_stop_threshhold = .00025;
 	
 	const zoom_friction = .93;
 	const zoom_velocity_start_threshhold = .01;
@@ -872,8 +872,8 @@
 			wilson.world_center_x -= x_delta;
 			wilson.world_center_y -= y_delta;
 			
-			next_pan_velocity_x = -x_delta;
-			next_pan_velocity_y = -y_delta;
+			next_pan_velocity_x = -x_delta / wilson.world_width;
+			next_pan_velocity_y = -y_delta / wilson.world_height;
 			
 			wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
 			wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
@@ -918,7 +918,7 @@
 		
 		else
 		{
-			if (Math.sqrt(next_pan_velocity_x * next_pan_velocity_x + next_pan_velocity_y * next_pan_velocity_y) >= pan_velocity_start_threshhold * Math.min(wilson.world_width, wilson.world_height))
+			if (Math.sqrt(next_pan_velocity_x * next_pan_velocity_x + next_pan_velocity_y * next_pan_velocity_y) >= pan_velocity_start_threshhold)
 			{
 				pan_velocity_x = next_pan_velocity_x;
 				pan_velocity_y = next_pan_velocity_y;
@@ -1099,8 +1099,8 @@
 		
 		if (pan_velocity_x !== 0 || pan_velocity_y !== 0 || zoom_velocity !== 0)
 		{
-			wilson.world_center_x += pan_velocity_x;
-			wilson.world_center_y += pan_velocity_y;
+			wilson.world_center_x += pan_velocity_x * wilson.world_width;
+			wilson.world_center_y += pan_velocity_y * wilson.world_height;
 			
 			wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
 			wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
@@ -1110,7 +1110,7 @@
 			pan_velocity_x *= pan_friction;
 			pan_velocity_y *= pan_friction;
 			
-			if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) < pan_velocity_stop_threshhold * Math.min(wilson.world_width, wilson.world_height))
+			if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) < pan_velocity_stop_threshhold)
 			{
 				pan_velocity_x = 0;
 				pan_velocity_y = 0;
