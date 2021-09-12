@@ -9,9 +9,6 @@
 	
 	
 	
-	let a = [1, 0];
-	let c = [0, 0];
-	
 	let aspect_ratio = 1;
 	
 	let num_iterations = 100;
@@ -22,8 +19,6 @@
 	
 	let resolution = 500;
 	let resolution_hidden = 100;
-	
-	let derivative_precision = 20;
 	
 	let fixed_point_x = 0;
 	let fixed_point_y = 0;
@@ -46,28 +41,11 @@
 	
 	let last_timestamp = -1;
 	
-	let currently_animating_parameters = false;
-	let parameter_animation_frame = 0;
-	
-	
-	
-	let colors = null;
-	let color_deltas = new Array(12);
-	let old_colors = new Array(12);
 	
 	
 	
 	
-	
-	let code_input_element = document.querySelector("#code-textarea");
-	
-	code_input_element.value = "cmul(csin(z), csin(cmul(z, i)))";
-	
-	
-	
-	let randomize_palette_button = document.querySelector("#randomize-palette-button");
-	
-	randomize_palette_button.addEventListener("click", animate_palette_change);
+	let generating_string_input_element = document.querySelector("#generating-string-input");
 	
 	
 	
@@ -86,23 +64,8 @@
 		
 		wilson.change_canvas_size(resolution, resolution);
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(draw_frame);
 	});
-	
-	
-	
-	let derivative_precision_input_element = document.querySelector("#derivative-precision-input");
-	
-	derivative_precision_input_element.addEventListener("input", () =>
-	{
-		derivative_precision = parseFloat(derivative_precision_input_element.value || 20);
-		
-		wilson.gl.uniform1f(wilson.uniforms["derivative_precision"], derivative_precision);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["derivative_precision"], derivative_precision);
-		
-		window.requestAnimationFrame(draw_newtons_method);
-	});
-	
 	
 	
 	
@@ -110,7 +73,7 @@
 	
 	download_button_element.addEventListener("click", () =>
 	{
-		wilson.download_frame("newtons-method.png");
+		wilson.download_frame("a-lyapunov-fractal.png");
 	});
 	
 	
@@ -125,7 +88,22 @@
 	
 	function use_new_code()
 	{
-		let generating_code = code_input_element.value || "cmul(csin(z), csin(cmul(z, i)))";
+		let generating_string = (generating_string_input_element.value || "AB").toUpperCase();
+		
+		let generating_code = [];
+		
+		for (let i = 0; i < generating_string.length; i++)
+		{
+			if (generating_string[i] === "B")
+			{
+				generating_code.push(1);
+			}
+			
+			else
+			{
+				generating_code.push(0);
+			}
+		}
 		
 		
 		
@@ -142,10 +120,9 @@
 			
 			uniform float brightness_scale;
 			
-			
-			
 			uniform int seq[12];
-			uniform int seq_length;
+			
+			
 			
 			void main(void)
 			{
@@ -171,9 +148,9 @@
 				
 				vec3 color = vec3(0.0, 0.0, 0.0);
 				
-				for (int iteration = 0; iteration < 20; iteration++)
+				for (int iteration = 0; iteration < ${Math.floor(250 / generating_string.length)}; iteration++)
 				{
-					for (int index = 0; index < 12; index++)
+					for (int index = 0; index < ${generating_string.length}; index++)
 					{
 						if (seq[index] == 0)
 						{
@@ -221,13 +198,6 @@
 			world_height: 4,
 			world_center_x: 2,
 			world_center_y: 2,
-			
-			
-			
-			use_draggables: true,
-			
-			draggables_mousemove_callback: on_drag_draggable,
-			draggables_touchmove_callback: on_drag_draggable,
 			
 			
 			
@@ -288,13 +258,13 @@
 		
 		wilson = new Wilson(document.querySelector("#output-canvas"), options);
 
-		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "brightness_scale", "seq", "seq_length"]);
+		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "brightness_scale", "seq"]);
 		
 		
 		
 		wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
 		
-		wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "brightness_scale", "seq", "seq_length"]);
+		wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "brightness_scale", "seq"]);
 		
 		
 		
@@ -312,117 +282,16 @@
 		
 		
 		
-		colors = generate_new_palette();
-		
-		
-		
 		//Render the inital frame.
 		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
 		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], 1);
 		
-		wilson.gl.uniform1iv(wilson.uniforms["seq"], [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]);
-		wilson_hidden.gl.uniform1iv(wilson_hidden.uniforms["seq"], [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]);
-		
-		wilson.gl.uniform1i(wilson.uniforms["seq_length"], 12);
-		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["seq_length"], 12);
-		
-		wilson.gl.uniform3fv(wilson.uniforms["colors"], colors);
-		wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], colors);
+		wilson.gl.uniform1iv(wilson.uniforms["seq"], generating_code);
+		wilson_hidden.gl.uniform1iv(wilson_hidden.uniforms["seq"], generating_code);
 		
 		
 		
-		window.requestAnimationFrame(draw_newtons_method);
-	}
-	
-	
-	
-	//Pick 4 colors, each with a bright, medium, and dim component. Each of these colors will be interpolated between based on the target x and y coordinates of the attractive root, forming a quadrilateral in the color plane. Since these 4 corner points are brightish but not overly so and decently saturated, this process almost always produces a pleasing palette.
-	function generate_new_palette()
-	{
-		let new_colors = new Array(12);
-		
-		let hue = 0;
-		
-		let restrictions = [];
-		
-		let restriction_width = .1;
-		
-		
-		
-		for (let i = 0; i < 4; i++)
-		{
-			hue = Math.random() * (1 - i * 2 * restriction_width);
-			
-			for (let j = 0; j < i; j++)
-			{
-				if (hue > restrictions[j])
-				{
-					hue += restriction_width*2;
-				}
-			}
-			
-			restrictions[i] = hue - restriction_width;
-			
-			restrictions.sort();
-			
-			
-			
-			let rgb = wilson.utils.hsv_to_rgb(hue, Math.random() * .25 + .75, Math.random() * .25 + .75);
-			
-			new_colors[3*i] = rgb[0] / 255;
-			new_colors[3*i + 1] = rgb[1] / 255;
-			new_colors[3*i + 2] = rgb[2] / 255;
-		}
-		
-		return new_colors;
-	}
-	
-	
-	
-	function animate_palette_change()
-	{
-		if (!currently_animating_parameters)
-		{
-			currently_animating_parameters = true;
-			
-			parameter_animation_frame = 0;
-			
-			
-			
-			let new_colors = generate_new_palette();
-			old_colors = [...colors];
-			
-			for (let i = 0; i < 12; i++)
-			{
-				color_deltas[i] = new_colors[i] - colors[i];
-			}
-			
-			window.requestAnimationFrame(draw_newtons_method);
-		}
-	}
-	
-	
-	
-	function animate_palette_change_step()
-	{
-		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 30 - Math.PI / 2) + .5;
-		
-		for (let i = 0; i < 12; i++)
-		{
-			colors[i] = old_colors[i] + color_deltas[i]*t;
-		}
-		
-		wilson.gl.uniform3fv(wilson.uniforms["colors"], colors);
-		wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], colors);
-		
-		
-		
-		parameter_animation_frame++;
-		
-		if (parameter_animation_frame === 31)
-		{
-			currently_animating_parameters = false;
-		}
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
@@ -453,9 +322,7 @@
 		next_pan_velocity_x = -x_delta;
 		next_pan_velocity_y = -y_delta;
 		
-		window.requestAnimationFrame(draw_newtons_method);
-		
-		wilson.draggables.recalculate_locations();
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
@@ -473,7 +340,7 @@
 			zoom_velocity = next_zoom_velocity;
 		}
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
@@ -554,31 +421,12 @@
 		wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, wilson.world_width / 2), 4 - wilson.world_width / 2);
 		wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, wilson.world_height / 2), 4 - wilson.world_height / 2);
 		
-		window.requestAnimationFrame(draw_newtons_method);
-		
-		wilson.draggables.recalculate_locations();
+		window.requestAnimationFrame(draw_frame);
 	}
 	
-	
-	
-	function on_drag_draggable(active_draggable, x, y, event)
-	{
-		if (active_draggable === 0)
-		{
-			a = [x, y];
-		}
-		
-		else
-		{
-			c = [x, y];
-		}
-		
-		window.requestAnimationFrame(draw_newtons_method);
-	}
 
 
-
-	function draw_newtons_method(timestamp)
+	function draw_frame(timestamp)
 	{
 		let time_elapsed = timestamp - last_timestamp;
 		
@@ -599,9 +447,6 @@
 		
 		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
 		
-		
-		wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms["a"], a);
-		wilson_hidden.gl.uniform2f(wilson_hidden.uniforms["c"], c[0] / 10, c[1] / 10);
 		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 20);
 		
 		wilson_hidden.render.draw_frame();
@@ -642,22 +487,9 @@
 		
 		wilson.gl.uniform1f(wilson.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
 		
-		wilson.gl.uniform2fv(wilson.uniforms["a"], a);
-		wilson.gl.uniform2f(wilson.uniforms["c"], c[0] / 10, c[1] / 10);
 		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
 		
 		wilson.render.draw_frame();
-		
-		
-		
-		let need_new_frame = false;
-		
-		if (currently_animating_parameters)
-		{
-			animate_palette_change_step();
-			
-			need_new_frame = true;
-		}
 		
 		
 		
@@ -699,16 +531,7 @@
 			
 			
 			
-			need_new_frame = true;
-			
-			wilson.draggables.recalculate_locations();
-		}
-		
-		
-		
-		if (need_new_frame)
-		{
-			window.requestAnimationFrame(draw_newtons_method);
+			window.requestAnimationFrame(draw_frame);
 		}
 	}
 	
@@ -756,7 +579,7 @@
 		
 		
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(draw_frame);
 	}
 
 	window.addEventListener("resize", change_aspect_ratio);

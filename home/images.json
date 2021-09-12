@@ -23,13 +23,13 @@
 		"non-webp": "/bio/cover.jpg"
 	},
 	
-	"about":
+	
+	
+	"lyapunov-fractals":
 	{
-		"webp": "/about/cover.webp",
-		"non-webp": "/about/cover.jpg"
+		"webp": "/applets/lyapunov-fractals/cover.webp",
+		"non-webp": "/applets/lyapunov-fractals/cover.jpg"
 	},
-	
-	
 	
 	"newtons-method-extended":
 	{
@@ -41,11 +41,5 @@
 	{
 		"webp": "/projects/wilson/cover.webp",
 		"non-webp": "/projects/wilson/cover.jpg"
-	},
-	
-	"intro":
-	{
-		"webp": "/writing/caracore/cover.webp",
-		"non-webp": "/writing/caracore/cover.jpg"
 	}
 }

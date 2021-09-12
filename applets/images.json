@@ -7,6 +7,12 @@
 	
 	
 	
+	"lyapunov-fractals":
+	{
+		"webp": "lyapunov-fractals/cover.webp",
+		"non-webp": "lyapunov-fractals/cover.jpg"
+	},
+	
 	"newtons-method-extended":
 	{
 		"webp": "newtons-method-extended/cover.webp",
