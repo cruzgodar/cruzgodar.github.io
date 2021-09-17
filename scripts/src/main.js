@@ -403,10 +403,13 @@ let Site =
 
 
 
-			//Remove focus when moving the mouse or touching anything
+			//Remove focus when moving the mouse or touching anything.
 			document.documentElement.addEventListener("mousedown", () =>
 			{
-				document.activeElement.blur();
+				if (document.activeElement.tagName !== "INPUT")
+				{
+					document.activeElement.blur();
+				}
 			});
 		},
 		
@@ -417,7 +420,10 @@ let Site =
 			this.last_touch_x = e.touches[0].clientX;
 			this.last_touch_y = e.touches[0].clientY;
 			
-			document.activeElement.blur();
+			if (document.activeElement.tagName !== "INPUT")
+			{
+				document.activeElement.blur();
+			}
 			
 			if (!this.currently_touch_device)
 			{
