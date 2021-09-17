@@ -377,6 +377,8 @@
 		//Draw the faint horizontal lines.
 		for (let y = min_horizontal_line; y <= max_horizontal_line; y += line_separation)
 		{
+			let color = [0, faint_brightness * Math.min(Math.abs((y + line_separation / 2) / 2), 1), faint_brightness * Math.max(1 - Math.abs((y + line_separation / 2) / 10), 0)];
+			
 			for (let x = min_vertical_line; x <= max_vertical_line; x += wilson.world_width / image_width)
 			{
 				let image_x = x;
@@ -386,7 +388,8 @@
 				{
 					let interpolated_coordinates = wilson.utils.interpolate.world_to_canvas(image_x, image_y);
 					
-					image_data[4 * (image_width * interpolated_coordinates[0] + interpolated_coordinates[1])] = faint_brightness;
+					image_data[4 * (image_width * interpolated_coordinates[0] + interpolated_coordinates[1]) + 1] = color[1];
+					image_data[4 * (image_width * interpolated_coordinates[0] + interpolated_coordinates[1]) + 2] = color[2];
 				}
 			}
 		}
@@ -396,6 +399,8 @@
 		//Draw the faint vertical lines.
 		for (let x = min_vertical_line; x <= max_vertical_line; x += line_separation)
 		{
+			let color = [faint_brightness * Math.min(Math.abs((x + line_separation / 2) / 2), 1), 0, faint_brightness * Math.max(1 - Math.abs((x + line_separation / 2) / 10), 0)];
+			
 			for (let y = min_horizontal_line; y <= max_horizontal_line; y += wilson.world_height / image_height)
 			{
 				let image_x = x + line_separation / 2;
@@ -405,7 +410,8 @@
 				{
 					let interpolated_coordinates = wilson.utils.interpolate.world_to_canvas(image_x, image_y);
 					
-					image_data[4 * (image_width * interpolated_coordinates[0] + interpolated_coordinates[1])] = faint_brightness;
+					image_data[4 * (image_width * interpolated_coordinates[0] + interpolated_coordinates[1])] = color[0];
+					image_data[4 * (image_width * interpolated_coordinates[0] + interpolated_coordinates[1]) + 2] = color[2];
 				}
 			}
 		}
@@ -415,6 +421,8 @@
 		//Draw the bold horizontal lines.
 		for (let y = min_horizontal_line; y <= max_horizontal_line; y += line_separation)
 		{
+			let color = [0, 255 * Math.min(Math.abs(y / 2), 1), 255 * Math.max(1 - Math.abs(y / 10), 0)];
+			
 			for (let x = min_vertical_line; x <= max_vertical_line; x += wilson.world_width / image_width)
 			{
 				let image_x = x;
@@ -424,7 +432,8 @@
 				{
 					let interpolated_coordinates = wilson.utils.interpolate.world_to_canvas(image_x, image_y);
 					
-					image_data[4 * (image_width * interpolated_coordinates[0] + interpolated_coordinates[1])] = 255;
+					image_data[4 * (image_width * interpolated_coordinates[0] + interpolated_coordinates[1]) + 1] = color[1];
+					image_data[4 * (image_width * interpolated_coordinates[0] + interpolated_coordinates[1]) + 2] = color[2];
 				}
 			}
 		}
@@ -434,6 +443,8 @@
 		//Draw the bold vertical lines.
 		for (let x = min_vertical_line; x <= max_vertical_line; x += line_separation)
 		{
+			let color = [255 * Math.min(Math.abs(x / 2), 1), 0, 255 * Math.max(1 - Math.abs(x / 10), 0)];
+			
 			for (let y = min_horizontal_line; y <= max_horizontal_line; y += wilson.world_height / image_height)
 			{
 				let image_x = x;
@@ -443,7 +454,8 @@
 				{
 					let interpolated_coordinates = wilson.utils.interpolate.world_to_canvas(image_x, image_y);
 					
-					image_data[4 * (image_width * interpolated_coordinates[0] + interpolated_coordinates[1])] = 255;
+					image_data[4 * (image_width * interpolated_coordinates[0] + interpolated_coordinates[1])] = color[0];
+					image_data[4 * (image_width * interpolated_coordinates[0] + interpolated_coordinates[1]) + 2] = color[2];
 				}
 			}
 		}
