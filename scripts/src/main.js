@@ -406,7 +406,7 @@ let Site =
 			//Remove focus when moving the mouse or touching anything.
 			document.documentElement.addEventListener("mousedown", () =>
 			{
-				if (document.activeElement.tagName !== "INPUT")
+				if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA")
 				{
 					document.activeElement.blur();
 				}
@@ -420,7 +420,7 @@ let Site =
 			this.last_touch_x = e.touches[0].clientX;
 			this.last_touch_y = e.touches[0].clientY;
 			
-			if (document.activeElement.tagName !== "INPUT")
+			if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA")
 			{
 				document.activeElement.blur();
 			}
