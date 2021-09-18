@@ -7,6 +7,12 @@
 	
 	
 	
+	"complex-maps":
+	{
+		"webp": "complex-maps/cover.webp",
+		"non-webp": "complex-maps/cover.jpg"
+	},
+	
 	"lyapunov-fractals":
 	{
 		"webp": "lyapunov-fractals/cover.webp",

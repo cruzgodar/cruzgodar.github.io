@@ -25,6 +25,12 @@
 	
 	
 	
+	"complex-maps":
+	{
+		"webp": "/applets/complex-maps/cover.webp",
+		"non-webp": "/applets/complex-maps/cover.jpg"
+	},
+	
 	"lyapunov-fractals":
 	{
 		"webp": "/applets/lyapunov-fractals/cover.webp",
@@ -35,11 +41,5 @@
 	{
 		"webp": "/applets/newtons-method-extended/cover.webp",
 		"non-webp": "/applets/newtons-method-extended/cover.jpg"
-	},
-	
-	"wilson":
-	{
-		"webp": "/projects/wilson/cover.webp",
-		"non-webp": "/projects/wilson/cover.jpg"
 	}
 }
