@@ -1790,6 +1790,40 @@ class Wilson
 				
 				this.on_wheel_bound = this.on_wheel.bind(this);
 				this.parent.fullscreen.canvases_to_resize[i].addEventListener("wheel", this.on_wheel_bound);
+				
+				
+				
+				this.parent.fullscreen.canvases_to_resize[i].addEventListener("mouseleave", (e) =>
+				{
+					let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
+					
+					if (this.currently_dragging)
+					{
+						try {this.mousedrag_callback(...last_world_coordinates, 0, 0, e);}
+						catch(ex) {}
+					}
+					
+					else
+					{
+						try {this.mousemove_callback(...last_world_coordinates, 0, 0, e);}
+						catch(ex) {}
+					}
+					
+					try {this.touchmove_callback(...last_world_coordinates, 0, 0, e);}
+					catch(ex) {}
+					
+					
+					
+					this.currently_dragging = false;
+					
+					
+					
+					try {this.mouseup_callback(...last_world_coordinates, e);}
+					catch(ex) {}
+					
+					try {this.touchend_callback(...last_world_coordinates, e);}
+					catch(ex) {}
+				});
 			}
 		},
 		
