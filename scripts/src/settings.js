@@ -181,6 +181,8 @@ let Settings =
 			{
 				this.toggle_dark_theme_color();
 				
+				document.querySelector("#theme-color-meta").setAttribute("content", "#000000");
+				
 				if (!no_animation)
 				{
 					setTimeout(() =>
@@ -280,11 +282,15 @@ let Settings =
 				if (this.url_vars["dark_theme_color"] !== 1)
 				{
 					document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
+					
+					document.querySelector("#theme-color-meta").setAttribute("content", "#181818");
 				}
 				
 				else
 				{
 					document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+					
+					document.querySelector("#theme-color-meta").setAttribute("content", "#000000");
 				}
 			}
 			
@@ -351,6 +357,8 @@ let Settings =
 			if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
 			{
 				document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
+				
+				document.querySelector("#theme-color-meta").setAttribute("content", "#ffffff");
 			}
 			
 			
