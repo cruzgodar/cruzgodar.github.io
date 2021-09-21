@@ -141,6 +141,35 @@ let Settings =
 		catch(ex) {}
 	},
 	
+	
+	
+	meta_theme_color_refresh_id: null,
+	meta_theme_color_animation_step: 0,
+	meta_theme_color_element: document.querySelector("#theme-color-meta"),
+	
+	animate_meta_theme_color: function(old_brightness, new_brightness)
+	{
+		try {clearInterval(this.meta_theme_color_refresh_id);}
+		catch(ex) {}
+		
+		this.meta_theme_color_animation_step = 0;
+		
+		this.meta_theme_color_refresh_id = setInterval(() =>
+		{
+			this.meta_theme_color_animation_step++;
+			
+			let brightness = (1 - this.meta_theme_color_animation_step / 45) * old_brightness + (this.meta_theme_color_animation_step / 45) * new_brightness;
+			
+			this.meta_theme_color_element.setAttribute("content", `rgb(${brightness}, ${brightness}, ${brightness})`);
+			
+			if (this.meta_theme_color_animation_step === 45)
+			{
+				try {clearInterval(this.meta_theme_color_refresh_id);}
+				catch(ex) {}
+			}
+		}, 10);
+	},
+	
 
 
 	//Changes a setting.
@@ -181,7 +210,8 @@ let Settings =
 			{
 				this.toggle_dark_theme_color();
 				
-				document.querySelector("#theme-color-meta").setAttribute("content", "#000000");
+				//document.querySelector("#theme-color-meta").setAttribute("content", "#000000");
+				this.animate_meta_theme_color(24, 0);
 				
 				if (!no_animation)
 				{
@@ -283,14 +313,14 @@ let Settings =
 				{
 					document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
 					
-					document.querySelector("#theme-color-meta").setAttribute("content", "#181818");
+					this.animate_meta_theme_color(255, 24);
 				}
 				
 				else
 				{
 					document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 					
-					document.querySelector("#theme-color-meta").setAttribute("content", "#000000");
+					this.animate_meta_theme_color(24, 0);
 				}
 			}
 			
@@ -358,7 +388,7 @@ let Settings =
 			{
 				document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
 				
-				document.querySelector("#theme-color-meta").setAttribute("content", "#ffffff");
+				this.animate_meta_theme_color(0, 255);
 			}
 			
 			
