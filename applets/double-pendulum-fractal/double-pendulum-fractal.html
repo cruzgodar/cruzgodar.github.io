@@ -1,0 +1,81 @@
+<head>
+	<title>A Julia Set Mosaic</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="A Julia Set Mosaic"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/applets/julia-set-mosaic/julia-set-mosaic.html"/>
+	
+	<meta property="og:description" content="The Mandelbrot set and Julia sets share a close relationship: the Julia set with parameter c &#x201C;looks like&#x201D; the Mandelbrot set at z = c. But just how close is that resemblance? Something we might try is picking a bunch of points in the complex plane and drawing a small Julia set at every one. We&#x2019;d expect to get something vaguely resembling the Mandelbrot set &mdash; but it&#x2019;s remarkable just how accurate that picture is."/>
+
+	<meta property="og:image" content="https://cruzgodar.com/applets/julia-set-mosaic/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header A Julia Set Mosaic
+
+
+
+!begin-text-block
+	
+	The <a href="/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html" onclick="Page.Navigation.redirect('/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html')">Mandelbrot set</a> and <a href="/applets/julia-set-explorer/julia-set-explorer.html" onclick="Page.Navigation.redirect('/applets/julia-set-explorer/julia-set-explorer.html')">Julia sets</a> share a close relationship: the Julia set with parameter \(c\) &#x201C;looks like&#x201D; the Mandelbrot set at \(z = c\). But just how close is that resemblance? Something we might try is picking a bunch of points in the complex plane and drawing a small Julia set at every one. We&#x2019;d expect to get something vaguely resembling the Mandelbrot set &mdash; but it&#x2019;s remarkable just how accurate that picture is.
+	
+	This applet was made with <a href="/projects/wilson/wilson.html" onclick="Page.Navigation.redirect('/projects/wilson/wilson.html')">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.
+	
+!end-text-block
+
+
+
+!begin-text-buttons
+	
+	generate Generate
+	
+!end-text-buttons
+
+
+
+!canvas
+
+
+
+!begin-text-buttons
+	
+	download Download Image
+	
+!end-text-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "A Julia Set Mosaic",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>
