@@ -481,10 +481,10 @@ Page.Load =
 								document.body.style.WebkitUserSelect = "auto";
 								
 								resolve();
-							}, 300);
-						}, 500);
+							}, Site.opacity_animation_time);
+						}, Site.opacity_animation_time * 2);
 					});
-				}, 300);
+				}, Site.opacity_animation_time);
 			});
 		},
 
@@ -517,7 +517,7 @@ Page.Load =
 						
 						
 						resolve();
-					}, 300);
+					}, Site.opacity_animation_time);
 				});
 				
 				
@@ -528,7 +528,7 @@ Page.Load =
 					
 					document.documentElement.addEventListener("mousemove", this.show_cancel_message_no_touch);
 					document.documentElement.addEventListener("touchmove", this.show_cancel_message_touch);
-				}, 1000);
+				}, Site.opacity_animation_time * 6);
 			});
 		},
 
@@ -677,7 +677,7 @@ Page.Load =
 					
 					else
 					{
-						current_delay += 100;
+						current_delay += Site.aos_separation_time;
 						
 						if (current_delay > 2000)
 						{
@@ -1070,7 +1070,7 @@ Page.Load =
 			
 			
 			
-			setTimeout(function()
+			setTimeout(() =>
 			{
 				let elements = document.querySelectorAll("mjx-container");
 				

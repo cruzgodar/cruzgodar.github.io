@@ -14,7 +14,7 @@
 	border-radius: 50%;
 	padding: 5px;
 	
-	transition: filter .15s ease-in-out;
+	transition: filter .1s ease-in-out;
 	filter: brightness(100%);
 	
 	cursor: pointer;
@@ -148,7 +148,7 @@
 	
 	border-radius: 10%;
 
-	transition: filter .15s ease-in-out;
+	transition: filter .1s ease-in-out;
 	filter: brightness(100%);
 }
 
@@ -184,7 +184,7 @@
 {
 	z-index: 101;
 	
-	transition: opacity .3s ease;
+	transition: opacity .2s ease;
 }
 
 #about-button, #sitemap-button, #settings-button
@@ -193,7 +193,7 @@
 	
 	left: -40px;
 	
-	transition: left .3s ease, opacity .3s ease;
+	transition: left .2s ease, opacity .2s ease;
 }
 
 #about-button
@@ -210,7 +210,7 @@
 
 #floating-footer-writing-link, #floating-footer-teaching-link, #floating-footer-applets-link, #floating-footer-bio-link
 {
-	transition: left .3s ease;
+	transition: left .2s ease;
 	
 	z-index: 105;
 }
@@ -223,7 +223,7 @@
 	
 	left: -40px;
 	
-	transition: left .3s ease, opacity .3s ease;
+	transition: left .2s ease, opacity .2s ease;
 }
 
 #contrast-button
@@ -254,7 +254,7 @@
 	opacity: 0;
 	display: none;
 	
-	transition: opacity .3s ease-in-out;
+	transition: opacity .2s ease-in-out;
 }
 
 
@@ -285,7 +285,7 @@
 	scrollbar-width: none;
 	
 	opacity: 0;
-	transition: opacity .3s ease-in-out;
+	transition: opacity .2s ease-in-out;
 	
 	z-index: 120;
 }
@@ -325,7 +325,7 @@
 	flex-direction: row;
 	justify-content: flex-start;
 	
-	transition: opacity .275s ease-in-out;
+	transition: opacity .175s ease-in-out;
 }
 
 .floating-settings-button-text-container

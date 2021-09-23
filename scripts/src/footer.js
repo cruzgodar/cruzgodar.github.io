@@ -24,7 +24,7 @@ Page.Footer =
 {
 	load: function()
 	{
-		let delay = 100;
+		let delay = Site.opacity_animation_time / 3;
 		
 		
 		
@@ -88,7 +88,7 @@ Page.Footer =
 				</div>
 			`;
 			
-			delay += 100;
+			delay += Site.opacity_animation_time / 3;
 		}
 		
 		
@@ -106,7 +106,7 @@ Page.Footer =
 				</div>
 			`;
 			
-			delay += 100;
+			delay += Site.opacity_animation_time / 3;
 		}
 		
 		
@@ -124,7 +124,7 @@ Page.Footer =
 				</div>
 			`;
 			
-			delay += 100;
+			delay += Site.opacity_animation_time / 3;
 		}
 		
 		if  (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "bio"))
@@ -141,7 +141,7 @@ Page.Footer =
 				</div>
 			`;
 			
-			delay += 100;
+			delay += Site.opacity_animation_time / 3;
 		}
 		
 		
@@ -282,7 +282,7 @@ Page.Footer =
 				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-teaching-link img"));
 				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-applets-link img"));
 				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-bio-link img"));
-			}, 50);
+			}, Site.opacity_animation_time / 6);
 			
 			
 			
@@ -430,7 +430,7 @@ Page.Footer =
 						this.last_scroll = -1;
 						
 						this.currently_animating = false;
-					}, 600);
+					}, Site.opacity_animation_time * 2);
 				}, 10);
 			}
 			
@@ -454,8 +454,8 @@ Page.Footer =
 					document.querySelector("#about-button").style.left = "10px";
 					
 					this.menu_is_open = true;
-				}, 50);
-			}, 50);
+				}, Site.opacity_animation_time / 6);
+			}, Site.opacity_animation_time / 6);
 			
 			
 			
@@ -536,9 +536,9 @@ Page.Footer =
 						document.querySelector("#settings-button").style.opacity = 1;
 						document.querySelector("#sitemap-button").style.opacity = 1;
 						document.querySelector("#about-button").style.opacity = 1;
-					}, 300);
-				}, 50);
-			}, 50);
+					}, Site.opacity_animation_time);
+				}, Site.opacity_animation_time / 6);
+			}, Site.opacity_animation_time / 6);
 		},
 		
 		
@@ -570,10 +570,10 @@ Page.Footer =
 						setTimeout(() =>
 						{
 							this.hide_menu();
-						}, 300);
-					}, 50);
-				}, 50);
-			}, 50);
+						}, Site.opacity_animation_time);
+					}, Site.opacity_animation_time / 6);
+				}, Site.opacity_animation_time / 6);
+			}, Site.opacity_animation_time / 6);
 			
 			
 			
@@ -649,9 +649,9 @@ Page.Footer =
 						document.querySelector("#floating-footer-bio-link").style.left = "-40px";
 						
 						this.image_links_is_open = false;
-					}, 50);
-				}, 50);
-			}, 50);
+					}, Site.opacity_animation_time / 6);
+				}, Site.opacity_animation_time / 6);
+			}, Site.opacity_animation_time / 6);
 		},
 		
 		
@@ -687,11 +687,11 @@ Page.Footer =
 							setTimeout(() =>
 							{
 								this.hide_menu();
-							}, 300);
-						}, 50);
-					}, 50);
-				}, 50);
-			}, 50);
+							}, Site.opacity_animation_time);
+						}, Site.opacity_animation_time / 6);
+					}, Site.opacity_animation_time / 6);
+				}, Site.opacity_animation_time / 6);
+			}, Site.opacity_animation_time / 6);
 			
 			
 			
@@ -770,10 +770,10 @@ Page.Footer =
 							document.querySelector("#content-animation-button").style.left = "-40px";
 							
 							this.settings_is_open = false;
-						}, 50);
-					}, 50);
-				}, 50);
-			}, 50);
+						}, Site.opacity_animation_time / 6);
+					}, Site.opacity_animation_time / 6);
+				}, Site.opacity_animation_time / 6);
+			}, Site.opacity_animation_time / 6);
 		},
 		
 		
@@ -805,8 +805,8 @@ Page.Footer =
 						this.timeout_id_2 = setTimeout(() =>
 						{
 							document.querySelector("#settings-text").style.display = "none";
-						}, 300);
-					}, 1800);
+						}, Site.opacity_animation_time);
+					}, Site.opacity_animation_time * 6);
 				}, 10);
 			}
 			
@@ -841,10 +841,10 @@ Page.Footer =
 							this.timeout_id_2 = setTimeout(() =>
 							{
 								document.querySelector("#settings-text").style.display = "none";
-							}, 300);
-						}, 1800);
+							}, Site.opacity_animation_time);
+						}, Site.opacity_animation_time * 6);
 					}, 10);
-				}, 300);
+				}, Site.opacity_animation_time);
 			}
 		}
 	}

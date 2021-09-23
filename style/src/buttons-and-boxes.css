@@ -57,7 +57,7 @@
 	border-radius: 10px;
 	padding: 10px;
 	
-	transition: filter .15s ease-in-out;
+	transition: filter .1s ease-in-out;
 	filter: brightness(100%);
 	
 	cursor: pointer;
@@ -108,7 +108,7 @@
 	border-radius: 6px;
 	padding: 2px;
 	
-	transition: width .15s ease-in-out, height .15s ease-in-out;
+	transition: width .1s ease-in-out, height .1s ease-in-out;
 }
 
 .checkbox-container.hover
@@ -142,7 +142,7 @@
 	
 	cursor: pointer;
 	
-	transition: width .15s ease-in-out, height .15s ease-in-out;
+	transition: width .1s ease-in-out, height .1s ease-in-out;
 }
 
 .checkbox-container > input ~ .checkbox
@@ -156,7 +156,7 @@
 	
 	cursor: pointer;
 	
-	transition: background-color .15s ease-in-out, width .15s ease-in-out, height .15s ease-in-out;
+	transition: background-color .1s ease-in-out, width .1s ease-in-out, height .1s ease-in-out;
 }
 
 .checkbox-container > input:checked ~ .checkbox
@@ -199,7 +199,7 @@
 	border-radius: 50%;
 	padding: 2px;
 	
-	transition: width .15s ease-in-out, height .15s ease-in-out;
+	transition: width .1s ease-in-out, height .1s ease-in-out;
 }
 
 .radio-button-container.hover
@@ -233,7 +233,7 @@
 	
 	cursor: pointer;
 	
-	transition: width .15s ease-in-out, height .15s ease-in-out;
+	transition: width .1s ease-in-out, height .1s ease-in-out;
 }
 
 .radio-button-container > input ~ .radio-button
@@ -247,7 +247,7 @@
 	
 	cursor: pointer;
 	
-	transition: background-color .15s ease-in-out, width .15s ease-in-out, height .15s ease-in-out;
+	transition: background-color .1s ease-in-out, width .1s ease-in-out, height .1s ease-in-out;
 }
 
 .radio-button-container > input:checked ~ .radio-button
@@ -274,7 +274,7 @@
 	font-size: 100%;
 	text-align: center;
 	
-	transition: border-color .3s ease-in-out, color .3s ease-in-out;
+	transition: border-color .2s ease-in-out, color .2s ease-in-out;
 }
 
 .text-box:focus
@@ -323,7 +323,7 @@ label .body-text
 	color: rgb(127, 127, 127);
 	font-size: 100%;
 	
-	transition: border-color .3s ease-in-out, color .3s ease-in-out;
+	transition: border-color .2s ease-in-out, color .2s ease-in-out;
 }
 
 .text-field:focus

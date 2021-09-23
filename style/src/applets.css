@@ -8,7 +8,7 @@
 	border-radius: 15px;
 	padding: 2px;
 	
-	transition: opacity .3s ease-in-out, border-color .3s ease-in-out;
+	transition: opacity .2s ease-in-out, border-color .2s ease-in-out;
 }
 
 .hidden-canvas
@@ -24,7 +24,7 @@
 .applet-progress-bar
 {
 	width: 50vmin !important;
-	transition: opacity .3s ease-in-out, margin-top .3s ease-in-out, margin-bottom .3s ease-in-out;
+	transition: opacity .2s ease-in-out, margin-top .2s ease-in-out, margin-bottom .2s ease-in-out;
 }
 
 

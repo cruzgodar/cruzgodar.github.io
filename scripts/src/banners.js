@@ -123,7 +123,7 @@ Page.Banner =
 						this.ScrollButton.timeout_id = setTimeout(() =>
 						{
 							this.ScrollButton.insert();
-						}, 2500);
+						}, 3000);
 						
 						resolve();
 					};
@@ -147,7 +147,7 @@ Page.Banner =
 					
 					
 					//Since all the elements have had their offsets changed dramatically, we need to update AOS.
-					AOS.init({duration: 1200, once: false, offset: 100});
+					AOS.init({duration: Site.aos_animation_time, once: true, offset: Math.min(100, Page.Layout.window_height / 10)});
 					
 					//We resolve here because the page can still be loaded without the banner.
 					resolve();

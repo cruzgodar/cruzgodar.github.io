@@ -80,7 +80,7 @@ let Settings =
 					setTimeout(() =>
 					{
 						this.toggle_dark_theme_color();
-					}, 600);
+					}, Site.opacity_animation_time * 2);
 				}
 			}
 		});
@@ -182,22 +182,22 @@ let Settings =
 			element = Site.add_style(`
 				html
 				{
-					transition: background-color .6s ease !important;
+					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
 				}
 				
 				p, span, h1, h2, a, q, em, strong, dfn
 				{
-					transition: color .6s ease !important;
+					transition: color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
 				}
 				
 				.text-box, .text-field, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button
 				{
-					transition: background-color .6s ease, border-color .6s ease, color .6s ease !important;
+					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease, border-color ${Site.opacity_animation_time * 2 / 1000}s ease, color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
 				}
 				
 				.line-break
 				{
-					transition: .6s ease !important;
+					transition: ${Site.opacity_animation_time * 2 / 1000}s ease !important;
 				}
 			`);
 		}
@@ -219,7 +219,7 @@ let Settings =
 					{
 						try {Page.Footer.Floating.show_settings_text("Theme: black");}
 						catch(ex) {}
-					}, 600);
+					}, Site.opacity_animation_time * 2);
 				}
 			}
 			
@@ -235,7 +235,7 @@ let Settings =
 						
 						try {Page.Footer.Floating.show_settings_text("Theme: light");}
 				 		catch(ex) {}
-					}, 600);
+					}, Site.opacity_animation_time * 2);
 				}
 			}
 			
@@ -249,7 +249,7 @@ let Settings =
 					{
 						try {Page.Footer.Floating.show_settings_text("Theme: dark");}
 						catch(ex) {}
-					}, 600);
+					}, Site.opacity_animation_time * 2);
 				}
 			}
 		}
@@ -295,7 +295,7 @@ let Settings =
 			setTimeout(() =>
 			{
 				element.remove();
-			}, 600);
+			}, Site.opacity_animation_time * 2);
 		}
 	},
 
@@ -346,7 +346,7 @@ let Settings =
 					catch(ex) {}
 					
 					this.clear_weird_inline_styles();
-				}, 600);
+				}, Site.opacity_animation_time * 2);
 			}
 			
 			
@@ -371,7 +371,7 @@ let Settings =
 					catch(ex) {}
 					
 					this.clear_weird_inline_styles();
-				}, 600);
+				}, Site.opacity_animation_time * 2);
 			}
 			
 			
@@ -413,7 +413,7 @@ let Settings =
 					catch(ex) {}
 					
 					this.clear_weird_inline_styles();
-				}, 600);
+				}, Site.opacity_animation_time * 2);
 			}
 			
 			
@@ -433,7 +433,7 @@ let Settings =
 					catch(ex) {}
 					
 					this.clear_weird_inline_styles();
-				}, 600);
+				}, Site.opacity_animation_time * 2);
 			}
 			
 			
@@ -499,7 +499,7 @@ let Settings =
 				catch(ex) {}
 				
 				this.clear_weird_inline_styles();
-			}, 600);
+			}, Site.opacity_animation_time * 2);
 			
 			
 			
@@ -561,7 +561,7 @@ let Settings =
 				catch(ex) {}
 				
 				this.clear_weird_inline_styles();
-			}, 600);
+			}, Site.opacity_animation_time * 2);
 			
 			
 			
@@ -593,7 +593,7 @@ let Settings =
 					catch(ex) {}
 					
 					this.clear_weird_inline_styles();
-				}, 600);
+				}, Site.opacity_animation_time * 2);
 			}
 			
 			
@@ -615,7 +615,7 @@ let Settings =
 					catch(ex) {}
 					
 					this.clear_weird_inline_styles();
-				}, 600);
+				}, Site.opacity_animation_time * 2);
 			}
 			
 			
@@ -624,7 +624,7 @@ let Settings =
 			{
 				try {Page.Footer.Floating.show_settings_text("Contrast: high");}
 				catch(ex) {}
-			}, 650);
+			}, Site.opacity_animation_time * 2 + 50);
 			
 			this.url_vars["contrast"] = 1;
 		}
@@ -651,7 +651,7 @@ let Settings =
 					catch(ex) {}
 					
 					this.clear_weird_inline_styles();
-				}, 600);
+				}, Site.opacity_animation_time * 2);
 			}
 			
 			
@@ -668,7 +668,7 @@ let Settings =
 					catch(ex) {}
 					
 					this.clear_weird_inline_styles();
-				}, 600);
+				}, Site.opacity_animation_time * 2);
 			}
 			
 			
@@ -677,7 +677,7 @@ let Settings =
 			{
 				try {Page.Footer.Floating.show_settings_text("Contrast: normal");}
 				catch(ex) {}
-			}, 650);
+			}, Site.opacity_animation_time * 2 + 50);
 			
 			this.url_vars["contrast"] = 0;
 		}
@@ -723,8 +723,8 @@ let Settings =
 				{
 					try {Page.Footer.Floating.show_settings_text("Text size: large");}
 				 	catch(ex) {}
-				}, 300);
-			}, 300);
+				}, Site.opacity_animation_time);
+			}, Site.opacity_animation_time);
 				
 			this.url_vars["text_size"] = 1;
 		}
@@ -742,8 +742,8 @@ let Settings =
 				{
 					try {Page.Footer.Floating.show_settings_text("Text size: normal");}
 				 	catch(ex) {}
-				}, 300);
-			}, 300);
+				}, Site.opacity_animation_time);
+			}, Site.opacity_animation_time);
 				
 			this.url_vars["text_size"] = 0;
 		}
@@ -754,9 +754,9 @@ let Settings =
 		{
 			setTimeout(() =>
 			{
-				document.body.style.opacity = 1;
+				document.body.style.opacity = 1; //???
 			}, 50);
-		}, 300);
+		}, Site.opacity_animation_time);
 	},
 
 
@@ -784,7 +784,7 @@ let Settings =
 				
 				try {Page.Footer.Floating.show_settings_text("Font: serif on writing");}
 			 	catch(ex) {}
-			}, 300);
+			}, Site.opacity_animation_time);
 			
 			this.url_vars["font"] = 1;
 		}
@@ -805,7 +805,7 @@ let Settings =
 				
 				try {Page.Footer.Floating.show_settings_text("Font: always sans serif");}
 		 		catch(ex) {}
-			}, 300);
+			}, Site.opacity_animation_time);
 			
 			this.url_vars["font"] = 0;
 		}
@@ -822,7 +822,7 @@ let Settings =
 					
 					Page.Load.AOS.on_resize();
 				}, 50);
-			}, 300);
+			}, Site.opacity_animation_time);
 		}
 	},
 
@@ -848,9 +848,9 @@ let Settings =
 					setTimeout(() =>
 					{
 						document.body.classList.remove("animated-opacity");
-					}, 300);
+					}, Site.opacity_animation_time);
 				}, 50);
-			}, 300);
+			}, Site.opacity_animation_time);
 			
 			
 			
@@ -858,7 +858,7 @@ let Settings =
 			{
 				try {Page.Footer.Floating.show_settings_text("Content animation: disabled");}
 		 		catch(ex) {}
-		 	}, 600);
+		 	}, Site.opacity_animation_time * 2);
 		 	
 		 	
 			

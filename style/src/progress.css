@@ -1,60 +1,5 @@
 /* Provides support for a progress bar and fillable bubbles, both to indicate progress toward something. */
 
-
-
-.stage-bubbles
-{
-	display: grid;
-	
-	grid-template-columns: repeat(3, 1fr);
-	grid-column-gap: calc(27.5vw - 12px);
-	grid-row-gap: 5vw;
-	
-	width: 70vw;
-	margin: 0 auto;
-}
-
-.stage-bubble
-{
-	width: 5vw;
-	height: 5vw;
-	
-	border: 2px solid rgb(152, 152, 152);
-	border-radius: 10%;
-	padding: 2px;
-}
-
-.stage-bubble span
-{
-	width: 0%;
-	height: 0%;
-	margin: 0 auto;
-	position: relative;
-	display: block;
-	
-	border-radius: calc(10% - 3px);
-	
-	background-color: rgb(152, 152, 152);
-	overflow: hidden;
-	
-	transition: width 1.2s ease, height 1.2s ease, background-color 1.2s ease;
-	
-	top: 50%;
-  	transform: translateY(-50%);
-}
-
-.stage-bubble-subtext
-{
-	width: 17.5vw;
-	margin-left: -6.25vw;
-	margin-top: calc(5vw + 1vh);
-	text-align: center;
-	
-	transition: margin-top 1.2s ease;
-}
-
-
-
 .progress-bar
 {
 	width: calc(70vw - 8px);
@@ -79,7 +24,7 @@
 	background-color: rgb(152, 152, 152);
 	overflow: hidden;
 	
-	transition: width 1.2s ease;
+	transition: width .8s ease;
 }
 
 
@@ -100,7 +45,7 @@
 	border-radius: 50%;
 	border: 2px solid rgb(127, 127, 127);
 	border-color: rgb(127, 127, 127) transparent rgb(127, 127, 127) transparent;
-	animation: loading-spinner 1.2s linear infinite;
+	animation: loading-spinner .8s linear infinite;
 }
 
 @keyframes loading-spinner

@@ -351,7 +351,7 @@ Page.Components =
 	
 	
 	
-	get_text_button: function(args, first)
+	get_text_button: function(args)
 	{
 		let id = args[0];
 		
@@ -370,17 +370,8 @@ Page.Components =
 		
 		
 		
-		let delay_string = "";
-		
-		if (first)
-		{
-			delay_string = ` data-aos-delay-increase="500"`;
-		}
-		
-		
-		
 		return `
-			<div class="focus-on-child" data-aos="zoom-out"${delay_string} tabindex="1">
+			<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
 				<button class="text-button${linked_string} no-floating-footer" type="button" id="${id}-button" tabindex="-1">${text}</button>
 			</div>
 		`;

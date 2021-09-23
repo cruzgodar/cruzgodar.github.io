@@ -119,14 +119,14 @@ Page.Layout =
 		//The banner opacity is the big sticking point, though. The solution is to increase the window height slowly and fire scroll events in rapid succession.
 		this.resize_time = 0;
 		
-		this.window_width_step_distance = (this.new_window_height - this.window_height) * (8 / 300);
-		this.window_height_step_distance = (this.new_window_height - this.window_height) * (8 / 300);
+		this.window_width_step_distance = (this.new_window_height - this.window_height) * (8 / Site.opacity_animation_time);
+		this.window_height_step_distance = (this.new_window_height - this.window_height) * (8 / Site.opacity_animation_time);
 		
 		let refresh_id = setInterval(() =>
 		{
 			this.resize_step();
 			
-			if (this.resize_time >= 300)
+			if (this.resize_time >= Site.opacity_animation_time)
 			{
 				clearInterval(refresh_id);
 				

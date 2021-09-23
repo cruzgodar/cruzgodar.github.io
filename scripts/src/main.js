@@ -99,6 +99,14 @@ let Site =
 	
 	
 	
+	aos_separation_time: 80,
+	button_animation_time: 125,
+	opacity_animation_time: 250,
+	background_color_animation_time: 375,
+	aos_animation_time: 1000,
+	
+	
+	
 	//Redirects to the chosen page and sets up all the miscellaneous things that make the site work.
 	load: async function(url)
 	{
@@ -205,7 +213,7 @@ let Site =
 		
 		
 		
-		AOS.init({duration: 1200, once: false, offset: Math.min(100, Page.Layout.window_height / 10)});
+		AOS.init({duration: Site.aos_animation_time, once: true, offset: Math.min(100, Page.Layout.window_height / 10)});
 		
 		window.addEventListener("scroll", () =>
 		{

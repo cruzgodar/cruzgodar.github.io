@@ -188,11 +188,11 @@ Page.Navigation =
 							setTimeout(() =>
 							{
 								document.body.style.opacity = 1;
-							}, 300);
-						}, 450);
-					}, 450);
+							}, Site.opacity_animation_time);
+						}, Site.background_color_animation_time);
+					}, Site.background_color_animation_time);
 				}
-			}, 300);
+			}, Site.opacity_animation_time);
 		});
 	},
 
@@ -342,11 +342,11 @@ Page.Unload =
 							
 							document.documentElement.classList.remove("background-transition");
 							document.body.classList.remove("background-transition");
-						}, 450);
+						}, Site.background_color_animation_time);
 						
 						resolve();
 					}
-				}, 300);
+				}, Site.opacity_animation_time);
 			}
 		});
 	}
