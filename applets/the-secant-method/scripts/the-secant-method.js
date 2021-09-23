@@ -616,7 +616,7 @@
 			}
 			
 			root_setter_element.style.opacity = 1;
-		}, 300);
+		}, Site.opacity_animation_time);
 	}
 
 

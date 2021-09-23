@@ -41,18 +41,19 @@
 	
 	border-radius: 10%;
 	
-	transition: filter .1s ease-in-out;
-	filter: brightness(100%);
+	transition: transform .2s ease-in-out, filter .2s ease-in-out;
 }
 
 .image-link img.hover
 {
-	filter: brightness(75%);
+	transform: scale(1.05);
+	filter: brightness(105%);
 }
 
 .image-link img:not(:hover):focus
 {
-	filter: brightness(75%);
+	transform: scale(1.05);
+	filter: brightness(105%);
 	outline: none;
 }
 
@@ -72,17 +73,6 @@
 .image-link-light img
 {
 	filter: brightness(95%) !important;
-}
-
-.image-link-light img.hover
-{
-	filter: brightness(75%) !important;
-}
-
-.image-link-light img:not(:hover):focus
-{
-	filter: brightness(75%) !important;
-	outline: none;
 }
 
 

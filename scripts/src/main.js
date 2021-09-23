@@ -99,17 +99,21 @@ let Site =
 	
 	
 	
-	aos_separation_time: 80,
-	button_animation_time: 125,
-	opacity_animation_time: 250,
-	background_color_animation_time: 375,
-	aos_animation_time: 1000,
+	base_animation_time: 200,
 	
 	
 	
 	//Redirects to the chosen page and sets up all the miscellaneous things that make the site work.
 	load: async function(url)
 	{
+		this.aos_separation_time = this.base_animation_time / 3;
+		this.button_animation_time = this.base_animation_time / 2;
+		this.opacity_animation_time = this.base_animation_time;
+		this.background_color_animation_time = this.base_animation_time * 2;
+		this.aos_animation_time = this.base_animation_time * 4;
+		
+		
+		
 		Page.Layout.window_width = window.innerWidth;
 		Page.Layout.window_height = window.innerHeight;
 		Page.Layout.aspect_ratio = Page.Layout.window_width / Page.Layout.window_height;

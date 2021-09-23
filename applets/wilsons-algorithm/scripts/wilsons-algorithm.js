@@ -185,8 +185,8 @@
 							progress_bar_element.style.marginTop = 0;
 							progress_bar_element.style.marginBottom = 0;
 							progress_bar_element.style.height = 0;
-						}, 300);
-					}, 600);
+						}, Site.opacity_animation_time);
+					}, Site.opacity_animation_time * 2);
 				}
 				
 				return;
@@ -223,7 +223,7 @@
 				setTimeout(() =>
 				{
 					progress_bar_element.style.opacity = 1;
-				}, 600);
+				}, Site.opacity_animation_time * 2);
 				
 				
 				

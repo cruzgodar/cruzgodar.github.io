@@ -34,6 +34,16 @@
 			
 			document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 			
+			if (Site.Settings.url_vars["theme"] !== 1)
+			{
+				Site.Settings.animate_meta_theme_color(255, 0);
+			}
+			
+			else if (Site.Settings.url_vars["theme"] === 0 && Site.Settings.url_vars["dark_theme_color"] === 0)
+			{
+				Site.Settings.animate_meta_theme_color(24, 0);
+			}
+			
 			setTimeout(() =>
 			{
 				document.querySelector("#earth-light").style.opacity = 1;

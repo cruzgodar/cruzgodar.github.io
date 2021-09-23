@@ -1311,6 +1311,6 @@
 			{
 				wilson.canvas.classList.remove("animated-opacity");
 			});
-		}, 300);
+		}, Site.opacity_animation_time);
 	}
 }()

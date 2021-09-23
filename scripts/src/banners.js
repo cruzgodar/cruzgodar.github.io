@@ -123,7 +123,7 @@ Page.Banner =
 						this.ScrollButton.timeout_id = setTimeout(() =>
 						{
 							this.ScrollButton.insert();
-						}, 3000);
+						}, 2000);
 						
 						resolve();
 					};

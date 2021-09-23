@@ -106,7 +106,7 @@
 	{
 		switch_julia_mode_button_element.style.opacity = 0;
 		
-		setTimeout(function()
+		setTimeout(() =>
 		{
 			if (julia_mode === 2)
 			{
@@ -119,7 +119,7 @@
 				
 				switch_julia_mode_button_element.style.opacity = 1;
 			}
-		}, 300);
+		}, Site.opacity_animation_time);
 		
 		
 		

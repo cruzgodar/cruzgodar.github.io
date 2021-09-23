@@ -280,7 +280,7 @@
 			wilson.ctx.fillRect(0, 0, wilson.canvas_width, wilson.canvas_height);
 			
 			request_animated_binary_tree();
-		}, 300);
+		}, Site.opacity_animation_time);
 	}
 	
 	

@@ -200,18 +200,18 @@
 	{
 		document.body.style.opacity = 0;
 
-		setTimeout(function()
+		setTimeout(() =>
 		{
 			let element = document.createElement("div");
 			
 			element.classList.add("caligo-black-background");
 			
-			element.addEventListener("touchstart", function(e)
+			element.addEventListener("touchstart", (e) =>
 			{
 				e.preventDefault();
 			});
 			
-			element.addEventListener("touchend", function(e)
+			element.addEventListener("touchend", (e) =>
 			{
 				e.preventDefault();
 			});
@@ -242,7 +242,7 @@
 			
 			
 			
-			setTimeout(function()
+			setTimeout(() =>
 			{
 				Page.background_color_changed = true;
 				
@@ -262,7 +262,7 @@
 					</div>
 				`);
 				
-				setTimeout(function()
+				setTimeout(() =>
 				{
 					Page.Load.AOS.load();
 					
@@ -270,11 +270,11 @@
 					
 					Page.set_element_styles(".part-text", "opacity", 1);
 					
-					setTimeout(function()
+					setTimeout(() =>
 					{
 						document.body.style.opacity = 0;
 						
-						setTimeout(function()
+						setTimeout(() =>
 						{
 							document.documentElement.style.overflowY = "visible";
 							document.body.style.overflowY = "visible";
@@ -283,11 +283,11 @@
 							document.body.style.WebkitUserSelect = "auto";
 							
 							Page.Navigation.redirect('/writing/caligo/chapters/11.html');
-						}, 600);
+						}, Site.opacity_animation_time * 2);
 					}, 3000);
 				}, 50);
-			}, 1200);
-		}, 600);
+			}, Site.opacity_animation_time * 4);
+		}, Site.opacity_animation_time * 2);
 	}
 
 

@@ -43,16 +43,13 @@
 		
 		caligo_scroll();
 		
-		setTimeout(function()
+		setTimeout(() =>
 		{
 			document.documentElement.classList.remove("background-transition");
-		}, 450);
+		}, Site.background_color_animation_time);
 	}
 	
-	else
-	{
-		setTimeout(Page.Banner.ScrollButton.insert, 7000);
-	}
+	setTimeout(Page.Banner.ScrollButton.insert, 7000);
 	
 	
 	
@@ -61,7 +58,7 @@
 	{
 		document.body.style.opacity = 0;
 		
-		setTimeout(function()
+		setTimeout(() =>
 		{
 			let element = document.createElement("div");
 			
@@ -103,7 +100,7 @@
 			
 			
 			
-			setTimeout(function()
+			setTimeout(() =>
 			{
 				element.firstChild.insertAdjacentHTML("afterend", `
 					<div style="height: 70vh"></div>
@@ -114,50 +111,50 @@
 					
 					<div style="height: 3vh"></div>
 					
-					<div data-aos="fade-up">
+					<div data-aos="fade-up" data-aos-delay="100">
 						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Nick</p>
 					</div>
 					
 					<div style="height: 1vh"></div>
 					
-					<div data-aos="fade-up">
+					<div data-aos="fade-up" data-aos-delay="200">
 						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Joel</p>
 					</div>
 					
 					<div style="height: 1vh"></div>
 					
-					<div data-aos="fade-up">
+					<div data-aos="fade-up" data-aos-delay="300">
 						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Aly</p>
 					</div>
 					
 					<div style="height: 1vh"></div>
 					
-					<div data-aos="fade-up">
+					<div data-aos="fade-up" data-aos-delay="400">
 						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Renee</p>
 					</div>
 					
 					<div style="height: 1vh"></div>
 					
-					<div data-aos="fade-up">
+					<div data-aos="fade-up" data-aos-delay="500">
 						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Delilah</p>
 					</div>
 					
 					<div style="height: 1vh"></div>
 					
-					<div data-aos="fade-up">
+					<div data-aos="fade-up" data-aos-delay="600">
 						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">and my Mom and Dad</p>
 					</div>
 				`);
 				
-				setTimeout(function()
+				setTimeout(() =>
 				{
 					Page.Load.AOS.load();
 					Page.Load.AOS.show_section(12);
 					
-					setTimeout(show_lyrics, 5000);
-				}, 50);
-			}, 600);
-		}, 300);
+					setTimeout(show_lyrics, 4000);
+				}, 100);
+			}, Site.opacity_animation_time * 2);
+		}, Site.opacity_animation_time);
 	}
 	
 	
@@ -166,18 +163,18 @@
 	{
 		document.body.style.opacity = 0;
 		
-		setTimeout(function()
+		setTimeout(() =>
 		{
 			let element = document.createElement("div");
 			
 			element.classList.add("caligo-black-background");
 			
-			element.addEventListener("touchstart", function(e)
+			element.addEventListener("touchstart", (e) =>
 			{
 				e.preventDefault();
 			});
 			
-			element.addEventListener("touchend", function(e)
+			element.addEventListener("touchend", (e) =>
 			{
 				e.preventDefault();
 			});
@@ -208,7 +205,7 @@
 			
 			
 			
-			setTimeout(function()
+			setTimeout(() =>
 			{
 				element.firstChild.insertAdjacentHTML("afterend", `
 					<div style="height: 70vh"></div>
@@ -217,35 +214,35 @@
 						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw"><em>And I walked up from the shoreline</em></p>
 					</div>
 					
-					<div data-aos="fade-up">
+					<div data-aos="fade-up" data-aos-delay="100">
 						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw"><em>To a city shining bright</em></p>
 					</div>
 					
-					<div data-aos="fade-up">
+					<div data-aos="fade-up" data-aos-delay="200">
 						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw"><em>And I walked the streets of that lovely place</em></p>
 					</div>
 					
-					<div data-aos="fade-up">
+					<div data-aos="fade-up" data-aos-delay="300">
 						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw"><em>&#x2019;Til the coming of the night</em></p>
 					</div>
 					
 					<br>
 					
-					<div data-aos="fade-up">
+					<div data-aos="fade-up" data-aos-delay="400">
 						<p class="synopsis-text" style="text-align: center; font-size: 125%; width: 90vw">Blitzen Trapper, <em>Across the River</em></p>
 					</div>
 				`);
 				
-				setTimeout(function()
+				setTimeout(() =>
 				{
 					Page.Load.AOS.load();
 					Page.Load.AOS.show_section(13);
 					
-					setTimeout(function()
+					setTimeout(() =>
 					{
 						document.body.style.opacity = 0;
 						
-						setTimeout(function()
+						setTimeout(() =>
 						{
 							document.documentElement.style.overflowY = "visible";
 							document.body.style.overflowY = "visible";
@@ -256,11 +253,11 @@
 							
 							
 							Page.Navigation.redirect("/writing/caligo/chapters/p.html");
-						}, 1000);
-					}, 5000);
+						}, Site.background_color_animation_time * 2);
+					}, 4000);
 				}, 50);
-			}, 600);
-		}, 300);
+			}, Site.opacity_animation_time * 2);
+		}, Site.opacity_animation_time);
 	}
 	
 	
@@ -313,7 +310,9 @@
 			}
 			
 			
-			document.documentElement.style.backgroundColor = "rgb(" + background_color + ", " + background_color + ", " + background_color + ")";
+			document.documentElement.style.backgroundColor = `rgb(${background_color}, ${background_color}, ${background_color})`;
+			
+			Site.Settings.meta_theme_color_element.setAttribute("content", `rgb(${background_color}, ${background_color}, ${background_color})`);
 			
 			if (background_color === 0)
 			{

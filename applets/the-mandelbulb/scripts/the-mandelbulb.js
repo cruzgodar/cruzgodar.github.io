@@ -1440,7 +1440,7 @@
 			Page.Load.TextButtons.equalize();
 			
 			switch_bulb_button_element.style.opacity = 1;
-		}, 300);
+		}, Site.opacity_animation_time);
 		
 		
 		
@@ -1456,7 +1456,7 @@
 			setTimeout(() =>
 			{
 				switch_movement_button_element.style.opacity = 1;
-			}, 300);
+			}, Site.opacity_animation_time);
 		}
 		
 		else
@@ -1520,7 +1520,7 @@
 			Page.Load.TextButtons.equalize();
 			
 			switch_movement_button_element.style.opacity = 1;
-		}, 300);
+		}, Site.opacity_animation_time);
 		
 		
 		

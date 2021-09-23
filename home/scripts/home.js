@@ -152,14 +152,14 @@
 		}
 		
 		document.querySelector("#banner").insertAdjacentHTML("afterend", `
-			<div class="name-text-container" style="position: fixed" data-aos="fade-left">
+			<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-duration="1000">
 				<p id="cruz-text" class="name-text" style="opacity: ${opacity}">Cruz</p>
 			</div>
 		`);
 		
 		
 		
-		setTimeout(function()
+		setTimeout(() =>
 		{
 			if (Page.scroll <= Page.Layout.window_height/3)
 			{
@@ -175,11 +175,11 @@
 			if (Site.Settings.url_vars["content_animation"] !== 1)
 			{
 				document.querySelector("#banner").insertAdjacentHTML("afterend", `
-					<div class="name-text-container" style="position: fixed" data-aos="fade-left">
+					<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-duration="1000">
 						<p id="godar-text" class="name-text" style="opacity: ${opacity}">Godar</p>
 					</div>
 				`);
 			}
-		}, 250);
+		}, 300);
 	}
 }()

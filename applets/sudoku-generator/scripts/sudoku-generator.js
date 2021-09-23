@@ -68,7 +68,7 @@
 				let canvas_size = 9 * 200 + 9;
 				
 				wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
-			}, 300);
+			}, Site.opacity_animation_time);
 		}
 		
 		else
@@ -126,7 +126,7 @@
 			setTimeout(() =>
 			{
 				web_worker.postMessage([]);
-			}, 300);
+			}, Site.opacity_animation_time);
 		}
 		
 		else

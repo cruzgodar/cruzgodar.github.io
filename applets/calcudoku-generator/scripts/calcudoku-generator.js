@@ -128,14 +128,14 @@
 		
 		
 		
-		setTimeout(function()
+		setTimeout(() =>
 		{
 			let canvas_size = grid_size * 200 + 9;
 			
 			wilson.change_canvas_size(canvas_size, canvas_size);
 			
 			wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
-		}, 300);
+		}, Site.opacity_animation_time);
 		
 		
 		
@@ -208,10 +208,10 @@
 		
 		
 		
-		setTimeout(function()
+		setTimeout(() =>
 		{
 			web_worker.postMessage([grid_size, max_cage_size]);
-		}, 300);
+		}, Site.opacity_animation_time);
 	}
 	
 	
@@ -220,25 +220,25 @@
 	{
 		total_time_label_element.style.opacity = 1;
 		
-		setTimeout(function()
+		setTimeout(() =>
 		{
 			total_time_clock_element.style.opacity = 1;
 			
-			setTimeout(function()
+			setTimeout(() =>
 			{
 				split_time_label_element.style.opacity = 1;
 				
-				setTimeout(function()
+				setTimeout(() =>
 				{
 					split_time_clock_element.style.opacity = 1;
 					
-					setTimeout(function()
+					setTimeout(() =>
 					{
 						wilson.canvas.style.opacity = 1;
-					}, 100);
-				}, 100);
-			}, 100);
-		}, 100);
+					}, Site.aos_separation_time);
+				}, Site.aos_separation_time);
+			}, Site.aos_separation_time);
+		}, Site.aos_separation_time);
 	}
 	
 	
