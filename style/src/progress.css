@@ -24,7 +24,7 @@
 	background-color: rgb(152, 152, 152);
 	overflow: hidden;
 	
-	transition: width .8s ease;
+	transition: width 1s ease;
 }
 
 
@@ -45,7 +45,7 @@
 	border-radius: 50%;
 	border: 2px solid rgb(127, 127, 127);
 	border-color: rgb(127, 127, 127) transparent rgb(127, 127, 127) transparent;
-	animation: loading-spinner .8s linear infinite;
+	animation: loading-spinner 1s linear infinite;
 }
 
 @keyframes loading-spinner

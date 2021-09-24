@@ -47,7 +47,7 @@ a
 {
 	color: rgb(127, 192, 127);
 	text-decoration: none;
-	transition: color .1s ease-in-out;
+	transition: color .125s ease-in-out;
 }
 
 a.hover
@@ -128,7 +128,7 @@ img
 	width: 100px;
 	height: 100px;
 	
-	transition: transform .2s ease-in-out, filter .2s ease-in-out;
+	transition: transform .25s ease-in-out, filter .25s ease-in-out;
 }
 
 #logo img.hover
@@ -223,7 +223,7 @@ img
 /* Applied whenever things need an opacity animation. Usually a substitute for $().animate. */
 .animated-opacity
 {
-	transition: opacity .2s ease-in-out;
+	transition: opacity .25s ease-in-out;
 }
 
 
@@ -231,7 +231,7 @@ img
 /* Used on pages with nonstandard background colors to fade to the default. */
 .background-transition
 {
-	transition: background-color .4s ease-in-out !important;
+	transition: background-color .5s ease-in-out !important;
 }
 
 
@@ -272,7 +272,7 @@ img
 	margin-bottom: 50vh;
 	
 	opacity: 0;
-	transition: opacity .2s ease-in-out;
+	transition: opacity .25s ease-in-out;
 }
 
 

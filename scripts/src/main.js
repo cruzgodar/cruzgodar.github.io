@@ -99,7 +99,7 @@ let Site =
 	
 	
 	
-	base_animation_time: 200,
+	base_animation_time: 250,
 	
 	
 	
