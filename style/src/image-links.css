@@ -75,6 +75,19 @@
 	filter: brightness(95%) !important;
 }
 
+.image-link-light img.hover
+{
+	transform: scale(1.05);
+	filter: brightness(97.5%) !important;
+}
+
+.image-link-light img:not(:hover):focus
+{
+	transform: scale(1.05);
+	filter: brightness(97.5%) !important;
+	outline: none;
+}
+
 
 
 
