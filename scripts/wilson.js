@@ -784,7 +784,7 @@ class Wilson
 						
 						cursor: pointer;
 						
-						transition: background-color .1s ease-in-out;
+						transition: background-color .125s ease-in-out;
 					}
 
 					.wilson-draggable:active
@@ -1213,7 +1213,7 @@ class Wilson
 							
 							z-index: 100;
 							
-							transition: filter .1s ease-in-out;
+							transition: filter .125s ease-in-out;
 							filter: brightness(100%);
 							
 							cursor: pointer;
@@ -1527,8 +1527,8 @@ class Wilson
 						this.currently_animating = false;
 						
 						this.on_resize();
-					}, 200);
-				}, 200);
+					}, 250);
+				}, 250);
 			}
 			
 			
@@ -1659,8 +1659,8 @@ class Wilson
 					setTimeout(() =>
 					{
 						this.currently_animating = false;
-					}, 200);
-				}, 200);
+					}, 250);
+				}, 250);
 			}
 		},
 

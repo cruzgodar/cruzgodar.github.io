@@ -148,7 +148,7 @@
 	
 	border-radius: 10%;
 
-	transition: transform .25s ease-in-out, filter .25s ease-in-out;
+	transition: transform .125s ease-in-out, filter .125s ease-in-out;
 }
 
 .footer-image-link img.hover
