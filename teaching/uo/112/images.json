@@ -181,10 +181,10 @@
         "non-webp": "homework/1/cover.jpg"
     },
     
-	"lecture-archive":
+	"office-hours":
     {
-        "webp": "lecture-archive/cover.webp",
-        "non-webp": "lecture-archive/cover.jpg"
+        "webp": "office-hours/cover.webp",
+        "non-webp": "office-hours/cover.jpg"
     },
     
     "syllabus":
