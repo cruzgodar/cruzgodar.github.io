@@ -16,6 +16,8 @@
 	
 	
 	
+	//Shader 1: initializes the states.
+	
 	let frag_shader_source = `
 		precision highp float;
 		
@@ -44,6 +46,7 @@
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 	
 	
+	
 	const framebuffer = 	wilson.gl.createFramebuffer();
 	
 	const texture = wilson.gl.createTexture();
@@ -62,6 +65,8 @@
 	wilson.gl.framebufferTexture2D(wilson.gl.FRAMEBUFFER, wilson.gl.COLOR_ATTACHMENT0, wilson.gl.TEXTURE_2D, texture, 0);
 	
 	
+	
+	//Shader 2: updates the states and writes the new ones to a texture.
 	
 	const vertex_shader_source_2 = `
 		attribute vec3 position;
@@ -83,11 +88,26 @@
 		
 		uniform sampler2D u_texture;
 		
+		const float dt = .01;
 		
+		/*
+			let d_theta_1 = 6 * (2 * p_1 - 3 * Math.cos(theta_1 - theta_2) * p_2) / (16 - 9 * Math.pow(Math.cos(theta_1 - theta_2), 2));
+			
+			let d_theta_2 = 6 * (8 * p_2 - 3 * Math.cos(theta_1 - theta_2) * p_1) / (16 - 9 * Math.pow(Math.cos(theta_1 - theta_2), 2));
+			
+			let d_p_1 = -(d_theta_1 * d_theta_2 * Math.sin(theta_1 - theta_2) + 3 * gravity * Math.sin(theta_1)) / 2;
+			
+			let d_p_2 = (d_theta_1 * d_theta_2 * Math.sin(theta_1 - theta_2) - gravity * Math.sin(theta_2)) / 2;
+		*/
 		
 		void main(void)
 		{
-			gl_FragColor = vec4(uv * 3.14, 0.0, 0.0);
+			vec4 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0) - .5 * vec4(1.0, 1.0, 1.0, 1.0)) * 3.14;
+			
+			//vec4 d_state = vec4(6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0)), 0.0, 0.0, 0.0);
+			
+			
+			gl_FragColor = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
 		}
 	`;
 	
@@ -119,6 +139,70 @@
 	wilson.gl.vertexAttribPointer(shader_program_2.position_attribute, 3, wilson.gl.FLOAT, false, 0, 0);
 	
 	wilson.gl.viewport(0, 0, wilson.canvas_width, wilson.canvas_height);
+	
+	
+	
+	//Shader 3: reads the state texture and renders it to a canvas without modifying it.
+	
+	const vertex_shader_source_3 = `
+		attribute vec3 position;
+		varying vec2 uv;
+
+		void main(void)
+		{
+			gl_Position = vec4(position, 1.0);
+
+			//Interpolate quad coordinates in the fragment shader.
+			uv = position.xy;
+		}
+	`;
+	
+	const frag_shader_source_3 = `
+		precision highp float;
+		
+		varying vec2 uv;
+		
+		uniform sampler2D u_texture;
+		
+		
+		
+		void main(void)
+		{
+			vec2 state = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).xy - vec2(.5, .5);
+			
+			gl_FragColor = vec4(normalize(vec3(abs(state.x + state.y), abs(state.x), abs(state.y)) + .05 / length(state) * vec3(1.0, 1.0, 1.0)), 1.0);
+		}
+	`;
+	
+	
+	
+	let vertex_shader_3 = load_shader(wilson.gl, wilson.gl.VERTEX_SHADER, vertex_shader_source_3);
+	
+	let frag_shader_3 = load_shader(wilson.gl, wilson.gl.FRAGMENT_SHADER, frag_shader_source_3);
+	
+	let shader_program_3 = wilson.gl.createProgram();
+	
+	wilson.gl.attachShader(shader_program_3, vertex_shader_3);
+	wilson.gl.attachShader(shader_program_3, frag_shader_3);
+	
+	wilson.gl.linkProgram(shader_program_3);
+	wilson.gl.useProgram(shader_program_3);
+	
+	let position_buffer_3 = wilson.gl.createBuffer();
+	
+	wilson.gl.bindBuffer(wilson.gl.ARRAY_BUFFER, position_buffer_3);
+	
+	wilson.gl.bufferData(wilson.gl.ARRAY_BUFFER, new Float32Array(quad), wilson.gl.STATIC_DRAW);
+	
+	shader_program_3.position_attribute = wilson.gl.getAttribLocation(shader_program_3, "position");
+	
+	wilson.gl.enableVertexAttribArray(shader_program_3.position_attribute);
+	
+	wilson.gl.vertexAttribPointer(shader_program_3.position_attribute, 3, wilson.gl.FLOAT, false, 0, 0);
+	
+	wilson.gl.viewport(0, 0, wilson.canvas_width, wilson.canvas_height);
+	
+	
 	
 	function load_shader(gl, type, source)
 	{
@@ -154,6 +238,18 @@
 	
 	let last_timestamp = -1;
 	
+	
+	
+	wilson.gl.useProgram(wilson.render.shader_program);
+	
+	wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, framebuffer);
+	wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, texture);
+	
+	wilson.render.draw_frame();
+	
+	
+	
+	
 	window.requestAnimationFrame(draw_frame);
 	
 	
@@ -182,7 +278,7 @@
 		
 		
 		
-		wilson.gl.useProgram(wilson.render.shader_program);
+		wilson.gl.useProgram(shader_program_2);
 		
 		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, framebuffer);
 		
@@ -190,10 +286,9 @@
 		
 		
 		
-		wilson.gl.useProgram(shader_program_2);
+		wilson.gl.useProgram(shader_program_3);
 		
 		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, null);
-		wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, texture);
 		
 		wilson.render.draw_frame();
 		
