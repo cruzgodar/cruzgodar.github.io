@@ -181,6 +181,12 @@
         "non-webp": "homework/1/cover.jpg"
     },
     
+    "webwork":
+    {
+        "webp": "webwork/cover.webp",
+        "non-webp": "webwork/cover.jpg"
+    },
+    
 	"office-hours":
     {
         "webp": "office-hours/cover.webp",
