@@ -20,10 +20,9 @@
 	
 	let frag_shader_source_hidden_1 = `
 		precision highp float;
+		precision highp sampler2D;
 		
 		varying vec2 uv;
-		
-		uniform sampler2D u_texture;
 		
 		
 		
@@ -51,6 +50,7 @@
 	
 	let frag_shader_source_hidden_2 = `
 		precision highp float;
+		precision highp sampler2D;
 		
 		varying vec2 uv;
 		
@@ -59,20 +59,29 @@
 		const float dt = .01;
 		
 		const vec4 halves = vec4(.5, .5, .5, .5);
+		const vec4 scale = 6.283 * vec4(1.0, 1.0, 2.0, 2.0);
 		
 		void main(void)
 		{
-			vec4 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0) - halves) * 3.14;
+			vec4 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0) - halves) * scale;
 			
-			vec4 d_state = vec4(6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0)), 6.0 * (8.0 * state.w - 3.0 * cos(state.x - state.y) * state.z) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0)), 0.0, 0.0);
+			
+			
+			vec4 d_state;
+			
+			d_state.x = 6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
+			
+			d_state.y = 6.0 * (8.0 * state.w - 3.0 * cos(state.x - state.y) * state.z) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
 			
 			d_state.z = -(d_state.x * d_state.y * sin(state.x - state.y) + 3.0 * sin(state.x)) / 2.0;
 			
 			d_state.w = (d_state.x * d_state.y * sin(state.x - state.y) - sin(state.y)) / 2.0;
 			
+			
+			
 			state += d_state * dt;
 			
-			gl_FragColor = (state / 3.14) + halves;
+			gl_FragColor = mod((state / scale) + halves, 1.0);
 		}
 	`;
 	
@@ -107,6 +116,7 @@
 	
 	const frag_shader_source = `
 		precision highp float;
+		precision highp sampler2D;
 		
 		varying vec2 uv;
 		
@@ -116,7 +126,7 @@
 		
 		void main(void)
 		{
-			vec2 state = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).xy - vec2(.5, .5);
+			vec2 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).xy - vec2(.5, .5)) * 2.0;
 			
 			gl_FragColor = vec4(normalize(vec3(abs(state.x + state.y), abs(state.x), abs(state.y)) + .05 / length(state) * vec3(1.0, 1.0, 1.0)), 1.0);
 		}
