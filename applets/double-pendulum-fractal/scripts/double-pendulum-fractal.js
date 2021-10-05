@@ -18,7 +18,7 @@
 	
 	//Shader 1: initializes the states.
 	
-	let frag_shader_source = `
+	let frag_shader_source_hidden_1 = `
 		precision highp float;
 		
 		varying vec2 uv;
@@ -29,27 +29,27 @@
 		
 		void main(void)
 		{
-			gl_FragColor = vec4((uv + vec2(1.0, 1.0)) / 2.0, 0.0, 1.0);
+			gl_FragColor = vec4((uv + vec2(1.0, 1.0)) / 2.0, 0.0, 0.0);
 		}
 	`;
 	
-	let options =
+	let options_hidden_1 =
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: frag_shader_source_hidden_1,
 		
 		canvas_width: 1000,
 		canvas_height: 1000
 	};
 	
-	let wilson_hidden_1 = new Wilson(document.querySelector("#hidden-canvas-1"), options);
+	let wilson_hidden_1 = new Wilson(document.querySelector("#hidden-canvas-1"), options_hidden_1);
 	
 	
 	
 	//Shader 2: updates the states.
 	
-	let frag_shader_source_2 = `
+	let frag_shader_source_hidden_2 = `
 		precision highp float;
 		
 		varying vec2 uv;
@@ -76,25 +76,23 @@
 		}
 	`;
 	
-	let options_2 =
+	let options_hidden_2 =
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source_2,
+		shader: frag_shader_source_hidden_2,
 		
 		canvas_width: 1000,
 		canvas_height: 1000
 	};
 	
-	let wilson_hidden_2 = new Wilson(document.querySelector("#hidden-canvas-2"), options_2);
+	let wilson_hidden_2 = new Wilson(document.querySelector("#hidden-canvas-2"), options_hidden_2);
 	
 	
 	
-	const framebuffer = wilson_hidden_2.gl.createFramebuffer();
+	const texture_hidden = wilson_hidden_2.gl.createTexture();
 	
-	const texture = wilson_hidden_2.gl.createTexture();
-	
-	wilson_hidden_2.gl.bindTexture(wilson_hidden_2.gl.TEXTURE_2D, texture);
+	wilson_hidden_2.gl.bindTexture(wilson_hidden_2.gl.TEXTURE_2D, texture_hidden);
 	
 	wilson_hidden_2.gl.texParameteri(wilson_hidden_2.gl.TEXTURE_2D, wilson_hidden_2.gl.TEXTURE_MAG_FILTER, wilson_hidden_2.gl.NEAREST);
 	wilson_hidden_2.gl.texParameteri(wilson_hidden_2.gl.TEXTURE_2D, wilson_hidden_2.gl.TEXTURE_MIN_FILTER, wilson_hidden_2.gl.NEAREST);
@@ -103,24 +101,11 @@
 	
 	wilson_hidden_2.gl.disable(wilson_hidden_2.gl.DEPTH_TEST);
 	
-	/*
+	
 	
 	//Shader 3: reads the state texture and renders it to a canvas without modifying it.
 	
-	const vertex_shader_source_3 = `
-		attribute vec3 position;
-		varying vec2 uv;
-
-		void main(void)
-		{
-			gl_Position = vec4(position, 1.0);
-
-			//Interpolate quad coordinates in the fragment shader.
-			uv = position.xy;
-		}
-	`;
-	
-	const frag_shader_source_3 = `
+	const frag_shader_source = `
 		precision highp float;
 		
 		varying vec2 uv;
@@ -137,7 +122,32 @@
 		}
 	`;
 	
-	*/
+	let options =
+	{
+		renderer: "gpu",
+		
+		shader: frag_shader_source,
+		
+		canvas_width: 1000,
+		canvas_height: 1000
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	
+	
+	const texture = wilson.gl.createTexture();
+	
+	wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, texture);
+	
+	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_MAG_FILTER, wilson.gl.NEAREST);
+	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_MIN_FILTER, wilson.gl.NEAREST);
+	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_WRAP_S, wilson.gl.CLAMP_TO_EDGE);
+	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_WRAP_T, wilson.gl.CLAMP_TO_EDGE);
+	
+	wilson.gl.disable(wilson.gl.DEPTH_TEST);
+	
+	
 	
 	
 	let image_size = 2000;
@@ -156,38 +166,10 @@
 	let last_timestamp = -1;
 	
 	
-	/*
-	wilson.gl.useProgram(wilson.render.shader_program);
-	
-	wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, framebuffer);
-	wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, texture);
-	*/
 	
 	wilson_hidden_1.render.draw_frame();
 	
 	wilson_hidden_2.gl.texImage2D(wilson_hidden_2.gl.TEXTURE_2D, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.canvas_width, wilson_hidden_2.canvas_height, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.gl.UNSIGNED_BYTE, wilson_hidden_1.render.get_pixel_data());
-	
-	wilson_hidden_2.render.draw_frame();
-	
-	
-	/*
-	wilson.gl.useProgram(shader_program_2);
-	
-	wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, framebuffer);
-	
-	wilson.gl.framebufferTexture2D(wilson.gl.FRAMEBUFFER, wilson.gl.COLOR_ATTACHMENT0, wilson.gl.TEXTURE_2D, texture, 0);
-	
-	wilson.render.draw_frame();
-	
-	
-	
-	wilson.gl.useProgram(shader_program_3);
-	
-	wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, null);
-	
-	wilson.render.draw_frame();
-	
-	*/
 	
 	
 	
@@ -219,23 +201,13 @@
 		}
 		
 		
-		/*
-		wilson.gl.useProgram(shader_program_2);
+		wilson_hidden_2.render.draw_frame();
 		
-		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, framebuffer);
+		wilson_hidden_2.gl.texImage2D(wilson_hidden_2.gl.TEXTURE_2D, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.canvas_width, wilson_hidden_2.canvas_height, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.gl.UNSIGNED_BYTE, wilson_hidden_2.render.get_pixel_data());
 		
-		wilson.gl.framebufferTexture2D(wilson.gl.FRAMEBUFFER, wilson.gl.COLOR_ATTACHMENT0, wilson.gl.TEXTURE_2D, texture, 0);
-		
-		wilson.render.draw_frame();
-		
-		
-		
-		wilson.gl.useProgram(shader_program_3);
-		
-		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, null);
+		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvas_width, wilson.canvas_height, 0, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, wilson_hidden_2.render.get_pixel_data());
 		
 		wilson.render.draw_frame();
-		*/
 		
 		/*
 		update_angles();
