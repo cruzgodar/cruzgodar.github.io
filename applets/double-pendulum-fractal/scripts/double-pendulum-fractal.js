@@ -29,7 +29,7 @@
 		
 		void main(void)
 		{
-			gl_FragColor = vec4((uv + vec2(1.0, 1.0)) / 2.0, 0.0, 0.0);
+			gl_FragColor = vec4((uv + vec2(1.0, 1.0)) / 2.0, 0.0, 1.0);
 		}
 	`;
 	
@@ -43,45 +43,13 @@
 		canvas_height: 1000
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson_hidden_1 = new Wilson(document.querySelector("#hidden-canvas-1"), options);
 	
 	
 	
-	const framebuffer = 	wilson.gl.createFramebuffer();
+	//Shader 2: updates the states.
 	
-	const texture = wilson.gl.createTexture();
-	
-	wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, texture);
-	wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvas_width, wilson.canvas_height, 0, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, null);
-	
-	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_MAG_FILTER, wilson.gl.NEAREST);
-	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_MIN_FILTER, wilson.gl.NEAREST);
-	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_WRAP_S, wilson.gl.CLAMP_TO_EDGE);
-	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_WRAP_T, wilson.gl.CLAMP_TO_EDGE);
-	
-	wilson.gl.disable(wilson.gl.DEPTH_TEST);
-	
-	wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, framebuffer);
-	wilson.gl.framebufferTexture2D(wilson.gl.FRAMEBUFFER, wilson.gl.COLOR_ATTACHMENT0, wilson.gl.TEXTURE_2D, texture, 0);
-	
-	
-	
-	//Shader 2: updates the states and writes the new ones to a texture.
-	
-	const vertex_shader_source_2 = `
-		attribute vec3 position;
-		varying vec2 uv;
-
-		void main(void)
-		{
-			gl_Position = vec4(position, 1.0);
-
-			//Interpolate quad coordinates in the fragment shader.
-			uv = position.xy;
-		}
-	`;
-	
-	const frag_shader_source_2 = `
+	let frag_shader_source_2 = `
 		precision highp float;
 		
 		varying vec2 uv;
@@ -90,57 +58,52 @@
 		
 		const float dt = .01;
 		
-		/*
-			let d_theta_1 = 6 * (2 * p_1 - 3 * Math.cos(theta_1 - theta_2) * p_2) / (16 - 9 * Math.pow(Math.cos(theta_1 - theta_2), 2));
-			
-			let d_theta_2 = 6 * (8 * p_2 - 3 * Math.cos(theta_1 - theta_2) * p_1) / (16 - 9 * Math.pow(Math.cos(theta_1 - theta_2), 2));
-			
-			let d_p_1 = -(d_theta_1 * d_theta_2 * Math.sin(theta_1 - theta_2) + 3 * gravity * Math.sin(theta_1)) / 2;
-			
-			let d_p_2 = (d_theta_1 * d_theta_2 * Math.sin(theta_1 - theta_2) - gravity * Math.sin(theta_2)) / 2;
-		*/
+		const vec4 halves = vec4(.5, .5, .5, .5);
 		
 		void main(void)
 		{
-			vec4 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0) - .5 * vec4(1.0, 1.0, 1.0, 1.0)) * 3.14;
+			vec4 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0) - halves) * 3.14;
 			
-			//vec4 d_state = vec4(6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0)), 0.0, 0.0, 0.0);
+			vec4 d_state = vec4(6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0)), 6.0 * (8.0 * state.w - 3.0 * cos(state.x - state.y) * state.z) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0)), 0.0, 0.0);
 			
+			d_state.z = -(d_state.x * d_state.y * sin(state.x - state.y) + 3.0 * sin(state.x)) / 2.0;
 			
-			gl_FragColor = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
+			d_state.w = (d_state.x * d_state.y * sin(state.x - state.y) - sin(state.y)) / 2.0;
+			
+			state += d_state * dt;
+			
+			gl_FragColor = (state / 3.14) + halves;
 		}
 	`;
 	
+	let options_2 =
+	{
+		renderer: "gpu",
+		
+		shader: frag_shader_source_2,
+		
+		canvas_width: 1000,
+		canvas_height: 1000
+	};
+	
+	let wilson_hidden_2 = new Wilson(document.querySelector("#hidden-canvas-2"), options_2);
 	
 	
-	let vertex_shader_2 = load_shader(wilson.gl, wilson.gl.VERTEX_SHADER, vertex_shader_source_2);
 	
-	let frag_shader_2 = load_shader(wilson.gl, wilson.gl.FRAGMENT_SHADER, frag_shader_source_2);
+	const framebuffer = wilson_hidden_2.gl.createFramebuffer();
 	
-	let shader_program_2 = wilson.gl.createProgram();
+	const texture = wilson_hidden_2.gl.createTexture();
 	
-	wilson.gl.attachShader(shader_program_2, vertex_shader_2);
-	wilson.gl.attachShader(shader_program_2, frag_shader_2);
+	wilson_hidden_2.gl.bindTexture(wilson_hidden_2.gl.TEXTURE_2D, texture);
 	
-	wilson.gl.linkProgram(shader_program_2);
-	wilson.gl.useProgram(shader_program_2);
+	wilson_hidden_2.gl.texParameteri(wilson_hidden_2.gl.TEXTURE_2D, wilson_hidden_2.gl.TEXTURE_MAG_FILTER, wilson_hidden_2.gl.NEAREST);
+	wilson_hidden_2.gl.texParameteri(wilson_hidden_2.gl.TEXTURE_2D, wilson_hidden_2.gl.TEXTURE_MIN_FILTER, wilson_hidden_2.gl.NEAREST);
+	wilson_hidden_2.gl.texParameteri(wilson_hidden_2.gl.TEXTURE_2D, wilson_hidden_2.gl.TEXTURE_WRAP_S, wilson_hidden_2.gl.CLAMP_TO_EDGE);
+	wilson_hidden_2.gl.texParameteri(wilson_hidden_2.gl.TEXTURE_2D, wilson_hidden_2.gl.TEXTURE_WRAP_T, wilson_hidden_2.gl.CLAMP_TO_EDGE);
 	
-	let position_buffer_2 = wilson.gl.createBuffer();
+	wilson_hidden_2.gl.disable(wilson_hidden_2.gl.DEPTH_TEST);
 	
-	wilson.gl.bindBuffer(wilson.gl.ARRAY_BUFFER, position_buffer_2);
-	
-	const quad = [-1, -1, 0,   -1, 1, 0,   1, -1, 0,   1, 1, 0];
-	wilson.gl.bufferData(wilson.gl.ARRAY_BUFFER, new Float32Array(quad), wilson.gl.STATIC_DRAW);
-	
-	shader_program_2.position_attribute = wilson.gl.getAttribLocation(shader_program_2, "position");
-	
-	wilson.gl.enableVertexAttribArray(shader_program_2.position_attribute);
-	
-	wilson.gl.vertexAttribPointer(shader_program_2.position_attribute, 3, wilson.gl.FLOAT, false, 0, 0);
-	
-	wilson.gl.viewport(0, 0, wilson.canvas_width, wilson.canvas_height);
-	
-	
+	/*
 	
 	//Shader 3: reads the state texture and renders it to a canvas without modifying it.
 	
@@ -174,53 +137,7 @@
 		}
 	`;
 	
-	
-	
-	let vertex_shader_3 = load_shader(wilson.gl, wilson.gl.VERTEX_SHADER, vertex_shader_source_3);
-	
-	let frag_shader_3 = load_shader(wilson.gl, wilson.gl.FRAGMENT_SHADER, frag_shader_source_3);
-	
-	let shader_program_3 = wilson.gl.createProgram();
-	
-	wilson.gl.attachShader(shader_program_3, vertex_shader_3);
-	wilson.gl.attachShader(shader_program_3, frag_shader_3);
-	
-	wilson.gl.linkProgram(shader_program_3);
-	wilson.gl.useProgram(shader_program_3);
-	
-	let position_buffer_3 = wilson.gl.createBuffer();
-	
-	wilson.gl.bindBuffer(wilson.gl.ARRAY_BUFFER, position_buffer_3);
-	
-	wilson.gl.bufferData(wilson.gl.ARRAY_BUFFER, new Float32Array(quad), wilson.gl.STATIC_DRAW);
-	
-	shader_program_3.position_attribute = wilson.gl.getAttribLocation(shader_program_3, "position");
-	
-	wilson.gl.enableVertexAttribArray(shader_program_3.position_attribute);
-	
-	wilson.gl.vertexAttribPointer(shader_program_3.position_attribute, 3, wilson.gl.FLOAT, false, 0, 0);
-	
-	wilson.gl.viewport(0, 0, wilson.canvas_width, wilson.canvas_height);
-	
-	
-	
-	function load_shader(gl, type, source)
-	{
-		let shader = gl.createShader(type);
-		
-		gl.shaderSource(shader, source);
-		
-		gl.compileShader(shader);
-		
-		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-		{
-			console.error(`Couldn't load shader: ${gl.getProgramInfoLog(shaderProgram)}`);
-			gl.deleteShader(shader);
-		}
-		
-		return shader;
-	}
-	
+	*/
 	
 	
 	let image_size = 2000;
@@ -239,13 +156,38 @@
 	let last_timestamp = -1;
 	
 	
-	
+	/*
 	wilson.gl.useProgram(wilson.render.shader_program);
 	
 	wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, framebuffer);
 	wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, texture);
+	*/
+	
+	wilson_hidden_1.render.draw_frame();
+	
+	wilson_hidden_2.gl.texImage2D(wilson_hidden_2.gl.TEXTURE_2D, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.canvas_width, wilson_hidden_2.canvas_height, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.gl.UNSIGNED_BYTE, wilson_hidden_1.render.get_pixel_data());
+	
+	wilson_hidden_2.render.draw_frame();
+	
+	
+	/*
+	wilson.gl.useProgram(shader_program_2);
+	
+	wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, framebuffer);
+	
+	wilson.gl.framebufferTexture2D(wilson.gl.FRAMEBUFFER, wilson.gl.COLOR_ATTACHMENT0, wilson.gl.TEXTURE_2D, texture, 0);
 	
 	wilson.render.draw_frame();
+	
+	
+	
+	wilson.gl.useProgram(shader_program_3);
+	
+	wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, null);
+	
+	wilson.render.draw_frame();
+	
+	*/
 	
 	
 	
@@ -277,10 +219,12 @@
 		}
 		
 		
-		
+		/*
 		wilson.gl.useProgram(shader_program_2);
 		
 		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, framebuffer);
+		
+		wilson.gl.framebufferTexture2D(wilson.gl.FRAMEBUFFER, wilson.gl.COLOR_ATTACHMENT0, wilson.gl.TEXTURE_2D, texture, 0);
 		
 		wilson.render.draw_frame();
 		
@@ -291,8 +235,7 @@
 		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, null);
 		
 		wilson.render.draw_frame();
-		
-		
+		*/
 		
 		/*
 		update_angles();
@@ -344,20 +287,6 @@
 			theta_2 += d_theta_2 * dt;
 			p_1 += d_p_1 * dt;
 			p_2 += d_p_2 * dt;
-			
-			if (Math.abs(p_1) > max_p)
-			{
-				max_p = Math.abs(p_1);
-				
-				console.log(max_p);
-			}
-			
-			if (Math.abs(p_2) > max_p)
-			{
-				max_p = Math.abs(p_2);
-				
-				console.log(max_p);
-			}
 		}
 	}
 }()
