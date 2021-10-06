@@ -24,10 +24,18 @@
 		
 		varying vec2 uv;
 		
+		uniform int image_size;
+		
 		
 		
 		void main(void)
 		{
+			vec2 int_uv = floor((uv + vec2(1.0, 1.0)) * float(image_size));
+			
+			bool parity_x = int(mod(int_uv.x, 2.0)) == 0;
+			bool parity_y = int(mod(int_uv.y, 2.0)) == 0;
+			
+			
 			gl_FragColor = vec4((uv + vec2(1.0, 1.0)) / 2.0, 0.0, 0.0);
 		}
 	`;
@@ -38,11 +46,15 @@
 		
 		shader: frag_shader_source_hidden_1,
 		
-		canvas_width: 1000,
-		canvas_height: 1000
+		canvas_width: 2000,
+		canvas_height: 2000
 	};
 	
 	let wilson_hidden_1 = new Wilson(document.querySelector("#hidden-canvas-1"), options_hidden_1);
+	
+	wilson_hidden_2.render.init_uniforms(["image_size"]);
+	
+	wilson_hidden_2.gl.uniform1i(wilson_hidden_2.uniforms["image_size"], 2000);
 	
 	
 	
@@ -56,32 +68,197 @@
 		
 		uniform sampler2D u_texture;
 		
+		uniform int image_size;
+		
+		//This is 1 / image_size.
+		uniform float texture_step;
+		
 		const float dt = .01;
 		
-		const vec4 halves = vec4(.5, .5, .5, .5);
-		const vec4 scale = 6.283 * vec4(1.0, 1.0, 2.0, 2.0);
+		
 		
 		void main(void)
 		{
-			vec4 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0) - halves) * scale;
+			vec2 int_uv = floor((uv + vec2(1.0, 1.0)) * float(image_size));
+			
+			bool parity_x = int(mod(int_uv.x, 2.0)) == 0;
+			bool parity_y = int(mod(int_uv.y, 2.0)) == 0;
+			
+			vec4 theta_x_data = texture2D(u_texture, int_uv);
+			vec4 theta_y_data = texture2D(u_texture, int_uv + vec2(texture_step, 0.0));
+			vec4 p_x_data = texture2D(u_texture, int_uv + vec2(0.0, texture_step));
+			vec4 p_y_data = texture2D(u_texture, int_uv + vec2(texture_step, texture_step));
+			
+			vec4 state = vec4(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, theta_y_data.x + theta_y_data.y / 256.0 + theta_y_data.z / 65536.0 + theta_y_data.w / 16777216.0, p_x_data.x + p_x_data.y / 256.0 + p_x_data.z / 65536.0 + p_x_data.w / 16777216.0, p_y_data.x + p_y_data.y / 256.0 + p_y_data.z / 65536.0 + p_y_data.w / 16777216.0);
 			
 			
 			
-			vec4 d_state;
+			//This is a longwinded way of encoding every state as a base-256 4-digit decimal over a 2x2 group of pixels.
 			
-			d_state.x = 6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
+			if (parity_y)
+			{
+				if (parity_x)
+				{
+					float d_state = 6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
+					
+					state.x += d_state * dt;
+					
+					state.x = mod(state.x / 6.283 + .5, 1.0);
+					
+					
+					
+					vec4 output_color;
+					
+					output_color.x = floor(state.x * 256.0) / 256.0;
+					
+					
+					
+					state.x = (state.x - output_color.x) * 256.0;
+					
+					output_color.y = floor(state.x * 256.0) / 256.0;
+					
+					
+					
+					state.x = (state.x - output_color.y) * 256.0;
+					
+					output_color.z = floor(state.x * 256.0) / 256.0;
+					
+					
+					
+					state.x = (state.x - output_color.z) * 256.0;
+					
+					output_color.w = state.x;
+					
+					
+				
+					gl_FragColor = output_color;
+					
+					return;
+				}
+				
+				
+				
+				float d_state = 6.0 * (8.0 * state.w - 3.0 * cos(state.x - state.y) * state.z) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
+				
+				state.y += d_state * dt;
+				
+				state.y = mod(state.y / 6.283 + .5, 1.0);
+				
+				
+				
+				vec4 output_color;
+				
+				output_color.x = floor(state.y * 256.0) / 256.0;
+				
+				
+				
+				state.y = (state.y - output_color.x) * 256.0;
+				
+				output_color.y = floor(state.y * 256.0) / 256.0;
+				
+				
+				
+				state.y = (state.y - output_color.y) * 256.0;
+				
+				output_color.z = floor(state.y * 256.0) / 256.0;
+				
+				
+				
+				state.y = (state.y - output_color.z) * 256.0;
+				
+				output_color.w = state.y;
+				
+				
 			
-			d_state.y = 6.0 * (8.0 * state.w - 3.0 * cos(state.x - state.y) * state.z) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
-			
-			d_state.z = -(d_state.x * d_state.y * sin(state.x - state.y) + 3.0 * sin(state.x)) / 2.0;
-			
-			d_state.w = (d_state.x * d_state.y * sin(state.x - state.y) - sin(state.y)) / 2.0;
-			
+				gl_FragColor = output_color;
+				
+				return;
+			}
 			
 			
-			state += d_state * dt;
 			
-			gl_FragColor = mod((state / scale) + halves, 1.0);
+			if (parity_x)
+			{
+				float d_state_x = 6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
+				float d_state_y = 6.0 * (8.0 * state.w - 3.0 * cos(state.x - state.y) * state.z) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
+				
+				float d_state = -(d_state_x * d_state_y * sin(state.x - state.y) + 3.0 * sin(state.x)) / 2.0;
+				
+				state.z += d_state * dt;
+				
+				state.z = mod(state.z / 6.283 + .5, 1.0);
+				
+				
+				
+				vec4 output_color;
+				
+				output_color.x = floor(state.z * 256.0) / 256.0;
+				
+				
+				
+				state.z = (state.z - output_color.x) * 256.0;
+				
+				output_color.y = floor(state.z * 256.0) / 256.0;
+				
+				
+				
+				state.z = (state.z - output_color.y) * 256.0;
+				
+				output_color.z = floor(state.z * 256.0) / 256.0;
+				
+				
+				
+				state.z = (state.z - output_color.z) * 256.0;
+				
+				output_color.w = state.z;
+				
+				
+			
+				gl_FragColor = output_color;
+				
+				return;
+			}
+			
+			
+			
+			float d_state_x = 6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
+			float d_state_y = 6.0 * (8.0 * state.w - 3.0 * cos(state.x - state.y) * state.z) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
+			
+			float d_state = (d_state_x * d_state_y * sin(state.x - state.y) - sin(state.y)) / 2.0;
+			
+			state.w += d_state * dt;
+			
+			state.w = mod(state.w / 6.283 + .5, 1.0);
+			
+			
+			
+			vec4 output_color;
+			
+			output_color.x = floor(state.w * 256.0) / 256.0;
+			
+			
+			
+			state.w = (state.w - output_color.x) * 256.0;
+			
+			output_color.y = floor(state.w * 256.0) / 256.0;
+			
+			
+			
+			state.w = (state.w - output_color.y) * 256.0;
+			
+			output_color.z = floor(state.w * 256.0) / 256.0;
+			
+			
+			
+			state.w = (state.w - output_color.z) * 256.0;
+			
+			output_color.w = state.w;
+			
+			
+		
+			gl_FragColor = output_color;
+			
+			return;
 		}
 	`;
 	
@@ -91,11 +268,16 @@
 		
 		shader: frag_shader_source_hidden_2,
 		
-		canvas_width: 1000,
-		canvas_height: 1000
+		canvas_width: 2000,
+		canvas_height: 2000
 	};
 	
 	let wilson_hidden_2 = new Wilson(document.querySelector("#hidden-canvas-2"), options_hidden_2);
+	
+	wilson_hidden_2.render.init_uniforms(["image_size", "texture_step"]);
+	
+	wilson_hidden_2.gl.uniform1i(wilson_hidden_2.uniforms["image_size"], 2000);
+	wilson_hidden_2.gl.uniform1f(wilson_hidden_2.uniforms["texture_step"], 1 / 2000);
 	
 	
 	
