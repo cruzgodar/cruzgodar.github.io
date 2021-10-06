@@ -4,12 +4,16 @@
 	
 	
 	
+	let image_size = 200;
+	
+	
+	
 	let options_pendulum_drawer =
 	{
 		renderer: "cpu",
 		
-		canvas_width: 2000,
-		canvas_height: 2000
+		canvas_width: 2 * image_size,
+		canvas_height: 2 * image_size
 	};
 	
 	let wilson_pendulum_drawer = new Wilson(document.querySelector("#pendulum-drawer-canvas"), options_pendulum_drawer);
@@ -30,13 +34,88 @@
 		
 		void main(void)
 		{
-			vec2 int_uv = floor((uv + vec2(1.0, 1.0)) * float(image_size));
+			vec2 int_uv = floor((uv + vec2(1.0, 1.0)) / 2.0 * float(image_size));
 			
 			bool parity_x = int(mod(int_uv.x, 2.0)) == 0;
 			bool parity_y = int(mod(int_uv.y, 2.0)) == 0;
 			
+			if (parity_y)
+			{
+				if (parity_x)
+				{
+					float state = (uv.x + 1.0) / 2.0;
+					
+					
+					
+					vec4 output_color;
+				
+					output_color.x = floor(state * 256.0) / 256.0;
+					
+					
+					
+					state = (state - output_color.x) * 256.0;
+					
+					output_color.y = floor(state * 256.0) / 256.0;
+					
+					
+					
+					state = (state - output_color.y) * 256.0;
+					
+					output_color.z = floor(state * 256.0) / 256.0;
+					
+					
+					
+					state = (state - output_color.z) * 256.0;
+					
+					output_color.w = state;
+					
+					
+				
+					gl_FragColor = output_color;
+					
+					return;
+				}
+				
+				
+				
+				float state = (uv.y + 1.0) / 2.0;
+				
+				
+				
+				vec4 output_color;
 			
-			gl_FragColor = vec4((uv + vec2(1.0, 1.0)) / 2.0, 0.0, 0.0);
+				output_color.x = floor(state * 256.0) / 256.0;
+				
+				
+				
+				state = (state - output_color.x) * 256.0;
+				
+				output_color.y = floor(state * 256.0) / 256.0;
+				
+				
+				
+				state = (state - output_color.y) * 256.0;
+				
+				output_color.z = floor(state * 256.0) / 256.0;
+				
+				
+				
+				state = (state - output_color.z) * 256.0;
+				
+				output_color.w = state;
+				
+				
+			
+				gl_FragColor = output_color;
+				
+				return;
+			}
+			
+			
+			
+			gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+				
+			return;
 		}
 	`;
 	
@@ -46,15 +125,15 @@
 		
 		shader: frag_shader_source_hidden_1,
 		
-		canvas_width: 2000,
-		canvas_height: 2000
+		canvas_width: 2 * image_size,
+		canvas_height: 2 * image_size
 	};
 	
 	let wilson_hidden_1 = new Wilson(document.querySelector("#hidden-canvas-1"), options_hidden_1);
 	
-	wilson_hidden_2.render.init_uniforms(["image_size"]);
+	wilson_hidden_1.render.init_uniforms(["image_size"]);
 	
-	wilson_hidden_2.gl.uniform1i(wilson_hidden_2.uniforms["image_size"], 2000);
+	wilson_hidden_1.gl.uniform1i(wilson_hidden_1.uniforms["image_size"], 2 * image_size);
 	
 	
 	
@@ -79,17 +158,18 @@
 		
 		void main(void)
 		{
-			vec2 int_uv = floor((uv + vec2(1.0, 1.0)) * float(image_size));
+			vec2 int_uv = floor((uv + vec2(1.0, 1.0)) / 2.0 * float(image_size));
+			vec2 texture_uv = (uv + vec2(1.0, 1.0)) / 2.0;
 			
 			bool parity_x = int(mod(int_uv.x, 2.0)) == 0;
 			bool parity_y = int(mod(int_uv.y, 2.0)) == 0;
 			
-			vec4 theta_x_data = texture2D(u_texture, int_uv);
-			vec4 theta_y_data = texture2D(u_texture, int_uv + vec2(texture_step, 0.0));
-			vec4 p_x_data = texture2D(u_texture, int_uv + vec2(0.0, texture_step));
-			vec4 p_y_data = texture2D(u_texture, int_uv + vec2(texture_step, texture_step));
+			vec4 theta_x_data;
+			vec4 theta_y_data;
+			vec4 p_x_data;
+			vec4 p_y_data;
 			
-			vec4 state = vec4(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, theta_y_data.x + theta_y_data.y / 256.0 + theta_y_data.z / 65536.0 + theta_y_data.w / 16777216.0, p_x_data.x + p_x_data.y / 256.0 + p_x_data.z / 65536.0 + p_x_data.w / 16777216.0, p_y_data.x + p_y_data.y / 256.0 + p_y_data.z / 65536.0 + p_y_data.w / 16777216.0);
+			vec4 state;
 			
 			
 			
@@ -99,6 +179,15 @@
 			{
 				if (parity_x)
 				{
+					theta_x_data = texture2D(u_texture, texture_uv);
+					theta_y_data = texture2D(u_texture, texture_uv + vec2(texture_step, 0.0));
+					p_x_data = texture2D(u_texture, texture_uv + vec2(0.0, texture_step));
+					p_y_data = texture2D(u_texture, texture_uv + vec2(texture_step, texture_step));
+					
+					state = vec4(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, theta_y_data.x + theta_y_data.y / 256.0 + theta_y_data.z / 65536.0 + theta_y_data.w / 16777216.0, p_x_data.x + p_x_data.y / 256.0 + p_x_data.z / 65536.0 + p_x_data.w / 16777216.0, p_y_data.x + p_y_data.y / 256.0 + p_y_data.z / 65536.0 + p_y_data.w / 16777216.0);
+					
+					
+					
 					float d_state = 6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
 					
 					state.x += d_state * dt;
@@ -135,6 +224,15 @@
 					
 					return;
 				}
+				
+				
+				
+				theta_x_data = texture2D(u_texture, texture_uv + vec2(-texture_step, 0.0));
+				theta_y_data = texture2D(u_texture, texture_uv);
+				p_x_data = texture2D(u_texture, texture_uv + vec2(-texture_step, texture_step));
+				p_y_data = texture2D(u_texture, texture_uv + vec2(0.0, texture_step));
+				
+				state = vec4(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, theta_y_data.x + theta_y_data.y / 256.0 + theta_y_data.z / 65536.0 + theta_y_data.w / 16777216.0, p_x_data.x + p_x_data.y / 256.0 + p_x_data.z / 65536.0 + p_x_data.w / 16777216.0, p_y_data.x + p_y_data.y / 256.0 + p_y_data.z / 65536.0 + p_y_data.w / 16777216.0);
 				
 				
 				
@@ -179,6 +277,15 @@
 			
 			if (parity_x)
 			{
+				theta_x_data = texture2D(u_texture, texture_uv + vec2(0.0, -texture_step));
+				theta_y_data = texture2D(u_texture, texture_uv + vec2(texture_step, -texture_step));
+				p_x_data = texture2D(u_texture, texture_uv);
+				p_y_data = texture2D(u_texture, texture_uv + vec2(texture_step, 0.0));
+				
+				state = vec4(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, theta_y_data.x + theta_y_data.y / 256.0 + theta_y_data.z / 65536.0 + theta_y_data.w / 16777216.0, p_x_data.x + p_x_data.y / 256.0 + p_x_data.z / 65536.0 + p_x_data.w / 16777216.0, p_y_data.x + p_y_data.y / 256.0 + p_y_data.z / 65536.0 + p_y_data.w / 16777216.0);
+				
+				
+				
 				float d_state_x = 6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
 				float d_state_y = 6.0 * (8.0 * state.w - 3.0 * cos(state.x - state.y) * state.z) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
 				
@@ -218,6 +325,15 @@
 				
 				return;
 			}
+			
+			
+			
+			theta_x_data = texture2D(u_texture, texture_uv + vec2(-texture_step, -texture_step));
+			theta_y_data = texture2D(u_texture, texture_uv + vec2(0.0, -texture_step));
+			p_x_data = texture2D(u_texture, texture_uv + vec2(-texture_step, 0.0));
+			p_y_data = texture2D(u_texture, texture_uv);
+			
+			state = vec4(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, theta_y_data.x + theta_y_data.y / 256.0 + theta_y_data.z / 65536.0 + theta_y_data.w / 16777216.0, p_x_data.x + p_x_data.y / 256.0 + p_x_data.z / 65536.0 + p_x_data.w / 16777216.0, p_y_data.x + p_y_data.y / 256.0 + p_y_data.z / 65536.0 + p_y_data.w / 16777216.0);
 			
 			
 			
@@ -268,16 +384,16 @@
 		
 		shader: frag_shader_source_hidden_2,
 		
-		canvas_width: 2000,
-		canvas_height: 2000
+		canvas_width: 2 * image_size,
+		canvas_height: 2 * image_size
 	};
 	
 	let wilson_hidden_2 = new Wilson(document.querySelector("#hidden-canvas-2"), options_hidden_2);
 	
 	wilson_hidden_2.render.init_uniforms(["image_size", "texture_step"]);
 	
-	wilson_hidden_2.gl.uniform1i(wilson_hidden_2.uniforms["image_size"], 2000);
-	wilson_hidden_2.gl.uniform1f(wilson_hidden_2.uniforms["texture_step"], 1 / 2000);
+	wilson_hidden_2.gl.uniform1i(wilson_hidden_2.uniforms["image_size"], 2 * image_size);
+	wilson_hidden_2.gl.uniform1f(wilson_hidden_2.uniforms["texture_step"], 1 / (2 * image_size));
 	
 	
 	
@@ -304,13 +420,23 @@
 		
 		uniform sampler2D u_texture;
 		
+		uniform int image_size;
+		uniform float texture_step;
+		
 		
 		
 		void main(void)
 		{
-			vec2 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).xy - vec2(.5, .5)) * 2.0;
+			vec2 texture_uv = floor((uv + vec2(1.0, 1.0)) * float(image_size) / 4.0) / (float(image_size) / 4.0);
+			
+			vec4 theta_x_data = texture2D(u_texture, texture_uv);
+			vec4 theta_y_data = texture2D(u_texture, texture_uv + vec2(texture_step, 0.0));
+			
+			vec2 state = vec2(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, theta_y_data.x + theta_y_data.y / 256.0 + theta_y_data.z / 65536.0 + theta_y_data.w / 16777216.0);
 			
 			gl_FragColor = vec4(normalize(vec3(abs(state.x + state.y), abs(state.x), abs(state.y)) + .05 / length(state) * vec3(1.0, 1.0, 1.0)), 1.0);
+			
+			gl_FragColor = vec4(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, 0.0, 0.0, 1.0);
 		}
 	`;
 	
@@ -320,11 +446,16 @@
 		
 		shader: frag_shader_source,
 		
-		canvas_width: 1000,
-		canvas_height: 1000
+		canvas_width: image_size * 2,
+		canvas_height: image_size * 2
 	};
 	
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	wilson.render.init_uniforms(["image_size", "texture_step"]);
+	
+	wilson.gl.uniform1i(wilson.uniforms["image_size"], 2 * image_size);
+	wilson.gl.uniform1f(wilson.uniforms["texture_step"], 1 / (2 * image_size));
 	
 	
 	
@@ -341,8 +472,6 @@
 	
 	
 	
-	
-	let image_size = 2000;
 	
 	let theta_1 = 3;
 	let theta_2 = 3;
@@ -361,7 +490,7 @@
 	
 	wilson_hidden_1.render.draw_frame();
 	
-	wilson_hidden_2.gl.texImage2D(wilson_hidden_2.gl.TEXTURE_2D, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.canvas_width, wilson_hidden_2.canvas_height, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.gl.UNSIGNED_BYTE, wilson_hidden_1.render.get_pixel_data());
+	//wilson_hidden_2.gl.texImage2D(wilson_hidden_2.gl.TEXTURE_2D, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.canvas_width, wilson_hidden_2.canvas_height, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.gl.UNSIGNED_BYTE, wilson_hidden_1.render.get_pixel_data());
 	
 	
 	
@@ -393,11 +522,11 @@
 		}
 		
 		
-		wilson_hidden_2.render.draw_frame();
+		//wilson_hidden_2.render.draw_frame();
 		
-		wilson_hidden_2.gl.texImage2D(wilson_hidden_2.gl.TEXTURE_2D, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.canvas_width, wilson_hidden_2.canvas_height, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.gl.UNSIGNED_BYTE, wilson_hidden_2.render.get_pixel_data());
+		//wilson_hidden_2.gl.texImage2D(wilson_hidden_2.gl.TEXTURE_2D, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.canvas_width, wilson_hidden_2.canvas_height, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.gl.UNSIGNED_BYTE, wilson_hidden_2.render.get_pixel_data());
 		
-		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvas_width, wilson.canvas_height, 0, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, wilson_hidden_2.render.get_pixel_data());
+		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvas_width, wilson.canvas_height, 0, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, wilson_hidden_1.render.get_pixel_data());
 		
 		wilson.render.draw_frame();
 		
@@ -428,7 +557,7 @@
 		
 		
 		
-		window.requestAnimationFrame(draw_frame);
+		//window.requestAnimationFrame(draw_frame);
 	}
 	
 	
