@@ -169,6 +169,12 @@
         "non-webp": "quizzes/1/cover.jpg"
     },
     
+    "quiz-0":
+    {
+        "webp": "quizzes/0/cover.webp",
+        "non-webp": "quizzes/0/cover.jpg"
+    },
+    
 	"week-1-notes":
     {
         "webp": "notes/1/cover.webp",
