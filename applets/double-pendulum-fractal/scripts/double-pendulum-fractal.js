@@ -112,8 +112,6 @@
 			}
 			
 			
-			
-			gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
 				
 			return;
 		}
@@ -159,7 +157,7 @@
 		void main(void)
 		{
 			vec2 int_uv = floor((uv + vec2(1.0, 1.0)) / 2.0 * float(image_size));
-			vec2 texture_uv = (uv + vec2(1.0, 1.0)) / 2.0;
+			vec2 texture_uv = (uv + vec2(1.0, 1.0)) / 2.0 + vec2(texture_step, texture_step) / 2.0;
 			
 			bool parity_x = int(mod(int_uv.x, 2.0)) == 0;
 			bool parity_y = int(mod(int_uv.y, 2.0)) == 0;
@@ -185,6 +183,8 @@
 					p_y_data = texture2D(u_texture, texture_uv + vec2(texture_step, texture_step));
 					
 					state = vec4(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, theta_y_data.x + theta_y_data.y / 256.0 + theta_y_data.z / 65536.0 + theta_y_data.w / 16777216.0, p_x_data.x + p_x_data.y / 256.0 + p_x_data.z / 65536.0 + p_x_data.w / 16777216.0, p_y_data.x + p_y_data.y / 256.0 + p_y_data.z / 65536.0 + p_y_data.w / 16777216.0);
+					
+					state = (state - vec4(.5, .5, .5, .5)) * 6.283;
 					
 					
 					
@@ -233,6 +233,8 @@
 				p_y_data = texture2D(u_texture, texture_uv + vec2(0.0, texture_step));
 				
 				state = vec4(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, theta_y_data.x + theta_y_data.y / 256.0 + theta_y_data.z / 65536.0 + theta_y_data.w / 16777216.0, p_x_data.x + p_x_data.y / 256.0 + p_x_data.z / 65536.0 + p_x_data.w / 16777216.0, p_y_data.x + p_y_data.y / 256.0 + p_y_data.z / 65536.0 + p_y_data.w / 16777216.0);
+				
+				state = (state - vec4(.5, .5, .5, .5)) * 6.283;
 				
 				
 				
@@ -284,6 +286,8 @@
 				
 				state = vec4(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, theta_y_data.x + theta_y_data.y / 256.0 + theta_y_data.z / 65536.0 + theta_y_data.w / 16777216.0, p_x_data.x + p_x_data.y / 256.0 + p_x_data.z / 65536.0 + p_x_data.w / 16777216.0, p_y_data.x + p_y_data.y / 256.0 + p_y_data.z / 65536.0 + p_y_data.w / 16777216.0);
 				
+				state = (state - vec4(.5, .5, .5, .5)) * 6.283;
+				
 				
 				
 				float d_state_x = 6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / (16.0 - 9.0 * pow(cos(state.x - state.y), 2.0));
@@ -334,6 +338,8 @@
 			p_y_data = texture2D(u_texture, texture_uv);
 			
 			state = vec4(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, theta_y_data.x + theta_y_data.y / 256.0 + theta_y_data.z / 65536.0 + theta_y_data.w / 16777216.0, p_x_data.x + p_x_data.y / 256.0 + p_x_data.z / 65536.0 + p_x_data.w / 16777216.0, p_y_data.x + p_y_data.y / 256.0 + p_y_data.z / 65536.0 + p_y_data.w / 16777216.0);
+			
+			state = (state - vec4(.5, .5, .5, .5)) * 6.283;
 			
 			
 			
@@ -408,6 +414,8 @@
 	
 	wilson_hidden_2.gl.disable(wilson_hidden_2.gl.DEPTH_TEST);
 	
+	wilson_hidden_2.gl.pixelStorei(wilson_hidden_2.gl.UNPACK_FLIP_Y_WEBGL, true);
+	
 	
 	
 	//Shader 3: reads the state texture and renders it to a canvas without modifying it.
@@ -427,7 +435,7 @@
 		
 		void main(void)
 		{
-			vec2 texture_uv = floor((uv + vec2(1.0, 1.0)) * float(image_size) / 4.0) / (float(image_size) / 4.0);
+			vec2 texture_uv = floor((uv + vec2(1.0, 1.0)) / 2.0 * float(image_size) / 4.0) / (float(image_size) / 4.0) + vec2(texture_step, texture_step) / 2.0;
 			
 			vec4 theta_x_data = texture2D(u_texture, texture_uv);
 			vec4 theta_y_data = texture2D(u_texture, texture_uv + vec2(texture_step, 0.0));
@@ -435,8 +443,6 @@
 			vec2 state = vec2(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, theta_y_data.x + theta_y_data.y / 256.0 + theta_y_data.z / 65536.0 + theta_y_data.w / 16777216.0);
 			
 			gl_FragColor = vec4(normalize(vec3(abs(state.x + state.y), abs(state.x), abs(state.y)) + .05 / length(state) * vec3(1.0, 1.0, 1.0)), 1.0);
-			
-			gl_FragColor = vec4(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, 0.0, 0.0, 1.0);
 		}
 	`;
 	
@@ -469,6 +475,8 @@
 	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_WRAP_T, wilson.gl.CLAMP_TO_EDGE);
 	
 	wilson.gl.disable(wilson.gl.DEPTH_TEST);
+	
+	wilson.gl.pixelStorei(wilson.gl.UNPACK_FLIP_Y_WEBGL, true);
 	
 	
 	
@@ -557,7 +565,7 @@
 		
 		
 		
-		//window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
