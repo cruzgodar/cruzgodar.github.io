@@ -112,6 +112,8 @@
 			}
 			
 			
+			
+			gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
 				
 			return;
 		}
@@ -150,7 +152,7 @@
 		//This is 1 / image_size.
 		uniform float texture_step;
 		
-		const float dt = .01;
+		const float dt = .00;
 		
 		
 		
@@ -414,7 +416,7 @@
 	
 	wilson_hidden_2.gl.disable(wilson_hidden_2.gl.DEPTH_TEST);
 	
-	wilson_hidden_2.gl.pixelStorei(wilson_hidden_2.gl.UNPACK_FLIP_Y_WEBGL, true);
+	//wilson_hidden_2.gl.pixelStorei(wilson_hidden_2.gl.UNPACK_FLIP_Y_WEBGL, true);
 	
 	
 	
@@ -435,12 +437,15 @@
 		
 		void main(void)
 		{
-			vec2 texture_uv = floor((uv + vec2(1.0, 1.0)) / 2.0 * float(image_size) / 4.0) / (float(image_size) / 4.0) + vec2(texture_step, texture_step) / 2.0;
+			vec2 texture_uv = floor((uv + vec2(1.0, 1.0)) / 2.0 * float(image_size) / 4.0) / (float(image_size) / 4.0) + vec2(texture_step, texture_step) / 2.0 + vec2(0.0, texture_step);
 			
+			//*Something* is happening here with floating point precision being a nightmare. Removing either the y shift here or the half-shift from the texture coordinate causes things to break badly. I'm not sure why.
 			vec4 theta_x_data = texture2D(u_texture, texture_uv);
 			vec4 theta_y_data = texture2D(u_texture, texture_uv + vec2(texture_step, 0.0));
 			
 			vec2 state = vec2(theta_x_data.x + theta_x_data.y / 256.0 + theta_x_data.z / 65536.0 + theta_x_data.w / 16777216.0, theta_y_data.x + theta_y_data.y / 256.0 + theta_y_data.z / 65536.0 + theta_y_data.w / 16777216.0);
+			
+			state -= vec2(.5, .5);
 			
 			gl_FragColor = vec4(normalize(vec3(abs(state.x + state.y), abs(state.x), abs(state.y)) + .05 / length(state) * vec3(1.0, 1.0, 1.0)), 1.0);
 		}
@@ -476,8 +481,6 @@
 	
 	wilson.gl.disable(wilson.gl.DEPTH_TEST);
 	
-	wilson.gl.pixelStorei(wilson.gl.UNPACK_FLIP_Y_WEBGL, true);
-	
 	
 	
 	
@@ -498,7 +501,7 @@
 	
 	wilson_hidden_1.render.draw_frame();
 	
-	//wilson_hidden_2.gl.texImage2D(wilson_hidden_2.gl.TEXTURE_2D, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.canvas_width, wilson_hidden_2.canvas_height, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.gl.UNSIGNED_BYTE, wilson_hidden_1.render.get_pixel_data());
+	wilson_hidden_2.gl.texImage2D(wilson_hidden_2.gl.TEXTURE_2D, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.canvas_width, wilson_hidden_2.canvas_height, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.gl.UNSIGNED_BYTE, wilson_hidden_1.render.get_pixel_data());
 	
 	
 	
@@ -530,11 +533,11 @@
 		}
 		
 		
-		//wilson_hidden_2.render.draw_frame();
+		wilson_hidden_2.render.draw_frame();
 		
-		//wilson_hidden_2.gl.texImage2D(wilson_hidden_2.gl.TEXTURE_2D, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.canvas_width, wilson_hidden_2.canvas_height, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.gl.UNSIGNED_BYTE, wilson_hidden_2.render.get_pixel_data());
+		wilson_hidden_2.gl.texImage2D(wilson_hidden_2.gl.TEXTURE_2D, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.canvas_width, wilson_hidden_2.canvas_height, 0, wilson_hidden_2.gl.RGBA, wilson_hidden_2.gl.UNSIGNED_BYTE, wilson_hidden_2.render.get_pixel_data());
 		
-		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvas_width, wilson.canvas_height, 0, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, wilson_hidden_1.render.get_pixel_data());
+		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvas_width, wilson.canvas_height, 0, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, wilson_hidden_2.render.get_pixel_data());
 		
 		wilson.render.draw_frame();
 		
@@ -565,7 +568,7 @@
 		
 		
 		
-		window.requestAnimationFrame(draw_frame);
+		//window.requestAnimationFrame(draw_frame);
 	}
 	
 	
