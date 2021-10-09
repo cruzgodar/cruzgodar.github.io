@@ -6,6 +6,7 @@ onmessage = function(e)
 {
 	image_size = e.data[0];
 	dt = e.data[1];
+	state = e.data[2];
 	
 	draw_double_pendulum_fractal();
 }
@@ -14,13 +15,13 @@ onmessage = function(e)
 
 let image_size = null;
 
+let state = null;
+
 let dt = null;
 
 
 function draw_double_pendulum_fractal()
 {
-	let state = new Array(image_size * image_size * 2);
-	
 	let image = new Uint8ClampedArray(image_size * image_size * 4);
 	
 	
@@ -35,11 +36,6 @@ function draw_double_pendulum_fractal()
 			image[index + 1] = 0;
 			image[index + 2] = 0;
 			image[index + 3] = 255;
-			
-			state[index] = (j / image_size - .5) * 2 * Math.PI;
-			state[index + 1] = (i / image_size - .5) * 2 * Math.PI;
-			state[index + 2] = 0;
-			state[index + 3] = 0;
 			
 			
 			
@@ -112,7 +108,7 @@ function draw_double_pendulum_fractal()
 		
 		
 		
-		postMessage([image]);
+		postMessage([image, state]);
 	}
 }
 

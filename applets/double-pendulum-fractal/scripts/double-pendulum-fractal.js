@@ -6,9 +6,13 @@
 	
 	let image_size = 500;
 	
+	let state = null;
+	
 	let dt = .01;
 	
 	let web_worker = null;
+	
+	let drawn_fractal = false;
 	
 	
 	
@@ -26,7 +30,12 @@
 	
 	let generate_button_element = document.querySelector("#generate-button");
 	
-	generate_button_element.addEventListener("click", request_double_pendulum_fractal);
+	generate_button_element.addEventListener("click", () =>
+	{
+		drawn_fractal = false;
+		
+		request_double_pendulum_fractal();
+	});
 	
 	
 	
@@ -65,11 +74,37 @@
 		web_worker.onmessage = function(e)
 		{
 			wilson.render.draw_frame(e.data[0]);
+			
+			state = e.data[1];
 		}
 		
 		
 		
-		web_worker.postMessage([image_size, dt]);
+		if (!drawn_fractal)
+		{
+			state = new Array(image_size * image_size * 2);
+			
+			
+			
+			for (let i = 0; i < image_size / 2; i++)
+			{
+				for (let j = 0; j < image_size; j++)
+				{
+					let index = 4 * (image_size * i + j);
+					
+					state[index] = (j / image_size - .5) * 2 * Math.PI;
+					state[index + 1] = (i / image_size - .5) * 2 * Math.PI;
+					state[index + 2] = 0;
+					state[index + 3] = 0;
+				}
+			}
+		}
+		
+		
+		
+		web_worker.postMessage([image_size, dt, state]);
+		
+		drawn_fractal = true;
 	}
 	
 	
@@ -169,6 +204,13 @@
 	
 	function show_pendulum_drawer_canvas_preview()
 	{
+		if (!drawn_fractal)
+		{
+			return;
+		}
+		
+		web_worker.terminate();
+		
 		wilson_pendulum_drawer.canvas.style.opacity = .5;
 		
 		pendulum_drawer_canvas_visible = 1;
@@ -176,6 +218,11 @@
 	
 	function show_pendulum_drawer_canvas()
 	{
+		if (!drawn_fractal)
+		{
+			return;
+		}
+		
 		wilson_pendulum_drawer.canvas.style.opacity = 1;
 		
 		pendulum_drawer_canvas_visible = 2;
@@ -185,6 +232,13 @@
 	
 	function hide_pendulum_drawer_canvas()
 	{
+		if (!drawn_fractal)
+		{
+			return;
+		}
+		
+		request_double_pendulum_fractal();
+		
 		wilson_pendulum_drawer.canvas.style.opacity = 0;
 		
 		pendulum_drawer_canvas_visible = 0;
