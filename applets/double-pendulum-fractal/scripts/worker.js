@@ -5,6 +5,7 @@
 onmessage = function(e)
 {
 	image_size = e.data[0];
+	dt = e.data[1];
 	
 	draw_double_pendulum_fractal();
 }
@@ -13,7 +14,7 @@ onmessage = function(e)
 
 let image_size = null;
 
-let dt = .01;
+let dt = null;
 
 
 function draw_double_pendulum_fractal()

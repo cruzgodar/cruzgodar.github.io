@@ -38,15 +38,22 @@
 
 !begin-text-buttons
 	
-	generate Generate
+	generate l Generate
+	
+	hide-pendulum-drawer-canvas l Return to Fractal
 	
 !end-text-buttons
 
 
 
 <div data-aos="fade-up">
-	<canvas id="output-canvas" class="output-canvas"></canvas>
-	<canvas id="pendulum-drawer-canvas" class="output-canvas"></canvas>
+	<div style="margin-bottom: calc(-50vh - 30px)">
+		<canvas id="output-canvas" class="output-canvas"></canvas>
+	</div>
+	
+	<div style="margin-top: calc(-60vh - 8px)">
+		<canvas id="pendulum-drawer-canvas" class="output-canvas" style="transition: opacity .125s ease-in-out; opacity: 0"></canvas>
+	</div>
 </div>
 
 
