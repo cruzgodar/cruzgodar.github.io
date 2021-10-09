@@ -86,8 +86,11 @@ function draw_double_pendulum_fractal()
 				
 				
 				let hue = Math.atan2(y, x) / Math.PI + 1;
-				let saturation = Math.min(Math.pow(x*x + y*y, .05), 1);
-				let value = Math.min(Math.pow(p_1*p_1 + p_2*p_2, .25), 1);
+				let saturation = Math.min((x*x + y*y) * 100, 1);
+				
+				let value_add = .9 * (1 - ((i / image_size - .5) * (i / image_size - .5) + (j / image_size - .5) * (j / image_size - .5)) * 4);
+				
+				let value = Math.min(Math.pow(p_1*p_1 + p_2*p_2, .5) + value_add, 1);
 				
 				let rgb = HSVtoRGB(hue, saturation, value);
 				

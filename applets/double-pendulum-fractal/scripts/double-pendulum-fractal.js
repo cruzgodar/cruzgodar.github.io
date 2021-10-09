@@ -86,7 +86,7 @@
 	
 	
 	
-	window.requestAnimationFrame(draw_frame_pendulum_drawer);
+	//window.requestAnimationFrame(draw_frame_pendulum_drawer);
 	
 	
 	
