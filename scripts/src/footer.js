@@ -71,6 +71,25 @@ Page.Footer =
 				<nav class="footer-image-links"></nav>
 			`);
 		}
+		
+		
+		
+		if  (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "applets"))
+		{
+			let element = document.createElement("div");
+			
+			document.querySelector(".footer-image-links").appendChild(element);
+			
+			element.outerHTML = `
+				<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
+					<a class="focus-on-child" href="index.html?page=%2Fapplets%2Fapplets.html${url_vars_suffix}" tabindex="-1">
+						<img onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="2"></img>
+					</a>
+				</div>
+			`;
+			
+			delay += Site.opacity_animation_time / 3;
+		}
 				
 				
 		
@@ -92,6 +111,7 @@ Page.Footer =
 		}
 		
 		
+		
 		if  (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "teaching"))
 		{
 			let element = document.createElement("div");
@@ -110,22 +130,6 @@ Page.Footer =
 		}
 		
 		
-		if  (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "applets"))
-		{
-			let element = document.createElement("div");
-			
-			document.querySelector(".footer-image-links").appendChild(element);
-			
-			element.outerHTML = `
-				<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-					<a class="focus-on-child" href="index.html?page=%2Fapplets%2Fapplets.html${url_vars_suffix}" tabindex="-1">
-						<img onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="2"></img>
-					</a>
-				</div>
-			`;
-			
-			delay += Site.opacity_animation_time / 3;
-		}
 		
 		if  (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "bio"))
 		{
