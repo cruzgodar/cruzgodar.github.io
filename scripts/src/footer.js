@@ -228,21 +228,21 @@ Page.Footer =
 					
 					
 					
-					<div id="floating-footer-writing-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 6.25px">
+					<div id="floating-footer-applets-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 6.25px">
+						<a href="/applets/applets.html" tabindex="-1">
+							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="1"></img>
+						</a>
+					</div>
+					
+					<div id="floating-footer-writing-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 55.25px">
 						<a href="/writing/writing.html" tabindex="-1">
 							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/writing/writing.html')" src="/writing/cover.${Page.Images.file_extension}" alt="Writing" tabindex="1"></img>
 						</a>
 					</div>
 					
-					<div id="floating-footer-teaching-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 55.25px">
+					<div id="floating-footer-teaching-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 104.25px">
 						<a href="/teaching/teaching.html" tabindex="-1">
 							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/teaching/teaching.html')" src="/teaching/cover.${Page.Images.file_extension}" alt="Teaching" tabindex="1"></img>
-						</a>
-					</div>
-					
-					<div id="floating-footer-applets-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 104.25px">
-						<a href="/applets/applets.html" tabindex="-1">
-							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="1"></img>
 						</a>
 					</div>
 					
@@ -282,9 +282,9 @@ Page.Footer =
 			
 			setTimeout(() =>
 			{
+				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-applets-link img"));
 				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-writing-link img"));
 				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-teaching-link img"));
-				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-applets-link img"));
 				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-bio-link img"));
 			}, Site.opacity_animation_time / 6);
 			
@@ -549,19 +549,19 @@ Page.Footer =
 		
 		show_image_links: function()
 		{
-			document.querySelector("#floating-footer-writing-link").style.left = "10px";
+			document.querySelector("#floating-footer-applets-link").style.left = "10px";
 			
 			document.querySelector("#settings-button").style.opacity = 0;
 			
 			setTimeout(() =>
 			{
-				document.querySelector("#floating-footer-teaching-link").style.left = "10px";
+				document.querySelector("#floating-footer-writing-link").style.left = "10px";
 			
 				document.querySelector("#sitemap-button").style.opacity = 0;
 				
 				setTimeout(() =>
 				{
-					document.querySelector("#floating-footer-applets-link").style.left = "10px";
+					document.querySelector("#floating-footer-teaching-link").style.left = "10px";
 				
 					document.querySelector("#about-button").style.opacity = 0;
 					
@@ -635,18 +635,18 @@ Page.Footer =
 			
 			
 			
-			document.querySelector("#floating-footer-writing-link").style.left = "-40px";
+			document.querySelector("#floating-footer-applets-link").style.left = "-40px";
 			
 			setTimeout(() =>
 			{
-				document.querySelector("#floating-footer-teaching-link").style.left = "-40px";
+				document.querySelector("#floating-footer-writing-link").style.left = "-40px";
 				
 				//This one looks better with a slight delay.
 				document.querySelector("#show-footer-menu-button").style.opacity = 1;
 				
 				setTimeout(() =>
 				{
-					document.querySelector("#floating-footer-applets-link").style.left = "-40px";
+					document.querySelector("#floating-footer-teaching-link").style.left = "-40px";
 					
 					setTimeout(() =>
 					{
