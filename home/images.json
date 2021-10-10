@@ -25,6 +25,12 @@
 	
 	
 	
+	"double-pendulum-fractal":
+	{
+		"webp": "/applets/double-pendulum-fractal/cover.webp",
+		"non-webp": "/applets/double-pendulum-fractal/cover.jpg"
+	},
+	
 	"complex-maps":
 	{
 		"webp": "/applets/complex-maps/cover.webp",
@@ -35,11 +41,5 @@
 	{
 		"webp": "/applets/lyapunov-fractals/cover.webp",
 		"non-webp": "/applets/lyapunov-fractals/cover.jpg"
-	},
-	
-	"newtons-method-extended":
-	{
-		"webp": "/applets/newtons-method-extended/cover.webp",
-		"non-webp": "/applets/newtons-method-extended/cover.jpg"
 	}
 }

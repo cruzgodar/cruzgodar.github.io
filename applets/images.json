@@ -7,6 +7,12 @@
 	
 	
 	
+	"double-pendulum-fractal":
+	{
+		"webp": "double-pendulum-fractal/cover.webp",
+		"non-webp": "double-pendulum-fractal/cover.jpg"
+	},
+	
 	"complex-maps":
 	{
 		"webp": "complex-maps/cover.webp",

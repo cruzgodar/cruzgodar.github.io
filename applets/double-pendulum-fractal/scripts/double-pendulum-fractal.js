@@ -23,7 +23,17 @@
 		renderer: "hybrid",
 		
 		canvas_width: image_size,
-		canvas_height: image_size
+		canvas_height: image_size,
+		
+		
+		
+		
+		use_fullscreen: true,
+		
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
@@ -31,8 +41,6 @@
 	
 	
 	let resolution_input_element = document.querySelector("#resolution-input");
-	
-	let dt_input_element = document.querySelector("#dt-input");
 	
 	
 	
@@ -47,13 +55,45 @@
 	
 	
 	
-	let hide_pendulum_drawer_canvas_button_element = document.querySelector("#hide-pendulum-drawer-canvas-button");
+	let switch_pendulum_drawer_canvas_button_element = document.querySelector("#switch-pendulum-drawer-canvas-button");
 	
-	hide_pendulum_drawer_canvas_button_element.addEventListener("click", () =>
+	switch_pendulum_drawer_canvas_button_element.style.transition = "filter .125s ease-in-out, opacity .25s ease-in-out";
+	
+	switch_pendulum_drawer_canvas_button_element.addEventListener("click", () =>
 	{
-		//What the actual fuck
-		hide_pendulum_drawer_canvas();
-		window.requestAnimationFrame(hide_pendulum_drawer_canvas);
+		if (paused)
+		{
+			//What the actual fuck
+			hide_pendulum_drawer_canvas();
+			window.requestAnimationFrame(hide_pendulum_drawer_canvas);
+			
+			
+			
+			switch_pendulum_drawer_canvas_button_element.style.opacity = 0;
+			
+			setTimeout(() =>
+			{
+				switch_pendulum_drawer_canvas_button_element.textContent = "Pick Pendulum";
+				
+				switch_pendulum_drawer_canvas_button_element.style.opacity = 1;
+			}, 250);
+		}
+		
+		else
+		{
+			paused = true;
+			
+			
+			
+			switch_pendulum_drawer_canvas_button_element.style.opacity = 0;
+			
+			setTimeout(() =>
+			{
+				switch_pendulum_drawer_canvas_button_element.textContent = "Return to Fractal";
+				
+				switch_pendulum_drawer_canvas_button_element.style.opacity = 1;
+			}, 250);
+		}
 	});
 	
 	
@@ -69,13 +109,15 @@
 	
 	function draw_double_pendulum_fractal()
 	{
+		image_size = parseInt(resolution_input_element.value || 500);
+		
 		state = new Array(image_size * image_size * 2);
 		
 		image = new Uint8ClampedArray(image_size * image_size * 4);
 		
-		image_size = parseInt(resolution_input_element.value || 500);
+		wilson.change_canvas_size(image_size, image_size);
 		
-		dt = parseFloat(dt_input_element.value || .01);
+		
 		
 		
 		
@@ -244,6 +286,11 @@
 	
 	function draw_preview_pendulum(x, y, x_delta, y_delta, e)
 	{
+		if (!paused)
+		{
+			return;
+		}
+		
 		if (pendulum_drawer_canvas_visible === 0)
 		{
 			show_pendulum_drawer_canvas_preview();
@@ -285,7 +332,9 @@
 	{
 		if (pendulum_drawer_canvas_visible === 1 || frame < 3)
 		{
-			hide_pendulum_drawer_canvas();
+			wilson_pendulum_drawer.canvas.style.opacity = 0;
+			
+			pendulum_drawer_canvas_visible = 0;
 		}
 	});
 	
