@@ -1379,6 +1379,11 @@ let Settings =
 					color: rgb(64, 64, 64);
 				}
 				
+				.settings-text
+				{
+					color: rgb(64, 64, 64) !important;
+				}
+				
 				.body-text .link
 				{
 					color: rgb(64, 128, 64);
@@ -1480,6 +1485,11 @@ let Settings =
 				.body-text, .body-text span, .song-lyrics, .image-link-subtext
 				{
 					color: rgb(216, 216, 216);
+				}
+				
+				.settings-text
+				{
+					color: rgb(64, 64, 64) !important;
 				}
 				
 				.body-text .link

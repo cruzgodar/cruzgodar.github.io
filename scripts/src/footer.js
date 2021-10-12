@@ -784,72 +784,39 @@ Page.Footer =
 		
 		show_settings_text: function(text)
 		{
-			if (document.querySelector("#settings-text").style.opacity == 0)
+			let element = document.createElement("div");
+			
+			element.classList.add("settings-text-container");
+			
+			document.body.appendChild(element);
+			
+			
+			
+			let element_2 = document.createElement("p");
+			
+			element_2.classList.add("settings-text");
+			
+			element_2.classList.add("body-text");
+			
+			element_2.textContent = text;
+			
+			element.appendChild(element_2);
+			
+			
+			
+			setTimeout(() =>
 			{
-				document.querySelector("#settings-text").style.display = "block";
+				element.style.opacity = 1;
 				
-				document.querySelector("#settings-text").textContent = text;
+				element.style.transform = "scale(1.0)";
 				
 				setTimeout(() =>
 				{
-					document.querySelector("#settings-text").style.opacity = 1;
+					element.style.opacity = 0;
 					
-					
-					
-					try {clearTimeout(this.timeout_id_1)}
-					catch(ex) {}
-					
-					try {clearTimeout(this.timeout_id_2)}
-					catch(ex) {}
-					
-					this.timeout_id_1 = setTimeout(() =>
-					{
-						document.querySelector("#settings-text").style.opacity = 0;
-						
-						this.timeout_id_2 = setTimeout(() =>
-						{
-							document.querySelector("#settings-text").style.display = "none";
-						}, Site.opacity_animation_time);
-					}, Site.opacity_animation_time * 6);
-				}, 10);
-			}
-			
-			
-			
-			else
-			{
-				document.querySelector("#settings-text").style.opacity = 0;
-				
-				setTimeout(() =>
-				{
-					document.querySelector("#settings-text").style.display = "block";
-					
-					document.querySelector("#settings-text").textContent = text;
-					
-					setTimeout(() =>
-					{
-						document.querySelector("#settings-text").style.opacity = 1;
-						
-						
-						
-						try {clearTimeout(this.timeout_id_1)}
-						catch(ex) {}
-						
-						try {clearTimeout(this.timeout_id_2)}
-						catch(ex) {}
-						
-						this.timeout_id_1 = setTimeout(() =>
-						{
-							document.querySelector("#settings-text").style.opacity = 0;
-							
-							this.timeout_id_2 = setTimeout(() =>
-							{
-								document.querySelector("#settings-text").style.display = "none";
-							}, Site.opacity_animation_time);
-						}, Site.opacity_animation_time * 6);
-					}, 10);
-				}, Site.opacity_animation_time);
-			}
+					element.style.transform = "scale(.9)";
+				}, Site.opacity_animation_time * 8);
+			}, 10);
 		}
 	}
 };
