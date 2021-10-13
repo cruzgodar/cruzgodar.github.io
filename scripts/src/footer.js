@@ -784,6 +784,11 @@ Page.Footer =
 		
 		show_settings_text: function(text)
 		{
+			Page.set_element_styles(".settings-text-container", "opacity", "0");
+			Page.set_element_styles(".settings-text-container", "transform", "scale(.9)");
+			
+			
+			
 			let element = document.createElement("div");
 			
 			element.classList.add("settings-text-container");
@@ -815,6 +820,11 @@ Page.Footer =
 					element.style.opacity = 0;
 					
 					element.style.transform = "scale(.9)";
+					
+					setTimeout(() =>
+					{
+						element.remove();
+					}, Site.opacity_animation_time * 2);
 				}, Site.opacity_animation_time * 8);
 			}, 10);
 		}
