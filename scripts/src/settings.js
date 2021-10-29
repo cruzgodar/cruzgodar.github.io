@@ -147,7 +147,7 @@ let Settings =
 	meta_theme_color_animation_step: 0,
 	meta_theme_color_element: document.querySelector("#theme-color-meta"),
 	
-	animate_meta_theme_color: function(old_brightness, new_brightness)
+	animate_meta_theme_color: function(old_brightness, new_brightness, num_steps = 45)
 	{
 		try {clearInterval(this.meta_theme_color_refresh_id);}
 		catch(ex) {}
@@ -158,11 +158,11 @@ let Settings =
 		{
 			this.meta_theme_color_animation_step++;
 			
-			let brightness = (1 - this.meta_theme_color_animation_step / 45) * old_brightness + (this.meta_theme_color_animation_step / 45) * new_brightness;
+			let brightness = (1 - this.meta_theme_color_animation_step / num_steps) * old_brightness + (this.meta_theme_color_animation_step / num_steps) * new_brightness;
 			
 			this.meta_theme_color_element.setAttribute("content", `rgb(${brightness}, ${brightness}, ${brightness})`);
 			
-			if (this.meta_theme_color_animation_step === 45)
+			if (this.meta_theme_color_animation_step === num_steps)
 			{
 				try {clearInterval(this.meta_theme_color_refresh_id);}
 				catch(ex) {}

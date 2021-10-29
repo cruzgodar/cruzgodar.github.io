@@ -1443,8 +1443,29 @@ class Wilson
 					
 					
 					
+					this.old_meta_theme_color_brightness = 255;
+					
+					if (Site.Settings.url_vars["theme"] === 1)
+					{
+						this.old_meta_theme_color_brightness = 24;
+						
+						if (Site.Settings.url_vars["dark_theme_color"] === 1)
+						{
+							this.old_meta_theme_color_brightness = 0;
+						}
+					}
+					
+					
+					
+					this.fullscreen_old_scroll = window.scrollY;
+					
+					
+					
 					document.documentElement.style.overflowY = "hidden";
 					document.body.style.overflowY = "hidden";
+					
+					document.body.style.width = "100vw";
+					document.body.style.height = "100vh";
 					
 					document.documentElement.style.userSelect = "none";
 					document.documentElement.style.WebkitUserSelect = "none";
@@ -1453,8 +1474,7 @@ class Wilson
 					document.addEventListener("gesturechange", this.prevent_gestures);
 					document.addEventListener("gestureend", this.prevent_gestures);
 					
-					
-					this.fullscreen_old_scroll = window.scrollY;
+					Site.Settings.animate_meta_theme_color(this.old_meta_theme_color_brightness, 0, 25);
 					
 					
 					
@@ -1565,12 +1585,17 @@ class Wilson
 					document.documentElement.style.overflowY = "visible";
 					document.body.style.overflowY = "visible";
 					
+					document.body.style.width = "";
+					document.body.style.height = "";
+					
 					document.documentElement.style.userSelect = "auto";
 					document.documentElement.style.WebkitUserSelect = "auto";
 					
 					document.removeEventListener("gesturestart", this.prevent_gestures);
 					document.removeEventListener("gesturechange", this.prevent_gestures);
 					document.removeEventListener("gestureend", this.prevent_gestures);
+					
+					Site.Settings.animate_meta_theme_color(0, this.old_meta_theme_color_brightness, 25);
 					
 					
 					
