@@ -4,6 +4,12 @@ class Lapsa
 	
 	current_slide = -1;
 	
+	target_element = null;
+	
+	blockquotes = [];
+	
+	quote_level = -1;
+	
 	
 	
 	constructor(source, options)
@@ -42,6 +48,21 @@ class Lapsa
 					align-items: center;
 					
 					background-color: rgb(255, 255, 255);
+				}
+				
+				.lapsa-slide p, .lapsa-slide blockquote
+				{
+					width: 90%;
+					text-align: justify;
+				}
+				
+				.lapsa-slide blockquote
+				{
+					width: calc(90% - 12px);
+					border-width: 0 0 0 2px;
+					padding: 5px 0 5px 10px;
+					border-color: rgb(0, 0, 0);
+					border-style: solid;
 				}
 				
 				@media (min-aspect-ratio: 16/9)
@@ -111,6 +132,41 @@ class Lapsa
 			}
 			
 			
+			let num_carets = 0;
+			
+			while (line[num_carets] === ">")
+			{
+				num_carets++;
+			}
+			
+			if (num_carets - 1 > this.quote_level)
+			{
+				for (let j = 0; j < num_carets - this.quote_level; j++)
+				{
+					this.add_blockquote();
+				}
+			}
+			
+			else if (num_carets - 1 < this.quote_level)
+			{
+				this.quote_level = num_carets - 1;
+				
+				if (this.quote_level === -1)
+				{
+					this.target_element = this.slides[this.current_slide];
+				}
+				
+				else
+				{
+					this.target_element = this.blockquotes[this.quote_level];
+				}
+			}
+			
+			console.log(this.quote_level);
+			
+			line = line.slice(this.quote_level + 1);
+			
+			
 			
 			if (line[0] === "#")
 			{
@@ -121,17 +177,15 @@ class Lapsa
 					num_hashes++;
 				}
 				
-				let start_index = num_hashes;
-				
-				while (line[start_index] === " " || line[num_hashes] === "\t")
-				{
-					start_index++;
-				}
-				
-				this.add_text(`h${num_hashes}`, line.slice(start_index));
+				this.add_text(`h${num_hashes}`, this.trim_leading_whitespace(line.slice(num_hashes)));
 			}
 			
 			
+			
+			else
+			{
+				this.add_text("p", this.trim_leading_whitespace(line));
+			}
 		}
 	}
 	
@@ -150,6 +204,8 @@ class Lapsa
 		this.slides.push(slide);
 		
 		this.current_slide++;
+		
+		this.target_element = slide;
 	}
 	
 	
@@ -161,6 +217,43 @@ class Lapsa
 		
 		element.textContent = text;
 		
-		this.slides[this.current_slide].appendChild(element);
+		this.target_element.appendChild(element);
+	}
+	
+	
+	
+	add_blockquote()
+	{
+		let element = document.createElement("blockquote");
+		
+		this.quote_level++;
+		
+		if (this.quote_level < this.blockquotes.length - 1)
+		{
+			this.blockquotes[this.quote_level] = element;
+		}
+		
+		else
+		{
+			this.blockquotes.push(element);
+		}
+		
+		this.target_element.appendChild(element);
+		
+		this.target_element = element;
+	}
+	
+	
+	
+	trim_leading_whitespace(text)
+	{
+		let start_index = 0;
+		
+		while (text[start_index] === " " || text[start_index] === "\t")
+		{
+			start_index++;
+		}
+		
+		return text.slice(start_index);
 	}
 };
