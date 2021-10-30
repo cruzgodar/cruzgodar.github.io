@@ -59,10 +59,13 @@ class Lapsa
 				.lapsa-slide blockquote
 				{
 					width: calc(90% - 12px);
-					border-width: 0 0 0 2px;
-					padding: 5px 0 5px 10px;
-					border-color: rgb(0, 0, 0);
+					
+					border-width: 0 0 0 4px;
+					border-color: rgb(64, 64, 64);
 					border-style: solid;
+					padding: 5px 0 5px 10px;
+					
+					background-color: rgba(127, 127, 127, .1);
 				}
 				
 				@media (min-aspect-ratio: 16/9)
@@ -118,6 +121,8 @@ class Lapsa
 		
 		let num_lines = lines.length;
 		
+		lines.push("");
+		
 		this.create_slide();
 		
 		
@@ -168,6 +173,9 @@ class Lapsa
 			
 			
 			
+			
+			
+			//Headings
 			if (line[0] === "#")
 			{
 				let num_hashes = 1;
@@ -178,6 +186,20 @@ class Lapsa
 				}
 				
 				this.add_text(`h${num_hashes}`, this.trim_leading_whitespace(line.slice(num_hashes)));
+			}
+			
+			else if (lines[i + 1][0] === "=" && lines[i + 1][1] === "=")
+			{
+				this.add_text("h1", this.trim_leading_whitespace(line));
+				
+				i++;
+			}
+			
+			else if (lines[i + 1][0] === "-" && lines[i + 1][1] === "-")
+			{
+				this.add_text("h2", this.trim_leading_whitespace(line));
+				
+				i++;
 			}
 			
 			
