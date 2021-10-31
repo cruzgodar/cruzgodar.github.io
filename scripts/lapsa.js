@@ -1,14 +1,24 @@
 class Lapsa
 {
+	target_element = null;
+	
+	
+	
 	slides = [];
 	
 	current_slide = -1;
 	
-	target_element = null;
+	
 	
 	blockquotes = [];
 	
 	quote_level = -1;
+	
+	
+	
+	lists = [];
+	
+	list_level = -1;
 	
 	
 	
@@ -50,7 +60,7 @@ class Lapsa
 					background-color: rgb(255, 255, 255);
 				}
 				
-				.lapsa-slide p, .lapsa-slide blockquote
+				.lapsa-slide p, .lapsa-slide blockquote, .lapsa-slide ol
 				{
 					width: 90%;
 					text-align: justify;
@@ -137,6 +147,27 @@ class Lapsa
 			}
 			
 			
+			
+			
+			
+			let num_indents = 0;
+			
+			line = line.replace(/    /g, "\t");
+			
+			while (line[0] === "\t")
+			{
+				num_indents++;
+				
+				line = line.slice(1);
+			}
+			
+			line = this.trim_leading_whitespace(line);
+			
+			
+			
+			
+			
+			//Blockquotes
 			let num_carets = 0;
 			
 			while (line[num_carets] === ">")
@@ -146,7 +177,9 @@ class Lapsa
 			
 			if (num_carets - 1 > this.quote_level)
 			{
-				for (let j = 0; j < num_carets - this.quote_level; j++)
+				let num_blockquotes_to_add = num_carets - this.quote_level;
+				
+				for (let j = 0; j < num_blockquotes_to_add; j++)
 				{
 					this.add_blockquote();
 				}
@@ -167,10 +200,53 @@ class Lapsa
 				}
 			}
 			
-			console.log(this.quote_level);
-			
 			line = line.slice(this.quote_level + 1);
 			
+			
+			
+			
+			
+			//Ordered lists
+			let period_index = line.indexOf(".");
+			
+			if (period_index > 0 && line[period_index - 1] !== "\\")
+			{
+				let j = 0;
+				
+				while (line[j] >= "0" && line[j] <= "9")
+				{
+					j++;
+				}
+				
+				if (j === period_index)
+				{
+					if (num_indents > this.list_level)
+					{
+						let num_lists_to_add = num_indents - this.list_level;
+						
+						for (let k = 0; k < num_lists_to_add; k++)
+						{
+							this.add_list(true);
+						}
+					}
+					
+					else if (num_indents < this.list_level)
+					{
+						this.list_level = num_indents;
+						
+						this.target_element = this.lists[this.list_level];
+					}
+					
+					
+					
+					let text = this.trim_leading_whitespace(line.slice(period_index + 1));
+					this.add_text("li", text);
+					
+					continue;
+				}
+			}
+				
+			this.target_element = this.slides[this.current_slide];
 			
 			
 			
@@ -185,19 +261,23 @@ class Lapsa
 					num_hashes++;
 				}
 				
-				this.add_text(`h${num_hashes}`, this.trim_leading_whitespace(line.slice(num_hashes)));
+				this.add_text(`h${num_hashes}`, line.slice(num_hashes));
 			}
+			
+			
+			
+			
 			
 			else if (lines[i + 1][0] === "=" && lines[i + 1][1] === "=")
 			{
-				this.add_text("h1", this.trim_leading_whitespace(line));
+				this.add_text("h1", line);
 				
 				i++;
 			}
 			
 			else if (lines[i + 1][0] === "-" && lines[i + 1][1] === "-")
 			{
-				this.add_text("h2", this.trim_leading_whitespace(line));
+				this.add_text("h2", line);
 				
 				i++;
 			}
@@ -206,7 +286,7 @@ class Lapsa
 			
 			else
 			{
-				this.add_text("p", this.trim_leading_whitespace(line));
+				this.add_text("p", line);
 			}
 		}
 	}
@@ -258,6 +338,39 @@ class Lapsa
 		else
 		{
 			this.blockquotes.push(element);
+		}
+		
+		this.target_element.appendChild(element);
+		
+		this.target_element = element;
+	}
+	
+	
+	
+	add_list(ordered)
+	{
+		let element = null;
+		
+		if (ordered)
+		{
+			element = document.createElement("ol");
+		}
+		
+		else
+		{
+			element = document.createElement("ul");
+		}
+		
+		this.list_level++;
+		
+		if (this.list_level < this.lists.length - 1)
+		{
+			this.lists[this.list_level] = element;
+		}
+		
+		else
+		{
+			this.lists.push(element);
 		}
 		
 		this.target_element.appendChild(element);
