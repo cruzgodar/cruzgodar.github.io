@@ -20,6 +20,10 @@ class Lapsa
 	
 	list_level = -1;
 	
+	lists_are_ordered = [];
+	
+	current_list_is_ordered = true;
+	
 	
 	
 	constructor(source, options)
@@ -60,7 +64,7 @@ class Lapsa
 					background-color: rgb(255, 255, 255);
 				}
 				
-				.lapsa-slide p, .lapsa-slide blockquote, .lapsa-slide ol
+				.lapsa-slide p, .lapsa-slide blockquote, .lapsa-slide ol, .lapsa-slide ul
 				{
 					width: 90%;
 					text-align: justify;
@@ -235,6 +239,48 @@ class Lapsa
 						this.list_level = num_indents;
 						
 						this.target_element = this.lists[this.list_level];
+						
+						this.current_list_is_ordered = this.lists_are_ordered[this.list_level];
+						
+						if (!this.current_list_is_ordered)
+						{
+							//Back out of the current list and start a new one.
+							this.list_level = num_indents - 1;
+							
+							if (this.list_level === -1)
+							{
+								this.target_element = this.slides[this.current_slide];
+							}
+							
+							else
+							{
+								this.target_element = this.lists[this.list_level];
+								
+								this.current_list_is_ordered = this.lists_are_ordered[this.list_level];
+							}
+							
+							this.add_list(true);
+						}
+					}
+					
+					else if (!this.current_list_is_ordered)
+					{
+						//Back out of the current list and start a new one.
+						this.list_level = num_indents - 1;
+						
+						if (this.list_level === -1)
+						{
+							this.target_element = this.slides[this.current_slide];
+						}
+						
+						else
+						{
+							this.target_element = this.lists[this.list_level];
+							
+							this.current_list_is_ordered = this.lists_are_ordered[this.list_level];
+						}
+						
+						this.add_list(true);
 					}
 					
 					
@@ -244,6 +290,78 @@ class Lapsa
 					
 					continue;
 				}
+			}
+			
+			
+			
+			//Unordered lists
+			else if ((line[0] === "-" || line[0] === "*" || line[0] === "+") && line.length >= 2 && line[1] === " ")
+			{
+				if (num_indents > this.list_level)
+				{
+					let num_lists_to_add = num_indents - this.list_level;
+					
+					for (let k = 0; k < num_lists_to_add; k++)
+					{
+						this.add_list(false);
+					}
+				}
+				
+				else if (num_indents < this.list_level)
+				{
+					this.list_level = num_indents;
+					
+					this.target_element = this.lists[this.list_level];
+					
+					this.current_list_is_ordered = this.lists_are_ordered[this.list_level];
+					
+					if (this.current_list_is_ordered)
+					{
+						//Back out of the current list and start a new one.
+						this.list_level = num_indents - 1;
+						
+						if (this.list_level === -1)
+						{
+							this.target_element = this.slides[this.current_slide];
+						}
+						
+						else
+						{
+							this.target_element = this.lists[this.list_level];
+							
+							this.current_list_is_ordered = this.lists_are_ordered[this.list_level];
+						}
+						
+						this.add_list(false);
+					}
+				}
+				
+				else if (this.current_list_is_ordered)
+				{
+					//Back out of the current list and start a new one.
+					this.list_level = num_indents - 1;
+					
+					if (this.list_level === -1)
+					{
+						this.target_element = this.slides[this.current_slide];
+					}
+					
+					else
+					{
+						this.target_element = this.lists[this.list_level];
+						
+						this.current_list_is_ordered = this.lists_are_ordered[this.list_level];
+					}
+					
+					this.add_list(false);
+				}
+				
+				
+				
+				let text = this.trim_leading_whitespace(line.slice(1));
+				this.add_text("li", text);
+				
+				continue;
 			}
 				
 			this.target_element = this.slides[this.current_slide];
@@ -361,17 +479,29 @@ class Lapsa
 			element = document.createElement("ul");
 		}
 		
+		
+		
+		this.current_list_is_ordered = ordered;
+		
+		
+		
 		this.list_level++;
 		
 		if (this.list_level < this.lists.length - 1)
 		{
 			this.lists[this.list_level] = element;
+			
+			this.lists_are_ordered[this.list_level] = ordered;
 		}
 		
 		else
 		{
 			this.lists.push(element);
+			
+			this.lists_are_ordered.push(ordered);
 		}
+		
+		
 		
 		this.target_element.appendChild(element);
 		
