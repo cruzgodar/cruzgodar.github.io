@@ -363,8 +363,15 @@ class Lapsa
 				
 				continue;
 			}
+			
+			
+			
+			if (num_indents <= this.list_level)
+			{	
+				this.target_element = this.slides[this.current_slide];
 				
-			this.target_element = this.slides[this.current_slide];
+				this.list_level = -1;
+			}
 			
 			
 			
