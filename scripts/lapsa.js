@@ -72,7 +72,7 @@ class Lapsa
 					font-size: 1.5vw;
 				}
 				
-				.lapsa-slide p, .lapsa-slide blockquote, .lapsa-slide ol, .lapsa-slide ul
+				.lapsa-slide p, .lapsa-slide blockquote, .lapsa-slide ol, .lapsa-slide ul, .lapsa-slide code
 				{
 					width: 90%;
 					text-align: justify;
@@ -326,6 +326,18 @@ class Lapsa
 				{
 					this.current_container = this.current_container.parent;
 				}
+			}
+			
+			
+			
+			
+			
+			//Code blocks
+			if ((this.current_container.list_depth === 0 && num_indents > 0) || (this.current_container.list_depth > 0 && num_indents > this.current_container.list_depth))
+			{
+				this.add_text("code", line);
+				
+				continue;
 			}
 			
 			
