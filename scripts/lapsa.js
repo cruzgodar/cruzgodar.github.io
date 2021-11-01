@@ -20,20 +20,20 @@ class Lapsa
 			type: one of the capital types defined below
 			
 			quote_depth: if it's a quote, this says how many carets to expect.
+			
+			list_depth: if it's a list, this says how many indents to expect.
 		}
 	*/
 	
-	TYPE_SLIDE = 0;
-	TYPE_BLOCKQUOTE = 1;
-	TYPE_ORDERED_LIST = 2;
-	TYPE_UNORDERED_LIST = 3;
+	SLIDE = 0;
+	BLOCKQUOTE = 1;
+	ORDERED_LIST = 2;
+	UNORDERED_LIST = 3;
 	
 	
 	
 	constructor(source, options)
 	{
-		console.log("hi!");
-		
 		if (document.querySelectorAll("#lapsa-style").length === 0)
 		{
 			let element = document.createElement("style");
@@ -151,33 +151,17 @@ class Lapsa
 		
 		
 		
-		this.current_container = {element: this.slides[0], parent: null, type: this.TYPE_SLIDE, quote_depth: 0};
+		this.current_container = {element: this.slides[0], parent: null, type: this.SLIDE, quote_depth: 0, list_depth: 0};
 		
 		
 		
 		for (let i = 0; i < num_lines; i++)
 		{
 			let line = lines[i];
-			
 			let num_indents = 0;
 			
-			line = line.replace(/    /g, "\t");
+			[line, num_indents] = this.clean_line(line);
 			
-			while (line[0] === "\t")
-			{
-				num_indents++;
-				
-				line = line.slice(1);
-			}
-			
-			line = this.trim_leading_whitespace(line);
-			
-			
-			
-			if (line.length === 0)
-			{
-				continue;
-			}
 			
 			
 			
@@ -202,9 +186,7 @@ class Lapsa
 			
 			else if (num_carets < this.current_container.quote_depth)
 			{
-				let num_blockquotes_to_remove = this.current_container.quote_depth - num_carets;
-				
-				for (let j = 0; j < num_blockquotes_to_remove; j++)
+				while (this.current_container.quote_depth > num_carets)
 				{
 					this.current_container = this.current_container.parent;
 				}
@@ -215,7 +197,21 @@ class Lapsa
 			
 			
 			
-			/*
+			
+			if (num_carets !== 0)
+			{
+				[line, num_indents] = this.clean_line(line);
+			}
+			
+			if (line.length === 0)
+			{
+				continue;
+			}
+			
+			
+			
+			
+			
 			//Ordered lists
 			let period_index = line.indexOf(".");
 			
@@ -230,9 +226,9 @@ class Lapsa
 				
 				if (j === period_index)
 				{
-					if (num_indents > this.list_level)
+					if (num_indents + 1 > this.current_container.list_depth)
 					{
-						let num_lists_to_add = num_indents - this.list_level;
+						let num_lists_to_add = num_indents + 1 - this.current_container.list_depth;
 						
 						for (let k = 0; k < num_lists_to_add; k++)
 						{
@@ -240,51 +236,27 @@ class Lapsa
 						}
 					}
 					
-					else if (num_indents < this.list_level)
+					else if (num_indents + 1 < this.current_container.list_depth)
 					{
-						this.list_level = num_indents;
+						while (this.current_container.list_depth > num_indents + 1)
+						{
+							this.current_container = this.current_container.parent;
+						}
 						
-						this.target_element = this.lists[this.list_level];
 						
-						this.current_list_is_ordered = this.lists_are_ordered[this.list_level];
-						
-						if (!this.current_list_is_ordered)
+						if (this.current_container.type === this.UNORDERED_LIST)
 						{
 							//Back out of the current list and start a new one.
-							this.list_level = num_indents - 1;
-							
-							if (this.list_level === -1)
-							{
-								this.target_element = this.slides[this.current_slide];
-							}
-							
-							else
-							{
-								this.target_element = this.lists[this.list_level];
-								
-								this.current_list_is_ordered = this.lists_are_ordered[this.list_level];
-							}
+							this.current_container = this.current_container.parent;
 							
 							this.add_list(true);
 						}
 					}
 					
-					else if (!this.current_list_is_ordered)
+					else if (this.current_container.type === this.UNORDERED_LIST)
 					{
 						//Back out of the current list and start a new one.
-						this.list_level = num_indents - 1;
-						
-						if (this.list_level === -1)
-						{
-							this.target_element = this.slides[this.current_slide];
-						}
-						
-						else
-						{
-							this.target_element = this.lists[this.list_level];
-							
-							this.current_list_is_ordered = this.lists_are_ordered[this.list_level];
-						}
+						this.current_container = this.current_container.parent;
 						
 						this.add_list(true);
 					}
@@ -303,9 +275,9 @@ class Lapsa
 			//Unordered lists
 			else if ((line[0] === "-" || line[0] === "*" || line[0] === "+") && line.length >= 2 && line[1] === " ")
 			{
-				if (num_indents > this.list_level)
+				if (num_indents + 1 > this.current_container.list_depth)
 				{
-					let num_lists_to_add = num_indents - this.list_level;
+					let num_lists_to_add = num_indents + 1 - this.current_container.list_depth;
 					
 					for (let k = 0; k < num_lists_to_add; k++)
 					{
@@ -313,51 +285,27 @@ class Lapsa
 					}
 				}
 				
-				else if (num_indents < this.list_level)
+				else if (num_indents + 1 < this.current_container.list_depth)
 				{
-					this.list_level = num_indents;
+					while (this.current_container.list_depth > num_indents + 1)
+					{
+						this.current_container = this.current_container.parent;
+					}
 					
-					this.target_element = this.lists[this.list_level];
 					
-					this.current_list_is_ordered = this.lists_are_ordered[this.list_level];
-					
-					if (this.current_list_is_ordered)
+					if (this.current_container.type === this.ORDERED_LIST)
 					{
 						//Back out of the current list and start a new one.
-						this.list_level = num_indents - 1;
-						
-						if (this.list_level === -1)
-						{
-							this.target_element = this.slides[this.current_slide];
-						}
-						
-						else
-						{
-							this.target_element = this.lists[this.list_level];
-							
-							this.current_list_is_ordered = this.lists_are_ordered[this.list_level];
-						}
+						this.current_container = this.current_container.parent;
 						
 						this.add_list(false);
 					}
 				}
 				
-				else if (this.current_list_is_ordered)
+				else if (this.current_container.type === this.ORDERED_LIST)
 				{
 					//Back out of the current list and start a new one.
-					this.list_level = num_indents - 1;
-					
-					if (this.list_level === -1)
-					{
-						this.target_element = this.slides[this.current_slide];
-					}
-					
-					else
-					{
-						this.target_element = this.lists[this.list_level];
-						
-						this.current_list_is_ordered = this.lists_are_ordered[this.list_level];
-					}
+					this.current_container = this.current_container.parent;
 					
 					this.add_list(false);
 				}
@@ -372,13 +320,15 @@ class Lapsa
 			
 			
 			
-			if (num_indents <= this.list_level)
+			if (num_indents < this.current_container.list_depth)
 			{
-				this.target_element = this.slides[this.current_slide];
-				
-				this.list_level = -1;
+				while (this.current_container.list_depth > num_indents)
+				{
+					this.current_container = this.current_container.parent;
+				}
 			}
-			*/
+			
+			
 			
 			
 			
@@ -459,55 +409,53 @@ class Lapsa
 		
 		this.current_container.element.appendChild(new_element);
 		
-		this.current_container = {element: new_element, parent: this.current_container, type: this.TYPE_BLOCKQUOTE, quote_depth: this.current_container.quote_depth + 1};
+		this.current_container = {element: new_element, parent: this.current_container, type: this.BLOCKQUOTE, quote_depth: this.current_container.quote_depth + 1, list_depth: this.current_container.list_depth};
 	}
 	
-	/*
+	
 	
 	add_list(ordered)
 	{
-		let element = null;
-		
 		if (ordered)
 		{
-			element = document.createElement("ol");
+			let new_element = document.createElement("ol");
+			
+			this.current_container.element.appendChild(new_element);
+			
+			this.current_container = {element: new_element, parent: this.current_container, type: this.ORDERED_LIST, quote_depth: this.current_container.quote_depth, list_depth: this.current_container.list_depth + 1};
 		}
 		
 		else
 		{
-			element = document.createElement("ul");
-		}
-		
-		
-		
-		this.current_list_is_ordered = ordered;
-		
-		
-		
-		this.list_level++;
-		
-		if (this.list_level < this.lists.length - 1)
-		{
-			this.lists[this.list_level] = element;
+			let new_element = document.createElement("ul");
 			
-			this.lists_are_ordered[this.list_level] = ordered;
-		}
-		
-		else
-		{
-			this.lists.push(element);
+			this.current_container.element.appendChild(new_element);
 			
-			this.lists_are_ordered.push(ordered);
+			this.current_container = {element: new_element, parent: this.current_container, type: this.UNORDERED_LIST, quote_depth: this.current_container.quote_depth, list_depth: this.current_container.list_depth + 1};
 		}
-		
-		
-		
-		this.target_element.appendChild(element);
-		
-		this.target_element = element;
 	}
 	
-	*/
+	
+	
+	clean_line(text)
+	{
+		let num_indents = 0;
+		
+		text = text.replace(/    /g, "\t");
+		
+		while (text[0] === "\t")
+		{
+			num_indents++;
+			
+			text = text.slice(1);
+		}
+		
+		text = this.trim_leading_whitespace(text);
+		
+		return [text, num_indents];
+	}
+	
+	
 	
 	trim_leading_whitespace(text)
 	{
