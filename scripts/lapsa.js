@@ -10,24 +10,30 @@ class Lapsa
 	
 	
 	
-	blockquotes = [];
+	/*
+		container format:
+		{
+			element: the html element
+			
+			parent: its parent element
+			
+			type: one of the capital types defined below
+			
+			quote_depth: if it's a quote, this says how many carets to expect.
+		}
+	*/
 	
-	quote_level = -1;
-	
-	
-	
-	lists = [];
-	
-	list_level = -1;
-	
-	lists_are_ordered = [];
-	
-	current_list_is_ordered = true;
+	TYPE_SLIDE = 0;
+	TYPE_BLOCKQUOTE = 1;
+	TYPE_ORDERED_LIST = 2;
+	TYPE_UNORDERED_LIST = 3;
 	
 	
 	
 	constructor(source, options)
 	{
+		console.log("hi!");
+		
 		if (document.querySelectorAll("#lapsa-style").length === 0)
 		{
 			let element = document.createElement("style");
@@ -62,6 +68,8 @@ class Lapsa
 					align-items: center;
 					
 					background-color: rgb(255, 255, 255);
+					
+					font-size: 1.5vw;
 				}
 				
 				.lapsa-slide p, .lapsa-slide blockquote, .lapsa-slide ol, .lapsa-slide ul
@@ -88,6 +96,8 @@ class Lapsa
 					{
 						width: calc(100vh * 16 / 9);
 						height: 100vh;
+						
+						font-size: 1.5vh;
 					}
 				}
 			`;
@@ -141,18 +151,13 @@ class Lapsa
 		
 		
 		
+		this.current_container = {element: this.slides[0], parent: null, type: this.TYPE_SLIDE, quote_depth: 0};
+		
+		
+		
 		for (let i = 0; i < num_lines; i++)
 		{
 			let line = lines[i];
-			
-			if (line.length === 0)
-			{
-				continue;
-			}
-			
-			
-			
-			
 			
 			let num_indents = 0;
 			
@@ -169,6 +174,12 @@ class Lapsa
 			
 			
 			
+			if (line.length === 0)
+			{
+				continue;
+			}
+			
+			
 			
 			
 			//Blockquotes
@@ -179,9 +190,9 @@ class Lapsa
 				num_carets++;
 			}
 			
-			if (num_carets - 1 > this.quote_level)
+			if (num_carets > this.current_container.quote_depth)
 			{
-				let num_blockquotes_to_add = num_carets - this.quote_level;
+				let num_blockquotes_to_add = num_carets - this.current_container.quote_depth;
 				
 				for (let j = 0; j < num_blockquotes_to_add; j++)
 				{
@@ -189,27 +200,22 @@ class Lapsa
 				}
 			}
 			
-			else if (num_carets - 1 < this.quote_level)
+			else if (num_carets < this.current_container.quote_depth)
 			{
-				this.quote_level = num_carets - 1;
+				let num_blockquotes_to_remove = this.current_container.quote_depth - num_carets;
 				
-				if (this.quote_level === -1)
+				for (let j = 0; j < num_blockquotes_to_remove; j++)
 				{
-					this.target_element = this.slides[this.current_slide];
-				}
-				
-				else
-				{
-					this.target_element = this.blockquotes[this.quote_level];
+					this.current_container = this.current_container.parent;
 				}
 			}
 			
-			line = line.slice(this.quote_level + 1);
+			line = line.slice(num_carets);
 			
 			
 			
 			
-			
+			/*
 			//Ordered lists
 			let period_index = line.indexOf(".");
 			
@@ -367,12 +373,12 @@ class Lapsa
 			
 			
 			if (num_indents <= this.list_level)
-			{	
+			{
 				this.target_element = this.slides[this.current_slide];
 				
 				this.list_level = -1;
 			}
-			
+			*/
 			
 			
 			
@@ -431,8 +437,6 @@ class Lapsa
 		this.slides.push(slide);
 		
 		this.current_slide++;
-		
-		this.target_element = slide;
 	}
 	
 	
@@ -440,37 +444,25 @@ class Lapsa
 	//tag_name: p, h1, h2, etc.
 	add_text(tag_name, text)
 	{
-		let element = document.createElement(tag_name);
+		let new_element = document.createElement(tag_name);
 		
-		element.textContent = text;
+		new_element.textContent = text;
 		
-		this.target_element.appendChild(element);
+		this.current_container.element.appendChild(new_element);
 	}
 	
 	
 	
 	add_blockquote()
 	{
-		let element = document.createElement("blockquote");
+		let new_element = document.createElement("blockquote");
 		
-		this.quote_level++;
+		this.current_container.element.appendChild(new_element);
 		
-		if (this.quote_level < this.blockquotes.length - 1)
-		{
-			this.blockquotes[this.quote_level] = element;
-		}
-		
-		else
-		{
-			this.blockquotes.push(element);
-		}
-		
-		this.target_element.appendChild(element);
-		
-		this.target_element = element;
+		this.current_container = {element: new_element, parent: this.current_container, type: this.TYPE_BLOCKQUOTE, quote_depth: this.current_container.quote_depth + 1};
 	}
 	
-	
+	/*
 	
 	add_list(ordered)
 	{
@@ -515,7 +507,7 @@ class Lapsa
 		this.target_element = element;
 	}
 	
-	
+	*/
 	
 	trim_leading_whitespace(text)
 	{
