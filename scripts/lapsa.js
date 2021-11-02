@@ -352,6 +352,8 @@ class Lapsa
 			
 			
 			
+			
+			
 			//Horizontal lines
 			if (line[0] === "-" || line[0] === "_" || line[0] === "*")
 			{
@@ -378,6 +380,57 @@ class Lapsa
 						continue;
 					}
 					
+				}
+			}
+			
+			
+			
+			
+			//Images
+			else if (line[0] === "!" && line[1] === "[")
+			{
+				let end_bracket_index = line.indexOf("]");
+				let end_parenthesis_index = line.lastIndexOf(")");
+				
+				if (end_bracket_index !== -1 && end_parenthesis_index !== -1)
+				{
+					let space_index = line.indexOf(" ", end_bracket_index);
+					
+					if (space_index === -1)
+					{
+						this.add_image(line.slice(end_bracket_index + 2, end_parenthesis_index), line.slice(2, end_bracket_index));
+					}
+					
+					else
+					{
+						this.add_image(line.slice(end_bracket_index + 2, space_index), line.slice(2, end_bracket_index), line.slice(space_index + 2, end_parenthesis_index - 1));
+					}
+					
+					continue;
+				}
+			}
+			
+			//Image links
+			else if (line[0] === "[" && line[1] === "!" && line[2] === "[")
+			{
+				let end_bracket_index = line.indexOf("]");
+				let end_parenthesis_index = line.indexOf(")]");
+				
+				if (end_bracket_index !== -1 && end_parenthesis_index !== -1)
+				{
+					let space_index = line.indexOf(" ", end_bracket_index);
+					
+					if (space_index === -1)
+					{
+						this.add_image_link(line.slice(end_bracket_index + 2, end_parenthesis_index), line.slice(3, end_bracket_index), line.slice(end_parenthesis_index + 3, line.length - 1));
+					}
+					
+					else
+					{
+						this.add_image_link(line.slice(end_bracket_index + 2, space_index), line.slice(3, end_bracket_index), line.slice(end_parenthesis_index + 3, line.length - 1), line.slice(space_index + 2, end_parenthesis_index - 1));
+					}
+					
+					continue;
 				}
 			}
 			
@@ -497,6 +550,48 @@ class Lapsa
 		new_element.classList.add("lapsa-hline");
 		
 		this.current_container.element.appendChild(new_element);
+	}
+	
+	
+	
+	add_image(src, alt, title)
+	{
+		let new_element = document.createElement("img");
+		
+		this.current_container.element.appendChild(new_element);
+		
+		new_element.src = src;
+		
+		new_element.alt = alt;
+		
+		if (typeof title !== "undefined")
+		{
+			new_element.title = title;
+		}
+	}
+	
+	add_image_link(src, alt, href, title)
+	{
+		let new_element = document.createElement("a");
+		
+		let new_element_2 = document.createElement("img");
+		
+		this.current_container.element.appendChild(new_element);
+		
+		new_element.appendChild(new_element_2);
+		
+		
+		
+		new_element_2.src = src;
+		
+		new_element_2.alt = alt;
+		
+		if (typeof title !== "undefined")
+		{
+			new_element_2.title = title;
+		}
+		
+		new_element.href = href;
 	}
 	
 	
