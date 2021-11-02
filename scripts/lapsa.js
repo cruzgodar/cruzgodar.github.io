@@ -90,6 +90,16 @@ class Lapsa
 					background-color: rgba(127, 127, 127, .1);
 				}
 				
+				.lapsa-slide .lapsa-hline
+				{
+					width: 95%;
+					height: 1px;
+					
+					background-color: rgb(127, 127, 127);
+					
+					margin: 5px;
+				}
+				
 				@media (min-aspect-ratio: 16/9)
 				{				
 					.lapsa-slide
@@ -342,6 +352,37 @@ class Lapsa
 			
 			
 			
+			//Horizontal lines
+			if (line[0] === "-" || line[0] === "_" || line[0] === "*")
+			{
+				let token = line[0];
+				
+				if (line[1] === token && line[2] === token)
+				{
+					let success = true;
+					
+					for (let i = 3; i < line.length; i++)
+					{
+						if (line[i] !== token)
+						{
+							success = false;
+							
+							break;
+						}
+					}
+					
+					if (success)
+					{
+						this.add_hline();
+						
+						continue;
+					}
+					
+				}
+			}
+			
+			
+			
 			
 			
 			//Headings
@@ -445,6 +486,17 @@ class Lapsa
 			
 			this.current_container = {element: new_element, parent: this.current_container, type: this.UNORDERED_LIST, quote_depth: this.current_container.quote_depth, list_depth: this.current_container.list_depth + 1};
 		}
+	}
+	
+	
+	
+	add_hline()
+	{
+		let new_element = document.createElement("div");
+		
+		new_element.classList.add("lapsa-hline");
+		
+		this.current_container.element.appendChild(new_element);
 	}
 	
 	
