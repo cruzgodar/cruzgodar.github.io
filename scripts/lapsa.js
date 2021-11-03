@@ -30,6 +30,9 @@ class Lapsa
 	ORDERED_LIST = 2;
 	UNORDERED_LIST = 3;
 	
+	escape_tokens = ["\\", "`", "*", "_", "{", "}", "[", "]", "<", ">", "(", ")", "#", "+", "-", ".", "!"];
+	escape_indices = {"\\": "00", "`": "01", "*": "02", "_": "03", "{": "04", "}": "05", "[": "06", "]": "07", "<": "08", ">": "09", "(": "10", ")": "11", "#": "12", "+": "13", "-": "14", ".": "15", "!": "16"};
+	
 	
 	
 	constructor(source, options)
@@ -225,7 +228,7 @@ class Lapsa
 			//Ordered lists
 			let period_index = line.indexOf(".");
 			
-			if (period_index > 0 && line[period_index - 1] !== "\\")
+			if (period_index > 0)
 			{
 				let j = 0;
 				
@@ -500,6 +503,17 @@ class Lapsa
 	//tag_name: p, h1, h2, etc.
 	add_text(tag_name, text)
 	{
+		//Unescape characters
+		for (let i = 0; i < text.length - 3; i++)
+		{
+			if (text[i] === "\t")
+			{
+				text = text.slice(0, i) + this.escape_tokens[parseInt(text.slice(i + 1, i + 3))] + text.slice(i + 3);
+			}
+		}
+		
+		
+		
 		let new_element = document.createElement(tag_name);
 		
 		new_element.textContent = text;
@@ -600,16 +614,29 @@ class Lapsa
 	{
 		let num_indents = 0;
 		
-		text = text.replace(/    /g, "\t");
+		text = text.replace(/\t/g, "    ");
 		
-		while (text[0] === "\t")
+		while (text.slice(0, 4) === "    ")
 		{
 			num_indents++;
 			
-			text = text.slice(1);
+			text = text.slice(4);
 		}
 		
 		text = this.trim_leading_whitespace(text);
+		
+		
+		
+		//Escape characters
+		for (let i = 0; i < text.length - 1; i++)
+		{
+			if (text[i] === "\\" && this.escape_tokens.includes(text[i + 1]))
+			{
+				text = text.slice(0, i) + `\t${this.escape_indices[text[i + 1]]}` + text.slice(i + 2);
+				
+				i += 2;
+			}
+		}
 		
 		return [text, num_indents];
 	}
@@ -620,7 +647,7 @@ class Lapsa
 	{
 		let start_index = 0;
 		
-		while (text[start_index] === " " || text[start_index] === "\t")
+		while (text[start_index] === " ")
 		{
 			start_index++;
 		}
