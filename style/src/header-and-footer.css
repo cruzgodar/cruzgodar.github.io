@@ -154,13 +154,11 @@
 .footer-image-link img.hover
 {
 	transform: scale(1.05);
-	filter: brightness(105%);
 }
 
 .footer-image-link img:not(:hover):focus
 {
 	transform: scale(1.05);
-	filter: brightness(105%);
 	outline: none;
 }
 
