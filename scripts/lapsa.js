@@ -504,7 +504,7 @@ class Lapsa
 	add_text(tag_name, text)
 	{
 		//Unescape characters
-		for (let i = 0; i < text.length - 3; i++)
+		for (let i = 0; i < text.length - 2; i++)
 		{
 			if (text[i] === "\t")
 			{
@@ -519,6 +519,103 @@ class Lapsa
 		new_element.textContent = text;
 		
 		this.current_container.element.appendChild(new_element);
+		
+		
+		
+		//Emphasis
+		new_element.innerHTML = this.add_emphasis(new_element.innerHTML, "*");
+		new_element.innerHTML = this.add_emphasis(new_element.innerHTML, "_");
+	}
+	
+	
+	
+	//Token is either * or _ to save code.
+	add_emphasis(html, token)
+	{
+		let index = 0;
+		
+		let em = false;
+		let strong = false;
+		
+		let tag_stack = [];
+		
+		html += "  ";
+		
+		while (index < html.length - 2)
+		{
+			index = html.indexOf(token);
+			
+			if (index === -1)
+			{
+				break;
+			}
+			
+			
+			
+			if (html[index + 1] === token)
+			{
+				if (!strong)
+				{
+					strong = true;
+					
+					html = html.slice(0, index) + "<strong>" + html.slice(index + 2);
+					
+					tag_stack.push(0);
+				}
+				
+				else if (tag_stack[tag_stack.length - 1] === 0)
+				{
+					strong = false;
+					
+					html = html.slice(0, index) + "</strong>" + html.slice(index + 2);
+					
+					tag_stack.pop();
+				}
+				
+				//If we're currently bold but it's not the last thing that was added, we need to take this as an opportunity to remove italics.
+				else
+				{
+					em = false;
+					
+					html = html.slice(0, index) + "</em>" + html.slice(index + 1);
+					
+					tag_stack.pop();
+				}
+			}
+			
+			
+			
+			else
+			{
+				if (!em)
+				{
+					em = true;
+					
+					html = html.slice(0, index) + "<em>" + html.slice(index + 1);
+					
+					tag_stack.push(1);
+				}
+				
+				else if (tag_stack[tag_stack.length - 1] === 1)
+				{
+					em = false;
+					
+					html = html.slice(0, index) + "</em>" + html.slice(index + 1);
+					
+					tag_stack.pop();
+				}
+				
+				//This is a new italics tag after we already started italics, which doesn't make any sense. We'll just ignore it.
+				else
+				{
+					html = html.slice(0, index) + html.slice(index + 1);
+				}
+			}
+		}
+		
+		
+		
+		return html;
 	}
 	
 	
