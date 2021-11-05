@@ -39,7 +39,7 @@
   color: #99cc99;
 }
 
-pre code {
+pre code.highlightable {
   font-size: 15px;
   display: block;
   overflow-x:auto;

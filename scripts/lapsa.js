@@ -75,7 +75,7 @@ class Lapsa
 					font-size: 1.5vw;
 				}
 				
-				.lapsa-slide p, .lapsa-slide blockquote, .lapsa-slide ol, .lapsa-slide ul, .lapsa-slide code
+				.lapsa-slide p, .lapsa-slide blockquote, .lapsa-slide ol, .lapsa-slide ul, .lapsa-slide pre
 				{
 					width: 90%;
 					text-align: justify;
@@ -101,6 +101,13 @@ class Lapsa
 					background-color: rgb(127, 127, 127);
 					
 					margin: 5px;
+				}
+				
+				.lapsa-slide pre code
+				{
+					tab-size: 4;
+					-moz-tab-size: 4;
+					-o-tab-size: 4;
 				}
 				
 				@media (min-aspect-ratio: 16/9)
@@ -174,6 +181,19 @@ class Lapsa
 			let num_indents = 0;
 			
 			[line, num_indents] = this.clean_line(line);
+			
+			if (line.length === 0 && num_indents === 0)
+			{
+				while (this.current_container.list_depth !== 0)
+				{
+					this.current_container = this.current_container.parent;
+				}
+				
+				while (this.current_container.quote_depth !== 0)
+				{
+					this.current_container = this.current_container.parent;
+				}
+			}
 			
 			
 			
@@ -348,7 +368,7 @@ class Lapsa
 			//Code blocks
 			if ((this.current_container.list_depth === 0 && num_indents > 0) || (this.current_container.list_depth > 0 && num_indents > this.current_container.list_depth))
 			{
-				this.add_text("code", line);
+				this.add_text("pre code", line);
 				
 				continue;
 			}
@@ -500,7 +520,7 @@ class Lapsa
 	
 	
 	
-	//tag_name: p, h1, h2, etc.
+	//tag_name: p, h1, h2, etc. There can be a space in the name (e.g. "pre code") to indicate nested tags.
 	add_text(tag_name, text)
 	{
 		//Unescape characters
@@ -514,11 +534,22 @@ class Lapsa
 		
 		
 		
-		let new_element = document.createElement(tag_name);
+		let tags = tag_name.split(" ");
+		
+		let new_element = null;
+		
+		let last_element = this.current_container.element;
+		
+		for (let i = 0; i < tags.length; i++)
+		{
+			new_element = document.createElement(tags[i]);
+			
+			last_element.appendChild(new_element);
+			
+			last_element = new_element;
+		}
 		
 		new_element.textContent = text;
-		
-		this.current_container.element.appendChild(new_element);
 		
 		
 		

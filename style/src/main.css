@@ -92,7 +92,7 @@ code
 	font-family: Menlo, Monaco, Consolas, monospace;
 }
 
-pre code
+pre code.highlightable
 {
 	position: relative;
 	width: calc(70vw - 24px);

@@ -4,6 +4,13 @@
 	
 	
 	
+	let elements = document.querySelectorAll("pre code");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].classList.add("highlightable");
+	}
+		
 	hljs.highlightAll();
 	
 	
