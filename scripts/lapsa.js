@@ -8,6 +8,8 @@ class Lapsa
 	
 	current_slide = -1;
 	
+	last_element = null;
+	
 	
 	
 	/*
@@ -173,6 +175,8 @@ class Lapsa
 		
 		this.current_container = {element: this.slides[0], parent: null, type: this.SLIDE, quote_depth: 0, list_depth: 0};
 		
+		let need_new_paragraph = true;
+		
 		
 		
 		for (let i = 0; i < num_lines; i++)
@@ -238,6 +242,8 @@ class Lapsa
 			
 			if (line.length === 0)
 			{
+				need_new_paragraph = true;
+				
 				continue;
 			}
 			
@@ -299,6 +305,8 @@ class Lapsa
 					let text = this.trim_leading_whitespace(line.slice(period_index + 1));
 					this.add_text("li", text);
 					
+					need_new_paragraph = true;
+					
 					continue;
 				}
 			}
@@ -348,6 +356,8 @@ class Lapsa
 				let text = this.trim_leading_whitespace(line.slice(1));
 				this.add_text("li", text);
 				
+				need_new_paragraph = true;
+				
 				continue;
 			}
 			
@@ -369,6 +379,8 @@ class Lapsa
 			if ((this.current_container.list_depth === 0 && num_indents > 0) || (this.current_container.list_depth > 0 && num_indents > this.current_container.list_depth))
 			{
 				this.add_text("pre code", line);
+				
+				need_new_paragraph = true;
 				
 				continue;
 			}
@@ -400,6 +412,8 @@ class Lapsa
 					{
 						this.add_hline();
 						
+						need_new_paragraph = true;
+						
 						continue;
 					}
 					
@@ -429,6 +443,8 @@ class Lapsa
 						this.add_image(line.slice(end_bracket_index + 2, space_index), line.slice(2, end_bracket_index), line.slice(space_index + 2, end_parenthesis_index - 1));
 					}
 					
+					need_new_paragraph = true;
+					
 					continue;
 				}
 			}
@@ -452,6 +468,8 @@ class Lapsa
 					{
 						this.add_image_link(line.slice(end_bracket_index + 2, space_index), line.slice(3, end_bracket_index), line.slice(end_parenthesis_index + 3, line.length - 1), line.slice(space_index + 2, end_parenthesis_index - 1));
 					}
+					
+					need_new_paragraph = true;
 					
 					continue;
 				}
@@ -496,8 +514,14 @@ class Lapsa
 			
 			else
 			{
-				this.add_text("p", line);
+				this.add_text("p", line, need_new_paragraph);
+				
+				need_new_paragraph = false;
+				
+				continue;
 			}
+			
+			need_new_paragraph = true;
 		}
 	}
 	
@@ -521,7 +545,7 @@ class Lapsa
 	
 	
 	//tag_name: p, h1, h2, etc. There can be a space in the name (e.g. "pre code") to indicate nested tags.
-	add_text(tag_name, text)
+	add_text(tag_name, text, need_new_paragraph = true)
 	{
 		let tags = tag_name.split(" ");
 		
@@ -542,10 +566,14 @@ class Lapsa
 		
 		
 		
+		
+		new_element.innerHTML = this.escape_characters(new_element.innerHTML);
+		
+		//Links
+		new_element.innerHTML = this.add_links(new_element.innerHTML);
+		
 		//Inline code
 		new_element.innerHTML = this.add_code(new_element.innerHTML);
-		
-		
 		
 		//Emphasis
 		new_element.innerHTML = this.add_emphasis(new_element.innerHTML, "*");
@@ -565,6 +593,175 @@ class Lapsa
 		}
 		
 		new_element.innerHTML = html;
+		
+		
+		
+		if (need_new_paragraph)
+		{
+			this.last_element = new_element;
+		}
+		
+		else
+		{
+			this.last_element.innerHTML = this.last_element.innerHTML + "<br>" + new_element.innerHTML;
+			
+			new_element.remove();
+		}
+	}
+	
+	
+	
+	escape_characters(html)
+	{
+		let index = 0;
+		
+		html += "  ";
+		
+		while (index < html.length - 2)
+		{
+			index = html.indexOf("``", index);
+			
+			if (index === -1)
+			{
+				break;
+			}
+			
+			
+			
+			//Until the next ``, escape all characters.
+			let end_index = html.indexOf("``", index + 2);
+			
+			if (end_index !== -1)
+			{
+				for (let i = 0; i < this.escape_tokens.length; i++)
+				{
+					let token = this.escape_tokens[i];
+					
+					let new_index = html.indexOf(token, index + 2);
+					
+					while (new_index !== -1 && new_index < end_index)
+					{
+						html = html.slice(0, new_index) + `\t${this.escape_indices[token]}` + html.slice(new_index + 1);
+						
+						end_index += 2;
+						
+						new_index = html.indexOf(token, index + 2);
+					}
+				}
+				
+				index = end_index + 2;
+			}
+			
+			else
+			{
+				break;
+			}
+		}
+		
+		
+		
+		index = 0;
+		
+		while (index < html.length - 1)
+		{
+			index = html.indexOf("`", index);
+			
+			if (index === -1)
+			{
+				break;
+			}
+			
+			
+			
+			//Until the next ``, escape all characters.
+			let end_index = html.indexOf("`", index + 1);
+			
+			if (end_index !== -1)
+			{
+				for (let i = 0; i < this.escape_tokens.length; i++)
+				{
+					let token = this.escape_tokens[i];
+					
+					let new_index = html.indexOf(token, index + 1);
+					
+					while (new_index !== -1 && new_index < end_index)
+					{
+						html = html.slice(0, new_index) + `\t${this.escape_indices[token]}` + html.slice(new_index + 1);
+						
+						end_index += 2;
+						
+						new_index = html.indexOf(token, index + 1);
+					}
+				}
+				
+				index = end_index + 1;
+			}
+			
+			else
+			{
+				break;
+			}
+		}
+		
+		
+		
+		return html;
+	}
+	
+	
+	
+	add_links(html)
+	{
+		let index = 0;
+		
+		html += "  ";
+		
+		while (index < html.length - 2)
+		{
+			index = html.indexOf("[");
+			
+			if (index === -1)
+			{
+				break;
+			}
+			
+			
+			
+			let end_index = html.indexOf("]", index + 1);
+			
+			if (end_index !== -1)
+			{
+				let text = html.slice(index + 1, end_index);
+				
+				if (html[end_index + 1] === "(")
+				{
+					let end_parenthesis_index = html.indexOf(")", end_index + 2);
+					
+					if (end_parenthesis_index !== -1)
+					{
+						let space_index = html.indexOf(" ", end_index + 2);
+						
+						if (space_index === -1 || space_index > end_parenthesis_index)
+						{
+							let src = html.slice(end_index + 2, end_parenthesis_index);
+							
+							html = html.slice(0, index) + `<a href="${src}">${text}</a>` + html.slice(end_parenthesis_index + 1);
+						}
+						
+						else
+						{
+							let src = html.slice(end_index + 2, space_index);
+							
+							let title = html.slice(space_index + 2, end_parenthesis_index - 1);
+							
+							html = html.slice(0, index) + `<a href="${src}" title="${title}">${text}</a>` + html.slice(end_parenthesis_index + 1);
+						}
+					}
+				}
+			}
+		}
+		
+		return html;
 	}
 	
 	
@@ -660,6 +857,10 @@ class Lapsa
 	
 	
 	
+	
+	
+	
+	
 	add_code(html)
 	{
 		let index = 0;
@@ -677,29 +878,10 @@ class Lapsa
 			
 			
 			
-			//Until the next ``, escape all characters.
 			let end_index = html.indexOf("``", index + 2);
 			
 			if (end_index !== -1)
 			{
-				for (let i = 0; i < this.escape_tokens.length; i++)
-				{
-					let token = this.escape_tokens[i];
-					
-					let new_index = html.indexOf(token, index + 2);
-					
-					while (new_index !== -1 && new_index < end_index)
-					{
-						html = html.slice(0, new_index) + `\t${this.escape_indices[token]}` + html.slice(new_index + 1);
-						
-						end_index += 2;
-						
-						new_index = html.indexOf(token, index + 2);
-					}
-				}
-				
-				
-				
 				html = html.slice(0, end_index) + "</code></pre>" + html.slice(end_index + 2);
 				
 				html = html.slice(0, index) + "<pre><code>" + html.slice(index + 2);
@@ -721,29 +903,10 @@ class Lapsa
 			
 			
 			
-			//Until the next ``, escape all characters.
 			let end_index = html.indexOf("`", index + 1);
 			
 			if (end_index !== -1)
 			{
-				for (let i = 0; i < this.escape_tokens.length; i++)
-				{
-					let token = this.escape_tokens[i];
-					
-					let new_index = html.indexOf(token, index + 1);
-					
-					while (new_index !== -1 && new_index < end_index)
-					{
-						html = html.slice(0, new_index) + `\t${this.escape_indices[token]}` + html.slice(new_index + 1);
-						
-						end_index += 2;
-						
-						new_index = html.indexOf(token, index + 1);
-					}
-				}
-				
-				
-				
 				html = html.slice(0, end_index) + "</code></pre>" + html.slice(end_index + 1);
 				
 				html = html.slice(0, index) + "<pre><code>" + html.slice(index + 1);
