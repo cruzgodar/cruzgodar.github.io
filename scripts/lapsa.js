@@ -569,15 +569,15 @@ class Lapsa
 		
 		new_element.innerHTML = this.escape_characters(new_element.innerHTML);
 		
-		//Links
-		new_element.innerHTML = this.add_links(new_element.innerHTML);
-		
 		//Inline code
 		new_element.innerHTML = this.add_code(new_element.innerHTML);
 		
 		//Emphasis
 		new_element.innerHTML = this.add_emphasis(new_element.innerHTML, "*");
 		new_element.innerHTML = this.add_emphasis(new_element.innerHTML, "_");
+		
+		//Links
+		new_element.innerHTML = this.add_links(new_element.innerHTML);
 		
 		
 		
@@ -613,93 +613,59 @@ class Lapsa
 	
 	escape_characters(html)
 	{
+		let start_delimiters = ["``", "`", "(", "&lt;"];
+		
+		let end_delimiters = ["``", "`", ")", "&gt;"];
+		
 		let index = 0;
 		
 		html += "  ";
 		
-		while (index < html.length - 2)
+		
+		
+		for (let j = 0; j < start_delimiters.length; j++)
 		{
-			index = html.indexOf("``", index);
+			index = 0;
 			
-			if (index === -1)
+			while (index < html.length - 2)
 			{
-				break;
-			}
-			
-			
-			
-			//Until the next ``, escape all characters.
-			let end_index = html.indexOf("``", index + 2);
-			
-			if (end_index !== -1)
-			{
-				for (let i = 0; i < this.escape_tokens.length; i++)
+				index = html.indexOf(start_delimiters[j], index);
+				
+				if (index === -1)
 				{
-					let token = this.escape_tokens[i];
-					
-					let new_index = html.indexOf(token, index + 2);
-					
-					while (new_index !== -1 && new_index < end_index)
-					{
-						html = html.slice(0, new_index) + `\t${this.escape_indices[token]}` + html.slice(new_index + 1);
-						
-						end_index += 2;
-						
-						new_index = html.indexOf(token, index + 2);
-					}
+					break;
 				}
 				
-				index = end_index + 2;
-			}
-			
-			else
-			{
-				break;
-			}
-		}
-		
-		
-		
-		index = 0;
-		
-		while (index < html.length - 1)
-		{
-			index = html.indexOf("`", index);
-			
-			if (index === -1)
-			{
-				break;
-			}
-			
-			
-			
-			//Until the next ``, escape all characters.
-			let end_index = html.indexOf("`", index + 1);
-			
-			if (end_index !== -1)
-			{
-				for (let i = 0; i < this.escape_tokens.length; i++)
+				
+				
+				//Until the next ``, escape all characters.
+				let end_index = html.indexOf(end_delimiters[j], index + start_delimiters[j].length);
+				
+				if (end_index !== -1)
 				{
-					let token = this.escape_tokens[i];
-					
-					let new_index = html.indexOf(token, index + 1);
-					
-					while (new_index !== -1 && new_index < end_index)
+					for (let i = 0; i < this.escape_tokens.length; i++)
 					{
-						html = html.slice(0, new_index) + `\t${this.escape_indices[token]}` + html.slice(new_index + 1);
+						let token = this.escape_tokens[i];
 						
-						end_index += 2;
+						let new_index = html.indexOf(token, index + start_delimiters[j].length);
 						
-						new_index = html.indexOf(token, index + 1);
+						while (new_index !== -1 && new_index < end_index)
+						{
+							html = html.slice(0, new_index) + `\t${this.escape_indices[token]}` + html.slice(new_index + 1);
+							
+							end_index += 2;
+							
+							new_index = html.indexOf(token, index + start_delimiters[j].length);
+						}
 					}
+					
+					index = end_index + start_delimiters[j].length;
 				}
 				
-				index = end_index + 1;
-			}
-			
-			else
-			{
-				break;
+				else
+				{
+					break;
+				}
 			}
 		}
 		
