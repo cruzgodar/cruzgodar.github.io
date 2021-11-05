@@ -710,12 +710,34 @@ class Lapsa
 	
 	
 	
+	escape_string(text)
+	{
+		for (let i = 0; i < this.escape_tokens.length; i++)
+		{
+			let token = this.escape_tokens[i];
+			
+			let index = text.indexOf(token);
+			
+			while (index !== -1)
+			{
+				text = text.slice(0, index) + `\t${this.escape_indices[token]}` + text.slice(index + 1);
+				
+				index = text.indexOf(token, index + 3);
+			}
+		}
+		
+		return text;
+	}
+	
+	
+	
 	add_links(html)
 	{
 		let index = 0;
 		
 		html += "  ";
 		
+		//[]() style
 		while (index < html.length - 2)
 		{
 			index = html.indexOf("[");
@@ -745,7 +767,7 @@ class Lapsa
 						{
 							let src = html.slice(end_index + 2, end_parenthesis_index);
 							
-							html = html.slice(0, index) + `<a href="${src}">${text}</a>` + html.slice(end_parenthesis_index + 1);
+							html = html.slice(0, index) + this.escape_string(`<a href="${src}">${text}</a>`) + html.slice(end_parenthesis_index + 1);
 						}
 						
 						else
@@ -754,12 +776,50 @@ class Lapsa
 							
 							let title = html.slice(space_index + 2, end_parenthesis_index - 1);
 							
-							html = html.slice(0, index) + `<a href="${src}" title="${title}">${text}</a>` + html.slice(end_parenthesis_index + 1);
+							html = html.slice(0, index) + this.escape_string(`<a href="${src}" title="${title}">${text}</a>`) + html.slice(end_parenthesis_index + 1);
 						}
 					}
 				}
 			}
+			
+			else
+			{
+				break;
+			}
 		}
+		
+		console.log(html);
+		
+		index = 0;
+		
+		//<> style
+		while (index < html.length - 2)
+		{
+			index = html.indexOf("&lt;");
+			
+			if (index === -1)
+			{
+				break;
+			}
+			
+			
+			
+			let end_index = html.indexOf("&gt;", index + 1);
+			
+			if (end_index !== -1)
+			{
+				let text = html.slice(index + 4, end_index);
+				
+				html = html.slice(0, index) + this.escape_string(`<a href="${text}">${text}</a>`) + html.slice(end_index + 4);
+			}
+			
+			else
+			{
+				break;
+			}
+		}
+		
+		
 		
 		return html;
 	}
@@ -795,7 +855,7 @@ class Lapsa
 				{
 					strong = true;
 					
-					html = html.slice(0, index) + "<strong>" + html.slice(index + 2);
+					html = html.slice(0, index) + this.escape_string("<strong>") + html.slice(index + 2);
 					
 					tag_stack.push(0);
 				}
@@ -804,7 +864,7 @@ class Lapsa
 				{
 					strong = false;
 					
-					html = html.slice(0, index) + "</strong>" + html.slice(index + 2);
+					html = html.slice(0, index) + this.escape_string("</strong>") + html.slice(index + 2);
 					
 					tag_stack.pop();
 				}
@@ -814,7 +874,7 @@ class Lapsa
 				{
 					em = false;
 					
-					html = html.slice(0, index) + "</em>" + html.slice(index + 1);
+					html = html.slice(0, index) + this.escape_string("</em>") + html.slice(index + 1);
 					
 					tag_stack.pop();
 				}
@@ -828,7 +888,7 @@ class Lapsa
 				{
 					em = true;
 					
-					html = html.slice(0, index) + "<em>" + html.slice(index + 1);
+					html = html.slice(0, index) + this.escape_string("<em>") + html.slice(index + 1);
 					
 					tag_stack.push(1);
 				}
@@ -837,7 +897,7 @@ class Lapsa
 				{
 					em = false;
 					
-					html = html.slice(0, index) + "</em>" + html.slice(index + 1);
+					html = html.slice(0, index) + this.escape_string("</em>") + html.slice(index + 1);
 					
 					tag_stack.pop();
 				}
@@ -882,9 +942,9 @@ class Lapsa
 			
 			if (end_index !== -1)
 			{
-				html = html.slice(0, end_index) + "</code></pre>" + html.slice(end_index + 2);
+				html = html.slice(0, end_index) + this.escape_string("</code></pre>") + html.slice(end_index + 2);
 				
-				html = html.slice(0, index) + "<pre><code>" + html.slice(index + 2);
+				html = html.slice(0, index) + this.escape_string("<pre><code>") + html.slice(index + 2);
 			}
 		}
 		
@@ -907,9 +967,9 @@ class Lapsa
 			
 			if (end_index !== -1)
 			{
-				html = html.slice(0, end_index) + "</code></pre>" + html.slice(end_index + 1);
+				html = html.slice(0, end_index) + this.escape_string("</code></pre>") + html.slice(end_index + 1);
 				
-				html = html.slice(0, index) + "<pre><code>" + html.slice(index + 1);
+				html = html.slice(0, index) + this.escape_string("<pre><code>") + html.slice(index + 1);
 			}
 		}
 		
