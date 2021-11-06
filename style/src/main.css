@@ -134,13 +134,11 @@ img
 #logo img.hover
 {
 	transform: scale(1.05);
-	filter: brightness(105%);
 }
 
 #logo img:not(:hover):focus
 {
 	transform: scale(1.05);
-	filter: brightness(105%);
 	outline: none;
 }
 
