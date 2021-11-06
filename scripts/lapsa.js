@@ -10,6 +10,8 @@ class Lapsa
 	
 	last_element = null;
 	
+	reference_links = {};
+	
 	
 	
 	/*
@@ -176,6 +178,92 @@ class Lapsa
 		this.current_container = {element: this.slides[0], parent: null, type: this.SLIDE, quote_depth: 0, list_depth: 0};
 		
 		let need_new_paragraph = true;
+		
+		
+		
+		
+		
+		//Find link references before anything else.
+		for (let i = 0; i < lines.length; i++)
+		{
+			let line = lines[i];
+			let num_indents = 0;
+			
+			[line, num_indents] = this.clean_line(line);
+			
+			if (line[0] === "[")
+			{
+				line += " ";
+				
+				let index = line.indexOf("]");
+				
+				if (index !== -1 && line[index + 1] === ":")
+				{
+					let var_name = line.slice(1, index);
+					
+					line = this.trim_leading_whitespace(line.slice(index + 2));
+					
+					let space_index = line.indexOf(" ");
+					
+					
+					
+					let url = null;
+					
+					if (line[0] === "&lt;")
+					{
+						let index_2 = line.indexOf("&gt;");
+						
+						if (index_2 !== -1)
+						{
+							url = line.slice(1, index_2);
+						}
+					}
+					
+					else
+					{
+						if (space_index !== -1)
+						{
+							url = line.slice(0, space_index);
+						}
+						
+						else
+						{
+							url = line;
+						}
+					}
+					
+					
+					
+					if (space_index === -1)
+					{
+						this.reference_links[var_name] = [url];
+					}
+					
+					else
+					{
+						let start_index = space_index + 1;
+						
+						while (line[start_index] === " ")
+						{
+							start_index++;
+						}
+						
+						let end_index = line.length - 1;
+						
+						while (line[end_index] === " ")
+						{
+							end_index--;
+						}
+						
+						let title = line.slice(start_index + 1, end_index);
+						
+						this.reference_links[var_name] = [url, title];
+					}
+				}
+			}
+		}
+		
+		
 		
 		
 		
@@ -754,7 +842,7 @@ class Lapsa
 			}
 		}
 		
-		console.log(html);
+		
 		
 		index = 0;
 		
