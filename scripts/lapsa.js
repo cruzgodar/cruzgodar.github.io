@@ -209,9 +209,9 @@ class Lapsa
 					
 					let url = null;
 					
-					if (line[0] === "&lt;")
+					if (line[0] === "<")
 					{
-						let index_2 = line.indexOf("&gt;");
+						let index_2 = line.indexOf(">");
 						
 						if (index_2 !== -1)
 						{
@@ -257,8 +257,22 @@ class Lapsa
 						
 						let title = line.slice(start_index + 1, end_index);
 						
-						this.reference_links[var_name] = [url, title];
+						
+						
+						if (title !== "")
+						{
+							this.reference_links[var_name] = [url, title];
+						}
+						
+						else
+						{
+							this.reference_links[var_name] = [url];
+						}
 					}
+					
+					
+					
+					lines[i] = "";
 				}
 			}
 		}
@@ -809,7 +823,7 @@ class Lapsa
 			{
 				let text = html.slice(index + 1, end_index);
 				
-				if (html[end_index + 1] === "(")
+				if (end_index < html.length - 1 && html[end_index + 1] === "(")
 				{
 					let end_parenthesis_index = html.indexOf(")", end_index + 2);
 					
@@ -833,6 +847,11 @@ class Lapsa
 							html = html.slice(0, index) + this.escape_string(`<a href="${src}" title="${title}">${text}</a>`) + html.slice(end_parenthesis_index + 1);
 						}
 					}
+				}
+				
+				else
+				{
+					break;
 				}
 			}
 			
@@ -865,6 +884,69 @@ class Lapsa
 				let text = html.slice(index + 4, end_index);
 				
 				html = html.slice(0, index) + this.escape_string(`<a href="${text}">${text}</a>`) + html.slice(end_index + 4);
+			}
+			
+			else
+			{
+				break;
+			}
+		}
+		
+		
+		
+		index = 0;
+		
+		//Reference style
+		while (index < html.length - 2)
+		{
+			index = html.indexOf("[");
+			
+			if (index === -1)
+			{
+				break;
+			}
+			
+			
+			
+			let end_index = html.indexOf("]", index + 1);
+			
+			if (end_index !== -1)
+			{
+				let text = html.slice(index + 1, end_index);
+				
+				if ((end_index < html.length - 1 && html[end_index + 1] === "[") || (end_index < html.length - 2 && html[end_index + 1] === " " && html[end_index + 2] ==="["))
+				{
+					let start_bracket_index = html.indexOf("[", end_index + 1);
+					
+					let end_bracket_index = html.indexOf("]", end_index + 2);
+					
+					if (end_bracket_index !== -1)
+					{
+						let var_name = html.slice(start_bracket_index + 1, end_bracket_index);
+						
+						if (this.reference_links[var_name] !== undefined)
+						{
+							let src = this.reference_links[var_name][0];
+							
+							if (this.reference_links[var_name].length >= 1)
+							{
+								let title = this.reference_links[var_name][1];
+								
+								html = html.slice(0, index) + this.escape_string(`<a href="${src}" title="${title}">${text}</a>`) + html.slice(end_bracket_index + 1);
+							}
+							
+							else
+							{
+								html = html.slice(0, index) + this.escape_string(`<a href="${src}">${text}</a>`) + html.slice(end_bracket_index + 1);
+							}
+						}
+					}
+				}
+				
+				else
+				{
+					break;
+				}
 			}
 			
 			else
