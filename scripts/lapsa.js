@@ -33,6 +33,7 @@ class Lapsa
 	BLOCKQUOTE = 1;
 	ORDERED_LIST = 2;
 	UNORDERED_LIST = 3;
+	TABLE = 4;
 	
 	escape_tokens = ["\\", "`", "*", "_", "{", "}", "[", "]", "<", ">", "(", ")", "#", "+", "-", ".", "!"];
 	escape_indices = {"\\": "00", "`": "01", "*": "02", "_": "03", "{": "04", "}": "05", "[": "06", "]": "07", "<": "08", ">": "09", "(": "10", ")": "11", "#": "12", "+": "13", "-": "14", ".": "15", "!": "16"};
@@ -114,6 +115,20 @@ class Lapsa
 					-o-tab-size: 4;
 				}
 				
+				.lapsa-slide table
+				{
+					border-collapse: collapse;
+					border: 1px solid rgb(127, 127, 127);
+					
+					text-align: center;
+				}
+				
+				.lapsa-slide td, th
+				{
+					padding: 5px;
+					border: 1px solid rgb(127, 127, 127);
+				}
+				
 				@media (min-aspect-ratio: 16/9)
 				{				
 					.lapsa-slide
@@ -169,7 +184,7 @@ class Lapsa
 		
 		let num_lines = lines.length;
 		
-		lines.push("");
+		lines.push(" ");
 		
 		this.create_slide();
 		
@@ -281,6 +296,7 @@ class Lapsa
 		
 		
 		
+		//Now search for block-level elements.
 		for (let i = 0; i < num_lines; i++)
 		{
 			let line = lines[i];
@@ -347,6 +363,33 @@ class Lapsa
 				need_new_paragraph = true;
 				
 				continue;
+			}
+			
+			
+			
+			
+			
+			//Tables
+			if (line[0] === "|")
+			{
+				if (this.current_container.type !== this.TABLE && lines[i + 1][0] === "|")
+				{
+					this.add_table(line, lines[i + 1]);
+					
+					i++;
+				}
+				
+				else
+				{
+					this.add_table_row(line);
+				}
+				
+				continue;
+			}
+			
+			else if (this.current_container.type === this.TABLE)
+			{
+				this.current_container = this.current_container.parent;
 			}
 			
 			
@@ -709,6 +752,10 @@ class Lapsa
 			
 			new_element.remove();
 		}
+		
+		
+		
+		return new_element;
 	}
 	
 	
@@ -1123,6 +1170,100 @@ class Lapsa
 		this.current_container.element.appendChild(new_element);
 		
 		this.current_container = {element: new_element, parent: this.current_container, type: this.BLOCKQUOTE, quote_depth: this.current_container.quote_depth + 1, list_depth: this.current_container.list_depth};
+	}
+	
+	
+	
+	add_table(header_line, divider_line)
+	{
+		let new_element = document.createElement("table");
+		
+		this.current_container.element.appendChild(new_element);
+		
+		this.current_container = {element: new_element, parent: this.current_container, type: this.TABLE, quote_depth: this.current_container.quote_depth, list_depth: this.current_container.list_depth};
+		
+		
+		
+		let text_aligns = [];
+		
+		let aligns = divider_line.split("|");
+		
+		for (let i = 1; i < aligns.length - 1; i++)
+		{
+			let index_1 = aligns[i].indexOf(":-");
+			let index_2 = aligns[i].indexOf("-:");
+			
+			if (index_1 === -1 && index_2 === -1)
+			{
+				text_aligns.push("justify");
+			}
+			
+			else if (index_1 !== -1 && index_2 === -1)
+			{
+				text_aligns.push("left");
+			}
+			
+			else if (index_1 !== -1 && index_2 !== -1)
+			{
+				text_aligns.push("center");
+			}
+			
+			else if (index_1 === -1 && index_2 !== -1)
+			{
+				text_aligns.push("right");
+			}
+		}
+		
+		this.current_container.table_text_aligns = text_aligns;
+		
+		
+		
+		new_element = document.createElement("tr");
+		
+		this.current_container.element.appendChild(new_element);
+		
+		this.current_container = {element: new_element, parent: this.current_container, type: this.TABLE, quote_depth: this.current_container.quote_depth, list_depth: this.current_container.list_depth};
+		
+		
+		
+		let headers = header_line.split("|");
+		
+		for (let i = 1; i < headers.length - 1; i++)
+		{
+			let element = this.add_text("th", headers[i]);
+			
+			element.style.textAlign = this.current_container.parent.table_text_aligns[i - 1];
+		}
+		
+		
+		
+		this.current_container = this.current_container.parent;
+	}
+	
+	
+	
+	add_table_row(line)
+	{
+		let new_element = document.createElement("tr");
+		
+		this.current_container.element.appendChild(new_element);
+		
+		this.current_container = {element: new_element, parent: this.current_container, type: this.TABLE, quote_depth: this.current_container.quote_depth, list_depth: this.current_container.list_depth};
+		
+		
+		
+		let texts = line.split("|");
+		
+		for (let i = 1; i < texts.length - 1; i++)
+		{
+			let element = this.add_text("td", texts[i]);
+			
+			element.style.textAlign = this.current_container.parent.table_text_aligns[i - 1];
+		}
+		
+		
+		
+		this.current_container = this.current_container.parent;
 	}
 	
 	
