@@ -34,6 +34,7 @@ class Lapsa
 	ORDERED_LIST = 2;
 	UNORDERED_LIST = 3;
 	TABLE = 4;
+	CODE_BLOCK = 5;
 	
 	escape_tokens = ["\\", "`", "*", "_", "{", "}", "[", "]", "<", ">", "(", ")", "#", "+", "-", ".", "!"];
 	escape_indices = {"\\": "00", "`": "01", "*": "02", "_": "03", "{": "04", "}": "05", "[": "06", "]": "07", "<": "08", ">": "09", "(": "10", ")": "11", "#": "12", "+": "13", "-": "14", ".": "15", "!": "16"};
@@ -113,6 +114,14 @@ class Lapsa
 					tab-size: 4;
 					-moz-tab-size: 4;
 					-o-tab-size: 4;
+				}
+				
+				.lapsa-slide .lapsa-codeblock
+				{
+					background: rgb(32, 32, 32);
+					color: rgb(224, 224, 224);
+					
+					padding: 5px;
 				}
 				
 				.lapsa-slide table
@@ -299,6 +308,18 @@ class Lapsa
 		//Now search for block-level elements.
 		for (let i = 0; i < num_lines; i++)
 		{
+			if (this.current_container.type === this.CODE_BLOCK && !(lines[i].length >= 3 && lines[i].slice(0, 3) === "```"))
+			{
+				console.log(lines[i]);
+				//Directly add text with no modifications.
+				
+				this.add_code_block_line(lines[i]);
+				
+				continue;
+			}
+			
+			
+			
 			let line = lines[i];
 			let num_indents = 0;
 			
@@ -361,6 +382,29 @@ class Lapsa
 			if (line.length === 0)
 			{
 				need_new_paragraph = true;
+				
+				continue;
+			}
+			
+			
+			
+			
+			
+			//Code blocks
+			if (line.length >= 3 && line.slice(0, 3) === "```")
+			{
+				if (this.current_container.type !== this.CODE_BLOCK)
+				{
+					this.add_code_block(line.slice(3));
+				}
+				
+				else
+				{
+					//Remove the first newline.
+					this.current_container.element.textContent = this.current_container.element.textContent.slice(1);
+					
+					this.current_container = this.current_container.parent;
+				}
 				
 				continue;
 			}
@@ -1170,6 +1214,28 @@ class Lapsa
 		this.current_container.element.appendChild(new_element);
 		
 		this.current_container = {element: new_element, parent: this.current_container, type: this.BLOCKQUOTE, quote_depth: this.current_container.quote_depth + 1, list_depth: this.current_container.list_depth};
+	}
+	
+	
+	
+	add_code_block(language)
+	{
+		let new_element = document.createElement("pre");
+		
+		new_element.classList.add("lapsa-codeblock");
+		
+		this.current_container.element.appendChild(new_element);
+		
+		let new_element_2 = document.createElement("code");
+		
+		new_element.appendChild(new_element_2);
+		
+		this.current_container = {element: new_element_2, parent: this.current_container, type: this.CODE_BLOCK, quote_depth: this.current_container.quote_depth, list_depth: this.current_container.list_depth};
+	}
+	
+	add_code_block_line(text)
+	{
+		this.current_container.element.textContent = this.current_container.element.textContent + "\n" + text;
 	}
 	
 	
