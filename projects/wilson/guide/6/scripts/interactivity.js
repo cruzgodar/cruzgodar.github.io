@@ -462,6 +462,9 @@
 		let resolution = 1000;
 		let resolution_hidden = 100;
 		
+		let fixed_point_x = 0;
+		let fixed_point_y = 0;
+		
 		let last_timestamp = -1;
 		
 		
@@ -521,6 +524,9 @@
 		
 		function on_wheel_canvas(x, y, scroll_amount, event)
 		{
+			fixed_point_x = x;
+			fixed_point_y = y;
+			
 			zoom_level += scroll_amount / 100;
 			
 			zoom_level = Math.min(zoom_level, 1);
@@ -544,12 +550,15 @@
 			
 			zoom_level = Math.min(zoom_level, 1);
 			
-			zoom_canvas(x, y);
+			fixed_point_x = x;
+			fixed_point_y = y;
+			
+			zoom_canvas();
 		}
 		
 		
 		
-		function zoom_canvas(fixed_point_x, fixed_point_y)
+		function zoom_canvas()
 		{
 			if (aspect_ratio >= 1)
 			{
