@@ -14,6 +14,10 @@ class Lapsa
 	
 	footnote_elements = {};
 	
+	current_line = 1;
+	
+	footnotes_seen = [];
+	
 	
 	
 	/*
@@ -213,6 +217,10 @@ class Lapsa
 		//Find link references and footnotes before anything else.
 		for (let i = 0; i < lines.length; i++)
 		{
+			this.current_line = i + 1;
+			
+			
+			
 			let line = lines[i];
 			let num_indents = 0;
 			
@@ -318,7 +326,7 @@ class Lapsa
 						
 						if (var_name.indexOf(" ") !== -1)
 						{
-							this.handle_error(`Footnote ID on line ${i} contains spaces -- use underscores instead`);
+							this.handle_error("Footnote ID contains spaces -- use underscores instead");
 						}
 						
 						let new_element = document.createElement("div");
@@ -327,7 +335,8 @@ class Lapsa
 						
 						this.current_container = {element: new_element, parent: this.current_container, type: this.FOOTNOTE, quote_depth: 0, list_depth: 0};
 						
-						this.footnote_elements[var_name] = {element: new_element, index: Object.keys(this.footnote_elements).length + 1};
+						//The second element will be the link to the footnote.
+						this.footnote_elements[var_name] = [new_element];
 						
 						this.add_text("p", line);
 						
@@ -339,6 +348,8 @@ class Lapsa
 						
 						while (i < lines.length)
 						{
+							this.current_line = i + 1;
+							
 							let line = lines[i];
 							let num_indents = 0;
 							
@@ -374,9 +385,12 @@ class Lapsa
 		//Now search for block-level elements.
 		for (let i = 0; i < num_lines; i++)
 		{
+			this.current_line = i + 1;
+			
+			
+			
 			if (this.current_container.type === this.CODE_BLOCK && !(lines[i].length >= 3 && lines[i].slice(0, 3) === "```"))
 			{
-				console.log(lines[i]);
 				//Directly add text with no modifications.
 				
 				this.add_code_block_line(lines[i]);
@@ -1020,6 +1034,8 @@ class Lapsa
 		
 		
 		
+		
+		
 		index = 0;
 		
 		//<> style
@@ -1051,6 +1067,8 @@ class Lapsa
 		
 		
 		
+		
+		
 		index = 0;
 		
 		//Reference style
@@ -1065,44 +1083,71 @@ class Lapsa
 			
 			
 			
+			//Reference links
 			let end_index = html.indexOf("]", index + 1);
 			
 			if (end_index !== -1)
 			{
-				let text = html.slice(index + 1, end_index);
-				
-				if ((end_index < html.length - 1 && html[end_index + 1] === "[") || (end_index < html.length - 2 && html[end_index + 1] === " " && html[end_index + 2] ==="["))
+				if (html[index + 1] !== "^")
 				{
-					let start_bracket_index = html.indexOf("[", end_index + 1);
+					let text = html.slice(index + 1, end_index);
 					
-					let end_bracket_index = html.indexOf("]", end_index + 2);
-					
-					if (end_bracket_index !== -1)
+					if ((end_index < html.length - 1 && html[end_index + 1] === "[") || (end_index < html.length - 2 && html[end_index + 1] === " " && html[end_index + 2] ==="["))
 					{
-						let var_name = html.slice(start_bracket_index + 1, end_bracket_index);
+						let start_bracket_index = html.indexOf("[", end_index + 1);
 						
-						if (this.reference_links[var_name] !== undefined)
+						let end_bracket_index = html.indexOf("]", end_index + 2);
+						
+						if (end_bracket_index !== -1)
 						{
-							let src = this.reference_links[var_name][0];
+							let var_name = html.slice(start_bracket_index + 1, end_bracket_index);
 							
-							if (this.reference_links[var_name].length >= 1)
+							if (this.reference_links[var_name] !== undefined)
 							{
-								let title = this.reference_links[var_name][1];
+								let src = this.reference_links[var_name][0];
 								
-								html = html.slice(0, index) + this.escape_string(`<a href="${src}" title="${title}">${text}</a>`) + html.slice(end_bracket_index + 1);
-							}
-							
-							else
-							{
-								html = html.slice(0, index) + this.escape_string(`<a href="${src}">${text}</a>`) + html.slice(end_bracket_index + 1);
+								if (this.reference_links[var_name].length >= 1)
+								{
+									let title = this.reference_links[var_name][1];
+									
+									html = html.slice(0, index) + this.escape_string(`<a href="${src}" title="${title}">${text}</a>`) + html.slice(end_bracket_index + 1);
+								}
+								
+								else
+								{
+									html = html.slice(0, index) + this.escape_string(`<a href="${src}">${text}</a>`) + html.slice(end_bracket_index + 1);
+								}
 							}
 						}
 					}
+					
+					else
+					{
+						break;
+					}
 				}
 				
+				
+				
+				
+				//Footnotes
 				else
 				{
-					break;
+					
+					let var_name = html.slice(index + 2, end_index);
+					
+					if (this.footnote_elements[var_name] === undefined)
+					{
+						this.handle_error("Unknown footnote");
+					}
+					
+					else
+					{
+						this.footnotes_seen.push(var_name);
+						
+						html = html.slice(0, index) + this.escape_string(`<a id="footnote-link-${var_name}" href="#footnote-${var_name}"><sup>${this.footnotes_seen.length}</sup></a>`) + html.slice(end_index + 1);
+						this.footnote_elements[var_name].push(this.footnotes_seen.length);
+					}
 				}
 			}
 			
@@ -1525,6 +1570,6 @@ class Lapsa
 	
 	handle_error(message)
 	{
-		console.error(message);
+		console.error(`Line ${this.current_line}: ${message}`);
 	}
 };
