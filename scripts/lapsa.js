@@ -12,6 +12,8 @@ class Lapsa
 	
 	reference_links = {};
 	
+	footnote_elements = {};
+	
 	
 	
 	/*
@@ -35,6 +37,7 @@ class Lapsa
 	UNORDERED_LIST = 3;
 	TABLE = 4;
 	CODE_BLOCK = 5;
+	FOOTNOTE = 6;
 	
 	escape_tokens = ["\\", "`", "*", "_", "{", "}", "[", "]", "<", ">", "(", ")", "#", "+", "-", ".", "!"];
 	escape_indices = {"\\": "00", "`": "01", "*": "02", "_": "03", "{": "04", "}": "05", "[": "06", "]": "07", "<": "08", ">": "09", "(": "10", ")": "11", "#": "12", "+": "13", "-": "14", ".": "15", "!": "16"};
@@ -207,7 +210,7 @@ class Lapsa
 		
 		
 		
-		//Find link references before anything else.
+		//Find link references and footnotes before anything else.
 		for (let i = 0; i < lines.length; i++)
 		{
 			let line = lines[i];
@@ -223,80 +226,143 @@ class Lapsa
 				
 				if (index !== -1 && line[index + 1] === ":")
 				{
-					let var_name = line.slice(1, index);
-					
-					line = this.trim_leading_whitespace(line.slice(index + 2));
-					
-					let space_index = line.indexOf(" ");
-					
-					
-					
-					let url = null;
-					
-					if (line[0] === "<")
+					//Link reference
+					if (line[1] !== "^")
 					{
-						let index_2 = line.indexOf(">");
+						let var_name = line.slice(1, index);
 						
-						if (index_2 !== -1)
+						line = this.trim_leading_whitespace(line.slice(index + 2));
+						
+						let space_index = line.indexOf(" ");
+						
+						
+						
+						let url = null;
+						
+						if (line[0] === "<")
 						{
-							url = line.slice(1, index_2);
-						}
-					}
-					
-					else
-					{
-						if (space_index !== -1)
-						{
-							url = line.slice(0, space_index);
+							let index_2 = line.indexOf(">");
+							
+							if (index_2 !== -1)
+							{
+								url = line.slice(1, index_2);
+							}
 						}
 						
 						else
 						{
-							url = line;
-						}
-					}
-					
-					
-					
-					if (space_index === -1)
-					{
-						this.reference_links[var_name] = [url];
-					}
-					
-					else
-					{
-						let start_index = space_index + 1;
-						
-						while (line[start_index] === " ")
-						{
-							start_index++;
+							if (space_index !== -1)
+							{
+								url = line.slice(0, space_index);
+							}
+							
+							else
+							{
+								url = line;
+							}
 						}
 						
-						let end_index = line.length - 1;
-						
-						while (line[end_index] === " ")
-						{
-							end_index--;
-						}
-						
-						let title = line.slice(start_index + 1, end_index);
 						
 						
-						
-						if (title !== "")
-						{
-							this.reference_links[var_name] = [url, title];
-						}
-						
-						else
+						if (space_index === -1)
 						{
 							this.reference_links[var_name] = [url];
 						}
+						
+						else
+						{
+							let start_index = space_index + 1;
+							
+							while (line[start_index] === " ")
+							{
+								start_index++;
+							}
+							
+							let end_index = line.length - 1;
+							
+							while (line[end_index] === " ")
+							{
+								end_index--;
+							}
+							
+							let title = line.slice(start_index + 1, end_index);
+							
+							
+							
+							if (title !== "")
+							{
+								this.reference_links[var_name] = [url, title];
+							}
+							
+							else
+							{
+								this.reference_links[var_name] = [url];
+							}
+						}
+						
+						
+						
+						lines[i] = "";
 					}
 					
 					
 					
-					lines[i] = "";
+					
+					
+					//Footnote
+					else
+					{
+						let var_name = line.slice(2, index);
+						
+						line = this.trim_leading_whitespace(line.slice(index + 2));
+						
+						if (var_name.indexOf(" ") !== -1)
+						{
+							this.handle_error(`Footnote ID on line ${i} contains spaces -- use underscores instead`);
+						}
+						
+						let new_element = document.createElement("div");
+						
+						new_element.id = `lapsa-footnote-${var_name}`;
+						
+						this.current_container = {element: new_element, parent: this.current_container, type: this.FOOTNOTE, quote_depth: 0, list_depth: 0};
+						
+						this.footnote_elements[var_name] = {element: new_element, index: Object.keys(this.footnote_elements).length + 1};
+						
+						this.add_text("p", line);
+						
+						lines[i] = "";
+						
+						i++;
+						
+						
+						
+						while (i < lines.length)
+						{
+							let line = lines[i];
+							let num_indents = 0;
+							
+							[line, num_indents] = this.clean_line(line);
+							
+							if (num_indents >= 1)
+							{
+								this.add_text(line);
+								
+								lines[i] = "";
+							}
+							
+							else
+							{
+								i--;
+								
+								break;
+							}
+							
+							i++;
+						}
+						
+						this.current_container = this.current_container.parent;
+					}
 				}
 			}
 		}
@@ -1453,5 +1519,12 @@ class Lapsa
 		}
 		
 		return text.slice(start_index);
+	}
+	
+	
+	
+	handle_error(message)
+	{
+		console.error(message);
 	}
 };
