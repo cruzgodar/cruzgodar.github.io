@@ -825,6 +825,8 @@ class Lapsa
 		new_element.innerHTML = this.add_emphasis(new_element.innerHTML, "*");
 		new_element.innerHTML = this.add_emphasis(new_element.innerHTML, "_");
 		
+		new_element.innerHTML = this.add_strikethrough(new_element.innerHTML);
+		
 		//Links
 		new_element.innerHTML = this.add_links(new_element.innerHTML);
 		
@@ -1224,6 +1226,47 @@ class Lapsa
 				{
 					html = html.slice(0, index) + html.slice(index + 1);
 				}
+			}
+		}
+		
+		
+		
+		return html;
+	}
+	
+	
+	
+	add_strikethrough(html)
+	{
+		let index = 0;
+		
+		let strikethrough = false;
+		
+		html += "  ";
+		
+		while (index < html.length - 2)
+		{
+			index = html.indexOf("~~");
+			
+			if (index === -1)
+			{
+				break;
+			}
+			
+			
+			
+			if (!strikethrough)
+			{
+				strikethrough = true;
+				
+				html = html.slice(0, index) + this.escape_string("<s>") + html.slice(index + 2);
+			}
+			
+			else
+			{
+				strikethrough = false;
+				
+				html = html.slice(0, index) + this.escape_string("</s>") + html.slice(index + 2);
 			}
 		}
 		
