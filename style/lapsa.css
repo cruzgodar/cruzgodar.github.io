@@ -1,0 +1,69 @@
+.lapsa-page
+{
+	width: 90%;
+	text-align: justify;
+	margin: 0 auto;
+	
+	background-color: rgb(255, 255, 255);
+}
+
+.lapsa-page > *:first-child
+{
+	margin-top: 5vh;
+}
+
+.lapsa-page h1, h2, h3, h4, h5, h6
+{
+	text-align: center;
+}
+
+.lapsa-page blockquote
+{
+	width: calc(90% - 12px);
+	
+	border-width: 0 0 0 4px;
+	border-color: rgb(64, 64, 64);
+	border-style: solid;
+	padding: 5px 0 5px 10px;
+	
+	background-color: rgba(127, 127, 127, .1);
+}
+
+.lapsa-page .lapsa-hline
+{
+	width: 95%;
+	height: 1px;
+	
+	background-color: rgb(127, 127, 127);
+	
+	margin: 5px;
+}
+
+.lapsa-page pre code
+{
+	tab-size: 4;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+}
+
+.lapsa-page .lapsa-codeblock
+{
+	background: rgb(48, 48, 48);
+	color: rgb(208, 208, 208);
+	
+	padding: 5px;
+}
+
+.lapsa-page table
+{
+	border-collapse: collapse;
+	border: 1px solid rgb(127, 127, 127);
+	
+	text-align: center;
+}
+
+.lapsa-page td, th
+{
+	padding: 5px;
+	border: 1px solid rgb(127, 127, 127);
+}

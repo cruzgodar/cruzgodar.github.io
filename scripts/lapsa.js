@@ -1,13 +1,5 @@
 class Lapsa
 {
-	target_element = null;
-	
-	
-	
-	slides = [];
-	
-	current_slide = -1;
-	
 	last_element = null;
 	
 	reference_links = {};
@@ -17,6 +9,8 @@ class Lapsa
 	current_line = 1;
 	
 	footnotes_seen = [];
+	
+	DEBUG = false;
 	
 	
 	
@@ -35,7 +29,7 @@ class Lapsa
 		}
 	*/
 	
-	SLIDE = 0;
+	PAGE = 0;
 	BLOCKQUOTE = 1;
 	ORDERED_LIST = 2;
 	UNORDERED_LIST = 3;
@@ -50,111 +44,23 @@ class Lapsa
 	
 	constructor(source, options)
 	{
-		if (document.querySelectorAll("#lapsa-style").length === 0)
-		{
-			let element = document.createElement("style");
-			
-			element.textContent = `
-				.lapsa-slide
-				{
-					width: 90%;
-					text-align: justify;
-					margin: 0 auto;
-					
-					background-color: rgb(255, 255, 255);
-				}
-				
-				.lapsa-slide > *:first-child
-				{
-					margin-top: 5vh;
-				}
-				
-				.lapsa-slide h1, h2, h3, h4, h5, h6
-				{
-					text-align: center;
-				}
-				
-				.lapsa-slide blockquote
-				{
-					width: calc(90% - 12px);
-					
-					border-width: 0 0 0 4px;
-					border-color: rgb(64, 64, 64);
-					border-style: solid;
-					padding: 5px 0 5px 10px;
-					
-					background-color: rgba(127, 127, 127, .1);
-				}
-				
-				.lapsa-slide .lapsa-hline
-				{
-					width: 95%;
-					height: 1px;
-					
-					background-color: rgb(127, 127, 127);
-					
-					margin: 5px;
-				}
-				
-				.lapsa-slide pre code
-				{
-					tab-size: 4;
-					-moz-tab-size: 4;
-					-o-tab-size: 4;
-				}
-				
-				.lapsa-slide .lapsa-codeblock
-				{
-					background: rgb(32, 32, 32);
-					color: rgb(224, 224, 224);
-					
-					padding: 5px;
-				}
-				
-				.lapsa-slide table
-				{
-					border-collapse: collapse;
-					border: 1px solid rgb(127, 127, 127);
-					
-					text-align: center;
-				}
-				
-				.lapsa-slide td, th
-				{
-					padding: 5px;
-					border: 1px solid rgb(127, 127, 127);
-				}
-				
-				@media (min-aspect-ratio: 16/9)
-				{				
-					.lapsa-slide
-					{
-						width: calc(100vh * 16 / 9);
-						height: 100vh;
-						
-						font-size: 1.5vh;
-					}
-				}
-			`;
-			
-			element.id = "lapsa-style";
-			
-			document.head.appendChild(element);
-		}
-		
-		
-		
 		let lines = source.replace(/\r/g, "").split("\n");
 		
 		let num_lines = lines.length;
 		
 		lines.push(" ");
 		
-		this.create_slide();
+		
+		
+		let page = document.createElement("div");
+		
+		page.classList.add("lapsa-page");
+		
+		document.body.appendChild(page);
 		
 		
 		
-		this.current_container = {element: this.slides[0], parent: null, type: this.SLIDE, quote_depth: 0, list_depth: 0};
+		this.current_container = {element: page, parent: null, type: this.PAGE, quote_depth: 0, list_depth: 0};
 		
 		let need_new_paragraph = true;
 		
@@ -746,7 +652,7 @@ class Lapsa
 		
 		
 		//Get back to the page scope.
-		while (this.current_container.type !== this.SLIDE)
+		while (this.current_container.type !== this.PAGE)
 		{
 			this.current_container = this.current_container.parent;
 		}
@@ -772,23 +678,6 @@ class Lapsa
 			
 			element.firstChild.innerHTML = `<sup>${index}</sup> ${element.firstChild.innerHTML} <a id="footnote-${var_name}" href="#footnote-link-${var_name}">↩︎</a>`;
 		}
-	}
-	
-	
-	
-	create_slide()
-	{
-		let slide = document.createElement("div")
-		
-		slide.classList.add("lapsa-slide");
-		
-		document.body.appendChild(slide);
-		
-		
-		
-		this.slides.push(slide);
-		
-		this.current_slide++;
 	}
 	
 	
