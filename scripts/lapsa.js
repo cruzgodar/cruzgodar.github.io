@@ -811,7 +811,7 @@ class Lapsa
 			last_element = new_element;
 		}
 		
-		new_element.textContent = text;
+		new_element.textContent = this.handle_id_and_classes(text, new_element);
 		
 		
 		
@@ -1230,6 +1230,79 @@ class Lapsa
 		
 		
 		return html;
+	}
+	
+	
+	
+	handle_id_and_classes(text, element)
+	{
+		let index = text.length - 1;
+		
+		while (index >= 0 && text[index] === " ")
+		{
+			index--;
+		}
+		
+		if (index < 0)
+		{
+			return text;
+		}
+		
+		if (text[index] === "}")
+		{
+			let start_index = text.lastIndexOf("{");
+			
+			if (start_index !== -1 && start_index < index - 1)
+			{
+				let tags = text.slice(start_index + 1, index).split(" ");
+				
+				let found_id = false;
+				
+				for (let i = 0; i < tags.length; i++)
+				{
+					let tag = tags[i];
+					
+					if (tag.length === 0)
+					{
+						continue;
+					}
+					
+					if (tag[0] === "#")
+					{
+						if (found_id)
+						{
+							this.handle_error("A line can have at most one ID");
+							
+							return text;
+						}
+						
+						found_id = true;
+						
+						element.id = tag.slice(1);
+					}
+					
+					else if (tag[0] === ".")
+					{
+						element.classList.add(tag.slice(1));
+					}
+					
+					else
+					{
+						this.handle_error("ID and class tags must start with either . or # and cannot contain spaces");
+						
+						return text;
+					}
+				}
+				
+				
+				
+				return text.slice(0, start_index);
+			}
+		}
+		
+		
+		
+		return text;
 	}
 	
 	
