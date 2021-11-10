@@ -188,6 +188,15 @@ let Site =
 		//Fade in the opacity when the user presses the back button.
 		window.addEventListener("popstate", (e) =>
 		{
+			//Ew
+			if (window.location.href.indexOf("#") !== -1)
+			{
+				return;
+			}
+			
+			
+			
+			
 			let index = Site.last_pages.length - 1;
 			
 			if (index !== -1 && Site.last_pages[index] !== Page.url)

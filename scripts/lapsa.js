@@ -55,43 +55,23 @@ class Lapsa
 			let element = document.createElement("style");
 			
 			element.textContent = `
-				.lapsa-container
-				{
-					position: fixed;
-					width: 100vw;
-					height: 100vh;
-					
-					display: flex;
-					
-					justify-content: center;
-					align-items: center;
-					
-					background-color: rgb(0, 0, 0);
-					
-					z-index: 1000000;
-				}
-				
 				.lapsa-slide
-				{
-					width: 100vw;
-					height: calc(100vw * 9 / 16);
-					
-					display: flex;
-					
-					flex-direction: column;
-					
-					justify-content: center;
-					align-items: center;
-					
-					background-color: rgb(255, 255, 255);
-					
-					font-size: 1.5vw;
-				}
-				
-				.lapsa-slide p, .lapsa-slide blockquote, .lapsa-slide ol, .lapsa-slide ul, .lapsa-slide pre
 				{
 					width: 90%;
 					text-align: justify;
+					margin: 0 auto;
+					
+					background-color: rgb(255, 255, 255);
+				}
+				
+				.lapsa-slide > *:first-child
+				{
+					margin-top: 5vh;
+				}
+				
+				.lapsa-slide h1, h2, h3, h4, h5, h6
+				{
+					text-align: center;
 				}
 				
 				.lapsa-slide blockquote
@@ -161,38 +141,6 @@ class Lapsa
 			
 			document.head.appendChild(element);
 		}
-		
-		
-		
-		if (document.querySelectorAll("#lapsa-body-freeze").length === 0)
-		{
-			let element = document.createElement("style");
-			
-			element.textContent = `
-				body
-				{
-					width: 100%;
-					height: 100%;
-				}
-			`;
-			
-			element.id = "lapsa-body-freeze";
-			
-			document.head.appendChild(element);
-			
-			
-			
-			document.documentElement.style.overflowY = "hidden";
-			document.body.style.overflowY = "hidden";
-		}
-		
-		
-		
-		this.container = document.createElement("div")
-		
-		this.container.classList.add("lapsa-container");
-		
-		document.body.appendChild(this.container);
 		
 		
 		
@@ -335,7 +283,7 @@ class Lapsa
 						
 						this.current_container = {element: new_element, parent: this.current_container, type: this.FOOTNOTE, quote_depth: 0, list_depth: 0};
 						
-						//The second element will be the link to the footnote.
+						//The second element will be the index.
 						this.footnote_elements[var_name] = [new_element];
 						
 						this.add_text("p", line);
@@ -792,6 +740,38 @@ class Lapsa
 			
 			need_new_paragraph = true;
 		}
+		
+		
+		
+		
+		
+		//Get back to the page scope.
+		while (this.current_container.type !== this.SLIDE)
+		{
+			this.current_container = this.current_container.parent;
+		}
+		
+		
+		
+		
+		
+		//Add footnotes.
+		for (let i = 0; i < this.footnotes_seen.length; i++)
+		{
+			let var_name = this.footnotes_seen[i];
+			
+			
+			
+			let element = this.footnote_elements[var_name][0];
+			
+			let index = this.footnote_elements[var_name][1];
+			
+			
+			
+			this.current_container.element.appendChild(element);
+			
+			element.firstChild.innerHTML = `<sup>${index}</sup> ${element.firstChild.innerHTML} <a id="footnote-${var_name}" href="#footnote-link-${var_name}">↩︎</a>`;
+		}
 	}
 	
 	
@@ -802,7 +782,7 @@ class Lapsa
 		
 		slide.classList.add("lapsa-slide");
 		
-		this.container.appendChild(slide);
+		document.body.appendChild(slide);
 		
 		
 		
@@ -1133,7 +1113,6 @@ class Lapsa
 				//Footnotes
 				else
 				{
-					
 					let var_name = html.slice(index + 2, end_index);
 					
 					if (this.footnote_elements[var_name] === undefined)
