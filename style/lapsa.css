@@ -67,3 +67,25 @@
 	padding: 5px;
 	border: 1px solid rgb(127, 127, 127);
 }
+
+.lapsa-warning
+{
+	padding: 4px;
+	
+	border-radius: 4px;
+	
+	background-color: rgba(192, 192, 0, .3);
+	
+	font-family: monospace;
+}
+
+.lapsa-error
+{
+	padding: 4px;
+	
+	border-radius: 4px;
+	
+	background-color: rgba(255, 0, 0, .3);
+	
+	font-family: monospace;
+}

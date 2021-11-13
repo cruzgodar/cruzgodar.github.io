@@ -37,13 +37,20 @@ class Lapsa
 	CODE_BLOCK = 5;
 	FOOTNOTE = 6;
 	
-	escape_tokens = ["\\", "`", "*", "_", "{", "}", "[", "]", "<", ">", "(", ")", "#", "+", "-", ".", "!"];
-	escape_indices = {"\\": "00", "`": "01", "*": "02", "_": "03", "{": "04", "}": "05", "[": "06", "]": "07", "<": "08", ">": "09", "(": "10", ")": "11", "#": "12", "+": "13", "-": "14", ".": "15", "!": "16"};
+	escape_tokens = ["\\", "`", "*", "_", "{", "}", "[", "]", "<", ">", "(", ")", "#", "+", "-", ".", "!", "|"];
+	escape_indices = {"\\": "00", "`": "01", "*": "02", "_": "03", "{": "04", "}": "05", "[": "06", "]": "07", "<": "08", ">": "09", "(": "10", ")": "11", "#": "12", "+": "13", "-": "14", ".": "15", "!": "16", "|": "17"};
 	
 	
 	
-	constructor(source, options)
+	constructor(source, options = {})
 	{
+		if (options.debug)
+		{
+			this.DEBUG = true;
+		}
+		
+		
+		
 		let lines = source.replace(/\r/g, "").split("\n");
 		
 		let num_lines = lines.length;
@@ -95,6 +102,11 @@ class Lapsa
 						
 						line = this.trim_leading_whitespace(line.slice(index + 2));
 						
+						if (line.length === 0)
+						{
+							this.handle_error(`Link reference on line ${this.current_line} contains no url`, false);
+						}
+						
 						let space_index = line.indexOf(" ");
 						
 						
@@ -108,6 +120,11 @@ class Lapsa
 							if (index_2 !== -1)
 							{
 								url = line.slice(1, index_2);
+							}
+							
+							else
+							{
+								this.handle_error(`Link reference on line ${this.current_line} is missing end caret`, false);
 							}
 						}
 						
@@ -180,7 +197,7 @@ class Lapsa
 						
 						if (var_name.indexOf(" ") !== -1)
 						{
-							this.handle_error("Footnote ID contains spaces -- use underscores instead");
+							this.handle_error(`Footnote reference on line ${this.current_line} uses an ID with spaces, which are invalid -- use underscores instead`);
 						}
 						
 						let new_element = document.createElement("div");
@@ -262,11 +279,6 @@ class Lapsa
 			if (line.length === 0 && num_indents === 0)
 			{
 				while (this.current_container.list_depth !== 0)
-				{
-					this.current_container = this.current_container.parent;
-				}
-				
-				while (this.current_container.quote_depth !== 0)
 				{
 					this.current_container = this.current_container.parent;
 				}
@@ -612,7 +624,7 @@ class Lapsa
 					num_hashes++;
 				}
 				
-				this.add_text(`h${num_hashes}`, line.slice(num_hashes));
+				this.add_text(`h${Math.min(num_hashes, 6)}`, line.slice(num_hashes));
 			}
 			
 			
@@ -701,7 +713,6 @@ class Lapsa
 		}
 		
 		new_element.textContent = this.handle_id_and_classes(text, new_element);
-		
 		
 		
 		
@@ -808,7 +819,9 @@ class Lapsa
 				
 				else
 				{
-					break;
+					this.handle_error(`Missing end ${this.escape_string(end_delimiters[j])}`, true);
+					
+					return "";
 				}
 			}
 		}
@@ -843,14 +856,14 @@ class Lapsa
 	
 	add_links(html)
 	{
-		let index = 0;
+		let index = -1;
 		
 		html += "  ";
 		
 		//[]() style
 		while (index < html.length - 2)
 		{
-			index = html.indexOf("[");
+			index = html.indexOf("[", index + 1);
 			
 			if (index === -1)
 			{
@@ -907,12 +920,12 @@ class Lapsa
 		
 		
 		
-		index = 0;
+		index = -1;
 		
 		//<> style
 		while (index < html.length - 2)
 		{
-			index = html.indexOf("&lt;");
+			index = html.indexOf("&lt;", index + 1);
 			
 			if (index === -1)
 			{
@@ -940,12 +953,12 @@ class Lapsa
 		
 		
 		
-		index = 0;
+		index = -1;
 		
 		//Reference style
 		while (index < html.length - 2)
 		{
-			index = html.indexOf("[");
+			index = html.indexOf("[", index + 1);
 			
 			if (index === -1)
 			{
@@ -989,6 +1002,11 @@ class Lapsa
 									html = html.slice(0, index) + this.escape_string(`<a href="${src}">${text}</a>`) + html.slice(end_bracket_index + 1);
 								}
 							}
+							
+							else
+							{
+								this.handle_error(`Undefined link reference`, false);
+							}
 						}
 					}
 					
@@ -1008,7 +1026,7 @@ class Lapsa
 					
 					if (this.footnote_elements[var_name] === undefined)
 					{
-						this.handle_error("Unknown footnote");
+						this.handle_error(`Undefined footnote`, false);
 					}
 					
 					else
@@ -1127,7 +1145,7 @@ class Lapsa
 	
 	add_strikethrough(html)
 	{
-		let index = 0;
+		let index = -1;
 		
 		let strikethrough = false;
 		
@@ -1135,7 +1153,7 @@ class Lapsa
 		
 		while (index < html.length - 2)
 		{
-			index = html.indexOf("~~");
+			index = html.indexOf("~~", index + 1);
 			
 			if (index === -1)
 			{
@@ -1245,13 +1263,13 @@ class Lapsa
 	
 	add_code(html)
 	{
-		let index = 0;
+		let index = -1;
 		
 		html += "  ";
 		
 		while (index < html.length - 2)
 		{
-			index = html.indexOf("``");
+			index = html.indexOf("``", index + 1);
 			
 			if (index === -1)
 			{
@@ -1268,15 +1286,20 @@ class Lapsa
 				
 				html = html.slice(0, index) + this.escape_string("<pre><code>") + html.slice(index + 2);
 			}
+			
+			else
+			{
+				this.handle_error(`Missing end ${this.escape_string("``")}`, true);
+			}
 		}
 		
 		
 		
-		index = 0;
+		index = -1;
 		
 		while (index < html.length - 1)
 		{
-			index = html.indexOf("`");
+			index = html.indexOf("`", index + 1);
 			
 			if (index === -1)
 			{
@@ -1292,6 +1315,11 @@ class Lapsa
 				html = html.slice(0, end_index) + this.escape_string("</code></pre>") + html.slice(end_index + 1);
 				
 				html = html.slice(0, index) + this.escape_string("<pre><code>") + html.slice(index + 1);
+			}
+			
+			else
+			{
+				this.handle_error(`Missing end ${this.escape_string("`")}`, true);
 			}
 		}
 		
@@ -1525,11 +1553,19 @@ class Lapsa
 		//Escape characters
 		for (let i = 0; i < text.length - 1; i++)
 		{
-			if (text[i] === "\\" && this.escape_tokens.includes(text[i + 1]))
+			if (text[i] === "\\")
 			{
-				text = text.slice(0, i) + `\t${this.escape_indices[text[i + 1]]}` + text.slice(i + 2);
+				if (this.escape_tokens.includes(text[i + 1]))
+				{
+					text = text.slice(0, i) + `\t${this.escape_indices[text[i + 1]]}` + text.slice(i + 2);
+					
+					i += 2;
+				}
 				
-				i += 2;
+				else
+				{
+					this.handle_error(`Unknown escape sequence`, false);
+				}
 			}
 		}
 		
@@ -1552,8 +1588,38 @@ class Lapsa
 	
 	
 	
-	handle_error(message)
+	handle_error(message, fatal = false)
 	{
-		console.error(`Line ${this.current_line}: ${message}`);
+		let log_message = message;
+		
+		for (let i = 0; i < log_message.length - 2; i++)
+		{
+			if (log_message[i] === "\t")
+			{
+				log_message = log_message.slice(0, i) + this.escape_tokens[parseInt(log_message.slice(i + 1, i + 3))] + log_message.slice(i + 3);
+			}
+		}
+		
+		
+		
+		if (fatal)
+		{
+			if (this.DEBUG)
+			{
+				this.add_text("p", `🛑 ${message} {.lapsa-error}`);
+			}
+			
+			console.error(`Line ${this.current_line}: ${log_message}`);
+		}
+		
+		else
+		{
+			if (this.DEBUG)
+			{
+				this.add_text("p", `⚠ ${message} {.lapsa-warning}`);
+			}
+			
+			console.warn(`Line ${this.current_line}: ${log_message}`);
+		}
 	}
 };

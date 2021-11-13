@@ -4,12 +4,12 @@
 	
 	
 	
-	fetch("/teaching/lapsa-test/slides/test.md")
+	fetch("/teaching/lapsa-test/pages/test.md")
 	
 	.then((response) => response.text())
 	
 	.then((text) =>
 	{
-		lapsa = new Lapsa(text);
+		lapsa = new Lapsa(text, {debug: true});
 	});
 }()
