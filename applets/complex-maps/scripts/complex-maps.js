@@ -386,7 +386,7 @@
 						return prod;
 					}
 					
-					prod = cpow(prod, z);
+					prod = cpow(z, prod);
 				}
 				
 				return prod;
@@ -410,7 +410,7 @@
 						return prod;
 					}
 					
-					prod = pow(prod, z);
+					prod = pow(z, prod);
 				}
 				
 				return prod;

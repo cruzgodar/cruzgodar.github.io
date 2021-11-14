@@ -381,6 +381,26 @@
 			
 			
 			
+			//Returns 1/z.
+			vec2 cinv(vec2 z)
+			{
+				float magnitude = z.x*z.x + z.y*z.y;
+				
+				return vec2(z.x / magnitude, -z.y / magnitude);
+			}
+			
+			float cinv(float z)
+			{
+				if (z == 0.0)
+				{
+					return 1.0;
+				}
+				
+				return 1.0 / z;
+			}
+			
+			
+			
 			//Returns z^w.
 			vec2 cpow(vec2 z, vec2 w)
 			{
@@ -451,7 +471,7 @@
 						return prod;
 					}
 					
-					prod = cpow(prod, z);
+					prod = cpow(z, prod);
 				}
 				
 				return prod;
@@ -475,7 +495,7 @@
 						return prod;
 					}
 					
-					prod = pow(prod, z);
+					prod = pow(z, prod);
 				}
 				
 				return prod;
