@@ -456,40 +456,44 @@ float factorial(float n)
 // Returns E_k(z) where E_k is the Eisenstein series of weight k and level 1 (k must be even...)
 vec2 eisenstein(float k, vec2 z)
 {
-	if (z.y < 0.0)
-	{
-		return ZERO;
-	}
-	
-	
-	
-	float zeta_k = 0.0;
+    if (z.y < 0.0)
+    {
+        return ZERO;
+    }
+    
+    
+    
+    float zeta_k = 0.0;
 
-	for (int j = 1; j < 1000; j++)
-	{
-		zeta_k += pow(float(j), -k);
-	}
+    if (k == 4.0) // can add more later... just hard to get this exactly for small k
+    {
+        zeta_k = 1.08232323371114;
+    } else {
+        for (int j = 1; j < 500; j++)
+        {
+            zeta_k += pow(float(j), -k);
+        }
+    }
 
-	vec2 q = cexp(2.0 * 3.14159265 * vec2(-z.y, z.x));
+    vec2 q = cexp(6.28318530717959 * vec2(-z.y, z.x));
 
-	vec2 summer = vec2(0.0, 0.0);
+    vec2 summer = ZERO;
 
-	// this bound may contribute error...
-	for (int n = 1; n < 100; n++)
-	{
-		summer += divisor(float(n), k - 1.0) * cpow(q, float(n));
-	}
+    // this bound may contribute error...
+    for (int n = 1; n < 100; n++)
+    {
+        summer += divisor(float(n), k - 1.0) * cpow(q, float(n));
+    }
 
-	summer *= pow(2.0*3.14159265, k) / factorial(k - 1.0);
+    if (mod(k,4.0) == 2.0)
+    {
+        summer *= -1.0;
+    }
+    summer *= pow(6.28318530717959, k) / factorial(k - 1.0);
 
-	if (mod(float(k), 4.0) == 2.0)
-	{
-		summer *= -1.0;
-	}
-
-	summer.x += 1.0;
-	summer *= 2.0 * zeta_k;
-	
-	return summer;
+    summer.x += zeta_k;
+    summer *= 2.0;
+    
+    return summer;
 }
 `;
