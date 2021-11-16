@@ -565,18 +565,20 @@ vec2 eisenstein(float k, vec2 z)
 
 	vec2 summer = ZERO;
 	vec2 temp = ZERO;
-	for (int r = 1; r < 20; r++) // need to fine tune this bound
+	for (int r = 1; r < 10; r++) // need to fine tune this bound
 	{
 		// add r^(k-1)q^r / (1-q^r)
 		// uses identity exp(2pi i rz)/(1-exp(2pi i rz)) = i/2 * (cot(pi r z)+ i)
-		temp = ccot(PI*float(r)*z);
+		temp = cot(PI*float(r)*z);
 		temp = vec2(temp.x,temp.y + 1.0);
-		temp = vec2(-temp.y * 0.5, 0.5*temp.x);
 		summer += pow(float(r),k-1.0)* temp;
 	}
+
 	
-	summer *= 2.0*k/bernoulli(k);
+	summer *= k/bernoulli(k);
+	summer = vec2(-summer.y,summer.x);
 	
 	return vec2(1.0-summer.x,summer.y);
+
 }
 `;
