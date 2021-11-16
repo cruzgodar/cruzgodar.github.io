@@ -5,7 +5,6 @@
 	
 	
 	let wilson = null;
-	let wilson_hidden = null;
 	
 	
 	
@@ -16,7 +15,9 @@
 	let past_brightness_scales = [];
 	
 	let resolution = 500;
-	let resolution_hidden = 100;
+	
+	let black_point = 1;
+	let white_point = 1;
 	
 	let fixed_point_x = 0;
 	let fixed_point_y = 0;
@@ -70,6 +71,27 @@
 	
 	
 	
+	let black_point_input_element = document.querySelector("#black-point-input");
+	
+	black_point_input_element.addEventListener("input", () =>
+	{
+		black_point = parseFloat(black_point_input_element.value || 1);
+		
+		window.requestAnimationFrame(draw_frame);
+	});
+	
+	
+	
+	let white_point_input_element = document.querySelector("#white-point-input");
+	
+	white_point_input_element.addEventListener("input", () =>
+	{
+		white_point = parseFloat(white_point_input_element.value || 1);
+		
+		window.requestAnimationFrame(draw_frame);
+	});
+	
+	
 	
 	let download_button_element = document.querySelector("#download-button");
 	
@@ -105,7 +127,8 @@
 			uniform float world_center_y;
 			uniform float world_size;
 			
-			uniform float brightness_scale;
+			uniform float black_point;
+			uniform float white_point;
 			
 			
 			
@@ -150,8 +173,8 @@
 				float modulus = length(image_z);
 				
 				float h = atan(image_z.y, image_z.x) / 6.283;
-				float s = 1.0 / (1.0 + .01 * modulus);
-				float v = 1.0 / (1.0 + .01 / modulus);//max(1.0 / (1.0 + 1.0 / modulus), 1.0 / (1.0 + 1.0 * modulus));
+				float s = 1.0 / (1.0 + .01 * (modulus / white_point / white_point));
+				float v = 1.0 / (1.0 + .01 / (modulus * black_point * black_point));
 				
 				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
 			}
@@ -201,27 +224,15 @@
 			pinch_callback: on_pinch_canvas
 		};
 		
-		let options_hidden =
-		{
-			renderer: "gpu",
-			
-			shader: frag_shader_source,
-			
-			canvas_width: 100,
-			canvas_height: 100
-		};
-		
 		
 		
 		try
 		{
 			wilson.output_canvas_container.parentNode.remove();
-			wilson_hidden.output_canvas_container.parentNode.remove();
 			
 			canvas_location_element.insertAdjacentHTML("beforebegin", `
 				<div>
 					<canvas id="output-canvas" class="output-canvas"></canvas>
-					<canvas id="hidden-canvas" class="hidden-canvas"></canvas>
 				</div>
 			`);
 		}
@@ -232,13 +243,7 @@
 		
 		wilson = new Wilson(document.querySelector("#output-canvas"), options);
 
-		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "brightness_scale"]);
-		
-		
-		
-		wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
-		
-		wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "brightness_scale"]);
+		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point"]);
 		
 		
 		
@@ -258,7 +263,6 @@
 		
 		//Render the inital frame.
 		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], 1);
 		
 		window.requestAnimationFrame(draw_frame);
 	}
@@ -397,53 +401,14 @@
 		
 		
 		
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], aspect_ratio);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_x"], wilson.world_center_x);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_y"], wilson.world_center_y);
-		
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
-		
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 50);
-		
-		wilson_hidden.render.draw_frame();
-		
-		
-		
-		let pixel_data = wilson_hidden.render.get_pixel_data();
-		
-		let brightnesses = new Array(resolution_hidden * resolution_hidden);
-		
-		for (let i = 0; i < resolution_hidden * resolution_hidden; i++)
-		{
-			brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
-		}
-		
-		brightnesses.sort((a, b) => a - b);
-		
-		let brightness_scale = Math.min(Math.max((brightnesses[Math.floor(resolution_hidden * resolution_hidden * .96)] + brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)]) / 50, .5), 50);
-		
-		past_brightness_scales.push(brightness_scale);
-		
-		let denom = past_brightness_scales.length;
-		
-		if (denom > 10)
-		{
-			past_brightness_scales.shift();
-		}
-		
-		brightness_scale = 1;//Math.max(past_brightness_scales.reduce((a, b) => a + b) / denom, .5);
-		
-		
-		
-		
-		
 		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
 		wilson.gl.uniform1f(wilson.uniforms["world_center_x"], wilson.world_center_x);
 		wilson.gl.uniform1f(wilson.uniforms["world_center_y"], wilson.world_center_y);
 		
 		wilson.gl.uniform1f(wilson.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
 		
-		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
+		wilson.gl.uniform1f(wilson.uniforms["black_point"], black_point);
+		wilson.gl.uniform1f(wilson.uniforms["white_point"], white_point);
 		
 		wilson.render.draw_frame();
 		

@@ -1,4 +1,6 @@
 const COMPLEX_GLSL = `
+const float PI = 3.141592653589;
+
 const vec2 ZERO = vec2(0.0, 0.0);
 const vec2 ONE = vec2(1.0, 0.0);
 const vec2 i = vec2(0.0, 1.0);
@@ -405,6 +407,47 @@ float ctan(float z)
 	return tan(z);
 }
 
+
+
+//Returns csc(z).
+vec2 ccsc(vec2 z)
+{
+	return cdiv(1.0, csin(z));
+}
+
+float ccsc(float z)
+{
+	return 1.0 / sin(z);
+}
+
+
+
+//Returns csc(z).
+vec2 csec(vec2 z)
+{
+	return cdiv(1.0, ccos(z));
+}
+
+float csec(float z)
+{
+	return 1.0 / cos(z);
+}
+
+
+
+//Returns cot(z).
+vec2 ccot(vec2 z)
+{
+	return cdiv(1.0, ctan(z));
+}
+
+float ccot(float z)
+{
+	return 1.0 / tan(z);
+}
+
+
+
 //Returns divisor(n,k), the sum all k-th powers of divisors of n.
 float divisor(float n,float k)
  {
@@ -512,27 +555,28 @@ float bernoulli(float m)
 
 // Returns E_k(z) where E_k is the normalized Eisenstein series of weight k and level 1 (k must be even...).
 // Uses equation (1.3) from https://arxiv.org/pdf/math/0009130.pdf.
-//TODO: implement eisnstein(k,q)
+//TODO: implement eisenstein(k,q)
 vec2 eisenstein(float k, vec2 z)
 {
 	if (z.y <= 0.0)
 	{
 		return ZERO;
 	}
-		
-	vec2 q = cexp(6.28318530717959 * vec2(-z.y,z.x)); // q = e^(2pi i z)
-	vec2 summer = ZERO;
 
-	for (int r = 1; r < 6; r++) // need to fine tune this bound
+	vec2 summer = ZERO;
+	vec2 temp = ZERO;
+	for (int r = 1; r < 20; r++) // need to fine tune this bound
 	{
 		// add r^(k-1)q^r / (1-q^r)
-		vec2 q_r = cpow(q,float(r));
-		summer += pow(float(r),k-1.0) * cdiv(q_r,vec2(1.0-q_r.x,q_r.y));
+		// uses identity exp(2pi i rz)/(1-exp(2pi i rz)) = i/2 * (cot(pi r z)+ i)
+		temp = ccot(PI*float(r)*z);
+		temp = vec2(temp.x,temp.y + 1.0);
+		temp = vec2(-temp.y * 0.5, 0.5*temp.x);
+		summer += pow(float(r),k-1.0)* temp;
 	}
 	
 	summer *= 2.0*k/bernoulli(k);
 	
 	return vec2(1.0-summer.x,summer.y);
-
 }
 `;
