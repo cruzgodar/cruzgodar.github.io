@@ -405,37 +405,38 @@ float ctan(float z)
 	return tan(z);
 }
 
-//Returns divisor(n,k), the sum all k-th powers of divisors of n
-         float divisor(float n,float k)
-         {
-             if (n == 0.0)
-             {
-                 return 0.0;
-             }
+//Returns divisor(n,k), the sum all k-th powers of divisors of n.
+float divisor(float n,float k)
+ {
+	 if (n == 0.0)
+	 {
+		 return 0.0;
+	 }
 
-             float summer = 0.0;
+	 float summer = 0.0;
 
-             for (int d = 1; d < 10000; d++)
-             {
-                 if (float(d) > n)
-                 {
-                     return summer;
-                 }
+	 for (int d = 1; d < 10000; d++)
+	 {
+		 if (float(d) > n)
+		 {
+			 return summer;
+		 }
 
-                 if (mod(n,float(d)) == 0.0)
-                 {
-                     summer += pow(float(d),k);
-                 }
-             }
-             return summer;
-         }
+		 if (mod(n,float(d)) == 0.0)
+		 {
+			 summer += pow(float(d),k);
+		 }
+	 }
+	 return summer;
+ }
 
-// Returns divisor(n,1)
+// Returns divisor(n,1).
 float divisor(float n)
 {
 	return divisor(n,1.0);
 }
 
+// Returns n!.
 float factorial(float n)
 {
 	float prod = 1.0;
@@ -453,47 +454,85 @@ float factorial(float n)
 	return prod;
 }
 
-// Returns E_k(z) where E_k is the Eisenstein series of weight k and level 1 (k must be even...)
+// Returns m choose n.
+float binomial(float m, float n)
+{
+	if (n > m)
+	{
+		return 0.0;
+	}
+	
+	float prod = 1.0;
+	
+	for (int j = 1; j < 1000; j++)
+	{
+		if (float(j) + n > m) 
+		{
+			break;
+		}
+		
+		prod *= (float(j) + n);
+	}
+	
+	return prod / factorial(m-n);
+}
+
+// Returns B_m, the mth Bernoulli number, e.g. 1, -1/2, 1/6, 0, -1/30, 0, ....
+// Formula from Louis Saalschütz according to Wikipedia.
+float bernoulli(float m)
+{
+	if (m > 1.0 && mod(m, 2.0) != 0.0)
+	{
+		return 0.0;
+	}
+	
+	float summer = 0.0;
+	
+	for (int v = 0; v < 1000; v++) 
+	{
+		if (float(v) > m) 
+		{
+			break;
+		}
+		
+		for (int k = 0; k < 1000; k++) 
+		{
+			if (float(k) > m) 
+			{
+				break;
+			}
+			
+			summer += (1.0 - 2.0 * mod(float(v), 2.0)) * binomial(float(k),float(v)) * pow(float(v),m) / (float(k)+1.0);
+		}
+	}
+	
+	return summer;
+}
+
+
+// Returns E_k(z) where E_k is the normalized Eisenstein series of weight k and level 1 (k must be even...).
+// Uses equation (1.3) from https://arxiv.org/pdf/math/0009130.pdf.
+//TODO: implement eisnstein(k,q)
 vec2 eisenstein(float k, vec2 z)
 {
-    if (z.y < 0.0)
-    {
-        return ZERO;
-    }
-    
-    
-    
-    float zeta_k = 0.0;
+	if (z.y <= 0.0)
+	{
+		return ZERO;
+	}
+		
+	vec2 q = cexp(6.28318530717959 * vec2(-z.y,z.x)); // q = e^(2pi i z)
+	vec2 summer = ZERO;
 
-    if (k == 4.0) // can add more later... just hard to get this exactly for small k
-    {
-        zeta_k = 1.08232323371114;
-    } else {
-        for (int j = 1; j < 500; j++)
-        {
-            zeta_k += pow(float(j), -k);
-        }
-    }
+	for (int r = 1; r < 6; r++) // need to fine tune this bound
+	{
+		// add r^(k-1)q^r / (1-q^r)
+		vec2 q_r = cpow(q,float(r));
+		summer += pow(float(r),k-1.0) * cdiv(q_r,vec2(1.0-q_r.x,q_r.y));
+	}
+	
+	summer *= 2.0*k/bernoulli(k);
+	
+	return vec2(1.0-summer.x,summer.y);
 
-    vec2 q = cexp(6.28318530717959 * vec2(-z.y, z.x));
-
-    vec2 summer = ZERO;
-
-    // this bound may contribute error...
-    for (int n = 1; n < 100; n++)
-    {
-        summer += divisor(float(n), k - 1.0) * cpow(q, float(n));
-    }
-
-    if (mod(k,4.0) == 2.0)
-    {
-        summer *= -1.0;
-    }
-    summer *= pow(6.28318530717959, k) / factorial(k - 1.0);
-
-    summer.x += zeta_k;
-    summer *= 2.0;
-    
-    return summer;
 }
 `;
