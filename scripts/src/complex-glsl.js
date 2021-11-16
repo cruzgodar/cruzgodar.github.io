@@ -569,7 +569,7 @@ vec2 eisenstein(float k, vec2 z)
 	{
 		// add r^(k-1)q^r / (1-q^r)
 		// uses identity exp(2pi i rz)/(1-exp(2pi i rz)) = i/2 * (cot(pi r z)+ i)
-		temp = cot(PI*float(r)*z);
+		temp = ccot(PI*float(r)*z);
 		temp = vec2(temp.x,temp.y + 1.0);
 		summer += pow(float(r),k-1.0)* temp;
 	}
