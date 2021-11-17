@@ -355,16 +355,25 @@
 			
 			
 			
+			let plus_1 = "+";
+			
+			if (y < 0)
+			{
+				plus_1 = "-";
+			}
+			
+			
+			
 			if (v === 1 && s === 0)
 			{
-				console.log("Infinity");
+				console.log(`${x} ${plus_1} ${Math.abs(y)}i |---> Infinity`);
 				
 				return;
 			}
 			
 			else if (v === 0 && s === 0)
 			{
-				console.log("0");
+				console.log(`${x} ${plus_1} ${Math.abs(y)}i |---> Infinity`);
 				
 				return;
 			}
@@ -386,14 +395,14 @@
 			let z_x = modulus * Math.cos(argument);
 			let z_y = modulus * Math.sin(argument);
 			
-			let plus = "+";
+			let plus_2 = "+";
 			
 			if (z_y < 0)
 			{
-				plus = "-";
+				plus_2 = "-";
 			}
 			
-			console.log(`${z_x} ${plus} ${Math.abs(z_y)}i`);
+			console.log(`${x} ${plus_1} ${Math.abs(y)}i |---> ${z_x} ${plus_2} ${Math.abs(z_y)}i`);
 		}
 	}
 	
