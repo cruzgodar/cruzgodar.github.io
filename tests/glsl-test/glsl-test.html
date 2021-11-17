@@ -1,0 +1,45 @@
+<head>
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header GLSL Test
+
+
+
+<div id="canvas-location">
+
+<div data-aos="fade-up">
+	<canvas id="output-canvas" class="output-canvas"></canvas>
+</div>
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "GLSL Test",
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>
