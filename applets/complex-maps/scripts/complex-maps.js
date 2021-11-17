@@ -421,6 +421,19 @@
 		
 		
 		
+		if (time_elapsed >= 50)
+		{
+			pan_velocity_x = 0;
+			pan_velocity_y = 0;
+			zoom_velocity = 0;
+			
+			next_pan_velocity_x = 0;
+			next_pan_velocity_y = 0;
+			next_zoom_velocity = 0;
+		}
+		
+		
+		
 		if (pan_velocity_x !== 0 || pan_velocity_y !== 0 || zoom_velocity !== 0)
 		{
 			wilson.world_center_x += pan_velocity_x * wilson.world_width;
