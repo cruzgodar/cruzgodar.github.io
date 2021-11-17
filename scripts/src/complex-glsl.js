@@ -597,6 +597,14 @@ vec2 eisenstein(float k, vec2 z)
 	{
 		return ZERO;
 	}
+	if (k == 4.0) 
+	{
+		return eisenstein4(z);
+	} 
+	if (k == 6.0) 
+	{
+		return eisenstein6(z);
+	}
 
 	if (k > 6.0)
 	{
@@ -612,6 +620,12 @@ vec2 eisenstein(float k, vec2 z)
 		}
 		// TODO: more
 	}
+	return ZERO;
+}
+
+// Riemann zeta function
+vec2 zeta(float z)
+{
 	return ZERO;
 }
 `;
