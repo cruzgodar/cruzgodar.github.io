@@ -186,13 +186,18 @@
 	transition: opacity .25s ease;
 }
 
-#about-button, #sitemap-button, #settings-button
+#about-button, #sitemap-button, #settings-button, #debug-button
 {
 	z-index: 102;
 	
 	left: -40px;
 	
 	transition: left .25s ease, opacity .25s ease;
+}
+
+#debug-button
+{
+	bottom: 153.25px;
 }
 
 #about-button

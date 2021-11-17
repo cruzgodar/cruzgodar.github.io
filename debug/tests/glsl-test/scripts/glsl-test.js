@@ -1,6 +1,13 @@
-!function()
+!async function()
 {
 	"use strict";
+	
+	
+	
+	if (!Site.scripts_loaded["glsl"])
+	{
+		await Site.load_glsl();
+	}
 	
 	
 	
@@ -76,8 +83,8 @@
 				
 				shader: frag_shader_source,
 				
-				canvas_width: 10,
-				canvas_height: 10
+				canvas_width: 1,
+				canvas_height: 1
 			};
 			
 			wilson = new Wilson(document.querySelector("#output-canvas"), options);

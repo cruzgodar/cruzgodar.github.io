@@ -206,6 +206,19 @@ Page.Footer =
 			
 			
 			
+			let debug_html = "";
+			
+			if (DEBUG)
+			{
+				debug_html = `
+					<div id="debug-button" class="footer-menu-button focus-on-child" tabindex="104">
+						<input type="image" class="footer-button" src="/graphics/button-icons/bug.png" alt="Debug" onclick="Page.Navigation.redirect('/debug/debug.html')" tabindex="-1">
+					</div>
+				`;
+			}
+			
+			
+			
 			floating_footer_element.innerHTML = `
 				<div class="footer-buttons">
 					<div id="show-footer-menu-button" class="footer-menu-button focus-on-child" tabindex="100">
@@ -213,6 +226,8 @@ Page.Footer =
 					</div>
 					
 					
+					
+					${debug_html}
 					
 					<div id="about-button" class="footer-menu-button focus-on-child" tabindex="103">
 						<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="Page.Navigation.redirect('/about/about.html')" tabindex="-1">
@@ -248,7 +263,7 @@ Page.Footer =
 					
 					<div id="floating-footer-bio-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 153.25px">
 						<a href="/bio/bio.html" tabindex="-1">
-							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/bio/bio.html')" src="/bio/cover.${Page.Images.file_extension}" alt="Bio" tabindex="1"></img>
+							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/bio/bio.html')" src="/bio/cover.${Page.Images.file_extension}" alt="Me" tabindex="1"></img>
 						</a>
 					</div>
 					
@@ -257,19 +272,19 @@ Page.Footer =
 					<p id="settings-text" class="body-text" style="opacity: 0"></p>
 					
 					<div id="content-animation-button" class="footer-menu-button focus-on-child" tabindex="101">
-						<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Options" onclick="Site.Settings.toggle('content_animation')" tabindex="-1">
+						<input type="image" class="footer-button" src="/graphics/button-icons/pop.png" alt="Content animation" onclick="Site.Settings.toggle('content_animation')" tabindex="-1">
 					</div>
 					
 					<div id="font-button" class="footer-menu-button focus-on-child" tabindex="101">
-						<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Options" onclick="Site.Settings.toggle('font')" tabindex="-1">
+						<input type="image" class="footer-button" src="/graphics/button-icons/font.png" alt="Font" onclick="Site.Settings.toggle('font')" tabindex="-1">
 					</div>
 					
 					<div id="text-size-button" class="footer-menu-button focus-on-child" tabindex="101">
-						<input type="image" class="footer-button" src="/graphics/button-icons/text-size.png" alt="Options" onclick="Site.Settings.toggle('text_size')" tabindex="-1">
+						<input type="image" class="footer-button" src="/graphics/button-icons/text-size.png" alt="Text size" onclick="Site.Settings.toggle('text_size')" tabindex="-1">
 					</div>
 					
 					<div id="contrast-button" class="footer-menu-button focus-on-child" tabindex="102">
-						<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Options" onclick="Site.Settings.toggle('contrast')" tabindex="-1">
+						<input type="image" class="footer-button" src="/graphics/button-icons/contrast.png" alt="Contrast" onclick="Site.Settings.toggle('contrast')" tabindex="-1">
 					</div>
 					
 					<div id="theme-button" class="footer-menu-button focus-on-child" tabindex="103">
@@ -457,7 +472,21 @@ Page.Footer =
 				{
 					document.querySelector("#about-button").style.left = "10px";
 					
-					this.menu_is_open = true;
+					
+					if (DEBUG)
+					{
+						setTimeout(() =>
+						{
+							document.querySelector("#debug-button").style.left = "10px";
+							
+							this.menu_is_open = true;
+						}, Site.opacity_animation_time / 6);
+					}
+					
+					else
+					{
+						this.menu_is_open = true;
+					}
 				}, Site.opacity_animation_time / 6);
 			}, Site.opacity_animation_time / 6);
 			
@@ -532,7 +561,21 @@ Page.Footer =
 				{
 					document.querySelector("#about-button").style.left = "-40px";
 					
-					this.menu_is_open = false;
+					
+					if (DEBUG)
+					{
+						setTimeout(() =>
+						{
+							document.querySelector("#debug-button").style.left = "-40px";
+							
+							this.menu_is_open = false;
+						}, Site.opacity_animation_time / 6);
+					}
+					
+					else
+					{
+						this.menu_is_open = false;
+					}
 					
 					setTimeout(() =>
 					{
@@ -540,6 +583,11 @@ Page.Footer =
 						document.querySelector("#settings-button").style.opacity = 1;
 						document.querySelector("#sitemap-button").style.opacity = 1;
 						document.querySelector("#about-button").style.opacity = 1;
+						
+						if (DEBUG)
+						{
+							document.querySelector("#debug-button").style.opacity = 1;
+						}
 					}, Site.opacity_animation_time);
 				}, Site.opacity_animation_time / 6);
 			}, Site.opacity_animation_time / 6);
