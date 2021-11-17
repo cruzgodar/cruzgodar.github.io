@@ -562,7 +562,7 @@ vec2 eisenstein4(vec2 z)
 	for (int r = 1; r < EISENSTEIN_BOUND; r++) // need to fine tune this bound
 	{
 		// add r^(k-1)q^r / (1-q^r)
-		// uses identity exp(2pi i rz)/(1-exp(2pi i rz)) = i/2 * (cot(pi r z)+ i)
+		// uses identity exp(2PI i rz)/(1-exp(2PI i rz)) = i/2 * (cot(PI r z)+ i)
 		temp = ccot(PI*float(r)*z);
 		temp = vec2(temp.x,temp.y + 1.0);
 		summer += float(r*r*r)* temp;
@@ -622,8 +622,79 @@ vec2 eisenstein(float k, vec2 z)
 	return ZERO;
 }
 
-// Riemann zeta function
-vec2 zeta(float z)
+vec2 gamma_helper(vec2 a) 
 {
-	return ZERO;
+	a -= ONE;
+
+	vec2 y = vec2(0.99999999999980993, 0.0);
+	y += cdiv(vec2(676.5203681218851, 0.0), (a + vec2(1.0, 0.0)));
+	y += cdiv(vec2(-1259.1392167224028, 0.0), (a + vec2(2.0, 0.0)));
+	y += cdiv(vec2(771.3234287776531, 0.0), (a + vec2(3.0, 0.0)));
+	y += cdiv(vec2(-176.6150291621406, 0.0), (a + vec2(4.0, 0.0)));
+	y += cdiv(vec2(12.507343278686905, 0.0), (a + vec2(5.0, 0.0)));
+	y += cdiv(vec2(-0.13857109526572012, 0.0), (a + vec2(6.0, 0.0)));
+	y += cdiv(vec2(.000009984369578019572, 0.0), (a + vec2(7.0, 0.0)));
+	y += cdiv(vec2(.00000015056327351493116, 0.0), (a + vec2(8.0, 0.0)));
+	vec2 t = a + vec2(8.0-0.5, 0.0);
+	return sqrt(2.0*PI) * cmul(cpow(t, (a + vec2(0.5, 0.0))), cmul(cexp(-t), y));
+}
+
+// Lanczos
+vec2 gamma(vec2 a) {
+	float result = 0.0;
+	if (a.x < 0.5) {
+		return cdiv(vec2(PI, 0.0), cmul(csin(PI * a), gamma_helper(ONE - a)));
+	}
+	a -= ONE;
+
+	vec2 y = vec2(0.99999999999980993, 0.0);
+	y += cdiv(vec2(676.5203681218851, 0.0), (a + vec2(1.0, 0.0)));
+	y += cdiv(vec2(-1259.1392167224028, 0.0), (a + vec2(2.0, 0.0)));
+	y += cdiv(vec2(771.3234287776531, 0.0), (a + vec2(3.0, 0.0)));
+	y += cdiv(vec2(-176.6150291621406, 0.0), (a + vec2(4.0, 0.0)));
+	y += cdiv(vec2(12.507343278686905, 0.0), (a + vec2(5.0, 0.0)));
+	y += cdiv(vec2(-0.13857109526572012, 0.0), (a + vec2(6.0, 0.0)));
+	y += cdiv(vec2(.000009984369578019572, 0.0), (a + vec2(7.0, 0.0)));
+	y += cdiv(vec2(.00000015056327351493116, 0.0), (a + vec2(8.0, 0.0)));
+	vec2 t = a + vec2(8.0-0.5, 0.0);
+	return sqrt(2.0*PI) * cmul(cpow(t, (a + vec2(0.5, 0.0))), cmul(cexp(-t), y));
+}
+float gamma(float a) {
+	return gamma(vec2(a, 0.0)).x;
+}
+
+// Riemann zeta function
+// algorithm 2 of http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=5B07751C858FF584B31B250A0F3AFC58?doi=10.1.1.56.9455&rep=rep1&type=pdf
+// accurate for |a|<20 or so
+vec2 zeta_helper(vec2 a) {
+	vec2 tot = ZERO;
+	float n = 10.0;
+	float dn = 22619537.0;
+	tot += 1.0 * cdiv((1.0 - dn), cpow(1.0, a));
+	tot += -1.0 * cdiv((201.0 - dn), cpow(2.0, a));
+	tot += 1.0 * cdiv((6801.0 - dn), cpow(3.0, a));
+	tot += -1.0 * cdiv((91281.0 - dn), cpow(4.0, a));
+	tot += 1.0 * cdiv((640401.0 - dn), cpow(5.0, a));
+	tot += -1.0 * cdiv((2690449.0 - dn), cpow(6.0, a));
+	tot += 1.0 * cdiv((7349649.0 - dn), cpow(7.0, a));
+	tot += -1.0 * cdiv((13903249.0 - dn), cpow(8.0, a));
+	tot += 1.0 * cdiv((19473809.0 - dn), cpow(9.0, a));
+	tot += -1.0 * cdiv((22095249.0 - dn), cpow(10.0, a));
+	return cdiv((-1.0/dn * tot), (ONE-cpow(2.0, ONE-a)));
+}
+
+// Seems to be pretty unstable with large imaginary part
+vec2 zeta(vec2 a) {
+	if (a.x < 0.5) {
+		if (a.x == 0.0) {
+			return vec2(-0.5,0.0);
+		}
+		return cmul(cmul(cmul(cmul(cpow(2.0,a),cpow(PI,a-ONE)),csin(PI * a / 2.0)),gamma(ONE-a)), zeta_helper(ONE-a));
+	} else {
+		return zeta_helper(a);
+	}
+}
+
+float zeta(float a) {
+	return zeta(vec2(a,0.0)).x;
 }
