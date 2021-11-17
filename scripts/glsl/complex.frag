@@ -384,7 +384,7 @@ vec2 ccos(vec2 z)
 {
 	vec2 temp = cexp(cmul(z, vec2(0.0, 1.0))) + cexp(cmul(z, vec2(0.0, -1.0)));
 	
-	return cmul(temp, vec2(0.0, -0.5));
+	return temp / 2.0;
 }
 
 float ccos(float z)
