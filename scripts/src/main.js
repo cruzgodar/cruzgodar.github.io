@@ -92,7 +92,8 @@ let Site =
 	scripts_loaded:
 	{
 		"mathjax": false,
-		"complexjs": false
+		"complexjs": false,
+		"glsl": false
 	},
 	
 	last_pages: [],
@@ -281,6 +282,26 @@ let Site =
 			script.onerror = reject;
 			script.async = true;
 			script.src = src;
+		});
+	},
+	
+	
+	
+	load_glsl: function()
+	{
+		return new Promise(async function(resolve, reject)
+		{
+			let shader = "";
+			
+			await Promise.all([
+				fetch("/scripts/glsl/complex.frag").then(response => response.text()).then(text => shader += text)
+			]);
+			
+			window.COMPLEX_GLSL = shader;
+			
+			Site.scripts_loaded["glsl"] = true;
+			
+			resolve();
 		});
 	},
 	

@@ -1,4 +1,3 @@
-const COMPLEX_GLSL = `
 const float PI = 3.141592653589;
 
 const vec2 ZERO = vec2(0.0, 0.0);
@@ -628,4 +627,3 @@ vec2 zeta(float z)
 {
 	return ZERO;
 }
-`;

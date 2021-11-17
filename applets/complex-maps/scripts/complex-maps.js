@@ -1,6 +1,13 @@
-!function()
+!async function()
 {
 	"use strict";
+	
+	
+	
+	if (!Site.scripts_loaded["glsl"])
+	{
+		await Site.load_glsl();
+	}
 	
 	
 	
