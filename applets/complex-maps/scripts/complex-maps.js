@@ -285,6 +285,116 @@
 		next_pan_velocity_x = 0;
 		next_pan_velocity_y = 0;
 		next_zoom_velocity = 0;
+		
+		
+		
+		if (DEBUG)
+		{
+			wilson.render.draw_frame();
+			
+			let coordinates = wilson.utils.interpolate.world_to_canvas(x, y);
+			
+			let pixel = new Uint8Array(4);
+			
+			this.parent.gl.readPixels(coordinates[1], wilson.canvas_height - coordinates[0], 1, 1, this.parent.gl.RGBA, this.parent.gl.UNSIGNED_BYTE, pixel);
+			
+			let r = pixel[0];
+			let g = pixel[1];
+			let b = pixel[2];
+			
+			
+			
+			//RGB to HSV
+			let max_color = Math.max(r, g, b);
+			let min_color = Math.min(r, g, b);
+			let delta = max_color - min_color;
+			
+			let h = 0;
+			let s = 0;
+			let v = 0;
+			
+			if (delta === 0)
+			{
+				h = 0;
+			}
+			
+			else if (r === max_color)
+			{
+				h = (6 + (g - b) / delta) % 6;
+			}
+			
+			else if (g === max_color)
+			{
+				h = 2 + (b - r) / delta;
+			}
+			
+			else if (b === max_color)
+			{
+				h = 4 + (r - g) / delta;
+			}
+			
+			else
+			{
+				h = 0;
+			}
+			
+			h = 1 - h / 6;
+
+			if (max_color !== 0)
+			{
+				s = delta / max_color;
+			}
+
+			v = max_color / 255;
+			
+			
+			
+			let argument = h * 2 * Math.PI;
+			
+			let modulus = 0;
+			
+			
+			
+			if (v === 1 && s === 0)
+			{
+				console.log("Infinity");
+				
+				return;
+			}
+			
+			else if (v === 0 && s === 0)
+			{
+				console.log("0");
+				
+				return;
+			}
+			
+			
+			
+			if (v < 1)
+			{
+				modulus = .01 * v / (black_point * black_point * (1 - v));
+			}
+			
+			else
+			{
+				modulus = 100 * (1 - s) * white_point * white_point / s;
+			}
+			
+			
+			
+			let z_x = modulus * Math.cos(argument);
+			let z_y = modulus * Math.sin(argument);
+			
+			let plus = "+";
+			
+			if (z_y < 0)
+			{
+				plus = "-";
+			}
+			
+			console.log(`${z_x} ${plus} ${Math.abs(z_y)}i`);
+		}
 	}
 	
 	
