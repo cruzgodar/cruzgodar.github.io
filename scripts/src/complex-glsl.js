@@ -8,6 +8,7 @@ const vec2 I = i;
 
 
 
+
 //Returns |z|.
 float cabs(vec2 z)
 {
@@ -552,6 +553,40 @@ float bernoulli(float m)
 	return summer;
 }
 
+const int EISENSTEIN_BOUND = 40;
+
+// auxiliary function
+vec2 eisenstein4(vec2 z)
+{
+	vec2 summer = ZERO;
+	vec2 temp = ZERO;
+	for (int r = 1; r < EISENSTEIN_BOUND; r++) // need to fine tune this bound
+	{
+		// add r^(k-1)q^r / (1-q^r)
+		// uses identity exp(2pi i rz)/(1-exp(2pi i rz)) = i/2 * (cot(pi r z)+ i)
+		temp = ccot(PI*float(r)*z);
+		temp = vec2(temp.x,temp.y + 1.0);
+		summer += float(r*r*r)* temp;
+	}
+	summer *= -120.0;
+	summer = vec2(-summer.y,summer.x);
+	return vec2(1.0-summer.x,summer.y);
+}
+
+vec2 eisenstein6(vec2 z)
+{
+	vec2 summer = ZERO;
+	vec2 temp = ZERO;
+	for (int r = 1; r < EISENSTEIN_BOUND; r++) // need to fine tune this bound
+	{
+		temp = ccot(PI*float(r)*z);
+		temp = vec2(temp.x,temp.y + 1.0);
+		summer += float(r*r*r*r*r)* temp;
+	}
+	summer *= 252.0;
+	summer = vec2(-summer.y,summer.x);
+	return vec2(1.0-summer.x,summer.y);
+}
 
 // Returns E_k(z) where E_k is the normalized Eisenstein series of weight k and level 1 (k must be even...).
 // Uses equation (1.3) from https://arxiv.org/pdf/math/0009130.pdf.
@@ -563,22 +598,20 @@ vec2 eisenstein(float k, vec2 z)
 		return ZERO;
 	}
 
-	vec2 summer = ZERO;
-	vec2 temp = ZERO;
-	for (int r = 1; r < 10; r++) // need to fine tune this bound
+	if (k > 6.0)
 	{
-		// add r^(k-1)q^r / (1-q^r)
-		// uses identity exp(2pi i rz)/(1-exp(2pi i rz)) = i/2 * (cot(pi r z)+ i)
-		temp = ccot(PI*float(r)*z);
-		temp = vec2(temp.x,temp.y + 1.0);
-		summer += pow(float(r),k-1.0)* temp;
+		vec2 e4 = eisenstein4(z);
+		if (k == 8.0)
+		{
+			return cmul(e4,e4);
+		}
+		vec2 e6 = eisenstein6(z);
+		if (k == 10.0)
+		{
+			return cmul(e4,e6);
+		}
+		// TODO: more
 	}
-
-	
-	summer *= k/bernoulli(k);
-	summer = vec2(-summer.y,summer.x);
-	
-	return vec2(1.0-summer.x,summer.y);
-
+	return ZERO;
 }
 `;
