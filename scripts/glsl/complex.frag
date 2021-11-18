@@ -339,10 +339,10 @@ vec2 csqrt(float z)
 
 
 //Returns e^z.
-vec2 cexp(vec2 w)
+vec2 cexp(vec2 z)
 {
-	float zexp = exp(w.x);	
-	return vec2(zexp * cos(w.y), zexp * sin(w.y));
+	float zexp = exp(z.x);	
+	return vec2(zexp * cos(z.y), zexp * sin(z.y));
 	// return cpow(2.7182818, z);
 }
 
@@ -442,9 +442,13 @@ float csec(float z)
 
 
 //Returns cot(z).
+// code ripped off of above code for tan
+// I believe this code to be corect but it could use verification -- Andy
 vec2 ccot(vec2 z)
 {
-	return cdiv(1.0, ctan(z));
+	vec2 temp = cexp(2.0 * vec2(-z.y,z.x));
+	temp = cdiv(vec2(1.0+temp.x,temp.y),vec2(-1.0+temp.x,temp.y));
+	return vec2(-temp.y,temp.x);
 }
 
 float ccot(float z)
@@ -503,27 +507,32 @@ float factorial(float n)
 	return prod;
 }
 
-// Returns m choose n.
-float binomial(float m, float n)
+// Returns n choose k.
+// I ripped this off of wikipedia
+float binomial(float n, float k)
 {
-	if (n > m)
-	{
+
+	if (k > n) {
 		return 0.0;
+	} else if (n == k) {
+		return 1.0;
+	} else if (n == 0.0) {
+		return 1.0;
 	}
-	
+	k = min(k,n-k);
+
 	float prod = 1.0;
-	
-	for (int j = 1; j < 1000; j++)
+	for (int j = 0; j < 1000; j++)
 	{
-		if (float(j) + n > m) 
+		if (float(j) >= k) 
 		{
-			break;
+			return prod;
 		}
 		
-		prod *= (float(j) + n);
+		prod *= (n-float(j))/ (float(j) + 1.0);
 	}
 	
-	return prod / factorial(m-n);
+	return prod;
 }
 
 // Returns B_m, the mth Bernoulli number, e.g. 1, -1/2, 1/6, 0, -1/30, 0, ....
