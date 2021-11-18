@@ -668,19 +668,28 @@ float gamma(float a) {
 // accurate for |a|<20 or so
 vec2 zeta_helper(vec2 a) {
 	vec2 tot = ZERO;
-	float n = 10.0;
-	float dn = 22619537.0;
-	tot += 1.0 * cdiv((1.0 - dn), cpow(1.0, a));
-	tot += -1.0 * cdiv((201.0 - dn), cpow(2.0, a));
-	tot += 1.0 * cdiv((6801.0 - dn), cpow(3.0, a));
-	tot += -1.0 * cdiv((91281.0 - dn), cpow(4.0, a));
-	tot += 1.0 * cdiv((640401.0 - dn), cpow(5.0, a));
-	tot += -1.0 * cdiv((2690449.0 - dn), cpow(6.0, a));
-	tot += 1.0 * cdiv((7349649.0 - dn), cpow(7.0, a));
-	tot += -1.0 * cdiv((13903249.0 - dn), cpow(8.0, a));
-	tot += 1.0 * cdiv((19473809.0 - dn), cpow(9.0, a));
-	tot += -1.0 * cdiv((22095249.0 - dn), cpow(10.0, a));
-	return cdiv((-1.0/dn * tot), (ONE-cpow(2.0, ONE-a)));
+	float dn = 1023286908188737.0;
+	tot += cdiv(-1023286908188736.0, cpow(1.0,a));
+	tot += cdiv(1023286908187936.0, cpow(2.0,a));
+	tot += cdiv(-1023286908081536.0, cpow(3.0,a));
+	tot += cdiv(1023286902463616.0, cpow(4.0,a));
+	tot += cdiv(-1023286745563136.0, cpow(5.0,a));
+	tot += cdiv(1023284067794944.0, cpow(6.0,a));
+	tot += cdiv(-1023253638610944.0, cpow(7.0,a));
+	tot += cdiv(1023010205138944.0, cpow(8.0,a));
+	tot += cdiv(-1021586119327744.0, cpow(9.0,a));
+	tot += cdiv(1015331311058944.0, cpow(10.0,a));
+	tot += cdiv(-994328323293184.0, cpow(11.0,a));
+	tot += cdiv(939775108317184.0, cpow(12.0,a));
+	tot += cdiv(-829482738909184.0, cpow(13.0,a));
+	tot += cdiv(655729836949504.0, cpow(14.0,a));
+	tot += cdiv(-443365178998784.0, cpow(15.0,a));
+	tot += cdiv(244181775679488.0, cpow(16.0,a));
+	tot += cdiv(-103628970917888.0, cpow(17.0,a));
+	tot += cdiv(31473520345088.0, cpow(18.0,a));
+	tot += cdiv(-6047313952768.0, cpow(19.0,a));
+	tot += cdiv(549755813888.0, cpow(20.0,a));
+	return cdiv((-tot/dn), (ONE-cpow(2.0, ONE-a)));
 }
 
 // Seems to be pretty unstable with large imaginary part
@@ -689,9 +698,12 @@ vec2 zeta(vec2 a) {
 		if (a.x == 0.0) {
 			return vec2(-0.5,0.0);
 		}
-		return cmul(cmul(cmul(cmul(cpow(2.0,a),cpow(PI,a-ONE)),csin(PI * a / 2.0)),gamma(ONE-a)), zeta_helper(ONE-a));
+		vec2 ans = cmul(cmul(cmul(cmul(cpow(2.0,a),cpow(PI,a-ONE)),csin(PI * a / 2.0)),gamma(ONE-a)), zeta_helper(ONE-a));
+		// sign is flipped/???
+		return vec2(ans.x,-ans.y);
 	} else {
-		return zeta_helper(a);
+		vec2 ans = zeta_helper(a);
+		return vec2(ans.x,-ans.y);
 	}
 }
 
