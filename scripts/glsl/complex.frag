@@ -222,9 +222,11 @@ vec2 cpow(vec2 z, vec2 w)
 	float exparg = exp(-w.y * arg);
 	float magexp = pow(magnitude, w.x / 2.0);
 	float logmag = log(magnitude) * w.y / 2.0;
+
+	float wxarg = w.x * arg;
 	
-	float p1 = exparg * cos(w.x * arg);
-	float p2 = exparg * sin(w.x * arg);
+	float p1 = exparg * cos(wxarg);
+	float p2 = exparg * sin(wxarg);
 	
 	float q1 = magexp * cos(logmag);
 	float q2 = magexp * sin(logmag);
@@ -254,8 +256,9 @@ vec2 cpow(float z, vec2 w)
 	
 	float zlog = log(z);
 	float zexp = exp(w.x * zlog);
+	float wyzlog = w.y * zlog;
 	
-	return vec2(zexp * cos(w.y * zlog), zexp * sin(w.y * zlog));
+	return vec2(zexp * cos(wyzlog), zexp * sin(wyzlog));
 }
 
 float cpow(float z, float w)
