@@ -9,8 +9,8 @@
 		await Site.load_glsl();
 	}
 	
-	
-	
+
+// I'm concerned that I can't get cos(i) to work... or (1+I)^(1+I)... or tan(pi/2)
 	let tests =
 	[
 		`
@@ -27,7 +27,16 @@
 			return cpow(I, I) == vec2(cexp(-PI/2.0),0.0);
 		`,`
 			return ctet(2.0, 3.0) == 16.0;
+		`,`
+			return csin(I) == vec2(0.0,1.17520119364380145688238185059560);
+		`,`
+			return csin(ONE) == vec2(0.84147098480789650665250232163,0.0);
+		`,`
+			return ccos(ONE) == vec2(0.54030230586813971740093660,0.0);
+		`,`
+			return ctan(ZERO) == ZERO;
 		`
+
 	];
 	
 	

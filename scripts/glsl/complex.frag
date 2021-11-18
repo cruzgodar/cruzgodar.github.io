@@ -241,8 +241,10 @@ vec2 cpow(vec2 z, float w)
 	
 	float magexp = pow(magnitude, w / 2.0);
 	
-	float p1 = cos(w * arg);
-	float p2 = sin(w * arg);
+	float warg = w * arg;
+
+	float p1 = cos(warg);
+	float p2 = sin(warg);
 	
 	return vec2(p1 * magexp, p2 * magexp);
 }
@@ -370,9 +372,9 @@ float clog(float z)
 //Returns sin(z).
 vec2 csin(vec2 z)
 {
-	vec2 temp = cexp(cmul(z, vec2(0.0, 1.0))) - cexp(cmul(z, vec2(0.0, -1.0)));
-	
-	return cmul(temp, vec2(0.0, -0.5));
+	vec2 temp = vec2(-z.y,z.x);
+	temp = -0.5*( cexp(temp) - cexp(-temp));
+	return vec2(-temp.y,temp.x);
 }
 
 float csin(float z)
@@ -385,9 +387,8 @@ float csin(float z)
 //Returns cos(z).
 vec2 ccos(vec2 z)
 {
-	vec2 temp = cexp(cmul(z, vec2(0.0, 1.0))) + cexp(cmul(z, vec2(0.0, -1.0)));
-	
-	return cmul(temp, vec2(0.0, -0.5));
+	vec2 temp = vec2(-z.y,z.x);
+	return 0.5*( cexp(temp) + cexp(-temp));	
 }
 
 float ccos(float z)
@@ -400,9 +401,9 @@ float ccos(float z)
 //Returns tan(z).
 vec2 ctan(vec2 z)
 {
-	vec2 temp = cexp(cmul(z, vec2(0.0, 2.0)));
-	
-	return cdiv(cmul(vec2(0.0, -1.0), vec2(-1.0, 0.0) + temp), vec2(1.0, 0.0) + temp);
+	vec2 temp = cexp(2.0 * vec2(-z.y,z.x));
+	temp = cdiv(vec2(-1.0+temp.x,temp.y),vec2(1.0+temp.x,temp.y));
+	return vec2(temp.y,-temp.x);
 }
 
 float ctan(float z)
@@ -672,7 +673,7 @@ float gamma(float a) {
 vec2 zeta_helper(vec2 a) {
 	vec2 tot = ZERO;
 	float dn = 1023286908188737.0;
-	tot += cdiv(-1023286908188736.0, cpow(1.0,a));
+	tot += cdiv(-1023286908188736.0,ONE);
 	tot += cdiv(1023286908187936.0, cpow(2.0,a));
 	tot += cdiv(-1023286908081536.0, cpow(3.0,a));
 	tot += cdiv(1023286902463616.0, cpow(4.0,a));
