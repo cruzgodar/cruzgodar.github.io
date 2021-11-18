@@ -5,7 +5,8 @@ const vec2 ONE = vec2(1.0, 0.0);
 const vec2 i = vec2(0.0, 1.0);
 const vec2 I = i;
 
-
+// error tolerance in glsl-tests.js... someday...
+const float TOL = .0001;
 
 
 //Returns |z|.
@@ -241,8 +242,10 @@ vec2 cpow(vec2 z, float w)
 	
 	float magexp = pow(magnitude, w / 2.0);
 	
-	float p1 = cos(w * arg);
-	float p2 = sin(w * arg);
+	float warg = w * arg;
+
+	float p1 = cos(warg);
+	float p2 = sin(warg);
 	
 	return vec2(p1 * magexp, p2 * magexp);
 }
@@ -339,7 +342,9 @@ vec2 csqrt(float z)
 //Returns e^z.
 vec2 cexp(vec2 z)
 {
-	return cpow(2.7182818, z);
+	float zexp = exp(z.x);	
+	return vec2(zexp * cos(z.y), zexp * sin(z.y));
+	// return cpow(2.7182818, z);
 }
 
 float cexp(float z)
@@ -347,6 +352,28 @@ float cexp(float z)
 	return exp(z);
 }
 
+const int EXP_BOUND = 5;
+
+
+float exp_minus_one(float z)
+{
+	float summer = 0.0;
+	float temp = 1.0;
+	for (int j = 1; j < EXP_BOUND; j++)
+	{
+		temp *= -z / float(j);
+		summer += temp;
+	}
+	return summer;
+}
+
+
+// returns e^z - 1; use in niche cases for better numerical stability
+vec2 cexp_minus_one(vec2 z)
+{
+	float zexp = exp_minus_one(z.x);	
+	return vec2(zexp * cos(z.y), zexp * sin(z.y));
+}
 
 
 //Returns log(z).
@@ -370,9 +397,9 @@ float clog(float z)
 //Returns sin(z).
 vec2 csin(vec2 z)
 {
-	vec2 temp = cexp(cmul(z, vec2(0.0, 1.0))) - cexp(cmul(z, vec2(0.0, -1.0)));
-	
-	return cmul(temp, vec2(0.0, -0.5));
+	vec2 temp = vec2(-z.y,z.x);
+	temp = -0.5*( cexp(temp) - cexp(-temp));
+	return vec2(-temp.y,temp.x);
 }
 
 float csin(float z)
@@ -385,9 +412,8 @@ float csin(float z)
 //Returns cos(z).
 vec2 ccos(vec2 z)
 {
-	vec2 temp = cexp(cmul(z, vec2(0.0, 1.0))) + cexp(cmul(z, vec2(0.0, -1.0)));
-	
-	return temp / 2.0;
+	vec2 temp = vec2(-z.y,z.x);
+	return 0.5*( cexp(temp) + cexp(-temp));
 }
 
 float ccos(float z)
@@ -400,9 +426,9 @@ float ccos(float z)
 //Returns tan(z).
 vec2 ctan(vec2 z)
 {
-	vec2 temp = cexp(cmul(z, vec2(0.0, 2.0)));
-	
-	return cdiv(cmul(vec2(0.0, -1.0), vec2(-1.0, 0.0) + temp), vec2(1.0, 0.0) + temp);
+	vec2 temp = cexp(2.0 * vec2(-z.y,z.x));
+	temp = cdiv(vec2(-1.0+temp.x,temp.y),vec2(1.0+temp.x,temp.y));
+	return vec2(temp.y,-temp.x);
 }
 
 float ctan(float z)
@@ -439,9 +465,12 @@ float csec(float z)
 
 
 //Returns cot(z).
+// code ripped off of above code for tan
 vec2 ccot(vec2 z)
 {
-	return cdiv(1.0, ctan(z));
+	vec2 temp = cexp(2.0 * vec2(-z.y,z.x));
+	temp = cdiv(vec2(1.0+temp.x,temp.y),vec2(-1.0+temp.x,temp.y));
+	return vec2(-temp.y,temp.x);
 }
 
 float ccot(float z)
@@ -500,27 +529,32 @@ float factorial(float n)
 	return prod;
 }
 
-// Returns m choose n.
-float binomial(float m, float n)
+// Returns n choose k.
+// I ripped this off of wikipedia
+float binomial(float n, float k)
 {
-	if (n > m)
-	{
+
+	if (k > n) {
 		return 0.0;
+	} else if (n == k) {
+		return 1.0;
+	} else if (n == 0.0) {
+		return 1.0;
 	}
-	
+	k = min(k,n-k);
+
 	float prod = 1.0;
-	
-	for (int j = 1; j < 1000; j++)
+	for (int j = 0; j < 1000; j++)
 	{
-		if (float(j) + n > m) 
+		if (float(j) >= k) 
 		{
-			break;
+			return prod;
 		}
 		
-		prod *= (float(j) + n);
+		prod *= (n-float(j))/ (float(j) + 1.0);
 	}
 	
-	return prod / factorial(m-n);
+	return prod;
 }
 
 // Returns B_m, the mth Bernoulli number, e.g. 1, -1/2, 1/6, 0, -1/30, 0, ....
@@ -555,7 +589,7 @@ float bernoulli(float m)
 	return summer;
 }
 
-const int EISENSTEIN_BOUND = 40;
+const int EISENSTEIN_BOUND = 20;
 
 // auxiliary function
 vec2 eisenstein4(vec2 z)
@@ -619,8 +653,22 @@ vec2 eisenstein(float k, vec2 z)
 		if (k == 10.0)
 		{
 			return cmul(e4,e6);
+		} else if (k == 12.0) {
+			return 1.0/691.0 * (441.0*cpow(e4,3.0) + 250.0 * cpow(e6,2.0));
+		} else if (k == 14.0) {
+			return cmul(cpow(e4,2.0), e6);
+		} else if (k == 16.0) {
+			return 1.0/3617.0 * (1617.0*cpow(e4,4.0) + 2000.0*cmul(e4,cpow(e6,2.0)));
+		} else if (k == 18.0) {
+			return 1.0/43867.0 * (38367.0*cmul(cpow(e4,3.0),e6) + 550.0 * cpow(e6,3.0));
+		} else if (k == 20.0) {
+			return 1.0/ 174611.0 * (53361.0*cpow(e4,5.0) + 121250.0*cmul(cpow(e4,2.0),cpow(e6,2.0)));
+		} else if (k == 22.0) {
+			return 1.0/77683.0*(57183.0*cmul(cpow(e4,4.0),e6) + 20500.0 * cmul(e4,cpow(e6,3.0)));
+		} else if (k == 24.0) {
+			return 1.0/236364091.0 * (49679091.0 * cpow(e4,6.0) + 176400000.0*cmul(cpow(e4,3.0),cpow(e6,2.0)) + 10285000.0*cpow(e6,4.0));
 		}
-		// TODO: more
+        // todo: k > 24??
 	}
 	return ZERO;
 }
@@ -672,7 +720,7 @@ float gamma(float a) {
 vec2 zeta_helper(vec2 a) {
 	vec2 tot = ZERO;
 	float dn = 1023286908188737.0;
-	tot += cdiv(-1023286908188736.0, cpow(1.0,a));
+	tot += cdiv(-1023286908188736.0,ONE);
 	tot += cdiv(1023286908187936.0, cpow(2.0,a));
 	tot += cdiv(-1023286908081536.0, cpow(3.0,a));
 	tot += cdiv(1023286902463616.0, cpow(4.0,a));

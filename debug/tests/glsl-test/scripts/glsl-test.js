@@ -9,25 +9,37 @@
 		await Site.load_glsl();
 	}
 	
-	
-	
+
+// I'm concerned that I can't get cos(i) to work... or (1+I)^(1+I)... or tan(pi/2)
+// These tests fail: 
+		// return ctan(ONE+I) == cdiv(csin(ONE+I),ccos(ONE+I));
+		// `return ccot(PI*ONE/4.0) == ONE;`,
+		// `return ccot(I) == vec2(0.0, -1.31303528549933130363616);`,
+		// `return -30.0*bernoulli(4.0) == 1.0;`
+		// return ctan(ONE) == vec2(1.55740772465490223050697480745,0.0);`
+		// `return gamma(4.0) == 6.0;`
+		// `return cabs(gamma(4.0) - vec2(6.0,0.0)) < TOL;`
+
+
+// TODO: add tolerance for floating point precision stuff
 	let tests =
 	[
-		`
-			return cadd(ONE, ONE) == vec2(2.0, 0.0);
-		`,`
-			return csub(I, ONE) == vec2(-1.0, 1.0);
-		`,`
-			return cmul(I+ONE,ONE-2.0*I) == vec2(3.0, -1.0);
-		`,`
-			return cdiv(ONE, ONE+I) == vec2(0.5, -0.5);
-		`,`
-			return cinv(I) == -I;
-		`,`
-			return cpow(I, I) == vec2(cexp(-PI/2.0),0.0);
-		`,`
-			return ctet(2.0, 3.0) == 16.0;
-		`
+/*0*/	`return cadd(ONE, ONE) == vec2(2.0, 0.0);`,
+		`return csub(I, ONE) == vec2(-1.0, 1.0);`,
+		`return cmul(I+ONE,ONE-2.0*I) == vec2(3.0, -1.0);`,
+		`return cdiv(ONE, ONE+I) == vec2(0.5, -0.5);`,
+		`return cinv(I) == -I;`,
+		`return cpow(I, I) == vec2(cexp(-PI/2.0),0.0);`,
+		`return ctet(2.0, 3.0) == 16.0;`,
+		`return csin(I) == vec2(0.0,1.17520119364380145688238185059560);`,
+		`return csin(ONE) == vec2(0.84147098480789650665250232163,0.0);`,
+		`return ccos(ONE) == vec2(0.54030230586813971740093660,0.0);`,
+/*10*/	`return ctan(ZERO) == ZERO;`,
+		`return ctan(I) == vec2(0.0,0.761594155955764888119458282604);`,
+		`return divisor(4.0,10.0) == 1049601.0;`,
+		`return factorial(8.0) == 40320.0;`,
+		`return binomial(3.0,2.0) == 3.0;`,
+		`return binomial(10.0,4.0) == 210.0;`,
 	];
 	
 	
