@@ -15,6 +15,18 @@
 	[
 		`
 			return cadd(ONE, ONE) == vec2(2.0, 0.0);
+		`,`
+			return csub(I, ONE) == vec2(-1.0, 1.0);
+		`,`
+			return cmul(I+ONE,ONE-2.0*I) == vec2(3.0, -1.0);
+		`,`
+			return cdiv(ONE, ONE+I) == vec2(0.5, -0.5);
+		`,`
+			return cinv(I) == -I;
+		`,`
+			return cpow(I, I) == vec2(cexp(-PI/2.0),0.0);
+		`,`
+			return ctet(2.0, 3.0) == 16.0;
 		`
 	];
 	
