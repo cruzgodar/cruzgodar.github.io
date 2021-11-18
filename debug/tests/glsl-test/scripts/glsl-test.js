@@ -11,6 +11,9 @@
 	
 
 // I'm concerned that I can't get cos(i) to work... or (1+I)^(1+I)... or tan(pi/2)
+// I want to add return ctan(ONE+I) == cdiv(csin(ONE+I),ccos(ONE+I));
+
+// TODO: add tolerance for floating point precision stuff
 	let tests =
 	[
 		`
@@ -36,7 +39,6 @@
 		`,`
 			return ctan(ZERO) == ZERO;
 		`
-
 	];
 	
 	

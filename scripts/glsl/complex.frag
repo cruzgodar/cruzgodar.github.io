@@ -339,9 +339,11 @@ vec2 csqrt(float z)
 
 
 //Returns e^z.
-vec2 cexp(vec2 z)
+vec2 cexp(vec2 w)
 {
-	return cpow(2.7182818, z);
+	float zexp = exp(w.x);	
+	return vec2(zexp * cos(w.y), zexp * sin(w.y));
+	// return cpow(2.7182818, z);
 }
 
 float cexp(float z)
