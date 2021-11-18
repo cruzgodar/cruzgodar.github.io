@@ -352,6 +352,28 @@ float cexp(float z)
 	return exp(z);
 }
 
+const int EXP_BOUND = 5;
+
+
+float exp_minus_one(float z)
+{
+	float summer = 0.0;
+	float temp = 1.0;
+	for (int j = 1; j < EXP_BOUND; j++)
+	{
+		temp *= -z / float(j);
+		summer += temp;
+	}
+	return summer;
+}
+
+
+// returns e^z - 1; use in niche cases for better numerical stability
+vec2 cexp_minus_one(vec2 z)
+{
+	float zexp = exp_minus_one(z.x);	
+	return vec2(zexp * cos(z.y), zexp * sin(z.y));
+}
 
 
 //Returns log(z).
@@ -444,7 +466,6 @@ float csec(float z)
 
 //Returns cot(z).
 // code ripped off of above code for tan
-// I believe this code to be corect but it could use verification -- Andy
 vec2 ccot(vec2 z)
 {
 	vec2 temp = cexp(2.0 * vec2(-z.y,z.x));
@@ -568,7 +589,7 @@ float bernoulli(float m)
 	return summer;
 }
 
-const int EISENSTEIN_BOUND = 40;
+const int EISENSTEIN_BOUND = 20;
 
 // auxiliary function
 vec2 eisenstein4(vec2 z)
