@@ -5,7 +5,8 @@ const vec2 ONE = vec2(1.0, 0.0);
 const vec2 i = vec2(0.0, 1.0);
 const vec2 I = i;
 
-
+// error tolerance in glsl-tests.js... someday...
+const float TOL = .0001;
 
 
 //Returns |z|.
@@ -631,8 +632,22 @@ vec2 eisenstein(float k, vec2 z)
 		if (k == 10.0)
 		{
 			return cmul(e4,e6);
+		} else if (k == 12.0) {
+			return 1.0/691.0 * (441.0*cpow(e4,3.0) + 250.0 * cpow(e6,2.0));
+		} else if (k == 14.0) {
+			return cmul(cpow(e4,2.0), e6);
+		} else if (k == 16.0) {
+			return 1.0/3617.0 * (1617.0*cpow(e4,4.0) + 2000.0*cmul(e4,cpow(e6,2.0)));
+		} else if (k == 18.0) {
+			return 1.0/43867.0 * (38367.0*cmul(cpow(e4,3.0),e6) + 550.0 * cpow(e6,3.0));
+		} else if (k == 20.0) {
+			return 1.0/ 174611.0 * (53361.0*cpow(e4,5.0) + 121250.0*cmul(cpow(e4,2.0),cpow(e6,2.0)));
+		} else if (k == 22.0) {
+			return 1.0/77683.0*(57183.0*cmul(cpow(e4,4.0),e6) + 20500.0 * cmul(e4,cpow(e6,3.0)));
+		} else if (k == 24.0) {
+			return 1.0/236364091.0 * (49679091.0 * cpow(e4,6.0) + 176400000.0*cmul(cpow(e4,3.0),cpow(e6,2.0)) + 10285000.0*cpow(e6,4.0));
 		}
-		// TODO: more
+        // todo: k > 24??
 	}
 	return ZERO;
 }

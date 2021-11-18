@@ -11,11 +11,15 @@
 	
 
 // I'm concerned that I can't get cos(i) to work... or (1+I)^(1+I)... or tan(pi/2)
-// I want to add return ctan(ONE+I) == cdiv(csin(ONE+I),ccos(ONE+I));
+// These tests fail: 
+		// return ctan(ONE+I) == cdiv(csin(ONE+I),ccos(ONE+I));
 		// `return ccot(PI*ONE/4.0) == ONE;`,
-				// `return ccot(I) == vec2(0.0, -1.31303528549933130363616);`,
+		// `return ccot(I) == vec2(0.0, -1.31303528549933130363616);`,
+		// `return -30.0*bernoulli(4.0) == 1.0;`
+		// return ctan(ONE) == vec2(1.55740772465490223050697480745,0.0);`
+		// `return gamma(4.0) == 6.0;`
+		// `return cabs(gamma(4.0) - vec2(6.0,0.0)) < TOL;`
 
-// This test currently fails: return ctan(ONE) == vec2(1.55740772465490223050697480745,0.0);
 
 // TODO: add tolerance for floating point precision stuff
 	let tests =
@@ -35,7 +39,7 @@
 		`return divisor(4.0,10.0) == 1049601.0;`,
 		`return factorial(8.0) == 40320.0;`,
 		`return binomial(3.0,2.0) == 3.0;`,
-		`return binomial(10.0,4.0) == 210.0;`
+		`return binomial(10.0,4.0) == 210.0;`,
 	];
 	
 	
