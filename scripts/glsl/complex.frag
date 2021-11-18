@@ -413,7 +413,7 @@ float csin(float z)
 vec2 ccos(vec2 z)
 {
 	vec2 temp = vec2(-z.y,z.x);
-	return 0.5*( cexp(temp) + cexp(-temp));	
+	return 0.5*( cexp(temp) + cexp(-temp));
 }
 
 float ccos(float z)
