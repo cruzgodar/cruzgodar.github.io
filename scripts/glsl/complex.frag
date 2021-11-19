@@ -154,12 +154,13 @@ float cmul(float z, float w)
 //Returns z / w.
 vec2 cdiv(vec2 z, vec2 w)
 {
-	if (length(w) == 0.0)
+	float len_w = w.x * w.x + w.y * w.y;
+	if (len_w == 0.0)
 	{
 		return vec2(1.0, 0.0);
 	}
 	
-	return vec2(z.x * w.x + z.y * w.y, -z.x * w.y + z.y * w.x) / (w.x * w.x + w.y * w.y);
+	return vec2(z.x * w.x + z.y * w.y, -z.x * w.y + z.y * w.x) / len_w;
 }
 
 vec2 cdiv(vec2 z, float w)
@@ -174,12 +175,13 @@ vec2 cdiv(vec2 z, float w)
 
 vec2 cdiv(float z, vec2 w)
 {
-	if (length(w) == 0.0)
+	float len_w = w.x * w.x + w.y * w.y;
+	if (len_w == 0.0)
 	{
 		return vec2(1.0, 0.0);
 	}
 	
-	return vec2(z * w.x, -z * w.y) / (w.x * w.x + w.y * w.y);
+	return vec2(z * w.x, -z * w.y) / len_w;
 }
 
 float cdiv(float z, float w)
@@ -352,30 +354,6 @@ float cexp(float z)
 	return exp(z);
 }
 
-const int EXP_BOUND = 5;
-
-
-float exp_minus_one(float z)
-{
-	float summer = 0.0;
-	float temp = 1.0;
-	for (int j = 1; j < EXP_BOUND; j++)
-	{
-		temp *= -z / float(j);
-		summer += temp;
-	}
-	return summer;
-}
-
-
-// returns e^z - 1; use in niche cases for better numerical stability
-vec2 cexp_minus_one(vec2 z)
-{
-	float zexp = exp_minus_one(z.x);	
-	return vec2(zexp * cos(z.y), zexp * sin(z.y));
-}
-
-
 //Returns log(z).
 vec2 clog(vec2 z)
 {
@@ -397,8 +375,9 @@ float clog(float z)
 //Returns sin(z).
 vec2 csin(vec2 z)
 {
+	// implementation idea: cache cexp(temp)... unclear if it works now
 	vec2 temp = vec2(-z.y,z.x);
-	temp = -0.5*( cexp(temp) - cexp(-temp));
+	temp = 0.5*(cexp(-temp) - cexp(temp));
 	return vec2(-temp.y,temp.x);
 }
 
@@ -623,6 +602,9 @@ vec2 eisenstein6(vec2 z)
 	summer = vec2(-summer.y,summer.x);
 	return vec2(1.0-summer.x,summer.y);
 }
+
+// Developer note: eisenstein8 was implemented along the lines of the two above... it's extremely unstable!
+// Just use M_k = {E_4,E_6} for all E_k, k>6.
 
 // Returns E_k(z) where E_k is the normalized Eisenstein series of weight k and level 1 (k must be even...).
 // Uses equation (1.3) from https://arxiv.org/pdf/math/0009130.pdf.
