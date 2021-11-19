@@ -54,6 +54,11 @@
 	
 	let use_selector_mode = false;
 	
+	let total_benchmark_time = 0;
+	let benchmarks_left = 0;
+	const benchmark_cycles = 10;
+	const benchmark_resolution = 4000;
+	
 	
 	
 	let code_input_element = document.querySelector("#code-textarea");
@@ -81,6 +86,14 @@
 	{
 		use_selector_mode = true;
 	});
+	
+	
+	
+	let benchmark_button_element = document.querySelector("#benchmark-button");
+	
+	benchmark_button_element.addEventListener("click", run_benchmark);
+	
+	
 	
 	if (!DEBUG)
 	{
@@ -603,4 +616,28 @@
 
 	window.addEventListener("resize", change_aspect_ratio);
 	Page.temporary_handlers["resize"].push(change_aspect_ratio);
+	
+	
+	
+	function run_benchmark()
+	{
+		wilson.change_canvas_size(benchmark_resolution, benchmark_resolution);
+		
+		let start_time = Date.now();
+		
+		let pixel = new Uint8Array(4);
+		
+		for (let i = 0; i < benchmark_cycles; i++)
+		{
+			wilson.render.draw_frame();
+			
+			wilson.gl.readPixels(0, 0, 1, 1, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, pixel);
+		}
+		
+		let average_time = (Date.now() - start_time) / benchmark_cycles;
+				
+		console.log(`Finished benchmark --- average time to draw a ${benchmark_resolution}x${benchmark_resolution} frame is ${average_time}ms`);
+		
+		wilson.change_canvas_size(resolution, resolution);
+	}
 }()
