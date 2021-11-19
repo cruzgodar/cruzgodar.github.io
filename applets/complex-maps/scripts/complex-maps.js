@@ -13,6 +13,8 @@
 	
 	let wilson = null;
 	
+	let wilson_hidden = null;
+	
 	
 	
 	let aspect_ratio = 1;
@@ -50,6 +52,8 @@
 	let currently_animating_parameters = false;
 	let parameter_animation_frame = 0;
 	
+	let use_selector_mode = false;
+	
 	
 	
 	let code_input_element = document.querySelector("#code-textarea");
@@ -60,11 +64,31 @@
 	
 	let generate_button_element = document.querySelector("#generate-button");
 	
-	generate_button_element.addEventListener("click", use_new_code);
+	generate_button_element.addEventListener("click", () =>
+	{
+		use_new_code();
+		
+		past_brightness_scales = [];
+		
+		zoom_level = -.585;
+	});
 	
 	
 	
-
+	let selector_mode_button_element = document.querySelector("#selector-mode-button");
+	
+	selector_mode_button_element.addEventListener("click", () =>
+	{
+		use_selector_mode = true;
+	});
+	
+	if (!DEBUG)
+	{
+		selector_mode_button_element.parentNode.parentNode.remove();
+	}
+	
+	
+	
 	let resolution_input_element = document.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
@@ -110,16 +134,43 @@
 	
 	
 	let canvas_location_element = document.querySelector("#canvas-location");
+	let hidden_canvas_location_element = document.querySelector("#hidden-canvas-location");
 	
 	
 	
 	use_new_code();
 	
+	past_brightness_scales = [];
+	
+	zoom_level = -.585;
 	
 	
-	function use_new_code()
+	
+	function use_new_code(selector_mode = false, world_width = 2, world_height = 2, world_center_x = 0, world_center_y = 0)
 	{
 		let generating_code = code_input_element.value || "cexp(cinv(z))";
+		
+		
+		
+		let selector_mode_string = "";
+		
+		if (selector_mode)
+		{
+			selector_mode_string = `
+				image_z.x += 127.0;
+				image_z.y += 127.0;
+				
+				float whole_1 = floor(image_z.x);
+				float whole_2 = floor(image_z.y);
+				
+				float fract_1 = (image_z.x - whole_1);
+				float fract_2 = (image_z.y - whole_2);
+				
+				gl_FragColor = vec4(whole_1 / 256.0, fract_1, whole_2 / 256.0, fract_2);
+				
+				return;
+			`;
+		}
 		
 		
 		
@@ -177,11 +228,18 @@
 				
 				
 				vec2 image_z = f(z);
+				
+				
+				
+				${selector_mode_string}
+				
+				
+				
 				float modulus = length(image_z);
 				
 				float h = atan(image_z.y, image_z.x) / 6.283;
-				float s = 1.0 / (1.0 + .01 * (modulus / white_point / white_point));
-				float v = 1.0 / (1.0 + .01 / (modulus * black_point * black_point));
+				float s = clamp(1.0 / (1.0 + .01 * (modulus / white_point / white_point)), 0.0, 1.0);
+				float v = clamp(1.0 / (1.0 + .01 / (modulus * black_point * black_point)), 0.0, 1.0);
 				
 				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
 			}
@@ -198,10 +256,10 @@
 			canvas_width: 500,
 			canvas_height: 500,
 			
-			world_width: 2,
-			world_height: 2,
-			world_center_x: 0,
-			world_center_y: 0,
+			world_width: world_width,
+			world_height: world_height,
+			world_center_x: world_center_x,
+			world_center_y: world_center_y,
 			
 			
 			
@@ -252,11 +310,11 @@
 
 		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point"]);
 		
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
+		
+		window.requestAnimationFrame(draw_frame);
 		
 		
-		past_brightness_scales = [];
-		
-		zoom_level = -.585;
 		
 		next_pan_velocity_x = 0;
 		next_pan_velocity_y = 0;
@@ -265,13 +323,6 @@
 		pan_velocity_x = 0;
 		pan_velocity_y = 0;
 		zoom_velocity = 0;
-		
-		
-		
-		//Render the inital frame.
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
-		
-		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
@@ -288,121 +339,45 @@
 		
 		
 		
-		if (DEBUG)
+		if (use_selector_mode)
 		{
-			wilson.render.draw_frame();
+			use_new_code(true, wilson.world_width, wilson.world_height, wilson.world_center_x, wilson.world_center_y);
 			
-			let coordinates = wilson.utils.interpolate.world_to_canvas(x, y);
-			
-			let pixel = new Uint8Array(4);
-			
-			this.parent.gl.readPixels(coordinates[1], wilson.canvas_height - coordinates[0], 1, 1, this.parent.gl.RGBA, this.parent.gl.UNSIGNED_BYTE, pixel);
-			
-			let r = pixel[0];
-			let g = pixel[1];
-			let b = pixel[2];
-			
-			
-			
-			//RGB to HSV
-			let max_color = Math.max(r, g, b);
-			let min_color = Math.min(r, g, b);
-			let delta = max_color - min_color;
-			
-			let h = 0;
-			let s = 0;
-			let v = 0;
-			
-			if (delta === 0)
+			setTimeout(() =>
 			{
-				h = 0;
-			}
-			
-			else if (r === max_color)
-			{
-				h = (6 + (g - b) / delta) % 6;
-			}
-			
-			else if (g === max_color)
-			{
-				h = 2 + (b - r) / delta;
-			}
-			
-			else if (b === max_color)
-			{
-				h = 4 + (r - g) / delta;
-			}
-			
-			else
-			{
-				h = 0;
-			}
-			
-			h = 1 - h / 6;
-
-			if (max_color !== 0)
-			{
-				s = delta / max_color;
-			}
-
-			v = max_color / 255;
-			
-			
-			
-			let argument = h * 2 * Math.PI;
-			
-			let modulus = 0;
-			
-			
-			
-			let plus_1 = "+";
-			
-			if (y < 0)
-			{
-				plus_1 = "-";
-			}
-			
-			
-			
-			if (v === 1 && s === 0)
-			{
-				console.log(`${x} ${plus_1} ${Math.abs(y)}i |---> Infinity`);
+				wilson.render.draw_frame();
 				
-				return;
-			}
-			
-			else if (v === 0 && s === 0)
-			{
-				console.log(`${x} ${plus_1} ${Math.abs(y)}i |---> Infinity`);
+				let coordinates = wilson.utils.interpolate.world_to_canvas(x, y);
 				
-				return;
-			}
-			
-			
-			
-			if (v < 1)
-			{
-				modulus = .01 * v / (black_point * black_point * (1 - v));
-			}
-			
-			else
-			{
-				modulus = 100 * (1 - s) * white_point * white_point / s;
-			}
-			
-			
-			
-			let z_x = modulus * Math.cos(argument);
-			let z_y = modulus * Math.sin(argument);
-			
-			let plus_2 = "+";
-			
-			if (z_y < 0)
-			{
-				plus_2 = "-";
-			}
-			
-			console.log(`${x} ${plus_1} ${Math.abs(y)}i |---> ${z_x} ${plus_2} ${Math.abs(z_y)}i`);
+				let pixel = new Uint8Array(4);
+				
+				wilson.gl.readPixels(coordinates[1], wilson.canvas_height - coordinates[0], 1, 1, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, pixel);
+				
+				let z_x = (pixel[0] - 127) + pixel[1] / 256;
+				let z_y = (pixel[2] - 127) + pixel[3] / 256;
+				
+				
+				
+				let plus_1 = "+";
+				
+				if (y < 0)
+				{
+					plus_1 = "-";
+				}
+				
+				let plus_2 = "+";
+				
+				if (z_y < 0)
+				{
+					plus_2 = "-";
+				}
+				
+				console.log(`${x} ${plus_1} ${Math.abs(y)}i |---> ${z_x} ${plus_2} ${Math.abs(z_y)}i`);
+				
+				use_new_code(false, wilson.world_width, wilson.world_height, wilson.world_center_x, wilson.world_center_y);
+				
+				use_selector_mode = false;
+			}, 20);
 		}
 	}
 	
