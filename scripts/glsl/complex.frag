@@ -655,6 +655,36 @@ vec2 eisenstein(float k, vec2 z)
 	return ZERO;
 }
 
+const int DELTA_BOUND = 100;
+
+vec2 delta(vec2 z) {
+	if (z.y <= 0.0)
+	{
+		return ZERO;
+	}
+	vec2 q = cexp(2.0*PI*vec2(-z.y,z.x));
+	vec2 prod = q;
+	for (int j = 1; j < DELTA_BOUND; j++) {
+		prod = cmul(prod,cpow(ONE-cpow(q,float(j)),24.0));
+	}
+	return prod;
+}
+
+// delta(q)
+vec2 deltaq(vec2 z) {
+	if (z.x*z.x + z.y*z.y >= 1.0)
+	{
+		return ZERO;
+	}
+	vec2 q = z;
+	vec2 prod = q;
+	for (int j = 1; j < DELTA_BOUND; j++) {
+		prod = cmul(prod,cpow(ONE-cpow(q,float(j)),24.0));
+	}
+	return prod;
+}
+
+
 vec2 gamma_helper(vec2 a) 
 {
 	a -= ONE;
@@ -733,10 +763,10 @@ vec2 zeta(vec2 a) {
 		}
 		vec2 ans = cmul(cmul(cmul(cmul(cpow(2.0,a),cpow(PI,a-ONE)),csin(PI * a / 2.0)),gamma(ONE-a)), zeta_helper(ONE-a));
 		// sign is flipped/???
-		return vec2(ans.x,-ans.y);
+		return vec2(ans.x,ans.y);
 	} else {
 		vec2 ans = zeta_helper(a);
-		return vec2(ans.x,-ans.y);
+		return vec2(ans.x,ans.y);
 	}
 }
 
