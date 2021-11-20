@@ -4,10 +4,7 @@ const vec2 ZERO = vec2(0.0, 0.0);
 const vec2 ONE = vec2(1.0, 0.0);
 const vec2 i = vec2(0.0, 1.0);
 const vec2 I = i;
-
-// error tolerance in glsl-tests.js... someday...
-const float TOL = .0001;
-
+const vec2 rho = vec2(-0.5, 0.866025403784438);
 
 //Returns |z|.
 float cabs(vec2 z)
@@ -300,11 +297,7 @@ float ctet(float z, float w)
 	{
 		return 1.0;
 	}
-	
-	
-	
 	float prod = z;
-	
 	for (int j = 1; j < 10000; j++)
 	{
 		if (float(j) >= w)
@@ -630,10 +623,11 @@ vec2 eisenstein(float k, vec2 z)
 		}
 		vec2 e6 = eisenstein6(z);
 		if (k == 10.0)
+			// todo: distribute the division
 		{
 			return cmul(e4,e6);
 		} else if (k == 12.0) {
-			return 1.0/691.0 * (441.0*cpow(e4,3.0) + 250.0 * cpow(e6,2.0));
+			return 0.638205499276411*cpow(e4,3.0) + 0.361794500723589 * cpow(e6,2.0);
 		} else if (k == 14.0) {
 			return cmul(cpow(e4,2.0), e6);
 		} else if (k == 16.0) {
@@ -679,6 +673,25 @@ vec2 deltaq(vec2 z) {
 		prod = cmul(prod,cpow(ONE-cpow(q,float(j)),24.0));
 	}
 	return prod;
+}
+
+
+const int WEIERSTRASS_BOUND = 10;
+// tau parametrizes the lattice
+vec2 weierstrassp(vec2 z, vec2 tau) {
+
+	vec2 tot = cpow(z,-2.0);
+	vec2 lambda = ZERO;
+	for (int i = -WEIERSTRASS_BOUND; i <= WEIERSTRASS_BOUND; i++) {
+		for (int j = -WEIERSTRASS_BOUND; j <= WEIERSTRASS_BOUND; j++) {
+			if (i*i+j*j != 0) {
+				lambda = ONE*float(i) + float(j) * tau;
+				tot += cpow(z-lambda,-2.0)-cpow(lambda,-2.0);
+			}
+		}
+	}
+	return tot;
+
 }
 
 
@@ -742,7 +755,6 @@ const float dn = 1023286908188737.0;
 // accurate for |a|<20 or so
 
 vec2 zeta_helper(vec2 a) {
-	// can also cache logs of bases
 	vec2 tot = vec2(-0.999999999999999,0.0);
 	tot += 0.999999999999217 * cpow_logz(2.0, 0.693147180559945,-a);
 	tot += -0.999999999895239 * cpow_logz(3.0, 1.09861228866811,-a);
