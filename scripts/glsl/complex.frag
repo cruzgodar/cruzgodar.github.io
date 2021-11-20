@@ -257,9 +257,8 @@ vec2 cpow(float z, vec2 w)
 		return vec2(0.0, 0.0);
 	}
 	
-	float zlog = log(z);
-	float zexp = exp(w.x * zlog);
-	float wyzlog = w.y * zlog;
+	float zexp = pow(z,w.x);
+	float wyzlog = w.y * log(z);
 	
 	return vec2(zexp * cos(wyzlog), zexp * sin(wyzlog));
 }
@@ -683,6 +682,8 @@ vec2 deltaq(vec2 z) {
 }
 
 
+// these can probably go in a different file...
+
 const vec2 GAMMA_CONST_0 = vec2(0.99999999999980993,0.0);
 const float GAMMA_CONST_1 = 676.5203681218851;
 const float GAMMA_CONST_2 = -1259.1392167224028;
@@ -722,34 +723,47 @@ float gamma(float a) {
 	return gamma(vec2(a, 0.0)).x;
 }
 
+// IN: log(z),w
+// OUT: z^w
+// Saves a few operations if you already know log(z)
+vec2 cpow_logz(float z, float logz, vec2 w)
+{
+	// Assume z != 0
+	float zexp = pow(z,w.x);
+	float wyzlog = w.y * logz;
+	
+	return vec2(zexp * cos(wyzlog), zexp * sin(wyzlog));
+}
+
+const float dn = 1023286908188737.0;
+
 // Riemann zeta function
 // algorithm 2 of http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=5B07751C858FF584B31B250A0F3AFC58?doi=10.1.1.56.9455&rep=rep1&type=pdf
 // accurate for |a|<20 or so
 
-const float dn = 1023286908188737.0;
 vec2 zeta_helper(vec2 a) {
-	vec2 tot = ZERO;
-	tot += -1023286908188736.0;
-	tot += cdiv(1023286908187936.0, cpow(2.0,a));
-	tot += cdiv(-1023286908081536.0, cpow(3.0,a));
-	tot += cdiv(1023286902463616.0, cpow(4.0,a));
-	tot += cdiv(-1023286745563136.0, cpow(5.0,a));
-	tot += cdiv(1023284067794944.0, cpow(6.0,a));
-	tot += cdiv(-1023253638610944.0, cpow(7.0,a));
-	tot += cdiv(1023010205138944.0, cpow(8.0,a));
-	tot += cdiv(-1021586119327744.0, cpow(9.0,a));
-	tot += cdiv(1015331311058944.0, cpow(10.0,a));
-	tot += cdiv(-994328323293184.0, cpow(11.0,a));
-	tot += cdiv(939775108317184.0, cpow(12.0,a));
-	tot += cdiv(-829482738909184.0, cpow(13.0,a));
-	tot += cdiv(655729836949504.0, cpow(14.0,a));
-	tot += cdiv(-443365178998784.0, cpow(15.0,a));
-	tot += cdiv(244181775679488.0, cpow(16.0,a));
-	tot += cdiv(-103628970917888.0, cpow(17.0,a));
-	tot += cdiv(31473520345088.0, cpow(18.0,a));
-	tot += cdiv(-6047313952768.0, cpow(19.0,a));
-	tot += cdiv(549755813888.0, cpow(20.0,a));
-	return cdiv((-tot/dn), (ONE-cpow(2.0, ONE-a)));
+	// can also cache logs of bases
+	vec2 tot = vec2(-0.999999999999999,0.0);
+	tot += 0.999999999999217 * cpow_logz(2.0, 0.693147180559945,-a);
+	tot += -0.999999999895239 * cpow_logz(3.0, 1.09861228866811,-a);
+	tot += 0.999999994405165 * cpow_logz(4.0, 1.38629436111989,-a);
+	tot += -0.999999841075265 * cpow_logz(5.0, 1.60943791243410,-a);
+	tot += 0.999997224244960 * cpow_logz(6.0, 1.79175946922805,-a);
+	tot += -0.999967487536949 * cpow_logz(7.0, 1.94591014905531,-a);
+	tot += 0.999729593872863 * cpow_logz(8.0, 2.07944154167984,-a);
+	tot += -0.998337915937962 * cpow_logz(9.0, 2.19722457733622,-a);
+	tot += 0.992225448145452 * cpow_logz(10.0, 2.30258509299405,-a);
+	tot += -0.971700424715869 * cpow_logz(11.0, 2.39789527279837,-a);
+	tot += 0.918388675548119 * cpow_logz(12.0, 2.48490664978800,-a);
+	tot += -0.810606226143756 * cpow_logz(13.0, 2.56494935746154,-a);
+	tot += 0.640807413543651 * cpow_logz(14.0, 2.63905732961526,-a);
+	tot += -0.433275531476856 * cpow_logz(15.0, 2.70805020110221,-a);
+	tot += 0.238624938641794 * cpow_logz(16.0, 2.77258872223978,-a);
+	tot += -0.101270689665439 * cpow_logz(17.0, 2.83321334405622,-a);
+	tot += 0.0307572784262407 * cpow_logz(18.0, 2.89037175789616,-a);
+	tot += -0.00590969541814232 * cpow_logz(19.0, 2.94443897916644,-a);
+	tot += 0.000537245038012938 * cpow_logz(20.0, 2.99573227355399,-a);
+	return cdiv(-tot, (ONE-cpow(2.0, ONE-a)));
 }
 
 // Seems to be pretty unstable with large imaginary part
@@ -759,7 +773,6 @@ vec2 zeta(vec2 a) {
 			return vec2(-0.5,0.0);
 		}
 		vec2 ans = cmul(cmul(cmul(cmul(cpow(2.0,a),cpow(PI,a-ONE)),csin(PI * a / 2.0)),gamma(ONE-a)), zeta_helper(ONE-a));
-		// sign is flipped/???
 		return vec2(ans.x,ans.y);
 	} else {
 		vec2 ans = zeta_helper(a);
@@ -776,7 +789,7 @@ float zeta(float a) {
 vec2 bench1000(vec2 z) {
 	vec2 temp = z;
 	for (int j = 0; j < 10000; j++) {
-		temp += gamma(z);
+		temp += zeta(z);
 	}
 	return temp;
 }
