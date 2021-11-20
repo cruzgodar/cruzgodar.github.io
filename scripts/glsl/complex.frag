@@ -80,8 +80,6 @@ float csign(float z)
 }
 
 
-
-
 //Returns z + w.
 vec2 cadd(vec2 z, vec2 w)
 {
@@ -685,21 +683,31 @@ vec2 deltaq(vec2 z) {
 }
 
 
+const vec2 GAMMA_CONST_0 = vec2(0.99999999999980993,0.0);
+const float GAMMA_CONST_1 = 676.5203681218851;
+const float GAMMA_CONST_2 = -1259.1392167224028;
+const float GAMMA_CONST_3 = 771.3234287776531;
+const float GAMMA_CONST_4 = -176.6150291621406;
+const float GAMMA_CONST_5 = 12.507343278686905;
+const float GAMMA_CONST_6 = -0.13857109526572012;
+const float GAMMA_CONST_7 = .000009984369578019572;
+const float GAMMA_CONST_8 = .00000015056327351493116;
+
 vec2 gamma_helper(vec2 a) 
 {
 	a -= ONE;
 
-	vec2 y = vec2(0.99999999999980993, 0.0);
-	y += cdiv(vec2(676.5203681218851, 0.0), (a + vec2(1.0, 0.0)));
-	y += cdiv(vec2(-1259.1392167224028, 0.0), (a + vec2(2.0, 0.0)));
-	y += cdiv(vec2(771.3234287776531, 0.0), (a + vec2(3.0, 0.0)));
-	y += cdiv(vec2(-176.6150291621406, 0.0), (a + vec2(4.0, 0.0)));
-	y += cdiv(vec2(12.507343278686905, 0.0), (a + vec2(5.0, 0.0)));
-	y += cdiv(vec2(-0.13857109526572012, 0.0), (a + vec2(6.0, 0.0)));
-	y += cdiv(vec2(.000009984369578019572, 0.0), (a + vec2(7.0, 0.0)));
-	y += cdiv(vec2(.00000015056327351493116, 0.0), (a + vec2(8.0, 0.0)));
-	vec2 t = a + vec2(8.0-0.5, 0.0);
-	return sqrt(2.0*PI) * cmul(cpow(t, (a + vec2(0.5, 0.0))), cmul(cexp(-t), y));
+	vec2 y = GAMMA_CONST_0;
+	y += cdiv(GAMMA_CONST_1, vec2(a.x + 1.0, a.y));
+	y += cdiv(GAMMA_CONST_2, vec2(a.x + 2.0, a.y));
+	y += cdiv(GAMMA_CONST_3, vec2(a.x + 3.0, a.y));
+	y += cdiv(GAMMA_CONST_4, vec2(a.x + 4.0, a.y));
+	y += cdiv(GAMMA_CONST_5, vec2(a.x + 5.0, a.y));
+	y += cdiv(GAMMA_CONST_6, vec2(a.x + 6.0, a.y));
+	y += cdiv(GAMMA_CONST_7, vec2(a.x + 7.0, a.y));
+	y += cdiv(GAMMA_CONST_8, vec2(a.x + 8.0, a.y));
+	vec2 t = vec2(a.x + 7.5, a.y);
+	return sqrt(2.0*PI) * cmul(cpow(t, vec2(a.x+0.5, a.y)), cmul(cexp(-t), y));
 }
 
 // Lanczos
@@ -708,19 +716,7 @@ vec2 gamma(vec2 a) {
 	if (a.x < 0.5) {
 		return cdiv(vec2(PI, 0.0), cmul(csin(PI * a), gamma_helper(ONE - a)));
 	}
-	a -= ONE;
-
-	vec2 y = vec2(0.99999999999980993, 0.0);
-	y += cdiv(vec2(676.5203681218851, 0.0), (a + vec2(1.0, 0.0)));
-	y += cdiv(vec2(-1259.1392167224028, 0.0), (a + vec2(2.0, 0.0)));
-	y += cdiv(vec2(771.3234287776531, 0.0), (a + vec2(3.0, 0.0)));
-	y += cdiv(vec2(-176.6150291621406, 0.0), (a + vec2(4.0, 0.0)));
-	y += cdiv(vec2(12.507343278686905, 0.0), (a + vec2(5.0, 0.0)));
-	y += cdiv(vec2(-0.13857109526572012, 0.0), (a + vec2(6.0, 0.0)));
-	y += cdiv(vec2(.000009984369578019572, 0.0), (a + vec2(7.0, 0.0)));
-	y += cdiv(vec2(.00000015056327351493116, 0.0), (a + vec2(8.0, 0.0)));
-	vec2 t = a + vec2(8.0-0.5, 0.0);
-	return sqrt(2.0*PI) * cmul(cpow(t, (a + vec2(0.5, 0.0))), cmul(cexp(-t), y));
+	return gamma_helper(a);
 }
 float gamma(float a) {
 	return gamma(vec2(a, 0.0)).x;
@@ -729,10 +725,11 @@ float gamma(float a) {
 // Riemann zeta function
 // algorithm 2 of http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=5B07751C858FF584B31B250A0F3AFC58?doi=10.1.1.56.9455&rep=rep1&type=pdf
 // accurate for |a|<20 or so
+
+const float dn = 1023286908188737.0;
 vec2 zeta_helper(vec2 a) {
 	vec2 tot = ZERO;
-	float dn = 1023286908188737.0;
-	tot += cdiv(-1023286908188736.0,ONE);
+	tot += -1023286908188736.0;
 	tot += cdiv(1023286908187936.0, cpow(2.0,a));
 	tot += cdiv(-1023286908081536.0, cpow(3.0,a));
 	tot += cdiv(1023286902463616.0, cpow(4.0,a));
@@ -772,4 +769,14 @@ vec2 zeta(vec2 a) {
 
 float zeta(float a) {
 	return zeta(vec2(a,0.0)).x;
+}
+
+
+// benchmarking function
+vec2 bench1000(vec2 z) {
+	vec2 temp = z;
+	for (int j = 0; j < 10000; j++) {
+		temp += gamma(z);
+	}
+	return temp;
 }
