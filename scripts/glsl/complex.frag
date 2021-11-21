@@ -693,9 +693,9 @@ vec2 theta1(vec2 z, vec2 t) {
 	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
 	vec2 w = cexp(PI * vec2(-z.y,z.x));
 	vec2 v = cdiv(1.0,w);
-	vec2 summer = ZERO;
-	float alternate_j = 1.0;
-	for (int j = 0; j < THETA_BOUND; j++) {
+	vec2 summer = w-v;
+	float alternate_j = -1.0;
+	for (int j = 1; j < THETA_BOUND; j++) {
 		summer += alternate_j * cmul(cpow(q,float(j*(j+1))),cpow(w,float(2*j+1))-cpow(v,float(2*j+1)));
 		alternate_j = -alternate_j;
 	}
@@ -707,8 +707,8 @@ vec2 theta2(vec2 z, vec2 t) {
 	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
 	vec2 w = cexp(PI * vec2(-z.y,z.x));
 	vec2 v = cdiv(1.0,w);
-	vec2 summer = ZERO;
-	for (int j = 0; j < THETA_BOUND; j++) {
+	vec2 summer = w+v;
+	for (int j = 1; j < THETA_BOUND; j++) {
 		summer += cmul(cpow(q,float(j*(j+1))),cpow(w,float(2*j+1))+cpow(v,float(2*j+1)));
 	}
 	return cmul(q4,summer);
@@ -738,15 +738,54 @@ vec2 theta4(vec2 z, vec2 t) {
 	return summer;
 }
 
-// a lot of reusing variables can be done here...
-// also can shift z to be in the fundamental parallelogram to extend image
-vec2 wp(vec2 z, vec2 tau) {
-	vec2 theta02 = theta2(ZERO,tau);
-	vec2 theta03 = theta3(ZERO,tau);
-	vec2 prod = PI*PI*cmul(cpow(theta02,2.0),cpow(theta03,2.0));
-	prod = cmul(prod,cpow(theta4(z,tau),2.0));
-	prod = cmul(prod,cpow(theta1(z,tau),-2.0));
-	prod -= PI*PI/3.0 * (cpow(theta02,4.0)+cpow(theta03,4.0));
+
+// Returns the weierstrass p function with w1 = 1, w2 = tau
+// Algorithms from equation 1.10 of https://arxiv.org/pdf/1806.06725.pdf
+
+// Example use: wp(z,rho)
+vec2 wp(vec2 z, vec2 t) {
+	// Shift z to be in the fundamental parallelogram
+	z -= floor(z.y/t.y)*t;
+	z.x = fract(z.x);
+
+	// Manually compute thetas here since you can reuse variables instead of calling separately
+	vec2 q = cexp(PI * vec2(-t.y,t.x));
+	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
+	vec2 w = cexp(PI * vec2(-z.y,z.x));
+	vec2 v = cdiv(1.0,w);
+
+	vec2 thetaz1 = w-v;
+	vec2 theta02 = ONE;
+	vec2 theta03 = ZERO;
+	vec2 thetaz4 = ONE;
+
+	float alternate_j = -1.0;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		thetaz1 += alternate_j * cmul(cpow(q,float(j*(j+1))),cpow(w,float(2*j+1))-cpow(v,float(2*j+1)));
+		theta02 += cpow(q,float(j*(j+1)));
+		theta03 += cpow(q,float(j*j));
+		thetaz4 += alternate_j * cmul(cpow(q,float(j*j)),cpow(w,float(2*j))+cpow(v,float(2*j)));
+
+		alternate_j = -alternate_j;
+	}
+
+	thetaz1 = cmul(vec2(q4.y,-q4.x),thetaz1);
+	theta02 = 2.0 * cmul(q4,theta02);
+	theta03 = 2.0 * theta03 + ONE;
+
+	theta02 = cmul(theta02,theta02);
+	theta03 = cmul(theta03,theta03);
+
+	// pi * pi = 9.8696044010893586188
+	vec2 prod = 9.8696044010893586188*cmul(theta02,theta03);
+	prod = cmul(prod, cpow(thetaz4,2.0));
+	prod = cmul(prod, cpow(thetaz1,-2.0));
+
+	theta02 = cmul(theta02,theta02);
+	theta03 = cmul(theta03,theta03);
+
+	// pi * pi / 3 = 3.2898681336964528729
+	prod -= 3.2898681336964528729 * (theta02+theta03);
 	return prod;
 }
 
