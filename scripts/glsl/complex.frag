@@ -265,7 +265,17 @@ float cpow(float z, float w)
 	return pow(z, w);
 }
 
-
+// IN: log(z),w
+// OUT: z^w
+// Saves a few operations if you already know log(z)
+vec2 cpow_logz(float z, float logz, vec2 w)
+{
+	// Assume z != 0
+	float zexp = pow(z,w.x);
+	float wyzlog = w.y * logz;
+	
+	return vec2(zexp * cos(wyzlog), zexp * sin(wyzlog));
+}
 
 //Returns z^^w.
 vec2 ctet(vec2 z, float w)
@@ -676,24 +686,73 @@ vec2 deltaq(vec2 z) {
 }
 
 
-const int WEIERSTRASS_BOUND = 10;
-// tau parametrizes the lattice
-vec2 weierstrassp(vec2 z, vec2 tau) {
-
-	vec2 tot = cpow(z,-2.0);
-	vec2 lambda = ZERO;
-	for (int i = -WEIERSTRASS_BOUND; i <= WEIERSTRASS_BOUND; i++) {
-		for (int j = -WEIERSTRASS_BOUND; j <= WEIERSTRASS_BOUND; j++) {
-			if (i*i+j*j != 0) {
-				lambda = ONE*float(i) + float(j) * tau;
-				tot += cpow(z-lambda,-2.0)-cpow(lambda,-2.0);
-			}
-		}
+const int THETA_BOUND = 10;
+// https://arxiv.org/pdf/1806.06725.pdf
+vec2 theta1(vec2 z, vec2 t) {
+	vec2 q = cexp(PI * vec2(-t.y,t.x));
+	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
+	vec2 w = cexp(PI * vec2(-z.y,z.x));
+	vec2 v = cdiv(1.0,w);
+	vec2 summer = ZERO;
+	float alternate_j = 1.0;
+	for (int j = 0; j < THETA_BOUND; j++) {
+		summer += alternate_j * cmul(cpow(q,float(j*(j+1))),cpow(w,float(2*j+1))-cpow(v,float(2*j+1)));
+		alternate_j = -alternate_j;
 	}
-	return tot;
-
+	return cmul(vec2(q4.y,-q4.x),summer);
 }
 
+vec2 theta2(vec2 z, vec2 t) {
+	vec2 q = cexp(PI * vec2(-t.y,t.x));
+	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
+	vec2 w = cexp(PI * vec2(-z.y,z.x));
+	vec2 v = cdiv(1.0,w);
+	vec2 summer = ZERO;
+	for (int j = 0; j < THETA_BOUND; j++) {
+		summer += cmul(cpow(q,float(j*(j+1))),cpow(w,float(2*j+1))+cpow(v,float(2*j+1)));
+	}
+	return cmul(q4,summer);
+}
+
+vec2 theta3(vec2 z, vec2 t) {
+	vec2 q = cexp(PI * vec2(-t.y,t.x));
+	vec2 w = cexp(PI * vec2(-z.y,z.x));
+	vec2 v = cdiv(1.0,w);
+	vec2 summer = ONE;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		summer += cmul(cpow(q,float(j*j)),cpow(w,float(2*j))+cpow(v,float(2*j)));
+	}
+	return summer;
+}
+
+vec2 theta4(vec2 z, vec2 t) {
+	vec2 q = cexp(PI * vec2(-t.y,t.x));
+	vec2 w = cexp(PI * vec2(-z.y,z.x));
+	vec2 v = cdiv(1.0,w);
+	float alternate_j = -1.0;
+	vec2 summer = ONE;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		summer += alternate_j * cmul(cpow(q,float(j*j)),cpow(w,float(2*j))+cpow(v,float(2*j)));
+		alternate_j = -alternate_j;
+	}
+	return summer;
+}
+
+// a lot of reusing variables can be done here...
+// also can shift z to be in the fundamental parallelogram to extend image
+vec2 wp(vec2 z, vec2 tau) {
+	vec2 theta02 = theta2(ZERO,tau);
+	vec2 theta03 = theta3(ZERO,tau);
+	vec2 prod = PI*PI*cmul(cpow(theta02,2.0),cpow(theta03,2.0));
+	prod = cmul(prod,cpow(theta4(z,tau),2.0));
+	prod = cmul(prod,cpow(theta1(z,tau),-2.0));
+	prod -= PI*PI/3.0 * (cpow(theta02,4.0)+cpow(theta03,4.0));
+	return prod;
+}
+
+vec2 weierstrassp(vec2 z, vec2 tau) {
+	return wp(z,tau);
+}
 
 // these can probably go in a different file...
 
@@ -736,17 +795,7 @@ float gamma(float a) {
 	return gamma(vec2(a, 0.0)).x;
 }
 
-// IN: log(z),w
-// OUT: z^w
-// Saves a few operations if you already know log(z)
-vec2 cpow_logz(float z, float logz, vec2 w)
-{
-	// Assume z != 0
-	float zexp = pow(z,w.x);
-	float wyzlog = w.y * logz;
-	
-	return vec2(zexp * cos(wyzlog), zexp * sin(wyzlog));
-}
+
 
 const float dn = 1023286908188737.0;
 
@@ -800,8 +849,8 @@ float zeta(float a) {
 // benchmarking function
 vec2 bench1000(vec2 z) {
 	vec2 temp = z;
-	for (int j = 0; j < 10000; j++) {
-		temp += zeta(z);
+	for (int j = 0; j < 100; j++) {
+		temp += wp(z,rho);
 	}
 	return temp;
 }
