@@ -37,8 +37,8 @@ class Lapsa
 	CODE_BLOCK = 5;
 	FOOTNOTE = 6;
 	
-	escape_tokens = ["\\", "`", "*", "_", "{", "}", "[", "]", "<", ">", "(", ")", "#", "+", "-", ".", "!", "|"];
-	escape_indices = {"\\": "00", "`": "01", "*": "02", "_": "03", "{": "04", "}": "05", "[": "06", "]": "07", "<": "08", ">": "09", "(": "10", ")": "11", "#": "12", "+": "13", "-": "14", ".": "15", "!": "16", "|": "17"};
+	escape_tokens = ["\\", "`", "*", "_", "{", "}", "[", "]", "<", ">", "(", ")", "#", "+", "-", ".", "!", "|", "$"];
+	escape_indices = {"\\": "00", "`": "01", "*": "02", "_": "03", "{": "04", "}": "05", "[": "06", "]": "07", "<": "08", ">": "09", "(": "10", ")": "11", "#": "12", "+": "13", "-": "14", ".": "15", "!": "16", "|": "17", "$": "18"};
 	
 	
 	
@@ -690,6 +690,45 @@ class Lapsa
 			
 			element.firstChild.innerHTML = `<sup>${index}</sup> ${element.firstChild.innerHTML} <a id="footnote-${var_name}" href="#footnote-link-${var_name}">↩︎</a>`;
 		}
+		
+		
+		
+		//Add math.
+		if (window.MathJax === undefined)
+		{
+			window.MathJax =
+			{
+				tex:
+				{
+					inlineMath: [["$", "$"]],
+					displayMath: [["$$", "$$"]]
+				}
+			};
+			
+			this.load_script("https://polyfill.io/v3/polyfill.min.js?features=es6");
+			
+			
+			
+			this.load_script("https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js")
+			
+			.then(() =>
+			{
+				//Unescape dollar signs.
+				let html = this.current_container.element.innerHTML;
+				
+				for (let i = 0; i < html.length - 2; i++)
+				{
+					if (html[i] === "\t")
+					{
+						let token = this.escape_tokens[parseInt(html.slice(i + 1, i + 3))];
+						
+						html = html.slice(0, i) + token + html.slice(i + 3);
+					}
+				}
+				
+				this.current_container.element.innerHTML = html;
+			});
+		}
 	}
 	
 	
@@ -739,7 +778,12 @@ class Lapsa
 		{
 			if (html[i] === "\t")
 			{
-				html = html.slice(0, i) + this.escape_tokens[parseInt(html.slice(i + 1, i + 3))] + html.slice(i + 3);
+				let token = this.escape_tokens[parseInt(html.slice(i + 1, i + 3))];
+				
+				if (token !== "$")
+				{
+					html = html.slice(0, i) + token + html.slice(i + 3);
+				}
 			}
 		}
 		
@@ -1621,5 +1665,26 @@ class Lapsa
 			
 			console.warn(`Line ${this.current_line}: ${log_message}`);
 		}
+	}
+	
+	
+	
+	load_script(src, is_module = false)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			const script = document.createElement("script");
+			
+			if (is_module)
+			{
+				script.setAttribute("type", "module");
+			}
+			
+			document.body.appendChild(script);
+			script.onload = resolve;
+			script.onerror = reject;
+			script.async = true;
+			script.src = src;
+		});
 	}
 };
