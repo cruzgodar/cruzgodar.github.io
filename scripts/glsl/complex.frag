@@ -568,40 +568,131 @@ float bernoulli(float m)
 	return summer;
 }
 
-const int EISENSTEIN_BOUND = 20;
+
+const int THETA_BOUND = 10;
+// https://arxiv.org/pdf/1806.06725.pdf
+vec2 theta1(vec2 z, vec2 t) {
+	vec2 q = cexp(PI * vec2(-t.y,t.x));
+	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
+	vec2 w = cexp(PI * vec2(-z.y,z.x));
+	vec2 v = cdiv(1.0,w);
+	vec2 summer = w-v;
+	float alternate_j = -1.0;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		summer += alternate_j * cmul(cpow(q,float(j*(j+1))),cpow(w,float(2*j+1))-cpow(v,float(2*j+1)));
+		alternate_j = -alternate_j;
+	}
+	return cmul(vec2(q4.y,-q4.x),summer);
+}
+
+vec2 theta2(vec2 z, vec2 t) {
+	vec2 q = cexp(PI * vec2(-t.y,t.x));
+	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
+	vec2 w = cexp(PI * vec2(-z.y,z.x));
+	vec2 v = cdiv(1.0,w);
+	vec2 summer = w+v;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		summer += cmul(cpow(q,float(j*(j+1))),cpow(w,float(2*j+1))+cpow(v,float(2*j+1)));
+	}
+	return cmul(q4,summer);
+}
+
+vec2 theta3(vec2 z, vec2 t) {
+	vec2 q = cexp(PI * vec2(-t.y,t.x));
+	vec2 w = cexp(PI * vec2(-z.y,z.x));
+	vec2 v = cdiv(1.0,w);
+	vec2 summer = ONE;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		summer += cmul(cpow(q,float(j*j)),cpow(w,float(2*j))+cpow(v,float(2*j)));
+	}
+	return summer;
+}
+
+vec2 theta4(vec2 z, vec2 t) {
+	vec2 q = cexp(PI * vec2(-t.y,t.x));
+	vec2 w = cexp(PI * vec2(-z.y,z.x));
+	vec2 v = cdiv(1.0,w);
+	float alternate_j = -1.0;
+	vec2 summer = ONE;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		summer += alternate_j * cmul(cpow(q,float(j*j)),cpow(w,float(2*j))+cpow(v,float(2*j)));
+		alternate_j = -alternate_j;
+	}
+	return summer;
+}
 
 // auxiliary function
 vec2 eisenstein4(vec2 z)
 {
-	vec2 summer = ZERO;
-	vec2 temp = ZERO;
-	for (int r = 1; r < EISENSTEIN_BOUND; r++) // need to fine tune this bound
+	if (z.y <= 0.0)
 	{
-		// add r^(k-1)q^r / (1-q^r)
-		// uses identity exp(2PI i rz)/(1-exp(2PI i rz)) = i/2 * (cot(PI r z)+ i)
-		temp = ccot(PI*float(r)*z);
-		temp = vec2(temp.x,temp.y + 1.0);
-		summer += float(r*r*r)* temp;
+		return ZERO;
 	}
-	summer *= -120.0;
-	summer = vec2(-summer.y,summer.x);
-	return vec2(1.0-summer.x,summer.y);
+	vec2 q = cexp(PI * vec2(-z.y,z.x));
+	vec2 q4 = cexp(PI/4.0 * vec2(-z.y,z.x));
+
+	vec2 a = ONE;
+	vec2 b = ZERO;
+	vec2 c = ZERO;
+
+	float alternate_j = -1.0;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		a += cpow(q,float(j*(j+1)));
+		b += cpow(q,float(j*j));
+		c += alternate_j *cpow(q,float(j*j));
+
+		alternate_j = -alternate_j;
+	}
+
+	a = 2.0 * cmul(q4,a);
+	b = 2.0 * b + ONE;
+	c = 2.0 * c + ONE;
+
+	return (cpow(a,8.0)+cpow(b,8.0)+cpow(c,8.0))/2.0;
+}
+
+vec2 g2(vec2 z) {
+	// 60.0 *2.0 * pi^4/90.0 = 129.878788045336582
+	return 129.878788045336582 * eisenstein4(z);
 }
 
 vec2 eisenstein6(vec2 z)
 {
-	vec2 summer = ZERO;
-	vec2 temp = ZERO;
-	for (int r = 1; r < EISENSTEIN_BOUND; r++) // need to fine tune this bound
+	if (z.y <= 0.0)
 	{
-		temp = ccot(PI*float(r)*z);
-		temp = vec2(temp.x,temp.y + 1.0);
-		summer += float(r*r*r*r*r)* temp;
+		return ZERO;
 	}
-	summer *= 252.0;
-	summer = vec2(-summer.y,summer.x);
-	return vec2(1.0-summer.x,summer.y);
+	vec2 q = cexp(PI * vec2(-z.y,z.x));
+	vec2 q4 = cexp(PI/4.0 * vec2(-z.y,z.x));
+
+	vec2 a = ONE;
+	vec2 b = ZERO;
+	vec2 c = ZERO;
+
+	float alternate_j = -1.0;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		a += cpow(q,float(j*(j+1)));
+		b += cpow(q,float(j*j));
+		c += alternate_j *cpow(q,float(j*j));
+
+		alternate_j = -alternate_j;
+	}
+
+	a = 2.0 * cmul(q4,a);
+	b = 2.0 * b + ONE;
+	c = 2.0 * c + ONE;
+
+	vec2 summer = -3.0 * cmul(cpow(a,8.0),cpow(b,4.0) + cpow(c,4.0));
+	summer += cpow(b,12.0) + cpow(c,12.0);
+	return 0.5 * summer;
 }
+
+vec2 g3(vec2 z) {
+	// off by about 0.5% at z = rho; could use some attention to precision
+	// 140.0 *2.0 * pi^6/945.0  = 284.856...
+	return 284.856057355645759120065 * eisenstein6(z);
+}
+
 
 // Developer note: eisenstein8 was implemented along the lines of the two above... it's extremely unstable!
 // Just use M_k = {E_4,E_6} for all E_k, k>6.
@@ -632,6 +723,7 @@ vec2 eisenstein(float k, vec2 z)
 			return cmul(e4,e4);
 		}
 		vec2 e6 = eisenstein6(z);
+		// can probably save a lot of operations copy pasting the eisenstein4/6 code here to reuse variables
 		if (k == 10.0)
 			// todo: distribute the division
 		{
@@ -686,57 +778,7 @@ vec2 deltaq(vec2 z) {
 }
 
 
-const int THETA_BOUND = 10;
-// https://arxiv.org/pdf/1806.06725.pdf
-vec2 theta1(vec2 z, vec2 t) {
-	vec2 q = cexp(PI * vec2(-t.y,t.x));
-	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
-	vec2 w = cexp(PI * vec2(-z.y,z.x));
-	vec2 v = cdiv(1.0,w);
-	vec2 summer = w-v;
-	float alternate_j = -1.0;
-	for (int j = 1; j < THETA_BOUND; j++) {
-		summer += alternate_j * cmul(cpow(q,float(j*(j+1))),cpow(w,float(2*j+1))-cpow(v,float(2*j+1)));
-		alternate_j = -alternate_j;
-	}
-	return cmul(vec2(q4.y,-q4.x),summer);
-}
 
-vec2 theta2(vec2 z, vec2 t) {
-	vec2 q = cexp(PI * vec2(-t.y,t.x));
-	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
-	vec2 w = cexp(PI * vec2(-z.y,z.x));
-	vec2 v = cdiv(1.0,w);
-	vec2 summer = w+v;
-	for (int j = 1; j < THETA_BOUND; j++) {
-		summer += cmul(cpow(q,float(j*(j+1))),cpow(w,float(2*j+1))+cpow(v,float(2*j+1)));
-	}
-	return cmul(q4,summer);
-}
-
-vec2 theta3(vec2 z, vec2 t) {
-	vec2 q = cexp(PI * vec2(-t.y,t.x));
-	vec2 w = cexp(PI * vec2(-z.y,z.x));
-	vec2 v = cdiv(1.0,w);
-	vec2 summer = ONE;
-	for (int j = 1; j < THETA_BOUND; j++) {
-		summer += cmul(cpow(q,float(j*j)),cpow(w,float(2*j))+cpow(v,float(2*j)));
-	}
-	return summer;
-}
-
-vec2 theta4(vec2 z, vec2 t) {
-	vec2 q = cexp(PI * vec2(-t.y,t.x));
-	vec2 w = cexp(PI * vec2(-z.y,z.x));
-	vec2 v = cdiv(1.0,w);
-	float alternate_j = -1.0;
-	vec2 summer = ONE;
-	for (int j = 1; j < THETA_BOUND; j++) {
-		summer += alternate_j * cmul(cpow(q,float(j*j)),cpow(w,float(2*j))+cpow(v,float(2*j)));
-		alternate_j = -alternate_j;
-	}
-	return summer;
-}
 
 
 // Returns the weierstrass p function with w1 = 1, w2 = tau
@@ -746,7 +788,7 @@ vec2 theta4(vec2 z, vec2 t) {
 vec2 wp(vec2 z, vec2 t) {
 	// Shift z to be in the fundamental parallelogram
 	z -= floor(z.y/t.y)*t;
-	z.x = fract(z.x);
+	z.x -= floor(z.x);
 
 	// Manually compute thetas here since you can reuse variables instead of calling separately
 	vec2 q = cexp(PI * vec2(-t.y,t.x));
@@ -791,6 +833,26 @@ vec2 wp(vec2 z, vec2 t) {
 
 vec2 weierstrassp(vec2 z, vec2 tau) {
 	return wp(z,tau);
+}
+
+// Returns the derivative of the Weierstrass p function wp
+// This satisfies p'^2 - 4p^3 +g2 p + g3 =0, although we have some instability issues
+// Can check by plotting cpow(wpprime(z,rho),2.0)-4.0*cpow(wp(z,rho),3.0) + g3(rho)
+vec2 wpprime(vec2 z, vec2 tau) {
+	// Shift z to be in the fundamental parallelogram
+	z -= floor(z.y/tau.y)*tau;
+	z.x = fract(z.x);
+
+	vec2 summer = ZERO;
+	vec2 temp = ZERO;
+	for (int j = -THETA_BOUND; j <= THETA_BOUND; j++) {
+		// can speed this up saving factors
+		temp = ccos(PI*(tau*float(j)-z));
+		temp = cmul(temp, cpow(csin(PI*(tau*float(j)-z)),-3.0));
+		summer += PI*temp;
+	}
+	summer = 2.0*(PI*PI) * summer;
+	return summer;
 }
 
 // these can probably go in a different file...
