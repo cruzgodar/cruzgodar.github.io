@@ -4,7 +4,7 @@
 	
 	
 	
-	let image_size = 500;
+	let image_size = 1000;
 	
 	let image = null;
 	
@@ -18,9 +18,103 @@
 	
 	
 	
+	let frag_shader_source_init = `
+		precision highp float;
+		
+		varying vec2 uv;
+		
+		
+		
+		void main(void)
+		{
+			gl_FragColor = vec4((uv + vec2(1.0, 1.0)) / 2.0, 0.5, 0.5);
+			
+			return;
+		}
+	`;
+	
+	
+	
+	let frag_shader_source_update = `
+		precision highp float;
+		precision highp sampler2D;
+		
+		varying vec2 uv;
+		
+		uniform sampler2D u_texture;
+		
+		const float dt = .01;
+		
+		
+		
+		void main(void)
+		{
+			vec4 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0) - vec4(.5, .5, .5, .5)) * (3.14159265358 * 2.0);
+			
+			float denom = 16.0 - 9.0 * cos(state.x - state.y) * cos(state.x - state.y);
+			
+			vec4 d_state = vec4(6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / denom, 6.0 * (8.0 * state.w - 3.0 * cos(state.x - state.y) * state.z) / denom, 0.0, 0.0);
+			
+			d_state.z = -(d_state.x * d_state.y * sin(state.x - state.y) + 3.0 * sin(state.x)) / 2.0;
+			
+			d_state.w = (d_state.x * d_state.y * sin(state.x - state.y) - sin(state.y)) / 2.0;
+			
+			
+			
+			state = ((dt * d_state + state) / (3.14159265358 * 2.0)) + vec4(.5, .5, .5, .5);
+			
+			state.xy = fract(state.xy);
+			
+			gl_FragColor = state;
+		}
+	`;
+	
+	
+	
+	let frag_shader_source_draw = `
+		precision highp float;
+		precision highp sampler2D;
+		
+		varying vec2 uv;
+		
+		uniform sampler2D u_texture;
+		
+		
+		
+		vec3 hsv2rgb(vec3 c)
+		{
+			vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+			vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+			return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+		}
+		
+		
+		
+		void main(void)
+		{
+			vec4 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0) - vec4(.5, .5, .5, .5));
+			
+			float h = atan(state.y, state.x) / 3.14159265258 + 1.0;
+			
+			float s = min((state.x * state.x + state.y * state.y) * 100.0, 1.0);
+			
+			float v_add = .9 * (1.0 - 4.0 * ((uv.x * uv.x) / 4.0 + (uv.y * uv.y) / 4.0));
+			
+			float v = min(sqrt(state.z * state.z + state.w * state.w) + v_add, 1.0);
+			
+			vec3 rgb = hsv2rgb(vec3(h, s, v));
+			
+			gl_FragColor = vec4(rgb, 1.0);
+		}
+	`;
+	
+	
+	
 	let options =
 	{
-		renderer: "hybrid",
+		renderer: "gpu",
+		
+		shader: frag_shader_source_init,
 		
 		canvas_width: image_size,
 		canvas_height: image_size,
@@ -37,6 +131,12 @@
 	};
 	
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	
+	wilson.render.load_new_shader(frag_shader_source_update);
+	wilson.render.load_new_shader(frag_shader_source_draw);
+	
+	wilson.render.create_framebuffer_texture_pair();
+	wilson.render.create_framebuffer_texture_pair();
 	
 	
 	
@@ -109,48 +209,28 @@
 	
 	function draw_double_pendulum_fractal()
 	{
-		image_size = parseInt(resolution_input_element.value || 500);
-		
-		state = new Array(image_size * image_size * 2);
-		
-		image = new Uint8ClampedArray(image_size * image_size * 4);
+		image_size = parseInt(resolution_input_element.value || 1000);
 		
 		wilson.change_canvas_size(image_size, image_size);
 		
 		
 		
+		wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, wilson.render.framebuffers[0].texture);
+		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvas_width, wilson.canvas_height, 0, wilson.gl.RGBA, wilson.gl.FLOAT, null);
+		
+		wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, wilson.render.framebuffers[1].texture);
+		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvas_width, wilson.canvas_height, 0, wilson.gl.RGBA, wilson.gl.FLOAT, null);
 		
 		
-		for (let i = 0; i < image_size / 2; i++)
-		{
-			for (let j = 0; j < image_size; j++)
-			{
-				let index = 4 * (image_size * i + j);
-				
-				image[index] = 0;
-				image[index + 1] = 0;
-				image[index + 2] = 0;
-				image[index + 3] = 255;
-				
-				
-				
-				state[index] = (j / image_size - .5) * 2 * Math.PI;
-				state[index + 1] = (i / image_size - .5) * 2 * Math.PI;
-				state[index + 2] = 0;
-				state[index + 3] = 0;
-				
-				
-				
-				let index_2 = 4 * (image_size * (image_size - i - 1) + (image_size - j - 1));
-				
-				image[index_2] = 0;
-				image[index_2 + 1] = 0;
-				image[index_2 + 2] = 0;
-				image[index_2 + 3] = 255;
-			}
-		}
 		
+		wilson.gl.useProgram(wilson.render.shader_programs[0]);
 		
+		wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, wilson.render.framebuffers[0].texture);
+		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, wilson.render.framebuffers[0].framebuffer);
+		
+		wilson.render.draw_frame();
+	
+	
 		
 		window.requestAnimationFrame(draw_frame);
 		
@@ -174,63 +254,43 @@
 		
 		
 		
-		for (let i = 0; i < image_size / 2; i++)
-		{
-			for (let j = 0; j < image_size; j++)
-			{
-				let index = 4 * (image_size * i + j);
-				
-				let d_theta_1 = 6 * (2 * state[index + 2] - 3 * Math.cos(state[index] - state[index + 1]) * state[index + 3]) / (16 - 9 * Math.pow(Math.cos(state[index] - state[index + 1]), 2));
-				
-				let d_theta_2 = 6 * (8 * state[index + 3] - 3 * Math.cos(state[index] - state[index + 1]) * state[index + 2]) / (16 - 9 * Math.pow(Math.cos(state[index] - state[index + 1]), 2));
-				
-				let d_p_1 = -(d_theta_1 * d_theta_2 * Math.sin(state[index] - state[index + 1]) + 3 * Math.sin(state[index])) / 2;
-				
-				let d_p_2 = (d_theta_1 * d_theta_2 * Math.sin(state[index] - state[index + 1]) - Math.sin(state[index + 1])) / 2;
-				
-				
-				
-				state[index] += d_theta_1 * dt;
-				state[index + 1] += d_theta_2 * dt;
-				state[index + 2] += d_p_1 * dt;
-				state[index + 3] += d_p_2 * dt;
-				
-				
-				
-				let x = state[index] / Math.PI;
-				let y = state[index + 1] / Math.PI;
-				
-				let p_1 = state[index + 2] / Math.PI;
-				let p_2 = state[index + 3] / Math.PI;
-				
-				
-				let hue = Math.atan2(y, x) / Math.PI + 1;
-				let saturation = Math.min((x*x + y*y) * 100, 1);
-				
-				let value_add = .9 * (1 - ((i / image_size - .5) * (i / image_size - .5) + (j / image_size - .5) * (j / image_size - .5)) * 4);
-				
-				let value = Math.min(Math.pow(p_1*p_1 + p_2*p_2, .5) + value_add, 1);
-				
-				let rgb = HSVtoRGB(hue, saturation, value);
-				
-				image[index] = rgb[0];
-				image[index + 1] = rgb[1];
-				image[index + 2] = rgb[2];
-				
-				
-				
-				let index_2 = 4 * (image_size * (image_size - i - 1) + (image_size - j - 1));
-				
-				image[index_2] = rgb[0];
-				image[index_2 + 1] = rgb[1];
-				image[index_2 + 2] = rgb[2];
-				image[index_2 + 3] = 255;
-			}
-		}
+		wilson.gl.useProgram(wilson.render.shader_programs[1]);
+		
+		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, wilson.render.framebuffers[1].framebuffer);
+		
+		wilson.render.draw_frame();
 		
 		
 		
-		wilson.render.draw_frame(image);
+		wilson.gl.useProgram(wilson.render.shader_programs[2]);
+		
+		wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, wilson.render.framebuffers[1].texture);
+		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, null);
+		
+		wilson.render.draw_frame();
+		
+		
+		
+		//At this point, we've gone Init --> F1 --> T1 --> Update --> F2 --> T2 --> Draw. T2 is still bound, which is correct, but we cannot be bound to F2, so we bind to F1.
+		
+		
+		
+		wilson.gl.useProgram(wilson.render.shader_programs[1]);
+		
+		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, wilson.render.framebuffers[0].framebuffer);
+		
+		wilson.render.draw_frame();
+		
+		
+		
+		wilson.gl.useProgram(wilson.render.shader_programs[2]);
+		
+		wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, wilson.render.framebuffers[0].texture);
+		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, null);
+		
+		wilson.render.draw_frame();
+		
+		
 		
 		if (!paused)
 		{

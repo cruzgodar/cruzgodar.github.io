@@ -5,6 +5,8 @@ class Wilson
 	ctx = null;
 	gl = null;
 	
+	shader_programs = [];
+	
 	uniforms = {};
 	
 	canvas_width = null;
@@ -187,14 +189,38 @@ class Wilson
 			this.render.init_webgl_hybrid();
 			
 			this.render.draw_frame = this.render.draw_frame_hybrid;
+			
+			
+			
+			try
+			{
+				let ext = this.gl.getExtension("OES_texture_float");
+			}
+			
+			catch(ex)
+			{
+				console.log("[Wilson] Could not load float textures");
+			}
 		}
 		
 		else
 		{
-			try {this.render.init_webgl_gpu(options.shader);}
+			try {this.render.load_new_shader(options.shader);}
 			catch(ex) {console.error("[Wilson] Error loading shader")}
 			
 			this.render.draw_frame = this.render.draw_frame_gpu;
+			
+			
+			
+			try
+			{
+				let ext = this.gl.getExtension("OES_texture_float");
+			}
+			
+			catch(ex)
+			{
+				console.log("[Wilson] Could not load float textures");
+			}
 		}
 		
 		
@@ -459,7 +485,10 @@ class Wilson
 		img_data: null,
 		
 		shader_program: null,
+		shader_programs: [],
 		texture: null,
+		
+		framebuffers: [],
 		
 		
 		
@@ -599,7 +628,7 @@ class Wilson
 		
 		
 		//Gets WebGL started for the canvas.
-		init_webgl_gpu(frag_shader_source)
+		load_new_shader(frag_shader_source)
 		{
 			this.parent.gl = this.parent.canvas.getContext("webgl");
 			
@@ -654,6 +683,10 @@ class Wilson
 			
 			
 			
+			this.shader_programs.push(this.shader_program);
+			
+			
+			
 			function load_shader(gl, type, source)
 			{
 				let shader = gl.createShader(type);
@@ -670,6 +703,32 @@ class Wilson
 				
 				return shader;
 			}
+		},
+		
+		
+		
+		create_framebuffer_texture_pair(type = this.parent.gl.FLOAT)
+		{
+			let framebuffer = this.parent.gl.createFramebuffer();
+	
+			let texture = this.parent.gl.createTexture();
+			
+			this.parent.gl.bindTexture(this.parent.gl.TEXTURE_2D, texture);
+			this.parent.gl.texImage2D(this.parent.gl.TEXTURE_2D, 0, this.parent.gl.RGBA, this.parent.canvas_width, this.parent.canvas_height, 0, this.parent.gl.RGBA, type, null);
+			
+			this.parent.gl.texParameteri(this.parent.gl.TEXTURE_2D, this.parent.gl.TEXTURE_MAG_FILTER, this.parent.gl.NEAREST);
+			this.parent.gl.texParameteri(this.parent.gl.TEXTURE_2D, this.parent.gl.TEXTURE_MIN_FILTER, this.parent.gl.NEAREST);
+			this.parent.gl.texParameteri(this.parent.gl.TEXTURE_2D, this.parent.gl.TEXTURE_WRAP_S, this.parent.gl.CLAMP_TO_EDGE);
+			this.parent.gl.texParameteri(this.parent.gl.TEXTURE_2D, this.parent.gl.TEXTURE_WRAP_T, this.parent.gl.CLAMP_TO_EDGE);
+			
+			this.parent.gl.disable(this.parent.gl.DEPTH_TEST);
+			
+			this.parent.gl.bindFramebuffer(this.parent.gl.FRAMEBUFFER, framebuffer);
+			this.parent.gl.framebufferTexture2D(this.parent.gl.FRAMEBUFFER, this.parent.gl.COLOR_ATTACHMENT0, this.parent.gl.TEXTURE_2D, texture, 0);
+			
+			
+			
+			this.framebuffers.push({framebuffer: framebuffer, texture: texture})
 		},
 		
 		
