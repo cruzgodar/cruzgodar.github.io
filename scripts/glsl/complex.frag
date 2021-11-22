@@ -573,6 +573,10 @@ const int EISENSTEIN_BOUND = 20;
 // auxiliary function
 vec2 eisenstein4(vec2 z)
 {
+	if (z.y <= 0.0)
+	{
+		return ZERO;
+	}
 	vec2 summer = ZERO;
 	vec2 temp = ZERO;
 	for (int r = 1; r < EISENSTEIN_BOUND; r++) // need to fine tune this bound
@@ -588,8 +592,17 @@ vec2 eisenstein4(vec2 z)
 	return vec2(1.0-summer.x,summer.y);
 }
 
+vec2 g2(vec2 z) {
+	// 60.0 *2.0 * pi^4/90.0 = 129.878788045336582
+	return 129.878788045336582 * eisenstein4(z);
+}
+
 vec2 eisenstein6(vec2 z)
 {
+	if (z.y <= 0.0)
+	{
+		return ZERO;
+	}
 	vec2 summer = ZERO;
 	vec2 temp = ZERO;
 	for (int r = 1; r < EISENSTEIN_BOUND; r++) // need to fine tune this bound
@@ -602,6 +615,13 @@ vec2 eisenstein6(vec2 z)
 	summer = vec2(-summer.y,summer.x);
 	return vec2(1.0-summer.x,summer.y);
 }
+
+vec2 g3(vec2 z) {
+	// off by about 0.5% at z = rho; could use some attention to precision
+	// 140.0 *2.0 * pi^6/945.0  = 284.856...
+	return 284.856057355645759120065 * eisenstein6(z);
+}
+
 
 // Developer note: eisenstein8 was implemented along the lines of the two above... it's extremely unstable!
 // Just use M_k = {E_4,E_6} for all E_k, k>6.
@@ -746,7 +766,7 @@ vec2 theta4(vec2 z, vec2 t) {
 vec2 wp(vec2 z, vec2 t) {
 	// Shift z to be in the fundamental parallelogram
 	z -= floor(z.y/t.y)*t;
-	z.x = fract(z.x);
+	z.x -= floor(z.x);
 
 	// Manually compute thetas here since you can reuse variables instead of calling separately
 	vec2 q = cexp(PI * vec2(-t.y,t.x));
@@ -791,6 +811,25 @@ vec2 wp(vec2 z, vec2 t) {
 
 vec2 weierstrassp(vec2 z, vec2 tau) {
 	return wp(z,tau);
+}
+
+// Returns the derivative of the Weierstrass p function wp
+// This satisfies p'^2 - 4p^3 +g2 p + g3 =0, although we have some instability issues
+vec2 wpprime(vec2 z, vec2 tau) {
+	// Shift z to be in the fundamental parallelogram
+	z -= floor(z.y/tau.y)*tau;
+	z.x = fract(z.x);
+
+	vec2 summer = ZERO;
+	vec2 temp = ZERO;
+	for (int j = -THETA_BOUND; j <= THETA_BOUND; j++) {
+		// can speed this up saving factors
+		temp = ccos(PI*(tau*float(j)-z));
+		temp = cmul(temp, cpow(csin(PI*(tau*float(j)-z)),-3.0));
+		summer += PI*temp;
+	}
+	summer = 2.0*(PI*PI) * summer;
+	return summer;
 }
 
 // these can probably go in a different file...
