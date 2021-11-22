@@ -201,6 +201,8 @@
 			uniform float black_point;
 			uniform float white_point;
 			
+			uniform vec2 draggable_arg;
+			
 			
 			
 			${COMPLEX_GLSL}
@@ -276,6 +278,13 @@
 			
 			
 			
+			use_draggables: true,
+			
+			draggables_mousemove_callback: on_drag_draggable,
+			draggables_touchmove_callback: on_drag_draggable,
+			
+			
+			
 			use_fullscreen: true,
 			
 			true_fullscreen: true,
@@ -321,9 +330,20 @@
 		
 		wilson = new Wilson(document.querySelector("#output-canvas"), options);
 
-		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point"]);
+		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point", "draggable_arg"]);
 		
 		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
+		
+		
+		
+		if (generating_code.indexOf("draggable_arg") !== -1)
+		{
+			wilson.draggables.add(0, 0);
+			
+			wilson.gl.uniform2f(wilson.uniforms["draggable_arg"], 0, 0);
+		}
+		
+		
 		
 		window.requestAnimationFrame(draw_frame);
 		
@@ -403,6 +423,9 @@
 		
 		next_pan_velocity_x = -x_delta / wilson.world_width;
 		next_pan_velocity_y = -y_delta / wilson.world_height;
+		
+		try {wilson.draggables.recalculate_locations();}
+		catch(ex) {}
 		
 		window.requestAnimationFrame(draw_frame);
 	}
@@ -494,6 +517,18 @@
 			wilson.world_center_x = new_world_center[0];
 			wilson.world_center_y = new_world_center[1];
 		}
+		
+		try {wilson.draggables.recalculate_locations();}
+		catch(ex) {}
+		
+		window.requestAnimationFrame(draw_frame);
+	}
+	
+	
+	
+	function on_drag_draggable(active_draggable, x, y, event)
+	{
+		wilson.gl.uniform2f(wilson.uniforms["draggable_arg"], x, y);
 		
 		window.requestAnimationFrame(draw_frame);
 	}

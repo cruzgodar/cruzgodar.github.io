@@ -343,7 +343,7 @@
 		let x = Math.random() * 3 - 1.5;
 		let y = Math.random() * 3 - 1.5;
 		
-		wilson.draggables.add(x, y)
+		wilson.draggables.add(x, y);
 		
 		current_roots.push(x);
 		current_roots.push(y);

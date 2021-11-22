@@ -28,7 +28,7 @@
 
 !begin-text-block
 	
-	It&#x2019;s not a coincidence that many of the applets I&#x2019;ve made revolve around the complex numbers &mdash; a complete two-dimensional number system is ideal for making pictures. Two of the applets that support custom complex functions are the generalized <a href="/applets/generalized-julia-sets/generalized-julia-sets.html" onclick="Page.Navigation.redirect('/applets/generalized-julia-sets/generalized-julia-sets.html')">Julia set</a> and <a href="/applets/newtons-method-extended/newtons-method-extended.html" onclick="Page.Navigation.redirect('/applets/newtons-method-extended/newtons-method-extended.html')">Newton&#x2019;s method</a> ones, but neither of them uses those functions directly &mdash; the first draws the points that stay bounded when iterated by the function, and the second shows convergence to the function&#x2019;s roots. This applet is somewhat simpler &mdash; it just plots the function itself. The color represents the argument of the output (the angle from the positive \(x\)-axis), and the saturation and brightness represent the modulus (the distance from the origin). Dark spots are roots of the function, where the modulus is zero, and white ones are singularities, where the modulus is infinite. As always, drag, pinch, and scroll to move around.
+	It&#x2019;s not a coincidence that many of the applets I&#x2019;ve made revolve around the complex numbers &mdash; a complete two-dimensional number system is ideal for making pictures. Two of the applets that support custom complex functions are the generalized <a href="/applets/generalized-julia-sets/generalized-julia-sets.html" onclick="Page.Navigation.redirect('/applets/generalized-julia-sets/generalized-julia-sets.html')">Julia set</a> and <a href="/applets/newtons-method-extended/newtons-method-extended.html" onclick="Page.Navigation.redirect('/applets/newtons-method-extended/newtons-method-extended.html')">Newton&#x2019;s method</a> ones, but neither of them uses those functions directly &mdash; the first draws the points that stay bounded when iterated by the function, and the second shows convergence to the function&#x2019;s roots. This applet is somewhat simpler &mdash; it just plots the function itself. The color represents the argument of the output (the angle from the positive \(x\)-axis), and the saturation and brightness represent the modulus (the distance from the origin). Dark spots are roots of the function, where the modulus is zero, and white ones are singularities, where the modulus is infinite. To reference a draggable argument in the function, use <code>draggable_arg</code> in the function body. As always, drag, pinch, and scroll to move around.
 	
 	Much of the code implementing complex functions was contributed by <a href="http://ahuchala.com" onclick="Page.Navigation.redirect('http://ahuchala.com', true)">Andy Huchala.</a> The applet itself was made with <a href="/projects/wilson/wilson.html" onclick="Page.Navigation.redirect('/projects/wilson/wilson.html')">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.
 
@@ -39,12 +39,6 @@
 <div style="height: 5vh"></div>
 
 
-
-<div data-aos="fade-up">
-	<p class="body-text center-if-needed"><span>Color demonstration: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">z</span></span></p>
-</div>
-
-<br>
 
 <div data-aos="fade-up">
 	<p class="body-text center-if-needed"><span>Trig function: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csin(z)</span></span></p>
@@ -66,6 +60,12 @@
 
 <div data-aos="fade-up">
 	<p class="body-text center-if-needed"><span>Tetration: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">ctet(z, 100.0)</span></span></p>
+</div>
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Lattices: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">wp(z, draggable_arg)</span></span></p>
 </div>
 
 <div style="height: 10vh"></div>
@@ -95,7 +95,7 @@
 
 !begin-text-buttons
 	
-	generate Generate
+	generate l Generate
 	
 !end-text-buttons
 
@@ -103,9 +103,9 @@
 
 !begin-text-buttons
 	
-	selector-mode Selector Mode
+	selector-mode l Selector Mode
 	
-	benchmark Benchmark
+	benchmark l Benchmark
 	
 !end-text-buttons
 
