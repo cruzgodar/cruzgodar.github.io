@@ -25,23 +25,26 @@
 	
 	
 	
-	let image_size = 1000;
+	let image_size = 2000;
 	
 	let num_rows = null;
 	let num_cols = null;
 	
-	//Must be even
-	let row_separation = 25;
+	let col_stagger = 25;
 	
-	let column_separation = Math.round(row_separation * 2 * Math.sqrt(3));
+	let col_separation = col_stagger * 2;
 	
-	let column_stagger = Math.round(column_separation / 2);
+	let row_separation = Math.round(col_stagger * Math.sqrt(3));
+	
+	
+	
+	let 
 	
 	
 	
 	let generate_button_element = document.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", draw_hex_graph);
+	generate_button_element.addEventListener("click", draw_frame);
 	
 	
 	let download_button_element = document.querySelector("#download-button");
@@ -53,36 +56,16 @@
 	
 	
 	
-	/*
-		With this coordinate system, the neighbors of a point (i, j) are:
-		(i - 2, j)
-		(i + 2, j)
-		
-		(i + 1, j)
-		(i - 1, j)
-		
-		if i % 2 === 0:
-			(i + 1, j - 1)
-			(i - 1, j - 1)
-		
-		else
-			(i + 1, j + 1)
-			(i - 1, j + 1)
-	*/
-	
-	function draw_point(i, j)
+	function draw_frame()
 	{
-		let j_modified = i % 2 === 1 ? j * column_separation + column_stagger : j * column_separation;
+		num_rows = Math.floor(image_size / row_separation) - 1;
+		num_cols = Math.floor(image_size / col_separation) + 1;
 		
-		wilson.ctx.fillRect(j_modified, (i + 1) * row_separation, 1, 1);
-	}
-	
-	
-	
-	function draw_hex_graph()
-	{
-		let num_rows = Math.floor(image_size / row_separation) - 1;
-		let num_cols = Math.floor(image_size / column_separation) + 1;
+		if (num_rows % 2 === 0)
+		{
+			image_size += row_separation;
+			num_rows++;
+		}
 		
 		wilson.change_canvas_size(image_size, image_size);
 		
@@ -93,17 +76,65 @@
 		
 		wilson.ctx.fillStyle = "rgb(255, 255, 255)";
 		
-		
-		
-		let odd_row = false;
+		wilson.ctx.strokeStyle = "rgb(255, 255, 255)";
 		
 		
 		
+		draw_all_lines();
+	}
+	
+	
+	
+	function draw_point(i, j)
+	{
+		let j_modified = i % 2 === 1 ? j * col_separation + col_stagger : j * col_separation;
+		
+		wilson.ctx.fillRect(j_modified, (i + 1) * row_separation, 1, 1);
+	}
+	
+	function draw_line(i_1, j_1, i_2, j_2)
+	{
+		if (i_1 < 0 || j_1 < 0 || i_2 < 0 || j_2 < 0 || i_1 >= num_rows || i_2 >= num_rows || j_1 >= num_cols || j_2 >= num_cols)
+		{
+			return;
+		}
+		
+		let j_1_modified = i_1 % 2 === 1 ? j_1 * col_separation + col_stagger : j_1 * col_separation;
+		let j_2_modified = i_2 % 2 === 1 ? j_2 * col_separation + col_stagger : j_2 * col_separation;
+		
+		let i_1_modified = (i_1 + 1) * row_separation;
+		let i_2_modified = (i_2 + 1) * row_separation;
+		
+		wilson.ctx.beginPath();
+		wilson.ctx.moveTo(j_1_modified, i_1_modified);
+		wilson.ctx.lineTo(j_2_modified, i_2_modified);
+		wilson.ctx.stroke();
+	}
+	
+	
+	
+	function draw_all_lines()
+	{
 		for (let i = 0; i < num_rows; i++)
 		{
 			for (let j = 0; j < num_cols; j++)
 			{
-				draw_point(i, j);
+				if ((j - i % 2) % 3 !== 0)
+				{
+					if (i % 2 === 0 && j % 3 === 1)
+					{
+						draw_line(i, j, i - 1, j - 1);
+						draw_line(i, j, i, j + 1);
+						draw_line(i, j, i + 1, j - 1);
+					}
+					
+					else if (i % 2 === 1 && j % 3 === 2)
+					{
+						draw_line(i, j, i - 1, j);
+						draw_line(i, j, i, j + 1);
+						draw_line(i, j, i + 1, j);
+					}
+				}
 			}
 		}
 	}
