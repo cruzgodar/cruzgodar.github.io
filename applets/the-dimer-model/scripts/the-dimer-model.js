@@ -25,11 +25,17 @@
 	
 	
 	
-	let image_size = 100;
+	let image_size = 1000;
 	
-	let graph_separation = 5;
+	let num_rows = null;
+	let num_cols = null;
 	
-	const row_stretch = Math.sqrt(3);
+	//Must be even
+	let row_separation = 25;
+	
+	let column_separation = Math.round(row_separation * 2 * Math.sqrt(3));
+	
+	let column_stagger = Math.round(column_separation / 2);
 	
 	
 	
@@ -47,8 +53,37 @@
 	
 	
 	
+	/*
+		With this coordinate system, the neighbors of a point (i, j) are:
+		(i - 2, j)
+		(i + 2, j)
+		
+		(i + 1, j)
+		(i - 1, j)
+		
+		if i % 2 === 0:
+			(i + 1, j - 1)
+			(i - 1, j - 1)
+		
+		else
+			(i + 1, j + 1)
+			(i - 1, j + 1)
+	*/
+	
+	function draw_point(i, j)
+	{
+		let j_modified = i % 2 === 1 ? j * column_separation + column_stagger : j * column_separation;
+		
+		wilson.ctx.fillRect(j_modified, (i + 1) * row_separation, 1, 1);
+	}
+	
+	
+	
 	function draw_hex_graph()
 	{
+		let num_rows = Math.floor(image_size / row_separation) - 1;
+		let num_cols = Math.floor(image_size / column_separation) + 1;
+		
 		wilson.change_canvas_size(image_size, image_size);
 		
 		
@@ -59,28 +94,17 @@
 		wilson.ctx.fillStyle = "rgb(255, 255, 255)";
 		
 		
+		
 		let odd_row = false;
 		
 		
-		for (let i = graph_separation; i <= image_size - graph_separation; i += graph_separation)
+		
+		for (let i = 0; i < num_rows; i++)
 		{
-			if (odd_row)
+			for (let j = 0; j < num_cols; j++)
 			{
-				for (let j = image_size / 2 - i; j <= image_size / 2 + i; j += graph_separation)
-				{
-					wilson.ctx.fillRect(j, i, 1, 1);
-				}
+				draw_point(i, j);
 			}
-			
-			else
-			{
-				for (let j = image_size / 2 - i * row_stretch; j <= image_size / 2 + i * row_stretch; j += graph_separation)
-				{
-					wilson.ctx.fillRect(j, i, 1, 1);
-				}
-			}
-			
-			odd_row = !odd_row;
 		}
 	}
 }()
