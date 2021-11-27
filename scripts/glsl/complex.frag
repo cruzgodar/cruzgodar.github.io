@@ -805,7 +805,7 @@ vec2 deltaq(vec2 z) {
 vec2 wp(vec2 z, vec2 t) {
 	// Shift z to be in the fundamental parallelogram
 	z -= floor(z.y/t.y)*t;
-	z.x -= floor(z.x);
+	z.x = fract(z.x);
 
 	// Manually compute thetas here since you can reuse variables instead of calling separately
 	vec2 q = cexp(PI * vec2(-t.y,t.x));
@@ -855,22 +855,59 @@ vec2 weierstrassp(vec2 z, vec2 tau) {
 // Returns the derivative of the Weierstrass p function wp
 // This satisfies p'^2 - 4p^3 +g2 p + g3 =0, although we have some instability issues
 // Can check by plotting cpow(wpprime(z,rho),2.0)-4.0*cpow(wp(z,rho),3.0) + g3(rho)
-vec2 wpprime(vec2 z, vec2 tau) {
+vec2 wpprime(vec2 z, vec2 t) {
 	// Shift z to be in the fundamental parallelogram
-	z -= floor(z.y/tau.y)*tau;
+	z -= floor(z.y/t.y)*t;
 	z.x = fract(z.x);
 
-	vec2 summer = ZERO;
-	vec2 temp = ZERO;
-	for (int j = -THETA_BOUND; j <= THETA_BOUND; j++) {
-		// can speed this up saving factors
-		temp = ccos(PI*(tau*float(j)-z));
-		temp = cmul(temp, cpow(csin(PI*(tau*float(j)-z)),-3.0));
-		summer += PI*temp;
+	// Manually compute thetas here since you can reuse variables instead of calling separately
+	vec2 q = cexp(PI * vec2(-t.y,t.x));
+	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
+	vec2 w = cexp(PI * vec2(-z.y,z.x));
+	vec2 v = cdiv(1.0,w);
+
+	vec2 thetaz1 = w-v;
+	vec2 theta02 = ONE;
+	vec2 theta03 = ZERO;
+	vec2 thetaz4 = ONE;
+
+	vec2 thetaz1_prime = w+v;
+	vec2 thetaz4_prime = ZERO;
+
+	float alternate_j = -1.0;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		thetaz1 += alternate_j * cmul(cpow(q,float(j*(j+1))),cpow(w,float(2*j+1))-cpow(v,float(2*j+1)));
+		theta02 += cpow(q,float(j*(j+1)));
+		theta03 += cpow(q,float(j*j));
+		thetaz4 += alternate_j * cmul(cpow(q,float(j*j)),cpow(w,float(2*j))+cpow(v,float(2*j)));
+
+		thetaz1_prime += float(2*j+1)*alternate_j * cmul(cpow(q,float(j*(j+1))),cpow(w,float(2*j+1))+cpow(v,float(2*j+1)));
+		thetaz4_prime += float(2*j)*alternate_j * cmul(cpow(q,float(j*j)),cpow(w,float(2*j))-cpow(v,float(2*j)));
+
+		alternate_j = -alternate_j;
 	}
-	summer = 2.0*(PI*PI) * summer;
-	return summer;
+
+	thetaz1 = cmul(vec2(q4.y,-q4.x),thetaz1);
+	theta02 = 2.0 * cmul(q4,theta02);
+	theta03 = 2.0 * theta03 + ONE;
+
+	theta02 = cmul(theta02,theta02);
+	theta03 = cmul(theta03,theta03);
+
+	thetaz1_prime = cmul(PI*q4,thetaz1_prime);
+	thetaz4_prime = cmul(I*PI,thetaz4_prime);
+
+	// pi * pi = 9.8696044010893586188
+	vec2 prod = 9.8696044010893586188*cmul(theta02,theta03);
+	prod = cmul(2.0*prod,thetaz4);
+	prod = cmul(prod, cmul(thetaz1,thetaz4_prime)-cmul(thetaz4,thetaz1_prime));
+	prod = cmul(prod,cpow(thetaz1,-3.0));
+	return prod;
 }
+
+
+
+
 
 // these can probably go in a different file...
 
