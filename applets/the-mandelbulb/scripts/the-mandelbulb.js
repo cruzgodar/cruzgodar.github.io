@@ -552,7 +552,18 @@
 		
 		
 		
-		if (time_elapsed >= 50)
+		
+		
+		
+		
+		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
+		{
+			update_camera_parameters();
+			
+			need_new_frame = true;
+		}
+		
+		else if (time_elapsed >= 50)
 		{
 			next_theta_velocity = 0;
 			next_phi_velocity = 0;
@@ -560,7 +571,7 @@
 			theta_velocity = 0;
 			phi_velocity = 0;
 			
-			moving_forward_touch = true;
+			moving_forward_touch = false;
 			moving_backward_touch = false;
 			
 			move_velocity[0] = 0;
@@ -573,13 +584,6 @@
 		}
 		
 		
-		
-		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
-		{
-			update_camera_parameters();
-			
-			need_new_frame = true;
-		}
 		
 		if (theta_velocity !== 0 || phi_velocity !== 0)
 		{

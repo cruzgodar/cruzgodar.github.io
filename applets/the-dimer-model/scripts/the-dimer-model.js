@@ -38,7 +38,7 @@
 	
 	
 	
-	let 
+	let matchings = [];
 	
 	
 	
@@ -88,8 +88,14 @@
 	function draw_point(i, j)
 	{
 		let j_modified = i % 2 === 1 ? j * col_separation + col_stagger : j * col_separation;
+		let i_modified = (i + 1) * row_separation;
 		
-		wilson.ctx.fillRect(j_modified, (i + 1) * row_separation, 1, 1);
+		
+		
+		wilson.ctx.beginPath();
+		wilson.ctx.arc(j_modified, i_modified, 5, 0, 2 * Math.PI, false);
+		wilson.ctx.fillStyle = "rgb(255, 0, 0)";
+		wilson.ctx.fill();
 	}
 	
 	function draw_line(i_1, j_1, i_2, j_2)
@@ -115,6 +121,8 @@
 	
 	function draw_all_lines()
 	{
+		wilson.ctx.fillStyle = "rgb(255, 0, 0)";
+		
 		for (let i = 0; i < num_rows; i++)
 		{
 			for (let j = 0; j < num_cols; j++)
@@ -137,5 +145,37 @@
 				}
 			}
 		}
+		
+		init_matching();
+	}
+	
+	
+	
+	function draw_matching()
+	{
+		wilson.ctx.strokeStyle = "rgb(255, 0, 0)";
+		
+		for (let i = 0; i < matchings.length; i++)
+		{
+			draw_line(matchings[i][0], matchings[i][1], matchings[i][2], matchings[i][3]);
+		}
+	}
+	
+	
+	
+	function init_matching()
+	{
+		for (let i = 0; i < num_rows; i++)
+		{
+			for (let j = 0; j < num_cols; j++)
+			{
+				if ((j - i % 2) % 3 === 1)
+				{
+					matchings.push([i, j, i, j + 1]);
+				}
+			}
+		}
+		
+		draw_matching();
 	}
 }()

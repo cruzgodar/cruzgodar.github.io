@@ -9,7 +9,7 @@
 	justify-content: center;
 	align-items: center;
 	
-	width: 70vw;
+	width: 70%;
 	margin: 0 auto;
 }
 
@@ -21,7 +21,7 @@
 	grid-row-gap: 2.5vw;
 	grid-column-gap: 2.5vw;
 	
-	margin-top: 10vh;
+	margin-top: 5vh;
 }
 
 .text-buttons
@@ -32,7 +32,7 @@
 	grid-row-gap: 5vw;
 	grid-column-gap: 5vw;
 	
-	margin-top: 10vh;
+	margin-top: 5vh;
 }
 
 
@@ -79,7 +79,7 @@
 
 .checkbox-row
 {
-	width: 70vw;
+	width: 70%;
 	height: 32px;
 	margin: 0 auto;
 	
@@ -170,7 +170,7 @@
 
 .radio-button-row
 {
-	width: 70vw;
+	width: 70%;
 	height: 32px;
 	margin: 0 auto;
 	
@@ -343,13 +343,32 @@ label .body-text
 
 
 
+#canvas-landscape
+{
+	display: flex;
+	flex-direction: column;
+	
+	width: 100vw;
+	
+	justify-content: space-between;
+	
+	align-items: center;
+}
+
+#canvas-landscape-left, #canvas-landscape-middle, #canvas-landscape-right
+{
+	width: 100%;
+}
+
+
+
 
 
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	.text-boxes, .text-buttons
 	{
-		width: 90vw;
+		width: 90%;
 	}
 	
 	.text-boxes
@@ -385,5 +404,34 @@ label .body-text
 	{
 		/* 4 buttons per row. */
 		grid-template-columns: repeat(auto-fit, 13.75vw);
+		
+		grid-column-gap: 0;
+	}
+	
+	.text-boxes, .text-buttons
+	{
+		width: 90%;
+	}
+	
+	#canvas-landscape
+	{
+		flex-direction: row;
+	}
+	
+	#canvas-landscape-left, #canvas-landscape-middle, #canvas-landscape-right
+	{
+		width: 33.33%;
+	}
+	
+	#canvas-landscape-left .body-text, #canvas-landscape-left .section-text, #canvas-landscape-middle .body-text, #canvas-landscape-middle .section-text, #canvas-landscape-right .body-text, #canvas-landscape-right .section-text
+	{
+		width: 70%;
+	}
+	
+	.text-box-container label p
+	{
+		margin: 0 0;
+		
+		width: 100% !important;
 	}
 }

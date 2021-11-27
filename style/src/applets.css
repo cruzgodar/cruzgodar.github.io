@@ -14,7 +14,7 @@
 .hidden-canvas
 {
 	position: fixed;
-	left: -100px;
+	left: -200vw;
 	width: 10px;
 	height: 10px;
 }

@@ -17,3 +17,14 @@
 	
 	transition: opacity .3s ease-in-out;
 }
+
+
+
+@media (min-aspect-ratio: 16/9), (min-width: 1400px)
+{
+	#calcudoku-grid
+	{	
+		width: 50vmin;
+		height: 50vmin;
+	}
+}
