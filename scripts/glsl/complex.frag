@@ -911,24 +911,6 @@ vec2 wpprime(vec2 z, vec2 t) {
 	return prod;
 }
 
-// defining via taylor series for debugging
-vec2 wsigma_test(vec2 z,vec2 t) {
-	vec2 prod = z;
-	vec2 temp = ONE;
-	for (int m = -THETA_BOUND; m <= THETA_BOUND; m++) {
-		for (int n = -THETA_BOUND; n <= THETA_BOUND; n++) {
-			if (m*m+n*n>0) {
-				temp = cdiv(z,float(m)+float(n)*t);
-				prod = cmul(prod,ONE-temp);
-				prod = cmul(prod,cexp(temp));
-				prod = cmul(prod,cexp(0.5*cmul(temp,temp)));
-			}
-		}
-	}
-	return prod;
-}
-
-
 // Weierstrass sigma function
 // Uses the garbage implementation outlined at https://mathworld.wolfram.com/WeierstrassSigmaFunction.html
 // which uses the garbage notation that w = e^{i z} not e^{i pi z}.
