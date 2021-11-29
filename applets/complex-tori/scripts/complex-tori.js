@@ -22,8 +22,8 @@
 	let aspect_ratio = 1;
 	let aspect_ratio_ec_plot = 1;
 	
-	let zoom_level = 1;
-	let zoom_level_ec_plot = 1;
+	let zoom_level = -.585;
+	let zoom_level_ec_plot = -.585;
 	
 	let past_brightness_scales = [];
 	
@@ -125,8 +125,6 @@
 	init_canvases();
 	
 	past_brightness_scales = [];
-	
-	zoom_level = -.585;
 	
 	
 	
@@ -537,8 +535,6 @@
 		next_pan_velocity_x_ec_plot = 0;
 		next_pan_velocity_y_ec_plot = 0;
 		next_zoom_velocity_ec_plot = 0;
-		
-		console.log("hi!");
 	}
 	
 	
@@ -756,7 +752,7 @@
 			wilson_ec_plot.world_center_y = new_world_center[1];
 		}
 		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(draw_frame_ec_plot);
 	}
 	
 	
@@ -871,14 +867,12 @@
 		
 		
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["aspect_ratio"], aspect_ratio);
-		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_center_x"], wilson_wp.world_center_x);
-		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_center_y"], wilson_wp.world_center_y);
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_center_x"], wilson_ec_plot.world_center_x);
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_center_y"], wilson_ec_plot.world_center_y);
 		
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_size"], Math.min(wilson_ec_plot.world_height, wilson_ec_plot.world_width) / 2);
 		
 		wilson_ec_plot.render.draw_frame();
-		
-		return;
 		
 		
 		
@@ -917,7 +911,7 @@
 			
 			zoom_canvas_ec_plot(fixed_point_x_ec_plot, fixed_point_y_ec_plot);
 			
-			zoom_velocity_ec_plot *= zoom_friction_ec_plot;
+			zoom_velocity_ec_plot *= zoom_friction;
 			
 			if (Math.abs(zoom_velocity_ec_plot) < zoom_velocity_stop_threshhold)
 			{
