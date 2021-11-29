@@ -1,0 +1,16 @@
+#wp-row
+{
+	display: flex;
+	width: 90vmin;
+	
+	margin: 0 auto;
+	
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+#wp-row .output-canvas
+{
+	width: 42.5vmin;
+	height: 42.5vmin;
+}
