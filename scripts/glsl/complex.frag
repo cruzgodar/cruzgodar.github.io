@@ -572,6 +572,8 @@ float bernoulli(float m)
 const int THETA_BOUND = 10;
 // https://arxiv.org/pdf/1806.06725.pdf
 vec2 theta1(vec2 z, vec2 t) {
+	// TODO: implement quasiperiodicity, a la https://mathworld.wolfram.com/JacobiThetaFunctions.html
+
 	vec2 q = cexp(PI * vec2(-t.y,t.x));
 	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
 	vec2 w = cexp(PI * vec2(-z.y,z.x));
@@ -636,10 +638,13 @@ vec2 eisenstein4(vec2 z)
 	vec2 c = ZERO;
 
 	float alternate_j = -1.0;
+	vec2 qjj = ZERO;
 	for (int j = 1; j < THETA_BOUND; j++) {
+		qjj = cpow(q,float(j*j));
+
 		a += cpow(q,float(j*(j+1)));
-		b += cpow(q,float(j*j));
-		c += alternate_j *cpow(q,float(j*j));
+		b += qjj;
+		c += alternate_j * qjj;
 
 		alternate_j = -alternate_j;
 	}
@@ -670,10 +675,12 @@ vec2 eisenstein6(vec2 z)
 	vec2 c = ZERO;
 
 	float alternate_j = -1.0;
+	vec2 qjj = ZERO;
 	for (int j = 1; j < THETA_BOUND; j++) {
+		qjj = cpow(q,float(j*j));
 		a += cpow(q,float(j*(j+1)));
-		b += cpow(q,float(j*j));
-		c += alternate_j *cpow(q,float(j*j));
+		b += qjj;
+		c += alternate_j * qjj;
 
 		alternate_j = -alternate_j;
 	}
@@ -801,7 +808,6 @@ vec2 deltaq(vec2 z) {
 // Returns the weierstrass p function with w1 = 1, w2 = tau
 // Algorithms from equation 1.10 of https://arxiv.org/pdf/1806.06725.pdf
 
-// Example use: wp(z,rho)
 vec2 wp(vec2 z, vec2 t) {
 	// Shift z to be in the fundamental parallelogram
 	z -= floor(z.y/t.y)*t;
@@ -905,7 +911,189 @@ vec2 wpprime(vec2 z, vec2 t) {
 	return prod;
 }
 
+// defining via taylor series for debugging
+vec2 wsigma_test(vec2 z,vec2 t) {
+	vec2 prod = z;
+	vec2 temp = ONE;
+	for (int m = -THETA_BOUND; m <= THETA_BOUND; m++) {
+		for (int n = -THETA_BOUND; n <= THETA_BOUND; n++) {
+			if (m*m+n*n>0) {
+				temp = cdiv(z,float(m)+float(n)*t);
+				prod = cmul(prod,ONE-temp);
+				prod = cmul(prod,cexp(temp));
+				prod = cmul(prod,cexp(0.5*cmul(temp,temp)));
+			}
+		}
+	}
+	return prod;
+}
 
+
+// Weierstrass sigma function
+// Uses the garbage implementation outlined at https://mathworld.wolfram.com/WeierstrassSigmaFunction.html
+// which uses the garbage notation that w = e^{i z} not e^{i pi z}.
+vec2 wsigma(vec2 z, vec2 t) {
+	// TODO: implement quasiperiodicity?
+	vec2 q = cexp(PI * vec2(-t.y,t.x));
+	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
+
+	vec2 w = ONE;
+	vec2 v = ONE;
+
+// theta evaluated at pi z -> z
+	vec2 w_PI= cexp(PI*vec2(-z.y,z.x));
+	vec2 v_PI = cdiv(1.0,w_PI);
+
+	vec2 thetaz1 = w_PI-v_PI;
+
+// theta1'(0,q)
+	vec2 thetaz1_prime = 2.0*ONE;
+	vec2 thetaz1_triple_prime = 2.0*ONE;
+
+	float alternate_j = -1.0;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		thetaz1 += alternate_j * cmul(cpow(q,float(j*(j+1))),cpow(w_PI,float(2*j+1))-cpow(v_PI,float(2*j+1)));
+
+
+		thetaz1_prime += float(2*j+1)*alternate_j * cpow(q,float(j*(j+1))) * 2.0;
+		thetaz1_triple_prime += float((2*j+1)*(2*j+1)*(2*j+1))*alternate_j * cpow(q,float(j*(j+1))) * 2.0;
+
+		alternate_j = -alternate_j;
+	}
+
+	thetaz1 = cmul(vec2(q4.y,-q4.x),thetaz1);
+
+
+	thetaz1_prime =cmul(q4,thetaz1_prime);
+	thetaz1_triple_prime = -cmul(q4,thetaz1_triple_prime);
+
+	vec2 prod = cdiv(ONE,PI*thetaz1_prime);
+	prod = cmul(prod,cexp(-PI*PI*cdiv(cmul(cmul(z,z),thetaz1_triple_prime),6.0*thetaz1_prime)));
+	return cmul(prod,thetaz1);
+}
+
+// Klein's j-invariant
+// Implemented via https://en.wikipedia.org/wiki/J-invariant, ``Expressions in terms of theta functions''
+vec2 kleinj(vec2 z) {
+	if (z.y <= 0.0)
+	{
+		return ZERO;
+	}
+	vec2 q = cexp(PI * vec2(-z.y,z.x));
+
+	vec2 a = ONE;
+	vec2 b = ZERO;
+	vec2 c = ZERO;
+
+	float alternate_j = -1.0;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		a += cpow(q,float(j*(j+1)));
+		b += cpow(q,float(j*j));
+		c += alternate_j *cpow(q,float(j*j));
+
+		alternate_j = -alternate_j;
+	}
+
+	a = 2.0 * a;
+	b = 2.0 * b + ONE;
+	c = 2.0 * c + ONE;
+
+	a = cmul(q,cmul(q,cpow(a,8.0)));
+	b = cpow(b,8.0);
+	c = cpow(c,8.0);
+	return 32.0 * cdiv(cpow(a+b+c,3.0),cmul(cmul(a,b),c));
+}
+
+// =j(z)/1728
+vec2 kleinJ(vec2 z) {
+	if (z.y <= 0.0)
+	{
+		return ZERO;
+	}
+	vec2 q = cexp(PI * vec2(-z.y,z.x));
+
+	vec2 a = ONE;
+	vec2 b = ZERO;
+	vec2 c = ZERO;
+
+	float alternate_j = -1.0;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		a += cpow(q,float(j*(j+1)));
+		b += cpow(q,float(j*j));
+		c += alternate_j *cpow(q,float(j*j));
+
+		alternate_j = -alternate_j;
+	}
+
+	a = 2.0 * a;
+	b = 2.0 * b + ONE;
+	c = 2.0 * c + ONE;
+
+	a = cmul(q,cmul(q,cpow(a,8.0)));
+	b = cpow(b,8.0);
+	c = cpow(c,8.0);
+	return cdiv(cpow(a+b+c,3.0),54.0*cmul(cmul(a,b),c));
+}
+
+// Klein's j-invariant as a function of q = exp(2 pi i z)
+vec2 kleinjq(vec2 q) {
+	if (q.x*q.x+q.y*q.y >= 1.0) {
+		return ZERO;
+	}
+	q = cpow(q,0.5);
+
+	vec2 a = ONE;
+	vec2 b = ZERO;
+	vec2 c = ZERO;
+
+	float alternate_j = -1.0;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		a += cpow(q,float(j*(j+1)));
+		b += cpow(q,float(j*j));
+		c += alternate_j *cpow(q,float(j*j));
+
+		alternate_j = -alternate_j;
+	}
+
+	a = 2.0 * a;
+	b = 2.0 * b + ONE;
+	c = 2.0 * c + ONE;
+
+	a = cmul(q,cmul(q,cpow(a,8.0)));
+	b = cpow(b,8.0);
+	c = cpow(c,8.0);
+	return 32.0 * cdiv(cpow(a+b+c,3.0),cmul(cmul(a,b),c));
+}
+
+// =kleinjq(z)/1728
+vec2 kleinJq(vec2 q) {
+	if (q.x*q.x+q.y*q.y >= 1.0) {
+		return ZERO;
+	}
+	q = cpow(q,0.5); //???
+
+	vec2 a = ONE;
+	vec2 b = ZERO;
+	vec2 c = ZERO;
+
+	float alternate_j = -1.0;
+	for (int j = 1; j < THETA_BOUND; j++) {
+		a += cpow(q,float(j*(j+1)));
+		b += cpow(q,float(j*j));
+		c += alternate_j *cpow(q,float(j*j));
+
+		alternate_j = -alternate_j;
+	}
+
+	a = 2.0 * a;
+	b = 2.0 * b + ONE;
+	c = 2.0 * c + ONE;
+
+	a = cmul(q,cmul(q,cpow(a,8.0)));
+	b = cpow(b,8.0);
+	c = cpow(c,8.0);
+	return cdiv(cpow(a+b+c,3.0),54.0*cmul(cmul(a,b),c));
+}
 
 
 
