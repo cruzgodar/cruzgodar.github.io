@@ -11,7 +11,7 @@
 	
 
 // I'm concerned that I can't get cos(i) to work... or (1+I)^(1+I)... or tan(pi/2)
-// These tests fail: 
+// WIshlist/these tests fail: 
 		// return ctan(ONE+I) == cdiv(csin(ONE+I),ccos(ONE+I));
 		// `return ccot(PI*ONE/4.0) == ONE;`,
 		// `return ccot(I) == vec2(0.0, -1.31303528549933130363616);`,
@@ -19,9 +19,11 @@
 		// return ctan(ONE) == vec2(1.55740772465490223050697480745,0.0);`
 		// `return gamma(4.0) == 6.0;`
 		// `return cabs(gamma(4.0) - vec2(6.0,0.0)) < TOL;`
+		// `return catan(ONE+I) == PI/4.0 + 0.5*cmul(I,clog(2.0*ONE-I));`,
 
 
 // TODO: add tolerance for floating point precision stuff
+// comments mean manually verified... at some point
 	let tests =
 	[
 /*0*/	`return cadd(ONE, ONE) == vec2(2.0, 0.0);`,
@@ -31,15 +33,30 @@
 		`return cinv(I) == -I;`,
 		`return cpow(I, I) == vec2(cexp(-PI/2.0),0.0);`,
 		`return ctet(2.0, 3.0) == 16.0;`,
-		`return csin(I) == vec2(0.0,1.17520119364380145688238185059560);`,
-		`return csin(ONE) == vec2(0.84147098480789650665250232163,0.0);`,
-		`return ccos(ONE) == vec2(0.54030230586813971740093660,0.0);`,
-/*10*/	`return ctan(ZERO) == ZERO;`,
-		`return ctan(I) == vec2(0.0,0.761594155955764888119458282604);`,
 		`return divisor(4.0,10.0) == 1049601.0;`,
 		`return factorial(8.0) == 40320.0;`,
 		`return binomial(3.0,2.0) == 3.0;`,
-		`return binomial(10.0,4.0) == 210.0;`,
+/*10*/	`return binomial(10.0,4.0) == 210.0;`,
+		// trig
+		`return csin(I) == vec2(0.0,1.17520119364380145688238185059560);`,
+		`return csin(ONE) == vec2(0.84147098480789650665250232163,0.0);`,
+		`return ccos(ONE) == vec2(0.54030230586813971740093660,0.0);`,
+		`return ctan(ZERO) == ZERO;`,
+		`return ctan(I) == vec2(0.0,0.761594155955764888119458282604);`,
+		// arc trig
+		`return casin(I) == cmul(I,clog(ONE+cpow(2.0,0.5)*ONE));`,
+		`return cacos(I) == PI*ONE/2.0 + cmul(I,clog(-ONE+cpow(2.0,0.5)*ONE));`,
+		// `return catan(0.5*ONE) == ONE*0.463647609000806116214256;`,
+		`return cacsc(I) == cmul(-I,clog(ONE+cpow(2.0,0.5)*ONE));`,
+		`return casec(I) == PI*ONE/2.0 + cmul(I,clog(ONE+cpow(2.0,0.5)*ONE));`,
+		// `return cacot(ONE) == PI*ONE/4.0;`,
+		// hyperbolic trig
+/*20*/	`return csinh(I*PI/2.0) == I;`,
+		`return ccosh(I*PI) == -ONE;`,
+		// `return ctanh(I*PI/4.0) == I;`,
+		`return ccsch(I*PI/2.0) == -I;`,
+		`return csech(I*PI) == -ONE;`,
+		// `return ccoth(I*PI/4.0) == -I;`,
 	];
 	
 	

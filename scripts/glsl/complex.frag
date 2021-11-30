@@ -457,7 +457,105 @@ float ccot(float z)
 	return 1.0 / tan(z);
 }
 
+// Returns arcsin(a)
+vec2 casin(vec2 a) {
+	return cmul(-I, clog(cmul(I,a) + cpow(ONE - vec2(a.x*a.x - a.y*a.y, a.x*a.y + a.y*a.x),0.5)));
+}
 
+float casin(float a) {
+	return casin(vec2(a,0.0)).x;
+}
+
+vec2 cacos(vec2 a) {
+	return vec2(PI/2.0, 0.0) - cmul(vec2(0,-1), clog(cmul(vec2(0.0,1.0),a) + cpow(vec2(1.0,0.0) - vec2(a.x*a.x - a.y*a.y, a.x*a.y + a.y*a.x),0.5)));
+}
+
+float cacos(float a) {
+	return cacos(vec2(a,0.0)).x;
+}
+
+vec2 catan(vec2 a) {
+	vec2 I_times_a = cmul(I,a);
+	return cmul(0.5*I, clog(vec2(1.0-I_times_a.x,-I_times_a.y)) - clog(vec2(I_times_a.x+1.0,I_times_a.y)));
+}
+
+float catan(float a) {
+	return catan(vec2(a,0.0)).x;
+}
+
+vec2 cacsc(vec2 a) {
+	return casin(cdiv(vec2(1.0,0.0),a));
+}
+
+float cacsc(float a) {
+	return cacsc(vec2(a,0.0)).x;
+}
+
+vec2 casec(vec2 a) {
+	return cacos(cdiv(vec2(1.0,0.0),a));
+}
+
+float casec(float a) {
+	return casec(vec2(a,0.0)).x;
+}
+
+vec2 cacot(vec2 a) {
+	vec2 I_over_a = cdiv(I,a);
+	return cmul(0.5*I, clog(vec2(1.0-I_over_a.x,-I_over_a.y)) - clog(vec2(I_over_a.x+1.0,I_over_a.y)));
+	// return catan(cdiv(vec2(1.0,0.0),a));
+}
+
+float cacot(float a) {
+	return cacot(vec2(a,0.0)).x;
+}
+
+vec2 csinh(vec2 a) {
+	return (cexp(a) - cexp(-a))/2.0;
+}
+
+float csinh(float a) {
+	return (exp(a)-exp(-a))/2.0;
+}
+
+vec2 ccosh(vec2 a) {
+	return (cexp(a) + cexp(-a))/2.0;
+}
+
+float ccosh(float a) {
+	return (exp(a)+exp(-a))/2.0;
+}
+
+vec2 ctanh(vec2 a) {
+	return cdiv(cexp(2.0 * a) - vec2(1.0,0.0),cexp(2.0 * a) + vec2(1.0,0.0));
+}
+
+float ctanh(float a) {
+	return (exp(2.0 * a) - 1.0)/(exp(2.0 * a) + 1.0);
+}
+
+vec2 ccsch(vec2 a) {
+	return cdiv(1.0, csinh(a));
+}
+
+float ccsch(float a) {
+	return ccsch(vec2(a,0.0)).x;
+}
+
+vec2 csech(vec2 a) {
+	return cdiv(1.0, ccosh(a));
+}
+
+float csech(float a) {
+	return ccsch(vec2(a,0.0)).x;
+}
+
+vec2 ccoth(vec2 a) {
+	return cdiv(cexp(2.0 * a) + vec2(1.0,0.0), cexp(2.0 * a) - vec2(1.0,0.0));
+}
+
+float ccoth(float a) {
+	return ccoth(vec2(a,0.0)).x;
+}
 
 //Returns divisor(n,k), the sum all k-th powers of divisors of n.
 float divisor(float n,float k)
