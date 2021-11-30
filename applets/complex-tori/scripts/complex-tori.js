@@ -316,6 +316,10 @@
 				
 				
 				
+				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+				
+				
+				
 				for (int i = 0; i < max_iterations; i++)
 				{
 					float score = abs(f(z)) / threshhold;
@@ -324,18 +328,23 @@
 					{
 						float adjacent_score = (abs(f(z + vec2(step, 0.0))) + abs(f(z - vec2(step, 0.0))) + abs(f(z + vec2(0.0, step))) + abs(f(z - vec2(0.0, step)))) / threshhold;
 						
-						if (adjacent_score > 16.0)
+						if (adjacent_score > 8.0)
 						{
 							gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 							
 							return;
 						}
+						
+						else if (adjacent_score > 4.0)
+						{
+							gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+							
+							gl_FragColor.xyz *= (adjacent_score - 4.0) / 4.0;
+						}
 					}
 					
-					threshhold /= 2.0;
+					threshhold /= 1.25;
 				}
-				
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 			}
 		`;
 		
