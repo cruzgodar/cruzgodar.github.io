@@ -57,6 +57,10 @@
 		`return ccsch(I*PI/2.0) == -I;`,
 		`return csech(I*PI) == -ONE;`,
 		// `return ccoth(I*PI/4.0) == -I;`,
+		// hyperbolic arc trig
+		// `return casinh(I) == I*PI/2.0;`,
+		// `return cacosh(I) == 1.31695789692481670862504634730*ONE;`,
+		// tested the rest of hyperbolic arc trig manually...
 	];
 	
 	

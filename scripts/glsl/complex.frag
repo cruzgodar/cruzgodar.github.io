@@ -557,6 +557,55 @@ float ccoth(float a) {
 	return ccoth(vec2(a,0.0)).x;
 }
 
+vec2 casinh(vec2 z) {
+	return clog(cpow(cpow(z,2.0) + ONE,0.5) + z);
+}
+
+float casinh(float a) {
+	return casinh(vec2(a,0.0)).x;
+}
+
+vec2 cacosh(vec2 z) {
+	return clog(cpow(cpow(z,2.0) - ONE,0.5) + z);
+}
+
+float cacosh(float a) {
+	return cacosh(vec2(a,0.0)).x;
+}
+
+vec2 catanh(vec2 z) {
+	return 0.5*clog(z+ONE) - 0.5*clog(ONE-z);
+}
+
+float catanh(float a) {
+	return catanh(vec2(a,0.0)).x;
+}
+
+vec2 cacsch(vec2 z) {
+	return clog(cpow(cpow(z,-2.0)+ONE,0.5) + cdiv(1.0,z));
+}
+
+float cacsch(float a) {
+	return cacsch(vec2(a,0.0)).x;
+}
+
+// branch cuts may differ from wolfram... whatever
+vec2 casech(vec2 z) {
+	return clog(cpow(cpow(z,-2.0)-ONE,0.5) + cdiv(1.0,z));
+}
+
+float casech(float a) {
+	return casech(vec2(a,0.0)).x;
+}
+
+vec2 cacoth(vec2 z) {
+	return 0.5*clog(cdiv(1.0,z)+ONE) - 0.5*clog(ONE-cdiv(1.0,z));
+}
+
+float cacoth(float a) {
+	return cacoth(vec2(a,0.0)).x;
+}
+
 //Returns divisor(n,k), the sum all k-th powers of divisors of n.
 float divisor(float n,float k)
  {
