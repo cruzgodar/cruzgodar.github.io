@@ -25,8 +25,6 @@
 	let zoom_level = -.585;
 	let zoom_level_ec_plot = -.585;
 	
-	let past_brightness_scales = [];
-	
 	let resolution = 500;
 	
 	let black_point = 1;
@@ -83,10 +81,13 @@
 		resolution = parseInt(resolution_input_element.value || 500);
 		
 		wilson_wp.change_canvas_size(resolution, resolution);
-		
 		wilson_wpprime.change_canvas_size(resolution, resolution);
 		
+		wilson_ec_plot.change_canvas_size(resolution, resolution);
+		
 		window.requestAnimationFrame(draw_frame);
+		
+		window.requestAnimationFrame(draw_frame_ec_plot);
 	});
 	
 	
@@ -117,14 +118,12 @@
 	
 	download_button_element.addEventListener("click", () =>
 	{
-		wilson.download_frame("a-complex-map.png");
+		wilson_ec_plot.download_frame("a-complex-map.png");
 	});
 	
 	
 	
 	init_canvases();
-	
-	past_brightness_scales = [];
 	
 	
 	
@@ -283,10 +282,12 @@
 			uniform float world_center_y;
 			uniform float world_size;
 			
+			uniform float step;
+			
 			uniform float g2;
 			uniform float g3;
 			
-			const float threshhold = .01;
+			const int max_iterations = 50;
 			
 			
 			
@@ -299,6 +300,8 @@
 			
 			void main(void)
 			{
+				float threshhold = world_size / 10.0;
+				
 				vec2 z;
 				
 				if (aspect_ratio >= 1.0)
@@ -313,11 +316,23 @@
 				
 				
 				
-				if (abs(f(z)) < threshhold)
+				for (int i = 0; i < max_iterations; i++)
 				{
-					gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+					float score = abs(f(z)) / threshhold;
 					
-					return;
+					if (score < 1.0)
+					{
+						float adjacent_score = (abs(f(z + vec2(step, 0.0))) + abs(f(z - vec2(step, 0.0))) + abs(f(z + vec2(0.0, step))) + abs(f(z - vec2(0.0, step)))) / threshhold;
+						
+						if (adjacent_score > 16.0)
+						{
+							gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+							
+							return;
+						}
+					}
+					
+					threshhold /= 2.0;
 				}
 				
 				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
@@ -480,7 +495,9 @@
 		
 		wilson_ec_plot = new Wilson(document.querySelector("#ec-plot-canvas"), options_ec_plot);
 		
-		wilson_ec_plot.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "g2", "g3"]);
+		wilson_ec_plot.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "step", "g2", "g3"]);
+		
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["step"], 1 / resolution);
 		
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["g2"], 1);
 			
@@ -870,7 +887,11 @@
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_center_x"], wilson_ec_plot.world_center_x);
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_center_y"], wilson_ec_plot.world_center_y);
 		
-		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_size"], Math.min(wilson_ec_plot.world_height, wilson_ec_plot.world_width) / 2);
+		let world_size = Math.min(wilson_ec_plot.world_height, wilson_ec_plot.world_width);
+		
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_size"], world_size / 2);
+		
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["step"], world_size / resolution);
 		
 		wilson_ec_plot.render.draw_frame();
 		
