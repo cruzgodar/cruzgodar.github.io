@@ -7,6 +7,12 @@
     
     
     
+    "final-worksheet":
+    {
+        "webp": "extra/final-worksheet/cover.webp",
+        "non-webp": "extra/final-worksheet/cover.jpg"
+    },
+    
 	"week-10-notes":
     {
         "webp": "notes/10/cover.webp",
