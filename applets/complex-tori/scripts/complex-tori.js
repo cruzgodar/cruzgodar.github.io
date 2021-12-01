@@ -26,6 +26,7 @@
 	let zoom_level_ec_plot = -.585;
 	
 	let resolution = 500;
+	let resolution_ec_plot = 1500;
 	
 	let black_point = 1;
 	let white_point = 1;
@@ -82,10 +83,6 @@
 		
 		wilson_wp.change_canvas_size(resolution, resolution);
 		wilson_wpprime.change_canvas_size(resolution, resolution);
-		
-		wilson_ec_plot.change_canvas_size(resolution, resolution);
-		
-		wilson_ec_plot.gl.texImage2D(wilson_ec_plot.gl.TEXTURE_2D, 0, wilson_ec_plot.gl.RGBA, wilson_ec_plot.canvas_width, wilson_ec_plot.canvas_height, 0, wilson_ec_plot.gl.RGBA, wilson_ec_plot.gl.UNSIGNED_BYTE, null);
 		
 		window.requestAnimationFrame(draw_frame);
 		
@@ -295,6 +292,7 @@
 			
 			float f(vec2 z)
 			{
+				return z.y - sin(z.x);
 				return z.y * z.y   -   4.0 * z.x * z.x * z.x   +   g2 * z.x   +   g3;
 			}
 			
@@ -384,13 +382,9 @@
 						texture2D(u_texture, center + vec2(texture_step, -texture_step)) +
 						texture2D(u_texture, center + vec2(-texture_step, texture_step)) +
 						texture2D(u_texture, center + vec2(-texture_step, -texture_step))
-					) / 3.0;
+					) / 2.0;
 					
 					state.w = 1.0;
-					
-					state.x = pow(state.x, .75);
-					state.y = pow(state.y, .75);
-					state.z = pow(state.z, .75);
 					
 					gl_FragColor = state;
 				}
@@ -401,15 +395,15 @@
 					
 					
 					
-						texture2D(u_texture, center + vec2(texture_step, 0.0)) +
-						texture2D(u_texture, center - vec2(texture_step, 0.0)) +
-						texture2D(u_texture, center + vec2(0.0, texture_step)) +
-						texture2D(u_texture, center - vec2(0.0, texture_step)) +
+						2.0 * texture2D(u_texture, center + vec2(texture_step, 0.0)) +
+						2.0 * texture2D(u_texture, center - vec2(texture_step, 0.0)) +
+						2.0 * texture2D(u_texture, center + vec2(0.0, texture_step)) +
+						2.0 * texture2D(u_texture, center - vec2(0.0, texture_step)) +
 						
-						texture2D(u_texture, center + vec2(texture_step, texture_step)) +
-						texture2D(u_texture, center + vec2(texture_step, -texture_step)) +
-						texture2D(u_texture, center + vec2(-texture_step, texture_step)) +
-						texture2D(u_texture, center + vec2(-texture_step, -texture_step)) +
+						2.0 * texture2D(u_texture, center + vec2(texture_step, texture_step)) +
+						2.0 * texture2D(u_texture, center + vec2(texture_step, -texture_step)) +
+						2.0 * texture2D(u_texture, center + vec2(-texture_step, texture_step)) +
+						2.0 * texture2D(u_texture, center + vec2(-texture_step, -texture_step)) +
 						
 						
 						
@@ -428,13 +422,9 @@
 						texture2D(u_texture, center + vec2(texture_step, -2.0 * texture_step)) +
 						texture2D(u_texture, center + vec2(0.0, -2.0 * texture_step)) +
 						texture2D(u_texture, center + vec2(-texture_step, -2.0 * texture_step))
-					) / 6.0;
+					) / 5.0;
 					
 					state.w = 1.0;
-					
-					state.x = pow(state.x, .75);
-					state.y = pow(state.y, .75);
-					state.z = pow(state.z, .75);
 					
 					gl_FragColor = state;
 				}
@@ -537,8 +527,8 @@
 			
 			shader: frag_shader_source_ec_plot,
 			
-			canvas_width: 500,
-			canvas_height: 500,
+			canvas_width: 1500,
+			canvas_height: 1500,
 			
 			world_width: 2,
 			world_height: 2,
@@ -599,7 +589,7 @@
 		
 		wilson_ec_plot.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "step", "g2", "g3"]);
 		
-		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["step"], 1 / resolution);
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["step"], 1 / resolution_ec_plot);
 		
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["g2"], 1);
 			
@@ -1007,7 +997,7 @@
 		
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_size"], world_size / 2);
 		
-		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["step"], world_size / resolution);
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["step"], world_size / resolution_ec_plot);
 		
 		
 		
@@ -1020,7 +1010,7 @@
 		wilson_ec_plot.gl.bindTexture(wilson_ec_plot.gl.TEXTURE_2D, wilson_ec_plot.render.framebuffers[0].texture);
 		wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, null);
 		
-		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["texture_step"], 1 / resolution);
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["texture_step"], 1 / resolution_ec_plot);
 		
 		wilson_ec_plot.render.draw_frame();
 		
@@ -1144,7 +1134,7 @@
 			
 			if (aspect_ratio_ec_plot >= 1)
 			{
-				wilson_ec_plot.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio_ec_plot));
+				wilson_ec_plot.change_canvas_size(resolution_ec_plot, Math.floor(resolution_ec_plot / aspect_ratio_ec_plot));
 				
 				wilson_ec_plot.world_width = 3 * Math.pow(2, zoom_level_ec_plot) * aspect_ratio_ec_plot;
 				wilson_ec_plot.world_height = 3 * Math.pow(2, zoom_level_ec_plot);
@@ -1152,7 +1142,7 @@
 			
 			else
 			{
-				wilson_ec_plot.change_canvas_size(Math.floor(resolution * aspect_ratio_ec_plot), resolution);	
+				wilson_ec_plot.change_canvas_size(Math.floor(resolution_ec_plot * aspect_ratio_ec_plot), resolution_ec_plot);	
 				
 				wilson_ec_plot.world_width = 3 * Math.pow(2, zoom_level_ec_plot);
 				wilson_ec_plot.world_height = 3 * Math.pow(2, zoom_level_ec_plot) / aspect_ratio_ec_plot;
@@ -1163,7 +1153,7 @@
 		{
 			aspect_ratio_ec_plot = 1;
 			
-			wilson_ec_plot.change_canvas_size(resolution, resolution);
+			wilson_ec_plot.change_canvas_size(resolution_ec_plot, resolution_ec_plot);
 			
 			wilson_ec_plot.world_width = 3 * Math.pow(2, zoom_level_ec_plot);
 			wilson_ec_plot.world_height = 3 * Math.pow(2, zoom_level_ec_plot);
