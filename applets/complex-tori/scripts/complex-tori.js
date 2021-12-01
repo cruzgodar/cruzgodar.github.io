@@ -26,7 +26,7 @@
 	let zoom_level_ec_plot = -.585;
 	
 	let resolution = 500;
-	let resolution_ec_plot = 1500;
+	let resolution_ec_plot = 2000;
 	
 	let black_point = 1;
 	let white_point = 1;
@@ -292,7 +292,6 @@
 			
 			float f(vec2 z)
 			{
-				return z.y - sin(z.x);
 				return z.y * z.y   -   4.0 * z.x * z.x * z.x   +   g2 * z.x   +   g3;
 			}
 			
@@ -367,65 +366,22 @@
 				//Dilate the pixels to make a thicker line.
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
 				
-				if (texture_step >= .001)
-				{	
-					vec4 state = (4.0 * texture2D(u_texture, center) +
-					
-						texture2D(u_texture, center + vec2(texture_step, 0.0)) +
-						texture2D(u_texture, center - vec2(texture_step, 0.0)) +
-						texture2D(u_texture, center + vec2(0.0, texture_step)) +
-						texture2D(u_texture, center - vec2(0.0, texture_step)) +
-						
-						texture2D(u_texture, center + vec2(texture_step, texture_step)) +
-						texture2D(u_texture, center + vec2(texture_step, -texture_step)) +
-						texture2D(u_texture, center + vec2(-texture_step, texture_step)) +
-						texture2D(u_texture, center + vec2(-texture_step, -texture_step))
-					) / 2.0;
-					
-					state.w = 1.0;
-					
-					gl_FragColor = state;
-				}
+				vec4 state = (4.0 * texture2D(u_texture, center) +
 				
-				else
-				{
-					vec4 state = (4.0 * texture2D(u_texture, center) +
+					texture2D(u_texture, center + vec2(texture_step, 0.0)) +
+					texture2D(u_texture, center - vec2(texture_step, 0.0)) +
+					texture2D(u_texture, center + vec2(0.0, texture_step)) +
+					texture2D(u_texture, center - vec2(0.0, texture_step)) +
 					
-					
-					
-						2.0 * texture2D(u_texture, center + vec2(texture_step, 0.0)) +
-						2.0 * texture2D(u_texture, center - vec2(texture_step, 0.0)) +
-						2.0 * texture2D(u_texture, center + vec2(0.0, texture_step)) +
-						2.0 * texture2D(u_texture, center - vec2(0.0, texture_step)) +
-						
-						2.0 * texture2D(u_texture, center + vec2(texture_step, texture_step)) +
-						2.0 * texture2D(u_texture, center + vec2(texture_step, -texture_step)) +
-						2.0 * texture2D(u_texture, center + vec2(-texture_step, texture_step)) +
-						2.0 * texture2D(u_texture, center + vec2(-texture_step, -texture_step)) +
-						
-						
-						
-						texture2D(u_texture, center + vec2(2.0 * texture_step, texture_step)) +
-						texture2D(u_texture, center + vec2(2.0 * texture_step, 0.0)) +
-						texture2D(u_texture, center + vec2(2.0 * texture_step, -texture_step)) +
-						
-						texture2D(u_texture, center + vec2(-2.0 * texture_step, texture_step)) +
-						texture2D(u_texture, center + vec2(-2.0 * texture_step, 0.0)) +
-						texture2D(u_texture, center + vec2(-2.0 * texture_step, -texture_step)) +
-						
-						texture2D(u_texture, center + vec2(texture_step, 2.0 * texture_step)) +
-						texture2D(u_texture, center + vec2(0.0, 2.0 * texture_step)) +
-						texture2D(u_texture, center + vec2(-texture_step, 2.0 * texture_step)) +
-						
-						texture2D(u_texture, center + vec2(texture_step, -2.0 * texture_step)) +
-						texture2D(u_texture, center + vec2(0.0, -2.0 * texture_step)) +
-						texture2D(u_texture, center + vec2(-texture_step, -2.0 * texture_step))
-					) / 5.0;
-					
-					state.w = 1.0;
-					
-					gl_FragColor = state;
-				}
+					texture2D(u_texture, center + vec2(texture_step, texture_step)) +
+					texture2D(u_texture, center + vec2(texture_step, -texture_step)) +
+					texture2D(u_texture, center + vec2(-texture_step, texture_step)) +
+					texture2D(u_texture, center + vec2(-texture_step, -texture_step))
+				) / 2.0;
+				
+				state.w = 1.0;
+				
+				gl_FragColor = state;
 			}
 		`;
 		
@@ -525,8 +481,8 @@
 			
 			shader: frag_shader_source_ec_plot,
 			
-			canvas_width: 1500,
-			canvas_height: 1500,
+			canvas_width: resolution_ec_plot,
+			canvas_height: resolution_ec_plot,
 			
 			world_width: 2,
 			world_height: 2,
@@ -599,6 +555,7 @@
 		
 		wilson_ec_plot.render.init_uniforms(["texture_step"]);
 		
+		wilson_ec_plot.render.create_framebuffer_texture_pair(wilson_ec_plot.gl.UNSIGNED_BYTE);
 		wilson_ec_plot.render.create_framebuffer_texture_pair(wilson_ec_plot.gl.UNSIGNED_BYTE);
 		
 		
@@ -1005,12 +962,57 @@
 		
 		wilson_ec_plot.gl.useProgram(wilson_ec_plot.render.shader_programs[1]);
 		
-		wilson_ec_plot.gl.bindTexture(wilson_ec_plot.gl.TEXTURE_2D, wilson_ec_plot.render.framebuffers[0].texture);
-		wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, null);
-		
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["texture_step"], 1 / resolution_ec_plot);
 		
-		wilson_ec_plot.render.draw_frame();
+		wilson_ec_plot.gl.bindTexture(wilson_ec_plot.gl.TEXTURE_2D, wilson_ec_plot.render.framebuffers[0].texture);
+		
+		
+		
+		if (resolution_ec_plot < 1000)
+		{
+			wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, null);
+			
+			
+			wilson_ec_plot.render.draw_frame();
+		}
+		
+		else if (resolution_ec_plot < 2000)
+		{
+			wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, wilson_ec_plot.render.framebuffers[1].framebuffer);
+			
+			wilson_ec_plot.render.draw_frame();
+			
+			
+			
+			wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, null);
+			
+			wilson_ec_plot.gl.bindTexture(wilson_ec_plot.gl.TEXTURE_2D, wilson_ec_plot.render.framebuffers[1].texture);
+			
+			wilson_ec_plot.render.draw_frame();
+		}
+		
+		else
+		{
+			wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, wilson_ec_plot.render.framebuffers[1].framebuffer);
+			
+			wilson_ec_plot.render.draw_frame();
+			
+			
+			
+			wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, wilson_ec_plot.render.framebuffers[0].framebuffer);
+			
+			wilson_ec_plot.gl.bindTexture(wilson_ec_plot.gl.TEXTURE_2D, wilson_ec_plot.render.framebuffers[1].texture);
+			
+			wilson_ec_plot.render.draw_frame();
+			
+			
+			
+			wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, null);
+			
+			wilson_ec_plot.gl.bindTexture(wilson_ec_plot.gl.TEXTURE_2D, wilson_ec_plot.render.framebuffers[0].texture);
+			
+			wilson_ec_plot.render.draw_frame();
+		}
 		
 		
 		
