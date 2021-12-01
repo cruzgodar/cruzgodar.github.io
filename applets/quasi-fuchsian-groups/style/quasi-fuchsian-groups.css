@@ -1,7 +1,7 @@
 #output-canvas-container
 {
 	position: absolute;
-	width: calc(50vmin + 8px);
+	width: calc(75vmin + 8px);
 }
 
 #output-canvas-container.fullscreen
@@ -15,8 +15,8 @@
 {
 	position: absolute;
 	
-	width: 50vmin;
-	height: 50vmin;
+	width: 75vmin;
+	height: 75vmin;
 	margin: 0 auto;
 	
 	border: 2px solid rgb(127, 127, 127);
@@ -33,8 +33,8 @@
 {
 	position: absolute;
 	
-	width: 50vmin;
-	height: 50vmin;
+	width: 75vmin;
+	height: 75vmin;
 	margin: 0 auto;
 	
 	border: 2px solid rgba(0, 0, 0, 0);

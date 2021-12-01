@@ -360,8 +360,6 @@
 			
 			uniform float texture_step;
 			
-			const int dilate_radius = 2;
-			
 			
 			
 			void main(void)
