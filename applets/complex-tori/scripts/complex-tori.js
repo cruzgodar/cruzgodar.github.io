@@ -17,6 +17,8 @@
 	
 	let wilson_ec_plot = null;
 	
+	let wilson_ec_plot_output = null;
+	
 	
 	
 	let aspect_ratio = 1;
@@ -26,7 +28,7 @@
 	let zoom_level_ec_plot = -.585;
 	
 	let resolution = 500;
-	let resolution_ec_plot = 2000;
+	let resolution_ec_plot = 1000;
 	
 	let black_point = 1;
 	let white_point = 1;
@@ -56,6 +58,8 @@
 	let pan_velocity_x_ec_plot = 0;
 	let pan_velocity_y_ec_plot = 0;
 	let zoom_velocity_ec_plot = 0;
+	
+	const interpolation_search_radius = 1000;
 	
 	
 	
@@ -286,7 +290,7 @@
 			uniform float g2;
 			uniform float g3;
 			
-			const int max_iterations = 50;
+			const int max_iterations = 100;
 			
 			
 			
@@ -299,7 +303,7 @@
 			
 			void main(void)
 			{
-				float threshhold = world_size / 10.0;
+				float threshhold = world_size;
 				
 				vec2 z;
 				
@@ -327,18 +331,11 @@
 					{
 						float adjacent_score = (abs(f(z + vec2(step, 0.0))) + abs(f(z - vec2(step, 0.0))) + abs(f(z + vec2(0.0, step))) + abs(f(z - vec2(0.0, step)))) / threshhold;
 						
-						if (adjacent_score > 8.0)
+						if (adjacent_score > 6.0)
 						{
 							gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 							
 							return;
-						}
-						
-						else if (adjacent_score > 4.0)
-						{
-							gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-							
-							gl_FragColor.xyz *= (adjacent_score - 4.0) / 4.0;
 						}
 					}
 					
@@ -365,7 +362,7 @@
 			{
 				//Dilate the pixels to make a thicker line.
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
-				
+				/*
 				vec4 state = (4.0 * texture2D(u_texture, center) +
 				
 					texture2D(u_texture, center + vec2(texture_step, 0.0)) +
@@ -380,6 +377,9 @@
 				) / 2.0;
 				
 				state.w = 1.0;
+				*/
+				
+				vec4 state = texture2D(u_texture, center);
 				
 				gl_FragColor = state;
 			}
@@ -543,8 +543,6 @@
 		
 		wilson_ec_plot.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "step", "g2", "g3"]);
 		
-		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["step"], 1 / resolution_ec_plot);
-		
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["g2"], 1);
 			
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["g3"], 0);
@@ -555,8 +553,9 @@
 		
 		wilson_ec_plot.render.init_uniforms(["texture_step"]);
 		
-		wilson_ec_plot.render.create_framebuffer_texture_pair(wilson_ec_plot.gl.UNSIGNED_BYTE);
-		wilson_ec_plot.render.create_framebuffer_texture_pair(wilson_ec_plot.gl.UNSIGNED_BYTE);
+		
+		
+		wilson_ec_plot.render.create_framebuffer_texture_pair();
 		
 		
 		
@@ -960,59 +959,88 @@
 		
 		
 		
+		let pixels = wilson_ec_plot.render.get_pixel_data();
+		
+		let endpoints = [];
+		
+		const width = wilson_ec_plot.canvas_width;
+		
+		for (let i = 1; i < wilson_ec_plot.canvas_height - 1; i++)
+		{
+			for (let j = 1; j < width - 1; j++)
+			{
+				let index = width * i + j;
+				
+				if (pixels[4 * index] !== 0)
+				{
+					let pixel_l = pixels[4 * (index - 1)];
+					let pixel_r = pixels[4 * (index + 1)];
+					let pixel_u = pixels[4 * (index - width)];
+					let pixel_d = pixels[4 * (index + width)];
+					let pixel_lu = pixels[4 * (index - 1 - width)];
+					let pixel_ru = pixels[4 * (index + 1 - width)];
+					let pixel_ld = pixels[4 * (index - 1 + width)];
+					let pixel_rd = pixels[4 * (index + 1 + width)];
+					
+					let total = pixel_l + pixel_r + pixel_u + pixel_d + pixel_lu + pixel_ru + pixel_ld + pixel_rd;
+					
+					if (total <= 255)
+					{
+						endpoints.push([i, j]);
+					}
+				}
+			}
+		}
+		
+		
+		
+		//Connect every endpoint to the nearest other endpoint within a given radius.
+		for (let i = 0; i < endpoints.length; i++)
+		{
+			let min_j = -1;
+			let min_distance = interpolation_search_radius;
+			
+			for (let j = i + 1; j < endpoints.length; j++)
+			{
+				let distance = Math.abs(endpoints[i][0] - endpoints[j][0]) + Math.abs(endpoints[i][1] - endpoints[j][1]);
+				
+				if (distance < min_distance)
+				{
+					min_j = j;
+					min_distance = distance;
+				}
+			}
+			
+			if (min_j !== -1)
+			{
+				//Interpolate between the two.
+				for (let k = 1; k < min_distance; k++)
+				{
+					let t = k / min_distance;
+					
+					let row = Math.round((1 - t) * endpoints[i][0] + t * endpoints[min_j][0]);
+					let col = Math.round((1 - t) * endpoints[i][1] + t * endpoints[min_j][1]);
+					
+					let index = width * row + col;
+					
+					pixels[4 * index] = 255;
+					pixels[4 * index + 1] = 255;
+					pixels[4 * index + 2] = 255;
+				}
+				
+				endpoints.splice(min_j, 1);
+			}
+		}
+		
+		
+		
+		wilson_ec_plot.gl.texImage2D(wilson_ec_plot.gl.TEXTURE_2D, 0, wilson_ec_plot.gl.RGBA, wilson_ec_plot.canvas_width, wilson_ec_plot.canvas_height, 0, wilson_ec_plot.gl.RGBA, wilson_ec_plot.gl.UNSIGNED_BYTE, pixels);
+		
 		wilson_ec_plot.gl.useProgram(wilson_ec_plot.render.shader_programs[1]);
 		
-		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["texture_step"], 1 / resolution_ec_plot);
+		wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, null);
 		
-		wilson_ec_plot.gl.bindTexture(wilson_ec_plot.gl.TEXTURE_2D, wilson_ec_plot.render.framebuffers[0].texture);
-		
-		
-		
-		if (resolution_ec_plot < 1000)
-		{
-			wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, null);
-			
-			
-			wilson_ec_plot.render.draw_frame();
-		}
-		
-		else if (resolution_ec_plot < 2000)
-		{
-			wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, wilson_ec_plot.render.framebuffers[1].framebuffer);
-			
-			wilson_ec_plot.render.draw_frame();
-			
-			
-			
-			wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, null);
-			
-			wilson_ec_plot.gl.bindTexture(wilson_ec_plot.gl.TEXTURE_2D, wilson_ec_plot.render.framebuffers[1].texture);
-			
-			wilson_ec_plot.render.draw_frame();
-		}
-		
-		else
-		{
-			wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, wilson_ec_plot.render.framebuffers[1].framebuffer);
-			
-			wilson_ec_plot.render.draw_frame();
-			
-			
-			
-			wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, wilson_ec_plot.render.framebuffers[0].framebuffer);
-			
-			wilson_ec_plot.gl.bindTexture(wilson_ec_plot.gl.TEXTURE_2D, wilson_ec_plot.render.framebuffers[1].texture);
-			
-			wilson_ec_plot.render.draw_frame();
-			
-			
-			
-			wilson_ec_plot.gl.bindFramebuffer(wilson_ec_plot.gl.FRAMEBUFFER, null);
-			
-			wilson_ec_plot.gl.bindTexture(wilson_ec_plot.gl.TEXTURE_2D, wilson_ec_plot.render.framebuffers[0].texture);
-			
-			wilson_ec_plot.render.draw_frame();
-		}
+		wilson_ec_plot.render.draw_frame(pixels);
 		
 		
 		
