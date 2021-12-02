@@ -130,6 +130,10 @@ let Site =
 		
 		
 		
+		this.load_glsl();
+		
+		
+		
 		setInterval(() =>
 		{
 			window.dispatchEvent(new Event("resize"));
