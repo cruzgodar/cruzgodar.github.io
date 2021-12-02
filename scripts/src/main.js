@@ -130,10 +130,6 @@ let Site =
 		
 		
 		
-		this.load_glsl();
-		
-		
-		
 		setInterval(() =>
 		{
 			window.dispatchEvent(new Event("resize"));
@@ -291,25 +287,47 @@ let Site =
 	
 	
 	
+	glsl_functions:
+	{
+		"main": "",
+		"zeta": ""
+	},
+	
 	load_glsl: function()
 	{
-		window.COMPLEX_GLSL = "";
-		
-		return new Promise(async function(resolve, reject)
+		return new Promise(async (resolve, reject) =>
 		{
-			let shader = "";
-
-			await Promise.all([
-				fetch("/scripts/glsl/complex.frag"),
-				fetch("/scripts/glsl/zeta.frag")
-			])
-
-			.then(response =>
+			window.COMPLEX_GLSL = "";
+			
+			let filenames = Object.keys(this.glsl_functions);
+			
+			
+			
+			for (let i = 0; i < filenames.length; i++)
 			{
-				response.map(x => x.text().then(text => window.COMPLEX_GLSL += text));
-				Site.scripts_loaded["glsl"] = true;
-				resolve();
-			});
+				await new Promise(async (resolve, reject) =>
+				{
+					fetch(`/scripts/glsl/${filenames[i]}.frag`)
+				
+					.then(response => response.text())
+					
+					.then(text => this.glsl_functions[filenames[i]] = text)
+					
+					.then(() => resolve());
+				});
+			}
+			
+			
+			
+			//Join them all for now -- we'll replace this later
+			for (let i = 0; i < filenames.length; i++)
+			{
+				window.COMPLEX_GLSL	+= this.glsl_functions[filenames[i]];
+			}
+			
+			Site.scripts_loaded["glsl"] = true;
+			
+			resolve();
 		});
 	},
 	
