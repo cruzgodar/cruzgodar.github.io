@@ -692,35 +692,52 @@ float binomial(float n, float k)
 }
 
 // Returns B_m, the mth Bernoulli number, e.g. 1, -1/2, 1/6, 0, -1/30, 0, ....
-// Formula from Louis Saalschütz according to Wikipedia.
-float bernoulli(float m)
-{
-	if (m > 1.0 && mod(m, 2.0) != 0.0)
-	{
+float bernoulli(float m) {
+	if (m == 1.0) {
+		return -0.5;
+	}
+	if (mod(m, 2.0) != 0.0) {
 		return 0.0;
 	}
-	
-	float summer = 0.0;
-	
-	for (int v = 0; v < 1000; v++) 
-	{
-		if (float(v) > m) 
-		{
-			break;
-		}
-		
-		for (int k = 0; k < 1000; k++) 
-		{
-			if (float(k) > m) 
-			{
-				break;
-			}
-			
-			summer += (1.0 - 2.0 * mod(float(v), 2.0)) * binomial(float(k),float(v)) * pow(float(v),m) / (float(k)+1.0);
-		}
+	if (m == 0.0) {
+	    return 1.00000000000000;
+	} else if (m == 2.0) {
+	    return 0.166666666666667;
+	} else if (m == 4.0) {
+	    return -0.0333333333333333;
+	} else if (m == 6.0) {
+	    return 0.0238095238095238;
+	} else if (m == 8.0) {
+	    return -0.0333333333333333;
+	} else if (m == 10.0) {
+	    return 0.0757575757575758;
+	} else if (m == 12.0) {
+	    return -0.253113553113553;
+	} else if (m == 14.0) {
+	    return 1.16666666666667;
+	} else if (m == 16.0) {
+	    return -7.09215686274510;
+	} else if (m == 18.0) {
+	    return 54.9711779448622;
+	} else if (m == 20.0) {
+	    return -529.124242424242;
+	} else if (m == 22.0) {
+	    return 6192.12318840580;
+	} else if (m == 24.0) {
+	    return -86580.253113;
+	} else if (m == 26.0) {
+	    return 1425517.1665;
+	} else if (m == 28.0) {
+	    return -27298231.070;
+	} else if (m == 30.0) {
+	    return 601580874.0;
+	} else if (m == 32.0) {
+	    return -15116315768.0;
+	} else if (m == 34.0) {
+	    return 429614643070.0;
 	}
-	
-	return summer;
+	// now they get inconveniently large
+	return 0.0;
 }
 
 
