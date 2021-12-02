@@ -59,8 +59,6 @@
 	let pan_velocity_y_ec_plot = 0;
 	let zoom_velocity_ec_plot = 0;
 	
-	const interpolation_search_radius = 1000;
-	
 	
 	
 	const pan_friction = .96;
@@ -362,7 +360,7 @@
 			{
 				//Dilate the pixels to make a thicker line.
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
-				/*
+				
 				vec4 state = (4.0 * texture2D(u_texture, center) +
 				
 					texture2D(u_texture, center + vec2(texture_step, 0.0)) +
@@ -377,9 +375,6 @@
 				) / 2.0;
 				
 				state.w = 1.0;
-				*/
-				
-				vec4 state = texture2D(u_texture, center);
 				
 				gl_FragColor = state;
 			}
@@ -552,6 +547,8 @@
 		wilson_ec_plot.render.load_new_shader(frag_shader_source_ec_plot_2);
 		
 		wilson_ec_plot.render.init_uniforms(["texture_step"]);
+		
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["texture_step"], 1 / resolution_ec_plot);
 		
 		
 		
@@ -965,6 +962,8 @@
 		
 		const width = wilson_ec_plot.canvas_width;
 		
+		let interpolation_search_radius = 30;
+		
 		for (let i = 1; i < wilson_ec_plot.canvas_height - 1; i++)
 		{
 			for (let j = 1; j < width - 1; j++)
@@ -984,9 +983,14 @@
 					
 					let total = pixel_l + pixel_r + pixel_u + pixel_d + pixel_lu + pixel_ru + pixel_ld + pixel_rd;
 					
-					if (total <= 255)
+					if (total === 255)
 					{
-						endpoints.push([i, j]);
+						endpoints.push([i, j, 2]);
+					}
+					
+					else if (total === 0)
+					{
+						endpoints.push([i, j, 2]);
 					}
 				}
 			}
@@ -1000,20 +1004,27 @@
 			let min_j = -1;
 			let min_distance = interpolation_search_radius;
 			
+			
+			
 			for (let j = i + 1; j < endpoints.length; j++)
 			{
-				let distance = Math.abs(endpoints[i][0] - endpoints[j][0]) + Math.abs(endpoints[i][1] - endpoints[j][1]);
-				
-				if (distance < min_distance)
+				if (endpoints[j][0] > endpoints[i][0] || (endpoints[j][0] === endpoints[i][0] && endpoints[j][1] > endpoints[i][1]))
 				{
-					min_j = j;
-					min_distance = distance;
+					let distance = Math.sqrt((endpoints[i][0] - endpoints[j][0])*(endpoints[i][0] - endpoints[j][0]) + (endpoints[i][1] - endpoints[j][1])*(endpoints[i][1] - endpoints[j][1]));
+					
+					if (distance < min_distance && distance >= 2)
+					{
+						min_j = j;
+						min_distance = distance;
+					}
 				}
 			}
 			
+			
+			
 			if (min_j !== -1)
 			{
-				//Interpolate between the two.
+				//Interpolate between the two points.
 				for (let k = 1; k < min_distance; k++)
 				{
 					let t = k / min_distance;
@@ -1028,7 +1039,14 @@
 					pixels[4 * index + 2] = 255;
 				}
 				
-				endpoints.splice(min_j, 1);
+				
+				
+				endpoints[min_j][2]--;
+				
+				if (endpoints[min_j][2] === 0)
+				{
+					endpoints.splice(min_j, 1);
+				}
 			}
 		}
 		
