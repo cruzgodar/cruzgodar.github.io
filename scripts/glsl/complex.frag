@@ -45,6 +45,14 @@ float carg(float z)
 	return 3.14159265;
 }
 
+// Returns |z|^2
+float cmag2(vec2 z) {
+	return z.x*z.x + z.y*z.y;
+}
+
+float cmag2(float z) {
+	return z*z;
+}
 
 
 //Returns the conjugate of z.
@@ -194,7 +202,7 @@ float cdiv(float z, float w)
 //Returns 1/z.
 vec2 cinv(vec2 z)
 {
-	float magnitude = z.x*z.x + z.y*z.y;
+	float magnitude = cmag2(z);
 	
 	return vec2(z.x / magnitude, -z.y / magnitude);
 }
@@ -215,7 +223,7 @@ float cinv(float z)
 vec2 cpow(vec2 z, vec2 w)
 {
 	float arg = carg(z);
-	float magnitude = z.x * z.x + z.y * z.y;
+	float magnitude = cmag2(z);
 	
 	float exparg = exp(-w.y * arg);
 	float magexp = pow(magnitude, w.x / 2.0);
@@ -808,6 +816,36 @@ vec2 g2(vec2 z) {
 	return 129.878788045336582 * eisenstein4(z);
 }
 
+const int INVERSE_E4_BOUND = 10;
+// Returns *very* approximate x in fundamental domain such e4(x) = z (brute force)
+// restrictions: |real(x)|<0.5, 0 < im(x) < 1, |x|^2 > 1
+vec2 inverse_e4(vec2 z) {
+	float constant = 0.5/float(INVERSE_E4_BOUND);
+	float x_coord = 0.0;
+	float y_coord = 0.0;
+
+	int best_i = 0;
+	int best_j = 0;
+	float best_f = cmag2(ONE*1000.0);
+	float cur_f = 0.0;
+
+	for (int i = -INVERSE_E4_BOUND; i < INVERSE_E4_BOUND; i++) {
+		for (int j = 0; j < 4 * INVERSE_E4_BOUND; j++) {
+			x_coord = constant * float(i);
+			y_coord = constant * float(j);
+			if (x_coord*x_coord + y_coord*y_coord>1.0) {
+				cur_f = cmag2(eisenstein4(vec2(x_coord, y_coord))-z);
+				if (cur_f < best_f) {
+					best_i = i;
+					best_j = j;
+					best_f = cur_f;
+				}
+			}
+		}
+	}
+	return vec2(float(best_i)*constant, float(best_j)*constant);
+}
+
 vec2 eisenstein6(vec2 z)
 {
 	if (z.y <= 0.0)
@@ -956,6 +994,15 @@ vec2 deltaq(vec2 z) {
 // Algorithms from equation 1.10 of https://arxiv.org/pdf/1806.06725.pdf
 
 vec2 wp(vec2 z, vec2 t) {
+
+
+	// extend domain to allow strange tau values
+	if (t.y < 0.0) {
+		t = -t;
+	}
+	
+	
+
 	// Shift z to be in the fundamental parallelogram
 	z -= floor(z.y/t.y)*t;
 	z.x = fract(z.x);
