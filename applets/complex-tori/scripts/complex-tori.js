@@ -33,6 +33,9 @@
 	let black_point = 1;
 	let white_point = 1;
 	
+	let g2 = 1;
+	let g3 = 1;
+	
 	
 	
 	let fixed_point_x = 0;
@@ -112,6 +115,42 @@
 		
 		window.requestAnimationFrame(draw_frame);
 	});
+	
+	
+	
+	let g2_slider_element = document.querySelector("#g2-slider");
+	
+	let g2_slider_value_element = document.querySelector("#g2-slider-value");
+	
+	g2_slider_element.addEventListener("input", () =>
+	{
+		//0 to 2
+		g2 = parseInt(g2_slider_element.value || 5000) / 5000;
+		
+		g2_slider_value_element.textContent = g2;
+		
+		window.requestAnimationFrame(draw_frame_ec_plot);
+	});
+	
+	g2_slider_value_element.textContent = g2;
+	
+	
+	
+	let g3_slider_element = document.querySelector("#g3-slider");
+	
+	let g3_slider_value_element = document.querySelector("#g3-slider-value");
+	
+	g3_slider_element.addEventListener("input", () =>
+	{
+		//0 to 2
+		g3 = parseInt(g3_slider_element.value || 5000) / 5000;
+		
+		g3_slider_value_element.textContent = g3;
+		
+		window.requestAnimationFrame(draw_frame_ec_plot);
+	});
+	
+	g3_slider_value_element.textContent = g3;
 	
 	
 	
@@ -538,10 +577,6 @@
 		
 		wilson_ec_plot.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "step", "g2", "g3"]);
 		
-		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["g2"], 1);
-			
-		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["g3"], 0);
-		
 		
 		
 		wilson_ec_plot.render.load_new_shader(frag_shader_source_ec_plot_2);
@@ -949,6 +984,10 @@
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_size"], world_size / 2);
 		
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["step"], world_size / resolution_ec_plot);
+		
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["g2"], g2);
+			
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["g3"], g3);
 		
 		
 		
