@@ -2,7 +2,7 @@
 
 
 
-.text-boxes, .text-buttons
+.text-boxes, .text-buttons, .sliders
 {
 	display: grid;
 	
@@ -31,6 +31,17 @@
 	
 	grid-row-gap: 5vw;
 	grid-column-gap: 5vw;
+	
+	margin-top: 5vh;
+}
+
+.sliders
+{
+	/* 6 sliders per row. */
+	grid-template-columns: repeat(auto-fit, 9.583vw);
+	
+	grid-row-gap: 2.5vw;
+	grid-column-gap: 2.5vw;
 	
 	margin-top: 5vh;
 }
@@ -342,6 +353,108 @@ label .body-text
 
 
 
+
+
+.slider-container
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.slider-container > input
+{
+	-webkit-appearance: none;
+	appearance: none;
+	
+	-webkit-user-select: none;
+	user-select: none;
+	
+	width: calc(100% + 1px);
+	height: 3px;
+	
+	border-radius: 1.5px;
+	
+	margin-left: -1px;
+	
+	background-color: rgb(200, 200, 200) !important;
+	outline: none;
+	box-shadow: none;
+	
+	transition: background-color .15s ease-in-out;
+}
+
+.slider-container > input::-webkit-slider-thumb
+{
+	-webkit-appearance: none;
+	appearance: none;
+	
+	-webkit-user-select: none;
+	user-select: none;
+	box-shadow: none;
+	
+	width: 20px;
+	height: 20px;
+	background-color: rgb(156, 156, 156) !important;
+	
+	border-radius: 50%;
+	
+	cursor: pointer;
+	
+	transition: background-color .15s ease-in-out;
+}
+
+.slider-container > input::-moz-slider-thumb
+{
+	-webkit-appearance: none;
+	appearance: none;
+	
+	-webkit-user-select: none;
+	user-select: none;
+	box-shadow: none;
+	
+	width: 20px;
+	height: 20px;
+	background-color: rgb(156, 156, 156) !important;
+	
+	border-radius: 50%;
+	
+	cursor: pointer;
+	
+	transition: background-color .15s ease-in-out;
+}
+
+.slider-container > input:active
+{
+	background-color: rgb(136, 136, 136) !important;
+}
+
+.slider-container > input:hover::-webkit-slider-thumb
+{
+	background-color: rgb(112, 112, 112) !important;
+}
+
+.slider-container > input:hover::-moz-slider-thumb
+{
+	background-color: rgb(112, 112, 112) !important;
+}
+
+.slider-container > input:active::-webkit-slider-thumb
+{
+	background-color: rgb(64, 64, 64) !important;
+}
+
+.slider-container > input:active::-moz-slider-thumb
+{
+	background-color: rgb(64, 64, 64) !important;
+}
+
+
+
+
+
+
+
 #canvas-landscape
 {
 	display: flex;
@@ -365,12 +478,12 @@ label .body-text
 
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
-	.text-boxes, .text-buttons
+	.text-boxes, .text-buttons, .sliders
 	{
 		width: 90%;
 	}
 	
-	.text-boxes
+	.text-boxes, .sliders
 	{
 		/* 4 boxes per row. */
 		grid-template-columns: repeat(auto-fit, 18.75vw);
@@ -393,7 +506,7 @@ label .body-text
 
 @media (min-aspect-ratio: 16/9), (min-width: 1400px)
 {
-	.text-boxes
+	.text-boxes, .sliders
 	{
 		/* 8 boxes per row. */
 		grid-template-columns: repeat(auto-fit, 6.5625vw);
@@ -427,7 +540,7 @@ label .body-text
 		width: 70%;
 	}
 	
-	.text-box-container label p
+	.text-box-container label p, .slider-container label p
 	{
 		margin: 0 0;
 		

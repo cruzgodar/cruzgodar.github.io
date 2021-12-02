@@ -190,7 +190,7 @@ let Settings =
 					transition: color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
 				}
 				
-				.text-box, .text-field, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button
+				.text-box, .text-field, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button, .slider-container > input
 				{
 					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease, border-color ${Site.opacity_animation_time * 2 / 1000}s ease, color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
 				}
@@ -998,6 +998,11 @@ let Settings =
 			
 			
 			
+			try {document.querySelector("#slider-style").remove();}
+			catch(ex) {}
+			
+			
+			
 			Page.set_element_styles("#floating-footer-content, #floating-footer-button-background", "background-color", "rgb(255, 255, 255)");
 			
 			
@@ -1050,6 +1055,57 @@ let Settings =
 			Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", this.dark_theme_background_color);
 			
 			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(152, 152, 152)");
+			
+			
+			
+			let element = Site.add_style(`
+				.slider-container > input
+				{
+					background-color: rgb(80, 80, 80) !important;
+				}
+
+				.slider-container > input::-webkit-slider-thumb
+				{
+					background-color: rgb(127, 127, 127) !important;
+				}
+
+				.slider-container > input::-moz-slider-thumb
+				{
+					background-color: rgb(127, 127, 127) !important;
+				}
+
+				.slider-container > input:active
+				{
+					background-color: rgb(144, 144, 144) !important;
+				}
+
+				.slider-container > input:hover::-webkit-slider-thumb
+				{
+					background-color: rgb(168, 168, 168) !important;
+				}
+
+				.slider-container > input:hover::-moz-slider-thumb
+				{
+					background-color: rgb(168, 168, 168) !important;
+				}
+
+				.slider-container > input:active::-webkit-slider-thumb
+				{
+					background-color: rgb(216, 216, 216) !important;
+				}
+
+				.slider-container > input:active::-moz-slider-thumb
+				{
+					background-color: rgb(216, 216, 216) !important;
+				}
+			`, false);
+			
+			try {document.querySelector("#slider-style").remove();}
+			catch(ex) {}
+			
+			try {element.id = "slider-style";}
+			catch(ex) {}
+				
 			
 			
 			
@@ -1109,6 +1165,56 @@ let Settings =
 			Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", "rgb(255, 255, 255)");
 			
 			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(64, 64, 64)");
+			
+			
+			
+			let element = Site.add_style(`
+				.slider-container > input
+				{
+					background-color: rgb(100, 100, 100) !important;
+				}
+
+				.slider-container > input::-webkit-slider-thumb
+				{
+					background-color: rgb(80, 80, 80) !important;
+				}
+
+				.slider-container > input::-moz-slider-thumb
+				{
+					background-color: rgb(80, 80, 80) !important;
+				}
+
+				.slider-container > input:active
+				{
+					background-color: rgb(64, 64, 64) !important;
+				}
+
+				.slider-container > input:hover::-webkit-slider-thumb
+				{
+					background-color: rgb(56, 56, 56) !important;
+				}
+
+				.slider-container > input:hover::-moz-slider-thumb
+				{
+					background-color: rgb(56, 56, 56) !important;
+				}
+
+				.slider-container > input:active::-webkit-slider-thumb
+				{
+					background-color: rgb(0, 0, 0) !important;
+				}
+
+				.slider-container > input:active::-moz-slider-thumb
+				{
+					background-color: rgb(0, 0, 0) !important;
+				}
+			`, false);
+			
+			try {document.querySelector("#slider-style").remove();}
+			catch(ex) {}
+			
+			try {element.id = "slider-style";}
+			catch(ex) {}
 			
 			
 			
@@ -1174,6 +1280,58 @@ let Settings =
 			Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", this.dark_theme_background_color);
 			
 			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(216, 216, 216)");
+			
+			
+			
+			//Page.set_element_styles(".slider-container > input", "background-color", "rgb(180, 180, 180)");
+			
+			let element = Site.add_style(`
+				.slider-container > input
+				{
+					background-color: rgb(180, 180, 180) !important;
+				}
+
+				.slider-container > input::-webkit-slider-thumb
+				{
+					background-color: rgb(200, 200, 200) !important;
+				}
+
+				.slider-container > input::-moz-slider-thumb
+				{
+					background-color: rgb(200, 200, 200) !important;
+				}
+
+				.slider-container > input:active
+				{
+					background-color: rgb(216, 216, 216) !important;
+				}
+
+				.slider-container > input:hover::-webkit-slider-thumb
+				{
+					background-color: rgb(224, 224, 224) !important;
+				}
+
+				.slider-container > input:hover::-moz-slider-thumb
+				{
+					background-color: rgb(224, 224, 224) !important;
+				}
+
+				.slider-container > input:active::-webkit-slider-thumb
+				{
+					background-color: rgb(255, 255, 255) !important;
+				}
+
+				.slider-container > input:active::-moz-slider-thumb
+				{
+					background-color: rgb(255, 255, 255) !important;
+				}
+			`, false);
+			
+			try {document.querySelector("#slider-style").remove();}
+			catch(ex) {}
+			
+			try {element.id = "slider-style";}
+			catch(ex) {}
 			
 			
 			

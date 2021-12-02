@@ -433,6 +433,26 @@ Page.Components =
 	
 	
 	
+	get_slider: function(args)
+	{
+		let id = args[0];
+		
+		let value = args[1];
+		
+		let text = args.slice(2).join(" ");
+		
+		return `
+			<div class="slider-container" data-aos="fade-up">
+				<input id="${id}-slider" class="no-floating-footer" type="range" min="0" max="10000" value="${value}" tabindex="1">
+				<label for="${id}-slider">
+					<p class="body-text">${text}: <span id="${id}-slider-value">0</span></p>
+				</label>
+			</div>
+		`;
+	},
+	
+	
+	
 	get_canvas: function()
 	{
 		return `
@@ -605,6 +625,28 @@ Page.Components =
 						words = lines[i].split(" ");
 						
 						first = false;
+					}
+					
+					lines[i] = `</div>`;
+				}
+				
+				
+				
+				else if (words[0] === "!begin-sliders")
+				{
+					lines[i] = `<div class="sliders">`;
+					
+					i += 2;
+					
+					words = lines[i].split(" ");
+					
+					while (words[0] !== "!end-sliders")
+					{
+						lines[i] = this.get_slider(words);
+						
+						i += 2;
+						
+						words = lines[i].split(" ");
 					}
 					
 					lines[i] = `</div>`;
