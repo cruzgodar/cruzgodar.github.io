@@ -296,7 +296,7 @@ vec2 ctet(vec2 z, float w)
 	
 	vec2 prod = z;
 	
-	for (int j = 1; j < 10000; j++)
+	for (int j = 1; j < 1000; j++)
 	{
 		if (float(j) >= w)
 		{
@@ -316,7 +316,7 @@ float ctet(float z, float w)
 		return 1.0;
 	}
 	float prod = z;
-	for (int j = 1; j < 10000; j++)
+	for (int j = 1; j < 1000; j++)
 	{
 		if (float(j) >= w)
 		{
@@ -624,7 +624,7 @@ float divisor(float n,float k)
 
 	 float summer = 0.0;
 
-	 for (int d = 1; d < 10000; d++)
+	 for (int d = 1; d < 100; d++)
 	 {
 		 if (float(d) > n)
 		 {
@@ -645,12 +645,12 @@ float divisor(float n)
 	return divisor(n,1.0);
 }
 
-// Returns n!.
+// Returns n!. Limited to n < 20 since it's waaaay too big there already.
 float factorial(float n)
 {
 	float prod = 1.0;
 	
-	for (int j = 1; j < 10000; j++) 
+	for (int j = 1; j < 20; j++) 
 	{
 		if (float(j) > n) 
 		{
@@ -678,7 +678,7 @@ float binomial(float n, float k)
 	k = min(k,n-k);
 
 	float prod = 1.0;
-	for (int j = 0; j < 1000; j++)
+	for (int j = 0; j < 100; j++)
 	{
 		if (float(j) >= k) 
 		{
