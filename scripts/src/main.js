@@ -289,19 +289,23 @@ let Site =
 	
 	load_glsl: function()
 	{
+		window.COMPLEX_GLSL = "";
+		
 		return new Promise(async function(resolve, reject)
 		{
 			let shader = "";
-			
+
 			await Promise.all([
-				fetch("/scripts/glsl/complex.frag").then(response => response.text()).then(text => shader += text)
-			]);
-			
-			window.COMPLEX_GLSL = shader;
-			
-			Site.scripts_loaded["glsl"] = true;
-			
-			resolve();
+				fetch("/scripts/glsl/complex.frag"),
+				fetch("/scripts/glsl/zeta.frag")
+			])
+
+			.then(response =>
+			{
+				response.map(x => x.text().then(text => window.COMPLEX_GLSL += text));
+				Site.scripts_loaded["glsl"] = true;
+				resolve();
+			});
 		});
 	},
 	

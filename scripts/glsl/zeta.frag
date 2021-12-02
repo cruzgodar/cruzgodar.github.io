@@ -1,0 +1,1 @@
+const float WBGRF = 0.0;
