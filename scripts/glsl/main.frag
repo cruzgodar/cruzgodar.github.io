@@ -1397,7 +1397,15 @@ vec2 hypergeometric2f1(float a, float b, float c, vec2 z) {
 
 // because I hate typing long function names
 vec2 f21(float a, float b, float c, vec2 z) {
-	return hypergeometric2f1(a,b,c, z);
+	return hypergeometric2f1(a,b,c,z);
+}
+
+// Inverse function to kleinJ
+// Uses ``Method 4: Solving the quadratic in α'' from https://en.wikipedia.org/wiki/J-invariant
+vec2 inverse_j(vec2 z) {
+	vec2 temp = cdiv(432.0,z);
+	vec2 a = 0.5 * (ONE + cpow(ONE-4.0*temp,0.5));
+	return cmul(I,cdiv(hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,ONE-a),hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,a)));
 }
 
 
