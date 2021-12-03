@@ -1370,13 +1370,12 @@ const int F21_BOUND = 15;
 vec2 hypergeometric2f1_helper(float a, float b, float c, vec2 z) {
 	vec2 summer = ONE;
     vec2 term = ONE;
-    // todo: try term *= ...
     for (int n = 0; n < F21_BOUND; n++) {
         term *= a+float(n);
         term *= b+float(n);
         term /= c+float(n);
         term = cmul(term,z);
-        term = term / (float(n)+1.0);
+        term /= float(n)+1.0;
         summer = summer + term;
     }
     return summer;
@@ -1403,11 +1402,23 @@ vec2 f21(float a, float b, float c, vec2 z) {
 // Inverse function to kleinJ
 // Uses ``Method 4: Solving the quadratic in α'' from https://en.wikipedia.org/wiki/J-invariant
 vec2 inverse_j(vec2 z) {
+
+	// Test code: 1728.0*cdiv(cpow(g2(inverse_j(z)),3.0),cpow(g2(inverse_j(z)),3.0)-27.0 * cpow(g3(inverse_j(z)),2.0))
+	// Should return the identity (it does!)
+
 	vec2 temp = cdiv(432.0,z);
 	vec2 a = 0.5 * (ONE + cpow(ONE-4.0*temp,0.5));
 	return cmul(I,cdiv(hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,ONE-a),hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,a)));
 }
 
+// IN: g2 = a, g3 = b
+// OUT: tau such that y^2 = 4x^3 - g2(tau)x - g3(tau) is isomorphic to y^2 = 4x^3 - ax - b
+// Can maybe think of a way to actually get g2(tau) = a, g3(tau) = b
+vec2 invert_g2_g3(vec2 a, vec2 b) {
+	a = cpow(a,3.0);
+	b = cpow(b,2.0);
+	return inverse_j(cdiv(a,a-27.0*b)); //It seems like this should be off by a factor of 1728 but it isn't (?)
+}
 
 // benchmarking function
 vec2 bench1000(vec2 z) {
