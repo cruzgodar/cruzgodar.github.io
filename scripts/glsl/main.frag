@@ -692,6 +692,9 @@ float binomial(float n, float k)
 }
 
 // Returns B_m, the mth Bernoulli number, e.g. 1, -1/2, 1/6, 0, -1/30, 0, ....
+
+//To-do: figure out array syngtac const int bernoulli_test[3] = int[3](1, 1, 2);
+
 float bernoulli(float m) {
 	if (m == 1.0) {
 		return -0.5;
@@ -1414,7 +1417,7 @@ vec2 inverse_j(vec2 z) {
 // IN: g2 = a, g3 = b
 // OUT: tau such that y^2 = 4x^3 - g2(tau)x - g3(tau) is isomorphic to y^2 = 4x^3 - ax - b
 // Can maybe think of a way to actually get g2(tau) = a, g3(tau) = b
-vec2 invert_g2_g3(vec2 a, vec2 b) {
+vec2 inverse_g2_g3(vec2 a, vec2 b) {
 	a = cpow(a,3.0);
 	b = cpow(b,2.0);
 	return inverse_j(cdiv(a,a-27.0*b)); //It seems like this should be off by a factor of 1728 but it isn't (?)
