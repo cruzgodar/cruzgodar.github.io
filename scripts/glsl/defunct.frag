@@ -93,3 +93,16 @@ vec2 inverse_wp(vec2 z, vec2 tau) {
 	}
 	return vec2(float(best_i)*constant,0.0) +  float(best_j)*constant*tau;
 }
+
+// Algorithm from Baaquie's paper cited in
+// https://math.stackexchange.com/questions/2852355/irreducible-characters-of-su3
+
+vec2 su3_character(float p, float q, vec2 z) {
+	vec2 summer = ZERO;
+	summer -= cexp(I*((p+1.0)*z.y-(q+1.0)*z.x));
+	summer += cexp(I*((p+1.0)*z.x-(q+1.0)*z.y));
+	summer += cmul(cexp(-I*(p+1.0)*(z.x+z.y)),cexp(-I*(q+1.0)*z.x)-cexp(-I*(q+1.0)*z.y));
+	summer += cmul(cexp(I*(q+1.0)*(z.x+z.y)),cexp(I*(p+1.0)*z.y)-cexp(I*(p+1.0)*z.x));
+	summer = vec2(summer.y,-summer.x);
+	return summer / (8.0 * csin((z.x-z.y)/2.0)*csin((z.x+2.0*z.y)/2.0)*csin((2.0*z.x+z.y)/2.0));
+}
