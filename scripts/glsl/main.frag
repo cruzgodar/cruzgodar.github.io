@@ -692,9 +692,6 @@ float binomial(float n, float k)
 }
 
 // Returns B_m, the mth Bernoulli number, e.g. 1, -1/2, 1/6, 0, -1/30, 0, ....
-
-//To-do: figure out array syngtac const int bernoulli_test[3] = int[3](1, 1, 2);
-
 float bernoulli(float m) {
 	if (m == 1.0) {
 		return -0.5;
@@ -1416,12 +1413,44 @@ vec2 inverse_j(vec2 z) {
 
 // IN: g2 = a, g3 = b
 // OUT: tau such that y^2 = 4x^3 - g2(tau)x - g3(tau) is isomorphic to y^2 = 4x^3 - ax - b
-// Can maybe think of a way to actually get g2(tau) = a, g3(tau) = b
-vec2 inverse_g2_g3(vec2 a, vec2 b) {
+// Can maybe think of a way to actually get g2(tau) = a, g3(tau) = b, or at least close
+// The main issue is that y^2 = 4x^3 + 1 \cong y^2 = 4x^3 + 2 over C
+// Think: j(g2,g3) = 1/(1-27g3^2/g2^3)
+// Tau has weight zero so it's invariant under z->(az+b)/(cz+d)! whereas g3^2 and g2^3 have weight 12
+vec2 invert_g2_g3(vec2 a, vec2 b) {
 	a = cpow(a,3.0);
 	b = cpow(b,2.0);
 	return inverse_j(cdiv(a,a-27.0*b)); //It seems like this should be off by a factor of 1728 but it isn't (?)
 }
+
+// Returns the character of the irreducible su3 representation with highest weight (p,q)
+// Algorithm from https://math.stackexchange.com/questions/2852355/irreducible-characters-of-su3
+
+vec2 su3_character(int p, int q, vec2 z) {
+	vec2 summer = ZERO;
+	float theta = z.x; //todo: change
+	float phi = z.y*sqrt(2.0);
+	for (int k = 0; k < 100; k++) {
+		if (k >= q) {
+			if (k > p+q) {
+				break;
+			}
+			for (int l = 0; l < 100; l++) {
+				if (l > q) {
+					break;
+				}
+				summer += csin(float(k-l+1) * phi / 2.0)/csin(phi / 2.0) * cexp(-1.5 * I * float(k+l)*theta); 
+			}
+		}
+	}
+	return cmul(summer, cexp(I*theta*(float(p+2*q))));
+}
+
+vec2 su3_character(float p, float q, vec2 z) {
+	return su3_character(int(p),int(q), z);
+}
+
+
 
 // benchmarking function
 vec2 bench1000(vec2 z) {
