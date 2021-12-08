@@ -1181,6 +1181,7 @@ vec2 kleinJ(vec2 z) {
 	{
 		return ZERO;
 	}
+
 	vec2 q = cexp(PI * vec2(-z.y,z.x));
 
 	vec2 a = ONE;
@@ -1417,10 +1418,11 @@ vec2 inverse_j(vec2 z) {
 // The main issue is that y^2 = 4x^3 + 1 \cong y^2 = 4x^3 + 2 over C
 // Think: j(g2,g3) = 1/(1-27g3^2/g2^3)
 // Tau has weight zero so it's invariant under z->(az+b)/(cz+d)! whereas g3^2 and g2^3 have weight 12
-vec2 invert_g2_g3(vec2 a, vec2 b) {
+vec2 inverse_g2_g3(vec2 a, vec2 b) {
 	a = cpow(a,3.0);
 	b = cpow(b,2.0);
-	return inverse_j(cdiv(a,a-27.0*b)); //It seems like this should be off by a factor of 1728 but it isn't (?)
+	// this would give you z; need to find c,d such that (cz+d)^-k g(az + b/cz + d) = g2 
+	return inverse_j(1728.0*cdiv(a,a-27.0*b)); //It seems like this should be off by a factor of 1728 but it isn't (?)
 }
 
 // Returns the character of the irreducible su3 representation with highest weight (p,q)
