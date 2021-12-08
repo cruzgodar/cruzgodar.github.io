@@ -33,8 +33,8 @@
 	let black_point = 1;
 	let white_point = 1;
 	
-	let g2 = 1;
-	let g3 = 1;
+	let g2 = 0;
+	let g3 = 0;
 	
 	
 	
@@ -124,10 +124,10 @@
 	
 	g2_slider_element.addEventListener("input", () =>
 	{
-		//0 to 2
-		g2 = parseInt(g2_slider_element.value || 5000) / 5000;
+		//-2 to 2
+		g2 = parseInt(g2_slider_element.value || 5000) / 1000 - 5;
 		
-		g2_slider_value_element.textContent = g2;
+		g2_slider_value_element.textContent = Math.round(g2 * 1000) / 1000;
 		
 		window.requestAnimationFrame(draw_frame);
 		
@@ -144,10 +144,10 @@
 	
 	g3_slider_element.addEventListener("input", () =>
 	{
-		//0 to 2
-		g3 = parseInt(g3_slider_element.value || 5000) / 5000;
+		//2 to 2
+		g3 = parseInt(g3_slider_element.value || 5000) / 1000 - 5;
 		
-		g3_slider_value_element.textContent = g3;
+		g3_slider_value_element.textContent = Math.round(g3 * 1000) / 1000;
 		
 		window.requestAnimationFrame(draw_frame);
 		
@@ -341,7 +341,7 @@
 			
 			float f(vec2 z)
 			{
-				return z.y * z.y   -   4.0 * z.x * z.x * z.x   +   g2_arg * z.x   +   g3_arg;
+				return z.y * z.y   -   z.x * z.x * z.x   -   g2_arg * z.x   -   g3_arg;
 			}
 			
 			

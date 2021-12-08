@@ -143,13 +143,22 @@
 		
 		
 		
-		wilson.ctx.beginPath();
-		wilson.ctx.moveTo(j_1_modified - forward_vec_j, i_1_modified - forward_vec_i);
-		wilson.ctx.lineTo(middle_j + ortho_vec_j, middle_i + ortho_vec_i);
-		wilson.ctx.lineTo(j_2_modified + forward_vec_j, i_2_modified + forward_vec_i);
-		wilson.ctx.lineTo(middle_j - ortho_vec_j, middle_i - ortho_vec_i);
-		wilson.ctx.lineTo(j_1_modified - forward_vec_j, i_1_modified - forward_vec_i);
-		wilson.ctx.stroke();
+		let scaled_angle = (Math.atan2(forward_vec_i, forward_vec_j) + Math.PI) / (2 * Math.PI);
+		
+		let light = .75 * (1 - Math.min(Math.abs(scaled_angle - .25), Math.abs(1.75 - scaled_angle))) + .25;
+		
+		
+		
+		let region = new Path2D();
+		region.moveTo(j_1_modified - forward_vec_j, i_1_modified - forward_vec_i);
+		region.lineTo(middle_j + ortho_vec_j, middle_i + ortho_vec_i);
+		region.lineTo(j_2_modified + forward_vec_j, i_2_modified + forward_vec_i);
+		region.lineTo(middle_j - ortho_vec_j, middle_i - ortho_vec_i);
+		region.lineTo(j_1_modified - forward_vec_j, i_1_modified - forward_vec_i);
+		region.closePath();
+		
+		wilson.ctx.fillStyle = `rgb(${light * 255}, ${light * 255}, ${light * 255})`;
+		wilson.ctx.fill(region);
 	}
 	
 	
@@ -188,11 +197,10 @@
 	
 	function draw_matching()
 	{
-		wilson.ctx.strokeStyle = "rgb(255, 0, 0)";
+		wilson.ctx.strokeStyle = "rgb(127, 0, 255)";
 		
 		for (let i = 0; i < matchings.length; i++)
 		{
-			//draw_line(matchings[i][0], matchings[i][1], matchings[i][2], matchings[i][3]);
 			draw_rhombus(matchings[i][0], matchings[i][1], matchings[i][2], matchings[i][3]);
 		}
 	}
@@ -211,19 +219,29 @@
 				
 				if ((j - i % 2) % 3 === 1)
 				{
-					if (x >= 0 && y >= -x * Math.sqrt(3) / 2)
-					{
-						matchings.push([i, j, i - 1, j - (i+1) % 2]);
-					}
+					let x_1 = x - .5 / num_cols * Math.sqrt(3) / 2;
+					let y_1 = y + .5 / num_rows;
 					
-					else if (x < 0 && y >= x * Math.sqrt(3) / 2)
+					if (x_1 >= 0 && y_1 > -x_1 * Math.sqrt(3) / 2)
 					{
-						matchings.push([i, j, i + 1, j - (i+1) % 2]);
+						matchings.push([i, j, i - 1, j - (i + 1) % 2]);
 					}
 					
 					else
 					{
-						matchings.push([i, j, i, j + 1]);
+						y_1 = y - .5 / num_rows;
+						
+						if (x_1 < 0 && y_1 > x_1 * Math.sqrt(3) / 2)
+						{
+							matchings.push([i, j, i + 1, j - (i + 1) % 2]);
+						}
+						
+						else
+						{
+							x_1 = x + .5 / num_cols * Math.sqrt(3) / 2;
+							y_1 = y + .5 / num_rows;
+							matchings.push([i, j, i, j + 1]);
+						}
 					}
 				}
 			}
