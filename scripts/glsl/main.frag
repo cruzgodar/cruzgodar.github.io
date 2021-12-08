@@ -1306,63 +1306,34 @@ vec2 gamma(vec2 a) {
 	}
 	return gamma_helper(a);
 }
-// TODO: make a faster version for real inputs since gamma(x\in R)\in R
+
+
+float gamma_float_helper(float a) {
+	a -= 1.0;
+
+	float y = 1.0;
+	y += GAMMA_CONST_1 / (a + 1.0);
+	y += GAMMA_CONST_2 / (a + 2.0);
+	y += GAMMA_CONST_3 / (a + 3.0);
+	y += GAMMA_CONST_4 / (a + 4.0);
+	y += GAMMA_CONST_5 / (a + 5.0);
+	y += GAMMA_CONST_6 / (a + 6.0);
+	y += GAMMA_CONST_7 / (a + 7.0);
+	y += GAMMA_CONST_8 / (a + 8.0);
+	float t = a+7.5;
+	return sqrt(2.0*PI) * cpow(t, a+0.5) * cexp(-t) * y;
+}
+
+// This is a faster version of gamma for real inputs (which implies real outputs)
 float gamma(float a) {
-	return gamma(vec2(a, 0.0)).x;
-}
-
-
-// Riemann zeta function
-// algorithm 2 of http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=5B07751C858FF584B31B250A0F3AFC58?doi=10.1.1.56.9455&rep=rep1&type=pdf
-// accurate for |a|<20 or so
-
-vec2 zeta_helper(vec2 a) {
-	vec2 tot = -ONE;
-	vec2 minus_a = -a;
-	tot += 1.00000000000000 * cpow_logz(2.0, 0.693147180559945, minus_a);
-	tot += -1.00000000000000 * cpow_logz(3.0, 1.09861228866811, minus_a);
-	tot += 0.999999999999999 * cpow_logz(4.0, 1.38629436111989, minus_a);
-	tot += -0.999999999999910 * cpow_logz(5.0, 1.60943791243410, minus_a);
-	tot += 0.999999999996429 * cpow_logz(6.0, 1.79175946922805, minus_a);
-	tot += -0.999999999904138 * cpow_logz(7.0, 1.94591014905531, minus_a);
-	tot += 0.999999998151620 * cpow_logz(8.0, 2.07944154167984, minus_a);
-	tot += -0.999999973295076 * cpow_logz(9.0, 2.19722457733622, minus_a);
-	tot += 0.999999701660162 * cpow_logz(10.0, 2.30258509299405, minus_a);
-	tot += -0.999997359881274 * cpow_logz(11.0, 2.39789527279837, minus_a);
-	tot += 0.999981139767760 * cpow_logz(12.0, 2.48490664978800, minus_a);
-	tot += -0.999889578402344 * cpow_logz(13.0, 2.56494935746154, minus_a);
-	tot += 0.999463606757703 * cpow_logz(14.0, 2.63905732961526, minus_a);
-	tot += -0.997816065634779 * cpow_logz(15.0, 2.70805020110221, minus_a);
-	tot += 0.992483334827706 * cpow_logz(16.0, 2.77258872223978, minus_a);
-	tot += -0.977968845735875 * cpow_logz(17.0, 2.83321334405622, minus_a);
-	tot += 0.944645027642685 * cpow_logz(18.0, 2.89037175789616, minus_a);
-	tot += -0.880007399531768 * cpow_logz(19.0, 2.94443897916644, minus_a);
-	tot += 0.774086279213452 * cpow_logz(20.0, 2.99573227355399, minus_a);
-	tot += -0.627697859081215 * cpow_logz(21.0, 3.04452243772342, minus_a);
-	tot += 0.457676465199407 * cpow_logz(22.0, 3.09104245335832, minus_a);
-	tot += -0.292687417013889 * cpow_logz(23.0, 3.13549421592915, minus_a);
-	tot += 0.160058539631908 * cpow_logz(24.0, 3.17805383034795, minus_a);
-	tot += -0.0728150759639730 * cpow_logz(25.0, 3.21887582486820, minus_a);
-	tot += 0.0266650641624859 * cpow_logz(26.0, 3.25809653802148, minus_a);
-	tot += -0.00752290240470469 * cpow_logz(27.0, 3.29583686600433, minus_a);
-	tot += 0.00153010822756563 * cpow_logz(28.0, 3.33220451017520, minus_a);
-	tot += -0.000199240949265922 * cpow_logz(29.0, 3.36729582998647, minus_a);
-	tot += 0.0000124525593291201 * cpow_logz(30.0, 3.40119738166216, minus_a);
-	return cdiv(-tot, (ONE-cpow_logz(2.0,0.693147180559945, ONE-a)));
-}
-
-// Seems to be pretty unstable with large imaginary part
-vec2 zeta(vec2 a) {
-	if (a.x < 0.5) {
-		vec2 ans = cmul(cmul(cmul(cmul(cpow_logz(2.0, 0.693147180559945,a),cpow_logz(PI,1.14472988584940,a-ONE)),csin(1.57079632679490*a)),gamma(ONE-a)), zeta_helper(ONE-a));
-		return vec2(ans.x,ans.y);
-	} else {
-		return zeta_helper(a);
+	if (a < 0.5) {
+		return PI/(csin(PI * a)* gamma_float_helper(1.0 - a));
 	}
+	return gamma_float_helper(a);
 }
 
-float zeta(float a) {
-	return zeta(vec2(a,0.0)).x;
+float gamma(int a) {
+	return gamma(float(a));
 }
 
 const int F21_BOUND = 15;
@@ -1414,16 +1385,12 @@ vec2 inverse_j(vec2 z) {
 
 // IN: g2 = a, g3 = b
 // OUT: tau such that y^2 = 4x^3 - g2(tau)x - g3(tau) is isomorphic to y^2 = 4x^3 - ax - b
-// Can maybe think of a way to actually get g2(tau) = a, g3(tau) = b, or at least close
-// The main issue is that y^2 = 4x^3 + 1 \cong y^2 = 4x^3 + 2 over C
-// Think: j(g2,g3) = 1/(1-27g3^2/g2^3)
-// Tau has weight zero so it's invariant under z->(az+b)/(cz+d)! whereas g3^2 and g2^3 have weight 12
 vec2 inverse_g2_g3(vec2 a, vec2 b) {
 	a = cpow(a,3.0);
 	b = cpow(b,2.0);
-	// this would give you z; need to find c,d such that (cz+d)^-k g(az + b/cz + d) = g2 
-	return inverse_j(1728.0*cdiv(a,a-27.0*b)); //It seems like this should be off by a factor of 1728 but it isn't (?)
+	return inverse_j(1728.0*cdiv(a,a-27.0*b));
 }
+
 
 // Returns the character of the irreducible su3 representation with highest weight (p,q)
 // Algorithm from https://math.stackexchange.com/questions/2852355/irreducible-characters-of-su3

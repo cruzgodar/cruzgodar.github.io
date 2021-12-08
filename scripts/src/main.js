@@ -290,6 +290,7 @@ let Site =
 	glsl_functions:
 	{
 		"main": "",
+		// "gamma": "",
 		"zeta": ""
 	},
 	
