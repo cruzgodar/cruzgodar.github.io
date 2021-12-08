@@ -826,14 +826,14 @@ class Wilson
 					{
 						position: absolute;
 						
-						width: 25px;
-						height: 25px;
+						width: 20px;
+						height: 20px;
 						
 						left: 0;
 						top: 0;
 						
 						background-color: rgb(255, 255, 255);
-						border: 2px solid rgb(0, 0, 0);
+						border: 2px solid rgb(64, 64, 64);
 						border-radius: 50%;
 						
 						touch-action: none;
@@ -843,12 +843,16 @@ class Wilson
 						
 						cursor: pointer;
 						
-						transition: background-color .125s ease-in-out;
+						transition: width .125s ease-in-out, height .125s ease-in-out, top .125s ease-in-out, left .125s ease-in-out;
 					}
 
 					.wilson-draggable:active
 					{
-						background-color: rgb(127, 127, 127);
+						width: 16px;
+						height: 16px;
+						
+						left: 2px;
+						top: 2px;
 					}
 				`;
 				
