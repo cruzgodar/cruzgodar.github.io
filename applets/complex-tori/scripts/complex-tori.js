@@ -129,6 +129,8 @@
 		
 		g2_slider_value_element.textContent = g2;
 		
+		window.requestAnimationFrame(draw_frame);
+		
 		window.requestAnimationFrame(draw_frame_ec_plot);
 	});
 	
@@ -146,6 +148,8 @@
 		g3 = parseInt(g3_slider_element.value || 5000) / 5000;
 		
 		g3_slider_value_element.textContent = g3;
+		
+		window.requestAnimationFrame(draw_frame);
 		
 		window.requestAnimationFrame(draw_frame_ec_plot);
 	});
@@ -183,7 +187,8 @@
 			uniform float black_point;
 			uniform float white_point;
 			
-			uniform vec2 tau;
+			uniform float g2_arg;
+			uniform float g3_arg;
 			
 			
 			
@@ -203,6 +208,7 @@
 			//Returns f(z) for a polynomial f with given roots.
 			vec2 f(vec2 z)
 			{
+				vec2 tau = inverse_g2_g3(g2_arg, g3_arg);
 				return wp(z, tau);
 			}
 			
@@ -254,7 +260,8 @@
 			uniform float black_point;
 			uniform float white_point;
 			
-			uniform vec2 tau;
+			uniform float g2_arg;
+			uniform float g3_arg;
 			
 			
 			
@@ -274,6 +281,7 @@
 			//Returns f(z) for a polynomial f with given roots.
 			vec2 f(vec2 z)
 			{
+				vec2 tau = inverse_g2_g3(g2_arg, g3_arg);
 				return wpprime(z, tau);
 			}
 			
@@ -324,8 +332,8 @@
 			
 			uniform float step;
 			
-			uniform float g2;
-			uniform float g3;
+			uniform float g2_arg;
+			uniform float g3_arg;
 			
 			const int max_iterations = 100;
 			
@@ -333,7 +341,7 @@
 			
 			float f(vec2 z)
 			{
-				return z.y * z.y   -   4.0 * z.x * z.x * z.x   +   g2 * z.x   +   g3;
+				return z.y * z.y   -   4.0 * z.x * z.x * z.x   +   g2_arg * z.x   +   g3_arg;
 			}
 			
 			
@@ -555,27 +563,23 @@
 		
 		wilson_wp = new Wilson(document.querySelector("#wp-canvas"), options_wp);
 
-		wilson_wp.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point", "tau"]);
+		wilson_wp.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point", "g2_arg", "g3_arg"]);
 		
 		wilson_wp.gl.uniform1f(wilson_wp.uniforms["aspect_ratio"], 1);
-			
-		wilson_wp.gl.uniform2f(wilson_wp.uniforms["tau"], .5, .866);
 		
 		
 		
 		wilson_wpprime = new Wilson(document.querySelector("#wpprime-canvas"), options_wpprime);
 
-		wilson_wpprime.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point", "tau"]);
+		wilson_wpprime.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point", "g2_arg", "g3_arg"]);
 		
 		wilson_wpprime.gl.uniform1f(wilson_wpprime.uniforms["aspect_ratio"], 1);
-			
-		wilson_wpprime.gl.uniform2f(wilson_wpprime.uniforms["tau"], .5, .866);
 		
 		
 		
 		wilson_ec_plot = new Wilson(document.querySelector("#ec-plot-canvas"), options_ec_plot);
 		
-		wilson_ec_plot.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "step", "g2", "g3"]);
+		wilson_ec_plot.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "step", "g2_arg", "g3_arg"]);
 		
 		
 		
@@ -884,6 +888,9 @@
 		wilson_wp.gl.uniform1f(wilson_wp.uniforms["black_point"], black_point);
 		wilson_wp.gl.uniform1f(wilson_wp.uniforms["white_point"], white_point);
 		
+		wilson_wp.gl.uniform1f(wilson_wp.uniforms["g2_arg"], g2);
+		wilson_wp.gl.uniform1f(wilson_wp.uniforms["g3_arg"], g3);
+		
 		wilson_wp.render.draw_frame();
 		
 		
@@ -896,6 +903,9 @@
 		
 		wilson_wpprime.gl.uniform1f(wilson_wpprime.uniforms["black_point"], black_point);
 		wilson_wpprime.gl.uniform1f(wilson_wpprime.uniforms["white_point"], white_point);
+		
+		wilson_wpprime.gl.uniform1f(wilson_wpprime.uniforms["g2_arg"], g2);
+		wilson_wpprime.gl.uniform1f(wilson_wpprime.uniforms["g3_arg"], g3);
 		
 		wilson_wpprime.render.draw_frame();
 		
@@ -985,9 +995,9 @@
 		
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["step"], world_size / resolution_ec_plot);
 		
-		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["g2"], g2);
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["g2_arg"], g2);
 			
-		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["g3"], g3);
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["g3_arg"], g3);
 		
 		
 		
