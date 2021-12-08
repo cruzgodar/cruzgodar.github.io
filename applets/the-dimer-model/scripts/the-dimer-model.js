@@ -117,6 +117,41 @@
 		wilson.ctx.stroke();
 	}
 	
+	function draw_rhombus(i_1, j_1, i_2, j_2)
+	{
+		if (i_1 < 0 || j_1 < 0 || i_2 < 0 || j_2 < 0 || i_1 >= num_rows || i_2 >= num_rows || j_1 >= num_cols || j_2 >= num_cols)
+		{
+			return;
+		}
+		
+		let j_1_modified = i_1 % 2 === 1 ? j_1 * col_separation + col_stagger : j_1 * col_separation;
+		let j_2_modified = i_2 % 2 === 1 ? j_2 * col_separation + col_stagger : j_2 * col_separation;
+		
+		let i_1_modified = (i_1 + 1) * row_separation;
+		let i_2_modified = (i_2 + 1) * row_separation;
+		
+		
+		
+		let forward_vec_i = i_2_modified - i_1_modified;
+		let forward_vec_j = j_2_modified - j_1_modified;
+		
+		let ortho_vec_i = -forward_vec_j * Math.sqrt(3) / 2;
+		let ortho_vec_j = forward_vec_i * Math.sqrt(3) / 2;
+		
+		let middle_i = (i_1_modified + i_2_modified) / 2;
+		let middle_j = (j_1_modified + j_2_modified) / 2;
+		
+		
+		
+		wilson.ctx.beginPath();
+		wilson.ctx.moveTo(j_1_modified - forward_vec_j, i_1_modified - forward_vec_i);
+		wilson.ctx.lineTo(middle_j + ortho_vec_j, middle_i + ortho_vec_i);
+		wilson.ctx.lineTo(j_2_modified + forward_vec_j, i_2_modified + forward_vec_i);
+		wilson.ctx.lineTo(middle_j - ortho_vec_j, middle_i - ortho_vec_i);
+		wilson.ctx.lineTo(j_1_modified - forward_vec_j, i_1_modified - forward_vec_i);
+		wilson.ctx.stroke();
+	}
+	
 	
 	
 	function draw_all_lines()
@@ -157,21 +192,39 @@
 		
 		for (let i = 0; i < matchings.length; i++)
 		{
-			draw_line(matchings[i][0], matchings[i][1], matchings[i][2], matchings[i][3]);
+			//draw_line(matchings[i][0], matchings[i][1], matchings[i][2], matchings[i][3]);
+			draw_rhombus(matchings[i][0], matchings[i][1], matchings[i][2], matchings[i][3]);
 		}
 	}
 	
 	
 	
+	//Initializes the matching to the empty room.
 	function init_matching()
 	{
 		for (let i = 0; i < num_rows; i++)
 		{
 			for (let j = 0; j < num_cols; j++)
 			{
+				let x = (j - num_cols / 2) / num_cols * 2;
+				let y = -(i - num_rows / 2) / num_rows * 2;
+				
 				if ((j - i % 2) % 3 === 1)
 				{
-					matchings.push([i, j, i, j + 1]);
+					if (x >= 0 && y >= -x * Math.sqrt(3) / 2)
+					{
+						matchings.push([i, j, i - 1, j - (i+1) % 2]);
+					}
+					
+					else if (x < 0 && y >= x * Math.sqrt(3) / 2)
+					{
+						matchings.push([i, j, i + 1, j - (i+1) % 2]);
+					}
+					
+					else
+					{
+						matchings.push([i, j, i, j + 1]);
+					}
 				}
 			}
 		}
