@@ -1040,7 +1040,40 @@ vec2 weierstrassp(vec2 z, vec2 tau) {
 	return wp(z,tau);
 }
 
+const int INVERSE_WP_BOUND = 10;
 
+// Works!
+vec2 inverse_wp(vec2 z, vec2 tau) {
+	if (tau.y < 0.0) {
+		tau = -tau;
+	}
+	// tau.x = fract(tau.x);
+
+	// cannot mod out z
+
+	float constant = 1.0/float(INVERSE_WP_BOUND);
+	float x_coord = 0.0;
+	vec2 y_coord = ZERO;
+
+	int best_i = 0;
+	int best_j = 0;
+	float best_f = 1000.0;
+	float cur_f = 0.0;
+
+	for (int i = 0; i < INVERSE_WP_BOUND+1; i++) {
+		for (int j = 0; j < INVERSE_WP_BOUND+1; j++) {
+			x_coord = constant * float(i);
+			y_coord = constant * tau * float(j);
+			cur_f = cmag2(wp(vec2(x_coord, 0.0)+y_coord,tau)-z);
+			if (cur_f < best_f) {
+				best_i = i;
+				best_j = j;
+				best_f = cur_f;
+			}
+		}
+	}
+	return vec2(float(best_i)*constant,0.0) +  float(best_j)*constant*tau;
+}
 
 // Returns the derivative of the Weierstrass p function wp
 // This satisfies p'^2 - 4p^3 +g2 p + g3 =0, although we have some instability issues
