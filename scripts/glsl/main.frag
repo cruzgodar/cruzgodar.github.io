@@ -1042,42 +1042,7 @@ vec2 weierstrassp(vec2 z, vec2 tau) {
 
 const int INVERSE_WP_BOUND = 10;
 
-// Works! test with wp(inverse_wp(z,rho),rho)
-vec2 inverse_wp(vec2 z, vec2 tau) {
-	if (tau.y < 0.0) {
-		tau = -tau;
-	}
-	// tau.x = fract(tau.x);
 
-	// cannot mod out z
-
-	float constant = 0.5/float(INVERSE_WP_BOUND);
-	float x_coord = 0.0;
-	vec2 y_coord = ZERO;
-
-	int best_i = 0;
-	int best_j = 0;
-	float best_f = 1000.0;
-	float cur_f = 0.0;
-
-	for (int i = 0; i < INVERSE_WP_BOUND+1; i++) {
-		for (int j = 0; j < 2*INVERSE_WP_BOUND+1; j++) {
-			x_coord = constant * float(i);
-			y_coord = constant * tau * float(j);
-			cur_f = cmag2(wp(vec2(x_coord, 0.0)+y_coord,tau)-z);
-			if (cur_f < best_f) {
-				best_i = i;
-				best_j = j;
-				best_f = cur_f;
-			}
-		}
-	}
-	vec2 best_z = vec2(float(best_i)*constant,0.0) +  float(best_j)*constant*tau;
-	best_z -= floor(best_z.y/tau.y)*tau;
-	best_z.x = fract(best_z.x);
-	return best_z;
-
-}
 
 // Returns the derivative of the Weierstrass p function wp
 // This satisfies p'^2 - 4p^3 +g2 p + g3 =0, although we have some instability issues
@@ -1378,14 +1343,15 @@ const int F21_BOUND = 15;
 // because I can't get enough of long function names
 vec2 hypergeometric2f1_helper(float a, float b, float c, vec2 z) {
 	vec2 summer = ONE;
-    vec2 term = ONE;
-    for (int n = 0; n < F21_BOUND; n++) {
-        term *= a+float(n);
-        term *= b+float(n);
-        term /= c+float(n);
-        term = cmul(term,z);
-        term /= float(n)+1.0;
-        summer = summer + term;
+    float term = 1.0;
+    vec2 zn = ONE;
+    for (int n = 1; n < F21_BOUND; n++) {
+        term *= a+float(n-1);
+        term *= b+float(n-1);
+        term /= c+float(n-1);
+        term /= float(n);
+        zn = cmul(z,zn);
+        summer += term*zn;
     }
     return summer;
 }
@@ -1406,6 +1372,108 @@ vec2 hypergeometric2f1(float a, float b, float c, vec2 z) {
 // because I hate typing long function names
 vec2 f21(float a, float b, float c, vec2 z) {
 	return hypergeometric2f1(a,b,c,z);
+}
+
+float rising_factorial(float a, int n) {
+	float prod = 1.0;
+	for (int i = 0; i < 100; i++) {
+		if (i >= n) {
+			break;
+		}
+		prod *= a+float(i);
+	}
+	return prod;
+}
+
+
+const int F1_BOUND = 10;
+
+
+// Works!
+vec2 hypergeometricf1_helper(float a, float b1, float b2, float c, vec2 x, vec2 y) {
+	vec2 summer = hypergeometric2f1(a,b1, c,x);
+	summer = cmul(summer,hypergeometric2f1(a,b2, c,y));
+
+	float term = 1.0;
+	vec2 vec_term = ZERO;
+	vec2 xyr = ONE;
+	for (int r = 1; r < F1_BOUND; r++) {
+		term *= a + float(r-1);
+		term *= b1 + float(r-1);
+		term *= b2 + float(r-1);
+		term *= c-a + float(r-1);
+		term /= c + 2.0*float(r-1);
+		term /= c + 2.0 *float(r-1) + 1.0;
+		term /= float(r);
+		xyr = cmul(cmul(xyr,x),y);
+		
+		vec_term = xyr/rising_factorial(c+float(r)-1.0,r) ;
+		vec_term = cmul(vec_term,hypergeometric2f1(a+float(r),b1 + float(r), c+2.0*float(r),x));
+		vec_term = cmul(vec_term,hypergeometric2f1(a+float(r),b2 + float(r), c+2.0*float(r),y));		
+		summer += term*vec_term;
+		
+	}
+    return summer;
+}
+
+// Appell series F1 as defined in https://en.wikipedia.org/wiki/Appell_series
+// Can implement more patches with http://www.gasaneofisica.uns.edu.ar/papers/2001/ColavecchiaGasaneoMiragliacpc_01_138_29.pdf
+// this is super close to working right		
+vec2 hypergeometricf1(float a, float b1, float b2, float c, vec2 x, vec2 y) {
+	if (cmag2(x) < 1.0) {
+		if (cmag2(y) < 1.0) {
+			return hypergeometricf1_helper(a,b1,b2,c,x,y);
+		}
+	}
+	return ZERO;
+}
+
+// Works! test with wp(inverse_wp(z,rho),rho)
+vec2 inverse_wp(vec2 z, vec2 tau) {
+	// TODO: slowly implement exact inverses with F1
+	if (tau.y < 0.0) {
+		tau = -tau;
+	}
+
+	vec2 r1 = wp(0.5*ONE,tau);
+	vec2 r2 = wp(tau/2.0,tau);
+	vec2 r3 = wp(0.5*ONE + tau/2.0,tau);
+	if (cmag2(cdiv(r2-r1,z-r1))<1.0) {
+		if (cmag2(cdiv(r3-r1,z-r1)) < 1.0) {
+			return cdiv(-1.0*hypergeometricf1(0.5,0.5,0.5,1.5,cdiv(r2-r1,z-r1),cdiv(r3-r1,z-r1)), cpow(z-r1,0.5));
+		}
+	}
+
+	// tau.x = fract(tau.x);
+
+	// cannot mod out z
+
+	float constant = 0.5/float(INVERSE_WP_BOUND);
+	float x_coord = 0.0;
+	vec2 y_coord = ZERO;
+
+	int best_i = 0;
+	int best_j = 0;
+	float best_f = 1000.0;
+	float cur_f = 0.0;
+
+	for (int i = 0; i < INVERSE_WP_BOUND+1; i++) {
+		for (int j = 0; j < 2*INVERSE_WP_BOUND+1; j++) {
+			x_coord = constant * float(i);
+			y_coord = constant * tau * float(j);
+			cur_f = cmag2(wp(vec2(x_coord, 0.0)+y_coord,tau)-z);
+			if (cur_f < best_f) {
+				best_i = i;
+				best_j = j;
+				best_f = cur_f;
+			}
+		}
+	}
+	vec2 best_z = vec2(float(best_i)*constant,0.0) +  float(best_j)*constant*tau;
+	best_z -= floor(best_z.y/tau.y)*tau;
+	best_z.x = fract(best_z.x);
+	return best_z;
+
 }
 
 // Inverse function to kleinJ
