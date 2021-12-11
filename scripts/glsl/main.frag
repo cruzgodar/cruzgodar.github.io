@@ -1360,7 +1360,9 @@ vec2 hypergeometric2f1_helper(float a, float b, float c, vec2 z) {
 // Can add some more patches to improve convergence, meh. Currently converges extremely well away from |z|=1
 // ideas for more: https://fredrikj.net/blog/2015/10/the-2f1-bites-the-dust/
 vec2 hypergeometric2f1(float a, float b, float c, vec2 z) {
-    if (cmag2(z) <= 1.0) {
+	if (b == c) {
+		return cpow(ONE-z,-a);
+	} else if (cmag2(z) <= 1.0) {
         return hypergeometric2f1_helper(a,b,c,z);
     } else {
     	vec2 summer = cmul(cpow(-z,-a)/(gamma(b)*(gamma(c-a))*gamma(a-b+1.0)),hypergeometric2f1_helper(a,a-c+1.0,a-b+1.0,cinv(z)));
