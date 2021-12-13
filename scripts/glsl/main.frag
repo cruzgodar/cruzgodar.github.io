@@ -1345,11 +1345,11 @@ vec2 hypergeometric2f1_helper(float a, float b, float c, vec2 z) {
 	vec2 summer = ONE;
     float term = 1.0;
     vec2 zn = ONE;
-    for (int n = 1; n < F21_BOUND; n++) {
-        term *= a+float(n-1);
-        term *= b+float(n-1);
-        term /= c+float(n-1);
-        term /= float(n);
+    for (int n = 0; n < F21_BOUND; n++) {
+        term *= a+float(n);
+        term *= b+float(n);
+        term /= c+float(n);
+        term /= float(n+1);
         zn = cmul(z,zn);
         summer += term*zn;
     }
@@ -1362,6 +1362,20 @@ vec2 hypergeometric2f1_helper(float a, float b, float c, vec2 z) {
 vec2 hypergeometric2f1(float a, float b, float c, vec2 z) {
 	if (b == c) {
 		return cpow(ONE-z,-a);
+	} else if (a == 1.0) {
+		if (b == 1.0) {
+			if (c == 2.0) {
+				return cdiv(clog(ONE-z),-z);
+			}
+		}
+	} else if (a == 0.5) {
+		if (b == 0.5) {
+			if (c == 1.5) {
+				return cdiv(casin(csqrt(z)),csqrt(z));
+			}
+		}
+	// can add some goofy quadratic ones for 2f1(1/3,2/3,3/2,z) if the mood strikes you
+
 	} else if (cmag2(z) <= 1.0) {
         return hypergeometric2f1_helper(a,b,c,z);
     } else {
