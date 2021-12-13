@@ -1338,7 +1338,7 @@ float gamma(int a) {
 	return gamma(float(a));
 }
 
-const int F21_BOUND = 15;
+const int F21_BOUND = 10;
 
 // because I can't get enough of long function names
 vec2 hypergeometric2f1_helper(float a, float b, float c, vec2 z) {
@@ -1391,8 +1391,6 @@ float rising_factorial(float a, int n) {
 const int F1_BOUND = 10;
 
 
-// Works! for x,y in unit circle
-// todo: add more patches
 vec2 hypergeometricf1_helper(float a, float b1, float b2, float c, vec2 x, vec2 y) {
 	vec2 summer = hypergeometric2f1(a,b1, c,x);
 	summer = cmul(summer,hypergeometric2f1(a,b2, c,y));
@@ -1400,6 +1398,9 @@ vec2 hypergeometricf1_helper(float a, float b1, float b2, float c, vec2 x, vec2 
 	float term = 1.0;
 	vec2 vec_term = ZERO;
 	vec2 xyr = ONE;
+	float gamma2r = gamma(c-1.0);
+	float gammar = gamma(c-1.0);
+
 	for (int r = 1; r < F1_BOUND; r++) {
 		term *= a + float(r-1);
 		term *= b1 + float(r-1);
@@ -1409,8 +1410,10 @@ vec2 hypergeometricf1_helper(float a, float b1, float b2, float c, vec2 x, vec2 
 		term /= c + 2.0 *float(r-1) + 1.0;
 		term /= float(r);
 		xyr = cmul(cmul(xyr,x),y);
-		
-		vec_term = xyr/rising_factorial(c+float(r)-1.0,r) ;
+		gamma2r *= (float(2*r) +c - 3.0)*(float(2*r) +c - 2.0);
+		gammar *= (float(r) + c-2.0);
+
+		vec_term = xyr / gamma2r*gammar;
 		vec_term = cmul(vec_term,hypergeometric2f1(a+float(r),b1 + float(r), c+2.0*float(r),x));
 		vec_term = cmul(vec_term,hypergeometric2f1(a+float(r),b2 + float(r), c+2.0*float(r),y));		
 		summer += term*vec_term;
@@ -1421,8 +1424,21 @@ vec2 hypergeometricf1_helper(float a, float b1, float b2, float c, vec2 x, vec2 
 
 // Appell series F1 as defined in https://en.wikipedia.org/wiki/Appell_series
 // Can implement more patches with http://www.gasaneofisica.uns.edu.ar/papers/2001/ColavecchiaGasaneoMiragliacpc_01_138_29.pdf
-// this is super close to working right		
+
+// This is pretty slow now... think about optimizing
 vec2 hypergeometricf1(float a, float b1, float b2, float c, vec2 x, vec2 y) {
+
+	if (x == ZERO) { // (17) from //mathworld.wolfram.com/AppellHypergeometricFunction.html
+		return hypergeometric2f1(a,b2,c,y);
+	} else if (y == ZERO) { // (18)
+		return hypergeometric2f1(a,b1,c,x);
+	} else if (x == y) { // (19) and (20)
+		return hypergeometric2f1(a,b1+b2,c,x);
+	} else if (b1 + b2 == c) {
+		return cmul(cpow(ONE-y,-a),hypergeometric2f1(a,b1,b1+b2,cdiv(x-y,ONE-y)));
+	}
+
+
 	if (cmag2(x) < 1.0) {
 		if (cmag2(y) < 1.0) {
 			return hypergeometricf1_helper(a,b1,b2,c,x,y);
@@ -1478,6 +1494,7 @@ float xy_in_f1_domain(vec2 x, vec2 y) {
 }
 
 // Works! test with wp(inverse_wp(z,rho),rho)
+// Very slow though.
 vec2 inverse_wp(vec2 z, vec2 tau) {
 	// TODO: slowly implement exact inverses with F1
 	if (tau.y < 0.0) {
