@@ -1391,7 +1391,8 @@ float rising_factorial(float a, int n) {
 const int F1_BOUND = 10;
 
 
-// Works!
+// Works! for x,y in unit circle
+// todo: add more patches
 vec2 hypergeometricf1_helper(float a, float b1, float b2, float c, vec2 x, vec2 y) {
 	vec2 summer = hypergeometric2f1(a,b1, c,x);
 	summer = cmul(summer,hypergeometric2f1(a,b2, c,y));
@@ -1427,7 +1428,53 @@ vec2 hypergeometricf1(float a, float b1, float b2, float c, vec2 x, vec2 y) {
 			return hypergeometricf1_helper(a,b1,b2,c,x,y);
 		}
 	}
+	vec2 u = cdiv(x,x-ONE);
+	vec2 w = cdiv(y,y-ONE);
+	if (cmag2(u) < 1.0) { // (15) from Colavecchia et al
+		if (cmag2(w) < 1.0) {
+			return cmul(cmul(cpow(ONE-x,-b1),cpow(ONE-y,-b2)), hypergeometricf1_helper(c-a,b1,b2,c,u,w));
+		}
+		w = cdiv(x-y,x-ONE);
+		if (cmag2(w) < 1.0) { //(16)
+			return cmul(cpow(ONE-x,-a), hypergeometricf1_helper(a,c-b1-b2,b2,c,u,w));
+		}
+	}
+	u = cdiv(y-x,y-ONE);
+	w = cdiv(y,y-ONE);
+	if (cmag2(u) < 1.0) { // (17)
+		if (cmag2(w) < 1.0) {
+			return cmul(cpow(ONE-y,-a), hypergeometricf1_helper(a,b1,c-b1-b2,c,u,w));
+		}
+	}
 	return ZERO;
+}
+
+// Returns 1.0 if hypergeometricf1_helper(a,b1,b2,c,x,y) has been implemented, -1.0 if not
+float xy_in_f1_domain(vec2 x, vec2 y) {
+	if (cmag2(x) < 1.0) {
+		if (cmag2(y) < 1.0) {
+			return 1.0;
+		}
+	}
+	vec2 u = cdiv(x,x-ONE);
+	vec2 w = cdiv(y,y-ONE);
+	if (cmag2(u) < 1.0) {
+		if (cmag2(w) < 1.0) {
+			return 1.0;
+		}
+		w = cdiv(x-y,x-ONE);
+		if (cmag2(w) < 1.0) {
+			return 1.0;
+		}
+	}
+	u = cdiv(y-x,y-ONE);
+	w = cdiv(y,y-ONE);
+	if (cmag2(u) < 1.0) {
+		if (cmag2(w) < 1.0) {
+			return 1.0;
+		}
+	}
+	return -1.0;
 }
 
 // Works! test with wp(inverse_wp(z,rho),rho)
@@ -1440,10 +1487,12 @@ vec2 inverse_wp(vec2 z, vec2 tau) {
 	vec2 r1 = wp(0.5*ONE,tau);
 	vec2 r2 = wp(tau/2.0,tau);
 	vec2 r3 = wp(0.5*ONE + tau/2.0,tau);
-	if (cmag2(cdiv(r2-r1,z-r1))<1.0) {
-		if (cmag2(cdiv(r3-r1,z-r1)) < 1.0) {
-			return cdiv(-1.0*hypergeometricf1(0.5,0.5,0.5,1.5,cdiv(r2-r1,z-r1),cdiv(r3-r1,z-r1)), cpow(z-r1,0.5));
-		}
+
+	vec2 x = cdiv(r2-r1,z-r1);
+	vec2 y = cdiv(r3-r1,z-r1);
+
+	if (xy_in_f1_domain(x,y) > 0.0) {
+		return cdiv(-1.0*hypergeometricf1(0.5,0.5,0.5,1.5,x,y), cpow(z-r1,0.5));
 	}
 
 	// tau.x = fract(tau.x);
