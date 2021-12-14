@@ -25,12 +25,14 @@
 	
 	
 	
-	let image_size = 2000;
+	let image_size = 500;
+	
+	let hex_slope = Math.sqrt(3) / 3;
 	
 	let num_rows = null;
 	let num_cols = null;
 	
-	let col_stagger = 25;
+	let col_stagger = 3;
 	
 	let col_separation = col_stagger * 2;
 	
@@ -58,7 +60,7 @@
 	
 	function draw_frame()
 	{
-		num_rows = Math.floor(image_size / row_separation) - 1;
+		num_rows = Math.floor(image_size / row_separation) + 1;
 		num_cols = Math.floor(image_size / col_separation) + 1;
 		
 		if (num_rows % 2 === 0)
@@ -80,15 +82,29 @@
 		
 		
 		
-		draw_all_lines();
+		draw_hex_grid();
 	}
 	
 	
 	
+	function get_matching_world_coordinates(i_1, j_1, i_2, j_2)
+	{
+		let j_1_modified = i_1 % 2 === 1 ? j_1 * col_separation + col_stagger : j_1 * col_separation;
+		let j_2_modified = i_2 % 2 === 1 ? j_2 * col_separation + col_stagger : j_2 * col_separation;
+		
+		let i_1_modified = i_1 * row_separation;
+		let i_2_modified = i_2 * row_separation;
+		
+		let middle_i = (i_1_modified + i_2_modified) / 2;
+		let middle_j = (j_1_modified + j_2_modified) / 2;
+
+		return [(middle_j - image_size / 2) / image_size * 2, (image_size / 2 - middle_i) / image_size * 2];
+	}
+	
 	function draw_point(i, j)
 	{
 		let j_modified = i % 2 === 1 ? j * col_separation + col_stagger : j * col_separation;
-		let i_modified = (i + 1) * row_separation;
+		let i_modified = i * row_separation;
 		
 		
 		
@@ -108,8 +124,8 @@
 		let j_1_modified = i_1 % 2 === 1 ? j_1 * col_separation + col_stagger : j_1 * col_separation;
 		let j_2_modified = i_2 % 2 === 1 ? j_2 * col_separation + col_stagger : j_2 * col_separation;
 		
-		let i_1_modified = (i_1 + 1) * row_separation;
-		let i_2_modified = (i_2 + 1) * row_separation;
+		let i_1_modified = i_1 * row_separation;
+		let i_2_modified = i_2 * row_separation;
 		
 		wilson.ctx.beginPath();
 		wilson.ctx.moveTo(j_1_modified, i_1_modified);
@@ -127,8 +143,8 @@
 		let j_1_modified = i_1 % 2 === 1 ? j_1 * col_separation + col_stagger : j_1 * col_separation;
 		let j_2_modified = i_2 % 2 === 1 ? j_2 * col_separation + col_stagger : j_2 * col_separation;
 		
-		let i_1_modified = (i_1 + 1) * row_separation;
-		let i_2_modified = (i_2 + 1) * row_separation;
+		let i_1_modified = i_1 * row_separation;
+		let i_2_modified = i_2 * row_separation;
 		
 		
 		
@@ -163,29 +179,24 @@
 	
 	
 	
-	function draw_all_lines()
+	function draw_hex_grid()
 	{
-		wilson.ctx.fillStyle = "rgb(255, 0, 0)";
-		
 		for (let i = 0; i < num_rows; i++)
 		{
 			for (let j = 0; j < num_cols; j++)
 			{
-				if ((j - i % 2) % 3 !== 0)
+				if (i % 2 === 0 && j % 3 === 0)
 				{
-					if (i % 2 === 0 && j % 3 === 1)
-					{
-						draw_line(i, j, i - 1, j - 1);
-						draw_line(i, j, i, j + 1);
-						draw_line(i, j, i + 1, j - 1);
-					}
-					
-					else if (i % 2 === 1 && j % 3 === 2)
-					{
-						draw_line(i, j, i - 1, j);
-						draw_line(i, j, i, j + 1);
-						draw_line(i, j, i + 1, j);
-					}
+					draw_line(i, j, i - 1, j - 1);
+					draw_line(i, j, i, j + 1);
+					draw_line(i, j, i + 1, j - 1);
+				}
+				
+				else if (i % 2 === 1 && j % 3 === 1)
+				{
+					draw_line(i, j, i - 1, j);
+					draw_line(i, j, i, j + 1);
+					draw_line(i, j, i + 1, j);
 				}
 			}
 		}
@@ -203,6 +214,23 @@
 		{
 			draw_rhombus(matchings[i][0], matchings[i][1], matchings[i][2], matchings[i][3]);
 		}
+		
+		for (let i = 0; i < matchings.length; i++)
+		{
+			draw_line(matchings[i][0], matchings[i][1], matchings[i][2], matchings[i][3]);
+		}
+		
+		wilson.ctx.fillStyle = "rgb(255, 0, 0)";
+		
+		for (let x = 0; x < 1; x += .0001)
+		{
+			let y = -x * hex_slope;
+			
+			let row = (1 - y) / 2 * image_size;
+			let col = (x + 1) / 2 * image_size;
+			
+			wilson.ctx.fillRect(col, row, 1, 1);
+		}
 	}
 	
 	
@@ -214,33 +242,27 @@
 		{
 			for (let j = 0; j < num_cols; j++)
 			{
-				let x = (j - num_cols / 2) / num_cols * 2;
-				let y = -(i - num_rows / 2) / num_rows * 2;
-				
 				if ((j - i % 2) % 3 === 1)
 				{
-					let x_1 = x - .5 / num_cols * Math.sqrt(3) / 2;
-					let y_1 = y + .5 / num_rows;
+					let [x, y] = get_matching_world_coordinates(i, j, i - 1, j - (i + 1) % 2);
 					
-					if (x_1 >= 0 && y_1 > -x_1 * Math.sqrt(3) / 2)
+					if (x >= 0 && y >= -x * hex_slope)
 					{
-						matchings.push([i, j, i - 1, j - (i + 1) % 2]);
+						matchings.push([i, j, i + 1, j + i % 2]);
 					}
 					
 					else
 					{
-						y_1 = y - .5 / num_rows;
+						let [x, y] = get_matching_world_coordinates(i, j, i + 1, j - (i + 1) % 2);
 						
-						if (x_1 < 0 && y_1 > x_1 * Math.sqrt(3) / 2)
+						if (x < 0 && y >= x * hex_slope)
 						{
-							matchings.push([i, j, i + 1, j - (i + 1) % 2]);
+							matchings.push([i, j, i - 1, j + i % 2]);
 						}
 						
 						else
 						{
-							x_1 = x + .5 / num_cols * Math.sqrt(3) / 2;
-							y_1 = y + .5 / num_rows;
-							matchings.push([i, j, i, j + 1]);
+							matchings.push([i, j, i, j - 1]);
 						}
 					}
 				}
