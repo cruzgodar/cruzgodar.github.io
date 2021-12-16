@@ -6,6 +6,7 @@ const vec2 i = vec2(0.0, 1.0);
 const vec2 I = i;
 const vec2 rho = vec2(-0.5, 0.866025403784438);
 
+
 //Returns |z|.
 float cabs(vec2 z)
 {
@@ -217,6 +218,12 @@ float cinv(float z)
 	return 1.0 / z;
 }
 
+const float TOL = .000000001;
+
+
+bool equal_within_tolerance(vec2 a, vec2 b) {
+	return (cmag2(a-b) < TOL);
+}
 
 
 //Returns z^w.
@@ -400,7 +407,8 @@ float csin(float z)
 vec2 ccos(vec2 z)
 {
 	vec2 temp = vec2(-z.y,z.x);
-	return 0.5*( cexp(temp) + cexp(-temp));
+	vec2 cexp_temp = cexp(temp);
+	return 0.5*( cexp_temp + cinv(cexp_temp));
 }
 
 float ccos(float z)
@@ -428,7 +436,7 @@ float ctan(float z)
 //Returns csc(z).
 vec2 ccsc(vec2 z)
 {
-	return cdiv(1.0, csin(z));
+	return cinv(csin(z));
 }
 
 float ccsc(float z)
@@ -441,7 +449,7 @@ float ccsc(float z)
 //Returns csc(z).
 vec2 csec(vec2 z)
 {
-	return cdiv(1.0, ccos(z));
+	return cinv(ccos(z));
 }
 
 float csec(float z)
@@ -467,7 +475,7 @@ float ccot(float z)
 
 // Returns arcsin(a)
 vec2 casin(vec2 a) {
-	return cmul(-I, clog(cmul(I,a) + cpow(ONE - vec2(a.x*a.x - a.y*a.y, a.x*a.y + a.y*a.x),0.5)));
+	return cmul(-I, clog(vec2(-a.y,a.x) + cpow(ONE - vec2(a.x*a.x - a.y*a.y, a.x*a.y + a.y*a.x),0.5)));
 }
 
 float casin(float a) {
@@ -475,7 +483,7 @@ float casin(float a) {
 }
 
 vec2 cacos(vec2 a) {
-	return vec2(PI/2.0, 0.0) - cmul(vec2(0,-1), clog(cmul(vec2(0.0,1.0),a) + cpow(vec2(1.0,0.0) - vec2(a.x*a.x - a.y*a.y, a.x*a.y + a.y*a.x),0.5)));
+	return vec2(PI/2.0, 0.0) - cmul(-I, clog(vec2(-a.y,a.x) + cpow(ONE - vec2(a.x*a.x - a.y*a.y, a.x*a.y + a.y*a.x),0.5)));
 }
 
 float cacos(float a) {
@@ -483,7 +491,7 @@ float cacos(float a) {
 }
 
 vec2 catan(vec2 a) {
-	vec2 I_times_a = cmul(I,a);
+	vec2 I_times_a = vec2(-a.y,a.x);
 	return cmul(0.5*I, clog(vec2(1.0-I_times_a.x,-I_times_a.y)) - clog(vec2(I_times_a.x+1.0,I_times_a.y)));
 }
 
@@ -492,7 +500,7 @@ float catan(float a) {
 }
 
 vec2 cacsc(vec2 a) {
-	return casin(cdiv(vec2(1.0,0.0),a));
+	return casin(cinv(a));
 }
 
 float cacsc(float a) {
@@ -500,7 +508,7 @@ float cacsc(float a) {
 }
 
 vec2 casec(vec2 a) {
-	return cacos(cdiv(vec2(1.0,0.0),a));
+	return cacos(cinv(a));
 }
 
 float casec(float a) {
@@ -542,7 +550,7 @@ float ctanh(float a) {
 }
 
 vec2 ccsch(vec2 a) {
-	return cdiv(1.0, csinh(a));
+	return cinv(csinh(a));
 }
 
 float ccsch(float a) {
@@ -550,7 +558,7 @@ float ccsch(float a) {
 }
 
 vec2 csech(vec2 a) {
-	return cdiv(1.0, ccosh(a));
+	return cinv(ccosh(a));
 }
 
 float csech(float a) {
@@ -558,7 +566,7 @@ float csech(float a) {
 }
 
 vec2 ccoth(vec2 a) {
-	return cdiv(cexp(2.0 * a) + vec2(1.0,0.0), cexp(2.0 * a) - vec2(1.0,0.0));
+	return cdiv(cexp(2.0 * a) + ONE, cexp(2.0 * a) - ONE);
 }
 
 float ccoth(float a) {
@@ -962,7 +970,7 @@ vec2 delta(vec2 z) {
 
 // delta(q)
 vec2 deltaq(vec2 z) {
-	if (z.x*z.x + z.y*z.y >= 1.0)
+	if (cmag2(z) >= 1.0)
 	{
 		return ZERO;
 	}
@@ -1540,6 +1548,7 @@ vec2 hypergeometricf1_helper(float a, float b1, float b2, float c, vec2 x, vec2 
 
 // Appell series F1 as defined in https://en.wikipedia.org/wiki/Appell_series
 // Can implement more patches with http://www.gasaneofisica.uns.edu.ar/papers/2001/ColavecchiaGasaneoMiragliacpc_01_138_29.pdf
+// A note about the above paper: it's insufficient for complex x and y
 
 // This is pretty slow now... think about optimizing
 vec2 hypergeometricf1(float a, float b1, float b2, float c, vec2 x, vec2 y) {
