@@ -407,26 +407,21 @@
 			{
 				//Dilate the pixels to make a thicker line.
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
-				/*
-				vec4 state = (4.0 * texture2D(u_texture, center) +
 				
-					texture2D(u_texture, center + vec2(texture_step, 0.0)) +
-					texture2D(u_texture, center - vec2(texture_step, 0.0)) +
-					texture2D(u_texture, center + vec2(0.0, texture_step)) +
-					texture2D(u_texture, center - vec2(0.0, texture_step)) +
+				float state = (4.0 * texture2D(u_texture, center).y +
+				
+					texture2D(u_texture, center + vec2(texture_step, 0.0)).y +
+					texture2D(u_texture, center - vec2(texture_step, 0.0)).y +
+					texture2D(u_texture, center + vec2(0.0, texture_step)).y +
+					texture2D(u_texture, center - vec2(0.0, texture_step)).y +
 					
-					texture2D(u_texture, center + vec2(texture_step, texture_step)) +
-					texture2D(u_texture, center + vec2(texture_step, -texture_step)) +
-					texture2D(u_texture, center + vec2(-texture_step, texture_step)) +
-					texture2D(u_texture, center + vec2(-texture_step, -texture_step))
+					texture2D(u_texture, center + vec2(texture_step, texture_step)).y +
+					texture2D(u_texture, center + vec2(texture_step, -texture_step)).y +
+					texture2D(u_texture, center + vec2(-texture_step, texture_step)).y +
+					texture2D(u_texture, center + vec2(-texture_step, -texture_step)).y
 				) / 2.0;
-				*/
 				
-				vec4 state = texture2D(u_texture, center);
-				
-				state.w = 1.0;
-				
-				gl_FragColor = state;
+				gl_FragColor = vec4(state, state, state, 1.0);
 			}
 		`;
 		
@@ -1033,15 +1028,15 @@
 				
 				if (pixels[4 * index] !== 0)
 				{
-					let total = pixels[4 * (index - 1)] + pixels[4 * (index + 1)] + pixels[4 * (index - width)] + pixels[4 * (index + width)] + pixels[4 * (index - 1 - width)] + pixels[4 * (index + 1 - width)] + pixels[4 * (index - 1 + width)] + pixels[4 * (index + 1 + width)];
+					//This is the sum of a radius 3 square centered at this pixel. It's an endpoint if there are 
+					let close_total = pixels[4 * (index - 1)] + pixels[4 * (index + 1)] + pixels[4 * (index - width)] + pixels[4 * (index + width)] + pixels[4 * (index - 1 - width)] + pixels[4 * (index + 1 - width)] + pixels[4 * (index - 1 + width)] + pixels[4 * (index + 1 + width)];
 					
-					if (total <= 255)
+					if (close_total <= 255)
 					{
-						//This is an endpoint. Now we'll check to see if it's isolated, which means it's connected to only at most one other pixel.
+						let far_total = pixels[4 * (index - 2 * width - 2)] + pixels[4 * (index - 2 * width - 1)] + pixels[4 * (index - 2 * width)] + pixels[4 * (index - 2 * width + 1)] + pixels[4 * (index - 2 * width + 2)]   +   pixels[4 * (index + 2 * width - 2)] + pixels[4 * (index + 2 * width - 1)] + pixels[4 * (index + 2 * width)] + pixels[4 * (index + 2 * width + 1)] + pixels[4 * (index + 2 * width + 2)]   +   pixels[4 * (index - width - 2)] + pixels[4 * (index - 2)] + pixels[4 * (index + width - 2)]   +   pixels[4 * (index - width + 2)] + pixels[4 * (index + 2)] + pixels[4 * (index + width + 2)];
 						
-						total += pixels[4 * (index - 2 * width - 2)] + pixels[4 * (index - 2 * width - 1)] + pixels[4 * (index - 2 * width)] + pixels[4 * (index - 2 * width + 1)] + pixels[4 * (index - 2 * width + 2)]   +   pixels[4 * (index + 2 * width - 2)] + pixels[4 * (index + 2 * width - 1)] + pixels[4 * (index + 2 * width)] + pixels[4 * (index + 2 * width + 1)] + pixels[4 * (index + 2 * width + 2)]   +   pixels[4 * (index - width - 2)] + pixels[4 * (index - 2)] + pixels[4 * (index + width - 2)]   +   pixels[4 * (index - width + 2)] + pixels[4 * (index + 2)] + pixels[4 * (index + width + 2)];
-						
-						if (total <= 255 * isolation_threshhold)
+						//This is an endpoint. Now we'll check to see if it's isolated, which means it's connected to only at most two other pixels.
+						if (far_total === 0)
 						{
 							endpoints.push([i, j, true]);
 						}
@@ -1060,11 +1055,28 @@
 		//Connect every endpoint to the nearest other endpoint within a given radius.
 		for (let i = 0; i < endpoints.length; i++)
 		{
+			if (endpoints[i][0] < wilson_ec_plot.canvas_width / 20 || endpoints[i][1] < wilson_ec_plot.canvas_height / 20 || endpoints[i][0] > 19 * wilson_ec_plot.canvas_width / 20 || endpoints[i][1] > 19 * wilson_ec_plot.canvas_height / 20)
+			{
+				continue;
+			}
+			
+			
+			
 			let num_nearby_points = 0;
 			let average_nearby_distance = 0;
 			
 			let min_open_j = -1;
 			let min_open_distance = max_interpolation_distance;
+			
+			if (!(endpoints[i][2]))
+			{
+				min_open_distance = max_interpolation_distance / 20;
+				
+				if (zoom_level_ec_plot > 10)
+				{
+					min_open_distance *= zoom_level_ec_plot / 10;
+				} 
+			}
 			
 			
 			
@@ -1075,22 +1087,62 @@
 					continue;
 				}
 				
-				
+					
 				
 				let distance = Math.sqrt((endpoints[i][0] - endpoints[j][0])*(endpoints[i][0] - endpoints[j][0]) + (endpoints[i][1] - endpoints[j][1])*(endpoints[i][1] - endpoints[j][1]));
 				
 				if (distance < min_open_distance && distance >= 2)
 				{
-					//Only connect here if there are no white points in that general direction.
+					//Only connect here if there are no white points in that general direction. General direction here means a 3x3 square centered at the shifted coordinate that doesn't intersect the endpoint itself.
 					let row_movement = (endpoints[j][0] - endpoints[i][0]) / distance * 1.414214;
 					let col_movement = (endpoints[j][1] - endpoints[i][1]) / distance * 1.414214;
 					
 					row_movement = Math.sign(row_movement) * Math.floor(Math.abs(row_movement));
 					col_movement = Math.sign(col_movement) * Math.floor(Math.abs(col_movement));
 					
-					let index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1] + col_movement);
 					
-					if (pixels[4 * index] === 0)
+					
+					let test = 0;
+					
+					if (row_movement === 0)
+					{
+						let index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1] + col_movement);
+						test += pixels[4 * index];
+						
+						index = width * (endpoints[i][0] + row_movement + 1) + (endpoints[i][1] + col_movement);
+						test += pixels[4 * index];
+						
+						index = width * (endpoints[i][0] + row_movement - 1) + (endpoints[i][1] + col_movement);
+						test += pixels[4 * index];
+					}
+					
+					else if (col_movement === 0)
+					{
+						let index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1] + col_movement);
+						test += pixels[4 * index];
+						
+						index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1] + col_movement + 1);
+						test += pixels[4 * index];
+						
+						index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1] + col_movement - 1);
+						test += pixels[4 * index];
+					}
+					
+					else
+					{
+						let index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1] + col_movement);
+						test += pixels[4 * index];
+						
+						index = width * (endpoints[i][0]) + (endpoints[i][1] + col_movement);
+						test += pixels[4 * index];
+						
+						index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1]);
+						test += pixels[4 * index];
+					}
+					
+					
+					
+					if (test === 0)
 					{
 						min_open_j = j;
 						min_open_distance = distance;
