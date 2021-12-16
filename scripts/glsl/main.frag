@@ -1040,7 +1040,6 @@ vec2 weierstrassp(vec2 z, vec2 tau) {
 	return wp(z,tau);
 }
 
-const int INVERSE_WP_BOUND = 10;
 
 
 
@@ -1342,6 +1341,28 @@ const int F21_BOUND = 10;
 
 // because I can't get enough of long function names
 vec2 hypergeometric2f1_helper(float a, float b, float c, vec2 z) {
+	if (b == c) {
+		return cpow(ONE-z,-a);
+	} else if (a == 1.0) {
+		if (b == 1.0) {
+			if (c == 2.0) {
+				return cdiv(clog(ONE-z),-z);
+			}
+		}
+	} else if (a == 0.5) {
+		if (b == 0.5) {
+			if (c == 1.5) {
+				return cdiv(casin(csqrt(z)),csqrt(z));
+			}
+		}
+	} else if (b == a+0.5) { // from https://reference.wolfram.com/language/ref/Hypergeometric2F1.html
+		if (c == 2.0*a) {
+			// I cant for the life of me figure out why this isn't working
+			// return cdiv(cpow(2.0,2.0*a-1.0) * cpow(csqrt(ONE-z)+1.0,1.0-2.0*a) ,csqrt(ONE-z));
+		}
+	}
+		// can add some goofy quadratic ones for 2f1(1/3,2/3,3/2,z) if the mood strikes you
+
 	vec2 summer = ONE;
     float term = 1.0;
     vec2 zn = ONE;
@@ -1360,23 +1381,8 @@ vec2 hypergeometric2f1_helper(float a, float b, float c, vec2 z) {
 // Can add some more patches to improve convergence, meh. Currently converges extremely well away from |z|=1
 // ideas for more: https://fredrikj.net/blog/2015/10/the-2f1-bites-the-dust/
 vec2 hypergeometric2f1(float a, float b, float c, vec2 z) {
-	if (b == c) {
-		return cpow(ONE-z,-a);
-	} else if (a == 1.0) {
-		if (b == 1.0) {
-			if (c == 2.0) {
-				return cdiv(clog(ONE-z),-z);
-			}
-		}
-	} else if (a == 0.5) {
-		if (b == 0.5) {
-			if (c == 1.5) {
-				return cdiv(casin(csqrt(z)),csqrt(z));
-			}
-		}
-	// can add some goofy quadratic ones for 2f1(1/3,2/3,3/2,z) if the mood strikes you
-
-	} else if (cmag2(z) <= 1.0) {
+	
+	if (cmag2(z) <= 1.0) {
         return hypergeometric2f1_helper(a,b,c,z);
     } else {
     	vec2 summer = cmul(cpow(-z,-a)/(gamma(b)*(gamma(c-a))*gamma(a-b+1.0)),hypergeometric2f1_helper(a,a-c+1.0,a-b+1.0,cinv(z)));
@@ -1399,6 +1405,102 @@ float rising_factorial(float a, int n) {
 		prod *= a+float(i);
 	}
 	return prod;
+}
+
+
+const int F2_BOUND = 10;
+
+// hard to test if this works
+vec2 hypergeometricf2_helper(float a, float b1, float b2, float c1, float c2, vec2 x, vec2 y) {
+	vec2 summer = hypergeometric2f1(a,b1, c1,x);
+	summer = cmul(summer,hypergeometric2f1(a,b2, c2,y));
+
+	float term = 1.0;
+	vec2 vec_term = ZERO;
+	vec2 xyr = ONE;
+
+	for (int r = 1; r < F2_BOUND; r++) {
+		term *= a + float(r-1);
+		term *= b1 + float(r-1);
+		term *= b2 + float(r-1);
+		term /= c1 + float(r-1);
+		term /= c2 + float(r-1);
+		term /= float(r);
+		xyr = cmul(cmul(xyr,x),y);
+
+		vec_term = xyr;
+		vec_term = cmul(vec_term,hypergeometric2f1(a+float(r),b1 + float(r), c1+float(2*r),x));
+		vec_term = cmul(vec_term,hypergeometric2f1(a+float(r),b2 + float(r), c2+float(2*r),y));		
+		summer += term*vec_term;
+		
+	}
+    return summer;
+}
+
+vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, vec2 x, vec2 y) {
+	if (cmag2(x)+cmag2(y) < 1.0) {
+		return hypergeometricf2_helper(a,b1,b2,c1,c2,x,y);
+	}
+	return ZERO;
+}
+
+vec2 hypergeometricg2(float b1, float b2, float c1, float c2, vec2 x, vec2 y) {
+	return cmul(cmul(cpow(ONE+x,-b1),cpow(ONE+y,-b2)),hypergeometricf2(1.0-c1-c2,b1,b2,1.0-c1,1.0-c2,cdiv(x,x+ONE),	cdiv(y,y+ONE)));
+}
+
+
+
+// Returns 1 if f1(a,b1,...,x,y) implemented, -1 if not
+// Commented section is correct but too slow to be useful as implemented
+int xy_in_f1_domain(vec2 x, vec2 y) {
+
+	// Check if x,y in unit circle
+	if (cmag2(x) < 1.0) {
+		if (cmag2(y) < 1.0) { // (1) denotes id
+			return 1;
+		}
+	}
+	// Otherwise, use analytic continuation
+	// Subroutine: find best convergence zone
+	float tmax = 10000.0;
+	int transformation_equation = -1; // these ae equations from Colavecchia et al
+
+	vec2 u = cdiv(x,x-ONE);
+	vec2 w = cdiv(y,y-ONE);
+	float tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 15;
+	}
+
+	w = cdiv(x-y,x-ONE);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 16;
+	}
+
+	u = cdiv(y-x,y-ONE);
+	w = cdiv(y,y-ONE);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 17;
+	}
+
+	u = cdiv(1.0,x);
+	w = cdiv(y,x);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 24;
+	}
+
+	if (tmax<1.0) {
+		return transformation_equation;
+	} else {
+		return -1;
+	}
 }
 
 
@@ -1452,65 +1554,36 @@ vec2 hypergeometricf1(float a, float b1, float b2, float c, vec2 x, vec2 y) {
 		return cmul(cpow(ONE-y,-a),hypergeometric2f1(a,b1,b1+b2,cdiv(x-y,ONE-y)));
 	}
 
+	int transformation_equation = xy_in_f1_domain(x,y);
+	if (transformation_equation == 1) {
+		return hypergeometricf1_helper(a,b1,b2,c,x,y);
+		// Some of these are too slow to be useful for now
+	} else if (transformation_equation == 15) {
+		return cmul(cmul(cpow(ONE-x,-b1),cpow(ONE-y,-b2)), hypergeometricf1_helper(c-a,b1,b2,c,cdiv(x,x-ONE),cdiv(y,y-ONE)));
+	} else if (transformation_equation == 16) {
+		return cmul(cpow(ONE-x,-a), hypergeometricf1_helper(a,c-b1-b2,b2,c,cdiv(x,x-ONE),cdiv(x-y,x-ONE)));
+	} else if (transformation_equation == 17) {
+		return cmul(cpow(ONE-y,-a), hypergeometricf1_helper(a,b1,c-b1-b2,c,cdiv(y-x,y-ONE),cdiv(y,y-ONE)));
+	} else if (transformation_equation == 24) {
+		// only accurate for large arguments
+		float gammac = gamma(c);
+		vec2 summer = gammac*gamma(b1-a)/gamma(b1)/gamma(c-a)*cmul(cpow(-x,-a), hypergeometricf1_helper(a,1.0+a-c,b2,a-b1+1.0,cinv(x),cdiv(y,x)));
+		summer += gammac*gamma(a-b1)/gamma(a)/gamma(c-b1)*cmul(cpow(-x,-b1), hypergeometricg2(b1,b2,a-b1,1.0+b1-c,-cinv(x),-y));
+		return summer;
+	}
 
-	if (cmag2(x) < 1.0) {
-		if (cmag2(y) < 1.0) {
-			return hypergeometricf1_helper(a,b1,b2,c,x,y);
-		}
-	}
-	vec2 u = cdiv(x,x-ONE);
-	vec2 w = cdiv(y,y-ONE);
-	if (cmag2(u) < 1.0) { // (15) from Colavecchia et al
-		if (cmag2(w) < 1.0) {
-			return cmul(cmul(cpow(ONE-x,-b1),cpow(ONE-y,-b2)), hypergeometricf1_helper(c-a,b1,b2,c,u,w));
-		}
-		w = cdiv(x-y,x-ONE);
-		if (cmag2(w) < 1.0) { //(16)
-			return cmul(cpow(ONE-x,-a), hypergeometricf1_helper(a,c-b1-b2,b2,c,u,w));
-		}
-	}
-	u = cdiv(y-x,y-ONE);
-	w = cdiv(y,y-ONE);
-	if (cmag2(u) < 1.0) { // (17)
-		if (cmag2(w) < 1.0) {
-			return cmul(cpow(ONE-y,-a), hypergeometricf1_helper(a,b1,c-b1-b2,c,u,w));
-		}
-	}
 	return ZERO;
 }
 
-// Returns 1.0 if hypergeometricf1_helper(a,b1,b2,c,x,y) has been implemented, -1.0 if not
-float xy_in_f1_domain(vec2 x, vec2 y) {
-	if (cmag2(x) < 1.0) {
-		if (cmag2(y) < 1.0) {
-			return 1.0;
-		}
-	}
-	vec2 u = cdiv(x,x-ONE);
-	vec2 w = cdiv(y,y-ONE);
-	if (cmag2(u) < 1.0) {
-		if (cmag2(w) < 1.0) {
-			return 1.0;
-		}
-		w = cdiv(x-y,x-ONE);
-		if (cmag2(w) < 1.0) {
-			return 1.0;
-		}
-	}
-	u = cdiv(y-x,y-ONE);
-	w = cdiv(y,y-ONE);
-	if (cmag2(u) < 1.0) {
-		if (cmag2(w) < 1.0) {
-			return 1.0;
-		}
-	}
-	return -1.0;
-}
+
+
+const int INVERSE_WP_BOUND = 5;
 
 // Works! test with wp(inverse_wp(z,rho),rho)
 // Very slow though.
 vec2 inverse_wp(vec2 z, vec2 tau) {
 	// TODO: slowly implement exact inverses with F1
+	// TODO: implement version for z real? r_i aren't though
 	if (tau.y < 0.0) {
 		tau = -tau;
 	}
@@ -1522,7 +1595,7 @@ vec2 inverse_wp(vec2 z, vec2 tau) {
 	vec2 x = cdiv(r2-r1,z-r1);
 	vec2 y = cdiv(r3-r1,z-r1);
 
-	if (xy_in_f1_domain(x,y) > 0.0) {
+	if (xy_in_f1_domain(x,y) > 0) {
 		return cdiv(-1.0*hypergeometricf1(0.5,0.5,0.5,1.5,x,y), cpow(z-r1,0.5));
 	}
 
