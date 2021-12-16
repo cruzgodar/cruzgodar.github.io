@@ -335,7 +335,7 @@
 			uniform float g2_arg;
 			uniform float g3_arg;
 			
-			const int max_iterations = 100;
+			const int max_iterations = 200;
 			
 			
 			
@@ -348,7 +348,7 @@
 			
 			void main(void)
 			{
-				float threshhold = world_size;
+				float threshhold = world_size * 1000.0;
 				
 				vec2 z;
 				
@@ -376,7 +376,7 @@
 					{
 						float adjacent_score = (abs(f(z + vec2(step, 0.0))) + abs(f(z - vec2(step, 0.0))) + abs(f(z + vec2(0.0, step))) + abs(f(z - vec2(0.0, step)))) / threshhold;
 						
-						if (adjacent_score > 6.0)
+						if (adjacent_score >= 6.0)
 						{
 							gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 							
@@ -407,7 +407,7 @@
 			{
 				//Dilate the pixels to make a thicker line.
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
-				
+				/*
 				vec4 state = (4.0 * texture2D(u_texture, center) +
 				
 					texture2D(u_texture, center + vec2(texture_step, 0.0)) +
@@ -420,6 +420,9 @@
 					texture2D(u_texture, center + vec2(-texture_step, texture_step)) +
 					texture2D(u_texture, center + vec2(-texture_step, -texture_step))
 				) / 2.0;
+				*/
+				
+				vec4 state = texture2D(u_texture, center);
 				
 				state.w = 1.0;
 				
@@ -1011,35 +1014,42 @@
 		
 		const width = wilson_ec_plot.canvas_width;
 		
-		let interpolation_search_radius = 30;
+		let max_interpolation_distance = wilson_ec_plot.canvas_width;
 		
-		for (let i = 1; i < wilson_ec_plot.canvas_height - 1; i++)
+		//If the distance is at least this small, the number of neighbors is ignored.
+		let min_guaranteed_interpolation_distance = 3;
+		
+		//This means a 5x5 square will be searched around each endpoint...
+		let isolation_search_radius = 2;
+		
+		//...and it will be considered isolated if there are at most 2 pixels in the square.
+		let isolation_threshhold = 1;
+		
+		for (let i = isolation_search_radius; i < wilson_ec_plot.canvas_height - isolation_search_radius; i++)
 		{
-			for (let j = 1; j < width - 1; j++)
+			for (let j = isolation_search_radius; j < width - isolation_search_radius; j++)
 			{
 				let index = width * i + j;
 				
 				if (pixels[4 * index] !== 0)
 				{
-					let pixel_l = pixels[4 * (index - 1)];
-					let pixel_r = pixels[4 * (index + 1)];
-					let pixel_u = pixels[4 * (index - width)];
-					let pixel_d = pixels[4 * (index + width)];
-					let pixel_lu = pixels[4 * (index - 1 - width)];
-					let pixel_ru = pixels[4 * (index + 1 - width)];
-					let pixel_ld = pixels[4 * (index - 1 + width)];
-					let pixel_rd = pixels[4 * (index + 1 + width)];
+					let total = pixels[4 * (index - 1)] + pixels[4 * (index + 1)] + pixels[4 * (index - width)] + pixels[4 * (index + width)] + pixels[4 * (index - 1 - width)] + pixels[4 * (index + 1 - width)] + pixels[4 * (index - 1 + width)] + pixels[4 * (index + 1 + width)];
 					
-					let total = pixel_l + pixel_r + pixel_u + pixel_d + pixel_lu + pixel_ru + pixel_ld + pixel_rd;
-					
-					if (total === 255)
+					if (total <= 255)
 					{
-						endpoints.push([i, j, 2]);
-					}
-					
-					else if (total === 0)
-					{
-						endpoints.push([i, j, 2]);
+						//This is an endpoint. Now we'll check to see if it's isolated, which means it's connected to only at most one other pixel.
+						
+						total += pixels[4 * (index - 2 * width - 2)] + pixels[4 * (index - 2 * width - 1)] + pixels[4 * (index - 2 * width)] + pixels[4 * (index - 2 * width + 1)] + pixels[4 * (index - 2 * width + 2)]   +   pixels[4 * (index + 2 * width - 2)] + pixels[4 * (index + 2 * width - 1)] + pixels[4 * (index + 2 * width)] + pixels[4 * (index + 2 * width + 1)] + pixels[4 * (index + 2 * width + 2)]   +   pixels[4 * (index - width - 2)] + pixels[4 * (index - 2)] + pixels[4 * (index + width - 2)]   +   pixels[4 * (index - width + 2)] + pixels[4 * (index + 2)] + pixels[4 * (index + width + 2)];
+						
+						if (total <= 255 * isolation_threshhold)
+						{
+							endpoints.push([i, j, true]);
+						}
+						
+						else
+						{
+							endpoints.push([i, j, false]);
+						}
 					}
 				}
 			}
@@ -1050,51 +1060,61 @@
 		//Connect every endpoint to the nearest other endpoint within a given radius.
 		for (let i = 0; i < endpoints.length; i++)
 		{
-			let min_j = -1;
-			let min_distance = interpolation_search_radius;
+			let num_nearby_points = 0;
+			let average_nearby_distance = 0;
+			
+			let min_open_j = -1;
+			let min_open_distance = max_interpolation_distance;
 			
 			
 			
-			for (let j = i + 1; j < endpoints.length; j++)
+			for (let j = 0; j < endpoints.length; j++)
 			{
-				if (endpoints[j][0] > endpoints[i][0] || (endpoints[j][0] === endpoints[i][0] && endpoints[j][1] > endpoints[i][1]))
+				if (j === i)
 				{
-					let distance = Math.sqrt((endpoints[i][0] - endpoints[j][0])*(endpoints[i][0] - endpoints[j][0]) + (endpoints[i][1] - endpoints[j][1])*(endpoints[i][1] - endpoints[j][1]));
+					continue;
+				}
+				
+				
+				
+				let distance = Math.sqrt((endpoints[i][0] - endpoints[j][0])*(endpoints[i][0] - endpoints[j][0]) + (endpoints[i][1] - endpoints[j][1])*(endpoints[i][1] - endpoints[j][1]));
+				
+				if (distance < min_open_distance && distance >= 2)
+				{
+					//Only connect here if there are no white points in that general direction.
+					let row_movement = (endpoints[j][0] - endpoints[i][0]) / distance * 1.414214;
+					let col_movement = (endpoints[j][1] - endpoints[i][1]) / distance * 1.414214;
 					
-					if (distance < min_distance && distance >= 2)
+					row_movement = Math.sign(row_movement) * Math.floor(Math.abs(row_movement));
+					col_movement = Math.sign(col_movement) * Math.floor(Math.abs(col_movement));
+					
+					let index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1] + col_movement);
+					
+					if (pixels[4 * index] === 0)
 					{
-						min_j = j;
-						min_distance = distance;
+						min_open_j = j;
+						min_open_distance = distance;
 					}
 				}
 			}
 			
 			
 			
-			if (min_j !== -1)
+			if (min_open_j !== -1)
 			{
 				//Interpolate between the two points.
-				for (let k = 1; k < min_distance; k++)
+				for (let k = 1; k < 2 * min_open_distance; k++)
 				{
-					let t = k / min_distance;
+					let t = k / (2 * min_open_distance);
 					
-					let row = Math.round((1 - t) * endpoints[i][0] + t * endpoints[min_j][0]);
-					let col = Math.round((1 - t) * endpoints[i][1] + t * endpoints[min_j][1]);
+					let row = Math.round((1 - t) * endpoints[i][0] + t * endpoints[min_open_j][0]);
+					let col = Math.round((1 - t) * endpoints[i][1] + t * endpoints[min_open_j][1]);
 					
 					let index = width * row + col;
 					
-					pixels[4 * index] = 255;
+					pixels[4 * index] = 0;
 					pixels[4 * index + 1] = 255;
-					pixels[4 * index + 2] = 255;
-				}
-				
-				
-				
-				endpoints[min_j][2]--;
-				
-				if (endpoints[min_j][2] === 0)
-				{
-					endpoints.splice(min_j, 1);
+					pixels[4 * index + 2] = 0;
 				}
 			}
 		}
