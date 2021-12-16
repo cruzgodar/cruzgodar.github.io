@@ -97,3 +97,82 @@ vec2 su3_character(float p, float q, vec2 z) {
 // 	// }
 // 	return gamma_float_helper(a);
 // }
+
+
+vec2 hypergeometricf1(float a, float b1, float b2, float c, vec2 x, vec2 y) {
+
+	if (x == ZERO) { // (17) from //mathworld.wolfram.com/AppellHypergeometricFunction.html
+		return hypergeometric2f1(a,b2,c,y);
+	} else if (y == ZERO) { // (18)
+		return hypergeometric2f1(a,b1,c,x);
+	} else if (x == y) { // (19) and (20)
+		return hypergeometric2f1(a,b1+b2,c,x);
+	} else if (b1 + b2 == c) {
+		return cmul(cpow(ONE-y,-a),hypergeometric2f1(a,b1,b1+b2,cdiv(x-y,ONE-y)));
+	}
+
+	int transformation_equation = xy_in_f1_domain(x,y);
+	if (transformation_equation == 1) {
+		return hypergeometricf1_helper(a,b1,b2,c,x,y);
+	} else if (transformation_equation == 15) {
+		return cmul(cmul(cpow(ONE-x,-b1),cpow(ONE-y,-b2)), hypergeometricf1_helper(c-a,b1,b2,c,u,w));
+	} else if (transformation_equation == 16) {
+		return cmul(cpow(ONE-x,-a), hypergeometricf1_helper(a,c-b1-b2,b2,c,u,w));
+	} else if (transformation_equation == 17) {
+		return cmul(cpow(ONE-y,-a), hypergeometricf1_helper(a,b1,c-b1-b2,c,u,w));
+	} else if (transformation_equation == 24) {
+		// only accurate for large arguments
+		vec2 summer = gamma(c)*gamma(b1-a)/gamma(b1)/gamma(c-a)*cmul(cpow(-x,-a), hypergeometricf1_helper(a,1.0+a-c,b2,a-b1+1.0,u,w));
+		summer += gamma(c)*gamma(a-b1)/gamma(a)/gamma(c-b1)*cmul(cpow(-x,-b1), hypergeometricg2(b1,b2,a-b1,1.0+b1-c,-u,-y));
+		return summer;
+	}
+
+	return ZERO;
+}
+
+int xy_in_f1_domain(vec2 x, vec2 y) {
+
+	// Check if x,y in unit circle
+	if (cmag2(x) < 1.0) {
+		if (cmag2(y) < 1.0) { // (1) denotes id
+			return 1;
+		}
+	}
+	// Otherwise, use analytic continuation
+	// Subroutine: find best convergence zone
+	float tmax = 10000.0;
+	int transformation_equation = -1; // these ae equations from Colavecchia et al
+
+	vec2 u = cdiv(x,x-ONE);
+	vec2 w = cdiv(y,y-ONE);
+	float tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 15;
+	}
+
+	w = cdiv(x-y,x-ONE);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 16;
+	}
+
+	u = cdiv(y-x,y-ONE);
+	w = cdiv(y,y-ONE);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 17;
+	}
+
+	u = cdiv(1.0,x);
+	w = cdiv(y,x);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 24;
+	}
+
+	return transformation_equation;
+}
