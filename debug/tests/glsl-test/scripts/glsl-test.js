@@ -36,8 +36,8 @@
 		`return equal_within_tolerance(-30.0*bernoulli(4.0),1.0);`,
 		// trig
 			// sin
-		`return csin(I) == vec2(0.0,1.17520119364380145688238185059560);`,
-		`return csin(ONE) == vec2(0.84147098480789650665250232163,0.0);`,
+		`return equal_within_tolerance(csin(I), vec2(0.0,1.17520119364380145688238185059560));`,
+		`return equal_within_tolerance(csin(ONE), vec2(0.84147098480789650665250232163,0.0));`,
 			// cos
 		`return equal_within_tolerance(ccos(ONE), vec2(0.54030230586813971740093660,0.0));`,
 			// tan
@@ -45,19 +45,29 @@
 		`return ctan(I) == vec2(0.0,0.761594155955764888119458282604);`,
 		`return equal_within_tolerance(ctan(ONE+I), cdiv(csin(ONE+I),ccos(ONE+I)));`,
 /*20*/	`return equal_within_tolerance(ctan(ONE), vec2(1.55740772465490223050697480745,0.0));`,
+			// csc
+		`return equal_within_tolerance(ccsc(ONE-I), vec2(0.621518017170428, 0.303931001628426));`,
+			// sec
+		`return equal_within_tolerance(csec(2.0*ONE-I), vec2(-0.413149344266940, - 0.687527438655479));`,
 			// cot
 		`return equal_within_tolerance(ccot(PI*ONE/4.0),ONE);`,
 		`return equal_within_tolerance(ccot(I),vec2(0.0, -1.31303528549933130363616));`,
 		// arc trig
+			// asin
 		`return casin(I) == cmul(I,clog(ONE+cpow(2.0,0.5)*ONE));`,
+			// acos
 		`return cacos(I) == PI*ONE/2.0 + cmul(I,clog(-ONE+cpow(2.0,0.5)*ONE));`,
+			// atan
 		`return equal_within_tolerance(catan(0.5*ONE),ONE*0.463647609000806116214256);`,
 		`return equal_within_tolerance(catan(ONE+I), PI/4.0*ONE + 0.5*cmul(I,clog(2.0*ONE-I)));`,
+			// acsc
 		`return cacsc(I) == cmul(-I,clog(ONE+cpow(2.0,0.5)*ONE));`,
-		`return casec(I) == PI*ONE/2.0 + cmul(I,clog(ONE+cpow(2.0,0.5)*ONE));`,
+			// asec
+/*30*/	`return casec(I) == PI*ONE/2.0 + cmul(I,clog(ONE+cpow(2.0,0.5)*ONE));`,
+			// acot
 		`return equal_within_tolerance(cacot(ONE), PI*ONE/4.0);`,
 		// hyperbolic trig
-/*30*/	`return csinh(I*PI/2.0) == I;`,
+		`return csinh(I*PI/2.0) == I;`,
 		`return ccosh(I*PI) == -ONE;`,
 		`return equal_within_tolerance(ctanh(I*PI/4.0), I);`,
 		`return ccsch(I*PI/2.0) == -I;`,

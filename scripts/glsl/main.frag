@@ -390,9 +390,8 @@ float clog(float z)
 //Returns sin(z).
 vec2 csin(vec2 z)
 {
-	// implementation idea: cache cexp(temp)... unclear if it works now
-	vec2 temp = vec2(-z.y,z.x);
-	temp = 0.5*(cexp(-temp) - cexp(temp));
+	vec2 cexp_temp = cexp(vec2(-z.y,z.x));
+	vec2 temp = 0.5*(cinv(cexp_temp) - cexp_temp);
 	return vec2(-temp.y,temp.x);
 }
 
