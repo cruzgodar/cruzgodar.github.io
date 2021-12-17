@@ -1,16 +1,48 @@
-#wp-row
+#canvas-row
 {
 	display: flex;
-	width: 90vmin;
+	width: fit-content;
 	
 	margin: 0 auto;
 	
+	margin-top: 5vh;
+	
 	flex-direction: row;
-	justify-content: space-between;
 }
 
-#wp-row .output-canvas
+#wp-column
 {
-	width: 42.5vmin;
-	height: 42.5vmin;
+	display: flex;
+	
+	flex-direction: column;
+}
+
+#ec-plot-column
+{
+	margin: 0 4px;
+}
+
+#parameter-column
+{
+	display: flex;
+	
+	flex-direction: column;
+}
+
+#wp-column .output-canvas
+{
+	width: calc(25vw - 6.5px);
+	height: auto;
+}
+
+#ec-plot-canvas
+{
+	width: 50vw;
+	height: auto;
+}
+
+#parameter-column .output-canvas
+{
+	width: calc(16.667vw - 8.8px);
+	height: auto;
 }

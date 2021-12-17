@@ -19,6 +19,12 @@
 	
 	let wilson_ec_plot_output = null;
 	
+	let wilson_g2 = null;
+	
+	let wilson_g3 = null;
+	
+	let wilson_other = null;
+	
 	
 	
 	let aspect_ratio = 1;
@@ -559,6 +565,36 @@
 		
 		
 		
+		let options_g2 =
+		{
+			renderer: "cpu",
+			
+			canvas_width: 500,
+			canvas_height: 500
+		};
+		
+		
+		
+		let options_g3 =
+		{
+			renderer: "cpu",
+			
+			canvas_width: 500,
+			canvas_height: 500
+		};
+		
+		
+		
+		let options_other =
+		{
+			renderer: "cpu",
+			
+			canvas_width: 500,
+			canvas_height: 500
+		};
+		
+		
+		
 		wilson_wp = new Wilson(document.querySelector("#wp-canvas"), options_wp);
 
 		wilson_wp.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point", "g2_arg", "g3_arg"]);
@@ -590,6 +626,19 @@
 		
 		
 		wilson_ec_plot.render.create_framebuffer_texture_pair();
+		
+		
+		
+		wilson_g2 = new Wilson(document.querySelector("#g2-canvas"), options_g2);
+		
+		wilson_g3 = new Wilson(document.querySelector("#g3-canvas"), options_g3);
+		
+		wilson_other = new Wilson(document.querySelector("#other-canvas"), options_other);
+		
+		
+		
+		Page.set_element_styles(".wilson-applet-canvas-container", "margin-top", "0", true);
+		Page.set_element_styles(".wilson-applet-canvas-container", "margin-bottom", "0", true);
 		
 		
 		
