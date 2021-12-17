@@ -46,3 +46,50 @@
 	width: calc(16.667vw - 8.8px);
 	height: auto;
 }
+
+
+
+@media (max-aspect-ratio: 1/1)
+{
+	#canvas-row
+	{
+		flex-direction: column;
+	}
+
+	#wp-column
+	{
+		flex-direction: row;
+		
+		justify-content: space-between;
+	}
+
+	#ec-plot-column
+	{
+		margin: 4px 0;
+	}
+
+	#parameter-column
+	{
+		flex-direction: row;
+		
+		justify-content: space-between;
+	}
+
+	#wp-column .output-canvas
+	{
+		height: calc(20vh - 6.5px);
+		width: auto;
+	}
+
+	#ec-plot-canvas
+	{
+		height: 40vh;
+		width: auto;
+	}
+
+	#parameter-column .output-canvas
+	{
+		height: calc(13.333vh - 8.8px);
+		width: auto;
+	}
+}

@@ -31,7 +31,7 @@
 	let aspect_ratio_ec_plot = 1;
 	
 	let zoom_level = -.585;
-	let zoom_level_ec_plot = -.585;
+	let zoom_level_ec_plot = 1;
 	
 	let resolution = 500;
 	let resolution_ec_plot = 1000;
@@ -39,7 +39,7 @@
 	let black_point = 1;
 	let white_point = 1;
 	
-	let g2 = 0;
+	let g2 = -2;
 	let g3 = 0;
 	
 	
@@ -1024,7 +1024,7 @@
 			return;
 		}
 		
-		
+		console.log(zoom_level_ec_plot);
 		
 		wilson_ec_plot.gl.useProgram(wilson_ec_plot.render.shader_programs[0]);
 		
