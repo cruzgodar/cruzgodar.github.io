@@ -25,18 +25,27 @@
 	
 	
 	
-	let image_size = 500;
+	let image_size = 2000;
 	
 	let hex_slope = Math.sqrt(3) / 3;
 	
 	let num_rows = null;
 	let num_cols = null;
 	
-	let col_stagger = 3;
+	let col_stagger = 100;
 	
 	let col_separation = col_stagger * 2;
 	
-	let row_separation = Math.round(col_stagger * Math.sqrt(3));
+	let row_separation = col_stagger * Math.sqrt(3);
+	
+	let half_row = null;
+	
+	
+	
+	let heights = [];
+	
+	let can_raise = [];
+	let can_lower = [];
 	
 	
 	
@@ -59,7 +68,16 @@
 	
 	
 	function draw_frame()
-	{
+	{/*
+		if (image_size % (2*col_separation) !== 0)
+		{
+			image_size += (2*col_separation) - image_size % (2*col_separation);
+			
+			wilson.change_canvas_size(image_size, image_size);
+		}
+		
+		console.log(image_size);
+		*/
 		num_rows = Math.floor(image_size / row_separation) + 1;
 		num_cols = Math.floor(image_size / col_separation) + 1;
 		
@@ -82,7 +100,7 @@
 		
 		
 		
-		draw_hex_grid();
+		init_matching();
 	}
 	
 	
@@ -116,11 +134,6 @@
 	
 	function draw_line(i_1, j_1, i_2, j_2)
 	{
-		if (i_1 < 0 || j_1 < 0 || i_2 < 0 || j_2 < 0 || i_1 >= num_rows || i_2 >= num_rows || j_1 >= num_cols || j_2 >= num_cols)
-		{
-			return;
-		}
-		
 		let j_1_modified = i_1 % 2 === 1 ? j_1 * col_separation + col_stagger : j_1 * col_separation;
 		let j_2_modified = i_2 % 2 === 1 ? j_2 * col_separation + col_stagger : j_2 * col_separation;
 		
@@ -135,11 +148,6 @@
 	
 	function draw_rhombus(i_1, j_1, i_2, j_2)
 	{
-		if (i_1 < 0 || j_1 < 0 || i_2 < 0 || j_2 < 0 || i_1 >= num_rows || i_2 >= num_rows || j_1 >= num_cols || j_2 >= num_cols)
-		{
-			return;
-		}
-		
 		let j_1_modified = i_1 % 2 === 1 ? j_1 * col_separation + col_stagger : j_1 * col_separation;
 		let j_2_modified = i_2 % 2 === 1 ? j_2 * col_separation + col_stagger : j_2 * col_separation;
 		
@@ -200,8 +208,6 @@
 				}
 			}
 		}
-		
-		init_matching();
 	}
 	
 	
@@ -226,7 +232,7 @@
 		{
 			let y = -x * hex_slope;
 			
-			let row = (1 - y) / 2 * image_size;
+			let row = (1 - y) / 2 * image_size + image_size / num_rows;
 			let col = (x + 1) / 2 * image_size;
 			
 			wilson.ctx.fillRect(col, row, 1, 1);
@@ -244,7 +250,7 @@
 			{
 				if ((j - i % 2) % 3 === 1)
 				{
-					let [x, y] = get_matching_world_coordinates(i, j, i - 1, j - (i + 1) % 2);
+					let [x, y] = get_matching_world_coordinates(i, j, i + 1, j + i % 2);
 					
 					if (x >= 0 && y >= -x * hex_slope)
 					{
@@ -253,7 +259,7 @@
 					
 					else
 					{
-						let [x, y] = get_matching_world_coordinates(i, j, i + 1, j - (i + 1) % 2);
+						let [x, y] = get_matching_world_coordinates(i, j, i - 1, j + i % 2);
 						
 						if (x < 0 && y >= x * hex_slope)
 						{
@@ -269,6 +275,51 @@
 			}
 		}
 		
+		
+		
+		half_row = Math.floor(num_rows / 2);
+		
+		heights = new Array(half_row);
+		
+		//Init the heightmap.
+		for (let i = 0; i < half_row; i++)
+		{
+			heights[i] = new Array(half_row);
+			
+			for (let j = 0; j < half_row; j++)
+			{
+				heights[i][j] = 0;
+			}
+		}
+		
+		can_raise = [[half_row + 2, half_row - 2]];
+		
 		draw_matching();
+		
+		monte_carlo_step();
+	}
+	
+	
+	
+	function monte_carlo_step()
+	{
+		let num_can_raise = can_raise.length;
+		let num_can_lower = can_lower.length;
+		
+		if (Math.random() < num_can_raise / (num_can_raise + num_can_lower))
+		{
+			//Raise something.
+			
+			let index = Math.floor(Math.random() * num_can_raise);
+			
+			let i = can_raise[index][0];
+			let j = can_raise[index][1];
+			
+			console.log(i, j);
+			
+			//Raising means the hexagon changes from having the flat edge on the bottom to the top.
+			
+			draw_point(i, j);
+		}
 	}
 }()
