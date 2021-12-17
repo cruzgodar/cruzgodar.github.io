@@ -75,13 +75,15 @@ Page.temporary_web_workers = [];
 Page.background_color_changed = false;
 
 //Sets a whole bunch of elements' styles at once.
-Page.set_element_styles = function(query_string, property, value)
+Page.set_element_styles = function(query_string, property, value, important = false)
 {
 	let elements = document.querySelectorAll(query_string);
 	
+	let priority_string = important ? "important" : "";
+	
 	for (let i = 0; i < elements.length; i++)
 	{
-		elements[i].style.setProperty(property, value);
+		elements[i].style.setProperty(property, value, priority_string);
 	}
 }
 
@@ -282,53 +284,6 @@ let Site =
 			script.onerror = reject;
 			script.async = true;
 			script.src = src;
-		});
-	},
-	
-	
-	
-	glsl_functions:
-	{
-		"main": "",
-		"gamma": "",
-		"zeta": ""
-	},
-	
-	load_glsl: function()
-	{
-		return new Promise(async (resolve, reject) =>
-		{
-			window.COMPLEX_GLSL = "";
-			
-			let filenames = Object.keys(this.glsl_functions);
-			
-			
-			
-			for (let i = 0; i < filenames.length; i++)
-			{
-				await new Promise(async (resolve, reject) =>
-				{
-					fetch(`/scripts/glsl/${filenames[i]}.frag`)
-				
-					.then(response => response.text())
-					
-					.then(text => this.glsl_functions[filenames[i]] = text)
-					
-					.then(() => resolve());
-				});
-			}
-			
-			
-			
-			//Join them all for now -- we'll replace this later
-			for (let i = 0; i < filenames.length; i++)
-			{
-				window.COMPLEX_GLSL	+= this.glsl_functions[filenames[i]];
-			}
-			
-			Site.scripts_loaded["glsl"] = true;
-			
-			resolve();
 		});
 	},
 	
