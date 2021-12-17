@@ -218,11 +218,22 @@ float cinv(float z)
 	return 1.0 / z;
 }
 
-const float TOL = .000000001;
+const float RELATIVE_TOL = .0000000001;
 
 
-bool equal_within_tolerance(vec2 a, vec2 b) {
-	return (cmag2(a-b) < TOL);
+// relative
+bool equal_within_relative_tolerance(vec2 a, vec2 b) {
+	return (cmag2(a-b) < RELATIVE_TOL*cmag2(a+b));
+}
+
+const float ABSOLUTE_TOL = .01;
+bool equal_within_absolute_tolerance(vec2 a, vec2 b) {
+	return (cmag2(a-b) < ABSOLUTE_TOL);
+}
+
+const float SHARP_ABSOLUTE_TOL = .0000000001;
+bool equal_within_sharp_absolute_tolerance(vec2 a, vec2 b) {
+	return (cmag2(a-b) < SHARP_ABSOLUTE_TOL);
 }
 
 
@@ -581,7 +592,7 @@ float casinh(float a) {
 }
 
 vec2 cacosh(vec2 z) {
-	return clog(cpow(cpow(z,2.0) - ONE,0.5) + z);
+	return clog(cmul(cpow(z + ONE,0.5),cpow(z - ONE,0.5)) + z);
 }
 
 float cacosh(float a) {
@@ -606,7 +617,8 @@ float cacsch(float a) {
 
 // branch cuts may differ from wolfram... whatever
 vec2 casech(vec2 z) {
-	return clog(cpow(cpow(z,-2.0)-ONE,0.5) + cdiv(1.0,z));
+	vec2 zinv = cinv(z);
+	return clog(cmul(csqrt(zinv-ONE),csqrt(zinv+ONE)) + zinv);
 }
 
 float casech(float a) {
@@ -614,7 +626,8 @@ float casech(float a) {
 }
 
 vec2 cacoth(vec2 z) {
-	return 0.5*clog(cdiv(1.0,z)+ONE) - 0.5*clog(ONE-cdiv(1.0,z));
+	vec2 zinv = cinv(z);
+	return 0.5*clog(zinv+ONE) - 0.5*clog(ONE-zinv);
 }
 
 float cacoth(float a) {
@@ -937,6 +950,8 @@ vec2 eisenstein(float k, vec2 z)
 
 const int DELTA_BOUND = 100;
 
+// Returns eta^24 where eta is the dedekind eta function
+// Note: this is the modular discriminant over (2pi)^12
 vec2 delta(vec2 z) {
 	if (z.y <= 0.0)
 	{
@@ -1666,6 +1681,8 @@ vec2 inverse_g2_g3(float a, float b)
 
 
 // Returns the character of the irreducible su3 representation with highest weight (p,q)
+// e.g. trivial rep is (0,0), 3-dim fundamental is (1,0), 8-dim adjoint is (1,1)
+// dimension is value at zero: (p+1)(q+1)(p+q+2)/2
 // Algorithm from https://math.stackexchange.com/questions/2852355/irreducible-characters-of-su3
 
 vec2 su3_character(int p, int q, vec2 z) {
