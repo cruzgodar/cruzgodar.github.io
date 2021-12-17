@@ -432,6 +432,51 @@
 		`;
 		
 		
+		
+		let frag_shader_source_g2 = `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			
+			
+			void main(void)
+			{
+				gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+			}
+		`;
+		
+		
+		
+		let frag_shader_source_g3 = `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			
+			
+			void main(void)
+			{
+				gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+			}
+		`;
+		
+		
+		
+		let frag_shader_source_other = `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			
+			
+			void main(void)
+			{
+				gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+			}
+		`;
+		
+		
 
 		let options_wp =
 		{
@@ -567,7 +612,9 @@
 		
 		let options_g2 =
 		{
-			renderer: "cpu",
+			renderer: "gpu",
+			
+			shader: frag_shader_source_g2,
 			
 			canvas_width: 500,
 			canvas_height: 500
@@ -577,7 +624,9 @@
 		
 		let options_g3 =
 		{
-			renderer: "cpu",
+			renderer: "gpu",
+			
+			shader: frag_shader_source_g3,
 			
 			canvas_width: 500,
 			canvas_height: 500
@@ -587,7 +636,9 @@
 		
 		let options_other =
 		{
-			renderer: "cpu",
+			renderer: "gpu",
+			
+			shader: frag_shader_source_other,
 			
 			canvas_width: 500,
 			canvas_height: 500
@@ -645,6 +696,12 @@
 		window.requestAnimationFrame(draw_frame);
 		
 		window.requestAnimationFrame(draw_frame_ec_plot);
+		
+		wilson_g2.render.draw_frame();
+		
+		wilson_g3.render.draw_frame();
+		
+		wilson_other.render.draw_frame();
 		
 		
 		
@@ -1024,7 +1081,7 @@
 			return;
 		}
 		
-		console.log(zoom_level_ec_plot);
+		
 		
 		wilson_ec_plot.gl.useProgram(wilson_ec_plot.render.shader_programs[0]);
 		
