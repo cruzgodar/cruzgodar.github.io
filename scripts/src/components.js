@@ -689,11 +689,11 @@ Page.Components =
 				
 				else if (words[0] === "!begin-def")
 				{
-					lines[i] = "";
+					lines[i] = `<div class="notes-def">`;
 					
 					i += 2;
 					
-					words = [`<span class="notes-def">Definition</span>`].concat(lines[i].split(" "));
+					words = [`<span class="notes-def-title">Definition: ${lines[i]}</span>`];
 					
 					lines[i] = this.get_text(["b", "j"].concat(words));
 					
@@ -730,18 +730,18 @@ Page.Components =
 					
 					
 					
-					lines[i] = "";
+					lines[i] = `</div>`;
 				}
 				
 				
 				
 				else if (words[0] === "!begin-example")
 				{
-					lines[i] = "";
+					lines[i] = `<div class="notes-example">`;
 					
 					i += 2;
 					
-					words = [`<span class="notes-example">Example</span>`].concat(lines[i].split(" "));
+					words = [`<span class="notes-example-title">Example: ${lines[i]}</span>`];
 					
 					lines[i] = this.get_text(["b", "j"].concat(words));
 					
@@ -778,18 +778,18 @@ Page.Components =
 					
 					
 					
-					lines[i] = "";
+					lines[i] = `</div>`;
 				}
 				
 				
 				
 				else if (words[0] === "!begin-prop")
 				{
-					lines[i] = "";
+					lines[i] = `<div class="notes-prop">`;
 					
 					i += 2;
 					
-					words = [`<span class="notes-prop">Proposition</span>`].concat(lines[i].split(" "));
+					words = [`<span class="notes-prop-title">Proposition: ${lines[i]}</span>`];
 					
 					lines[i] = this.get_text(["b", "j"].concat(words));
 					
@@ -826,18 +826,18 @@ Page.Components =
 					
 					
 					
-					lines[i] = "";
+					lines[i] = `</div>`;
 				}
 				
 				
 				
 				else if (words[0] === "!begin-thm")
 				{
-					lines[i] = "";
+					lines[i] = `<div class="notes-thm">`;
 					
 					i += 2;
 					
-					words = [`<span class="notes-thm">Theorem</span>`].concat(lines[i].split(" "));
+					words = [`<span class="notes-thm-title">Theorem: ${lines[i]}</span>`];
 					
 					lines[i] = this.get_text(["b", "j"].concat(words));
 					
@@ -874,20 +874,14 @@ Page.Components =
 					
 					
 					
-					lines[i] = "";
+					lines[i] = `</div>`;
 				}
 				
 				
 				
 				else if (words[0] === "!begin-proof")
 				{
-					lines[i] = "";
-					
-					i += 2;
-					
-					words = [`<span class="notes-proof">Proof</span>`].concat(lines[i].split(" "));
-					
-					lines[i] = this.get_text(["b", "j"].concat(words));
+					lines[i] = `<div class="notes-proof"><span class="notes-proof-title">Proof</span>`;
 					
 					
 					
@@ -922,20 +916,14 @@ Page.Components =
 					
 					
 					
-					lines[i] = "";
+					lines[i] = `</div>`;
 				}
 				
 				
 				
 				else if (words[0] === "!begin-comment")
 				{
-					lines[i] = "";
-					
-					i += 2;
-					
-					words = [`<span class="notes-comment">Comment</span>`].concat(lines[i].split(" "));
-					
-					lines[i] = this.get_text(["b", "j"].concat(words));
+					lines[i] = `<div class="notes-comment"><span class="notes-comment-title">Comment</span>`;
 					
 					
 					
@@ -970,18 +958,18 @@ Page.Components =
 					
 					
 					
-					lines[i] = "";
+					lines[i] = `</div>`;
 				}
 				
 				
 				
 				else if (words[0] === "!begin-cor")
 				{
-					lines[i] = "";
+					lines[i] = `<div class="notes-cor">`;
 					
 					i += 2;
 					
-					words = [`<span class="notes-cor">Corollary</span>`].concat(lines[i].split(" "));
+					words = [`<span class="notes-cor-title">Corollary: ${lines[i]}</span>`];
 					
 					lines[i] = this.get_text(["b", "j"].concat(words));
 					
@@ -1018,18 +1006,18 @@ Page.Components =
 					
 					
 					
-					lines[i] = "";
+					lines[i] = `</div>`;
 				}
 				
 				
 				
 				else if (words[0] === "!begin-lemma")
 				{
-					lines[i] = "";
+					lines[i] = `<div class="notes-lemma">`;
 					
 					i += 2;
 					
-					words = [`<span class="notes-lemma">Lemma</span>`].concat(lines[i].split(" "));
+					words = [`<span class="notes-lemma-title">Lemma: ${lines[i]}</span>`];
 					
 					lines[i] = this.get_text(["b", "j"].concat(words));
 					
@@ -1066,18 +1054,18 @@ Page.Components =
 					
 					
 					
-					lines[i] = "";
+					lines[i] = `</div>`;
 				}
 				
 				
 				
 				else if (words[0] === "!begin-axiom")
 				{
-					lines[i] = "";
+					lines[i] = `<div class="notes-axiom">`;
 					
 					i += 2;
 					
-					words = [`<span class="notes-axiom">Axiom</span>`].concat(lines[i].split(" "));
+					words = [`<span class="notes-axiom-title">Axiom: ${lines[i]}</span>`];
 					
 					lines[i] = this.get_text(["b", "j"].concat(words));
 					
@@ -1114,18 +1102,18 @@ Page.Components =
 					
 					
 					
-					lines[i] = "";
+					lines[i] = `</div>`;
 				}
 				
 				
 				
 				else if (words[0] === "!begin-exercise")
 				{
-					lines[i] = "";
+					lines[i] = `<div class="notes-exercise">`;
 					
 					i += 2;
 					
-					words = [`<span class="notes-exercise">Exercise</span>`].concat(lines[i].split(" "));
+					words = [`<span class="notes-exercise-title">Exercise: ${lines[i]}</span>`];
 					
 					lines[i] = this.get_text(["b", "j"].concat(words));
 					
@@ -1162,7 +1150,7 @@ Page.Components =
 					
 					
 					
-					lines[i] = "";
+					lines[i] = `</div>`;
 				}
 				
 				
