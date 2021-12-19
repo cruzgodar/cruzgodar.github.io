@@ -1,0 +1,238 @@
+<head>
+	<title>Calculus I Review</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Calculus I Review"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/0-calc-1-review/0-calc-1-review.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/252/notes/0-calc-1-review/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Calculus I Review
+
+
+
+!begin-text-block
+	
+	Welcome to Math 252! You&#x2019;re viewing the interactive lecture notes &mdash; reading either these or the textbook is required for the class, since we&#x2019;ll have a very short reading quiz on Canvas due before each lecture. To get started, let&#x2019;s make sure your browser handles equations and graphs correctly. You should see an equation in this paragraph, another on its own line below, and then a graph below that. $(x, y) = (r \cos(\theta), r \sin(\theta))$!
+	
+	$$x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+	
+!end-text-block
+
+
+
+!iframe https://www.desmos.com/calculator/zgrogzuagn
+
+
+
+!begin-text-block
+	
+	If anything doesn&#x2019;t appear correctly, update your browser and then reach out if that doesn&#x2019;t work. There&#x2019;s also a non-interactive pdf version of each document available for compatibility.
+	
+!end-text-block
+
+
+
+<div style="height: 15vh"></div>
+
+
+
+!text s Limits
+
+<br>
+
+!begin-text-block
+	
+	Let&#x2019;s talk about Calc I. There are two main concepts taught there that we&#x2019;ll need in this course: limits and derivatives. We&#x2019;ll skip the formal definition of a limit in favor of the intuitive one: $\lim_{x \to a} f(x)$ is the value that $f(a)$ &#x201C;should&#x201D; have. Should is in quotes because $f(a)$ doesn&#x2019;t actually need to have that value &mdash; or any value. Instead, we take a limit by sliding $x$ closer and closer to $a$, from either above or below, and seeing what value $f(x)$ gets close to. In the graph below, $f(2) = 5$, since there&#x2019;s a hole in the graph at $(2, 4)$. But as $x$ gets closer to $2$ from the right or the left, $f(x)$ gets closer to $4$, so $\lim_{x \to 2} f(x) = 4$.
+	
+!end-text-block
+
+
+
+!iframe https://www.desmos.com/calculator/nda2udjjdp
+
+
+
+!begin-text-block
+	
+	There&#x2019;s a sense in which the behavior of the previous example is pathological (i.e. unusual). &#x201C;Nice&#x201D; functions shouldn&#x2019;t have holes in them or strange things like that, and it turns out that what we mean by &#x201C;nice&#x201D; is <dfn>continuous</dfn>.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	A function $f$ is <dfn>continuous</dfn> if for all $a$ in its domain, $\lim_{x \to a} f(x) = f(a)$.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	Continuous functions are ones that can be drawn without lifting up your pencil &mdash; there are no holes or jumps. Recall that the <dfn>domain</dfn> of a function is the colection of $x$-values for which $f(x)$ is defined &mdash; we need that in the definition so that $f(a)$ makes sense to write. In the example below, the red function $f(x)$ is continuous while the blue function $g(x)$ is not.
+	
+!end-text-block
+
+
+
+!iframe https://www.desmos.com/calculator/g0pgjrwv3p
+
+
+
+!begin-example
+	
+	Find $g(0)$, $g(1)$, $g(3)$, $\lim_{x \to 1^-} g(x)$, $\lim_{x \to 1^+} g(x)$, and $\lim_{x \to 1} g(x)$.
+	
+	The first three can be read directly off the graph. Try clicking or tapping the relevant points!
+	
+	$g(0) = -1$
+	
+	$g(1)$ is undefined, since there is no solid point with $x = 1$
+	
+	$g(3) = -\dfrac{2}{3}$
+	
+	For the limits, remember that the superscript plus or minus indicates a direction to approach from. So $\lim_{x \to 1^-} g(x) = 0$, since we only look at the graph to the left (because of the $1^-$) of $x = 1$. Similarly, $\lim_{x \to 1^+} g(x) = -1$. When we remove that superscript, we get $\lim_{x \to 1} g(x)$, which is actually undefined. This is because in order for a limit to exist, the limits from both the left and right have to exist and be equal to one another, and here they aren&#x2019;t.
+	
+!end-example
+
+
+
+<div style="height: 15vh"></div>
+
+
+
+!text s Derivatives
+
+<br>
+
+!begin-text-block
+	
+	The <dfn>derivative</dfn> of a function $f(x)$ is a function we call $f'(x)$, defined as the slope of the tangent line to the graph of $f$ at $x$. Not all functions are differentiable &mdash; in order for one to be, it must be continuous and not have any sharp corners. In the example below, the red function is differentiable while the blue one isn&#x2019;t. Drag the red point around to show the tangent line to $f$ &mdash; its slope is the value of $f'(x)$.
+	
+!end-text-block
+
+
+
+!iframe https://www.desmos.com/calculator/canjr6j4jb
+
+
+
+!begin-text-block
+	
+	Now&#x2019;s a good time to mention that most of the graphs are editable &mdash; for example, you can change the formula of $f(x)$ to any other differentiable function in the previous graph. Try changing it to $\sin(x)$!
+	
+	Let&#x2019;s write the formal definition of a derivative, which is defined to be the limit of slopes of secant lines, and then a handful of common derivative formulas.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	Let $f(x)$ be a continuous function. The <dfn>derivative</dfn> of $f$ at $x = a$, if it exists, is
+	
+	$$f'(a) = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h}.$$
+	
+!end-def
+
+
+
+!begin-prop
+	
+	Some derivative rules:
+	
+	$$\frac{d}{dx} [c \cdot f(x)] = c \cdot f'(x)$$
+	
+	$$\frac{d}{dx} [f(x) + g(x)] = f'(x) + g'(x)$$
+	
+	$$\frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x) \text{ (the product rule)}$$
+	
+	$$\frac{d}{dx} \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2} \text{ (the quotient rule)}$$
+	
+	$$\frac{d}{dx} [f(g(x))] = f'(g(x))g'(x) \text{ (the chain rule)}$$
+	
+!end-prop
+
+
+
+!begin-example
+	
+	Here&#x2019;s a derivative involving the chain rule:
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx} [\sin(x^3)] &= \left( \frac{d}{dx} [\sin(x)]|_{x^3} \right) \left( \frac{d}{dx} [x^3] \right)\\
+			&= 3x^2 \cos(x^3)
+		\end{align*}
+	$$
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	Some notational quirks to remember: $\frac{d}{dx}$ means derivative with respect to $x$, the $|_{x^3}$ tells us to plug $x^3$ in for $x$ after we take a derivative, and the derivative of $\sin(x)$ is $\cos(x)$. While we&#x2019;re talking about slightly obscure formulas like that, here&#x2019;s a short list of good derivatives to know.
+	
+!end-text-block
+
+
+
+!begin-prop
+	
+	The derivatives of some common functions:
+	
+	$$\frac{d}{dx} [0] = 0$$
+	
+	$$\frac{d}{dx} [x^p] = px^{p - 1}, p \neq 0 \text{ (the power rule)}$$
+	
+	$$\frac{d}{dx} [\sin(x)] = \cos(x)$$
+	
+	$$\frac{d}{dx} [\cos(x)] = -\sin(x)$$
+	
+	$$\frac{d}{dx} [b^x] = b^x \ln(b)$$
+	
+	$$\frac{d}{dx} [e^x] = e^x$$
+	
+	$$\frac{d}{dx} [\ln(x)] = \frac{1}{x}$$
+	
+!end-prop
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Calculus I Review",
+		
+		"math_page": true
+	};
+	
+	Page.load();
+</script>

@@ -90,9 +90,11 @@ Page.Components =
 	{
 		let aos_section_segment = "";
 		
-		if (new_aos_section)
+		if (this.need_new_aos_section)
 		{
 			aos_section_segment = ` class="new-aos-section"`;
+			
+			this.need_new_aos_section = false;
 		}
 		
 		
@@ -464,6 +466,17 @@ Page.Components =
 	
 	
 	
+	get_iframe: function(src)
+	{
+		return `
+			<div data-aos="fade-up" style="width: 100%; display: flex; justify-content: center">
+				<iframe src="${src}" width="500" height="500"></iframe>
+			</div>
+		`;
+	},
+	
+	
+	
 	get_line_break: function()
 	{
 		return `
@@ -498,18 +511,38 @@ Page.Components =
 				{
 					lines[i] = "";
 					
-					i += 2;
 					
-					words = lines[i].split(" ");
 					
 					while (words[0] !== "!end-text-block")
 					{
-						lines[i] = this.get_text(["b", "j"].concat(words));
-						
 						i += 2;
 						
+						
+						
+						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
+						{
+							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+						
+							i++;
+							
+							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
+							{
+								i++;
+							}
+							
+							lines[i] = `$$</p></div>`;
+							
+							continue;
+						}
+						
+						
+						
 						words = lines[i].split(" ");
+						
+						lines[i] = this.get_text(["b", "j"].concat(words));
 					}
+					
+					
 					
 					lines[i] = "";
 				}
@@ -540,7 +573,7 @@ Page.Components =
 				
 				else if (words[0] === "!section")
 				{
-					new_aos_section = true;
+					this.need_new_aos_section = true;
 					
 					lines[i] = this.get_section();
 				}
@@ -654,6 +687,486 @@ Page.Components =
 				
 				
 				
+				else if (words[0] === "!begin-def")
+				{
+					lines[i] = "";
+					
+					i += 2;
+					
+					words = [`<span class="notes-def">Definition</span>`].concat(lines[i].split(" "));
+					
+					lines[i] = this.get_text(["b", "j"].concat(words));
+					
+					
+					
+					while (words[0] !== "!end-def")
+					{
+						i += 2;
+						
+						
+						
+						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
+						{
+							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+						
+							i++;
+							
+							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
+							{
+								i++;
+							}
+							
+							lines[i] = `$$</p></div>`;
+							
+							continue;
+						}
+						
+						
+						
+						words = lines[i].split(" ");
+						
+						lines[i] = this.get_text(["b", "j"].concat(words));
+					}
+					
+					
+					
+					lines[i] = "";
+				}
+				
+				
+				
+				else if (words[0] === "!begin-example")
+				{
+					lines[i] = "";
+					
+					i += 2;
+					
+					words = [`<span class="notes-example">Example</span>`].concat(lines[i].split(" "));
+					
+					lines[i] = this.get_text(["b", "j"].concat(words));
+					
+					
+					
+					while (words[0] !== "!end-example")
+					{
+						i += 2;
+						
+						
+						
+						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
+						{
+							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+						
+							i++;
+							
+							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
+							{
+								i++;
+							}
+							
+							lines[i] = `$$</p></div>`;
+							
+							continue;
+						}
+						
+						
+						
+						words = lines[i].split(" ");
+						
+						lines[i] = this.get_text(["b", "j"].concat(words));
+					}
+					
+					
+					
+					lines[i] = "";
+				}
+				
+				
+				
+				else if (words[0] === "!begin-prop")
+				{
+					lines[i] = "";
+					
+					i += 2;
+					
+					words = [`<span class="notes-prop">Proposition</span>`].concat(lines[i].split(" "));
+					
+					lines[i] = this.get_text(["b", "j"].concat(words));
+					
+					
+					
+					while (words[0] !== "!end-prop")
+					{
+						i += 2;
+						
+						
+						
+						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
+						{
+							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+						
+							i++;
+							
+							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
+							{
+								i++;
+							}
+							
+							lines[i] = `$$</p></div>`;
+							
+							continue;
+						}
+						
+						
+						
+						words = lines[i].split(" ");
+						
+						lines[i] = this.get_text(["b", "j"].concat(words));
+					}
+					
+					
+					
+					lines[i] = "";
+				}
+				
+				
+				
+				else if (words[0] === "!begin-thm")
+				{
+					lines[i] = "";
+					
+					i += 2;
+					
+					words = [`<span class="notes-thm">Theorem</span>`].concat(lines[i].split(" "));
+					
+					lines[i] = this.get_text(["b", "j"].concat(words));
+					
+					
+					
+					while (words[0] !== "!end-thm")
+					{
+						i += 2;
+						
+						
+						
+						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
+						{
+							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+						
+							i++;
+							
+							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
+							{
+								i++;
+							}
+							
+							lines[i] = `$$</p></div>`;
+							
+							continue;
+						}
+						
+						
+						
+						words = lines[i].split(" ");
+						
+						lines[i] = this.get_text(["b", "j"].concat(words));
+					}
+					
+					
+					
+					lines[i] = "";
+				}
+				
+				
+				
+				else if (words[0] === "!begin-proof")
+				{
+					lines[i] = "";
+					
+					i += 2;
+					
+					words = [`<span class="notes-proof">Proof</span>`].concat(lines[i].split(" "));
+					
+					lines[i] = this.get_text(["b", "j"].concat(words));
+					
+					
+					
+					while (words[0] !== "!end-proof")
+					{
+						i += 2;
+						
+						
+						
+						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
+						{
+							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+						
+							i++;
+							
+							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
+							{
+								i++;
+							}
+							
+							lines[i] = `$$</p></div>`;
+							
+							continue;
+						}
+						
+						
+						
+						words = lines[i].split(" ");
+						
+						lines[i] = this.get_text(["b", "j"].concat(words));
+					}
+					
+					
+					
+					lines[i] = "";
+				}
+				
+				
+				
+				else if (words[0] === "!begin-comment")
+				{
+					lines[i] = "";
+					
+					i += 2;
+					
+					words = [`<span class="notes-comment">Comment</span>`].concat(lines[i].split(" "));
+					
+					lines[i] = this.get_text(["b", "j"].concat(words));
+					
+					
+					
+					while (words[0] !== "!end-comment")
+					{
+						i += 2;
+						
+						
+						
+						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
+						{
+							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+						
+							i++;
+							
+							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
+							{
+								i++;
+							}
+							
+							lines[i] = `$$</p></div>`;
+							
+							continue;
+						}
+						
+						
+						
+						words = lines[i].split(" ");
+						
+						lines[i] = this.get_text(["b", "j"].concat(words));
+					}
+					
+					
+					
+					lines[i] = "";
+				}
+				
+				
+				
+				else if (words[0] === "!begin-cor")
+				{
+					lines[i] = "";
+					
+					i += 2;
+					
+					words = [`<span class="notes-cor">Corollary</span>`].concat(lines[i].split(" "));
+					
+					lines[i] = this.get_text(["b", "j"].concat(words));
+					
+					
+					
+					while (words[0] !== "!end-cor")
+					{
+						i += 2;
+						
+						
+						
+						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
+						{
+							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+						
+							i++;
+							
+							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
+							{
+								i++;
+							}
+							
+							lines[i] = `$$</p></div>`;
+							
+							continue;
+						}
+						
+						
+						
+						words = lines[i].split(" ");
+						
+						lines[i] = this.get_text(["b", "j"].concat(words));
+					}
+					
+					
+					
+					lines[i] = "";
+				}
+				
+				
+				
+				else if (words[0] === "!begin-lemma")
+				{
+					lines[i] = "";
+					
+					i += 2;
+					
+					words = [`<span class="notes-lemma">Lemma</span>`].concat(lines[i].split(" "));
+					
+					lines[i] = this.get_text(["b", "j"].concat(words));
+					
+					
+					
+					while (words[0] !== "!end-lemma")
+					{
+						i += 2;
+						
+						
+						
+						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
+						{
+							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+						
+							i++;
+							
+							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
+							{
+								i++;
+							}
+							
+							lines[i] = `$$</p></div>`;
+							
+							continue;
+						}
+						
+						
+						
+						words = lines[i].split(" ");
+						
+						lines[i] = this.get_text(["b", "j"].concat(words));
+					}
+					
+					
+					
+					lines[i] = "";
+				}
+				
+				
+				
+				else if (words[0] === "!begin-axiom")
+				{
+					lines[i] = "";
+					
+					i += 2;
+					
+					words = [`<span class="notes-axiom">Axiom</span>`].concat(lines[i].split(" "));
+					
+					lines[i] = this.get_text(["b", "j"].concat(words));
+					
+					
+					
+					while (words[0] !== "!end-axiom")
+					{
+						i += 2;
+						
+						
+						
+						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
+						{
+							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+						
+							i++;
+							
+							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
+							{
+								i++;
+							}
+							
+							lines[i] = `$$</p></div>`;
+							
+							continue;
+						}
+						
+						
+						
+						words = lines[i].split(" ");
+						
+						lines[i] = this.get_text(["b", "j"].concat(words));
+					}
+					
+					
+					
+					lines[i] = "";
+				}
+				
+				
+				
+				else if (words[0] === "!begin-exercise")
+				{
+					lines[i] = "";
+					
+					i += 2;
+					
+					words = [`<span class="notes-exercise">Exercise</span>`].concat(lines[i].split(" "));
+					
+					lines[i] = this.get_text(["b", "j"].concat(words));
+					
+					
+					
+					while (words[0] !== "!end-exercise")
+					{
+						i += 2;
+						
+						
+						
+						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
+						{
+							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+						
+							i++;
+							
+							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
+							{
+								i++;
+							}
+							
+							lines[i] = `$$</p></div>`;
+							
+							continue;
+						}
+						
+						
+						
+						words = lines[i].split(" ");
+						
+						lines[i] = this.get_text(["b", "j"].concat(words));
+					}
+					
+					
+					
+					lines[i] = "";
+				}
+				
+				
+				
 				else if (words[0] === "!checkbox")
 				{
 					lines[i] = this.get_checkbox(words.slice(1));
@@ -671,6 +1184,13 @@ Page.Components =
 				else if (words[0] === "!canvas")
 				{
 					lines[i] = this.get_canvas();
+				}
+				
+				
+				
+				else if (words[0] === "!iframe")
+				{
+					lines[i] = this.get_iframe(words.slice(1));
 				}
 				
 				

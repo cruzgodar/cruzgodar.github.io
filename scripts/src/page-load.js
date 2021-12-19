@@ -1046,6 +1046,14 @@ Page.Load =
 		{
 			if (!Site.scripts_loaded["mathjax"])
 			{
+				window.MathJax =
+				{
+					tex:
+					{
+						inlineMath: [["$", "$"], ["\\(", "\\)"]]
+					}
+				};
+				
 				Site.load_script("https://polyfill.io/v3/polyfill.min.js?features=es6");
 				
 				

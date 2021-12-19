@@ -1,0 +1,66 @@
+iframe
+{
+	width: 75vmin;
+	height: 75vmin;
+	margin: 0 auto;
+	
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 15px;
+	padding: 2px;
+	
+	margin-top: 5vh;
+	margin-bottom: 5vh;
+}
+
+.notes-example, .notes-exercise, .notes-def, .notes-prop, .notes-thm, .notes-proof, .notes-comment, .notes-cor, .notes-lemma, .notes-axiom
+{
+	color: rgb(255, 255, 255) !important;
+	
+	border-radius: 5px;
+	padding: 4px 6px 4px 6px;
+	
+	margin-right: 4px;
+	
+	font-weight: bold;
+	font-style: normal;
+}
+
+.notes-def
+{
+	background-color: rgb(63, 127, 63);
+}
+
+.notes-example, .notes-exercise
+{
+	background-color: rgb(127, 127, 127);
+}
+
+.notes-prop, .notes-thm
+{
+	background-color: rgb(127, 85, 63);
+}
+
+.notes-proof
+{
+	background-color: rgb(74, 63, 127);
+}
+
+.notes-comment
+{
+	background-color: rgb(63, 106, 127);
+}
+
+.notes-cor
+{
+	background-color: rgb(63, 85, 127);
+}
+
+.notes-lemma
+{
+	background-color: rgb(127, 127, 63);
+}
+
+.notes-axiom
+{
+	background-color: rgb(127, 63, 63);
+}
