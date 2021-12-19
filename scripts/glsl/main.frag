@@ -1399,6 +1399,44 @@ vec2 hypergeometric2f1_helper(float a, float b, float c, vec2 z) {
     return summer;
 }
 
+// float version
+vec2 hypergeometric2f1_helper(float a, float b, float c, float z) {
+	if (b == c) {
+		return ONE*cpow(1.0-z,-a);
+	} else if (a == 1.0) {
+		if (b == 1.0) {
+			if (c == 2.0) {
+				return ONE*cdiv(clog(1.0-z),-z);
+			}
+		}
+	} else if (a == 0.5) {
+		if (b == 0.5) {
+			if (c == 1.5) {
+				return ONE*cdiv(casin(csqrt(z)),csqrt(z));
+			}
+		}
+	} else if (b == a+0.5) { // from https://reference.wolfram.com/language/ref/Hypergeometric2F1.html
+		if (c == 2.0*a) {
+			// I cant for the life of me figure out why this isn't working
+			// return cdiv(cpow(2.0,2.0*a-1.0) * cpow(csqrt(ONE-z)+1.0,1.0-2.0*a) ,csqrt(ONE-z));
+		}
+	}
+		// can add some goofy quadratic ones for 2f1(1/3,2/3,3/2,z) if the mood strikes you
+
+	float summer = 1.0;
+    float term = 1.0;
+    float zn = 1.0;
+    for (int n = 0; n < F21_BOUND; n++) {
+        term *= a+float(n);
+        term *= b+float(n);
+        term /= c+float(n);
+        term /= float(n+1);
+        zn *= z;
+        summer += term*zn;
+    }
+    return vec2(summer,0.0);
+}
+
 // Returns 2F1(a,b,c,z) a la https://en.wikipedia.org/wiki/Hypergeometric_function
 // Can add some more patches to improve convergence, meh. Currently converges extremely well away from |z|=1
 // ideas for more: https://fredrikj.net/blog/2015/10/the-2f1-bites-the-dust/
@@ -1409,6 +1447,17 @@ vec2 hypergeometric2f1(float a, float b, float c, vec2 z) {
     } else {
     	vec2 summer = cmul(cpow(-z,-a)/(gamma(b)*(gamma(c-a))*gamma(a-b+1.0)),hypergeometric2f1_helper(a,a-c+1.0,a-b+1.0,cinv(z)));
     	summer -= cmul(cpow(-z,-b)/(gamma(a)*(gamma(c-b))*gamma(b-a+1.0)),hypergeometric2f1_helper(b,b-c+1.0,b-a+1.0,cinv(z)));
+    	return gamma(c)*PI*ccsc(PI*(b-a))*summer;
+    }
+}
+
+// float version
+vec2 hypergeometric2f1(float a, float b, float c, float z) {
+	if (z*z <= 1.0) {
+        return hypergeometric2f1_helper(a,b,c,z);
+    } else {
+    	vec2 summer = cmul(cpow(-z,-a)/(gamma(b)*(gamma(c-a))*gamma(a-b+1.0)),hypergeometric2f1_helper(a,a-c+1.0,a-b+1.0,1.0/z));
+    	summer -= cmul(cpow(-z,-b)/(gamma(a)*(gamma(c-b))*gamma(b-a+1.0)),hypergeometric2f1_helper(b,b-c+1.0,b-a+1.0,1.0/z));
     	return gamma(c)*PI*ccsc(PI*(b-a))*summer;
     }
 }
@@ -1459,6 +1508,31 @@ vec2 hypergeometricf2_helper(float a, float b1, float b2, float c1, float c2, ve
     return summer;
 }
 
+vec2 hypergeometricf2_helper(float a, float b1, float b2, float c1, float c2, float x, float y) {
+	vec2 summer = hypergeometric2f1(a,b1, c1,x);
+	summer = cmul(summer,hypergeometric2f1(a,b2, c2,y));
+
+	float term = 1.0;
+	vec2 vec_term = ZERO;
+	vec2 xyr = ONE;
+
+	for (int r = 1; r < F2_BOUND; r++) {
+		term *= a + float(r-1);
+		term *= b1 + float(r-1);
+		term *= b2 + float(r-1);
+		term /= c1 + float(r-1);
+		term /= c2 + float(r-1);
+		term /= float(r);
+		xyr = cmul(cmul(xyr,x),y);
+
+		vec_term = xyr;
+		vec_term = cmul(vec_term,hypergeometric2f1(a+float(r),b1 + float(r), c1+float(2*r),x));
+		vec_term = cmul(vec_term,hypergeometric2f1(a+float(r),b2 + float(r), c2+float(2*r),y));		
+		summer += term*vec_term;
+		
+	}
+    return summer;
+}
 vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, vec2 x, vec2 y) {
 	if (cmag2(x)+cmag2(y) < 1.0) {
 		return hypergeometricf2_helper(a,b1,b2,c1,c2,x,y);
@@ -1466,8 +1540,19 @@ vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, vec2 x, v
 	return ZERO;
 }
 
+vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, float x, float y) {
+	if (x*x+y*y < 1.0) {
+		return hypergeometricf2_helper(a,b1,b2,c1,c2,x,y);
+	}
+	return ZERO;
+}
+
 vec2 hypergeometricg2(float b1, float b2, float c1, float c2, vec2 x, vec2 y) {
 	return cmul(cmul(cpow(ONE+x,-b1),cpow(ONE+y,-b2)),hypergeometricf2(1.0-c1-c2,b1,b2,1.0-c1,1.0-c2,cdiv(x,x+ONE),	cdiv(y,y+ONE)));
+}
+
+vec2 hypergeometricg2(float b1, float b2, float c1, float c2, float x, float y) {
+	return cmul(cmul(cpow(1.0+x,-b1),cpow(1.0+y,-b2)),hypergeometricf2(1.0-c1-c2,b1,b2,1.0-c1,1.0-c2,cdiv(x,x+1.0),	cdiv(y,y+1.0)));
 }
 
 
@@ -1510,6 +1595,22 @@ int xy_in_f1_domain(vec2 x, vec2 y) {
 		transformation_equation = 17;
 	}
 
+	u = ONE-x;
+	w = ONE-y;
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 21; // or 22 (not implemented!)
+	}
+
+	u = cdiv(x,y);
+	w = cdiv(1.0,y);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 23;
+	}
+
 	u = cdiv(1.0,x);
 	w = cdiv(y,x);
 	tcur = cmag2(u) + cmag2(w);
@@ -1518,11 +1619,61 @@ int xy_in_f1_domain(vec2 x, vec2 y) {
 		transformation_equation = 24;
 	}
 
+	u = ONE-x;
+	w = cinv(y);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 25;
+	}
+
+	u = cinv(x);
+	w = ONE-y;
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 26;
+	}
+
+	u = cinv(x);
+	w = cinv(y);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 27; //or (28), not implemented
+	}
+
+	if (cmag2(x-y)<cmag2(ONE-x)) {
+		u = cdiv(x-y,cmul(y,x-ONE));
+		w = cinv(y);
+		tcur = cmag2(u) + cmag2(w);
+		if (tcur < tmax) {
+			tmax = tcur;
+			transformation_equation = 29;
+		}
+	}
+
+	if (cmag2(x-y)<cmag2(ONE-y)) {
+		u = cinv(x);
+		w = cdiv(x-y,cmul(x,y-ONE));
+		tcur = cmag2(u) + cmag2(w);
+		if (tcur < tmax) {
+			tmax = tcur;
+			transformation_equation = 30;
+		}
+	}
+
+
 	if (tmax<1.0) {
 		return transformation_equation;
 	} else {
 		return -1;
 	}
+}
+
+// float version
+int xy_in_f1_domain(float x, float y) {
+	return xy_in_f1_domain(vec2(x,0.0),vec2(y,0.0));
 }
 
 
@@ -1560,6 +1711,37 @@ vec2 hypergeometricf1_helper(float a, float b1, float b2, float c, vec2 x, vec2 
     return summer;
 }
 
+// float version
+vec2 hypergeometricf1_helper(float a, float b1, float b2, float c, float x, float y) {
+	vec2 summer = hypergeometric2f1(a,b1, c,x);
+	summer = cmul(summer,hypergeometric2f1(a,b2, c,y));
+
+	float term = 1.0;
+	vec2 vec_term = ZERO;
+	float xyr = 1.0;
+	float gamma2r = gamma(c-1.0);
+	float gammar = gamma(c-1.0);
+
+	for (int r = 1; r < F1_BOUND; r++) {
+		term *= a + float(r-1);
+		term *= b1 + float(r-1);
+		term *= b2 + float(r-1);
+		term *= c-a + float(r-1);
+		term /= c + 2.0*float(r-1);
+		term /= c + 2.0 *float(r-1) + 1.0;
+		term /= float(r);
+		xyr *= x*y;
+		gamma2r *= (float(2*r) +c - 3.0)*(float(2*r) +c - 2.0);
+		gammar *= (float(r) + c-2.0);
+
+		vec_term = xyr / gamma2r*gammar*(hypergeometric2f1(a+float(r),b1 + float(r), c+2.0*float(r),x));
+		vec_term = cmul(vec_term,hypergeometric2f1(a+float(r),b2 + float(r), c+2.0*float(r),y));		
+		summer += term*vec_term;
+		
+	}
+    return summer;
+}
+
 // Appell series F1 as defined in https://en.wikipedia.org/wiki/Appell_series
 // Can implement more patches with http://www.gasaneofisica.uns.edu.ar/papers/2001/ColavecchiaGasaneoMiragliacpc_01_138_29.pdf
 // A note about the above paper: it's insufficient for complex x and y
@@ -1575,7 +1757,7 @@ vec2 hypergeometricf1(float a, float b1, float b2, float c, vec2 x, vec2 y) {
 		return hypergeometric2f1(a,b1+b2,c,x);
 	} else if (b1 + b2 == c) {
 		return cmul(cpow(ONE-y,-a),hypergeometric2f1(a,b1,b1+b2,cdiv(x-y,ONE-y)));
-	}
+	} //TODO: add a = c case from (37)
 
 	int transformation_equation = xy_in_f1_domain(x,y);
 	if (transformation_equation == 1) {
@@ -1588,17 +1770,49 @@ vec2 hypergeometricf1(float a, float b1, float b2, float c, vec2 x, vec2 y) {
 	} else if (transformation_equation == 17) {
 		return cmul(cpow(ONE-y,-a), hypergeometricf1_helper(a,b1,c-b1-b2,c,cdiv(y-x,y-ONE),cdiv(y,y-ONE)));
 	} else if (transformation_equation == 24) {
-		// only accurate for large arguments
-		float gammac = gamma(c);
-		vec2 summer = gammac*gamma(b1-a)/gamma(b1)/gamma(c-a)*cmul(cpow(-x,-a), hypergeometricf1_helper(a,1.0+a-c,b2,a-b1+1.0,cinv(x),cdiv(y,x)));
-		summer += gammac*gamma(a-b1)/gamma(a)/gamma(c-b1)*cmul(cpow(-x,-b1), hypergeometricg2(b1,b2,a-b1,1.0+b1-c,-cinv(x),-y));
-		return summer;
+		// // only accurate for large arguments
+		// float gammac = gamma(c);
+		// vec2 summer = gammac*gamma(b1-a)/gamma(b1)/gamma(c-a)*cmul(cpow(-x,-a), hypergeometricf1_helper(a,1.0+a-c,b2,a-b1+1.0,cinv(x),cdiv(y,x)));
+		// summer += gammac*gamma(a-b1)/gamma(a)/gamma(c-b1)*cmul(cpow(-x,-b1), hypergeometricg2(b1,b2,a-b1,1.0+b1-c,-cinv(x),-y));
+		// return summer;
 	}
 
 	return ZERO;
 }
 
+// float version
+// test with: hypergeometricf1(0.1,0.2,0.4,0.5,z.x,z.y)
+vec2 hypergeometricf1(float a, float b1, float b2, float c, float x, float y) {
+	if (x == 0.0) { // (17) from //mathworld.wolfram.com/AppellHypergeometricFunction.html
+		return hypergeometric2f1(a,b2,c,y);
+	} else if (y == 0.0) { // (18)
+		return hypergeometric2f1(a,b1,c,x);
+	} else if (x == y) { // (19) and (20)
+		return hypergeometric2f1(a,b1+b2,c,x);
+	} else if (b1 + b2 == c) {
+		return cmul(cpow(1.0-y,-a),hypergeometric2f1(a,b1,b1+b2,(x-y)/(1.0-y)));
+	} //TODO: add a = c case from (37)
 
+
+	int transformation_equation = xy_in_f1_domain(x,y);
+	if (transformation_equation == 1) { //correct!
+		return hypergeometricf1_helper(a,b1,b2,c,x,y);
+	} else if (transformation_equation == 15) { // correct!
+		return cmul(cmul(cpow(1.0-x,-b1),cpow(1.0-y,-b2)), hypergeometricf1_helper(c-a,b1,b2,c,cdiv(x,x-1.0),cdiv(y,y-1.0)));
+	} else if (transformation_equation == 16) { // correct!
+		return cmul(cpow(1.0-x,-a), hypergeometricf1_helper(a,c-b1-b2,b2,c,cdiv(x,x-1.0),cdiv(x-y,x-1.0)));
+	} else if (transformation_equation == 17) { //correct! even in all 3 connected components
+		return cmul(cpow(1.0-y,-a), hypergeometricf1_helper(a,b1,c-b1-b2,c,cdiv(y-x,y-1.0),cdiv(y,y-1.0)));
+	} else if (transformation_equation == 24) { // correct (!?) a bit rough, but overall good!
+		float gammac = gamma(c);
+		vec2 summer = gammac*gamma(b1-a)/(gamma(b1)*gamma(c-a))*cmul(cpow(-x,-a), hypergeometricf1_helper(a,1.0+a-c,b2,a-b1+1.0,1.0/x,y/x));
+		summer += gammac*gamma(a-b1)/(gamma(a)*gamma(c-b1))*cmul(cpow(-x,-b1), hypergeometricg2(b1,b2,a-b1,1.0+b1-c,-1.0/x,-y));
+		return summer;
+	}
+
+	// return hypergeometricf1(a,b1,b2,c,vec2(x,0.0),vec2(y,0.0));
+	return ZERO;
+}
 
 const int INVERSE_WP_BOUND = 5;
 
