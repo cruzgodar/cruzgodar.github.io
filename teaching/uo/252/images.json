@@ -1,38 +1,12 @@
 {
-	"final":
-    {
-        "webp": "exams/final/cover.webp",
-        "non-webp": "exams/final/cover.jpg"
-    },
-    
-    
-    
-    "practice-final-solutions":
-    {
-        "webp": "extra/practice-final-solutions/cover.webp",
-        "non-webp": "extra/practice-final-solutions/cover.jpg"
-    },
-    
-    "practice-final":
-    {
-        "webp": "extra/practice-final/cover.webp",
-        "non-webp": "extra/practice-final/cover.jpg"
-    },
-    
-	"week-10-notes":
-    {
-        "webp": "notes/10/cover.webp",
-        "non-webp": "notes/10/cover.jpg"
-    },
-    
-    
-    
-    "week-9-notes":
-    {
-        "webp": "notes/9/cover.webp",
-        "non-webp": "notes/9/cover.jpg"
-    },
-    
+	"0-calc-1-review":
+	{
+		"webp": "notes/0-calc-1-review/cover.webp",
+        "non-webp": "notes/0-calc-1-review/cover.jpg"
+	},
+	
+	
+	
 	"homework-7":
     {
         "webp": "homework/7/cover.webp",
@@ -47,40 +21,10 @@
     
     
     
-	"week-8-notes":
-    {
-        "webp": "notes/8/cover.webp",
-        "non-webp": "notes/8/cover.jpg"
-    },
-    
-    "midterm-2-solutions":
-    {
-        "webp": "exams/2-solutions/cover.webp",
-        "non-webp": "exams/2-solutions/cover.jpg"
-    },
-    
     "midterm-2":
     {
         "webp": "exams/2/cover.webp",
         "non-webp": "exams/2/cover.jpg"
-    },
-    
-    "practice-midterm-2-solutions":
-    {
-        "webp": "extra/practice-midterm-2-solutions/cover.webp",
-        "non-webp": "extra/practice-midterm-2-solutions/cover.jpg"
-    },
-    
-    "practice-midterm-2":
-    {
-        "webp": "extra/practice-midterm-2/cover.webp",
-        "non-webp": "extra/practice-midterm-2/cover.jpg"
-    },
-    
-    "trig-formulas":
-    {
-        "webp": "extra/trig-formulas/cover.webp",
-        "non-webp": "extra/trig-formulas/cover.jpg"
     },
     
     
@@ -89,12 +33,6 @@
     {
         "webp": "quizzes/6/cover.webp",
         "non-webp": "quizzes/6/cover.jpg"
-    },
-    
-    "week-7-notes":
-    {
-        "webp": "notes/7/cover.webp",
-        "non-webp": "notes/7/cover.jpg"
     },
     
     "homework-6":
@@ -111,12 +49,6 @@
         "non-webp": "quizzes/5/cover.jpg"
     },
     
-    "week-6-notes":
-    {
-        "webp": "notes/6/cover.webp",
-        "non-webp": "notes/6/cover.jpg"
-    },
-    
     "homework-5":
     {
         "webp": "homework/5/cover.webp",
@@ -131,18 +63,6 @@
         "non-webp": "quizzes/4/cover.jpg"
     },
     
-    "week-5-notes":
-    {
-        "webp": "notes/5/cover.webp",
-        "non-webp": "notes/5/cover.jpg"
-    },
-    
-    "midterm-1-solutions":
-    {
-        "webp": "exams/1-solutions/cover.webp",
-        "non-webp": "exams/1-solutions/cover.jpg"
-    },
-    
 	"homework-4":
     {
         "webp": "homework/4/cover.webp",
@@ -151,28 +71,11 @@
     
     
     
-	"week-4-notes":
-    {
-        "webp": "notes/4/cover.webp",
-        "non-webp": "notes/4/cover.jpg"
-    },
     
 	"midterm-1":
     {
         "webp": "exams/1/cover.webp",
         "non-webp": "exams/1/cover.jpg"
-    },
-    
-    "practice-midterm-1-solutions":
-    {
-        "webp": "extra/practice-midterm-1-solutions/cover.webp",
-        "non-webp": "extra/practice-midterm-1-solutions/cover.jpg"
-    },
-    
-    "practice-midterm-1":
-    {
-        "webp": "extra/practice-midterm-1/cover.webp",
-        "non-webp": "extra/practice-midterm-1/cover.jpg"
     },
     
     
@@ -181,12 +84,6 @@
     {
         "webp": "quizzes/3/cover.webp",
         "non-webp": "quizzes/3/cover.jpg"
-    },
-    
-	"week-3-notes":
-    {
-        "webp": "notes/3/cover.webp",
-        "non-webp": "notes/3/cover.jpg"
     },
     
 	"homework-3":
@@ -203,12 +100,6 @@
         "non-webp": "quizzes/2/cover.jpg"
     },
     
-	"week-2-notes":
-    {
-        "webp": "notes/2/cover.webp",
-        "non-webp": "notes/2/cover.jpg"
-    },
-    
 	"homework-2":
     {
         "webp": "homework/2/cover.webp",
@@ -223,22 +114,22 @@
         "non-webp": "quizzes/1/cover.jpg"
     },
     
-	"week-1-notes":
-    {
-        "webp": "notes/1/cover.webp",
-        "non-webp": "notes/1/cover.jpg"
-    },
-    
 	"homework-1":
     {
         "webp": "homework/1/cover.webp",
         "non-webp": "homework/1/cover.jpg"
     },
     
-	"lecture-archive":
+	"office-hours":
     {
-        "webp": "lecture-archive/cover.webp",
-        "non-webp": "lecture-archive/cover.jpg"
+        "webp": "office-hours/cover.webp",
+        "non-webp": "office-hours/cover.jpg"
+    },
+    
+    "webwork":
+    {
+        "webp": "webwork/cover.webp",
+        "non-webp": "webwork/cover.jpg"
     },
     
     "syllabus":
@@ -246,4 +137,4 @@
         "webp": "syllabus/cover.webp",
         "non-webp": "syllabus/cover.jpg"
     }
-	}
+}
