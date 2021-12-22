@@ -11,6 +11,12 @@
         "non-webp": "notes/1-riemann-sums/cover.jpg"
 	},
 	
+	"2-integrals-intro":
+	{
+		"webp": "notes/2-integrals-intro/cover.webp",
+        "non-webp": "notes/2-integrals-intro/cover.jpg"
+	},
+	
 	
 	
 	"homework-7":

@@ -150,6 +150,88 @@
 
 
 
+!begin-text-block
+	
+	Let&#x2019;s look at one more type of integral that we can handle geometrically, and then we&#x2019;ll write down a few properties of integrals.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	another geometric integral
+	
+	Compute $\int_3^6 \sqrt{9 - (x - 3)^2}\ dx$.
+	
+	As always, it&#x2019;s good to draw a picture. Our function is $y = \sqrt{9 - (x - 3)^2}$, so $(x-3)^2 + y^2 = 3^2$. This is a circle of radius $3$ centered at $(3, 0)$, and since $\sqrt{9 - (x - 3)^2}$ is always positive, so the graph is only the top half of the circle.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/js9xsmavtr" width="500" height="500"></iframe></div>
+	
+	The shaded area is just a quarter of the area of a full circle with radius $3$, so in total, it&#x2019;s $\frac{1}{4} \cdot 9\pi$.
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	So far, we&#x2019;ve only defined integrals for functions that are nonnegative. We&#x2019;ll need to integrate functions other than these too, but the definition of area under a curve needs a slight adjustment.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	signed area
+	
+	Let $f$ be an integrable function on $[a, b]$. The integral $\int_a^b f(x)\ dx$ is the area under the graph of $f$, where area below the $x$-axis is counted as negative.
+	
+!end-def
+
+
+
+!begin-example
+	
+	signed area
+	
+	$\int_{-2}^2 x^3\ dx = 0$, since the areas above (red) and below (blue) the $x$-axis are equal.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/h3g6k4aewe" width="500" height="500"></iframe></div>
+	
+!end-example
+
+
+
+!begin-prop
+	
+	basic integral properties
+	
+	1. $\int_a^a f(x)\ dx = 0$ (lines have no area).
+	
+	2. $\int_a^b (f(x) + g(x))\ dx = \int_a^b f(x)\ dx + \int_a^b g(x)\ dx$.
+	
+	3. $\int_a^b c \cdot f(x)\ dx = c\int_a^b f(x)\ dx$.
+	
+	4. For $a \leq c \leq b$, $\int_a^b f(x)\ dx = \int_a^c f(x)\ dx + \int_c^b f(x)\ dx$.
+	
+	5. If $f(x) \geq g(x)$ on $[a, b]$, then $\int_a^b f(x)\ dx \geq \int_a^b g(x)\ dx$.
+	
+	Property 4 is the same kind of stitching-together property as the one for sums &mdash; we&#x2019;re just breaking an area into two pieces. This is particularly useful for piecewise-defined functions, since we can integrate each piece separately and add up the results.
+	
+!end-prop
+
+
+
+!begin-text-block
+	
+	In the next section, we&#x2019;ll take a brief break from computing areas to work on some machinery that will let us bypass the limit definition of the integral.
+	
+!end-text-block
+
+
+
 !begin-text-buttons
 	
 	previous Previous
