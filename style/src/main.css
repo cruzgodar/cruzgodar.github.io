@@ -248,6 +248,12 @@ img
 	display: none !important;
 }
 
+mjx-container
+{
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
 
 
 #vara-container

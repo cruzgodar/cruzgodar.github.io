@@ -5,6 +5,12 @@
         "non-webp": "notes/0-calc-1-review/cover.jpg"
 	},
 	
+	"1-riemann-sums":
+	{
+		"webp": "notes/1-riemann-sums/cover.webp",
+        "non-webp": "notes/1-riemann-sums/cover.jpg"
+	},
+	
 	
 	
 	"homework-7":

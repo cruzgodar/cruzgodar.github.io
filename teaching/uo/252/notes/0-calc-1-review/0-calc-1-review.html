@@ -40,7 +40,7 @@
 
 !begin-text-block
 	
-	If anything doesn&#x2019;t appear correctly, update your browser and then reach out if that doesn&#x2019;t work. There&#x2019;s also a non-interactive pdf version of each document available for compatibility.
+	If anything doesn&#x2019;t appear correctly, update your browser and then reach out if that doesn&#x2019;t work. There&#x2019;s also a non-interactive pdf version of each document available for compatibility &mdash; let me know if you need them.
 	
 !end-text-block
 
@@ -187,15 +187,9 @@
 		\end{align*}
 	$$
 	
-!end-example
-
-
-
-!begin-text-block
-	
 	Some notational quirks to remember: $\frac{d}{dx}$ means derivative with respect to $x$, the $|_{x^3}$ tells us to plug $x^3$ in for $x$ after we take a derivative, and the derivative of $\sin(x)$ is $\cos(x)$. While we&#x2019;re talking about slightly obscure formulas like that, here&#x2019;s a short list of good derivatives to know.
 	
-!end-text-block
+!end-example
 
 
 
@@ -241,7 +235,7 @@
 	
 	You can click the colored circles next to functions to temporarily hide them if the graphs get too crowded.
 	
-	This is just about everything we&#x2019;ll need from Calc I. The last bit is <dfn>L&#x2019;sH&#x00F4;pital&#x2019;s rule</dfn>, which lets us calculate difficult limits with derivatives.
+	This is just about everything we&#x2019;ll need from Calc I. The last bit is <dfn>L&#x2019;H&#x00F4;pital&#x2019;s rule</dfn>, which lets us calculate difficult limits with derivatives.
 	
 !end-text-block
 
@@ -254,6 +248,16 @@
 	If $\lim_{x \to a} \frac{f(x)}{g(x)}$ is either $\frac{0}{0}$ or $\frac{\infty}{\infty}$, then $\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}$. Note this is <em>only</em> allowed when the limit is originally in one of these indeterminate forms, and that we differentiate the top and bottom of the fraction separately, rather than use the quotient rule.
 	
 !end-prop
+
+
+
+!begin-example
+	
+	L&#x2019;H&#x00F4;pital&#x2019;s rule
+	
+	$\lim_{x \to \infty} \frac{x}{x^2 + 1} = \frac{\infty}{\infty}$, so $\lim_{x \to \infty} \frac{x}{x^2 + 1} = \lim_{x \to \infty} \frac{1}{2x} = 0$.
+	
+!end-example
 
 
 
