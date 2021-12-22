@@ -176,3 +176,57 @@ int xy_in_f1_domain(vec2 x, vec2 y) {
 
 	return transformation_equation;
 }
+
+const int INVERSE_WP_BOUND = 5;
+
+// Works! test with wp(inverse_wp(z,rho),rho)
+// Very slow though.
+vec2 inverse_wp(vec2 z, vec2 tau) {
+	// TODO: slowly implement exact inverses with F1
+	// TODO: implement version for z real? r_i aren't though
+	if (tau.y < 0.0) {
+		tau = -tau;
+	}
+
+	vec2 r1 = wp(0.5*ONE,tau);
+	vec2 r2 = wp(tau/2.0,tau);
+	vec2 r3 = wp(0.5*ONE + tau/2.0,tau);
+
+	vec2 x = cdiv(r2-r1,z-r1);
+	vec2 y = cdiv(r3-r1,z-r1);
+
+	if (xy_in_f1_domain(x,y) ==1) {
+		return cdiv(-1.0*hypergeometricf1(0.5,0.5,0.5,1.5,x,y), cpow(z-r1,0.5));
+	}
+
+	// tau.x = fract(tau.x);
+
+	// cannot mod out z
+
+	float constant = 0.5/float(INVERSE_WP_BOUND);
+	float x_coord = 0.0;
+	vec2 y_coord = ZERO;
+
+	int best_i = 0;
+	int best_j = 0;
+	float best_f = 1000.0;
+	float cur_f = 0.0;
+
+	for (int i = 0; i < INVERSE_WP_BOUND+1; i++) {
+		for (int j = 0; j < 2*INVERSE_WP_BOUND+1; j++) {
+			x_coord = constant * float(i);
+			y_coord = constant * tau * float(j);
+			cur_f = cmag2(wp(vec2(x_coord, 0.0)+y_coord,tau)-z);
+			if (cur_f < best_f) {
+				best_i = i;
+				best_j = j;
+				best_f = cur_f;
+			}
+		}
+	}
+	vec2 best_z = vec2(float(best_i)*constant,0.0) +  float(best_j)*constant*tau;
+	best_z -= floor(best_z.y/tau.y)*tau;
+	best_z.x = fract(best_z.x);
+	return best_z;
+
+}
