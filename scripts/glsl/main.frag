@@ -1674,84 +1674,84 @@ int xy_in_f1_domain(vec2 x, vec2 y) {
 		transformation_equation = 17;
 	}
 
-	u = ONE-x;
-	w = ONE-y;
-	tcur = cmag2(u) + cmag2(w);
+	// u = ONE-x;
+	// w = ONE-y;
+	// tcur = cmag2(u) + cmag2(w);
 
-	if (tcur < tmax) {
-		tmax = tcur;
-		if (cmag2(w) < cmag2(u)) {
-			transformation_equation = 21;
-		} else {
-			transformation_equation = 22;
-		}
+	// if (tcur < tmax) {
+	// 	tmax = tcur;
+	// 	if (cmag2(w) < cmag2(u)) {
+	// 		transformation_equation = 21;
+	// 	} else {
+	// 		transformation_equation = 22;
+	// 	}
 		
-	}
+	// }
 
-	u = cdiv(x,y);
-	w = cdiv(1.0,y);
-	tcur = cmag2(u) + cmag2(w);
-	if (tcur < tmax) {
-		tmax = tcur;
-		transformation_equation = 23;
-	}
+	// u = cdiv(x,y);
+	// w = cdiv(1.0,y);
+	// tcur = cmag2(u) + cmag2(w);
+	// if (tcur < tmax) {
+	// 	tmax = tcur;
+	// 	transformation_equation = 23;
+	// }
 
-	u = cdiv(1.0,x);
-	w = cdiv(y,x);
-	tcur = cmag2(u) + cmag2(w);
-	if (tcur < tmax) {
-		tmax = tcur;
-		transformation_equation = 24;
-	}
+	// u = cdiv(1.0,x);
+	// w = cdiv(y,x);
+	// tcur = cmag2(u) + cmag2(w);
+	// if (tcur < tmax) {
+	// 	tmax = tcur;
+	// 	transformation_equation = 24;
+	// }
 
-	u = ONE-x;
-	w = cinv(y);
-	tcur = cmag2(u) + cmag2(w);
-	if (tcur < tmax) {
-		tmax = tcur;
-		transformation_equation = 25;
-	}
+	// u = ONE-x;
+	// w = cinv(y);
+	// tcur = cmag2(u) + cmag2(w);
+	// if (tcur < tmax) {
+	// 	tmax = tcur;
+	// 	transformation_equation = 25;
+	// }
 
-	u = cinv(x);
-	w = ONE-y;
-	tcur = cmag2(u) + cmag2(w);
-	if (tcur < tmax) {
-		tmax = tcur;
-		transformation_equation = 26;
-	}
+	// u = cinv(x);
+	// w = ONE-y;
+	// tcur = cmag2(u) + cmag2(w);
+	// if (tcur < tmax) {
+	// 	tmax = tcur;
+	// 	transformation_equation = 26;
+	// }
 
-	u = cinv(x);
-	w = cinv(y);
-	tcur = cmag2(u) + cmag2(w);
-	if (tcur < tmax) {
-		tmax = tcur;
-		if (x.x < y.x) { // this is incorrect for the complex case, but oh well
-			transformation_equation = 27;
-		} else {
-			transformation_equation = 28;
-		}
+	// u = cinv(x);
+	// w = cinv(y);
+	// tcur = cmag2(u) + cmag2(w);
+	// if (tcur < tmax) {
+	// 	tmax = tcur;
+	// 	if (x.x < y.x) { // this is incorrect for the complex case, but oh well
+	// 		transformation_equation = 27;
+	// 	} else {
+	// 		transformation_equation = 28;
+	// 	}
 		
-	}
+	// }
 
-	if (cmag2(x-y)<cmag2(ONE-x)) {
-		u = cdiv(x-y,cmul(y,x-ONE));
-		w = cinv(y);
-		tcur = cmag2(u) + cmag2(w);
-		if (tcur < tmax) {
-			tmax = tcur;
-			transformation_equation = 29;
-		}
-	}
+	// if (cmag2(x-y)<cmag2(ONE-x)) {
+	// 	u = cdiv(x-y,cmul(y,x-ONE));
+	// 	w = cinv(y);
+	// 	tcur = cmag2(u) + cmag2(w);
+	// 	if (tcur < tmax) {
+	// 		tmax = tcur;
+	// 		transformation_equation = 29;
+	// 	}
+	// }
 
-	if (cmag2(x-y)<cmag2(ONE-y)) {
-		u = cinv(x);
-		w = cdiv(x-y,cmul(x,y-ONE));
-		tcur = cmag2(u) + cmag2(w);
-		if (tcur < tmax) {
-			tmax = tcur;
-			transformation_equation = 30;
-		}
-	}
+	// if (cmag2(x-y)<cmag2(ONE-y)) {
+	// 	u = cinv(x);
+	// 	w = cdiv(x-y,cmul(x,y-ONE));
+	// 	tcur = cmag2(u) + cmag2(w);
+	// 	if (tcur < tmax) {
+	// 		tmax = tcur;
+	// 		transformation_equation = 30;
+	// 	}
+	// }
 
 
 	return transformation_equation;
@@ -1849,13 +1849,13 @@ vec2 hypergeometricf1(float a, float b1, float b2, float c, vec2 x, vec2 y) {
 	if (transformation_equation == 1) {
 		return hypergeometricf1_helper(a,b1,b2,c,x,y);
 		// Some of these are too slow to be useful for now
-	} else if (transformation_equation == 15) {
-		return cmul(cmul(cpow(ONE-x,-b1),cpow(ONE-y,-b2)), hypergeometricf1_helper(c-a,b1,b2,c,cdiv(x,x-ONE),cdiv(y,y-ONE)));
-	} else if (transformation_equation == 16) {
-		return cmul(cpow(ONE-x,-a), hypergeometricf1_helper(a,c-b1-b2,b2,c,cdiv(x,x-ONE),cdiv(x-y,x-ONE)));
-	} else if (transformation_equation == 17) {
-		return cmul(cpow(ONE-y,-a), hypergeometricf1_helper(a,b1,c-b1-b2,c,cdiv(y-x,y-ONE),cdiv(y,y-ONE)));
-	} else if (transformation_equation == 24) {
+	// } else if (transformation_equation == 15) {
+	// 	return cmul(cmul(cpow(ONE-x,-b1),cpow(ONE-y,-b2)), hypergeometricf1_helper(c-a,b1,b2,c,cdiv(x,x-ONE),cdiv(y,y-ONE)));
+	// } else if (transformation_equation == 16) {
+	// 	return cmul(cpow(ONE-x,-a), hypergeometricf1_helper(a,c-b1-b2,b2,c,cdiv(x,x-ONE),cdiv(x-y,x-ONE)));
+	// } else if (transformation_equation == 17) {
+	// 	return cmul(cpow(ONE-y,-a), hypergeometricf1_helper(a,b1,c-b1-b2,c,cdiv(y-x,y-ONE),cdiv(y,y-ONE)));
+	// } else if (transformation_equation == 24) {
 		// // only accurate for large arguments
 		// float gammac = gamma(c);
 		// vec2 summer = gammac*gamma(b1-a)/gamma(b1)/gamma(c-a)*cmul(cpow(-x,-a), hypergeometricf1_helper(a,1.0+a-c,b2,a-b1+1.0,cinv(x),cdiv(y,x)));
@@ -1889,44 +1889,46 @@ vec2 hypergeometricf1(float a, float b1, float b2, float c, float x, float y) {
 		return cmul(cpow(1.0-x,-a), hypergeometricf1_helper(a,c-b1-b2,b2,c,cdiv(x,x-1.0),cdiv(x-y,x-1.0)));
 	} else if (transformation_equation == 17) { //correct! even in all 3 connected components
 		return cmul(cpow(1.0-y,-a), hypergeometricf1_helper(a,b1,c-b1-b2,c,cdiv(y-x,y-1.0),cdiv(y,y-1.0)));
-	} else if (transformation_equation == 21) {
-		return I;
-	} else if (transformation_equation == 22) {
-		return I;
-	} else if (transformation_equation == 23) {
-		return I;
-	} else if (transformation_equation == 24) { // correct in 3rd quad, unclear if it is in 2nd; is not in 1/4
-		float gammac = gamma(c);
-		vec2 summer = gammac*gamma(b1-a)/(gamma(b1)*gamma(c-a))*cmul(cpow(-x,-a), hypergeometricf1_helper(a,1.0+a-c,b2,a-b1+1.0,1.0/x,y/x));
-		summer += gammac*gamma(a-b1)/(gamma(a)*gamma(c-b1))*cmul(cpow(-x,-b1), hypergeometricg2(b1,b2,a-b1,1.0+b1-c,-1.0/x,-y));
-		return summer;
-	} else if (transformation_equation == 25) {
-		return I;
-	} else if (transformation_equation == 26) {
-		return -I;
-	} else if (transformation_equation == 27) {
-		return I;
-	} else if (transformation_equation == 28) {
-		return I;
-	} else if (transformation_equation == 29) {
-		return I;
-	} else if (transformation_equation == 30) {
-		return I;
-	} else if (transformation_equation == -1) {
-		// something has gone wrong
-		return ONE+I;
+	// } else if (transformation_equation == 21) {
+	// 	return I;
+	// } else if (transformation_equation == 22) {
+	// 	return I;
+	// } else if (transformation_equation == 23) {
+	// 	return I;
+	// } else if (transformation_equation == 24) { // correct in 3rd quad, unclear if it is in 2nd; is not in 1/4
+	// 	float gammac = gamma(c);
+	// 	vec2 summer = gammac*gamma(b1-a)/(gamma(b1)*gamma(c-a))*cmul(cpow(-x,-a), hypergeometricf1_helper(a,1.0+a-c,b2,a-b1+1.0,1.0/x,y/x));
+	// 	summer += gammac*gamma(a-b1)/(gamma(a)*gamma(c-b1))*cmul(cpow(-x,-b1), hypergeometricg2(b1,b2,a-b1,1.0+b1-c,-1.0/x,-y));
+	// 	return summer;
+	// } else if (transformation_equation == 25) {
+	// 	return I;
+	// } else if (transformation_equation == 26) {
+	// 	return -I;
+	// } else if (transformation_equation == 27) {
+	// 	return I;
+	// } else if (transformation_equation == 28) {
+	// 	return I;
+	// } else if (transformation_equation == 29) {
+	// 	return I;
+	// } else if (transformation_equation == 30) {
+	// 	return I;
+	// } else if (transformation_equation == -1) {
+	// 	// something has gone wrong
+	// 	return ONE+I;
 	}
 	// return hypergeometricf1(a,b1,b2,c,vec2(x,0.0),vec2(y,0.0));
 	return -ONE;
 }
 
-const int INVERSE_WP_BOUND = 5;
 
-// Works! test with wp(inverse_wp(z,rho),rho)
-// Very slow though.
+
+const float INVERSE_WP_TOL = 0.01;
+const float INVERSE_WP_DX = 0.01;
+const int INVERSE_WP_GRADIENT_DESCENT_BOUND = 100;
+
+// Invert weierstrass p by hacky gradient descent -- actually works!
+// test with wp(inverse_wp(z,rho),rho)
 vec2 inverse_wp(vec2 z, vec2 tau) {
-	// TODO: slowly implement exact inverses with F1
-	// TODO: implement version for z real? r_i aren't though
 	if (tau.y < 0.0) {
 		tau = -tau;
 	}
@@ -1938,39 +1940,49 @@ vec2 inverse_wp(vec2 z, vec2 tau) {
 	vec2 x = cdiv(r2-r1,z-r1);
 	vec2 y = cdiv(r3-r1,z-r1);
 
-	if (xy_in_f1_domain(x,y) > 0) {
+	if (xy_in_f1_domain(x,y) ==1) {
 		return cdiv(-1.0*hypergeometricf1(0.5,0.5,0.5,1.5,x,y), cpow(z-r1,0.5));
 	}
 
-	// tau.x = fract(tau.x);
+	vec2 a = tau/2.0 + .5*ONE;
+	float ydist = cabs(z-wp(a,tau));
+	float n = 0.0;
+	float e = 0.0;
+	float s = 0.0;
+	float w = 0.0;
+	float dir = 0.0;
 
-	// cannot mod out z
-
-	float constant = 0.5/float(INVERSE_WP_BOUND);
-	float x_coord = 0.0;
-	vec2 y_coord = ZERO;
-
-	int best_i = 0;
-	int best_j = 0;
-	float best_f = 1000.0;
-	float cur_f = 0.0;
-
-	for (int i = 0; i < INVERSE_WP_BOUND+1; i++) {
-		for (int j = 0; j < 2*INVERSE_WP_BOUND+1; j++) {
-			x_coord = constant * float(i);
-			y_coord = constant * tau * float(j);
-			cur_f = cmag2(wp(vec2(x_coord, 0.0)+y_coord,tau)-z);
-			if (cur_f < best_f) {
-				best_i = i;
-				best_j = j;
-				best_f = cur_f;
-			}
+	for (int step = 0; step < INVERSE_WP_GRADIENT_DESCENT_BOUND; step++) {
+		if (ydist < INVERSE_WP_TOL) {
+			return a;
 		}
+		// can think how to reuse a calculation
+		n = cabs(wp(a + INVERSE_WP_DX * tau*ydist,tau)- z);
+		e = cabs(wp(a + INVERSE_WP_DX * ONE*ydist,tau)- z);
+		s = cabs(wp(a - INVERSE_WP_DX * tau*ydist,tau)- z);
+		w = cabs(wp(a - INVERSE_WP_DX * ONE*ydist,tau)- z);
+		dir = n;
+		if (dir > e) {
+			dir = e;
+		}
+		if (dir > s) {
+			dir = s;
+		}
+		if (dir > w) {
+			dir = w;
+		}
+		if (dir == n) {
+			a += INVERSE_WP_DX * ydist * tau;
+		} else if (dir == e) {
+			a += INVERSE_WP_DX * ydist * ONE;
+		} else if (dir == s) {
+			a -= INVERSE_WP_DX * ydist * tau;
+		} else if (dir == w) {
+			a -= INVERSE_WP_DX * ydist * ONE;
+		}
+		ydist = dir;
 	}
-	vec2 best_z = vec2(float(best_i)*constant,0.0) +  float(best_j)*constant*tau;
-	best_z -= floor(best_z.y/tau.y)*tau;
-	best_z.x = fract(best_z.x);
-	return best_z;
+	return ZERO;
 
 }
 
