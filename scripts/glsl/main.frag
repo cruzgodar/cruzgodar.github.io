@@ -226,6 +226,11 @@ bool equal_within_relative_tolerance(vec2 a, vec2 b) {
 	return (cmag2(a-b) < RELATIVE_TOL*cmag2(a+b));
 }
 
+bool equal_within_relative_tolerance(float a, float b) {
+	return (cmag2(a-b) < RELATIVE_TOL*cmag2(a+b));
+}
+
+
 const float ABSOLUTE_TOL = .01;
 bool equal_within_absolute_tolerance(vec2 a, vec2 b) {
 	return (cmag2(a-b) < ABSOLUTE_TOL);
@@ -286,6 +291,7 @@ vec2 cpow(float z, vec2 w)
 	return vec2(zexp * cos(wyzlog), zexp * sin(wyzlog));
 }
 
+// Warning: this inherits a bug from pow(z,w), namely it's not defined if z<0
 float cpow(float z, float w)
 {
 	return pow(z, w);
@@ -681,6 +687,11 @@ float factorial(float n)
 	}
 	
 	return prod;
+}
+
+float factorial(int n)
+{
+	return factorial(float(n));
 }
 
 // Returns n choose k.
@@ -1467,8 +1478,23 @@ vec2 f21(float a, float b, float c, vec2 z) {
 	return hypergeometric2f1(a,b,c,z);
 }
 
+
 float rising_factorial(float a, int n) {
+	if (n == 0) {
+		return 1.0;
+	}
 	float prod = 1.0;
+
+	if (n < 0) {
+		n = -n;
+		for (int i = 0; i < 100; i++) {
+			if (i >= n) {
+				break;
+			}
+			prod /= a-float(i+1);
+		}
+		return prod;
+	}
 	for (int i = 0; i < 100; i++) {
 		if (i >= n) {
 			break;
@@ -1478,10 +1504,17 @@ float rising_factorial(float a, int n) {
 	return prod;
 }
 
+float rising_factorial(float a, float n) {
+	if (fract(n) == 0.0) {
+		return rising_factorial(a,int(n));
+	}
+	return gamma(a+n)/gamma(a);
+}
+
 
 const int F2_BOUND = 10;
 
-// hard to test if this works
+// This is correct for |x| + |y| < 1
 vec2 hypergeometricf2_helper(float a, float b1, float b2, float c1, float c2, vec2 x, vec2 y) {
 	vec2 summer = hypergeometric2f1(a,b1, c1,x);
 	summer = cmul(summer,hypergeometric2f1(a,b2, c2,y));
@@ -1507,7 +1540,8 @@ vec2 hypergeometricf2_helper(float a, float b1, float b2, float c1, float c2, ve
 	}
     return summer;
 }
-
+// Check (49) and (82) from
+// https://www.tandfonline.com/doi/pdf/10.1080/10652469.2013.822207?needAccess=true
 vec2 hypergeometricf2_helper(float a, float b1, float b2, float c1, float c2, float x, float y) {
 	vec2 summer = hypergeometric2f1(a,b1, c1,x);
 	summer = cmul(summer,hypergeometric2f1(a,b2, c2,y));
@@ -1534,25 +1568,70 @@ vec2 hypergeometricf2_helper(float a, float b1, float b2, float c1, float c2, fl
     return summer;
 }
 vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, vec2 x, vec2 y) {
-	if (cmag2(x)+cmag2(y) < 1.0) {
+	if (cabs(x)+cabs(y) < 1.0) {
 		return hypergeometricf2_helper(a,b1,b2,c1,c2,x,y);
 	}
 	return ZERO;
 }
 
 vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, float x, float y) {
-	if (x*x+y*y < 1.0) {
+	if (cabs(x)+cabs(y) < 1.0) {
 		return hypergeometricf2_helper(a,b1,b2,c1,c2,x,y);
 	}
 	return ZERO;
 }
 
+const int G2_BOUND = 5;
+// Horn function G2, defined for |x|<1 and |y|<1
+// This implementation is super scuffed for x,y<0
+// check wtih hypergeometricg2(0.1,0.2,0.4,0.5,z.x,z.y)
 vec2 hypergeometricg2(float b1, float b2, float c1, float c2, vec2 x, vec2 y) {
-	return cmul(cmul(cpow(ONE+x,-b1),cpow(ONE+y,-b2)),hypergeometricf2(1.0-c1-c2,b1,b2,1.0-c1,1.0-c2,cdiv(x,x+ONE),	cdiv(y,y+ONE)));
+	vec2 u = cdiv(x,x+ONE);
+	vec2 w = cdiv(y,y+ONE);
+	if (cmag2(u) < 1.0) {
+		if (cmag2(w) < 1.0) {
+			return cmul(cmul(cpow(ONE+x,-b1),cpow(ONE+y,-b2)),hypergeometricf2(1.0-c1-c2,b1,b2,1.0-c1,1.0-c2,u,w));
+		}
+	}
+	return ZERO;
 }
 
 vec2 hypergeometricg2(float b1, float b2, float c1, float c2, float x, float y) {
-	return cmul(cmul(cpow(1.0+x,-b1),cpow(1.0+y,-b2)),hypergeometricf2(1.0-c1-c2,b1,b2,1.0-c1,1.0-c2,cdiv(x,x+1.0),	cdiv(y,y+1.0)));
+	float u = x/(x+1.0);
+	float w = y/(y+1.0); 
+	if (length(u) + length(w) < 1.0) {
+		return cmul(cmul(cpow(vec2(1.0+x,0.0),-b1),cpow(vec2(1.0+y,0.0),-b2)),hypergeometricf2(1.0-c1-c2,b1,b2,1.0-c1,1.0-c2,u,w));
+	}
+
+	if (cmag2(x) < 1.0) {
+		if (cmag2(y) < 1.0) {
+			float summer = 0.0;
+			float term = 0.0;
+			float xm = 1.0;
+			float yn = 1.0;
+			for (int m = 0; m < G2_BOUND; m++) {
+				yn = 1.0;
+				for (int n = 0; n < G2_BOUND; n++) {
+					// can probably rewrite this nicer
+
+					term = rising_factorial(b1,float(m));
+					term *= rising_factorial(b2,float(n));
+					term *= rising_factorial(c1,float(n-m));
+					term *= rising_factorial(c2,float(m-n));
+					term /= factorial(m);
+					term /= factorial(n);
+					term *= xm*yn;
+					summer += term;
+
+					yn *= y;
+				}
+				xm *= x;
+			}
+			return ONE*summer;
+		}
+	}
+	return ZERO;
+	
 }
 
 
@@ -1598,9 +1677,15 @@ int xy_in_f1_domain(vec2 x, vec2 y) {
 	u = ONE-x;
 	w = ONE-y;
 	tcur = cmag2(u) + cmag2(w);
+
 	if (tcur < tmax) {
 		tmax = tcur;
-		transformation_equation = 21; // or 22 (not implemented!)
+		if (cmag2(w) < cmag2(u)) {
+			transformation_equation = 21;
+		} else {
+			transformation_equation = 22;
+		}
+		
 	}
 
 	u = cdiv(x,y);
@@ -1640,7 +1725,12 @@ int xy_in_f1_domain(vec2 x, vec2 y) {
 	tcur = cmag2(u) + cmag2(w);
 	if (tcur < tmax) {
 		tmax = tcur;
-		transformation_equation = 27; //or (28), not implemented
+		if (x.x < y.x) { // this is incorrect for the complex case, but oh well
+			transformation_equation = 27;
+		} else {
+			transformation_equation = 28;
+		}
+		
 	}
 
 	if (cmag2(x-y)<cmag2(ONE-x)) {
@@ -1664,11 +1754,7 @@ int xy_in_f1_domain(vec2 x, vec2 y) {
 	}
 
 
-	if (tmax<1.0) {
-		return transformation_equation;
-	} else {
-		return -1;
-	}
+	return transformation_equation;
 }
 
 // float version
@@ -1803,15 +1889,35 @@ vec2 hypergeometricf1(float a, float b1, float b2, float c, float x, float y) {
 		return cmul(cpow(1.0-x,-a), hypergeometricf1_helper(a,c-b1-b2,b2,c,cdiv(x,x-1.0),cdiv(x-y,x-1.0)));
 	} else if (transformation_equation == 17) { //correct! even in all 3 connected components
 		return cmul(cpow(1.0-y,-a), hypergeometricf1_helper(a,b1,c-b1-b2,c,cdiv(y-x,y-1.0),cdiv(y,y-1.0)));
-	} else if (transformation_equation == 24) { // correct (!?) a bit rough, but overall good!
+	} else if (transformation_equation == 21) {
+		return I;
+	} else if (transformation_equation == 22) {
+		return I;
+	} else if (transformation_equation == 23) {
+		return I;
+	} else if (transformation_equation == 24) { // correct in 3rd quad, unclear if it is in 2nd; is not in 1/4
 		float gammac = gamma(c);
 		vec2 summer = gammac*gamma(b1-a)/(gamma(b1)*gamma(c-a))*cmul(cpow(-x,-a), hypergeometricf1_helper(a,1.0+a-c,b2,a-b1+1.0,1.0/x,y/x));
 		summer += gammac*gamma(a-b1)/(gamma(a)*gamma(c-b1))*cmul(cpow(-x,-b1), hypergeometricg2(b1,b2,a-b1,1.0+b1-c,-1.0/x,-y));
 		return summer;
+	} else if (transformation_equation == 25) {
+		return I;
+	} else if (transformation_equation == 26) {
+		return -I;
+	} else if (transformation_equation == 27) {
+		return I;
+	} else if (transformation_equation == 28) {
+		return I;
+	} else if (transformation_equation == 29) {
+		return I;
+	} else if (transformation_equation == 30) {
+		return I;
+	} else if (transformation_equation == -1) {
+		// something has gone wrong
+		return ONE+I;
 	}
-
 	// return hypergeometricf1(a,b1,b2,c,vec2(x,0.0),vec2(y,0.0));
-	return ZERO;
+	return -ONE;
 }
 
 const int INVERSE_WP_BOUND = 5;

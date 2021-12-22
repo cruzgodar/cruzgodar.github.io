@@ -122,6 +122,12 @@
 			// SU3 stuff
 			// unstable at zero
 		`return equal_within_absolute_tolerance(su3_character(3,4,.01*I),90.0*ONE);`,
+			// rising factorials
+		`return equal_within_relative_tolerance(rising_factorial(-8.0,2),56.0);`,
+		`return equal_within_relative_tolerance(rising_factorial(7.5,3),605.625);`,
+		`return equal_within_relative_tolerance(rising_factorial(-3.1,-3),-0.007840001254400200704032);`,
+/*70*/  `return equal_within_relative_tolerance(rising_factorial(-2.0,-3),-1.0/60.0);`,
+		`return equal_within_relative_tolerance(rising_factorial(-4.0,-3),-1.0/210.0);`,
 	];
 	
 	
