@@ -134,6 +134,11 @@ iframe
 	{
 		width: calc(90% - 16px);
 	}
+	
+	.notes-example .body-text, .notes-exercise .body-text, .notes-def .body-text, .notes-prop .body-text, .notes-thm .body-text, .notes-proof .body-text, .notes-comment .body-text, .notes-cor .body-text, .notes-lemma .body-text, .notes-axiom .body-text
+	{
+		width: 100%;
+	}
 }
 
 @media (min-aspect-ratio: 16/9), (min-width: 1400px)

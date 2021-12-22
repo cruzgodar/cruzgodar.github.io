@@ -6,7 +6,7 @@
         
         element.addEventListener("click", () =>
         {
-            Page.Navigation.redirect("/teaching/uo/252/notes/1-riemann-sums/1-riemann-sums.html");
+            Page.Navigation.redirect("/teaching/uo/252/notes/2-integrals-intro/2-integrals-intro.html");
         });
     }
     
