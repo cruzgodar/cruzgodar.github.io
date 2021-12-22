@@ -128,11 +128,18 @@ iframe
 
 
 
-/* Compact layout: reduce margins. */
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	.notes-example, .notes-exercise, .notes-def, .notes-prop, .notes-thm, .notes-proof, .notes-comment, .notes-cor, .notes-lemma, .notes-axiom
 	{
 		width: calc(90% - 16px);
+	}
+}
+
+@media (min-aspect-ratio: 16/9), (min-width: 1400px)
+{
+	.notes-example, .notes-exercise, .notes-def, .notes-prop, .notes-thm, .notes-proof, .notes-comment, .notes-cor, .notes-lemma, .notes-axiom
+	{
+		width: calc(50% - 16px);
 	}
 }

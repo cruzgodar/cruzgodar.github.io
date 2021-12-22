@@ -26,7 +26,7 @@
 
 !begin-text-block
 	
-	The concepts of Calc I that we just reviewed &mdash; limits and derivatives &mdash; are extremely useful. They have wide-ranging applications across all areas of science, and there are quite a few topics we could choose to explore next. What we&#x2019;ll be spending this class on one in particular that we&#x2019;re well-prepared for: integrals. Our ultimate goal in the class will be to calculate the <dfn>area under curves</dfn>: areas whose top sides are described by functions.
+	The concepts of Calc I that we just reviewed &mdash; limits and derivatives &mdash; are extremely useful. They have wide-ranging applications across all areas of science, and there are quite a few topics we could choose to explore next. What we&#x2019;ll be spending this class on is one in particular that we&#x2019;re well-prepared for: integration. Our ultimate goal in the class will be to calculate the <dfn>area under curves</dfn>: areas whose top sides are described by functions.
 	
 !end-text-block
 
@@ -258,13 +258,13 @@
 
 
 
-!iframe https://www.desmos.com/calculator/owec5dfwhz
+!iframe https://www.desmos.com/calculator/q3ovooxz7u
 
 
 
 !begin-text-block
 	
-	Take a moment to really dig into that Desmos frame. Change $a$ and $b$ and $n$, and change $f$ to another positive function like $x^2$.
+	Take a moment to really dig into that Desmos frame. Change $a$ and $b$ and $n$, and change $f$ to another positive function like $x^2$. The two large sum expressions are calculating the left and right Riemann sums, respectively &mdash; notice how they both get close to $10$ as $n$ gets larger. 
 	
 !end-text-block
 
@@ -276,21 +276,31 @@
 	
 	Compute the upper Riemann sum with $5$ intervals for the function $g(t) = t^2$ on the interval $[-5, 5]$.
 	
-	If we want to split $[-5, 5]$ into five equal subintervals, we need the partition $\{-5, -3, -1, 1, 3, 5\}$. Now we&#x2019;re doing an upper sum, so for each of the four subintervals, we need to find the $x$-value that maximizes the function. Working this through, we find that the points are $-5, -3, -1, 3, 5$. The $-1$ could also be taken to be $x = 1$, since they both have $f(x) = 1$.
+	If we want to split $[-5, 5]$ into five equal subintervals, we need the partition $\{-5, -3, -1, 1, 3, 5\}$. Now we&#x2019;re doing an upper sum, so for each of the five subintervals, we need to find the $t$-value that maximizes the function. Working this through, we find that the points are $-5, -3, -1, 3, 5$. The $-1$ could also be taken to be $t = 1$, since they both have $g(t) = 1$.
 	
-	<div class="center-content"><iframe src="https://www.desmos.com/calculator/pw90m9vaok" width="500" height="500"></iframe></div>
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/vwn37tycau" width="500" height="500"></iframe></div>
 	
-	The base of every rectangle is $\Delta x = 2$, so in total, the sum is
+	The base of every rectangle is $\Delta t = 2$, so in total, the sum is
 	
-	$$f(-5) \cdot 2 + f(-3) \cdot 2 + f(-1) \cdot 2 + f(3) \cdot 2 + f(5) \cdot 2 = 50 + 18 + 2 + 18 + 50 = 138.$$
+	$$g(-5) \cdot 2 + g(-3) \cdot 2 + g(-1) \cdot 2 + g(3) \cdot 2 + g(5) \cdot 2 = 50 + 18 + 2 + 18 + 50 = 138.$$
 	
 !end-example
 
 
 
+!begin-exercise
+	
+	Riemann sum
+	
+	Compute the left Riemann sum with $5$ intervals for the function $g(t) = t^2$ on the interval $[-5, 5]$.
+	
+!end-exercise
+
+
+
 !begin-text-block
 	
-	So what? well, just like we defined the derivative to be the slope of a tangent line, but we actually computed it by taking the limit of slopes of secant lines, we&#x2019;re going to define another object that gives the area under a curve, and then we&#x2019;ll compute it by taking the limit of a Riemann sum as the number of subintervals approaches infinity. Also like derivatives, the limit definition is going to be a major pain to actually use, so we&#x2019;ll spend much of the course building formulas and rules that let us compute that area without going to so much trouble.
+	So what? Well, just like we defined the derivative to be the slope of a tangent line, but we actually computed it by taking the limit of slopes of secant lines, we&#x2019;re going to define another object that gives the area under a curve, and then we&#x2019;ll compute it by taking the limit of a Riemann sum as the number of subintervals approaches infinity. Also like derivatives, the limit definition is going to be a major pain to actually use, so we&#x2019;ll spend much of the course building formulas and rules that let us compute that area without going to so much trouble. In the next section, we&#x2019;ll get the limit definition working and use it to compute some areas.
 	
 !end-text-block
 
@@ -324,7 +334,9 @@
 	{
 		"title": "Riemann Sums",
 		
-		"math_page": true
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true
 	};
 	
 	Page.load();
