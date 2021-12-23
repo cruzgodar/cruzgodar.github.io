@@ -744,7 +744,7 @@ Page.Load =
 
 
 
-		show_section: function(section)
+		show_section: function(section, force = false)
 		{
 			if (Site.Settings.url_vars["content_animation"] === 1)
 			{
@@ -753,19 +753,34 @@ Page.Load =
 			
 			
 			
-			for (let i = 0; i < this.elements[section].length; i++)
+			if (Page.scroll !== 0 || section === 0 || force)
 			{
-				let refresh_id = setTimeout(() =>
+				for (let i = 0; i < this.elements[section].length; i++)
 				{
-					this.elements[section][i][0].setAttribute("data-aos-offset", -1000000);
+					let refresh_id = setTimeout(() =>
+					{
+						this.elements[section][i][0].setAttribute("data-aos-offset", -1000000);
+						
+						AOS.refresh();
+					}, this.elements[section][i][1]);
 					
-					AOS.refresh();
-				}, this.elements[section][i][1]);
+					this.currently_animating[section].push(refresh_id);
+				}
 				
-				this.currently_animating[section].push(refresh_id);
+				this.anchors_shown[section] = true;
+				
+				
+				
+				if (Page.scroll === 0 && section + 1 < this.elements.length && Page.Layout.window_height >= this.anchor_positions[section + 1] + this.anchor_offsets[section + 1])
+				{
+					let total_delay = this.elements[section][this.elements[section].length - 1][1] + Site.aos_separation_time * 3;
+					
+					setTimeout(() =>
+					{
+						this.show_section(section + 1, true);
+					}, total_delay);
+				}
 			}
-			
-			this.anchors_shown[section] = true;
 		},
 
 
