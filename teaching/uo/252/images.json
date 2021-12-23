@@ -17,6 +17,12 @@
         "non-webp": "notes/2-integrals-intro/cover.jpg"
 	},
 	
+	"3-antiderivatives":
+	{
+		"webp": "notes/3-antiderivatives/cover.webp",
+        "non-webp": "notes/3-antiderivatives/cover.jpg"
+	},
+	
 	
 	
 	"homework-7":
