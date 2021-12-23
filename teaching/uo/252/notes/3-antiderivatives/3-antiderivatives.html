@@ -24,6 +24,14 @@
 
 
 
+!begin-text-block
+	
+	We need to take a brief deviation from definite integrals to develop something slightly different. It won&#x2019;t seem to have any relation at first, but in the next section, we&#x2019;ll get back to our main goal.
+	
+!end-text-block
+
+
+
 !begin-def
 	
 	antiderivative
@@ -60,7 +68,7 @@
 
 !begin-text-block
 	
-	We need some notation to represent the operation of taking an antiderivative akin to $\frac{d}{dx}$. We&#x2019;re going to make a choice for that notation that&#x2019;ll probably seem horrible at first, but eventually will actually simplify things for us.
+	It&#x2019;d be nice to have some notation to represent the operation of taking an antiderivative &mdash; something akin to $\frac{d}{dx}$. As strange as it might seem right now, we&#x2019;re actually going to use the integral symbol for this &mdash; despite how confusing that is, it&#x2019;ll actually simplify things for us in the end.
 	
 !end-text-block
 
@@ -78,7 +86,7 @@
 
 !begin-text-block
 	
-	So the only notational difference between the definite integral that measures area under a graph and the indefinite integral that takes an antiderivative is that the former is written with limits of integration &mdash; $\int_a^b f(x)\ dx$ &mdash; and the latter isn&#x2019;t &mdash; $\int f(x)\ dx$.
+	So the only notational difference between the definite integral that measures area under a graph and the indefinite integral that takes an antiderivative is that the former is written with limits of integration &mdash; $\int_a^b f(x)\ dx$ &mdash; and the latter isn&#x2019;t &mdash; $\int f(x)\ dx$. Again, this should seem like an awful choice of notation, but bear with it for now.
 	
 !end-text-block
 
@@ -97,6 +105,28 @@
 	$\int x^p\ du = \frac{x^{p + 1}}{p + 1} + C$ if $p \neq -1$.
 	
 !end-example
+
+!begin-exercise
+	
+	indefinite integrals
+	
+	Find the following.
+	
+	$\int \frac{1}{t^2}\ dt$.
+	
+	$\int \sec^2(y)\ dy$.
+	
+	$\int (mx + b)\ dx$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	Because derivatives factor through addition and multiplication by a constant, so do antiderivatives.
+	
+!end-text-block
 
 
 
@@ -135,6 +165,16 @@
 	Since $v'(t) = s(t)$, we have that $s(t) = \int v(t)\ dt = \frac{3}{2}t^2 + 2t + C$. Now since $s(1) = 2$, we can solve for $C$: $\frac{3}{2} + 2 + C = 2$, so $C = -\frac{3}{2}$. In total, $s(t) = \frac{3}{2}t^2 + 2t - \frac{3}{2}$.
 	
 !end-example
+
+
+
+!begin-exercise
+	
+	an initial value problem
+	
+	You throw a ball straight up. Acceleration due to gravity is always $a(t) = -9.81 \frac{m}{s^2}$. The ball leaves your hand $1$ meter off the ground with a velocity of $2 \frac{m}{s}$. Find a function $h(t)$ that gives the height of the ball above the ground $t$ seconds after leaving your hand.
+	
+!end-exercise
 
 
 
