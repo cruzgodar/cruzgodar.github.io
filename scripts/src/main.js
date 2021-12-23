@@ -109,7 +109,7 @@ let Site =
 	//Redirects to the chosen page and sets up all the miscellaneous things that make the site work.
 	load: async function(url)
 	{
-		this.aos_separation_time = this.base_animation_time / 3;
+		this.aos_separation_time = this.base_animation_time / 5;
 		this.button_animation_time = this.base_animation_time / 2;
 		this.opacity_animation_time = this.base_animation_time;
 		this.background_color_animation_time = this.base_animation_time * 2;

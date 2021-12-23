@@ -689,7 +689,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-def")
 				{
-					lines[i] = `<div class="notes-def">`;
+					lines[i] = `<div class="notes-def" data-aos="fade-in">`;
 					
 					i += 2;
 					
@@ -737,7 +737,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-example")
 				{
-					lines[i] = `<div class="notes-example">`;
+					lines[i] = `<div class="notes-example" data-aos="fade-in">`;
 					
 					i += 2;
 					
@@ -785,7 +785,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-prop")
 				{
-					lines[i] = `<div class="notes-prop">`;
+					lines[i] = `<div class="notes-prop" data-aos="fade-in">`;
 					
 					i += 2;
 					
@@ -833,7 +833,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-thm")
 				{
-					lines[i] = `<div class="notes-thm">`;
+					lines[i] = `<div class="notes-thm" data-aos="fade-in">`;
 					
 					i += 2;
 					
@@ -881,7 +881,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-proof")
 				{
-					lines[i] = `<div class="notes-proof"><span class="notes-proof-title">Proof</span>`;
+					lines[i] = `<div class="notes-proof" data-aos="fade-in"><span class="notes-proof-title">Proof</span>`;
 					
 					
 					
@@ -923,7 +923,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-comment")
 				{
-					lines[i] = `<div class="notes-comment"><span class="notes-comment-title">Comment</span>`;
+					lines[i] = `<div class="notes-comment" data-aos="fade-in"><span class="notes-comment-title">Comment</span>`;
 					
 					
 					
@@ -965,7 +965,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-cor")
 				{
-					lines[i] = `<div class="notes-cor">`;
+					lines[i] = `<div class="notes-cor" data-aos="fade-in">`;
 					
 					i += 2;
 					
@@ -1013,7 +1013,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-lemma")
 				{
-					lines[i] = `<div class="notes-lemma">`;
+					lines[i] = `<div class="notes-lemma" data-aos="fade-in">`;
 					
 					i += 2;
 					
@@ -1061,7 +1061,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-axiom")
 				{
-					lines[i] = `<div class="notes-axiom">`;
+					lines[i] = `<div class="notes-axiom" data-aos="fade-in">`;
 					
 					i += 2;
 					
@@ -1109,7 +1109,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-exercise")
 				{
-					lines[i] = `<div class="notes-exercise">`;
+					lines[i] = `<div class="notes-exercise" data-aos="fade-in">`;
 					
 					i += 2;
 					
