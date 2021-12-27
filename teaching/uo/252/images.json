@@ -23,6 +23,12 @@
         "non-webp": "notes/3-antiderivatives/cover.jpg"
 	},
 	
+	"4-ftoc":
+	{
+		"webp": "notes/4-ftoc/cover.webp",
+        "non-webp": "notes/4-ftoc/cover.jpg"
+	},
+	
 	
 	
 	"homework-7":

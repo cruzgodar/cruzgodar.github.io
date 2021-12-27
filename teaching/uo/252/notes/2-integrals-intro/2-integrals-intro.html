@@ -144,6 +144,8 @@
 
 !begin-exercise
 	
+	computing an integral from the limit definition
+	
 	Find $\int_0^3 t^3\ dt$ from the limit definition.
 	
 !end-exercise
@@ -226,6 +228,52 @@
 
 !begin-text-block
 	
+	One quantity integrals let us calculate conveniently is average value &mdash; for a list of values, we add them all up and divide by the number of values, but for a function, we&#x2019;ll need to be a little more careful.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	average value
+	
+	Let $f$ be a function on $[a, b]$. The <dfn>average value</dfn> of $f$ on $[a, b]$ is
+	
+	$$\frac{1}{b - a} \int_a^b f(x)\ dx.$$
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	This is a reasonable definition, since the integral is adding up the values of $f(x)$ over $[a, b]$, in a sense, and $\frac{1}{b - a}$ is, in the same sense, the number of values added up. Of course, this is all just an analogy &mdash; adding up infinitely many values is meaningless, which is exactly why we need integrals in the first place.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	average value
+	
+	The average value of $f(x) = x^2$ on $[0, 2]$ is $\frac{1}{2 - 0} \cdot \frac{8}{3} = \frac{8}{6}$.
+	
+!end-example
+
+!begin-exercise
+	
+	average value
+	
+	Find the average value of $g(x) = x^3$ on $[0, 3]$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
 	In the next section, we&#x2019;ll take a brief break from computing areas to work on some machinery that will let us bypass the limit definition of the integral.
 	
 !end-text-block
@@ -234,11 +282,11 @@
 
 !begin-text-buttons
 	
-	previous Previous
+	previous l Previous
 	
-	home Home
+	home l Home
 	
-	next Next
+	next l Next
 	
 !end-text-buttons
 
