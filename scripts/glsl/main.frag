@@ -1388,11 +1388,11 @@ vec2 hypergeometric2f1_helper(float a, float b, float c, vec2 z) {
 				return cdiv(casin(csqrt(z)),csqrt(z));
 			}
 		}
-	} else if (b == a+0.5) { // from https://reference.wolfram.com/language/ref/Hypergeometric2F1.html
-		if (c == 2.0*a) {
+	// } else if (b == a+0.5) { // from https://reference.wolfram.com/language/ref/Hypergeometric2F1.html
+		// if (c == 2.0*a) {
 			// I cant for the life of me figure out why this isn't working
 			// return cdiv(cpow(2.0,2.0*a-1.0) * cpow(csqrt(ONE-z)+1.0,1.0-2.0*a) ,csqrt(ONE-z));
-		}
+		// }
 	}
 		// can add some goofy quadratic ones for 2f1(1/3,2/3,3/2,z) if the mood strikes you
 
@@ -1426,11 +1426,11 @@ vec2 hypergeometric2f1_helper(float a, float b, float c, float z) {
 				return ONE*cdiv(casin(csqrt(z)),csqrt(z));
 			}
 		}
-	} else if (b == a+0.5) { // from https://reference.wolfram.com/language/ref/Hypergeometric2F1.html
-		if (c == 2.0*a) {
+	// } else if (b == a+0.5) { // from https://reference.wolfram.com/language/ref/Hypergeometric2F1.html
+	// 	if (c == 2.0*a) {
 			// I cant for the life of me figure out why this isn't working
 			// return cdiv(cpow(2.0,2.0*a-1.0) * cpow(csqrt(ONE-z)+1.0,1.0-2.0*a) ,csqrt(ONE-z));
-		}
+		// }
 	}
 		// can add some goofy quadratic ones for 2f1(1/3,2/3,3/2,z) if the mood strikes you
 
@@ -1956,7 +1956,7 @@ vec2 inverse_wp(vec2 z, vec2 tau) {
 		if (ydist < INVERSE_WP_TOL) {
 			return a;
 		}
-		// can think how to reuse a calculation
+		// TODO: think how to reuse a calculation
 		n = cabs(wp(a + INVERSE_WP_DX * tau*ydist,tau)- z);
 		e = cabs(wp(a + INVERSE_WP_DX * ONE*ydist,tau)- z);
 		s = cabs(wp(a - INVERSE_WP_DX * tau*ydist,tau)- z);
@@ -1998,18 +1998,41 @@ vec2 inverse_j(vec2 z) {
 	return cmul(I,cdiv(hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,ONE-a),hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,a)));
 }
 
+// specialized version for inverse_g2_g3
+// NOTE: can up F21_BOUND if needed for more precision
+vec2 inverse_j_reduced(vec2 z) {
+	// sqrt(27) = 5.19615242270663
+	vec2 a = 0.5 * (ONE + 5.19615242270663*cpow(z,0.5));
+	// can maybe save some calculations doing these both at once!
+	return cmul(I,cdiv(hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,ONE-a),hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,a)));
+}
+
+vec2 inverse_j_reduced(float z) {
+	// sqrt(27) = 5.19615242270663
+	float a = 0.5 * (1.0 + 5.19615242270663*csqrt(z).x);
+	return cmul(I,cdiv(hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,1.0-a),hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,a)));
+}
+
+
 // IN: g2 = a, g3 = b
 // OUT: tau such that y^2 = 4x^3 - g2(tau)x - g3(tau) is isomorphic to y^2 = 4x^3 - ax - b
+
+// This gives the identity map on the segment below fundamental domain: inverse_g2_g3(g2(z),g3(z))
+// that is, |z| < 1, -.5<z.x<.5, z not within unit circles around +- 1
+// TODO: write algorithm to take tau and map it to a sensible element of SL2Z orbit?
+
 vec2 inverse_g2_g3(vec2 a, vec2 b) {
 	a = cpow(a,3.0);
 	b = cpow(b,2.0);
-	return inverse_j(1728.0*cdiv(a,a-27.0*b));
+	vec2 b_over_a = cdiv(b,a);
+	if (b_over_a.y == 0.0) {
+		if (b_over_a.x >= 0.0) {
+			return inverse_j_reduced(b_over_a.x);
+		}
+	}
+	return inverse_j_reduced(b_over_a);
 }
 
-vec2 inverse_g2_g3(float a, float b)
-{
-	return inverse_g2_g3(vec2(a, 0.0), vec2(b, 0.0));
-}
 
 
 // Returns the character of the irreducible su3 representation with highest weight (p,q)
