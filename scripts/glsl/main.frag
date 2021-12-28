@@ -284,7 +284,10 @@ vec2 cpow(float z, vec2 w)
 	{
 		return vec2(0.0, 0.0);
 	}
-	
+	// solves same bug as below
+	if (z < 0.0) {
+		return cpow(vec2(z,0.0),w);
+	}
 	float zexp = pow(z,w.x);
 	float wyzlog = w.y * log(z);
 	
@@ -292,8 +295,12 @@ vec2 cpow(float z, vec2 w)
 }
 
 // Warning: this inherits a bug from pow(z,w), namely it's not defined if z<0
+// It tries a workaround if z < 0 and hopes the answer is real, but it's better to use vec2 cpow above
 float cpow(float z, float w)
 {
+	if (z < 0.0) {
+		return cpow(vec2(z,0.0),w).x;
+	}
 	return pow(z, w);
 }
 
@@ -309,7 +316,8 @@ vec2 cpow_logz(float z, float logz, vec2 w)
 	return vec2(zexp * cos(wyzlog), zexp * sin(wyzlog));
 }
 
-//Returns z^^w.
+// Returns w__z.
+// Example: ctet(2,3) = 16, not 27
 vec2 ctet(vec2 z, float w)
 {
 	if (w == 0.0)
@@ -1343,6 +1351,7 @@ vec2 gamma(vec2 a) {
 
 
 float gamma_float_helper(float a) {
+	// always have a >= 0.5 when calling from gamma
 	a -= 1.0;
 
 	float y = 1.0;
@@ -1360,6 +1369,7 @@ float gamma_float_helper(float a) {
 
 // This is a faster version of gamma for real inputs (which implies real outputs)
 float gamma(float a) {
+
 	if (a < 0.5) {
 		return PI/(csin(PI * a)* gamma_float_helper(1.0 - a));
 	}
@@ -1467,8 +1477,9 @@ vec2 hypergeometric2f1(float a, float b, float c, float z) {
 	if (z*z <= 1.0) {
         return hypergeometric2f1_helper(a,b,c,z);
     } else {
-    	vec2 summer = cmul(cpow(-z,-a)/(gamma(b)*(gamma(c-a))*gamma(a-b+1.0)),hypergeometric2f1_helper(a,a-c+1.0,a-b+1.0,1.0/z));
-    	summer -= cmul(cpow(-z,-b)/(gamma(a)*(gamma(c-b))*gamma(b-a+1.0)),hypergeometric2f1_helper(b,b-c+1.0,b-a+1.0,1.0/z));
+    	vec2 Z = vec2(z,0.0);
+    	vec2 summer = cmul(cpow(-Z,-a)/(gamma(b)*(gamma(c-a))*gamma(a-b+1.0)),hypergeometric2f1_helper(a,a-c+1.0,a-b+1.0,1.0/z));
+    	summer -= cmul(cpow(-Z,-b)/(gamma(a)*(gamma(c-b))*gamma(b-a+1.0)),hypergeometric2f1_helper(b,b-c+1.0,b-a+1.0,1.0/z));
     	return gamma(c)*PI*ccsc(PI*(b-a))*summer;
     }
 }
@@ -1574,6 +1585,8 @@ vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, vec2 x, v
 	return ZERO;
 }
 
+// Check with hypergeometricf2(0.1,0.2,0.3,0.4,0.5,z.x,z.y)
+// Appears correct in domain
 vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, float x, float y) {
 	if (cabs(x)+cabs(y) < 1.0) {
 		return hypergeometricf2_helper(a,b1,b2,c1,c2,x,y);
@@ -1582,9 +1595,8 @@ vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, float x, 
 }
 
 const int G2_BOUND = 5;
+
 // Horn function G2, defined for |x|<1 and |y|<1
-// This implementation is super scuffed for x,y<0
-// check wtih hypergeometricg2(0.1,0.2,0.4,0.5,z.x,z.y)
 vec2 hypergeometricg2(float b1, float b2, float c1, float c2, vec2 x, vec2 y) {
 	vec2 u = cdiv(x,x+ONE);
 	vec2 w = cdiv(y,y+ONE);
@@ -1596,6 +1608,8 @@ vec2 hypergeometricg2(float b1, float b2, float c1, float c2, vec2 x, vec2 y) {
 	return ZERO;
 }
 
+// This implementation is no longer super scuffed for x,y<0
+// check with hypergeometricg2(0.1,0.2,0.4,0.5,z.x,z.y)
 vec2 hypergeometricg2(float b1, float b2, float c1, float c2, float x, float y) {
 	float u = x/(x+1.0);
 	float w = y/(y+1.0); 
@@ -1674,84 +1688,84 @@ int xy_in_f1_domain(vec2 x, vec2 y) {
 		transformation_equation = 17;
 	}
 
-	// u = ONE-x;
-	// w = ONE-y;
-	// tcur = cmag2(u) + cmag2(w);
+	u = ONE-x;
+	w = ONE-y;
+	tcur = cmag2(u) + cmag2(w);
 
-	// if (tcur < tmax) {
-	// 	tmax = tcur;
-	// 	if (cmag2(w) < cmag2(u)) {
-	// 		transformation_equation = 21;
-	// 	} else {
-	// 		transformation_equation = 22;
-	// 	}
+	if (tcur < tmax) {
+		tmax = tcur;
+		if (cmag2(w) < cmag2(u)) {
+			transformation_equation = 21;
+		} else {
+			transformation_equation = 22;
+		}
 		
-	// }
+	}
 
-	// u = cdiv(x,y);
-	// w = cdiv(1.0,y);
-	// tcur = cmag2(u) + cmag2(w);
-	// if (tcur < tmax) {
-	// 	tmax = tcur;
-	// 	transformation_equation = 23;
-	// }
+	u = cdiv(x,y);
+	w = cdiv(1.0,y);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 23;
+	}
 
-	// u = cdiv(1.0,x);
-	// w = cdiv(y,x);
-	// tcur = cmag2(u) + cmag2(w);
-	// if (tcur < tmax) {
-	// 	tmax = tcur;
-	// 	transformation_equation = 24;
-	// }
+	u = cdiv(1.0,x);
+	w = cdiv(y,x);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 24;
+	}
 
-	// u = ONE-x;
-	// w = cinv(y);
-	// tcur = cmag2(u) + cmag2(w);
-	// if (tcur < tmax) {
-	// 	tmax = tcur;
-	// 	transformation_equation = 25;
-	// }
+	u = ONE-x;
+	w = cinv(y);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 25;
+	}
 
-	// u = cinv(x);
-	// w = ONE-y;
-	// tcur = cmag2(u) + cmag2(w);
-	// if (tcur < tmax) {
-	// 	tmax = tcur;
-	// 	transformation_equation = 26;
-	// }
+	u = cinv(x);
+	w = ONE-y;
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 26;
+	}
 
-	// u = cinv(x);
-	// w = cinv(y);
-	// tcur = cmag2(u) + cmag2(w);
-	// if (tcur < tmax) {
-	// 	tmax = tcur;
-	// 	if (x.x < y.x) { // this is incorrect for the complex case, but oh well
-	// 		transformation_equation = 27;
-	// 	} else {
-	// 		transformation_equation = 28;
-	// 	}
+	u = cinv(x);
+	w = cinv(y);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		if (x.x < y.x) { // this is incorrect for the complex case, but oh well
+			transformation_equation = 27;
+		} else {
+			transformation_equation = 28;
+		}
 		
-	// }
+	}
 
-	// if (cmag2(x-y)<cmag2(ONE-x)) {
-	// 	u = cdiv(x-y,cmul(y,x-ONE));
-	// 	w = cinv(y);
-	// 	tcur = cmag2(u) + cmag2(w);
-	// 	if (tcur < tmax) {
-	// 		tmax = tcur;
-	// 		transformation_equation = 29;
-	// 	}
-	// }
+	if (cmag2(x-y)<cmag2(ONE-x)) {
+		u = cdiv(x-y,cmul(y,x-ONE));
+		w = cinv(y);
+		tcur = cmag2(u) + cmag2(w);
+		if (tcur < tmax) {
+			tmax = tcur;
+			transformation_equation = 29;
+		}
+	}
 
-	// if (cmag2(x-y)<cmag2(ONE-y)) {
-	// 	u = cinv(x);
-	// 	w = cdiv(x-y,cmul(x,y-ONE));
-	// 	tcur = cmag2(u) + cmag2(w);
-	// 	if (tcur < tmax) {
-	// 		tmax = tcur;
-	// 		transformation_equation = 30;
-	// 	}
-	// }
+	if (cmag2(x-y)<cmag2(ONE-y)) {
+		u = cinv(x);
+		w = cdiv(x-y,cmul(x,y-ONE));
+		tcur = cmag2(u) + cmag2(w);
+		if (tcur < tmax) {
+			tmax = tcur;
+			transformation_equation = 30;
+		}
+	}
 
 
 	return transformation_equation;
@@ -1876,7 +1890,7 @@ vec2 hypergeometricf1(float a, float b1, float b2, float c, float x, float y) {
 	} else if (x == y) { // (19) and (20)
 		return hypergeometric2f1(a,b1+b2,c,x);
 	} else if (b1 + b2 == c) {
-		return cmul(cpow(1.0-y,-a),hypergeometric2f1(a,b1,b1+b2,(x-y)/(1.0-y)));
+		return cmul(cpow(1.0-y,vec2(-a,0.0)),hypergeometric2f1(a,b1,b1+b2,(x-y)/(1.0-y)));
 	} //TODO: add a = c case from (37)
 
 
@@ -1884,37 +1898,58 @@ vec2 hypergeometricf1(float a, float b1, float b2, float c, float x, float y) {
 	if (transformation_equation == 1) { //correct!
 		return hypergeometricf1_helper(a,b1,b2,c,x,y);
 	} else if (transformation_equation == 15) { // correct!
-		return cmul(cmul(cpow(1.0-x,-b1),cpow(1.0-y,-b2)), hypergeometricf1_helper(c-a,b1,b2,c,cdiv(x,x-1.0),cdiv(y,y-1.0)));
+		return cmul(cmul(cpow(1.0-x,vec2(-b1,0.0)),cpow(1.0-y,vec2(-b2,0.0))), hypergeometricf1_helper(c-a,b1,b2,c,cdiv(x,x-1.0),cdiv(y,y-1.0)));
 	} else if (transformation_equation == 16) { // correct!
-		return cmul(cpow(1.0-x,-a), hypergeometricf1_helper(a,c-b1-b2,b2,c,cdiv(x,x-1.0),cdiv(x-y,x-1.0)));
+		return cmul(cpow(1.0-x,vec2(-a,0.0)), hypergeometricf1_helper(a,c-b1-b2,b2,c,x/(x-1.0),(x-y)/(x-1.0)));
 	} else if (transformation_equation == 17) { //correct! even in all 3 connected components
-		return cmul(cpow(1.0-y,-a), hypergeometricf1_helper(a,b1,c-b1-b2,c,cdiv(y-x,y-1.0),cdiv(y,y-1.0)));
-	// } else if (transformation_equation == 21) {
-	// 	return I;
-	// } else if (transformation_equation == 22) {
-	// 	return I;
-	// } else if (transformation_equation == 23) {
-	// 	return I;
-	// } else if (transformation_equation == 24) { // correct in 3rd quad, unclear if it is in 2nd; is not in 1/4
-	// 	float gammac = gamma(c);
-	// 	vec2 summer = gammac*gamma(b1-a)/(gamma(b1)*gamma(c-a))*cmul(cpow(-x,-a), hypergeometricf1_helper(a,1.0+a-c,b2,a-b1+1.0,1.0/x,y/x));
-	// 	summer += gammac*gamma(a-b1)/(gamma(a)*gamma(c-b1))*cmul(cpow(-x,-b1), hypergeometricg2(b1,b2,a-b1,1.0+b1-c,-1.0/x,-y));
-	// 	return summer;
-	// } else if (transformation_equation == 25) {
-	// 	return I;
-	// } else if (transformation_equation == 26) {
-	// 	return -I;
-	// } else if (transformation_equation == 27) {
-	// 	return I;
-	// } else if (transformation_equation == 28) {
-	// 	return I;
-	// } else if (transformation_equation == 29) {
-	// 	return I;
-	// } else if (transformation_equation == 30) {
-	// 	return I;
-	// } else if (transformation_equation == -1) {
-	// 	// something has gone wrong
-	// 	return ONE+I;
+		return cmul(cpow(1.0-y,vec2(-a,0.0)), hypergeometricf1_helper(a,b1,c-b1-b2,c,(y-x)/(y-1.0),y/(y-1.0)));
+	} else if (transformation_equation == 21) {
+		return I;
+	} else if (transformation_equation == 22) {
+		return I;
+	} else if (transformation_equation == 23) { // correct below x-axis... although misses some imaginary part
+		// also unbelievably slow above x-axis
+		// vec2 X = vec2(x,0.0);
+		// vec2 Y = vec2(y,0.0);
+		// float gammac = gamma(c);
+		// vec2 summer = gammac*gamma(b2-a)/(gamma(b2)*gamma(c-a))*cmul(cpow(-Y,-a), hypergeometricf1_helper(a,b1,1.0+a-c,a-b2+1.0,x/y,1.0/y));
+		// summer += gammac*gamma(a-b2)/(gamma(a)*gamma(c-b2))*cmul(cpow(-Y,-b2), hypergeometricg2(b1,b2,1.0+b2-c,a-b2,-x,-1.0/y));
+		// return summer;
+	} else if (transformation_equation == 24) { // correct in 3rd quad, seems to have correct real part elsewhere
+												// just maybe not imag part?
+		// vec2 X = vec2(x,0.0);
+		// vec2 Y = vec2(y,0.0);
+		// float gammac = gamma(c);
+		// vec2 summer = gammac*gamma(b1-a)/(gamma(b1)*gamma(c-a))*cmul(cpow(-X,-a), hypergeometricf1_helper(a,1.0+a-c,b2,a-b1+1.0,1.0/x,y/x));
+		// summer += gammac*gamma(a-b1)/(gamma(a)*gamma(c-b1))*cmul(cpow(-X,-b1), hypergeometricg2(b1,b2,a-b1,1.0+b1-c,-1.0/x,-y));
+		// return summer;
+	} else if (transformation_equation == 25) {
+		return I;
+	} else if (transformation_equation == 26) {
+		return I;
+	} else if (transformation_equation == 27) {
+		// vec2 X = vec2(x,0.0);
+		// vec2 Y = vec2(y,0.0);
+		// float gammac = gamma(c);
+		// vec2 summer = gammac*gamma(b1-a)/(gamma(b1)*gamma(c-a))*cmul(cpow(-X,-a), hypergeometricf1_helper(a,1.0+a-c,b2,1.0+a-b1,1.0/x,y/x));
+		// summer += gammac*gamma(a-b1-b2)/(gamma(a)*gamma(c-b1-b2))*cmul(cpow(-X,-b1),cmul(cpow(-Y,-b2),hypergeometricf1_helper(1.0+b1+b2-c,b1,b2,1.0+b1+b2-a,1.0/x,1.0/y)));
+		// summer += gammac*gamma(a-b1)*gamma(b1+b2-a)/(gamma(a)*gamma(b2)*gamma(c-a))*cmul(cpow(-X,-b1),cmul(cpow(-Y,b1-a),hypergeometricg2(b1,1.0+a-c,a-b1,b1+b2-a,-y/x,-1.0/y)));
+		// return summer;
+	} else if (transformation_equation == 28) {
+		// vec2 X = vec2(x,0.0);
+		// vec2 Y = vec2(y,0.0);
+		// float gammac = gamma(c);
+		// vec2 summer = gammac*gamma(b2-a)/(gamma(b2)*gamma(c-a))*cmul(cpow(-Y,-a), hypergeometricf1_helper(a,b1,1.0+a-c,1.0+a-b2,x/y,1.0/y));
+		// summer += gammac*gamma(a-b1-b2)/(gamma(a)*gamma(c-b1-b2))*cmul(cpow(-X,-b1),cmul(cpow(-Y,-b2),hypergeometricf1_helper(1.0+b1+b2-c,b1,b2,1.0+b1+b2-a,1.0/x,1.0/y)));
+		// summer += gammac*gamma(a-b2)*gamma(b1+b2-a)/(gamma(a)*gamma(b1)*gamma(c-a))*cmul(cpow(-X,b2-a),cmul(cpow(-Y,-b2),hypergeometricg2(1.0+a-c,b2,b1+b2-a,a-b2,-1.0/x,-x/y)));
+		// return summer;
+	} else if (transformation_equation == 29) {
+		return I;
+	} else if (transformation_equation == 30) {
+		return I;
+	} else if (transformation_equation == -1) {
+		// something has gone wrong
+		return ONE+I;
 	}
 	// return hypergeometricf1(a,b1,b2,c,vec2(x,0.0),vec2(y,0.0));
 	return -ONE;

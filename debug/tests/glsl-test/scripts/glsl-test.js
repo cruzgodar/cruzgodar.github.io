@@ -128,6 +128,12 @@
 		`return equal_within_relative_tolerance(rising_factorial(-3.1,-3),-0.007840001254400200704032);`,
 /*70*/  `return equal_within_relative_tolerance(rising_factorial(-2.0,-3),-1.0/60.0);`,
 		`return equal_within_relative_tolerance(rising_factorial(-4.0,-3),-1.0/210.0);`,
+			// negative float exponentiation
+		`return equal_within_relative_tolerance(cpow(-1.0,2.0),1.0);`,
+		`return equal_within_relative_tolerance(cpow(-1.0,-1.0),-1.0);`,
+		`return equal_within_relative_tolerance(cpow(-1.0,ONE),-ONE);`,
+		`return equal_within_relative_tolerance(cpow(-1.0,ONE/2.0),I);`,
+		`return equal_within_absolute_tolerance(ctet(I,2.0),0.2079*ONE);`,
 	];
 	
 	
