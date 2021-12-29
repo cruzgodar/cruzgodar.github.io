@@ -2,6 +2,7 @@
 // algorithm 2 of http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=5B07751C858FF584B31B250A0F3AFC58?doi=10.1.1.56.9455&rep=rep1&type=pdf
 // accurate for |a|<20 or so
 vec2 zeta_helper(vec2 a) {
+
 	vec2 tot = -ONE;
 	vec2 minus_a = -a;
 	tot += 1.00000000000000 * cpow_logz(2.0, 0.693147180559945, minus_a);

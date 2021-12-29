@@ -307,9 +307,11 @@ float cpow(float z, float w)
 // IN: log(z),w
 // OUT: z^w
 // Saves a few operations if you already know log(z)
+// Need to be sure that z > 0 to use this
 vec2 cpow_logz(float z, float logz, vec2 w)
 {
 	// Assume z != 0
+
 	float zexp = pow(z,w.x);
 	float wyzlog = w.y * logz;
 	
@@ -410,11 +412,28 @@ float clog(float z)
 	return log(z);
 }
 
+vec2 csinh(vec2 a) {
+	return (cexp(a) - cexp(-a))/2.0;
+}
 
+float csinh(float a) {
+	return (exp(a)-exp(-a))/2.0;
+}
+
+vec2 ccosh(vec2 a) {
+	return (cexp(a) + cexp(-a))/2.0;
+}
+
+float ccosh(float a) {
+	return (exp(a)+exp(-a))/2.0;
+}
 
 //Returns sin(z).
 vec2 csin(vec2 z)
 {
+	if (cabs(z.y) > 10.0) { // random heuristic to make it at least defined there
+		return vec2(sin(z.x)*ccosh(z.y),cos(z.x)*csinh(z.y));
+	}
 	vec2 cexp_temp = cexp(vec2(-z.y,z.x));
 	vec2 temp = 0.5*(cinv(cexp_temp) - cexp_temp);
 	return vec2(-temp.y,temp.x);
@@ -430,6 +449,9 @@ float csin(float z)
 //Returns cos(z).
 vec2 ccos(vec2 z)
 {
+	if (cabs(z.y) > 10.0) { // random heuristic to make it at least defined there
+		return vec2(cos(z.x)*ccosh(z.y),-sin(z.x)*csinh(z.y));
+	}
 	vec2 temp = vec2(-z.y,z.x);
 	vec2 cexp_temp = cexp(temp);
 	return 0.5*( cexp_temp + cinv(cexp_temp));
@@ -549,21 +571,7 @@ float cacot(float a) {
 	return cacot(vec2(a,0.0)).x;
 }
 
-vec2 csinh(vec2 a) {
-	return (cexp(a) - cexp(-a))/2.0;
-}
 
-float csinh(float a) {
-	return (exp(a)-exp(-a))/2.0;
-}
-
-vec2 ccosh(vec2 a) {
-	return (cexp(a) + cexp(-a))/2.0;
-}
-
-float ccosh(float a) {
-	return (exp(a)+exp(-a))/2.0;
-}
 
 vec2 ctanh(vec2 a) {
 	return cdiv(cexp(2.0 * a) - vec2(1.0,0.0),cexp(2.0 * a) + vec2(1.0,0.0));
@@ -2321,4 +2329,32 @@ vec2 digamma(vec2 z) {
 
 	return digamma_helper(z);
 
+}
+
+
+vec2 polygamma_helper(float m, vec2 z) {
+	vec2 summer = ZERO;
+	float m_plus_one = m+1.0;
+	for (int k = 0; k < 1000; k++) {
+		summer += cpow(z+float(k)*ONE,-m_plus_one);
+	}
+	return cpow(-1.0,m_plus_one)*gamma(m_plus_one) * summer;
+}
+
+// Returns (m+1)th logarithmic derivative of the gamma function
+// https://en.wikipedia.org/wiki/Polygamma_function
+// Example: polygamma(0,z) is digamma
+vec2 polygamma(float m, vec2 z) {
+	if (m == 0.0) {
+		return digamma(z);
+	}
+	return polygamma_helper(m,z);
+}
+
+vec2 polygamma(int m, vec2 z) {
+	return polygamma(float(m),z);
+}
+
+vec2 trigamma(vec2 z) {
+	return polygamma(1,z);
 }

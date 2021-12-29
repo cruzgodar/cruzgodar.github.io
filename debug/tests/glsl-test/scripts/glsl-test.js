@@ -146,7 +146,12 @@
 		`return equal_within_relative_tolerance(digamma(ONE),-0.57721566490153286060*ONE);`,
 		`return equal_within_absolute_tolerance(digamma(ONE/2.0),-2.0*log(2.0)*ONE-0.57721566490153286060*ONE);`,
 		`return equal_within_absolute_tolerance(digamma(-I),vec2(0.094650320622476977271,-2.076674047468581174134));`,
-		
+			// polygamma
+		`return equal_within_absolute_tolerance(polygamma(1,I),vec2(-0.5369999033772362, -0.794233542759318865583));`,
+		`return equal_within_absolute_tolerance(polygamma(10,2.0*ONE+I),vec2(-185.17306557513192307, -484.8781994177458189));`,
+			// honestly surprised this works 
+		`return equal_within_absolute_tolerance(polygamma(2.5,2.0*ONE+I),vec2(-0.0258830, -0.0752557 ));`,
+
 
 	];
 	
