@@ -1961,7 +1961,7 @@ const float INVERSE_WP_TOL = 0.01;
 const float INVERSE_WP_DX = 0.01;
 const int INVERSE_WP_GRADIENT_DESCENT_BOUND = 100;
 
-// Invert weierstrass p by hacky gradient descent -- actually works!
+// Invert weierstrass p by hacky gradient descent -- actually works! really slow though
 // test with wp(inverse_wp(z,rho),rho)
 vec2 inverse_wp(vec2 z, vec2 tau) {
 	if (tau.y < 0.0) {
@@ -2112,6 +2112,7 @@ vec2 bench1000(vec2 z) {
 
 // Plan: ctet(z,100) should look like W(-ln(z))/-ln(z)
 // Test: cmul(lambert_w(z),cexp(lambert_w(z)))-z
+// Is this supposed to look interesting? cdiv(lambert_w(-clog(z)),-clog(z))
 vec2 lambert_w(vec2 x) {
 	// This tries a few easy convergence patches, then if x doesn't lie in them
 	// it runs a ton of more complicated ones and returns the closest one
@@ -2203,7 +2204,7 @@ vec2 lambert_w(vec2 x) {
 		// 	best_err = err2;
 		// }
 
-		// method 3: logarithmic continued fraction--good for |W(x)|>e
+		// method 3: logarithmic continued fraction--good for |W(x)|>e in theory
 		// I think this one's busted
 		// summer = x;
 		// for (int i = 0; i < 2; i++) {
@@ -2218,6 +2219,8 @@ vec2 lambert_w(vec2 x) {
 
 		vec2 sol4 = sol0;
 		float err4 = 1000.0;
+		vec2 sol5 = x;
+		float err5 = 100.0;
 		if ((x.x>-0.4) && cabs(x.y)>0.4) { //it's got some confusion about the branch cut otherwise
 			// Method 4: Numerical evaluation using Newton's method: https://en.wikipedia.org/wiki/Lambert_W_function#Numerical_evaluation
 			vec2 w = ONE; //picking ONE makes the answer unstable elsewhere...
@@ -2231,10 +2234,50 @@ vec2 lambert_w(vec2 x) {
 			}
 			sol4 = w;
 
-			// TODO: this often picks out the wrong log branch. Can fix
 			err4 = cmag2(wew-x);
 			if (err4 < best_err) {
 				best_err = err4;
+			}
+			// I honestly don't understand why this works
+		} else if ((x.x<-0.4) || (x.x>2.2) || (x.y>.41) || (x.y<-.41)) { //here's some goofy heuristics
+			// Method 4 v2: Numerical evaluation using Newton's method: https://en.wikipedia.org/wiki/Lambert_W_function#Numerical_evaluation
+			vec2 w = sol0; 
+			vec2 ew = ONE;
+			vec2 wew = ONE;
+			for (int j = 0; j < 100; j++) {
+				ew = cexp(w);
+				wew = cmul(w,ew);
+				w -= cdiv(wew-x,ew + wew-cdiv(cmul(w+2.0*ONE,wew-x),2.0*w+2.0*ONE));
+			}
+			sol5 = w;
+
+			err5 = cmag2(wew-x);
+			if (err5 < best_err) {
+				if ((x.y<0.0 && w.y<0.0) || (x.y>0.0 && w.y>0.0)) {
+					best_err = err5;
+				}
+			}
+		}
+
+		vec2 sol6 = x;
+		float err6 = 100.0;
+		// manual patches around bad spots
+		if (cmag2(x+.37*ONE)<.01) {
+			vec2 w = ONE; 
+			vec2 ew = ONE;
+			vec2 wew = ONE;
+			for (int j = 0; j < 100; j++) {
+				ew = cexp(w);
+				wew = cmul(w,ew);
+				w -= cdiv(wew-x,ew + wew-cdiv(cmul(w+2.0*ONE,wew-x),2.0*w+2.0*ONE));
+			}
+			sol6 = w;
+
+			err6 = cmag2(wew-x);
+			if (err6 < best_err) {
+				if ((x.y<0.0 && w.y<0.0) || (x.y>0.0 && w.y>0.0) || (cabs(x.y)<.00000001)) {
+					best_err = err6;
+				}
 			}
 		}
 
@@ -2250,7 +2293,32 @@ vec2 lambert_w(vec2 x) {
 		// 	return sol3;
 		} else if (best_err == err4) {
 			return sol4;
+		} else if (best_err == err5) {
+			return sol5;
+		} else if (best_err == err6) {
+			return sol6;
 		}
 	}
 	return ZERO;
+}
+
+// Assumption: real(z)>0
+vec2 digamma_helper(vec2 z) {
+	
+	vec2 summer = -0.57721566490153286060*ONE;
+	for (int k = 0; k < 1000; k++) {
+		summer += cdiv(z-ONE,float(k+1)*(float(k)*ONE+z));
+	}
+	return summer;
+
+}
+
+// TODO: consider implementing bernoulli formula
+// check: digamma(z+ONE)-digamma(z)-cinv(z)
+vec2 digamma(vec2 z) {
+	// can use reflection formula:
+	//gamma(x) = gamma(1-x) - pi cot pi x
+
+	return digamma_helper(z);
+
 }

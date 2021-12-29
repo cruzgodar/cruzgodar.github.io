@@ -139,8 +139,14 @@
 		`return equal_within_absolute_tolerance(lambert_w(vec2(-0.009898889724885729, 0.20871443884942303)),vec2(0.030846799185485886,0.20024000517866644));`,
 			//why doesn't this work for ONE exactly?
 		`return equal_within_absolute_tolerance(lambert_w(ONE+.0000001*I), 0.5671432904097838729999686622103*ONE);`,
-		`return equal_within_absolute_tolerance(lambert_w(-ONE*PI/2.0), I*PI/2.0);`,
-		`return equal_within_absolute_tolerance(lambert_w(-ONE*cinv(2.718281828)), -ONE);`,
+/*80*/	`return equal_within_absolute_tolerance(lambert_w(-ONE*PI/2.0), I*PI/2.0);`,
+		`return equal_within_absolute_tolerance(lambert_w(-ONE*cinv(2.7181828459)), -ONE);`,
+			//digamma
+		`return equal_within_absolute_tolerance(digamma(40.45959427318573*ONE + 25.50759401525997*I),vec2(3.858773893848084409,0.5681140543684587976));`,
+		`return equal_within_relative_tolerance(digamma(ONE),-0.57721566490153286060*ONE);`,
+		`return equal_within_absolute_tolerance(digamma(ONE/2.0),-2.0*log(2.0)*ONE-0.57721566490153286060*ONE);`,
+		`return equal_within_absolute_tolerance(digamma(-I),vec2(0.094650320622476977271,-2.076674047468581174134));`,
+		
 
 	];
 	
