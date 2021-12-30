@@ -429,6 +429,7 @@ float ccosh(float a) {
 }
 
 //Returns sin(z).
+// Oddly enough, this limits zeta precision along the critical strip
 vec2 csin(vec2 z)
 {
 	if (cabs(z.y) > 10.0) { // random heuristic to make it at least defined there
@@ -1345,14 +1346,16 @@ vec2 gamma_helper(vec2 a)
 	y += cdiv(GAMMA_CONST_7, vec2(a.x + 7.0, a.y));
 	y += cdiv(GAMMA_CONST_8, vec2(a.x + 8.0, a.y));
 	vec2 t = vec2(a.x + 7.5, a.y);
-	return sqrt(2.0*PI) * cmul(cpow(t, vec2(a.x+0.5, a.y)), cmul(cexp(-t), y));
+	// return sqrt(2.0*PI) * cmul(cpow(t, vec2(a.x+0.5, a.y)), cmul(cexp(-t), y));
+	// e^(-7.5)*sqrt(2 pi) = 0.0013863769204690377346...
+	return cmul(cpow(t, vec2(a.x+0.5, a.y)), cmul(cexp(-a), y)) * 0.0013863769204690377346;
 }
 
 // Lanczos
 vec2 gamma(vec2 a) {
 	float result = 0.0;
 	if (a.x < 0.5) {
-		return cdiv(vec2(PI, 0.0), cmul(csin(PI * a), gamma_helper(ONE - a)));
+		return cdiv(PI, cmul(csin(PI * a), gamma_helper(ONE - a)));
 	}
 	return gamma_helper(a);
 }
@@ -1387,6 +1390,7 @@ float gamma(float a) {
 float gamma(int a) {
 	return gamma(float(a));
 }
+
 
 const int F21_BOUND = 10;
 
