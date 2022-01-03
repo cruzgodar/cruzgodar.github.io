@@ -284,7 +284,10 @@ vec2 cpow(float z, vec2 w)
 	{
 		return vec2(0.0, 0.0);
 	}
-	
+	// solves same bug as below
+	if (z < 0.0) {
+		return cpow(vec2(z,0.0),w);
+	}
 	float zexp = pow(z,w.x);
 	float wyzlog = w.y * log(z);
 	
@@ -292,24 +295,31 @@ vec2 cpow(float z, vec2 w)
 }
 
 // Warning: this inherits a bug from pow(z,w), namely it's not defined if z<0
+// It tries a workaround if z < 0 and hopes the answer is real, but it's better to use vec2 cpow above
 float cpow(float z, float w)
 {
+	if (z < 0.0) {
+		return cpow(vec2(z,0.0),w).x;
+	}
 	return pow(z, w);
 }
 
 // IN: log(z),w
 // OUT: z^w
 // Saves a few operations if you already know log(z)
+// Need to be sure that z > 0 to use this
 vec2 cpow_logz(float z, float logz, vec2 w)
 {
 	// Assume z != 0
+
 	float zexp = pow(z,w.x);
 	float wyzlog = w.y * logz;
 	
 	return vec2(zexp * cos(wyzlog), zexp * sin(wyzlog));
 }
 
-//Returns z^^w.
+// Returns w__z.
+// Example: ctet(2,3) = 16, not 27
 vec2 ctet(vec2 z, float w)
 {
 	if (w == 0.0)
@@ -402,11 +412,29 @@ float clog(float z)
 	return log(z);
 }
 
+vec2 csinh(vec2 a) {
+	return (cexp(a) - cexp(-a))/2.0;
+}
 
+float csinh(float a) {
+	return (exp(a)-exp(-a))/2.0;
+}
+
+vec2 ccosh(vec2 a) {
+	return (cexp(a) + cexp(-a))/2.0;
+}
+
+float ccosh(float a) {
+	return (exp(a)+exp(-a))/2.0;
+}
 
 //Returns sin(z).
+// Oddly enough, this limits zeta precision along the critical strip
 vec2 csin(vec2 z)
 {
+	if (cabs(z.y) > 10.0) { // random heuristic to make it at least defined there
+		return vec2(sin(z.x)*ccosh(z.y),cos(z.x)*csinh(z.y));
+	}
 	vec2 cexp_temp = cexp(vec2(-z.y,z.x));
 	vec2 temp = 0.5*(cinv(cexp_temp) - cexp_temp);
 	return vec2(-temp.y,temp.x);
@@ -422,6 +450,9 @@ float csin(float z)
 //Returns cos(z).
 vec2 ccos(vec2 z)
 {
+	if (cabs(z.y) > 10.0) { // random heuristic to make it at least defined there
+		return vec2(cos(z.x)*ccosh(z.y),-sin(z.x)*csinh(z.y));
+	}
 	vec2 temp = vec2(-z.y,z.x);
 	vec2 cexp_temp = cexp(temp);
 	return 0.5*( cexp_temp + cinv(cexp_temp));
@@ -541,21 +572,7 @@ float cacot(float a) {
 	return cacot(vec2(a,0.0)).x;
 }
 
-vec2 csinh(vec2 a) {
-	return (cexp(a) - cexp(-a))/2.0;
-}
 
-float csinh(float a) {
-	return (exp(a)-exp(-a))/2.0;
-}
-
-vec2 ccosh(vec2 a) {
-	return (cexp(a) + cexp(-a))/2.0;
-}
-
-float ccosh(float a) {
-	return (exp(a)+exp(-a))/2.0;
-}
 
 vec2 ctanh(vec2 a) {
 	return cdiv(cexp(2.0 * a) - vec2(1.0,0.0),cexp(2.0 * a) + vec2(1.0,0.0));
@@ -1329,20 +1346,23 @@ vec2 gamma_helper(vec2 a)
 	y += cdiv(GAMMA_CONST_7, vec2(a.x + 7.0, a.y));
 	y += cdiv(GAMMA_CONST_8, vec2(a.x + 8.0, a.y));
 	vec2 t = vec2(a.x + 7.5, a.y);
-	return sqrt(2.0*PI) * cmul(cpow(t, vec2(a.x+0.5, a.y)), cmul(cexp(-t), y));
+	// return sqrt(2.0*PI) * cmul(cpow(t, vec2(a.x+0.5, a.y)), cmul(cexp(-t), y));
+	// e^(-7.5)*sqrt(2 pi) = 0.0013863769204690377346...
+	return cmul(cpow(t, vec2(a.x+0.5, a.y)), cmul(cexp(-a), y)) * 0.0013863769204690377346;
 }
 
 // Lanczos
 vec2 gamma(vec2 a) {
 	float result = 0.0;
 	if (a.x < 0.5) {
-		return cdiv(vec2(PI, 0.0), cmul(csin(PI * a), gamma_helper(ONE - a)));
+		return cdiv(PI, cmul(csin(PI * a), gamma_helper(ONE - a)));
 	}
 	return gamma_helper(a);
 }
 
 
 float gamma_float_helper(float a) {
+	// always have a >= 0.5 when calling from gamma
 	a -= 1.0;
 
 	float y = 1.0;
@@ -1360,6 +1380,7 @@ float gamma_float_helper(float a) {
 
 // This is a faster version of gamma for real inputs (which implies real outputs)
 float gamma(float a) {
+
 	if (a < 0.5) {
 		return PI/(csin(PI * a)* gamma_float_helper(1.0 - a));
 	}
@@ -1369,6 +1390,7 @@ float gamma(float a) {
 float gamma(int a) {
 	return gamma(float(a));
 }
+
 
 const int F21_BOUND = 10;
 
@@ -1388,11 +1410,11 @@ vec2 hypergeometric2f1_helper(float a, float b, float c, vec2 z) {
 				return cdiv(casin(csqrt(z)),csqrt(z));
 			}
 		}
-	} else if (b == a+0.5) { // from https://reference.wolfram.com/language/ref/Hypergeometric2F1.html
-		if (c == 2.0*a) {
+	// } else if (b == a+0.5) { // from https://reference.wolfram.com/language/ref/Hypergeometric2F1.html
+		// if (c == 2.0*a) {
 			// I cant for the life of me figure out why this isn't working
 			// return cdiv(cpow(2.0,2.0*a-1.0) * cpow(csqrt(ONE-z)+1.0,1.0-2.0*a) ,csqrt(ONE-z));
-		}
+		// }
 	}
 		// can add some goofy quadratic ones for 2f1(1/3,2/3,3/2,z) if the mood strikes you
 
@@ -1426,11 +1448,11 @@ vec2 hypergeometric2f1_helper(float a, float b, float c, float z) {
 				return ONE*cdiv(casin(csqrt(z)),csqrt(z));
 			}
 		}
-	} else if (b == a+0.5) { // from https://reference.wolfram.com/language/ref/Hypergeometric2F1.html
-		if (c == 2.0*a) {
+	// } else if (b == a+0.5) { // from https://reference.wolfram.com/language/ref/Hypergeometric2F1.html
+	// 	if (c == 2.0*a) {
 			// I cant for the life of me figure out why this isn't working
 			// return cdiv(cpow(2.0,2.0*a-1.0) * cpow(csqrt(ONE-z)+1.0,1.0-2.0*a) ,csqrt(ONE-z));
-		}
+		// }
 	}
 		// can add some goofy quadratic ones for 2f1(1/3,2/3,3/2,z) if the mood strikes you
 
@@ -1467,8 +1489,9 @@ vec2 hypergeometric2f1(float a, float b, float c, float z) {
 	if (z*z <= 1.0) {
         return hypergeometric2f1_helper(a,b,c,z);
     } else {
-    	vec2 summer = cmul(cpow(-z,-a)/(gamma(b)*(gamma(c-a))*gamma(a-b+1.0)),hypergeometric2f1_helper(a,a-c+1.0,a-b+1.0,1.0/z));
-    	summer -= cmul(cpow(-z,-b)/(gamma(a)*(gamma(c-b))*gamma(b-a+1.0)),hypergeometric2f1_helper(b,b-c+1.0,b-a+1.0,1.0/z));
+    	vec2 Z = vec2(z,0.0);
+    	vec2 summer = cmul(cpow(-Z,-a)/(gamma(b)*(gamma(c-a))*gamma(a-b+1.0)),hypergeometric2f1_helper(a,a-c+1.0,a-b+1.0,1.0/z));
+    	summer -= cmul(cpow(-Z,-b)/(gamma(a)*(gamma(c-b))*gamma(b-a+1.0)),hypergeometric2f1_helper(b,b-c+1.0,b-a+1.0,1.0/z));
     	return gamma(c)*PI*ccsc(PI*(b-a))*summer;
     }
 }
@@ -1574,6 +1597,8 @@ vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, vec2 x, v
 	return ZERO;
 }
 
+// Check with hypergeometricf2(0.1,0.2,0.3,0.4,0.5,z.x,z.y)
+// Appears correct in domain
 vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, float x, float y) {
 	if (cabs(x)+cabs(y) < 1.0) {
 		return hypergeometricf2_helper(a,b1,b2,c1,c2,x,y);
@@ -1582,9 +1607,8 @@ vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, float x, 
 }
 
 const int G2_BOUND = 5;
+
 // Horn function G2, defined for |x|<1 and |y|<1
-// This implementation is super scuffed for x,y<0
-// check wtih hypergeometricg2(0.1,0.2,0.4,0.5,z.x,z.y)
 vec2 hypergeometricg2(float b1, float b2, float c1, float c2, vec2 x, vec2 y) {
 	vec2 u = cdiv(x,x+ONE);
 	vec2 w = cdiv(y,y+ONE);
@@ -1596,6 +1620,8 @@ vec2 hypergeometricg2(float b1, float b2, float c1, float c2, vec2 x, vec2 y) {
 	return ZERO;
 }
 
+// This implementation is no longer super scuffed for x,y<0
+// check with hypergeometricg2(0.1,0.2,0.4,0.5,z.x,z.y)
 vec2 hypergeometricg2(float b1, float b2, float c1, float c2, float x, float y) {
 	float u = x/(x+1.0);
 	float w = y/(y+1.0); 
@@ -1674,84 +1700,84 @@ int xy_in_f1_domain(vec2 x, vec2 y) {
 		transformation_equation = 17;
 	}
 
-	// u = ONE-x;
-	// w = ONE-y;
-	// tcur = cmag2(u) + cmag2(w);
+	u = ONE-x;
+	w = ONE-y;
+	tcur = cmag2(u) + cmag2(w);
 
-	// if (tcur < tmax) {
-	// 	tmax = tcur;
-	// 	if (cmag2(w) < cmag2(u)) {
-	// 		transformation_equation = 21;
-	// 	} else {
-	// 		transformation_equation = 22;
-	// 	}
+	if (tcur < tmax) {
+		tmax = tcur;
+		if (cmag2(w) < cmag2(u)) {
+			transformation_equation = 21;
+		} else {
+			transformation_equation = 22;
+		}
 		
-	// }
+	}
 
-	// u = cdiv(x,y);
-	// w = cdiv(1.0,y);
-	// tcur = cmag2(u) + cmag2(w);
-	// if (tcur < tmax) {
-	// 	tmax = tcur;
-	// 	transformation_equation = 23;
-	// }
+	u = cdiv(x,y);
+	w = cdiv(1.0,y);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 23;
+	}
 
-	// u = cdiv(1.0,x);
-	// w = cdiv(y,x);
-	// tcur = cmag2(u) + cmag2(w);
-	// if (tcur < tmax) {
-	// 	tmax = tcur;
-	// 	transformation_equation = 24;
-	// }
+	u = cdiv(1.0,x);
+	w = cdiv(y,x);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 24;
+	}
 
-	// u = ONE-x;
-	// w = cinv(y);
-	// tcur = cmag2(u) + cmag2(w);
-	// if (tcur < tmax) {
-	// 	tmax = tcur;
-	// 	transformation_equation = 25;
-	// }
+	u = ONE-x;
+	w = cinv(y);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 25;
+	}
 
-	// u = cinv(x);
-	// w = ONE-y;
-	// tcur = cmag2(u) + cmag2(w);
-	// if (tcur < tmax) {
-	// 	tmax = tcur;
-	// 	transformation_equation = 26;
-	// }
+	u = cinv(x);
+	w = ONE-y;
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		transformation_equation = 26;
+	}
 
-	// u = cinv(x);
-	// w = cinv(y);
-	// tcur = cmag2(u) + cmag2(w);
-	// if (tcur < tmax) {
-	// 	tmax = tcur;
-	// 	if (x.x < y.x) { // this is incorrect for the complex case, but oh well
-	// 		transformation_equation = 27;
-	// 	} else {
-	// 		transformation_equation = 28;
-	// 	}
+	u = cinv(x);
+	w = cinv(y);
+	tcur = cmag2(u) + cmag2(w);
+	if (tcur < tmax) {
+		tmax = tcur;
+		if (x.x < y.x) { // this is incorrect for the complex case, but oh well
+			transformation_equation = 27;
+		} else {
+			transformation_equation = 28;
+		}
 		
-	// }
+	}
 
-	// if (cmag2(x-y)<cmag2(ONE-x)) {
-	// 	u = cdiv(x-y,cmul(y,x-ONE));
-	// 	w = cinv(y);
-	// 	tcur = cmag2(u) + cmag2(w);
-	// 	if (tcur < tmax) {
-	// 		tmax = tcur;
-	// 		transformation_equation = 29;
-	// 	}
-	// }
+	if (cmag2(x-y)<cmag2(ONE-x)) {
+		u = cdiv(x-y,cmul(y,x-ONE));
+		w = cinv(y);
+		tcur = cmag2(u) + cmag2(w);
+		if (tcur < tmax) {
+			tmax = tcur;
+			transformation_equation = 29;
+		}
+	}
 
-	// if (cmag2(x-y)<cmag2(ONE-y)) {
-	// 	u = cinv(x);
-	// 	w = cdiv(x-y,cmul(x,y-ONE));
-	// 	tcur = cmag2(u) + cmag2(w);
-	// 	if (tcur < tmax) {
-	// 		tmax = tcur;
-	// 		transformation_equation = 30;
-	// 	}
-	// }
+	if (cmag2(x-y)<cmag2(ONE-y)) {
+		u = cinv(x);
+		w = cdiv(x-y,cmul(x,y-ONE));
+		tcur = cmag2(u) + cmag2(w);
+		if (tcur < tmax) {
+			tmax = tcur;
+			transformation_equation = 30;
+		}
+	}
 
 
 	return transformation_equation;
@@ -1876,7 +1902,7 @@ vec2 hypergeometricf1(float a, float b1, float b2, float c, float x, float y) {
 	} else if (x == y) { // (19) and (20)
 		return hypergeometric2f1(a,b1+b2,c,x);
 	} else if (b1 + b2 == c) {
-		return cmul(cpow(1.0-y,-a),hypergeometric2f1(a,b1,b1+b2,(x-y)/(1.0-y)));
+		return cmul(cpow(1.0-y,vec2(-a,0.0)),hypergeometric2f1(a,b1,b1+b2,(x-y)/(1.0-y)));
 	} //TODO: add a = c case from (37)
 
 
@@ -1884,37 +1910,58 @@ vec2 hypergeometricf1(float a, float b1, float b2, float c, float x, float y) {
 	if (transformation_equation == 1) { //correct!
 		return hypergeometricf1_helper(a,b1,b2,c,x,y);
 	} else if (transformation_equation == 15) { // correct!
-		return cmul(cmul(cpow(1.0-x,-b1),cpow(1.0-y,-b2)), hypergeometricf1_helper(c-a,b1,b2,c,cdiv(x,x-1.0),cdiv(y,y-1.0)));
+		return cmul(cmul(cpow(1.0-x,vec2(-b1,0.0)),cpow(1.0-y,vec2(-b2,0.0))), hypergeometricf1_helper(c-a,b1,b2,c,cdiv(x,x-1.0),cdiv(y,y-1.0)));
 	} else if (transformation_equation == 16) { // correct!
-		return cmul(cpow(1.0-x,-a), hypergeometricf1_helper(a,c-b1-b2,b2,c,cdiv(x,x-1.0),cdiv(x-y,x-1.0)));
+		return cmul(cpow(1.0-x,vec2(-a,0.0)), hypergeometricf1_helper(a,c-b1-b2,b2,c,x/(x-1.0),(x-y)/(x-1.0)));
 	} else if (transformation_equation == 17) { //correct! even in all 3 connected components
-		return cmul(cpow(1.0-y,-a), hypergeometricf1_helper(a,b1,c-b1-b2,c,cdiv(y-x,y-1.0),cdiv(y,y-1.0)));
-	// } else if (transformation_equation == 21) {
-	// 	return I;
-	// } else if (transformation_equation == 22) {
-	// 	return I;
-	// } else if (transformation_equation == 23) {
-	// 	return I;
-	// } else if (transformation_equation == 24) { // correct in 3rd quad, unclear if it is in 2nd; is not in 1/4
-	// 	float gammac = gamma(c);
-	// 	vec2 summer = gammac*gamma(b1-a)/(gamma(b1)*gamma(c-a))*cmul(cpow(-x,-a), hypergeometricf1_helper(a,1.0+a-c,b2,a-b1+1.0,1.0/x,y/x));
-	// 	summer += gammac*gamma(a-b1)/(gamma(a)*gamma(c-b1))*cmul(cpow(-x,-b1), hypergeometricg2(b1,b2,a-b1,1.0+b1-c,-1.0/x,-y));
-	// 	return summer;
-	// } else if (transformation_equation == 25) {
-	// 	return I;
-	// } else if (transformation_equation == 26) {
-	// 	return -I;
-	// } else if (transformation_equation == 27) {
-	// 	return I;
-	// } else if (transformation_equation == 28) {
-	// 	return I;
-	// } else if (transformation_equation == 29) {
-	// 	return I;
-	// } else if (transformation_equation == 30) {
-	// 	return I;
-	// } else if (transformation_equation == -1) {
-	// 	// something has gone wrong
-	// 	return ONE+I;
+		return cmul(cpow(1.0-y,vec2(-a,0.0)), hypergeometricf1_helper(a,b1,c-b1-b2,c,(y-x)/(y-1.0),y/(y-1.0)));
+	} else if (transformation_equation == 21) {
+		return I;
+	} else if (transformation_equation == 22) {
+		return I;
+	} else if (transformation_equation == 23) { // correct below x-axis... although misses some imaginary part
+		// also unbelievably slow above x-axis
+		// vec2 X = vec2(x,0.0);
+		// vec2 Y = vec2(y,0.0);
+		// float gammac = gamma(c);
+		// vec2 summer = gammac*gamma(b2-a)/(gamma(b2)*gamma(c-a))*cmul(cpow(-Y,-a), hypergeometricf1_helper(a,b1,1.0+a-c,a-b2+1.0,x/y,1.0/y));
+		// summer += gammac*gamma(a-b2)/(gamma(a)*gamma(c-b2))*cmul(cpow(-Y,-b2), hypergeometricg2(b1,b2,1.0+b2-c,a-b2,-x,-1.0/y));
+		// return summer;
+	} else if (transformation_equation == 24) { // correct in 3rd quad, seems to have correct real part elsewhere
+												// just maybe not imag part?
+		// vec2 X = vec2(x,0.0);
+		// vec2 Y = vec2(y,0.0);
+		// float gammac = gamma(c);
+		// vec2 summer = gammac*gamma(b1-a)/(gamma(b1)*gamma(c-a))*cmul(cpow(-X,-a), hypergeometricf1_helper(a,1.0+a-c,b2,a-b1+1.0,1.0/x,y/x));
+		// summer += gammac*gamma(a-b1)/(gamma(a)*gamma(c-b1))*cmul(cpow(-X,-b1), hypergeometricg2(b1,b2,a-b1,1.0+b1-c,-1.0/x,-y));
+		// return summer;
+	} else if (transformation_equation == 25) {
+		return I;
+	} else if (transformation_equation == 26) {
+		return I;
+	} else if (transformation_equation == 27) {
+		// vec2 X = vec2(x,0.0);
+		// vec2 Y = vec2(y,0.0);
+		// float gammac = gamma(c);
+		// vec2 summer = gammac*gamma(b1-a)/(gamma(b1)*gamma(c-a))*cmul(cpow(-X,-a), hypergeometricf1_helper(a,1.0+a-c,b2,1.0+a-b1,1.0/x,y/x));
+		// summer += gammac*gamma(a-b1-b2)/(gamma(a)*gamma(c-b1-b2))*cmul(cpow(-X,-b1),cmul(cpow(-Y,-b2),hypergeometricf1_helper(1.0+b1+b2-c,b1,b2,1.0+b1+b2-a,1.0/x,1.0/y)));
+		// summer += gammac*gamma(a-b1)*gamma(b1+b2-a)/(gamma(a)*gamma(b2)*gamma(c-a))*cmul(cpow(-X,-b1),cmul(cpow(-Y,b1-a),hypergeometricg2(b1,1.0+a-c,a-b1,b1+b2-a,-y/x,-1.0/y)));
+		// return summer;
+	} else if (transformation_equation == 28) {
+		// vec2 X = vec2(x,0.0);
+		// vec2 Y = vec2(y,0.0);
+		// float gammac = gamma(c);
+		// vec2 summer = gammac*gamma(b2-a)/(gamma(b2)*gamma(c-a))*cmul(cpow(-Y,-a), hypergeometricf1_helper(a,b1,1.0+a-c,1.0+a-b2,x/y,1.0/y));
+		// summer += gammac*gamma(a-b1-b2)/(gamma(a)*gamma(c-b1-b2))*cmul(cpow(-X,-b1),cmul(cpow(-Y,-b2),hypergeometricf1_helper(1.0+b1+b2-c,b1,b2,1.0+b1+b2-a,1.0/x,1.0/y)));
+		// summer += gammac*gamma(a-b2)*gamma(b1+b2-a)/(gamma(a)*gamma(b1)*gamma(c-a))*cmul(cpow(-X,b2-a),cmul(cpow(-Y,-b2),hypergeometricg2(1.0+a-c,b2,b1+b2-a,a-b2,-1.0/x,-x/y)));
+		// return summer;
+	} else if (transformation_equation == 29) {
+		return I;
+	} else if (transformation_equation == 30) {
+		return I;
+	} else if (transformation_equation == -1) {
+		// something has gone wrong
+		return ONE+I;
 	}
 	// return hypergeometricf1(a,b1,b2,c,vec2(x,0.0),vec2(y,0.0));
 	return -ONE;
@@ -1926,7 +1973,7 @@ const float INVERSE_WP_TOL = 0.01;
 const float INVERSE_WP_DX = 0.01;
 const int INVERSE_WP_GRADIENT_DESCENT_BOUND = 100;
 
-// Invert weierstrass p by hacky gradient descent -- actually works!
+// Invert weierstrass p by hacky gradient descent -- actually works! really slow though
 // test with wp(inverse_wp(z,rho),rho)
 vec2 inverse_wp(vec2 z, vec2 tau) {
 	if (tau.y < 0.0) {
@@ -1956,7 +2003,7 @@ vec2 inverse_wp(vec2 z, vec2 tau) {
 		if (ydist < INVERSE_WP_TOL) {
 			return a;
 		}
-		// can think how to reuse a calculation
+		// TODO: think how to reuse a calculation
 		n = cabs(wp(a + INVERSE_WP_DX * tau*ydist,tau)- z);
 		e = cabs(wp(a + INVERSE_WP_DX * ONE*ydist,tau)- z);
 		s = cabs(wp(a - INVERSE_WP_DX * tau*ydist,tau)- z);
@@ -1998,18 +2045,41 @@ vec2 inverse_j(vec2 z) {
 	return cmul(I,cdiv(hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,ONE-a),hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,a)));
 }
 
+// specialized version for inverse_g2_g3
+// NOTE: can up F21_BOUND if needed for more precision
+vec2 inverse_j_reduced(vec2 z) {
+	// sqrt(27) = 5.19615242270663
+	vec2 a = 0.5 * (ONE + 5.19615242270663*cpow(z,0.5));
+	// can maybe save some calculations doing these both at once!
+	return cmul(I,cdiv(hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,ONE-a),hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,a)));
+}
+
+vec2 inverse_j_reduced(float z) {
+	// sqrt(27) = 5.19615242270663
+	float a = 0.5 * (1.0 + 5.19615242270663*csqrt(z).x);
+	return cmul(I,cdiv(hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,1.0-a),hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,a)));
+}
+
+
 // IN: g2 = a, g3 = b
 // OUT: tau such that y^2 = 4x^3 - g2(tau)x - g3(tau) is isomorphic to y^2 = 4x^3 - ax - b
+
+// This gives the identity map on the segment below fundamental domain: inverse_g2_g3(g2(z),g3(z))
+// that is, |z| < 1, -.5<z.x<.5, z not within unit circles around +- 1
+// TODO: write algorithm to take tau and map it to a sensible element of SL2Z orbit?
+
 vec2 inverse_g2_g3(vec2 a, vec2 b) {
 	a = cpow(a,3.0);
 	b = cpow(b,2.0);
-	return inverse_j(1728.0*cdiv(a,a-27.0*b));
+	vec2 b_over_a = cdiv(b,a);
+	if (b_over_a.y == 0.0) {
+		if (b_over_a.x >= 0.0) {
+			return inverse_j_reduced(b_over_a.x);
+		}
+	}
+	return inverse_j_reduced(b_over_a);
 }
 
-vec2 inverse_g2_g3(float a, float b)
-{
-	return inverse_g2_g3(vec2(a, 0.0), vec2(b, 0.0));
-}
 
 
 // Returns the character of the irreducible su3 representation with highest weight (p,q)
@@ -2050,4 +2120,245 @@ vec2 bench1000(vec2 z) {
 		temp += wp(z,rho);
 	}
 	return temp;
+}
+
+// Plan: ctet(z,100) should look like W(-ln(z))/-ln(z)
+// Test: cmul(lambert_w(z),cexp(lambert_w(z)))-z
+// Is this supposed to look interesting? cdiv(lambert_w(-clog(z)),-clog(z))
+vec2 lambert_w(vec2 x) {
+	// This tries a few easy convergence patches, then if x doesn't lie in them
+	// it runs a ton of more complicated ones and returns the closest one
+	if (cmag2(x)<0.13) { // annoyingly low effective convergence radius
+								   // 1/e (squared)
+		vec2 summer = ZERO;
+		vec2 xn = x;
+		// \sum_n (-n)^(n-1)/n! x^n
+		summer += 1.0 * xn; xn = cmul(xn,x);
+		summer += -1.0 * xn; xn = cmul(xn,x);
+		summer += 1.5 * xn; xn = cmul(xn,x);
+		summer += -2.6666666666666665 * xn; xn = cmul(xn,x);
+		summer += 5.208333333333333 * xn; xn = cmul(xn,x);
+		summer += -10.8 * xn; xn = cmul(xn,x);
+		summer += 23.343055555555555 * xn; xn = cmul(xn,x);
+		summer += -52.01269841269841 * xn; xn = cmul(xn,x);
+		summer += 118.62522321428571 * xn; xn = cmul(xn,x);
+		summer += -275.5731922398589 * xn; xn = cmul(xn,x);
+		summer += 649.7871723434745 * xn; xn = cmul(xn,x);
+		summer += -1551.1605194805195 * xn; xn = cmul(xn,x);
+		summer += 3741.4497029592385 * xn; xn = cmul(xn,x);
+		summer += -9104.500241158019 * xn; xn = cmul(xn,x);
+		summer += 22324.3085127066 * xn; xn = cmul(xn,x);
+		summer += -55103.621972903835 * xn; xn = cmul(xn,x);
+		summer += 136808.86090394293 * xn; xn = cmul(xn,x);
+		summer += -341422.05066583835 * xn; xn = cmul(xn,x);
+		summer += 855992.9659966076 * xn;
+		return summer;
+	} else {
+		// this can use a touch up
+		vec2 L1 = clog(x);
+		vec2 L12 = cpow(L1,2.0);
+		vec2 L13 = cpow(L1,3.0);
+		vec2 L14 = cpow(L1,4.0);
+		vec2 L15 = cpow(L1,5.0);
+
+		vec2 L2 = clog(L1);
+		vec2 L22 = cpow(L2,2.0);
+		vec2 L23 = cpow(L2,3.0);
+		vec2 L24 = cpow(L2,4.0);
+		vec2 L25 = cpow(L2,5.0);
+
+		vec2 summer = ZERO;
+		// can reduce these a bit
+		summer += L1;
+		summer -= L2;
+		summer += cdiv(L2,L1);
+		summer += cdiv(-2.0*L2+ L22,2.0*L12);
+		summer += cdiv(6.0*L2 -9.0*L22 +2.0*L23,6.0*L13);
+		summer += cdiv(-12.0*L2 + 36.0*L22-22.0*L23+3.0*L24,12.0*L14);
+		summer += cdiv(60.0*L2-300.0*L22+350.0*L23-125.0*L24+12.0*L25,60.0*L15);
+		if (cmag2(x) > 9000.0) {
+			return summer;
+		}
+
+		// method 0: above
+		vec2 sol0 = summer;
+		float err0 = cmag2(cmul(sol0,cexp(sol0))-x);
+		float best_err = err0;
+
+		// try a few methods, find the one with least error in magnitude
+		// method 1: simple continued fraction
+		summer = 190.0*ONE +13582711.0/94423.0*x;
+		summer = 17.0*ONE + 1927.0*cdiv(x,summer);
+		summer = 10.0*ONE + 133.0*cdiv(x,summer);
+		summer = 3.0*ONE + 17.0*cdiv(x,summer);
+		summer = 2.0*ONE + 5.0*cdiv(x,summer);
+		summer = ONE + cdiv(x,summer);
+		summer = ONE + cdiv(x,summer);
+		summer = cdiv(x,summer);
+		vec2 sol1 = summer;
+		float err1 = cmag2(cmul(sol1,cexp(sol1))-x);
+
+		if (err1 < best_err) {
+			best_err = err1;
+		}
+
+		// method 2: exponential continued fraction--good for |W(x)|<1 in principle,
+		// bad in practice
+
+		// summer = ZERO;
+		// for (int i = 0; i < 10; i++) {
+		// 	summer = cdiv(x,cexp(summer));
+		// }
+
+		// vec2 sol2 = summer;
+		// float err2 = cmag2(cmul(sol2,cexp(sol2))-x);
+		// if (err2 < best_err) {
+		// 	best_err = err2;
+		// }
+
+		// method 3: logarithmic continued fraction--good for |W(x)|>e in theory
+		// I think this one's busted
+		// summer = x;
+		// for (int i = 0; i < 2; i++) {
+		// 	summer = cdiv(x,clog(summer));
+		// }
+		// summer = clog(summer);
+		// vec2 sol3 = summer;
+		// float err3 = cmag2(cmul(sol3,cexp(sol3))-x);
+		// if (err3 < best_err) {
+		// 	best_err = err3;
+		// }
+
+		vec2 sol4 = sol0;
+		float err4 = 1000.0;
+		vec2 sol5 = x;
+		float err5 = 100.0;
+		if ((x.x>-0.4) && cabs(x.y)>0.4) { //it's got some confusion about the branch cut otherwise
+			// Method 4: Numerical evaluation using Newton's method: https://en.wikipedia.org/wiki/Lambert_W_function#Numerical_evaluation
+			vec2 w = ONE; //picking ONE makes the answer unstable elsewhere...
+			vec2 ew = ONE;
+			vec2 wew = ONE;
+			for (int j = 0; j < 100; j++) {
+				ew = cexp(w);
+				wew = cmul(w,ew);
+				w -= cdiv(wew-x,ew + wew-cdiv(cmul(w+2.0*ONE,wew-x),2.0*w+2.0*ONE));
+				// TODO: add something to kill this early if it's close
+			}
+			sol4 = w;
+
+			err4 = cmag2(wew-x);
+			if (err4 < best_err) {
+				best_err = err4;
+			}
+			// I honestly don't understand why this works
+		} else if ((x.x<-0.4) || (x.x>2.2) || (x.y>.41) || (x.y<-.41)) { //here's some goofy heuristics
+			// Method 4 v2: Numerical evaluation using Newton's method: https://en.wikipedia.org/wiki/Lambert_W_function#Numerical_evaluation
+			vec2 w = sol0; 
+			vec2 ew = ONE;
+			vec2 wew = ONE;
+			for (int j = 0; j < 100; j++) {
+				ew = cexp(w);
+				wew = cmul(w,ew);
+				w -= cdiv(wew-x,ew + wew-cdiv(cmul(w+2.0*ONE,wew-x),2.0*w+2.0*ONE));
+			}
+			sol5 = w;
+
+			err5 = cmag2(wew-x);
+			if (err5 < best_err) {
+				if ((x.y<0.0 && w.y<0.0) || (x.y>0.0 && w.y>0.0)) {
+					best_err = err5;
+				}
+			}
+		}
+
+		vec2 sol6 = x;
+		float err6 = 100.0;
+		// manual patches around bad spots
+		if (cmag2(x+.37*ONE)<.01) {
+			vec2 w = ONE; 
+			vec2 ew = ONE;
+			vec2 wew = ONE;
+			for (int j = 0; j < 100; j++) {
+				ew = cexp(w);
+				wew = cmul(w,ew);
+				w -= cdiv(wew-x,ew + wew-cdiv(cmul(w+2.0*ONE,wew-x),2.0*w+2.0*ONE));
+			}
+			sol6 = w;
+
+			err6 = cmag2(wew-x);
+			if (err6 < best_err) {
+				if ((x.y<0.0 && w.y<0.0) || (x.y>0.0 && w.y>0.0) || (cabs(x.y)<.00000001)) {
+					best_err = err6;
+				}
+			}
+		}
+
+		// Now return best method
+		if (best_err == err0) {
+			return sol0;
+		} else if (best_err == err1) {
+			return sol1;
+		// } else if (best_err == err2) {
+			// this one is pretty useless
+			// return sol2;
+		// } else if (best_err == err3) {
+		// 	return sol3;
+		} else if (best_err == err4) {
+			return sol4;
+		} else if (best_err == err5) {
+			return sol5;
+		} else if (best_err == err6) {
+			return sol6;
+		}
+	}
+	return ZERO;
+}
+
+// Assumption: real(z)>0
+vec2 digamma_helper(vec2 z) {
+	
+	vec2 summer = -0.57721566490153286060*ONE;
+	for (int k = 0; k < 1000; k++) {
+		summer += cdiv(z-ONE,float(k+1)*(float(k)*ONE+z));
+	}
+	return summer;
+
+}
+
+// TODO: consider implementing bernoulli formula
+// check: digamma(z+ONE)-digamma(z)-cinv(z)
+vec2 digamma(vec2 z) {
+	// can use reflection formula:
+	//gamma(x) = gamma(1-x) - pi cot pi x
+
+	return digamma_helper(z);
+
+}
+
+
+vec2 polygamma_helper(float m, vec2 z) {
+	vec2 summer = ZERO;
+	float m_plus_one = m+1.0;
+	for (int k = 0; k < 1000; k++) {
+		summer += cpow(z+float(k)*ONE,-m_plus_one);
+	}
+	return cpow(-1.0,m_plus_one)*gamma(m_plus_one) * summer;
+}
+
+// Returns (m+1)th logarithmic derivative of the gamma function
+// https://en.wikipedia.org/wiki/Polygamma_function
+// Example: polygamma(0,z) is digamma
+vec2 polygamma(float m, vec2 z) {
+	if (m == 0.0) {
+		return digamma(z);
+	}
+	return polygamma_helper(m,z);
+}
+
+vec2 polygamma(int m, vec2 z) {
+	return polygamma(float(m),z);
+}
+
+vec2 trigamma(vec2 z) {
+	return polygamma(1,z);
 }
