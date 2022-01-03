@@ -116,6 +116,16 @@
 
 
 
+!begin-exercise
+	
+	limits
+	
+	Find $\lim_{x \to \infty} g(x)$, $\lim_{x \to -\infty} g(x)$, and $\lim_{x \to 0} g(x)$. Why the last one is defined even though $g(x)$ is not defined for $x \leq 0$?
+	
+!end-exercise
+
+
+
 <div style="height: 15vh"></div>
 
 
@@ -187,9 +197,23 @@
 		\end{align*}
 	$$
 	
+!end-example
+
+!begin-exercise
+	
+	the chain rule
+	
+	Find $\frac{d}{dx} \left[ \tan(x) \ln(x^2) \right]$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
 	Some notational quirks to remember: $\frac{d}{dx}$ means derivative with respect to $x$, the $|_{x^3}$ tells us to plug $x^3$ in for $x$ after we take a derivative, and the derivative of $\sin(x)$ is $\cos(x)$. While we&#x2019;re talking about slightly obscure formulas like that, here&#x2019;s a short list of good derivatives to know.
 	
-!end-example
+!end-text-block
 
 
 
@@ -204,6 +228,8 @@
 	$\frac{d}{dx} [\sin(x)] = \cos(x)$
 	
 	$\frac{d}{dx} [\cos(x)] = -\sin(x)$
+	
+	$\frac{d}{dx} [\tan(x)] = \sec^2(x)$
 	
 	$\frac{d}{dx} [b^x] = b^x \ln(b)$
 	
@@ -245,7 +271,7 @@
 	
 	L&#x2019;H&#x00F4;pital&#x2019;s rule
 	
-	If $\lim_{x \to a} \frac{f(x)}{g(x)}$ is either $\frac{0}{0}$ or $\frac{\infty}{\infty}$, then $\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}$. Note this is <em>only</em> allowed when the limit is originally in one of these indeterminate forms, and that we differentiate the top and bottom of the fraction separately, rather than use the quotient rule.
+	If $\lim_{x \to a} \frac{f(x)}{g(x)}$ is either $\frac{0}{0}$ or $\frac{\infty}{\infty}$, then $\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}$. Note this is <strong>only</strong> allowed when the limit is originally in one of these indeterminate forms, and that we differentiate the top and bottom of the fraction separately, rather than use the quotient rule.
 	
 !end-prop
 
@@ -258,6 +284,14 @@
 	$\lim_{x \to \infty} \frac{x}{x^2 + 1} = \frac{\infty}{\infty}$, so $\lim_{x \to \infty} \frac{x}{x^2 + 1} = \lim_{x \to \infty} \frac{1}{2x} = 0$.
 	
 !end-example
+
+!begin-exercise
+	
+	L&#x2019;H&#x00F4;pital&#x2019;s rule
+	
+	Find $\lim_{x \to 0} \frac{\sin(x)}{x}$.
+	
+!end-exercise
 
 
 
