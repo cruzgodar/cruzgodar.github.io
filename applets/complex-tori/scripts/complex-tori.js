@@ -438,11 +438,68 @@
 			
 			varying vec2 uv;
 			
+			const float aspect_ratio = 1.0;
+			
+			const float world_center_x = 0.0;
+			const float world_center_y = 1.0;
+			const float world_size = 1.0;
+			
+			const float black_point = 1.0;
+			const float white_point = 1.0;
+			
+			uniform float g2_arg;
+			uniform float g3_arg;
+			
+			
+			
+			${COMPLEX_GLSL}
+			
+			
+			
+			vec3 hsv2rgb(vec3 c)
+			{
+				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+			}
+			
+			
+			
+			//Returns f(z) for a polynomial f with given roots.
+			vec2 f(vec2 z)
+			{
+				return kleinJ(z);
+			}
+			
 			
 			
 			void main(void)
 			{
-				gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+				vec2 z;
+				
+				if (aspect_ratio >= 1.0)
+				{
+					z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
+				}
+				
+				else
+				{
+					z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
+				}
+				
+				
+				
+				vec2 image_z = f(z);
+				
+				
+				
+				float modulus = length(image_z);
+				
+				float h = atan(image_z.y, image_z.x) / 6.283;
+				float s = clamp(1.0 / (1.0 + .01 * (modulus / white_point / white_point)), 0.0, 1.0);
+				float v = clamp(1.0 / (1.0 + .01 / (modulus * black_point * black_point)), 0.0, 1.0);
+				
+				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
 			}
 		`;
 		
@@ -453,11 +510,68 @@
 			
 			varying vec2 uv;
 			
+			const float aspect_ratio = 1.0;
+			
+			const float world_center_x = 0.0;
+			const float world_center_y = 1.0;
+			const float world_size = 1.0;
+			
+			const float black_point = 1.0;
+			const float white_point = 1.0;
+			
+			uniform float g2_arg;
+			uniform float g3_arg;
+			
+			
+			
+			${COMPLEX_GLSL}
+			
+			
+			
+			vec3 hsv2rgb(vec3 c)
+			{
+				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+			}
+			
+			
+			
+			//Returns f(z) for a polynomial f with given roots.
+			vec2 f(vec2 z)
+			{
+				return kleinJ(z);
+			}
+			
 			
 			
 			void main(void)
 			{
-				gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+				vec2 z;
+				
+				if (aspect_ratio >= 1.0)
+				{
+					z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
+				}
+				
+				else
+				{
+					z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
+				}
+				
+				
+				
+				vec2 image_z = f(z);
+				
+				
+				
+				float modulus = length(image_z);
+				
+				float h = atan(image_z.y, image_z.x) / 6.283;
+				float s = clamp(1.0 / (1.0 + .01 * (modulus / white_point / white_point)), 0.0, 1.0);
+				float v = clamp(1.0 / (1.0 + .01 / (modulus * black_point * black_point)), 0.0, 1.0);
+				
+				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
 			}
 		`;
 		
@@ -617,7 +731,13 @@
 			shader: frag_shader_source_g2,
 			
 			canvas_width: 500,
-			canvas_height: 500
+			canvas_height: 500,
+			
+			
+			
+			use_draggables: true,
+			
+			draggables_static: true
 		};
 		
 		
@@ -629,7 +749,13 @@
 			shader: frag_shader_source_g3,
 			
 			canvas_width: 500,
-			canvas_height: 500
+			canvas_height: 500,
+			
+			
+			
+			use_draggables: true,
+			
+			draggables_static: true
 		};
 		
 		
@@ -682,7 +808,19 @@
 		
 		wilson_g2 = new Wilson(document.querySelector("#g2-canvas"), options_g2);
 		
+		wilson_g2.render.init_uniforms(["g2_arg", "g3_arg"]);
+		
+		wilson_g2.draggables.add(0, 0);
+		
+		
+		
 		wilson_g3 = new Wilson(document.querySelector("#g3-canvas"), options_g3);
+		
+		wilson_g3.render.init_uniforms(["g3_arg", "g3_arg"]);
+		
+		wilson_g3.draggables.add(0, 0);
+		
+		
 		
 		wilson_other = new Wilson(document.querySelector("#other-canvas"), options_other);
 		

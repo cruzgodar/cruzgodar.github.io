@@ -2080,6 +2080,10 @@ vec2 inverse_g2_g3(vec2 a, vec2 b) {
 	return inverse_j_reduced(b_over_a);
 }
 
+vec2 inverse_g2_g3(float a, float b) {
+	return inverse_g2_g3(vec2(a, 0.0), vec2(b, 0.0));
+}
+
 
 
 // Returns the character of the irreducible su3 representation with highest weight (p,q)

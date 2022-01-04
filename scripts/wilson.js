@@ -61,6 +61,8 @@ class Wilson
 			
 			use_draggables
 			
+			draggables_static
+			
 			draggables_mousedown_callback
 			draggables_mouseup_callback
 			draggables_mousemove_callback
@@ -249,6 +251,8 @@ class Wilson
 		
 		
 		this.use_draggables = true;
+		
+		this.draggables.static = typeof options.draggables_static === "undefined" ? false : options.draggables_static;
 		
 		this.draggables.mousedown_callback = typeof options.draggables_mousedown_callback === "undefined" ? null : options.draggables_mousedown_callback;
 		this.draggables.mouseup_callback = typeof options.draggables_mouseup_callback === "undefined" ? null : options.draggables_mouseup_callback;
@@ -777,6 +781,8 @@ class Wilson
 		
 		num_draggables: 0,
 		
+		static: false,
+		
 		draggable_radius: 14.5,
 		
 		active_draggable: -1,
@@ -880,16 +886,24 @@ class Wilson
 			
 			
 			
-			document.documentElement.addEventListener("touchstart", handle_touchstart_event_bound, false);
-			document.documentElement.addEventListener("touchmove", handle_touchmove_event_bound, false);
-			document.documentElement.addEventListener("touchend", handle_touchend_event_bound, false);
+			if (!this.static)
+			{	
+				document.documentElement.addEventListener("touchstart", handle_touchstart_event_bound, false);
+				document.documentElement.addEventListener("touchmove", handle_touchmove_event_bound, false);
+				document.documentElement.addEventListener("touchend", handle_touchend_event_bound, false);
+				
+				document.documentElement.addEventListener("mousedown", handle_mousedown_event_bound, false);
+				document.documentElement.addEventListener("mousemove", handle_mousemove_event_bound, false);
+				document.documentElement.addEventListener("mouseup", handle_mouseup_event_bound, false);
+				
+				window.addEventListener("resize", on_resize_bound);
+				Page.temporary_handlers["resize"].push(on_resize_bound);
+			}
 			
-			document.documentElement.addEventListener("mousedown", handle_mousedown_event_bound, false);
-			document.documentElement.addEventListener("mousemove", handle_mousemove_event_bound, false);
-			document.documentElement.addEventListener("mouseup", handle_mouseup_event_bound, false);
-			
-			window.addEventListener("resize", on_resize_bound);
-			Page.temporary_handlers["resize"].push(on_resize_bound);
+			else
+			{
+				console.log(`[Wilson] Using non-draggable draggables -- is this really what you want to do?`);
+			}
 		},
 		
 		
