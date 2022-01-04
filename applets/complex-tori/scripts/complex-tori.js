@@ -19,11 +19,11 @@
 	
 	let wilson_ec_plot_output = null;
 	
+	let wilson_kleinj = null;
+	
 	let wilson_g2 = null;
 	
 	let wilson_g3 = null;
-	
-	let wilson_other = null;
 	
 	
 	
@@ -80,6 +80,7 @@
 	
 	let last_timestamp = -1;
 	let last_timestamp_ec_plot = -1;
+	let last_timestamp_parameter_column = -1;
 	
 	let currently_animating_parameters = false;
 	let parameter_animation_frame = 0;
@@ -138,6 +139,8 @@
 		window.requestAnimationFrame(draw_frame);
 		
 		window.requestAnimationFrame(draw_frame_ec_plot);
+		
+		window.requestAnimationFrame(draw_frame_parameter_column);
 	});
 	
 	g2_slider_value_element.textContent = g2;
@@ -158,6 +161,8 @@
 		window.requestAnimationFrame(draw_frame);
 		
 		window.requestAnimationFrame(draw_frame_ec_plot);
+		
+		window.requestAnimationFrame(draw_frame_parameter_column);
 	});
 	
 	g3_slider_value_element.textContent = g3;
@@ -433,7 +438,7 @@
 		
 		
 		
-		let frag_shader_source_g2 = `
+		let frag_shader_source_kleinj = `
 			precision highp float;
 			
 			varying vec2 uv;
@@ -449,6 +454,9 @@
 			
 			uniform float g2_arg;
 			uniform float g3_arg;
+			
+			const float dot_center_radius = .1;
+			const float dot_border_radius = .12;
 			
 			
 			
@@ -500,6 +508,113 @@
 				float v = clamp(1.0 / (1.0 + .01 / (modulus * black_point * black_point)), 0.0, 1.0);
 				
 				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
+				
+				
+				
+				vec2 tau = inverse_g2_g3(g2_arg, g3_arg);
+				
+				float distance = length(tau - z);
+				
+				if (distance < dot_center_radius)
+				{
+					gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+				}
+				
+				else if (distance < dot_border_radius)
+				{
+					gl_FragColor = vec4(0.25, 0.25, 0.25, 1.0);
+				}
+			}
+		`;
+		
+		
+		
+		let frag_shader_source_g2 = `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			const float aspect_ratio = 1.0;
+			
+			const float world_center_x = 0.0;
+			const float world_center_y = 1.0;
+			const float world_size = 1.0;
+			
+			const float black_point = 1.0;
+			const float white_point = 1.0;
+			
+			uniform float g2_arg;
+			uniform float g3_arg;
+			
+			const float dot_center_radius = .1;
+			const float dot_border_radius = .12;
+			
+			
+			
+			${COMPLEX_GLSL}
+			
+			
+			
+			vec3 hsv2rgb(vec3 c)
+			{
+				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+			}
+			
+			
+			
+			//Returns f(z) for a polynomial f with given roots.
+			vec2 f(vec2 z)
+			{
+				return eisenstein4(z);
+			}
+			
+			
+			
+			void main(void)
+			{
+				vec2 z;
+				
+				if (aspect_ratio >= 1.0)
+				{
+					z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
+				}
+				
+				else
+				{
+					z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
+				}
+				
+				
+				
+				vec2 image_z = f(z);
+				
+				
+				
+				float modulus = length(image_z);
+				
+				float h = atan(image_z.y, image_z.x) / 6.283;
+				float s = clamp(1.0 / (1.0 + .01 * (modulus / white_point / white_point)), 0.0, 1.0);
+				float v = clamp(1.0 / (1.0 + .01 / (modulus * black_point * black_point)), 0.0, 1.0);
+				
+				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
+				
+				
+				
+				vec2 tau = inverse_g2_g3(g2_arg, g3_arg);
+				
+				float distance = length(tau - z);
+				
+				if (distance < dot_center_radius)
+				{
+					gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+				}
+				
+				else if (distance < dot_border_radius)
+				{
+					gl_FragColor = vec4(0.25, 0.25, 0.25, 1.0);
+				}
 			}
 		`;
 		
@@ -522,6 +637,9 @@
 			uniform float g2_arg;
 			uniform float g3_arg;
 			
+			const float dot_center_radius = .1;
+			const float dot_border_radius = .12;
+			
 			
 			
 			${COMPLEX_GLSL}
@@ -540,7 +658,7 @@
 			//Returns f(z) for a polynomial f with given roots.
 			vec2 f(vec2 z)
 			{
-				return kleinJ(z);
+				return eisenstein6(z);
 			}
 			
 			
@@ -572,21 +690,22 @@
 				float v = clamp(1.0 / (1.0 + .01 / (modulus * black_point * black_point)), 0.0, 1.0);
 				
 				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
-			}
-		`;
-		
-		
-		
-		let frag_shader_source_other = `
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			
-			
-			void main(void)
-			{
-				gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+				
+				
+				
+				vec2 tau = inverse_g2_g3(g2_arg, g3_arg);
+				
+				float distance = length(tau - z);
+				
+				if (distance < dot_center_radius)
+				{
+					gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+				}
+				
+				else if (distance < dot_border_radius)
+				{
+					gl_FragColor = vec4(0.25, 0.25, 0.25, 1.0);
+				}
 			}
 		`;
 		
@@ -724,6 +843,18 @@
 		
 		
 		
+		let options_kleinj =
+		{
+			renderer: "gpu",
+			
+			shader: frag_shader_source_kleinj,
+			
+			canvas_width: 500,
+			canvas_height: 500
+		};
+		
+		
+		
 		let options_g2 =
 		{
 			renderer: "gpu",
@@ -731,13 +862,7 @@
 			shader: frag_shader_source_g2,
 			
 			canvas_width: 500,
-			canvas_height: 500,
-			
-			
-			
-			use_draggables: true,
-			
-			draggables_static: true
+			canvas_height: 500
 		};
 		
 		
@@ -747,24 +872,6 @@
 			renderer: "gpu",
 			
 			shader: frag_shader_source_g3,
-			
-			canvas_width: 500,
-			canvas_height: 500,
-			
-			
-			
-			use_draggables: true,
-			
-			draggables_static: true
-		};
-		
-		
-		
-		let options_other =
-		{
-			renderer: "gpu",
-			
-			shader: frag_shader_source_other,
 			
 			canvas_width: 500,
 			canvas_height: 500
@@ -806,23 +913,21 @@
 		
 		
 		
+		wilson_kleinj = new Wilson(document.querySelector("#kleinj-canvas"), options_kleinj);
+		
+		wilson_kleinj.render.init_uniforms(["g2_arg", "g3_arg"]);
+		
+		
+		
 		wilson_g2 = new Wilson(document.querySelector("#g2-canvas"), options_g2);
 		
 		wilson_g2.render.init_uniforms(["g2_arg", "g3_arg"]);
-		
-		wilson_g2.draggables.add(0, 0);
 		
 		
 		
 		wilson_g3 = new Wilson(document.querySelector("#g3-canvas"), options_g3);
 		
-		wilson_g3.render.init_uniforms(["g3_arg", "g3_arg"]);
-		
-		wilson_g3.draggables.add(0, 0);
-		
-		
-		
-		wilson_other = new Wilson(document.querySelector("#other-canvas"), options_other);
+		wilson_g3.render.init_uniforms(["g2_arg", "g3_arg"]);
 		
 		
 		
@@ -835,11 +940,7 @@
 		
 		window.requestAnimationFrame(draw_frame_ec_plot);
 		
-		wilson_g2.render.draw_frame();
-		
-		wilson_g3.render.draw_frame();
-		
-		wilson_other.render.draw_frame();
+		window.requestAnimationFrame(draw_frame_parameter_column);
 		
 		
 		
@@ -1474,6 +1575,41 @@
 			
 			window.requestAnimationFrame(draw_frame_ec_plot);
 		}
+	}
+	
+	
+	
+	function draw_frame_parameter_column(timestamp)
+	{
+		let time_elapsed = timestamp - last_timestamp_parameter_column;
+		
+		last_timestamp_parameter_column = timestamp;
+		
+		
+		
+		if (time_elapsed === 0)
+		{
+			return;
+		}
+		
+		
+		
+		wilson_kleinj.gl.uniform1f(wilson_kleinj.uniforms["g2_arg"], g2);
+		wilson_kleinj.gl.uniform1f(wilson_kleinj.uniforms["g3_arg"], g3);
+		
+		wilson_g2.gl.uniform1f(wilson_g2.uniforms["g2_arg"], g2);
+		wilson_g2.gl.uniform1f(wilson_g2.uniforms["g3_arg"], g3);
+		
+		wilson_g3.gl.uniform1f(wilson_g3.uniforms["g2_arg"], g2);
+		wilson_g3.gl.uniform1f(wilson_g3.uniforms["g3_arg"], g3);
+		
+		
+		
+		wilson_kleinj.render.draw_frame();
+		
+		wilson_g2.render.draw_frame();
+		
+		wilson_g3.render.draw_frame();
 	}
 	
 	
