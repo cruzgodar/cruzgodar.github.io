@@ -29,6 +29,12 @@
         "non-webp": "notes/4-ftoc/cover.jpg"
 	},
 	
+	"5-simple-applications":
+	{
+		"webp": "notes/5-simple-applications/cover.webp",
+        "non-webp": "notes/5-simple-applications/cover.jpg"
+	},
+	
 	
 	
 	"homework-7":
