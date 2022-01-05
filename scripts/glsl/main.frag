@@ -739,6 +739,10 @@ float binomial(float n, float k)
 	return prod;
 }
 
+float binomial(int n, int k) {
+	return binomial(float(n),float(k));
+}
+
 // Returns B_m, the mth Bernoulli number, e.g. 1, -1/2, 1/6, 0, -1/30, 0, ....
 float bernoulli(float m) {
 	if (m == 1.0) {
@@ -2060,6 +2064,48 @@ vec2 inverse_j_reduced(float z) {
 	return cmul(I,cdiv(hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,1.0-a),hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,a)));
 }
 
+int mod_int(int a, int b) {
+	return int(mod(float(a),float(b)));
+}
+// IN: coprime integers a,b
+// OUT: integers c,d such that ad - bc = 1
+// check: extended_euclidean(4,15)
+// answer: (4,-1)
+const int EUCLIDEAN_BOUND = 100;
+vec2 extended_euclidean(int a, int b) {
+    int r = b;
+    int x = a;    // becomes gcd(a, b)
+    int s = 0;
+    int y = 1;    // the coefficient of a
+    int t = 1;
+    int z = 0;    // the coefficient of b
+    int q = 0;
+    int prev_r = r;
+    int prev_s = s;
+    int prev_t = t;
+    for (int j = 0; j < EUCLIDEAN_BOUND; j++) {
+    	if (r == 0) {
+    		break;
+    	}
+        q = x / r;
+        
+        r = mod_int(x, r);
+        x = prev_r;
+        
+        s =  y - q * s;
+        y = prev_s;
+        
+        t = z - q * t;
+        z = prev_t;
+
+        prev_r = r;
+    	prev_s = s;
+    	prev_t = t;
+    }
+
+    return vec2(float(mod_int(y, b / x)), -float(mod_int(z, -a / x))); // modulus in this way so that y is positive and z is negative
+}
+
 
 // IN: g2 = a, g3 = b
 // OUT: tau such that y^2 = 4x^3 - g2(tau)x - g3(tau) is isomorphic to y^2 = 4x^3 - ax - b
@@ -2068,16 +2114,34 @@ vec2 inverse_j_reduced(float z) {
 // that is, |z| < 1, -.5<z.x<.5, z not within unit circles around +- 1
 // TODO: write algorithm to take tau and map it to a sensible element of SL2Z orbit?
 
+// IN: z
+// Let tau= (az+b)/(cz+d) such that a = g2(tau), b = g3(tau) (please forgive double this usage of a,b)
+// OUT: tau
+vec2 out_of_fundamental_domain(vec2 z, vec2 a, vec2 b) {
+	// since g2(\gamma z) = (cz + d)^4 g(z)
+	vec2 cz_plus_d = cpow(cdiv(a,g2(z)),0.25);
+	// round them up
+	float c = floor(cdiv(cz_plus_d.y,z.y)+.499);
+	float d = floor((cz_plus_d - c * z).x+.499);
+	vec2 temp = extended_euclidean(int(c),int(d));
+	float aa = temp.x;
+	float bb = temp.y;
+	// maybe inverse?
+
+	return cdiv(aa*z + bb*ONE, c * z + d*ONE);
+
+}
+
 vec2 inverse_g2_g3(vec2 a, vec2 b) {
 	a = cpow(a,3.0);
 	b = cpow(b,2.0);
 	vec2 b_over_a = cdiv(b,a);
 	if (b_over_a.y == 0.0) {
 		if (b_over_a.x >= 0.0) {
-			return inverse_j_reduced(b_over_a.x);
+			return out_of_fundamental_domain(inverse_j_reduced(b_over_a.x),a,b);
 		}
 	}
-	return inverse_j_reduced(b_over_a);
+	return out_of_fundamental_domain(inverse_j_reduced(b_over_a),a,b);
 }
 
 vec2 inverse_g2_g3(float a, float b) {
@@ -2353,6 +2417,7 @@ vec2 polygamma_helper(float m, vec2 z) {
 // https://en.wikipedia.org/wiki/Polygamma_function
 // Example: polygamma(0,z) is digamma
 vec2 polygamma(float m, vec2 z) {
+	// can think about rewriting these using hurwitz zeta
 	if (m == 0.0) {
 		return digamma(z);
 	}
@@ -2366,3 +2431,74 @@ vec2 polygamma(int m, vec2 z) {
 vec2 trigamma(vec2 z) {
 	return polygamma(1,z);
 }
+
+vec2 hurwitz_zeta_helper(vec2 s, vec2 a) {
+	vec2 summer = ZERO;
+	vec2 minus_s = -s;
+	for (int k = 0; k < 1000; k++) {
+		summer += cpow(a+float(k)*ONE,minus_s);
+	}
+	return summer;
+}
+
+const int HURWITZ_ZETA_BOUND = 5;
+
+// can't call zeta rn LOL
+// test with hurwitz_zeta(z,1.0/3.0)
+// this one is pretty: hurwitz_zeta(3.0*ONE + 4.0*I,z)
+vec2 hurwitz_zeta(vec2 s, vec2 a) {
+	// for real a, Bailey and Borwein apparently have a decent algorithm
+	if (a == ONE) {
+		// return zeta(s);
+	} else if (a == 0.5*ONE) {
+		// return cmul(cpow(2.0,s)-ONE,zeta(s));
+	}
+	if (s.x > 1.0) {
+		return hurwitz_zeta_helper(s,a);
+		// can implement functional equation with (Apostol 1995, Miller and Adamchik 1999) for real, rational a,
+		// read: https://mathworld.wolfram.com/HurwitzZetaFunction.html
+	} else if (a.x>0.0) {
+		// use hasse's formula from https://en.wikipedia.org/wiki/Hurwitz_zeta_function
+		vec2 summer = ZERO;
+		vec2 term = ZERO;
+		for (int n = 0; n < HURWITZ_ZETA_BOUND; n++) {
+			term = ZERO;
+			for (int k = 0; k < HURWITZ_ZETA_BOUND; k++) {
+				term += cpow(-1.0,float(k)) * binomial(float(n),float(k)) * cpow(a + float(k)*ONE,ONE-s);
+			}
+			summer += term/float(n+1);
+		}
+		return cdiv(summer,s-ONE);
+	}
+	return ZERO;
+}
+
+vec2 hurwitz_zeta(vec2 s, float a) {
+	return hurwitz_zeta(s, vec2(a,0.0));
+}
+
+const int HURWITZ_ZETA_BOUND_PQ = 100;
+
+// test: hurwitz_zeta(z,1,2)
+// also useful: hurwitz_zeta(z,1,1)
+// currenty broken
+// vec2 hurwitz_zeta(vec2 s, int p, int q) {
+// 	// returns hurwitz_zeta(s,p/q)
+// 	// can think about looking at gcd of p and q
+
+// 	if ((s.x > 1.0) || (float(p)/float(q) > 0.0)) {
+// 		return hurwitz_zeta(s,float(p)/float(q));
+// 	}
+	
+// 	vec2 summer = ZERO;
+// 	vec2 one_minus_s = ONE-s;
+// 	for (int n = 1; n < HURWITZ_ZETA_BOUND_PQ; n++) {
+// 		if (n > q) {
+// 			break;
+// 		}
+// 		summer += cmul(csin(PI/2.0*s + 2.0*PI*float(n*p)/float(q)*ONE), hurwitz_zeta(ONE-s,float(n)/float(q)));
+// 	}
+// 	return 2.0 * cmul(gamma(one_minus_s),cpow(2.0*PI*float(q),s-ONE));
+// }
+
+// TODO: dirichlet characters and L-functions
