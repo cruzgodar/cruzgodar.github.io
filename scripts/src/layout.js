@@ -104,6 +104,15 @@ Page.Layout =
 		
 		
 		
+		let elements = document.querySelectorAll("iframe");
+		
+		for (let i = 0; i < elements.length; i++)
+		{
+			elements[i].style.height = `${elements[i].offsetWidth}px`;
+		}
+		
+		
+		
 		if (this.aspect_ratio < 1)
 		{
 			Page.Banner.file_name = "portrait." + Page.Images.file_extension;
