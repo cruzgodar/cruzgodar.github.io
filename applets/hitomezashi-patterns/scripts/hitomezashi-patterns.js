@@ -32,6 +32,12 @@
 	
 	let pattern_rows = [];
 	let pattern_cols = [];
+	let regions = [];
+	let regions_ordered = [];
+	let num_regions = 0;
+	let cells_by_radius = [];
+	
+	let line_width = null;
 	
 	
 	
@@ -108,13 +114,21 @@
 		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		wilson.ctx.fillRect(0, 0, resolution, resolution);
 		
-		wilson.ctx.strokeStyle = "rgb(255, 255, 255)";
+		wilson.ctx.strokeStyle = "rgb(0, 0, 0)";
+		
+		line_width = resolution / grid_size / 20;
+		
+		wilson.ctx.lineWidth = line_width;
 		
 		
 		
 		//These are 0 if there is not a row/col in that position, and 1 if there is.
 		pattern_rows = new Array(grid_size + 1);
 		pattern_cols = new Array(grid_size + 1);
+		regions = new Array(grid_size);
+		regions_ordered = [];
+		num_regions = 0;
+		cells_by_radius = new Array(grid_size + 1);
 		
 		for (let i = 0; i < grid_size + 1; i++)
 		{
@@ -125,6 +139,33 @@
 			{
 				pattern_rows[i][j] = 0;
 				pattern_cols[i][j] = 0;
+			}
+		}
+		
+		for (let i = 0; i < grid_size; i++)
+		{
+			regions[i] = new Array(grid_size);
+			
+			for (let j = 0; j < grid_size; j++)
+			{
+				regions[i][j] = -1;
+			}
+		}
+		
+		for (let i = 0; i < grid_size + 1; i++)
+		{
+			cells_by_radius[i] = [];
+		}
+		
+		
+		
+		let middle_row = Math.floor(grid_size / 2);
+		
+		for (let i = 0; i < grid_size; i++)
+		{
+			for (let j = 0; j < grid_size; j++)
+			{
+				cells_by_radius[Math.abs(i - middle_row) + Math.abs(j - middle_row)].push([i, j]);
 			}
 		}
 		
@@ -169,6 +210,10 @@
 		
 		
 		draw_hitomezashi_pattern();
+		
+		identify_regions();
+		
+		draw_regions();
 	}
 	
 	
@@ -177,24 +222,25 @@
 	{
 		//Draw the boundary.
 		wilson.ctx.beginPath();
-		wilson.ctx.moveTo(resolution / (grid_size + 2), resolution / (grid_size + 2));
+		wilson.ctx.moveTo(resolution / (grid_size + 2) - line_width / 2, resolution / (grid_size + 2));
 		wilson.ctx.lineTo((resolution / (grid_size + 2)) * (grid_size + 1), resolution / (grid_size + 2));
 		wilson.ctx.lineTo((resolution / (grid_size + 2)) * (grid_size + 1), (resolution / (grid_size + 2)) * (grid_size + 1));
 		wilson.ctx.lineTo(resolution / (grid_size + 2), (resolution / (grid_size + 2)) * (grid_size + 1));
-		wilson.ctx.lineTo(resolution / (grid_size + 2), resolution / (grid_size + 2));
+		wilson.ctx.lineTo(resolution / (grid_size + 2), resolution / (grid_size + 2) - line_width / 2);
 		wilson.ctx.stroke();
 		
 		
 		
-		for (let i = 0; i < grid_size + 1; i++)
+		//We don't include things on the boundary, since they don't play nice with the lines already drawn there.
+		for (let i = 1; i < grid_size; i++)
 		{
 			for (let j = 0; j < grid_size; j++)
 			{
 				if (pattern_rows[i][j])
 				{			
 					wilson.ctx.beginPath();
-					wilson.ctx.moveTo((resolution / (grid_size + 2)) * (j + 1), (resolution / (grid_size + 2)) * (i + 1));
-					wilson.ctx.lineTo((resolution / (grid_size + 2)) * (j + 2), (resolution / (grid_size + 2)) * (i + 1));
+					wilson.ctx.moveTo((resolution / (grid_size + 2)) * (j + 1) - line_width / 2, (resolution / (grid_size + 2)) * (i + 1));
+					wilson.ctx.lineTo((resolution / (grid_size + 2)) * (j + 2) + line_width / 2, (resolution / (grid_size + 2)) * (i + 1));
 					wilson.ctx.stroke();
 				}
 			}
@@ -204,15 +250,142 @@
 		
 		for (let i = 0; i < grid_size; i++)
 		{
-			for (let j = 0; j < grid_size + 1; j++)
+			for (let j = 1; j < grid_size; j++)
 			{
 				if (pattern_cols[i][j])
 				{			
 					wilson.ctx.beginPath();
-					wilson.ctx.moveTo((resolution / (grid_size + 2)) * (j + 1), (resolution / (grid_size + 2)) * (i + 1));
-					wilson.ctx.lineTo((resolution / (grid_size + 2)) * (j + 1), (resolution / (grid_size + 2)) * (i + 2));
+					wilson.ctx.moveTo((resolution / (grid_size + 2)) * (j + 1), (resolution / (grid_size + 2)) * (i + 1) - line_width / 2);
+					wilson.ctx.lineTo((resolution / (grid_size + 2)) * (j + 1), (resolution / (grid_size + 2)) * (i + 2) + line_width / 2);
 					wilson.ctx.stroke();
 				}
+			}
+		}
+	}
+	
+	
+	
+	function identify_regions()
+	{
+		//This is kind of a mess, but we're just going to floodfill one region at a time and just constant colors that range from red in the top left to magenta in the bottom right. That's the goal at least.
+		
+		let start_row = 0;
+		let start_col = 0;
+		
+		while (true)
+		{
+			let active_squares = [[start_row, start_col]];
+			
+			regions[start_row][start_col] = num_regions;
+			
+			regions_ordered.push([[start_row, start_col]]);
+			
+			
+			
+			while (active_squares.length !== 0)
+			{
+				let num_active_squares = active_squares.length;
+				
+				for (let i = 0; i < num_active_squares; i++)
+				{
+					let row = active_squares[i][0];
+					let col = active_squares[i][1];
+					
+					if (row > 0 && regions[row - 1][col] === -1 && !(pattern_rows[row][col]))
+					{
+						active_squares.push([row - 1, col]);
+						
+						regions[row - 1][col] = num_regions;
+						
+						regions_ordered[num_regions].push([row - 1, col]);
+					}
+					
+					if (row < grid_size - 1 && regions[row + 1][col] === -1 && !(pattern_rows[row + 1][col]))
+					{
+						active_squares.push([row + 1, col]);
+						
+						regions[row + 1][col] = num_regions;
+						
+						regions_ordered[num_regions].push([row + 1, col]);
+					}
+					
+					if (col > 0 && regions[row][col - 1] === -1 && !(pattern_cols[row][col]))
+					{
+						active_squares.push([row, col - 1]);
+						
+						regions[row][col - 1] = num_regions;
+						
+						regions_ordered[num_regions].push([row, col - 1]);
+					}
+					
+					if (col < grid_size - 1 && regions[row][col + 1] === -1 && !(pattern_cols[row][col + 1]))
+					{
+						active_squares.push([row, col + 1]);
+						
+						regions[row][col + 1] = num_regions;
+						
+						regions_ordered[num_regions].push([row, col + 1]);
+					}
+				}
+				
+				active_squares.splice(0, num_active_squares);
+			}
+			
+			
+			
+			//Now search radially outward from the center for the next starting square.
+			
+			let found_new_start = false;
+			
+			for (let radius = 0; radius <= grid_size; radius++)
+			{
+				for (let i = 0; i < cells_by_radius[radius].length; i++)
+				{
+					let row = cells_by_radius[radius][i][0];
+					let col = cells_by_radius[radius][i][1];
+					
+					if (regions[row][col] === -1)
+					{
+						start_row = row;
+						start_col = col;
+						
+						found_new_start = true;
+						
+						break;
+					}
+				}
+				
+				if (found_new_start)
+				{
+					break;
+				}
+			}
+			
+			num_regions++;
+			
+			if (!found_new_start)
+			{
+				break;
+			}
+		}
+	}
+	
+	
+	
+	function draw_regions()
+	{
+		for (let i = 0; i < num_regions; i++)
+		{
+			let rgb = wilson.utils.hsv_to_rgb(i / (num_regions - 1) * 6/7, 1, 1);
+			
+			wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			
+			for (let j = 0; j < regions_ordered[i].length; j++)
+			{
+				let row = regions_ordered[i][j][0];
+				let col = regions_ordered[i][j][1];
+				
+				wilson.ctx.fillRect((resolution / (grid_size + 2)) * (col + 1) + line_width / 2, (resolution / (grid_size + 2)) * (row + 1) + line_width / 2, resolution / (grid_size + 2) - line_width, resolution / (grid_size + 2) - line_width);
 			}
 		}
 	}
