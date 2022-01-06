@@ -2039,6 +2039,7 @@ vec2 inverse_wp(vec2 z, vec2 tau) {
 
 // Inverse function to kleinJ
 // Uses ``Method 4: Solving the quadratic in α'' from https://en.wikipedia.org/wiki/J-invariant
+// inverse_j(kleinj(z)) is not an inverse tho
 vec2 inverse_j(vec2 z) {
 
 	// Test code: 1728.0*cdiv(cpow(g2(inverse_j(z)),3.0),cpow(g2(inverse_j(z)),3.0)-27.0 * cpow(g3(inverse_j(z)),2.0))
@@ -2064,85 +2065,88 @@ vec2 inverse_j_reduced(float z) {
 	return cmul(I,cdiv(hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,1.0-a),hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,a)));
 }
 
-int mod_int(int a, int b) {
-	return int(mod(float(a),float(b)));
-}
-// IN: coprime integers a,b
-// OUT: integers c,d such that ad - bc = 1
-// check: extended_euclidean(4,15)
-// answer: (4,-1)
-const int EUCLIDEAN_BOUND = 100;
-vec2 extended_euclidean(int a, int b) {
-    int r = b;
-    int x = a;    // becomes gcd(a, b)
-    int s = 0;
-    int y = 1;    // the coefficient of a
-    int t = 1;
-    int z = 0;    // the coefficient of b
-    int q = 0;
-    int prev_r = r;
-    int prev_s = s;
-    int prev_t = t;
-    for (int j = 0; j < EUCLIDEAN_BOUND; j++) {
-    	if (r == 0) {
-    		break;
-    	}
-        q = x / r;
-        
-        r = mod_int(x, r);
-        x = prev_r;
-        
-        s =  y - q * s;
-        y = prev_s;
-        
-        t = z - q * t;
-        z = prev_t;
 
-        prev_r = r;
-    	prev_s = s;
-    	prev_t = t;
-    }
+const int ARITHMETIC_GEOMETRIC_MEAN_BOUND = 10;
+const float ARITHMETIC_GEOMETRIC_MEAN_TOL = .001;
 
-    return vec2(float(mod_int(y, b / x)), -float(mod_int(z, -a / x))); // modulus in this way so that y is positive and z is negative
+vec2 arithmetic_geometric_mean(vec2 x, vec2 y) {
+	vec2 an = x;
+	vec2 gn = y;
+	for (int i = 0; i < ARITHMETIC_GEOMETRIC_MEAN_BOUND; i++) {
+		if (cabs(an-gn) < ARITHMETIC_GEOMETRIC_MEAN_TOL) {
+			break;
+		}
+		x = 0.5*(an+gn);
+		y = csqrt(cmul(an,gn));
+
+		an = x;
+		gn = y;
+	}
+	return an;
+
 }
 
+vec2 agm(vec2 x, vec2 y) {
+	return arithmetic_geometric_mean(x,y);
+}
+
+// weird function to satisfy wikipedia's equation for fundamental periods on https://en.wikipedia.org/wiki/Elliptic_curve
+vec2 arithmetic_geometric_mean_for_g2_g3(vec2 x, vec2 y) {
+	vec2 an = x;
+	vec2 gn = y;
+	for (int i = 0; i < ARITHMETIC_GEOMETRIC_MEAN_BOUND; i++) {
+		if (cabs(an-gn) < ARITHMETIC_GEOMETRIC_MEAN_TOL) {
+			break;
+		}
+		x = 0.5*(an+gn);
+		y = csqrt(cmul(an,gn));
+		if (cabs(x-y) > cabs(x+y)) {
+			y = -y;
+		}
+
+		an = x;
+		gn = y;
+	}
+	return an;
+
+}
 
 // IN: g2 = a, g3 = b
 // OUT: tau such that y^2 = 4x^3 - g2(tau)x - g3(tau) is isomorphic to y^2 = 4x^3 - ax - b
+// 
 
-// This gives the identity map on the segment below fundamental domain: inverse_g2_g3(g2(z),g3(z))
-// that is, |z| < 1, -.5<z.x<.5, z not within unit circles around +- 1
-// TODO: write algorithm to take tau and map it to a sensible element of SL2Z orbit?
+//  oh my lord it actually works
+// Test with inverse_g2_g3(g2(z),g3(z))
 
-// IN: z
-// Let tau= (az+b)/(cz+d) such that a = g2(tau), b = g3(tau) (please forgive double this usage of a,b)
-// OUT: tau
-vec2 out_of_fundamental_domain(vec2 z, vec2 a, vec2 b) {
-	// since g2(\gamma z) = (cz + d)^4 g(z)
-	vec2 cz_plus_d = cpow(cdiv(a,g2(z)),0.25);
-	// round them up
-	float c = floor(cdiv(cz_plus_d.y,z.y)+.499);
-	float d = floor((cz_plus_d - c * z).x+.499);
-	vec2 temp = extended_euclidean(int(c),int(d));
-	float aa = temp.x;
-	float bb = temp.y;
-	// maybe inverse?
+const float cube_root_three = pow(3.0,1.0/3.0);
+const float cube_root_three_squared = pow(3.0,2.0/3.0);
 
-	return cdiv(aa*z + bb*ONE, c * z + d*ONE);
-
-}
+const vec2 one_plus_root_three_i = ONE+I*sqrt(3.0);
+const vec2 one_minus_root_three_i = ONE-I*sqrt(3.0);
 
 vec2 inverse_g2_g3(vec2 a, vec2 b) {
-	a = cpow(a,3.0);
-	b = cpow(b,2.0);
-	vec2 b_over_a = cdiv(b,a);
-	if (b_over_a.y == 0.0) {
-		if (b_over_a.x >= 0.0) {
-			return out_of_fundamental_domain(inverse_j_reduced(b_over_a.x),a,b);
-		}
-	}
-	return out_of_fundamental_domain(inverse_j_reduced(b_over_a),a,b);
+
+	vec2 a3 = cpow(a,3.0);
+	vec2 b2 = cpow(b,2.0);
+
+	vec2 d = cpow(sqrt(3.0) *csqrt(a3 + 27.0* b2) - 9.0* b,1.0/3.0);
+
+	// r1,r2,r3 work!
+	vec2 r1 = 0.5* (d/cube_root_three_squared - cdiv(a,d)/cube_root_three);
+	vec2 r2 = cdiv(cmul(one_plus_root_three_i,a),4.0*cube_root_three*d) - cmul(d, one_minus_root_three_i) /4.0 / cube_root_three_squared;
+	vec2 r3 = cdiv(cmul(one_minus_root_three_i,a),4.0*cube_root_three*d) - cmul(d, one_plus_root_three_i) /4.0 / cube_root_three_squared;
+
+	vec2 a0 = csqrt(r1-r3);
+	vec2 b0 = csqrt(r1-r2);
+	vec2 c0 = csqrt(r2-r3);
+
+	return cdiv(arithmetic_geometric_mean(c0,cmul(I,b0)),arithmetic_geometric_mean_for_g2_g3(a0,b0));
+
+	// fwiw this is a decent inverse right below the fundamental domain
+	// // vec2 tau = inverse_j_reduced(cdiv(cpow(b,2.0),cpow(a,3.0)));
+	
 }
+
 
 vec2 inverse_g2_g3(float a, float b) {
 	return inverse_g2_g3(vec2(a, 0.0), vec2(b, 0.0));
