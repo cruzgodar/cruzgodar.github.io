@@ -34,6 +34,7 @@
 	let pattern_cols = [];
 	let regions = [];
 	let regions_ordered = [];
+	let region_sizes = [];
 	let num_regions = 0;
 	let cells_by_radius = [];
 	
@@ -127,6 +128,7 @@
 		pattern_cols = new Array(grid_size + 1);
 		regions = new Array(grid_size);
 		regions_ordered = [];
+		region_sizes = [];
 		num_regions = 0;
 		cells_by_radius = new Array(grid_size + 1);
 		
@@ -333,6 +335,10 @@
 			
 			
 			
+			region_sizes.push(regions_ordered[num_regions].length);
+			
+			
+			
 			//Now search radially outward from the center for the next starting square.
 			
 			let found_new_start = false;
@@ -374,13 +380,33 @@
 	
 	function draw_regions()
 	{
+		//Get unique values.
+		region_sizes = [...new Set(region_sizes)];
+		
+		//Sort descending.
+		region_sizes.sort((a, b) => b - a);
+		
+		let num_unique_region_sizes = region_sizes.length;
+		
+		
+		
 		for (let i = 0; i < num_regions; i++)
 		{
-			let rgb = wilson.utils.hsv_to_rgb(i / (num_regions - 1) * 6/7, 1, 1);
+			let region_length = regions_ordered[i].length;
+			
+			//Cycle colors every grid_size regions (this is just an experimentally good value).
+			let h = (i % (2 * grid_size)) / (2 * grid_size);
+			
+			//Color the largest regions darkest, but linearly according to the list of lengths, so that all the medium regions aren't extremely bright when there's a very large region.
+			let v = (region_sizes.indexOf(region_length) / (num_unique_region_sizes - 1)) * .85 + .15;
+			
+			let rgb = wilson.utils.hsv_to_rgb(h, 1, v);
 			
 			wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 			
-			for (let j = 0; j < regions_ordered[i].length; j++)
+			
+			
+			for (let j = 0; j < region_length; j++)
 			{
 				let row = regions_ordered[i][j][0];
 				let col = regions_ordered[i][j][1];
