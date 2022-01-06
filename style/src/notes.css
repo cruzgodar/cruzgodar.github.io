@@ -70,6 +70,11 @@ iframe
 	display: none;
 }
 
+.notes-example iframe:last-child, .notes-exercise iframe:last-child, .notes-def iframe:last-child, .notes-prop iframe:last-child, .notes-thm iframe:last-child, .notes-proof iframe:last-child, .notes-comment iframe:last-child, .notes-cor iframe:last-child, .notes-lemma iframe:last-child, .notes-axiom iframe:last-child
+{
+	margin-bottom: 0;
+}
+
 
 
 .notes-example-title, .notes-exercise-title, .notes-def-title, .notes-prop-title, .notes-thm-title, .notes-proof-title, .notes-comment-title, .notes-cor-title, .notes-lemma-title, .notes-axiom-title
