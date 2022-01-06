@@ -293,6 +293,9 @@
 
 label .body-text
 {
+	width: 100% !important;
+	height: 24px;
+	
 	text-align: center;
 }
 
