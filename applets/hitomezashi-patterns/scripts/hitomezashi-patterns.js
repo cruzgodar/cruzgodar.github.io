@@ -398,7 +398,13 @@
 			let h = (i % (2 * grid_size)) / (2 * grid_size);
 			
 			//Color the largest regions darkest, but linearly according to the list of lengths, so that all the medium regions aren't extremely bright when there's a very large region.
-			let v = (region_sizes.indexOf(region_length) / (num_unique_region_sizes - 1)) * .85 + .15;
+			let v = Math.sqrt(region_sizes.indexOf(region_length) / (num_unique_region_sizes - 2));
+			
+			//Tone down the singletons -- otherwise they stand out way too much.
+			if (region_length === 1)
+			{
+				v = .5;
+			}
 			
 			let rgb = wilson.utils.hsv_to_rgb(h, 1, v);
 			
