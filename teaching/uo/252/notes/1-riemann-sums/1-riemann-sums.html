@@ -88,7 +88,11 @@
 	
 	Find $\sum_{i = 1}^6 i$.
 	
+	Solution: this is $1 + 2 + 3 + 4 + 5 + 6 = 36$.
+	
 	Write $0 + \sqrt{3} + \sqrt{8} + \sqrt{15} + \sqrt{24}$ as a sum.
+	
+	Solution: there are two main patterns you could see here: first, $0 = 0 \cdot 2$, $3 = 3 \cdot 1$, $8 = 4 \cdot 2$, and so on, or alternatively, $0 = 1^2 - 1$, $3 = 2^2 - 1$, $8 = 3^2 - 1$, and so on. For the first, we get $\sum_{i = 0}^4 \sqrt{i(i + 2)}$, and for the second, we get $\sum_{i = 1}^5 \sqrt{i^2 - 1}$. Both answers are correct!
 	
 !end-exercise
 
@@ -189,6 +193,24 @@
 	some special sums
 	
 	Find $2 \cdot 10^3 + 2 \cdot 11^3 + \cdots + 2 \cdot 25^3$.
+	
+	Solution: first, write this as a sum: $\sum_{i = 10}^{25} 2 i^3$. Factor out the $2$ to get $2\sum_{i = 10}^{25} i^3$ and place the remaining sum in an equation with sums starting at $1$:
+	
+	$$
+		\sum_{i = 1}^9 i^3 + \sum_{i = 10}^{25} i^3 = \sum_{i = 1}^{25} i^3.
+	$$
+	
+	Now use the formula for the sum of cubes.
+	
+	$$
+		\begin{align*}
+			\frac{9^2 \cdot 10^2}{4} + \sum_{i = 10}^{25} i^3 &= \frac{25^2 \cdot 26^2}{4}\\
+			2025 + \sum_{i = 10}^{25} i^3 &= 105625\\
+			\sum_{i = 10}^{25} i^3 &= 103600\\
+		\end{align*}
+	$$
+	
+	Now we just need to multiply this by $2$ to get $207200$.
 	
 !end-exercise
 
@@ -299,6 +321,12 @@
 	Riemann sum
 	
 	Compute the left Riemann sum with $5$ intervals for the function $g(t) = t^4$ on the interval $[-5, 5]$. Draw a picture of the rectangles.
+	
+	Solution: the partition is the same as the previous example, and the $x_i^*$ are the left endpoints, which are $-5, -3, -1, 1, 3$. Therefore, we want
+	
+	$$
+		(-5)^4 \cdot 2 + (-3)^4 \cdot 2 + (-1)^4 \cdot 2 + 1^4 \cdot 2 + 3^4 \cdot 2 = 1578.
+	$$
 	
 !end-exercise
 
