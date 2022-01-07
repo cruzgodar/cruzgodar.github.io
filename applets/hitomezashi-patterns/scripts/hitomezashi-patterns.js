@@ -25,6 +25,10 @@
 	
 	
 	
+	let do_draw_boundaries = true;
+	let do_draw_regions = true;
+	let maximum_speed = false;
+	
 	let resolution = null;
 	let grid_size = null;
 	let row_prob = null;
@@ -36,7 +40,12 @@
 	let regions_ordered = [];
 	let region_sizes = [];
 	let num_regions = 0;
+	let num_unique_region_sizes = 0;
 	let cells_by_radius = [];
+	
+	let current_row = 1;
+	let current_col = 1;
+	let current_region = 0;
 	
 	let line_width = null;
 	
@@ -92,6 +101,36 @@
 	
 	
 	
+	let draw_boundaries_checkbox_element = document.querySelector("#toggle-draw-boundaries-checkbox");
+	
+	let draw_regions_checkbox_element = document.querySelector("#toggle-draw-regions-checkbox");
+	
+	let maximum_speed_checkbox_element = document.querySelector("#toggle-maximum-speed-checkbox");
+	
+	
+	
+	draw_boundaries_checkbox_element.checked = true;
+	
+	
+	
+	draw_boundaries_checkbox_element.addEventListener("input", () =>
+	{
+		if (!draw_boundaries_checkbox_element.checked && !draw_regions_checkbox_element.checked)
+		{
+			draw_regions_checkbox_element.checked = true;
+		}
+	});
+	
+	draw_regions_checkbox_element.addEventListener("input", () =>
+	{
+		if (!draw_boundaries_checkbox_element.checked && !draw_regions_checkbox_element.checked)
+		{
+			draw_boundaries_checkbox_element.checked = true;
+		}
+	});
+	
+	
+	
 	let download_button_element = document.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
@@ -115,11 +154,17 @@
 		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		wilson.ctx.fillRect(0, 0, resolution, resolution);
 		
-		wilson.ctx.strokeStyle = "rgb(0, 0, 0)";
+		wilson.ctx.strokeStyle = "rgb(127, 127, 127)";
 		
 		line_width = resolution / grid_size / 20;
 		
 		wilson.ctx.lineWidth = line_width;
+		
+		
+		
+		do_draw_boundaries = draw_boundaries_checkbox_element.checked;
+		do_draw_regions = draw_regions_checkbox_element.checked;
+		maximum_speed = maximum_speed_checkbox_element.checked;
 		
 		
 		
@@ -211,28 +256,48 @@
 		
 		
 		
-		draw_hitomezashi_pattern();
+		if (maximum_speed)
+		{
+			if (do_draw_boundaries)
+			{
+				draw_hitomezashi_pattern();
+			}
+			
+			if (do_draw_regions)
+			{
+				identify_regions();
+				
+				draw_regions();
+			}
+		}
 		
-		identify_regions();
 		
-		draw_regions();
+		
+		else
+		{
+			if (do_draw_boundaries)
+			{
+				current_row = 1;
+				current_col = 1;
+				
+				draw_hitomezashi_pattern_row_step();
+			}
+			
+			else if (do_draw_regions)
+			{
+				identify_regions();
+				
+				current_region = 0;
+				
+				draw_regions_step();
+			}
+		}
 	}
 	
 	
 	
 	function draw_hitomezashi_pattern()
 	{
-		//Draw the boundary.
-		wilson.ctx.beginPath();
-		wilson.ctx.moveTo(resolution / (grid_size + 2) - line_width / 2, resolution / (grid_size + 2));
-		wilson.ctx.lineTo((resolution / (grid_size + 2)) * (grid_size + 1), resolution / (grid_size + 2));
-		wilson.ctx.lineTo((resolution / (grid_size + 2)) * (grid_size + 1), (resolution / (grid_size + 2)) * (grid_size + 1));
-		wilson.ctx.lineTo(resolution / (grid_size + 2), (resolution / (grid_size + 2)) * (grid_size + 1));
-		wilson.ctx.lineTo(resolution / (grid_size + 2), resolution / (grid_size + 2) - line_width / 2);
-		wilson.ctx.stroke();
-		
-		
-		
 		//We don't include things on the boundary, since they don't play nice with the lines already drawn there.
 		for (let i = 1; i < grid_size; i++)
 		{
@@ -241,8 +306,8 @@
 				if (pattern_rows[i][j])
 				{			
 					wilson.ctx.beginPath();
-					wilson.ctx.moveTo((resolution / (grid_size + 2)) * (j + 1) - line_width / 2, (resolution / (grid_size + 2)) * (i + 1));
-					wilson.ctx.lineTo((resolution / (grid_size + 2)) * (j + 2) + line_width / 2, (resolution / (grid_size + 2)) * (i + 1));
+					wilson.ctx.moveTo((resolution / grid_size) * j, (resolution / grid_size) * i);
+					wilson.ctx.lineTo((resolution / grid_size) * (j + 1), (resolution / grid_size) * i);
 					wilson.ctx.stroke();
 				}
 			}
@@ -257,11 +322,70 @@
 				if (pattern_cols[i][j])
 				{			
 					wilson.ctx.beginPath();
-					wilson.ctx.moveTo((resolution / (grid_size + 2)) * (j + 1), (resolution / (grid_size + 2)) * (i + 1) - line_width / 2);
-					wilson.ctx.lineTo((resolution / (grid_size + 2)) * (j + 1), (resolution / (grid_size + 2)) * (i + 2) + line_width / 2);
+					wilson.ctx.moveTo((resolution / grid_size) * j, (resolution / grid_size) * i);
+					wilson.ctx.lineTo((resolution / grid_size) * j, (resolution / grid_size) * (i + 1));
 					wilson.ctx.stroke();
 				}
 			}
+		}
+	}
+	
+	
+	
+	function draw_hitomezashi_pattern_row_step()
+	{
+		for (let j = 0; j < grid_size; j++)
+		{
+			if (pattern_rows[current_row][j])
+			{			
+				wilson.ctx.beginPath();
+				wilson.ctx.moveTo((resolution / grid_size) * j, (resolution / grid_size) * current_row);
+				wilson.ctx.lineTo((resolution / grid_size) * (j + 1), (resolution / grid_size) * current_row);
+				wilson.ctx.stroke();
+			}
+		}
+		
+		current_row++;
+		
+		if (current_row < grid_size)
+		{
+			window.requestAnimationFrame(draw_hitomezashi_pattern_row_step);
+		}
+		
+		else
+		{
+			window.requestAnimationFrame(draw_hitomezashi_pattern_col_step);
+		}
+		
+	}
+	
+	function draw_hitomezashi_pattern_col_step()
+	{
+		for (let i = 0; i < grid_size; i++)
+		{
+			if (pattern_cols[i][current_col])
+			{			
+				wilson.ctx.beginPath();
+				wilson.ctx.moveTo((resolution / grid_size) * current_col, (resolution / grid_size) * i);
+				wilson.ctx.lineTo((resolution / grid_size) * current_col, (resolution / grid_size) * (i + 1));
+				wilson.ctx.stroke();
+			}
+		}
+		
+		current_col++;
+		
+		if (current_col < grid_size)
+		{
+			window.requestAnimationFrame(draw_hitomezashi_pattern_col_step);
+		}
+		
+		else if (do_draw_regions)
+		{
+			identify_regions();
+			
+			current_region = 0;
+			
+			draw_regions_step();
 		}
 	}
 	
@@ -374,19 +498,24 @@
 				break;
 			}
 		}
-	}
-	
-	
-	
-	function draw_regions()
-	{
+		
+		
+		
 		//Get unique values.
 		region_sizes = [...new Set(region_sizes)];
 		
 		//Sort descending.
 		region_sizes.sort((a, b) => b - a);
 		
-		let num_unique_region_sizes = region_sizes.length;
+		num_unique_region_sizes = region_sizes.length;
+	}
+	
+	
+	
+	function draw_regions()
+	{
+		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilson.ctx.fillRect(0, 0, resolution, resolution);
 		
 		
 		
@@ -417,8 +546,69 @@
 				let row = regions_ordered[i][j][0];
 				let col = regions_ordered[i][j][1];
 				
-				wilson.ctx.fillRect((resolution / (grid_size + 2)) * (col + 1) + line_width / 2, (resolution / (grid_size + 2)) * (row + 1) + line_width / 2, resolution / (grid_size + 2) - line_width, resolution / (grid_size + 2) - line_width);
+				wilson.ctx.fillRect((resolution / grid_size) * col + line_width / 2, (resolution / grid_size) * row + line_width / 2, resolution / grid_size - line_width, resolution / grid_size - line_width);
 			}
+		}
+	}
+	
+	
+	
+	function draw_regions_step()
+	{
+		for (let i = 0; i < Math.ceil(grid_size / 50); i++)
+		{
+			let region_length = regions_ordered[current_region].length;
+			
+			//Cycle colors every grid_size regions (this is just an experimentally good value).
+			let h = (current_region % (2 * grid_size)) / (2 * grid_size);
+			
+			//Color the largest regions darkest, but linearly according to the list of lengths, so that all the medium regions aren't extremely bright when there's a very large region.
+			let v = Math.sqrt(region_sizes.indexOf(region_length) / (num_unique_region_sizes - 2));
+			
+			//Tone down the singletons -- otherwise they stand out way too much.
+			if (region_length === 1)
+			{
+				v = .5;
+			}
+			
+			let rgb = wilson.utils.hsv_to_rgb(h, 1, v);
+			
+			
+			
+			wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			
+			for (let j = 0; j < region_length; j++)
+			{
+				let row = regions_ordered[current_region][j][0];
+				let col = regions_ordered[current_region][j][1];
+				
+				wilson.ctx.fillRect((resolution / grid_size) * col, (resolution / grid_size) * row, resolution / grid_size, resolution / grid_size);
+			}
+			
+			
+			wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			
+			for (let j = 0; j < region_length; j++)
+			{
+				let row = regions_ordered[current_region][j][0];
+				let col = regions_ordered[current_region][j][1];
+				
+				wilson.ctx.fillRect((resolution / grid_size) * col + line_width / 2, (resolution / grid_size) * row + line_width / 2, resolution / grid_size - line_width, resolution / grid_size - line_width);
+			}
+			
+			
+			
+			current_region++;
+			
+			if (current_region === num_regions)
+			{
+				return;
+			}
+		}
+		
+		if (current_region < num_regions)
+		{
+			window.requestAnimationFrame(draw_regions_step);
 		}
 	}
 }()

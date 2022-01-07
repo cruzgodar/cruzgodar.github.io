@@ -25,6 +25,12 @@
 	
 	
 	
+	"hitomezashi-patterns":
+	{
+		"webp": "/applets/hitomezashi-patterns/cover.webp",
+		"non-webp": "/applets/hitomezashi-patterns/cover.jpg"
+	},
+	
 	"double-pendulum-fractal":
 	{
 		"webp": "/applets/double-pendulum-fractal/cover.webp",
@@ -35,11 +41,5 @@
 	{
 		"webp": "/applets/complex-maps/cover.webp",
 		"non-webp": "/applets/complex-maps/cover.jpg"
-	},
-	
-	"lyapunov-fractals":
-	{
-		"webp": "/applets/lyapunov-fractals/cover.webp",
-		"non-webp": "/applets/lyapunov-fractals/cover.jpg"
 	}
 }

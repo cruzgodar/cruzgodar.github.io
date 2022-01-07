@@ -7,6 +7,14 @@
 	
 	
 	
+	"hitomezashi-patterns":
+	{
+		"webp": "hitomezashi-patterns/cover.webp",
+		"non-webp": "hitomezashi-patterns/cover.jpg"
+	},
+	
+	
+	
 	"double-pendulum-fractal":
 	{
 		"webp": "double-pendulum-fractal/cover.webp",
