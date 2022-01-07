@@ -111,6 +111,8 @@
 	
 	draw_boundaries_checkbox_element.checked = true;
 	
+	draw_regions_checkbox_element.checked = true;
+	
 	
 	
 	draw_boundaries_checkbox_element.addEventListener("input", () =>
@@ -385,7 +387,7 @@
 			
 			current_region = 0;
 			
-			draw_regions_step();
+			setTimeout(draw_regions_step, 1000);
 		}
 	}
 	
