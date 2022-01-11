@@ -1,0 +1,251 @@
+{
+	"newtons-method-2":
+	{
+		"webp": "thumbnails/newtons-method-2.webp",
+		"non-webp": "thumbnails/newtons-method-2.jpg"
+	},
+	
+	"abelian-sandpile":
+	{
+		"webp": "thumbnails/abelian-sandpile.webp",
+		"non-webp": "thumbnails/abelian-sandpile.jpg"
+	},
+	
+	"wilsons-algorithm-3":
+	{
+		"webp": "thumbnails/wilsons-algorithm-3.webp",
+		"non-webp": "thumbnails/wilsons-algorithm-3.jpg"
+	},
+	
+	"finite-subdivision-1":
+	{
+		"webp": "thumbnails/finite-subdivision-1.webp",
+		"non-webp": "thumbnails/finite-subdivision-1.jpg"
+	},
+	
+	"generalized-julia-set-2":
+	{
+		"webp": "thumbnails/generalized-julia-set-2.webp",
+		"non-webp": "thumbnails/generalized-julia-set-2.jpg"
+	},
+	
+	"hitomezashi-pattern-2":
+	{
+		"webp": "thumbnails/hitomezashi-pattern-2.webp",
+		"non-webp": "thumbnails/hitomezashi-pattern-2.jpg"
+	},
+	
+	
+	
+	"brownian-tree":
+	{
+		"webp": "thumbnails/brownian-tree.webp",
+		"non-webp": "thumbnails/brownian-tree.jpg"
+	},
+	
+	"lyapunov-fractal":
+	{
+		"webp": "thumbnails/lyapunov-fractal.webp",
+		"non-webp": "thumbnails/lyapunov-fractal.jpg"
+	},
+	
+	"strange-attractor":
+	{
+		"webp": "thumbnails/strange-attractor.webp",
+		"non-webp": "thumbnails/strange-attractor.jpg"
+	},
+	
+	"complex-map-3":
+	{
+		"webp": "thumbnails/complex-map-3.webp",
+		"non-webp": "thumbnails/complex-map-3.jpg"
+	},
+	
+	"julia-set-1":
+	{
+		"webp": "thumbnails/julia-set-1.webp",
+		"non-webp": "thumbnails/julia-set-1.jpg"
+	},
+	
+	"gravner-griffeath-snowflake":
+	{
+		"webp": "thumbnails/gravner-griffeath-snowflake.webp",
+		"non-webp": "thumbnails/gravner-griffeath-snowflake.jpg"
+	},
+	
+	
+	
+	"double-pendulum-fractal":
+	{
+		"webp": "thumbnails/double-pendulum-fractal.webp",
+		"non-webp": "thumbnails/double-pendulum-fractal.jpg"
+	},
+	
+	
+	
+	"newtons-method-1":
+	{
+		"webp": "thumbnails/newtons-method-1.webp",
+		"non-webp": "thumbnails/newtons-method-1.jpg"
+	},
+	
+	"kicked-rotator":
+	{
+		"webp": "thumbnails/kicked-rotator.webp",
+		"non-webp": "thumbnails/kicked-rotator.jpg"
+	},
+	
+	"kaleidoscopic-ifs-1":
+	{
+		"webp": "thumbnails/kaleidoscopic-ifs-1.webp",
+		"non-webp": "thumbnails/kaleidoscopic-ifs-1.jpg"
+	},
+	
+	"generalized-julia-set-1":
+	{
+		"webp": "thumbnails/generalized-julia-set-1.webp",
+		"non-webp": "thumbnails/generalized-julia-set-1.jpg"
+	},
+	
+	"quasi-fuchsian-group":
+	{
+		"webp": "thumbnails/quasi-fuchsian-group.webp",
+		"non-webp": "thumbnails/quasi-fuchsian-group.jpg"
+	},
+	
+	"chaos-game-1":
+	{
+		"webp": "thumbnails/chaos-game-1.webp",
+		"non-webp": "thumbnails/chaos-game-1.jpg"
+	},
+	
+	
+	
+	"wilsons-algorithm-2":
+	{
+		"webp": "thumbnails/wilsons-algorithm-2.webp",
+		"non-webp": "thumbnails/wilsons-algorithm-2.jpg"
+	},
+	
+	
+	
+	"julia-set-mosaic":
+	{
+		"webp": "thumbnails/julia-set-mosaic.webp",
+		"non-webp": "thumbnails/julia-set-mosaic.jpg"
+	},
+	
+	"barnsley-fern":
+	{
+		"webp": "thumbnails/barnsley-fern.webp",
+		"non-webp": "thumbnails/barnsley-fern.jpg"
+	},
+	
+	"generalized-julia-set-3":
+	{
+		"webp": "thumbnails/generalized-julia-set-3.webp",
+		"non-webp": "thumbnails/generalized-julia-set-3.jpg"
+	},
+	
+	"newtons-method-3":
+	{
+		"webp": "thumbnails/newtons-method-3.webp",
+		"non-webp": "thumbnails/newtons-method-3.jpg"
+	},
+	
+	"complex-map-1":
+	{
+		"webp": "thumbnails/complex-map-1.webp",
+		"non-webp": "thumbnails/complex-map-1.jpg"
+	},
+	
+	"kaleidoscopic-ifs-2":
+	{
+		"webp": "thumbnails/kaleidoscopic-ifs-2.webp",
+		"non-webp": "thumbnails/kaleidoscopic-ifs-2.jpg"
+	},
+	
+	
+	
+	"secant-method":
+	{
+		"webp": "thumbnails/secant-method.webp",
+		"non-webp": "thumbnails/secant-method.jpg"
+	},
+	
+	"juliabulb-1":
+	{
+		"webp": "thumbnails/juliabulb-1.webp",
+		"non-webp": "thumbnails/juliabulb-1.jpg"
+	},
+	
+	"juliabulb-2":
+	{
+		"webp": "thumbnails/juliabulb-2.webp",
+		"non-webp": "thumbnails/juliabulb-2.jpg"
+	},
+	
+	"newtons-method-extended":
+	{
+		"webp": "thumbnails/newtons-method-extended.webp",
+		"non-webp": "thumbnails/newtons-method-extended.jpg"
+	},
+	
+	"chaos-game-2":
+	{
+		"webp": "thumbnails/chaos-game-2.webp",
+		"non-webp": "thumbnails/chaos-game-2.jpg"
+	},
+	
+	"juliabulb-3":
+	{
+		"webp": "thumbnails/juliabulb-3.webp",
+		"non-webp": "thumbnails/juliabulb-3.jpg"
+	},
+	
+	
+	
+	"mandelbulb":
+	{
+		"webp": "thumbnails/mandelbulb.webp",
+		"non-webp": "thumbnails/mandelbulb.jpg"
+	},
+	
+	
+	
+	"finite-subdivision-2":
+	{
+		"webp": "thumbnails/finite-subdivision-2.webp",
+		"non-webp": "thumbnails/finite-subdivision-2.jpg"
+	},
+	
+	"hitomezashi-pattern-1":
+	{
+		"webp": "thumbnails/hitomezashi-pattern-1.webp",
+		"non-webp": "thumbnails/hitomezashi-pattern-1.jpg"
+	},
+	
+	"julia-set-2":
+	{
+		"webp": "thumbnails/julia-set-2.webp",
+		"non-webp": "thumbnails/julia-set-2.jpg"
+	},
+	
+	"wilsons-algorithm-1":
+	{
+		"webp": "thumbnails/wilsons-algorithm-1.webp",
+		"non-webp": "thumbnails/wilsons-algorithm-1.jpg"
+	},
+	
+	"newtons-method-4":
+	{
+		"webp": "thumbnails/newtons-method-4.webp",
+		"non-webp": "thumbnails/newtons-method-4.jpg"
+	},
+	
+	"complex-map-4":
+	{
+		"webp": "thumbnails/complex-map-4.webp",
+		"non-webp": "thumbnails/complex-map-4.jpg"
+	}
+}
