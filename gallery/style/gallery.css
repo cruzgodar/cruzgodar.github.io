@@ -42,6 +42,8 @@
 	object-fit: cover;
 	
 	transition: transform .125s ease-in-out; 
+	
+	cursor: pointer;
 }
 
 .gallery-image-1-1
