@@ -35,6 +35,9 @@
 	width: 100%;
 	height: 100%;
 	
+	object-fit: cover;
+	
+	transition: transform .125s ease-in-out; 
 }
 
 .gallery-image-1-1
@@ -53,6 +56,17 @@
 {
 	grid-row: span 3;
 	grid-column: span 3;
+}
+
+
+.gallery-image-1-1 img.hover, .gallery-image-2-2 img.hover, .gallery-image-3-3 img.hover
+{
+	transform: scale(1.05);
+}
+
+.gallery-image-1-1 img:not(:hover):focus, .gallery-image-2-2 img:not(:hover):focus, .gallery-image-3-3 img:not(:hover):focus
+{
+	transform: scale(1.05);
 }
 
 
