@@ -74,6 +74,25 @@ Page.Footer =
 		
 		
 		
+		if  (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "gallery"))
+		{
+			let element = document.createElement("div");
+			
+			document.querySelector(".footer-image-links").appendChild(element);
+			
+			element.outerHTML = `
+				<div id="gallery-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
+					<a class="focus-on-child" href="index.html?page=%2Fgallery%2Fgallery.html${url_vars_suffix}" tabindex="-1">
+						<img onclick="Page.Navigation.redirect('/gallery/gallery.html')" src="/gallery/cover.${Page.Images.file_extension}" alt="Gallery" tabindex="2"></img>
+					</a>
+				</div>
+			`;
+			
+			delay += Site.opacity_animation_time / 3;
+		}
+		
+		
+		
 		if  (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "applets"))
 		{
 			let element = document.createElement("div");
@@ -243,25 +262,31 @@ Page.Footer =
 					
 					
 					
-					<div id="floating-footer-applets-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 6.25px">
+					<div id="floating-footer-gallery-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 6.25px">
+						<a href="/gallery/gallery.html" tabindex="-1">
+							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/gallery/gallery.html')" src="/gallery/cover.${Page.Images.file_extension}" alt="Gallery" tabindex="1"></img>
+						</a>
+					</div>
+					
+					<div id="floating-footer-applets-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 55.25px">
 						<a href="/applets/applets.html" tabindex="-1">
 							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="1"></img>
 						</a>
 					</div>
 					
-					<div id="floating-footer-writing-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 55.25px">
+					<div id="floating-footer-writing-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 104.25px">
 						<a href="/writing/writing.html" tabindex="-1">
 							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/writing/writing.html')" src="/writing/cover.${Page.Images.file_extension}" alt="Writing" tabindex="1"></img>
 						</a>
 					</div>
 					
-					<div id="floating-footer-teaching-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 104.25px">
+					<div id="floating-footer-teaching-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 153.25px">
 						<a href="/teaching/teaching.html" tabindex="-1">
 							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/teaching/teaching.html')" src="/teaching/cover.${Page.Images.file_extension}" alt="Teaching" tabindex="1"></img>
 						</a>
 					</div>
 					
-					<div id="floating-footer-bio-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 153.25px">
+					<div id="floating-footer-bio-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 202.25px">
 						<a href="/bio/bio.html" tabindex="-1">
 							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/bio/bio.html')" src="/bio/cover.${Page.Images.file_extension}" alt="Me" tabindex="1"></img>
 						</a>
@@ -297,6 +322,7 @@ Page.Footer =
 			
 			setTimeout(() =>
 			{
+				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-gallery-link img"));
 				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-applets-link img"));
 				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-writing-link img"));
 				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-teaching-link img"));
@@ -597,32 +623,37 @@ Page.Footer =
 		
 		show_image_links: function()
 		{
-			document.querySelector("#floating-footer-applets-link").style.left = "10px";
+			document.querySelector("#floating-footer-gallery-link").style.left = "10px";
 			
 			document.querySelector("#settings-button").style.opacity = 0;
 			
 			setTimeout(() =>
 			{
-				document.querySelector("#floating-footer-writing-link").style.left = "10px";
-			
+				document.querySelector("#floating-footer-applets-link").style.left = "10px";
+				
 				document.querySelector("#sitemap-button").style.opacity = 0;
 				
 				setTimeout(() =>
 				{
-					document.querySelector("#floating-footer-teaching-link").style.left = "10px";
-				
+					document.querySelector("#floating-footer-writing-link").style.left = "10px";
+					
 					document.querySelector("#about-button").style.opacity = 0;
 					
 					setTimeout(() =>
 					{
-						document.querySelector("#floating-footer-bio-link").style.left = "10px";
-						
-						this.image_links_is_open = true;
+						document.querySelector("#floating-footer-teaching-link").style.left = "10px";
 						
 						setTimeout(() =>
 						{
-							this.hide_menu();
-						}, Site.opacity_animation_time);
+							document.querySelector("#floating-footer-bio-link").style.left = "10px";
+							
+							this.image_links_is_open = true;
+							
+							setTimeout(() =>
+							{
+								this.hide_menu();
+							}, Site.opacity_animation_time);
+						}, Site.opacity_animation_time / 6);
 					}, Site.opacity_animation_time / 6);
 				}, Site.opacity_animation_time / 6);
 			}, Site.opacity_animation_time / 6);
@@ -683,24 +714,29 @@ Page.Footer =
 			
 			
 			
-			document.querySelector("#floating-footer-applets-link").style.left = "-40px";
+			document.querySelector("#floating-footer-gallery-link").style.left = "-40px";
 			
 			setTimeout(() =>
 			{
-				document.querySelector("#floating-footer-writing-link").style.left = "-40px";
+				document.querySelector("#floating-footer-applets-link").style.left = "-40px";
 				
 				//This one looks better with a slight delay.
 				document.querySelector("#show-footer-menu-button").style.opacity = 1;
 				
 				setTimeout(() =>
 				{
-					document.querySelector("#floating-footer-teaching-link").style.left = "-40px";
+					document.querySelector("#floating-footer-writing-link").style.left = "-40px";
 					
 					setTimeout(() =>
 					{
-						document.querySelector("#floating-footer-bio-link").style.left = "-40px";
+						document.querySelector("#floating-footer-teaching-link").style.left = "-40px";
 						
-						this.image_links_is_open = false;
+						setTimeout(() =>
+						{
+							document.querySelector("#floating-footer-bio-link").style.left = "-40px";
+							
+							this.image_links_is_open = false;
+						}, Site.opacity_animation_time / 6);
 					}, Site.opacity_animation_time / 6);
 				}, Site.opacity_animation_time / 6);
 			}, Site.opacity_animation_time / 6);

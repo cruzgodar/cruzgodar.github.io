@@ -1,4 +1,10 @@
 {
+	"gallery":
+	{
+		"webp": "/gallery/cover.webp",
+		"non-webp": "/gallery/cover.jpg"
+	},
+	
 	"writing":
 	{
 		"webp": "/writing/cover.webp",

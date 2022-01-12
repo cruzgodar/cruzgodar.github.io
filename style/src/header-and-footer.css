@@ -94,18 +94,18 @@
 
 .footer-line-break
 {
-	width: 40vw !important;
+	width: 60vw !important;
 	
-	margin-left: 30vw;
+	margin-left: 20vw;
 	
 	margin-bottom: 3vw;
 }
 
 .footer-line-break-big
 {
-	width: 52.5vw !important;
+	width: 80vw !important;
 	
-	margin-left: 23.75vw;
+	margin-left: 10vw;
 	
 	margin-bottom: 3vw;
 }
@@ -118,14 +118,14 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-between;
-	width: 30vw;
+	width: 41vw;
 	margin: 0 auto;
 	margin-bottom: 3vw;
 }
 
 .footer-image-links-big
 {
-	width: 41vw;
+	width: 52vw;
 }
 
 
@@ -212,7 +212,7 @@
 
 
 
-#floating-footer-writing-link, #floating-footer-teaching-link, #floating-footer-applets-link, #floating-footer-bio-link
+#floating-footer-writing-link, #floating-footer-teaching-link, #floating-footer-applets-link, #floating-footer-bio-link, #floating-footer-gallery-link
 {
 	transition: left .25s ease;
 	
@@ -384,18 +384,18 @@
 {
 	.footer-line-break
 	{
-		width: 55vw !important;
+		width: 85vw !important;
 		
-		margin-left: 22.5vw !important;
+		margin-left: 7.5vw !important;
 		
 		margin-bottom: 4vw !important;
 	}
 
 	.footer-line-break-big
 	{
-		width: 75vw !important;
+		width: 100vw !important;
 		
-		margin-left: 12.5vw !important;
+		margin-left: 0 !important;
 		
 		margin-bottom: 4vw !important;
 	}
@@ -404,12 +404,12 @@
 
 	.footer-image-links
 	{
-		width: 44vw;
+		width: 60vw;
 	}
 
 	.footer-image-links-big
 	{
-		width: 60vw;
+		width: 76vw;
 	}
 
 	.footer-image-link
