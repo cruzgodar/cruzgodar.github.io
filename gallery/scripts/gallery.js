@@ -7,6 +7,8 @@
 		Site.Settings.toggle("theme");
 	}
 	
+	let current_id = "";
+	
 	
 	
 	let full_res_viewer_element = document.querySelector("#full-res-viewer");
@@ -31,8 +33,6 @@
 	
 	full_res_viewer_element.addEventListener("click", e =>
 	{
-		console.log(e.target.id);
-		
 		if (e.target.id === "full-res-viewer-image-container" || e.target.id === "full-res-viewer-text-container" || e.target.id === "full-res-viewer")
 		{
 			hide_full_res_image();
@@ -41,10 +41,24 @@
 	
 	
 	
+	full_res_viewer_image_element.addEventListener("click", e =>
+	{
+		if (current_id !== "")
+		{
+			Page.Navigation.redirect(gallery_image_data[current_id]["image_link"], true);
+		}
+	});
+	
+	
+	
 	function show_full_res_image(id)
 	{
+		current_id = id;
+		
+		
+		
 		full_res_viewer_element.style.display = "block";
-		full_res_viewer_image_element.src = `${Page.parent_folder}full-res/${id}.png`;
+		full_res_viewer_image_element.src = gallery_image_data[id]["image_link"];
 		
 		
 		
@@ -54,13 +68,19 @@
 			</h1>
 			
 			<br>
+			
+			<h2 class="section-text center-if-needed">
+				<span>${gallery_image_data[id]["resolution"]}</span>
+			</h2>
+			
+			<br>
 		`;
 		
 		
 		
 		let parameters = gallery_image_data[id]["parameters"];
 		
-		if (parameters !== "")
+		if (parameters !== undefined)
 		{
 			new_html += `
 				<p class="body-text center-if-needed">
@@ -75,7 +95,7 @@
 		
 		let featured = gallery_image_data[id]["featured"];
 		
-		if (featured !== "")
+		if (featured !== undefined)
 		{
 			new_html += `
 				<p class="body-text center-if-needed">
@@ -107,10 +127,13 @@
 	
 	function hide_full_res_image()
 	{
+		current_id = "";
+		
 		full_res_viewer_element.style.opacity = 0;
 		
 		setTimeout(() =>
 		{
+			full_res_viewer_image_element.src = "";
 			full_res_viewer_element.style.display = "none";
 		}, Site.opacity_animation_time);
 	}
@@ -119,15 +142,519 @@
 	
 	const gallery_image_data = 
 	{
+		"newtons-method-2":
+		{
+			"title": "Newton&#x2019;s Method",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "Roots at (&#x00B1;1, 0), (0, &#x00B1;1.5), (&#x00B1;1.5, &#x00B1;1.5)",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
+			
+			"applet_link": "newtons-method",
+			
+			"image_link": "https://drive.google.com/uc?id=1I19shEUp7KEPThaj16eV9H9hqBeSwJm3&export=download"
+		},
+		
+		"abelian-sandpile":
+		{
+			"title": "An Abelian Sandpile",
+			
+			"resolution": "4747x4747",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
+			
+			"applet_link": "abelian-sandpiles",
+			
+			"image_link": "https://drive.google.com/uc?id=1pqpf8z08AgJ9oFXQLU0J6eWaJvgg6oME&export=download"
+		},
+		
+		"wilsons-algorithm-3":
+		{
+			"title": "Wilson&#x2019;s Algorithm",
+			
+			"resolution": "5050x5050",
+			
+			"applet_link": "wilsons-algorithm",
+			
+			"image_link": "https://drive.google.com/uc?id=1m_vUOhvRyb-3Tctspo0SjrmH22AsshKi&export=download"
+		},
+		
+		"finite-subdivision-1":
+		{
+			"title": "A Finite Subdivision",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "6 vertices, 6 iterations",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
+			
+			"applet_link": "finite-subdivisions",
+			
+			"image_link": "https://drive.google.com/uc?id=1qdHVX58lkTdrcebrzDyQC4690C0IgpJE&export=download"
+		},
+		
+		"generalized-julia-set-2":
+		{
+			"title": "A Generalized Julia Set",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "Generated from z&#x00B2; - .05z&#x207B;&#x00B2; + c",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
+			
+			"applet_link": "generalized-julia-sets",
+			
+			"image_link": "https://drive.google.com/uc?id=1l7lChOVrzWkJSsydmEte1f3pPZe3Txro&export=download"
+		},
+		
+		"hitomezashi-pattern-2":
+		{
+			"title": "A Hitomezashi Pattern",
+			
+			"resolution": "5000x5000",
+			
+			"applet_link": "hitomezashi-patterns",
+			
+			"image_link": "https://drive.google.com/uc?id=1JkngUmUdSEJvzYMRTTUIa3jy26F0c6m8&export=download"
+		},
+		
+		
+		
+		"brownian-tree":
+		{
+			"title": "A Brownian Tree",
+			
+			"resolution": "5000x5000",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
+			
+			"applet_link": "brownian-trees",
+			
+			"image_link": "https://drive.google.com/uc?id=1BSuYpCW9jQKqu8NOu6f_6omr_LVMXprh&export=download"
+		},
+		
+		"lyapunov-fractal":
+		{
+			"title": "A Lyapunov Fractal",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "Generating string AABB",
+			
+			"applet_link": "lyapunov-fractals",
+			
+			"image_link": "https://drive.google.com/uc?id=1Xb5BMuz-iB9f-CN4l5wyZtbCLLOXrz80&export=download"
+		},
+		
+		"strange-attractor":
+		{
+			"title": "A Lorenz Attractor",
+			
+			"resolution": "5000x5000",
+			
+			"applet_link": "strange-attractors",
+			
+			"image_link": "https://drive.google.com/uc?id=1sRCKC-WE8a2iYNW942uKgAJbHVkAYDrQ&export=download"
+		},
+		
+		"complex-map-3":
+		{
+			"title": "A Complex Map",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "Generated from wp(rho, z)",
+			
+			"applet_link": "complex-maps",
+			
+			"image_link": "https://drive.google.com/uc?id=1VHOdSrwJYkUH18f2UhLVrwQ2OBJC0_op&export=download"
+		},
+		
+		"julia-set-1":
+		{
+			"title": "A Julia Set",
+			
+			"resolution": "5000x5000",
+			
+			"applet_link": "julia-set-explorer",
+			
+			"image_link": "https://drive.google.com/uc?id=1V4B0ULle-Dq0-ludCNyQg5lQ8Hm6cm_X&export=download"
+		},
+		
+		"gravner-griffeath-snowflake":
+		{
+			"title": "A Gravner-Griffeath Snowflake",
+			
+			"resolution": "5000x5000",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
+			
+			"applet_link": "gravner-griffeath-snowflakes",
+			
+			"image_link": "https://drive.google.com/uc?id=1WOE3ICzhl9IiQ-WezIVH1J6p-IRHxzEv&export=download"
+		},
+		
+		
+		
 		"double-pendulum-fractal":
 		{
 			"title": "The Double Pendulum Fractal",
 			
-			"parameters": "",
+			"resolution": "5000x5000",
 			
-			"featured": "",
+			"applet_link": "double-pendulum-fractal",
 			
-			"applet_link": "double-pendulum-fractal"
+			"image_link": "https://drive.google.com/uc?id=1vyekqHESbwyD7PWBbWxVnw96rhNT-ZtB&export=download"
+		},
+		
+		
+		
+		"newtons-method-1":
+		{
+			"title": "Newton&#x2019;s Method",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "Generated from the polynomial z&#x2078; - 1",
+			
+			"featured": "Featured in the Jordan Schnitzer Museum of Art",
+			
+			"applet_link": "newtons-method",
+			
+			"image_link": "https://drive.google.com/uc?id=1u5HfagNZ0E1SmEu4kcLFCuwGmLOoX-qL&export=download"
+		},
+		
+		"kicked-rotator":
+		{
+			"title": "A Kicked Rotator",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "K = .75",
+			
+			"featured": "Featured in the Jordan Schnitzer Museum of Art, UO&#x2019;s Erb Memorial Union, and currently in University Hall",
+			
+			"applet_link": "the-kicked-rotator",
+			
+			"image_link": "https://drive.google.com/uc?id=1vXP_8ArZg7F2o7rbFCsksoHDT3nw8y66&export=download"
+		},
+		
+		"kaleidoscopic-ifs-1":
+		{
+			"title": "The Sierpinski Octahedron",
+			
+			"resolution": "5000x5000",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
+			
+			"applet_link": "kaleidoscopic-ifs-fractals",
+			
+			"image_link": "https://drive.google.com/uc?id=1XhywTt1u8SY8JR9GUiauZRBnLzzLUOxP&export=download"
+		},
+		
+		"generalized-julia-set-1":
+		{
+			"title": "A Generalized Julia Set",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "Generated from sin(cz)",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
+			
+			"applet_link": "generalized-julia-sets",
+			
+			"image_link": "https://drive.google.com/uc?id=1rgAIVr9Ztfs2EiVtY_39-GQ91ayeMJXu&export=download"
+		},
+		
+		"quasi-fuchsian-group":
+		{
+			"title": "A Quasi-Fuchsian Group",
+			
+			"resolution": "5000x5000",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
+			
+			"applet_link": "quasi-fuchsian-groups",
+			
+			"image_link": "https://drive.google.com/uc?id=1IBT9iwv34NUjaxETx7C22a_NyoqDRcZj&export=download"
+		},
+		
+		"chaos-game-1":
+		{
+			"title": "A Chaos Game",
+			
+			"resolution": "5000x5000",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
+			
+			"applet_link": "the-chaos-game",
+			
+			"image_link": "https://drive.google.com/uc?id=15NZyBmIqZxCaTrT9C9m87bqfM1sUmY5i&export=download"
+		},
+		
+		
+		
+		"wilsons-algorithm-2":
+		{
+			"title": "Wilson&#x2019;s Algorithm",
+			
+			"resolution": "7218x7218",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
+			
+			"applet_link": "wilsons-algorithm",
+			
+			"image_link": "https://drive.google.com/uc?id=1EJD5tYppybnvAxK1bWpLEXK2gjKAnMqZ&export=download"
+		},
+		
+		
+		
+		"julia-set-mosaic":
+		{
+			"title": "A Julia Set Mosaic",
+			
+			"resolution": "5000x5000",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
+			
+			"applet_link": "julia-set-mosaic",
+			
+			"image_link": "https://drive.google.com/uc?id=17lVqXB7yFmoZRpEievJBV6BbwogOlM5U&export=download"
+		},
+		
+		"barnsley-fern":
+		{
+			"title": "The Barnsley Fern",
+			
+			"resolution": "5000x5000",
+			
+			"featured": "Featured in the Jordan Schnitzer Museum of Art",
+			
+			"applet_link": "the-barnsley-fern",
+			
+			"image_link": "https://drive.google.com/uc?id=1ED5_vAUhFEF0E3fcnY4NOEYJSVf1P7cA&export=download"
+		},
+		
+		"generalized-julia-set-3":
+		{
+			"title": "A Generalized Julia Set",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "Generated from (|z.x| - |z.y|)&#x00B2; + c",
+			
+			"applet_link": "generalized-julia-sets",
+			
+			"image_link": "https://drive.google.com/uc?id=1ZOh2bya7QzuvSQqkM55cLxV3v-0MlET3&export=download"
+		},
+		
+		"newtons-method-3":
+		{
+			"title": "Newton&#x2019;s Method",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "Roots at (&#x00B1;1, 0), (0, &#x00B1;1), (-1.5, 1.5), (1.5, -1.5)",
+			
+			"applet_link": "newtons-method",
+			
+			"image_link": "https://drive.google.com/uc?id=19d79RVQzu2aWNdyaP_dkIJJHJpDr8VDX&export=download"
+		},
+		
+		"complex-map-1":
+		{
+			"title": "A Complex Map",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "Generated from exp(1/z)",
+			
+			"applet_link": "complex-maps",
+			
+			"image_link": "https://drive.google.com/uc?id=1rcF2qy4gGCJ3lg3X8jQW0Z0_OcFYKv8Q&export=download"
+		},
+		
+		"kaleidoscopic-ifs-2":
+		{
+			"title": "The Sierpinski Tetrahedron",
+			
+			"resolution": "5000x5000",
+			
+			"applet_link": "kaleidoscopic-ifs-fractals",
+			
+			"image_link": "https://drive.google.com/uc?id=1vmRBT5i-KEq1DbReB87DhDJqzgpzlpWE&export=download"
+		},
+		
+		
+		
+		"secant-method":
+		{
+			"title": "The Secant Method",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "Generated from the polynomial z&#x2076; - 1 with a = 1.5",
+			
+			"applet_link": "the-secant-method",
+			
+			"image_link": "https://drive.google.com/uc?id=1XaNHxtiX5oA9KcLGs8ZSPFJwpDWt4mPk&export=download"
+		},
+		
+		"juliabulb-1":
+		{
+			"title": "A Juliabulb",
+			
+			"resolution": "5000x5000",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
+			
+			"applet_link": "the-mandelbulb",
+			
+			"image_link": "https://drive.google.com/uc?id=13vuMeBG2XX-cVar60W9bN_PoDhb9kC8H&export=download"
+		},
+		
+		"juliabulb-2":
+		{
+			"title": "A Juliabulb",
+			
+			"resolution": "5000x5000",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
+			
+			"applet_link": "the-mandelbulb",
+			
+			"image_link": "https://drive.google.com/uc?id=1j9kMfSl5fwTaHysRWROjuhwKgrc0i5SD&export=download"
+		},
+		
+		"newtons-method-extended":
+		{
+			"title": "Newton&#x2019;s Method, Extended",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "Generated from sin(z)*csin(iz)",
+			
+			"applet_link": "newtons-method-extended",
+			
+			"image_link": "https://drive.google.com/uc?id=1fzmyXiEIYBxNNFdAgEYhcy8TO04BHnYT&export=download"
+		},
+		
+		"chaos-game-2":
+		{
+			"title": "A Chaos Game",
+			
+			"resolution": "5000x5000",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
+			
+			"applet_link": "the-chaos-game",
+			
+			"image_link": "https://drive.google.com/uc?id=14ADChQ4KHV426ySW_CIVvTAXe2irMKU0&export=download"
+		},
+		
+		"juliabulb-3":
+		{
+			"title": "A Juliabulb",
+			
+			"resolution": "5000x5000",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
+			
+			"applet_link": "the-mandelbulb",
+			
+			"image_link": "https://drive.google.com/uc?id=1UZaqN8xkOc4a2rMtA9_85YllnJDfwqO2&export=download"
+		},
+		
+		
+		
+		"mandelbulb":
+		{
+			"title": "The Mandelbulb",
+			
+			"resolution": "5000x5000",
+			
+			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
+			
+			"applet_link": "the-mandelbulb",
+			
+			"image_link": "https://drive.google.com/uc?id=1GfsC_gm0DU1j2X79Ros6lQY4HAUp-iy4&export=download"
+		},
+		
+		
+		
+		"finite-subdivision-2":
+		{
+			"title": "A Finite Subdivision",
+			
+			"resolution": "5000x5000",
+			
+			"applet_link": "finite-subdivisions",
+			
+			"image_link": "https://drive.google.com/uc?id=1KFs9T05JS-N3Aad_5tiW7T3FHcxaCc8c&export=download"
+		},
+		
+		"hitomezashi-pattern-1":
+		{
+			"title": "A Hitomezashi Pattern",
+			
+			"resolution": "5000x5000",
+			
+			"applet_link": "hitomezashi-patterns",
+			
+			"image_link": "https://drive.google.com/uc?id=1PqAZLMb0u-u8FR5ieN8ysWNOn5GhPGkD&export=download"
+		},
+		
+		"julia-set-2":
+		{
+			"title": "A Julia Set",
+			
+			"resolution": "5000x5000",
+			
+			"applet_link": "julia-set-explorer",
+			
+			"image_link": "https://drive.google.com/uc?id=13JfzfwwSXrlGPgPyk203ZDj4eaT4uTDA&export=download"
+		},
+		
+		"wilsons-algorithm-1":
+		{
+			"title": "Wilson&#x2019;s Algorithm",
+			
+			"resolution": "3015x3015",
+			
+			"featured": "Featured in the Jordan Schnitzer Museum of Art",
+			
+			"applet_link": "wilsons-algorithm",
+			
+			"image_link": "https://drive.google.com/uc?id=1kgWTqci85uCCkGQksCrqYqjhYH2416pq&export=download"
+		},
+		
+		"newtons-method-4":
+		{
+			"title": "Newton&#x2019;s Method",
+			
+			"resolution": "5000x5000",
+			
+			"applet_link": "newtons-method",
+			
+			"image_link": "https://drive.google.com/uc?id=1NLQJ8ftFYtlLgLuB6ZyG3U4BZtseD8VP&export=download"
+		},
+		
+		"complex-map-4":
+		{
+			"title": "A Complex Map",
+			
+			"resolution": "5000x5000",
+			
+			"parameters": "Generated from tet(1/z, 100)",
+			
+			"applet_link": "complex-maps",
+			
+			"image_link": "https://drive.google.com/uc?id=1j0x1yXmzACwbRrwHjp90IlRMpPSD9lgA&export=download"
 		}
 	};
 }()

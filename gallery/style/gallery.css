@@ -108,8 +108,10 @@
 {
 	position: relative;
 	
-	width: 100%;
-	height: 100%;
+	width: 75vh;
+	height: 75vh;
+	margin-top: 12.5vh;
+	margin-left: 5vh;
 	
 	display: flex;
 	
@@ -119,17 +121,17 @@
 
 #full-res-viewer-image-container img
 {
-	width: 60%;
+	width: 100%;
 }
 
 #full-res-viewer-text-container
 {
 	position: fixed;
 	
-	right: 0;
-	top: 0;
+	right: 10px;
+	bottom: 0;
 	
-	width: 20%;
+	width: calc(100vw - 80vh - 20px);
 	height: 100%;
 	
 	display: flex;
@@ -170,17 +172,20 @@
 
 @media (max-aspect-ratio: 1/1)
 {
-	#full-res-viewer-text-container
+	#full-res-viewer-image-container
 	{
-		left: 0;
-		top: 0;
-		
-		height: 20%;
-		width: 100%;
+		width: 75vw;
+		height: 75vw;
+		margin-top: 5vw;
+		margin-left: 12.5vw;
 	}
 	
-	#full-res-viewer-text-container .body-text, #full-res-viewer-text-container .section-text, #full-res-viewer-text-	container .heading-text
+	#full-res-viewer-text-container
 	{
-		width: 90%;
+		height: calc(100vh - 80vw - 20px);
+		width: 100%;
+		
+		right: 0;
+		bottom: 10px;
 	}
 }
