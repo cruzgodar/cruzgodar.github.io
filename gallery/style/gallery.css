@@ -10,8 +10,8 @@
 
 #gallery
 {
-	width: 100%;
-	padding: 10px;
+	width: calc(100% - 20px);
+	margin: 10px;
 	
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
