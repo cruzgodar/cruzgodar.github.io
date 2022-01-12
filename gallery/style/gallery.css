@@ -30,10 +30,14 @@
 	grid-gap: 10px;
 }
 
+.gallery-image-1-1, .gallery-image-2-2, .gallery-image-3-3
+{
+	font-size: 0;
+}
+
 .gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img
 {
 	width: 100%;
-	height: 100%;
 	
 	object-fit: cover;
 	
@@ -59,14 +63,25 @@
 }
 
 
-.gallery-image-1-1 img.hover, .gallery-image-2-2 img.hover, .gallery-image-3-3 img.hover
+.gallery-image-1-1 img.hover, .gallery-image-1-1 img:not(:hover):focus
 {
-	transform: scale(1.05);
+	transform: scale(1.075);
+	
+	z-index: 1000;
 }
 
-.gallery-image-1-1 img:not(:hover):focus, .gallery-image-2-2 img:not(:hover):focus, .gallery-image-3-3 img:not(:hover):focus
+.gallery-image-2-2 img.hover, .gallery-image-2-2 img:not(:hover):focus
 {
-	transform: scale(1.05);
+	transform: scale(1.0375);
+	
+	z-index: 1000;
+}
+
+.gallery-image-3-3 img.hover, .gallery-image-3-3 img:not(:hover):focus
+{
+	transform: scale(1.025);
+	
+	z-index: 1000;
 }
 
 

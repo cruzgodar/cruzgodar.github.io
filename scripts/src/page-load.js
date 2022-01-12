@@ -844,7 +844,9 @@ Page.Load =
 			
 			
 			
-			.root-marker
+			.gallery-image-1-1 img,
+			.gallery-image-2-2 img,
+			.gallery-image-3-3 img
 		`,
 		
 		
