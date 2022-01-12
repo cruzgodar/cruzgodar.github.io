@@ -12,7 +12,7 @@
 	
 	
 	let full_res_viewer_element = document.querySelector("#full-res-viewer");
-	let full_res_viewer_image_element = document.querySelector("#full-res-viewer img");
+	let full_res_viewer_image_element = document.querySelector("#full-res-viewer-image");
 	let full_res_viewer_text_container_element = document.querySelector("#full-res-viewer-text-container");
 	let main_text_container_element = document.querySelector("#main-text-container");
 	let applet_link_element = document.querySelector("#applet-link");
@@ -58,7 +58,7 @@
 		
 		
 		full_res_viewer_element.style.display = "block";
-		full_res_viewer_image_element.src = gallery_image_data[id]["image_link"];
+		full_res_viewer_image_element.style.backgroundImage = `url(${gallery_image_data[id]["image_link"]})`;
 		
 		
 		
@@ -133,7 +133,7 @@
 		
 		setTimeout(() =>
 		{
-			full_res_viewer_image_element.src = "";
+			full_res_viewer_image_element.style.backgroundImage = "";
 			full_res_viewer_element.style.display = "none";
 		}, Site.opacity_animation_time);
 	}

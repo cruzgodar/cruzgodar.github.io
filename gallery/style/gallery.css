@@ -119,9 +119,13 @@
 	align-items: center;
 }
 
-#full-res-viewer-image-container img
+#full-res-viewer-image
 {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 	width: 100%;
+	height: 100%;
 }
 
 #full-res-viewer-text-container
