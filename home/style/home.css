@@ -135,4 +135,13 @@
 	{
 		width: 33.5vw !important;
 	}
+	
+	
+	
+	.image-links:first-of-type
+	{
+		width: 45.667vw !important;
+		
+		grid-template-columns: repeat(4, 1fr) !important;
+	}
 }
