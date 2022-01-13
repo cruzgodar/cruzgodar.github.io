@@ -16,6 +16,7 @@
 	let full_res_viewer_text_container_element = document.querySelector("#full-res-viewer-text-container");
 	let main_text_container_element = document.querySelector("#main-text-container");
 	let applet_link_element = document.querySelector("#applet-link");
+	let full_res_link_element = document.querySelector("#full-res-link");
 	
 	
 	
@@ -58,7 +59,7 @@
 		
 		
 		full_res_viewer_element.style.display = "block";
-		full_res_viewer_image_element.style.backgroundImage = `url(${gallery_image_data[id]["image_link"]})`;
+		full_res_viewer_image_element.style.backgroundImage = `url(${Page.parent_folder}high-res/${id}.${Page.Images.file_extension})`;
 		
 		
 		
@@ -114,6 +115,9 @@
 		
 		applet_link_element.setAttribute("href", `/applets/${gallery_image_data[id]["applet_link"]}/${gallery_image_data[id]["applet_link"]}.html`);
 		applet_link_element.setAttribute("onclick", `Page.Navigation.redirect('/applets/${gallery_image_data[id]["applet_link"]}/${gallery_image_data[id]["applet_link"]}.html')`);
+		
+		full_res_link_element.setAttribute("href", gallery_image_data[id]["image_link"]);
+		full_res_link_element.setAttribute("onclick", `Page.Navigation.redirect('${gallery_image_data[id]["image_link"]}', true)`);
 		
 		
 		
@@ -644,17 +648,17 @@
 			"image_link": "https://drive.google.com/uc?id=1NLQJ8ftFYtlLgLuB6ZyG3U4BZtseD8VP&export=download"
 		},
 		
-		"complex-map-4":
+		"complex-map-2":
 		{
 			"title": "A Complex Map",
 			
 			"resolution": "5000x5000",
 			
-			"parameters": "Generated from tet(1/z, 100)",
+			"parameters": "Generated from wp(z, rho)",
 			
 			"applet_link": "complex-maps",
 			
-			"image_link": "https://drive.google.com/uc?id=1j0x1yXmzACwbRrwHjp90IlRMpPSD9lgA&export=download"
+			"image_link": "https://drive.google.com/uc?id=1ulWn8MMjzNTiTRuZKYWlqHoJOQBUwAnz&export=download"
 		}
 	};
 }()

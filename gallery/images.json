@@ -243,9 +243,9 @@
 		"non-webp": "thumbnails/newtons-method-4.jpg"
 	},
 	
-	"complex-map-4":
+	"complex-map-2":
 	{
-		"webp": "thumbnails/complex-map-4.webp",
-		"non-webp": "thumbnails/complex-map-4.jpg"
+		"webp": "thumbnails/complex-map-2.webp",
+		"non-webp": "thumbnails/complex-map-2.jpg"
 	}
 }
