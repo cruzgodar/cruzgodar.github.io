@@ -174,6 +174,8 @@ Page.load = async function()
 	
 	Page.background_color_changed = false;
 	
+	Site.Settings.handle_theme_revert();
+	
 	
 	
 	if ("banner_page" in this.settings && this.settings["banner_page"])

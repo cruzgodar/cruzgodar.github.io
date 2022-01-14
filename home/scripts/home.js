@@ -16,11 +16,13 @@
 	
 	
 	
-	let element = document.querySelectorAll(".image-links")[1];
+	let elements = document.querySelectorAll(".image-links");
 	
-	element.id = "newest-pages";
+	elements[0].id = "category-pages";
 	
-	let children = element.querySelectorAll(".image-link");
+	elements[1].id = "newest-pages";
+	
+	let children = elements[1].querySelectorAll(".image-link");
 	
 	for (let i = 0; i < children.length; i++)
 	{

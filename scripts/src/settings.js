@@ -25,6 +25,9 @@ let Settings =
 	
 	gradient_suffix: "-0-0",
 	
+	//Set to either 0 or 1 if a page has forced a theme and it needs to change back.
+	revert_theme: -1,
+	
 	
 	
 	get_url_var: function(id)
@@ -170,10 +173,53 @@ let Settings =
 		}, 10);
 	},
 	
+	
+	
+	handle_theme_revert: function()
+	{
+		if (this.url_vars["content_animation"] === 1)
+		{
+			if (this.revert_theme === 0)
+			{
+				this.revert_theme = -1;
+				
+				this.url_vars["dark_theme_color"] = 1;
+				
+				this.toggle("theme", true, true);
+			}
+			
+			else if (Site.Settings.revert_theme === 1)
+			{
+				this.revert_theme = -1;
+				
+				this.toggle("theme", true, true);
+			}
+		}
+		
+		else
+		{
+			if (this.revert_theme === 0)
+			{
+				this.revert_theme = -1;
+				
+				this.url_vars["dark_theme_color"] = 1;
+				
+				this.toggle("theme", false, true);
+			}
+			
+			else if (Site.Settings.revert_theme === 1)
+			{
+				this.revert_theme = -1;
+				
+				this.toggle("theme", false, true);
+			}
+		}
+	},
+	
 
 
 	//Changes a setting.
-	toggle: function(setting, no_animation = false)
+	toggle: function(setting, no_animation = false, no_settings_text = false)
 	{
 		let element = null;
 		
@@ -208,7 +254,7 @@ let Settings =
 		{
 			if (this.url_vars["theme"] === 1 && this.url_vars["dark_theme_color"] !== 1)
 			{
-				this.toggle_dark_theme_color();
+				this.toggle_dark_theme_color(no_settings_text);
 				
 				//document.querySelector("#theme-color-meta").setAttribute("content", "#000000");
 				this.animate_meta_theme_color(24, 0);
@@ -217,15 +263,18 @@ let Settings =
 				{
 					setTimeout(() =>
 					{
-						try {Page.Footer.Floating.show_settings_text("Theme: black");}
-						catch(ex) {}
+						if (!no_settings_text)
+						{
+							try {Page.Footer.Floating.show_settings_text("Theme: black");}
+							catch(ex) {}
+						}
 					}, Site.opacity_animation_time * 2);
 				}
 			}
 			
 			else if (this.url_vars["theme"] === 1 && this.url_vars["dark_theme_color"] === 1)
 			{
-				this.toggle_theme();
+				this.toggle_theme(no_settings_text);
 				
 				if (!no_animation)
 				{
@@ -233,22 +282,28 @@ let Settings =
 					{
 						this.toggle_dark_theme_color();
 						
-						try {Page.Footer.Floating.show_settings_text("Theme: light");}
-				 		catch(ex) {}
+						if (!no_settings_text)
+						{
+							try {Page.Footer.Floating.show_settings_text("Theme: light");}
+					 		catch(ex) {}
+					 	}
 					}, Site.opacity_animation_time * 2);
 				}
 			}
 			
 			else
 			{
-				this.toggle_theme();
+				this.toggle_theme(no_settings_text);
 				
 				if (!no_animation)
 				{
 					setTimeout(() =>
 					{
-						try {Page.Footer.Floating.show_settings_text("Theme: dark");}
-						catch(ex) {}
+						if (!no_settings_text)
+						{
+							try {Page.Footer.Floating.show_settings_text("Theme: dark");}
+							catch(ex) {}
+						}
 					}, Site.opacity_animation_time * 2);
 				}
 			}
@@ -256,27 +311,27 @@ let Settings =
 		
 		else if (setting === "dark_theme_color")
 		{
-			this.toggle_dark_theme_color();
+			this.toggle_dark_theme_color(no_settings_text);
 		}
 		
 		else if (setting === "contrast")
 		{
-			this.toggle_contrast();
+			this.toggle_contrast(no_settings_text);
 		}
 		
 		else if (setting === "text_size")
 		{
-			this.toggle_text_size();
+			this.toggle_text_size(no_settings_text);
 		}
 		
 		else if (setting === "font")
 		{
-			this.toggle_font();
+			this.toggle_font(no_settings_text);
 		}
 		
 		else if (setting === "content_animation")
 		{
-			this.toggle_content_animation();
+			this.toggle_content_animation(no_settings_text);
 		}
 		
 		else
@@ -302,7 +357,7 @@ let Settings =
 
 
 	//Changes the theme and animates elements.
-	toggle_theme: function()
+	toggle_theme: function(no_settings_text)
 	{
 		//Light to dark
 		if (this.url_vars["theme"] === 0)
@@ -444,7 +499,7 @@ let Settings =
 
 
 
-	toggle_dark_theme_color: function()
+	toggle_dark_theme_color: function(no_settings_text)
 	{
 		if (this.url_vars["dark_theme_color"] === 0)
 		{
@@ -571,7 +626,7 @@ let Settings =
 
 
 
-	toggle_contrast: function()
+	toggle_contrast: function(no_settings_text)
 	{
 		//Default to high
 		if (this.url_vars["contrast"] === 0)
@@ -622,8 +677,11 @@ let Settings =
 			
 			setTimeout(() =>
 			{
-				try {Page.Footer.Floating.show_settings_text("Contrast: high");}
-				catch(ex) {}
+				if (!no_settings_text)
+				{
+					try {Page.Footer.Floating.show_settings_text("Contrast: high");}
+					catch(ex) {}
+				}
 			}, Site.opacity_animation_time * 2 + 50);
 			
 			this.url_vars["contrast"] = 1;
@@ -675,8 +733,11 @@ let Settings =
 			
 			setTimeout(() =>
 			{
-				try {Page.Footer.Floating.show_settings_text("Contrast: normal");}
-				catch(ex) {}
+				if (!no_settings_text)
+				{
+					try {Page.Footer.Floating.show_settings_text("Contrast: normal");}
+					catch(ex) {}
+				}
 			}, Site.opacity_animation_time * 2 + 50);
 			
 			this.url_vars["contrast"] = 0;
@@ -685,7 +746,7 @@ let Settings =
 
 
 
-	toggle_text_size: function()
+	toggle_text_size: function(no_settings_text)
 	{
 		document.body.classList.add("animated-opacity");
 		document.body.style.opacity = 0;
@@ -721,8 +782,11 @@ let Settings =
 				
 				setTimeout(() =>
 				{
-					try {Page.Footer.Floating.show_settings_text("Text size: large");}
-				 	catch(ex) {}
+					if (!no_settings_text)
+					{
+						try {Page.Footer.Floating.show_settings_text("Text size: large");}
+					 	catch(ex) {}
+					 }
 				}, Site.opacity_animation_time);
 			}, Site.opacity_animation_time);
 				
@@ -740,8 +804,11 @@ let Settings =
 				
 				setTimeout(() =>
 				{
-					try {Page.Footer.Floating.show_settings_text("Text size: normal");}
-				 	catch(ex) {}
+					if (!no_settings_text)
+					{
+						try {Page.Footer.Floating.show_settings_text("Text size: normal");}
+					 	catch(ex) {}
+					 }
 				}, Site.opacity_animation_time);
 			}, Site.opacity_animation_time);
 				
@@ -761,7 +828,7 @@ let Settings =
 
 
 
-	toggle_font: function()
+	toggle_font: function(no_settings_text)
 	{
 		if ("writing_page" in Page.settings && Page.settings["writing_page"])
 		{
@@ -781,9 +848,11 @@ let Settings =
 				}
 				
 				
-				
-				try {Page.Footer.Floating.show_settings_text("Font: serif on writing");}
-			 	catch(ex) {}
+				if (!no_settings_text)
+				{
+					try {Page.Footer.Floating.show_settings_text("Font: serif on writing");}
+				 	catch(ex) {}
+				 }
 			}, Site.opacity_animation_time);
 			
 			this.url_vars["font"] = 1;
@@ -803,8 +872,11 @@ let Settings =
 				
 				
 				
-				try {Page.Footer.Floating.show_settings_text("Font: always sans serif");}
-		 		catch(ex) {}
+				if (!no_settings_text)
+				{
+					try {Page.Footer.Floating.show_settings_text("Font: always sans serif");}
+			 		catch(ex) {}
+			 	}
 			}, Site.opacity_animation_time);
 			
 			this.url_vars["font"] = 0;
@@ -828,7 +900,7 @@ let Settings =
 
 
 
-	toggle_content_animation: function()
+	toggle_content_animation: function(no_settings_text)
 	{
 		if (this.url_vars["content_animation"] === 0)
 		{
@@ -856,8 +928,11 @@ let Settings =
 			
 			setTimeout(() =>
 			{
-				try {Page.Footer.Floating.show_settings_text("Content animation: disabled");}
-		 		catch(ex) {}
+				if (!no_settings_text)
+				{
+					try {Page.Footer.Floating.show_settings_text("Content animation: disabled");}
+			 		catch(ex) {}
+			 	}
 		 	}, Site.opacity_animation_time * 2);
 		 	
 		 	

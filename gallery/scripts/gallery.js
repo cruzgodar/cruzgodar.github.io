@@ -4,7 +4,9 @@
 	
 	if (Site.Settings.url_vars["theme"] !== 1)
 	{
-		Site.Settings.toggle("theme");
+		Site.Settings.revert_theme = 0;
+		
+		Site.Settings.toggle("theme", false, true);
 	}
 	
 	let current_id = "";

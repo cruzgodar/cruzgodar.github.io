@@ -129,19 +129,15 @@
 		width: 45.667vw !important;
 	}
 	
-	
-	
-	#newest-pages
-	{
-		width: 33.5vw !important;
-	}
-	
-	
-	
-	.image-links:first-of-type
+	#category-pages
 	{
 		width: 45.667vw !important;
 		
 		grid-template-columns: repeat(4, 1fr) !important;
+	}
+	
+	#newest-pages
+	{
+		width: 33.5vw !important;
 	}
 }
