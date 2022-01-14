@@ -645,6 +645,8 @@
 			
 			"resolution": "5000x5000",
 			
+			"parameters": "Roots at (&#x00B1;1, &#x00B1;1), (.707, .707), (-.707, -.707), (-1.5, 1.5), (1.5, -1.5)",
+			
 			"applet_link": "newtons-method",
 			
 			"image_link": "https://drive.google.com/uc?id=1NLQJ8ftFYtlLgLuB6ZyG3U4BZtseD8VP&export=download"
