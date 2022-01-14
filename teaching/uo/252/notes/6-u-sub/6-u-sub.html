@@ -1,9 +1,9 @@
 <head>
-	<title>u-Substitution</title>
+	<title>Section 6: u-Substitution</title>
 	
 	<meta property="og:type" content="website">
 	
-	<meta property="og:title" content="u-Substitution"/>
+	<meta property="og:title" content="Section 6: u-Substitution"/>
 	
 	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/6-u-sub/6-u-sub.html">
 
@@ -20,7 +20,7 @@
 
 
 
-!header $u$-Substitution
+!header Section 6: $u$-Substitution
 
 
 
@@ -108,7 +108,7 @@
 	
 	Find $\int 6x^2(3x^2 + 4)^4\ dx$.
 	
-	If we try to set $u = 3x^2 + 4$ again, we get that $du = 6x\ dx$, as before. The integral then becomes $\int xu^4\ du$, which is a deadend, because the integral contains more than just $u$. Eventually, we&#x2019;ll talk about another strategy to handle this kind of integral, but that&#x2019;s for the future.
+	If we try to set $u = 3x^2 + 4$ again, we get that $du = 6x\ dx$, as before. The integral then becomes $\int xu^4\ du$, and as is, that&#x2019;s a deadend, because the integral contains more than just $u$. The only way to possibly make it work is to solve for $x$ in terms of $u$, which gives $x = \sqrt{\frac{1}{3} (u - 4)}. But the integral is then $\int u^4\sqrt{\frac{1}{3} (u - 4)}\ du$, and this is significantly worse than what we started with. Unfortunately, there is simply no way to make $u$-sub helpful on this problem. Eventually, we&#x2019;ll talk about a different strategy to handle this kind of integral, but that&#x2019;s for the future.
 	
 !end-example
 
@@ -199,38 +199,30 @@
 	
 	the half-angle formulas
 	
-	Find $\int \sqrt{z^2 - 5}\ dz$.
+	Find $\int 3\cos^2(x)\ dx$.
 	
-	When using $u$-sub on a definite integral, we need to be careful. The $3$ and $4$ are things to plug in for $z$, not $u$, so we&#x2019;ll need to remember to backsubstitute before plugging in the limits.
-	
-	$$
-		\begin{align*}
-			\int_3^4 z\sqrt{z^2 - 5}\ dz\\
-			u &= z^2 - 5\\
-			du &= 2z\ dz
-		\end{align*}
-	$$
-	
-	At this point, $du$ isn&#x2019;t exactly present in the integral: it&#x2019;s $2z\ dz$ and we only have $z\ dz$. However, since we&#x2019;re only off by a constant multiple, we can just divide by it on both sides to make the expression fit what we have.
+	First, we need to apply the half-angle formula:
 	
 	$$
 		\begin{align*}
-			\frac{1}{2} du &= z\ dz\\
-			\int_3^4 z\sqrt{z^2 - 5}\ dz &= \int_3^4 \frac{1}{2} \sqrt{u}\ du\\
-			&= \int_3^4 \frac{1}{2} u^{1/2}\ du\\
-			&= \left. \left[ \frac{1}{2} \frac{u^{3/2}}{3/2} \right] \right|_3^4\\
-			&= \left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4\\
+			\int 3\cos^2(x)\ dx &= 3\int \cos^2(x)\ dx\\
+			&= 3\int \frac{1 + \cos(2x)}{2}\ dx\\
+			&= 3\int \frac{1}{2} + \frac{1}{2}\cos(2x)\ dx\\
+			&= \frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\ dx\\
 		\end{align*}
 	$$
 	
-	Now we need to backsubstitute before plugging in the limits.
+	To integrate $\cos(2x)$, we set $u = 2x$ and $\du = 2\ dx$, so $dx = \frac{1}{2}\ du$. Now
 	
 	$$
 		\begin{align*}
-			\left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4 &= \left. \left[ \frac{1}{3} (z^2 - 5)^{3/2} \right] \right|_3^4\\
-			&= \frac{1}{3} 11^{3/2} - \frac{1}{3} 4^{3/2}.
+			\frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\ dx &= \frac{3}{2}x + C + \frac{3}{4}\int \cos(u)\ du\\
+			&= \frac{3}{2}x + C + \frac{3}{4}\sin(u)\\
+			&= \frac{3}{2}x + \frac{3}{4}\sin(2x) + C.\\
 		\end{align*}
 	$$
+	
+	Although we have two integrals, we only need one $C$, since it can take on any numerical value.
 	
 !end-example
 
@@ -238,9 +230,45 @@
 	
 	the half-angle formulas
 	
-	Find $\int 2t^2 e^{4t^3 + 3}\ dt$.
+	Find $\int \sin^4(t)\ dt$.
 	
 !end-exercise
+
+
+
+!begin-text-block
+	
+	One last type of $u$-sub problem to explore is where the substitution doesn&#x2019;t quite work. We encountered this in an earlier example where $u$-sub didn&#x2019;t work at all, but sometimes it can be made to work.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	another $u$-sub
+	
+	Find $\int \frac{x}{\sqrt{x - 1}}\ dx$.
+	
+	The complicated part is the $\sqrt{x - 1}$, so let&#x2019;s try setting $u$ to be the inside function. If $u = x - 1$, then $du = dx$, and so we have
+	
+	$$
+		\int \frac{x}{\sqrt{x - 1}}\ dx = \int \frac{x}{\sqrt{u}}\ du.
+	$$
+	
+	To get rid of the $x$ left over, we need to solve for $x$ in terms of $u$: $x = u + 1$. Now we have
+	
+	$$
+		\begin{align*}
+			\int \frac{u + 1}{\sqrt{u}}\ du &= \int \frac{u}{\sqrt{u}} + \frac{1}{\sqrt{u}\ du\\
+			&= \int \frac{u}{\sqrt{u}}\ du + \int \frac{1}{\sqrt{u}}\ du\\
+			&= \int u^{1/2}\ du + \int u^{-1/2}\ du\\
+			&= \frac{2}{3} u^{3/2} + 2u^{1/2} + C\\
+			&= \frac{2}{3} (x - 1)^{3/2} + 2(x - 1)^{1/2} + C.
+		\end{align*}
+	$$
+	
+!end-example
 
 
 
@@ -270,7 +298,7 @@
 	
 	Page.settings = 
 	{
-		"title": "u-Substitution",
+		"title": "Section 6: u-Substitution",
 		
 		"math_page": true,
 		

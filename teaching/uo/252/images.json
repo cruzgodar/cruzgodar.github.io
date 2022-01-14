@@ -35,6 +35,12 @@
         "non-webp": "notes/5-simple-applications/cover.jpg"
 	},
 	
+	"6-u-sub":
+	{
+		"webp": "notes/6-u-sub/cover.webp",
+        "non-webp": "notes/6-u-sub/cover.jpg"
+	},
+	
 	
 	
 	"homework-7":
