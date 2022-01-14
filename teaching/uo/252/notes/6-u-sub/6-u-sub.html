@@ -1,0 +1,281 @@
+<head>
+	<title>u-Substitution</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="u-Substitution"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/6-u-sub/6-u-sub.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/252/notes/6-u-sub/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header $u$-Substitution
+
+
+
+!begin-text-block
+	
+	At the moment, the only reasonable way we can calculate integrals is with the fundamental theorem, which requires taking an antiderivative. With derivatives, we know a handful of them exactly, like $\frac{d}{dx}[\sin(x)] = \cos(x)$, and we developed a handful of rules like the product and chain rules to be able to differentiate more complicated functions. We already have that first part done for antiderivatives, since we can just run all the regular derivatives backward: for example, $\int \cos(x)\ dx = \sin(x) + C$. What we need, though, is rules analogous to the ones for derivatives, only in reverse. We&#x2019;ll start with the simplest and arguably most useful: the opposite of the chain rule.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	$u$-substitution
+	
+	If you have an integral of the form
+	
+	$$
+		\int f(g(x))g'(x)\ dx,
+	$$
+	
+	then:
+	
+	1. Set $u = g(x)$.
+	
+	2. Write $\frac{du}{dx} = g'(x)$ and multiply both sides by $dx$ to get $du = g'(x) dx$. (This looks weird, but it&#x2019;s okay.)
+	
+	3. Rewrite the integral as $\int f(u)\ du$.
+	
+	4. Integrate as usual to get $F(u) + C$.
+	
+	5. Back-substitute for $u$ to get $F(g(x)) + C$.
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{dx}[F(g(x))] = f(g(x))g'(x)$. In practice, $u$-sub lets us integrate a composition, as long as the derivative of the inside function is being multiplied on the outside one.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	$u$-sub
+	
+	Find $\int 6x(3x^2 + 4)^4\ dx$.
+	
+	We could foil out $(3x^2 + 4)^4$, but that&#x2019;s way more work than necessary. Instead, we can think of it as a composition of two functions, where the outside function is $x^4$ and the inside one is $3x^2 + 4$. Since $\frac{d}{dx} \left[ 3x^2 + 4 \right] = 6x$, we set $u = 3x^2 + 4$ and $du = 6x\ dx$. Then we have
+	
+	$$
+		\begin{align*}
+			\int 6x(3x^2 + 4)^4\ dx &= \int u^4\ du\\
+			&= \frac{u^5}{5}\\
+			&= \frac{(3x^2 + 4)^5}{5}.
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	$u$-sub
+	
+	Find $\int 2\sin^3(2x)\cos(2x)\ dx$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	The chain rule works for all compositions, but $u$-sub works only in the specific situations where the derivative of the inside is present on the outside. Unfortunately, if this isn&#x2019;t the case, there&#x2019;s usually not a way to get around it.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	$u$-sub doesn&#x2019;t always work
+	
+	Find $\int 6x^2(3x^2 + 4)^4\ dx$.
+	
+	If we try to set $u = 3x^2 + 4$ again, we get that $du = 6x\ dx$, as before. The integral then becomes $\int xu^4\ du$, which is a deadend, because the integral contains more than just $u$. Eventually, we&#x2019;ll talk about another strategy to handle this kind of integral, but that&#x2019;s for the future.
+	
+!end-example
+
+
+
+!begin-example
+	
+	$u$-sub
+	
+	Find $\int_3^4 z\sqrt{z^2 - 5}\ dz$.
+	
+	When using $u$-sub on a definite integral, we need to be careful. The $3$ and $4$ are things to plug in for $z$, not $u$, so we&#x2019;ll need to remember to backsubstitute before plugging in the limits.
+	
+	$$
+		\begin{align*}
+			\int_3^4 z\sqrt{z^2 - 5}\ dz\\
+			u &= z^2 - 5\\
+			du &= 2z\ dz
+		\end{align*}
+	$$
+	
+	At this point, $du$ isn&#x2019;t exactly present in the integral: it&#x2019;s $2z\ dz$ and we only have $z\ dz$. However, since we&#x2019;re only off by a constant multiple, we can just divide by it on both sides to make the expression fit what we have.
+	
+	$$
+		\begin{align*}
+			\frac{1}{2} du &= z\ dz\\
+			\int_3^4 z\sqrt{z^2 - 5}\ dz &= \int_3^4 \frac{1}{2} \sqrt{u}\ du\\
+			&= \int_3^4 \frac{1}{2} u^{1/2}\ du\\
+			&= \left. \left[ \frac{1}{2} \frac{u^{3/2}}{3/2} \right] \right|_3^4\\
+			&= \left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4\\
+		\end{align*}
+	$$
+	
+	Now we need to backsubstitute before plugging in the limits.
+	
+	$$
+		\begin{align*}
+			\left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4 &= \left. \left[ \frac{1}{3} (z^2 - 5)^{3/2} \right] \right|_3^4\\
+			&= \frac{1}{3} 11^{3/2} - \frac{1}{3} 4^{3/2}.
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	$u$-sub
+	
+	Find $\int 2t^2 e^{4t^3 + 3}\ dt$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	One common type of integral involves $\sin^2(x)$ or $\cos^2(x)$ (remember that those are just more convenient ways of writing $(\sin(x))^2$ and $(\cos(x))^2$). For these, we use a modified version of the half-angle formulas:
+	
+!end-text-block
+
+
+
+!begin-prop
+	
+	the half-angle formulas
+	
+	$$
+		\sin^2(\theta) = \frac{1 - \cos(2\theta)}{2}
+	$$
+	
+	$$
+		\cos^2(\theta) = \frac{1 + \cos(2\theta)}{2}
+	$$
+	
+!end-prop
+
+
+
+!begin-text-block
+	
+	Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x)$.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	the half-angle formulas
+	
+	Find $\int \sqrt{z^2 - 5}\ dz$.
+	
+	When using $u$-sub on a definite integral, we need to be careful. The $3$ and $4$ are things to plug in for $z$, not $u$, so we&#x2019;ll need to remember to backsubstitute before plugging in the limits.
+	
+	$$
+		\begin{align*}
+			\int_3^4 z\sqrt{z^2 - 5}\ dz\\
+			u &= z^2 - 5\\
+			du &= 2z\ dz
+		\end{align*}
+	$$
+	
+	At this point, $du$ isn&#x2019;t exactly present in the integral: it&#x2019;s $2z\ dz$ and we only have $z\ dz$. However, since we&#x2019;re only off by a constant multiple, we can just divide by it on both sides to make the expression fit what we have.
+	
+	$$
+		\begin{align*}
+			\frac{1}{2} du &= z\ dz\\
+			\int_3^4 z\sqrt{z^2 - 5}\ dz &= \int_3^4 \frac{1}{2} \sqrt{u}\ du\\
+			&= \int_3^4 \frac{1}{2} u^{1/2}\ du\\
+			&= \left. \left[ \frac{1}{2} \frac{u^{3/2}}{3/2} \right] \right|_3^4\\
+			&= \left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4\\
+		\end{align*}
+	$$
+	
+	Now we need to backsubstitute before plugging in the limits.
+	
+	$$
+		\begin{align*}
+			\left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4 &= \left. \left[ \frac{1}{3} (z^2 - 5)^{3/2} \right] \right|_3^4\\
+			&= \frac{1}{3} 11^{3/2} - \frac{1}{3} 4^{3/2}.
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	the half-angle formulas
+	
+	Find $\int 2t^2 e^{4t^3 + 3}\ dt$.
+	
+!end-exercise
+
+
+
+!begin-text-buttons
+	
+	previous l Previous
+	
+	home l Home
+	
+	next l Next
+	
+!end-text-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "u-Substitution",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>
