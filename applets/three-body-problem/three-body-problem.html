@@ -1,0 +1,115 @@
+<head>
+	<title>The Three Body Problem</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="The Three Body Problem"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/applets/three-body-problem/three-body-problem.html"/>
+	
+	<meta property="og:description" content="Text"/>
+
+	<meta property="og:image" content="https://cruzgodar.com/applets/three-body-problem/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header The Three Body Problem
+
+
+
+!begin-text-block
+	
+	Text
+	
+	This applet was made with <a href="/projects/wilson/wilson.html" onclick="Page.Navigation.redirect('/projects/wilson/wilson.html')">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.
+	
+!end-text-block
+
+
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+
+!begin-text-boxes
+	
+	resolution 1000 Resolution
+	
+!end-text-boxes
+
+
+
+!begin-text-buttons
+	
+	generate l Generate
+	
+	switch-planet-drawer-canvas l Move Planets
+	
+!end-text-buttons
+
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+<div data-aos="fade-up" style="position: relative; margin: 0 auto; width: 75vmin; height: 75vmin; margin-bottom: 20vh">
+	<div style="position: absolute">
+		<canvas id="output-canvas" class="output-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
+	</div>
+	
+	<div style="position: absolute">
+		<canvas id="planet-drawer-canvas" class="output-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important; transition: opacity .125s ease-in-out; opacity: 0"></canvas>
+	</div>
+</div>
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+!begin-text-buttons
+	
+	download Download Image
+	
+!end-text-buttons
+
+</div>
+
+</div>
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "The Three Body Problem",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>
