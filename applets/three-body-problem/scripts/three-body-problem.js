@@ -61,44 +61,85 @@
 		{
 			vec4 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0) - vec4(.5, .5, .5, .5)) * world_size;
 			
-			float r_1 = length(planet_1 - state.xy);
-			
-			float r_2 = length(planet_2 - state.xy);
-			
-			float r_3 = length(planet_3 - state.xy);
+			vec4 d_state = vec4(0.0, 0.0, 0.0, 0.0);
 			
 			
-			/*
-			if (state.x < -world_size / 2.0 || state.x > world_size / 2.0 || state.y < -world_size / 2.0 || state.y > world_size / 2.0)
+			
+			float d_x = planet_1.x - state.x;
+			
+			float d_y = planet_1.y - state.y;
+			
+			float r;
+			
+			
+			
+			if (d_x < world_size / 2.0)
 			{
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
-				return;
+				if (abs(d_y) < world_size / 2.0)
+				{
+					vec2 vec_to_planet = vec2(d_x, d_y);
+					
+					r = length(vec_to_planet);
+					
+					d_state.zw += G * vec_to_planet / (r * r * r);
+				}
+				
+				else if (d_y < 0.0)
+				{
+					vec2 vec_to_planet = vec2(d_x, d_y + world_size);
+					
+					r = length(vec_to_planet);
+					
+					d_state.zw += G * vec_to_planet / (r * r * r);
+				}
+				
+				else
+				{
+					vec2 vec_to_planet = vec2(d_x, d_y - world_size);
+					
+					r = length(vec_to_planet);
+					
+					d_state.zw += G * vec_to_planet / (r * r * r);
+				}
 			}
-			*/
 			
-			if (r_1 < crash_threshhold)
+			if (d_y < world_size / 2.0)
+			{
+				if (abs(d_x) < world_size / 2.0)
+				{
+					vec2 vec_to_planet = vec2(d_x, d_y);
+					
+					r = length(vec_to_planet);
+					
+					d_state.zw += G * vec_to_planet / (r * r * r);
+				}
+				
+				else if (d_x < 0.0)
+				{
+					vec2 vec_to_planet = vec2(d_x + world_size, d_y);
+					
+					r = length(vec_to_planet);
+					
+					d_state.zw += G * vec_to_planet / (r * r * r);
+				}
+				
+				else
+				{
+					vec2 vec_to_planet = vec2(d_x - world_size, d_y);
+					
+					r = length(vec_to_planet);
+					
+					d_state.zw += G * vec_to_planet / (r * r * r);
+				}
+			}
+			
+			if (r < crash_threshhold)
 			{
 				gl_FragColor = vec4(planet_1, 0.0, 0.0);
 				return;
 			}
 			
-			if (r_2 < crash_threshhold)
-			{
-				gl_FragColor = vec4(planet_2, 0.0, 0.0);
-				return;
-			}
 			
-			if (r_3 < crash_threshhold)
-			{
-				gl_FragColor = vec4(planet_3, 0.0, 0.0);
-				return;
-			}
-			
-			
-			
-			vec4 d_state;
-			
-			d_state.zw = G * ((planet_1 - state.xy) / (r_1 * r_1 * r_1) + (planet_2 - state.xy) / (r_2 * r_2 * r_2) + (planet_3 - state.xy) / (r_3 * r_3 * r_3));
 			
 			d_state.xy = state.zw;
 			
@@ -349,12 +390,16 @@
 	
 	
 	
+	let world_size = 5;
+	
+	
+	
 	let options_planet_drawer =
 	{
 		renderer: "cpu",
 		
-		world_width: Math.PI,
-		world_height: Math.PI,
+		world_width: world_size,
+		world_height: world_size,
 		
 		canvas_width: image_size_planet_drawer,
 		canvas_height: image_size_planet_drawer,
@@ -372,6 +417,8 @@
 	let sy = 0;
 	let vx = 0;
 	let vy = 0;
+	
+	
 	
 	let frame = 0;
 	
@@ -513,11 +560,11 @@
 		
 		
 		
-		let x = sx / Math.PI;
-		let y = sy / Math.PI;
+		let x = sx / world_size;
+		let y = sy / world_size;
 		
-		let z = vx / Math.PI;
-		let w = vy / Math.PI;
+		let z = vx / world_size;
+		let w = vy / world_size;
 		
 		let hue = Math.atan2(y, -x) / (2 * Math.PI) + 1;
 		let saturation = Math.min(Math.min((x*x + y*y) * 50, (1 - Math.max(Math.abs(x), Math.abs(y))) * 5), 1);
@@ -550,52 +597,99 @@
 	
 	function update_parameters()
 	{
-		let planet_1_x = .5;
-		let planet_1_y = 0;
+		let planet_1_x = 0;
+		let planet_1_y = -1;
 		
-		let planet_2_x = -.5;
-		let planet_2_y = 0;
+		let planet_2_x = 0;
+		let planet_2_y = 1;
 		
-		let r_1 = Math.sqrt((planet_1_x - sx) * (planet_1_x - sx) + (planet_1_y - sy) * (planet_1_y - sy));
-		
-		let r_2 = Math.sqrt((planet_2_x - sx) * (planet_2_x - sx) + (planet_2_y - sy) * (planet_2_y - sy));
-		
-		let d_vx = (planet_1_x - sx) / (r_1 * r_1 * r_1) + (planet_2_x - sx) / (r_2 * r_2 * r_2);
-		
-		let d_vy = (planet_1_y - sy) / (r_1 * r_1 * r_1) + (planet_2_y - sy) / (r_2 * r_2 * r_2);
-		
-		let d_sx = vx;
-		
-		let d_sy = vy;
+		let d_vx = 0;
+		let d_vy = 0;
 		
 		
 		
-		sx += d_sx * dt;
-		sy += d_sy * dt;
+		let d_v = get_acceleration_to_planet(planet_1_x, planet_1_y);
+		
+		d_vx += d_v[0];
+		d_vy += d_v[1];
+		
+		
+		
+		d_v = get_acceleration_to_planet(planet_2_x, planet_2_y);
+		
+		d_vx += d_v[0];
+		d_vy += d_v[1];
+		
+		
+		
+		sx += vx * dt;
+		sy += vy * dt;
 		vx += d_vx * dt;
 		vy += d_vy * dt;
 		
-		
-		
-		if (sx >= Math.PI / 2)
+		while (sx < -world_size / 2)
 		{
-			sx -= Math.PI;
+			sx += world_size;
 		}
 		
-		else if (sx < -Math.PI / 2)
+		while (sx > world_size / 2)
 		{
-			sx += Math.PI;
+			sx -= world_size;
 		}
 		
-		if (sy >= Math.PI / 2)
+		while (sy < -world_size / 2)
 		{
-			sy -= Math.PI;
+			sy += world_size;
 		}
 		
-		else if (sy < -Math.PI / 2)
+		while (sy > world_size / 2)
 		{
-			sy += Math.PI;
+			sy -= world_size;
 		}
+	}
+	
+	
+	
+	function get_acceleration_to_planet(planet_x, planet_y)
+	{
+		let d_x = planet_x - sx;
+		let d_y = planet_y - sy;
+		
+		let r = 0;
+		
+		
+		
+		if (Math.abs(d_x) > world_size / 2)
+		{
+			if (d_x < 0)
+			{
+				d_x += world_size;
+			}
+			
+			else
+			{
+				d_x -= world_size;
+			}
+		}
+		
+		if (Math.abs(d_y) > world_size / 2)
+		{
+			if (d_y < 0)
+			{
+				d_y += world_size;
+			}
+			
+			else
+			{
+				d_y -= world_size;
+			}
+		}
+		
+		
+		
+		r = Math.sqrt(d_x*d_x + d_y*d_y);
+		
+		return [d_x / (r*r*r), d_y / (r*r*r)];
 	}
 	
 	
