@@ -49,7 +49,7 @@
 		const vec2 planet_2 = vec2(-.866, -.5);
 		const vec2 planet_3 = vec2(.866, -.5);
 		
-		const float world_size = 5.0;
+		const float world_size = 6.0;
 		
 		const float crash_threshhold = .02;
 		
@@ -66,78 +66,131 @@
 			
 			
 			float d_x = planet_1.x - state.x;
-			
 			float d_y = planet_1.y - state.y;
 			
-			float r;
-			
-			
-			
-			if (d_x < world_size / 2.0)
+			if (abs(d_x) > world_size / 2.0)
 			{
-				if (abs(d_y) < world_size / 2.0)
+				if (d_x < 0.0)
 				{
-					vec2 vec_to_planet = vec2(d_x, d_y);
-					
-					r = length(vec_to_planet);
-					
-					d_state.zw += G * vec_to_planet / (r * r * r);
-				}
-				
-				else if (d_y < 0.0)
-				{
-					vec2 vec_to_planet = vec2(d_x, d_y + world_size);
-					
-					r = length(vec_to_planet);
-					
-					d_state.zw += G * vec_to_planet / (r * r * r);
+					d_x += world_size;
 				}
 				
 				else
 				{
-					vec2 vec_to_planet = vec2(d_x, d_y - world_size);
-					
-					r = length(vec_to_planet);
-					
-					d_state.zw += G * vec_to_planet / (r * r * r);
+					d_x -= world_size;
 				}
 			}
 			
-			if (d_y < world_size / 2.0)
+			if (abs(d_y) > world_size / 2.0)
 			{
-				if (abs(d_x) < world_size / 2.0)
+				if (d_y < 0.0)
 				{
-					vec2 vec_to_planet = vec2(d_x, d_y);
-					
-					r = length(vec_to_planet);
-					
-					d_state.zw += G * vec_to_planet / (r * r * r);
-				}
-				
-				else if (d_x < 0.0)
-				{
-					vec2 vec_to_planet = vec2(d_x + world_size, d_y);
-					
-					r = length(vec_to_planet);
-					
-					d_state.zw += G * vec_to_planet / (r * r * r);
+					d_y += world_size;
 				}
 				
 				else
 				{
-					vec2 vec_to_planet = vec2(d_x - world_size, d_y);
-					
-					r = length(vec_to_planet);
-					
-					d_state.zw += G * vec_to_planet / (r * r * r);
+					d_y -= world_size;
 				}
 			}
+			
+			vec2 planet_direction = vec2(d_x, d_y);
+			
+			float r = length(planet_direction);
 			
 			if (r < crash_threshhold)
 			{
-				gl_FragColor = vec4(planet_1, 0.0, 0.0);
+				gl_FragColor = vec4(planet_1 / world_size + vec2(.5, .5), 0.5, 0.5);
 				return;
 			}
+			
+			d_state.zw += planet_direction / (r*r*r);
+			
+			
+			
+			d_x = planet_2.x - state.x;
+			d_y = planet_2.y - state.y;
+			
+			if (abs(d_x) > world_size / 2.0)
+			{
+				if (d_x < 0.0)
+				{
+					d_x += world_size;
+				}
+				
+				else
+				{
+					d_x -= world_size;
+				}
+			}
+			
+			if (abs(d_y) > world_size / 2.0)
+			{
+				if (d_y < 0.0)
+				{
+					d_y += world_size;
+				}
+				
+				else
+				{
+					d_y -= world_size;
+				}
+			}
+			
+			planet_direction = vec2(d_x, d_y);
+			
+			r = length(planet_direction);
+			
+			if (r < crash_threshhold)
+			{
+				gl_FragColor = vec4(planet_2 / world_size + vec2(.5, .5), 0.5, 0.5);
+				return;
+			}
+			
+			d_state.zw += planet_direction / (r*r*r);
+			
+			
+			
+			d_x = planet_3.x - state.x;
+			d_y = planet_3.y - state.y;
+			
+			if (abs(d_x) > world_size / 2.0)
+			{
+				if (d_x < 0.0)
+				{
+					d_x += world_size;
+				}
+				
+				else
+				{
+					d_x -= world_size;
+				}
+			}
+			
+			if (abs(d_y) > world_size / 2.0)
+			{
+				if (d_y < 0.0)
+				{
+					d_y += world_size;
+				}
+				
+				else
+				{
+					d_y -= world_size;
+				}
+			}
+			
+			planet_direction = vec2(d_x, d_y);
+			
+			r = length(planet_direction);
+			
+			if (r < crash_threshhold)
+			{
+				gl_FragColor = vec4(planet_3 / world_size + vec2(.5, .5), 0.5, 0.5);
+				return;
+			}
+			
+			d_state.zw += planet_direction / (r*r*r);
 			
 			
 			
@@ -182,7 +235,7 @@
 			
 			float v_add = .9 * (1.0 - 4.0 * ((uv.x * uv.x) / 4.0 + (uv.y * uv.y) / 4.0));
 			
-			float v = min(sqrt(state.z * state.z + state.w * state.w) + v_add, 1.0);
+			float v = clamp(sqrt(state.z * state.z + state.w * state.w) + v_add, 0.0, 1.0);
 			
 			vec3 rgb = hsv2rgb(vec3(h, s, v));
 			
@@ -600,8 +653,11 @@
 		let planet_1_x = 0;
 		let planet_1_y = -1;
 		
-		let planet_2_x = 0;
-		let planet_2_y = 1;
+		let planet_2_x = -.866;
+		let planet_2_y = .5;
+		
+		let planet_3_x = .866;
+		let planet_3_y = .5;
 		
 		let d_vx = 0;
 		let d_vy = 0;
@@ -616,6 +672,13 @@
 		
 		
 		d_v = get_acceleration_to_planet(planet_2_x, planet_2_y);
+		
+		d_vx += d_v[0];
+		d_vy += d_v[1];
+		
+		
+		
+		d_v = get_acceleration_to_planet(planet_3_x, planet_3_y);
 		
 		d_vx += d_v[0];
 		d_vy += d_v[1];
