@@ -10,7 +10,20 @@
 	
 	let state = null;
 	
+	
+	
+	let planet_1_x = 0;
+	let planet_1_y = 1;
+	
+	let planet_2_x = -.866;
+	let planet_2_y = -.5;
+	
+	let planet_3_x = .866;
+	let planet_3_y = -.5;
+	
 	let dt = .01;
+	
+	
 	
 	let drawn_fractal = false;
 	
@@ -45,11 +58,11 @@
 		
 		const float dt = .001;
 		
-		const vec2 planet_1 = vec2(0.0, 1.0);
-		const vec2 planet_2 = vec2(-.866, -.5);
-		const vec2 planet_3 = vec2(.866, -.5);
+		uniform vec2 planet_1;
+		uniform vec2 planet_2;
+		uniform vec2 planet_3;
 		
-		const float world_size = 6.0;
+		const float world_size = 10.0;
 		
 		const float crash_threshhold = .02;
 		
@@ -267,7 +280,18 @@
 	
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 	
+	
+	
 	wilson.render.load_new_shader(frag_shader_source_update);
+	
+	wilson.render.init_uniforms(["planet_1", "planet_2", "planet_3"]);
+	
+	wilson.gl.uniform2f(wilson.uniforms["planet_1"], planet_1_x, planet_1_y);
+	wilson.gl.uniform2f(wilson.uniforms["planet_2"], planet_2_x, planet_2_y);
+	wilson.gl.uniform2f(wilson.uniforms["planet_3"], planet_3_x, planet_3_y);
+	
+	
+	
 	wilson.render.load_new_shader(frag_shader_source_draw);
 	
 	wilson.render.create_framebuffer_texture_pair();
@@ -350,6 +374,10 @@
 		
 		
 		
+		wilson.gl.useProgram(wilson.render.shader_programs[1]);
+		
+		
+		
 		wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, wilson.render.framebuffers[0].texture);
 		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvas_width, wilson.canvas_height, 0, wilson.gl.RGBA, wilson.gl.FLOAT, null);
 		
@@ -390,6 +418,10 @@
 		
 		
 		wilson.gl.useProgram(wilson.render.shader_programs[1]);
+		
+		wilson.gl.uniform2f(wilson.uniforms["planet_1"], planet_1_x, planet_1_y);
+		wilson.gl.uniform2f(wilson.uniforms["planet_2"], planet_2_x, planet_2_y);
+		wilson.gl.uniform2f(wilson.uniforms["planet_3"], planet_3_x, planet_3_y);
 		
 		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, wilson.render.framebuffers[1].framebuffer);
 		
@@ -443,7 +475,7 @@
 	
 	
 	
-	let world_size = 5;
+	let world_size = 10;
 	
 	
 	
@@ -461,10 +493,21 @@
 		touchmove_callback: draw_preview_planet,
 		
 		mousedown_callback: start_planet_animation,
-		touchend_callback: start_planet_animation
+		touchend_callback: start_planet_animation,
+		
+		
+		
+		use_draggables: true,
+		
+		draggables_mousemove_callback: on_drag_draggable,
+		draggables_touchmove_callback: on_drag_draggable
 	};
 	
 	let wilson_planet_drawer = new Wilson(document.querySelector("#planet-drawer-canvas"), options_planet_drawer);
+	
+	wilson_planet_drawer.draggables.add(0, 1);
+	wilson_planet_drawer.draggables.add(-.866, -.5);
+	wilson_planet_drawer.draggables.add(.866, -.5);
 	
 	let sx = 0;
 	let sy = 0;
@@ -650,35 +693,26 @@
 	
 	function update_parameters()
 	{
-		let planet_1_x = 0;
-		let planet_1_y = -1;
-		
-		let planet_2_x = -.866;
-		let planet_2_y = .5;
-		
-		let planet_3_x = .866;
-		let planet_3_y = .5;
-		
 		let d_vx = 0;
 		let d_vy = 0;
 		
 		
 		
-		let d_v = get_acceleration_to_planet(planet_1_x, planet_1_y);
+		let d_v = get_acceleration_to_planet(planet_1_x, -planet_1_y);
 		
 		d_vx += d_v[0];
 		d_vy += d_v[1];
 		
 		
 		
-		d_v = get_acceleration_to_planet(planet_2_x, planet_2_y);
+		d_v = get_acceleration_to_planet(planet_2_x, -planet_2_y);
 		
 		d_vx += d_v[0];
 		d_vy += d_v[1];
 		
 		
 		
-		d_v = get_acceleration_to_planet(planet_3_x, planet_3_y);
+		d_v = get_acceleration_to_planet(planet_3_x, -planet_3_y);
 		
 		d_vx += d_v[0];
 		d_vy += d_v[1];
@@ -753,6 +787,29 @@
 		r = Math.sqrt(d_x*d_x + d_y*d_y);
 		
 		return [d_x / (r*r*r), d_y / (r*r*r)];
+	}
+	
+	
+	
+	function on_drag_draggable(active_draggable, x, y, event)
+	{
+		if (active_draggable === 0)
+		{
+			planet_1_x = x;
+			planet_1_y = y;
+		}
+		
+		else if (active_draggable === 1)
+		{
+			planet_2_x = x;
+			planet_2_y = y;
+		}
+		
+		else
+		{
+			planet_3_x = x;
+			planet_3_y = y;
+		}
 	}
 	
 	
