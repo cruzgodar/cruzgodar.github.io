@@ -21,6 +21,8 @@
 	let planet_3_x = .866;
 	let planet_3_y = -.5;
 	
+	let crash_threshhold = .1;
+	
 	let dt = .01;
 	
 	
@@ -332,7 +334,7 @@
 			
 			setTimeout(() =>
 			{
-				switch_planet_drawer_canvas_button_element.textContent = "Move Planets";
+				switch_planet_drawer_canvas_button_element.textContent = "Pick Particle";
 				
 				switch_planet_drawer_canvas_button_element.style.opacity = 1;
 			}, 250);
@@ -361,7 +363,7 @@
 	
 	download_button_element.addEventListener("click", () =>
 	{
-		wilson.download_frame("the-three-body-problem.png");
+		wilson.download_frame("a-three-body-system.png");
 	});
 	
 	
@@ -703,6 +705,16 @@
 		d_vx += d_v[0];
 		d_vy += d_v[1];
 		
+		if (d_v[2] < crash_threshhold)
+		{
+			sx = planet_1_x;
+			sy = -planet_1_y;
+			vx = 0;
+			vy = 0;
+			
+			return;
+		}
+		
 		
 		
 		d_v = get_acceleration_to_planet(planet_2_x, -planet_2_y);
@@ -710,12 +722,32 @@
 		d_vx += d_v[0];
 		d_vy += d_v[1];
 		
+		if (d_v[2] < crash_threshhold)
+		{
+			sx = planet_2_x;
+			sy = -planet_2_y;
+			vx = 0;
+			vy = 0;
+			
+			return;
+		}
+		
 		
 		
 		d_v = get_acceleration_to_planet(planet_3_x, -planet_3_y);
 		
 		d_vx += d_v[0];
 		d_vy += d_v[1];
+		
+		if (d_v[2] < crash_threshhold)
+		{
+			sx = planet_3_x;
+			sy = -planet_3_y;
+			vx = 0;
+			vy = 0;
+			
+			return;
+		}
 		
 		
 		
@@ -786,7 +818,7 @@
 		
 		r = Math.sqrt(d_x*d_x + d_y*d_y);
 		
-		return [d_x / (r*r*r), d_y / (r*r*r)];
+		return [d_x / (r*r*r), d_y / (r*r*r), r];
 	}
 	
 	

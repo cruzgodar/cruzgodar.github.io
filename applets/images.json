@@ -7,6 +7,12 @@
 	
 	
 	
+	"three-body-systems":
+	{
+		"webp": "three-body-systems/cover.webp",
+		"non-webp": "three-body-systems/cover.jpg"
+	},
+	
 	"hitomezashi-patterns":
 	{
 		"webp": "hitomezashi-patterns/cover.webp",
