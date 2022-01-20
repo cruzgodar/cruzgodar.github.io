@@ -61,6 +61,10 @@ Page.Navigation =
 		
 		
 		
+		Site.applet_process_id++;
+		
+		
+		
 		if (!no_state_push)
 		{
 			Site.last_pages.push(Page.url);

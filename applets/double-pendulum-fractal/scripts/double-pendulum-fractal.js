@@ -16,6 +16,8 @@
 	
 	let paused = false;
 	
+	let starting_process_id = null;
+	
 	
 	
 	let frag_shader_source_init = `
@@ -209,6 +211,8 @@
 	
 	function draw_double_pendulum_fractal()
 	{
+		starting_process_id = Site.applet_process_id;
+		
 		image_size = parseInt(resolution_input_element.value || 1000);
 		
 		wilson.change_canvas_size(image_size, image_size);
@@ -291,6 +295,13 @@
 		wilson.render.draw_frame();
 		
 		
+		
+		if (starting_process_id !== Site.applet_process_id)
+		{
+			console.log("Terminated applet process");
+			
+			return;
+		}
 		
 		if (!paused)
 		{

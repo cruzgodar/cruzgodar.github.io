@@ -31,6 +31,8 @@
 	
 	let paused = false;
 	
+	let starting_process_id = null;
+	
 	
 	
 	let frag_shader_source_init = `
@@ -64,7 +66,7 @@
 		uniform vec2 planet_2;
 		uniform vec2 planet_3;
 		
-		const float world_size = 10.0;
+		const float world_size = 15.0;
 		
 		const float crash_threshhold = .02;
 		
@@ -370,6 +372,8 @@
 	
 	function draw_three_body_problem_fractal()
 	{
+		starting_process_id = Site.applet_process_id;
+		
 		image_size = parseInt(resolution_input_element.value || 1000);
 		
 		wilson.change_canvas_size(image_size, image_size);
@@ -461,6 +465,13 @@
 		
 		
 		
+		if (starting_process_id !== Site.applet_process_id)
+		{
+			console.log("Terminated applet process");
+			
+			return;
+		}
+		
 		if (!paused)
 		{
 			window.requestAnimationFrame(draw_frame);
@@ -477,7 +488,7 @@
 	
 	
 	
-	let world_size = 10;
+	let world_size = 15;
 	
 	
 	

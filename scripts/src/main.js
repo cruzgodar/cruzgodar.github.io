@@ -106,6 +106,10 @@ let Site =
 	
 	
 	
+	applet_process_id: 0,
+	
+	
+	
 	//Redirects to the chosen page and sets up all the miscellaneous things that make the site work.
 	load: async function(url)
 	{
