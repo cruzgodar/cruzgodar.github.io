@@ -1,0 +1,169 @@
+<head>
+	<title>Section 7: Exponential, Logarithmic, and Inverse Trig Integrals</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 7: Exponential, Logarithmic, and Inverse Trig Integrals"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/7-exp-and-log-integrals/7-exp-and-log-integrals.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/252/notes/7-exp-and-log-integrals/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 7: Exponential, Logarithmic, and Inverse Trig Integrals
+
+
+
+!begin-text-block
+	
+	So far, we know the antiderivatives of functions which are derivatives of other functions, and we can also sometimes compose them with $u$-sub. In this section, we&#x2019;ll talk about a few more common integrals, and then we&#x2019;ll end with a summary of all the integrals we know so far.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	An integral involving an exponential function
+	
+	A certain strain of bacteria grow at a rate of $3^t$ new bacteria per hour. If the population starts at $100$ bacteria at time $0$, how many will there be after $6$ hours?
+	
+	Let $N(t)$ be the number of total bacteria after $t$ hours. Then $N(0) = 0$ and $N'(t) = 3^t$, since the $3^t$ is the rate of growth of $N$. We want to find $N(6)$, so a good place to start is $N(t)$ in general. This is an antiderivative of $N'$, and so we have
+	
+	$$
+		\begin{align*}
+			N(t) &= \int N'(t)\ dt\\
+			&= \int 3^t\ dt.
+		\end{align*}
+	$$
+	
+	Since $\frac{d}{dt} [3^t] = 3^t \ln(3)$, we can divide both sides by $\ln(3)$ to find that $N(t) = \int 3^t\ dt = \frac{1}{ln(3)} 3^t + C$. Since $N(0) = 100$, we have that $100 = \frac{1}{ln(3)} 3^0 + C$, so $C = 100 - \frac{1}{\ln(3)} \approx 99.09$. Therefore, $N(6) = \frac{3^6}{\ln(3)} + 99.09 = 762.7$.
+	
+!end-example
+
+!begin-exercise
+	
+	An integral involving an exponential function
+	
+	A radioactive substance degrades at a rate of $-.0953 \cdot 1.1^{-t}$ grams per year after $t$ years. If there is initially $1$ gram of the substance, how much will be left after $20$ years?
+	
+!end-exercise
+
+
+
+!begin-example
+	
+	Another exponential integral
+	
+	Find $\int \frac{2^{1/x}}{x^2}\ dx.
+	
+	This is too complicated to evaluate directly, so we have to try $u$-sub. If we set $u = x^2$, then the exponential becomes $2^{1/\sqrt{u}}$, which is not helpful. Instead, we can try $u = \frac{1}{x}$. Then $du = -\frac{1}{x^2}\ dx$. This lines up nicely: the integral becomes
+	
+	$$
+		\begin{align*}
+			-\int 2^u\ du &= -\frac{1}{\ln(2)} 2^u + C\\
+			&= -\frac{1}{\ln(2)} 2^(1/x) + C.
+		\end{align*}
+	$$
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	We know that $\int \frac{1}{x}\ dx = \ln|x| + C$, since $\frac{d}{dx}[\ln|x|] = \frac{1}{x}$, but we don&#x2019;t yet know the integral of $\ln(x)$, or more generally of $\log_a(x)$ for any $a$. Let&#x2019;s fix that now.
+	
+!end-text-block
+
+
+
+!begin-prop
+	
+	the integral of natural log
+	
+	$\int \ln(x)\ dx = x\ln(x) - x + C$.
+	
+!end-prop
+
+!begin-exercise
+	
+	Differentiate $x\ln(x) - x + C$ and verify that you do in fact get $\ln(x)$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	It&#x2019;s not at all clear how we were supposed to find this integral out, but it isn&#x2019;t all that hard to verify. Now we can integrate functions involving $\ln(x)$, and for logs with different bases, we can use the following formula:
+	
+	$$
+		\log_a(x) = \frac{\ln(x)}{\ln(a)}.
+	$$
+	
+	Remember that $\log_a(x)$ is the number you raise $a$ to in order to get $x$ &mdash; for example, $\log_2(8) = 3$, since $2^3 = 8$. And $\ln(x)$ is just a shorthand for $\log_e(x)$.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a logarithmic integral
+	
+	Find $\int_2^3 \log_2(5x)\ dx$.
+	
+	First, we&#x2019;ll turn this log into a natural log:
+	
+	$$\int_2^3 \log_2(5x)\ dx$$
+	
+!end-example
+
+
+
+!begin-text-buttons
+	
+	previous l Previous
+	
+	home l Home
+	
+	next l Next
+	
+!end-text-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 6: u-Substitution",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>
