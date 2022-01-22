@@ -6,7 +6,7 @@
         
         element.addEventListener("click", () =>
         {
-            Page.Navigation.redirect("/teaching/uo/252/notes/8-inverse-trig-functions/8-inverse-trig-functions.html");
+            Page.Navigation.redirect("/teaching/uo/252/notes/8-area-between-curves/8-area-between-curves.html");
         });
     }
     

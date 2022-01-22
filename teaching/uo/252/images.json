@@ -41,6 +41,12 @@
         "non-webp": "notes/6-u-sub/cover.jpg"
 	},
 	
+	"7-exp-and-log-integrals":
+	{
+		"webp": "notes/7-exp-and-log-integrals/cover.webp",
+        "non-webp": "notes/7-exp-and-log-integrals/cover.jpg"
+	},
+	
 	
 	
 	"homework-7":

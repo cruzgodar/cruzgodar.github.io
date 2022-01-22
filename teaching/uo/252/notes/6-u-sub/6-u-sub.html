@@ -112,7 +112,7 @@
 	
 	Find $\int 6x^2(3x^2 + 4)^4\ dx$.
 	
-	If we try to set $u = 3x^2 + 4$ again, we get that $du = 6x\ dx$, as before. The integral then becomes $\int xu^4\ du$, and as is, that&#x2019;s a deadend, because the integral contains more than just $u$. The only way to possibly make it work is to solve for $x$ in terms of $u$, which gives $x = \sqrt{\frac{1}{3} (u - 4)}. But the integral is then $\int u^4\sqrt{\frac{1}{3} (u - 4)}\ du$, and this is significantly worse than what we started with. Unfortunately, there is simply no way to make $u$-sub helpful on this problem. Eventually, we&#x2019;ll talk about a different strategy to handle this kind of integral, but that&#x2019;s for the future.
+	If we try to set $u = 3x^2 + 4$ again, we get that $du = 6x\ dx$, as before. The integral then becomes $\int xu^4\ du$, and as is, that&#x2019;s a deadend, because the integral contains more than just $u$. The only way to possibly make it work is to solve for $x$ in terms of $u$, which gives $x = \sqrt{\frac{1}{3} (u - 4)}$. But the integral is then $\int u^4\sqrt{\frac{1}{3} (u - 4)}\ du$, and this is significantly worse than what we started with. Unfortunately, there is simply no way to make $u$-sub helpful on this problem. Eventually, we&#x2019;ll talk about a different strategy to handle this kind of integral, but that&#x2019;s for the future.
 	
 !end-example
 
@@ -216,7 +216,7 @@
 		\end{align*}
 	$$
 	
-	To integrate $\cos(2x)$, we set $u = 2x$ and $\du = 2\ dx$, so $dx = \frac{1}{2}\ du$. Now
+	To integrate $\cos(2x)$, we set $u = 2x$ and $du = 2\ dx$, so $dx = \frac{1}{2}\ du$. Now
 	
 	$$
 		\begin{align*}
@@ -256,15 +256,13 @@
 	
 	The complicated part is the $\sqrt{x - 1}$, so let&#x2019;s try setting $u$ to be the inside function. If $u = x - 1$, then $du = dx$, and so we have
 	
-	$$
-		\int \frac{x}{\sqrt{x - 1}}\ dx = \int \frac{x}{\sqrt{u}}\ du.
-	$$
+	$$\int \frac{x}{\sqrt{x - 1}}\ dx = \int \frac{x}{\sqrt{u}}\ du.$$
 	
 	To get rid of the $x$ left over, we need to solve for $x$ in terms of $u$: $x = u + 1$. Now we have
 	
 	$$
 		\begin{align*}
-			\int \frac{u + 1}{\sqrt{u}}\ du &= \int \frac{u}{\sqrt{u}} + \frac{1}{\sqrt{u}\ du\\
+			\int \frac{u + 1}{\sqrt{u}}\ du &= \int \frac{u}{\sqrt{u}} + \frac{1}{\sqrt{u}}\ du\\
 			&= \int \frac{u}{\sqrt{u}}\ du + \int \frac{1}{\sqrt{u}}\ du\\
 			&= \int u^{1/2}\ du + \int u^{-1/2}\ du\\
 			&= \frac{2}{3} u^{3/2} + 2u^{1/2} + C\\
