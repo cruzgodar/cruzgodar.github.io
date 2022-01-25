@@ -94,6 +94,15 @@
 	
 	Find $\int 2\sin^3(2x)\cos(2x)\ dx$.
 	
+	Solution: Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won&#x2019;t advance the problem forward &mdash; if you don&#x2019;t see why, try it!) Then $du = 2\cos(2x)\ dx$ by the chain rule, and so the integral becomes
+	
+	$$
+		\begin{align*}
+			\int u^3\ du &= \frac{u^4}{4} + C\\
+			&= \frac{1}{4} \sin^4(2x) + C.
+		\end{align*}
+	$$
+	
 !end-exercise
 
 
@@ -163,6 +172,16 @@
 	
 	Find $\int 2t^2 e^{4t^3 + 3}\ dt$.
 	
+	Solution: let $u = 4t^3 + 3$. Then $du = 12t^2\ dt$, but we have $2t^2\ dt$, so we solve for $2t^2\ dt$ to get $2t^2\ dt = 6\ du$. Now we have
+	
+	$$
+		\begin{align*}
+			\int 2t^2 e^{4t^3 + 3}\ dt &= \int 6 e^u\ du\\
+			&= 6e^u + C\\
+			&= 6e^{4t^3 + 3} + C.
+		\end{align*}
+	$$
+	
 !end-exercise
 
 
@@ -212,7 +231,7 @@
 			\int 3\cos^2(x)\ dx &= 3\int \cos^2(x)\ dx\\
 			&= 3\int \frac{1 + \cos(2x)}{2}\ dx\\
 			&= 3\int \frac{1}{2} + \frac{1}{2}\cos(2x)\ dx\\
-			&= \frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\ dx\\
+			&= \frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\ dx
 		\end{align*}
 	$$
 	
@@ -222,7 +241,7 @@
 		\begin{align*}
 			\frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\ dx &= \frac{3}{2}x + C + \frac{3}{4}\int \cos(u)\ du\\
 			&= \frac{3}{2}x + C + \frac{3}{4}\sin(u)\\
-			&= \frac{3}{2}x + \frac{3}{4}\sin(2x) + C.\\
+			&= \frac{3}{2}x + \frac{3}{4}\sin(2x) + C.
 		\end{align*}
 	$$
 	
@@ -235,6 +254,32 @@
 	the half-angle formulas
 	
 	Find $\int \sin^4(t)\ dt$.
+	
+	Solution: using the half-angle formula, we have
+	
+	$$
+		\begin{align*}
+			\int \sin^4(t)\ dt &= \int (\sin^2(t))^2\ dt\\
+			&= \int \left( \frac{1}{2} - \frac{1}{2} \cos(2t) \right)^2\ dt\\
+			&= \int (\frac{1}{4} - \frac{1}{2} \cos(2t) + \frac{1}{4} \cos^2(2t))\ dt\\
+			&= \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \int \cos^2(2t)\ dt\\
+		\end{align*}
+	$$
+	
+	Now we use half-angles <strong>again</strong>, this time on $\cos^2(2t)$.
+	
+	$$
+		\begin{align*}
+			\int \cos^2(2t)\ dt &= \int \left( \frac{1}{2} + \frac{1}{2} \cos(4t) \right)\ dt\\
+			&= \frac{1}{2} t + \frac{1}{8} \cos(4t) + C.
+		\end{align*}
+	$$
+	
+	In total, we have
+	
+	$$
+		\int \sin^4(t)\ dt = \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \left(\frac{1}{2} t + \frac{1}{8} \cos(4t)\right) + C.
+	$$
 	
 !end-exercise
 
