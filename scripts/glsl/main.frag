@@ -1322,7 +1322,9 @@ vec2 kleinJq(vec2 q) {
 	return cdiv(cpow(a+b+c,3.0),54.0*cmul(cmul(a,b),c));
 }
 
-
+float kleinj_from_g2_g3(float a, float b) {
+	return cpow(4.0*a,3.0)/(cpow(4.0*a,3.0) + cpow(27.0*b,2.0)) * 1728.0/16.0;
+}
 
 // these can probably go in a different file...
 
@@ -2111,6 +2113,37 @@ vec2 arithmetic_geometric_mean_for_g2_g3(vec2 x, vec2 y) {
 
 }
 
+bool in_fun_domain(vec2 z) {
+	if (cmag2(z)<1.0) {
+		return false;
+	} else if (z.x < -0.5) {
+		return false;
+	} else if (z.x > -0.5) {
+		return false;
+	}
+	return true;
+}
+
+// how many steps to try to map to fun domain
+const int MAX_FUN = 100;
+
+// in: z in H
+// out: z in D, i.e. |z|>1, |z.x|<.5
+vec2 map_to_fun_domain(vec2 z) {
+	for (int i = 0; i < MAX_FUN; i++) {
+		if (cmag2(z)<1.0) {
+			z = -cinv(z);
+		} else if (z.x <= -0.5) {
+			z += ONE;
+		} else if (z.x > 0.5) {
+			z -= ONE;
+		} else {
+			return vec2(cabs(z.x),z.y);
+		}
+	}
+	return z;
+}
+
 // IN: g2 = a, g3 = b
 // OUT: tau such that y^2 = 4x^3 - g2(tau)x - g3(tau) is isomorphic to y^2 = 4x^3 - ax - b
 // 
@@ -2140,7 +2173,8 @@ vec2 inverse_g2_g3(vec2 a, vec2 b) {
 	vec2 b0 = csqrt(r1-r2);
 	vec2 c0 = csqrt(r2-r3);
 
-	return cdiv(arithmetic_geometric_mean(c0,cmul(I,b0)),arithmetic_geometric_mean_for_g2_g3(a0,b0));
+	d = cdiv(arithmetic_geometric_mean(c0,cmul(I,b0)),arithmetic_geometric_mean_for_g2_g3(a0,b0));
+	return map_to_fun_domain(d);
 
 	// fwiw this is a decent inverse right below the fundamental domain
 	// // vec2 tau = inverse_j_reduced(cdiv(cpow(b,2.0),cpow(a,3.0)));
