@@ -23,8 +23,6 @@
 	
 	let wilson_g2 = null;
 	
-	let wilson_g3 = null;
-	
 	
 	
 	let aspect_ratio = 1;
@@ -131,15 +129,16 @@
 	
 	g2_slider_element.addEventListener("input", () =>
 	{
-		//-2 to 2
+		//-5 to 5
 		g2 = parseInt(g2_slider_element.value || 5000) / 1000 - 5;
 		
 		g2_slider_value_element.textContent = Math.round(g2 * 1000) / 1000;
 		
+		wilson_g2.draggables.world_coordinates[0] = [g2, g3];
+		wilson_g2.draggables.recalculate_locations();
+		
 		window.requestAnimationFrame(draw_frame);
-		
 		window.requestAnimationFrame(draw_frame_ec_plot);
-		
 		window.requestAnimationFrame(draw_frame_parameter_column);
 	});
 	
@@ -153,15 +152,16 @@
 	
 	g3_slider_element.addEventListener("input", () =>
 	{
-		//2 to 2
+		//-5 to 5
 		g3 = parseInt(g3_slider_element.value || 5000) / 1000 - 5;
 		
 		g3_slider_value_element.textContent = Math.round(g3 * 1000) / 1000;
 		
+		wilson_g2.draggables.world_coordinates[0] = [g2, g3];
+		wilson_g2.draggables.recalculate_locations();
+		
 		window.requestAnimationFrame(draw_frame);
-		
 		window.requestAnimationFrame(draw_frame_ec_plot);
-		
 		window.requestAnimationFrame(draw_frame_parameter_column);
 	});
 	
@@ -200,6 +200,9 @@
 			
 			uniform float g2_arg;
 			uniform float g3_arg;
+			
+			const float dot_center_radius = .05;
+			const float dot_border_radius = .06;
 			
 			
 			
@@ -252,6 +255,22 @@
 				float v = clamp(1.0 / (1.0 + .01 / (modulus * black_point * black_point)), 0.0, 1.0);
 				
 				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
+				
+				
+				
+				vec2 tau = inverse_g2_g3(g2_arg, g3_arg);
+				
+				float distance = length(tau - z);
+				
+				if (distance < dot_center_radius)
+				{
+					gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+				}
+				
+				else if (distance < dot_border_radius)
+				{
+					gl_FragColor = vec4(0.25, 0.25, 0.25, 1.0);
+				}
 			}
 		`;
 		
@@ -273,6 +292,9 @@
 			
 			uniform float g2_arg;
 			uniform float g3_arg;
+			
+			const float dot_center_radius = .05;
+			const float dot_border_radius = .06;
 			
 			
 			
@@ -325,6 +347,22 @@
 				float v = clamp(1.0 / (1.0 + .01 / (modulus * black_point * black_point)), 0.0, 1.0);
 				
 				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
+				
+				
+				
+				vec2 tau = inverse_g2_g3(g2_arg, g3_arg);
+				
+				float distance = length(tau - z);
+				
+				if (distance < dot_center_radius)
+				{
+					gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+				}
+				
+				else if (distance < dot_border_radius)
+				{
+					gl_FragColor = vec4(0.25, 0.25, 0.25, 1.0);
+				}
 			}
 		`;
 		
@@ -455,8 +493,8 @@
 			uniform float g2_arg;
 			uniform float g3_arg;
 			
-			const float dot_center_radius = .1;
-			const float dot_border_radius = .12;
+			const float dot_center_radius = .05;
+			const float dot_border_radius = .06;
 			
 			
 			
@@ -537,8 +575,8 @@
 			const float aspect_ratio = 1.0;
 			
 			const float world_center_x = 0.0;
-			const float world_center_y = 1.0;
-			const float world_size = 1.0;
+			const float world_center_y = 0.0;
+			const float world_size = 10.0;
 			
 			const float black_point = 1.0;
 			const float white_point = 1.0;
@@ -546,8 +584,8 @@
 			uniform float g2_arg;
 			uniform float g3_arg;
 			
-			const float dot_center_radius = .1;
-			const float dot_border_radius = .12;
+			const float dot_center_radius = .5;
+			const float dot_border_radius = .6;
 			
 			
 			
@@ -567,7 +605,7 @@
 			//Returns f(z) for a polynomial f with given roots.
 			vec2 f(vec2 z)
 			{
-				return eisenstein4(z);
+				return kleinj_from_g2_g3(z.x, z.y) * ONE;
 			}
 			
 			
@@ -599,113 +637,6 @@
 				float v = clamp(1.0 / (1.0 + .01 / (modulus * black_point * black_point)), 0.0, 1.0);
 				
 				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
-				
-				
-				
-				vec2 tau = inverse_g2_g3(g2_arg, g3_arg);
-				
-				float distance = length(tau - z);
-				
-				if (distance < dot_center_radius)
-				{
-					gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-				}
-				
-				else if (distance < dot_border_radius)
-				{
-					gl_FragColor = vec4(0.25, 0.25, 0.25, 1.0);
-				}
-			}
-		`;
-		
-		
-		
-		let frag_shader_source_g3 = `
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			const float aspect_ratio = 1.0;
-			
-			const float world_center_x = 0.0;
-			const float world_center_y = 1.0;
-			const float world_size = 1.0;
-			
-			const float black_point = 1.0;
-			const float white_point = 1.0;
-			
-			uniform float g2_arg;
-			uniform float g3_arg;
-			
-			const float dot_center_radius = .1;
-			const float dot_border_radius = .12;
-			
-			
-			
-			${COMPLEX_GLSL}
-			
-			
-			
-			vec3 hsv2rgb(vec3 c)
-			{
-				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-			}
-			
-			
-			
-			//Returns f(z) for a polynomial f with given roots.
-			vec2 f(vec2 z)
-			{
-				return eisenstein6(z);
-			}
-			
-			
-			
-			void main(void)
-			{
-				vec2 z;
-				
-				if (aspect_ratio >= 1.0)
-				{
-					z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
-				}
-				
-				else
-				{
-					z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
-				}
-				
-				
-				
-				vec2 image_z = f(z);
-				
-				
-				
-				float modulus = length(image_z);
-				
-				float h = atan(image_z.y, image_z.x) / 6.283;
-				float s = clamp(1.0 / (1.0 + .01 * (modulus / white_point / white_point)), 0.0, 1.0);
-				float v = clamp(1.0 / (1.0 + .01 / (modulus * black_point * black_point)), 0.0, 1.0);
-				
-				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
-				
-				
-				
-				vec2 tau = inverse_g2_g3(g2_arg, g3_arg);
-				
-				float distance = length(tau - z);
-				
-				if (distance < dot_center_radius)
-				{
-					gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-				}
-				
-				else if (distance < dot_border_radius)
-				{
-					gl_FragColor = vec4(0.25, 0.25, 0.25, 1.0);
-				}
 			}
 		`;
 		
@@ -808,8 +739,8 @@
 			canvas_width: resolution_ec_plot,
 			canvas_height: resolution_ec_plot,
 			
-			world_width: 2,
-			world_height: 2,
+			world_width: 6,
+			world_height: 6,
 			world_center_x: 0,
 			world_center_y: 0,
 			
@@ -862,19 +793,17 @@
 			shader: frag_shader_source_g2,
 			
 			canvas_width: 500,
-			canvas_height: 500
-		};
-		
-		
-		
-		let options_g3 =
-		{
-			renderer: "gpu",
+			canvas_height: 500,
 			
-			shader: frag_shader_source_g3,
+			world_width: 10,
+			world_height: 10,
+			world_center_x: 0,
+			world_center_y: 0,
 			
-			canvas_width: 500,
-			canvas_height: 500
+			use_draggables: true,
+			
+			draggables_mousemove_callback: on_drag_draggable,
+			draggables_touchmove_callback: on_drag_draggable
 		};
 		
 		
@@ -923,11 +852,7 @@
 		
 		wilson_g2.render.init_uniforms(["g2_arg", "g3_arg"]);
 		
-		
-		
-		wilson_g3 = new Wilson(document.querySelector("#g3-canvas"), options_g3);
-		
-		wilson_g3.render.init_uniforms(["g2_arg", "g3_arg"]);
+		wilson_g2.draggables.add(g2, g3);
 		
 		
 		
@@ -937,9 +862,8 @@
 		
 		
 		window.requestAnimationFrame(draw_frame);
-		
 		window.requestAnimationFrame(draw_frame_ec_plot);
-		
+		setTimeout(() => window.requestAnimationFrame(draw_frame_ec_plot), 0);
 		window.requestAnimationFrame(draw_frame_parameter_column);
 		
 		
@@ -1206,6 +1130,24 @@
 	}
 	
 	
+	
+	function on_drag_draggable(active_draggable, x, y, event)
+	{
+		g2 = x;
+		g3 = y;
+		
+		g2_slider_element.value = (g2 + 5) * 1000;
+		g3_slider_element.value = (g3 + 5) * 1000;
+		
+		g2_slider_value_element.textContent = Math.round(g2 * 1000) / 1000;
+		g3_slider_value_element.textContent = Math.round(g3 * 1000) / 1000;
+		
+		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(draw_frame_ec_plot);
+		window.requestAnimationFrame(draw_frame_parameter_column);
+	}
+	
+	
 
 	function draw_frame(timestamp)
 	{
@@ -1328,7 +1270,7 @@
 		
 		
 		
-		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["aspect_ratio"], aspect_ratio);
+		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["aspect_ratio"], aspect_ratio_ec_plot);
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_center_x"], wilson_ec_plot.world_center_x);
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_center_y"], wilson_ec_plot.world_center_y);
 		
@@ -1600,16 +1542,11 @@
 		wilson_g2.gl.uniform1f(wilson_g2.uniforms["g2_arg"], g2);
 		wilson_g2.gl.uniform1f(wilson_g2.uniforms["g3_arg"], g3);
 		
-		wilson_g3.gl.uniform1f(wilson_g3.uniforms["g2_arg"], g2);
-		wilson_g3.gl.uniform1f(wilson_g3.uniforms["g3_arg"], g3);
-		
 		
 		
 		wilson_kleinj.render.draw_frame();
 		
 		wilson_g2.render.draw_frame();
-		
-		wilson_g3.render.draw_frame();
 	}
 	
 	

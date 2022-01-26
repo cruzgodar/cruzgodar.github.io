@@ -29,21 +29,15 @@
 	flex-direction: column;
 }
 
-#wp-column .output-canvas
+#wp-column .output-canvas, #parameter-column .output-canvas
 {
-	width: calc(25vw - 6.5px);
+	width: calc(22.5vw - 6.5px);
 	height: auto;
 }
 
 #ec-plot-canvas
 {
-	width: 50vw;
-	height: auto;
-}
-
-#parameter-column .output-canvas
-{
-	width: calc(16.667vw - 8.8px);
+	width: 45vw;
 	height: auto;
 }
 
