@@ -201,8 +201,8 @@
 			uniform float g2_arg;
 			uniform float g3_arg;
 			
-			const float dot_center_radius = .05;
-			const float dot_border_radius = .06;
+			float dot_center_radius = world_size * .065;
+			float dot_border_radius = world_size * .078;
 			
 			
 			
@@ -293,8 +293,8 @@
 			uniform float g2_arg;
 			uniform float g3_arg;
 			
-			const float dot_center_radius = .05;
-			const float dot_border_radius = .06;
+			float dot_center_radius = world_size * .065;
+			float dot_border_radius = world_size * .078;
 			
 			
 			
@@ -493,8 +493,8 @@
 			uniform float g2_arg;
 			uniform float g3_arg;
 			
-			const float dot_center_radius = .05;
-			const float dot_border_radius = .06;
+			float dot_center_radius = world_size * .065;
+			float dot_border_radius = world_size * .078;
 			
 			
 			
@@ -583,9 +583,6 @@
 			
 			uniform float g2_arg;
 			uniform float g3_arg;
-			
-			const float dot_center_radius = .5;
-			const float dot_border_radius = .6;
 			
 			
 			
