@@ -47,6 +47,12 @@
         "non-webp": "notes/7-exp-and-log-integrals/cover.jpg"
 	},
 	
+	"8-area-between-curves":
+	{
+		"webp": "notes/8-area-between-curves/cover.webp",
+        "non-webp": "notes/8-area-between-curves/cover.jpg"
+	},
+	
 	
 	
 	"homework-7":

@@ -36,11 +36,156 @@
 	
 	area between curves
 	
-	Let $f(x)$ and $g(x)$ be functions with $f(x) \geq g(x)$ when $a \leq x \leq b$. Then the area between the graphs of $f$ and $g$ on $[a, b]$
+	Let $f(x)$ and $g(x)$ be functions with $f(x) \geq g(x)$ when $a \leq x \leq b$. Then the area between the graphs of $f$ and $g$ on $[a, b]$ is
 	
 	$$\int_a^b (f(x) - g(x))\ dx.$$
 	
 !end-prop
+
+
+
+!begin-example
+	
+	area between curves
+	
+	Find the area of the region bounded by $f(x) = x$ and $g(x) = x^2$.
+	
+	First, we need to actually figure out where that area is, so that we know the limits of integration.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/a04wieapqr" width="500" height="500"></iframe></div>
+	
+	To find those limits, we set the two functions equal and solve for $x$. If $x = x^2$, then $x^2 - x = 0$, so $x(x-1) = 0$, and therefore $x = 0$ or $x = 1$. This reflects what we see in the graph. Since $f(x)$ is the function with the larger $y$-value on the region, our integral becomes
+	
+	$$
+		\begin{align*}
+			\int_0^1 (x - x^2)\ dx &= \left. \left[ \frac{x^2}{2} - \frac{x^3}{3} \right] \right|_0^1\\
+			&= \frac{1}{2} - \frac{1}{3}\\
+			&= \frac{1}{6}.
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	area between curves
+	
+	Find the area of the region bounded by $y = 6 - x$ and $y = 9 - \left( \frac{x}{2} \right)^2$.
+	
+!end-exercise
+
+
+
+!begin-example
+	
+	more area between curves
+	
+	Find the area between $\sin(x)$ and $\cos(x)$ on $[0, \pi]$.
+	
+	This is a little more complicated since the top function changes across the interval. Setting $\sin(x) = \cos(x)$ gives $x = \frac{\pi}{4}$ (using $\tan^{-1}$), so at $x = \frac{\pi}{4}$, the functions meet, which is the only possible place they could cross. Let&#x2019;s try some test points: plugging in $x = 0$ gives $\sin(0) = 0$ and $\cos(0) = 1$, so until $x = \frac{\pi}{4}$, $\cos$ is the larger function. Similarly, $x = \pi$ gives $\sin(\pi) = 0$ and $\cos(\pi) = -1$, so $\sin$ is larger after $\frac{\pi}{4}$. Therefore, we have
+	
+	$$
+		\begin{align*}
+			\int_0^{\frac{\pi}{4}} (\cos(x) - \sin(x))\ dx + \int_{\frac{\pi}{4}}^\pi (\sin(x) - \cos(x))\ dx &= \left. \left[ \sin(x) + \cos(x) \right] \right|_0^{\frac{\pi}{4}} + \left. \left[ -\cos(x) - \sin(x) \right] \right|_{\frac{\pi}{4}}^\pi\\
+			&= \left( \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} - 1 - 0 \right) + \left( 1 + 0 + \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} \right)\\
+			&= 2\sqrt{2}.
+		\end{align*}
+	$$
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/vbg64fpffq" width="500" height="500"></iframe></div>
+	
+!end-example
+
+
+
+!begin-example
+	
+	even more area between curves
+	
+	Find the area of the shaded region bounded by $y = 1$, $y = 3 - x$, and $y = x^2 + 1$, as pictured.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/ioprgqgyxf" width="500" height="500"></iframe></div>
+	
+	First, let&#x2019;s find the limits of integration. The left one is the intersection of $y = x^2 + 1$ with $y = 1$: then $x^2 + 1 = 1$, so $x = 0$. The right endpoint is the intersection of $y = 3 - x$ with $y = 1$, so $x = 2$. Like the last example, though, the bounding functions change as we move left to right along the interval. The point where we switch from $x^2 + 1$ to $3 - x$ being the top function is the intersection of the two: $x^2 + 1 = 3 - x$, so $x^2 + x - 2 = 0$. Factoring this gives $x = 1$ or $x = -2$, and we clearly want $x = 1$. Now the integral becomes
+	
+	$$
+		\begin{align*}
+			\int_0^1 (x^2 + 1 - 1)\ dx + \int_1^2 (3 - x - 1)\ dx &= \left. \left[ \frac{x^3}{3} \right] \right|_0^1 + \left. \left[ 2x - \frac{x^2}{2} \right] \right|_1^2\\
+			&= \frac{1}{3} + \left( 4 - 2 - 2 + \frac{1}{2} \right)\\
+			&= \frac{5}{6}.
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	even more area between curves
+	
+	Find the area of the shaded region bounded by $y = 1 - x$, $y = x^2$, and $y = \sqrt{x}$, as pictured.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/1lhzynqlu3" width="500" height="500"></iframe></div>
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	Sometimes &mdash; particularly in cases like the previous example with multiple bounding functions, we can make things much simpler by changing the variable we integrate with respect to. This is not $u$-sub, but something else entirely: integrating with respect to $y$. Let&#x2019;s redo the previous example to see how it works.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	integrating with respect to $y$.
+	
+	Find the area of the shaded region bounded by $y = 1$, $y = 3 - x$, and $y = x^2 + 1$ by integrating with respect to $y$.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/ioprgqgyxf" width="500" height="500"></iframe></div>
+	
+	The first thing to do is rewrite the functions as <strong>functions of $y$</strong>. That means solving each one for $x$: $y = 3 - x$ becomes $x = 3 - y$, and $y = x^2 + 1$ becomes $x = \sqrt{y - 1}$. Since there is no $x$ in $y = 1$, we can&#x2019;t solve it for $x$, but we&#x2019;ll see that that won&#x2019;t be a problem momentarily.
+	
+	Now we need to identify the limits, which are $y$-values now. The minimum $y$-value is clearly $y = 1$, and to find the maximum one, we intersect the other two functions. That gave us $x = 1$ before, but we want the $y$-value this time, so we can just plug $x = 1$ into either formula to get $y = 2$. Alternatively, we could have just solved $\sqrt{y - 1} = 3 - y$.
+	
+	The next thing to reverse is the way the integral is set up. Normally we take the top function minus the bottom one &mdash; i.e. the larger $y$-value minus the smaller $y$-value. Now we&#x2019;re using $x$ instead, so to take the larger $x$-value minus the smaller $x$-value, we take the right function minus the left one. And here&#x2019;s the reason this is an easier way to do things for this example in particular: the right and left functions stay the same across the entire region, so there&#x2019;s no need to split up the region. We just have
+	
+	$$
+		\begin{align*}
+			\int_1^2 (3 - y - \sqrt{y - 1})\ dy &= \int_1^2 (3 - y)\ dy - \int_1^2 \sqrt{y - 1}\ dy\\
+			& u = y - 1,\ du = dy\\
+			&= \int_1^2 (3 - y)\ dy - \int_1^2 \sqrt{u}\ du\\
+			&= \left. \left[ 3y - \frac{y^2}{2} \right] \right|_1^2 - \left. \left[ \frac{u^{3/2}}{3/2} \right] \right|_1^2\\
+			&= \left. \left[ 3y - \frac{y^2}{2} \right] \right|_1^2 - \left. \left[ \frac{(y-1)^{3/2}}{3/2} \right] \right|_1^2
+			&= \left( 6 - 2 - 3 + \frac{1}{2} \right) - \left( \frac{1}{3/2} \right)\\
+			&= \frac{3}{2} - \frac{2}{3}\\
+			&= \frac{5}{6},
+		\end{align*}
+	$$
+	
+	which agrees with what we got before.
+	
+!end-example
+
+!begin-exercise
+	
+	even more area between curves
+	
+	Find the area of the shaded region bounded by $y = 1 - x$, $y = x^2$, and $y = \sqrt{x}$ by integrating with respect to $y$.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/1lhzynqlu3" width="500" height="500"></iframe></div>
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	In general, you&#x2019;ll need to choose which variable is better to integrate with respect to. Sometimes one will be a little easier than the other, and other times only one will be possible at all. Integrating with respect to $y$ will continue to crop up throughout the coming sections, so it&#x2019;s a good thing to get accustomed to sooner rather than later.
+	
+!end-text-block
 
 
 
