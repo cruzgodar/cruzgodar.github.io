@@ -9,7 +9,7 @@
 	let pixels_per_frame = 10;
 	let delay_on_meet = 0;
 	
-	let resolution = 3000;
+	let resolution = 2000;
 	
 	let num_colors = 3;
 	
@@ -32,8 +32,8 @@
 	{
 		renderer: "cpu",
 		
-		canvas_width: 3000,
-		canvas_height: 3000,
+		canvas_width: 2000,
+		canvas_height: 2000,
 		
 		
 		
