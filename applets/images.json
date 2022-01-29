@@ -7,6 +7,12 @@
 	
 	
 	
+	"pascals-triangle-colorings":
+	{
+		"webp": "pascals-triangle-colorings/cover.webp",
+		"non-webp": "pascals-triangle-colorings/cover.jpg"
+	},
+	
 	"three-body-systems":
 	{
 		"webp": "three-body-systems/cover.webp",
