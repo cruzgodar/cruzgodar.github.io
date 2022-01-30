@@ -223,25 +223,7 @@
 				
 				
 				
-				let old_t = active_nodes[j][2] / pixels_per_row;
-				let new_t = (active_nodes[j][2] + 2) / pixels_per_row;
-				
-				
-				wilson.ctx.strokeStyle = `rgb(${colors[active_nodes[j][0]][active_nodes[j][1]][0] * (1 - old_t) + colors[active_nodes[j][0] + 1][active_nodes[j][1]][0] * old_t}, ${colors[active_nodes[j][0]][active_nodes[j][1]][1] * (1 - old_t) + colors[active_nodes[j][0] + 1][active_nodes[j][1]][1] * old_t}, ${colors[active_nodes[j][0]][active_nodes[j][1]][2] * (1 - old_t) + colors[active_nodes[j][0] + 1][active_nodes[j][1]][2] * old_t})`;
-				
-				wilson.ctx.beginPath();
-				wilson.ctx.moveTo(coordinates[active_nodes[j][0]][active_nodes[j][1]][0] * (1 - old_t) + coordinates[active_nodes[j][0] + 1][active_nodes[j][1]][0] * old_t, coordinates[active_nodes[j][0]][active_nodes[j][1]][1] * (1 - old_t) + coordinates[active_nodes[j][0] + 1][active_nodes[j][1]][1] * old_t);
-				wilson.ctx.lineTo(coordinates[active_nodes[j][0]][active_nodes[j][1]][0] * (1 - new_t) + coordinates[active_nodes[j][0] + 1][active_nodes[j][1]][0] * new_t, coordinates[active_nodes[j][0]][active_nodes[j][1]][1] * (1 - new_t) + coordinates[active_nodes[j][0] + 1][active_nodes[j][1]][1] * new_t);
-				wilson.ctx.stroke();
-				
-				
-				
-				wilson.ctx.strokeStyle = `rgb(${colors[active_nodes[j][0]][active_nodes[j][1]][0] * (1 - old_t) + colors[active_nodes[j][0] + 1][active_nodes[j][1] + 1][0] * old_t}, ${colors[active_nodes[j][0]][active_nodes[j][1]][1] * (1 - old_t) + colors[active_nodes[j][0] + 1][active_nodes[j][1] + 1][1] * old_t}, ${colors[active_nodes[j][0]][active_nodes[j][1]][2] * (1 - old_t) + colors[active_nodes[j][0] + 1][active_nodes[j][1] + 1][2] * old_t})`;
-				
-				wilson.ctx.beginPath();
-				wilson.ctx.moveTo(coordinates[active_nodes[j][0]][active_nodes[j][1]][0] * (1 - old_t) + coordinates[active_nodes[j][0] + 1][active_nodes[j][1] + 1][0] * old_t, coordinates[active_nodes[j][0]][active_nodes[j][1]][1] * (1 - old_t) + coordinates[active_nodes[j][0] + 1][active_nodes[j][1] + 1][1] * old_t);
-				wilson.ctx.lineTo(coordinates[active_nodes[j][0]][active_nodes[j][1]][0] * (1 - new_t) + coordinates[active_nodes[j][0] + 1][active_nodes[j][1] + 1][0] * new_t, coordinates[active_nodes[j][0]][active_nodes[j][1]][1] * (1 - new_t) + coordinates[active_nodes[j][0] + 1][active_nodes[j][1] + 1][1] * new_t);
-				wilson.ctx.stroke();
+				draw_line_segments(j);
 				
 				
 				
@@ -291,7 +273,7 @@
 								}
 							}
 							
-							if (!found)
+							if (!found && active_nodes[j][1] + 1 <= (active_nodes[j][0] + 1) / 2)
 							{
 								active_nodes.push([active_nodes[j][0] + 1, active_nodes[j][1] + 1, 0, 0]);
 							}
@@ -336,5 +318,64 @@
 		let center_y = (row + 1) * Math.sqrt(3) / 2 * resolution / (grid_size + 2) + y_offset;
 		
 		return [.8 * center_x + .1 * resolution, .8 * center_y + .1 * resolution];
+	}
+	
+	
+	
+	function draw_line_segments(active_node_index)
+	{
+		let old_t = active_nodes[active_node_index][2] / pixels_per_row;
+		let new_t = (active_nodes[active_node_index][2] + 2) / pixels_per_row;
+		
+		
+		
+		let row_1 = active_nodes[active_node_index][0];
+		let col_1 = active_nodes[active_node_index][1];
+		
+		let row_2 = row_1 + 1;
+		let col_2 = col_1;
+		
+		wilson.ctx.strokeStyle = `rgb(${colors[row_1][col_1][0] * (1 - old_t) + colors[row_2][col_2][0] * old_t}, ${colors[row_1][col_1][1] * (1 - old_t) + colors[row_2][col_2][1] * old_t}, ${colors[row_1][col_1][2] * (1 - old_t) + colors[row_2][col_2][2] * old_t})`;
+		
+		wilson.ctx.beginPath();
+		wilson.ctx.moveTo(coordinates[row_1][col_1][0] * (1 - old_t) + coordinates[row_2][col_2][0] * old_t, coordinates[row_1][col_1][1] * (1 - old_t) + coordinates[row_2][col_2][1] * old_t);
+		wilson.ctx.lineTo(coordinates[row_1][col_1][0] * (1 - new_t) + coordinates[row_2][col_2][0] * new_t, coordinates[row_1][col_1][1] * (1 - new_t) + coordinates[row_2][col_2][1] * new_t);
+		wilson.ctx.stroke();
+		
+		
+		
+		col_2++;
+		
+		wilson.ctx.strokeStyle = `rgb(${colors[row_1][col_1][0] * (1 - old_t) + colors[row_2][col_2][0] * old_t}, ${colors[row_1][col_1][1] * (1 - old_t) + colors[row_2][col_2][1] * old_t}, ${colors[row_1][col_1][2] * (1 - old_t) + colors[row_2][col_2][2] * old_t})`;
+		
+		wilson.ctx.beginPath();
+		wilson.ctx.moveTo(coordinates[row_1][col_1][0] * (1 - old_t) + coordinates[row_2][col_2][0] * old_t, coordinates[row_1][col_1][1] * (1 - old_t) + coordinates[row_2][col_2][1] * old_t);
+		wilson.ctx.lineTo(coordinates[row_1][col_1][0] * (1 - new_t) + coordinates[row_2][col_2][0] * new_t, coordinates[row_1][col_1][1] * (1 - new_t) + coordinates[row_2][col_2][1] * new_t);
+		wilson.ctx.stroke();
+		
+		
+		
+		//The reflected ones. Note that by reflecting the right path from before, we get the reflected left path.
+		
+		col_1 = row_1 - col_1;
+		col_2 = row_2 - col_2;
+		
+		wilson.ctx.strokeStyle = `rgb(${colors[row_1][col_1][0] * (1 - old_t) + colors[row_2][col_2][0] * old_t}, ${colors[row_1][col_1][1] * (1 - old_t) + colors[row_2][col_2][1] * old_t}, ${colors[row_1][col_1][2] * (1 - old_t) + colors[row_2][col_2][2] * old_t})`;
+		
+		wilson.ctx.beginPath();
+		wilson.ctx.moveTo(coordinates[row_1][col_1][0] * (1 - old_t) + coordinates[row_2][col_2][0] * old_t, coordinates[row_1][col_1][1] * (1 - old_t) + coordinates[row_2][col_2][1] * old_t);
+		wilson.ctx.lineTo(coordinates[row_1][col_1][0] * (1 - new_t) + coordinates[row_2][col_2][0] * new_t, coordinates[row_1][col_1][1] * (1 - new_t) + coordinates[row_2][col_2][1] * new_t);
+		wilson.ctx.stroke();
+		
+		
+		
+		col_2++;
+		
+		wilson.ctx.strokeStyle = `rgb(${colors[row_1][col_1][0] * (1 - old_t) + colors[row_2][col_2][0] * old_t}, ${colors[row_1][col_1][1] * (1 - old_t) + colors[row_2][col_2][1] * old_t}, ${colors[row_1][col_1][2] * (1 - old_t) + colors[row_2][col_2][2] * old_t})`;
+		
+		wilson.ctx.beginPath();
+		wilson.ctx.moveTo(coordinates[row_1][col_1][0] * (1 - old_t) + coordinates[row_2][col_2][0] * old_t, coordinates[row_1][col_1][1] * (1 - old_t) + coordinates[row_2][col_2][1] * old_t);
+		wilson.ctx.lineTo(coordinates[row_1][col_1][0] * (1 - new_t) + coordinates[row_2][col_2][0] * new_t, coordinates[row_1][col_1][1] * (1 - new_t) + coordinates[row_2][col_2][1] * new_t);
+		wilson.ctx.stroke();
 	}
 }()
