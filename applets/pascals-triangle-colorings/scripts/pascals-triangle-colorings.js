@@ -26,6 +26,8 @@
 	
 	let active_nodes = [];
 	
+	let starting_process_id = null;
+	
 	
 	
 	let options =
@@ -102,6 +104,10 @@
 	
 	function draw_pascals_triangle()
 	{
+		starting_process_id = Site.applet_process_id;
+		
+		
+		
 		resolution = parseInt(resolution_input_element.value || 2000);
 		
 		wilson.change_canvas_size(resolution, resolution);
@@ -303,6 +309,13 @@
 		
 		
 		
+		if (starting_process_id !== Site.applet_process_id)
+		{
+			console.log("Terminated applet process");
+			
+			return;
+		}
+		
 		if (active_nodes.length !== 0)
 		{
 			window.requestAnimationFrame(draw_frame);
@@ -322,6 +335,6 @@
 		
 		let center_y = (row + 1) * Math.sqrt(3) / 2 * resolution / (grid_size + 2) + y_offset;
 		
-		return [center_x, center_y];
+		return [.8 * center_x + .1 * resolution, .8 * center_y + .1 * resolution];
 	}
 }()
