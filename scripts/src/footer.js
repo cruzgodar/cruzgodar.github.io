@@ -67,6 +67,8 @@ Page.Footer =
 					<a class="focus-on-child" href="index.html?page=%2Fgallery%2Fgallery.html${url_vars_suffix}" tabindex="-1">
 						<img onclick="Page.Navigation.redirect('/gallery/gallery.html')" src="/gallery/cover.${Page.Images.file_extension}" alt="Gallery" tabindex="2"></img>
 					</a>
+					
+					<p class="footer-image-link-subtext">Gallery</p>
 				</div>
 			`;
 			
@@ -86,6 +88,8 @@ Page.Footer =
 					<a class="focus-on-child" href="index.html?page=%2Fapplets%2Fapplets.html${url_vars_suffix}" tabindex="-1">
 						<img onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="2"></img>
 					</a>
+					
+					<p class="footer-image-link-subtext">Applets</p>
 				</div>
 			`;
 			
@@ -105,6 +109,8 @@ Page.Footer =
 					<a href="/index.html?page=%2Fwriting%2Fwriting.html${url_vars_suffix}" tabindex="-1">
 						<img onclick="Page.Navigation.redirect('/writing/writing.html')" src="/writing/cover.${Page.Images.file_extension}" alt="Writing" tabindex="2"></img>
 					</a>
+					
+					<p class="footer-image-link-subtext">Writing</p>
 				</div>
 			`;
 			
@@ -124,6 +130,8 @@ Page.Footer =
 					<a class="focus-on-child" href="/index.html?page=%2Fteaching%2Fteaching.html${url_vars_suffix}" tabindex="-1">
 						<img onclick="Page.Navigation.redirect('/teaching/teaching.html')" src="/teaching/cover.${Page.Images.file_extension}" alt="Teaching" tabindex="2"></img>
 					</a>
+					
+					<p class="footer-image-link-subtext">Teaching</p>
 				</div>
 			`;
 			
@@ -143,6 +151,8 @@ Page.Footer =
 					<a class="focus-on-child" href="/index.html?page=%2Fbio%2Fbio.html${url_vars_suffix}" tabindex="-1">
 						<img onclick="Page.Navigation.redirect('/bio/bio.html')" src="/bio/cover.${Page.Images.file_extension}" alt="Me" tabindex="2"></img>
 					</a>
+					
+					<p class="footer-image-link-subtext">Me</p>
 				</div>
 			`;
 			
@@ -158,6 +168,28 @@ Page.Footer =
 				<div style="height: ${Page.Layout.window_height - document.body.clientHeight}px"></div>
 			`);
 		}
+		
+		
+		
+		setTimeout(() =>
+		{
+			let elements = document.querySelectorAll("#gallery-link, #applets-link, #writing-link, #teaching-link, #bio-link");
+			
+			for (let i = 0; i < elements.length; i++)
+			{
+				elements[i].addEventListener("mouseenter", () =>
+				{
+					elements[i].lastElementChild.style.marginTop = "-32px";
+					elements[i].lastElementChild.style.opacity = 1;
+				});
+				
+				elements[i].addEventListener("mouseleave", () =>
+				{
+					elements[i].lastElementChild.style.marginTop = 0;
+					elements[i].lastElementChild.style.opacity = 0;
+				});
+			}
+		}, 10);
 		
 		
 		

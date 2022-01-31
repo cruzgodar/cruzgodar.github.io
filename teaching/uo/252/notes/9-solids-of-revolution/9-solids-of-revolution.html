@@ -148,6 +148,59 @@
 	
 !end-example
 
+!begin-exercise
+	
+	the disk method, again
+	
+	The area bounded by $y = \frac{1}{x}$, and $x = 0$ is revolved about the $y$-axis. Find the volume between $y = 1$ and $y = 2$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	The disk method can be extended to work with problems where we&#x2019;re taking the difference between two functions and rotating that. Some books, including ours, call this the <strong>washer method</strong>, but we won&#x2019;t use that term often for two reasons: it&#x2019;s identical to the disk method, and more importantly, we&#x2019;ll see a method later in this section that is genuinely different and <em>looks</em> like washers, to the point where it&#x2019;s very common for students to get the two confused.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	the disk method with a hole
+	
+	The area bounded by $y = x$ and $y = \sqrt{x}$ is revolved about the $x$-axis. Find its volume.
+	
+	Let&#x2019;s visualize what&#x2019;s going on here. Just like in the previous section, we set the two functions equal to get $x = 0$ or $x = 1$, and drawing a 2D plot, we can see the area that&#x2019;s going to be rotated.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/u1dhi35rfb" width="500" height="500"></iframe></div>
+	
+	So what does this look like when it&#x2019;s revolved about the $x$-axis? Well, both the inner function and outer function produce circles, so cross sections look like large circles with smaller circles cut out of them.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/fztvietv2h" width="500" height="500"></iframe></div>
+	
+	In order to find the area of one of these things, we need just need to take the area of the larger circle and subtract the area of the hole. Since the outer area is $\pi (\sqrt{x})^2$ and the inner one is $\pi x^2$, we have
+	
+	$$
+		\begin{align*}
+			\int_0^1 \left( \pi (\sqrt{x})^2 - \pi x^2 \right)\ dx &= \int_0^1 \left( \pi x - \pi x^2 \right)\ dx\\
+			&= \left. \left[ \pi \frac{x^2}{2} - \pi \frac{x^3}{3} \right] \right|_0^1\\
+			&= \frac{\pi}{2} - \frac{\pi}{3}\\
+			&= \frac{\pi}{6}.
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	the disk method with a hole
+	
+	The area bounded by $y = \frac{1}{x^2}$, $y = 1$, $x = 1$, and $x = 2$ is revolved about the $y$-axis. Find its volume.
+	
+!end-exercise
+
 
 
 !begin-text-buttons
