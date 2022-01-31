@@ -53,6 +53,12 @@
         "non-webp": "notes/8-area-between-curves/cover.jpg"
 	},
 	
+	"9-solids-of-revolution":
+	{
+		"webp": "notes/9-solids-of-revolution/cover.webp",
+        "non-webp": "notes/9-solids-of-revolution/cover.jpg"
+	},
+	
 	
 	
 	"homework-7":

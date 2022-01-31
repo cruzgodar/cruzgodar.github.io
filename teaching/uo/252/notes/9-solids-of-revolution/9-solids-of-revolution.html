@@ -144,7 +144,7 @@
 		\end{align*}
 	$$
 	
-	<div class="center-content"><iframe src="https://www.desmos.com/calculator/b6tavehd10" width="500" height="500"></iframe></div>
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/hfyy4cgwt4" width="500" height="500"></iframe></div>
 	
 !end-example
 
@@ -200,6 +200,141 @@
 	The area bounded by $y = \frac{1}{x^2}$, $y = 1$, $x = 1$, and $x = 2$ is revolved about the $y$-axis. Find its volume.
 	
 !end-exercise
+
+
+
+!section
+
+!text s The Shell Method
+
+<br>
+
+
+
+!begin-text-block
+	
+	Sometimes, the disk method just won&#x2019;t work: it will produce an integral we cannot solve. But not all hope is lost &mdash; just like with finding the area between curves, we can integrate with respect to a different variable to find the volume. That&#x2019;s a little more complicated than it used to be, though. Let&#x2019;s look at some pictures to walk through this carefully.
+	
+!end-text-block
+
+
+
+!iframe https://www.desmos.com/calculator/hfyy4cgwt4
+
+
+
+!begin-text-block
+	
+	Here is the disk method applied to the function from two examples ago. Since it&#x2019;s revolved about the $y$-axis, the disk method integrates with respect to $y$. That means we take a horizontal line at height $y$ and revolve it about the $y$-axis to produce a circle. The function $x = \sqrt[3]{y}$ tells us the radius of that circle.
+	
+	What we&#x2019;re going to do instead is integrate with respect to $x$. That means that each slice will have no thickness in the $x$-direction, so we take a <strong>vertical</strong> line and revolve it about the $y$-axis. This produces a hollow cylinder instead, called a <dfn>shell.</dfn>
+	
+!end-text-block
+
+
+
+!iframe https://www.desmos.com/calculator/uoa8sq7vhd
+
+
+
+!begin-text-block
+	
+	The principle is the same: add up all the areas of those cylinders to produce the volume. Since we&#x2019;re integrating $dx$ instead of $dy$, we&#x2019;ll now need to express everything in terms of $x$. The radius of the shell is $x$, and the height is the distance from the bottom bounding function ($y = x^3$) to the top ($y = 2$), which is just $2 - x^3$. And the surface area of a cylinder is the circumference of the edge circles times the height, so for us, it&#x2019;s $2 \pi x (2 - x^3)$. Now we need to integrate that, ranging $x$ over all possible radii. We know from the past example that the intersection occurs at $x = \sqrt[3]{2}$, so our final integral becomes
+	
+	$$
+		\int_0^{\sqrt[3]{2}} 2\pi x (2 - x^3)\ dx.
+	$$
+	
+	Before we do more examples, let&#x2019;s write down when to apply all of these methods.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	finding the volume of solids of revolution
+	
+	1. Identify the axis about which the area is being revolved. The disk will integrate with respect to that variable, and the shell method will not. For example, if the area is revolved about the $x$-axis, then the disk method will integrate $dx$ and the shell method will integrate $dy$.
+	
+	2. Try the method that matches your variables first. For example, if you&#x2019;re given a function as $y = e^x + 1$, that is a function of $x$, so try whichever method integrates $dx$.
+	
+	3. If that doesn&#x2019;t work (you don&#x2019;t know how to take the integral), then rewrite your equation in terms of the other variable. For example, $y = e^x + 1$ beocmes $x = \ln(y - 1)$. You&#x2019;ll also need to convert the limits of your integral. Then try the method you didn&#x2019;t try in step 2.
+	
+!end-thm
+
+
+
+!begin-example
+	
+	the shell method
+	
+	Find the volume of the solid created by revolving the region bounded by $y = \frac{1}{x}$ and $y = 0$ on $[1, 3]$ about the $y$-axis.
+	
+	Following the previous instructions, the first step is to notice that we&#x2019;re revolving about the $y$-axis, so the disk method will integrate $dy$ and the shell method will integrate $dx$. Since our function is currently a function of $x$, we&#x2019;ll try the shell method first.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/0i6gal3azj" width="500" height="500"></iframe></div>
+	
+	To use the shell method, we need to know two things: the range of radii and the height of each shell. Since $x$ is the radius of the shell and it ranges from $1$ to $3$, those will be our limits of integration. And the height of a cylinder with radius $x$ is just $y = \frac{1}{x}$. In total, the integral becomes
+	
+	$$
+		\begin{align*}
+			\int_1^3 2\pi x \left( \frac{1}{x} \right)\ dx &= \int_1^3 2\pi\ dx\\
+			&= 4\pi.
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	the shell method
+	
+	Find the volume of the solid created by revolving the region bounded by $y = 2x - x^2 + 2$, $y = x$, and $x = 0$ about the $y$-axis.
+	
+!end-exercise
+
+
+
+!begin-example
+	
+	the shell method, again
+	
+	The region bounded by $y = \ln(x)$, $y = 1$, and $x = e^2$ is revolved about the $x$-axis. Set up, but do not solve, the integrals to find its volume using both the disk method and shell method.
+	
+	Since we&#x2019;re revolving about the $x$-axis, the disk method with integrate $dx$ and the shell method $dy$. Our functions are in terms of $x$, so let&#x2019;s do the disk method first &mdash; it&#x2019;ll be easier to set up. Let&#x2019;s sketch a 2D picture of the area here.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/ulq9d1vbp1" width="500" height="500"></iframe></div>
+	
+	We need to know the limits of our integral, so we solve for that intersection point on the left. That gives $\ln(x) = 1$, so $x = e^1 = e$. Now applying the disk method, the outer radius is $\ln(x)$, the inner radius is $1$, and the integral runs from $x = e$ to $x = e^2$. The integral is therefore
+	
+	$$
+		\int_e^{e^2} \pi \left( (\ln(x))^2 - 1 \right)\ dx.
+	$$
+	
+	It&#x2019;s good that we don&#x2019;t need to continue with this, because we have no idea how to integrate $(\ln(x))^2$. $u$-sub doesn&#x2019;t work, and we have no other options at the moment. Let&#x2019;s move on to the shell method and see if it&#x2019;s any different.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/k9woaie0yg" width="500" height="500"></iframe></div>
+	
+	Since it integrates $dy$, we need to rewrite everything in terms of $y$. First of all, $y = \ln(x)$ becomes $x = e^y$. Drawing a shell, we can see that its height is $e^2 - e^y$, and all that&#x2019;s left is to figure out the range of radii. The smallest is $y = 1$, and the largest is the $y$-coordinate of the intersection of $x = e^2$ with $y = \ln(x)$ &mdash; and that&#x2019;s just $\ln(e^2) = 2$. Finally, we now have
+	
+	$$
+		\int_1^2 2\pi y \left( e^2 - e^y \right)\ dy.
+	$$
+	
+	We also don&#x2019;t know how to handle the integral of $ye^y$! We will soon, though, and for now, setting up the integrals is the bulk of the work.
+	
+!end-example
+
+!begin-exercise
+	
+	the shell method, again
+	
+	The region bounded by $y = x^2$, $y = 1$, and $x = 2$ is revolved about the $y$-axis. Set up, but do not solve, the integrals to find its volume using both the disk method and shell method.
+	
+!end-exercise
+
+
 
 
 
