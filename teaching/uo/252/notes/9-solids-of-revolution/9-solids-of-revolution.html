@@ -1,0 +1,187 @@
+<head>
+	<title>Section 9: Solids of Revolution</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 9: Solids of Revolution"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/9-solids-of-revolution/9-solids-of-revolution.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/252/notes/9-solids-of-revolution/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 9: Solids of Revolution
+
+
+
+!begin-text-block
+	
+	Fundamentally, definite integrals calculate area under curves. If you stick around to Calc IV, you&#x2019;ll learn how to extend integrals to calculate volume under surfaces too, which turns out to be the natural way to extend integrals to three dimensions. But right now, we can use the kind of integrals we&#x2019;ve developed so far to calculate certain volumes, ones called <dfn>solids of revolution</dfn>
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	solid of revolution
+	
+	Let $f(x)$ be a function on $[a, b]$ with $f(x) \geq 0$. A <dfn>solid of revolution</dfn> is the solid $3$-dimensional shape created by rotating the graph of $f$ on $[a, b]$ about the $x$-axis or $y$-axis.
+	
+!end-def
+
+
+
+!begin-example
+	
+	solid of revolution
+	
+	With $f(x) = \sin(x) + 2$ on $[0, 10]$, the solid of revolution of $f$ about the $x$-axis is plotted below.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/txwzemcsmi" width="500" height="500"></iframe></div>
+	
+	Desmos is obviously not a 3d graphing engine, but it still does a great job of plotting these things. Even if you don&#x2019;t normally, <strong>please take the time to poke around with this one</strong> &mdash; there&#x2019;s a lot to digest. First of all, note that the solid is shown properly when $n = 1$ &mdash; other values of $n$ are to demonstrate the process of revolution. Change $f$ and/or $g$, along with $a$ and $b$, and see what happens.
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	Our goal is to find the volume of these things. We&#x2019;ll have two ways to do this &mdash; like we alluded to before, one will end up with an integral $dx$, and the other with an integral $dy$. Let&#x2019;s start with the simplest one first, which is called the <dfn>disk method</dfn>.
+	
+	When we rotate a graph about the $x$-axis, cross sections of the solid taken perpendicular to the $x$-axis are always circles. The example below highlights those cross sections in red &mdash; slide $x_0$ to change which cross section is shown.
+	
+!end-text-block
+
+
+
+!iframe https://www.desmos.com/calculator/1cd65nmsxa
+
+
+
+!begin-text-block
+	
+	Now a definite integral just adds up whatever is inside of it over an interval, creating an area. If we instead add up the areas of all those circles, we&#x2019;ll get the volume of that region. And what is that red area? Well, it&#x2019;s a circle, so we just need its radius. But you can see from the picture that the radius is given by the height of the funciton, which is $f(x)$. Therefore, the area is $\pi r^2 = \pi (f(x))^2$. This leads us to the following result:
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the disk method
+	
+	Let $f(x)$ be a positive function on $[a, b]$. The volume of the solid created by revolving $f(x)$ about the $x$-axis is
+	
+	$$
+		\int_a^b \pi (f(x))^2\ dx.
+	$$
+	
+!end-thm
+
+
+
+!begin-example
+	
+	the disk method
+	
+	Find the volume of the solid created by revolving $f(x) = \frac{3}{x}$ on $[1, 5]$ about the $x$-axis.
+	
+	This solid is plotted in the previous graph. Applying the disk method, we have
+	
+	$$
+		\begin{align*}
+			\int_1^5 \pi \left( \frac{3}{x} \right)^2\ dx &= \int_1^5 \frac{9\pi}{x^2}\ dx\\
+			&= \left. \left[ -\frac{9\pi}{x} \right] \right|_1^5\\
+			&= -\frac{9\pi}{5} + 9\pi.
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	the disk method
+	
+	Find the volume of the solid created by revolving $f(x) = \sin(x) + 2$ on $[0, \pi]$ about the $x$-axis.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	That wasn&#x2019;t so bad! We can also use the same method for functions revolved about the $y$-axis, but we&#x2019;ll need to solve them to be defined in terms of $y$ first.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	the disk method, again
+	
+	The area bounded by $y = x^3$ and $x = 0$ is revolved about the $y$-axis. Find the volume between $y = 0$ and $y = 2$.
+	
+	First, we need to rewrite this as a function of $y$: $x = y^{1/3}$. Then we have
+	
+	$$
+		\begin{align*}
+			\int_0^2 \pi \left( y^{1/3} \right)^2\ dy &= \int_0^2 \pi y^{2/3}\ dy\\
+			&= \left. \left[ \pi \frac{y^{5/3}}{5/3} \right] \right|_0^2\\
+			&= \pi \frac{2^{5/3}}{5/3}.
+		\end{align*}
+	$$
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/b6tavehd10" width="500" height="500"></iframe></div>
+	
+!end-example
+
+
+
+!begin-text-buttons
+	
+	previous l Previous
+	
+	home l Home
+	
+	next l Next
+	
+!end-text-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 9: Solids of Revolution",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>
