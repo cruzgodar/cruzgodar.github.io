@@ -1,0 +1,103 @@
+<head>
+	<title>Domino Shuffling</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Domino Shuffling"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/applets/domino-shuffling/domino-shuffling.html"/>
+	
+	<meta property="og:description" content="Text"/>
+
+	<meta property="og:image" content="https://cruzgodar.com/applets/domino-shuffling/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Domino Shuffling
+
+
+
+!begin-text-block
+	
+	Text
+
+!end-text-block
+
+
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+
+!begin-text-boxes
+	
+	resolution 2000 Resolution
+	
+	diamond-size 5 Diamond Size
+	
+!end-text-boxes
+
+
+
+!begin-text-buttons
+	
+	generate Generate
+	
+!end-text-buttons
+
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+!canvas
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+!begin-text-buttons
+	
+	download Download
+	
+!end-text-buttons
+
+</div>
+
+</div>
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Domino Shuffling",
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>
