@@ -59,6 +59,12 @@
         "non-webp": "notes/9-solids-of-revolution/cover.jpg"
 	},
 	
+	"10-arc-length-and-surface-area":
+	{
+		"webp": "notes/10-arc-length-and-surface-area/cover.webp",
+        "non-webp": "notes/10-arc-length-and-surface-area/cover.jpg"
+	},
+	
 	
 	
 	"homework-7":
