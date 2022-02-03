@@ -173,20 +173,20 @@ Page.Footer =
 		
 		setTimeout(() =>
 		{
-			let elements = document.querySelectorAll("#gallery-link, #applets-link, #writing-link, #teaching-link, #bio-link");
+			let elements = document.querySelectorAll("#gallery-link img, #applets-link img, #writing-link img, #teaching-link img, #bio-link img");
 			
 			for (let i = 0; i < elements.length; i++)
 			{
 				elements[i].addEventListener("mouseenter", () =>
 				{
-					elements[i].lastElementChild.style.marginTop = "-32px";
-					elements[i].lastElementChild.style.opacity = 1;
+					elements[i].parentNode.parentNode.lastElementChild.style.marginTop = "-32px";
+					elements[i].parentNode.parentNode.lastElementChild.style.opacity = 1;
 				});
 				
 				elements[i].addEventListener("mouseleave", () =>
 				{
-					elements[i].lastElementChild.style.marginTop = 0;
-					elements[i].lastElementChild.style.opacity = 0;
+					elements[i].parentNode.parentNode.lastElementChild.style.marginTop = 0;
+					elements[i].parentNode.parentNode.lastElementChild.style.opacity = 0;
 				});
 			}
 		}, 10);
