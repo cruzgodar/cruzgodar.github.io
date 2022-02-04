@@ -43,9 +43,8 @@ Page.Navigation =
 		
 		
 		
-		
 		//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
-		if (in_new_tab || url.slice(url.length - 4) === ".pdf")
+		if (in_new_tab || url.slice(url.length - 5) !== ".html")
 		{
 			window.open(url, "_blank");
 			return;

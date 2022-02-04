@@ -28,7 +28,7 @@
 	
 	There are a handful of features we could build in next, but we&#x2019;re overdue for one in particular: moving the math onto the GPU. This is called <em>parallelizing</em>, and it&#x2019;s not something that&#x2019;s possible for every applet: every pixel will be processed independently of every other, so information cannot be shared between them. For example, an applet that renders an iterated function system by tracking the orbit of a single point across millions of iterations will not lend itself well to parallelization. A Julia set, on the other hand, is a perfect candidate.
 	
-	The technology for GPU-based applets on the web is called WebGL &mdash; traditionally, it&#x2019;s used for 3D applets and games that use raster graphics. Wilson does <em>not</em> support any of that &mdash; if you need high-performance raster graphics, look to something like <a href="https://threejs.org" onclick="Page.Navigation.redirect('https://threejs.org', true)">three.js</a> instead. What Wilson provides is a stripped-down environment where getting WebGL to work only requires a fragment shader, something that normally takes hundreds of lines of boilerplate.
+	The technology for GPU-based applets on the web is called WebGL &mdash; traditionally, it&#x2019;s used for 3D applets and games that use raster graphics. Wilson does <em>not</em> support any of that &mdash; if you need high-performance raster graphics, look to something like <a href="https://threejs.org">three.js</a> instead. What Wilson provides is a stripped-down environment where getting WebGL to work only requires a fragment shader, something that normally takes hundreds of lines of boilerplate.
 	
 	Although it&#x2019;s nice to only have to write that fragment shader, actually writing it can be challenging. It&#x2019;s not written in JavaScript, but rather in a language called GLSL that&#x2019;s very unforgiving &mdash; for example, writing a number as <code>3</code> instead of <code>3.0</code> or <code>3.</code> will most likely cause the entire program to crash with a generic error message and no ability to debug. Writing GLSL is an exercise in extreme caution and frequent testing, but the upshot is <em>massively</em> improved performance &mdash; it&#x2019;s not at all uncommon to see a 100x jump in the number of pixels that can be rendered per frame, though this of course depends on the relative power of the CPU and the GPU. If your applet is parallelizable, you owe it to yourself to get it working in GLSL.
 	
@@ -251,7 +251,7 @@ function draw_julia_set(timestamp)
 	
 	Hopefully the performance increase is apparent! At the time of writing, my computer can only handle about a 500x500 CPU-driven canvas before it starts to drop below 60fps, but a 5000x5000 GPU-driven one is still silky smooth. In the next section, we&#x2019;ll add a second, hidden canvas that we can leverage to efficiently find a good brightness scale.
 	
-	You can view the code for this page <a href="/projects/wilson/guide/3/scripts/parallelizing.js", onclick="Page.Navigation.redirect('/projects/wilson/guide/3/scripts/parallelizing.js', true)">here</a>.
+	You can view the code for this page <a href="/projects/wilson/guide/3/scripts/parallelizing.js">here</a>.
 
 !end-text-block
 

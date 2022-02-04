@@ -1032,11 +1032,21 @@ Page.Load =
 			
 			for (let i = 0; i < links.length; i++)
 			{
-				let href = links[i].getAttribute("href");
-				
-				if (href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data" && !(links[i].parentNode.classList.contains("footer-image-link")))
+				if (!(links[i].parentNode.classList.contains("footer-image-link")))
 				{
-					links[i].setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + url_vars_suffix);
+					let href = links[i].getAttribute("href");
+					
+					if (href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data")
+					{
+						links[i].setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + url_vars_suffix);
+						
+						links[i].setAttribute("onclick", `Page.Navigation.redirect("${href}")`);
+					}
+					
+					else
+					{
+						links[i].setAttribute("onclick", `Page.Navigation.redirect("${href}", true)`);
+					}
 				}
 			}
 		},
@@ -1049,7 +1059,7 @@ Page.Load =
 			
 			for (let i = 0; i < links.length; i++)
 			{
-				links[i].addEventListener("click", function(e)
+				links[i].addEventListener("click", (e) =>
 				{
 					e.preventDefault();
 				});

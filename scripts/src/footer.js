@@ -179,14 +179,20 @@ Page.Footer =
 			{
 				elements[i].addEventListener("mouseenter", () =>
 				{
-					elements[i].parentNode.parentNode.lastElementChild.style.marginTop = "-32px";
-					elements[i].parentNode.parentNode.lastElementChild.style.opacity = 1;
+					if (!(Site.Interaction.currently_touch_device))
+					{
+						elements[i].parentNode.parentNode.lastElementChild.style.marginTop = "-32px";
+						elements[i].parentNode.parentNode.lastElementChild.style.opacity = 1;
+					}
 				});
 				
 				elements[i].addEventListener("mouseleave", () =>
 				{
-					elements[i].parentNode.parentNode.lastElementChild.style.marginTop = 0;
-					elements[i].parentNode.parentNode.lastElementChild.style.opacity = 0;
+					if (!(Site.Interaction.currently_touch_device))
+					{
+						elements[i].parentNode.parentNode.lastElementChild.style.marginTop = 0;
+						elements[i].parentNode.parentNode.lastElementChild.style.opacity = 0;
+					}
 				});
 			}
 		}, 10);

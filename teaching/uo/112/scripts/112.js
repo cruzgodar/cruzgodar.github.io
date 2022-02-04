@@ -8,7 +8,7 @@
 		
 		element.parentNode.setAttribute("href", "https://uoregon.zoom.us/j/5334229656");
 		
-		element.setAttribute("onclick", "Page.Navigation.redirect('https://uoregon.zoom.us/j/5334229656', true)");
+		element.parentNode.setAttribute("onclick", "Page.Navigation.redirect('https://uoregon.zoom.us/j/5334229656', true)");
 		
 		
 		
@@ -16,6 +16,6 @@
 		
 		element.parentNode.setAttribute("href", "https://webwork.uoregon.edu/webwork2/Math112-13873/");
 		
-		element.setAttribute("onclick", "Page.Navigation.redirect('https://webwork.uoregon.edu/webwork2/Math112-13873/', true)");
-	}, 1000);
+		element.parentNode.setAttribute("onclick", "Page.Navigation.redirect('https://webwork.uoregon.edu/webwork2/Math112-13873/', true)");
+	}, 100);
 }()

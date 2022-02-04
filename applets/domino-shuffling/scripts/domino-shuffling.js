@@ -10,6 +10,7 @@
 	let margin_size = .05;
 	
 	let aztec_diamond = [];
+	let new_diamond = [];
 	
 	let last_timestamp = -1;
 	
@@ -92,10 +93,12 @@
 		
 		
 		aztec_diamond = new Array(diamond_size * 2);
+		new_diamond = new Array(diamond_size * 2);
 		
 		for (let i = 0; i < diamond_size * 2; i++)
 		{
 			aztec_diamond[i] = new Array(diamond_size * 2);
+			new_diamond[i] = new Array(diamond_size * 2);
 			
 			for (let j = 0; j < diamond_size * 2; j++)
 			{
@@ -122,12 +125,6 @@
 		
 		
 		
-		
-		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		wilson.ctx.fillRect(0, 0, resolution, resolution);
-		
-		wilson.ctx.fillStyle = "rgb(255, 255, 255)";
-		
 		window.requestAnimationFrame(draw_frame);
 	}
 	
@@ -146,7 +143,38 @@
 		
 		
 		
-		//Draw the diamond.
+		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilson.ctx.fillRect(0, 0, resolution, resolution);
+		
+		draw_diamond();
+		
+		update_diamond();
+		
+		
+		
+		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilson.ctx.fillRect(0, 0, resolution, resolution);
+		
+		draw_diamond();
+		
+		
+		
+		if (starting_process_id !== Site.applet_process_id)
+		{
+			console.log("Terminated applet process");
+			
+			return;
+		}
+		
+		//window.requestAnimationFrame(draw_frame);
+	}
+	
+	
+	
+	function draw_diamond()
+	{
+		wilson.ctx.fillStyle = "rgb(255, 255, 255)";
+		
 		for (let i = 0; i < 2 * diamond_size; i++)
 		{
 			for (let j = 0; j < 2 * diamond_size; j++)
@@ -165,17 +193,6 @@
 				}
 			}
 		}
-		
-		
-		
-		if (starting_process_id !== Site.applet_process_id)
-		{
-			console.log("Terminated applet process");
-			
-			return;
-		}
-		
-		//window.requestAnimationFrame(draw_frame);
 	}
 	
 	
@@ -193,6 +210,68 @@
 		else
 		{
 			wilson.ctx.fillRect(x, y, resolution / (diamond_size * 2) * (1 - 2 * margin_size), resolution / (diamond_size * 2) * (2 - 2 * margin_size));
+		}
+	}
+	
+	
+	
+	function update_diamond()
+	{
+		for (let i = 0; i < diamond_size * 2; i++)
+		{
+			for (let j = 0; j < diamond_size * 2; j++)
+			{
+				new_diamond[i][j] = 0;
+			}
+		}
+		
+		
+		
+		for (let i = 0; i < 2 * diamond_size; i++)
+		{
+			for (let j = 0; j < 2 * diamond_size; j++)
+			{
+				if (aztec_diamond[i][j] !== 0)
+				{
+					if (Math.abs(aztec_diamond[i][j]) === 1)
+					{
+						if (new_diamond[i + aztec_diamond[i][j]][j] === 0)
+						{
+							new_diamond[i + aztec_diamond[i][j]][j] = aztec_diamond[i][j];
+						}
+						
+						//If there's something there already, delete it.
+						else
+						{
+							new_diamond[i + aztec_diamond[i][j]][j] = 0;
+						}
+					}
+					
+					else
+					{
+						if (new_diamond[i][j + Math.sign(aztec_diamond[i][j])] === 0)
+						{
+							new_diamond[i][j + Math.sign(aztec_diamond[i][j])] = aztec_diamond[i][j];
+						}
+						
+						//If there's something there already, delete it.
+						else
+						{
+							new_diamond[i][j + Math.sign(aztec_diamond[i][j])] = 0;
+						}
+					}
+				}
+			}
+		}
+		
+		
+		
+		for (let i = 0; i < diamond_size * 2; i++)
+		{
+			for (let j = 0; j < diamond_size * 2; j++)
+			{
+				aztec_diamond[i][j] = new_diamond[i][j];
+			}
 		}
 	}
 }()

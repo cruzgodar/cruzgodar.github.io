@@ -3,21 +3,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>https://www.cruzgodar.com/</loc>
-		<lastmod>2020-09-19</lastmod>
+		<lastmod>2022-02-04</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>1.0</priority>
 	</url>
 	
 	<url>
 		<loc>https://www.cruzgodar.com/index.html</loc>
-		<lastmod>2020-09-19</lastmod>
+		<lastmod>2022-02-04</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>1.0</priority>
 	</url>
 	
 	<url>
 		<loc>https://www.cruzgodar.com/home/home.html</loc>
-		<lastmod>2020-09-19</lastmod>
+		<lastmod>2022-02-04</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.5</priority>
 	</url>
@@ -37,54 +37,7 @@
 	
 	
 	<url>
-		<loc>https://www.cruzgodar.com/writing/writing.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/writing/caligo/caligo.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/writing/mist/mist.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/writing/desolation-point/desolation-point.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	
-	
-	<url>
-		<loc>https://www.cruzgodar.com/teaching/teaching.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/teaching/uo/111/111.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/teaching/uo/112/112.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/teaching/uo/112/lecture-archive/lecture-archive.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/teaching/uo/105/105.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/teaching/uo/105/lecture-archive/lecture-archive.html</loc>
+		<loc>https://www.cruzgodar.com/gallery/gallery.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
@@ -97,11 +50,6 @@
 	
 	<url>
 		<loc>https://www.cruzgodar.com/applets/julia-set-explorer/julia-set-explorer.html</loc>
-		<priority>0.5</priority>
-	</url>
-	
-	<url>
-		<loc>https://www.cruzgodar.com/applets/mandelbrot-set-explorer/mandelbrot-set-explorer.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
@@ -186,11 +134,118 @@
 	</url>
 	
 	<url>
-		<loc>https://www.cruzgodar.com/applets/the-sierpinski-tetrahedron/the-sierpinski-tetrahedron.html</loc>
+		<loc>https://www.cruzgodar.com/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/the-mandelbulb/the-mandelbulb.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/quasi-fuchsian-groups/quasi-fuchsian-groups.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/the-secant-method/the-secant-method.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/kleinian-pearls/kleinian-pearls.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/newtons-method-extended/newtons-method-extended.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/lyapunov-fractals/lyapunov-fractals.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/complex-maps/complex-maps.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/double-pendulum-fractal/double-pendulum-fractal.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/hitomezashi-patterns/hitomezashi-patterns.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/three-body-systems/three-body-systems.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/applets/pascals-triangle-colorings/pascals-triangle-colorings.html</loc>
 		<priority>0.5</priority>
 	</url>
 	
 	
+	
+	<url>
+		<loc>https://www.cruzgodar.com/writing/writing.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/writing/caligo/caligo.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/writing/mist/mist.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/writing/desolation-point/desolation-point.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	
+	
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/teaching.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/111/111.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/112/112.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/105/105.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/243/243.html</loc>
+		<priority>0.5</priority>
+	</url>
+	
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/252/252.html</loc>
+		<priority>0.5</priority>
+	</url>
 	
 	
 	

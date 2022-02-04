@@ -26,7 +26,7 @@ Page.Components =
 				<div class="new-aos-section" data-aos="fade-in">
 					<div id="logo">
 						<a href="/home/home.html" tabindex="-1">
-							<img src="/graphics/general-icons/logo.png" alt="Logo" onclick="Page.Navigation.redirect('/home/home.html')" tabindex="1"></img>
+							<img src="/graphics/general-icons/logo.png" alt="Logo" tabindex="1"></img>
 						</a>
 					</div>
 				</div>
@@ -201,7 +201,7 @@ Page.Components =
 		return `
 			<div class="image-link${light_text}" data-aos="fade-up">
 				<a href="${file_path}" tabindex="-1">
-					<img data-image-id="${id}" class="check-webp no-floating-footer" onclick="Page.Navigation.redirect('${file_path}')" src="" alt="${subtext}" tabindex="1"></img>
+					<img data-image-id="${id}" class="check-webp no-floating-footer" src="" alt="${subtext}" tabindex="1"></img>
 				</a>
 				
 				<p class="image-link-subtext">${subtext}</p>
