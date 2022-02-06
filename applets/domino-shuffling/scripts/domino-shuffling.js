@@ -12,6 +12,8 @@
 	let aztec_diamond = [];
 	let new_diamond = [];
 	
+	let current_diamond_size = 1;
+	
 	let last_timestamp = -1;
 	
 	let starting_process_id = null;
@@ -125,6 +127,8 @@
 		
 		
 		
+		current_diamond_size = 1;
+		
 		window.requestAnimationFrame(draw_frame);
 	}
 	
@@ -150,12 +154,7 @@
 		
 		update_diamond();
 		
-		
-		
-		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		wilson.ctx.fillRect(0, 0, resolution, resolution);
-		
-		draw_diamond();
+		current_diamond_size++;
 		
 		
 		
@@ -166,7 +165,12 @@
 			return;
 		}
 		
-		//window.requestAnimationFrame(draw_frame);
+		
+		
+		if (current_diamond_size < diamond_size)
+		{
+			window.requestAnimationFrame(draw_frame);
+		}
 	}
 	
 	
@@ -211,6 +215,16 @@
 		{
 			wilson.ctx.fillRect(x, y, resolution / (diamond_size * 2) * (1 - 2 * margin_size), resolution / (diamond_size * 2) * (2 - 2 * margin_size));
 		}
+	}
+	
+	
+	
+	function draw_square(row, col)
+	{
+		let x = resolution / (diamond_size * 2) * (col + margin_size);
+		let y = resolution / (diamond_size * 2) * (diamond_size * 2 - 1 - (row + margin_size));
+		
+		wilson.ctx.fillRect(x, y, resolution / (diamond_size * 2) * (1 - 2 * margin_size), resolution / (diamond_size * 2) * (1 - 2 * margin_size));
 	}
 	
 	
@@ -271,6 +285,22 @@
 			for (let j = 0; j < diamond_size * 2; j++)
 			{
 				aztec_diamond[i][j] = new_diamond[i][j];
+			}
+		}
+		
+		
+		
+		wilson.ctx.fillStyle = "rgb(0, 255, 0)";
+		
+		//Now the diamond has a bunch of 2x2 holes in it, and we need to fill them with two parallel dominos each.
+		for (let i = -current_diamond_size; i < current_diamond_size; i++)
+		{
+			for (let j = -current_diamond_size; j < current_diamond_size; j++)
+			{
+				if (Math.abs(i + .5) + Math.abs(j + .5) <= current_diamond_size)
+				{
+					draw_square(i + diamond_size, j + diamond_size);
+				}
 			}
 		}
 	}
