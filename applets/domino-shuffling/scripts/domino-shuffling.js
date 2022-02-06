@@ -154,7 +154,12 @@
 		
 		update_diamond();
 		
-		current_diamond_size++;
+		
+		
+		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilson.ctx.fillRect(0, 0, resolution, resolution);
+		
+		draw_diamond();
 		
 		
 		
@@ -165,9 +170,7 @@
 			return;
 		}
 		
-		
-		
-		if (current_diamond_size < diamond_size)
+		if (current_diamond_size < 3)
 		{
 			window.requestAnimationFrame(draw_frame);
 		}
@@ -192,7 +195,7 @@
 					
 					else
 					{
-						draw_domino(i + 1, j, false);
+						draw_domino(i, j, false);
 					}
 				}
 			}
@@ -204,7 +207,7 @@
 	function draw_domino(row, col, is_horizontal)
 	{
 		let x = resolution / (diamond_size * 2) * (col + margin_size);
-		let y = resolution / (diamond_size * 2) * (diamond_size * 2 - 1 - (row + margin_size));
+		let y = resolution / (diamond_size * 2) * (row + margin_size);
 		
 		if (is_horizontal)
 		{
@@ -222,9 +225,28 @@
 	function draw_square(row, col)
 	{
 		let x = resolution / (diamond_size * 2) * (col + margin_size);
-		let y = resolution / (diamond_size * 2) * (diamond_size * 2 - 1 - (row + margin_size));
+		let y = resolution / (diamond_size * 2) * (row + margin_size);
 		
-		wilson.ctx.fillRect(x, y, resolution / (diamond_size * 2) * (1 - 2 * margin_size), resolution / (diamond_size * 2) * (1 - 2 * margin_size));
+		wilson.ctx.fillRect(x, y, resolution / (diamond_size * 2) * (2 - 2 * margin_size), resolution / (diamond_size * 2) * (2 - 2 * margin_size));
+	}
+	
+	
+	
+	function fill_space(row, col)
+	{
+		if (Math.random() < .5)
+		{
+			//Horizontal
+			aztec_diamond[row][col] = -1;
+			aztec_diamond[row + 1][col] = 1;
+		}
+		
+		else
+		{
+			//Vertical
+			aztec_diamond[row][col] = -2;
+			aztec_diamond[row][col + 1] = 2;
+		}
 	}
 	
 	
@@ -290,16 +312,23 @@
 		
 		
 		
-		wilson.ctx.fillStyle = "rgb(0, 255, 0)";
+		current_diamond_size++;
 		
 		//Now the diamond has a bunch of 2x2 holes in it, and we need to fill them with two parallel dominos each.
 		for (let i = -current_diamond_size; i < current_diamond_size; i++)
 		{
 			for (let j = -current_diamond_size; j < current_diamond_size; j++)
 			{
-				if (Math.abs(i + .5) + Math.abs(j + .5) <= current_diamond_size)
+				if (Math.abs(i + .5) + Math.abs(j + .5) <= current_diamond_size && Math.abs(i + 1.5) + Math.abs(j + .5) <= current_diamond_size && Math.abs(i + .5) + Math.abs(j + 1.5) <= current_diamond_size && Math.abs(i + 1.5) + Math.abs(j + 1.5) <= current_diamond_size)
 				{
-					draw_square(i + diamond_size, j + diamond_size);
+					let row = i + diamond_size;
+					let col = j + diamond_size;
+					
+					//The extra checks are needed because we only record the top/bottom square of a domino.
+					if (aztec_diamond[row][col] === 0 && aztec_diamond[row + 1][col] === 0 && aztec_diamond[row][col + 1] === 0 && aztec_diamond[row + 1][col + 1] === 0 && Math.abs(aztec_diamond[row - 1][col]) !== 2 && Math.abs(aztec_diamond[row - 1][col + 1]) !== 2 && Math.abs(aztec_diamond[row][col - 1]) !== 1 && Math.abs(aztec_diamond[row + 1][col - 1]) !== 1)
+					{
+						fill_space(row, col);
+					}
 				}
 			}
 		}
