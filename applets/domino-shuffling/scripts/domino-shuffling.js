@@ -100,6 +100,8 @@
 		
 		diamond_size = parseInt(diamond_size_input_element.value || 20) + 1;
 		
+		frames_per_animation_step = Math.ceil(100 / diamond_size);
+		
 		
 		
 		aztec_diamond = new Array(diamond_size * 2);
@@ -214,17 +216,16 @@
 			return;
 		}
 		
-		if (current_diamond_size < diamond_size - 1)
+		
+		
+		if (frame === frames_per_animation_step && current_diamond_size === diamond_size - 1)
 		{
-			window.requestAnimationFrame(draw_frame);
+			return;
 		}
 		
 		else
 		{
-			wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-			wilson.ctx.fillRect(0, 0, resolution, resolution);
-			
-			draw_diamond();
+			window.requestAnimationFrame(draw_frame);
 		}
 	}
 	
