@@ -13,6 +13,7 @@
 	let new_diamond = [];
 	
 	let current_diamond_size = 1;
+	let frame = 0;
 	
 	let last_timestamp = -1;
 	
@@ -112,7 +113,6 @@
 		if (Math.random() < .5)
 		{
 			//Horizontal
-			
 			aztec_diamond[diamond_size - 1][diamond_size - 1] = -1;
 			aztec_diamond[diamond_size][diamond_size - 1] = 1;
 		}
@@ -120,7 +120,6 @@
 		else
 		{
 			//Vertical
-			
 			aztec_diamond[diamond_size - 1][diamond_size - 1] = -2;
 			aztec_diamond[diamond_size - 1][diamond_size] = 2;
 		}
@@ -128,6 +127,8 @@
 		
 		
 		current_diamond_size = 1;
+		
+		frame = 59;
 		
 		window.requestAnimationFrame(draw_frame);
 	}
@@ -147,22 +148,29 @@
 		
 		
 		
-		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		wilson.ctx.fillRect(0, 0, resolution, resolution);
+		frame++;
 		
-		draw_diamond();
+		if (frame === 60)
+		{
+			frame = 0;
+			
+			wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			wilson.ctx.fillRect(0, 0, resolution, resolution);
+			
+			draw_diamond();
+			
+			update_diamond();
+			
+			
+			
+			wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			wilson.ctx.fillRect(0, 0, resolution, resolution);
+			
+			draw_diamond();
+		}
 		
-		update_diamond();
 		
-		
-		
-		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		wilson.ctx.fillRect(0, 0, resolution, resolution);
-		
-		draw_diamond();
-		
-		
-		
+			
 		if (starting_process_id !== Site.applet_process_id)
 		{
 			console.log("Terminated applet process");
@@ -170,7 +178,7 @@
 			return;
 		}
 		
-		if (current_diamond_size < 3)
+		if (current_diamond_size < diamond_size)
 		{
 			window.requestAnimationFrame(draw_frame);
 		}
@@ -206,28 +214,18 @@
 	
 	function draw_domino(row, col, is_horizontal)
 	{
-		let x = resolution / (diamond_size * 2) * (col + margin_size);
-		let y = resolution / (diamond_size * 2) * (row + margin_size);
+		let x = resolution * (.1 + (col + margin_size) / (diamond_size * 2) * .8);
+		let y = resolution * (.1 + (row + margin_size) / (diamond_size * 2) * .8);
 		
 		if (is_horizontal)
 		{
-			wilson.ctx.fillRect(x, y, resolution / (diamond_size * 2) * (2 - 2 * margin_size), resolution / (diamond_size * 2) * (1 - 2 * margin_size));
+			wilson.ctx.fillRect(x, y, resolution * (2 - 2 * margin_size) / (diamond_size * 2) * .8, resolution * (1 - 2 * margin_size) / (diamond_size * 2) * .8);
 		}
 		
 		else
 		{
-			wilson.ctx.fillRect(x, y, resolution / (diamond_size * 2) * (1 - 2 * margin_size), resolution / (diamond_size * 2) * (2 - 2 * margin_size));
+			wilson.ctx.fillRect(x, y, resolution * (1 - 2 * margin_size) / (diamond_size * 2) * .8, resolution * (2 - 2 * margin_size) / (diamond_size * 2) * .8);
 		}
-	}
-	
-	
-	
-	function draw_square(row, col)
-	{
-		let x = resolution / (diamond_size * 2) * (col + margin_size);
-		let y = resolution / (diamond_size * 2) * (row + margin_size);
-		
-		wilson.ctx.fillRect(x, y, resolution / (diamond_size * 2) * (2 - 2 * margin_size), resolution / (diamond_size * 2) * (2 - 2 * margin_size));
 	}
 	
 	
@@ -271,29 +269,29 @@
 				{
 					if (Math.abs(aztec_diamond[i][j]) === 1)
 					{
-						if (new_diamond[i + aztec_diamond[i][j]][j] === 0)
-						{
-							new_diamond[i + aztec_diamond[i][j]][j] = aztec_diamond[i][j];
-						}
-						
 						//If there's something there already, delete it.
-						else
+						if (aztec_diamond[i + aztec_diamond[i][j]][j] === -aztec_diamond[i][j])
 						{
 							new_diamond[i + aztec_diamond[i][j]][j] = 0;
+						}
+						
+						else
+						{
+							new_diamond[i + aztec_diamond[i][j]][j] = aztec_diamond[i][j];
 						}
 					}
 					
 					else
 					{
-						if (new_diamond[i][j + Math.sign(aztec_diamond[i][j])] === 0)
-						{
-							new_diamond[i][j + Math.sign(aztec_diamond[i][j])] = aztec_diamond[i][j];
-						}
-						
 						//If there's something there already, delete it.
-						else
+						if (aztec_diamond[i][j + Math.sign(aztec_diamond[i][j])] === -aztec_diamond[i][j])
 						{
 							new_diamond[i][j + Math.sign(aztec_diamond[i][j])] = 0;
+						}
+						
+						else
+						{
+							new_diamond[i][j + Math.sign(aztec_diamond[i][j])] = aztec_diamond[i][j];
 						}
 					}
 				}
