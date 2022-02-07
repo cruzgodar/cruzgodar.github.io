@@ -104,20 +104,29 @@
 		
 		aztec_diamond = new Array(diamond_size * 2);
 		new_diamond = new Array(diamond_size * 2);
+		
 		age = new Array(diamond_size * 2);
 		new_age = new Array(diamond_size * 2);
+		
+		hue = new Array(diamond_size * 2);
+		new_hue = new Array(diamond_size * 2);
 		
 		for (let i = 0; i < diamond_size * 2; i++)
 		{
 			aztec_diamond[i] = new Array(diamond_size * 2);
 			new_diamond[i] = new Array(diamond_size * 2);
+			
 			age[i] = new Array(diamond_size * 2);
 			new_age[i] = new Array(diamond_size * 2);
+			
+			hue[i] = new Array(diamond_size * 2);
+			new_hue[i] = new Array(diamond_size * 2);
 			
 			for (let j = 0; j < diamond_size * 2; j++)
 			{
 				aztec_diamond[i][j] = 0;
 				age[i][j] = 0;
+				hue[i][j] = 0;
 			}
 		}
 		
@@ -127,6 +136,12 @@
 			//Horizontal
 			aztec_diamond[diamond_size - 1][diamond_size - 1] = -1;
 			aztec_diamond[diamond_size][diamond_size - 1] = 1;
+			
+			age[diamond_size - 1][diamond_size - 1] = 1;
+			age[diamond_size][diamond_size - 1] = 1;
+			
+			hue[diamond_size - 1][diamond_size - 1] = Math.atan2(-.5, -.5) / (2 * Math.PI) + .5;
+			hue[diamond_size][diamond_size - 1] = Math.atan2(.5, -.5) / (2 * Math.PI) + .5;
 		}
 		
 		else
@@ -134,6 +149,12 @@
 			//Vertical
 			aztec_diamond[diamond_size - 1][diamond_size - 1] = -2;
 			aztec_diamond[diamond_size - 1][diamond_size] = 2;
+			
+			age[diamond_size - 1][diamond_size - 1] = 1;
+			age[diamond_size - 1][diamond_size] = 1;
+			
+			hue[diamond_size - 1][diamond_size - 1] = Math.atan2(-.5, -.5) / (2 * Math.PI) + .5;
+			hue[diamond_size - 1][diamond_size] = Math.atan2(-.5, .5) / (2 * Math.PI) + .5;
 		}
 		
 		
@@ -235,32 +256,9 @@
 	
 	function draw_domino(row, col, is_horizontal)
 	{
-		let h = 0;
+		let h = hue[row][col];
 		
-		//Color based on direction
-		if (aztec_diamond[row][col] === -1)
-		{
-			h = 0;
-		}
-		
-		else if (aztec_diamond[row][col] === 2)
-		{
-			h = .25;
-		}
-		
-		else if (aztec_diamond[row][col] === 1)
-		{
-			h = .5;
-		}
-		
-		else if (aztec_diamond[row][col] === -2)
-		{
-			h = .75;
-		}
-		
-		
-		
-		let s = Math.pow(1 - age[row][col] / diamond_size, .25);
+		let s = 1 - .75 * Math.pow((age[row][col] - 1) / current_diamond_size, 4);
 		
 		let rgb = wilson.utils.hsv_to_rgb(h, s, 1);
 		
@@ -292,6 +290,7 @@
 			{
 				new_diamond[i][j] = 0;
 				new_age[i][j] = 0;
+				new_hue[i][j] = 0;
 			}
 		}
 		
@@ -340,12 +339,14 @@
 					{
 						new_diamond[i + aztec_diamond[i][j]][j] = aztec_diamond[i][j];
 						new_age[i + aztec_diamond[i][j]][j] = age[i][j];
+						new_hue[i + aztec_diamond[i][j]][j] = hue[i][j];
 					}
 					
 					else
 					{
 						new_diamond[i][j + Math.sign(aztec_diamond[i][j])] = aztec_diamond[i][j];
 						new_age[i][j + Math.sign(aztec_diamond[i][j])] = age[i][j];
+						new_hue[i][j + Math.sign(aztec_diamond[i][j])] = hue[i][j];
 					}
 				}
 			}
@@ -360,6 +361,7 @@
 			{
 				aztec_diamond[i][j] = new_diamond[i][j];
 				age[i][j] = new_age[i][j];
+				hue[i][j] = new_hue[i][j];
 			}
 		}
 		
@@ -402,6 +404,9 @@
 			
 			age[row][col] = current_diamond_size;
 			age[row + 1][col] = current_diamond_size;
+			
+			hue[row][col] = Math.atan2(row + .5 - diamond_size, col + .5 - diamond_size) / (2 * Math.PI) + .5;
+			hue[row + 1][col] = Math.atan2(row + 1.5 - diamond_size, col + .5 - diamond_size) / (2 * Math.PI) + .5;
 		}
 		
 		else
@@ -412,6 +417,9 @@
 			
 			age[row][col] = current_diamond_size;
 			age[row][col + 1] = current_diamond_size;
+			
+			hue[row][col] = Math.atan2(row + .5 - diamond_size, col + .5 - diamond_size) / (2 * Math.PI) + .5;
+			hue[row][col + 1] = Math.atan2(row + .5 - diamond_size, col + 1.5 - diamond_size) / (2 * Math.PI) + .5;
 		}
 	}
 }()
