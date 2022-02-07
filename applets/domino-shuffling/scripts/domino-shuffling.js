@@ -11,8 +11,12 @@
 	
 	let aztec_diamond = [];
 	let new_diamond = [];
-	let hues = [];
-	let new_hues = [];
+	
+	let hue = [];
+	let new_hue = [];
+	
+	let age = [];
+	let new_age = [];
 	
 	let current_diamond_size = 1;
 	let frame = 0;
@@ -100,20 +104,20 @@
 		
 		aztec_diamond = new Array(diamond_size * 2);
 		new_diamond = new Array(diamond_size * 2);
-		hues = new Array(diamond_size * 2);
-		new_hues = new Array(diamond_size * 2);
+		age = new Array(diamond_size * 2);
+		new_age = new Array(diamond_size * 2);
 		
 		for (let i = 0; i < diamond_size * 2; i++)
 		{
 			aztec_diamond[i] = new Array(diamond_size * 2);
 			new_diamond[i] = new Array(diamond_size * 2);
-			hues[i] = new Array(diamond_size * 2);
-			new_hues[i] = new Array(diamond_size * 2);
+			age[i] = new Array(diamond_size * 2);
+			new_age[i] = new Array(diamond_size * 2);
 			
 			for (let j = 0; j < diamond_size * 2; j++)
 			{
 				aztec_diamond[i][j] = 0;
-				hues[i][j] = 0;
+				age[i][j] = 0;
 			}
 		}
 		
@@ -231,34 +235,36 @@
 	
 	function draw_domino(row, col, is_horizontal)
 	{
-		let rgb = wilson.utils.hsv_to_rgb(hues[row][col], 1, 1);
+		let h = 0;
 		
-		wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-		
-		
-		
-		/*
 		//Color based on direction
 		if (aztec_diamond[row][col] === -1)
 		{
-			wilson.ctx.fillStyle = "rgb(255, 0, 0)";
+			h = 0;
 		}
 		
 		else if (aztec_diamond[row][col] === 2)
 		{
-			wilson.ctx.fillStyle = "rgb(255, 255, 0)";
+			h = .25;
 		}
 		
 		else if (aztec_diamond[row][col] === 1)
 		{
-			wilson.ctx.fillStyle = "rgb(0, 255, 0)";
+			h = .5;
 		}
 		
 		else if (aztec_diamond[row][col] === -2)
 		{
-			wilson.ctx.fillStyle = "rgb(0, 0, 255)";
+			h = .75;
 		}
-		*/
+		
+		
+		
+		let s = Math.pow(1 - age[row][col] / diamond_size, .25);
+		
+		let rgb = wilson.utils.hsv_to_rgb(h, s, 1);
+		
+		wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 		
 		
 		
@@ -285,7 +291,7 @@
 			for (let j = 0; j < diamond_size * 2; j++)
 			{
 				new_diamond[i][j] = 0;
-				new_hues[i][j] = 0;
+				new_age[i][j] = 0;
 			}
 		}
 		
@@ -333,13 +339,13 @@
 					if (Math.abs(aztec_diamond[i][j]) === 1)
 					{
 						new_diamond[i + aztec_diamond[i][j]][j] = aztec_diamond[i][j];
-						new_hues[i + aztec_diamond[i][j]][j] = hues[i][j];
+						new_age[i + aztec_diamond[i][j]][j] = age[i][j];
 					}
 					
 					else
 					{
 						new_diamond[i][j + Math.sign(aztec_diamond[i][j])] = aztec_diamond[i][j];
-						new_hues[i][j + Math.sign(aztec_diamond[i][j])] = hues[i][j];
+						new_age[i][j + Math.sign(aztec_diamond[i][j])] = age[i][j];
 					}
 				}
 			}
@@ -353,7 +359,7 @@
 			for (let j = 0; j < diamond_size * 2; j++)
 			{
 				aztec_diamond[i][j] = new_diamond[i][j];
-				hues[i][j] = new_hues[i][j];
+				age[i][j] = new_age[i][j];
 			}
 		}
 		
@@ -394,8 +400,8 @@
 			aztec_diamond[row][col] = -1;
 			aztec_diamond[row + 1][col] = 1;
 			
-			hues[row][col] = (current_diamond_size - 1) / (diamond_size - 1) * 6/7;
-			hues[row + 1][col] = (current_diamond_size - 1) / (diamond_size - 1) * 6/7;
+			age[row][col] = current_diamond_size;
+			age[row + 1][col] = current_diamond_size;
 		}
 		
 		else
@@ -404,8 +410,8 @@
 			aztec_diamond[row][col] = -2;
 			aztec_diamond[row][col + 1] = 2;
 			
-			hues[row][col] = (current_diamond_size - 1) / (diamond_size - 1) * 6/7;
-			hues[row][col + 1] = (current_diamond_size - 1) / (diamond_size - 1) * 6/7;
+			age[row][col] = current_diamond_size;
+			age[row][col + 1] = current_diamond_size;
 		}
 	}
 }()
