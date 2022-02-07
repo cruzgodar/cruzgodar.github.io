@@ -60,18 +60,24 @@
 
 
 
-<div id="canvas-row">
-	<div id="wp-column" data-aos="fade-up">
+<div id="canvas-grid">
+	<div class="grid-item">
 		<canvas id="wp-canvas" class="output-canvas"></canvas>
-		<canvas id="wpprime-canvas" class="output-canvas"></canvas>
 	</div>
 	
-	<div id="ec-plot-column" data-aos="fade-up">
+	<div class="grid-item" style="grid-row: span 2; grid-column: span 2">
 		<canvas id="ec-plot-canvas" class="output-canvas"></canvas>
 	</div>
 	
-	<div id="parameter-column" data-aos="fade-up">
+	<div class="grid-item">
 		<canvas id="kleinj-canvas" class="output-canvas"></canvas>
+	</div>
+	
+	<div class="grid-item">
+		<canvas id="wpprime-canvas" class="output-canvas"></canvas>
+	</div>
+	
+	<div class="grid-item">
 		<canvas id="g2-canvas" class="output-canvas"></canvas>
 	</div>
 </div>
