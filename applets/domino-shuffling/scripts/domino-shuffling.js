@@ -259,7 +259,7 @@
 	{
 		let h = hue[row][col];
 		
-		let s = 1 - .75 * Math.pow((age[row][col] - 1) / current_diamond_size, 4);
+		let s = 1 - .8 * Math.pow((age[row][col] - 1) / current_diamond_size, 4);
 		
 		let rgb = wilson.utils.hsv_to_rgb(h, s, 1);
 		

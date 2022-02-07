@@ -101,28 +101,6 @@
 	
 	
 	
-	let black_point_input_element = document.querySelector("#black-point-input");
-	
-	black_point_input_element.addEventListener("input", () =>
-	{
-		black_point = parseFloat(black_point_input_element.value || 1);
-		
-		window.requestAnimationFrame(draw_frame);
-	});
-	
-	
-	
-	let white_point_input_element = document.querySelector("#white-point-input");
-	
-	white_point_input_element.addEventListener("input", () =>
-	{
-		white_point = parseFloat(white_point_input_element.value || 1);
-		
-		window.requestAnimationFrame(draw_frame);
-	});
-	
-	
-	
 	let g2_slider_element = document.querySelector("#g2-slider");
 	
 	let g2_slider_value_element = document.querySelector("#g2-slider-value");

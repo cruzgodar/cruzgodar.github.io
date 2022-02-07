@@ -783,7 +783,7 @@ class Wilson
 		
 		static: false,
 		
-		draggable_radius: 14.5,
+		draggable_radius: 12,
 		
 		active_draggable: -1,
 		
