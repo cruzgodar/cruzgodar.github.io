@@ -23,6 +23,7 @@
 	let current_diamond_size = 1;
 	let frame = 0;
 	let frames_per_animation_step = 1;
+	let draw_diamond_with_holes = true;
 	
 	let last_timestamp = -1;
 	
@@ -109,6 +110,16 @@
 		diamond_size = parseInt(diamond_size_input_element.value || 20) + 1;
 		
 		frames_per_animation_step = Math.ceil(100 / diamond_size);
+		
+		if (diamond_size > 30)
+		{
+			draw_diamond_with_holes = false;
+		}
+		
+		else
+		{
+			draw_diamond_with_holes = true;
+		}
 		
 		use_smooth_colors = use_smooth_colors_checkbox_element.checked;
 		
@@ -215,24 +226,16 @@
 		
 		if (frame === frames_per_animation_step)
 		{
-			wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-			wilson.ctx.fillRect(0, 0, resolution, resolution);
-			
-			draw_diamond();
-		}
-		
-		else if (frame === 2 * frames_per_animation_step)
-		{
 			frame = 0;
 			
 			move_dominos();
 			
+			fill_spaces();
+			
 			wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 			wilson.ctx.fillRect(0, 0, resolution, resolution);
 			
 			draw_diamond();
-			
-			fill_spaces();
 		}
 		
 		
@@ -246,8 +249,13 @@
 		
 		
 		
-		if (frame === frames_per_animation_step && current_diamond_size === diamond_size - 1)
+		if (frame === 0 && current_diamond_size === diamond_size - 1)
 		{
+			wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			wilson.ctx.fillRect(0, 0, resolution, resolution);
+			
+			draw_diamond();
+			
 			return;
 		}
 		
