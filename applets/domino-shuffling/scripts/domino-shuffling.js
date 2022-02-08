@@ -6,6 +6,8 @@
 	let resolution = 2000;
 	let diamond_size = 20;
 	
+	let use_smooth_colors = true;
+	
 	//As a fraction of domino size
 	let margin_size = .05;
 	
@@ -79,6 +81,12 @@
 	
 	
 	
+	let use_smooth_colors_checkbox_element = document.querySelector("#use-smooth-colors-checkbox");
+	
+	use_smooth_colors_checkbox_element.checked = true;
+	
+	
+	
 	let download_button_element = document.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
@@ -101,6 +109,8 @@
 		diamond_size = parseInt(diamond_size_input_element.value || 20) + 1;
 		
 		frames_per_animation_step = Math.ceil(100 / diamond_size);
+		
+		use_smooth_colors = use_smooth_colors_checkbox_element.checked;
 		
 		
 		
@@ -142,8 +152,17 @@
 			age[diamond_size - 1][diamond_size - 1] = 1;
 			age[diamond_size][diamond_size - 1] = 1;
 			
-			hue[diamond_size - 1][diamond_size - 1] = Math.atan2(-.5, -.5) / (2 * Math.PI) + .5;
-			hue[diamond_size][diamond_size - 1] = Math.atan2(.5, -.5) / (2 * Math.PI) + .5;
+			if (use_smooth_colors)
+			{
+				hue[diamond_size - 1][diamond_size - 1] = .75 - Math.atan2(-.5, -.5) / (2 * Math.PI);
+				hue[diamond_size][diamond_size - 1] = .75 - Math.atan2(.5, -.5) / (2 * Math.PI);
+			}
+			
+			else
+			{
+				hue[diamond_size - 1][diamond_size - 1] = 0;
+				hue[diamond_size][diamond_size - 1] = .5;
+			}
 		}
 		
 		else
@@ -155,8 +174,17 @@
 			age[diamond_size - 1][diamond_size - 1] = 1;
 			age[diamond_size - 1][diamond_size] = 1;
 			
-			hue[diamond_size - 1][diamond_size - 1] = Math.atan2(-.5, -.5) / (2 * Math.PI) + .5;
-			hue[diamond_size - 1][diamond_size] = Math.atan2(-.5, .5) / (2 * Math.PI) + .5;
+			if (use_smooth_colors)
+			{
+				hue[diamond_size - 1][diamond_size - 1] = .75 - Math.atan2(-.5, -.5) / (2 * Math.PI);
+				hue[diamond_size - 1][diamond_size] = .75 - Math.atan2(-.5, .5) / (2 * Math.PI);
+			}
+			
+			else
+			{
+				hue[diamond_size - 1][diamond_size - 1] = .25;
+				hue[diamond_size - 1][diamond_size] = .75;
+			}
 		}
 		
 		
@@ -409,8 +437,17 @@
 			age[row][col] = current_diamond_size;
 			age[row + 1][col] = current_diamond_size;
 			
-			hue[row][col] = Math.atan2(row + .5 - diamond_size, col + .5 - diamond_size) / (2 * Math.PI) + .5;
-			hue[row + 1][col] = Math.atan2(row + 1.5 - diamond_size, col + .5 - diamond_size) / (2 * Math.PI) + .5;
+			if (use_smooth_colors)
+			{
+				hue[row][col] = .75 - Math.atan2(row + .5 - diamond_size, col + .5 - diamond_size) / (2 * Math.PI);
+				hue[row + 1][col] = .75 - Math.atan2(row + 1.5 - diamond_size, col + .5 - diamond_size) / (2 * Math.PI);
+			}
+			
+			else
+			{
+				hue[row][col] = 0;
+				hue[row + 1][col] = .5;
+			}
 		}
 		
 		else
@@ -422,8 +459,17 @@
 			age[row][col] = current_diamond_size;
 			age[row][col + 1] = current_diamond_size;
 			
-			hue[row][col] = Math.atan2(row + .5 - diamond_size, col + .5 - diamond_size) / (2 * Math.PI) + .5;
-			hue[row][col + 1] = Math.atan2(row + .5 - diamond_size, col + 1.5 - diamond_size) / (2 * Math.PI) + .5;
+			if (use_smooth_colors)
+			{
+				hue[row][col] = .75 - Math.atan2(row + .5 - diamond_size, col + .5 - diamond_size) / (2 * Math.PI);
+				hue[row][col + 1] = .75 - Math.atan2(row + .5 - diamond_size, col + 1.5 - diamond_size) / (2 * Math.PI);
+			}
+			
+			else
+			{
+				hue[row][col] = .25;
+				hue[row][col + 1] = .75;
+			}
 		}
 	}
 }()

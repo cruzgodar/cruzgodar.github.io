@@ -7,6 +7,12 @@
 	
 	
 	
+	"domino-shuffling":
+	{
+		"webp": "domino-shuffling/cover.webp",
+		"non-webp": "domino-shuffling/cover.jpg"
+	},
+	
 	"pascals-triangle-colorings":
 	{
 		"webp": "pascals-triangle-colorings/cover.webp",
