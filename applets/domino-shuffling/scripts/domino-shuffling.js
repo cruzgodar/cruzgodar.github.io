@@ -233,20 +233,23 @@
 	
 	function draw_diamond()
 	{
-		for (let i = 0; i < 2 * diamond_size; i++)
+		for (let i = -current_diamond_size; i < current_diamond_size; i++)
 		{
-			for (let j = 0; j < 2 * diamond_size; j++)
+			for (let j = -current_diamond_size; j < current_diamond_size; j++)
 			{
-				if (aztec_diamond[i][j] !== 0)
+				let row = i + diamond_size;
+				let col = j + diamond_size;
+				
+				if (aztec_diamond[row][col] !== 0)
 				{
-					if (Math.abs(aztec_diamond[i][j]) === 1)
+					if (Math.abs(aztec_diamond[row][col]) === 1)
 					{
-						draw_domino(i, j, true);
+						draw_domino(row, col, true);
 					}
 					
 					else
 					{
-						draw_domino(i, j, false);
+						draw_domino(row, col, false);
 					}
 				}
 			}
