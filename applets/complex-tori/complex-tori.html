@@ -1,15 +1,15 @@
 <head>
-	<title>Complex Maps</title>
+	<title>Complex Tori</title>
 	
 	<meta property="og:type" content="website">
 	
-	<meta property="og:title" content="Complex Maps"/>
+	<meta property="og:title" content="Complex Tori"/>
 	
-	<meta property="og:url" content="https://cruzgodar.com/applets/complex-maps/complex-maps.html"/>
+	<meta property="og:url" content="https://cruzgodar.com/applets/complex-tori/complex-tori.html"/>
 	
 	<meta property="og:description" content="Text"/>
 
-	<meta property="og:image" content="https://cruzgodar.com/applets/complex-maps/cover.jpg"/>
+	<meta property="og:image" content="https://cruzgodar.com/applets/complex-tori/cover.jpg"/>
 	
 	<style>body {opacity: 0;}</style>
 </head>
@@ -59,22 +59,32 @@
 <div id="canvas-grid">
 	<div class="grid-item">
 		<canvas id="wp-canvas" class="output-canvas"></canvas>
+		
+		<h2 class="section-text wp-text">$\wp(z, \tau)$</h2>
 	</div>
 	
 	<div class="grid-item" style="grid-row: span 2; grid-column: span 2">
 		<canvas id="ec-plot-canvas" class="output-canvas"></canvas>
+		
+		<h2 class="section-text ec-text">$y^2 = x^3 + g_2 x + g_3$</h2>
 	</div>
 	
 	<div class="grid-item">
 		<canvas id="kleinj-canvas" class="output-canvas"></canvas>
+		
+		<h2 class="section-text kleinj-text">$j(\tau)$</h2>
 	</div>
 	
 	<div class="grid-item">
 		<canvas id="wpprime-canvas" class="output-canvas"></canvas>
+		
+		<h2 class="section-text wpprime-text">$\wp'(z, \tau)$</h2>
 	</div>
 	
 	<div class="grid-item">
 		<canvas id="g2-canvas" class="output-canvas"></canvas>
+		
+		<h2 class="section-text g2-text">$j(g_2, g_3)$</h2>
 	</div>
 </div>
 
@@ -102,7 +112,7 @@
 	
 	Page.settings = 
 	{
-		"title": "Complex Maps",
+		"title": "Complex Tori",
 		
 		"math_page": true,
 		
