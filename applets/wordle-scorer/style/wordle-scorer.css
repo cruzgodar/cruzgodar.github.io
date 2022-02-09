@@ -1,0 +1,44 @@
+#wordle
+{
+	display: grid;
+	
+	width: 30vw;
+	
+	margin: 0 auto;
+	
+	grid-template-rows: repeat(6, 1fr);
+	grid-template-columns: repeat(5, 1fr);
+	grid-gap: 10px;
+}
+
+#wordle div
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	width: 100%;
+	aspect-ratio: 1;
+	
+	border: 2px solid rgb(127, 127, 127);
+	
+	margin: 0;
+	padding: 0;
+}
+
+#wordle div input
+{
+	font-size: 3.5vw;
+	font-weight: bold;
+	color: rgb(0, 0, 0);
+	text-align: center;
+	
+	width: 100%;
+	
+	border: none;
+	outline: none;
+	background-color: rgb(255, 255, 255);
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
