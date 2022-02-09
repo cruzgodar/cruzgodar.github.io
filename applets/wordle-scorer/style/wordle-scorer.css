@@ -2,13 +2,15 @@
 {
 	display: grid;
 	
-	width: 30vw;
+	width: fit-content;
+	height: fit-content;
 	
 	margin: 0 auto;
 	
 	grid-template-rows: repeat(6, 1fr);
-	grid-template-columns: repeat(5, 1fr);
-	grid-gap: 10px;
+	grid-template-columns: repeat(7, 1fr);
+	grid-row-gap: 10px;
+	grid-column-gap: 10px;
 }
 
 #wordle div
@@ -17,28 +19,80 @@
 	align-items: center;
 	justify-content: center;
 	
-	width: 100%;
-	aspect-ratio: 1;
+	width: 50px;
+	height: 50px;
 	
-	border: 2px solid rgb(127, 127, 127);
+	border: 2px solid rgb(216, 216, 216);
 	
 	margin: 0;
 	padding: 0;
+	
+	transition: background-color .25s ease-in-out, border-size .25s ease-in-out;
 }
 
-#wordle div input
+#wordle div:nth-child(7n + 1)
 {
-	font-size: 3.5vw;
+	opacity: 0;
+}
+
+#wordle div:nth-child(7n)
+{
+	background-color: rgb(80, 64, 192);
+	border: none;
+	width: 54px;
+	height: 54px;
+}
+
+#wordle div input, #wordle div p
+{
+	font-size: 40px;
 	font-weight: bold;
 	color: rgb(0, 0, 0);
 	text-align: center;
 	
 	width: 100%;
+	height: 100%;
 	
 	border: none;
+	border-radius: 0;
 	outline: none;
 	background-color: rgb(255, 255, 255);
 	box-sizing: border-box;
+	
 	margin: 0;
 	padding: 0;
+	
+	transition: background-color .25s ease-in-out, color .25s ease-in-out;
+}
+
+#wordle div p
+{
+	color: rgb(255, 255, 255);
+	background-color: rgb(80, 64, 192);
+}
+
+#wordle div.black
+{
+	border-color: rgb(0, 0, 0);
+}
+
+#wordle div input.gray
+{
+	background-color: rgb(235, 235, 235);
+}
+
+#wordle div input.yellow
+{
+	background-color: rgb(197, 180, 101);
+}
+
+#wordle div input.green
+{
+	background-color: rgb(120, 168, 107);
+}
+
+#wordle div input.gray, #wordle div input.yellow, #wordle div input.green
+{
+	color: rgb(255, 255, 255);
+	border-size: 0;
 }

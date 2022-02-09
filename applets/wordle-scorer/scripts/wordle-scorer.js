@@ -2,6 +2,75 @@
 {
 	"use strict";
 	
+	let active_row = 0;
+	
+	let boxes = document.querySelectorAll("#wordle input");
+	
+	for (let i = 0; i < boxes.length; i++)
+	{
+		boxes[i].addEventListener("click", () =>
+		{
+			//Put cursor on the right
+			let value = boxes[i].value;
+			boxes[i].value = "";
+			boxes[i].value = value;
+		});
+		
+		boxes[i].addEventListener("input", () =>
+		{
+			if (boxes[i].value.length >= 1)
+			{
+				if (boxes[i].value.length === 2)
+				{
+					boxes[i].value = boxes[i].value[1].toUpperCase();
+				}
+				
+				else
+				{
+					boxes[i].value = boxes[i].value[0].toUpperCase();
+				}
+				
+				boxes[i].parentNode.classList.add("black");
+				
+				if (i % 5 !== 4)
+				{
+					boxes[i + 1].focus();
+				}
+			}
+			
+			else
+			{
+				if (boxes[i].parentNode.classList.contains("black"))
+				{
+					boxes[i].parentNode.classList.remove("black");
+					
+					if (i % 5 !== 0)
+					{
+						boxes[i - 1].focus();
+					}
+				}
+				
+				else
+				{
+					if (i % 5 !== 0)
+					{
+						boxes[i - 1].value = "";
+						boxes[i - 1].focus();
+					}
+				}
+			}
+		});
+		
+		boxes[i].addEventListener("keydown", (e) =>
+		{
+			if (e.keyCode === 8 && boxes[i].value.length === 0 && !(boxes[i].parentNode.classList.contains("black")) && (i % 5 !== 0))
+			{
+				boxes[i - 1].value = "";
+				boxes[i - 1].focus();
+				boxes[i - 1].parentNode.classList.remove("black");
+			}
+		});
+	}
 	
 	
 	const all_words = [
