@@ -11,6 +11,9 @@
 	grid-template-columns: repeat(7, 1fr);
 	grid-row-gap: 10px;
 	grid-column-gap: 10px;
+	
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 #wordle div
@@ -41,6 +44,10 @@
 	border: none;
 	width: 54px;
 	height: 54px;
+	
+	opacity: 0;
+	
+	cursor: default;
 }
 
 #wordle div input, #wordle div p
@@ -67,8 +74,13 @@
 
 #wordle div p
 {
+	width: auto;
+	height: auto;
+	
 	color: rgb(255, 255, 255);
 	background-color: rgb(80, 64, 192);
+	
+	cursor: default;
 }
 
 #wordle div.black
