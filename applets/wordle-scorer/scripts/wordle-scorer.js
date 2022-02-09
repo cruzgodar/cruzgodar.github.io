@@ -4,12 +4,23 @@
 	
 	let active_row = 0;
 	
+	let entry = ["_", "_", "_", "_", "_"];
+	
 	let boxes = document.querySelectorAll("#wordle input");
+	
+	let confirm_buttons = document.querySelectorAll("#wordle div:nth-child(7n)");
+	
+	
 	
 	for (let i = 0; i < boxes.length; i++)
 	{
 		boxes[i].addEventListener("click", () =>
 		{
+			if (Math.floor(i / 5) !== active_row)
+			{
+				boxes[i].blur();
+			}
+			
 			//Put cursor on the right
 			let value = boxes[i].value;
 			boxes[i].value = "";
@@ -32,22 +43,36 @@
 				
 				boxes[i].parentNode.classList.add("black");
 				
+				
+				
+				entry[i % 5] = boxes[i].value[0].toLowerCase();
+				
+				
+				
 				if (i % 5 !== 4)
 				{
 					boxes[i + 1].focus();
+				}
+				
+				if (entry.indexOf("_") === -1)
+				{
+					confirm_buttons[Math.floor(i / 5)].style.opacity = 1;
+					confirm_buttons[Math.floor(i / 5)].style.cursor = "pointer";
 				}
 			}
 			
 			else
 			{
+				confirm_buttons[Math.floor(i / 5)].style.opacity = 0;
+				confirm_buttons[Math.floor(i / 5)].style.cursor = "default";
+				
+				
+				
 				if (boxes[i].parentNode.classList.contains("black"))
 				{
 					boxes[i].parentNode.classList.remove("black");
 					
-					if (i % 5 !== 0)
-					{
-						boxes[i - 1].focus();
-					}
+					entry[i % 5] = "_";
 				}
 				
 				else
@@ -55,7 +80,9 @@
 					if (i % 5 !== 0)
 					{
 						boxes[i - 1].value = "";
+						entry[i % 5 - 1] = "_";
 						boxes[i - 1].focus();
+						boxes[i - 1].parentNode.classList.remove("black");
 					}
 				}
 			}
@@ -66,10 +93,40 @@
 			if (e.keyCode === 8 && boxes[i].value.length === 0 && !(boxes[i].parentNode.classList.contains("black")) && (i % 5 !== 0))
 			{
 				boxes[i - 1].value = "";
+				entry[i % 5 - 1] = "_";
 				boxes[i - 1].focus();
 				boxes[i - 1].parentNode.classList.remove("black");
 			}
 		});
+	}
+	
+	
+	
+	for (let i = 0; i < confirm_buttons.length; i++)
+	{
+		confirm_buttons[i].style.transition = "opacity .125s ease-in-out";
+		
+		
+		
+		confirm_buttons[i].addEventListener("click", () =>
+		{
+			if (confirm_buttons[i].style.opacity == 1)
+			{
+				active_row++;
+				
+				confirm_buttons[i].style.opacity = 0;
+				confirm_buttons[i].style.cursor = "default";
+				
+				grade_submission();
+			}
+		});
+	}
+	
+	
+	
+	function grade_submission()
+	{
+		
 	}
 	
 	
