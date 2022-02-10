@@ -28,11 +28,37 @@
 
 !begin-text-block
 	
-	Text
+	Elliptic curves are solutions to the equation $y^2 = x^3 + ax + b$. More generally, you can define elliptic curves over any field, for example the field of rational numbers or the real numbers. If you look for solutions to this equation over the complex numbers, it turns out that an elliptic curve is just a torus (fancy word for doughnut).  The goal of this applet is to visualize this by showing the real points of an elliptic curve (which look like what you'd normally think of as a curve) along with the picture of the complex torus (which looks like a lattice).
+
+	Explanation of plots: elliptic curves get their name from so-called elliptic functions. An important elliptic function is the Weierstrass $\wp$-function, defined by
+
+	$$
+	\wp(z)=\dfrac{1}{z^2} + \sum_{(m,n) \neq (0,0)}\left(\dfrac{1}{(z-(m+n\tau))^2}-\dfrac{1}{(m+n\tau)^2}\right)
+	$$
 	
-	Another line
+	where $\tau$ is some constant defined by the curve. Amazingly, all points on an elliptic curve arise as solutions to the equation
 	
-	Hooray!
+	$$
+	\wp'(z)^2 = 4\wp(z)^3-g_2\wp(z) - g_3
+	$$
+
+	where $g_2$ and $g_3$ play the role of $a$ and $b$ above. In turn, $g_2$ and $g_3$ are members of another special class of functions called modular forms, given by
+
+	$$
+	g_2= 60\sum_{(m,n) \neq (0,0)}(m+n\tau)^{-4}
+	$$
+	
+	$$
+	g_3= 140\sum_{(m,n) \neq (0,0)}(m+n\tau)^{-6}
+	$$
+	
+	We can define the Klein $j$-invariant by
+
+	$$
+	j(\tau) = 1728\dfrac{g_2(\tau)^3}{g_2(\tau)^3-27g_3(\tau)^2}
+	$$
+
+	Two complex elliptic curves are the "same" (isomorphic) if they have the same $j$-invariant.
 	
 !end-text-block
 
