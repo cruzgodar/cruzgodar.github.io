@@ -116,9 +116,134 @@
 
 !begin-text-block
 	
-	Just like work is force times distance, mass is density times amount. Here, amount means either length, area, or volume, depending on the shape of the object we&#x2019;re considering. As before, we&#x2019;ll look at objects with varying density &mdash; 
+	Just like work is force times distance, mass is density times amount. Here, amount means either length, area, or volume, depending on the shape of the object we&#x2019;re considering. As before, we&#x2019;ll look at objects with varying density &mdash; both thin bars and thin circular plates.
 	
 !end-text-block
+
+
+
+!begin-thm
+	
+	mass of a bar
+	
+	Let $\rho(x)$ be the density of a bar at distance $x$, where $a \leq x \leq b$. Then the mass of the bar is $\int_a^b \rho(x)\ dx$.
+	
+!end-thm
+
+
+
+!begin-example
+	
+	mass of a bar
+	
+	Suppose a bar has density $\rho(x) = \sin(x)$ on $\left[ \frac{\pi}{2}, \pi \right]$. Find its mass.
+	
+	This is just
+	
+	$$
+		\begin{align*}
+			\int_{\frac{\pi}{2}}^\pi \sin(x)\ dx &= -\cos(\pi) + \cos\left(\frac{\pi}{2}\right)\\
+			&= 1.
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	mass of a bar
+	
+	Suppose a bar has density $\rho(x) = \ln(x)$ on $[1, e]$. Find its mass.
+	
+!end-exercise
+
+
+
+!begin-thm
+	
+	mass of a disk or washer
+	
+	Let $\rho(r)$ be the radial density of a circular disk or washer at radius $r$ from its center, where $a \leq r \leq b$. Then the mass of the disk is $\int_a^b 2\pi r\rho(r)\ dr$.
+	
+!end-thm
+
+
+
+!begin-example
+	
+	mass of a disk
+	
+	Suppose a disk has radial density $\rho(r) = \sqrt{r}$ for $0 \leq r \leq 4$. Find its mass.
+	
+	We have
+	
+	$$
+		\begin{align*}
+			\int_0^4 2\pi r \sqrt{r}\ dr &= \left. \left[ 2\pi \frac{r^{5/2}}{5/2} \right] \right|_0^4\\
+			&= \frac{4\pi}{5} \left( 32 - 0 \right).
+			&= \frac{128\pi}{5}.
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	mass of a washer
+	
+	Suppose a washer has radial density $\rho(r) = \frac{1}{r^2}$ for $2 \leq r \leq 4$. Find its mass.
+	
+!end-exercise
+
+
+
+!section
+
+!text s Tanks
+
+<br>
+
+
+
+!begin-text-block
+	
+	The last type of problem we&#x2019;ll explore in this section has to do with the work done by pumping a substance, usually a liquid, out of a tank. This requires a bit more work: the idea is that each vertical cross-section needs to be lifted a different length out of the tank, so to find the total work done, we find the work done by lifting a single slice out (since the distance it needs to travel is the same for the whole slice), and then integrate that over all the slices. This is similar to what we&#x2019;ve done before, but the catch is that we&#x2019;re dealing with more than just solids of revolution now &mdash; the slices can be any shape.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a cylindrical tank
+	
+	A cylindrical tank has radius $4$ meters. It is $10$ meters tall and is filled with water up to $8$ meters. The weight density of water is $9800\ \frac{N}{m^3}$. Find the work done by pumping out all the water over the top of the tank.
+	
+	<div class="center-content"><img class="notes-image" src="/teaching/uo/252/notes/11-physical-applications/graphics/cylindrical-tank.png"></img></div>
+	
+	Like we said before, we just need to find the work done by lifting each slice out of the tank, and then integrate that work over all the slices. Taking a cross-section at height $y$ off the ground, we have a circle with radius $4$. Its area is then $16\pi$, so the force applied to it is $9800 \cdot 16\pi$. The distance it needs to travel is $10 - y$, since it needs to go up to the top of the tank. Therefore, our integral becomes
+	
+	$$
+		\begin{align*}
+			\int_0^8 (9800)(16\pi)(10 - y)\ dy &= \left. \left[ (9800)(16\pi) \left(10y - \frac{y^2}{2}\right) \right] \right|_0^8\\
+			&= (9800)(16\pi) \left(80 - 32\right).
+			&= 7526400\pi.
+		\end{align*}
+	$$
+	
+	The amount of work done is very large, but that makes sense &mdash; you&#x2019;re emptying an entire water tower&#x2019;s worth of liquid.
+	
+!end-example
+
+
+
+!begin-example
+	
+	a pyramid
+	
+	A tank in the shape of a square pyramid has height $6$ and a base with side length $5$. It is completely full of a liquid with weight density $1000\ \frac{N}{m^3}$. Find the work done by pumping it all out.
+	
+!end-example
 
 
 

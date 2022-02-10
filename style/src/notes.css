@@ -13,6 +13,14 @@ iframe
 
 
 
+.notes-image
+{
+	width: 70%;
+	margin: 0 auto;
+}
+
+
+
 .notes-example, .notes-exercise, .notes-def, .notes-prop, .notes-thm, .notes-proof, .notes-comment, .notes-cor, .notes-lemma, .notes-axiom
 {
 	width: calc(70% - 16px);
