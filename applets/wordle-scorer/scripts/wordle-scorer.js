@@ -10,6 +10,10 @@
 	
 	let confirm_buttons = document.querySelectorAll("#wordle div:nth-child(7n)");
 	
+	let num_words_to_evaluate = 200;
+	
+	let hardmode = false;
+	
 	
 	
 	for (let i = 0; i < boxes.length; i++)
@@ -112,22 +116,193 @@
 		{
 			if (confirm_buttons[i].style.opacity == 1)
 			{
+				let entry_string = `${entry[0]}${entry[1]}${entry[2]}${entry[3]}${entry[4]}`;
+		
+				if (all_words.indexOf(entry_string) === -1)
+				{
+					reject_submission();
+					
+					return;
+				}
+				
+				
+				
 				active_row++;
 				
 				confirm_buttons[i].style.opacity = 0;
 				confirm_buttons[i].style.cursor = "default";
 				
-				grade_submission();
+				setTimeout(() =>
+				{
+					grade_submission(entry_string);
+				}, 250);
 			}
 		});
 	}
 	
 	
 	
-	function grade_submission()
+	function reject_submission()
 	{
-		
+	
 	}
+	
+	
+	
+	function grade_submission(entry_string)
+	{
+		//First, select some words from the set of current possibilities for grading.
+		let grading_words = new Array(Math.min(num_words_to_evaluate, valid_words.length));
+		
+		for (let i = 0; i < grading_words.length; i++)
+		{
+			let index = Math.floor(Math.random() * valid_words.length);
+			
+			grading_words[i] = valid_words[index];
+			
+			valid_words.splice(index, 1);
+		}
+		
+		for (let i = 0; i < grading_words.length; i++)
+		{
+			valid_words.push(grading_words[i]);
+		}
+		
+		
+		
+		let words_by_score = new Array(all_words.length);
+		
+		//First, loop through all potential guesses.
+		for (let i = 0; i < all_words.length; i++)
+		{
+			let scores = new Array(grading_words.length);
+			
+			//A guess's score is determined by the percentage of remaining valid words it removes, so we first score a bunch of words.
+			for (let j = 0; j < grading_words.length; j++)
+			{
+				scores[j] = score_word(all_words[i], grading_words[j]);
+			}
+			
+			//Now we'll take that score and go through the list of grading words, and see which ones would have given the same score.
+			let num_eliminated = 0;
+			
+			for (let j = 0; j < grading_words.length; j++)
+			{
+				for (let k = 0; k < grading_words.length; k++)
+				{
+					if (k === j)
+					{
+						continue;
+					}
+					
+					let equal = true;
+					
+					for (let l = 0; l < 5; l++)
+					{
+						if (scores[j][l] !== scores[k][l])
+						{
+							equal = false;
+							break;
+						}
+					}
+					
+					if (!equal)
+					{
+						num_eliminated++;
+					}
+				}
+			}
+			
+			num_eliminated *= 100 / (grading_words.length * grading_words.length);
+			
+			words_by_score[i] = [all_words[i], num_eliminated];
+		}
+		
+		
+		
+		//Now sort all the words by their score.
+		words_by_score.sort((a, b) => a[1] - b[1]);
+		
+		let min_score = words_by_score[0][1];
+		let max_score = words_by_score[words_by_score.length - 1][1];
+		
+		let entry_score = 0;
+		
+		//Find the entry in the word list.
+		for (let i = 0; i < words_by_score.length; i++)
+		{
+			if (words_by_score[i][0] === entry_string)
+			{
+				entry_score = Math.ceil((words_by_score[i][1] - min_score) / (max_score - min_score) * 100);
+				
+				break;
+			}
+		}
+		
+		
+		
+		//Finally, display the score.
+		confirm_buttons[active_row - 1].classList.add("score");
+		confirm_buttons[active_row - 1].firstElementChild.textContent = 0;
+		confirm_buttons[active_row - 1].style.opacity = 1;
+		
+		let t = 0;
+		
+		let refresh_id = setInterval(() =>
+		{
+			t++;
+			
+			confirm_buttons[active_row - 1].firstElementChild.textContent = Math.ceil(Math.pow(Math.sin(Math.PI / 2 * t / 120), .35) * entry_score);
+			
+			if (t === 120)
+			{
+				clearInterval(refresh_id);
+			}
+		}, 16);
+	}
+	
+	
+	
+	function score_word(guess, solution)
+	{
+		let score = [0, 0, 0, 0, 0];
+		
+		let mutable_solution = solution.split("");
+		
+		for (let i = 0; i < 5; i++)
+		{
+			if (guess[i] === mutable_solution[i])
+			{
+				score[i] = 2;
+				
+				mutable_solution[i] = "_";
+			}
+		}
+		
+		for (let i = 0; i < 5; i++)
+		{
+			if (guess[i] !== mutable_solution[i] && mutable_solution[i] !== "_")
+			{
+				for (let j = 0; j < 5; j++)
+				{
+					if (j === i)
+					{
+						continue;
+					}
+					
+					if (guess[i] === mutable_solution[j])
+					{
+						score[i] = 1;
+						
+						mutable_solution[j] = "_";
+					}
+				}
+			}
+		}
+		
+		return score;
+	}
+	
 	
 	
 	const all_words = [
@@ -2447,4 +2622,6 @@
 		"rural",
 		"shave"
 	];
+	
+	let valid_words = JSON.parse(JSON.stringify(all_words));
 }()

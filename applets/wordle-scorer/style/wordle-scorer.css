@@ -50,6 +50,16 @@
 	cursor: default;
 }
 
+#wordle div.score
+{
+	background-color: rgba(0, 0, 0, 0);
+	border: none;
+	
+	opacity: 1;
+	
+	transition: opacity .25s ease-in-out;
+}
+
 #wordle div input, #wordle div p
 {
 	font-size: 40px;
@@ -81,6 +91,16 @@
 	background-color: rgb(80, 64, 192);
 	
 	cursor: default;
+}
+
+#wordle div.score p
+{
+	font-size: 20px;
+	
+	color: rgb(127, 127, 127);
+	background-color: rgba(0, 0, 0, 0);
+	
+	transition: none;
 }
 
 #wordle div.black
