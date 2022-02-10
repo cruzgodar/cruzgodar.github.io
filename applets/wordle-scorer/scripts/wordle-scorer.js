@@ -6,11 +6,15 @@
 	
 	let entry = ["_", "_", "_", "_", "_"];
 	
+	let correct_solution = "";
+	
+	let completed = false;
+	
 	let boxes = document.querySelectorAll("#wordle input");
 	
 	let confirm_buttons = document.querySelectorAll("#wordle div:nth-child(7n)");
 	
-	let num_words_to_evaluate = 200;
+	let num_words_to_evaluate = 300;
 	
 	let hardmode = false;
 	
@@ -20,7 +24,7 @@
 	{
 		boxes[i].addEventListener("click", () =>
 		{
-			if (Math.floor(i / 5) !== active_row)
+			if (completed || Math.floor(i / 5) !== active_row)
 			{
 				boxes[i].blur();
 			}
@@ -118,7 +122,7 @@
 			{
 				let entry_string = `${entry[0]}${entry[1]}${entry[2]}${entry[3]}${entry[4]}`;
 		
-				if (all_words.indexOf(entry_string) === -1)
+				if (valid_words.indexOf(entry_string) === -1)
 				{
 					reject_submission();
 					
@@ -128,6 +132,8 @@
 				
 				
 				active_row++;
+				
+				entry = ["_", "_", "_", "_", "_"];
 				
 				confirm_buttons[i].style.opacity = 0;
 				confirm_buttons[i].style.cursor = "default";
@@ -170,17 +176,17 @@
 		
 		
 		
-		let words_by_score = new Array(all_words.length);
+		let words_by_score = new Array(valid_words.length);
 		
 		//First, loop through all potential guesses.
-		for (let i = 0; i < all_words.length; i++)
+		for (let i = 0; i < valid_words.length; i++)
 		{
 			let scores = new Array(grading_words.length);
 			
 			//A guess's score is determined by the percentage of remaining valid words it removes, so we first score a bunch of words.
 			for (let j = 0; j < grading_words.length; j++)
 			{
-				scores[j] = score_word(all_words[i], grading_words[j]);
+				scores[j] = score_word(valid_words[i], grading_words[j]);
 			}
 			
 			//Now we'll take that score and go through the list of grading words, and see which ones would have given the same score.
@@ -215,7 +221,7 @@
 			
 			num_eliminated *= 100 / (grading_words.length * grading_words.length);
 			
-			words_by_score[i] = [all_words[i], num_eliminated];
+			words_by_score[i] = [valid_words[i], num_eliminated];
 		}
 		
 		
@@ -223,19 +229,22 @@
 		//Now sort all the words by their score.
 		words_by_score.sort((a, b) => a[1] - b[1]);
 		
-		let min_score = words_by_score[0][1];
-		let max_score = words_by_score[words_by_score.length - 1][1];
+		let worst_word = words_by_score[0][0];
+		let best_word = words_by_score[words_by_score.length - 1][0];
 		
-		let entry_score = 0;
+		let entry_score = 100;
 		
-		//Find the entry in the word list.
-		for (let i = 0; i < words_by_score.length; i++)
+		if (words_by_score.length > 1)
 		{
-			if (words_by_score[i][0] === entry_string)
+			//Find the entry in the word list.
+			for (let i = 0; i < words_by_score.length; i++)
 			{
-				entry_score = Math.ceil((words_by_score[i][1] - min_score) / (max_score - min_score) * 100);
-				
-				break;
+				if (words_by_score[i][0] === entry_string)
+				{
+					entry_score = Math.ceil(i / (words_by_score.length - 1) * 100); //Math.ceil((words_by_score[i][1] - min_score) / (max_score - min_score) * 100);
+					
+					break;
+				}
 			}
 		}
 		
@@ -259,6 +268,80 @@
 				clearInterval(refresh_id);
 			}
 		}, 16);
+		
+		
+		
+		//Now we bother with what actually happened.
+		let score = score_word(entry_string, correct_solution);
+		
+		for (let i = 0; i < 5; i++)
+		{
+			if (score[i] === 0)
+			{
+				setTimeout(() =>
+				{
+					boxes[(active_row - 1) * 5 + i].classList.add("gray");
+					boxes[(active_row - 1) * 5 + i].parentNode.style.borderWidth = 0;
+					boxes[(active_row - 1) * 5 + i].parentNode.style.width = "54px";
+					boxes[(active_row - 1) * 5 + i].parentNode.style.height = "54px";
+				}, i * 437.5);
+			}
+			
+			else if (score[i] === 1)
+			{
+				setTimeout(() =>
+				{
+					boxes[(active_row - 1) * 5 + i].classList.add("yellow");
+					boxes[(active_row - 1) * 5 + i].parentNode.style.borderWidth = 0;
+					boxes[(active_row - 1) * 5 + i].parentNode.style.width = "54px";
+					boxes[(active_row - 1) * 5 + i].parentNode.style.height = "54px";
+				}, i * 437.5);
+			}
+			
+			else
+			{
+				setTimeout(() =>
+				{
+					boxes[(active_row - 1) * 5 + i].classList.add("green");
+					boxes[(active_row - 1) * 5 + i].parentNode.style.borderWidth = 0;
+					boxes[(active_row - 1) * 5 + i].parentNode.style.width = "54px";
+					boxes[(active_row - 1) * 5 + i].parentNode.style.height = "54px";
+				}, i * 437.5);
+			}
+		}
+		
+		if (score[0] + score[1] + score[2] + score[3] + score[4] === 10)
+		{
+			completed = true;
+		}
+		
+		
+		
+		//Restrict valid words to a smaller set.
+		for (let i = 0; i < valid_words.length; i++)
+		{
+			let score_2 = score_word(entry_string, valid_words[i]);
+			
+			let equal = true;
+			
+			for (let j = 0; j < 5; j++)
+			{
+				if (score[j] !== score_2[j])
+				{
+					equal = false;
+					break;
+				}
+			}
+			
+			if (!equal)
+			{
+				valid_words.splice(i, 1);
+				
+				i--;
+			}
+		}
+		
+		console.log(valid_words);
 	}
 	
 	

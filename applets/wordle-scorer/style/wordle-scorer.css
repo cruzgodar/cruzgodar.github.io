@@ -25,12 +25,12 @@
 	width: 50px;
 	height: 50px;
 	
-	border: 2px solid rgb(216, 216, 216);
+	border: 2px solid rgb(127, 127, 127);
 	
 	margin: 0;
 	padding: 0;
 	
-	transition: background-color .25s ease-in-out, border-size .25s ease-in-out;
+	transition: background-color .25s ease-in-out, border-width .25s ease-in-out, width .25s ease-in-out, height .25s ease-in-out;
 }
 
 #wordle div:nth-child(7n + 1)
@@ -110,7 +110,7 @@
 
 #wordle div input.gray
 {
-	background-color: rgb(235, 235, 235);
+	background-color: rgb(121, 124, 126);
 }
 
 #wordle div input.yellow
@@ -126,5 +126,4 @@
 #wordle div input.gray, #wordle div input.yellow, #wordle div input.green
 {
 	color: rgb(255, 255, 255);
-	border-size: 0;
 }
