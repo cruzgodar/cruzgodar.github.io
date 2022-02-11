@@ -33,12 +33,7 @@
 	transition: background-color .25s ease-in-out, border-width .25s ease-in-out, width .25s ease-in-out, height .25s ease-in-out;
 }
 
-#wordle div:nth-child(7n + 1)
-{
-	opacity: 0;
-}
-
-#wordle div:nth-child(7n)
+#wordle div:nth-child(7n), #wordle div:nth-child(7n + 1)
 {
 	background-color: rgb(80, 64, 192);
 	border: none;
@@ -101,6 +96,11 @@
 	background-color: rgba(0, 0, 0, 0);
 	
 	transition: none;
+}
+
+#wordle div:nth-child(7n + 1) p
+{
+	font-size: 30px;
 }
 
 #wordle div.black
