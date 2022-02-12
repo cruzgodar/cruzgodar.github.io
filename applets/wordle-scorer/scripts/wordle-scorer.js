@@ -10,6 +10,8 @@
 	
 	let completed = false;
 	
+	let currently_animating = false;
+	
 	let boxes = document.querySelectorAll("#wordle input");
 	
 	let confirm_buttons = document.querySelectorAll("#wordle div:nth-child(7n)");
@@ -21,6 +23,10 @@
 	
 	let good_guesses = [];
 	let bad_guesses = [];
+	
+	let hardmode_checkbox_element = document.querySelector("#hardmode-checkbox");
+	
+	let grading_quality_input_element = document.querySelector("#grading-quality-input");
 	
 	
 	
@@ -53,6 +59,10 @@
 		
 		
 		
+		currently_animating = true;
+		
+		
+		
 		good_guesses = e.data[2];
 		bad_guesses = e.data[3];
 		
@@ -62,6 +72,12 @@
 		confirm_buttons[active_row].classList.add("score");
 		confirm_buttons[active_row].firstElementChild.textContent = 0;
 		confirm_buttons[active_row].style.opacity = 1;
+		
+		
+		
+		hardmode_checkbox_element.style.pointerEvents = "none";
+		
+		
 		
 		let t = 0;
 		
@@ -83,6 +99,7 @@
 		{
 			info_buttons[active_row - 1].style.opacity = 0;
 			info_buttons[active_row - 1].style.cursor = "default";
+			info_buttons[active_row - 1].firstElementChild.style.cursor = "default";
 		}
 		
 		catch(ex) {}
@@ -103,6 +120,8 @@
 		boxes[active_row * 5 + 3].style.pointerEvents = "auto";
 		boxes[active_row * 5 + 4].style.pointerEvents = "auto";
 		
+		boxes[active_row * 5].focus();
+		
 		
 		
 		let score = e.data[1];
@@ -115,9 +134,7 @@
 				setTimeout(() =>
 				{
 					boxes[(active_row - 1) * 5 + i].classList.add("gray");
-					boxes[(active_row - 1) * 5 + i].parentNode.style.borderWidth = 0;
-					boxes[(active_row - 1) * 5 + i].parentNode.style.width = "54px";
-					boxes[(active_row - 1) * 5 + i].parentNode.style.height = "54px";
+					boxes[(active_row - 1) * 5 + i].parentNode.classList.add("gray");
 				}, i * 300);
 			}
 			
@@ -126,9 +143,7 @@
 				setTimeout(() =>
 				{
 					boxes[(active_row - 1) * 5 + i].classList.add("yellow");
-					boxes[(active_row - 1) * 5 + i].parentNode.style.borderWidth = 0;
-					boxes[(active_row - 1) * 5 + i].parentNode.style.width = "54px";
-					boxes[(active_row - 1) * 5 + i].parentNode.style.height = "54px";
+					boxes[(active_row - 1) * 5 + i].parentNode.classList.add("yellow");
 				}, i * 300);
 			}
 			
@@ -137,9 +152,7 @@
 				setTimeout(() =>
 				{
 					boxes[(active_row - 1) * 5 + i].classList.add("green");
-					boxes[(active_row - 1) * 5 + i].parentNode.style.borderWidth = 0;
-					boxes[(active_row - 1) * 5 + i].parentNode.style.width = "54px";
-					boxes[(active_row - 1) * 5 + i].parentNode.style.height = "54px";
+					boxes[(active_row - 1) * 5 + i].parentNode.classList.add("green");
 				}, i * 300);
 			}
 		}
@@ -155,8 +168,16 @@
 			{
 				info_buttons[active_row - 1].style.opacity = 1;
 				info_buttons[active_row - 1].style.cursor = "pointer";
+				info_buttons[active_row - 1].firstElementChild.style.cursor = "pointer";
 			}, 1800);
 		}
+		
+		
+		
+		setTimeout(() =>
+		{
+			currently_animating = false;
+		}, 2000);
 	}
 	
 	
@@ -215,6 +236,7 @@
 				{
 					confirm_buttons[Math.floor(i / 5)].style.opacity = 1;
 					confirm_buttons[Math.floor(i / 5)].style.cursor = "pointer";
+					confirm_buttons[Math.floor(i / 5)].firstElementChild.style.cursor = "pointer";
 				}
 			}
 			
@@ -222,6 +244,7 @@
 			{
 				confirm_buttons[Math.floor(i / 5)].style.opacity = 0;
 				confirm_buttons[Math.floor(i / 5)].style.cursor = "default";
+				confirm_buttons[Math.floor(i / 5)].firstElementChild.style.cursor = "default";
 				
 				
 				
@@ -254,6 +277,19 @@
 				boxes[i - 1].focus();
 				boxes[i - 1].parentNode.classList.remove("black");
 			}
+			
+			else if (e.keyCode === 13 && confirm_buttons[Math.floor(i / 5)].style.opacity == 1)
+			{
+				let entry_string = `${entry[0]}${entry[1]}${entry[2]}${entry[3]}${entry[4]}`;
+				
+				confirm_buttons[Math.floor(i / 5)].style.opacity = 0;
+				confirm_buttons[Math.floor(i / 5)].style.cursor = "default";
+				confirm_buttons[Math.floor(i / 5)].firstElementChild.style.cursor = "default";
+				
+				num_words_to_evaluate = Math.ceil(2315 * parseInt(grading_quality_input_element.value || 10) / 100);
+				
+				web_worker.postMessage([entry_string, num_words_to_evaluate, hardmode_checkbox_element.checked]);
+			}
 		});
 	}
 	
@@ -274,8 +310,11 @@
 				
 				confirm_buttons[i].style.opacity = 0;
 				confirm_buttons[i].style.cursor = "default";
+				confirm_buttons[i].firstElementChild.style.cursor = "default";
 				
-				web_worker.postMessage([entry_string, num_words_to_evaluate, hardmode]);
+				num_words_to_evaluate = Math.ceil(2315 * parseInt(grading_quality_input_element.value || 10) / 100);
+				
+				web_worker.postMessage([entry_string, num_words_to_evaluate, hardmode_checkbox_element.checked]);
 			}
 		});
 		
@@ -287,6 +326,7 @@
 			{
 				info_buttons[i].style.opacity = 0;
 				info_buttons[i].style.cursor = "default";
+				info_buttons[i].firstElementChild.style.cursor = "default";
 				
 				display_info();
 			}
@@ -297,7 +337,26 @@
 	
 	function reject_submission()
 	{
-	
+		setTimeout(() =>
+		{
+			confirm_buttons[active_row].firstElementChild.innerHTML = "&#10005;";
+			
+			confirm_buttons[active_row].classList.add("reject");
+			
+			confirm_buttons[active_row].style.opacity = 1;
+			
+			setTimeout(() =>
+			{
+				confirm_buttons[active_row].style.opacity = 0;
+				
+				setTimeout(() =>
+				{
+					confirm_buttons[active_row].firstElementChild.innerHTML = "&#x2794;";
+					
+					confirm_buttons[active_row].classList.remove("reject");
+				}, 250);
+			}, 1750);
+		}, 250);
 	}
 	
 	
@@ -371,6 +430,7 @@
 				info_panel_container_element.style.opacity = 0;
 				info_buttons[active_row - 1].style.opacity = 1;
 				info_buttons[active_row - 1].style.cursor = "pointer";
+				info_buttons[active_row - 1].firstElementChild.style.cursor = "pointer";
 				
 				setTimeout(() =>
 				{
@@ -379,4 +439,39 @@
 			});
 		}, 10);
 	}
+	
+	
+	
+	async function resize_boxes()
+	{
+		if (currently_animating)
+		{
+			await new Promise((resolve, reject) => setTimeout(resolve, 2000));
+		}
+		
+		
+		
+		let big_size = Page.Layout.new_window_width <= 450 ? "34px" : "54px";
+		let small_size = Page.Layout.new_window_width <= 450 ? "30px" : "50px";
+		
+		for (let i = 0; i < 6; i++)
+		{
+			for (let j = 0; j < 5; j++)
+			{
+				boxes[5 * i + j].parentNode.style.width = small_size;
+				boxes[5 * i + j].parentNode.style.height = small_size;
+			}
+			
+			confirm_buttons[i].style.width = big_size;
+			confirm_buttons[i].style.height = big_size;
+			
+			info_buttons[i].style.width = big_size;
+			info_buttons[i].style.height = big_size;
+		}
+	}
+	
+	
+	
+	window.addEventListener("resize", resize_boxes);
+	Page.temporary_handlers["resize"].push(resize_boxes);
 }();

@@ -37,6 +37,8 @@ fetch("/applets/wordle-scorer/scripts/data.json")
 	valid_guesses = data["guesses"];
 	
 	correct_solution = valid_solutions[Math.floor((Date.now() - 28800000) / 86400000) - 18797];
+	
+	correct_solution = "ultra";
 });
 
 
@@ -71,17 +73,17 @@ function grade_submission(entry_string)
 	
 	
 	
-	let words_by_score = new Array(valid_guesses.length);
+	let words_by_score = new Array(valid_solutions.length);
 	
 	//First, loop through all potential guesses.
-	for (let i = 0; i < valid_guesses.length; i++)
+	for (let i = 0; i < valid_solutions.length; i++)
 	{
 		let scores = new Array(grading_words.length);
 		
 		//A guess's score is determined by the percentage of remaining valid words it removes, so we first score a bunch of words.
 		for (let j = 0; j < grading_words.length; j++)
 		{
-			scores[j] = score_word(valid_guesses[i], grading_words[j]);
+			scores[j] = score_word(valid_solutions[i], grading_words[j]);
 		}
 		
 		//Now we'll take that score and go through the list of grading words, and see which ones would have given the same score.
@@ -109,29 +111,49 @@ function grade_submission(entry_string)
 			}
 		}
 		
-		words_by_score[i] = [valid_guesses[i], -Math.log(num_preserved / (grading_words.length * grading_words.length)) / Math.log(2)];
+		words_by_score[i] = [valid_solutions[i], -Math.log(num_preserved / (grading_words.length * grading_words.length)) / Math.log(2)];
 	}
+	
+	
+	
+	//Now do the same for whatever the entry is.
+	let scores = new Array(grading_words.length);
+	
+	for (let j = 0; j < grading_words.length; j++)
+	{
+		scores[j] = score_word(entry_string, grading_words[j]);
+	}
+	
+	let num_preserved = 0;
+	
+	for (let j = 0; j < grading_words.length; j++)
+	{
+		for (let k = 0; k < grading_words.length; k++)
+		{
+			let equal = true;
+			
+			for (let l = 0; l < 5; l++)
+			{
+				if (scores[j][l] !== scores[k][l])
+				{
+					equal = false;
+					break;
+				}
+			}
+			
+			if (equal)
+			{
+				num_preserved++;
+			}
+		}
+	}
+	
+	let entry_score = -Math.log(num_preserved / (grading_words.length * grading_words.length)) / Math.log(2);
 	
 	
 	
 	//Now sort all the words by their score.
 	words_by_score.sort((a, b) => a[1] - b[1]);
-	
-	let entry_score = 0;
-	
-	if (words_by_score.length > 1)
-	{
-		//Find the entry in the word list.
-		for (let i = 0; i < words_by_score.length; i++)
-		{
-			if (words_by_score[i][0] === entry_string)
-			{
-				entry_score = words_by_score[i][1];
-				
-				break;
-			}
-		}
-	}
 	
 	
 	

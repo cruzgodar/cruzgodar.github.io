@@ -6,6 +6,7 @@
 	height: fit-content;
 	
 	margin: 0 auto;
+	margin-top: 5vh;
 	
 	grid-template-rows: repeat(6, 1fr);
 	grid-template-columns: repeat(7, 1fr);
@@ -30,7 +31,7 @@
 	margin: 0;
 	padding: 0;
 	
-	transition: background-color .25s ease-in-out, border-width .25s ease-in-out, width .25s ease-in-out, height .25s ease-in-out;
+	transition: background-color .25s ease-in-out, border-color .25s ease-in-out, width .25s ease-in-out, height .25s ease-in-out;
 }
 
 #wordle div:nth-child(7n), #wordle div:nth-child(7n + 1)
@@ -43,6 +44,13 @@
 	opacity: 0;
 	
 	cursor: default;
+	
+	transition: none;
+}
+
+#wordle div:nth-child(7n) p, #wordle div:nth-child(7n + 1) p
+{
+	transition: none;
 }
 
 #wordle div.score
@@ -98,6 +106,13 @@
 	transition: none;
 }
 
+#wordle div.reject, #wordle div.reject p
+{
+	background-color: rgb(192, 63, 63);
+	
+	font-size: 35px;
+}
+
 #wordle div:nth-child(7n + 1) p
 {
 	font-size: 30px;
@@ -113,19 +128,22 @@
 	pointer-events: none;
 }
 
-#wordle div input.gray
+#wordle div input.gray, #wordle div.gray
 {
 	background-color: rgb(121, 124, 126);
+	border-color: rgb(121, 124, 126);
 }
 
-#wordle div input.yellow
+#wordle div input.yellow, #wordle div.yellow
 {
 	background-color: rgb(197, 180, 101);
+	border-color: rgb(197, 180, 101);
 }
 
-#wordle div input.green
+#wordle div input.green, #wordle div.green
 {
 	background-color: rgb(120, 168, 107);
+	border-color: rgb(120, 168, 107);
 }
 
 #wordle div input.gray, #wordle div input.yellow, #wordle div input.green
@@ -138,6 +156,8 @@
 #info-panel-container
 {
 	position: fixed;
+	
+	z-index: 1000;
 	
 	width: 100vw;
 	height: 100vh;
@@ -182,4 +202,47 @@
 	width: 100%;
 	
 	text-align: left;
+}
+
+
+
+@media (max-width: 450px)
+{
+	#wordle
+	{
+		grid-row-gap: 5px;
+		grid-column-gap: 5px;
+	}
+	
+	#wordle div
+	{
+		width: 30px;
+		height: 30px;
+	}
+	
+	#wordle div:nth-child(7n), #wordle div:nth-child(7n + 1)
+	{
+		width: 34px;
+		height: 34px;
+	}
+	
+	#wordle div input, #wordle div p
+	{
+		font-size: 20px;
+	}
+	
+	#wordle div.score p
+	{
+		font-size: 12px;
+	}
+	
+	#wordle div.reject, #wordle div.reject p
+	{
+		font-size: 20px;
+	}
+
+	#wordle div:nth-child(7n + 1) p
+	{
+		font-size: 20px;
+	}
 }
