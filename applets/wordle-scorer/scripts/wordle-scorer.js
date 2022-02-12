@@ -13,9 +13,11 @@
 	let boxes = document.querySelectorAll("#wordle input");
 	
 	let confirm_buttons = document.querySelectorAll("#wordle div:nth-child(7n)");
-	let best_buttons = document.querySelectorAll("#wordle div:nth-child(7n + 1)");
+	let info_buttons = document.querySelectorAll("#wordle div:nth-child(7n + 1)");
 	
 	let num_words_to_evaluate = 200;
+	
+	let hardmode = false;
 	
 	
 	
@@ -43,12 +45,10 @@
 		{
 			reject_submission();
 			
-			console.log("hi!");
-			
 			return;
 		}
 		
-		
+		console.log(e.data[2]);
 		
 		//Display the score.
 		confirm_buttons[active_row].classList.add("score");
@@ -70,6 +70,9 @@
 		}, 16);
 		
 		
+		
+		info_buttons[active_row].style.opacity = 0;
+		info_buttons[active_row].style.cursor = "default";
 		
 		active_row++;
 		
@@ -123,8 +126,8 @@
 		{
 			setTimeout(() =>
 			{
-				best_buttons[active_row].style.opacity = 1;
-				best_buttons[active_row].style.cursor = "pointer";
+				info_buttons[active_row - 1].style.opacity = 1;
+				info_buttons[active_row - 1].style.cursor = "pointer";
 			}, 1800);
 		}
 	}
@@ -224,7 +227,7 @@
 	for (let i = 0; i < confirm_buttons.length; i++)
 	{
 		confirm_buttons[i].style.transition = "opacity .125s ease-in-out";
-		best_buttons[i].style.transition = "opacity .125s ease-in-out";
+		info_buttons[i].style.transition = "opacity .125s ease-in-out";
 		
 		
 		
@@ -237,7 +240,20 @@
 				confirm_buttons[i].style.opacity = 0;
 				confirm_buttons[i].style.cursor = "default";
 				
-				web_worker.postMessage([entry_string, num_words_to_evaluate]);
+				web_worker.postMessage([entry_string, num_words_to_evaluate, hardmode]);
+			}
+		});
+		
+		
+		
+		info_buttons[i].addEventListener("click", () =>
+		{
+			if (info_buttons[i].style.opacity == 1)
+			{
+				info_buttons[i].style.opacity = 0;
+				info_buttons[i].style.cursor = "default";
+				
+				display_info();
 			}
 		});
 	}
@@ -247,5 +263,12 @@
 	function reject_submission()
 	{
 	
+	}
+	
+	
+	
+	function display_info()
+	{
+		
 	}
 }();

@@ -6,6 +6,11 @@ onmessage = async function(e)
 {
 	num_words_to_evaluate = e.data[1];
 	
+	if (hardmode === null)
+	{
+		hardmode = e.data[2];
+	}
+	
 	grade_submission(e.data[0]);
 }
 
@@ -13,9 +18,9 @@ onmessage = async function(e)
 
 let correct_solution = "ulcer";
 
-let num_words_to_evaluate = 200;
+let num_words_to_evaluate = 300;
 
-let hardmode = false;
+let hardmode = null;
 
 let valid_guesses = [];
 let valid_solutions = [];
@@ -38,7 +43,9 @@ function grade_submission(entry_string)
 {
 	if (valid_guesses.indexOf(entry_string) === -1)
 	{
-		postMessage([-1])
+		postMessage([-1]);
+		
+		return;
 	}
 	
 	
@@ -126,12 +133,51 @@ function grade_submission(entry_string)
 	
 	
 	
+	let num_found = 0;
+	
+	let i = words_by_score.length - 1;
+	
+	let notable_guesses = [];
+	
+	while (num_found < 3 && i >= 0)
+	{
+		if (valid_solutions.indexOf(words_by_score[i][0]) !== -1)
+		{
+			notable_guesses.push(words_by_score[i]);
+			
+			num_found++;
+		}
+		
+		i--;
+	}
+	
+	if (i > 0)
+	{
+		num_found = 0;
+		
+		let j = 0;
+		
+		while (num_found < 3 && j < i)
+		{
+			if (valid_solutions.indexOf(words_by_score[j][0]) !== -1)
+			{
+				notable_guesses.push(words_by_score[j]);
+				
+				num_found++;
+			}
+			
+			j++;
+		}
+	}
+	
+	
+	
 	//Now we bother with what actually happened.
 	let score = score_word(entry_string, correct_solution);
 	
 	
 	
-	//Restrict valid solutions and valid guesses to a smaller set.
+	//Restrict valid solutions and valid guesses (if in hardmode) to a smaller set.
 	for (let i = 0; i < valid_solutions.length; i++)
 	{
 		let score_2 = score_word(entry_string, valid_solutions[i]);
@@ -155,32 +201,35 @@ function grade_submission(entry_string)
 		}
 	}
 	
-	for (let i = 0; i < valid_guesses.length; i++)
+	if (hardmode)
 	{
-		let score_2 = score_word(entry_string, valid_guesses[i]);
-		
-		let equal = true;
-		
-		for (let j = 0; j < 5; j++)
+		for (let i = 0; i < valid_guesses.length; i++)
 		{
-			if (score[j] !== score_2[j])
-			{
-				equal = false;
-				break;
-			}
-		}
-		
-		if (!equal)
-		{
-			valid_guesses.splice(i, 1);
+			let score_2 = score_word(entry_string, valid_guesses[i]);
 			
-			i--;
+			let equal = true;
+			
+			for (let j = 0; j < 5; j++)
+			{
+				if (score[j] !== score_2[j])
+				{
+					equal = false;
+					break;
+				}
+			}
+			
+			if (!equal)
+			{
+				valid_guesses.splice(i, 1);
+				
+				i--;
+			}
 		}
 	}
 	
 	
 	
-	postMessage([entry_score, score]);
+	postMessage([entry_score, score, notable_guesses]);
 }
 
 
