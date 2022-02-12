@@ -19,6 +19,9 @@
 	
 	let hardmode = false;
 	
+	let good_guesses = [];
+	let bad_guesses = [];
+	
 	
 	
 	let web_worker = null;
@@ -48,7 +51,12 @@
 			return;
 		}
 		
-		console.log(e.data[2]);
+		
+		
+		good_guesses = e.data[2];
+		bad_guesses = e.data[3];
+		
+		
 		
 		//Display the score.
 		confirm_buttons[active_row].classList.add("score");
@@ -71,10 +79,29 @@
 		
 		
 		
-		info_buttons[active_row].style.opacity = 0;
-		info_buttons[active_row].style.cursor = "default";
+		try
+		{
+			info_buttons[active_row - 1].style.opacity = 0;
+			info_buttons[active_row - 1].style.cursor = "default";
+		}
+		
+		catch(ex) {}
+		
+		
+		
+		boxes[active_row * 5].style.pointerEvents = "none";
+		boxes[active_row * 5 + 1].style.pointerEvents = "none";
+		boxes[active_row * 5 + 2].style.pointerEvents = "none";
+		boxes[active_row * 5 + 3].style.pointerEvents = "none";
+		boxes[active_row * 5 + 4].style.pointerEvents = "none";
 		
 		active_row++;
+		
+		boxes[active_row * 5].style.pointerEvents = "auto";
+		boxes[active_row * 5 + 1].style.pointerEvents = "auto";
+		boxes[active_row * 5 + 2].style.pointerEvents = "auto";
+		boxes[active_row * 5 + 3].style.pointerEvents = "auto";
+		boxes[active_row * 5 + 4].style.pointerEvents = "auto";
 		
 		
 		
@@ -131,6 +158,14 @@
 			}, 1800);
 		}
 	}
+	
+	
+	
+	boxes[0].style.pointerEvents = "auto";
+	boxes[1].style.pointerEvents = "auto";
+	boxes[2].style.pointerEvents = "auto";
+	boxes[3].style.pointerEvents = "auto";
+	boxes[4].style.pointerEvents = "auto";
 	
 	
 	
@@ -269,6 +304,79 @@
 	
 	function display_info()
 	{
+		let info_panel_element = document.querySelector("#info-panel");
 		
+		info_panel_element.innerHTML = `<h2>Top Guesses</h2><br>`;
+		
+		
+		
+		if (good_guesses.length === 5 && bad_guesses.length === 5)
+		{
+			for (let i = 0; i < 5; i++)
+			{
+				info_panel_element.innerHTML += `<p>${good_guesses[i][0].toUpperCase()} <span style="float: right">${(Math.round(good_guesses[i][1] * 100) / 100).toFixed(2)}</span></p><br>`;
+			}
+			
+			info_panel_element.innerHTML += `<p style="text-align: center">&#x22ee;</p><br>`;
+			
+			for (let i = 4; i > 0; i--)
+			{
+				info_panel_element.innerHTML += `<p>${bad_guesses[i][0].toUpperCase()} <span style="float: right">${(Math.round(bad_guesses[i][1] * 100) / 100).toFixed(2)}</span></p><br>`;
+			}
+			
+			info_panel_element.innerHTML += `<p>${bad_guesses[0][0].toUpperCase()} <span style="float: right">${(Math.round(bad_guesses[0][1] * 100) / 100).toFixed(2)}</span></p>`;
+		}
+		
+		
+		
+		else if (bad_guesses.length > 0)
+		{
+			for (let i = 0; i < good_guesses.length; i++)
+			{
+				info_panel_element.innerHTML += `<p>${good_guesses[i][0].toUpperCase()} <span style="float: right">${(Math.round(good_guesses[i][1] * 100) / 100).toFixed(2)}</span></p><br>`;
+			}
+			
+			for (let i = bad_guesses.length - 1; i > 0; i--)
+			{
+				info_panel_element.innerHTML += `<p>${bad_guesses[i][0].toUpperCase()} <span style="float: right">${(Math.round(bad_guesses[i][1] * 100) / 100).toFixed(2)}</span></p><br>`;
+			}
+			
+			info_panel_element.innerHTML += `<p>${bad_guesses[0][0].toUpperCase()} <span style="float: right">${(Math.round(bad_guesses[0][1] * 100) / 100).toFixed(2)}</span></p>`;
+		}
+		
+		
+		
+		else
+		{
+			for (let i = 0; i < good_guesses.length - 1; i++)
+			{
+				info_panel_element.innerHTML += `<p>${good_guesses[i][0].toUpperCase()} <span style="float: right">${(Math.round(good_guesses[i][1] * 100) / 100).toFixed(2)}</span></p><br>`;
+			}
+			
+			info_panel_element.innerHTML += `<p>${good_guesses[good_guesses.length - 1][0].toUpperCase()} <span style="float: right">${(Math.round(good_guesses[good_guesses.length - 1][1] * 100) / 100).toFixed(2)}</span></p>`;
+		}
+		
+		
+		
+		let info_panel_container_element = document.querySelector("#info-panel-container");
+		
+		info_panel_container_element.style.display = "flex";
+		
+		setTimeout(() =>
+		{
+			info_panel_container_element.style.opacity = 1;
+			
+			info_panel_container_element.addEventListener("click", () =>
+			{
+				info_panel_container_element.style.opacity = 0;
+				info_buttons[active_row - 1].style.opacity = 1;
+				info_buttons[active_row - 1].style.cursor = "pointer";
+				
+				setTimeout(() =>
+				{
+					info_panel_container_element.style.display = "none";
+				}, 250);
+			});
+		}, 10);
 	}
 }();

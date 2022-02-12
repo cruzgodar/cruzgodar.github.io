@@ -16,7 +16,7 @@ onmessage = async function(e)
 
 
 
-let correct_solution = "ulcer";
+let correct_solution = null;
 
 let num_words_to_evaluate = 300;
 
@@ -35,6 +35,8 @@ fetch("/applets/wordle-scorer/scripts/data.json")
 {
 	valid_solutions = data["solutions"];
 	valid_guesses = data["guesses"];
+	
+	correct_solution = valid_solutions[Math.floor((Date.now() - 28800000) / 86400000) - 18797];
 });
 
 
@@ -137,13 +139,14 @@ function grade_submission(entry_string)
 	
 	let i = words_by_score.length - 1;
 	
-	let notable_guesses = [];
+	let good_guesses = [];
+	let bad_guesses = [];
 	
-	while (num_found < 3 && i >= 0)
+	while (num_found < 5 && i >= 0)
 	{
 		if (valid_solutions.indexOf(words_by_score[i][0]) !== -1)
 		{
-			notable_guesses.push(words_by_score[i]);
+			good_guesses.push(words_by_score[i]);
 			
 			num_found++;
 		}
@@ -157,11 +160,11 @@ function grade_submission(entry_string)
 		
 		let j = 0;
 		
-		while (num_found < 3 && j < i)
+		while (num_found < 5 && j < i)
 		{
 			if (valid_solutions.indexOf(words_by_score[j][0]) !== -1)
 			{
-				notable_guesses.push(words_by_score[j]);
+				bad_guesses.push(words_by_score[j]);
 				
 				num_found++;
 			}
@@ -229,7 +232,7 @@ function grade_submission(entry_string)
 	
 	
 	
-	postMessage([entry_score, score, notable_guesses]);
+	postMessage([entry_score, score, good_guesses, bad_guesses]);
 }
 
 

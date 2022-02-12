@@ -108,6 +108,11 @@
 	border-color: rgb(0, 0, 0);
 }
 
+#wordle div input
+{
+	pointer-events: none;
+}
+
 #wordle div input.gray
 {
 	background-color: rgb(121, 124, 126);
@@ -126,4 +131,55 @@
 #wordle div input.gray, #wordle div input.yellow, #wordle div input.green
 {
 	color: rgb(255, 255, 255);
+}
+
+
+
+#info-panel-container
+{
+	position: fixed;
+	
+	width: 100vw;
+	height: 100vh;
+	
+	top: 0;
+	left: 0;
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	display: none;
+	opacity: 0;
+	
+	transition: opacity .25s ease-in-out;
+}
+
+#info-panel
+{
+	padding: 20px;
+	
+	background-color: rgb(255, 255, 255);
+	
+	border-radius: 20px;
+	
+	box-shadow: 0 0 10px 10px rgba(0, 0, 0, .5);
+}
+
+#info-panel h2
+{
+	color: rgb(127, 127, 127);
+	
+	width: 100%;
+	
+	text-align: center;
+}
+
+#info-panel p
+{
+	color: rgb(127, 127, 127);
+	
+	width: 100%;
+	
+	text-align: left;
 }
