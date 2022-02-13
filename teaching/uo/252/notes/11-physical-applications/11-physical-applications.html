@@ -226,7 +226,7 @@
 	$$
 		\begin{align*}
 			\int_0^8 (9800)(16\pi)(10 - y)\ dy &= \left. \left[ (9800)(16\pi) \left(10y - \frac{y^2}{2}\right) \right] \right|_0^8\\
-			&= (9800)(16\pi) \left(80 - 32\right).
+			&= (9800)(16\pi) \left(80 - 32\right)\\
 			&= 7526400\pi.
 		\end{align*}
 	$$
@@ -243,7 +243,34 @@
 	
 	A tank in the shape of a square pyramid has height $6$ and a base with side length $5$. It is completely full of a liquid with weight density $1000\ \frac{N}{m^3}$. Find the work done by pumping it all out.
 	
+	<div class="center-content"><img class="notes-image" src="/teaching/uo/252/notes/11-physical-applications/graphics/pyramid-tank.png"></img></div>
+	
+	This time, the cross-sections are squares, and their area changes as we move up the tank. To figure out how that size depends on the slice location, let&#x2019;s look at this thing from the side.
+	
+	<div class="center-content"><img class="notes-image" src="/teaching/uo/252/notes/11-physical-applications/graphics/pyramid-cross-section.png"></img></div>
+	
+	If we take a slice at height $y$, then we cut the triangle and create a smaller triangle at the bottom. Since these triangle have the same angles, they are <dfn>similar.</dfn> This means that the ratios of corresponding sides are the same: specifically, $\frac{y}{6} = \frac{b}{5}$. Therefore $b = \frac{5}{6} y$, and $b$ is the side length of the square cross-section, so its area is $b^2 = \frac{25}{36} y^2$. Now the integral takes the same form as before:
+	
+	$$
+		\begin{align*}
+			\int_0^6 (1000)\left(\frac{25}{36}y^2\right)(6 - y)\ dy &= (1000) \left(\frac{25}{36}\right) \int_0^6 (6y^2 - y^3)\ dy\\
+			&= (1000) \left(\frac{25}{36}\right) \left. \left[ 2y^3 - \frac{1}{4}y^4 \right] \right|_0^6\\
+			&= (1000) \left(\frac{25}{36}\right) \left( 432 - 324 \right)\\
+			&= 75000.
+		\end{align*}
+	$$
+	
 !end-example
+
+
+
+!begin-text-block
+	
+	In general, this is how all tank problems go. Take a cross-section at height $y$, find its area, possibly using similar triangles, and then integrate the expression $(\text{density})(\text{area})((\text{distance to top})$ as $y$ runs across all slices that contain liquid.
+	
+	This marks the end of applications of integration! In the next section, we&#x2019;ll begin to look at more techniques to find antiderivatives.
+	
+!end-text-block
 
 
 
