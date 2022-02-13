@@ -37,8 +37,6 @@ fetch("/applets/wordle-scorer/scripts/data.json")
 	valid_guesses = data["guesses"];
 	
 	correct_solution = valid_solutions[Math.floor((Date.now() - 28800000) / 86400000) - 18797];
-	
-	correct_solution = "ultra";
 });
 
 

@@ -304,7 +304,7 @@
 		
 		confirm_buttons[i].addEventListener("click", () =>
 		{
-			if (confirm_buttons[i].style.opacity == 1)
+			if (confirm_buttons[i].style.opacity == 1 && active_row === i)
 			{
 				let entry_string = `${entry[0]}${entry[1]}${entry[2]}${entry[3]}${entry[4]}`;
 				
