@@ -26,8 +26,6 @@
 	
 	let hardmode_checkbox_element = document.querySelector("#hardmode-checkbox");
 	
-	let grading_quality_input_element = document.querySelector("#grading-quality-input");
-	
 	
 	
 	let web_worker = null;
@@ -286,9 +284,7 @@
 				confirm_buttons[Math.floor(i / 5)].style.cursor = "default";
 				confirm_buttons[Math.floor(i / 5)].firstElementChild.style.cursor = "default";
 				
-				num_words_to_evaluate = Math.ceil(2315 * parseInt(grading_quality_input_element.value || 10) / 100);
-				
-				web_worker.postMessage([entry_string, num_words_to_evaluate, hardmode_checkbox_element.checked]);
+				web_worker.postMessage([entry_string, hardmode_checkbox_element.checked]);
 			}
 		});
 	}
@@ -312,9 +308,7 @@
 				confirm_buttons[i].style.cursor = "default";
 				confirm_buttons[i].firstElementChild.style.cursor = "default";
 				
-				num_words_to_evaluate = Math.ceil(2315 * parseInt(grading_quality_input_element.value || 10) / 100);
-				
-				web_worker.postMessage([entry_string, num_words_to_evaluate, hardmode_checkbox_element.checked]);
+				web_worker.postMessage([entry_string, hardmode_checkbox_element.checked]);
 			}
 		});
 		

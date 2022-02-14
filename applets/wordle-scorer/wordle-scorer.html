@@ -30,21 +30,11 @@
 	
 	Though it might be dated in a year or two, I couldn&#x2019;t resist making this applet. First, a little background: <a href="https://www.powerlanguage.co.uk/wordle/">Wordle</a> accepts about 13000 5-letter words as guesses, but only draws its solutions from a curated list of about 2000 of those. Uncommon and non-standard words, along with plurals, are generally never chosen as solutions. Hardmode can be enabled before starting a round, and restricts guesses to ones matching all previous clues. We can score a guess based on how many times it halves the set of possible solutions: a score of $1$ means there are half as many as before, while a score of $5$ means the set has been halved five times, resulting in $32$ times fewer solutions. Since there are close to $2048 = 2^{11}$ solutions initially, a total score of about $11$ is necessary to narrow it down to a single word. This assumes perfect knowledge of which words can appear as solutions, though, so in practice it usually takes more. Importantly, the score <strong>does not consider the actual solution.</strong>
 	
-	I was a few days into working on this when <a href="https://www.youtube.com/watch?v=v68zYyaEmEA">3Blue1Brown</a> released a video</a> on nearly the same topic &mdash; for more on the scoring method, I recommend taking a look at it. In order to get a score, this applet needs to consider every possible solution, but that&#x2019;s much too slow to be practical, so it only looks at a maximum of 10% of the possible solutions by default. To get a more accurate score at the cost of a longer wait, increase the grading quality.
-	
-	This applet syncs with the official Wordle site &mdash; once you&#x2019;ve finished a round, enter your guesses here and click the info button to the left to see some of the best and worst guesses and their scores.
+	I was a few days into working on this when <a href="https://www.youtube.com/watch?v=v68zYyaEmEA">3Blue1Brown</a> released a video</a> on nearly the same topic &mdash; for more on the scoring method, I recommend taking a look at it. This applet syncs with the official Wordle site &mdash; once you&#x2019;ve finished a round, enter your guesses here and click the info button to the left to see some of the best and worst guesses and their scores.
 
 !end-text-block
 
 
-
-!begin-text-boxes
-	
-	grading-quality 10 Grading Quality <span>(0-100)</span>
-	
-!end-text-boxes
-
-<div style="height: 2.5vh"></div>
 
 !checkbox hardmode Hardmode
 

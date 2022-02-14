@@ -4,11 +4,9 @@
 
 onmessage = async function(e)
 {
-	num_words_to_evaluate = e.data[1];
-	
 	if (hardmode === null)
 	{
-		hardmode = e.data[2];
+		hardmode = e.data[1];
 	}
 	
 	grade_submission(e.data[0]);
@@ -18,9 +16,9 @@ onmessage = async function(e)
 
 let correct_solution = null;
 
-let num_words_to_evaluate = 300;
-
 let hardmode = null;
+
+let first_guess = true;
 
 let valid_guesses = [];
 let valid_solutions = [];
@@ -53,7 +51,7 @@ function grade_submission(entry_string)
 	
 	
 	//First, select some words from the set of current possibilities for grading.
-	let grading_words = new Array(Math.min(num_words_to_evaluate, valid_solutions.length));
+	let grading_words = new Array(valid_solutions.length);
 	
 	for (let i = 0; i < grading_words.length; i++)
 	{
@@ -71,45 +69,55 @@ function grade_submission(entry_string)
 	
 	
 	
-	let words_by_score = new Array(valid_solutions.length);
+	let words_by_score = [];
 	
-	//First, loop through all potential guesses.
-	for (let i = 0; i < valid_solutions.length; i++)
+	if (!first_guess)
 	{
-		let scores = new Array(grading_words.length);
+		words_by_score = new Array(valid_solutions.length);
 		
-		//A guess's score is determined by the percentage of remaining valid words it removes, so we first score a bunch of words.
-		for (let j = 0; j < grading_words.length; j++)
+		//First, loop through all potential guesses.
+		for (let i = 0; i < valid_solutions.length; i++)
 		{
-			scores[j] = score_word(valid_solutions[i], grading_words[j]);
-		}
-		
-		//Now we'll take that score and go through the list of grading words, and see which ones would have given the same score.
-		let num_preserved = 0;
-		
-		for (let j = 0; j < grading_words.length; j++)
-		{
-			for (let k = 0; k < grading_words.length; k++)
+			let scores = new Array(grading_words.length);
+			
+			//A guess's score is determined by the percentage of remaining valid words it removes, so we first score a bunch of words.
+			for (let j = 0; j < grading_words.length; j++)
 			{
-				let equal = true;
-				
-				for (let l = 0; l < 5; l++)
+				scores[j] = score_word(valid_solutions[i], grading_words[j]);
+			}
+			
+			//Now we'll take that score and go through the list of grading words, and see which ones would have given the same score.
+			let num_preserved = 0;
+			
+			for (let j = 0; j < grading_words.length; j++)
+			{
+				for (let k = 0; k < grading_words.length; k++)
 				{
-					if (scores[j][l] !== scores[k][l])
+					let equal = true;
+					
+					for (let l = 0; l < 5; l++)
 					{
-						equal = false;
-						break;
+						if (scores[j][l] !== scores[k][l])
+						{
+							equal = false;
+							break;
+						}
+					}
+					
+					if (equal)
+					{
+						num_preserved++;
 					}
 				}
-				
-				if (equal)
-				{
-					num_preserved++;
-				}
 			}
+			
+			words_by_score[i] = [valid_solutions[i], -Math.log(num_preserved / (grading_words.length * grading_words.length)) / Math.log(2)];
 		}
-		
-		words_by_score[i] = [valid_solutions[i], -Math.log(num_preserved / (grading_words.length * grading_words.length)) / Math.log(2)];
+	}
+	
+	else
+	{
+		words_by_score = [["raise", 5.11], ["irate", 5.08], ["arise", 5.06], ["arose", 4.97], ["saner", 4.96], ["null!", 3], ["puppy", 1.57], ["mamma", 1.56], ["vivid", 1.51], ["mummy", 1.50], ["fuzzy", 1.44]];
 	}
 	
 	
@@ -251,6 +259,8 @@ function grade_submission(entry_string)
 	}
 	
 	
+	
+	first_guess = false;
 	
 	postMessage([entry_score, score, good_guesses, bad_guesses]);
 }
