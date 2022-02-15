@@ -7,7 +7,7 @@
 	
 	<meta property="og:url" content="https://cruzgodar.com/applets/wordle-scorer/wordle-scorer.html"/>
 	
-	<meta property="og:description" content="Text"/>
+	<meta property="og:description" content="Though it might be dated in a year or two, I couldn&#x2019;t resist making this applet. First, a little background: Wordle accepts about 13000 5-letter words as guesses, but only draws its solutions from a curated list of about 2000 of those. Uncommon and non-standard words, along with plurals, are generally never chosen as solutions. Hardmode can be enabled before starting a round, and restricts guesses to ones matching all previous clues. We can score a guess based on how many times it halves the set of possible solutions: a score of 1 means there are half as many as before, while a score of 5 means the set has been halved five times, resulting in 32 times fewer solutions. Since there are close to 2048 = 2^11 solutions initially, a total score of about 11 is necessary to narrow it down to a single word. This assumes perfect knowledge of which words can appear as solutions, though, so in practice it usually takes more. Importantly, the score does not consider the actual solution."/>
 
 	<meta property="og:image" content="https://cruzgodar.com/applets/wordle-scorer/cover.jpg"/>
 	
@@ -28,48 +28,70 @@
 
 !begin-text-block
 	
-	Text
+	Though it might be dated in a year or two, I couldn&#x2019;t resist making this applet. First, a little background: <a href="https://www.powerlanguage.co.uk/wordle/">Wordle</a> accepts about 13000 5-letter words as guesses, but only draws its solutions from a curated list of about 2000 of those. Uncommon and non-standard words, along with plurals, are generally never chosen as solutions. Hardmode can be enabled before starting a round, and restricts guesses to ones matching all previous clues. We can score a guess based on how many times it halves the set of possible solutions: a score of $1$ means there are half as many as before, while a score of $5$ means the set has been halved five times, resulting in $32$ times fewer solutions. Since there are close to $2048 = 2^{11}$ solutions initially, a total score of about $11$ is necessary to narrow it down to a single word. This assumes perfect knowledge of which words can appear as solutions, though, so in practice it usually takes more. Importantly, the score <strong>does not consider the actual solution.</strong>
+	
+	I was a few days into working on this when <a href="https://www.youtube.com/watch?v=v68zYyaEmEA">3Blue1Brown</a> released a video</a> on nearly the same topic &mdash; for more on the scoring method, I recommend taking a look at it. This applet syncs with the official Wordle site &mdash; once you&#x2019;ve finished a round, enter your guesses here and click the info button to the left to see some of the best and worst guesses and their scores.
 
 !end-text-block
 
 
 
-<div id="wordle">
-	<div><input type="text" value="H"></div>
-	<div><input type="text" value="E"></div>
-	<div><input type="text" value="L"></div>
-	<div><input type="text" value="L"></div>
-	<div><input type="text" value="O"></div>
+!checkbox hardmode Hardmode
+
+
+
+<div id="wordle" data-aos="fade-up">
+	<div><p>&#9432;</p></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><p>&#x2794;</p></div>
 	
-	<div><input type="text" value="H"></div>
-	<div><input type="text" value="E"></div>
-	<div><input type="text" value="L"></div>
-	<div><input type="text" value="L"></div>
-	<div><input type="text" value="O"></div>
+	<div><p>&#9432;</p></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><p>&#x2794;</p></div>
 	
-	<div><input type="text" value="H"></div>
-	<div><input type="text" value="E"></div>
-	<div><input type="text" value="L"></div>
-	<div><input type="text" value="L"></div>
-	<div><input type="text" value="O"></div>
+	<div><p>&#9432;</p></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><p>&#x2794;</p></div>
 	
-	<div><input type="text" value="H"></div>
-	<div><input type="text" value="E"></div>
-	<div><input type="text" value="L"></div>
-	<div><input type="text" value="L"></div>
-	<div><input type="text" value="O"></div>
+	<div><p>&#9432;</p></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><p>&#x2794;</p></div>
 	
-	<div><input type="text" value="H"></div>
-	<div><input type="text" value="E"></div>
-	<div><input type="text" value="L"></div>
-	<div><input type="text" value="L"></div>
-	<div><input type="text" value="O"></div>
+	<div><p>&#9432;</p></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><p>&#x2794;</p></div>
 	
-	<div><input type="text" value="H"></div>
-	<div><input type="text" value="E"></div>
-	<div><input type="text" value="L"></div>
-	<div><input type="text" value="L"></div>
-	<div><input type="text" value="O"></div>
+	<div><p>&#9432;</p></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><input type="text" value=""></div>
+	<div><p>&#x2794;</p></div>
+</div>
+
+<div id="info-panel-container">
+	<div id="info-panel"></div>
 </div>
 
 
@@ -81,7 +103,7 @@
 <script>
 	if (typeof Page === "undefined")
 	{
-		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	
@@ -89,6 +111,8 @@
 	Page.settings = 
 	{
 		"title": "Wordle Scorer",
+		
+		"math_page": true,
 		
 		"small_margins_on_ultrawide": true
 	};

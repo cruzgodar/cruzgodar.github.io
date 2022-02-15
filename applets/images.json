@@ -7,6 +7,12 @@
 	
 	
 	
+	"wordle-scorer":
+	{
+		"webp": "wordle-scorer/cover.webp",
+		"non-webp": "wordle-scorer/cover.jpg"
+	},
+	
 	"domino-shuffling":
 	{
 		"webp": "domino-shuffling/cover.webp",

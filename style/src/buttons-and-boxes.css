@@ -56,8 +56,7 @@
 	border-radius: 10px;
 	padding: 10px;
 	
-	transition: filter .125s ease-in-out;
-	filter: brightness(100%);
+	transition: transform .125s ease-in-out;
 	
 	cursor: pointer;
 	outline: none;
@@ -65,12 +64,12 @@
 
 .text-button.hover
 {
-	filter: brightness(75%);
+	transform: scale(1.075);
 }
 
 .text-button:not(:hover):focus
 {
-	filter: brightness(75%);
+	transform: scale(1.075);
 	outline: none;
 }
 

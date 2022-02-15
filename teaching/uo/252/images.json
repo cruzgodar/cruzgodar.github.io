@@ -65,6 +65,18 @@
         "non-webp": "notes/10-arc-length-and-surface-area/cover.jpg"
 	},
 	
+	"11-physical-applications":
+	{
+		"webp": "notes/11-physical-applications/cover.webp",
+        "non-webp": "notes/11-physical-applications/cover.jpg"
+	},
+	
+	"12-integration-by-parts":
+	{
+		"webp": "notes/12-integration-by-parts/cover.webp",
+        "non-webp": "notes/12-integration-by-parts/cover.jpg"
+	},
+	
 	
 	
 	"homework-7":
