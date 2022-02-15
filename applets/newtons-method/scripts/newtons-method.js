@@ -430,8 +430,8 @@
 		
 		else
 		{
-			current_roots[last_active_root - 2][0] = parseFloat(root_a_input_element.value || 0);
-			current_roots[last_active_root - 2][1] = parseFloat(root_b_input_element.value || 0);
+			current_roots[2 * (last_active_root - 2)] = parseFloat(root_a_input_element.value || 0);
+			current_roots[2 * (last_active_root - 2) + 1] = parseFloat(root_b_input_element.value || 0);
 			
 			wilson.draggables.world_coordinates[last_active_root - 2] = [current_roots[2 * (last_active_root - 2)], current_roots[2 * (last_active_root - 2) + 1]];
 		}
