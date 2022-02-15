@@ -93,6 +93,7 @@
 		
 		wilson_wp.change_canvas_size(resolution, resolution);
 		wilson_wpprime.change_canvas_size(resolution, resolution);
+		wilson_ec_plot.change_canvas_size(resolution, resolution);
 		
 		window.requestAnimationFrame(draw_frame);
 		
@@ -151,7 +152,7 @@
 	
 	download_button_element.addEventListener("click", () =>
 	{
-		wilson_ec_plot.download_frame("a-complex-map.png");
+		wilson_wp.download_frame("wp.png");
 	});
 	
 	

@@ -7,6 +7,12 @@
 	
 	
 	
+	"complex-tori":
+	{
+		"webp": "complex-tori/cover.webp",
+		"non-webp": "complex-tori/cover.jpg"
+	},
+	
 	"wordle-scorer":
 	{
 		"webp": "wordle-scorer/cover.webp",

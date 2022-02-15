@@ -7,7 +7,7 @@
 	
 	<meta property="og:url" content="https://cruzgodar.com/applets/complex-tori/complex-tori.html"/>
 	
-	<meta property="og:description" content="Text"/>
+	<meta property="og:description" content="Elliptic curves are solutions to the equation y^2 = x^3 + g_2 x + g_3, where g_2 and g_3 are fixed constants. Rather than defining them over only the real numbers, though, we can let x and y take values in the complex plane. There are more solutions there than a single curve's worth -- in fact, elliptic curves over the complex numbers are tori, the technical word for donut shapes. The central black-and-white canvas plots the elliptic curve over the real numbers, while the four surrounding canvases help show the structure of the complex torus: all points on it satisfy x = \wp(z, \tau) and y = \wp'(z, \tau), where z is a complex number, \tau is determined from g_2 and g_3, and \wp is the Weierstrass p-function. Both \wp(z, \tau) and \wp'(z, \tau) are plotted as functions of z, along with something called the j-invariant -- two elliptic curves arising from different values of g_2 and g_3 are actually the same if the two values of j(\tau) are equal. The final canvas plots j(\tau) as a function of g_2 and g_3, and lets g_2 and g_3 be changed with a draggable."/>
 
 	<meta property="og:image" content="https://cruzgodar.com/applets/complex-tori/cover.jpg"/>
 	
@@ -28,9 +28,11 @@
 
 !begin-text-block
 	
-	Elliptic curves are solutions to the equation $y^2 = x^3 + ax + b$. More generally, you can define elliptic curves over any field, for example the field of rational numbers or the real numbers. If you look for solutions to this equation over the complex numbers, it turns out that an elliptic curve is just a torus (fancy word for doughnut).  The goal of this applet is to visualize this by showing the real points of an elliptic curve (which look like what you'd normally think of as a curve) along with the picture of the complex torus (which looks like a lattice).
+	Elliptic curves are solutions to the equation $y^2 = x^3 + g_2x + g_3$, where $g_2$ and $g_3$ are fixed constants. Rather than defining them over only the real numbers, though, we can let $x$ and $y$ take values in the complex plane. There are more solutions there than a single curve&#x2019;s worth &mdash; in fact, elliptic curves over the complex numbers are tori, the technical word for donut shapes. The central black-and-white canvas plots the elliptic curve over the real numbers, while the four surrounding canvases help show the structure of the complex torus: all points on it satisfy $x = \wp(z, \tau)$ and $y = \wp'(z, \tau)$, where $z$ is a complex number, $\tau$ is determined from $g_2$ and $g_3$, and $\wp$ is the Weierstrass $p$-function. Both $\wp(z, \tau)$ and $\wp'(z, \tau)$ are plotted as functions of $z$, along with something called the $j$-invariant &mdash; two elliptic curves arising from different values of $g_2$ and $g_3$ are actually the same if the two values of $j(\tau)$ are equal. The final canvas plots $j(\tau)$ as a function of $g_2$ and $g_3$, and lets $g_2$ and $g_3$ be changed with a draggable.
+	
+	The idea for this applet, along with the code implementing all of the complex maps, is due to <a href="https://ahuchala.com">Andy Huchala</a>. I wrote the elliptic curve plotter, and the applet itself was built with <a href="/projects/wilson/wilson.html">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.
 
-	Explanation of plots: elliptic curves get their name from so-called elliptic functions. An important elliptic function is the Weierstrass $\wp$-function, defined by
+	<!--Explanation of plots: elliptic curves get their name from so-called elliptic functions. An important elliptic function is the Weierstrass $\wp$-function, defined by
 
 	$$
 	\wp(z)=\dfrac{1}{z^2} + \sum_{(m,n) \neq (0,0)}\left(\dfrac{1}{(z-(m+n\tau))^2}-\dfrac{1}{(m+n\tau)^2}\right)
@@ -57,8 +59,8 @@
 	$$
 	j(\tau) = 1728\dfrac{g_2(\tau)^3}{g_2(\tau)^3-27g_3(\tau)^2}
 	$$
-
-	Two complex elliptic curves are the "same" (isomorphic) if they have the same $j$-invariant.
+	
+	Two complex elliptic curves are the "same" (isomorphic) if they have the same $j$-invariant.-->
 	
 !end-text-block
 
@@ -87,31 +89,31 @@
 
 
 <div id="canvas-grid">
-	<div class="grid-item">
+	<div class="grid-item" data-aos="fade-up">
 		<canvas id="wp-canvas" class="output-canvas"></canvas>
 		
 		<h2 class="section-text wp-text">$\wp(z, \tau)$</h2>
 	</div>
 	
-	<div class="grid-item" style="grid-row: span 2; grid-column: span 2">
+	<div class="grid-item" style="grid-row: span 2; grid-column: span 2" data-aos="fade-up">
 		<canvas id="ec-plot-canvas" class="output-canvas"></canvas>
 		
 		<h2 class="section-text ec-text">$y^2 = x^3 + g_2 x + g_3$</h2>
 	</div>
 	
-	<div class="grid-item">
+	<div class="grid-item" data-aos="fade-up">
 		<canvas id="kleinj-canvas" class="output-canvas"></canvas>
 		
 		<h2 class="section-text kleinj-text">$j(\tau)$</h2>
 	</div>
 	
-	<div class="grid-item">
+	<div class="grid-item" data-aos="fade-up">
 		<canvas id="wpprime-canvas" class="output-canvas"></canvas>
 		
 		<h2 class="section-text wpprime-text">$\wp'(z, \tau)$</h2>
 	</div>
 	
-	<div class="grid-item">
+	<div class="grid-item" data-aos="fade-up">
 		<canvas id="g2-canvas" class="output-canvas"></canvas>
 		
 		<h2 class="section-text g2-text">$j(g_2, g_3)$</h2>
@@ -120,9 +122,13 @@
 
 
 
+<div style="height: 5vh"></div>
+
+
+
 !begin-text-buttons
 	
-	download Download
+	download Download Image
 	
 !end-text-buttons
 
@@ -135,7 +141,7 @@
 <script>
 	if (typeof Page === "undefined")
 	{
-		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	
