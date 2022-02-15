@@ -14,8 +14,7 @@
 	border-radius: 50%;
 	padding: 5px;
 	
-	transition: filter .125s ease-in-out;
-	filter: brightness(100%);
+	transition: transform .125s ease-in-out;
 	
 	cursor: pointer;
 	outline: none;
@@ -23,12 +22,12 @@
 
 .footer-button.hover
 {
-	filter: brightness(75%);
+	transform: scale(1.1);
 }
 
 .footer-button:not(:hover):focus
 {
-	filter: brightness(75%);
+	transform: scale(1.1);
 	outline: none;
 }
 
@@ -150,7 +149,7 @@
 	
 	border-radius: 10%;
 
-	transition: transform .125s ease-in-out, filter .125s ease-in-out;
+	transition: transform .125s ease-in-out;
 }
 
 .footer-image-link img.hover

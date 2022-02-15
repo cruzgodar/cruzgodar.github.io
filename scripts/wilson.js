@@ -1290,8 +1290,7 @@ class Wilson
 							
 							z-index: 100;
 							
-							transition: filter .125s ease-in-out;
-							filter: brightness(100%);
+							transition: transform .125s ease-in-out;
 							
 							cursor: pointer;
 							outline: none;
@@ -1299,12 +1298,12 @@ class Wilson
 
 						.wilson-enter-fullscreen-button.hover, .wilson-exit-fullscreen-button.hover
 						{
-							filter: brightness(75%);
+							transform: scale(1.1);
 						}
 
 						.wilson-enter-fullscreen-button:not(:hover):focus, .wilson-exit-fullscreen-button:not(:hover):focus
 						{
-							filter: brightness(75%);
+							transform: scale(1.1);
 							outline: none;
 						}
 
