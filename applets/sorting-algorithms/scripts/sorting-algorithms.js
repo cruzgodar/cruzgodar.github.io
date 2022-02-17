@@ -3,18 +3,19 @@
 	"use strict";
 	
 	
+	
 	let resolution = 2000;
 	
-	let data_length = 10;
+	let data_length = null;
 	
-	let data = new Array(data_length);
-	
-	for (let i = 0; i < data_length; i++)
-	{
-		data[i] = i;
-	}
+	let data = [];
 	
 	let current_generator = null;
+	
+	let min_frequency = 30;
+	let max_frequency = 800;
+	
+	let play_sound = true;
 	
 	let last_timestamp = -1;
 	
@@ -52,8 +53,11 @@
 			{
 				float sample = mod(atan(uv.y, uv.x) / 6.283, 1.0);
 				
-				float h_1 = texture2D(u_texture, vec2(floor(sample * data_length) / data_length, .5)).x / data_length * 255.0;
-				float h_2 = texture2D(u_texture, vec2(mod(floor(sample * data_length + 1.0) / data_length, 1.0), .5)).x / data_length * 255.0;
+				vec4 output_1 = texture2D(u_texture, vec2(floor(sample * data_length) / data_length, .5));
+				vec4 output_2 = texture2D(u_texture, vec2(mod(floor(sample * data_length + 1.0) / data_length, 1.0), .5));
+				
+				float h_1 = (output_1.x * 256.0 + output_1.y) / data_length * 255.0;
+				float h_2 = (output_2.x * 256.0 + output_2.y) / data_length * 255.0;
 				
 				if (abs(h_1 - h_2) > .5)
 				{
@@ -136,6 +140,26 @@
 	
 	
 	
+	let array_size_input_element = document.querySelector("#array-size-input");
+	
+	array_size_input_element.addEventListener("keydown", (e) =>
+	{
+		if (e.keyCode === 13)
+		{
+			draw_sorting_algorithm();
+		}
+	});
+	
+	
+	
+	let play_sound_checkbox_element = document.querySelector("#play-sound-checkbox");
+	
+	let audio_context = null;
+	let audio_oscillator = null;
+	let audio_gain_node = null;
+	
+	
+	
 	let download_button_element = document.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
@@ -155,7 +179,44 @@
 		
 		wilson.change_canvas_size(resolution, resolution);
 		
+		
+		
+		data_length = parseInt(array_size_input_element.value || 256);
+		
+		data = new Array(data_length);
+		
+		for (let i = 0; i < data_length; i++)
+		{
+			data[i] = i;
+		}
+		
 		wilson.gl.uniform1f(wilson.uniforms["data_length"], data_length);
+		
+		
+		
+		try {audio_gain_node.gain.exponentialRampToValueAtTime(.00001, audio_context.currentTime + .1)}
+		catch(ex) {}
+		
+		play_sound = play_sound_checkbox_element.checked;
+		
+		if (play_sound)
+		{
+			audio_context = new AudioContext();
+			
+			audio_oscillator = audio_context.createOscillator();
+			
+			audio_oscillator.type = "sine";
+			
+			audio_oscillator.frequency.value = 50;
+			
+			audio_gain_node = audio_context.createGain();
+			
+			audio_oscillator.connect(audio_gain_node);
+			
+			audio_gain_node.connect(audio_context.destination);
+			
+			audio_oscillator.start(0);
+		}
 		
 		
 		
@@ -185,10 +246,8 @@
 		
 		for (let i = 0; i < data_length; i++)
 		{
-			texture_data[4 * i] = data[i];
-			texture_data[4 * i + 1] = 0;
-			texture_data[4 * i + 2] = 0;
-			texture_data[4 * i + 3] = 0;
+			texture_data[4 * i] = Math.floor(data[i] / 256);
+			texture_data[4 * i + 1] = data[i] % 256;
 		}
 		
 		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, data_length, 1, 0, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, texture_data);
@@ -221,7 +280,17 @@
 			data[i] = data[j];
 			data[j] = temp;
 			
+			if (play_sound)
+			{
+				audio_oscillator.frequency.linearRampToValueAtTime((max_frequency - min_frequency) * data[i] / data_length + min_frequency, audio_context.currentTime + .016);
+			}
+			
 			yield;
+		}
+		
+		if (play_sound)
+		{
+			audio_gain_node.gain.exponentialRampToValueAtTime(.00001, audio_context.currentTime + .1);
 		}
 	}
 }()
