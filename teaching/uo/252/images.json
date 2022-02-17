@@ -105,6 +105,12 @@
         "non-webp": "exams/2/cover.jpg"
     },
     
+    "practice-midterm-2":
+    {
+        "webp": "extra/practice-midterm-2/cover.webp",
+        "non-webp": "extra/practice-midterm-2/cover.jpg"
+    },
+    
     
     
     "quiz-6":
