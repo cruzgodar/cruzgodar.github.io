@@ -5,7 +5,7 @@
 	
 	let resolution = 2000;
 	
-	let data_length = 256;
+	let data_length = 10;
 	
 	let data = new Array(data_length);
 	
@@ -50,7 +50,25 @@
 			
 			if (length(uv) <= circle_size)
 			{
-				float h = texture2D(u_texture, vec2(mod(atan(uv.y, uv.x) / 6.283, 1.0), .5)).x / data_length * 255.0;
+				float sample = mod(atan(uv.y, uv.x) / 6.283, 1.0);
+				
+				float h_1 = texture2D(u_texture, vec2(floor(sample * data_length) / data_length, .5)).x / data_length * 255.0;
+				float h_2 = texture2D(u_texture, vec2(mod(floor(sample * data_length + 1.0) / data_length, 1.0), .5)).x / data_length * 255.0;
+				
+				if (abs(h_1 - h_2) > .5)
+				{
+					if (h_1 > h_2)
+					{
+						h_1 -= 1.0;
+					}
+					
+					else
+					{
+						h_2 -= 1.0;
+					}
+				}
+				
+				float h = mix(h_1, h_2, fract(sample * data_length));
 				
 				float s = clamp((length(uv) / circle_size - .03) * 1.0, 0.0, 1.0);
 				
@@ -90,8 +108,8 @@
 	
 	wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, texture);
 	
-	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_MAG_FILTER, wilson.gl.LINEAR);
-	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_MIN_FILTER, wilson.gl.LINEAR);
+	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_MAG_FILTER, wilson.gl.NEAREST);
+	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_MIN_FILTER, wilson.gl.NEAREST);
 	
 	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_WRAP_S, wilson.gl.CLAMP_TO_EDGE);
 	wilson.gl.texParameteri(wilson.gl.TEXTURE_2D, wilson.gl.TEXTURE_WRAP_T, wilson.gl.CLAMP_TO_EDGE);
@@ -170,7 +188,7 @@
 			texture_data[4 * i] = data[i];
 			texture_data[4 * i + 1] = 0;
 			texture_data[4 * i + 2] = 0;
-			texture_data[4 * i + 3] = 255;
+			texture_data[4 * i + 3] = 0;
 		}
 		
 		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, data_length, 1, 0, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, texture_data);
