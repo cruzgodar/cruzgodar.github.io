@@ -77,6 +77,12 @@
         "non-webp": "notes/12-integration-by-parts/cover.jpg"
 	},
 	
+	"13-trig-sub":
+	{
+		"webp": "notes/13-trig-sub/cover.webp",
+        "non-webp": "notes/13-trig-sub/cover.jpg"
+	},
+	
 	
 	
 	"homework-7":
