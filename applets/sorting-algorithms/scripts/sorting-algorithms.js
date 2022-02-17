@@ -5,13 +5,16 @@
 	
 	let resolution = 2000;
 	
-	let data = new Array(256);
 	let data_length = 256;
+	
+	let data = new Array(data_length);
 	
 	for (let i = 0; i < data_length; i++)
 	{
-		data[i] = Math.floor(Math.random() * 256);
+		data[i] = i;
 	}
+	
+	let current_generator = null;
 	
 	let last_timestamp = -1;
 	
@@ -47,7 +50,7 @@
 			
 			if (length(uv) <= circle_size)
 			{
-				float h = texture2D(u_texture, vec2(atan(uv.y, uv.x) / 6.283 + .5, .5)).x / data_length * 255.0;
+				float h = texture2D(u_texture, vec2(mod(atan(uv.y, uv.x) / 6.283, 1.0), .5)).x / data_length * 255.0;
 				
 				float s = clamp((length(uv) / circle_size - .03) * 1.0, 0.0, 1.0);
 				
@@ -138,6 +141,10 @@
 		
 		
 		
+		current_generator = shuffle_array();
+		
+		
+		
 		window.requestAnimationFrame(draw_frame);
 	}
 	
@@ -170,8 +177,10 @@
 		
 		wilson.render.draw_frame();
 		
+		current_generator.next();
 		
-			
+		
+		
 		if (starting_process_id !== Site.applet_process_id)
 		{
 			console.log("Terminated applet process");
@@ -179,6 +188,22 @@
 			return;
 		}
 		
-		//window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(draw_frame);
+	}
+	
+	
+	
+	function* shuffle_array()
+	{
+		for (let i = 0; i < data_length - 1; i++)
+		{
+			let j = Math.floor(Math.random() * (data_length - i - 1)) + i;
+			
+			let temp = data[i];
+			data[i] = data[j];
+			data[j] = temp;
+			
+			yield;
+		}
 	}
 }()
