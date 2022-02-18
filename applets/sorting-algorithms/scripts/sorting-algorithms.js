@@ -7,15 +7,16 @@
 	let resolution = 2000;
 	
 	let data_length = null;
-	
 	let data = [];
+	let brightness = [];
+	let max_brightness = 40;
 	
 	let current_generator = null;
 	
 	let min_frequency = 30;
 	let max_frequency = 800;
 	
-	let play_sound = true;
+	let do_play_sound = true;
 	
 	let last_timestamp = -1;
 	
@@ -28,9 +29,9 @@
 		
 		varying vec2 uv;
 		
-		const float circle_size = .8;
-		
 		uniform float data_length;
+		
+		const float circle_size = .8;
 		
 		uniform sampler2D u_texture;
 		
@@ -56,6 +57,8 @@
 				vec4 output_1 = texture2D(u_texture, vec2(floor(sample * data_length) / data_length, .5));
 				vec4 output_2 = texture2D(u_texture, vec2(mod(floor(sample * data_length + 1.0) / data_length, 1.0), .5));
 				
+				float brightness = mix(output_1.z, output_2.z, fract(sample * data_length));
+				
 				float h_1 = (output_1.x * 256.0 + output_1.y) / data_length * 255.0;
 				float h_2 = (output_2.x * 256.0 + output_2.y) / data_length * 255.0;
 				
@@ -72,9 +75,11 @@
 					}
 				}
 				
+				
+				
 				float h = mix(h_1, h_2, fract(sample * data_length));
 				
-				float s = clamp((length(uv) / circle_size - .03) * 1.0, 0.0, 1.0);
+				float s = clamp((length(uv) / circle_size - .03) * (1.0 - brightness), 0.0, 1.0);
 				
 				float v = min(1.0, (1.0 - length(uv) / circle_size) * 100.0);
 				
@@ -182,12 +187,13 @@
 		
 		
 		data_length = parseInt(array_size_input_element.value || 256);
-		
 		data = new Array(data_length);
+		brightness = new Array(data_length);
 		
 		for (let i = 0; i < data_length; i++)
 		{
 			data[i] = i;
+			brightness[i] = 0;
 		}
 		
 		wilson.gl.uniform1f(wilson.uniforms["data_length"], data_length);
@@ -197,9 +203,9 @@
 		try {audio_gain_node.gain.exponentialRampToValueAtTime(.00001, audio_context.currentTime + .1)}
 		catch(ex) {}
 		
-		play_sound = play_sound_checkbox_element.checked;
+		do_play_sound = play_sound_checkbox_element.checked;
 		
-		if (play_sound)
+		if (do_play_sound)
 		{
 			audio_context = new AudioContext();
 			
@@ -220,7 +226,7 @@
 		
 		
 		
-		current_generator = shuffle_array();
+		current_generator = verify_array();//shuffle_array();
 		
 		
 		
@@ -248,11 +254,15 @@
 		{
 			texture_data[4 * i] = Math.floor(data[i] / 256);
 			texture_data[4 * i + 1] = data[i] % 256;
+			
+			texture_data[4 * i + 2] = Math.floor(brightness[i] / max_brightness * 256);
 		}
 		
 		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, data_length, 1, 0, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, texture_data);
 		
 		wilson.render.draw_frame();
+		
+		decrease_brightness();
 		
 		current_generator.next();
 		
@@ -270,8 +280,33 @@
 	
 	
 	
+	function highlight_position(index)
+	{
+		brightness[index] = max_brightness - 1;
+	}
+	
+	function play_sound(index)
+	{
+		if (do_play_sound)
+		{
+			audio_oscillator.frequency.linearRampToValueAtTime((max_frequency - min_frequency) * data[index] / data_length + min_frequency, audio_context.currentTime + .016);
+		}
+	}
+	
+	function decrease_brightness()
+	{
+		for (let i = 0; i < data_length; i++)
+		{
+			brightness[i] = Math.max(brightness[i] - 1, 0);
+		}
+	}
+	
+	
+	
 	function* shuffle_array()
 	{
+		let step = Math.ceil(data_length / 100);
+		
 		for (let i = 0; i < data_length - 1; i++)
 		{
 			let j = Math.floor(Math.random() * (data_length - i - 1)) + i;
@@ -280,15 +315,36 @@
 			data[i] = data[j];
 			data[j] = temp;
 			
-			if (play_sound)
-			{
-				audio_oscillator.frequency.linearRampToValueAtTime((max_frequency - min_frequency) * data[i] / data_length + min_frequency, audio_context.currentTime + .016);
-			}
+			highlight_position(i);
 			
-			yield;
+			if ((i + 1) % step === 0)
+			{
+				play_sound(i);
+				
+				yield;
+			}
+		}
+	}
+	
+	
+	
+	function* verify_array()
+	{
+		let step = Math.ceil(data_length / 100);
+		
+		for (let i = 0; i < data_length; i++)
+		{
+			highlight_position(i);
+			
+			if ((i + 1) % step === 0)
+			{
+				play_sound(i);
+				
+				yield;
+			}
 		}
 		
-		if (play_sound)
+		if (do_play_sound)
 		{
 			audio_gain_node.gain.exponentialRampToValueAtTime(.00001, audio_context.currentTime + .1);
 		}
