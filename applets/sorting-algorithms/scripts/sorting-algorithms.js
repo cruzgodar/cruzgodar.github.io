@@ -227,7 +227,7 @@
 		
 		
 		
-		generators = [shuffle_array, heapsort, verify_array];
+		generators = [shuffle_array, merge_sort, verify_array];
 		current_generator_index = 0;
 		
 		audio_nodes = [];
@@ -647,6 +647,105 @@
 				{
 					break;
 				}
+			}
+		}
+		
+		advance_generator();
+	}
+	
+	
+	
+	function* merge_sort()
+	{
+		operations_per_frame = Math.ceil(data_length * Math.log(data_length) / 450);
+		
+		let aux_array = new Array(data_length);
+		
+		let block_size = 1;
+		
+		while (true)
+		{
+			//First iterate over blocks.
+			for (let i = 0; i < data_length; i += 2 * block_size)
+			{
+				//Within each block, we need to place things in the right order into the auxiliary array.
+				let index_1 = 0;
+				let index_2 = block_size;
+				let aux_index = 0;
+				
+				while (true)
+				{
+					if (index_2 + i >= data_length || index_2 >= 2*block_size)
+					{
+						if (index_1 >= block_size)
+						{
+							break;
+						}
+						
+						aux_array[aux_index] = data[i + index_1];
+						
+						if (write_to_position(i + index_1)) {yield}
+						
+						index_1++;
+						aux_index++;
+					}
+					
+					else if (index_1 >= block_size)
+					{
+						aux_array[aux_index] = data[i + index_2];
+						
+						if (write_to_position(i + index_2)) {yield}
+						
+						index_2++;
+						aux_index++;
+					}
+					
+					else
+					{
+						read_from_position(i + index_1);
+						read_from_position(i + index_2);
+						
+						if (data[i + index_1] < data[i + index_2])
+						{
+							aux_array[aux_index] = data[i + index_1];
+							
+							if (write_to_position(i + index_1)) {yield}
+							
+							index_1++;
+							aux_index++;
+						}
+						
+						else
+						{
+							aux_array[aux_index] = data[i + index_2];
+							
+							if (write_to_position(i + index_2)) {yield}
+							
+							index_2++;
+							aux_index++;
+						}
+					}
+				}
+				
+				//Copy the aux array back into the original one.
+				for (let j = 0; j < 2 * block_size; j++)
+				{
+					if (i + j >= data_length)
+					{
+						break;
+					}
+					
+					data[i + j] = aux_array[j];
+					
+					if (write_to_position(i + j)) {yield}
+				}
+			}
+			
+			block_size *= 2;
+			
+			if (block_size >= data_length)
+			{
+				break;
 			}
 		}
 		
