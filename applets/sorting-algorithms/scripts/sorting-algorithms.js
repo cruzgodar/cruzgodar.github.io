@@ -440,7 +440,7 @@
 	
 	function* bubble_sort()
 	{
-		operations_per_frame = Math.ceil(data_length * data_length / 500);
+		operations_per_frame = Math.ceil(data_length * data_length / 2500);
 		
 		while (true)
 		{
@@ -477,7 +477,7 @@
 	
 	function* insertion_sort()
 	{
-		operations_per_frame = Math.ceil(data_length * data_length / 10000);
+		operations_per_frame = Math.ceil(data_length * data_length / 5000);
 		
 		for (let i = 1; i < data_length; i++)
 		{
@@ -517,7 +517,7 @@
 	
 	function* selection_sort()
 	{
-		operations_per_frame = Math.ceil(data_length / 500);
+		operations_per_frame = Math.ceil(data_length / 1000);
 		
 		for (let i = 0; i < data_length; i++)
 		{
@@ -551,7 +551,7 @@
 	
 	function* heapsort()
 	{
-		operations_per_frame = Math.ceil(data_length * Math.log(data_length) / 300);
+		operations_per_frame = Math.ceil(data_length * Math.log(data_length) / 500);
 		
 		//Build the heap.
 		for (let i = 1; i < data_length; i++)
