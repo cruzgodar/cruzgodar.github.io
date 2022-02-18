@@ -25,6 +25,11 @@
 	let generators = [shuffle_array, bubble_sort, verify_array];
 	let current_generator_index = 0;
 	
+	let num_reads = 0;
+	let num_writes = 0;
+	let in_frame_operations = 0;
+	let operations_per_frame = 1;
+	
 	let changing_sound = false;
 	
 	let audio_nodes = [];
@@ -88,7 +93,7 @@
 				
 				float s = clamp((length(uv) / circle_size - .03) * (1.0 - brightness), 0.0, 1.0);
 				
-				float v = min(1.0, (1.0 - length(uv) / circle_size) * 100.0);
+				float v = clamp((1.0 - length(uv) / circle_size) * 100.0, 0.0, 1.0);
 				
 				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
 			}
@@ -212,6 +217,12 @@
 		
 		
 		
+		num_reads = 0;
+		num_writes = 0;
+		in_frame_operations = 0;
+		
+		
+		
 		do_play_sound = play_sound_checkbox_element.checked;
 		
 		
@@ -314,9 +325,28 @@
 		}
 	}
 	
-	function highlight_position(index)
+	function read_from_position(index, highlight = false)
+	{
+		num_reads++;
+	}
+	
+	function write_to_position(index)
 	{
 		brightness[index] = max_brightness - 1;
+		
+		num_writes++;
+		in_frame_operations++;
+		
+		if (in_frame_operations >= operations_per_frame)
+		{
+			in_frame_operations = 0;
+			
+			play_sound(index);
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
 	function play_sound(index)
@@ -366,7 +396,7 @@
 	
 	function* shuffle_array()
 	{
-		let step = Math.ceil(data_length / 100);
+		operations_per_frame = Math.ceil(data_length / 60);
 		
 		for (let i = 0; i < data_length - 1; i++)
 		{
@@ -376,16 +406,12 @@
 			data[i] = data[j];
 			data[j] = temp;
 			
-			highlight_position(i);
-			highlight_position(j);
-			
-			if ((i + 1) % step === 0)
-			{
-				play_sound(i);
-				
-				yield;
-			}
+			if (write_to_position(i)) {yield}
+			if (write_to_position(j)) {yield}
 		}
+		
+		num_reads = 0;
+		num_writes = 0;
 		
 		advance_generator();
 	}
@@ -394,18 +420,14 @@
 	
 	function* verify_array()
 	{
-		let step = Math.ceil(data_length / 100);
+		console.log(num_reads, num_writes);
+		
+		operations_per_frame = Math.ceil(data_length / 60);
 		
 		for (let i = 0; i < data_length; i++)
 		{
-			highlight_position(i);
-			
-			if ((i + 1) % step === 0)
-			{
-				play_sound(i);
-				
-				yield;
-			}
+			//This isn't actually a write, but we want to animate the process.
+			if (write_to_position(i)) {yield}
 		}
 		
 		if (do_play_sound)
@@ -418,11 +440,7 @@
 	
 	function* bubble_sort()
 	{
-		let step = Math.ceil(data_length / 50);
-		
-		let num_operations = 0;
-		
-		
+		operations_per_frame = Math.ceil(data_length * data_length / 500);
 		
 		while (true)
 		{
@@ -430,6 +448,9 @@
 			
 			for (let i = 0; i < data_length - 1; i++)
 			{
+				read_from_position(i);
+				read_from_position(i + 1);
+				
 				if (data[i] > data[i + 1])
 				{
 					done = false;
@@ -438,31 +459,8 @@
 					data[i] = data[i + 1];
 					data[i + 1] = temp;
 					
-					
-					
-					highlight_position(i);
-					
-					num_operations++;
-					
-					if (num_operations % step === 0)
-					{
-						play_sound(i);
-						
-						yield;
-					}
-					
-					
-					
-					highlight_position(i + 1);
-					
-					num_operations++;
-					
-					if (num_operations % step === 0)
-					{
-						play_sound(i);
-						
-						yield;
-					}
+					if (write_to_position(i)) {yield}
+					if (write_to_position(i + 1)) {yield}
 				}
 			}
 			
@@ -472,8 +470,6 @@
 			}
 		}
 		
-		
-		
 		advance_generator();
 	}
 	
@@ -481,18 +477,20 @@
 	
 	function* insertion_sort()
 	{
-		let step = Math.ceil(data_length * data_length / 20000);
-		
-		let num_operations = 0;
-		
-		
+		operations_per_frame = Math.ceil(data_length * data_length / 10000);
 		
 		for (let i = 1; i < data_length; i++)
 		{
+			read_from_position(i);
+			read_from_position(i - 1);
+			
 			if (data[i] < data[i - 1])
 			{
 				for (let j = 0; j < i; j++)
 				{
+					read_from_position(j);
+					read_from_position(i);
+					
 					if (data[j] > data[i])
 					{
 						let temp = data[i];
@@ -501,40 +499,16 @@
 						{
 							data[k] = data[k - 1];
 							
-							
-							
-							highlight_position(k);
-							
-							num_operations++;
-							
-							if (num_operations % step === 0)
-							{
-								play_sound(k);
-								
-								yield;
-							}
+							if (write_to_position(k)) {yield}
 						}
 						
 						data[j] = temp;
 						
-						
-						
-						highlight_position(j);
-						
-						num_operations++;
-						
-						if (num_operations % step === 0)
-						{
-							play_sound(j);
-							
-							yield;
-						}
+						if (write_to_position(j)) {yield}
 					}
 				}
 			}
 		}
-		
-		
 		
 		advance_generator();
 	}
@@ -543,11 +517,7 @@
 	
 	function* selection_sort()
 	{
-		let step = Math.ceil(data_length / 500);
-		
-		let num_operations = 0;
-		
-		
+		operations_per_frame = Math.ceil(data_length / 500);
 		
 		for (let i = 0; i < data_length; i++)
 		{
@@ -556,6 +526,9 @@
 			
 			for (let j = i; j < data_length; j++)
 			{
+				read_from_position(j);
+				read_from_position(min_element);
+				
 				if (data[j] < min_element)
 				{
 					min_element = data[j];
@@ -567,34 +540,9 @@
 			data[i] = min_element;
 			data[min_index] = temp;
 			
-			
-			
-			highlight_position(i);
-			
-			num_operations++;
-			
-			if (num_operations % step === 0)
-			{
-				play_sound(i);
-				
-				yield;
-			}
-			
-			
-			
-			highlight_position(min_index);
-			
-			num_operations++;
-			
-			if (num_operations % step === 0)
-			{
-				play_sound(min_index);
-				
-				yield;
-			}
+			if (write_to_position(i)) {yield}
+			if (write_to_position(min_index)) {yield}
 		}
-		
-		
 		
 		advance_generator();
 	}
@@ -603,14 +551,9 @@
 	
 	function* heapsort()
 	{
-		let step = Math.ceil(data_length / 200);
-		
-		let num_operations = 0;
-		
-		
+		operations_per_frame = Math.ceil(data_length * Math.log(data_length) / 300);
 		
 		//Build the heap.
-		
 		for (let i = 1; i < data_length; i++)
 		{
 			let index = i;
@@ -620,39 +563,17 @@
 			{
 				index_2 = Math.floor((index - 1) / 2);
 				
+				read_from_position(index);
+				read_from_position(index_2);
+				
 				if (data[index] > data[index_2])
 				{
 					let temp = data[index];
 					data[index] = data[index_2];
 					data[index_2] = temp;
 					
-					
-					
-					highlight_position(index);
-					
-					num_operations++;
-					
-					if (num_operations % step === 0)
-					{
-						play_sound(index);
-						
-						yield;
-					}
-					
-					
-					
-					highlight_position(index_2);
-					
-					num_operations++;
-					
-					if (num_operations % step === 0)
-					{
-						play_sound(index_2);
-						
-						yield;
-					}
-					
-					
+					if (write_to_position(index)) {yield}
+					if (write_to_position(index_2)) {yield}
 					
 					index = index_2;
 				}
@@ -664,41 +585,15 @@
 			}
 		}
 		
-		
-		
 		//Disassemble the heap.
-		
 		for (let i = data_length - 1; i >= 0; i--)
 		{
 			let temp = data[0];
 			data[0] = data[i];
 			data[i] = temp;
 			
-			
-			
-			highlight_position(0);
-			
-			num_operations++;
-			
-			if (num_operations % step === 0)
-			{
-				play_sound(0);
-				
-				yield;
-			}
-			
-			
-			
-			highlight_position(i);
-			
-			num_operations++;
-			
-			if (num_operations % step === 0)
-			{
-				play_sound(i);
-				
-				yield;
-			}
+			if (write_to_position(0)) {yield}
+			if (write_to_position(i)) {yield}
 			
 			
 			
@@ -725,10 +620,16 @@
 				
 				else
 				{
+					read_from_position(child_1);
+					read_from_position(child_2);
+					
 					max_child = data[child_1] > data[child_2] ? child_1 : child_2;
 				}
 				
 				
+				
+				read_from_position(index);
+				read_from_position(max_child);
 				
 				if (data[index] < data[max_child])
 				{
@@ -736,33 +637,8 @@
 					data[index] = data[max_child];
 					data[max_child] = temp;
 					
-					
-					
-					highlight_position(index);
-					
-					num_operations++;
-					
-					if (num_operations % step === 0)
-					{
-						play_sound(index);
-						
-						yield;
-					}
-					
-					
-					
-					highlight_position(max_child);
-					
-					num_operations++;
-					
-					if (num_operations % step === 0)
-					{
-						play_sound(max_child);
-						
-						yield;
-					}
-					
-					
+					if (write_to_position(index)) {yield}
+					if (write_to_position(max_child)) {yield}
 					
 					index = max_child;
 				}
@@ -773,8 +649,6 @@
 				}
 			}
 		}
-		
-		
 		
 		advance_generator();
 	}
