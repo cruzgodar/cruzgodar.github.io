@@ -216,7 +216,7 @@
 		
 		
 		
-		generators = [shuffle_array, bubble_sort, verify_array];
+		generators = [shuffle_array, selection_sort, verify_array];
 		current_generator_index = 0;
 		
 		audio_nodes = [];
@@ -436,7 +436,21 @@
 					data[i] = data[i + 1];
 					data[i + 1] = temp;
 					
+					
+					
 					highlight_position(i);
+					
+					num_operations++;
+					
+					if (num_operations % step === 0)
+					{
+						play_sound(i);
+						
+						yield;
+					}
+					
+					
+					
 					highlight_position(i + 1);
 					
 					num_operations++;
@@ -511,6 +525,62 @@
 						}
 					}
 				}
+			}
+		}
+		
+		advance_generator();
+	}
+	
+	
+	
+	function* selection_sort()
+	{
+		let step = Math.ceil(data_length / 500);
+		
+		let num_operations = 0;
+		
+		for (let i = 0; i < data_length; i++)
+		{
+			let min_index = -1;
+			let min_element = data_length;
+			
+			for (let j = i; j < data_length; j++)
+			{
+				if (data[j] < min_element)
+				{
+					min_element = data[j];
+					min_index = j;
+				}
+			}
+			
+			let temp = data[i];
+			data[i] = min_element;
+			data[min_index] = temp;
+			
+			
+			
+			highlight_position(i);
+			
+			num_operations++;
+			
+			if (num_operations % step === 0)
+			{
+				play_sound(i);
+				
+				yield;
+			}
+			
+			
+			
+			highlight_position(min_index);
+			
+			num_operations++;
+			
+			if (num_operations % step === 0)
+			{
+				play_sound(min_index);
+				
+				yield;
 			}
 		}
 		
