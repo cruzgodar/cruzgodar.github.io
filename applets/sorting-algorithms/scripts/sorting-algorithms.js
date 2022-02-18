@@ -22,6 +22,13 @@
 	
 	let starting_process_id = null;
 	
+	let generators = [shuffle_array, bubble_sort, verify_array];
+	let current_generator_index = 0;
+	
+	let changing_sound = false;
+	
+	let audio_nodes = [];
+	
 	
 	
 	let frag_shader_source = `
@@ -200,33 +207,18 @@
 		
 		
 		
-		try {audio_gain_node.gain.exponentialRampToValueAtTime(.00001, audio_context.currentTime + .1)}
-		catch(ex) {}
-		
 		do_play_sound = play_sound_checkbox_element.checked;
 		
-		if (do_play_sound)
-		{
-			audio_context = new AudioContext();
-			
-			audio_oscillator = audio_context.createOscillator();
-			
-			audio_oscillator.type = "sine";
-			
-			audio_oscillator.frequency.value = 50;
-			
-			audio_gain_node = audio_context.createGain();
-			
-			audio_oscillator.connect(audio_gain_node);
-			
-			audio_gain_node.connect(audio_context.destination);
-			
-			audio_oscillator.start(0);
-		}
 		
 		
+		generators = [shuffle_array, bubble_sort, verify_array];
+		current_generator_index = 0;
 		
-		current_generator = verify_array();//shuffle_array();
+		create_audio_nodes();
+		
+		audio_nodes[current_generator_index][1].start(0);
+		
+		current_generator = generators[0]();
 		
 		
 		
@@ -264,7 +256,10 @@
 		
 		decrease_brightness();
 		
-		current_generator.next();
+		if (!changing_sound)
+		{
+			current_generator.next();
+		}
 		
 		
 		
@@ -280,6 +275,33 @@
 	
 	
 	
+	function create_audio_nodes()
+	{
+		if (do_play_sound)
+		{
+			for (let i = 0; i < generators.length; i++)
+			{
+				let audio_context = new AudioContext();
+				
+				let audio_oscillator = audio_context.createOscillator();
+				
+				audio_oscillator.type = "sine";
+				
+				audio_oscillator.frequency.value = 50;
+				
+				let audio_gain_node = audio_context.createGain();
+				
+				audio_oscillator.connect(audio_gain_node);
+				
+				audio_gain_node.connect(audio_context.destination);
+				
+				
+				
+				audio_nodes.push([audio_context, audio_oscillator, audio_gain_node]);
+			}
+		}
+	}
+	
 	function highlight_position(index)
 	{
 		brightness[index] = max_brightness - 1;
@@ -289,7 +311,7 @@
 	{
 		if (do_play_sound)
 		{
-			audio_oscillator.frequency.linearRampToValueAtTime((max_frequency - min_frequency) * data[index] / data_length + min_frequency, audio_context.currentTime + .016);
+			audio_nodes[current_generator_index][1].frequency.linearRampToValueAtTime((max_frequency - min_frequency) * data[index] / data_length + min_frequency, audio_nodes[current_generator_index][0].currentTime + .016);
 		}
 	}
 	
@@ -299,6 +321,30 @@
 		{
 			brightness[i] = Math.max(brightness[i] - 1, 0);
 		}
+	}
+	
+	function advance_generator()
+	{
+		changing_sound = true;
+		
+		audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + .016);
+		
+		setTimeout(() =>
+		{
+			current_generator_index++;
+			
+			if (current_generator_index < generators.length)
+			{
+				setTimeout(() =>
+				{
+					audio_nodes[current_generator_index][1].start(0);
+					
+					current_generator = generators[current_generator_index]();
+					
+					changing_sound = false;
+				}, 1000);
+			}
+		}, 100);
 	}
 	
 	
@@ -316,6 +362,7 @@
 			data[j] = temp;
 			
 			highlight_position(i);
+			highlight_position(j);
 			
 			if ((i + 1) % step === 0)
 			{
@@ -324,6 +371,8 @@
 				yield;
 			}
 		}
+		
+		advance_generator();
 	}
 	
 	
@@ -344,9 +393,51 @@
 			}
 		}
 		
-		if (do_play_sound)
+		audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + .016);
+	}
+	
+	
+	
+	function* bubble_sort()
+	{
+		let step = Math.ceil(Math.sqrt(data_length));
+		
+		let num_operations = 0;
+		
+		while (true)
 		{
-			audio_gain_node.gain.exponentialRampToValueAtTime(.00001, audio_context.currentTime + .1);
+			let done = true;
+			
+			for (let i = 0; i < data_length - 1; i++)
+			{
+				if (data[i] > data[i + 1])
+				{
+					done = false;
+					
+					let temp = data[i];
+					data[i] = data[i + 1];
+					data[i + 1] = temp;
+					
+					highlight_position(i);
+					highlight_position(i + 1);
+					
+					num_operations++;
+					
+					if (num_operations % step === 0)
+					{
+						play_sound(i);
+						
+						yield;
+					}
+				}
+			}
+			
+			if (done)
+			{
+				break;
+			}
 		}
+		
+		advance_generator();
 	}
 }()
