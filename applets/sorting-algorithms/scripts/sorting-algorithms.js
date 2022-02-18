@@ -183,6 +183,11 @@
 	
 	function draw_sorting_algorithm()
 	{
+		try {audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + .016);}
+		catch(ex) {}
+		
+		
+		
 		starting_process_id = Site.applet_process_id;
 		
 		
@@ -214,9 +219,13 @@
 		generators = [shuffle_array, bubble_sort, verify_array];
 		current_generator_index = 0;
 		
+		audio_nodes = [];
 		create_audio_nodes();
 		
-		audio_nodes[current_generator_index][1].start(0);
+		if (do_play_sound)
+		{
+			audio_nodes[current_generator_index][1].start(0);
+		}
 		
 		current_generator = generators[0]();
 		
@@ -266,6 +275,9 @@
 		if (starting_process_id !== Site.applet_process_id)
 		{
 			console.log("Terminated applet process");
+			
+			try {audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + .016);}
+			catch(ex) {}
 			
 			return;
 		}
@@ -327,24 +339,27 @@
 	{
 		changing_sound = true;
 		
-		audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + .016);
-		
-		setTimeout(() =>
+		if (do_play_sound)
 		{
-			current_generator_index++;
-			
-			if (current_generator_index < generators.length)
+			audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + .016);
+		}
+		
+		current_generator_index++;
+		
+		if (current_generator_index < generators.length)
+		{
+			setTimeout(() =>
 			{
-				setTimeout(() =>
+				if (do_play_sound)
 				{
 					audio_nodes[current_generator_index][1].start(0);
-					
-					current_generator = generators[current_generator_index]();
-					
-					changing_sound = false;
-				}, 1000);
-			}
-		}, 100);
+				}
+				
+				current_generator = generators[current_generator_index]();
+				
+				changing_sound = false;
+			}, 1000);
+		}
 	}
 	
 	
@@ -393,14 +408,17 @@
 			}
 		}
 		
-		audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + .016);
+		if (do_play_sound)
+		{
+			audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + .016);
+		}
 	}
 	
 	
 	
 	function* bubble_sort()
 	{
-		let step = Math.ceil(Math.sqrt(data_length));
+		let step = Math.ceil(data_length / 50);
 		
 		let num_operations = 0;
 		
@@ -435,6 +453,64 @@
 			if (done)
 			{
 				break;
+			}
+		}
+		
+		advance_generator();
+	}
+	
+	
+	
+	function* insertion_sort()
+	{
+		let step = Math.ceil(data_length / 50);
+		
+		let num_operations = 0;
+		
+		for (let i = 1; i < data_length; i++)
+		{
+			if (data[i] < data[i - 1])
+			{
+				for (let j = 0; j < i; j++)
+				{
+					if (data[j] > data[i])
+					{
+						let temp = data[i];
+						
+						for (let k = i; k > j; k--)
+						{
+							data[k] = data[k - 1];
+							
+							
+							
+							highlight_position(k);
+							
+							num_operations++;
+							
+							if (num_operations % step === 0)
+							{
+								play_sound(k);
+								
+								yield;
+							}
+						}
+						
+						data[j] = temp;
+						
+						
+						
+						highlight_position(j);
+						
+						num_operations++;
+						
+						if (num_operations % step === 0)
+						{
+							play_sound(j);
+							
+							yield;
+						}
+					}
+				}
 			}
 		}
 		
