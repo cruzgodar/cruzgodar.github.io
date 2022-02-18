@@ -216,7 +216,7 @@
 		
 		
 		
-		generators = [shuffle_array, selection_sort, verify_array];
+		generators = [shuffle_array, heapsort, verify_array];
 		current_generator_index = 0;
 		
 		audio_nodes = [];
@@ -422,6 +422,8 @@
 		
 		let num_operations = 0;
 		
+		
+		
 		while (true)
 		{
 			let done = true;
@@ -470,6 +472,8 @@
 			}
 		}
 		
+		
+		
 		advance_generator();
 	}
 	
@@ -477,9 +481,11 @@
 	
 	function* insertion_sort()
 	{
-		let step = Math.ceil(data_length / 50);
+		let step = Math.ceil(data_length * data_length / 20000);
 		
 		let num_operations = 0;
+		
+		
 		
 		for (let i = 1; i < data_length; i++)
 		{
@@ -528,6 +534,8 @@
 			}
 		}
 		
+		
+		
 		advance_generator();
 	}
 	
@@ -538,6 +546,8 @@
 		let step = Math.ceil(data_length / 500);
 		
 		let num_operations = 0;
+		
+		
 		
 		for (let i = 0; i < data_length; i++)
 		{
@@ -583,6 +593,188 @@
 				yield;
 			}
 		}
+		
+		
+		
+		advance_generator();
+	}
+	
+	
+	
+	function* heapsort()
+	{
+		let step = Math.ceil(data_length / 200);
+		
+		let num_operations = 0;
+		
+		
+		
+		//Build the heap.
+		
+		for (let i = 1; i < data_length; i++)
+		{
+			let index = i;
+			let index_2 = 0;
+			
+			while (index !== 0)
+			{
+				index_2 = Math.floor((index - 1) / 2);
+				
+				if (data[index] > data[index_2])
+				{
+					let temp = data[index];
+					data[index] = data[index_2];
+					data[index_2] = temp;
+					
+					
+					
+					highlight_position(index);
+					
+					num_operations++;
+					
+					if (num_operations % step === 0)
+					{
+						play_sound(index);
+						
+						yield;
+					}
+					
+					
+					
+					highlight_position(index_2);
+					
+					num_operations++;
+					
+					if (num_operations % step === 0)
+					{
+						play_sound(index_2);
+						
+						yield;
+					}
+					
+					
+					
+					index = index_2;
+				}
+				
+				else
+				{
+					break;
+				}
+			}
+		}
+		
+		
+		
+		//Disassemble the heap.
+		
+		for (let i = data_length - 1; i >= 0; i--)
+		{
+			let temp = data[0];
+			data[0] = data[i];
+			data[i] = temp;
+			
+			
+			
+			highlight_position(0);
+			
+			num_operations++;
+			
+			if (num_operations % step === 0)
+			{
+				play_sound(0);
+				
+				yield;
+			}
+			
+			
+			
+			highlight_position(i);
+			
+			num_operations++;
+			
+			if (num_operations % step === 0)
+			{
+				play_sound(i);
+				
+				yield;
+			}
+			
+			
+			
+			let index = 0;
+			
+			let child_1 = 0;
+			let child_2 = 0;
+			let max_child = 0;
+			
+			while (true)
+			{
+				child_1 = 2 * index + 1;
+				child_2 = child_1 + 1;
+				
+				if (child_1 >= i)
+				{
+					break;
+				}
+				
+				else if (child_2 >= i)
+				{
+					max_child = child_1;
+				}
+				
+				else
+				{
+					max_child = data[child_1] > data[child_2] ? child_1 : child_2;
+				}
+				
+				
+				
+				if (data[index] < data[max_child])
+				{
+					let temp = data[index];
+					data[index] = data[max_child];
+					data[max_child] = temp;
+					
+					
+					
+					highlight_position(index);
+					
+					num_operations++;
+					
+					if (num_operations % step === 0)
+					{
+						play_sound(index);
+						
+						yield;
+					}
+					
+					
+					
+					highlight_position(max_child);
+					
+					num_operations++;
+					
+					if (num_operations % step === 0)
+					{
+						play_sound(max_child);
+						
+						yield;
+					}
+					
+					
+					
+					index = max_child;
+				}
+				
+				else
+				{
+					break;
+				}
+			}
+		}
+		
+		
 		
 		advance_generator();
 	}
