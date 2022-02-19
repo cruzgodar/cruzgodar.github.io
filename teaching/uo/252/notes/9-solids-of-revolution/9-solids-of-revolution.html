@@ -120,6 +120,17 @@
 	
 	Find the volume of the solid created by revolving $f(x) = \sin(x) + 2$ on $[0, \pi]$ about the $x$-axis.
 	
+	Solution: We have
+	
+	$$
+		\begin{align*}
+			\int_0^\pi \pi (\sin(x) + 2)^2\ dx &= \int_0^\pi (\sin^2(x) + 2\sin(x) + 4)\ dx\\
+			&= \pi \int_0^\pi \left(\frac{1}{2} - \frac{1}{2}\cos(2x) + 2\sin(x) + 4\right)\ dx\\
+			&= \pi \left. \left[ \frac{9}{2}x - \frac{1}{4}\sin(2x) - 2\cos(x) \right] \right|_0^\pi\\
+			&= 2\pi + \frac{9\pi^2}{2} + 2\pi.
+		\end{align*}
+	$$
+	
 !end-exercise
 
 
@@ -157,6 +168,15 @@
 	the disk method, again
 	
 	The area bounded by $y = \frac{1}{x}$, and $x = 0$ is revolved about the $y$-axis. Find the volume between $y = 1$ and $y = 2$.
+	
+	Solution: to use the disk method, we integrate $dy$, so first we rewrite $y = \frac{1}{x}$ as $x = \frac{1}{y}$. Then the right side of the region is given by $x = \frac{1}{y}$ and the left side by $x = 0$, so in total, we have
+	
+	$$
+		\begin{align*}
+			\int_1^2 \pi \left( \frac{1}{y} \right)^2\ dy &= \left. \left[ -\pi \frac{1}{y} \right] \right|_1^2\\
+			&= \frac{\pi}{2}.
+		\end{align*}
+	$$
 	
 !end-exercise
 
@@ -201,7 +221,17 @@
 	
 	the disk method with a hole
 	
-	The area bounded by $y = \frac{1}{x^2}$, $y = 1$, $x = 1$, and $x = 2$ is revolved about the $y$-axis. Find its volume.
+	The area bounded by $y = \frac{1}{x^2}$, $y = 1$, and $x = 2$ is revolved about the $y$-axis. Find its volume.
+	
+	Solution: let&#x2019;s first rewrite this in terms of $y$: $x = \frac{1}{\sqrt{y}}$. Then the region is bounded on the right by $x = 2$ and on the left by $x = \frac{1}{\sqrt{y}}$. Those two meet when $\frac{1}{\sqrt{y}} = 2$, so $y = \sqrt{\frac{1}{2}} = \frac{1}{4}. Then the integral becomes
+	
+	$$
+		\begin{align*}
+			\int_{1/4}^1 \left( \pi (2)^2 - \pi \left(\frac{1}{\sqrt{y}}\right)^2 \right)\ dy &= \int_{1/4}^1 \left( 4\pi - \frac{\pi}{y} \right)\ dy
+			&= \left. \left[ 4\pi y - \pi \ln(y) \right] \right|_{1/4}^1\\
+			&= 3\pi + \pi\ln\left(\frac{1}{4}\right).
+		\end{align*}
+	$$
 	
 !end-exercise
 
@@ -296,6 +326,15 @@
 	
 	Find the volume of the solid created by revolving the region bounded by $y = 2x - x^2 + 2$, $y = x$, and $x = 0$ about the $y$-axis.
 	
+	Solution: for this one, we look to the intersection of $2x - x^2 + 2$ and $x$ to find the limits on $x$: it gives $x = 2$, so we want to integrate from $0$ to $2$. Now a vertical line drawn in the region goes from $y = x$ up to $y = 2x - x^2 + 2$, so its height is $2x - x^2 + 2 - x = x - x^2 + 2$. Therefore, the area of a shell at radius $x$ is $2\pi x (x - x^2 + 2)$. Our integral then becomes
+	
+	$$
+		\begin{align*}
+			2\pi \int_0^2 \left( x^2 - x^3 + 2x \right)\ dx &= \left. \left[ \frac{x^3}{3} - \frac{x^4}{4} + x^2 \right] \right|_0^2\\
+			&= \frac{8}{3} - \frac{16}{4} + 4.
+		\end{align*}
+	$$
+	
 !end-exercise
 
 
@@ -335,6 +374,18 @@
 	the shell method, again
 	
 	The region bounded by $y = x^2$, $y = 1$, and $x = 2$ is revolved about the $y$-axis. Set up, but do not solve, the integrals to find its volume using both the disk method and shell method.
+	
+	Solution: for the disk method, we need to get everything in terms of $y$: $x = \sqrt{y}$. Then the region is bounded to the right by $x = 2$ and to the left by $x = \sqrt{y}$, and the top $y$-coordinate is given by the intersection of $\sqrt{y}$ and $2$, so $y = 4$. Then the integral becomes
+	
+	$$
+		\int_1^4 \left( \pi (2^2) - \pi (\sqrt{y})^2 \right)\ dy.
+	$$
+	
+	For the shell method, we need to take the other intersection point to find the left $x$-bound: it&#x2019;s when $x^2 = 1$, so $x = 1$. A vertical slice begins at $y = 1$ and ends at $y = x^2$, so we have
+	
+	$$
+		\int_1^2 2\pi x (x^2 - 1)\ dx.
+	$$
 	
 !end-exercise
 

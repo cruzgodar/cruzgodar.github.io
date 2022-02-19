@@ -76,6 +76,16 @@
 	
 	Find the area of the region bounded by $y = 6 - x$ and $y = 9 - \left( \frac{x}{2} \right)^2$.
 	
+	Solution: the intersection occurs when $6 - x = 9 - \left( \frac{x}{2} \right)^2$. This gives $x = -2$ and $x = 6$. Now we can see which function is larger by evaulating them both somewhere in between, say at $0$: $6 - 0 = 6$ and $9 - \left( \frac{0}{2} \right)^2 = 9$. Thus the second one is the larger function, so we have
+	
+	$$
+		\begin{align*}
+			\int_{-2}^6 \left(9 - \left( \frac{x}{2} \right)^2 - (6 - x)\right)\ dx &= \int_{-2}^6 \left(3 + x - \frac{x^2}{4} \right)\ dx\\
+			&= \left. \left[ 3x + \frac{x^2}{2} - \frac{x^3}{12} \right] \right|_{-2}^{6}\\
+			&= 18 + \frac{10}{3}.
+		\end{align*}
+	$$
+	
 !end-exercise
 
 
@@ -130,6 +140,12 @@
 	
 	<div class="center-content"><iframe src="https://www.desmos.com/calculator/1lhzynqlu3" width="500" height="500"></iframe></div>
 	
+	Solution: $f$ and $h$ intersect at $x = \frac{3}{2} - \frac{\sqrt{5}}{2}$, $g$ and $h$ intersect at $x = 1$, and $f$ and $g$ intersect at $x = \frac{\sqrt{5}}{2} - \frac{1}{2}$. To save notation, let&#x2019;s call the first number $a$, the second one $b$, and the third one $c$. Then the integral becomes $\int_a^c (h(x) - f(x))\ dx + \int_c^b (h(x) - g(x))\ dx$. This comes out to
+	
+	$$
+		\left(\frac{7}{7} - \frac{7}{6}\sqrt{5} + \frac{2}{3}\sqrt{\sqrt{5} - 2}\right) - \left(\frac{1}{3} + \frac{1}{3}\sqrt{5} - \frac{2}{3}\sqrt{\sqrt{5} - 2}\right).
+	$$
+	
 !end-exercise
 
 
@@ -180,6 +196,8 @@
 	Find the area of the shaded region bounded by $y = 1 - x$, $y = x^2$, and $y = \sqrt{x}$ by integrating with respect to $y$.
 	
 	<div class="center-content"><iframe src="https://www.desmos.com/calculator/1lhzynqlu3" width="500" height="500"></iframe></div>
+	
+	The functions are now $1 - y$, $\sqrt{y}$, and $y^2$. The integrals are actually exactly the same, since they intersect at the same $y$-coordinates as the previous $x$-coordinates.
 	
 !end-exercise
 
