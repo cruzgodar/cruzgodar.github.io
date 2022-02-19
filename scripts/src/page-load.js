@@ -136,6 +136,59 @@ Page.load = async function()
 	
 	
 	
+	//We do dropdowns here too.
+	let elements = document.querySelectorAll("select");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].addEventListener("input", () =>
+		{
+			let option = elements[i].querySelector(`[value=${elements[i].value}]`);
+			
+			let element = document.createElement("p");
+			
+			element.style.position = "fixed";
+			element.style.opacity = "0";
+			element.style.left = "-1000px";
+			element.style.top = "-1000px";
+			element.style.padding = "17px";
+			
+			element.textContent = option.textContent.replace(/ /g, "");
+			
+			
+			document.body.appendChild(element);
+			
+			let width = element.getBoundingClientRect().width;
+			
+			elements[i].style.width = width + "px";
+			
+			element.remove();
+		});
+		
+		let option = elements[i].querySelector(`[value=${elements[i].value}]`);
+		
+		let element = document.createElement("p");
+		
+		element.style.position = "fixed";
+		element.style.opacity = "0";
+		element.style.left = "-1000px";
+		element.style.top = "-1000px";
+		element.style.padding = "17px";
+		
+		element.textContent = option.textContent.replace(/ /g, "");
+		
+		
+		document.body.appendChild(element);
+		
+		let width = element.getBoundingClientRect().width;
+		
+		elements[i].style.width = width + "px";
+		
+		element.remove();
+	}
+	
+	
+	
 	if (!("no_footer" in this.settings && this.settings["no_footer"]))
 	{
 		setTimeout(() =>
@@ -826,6 +879,7 @@ Page.Load =
 			.text-button,
 			.checkbox-container,
 			.radio-button-container,
+			select,
 			
 			.footer-button,
 			.footer-image-link img,

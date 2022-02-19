@@ -13,8 +13,8 @@
 	
 	let current_generator = null;
 	
-	let min_frequency = 30;
-	let max_frequency = 800;
+	let min_frequency = 20;
+	let max_frequency = 600;
 	
 	let do_play_sound = true;
 	
@@ -22,7 +22,16 @@
 	
 	let starting_process_id = null;
 	
-	let generators = [shuffle_array, bubble_sort, verify_array];
+	let algorithms =
+	{
+		"bubble": bubble_sort,
+		"insertion": insertion_sort,
+		"selection": selection_sort,
+		"heap": heapsort,
+		"merge": merge_sort
+	};
+	
+	let generators = [shuffle_array, null, verify_array];
 	let current_generator_index = 0;
 	
 	let num_reads = 0;
@@ -139,6 +148,10 @@
 	
 	
 	
+	let algorithm_selector_element = document.querySelector("#algorithm-selector");
+	
+	
+	
 	let generate_button_element = document.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", draw_sorting_algorithm);
@@ -227,7 +240,7 @@
 		
 		
 		
-		generators = [shuffle_array, merge_sort, verify_array];
+		generators = [shuffle_array, algorithms[algorithm_selector_element.value], verify_array];
 		current_generator_index = 0;
 		
 		audio_nodes = [];

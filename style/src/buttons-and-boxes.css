@@ -442,7 +442,52 @@ label .body-text
 
 
 
+select
+{
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	
+	
+	
+	color: rgb(127, 127, 127);
+	background-color: rgb(255, 255, 255);
+	//width: 200px;
+	margin: auto;
+	position: relative;
+	
+	text-align: center;
+	text-indent: 5px;
+	
+	font-size: 100%;
 
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 100px;
+	padding: 10px;
+	
+	cursor: pointer;
+	outline: none;
+	
+	transition: transform .125s ease-in-out, width .125s ease-in-out;
+}
+
+select.hover
+{
+	transform: scale(1.075);
+}
+
+select:not(:hover):focus
+{
+	transform: scale(1.075);
+	outline: none;
+}
+
+option
+{
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
 
 
 
