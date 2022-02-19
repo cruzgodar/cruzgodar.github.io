@@ -1,0 +1,141 @@
+<head>
+	<title>Section 14: Partial Fractions</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 14: Partial Fractions"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/14-partial-fractions/14-partial-fractions.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/252/notes/14-partial-fractions/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 14: Partial Fractions
+
+!text b c Covered Monday of Week 8
+
+<br>
+
+
+
+!begin-text-block
+	
+	We&#x2019;re ready for our final integration technique. This one will let us handle complicated rational functions, which are just one polynomial divided by another. Compared to the first three techniques, which tell us substitutions we can make to simplify the integral, this one just splits one complicated function into many simple ones, each of which we can then integrate separately.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	degree of a polynomial
+	
+	Let $P(x)$ be a polynomial. The degree of $P$, written $\deg(P)$, is the largest exponent on $x$ in $P(x)$.
+	
+!end-def
+
+
+
+!begin-example
+	
+	degree of a polynomial
+	
+	$\deg(x^5 + 2x^4 - 2) = 5$.
+	
+	$\deg(4) = 0$.
+	
+	$\deg(x^3 + 2x^2 - x^3) = 2$.
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	In general, partial fractions will work on functions of the form $\frac{P(x)}{Q(x)}$, where $P$ and $Q$ are polynomials and $\deg(P) &lt; \deg(Q)$. It will always require us to factor $Q$, so let&#x2019;s take a moment to remember how polynomials can factor. Ideally, a polynomial splits into <dfn>linear factors</dfn>. For example, if $Q(x) = x^2 - 5x + 6$, it factors into $(x - 2)(x - 3)$. We call them linear factors because $x - 2$ and $x - 3$ are both linear functions. Sometimes these factors might be repeated: $(x-2)^2(x-3)^2$ is written with linear factors, but both $(x-2)$ and $(x-3)$ appear twice.
+	
+	Finally, there are some polynomials that cannot be split into linear factors. For example, $x^2 + x + 1$ cannot factor &mdash; if we try to use the quadratic formula on it, the part under the square root is $\sqrt{b^2 - 4ac} = \sqrt{1 - 4} = \sqrt{-3}$, so there are no real numbers that solve the equation. We call a factor like $x^2 + x + 1$ an <strong>irreducible quadratic</strong>, because it is quadratic and doesn&#x2019;t split any further.
+	
+	Although the reason why is out of the scope of this class, every polynomial splits into linear and irreducible quadratic factors, possibly repeated. Partial fractions will split $\frac{P(x)}{Q(x)}$ into a handful of terms based on the factors of $Q(x)$, and we&#x2019;ll handle each one with a previous integration technique.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	partial fractions
+	
+	Let $\frac{P(x)}{Q(x)}$ be a ratio of polynomials. Factor $Q$ into linear and irreducible factors, and handle one factor at a time.
+	
+	For a linear factor $(x - a)^n$, add
+	
+	$$
+		\frac{A}{x - a} + \frac{B}{(x - a)^2} + \frac{C}{(x - a)^3} + \cdots + \frac{D}{(x - a)^n}
+	$$
+	
+	to a running total. For a quadratic factor $(x^2 + ax + b)^n$, add
+	
+	$$
+		\frac{Ax + B}{x^2 + ax + b} + \frac{Cx + D}{(x^2 + ax + b)^2} + \frac{Ex + F}{(x^2 + ax + b)^3} + \cdots + \frac{Gx + H}{(x^2 + ax + b)^n}.
+	$$
+	
+	The capital letter variables here are just examples &mdash; make sure they&#x2019;re all different. At the end, you&#x2019;ll have a large sum of terms. Set it equal to $\frac{P(x)}{Q(x)}$ and multiply both sides by the factored form of $Q(x)$. Then foil out everything on the right side and set corresponding coefficients of $x$ equal to one another to solve for all the variables.
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	There&#x2019;s a lot to deal with here, but it&#x2019;s not so bad in practice. Let&#x2019;s start with a simple example and work our way up.
+	
+!end-text-block
+
+
+
+!begin-text-buttons
+	
+	previous l Previous
+	
+	home l Home
+	
+	next l Next
+	
+!end-text-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 14: Partial Fractions",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>

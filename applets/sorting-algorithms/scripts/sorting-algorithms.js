@@ -28,7 +28,8 @@
 		"insertion": insertion_sort,
 		"selection": selection_sort,
 		"heap": heapsort,
-		"merge": merge_sort
+		"merge": merge_sort,
+		"quick": quicksort
 	};
 	
 	let generators = [shuffle_array, null, verify_array];
@@ -148,7 +149,7 @@
 	
 	
 	
-	let algorithm_selector_element = document.querySelector("#algorithm-selector");
+	let algorithm_selector_dropdown_element = document.querySelector("#algorithm-selector-dropdown");
 	
 	
 	
@@ -216,17 +217,22 @@
 		
 		
 		
+		let old_data_length = data_length;
 		data_length = parseInt(array_size_input_element.value || 256);
-		data = new Array(data_length);
-		brightness = new Array(data_length);
 		
-		for (let i = 0; i < data_length; i++)
+		if (data_length !== old_data_length)
 		{
-			data[i] = i;
-			brightness[i] = 0;
-		}
-		
-		wilson.gl.uniform1f(wilson.uniforms["data_length"], data_length);
+			data = new Array(data_length);
+			brightness = new Array(data_length);
+			
+			for (let i = 0; i < data_length; i++)
+			{
+				data[i] = i;
+				brightness[i] = 0;
+			}
+			
+			wilson.gl.uniform1f(wilson.uniforms["data_length"], data_length);
+		}	
 		
 		
 		
@@ -240,7 +246,7 @@
 		
 		
 		
-		generators = [shuffle_array, algorithms[algorithm_selector_element.value], verify_array];
+		generators = [shuffle_array, algorithms[algorithm_selector_dropdown_element.value], verify_array];
 		current_generator_index = 0;
 		
 		audio_nodes = [];
@@ -759,6 +765,90 @@
 			if (block_size >= data_length)
 			{
 				break;
+			}
+		}
+		
+		advance_generator();
+	}
+	
+	
+	
+	function* quicksort()
+	{
+		operations_per_frame = Math.ceil(data_length * Math.log(data_length) / 2250);
+		
+		let current_endpoints = new Array(data_length);
+		current_endpoints[0] = 0;
+		current_endpoints[1] = data_length - 1;
+		
+		let next_endpoints = new Array(data_length);
+		
+		let num_blocks = 1;
+		let next_num_blocks = 0;
+		
+		
+		
+		while (num_blocks > 0)
+		{
+			for (let i = 0; i < num_blocks; i++)
+			{
+				//For each block, pick the middle element as the pivot.
+				let pivot = data[Math.floor((current_endpoints[2 * i] + current_endpoints[2 * i + 1]) / 2)];
+				
+				//Now we need to split the block so that everything before the pivot is less than it and everything after is greater.
+				let left_index = current_endpoints[2 * i] - 1;
+				let right_index = current_endpoints[2 * i + 1] + 1;
+				
+				while (true)
+				{
+					do
+					{
+						left_index++;
+					} while (data[left_index] < pivot)
+					
+					do
+					{
+						right_index--;
+					} while (data[right_index] > pivot)
+					
+					if (left_index >= right_index)
+					{
+						break;
+					}
+					
+					let temp = data[left_index];
+					data[left_index] = data[right_index];
+					data[right_index] = temp;
+					
+					if (write_to_position(left_index)) {yield}
+					if (write_to_position(right_index)) {yield}
+				}
+				
+				if (right_index > current_endpoints[2 * i])
+				{
+					next_endpoints[2 * next_num_blocks] = current_endpoints[2 * i];
+					next_endpoints[2 * next_num_blocks + 1] = right_index;
+					
+					next_num_blocks++;
+				}
+				
+				if (current_endpoints[2 * i + 1] > right_index + 1)
+				{
+					next_endpoints[2 * next_num_blocks] = right_index + 1;
+					next_endpoints[2 * next_num_blocks + 1] = current_endpoints[2 * i + 1];
+					
+					next_num_blocks++;
+				}
+			}
+			
+			
+			
+			num_blocks = next_num_blocks;
+			next_num_blocks = 0;
+			
+			for (let i = 0; i < 2 * num_blocks; i++)
+			{
+				current_endpoints[i] = next_endpoints[i];
 			}
 		}
 		

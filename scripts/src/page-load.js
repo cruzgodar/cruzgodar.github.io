@@ -141,50 +141,21 @@ Page.load = async function()
 	
 	for (let i = 0; i < elements.length; i++)
 	{
-		elements[i].addEventListener("input", () =>
+		let button_element = elements[i].previousElementSibling;
+		
+		button_element.innerHTML = `${elements[i].querySelector(`[value=${elements[i].value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
+		
+		button_element.addEventListener("click", () =>
 		{
-			let option = elements[i].querySelector(`[value=${elements[i].value}]`);
-			
-			let element = document.createElement("p");
-			
-			element.style.position = "fixed";
-			element.style.opacity = "0";
-			element.style.left = "-1000px";
-			element.style.top = "-1000px";
-			element.style.padding = "17px";
-			
-			element.textContent = option.textContent.replace(/ /g, "");
-			
-			
-			document.body.appendChild(element);
-			
-			let width = element.getBoundingClientRect().width;
-			
-			elements[i].style.width = width + "px";
-			
-			element.remove();
+			let event = document.createEvent("MouseEvents");
+			event.initMouseEvent("mousedown", true, true, window);
+			elements[i].dispatchEvent(event);
 		});
 		
-		let option = elements[i].querySelector(`[value=${elements[i].value}]`);
-		
-		let element = document.createElement("p");
-		
-		element.style.position = "fixed";
-		element.style.opacity = "0";
-		element.style.left = "-1000px";
-		element.style.top = "-1000px";
-		element.style.padding = "17px";
-		
-		element.textContent = option.textContent.replace(/ /g, "");
-		
-		
-		document.body.appendChild(element);
-		
-		let width = element.getBoundingClientRect().width;
-		
-		elements[i].style.width = width + "px";
-		
-		element.remove();
+		elements[i].addEventListener("input", () =>
+		{
+			button_element.innerHTML = `${elements[i].querySelector(`[value=${elements[i].value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
+		});
 	}
 	
 	

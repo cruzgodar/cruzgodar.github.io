@@ -455,6 +455,35 @@ Page.Components =
 	
 	
 	
+	get_dropdown: function(args)
+	{
+		let html = "";
+		
+		let id = args[0];
+		
+		html += `<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+				<button class="text-button dropdown no-floating-footer" type="button" id="${id}-dropdown-button" tabindex="-1">`;
+		
+		for (let i = 1; i < args.length; i++)
+		{
+			let value = args[i][0];
+			let text = args[i].slice(1).join(" ");
+			
+			if (i === 1)
+			{
+				html += `${text}</button><select id="${id}-dropdown">`;
+			}
+			
+			html += `<option value="${value}">${text}</option>`;
+		}
+		
+		html += `</select></div></div>`;
+		
+		return html;
+	},
+	
+	
+	
 	get_canvas: function()
 	{
 		return `
@@ -683,6 +712,32 @@ Page.Components =
 					}
 					
 					lines[i] = `</div>`;
+				}
+				
+				
+				
+				else if (words[0] === "!begin-dropdown")
+				{
+					lines[i] = `<div class="text-buttons">`;
+					
+					i += 2;
+					
+					words = lines[i].split(" ");
+					
+					let args = [];
+					
+					while (words[0] !== "!end-dropdown")
+					{
+						args.push(words);
+						
+						lines[i] = "";
+						
+						i += 2;
+						
+						words = lines[i].split(" ");
+					}
+						
+					lines[i] = `${this.get_dropdown(args)}`;
 				}
 				
 				

@@ -4,6 +4,7 @@
 
 .text-boxes, .text-buttons, .sliders
 {
+	position: relative;
 	display: grid;
 	
 	justify-content: center;
@@ -60,6 +61,8 @@
 	
 	cursor: pointer;
 	outline: none;
+	
+	z-index: 10;
 }
 
 .text-button.hover
@@ -71,6 +74,13 @@
 {
 	transform: scale(1.075);
 	outline: none;
+}
+
+.text-button.dropdown
+{
+	border-radius: 100px;
+	
+	white-space: pre;
 }
 
 
@@ -448,38 +458,15 @@ select
 	-moz-appearance: none;
 	appearance: none;
 	
+	width: 0;
+	height: 0;
 	
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
 	
-	color: rgb(127, 127, 127);
-	background-color: rgb(255, 255, 255);
-	//width: 200px;
-	margin: auto;
-	position: relative;
-	
-	text-align: center;
-	text-indent: 5px;
-	
-	font-size: 100%;
-
-	border: 2px solid rgb(127, 127, 127);
-	border-radius: 100px;
-	padding: 10px;
-	
-	cursor: pointer;
-	outline: none;
-	
-	transition: transform .125s ease-in-out, width .125s ease-in-out;
-}
-
-select.hover
-{
-	transform: scale(1.075);
-}
-
-select:not(:hover):focus
-{
-	transform: scale(1.075);
-	outline: none;
+	z-index: 0;
 }
 
 option
