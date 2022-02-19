@@ -29,7 +29,8 @@
 		"selection": selection_sort,
 		"heap": heapsort,
 		"merge": merge_sort,
-		"quick": quicksort
+		"quick": quicksort,
+		"cycle": cycle_sort
 	};
 	
 	let generators = [shuffle_array, null, verify_array];
@@ -794,6 +795,7 @@
 			{
 				//For each block, pick the middle element as the pivot.
 				let pivot = data[Math.floor((current_endpoints[2 * i] + current_endpoints[2 * i + 1]) / 2)];
+				read_from_position(Math.floor((current_endpoints[2 * i] + current_endpoints[2 * i + 1]) / 2));
 				
 				//Now we need to split the block so that everything before the pivot is less than it and everything after is greater.
 				let left_index = current_endpoints[2 * i] - 1;
@@ -804,12 +806,18 @@
 					do
 					{
 						left_index++;
+						read_from_position(left_index);
 					} while (data[left_index] < pivot)
+					
+					read_from_position(left_index);
 					
 					do
 					{
 						right_index--;
+						read_from_position(right_index);
 					} while (data[right_index] > pivot)
+					
+					read_from_position(right_index);
 					
 					if (left_index >= right_index)
 					{
@@ -851,6 +859,63 @@
 				current_endpoints[i] = next_endpoints[i];
 			}
 		}
+		
+		advance_generator();
+	}
+	
+	
+	
+	function* cycle_sort()
+	{
+		operations_per_frame = Math.ceil(data_length / 2000);
+		
+		let done = new Array(data_length);
+		
+		for (let i = 0; i < data_length; i++)
+		{
+			done[i] = false;
+		}
+		
+		for (let i = 0; i < data_length; i++)
+		{
+			if (done[i])
+			{
+				continue;
+			}
+			
+			let popped_entry = data[i];
+			let first_popped_entry = popped_entry;
+			let index = 0;
+			
+			do
+			{
+				//Figure out where this index should go.
+				index = 0;
+				
+				for (let j = 0; j < data_length; j++)
+				{
+					read_from_position(j);
+					
+					if (data[j] < popped_entry)
+					{
+						index++;
+					}
+				}
+				
+				if (popped_entry > first_popped_entry)
+				{
+					index--;
+				}
+				
+				let temp = data[index];
+				data[index] = popped_entry;
+				popped_entry = temp;
+				
+				if (write_to_position(index)) {yield}
+				
+				done[index] = true;
+			} while (index !== i)
+		}	
 		
 		advance_generator();
 	}
