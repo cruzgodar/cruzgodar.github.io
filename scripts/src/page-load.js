@@ -145,13 +145,6 @@ Page.load = async function()
 		
 		button_element.innerHTML = `${elements[i].querySelector(`[value=${elements[i].value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
 		
-		button_element.addEventListener("click", () =>
-		{
-			let event = document.createEvent("MouseEvents");
-			event.initMouseEvent("mousedown", true, true, window);
-			elements[i].dispatchEvent(event);
-		});
-		
 		elements[i].addEventListener("input", () =>
 		{
 			button_element.innerHTML = `${elements[i].querySelector(`[value=${elements[i].value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
@@ -898,6 +891,11 @@ Page.Load =
 				if (!Site.Interaction.currently_touch_device)
 				{
 					element.classList.add("hover");
+					
+					if (element.tagName === "SELECT")
+					{
+						element.previousElementSibling.classList.add("hover");
+					}
 				}
 			});
 			
@@ -907,7 +905,15 @@ Page.Load =
 				{
 					element.classList.remove("hover");
 					
-					element.blur();
+					if (element.tagName === "SELECT")
+					{
+						element.previousElementSibling.classList.remove("hover");
+					}
+					
+					else
+					{
+						element.blur();
+					}	
 				}
 			});
 		},
