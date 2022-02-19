@@ -696,7 +696,7 @@
 				{
 					if (index_2 + i >= data_length || index_2 >= 2*block_size)
 					{
-						if (index_1 >= block_size)
+						if (index_1 >= block_size || i + index_1 >= data_length)
 						{
 							break;
 						}
@@ -709,7 +709,7 @@
 						aux_index++;
 					}
 					
-					else if (index_1 >= block_size)
+					else if (index_1 >= block_size || i + index_1 >= data_length)
 					{
 						aux_array[aux_index] = data[i + index_2];
 						
