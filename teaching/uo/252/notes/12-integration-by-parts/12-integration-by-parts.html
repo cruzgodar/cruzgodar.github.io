@@ -100,6 +100,14 @@
 	
 	Find $\int ye^y\ dy$.
 	
+	Solution: just like in the last example, let $u = y$ and $dv = e^y\ dy$. Then $du = dy$ and $v = e^y$, so we get
+	
+	$$
+		\begin{align*}
+			ye^y - \int e^y\ dy &= ye^y - e^y + C.
+		\end{align*}
+	$$
+	
 !end-exercise
 
 
@@ -175,6 +183,18 @@
 	
 	Find $\int t^2 \cos(2t)\ dt$.
 	
+	Solution: by the same logic, let $u = t^2$ and $dv = \cos(2t)\ dt$. Then $du = 2t\ dt$ and $v = \frac{1}{2} \sin(2t)\ dt$, so the integral becomes
+	
+	$$
+		\frac{1}{2}t^2\sin(2t) - \int \frac{1}{2} \sin(2t) (2t)\ dt = \frac{1}{2}t^2\sin(2t) - \int t \sin(2t)\ dt.
+	$$
+	
+	This is similar to the previous examples we&#x2019;ve done: let $u = t$ and $dv = \sin(2t)\ dt$. Then $du = dt$ and $v = -\frac{1}{2} \cos(2t)$, so we get
+	
+	$$
+		\frac{1}{2}t^2\sin(2t) - \left(-\frac{1}{2} t \cos(2t) - \int -\frac{1}{2} \cos(2t)\ dt \right) = \frac{1}{2}t^2\sin(2t) + \frac{1}{2} t \cos(2t) - \frac{1}{4} \sin(2t) + C.
+	$$
+	
 !end-exercise
 
 
@@ -244,6 +264,30 @@
 	integration by parts on definite integrals
 	
 	Find $\int_1^3 x^3 \sin(x^2)\ dx$.
+	
+	Solution: we see a composition ($\sin(x^2)$), so we should try $u$-sub before integrating by parts. Let $u = x^2$, so that $du = 2x\ dx$. Then $\frac{1}{2} du = x\ dx$, so the integral becomes
+	
+	$$
+		\int_1^3 \frac{1}{2} u \sin(u)\ du.
+	$$
+	
+	Now there&#x2019;s nothing left to do but integrate by parts. We&#x2019;re already using $u$ as a variable, so let&#x2019;s set $w = \frac{1}{2}u$ and $dv = \sin(u)\ du$. Then we have $dw = \frac{1}{2}\ du$ and $v = -\cos(u)$, so the integral becomes
+	
+	$$
+		-\frac{1}{2} u \cos(u) + \int \frac{1}{2} \cos(u)\ du = -\frac{1}{2} u \cos(u) + \frac{1}{2} \sin(u).
+	$$
+	
+	Now it&#x2019;s time to back-substitute for $u$.
+	
+	$$
+		-\frac{1}{2} x^2 \cos(x^2) + \frac{1}{2} \sin(x^2).
+	$$
+	
+	Finally, we can evaluate the integral limits.
+	
+	$$
+		\left. \left[ -\frac{1}{2} x^2 \cos(x^2) + \frac{1}{2} \sin(x^2) \right] \right|_1^3 = \frac{1}{2} (\sin(9) - 9\cos(9) - \sin(1) + \cos(1)).
+	$$
 	
 !end-exercise
 

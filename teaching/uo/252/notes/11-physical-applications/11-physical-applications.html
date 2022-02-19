@@ -68,6 +68,8 @@
 	
 	A cart is rolling down a hill, and you try to stop it. You apply a force of $x\ N$ <strong>against</strong> the cart when it has rolled $x\ m$, and it finally comes to a stop after $3$ meters. How much work do you do? Note that force applied against the direction of motion counts as negative.
 	
+	Solution: the integral is $\int_0^3 -x\ dx = \left. \left[ -\frac{x^2}{2} \right] \right|_0^3 = -\frac{9}{2}$.
+	
 !end-exercise
 
 
@@ -105,6 +107,8 @@
 	Hooke&#x2019;s law
 	
 	A spring is stretched $1\ m$, and it takes a force of $5\ N$ to stretch it more at that point. How much work is done by compressing the spring $.1\ m$ from its resting position?
+	
+	Solution: since the force is given by $F(x) = kx$ and $F(1) = 5$, we have that $k = 5$. We now want to find the work, which is $\int_0^{.1} 5x\ dx = \left. \left[ \frac{5x^2}{2} \right] \right|_0^{.1} = .025\ Nm$.
 	
 !end-exercise
 
@@ -159,6 +163,8 @@
 	
 	Suppose a bar has density $\rho(x) = \ln(x)$ on $[1, e]$. Find its mass.
 	
+	Solution: this is $\int_1^e \ln(x)\ dx = \left. \left[ x\ln(x) - x \right] \right|_1^e = (e - e) - (-1) = 1$.
+	
 !end-exercise
 
 
@@ -196,6 +202,8 @@
 	mass of a washer
 	
 	Suppose a washer has radial density $\rho(r) = \frac{1}{r^2}$ for $2 \leq r \leq 4$. Find its mass.
+	
+	Solution: we have $\int_2^4 2\pi r \frac{1}{r^2}\ dr = \left. \left[ 2\pi \ln(r) \right] \right|_2^4 = 2\pi(\ln(4) - \ln(2))$.
 	
 !end-exercise
 
