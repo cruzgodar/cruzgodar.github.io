@@ -32,7 +32,8 @@
 		"quick": quicksort,
 		"cycle": cycle_sort,
 		"msd-radix": msd_radix_sort,
-		"lsd-radix": lsd_radix_sort
+		"lsd-radix": lsd_radix_sort,
+		"gravity": gravity_sort
 	};
 	
 	let generators = [shuffle_array, null, verify_array];
@@ -352,9 +353,12 @@
 		num_reads++;
 	}
 	
-	function write_to_position(index)
+	function write_to_position(index, highlight = true, sound = true)
 	{
-		brightness[index] = max_brightness - 1;
+		if (highlight)
+		{
+			brightness[index] = max_brightness - 1;
+		}	
 		
 		num_writes++;
 		in_frame_operations++;
@@ -363,8 +367,11 @@
 		{
 			in_frame_operations = 0;
 			
-			play_sound(index);
-			
+			if (sound)
+			{
+				play_sound(index);
+			}	
+				
 			return true;
 		}
 		
@@ -885,6 +892,8 @@
 				continue;
 			}
 			
+			read_from_position(i);
+			
 			let popped_entry = data[i];
 			let first_popped_entry = popped_entry;
 			let index = 0;
@@ -932,6 +941,8 @@
 		
 		for (let i = 0; i < data_length; i++)
 		{
+			read_from_position(i);
+			
 			let key_length = Math.log(data[i]) * denom;
 			
 			max_key_length = Math.max(max_key_length, key_length);
@@ -969,6 +980,8 @@
 				
 				for (let j = current_endpoints[2 * i]; j <= current_endpoints[2 * i + 1]; j++)
 				{
+					read_from_position(j);
+					
 					let digit = Math.floor(data[j] / div) % 2;
 					
 					if (digit === 0)
@@ -1043,6 +1056,8 @@
 		
 		for (let i = 0; i < data_length; i++)
 		{
+			read_from_position(i);
+			
 			let key_length = Math.log(data[i]) * denom;
 			
 			max_key_length = Math.max(max_key_length, key_length);
@@ -1069,6 +1084,8 @@
 			
 			for (let j = 0; j < data_length; j++)
 			{
+				read_from_position(j);
+				
 				let digit = Math.floor(data[j] / div) % 2;
 				
 				if (digit === 0)
@@ -1112,6 +1129,80 @@
 		}
 		
 		
+		
+		advance_generator();
+	}
+	
+	
+	
+	function* gravity_sort()
+	{
+		operations_per_frame = 1;//Math.ceil(data_length * data_length / 10000);
+		
+		let beads = new Array(data_length);
+		
+		for (let i = 0; i < data_length; i++)
+		{
+			beads[i] = new Array(data_length);
+			
+			for (let j = 0; j < data_length; j++)
+			{
+				beads[i][j] = false;
+			}
+		}
+		
+		let max_index = 0;
+		let max_entry = 0;
+		
+		for (let i = 0; i < data_length; i++)
+		{
+			read_from_position(i);
+			
+			let size = data[i];
+			
+			for (let j = 0; j < size; j++)
+			{
+				beads[i][j] = true;
+			}
+			
+			if (size - i > max_entry)
+			{
+				max_entry = size - i;
+				max_index = i;
+			}
+		}
+		
+		for (let j = 0; j < data_length; j++)
+		{
+			for (let i = data_length - 1; i >= 0; i--)
+			{
+				if (beads[i][j])
+				{	
+					let target_row = i;
+					
+					do
+					{
+						target_row++;
+					} while (target_row < data_length && !beads[target_row][j])
+					
+					target_row--;
+					
+					beads[i][j] = false;
+					beads[target_row][j] = true;
+					
+					data[i]--;
+					data[target_row]++;
+					
+					write_to_position(i, false, false);
+					write_to_position(target_row, false, false);
+				}
+			}
+			
+			if (write_to_position(max_index, false, true)) {yield}
+			
+			num_writes--;
+			in_frame_operations--;
+		}
 		
 		advance_generator();
 	}
