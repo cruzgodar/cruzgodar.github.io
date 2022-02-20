@@ -156,6 +156,25 @@
 	
 	let algorithm_selector_dropdown_element = document.querySelector("#algorithm-selector-dropdown");
 	
+	algorithm_selector_dropdown_element.addEventListener("input", () =>
+	{
+		Page.set_element_styles(".info-text", "opacity", 0);
+		
+		setTimeout(() =>
+		{
+			Page.set_element_styles(".info-text", "display", "none");
+			
+			let element = document.querySelector(`#${algorithm_selector_dropdown_element.value}-info`);
+			
+			element.style.display = "block";
+			
+			setTimeout(() =>
+			{
+				element.style.opacity = 1;
+			}, 10);
+		}, Site.opacity_animation_time);	
+	});
+	
 	
 	
 	let generate_button_element = document.querySelector("#generate-button");
@@ -189,6 +208,8 @@
 	
 	
 	let play_sound_checkbox_element = document.querySelector("#play-sound-checkbox");
+	
+	play_sound_checkbox_element.checked = true;
 	
 	let audio_context = null;
 	let audio_oscillator = null;

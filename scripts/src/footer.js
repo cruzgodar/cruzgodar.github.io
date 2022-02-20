@@ -24,7 +24,7 @@ Page.Footer =
 {
 	load: function()
 	{
-		let delay = Site.opacity_animation_time / 3;
+		let delay = Site.aos_separation_time;
 		
 		
 		
@@ -72,7 +72,7 @@ Page.Footer =
 				</div>
 			`;
 			
-			delay += Site.opacity_animation_time / 3;
+			delay += Site.aos_separation_time;
 		}
 		
 		
@@ -93,7 +93,7 @@ Page.Footer =
 				</div>
 			`;
 			
-			delay += Site.opacity_animation_time / 3;
+			delay += Site.aos_separation_time;
 		}
 				
 				
@@ -114,7 +114,7 @@ Page.Footer =
 				</div>
 			`;
 			
-			delay += Site.opacity_animation_time / 3;
+			delay += Site.aos_separation_time;
 		}
 		
 		
@@ -135,7 +135,7 @@ Page.Footer =
 				</div>
 			`;
 			
-			delay += Site.opacity_animation_time / 3;
+			delay += Site.aos_separation_time;
 		}
 		
 		
@@ -156,7 +156,7 @@ Page.Footer =
 				</div>
 			`;
 			
-			delay += Site.opacity_animation_time / 3;
+			delay += Site.aos_separation_time;
 		}
 		
 		

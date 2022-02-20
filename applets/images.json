@@ -7,6 +7,12 @@
 	
 	
 	
+	"sorting-algorithms":
+	{
+		"webp": "sorting-algorithms/cover.webp",
+		"non-webp": "sorting-algorithms/cover.jpg"
+	},
+	
 	"complex-tori":
 	{
 		"webp": "complex-tori/cover.webp",
