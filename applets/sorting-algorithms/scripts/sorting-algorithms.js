@@ -43,6 +43,7 @@
 	let num_writes = 0;
 	let in_frame_operations = 0;
 	let operations_per_frame = 1;
+	let update_reads_and_writes = false;
 	
 	let changing_sound = false;
 	
@@ -195,6 +196,12 @@
 	
 	
 	
+	let num_reads_element = document.querySelector("#num-reads");
+	
+	let num_writes_element = document.querySelector("#num-writes");
+	
+	
+	
 	let download_button_element = document.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
@@ -243,6 +250,11 @@
 		num_reads = 0;
 		num_writes = 0;
 		in_frame_operations = 0;
+		
+		update_reads_and_writes = false;
+		
+		num_reads_element.textContent = "0";
+		num_writes_element.textContent = "0";
 		
 		
 		
@@ -298,6 +310,12 @@
 		wilson.render.draw_frame();
 		
 		decrease_brightness();
+		
+		if (update_reads_and_writes)
+		{
+			num_reads_element.textContent = num_reads;
+			num_writes_element.textContent = num_writes;
+		}
 		
 		if (!changing_sound)
 		{
@@ -361,6 +379,7 @@
 		}	
 		
 		num_writes++;
+		
 		in_frame_operations++;
 		
 		if (in_frame_operations >= operations_per_frame)
@@ -442,6 +461,8 @@
 		num_reads = 0;
 		num_writes = 0;
 		
+		update_reads_and_writes = true;
+		
 		advance_generator();
 	}
 	
@@ -449,7 +470,7 @@
 	
 	function* verify_array()
 	{
-		console.log(num_reads, num_writes);
+		update_reads_and_writes = false;
 		
 		operations_per_frame = Math.ceil(data_length / 60);
 		
