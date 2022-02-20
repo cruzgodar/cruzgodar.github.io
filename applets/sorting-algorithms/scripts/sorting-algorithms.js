@@ -31,7 +31,7 @@
 		"merge": merge_sort,
 		"quick": quicksort,
 		"cycle": cycle_sort,
-		"counting": counting_sort
+		"radix": radix_sort
 	};
 	
 	let generators = [shuffle_array, null, verify_array];
@@ -923,60 +923,111 @@
 	
 	
 	
-	function* counting_sort()
+	function* radix_sort()
 	{
-		operations_per_frame = Math.ceil(data_length / 1000);
+		let max_key_length = 0;
 		
-		//Figure out how many keys we need.
-		let num_keys = 0;
-		
-		for (let i = 0; i < data_length; i++)
-		{
-			num_keys = Math.max(num_keys, data[i]);
-			
-			read_from_position(i);
-		}
-		
-		num_keys++;
-		
-		//Figure out how many of each key there are.
-		let counts = new Array(num_keys);
-		
-		for (let i = 0; i < num_keys; i++)
-		{
-			counts[i] = 0;
-		}
+		let denom = 1 / Math.log(2);
 		
 		for (let i = 0; i < data_length; i++)
 		{
-			counts[data[i]]++;
+			let key_length = Math.log(data[i]) * denom;
 			
-			read_from_position(i);
+			max_key_length = Math.max(max_key_length, key_length);
 		}
 		
-		//Compute partial sums.
-		for (let i = 1; i < num_keys; i++)
-		{
-			counts[i] += counts[i - 1];
-		}
+		max_key_length = Math.round(max_key_length);
+		
+		
+		
+		operations_per_frame = Math.ceil(data_length * max_key_length / 500);
+		
+		
+		
+		let current_endpoints = new Array(data_length);
+		current_endpoints[0] = 0;
+		current_endpoints[1] = data_length - 1;
+		
+		let next_endpoints = new Array(data_length);
+		
+		let num_blocks = 1;
+		let next_num_blocks = 0;
 		
 		let aux_array = new Array(data_length);
 		
-		for (let i = 0; i < data_length; i++)
+		
+		
+		let div = Math.pow(2, max_key_length - 1);
+		
+		for (let key_pos = 0; key_pos < max_key_length; key_pos++)
 		{
-			aux_array[i] = data[i];
+			for (let i = 0; i < num_blocks; i++)
+			{
+				let index_0 = current_endpoints[2 * i];
+				let index_1 = current_endpoints[2 * i + 1];
+				
+				for (let j = current_endpoints[2 * i]; j <= current_endpoints[2 * i + 1]; j++)
+				{
+					let digit = Math.floor(data[j] / div) % 2;
+					
+					if (digit === 0)
+					{
+						aux_array[index_0] = data[j];
+						
+						if (write_to_position(index_0)) {yield}
+						
+						index_0++;
+					}
+					
+					else
+					{
+						aux_array[index_1] = data[j];
+						
+						if (write_to_position(index_1)) {yield}
+						
+						index_1--;
+					}
+				}
+				
+				for (let j = current_endpoints[2 * i]; j <= current_endpoints[2 * i + 1]; j++)
+				{
+					data[j] = aux_array[j];
+					
+					if (write_to_position(j)) {yield}
+				}
+				
+				index_0--;
+				index_1++;
+				
+				if (index_0 > current_endpoints[2 * i])
+				{
+					next_endpoints[2 * next_num_blocks] = current_endpoints[2 * i];
+					next_endpoints[2 * next_num_blocks + 1] = index_0;
+					
+					next_num_blocks++;
+				}	
+				
+				if (current_endpoints[2 * i + 1] > index_1)
+				{
+					next_endpoints[2 * next_num_blocks] = index_1;
+					next_endpoints[2 * next_num_blocks + 1] = current_endpoints[2 * i + 1];
+					
+					next_num_blocks++;
+				}			
+			}
 			
-			if (write_to_position(i)) {yield}
+			num_blocks = next_num_blocks;
+			next_num_blocks = 0;
+			
+			for (let i = 0; i < 2 * num_blocks; i++)
+			{
+				current_endpoints[i] = next_endpoints[i];
+			}
+			
+			div /= 2;
 		}
 		
-		//Sort the array.
-		for (let i = data_length - 1; i >= 0; i--)
-		{
-			counts[aux_array[i]]--;
-			data[counts[aux_array[i]]] = aux_array[i];
-			
-			if (write_to_position(counts[aux_array[i]])) {yield}
-		}
+		
 		
 		advance_generator();
 	}
