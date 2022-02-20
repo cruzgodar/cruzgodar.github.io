@@ -30,7 +30,8 @@
 		"heap": heapsort,
 		"merge": merge_sort,
 		"quick": quicksort,
-		"cycle": cycle_sort
+		"cycle": cycle_sort,
+		"counting": counting_sort
 	};
 	
 	let generators = [shuffle_array, null, verify_array];
@@ -916,6 +917,66 @@
 				done[index] = true;
 			} while (index !== i)
 		}	
+		
+		advance_generator();
+	}
+	
+	
+	
+	function* counting_sort()
+	{
+		operations_per_frame = Math.ceil(data_length / 1000);
+		
+		//Figure out how many keys we need.
+		let num_keys = 0;
+		
+		for (let i = 0; i < data_length; i++)
+		{
+			num_keys = Math.max(num_keys, data[i]);
+			
+			read_from_position(i);
+		}
+		
+		num_keys++;
+		
+		//Figure out how many of each key there are.
+		let counts = new Array(num_keys);
+		
+		for (let i = 0; i < num_keys; i++)
+		{
+			counts[i] = 0;
+		}
+		
+		for (let i = 0; i < data_length; i++)
+		{
+			counts[data[i]]++;
+			
+			read_from_position(i);
+		}
+		
+		//Compute partial sums.
+		for (let i = 1; i < num_keys; i++)
+		{
+			counts[i] += counts[i - 1];
+		}
+		
+		let aux_array = new Array(data_length);
+		
+		for (let i = 0; i < data_length; i++)
+		{
+			aux_array[i] = data[i];
+			
+			if (write_to_position(i)) {yield}
+		}
+		
+		//Sort the array.
+		for (let i = data_length - 1; i >= 0; i--)
+		{
+			counts[aux_array[i]]--;
+			data[counts[aux_array[i]]] = aux_array[i];
+			
+			if (write_to_position(counts[aux_array[i]])) {yield}
+		}
 		
 		advance_generator();
 	}
