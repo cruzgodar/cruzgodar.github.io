@@ -19,6 +19,7 @@
 	let do_play_sound = true;
 	
 	let last_timestamp = -1;
+	let time_elapsed = 0;
 	
 	let starting_process_id = null;
 	
@@ -234,7 +235,7 @@
 	
 	function draw_sorting_algorithm()
 	{
-		try {audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + .016);}
+		try {audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + time_elapsed / 1000);}
 		catch(ex) {}
 		
 		
@@ -305,7 +306,7 @@
 	
 	function draw_frame(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		time_elapsed = timestamp - last_timestamp;
 		
 		last_timestamp = timestamp;
 		
@@ -349,7 +350,7 @@
 		{
 			console.log("Terminated applet process");
 			
-			try {audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + .016);}
+			try {audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + time_elapsed / 1000);}
 			catch(ex) {}
 			
 			return;
@@ -422,7 +423,7 @@
 	{
 		if (do_play_sound)
 		{
-			audio_nodes[current_generator_index][1].frequency.linearRampToValueAtTime((max_frequency - min_frequency) * data[index] / data_length + min_frequency, audio_nodes[current_generator_index][0].currentTime + .016);
+			audio_nodes[current_generator_index][1].frequency.linearRampToValueAtTime((max_frequency - min_frequency) * data[index] / data_length + min_frequency, audio_nodes[current_generator_index][0].currentTime + time_elapsed / 1000);
 		}
 	}
 	
@@ -440,7 +441,7 @@
 		
 		if (do_play_sound)
 		{
-			audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + .016);
+			audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + time_elapsed / 1000);
 		}
 		
 		current_generator_index++;
@@ -503,7 +504,7 @@
 		
 		if (do_play_sound)
 		{
-			audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + .016);
+			audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + time_elapsed / 1000);
 		}
 	}
 	
