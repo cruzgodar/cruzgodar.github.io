@@ -31,7 +31,8 @@
 		"merge": merge_sort,
 		"quick": quicksort,
 		"cycle": cycle_sort,
-		"radix": radix_sort
+		"msd-radix": msd_radix_sort,
+		"lsd-radix": lsd_radix_sort
 	};
 	
 	let generators = [shuffle_array, null, verify_array];
@@ -923,7 +924,7 @@
 	
 	
 	
-	function* radix_sort()
+	function* msd_radix_sort()
 	{
 		let max_key_length = 0;
 		
@@ -940,7 +941,7 @@
 		
 		
 		
-		operations_per_frame = Math.ceil(data_length * max_key_length / 500);
+		operations_per_frame = Math.ceil(data_length * max_key_length / 650);
 		
 		
 		
@@ -1025,6 +1026,89 @@
 			}
 			
 			div /= 2;
+		}
+		
+		
+		
+		advance_generator();
+	}
+	
+	
+	
+	function* lsd_radix_sort()
+	{
+		let max_key_length = 0;
+		
+		let denom = 1 / Math.log(2);
+		
+		for (let i = 0; i < data_length; i++)
+		{
+			let key_length = Math.log(data[i]) * denom;
+			
+			max_key_length = Math.max(max_key_length, key_length);
+		}
+		
+		max_key_length = Math.round(max_key_length);
+		
+		
+		
+		operations_per_frame = Math.ceil(data_length * max_key_length / 650);
+		
+		
+		
+		let aux_array = new Array(data_length);
+		
+		
+		
+		let div = 1;
+		
+		for (let key_pos = 0; key_pos < max_key_length; key_pos++)
+		{
+			let index_0 = 0;
+			let index_1 = data_length - 1;
+			
+			for (let j = 0; j < data_length; j++)
+			{
+				let digit = Math.floor(data[j] / div) % 2;
+				
+				if (digit === 0)
+				{
+					aux_array[index_0] = data[j];
+					
+					if (write_to_position(index_0)) {yield}
+					
+					index_0++;
+				}
+				
+				else
+				{
+					aux_array[index_1] = data[j];
+					
+					if (write_to_position(index_1)) {yield}
+					
+					index_1--;
+				}
+			}
+			
+			index_0--;
+			index_1++;
+			
+			for (let j = 0; j <= index_0; j++)
+			{
+				data[j] = aux_array[j];
+				
+				if (write_to_position(j)) {yield}
+			}
+			
+			//We need to take care to reverse the top half of aux_array.
+			for (let j = 0; j < data_length - index_1; j++)
+			{
+				data[index_1 + j] = aux_array[data_length - 1 - j];
+				
+				if (write_to_position(index_1 + j)) {yield}
+			}
+			
+			div *= 2;
 		}
 		
 		
