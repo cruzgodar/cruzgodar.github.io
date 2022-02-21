@@ -198,10 +198,14 @@ Page.Components =
 		
 		
 		
+		let src = `${file_path.slice(0, file_path.lastIndexOf("/") + 1)}cover.${Page.Images.file_extension}`;
+		
+		
+		
 		return `
 			<div class="image-link${light_text}" data-aos="fade-up">
 				<a href="${file_path}" tabindex="-1">
-					<img data-image-id="${id}" class="check-webp no-floating-footer" src="" alt="${subtext}" tabindex="1"></img>
+					<img data-image-id="${id}" src="${src}" alt="${subtext}" tabindex="1"></img>
 				</a>
 				
 				<p class="image-link-subtext">${subtext}</p>
@@ -343,7 +347,7 @@ Page.Components =
 		
 		return `
 			<div class="text-box-container" data-aos="fade-up">
-				<input id="${id}-input" class="text-box no-floating-footer" type="text" value="${value}" tabindex="1">
+				<input id="${id}-input" class="text-box" type="text" value="${value}" tabindex="1">
 				<label for="${id}-input">
 					<p class="body-text">${text}</p>
 				</label>
@@ -374,7 +378,7 @@ Page.Components =
 		
 		return `
 			<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
-				<button class="text-button${linked_string} no-floating-footer" type="button" id="${id}-button" tabindex="-1">${text}</button>
+				<button class="text-button${linked_string}" type="button" id="${id}-button" tabindex="-1">${text}</button>
 			</div>
 		`;
 	},
@@ -393,8 +397,8 @@ Page.Components =
 			<div class="checkbox-row">
 				<div data-aos="zoom-out">
 					<div class="checkbox-container click-on-child" tabindex="1">
-						<input type="checkbox" id="${id}-checkbox" class="no-floating-footer">
-						<div class="checkbox no-floating-footer"></div>
+						<input type="checkbox" id="${id}-checkbox">
+						<div class="checkbox"></div>
 					</div>
 				</div>
 				
@@ -421,8 +425,8 @@ Page.Components =
 			<div class="radio-button-row">
 				<div data-aos="zoom-out">
 					<div class="radio-button-container click-on-child" tabindex="1">
-						<input type="radio" name="${name}" id="${id}-radio-button" class="no-floating-footer">
-						<div class="radio-button no-floating-footer"></div>
+						<input type="radio" name="${name}" id="${id}-radio-button">
+						<div class="radio-button"></div>
 					</div>
 				</div>
 				
@@ -445,7 +449,7 @@ Page.Components =
 		
 		return `
 			<div class="slider-container" data-aos="fade-up">
-				<input id="${id}-slider" class="no-floating-footer" type="range" min="0" max="10000" value="${value}" tabindex="1">
+				<input id="${id}-slider" type="range" min="0" max="10000" value="${value}" tabindex="1">
 				<label for="${id}-slider">
 					<p class="body-text">${text}: <span id="${id}-slider-value">0</span></p>
 				</label>
@@ -462,7 +466,7 @@ Page.Components =
 		let id = args[0];
 		
 		html += `<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
-				<button class="text-button dropdown no-floating-footer" type="button" id="${id}-dropdown-button" tabindex="-1">`;
+				<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1">`;
 		
 		for (let i = 1; i < args.length; i++)
 		{

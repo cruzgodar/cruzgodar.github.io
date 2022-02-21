@@ -165,12 +165,9 @@ Page.load = async function()
 	
 	this.Load.fade_in();
 	
+	this.Images.add_extensions();
 	
-	
-	Page.Images.insert().then(() =>
-	{
-		this.Load.AOS.on_resize();
-	});
+	this.Load.AOS.on_resize();
 	
 	Page.Banner.fetch_other_page_banners_in_background();
 	

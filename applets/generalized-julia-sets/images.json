@@ -1,7 +1,0 @@
-{
-	"mandelbrot-set":
-	{
-		"webp": "graphics/mandelbrot-set.webp",
-		"non-webp": "graphics/mandelbrot-set.png"
-	}
-}

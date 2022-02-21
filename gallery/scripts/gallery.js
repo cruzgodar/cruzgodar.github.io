@@ -26,6 +26,8 @@
 	
 	for (let i = 0; i < elements.length; i++)
 	{
+		elements[i].src = `${Page.parent_folder}high-res/${elements[i].getAttribute("data-image-id")}.${Page.Images.file_extension}`;
+		
 		elements[i].addEventListener("click", e =>
 		{
 			show_full_res_image(e.target.getAttribute("data-image-id"));

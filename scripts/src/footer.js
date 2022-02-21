@@ -284,31 +284,31 @@ Page.Footer =
 					
 					<div id="floating-footer-gallery-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 6.25px">
 						<a href="/gallery/gallery.html" tabindex="-1">
-							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/gallery/gallery.html')" src="/gallery/cover.${Page.Images.file_extension}" alt="Gallery" tabindex="1"></img>
+							<img onclick="Page.Navigation.redirect('/gallery/gallery.html')" src="/gallery/cover.${Page.Images.file_extension}" alt="Gallery" tabindex="1"></img>
 						</a>
 					</div>
 					
 					<div id="floating-footer-applets-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 55.25px">
 						<a href="/applets/applets.html" tabindex="-1">
-							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="1"></img>
+							<img onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="1"></img>
 						</a>
 					</div>
 					
 					<div id="floating-footer-writing-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 104.25px">
 						<a href="/writing/writing.html" tabindex="-1">
-							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/writing/writing.html')" src="/writing/cover.${Page.Images.file_extension}" alt="Writing" tabindex="1"></img>
+							<img onclick="Page.Navigation.redirect('/writing/writing.html')" src="/writing/cover.${Page.Images.file_extension}" alt="Writing" tabindex="1"></img>
 						</a>
 					</div>
 					
 					<div id="floating-footer-teaching-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 153.25px">
 						<a href="/teaching/teaching.html" tabindex="-1">
-							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/teaching/teaching.html')" src="/teaching/cover.${Page.Images.file_extension}" alt="Teaching" tabindex="1"></img>
+							<img onclick="Page.Navigation.redirect('/teaching/teaching.html')" src="/teaching/cover.${Page.Images.file_extension}" alt="Teaching" tabindex="1"></img>
 						</a>
 					</div>
 					
 					<div id="floating-footer-bio-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 202.25px">
 						<a href="/bio/bio.html" tabindex="-1">
-							<img class="no-floating-footer" onclick="Page.Navigation.redirect('/bio/bio.html')" src="/bio/cover.${Page.Images.file_extension}" alt="Me" tabindex="1"></img>
+							<img onclick="Page.Navigation.redirect('/bio/bio.html')" src="/bio/cover.${Page.Images.file_extension}" alt="Me" tabindex="1"></img>
 						</a>
 					</div>
 					
