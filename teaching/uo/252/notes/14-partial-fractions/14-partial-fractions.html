@@ -108,7 +108,7 @@
 	
 	partial fractions
 	
-	Find $\int \frac{3x + 2}{x^3 - x^2 - 2x}\ dx.
+	Find $\int \frac{3x + 2}{x^3 - x^2 - 2x}\ dx$.
 	
 	Let&#x2019;s go down the checklist. We can&#x2019;t use $u$-sub, because nothing in the denominator has a derivative matching something in the numerator. We can&#x2019;t integrate by parts, because we don&#x2019;t know how to integrate $\frac{1}{x^3 - x^2 - 2x}$ and differentiating it just makes it worse. Trig sub is a non-starter because there are no patterns matching it. Instead, since this is one polynomial divided by another and the degree of the top (1) is less than the degree of the bottom (3), we can use partial fractions. The first step is to factor the denominator. First we can take an $x$ out: $x(x^2 - x - 2)$. Next we can factor the remaining quadratic as $(x+1)(x-2)$, so the total polynomial becomes $x(x+1)(x-2)$. Now each of these is a linear factor (since there&#x2019;s no $x^2$), so partial fractions says that the whole function decomposes as
 	
@@ -128,13 +128,13 @@
 		3x + 2 = Ax^2 - Ax - 2A + Bx^2 - 2Bx + Cx^2 + Cx.
 	$$
 	
-	Now we group like terms.
+	Next we need to group like terms.
 	
 	$$
 		3x + 2 = (A + B + C)x^2 + (-A - 2B + C)x - 2A.
 	$$
 	
-	Now for these polynomials to be equal, the coefficients on $x$ must be the same, and so must the coefficients on $x^2$, and so on. That means
+	For these polynomials to be equal, the coefficients on $x$ must be the same, and so must the coefficients on $x^2$, and so on. That means
 	
 	$$
 		\begin{align*}
@@ -153,9 +153,202 @@
 		\end{align*}
 	$$
 	
-	Now 
+	We can solve this by substitution. Solving the first equation for $B$ gives us $B = 1 - C$, so the second one becomes $C = 2 + 2B = 2 + 2 - 2C$. Then $3C = 4$, so $C = \frac{4}{3}$. Finally, $B = 1 - \frac{4}{3} = -\frac{1}{3}$. Therefore, we have
+	
+	$$
+		\frac{3x + 2}{x(x+1)(x-2)} = -\frac{1}{x} - \frac{1/3}{x + 1} + \frac{4/3}{x - 2}.
+	$$
+	
+	Finally, we can integrate each of these separately.
+	
+	$$
+		\int \left( -\frac{1}{x} - \frac{1/3}{x + 1} + \frac{4/3}{x - 2} \right)\ dx = -\ln|x| - \frac{1}{3} \ln|x + 1| + \frac{4}{3} \ln|x - 2| + C.
+	$$
 	
 !end-example
+
+!begin-exercise
+	
+	partial fractions
+	
+	Find $\int \frac{x - 2}{(x - 1)(2x - 1)}\ dx$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	The next most complicated type of example involves linear factors raised to a power. Partial fractions tells us to write as many terms as the power, incrementing the power of the denominator by one each time.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	partial fractions with a linear factor to a power
+	
+	Find $\int \frac{8x}{(x-1)(x+1)^3}\ dx$.
+	
+	By partial fractions, we have
+	
+	$$
+		\begin{align*}
+			\frac{8x}{(x-1)(x+1)^3} &= \frac{A}{x - 1} + \frac{B}{x + 1} + \frac{C}{(x + 1)^2} + \frac{D}{(x + 1)^3}\\
+			8x &= A(x+1)^3 + B(x-1)(x+1)^2 + C(x-1)(x+1) + D(x-1)\\
+			8x &= A(x^3 + 3x^2 + 3x + 1) + B(x^3 + x^2 - x - 1) + C(x^2 - 1) + D(x - 1)\\
+			8x &= (A + B)x^3 + (3A + B + C)x^2 + (3A - B + D)x + (A - B - C - D),
+		\end{align*}
+	$$
+	
+	which turns into
+	
+	$$
+		\begin{align*}
+			0 &= A + B\\
+			0 &= 3A + B + C\\
+			8 &= 3A - B + D\\
+			0 &= A - B - C - D.
+		\end{align*}
+	$$
+	
+	The first equation becomes $A = -B$, so we get
+	
+	$$
+		\begin{align*}
+			0 &= -2B + C\\
+			8 &= -4B + D\\
+			0 &= -2B - C - D.
+		\end{align*}
+	$$
+	
+	Then $B = \frac{1}{2} C$, so
+	
+	$$
+		\begin{align*}
+			8 &= -2C + D\\
+			0 &= -2C - D.
+		\end{align*}
+	$$
+	
+	The last equation says that $D = -2C$, so finally, we have
+	
+	$$
+		8 = -4C.
+	$$
+	
+	Therefore, $C = -2$, so $D = 4$, $B = -1$, and $A = 1$. Putting it all back together, we get
+	
+	$$
+		\begin{align*}
+			\frac{8x}{(x-1)(x+1)^3} &= \frac{1}{x - 1} - \frac{1}{x + 1} - \frac{2}{(x + 1)^2} + \frac{4}{(x + 1)^3}\\
+			\int \frac{8x}{(x-1)(x+1)^3}\ dx &= \int \left( \frac{1}{x - 1} - \frac{1}{x + 1} - 2(x + 1)^{-2} + 4(x + 1)^{-3} \right)\\
+			&= \ln |x - 1| - \ln |x + 1| + 2(x + 1)^{-1} - 2(x + 1)^{-2} + C.
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	partial fractions with a linear factor to a power
+	
+	Find $\int \frac{27x^2}{(x+1)(x-2)^2}\ dx$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	The final thing to deal with is when there is an irreducible quadratic factor, like $x^2 + 1$. For these, we just change the numerator from $A$ to $Ax + B$, but we leave everything else the same.
+	
+!end-text-block
+
+!begin-example
+	
+	partial fractions with an irreducible quadratic factor
+	
+	Find $\int \frac{9}{(x^2 + 2)(x+1)^2}\ dx$.
+	
+	By partial fractions, we have
+	
+	$$
+		\begin{align*}
+			\frac{9}{(x^2 + 2)(x+1)^2} &= \frac{Ax + B}{x^2 + 2} + \frac{C}{x + 1} + \frac{D}{(x + 1)^2}\\
+			9 &= (Ax + B)(x+1)^2 + C(x^2 + 2)(x+1) + D(x^2 + 2)\\
+			9 &= (Ax + B)(x^2 + 2x + 1) + C(x^3 + x^2 + 2x + 2) + D(x^2 + 2)\\
+			9 &= (A + C)x^3 + (2A + B + C + D)x^2 + (A + 2B + 2C)x + (B + 2C + 2D),
+		\end{align*}
+	$$
+	
+	which turns into
+	
+	$$
+		\begin{align*}
+			0 &= A + C\\
+			0 &= 2A + B + C + D\\
+			0 &= A + 2B + 2C\\
+			9 &= B + 2C + 2D.
+		\end{align*}
+	$$
+	
+	The first equation becomes $A = -C$, so we get
+	
+	$$
+		\begin{align*}
+			0 &= B - C + D\\
+			0 &= 2B + C\\
+			9 &= B + 2C + 2D.
+		\end{align*}
+	$$
+	
+	Then $C = -2B$, so
+	
+	$$
+		\begin{align*}
+			0 &= 3B + D\\
+			9 &= -3B + 2D.
+		\end{align*}
+	$$
+	
+	And since $D = -3B$, we finally have
+	
+	$$
+		9 = -9B.
+	$$
+	
+	Therefore, $B = -1$, so $D = 3$, $C = 2$, and $A = -2$. Putting it all back together, we get
+	
+	$$
+		\begin{align*}
+			\frac{9}{(x^2 + 2)(x+1)^2} &= \frac{-2x - 1}{x^2 + 2} + \frac{2}{x + 1} + \frac{3}{(x + 1)^2}\\
+			\frac{9}{(x^2 + 2)(x+1)^2} &= -\frac{2x}{x^2 + 2} - \frac{1}{x^2 + 2} + \frac{2}{x + 1} + \frac{3}{(x + 1)^2}\\
+			\int \frac{9}{(x^2 + 2)(x+1)^2}\ dx &= \int \left( -\frac{2x}{x^2 + 2} - \frac{1}{x^2 + 2} + \frac{2}{x + 1} + \frac{3}{(x + 1)^2} \right)\ dx.\\
+			\int \frac{9}{(x^2 + 2)(x+1)^2}\ dx &= -\int \frac{2x}{x^2 + 2}\ dx - \int \frac{1}{x^2 + 2}\ dx + \int \frac{2}{x + 1}\ dx + 3(x + 1)^{-2}\ dx.\\
+		\end{align*}
+	$$
+	
+	The first term is a $u$-sub. Let $u = x^2 + 2$ so that $du = 2x\ dx$. Now we have
+	
+	$$
+		\begin{align*}
+			\int \frac{9}{(x^2 + 2)(x+1)^2}\ dx &= -\int \frac{1}{u}\ du - \frac{1}{\sqrt{2}} \tan^{-1} \left( \frac{x}{\sqrt{2}} \right) + 2\ln |x+1| - (x + 1)^{-1} + C\\
+			&= -\ln|u| - \frac{1}{\sqrt{2}} \tan^{-1} \left( \frac{x}{\sqrt{2}} \right) + 2\ln |x+1| - (x + 1)^{-1} + C\\
+			&= -\ln|x^2 + 2| - \frac{1}{\sqrt{2}} \tan^{-1} \left( \frac{x}{\sqrt{2}} \right) + 2\ln |x+1| - (x + 1)^{-1} + C.
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	partial fractions with an irreducible quadratic factor
+	
+	Find $\int \frac{16}{x(x^2 + 4)^2}\ dx$.
+	
+!end-exercise
 
 
 
