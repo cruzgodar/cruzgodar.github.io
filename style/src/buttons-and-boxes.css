@@ -24,6 +24,11 @@
 	margin-top: 5vh;
 }
 
+.text-boxes
+{
+	align-items: start;
+}
+
 
 
 
@@ -288,10 +293,10 @@
 	align-items: center;
 }
 
-label .body-text
+.text-box-container .body-text
 {
 	width: 100% !important;
-	height: 24px;
+	height: fit-content;
 	
 	text-align: center;
 }
@@ -469,7 +474,7 @@ option
 
 
 
-@media (min-aspect-ratio: 1/1)
+@media (min-aspect-ratio: 1/1), (max-aspect-ratio: 9/16), (max-width: 700px)
 {
 	.text-boxes, .text-buttons, .sliders
 	{

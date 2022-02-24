@@ -7,11 +7,5 @@
 
 #switch-bulb-button, #switch-movement-button
 {
-	transition: opacity .25s ease-in-out, transsform .125s ease-in-out;
-}
-
-#phantom-button
-{
-	opacity: 0;
-	pointer-events: none;
+	transition: opacity .25s ease-in-out, transform .125s ease-in-out;
 }

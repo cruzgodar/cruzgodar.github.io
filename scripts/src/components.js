@@ -348,9 +348,7 @@ Page.Components =
 		return `
 			<div class="text-box-container" data-aos="fade-up">
 				<input id="${id}-input" class="text-box" type="text" value="${value}" tabindex="1">
-				<label for="${id}-input">
-					<p class="body-text">${text}</p>
-				</label>
+				<p class="body-text">${text}</p>
 			</div>
 		`;
 	},

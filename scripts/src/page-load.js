@@ -152,6 +152,8 @@ Page.load = async function()
 		
 		button_element.innerHTML = `${elements[i].querySelector(`[value=${elements[i].value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
 		
+		button_element.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, 100%)`;
+		
 		elements[i].addEventListener("input", () =>
 		{
 			button_element.innerHTML = `${elements[i].querySelector(`[value=${elements[i].value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
@@ -1046,6 +1048,8 @@ Page.Load =
 				{
 					elements[i].style.width = "fit-content";
 				}
+				
+				elements[i].parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, ${max_width}px)`;
 			}
 		}
 	},
