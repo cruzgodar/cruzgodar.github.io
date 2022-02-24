@@ -16,17 +16,12 @@
 
 .text-boxes, .text-buttons, .sliders
 {
-	grid-template-columns: repeat(auto-fit, 20vw);
+	grid-template-columns: repeat(auto-fit, 100px);
 	
-	grid-row-gap: 5vh;
-	grid-column-gap: 5%;
+	grid-row-gap: 10px;
+	grid-column-gap: 10px;
 	
 	margin-top: 5vh;
-}
-
-.text-boxes
-{
-	grid-template-columns: repeat(auto-fit, 10vw);
 }
 
 
@@ -479,7 +474,5 @@ option
 	.text-boxes, .text-buttons, .sliders
 	{
 		width: 90%;
-		
-		grid-template-columns: repeat(auto-fit, 10vw);
 	}
 }
