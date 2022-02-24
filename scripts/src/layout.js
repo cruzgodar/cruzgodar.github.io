@@ -96,6 +96,18 @@ Page.Layout =
 		
 		
 		
+		if (this.aspect_ratio > 1 && !this.AppletColumns.are_equalized)
+		{
+			this.AppletColumns.equalize();
+		}
+		
+		else if (this.aspect_ratio < 1 && this.AppletColumns.are_equalized)
+		{
+			this.AppletColumns.remove();
+		}	
+		
+		
+		
 		for (let i = 0; i < this.Multicols.texts.length; i++)
 		{
 			this.Multicols.texts[i].style.marginLeft = this.Multicols.reference.getBoundingClientRect().left + "px";
@@ -301,6 +313,161 @@ Page.Layout =
 				elements[i].classList.remove("old-new-aos-section");
 				elements[i].classList.add("new-aos-section");
 			}
+		}
+	},
+	
+	
+	
+	AppletColumns:
+	{
+		are_equalized: false,
+		
+		equalize: function()
+		{
+			let left_column = null;
+			let right_column = null;
+			
+			try
+			{
+				left_column = document.querySelector("#canvas-landscape-left");
+				right_column = document.querySelector("#canvas-landscape-right");
+			}
+			
+			catch(ex) {}
+			
+			if (left_column === null || right_column === null)
+			{
+				return;
+			}
+			
+			
+			
+			let elements = [];
+			
+			let num_left_children = left_column.children.length;
+			let num_right_children = right_column.children.length;
+			
+			for (let i = 0; i < num_left_children; i++)
+			{
+				elements.push(left_column.children[i]);
+			}
+			
+			for (let i = 0; i < num_right_children; i++)
+			{
+				elements.push(right_column.children[i]);
+			}
+			
+			
+			
+			let height_sums = [elements[0].clientHeight];
+			
+			for (let i = 1; i < elements.length; i++)
+			{
+				height_sums.push(height_sums[i - 1] + elements[i].clientHeight);
+			}
+			
+			//Find the midpoint.
+			
+			let min_height_difference = Infinity;
+			
+			let midpoint_index = 0;
+			
+			if (elements.length > 1)
+			{
+				for (let i = 0; i < elements.length; i++)
+				{
+					let height_difference = Math.abs(height_sums[i] - (height_sums[height_sums.length - 1] - height_sums[i]));
+					
+					if (height_difference < min_height_difference)
+					{
+						min_height_difference = height_difference;
+						
+						midpoint_index = i + 1;
+					}
+				}
+			}	
+			
+			
+			
+			//Move elements around.
+			if (midpoint_index < num_left_children)
+			{
+				for (let i = midpoint_index; i < num_left_children; i++)
+				{
+					left_column.children[i].classList.add("move-to-right");
+				}
+				
+				let elements_to_move = document.querySelectorAll(".move-to-right");
+				
+				for (let i = elements_to_move.length - 1; i >= 0; i--)
+				{
+					right_column.insertBefore(elements_to_move[i], right_column.firstElementChild);
+				}
+			}
+			
+			else
+			{
+				for (let i = 0; i < midpoint_index - num_left_children; i++)
+				{
+					right_column.children[i].classList.add("move-to-left");
+				}
+				
+				let elements_to_move = document.querySelectorAll(".move-to-left");
+				
+				for (let i = 0; i < elements_to_move.length; i++)
+				{
+					left_column.appendChild(elements_to_move[i]);
+				}
+			}
+			
+			
+			
+			this.are_equalized = true;
+		},
+		
+		remove: function()
+		{
+			let left_column = null;
+			let right_column = null;
+			
+			try
+			{
+				left_column = document.querySelector("#canvas-landscape-left");
+				right_column = document.querySelector("#canvas-landscape-right");
+			}
+			
+			catch(ex) {}
+			
+			if (left_column === null || right_column === null)
+			{
+				return;
+			}
+			
+			
+			
+			let elements_to_move = document.querySelectorAll(".move-to-left");
+			
+			for (let i = elements_to_move.length - 1; i >= 0; i--)
+			{
+				right_column.insertBefore(elements_to_move[i], right_column.firstElementChild);
+				
+				elements_to_move[i].classList.remove("move-to-left");
+			}
+			
+			
+			
+			elements_to_move = document.querySelectorAll(".move-to-right");
+			
+			for (let i = 0; i < elements_to_move.length; i++)
+			{
+				left_column.appendChild(elements_to_move[i]);
+				
+				elements_to_move[i].classList.remove("move-to-right");
+			}
+			
+			
+			
+			this.are_equalized = false;
 		}
 	}
 };

@@ -14,26 +14,19 @@
 	margin: 0 auto;
 }
 
-.text-boxes
+.text-boxes, .text-buttons, .sliders
 {
-	/* 6 boxes per row. */
-	grid-template-columns: repeat(auto-fit, 9.583vw);
+	grid-template-columns: repeat(auto-fit, 20vw);
 	
-	grid-row-gap: 2.5vw;
-	grid-column-gap: 2.5vw;
+	grid-row-gap: 5vh;
+	grid-column-gap: 5%;
 	
 	margin-top: 5vh;
 }
 
-.text-buttons, .sliders
+.text-boxes
 {
-	/* 3 buttons per row. */
-	grid-template-columns: repeat(auto-fit, 20vw);
-	
-	grid-row-gap: 5vw;
-	grid-column-gap: 5vw;
-	
-	margin-top: 5vh;
+	grid-template-columns: repeat(auto-fit, 10vw);
 }
 
 
@@ -317,8 +310,6 @@ label .body-text
 
 
 
-
-
 .text-field
 {
 	width: 100%;
@@ -481,95 +472,14 @@ option
 
 
 
-#canvas-landscape
-{
-	display: flex;
-	flex-direction: column;
-	
-	width: 100vw;
-	
-	justify-content: space-between;
-	
-	align-items: center;
-}
-
-#canvas-landscape-left, #canvas-landscape-middle, #canvas-landscape-right
-{
-	width: 100%;
-}
 
 
-
-
-
-@media (max-aspect-ratio: 9/16), (max-width: 700px)
+@media (min-aspect-ratio: 1/1)
 {
 	.text-boxes, .text-buttons, .sliders
 	{
 		width: 90%;
-	}
-	
-	.text-boxes
-	{
-		/* 4 boxes per row. */
-		grid-template-columns: repeat(auto-fit, 18.75vw);
 		
-		grid-row-gap: 5vw;
-		grid-column-gap: 5vw;
-	}
-
-	.text-buttons, .sliders
-	{
-		/* 2 buttons per row. */
-		grid-template-columns: repeat(auto-fit, 40vw);
-		
-		grid-row-gap: 10vw;
-		grid-column-gap: 10vw;
-	}
-}
-
-
-
-@media (min-aspect-ratio: 16/9), (min-width: 1400px)
-{
-	.text-boxes
-	{
-		/* 8 boxes per row. */
-		grid-template-columns: repeat(auto-fit, 6.5625vw);
-	}
-
-	.text-buttons, .sliders
-	{
-		/* 4 buttons per row. */
-		grid-template-columns: repeat(auto-fit, 13.75vw);
-		
-		grid-column-gap: 0;
-	}
-	
-	.text-boxes, .text-buttons
-	{
-		width: 90%;
-	}
-	
-	#canvas-landscape
-	{
-		flex-direction: row;
-	}
-	
-	#canvas-landscape-left, #canvas-landscape-middle, #canvas-landscape-right
-	{
-		width: 33.33%;
-	}
-	
-	#canvas-landscape-left .body-text, #canvas-landscape-left .section-text, #canvas-landscape-middle .body-text, #canvas-landscape-middle .section-text, #canvas-landscape-right .body-text, #canvas-landscape-right .section-text
-	{
-		width: 70%;
-	}
-	
-	.text-box-container label p, .slider-container label p
-	{
-		margin: 0 0;
-		
-		width: 100% !important;
+		grid-template-columns: repeat(auto-fit, 10vw);
 	}
 }

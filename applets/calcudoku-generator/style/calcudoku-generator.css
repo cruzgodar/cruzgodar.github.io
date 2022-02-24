@@ -1,9 +1,12 @@
+#canvas-container
+{
+	width: 80%;
+	margin: 0 auto;
+}
+
 #calcudoku-grid
 {
-	width: 80vmin;
-	height: 80vmin;
-	margin: 0 auto;
-	
+	width: 100%;
 	opacity: 0;
 	transition: opacity .3s ease-in-out;
 }
@@ -20,11 +23,10 @@
 
 
 
-@media (min-aspect-ratio: 16/9), (min-width: 1400px)
+@media (min-aspect-ratio: 1/1)
 {
 	#calcudoku-grid
 	{	
-		width: 50vmin;
-		height: 50vmin;
+		width: 100%;
 	}
 }

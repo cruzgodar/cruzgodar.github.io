@@ -58,11 +58,6 @@
 	
 	
 	
-	let progress_bar_element = document.querySelector("#progress-bar");
-	let progress_bar_innards_element = document.querySelector("#progress-bar span");
-	
-	
-	
 	if (Browser.name === "Chrome" || Browser.name === "Opera")
 	{
 		alert_about_hardware_acceleration();
@@ -78,12 +73,6 @@
 		
 		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		wilson.ctx.fillRect(0, 0, grid_size, grid_size);
-		
-		
-		
-		progress_bar_innards_element.insertAdjacentHTML("afterend", `<span></span>`);
-		progress_bar_innards_element.remove();
-		progress_bar_innards_element = document.querySelector("#progress-bar span");
 		
 		
 		
@@ -106,60 +95,13 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			if (e.data[0] === 0)
-			{
-				progress_bar_innards_element.style.width = e.data[1] + "%";
-				
-				if (e.data[1] === 100)
-				{
-					setTimeout(() =>
-					{
-						progress_bar_element.style.opacity = 0;
-						
-						setTimeout(() =>
-						{
-							progress_bar_element.style.marginTop = 0;
-							progress_bar_element.style.marginBottom = 0;
-						}, Site.opacity_animation_time);
-					}, Site.opacity_animation_time * 2);
-				}
-			}
-			
-			
-			
-			else if (e.data[0] === 1)
-			{
-				progress_bar_element.style.opacity = 0;
-				
-				setTimeout(() =>
-				{
-					progress_bar_element.style.marginTop = 0;
-					progress_bar_element.style.marginBottom = 0;
-				}, Site.opacity_animation_time);
-			}
-			
-			
-			
-			else
+			if (e.data[0] !== 0 && e.data[0] !== 1)
 			{
 				wilson.ctx.fillStyle = e.data[3];
 				
 				wilson.ctx.fillRect(e.data[1], e.data[2], 1, 1);
 			}
 		}
-		
-		
-		
-		progress_bar_innards_element.style.width = 0;
-		progress_bar_element.style.marginTop = "10vh";
-		progress_bar_element.style.marginBottom = "-5vh";
-		
-		setTimeout(() =>
-		{
-			progress_bar_element.style.opacity = 1;
-		}, Site.opacity_animation_time * 2);
-		
-		
 		
 		web_worker.postMessage([grid_size]);
 	}

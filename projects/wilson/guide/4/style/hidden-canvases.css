@@ -9,31 +9,25 @@
 #container
 {
 	position: relative;
-	width: 50vmin;
-	height: 50vmin;
+	width: 75vmin;
+	height: 75vmin;
 	margin: 0 auto;
 }
 
 #container .hidden-canvas-superimposed
 {
-	position: absolute;
 	width: 15vmin;
 	height: 15vmin;
 	
 	border: none;
 	padding: 4px;
-	
-	margin-left: -25vmin;
+	margin: 0 !important;
 	
 	z-index: 3;
 }
 
 #container .output-canvas
 {
-	position: absolute;
-	
-	margin-left: -25vmin;
-	
 	z-index: 1;
 }
 

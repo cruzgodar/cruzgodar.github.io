@@ -134,6 +134,13 @@ Page.load = async function()
 		this.Layout.Multicols.create();
 	}
 	
+	this.Layout.AppletColumns.are_equalized = false;
+	
+	if (this.Layout.aspect_ratio > 1)
+	{
+		this.Layout.AppletColumns.equalize();
+	}
+	
 	
 	
 	//We do dropdowns here too.

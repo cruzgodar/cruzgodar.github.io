@@ -1,1 +1,1 @@
-#output-canvas{touch-action:none;user-select:none;-webkit-user-select:none}#switch-bulb-button,#switch-movement-button{transition:opacity .3s ease-in-out,filter .15s ease-in-out}#phantom-button{opacity:0;pointer-events:none}
+#output-canvas{touch-action:none;user-select:none;-webkit-user-select:none}#switch-bulb-button,#switch-movement-button{transition:opacity .25s ease-in-out,transsform .125s ease-in-out}#phantom-button{opacity:0;pointer-events:none}

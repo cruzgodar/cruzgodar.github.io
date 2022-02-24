@@ -151,8 +151,13 @@ brightness_scale = Math.max(brightness_scale, .1);
 
 
 <div id="container" style="position: relative" data-aos="fade-up">
-	<canvas id="output-canvas" class="output-canvas"></canvas>
-	<canvas id="hidden-canvas" class="output-canvas hidden-canvas-superimposed"></canvas>
+	<div style="position: absolute; top: 0; left: 0; margin: 0">
+		<canvas id="output-canvas" class="output-canvas"></canvas>
+	</div>
+	
+	<div style="position: absolute; top: 0; left: 0; margin: 0">
+		<canvas id="hidden-canvas" class="output-canvas hidden-canvas-superimposed"></canvas>
+	</div>	
 </div>
 
 
@@ -194,7 +199,7 @@ brightness_scale = Math.max(brightness_scale, .1);
 <script>
 	if (typeof Page === "undefined")
 	{
-		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	

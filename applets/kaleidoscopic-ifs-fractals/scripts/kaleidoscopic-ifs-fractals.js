@@ -404,31 +404,21 @@
 	
 	
 	
-	let tetrahedron_radio_button_element = document.querySelector("#tetrahedron-radio-button");
-	let cube_radio_button_element = document.querySelector("#cube-radio-button");
-	let octahedron_radio_button_element = document.querySelector("#octahedron-radio-button");
+	let polyhedron_selector_dropdown_element = document.querySelector("#polyhedron-selector-dropdown");
 	
-	tetrahedron_radio_button_element.checked = true;
-	
-	tetrahedron_radio_button_element.addEventListener("input", () =>
+	polyhedron_selector_dropdown_element.addEventListener("input", () =>
 	{
-		if (polyhedron_index !== 0)
+		if (polyhedron_selector_dropdown_element.value === "tetrahedron")
 		{
 			change_polyhedron(0);
 		}
-	});
-	
-	cube_radio_button_element.addEventListener("input", () =>
-	{
-		if (polyhedron_index !== 1)
+		
+		else if (polyhedron_selector_dropdown_element.value === "cube")
 		{
 			change_polyhedron(1);
 		}
-	});
-	
-	octahedron_radio_button_element.addEventListener("input", () =>
-	{
-		if (polyhedron_index !== 2)
+		
+		else
 		{
 			change_polyhedron(2);
 		}
