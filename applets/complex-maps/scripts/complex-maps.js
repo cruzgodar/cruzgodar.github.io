@@ -65,6 +65,20 @@
 	
 	code_input_element.value = "cexp(cinv(z))";
 	
+	code_input_element.addEventListener("keydown", (e) =>
+	{
+		if (e.keyCode === 13)
+		{
+			e.preventDefault();
+			
+			use_new_code();
+			
+			past_brightness_scales = [];
+			
+			zoom_level = -.585;
+		}
+	});
+	
 	
 	
 	let generate_button_element = document.querySelector("#generate-button");

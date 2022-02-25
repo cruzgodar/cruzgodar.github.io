@@ -61,6 +61,16 @@
 	
 	code_input_element.value = "cadd(cpow(z, 2.0), c)";
 	
+	code_input_element.addEventListener("keydown", (e) =>
+	{
+		if (e.keyCode === 13)
+		{
+			e.preventDefault();
+			
+			use_new_code();
+		}
+	});
+	
 	
 
 	let resolution_input_element = document.querySelector("#resolution-input");

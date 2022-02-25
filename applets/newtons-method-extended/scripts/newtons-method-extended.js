@@ -70,6 +70,16 @@
 	
 	code_input_element.value = "cmul(csin(z), csin(cmul(z, i)))";
 	
+	code_input_element.addEventListener("keydown", (e) =>
+	{
+		if (e.keyCode === 13)
+		{
+			e.preventDefault();
+			
+			use_new_code();
+		}
+	});
+	
 	
 	
 	let randomize_palette_button = document.querySelector("#randomize-palette-button");
