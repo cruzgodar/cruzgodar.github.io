@@ -1180,7 +1180,7 @@
 	
 	function* gravity_sort()
 	{
-		operations_per_frame = 1;//Math.ceil(data_length * data_length / 10000);
+		operations_per_frame = Math.ceil(data_length * data_length / 1000000);
 		
 		let beads = new Array(data_length);
 		
