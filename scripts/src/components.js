@@ -980,7 +980,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-comment")
 				{
-					lines[i] = `<div class="notes-comment" data-aos="fade-in"><span class="notes-comment-title">Comment</span>`;
+					lines[i] = `<div class="notes-comment" data-aos="fade-in"><span class="notes-comment-title">Comment</span><p></p><br>`;
 					
 					
 					
