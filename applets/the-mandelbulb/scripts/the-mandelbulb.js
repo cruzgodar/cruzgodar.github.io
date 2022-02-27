@@ -27,6 +27,8 @@
 		
 		uniform int draw_sphere;
 		
+		uniform int max_iterations;
+		
 		
 		
 		const float clip_distance = 1000.0;
@@ -34,7 +36,6 @@
 		uniform float step_factor;
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .1;
-		const int max_iterations = 32;
 		
 		
 		vec3 color;
@@ -58,9 +59,9 @@
 			color = vec3(1.0, 1.0, 1.0);
 			float color_scale = .5;
 			
-			for (int iteration = 0; iteration < max_iterations; iteration++)
+			for (int iteration = 0; iteration < 100; iteration++)
 			{
-				if (r > 16.0)
+				if (r > 16.0 || iteration >= max_iterations)
 				{
 					break;
 				}
@@ -113,13 +114,15 @@
 		
 		vec3 get_surface_normal(vec3 pos)
 		{
-			float base = distance_estimator(pos);
+			float x_step_1 = distance_estimator(pos + vec3(.000001, 0.0, 0.0));
+			float y_step_1 = distance_estimator(pos + vec3(0.0, .000001, 0.0));
+			float z_step_1 = distance_estimator(pos + vec3(0.0, 0.0, .000001));
 			
-			float x_step = distance_estimator(pos + vec3(.000001, 0.0, 0.0));
-			float y_step = distance_estimator(pos + vec3(0.0, .000001, 0.0));
-			float z_step = distance_estimator(pos + vec3(0.0, 0.0, .000001));
+			float x_step_2 = distance_estimator(pos - vec3(.000001, 0.0, 0.0));
+			float y_step_2 = distance_estimator(pos - vec3(0.0, .000001, 0.0));
+			float z_step_2 = distance_estimator(pos - vec3(0.0, 0.0, .000001));
 			
-			return normalize(vec3(x_step - base, y_step - base, z_step - base));
+			return normalize(vec3(x_step_1 - x_step_2, y_step_1 - y_step_2, z_step_1 - z_step_2));
 		}
 		
 		
@@ -269,7 +272,7 @@
 	
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 	
-	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "draw_sphere", "power", "c", "julia_proportion", "rotation_matrix", "max_marches", "step_factor"]);
+	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "draw_sphere", "power", "c", "julia_proportion", "rotation_matrix", "max_marches", "step_factor", "max_iterations"]);
 	
 	
 	
@@ -332,7 +335,7 @@
 	let image_width = 500;
 	let image_height = 500;
 	
-	let num_iterations = 32;
+	let max_iterations = 4;
 	
 	let max_marches = 100;
 	
@@ -380,6 +383,19 @@
 	let resolution_input_element = document.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", change_resolution);
+	
+	
+	
+	let iterations_input_element = document.querySelector("#iterations-input");
+	
+	iterations_input_element.addEventListener("input", () =>
+	{
+		max_iterations = parseInt(iterations_input_element.value || 4);
+		
+		wilson.gl.uniform1i(wilson.uniforms["max_iterations"], max_iterations);
+		
+		window.requestAnimationFrame(draw_frame);
+	});
 	
 	
 	
@@ -510,6 +526,7 @@
 	
 	wilson.gl.uniform1i(wilson.uniforms["max_marches"], max_marches);
 	wilson.gl.uniform1f(wilson.uniforms["step_factor"], 1);
+	wilson.gl.uniform1i(wilson.uniforms["max_iterations"], max_iterations);
 	
 	
 	
@@ -775,7 +792,7 @@
 		let r = 0.0;
 		let dr = 1.0;
 		
-		for (let iteration = 0; iteration < num_iterations; iteration++)
+		for (let iteration = 0; iteration < max_iterations * 4; iteration++)
 		{
 			r = Math.sqrt(dot_product(mutable_z, mutable_z));
 			
