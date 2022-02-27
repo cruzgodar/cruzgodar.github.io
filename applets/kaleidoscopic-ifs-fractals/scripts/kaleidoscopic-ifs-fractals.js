@@ -194,10 +194,7 @@
 				float distance = distance_estimator(pos);
 				
 				//This lowers the detail far away, which makes everything run nice and fast.
-				if (distance / float(image_size) * 3.0 > epsilon)
-				{
-					epsilon = distance / float(image_size) * 3.0;
-				}
+				epsilon = max(.0000006, .5 * t / float(image_size));
 				
 				
 				

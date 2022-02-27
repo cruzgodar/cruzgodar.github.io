@@ -178,10 +178,7 @@
 				last_distance = distance;
 				
 				//This lowers the detail far away, which makes everything run nice and fast.
-				if (distance / float(image_size) * 1.5 > epsilon)
-				{
-					epsilon = distance / float(image_size) * 1.5;
-				}
+				epsilon = max(.0000006, .5 * t / float(image_size));
 				
 				
 				
