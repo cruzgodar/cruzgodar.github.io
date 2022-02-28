@@ -96,24 +96,36 @@
 		
 		
 		
+		let sample_rate = 44100;
 		let num_frames = 44100;
+		let samples_per_frame = 12;
+		let num_samples = Math.floor(44100 / samples_per_frame);
 		
+		let x = 0.3248430447992505;
+		let y = 0.5649935486320172;
+		let a = x;
+		let b = y;
 		
+		let buffer = audio_context.createBuffer(2, num_frames, sample_rate);
 		
-		let buffer = audio_context.createBuffer(2, num_frames, 44100);
+		let left_data = buffer.getChannelData(0);
+		let right_data = buffer.getChannelData(1);
 		
-		let now_buffering = buffer.getChannelData(0);
-		
-		for (var i = 0; i < buffer.length; i++)
+		for (let i = 0; i < num_samples; i++)
 		{
-			now_buffering[i] = Math.sin(i / num_frames * 500*Math.PI);
-		}
-		
-		now_buffering = buffer.getChannelData(1);
-		
-		for (var i = 0; i < buffer.length; i++)
-		{
-			now_buffering[i] = Math.sin(i / num_frames * 500*Math.PI);
+			let next_x = x*x - y*y + a;
+			let next_y = 2*x*y + b;
+			
+			for (let j = 0; j < samples_per_frame; j++)
+			{
+				let t = j / samples_per_frame;
+				
+				left_data[samples_per_frame * i + j] = (1 - t) * (x / 2) + t * (next_x / 2);
+				right_data[samples_per_frame * i + j] = (1 - t) * (y / 2) + t * (next_y / 2)
+			}
+			
+			x = next_x;
+			y = next_y;
 		}
 		
 		
