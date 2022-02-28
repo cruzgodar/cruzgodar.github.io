@@ -47,7 +47,7 @@
 		
 		audio_nodes = [];
 		create_audio_node();
-		create_audio_node();
+		/*create_audio_node();
 		
 		audio_nodes[0][3].setPosition(-1, 0, 0);
 		audio_nodes[1][3].setPosition(1, 0, 0);
@@ -57,6 +57,7 @@
 		
 		audio_nodes[0][1].start(0);
 		audio_nodes[1][1].start(0);
+		*/
 	}
 	
 	
@@ -96,19 +97,39 @@
 	{
 		let audio_context = new AudioContext();
 		
-		let audio_oscillator = audio_context.createOscillator();
-		audio_oscillator.type = "sine";
-		audio_oscillator.frequency.value = 50;
 		
+		
+		let buffer = audio_context.createBuffer(2, 22050, 44100);
+		
+		let now_buffering = buffer.getChannelData(0);
+		
+		for (var i = 0; i < buffer.length; i++)
+		{
+			now_buffering[i] = Math.random() * 2 - 1;
+		}
+		
+		now_buffering = buffer.getChannelData(1);
+		
+		for (var i = 0; i < buffer.length; i++)
+		{
+			now_buffering[i] = Math.random() * 2 - 1;
+		}
+		/*
 		let audio_gain_node = audio_context.createGain();
 		audio_oscillator.connect(audio_gain_node);
 		
 		let audio_panner_node = audio_context.createPanner();
 		audio_gain_node.connect(audio_panner_node);
 		audio_panner_node.connect(audio_context.destination);
+		*/
+		
+		let source = audio_context.createBufferSource();
+		source.buffer = buffer;
+		source.connect(audio_context.destination);
+
+		source.start();
 		
 		
-		
-		audio_nodes.push([audio_context, audio_oscillator, audio_gain_node, audio_panner_node]);
+		//audio_nodes.push([audio_context, audio_oscillator, audio_gain_node, audio_panner_node]);
 	}
 }()
