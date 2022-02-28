@@ -153,7 +153,8 @@
 		`return equal_within_absolute_tolerance(polygamma(2.5,2.0*ONE+I),vec2(-0.0258830, -0.0752557 ));`,
 			// arithmetic_geometric_mean
 		`return equal_within_absolute_tolerance(agm(2.0*ONE,I),vec2(1.010051593619580924333050617727020, 0.7426464223997775055939));`,
-
+		`return powermod(2,31,7) == 2;`,
+		`return powermod(3,600,4) == 1;`,
 	];
 	
 	
