@@ -79,10 +79,7 @@
 		{
 			console.log("Terminated applet process");
 			
-			try {audio_nodes[0][2].gain.linearRampToValueAtTime(.0001, audio_nodes[0][0].currentTime + time_elapsed / 1000)}
-			catch(ex) {}
-			
-			try {audio_nodes[1][2].gain.linearRampToValueAtTime(.0001, audio_nodes[1][0].currentTime + time_elapsed / 1000)}
+			try {}
 			catch(ex) {}
 			
 			return;
@@ -99,37 +96,36 @@
 		
 		
 		
-		let buffer = audio_context.createBuffer(2, 22050, 44100);
+		let num_frames = 44100;
+		
+		
+		
+		let buffer = audio_context.createBuffer(2, num_frames, 44100);
 		
 		let now_buffering = buffer.getChannelData(0);
 		
 		for (var i = 0; i < buffer.length; i++)
 		{
-			now_buffering[i] = Math.random() * 2 - 1;
+			now_buffering[i] = Math.sin(i / num_frames * 500*Math.PI);
 		}
 		
 		now_buffering = buffer.getChannelData(1);
 		
 		for (var i = 0; i < buffer.length; i++)
 		{
-			now_buffering[i] = Math.random() * 2 - 1;
+			now_buffering[i] = Math.sin(i / num_frames * 500*Math.PI);
 		}
-		/*
-		let audio_gain_node = audio_context.createGain();
-		audio_oscillator.connect(audio_gain_node);
 		
-		let audio_panner_node = audio_context.createPanner();
-		audio_gain_node.connect(audio_panner_node);
-		audio_panner_node.connect(audio_context.destination);
-		*/
+		
 		
 		let source = audio_context.createBufferSource();
 		source.buffer = buffer;
-		source.connect(audio_context.destination);
+		
+		let audio_gain_node = audio_context.createGain();
+		source.connect(audio_gain_node);
+		audio_gain_node.connect(audio_context.destination);
 
 		source.start();
-		
-		
-		//audio_nodes.push([audio_context, audio_oscillator, audio_gain_node, audio_panner_node]);
+		audio_gain_node.gain.exponentialRampToValueAtTime(.0001, num_frames / 44100);
 	}
 }()
