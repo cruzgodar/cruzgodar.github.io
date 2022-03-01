@@ -16,7 +16,6 @@
 	let wilson_line_drawer = null;
 	
 	let line_drawer_canvas_container_element = document.querySelector("#line-drawer-canvas-container");
-	line_drawer_canvas_container_element.style.display = "none";
 	
 	let generating_code = "cadd(cpow(z, 2.0), c)";
 	
@@ -66,14 +65,31 @@
 	{
 		renderer: "cpu",
 		
-		canvas_width: 2000,
-		canvas_height: 2000
+		canvas_width: resolution,
+		canvas_height: resolution,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0,
+		
+		mousemove_callback: on_hover_canvas,
+		mousedown_callback: on_grab_canvas,
+		touchstart_callback: on_grab_canvas,
+		
+		mousedrag_callback: on_drag_canvas,
+		touchmove_callback: on_drag_canvas,
+		
+		mouseup_callback: on_release_canvas,
+		touchend_callback: on_release_canvas,
+		
+		wheel_callback: on_wheel_canvas,
+		pinch_callback: on_pinch_canvas
 	};
 	
 	wilson_line_drawer = new Wilson(document.querySelector("#line-drawer-canvas"), options_line_drawer);
 	
-	wilson_line_drawer.ctx.strokeStyle = "rgb(255, 0, 0)";
-	wilson_line_drawer.ctx.lineWidth = 5;
+	wilson_line_drawer.ctx.lineWidth = 3;
 	
 	
 	
@@ -373,22 +389,7 @@
 			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
 			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switch_fullscreen_callback: change_aspect_ratio,
-			
-			
-			
-			mousedown_callback: on_grab_canvas,
-			touchstart_callback: on_grab_canvas,
-			
-			mousemove_callback: on_hover_canvas,
-			mousedrag_callback: on_drag_canvas,
-			touchmove_callback: on_drag_canvas,
-			
-			mouseup_callback: on_release_canvas,
-			touchend_callback: on_release_canvas,
-			
-			wheel_callback: on_wheel_canvas,
-			pinch_callback: on_pinch_canvas
+			switch_fullscreen_callback: change_aspect_ratio
 		};
 		
 		let options_hidden =
@@ -434,10 +435,17 @@
 		
 		
 		
+		
+		
 		julia_mode = 0;
 		zoom_level = 0;
 		
 		past_brightness_scales = [];
+		
+		wilson_line_drawer.world_width = 4;
+		wilson_line_drawer.world_height = 4;
+		wilson_line_drawer.world_center_x = 0;
+		wilson_line_drawer.world_center_y = 0;
 		
 		
 		
@@ -461,48 +469,20 @@
 		next_zoom_velocity = 0;
 		
 		play_sound(x, y);
-		
-		
-		
-		if (julia_mode === 2 && event.type === "mousedown")
-		{
-			julia_mode = 1;
-			
-			wilson.world_center_x = 0;
-			wilson.world_center_y = 0;
-			wilson.world_width = 4;
-			wilson.world_height = 4;
-			zoom_level = 0;
-			
-			past_brightness_scales = [];
-			
-			switch_julia_mode_button_element.style.opacity = 1;
-			
-			window.requestAnimationFrame(draw_julia_set);
-		}
 	}
 	
 	
 	
 	function on_drag_canvas(x, y, x_delta, y_delta, event)
 	{
-		if (julia_mode === 2 && event.type === "touchmove")
-		{
-			a = x;
-			b = y;
-		}
+		wilson_line_drawer.world_center_x -= x_delta;
+		wilson_line_drawer.world_center_y -= y_delta;
 		
-		else
-		{
-			wilson.world_center_x -= x_delta;
-			wilson.world_center_y -= y_delta;
-			
-			next_pan_velocity_x = -x_delta / wilson.world_width;
-			next_pan_velocity_y = -y_delta / wilson.world_height;
-			
-			wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
-			wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
-		}
+		next_pan_velocity_x = -x_delta / wilson.world_width;
+		next_pan_velocity_y = -y_delta / wilson.world_height;
+		
+		wilson_line_drawer.world_center_x = Math.min(Math.max(wilson_line_drawer.world_center_x, -2), 2);
+		wilson_line_drawer.world_center_y = Math.min(Math.max(wilson_line_drawer.world_center_y, -2), 2);
 		
 		window.requestAnimationFrame(draw_julia_set);
 	}
@@ -511,63 +491,75 @@
 	
 	function on_hover_canvas(x, y, x_delta, y_delta, event)
 	{
-		if (julia_mode === 2 && event.type === "mousemove")
-		{
-			a = x;
-			b = y;
-			
-			window.requestAnimationFrame(draw_julia_set);
-		}
+		show_orbit(x, y);
 	}
 	
 	
 	
 	function on_release_canvas(x, y, event)
 	{
-		if (julia_mode === 2 && event.type === "touchend")
+		if (Math.sqrt(next_pan_velocity_x * next_pan_velocity_x + next_pan_velocity_y * next_pan_velocity_y) >= pan_velocity_start_threshhold)
 		{
-			julia_mode = 1;
-			
-			wilson.world_center_x = 0;
-			wilson.world_center_y = 0;
-			wilson.world_width = 4;
-			wilson.world_height = 4;
-			zoom_level = 0;
-			
-			past_brightness_scales = [];
-			
-			switch_julia_mode_button_element.style.opacity = 1;
-			
-			window.requestAnimationFrame(draw_julia_set);
+			pan_velocity_x = next_pan_velocity_x;
+			pan_velocity_y = next_pan_velocity_y;
 		}
 		
-		else
+		if (Math.abs(next_zoom_velocity) >= zoom_velocity_start_threshhold)
 		{
-			if (Math.sqrt(next_pan_velocity_x * next_pan_velocity_x + next_pan_velocity_y * next_pan_velocity_y) >= pan_velocity_start_threshhold)
-			{
-				pan_velocity_x = next_pan_velocity_x;
-				pan_velocity_y = next_pan_velocity_y;
-			}
-			
-			if (Math.abs(next_zoom_velocity) >= zoom_velocity_start_threshhold)
-			{
-				zoom_velocity = next_zoom_velocity;
-			}
+			zoom_velocity = next_zoom_velocity;
 		}
 		
 		window.requestAnimationFrame(draw_julia_set);
 	}
 	
-	function play_sound(x_0, y_0)
+	
+	
+	function show_orbit(x_0, y_0)
 	{
-		wilson_line_drawer.ctx.clearRect(0, 0, 2000, 2000);
+		wilson_line_drawer.ctx.strokeStyle = "rgb(255, 255, 255)";
+		wilson_line_drawer.ctx.clearRect(0, 0, resolution, resolution);
 		
 		wilson_line_drawer.ctx.beginPath();
-		let coords = wilson.utils.interpolate.world_to_canvas(x_0, y_0);
-		wilson_line_drawer.ctx.moveTo(coords[1] * 2000 / wilson.canvas_width, coords[0] * 2000 / wilson.canvas_height);
+		let coords = wilson_line_drawer.utils.interpolate.world_to_canvas(x_0, y_0);
+		wilson_line_drawer.ctx.moveTo(coords[1], coords[0]);
 		
 		
 		
+		let x = x_0;
+		let y = y_0;
+		let a = x_0;
+		let b = y_0;
+		
+		let next_x = x*x*x + x*y*y - x*a*a + y*b*b;
+		let next_y = x*x*y - x*b*b + y*y*y - y*a*a;
+		//let next_x = x*x - y*y + a;
+		//let next_y = 2*x*y + b;
+		
+		x = 0;
+		y = 0;
+		
+		for (let i = 0; i < 300; i++)
+		{
+			if (Math.abs(next_x) > 10 || Math.abs(next_y) > 10)
+			{
+				return;
+			}
+			
+			x = next_x;
+			y = next_y;
+			
+			next_x = x*x*x + x*y*y - x*a*a + y*b*b;
+			next_y = x*x*y - x*b*b + y*y*y - y*a*a;
+			
+			coords = wilson_line_drawer.utils.interpolate.world_to_canvas(x, y);
+			wilson_line_drawer.ctx.lineTo(coords[1], coords[0]);
+		}
+		
+		wilson_line_drawer.ctx.stroke();
+	}
+	
+	function play_sound(x_0, y_0)
+	{
 		let audio_context = new AudioContext();
 		
 		let sample_rate = 44100;
@@ -617,25 +609,8 @@
 			next_y = x*x*y - x*b*b + y*y*y - y*a*a;
 			//next_x = x*x - y*y + a;
 			//next_y = 2*x*y + b;
-			
-			if (i < 300)
-			{
-				coords = wilson.utils.interpolate.world_to_canvas(x, y);
-			
-				wilson_line_drawer.ctx.lineTo(coords[1] * 2000 / wilson.canvas_width, coords[0] * 2000 / wilson.canvas_height);
-			}
-			
 		}
 		
-		line_drawer_canvas_container_element.style.transition = "";
-		line_drawer_canvas_container_element.style.display = "block";
-		line_drawer_canvas_container_element.style.opacity = 1;
-		
-		wilson_line_drawer.ctx.stroke();
-		
-		line_drawer_canvas_container_element.style.transition = "opacity .25s ease-in-out";
-		setTimeout(() => line_drawer_canvas_container_element.style.opacity = 0, 10);
-		setTimeout(() => line_drawer_canvas_container_element.style.display = "none", 260);
 		
 		
 		let source = audio_context.createBufferSource();
@@ -684,16 +659,16 @@
 		
 		if (aspect_ratio >= 1)
 		{
-			zoom_level -= touch_distance_delta / wilson.world_width * 10;
+			zoom_level -= touch_distance_delta / wilson_line_drawer.world_width * 10;
 			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_width * 10;
+			next_zoom_velocity = -touch_distance_delta / wilson_line_drawer.world_width * 10;
 		}
 		
 		else
 		{
-			zoom_level -= touch_distance_delta / wilson.world_height * 10;
+			zoom_level -= touch_distance_delta / wilson_line_drawer.world_height * 10;
 			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_height * 10;
+			next_zoom_velocity = -touch_distance_delta / wilson_line_drawer.world_height * 10;
 		}
 		
 		zoom_level = Math.min(zoom_level, 1);
@@ -710,24 +685,24 @@
 	{
 		if (aspect_ratio >= 1)
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level) * aspect_ratio, 4 * Math.pow(2, zoom_level));
+			let new_world_center = wilson_line_drawer.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level) * aspect_ratio, 4 * Math.pow(2, zoom_level));
 			
-			wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
-			wilson.world_height = 4 * Math.pow(2, zoom_level);
+			wilson_line_drawer.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
+			wilson_line_drawer.world_height = 4 * Math.pow(2, zoom_level);
 			
-			wilson.world_center_x = new_world_center[0];
-			wilson.world_center_y = new_world_center[1];
+			wilson_line_drawer.world_center_x = new_world_center[0];
+			wilson_line_drawer.world_center_y = new_world_center[1];
 		}
 		
 		else
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level), 4 * Math.pow(2, zoom_level) / aspect_ratio);
+			let new_world_center = wilson_line_drawer.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level), 4 * Math.pow(2, zoom_level) / aspect_ratio);
 			
-			wilson.world_width = 4 * Math.pow(2, zoom_level);
-			wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+			wilson_line_drawer.world_width = 4 * Math.pow(2, zoom_level);
+			wilson_line_drawer.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
 			
-			wilson.world_center_x = new_world_center[0];
-			wilson.world_center_y = new_world_center[1];
+			wilson_line_drawer.world_center_x = new_world_center[0];
+			wilson_line_drawer.world_center_y = new_world_center[1];
 		}
 		
 		window.requestAnimationFrame(draw_julia_set);
@@ -751,10 +726,10 @@
 		
 		
 		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["julia_mode"], julia_mode);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_x"], wilson.world_center_x);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_y"], wilson.world_center_y);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_x"], wilson_line_drawer.world_center_x);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_y"], wilson_line_drawer.world_center_y);
 		
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_size"], Math.min(wilson_line_drawer.world_height, wilson_line_drawer.world_width) / 2);
 		
 		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["num_iterations"], num_iterations);
 		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["exposure"], 1);
@@ -796,10 +771,10 @@
 		
 		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
 		
-		wilson.gl.uniform1f(wilson.uniforms["world_center_x"], wilson.world_center_x);
-		wilson.gl.uniform1f(wilson.uniforms["world_center_y"], wilson.world_center_y);
+		wilson.gl.uniform1f(wilson.uniforms["world_center_x"], wilson_line_drawer.world_center_x);
+		wilson.gl.uniform1f(wilson.uniforms["world_center_y"], wilson_line_drawer.world_center_y);
 		
-		wilson.gl.uniform1f(wilson.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
+		wilson.gl.uniform1f(wilson.uniforms["world_size"], Math.min(wilson_line_drawer.world_height, wilson_line_drawer.world_width) / 2);
 		
 		wilson.gl.uniform1i(wilson.uniforms["num_iterations"], num_iterations);
 		
@@ -827,11 +802,11 @@
 		
 		if (pan_velocity_x !== 0 || pan_velocity_y !== 0 || zoom_velocity !== 0)
 		{
-			wilson.world_center_x += pan_velocity_x * wilson.world_width;
-			wilson.world_center_y += pan_velocity_y * wilson.world_height;
+			wilson_line_drawer.world_center_x += pan_velocity_x * wilson_line_drawer.world_width;
+			wilson_line_drawer.world_center_y += pan_velocity_y * wilson_line_drawer.world_height;
 			
-			wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
-			wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
+			wilson_line_drawer.world_center_x = Math.min(Math.max(wilson_line_drawer.world_center_x, -2), 2);
+			wilson_line_drawer.world_center_y = Math.min(Math.max(wilson_line_drawer.world_center_y, -2), 2);
 			
 			
 			
@@ -875,18 +850,20 @@
 			
 			if (aspect_ratio >= 1)
 			{
+				wilson_line_drawer.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
 				wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
 				
-				wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
-				wilson.world_height = 4 * Math.pow(2, zoom_level);
+				wilson_line_drawer.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
+				wilson_line_drawer.world_height = 4 * Math.pow(2, zoom_level);
 			}
 			
 			else
 			{
+				wilson_line_drawer.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
 				wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
 				
-				wilson.world_width = 4 * Math.pow(2, zoom_level);
-				wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+				wilson_line_drawer.world_width = 4 * Math.pow(2, zoom_level);
+				wilson_line_drawer.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
 			}
 		}
 		
@@ -894,10 +871,11 @@
 		{
 			aspect_ratio = 1;
 			
+			wilson_line_drawer.change_canvas_size(resolution, resolution);
 			wilson.change_canvas_size(resolution, resolution);
 			
-			wilson.world_width = 4 * Math.pow(2, zoom_level);
-			wilson.world_height = 4 * Math.pow(2, zoom_level);
+			wilson_line_drawer.world_width = 4 * Math.pow(2, zoom_level);
+			wilson_line_drawer.world_height = 4 * Math.pow(2, zoom_level);
 		}
 		
 		window.requestAnimationFrame(draw_julia_set);
