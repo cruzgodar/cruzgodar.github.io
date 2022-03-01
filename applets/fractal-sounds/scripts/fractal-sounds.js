@@ -472,17 +472,23 @@
 		need_to_hide = false;
 		line_drawer_canvas_container_element.style.opacity = 1;
 		
-		show_orbit(x, y);
+		
 		
 		if (event.type === "touchstart")
 		{
-			play_sound(x, y);
 			num_touches = event.touches.length;
+			
+			if (num_touches === 1)
+			{
+				show_orbit(x, y);
+				play_sound(x, y);
+			}
 		}
 		
 		else
 		{
 			moved = 0;
+			show_orbit(x, y);
 		}
 	}
 	
@@ -492,7 +498,7 @@
 	{
 		if (event.type === "mousemove" || num_touches >= 2)
 		{
-			if (Math.abs(x_delta) > 0 || Math.abs(y_delta) > 0)
+			if (num_touches >= 2 || Math.abs(x_delta) > 0 || Math.abs(y_delta) > 0)
 			{
 				wilson_line_drawer.ctx.clearRect(0, 0, resolution, resolution);
 			}	
@@ -585,15 +591,15 @@
 		let a = x_0;
 		let b = y_0;
 		
-		let next_x = x*x*x + x*y*y - x*a*a + y*b*b;
-		let next_y = x*x*y - x*b*b + y*y*y - y*a*a;
-		//let next_x = x*x - y*y + a;
-		//let next_y = 2*x*y + b;
+		//let next_x = x*x*x + x*y*y - x*a*a + y*b*b;
+		//let next_y = x*x*y - x*b*b + y*y*y - y*a*a;
+		let next_x = x*x - y*y + a;
+		let next_y = 2*x*y + b;
 		
 		x = 0;
 		y = 0;
 		
-		for (let i = 0; i < 300; i++)
+		for (let i = 0; i < 500; i++)
 		{
 			if (Math.abs(next_x) > 10 || Math.abs(next_y) > 10)
 			{
@@ -603,8 +609,10 @@
 			x = next_x;
 			y = next_y;
 			
-			next_x = x*x*x + x*y*y - x*a*a + y*b*b;
-			next_y = x*x*y - x*b*b + y*y*y - y*a*a;
+			//next_x = x*x*x + x*y*y - x*a*a + y*b*b;
+			//next_y = x*x*y - x*b*b + y*y*y - y*a*a;
+			next_x = x*x - y*y + a;
+			next_y = 2*x*y + b;
 			
 			coords = wilson_line_drawer.utils.interpolate.world_to_canvas(x, y);
 			wilson_line_drawer.ctx.lineTo(coords[1], coords[0]);
@@ -650,10 +658,10 @@
 		let a = x_0;
 		let b = y_0;
 		
-		let next_x = x*x*x + x*y*y - x*a*a + y*b*b;
-		let next_y = x*x*y - x*b*b + y*y*y - y*a*a;
-		//let next_x = x*x - y*y + a;
-		//let next_y = 2*x*y + b;
+		//let next_x = x*x*x + x*y*y - x*a*a + y*b*b;
+		//let next_y = x*x*y - x*b*b + y*y*y - y*a*a;
+		let next_x = x*x - y*y + a;
+		let next_y = 2*x*y + b;
 		
 		x = 0;
 		y = 0;
@@ -683,10 +691,10 @@
 			x = next_x;
 			y = next_y;
 			
-			next_x = x*x*x + x*y*y - x*a*a + y*b*b;
-			next_y = x*x*y - x*b*b + y*y*y - y*a*a;
-			//next_x = x*x - y*y + a;
-			//next_y = 2*x*y + b;
+			//next_x = x*x*x + x*y*y - x*a*a + y*b*b;
+			//next_y = x*x*y - x*b*b + y*y*y - y*a*a;
+			next_x = x*x - y*y + a;
+			next_y = 2*x*y + b;
 		}
 		
 		
@@ -722,6 +730,8 @@
 		}
 		
 		zoom_canvas();
+		
+		show_orbit(x, y);
 	}
 	
 	
