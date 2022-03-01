@@ -32,14 +32,20 @@
 	
 	let past_brightness_scales = [];
 	
-	let a = 0;
-	let b = 0;
+	let opacity_frame = 0;
+	let need_to_hide = false;
 	
 	let resolution = 500;
 	let resolution_hidden = 200;
 	
+	let need_to_clear = false;
+	
 	let fixed_point_x = 0;
 	let fixed_point_y = 0;
+	
+	let num_touches = 0;
+	
+	let moved = 0;
 	
 	let next_pan_velocity_x = 0;
 	let next_pan_velocity_y = 0;
@@ -233,16 +239,12 @@
 			
 			varying vec2 uv;
 			
-			uniform int julia_mode;
-			
 			uniform float aspect_ratio;
 			
 			uniform float world_center_x;
 			uniform float world_center_y;
 			uniform float world_size;
 			
-			uniform float a;
-			uniform float b;
 			uniform float exposure;
 			uniform int num_iterations;
 			uniform float brightness_scale;
@@ -404,8 +406,6 @@
 		
 		
 		
-		
-		
 		try
 		{
 			wilson.output_canvas_container.parentNode.remove();
@@ -468,23 +468,53 @@
 		next_pan_velocity_y = 0;
 		next_zoom_velocity = 0;
 		
-		play_sound(x, y);
+		opacity_frame = 0;
+		need_to_hide = false;
+		line_drawer_canvas_container_element.style.opacity = 1;
+		
+		show_orbit(x, y);
+		
+		if (event.type === "touchstart")
+		{
+			play_sound(x, y);
+			num_touches = event.touches.length;
+		}
+		
+		else
+		{
+			moved = 0;
+		}
 	}
 	
 	
 	
 	function on_drag_canvas(x, y, x_delta, y_delta, event)
 	{
-		wilson_line_drawer.world_center_x -= x_delta;
-		wilson_line_drawer.world_center_y -= y_delta;
+		if (event.type === "mousemove" || num_touches >= 2)
+		{
+			if (Math.abs(x_delta) > 0 || Math.abs(y_delta) > 0)
+			{
+				wilson_line_drawer.ctx.clearRect(0, 0, resolution, resolution);
+			}	
+			
+			wilson_line_drawer.world_center_x -= x_delta;
+			wilson_line_drawer.world_center_y -= y_delta;
+			
+			next_pan_velocity_x = -x_delta / wilson.world_width;
+			next_pan_velocity_y = -y_delta / wilson.world_height;
+			
+			wilson_line_drawer.world_center_x = Math.min(Math.max(wilson_line_drawer.world_center_x, -2), 2);
+			wilson_line_drawer.world_center_y = Math.min(Math.max(wilson_line_drawer.world_center_y, -2), 2);
+			
+			moved++;
+			
+			window.requestAnimationFrame(draw_julia_set);
+		}
 		
-		next_pan_velocity_x = -x_delta / wilson.world_width;
-		next_pan_velocity_y = -y_delta / wilson.world_height;
-		
-		wilson_line_drawer.world_center_x = Math.min(Math.max(wilson_line_drawer.world_center_x, -2), 2);
-		wilson_line_drawer.world_center_y = Math.min(Math.max(wilson_line_drawer.world_center_y, -2), 2);
-		
-		window.requestAnimationFrame(draw_julia_set);
+		else
+		{
+			show_orbit(x, y);
+		}	
 	}
 	
 	
@@ -492,22 +522,46 @@
 	function on_hover_canvas(x, y, x_delta, y_delta, event)
 	{
 		show_orbit(x, y);
+		
+		moved = 0;
 	}
 	
 	
 	
 	function on_release_canvas(x, y, event)
 	{
-		if (Math.sqrt(next_pan_velocity_x * next_pan_velocity_x + next_pan_velocity_y * next_pan_velocity_y) >= pan_velocity_start_threshhold)
+		if (event.type === "mouseup" || num_touches >= 2)
 		{
-			pan_velocity_x = next_pan_velocity_x;
-			pan_velocity_y = next_pan_velocity_y;
+			if (Math.sqrt(next_pan_velocity_x * next_pan_velocity_x + next_pan_velocity_y * next_pan_velocity_y) >= pan_velocity_start_threshhold)
+			{
+				pan_velocity_x = next_pan_velocity_x;
+				pan_velocity_y = next_pan_velocity_y;
+				
+				moved = 10;
+			}
+			
+			if (Math.abs(next_zoom_velocity) >= zoom_velocity_start_threshhold)
+			{
+				zoom_velocity = next_zoom_velocity;
+				
+				moved = 10;
+			}
+			
+			if (moved < 10 && event.type === "mouseup")
+			{
+				play_sound(x, y);
+			}
 		}
 		
-		if (Math.abs(next_zoom_velocity) >= zoom_velocity_start_threshhold)
+		else
 		{
-			zoom_velocity = next_zoom_velocity;
+			opacity_frame = 0;
+			need_to_hide = true;
+			window.requestAnimationFrame(hide_orbit);
 		}
+		
+		setTimeout(() => num_touches = 0, 50);
+		moved = 0;
 		
 		window.requestAnimationFrame(draw_julia_set);
 	}
@@ -516,6 +570,7 @@
 	
 	function show_orbit(x_0, y_0)
 	{
+		line_drawer_canvas_container_element.style.opacity = 1;
 		wilson_line_drawer.ctx.strokeStyle = "rgb(255, 255, 255)";
 		wilson_line_drawer.ctx.clearRect(0, 0, resolution, resolution);
 		
@@ -557,6 +612,29 @@
 		
 		wilson_line_drawer.ctx.stroke();
 	}
+	
+	
+	
+	function hide_orbit()
+	{
+		opacity_frame++;
+		
+		let t = .5 + .5 * Math.sin(Math.PI * opacity_frame / 30 - Math.PI / 2);
+		
+		line_drawer_canvas_container_element.style.opacity = 1 - t;
+		
+		if (opacity_frame < 30 && need_to_hide)
+		{
+			window.requestAnimationFrame(hide_orbit);
+		}
+		
+		else
+		{
+			need_to_hide = false;
+		}
+	}
+	
+	
 	
 	function play_sound(x_0, y_0)
 	{
@@ -725,7 +803,6 @@
 		
 		
 		
-		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["julia_mode"], julia_mode);
 		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_x"], wilson_line_drawer.world_center_x);
 		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_y"], wilson_line_drawer.world_center_y);
 		
@@ -733,8 +810,6 @@
 		
 		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["num_iterations"], num_iterations);
 		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["exposure"], 1);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["a"], a);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["b"], b);
 		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 20 * (Math.abs(zoom_level) + 1));
 		
 		wilson_hidden.render.draw_frame();
@@ -767,8 +842,6 @@
 		
 		
 		
-		wilson.gl.uniform1i(wilson.uniforms["julia_mode"], julia_mode);
-		
 		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
 		
 		wilson.gl.uniform1f(wilson.uniforms["world_center_x"], wilson_line_drawer.world_center_x);
@@ -779,8 +852,6 @@
 		wilson.gl.uniform1i(wilson.uniforms["num_iterations"], num_iterations);
 		
 		wilson.gl.uniform1f(wilson.uniforms["exposure"], exposure);
-		wilson.gl.uniform1f(wilson.uniforms["a"], a);
-		wilson.gl.uniform1f(wilson.uniforms["b"], b);
 		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
 		
 		wilson.render.draw_frame();
