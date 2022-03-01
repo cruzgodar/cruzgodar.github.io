@@ -13,6 +13,10 @@
 	
 	let wilson = null;
 	let wilson_hidden = null;
+	let wilson_line_drawer = null;
+	
+	let line_drawer_canvas_container_element = document.querySelector("#line-drawer-canvas-container");
+	line_drawer_canvas_container_element.style.display = "none";
 	
 	let generating_code = "cadd(cpow(z, 2.0), c)";
 	
@@ -21,6 +25,7 @@
 	let aspect_ratio = 1;
 	
 	let num_iterations = 200;
+	let starting_iterations = 200;
 	
 	let exposure = 1;
 	
@@ -32,7 +37,7 @@
 	let b = 0;
 	
 	let resolution = 500;
-	let resolution_hidden = 100;
+	let resolution_hidden = 200;
 	
 	let fixed_point_x = 0;
 	let fixed_point_y = 0;
@@ -55,7 +60,20 @@
 	
 	let last_timestamp = -1;
 	
-	let frame = 0;
+	
+	
+	let options_line_drawer =
+	{
+		renderer: "cpu",
+		
+		canvas_width: 2000,
+		canvas_height: 2000
+	};
+	
+	wilson_line_drawer = new Wilson(document.querySelector("#line-drawer-canvas"), options_line_drawer);
+	
+	wilson_line_drawer.ctx.strokeStyle = "rgb(255, 0, 0)";
+	wilson_line_drawer.ctx.lineWidth = 5;
 	
 	
 	
@@ -99,7 +117,7 @@
 	
 	num_iterations_input_element.addEventListener("input", () =>
 	{
-		num_iterations = parseInt(num_iterations_input_element.value || 200);
+		starting_iterations = parseInt(num_iterations_input_element.value || 200);
 	});
 	
 	
@@ -213,7 +231,7 @@
 			uniform int num_iterations;
 			uniform float brightness_scale;
 			
-			const float hue_multiplier = 20.0;
+			const float hue_multiplier = 100.0;
 			
 			
 			
@@ -244,7 +262,7 @@
 					z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
 				}
 				
-				float brightness = exp(-length(z));
+				float brightness = exp(-max(length(z), .5));
 				
 				vec2 c = z;
 				
@@ -313,7 +331,7 @@
 					
 					
 					
-					brightness += exp(-length(z));
+					brightness += exp(-max(length(z), .5));
 					
 					hue_1 += exp(-hue_multiplier * length(z - last_z_1));
 					hue_2 += exp(-hue_multiplier * length(z - last_z_2));
@@ -379,9 +397,11 @@
 			
 			shader: frag_shader_source,
 			
-			canvas_width: 100,
-			canvas_height: 100
+			canvas_width: resolution_hidden,
+			canvas_height: resolution_hidden
 		};
+		
+		
 		
 		
 		
@@ -439,6 +459,8 @@
 		next_pan_velocity_x = 0;
 		next_pan_velocity_y = 0;
 		next_zoom_velocity = 0;
+		
+		play_sound(x, y);
 		
 		
 		
@@ -533,26 +555,40 @@
 			}
 		}
 		
-		play_sound(x, y);
-		
 		window.requestAnimationFrame(draw_julia_set);
 	}
 	
 	function play_sound(x_0, y_0)
 	{
+		wilson_line_drawer.ctx.clearRect(0, 0, 2000, 2000);
+		
+		wilson_line_drawer.ctx.beginPath();
+		let coords = wilson.utils.interpolate.world_to_canvas(x_0, y_0);
+		wilson_line_drawer.ctx.moveTo(coords[1] * 2000 / wilson.canvas_width, coords[0] * 2000 / wilson.canvas_height);
+		
+		
+		
 		let audio_context = new AudioContext();
-		
-		
 		
 		let sample_rate = 44100;
 		let num_frames = 44100;
 		let samples_per_frame = 12;
 		let num_samples = Math.floor(num_frames / samples_per_frame);
 		
-		let x = 0;
-		let y = 0;
+		let x = x_0;
+		let y = y_0;
 		let a = x_0;
 		let b = y_0;
+		
+		let next_x = x*x*x + x*y*y - x*a*a + y*b*b;
+		let next_y = x*x*y - x*b*b + y*y*y - y*a*a;
+		//let next_x = x*x - y*y + a;
+		//let next_y = 2*x*y + b;
+		
+		x = 0;
+		y = 0;
+		
+		
 		
 		let buffer = audio_context.createBuffer(2, num_frames, sample_rate);
 		
@@ -561,11 +597,10 @@
 		
 		for (let i = 0; i < num_samples; i++)
 		{
-			//let next_x = x*x*x + x*y*y - x*a*a + y*b*b;
-			//let next_y = x*x*y - x*b*b + y*y*y - y*a*a;
-			
-			let next_x = x*x - y*y + a;
-			let next_y = 2*x*y + b;
+			if (Math.abs(next_x) > 10 || Math.abs(next_y) > 10)
+			{
+				return;
+			}
 			
 			for (let j = 0; j < samples_per_frame; j++)
 			{
@@ -577,8 +612,30 @@
 			
 			x = next_x;
 			y = next_y;
+			
+			next_x = x*x*x + x*y*y - x*a*a + y*b*b;
+			next_y = x*x*y - x*b*b + y*y*y - y*a*a;
+			//next_x = x*x - y*y + a;
+			//next_y = 2*x*y + b;
+			
+			if (i < 300)
+			{
+				coords = wilson.utils.interpolate.world_to_canvas(x, y);
+			
+				wilson_line_drawer.ctx.lineTo(coords[1] * 2000 / wilson.canvas_width, coords[0] * 2000 / wilson.canvas_height);
+			}
+			
 		}
 		
+		line_drawer_canvas_container_element.style.transition = "";
+		line_drawer_canvas_container_element.style.display = "block";
+		line_drawer_canvas_container_element.style.opacity = 1;
+		
+		wilson_line_drawer.ctx.stroke();
+		
+		line_drawer_canvas_container_element.style.transition = "opacity .25s ease-in-out";
+		setTimeout(() => line_drawer_canvas_container_element.style.opacity = 0, 10);
+		setTimeout(() => line_drawer_canvas_container_element.style.display = "none", 260);
 		
 		
 		let source = audio_context.createBufferSource();
@@ -673,8 +730,6 @@
 			wilson.world_center_y = new_world_center[1];
 		}
 		
-		num_iterations = (-zoom_level * 30) + 200;
-		
 		window.requestAnimationFrame(draw_julia_set);
 	}
 
@@ -747,19 +802,13 @@
 		wilson.gl.uniform1f(wilson.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
 		
 		wilson.gl.uniform1i(wilson.uniforms["num_iterations"], num_iterations);
+		
 		wilson.gl.uniform1f(wilson.uniforms["exposure"], exposure);
 		wilson.gl.uniform1f(wilson.uniforms["a"], a);
 		wilson.gl.uniform1f(wilson.uniforms["b"], b);
 		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
 		
 		wilson.render.draw_frame();
-		
-		frame++;
-		
-		if (frame === 60)
-		{
-			frame = 0;
-		}
 		
 		
 		
