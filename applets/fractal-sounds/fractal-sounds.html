@@ -44,16 +44,15 @@
 
 <div id="canvas-landscape-left">
 
-<div class="center-content" data-aos="fade-up">
-	<div class="text-field-container">
-		<textarea cols="16" rows="4" name="code-textarea" id="code-textarea" class="text-field" style="font-family: 'Source Code Pro', monospace"></textarea>
-		<p class="body-text" style="text-align: center">Generating Function</p>
-	</div>
-</div>
+!begin-dropdown
+	
+	fractal-selector
+	
+	mandelbrot Mandelbrot Set
+	
+	sfx SFX Fractal
 
-
-
-<div style="height: -5vh"></div>
+!end-dropdown
 
 
 
@@ -73,8 +72,6 @@
 	
 	generate l Generate
 	
-	switch-julia-mode l Pick Julia Set
-	
 !end-text-buttons
 
 </div>
@@ -84,13 +81,13 @@
 <div id="canvas-landscape-middle">
 
 <div data-aos="fade-up" style="position: relative; margin: 0 auto; width: 100%; aspect-ratio: 1; margin-bottom: 5vh">
-	<div style="position: absolute">
+	<div style="position: absolute; width: 100%">
 		<div id="canvas-location"></div>
 		<canvas id="output-canvas" class="output-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
 		<canvas id="hidden-canvas" class="hidden-canvas"></canvas>
 	</div>
 	
-	<div id="line-drawer-canvas-container" style="position: absolute">
+	<div id="line-drawer-canvas-container" style="position: absolute; width: 100%">
 		<canvas id="line-drawer-canvas" class="output-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important; border-color: rgba(0, 0, 0, 0)"></canvas>
 	</div>
 </div>

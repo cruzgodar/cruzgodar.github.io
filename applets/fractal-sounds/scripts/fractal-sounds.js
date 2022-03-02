@@ -17,8 +17,6 @@
 	
 	let line_drawer_canvas_container_element = document.querySelector("#line-drawer-canvas-container");
 	
-	let generating_code = "cadd(cpow(z, 2.0), c)";
-	
 	let julia_mode = 0;
 	
 	let aspect_ratio = 1;
@@ -67,6 +65,16 @@
 	
 	
 	
+	let fractals = 
+	{
+		"mandelbrot": ["cmul(z, z) + c", (x, y, a, b) => [x*x - y*y + a, 2*x*y + b]],
+		"sfx": ["cmul(z, dot(z, z)) - cmul(z, c*c)", (x, y, a, b) => [x*x*x + x*y*y - x*a*a + y*b*b, x*x*y - x*b*b + y*y*y - y*a*a]]
+	};
+	
+	let current_fractal_function = fractals["mandelbrot"][1];
+	
+	
+	
 	let options_line_drawer =
 	{
 		renderer: "cpu",
@@ -95,23 +103,13 @@
 	
 	wilson_line_drawer = new Wilson(document.querySelector("#line-drawer-canvas"), options_line_drawer);
 	
-	wilson_line_drawer.ctx.lineWidth = 3;
+	wilson_line_drawer.ctx.lineWidth = 2;
 	
 	
 	
-	let code_input_element = document.querySelector("#code-textarea");
+	let fractal_selector_dropdown_element = document.querySelector("#fractal-selector-dropdown");
 	
-	code_input_element.value = "cadd(cpow(z, 2.0), c)";
-	
-	code_input_element.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			e.preventDefault();
-			
-			use_new_code();
-		}
-	});
+	fractal_selector_dropdown_element.addEventListener("input", use_new_code);
 	
 	
 
@@ -159,66 +157,6 @@
 	
 	
 	
-	let switch_julia_mode_button_element = document.querySelector("#switch-julia-mode-button");
-	
-	switch_julia_mode_button_element.addEventListener("click", () =>
-	{
-		switch_julia_mode_button_element.style.opacity = 0;
-		
-		setTimeout(() =>
-		{
-			if (julia_mode === 2)
-			{
-				switch_julia_mode_button_element.textContent = "Return to Mandelbrot Set";
-			}
-			
-			else if (julia_mode === 0)
-			{
-				switch_julia_mode_button_element.textContent = "Pick Julia Set";
-				
-				switch_julia_mode_button_element.style.opacity = 1;
-			}
-		}, Site.opacity_animation_time);
-		
-		
-		
-		if (julia_mode === 0)
-		{
-			julia_mode = 2;
-			
-			a = 0;
-			b = 0;
-			
-			pan_velocity_x = 0;
-			pan_velocity_y = 0;
-			zoom_velocity = 0;
-			
-			next_pan_velocity_x = 0;
-			next_pan_velocity_y = 0;
-			next_zoom_velocity = 0;
-			
-			past_brightness_scales = [];
-			
-			window.requestAnimationFrame(draw_julia_set);
-		}
-		
-		else if (julia_mode === 1)
-		{
-			julia_mode = 0;
-			
-			wilson.world_center_x = 0;
-			wilson.world_center_y = 0;
-			wilson.world_width = 4;
-			wilson.world_height = 4;
-			zoom_level = 0;
-			
-			past_brightness_scales = [];
-			
-			window.requestAnimationFrame(draw_julia_set);
-		}
-	});
-	
-	
 	
 	let canvas_location_element = document.querySelector("#canvas-location");
 	
@@ -230,7 +168,9 @@
 	
 	function use_new_code()
 	{
-		generating_code = code_input_element.value || "cadd(cpow(z, 2.0), c)";
+		let generating_code = fractals[fractal_selector_dropdown_element.value][0];
+		
+		current_fractal_function = fractals[fractal_selector_dropdown_element.value][1];
 		
 		
 		
@@ -380,8 +320,6 @@
 			world_center_x: 0,
 			world_center_y: 0,
 			
-			
-			
 			use_fullscreen: true,
 			
 			true_fullscreen: true,
@@ -391,7 +329,7 @@
 			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
 			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switch_fullscreen_callback: change_aspect_ratio
+			switch_fullscreen_callback: switch_fullscreen
 		};
 		
 		let options_hidden =
@@ -434,7 +372,8 @@
 		wilson_hidden.render.init_uniforms(["julia_mode", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "exposure", "brightness_scale"]);
 		
 		
-		
+		wilson.fullscreen.canvases_to_resize.push(wilson_line_drawer.canvas);
+		wilson.fullscreen.canvases_to_resize.push(wilson_line_drawer.draggables.container);
 		
 		
 		julia_mode = 0;
@@ -591,28 +530,22 @@
 		let a = x_0;
 		let b = y_0;
 		
-		//let next_x = x*x*x + x*y*y - x*a*a + y*b*b;
-		//let next_y = x*x*y - x*b*b + y*y*y - y*a*a;
-		let next_x = x*x - y*y + a;
-		let next_y = 2*x*y + b;
+		let next = current_fractal_function(x, y, a, b);
 		
 		x = 0;
 		y = 0;
 		
-		for (let i = 0; i < 500; i++)
+		for (let i = 0; i < 300; i++)
 		{
-			if (Math.abs(next_x) > 10 || Math.abs(next_y) > 10)
+			if (Math.abs(next[0]) > 10 || Math.abs(next[1]) > 10)
 			{
 				return;
 			}
 			
-			x = next_x;
-			y = next_y;
+			x = next[0];
+			y = next[1];
 			
-			//next_x = x*x*x + x*y*y - x*a*a + y*b*b;
-			//next_y = x*x*y - x*b*b + y*y*y - y*a*a;
-			next_x = x*x - y*y + a;
-			next_y = 2*x*y + b;
+			next = current_fractal_function(x, y, a, b);
 			
 			coords = wilson_line_drawer.utils.interpolate.world_to_canvas(x, y);
 			wilson_line_drawer.ctx.lineTo(coords[1], coords[0]);
@@ -658,10 +591,7 @@
 		let a = x_0;
 		let b = y_0;
 		
-		//let next_x = x*x*x + x*y*y - x*a*a + y*b*b;
-		//let next_y = x*x*y - x*b*b + y*y*y - y*a*a;
-		let next_x = x*x - y*y + a;
-		let next_y = 2*x*y + b;
+		let next = current_fractal_function(x, y, a, b);
 		
 		x = 0;
 		y = 0;
@@ -675,7 +605,7 @@
 		
 		for (let i = 0; i < num_samples; i++)
 		{
-			if (Math.abs(next_x) > 10 || Math.abs(next_y) > 10)
+			if (Math.abs(next[0]) > 10 || Math.abs(next[1]) > 10)
 			{
 				return;
 			}
@@ -684,17 +614,14 @@
 			{
 				let t = .5 + .5 * Math.sin(Math.PI * j / samples_per_frame - Math.PI / 2);
 				
-				left_data[samples_per_frame * i + j] = (1 - t) * (x / 2) + t * (next_x / 2);
-				right_data[samples_per_frame * i + j] = (1 - t) * (y / 2) + t * (next_y / 2);
+				left_data[samples_per_frame * i + j] = (1 - t) * (x / 2) + t * (next[0] / 2);
+				right_data[samples_per_frame * i + j] = (1 - t) * (y / 2) + t * (next[1] / 2);
 			}
 			
-			x = next_x;
-			y = next_y;
+			x = next[0];
+			y = next[1];
 			
-			//next_x = x*x*x + x*y*y - x*a*a + y*b*b;
-			//next_y = x*x*y - x*b*b + y*y*y - y*a*a;
-			next_x = x*x - y*y + a;
-			next_y = 2*x*y + b;
+			next = current_fractal_function(x, y, a, b);
 		}
 		
 		
@@ -919,6 +846,13 @@
 			
 			window.requestAnimationFrame(draw_julia_set);
 		}
+	}
+	
+	
+	
+	function switch_fullscreen()
+	{
+		change_aspect_ratio();
 	}
 	
 	
