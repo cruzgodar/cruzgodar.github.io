@@ -318,6 +318,24 @@ vec2 cpow_logz(float z, float logz, vec2 w)
 	return vec2(zexp * cos(wyzlog), zexp * sin(wyzlog));
 }
 
+// modular exponentiation
+// returns a^b mod c
+int powermod(int a, int b, int c) {
+	if (c==0) {
+		return 0;
+	}
+	int temp = 1;
+	float floatc = float(c);
+	for (int i = 0; i < 1000; i++) {
+		if (i == b) {
+			return temp;
+		}
+		temp *= a;
+		temp = int(mod(float(temp),floatc));
+	}
+	return temp;
+}
+
 // Returns w__z.
 // Example: ctet(2,3) = 16, not 27
 vec2 ctet(vec2 z, float w)
