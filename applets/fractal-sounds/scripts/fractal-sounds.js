@@ -72,7 +72,8 @@
 	let fractals = 
 	{
 		"mandelbrot": ["cmul(z, z) + c", (x, y, a, b) => [x*x - y*y + a, 2*x*y + b]],
-		"sfx": ["cmul(z, dot(z, z)) - cmul(z, c*c)", (x, y, a, b) => [x*x*x + x*y*y - x*a*a + y*b*b, x*x*y - x*b*b + y*y*y - y*a*a]]
+		"sfx": ["cmul(z, dot(z, z)) - cmul(z, c*c)", (x, y, a, b) => [x*x*x + x*y*y - x*a*a + y*b*b, x*x*y - x*b*b + y*y*y - y*a*a]],
+		"burning-ship": ["-vec2(z.x * z.x - z.y * z.y, 2.0 * abs(z.x * z.y)) + c", (x, y, a, b) => [-(x*x - y*y) + a, -(2 * Math.abs(x * y)) + b]]
 	};
 	
 	let current_fractal_function = fractals["mandelbrot"][1];
@@ -604,6 +605,11 @@
 		x = 0;
 		y = 0;
 		
+		let max_value = 0;
+		
+		let unscaled_left_data = new Array(num_samples);
+		let unscaled_right_data = new Array(num_samples);
+		
 		
 		
 		let buffer = audio_context.createBuffer(2, num_frames, sample_rate);
@@ -613,23 +619,49 @@
 		
 		for (let i = 0; i < num_samples; i++)
 		{
-			if (Math.abs(next[0]) > 10 || Math.abs(next[1]) > 10)
+			if (Math.abs(next[0]) > 100 || Math.abs(next[1]) > 100)
 			{
 				return;
 			}
 			
-			for (let j = 0; j < samples_per_frame; j++)
+			if (Math.abs(next[0]) > max_value)
 			{
-				let t = .5 + .5 * Math.sin(Math.PI * j / samples_per_frame - Math.PI / 2);
-				
-				left_data[samples_per_frame * i + j] = (1 - t) * (x / 2) + t * (next[0] / 2);
-				right_data[samples_per_frame * i + j] = (1 - t) * (y / 2) + t * (next[1] / 2);
+				max_value = Math.abs(next[0]);
 			}
+			
+			if (Math.abs(next[1]) > max_value)
+			{
+				max_value = Math.abs(next[1]);
+			}
+			
+			unscaled_left_data[i] = x;
+			unscaled_right_data[i] = y;
 			
 			x = next[0];
 			y = next[1];
 			
 			next = current_fractal_function(x, y, a, b);
+		}
+		
+		
+		
+		for (let i = 0; i < num_samples; i++)
+		{
+			unscaled_left_data[i] /= max_value;
+			unscaled_right_data[i] /= max_value;
+		}
+		
+		
+		
+		for (let i = 0; i < num_samples - 1; i++)
+		{
+			for (let j = 0; j < samples_per_frame; j++)
+			{
+				let t = .5 + .5 * Math.sin(Math.PI * j / samples_per_frame - Math.PI / 2);
+				
+				left_data[samples_per_frame * i + j] = (1 - t) * (unscaled_left_data[i] / 2) + t * (unscaled_left_data[i + 1] / 2);
+				right_data[samples_per_frame * i + j] = (1 - t) * (unscaled_right_data[i] / 2) + t * (unscaled_right_data[i + 1] / 2);
+			}
 		}
 		
 		
@@ -641,7 +673,7 @@
 		source.connect(audio_gain_node);
 		audio_gain_node.connect(audio_context.destination);
 
-		source.start();
+		source.start(0);
 		audio_gain_node.gain.exponentialRampToValueAtTime(.0001, num_frames / 44100);
 	}
 	
