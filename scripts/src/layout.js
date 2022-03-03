@@ -98,12 +98,12 @@ Page.Layout =
 		
 		if (this.aspect_ratio > 1 && !this.AppletColumns.are_equalized)
 		{
-			this.AppletColumns.equalize();
+			setTimeout(this.AppletColumns.equalize, 100);
 		}
 		
 		else if (this.aspect_ratio < 1 && this.AppletColumns.are_equalized)
 		{
-			this.AppletColumns.remove();
+			setTimeout(this.AppletColumns.remove, 100)
 		}	
 		
 		

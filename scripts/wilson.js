@@ -1259,7 +1259,7 @@ class Wilson
 		enter_fullscreen_button: null,
 		exit_fullscreen_button: null,
 		
-		use_fullscreen_button: true,
+		use_fullscreen_button: false,
 		
 		enter_fullscreen_button_icon_path: null,
 		exit_fullscreen_button_icon_path: null,
@@ -1393,11 +1393,6 @@ class Wilson
 						height: calc(100vh + 4px) !important;
 						
 						background-color: rgb(0, 0, 0) !important;
-					}
-					
-					.wilson-output-canvas-container
-					{
-						position: relative;
 					}
 					
 					.wilson-center-content
