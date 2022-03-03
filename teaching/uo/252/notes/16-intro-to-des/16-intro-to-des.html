@@ -36,6 +36,224 @@
 
 
 
+!begin-def
+	
+	differential equation
+	
+	A <dfn>differential equation</dfn>, or a <dfn>DE</dfn>, is an equation involving a function $y = f(x)$ and its derivatives. They&#x2019;re like polynomials, but instead of increasing the power on $x$, we increase the order of derivatives.
+	
+!end-def
+
+
+
+!begin-example
+	
+	some differential equations
+	
+	$y' = y + 2x$.
+	
+	$y''' + y' - y = 3$.
+	
+!end-example
+
+
+
+!begin-def
+	
+	solution to a DE
+	
+	A solution to a DE is a function $y = f(x)$ satisfying the equation.
+	
+!end-def
+
+
+
+!begin-example
+	
+	solution to a DE
+	
+	A solution to $y' + 3y = 6x + 11$ is $y = e^{-3x} + 2x + 3$, since $y' = -3e^{-3x} + 2$, and so we get
+	
+	$$
+		y' + 3y = -3e^{-3x} + 2 + 3e^{-3x} + 6x + 9 = 6x + 11.
+	$$	
+	
+!end-example
+
+
+
+!section
+
+!text s Direction Fields
+
+<br>
+
+
+
+!begin-text-block
+	
+	A direction field lets us visualize how a DE acts over time. To draw one, we solve for $y'$, then draw a line segment at every point $(x, y)$ that has the slope given by $y'$.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	direction field
+	
+	Below is the direction field for the differential equation $y' - \frac{1}{30}xy = 0$.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/5rnbmsymfx" width="500" height="500"></iframe></div>
+	
+!end-example
+
+!begin-exercise
+	
+	direction field
+	
+	Draw a direction field for $y' = \frac{1}{20}(x^2 - 1)\sin(y)$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	By definition, a solution to the DE is a function whose slope matches the direction field, so the graph of a solution follows the direction field like guidelines.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	direction field
+	
+	One solution to $y' - xy = 0$ is $y = e^{x^2 / 60}$.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/nwunmcch4d" width="500" height="500"></iframe></div>
+	
+	As we can see, this function follows the direction field. Another solution that follows the field is $y = 0$, and this is a special type of solution:
+	
+!end-example
+
+
+
+!begin-def
+	
+	equilibrium solution
+	
+	An <dfn>equilibrium solution</dfn> to a DE is a solution $y = c$ for some number $c$. In a direction field, this appears as a horizontal line.
+	
+!end-def
+
+
+
+!begin-example
+	
+	equilibrium solution
+	
+	Find all equilibrium solutions to $y' = \frac{1}{20}(x-3)(y^2 - 4)$.
+	
+	If $y = c$, then $y' = 0$, so to find the equilibrium solutions, we just need to set $(x-3)(y^2 - 4) = 0$. Then $x = 3$, $y = -2$, or $y = 2$, and we only want the solutions of the form $y = c$, so we want $y = \pm 2$.
+	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/5ssixh7zd5" width="500" height="500"></iframe></div>
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	Two special types of equilibrium solutions are those that either attract or repel their neighbors.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	stable and unstable equilibrium solutions
+	
+	An equilibrium solution $y = c$ is <dfn>stable</dfn> if for large $x$, the direction field around $y = c$ points toward it. It is <dfn>unstable</dfn> if for large $x$, the direction field around $y = c$ points away. If some points toward it and some points away, then the solution is neither stable nor unstable.
+	
+!end-def
+
+
+
+!begin-example
+	
+	stable and unstable equilibrium solutions
+	
+	In the previous example, $y = 2$ is an unstable solution, since the direction field eventually points away from it for large $x$. Similarly, $y = -2$ is a stable solution. In general, to know how large to draw the direction field to determine if a solution is stable or unstable, make it large enough to capture all the places where the $y' = 0$, including $x$-values. In the previous example, that&#x2019;s $x = 3$.
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	A nice way to think about stable solutions is by imagining a small ball placed into a hemispherical dish. It settles to the bottom, and nudging it slightly in any direction will just result it in settling back down to where it was. On the other hand, unstable solutions are akin to turning the bowl upside-down and balancing the ball on the top of it. There is a single point where the ball will balance, but nudging it slightly in any direction makes the ball roll away from the center.
+	
+!end-text-block
+
+
+
+!section
+
+!text s Separable DEs
+
+<br>
+
+
+
+!begin-text-block
+	
+	Okay, so how to we solve DEs? This is the subject that all those future classes are devoted to, but we&#x2019;ll just look at the simplest possible type: something called a separable DE.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	separable DE
+	
+	A differentiable equation is <dfn>separable</dfn> if it can be written in the form $y' = f(x)g(y)$ for some functions $f$ and $g$.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	In other words, a separable equation is one where we can get $y'$ by itself and write the other side as ($x$-stuff)($y$-stuff). If this is the case, we&#x2019;ll go through the following process, called <dfn>separation of variables</dfn>:
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	separation of variables
+	
+	To solve a DE of the form $y' = f(x)g(y)$:
+	
+	1. Rewrite $y'$ as $\frac{dy}{dx}$ to get $\frac{dy}{dx} = f(x)g(y)$.
+	
+	2. Divide both sides by $g(y)$ and multiply both sides by $dx$ to get $\frac{1}{g(y)}\ dy = f(x)\ dx$.
+	
+	3. Add an integral to both sides: $\int \frac{1}{g(y)}\ dy = \int f(x)\ dx$.
+	
+	4. Integrate.
+	
+	5. Solve for $y$. There will still be the integration constant $C$ in your answer
+	
+!end-thm
+
+
+
 !begin-text-buttons
 	
 	previous l Previous
