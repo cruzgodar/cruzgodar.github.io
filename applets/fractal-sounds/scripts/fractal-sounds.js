@@ -45,6 +45,10 @@
 	
 	let moved = 0;
 	
+	let last_x = 0;
+	let last_y = 0;	
+	let zooming_with_mouse = false;
+	
 	let next_pan_velocity_x = 0;
 	let next_pan_velocity_y = 0;
 	let next_zoom_velocity = 0;
@@ -98,10 +102,18 @@
 		touchend_callback: on_release_canvas,
 		
 		wheel_callback: on_wheel_canvas,
-		pinch_callback: on_pinch_canvas
+		pinch_callback: on_pinch_canvas,
+		
+		use_fullscreen: true,
+	
+		true_fullscreen: true,
+	
+		use_fullscreen_button: false
 	};
 	
 	wilson_line_drawer = new Wilson(document.querySelector("#line-drawer-canvas"), options_line_drawer);
+	
+	document.querySelector(".wilson-fullscreen-components-container").style.setProperty("z-index", 200, "important");
 	
 	wilson_line_drawer.ctx.lineWidth = 2;
 	
@@ -321,7 +333,7 @@
 			world_center_y: 0,
 			
 			use_fullscreen: true,
-			
+		
 			true_fullscreen: true,
 		
 			use_fullscreen_button: true,
@@ -370,10 +382,6 @@
 		wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
 		
 		wilson_hidden.render.init_uniforms(["julia_mode", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "exposure", "brightness_scale"]);
-		
-		
-		wilson.fullscreen.canvases_to_resize.push(wilson_line_drawer.canvas);
-		wilson.fullscreen.canvases_to_resize.push(wilson_line_drawer.draggables.container);
 		
 		
 		julia_mode = 0;
@@ -656,9 +664,11 @@
 			zoom_velocity += Math.sign(scroll_amount) * .05;
 		}
 		
-		zoom_canvas();
+		last_x = x;
+		last_y = y;
+		zooming_with_mouse = true;
 		
-		show_orbit(x, y);
+		zoom_canvas();
 	}
 	
 	
@@ -691,6 +701,8 @@
 		fixed_point_x = x;
 		fixed_point_y = y;
 		
+		zooming_with_mouse = false;
+		
 		zoom_canvas();
 	}
 	
@@ -719,6 +731,11 @@
 			wilson_line_drawer.world_center_x = new_world_center[0];
 			wilson_line_drawer.world_center_y = new_world_center[1];
 		}
+		
+		if (zooming_with_mouse)
+		{
+			show_orbit(last_x, last_y);
+		}	
 		
 		window.requestAnimationFrame(draw_julia_set);
 	}
@@ -853,6 +870,10 @@
 	function switch_fullscreen()
 	{
 		change_aspect_ratio();
+		
+		Page.set_element_styles(".wilson-applet-canvas-container", "background-color", "rgba(0, 0, 0, 0)", true);
+		
+		wilson_line_drawer.fullscreen.switch_fullscreen();
 	}
 	
 	
