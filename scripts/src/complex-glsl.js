@@ -10,6 +10,30 @@ Site.glsl_files =
 		keywords: []
 	},
 	
+	"equality":
+	{
+		loaded: false,
+		content: "",
+		dependencies: [],
+		keywords:
+		[
+			"equal_within_relative_tolerance",
+			"equal_within_absolute_tolerance",
+			"equal_within_sharp_absolute_tolerance"
+		]
+	},
+	
+	"cpow":
+	{
+		loaded: false,
+		content: "",
+		dependencies: [],
+		keywords:
+		[
+			"cpow"
+		]
+	},
+	
 	"gamma":
 	{
 		loaded: false,
@@ -110,7 +134,7 @@ Site.get_glsl_bundle = function(code_string)
 				
 				if (DEBUG)
 				{
-					console.log(`[GLSL bundling]: ${filenames[i]}`);
+					console.log(`[GLSL bundling] added ${filenames[i]}`);
 				}
 				
 				
@@ -129,7 +153,7 @@ Site.get_glsl_bundle = function(code_string)
 						
 						if (DEBUG)
 						{
-							console.log(`[GLSL bundling]: ${filenames[i]} -> ${dependencies[0]}`);
+							console.log(`[GLSL bundling]: ${filenames[i]} requires ${dependencies[0]}`);
 						}	
 						
 						dependencies.shift();
