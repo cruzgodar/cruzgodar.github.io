@@ -150,15 +150,21 @@ brightness_scale = Math.max(brightness_scale, .1);
 
 
 
-<div id="container" style="position: relative" data-aos="fade-up">
-	<div style="position: absolute; top: 0; left: 0; margin: 0">
-		<canvas id="output-canvas" class="output-canvas"></canvas>
+<div class="center-content" data-aos="fade-up">
+	<div id="container" style="position: relative; width: 70vmin; height: 70vmin" data-aos="fade-up">
+		<div style="position: absolute; top: 0; left: 0; margin: 0">
+			<canvas id="output-canvas" class="output-canvas"></canvas>
+		</div>
+		
+		<div style="position: absolute; top: 0; left: 0; margin: 0; width: 15vmin; height: 15vmin">
+			<canvas id="hidden-canvas" class="hidden-canvas-superimposed"></canvas>
+		</div>	
 	</div>
-	
-	<div style="position: absolute; top: 0; left: 0; margin: 0">
-		<canvas id="hidden-canvas" class="output-canvas hidden-canvas-superimposed"></canvas>
-	</div>	
 </div>
+
+
+
+<div style="height: 5vh"></div>
 
 
 

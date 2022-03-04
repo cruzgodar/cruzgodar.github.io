@@ -1,27 +1,12 @@
-.hidden-canvas
-{
-	position: fixed;
-	left: -100px;
-	width: 100px;
-	height: 100px;
-}
-
-#container
-{
-	position: relative;
-	width: 75vmin;
-	height: 75vmin;
-	margin: 0 auto;
-}
-
-#container .hidden-canvas-superimposed
+.hidden-canvas-superimposed
 {
 	width: 15vmin;
 	height: 15vmin;
 	
-	border: none;
+	margin-top: 5vh !important;
+	
+	border-radius: 15px;
 	padding: 4px;
-	margin: 0 !important;
 	
 	z-index: 3;
 }
@@ -31,7 +16,7 @@
 	z-index: 1;
 }
 
-#container .wilson-draggables-container
+#container > div:first-child .wilson-draggables-container
 {
 	z-index: 5;
 }

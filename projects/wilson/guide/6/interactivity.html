@@ -28,7 +28,7 @@
 	
 	Direct interaction with the canvas is the only part of Wilson that we haven&#x2019;t discussed yet, and it will require slightly more work on our end than the others, since panning and zooming aren&#x2019;t the only possible effects we could want.
 	
-	Panning is easier, so let&#x2019;s start with that. As you can probably predict by now, we attach callbacks in the options that fire when different kinds of interaction with the canvas take place, just like with draggables. The mouse movement callbacks are separated into <code>mousemove</code> and <code>mousedrag</code> &mdash; the first is called when the mouse is not being clicked, and the second when it is. We&#x2019;re going for something akin to Google Maps here, so we&#x2019;ll use <code>mousedrag</code>. For touchscreens, there&#x2019;s only one event for movement &mdash; <code>touchmove</code> &mdash; since it&#x2019;s not possible to drag without touching the screen. This callback shouldn&#x2019;t be used for pinch gestures &mdash; we&#x2019;ll handle those later.
+	Panning is easier, so let&#x2019;s start with that. As you can probably guess by now, we attach callbacks in the options that fire when different kinds of interaction with the canvas take place, just like with draggables. The mouse movement callbacks are separated into <code>mousemove</code> and <code>mousedrag</code> &mdash; the first is called when the mouse is not being clicked, and the second when it is. We&#x2019;re going for something akin to Google Maps here, so we&#x2019;ll use <code>mousedrag</code>. For touchscreens, there&#x2019;s only one event for movement &mdash; <code>touchmove</code> &mdash; since it&#x2019;s not possible to drag without touching the screen. This callback shouldn&#x2019;t be used for pinch gestures &mdash; we&#x2019;ll handle those later.
 	
 !end-text-block
 
@@ -116,9 +116,11 @@ wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_cen
 
 
 
-<div data-aos="fade-up">
-	<canvas id="output-canvas-1" class="output-canvas"></canvas>
-	<canvas id="hidden-canvas-1" class="hidden-canvas"></canvas>
+<div class="center-content" data-aos="fade-up">
+	<div style="width: 70vmin">
+		<canvas id="output-canvas-1" class="output-canvas"></canvas>
+		<canvas id="hidden-canvas-1" class="hidden-canvas"></canvas>
+	</div>
 </div>
 
 
@@ -355,9 +357,11 @@ function on_pinch_canvas(x, y, touch_distance_delta, event)
 
 
 
-<div data-aos="fade-up">
-	<canvas id="output-canvas-2" class="output-canvas"></canvas>
-	<canvas id="hidden-canvas-2" class="hidden-canvas"></canvas>
+<div class="center-content" data-aos="fade-up">
+	<div style="width: 70vmin">
+		<canvas id="output-canvas-2" class="output-canvas"></canvas>
+		<canvas id="hidden-canvas-2" class="hidden-canvas"></canvas>
+	</div>
 </div>
 
 
@@ -625,9 +629,11 @@ function on_pinch_canvas(x, y, touch_distance_delta, event)
 
 
 
-<div data-aos="fade-up">
-	<canvas id="output-canvas-3" class="output-canvas"></canvas>
-	<canvas id="hidden-canvas-3" class="hidden-canvas"></canvas>
+<div class="center-content" data-aos="fade-up">
+	<div style="width: 70vmin">
+		<canvas id="output-canvas-3" class="output-canvas"></canvas>
+		<canvas id="hidden-canvas-3" class="hidden-canvas"></canvas>
+	</div>
 </div>
 
 
