@@ -73,9 +73,12 @@ Site.load_glsl = function()
 
 
 
-//Returns a bundle of all required glsl to handle the given keywords.
-Site.get_glsl_bundle = function(keywords)
+//Returns a bundle of all required glsl to handle the given function.
+Site.get_glsl_bundle = function(code_string)
 {
+	//First, we need to identify the keywords in the provided string.
+	let keywords = code_string.match(/[a-zA-Z_][a-zA-Z0-9_]*/g);
+	
 	//main.glsl is always included.
 	let bundle = Site.glsl_files["main"].content;
 	
@@ -107,7 +110,7 @@ Site.get_glsl_bundle = function(keywords)
 				
 				if (DEBUG)
 				{
-					console.log(`GLSL loading: ${filenames[i]}`);
+					console.log(`[GLSL bundling]: ${filenames[i]}`);
 				}
 				
 				
@@ -126,7 +129,7 @@ Site.get_glsl_bundle = function(keywords)
 						
 						if (DEBUG)
 						{
-							console.log(`GLSL loading: ${filenames[i]} -> ${dependencies[0]}`);
+							console.log(`[GLSL bundling]: ${filenames[i]} -> ${dependencies[0]}`);
 						}	
 						
 						dependencies.shift();
