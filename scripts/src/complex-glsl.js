@@ -1,6 +1,6 @@
 //Needs to be loaded *after* main.js.
 
-Site.glsl_functions = 
+Site.glsl_files = 
 {
 	"main":
 	{
@@ -25,11 +25,10 @@ Site.glsl_functions =
 	{
 		loaded: false,
 		content: "",
-		dependencies: ["main"],
+		dependencies: [],
 		keywords:
 		[
-			"zeta",
-			"zeta_helper"
+			"zeta"
 		]
 	}
 };
@@ -40,7 +39,7 @@ Site.load_glsl = function()
 	{
 		window.COMPLEX_GLSL = "";
 		
-		let filenames = Object.keys(this.glsl_functions);
+		let filenames = Object.keys(this.glsl_files);
 		
 		
 		
@@ -52,7 +51,7 @@ Site.load_glsl = function()
 			
 				.then(response => response.text())
 				
-				.then(text => this.glsl_functions[filenames[i]].content = text)
+				.then(text => this.glsl_files[filenames[i]].content = text)
 				
 				.then(() => resolve());
 			});
@@ -63,7 +62,7 @@ Site.load_glsl = function()
 		//Join them all for now -- we'll replace this later
 		for (let i = 0; i < filenames.length; i++)
 		{
-			window.COMPLEX_GLSL	+= this.glsl_functions[filenames[i]].content;
+			window.COMPLEX_GLSL	+= this.glsl_files[filenames[i]].content;
 		}
 		
 		Site.scripts_loaded["glsl"] = true;
@@ -71,3 +70,72 @@ Site.load_glsl = function()
 		resolve();
 	});
 };
+
+
+
+//Returns a bundle of all required glsl to handle the given keywords.
+Site.get_glsl_bundle = function(keywords)
+{
+	//main.glsl is always included.
+	let bundle = Site.glsl_files["main"].content;
+	
+	let filenames = Object.keys(this.glsl_files);
+	
+	let files_included = {};
+	
+	for (let i = 0; i < filenames.length; i++)
+	{
+		files_included[filenames[i]] = false;
+	}
+	
+	files_included["main"] = true;
+	
+	
+	
+	for (let i = 0; i < filenames.length; i++)
+	{
+		if (files_included[filenames[i]])
+		{
+			continue;
+		}
+		
+		for (let j = 0; j < keywords.length; j++)
+		{
+			if (Site.glsl_files[filenames[i]].keywords.indexOf(keywords[j]) !== -1)
+			{
+				bundle += Site.glsl_files[filenames[i]].content;
+				
+				if (DEBUG)
+				{
+					console.log(`GLSL loading: ${filenames[i]}`);
+				}
+				
+				
+				
+				let dependencies = [...Site.glsl_files[filenames[i]].dependencies];
+				
+				while (dependencies.length > 0)
+				{
+					if (!files_included[dependencies[0]])
+					{
+						bundle += Site.glsl_files[dependencies[0]].content;
+						
+						files_included[dependencies[0]] = true;
+						
+						dependencies = dependencies.concat(Site.glsl_files[dependencies[0]].dependencies);
+						
+						if (DEBUG)
+						{
+							console.log(`GLSL loading: ${filenames[i]} -> ${dependencies[0]}`);
+						}	
+						
+						dependencies.shift();
+					}
+				}
+			}
+		}	
+	}
+	
+	
+	return bundle;
+}
