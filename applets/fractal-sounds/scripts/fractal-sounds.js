@@ -224,7 +224,7 @@
 			
 			
 			
-			${COMPLEX_GLSL}
+			${Site.get_glsl_bundle(generating_code)}
 			
 			
 			

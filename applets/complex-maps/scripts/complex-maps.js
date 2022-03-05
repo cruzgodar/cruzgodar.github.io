@@ -178,7 +178,6 @@
 		let generating_code = code_input_element.value || "cexp(cinv(z))";
 		
 		
-		
 		let selector_mode_string = "";
 		
 		if (selector_mode)
@@ -219,7 +218,7 @@
 			
 			
 			
-			${COMPLEX_GLSL}
+			${Site.get_glsl_bundle(generating_code)}
 			
 			
 			

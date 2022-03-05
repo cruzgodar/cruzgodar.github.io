@@ -185,7 +185,7 @@
 			
 			
 			
-			${COMPLEX_GLSL}
+			${Site.get_glsl_bundle("inverse_g2_g3, wp")}
 			
 			
 			
@@ -277,7 +277,7 @@
 			
 			
 			
-			${COMPLEX_GLSL}
+			${Site.get_glsl_bundle("inverse_g2_g3, wpprime")}
 			
 			
 			
@@ -477,7 +477,7 @@
 			
 			
 			
-			${COMPLEX_GLSL}
+			${Site.get_glsl_bundle("kleinJ, inverse_g2_g3")}
 			
 			
 			
@@ -565,7 +565,7 @@
 			
 			
 			
-			${COMPLEX_GLSL}
+			${Site.get_glsl_bundle("kleinj_from_g2_g3")}
 			
 			
 			
@@ -804,15 +804,11 @@
 		
 		wilson_ec_plot.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "step", "g2_arg", "g3_arg"]);
 		
-		
-		
 		wilson_ec_plot.render.load_new_shader(frag_shader_source_ec_plot_2);
 		
 		wilson_ec_plot.render.init_uniforms(["texture_step"]);
 		
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["texture_step"], 1 / resolution_ec_plot);
-		
-		
 		
 		wilson_ec_plot.render.create_framebuffer_texture_pair();
 		
