@@ -160,3 +160,191 @@ float cacos(float a) {
 	return cacos(vec2(a,0.0)).x;
 }
 #endfunction
+
+
+
+#function catan
+#requires clog
+vec2 catan(vec2 a) {
+	vec2 I_times_a = vec2(-a.y,a.x);
+	return cmul(0.5*I, clog(vec2(1.0-I_times_a.x,-I_times_a.y)) - clog(vec2(I_times_a.x+1.0,I_times_a.y)));
+}
+
+float catan(float a) {
+	return catan(vec2(a,0.0)).x;
+}
+#endfunction
+
+
+
+#function cacsc
+#requires casin
+vec2 cacsc(vec2 a) {
+	return casin(cinv(a));
+}
+
+float cacsc(float a) {
+	return cacsc(vec2(a,0.0)).x;
+}
+#endfunction
+
+
+
+#function casec
+#requires cacos
+vec2 casec(vec2 a) {
+	return cacos(cinv(a));
+}
+
+float casec(float a) {
+	return casec(vec2(a,0.0)).x;
+}
+#endfunction
+
+
+
+#function cacot
+#requires clog
+vec2 cacot(vec2 a) {
+	vec2 I_over_a = cdiv(I,a);
+	return cmul(0.5*I, clog(vec2(1.0-I_over_a.x,-I_over_a.y)) - clog(vec2(I_over_a.x+1.0,I_over_a.y)));
+	// return catan(cdiv(vec2(1.0,0.0),a));
+}
+
+float cacot(float a) {
+	return cacot(vec2(a,0.0)).x;
+}
+#endfunction
+
+
+
+#function ctanh
+#requires cexp
+vec2 ctanh(vec2 a) {
+	return cdiv(cexp(2.0 * a) - vec2(1.0,0.0),cexp(2.0 * a) + vec2(1.0,0.0));
+}
+
+float ctanh(float a) {
+	return (exp(2.0 * a) - 1.0)/(exp(2.0 * a) + 1.0);
+}
+#endfunction
+
+
+
+#function ccsch
+#requires csinh
+vec2 ccsch(vec2 a) {
+	return cinv(csinh(a));
+}
+
+float ccsch(float a) {
+	return ccsch(vec2(a,0.0)).x;
+}
+#endfunction
+
+
+
+#function csech
+#requires ccosh
+vec2 csech(vec2 a) {
+	return cinv(ccosh(a));
+}
+
+float csech(float a) {
+	return ccsch(vec2(a,0.0)).x;
+}
+#endfunction
+
+
+
+#function ccoth
+#requires cexp
+vec2 ccoth(vec2 a) {
+	return cdiv(cexp(2.0 * a) + ONE, cexp(2.0 * a) - ONE);
+}
+
+float ccoth(float a) {
+	return ccoth(vec2(a,0.0)).x;
+}
+#endfunction
+
+
+
+#function casinh
+#requires clog cpow
+vec2 casinh(vec2 z) {
+	return clog(cpow(cpow(z,2.0) + ONE,0.5) + z);
+}
+
+float casinh(float a) {
+	return casinh(vec2(a,0.0)).x;
+}
+#endfunction
+
+
+
+#function cacosh
+#requires clog cpow
+vec2 cacosh(vec2 z) {
+	return clog(cmul(cpow(z + ONE,0.5),cpow(z - ONE,0.5)) + z);
+}
+
+float cacosh(float a) {
+	return cacosh(vec2(a,0.0)).x;
+}
+#endfunction
+
+
+
+#function catanh
+#requires clog
+vec2 catanh(vec2 z) {
+	return 0.5*clog(z+ONE) - 0.5*clog(ONE-z);
+}
+
+float catanh(float a) {
+	return catanh(vec2(a,0.0)).x;
+}
+#endfunction
+
+
+
+#function cacsch
+#requires clog cpow
+vec2 cacsch(vec2 z) {
+	return clog(cpow(cpow(z,-2.0)+ONE,0.5) + cdiv(1.0,z));
+}
+
+float cacsch(float a) {
+	return cacsch(vec2(a,0.0)).x;
+}
+#endfunction
+
+
+
+// branch cuts may differ from wolfram... whatever
+#function casech
+#requires clog csqrt
+vec2 casech(vec2 z) {
+	vec2 zinv = cinv(z);
+	return clog(cmul(csqrt(zinv-ONE),csqrt(zinv+ONE)) + zinv);
+}
+
+float casech(float a) {
+	return casech(vec2(a,0.0)).x;
+}
+#endfunction
+
+
+
+#function cacoth
+#requires clog
+vec2 cacoth(vec2 z) {
+	vec2 zinv = cinv(z);
+	return 0.5*clog(zinv+ONE) - 0.5*clog(ONE-zinv);
+}
+
+float cacoth(float a) {
+	return cacoth(vec2(a,0.0)).x;
+}
+#endfunction

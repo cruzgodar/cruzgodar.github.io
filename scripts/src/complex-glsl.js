@@ -44,6 +44,17 @@ Site.split_glsl_file = function(filename, text)
 		
 		let keywords = text.slice(index + 10, end_index).split(" ");
 		
+		for (let i = 0; i < keywords.length; i++)
+		{
+			keywords[i] = keywords[i].replaceAll(" ", "");
+			
+			if (keywords[i] === "")
+			{
+				keywords.splice(i, 1);
+				i--;
+			}
+		}
+		
 		
 		
 		let end_function_index = text.indexOf("#endfunction", end_index + 1);
@@ -69,7 +80,20 @@ Site.split_glsl_file = function(filename, text)
 		{
 			let end_dependencies_index = text.indexOf("\n", dependencies_index + 10);
 			
-			Site.glsl_files[keywords[0]].dependencies = text.slice(dependencies_index + 10, end_dependencies_index).split(" ");
+			let dependencies = text.slice(dependencies_index + 10, end_dependencies_index).split(" ");
+			
+			for (let i = 0; i < dependencies.length; i++)
+			{
+				dependencies[i] = dependencies[i].replaceAll(" ", "");
+				
+				if (dependencies[i] === "")
+				{
+					dependencies.splice(i, 1);
+					i--;
+				}
+			}
+			
+			Site.glsl_files[keywords[0]].dependencies = dependencies;
 			
 			Site.glsl_files[keywords[0]].content = text.slice(end_dependencies_index + 1, end_function_index);
 		}
@@ -238,11 +262,11 @@ Site.get_glsl_bundle = function(code_string)
 		
 		if (DEBUG && depth !== 0)
 		{
-			debug_message += "\n                    ";
+			debug_message += "\n                     ";
 			
 			for (let i = 0; i < depth; i++)
 			{
-				debug_message += "    ";
+				debug_message += "   ";
 			}
 			
 			debug_message += `↳ ${filename}.frag`;
@@ -296,8 +320,6 @@ Site.get_glsl_bundle = function(code_string)
 			}
 		}	
 	}
-	
-	console.log(bundle);
 	
 	return bundle;
 }
