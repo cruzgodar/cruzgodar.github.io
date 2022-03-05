@@ -1,15 +1,5 @@
 #function gamma gamma_helper gamma_float_helper
 #requires cpow cexp csin
-const vec2 GAMMA_CONST_0 = ONE;
-const float GAMMA_CONST_1 = 676.5203681218851;
-const float GAMMA_CONST_2 = -1259.1392167224028;
-const float GAMMA_CONST_3 = 771.3234287776531;
-const float GAMMA_CONST_4 = -176.6150291621406;
-const float GAMMA_CONST_5 = 12.507343278686905;
-const float GAMMA_CONST_6 = -0.13857109526572012;
-const float GAMMA_CONST_7 = .000009984369578019572;
-const float GAMMA_CONST_8 = .00000015056327351493116;
-
 vec2 gamma_helper(vec2 a)
 {
 	a -= ONE;
@@ -66,5 +56,67 @@ float gamma(float a) {
 
 float gamma(int a) {
 	return gamma(float(a));
+}
+#endfunction
+
+
+
+// Assumption: real(z)>0
+#function digamma digamma_helper
+vec2 digamma_helper(vec2 z) {
+	
+	vec2 summer = -0.57721566490153286060*ONE;
+	for (int k = 0; k < 1000; k++) {
+		summer += cdiv(z-ONE,float(k+1)*(float(k)*ONE+z));
+	}
+	return summer;
+
+}
+
+// TODO: consider implementing bernoulli formula
+// check: digamma(z+ONE)-digamma(z)-cinv(z)
+vec2 digamma(vec2 z) {
+	// can use reflection formula:
+	//gamma(x) = gamma(1-x) - pi cot pi x
+
+	return digamma_helper(z);
+}
+#endfunction
+
+
+
+#function polygamma polygamma_helper
+#requires cpow gamma digamma
+vec2 polygamma_helper(float m, vec2 z) {
+	vec2 summer = ZERO;
+	float m_plus_one = m+1.0;
+	for (int k = 0; k < 1000; k++) {
+		summer += cpow(z+float(k)*ONE,-m_plus_one);
+	}
+	return cpow(-1.0,m_plus_one)*gamma(m_plus_one) * summer;
+}
+
+// Returns (m+1)th logarithmic derivative of the gamma function
+// https://en.wikipedia.org/wiki/Polygamma_function
+// Example: polygamma(0,z) is digamma
+vec2 polygamma(float m, vec2 z) {
+	// can think about rewriting these using hurwitz zeta
+	if (m == 0.0) {
+		return digamma(z);
+	}
+	return polygamma_helper(m,z);
+}
+
+vec2 polygamma(int m, vec2 z) {
+	return polygamma(float(m),z);
+}
+#endfunction
+
+
+
+#function trigamma
+#requires polygamma
+vec2 trigamma(vec2 z) {
+	return polygamma(1,z);
 }
 #endfunction

@@ -1,6 +1,8 @@
 // Riemann zeta function
 // algorithm 2 of http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=5B07751C858FF584B31B250A0F3AFC58?doi=10.1.1.56.9455&rep=rep1&type=pdf
 // accurate for |a|<20 or so
+#function zeta zeta_helper functional_zeta functional_zeta_helper
+#requires cpow_logz cexp cpow
 vec2 zeta_helper(vec2 a) {
 
 	vec2 tot = -ONE;
@@ -117,3 +119,4 @@ vec2 zeta(vec2 a) {
 float zeta(float a) {
 	return zeta(vec2(a,0.0)).x;
 }
+#endfunction

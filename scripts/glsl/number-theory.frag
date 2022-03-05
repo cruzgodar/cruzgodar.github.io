@@ -285,7 +285,7 @@ vec2 deltaq(vec2 z) {
 
 // Returns the weierstrass p function with w1 = 1, w2 = tau
 // Algorithms from equation 1.10 of https://arxiv.org/pdf/1806.06725.pdf
-#function wp
+#function wp weierstrassp
 #requires cexp cpow
 vec2 wp(vec2 z, vec2 t) {
 
@@ -341,17 +341,27 @@ vec2 wp(vec2 z, vec2 t) {
 	prod -= 3.2898681336964528729 * (theta02+theta03);
 	return prod;
 }
-#endfunction
 
 
 
-#function weierstrassp
-#requires wp
 vec2 weierstrassp(vec2 z, vec2 tau) {
 	return wp(z,tau);
 }
 #endfunction
 
+
+
+// benchmarking function
+#function bench1000
+#requires wp
+vec2 bench1000(vec2 z) {
+	vec2 temp = z;
+	for (int j = 0; j < 100; j++) {
+		temp += wp(z,rho);
+	}
+	return temp;
+}
+#endfunction
 
 
 
@@ -614,5 +624,245 @@ vec2 kleinJq(vec2 q) {
 #requires cpow
 float kleinj_from_g2_g3(float a, float b) {
 	return cpow(4.0*a,3.0)/(cpow(4.0*a,3.0) + cpow(27.0*b,2.0)) * 1728.0/16.0;
+}
+#endfunction
+
+
+
+#function inverse_wp
+#requires wp xy_in_f1_domain hypergeometricf1 cpow
+const float INVERSE_WP_TOL = 0.01;
+const float INVERSE_WP_DX = 0.01;
+const int INVERSE_WP_GRADIENT_DESCENT_BOUND = 100;
+
+// Invert weierstrass p by hacky gradient descent -- actually works! really slow though
+// test with wp(inverse_wp(z,rho),rho)
+vec2 inverse_wp(vec2 z, vec2 tau) {
+	if (tau.y < 0.0) {
+		tau = -tau;
+	}
+
+	vec2 r1 = wp(0.5*ONE,tau);
+	vec2 r2 = wp(tau/2.0,tau);
+	vec2 r3 = wp(0.5*ONE + tau/2.0,tau);
+
+	vec2 x = cdiv(r2-r1,z-r1);
+	vec2 y = cdiv(r3-r1,z-r1);
+
+	if (xy_in_f1_domain(x,y) == 1) {
+		return cdiv(-1.0*hypergeometricf1(0.5,0.5,0.5,1.5,x,y), cpow(z-r1,0.5));
+	}
+
+	vec2 a = tau/2.0 + .5*ONE;
+	float ydist = cabs(z-wp(a,tau));
+	float n = 0.0;
+	float e = 0.0;
+	float s = 0.0;
+	float w = 0.0;
+	float dir = 0.0;
+
+	for (int step = 0; step < INVERSE_WP_GRADIENT_DESCENT_BOUND; step++) {
+		if (ydist < INVERSE_WP_TOL) {
+			return a;
+		}
+		// TODO: think how to reuse a calculation
+		n = cabs(wp(a + INVERSE_WP_DX * tau*ydist,tau)- z);
+		e = cabs(wp(a + INVERSE_WP_DX * ONE*ydist,tau)- z);
+		s = cabs(wp(a - INVERSE_WP_DX * tau*ydist,tau)- z);
+		w = cabs(wp(a - INVERSE_WP_DX * ONE*ydist,tau)- z);
+		dir = n;
+		if (dir > e) {
+			dir = e;
+		}
+		if (dir > s) {
+			dir = s;
+		}
+		if (dir > w) {
+			dir = w;
+		}
+		if (dir == n) {
+			a += INVERSE_WP_DX * ydist * tau;
+		} else if (dir == e) {
+			a += INVERSE_WP_DX * ydist * ONE;
+		} else if (dir == s) {
+			a -= INVERSE_WP_DX * ydist * tau;
+		} else if (dir == w) {
+			a -= INVERSE_WP_DX * ydist * ONE;
+		}
+		ydist = dir;
+	}
+	return ZERO;
+
+}
+#endfunction
+
+
+
+// Inverse function to kleinJ
+// Uses ``Method 4: Solving the quadratic in α'' from https://en.wikipedia.org/wiki/J-invariant
+// inverse_j(kleinj(z)) is not an inverse tho
+#function inverse_j inverse_j_reduced
+#requires cpow hypergeometric2f1
+vec2 inverse_j(vec2 z) {
+
+	// Test code: 1728.0*cdiv(cpow(g2(inverse_j(z)),3.0),cpow(g2(inverse_j(z)),3.0)-27.0 * cpow(g3(inverse_j(z)),2.0))
+	// Should return the identity (it does!)
+
+	vec2 temp = cdiv(432.0,z);
+	vec2 a = 0.5 * (ONE + cpow(ONE-4.0*temp,0.5));
+	return cmul(I,cdiv(hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,ONE-a),hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,a)));
+}
+
+// specialized version for inverse_g2_g3
+// NOTE: can up F21_BOUND if needed for more precision
+vec2 inverse_j_reduced(vec2 z) {
+	// sqrt(27) = 5.19615242270663
+	vec2 a = 0.5 * (ONE + 5.19615242270663*cpow(z,0.5));
+	// can maybe save some calculations doing these both at once!
+	return cmul(I,cdiv(hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,ONE-a),hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,a)));
+}
+
+vec2 inverse_j_reduced(float z) {
+	// sqrt(27) = 5.19615242270663
+	float a = 0.5 * (1.0 + 5.19615242270663*csqrt(z).x);
+	return cmul(I,cdiv(hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,1.0-a),hypergeometric2f1(1.0/6.0,5.0/6.0,1.0,a)));
+}
+#endfunction
+
+
+
+#function arithmetic_geometric_mean agm
+#requires csqrt
+const int ARITHMETIC_GEOMETRIC_MEAN_BOUND = 10;
+const float ARITHMETIC_GEOMETRIC_MEAN_TOL = .001;
+
+vec2 arithmetic_geometric_mean(vec2 x, vec2 y) {
+	vec2 an = x;
+	vec2 gn = y;
+	for (int i = 0; i < ARITHMETIC_GEOMETRIC_MEAN_BOUND; i++) {
+		if (cabs(an-gn) < ARITHMETIC_GEOMETRIC_MEAN_TOL) {
+			break;
+		}
+		x = 0.5*(an+gn);
+		y = csqrt(cmul(an,gn));
+
+		an = x;
+		gn = y;
+	}
+	return an;
+
+}
+
+vec2 agm(vec2 x, vec2 y) {
+	return arithmetic_geometric_mean(x,y);
+}
+#endfunction
+
+
+
+#function arithmetic_geometric_mean_for_g2_g3
+#requires csqrt
+// weird function to satisfy wikipedia's equation for fundamental periods on https://en.wikipedia.org/wiki/Elliptic_curve
+vec2 arithmetic_geometric_mean_for_g2_g3(vec2 x, vec2 y) {
+	vec2 an = x;
+	vec2 gn = y;
+	for (int i = 0; i < ARITHMETIC_GEOMETRIC_MEAN_BOUND; i++) {
+		if (cabs(an-gn) < ARITHMETIC_GEOMETRIC_MEAN_TOL) {
+			break;
+		}
+		x = 0.5*(an+gn);
+		y = csqrt(cmul(an,gn));
+		if (cabs(x-y) > cabs(x+y)) {
+			y = -y;
+		}
+
+		an = x;
+		gn = y;
+	}
+	
+	return an;
+}
+#endfunction
+
+
+
+#function in_fun_domain
+bool in_fun_domain(vec2 z) {
+	if (cmag2(z)<1.0) {
+		return false;
+	} else if (z.x < -0.5) {
+		return false;
+	} else if (z.x > -0.5) {
+		return false;
+	}
+	return true;
+}
+#endfunction
+
+
+
+// in: z in H
+// out: z in D, i.e. |z|>1, |z.x|<.5
+#function map_to_fun_domain
+// how many steps to try to map to fun domain
+const int MAX_FUN = 100;
+
+vec2 map_to_fun_domain(vec2 z) {
+	for (int i = 0; i < MAX_FUN; i++) {
+		if (cmag2(z)<1.0) {
+			z = -cinv(z);
+		} else if (z.x <= -0.5) {
+			z += ONE;
+		} else if (z.x > 0.5) {
+			z -= ONE;
+		} else {
+			return vec2(cabs(z.x),z.y);
+		}
+	}
+	return z;
+}
+#endfunction
+
+
+
+// IN: g2 = a, g3 = b
+// OUT: tau such that y^2 = 4x^3 - g2(tau)x - g3(tau) is isomorphic to y^2 = 4x^3 - ax - b
+// 
+
+//  oh my lord it actually works
+// Test with inverse_g2_g3(g2(z),g3(z))
+#function inverse_g2_g3
+#requires cpow csqrt arithmetic_geometric_mean arithmetic_geometric_mean_for_g2_g3 map_to_fun_domain
+const float cube_root_three = 1.44224957;
+const float cube_root_three_squared = 2.08008382;
+
+const vec2 one_plus_root_three_i = vec2(1.0, 1.73205081);
+const vec2 one_minus_root_three_i = vec2(1.0, -1.73205081);
+
+vec2 inverse_g2_g3(vec2 a, vec2 b) {
+
+	vec2 a3 = cpow(a,3.0);
+	vec2 b2 = cpow(b,2.0);
+
+	vec2 d = cpow(sqrt(3.0) *csqrt(a3 + 27.0* b2) - 9.0* b,1.0/3.0);
+
+	// r1,r2,r3 work!
+	vec2 r1 = 0.5* (d/cube_root_three_squared - cdiv(a,d)/cube_root_three);
+	vec2 r2 = cdiv(cmul(one_plus_root_three_i,a),4.0*cube_root_three*d) - cmul(d, one_minus_root_three_i) /4.0 / cube_root_three_squared;
+	vec2 r3 = cdiv(cmul(one_minus_root_three_i,a),4.0*cube_root_three*d) - cmul(d, one_plus_root_three_i) /4.0 / cube_root_three_squared;
+
+	vec2 a0 = csqrt(r1-r3);
+	vec2 b0 = csqrt(r1-r2);
+	vec2 c0 = csqrt(r2-r3);
+
+	d = cdiv(arithmetic_geometric_mean(c0,cmul(I,b0)),arithmetic_geometric_mean_for_g2_g3(a0,b0));
+	return map_to_fun_domain(d);
+
+	// fwiw this is a decent inverse right below the fundamental domain
+	// // vec2 tau = inverse_j_reduced(cdiv(cpow(b,2.0),cpow(a,3.0)));
+}
+
+vec2 inverse_g2_g3(float a, float b) {
+	return inverse_g2_g3(vec2(a, 0.0), vec2(b, 0.0));
 }
 #endfunction

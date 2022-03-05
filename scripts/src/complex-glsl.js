@@ -8,7 +8,11 @@ Site.glsl_filenames =
 	"combinatorics",
 	"number-theory",
 	"gamma",
-	"hypergeometric"
+	"hypergeometric",
+	"su3_charcter",
+	"lambert_w",
+	"hurwitz_zeta",
+	"zeta"
 ];
 
 Site.glsl_files = 
