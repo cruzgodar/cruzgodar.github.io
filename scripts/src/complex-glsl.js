@@ -1,5 +1,11 @@
 //Needs to be loaded *after* main.js.
 
+Site.glsl_filenames =
+[
+	"equality",
+	"powers"
+];
+
 Site.glsl_files = 
 {
 	"main":
@@ -7,85 +13,10 @@ Site.glsl_files =
 		dependencies: [],
 		
 		keywords: []
-	},
+	}
+	/*
 	
-	"equality":
-	{
-		dependencies: [],
-		
-		keywords:
-		[
-			"equal_within_relative_tolerance",
-			"equal_within_absolute_tolerance",
-			"equal_within_sharp_absolute_tolerance"
-		]
-	},
 	
-	"cpow":
-	{
-		dependencies: [],
-		
-		keywords:
-		[
-			"cpow"
-		]
-	},
-	
-	"cpow_logz":
-	{
-		dependencies: [],
-		
-		keywords:
-		[
-			"cpow_logz"
-		]
-	},
-	
-	"powermod":
-	{
-		dependencies: [],
-		
-		keywords:
-		[
-			"powermod"
-		]
-	},
-	
-	"ctet":
-	{
-		dependencies:
-		[
-			"cpow"
-		],
-		
-		keywords:
-		[
-			"ctet"
-		]
-	},
-	
-	"csqrt":
-	{
-		dependencies:
-		[
-			"cpow"
-		],
-		
-		keywords:
-		[
-			"csqrt"
-		]
-	},
-	
-	"cexp":
-	{
-		dependencies: [],
-		
-		keywords:
-		[
-			"cexp"
-		]
-	},
 	
 	"clog":
 	{
@@ -251,8 +182,80 @@ Site.glsl_files =
 		[
 			"zeta"
 		]
+	}*/
+};
+
+
+
+Site.split_glsl_file = function(filename, text)
+{
+	text = text.replaceAll("\r", "");
+	
+	let start_search_index = 0;
+	
+	while (true)
+	{
+		let index = text.indexOf("#function", start_search_index);
+		
+		if (index === -1)
+		{
+			break;
+		}
+		
+		let end_index = text.indexOf("\n", index + 10);
+		
+		if (end_index === -1)
+		{
+			console.error(`[GLSL bundling] Invalid function name in file ${filename}.frag`);
+			return;
+		}
+		
+		let keywords = text.slice(index + 10, end_index).split(" ");
+		
+		
+		
+		let end_function_index = text.indexOf("#endfunction", end_index + 1);
+		
+		if (end_function_index === -1)
+		{
+			console.error(`[GLSL bundling] Missing #endfunction in file ${filename}.frag`);
+			return;
+		}
+		
+		
+		
+		Site.glsl_files[keywords[0]] =
+		{
+			keywords: keywords
+		};
+		
+		
+		
+		let dependencies_index = text.indexOf("#requires", index);
+		
+		if (dependencies_index !== -1 && dependencies_index < end_function_index)
+		{
+			let end_dependencies_index = text.indexOf("\n", dependencies_index + 10);
+			
+			Site.glsl_files[keywords[0]].dependencies = text.slice(dependencies_index + 10, end_dependencies_index).split(" ");
+			
+			Site.glsl_files[keywords[0]].content = text.slice(end_dependencies_index + 1, end_function_index);
+		}
+		
+		else
+		{
+			Site.glsl_files[keywords[0]].dependencies = [];
+			
+			Site.glsl_files[keywords[0]].content = text.slice(end_index + 1, end_function_index);
+		}
+		
+		
+		
+		start_search_index = end_function_index + 13;
 	}
 };
+
+
 
 Site.glsl_files_by_depth = [];
 
@@ -260,21 +263,37 @@ Site.load_glsl = function()
 {
 	return new Promise(async (resolve, reject) =>
 	{
-		let filenames = Object.keys(this.glsl_files);
+		//main.frag is always fetched.
+		await new Promise(async (resolve, reject) =>
+		{
+			fetch(`/scripts/glsl/main.frag`)
 		
-		for (let i = 0; i < filenames.length; i++)
+			.then(response => response.text())
+			
+			.then(text => this.glsl_files["main"].content = text)
+			
+			.then(() => resolve());
+		});
+		
+		
+		
+		for (let i = 0; i < this.glsl_filenames.length; i++)
 		{
 			await new Promise(async (resolve, reject) =>
 			{
-				fetch(`/scripts/glsl/${filenames[i]}.frag`)
+				fetch(`/scripts/glsl/${this.glsl_filenames[i]}.frag`)
 			
 				.then(response => response.text())
 				
-				.then(text => this.glsl_files[filenames[i]].content = text)
+				.then(text => this.split_glsl_file(this.glsl_filenames[i], text))
 				
 				.then(() => resolve());
 			});
 		}
+		
+		
+		
+		let filenames = Object.keys(this.glsl_files);
 		
 		
 		
@@ -283,6 +302,8 @@ Site.load_glsl = function()
 		{
 			this.glsl_files[filenames[i]].parents = [];
 		}
+		
+		
 		
 		for (let i = 0; i < filenames.length; i++)
 		{
