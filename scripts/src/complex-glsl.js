@@ -3,7 +3,8 @@
 Site.glsl_filenames =
 [
 	"equality",
-	"powers"
+	"powers",
+	"trig"
 ];
 
 Site.glsl_files = 
@@ -14,175 +15,6 @@ Site.glsl_files =
 		
 		keywords: []
 	}
-	/*
-	
-	
-	
-	"clog":
-	{
-		dependencies: [],
-		
-		keywords:
-		[
-			"clog"
-		]
-	},
-	
-	"csinh":
-	{
-		dependencies:
-		[
-			"cexp"
-		],
-		
-		keywords:
-		[
-			"csinh"
-		]
-	},
-	
-	"ccosh":
-	{
-		dependencies:
-		[
-			"cexp"
-		],
-		
-		keywords:
-		[
-			"ccosh"
-		]
-	},
-	
-	"csin":
-	{
-		dependencies:
-		[
-			"cexp",
-			"csinh",
-			"ccosh"
-		],
-		
-		keywords:
-		[
-			"csin"
-		]
-	},
-	
-	"ccos":
-	{
-		dependencies:
-		[
-			"cexp",
-			"csinh",
-			"ccosh"
-		],
-		
-		keywords:
-		[
-			"ccos"
-		]
-	},
-	
-	"ctan":
-	{
-		dependencies:
-		[
-			"cexp"
-		],
-		
-		keywords:
-		[
-			"ctan"
-		]
-	},
-	
-	"ccsc":
-	{
-		dependencies:
-		[
-			"csin"
-		],
-		
-		keywords:
-		[
-			"ccsc"
-		]
-	},
-	
-	"csec":
-	{
-		dependencies:
-		[
-			"ccos"
-		],
-		
-		keywords:
-		[
-			"csec"
-		]
-	},
-	
-	"ccot":
-	{
-		dependencies:
-		[
-			"cexp"
-		],
-		
-		keywords:
-		[
-			"ccot"
-		]
-	},
-	
-	"casin":
-	{
-		dependencies:
-		[
-			"clog",
-			"cpow"
-		],
-		
-		keywords:
-		[
-			"casin"
-		]
-	},
-	
-	"cacos":
-	{
-		dependencies:
-		[
-			"clog",
-			"cpow"
-		],
-		
-		keywords:
-		[
-			"casin"
-		]
-	},
-	
-	"gamma":
-	{
-		dependencies: ["zeta"],
-		
-		keywords:
-		[
-			"gamma"
-		]
-	},
-	
-	"zeta":
-	{
-		dependencies: [],
-		
-		keywords:
-		[
-			"zeta"
-		]
-	}*/
 };
 
 
@@ -464,6 +296,8 @@ Site.get_glsl_bundle = function(code_string)
 			}
 		}	
 	}
+	
+	console.log(bundle);
 	
 	return bundle;
 }
