@@ -4,11 +4,20 @@ Site.glsl_filenames =
 [
 	"equality",
 	"powers",
-	"trig"
+	"trig",
+	"combinatorics",
+	"number-theory"
 ];
 
 Site.glsl_files = 
 {
+	"constants":
+	{
+		dependencies: [],
+		
+		keywords: []
+	},
+	
 	"main":
 	{
 		dependencies: [],
@@ -119,7 +128,19 @@ Site.load_glsl = function()
 {
 	return new Promise(async (resolve, reject) =>
 	{
-		//main.frag is always fetched.
+		//constants.frag and main.frag are always fetched.
+		await new Promise(async (resolve, reject) =>
+		{
+			fetch(`/scripts/glsl/constants.frag`)
+		
+			.then(response => response.text())
+			
+			.then(text => this.glsl_files["constants"].content = text)
+			
+			.then(() => resolve());
+		});
+		
+		
 		await new Promise(async (resolve, reject) =>
 		{
 			fetch(`/scripts/glsl/main.frag`)
@@ -307,8 +328,8 @@ Site.get_glsl_bundle = function(code_string)
 	
 	
 	
-	//main.glsl is always included.
-	bundle = Site.glsl_files["main"].content;
+	//constants.frag and main.glsl are always included.
+	bundle = Site.glsl_files["constants"].content + Site.glsl_files["main"].content;
 	
 	for (let i = 1; i < Site.glsl_files_by_depth.length; i++)
 	{
