@@ -6,7 +6,9 @@ Site.glsl_filenames =
 	"powers",
 	"trig",
 	"combinatorics",
-	"number-theory"
+	"number-theory",
+	"gamma",
+	"hypergeometric"
 ];
 
 Site.glsl_files = 
@@ -290,7 +292,7 @@ Site.get_glsl_bundle = function(code_string)
 				debug_message += "   ";
 			}
 			
-			debug_message += `↳ ${filename}.frag`;
+			debug_message += `↳ ${filename}`;
 		}
 		
 		let dependencies = Site.glsl_files[filename].dependencies;
@@ -314,7 +316,7 @@ Site.get_glsl_bundle = function(code_string)
 		{
 			if (Site.glsl_files[filenames[i]].keywords.indexOf(keywords[j]) !== -1)
 			{
-				debug_message = `[GLSL bundling] Adding ${filenames[i]}.frag`;
+				debug_message = `[GLSL bundling] Adding ${filenames[i]}`;
 				
 				add_to_bundle(filenames[i], 0);
 				

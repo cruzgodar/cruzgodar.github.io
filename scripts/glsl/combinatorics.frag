@@ -147,3 +147,40 @@ float bernoulli(float m) {
 	return 0.0;
 }
 #endfunction
+
+
+
+#function rising_factorial
+#requires gamma
+float rising_factorial(float a, int n) {
+	if (n == 0) {
+		return 1.0;
+	}
+	float prod = 1.0;
+
+	if (n < 0) {
+		n = -n;
+		for (int i = 0; i < 100; i++) {
+			if (i >= n) {
+				break;
+			}
+			prod /= a-float(i+1);
+		}
+		return prod;
+	}
+	for (int i = 0; i < 100; i++) {
+		if (i >= n) {
+			break;
+		}
+		prod *= a+float(i);
+	}
+	return prod;
+}
+
+float rising_factorial(float a, float n) {
+	if (fract(n) == 0.0) {
+		return rising_factorial(a,int(n));
+	}
+	return gamma(a+n)/gamma(a);
+}
+#endfunction
