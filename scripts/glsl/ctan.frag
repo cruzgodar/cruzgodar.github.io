@@ -1,0 +1,12 @@
+//Returns tan(z).
+vec2 ctan(vec2 z)
+{
+	vec2 temp = cexp(2.0 * vec2(-z.y,z.x));
+	temp = cdiv(vec2(-1.0+temp.x,temp.y),vec2(1.0+temp.x,temp.y));
+	return vec2(temp.y,-temp.x);
+}
+
+float ctan(float z)
+{
+	return tan(z);
+}

@@ -153,6 +153,86 @@ Site.glsl_files =
 		]
 	},
 	
+	"ctan":
+	{
+		dependencies:
+		[
+			"cexp"
+		],
+		
+		keywords:
+		[
+			"ctan"
+		]
+	},
+	
+	"ccsc":
+	{
+		dependencies:
+		[
+			"csin"
+		],
+		
+		keywords:
+		[
+			"ccsc"
+		]
+	},
+	
+	"csec":
+	{
+		dependencies:
+		[
+			"ccos"
+		],
+		
+		keywords:
+		[
+			"csec"
+		]
+	},
+	
+	"ccot":
+	{
+		dependencies:
+		[
+			"cexp"
+		],
+		
+		keywords:
+		[
+			"ccot"
+		]
+	},
+	
+	"casin":
+	{
+		dependencies:
+		[
+			"clog",
+			"cpow"
+		],
+		
+		keywords:
+		[
+			"casin"
+		]
+	},
+	
+	"cacos":
+	{
+		dependencies:
+		[
+			"clog",
+			"cpow"
+		],
+		
+		keywords:
+		[
+			"casin"
+		]
+	},
+	
 	"gamma":
 	{
 		dependencies: ["zeta"],
