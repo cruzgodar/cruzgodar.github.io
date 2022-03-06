@@ -62,9 +62,9 @@
 		`return equal_within_relative_tolerance(cacot(ONE), PI*ONE/4.0);`,
 		// hyperbolic trig
 			// sinh
-		`return equal_within_relative_tolerance(csinh(I*PI/2.0), I);`,
+		`return csinh(I*PI/2.0) == I;`,
 			// cosh
-		`return equal_within_relative_tolerance(ccosh(I*PI), -ONE);`,
+		`return ccosh(I*PI) == -ONE;`,
 			// tanh
 		`return equal_within_relative_tolerance(ctanh(I*PI/4.0), I);`,
 			// csch
