@@ -251,6 +251,10 @@ let Site =
 		
 		
 		
+		Site.load_glsl();
+		
+		
+		
 		Page.Images.check_webp_support()
 		
 		.then(() =>
