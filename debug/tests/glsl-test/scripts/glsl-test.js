@@ -62,9 +62,9 @@
 		`return equal_within_relative_tolerance(cacot(ONE), PI*ONE/4.0);`,
 		// hyperbolic trig
 			// sinh
-		`return csinh(I*PI/2.0) == I;`,
+		`return equal_within_relative_tolerance(csinh(I*PI/2.0), I);`,
 			// cosh
-		`return ccosh(I*PI) == -ONE;`,
+		`return equal_within_relative_tolerance(ccosh(I*PI), -ONE);`,
 			// tanh
 		`return equal_within_relative_tolerance(ctanh(I*PI/4.0), I);`,
 			// csch
@@ -89,6 +89,7 @@
 		`return equal_within_relative_tolerance(cacsch(ONE-I/2.0), vec2(0.763884345953711, 0.311225797244761));`,
 			// asech
 		`return equal_within_relative_tolerance(casech(ONE+I/2.0), vec2(0.533218290584112, -0.797709970075392));`,
+		
 		`return equal_within_relative_tolerance(casech(ONE-I/2.0), vec2(0.533218290584112, 0.797709970075392));`,
 			// acoth
 		`return equal_within_relative_tolerance(cacoth(ONE+I/2.0), vec2(0.708303336014054, -0.662908831834016));`,
@@ -155,7 +156,7 @@
 		`return equal_within_absolute_tolerance(agm(2.0*ONE,I),vec2(1.010051593619580924333050617727020, 0.7426464223997775055939));`,
 		`return powermod(2,31,7) == 2;`,
 		`return powermod(3,600,4) == 1;`,
-	];
+	]
 	
 	
 	
@@ -173,10 +174,8 @@
 			{
 				wilson.output_canvas_container.parentNode.remove();
 				
-				canvas_location_element.insertAdjacentHTML("beforebegin", `
-					<div>
-						<canvas id="output-canvas" class="output-canvas"></canvas>
-					</div>
+				canvas_location_element.insertAdjacentHTML("afterend", `
+					<canvas id="output-canvas" class="output-canvas"></canvas>
 				`);
 			}
 			
@@ -191,7 +190,7 @@
 				
 				
 				
-				${COMPLEX_GLSL}
+				${Site.get_glsl_bundle(shader)}
 				
 				
 				
@@ -254,7 +253,7 @@
 	
 	for (let i = 0; i < tests.length; i++)
 	{
-		console.log(`Starting test ${i}`);
+		console.log(`Starting test ${i}: ${tests[i]}`);
 		
 		let result = unit_test(tests[i]);
 		
@@ -265,9 +264,7 @@
 		
 		if (result === 1)
 		{
-			console.error(`Test ${i} returned false:`);
-			
-			console.error(tests[i]);
+			console.error(`Test ${i} returned false: ${tests[i]}`);
 			
 			passed_everything = false;
 			
