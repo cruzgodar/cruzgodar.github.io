@@ -9,7 +9,7 @@ Site.glsl_filenames =
 	"number-theory",
 	"gamma",
 	"hypergeometric",
-	"su3_charcter",
+	"su3_character",
 	"lambert_w",
 	"hurwitz_zeta",
 	"zeta"
