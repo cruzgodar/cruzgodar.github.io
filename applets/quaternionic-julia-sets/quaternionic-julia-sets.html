@@ -1,15 +1,15 @@
 <head>
-	<title>The Mandelbulb</title>
+	<title>Quaternionic Julia Sets</title>
 	
 	<meta property="og:type" content="website">
 	
-	<meta property="og:title" content="The Mandelbulb"/>
+	<meta property="og:title" content="Quaternionic Julia Sets"/>
 	
-	<meta property="og:url" content="https://cruzgodar.com/applets/the-mandelbulb/the-mandelbulb.html"/>
+	<meta property="og:url" content="https://cruzgodar.com/applets/quaternionic-julia-sets/quaternionic-julia-sets.html"/>
 	
-	<meta property="og:description" content="The holy grail of 3D fractals, the Mandelbulb is a landmark accomplishment. Translating the Mandelbrot set to three dimensions is impossible to do canonically, since there is no appropriate 3-dimensional number system analogous to the complex numbers. Nevertheless, Daniel White and Paul Nylander managed to use spherical coordinates to produce something spectacular in its own right, showing just what 3D fractals could be and igniting the search for more."/>
+	<meta property="og:description" content="The Mandelbrot and Julia sets are defined using the complex numbers, a 2D number system that lends itself to making images. It's natural to ask if there's a 3D Mandebrot set, but unfortunately there isn't any functional 3-dimensional number system analagous to the complex numbers, and the best we have is the Mandelbulb. If we go up one more dimension, though, we find a 4D number system -- the quaternions -- that behaves like the complex numbers. While we can't render four dimensions at once, we can just take a 3D slice, similar to a 2D cross-section of a 3D object. The resulting objects may not be quite as remarkable as Juliabulbs, but the underlying Julia sets are visible within them, and they have their own unique sort of beauty."/>
 
-	<meta property="og:image" content="https://cruzgodar.com/applets/the-mandelbulb/cover.jpg"/>
+	<meta property="og:image" content="https://cruzgodar.com/applets/quaternionic-julia-sets/cover.jpg"/>
 	
 	<style>body {opacity: 0;}</style>
 </head>
@@ -22,17 +22,13 @@
 
 
 
-!header The Mandelbulb
+!header Quaternionic Julia Sets
 
 
 
 !begin-text-block
 	
-	The holy grail of 3D fractals, the Mandelbulb is a landmark accomplishment. Translating the <a href="/applets/julia-set-explorer/julia-set-explorer.html">Mandelbrot set</a> to three dimensions is impossible to do canonically, since there is no appropriate 3-dimensional number system analogous to the complex numbers. Nevertheless, Daniel White and Paul Nylander managed to use spherical coordinates to produce something spectacular in its own right, showing just what 3D fractals could be and igniting the search for more.
-	
-	The typical Mandelbulb uses a power-8 formula, but any power larger than 1 works too. Like the <a href="/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html">Kaleidoscopic IFS fractals</a>, we can introduce a rotation into the system for fun, and of course, just like the Mandelbrot set has its <a href="/applets/julia-set-explorer/julia-set-explorer.html">Julias</a>, every point in space gives rise to a Juliabulb. The third button lets you change the \(c\) parameter used to generate the Juliabulb, indicated by the white dot.
-	
-	Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
+	The <a href="/applets/julia-set-explorer/julia-set-explorer.html">Mandelbrot and Julia sets</a> are defined using the complex numbers, a 2D number system that lends itself to making images. It&#x2019;s natural to ask if there&#x2019;s a 3D Mandebrot set, but unfortunately there isn&#x2019;t any functional 3-dimensional number system analagous to the complex numbers, and the best we have is the <a href="/applets/the-mandelbulb/the-mandelbulb.html">Mandelbulb</a>. If we go up one more dimension, though, we find a 4D number system &mdash; the <dfn>quaternions</dfn> &mdash; that behaves like the complex numbers. While we can&#x2019;t render four dimensions at once, we can just take a 3D slice, similar to a 2D cross-section of a 3D object. The resulting objects may not be quite as remarkable as Juliabulbs, but the underlying Julia sets are visible within them, and they have their own unique sort of beauty.
 	
 	This applet was made with <a href="/projects/wilson/wilson.html">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.
 	
@@ -48,23 +44,15 @@
 	
 	resolution 500 Resolution
 	
-	iterations 4 Iterations
+	iterations 16 Iterations
 	
 	view-distance 100 View Distance
 	
-	power 8 Power
+	c-x -0.528783 \(c_x\)
 	
-	rotation-angle-x 0 \(\theta_x\)
+	c-y 0.123638 \(c_y\)
 	
-	rotation-angle-y 0 \(\theta_y\)
-	
-	rotation-angle-z 0 \(\theta_z\)
-	
-	c-x 0 \(c_x\)
-	
-	c-y 0 \(c_y\)
-	
-	c-z 0 \(c_z\)
+	c-z 0.672392 \(c_z\)
 	
 !end-text-boxes
 
@@ -72,13 +60,11 @@
 
 !begin-text-buttons
 	
-	randomize-rotation l Randomize Rotation
-	
 	randomize-c l Randomize \(c\)
 	
-	switch-bulb l Switch to Juliabulb
+	switch-bulb l Switch to Mandelbrot Set
 	
-	switch-movement l Change Juliabulb
+	switch-movement l Move Camera
 	
 !end-text-buttons
 
@@ -115,14 +101,14 @@
 <script>
 	if (typeof Page === "undefined")
 	{
-		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	
 	
 	Page.settings = 
 	{
-		"title": "The Mandelbulb",
+		"title": "Quaternionic Julia Sets",
 		
 		"math_page": true,
 		
