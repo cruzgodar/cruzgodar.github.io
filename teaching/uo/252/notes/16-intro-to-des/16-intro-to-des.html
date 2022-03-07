@@ -248,9 +248,155 @@
 	
 	4. Integrate.
 	
-	5. Solve for $y$. There will still be the integration constant $C$ in your answer &mdash; either leave it there or 
+	5. Solve for $y$. There will still be the integration constant $C$ in your answer &mdash; either leave it there or use an initial value to solve for it, just like in the initial value problems we solved back in section 3.
+	
+	6. Also list any equilibrium solutions by going back to the initial equation and solving $g(y) = 0$.
 	
 !end-thm
+
+
+
+!begin-example
+	
+	separation of variables
+	
+	Solve $y' = (x-2)(y-3)$, given that $y(0) = 5$.
+	
+	We have $\frac{dy}{dx} = (x-2)(y-3)$. We then divide by the $y$ stuff (i.e. $y-3$) and multiply by $dx$ to get $\frac{1}{y-3}\ dy = (x-2)\ dx$. Then we integrate both sides:
+	
+	$$
+		\begin{align*}
+			\int \frac{1}{y-3}\ dy &= \int (x-2)\ dx\\
+			\ln |y - 3| &= x^2 - 2x + C.
+		\end{align*}
+	$$
+	
+	Now it&#x2019;s time to solve for $y$.
+	
+	$$
+		\begin{align*}
+			\ln |y - 3| &= x^2 - 2x + C\\
+			y - 3 &= e^{x^2 - 2x + C}\\
+			y &= e^{x^2 - 2x + C} + 3.
+		\end{align*}
+	$$
+	
+	Now to get rid of $C$, we need to use the initial value: $y(0) = 5$. That gives us
+	
+	$$
+		\begin{align*}
+			5 &= e^{0^2 - 2(0) + C} + 3\\
+			2 &= e^C\\
+			\ln(2) &= C.
+		\end{align*}
+	$$
+	
+	Therefore, this solution becomes $y = e^{x^2 - 2x + \ln(2)} + 3$.
+	
+	Finally, we&#x2019;ll solve for the equilibrium solutions by solving $y - 3 = 0$, so $y = 3$. The reason why the previous method didn&#x2019;t solve for this solution is because it required dividing by $y - 3$, so that&#x2019;s exactly the solution we missed. However, it does not satisfy the initial condition, since $y(0) = 3 \neq 3$. Therefore, only the previous solution is correct.
+	
+!end-example
+
+!begin-exercise
+	
+	separation of variables
+	
+	Solve $y' = y\ln(x)$, given that $y(1) = 1$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	As an final application, let&#x2019;s talk about temperature.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	Newton&#x2019;s Law of Cooling
+	
+	Let $T(t)$ be the temperature of an object at time $t$ and let $S$ be the temperature of the material, like air or water, the material is surrounded by. Then for some number $k$
+	
+	$$
+		T' = k(T - S).
+	$$
+	
+	In other words, the rate of cooling is proportional to the difference between the current temperature and the ambient temperature.
+	
+!end-thm
+
+
+
+!begin-example
+	
+	Newton&#x2019;s Law of Cooling
+	
+	A pizza is baked at $350^\circ F$ and removed from the oven. The air temperature of the kitchen is $75^\circ F$, and after $5$ minutes, the pizza is $300^\circ F$. How much longer until it is $200^\circ F$?
+	
+	We have $S = 75$, $T(0) = 350$, and $T(5) = 300$. Newton&#x2019;s Law of Cooling says that $T' = k(T - 75)$, so by separation, we have
+	
+	$$
+		\begin{align*}
+			\frac{dT}{dt} &= k(T - 75)\\
+			\frac{1}{T - 75} &= k\ dt\\
+			\int \frac{1}{T - 75} &= \int k\ dt\\
+			\ln |T - 75| &= kt + C\\
+			T - 75 &= e^{kt + C}\\
+			T &= e^{kt + C} + 75.
+		\end{align*}
+	$$
+	
+	Now we have $T(0) = 350$, so
+	
+	$$
+		\begin{align*}
+			350 &= e^C + 75\\
+			275 &= e^C\\
+			C &= \ln(275).
+		\end{align*}
+	$$
+	
+	Next, $T(5) = 300$. That means
+	
+	$$
+		\begin{align*}
+			300 &= e^{5k + \ln(275)} + 75\\
+			225 &= e^{5k}e^{\ln(275)}\\
+			225 &= 275e^{5k}\\
+			\frac{225}{275} &= e^{5k}\\
+			5k &= \ln\left(\frac{225}{275}\right)\\
+			k &= \frac{1}{5} \ln\left(\frac{225}{275}\right)\\
+			&\approx -.0401.
+		\end{align*}
+	$$
+	
+	In total, we have $T(t) = e^{-.0401t + \ln(275)} + 75$. What we&#x2019;re trying to solve is $T(t) = 200$, so we have
+	
+	$$
+		\begin{align*}
+			200 &= e^{-.0401t + \ln(275)} + 75\\
+			125 &= 275e^{-.0401t}\\
+			\frac{125}{275} &= e^{-.0401t}\\
+			\ln\left(\frac{125}{275}\right) &= -.0401t\\
+			t &\approx 19.66.
+		\end{align*}
+	$$
+	
+	Therefore, it will take just under $20$ minutes for the pizza to cool to $200^\circ F$.
+	
+!end-example
+
+!begin-exercise
+	
+	Newton&#x2019;s Law of Cooling
+	
+	In the same $75^\circ F$ kitchen, we bake a cake at $400^\circ F$. It&#x2019;s removed from the oven and after $10$ minutes, it has cooled to $300^\circ F$. How long until it cools down to $100^\circ F$?
+	
+!end-exercise
 
 
 
