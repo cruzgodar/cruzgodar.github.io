@@ -40,9 +40,6 @@
 		uniform float k_slice;
 		
 		
-		vec3 color;
-		
-		
 		uniform vec3 c;
 		uniform float julia_proportion;
 		
@@ -60,7 +57,46 @@
 			vec4 z_prime = vec4(1.0, 0.0, 0.0, 0.0);
 			float r;
 			
-			color = vec3(1.0, 1.0, 1.0);
+			for (int iteration = 0; iteration < 100; iteration++)
+			{
+				r = length(z);
+				
+				if (r > 16.0 || iteration >= max_iterations)
+				{
+					break;
+				}
+				
+				z_prime = 2.0 * qmul(z, z_prime);
+				
+				z = qmul(z, z);
+				
+				z += mix(vec4(pos, k_slice), vec4(c, k_slice), julia_proportion);
+			}
+			
+			
+			r = length(z);
+			float distance_1 = .5 * r * log(r) / length(z_prime);
+			float distance_2 = length(pos - c) - .05;
+			
+			
+			
+			if (distance_2 < distance_1 && draw_sphere == 1)
+			{
+				return distance_2;
+			}
+			
+			return distance_1;
+		}
+		
+		
+		
+		vec3 get_color(vec3 pos)
+		{
+			vec4 z = vec4(pos, k_slice);
+			vec4 z_prime = vec4(1.0, 0.0, 0.0, 0.0);
+			float r;
+			
+			vec3 color = vec3(1.0, 1.0, 1.0);
 			float color_scale = .5;
 			
 			for (int iteration = 0; iteration < 100; iteration++)
@@ -95,14 +131,9 @@
 			if (distance_2 < distance_1 && draw_sphere == 1)
 			{
 				color = vec3(1.0, 1.0, 1.0);
-				
-				return distance_2;
 			}
 			
-			
-			
-			return distance_1;
-			return length(pos - c) - .05;
+			return color;
 		}
 		
 		
@@ -133,7 +164,7 @@
 			float light_intensity = light_brightness * max(dot_product, -.25 * dot_product);
 			
 			//The last factor adds ambient occlusion.
-			color = color * light_intensity * max((1.0 - float(iteration) / float(max_marches)), 0.0);
+			vec3 color = get_color(pos) * light_intensity * max((1.0 - float(iteration) / float(max_marches)), 0.0);
 			
 			
 			

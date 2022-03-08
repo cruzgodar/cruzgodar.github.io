@@ -38,8 +38,6 @@
 		const float fog_scaling = .1;
 		
 		
-		vec3 color;
-		
 		
 		uniform mat3 rotation_matrix;
 		
@@ -56,7 +54,59 @@
 			float r = length(z);
 			float dr = 1.0;
 			
-			color = vec3(1.0, 1.0, 1.0);
+			for (int iteration = 0; iteration < 100; iteration++)
+			{
+				if (r > 16.0 || iteration >= max_iterations)
+				{
+					break;
+				}
+				
+				float theta = acos(z.z / r);
+				
+				float phi = atan(z.y, z.x);
+				
+				dr = pow(r, power - 1.0) * power * dr + 1.0;
+				
+				theta *= power;
+				
+				phi *= power;
+				
+				z = pow(r, power) * vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+				
+				z += mix(pos, c, julia_proportion);
+				
+				z = rotation_matrix * z;
+				
+				r = length(z);
+			}
+			
+			
+			
+			float distance_1 = .5 * log(r) * r / dr;
+			float distance_2 = length(pos - c) - .05;
+			
+			
+			
+			if (distance_2 < distance_1 && draw_sphere == 1)
+			{
+				return distance_2;
+			}
+			
+			
+			
+			return distance_1;
+		}
+		
+		
+		
+		vec3 get_color(vec3 pos)
+		{
+			vec3 z = pos;
+			
+			float r = length(z);
+			float dr = 1.0;
+			
+			vec3 color = vec3(1.0, 1.0, 1.0);
 			float color_scale = .5;
 			
 			for (int iteration = 0; iteration < 100; iteration++)
@@ -101,13 +151,11 @@
 			if (distance_2 < distance_1 && draw_sphere == 1)
 			{
 				color = vec3(1.0, 1.0, 1.0);
-				
-				return distance_2;
 			}
 			
 			
 			
-			return distance_1;
+			return color;
 		}
 		
 		
@@ -138,7 +186,7 @@
 			float light_intensity = light_brightness * max(dot_product, -.25 * dot_product);
 			
 			//The last factor adds ambient occlusion.
-			color = color * light_intensity * max((1.0 - float(iteration) / float(max_marches)), 0.0);
+			vec3 color = get_color(pos) * light_intensity * max((1.0 - float(iteration) / float(max_marches)), 0.0);
 			
 			
 			

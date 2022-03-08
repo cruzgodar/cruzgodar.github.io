@@ -34,7 +34,6 @@
 		const int max_iterations = 24;
 		
 		
-		vec3 color;
 		
 		const vec3 color_1 = vec3(1.0, 0.0, 0.0);
 		const vec3 color_2 = vec3(0.0, 1.0, 0.0);
@@ -67,7 +66,61 @@
 		{
 			vec3 mutable_pos = pos;
 			
-			color = vec3(1.0, 1.0, 1.0);
+			//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
+			for (int iteration = 0; iteration < max_iterations; iteration++)
+			{
+				//Fold space over on itself so that we can reference only the top vertex.
+				float t1 = dot(mutable_pos, n1);
+				
+				if (t1 < 0.0)
+				{
+					mutable_pos -= 2.0 * t1 * n1;
+				}
+				
+				float t2 = dot(mutable_pos, n2);
+				
+				if (t2 < 0.0)
+				{
+					mutable_pos -= 2.0 * t2 * n2;
+				}
+				
+				float t3 = dot(mutable_pos, n3);
+				
+				if (t3 < 0.0)
+				{
+					mutable_pos -= 2.0 * t3 * n3;
+				}
+				
+				if (num_ns >= 4)
+				{
+					float t4 = dot(mutable_pos, n4);
+					
+					if (t4 < 0.0)
+					{
+						mutable_pos -= 2.0 * t4 * n4;
+					}
+				}
+				
+				
+				
+				mutable_pos = rotation_matrix_1 * mutable_pos;
+				
+				//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
+				mutable_pos = scale * mutable_pos - (scale - 1.0) * scale_center;
+				
+				mutable_pos = rotation_matrix_2 * mutable_pos;
+			}
+			
+			return length(mutable_pos) * pow(1.0/scale, float(max_iterations));
+		}
+		
+		
+		
+		vec3 get_color(vec3 pos)
+		{
+			vec3 mutable_pos = pos;
+			
+			vec3 color = vec3(1.0, 1.0, 1.0);
 			float color_scale = .5;
 			
 			
@@ -119,36 +172,32 @@
 				
 				mutable_pos = rotation_matrix_1 * mutable_pos;
 				
-				
-				
 				//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
 				mutable_pos = scale * mutable_pos - (scale - 1.0) * scale_center;
 				
-				
-				
 				mutable_pos = rotation_matrix_2 * mutable_pos;
-				
-				
 				
 				color_scale *= .5;
 			}
 			
 			
 			
-			return length(mutable_pos) * pow(1.0/scale, float(max_iterations));
+			return color;
 		}
 		
 		
 		
 		vec3 get_surface_normal(vec3 pos)
 		{
-			float base = distance_estimator(pos);
+			float x_step_1 = distance_estimator(pos + vec3(.000001, 0.0, 0.0));
+			float y_step_1 = distance_estimator(pos + vec3(0.0, .000001, 0.0));
+			float z_step_1 = distance_estimator(pos + vec3(0.0, 0.0, .000001));
 			
-			float x_step = distance_estimator(pos + vec3(.000001, 0.0, 0.0));
-			float y_step = distance_estimator(pos + vec3(0.0, .000001, 0.0));
-			float z_step = distance_estimator(pos + vec3(0.0, 0.0, .000001));
+			float x_step_2 = distance_estimator(pos - vec3(.000001, 0.0, 0.0));
+			float y_step_2 = distance_estimator(pos - vec3(0.0, .000001, 0.0));
+			float z_step_2 = distance_estimator(pos - vec3(0.0, 0.0, .000001));
 			
-			return normalize(vec3(x_step - base, y_step - base, z_step - base));
+			return normalize(vec3(x_step_1 - x_step_2, y_step_1 - y_step_2, z_step_1 - z_step_2));
 		}
 		
 		
@@ -164,7 +213,7 @@
 			float light_intensity = light_brightness * max(dot_product, -.25 * dot_product);
 			
 			//The last factor adds ambient occlusion.
-			color = color * light_intensity * max((1.0 - float(iteration) / float(max_marches)), 0.0);
+			vec3 color = get_color(pos) * light_intensity * max((1.0 - float(iteration) / float(max_marches)), 0.0);
 			
 			
 			
@@ -194,7 +243,7 @@
 				float distance = distance_estimator(pos);
 				
 				//This lowers the detail far away, which makes everything run nice and fast.
-				epsilon = max(.0000006, .5 * t / float(image_size));
+				epsilon = max(.0000006, 3.0 * t / float(image_size));
 				
 				
 				
