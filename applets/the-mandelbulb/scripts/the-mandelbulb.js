@@ -1154,15 +1154,15 @@
 			if (moving_right_keyboard)
 			{
 				c[0] += .5 * moving_speed * right_vec[0] / focal_length;
-				c[1] += .5 * moving_speed * right_vec[0] / focal_length;
-				c[2] += .5 * moving_speed * right_vec[0] / focal_length;
+				c[1] += .5 * moving_speed * right_vec[1] / focal_length;
+				c[2] += .5 * moving_speed * right_vec[2] / focal_length;
 			}
 			
 			else if (moving_left_keyboard)
 			{
 				c[0] -= .5 * moving_speed * right_vec[0] / focal_length;
-				c[1] -= .5 * moving_speed * right_vec[0] / focal_length;
-				c[2] -= .5 * moving_speed * right_vec[0] / focal_length;
+				c[1] -= .5 * moving_speed * right_vec[1] / focal_length;
+				c[2] -= .5 * moving_speed * right_vec[2] / focal_length;
 			}
 			
 			

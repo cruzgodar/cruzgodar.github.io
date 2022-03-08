@@ -37,7 +37,7 @@
 		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
 		const float fog_scaling = .1;
 		
-		const float k_slice = 0.0;
+		uniform float k_slice;
 		
 		
 		vec3 color;
@@ -267,7 +267,7 @@
 	
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 	
-	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "draw_sphere", "c", "julia_proportion", "max_marches", "step_factor", "max_iterations"]);
+	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "draw_sphere", "c", "julia_proportion", "max_marches", "step_factor", "max_iterations", "k_slice"]);
 	
 	
 	
@@ -287,6 +287,9 @@
 	let moving_right_keyboard = false;
 	let moving_left_keyboard = false;
 	
+	let moving_slice_up_keyboard = false;
+	let moving_slice_down_keyboard = false;
+	
 	let moving_forward_touch = false;
 	let moving_backward_touch = false;
 	
@@ -296,9 +299,9 @@
 	
 	
 	
-	let next_move_velocity = [0, 0, 0];
+	let next_move_velocity = [0, 0, 0, 0];
 	
-	let move_velocity = [0, 0, 0];
+	let move_velocity = [0, 0, 0, 0];
 	
 	const move_friction = .94;
 	const move_velocity_stop_threshhold = .0005;
@@ -351,6 +354,8 @@
 	let c_delta = [0, 0, 0];
 	
 	let k_slice = 0;
+	let k_slice_old = 0;
+	let k_slice_delta = 0;
 	
 	let julia_proportion = 1;
 	let moving_pos = 0;
@@ -414,8 +419,9 @@
 	let c_x_input_element = document.querySelector("#c-x-input");
 	let c_y_input_element = document.querySelector("#c-y-input");
 	let c_z_input_element = document.querySelector("#c-z-input");
+	let c_w_input_element = document.querySelector("#c-w-input");
 	
-	let elements = [c_x_input_element, c_y_input_element, c_z_input_element];
+	let elements = [c_x_input_element, c_y_input_element, c_z_input_element, c_w_input_element];
 	
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -479,6 +485,7 @@
 	
 	wilson.gl.uniform3fv(wilson.uniforms["c"], c);
 	wilson.gl.uniform1f(wilson.uniforms["julia_proportion"], 1);
+	wilson.gl.uniform1i(wilson.uniforms["k_slice"], 0);
 	
 	wilson.gl.uniform1i(wilson.uniforms["max_marches"], max_marches);
 	wilson.gl.uniform1f(wilson.uniforms["step_factor"], 1);
@@ -526,7 +533,7 @@
 		
 		
 		
-		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
+		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch || moving_slice_up_keyboard || moving_slice_down_keyboard)
 		{
 			update_camera_parameters();
 			
@@ -547,10 +554,12 @@
 			move_velocity[0] = 0;
 			move_velocity[1] = 0;
 			move_velocity[2] = 0;
+			move_velocity[3] = 0;
 			
 			next_move_velocity[0] = 0;
 			next_move_velocity[1] = 0;
 			next_move_velocity[2] = 0;
+			next_move_velocity[3] = 0;
 		}
 		
 		
@@ -602,7 +611,7 @@
 			need_new_frame = true;
 		}
 		
-		if (move_velocity[0] !== 0 || move_velocity[1] !== 0 || move_velocity[2] !== 0)
+		if (move_velocity[0] !== 0 || move_velocity[1] !== 0 || move_velocity[2] !== 0 || move_velocity[3] !== 0)
 		{
 			if (moving_pos)
 			{	
@@ -617,11 +626,17 @@
 				c[1] += move_velocity[1];
 				c[2] += move_velocity[2];
 				
+				k_slice += move_velocity[3];
+				
 				c_x_input_element.value = Math.round((c[0]) * 1000000) / 1000000;
 				c_y_input_element.value = Math.round((c[1]) * 1000000) / 1000000;
 				c_z_input_element.value = Math.round((c[2]) * 1000000) / 1000000;
 				
+				c_w_input_element.value = Math.round((k_slice) * 1000000) / 1000000;
+				
 				wilson.gl.uniform3fv(wilson.uniforms["c"], c);
+				
+				wilson.gl.uniform1f(wilson.uniforms["k_slice"], k_slice);
 			}
 			
 			
@@ -630,11 +645,15 @@
 			move_velocity[1] *= move_friction;
 			move_velocity[2] *= move_friction;
 			
-			if (Math.sqrt(move_velocity[0] * move_velocity[0] + move_velocity[1] * move_velocity[1] + move_velocity[2] * move_velocity[2]) < move_velocity_stop_threshhold * moving_speed)
+			move_velocity[3] *= move_friction;
+			
+			if (Math.sqrt(move_velocity[0] * move_velocity[0] + move_velocity[1] * move_velocity[1] + move_velocity[2] * move_velocity[2] + move_velocity[3] * move_velocity[3]) < move_velocity_stop_threshhold * moving_speed)
 			{
 				move_velocity[0] = 0;
 				move_velocity[1] = 0;
 				move_velocity[2] = 0;
+				
+				move_velocity[3] = 0;
 			}
 			
 			
@@ -792,9 +811,13 @@
 				move_velocity[1] = 0;
 				move_velocity[2] = 0;
 				
+				move_velocity[3] = 0;
+				
 				next_move_velocity[0] = 0;
 				next_move_velocity[1] = 0;
 				next_move_velocity[2] = 0;
+				
+				next_move_velocity[3] = 0;
 				
 				window.requestAnimationFrame(draw_frame);
 			}
@@ -808,9 +831,13 @@
 				move_velocity[1] = 0;
 				move_velocity[2] = 0;
 				
+				move_velocity[3] = 0;
+				
 				next_move_velocity[0] = 0;
 				next_move_velocity[1] = 0;
 				next_move_velocity[2] = 0;
+				
+				next_move_velocity[3] = 0;
 				
 				window.requestAnimationFrame(draw_frame);
 			}
@@ -891,9 +918,13 @@
 				move_velocity[1] = next_move_velocity[1];
 				move_velocity[2] = next_move_velocity[2];
 				
+				move_velocity[3] = next_move_velocity[3];
+				
 				next_move_velocity[0] = 0;
 				next_move_velocity[1] = 0;
 				next_move_velocity[2] = 0;
+				
+				next_move_velocity[3] = 0;
 			}
 		}
 		
@@ -908,15 +939,15 @@
 	
 	function handle_keydown_event(e)
 	{
-		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
+		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65 || e.keyCode === 69 || e.keyCode === 81))
 		{
 			return;
 		}
 		
 		
 		
-		next_move_velocity = [0, 0, 0];
-		move_velocity = [0, 0, 0];
+		next_move_velocity = [0, 0, 0, 0];
+		move_velocity = [0, 0, 0, 0];
 		
 		
 		
@@ -946,6 +977,20 @@
 		
 		
 		
+		//E
+		if (e.keyCode === 69)
+		{
+			moving_slice_up_keyboard = true;
+		}
+		
+		//Q
+		else if (e.keyCode === 81)
+		{
+			moving_slice_down_keyboard = true;
+		}
+		
+		
+		
 		window.requestAnimationFrame(draw_frame);
 	}
 	
@@ -953,22 +998,26 @@
 	
 	function handle_keyup_event(e)
 	{
-		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
+		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65 || e.keyCode === 69 || e.keyCode === 81))
 		{
 			return;
 		}
 		
 		
 		
-		if (move_velocity[0] === 0 && move_velocity[1] === 0 && move_velocity[2] === 0)
+		if (move_velocity[0] === 0 && move_velocity[1] === 0 && move_velocity[2] === 0 && move_velocity[3] === 0)
 		{
 			move_velocity[0] = next_move_velocity[0];
 			move_velocity[1] = next_move_velocity[1];
 			move_velocity[2] = next_move_velocity[2];
 			
+			move_velocity[3] = next_move_velocity[3];
+			
 			next_move_velocity[0] = 0;
 			next_move_velocity[1] = 0;
 			next_move_velocity[2] = 0;
+			
+			next_move_velocity[3] = 0;
 		}
 		
 		
@@ -995,6 +1044,20 @@
 		else if (e.keyCode === 65)
 		{
 			moving_left_keyboard = false;
+		}
+		
+		
+		
+		//E
+		if (e.keyCode === 69)
+		{
+			moving_slice_up_keyboard = false;
+		}
+		
+		//Q
+		else if (e.keyCode === 81)
+		{
+			moving_slice_down_keyboard = false;
 		}
 	}
 	
@@ -1048,7 +1111,7 @@
 				camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
 				camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
 				camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
-			}	
+			}
 			
 			
 			
@@ -1062,6 +1125,7 @@
 		else
 		{
 			let old_c = [...c];
+			let old_k_slice = k_slice;
 			
 			if (moving_forward_keyboard || moving_forward_touch)
 			{
@@ -1082,15 +1146,27 @@
 			if (moving_right_keyboard)
 			{
 				c[0] += .5 * moving_speed * right_vec[0] / focal_length;
-				c[1] += .5 * moving_speed * right_vec[0] / focal_length;
-				c[2] += .5 * moving_speed * right_vec[0] / focal_length;
+				c[1] += .5 * moving_speed * right_vec[1] / focal_length;
+				c[2] += .5 * moving_speed * right_vec[2] / focal_length;
 			}
 			
 			else if (moving_left_keyboard)
 			{
 				c[0] -= .5 * moving_speed * right_vec[0] / focal_length;
-				c[1] -= .5 * moving_speed * right_vec[0] / focal_length;
-				c[2] -= .5 * moving_speed * right_vec[0] / focal_length;
+				c[1] -= .5 * moving_speed * right_vec[1] / focal_length;
+				c[2] -= .5 * moving_speed * right_vec[2] / focal_length;
+			}
+			
+			
+			
+			if (moving_slice_up_keyboard)
+			{
+				k_slice += .5 * moving_speed;
+			}
+			
+			else if (moving_slice_down_keyboard)
+			{
+				k_slice -= .5 * moving_speed;
 			}
 			
 			
@@ -1099,15 +1175,21 @@
 			c_y_input_element.value = Math.round((c[1]) * 1000000) / 1000000;
 			c_z_input_element.value = Math.round((c[2]) * 1000000) / 1000000;
 			
+			c_w_input_element.value = Math.round((k_slice) * 1000000) / 1000000;
+			
 			
 			
 			wilson.gl.uniform3fv(wilson.uniforms["c"], c);
+			
+			wilson.gl.uniform1f(wilson.uniforms["k_slice"], k_slice);
 			
 			
 			
 			next_move_velocity[0] = c[0] - old_c[0];
 			next_move_velocity[1] = c[1] - old_c[1];
 			next_move_velocity[2] = c[2] - old_c[2];
+			
+			next_move_velocity[3] = k_slice - old_k_slice;
 		}
 		
 		
@@ -1199,6 +1281,11 @@
 		
 		
 		
+		k_slice_old = k_slice;
+		k_slice_delta = 0;
+		
+		
+		
 		if (animate_change)
 		{
 			animate_parameter_change();
@@ -1228,6 +1315,11 @@
 		
 		julia_proportion_old = julia_proportion;
 		julia_proportion_delta = 0;
+		
+		
+		
+		k_slice_old = k_slice;
+		k_slice_delta = (parseFloat(c_w_input_element.value || 0) || 0) - k_slice_old;
 		
 		
 		
@@ -1267,6 +1359,12 @@
 		julia_proportion = julia_proportion_old + julia_proportion_delta * t;
 		
 		wilson.gl.uniform1f(wilson.uniforms["julia_proportion"], julia_proportion);
+		
+		
+		
+		k_slice = k_slice_old + k_slice_delta * t;
+		
+		wilson.gl.uniform1f(wilson.uniforms["k_slice"], k_slice);
 		
 		
 		
@@ -1322,6 +1420,7 @@
 			setTimeout(() =>
 			{
 				switch_movement_button_element.style.opacity = 1;
+				randomize_c_button_element.style.opacity = 1;
 			}, Site.opacity_animation_time);
 		}
 		
@@ -1332,12 +1431,16 @@
 			wilson.gl.uniform1i(wilson.uniforms["draw_sphere"], 0);
 			
 			switch_movement_button_element.style.opacity = 0;
+			randomize_c_button_element.style.opacity = 0;
 		}
 		
 		
 		
 		julia_proportion_old = julia_proportion;
 		julia_proportion_delta = 1 - 2*julia_proportion_old;
+		
+		k_slice_old = k_slice;
+		k_slice_delta = 0;
 		
 		c_old[0] = c[0];
 		c_old[1] = c[1];
