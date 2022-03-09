@@ -1296,17 +1296,6 @@ class Wilson
 							outline: none;
 						}
 
-						.wilson-enter-fullscreen-button.hover, .wilson-exit-fullscreen-button.hover
-						{
-							transform: scale(1.1);
-						}
-
-						.wilson-enter-fullscreen-button:not(:hover):focus, .wilson-exit-fullscreen-button:not(:hover):focus
-						{
-							transform: scale(1.1);
-							outline: none;
-						}
-
 						.wilson-enter-fullscreen-button
 						{
 							position: absolute;

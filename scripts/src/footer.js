@@ -342,11 +342,12 @@ Page.Footer =
 			
 			setTimeout(() =>
 			{
-				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-gallery-link img"));
-				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-applets-link img"));
-				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-writing-link img"));
-				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-teaching-link img"));
-				Page.Load.HoverEvents.add(document.querySelector("#floating-footer-bio-link img"));
+				let elements = document.querySelectorAll(".footer-menu-button, .footer-menu-image-link");
+				
+				for (let i = 0; i < elements.length; i++)
+				{
+					Page.Load.HoverEvents.add_with_scale(elements[i], 1.1);
+				}
 			}, Site.opacity_animation_time / 6);
 			
 			

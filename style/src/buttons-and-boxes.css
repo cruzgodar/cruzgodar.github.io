@@ -50,17 +50,10 @@
 	border-radius: 10px;
 	padding: 10px;
 	
-	transition: transform .125s ease-in-out;
-	
 	cursor: pointer;
 	outline: none;
 	
 	z-index: 10;
-}
-
-.text-button.hover
-{
-	transform: scale(1.075);
 }
 
 .text-button:not(:hover):focus
@@ -108,20 +101,11 @@
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 6px;
 	padding: 2px;
-	
-	transition: width .125s ease-in-out, height .125s ease-in-out;
-}
-
-.checkbox-container.hover
-{
-	width: 28px;
-	height: 28px;
 }
 
 .checkbox-container:not(:hover):focus
 {
-	width: 28px;
-	height: 28px;
+	transform: scale(1.1);
 	
 	outline: none;
 }
@@ -199,20 +183,11 @@
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 50%;
 	padding: 2px;
-	
-	transition: width .125s ease-in-out, height .125s ease-in-out;
-}
-
-.radio-button-container.hover
-{
-	width: 28px;
-	height: 28px;
 }
 
 .radio-button-container:not(:hover):focus
 {
-	width: 28px;
-	height: 28px;
+	transform: scale(1.1);
 	
 	outline: none;
 }
@@ -233,8 +208,6 @@
 	opacity: 0;
 	
 	cursor: pointer;
-	
-	transition: width .125s ease-in-out, height .125s ease-in-out;
 }
 
 .radio-button-container > input ~ .radio-button

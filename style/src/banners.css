@@ -46,14 +46,7 @@
 	border-radius: 10px;
 	padding: 10px;
 	
-	transition: transform .125s ease-in-out;
-	
 	outline: none;
-}
-
-#scroll-button.hover
-{
-	transform: scale(1.1);
 }
 
 #scroll-button:not(:hover):focus

@@ -756,39 +756,26 @@ Page.Load =
 		element_selectors: `
 			a,
 			
-			#scroll-button,
-			
-			.text-button,
-			.checkbox-container,
-			.radio-button-container,
-			select,
-			
-			.footer-button,
-			.footer-image-link img,
-			#scroll-up-button,
-			
-			#enter-fullscreen-button,
-			#exit-fullscreen-button,
-			
-			.image-link img,
-			
-			.nav-button,
-			.big-image-horizontal,
-			.small-image-horizontal,
-			.big-image-vertical,
-			.small-image-vertical,
-			
-			
-			
-			.gallery-image-1-1 img,
-			.gallery-image-2-2 img,
-			.gallery-image-3-3 img
+			select
 		`,
 		
 		//These elements need to have their scale increased when hovered.
 		element_selectors_with_scale:
 		[
-			[`#logo img`, 1.05]
+			["#logo img", 1.05],
+			["#scroll-button", 1.1],
+			[".text-button", 1.075],
+			[".checkbox-container", 1.1],
+			[".radio-button-container", 1.1],
+			[".footer-button", 1.1],
+			[".footer-image-link img", 1.05],
+			[".footer-menu-image-link img", 1.1],
+			[".image-link img", 1.05],
+			["#enter-fullscreen-button", 1.1],
+			["#exit-fullscreen-button", 1.1],
+			[".gallery-image-1-1 img", 1.075],
+			[".gallery-image-2-2 img", 1.0375],
+			[".gallery-image-3-3 img", 1.025]
 		],
 		
 		

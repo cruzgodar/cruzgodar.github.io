@@ -40,13 +40,6 @@
 	width: 100%;
 	
 	border-radius: 10%;
-	
-	transition: transform .125s ease-in-out, filter .125s ease-in-out;
-}
-
-.image-link img.hover
-{
-	transform: scale(1.05);
 }
 
 .image-link img:not(:hover):focus

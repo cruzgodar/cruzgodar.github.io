@@ -365,7 +365,7 @@ Page.Banner =
 					
 					setTimeout(() =>
 					{
-						try {Page.Load.HoverEvents.add(document.querySelector("#scroll-button"));}
+						try {Page.Load.HoverEvents.add_with_scale(document.querySelector("#scroll-button"), 1.1);}
 						catch(ex) {}
 					}, 100);
 					
