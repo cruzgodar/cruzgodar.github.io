@@ -302,9 +302,11 @@
 	
 	let switch_julia_mode_button_element = document.querySelector("#switch-julia-mode-button");
 	
+	switch_julia_mode_button_element.style.opacity = 1;
+	
 	switch_julia_mode_button_element.addEventListener("click", function()
 	{
-		switch_julia_mode_button_element.style.opacity = 0;
+		Page.Animate.change_opacity(switch_julia_mode_button_element, 0, Site.opacity_animation_time);
 		
 		setTimeout(() =>
 		{
@@ -317,7 +319,7 @@
 			{
 				switch_julia_mode_button_element.textContent = "Pick Julia Set";
 				
-				switch_julia_mode_button_element.style.opacity = 1;
+				Page.Animate.change_opacity(switch_julia_mode_button_element, 1, Site.opacity_animation_time);
 			}
 		}, Site.opacity_animation_time);
 		
@@ -393,7 +395,7 @@
 			
 			past_brightness_scales = [];
 			
-			switch_julia_mode_button_element.style.opacity = 1;
+			Page.Animate.change_opacity(switch_julia_mode_button_element, 1, Site.opacity_animation_time);
 			
 			window.requestAnimationFrame(draw_julia_set);
 		}
@@ -453,7 +455,7 @@
 			
 			past_brightness_scales = [];
 			
-			switch_julia_mode_button_element.style.opacity = 1;
+			Page.Animate.change_opacity(switch_julia_mode_button_element, 1, Site.opacity_animation_time);
 			
 			window.requestAnimationFrame(draw_julia_set);
 		}

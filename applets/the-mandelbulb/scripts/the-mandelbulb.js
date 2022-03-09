@@ -508,11 +508,15 @@
 	
 	let randomize_rotation_button_element = document.querySelector("#randomize-rotation-button");
 	
+	randomize_rotation_button_element.style.opacity = 1;
+	
 	randomize_rotation_button_element.addEventListener("click", randomize_rotation);
 	
 	
 	
 	let randomize_c_button_element = document.querySelector("#randomize-c-button");
+	
+	randomize_c_button_element.style.opacity = 1;
 	
 	randomize_c_button_element.addEventListener("click", randomize_c);
 	
@@ -520,15 +524,17 @@
 	
 	let switch_bulb_button_element = document.querySelector("#switch-bulb-button");
 	
+	switch_bulb_button_element.style.opacity = 1;
+	
 	switch_bulb_button_element.addEventListener("click", switch_bulb);
 	
 	
 	
 	let switch_movement_button_element = document.querySelector("#switch-movement-button");
 	
-	switch_movement_button_element.addEventListener("click", switch_movement);
-	
 	switch_movement_button_element.style.opacity = 0;
+	
+	switch_movement_button_element.addEventListener("click", switch_movement);
 	
 	
 	
@@ -1513,7 +1519,7 @@
 		
 		
 		
-		switch_bulb_button_element.style.opacity = 0;
+		Page.Animate.change_opacity(switch_bulb_button_element, 0, Site.opacity_animation_time);
 		
 		setTimeout(() =>
 		{
@@ -1529,7 +1535,7 @@
 			
 			Page.Load.TextButtons.equalize();
 			
-			switch_bulb_button_element.style.opacity = 1;
+			Page.Animate.change_opacity(switch_bulb_button_element, 1, Site.opacity_animation_time);
 		}, Site.opacity_animation_time);
 		
 		
@@ -1545,7 +1551,7 @@
 			
 			setTimeout(() =>
 			{
-				switch_movement_button_element.style.opacity = 1;
+				Page.Animate.change_opacity(switch_movement_button_element, 1, Site.opacity_animation_time);
 			}, Site.opacity_animation_time);
 		}
 		
@@ -1555,7 +1561,7 @@
 			
 			wilson.gl.uniform1i(wilson.uniforms["draw_sphere"], 0);
 			
-			switch_movement_button_element.style.opacity = 0;
+			Page.Animate.change_opacity(switch_movement_button_element, 0, Site.opacity_animation_time);
 		}
 		
 		
@@ -1593,7 +1599,7 @@
 		
 		
 		
-		switch_movement_button_element.style.opacity = 0;
+		Page.Animate.change_opacity(switch_movement_button_element, 0, Site.opacity_animation_time);
 		
 		setTimeout(() =>
 		{
@@ -1609,7 +1615,7 @@
 			
 			Page.Load.TextButtons.equalize();
 			
-			switch_movement_button_element.style.opacity = 1;
+			Page.Animate.change_opacity(switch_movement_button_element, 1, Site.opacity_animation_time);
 		}, Site.opacity_animation_time);
 		
 		

@@ -459,45 +459,19 @@ Page.Footer =
 			
 			
 			
-			this.currently_animating = true;
-			
-			this.current_offset = 6.25;
-			
-			
-			
 			try
 			{
-				document.querySelector("#show-footer-menu-button").style.opacity = 0;
+				document.querySelector("#show-footer-menu-button").style.opacity = 1;
 				
-				document.querySelector("#show-footer-menu-button").style.transform = "scale(1.2)";
+				document.querySelector("#show-footer-menu-button").style.transform = "scale(1)";
 				
 				document.querySelector("#show-footer-menu-button").style.bottom = "6.25px";
 				
+				this.current_offset = 6.25;
+						
+				this.last_scroll = -1;
 				
-				
-				setTimeout(() =>
-				{
-					document.querySelector("#show-footer-menu-button").style.transition = "opacity .6s ease-out, transform .6s ease-out";
-					
-					document.querySelector("#show-footer-menu-button").style.opacity = 1;
-					
-					document.querySelector("#show-footer-menu-button").style.transform = "scale(1)";
-					
-					this.is_visible = true;
-					
-					
-					
-					setTimeout(() =>
-					{
-						document.querySelector("#show-footer-menu-button").style.transition = "opacity .3s ease";
-						
-						this.current_offset = 6.25;
-						
-						this.last_scroll = -1;
-						
-						this.currently_animating = false;
-					}, Site.opacity_animation_time * 2);
-				}, 10);
+				this.currently_animating = false;
 			}
 			
 			catch(ex) {}
@@ -889,14 +863,22 @@ Page.Footer =
 		
 		show_settings_text: function(text)
 		{
-			Page.set_element_styles(".settings-text-container", "opacity", "0");
-			Page.set_element_styles(".settings-text-container", "transform", "scale(.9)");
+			let elements = document.querySelectorAll(".settings-text-container");
+			
+			for (let i = 0; i < elements.length; i++)
+			{
+				Page.Animate.change_opacity(elements[i], 0, 1.5 * Site.base_animation_time);
+				Page.Animate.change_scale(elements[i], .9, 1.5 * Site.base_animation_time);
+			}
 			
 			
 			
 			let element = document.createElement("div");
 			
 			element.classList.add("settings-text-container");
+			
+			element.style.opacity = 0;
+			element.style.transform = "scale(1.1)";
 			
 			document.body.appendChild(element);
 			
@@ -916,15 +898,13 @@ Page.Footer =
 			
 			setTimeout(() =>
 			{
-				element.style.opacity = 1;
-				
-				element.style.transform = "scale(1.0)";
+				Page.Animate.change_opacity(element, 1, 1.5 * Site.base_animation_time);
+				Page.Animate.change_scale(element, 1, 1.5 * Site.base_animation_time);
 				
 				setTimeout(() =>
 				{
-					element.style.opacity = 0;
-					
-					element.style.transform = "scale(.9)";
+					Page.Animate.change_opacity(element, 0, 1.5 * Site.base_animation_time);
+					Page.Animate.change_scale(element, .9, 1.5 * Site.base_animation_time);
 					
 					setTimeout(() =>
 					{
