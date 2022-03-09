@@ -166,7 +166,7 @@ Page.Navigation =
 			{
 				if (!Page.background_color_changed)
 				{
-					document.body.style.opacity = 1;
+					Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
 				}
 				
 				
@@ -190,7 +190,7 @@ Page.Navigation =
 							
 							setTimeout(() =>
 							{
-								document.body.style.opacity = 1;
+								Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
 							}, Site.opacity_animation_time);
 						}, Site.background_color_animation_time);
 					}, Site.background_color_animation_time);
@@ -254,21 +254,6 @@ Page.Unload =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			try
-			{
-				hide_floating_settings();
-				
-				
-				
-				document.querySelector("#floating-footer").style.opacity = 0;
-				
-				Footer.Floating.is_visible = false;
-			}
-			
-			catch(ex) {}
-			
-			
-			
 			//Act like a normal link, with no transitions, if the user wants that.
 			if (Site.Settings.url_vars["content_animation"] === 1)
 			{
@@ -301,7 +286,7 @@ Page.Unload =
 			else
 			{
 				//Fade out the current page's content.
-				document.body.style.opacity = 0;
+				Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time);
 				
 				setTimeout(() =>
 				{

@@ -127,14 +127,7 @@ img
 	position: absolute;
 	width: 100px;
 	height: 100px;
-	
-	transition: transform .125s ease-in-out, filter .125s ease-in-out;
-}
-
-#logo img.hover
-{
-	transform: scale(1.05);
-}
+};
 
 #logo img:not(:hover):focus
 {

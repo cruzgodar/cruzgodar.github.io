@@ -27,7 +27,7 @@
 
 "use strict";
 
-let Page = {};
+
 
 Page.Banner =
 {

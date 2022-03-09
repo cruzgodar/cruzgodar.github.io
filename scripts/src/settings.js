@@ -6,7 +6,7 @@
 
 
 
-let Settings =
+Site.Settings =
 {
 	url_vars: {},
 	
@@ -748,8 +748,7 @@ let Settings =
 
 	toggle_text_size: function(no_settings_text)
 	{
-		document.body.classList.add("animated-opacity");
-		document.body.style.opacity = 0;
+		Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time);
 		
 		
 		
@@ -821,7 +820,7 @@ let Settings =
 		{
 			setTimeout(() =>
 			{
-				document.body.style.opacity = 1; //???
+				Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
 			}, 50);
 		}, Site.opacity_animation_time);
 	},
@@ -910,17 +909,10 @@ let Settings =
 			setTimeout(() =>
 			{
 				this.remove_animation();
-				
-				document.body.classList.add("animated-opacity");
 			
 				setTimeout(() =>
 				{
-					document.body.style.opacity = 1;
-					
-					setTimeout(() =>
-					{
-						document.body.classList.remove("animated-opacity");
-					}, Site.opacity_animation_time);
+					Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
 				}, 50);
 			}, Site.opacity_animation_time);
 			
@@ -945,8 +937,6 @@ let Settings =
 		else
 		{
 			this.url_vars["content_animation"] = 0;
-			
-			document.body.classList.add("animated-opacity");
 			
 			
 			
@@ -1850,3 +1840,7 @@ let Settings =
 		}
 	}
 };
+
+
+
+Page.url = decodeURIComponent(Site.Settings.get_url_var("page"));

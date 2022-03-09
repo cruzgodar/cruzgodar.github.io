@@ -1,5 +1,3 @@
-//Needs to be loaded *after* main.js.
-
 Site.glsl_filenames =
 [
 	"equality",

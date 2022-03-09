@@ -1,82 +1,3 @@
-/*
-	
-	Page: methods for managing the current page.
-		
-		load: run after the HTML is prepared to organize everything necessary.
-		
-		...
-		
-		
-		Load: methods for preparing a page to be displayed.
-			
-			parse_script_tags: runs the script tags in the html -- typically, these set the page settings and invoke Page.load.
-			
-			parse_custom_style: loads the css in the style folder, if it exists.
-			
-			parse_custom_scripts: runs the scripts in the scripts folder, if it exists.
-			
-			fade_in: animates in the opacity.
-			
-			
-			
-			TitleText: methods for displaying animated text with vara.js.
-				
-				prepare: gets the necessary machinery set up.
-				
-				show: animates some text in.
-				
-			
-			
-			AOS: methods for handling content animation.
-				
-				load: initializes all of the anchors and elements.
-				
-				show_section: manually reveals a section.
-				
-				hide_section: manually hides a section.
-			
-			
-			
-			HoverEvents: methods for setting up the hover events that the site uses.
-				
-				set_up: adds all the event listeners necessary.
-				
-				add: manually adds a hover event.
-				
-				remove: removes all hover events.
-			
-			
-			
-			FocusEvents: methods for handling focus events that aren't dealt with automatically.
-				
-				set_up_weird_elements: initializes elements who need focus passed to their children.
-			
-			
-			
-			TextButtons: methods for manipulating text buttons.
-				
-				set_up: resizes text buttons whenever the window is resized.
-				
-				equalize: makes all linked text buttons have the same width and height for a more symmetric appearance.
-			
-			
-			
-			Links: methods for handling links on the page.
-				
-				set: turns all links' urls into single page app urls with a page variable and adds on the url variables.
-				
-				disable: makes all links do nothing when pressed, allowing the redirect function to take effect.
-			
-			
-			
-			Math: methods for handling MathJax on the page.
-				
-				typeset: compiles MathJax into Latex.
-	
-*/
-
-
-
 "use strict";
 
 
@@ -365,16 +286,9 @@ Page.Load =
 					}
 				}
 			`);
-			
-			document.body.style.opacity = 1;
 		}
 		
-		else
-		{
-			document.body.classList.remove("animated-opacity");
-			document.body.style.opacity = 1;
-			document.body.classList.add("animated-opacity");
-		}
+		Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
 	},
 	
 	
@@ -406,9 +320,7 @@ Page.Load =
 			
 			else
 			{
-				document.body.classList.remove("animated-opacity");
-				document.body.style.opacity = 1;
-				document.body.classList.add("animated-opacity");
+				Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
 				
 				
 				
@@ -860,8 +772,6 @@ Page.Load =
 			
 			.image-link img,
 			
-			#logo img,
-			
 			.nav-button,
 			.big-image-horizontal,
 			.small-image-horizontal,
@@ -875,6 +785,12 @@ Page.Load =
 			.gallery-image-3-3 img
 		`,
 		
+		//These elements need to have their scale increased when hovered.
+		element_selectors_with_scale:
+		[
+			[`#logo img`, 1.05]
+		],
+		
 		
 		
 		//Adds a listener to every element that needs a hover event. Yes, you could use CSS for this. No, I don't want to.
@@ -886,6 +802,18 @@ Page.Load =
 			{
 				this.add(elements[i]);
 			}
+			
+			
+			
+			for (let i = 0; i < this.element_selectors_with_scale.length; i++)
+			{
+				let elements = document.querySelectorAll(this.element_selectors_with_scale[i][0]);
+				
+				for (let j = 0; j < elements.length; j++)
+				{
+					this.add_with_scale(elements[j], this.element_selectors_with_scale[i][1]);
+				}
+			}	
 		},
 
 
@@ -919,7 +847,32 @@ Page.Load =
 					else
 					{
 						element.blur();
-					}	
+					}
+				}
+			});
+		},
+		
+		
+		
+		add_with_scale: function(element, scale)
+		{
+			element.addEventListener("mouseenter", () =>
+			{
+				if (!Site.Interaction.currently_touch_device)
+				{
+					element.classList.add("hover");
+					
+					Page.Animate.change_scale(element, scale, Site.button_animation_time);
+				}
+			});
+			
+			element.addEventListener("mouseleave", () =>
+			{
+				if (!Site.Interaction.currently_touch_device)
+				{
+					element.classList.remove("hover");
+					
+					Page.Animate.change_scale(element, 1, Site.button_animation_time);
 				}
 			});
 		},
