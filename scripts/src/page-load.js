@@ -32,6 +32,8 @@ Page.load = async function()
 		setTimeout(() =>
 		{
 			this.Footer.Floating.on_scroll();
+			
+			Page.Load.AOS.element_animation_types[Page.Load.AOS.element_animation_types.length - 1] = 1;
 		}, 50);
 	}
 	
@@ -517,6 +519,7 @@ Page.Load =
 	{
 		//A list of lists. Each sublist starts with an anchor, then lists all the elements anchored to it in sequence, along with their delays.
 		elements: [],
+		element_animation_types: [],
 
 		anchor_positions: [],
 
@@ -536,6 +539,7 @@ Page.Load =
 		load: function()
 		{
 			this.elements = [];
+			this.element_animation_types = [];
 			
 			let new_elements = document.querySelectorAll("[data-aos]");
 			
@@ -551,21 +555,7 @@ Page.Load =
 					//Create a new section.
 					this.elements.push([]);
 					
-					this.currently_animating.push([]);
-					
 					current_section++;
-					
-					
-					
-					if (new_elements[i].getAttribute("data-aos-delay") !== null)
-					{
-						current_delay = parseInt(new_elements[i].getAttribute("data-aos-delay"));
-					}
-					
-					else
-					{
-						current_delay = 0;
-					}
 					
 					
 					
@@ -581,13 +571,17 @@ Page.Load =
 					
 					
 					
-					new_elements[i].style.opacity = 0;
-					new_elements[i].style.transform = "translateY(100px)";
-					new_elements[i].setAttribute("data-aos-delay", 0);
+					if (new_elements[i].getAttribute("data-aos") === "zoom-out")
+					{
+						this.element_animation_types.push(1);
+					}
+					
+					else
+					{
+						this.element_animation_types.push(0);
+					}
 					
 					
-					
-					this.elements[current_section - 1].push(new_elements[i]);
 					
 					this.anchor_positions[current_section - 1] = new_elements[i].getBoundingClientRect().top + Page.scroll;
 					
@@ -596,14 +590,19 @@ Page.Load =
 				
 				
 				
+				if (new_elements[i].getAttribute("data-aos") === "zoom-out")
+				{
+					new_elements[i].style.transform = "scale(1.3)";
+				}
+				
 				else
 				{
-					new_elements[i].style.opacity = 0;
 					new_elements[i].style.transform = "translateY(100px)";
-					new_elements[i].setAttribute("data-aos-delay", 0);
-					
-					this.elements[current_section - 1].push([new_elements[i], current_delay]);
 				}
+				
+				new_elements[i].style.opacity = 0;
+				
+				this.elements[current_section - 1].push(new_elements[i]);
 			}
 			
 			
@@ -647,7 +646,7 @@ Page.Load =
 					this.show_section(i);
 				}
 				
-				else if (Page.scroll + Page.Layout.window_height < this.anchor_positions[i] - this.anchor_offsets[i]/2 && this.anchors_shown[i] === true)
+				else if (Page.scroll + Page.Layout.window_height < this.anchor_positions[i] - this.anchor_offsets[i] / 2 && this.anchors_shown[i] === true)
 				{
 					this.hide_section(i);
 				}
@@ -669,25 +668,35 @@ Page.Load =
 			{
 				this.anchors_shown[section] = true;
 				
-				anime({
-					targets: this.elements[section],
-					opacity: 1,
-					translateY: 0,
-					delay: anime.stagger(Site.aos_separation_time),
-					duration: Site.aos_animation_time,
-					easing: "easeOutCubic"
-				});
+				if (this.element_animation_types[section] === 1)
+				{
+					anime({
+						targets: this.elements[section],
+						opacity: 1,
+						scale: 1,
+						delay: anime.stagger(Site.aos_separation_time),
+						duration: Site.aos_animation_time,
+						easing: "easeOutCubic"
+					});
+				}
+				
+				else
+				{
+					anime({
+						targets: this.elements[section],
+						opacity: 1,
+						translateY: 0,
+						delay: anime.stagger(Site.aos_separation_time),
+						duration: Site.aos_animation_time,
+						easing: "easeOutCubic"
+					});
+				}	
 				
 				
 				
 				if (Page.scroll === 0 && section + 1 < this.elements.length && Page.Layout.window_height >= this.anchor_positions[section + 1] + this.anchor_offsets[section + 1])
 				{
-					let total_delay = this.elements[section][this.elements[section].length - 1][1] + Site.aos_separation_time * 3;
-					
-					setTimeout(() =>
-					{
-						this.show_section(section + 1, true);
-					}, total_delay);
+					//this.show_section(section + 1, true);
 				}
 			}
 		},
@@ -710,13 +719,27 @@ Page.Load =
 			
 			
 			
-			anime({
-				targets: this.elements[section],
-				opacity: 0,
-				translateY: 100,
-				duration: Site.aos_animation_time,
-				easing: "easeOutCubic"
-			});
+			if (this.element_animation_types[section] === 1)
+			{
+				anime({
+					targets: this.elements[section],
+					opacity: 0,
+					scale: 1.3,
+					duration: Site.aos_animation_time,
+					easing: "easeOutCubic"
+				});
+			}
+			
+			else
+			{
+				anime({
+					targets: this.elements[section],
+					opacity: 0,
+					translateY: 100,
+					duration: Site.aos_animation_time,
+					easing: "easeOutCubic"
+				});
+			}	
 			
 			this.anchors_shown[section] = false;
 		}

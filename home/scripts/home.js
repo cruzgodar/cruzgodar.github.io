@@ -24,10 +24,14 @@
 	
 	let children = elements[1].querySelectorAll(".image-link");
 	
-	for (let i = 0; i < children.length; i++)
+	for (let i = 0; i < Page.Load.AOS.elements[2].length; i++)
 	{
-		children[i].setAttribute("data-aos", "zoom-out");
+		Page.Load.AOS.elements[2][i].setAttribute("data-aos", "zoom-out");
+		
+		Page.Load.AOS.elements[2][i].style.transform = "scale(1.3)";
 	}
+	
+	Page.Load.AOS.element_animation_types[2] = 1;
 	
 	
 	

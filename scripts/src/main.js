@@ -111,9 +111,9 @@ Site.load = async function(url)
 {
 	this.aos_separation_time = this.base_animation_time / 5;
 	this.button_animation_time = this.base_animation_time / 2;
-	this.opacity_animation_time = this.base_animation_time;
+	this.opacity_animation_time = this.base_animation_time * .8;
 	this.background_color_animation_time = this.base_animation_time * 2;
-	this.aos_animation_time = this.base_animation_time * 4;
+	this.aos_animation_time = this.base_animation_time * 4.25;
 	
 	
 	
