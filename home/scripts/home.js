@@ -44,38 +44,27 @@
 	
 	
 	
-	if (Site.Settings.url_vars["content_animation"] === 1)
-	{
-		let opacity = 0;
-		
-		
-		if (Page.scroll <= Page.Layout.window_height/3)
-		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
-		}
-		
-		else
-		{
-			opacity = 0;
-		}
-		
-		
-		
-		document.querySelector("#banner").insertAdjacentHTML("afterend", `
-			<div class="name-text-container" style="position: fixed">
-				<p id="cruz-text" class="name-text" style="opacity: ${opacity}">Cruz</p>
-			</div>
-			
-			<div class="name-text-container" style="position: fixed">
-				<p id="godar-text" class="name-text" style="opacity: ${opacity}">Godar</p>
-			</div>
-		`);
-	}
+	set_name_text_opacity();
 	
-	else
-	{
-		setTimeout(add_name_text, 350);
-	}
+	
+	
+	anime({
+		targets: document.querySelector("#cruz-text"),
+		opacity: 1,
+		translateX: 0,
+		duration: 800,
+		delay: 500,
+		easing: "easeOutQuad"
+	});
+		
+	anime({
+		targets: document.querySelector("#godar-text"),
+		opacity: 1,
+		translateX: 0,
+		duration: 800,
+		delay: 800,
+		easing: "easeOutQuad"
+	});
 	
 	
 	
@@ -140,52 +129,16 @@
 	
 	
 	
-	function add_name_text()
+	function set_name_text_opacity()
 	{
-		document.querySelector(".name-text").remove();
-		
 		let opacity = 0;
-		
 		
 		if (Page.scroll <= Page.Layout.window_height/3)
 		{
 			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 		}
 		
-		else
-		{
-			opacity = 0;
-		}
-		
-		document.querySelector("#banner").insertAdjacentHTML("afterend", `
-			<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-duration="1000">
-				<p id="cruz-text" class="name-text" style="opacity: ${opacity}">Cruz</p>
-			</div>
-		`);
-		
-		
-		
-		setTimeout(() =>
-		{
-			if (Page.scroll <= Page.Layout.window_height/3)
-			{
-				opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
-			}
-			
-			else
-			{
-				opacity = 0;
-			}
-			
-			
-			if (Site.Settings.url_vars["content_animation"] !== 1)
-			{
-				document.querySelector("#banner").insertAdjacentHTML("afterend", `
-					<div class="name-text-container" style="position: fixed" data-aos="fade-left" data-aos-duration="1000">
-						<p id="godar-text" class="name-text" style="opacity: ${opacity}">Godar</p>
-					</div>
-				`);
-			}
-		}, 300);
+		document.querySelector("#cruz-text").parentNode.style.opacity = opacity;
+		document.querySelector("#godar-text").parentNode.style.opacity = opacity;
 	}
 }()

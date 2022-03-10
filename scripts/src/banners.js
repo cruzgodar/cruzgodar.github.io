@@ -216,7 +216,8 @@ Page.Banner =
 				
 				try
 				{
-					Page.set_element_styles(".name-text", "opacity", opacity);
+					document.querySelector("#cruz-text").parentNode.style.opacity = opacity;
+					document.querySelector("#godar-text").parentNode.style.opacity = opacity;
 				}
 				
 				catch(ex) {}
@@ -252,7 +253,8 @@ Page.Banner =
 			
 			else if (this.ScrollButton.done_loading === false)
 			{
-				Page.set_element_styles(".name-text", "opacity", 0);
+				document.querySelector("#cruz-text").parentNode.style.opacity = 0;
+				document.querySelector("#godar-text").parentNode.style.opacity = 0;
 				
 				if (this.ScrollButton.exists)
 				{
