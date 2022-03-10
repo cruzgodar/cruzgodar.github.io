@@ -581,12 +581,13 @@ Page.Load =
 					
 					
 					
-					new_elements[i].setAttribute("data-aos-offset", 1000000);
+					new_elements[i].style.opacity = 0;
+					new_elements[i].style.transform = "translateY(100px)";
 					new_elements[i].setAttribute("data-aos-delay", 0);
 					
 					
 					
-					this.elements[current_section - 1].push([new_elements[i], current_delay]);
+					this.elements[current_section - 1].push(new_elements[i]);
 					
 					this.anchor_positions[current_section - 1] = new_elements[i].getBoundingClientRect().top + Page.scroll;
 					
@@ -597,34 +598,8 @@ Page.Load =
 				
 				else
 				{
-					if (new_elements[i].getAttribute("data-aos-delay-increase") !== null)
-					{
-						current_delay += parseInt(new_elements[i].getAttribute("data-aos-delay-increase"));
-						
-						if (current_delay > 2000)
-						{
-							current_delay = 2000;
-						}
-					}
-					
-					else if (new_elements[i].getAttribute("data-aos-delay") !== null)
-					{
-						current_delay = parseInt(new_elements[i].getAttribute("data-aos-delay"));
-					}
-					
-					else
-					{
-						current_delay += Site.aos_separation_time;
-						
-						if (current_delay > 2000)
-						{
-							current_delay = 2000;
-						}
-					}
-					
-					
-					
-					new_elements[i].setAttribute("data-aos-offset", 1000000);
+					new_elements[i].style.opacity = 0;
+					new_elements[i].style.transform = "translateY(100px)";
 					new_elements[i].setAttribute("data-aos-delay", 0);
 					
 					this.elements[current_section - 1].push([new_elements[i], current_delay]);
@@ -645,7 +620,7 @@ Page.Load =
 		{
 			for (let i = 0; i < this.elements.length; i++)
 			{
-				this.anchor_positions[i] = this.elements[i][0][0].getBoundingClientRect().top + Page.scroll;
+				this.anchor_positions[i] = this.elements[i][0].getBoundingClientRect().top + Page.scroll;
 			}
 			
 			this.fix_footer_anchor();
@@ -692,19 +667,16 @@ Page.Load =
 			
 			if (Page.scroll !== 0 || section === 0 || force)
 			{
-				for (let i = 0; i < this.elements[section].length; i++)
-				{
-					let refresh_id = setTimeout(() =>
-					{
-						this.elements[section][i][0].setAttribute("data-aos-offset", -1000000);
-						
-						AOS.refresh();
-					}, this.elements[section][i][1]);
-					
-					this.currently_animating[section].push(refresh_id);
-				}
-				
 				this.anchors_shown[section] = true;
+				
+				anime({
+					targets: this.elements[section],
+					opacity: 1,
+					translateY: 0,
+					delay: anime.stagger(Site.aos_separation_time),
+					duration: Site.aos_animation_time,
+					easing: "easeOutCubic"
+				});
 				
 				
 				
@@ -738,12 +710,13 @@ Page.Load =
 			
 			
 			
-			for (let i = 0; i < this.elements[section].length; i++)
-			{
-				this.elements[section][i][0].setAttribute("data-aos-offset", 1000000);
-				
-				AOS.refresh();
-			}
+			anime({
+				targets: this.elements[section],
+				opacity: 0,
+				translateY: 100,
+				duration: Site.aos_animation_time,
+				easing: "easeOutCubic"
+			});
 			
 			this.anchors_shown[section] = false;
 		}

@@ -229,8 +229,6 @@ Site.load = async function(url)
 	
 	
 	
-	AOS.init({duration: Site.aos_animation_time, once: true, offset: Math.min(100, Page.Layout.window_height / 10)});
-	
 	window.addEventListener("scroll", () =>
 	{
 		Page.Load.AOS.on_scroll();
