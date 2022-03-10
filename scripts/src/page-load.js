@@ -18,13 +18,6 @@ Page.load = async function()
 	
 	
 	
-	if ("title_page_text" in this.settings && this.settings["title_page_text"] !== "")
-	{
-		await this.Load.TitleText.prepare();
-	}
-	
-	
-	
 	if (!("no_footer" in this.settings && this.settings["no_footer"]))
 	{
 		this.Footer.load();
@@ -295,226 +288,6 @@ Page.Load =
 	
 	
 	
-	TitleText:
-	{
-		canceled: false,
-
-		cancel_message_shown: false,
-		
-		page_ids:
-		{
-			"/teaching/uo/111/111.html": 0,
-			"/teaching/uo/112/112.html": 1,
-			"/teaching/uo/105/105.html": 2,
-			"/teaching/uo/252/252.html": 3
-		},
-		
-		
-		
-		prepare: async function()
-		{
-			if (Site.Settings.url_vars["content_animation"] === 1 || ((Site.Settings.url_vars["title_pages_seen"] >> this.page_ids[Page.url]) & 1))
-			{
-				document.querySelector("#vara-container").remove();
-				
-				document.querySelector("#cancel-vara-text").remove();
-			}
-			
-			else
-			{
-				Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
-				
-				
-				
-				await Promise.any([this.show(Page.settings["title_page_text"]), this.listen_for_click()]);
-				
-				
-				
-				document.documentElement.removeEventListener("mousemove", this.show_cancel_message_no_touch);
-				document.documentElement.removeEventListener("touchmove", this.show_cancel_message_touch);
-				
-				
-				
-				if (!((Site.Settings.url_vars["title_pages_seen"] >> this.page_ids[Page.url]) & 1))
-				{
-					Site.Settings.url_vars["title_pages_seen"] += (1 << this.page_ids[Page.url]);
-					
-					Page.Navigation.write_url_vars();
-				}
-			}
-		},
-		
-		
-
-		show: function(text_to_draw)
-		{
-			return new Promise((resolve, reject) =>
-			{
-				this.canceled = false;
-				
-				
-				
-				document.documentElement.style.overflowY = "hidden";
-				document.body.style.overflowY = "hidden";
-				
-				document.body.style.userSelect = "none";
-				document.body.style.WebkitUserSelect = "none";
-				
-				document.querySelector("#vara-container").addEventListener("touchmove", (e) =>
-				{
-					e.preventDefault();
-				});
-				
-				
-				
-				setTimeout(() =>
-				{
-					let color = "black";
-					
-					if (Site.Settings.url_vars["theme"] === 1)
-					{
-						color = "white";
-					}
-					
-					let text = new Vara("#vara-container", Page.parent_folder + "/vara-font.json", [{text: text_to_draw, fontSize: Page.settings["title_page_text_size"] * Page.Layout.window_width / text_to_draw.length, duration: 4000, strokeWidth: .5, textAlign: "center", color: color}]);
-					
-					text.animationEnd((id, object) =>
-					{
-						if (this.canceled)
-						{
-							return;
-						}
-						
-						
-						
-						setTimeout(() =>
-						{
-							if (this.canceled)
-							{
-								return;
-							}
-							
-							
-							
-							document.body.style.opacity = 0;
-							
-							setTimeout(() =>
-							{
-								if (this.canceled)
-								{
-									return;
-								}
-								
-								
-								
-								document.querySelector("#vara-container").remove();
-								
-								document.querySelector("#cancel-vara-text").remove();
-								
-								
-								
-								document.documentElement.style.overflowY = "visible";
-								document.body.style.overflowY = "visible";
-								
-								document.body.style.userSelect = "auto";
-								document.body.style.WebkitUserSelect = "auto";
-								
-								resolve();
-							}, Site.opacity_animation_time);
-						}, Site.opacity_animation_time * 2);
-					});
-				}, Site.opacity_animation_time);
-			});
-		},
-
-
-
-		listen_for_click: function()
-		{
-			return new Promise((resolve, reject) =>
-			{
-				document.querySelector("#vara-container").addEventListener("click", () =>
-				{
-					this.canceled = true;
-				
-					document.body.style.opacity = 0;
-					
-					setTimeout(() =>
-					{
-						document.querySelector("#vara-container").remove();
-						
-						document.querySelector("#cancel-vara-text").remove();
-						
-						
-						
-						document.documentElement.style.overflowY = "visible";
-						document.body.style.overflowY = "visible";
-						
-						document.body.style.userSelect = "auto";
-						document.body.style.WebkitUserSelect = "auto";
-						
-						
-						
-						resolve();
-					}, Site.opacity_animation_time);
-				});
-				
-				
-				
-				setTimeout(() =>
-				{
-					this.cancel_message_shown = false;
-					
-					document.documentElement.addEventListener("mousemove", this.show_cancel_message_no_touch);
-					document.documentElement.addEventListener("touchmove", this.show_cancel_message_touch);
-				}, Site.opacity_animation_time * 6);
-			});
-		},
-
-
-
-		show_cancel_message_no_touch: function()
-		{
-			if (this.cancel_message_shown)
-			{
-				return;
-			}
-			
-			this.cancel_message_shown = true;
-			
-			
-			
-			try
-			{
-				document.querySelector("#cancel-vara-text").textContent = "Click animation to skip";
-				
-				document.querySelector("#cancel-vara-text").style.opacity = 1;
-			}
-			
-			catch(ex) {}
-		},
-
-
-
-		show_cancel_message_touch: function()
-		{
-			if (this.cancel_message_shown)
-			{
-				return;
-			}
-			
-			this.cancel_message_shown = true;
-			
-			
-			
-			document.querySelector("#cancel-vara-text").textContent = "Tap animation to skip";
-			
-			document.querySelector("#cancel-vara-text").style.opacity = 1;
-		}
-	},
-	
-	
-	
 	AOS:
 	{
 		//A list of lists. Each sublist starts with an anchor, then lists all the elements anchored to it in sequence, along with their delays.
@@ -538,6 +311,13 @@ Page.Load =
 		//This function puts the proper delays and anchors on aos elements on the page. The first animated element in every section should have a class of new-aos-section.
 		load: function()
 		{
+			if (Site.Settings.url_vars["content_animation"] === 1)
+			{
+				return;
+			}
+			
+			
+			
 			this.elements = [];
 			this.element_animation_types = [];
 			
@@ -645,11 +425,6 @@ Page.Load =
 				{
 					this.show_section(i);
 				}
-				
-				else if (Page.scroll + Page.Layout.window_height < this.anchor_positions[i] - this.anchor_offsets[i] / 2 && this.anchors_shown[i] === true)
-				{
-					this.hide_section(i);
-				}
 			}
 		},
 
@@ -696,7 +471,7 @@ Page.Load =
 				
 				if (Page.scroll === 0 && section + 1 < this.elements.length && Page.Layout.window_height >= this.anchor_positions[section + 1] + this.anchor_offsets[section + 1])
 				{
-					//this.show_section(section + 1, true);
+					setTimeout(() => this.show_section(section + 1, true), Site.aos_separation_time * this.elements[section].length + parseInt(this.elements[section + 1][0].getAttribute("data-aos-delay-increase") || 0));
 				}
 			}
 		},

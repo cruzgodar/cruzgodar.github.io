@@ -253,8 +253,13 @@ Page.Banner =
 			
 			else if (this.ScrollButton.done_loading === false)
 			{
-				document.querySelector("#cruz-text").parentNode.style.opacity = 0;
-				document.querySelector("#godar-text").parentNode.style.opacity = 0;
+				try
+				{
+					document.querySelector("#cruz-text").parentNode.style.opacity = 0;
+					document.querySelector("#godar-text").parentNode.style.opacity = 0;
+				}
+				
+				catch(ex) {}
 				
 				if (this.ScrollButton.exists)
 				{

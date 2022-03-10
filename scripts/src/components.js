@@ -375,7 +375,7 @@ Page.Components =
 		
 		
 		return `
-			<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+			<div class="focus-on-child" data-aos="fade-up" tabindex="1">
 				<button class="text-button${linked_string}" type="button" id="${id}-button" tabindex="-1">${text}</button>
 			</div>
 		`;
@@ -393,14 +393,14 @@ Page.Components =
 		
 		return `
 			<div class="checkbox-row">
-				<div data-aos="zoom-out">
+				<div data-aos="fade-up">
 					<div class="checkbox-container click-on-child" tabindex="1">
 						<input type="checkbox" id="${id}-checkbox">
 						<div class="checkbox"></div>
 					</div>
 				</div>
 				
-				<div style="margin-left: 10px" data-aos="fade-left">
+				<div style="margin-left: 10px" data-aos="fade-up">
 					<p class="body-text">${text}</p>
 				</div>
 			</div>
@@ -421,14 +421,14 @@ Page.Components =
 		
 		return `
 			<div class="radio-button-row">
-				<div data-aos="zoom-out">
+				<div data-aos="fade-up">
 					<div class="radio-button-container click-on-child" tabindex="1">
 						<input type="radio" name="${name}" id="${id}-radio-button">
 						<div class="radio-button"></div>
 					</div>
 				</div>
 				
-				<div style="margin-left: 10px" data-aos="fade-left">
+				<div style="margin-left: 10px" data-aos="fade-up">
 					<p class="body-text">${text}</p>
 				</div>
 			</div>
@@ -463,7 +463,7 @@ Page.Components =
 		
 		let id = args[0];
 		
-		html += `<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+		html += `<div class="focus-on-child" data-aos="fade-up" tabindex="1">
 				<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1">`;
 		
 		for (let i = 1; i < args.length; i++)

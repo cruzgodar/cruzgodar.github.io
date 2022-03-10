@@ -1290,8 +1290,6 @@ class Wilson
 							
 							z-index: 100;
 							
-							transition: transform .125s ease-in-out;
-							
 							cursor: pointer;
 							outline: none;
 						}
@@ -1411,7 +1409,7 @@ class Wilson
 				
 				this.parent.canvas.parentNode.appendChild(this.enter_fullscreen_button);
 				
-				Page.Load.HoverEvents.add(this.enter_fullscreen_button);
+				Page.Load.HoverEvents.add_with_scale(this.enter_fullscreen_button, 1.1);
 				
 				this.enter_fullscreen_button.addEventListener("click", () =>
 				{
@@ -1453,7 +1451,7 @@ class Wilson
 				
 				
 				
-				document.body.style.opacity = 0;
+				Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time);
 				
 				setTimeout(() =>
 				{
@@ -1484,7 +1482,7 @@ class Wilson
 						
 						document.body.appendChild(this.exit_fullscreen_button);
 						
-						Page.Load.HoverEvents.add(this.exit_fullscreen_button);
+						Page.Load.HoverEvents.add_with_scale(this.exit_fullscreen_button, 1.1);
 						
 						this.exit_fullscreen_button.addEventListener("click", () =>
 						{
@@ -1600,15 +1598,15 @@ class Wilson
 					
 					
 					
-					document.body.style.opacity = 1;
+					Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
 					
 					setTimeout(() =>
 					{
 						this.currently_animating = false;
 						
 						this.on_resize();
-					}, 250);
-				}, 250);
+					}, Site.opacity_animation_time);
+				}, Site.opacity_animation_time);
 			}
 			
 			
@@ -1628,7 +1626,7 @@ class Wilson
 				
 				
 				
-				document.body.style.opacity = 0;
+				Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time);
 				
 				setTimeout(() =>
 				{
@@ -1680,7 +1678,7 @@ class Wilson
 						
 						this.parent.canvas.parentNode.appendChild(this.enter_fullscreen_button);
 						
-						Page.Load.HoverEvents.add(this.enter_fullscreen_button);
+						Page.Load.HoverEvents.add_with_scale(this.enter_fullscreen_button, 1.1);
 						
 						this.enter_fullscreen_button.addEventListener("click", () =>
 						{
@@ -1739,13 +1737,13 @@ class Wilson
 					
 					
 					
-					document.body.style.opacity = 1;
+					Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
 					
 					setTimeout(() =>
 					{
 						this.currently_animating = false;
-					}, 250);
-				}, 250);
+					}, Site.opacity_animation_time);
+				}, Site.opacity_animation_time);
 			}
 		},
 
