@@ -241,7 +241,7 @@ Page.Footer =
 			let floating_footer_element = document.createElement("footer");
 			floating_footer_element.id = "floating-footer";
 			
-			document.body.insertBefore(floating_footer_element, document.body.firstChild);
+			Page.element.insertBefore(floating_footer_element, Page.element.firstChild);
 			
 			
 			
@@ -880,7 +880,7 @@ Page.Footer =
 			element.style.opacity = 0;
 			element.style.transform = "scale(1.1)";
 			
-			document.body.appendChild(element);
+			Page.element.appendChild(element);
 			
 			
 			

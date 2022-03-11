@@ -131,7 +131,7 @@ Page.Banner =
 					img.style.display = "hidden";
 					img.style.opacity = 0;
 					
-					document.body.appendChild(img);
+					Page.element.appendChild(img);
 					
 					setTimeout(() =>
 					{

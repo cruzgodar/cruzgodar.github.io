@@ -4,6 +4,8 @@
 
 Page.load = async function()
 {
+	Page.element = document.querySelector(".page");
+	
 	this.Navigation.currently_changing_page = false;
 	
 	
@@ -47,7 +49,7 @@ Page.load = async function()
 	
 	if (this.Layout.layout_string === "ultrawide")
 	{
-		this.Layout.Multicols.create();
+		//this.Layout.Multicols.create();
 	}
 	
 	this.Layout.AppletColumns.are_equalized = false;

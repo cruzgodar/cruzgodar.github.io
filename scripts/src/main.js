@@ -17,6 +17,8 @@
 let DEBUG = false;
 
 
+Page.element = null;
+
 
 Page.scroll = 0;
 
@@ -109,6 +111,10 @@ Site.applet_process_id = 0;
 //Redirects to the chosen page and sets up all the miscellaneous things that make the site work.
 Site.load = async function(url)
 {
+	Page.element = document.querySelector(".page");
+	
+	
+	
 	this.aos_separation_time = this.base_animation_time / 5;
 	this.button_animation_time = this.base_animation_time / 2;
 	this.opacity_animation_time = this.base_animation_time;

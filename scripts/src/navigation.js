@@ -41,7 +41,7 @@ Page.Navigation =
 			return;
 		}
 		
-		
+		console.log(url);
 		
 		//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
 		if (in_new_tab || url.slice(url.length - 5) !== ".html")
@@ -127,7 +127,27 @@ Page.Navigation =
 			
 			
 			
-			document.body.innerHTML = Page.Components.decode(data);
+			let index = data.indexOf("</head>");
+			
+			if (index !== -1)
+			{
+				data = data.slice(index + 7);
+			}
+			
+			index = data.indexOf("<script>");
+			
+			let scripts_data = "";
+			
+			if (index !== -1)
+			{
+				scripts_data = data.slice(index);
+				
+				data = data.slice(0, index);
+			}
+			
+			
+			
+			document.body.innerHTML += Page.Components.decode(`<div class="page">${data}</div>${scripts_data}`);
 			
 			
 			
@@ -345,7 +365,7 @@ Page.Unload =
 Page.unload = function()
 {
 	//Remove any css and js that's no longer needed to prevent memory leaks.
-	let elements = document.querySelectorAll("style.temporary-style, link.temporary-style, script.temporary-script");
+	let elements = document.querySelectorAll("style.temporary-style, link.temporary-style, script");
 	for (let i = 0; i < elements.length; i++)
 	{
 		elements[i].remove();
@@ -354,11 +374,7 @@ Page.unload = function()
 	
 	
 	//Remove everything that's not a script from the body.
-	elements = document.querySelectorAll("body > *:not(script)");
-	for (let i = 0; i < elements.length; i++)
-	{ 
-		elements[i].remove();
-	}
+	Page.element.remove();
 	
 	
 	
