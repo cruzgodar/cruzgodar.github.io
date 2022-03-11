@@ -83,13 +83,54 @@ Page.Navigation =
 		
 		
 		//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-		Promise.all([this.prepare_new_page(url), Page.Unload.fade_out(), Page.Banner.load()])
+		Promise.all([fetch(url), Page.Unload.fade_out(), Page.Banner.load()])
 		
 		
+		.then((response) =>
+		{
+			if (!response[0].ok)
+			{
+				window.location.replace("/404.html");
+			}
+			
+			else
+			{
+				return response[0].text();
+			}
+		})
+			
 		
-		.then(() =>
+		.then((data) =>
 		{
 			Page.unload();
+			
+			
+			
+			let index = data.indexOf("</head>");
+			
+			if (index !== -1)
+			{
+				data = data.slice(index + 7);
+			}
+			
+			index = data.indexOf("<script>");
+			
+			let scripts_data = "";
+			
+			if (index !== -1)
+			{
+				scripts_data = data.slice(index);
+				
+				data = data.slice(0, index);
+			}
+			
+			
+			
+			document.body.innerHTML = Page.Components.decode(`<div class="page">${data}</div>${scripts_data}`);
+			
+			Page.Load.parse_script_tags();
+			
+			
 			
 			//Record the page change in the url bar and in the browser history.
 			if (!no_state_push)
@@ -187,109 +228,6 @@ Page.Navigation =
 				}
 			}, Site.opacity_animation_time);
 		});
-	},
-	
-	
-	
-	prepare_new_page: function(url)
-	{
-		return new Promise((resolve, reject) =>
-		{
-			fetch(url)
-			
-			.then((response) =>
-			{
-				if (!response.ok)
-				{
-					window.location.replace("/404.html");
-				}
-				
-				else
-				{
-					return response.text();
-				}
-			})
-			
-			
-			
-			.then((data) =>
-			{
-				//Remove JS so it's not executed twice.
-				let elements = document.querySelectorAll("script");
-				
-				for (let i = 0; i < elements.length; i++)
-				{
-					elements[i].remove();
-				}
-				
-				//Mark some other stuff for deletion.
-				this.elements_to_remove = document.querySelectorAll("style.temporary-style, link.temporary-style");
-				
-				//Clear temporary things.
-				//Unbind everything transient from the window and the html element.
-				for (let key in Page.temporary_handlers)
-				{
-					for (let j = 0; j < Page.temporary_handlers[key].length; j++)
-					{
-						window.removeEventListener(key, Page.temporary_handlers[key][j]);
-						document.documentElement.removeEventListener(key, Page.temporary_handlers[key][j]);
-					}
-				}
-				
-				
-				
-				//Clear any temporary intervals.
-				for (let i = 0; i < Page.temporary_intervals.length; i++)
-				{
-					clearInterval(Page.temporary_intervals[i]);
-				}
-				
-				Page.temporary_intervals = [];
-				
-				
-				
-				//Terminate any temporary web workers.
-				for (let i = 0; i < Page.temporary_web_workers.length; i++)
-				{
-					Page.temporary_web_workers[i].terminate();
-				}
-				
-				Page.temporary_web_workers = [];
-				
-				
-				
-				let index = data.indexOf("</head>");
-				
-				if (index !== -1)
-				{
-					data = data.slice(index + 7);
-				}
-				
-				index = data.indexOf("<script>");
-				
-				let scripts_data = "";
-				
-				if (index !== -1)
-				{
-					scripts_data = data.slice(index);
-					
-					data = data.slice(0, index);
-				}
-				
-				
-				
-				document.body.innerHTML += Page.Components.decode(`<div class="page">${data}</div>${scripts_data}`);
-				
-				Page.Load.parse_script_tags();
-				
-				resolve();
-			})
-			
-			.catch((error) =>
-			{
-				reject();
-			});
-		});	
 	},
 
 
@@ -437,12 +375,48 @@ Page.Unload =
 
 Page.unload = function()
 {
-	//Remove any css that's no longer needed to prevent memory leaks.
-	for (let i = 0; i < Page.Navigation.elements_to_remove.length; i++)
+	//Remove JS so it's not executed twice.
+	let elements = document.querySelectorAll("script, style.temporary-style, link.temporary-style");
+	
+	for (let i = 0; i < elements.length; i++)
 	{
-		Page.Navigation.elements_to_remove[i].remove();
+		elements[i].remove();
 	}
 	
+	//Clear temporary things.
+	//Unbind everything transient from the window and the html element.
+	for (let key in Page.temporary_handlers)
+	{
+		for (let j = 0; j < Page.temporary_handlers[key].length; j++)
+		{
+			window.removeEventListener(key, Page.temporary_handlers[key][j]);
+			document.documentElement.removeEventListener(key, Page.temporary_handlers[key][j]);
+		}
+	}
+	
+	
+	
+	//Clear any temporary intervals.
+	for (let i = 0; i < Page.temporary_intervals.length; i++)
+	{
+		clearInterval(Page.temporary_intervals[i]);
+	}
+	
+	Page.temporary_intervals = [];
+	
+	
+	
+	//Terminate any temporary web workers.
+	for (let i = 0; i < Page.temporary_web_workers.length; i++)
+	{
+		Page.temporary_web_workers[i].terminate();
+	}
+	
+	Page.temporary_web_workers = [];
+	
+	
+	
+	
 	//Remove everything that's not a script from the body.
-	Page.last_element.remove();
+	Page.element.remove();
 }

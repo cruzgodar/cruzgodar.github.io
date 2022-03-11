@@ -5,9 +5,7 @@
 //Gets the page ready to be shown but doesn't do anything that needs the page to be visible.
 Page.load = function()
 {
-	let elements = document.body.querySelectorAll(".page");
-	Page.element = elements[1];
-	Page.last_element = elements[0];
+	Page.element = document.body.querySelector(".page");
 	
 	Page.on_show = null;
 	
@@ -59,7 +57,7 @@ Page.load = function()
 	
 	
 	//We do dropdowns here too.
-	elements = Page.element.querySelectorAll("select");
+	let elements = Page.element.querySelectorAll("select");
 	
 	for (let i = 0; i < elements.length; i++)
 	{
