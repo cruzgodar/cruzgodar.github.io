@@ -67,18 +67,16 @@
 
 
 <body>
-	<div class="page">
-		<noscript>
-			<div style="height: 5vh"></div>
-			
-			<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
-		</noscript>
+	<noscript>
+		<div style="height: 5vh"></div>
 		
-		
-		
-		<!-- Tells the browser that it's time to get GBB up and running -->
-		<p style="opacity: 0; font-family: 'Gentium Book Basic', serif">&#x200B</p>
-	</div>	
+		<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+	</noscript>
+	
+	
+	
+	<!-- Tells the browser that it's time to get GBB up and running -->
+	<p style="opacity: 0; font-family: 'Gentium Book Basic', serif">&#x200B</p>
 	
 	
 	
@@ -103,6 +101,12 @@
 		link.setAttribute("rel", "stylesheet");
 		link.setAttribute("type", "text/css");
 		link.setAttribute("href", "/style/css-bundle.min.css");
+		document.head.appendChild(link);
+		
+		link = document.createElement("link");
+		link.setAttribute("rel", "stylesheet");
+		link.setAttribute("type", "text/css");
+		link.setAttribute("href", "/style/aos.min.css");
 		document.head.appendChild(link);
 		
 		link = document.createElement("link");
