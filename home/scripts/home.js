@@ -4,6 +4,40 @@
 	
 	
 	
+	Page.on_show = function()
+	{
+		let children = elements[1].querySelectorAll(".image-link");
+		
+		for (let i = 0; i < Page.Load.AOS.elements[2].length; i++)
+		{
+			Page.Load.AOS.elements[2][i].setAttribute("data-aos", "zoom-out");
+			
+			Page.Load.AOS.elements[2][i].style.transform = "scale(1.3)";
+		}
+		
+		Page.Load.AOS.element_animation_types[2] = 1;
+		
+		
+		
+		anime({
+			targets: document.querySelector("#cruz-text"),
+			opacity: 1,
+			translateX: 0,
+			duration: 800,
+			delay: 200,
+			easing: "easeOutQuad"
+		});
+			
+		anime({
+			targets: document.querySelector("#godar-text"),
+			opacity: 1,
+			translateX: 0,
+			duration: 800,
+			delay: 500,
+			easing: "easeOutQuad"
+		});
+	};
+	
 	let homepage_image_links_mode = "";
 	
 	window.addEventListener("resize", homepage_resize);
@@ -22,19 +56,6 @@
 	
 	elements[1].id = "newest-pages";
 	
-	let children = elements[1].querySelectorAll(".image-link");
-	
-	for (let i = 0; i < Page.Load.AOS.elements[2].length; i++)
-	{
-		Page.Load.AOS.elements[2][i].setAttribute("data-aos", "zoom-out");
-		
-		Page.Load.AOS.elements[2][i].style.transform = "scale(1.3)";
-	}
-	
-	Page.Load.AOS.element_animation_types[2] = 1;
-	
-	
-	
 	
 	
 	if (Browser.name === "MS Edge")
@@ -45,26 +66,6 @@
 	
 	
 	set_name_text_opacity();
-	
-	
-	
-	anime({
-		targets: document.querySelector("#cruz-text"),
-		opacity: 1,
-		translateX: 0,
-		duration: 800,
-		delay: 500,
-		easing: "easeOutQuad"
-	});
-		
-	anime({
-		targets: document.querySelector("#godar-text"),
-		opacity: 1,
-		translateX: 0,
-		duration: 800,
-		delay: 800,
-		easing: "easeOutQuad"
-	});
 	
 	
 	

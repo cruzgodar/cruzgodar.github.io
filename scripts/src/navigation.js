@@ -31,6 +31,8 @@ Page.Navigation =
 
 	last_page_scroll: 0,
 	
+	elements_to_remove: [],
+	
 	
 	
 	//Handles virtually all links.
@@ -40,8 +42,6 @@ Page.Navigation =
 		{
 			return;
 		}
-		
-		console.log(url);
 		
 		//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
 		if (in_new_tab || url.slice(url.length - 5) !== ".html")
@@ -73,6 +73,8 @@ Page.Navigation =
 		
 		Page.parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
 		
+		Page.loaded = false;
+		
 		
 		
 		//We need to record this in case we can't successfully load the next page and we need to return to the current one.
@@ -81,31 +83,15 @@ Page.Navigation =
 		
 		
 		//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-		Promise.all([fetch(url), Page.Unload.fade_out(), Page.Banner.load()])
+		Promise.all([this.prepare_new_page(url), Page.Unload.fade_out(), Page.Banner.load()])
 		
 		
 		
-		.then((response) =>
-		{
-			if (!response[0].ok)
-			{
-				window.location.replace("/404.html");
-			}
-			
-			else
-			{
-				return response[0].text();
-			}
-		})
-		
-		
-		
-		.then((data) =>
+		.then(() =>
 		{
 			Page.unload();
 			
 			//Record the page change in the url bar and in the browser history.
-			
 			if (!no_state_push)
 			{
 				history.pushState({}, document.title, url + this.concat_url_vars());
@@ -127,30 +113,6 @@ Page.Navigation =
 			
 			
 			
-			let index = data.indexOf("</head>");
-			
-			if (index !== -1)
-			{
-				data = data.slice(index + 7);
-			}
-			
-			index = data.indexOf("<script>");
-			
-			let scripts_data = "";
-			
-			if (index !== -1)
-			{
-				scripts_data = data.slice(index);
-				
-				data = data.slice(0, index);
-			}
-			
-			
-			
-			document.body.innerHTML += Page.Components.decode(`<div class="page">${data}</div>${scripts_data}`);
-			
-			
-			
 			if (restore_scroll)
 			{
 				window.scrollTo(0, this.last_page_scroll);
@@ -167,7 +129,17 @@ Page.Navigation =
 			
 			
 			
-			Page.Load.parse_script_tags();
+			if (Page.loaded)
+			{
+				Page.show();
+			}
+			
+			else
+			{
+				Page.loaded = true;
+			}
+			
+			console.log("Ran Page.load");	
 		})
 		
 		
@@ -217,6 +189,109 @@ Page.Navigation =
 				}
 			}, Site.opacity_animation_time);
 		});
+	},
+	
+	
+	
+	prepare_new_page: function(url)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			fetch(url)
+			
+			.then((response) =>
+			{
+				if (!response.ok)
+				{
+					window.location.replace("/404.html");
+				}
+				
+				else
+				{
+					return response.text();
+				}
+			})
+			
+			
+			
+			.then((data) =>
+			{
+				//Remove JS so it's not executed twice.
+				let elements = document.querySelectorAll("script");
+				
+				for (let i = 0; i < elements.length; i++)
+				{
+					elements[i].remove();
+				}
+				
+				//Mark some other stuff for deletion.
+				this.elements_to_remove = document.querySelectorAll("style.temporary-style, link.temporary-style");
+				
+				//Clear temporary things.
+				//Unbind everything transient from the window and the html element.
+				for (let key in Page.temporary_handlers)
+				{
+					for (let j = 0; j < Page.temporary_handlers[key].length; j++)
+					{
+						window.removeEventListener(key, Page.temporary_handlers[key][j]);
+						document.documentElement.removeEventListener(key, Page.temporary_handlers[key][j]);
+					}
+				}
+				
+				
+				
+				//Clear any temporary intervals.
+				for (let i = 0; i < Page.temporary_intervals.length; i++)
+				{
+					clearInterval(Page.temporary_intervals[i]);
+				}
+				
+				Page.temporary_intervals = [];
+				
+				
+				
+				//Terminate any temporary web workers.
+				for (let i = 0; i < Page.temporary_web_workers.length; i++)
+				{
+					Page.temporary_web_workers[i].terminate();
+				}
+				
+				Page.temporary_web_workers = [];
+				
+				
+				
+				let index = data.indexOf("</head>");
+				
+				if (index !== -1)
+				{
+					data = data.slice(index + 7);
+				}
+				
+				index = data.indexOf("<script>");
+				
+				let scripts_data = "";
+				
+				if (index !== -1)
+				{
+					scripts_data = data.slice(index);
+					
+					data = data.slice(0, index);
+				}
+				
+				
+				
+				document.body.innerHTML += Page.Components.decode(`<div class="page">${data}</div>${scripts_data}`);
+				
+				Page.Load.parse_script_tags();
+				
+				resolve();
+			})
+			
+			.catch((error) =>
+			{
+				reject();
+			});
+		});	
 	},
 
 
@@ -306,9 +381,9 @@ Page.Unload =
 			else
 			{
 				//Fade out the current page's content.
-				Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time);
+				Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time)
 				
-				setTimeout(() =>
+				.then(() =>
 				{
 					if (Page.background_color_changed === false)
 					{
@@ -354,7 +429,7 @@ Page.Unload =
 						
 						resolve();
 					}
-				}, Site.opacity_animation_time);
+				});
 			}
 		});
 	}
@@ -364,47 +439,12 @@ Page.Unload =
 
 Page.unload = function()
 {
-	//Remove any css and js that's no longer needed to prevent memory leaks.
-	let elements = document.querySelectorAll("style.temporary-style, link.temporary-style, script");
-	for (let i = 0; i < elements.length; i++)
+	//Remove any css that's no longer needed to prevent memory leaks.
+	for (let i = 0; i < Page.Navigation.elements_to_remove.length; i++)
 	{
-		elements[i].remove();
+		Page.Navigation.elements_to_remove[i].remove();
 	}
-	
-	
 	
 	//Remove everything that's not a script from the body.
-	Page.element.remove();
-	
-	
-	
-	//Unbind everything transient from the window and the html element.
-	for (let key in Page.temporary_handlers)
-	{
-		for (let j = 0; j < Page.temporary_handlers[key].length; j++)
-		{
-			window.removeEventListener(key, Page.temporary_handlers[key][j]);
-			document.documentElement.removeEventListener(key, Page.temporary_handlers[key][j]);
-		}
-	}
-	
-	
-	
-	//Clear any temporary intervals.
-	for (let i = 0; i < Page.temporary_intervals.length; i++)
-	{
-		clearInterval(Page.temporary_intervals[i]);
-	}
-	
-	Page.temporary_intervals = [];
-	
-	
-	
-	//Terminate any temporary web workers.
-	for (let i = 0; i < Page.temporary_web_workers.length; i++)
-	{
-		Page.temporary_web_workers[i].terminate();
-	}
-	
-	Page.temporary_web_workers = [];
+	Page.last_element.remove();
 }

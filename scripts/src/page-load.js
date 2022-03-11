@@ -2,9 +2,15 @@
 
 
 
-Page.load = async function()
+//Gets the page ready to be shown but doesn't do anything that needs the page to be visible.
+Page.load = function()
 {
-	Page.element = document.querySelector(".page");
+	let elements = document.body.querySelectorAll(".page");
+	Page.element = elements[1];
+	Page.last_element = elements[0];
+	
+	Page.on_show = null;
+	
 	
 	this.Navigation.currently_changing_page = false;
 	
@@ -16,7 +22,7 @@ Page.load = async function()
 	
 	
 	//Set the page title.
-	document.querySelector("title").innerHTML = this.settings["title"];
+	document.head.querySelector("title").innerHTML = this.settings["title"];
 	
 	
 	
@@ -34,22 +40,13 @@ Page.load = async function()
 	
 	
 	
-	this.Load.AOS.load();
-	
-	setTimeout(() =>
-	{
-		this.Load.AOS.on_resize();
-	}, 1000);
-	
-	
-	
 	Page.Layout.Multicols.active = false;
 	
 	Page.Layout.on_resize();
 	
 	if (this.Layout.layout_string === "ultrawide")
 	{
-		//this.Layout.Multicols.create();
+		this.Layout.Multicols.create();
 	}
 	
 	this.Layout.AppletColumns.are_equalized = false;
@@ -62,7 +59,7 @@ Page.load = async function()
 	
 	
 	//We do dropdowns here too.
-	let elements = document.querySelectorAll("select");
+	elements = Page.element.querySelectorAll("select");
 	
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -90,11 +87,7 @@ Page.load = async function()
 	
 	
 	
-	this.Load.fade_in();
-	
 	this.Images.add_extensions();
-	
-	this.Load.AOS.on_resize();
 	
 	Page.Banner.fetch_other_page_banners_in_background();
 	
@@ -148,6 +141,43 @@ Page.load = async function()
 	{
 		this.Load.Math.typeset();
 	}
+	
+	
+	
+	if (Page.loaded)
+	{
+		Page.show();
+	}
+	
+	else
+	{
+		Page.loaded = true;
+	}
+	
+	console.log("Ran Page.load");
+};
+
+
+
+Page.show = async function()
+{
+	console.log("showing");
+	
+	this.Load.AOS.load();
+	
+	await this.Load.fade_in();
+	
+	setTimeout(() =>
+	{
+		this.Load.AOS.on_resize();
+	}, 1000);
+	
+	this.Load.AOS.show_elements = true;
+	
+	this.Load.AOS.on_scroll();
+	
+	try {Page.on_show()}
+	catch(ex) {}
 };
 
 
@@ -265,27 +295,43 @@ Page.Load =
 
 	fade_in: function()
 	{
-		if ("banner_page" in Page.settings && Page.settings["banner_page"])
+		return new Promise((resolve, reject) =>
 		{
-			Site.add_style(`
-				#banner
-				{
-					background: url(${Page.Banner.file_path}landscape.${Page.Images.file_extension}) no-repeat center center;
-					background-size: cover;
-				}
-				
-				@media (max-aspect-ratio: 1/1)
-				{
+			if ("banner_page" in Page.settings && Page.settings["banner_page"])
+			{
+				Site.add_style(`
 					#banner
 					{
-						background: url(${Page.Banner.file_path}portrait.${Page.Images.file_extension}) no-repeat center center;
+						background: url(${Page.Banner.file_path}landscape.${Page.Images.file_extension}) no-repeat center center;
 						background-size: cover;
 					}
-				}
-			`);
-		}
-		
-		Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
+					
+					@media (max-aspect-ratio: 1/1)
+					{
+						#banner
+						{
+							background: url(${Page.Banner.file_path}portrait.${Page.Images.file_extension}) no-repeat center center;
+							background-size: cover;
+						}
+					}
+				`);
+				
+				anime({
+					targets: document.body,
+					opacity: 1,
+					duration: Site.opacity_animation_time,
+					easing: "easeOutQuad",
+					complete: resolve
+				});
+			}
+			
+			else
+			{
+				document.body.style.opacity = 1;
+				
+				resolve();
+			}
+		});	
 	},
 	
 	
@@ -293,6 +339,8 @@ Page.Load =
 	AOS:
 	{
 		//A list of lists. Each sublist starts with an anchor, then lists all the elements anchored to it in sequence, along with their delays.
+		show_elements: false,
+		
 		elements: [],
 		element_animation_types: [],
 
@@ -311,6 +359,8 @@ Page.Load =
 		//In iOS 13.4, it seems Apple has miraculously fixed this nightmare. But for whatever reason, AOS is still problematic. If an element has a nonzero delay, it will be bugged, but zero-delay elements behave as usual. And so the solution is, unfortunately, to handle almost all of what AOS does manually.
 
 		//This function puts the proper delays and anchors on aos elements on the page. The first animated element in every section should have a class of new-aos-section.
+		
+		//Update: the bug came back even for zero-delay elements. The site's content animation has been moved to the JS-based anime.js, so while variables are still called AOS to avoid massive refactoring, it's no longer a part of the site.
 		load: function()
 		{
 			if (Site.Settings.url_vars["content_animation"] === 1)
@@ -320,10 +370,12 @@ Page.Load =
 			
 			
 			
+			this.show_elements = false;
+			
 			this.elements = [];
 			this.element_animation_types = [];
 			
-			let new_elements = document.querySelectorAll("[data-aos]");
+			let new_elements = Page.element.querySelectorAll("[data-aos]");
 			
 			let current_section = 0;
 			let current_delay = 0;
@@ -390,15 +442,17 @@ Page.Load =
 			
 			
 			//At this point we have a list of all the AOS sections and their delays. Now whenever we scroll, we'll check each of the anchors to see if the scroll position is beyond the offset.
-			
-			this.on_resize();
-			this.on_scroll();
 		},
 
 
 
 		on_resize: function()
 		{
+			if (!this.show_elements)
+			{
+				return;
+			}
+			
 			for (let i = 0; i < this.elements.length; i++)
 			{
 				this.anchor_positions[i] = this.elements[i][0].getBoundingClientRect().top + Page.scroll;
@@ -421,6 +475,11 @@ Page.Load =
 
 		on_scroll: function()
 		{
+			if (!this.show_elements)
+			{
+				return;
+			}
+			
 			for (let i = 0; i < this.elements.length; i++)
 			{
 				if (Page.scroll + Page.Layout.window_height >= this.anchor_positions[i] + this.anchor_offsets[i] && this.anchors_shown[i] === false)
@@ -554,7 +613,7 @@ Page.Load =
 		//Adds a listener to every element that needs a hover event. Yes, you could use CSS for this. No, I don't want to.
 		set_up: function()
 		{
-			let elements = document.querySelectorAll(this.element_selectors);
+			let elements = Page.element.querySelectorAll(this.element_selectors);
 			
 			for (let i = 0; i < elements.length; i++)
 			{
@@ -639,7 +698,7 @@ Page.Load =
 
 		remove: function()
 		{
-			let elements = document.querySelectorAll(this.element_selectors);
+			let elements = Page.element.querySelectorAll(this.element_selectors);
 			
 			for (let i = 0; i < elements.length; i++)
 			{
@@ -654,7 +713,7 @@ Page.Load =
 	{
 		set_up_weird_elements: function()
 		{
-			let elements = document.querySelectorAll(".focus-on-child");
+			let elements = Page.element.querySelectorAll(".focus-on-child");
 
 			for (let i = 0; i < elements.length; i++)
 			{
@@ -693,7 +752,7 @@ Page.Load =
 		//Makes linked text buttons have the same width and height.
 		equalize: function()
 		{
-			let elements = document.querySelectorAll(".text-button");
+			let elements = Page.element.querySelectorAll(".text-button");
 			
 			for (let i = 0; i < elements.length; i++)
 			{
@@ -702,7 +761,7 @@ Page.Load =
 			
 			
 			
-			elements = document.querySelectorAll(".linked-text-button");
+			elements = Page.element.querySelectorAll(".linked-text-button");
 			
 			let heights = [];
 			
@@ -772,7 +831,7 @@ Page.Load =
 	{
 		set: function()
 		{
-			let links = document.querySelectorAll("a");
+			let links = Page.element.querySelectorAll("a");
 			
 			
 			
@@ -805,7 +864,7 @@ Page.Load =
 
 		disable: function()
 		{
-			let links = document.querySelectorAll("a:not(.real-link)");
+			let links = Page.element.querySelectorAll("a:not(.real-link)");
 			
 			for (let i = 0; i < links.length; i++)
 			{
@@ -859,7 +918,7 @@ Page.Load =
 			
 			setTimeout(() =>
 			{
-				let elements = document.querySelectorAll("mjx-container");
+				let elements = Page.element.querySelectorAll("mjx-container");
 				
 				for (let i = 0; i < elements.length; i++)
 				{

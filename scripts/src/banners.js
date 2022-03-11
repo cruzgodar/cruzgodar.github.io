@@ -1,30 +1,3 @@
-/*
-	
-	Page:
-		
-		...
-		
-		
-		Banner: methods for loading banners, displaying them, fading them out when the user scrolls, and everything to do with scroll buttons.
-		
-			load: loads and displays the banner for the current page.
-			
-			on_scroll: run whenever the user scrolls to update banner and scroll button opacity.
-			
-			fetch_other_size_in_background: fetches the portrait orientation if the current one is landscape or landscape if the current one is portrait, so that changing the screen orientation can load the new banner immediately.
-			
-			fetch_other_page_banners_in_background: fetches the current orientation of every adjacent page's banner, so that load times are reduced.
-			
-			ScrollButton: methods for handling the button that appears after a few seconds in case the user doesn't know to scroll down.
-			
-				insert: creates and animates in the scroll button.
-				
-				animate_to: smoothly animates the screen to scroll to a given element.
-	
-*/
-
-
-
 "use strict";
 
 
@@ -120,6 +93,8 @@ Page.Banner =
 					
 					img.onload = () =>
 					{
+						img.remove();
+						
 						this.ScrollButton.timeout_id = setTimeout(() =>
 						{
 							this.ScrollButton.insert();

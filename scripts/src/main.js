@@ -18,6 +18,9 @@ let DEBUG = false;
 
 
 Page.element = null;
+Page.last_element = null;
+
+Page.loaded = false;
 
 
 Page.scroll = 0;
@@ -127,6 +130,13 @@ Site.load = async function(url)
 	Page.Layout.window_height = window.innerHeight;
 	Page.Layout.aspect_ratio = Page.Layout.window_width / Page.Layout.window_height;
 	
+	window.addEventListener("scroll", () =>
+	{
+		Page.Banner.on_scroll(0);
+		
+		Page.Load.AOS.on_scroll();
+	});
+	
 	window.addEventListener("resize", () =>
 	{
 		Page.Load.AOS.on_resize();
@@ -150,13 +160,6 @@ Site.load = async function(url)
 	
 	
 	Site.Interaction.set_up_listeners();
-	
-	
-	
-	window.addEventListener("scroll", () =>
-	{
-		Page.Banner.on_scroll(0);
-	});
 	
 	
 	
@@ -232,18 +235,6 @@ Site.load = async function(url)
 	
 	
 	Page.Banner.ScrollButton.exists = false;
-	
-	
-	
-	window.addEventListener("scroll", () =>
-	{
-		Page.Load.AOS.on_scroll();
-	});
-	
-	window.addEventListener("resize", () =>
-	{
-		Page.Load.AOS.on_resize();
-	});
 	
 	
 	
