@@ -12,10 +12,10 @@
 	
 	let currently_animating = false;
 	
-	let boxes = document.querySelectorAll("#wordle input");
+	let boxes = Page.element.querySelectorAll("#wordle input");
 	
-	let confirm_buttons = document.querySelectorAll("#wordle div:nth-child(7n)");
-	let info_buttons = document.querySelectorAll("#wordle div:nth-child(7n + 1)");
+	let confirm_buttons = Page.element.querySelectorAll("#wordle div:nth-child(7n)");
+	let info_buttons = Page.element.querySelectorAll("#wordle div:nth-child(7n + 1)");
 	
 	let num_words_to_evaluate = 200;
 	
@@ -24,7 +24,7 @@
 	let good_guesses = [];
 	let bad_guesses = [];
 	
-	let hardmode_checkbox_element = document.querySelector("#hardmode-checkbox");
+	let hardmode_checkbox_element = Page.element.querySelector("#hardmode-checkbox");
 	
 	
 	
@@ -357,7 +357,7 @@
 	
 	function display_info()
 	{
-		let info_panel_element = document.querySelector("#info-panel");
+		let info_panel_element = Page.element.querySelector("#info-panel");
 		
 		info_panel_element.innerHTML = `<h2>Top Guesses</h2><br>`;
 		
@@ -411,7 +411,7 @@
 		
 		
 		
-		let info_panel_container_element = document.querySelector("#info-panel-container");
+		let info_panel_container_element = Page.element.querySelector("#info-panel-container");
 		
 		info_panel_container_element.style.display = "flex";
 		

@@ -21,7 +21,7 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	
 	
@@ -35,7 +35,7 @@
 
 	
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", () =>
 	{
@@ -44,7 +44,7 @@
 	
 	
 	
-	let grid_size_input_element = document.querySelector("#grid-size-input");
+	let grid_size_input_element = Page.element.querySelector("#grid-size-input");
 	
 	grid_size_input_element.addEventListener("keydown", (e) =>
 	{
@@ -56,7 +56,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -65,13 +65,13 @@
 	
 	
 	
-	let maximum_speed_checkbox_element = document.querySelector("#toggle-maximum-speed-checkbox");
+	let maximum_speed_checkbox_element = Page.element.querySelector("#toggle-maximum-speed-checkbox");
 	
-	let no_borders_checkbox_element = document.querySelector("#no-borders-checkbox");
+	let no_borders_checkbox_element = Page.element.querySelector("#no-borders-checkbox");
 	
-	let progress_bar_element = document.querySelector("#progress-bar");
+	let progress_bar_element = Page.element.querySelector("#progress-bar");
 	
-	let progress_bar_child_element = document.querySelector("#progress-bar span");
+	let progress_bar_child_element = Page.element.querySelector("#progress-bar span");
 	
 	
 	
@@ -136,8 +136,8 @@
 			catch(ex) {}
 		}
 		
-		document.querySelector("#progress-bar span").insertAdjacentHTML("afterend", `<span></span>`);
-		document.querySelector("#progress-bar span").remove();
+		Page.element.querySelector("#progress-bar span").insertAdjacentHTML("afterend", `<span></span>`);
+		Page.element.querySelector("#progress-bar span").remove();
 		
 		
 		

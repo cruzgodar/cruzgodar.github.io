@@ -162,7 +162,7 @@
 	
 	let wilson = null;
 	
-	let canvas_location_element = document.querySelector("#canvas-location");
+	let canvas_location_element = Page.element.querySelector("#canvas-location");
 	
 	
 	
@@ -225,7 +225,7 @@
 				canvas_height: 1
 			};
 			
-			wilson = new Wilson(document.querySelector("#output-canvas"), options);
+			wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 			
 			
 			

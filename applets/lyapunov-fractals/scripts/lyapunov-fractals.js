@@ -45,18 +45,18 @@
 	
 	
 	
-	let generating_string_input_element = document.querySelector("#generating-string-input");
+	let generating_string_input_element = Page.element.querySelector("#generating-string-input");
 	
 	
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 	
 	generate_button_element.addEventListener("click", use_new_code);
 	
 	
 	
 
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
@@ -69,7 +69,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -78,7 +78,7 @@
 	
 	
 	
-	let canvas_location_element = document.querySelector("#canvas-location");
+	let canvas_location_element = Page.element.querySelector("#canvas-location");
 	
 	
 	
@@ -256,13 +256,13 @@
 		
 		
 		
-		wilson = new Wilson(document.querySelector("#output-canvas"), options);
+		wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
 		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "brightness_scale", "seq"]);
 		
 		
 		
-		wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
+		wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), options_hidden);
 		
 		wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "brightness_scale", "seq"]);
 		

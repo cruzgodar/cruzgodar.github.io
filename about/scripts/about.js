@@ -11,9 +11,9 @@
 	
 	
 	
-	document.querySelector("#toggle-minor-versions-checkbox").addEventListener("click", function()
+	Page.element.querySelector("#toggle-minor-versions-checkbox").addEventListener("click", function()
 	{
-		if (document.querySelector("#toggle-minor-versions-checkbox").checked)
+		if (Page.element.querySelector("#toggle-minor-versions-checkbox").checked)
 		{
 			Page.set_element_styles(".minor-version, .medium-version, .major-version", "opacity", 0);
 			

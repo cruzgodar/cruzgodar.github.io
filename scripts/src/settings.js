@@ -951,7 +951,7 @@ Site.Settings =
 
 	set_img_button_contrast: function()
 	{
-		let elements = document.querySelectorAll(".nav-button, .scroll-button");
+		let elements = Page.element.querySelectorAll(".scroll-button");
 		
 		for (let i = 0; i < elements.length; i++)
 		{

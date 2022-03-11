@@ -195,13 +195,13 @@
 	
 	
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
 	wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "num_roots", "roots", "colors", "a", "c", "brightness_scale"]);
 	
 	
 	
-	let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
+	let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), options_hidden);
 	
 	wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "num_roots", "roots", "colors", "a", "c", "brightness_scale"]);
 	
@@ -268,7 +268,7 @@
 	
 	
 
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
@@ -281,25 +281,25 @@
 	
 	
 	
-	let add_root_button_element = document.querySelector("#add-root-button");
+	let add_root_button_element = Page.element.querySelector("#add-root-button");
 	
 	add_root_button_element.addEventListener("click", add_root);
 	
 	
 	
-	let remove_root_button_element = document.querySelector("#remove-root-button");
+	let remove_root_button_element = Page.element.querySelector("#remove-root-button");
 	
 	remove_root_button_element.addEventListener("click", remove_root);
 	
 	
 	
-	let spread_roots_button_element = document.querySelector("#spread-roots-button");
+	let spread_roots_button_element = Page.element.querySelector("#spread-roots-button");
 	
 	spread_roots_button_element.addEventListener("click", spread_roots);
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -308,15 +308,15 @@
 	
 	
 	
-	let root_a_input_element = document.querySelector("#root-a-input");
-	let root_b_input_element = document.querySelector("#root-b-input");
+	let root_a_input_element = Page.element.querySelector("#root-a-input");
+	let root_b_input_element = Page.element.querySelector("#root-b-input");
 	
 	root_a_input_element.addEventListener("input", set_root);
 	root_b_input_element.addEventListener("input", set_root);
 	
 	
 	
-	let root_setter_element = document.querySelector("#root-setter");
+	let root_setter_element = Page.element.querySelector("#root-setter");
 	
 	
 	

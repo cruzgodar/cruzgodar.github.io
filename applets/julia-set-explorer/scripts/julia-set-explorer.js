@@ -229,13 +229,13 @@
 	
 	
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
 	wilson.render.init_uniforms(["julia_mode", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "brightness_scale"]);
 	
 	
 	
-	let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
+	let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), options_hidden);
 	
 	wilson_hidden.render.init_uniforms(["julia_mode", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "brightness_scale"]);
 	
@@ -280,7 +280,7 @@
 	
 	
 
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
@@ -291,7 +291,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -300,7 +300,7 @@
 	
 	
 	
-	let switch_julia_mode_button_element = document.querySelector("#switch-julia-mode-button");
+	let switch_julia_mode_button_element = Page.element.querySelector("#switch-julia-mode-button");
 	
 	switch_julia_mode_button_element.style.opacity = 1;
 	

@@ -4,7 +4,7 @@
 	
 	
 	
-	let elements = document.querySelectorAll("pre code");
+	let elements = Page.element.querySelectorAll("pre code");
 	
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -29,15 +29,15 @@
 			world_center_y: 0
 		};
 		
-		let wilson = new Wilson(document.querySelector("#output-canvas-1"), options);
+		let wilson = new Wilson(Page.element.querySelector("#output-canvas-1"), options);
 		
 		
 		
-		let a_input_element = document.querySelector("#a-1-input");
-		let b_input_element = document.querySelector("#b-1-input");
-		let resolution_input_element = document.querySelector("#resolution-1-input");
+		let a_input_element = Page.element.querySelector("#a-1-input");
+		let b_input_element = Page.element.querySelector("#b-1-input");
+		let resolution_input_element = Page.element.querySelector("#resolution-1-input");
 
-		let generate_button_element = document.querySelector("#generate-1-button");
+		let generate_button_element = Page.element.querySelector("#generate-1-button");
 
 		generate_button_element.addEventListener("click", () =>
 		{
@@ -136,15 +136,15 @@
 			world_center_y: 0
 		};
 		
-		let wilson = new Wilson(document.querySelector("#output-canvas-2"), options);
+		let wilson = new Wilson(Page.element.querySelector("#output-canvas-2"), options);
 		
 		
 		
-		let a_input_element = document.querySelector("#a-2-input");
-		let b_input_element = document.querySelector("#b-2-input");
-		let resolution_input_element = document.querySelector("#resolution-2-input");
+		let a_input_element = Page.element.querySelector("#a-2-input");
+		let b_input_element = Page.element.querySelector("#b-2-input");
+		let resolution_input_element = Page.element.querySelector("#resolution-2-input");
 
-		let generate_button_element = document.querySelector("#generate-2-button");
+		let generate_button_element = Page.element.querySelector("#generate-2-button");
 
 		generate_button_element.addEventListener("click", () =>
 		{
@@ -159,7 +159,7 @@
 		
 		
 		
-		let download_button_element = document.querySelector("#download-2-button");
+		let download_button_element = Page.element.querySelector("#download-2-button");
 		
 		download_button_element.addEventListener("click", () =>
 		{
@@ -237,7 +237,7 @@
 	
 	
 	
-	document.querySelector("#next-part-button").addEventListener("click", () =>
+	Page.element.querySelector("#next-part-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/2/draggables.html");
 	});

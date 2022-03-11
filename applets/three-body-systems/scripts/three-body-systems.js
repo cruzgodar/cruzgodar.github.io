@@ -282,7 +282,7 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	
 	
@@ -303,11 +303,11 @@
 	
 	
 	
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 	
 	generate_button_element.addEventListener("click", () =>
 	{
@@ -318,7 +318,7 @@
 	
 	
 	
-	let switch_planet_drawer_canvas_button_element = document.querySelector("#switch-planet-drawer-canvas-button");
+	let switch_planet_drawer_canvas_button_element = Page.element.querySelector("#switch-planet-drawer-canvas-button");
 	
 	switch_planet_drawer_canvas_button_element.style.transition = "filter .125s ease-in-out, opacity .25s ease-in-out";
 	
@@ -361,7 +361,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -516,7 +516,7 @@
 		draggables_touchmove_callback: on_drag_draggable
 	};
 	
-	let wilson_planet_drawer = new Wilson(document.querySelector("#planet-drawer-canvas"), options_planet_drawer);
+	let wilson_planet_drawer = new Wilson(Page.element.querySelector("#planet-drawer-canvas"), options_planet_drawer);
 	
 	wilson_planet_drawer.draggables.add(0, 1);
 	wilson_planet_drawer.draggables.add(-.866, -.5);

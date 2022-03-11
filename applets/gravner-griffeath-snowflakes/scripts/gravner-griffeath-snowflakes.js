@@ -22,7 +22,7 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	
 	
@@ -32,19 +32,19 @@
 	
 	
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", request_snowflake);
 	
 	
 	
-	let randomize_parameters_button_element = document.querySelector("#randomize-parameters-button");
+	let randomize_parameters_button_element = Page.element.querySelector("#randomize-parameters-button");
 
 	randomize_parameters_button_element.addEventListener("click", randomize_parameters);
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -53,14 +53,14 @@
 	
 	
 	
-	let grid_size_input_element = document.querySelector("#grid-size-input");
-	let rho_input_element = document.querySelector("#rho-input");
-	let beta_input_element = document.querySelector("#beta-input");
-	let alpha_input_element = document.querySelector("#alpha-input");
-	let theta_input_element = document.querySelector("#theta-input");
-	let kappa_input_element = document.querySelector("#kappa-input");
-	let mu_input_element = document.querySelector("#mu-input");
-	let gamma_input_element = document.querySelector("#gamma-input");
+	let grid_size_input_element = Page.element.querySelector("#grid-size-input");
+	let rho_input_element = Page.element.querySelector("#rho-input");
+	let beta_input_element = Page.element.querySelector("#beta-input");
+	let alpha_input_element = Page.element.querySelector("#alpha-input");
+	let theta_input_element = Page.element.querySelector("#theta-input");
+	let kappa_input_element = Page.element.querySelector("#kappa-input");
+	let mu_input_element = Page.element.querySelector("#mu-input");
+	let gamma_input_element = Page.element.querySelector("#gamma-input");
 	
 	
 	

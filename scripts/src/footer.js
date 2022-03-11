@@ -30,40 +30,34 @@ Page.Footer =
 		
 		let url_vars_suffix = Page.Navigation.concat_url_vars();
 
-		
-		
-		document.querySelector("#spawn-footer").insertAdjacentHTML("beforebegin", `
-			<div style="position: relative">
-				<div class="new-aos-section" data-aos="fade-in" data-aos-offset="0" style="position: absolute; bottom: 5px"></div>
-			</div>
-		`);
+		let first_link_string = " new-aos-section";
 		
 		
 		
 		if (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] !== ""))
 		{
-			document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
+			Page.element.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 				<nav class="footer-image-links footer-image-links-big"></nav>
 			`);
 		}
 		
 		else
 		{
-			document.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
+			Page.element.querySelector("#spawn-footer").insertAdjacentHTML("afterend", `
 				<nav class="footer-image-links"></nav>
 			`);
 		}
 		
 		
 		
-		if  (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "gallery"))
+		if (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "gallery"))
 		{
 			let element = document.createElement("div");
 			
-			document.querySelector(".footer-image-links").appendChild(element);
+			Page.element.querySelector(".footer-image-links").appendChild(element);
 			
 			element.outerHTML = `
-				<div id="gallery-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
+				<div id="gallery-link" class="footer-image-link${first_link_string}" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 					<a class="focus-on-child" href="index.html?page=%2Fgallery%2Fgallery.html${url_vars_suffix}" tabindex="-1">
 						<img onclick="Page.Navigation.redirect('/gallery/gallery.html')" src="/gallery/cover.${Page.Images.file_extension}" alt="Gallery" tabindex="2"></img>
 					</a>
@@ -71,6 +65,8 @@ Page.Footer =
 					<p class="footer-image-link-subtext">Gallery</p>
 				</div>
 			`;
+			
+			first_link_string = "";
 			
 			delay += Site.aos_separation_time;
 		}
@@ -81,10 +77,10 @@ Page.Footer =
 		{
 			let element = document.createElement("div");
 			
-			document.querySelector(".footer-image-links").appendChild(element);
+			Page.element.querySelector(".footer-image-links").appendChild(element);
 			
 			element.outerHTML = `
-				<div id="applets-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
+				<div id="applets-link" class="footer-image-link${first_link_string}" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
 					<a class="focus-on-child" href="index.html?page=%2Fapplets%2Fapplets.html${url_vars_suffix}" tabindex="-1">
 						<img onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="2"></img>
 					</a>
@@ -92,6 +88,8 @@ Page.Footer =
 					<p class="footer-image-link-subtext">Applets</p>
 				</div>
 			`;
+			
+			first_link_string = "";
 			
 			delay += Site.aos_separation_time;
 		}
@@ -102,7 +100,7 @@ Page.Footer =
 		{
 			let element = document.createElement("div");
 			
-			document.querySelector(".footer-image-links").appendChild(element);
+			Page.element.querySelector(".footer-image-links").appendChild(element);
 			
 			element.outerHTML = `
 				<div id="writing-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
@@ -123,7 +121,7 @@ Page.Footer =
 		{
 			let element = document.createElement("div");
 			
-			document.querySelector(".footer-image-links").appendChild(element);
+			Page.element.querySelector(".footer-image-links").appendChild(element);
 			
 			element.outerHTML = `
 				<div id="teaching-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
@@ -144,7 +142,7 @@ Page.Footer =
 		{
 			let element = document.createElement("div");
 			
-			document.querySelector(".footer-image-links").appendChild(element);
+			Page.element.querySelector(".footer-image-links").appendChild(element);
 			
 			element.outerHTML = `
 				<div id="bio-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
@@ -162,9 +160,9 @@ Page.Footer =
 		
 		
 		//If the page isn't as tall as the screen (e.g. the 404 page), move the footer to the bottom of the page.
-		if (document.body.clientHeight < Page.Layout.window_height)
+		if (Page.element.clientHeight < Page.Layout.window_height)
 		{
-			document.querySelector("#spawn-footer").insertAdjacentHTML("beforebegin", `
+			Page.element.querySelector("#spawn-footer").insertAdjacentHTML("beforebegin", `
 				<div style="height: ${Page.Layout.window_height - document.body.clientHeight}px"></div>
 			`);
 		}
@@ -173,7 +171,7 @@ Page.Footer =
 		
 		setTimeout(() =>
 		{
-			let elements = document.querySelectorAll("#gallery-link img, #applets-link img, #writing-link img, #teaching-link img, #bio-link img");
+			let elements = Page.element.querySelectorAll("#gallery-link img, #applets-link img, #writing-link img, #teaching-link img, #bio-link img");
 			
 			for (let i = 0; i < elements.length; i++)
 			{
@@ -342,7 +340,7 @@ Page.Footer =
 			
 			setTimeout(() =>
 			{
-				let elements = document.querySelectorAll(".footer-menu-button, .footer-menu-image-link");
+				let elements = Page.element.querySelectorAll(".footer-menu-button, .footer-menu-image-link");
 				
 				for (let i = 0; i < elements.length; i++)
 				{
@@ -363,7 +361,7 @@ Page.Footer =
 			
 			
 			
-			document.querySelector("#show-footer-menu-button").style.bottom = `${this.current_offset}px`;
+			Page.element.querySelector("#show-footer-menu-button").style.bottom = `${this.current_offset}px`;
 			
 			
 			
@@ -445,7 +443,7 @@ Page.Footer =
 			
 			
 			
-			document.querySelector("#show-footer-menu-button").style.bottom = `${this.current_offset}px`;
+			Page.element.querySelector("#show-footer-menu-button").style.bottom = `${this.current_offset}px`;
 		},
 		
 		
@@ -461,11 +459,11 @@ Page.Footer =
 			
 			try
 			{
-				document.querySelector("#show-footer-menu-button").style.opacity = 1;
+				Page.element.querySelector("#show-footer-menu-button").style.opacity = 1;
 				
-				document.querySelector("#show-footer-menu-button").style.transform = "scale(1)";
+				Page.element.querySelector("#show-footer-menu-button").style.transform = "scale(1)";
 				
-				document.querySelector("#show-footer-menu-button").style.bottom = "6.25px";
+				Page.element.querySelector("#show-footer-menu-button").style.bottom = "6.25px";
 				
 				this.current_offset = 6.25;
 						
@@ -481,24 +479,24 @@ Page.Footer =
 		
 		show_menu: function()
 		{
-			document.querySelector("#settings-button").style.left = "10px";
+			Page.element.querySelector("#settings-button").style.left = "10px";
 			
-			document.querySelector("#show-footer-menu-button").style.opacity = 0;
+			Page.element.querySelector("#show-footer-menu-button").style.opacity = 0;
 			
 			setTimeout(() =>
 			{
-				document.querySelector("#sitemap-button").style.left = "10px";
+				Page.element.querySelector("#sitemap-button").style.left = "10px";
 				
 				setTimeout(() =>
 				{
-					document.querySelector("#about-button").style.left = "10px";
+					Page.element.querySelector("#about-button").style.left = "10px";
 					
 					
 					if (DEBUG)
 					{
 						setTimeout(() =>
 						{
-							document.querySelector("#debug-button").style.left = "10px";
+							Page.element.querySelector("#debug-button").style.left = "10px";
 							
 							this.menu_is_open = true;
 						}, Site.opacity_animation_time / 6);
@@ -567,27 +565,27 @@ Page.Footer =
 			
 			
 			
-			document.querySelector("#settings-button").style.left = "-40px";
+			Page.element.querySelector("#settings-button").style.left = "-40px";
 			
 			if (!this.image_links_is_open)
 			{
-				document.querySelector("#show-footer-menu-button").style.opacity = 1;
+				Page.element.querySelector("#show-footer-menu-button").style.opacity = 1;
 			}
 			
 			setTimeout(() =>
 			{
-				document.querySelector("#sitemap-button").style.left = "-40px";
+				Page.element.querySelector("#sitemap-button").style.left = "-40px";
 				
 				setTimeout(() =>
 				{
-					document.querySelector("#about-button").style.left = "-40px";
+					Page.element.querySelector("#about-button").style.left = "-40px";
 					
 					
 					if (DEBUG)
 					{
 						setTimeout(() =>
 						{
-							document.querySelector("#debug-button").style.left = "-40px";
+							Page.element.querySelector("#debug-button").style.left = "-40px";
 							
 							this.menu_is_open = false;
 						}, Site.opacity_animation_time / 6);
@@ -601,13 +599,13 @@ Page.Footer =
 					setTimeout(() =>
 					{
 						//This is called when showing the image links, so we might need to reset the opacity.
-						document.querySelector("#settings-button").style.opacity = 1;
-						document.querySelector("#sitemap-button").style.opacity = 1;
-						document.querySelector("#about-button").style.opacity = 1;
+						Page.element.querySelector("#settings-button").style.opacity = 1;
+						Page.element.querySelector("#sitemap-button").style.opacity = 1;
+						Page.element.querySelector("#about-button").style.opacity = 1;
 						
 						if (DEBUG)
 						{
-							document.querySelector("#debug-button").style.opacity = 1;
+							Page.element.querySelector("#debug-button").style.opacity = 1;
 						}
 					}, Site.opacity_animation_time);
 				}, Site.opacity_animation_time / 6);
@@ -618,29 +616,29 @@ Page.Footer =
 		
 		show_image_links: function()
 		{
-			document.querySelector("#floating-footer-gallery-link").style.left = "10px";
+			Page.element.querySelector("#floating-footer-gallery-link").style.left = "10px";
 			
-			document.querySelector("#settings-button").style.opacity = 0;
+			Page.element.querySelector("#settings-button").style.opacity = 0;
 			
 			setTimeout(() =>
 			{
-				document.querySelector("#floating-footer-applets-link").style.left = "10px";
+				Page.element.querySelector("#floating-footer-applets-link").style.left = "10px";
 				
-				document.querySelector("#sitemap-button").style.opacity = 0;
+				Page.element.querySelector("#sitemap-button").style.opacity = 0;
 				
 				setTimeout(() =>
 				{
-					document.querySelector("#floating-footer-writing-link").style.left = "10px";
+					Page.element.querySelector("#floating-footer-writing-link").style.left = "10px";
 					
-					document.querySelector("#about-button").style.opacity = 0;
+					Page.element.querySelector("#about-button").style.opacity = 0;
 					
 					setTimeout(() =>
 					{
-						document.querySelector("#floating-footer-teaching-link").style.left = "10px";
+						Page.element.querySelector("#floating-footer-teaching-link").style.left = "10px";
 						
 						setTimeout(() =>
 						{
-							document.querySelector("#floating-footer-bio-link").style.left = "10px";
+							Page.element.querySelector("#floating-footer-bio-link").style.left = "10px";
 							
 							this.image_links_is_open = true;
 							
@@ -709,26 +707,26 @@ Page.Footer =
 			
 			
 			
-			document.querySelector("#floating-footer-gallery-link").style.left = "-40px";
+			Page.element.querySelector("#floating-footer-gallery-link").style.left = "-40px";
 			
 			setTimeout(() =>
 			{
-				document.querySelector("#floating-footer-applets-link").style.left = "-40px";
+				Page.element.querySelector("#floating-footer-applets-link").style.left = "-40px";
 				
 				//This one looks better with a slight delay.
-				document.querySelector("#show-footer-menu-button").style.opacity = 1;
+				Page.element.querySelector("#show-footer-menu-button").style.opacity = 1;
 				
 				setTimeout(() =>
 				{
-					document.querySelector("#floating-footer-writing-link").style.left = "-40px";
+					Page.element.querySelector("#floating-footer-writing-link").style.left = "-40px";
 					
 					setTimeout(() =>
 					{
-						document.querySelector("#floating-footer-teaching-link").style.left = "-40px";
+						Page.element.querySelector("#floating-footer-teaching-link").style.left = "-40px";
 						
 						setTimeout(() =>
 						{
-							document.querySelector("#floating-footer-bio-link").style.left = "-40px";
+							Page.element.querySelector("#floating-footer-bio-link").style.left = "-40px";
 							
 							this.image_links_is_open = false;
 						}, Site.opacity_animation_time / 6);
@@ -741,29 +739,29 @@ Page.Footer =
 		
 		show_settings: function()
 		{
-			document.querySelector("#theme-button").style.left = "10px";
+			Page.element.querySelector("#theme-button").style.left = "10px";
 			
-			document.querySelector("#settings-button").style.opacity = 0;
+			Page.element.querySelector("#settings-button").style.opacity = 0;
 			
 			setTimeout(() =>
 			{
-				document.querySelector("#contrast-button").style.left = "10px";
+				Page.element.querySelector("#contrast-button").style.left = "10px";
 			
-				document.querySelector("#sitemap-button").style.opacity = 0;
+				Page.element.querySelector("#sitemap-button").style.opacity = 0;
 				
 				setTimeout(() =>
 				{
-					document.querySelector("#text-size-button").style.left = "10px";
+					Page.element.querySelector("#text-size-button").style.left = "10px";
 				
-					document.querySelector("#about-button").style.opacity = 0;
+					Page.element.querySelector("#about-button").style.opacity = 0;
 					
 					setTimeout(() =>
 					{
-						document.querySelector("#font-button").style.left = "10px";
+						Page.element.querySelector("#font-button").style.left = "10px";
 						
 						setTimeout(() =>
 						{
-							document.querySelector("#content-animation-button").style.left = "10px";
+							Page.element.querySelector("#content-animation-button").style.left = "10px";
 							
 							this.settings_is_open = true;
 							
@@ -832,25 +830,25 @@ Page.Footer =
 			
 			
 			
-			document.querySelector("#theme-button").style.left = "-40px";
+			Page.element.querySelector("#theme-button").style.left = "-40px";
 			
-			document.querySelector("#show-footer-menu-button").style.opacity = 1;
+			Page.element.querySelector("#show-footer-menu-button").style.opacity = 1;
 			
 			setTimeout(() =>
 			{
-				document.querySelector("#contrast-button").style.left = "-40px";
+				Page.element.querySelector("#contrast-button").style.left = "-40px";
 				
 				setTimeout(() =>
 				{
-					document.querySelector("#text-size-button").style.left = "-40px";
+					Page.element.querySelector("#text-size-button").style.left = "-40px";
 					
 					setTimeout(() =>
 					{
-						document.querySelector("#font-button").style.left = "-40px";
+						Page.element.querySelector("#font-button").style.left = "-40px";
 						
 						setTimeout(() =>
 						{
-							document.querySelector("#content-animation-button").style.left = "-40px";
+							Page.element.querySelector("#content-animation-button").style.left = "-40px";
 							
 							this.settings_is_open = false;
 						}, Site.opacity_animation_time / 6);
@@ -863,7 +861,7 @@ Page.Footer =
 		
 		show_settings_text: function(text)
 		{
-			let elements = document.querySelectorAll(".settings-text-container");
+			let elements = Page.element.querySelectorAll(".settings-text-container");
 			
 			for (let i = 0; i < elements.length; i++)
 			{

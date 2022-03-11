@@ -128,7 +128,7 @@
 	
 	
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
 	wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "brightness_scale"]);
 
@@ -136,7 +136,7 @@
 	
 	
 	
-	let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
+	let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), options_hidden);
 	
 	wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "brightness_scale"]);
 	
@@ -180,7 +180,7 @@
 	
 	
 
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
@@ -484,46 +484,46 @@
 	
 	
 	
-	document.querySelector("#part-1-button").addEventListener("click", () =>
+	Page.element.querySelector("#part-1-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/1/getting-started.html");
 	});
 	
-	document.querySelector("#part-2-button").addEventListener("click", () =>
+	Page.element.querySelector("#part-2-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/2/draggables.html");
 	});
 	
-	document.querySelector("#part-3-button").addEventListener("click", () =>
+	Page.element.querySelector("#part-3-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/3/parallelizing.html");
 	});
 	
-	document.querySelector("#part-4-button").addEventListener("click", () =>
+	Page.element.querySelector("#part-4-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/4/hidden-canvases.html");
 	});
 	
-	document.querySelector("#part-5-button").addEventListener("click", () =>
+	Page.element.querySelector("#part-5-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/5/fullscreen.html");
 	});
 	
-	document.querySelector("#part-6-button").addEventListener("click", () =>
+	Page.element.querySelector("#part-6-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/6/interactivity.html");
 	});
 	
 	
 	
-	document.querySelector("#docs-button").addEventListener("click", () =>
+	Page.element.querySelector("#docs-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/docs/docs.html");
 	});
 	
 	
 	
-	document.querySelector("#download-button").addEventListener("click", () =>
+	Page.element.querySelector("#download-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("https://github.com/90259025/wilson/releases", true);
 	});

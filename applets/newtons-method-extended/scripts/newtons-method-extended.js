@@ -66,7 +66,7 @@
 	
 	
 	
-	let code_input_element = document.querySelector("#code-textarea");
+	let code_input_element = Page.element.querySelector("#code-textarea");
 	
 	code_input_element.value = "cmul(csin(z), csin(cmul(z, i)))";
 	
@@ -82,20 +82,20 @@
 	
 	
 	
-	let randomize_palette_button = document.querySelector("#randomize-palette-button");
+	let randomize_palette_button = Page.element.querySelector("#randomize-palette-button");
 	
 	randomize_palette_button.addEventListener("click", animate_palette_change);
 	
 	
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 	
 	generate_button_element.addEventListener("click", use_new_code);
 	
 	
 	
 
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
@@ -108,7 +108,7 @@
 	
 	
 	
-	let derivative_precision_input_element = document.querySelector("#derivative-precision-input");
+	let derivative_precision_input_element = Page.element.querySelector("#derivative-precision-input");
 	
 	derivative_precision_input_element.addEventListener("input", () =>
 	{
@@ -123,7 +123,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -132,7 +132,7 @@
 	
 	
 	
-	let canvas_location_element = document.querySelector("#canvas-location");
+	let canvas_location_element = Page.element.querySelector("#canvas-location");
 	
 	
 	
@@ -335,13 +335,13 @@
 		
 		
 		
-		wilson = new Wilson(document.querySelector("#output-canvas"), options);
+		wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
 		wilson.render.init_uniforms(["aspect_ratio", "derivative_precision", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
 		
 		
 		
-		wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
+		wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), options_hidden);
 		
 		wilson_hidden.render.init_uniforms(["aspect_ratio", "derivative_precision", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
 		

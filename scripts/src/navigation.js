@@ -138,8 +138,6 @@ Page.Navigation =
 			{
 				Page.loaded = true;
 			}
-			
-			console.log("Ran Page.load");	
 		})
 		
 		

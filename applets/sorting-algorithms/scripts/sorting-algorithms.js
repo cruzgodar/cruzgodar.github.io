@@ -135,7 +135,7 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	wilson.render.init_uniforms(["data_length"]);
 	
@@ -155,7 +155,7 @@
 	
 	
 	
-	let algorithm_selector_dropdown_element = document.querySelector("#algorithm-selector-dropdown");
+	let algorithm_selector_dropdown_element = Page.element.querySelector("#algorithm-selector-dropdown");
 	
 	algorithm_selector_dropdown_element.addEventListener("input", () =>
 	{
@@ -165,7 +165,7 @@
 		{
 			Page.set_element_styles(".info-text", "display", "none");
 			
-			let element = document.querySelector(`#${algorithm_selector_dropdown_element.value}-info`);
+			let element = Page.element.querySelector(`#${algorithm_selector_dropdown_element.value}-info`);
 			
 			element.style.display = "block";
 			
@@ -178,13 +178,13 @@
 	
 	
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", draw_sorting_algorithm);
 	
 	
 	
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("keydown", (e) =>
 	{
@@ -196,7 +196,7 @@
 	
 	
 	
-	let array_size_input_element = document.querySelector("#array-size-input");
+	let array_size_input_element = Page.element.querySelector("#array-size-input");
 	
 	array_size_input_element.addEventListener("keydown", (e) =>
 	{
@@ -208,7 +208,7 @@
 	
 	
 	
-	let play_sound_checkbox_element = document.querySelector("#play-sound-checkbox");
+	let play_sound_checkbox_element = Page.element.querySelector("#play-sound-checkbox");
 	
 	play_sound_checkbox_element.checked = true;
 	
@@ -218,13 +218,13 @@
 	
 	
 	
-	let num_reads_element = document.querySelector("#num-reads");
+	let num_reads_element = Page.element.querySelector("#num-reads");
 	
-	let num_writes_element = document.querySelector("#num-writes");
+	let num_writes_element = Page.element.querySelector("#num-writes");
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{

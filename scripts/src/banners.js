@@ -116,8 +116,8 @@ Page.Banner =
 				
 				.catch((error) =>
 				{
-					document.querySelector("#banner").remove();
-					document.querySelector("#banner-cover").remove();
+					Page.element.querySelector("#banner").remove();
+					Page.element.querySelector("#banner-cover").remove();
 					
 					
 					
@@ -152,7 +152,7 @@ Page.Banner =
 			{
 				let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 				
-				try {document.querySelector("#banner").style.opacity = opacity;}
+				try {Page.element.querySelector("#banner").style.opacity = opacity;}
 				catch(ex) {}
 				
 				if (opacity === 0)
@@ -169,7 +169,7 @@ Page.Banner =
 			else if (!this.done_loading)
 			{
 				//We need a try block here in case the user refreshes the page and it's way low down for some reason, even though scrollRestoration should be off.
-				try {document.querySelector("#banner").style.opacity = 0;}
+				try {Page.element.querySelector("#banner").style.opacity = 0;}
 				catch(ex) {}
 				
 				this.done_loading = true;
@@ -183,7 +183,7 @@ Page.Banner =
 				
 				if (this.ScrollButton.exists)
 				{
-					try {document.querySelector("#scroll-button").style.opacity = opacity;}
+					try {Page.element.querySelector("#scroll-button").style.opacity = opacity;}
 					catch(ex) {}
 				}
 				
@@ -191,8 +191,8 @@ Page.Banner =
 				
 				try
 				{
-					document.querySelector("#cruz-text").parentNode.style.opacity = opacity;
-					document.querySelector("#godar-text").parentNode.style.opacity = opacity;
+					Page.element.querySelector("#cruz-text").parentNode.style.opacity = opacity;
+					Page.element.querySelector("#godar-text").parentNode.style.opacity = opacity;
 				}
 				
 				catch(ex) {}
@@ -203,7 +203,7 @@ Page.Banner =
 				{
 					if (this.ScrollButton.exists)
 					{
-						document.querySelector("#scroll-button").remove();
+						Page.element.querySelector("#scroll-button").remove();
 						this.ScrollButton.exists = false;
 					}
 					
@@ -230,15 +230,15 @@ Page.Banner =
 			{
 				try
 				{
-					document.querySelector("#cruz-text").parentNode.style.opacity = 0;
-					document.querySelector("#godar-text").parentNode.style.opacity = 0;
+					Page.element.querySelector("#cruz-text").parentNode.style.opacity = 0;
+					Page.element.querySelector("#godar-text").parentNode.style.opacity = 0;
 				}
 				
 				catch(ex) {}
 				
 				if (this.ScrollButton.exists)
 				{
-					document.querySelector("#scroll-button").remove();
+					Page.element.querySelector("#scroll-button").remove();
 					this.ScrollButton.exists = false;
 				}
 				
@@ -272,7 +272,7 @@ Page.Banner =
 	//For every banner page linked to by the current page, this fetches that banner so that the waiting time between pages is minimized.
 	fetch_other_page_banners_in_background: function()
 	{
-		let links = document.querySelectorAll("a");
+		let links = Page.element.querySelectorAll("a");
 		
 		for (let i = 0; i < links.length; i++)
 		{

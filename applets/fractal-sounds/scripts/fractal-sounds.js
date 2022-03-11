@@ -15,7 +15,7 @@
 	let wilson_hidden = null;
 	let wilson_line_drawer = null;
 	
-	let line_drawer_canvas_container_element = document.querySelector("#line-drawer-canvas-container");
+	let line_drawer_canvas_container_element = Page.element.querySelector("#line-drawer-canvas-container");
 	
 	let julia_mode = 0;
 	
@@ -114,21 +114,21 @@
 		use_fullscreen_button: false
 	};
 	
-	wilson_line_drawer = new Wilson(document.querySelector("#line-drawer-canvas"), options_line_drawer);
+	wilson_line_drawer = new Wilson(Page.element.querySelector("#line-drawer-canvas"), options_line_drawer);
 	
-	document.querySelector(".wilson-fullscreen-components-container").style.setProperty("z-index", 200, "important");
+	Page.element.querySelector(".wilson-fullscreen-components-container").style.setProperty("z-index", 200, "important");
 	
 	wilson_line_drawer.ctx.lineWidth = 40;
 	
 	
 	
-	let fractal_selector_dropdown_element = document.querySelector("#fractal-selector-dropdown");
+	let fractal_selector_dropdown_element = Page.element.querySelector("#fractal-selector-dropdown");
 	
 	fractal_selector_dropdown_element.addEventListener("input", use_new_code);
 	
 	
 
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
@@ -143,7 +143,7 @@
 	
 	
 	
-	let exposure_input_element = document.querySelector("#exposure-input");
+	let exposure_input_element = Page.element.querySelector("#exposure-input");
 	
 	exposure_input_element.addEventListener("input", () =>
 	{
@@ -154,7 +154,7 @@
 	
 	
 	
-	let num_iterations_input_element = document.querySelector("#num-iterations-input");
+	let num_iterations_input_element = Page.element.querySelector("#num-iterations-input");
 	
 	num_iterations_input_element.addEventListener("input", () =>
 	{
@@ -165,7 +165,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -175,7 +175,7 @@
 	
 	
 	
-	let canvas_location_element = document.querySelector("#canvas-location");
+	let canvas_location_element = Page.element.querySelector("#canvas-location");
 	
 	
 	
@@ -397,13 +397,13 @@
 		
 		
 		
-		wilson = new Wilson(document.querySelector("#output-canvas"), options);
+		wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
 		wilson.render.init_uniforms(["julia_mode", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "exposure", "brightness_scale"]);
 		
 		
 		
-		wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
+		wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), options_hidden);
 		
 		wilson_hidden.render.init_uniforms(["julia_mode", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "exposure", "brightness_scale"]);
 		

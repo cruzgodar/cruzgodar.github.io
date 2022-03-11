@@ -318,7 +318,7 @@
 		touchend_callback: on_release_canvas
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "draw_sphere", "power", "c", "julia_proportion", "rotation_matrix", "max_marches", "step_factor", "max_iterations"]);
 	
@@ -428,13 +428,13 @@
 	
 	
 	
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", change_resolution);
 	
 	
 	
-	let iterations_input_element = document.querySelector("#iterations-input");
+	let iterations_input_element = Page.element.querySelector("#iterations-input");
 	
 	iterations_input_element.addEventListener("input", () =>
 	{
@@ -447,7 +447,7 @@
 	
 	
 	
-	let view_distance_input_element = document.querySelector("#view-distance-input");
+	let view_distance_input_element = Page.element.querySelector("#view-distance-input");
 	
 	view_distance_input_element.addEventListener("input", () =>
 	{
@@ -460,7 +460,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -487,15 +487,15 @@
 	
 	
 	
-	let rotation_angle_x_input_element = document.querySelector("#rotation-angle-x-input");
-	let rotation_angle_y_input_element = document.querySelector("#rotation-angle-y-input");
-	let rotation_angle_z_input_element = document.querySelector("#rotation-angle-z-input");
+	let rotation_angle_x_input_element = Page.element.querySelector("#rotation-angle-x-input");
+	let rotation_angle_y_input_element = Page.element.querySelector("#rotation-angle-y-input");
+	let rotation_angle_z_input_element = Page.element.querySelector("#rotation-angle-z-input");
 	
-	let c_x_input_element = document.querySelector("#c-x-input");
-	let c_y_input_element = document.querySelector("#c-y-input");
-	let c_z_input_element = document.querySelector("#c-z-input");
+	let c_x_input_element = Page.element.querySelector("#c-x-input");
+	let c_y_input_element = Page.element.querySelector("#c-y-input");
+	let c_z_input_element = Page.element.querySelector("#c-z-input");
 	
-	let power_input_element = document.querySelector("#power-input");
+	let power_input_element = Page.element.querySelector("#power-input");
 	
 	let elements = [rotation_angle_x_input_element, rotation_angle_y_input_element, rotation_angle_z_input_element, c_x_input_element, c_y_input_element, c_z_input_element, power_input_element];
 	
@@ -506,7 +506,7 @@
 	
 	
 	
-	let randomize_rotation_button_element = document.querySelector("#randomize-rotation-button");
+	let randomize_rotation_button_element = Page.element.querySelector("#randomize-rotation-button");
 	
 	randomize_rotation_button_element.style.opacity = 1;
 	
@@ -514,7 +514,7 @@
 	
 	
 	
-	let randomize_c_button_element = document.querySelector("#randomize-c-button");
+	let randomize_c_button_element = Page.element.querySelector("#randomize-c-button");
 	
 	randomize_c_button_element.style.opacity = 1;
 	
@@ -522,7 +522,7 @@
 	
 	
 	
-	let switch_bulb_button_element = document.querySelector("#switch-bulb-button");
+	let switch_bulb_button_element = Page.element.querySelector("#switch-bulb-button");
 	
 	switch_bulb_button_element.style.opacity = 1;
 	
@@ -530,7 +530,7 @@
 	
 	
 	
-	let switch_movement_button_element = document.querySelector("#switch-movement-button");
+	let switch_movement_button_element = Page.element.querySelector("#switch-movement-button");
 	
 	switch_movement_button_element.style.opacity = 0;
 	

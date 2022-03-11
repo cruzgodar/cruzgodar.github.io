@@ -4,7 +4,7 @@
 	
 	
 	
-	let elements = document.querySelectorAll("pre code");
+	let elements = Page.element.querySelectorAll("pre code");
 	
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -40,7 +40,7 @@
 		draggables_touchend_callback: on_release
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	let draggable = wilson.draggables.add(0, 1);
 	
@@ -59,7 +59,7 @@
 	
 	
 	
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
@@ -69,7 +69,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -207,12 +207,12 @@
 	
 	
 	
-	document.querySelector("#previous-part-button").addEventListener("click", () =>
+	Page.element.querySelector("#previous-part-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/1/getting-started.html");
 	});
 	
-	document.querySelector("#next-part-button").addEventListener("click", () =>
+	Page.element.querySelector("#next-part-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/3/parallelizing.html");
 	});

@@ -80,7 +80,7 @@ Page.background_color_changed = false;
 //Sets a whole bunch of elements' styles at once.
 Page.set_element_styles = function(query_string, property, value, important = false)
 {
-	let elements = document.querySelectorAll(query_string);
+	let elements = Page.element.querySelectorAll(query_string);
 	
 	let priority_string = important ? "important" : "";
 	
@@ -177,7 +177,7 @@ Site.load = async function(url)
 		document.documentElement.style.userSelect = "none";
 		document.documentElement.style.WebkitTouchCallout = "none";
 		
-		let elements = document.querySelectorAll("body *");
+		let elements = Page.element.querySelectorAll("body *");
 		for (let i = 0; i < elements.length; i++)
 		{
 			elements[i].setAttribute("draggable", "false");

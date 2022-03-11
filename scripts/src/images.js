@@ -64,7 +64,7 @@ Page.Images =
 	
 	add_extensions: function()
 	{
-		let elements = document.querySelectorAll(".check-webp");
+		let elements = Page.element.querySelectorAll(".check-webp");
 		
 		for (let i = 0; i < elements.length; i++)
 		{

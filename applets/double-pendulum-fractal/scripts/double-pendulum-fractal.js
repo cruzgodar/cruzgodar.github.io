@@ -132,7 +132,7 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	wilson.render.load_new_shader(frag_shader_source_update);
 	wilson.render.load_new_shader(frag_shader_source_draw);
@@ -142,11 +142,11 @@
 	
 	
 	
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 	
 	generate_button_element.addEventListener("click", () =>
 	{
@@ -157,7 +157,7 @@
 	
 	
 	
-	let switch_pendulum_drawer_canvas_button_element = document.querySelector("#switch-pendulum-drawer-canvas-button");
+	let switch_pendulum_drawer_canvas_button_element = Page.element.querySelector("#switch-pendulum-drawer-canvas-button");
 	
 	switch_pendulum_drawer_canvas_button_element.style.transition = "filter .125s ease-in-out, opacity .25s ease-in-out";
 	
@@ -200,7 +200,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -333,7 +333,7 @@
 		touchend_callback: start_pendulum_animation
 	};
 	
-	let wilson_pendulum_drawer = new Wilson(document.querySelector("#pendulum-drawer-canvas"), options_pendulum_drawer);
+	let wilson_pendulum_drawer = new Wilson(Page.element.querySelector("#pendulum-drawer-canvas"), options_pendulum_drawer);
 	
 	let theta_1 = 0;
 	let theta_2 = 0;

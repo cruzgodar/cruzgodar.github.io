@@ -21,7 +21,7 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	
 	
@@ -29,13 +29,13 @@
 	
 	
 
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", request_annealing_graph);
 	
 	
 	
-	let num_nodes_input_element = document.querySelector("#num-nodes-input");
+	let num_nodes_input_element = Page.element.querySelector("#num-nodes-input");
 	
 	num_nodes_input_element.addEventListener("keydown", function(e)
 	{
@@ -47,7 +47,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -55,7 +55,7 @@
 	});
 	
 	
-	let maximum_speed_checkbox_element = document.querySelector("#toggle-maximum-speed-checkbox");
+	let maximum_speed_checkbox_element = Page.element.querySelector("#toggle-maximum-speed-checkbox");
 	
 	
 	function request_annealing_graph()

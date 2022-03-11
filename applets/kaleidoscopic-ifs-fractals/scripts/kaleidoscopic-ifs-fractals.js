@@ -317,7 +317,7 @@
 		touchend_callback: on_release_canvas
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "scale_center", "n1", "n2", "n3", "n4", "num_ns", "rotation_matrix_1", "rotation_matrix_2"]);
 	
@@ -435,13 +435,13 @@
 	
 	
 	
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", change_resolution);
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -450,7 +450,7 @@
 	
 	
 	
-	let polyhedron_selector_dropdown_element = document.querySelector("#polyhedron-selector-dropdown");
+	let polyhedron_selector_dropdown_element = Page.element.querySelector("#polyhedron-selector-dropdown");
 	
 	polyhedron_selector_dropdown_element.addEventListener("input", () =>
 	{
@@ -472,13 +472,13 @@
 	
 	
 	
-	let rotation_angle_x_1_input_element = document.querySelector("#rotation-angle-x-1-input");
-	let rotation_angle_y_1_input_element = document.querySelector("#rotation-angle-y-1-input");
-	let rotation_angle_z_1_input_element = document.querySelector("#rotation-angle-z-1-input");
+	let rotation_angle_x_1_input_element = Page.element.querySelector("#rotation-angle-x-1-input");
+	let rotation_angle_y_1_input_element = Page.element.querySelector("#rotation-angle-y-1-input");
+	let rotation_angle_z_1_input_element = Page.element.querySelector("#rotation-angle-z-1-input");
 	
-	let rotation_angle_x_2_input_element = document.querySelector("#rotation-angle-x-2-input");
-	let rotation_angle_y_2_input_element = document.querySelector("#rotation-angle-y-2-input");
-	let rotation_angle_z_2_input_element = document.querySelector("#rotation-angle-z-2-input");
+	let rotation_angle_x_2_input_element = Page.element.querySelector("#rotation-angle-x-2-input");
+	let rotation_angle_y_2_input_element = Page.element.querySelector("#rotation-angle-y-2-input");
+	let rotation_angle_z_2_input_element = Page.element.querySelector("#rotation-angle-z-2-input");
 	
 	let elements = [rotation_angle_x_1_input_element, rotation_angle_y_1_input_element, rotation_angle_z_1_input_element, rotation_angle_x_2_input_element, rotation_angle_y_2_input_element, rotation_angle_z_2_input_element];
 	
@@ -489,7 +489,7 @@
 	
 	
 	
-	let randomize_parameters_button_element = document.querySelector("#randomize-parameters-button");
+	let randomize_parameters_button_element = Page.element.querySelector("#randomize-parameters-button");
 	
 	randomize_parameters_button_element.addEventListener("click", randomize_parameters);
 	

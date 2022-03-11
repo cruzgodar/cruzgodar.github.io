@@ -21,7 +21,7 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	
 	
@@ -33,19 +33,19 @@
 	
 	
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", request_lorenz_attractor);
 	
 	
 	
-	let grid_size_input_element = document.querySelector("#grid-size-input");
+	let grid_size_input_element = Page.element.querySelector("#grid-size-input");
 	
-	let sigma_input_element = document.querySelector("#sigma-input");
+	let sigma_input_element = Page.element.querySelector("#sigma-input");
 	
-	let rho_input_element = document.querySelector("#rho-input");
+	let rho_input_element = Page.element.querySelector("#rho-input");
 	
-	let beta_input_element = document.querySelector("#beta-input");
+	let beta_input_element = Page.element.querySelector("#beta-input");
 	
 	
 	
@@ -83,7 +83,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -92,7 +92,7 @@
 	
 	
 	
-	let maximum_speed_checkbox_element = document.querySelector("#toggle-maximum-speed-checkbox");
+	let maximum_speed_checkbox_element = Page.element.querySelector("#toggle-maximum-speed-checkbox");
 	
 	
 	

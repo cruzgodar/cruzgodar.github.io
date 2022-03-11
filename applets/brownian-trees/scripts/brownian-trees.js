@@ -21,7 +21,7 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	
 	
@@ -31,13 +31,13 @@
 	
 	
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", request_brownian_tree);
 	
 	
 	
-	let grid_size_input_element = document.querySelector("#grid-size-input");
+	let grid_size_input_element = Page.element.querySelector("#grid-size-input");
 	
 	grid_size_input_element.addEventListener("keydown", (e) =>
 	{
@@ -49,7 +49,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -110,7 +110,7 @@
 	
 	function alert_about_hardware_acceleration()
 	{
-		let elements = document.querySelector("main").children;
+		let elements = Page.element.querySelector("main").children;
 		
 		elements = elements[elements.length - 1].children;
 		

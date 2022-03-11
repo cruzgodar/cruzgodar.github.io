@@ -12,7 +12,7 @@
 		canvas_height: 1000
 	};
 	
-	let wilson = new Wilson(document.querySelector("#calcudoku-grid"), options);
+	let wilson = new Wilson(Page.element.querySelector("#calcudoku-grid"), options);
 	
 	
 	
@@ -34,13 +34,13 @@
 	
 	
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", request_calcudoku_grid);
 	
 	
 	
-	let grid_size_input_element = document.querySelector("#grid-size-input");
+	let grid_size_input_element = Page.element.querySelector("#grid-size-input");
 	
 	grid_size_input_element.addEventListener("keydown", function(e)
 	{
@@ -52,7 +52,7 @@
 	
 	
 	
-	let max_cage_size_input_element = document.querySelector("#max-cage-size-input");
+	let max_cage_size_input_element = Page.element.querySelector("#max-cage-size-input");
 	
 	max_cage_size_input_element.addEventListener("keydown", function(e)
 	{
@@ -64,7 +64,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -73,11 +73,11 @@
 	
 	
 	
-	let total_time_clock_element = document.querySelector("#total-time-clock");
-	let split_time_clock_element = document.querySelector("#split-time-clock");
+	let total_time_clock_element = Page.element.querySelector("#total-time-clock");
+	let split_time_clock_element = Page.element.querySelector("#split-time-clock");
 	
-	let total_time_label_element = document.querySelector("#total-time-label");
-	let split_time_label_element = document.querySelector("#split-time-label");
+	let total_time_label_element = Page.element.querySelector("#total-time-label");
+	let split_time_label_element = Page.element.querySelector("#split-time-label");
 	
 	
 	
@@ -109,7 +109,7 @@
 		
 		
 		
-		if (document.querySelector("#total-time-label").style.opacity == 0)
+		if (Page.element.querySelector("#total-time-label").style.opacity == 0)
 		{
 			show_timers();
 		}

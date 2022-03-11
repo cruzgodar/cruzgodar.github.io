@@ -2,7 +2,7 @@
 {
     try
     {
-        let element = document.querySelector("#home-button");
+        let element = Page.element.querySelector("#home-button");
         
         element.addEventListener("click", () =>
         {
@@ -16,7 +16,7 @@
     
     try
     {
-        let element = document.querySelector("#previous-button");
+        let element = Page.element.querySelector("#previous-button");
         
         element.addEventListener("click", () =>
         {

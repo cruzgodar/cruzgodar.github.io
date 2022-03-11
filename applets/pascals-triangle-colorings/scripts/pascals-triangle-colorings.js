@@ -47,17 +47,17 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", draw_pascals_triangle);
 	
 	
 	
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("keydown", (e) =>
 	{
@@ -69,7 +69,7 @@
 	
 	
 	
-	let triangle_size_input_element = document.querySelector("#triangle-size-input");
+	let triangle_size_input_element = Page.element.querySelector("#triangle-size-input");
 	
 	triangle_size_input_element.addEventListener("keydown", (e) =>
 	{
@@ -81,7 +81,7 @@
 	
 	
 	
-	let num_colors_input_element = document.querySelector("#num-colors-input");
+	let num_colors_input_element = Page.element.querySelector("#num-colors-input");
 	
 	num_colors_input_element.addEventListener("keydown", (e) =>
 	{
@@ -93,7 +93,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{

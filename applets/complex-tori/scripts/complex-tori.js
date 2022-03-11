@@ -85,7 +85,7 @@
 	
 	
 	
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
@@ -102,9 +102,9 @@
 	
 	
 	
-	let g2_slider_element = document.querySelector("#g2-slider");
+	let g2_slider_element = Page.element.querySelector("#g2-slider");
 	
-	let g2_slider_value_element = document.querySelector("#g2-slider-value");
+	let g2_slider_value_element = Page.element.querySelector("#g2-slider-value");
 	
 	g2_slider_element.addEventListener("input", () =>
 	{
@@ -125,9 +125,9 @@
 	
 	
 	
-	let g3_slider_element = document.querySelector("#g3-slider");
+	let g3_slider_element = Page.element.querySelector("#g3-slider");
 	
-	let g3_slider_value_element = document.querySelector("#g3-slider-value");
+	let g3_slider_value_element = Page.element.querySelector("#g3-slider-value");
 	
 	g3_slider_element.addEventListener("input", () =>
 	{
@@ -148,7 +148,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -784,7 +784,7 @@
 		
 		
 		
-		wilson_wp = new Wilson(document.querySelector("#wp-canvas"), options_wp);
+		wilson_wp = new Wilson(Page.element.querySelector("#wp-canvas"), options_wp);
 
 		wilson_wp.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point", "g2_arg", "g3_arg"]);
 		
@@ -792,7 +792,7 @@
 		
 		
 		
-		wilson_wpprime = new Wilson(document.querySelector("#wpprime-canvas"), options_wpprime);
+		wilson_wpprime = new Wilson(Page.element.querySelector("#wpprime-canvas"), options_wpprime);
 
 		wilson_wpprime.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point", "g2_arg", "g3_arg"]);
 		
@@ -800,7 +800,7 @@
 		
 		
 		
-		wilson_ec_plot = new Wilson(document.querySelector("#ec-plot-canvas"), options_ec_plot);
+		wilson_ec_plot = new Wilson(Page.element.querySelector("#ec-plot-canvas"), options_ec_plot);
 		
 		wilson_ec_plot.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "step", "g2_arg", "g3_arg"]);
 		
@@ -814,13 +814,13 @@
 		
 		
 		
-		wilson_kleinj = new Wilson(document.querySelector("#kleinj-canvas"), options_kleinj);
+		wilson_kleinj = new Wilson(Page.element.querySelector("#kleinj-canvas"), options_kleinj);
 		
 		wilson_kleinj.render.init_uniforms(["g2_arg", "g3_arg"]);
 		
 		
 		
-		wilson_g2 = new Wilson(document.querySelector("#g2-canvas"), options_g2);
+		wilson_g2 = new Wilson(Page.element.querySelector("#g2-canvas"), options_g2);
 		
 		wilson_g2.render.init_uniforms(["g2_arg", "g3_arg"]);
 		

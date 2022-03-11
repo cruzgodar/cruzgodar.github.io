@@ -153,16 +153,12 @@ Page.load = function()
 	{
 		Page.loaded = true;
 	}
-	
-	console.log("Ran Page.load");
 };
 
 
 
 Page.show = async function()
 {
-	console.log("showing");
-	
 	this.Load.AOS.load();
 	
 	await this.Load.fade_in();
@@ -187,7 +183,7 @@ Page.Load =
 	//Right, so this is a pain. One of those things jQuery makes really easy and that you might never notice otherwise is that when using $(element).html(data), any non-external script tags in data are automatically excuted. This is great, but it doesn't happen when using element.innerHTML. Weirdly enough, though, it works with element.appendChild. Therefore, we just need to get all our script tags, and for each one, make a new tag with identical contents, append it to the body, and delete the original script.
 	parse_script_tags: function()
 	{
-		var scripts = document.querySelectorAll("script");
+		let scripts = document.querySelectorAll("script");
 		
 		for (let i = 0; i < scripts.length; i++)
 		{
@@ -624,7 +620,7 @@ Page.Load =
 			
 			for (let i = 0; i < this.element_selectors_with_scale.length; i++)
 			{
-				let elements = document.querySelectorAll(this.element_selectors_with_scale[i][0]);
+				let elements = Page.element.querySelectorAll(this.element_selectors_with_scale[i][0]);
 				
 				for (let j = 0; j < elements.length; j++)
 				{

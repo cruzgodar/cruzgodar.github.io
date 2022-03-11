@@ -20,10 +20,10 @@
 	
 	
 	//Make the eclipse image have a 1:1 aspect ratio.
-	document.querySelector("#eclipse").style.height = document.querySelector("#eclipse").offsetWidth + "px";
-	document.querySelector("#eclipse img").style.height = document.querySelector("#eclipse").offsetWidth + "px";
+	Page.element.querySelector("#eclipse").style.height = Page.element.querySelector("#eclipse").offsetWidth + "px";
+	Page.element.querySelector("#eclipse img").style.height = Page.element.querySelector("#eclipse").offsetWidth + "px";
 	
-	document.querySelector("#prologue-link").addEventListener("click", show_prereaders);
+	Page.element.querySelector("#prologue-link").addEventListener("click", show_prereaders);
 	
 	window.addEventListener("resize", caligo_resize);
 	Page.temporary_handlers["resize"].push(caligo_resize);
@@ -340,12 +340,12 @@
 		{
 			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / initial_window_height, 0) - .5 * Math.PI);
 			
-			try {document.querySelector("#scroll-button").style.opacity = opacity;}
+			try {Page.element.querySelector("#scroll-button").style.opacity = opacity;}
 			catch(ex) {}
 			
 			if (opacity === 0)
 			{
-				try {document.querySelector("#scroll-button").remove();}
+				try {Page.element.querySelector("#scroll-button").remove();}
 				catch(ex) {}
 				
 				Page.Banner.ScrollButton.done_loading = true;
@@ -359,7 +359,7 @@
 		
 		else if (Page.Banner.ScrollButton.done_loading === false)
 		{
-			try {document.querySelector("#scroll-button").remove();}
+			try {Page.element.querySelector("#scroll-button").remove();}
 			catch(ex) {}
 			
 			Page.Banner.ScrollButton.done_loading = true;
@@ -374,7 +374,7 @@
 		{
 			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3.5 * (Page.scroll - (4/5 * initial_window_height)) / initial_window_height, 0) - .5 * Math.PI);
 			
-			document.querySelector("#eclipse").style.opacity = 1 - opacity;
+			Page.element.querySelector("#eclipse").style.opacity = 1 - opacity;
 			
 			if (opacity === 1)
 			{
@@ -389,14 +389,14 @@
 		
 		else if (scroll >= 6/5 * initial_window_height && eclipse_done === false)
 		{
-			document.querySelector("#eclipse").style.opacity = 1;
+			Page.element.querySelector("#eclipse").style.opacity = 1;
 			
 			eclipse_done = true;
 		}
 		
 		else if (scroll <= 4/5 * initial_window_height && eclipse_done === false)
 		{
-			document.querySelector("#eclipse").style.opacity = 0;
+			Page.element.querySelector("#eclipse").style.opacity = 0;
 			
 			eclipse_done = true;
 		}
@@ -406,14 +406,14 @@
 	
 	function caligo_resize()
 	{
-		document.querySelector("#eclipse").style.height = document.querySelector("#eclipse").offsetWidth + "px";
-		document.querySelector("#eclipse img").style.height = document.querySelector("#eclipse").offsetWidth + "px";
+		Page.element.querySelector("#eclipse").style.height = Page.element.querySelector("#eclipse").offsetWidth + "px";
+		Page.element.querySelector("#eclipse img").style.height = Page.element.querySelector("#eclipse").offsetWidth + "px";
 		
 		
 		
 		let max_width = 0;
 		
-		let elements = document.querySelectorAll(".chapter-link a");
+		let elements = Page.element.querySelectorAll(".chapter-link a");
 		
 		for (let i = 0; i < elements.length; i++)
 		{
@@ -425,7 +425,7 @@
 			}
 		}
 		
-		elements = document.querySelectorAll(".chapter-link");
+		elements = Page.element.querySelectorAll(".chapter-link");
 		
 		for (let i = 0; i < elements.length; i++)
 		{
@@ -462,7 +462,7 @@
 			
 			
 			
-			document.querySelector("#email img").style.filter = "brightness(150%)";
+			Page.element.querySelector("#email img").style.filter = "brightness(150%)";
 			
 			
 			

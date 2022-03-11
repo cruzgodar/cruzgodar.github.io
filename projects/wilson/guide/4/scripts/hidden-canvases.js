@@ -4,7 +4,7 @@
 	
 	
 	
-	let elements = document.querySelectorAll("pre code");
+	let elements = Page.element.querySelectorAll("pre code");
 	
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -95,7 +95,7 @@
 	
 	
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
 	wilson.render.init_uniforms(["a", "b", "brightness_scale"]);
 
@@ -103,7 +103,7 @@
 	
 	
 	
-	let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas"), options_hidden);
+	let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), options_hidden);
 	
 	wilson_hidden.render.init_uniforms(["a", "b", "brightness_scale"]);
 	
@@ -124,7 +124,7 @@
 	
 	
 
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
@@ -135,7 +135,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -216,12 +216,12 @@
 	
 	
 	
-	document.querySelector("#previous-part-button").addEventListener("click", () =>
+	Page.element.querySelector("#previous-part-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/3/parallelizing.html");
 	});
 	
-	document.querySelector("#next-part-button").addEventListener("click", () =>
+	Page.element.querySelector("#next-part-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/5/fullscreen.html");
 	});

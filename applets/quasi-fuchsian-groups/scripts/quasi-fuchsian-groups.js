@@ -48,7 +48,7 @@
 		switch_fullscreen_callback: change_aspect_ratio
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	
 	
@@ -117,7 +117,7 @@
 	
 	
 	
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
@@ -130,7 +130,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", request_high_res_frame);
 	
@@ -480,9 +480,9 @@
 	
 	function request_high_res_frame()
 	{
-		image_size = parseInt(document.querySelector("#high-res-resolution-input").value || 1000);
-		max_depth = parseInt(document.querySelector("#max-depth-input").value || 100);
-		max_pixel_brightness = parseInt(document.querySelector("#max-pixel-brightness-input").value || 50);
+		image_size = parseInt(Page.element.querySelector("#high-res-resolution-input").value || 1000);
+		max_depth = parseInt(Page.element.querySelector("#max-depth-input").value || 100);
+		max_pixel_brightness = parseInt(Page.element.querySelector("#max-pixel-brightness-input").value || 50);
 		
 		
 		

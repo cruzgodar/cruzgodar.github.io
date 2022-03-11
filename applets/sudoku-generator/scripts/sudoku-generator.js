@@ -12,7 +12,7 @@
 		canvas_height: 1000
 	};
 	
-	let wilson = new Wilson(document.querySelector("#sudoku-grid"), options);
+	let wilson = new Wilson(Page.element.querySelector("#sudoku-grid"), options);
 	
 	
 	
@@ -24,13 +24,13 @@
 	
 	
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", request_sudoku_grid);
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{

@@ -73,7 +73,7 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	wilson.render.init_uniforms(["julia_sets_per_side", "julia_set_size", "image_size", "num_iterations"]);
 	
@@ -84,14 +84,14 @@
 	
 	
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", draw_frame);
 	
 	
 	
-	let num_julias_input_element = document.querySelector("#num-julias-input");
-	let julia_size_input_element = document.querySelector("#julia-size-input");
+	let num_julias_input_element = Page.element.querySelector("#num-julias-input");
+	let julia_size_input_element = Page.element.querySelector("#julia-size-input");
 	
 	num_julias_input_element.addEventListener("keydown", function(e)
 	{
@@ -111,7 +111,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{

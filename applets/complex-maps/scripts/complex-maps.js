@@ -61,7 +61,7 @@
 	
 	
 	
-	let code_input_element = document.querySelector("#code-textarea");
+	let code_input_element = Page.element.querySelector("#code-textarea");
 	
 	code_input_element.value = "cexp(cinv(z))";
 	
@@ -81,7 +81,7 @@
 	
 	
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 	
 	generate_button_element.addEventListener("click", () =>
 	{
@@ -94,7 +94,7 @@
 	
 	
 	
-	let selector_mode_button_element = document.querySelector("#selector-mode-button");
+	let selector_mode_button_element = Page.element.querySelector("#selector-mode-button");
 	
 	selector_mode_button_element.addEventListener("click", () =>
 	{
@@ -103,7 +103,7 @@
 	
 	
 	
-	let benchmark_button_element = document.querySelector("#benchmark-button");
+	let benchmark_button_element = Page.element.querySelector("#benchmark-button");
 	
 	benchmark_button_element.addEventListener("click", run_benchmark);
 	
@@ -116,7 +116,7 @@
 	
 	
 	
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
@@ -129,7 +129,7 @@
 	
 	
 	
-	let black_point_input_element = document.querySelector("#black-point-input");
+	let black_point_input_element = Page.element.querySelector("#black-point-input");
 	
 	black_point_input_element.addEventListener("input", () =>
 	{
@@ -140,7 +140,7 @@
 	
 	
 	
-	let white_point_input_element = document.querySelector("#white-point-input");
+	let white_point_input_element = Page.element.querySelector("#white-point-input");
 	
 	white_point_input_element.addEventListener("input", () =>
 	{
@@ -151,7 +151,7 @@
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -160,8 +160,8 @@
 	
 	
 	
-	let canvas_location_element = document.querySelector("#canvas-location");
-	let hidden_canvas_location_element = document.querySelector("#hidden-canvas-location");
+	let canvas_location_element = Page.element.querySelector("#canvas-location");
+	let hidden_canvas_location_element = Page.element.querySelector("#hidden-canvas-location");
 	
 	
 	
@@ -341,7 +341,7 @@
 		
 		
 		
-		wilson = new Wilson(document.querySelector("#output-canvas"), options);
+		wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
 		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point", "draggable_arg"]);
 		

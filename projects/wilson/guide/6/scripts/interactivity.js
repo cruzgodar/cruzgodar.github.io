@@ -4,7 +4,7 @@
 	
 	
 	
-	let elements = document.querySelectorAll("pre code");
+	let elements = Page.element.querySelectorAll("pre code");
 	
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -130,7 +130,7 @@
 		
 		
 		
-		let wilson = new Wilson(document.querySelector("#output-canvas-1"), options);
+		let wilson = new Wilson(Page.element.querySelector("#output-canvas-1"), options);
 
 		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "a", "b", "brightness_scale"]);
 
@@ -138,7 +138,7 @@
 		
 		
 		
-		let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas-1"), options_hidden);
+		let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas-1"), options_hidden);
 		
 		wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "a", "b", "brightness_scale"]);
 		
@@ -161,7 +161,7 @@
 		
 		
 
-		let resolution_input_element = document.querySelector("#resolution-1-input");
+		let resolution_input_element = Page.element.querySelector("#resolution-1-input");
 		
 		resolution_input_element.addEventListener("input", () =>
 		{
@@ -172,7 +172,7 @@
 		
 		
 		
-		let download_button_element = document.querySelector("#download-1-button");
+		let download_button_element = Page.element.querySelector("#download-1-button");
 		
 		download_button_element.addEventListener("click", () =>
 		{
@@ -433,7 +433,7 @@
 		
 		
 		
-		let wilson = new Wilson(document.querySelector("#output-canvas-2"), options);
+		let wilson = new Wilson(Page.element.querySelector("#output-canvas-2"), options);
 
 		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "brightness_scale"]);
 
@@ -441,7 +441,7 @@
 		
 		
 		
-		let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas-2"), options_hidden);
+		let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas-2"), options_hidden);
 		
 		wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "brightness_scale"]);
 		
@@ -469,7 +469,7 @@
 		
 		
 
-		let resolution_input_element = document.querySelector("#resolution-2-input");
+		let resolution_input_element = Page.element.querySelector("#resolution-2-input");
 		
 		resolution_input_element.addEventListener("input", () =>
 		{
@@ -480,7 +480,7 @@
 		
 		
 		
-		let download_button_element = document.querySelector("#download-2-button");
+		let download_button_element = Page.element.querySelector("#download-2-button");
 		
 		download_button_element.addEventListener("click", () =>
 		{
@@ -819,7 +819,7 @@
 		
 		
 		
-		let wilson = new Wilson(document.querySelector("#output-canvas-3"), options);
+		let wilson = new Wilson(Page.element.querySelector("#output-canvas-3"), options);
 
 		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "brightness_scale"]);
 
@@ -827,7 +827,7 @@
 		
 		
 		
-		let wilson_hidden = new Wilson(document.querySelector("#hidden-canvas-3"), options_hidden);
+		let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas-3"), options_hidden);
 		
 		wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "brightness_scale"]);
 		
@@ -871,7 +871,7 @@
 		
 		
 
-		let resolution_input_element = document.querySelector("#resolution-3-input");
+		let resolution_input_element = Page.element.querySelector("#resolution-3-input");
 		
 		resolution_input_element.addEventListener("input", () =>
 		{
@@ -882,7 +882,7 @@
 		
 		
 		
-		let download_button_element = document.querySelector("#download-3-button");
+		let download_button_element = Page.element.querySelector("#download-3-button");
 		
 		download_button_element.addEventListener("click", () =>
 		{
@@ -1185,12 +1185,12 @@
 	
 	
 	
-	document.querySelector("#previous-part-button").addEventListener("click", () =>
+	Page.element.querySelector("#previous-part-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/5/fullscreen.html");
 	});
 	
-	document.querySelector("#homepage-button").addEventListener("click", () =>
+	Page.element.querySelector("#homepage-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/wilson.html");
 	});

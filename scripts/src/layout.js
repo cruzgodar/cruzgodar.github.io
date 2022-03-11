@@ -116,7 +116,7 @@ Page.Layout =
 		
 		
 		
-		let elements = document.querySelectorAll("iframe");
+		let elements = Page.element.querySelectorAll("iframe");
 		
 		for (let i = 0; i < elements.length; i++)
 		{
@@ -194,7 +194,7 @@ Page.Layout =
 			
 			
 			
-			let parents = document.querySelectorAll(".multicol-block");
+			let parents = Page.element.querySelectorAll(".multicol-block");
 			
 			if (parents.length === 0)
 			{
@@ -262,7 +262,7 @@ Page.Layout =
 			
 			
 			
-			let containers = document.querySelectorAll(".image-links-double-column-container");
+			let containers = Page.element.querySelectorAll(".image-links-double-column-container");
 			
 			if (containers.length === 0)
 			{
@@ -306,7 +306,7 @@ Page.Layout =
 			
 			
 			
-			let elements = document.querySelectorAll(".old-new-aos-section");
+			let elements = Page.element.querySelectorAll(".old-new-aos-section");
 			
 			for (let i = 0; i < elements.length; i++)
 			{
@@ -329,8 +329,8 @@ Page.Layout =
 			
 			try
 			{
-				left_column = document.querySelector("#canvas-landscape-left");
-				right_column = document.querySelector("#canvas-landscape-right");
+				left_column = Page.element.querySelector("#canvas-landscape-left");
+				right_column = Page.element.querySelector("#canvas-landscape-right");
 			}
 			
 			catch(ex) {}
@@ -397,7 +397,7 @@ Page.Layout =
 					left_column.children[i].classList.add("move-to-right");
 				}
 				
-				let elements_to_move = document.querySelectorAll(".move-to-right");
+				let elements_to_move = Page.element.querySelectorAll(".move-to-right");
 				
 				for (let i = elements_to_move.length - 1; i >= 0; i--)
 				{
@@ -412,7 +412,7 @@ Page.Layout =
 					right_column.children[i].classList.add("move-to-left");
 				}
 				
-				let elements_to_move = document.querySelectorAll(".move-to-left");
+				let elements_to_move = Page.element.querySelectorAll(".move-to-left");
 				
 				for (let i = 0; i < elements_to_move.length; i++)
 				{
@@ -432,8 +432,8 @@ Page.Layout =
 			
 			try
 			{
-				left_column = document.querySelector("#canvas-landscape-left");
-				right_column = document.querySelector("#canvas-landscape-right");
+				left_column = Page.element.querySelector("#canvas-landscape-left");
+				right_column = Page.element.querySelector("#canvas-landscape-right");
 			}
 			
 			catch(ex) {}
@@ -445,7 +445,7 @@ Page.Layout =
 			
 			
 			
-			let elements_to_move = document.querySelectorAll(".move-to-left");
+			let elements_to_move = Page.element.querySelectorAll(".move-to-left");
 			
 			for (let i = elements_to_move.length - 1; i >= 0; i--)
 			{
@@ -456,7 +456,7 @@ Page.Layout =
 			
 			
 			
-			elements_to_move = document.querySelectorAll(".move-to-right");
+			elements_to_move = Page.element.querySelectorAll(".move-to-right");
 			
 			for (let i = 0; i < elements_to_move.length; i++)
 			{

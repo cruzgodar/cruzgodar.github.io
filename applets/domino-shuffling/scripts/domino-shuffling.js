@@ -48,17 +48,17 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 
 	
-	let generate_button_element = document.querySelector("#generate-button");
+	let generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", draw_domino_shuffling);
 	
 	
 	
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("keydown", (e) =>
 	{
@@ -70,7 +70,7 @@
 	
 	
 	
-	let diamond_size_input_element = document.querySelector("#diamond-size-input");
+	let diamond_size_input_element = Page.element.querySelector("#diamond-size-input");
 	
 	diamond_size_input_element.addEventListener("keydown", (e) =>
 	{
@@ -82,13 +82,13 @@
 	
 	
 	
-	let use_smooth_colors_checkbox_element = document.querySelector("#use-smooth-colors-checkbox");
+	let use_smooth_colors_checkbox_element = Page.element.querySelector("#use-smooth-colors-checkbox");
 	
 	use_smooth_colors_checkbox_element.checked = true;
 	
 	
 	
-	let download_button_element = document.querySelector("#download-button");
+	let download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
