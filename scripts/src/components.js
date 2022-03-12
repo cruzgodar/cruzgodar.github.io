@@ -23,7 +23,7 @@ Page.Components =
 		
 		return `
 			<header${height_adjust}>
-				<div class="new-aos-section" data-aos="fade-in">
+				<div class="new-aos-section" data-aos="fade-up">
 					<div id="logo">
 						<a href="/home/home.html" tabindex="-1">
 							<img src="/graphics/general-icons/logo.png" alt="Logo" tabindex="1"></img>

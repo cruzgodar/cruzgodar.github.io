@@ -289,7 +289,7 @@ Page.Load =
 
 	fade_in: function()
 	{
-		return new Promise((resolve, reject) =>
+		return new Promise(async (resolve, reject) =>
 		{
 			if ("banner_page" in Page.settings && Page.settings["banner_page"])
 			{
@@ -310,13 +310,9 @@ Page.Load =
 					}
 				`);
 				
-				anime({
-					targets: document.body,
-					opacity: 1,
-					duration: Site.opacity_animation_time,
-					easing: "easeOutQuad",
-					complete: resolve
-				});
+				await Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time, true);
+				
+				resolve();
 			}
 			
 			else
@@ -337,6 +333,7 @@ Page.Load =
 		
 		elements: [],
 		element_animation_types: [],
+		delays: [],
 
 		anchor_positions: [],
 
@@ -354,7 +351,7 @@ Page.Load =
 
 		//This function puts the proper delays and anchors on aos elements on the page. The first animated element in every section should have a class of new-aos-section.
 		
-		//Update: the bug came back even for zero-delay elements. The site's content animation has been moved to the JS-based anime.js, so while variables are still called AOS to avoid massive refactoring, it's no longer a part of the site.
+		//Update: the bug came back even for zero-delay elements. The site's content animation has been optionally moved to the JS-based anime.js, so while variables are still called AOS to avoid massive refactoring, it's no longer a part of the site.
 		load: function()
 		{
 			if (Site.Settings.url_vars["content_animation"] === 1)
@@ -368,6 +365,7 @@ Page.Load =
 			
 			this.elements = [];
 			this.element_animation_types = [];
+			this.delays = [];
 			
 			let new_elements = Page.element.querySelectorAll("[data-aos]");
 			
@@ -382,8 +380,11 @@ Page.Load =
 				{
 					//Create a new section.
 					this.elements.push([]);
+					this.delays.push([]);
 					
 					current_section++;
+					
+					current_delay = 0;
 					
 					
 					
@@ -417,25 +418,42 @@ Page.Load =
 				}
 				
 				
-				
-				if (new_elements[i].getAttribute("data-aos") === "zoom-out")
+				if (Site.use_js_animation)
 				{
-					new_elements[i].style.transform = "scale(1.3)";
-				}
+					if (new_elements[i].getAttribute("data-aos") === "zoom-out")
+					{
+						new_elements[i].style.transform = "scale(1.3)";
+					}
+					
+					else
+					{
+						new_elements[i].style.transform = "translateY(100px)";
+					}
+					
+					new_elements[i].style.opacity = 0;
+				}	
 				
 				else
 				{
-					new_elements[i].style.transform = "translateY(100px)";
-				}
-				
-				new_elements[i].style.opacity = 0;
+					new_elements[i].setAttribute("data-aos-offset", 1000000);
+				}	
 				
 				this.elements[current_section - 1].push(new_elements[i]);
+				
+				
+				
+				
+				let delay_increase = new_elements[i].getAttribute("data-aos-delay-increase");
+				
+				if (delay_increase !== null)
+				{
+					current_delay += parseInt(delay_increase);
+				}
+				
+				this.delays[current_section - 1].push(current_delay);
+				
+				current_delay += Site.aos_separation_time;
 			}
-			
-			
-			
-			//At this point we have a list of all the AOS sections and their delays. Now whenever we scroll, we'll check each of the anchors to see if the scroll position is beyond the offset.
 		},
 
 
@@ -500,27 +518,13 @@ Page.Load =
 				
 				if (this.element_animation_types[section] === 1)
 				{
-					anime({
-						targets: this.elements[section],
-						opacity: 1,
-						scale: 1,
-						delay: anime.stagger(Site.aos_separation_time),
-						duration: Site.aos_animation_time,
-						easing: "easeOutCubic"
-					});
+					Page.Animate.show_zoom_out_section(this.elements[section], Site.aos_animation_time, this.delays[section]);
 				}
 				
 				else
 				{
-					anime({
-						targets: this.elements[section],
-						opacity: 1,
-						translateY: 0,
-						delay: anime.stagger(Site.aos_separation_time),
-						duration: Site.aos_animation_time,
-						easing: "easeOutCubic"
-					});
-				}	
+					Page.Animate.show_fade_up_section(this.elements[section], Site.aos_animation_time, this.delays[section]);
+				}
 				
 				
 				
@@ -529,51 +533,8 @@ Page.Load =
 					setTimeout(() => this.show_section(section + 1, true), Site.aos_separation_time * this.elements[section].length + parseInt(this.elements[section + 1][0].getAttribute("data-aos-delay-increase") || 0));
 				}
 			}
-		},
-
-
-
-		hide_section: function(section)
-		{
-			try
-			{
-				for (let i = 0; i < this.currently_animating[section].length; i++)
-				{
-					clearTimeout(this.currently_animating[section][i]);
-				}
-			}
-			
-			catch(ex) {}
-			
-			this.currently_animating[section] = [];
-			
-			
-			
-			if (this.element_animation_types[section] === 1)
-			{
-				anime({
-					targets: this.elements[section],
-					opacity: 0,
-					scale: 1.3,
-					duration: Site.aos_animation_time,
-					easing: "easeOutCubic"
-				});
-			}
-			
-			else
-			{
-				anime({
-					targets: this.elements[section],
-					opacity: 0,
-					translateY: 100,
-					duration: Site.aos_animation_time,
-					easing: "easeOutCubic"
-				});
-			}	
-			
-			this.anchors_shown[section] = false;
 		}
-	},
+	},	
 
 
 	

@@ -80,5 +80,20 @@ let Browser =
 			{string: navigator.userAgent, subString: "Chrome", identity: "Chrome"}, 
 			{string: navigator.userAgent, subString: "Safari", identity: "Safari"}	   
 		]
+	},
+	
+	is_ios: function()
+	{
+		return [
+			'iPad Simulator',
+			'iPhone Simulator',
+			'iPod Simulator',
+			'iPad',
+			'iPhone',
+			'iPod'
+		].includes(navigator.platform)
+		
+		// iPad on iOS 13 detection
+		|| (navigator.userAgent.includes("Mac") && "ontouchend" in document)
 	}
 };

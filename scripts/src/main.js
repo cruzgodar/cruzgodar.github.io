@@ -1,15 +1,3 @@
-/*
-	
-	Page: one of the highest-level objects. Contains methods for loading and unloading the page, as well as all of the fundamental properties that various subobjects.
-	
-	Site: the other highest-level object. Contains properties and methods that extend beyond the current page.
-		
-		Fetch: methods for getting files.
-	
-*/
-
-//
-
 "use strict";
 
 
@@ -100,9 +88,11 @@ Site.scripts_loaded =
 };
 	
 Site.last_pages = [];
-	
-	
-	
+
+
+
+Site.use_js_animation = false;
+
 Site.base_animation_time = 250;
 	
 	
@@ -118,11 +108,43 @@ Site.load = async function(url)
 	
 	
 	
-	this.aos_separation_time = this.base_animation_time / 5;
-	this.button_animation_time = this.base_animation_time / 2;
-	this.opacity_animation_time = this.base_animation_time * .8;
-	this.background_color_animation_time = this.base_animation_time * 2;
-	this.aos_animation_time = this.base_animation_time * 4.25;
+	Site.use_js_animation = Browser.is_ios();
+	
+	
+	
+	if (Site.use_js_animation)
+	{
+		console.log("Using JS animation");
+		
+		this.aos_separation_time = this.base_animation_time / 5;
+		this.button_animation_time = this.base_animation_time / 2;
+		this.opacity_animation_time = this.base_animation_time * .8;
+		this.background_color_animation_time = this.base_animation_time * 2;
+		this.aos_animation_time = this.base_animation_time * 4;
+		
+		Page.Animate.change_opacity = Page.Animate.change_opacity_js;
+		Page.Animate.change_scale = Page.Animate.change_scale_js;
+		Page.Animate.fade_left = Page.Animate.fade_left_js;
+		Page.Animate.show_fade_up_section = Page.Animate.show_fade_up_section_js;
+		Page.Animate.show_zoom_out_section = Page.Animate.show_zoom_out_section_js;
+	}
+	
+	else
+	{
+		this.aos_separation_time = this.base_animation_time / 5;
+		this.button_animation_time = this.base_animation_time / 2;
+		this.opacity_animation_time = this.base_animation_time * .75;
+		this.background_color_animation_time = this.base_animation_time * 2;
+		this.aos_animation_time = this.base_animation_time * 3;
+		
+		AOS.init({duration: Site.aos_animation_time, once: true, offset: Math.min(100, Page.Layout.window_height / 10)});
+		
+		Page.Animate.change_opacity = Page.Animate.change_opacity_css;
+		Page.Animate.change_scale = Page.Animate.change_scale_css;
+		Page.Animate.fade_left = Page.Animate.fade_left_css;
+		Page.Animate.show_fade_up_section = Page.Animate.show_fade_up_section_css;
+		Page.Animate.show_zoom_out_section = Page.Animate.show_zoom_out_section_css;
+	}
 	
 	
 	

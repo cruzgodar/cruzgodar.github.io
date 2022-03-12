@@ -4,45 +4,19 @@
 	
 	
 	
-	Page.on_show = function()
+	setTimeout(() =>
 	{
-		let elements = Page.element.querySelectorAll(".image-links");
+		Page.Animate.fade_left(Page.element.querySelector("#cruz-text"), Site.aos_animation_time * .8);
 		
-		elements[0].id = "category-pages";
-		
-		elements[1].id = "newest-pages";
-		
-		let children = elements[1].querySelectorAll(".image-link");
-		
-		for (let i = 0; i < Page.Load.AOS.elements[2].length; i++)
+		setTimeout(() =>
 		{
-			Page.Load.AOS.elements[2][i].setAttribute("data-aos", "zoom-out");
-			
-			Page.Load.AOS.elements[2][i].style.transform = "scale(1.3)";
-		}
-		
-		Page.Load.AOS.element_animation_types[2] = 1;
-		
-		
-		
-		anime({
-			targets: Page.element.querySelector("#cruz-text"),
-			opacity: 1,
-			translateX: 0,
-			duration: 800,
-			delay: 200,
-			easing: "easeOutQuad"
-		});
-			
-		anime({
-			targets: Page.element.querySelector("#godar-text"),
-			opacity: 1,
-			translateX: 0,
-			duration: 800,
-			delay: 500,
-			easing: "easeOutQuad"
-		});
-	};
+			Page.Animate.fade_left(Page.element.querySelector("#godar-text"), Site.aos_animation_time * .8);
+		}, 300);	
+	}, 200);
+	
+	set_name_text_opacity();
+	
+	
 	
 	let homepage_image_links_mode = "";
 	
@@ -56,14 +30,32 @@
 	
 	
 	
+	let elements = Page.element.querySelectorAll(".image-links");
+	
+	elements[0].id = "category-pages";
+	
+	elements[1].id = "newest-pages";
+	
+	let children = elements[1].querySelectorAll(".image-link");
+	
+	for (let i = 0; i < Page.Load.AOS.elements[2].length; i++)
+	{
+		Page.Load.AOS.elements[2][i].setAttribute("data-aos", "zoom-out");
+		
+		if (Site.use_js_animation)
+		{
+			Page.Load.AOS.elements[2][i].style.transform = "scale(1.3)";
+		}
+	}
+	
+	Page.Load.AOS.element_animation_types[2] = 1;
+	
+	
+	
 	if (Browser.name === "MS Edge")
 	{
 		alert_on_edge();
 	}
-	
-	
-	
-	set_name_text_opacity();
 	
 	
 	
