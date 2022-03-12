@@ -1,13 +1,3 @@
-/*
-	
-	Images: methods for handling inline page images.
-		
-		check_webp_support: tests support for WebP.
-	
-*/
-
-
-
 "use strict";
 
 

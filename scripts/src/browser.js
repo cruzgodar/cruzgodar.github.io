@@ -1,13 +1,3 @@
-/*
-	
-	Browser: methods to detect the user's browser.
-		
-		detect: detects the browser used.
-	
-*/
-
-
-
 "use strict";
 
 

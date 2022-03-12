@@ -2,10 +2,6 @@
 
 
 
-//Handles the various settings' effects on the page. These functions typically add or remove a style tag that handles all the changes. Some settings, like the theme, require an animation.
-
-
-
 Site.Settings =
 {
 	url_vars: {},

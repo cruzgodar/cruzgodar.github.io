@@ -1,21 +1,3 @@
-/*
-	
-	Footer: methods for handling the footer at the bottom of the page.
-		
-		insert: creates the footer.
-		
-		Floating: methods for handling the floating footer.
-			
-			insert: creates the floating footer from the regular footer.
-			
-			fit_to_window_width: adjusts the width to fit the window.
-			
-			on_scroll: hides the footer when scrolling to the bottom of the page.
-	
-*/
-
-
-
 "use strict";
 
 

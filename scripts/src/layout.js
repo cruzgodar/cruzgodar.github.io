@@ -1,27 +1,3 @@
-/*
-	Page
-		...
-		
-		Layout: methods for handling layout changes.
-			
-			on_resize: updates the banner opacity and anything else that needs changing when the window resizes.
-			
-			resize_step: updates the banner opacity gradually so there aren't abrupt opacity changes when next scrolling.
-			
-			Multicols: methods to split image link pages into multiple columns in the ultrawide layout.
-				
-				create: arranges the image links into multiple columns.
-				
-				remove: reverts to the standard layout.
-		
-		
-		
-		Interaction: methods for dealing with mouse vs touch iteraction.
-	
-*/
-
-
-
 "use strict";
 
 

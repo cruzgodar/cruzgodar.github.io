@@ -1,26 +1,3 @@
-/*
-	
-	Page:
-		
-		...
-		
-		
-		Navigation: methods for navigating between pages.
-			
-			redirect: loads a new page.
-			
-			concat_url_vars: returns a string of url variables that can be appended to any url.
-			
-			write_url_vars: does exactly that.
-		
-		Unload: methods for deconstructing the current page.
-			
-			fade_out: handles the process of fading out the opacity, including edge cases like the background color being weird or the new page failing to load.
-	
-*/
-
-
-
 "use strict";
 
 
