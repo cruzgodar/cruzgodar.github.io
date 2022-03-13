@@ -245,6 +245,20 @@
 	
 	Find $\int \frac{1}{x^2 \sqrt{x^2 - 1}}\ dx$.
 	
+	Solution: Let $x = \sec(\theta)$. Then $dx = \sec(\theta)\tan(\theta)$, so the intergal becomes
+	
+	$$
+		\begin{align*}
+			\int \frac{1}{x^2 \sqrt{x^2 - 1}}\ dx &= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \sqrt{\sec^2(\theta) - 1}}\ d\theta\\
+			&= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \tan(\theta)}\ d\theta\\
+			&= \int \frac{1}{\sec(\theta)}\ d\theta\\
+			&= \int \cos(\theta)\ d\theta\\
+			&= \sin(\theta) + C.
+		\end{align*}
+	$$
+	
+	Since $\sec(\theta) = \frac{x}{2}$, we draw a right triangle with hypotenuse $x$ and adjacent side $2$. Then the remaining leg has length $\sqrt{x^2 - 4}$, so $\sin(\theta) = \dfrac{\sqrt{x^2 - 4}}{x}$. In total, the integral is $\dfrac{\sqrt{x^2 - 4}}{x} + C$.
+	
 !end-exercise
 
 

@@ -114,6 +114,8 @@
 	
 	Draw a direction field for $y' = \frac{1}{20}(x^2 - 1)\sin(y)$.
 	
+	<div class="center-content"><iframe src="https://www.desmos.com/calculator/l1xqxf3srx" width="500" height="500"></iframe></div>
+	
 !end-exercise
 
 
@@ -303,6 +305,35 @@
 	
 	Solve $y' = y\ln(x)$, given that $y(1) = 1$.
 	
+	Solution: separating and integrating, we have
+	
+	$$
+		\begin{align*}
+			\frac{1}{y}\ dy &= \ln(x)\ dx\\
+			\int \frac{1}{y}\ dy &= \int \ln(x)\ dx\\
+			\ln|y| &= x\ln(x) - x + C\\
+			y &= e^{x\ln(x) - x + C}.
+		\end{align*}
+	$$
+	
+	Since $y(1) = 1$,
+	
+	$$
+		\begin{align*}
+			1 &= e^{1\ln(1) - 1 + C}\\
+			1 &= e^{C - 1}\\
+			\ln(1) &= C - 1\\
+			0 &= C - 1\\
+			C &= 1.
+		\end{align*}
+	$$
+	
+	Our final answer is then
+	
+	$$
+		y = e^{x\ln(x) - x + 1}.
+	$$
+	
 !end-exercise
 
 
@@ -395,6 +426,42 @@
 	Newton&#x2019;s Law of Cooling
 	
 	In the same $75^\circ F$ kitchen, we bake a cake at $400^\circ F$. It&#x2019;s removed from the oven and after $10$ minutes, it has cooled to $300^\circ F$. How long until it cools down to $100^\circ F$?
+	
+	Solution: We have $T' = k(T - 75)$, so following the same procedure as in the above example, we get $T = e^{kt + C} + 75$. Since $T(0) = 400$, we have
+	
+	$$
+		\begin{align*}
+			400 &= e^C + 75\\
+			325 &= e^C\\
+			C &= \ln(325).
+		\end{align*}
+	$$
+	
+	Since $T(10) = 300$,
+	
+	$$
+		\begin{align*}
+			300 &= e^{10k + \ln(325)} + 75\\
+			225 &= e^{10k}e^{\ln(325)}\\
+			225 &= 325e^{10k}\\
+			\frac{225}{325} &= e^{10k}\\
+			10k &= \ln\left(\frac{225}{325}\right)\\
+			k &= \frac{1}{10} \ln\left(\frac{225}{325}\right)\\
+			&\approx -.0368.
+		\end{align*}
+	$$
+	
+	In total, we have $T(t) = e^{-.0368t + \ln(325)} + 75$, and we want to solve
+	
+	$$
+		\begin{align*}
+			100 &= e^{-.0368t + \ln(325)} + 75\\
+			25 &= 325e^{-.0368t}\\
+			\frac{25}{325} &= e^{-.0368t}\\
+			\ln\left(\frac{25}{325}\right) &= -.0368t\\
+			t &\approx 70.
+		\end{align*}
+	$$
 	
 !end-exercise
 

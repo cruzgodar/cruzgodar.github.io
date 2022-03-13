@@ -173,6 +173,26 @@
 	
 	Find $\int \frac{x - 2}{(x - 1)(2x - 1)}\ dx$.
 	
+	Solution: By partial fractions, this becomes
+	
+	$$
+		\begin{align*}
+			\frac{x - 2}{(x - 1)(2x - 1)} &= \frac{A}{x - 1} + \frac{B}{2x - 1}\\
+			x - 2 &= A(2x - 1) + B(x - 1)\\
+			x - 2 &= (2A + B)x + (-A - B),
+		\end{align*}
+	$$
+	
+	and so we have $1 = 2A + B$ and $-2 = -A - B$. The solution is $A = -1$ and $B = 3$, so the integral is
+	
+	$$
+		\begin{align*}
+			\int \left( -\frac{1}{x - 1} + \frac{3}{2x - 1} \right)\ dx &= -\ln|x - 1| + \frac{1}{2}\ln|2x - 1| + C
+		\end{align*}
+	$$
+	
+	via a $u$-sub.
+	
 !end-exercise
 
 
@@ -255,6 +275,27 @@
 	partial fractions with a linear factor to a power
 	
 	Find $\int \frac{27x^2}{(x+1)(x-2)^2}\ dx$.
+	
+	Solution: Partial fractions tells us that
+	
+	$$
+		\begin{align*}
+			\frac{27x^2}{(x+1)(x-2)^2} &= \frac{A}{x + 1} + \frac{B}{x - 2} + \frac{C}{(x - 2)^2}\\
+			27x^2 &= A(x - 2)^2 + B(x-1)(x-2) + C(x-1)\\
+			27x^2 &= A(x^2 - 4x + 4) + B(x^2 - 3x + 2) + C(x-1)\\
+			27x^2 &= (A + B)x^2 + (-4A - 3B + C)x + (4A + 2B - C),
+		\end{align*}
+	$$
+	
+	so $A + B = 27$, $-4A - 3B + C = 0$, and $4A + 2B - C = 0$. Solving this gives us $A = 27$, $B = 0$, and $C = 108$. Then the integral becomes
+	
+	$$
+		\begin{align*}
+			\int \left( \frac{27}{x + 1} \frac{108}{(x - 2)^2} \right)\ dx &= 27\ln|x + 1| - 108(x-2)^{-1}
+		\end{align*}
+	$$
+	
+	via two $u$-subs.
 	
 !end-exercise
 
@@ -347,6 +388,26 @@
 	partial fractions with an irreducible quadratic factor
 	
 	Find $\int \frac{16}{x(x^2 + 4)^2}\ dx$.
+	
+	The partial fraction expansion of this is
+	
+	$$
+		\begin{align*}
+			\frac{16}{x(x^2 + 4)^2} &= \frac{A}{x} + \frac{Bx + C}{x^2 + 4} + \frac{Dx + E}{(x^2 + 4)^2}\\
+			16 &= A(x^2 + 4)^2 + (Bx + C)(x)(x^2 + 4) + (Dx + E)(x)\\
+			16 &= (A + B)x^4 + Cx^3 + (16A + 4B + D)x^2 + (4C + E)x + 16A\\
+		\end{align*}
+	$$
+	
+	This looks bad, but it&#x2019;s actually not that hard to solve. We end up with $A = 1$, $B = -1$, $C = 0$, $D = -12$, and $E = 0$. In total, the integral then becomes
+	
+	$$
+		\begin{align*}
+			\int \left( \frac{1}{x} - \frac{x}{x^2 + 4} - \frac{12x}{(x^2 + 4)^2} \right) &= \ln|x| - \frac{1}{2} \ln|x^2 + 4| + \frac{6}{x^2 + 4} + C,
+		\end{align*}
+	$$
+	
+	using $u = x^2 + 4$.
 	
 !end-exercise
 
