@@ -132,10 +132,10 @@ Site.load = async function(url)
 	else
 	{
 		this.aos_separation_time = this.base_animation_time / 5;
-		this.button_animation_time = this.base_animation_time / 2;
+		this.button_animation_time = this.base_animation_time * .45;
 		this.opacity_animation_time = this.base_animation_time * .75;
 		this.background_color_animation_time = this.base_animation_time * 2;
-		this.aos_animation_time = this.base_animation_time * 3;
+		this.aos_animation_time = Math.ceil(this.base_animation_time * 3.25 / 50) * 50;
 		
 		AOS.init({duration: Site.aos_animation_time, once: true, offset: Math.min(100, Page.Layout.window_height / 10)});
 		

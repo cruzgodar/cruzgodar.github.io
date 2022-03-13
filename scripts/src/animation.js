@@ -30,17 +30,22 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
+			try {clearTimeout(element.getAttribute("data-opacity-timeout-id"))}
+			catch(ex) {}
+			
 			element.style.transition = `opacity ${duration}ms ${ease_in_out ? "ease-in-out" : "ease-out"}`;
 			
 			setTimeout(() =>
 			{
 				element.style.opacity = end_value;
 				
-				setTimeout(() =>
+				let timeout_id = setTimeout(() =>
 				{
 					element.style.transition = "";
 					resolve();
 				}, duration);
+				
+				element.setAttribute("data-opacity-timeout-id", timeout_id);
 			}, 10);
 		});	
 	},
@@ -67,17 +72,22 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
+			try {clearTimeout(element.getAttribute("data-scale-timeout-id"))}
+			catch(ex) {}
+			
 			element.style.transition = `transform ${duration}ms ${ease_in_out ? "ease-in-out" : "ease-out"}`;
 			
 			setTimeout(() =>
 			{
 				element.style.transform = `scale(${end_value})`;
 				
-				setTimeout(() =>
+				let timeout_id = setTimeout(() =>
 				{
 					element.style.transition = "";
 					resolve();
 				}, duration);
+				
+				element.setAttribute("data-scale-timeout-id", timeout_id);
 			}, 10);
 		});	
 	},
@@ -105,6 +115,9 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
+			try {clearTimeout(element.getAttribute("data-fade-left-timeout-id"))}
+			catch(ex) {}
+			
 			element.style.transition = `transform ${duration}ms ${ease_in_out ? "ease-in-out" : "ease-out"}, opacity ${duration}ms ${ease_in_out ? "ease-in-out" : "ease-out"}`;
 			
 			setTimeout(() =>
@@ -112,11 +125,13 @@ Page.Animate =
 				element.style.transform = `translateX(0px)`;
 				element.style.opacity = 1;
 				
-				setTimeout(() =>
+				let timeout_id = setTimeout(() =>
 				{
 					element.style.transition = "";
 					resolve();
 				}, duration);
+				
+				element.setAttribute("data-fade-left-timeout-id", timeout_id);
 			}, 10);
 		});	
 	},
