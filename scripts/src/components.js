@@ -550,6 +550,13 @@ Page.Components =
 						
 						
 						
+						if (lines[i] === "!wilson")
+						{
+							lines[i] = `This applet was made with <a href="/projects/wilson/wilson.html">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.`
+						}
+						
+						
+						
 						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
 						{
 							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
