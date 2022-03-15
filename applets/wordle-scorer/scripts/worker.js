@@ -9,6 +9,8 @@ onmessage = async function(e)
 		hardmode = e.data[1];
 	}
 	
+	correct_solution = e.data[2];
+	
 	grade_submission(e.data[0]);
 }
 
@@ -33,14 +35,27 @@ fetch("/applets/wordle-scorer/scripts/data.json")
 {
 	valid_solutions = data["solutions"];
 	valid_guesses = data["guesses"];
-	
-	correct_solution = valid_solutions[Math.floor((Date.now() - 28800000) / 86400000) - 18797];
 });
 
 
 
 function grade_submission(entry_string)
 {
+	if (first_guess)
+	{
+		if (valid_guesses.indexOf(correct_solution) === -1)
+		{
+			valid_guesses.push(correct_solution);
+		}
+		
+		if (valid_solutions.indexOf(correct_solution) === -1)
+		{
+			valid_solutions.push(correct_solution);
+		}
+	}
+	
+	
+	
 	if (valid_guesses.indexOf(entry_string) === -1)
 	{
 		postMessage([-1]);
@@ -71,7 +86,12 @@ function grade_submission(entry_string)
 	
 	let words_by_score = [];
 	
-	if (!first_guess)
+	if (first_guess)
+	{
+		words_by_score = [["raise", 5.11], ["irate", 5.08], ["arise", 5.06], ["arose", 4.97], ["saner", 4.96], ["null!", 3], ["puppy", 1.57], ["mamma", 1.56], ["vivid", 1.51], ["mummy", 1.50], ["fuzzy", 1.44]];
+	}
+	
+	else
 	{
 		words_by_score = new Array(valid_solutions.length);
 		
@@ -113,11 +133,6 @@ function grade_submission(entry_string)
 			
 			words_by_score[i] = [valid_solutions[i], -Math.log(num_preserved / (grading_words.length * grading_words.length)) / Math.log(2)];
 		}
-	}
-	
-	else
-	{
-		words_by_score = [["raise", 5.11], ["irate", 5.08], ["arise", 5.06], ["arose", 4.97], ["saner", 4.96], ["null!", 3], ["puppy", 1.57], ["mamma", 1.56], ["vivid", 1.51], ["mummy", 1.50], ["fuzzy", 1.44]];
 	}
 	
 	

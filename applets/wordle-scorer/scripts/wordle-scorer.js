@@ -10,6 +10,8 @@
 	
 	let completed = false;
 	
+	let correct_solution = "";
+	
 	let currently_animating = false;
 	
 	let boxes = Page.element.querySelectorAll("#wordle input");
@@ -25,6 +27,8 @@
 	let bad_guesses = [];
 	
 	let hardmode_checkbox_element = Page.element.querySelector("#hardmode-checkbox");
+	
+	let correct_solution_input_element = Page.element.querySelector("#correct-solution-input");
 	
 	
 	
@@ -284,7 +288,14 @@
 				confirm_buttons[Math.floor(i / 5)].style.cursor = "default";
 				confirm_buttons[Math.floor(i / 5)].firstElementChild.style.cursor = "default";
 				
-				web_worker.postMessage([entry_string, hardmode_checkbox_element.checked]);
+				if (active_row === 0)
+				{
+					correct_solution = correct_solution_input_element.value.toLowerCase();
+					
+					correct_solution_input_element.value = correct_solution_input_element.value.slice(0, 5).toUpperCase();
+				}
+				
+				web_worker.postMessage([entry_string, hardmode_checkbox_element.checked, correct_solution]);
 			}
 		});
 	}
@@ -308,7 +319,14 @@
 				confirm_buttons[i].style.cursor = "default";
 				confirm_buttons[i].firstElementChild.style.cursor = "default";
 				
-				web_worker.postMessage([entry_string, hardmode_checkbox_element.checked]);
+				if (active_row === 0)
+				{
+					correct_solution = correct_solution_input_element.value.toLowerCase();
+					
+					correct_solution_input_element.value = correct_solution_input_element.value.slice(0, 5).toUpperCase();
+				}
+				
+				web_worker.postMessage([entry_string, hardmode_checkbox_element.checked, correct_solution]);
 			}
 		});
 		
