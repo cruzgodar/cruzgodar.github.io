@@ -178,15 +178,15 @@
 			"image_link": "https://drive.google.com/uc?id=1pqpf8z08AgJ9oFXQLU0J6eWaJvgg6oME&export=download"
 		},
 		
-		"wilsons-algorithm-3":
+		"aztec-diamond":
 		{
-			"title": "Wilson&#x2019;s Algorithm",
+			"title": "An Aztec Diamond",
 			
-			"resolution": "5050x5050",
+			"resolution": "5000x5000",
 			
-			"applet_link": "wilsons-algorithm",
+			"applet_link": "domino-shuffling",
 			
-			"image_link": "https://drive.google.com/uc?id=1m_vUOhvRyb-3Tctspo0SjrmH22AsshKi&export=download"
+			"image_link": "https://drive.google.com/uc?id=1XaoTpV0dKscPtOvrjU6sUuD1Mo-pyQzH&export=download"
 		},
 		
 		"finite-subdivision-1":
@@ -308,15 +308,15 @@
 		
 		
 		
-		"double-pendulum-fractal":
+		"quaternionic-julia-set-1":
 		{
-			"title": "The Double Pendulum Fractal",
+			"title": "A Quaternionic Julia Set",
 			
 			"resolution": "5000x5000",
 			
-			"applet_link": "double-pendulum-fractal",
+			"applet_link": "quaternionic-julia-sets",
 			
-			"image_link": "https://drive.google.com/uc?id=1vyekqHESbwyD7PWBbWxVnw96rhNT-ZtB&export=download"
+			"image_link": "https://drive.google.com/uc?id=1092d-V4qcvcW5_lsf5xsyDQvlDs1LdO9&export=download"
 		},
 		
 		
@@ -595,17 +595,6 @@
 		
 		
 		
-		"finite-subdivision-2":
-		{
-			"title": "A Finite Subdivision",
-			
-			"resolution": "5000x5000",
-			
-			"applet_link": "finite-subdivisions",
-			
-			"image_link": "https://drive.google.com/uc?id=1KFs9T05JS-N3Aad_5tiW7T3FHcxaCc8c&export=download"
-		},
-		
 		"hitomezashi-pattern-1":
 		{
 			"title": "A Hitomezashi Pattern",
@@ -617,15 +606,15 @@
 			"image_link": "https://drive.google.com/uc?id=1PqAZLMb0u-u8FR5ieN8ysWNOn5GhPGkD&export=download"
 		},
 		
-		"julia-set-2":
+		"quaternionic-julia-set-2":
 		{
-			"title": "A Julia Set",
+			"title": "A Quaternionic Julia Set",
 			
 			"resolution": "5000x5000",
 			
-			"applet_link": "julia-set-explorer",
+			"applet_link": "quaternionic-julia-sets",
 			
-			"image_link": "https://drive.google.com/uc?id=13JfzfwwSXrlGPgPyk203ZDj4eaT4uTDA&export=download"
+			"image_link": "https://drive.google.com/uc?id=17yHyELz5FaAVIgSfBUjYTwy--yOBxGWv&export=download"
 		},
 		
 		"wilsons-algorithm-1":
@@ -665,6 +654,19 @@
 			"applet_link": "complex-maps",
 			
 			"image_link": "https://drive.google.com/uc?id=1ulWn8MMjzNTiTRuZKYWlqHoJOQBUwAnz&export=download"
+		},
+		
+		
+		
+		"double-pendulum-fractal":
+		{
+			"title": "The Double Pendulum Fractal",
+			
+			"resolution": "5000x5000",
+			
+			"applet_link": "double-pendulum-fractal",
+			
+			"image_link": "https://drive.google.com/uc?id=1vyekqHESbwyD7PWBbWxVnw96rhNT-ZtB&export=download"
 		}
 	};
 }()
