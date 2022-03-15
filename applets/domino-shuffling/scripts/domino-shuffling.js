@@ -97,6 +97,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function draw_domino_shuffling()
 	{
 		starting_process_id = Site.applet_process_id;

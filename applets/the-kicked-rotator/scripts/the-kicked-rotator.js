@@ -83,6 +83,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function request_kicked_rotator()
 	{
 		let grid_size = parseInt(grid_size_input_element.value || 500);

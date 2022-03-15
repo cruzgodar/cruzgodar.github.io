@@ -331,6 +331,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function add_root()
 	{
 		if (num_roots === 8)

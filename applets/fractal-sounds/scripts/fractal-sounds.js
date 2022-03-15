@@ -183,6 +183,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function use_new_code()
 	{
 		let generating_code = fractals[fractal_selector_dropdown_element.value][0];

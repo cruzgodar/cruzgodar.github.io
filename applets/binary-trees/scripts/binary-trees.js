@@ -74,6 +74,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function draw_binary_tree()
 	{
 		wilson.ctx.fillStyle = "rgb(0, 0, 0)";

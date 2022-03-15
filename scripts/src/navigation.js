@@ -50,7 +50,7 @@ Page.Navigation =
 		
 		Page.parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
 		
-		Page.loaded = false;
+		Page.ready_to_show = false;
 		
 		
 		
@@ -144,18 +144,6 @@ Page.Navigation =
 			}
 			
 			this.last_page_scroll = temp;
-			
-			
-			
-			if (Page.loaded)
-			{
-				Page.show();
-			}
-			
-			else
-			{
-				Page.loaded = true;
-			}
 		})
 		
 		

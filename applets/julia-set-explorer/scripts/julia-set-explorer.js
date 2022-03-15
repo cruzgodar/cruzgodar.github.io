@@ -304,7 +304,7 @@
 	
 	switch_julia_mode_button_element.style.opacity = 1;
 	
-	switch_julia_mode_button_element.addEventListener("click", function()
+	switch_julia_mode_button_element.addEventListener("click", () =>
 	{
 		Page.Animate.change_opacity(switch_julia_mode_button_element, 0, Site.opacity_animation_time);
 		
@@ -368,6 +368,10 @@
 	wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], 1);
 	
 	window.requestAnimationFrame(draw_julia_set);
+	
+	
+	
+	Page.show();
 	
 	
 	

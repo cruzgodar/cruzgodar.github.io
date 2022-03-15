@@ -241,4 +241,8 @@
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/2/draggables.html");
 	});
+	
+	
+	
+	Page.show();
 }()

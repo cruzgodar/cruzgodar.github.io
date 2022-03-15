@@ -140,6 +140,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function use_new_code()
 	{
 		let generating_code = code_input_element.value || "cmul(csin(z), csin(cmul(z, i)))";

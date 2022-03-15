@@ -161,6 +161,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function init_canvases()
 	{
 		let frag_shader_source_wp = `

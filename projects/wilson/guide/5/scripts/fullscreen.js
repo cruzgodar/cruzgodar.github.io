@@ -505,4 +505,8 @@
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/6/interactivity.html");
 	});
+	
+	
+	
+	Page.show();
 }()

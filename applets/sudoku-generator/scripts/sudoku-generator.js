@@ -39,6 +39,8 @@
 	
 	
 	
+	Page.show();
+	
 	
 	
 	function request_sudoku_grid()

@@ -1194,4 +1194,8 @@
 	{
 		Page.Navigation.redirect("/projects/wilson/wilson.html");
 	});
+	
+	
+	
+	Page.show();
 }()

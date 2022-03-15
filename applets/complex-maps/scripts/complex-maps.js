@@ -173,6 +173,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function use_new_code(selector_mode = false, world_width = 2, world_height = 2, world_center_x = 0, world_center_y = 0)
 	{
 		let generating_code = code_input_element.value || "cexp(cinv(z))";

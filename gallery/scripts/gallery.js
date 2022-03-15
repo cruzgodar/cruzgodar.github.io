@@ -669,4 +669,8 @@
 			"image_link": "https://drive.google.com/uc?id=1vyekqHESbwyD7PWBbWxVnw96rhNT-ZtB&export=download"
 		}
 	};
+	
+	
+	
+	Page.show();
 }()

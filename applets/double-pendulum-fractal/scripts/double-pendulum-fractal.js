@@ -355,6 +355,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function draw_preview_pendulum(x, y, x_delta, y_delta, e)
 	{
 		if (!paused)

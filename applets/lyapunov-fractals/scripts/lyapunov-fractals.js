@@ -86,6 +86,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function use_new_code()
 	{
 		let generating_string = (generating_string_input_element.value || "AB").toUpperCase();

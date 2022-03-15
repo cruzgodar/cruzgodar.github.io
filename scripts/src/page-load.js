@@ -7,6 +7,8 @@ Page.load = function()
 {
 	Page.element = document.body.querySelector(".page");
 	
+	Page.using_custom_script = true;
+	
 	Page.on_show = null;
 	
 	
@@ -142,14 +144,14 @@ Page.load = function()
 	
 	
 	
-	if (Page.loaded)
+	if (Page.ready_to_show && !Page.using_custom_script)
 	{
 		Page.show();
 	}
 	
 	else
 	{
-		Page.loaded = true;
+		Page.ready_to_show = true;
 	}
 };
 
@@ -253,36 +255,48 @@ Page.Load =
 		
 		
 		
-		try
+		//Make sure there's actually something to get.
+		fetch(Page.parent_folder + "scripts/" + page_name + ".js")
+		
+		.then((response) =>
 		{
-			//Make sure there's actually something to get.
-			fetch(Page.parent_folder + "scripts/" + page_name + ".js")
-			
-			.then((response) =>
+			if (!response.ok)
 			{
-				let element = document.createElement("script");
-				
-				
-				
-				if (DEBUG)
+				if (Page.ready_to_show)
 				{
-					element.setAttribute("src", Page.parent_folder + "scripts/" + page_name + ".js");
+					Page.show();
 				}
 				
 				else
 				{
-					element.setAttribute("src", Page.parent_folder + "scripts/" + page_name + ".min.js");
+					Page.using_custom_script = false;
 				}
 				
-				
-				
-				element.classList.add("temporary-script");
-				
-				document.body.appendChild(element);
-			});
-		}
-		
-		catch(ex) {}
+				return;
+			}
+			
+			Page.ready_to_show = true;
+			
+			
+			
+			let element = document.createElement("script");
+			
+			if (DEBUG)
+			{
+				element.setAttribute("src", Page.parent_folder + "scripts/" + page_name + ".js");
+			}
+			
+			else
+			{
+				element.setAttribute("src", Page.parent_folder + "scripts/" + page_name + ".min.js");
+			}
+			
+			
+			
+			element.classList.add("temporary-script");
+			
+			document.body.appendChild(element);
+		});
 	},
 
 

@@ -225,4 +225,8 @@
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/5/fullscreen.html");
 	});
+	
+	
+	
+	Page.show();
 }()

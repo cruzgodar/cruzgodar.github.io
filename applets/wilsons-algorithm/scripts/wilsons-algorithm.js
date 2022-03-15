@@ -75,6 +75,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function request_wilson_graph(reverse_generate_skeleton)
 	{
 		grid_size = parseInt(grid_size_input_element.value || 50);

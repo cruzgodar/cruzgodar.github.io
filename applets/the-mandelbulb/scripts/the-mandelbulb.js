@@ -588,6 +588,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function draw_frame(timestamp)
 	{
 		let time_elapsed = timestamp - last_timestamp;

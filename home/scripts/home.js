@@ -30,6 +30,42 @@
 	
 	
 	
+	if (Browser.name === "MS Edge")
+	{
+		alert_on_edge();
+	}
+	
+	
+	
+	Page.Footer.Floating.load();
+	
+	
+	
+	setTimeout(() =>
+	{
+		try
+		{
+			let elements = Page.element.querySelectorAll(".footer-button");
+			
+			for (let i = 0; i < elements.length; i++)
+			{
+				Page.Load.HoverEvents.add(elements[i]);
+			}
+		}
+		
+		catch(ex) {}
+	}, 100);
+	
+	
+	
+	Page.Load.Links.disable();
+	
+	
+	
+	Page.show();
+	
+	
+	
 	let elements = Page.element.querySelectorAll(".image-links");
 	
 	elements[0].id = "category-pages";
@@ -49,38 +85,6 @@
 	}
 	
 	Page.Load.AOS.element_animation_types[2] = 1;
-	
-	
-	
-	if (Browser.name === "MS Edge")
-	{
-		alert_on_edge();
-	}
-	
-	
-	
-	Page.Footer.Floating.load();
-	
-	
-	
-	setTimeout(function()
-	{
-		try
-		{
-			let elements = Page.element.querySelectorAll(".footer-button");
-			
-			for (let i = 0; i < elements.length; i++)
-			{
-				Page.Load.HoverEvents.add(elements[i]);
-			}
-		}
-		
-		catch(ex) {}
-	}, 100);
-	
-	
-	
-	Page.Load.Links.disable();
 	
 	
 	

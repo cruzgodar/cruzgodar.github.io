@@ -216,4 +216,7 @@
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/3/parallelizing.html");
 	});
+	
+	
+	Page.show();
 }()

@@ -8,7 +8,7 @@ let DEBUG = false;
 Page.element = null;
 Page.last_element = null;
 
-Page.loaded = false;
+Page.ready_to_show = false;
 
 
 Page.scroll = 0;
@@ -64,6 +64,8 @@ Page.temporary_intervals = [];
 Page.temporary_web_workers = [];
 
 Page.background_color_changed = false;
+
+Page.using_custom_script = true;
 
 //Sets a whole bunch of elements' styles at once.
 Page.set_element_styles = function(query_string, property, value, important = false)

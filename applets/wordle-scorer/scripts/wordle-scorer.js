@@ -329,6 +329,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function reject_submission()
 	{
 		setTimeout(() =>

@@ -544,6 +544,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function draw_preview_planet(x, y, x_delta, y_delta, e)
 	{
 		if (!paused)

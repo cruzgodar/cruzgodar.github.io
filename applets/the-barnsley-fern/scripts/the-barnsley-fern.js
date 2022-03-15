@@ -61,6 +61,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function request_fern()
 	{
 		num_iterations = 1000 * parseInt(num_iterations_input_element.value || 10000);

@@ -4,14 +4,7 @@
 	
 	
 	
-	setTimeout(() =>
-	{
-		Page.Load.AOS.on_resize();
-	}, 50);
-	
-	
-	
-	Page.element.querySelector("#toggle-minor-versions-checkbox").addEventListener("click", function()
+	Page.element.querySelector("#toggle-minor-versions-checkbox").addEventListener("click", () =>
 	{
 		if (Page.element.querySelector("#toggle-minor-versions-checkbox").checked)
 		{
@@ -46,4 +39,15 @@
 			}, Site.opacity_animation_time);
 		}
 	});
+	
+	
+	
+	Page.show();
+	
+	
+	
+	setTimeout(() =>
+	{
+		Page.Load.AOS.on_resize();
+	}, 50);
 }()

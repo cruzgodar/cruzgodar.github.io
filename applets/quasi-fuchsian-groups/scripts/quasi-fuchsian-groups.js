@@ -136,6 +136,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	
 	function draw_frame(timestamp)
 	{

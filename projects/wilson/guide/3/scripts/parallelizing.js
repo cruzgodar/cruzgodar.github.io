@@ -170,4 +170,8 @@
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/4/hidden-canvases.html");
 	});
+	
+	
+	
+	Page.show();
 }()

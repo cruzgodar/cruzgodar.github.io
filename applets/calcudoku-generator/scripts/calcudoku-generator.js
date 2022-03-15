@@ -81,6 +81,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function request_calcudoku_grid()
 	{
 		grid_size = parseInt(grid_size_input_element.value || 6);

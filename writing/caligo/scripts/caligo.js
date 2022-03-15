@@ -53,6 +53,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	
 	function show_prereaders()
 	{

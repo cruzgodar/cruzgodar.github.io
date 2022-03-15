@@ -65,6 +65,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function request_brownian_tree()
 	{
 		let grid_size = parseInt(grid_size_input_element.value || 1000);

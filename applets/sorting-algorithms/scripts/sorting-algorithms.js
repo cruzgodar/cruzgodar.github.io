@@ -233,6 +233,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function draw_sorting_algorithm()
 	{
 		try {audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + time_elapsed / 1000);}

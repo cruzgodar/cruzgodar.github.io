@@ -188,6 +188,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function use_new_code()
 	{
 		generating_code = code_input_element.value || "cadd(cpow(z, 2.0), c)";

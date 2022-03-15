@@ -18,4 +18,8 @@
 		
 		element.parentNode.setAttribute("onclick", "Page.Navigation.redirect('https://webwork.uoregon.edu/webwork2/Math112-13873/', true)");
 	}, 100);
+	
+	
+	
+	Page.show();
 }()

@@ -142,6 +142,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function generate_hitomezashi_pattern()
 	{
 		resolution = parseInt(resolution_input_element.value || 2000);

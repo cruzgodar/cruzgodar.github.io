@@ -96,6 +96,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function request_lorenz_attractor()
 	{
 		let grid_size = parseInt(grid_size_input_element.value || 1000);

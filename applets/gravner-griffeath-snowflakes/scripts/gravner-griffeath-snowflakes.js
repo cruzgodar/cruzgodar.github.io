@@ -64,6 +64,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function randomize_parameters()
 	{
 		rho_input_element.value = .9 * (Math.random() + .5);

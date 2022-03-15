@@ -71,6 +71,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function request_sandpile()
 	{
 		let num_grains = parseInt(num_grains_input_element.value || 10000);

@@ -102,6 +102,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function draw_pascals_triangle()
 	{
 		starting_process_id = Site.applet_process_id;

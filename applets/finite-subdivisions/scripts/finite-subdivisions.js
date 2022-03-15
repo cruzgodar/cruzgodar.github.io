@@ -74,6 +74,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function request_finite_subdivisions()
 	{
 		let num_vertices = parseInt(num_vertices_input_element.value || 5);

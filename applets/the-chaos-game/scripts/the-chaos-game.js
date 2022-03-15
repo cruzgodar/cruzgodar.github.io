@@ -70,6 +70,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function request_chaos_game()
 	{
 		let num_vertices = parseInt(num_vertices_input_element.value || 5);

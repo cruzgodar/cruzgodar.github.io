@@ -120,6 +120,10 @@
 	
 	
 	
+	Page.show();
+	
+	
+	
 	function draw_frame()
 	{	
 		let julia_sets_per_side = parseInt(num_julias_input_element.value || 100);

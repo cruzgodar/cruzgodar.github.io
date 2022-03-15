@@ -58,6 +58,11 @@
 	let maximum_speed_checkbox_element = Page.element.querySelector("#toggle-maximum-speed-checkbox");
 	
 	
+	
+	Page.show();
+	
+	
+	
 	function request_annealing_graph()
 	{
 		let num_nodes = parseInt(num_nodes_input_element.value || 20);
