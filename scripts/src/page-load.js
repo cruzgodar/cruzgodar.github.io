@@ -29,13 +29,6 @@ Page.load = function()
 	if (!("no_footer" in this.settings && this.settings["no_footer"]))
 	{
 		this.Footer.load();
-		
-		setTimeout(() =>
-		{
-			this.Footer.Floating.on_scroll();
-			
-			Page.Load.AOS.element_animation_types[Page.Load.AOS.element_animation_types.length - 1] = 1;
-		}, 50);
 	}
 	
 	
@@ -73,16 +66,6 @@ Page.load = function()
 		{
 			button_element.innerHTML = `${elements[i].querySelector(`[value=${elements[i].value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
 		});
-	}
-	
-	
-	
-	if (!("no_footer" in this.settings && this.settings["no_footer"]))
-	{
-		setTimeout(() =>
-		{
-			this.Load.AOS.fix_footer_anchor();
-		}, 500);
 	}
 	
 	
@@ -331,6 +314,10 @@ Page.Load =
 			
 			else
 			{
+				Page.Footer.Floating.show_footer_menu_button.style.opacity = 0;
+				
+				setTimeout(() => Page.Animate.change_opacity(Page.Footer.Floating.show_footer_menu_button, 1, Site.opacity_animation_time), 10);
+				
 				document.body.style.opacity = 1;
 				
 				resolve();
@@ -468,6 +455,10 @@ Page.Load =
 				
 				current_delay += Site.aos_separation_time;
 			}
+			
+			
+			
+			this.on_resize();
 		},
 
 
@@ -494,6 +485,8 @@ Page.Load =
 			if (!("no_footer" in Page.settings && Page.settings["no_footer"]))
 			{
 				this.anchor_positions[this.elements.length - 1] = document.body.clientHeight - 10;
+				
+				this.element_animation_types[this.elements.length - 1] = 1;
 			}
 		},
 

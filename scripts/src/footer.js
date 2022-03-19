@@ -179,10 +179,6 @@ Page.Footer =
 		
 		
 		
-		this.Floating.load();
-		
-		
-		
 		//If we restored a scroll position that was supposed to be in the footer, we won't be able to properly restore that until now.
 		if (Page.scroll > 0)
 		{
@@ -215,13 +211,34 @@ Page.Footer =
 		
 		
 		
-		//Initializes the floating footer by copying specific parts of the normal footer.
+		show_footer_menu_button: null,
+		
+		settings_button: null,
+		sitemap_button: null,
+		about_button: null,
+		debug_button: null,
+		
+		gallery_link: null,
+		applets_link: null,
+		writing_link: null,
+		teaching_link: null,
+		bio_link: null,
+		
+		theme_button: null,
+		contrast_button: null,
+		text_size_button: null,
+		font_button: null,
+		content_animation_button: null,
+		
+		
+		
+		//Initializes the floating footer.
 		load: function()
 		{
 			let floating_footer_element = document.createElement("footer");
 			floating_footer_element.id = "floating-footer";
 			
-			Page.element.insertBefore(floating_footer_element, Page.element.firstChild);
+			document.body.insertBefore(floating_footer_element, document.body.firstChild);
 			
 			
 			
@@ -322,7 +339,33 @@ Page.Footer =
 			
 			setTimeout(() =>
 			{
-				let elements = Page.element.querySelectorAll(".footer-menu-button, .footer-menu-image-link");
+				this.show_footer_menu_button = floating_footer_element.querySelector("#show-footer-menu-button");
+				this.show_footer_menu_button.style.bottom = "6.25px";
+				
+				this.settings_button = floating_footer_element.querySelector("#settings-button");
+				this.sitemap_button = floating_footer_element.querySelector("#sitemap-button");
+				this.about_button = floating_footer_element.querySelector("#about-button");
+				
+				this.gallery_link = floating_footer_element.querySelector("#floating-footer-gallery-link");
+				this.applets_link = floating_footer_element.querySelector("#floating-footer-applets-link");
+				this.writing_link = floating_footer_element.querySelector("#floating-footer-writing-link");
+				this.teaching_link = floating_footer_element.querySelector("#floating-footer-teaching-link");
+				this.bio_link = floating_footer_element.querySelector("#floating-footer-bio-link");
+				
+				this.theme_button = floating_footer_element.querySelector("#theme-button");
+				this.contrast_button = floating_footer_element.querySelector("#contrast-button");
+				this.text_size_button = floating_footer_element.querySelector("#text-size-button");
+				this.font_button = floating_footer_element.querySelector("#font-button");
+				this.content_animation_button = floating_footer_element.querySelector("#content-animation-button");
+				
+				let elements = [this.show_footer_menu_button, this.settings_button, this.sitemap_button, this.about_button, this.gallery_link, this.applets_link, this.writing_link, this.teaching_link, this.bio_link, this.theme_button, this.contrast_button, this.text_size_button, this.font_button, this.content_animation_button];
+				
+				if (DEBUG)
+				{
+					this.debug_button = floating_footer_element.querySelector("#debug-button");
+					
+					elements.push(this.debug_button);
+				}
 				
 				for (let i = 0; i < elements.length; i++)
 				{
@@ -334,151 +377,33 @@ Page.Footer =
 			
 			this.last_scroll = window.scrollY;
 			
-			if (!Site.Interaction.currently_touch_device)
-			{
-				this.current_offset = 6.25;
-				
-				this.is_visible = true;
-			}
+			this.current_offset = 6.25;
 			
-			
-			
-			Page.element.querySelector("#show-footer-menu-button").style.bottom = `${this.current_offset}px`;
-			
-			
-			
-			let bound_function = this.on_scroll.bind(this);
-			
-			window.addEventListener("scroll", bound_function);
-			
-			Page.temporary_handlers["scroll"].push(bound_function);
-		},
-		
-		
-		
-		on_scroll: function()
-		{
-			if (!Site.Interaction.currently_touch_device || this.currently_animating || window.scrollY > document.body.scrollHeight - Page.Layout.window_height)
-			{
-				return;
-			}
-			
-			
-			
-			
-			if (this.last_scroll <= 0)
-			{
-				this.last_scroll = window.scrollY;
-				
-				return;
-			}
-			
-			
-			
-			let new_scroll = window.scrollY;
-			
-			let scroll_delta = new_scroll - this.last_scroll;
-			
-			//Only restrict the speed if we're not near the bottom of the page, since there it's critical that we get the button all the way up.
-			if (scroll_delta > 0 && window.scrollY > document.body.scrollHeight - Page.Layout.window_height - 150)
-			{
-				scroll_delta = -scroll_delta;
-			}
-			
-			else
-			{
-				if (scroll_delta > 0)
-				{
-					scroll_delta = Math.max(2, Math.min(scroll_delta, 10))
-				}
-				
-				else
-				{
-					scroll_delta = Math.max(-10, Math.min(scroll_delta, -2))
-				}
-			}
-			
-			//Interpolates from .15 at -43.75 to 1 at -18.75 to .15 at at 6.25.
-			scroll_delta *= (Math.cos(2 * Math.PI * (this.current_offset + 43.75) / 50 + Math.PI) + 1.33) / 2.33;
-			
-			
-			
-			this.last_scroll = new_scroll;
-			
-			
-			
-			this.current_offset -= scroll_delta;
-				
-			if (this.current_offset < -43.75)
-			{
-				this.current_offset = -43.75;
-				
-				this.is_visible = false;
-			}
-			
-			if (this.current_offset > 6.25)
-			{
-				this.current_offset = 6.25;
-				
-				this.is_visible = true;
-			}
-			
-			
-			
-			Page.element.querySelector("#show-footer-menu-button").style.bottom = `${this.current_offset}px`;
-		},
-		
-		
-		
-		animate_in: function()
-		{
-			if (this.currently_animating)
-			{
-				return;
-			}
-			
-			
-			
-			try
-			{
-				Page.element.querySelector("#show-footer-menu-button").style.opacity = 1;
-				
-				Page.element.querySelector("#show-footer-menu-button").style.transform = "scale(1)";
-				
-				Page.element.querySelector("#show-footer-menu-button").style.bottom = "6.25px";
-				
-				this.current_offset = 6.25;
-						
-				this.last_scroll = -1;
-				
-				this.currently_animating = false;
-			}
-			
-			catch(ex) {}
+			this.is_visible = true;
 		},
 		
 		
 		
 		show_menu: function()
 		{
-			Page.element.querySelector("#settings-button").style.left = "10px";
+			this.settings_button.style.left = "10px";
 			
-			Page.element.querySelector("#show-footer-menu-button").style.opacity = 0;
+			Page.Animate.change_opacity(this.show_footer_menu_button, 0, Site.opacity_animation_time);
 			
 			setTimeout(() =>
 			{
-				Page.element.querySelector("#sitemap-button").style.left = "10px";
+				this.sitemap_button.style.left = "10px";
 				
 				setTimeout(() =>
 				{
-					Page.element.querySelector("#about-button").style.left = "10px";
+					this.about_button.style.left = "10px";
 					
 					
 					if (DEBUG)
 					{
 						setTimeout(() =>
 						{
-							Page.element.querySelector("#debug-button").style.left = "10px";
+							this.debug_button.style.left = "10px";
 							
 							this.menu_is_open = true;
 						}, Site.opacity_animation_time / 6);
@@ -547,27 +472,26 @@ Page.Footer =
 			
 			
 			
-			Page.element.querySelector("#settings-button").style.left = "-40px";
+			this.settings_button.style.left = "-40px";
 			
 			if (!this.image_links_is_open)
 			{
-				Page.element.querySelector("#show-footer-menu-button").style.opacity = 1;
+				Page.Animate.change_opacity(this.show_footer_menu_button, 1, Site.opacity_animation_time);
 			}
 			
 			setTimeout(() =>
 			{
-				Page.element.querySelector("#sitemap-button").style.left = "-40px";
+				this.sitemap_button.style.left = "-40px";
 				
 				setTimeout(() =>
 				{
-					Page.element.querySelector("#about-button").style.left = "-40px";
-					
+					this.about_button.style.left = "-40px";
 					
 					if (DEBUG)
 					{
 						setTimeout(() =>
 						{
-							Page.element.querySelector("#debug-button").style.left = "-40px";
+							this.debug_button.style.left = "-40px";
 							
 							this.menu_is_open = false;
 						}, Site.opacity_animation_time / 6);
@@ -581,13 +505,13 @@ Page.Footer =
 					setTimeout(() =>
 					{
 						//This is called when showing the image links, so we might need to reset the opacity.
-						Page.element.querySelector("#settings-button").style.opacity = 1;
-						Page.element.querySelector("#sitemap-button").style.opacity = 1;
-						Page.element.querySelector("#about-button").style.opacity = 1;
+						Page.Animate.change_opacity(this.settings_button, 1, Site.opacity_animation_time);
+						Page.Animate.change_opacity(this.sitemap_button, 1, Site.opacity_animation_time);
+						Page.Animate.change_opacity(this.about_button, 1, Site.opacity_animation_time);
 						
 						if (DEBUG)
 						{
-							Page.element.querySelector("#debug-button").style.opacity = 1;
+							Page.Animate.change_opacity(this.debug_button, 1, Site.opacity_animation_time);
 						}
 					}, Site.opacity_animation_time);
 				}, Site.opacity_animation_time / 6);
@@ -598,29 +522,29 @@ Page.Footer =
 		
 		show_image_links: function()
 		{
-			Page.element.querySelector("#floating-footer-gallery-link").style.left = "10px";
+			this.gallery_link.style.left = "10px";
 			
-			Page.element.querySelector("#settings-button").style.opacity = 0;
+			Page.Animate.change_opacity(this.settings_button, 0, Site.opacity_animation_time);
 			
 			setTimeout(() =>
 			{
-				Page.element.querySelector("#floating-footer-applets-link").style.left = "10px";
+				this.applets_link.style.left = "10px";
 				
-				Page.element.querySelector("#sitemap-button").style.opacity = 0;
+				Page.Animate.change_opacity(this.sitemap_button, 0, Site.opacity_animation_time);
 				
 				setTimeout(() =>
 				{
-					Page.element.querySelector("#floating-footer-writing-link").style.left = "10px";
+					this.writing_link.style.left = "10px";
 					
-					Page.element.querySelector("#about-button").style.opacity = 0;
+					Page.Animate.change_opacity(this.about_button, 0, Site.opacity_animation_time);
 					
 					setTimeout(() =>
 					{
-						Page.element.querySelector("#floating-footer-teaching-link").style.left = "10px";
+						this.teaching_link.style.left = "10px";
 						
 						setTimeout(() =>
 						{
-							Page.element.querySelector("#floating-footer-bio-link").style.left = "10px";
+							this.bio_link.style.left = "10px";
 							
 							this.image_links_is_open = true;
 							
@@ -689,26 +613,26 @@ Page.Footer =
 			
 			
 			
-			Page.element.querySelector("#floating-footer-gallery-link").style.left = "-40px";
+			this.gallery_link.style.left = "-40px";
 			
 			setTimeout(() =>
 			{
-				Page.element.querySelector("#floating-footer-applets-link").style.left = "-40px";
+				this.applets_link.style.left = "-40px";
 				
 				//This one looks better with a slight delay.
-				Page.element.querySelector("#show-footer-menu-button").style.opacity = 1;
+				Page.Animate.change_opacity(this.show_footer_menu_button, 1, Site.opacity_animation_time);
 				
 				setTimeout(() =>
 				{
-					Page.element.querySelector("#floating-footer-writing-link").style.left = "-40px";
+					this.writing_link.style.left = "-40px";
 					
 					setTimeout(() =>
 					{
-						Page.element.querySelector("#floating-footer-teaching-link").style.left = "-40px";
+						this.teaching_link.style.left = "-40px";
 						
 						setTimeout(() =>
 						{
-							Page.element.querySelector("#floating-footer-bio-link").style.left = "-40px";
+							this.bio_link.style.left = "-40px";
 							
 							this.image_links_is_open = false;
 						}, Site.opacity_animation_time / 6);
@@ -721,29 +645,29 @@ Page.Footer =
 		
 		show_settings: function()
 		{
-			Page.element.querySelector("#theme-button").style.left = "10px";
+			this.theme_button.style.left = "10px";
 			
-			Page.element.querySelector("#settings-button").style.opacity = 0;
+			Page.Animate.change_opacity(this.settings_button, 0, Site.opacity_animation_time);
 			
 			setTimeout(() =>
 			{
-				Page.element.querySelector("#contrast-button").style.left = "10px";
+				this.contrast_button.style.left = "10px";
 			
-				Page.element.querySelector("#sitemap-button").style.opacity = 0;
+				Page.Animate.change_opacity(this.sitemap_button, 0, Site.opacity_animation_time);
 				
 				setTimeout(() =>
 				{
-					Page.element.querySelector("#text-size-button").style.left = "10px";
+					this.text_size_button.style.left = "10px";
 				
-					Page.element.querySelector("#about-button").style.opacity = 0;
+					Page.Animate.change_opacity(this.about_button, 0, Site.opacity_animation_time);
 					
 					setTimeout(() =>
 					{
-						Page.element.querySelector("#font-button").style.left = "10px";
+						this.font_button.style.left = "10px";
 						
 						setTimeout(() =>
 						{
-							Page.element.querySelector("#content-animation-button").style.left = "10px";
+							this.content_animation_button.style.left = "10px";
 							
 							this.settings_is_open = true;
 							
@@ -812,25 +736,25 @@ Page.Footer =
 			
 			
 			
-			Page.element.querySelector("#theme-button").style.left = "-40px";
+			this.theme_button.style.left = "-40px";
 			
-			Page.element.querySelector("#show-footer-menu-button").style.opacity = 1;
+			Page.Animate.change_opacity(this.show_footer_menu_button, 1, Site.opacity_animation_time);
 			
 			setTimeout(() =>
 			{
-				Page.element.querySelector("#contrast-button").style.left = "-40px";
+				this.contrast_button.style.left = "-40px";
 				
 				setTimeout(() =>
 				{
-					Page.element.querySelector("#text-size-button").style.left = "-40px";
+					this.text_size_button.style.left = "-40px";
 					
 					setTimeout(() =>
 					{
-						Page.element.querySelector("#font-button").style.left = "-40px";
+						this.font_button.style.left = "-40px";
 						
 						setTimeout(() =>
 						{
-							Page.element.querySelector("#content-animation-button").style.left = "-40px";
+							this.content_animation_button.style.left = "-40px";
 							
 							this.settings_is_open = false;
 						}, Site.opacity_animation_time / 6);

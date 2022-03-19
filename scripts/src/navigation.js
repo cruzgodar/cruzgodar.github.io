@@ -103,7 +103,7 @@ Page.Navigation =
 			
 			
 			
-			document.body.innerHTML = Page.Components.decode(`<div class="page">${data}</div>${scripts_data}`);
+			Page.element.innerHTML = Page.Components.decode(`<div class="page">${data}</div>${scripts_data}`);
 			
 			Page.Load.parse_script_tags();
 			
@@ -382,6 +382,11 @@ Page.unload = function()
 	
 	
 	
-	//Remove everything that's not a script from the body.
-	Page.element.remove();
+	//Remove everything that's not a script from the page element.
+	elements = Page.element.querySelectorAll(":scope > *");
+	
+	for (let i = 0; i < elements.length; i++)
+	{
+		elements[i].remove();
+	}	
 }

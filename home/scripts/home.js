@@ -37,10 +37,6 @@
 	
 	
 	
-	Page.Footer.Floating.load();
-	
-	
-	
 	setTimeout(() =>
 	{
 		try

@@ -266,6 +266,10 @@ Site.load = async function(url)
 	
 	
 	
+	Page.Footer.Floating.load();
+	
+	
+	
 	Site.load_glsl();
 	
 	
@@ -418,13 +422,6 @@ Site.Interaction =
 				if (time_between_mousemoves >= 3 && time_between_mousemoves <= 50 && time_between_mousemoves !== 33)
 				{
 					this.currently_touch_device = false;
-					
-					
-					
-					if (!Page.Footer.Floating.is_visible)
-					{
-						Page.Footer.Floating.animate_in();
-					}
 				}
 			}
 		});
