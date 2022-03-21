@@ -319,12 +319,26 @@ Page.Unload =
 							{
 								document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 								document.body.style.backgroundColor = "rgb(0, 0, 0)";
+								
+								anime({
+									targets: Site.Settings.meta_theme_color_element,
+									content: "#000000",
+									duration: 500,
+									easing: "cubicBezier(.42, 0, .58, 1)"
+								});
 							}
 							
 							else
 							{
 								document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
 								document.body.style.backgroundColor = "rgb(24, 24, 24)";
+								
+								anime({
+									targets: Site.Settings.meta_theme_color_element,
+									content: "#161616",
+									duration: 500,
+									easing: "cubicBezier(.42, 0, .58, 1)"
+								});
 							}
 						}
 						
@@ -332,6 +346,13 @@ Page.Unload =
 						{
 							document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
 							document.body.style.backgroundColor = "rgb(255, 255, 255)";
+							
+							anime({
+								targets: Site.Settings.meta_theme_color_element,
+								content: "#ffffff",
+								duration: 500,
+								easing: "cubicBezier(.42, 0, .58, 1)"
+							});
 						}
 						
 						setTimeout(() =>

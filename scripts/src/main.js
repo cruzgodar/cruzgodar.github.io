@@ -266,10 +266,6 @@ Site.load = async function(url)
 	
 	
 	
-	Page.Footer.Floating.load();
-	
-	
-	
 	Site.load_glsl();
 	
 	
@@ -278,6 +274,10 @@ Site.load = async function(url)
 	
 	.then(() =>
 	{
+		Page.Footer.Floating.load();
+		
+		
+		
 		//If it's not an html file, it shouldn't be anywhere near redirect().
 		if (url.substring(url.lastIndexOf(".") + 1, url.length) !== "html")
 		{

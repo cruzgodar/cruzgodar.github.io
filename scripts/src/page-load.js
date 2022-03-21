@@ -476,7 +476,8 @@ Page.Load =
 		{
 			if (!("no_footer" in Page.settings && Page.settings["no_footer"]))
 			{
-				this.anchor_positions[this.elements.length - 1] = document.body.clientHeight - 10;
+				this.anchor_positions[this.elements.length - 1] = document.body.scrollHeight - 10;
+				this.anchor_offsets[this.elements.length - 1] = 0;
 				
 				this.element_animation_types[this.elements.length - 1] = 1;
 			}
