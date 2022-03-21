@@ -287,7 +287,7 @@ Site.load = async function(url)
 		
 		else
 		{
-			Page.Navigation.redirect(url, false, true);
+			Page.Navigation.redirect(url, false, true, false, true);
 		}
 	});
 };

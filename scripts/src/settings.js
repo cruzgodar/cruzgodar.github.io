@@ -142,32 +142,7 @@ Site.Settings =
 	
 	
 	
-	meta_theme_color_refresh_id: null,
-	meta_theme_color_animation_step: 0,
 	meta_theme_color_element: document.querySelector("#theme-color-meta"),
-	
-	animate_meta_theme_color: function(old_brightness, new_brightness, num_steps = 45)
-	{
-		try {clearInterval(this.meta_theme_color_refresh_id);}
-		catch(ex) {}
-		
-		this.meta_theme_color_animation_step = 0;
-		
-		this.meta_theme_color_refresh_id = setInterval(() =>
-		{
-			this.meta_theme_color_animation_step++;
-			
-			let brightness = (1 - this.meta_theme_color_animation_step / num_steps) * old_brightness + (this.meta_theme_color_animation_step / num_steps) * new_brightness;
-			
-			this.meta_theme_color_element.setAttribute("content", `rgb(${brightness}, ${brightness}, ${brightness})`);
-			
-			if (this.meta_theme_color_animation_step === num_steps)
-			{
-				try {clearInterval(this.meta_theme_color_refresh_id);}
-				catch(ex) {}
-			}
-		}, 10);
-	},
 	
 	
 	
@@ -252,11 +227,15 @@ Site.Settings =
 			{
 				this.toggle_dark_theme_color(no_settings_text);
 				
-				//document.querySelector("#theme-color-meta").setAttribute("content", "#000000");
-				this.animate_meta_theme_color(24, 0);
-				
 				if (!no_animation)
 				{
+					anime({
+						targets: this.meta_theme_color_element,
+						content: "#000000",
+						duration: 500,
+						easing: "cubicBezier(.42, 0, .58, 1)"
+					});
+					
 					setTimeout(() =>
 					{
 						if (!no_settings_text)
@@ -266,6 +245,11 @@ Site.Settings =
 						}
 					}, Site.opacity_animation_time * 2);
 				}
+				
+				else
+				{
+					this.meta_theme_color_element.setAttribute("content", "rgb(0, 0, 0)");
+				}
 			}
 			
 			else if (this.url_vars["theme"] === 1 && this.url_vars["dark_theme_color"] === 1)
@@ -274,6 +258,13 @@ Site.Settings =
 				
 				if (!no_animation)
 				{
+					anime({
+						targets: this.meta_theme_color_element,
+						content: "#ffffff",
+						duration: 500,
+						easing: "cubicBezier(.42, 0, .58, 1)"
+					});
+					
 					setTimeout(() =>
 					{
 						this.toggle_dark_theme_color();
@@ -285,6 +276,11 @@ Site.Settings =
 					 	}
 					}, Site.opacity_animation_time * 2);
 				}
+				
+				else
+				{
+					this.meta_theme_color_element.setAttribute("content", "rgb(255, 255, 255)");
+				}
 			}
 			
 			else
@@ -293,6 +289,13 @@ Site.Settings =
 				
 				if (!no_animation)
 				{
+					anime({
+						targets: this.meta_theme_color_element,
+						content: "#161616",
+						duration: 500,
+						easing: "cubicBezier(.42, 0, .58, 1)"
+					});
+					
 					setTimeout(() =>
 					{
 						if (!no_settings_text)
@@ -301,6 +304,11 @@ Site.Settings =
 							catch(ex) {}
 						}
 					}, Site.opacity_animation_time * 2);
+				}
+				
+				else
+				{
+					this.meta_theme_color_element.setAttribute("content", "rgb(24, 24, 24)");
 				}
 			}
 		}
@@ -363,15 +371,11 @@ Site.Settings =
 				if (this.url_vars["dark_theme_color"] !== 1)
 				{
 					document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-					
-					this.animate_meta_theme_color(255, 24);
 				}
 				
 				else
 				{
 					document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-					
-					this.animate_meta_theme_color(24, 0);
 				}
 			}
 			
@@ -438,8 +442,6 @@ Site.Settings =
 			if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
 			{
 				document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
-				
-				this.animate_meta_theme_color(0, 255);
 			}
 			
 			

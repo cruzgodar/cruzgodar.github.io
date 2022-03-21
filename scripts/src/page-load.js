@@ -140,23 +140,30 @@ Page.load = function()
 
 
 
-Page.show = async function()
+Page.show = function()
 {
-	this.Load.AOS.load();
-	
-	await this.Load.fade_in();
-	
-	setTimeout(() =>
+	return new Promise(async (resolve, reject) =>
 	{
+		await this.Load.fade_in();
+		
+		this.Load.AOS.load();
+		
 		this.Load.AOS.on_resize();
-	}, 1000);
-	
-	this.Load.AOS.show_elements = true;
-	
-	this.Load.AOS.on_scroll();
-	
-	try {Page.on_show()}
-	catch(ex) {}
+		
+		setTimeout(() =>
+		{
+			this.Load.AOS.on_resize();
+		}, 1000);
+		
+		this.Load.AOS.show_elements = true;
+		
+		this.Load.AOS.on_scroll();
+		
+		try {Page.on_show()}
+		catch(ex) {}
+		
+		resolve();
+	});
 };
 
 
@@ -308,8 +315,6 @@ Page.Load =
 				`);
 				
 				await Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time, true);
-				
-				resolve();
 			}
 			
 			else
@@ -319,9 +324,9 @@ Page.Load =
 				setTimeout(() => Page.Animate.change_opacity(Page.Footer.Floating.show_footer_menu_button, 1, Site.opacity_animation_time), 10);
 				
 				document.body.style.opacity = 1;
-				
-				resolve();
 			}
+			
+			resolve();
 		});	
 	},
 	
@@ -352,7 +357,7 @@ Page.Load =
 
 		//This function puts the proper delays and anchors on aos elements on the page. The first animated element in every section should have a class of new-aos-section.
 		
-		//Update: the bug came back even for zero-delay elements. The site's content animation has been optionally moved to the JS-based anime.js, so while variables are still called AOS to avoid massive refactoring, it's no longer a part of the site.
+		//Update: the bug came back even for zero-delay elements. The site's content animation has been optionally moved to the JS-based anime.js.
 		load: function()
 		{
 			if (Site.Settings.url_vars["content_animation"] === 1)
@@ -389,15 +394,7 @@ Page.Load =
 					
 					
 					
-					if (new_elements[i].getAttribute("data-aos-offset") !== null)
-					{
-						this.anchor_offsets[current_section - 1] = parseInt(new_elements[i].getAttribute("data-aos-offset"));
-					}
-					
-					else
-					{
-						this.anchor_offsets[current_section - 1] = 100;
-					}
+					this.anchor_offsets[current_section - 1] = 100;
 					
 					
 					
@@ -432,12 +429,7 @@ Page.Load =
 					}
 					
 					new_elements[i].style.opacity = 0;
-				}	
-				
-				else
-				{
-					new_elements[i].setAttribute("data-aos-offset", 1000000);
-				}	
+				}
 				
 				this.elements[current_section - 1].push(new_elements[i]);
 				

@@ -13,7 +13,7 @@ Page.Navigation =
 	
 	
 	//Handles virtually all links.
-	redirect: function(url, in_new_tab = false, no_state_push = false, restore_scroll = false)
+	redirect: function(url, in_new_tab = false, no_state_push = false, restore_scroll = false, no_fade_out = false)
 	{
 		if (this.currently_changing_page)
 		{
@@ -60,7 +60,7 @@ Page.Navigation =
 		
 		
 		//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-		Promise.all([fetch(url), Page.Unload.fade_out(), Page.Banner.load()])
+		Promise.all([fetch(url), Page.Unload.fade_out(no_fade_out), Page.Banner.load()])
 		
 		
 		.then((response) =>
@@ -103,7 +103,7 @@ Page.Navigation =
 			
 			
 			
-			Page.element.innerHTML = Page.Components.decode(`<div class="page">${data}</div>${scripts_data}`);
+			Page.element.innerHTML = Page.Components.decode(`<div class="page">${data}</div>${scripts_data}`).replace(/data-aos=/g, `data-aos-offset="1000000" data-aos=`);
 			
 			Page.Load.parse_script_tags();
 			
@@ -246,10 +246,18 @@ Page.Navigation =
 
 Page.Unload =
 {
-	fade_out: function()
+	fade_out: function(no_fade_out)
 	{
 		return new Promise((resolve, reject) =>
 		{
+			if (no_fade_out)
+			{
+				resolve();
+				return;
+			}
+			
+			
+			
 			//Act like a normal link, with no transitions, if the user wants that.
 			if (Site.Settings.url_vars["content_animation"] === 1)
 			{

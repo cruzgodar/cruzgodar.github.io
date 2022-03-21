@@ -58,29 +58,30 @@
 	
 	
 	
-	Page.show();
+	Page.show()
 	
-	
-	
-	let elements = Page.element.querySelectorAll(".image-links");
-	
-	elements[0].id = "category-pages";
-	
-	elements[1].id = "newest-pages";
-	
-	let children = elements[1].querySelectorAll(".image-link");
-	
-	for (let i = 0; i < Page.Load.AOS.elements[2].length; i++)
+	.then(() =>
 	{
-		Page.Load.AOS.elements[2][i].setAttribute("data-aos", "zoom-out");
+		let elements = Page.element.querySelectorAll(".image-links");
 		
-		if (Site.use_js_animation)
+		elements[0].id = "category-pages";
+		
+		elements[1].id = "newest-pages";
+		
+		let children = elements[1].querySelectorAll(".image-link");
+		
+		for (let i = 0; i < Page.Load.AOS.elements[2].length; i++)
 		{
-			Page.Load.AOS.elements[2][i].style.transform = "scale(1.3)";
+			Page.Load.AOS.elements[2][i].setAttribute("data-aos", "zoom-out");
+			
+			if (Site.use_js_animation)
+			{
+				Page.Load.AOS.elements[2][i].style.transform = "scale(1.3)";
+			}
 		}
-	}
-	
-	Page.Load.AOS.element_animation_types[2] = 1;
+		
+		Page.Load.AOS.element_animation_types[2] = 1;
+	});	
 	
 	
 	
