@@ -39,4 +39,8 @@
     }
     
     catch(ex) {}
+    
+    
+    
+    Page.show();
 }()

@@ -25,4 +25,8 @@
     }
     
     catch(ex) {}
+    
+    
+    
+    Page.show();
 }()
