@@ -2,6 +2,13 @@
 
 
 
+Site.force_dark_theme_pages =
+[
+	"/gallery/gallery.html"
+];
+
+
+
 Site.Settings =
 {
 	url_vars: {},
@@ -23,6 +30,7 @@ Site.Settings =
 	
 	//Set to either 0 or 1 if a page has forced a theme and it needs to change back.
 	revert_theme: -1,
+	forced_theme: false,
 	
 	
 	
@@ -65,6 +73,13 @@ Site.Settings =
 		
 		window.matchMedia("(prefers-color-scheme: dark)").addListener((e) =>
 		{
+			if (this.revert_theme !== -1)
+			{
+				return;
+			}
+			
+			
+			
 			if (e.matches && this.url_vars["theme"] !== 1)
 			{
 				this.toggle_theme();
@@ -148,6 +163,14 @@ Site.Settings =
 	
 	handle_theme_revert: function()
 	{
+		if (Site.Settings.forced_theme)
+		{
+			Site.Settings.forced_theme = false;
+			return;
+		}
+		
+		
+		
 		if (this.url_vars["content_animation"] === 1)
 		{
 			if (this.revert_theme === 0)

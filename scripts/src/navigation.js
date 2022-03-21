@@ -60,7 +60,7 @@ Page.Navigation =
 		
 		
 		//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-		Promise.all([fetch(url), Page.Unload.fade_out(no_fade_out), Page.Banner.load()])
+		Promise.all([fetch(url), Page.Unload.fade_out(no_fade_out, url), Page.Banner.load()])
 		
 		
 		.then((response) =>
@@ -246,10 +246,21 @@ Page.Navigation =
 
 Page.Unload =
 {
-	fade_out: function(no_fade_out)
+	fade_out: function(no_fade_out, url)
 	{
 		return new Promise((resolve, reject) =>
 		{
+			if (Site.force_dark_theme_pages.includes(url) && Site.Settings.url_vars["theme"] !== 1)
+			{
+				Site.Settings.revert_theme = 0;
+				
+				Site.Settings.forced_theme = true;
+				
+				Site.Settings.toggle("theme", false, true);
+			}
+			
+			
+			
 			if (no_fade_out)
 			{
 				document.body.style.opacity = 0;
@@ -296,15 +307,8 @@ Page.Unload =
 				
 				.then(() =>
 				{
-					if (Page.background_color_changed === false)
-					{
-						resolve();
-					}
-					
-					
-					
 					//If necessary, take the time to fade back to the default background color, whatever that is.
-					else
+					if (Page.background_color_changed)
 					{
 						document.documentElement.classList.add("background-transition");
 						document.body.classList.add("background-transition");
@@ -337,9 +341,9 @@ Page.Unload =
 							document.documentElement.classList.remove("background-transition");
 							document.body.classList.remove("background-transition");
 						}, Site.background_color_animation_time);
-						
-						resolve();
 					}
+					
+					resolve();
 				});
 			}
 		});

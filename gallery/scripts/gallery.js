@@ -2,13 +2,6 @@
 {
 	"use strict";
 	
-	if (Site.Settings.url_vars["theme"] !== 1)
-	{
-		Site.Settings.revert_theme = 0;
-		
-		Site.Settings.toggle("theme", false, true);
-	}
-	
 	let current_id = "";
 	
 	
@@ -24,9 +17,15 @@
 	
 	let elements = Page.element.querySelectorAll(".gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img");
 	
+	let src_separation_time = Site.aos_separation_time * 2;
+	
 	for (let i = 0; i < elements.length; i++)
 	{
-		elements[i].src = `${Page.parent_folder}high-res/${elements[i].getAttribute("data-image-id")}.${Page.Images.file_extension}`;
+		//if (elements[i].getBoundingClientRect().top < Page.Layout.window_height + 100)
+		setTimeout(() =>
+		{
+			elements[i].src = `${Page.parent_folder}high-res/${elements[i].getAttribute("data-image-id")}.${Page.Images.file_extension}`;
+		}, src_separation_time * i + 900);	
 		
 		elements[i].addEventListener("click", e =>
 		{
