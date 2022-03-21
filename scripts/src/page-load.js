@@ -142,27 +142,27 @@ Page.load = function()
 
 Page.show = function()
 {
-	return new Promise(async (resolve, reject) =>
+	return new Promise((resolve, reject) =>
 	{
-		await this.Load.fade_in();
-		
-		this.Load.AOS.load();
-		
-		this.Load.AOS.on_resize();
-		
-		setTimeout(() =>
+		setTimeout(async () =>
 		{
+			await this.Load.fade_in();
+			
+			this.Load.AOS.load();
+			
 			this.Load.AOS.on_resize();
-		}, 1000);
-		
-		this.Load.AOS.show_elements = true;
-		
-		this.Load.AOS.on_scroll();
-		
-		try {Page.on_show()}
-		catch(ex) {}
-		
-		resolve();
+			
+			setTimeout(() =>
+			{
+				this.Load.AOS.on_resize();
+			}, 1000);
+			
+			this.Load.AOS.show_elements = true;
+			
+			this.Load.AOS.on_scroll();
+			
+			resolve();
+		}, 10);	
 	});
 };
 
