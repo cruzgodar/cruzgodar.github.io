@@ -252,6 +252,8 @@ Page.Unload =
 		{
 			if (no_fade_out)
 			{
+				document.body.style.opacity = 0;
+				
 				resolve();
 				return;
 			}
