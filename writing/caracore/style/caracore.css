@@ -1,6 +1,6 @@
 html
 {
-	transition: background-color .6s ease !important;
+	transition: background-color .5s ease !important;
 }
 
 footer
@@ -42,8 +42,10 @@ footer
 #flame-container
 {
 	width: 50vh;
-	height: 50vh;
+	height: calc(50vh + 50px);
 	margin: 0 auto;
+	
+	position: relative;
 	
 	opacity: 0;
 }
@@ -52,26 +54,28 @@ footer
 {
 	position: absolute;
 	width: 50vh;
+	height: 50vh;
+	top: 50px;
 }
 
 #flame-cover
 {
 	position: absolute;
 	width: 50vh;
-	height: 50vh;
+	height: calc(50vh + 50px);
 	
 	background-color: rgb(0, 0, 0);
 	
 	z-index: 10;
 	
-	transition: height 1.2s ease-in-out;
+	transition: height 1s ease-in-out;
 }
 
 #flame-gradient-container
 {
 	position: absolute;
 	width: 50vh;
-	height: 60vh;
+	height: calc(50vh + 50px);
 	
 	z-index: 10;
 }
@@ -79,18 +83,16 @@ footer
 #flame-gradient
 {
 	width: 50vh;
-	height: 10vh;
+	height: 50px;
 	
 	background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
-	
-	transition: opacity .3s ease-in-out;
 }
 
 #flame-gradient-space
 {
-	height: 50vh;
+	height: calc(50vh + 50px);
 	
-	transition: height 1.2s ease-in-out;
+	transition: height 1s ease-in-out;
 }
 
 
@@ -100,7 +102,7 @@ footer
 	#flame-container
 	{
 		width: 50vw;
-		height: 50vw;
+		height: calc(50vw + 50px);
 		margin-left: 25vw;
 	}
 	
@@ -108,29 +110,30 @@ footer
 	{
 		width: 50vw;
 		height: 50vw;
+		top: 50px;
 	}
 	
 	#flame-cover
 	{
 		width: 50vw;
-		height: 50vw;
+		height: calc(50vw + 50px);
 	}
 	
 	#flame-gradient-container
 	{
 		width: 50vw;
-		height: 60vw;
+		height: calc(50vw + 50px);
 	}
 	
 	#flame-gradient
 	{
 		width: 50vw;
-		height: 10vw;
+		height: 50px;
 	}
 	
 	#flame-gradient-space
 	{
-		height: 50vw;
+		height: calc(50vw + 50px);
 	}
 }
 

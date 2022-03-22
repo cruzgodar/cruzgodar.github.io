@@ -2,48 +2,38 @@
 {
 	"use strict";
 	
-	Page.element.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-	
-	if (Site.Settings.url_vars["theme"] !== 1)
-	{
-		Site.Settings.animate_meta_theme_color(255, 0);
-	}
-	
-	else if (Site.Settings.url_vars["theme"] === 0 && Site.Settings.url_vars["dark_theme_color"] === 0)
-	{
-		Site.Settings.animate_meta_theme_color(24, 0);
-	}
+	document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 	
 	Page.background_color_changed = true;
 	
-	Page.element.querySelector("#hidden").style.display = "block";
+	Page.show()
 	
-	Page.element.querySelector("#spawn-footer").previousElementSibling.remove();
-	
-	
-	
-	setTimeout(() =>
+	.then(() =>
 	{
-		Page.element.querySelector("#flame-container").style.opacity = 1;
+		anime({
+			targets: Site.Settings.meta_theme_color_element,
+			content: "#000000",
+			duration: 500,
+			easing: "cubicBezier(.42, 0, .58, 1)"
+		});
 		
-		Page.element.querySelector("#flame-cover").style.height = 0;
-		Page.element.querySelector("#flame-gradient-space").style.height = 0;
+		Page.element.querySelector("#spawn-footer").previousElementSibling.remove();
+		
+		Page.element.querySelector("#hidden").style.display = "block";
+		
+		Page.element.querySelector("#flame-gradient-container").style.opacity = 1;
 		
 		setTimeout(() =>
 		{
-			Page.element.querySelector("#flame-gradient").style.opacity = 0;
+			Page.element.querySelector("#flame-container").style.opacity = 1;
 			
-			Page.Load.AOS.on_resize();
+			Page.element.querySelector("#flame-cover").style.height = 0;
+			Page.element.querySelector("#flame-gradient-space").style.height = 0;
 			
 			setTimeout(() =>
 			{
-				try {Page.element.querySelector("#show-footer-menu-button-opacity-adjust").remove();}
-				catch(ex) {}
-			}, 2000);
+				Page.Load.AOS.on_resize();
+			}, 1000);
 		}, 1000);
-	}, 1000);
-	
-	
-	
-	Page.show();
+	});			
 }()
