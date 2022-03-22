@@ -130,124 +130,138 @@ Site.glsl_files_by_depth = [];
 
 Site.load_glsl = function()
 {
-	return new Promise(async (resolve, reject) =>
+	if (Site.scripts_loaded["glsl"] === 0)
 	{
-		//constants.frag and main.frag are always fetched.
-		await new Promise(async (resolve, reject) =>
+		Site.scripts_loaded["glsl"] = 1;
+		
+		return new Promise(async (resolve, reject) =>
 		{
-			fetch(`/scripts/glsl/constants.frag`)
-		
-			.then(response => response.text())
+			//constants.frag and main.frag are always fetched.
+			let response = await fetch("/scripts/glsl/constants.frag");
 			
-			.then(text => this.glsl_files["constants"].content = text)
-			
-			.then(() => resolve());
-		});
-		
-		
-		await new Promise(async (resolve, reject) =>
-		{
-			fetch(`/scripts/glsl/main.frag`)
-		
-			.then(response => response.text())
-			
-			.then(text => this.glsl_files["main"].content = text)
-			
-			.then(() => resolve());
-		});
-		
-		
-		
-		for (let i = 0; i < this.glsl_filenames.length; i++)
-		{
-			await new Promise(async (resolve, reject) =>
-			{
-				fetch(`/scripts/glsl/${this.glsl_filenames[i]}.frag`)
-			
-				.then(response => response.text())
+			let text = await response.text();
 				
-				.then(text => this.split_glsl_file(this.glsl_filenames[i], text))
-				
-				.then(() => resolve());
-			});
-		}
-		
-		
-		
-		let filenames = Object.keys(this.glsl_files);
-		
-		
-		
-		//Figure out the depth of everything.
-		for (let i = 0; i < filenames.length; i++)
-		{
-			this.glsl_files[filenames[i]].parents = [];
-		}
-		
-		
-		
-		for (let i = 0; i < filenames.length; i++)
-		{
-			let dependencies = this.glsl_files[filenames[i]].dependencies;
+			this.glsl_files["constants"].content = text;
 			
-			for (let j = 0; j < dependencies.length; j++)
+			
+			
+			response = await fetch("/scripts/glsl/main.frag");
+			
+			text = await response.text();
+				
+			this.glsl_files["main"].content = text;
+			
+			
+			
+			for (let i = 0; i < this.glsl_filenames.length; i++)
 			{
-				this.glsl_files[dependencies[j]].parents.push(filenames[i]);
+				response = await fetch(`/scripts/glsl/${this.glsl_filenames[i]}.frag`);
+				
+				text = await response.text();
+				
+				this.split_glsl_file(this.glsl_filenames[i], text);
 			}
 			
-			if (dependencies.length === 0 && filenames[i] !== "main")
+			let filenames = Object.keys(this.glsl_files);
+			
+			
+			
+			//Figure out the depth of everything.
+			for (let i = 0; i < filenames.length; i++)
 			{
-				this.glsl_files["main"].parents.push(filenames[i]);
+				this.glsl_files[filenames[i]].parents = [];
 			}
-		}
-		
-		let active_nodes = ["main"];
-		let depth = 0;
-		
-		while (active_nodes.length !== 0)
-		{
-			let next_active_nodes = [];
 			
-			Site.glsl_files_by_depth.push([]);
 			
-			for (let i = 0; i < active_nodes.length; i++)
+			
+			for (let i = 0; i < filenames.length; i++)
 			{
-				if (typeof this.glsl_files[active_nodes[i]].depth === "undefined")
+				let dependencies = this.glsl_files[filenames[i]].dependencies;
+				
+				for (let j = 0; j < dependencies.length; j++)
 				{
-					this.glsl_files[active_nodes[i]].depth = depth;
+					this.glsl_files[dependencies[j]].parents.push(filenames[i]);
 				}
 				
-				else
+				if (dependencies.length === 0 && filenames[i] !== "main")
 				{
-					this.glsl_files[active_nodes[i]].depth = Math.max(this.glsl_files[active_nodes[i]].depth, depth);
+					this.glsl_files["main"].parents.push(filenames[i]);
 				}
+			}
+			
+			let active_nodes = ["main"];
+			let depth = 0;
+			
+			while (active_nodes.length !== 0)
+			{
+				let next_active_nodes = [];
 				
-				let parents = this.glsl_files[active_nodes[i]].parents;
+				Site.glsl_files_by_depth.push([]);
 				
-				for (let j = 0; j < parents.length; j++)
+				for (let i = 0; i < active_nodes.length; i++)
 				{
-					if (!next_active_nodes.includes(parents[j]))
+					if (typeof this.glsl_files[active_nodes[i]].depth === "undefined")
 					{
-						next_active_nodes.push(parents[j]);
-					}	
+						this.glsl_files[active_nodes[i]].depth = depth;
+					}
+					
+					else
+					{
+						this.glsl_files[active_nodes[i]].depth = Math.max(this.glsl_files[active_nodes[i]].depth, depth);
+					}
+					
+					let parents = this.glsl_files[active_nodes[i]].parents;
+					
+					for (let j = 0; j < parents.length; j++)
+					{
+						if (!next_active_nodes.includes(parents[j]))
+						{
+							next_active_nodes.push(parents[j]);
+						}	
+					}
 				}
+				
+				depth++;
+				active_nodes = next_active_nodes;
 			}
 			
-			depth++;
-			active_nodes = next_active_nodes;
-		}
-		
-		for (let i = 0; i < filenames.length; i++)
+			for (let i = 0; i < filenames.length; i++)
+			{
+				Site.glsl_files_by_depth[this.glsl_files[filenames[i]].depth].push(filenames[i]);
+			}
+			
+			
+			
+			Site.scripts_loaded["glsl"] = 2;
+			
+			resolve();
+		});
+	}
+	
+	
+	
+	else if (Site.scripts_loaded["glsl"] === 1)
+	{
+		return new Promise((resolve, reject) =>
 		{
-			Site.glsl_files_by_depth[this.glsl_files[filenames[i]].depth].push(filenames[i]);
-		}
-		
-		
-		
-		Site.scripts_loaded["glsl"] = true;
-		
-		resolve();
-	});
+			let refresh_id = setInterval(() =>
+			{
+				if (Site.scripts_loaded["glsl"] === 2)
+				{
+					clearInterval(refresh_id);
+					
+					resolve();
+				}
+			}, 100);
+		});
+	}
+	
+	
+	
+	else
+	{
+		return new Promise((resolve, reject) => resolve());
+	}
 };
 
 
@@ -345,6 +359,8 @@ Site.get_glsl_bundle = function(code_string)
 			}
 		}	
 	}
+	
+	
 	
 	return bundle;
 }

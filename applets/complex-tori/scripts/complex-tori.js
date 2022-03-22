@@ -4,10 +4,7 @@
 	
 	
 	
-	if (!Site.scripts_loaded["glsl"])
-	{
-		await Site.load_glsl();
-	}
+	await Site.load_glsl();
 	
 	
 	

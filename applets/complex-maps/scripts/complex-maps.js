@@ -4,16 +4,11 @@
 	
 	
 	
-	if (!Site.scripts_loaded["glsl"])
-	{
-		await Site.load_glsl();
-	}
+	await Site.load_glsl();
 	
 	
 	
 	let wilson = null;
-	
-	let wilson_hidden = null;
 	
 	
 	
@@ -170,8 +165,6 @@
 	past_brightness_scales = [];
 	
 	zoom_level = -.585;
-	
-	
 	
 	Page.show();
 	
@@ -346,7 +339,7 @@
 		
 		
 		wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
-
+		
 		wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point", "draggable_arg"]);
 		
 		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
@@ -363,8 +356,6 @@
 		
 		
 		window.requestAnimationFrame(draw_frame);
-		
-		
 		
 		next_pan_velocity_x = 0;
 		next_pan_velocity_y = 0;

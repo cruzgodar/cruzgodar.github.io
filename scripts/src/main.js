@@ -86,7 +86,7 @@ Site.scripts_loaded =
 {
 	"mathjax": false,
 	"complexjs": false,
-	"glsl": false
+	"glsl": 0
 };
 
 
@@ -248,10 +248,6 @@ Site.load = async function(url)
 	
 	
 	Site.Settings.set_up();
-	
-	
-	
-	Site.load_glsl();
 	
 	
 	
