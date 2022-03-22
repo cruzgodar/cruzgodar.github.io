@@ -156,12 +156,12 @@ Site.load = async function(url)
 	{
 		Page.Banner.on_scroll(0);
 		
-		Page.Load.AOS.on_scroll();
+		window.requestAnimationFrame(Page.Load.AOS.on_scroll);
 	});
 	
 	window.addEventListener("resize", () =>
 	{
-		Page.Load.AOS.on_resize();
+		window.requestAnimationFrame(Page.Load.AOS.on_resize);
 		
 		Page.Layout.on_resize();
 	});

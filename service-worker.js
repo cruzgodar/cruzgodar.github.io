@@ -7,7 +7,7 @@ if (workbox)
 
 
 
-//For image files, though, we'll cache them for a week and serve the cached version by default. It's not as important to have the latest versions, and they are by far the biggest use of the network.
+//For image files, we'll cache them for a day and serve the cached version by default. It's not as important to have the latest versions, and they are by far the biggest use of the network.
 workbox.routing.registerRoute(
 	/\.(?:webp|png|jpg|jpeg|gif)$/,
 	new workbox.strategies.CacheFirst({

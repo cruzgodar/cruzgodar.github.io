@@ -128,7 +128,9 @@ Page.Banner =
 		});
 	},
 
-
+	
+	
+	last_scroll_timestamp: -1,
 
 	on_scroll: function(scroll_position_override)
 	{
@@ -144,8 +146,25 @@ Page.Banner =
 			this.ScrollButton.done_loading = false;
 		}
 		
+		window.requestAnimationFrame(this.scroll_animation_frame);
+	},
 		
+	scroll_animation_frame: function(timestamp)
+	{
+		let time_elapsed = timestamp - Page.Banner.last_scroll_timestamp;
 		
+		Page.Banner.last_scroll_timestamp = timestamp;
+		
+		if (time_elapsed === 0)
+		{
+			return;
+		}
+		
+		Page.Banner.scroll_handler();
+	},
+	
+	scroll_handler: function()
+	{
 		if (Page.scroll >= 0)
 		{
 			if (Page.scroll <= Page.Layout.window_height)
