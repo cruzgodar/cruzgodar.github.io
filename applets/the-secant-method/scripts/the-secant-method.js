@@ -220,6 +220,11 @@
 	
 	let num_iterations = 100;
 	
+	let currently_spreading_roots = false;
+	let parameter_animation_frame = 0;
+	let old_roots = [];
+	let roots_delta = [];
+	
 	let zoom_level = 0;
 	
 	let past_brightness_scales = [];
@@ -264,7 +269,7 @@
 	add_root();
 	add_root();
 	
-	spread_roots();
+	spread_roots(true);
 	
 	
 
@@ -295,7 +300,7 @@
 	
 	let spread_roots_button_element = Page.element.querySelector("#spread-roots-button");
 	
-	spread_roots_button_element.addEventListener("click", spread_roots);
+	spread_roots_button_element.addEventListener("click", () => spread_roots(false));
 	
 	
 	
@@ -347,7 +352,7 @@
 		let x = Math.random() * 3 - 1.5;
 		let y = Math.random() * 3 - 1.5;
 		
-		wilson.draggables.add(x, y)
+		wilson.draggables.add(x, y);
 		
 		current_roots.push(x);
 		current_roots.push(y);
@@ -384,21 +389,60 @@
 	
 	
 	
-	function spread_roots()
+	function spread_roots(no_animation = false)
 	{
+		if (!currently_spreading_roots)
+		{
+			currently_spreading_roots = true;
+			
+			parameter_animation_frame = 0;
+		}
+		
+		old_roots = JSON.parse(JSON.stringify(current_roots));
+		
 		for (let i = 0; i < num_roots; i++)
 		{
 			if (i < num_roots / 2 || num_roots % 2 === 1)
 			{
-				current_roots[2 * i] = Math.cos(2 * Math.PI * 2 * i / num_roots);
-				current_roots[2 * i + 1] = Math.sin(2 * Math.PI * 2 * i / num_roots);
+				roots_delta[2 * i] = Math.cos(2 * Math.PI * 2 * i / num_roots) - current_roots[2 * i];
+				roots_delta[2 * i + 1] = Math.sin(2 * Math.PI * 2 * i / num_roots) - current_roots[2 * i + 1];
 			}
 			
 			else
 			{
-				current_roots[2 * i] = Math.cos(2 * Math.PI * (2 * i + 1) / num_roots);
-				current_roots[2 * i + 1] = Math.sin(2 * Math.PI * (2 * i + 1) / num_roots);
+				roots_delta[2 * i] = Math.cos(2 * Math.PI * (2 * i + 1) / num_roots) - current_roots[2 * i];
+				roots_delta[2 * i + 1] = Math.sin(2 * Math.PI * (2 * i + 1) / num_roots) - current_roots[2 * i + 1];
 			}
+		}
+		
+		if (no_animation)
+		{
+			currently_spreading_roots = false;
+			
+			for (let i = 0; i < num_roots; i++)
+			{
+				current_roots[2 * i] = old_roots[2 * i] + roots_delta[2 * i];
+				current_roots[2 * i + 1] = old_roots[2 * i + 1] + roots_delta[2 * i + 1];
+				
+				wilson.draggables.world_coordinates[i + 2] = [current_roots[2 * i], current_roots[2 * i + 1]];
+			}
+			
+			wilson.draggables.recalculate_locations();
+		}
+		
+		window.requestAnimationFrame(draw_newtons_method);
+	}
+	
+	
+	
+	function spread_roots_step()
+	{
+		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 120 - Math.PI / 2) + .5;
+		
+		for (let i = 0; i < num_roots; i++)
+		{
+			current_roots[2 * i] = old_roots[2 * i] + roots_delta[2 * i] * t;
+			current_roots[2 * i + 1] = old_roots[2 * i + 1] + roots_delta[2 * i + 1] * t;
 			
 			wilson.draggables.world_coordinates[i + 2] = [current_roots[2 * i], current_roots[2 * i + 1]];
 		}
@@ -406,6 +450,13 @@
 		window.requestAnimationFrame(draw_newtons_method);
 		
 		wilson.draggables.recalculate_locations();
+		
+		parameter_animation_frame++;
+		
+		if (parameter_animation_frame === 121)
+		{
+			currently_spreading_roots = false;
+		}
 	}
 	
 	
@@ -701,6 +752,13 @@
 		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
 		
 		wilson.render.draw_frame();
+		
+		
+		
+		if (currently_spreading_roots)
+		{
+			spread_roots_step();
+		}
 		
 		
 		
