@@ -120,19 +120,19 @@ Page.Footer =
 		
 		
 		
-		if  (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "bio"))
+		if  (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === "about"))
 		{
 			let element = document.createElement("div");
 			
 			Page.element.querySelector(".footer-image-links").appendChild(element);
 			
 			element.outerHTML = `
-				<div id="bio-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-					<a class="focus-on-child" href="/index.html?page=%2Fbio%2Fbio.html${url_vars_suffix}" tabindex="-1">
-						<img onclick="Page.Navigation.redirect('/bio/bio.html')" src="/bio/cover.${Page.Images.file_extension}" alt="Me" tabindex="2"></img>
+				<div id="about-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
+					<a class="focus-on-child" href="/index.html?page=%2Fabout%2Fabout.html${url_vars_suffix}" tabindex="-1">
+						<img onclick="Page.Navigation.redirect('/about/about.html')" src="/about/cover.${Page.Images.file_extension}" alt="About" tabindex="2"></img>
 					</a>
 					
-					<p class="footer-image-link-subtext">Me</p>
+					<p class="footer-image-link-subtext">About</p>
 				</div>
 			`;
 			
@@ -153,7 +153,7 @@ Page.Footer =
 		
 		setTimeout(() =>
 		{
-			let elements = Page.element.querySelectorAll("#gallery-link img, #applets-link img, #writing-link img, #teaching-link img, #bio-link img");
+			let elements = Page.element.querySelectorAll("#gallery-link img, #applets-link img, #writing-link img, #teaching-link img, #about-link img");
 			
 			for (let i = 0; i < elements.length; i++)
 			{
@@ -222,7 +222,7 @@ Page.Footer =
 		applets_link: null,
 		writing_link: null,
 		teaching_link: null,
-		bio_link: null,
+		about_link: null,
 		
 		theme_button: null,
 		contrast_button: null,
@@ -303,9 +303,9 @@ Page.Footer =
 						</a>
 					</div>
 					
-					<div id="floating-footer-bio-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 202.25px">
-						<a href="/bio/bio.html" tabindex="-1">
-							<img onclick="Page.Navigation.redirect('/bio/bio.html')" src="/bio/cover.${Page.Images.file_extension}" alt="Me" tabindex="1"></img>
+					<div id="floating-footer-about-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 202.25px">
+						<a href="/about/about.html" tabindex="-1">
+							<img onclick="Page.Navigation.redirect('/about/about.html')" src="/about/cover.${Page.Images.file_extension}" alt="Me" tabindex="1"></img>
 						</a>
 					</div>
 					
@@ -350,7 +350,7 @@ Page.Footer =
 				this.applets_link = floating_footer_element.querySelector("#floating-footer-applets-link");
 				this.writing_link = floating_footer_element.querySelector("#floating-footer-writing-link");
 				this.teaching_link = floating_footer_element.querySelector("#floating-footer-teaching-link");
-				this.bio_link = floating_footer_element.querySelector("#floating-footer-bio-link");
+				this.about_link = floating_footer_element.querySelector("#floating-footer-about-link");
 				
 				this.theme_button = floating_footer_element.querySelector("#theme-button");
 				this.contrast_button = floating_footer_element.querySelector("#contrast-button");
@@ -358,7 +358,7 @@ Page.Footer =
 				this.font_button = floating_footer_element.querySelector("#font-button");
 				this.content_animation_button = floating_footer_element.querySelector("#content-animation-button");
 				
-				let elements = [this.show_footer_menu_button, this.settings_button, this.sitemap_button, this.about_button, this.gallery_link, this.applets_link, this.writing_link, this.teaching_link, this.bio_link, this.theme_button, this.contrast_button, this.text_size_button, this.font_button, this.content_animation_button];
+				let elements = [this.show_footer_menu_button, this.settings_button, this.sitemap_button, this.about_button, this.gallery_link, this.applets_link, this.writing_link, this.teaching_link, this.about_link, this.theme_button, this.contrast_button, this.text_size_button, this.font_button, this.content_animation_button];
 				
 				if (DEBUG)
 				{
@@ -544,7 +544,7 @@ Page.Footer =
 						
 						setTimeout(() =>
 						{
-							this.bio_link.style.left = "10px";
+							this.about_link.style.left = "10px";
 							
 							this.image_links_is_open = true;
 							
@@ -632,7 +632,7 @@ Page.Footer =
 						
 						setTimeout(() =>
 						{
-							this.bio_link.style.left = "-40px";
+							this.about_link.style.left = "-40px";
 							
 							this.image_links_is_open = false;
 						}, Site.opacity_animation_time / 6);

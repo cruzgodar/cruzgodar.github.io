@@ -1501,17 +1501,7 @@ class Wilson
 					
 					
 					
-					this.old_meta_theme_color_brightness = 255;
-					
-					if (Site.Settings.url_vars["theme"] === 1)
-					{
-						this.old_meta_theme_color_brightness = 24;
-						
-						if (Site.Settings.url_vars["dark_theme_color"] === 1)
-						{
-							this.old_meta_theme_color_brightness = 0;
-						}
-					}
+					this.old_meta_theme_color = Site.Settings.meta_theme_color_element.getAttribute("content");
 					
 					
 					
@@ -1532,7 +1522,14 @@ class Wilson
 					document.addEventListener("gesturechange", this.prevent_gestures);
 					document.addEventListener("gestureend", this.prevent_gestures);
 					
-					Site.Settings.animate_meta_theme_color(this.old_meta_theme_color_brightness, 0, 25);
+					
+					
+					anime({
+						targets: Site.Settings.meta_theme_color_element,
+						content: "#000000",
+						duration: Site.opacity_animation_time,
+						easing: "cubicBezier(.42, 0, .58, 1)"
+					});
 					
 					
 					
@@ -1653,7 +1650,12 @@ class Wilson
 					document.removeEventListener("gesturechange", this.prevent_gestures);
 					document.removeEventListener("gestureend", this.prevent_gestures);
 					
-					Site.Settings.animate_meta_theme_color(0, this.old_meta_theme_color_brightness, 25);
+					anime({
+						targets: Site.Settings.meta_theme_color_element,
+						content: this.old_meta_theme_color,
+						duration: Site.opacity_animation_time,
+						easing: "cubicBezier(.42, 0, .58, 1)"
+					});
 					
 					
 					

@@ -16,7 +16,7 @@ Page.Banner =
 	[
 		"/home/home.html",
 		
-		"/bio/bio.html",
+		"/about/about.html",
 		
 		"/writing/mist/mist.html",
 		"/writing/desolation-point/desolation-point.html"
@@ -203,7 +203,9 @@ Page.Banner =
 				{
 					if (this.ScrollButton.exists)
 					{
-						Page.element.querySelector("#scroll-button").remove();
+						try {Page.element.querySelector("#scroll-button").remove()}
+						catch(ex) {}
+						
 						this.ScrollButton.exists = false;
 					}
 					
@@ -238,7 +240,9 @@ Page.Banner =
 				
 				if (this.ScrollButton.exists)
 				{
-					Page.element.querySelector("#scroll-button").remove();
+					try {Page.element.querySelector("#scroll-button").remove()}
+					catch(ex) {}
+					
 					this.ScrollButton.exists = false;
 				}
 				

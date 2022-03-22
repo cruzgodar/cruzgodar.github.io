@@ -1,8 +1,6 @@
 .major-version, .medium-version, .minor-version
 {
 	margin-top: 15vh;
-	
-	transition: opacity .3s ease-in-out;
 }
 
 .major-version .body-text, .medium-version .body-text, .minor-version .body-text
@@ -38,7 +36,11 @@
 
 .minor-version
 {
-	display: none;
+	display: hidden;
+	
+	position: fixed;
+	
+	top: 10000px;
 	
 	opacity: 0;
 }
