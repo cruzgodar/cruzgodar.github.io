@@ -215,7 +215,6 @@ Page.Footer =
 		
 		settings_button: null,
 		sitemap_button: null,
-		about_button: null,
 		debug_button: null,
 		
 		gallery_link: null,
@@ -247,7 +246,7 @@ Page.Footer =
 			if (DEBUG)
 			{
 				debug_html = `
-					<div id="debug-button" class="footer-menu-button focus-on-child" tabindex="104">
+					<div id="debug-button" class="footer-menu-button focus-on-child" tabindex="103">
 						<input type="image" class="footer-button" src="/graphics/button-icons/bug.png" alt="Debug" onclick="Page.Navigation.redirect('/debug/debug.html')" tabindex="-1">
 					</div>
 				`;
@@ -264,10 +263,6 @@ Page.Footer =
 					
 					
 					${debug_html}
-					
-					<div id="about-button" class="footer-menu-button focus-on-child" tabindex="103">
-						<input type="image" class="footer-button" src="/graphics/button-icons/question.png" alt="About" onclick="Page.Navigation.redirect('/about/about.html')" tabindex="-1">
-					</div>
 					
 					<div id="sitemap-button" class="footer-menu-button focus-on-child" tabindex="102">
 						<input type="image" class="footer-button" src="/graphics/button-icons/sitemap.png" alt="Options" onclick="Page.Footer.Floating.show_image_links()" tabindex="-1">
@@ -344,7 +339,6 @@ Page.Footer =
 				
 				this.settings_button = floating_footer_element.querySelector("#settings-button");
 				this.sitemap_button = floating_footer_element.querySelector("#sitemap-button");
-				this.about_button = floating_footer_element.querySelector("#about-button");
 				
 				this.gallery_link = floating_footer_element.querySelector("#floating-footer-gallery-link");
 				this.applets_link = floating_footer_element.querySelector("#floating-footer-applets-link");
@@ -358,7 +352,7 @@ Page.Footer =
 				this.font_button = floating_footer_element.querySelector("#font-button");
 				this.content_animation_button = floating_footer_element.querySelector("#content-animation-button");
 				
-				let elements = [this.show_footer_menu_button, this.settings_button, this.sitemap_button, this.about_button, this.gallery_link, this.applets_link, this.writing_link, this.teaching_link, this.about_link, this.theme_button, this.contrast_button, this.text_size_button, this.font_button, this.content_animation_button];
+				let elements = [this.show_footer_menu_button, this.settings_button, this.sitemap_button, this.gallery_link, this.applets_link, this.writing_link, this.teaching_link, this.about_link, this.theme_button, this.contrast_button, this.text_size_button, this.font_button, this.content_animation_button];
 				
 				if (DEBUG)
 				{
@@ -371,6 +365,18 @@ Page.Footer =
 				{
 					Page.Load.HoverEvents.add_with_scale(elements[i], 1.1);
 				}
+				
+				
+				
+				let links = [this.gallery_link, this.applets_link, this.writing_link, this.teaching_link, this.about_link];
+				
+				for (let i = 0; i < links.length; i++)
+				{
+					links[i].addEventListener("click", (e) =>
+					{
+						e.preventDefault();
+					});
+				}
 			}, Site.opacity_animation_time / 6);
 			
 			
@@ -380,6 +386,26 @@ Page.Footer =
 			this.current_offset = 6.25;
 			
 			this.is_visible = true;
+			
+			
+			
+			let bound_function = this.hide_menu.bind(this);
+			
+			document.body.addEventListener("touchstart", bound_function);
+			document.body.addEventListener("touchmove", bound_function);
+			document.body.addEventListener("mousedown", bound_function);
+			
+			bound_function = this.hide_image_links.bind(this);
+			
+			document.body.addEventListener("touchstart", bound_function);
+			document.body.addEventListener("touchmove", bound_function);
+			document.body.addEventListener("mousedown", bound_function);
+			
+			bound_function = this.hide_settings.bind(this);
+			
+			document.body.addEventListener("touchstart", bound_function);
+			document.body.addEventListener("touchmove", bound_function);
+			document.body.addEventListener("mousedown", bound_function);
 		},
 		
 		
@@ -394,39 +420,21 @@ Page.Footer =
 			{
 				this.sitemap_button.style.left = "10px";
 				
-				setTimeout(() =>
+				if (DEBUG)
 				{
-					this.about_button.style.left = "10px";
-					
-					
-					if (DEBUG)
+					setTimeout(() =>
 					{
-						setTimeout(() =>
-						{
-							this.debug_button.style.left = "10px";
-							
-							this.menu_is_open = true;
-						}, Site.opacity_animation_time / 6);
-					}
-					
-					else
-					{
+						this.debug_button.style.left = "10px";
+						
 						this.menu_is_open = true;
-					}
-				}, Site.opacity_animation_time / 6);
+					}, Site.opacity_animation_time / 6);
+				}
+				
+				else
+				{
+					this.menu_is_open = true;
+				}
 			}, Site.opacity_animation_time / 6);
-			
-			
-			
-			let bound_function = this.hide_menu.bind(this);
-			
-			document.documentElement.addEventListener("touchstart", bound_function);
-			document.documentElement.addEventListener("touchmove", bound_function);
-			document.documentElement.addEventListener("mousedown", bound_function);
-			
-			Page.temporary_handlers["touchstart"].push(bound_function);
-			Page.temporary_handlers["touchmove"].push(bound_function);
-			Page.temporary_handlers["mousedown"].push(bound_function);
 		},
 		
 		
@@ -483,38 +491,32 @@ Page.Footer =
 			{
 				this.sitemap_button.style.left = "-40px";
 				
+				if (DEBUG)
+				{
+					setTimeout(() =>
+					{
+						this.debug_button.style.left = "-40px";
+						
+						this.menu_is_open = false;
+					}, Site.opacity_animation_time / 6);
+				}
+				
+				else
+				{
+					this.menu_is_open = false;
+				}
+				
 				setTimeout(() =>
 				{
-					this.about_button.style.left = "-40px";
+					//This is called when showing the image links, so we might need to reset the opacity.
+					Page.Animate.change_opacity(this.settings_button, 1, Site.opacity_animation_time);
+					Page.Animate.change_opacity(this.sitemap_button, 1, Site.opacity_animation_time);
 					
 					if (DEBUG)
 					{
-						setTimeout(() =>
-						{
-							this.debug_button.style.left = "-40px";
-							
-							this.menu_is_open = false;
-						}, Site.opacity_animation_time / 6);
+						Page.Animate.change_opacity(this.debug_button, 1, Site.opacity_animation_time);
 					}
-					
-					else
-					{
-						this.menu_is_open = false;
-					}
-					
-					setTimeout(() =>
-					{
-						//This is called when showing the image links, so we might need to reset the opacity.
-						Page.Animate.change_opacity(this.settings_button, 1, Site.opacity_animation_time);
-						Page.Animate.change_opacity(this.sitemap_button, 1, Site.opacity_animation_time);
-						Page.Animate.change_opacity(this.about_button, 1, Site.opacity_animation_time);
-						
-						if (DEBUG)
-						{
-							Page.Animate.change_opacity(this.debug_button, 1, Site.opacity_animation_time);
-						}
-					}, Site.opacity_animation_time);
-				}, Site.opacity_animation_time / 6);
+				}, Site.opacity_animation_time);
 			}, Site.opacity_animation_time / 6);
 		},
 		
@@ -536,7 +538,10 @@ Page.Footer =
 				{
 					this.writing_link.style.left = "10px";
 					
-					Page.Animate.change_opacity(this.about_button, 0, Site.opacity_animation_time);
+					if (DEBUG)
+					{
+						Page.Animate.change_opacity(this.debug_button, 0, Site.opacity_animation_time);
+					}	
 					
 					setTimeout(() =>
 					{
@@ -556,18 +561,6 @@ Page.Footer =
 					}, Site.opacity_animation_time / 6);
 				}, Site.opacity_animation_time / 6);
 			}, Site.opacity_animation_time / 6);
-			
-			
-			
-			let bound_function = this.hide_image_links.bind(this);
-			
-			document.documentElement.addEventListener("touchstart", bound_function);
-			document.documentElement.addEventListener("touchmove", bound_function);
-			document.documentElement.addEventListener("mousedown", bound_function);
-			
-			Page.temporary_handlers["touchstart"].push(bound_function);
-			Page.temporary_handlers["touchmove"].push(bound_function);
-			Page.temporary_handlers["mousedown"].push(bound_function);
 		},
 		
 		
@@ -659,7 +652,10 @@ Page.Footer =
 				{
 					this.text_size_button.style.left = "10px";
 				
-					Page.Animate.change_opacity(this.about_button, 0, Site.opacity_animation_time);
+					if (DEBUG)
+					{
+						Page.Animate.change_opacity(this.debug_button, 0, Site.opacity_animation_time);
+					}
 					
 					setTimeout(() =>
 					{
@@ -679,18 +675,6 @@ Page.Footer =
 					}, Site.opacity_animation_time / 6);
 				}, Site.opacity_animation_time / 6);
 			}, Site.opacity_animation_time / 6);
-			
-			
-			
-			let bound_function = this.hide_settings.bind(this);
-			
-			document.documentElement.addEventListener("touchstart", bound_function);
-			document.documentElement.addEventListener("touchmove", bound_function);
-			document.documentElement.addEventListener("mousedown", bound_function);
-			
-			Page.temporary_handlers["touchstart"].push(bound_function);
-			Page.temporary_handlers["touchmove"].push(bound_function);
-			Page.temporary_handlers["mousedown"].push(bound_function);
 		},
 		
 		
