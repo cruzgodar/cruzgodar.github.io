@@ -41,11 +41,6 @@ Page.Navigation =
 		
 		
 		
-		if (!no_state_push)
-		{
-			Site.last_pages.push(Page.url);
-		}
-		
 		Page.url = url;
 		
 		Page.parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
@@ -112,12 +107,12 @@ Page.Navigation =
 			//Record the page change in the url bar and in the browser history.
 			if (!no_state_push)
 			{
-				history.pushState({}, document.title, url + this.concat_url_vars());
+				history.pushState({url: url}, document.title, url + this.concat_url_vars());
 			}
 			
 			else
 			{
-				history.replaceState({}, document.title, url + this.concat_url_vars());
+				history.replaceState({url: url}, document.title, url + this.concat_url_vars());
 			}
 			
 			

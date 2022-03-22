@@ -88,8 +88,6 @@ Site.scripts_loaded =
 	"complexjs": false,
 	"glsl": false
 };
-	
-Site.last_pages = [];
 
 
 
@@ -230,20 +228,7 @@ Site.load = async function(url)
 			return;
 		}
 		
-		
-		
-		
-		let index = Site.last_pages.length - 1;
-		
-		if (index !== -1 && Site.last_pages[index] !== Page.url)
-		{
-			Page.Navigation.redirect(Site.last_pages.pop(), false, true, true);
-		}
-		
-		else
-		{
-			Page.Navigation.redirect("/home/home.html", false, true);
-		}
+		Page.Navigation.redirect(event.state.url, false, true, true);
 	});
 	
 	
