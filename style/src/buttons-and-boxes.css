@@ -346,7 +346,7 @@
 	outline: none;
 	box-shadow: none;
 	
-	transition: background-color .15s ease-in-out;
+	transition: background-color .125s ease-in-out;
 }
 
 .slider-container > input::-webkit-slider-thumb
@@ -366,7 +366,7 @@
 	
 	cursor: pointer;
 	
-	transition: background-color .15s ease-in-out;
+	transition: background-color .125s ease-in-out;
 }
 
 .slider-container > input::-moz-slider-thumb
@@ -386,7 +386,7 @@
 	
 	cursor: pointer;
 	
-	transition: background-color .15s ease-in-out;
+	transition: background-color .125s ease-in-out;
 }
 
 .slider-container > input:active
