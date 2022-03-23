@@ -44,7 +44,9 @@ Page.Footer =
 						<img onclick="Page.Navigation.redirect('/gallery/gallery.html')" src="/gallery/cover.${Page.Images.file_extension}" alt="Gallery" tabindex="2"></img>
 					</a>
 					
-					<p class="footer-image-link-subtext">Gallery</p>
+					<div class="footer-image-link-subtext-container">
+						<p>Gallery</p>
+					</div>
 				</div>
 			`;
 			
@@ -67,7 +69,9 @@ Page.Footer =
 						<img onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="2"></img>
 					</a>
 					
-					<p class="footer-image-link-subtext">Applets</p>
+					<div class="footer-image-link-subtext-container">
+						<p>Applets</p>
+					</div>
 				</div>
 			`;
 			
@@ -90,7 +94,9 @@ Page.Footer =
 						<img onclick="Page.Navigation.redirect('/writing/writing.html')" src="/writing/cover.${Page.Images.file_extension}" alt="Writing" tabindex="2"></img>
 					</a>
 					
-					<p class="footer-image-link-subtext">Writing</p>
+					<div class="footer-image-link-subtext-container">
+						<p>Writing</p>
+					</div>
 				</div>
 			`;
 			
@@ -111,7 +117,9 @@ Page.Footer =
 						<img onclick="Page.Navigation.redirect('/teaching/teaching.html')" src="/teaching/cover.${Page.Images.file_extension}" alt="Teaching" tabindex="2"></img>
 					</a>
 					
-					<p class="footer-image-link-subtext">Teaching</p>
+					<div class="footer-image-link-subtext-container">
+						<p>Teaching</p>
+					</div>
 				</div>
 			`;
 			
@@ -132,7 +140,9 @@ Page.Footer =
 						<img onclick="Page.Navigation.redirect('/about/about.html')" src="/about/cover.${Page.Images.file_extension}" alt="About" tabindex="2"></img>
 					</a>
 					
-					<p class="footer-image-link-subtext">About</p>
+					<div class="footer-image-link-subtext-container">
+						<p>About</p>
+					</div>
 				</div>
 			`;
 			
@@ -162,7 +172,7 @@ Page.Footer =
 					if (!(Site.Interaction.currently_touch_device))
 					{
 						elements[i].parentNode.parentNode.lastElementChild.style.marginTop = "-32px";
-						elements[i].parentNode.parentNode.lastElementChild.style.opacity = 1;
+						Page.Animate.change_opacity(elements[i].parentNode.parentNode.lastElementChild.firstElementChild, 1, 200);
 					}
 				});
 				
@@ -171,7 +181,7 @@ Page.Footer =
 					if (!(Site.Interaction.currently_touch_device))
 					{
 						elements[i].parentNode.parentNode.lastElementChild.style.marginTop = 0;
-						elements[i].parentNode.parentNode.lastElementChild.style.opacity = 0;
+						Page.Animate.change_opacity(elements[i].parentNode.parentNode.lastElementChild.firstElementChild, 0, 200);
 					}
 				});
 			}

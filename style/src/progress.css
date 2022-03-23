@@ -29,79 +29,11 @@
 
 
 
-.loading-spinner
-{
-	width: 32px;
-	height: 32px;
-}
-
-.loading-spinner:after
-{
-	content: " ";
-	display: block;
-	width: 24px;
-	height: 24px;
-	margin: 4px;
-	border-radius: 50%;
-	border: 2px solid rgb(127, 127, 127);
-	border-color: rgb(127, 127, 127) transparent rgb(127, 127, 127) transparent;
-	animation: loading-spinner 1s linear infinite;
-}
-
-@keyframes loading-spinner
-{
-	0%
-	{
-		transform: rotate(0deg);
-	}
-	
-	100%
-	{
-		transform: rotate(360deg);
-	}
-}
-
-
-
 /* Compact layout: fit to the correct margins. */
 @media (max-aspect-ratio: 9/16), (max-width: 700px)
 {
-	.stage-bubbles
-	{
-		width: 90vw;
-		
-		grid-column-gap: calc(30vw - 12px);
-		grid-row-gap: 10vw;
-	}
-	
-	.stage-bubble
-	{
-		width: 10vw;
-		height: 10vw;
-	}
-	
-	.stage-bubble-subtext
-	{
-		margin-top: calc(10vw + 1vh);
-		width: 25vw;
-		margin-left: -7.5vw;
-	}
-	
 	.progress-bar
 	{
 		width: calc(90vw - 8px);
-	}
-}
-
-
-
-/* Ultrawide layout: put the stage bubbles on one line. */
-@media (min-aspect-ratio: 16/9), (min-width: 1400px)
-{
-	.stage-bubbles
-	{
-		grid-template-columns: repeat(6, 1fr);
-		
-		grid-column-gap: calc(8vw - 9.6px);
 	}
 }
