@@ -162,6 +162,8 @@
 
 .footer-image-link-subtext-container p
 {
+	opacity: 0;
+	
 	color: rgb(127, 127, 127);
 	text-align: center;
 	font-size: 100%;
