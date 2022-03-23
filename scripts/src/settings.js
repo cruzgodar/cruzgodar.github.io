@@ -66,7 +66,6 @@ Site.Settings =
 			"text_size": this.get_url_var("text_size"),
 			"font": this.get_url_var("font"),
 			"content_animation": this.get_url_var("content_animation"),
-			"title_pages_seen": this.get_url_var("title_pages_seen")
 		};
 		
 		

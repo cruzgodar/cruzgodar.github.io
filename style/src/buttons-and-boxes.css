@@ -316,6 +316,11 @@
 	align-items: center;
 }
 
+.text-field-container p
+{
+	width: 70%;
+}
+
 
 
 
@@ -412,6 +417,11 @@
 .slider-container > input:active::-moz-slider-thumb
 {
 	background-color: rgb(64, 64, 64) !important;
+}
+
+.slider-container p
+{
+	text-align: center;
 }
 
 

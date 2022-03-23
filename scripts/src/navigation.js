@@ -104,15 +104,22 @@ Page.Navigation =
 			
 			
 			
+			let display_url = url;
+			
+			if (DEBUG)
+			{
+				display_url = `/index-testing.html?page=${encodeURIComponent(url)}`;
+			}
+			
 			//Record the page change in the url bar and in the browser history.
 			if (!no_state_push)
 			{
-				history.pushState({url: url}, document.title, url + this.concat_url_vars());
+				history.pushState({url: url}, document.title, display_url + this.concat_url_vars());
 			}
 			
 			else
 			{
-				history.replaceState({url: url}, document.title, url + this.concat_url_vars());
+				history.replaceState({url: url}, document.title, display_url + this.concat_url_vars());
 			}
 			
 			
@@ -209,7 +216,7 @@ Page.Navigation =
 			
 			if (Site.Settings.url_vars[key] !== 0 || (window.matchMedia("(prefers-color-scheme: dark)").matches && Site.Settings.url_vars["theme"] === 0 && key === "theme"))
 			{
-				if (found_first_key)
+				if (DEBUG || found_first_key)
 				{
 					string += "&" + key + "=" + Site.Settings.url_vars[key];
 				}
@@ -233,7 +240,14 @@ Page.Navigation =
 	write_url_vars: function()
 	{
 		//Make the current state persist on refresh.
-		history.replaceState({}, document.title, window.location.pathname + this.concat_url_vars());
+		let display_url = Page.url
+		
+		if (DEBUG)
+		{
+			display_url = `/index-testing.html?page=${encodeURIComponent(Page.url)}`;
+		}
+		
+		history.replaceState({}, document.title, display_url + this.concat_url_vars());
 	}
 };
 
