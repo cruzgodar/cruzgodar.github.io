@@ -1,0 +1,195 @@
+<head>
+	<title>Section 1: Intro to Limits</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 1: Intro to Limits"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/1-intro-to-limits/1-intro-to-limits.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/252/notes/1-intro-to-limits/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 1: Intro to Limits
+
+!text b c Covered in Week 1
+
+<br>
+
+
+
+!begin-text-block
+	
+	Up to this point in your experience with math, most topics and problems have probably revolved around functions. You can evaluate a function at a number, or solve for when a function is zero, or create a function to model a certain quantity. The more we use functions, though, the more certain limitations become clear. For example, if we have a function $s(t)$ that measures your position after $t$ seconds, then how do we determine your velocity $v(t)$? Knowing exactly where you are at all times $t$, we really ought to be able to tell how fast you&#x2019;re moving, but we don&#x2019;t have the tools to do that yet. If you&#x2019;re moving at a constant rate &mdash; say 2 meters per second (written $\frac{m}{s}$), then your position function $s(t)$, which just measures total distance from where you started, is a straight line with slope 2.
+	
+!end-text-block
+
+
+
+!iframe https://www.desmos.com/calculator/onymx1pdde
+
+
+
+!begin-text-block
+	
+	The slope of a line is informally its rise over its run, and if the run is $1$, that means the slope is how much the output changes when the input increases by 1. For our position example, that&#x2019;s literally meters moved per second, which is velocity. That rise over run definition means that if we want to figure out the rate of change of a function, we should look at slopes of lines. Let&#x2019;s see how well this idea works in practice with the function $f(t) = t^2$.
+	
+!end-text-block
+
+
+
+!iframe https://www.desmos.com/calculator/t22qv3qjsj
+
+
+
+!begin-text-block
+	
+	Here we&#x2019;re taking a slope in the same way as before: rise over run, where run is exactly $1$: we evaluate one point at $t = 0$ and another at $t = 1$. The rise is also $1$, since $f(0) = 0^2 = 0$ and $f(1) = 1^2 = 1$, and so the slope of that blue line is $\frac{1}{1} = 1$.
+	
+	Imagine that $f$ is measuring the distance you&#x2019;ve traveled after $t$ seconds. You start off barely moving at all, and only really pick up speed down the line. You definitely don&#x2019;t have velocity $1 \frac{m}{2}$ from the moment you start, or the graph wouldn&#x2019;t have such a slow start from the origin. So what&#x2019;s the problem with the slope we found?
+	
+	Fundamentally, your velocity at time $t = 0$ shouldn&#x2019;t have anything to do with your position at $t = 1$. You might speed up or slow down a lot in that intervening second &mdash; maybe you even walk bacwkward! In our case, we sped up a lot, since our position is increasing faster at $t = 1$ than $t = 0$. In order to take a better measurement, we can make the run smaller in our slope calculation: for example, if we take $t = .1$, only a tenth of a second after we start measuring, then there&#x2019;s much less time for changes in position to affect the rise of the line. As a result, we get a better approximation of the actual velocity at $t = 0$.
+	
+!end-text-block
+
+
+
+!iframe https://www.desmos.com/calculator/darnsv8dvs
+
+
+
+!begin-text-block
+	
+	What&#x2019;s the slope now? The rise over run calculation gives us
+	
+	$$
+		\frac{f(.1) - f(0)}{.1 - 0} = \frac{.1^2}{.1} = .1.
+	$$
+	
+	Better! Since our approximations improve as we have a smaller and smaller run, the best approximation &mdash; in fact, the actual velocity we&#x2019;re after &mdash; is the slope of a line with <strong>no</strong> run at all. Let&#x2019;s define a couple terms to make talking about these things easier.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	secant and tangent lines
+	
+	A <dfn>secant line</dfn> through a curve is a line that passes through two particular points on the curve. A <dfn>tangant line</dfn> is formed from a secant line by sliding one point until it is in the same location as the other.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	So far, we&#x2019;ve been dealing with secant lines. The two points are the highlighted ones &mdash; try dragging them! What we want is a tangent line, though, which appears when both points are at $(0, 0)$.
+	
+!end-text-block
+
+
+
+!iframe https://www.desmos.com/calculator/yufsg1rvw7
+
+
+
+!begin-text-block
+	
+	As you might be able to predict, that line is totally flat! So our velocity at time $t = 0$ is zero, because although we pick up speed later, we don&#x2019;t have any right at the start. If this seems a little confusing, think of dropping a ball above the ground: gravity speeds it up over time, but at the exact moment you let go, it has zero velocity.
+	
+	It might not seem like it, but we actually just did something really cool: we defined the slope of something that&#x2019;s not a line.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	slope of a curve
+	
+	Let $f(x)$ be a function. The <dfn>slope</dfn> of the graph of $f$ at $x = a$ is the slope of the tangent line to the graph of $f$ at $x = a$.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	That wasn&#x2019;t too bad! We already have a formula for the slope of a secant line, so let&#x2019;s just plug in the same point twice to find the slope of a tangent line. So in the example we&#x2019;ve been talking about, that means plugging in $(0, 0)$ for both the left and right points:
+	
+	$$
+		\frac{f(0) - f(0)}{0 - 0} = \frac{0}{0}.
+	$$
+	
+	And now it all comes grinding to a halt. We can&#x2019;t divide anything by zero &mdash; even dividing zero by itself is a problem. No matter what slope we try to calculate, we&#x2019;ll have this problem, since the rise over run formula will always be $\frac{0}{0}$. So what can we do? That line <strong>has</strong> a slope &mdash; the problem isn&#x2019;t that it&#x2019;s not well-defined or something, it&#x2019;s just that we cannot calculate it with methods in math that we&#x2019;ve learned so far.
+	
+	It&#x2019;s important that we spell out the problem we&#x2019;re running into very clearly. Let $g(h) = \frac{f(h) - f(0)}{h - 0}$, which is just the slope of a secant line passing through the points $(0, f(0))$ and $(h, f(h))$. The function $g$ is undefined at zero, but <strong>there is a clear value it should have.</strong> To illustrate what we mean, let&#x2019;s graph $g(h)$.
+	
+!end-text-block
+
+
+
+!iframe https://www.desmos.com/calculator/zne3gmgazq
+
+
+
+!begin-text-block
+	
+	Since $f(h) = h^2$, $g(h) = \frac{h^2}{h}$. When $h$ is nonzero, we can cancel an $h$ to get $g(h) = h$. When $h = 0$, $g$ is undefined, so there is a hole in the graph at $h = 0$. But looking at that graph, the values of the graph right around $h = 0$ are very close to $0$, and so there is a sense in which the value that $g(h)$ <strong>should</strong> have at $h = 0$ is $0$.
+	
+	That sense is nice, but it&#x2019;s far from being a concrete definition, and if we&#x2019;re going to find the slopes of more complicated functions than $f(t) = t^2$, we need to know exactly what we&#x2019;re going. The tool we&#x2019;ll construct for this purpose is called a <dfn>limit,</dfn> and we&#x2019;ll spend roughly the first two weeks of the course getting used to working with them. Around week 3, we&#x2019;ll return with our knowledge of limits to this tangent line business, and figure out an easier way to find the slope of a curve. For now, let&#x2019;s dive into limits.
+	
+!end-text-block
+
+
+
+<div class="text-buttons">
+	<div class="focus-on-child new-aos-section" data-aos="zoom-out" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="Page.Navigation.redirect('/teaching/uo/251/notes/0-algebra-and-trig-review/0-algebra-and-trig-review.html')">Previous</button>
+	</div>
+	
+	<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="Page.Navigation.redirect('/teaching/uo/251/251.html.html')">Home</button>
+	</div>
+	
+	<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="Page.Navigation.redirect('/teaching/uo/251/notes/2-continuity/2-continuity.html')">Next</button>
+	</div>
+</div>
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 1: Intro to Limits",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>
