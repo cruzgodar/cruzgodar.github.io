@@ -3,13 +3,14 @@
 
 
 //Gets the page ready to be shown but doesn't do anything that needs the page to be visible.
-Page.load = function()
+Page.load = async function()
 {
 	Page.element = document.body.querySelector(".page");
 	
 	Page.using_custom_script = true;
 	
-	Page.on_show = null;
+	Page.ready_to_show = false;
+	
 	
 	
 	this.Navigation.currently_changing_page = false;
@@ -17,7 +18,7 @@ Page.load = function()
 	
 	
 	this.Load.parse_custom_style();
-	this.Load.parse_custom_scripts();
+	await this.Load.parse_custom_scripts();
 	
 	
 	
@@ -127,14 +128,10 @@ Page.load = function()
 	
 	
 	
-	if (Page.ready_to_show && !Page.using_custom_script)
+	if (!Page.using_custom_script)
 	{
-		Page.show();
-	}
-	
-	else
-	{
-		Page.ready_to_show = true;
+		//Truly godawful
+		setTimeout(() => Page.show(), 1);
 	}
 };
 
@@ -238,55 +235,62 @@ Page.Load =
 
 	parse_custom_scripts: function()
 	{
-		let page_name = Page.url.split("/");
-		page_name = page_name[page_name.length - 1];
-		page_name = page_name.split(".");
-		page_name = page_name[0];
-		
-		
-		
-		//Make sure there's actually something to get.
-		fetch(Page.parent_folder + "scripts/" + page_name + ".js")
-		
-		.then((response) =>
+		return new Promise((resolve, reject) =>
 		{
-			if (!response.ok)
+			let page_name = Page.url.split("/");
+			page_name = page_name[page_name.length - 1];
+			page_name = page_name.split(".");
+			page_name = page_name[0];
+			
+			
+			
+			//Make sure there's actually something to get.
+			fetch(Page.parent_folder + "scripts/" + page_name + ".js")
+			
+			.then((response) =>
 			{
-				if (Page.ready_to_show)
+				if (!response.ok)
 				{
-					Page.show();
+					if (Page.ready_to_show)
+					{
+						Page.show();
+					}
+					
+					else
+					{
+						Page.using_custom_script = false;
+					}
+					
+					resolve();
+					
+					return;
+				}
+				
+				Page.ready_to_show = true;
+				
+				
+				
+				let element = document.createElement("script");
+				
+				if (DEBUG)
+				{
+					element.setAttribute("src", Page.parent_folder + "scripts/" + page_name + ".js");
 				}
 				
 				else
 				{
-					Page.using_custom_script = false;
+					element.setAttribute("src", Page.parent_folder + "scripts/" + page_name + ".min.js");
 				}
 				
-				return;
-			}
-			
-			Page.ready_to_show = true;
-			
-			
-			
-			let element = document.createElement("script");
-			
-			if (DEBUG)
-			{
-				element.setAttribute("src", Page.parent_folder + "scripts/" + page_name + ".js");
-			}
-			
-			else
-			{
-				element.setAttribute("src", Page.parent_folder + "scripts/" + page_name + ".min.js");
-			}
-			
-			
-			
-			element.classList.add("temporary-script");
-			
-			document.body.appendChild(element);
-		});
+				
+				
+				element.classList.add("temporary-script");
+				
+				document.body.appendChild(element);
+				
+				resolve();
+			});
+		});	
 	},
 
 

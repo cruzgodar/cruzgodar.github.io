@@ -45,8 +45,6 @@ Page.Navigation =
 		
 		Page.parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
 		
-		Page.ready_to_show = false;
-		
 		
 		
 		//We need to record this in case we can't successfully load the next page and we need to return to the current one.
