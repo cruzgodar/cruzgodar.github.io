@@ -154,6 +154,182 @@
 
 
 
+!section
+
+!text s Defining Limits
+
+<br>
+
+
+
+!begin-text-block
+	
+	Our goal is to formalize the sense in which the function $g(h)$ from before should be defined at zero. We said this was because the graph was very close to the hole at $(0, 0)$, so let&#x2019;s write down exactly what we mean.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	limit
+	
+	Let $a$ be a real number and let $f(x)$ be a function defined everywhere on some interval containing $a$, except possibly at $a$ itself. If there is a real number $L$ so that all values of $f(x)$ get closer to $L$ as $x$ gets closer to $a$, then we say that <dfn>the limit as $x$ approaches $a$ of $f(x)$ is equal to $L$</dfn>, which we write more neatly as
+	
+	$$
+		\lim_{x \to a} f(x) = L.
+	$$
+	
+	If there is no single number $L$ that satisfies this property, then we say that the limit as $x$ approaches $a$ of $f(x)$ <dfn>does not exist</dfn>, which we can also write succinctly as
+	
+	$$
+		\lim_{x \to a} f(x) \text{ DNE}.
+	$$
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	In practice, we can calculate $\lim_{x \to a} f(x)$ by making a table that contains $x$-values getting closer and closer to $a$ (from both above and below), and the corresponding values of $f(x)$. If we see that the $f(x)$ values are getting closer and closer to the same number from both directions, then that is the limit. If not, the limit doesn&#x2019;t exist.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	calculating a limit with a table
+	
+	Find $\lim_{x \to 0} \frac{\sin(x)}{x}$ with a table.
+	
+	We can&#x2019;t plug in $x = 0$, since $\sin(0) = 0$ and so we&#x2019;d get $\frac{0}{0}$, but that&#x2019;s okay &mdash; the limit doesn&#x2019;t have anything to do with what the function actually does at $0$, only very close to it.
+	
+	Let&#x2019;s plug in some values for $x$ that get closer and closer to zero. We need to do this from both above and below, but let&#x2019;s just start with above. That means positive numbers getting smaller and smaller &mdash; let&#x2019;s try $.1$, $.01$, and $.001$.
+	
+	$f(.1) = \frac{\sin(.1)}{.1} \approx .998334$
+	
+	$f(.01) = \frac{\sin(.01)}{.01} \approx .999983$
+	
+	$f(.001) = \frac{\sin(.1)}{.1} \approx .999999$
+	
+	It&#x2019;s pretty clear that these values are approaching $1$. Now let&#x2019;s try approaching from below, which means negative numbers getting closer and closer to zero.
+	
+	$f(-.1) = \frac{\sin(-.1)}{-.1} \approx .998334$
+	
+	$f(-.01) = \frac{\sin(-.01)}{-.01} \approx .999983$
+	
+	$f(-.001) = \frac{\sin(-.1)}{-.1} \approx .999999$
+	
+	It turns out these numbers are exactly the same, but all we need to know is that they are also approaching $1$. Since the two numbers agree, we can declare that
+	
+	$$
+		\lim_{x \to 0} \frac{\sin(x)}{x} = 1.
+	$$
+	
+	Let&#x2019;s see what this looks like visually.
+	
+	!iframe https://www.desmos.com/calculator/4swxaaewth
+	
+	The graph has a hole in it at $x = 0$, but by taking the limit, we found where the hole is: $(0, 1)$. That doesn&#x2019;t make the function any less undefined there, but as we talked about with slopes of tangent lines, limit values are useful despite &mdash; and often because of &mdash; the function is undefined.
+	
+!end-example
+
+!begin-exercise
+	
+	calculating a limit with a table
+	
+	Find $\lim_{x \to 4} \frac{\sqrt{x} - 2}{x - 4}$ with a table.
+	
+	Exercises like this will often follow examples &mdash; we&#x2019;ll do some of them as group work in class. They&#x2019;re a great source of possible quiz and test questions, so it&#x2019;s a good idea to do them as practice problems.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	In this next example, let&#x2019;s start with the graph.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	calculating a limit from a graph
+	
+	Find $\lim_{t \to 1} g(t)$ and $\lim_{t \to -1} g(t)$.
+	
+	!iframe https://www.desmos.com/calculator/qpxqvafxbv
+	
+	At $t = 1$, the hole and filled-in dot indicate that $g(1) = 2$. However, $\lim_{t \to 1} g(t)$ is determined only by what the points on the graph right next to $t = 1$ are doing. From both sides, the $y$-values get closer and closer to $y = 0$, so the limit is $\lim_{t \to 1} g(t) = 0$. In this sense, the limit is what you would expect a function&#x2019;s value to be, without actually knowing what that value is. Knowing everything about $g(t)$ except what $g(1)$ is, our best guess is $g(1) = 0$, since that&#x2019;s what the values near $t = 1$ indicate.
+	
+	As for $\lim_{t \to -1} g(t)$, the exact same process tells us that $\lim_{t \to -1} g(t) = 0$. It&#x2019;s also true that $g(-1) = 0$, but that doesn&#x2019;t affect our reasoning at all &mdash; the only thing that matters is that values around $t = -1$ have $y$-values close to $y = 0$.
+	
+!end-example
+
+
+
+!begin-prop
+	
+	some simple limits
+	
+	For real numbers $a$ and $c$, $\lim_{x \to a} x = a$ and $\lim_{x \to a} c = c$.
+	
+	A proposition is just a true fact that&#x2019;s not particularly exciting. All the first part of this one is saying is that as $x$ gets closer and closer to $a$, the function $f(x) = x$ gets closer and closer to... $a$. That isn&#x2019;t a major result, but it&#x2019;s a good check to make sure things are making sense. The second part just says that the constant function $f(x) = c$ never changes, so no matter what $x$ is approaching, $f(x) = c$ approaches $c$.
+	
+!end-prop
+
+
+
+!section
+
+!text s Limits that don&#x2019;t exist
+
+<br>
+
+
+
+!begin-text-block
+	
+	How could a limit not exist? There are two possibilities for this, generally speaking. Either the values of a function don&#x2019;t approach anything no matter how close $x$ gets to what it&#x2019;s approaching, or the values do approach something, but that something is different depending on the direction we approach from. We&#x2019;ll be able to partially remedy the second case, but let&#x2019;s take a look at the first one first.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a limit that doesn&#x2019;t exist
+	
+	Find $\lim_{x \to 0} \sin\left( \frac{1}{x} \right)$.
+	
+	Without a graph to go on, let&#x2019;s plug in a handful of values.
+	
+	$f(.1) \approx -.544021$
+	
+	$f(.01) \approx -.506366$
+	
+	$f(.001) \approx .826880$
+	
+	$f(.0001) \approx -.305614$
+	
+	$f(.00001) \approx .035749$
+	
+	$f(.000001) \approx -.349994$
+	
+	These values aren&#x2019;t moving toward anything. While it&#x2019;s possible that the function only begins converging <em>incredibly</em> close to zero, the safest bet is that $\lim_{x \to 0} \sin\left( \frac{1}{x} \right) \text{ DNE}$. Let&#x2019;s back this up with a graph.
+	
+	!iframe https://www.desmos.com/calculator/qlgryd0dbu
+	
+	As $x \to 0$ even just from the right, the $y$-values never settle down anything &mdash; in fact, they just get more and more chaotic. Using the previous example&#x2019;s metaphor, there isn&#x2019;t any $y$-value that it would make sense to expect the graph to have at $x = 0$.
+	
+!end-example
+
+
+
 <div class="text-buttons">
 	<div class="focus-on-child new-aos-section" data-aos="zoom-out" tabindex="1">
 		<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="Page.Navigation.redirect('/teaching/uo/251/notes/0-algebra-and-trig-review/0-algebra-and-trig-review.html')">Previous</button>
