@@ -18,18 +18,6 @@
 	
 	
 	
-	let homepage_image_links_mode = "";
-	
-	window.addEventListener("resize", homepage_resize);
-	Page.temporary_handlers["resize"].push(homepage_resize);
-	
-	setTimeout(() =>
-	{
-		homepage_resize();
-	}, 500);
-	
-	
-	
 	if (Browser.name === "MS Edge")
 	{
 		alert_on_edge();
@@ -83,28 +71,6 @@
 		Page.Load.AOS.element_animation_types[2] = 1;
 	});	
 	
-	
-	
-	
-	
-	function homepage_resize()
-	{
-		if (homepage_image_links_mode !== Page.Layout.layout_string)
-		{
-			homepage_image_links_mode = Page.Layout.layout_string;
-			
-			if (Page.Layout.layout_string === "ultrawide")
-			{
-				Page.element.querySelectorAll(".image-link")[4].insertAdjacentHTML("beforebegin", `<div id="empty-image-link"></div>`);
-			}
-			
-			else
-			{
-				try {Page.element.querySelector("#empty-image-link").remove();}
-				catch(ex) {}
-			}
-		}
-	}
 	
 	
 	
