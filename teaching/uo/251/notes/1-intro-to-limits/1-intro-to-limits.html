@@ -330,6 +330,152 @@
 
 
 
+!begin-example
+	
+	another limit that doesn&#x2019;t exist
+	
+	Find $\lim_{x \to 2} \frac{|x - 2|}{x - 2}$.
+	
+	As usual, let&#x2019;s plug in some values. Calling the function $f(x)$, we have
+	
+	$f(2.1) = \frac{|.1|}{.1} = 1$
+	
+	$f(2.01) = \frac{|.01|}{.01} = 1$
+	
+	$f(2.001) = \frac{|.001|}{.001} = 1$
+	
+	So approaching $x = 2$ from above tells us that the limit is probably $1$. Let&#x2019;s try approaching from below.
+	
+	$f(1.9) = \frac{|-.1|}{-.1} = -1$
+	
+	$f(1.99) = \frac{|-.01|}{-.01} = -1$
+	
+	$f(1.999) = \frac{|-.001|}{-.001} = -1$
+	
+	These values tell a different story &mdash; that the limit really ought to be $-1$. So what do we do? The limit can&#x2019;t be two values at once, so we just say it doesn&#x2019;t exist. But look at this graph &mdash; it&#x2019;s so much more well-behaved than the previous one we looked at, and we should be able to say something, at least.
+	
+	!iframe https://www.desmos.com/calculator/v4mtoydxio
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	The previous example leads us to define a watered-down form of limit to describe the sort of behavior it exhibits.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	one-sided limits
+	
+	Let $f(x)$ be a function. The limit of $f(x)$ as $x$ approaches $a$ <dfn>from above</dfn> is the same as the usual limit, but we only consider numbers larger than $a$ when computing it. We write this new limit as
+	
+	$$
+		\lim_{x \to a^+} f(x).
+	$$
+	
+	Similarly, the limit of $f(x)$ as $x$ approaches $a$ <dfn>from below</dfn> is the same as the usual limit, but we only consider numbers smaller than $a$ when computing it. It&#x2019;s written as
+	
+	$$
+		\lim_{x \to a^-} f(x).
+	$$
+	
+	By the definition of the regular limit, $\lim_{x \to a} f(x)$ existing is equivalent to both $\lim_{x \to a^+} f(x)$ and $\lim_{x \to a^-} f(x)$ existing and being equal. To make the language a little less awkward, you&#x2019;ll often hear people say this sort of equivalence like this: $\lim_{x \to a} f(x)$ exists if and only if $\lim_{x \to a^+} f(x)$ and $\lim_{x \to a^-} f(x)$ exist and are equal.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	For the previous example, $\lim_{x \to 2^+} f(x) = 1$, while $\lim_{x \to 2^-} f(x) = -1$. On the other hand, $\lim_{x \to 0^+} \sin \left( \frac{1}{x} \right)$ and $\lim_{x \to 0^-} \sin \left( \frac{1}{x} \right)$ both still do not exist &mdash; the problem there wasn&#x2019;t that the two sides didn&#x2019;t agree, it&#x2019;s that they didn&#x2019;t converge to anything in the first place.
+	
+!end-text-block
+
+
+
+!begin-exercise
+	
+	some one-sided limits
+	
+	Find $\lim_{x \to 2^+} g(x)$ and $\lim_{x \to 2^-} g(x)$, where $g(x) = \frac{|x^2 - 4|}{x - 2}$.
+	
+!end-exercise
+
+
+
+!section
+
+!text s Infinite Limits
+
+<br>
+
+
+
+!begin-text-block
+	
+	There&#x2019;s one possibility we haven&#x2019;t mentioned yet: what if the function values just grow larger and larger (or more and more negative) without bound when we take a limit? In that case, there&#x2019;s a sense in which they&#x2019;re getting closer and closer to infinity or negative infinity, so we write those limits as $\lim_{x \to a} f(x) = \infty$ or $\lim_{x \to a} f(x) = -\infty$. Let&#x2019;s look at an example to see what we mean.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	an infinite limit
+	
+	Find $\lim_{x \to 0} f(x)$, where $f(x) = \frac{1}{x^2}$.
+	
+	Plugging in values, we have
+	
+	$f(.1) = \frac{1}{.1^2} = 100$
+	
+	$f(.01) = \frac{1}{.01^2} = 10000$
+	
+	$f(.001) = \frac{1}{.001^2} = 1000000$
+	
+	Since these numbers are getting larger and larger with no upper bound, $\lim_{x \to 0^+} f(x) = \infty$. Now let&#x2019;s compute the limit from below.
+	
+	$f(-.1) = \frac{1}{(-.1)^2} = 100$
+	
+	$f(-.01) = \frac{1}{(-.01)^2} = 10000$
+	
+	$f(-.001) = \frac{1}{(-.001)^2} = 1000000$
+	
+	Similarly, $\lim_{x \to 0^-} f(x) = \infty$. Since the limits from above and below agree, we have that $\lim_{x \to 0} f(x) = \infty$. Graphically, limits equalling $\pm \infty$ correspond to vertical asymptotes in the graph.
+	
+	!iframe https://www.desmos.com/calculator/pjm5yckwm7
+	
+!end-example
+
+
+
+!begin-exercise
+	
+	a lot of limits
+	
+	Let $f(x)$ be defined by the following graph.
+	
+	!iframe https://www.desmos.com/calculator/2w1apjdden
+	
+	Find the following quantities:
+	
+	$f(-3)$, $f(0)$, $f(1)$
+	
+	$\lim_{x \to -3^+} f(x)$, $\lim_{x \to 0^+} f(x)$, $\lim_{x \to 1^+} f(x)$
+	
+	$\lim_{x \to -3^-} f(x)$, $\lim_{x \to 0^-} f(x)$, $\lim_{x \to 1^-} f(x)$
+	
+	$\lim_{x \to -3} f(x)$, $\lim_{x \to 0} f(x)$, $\lim_{x \to 1} f(x)$
+	
+!end-exercise
+
+
+
 <div class="text-buttons">
 	<div class="focus-on-child new-aos-section" data-aos="zoom-out" tabindex="1">
 		<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="Page.Navigation.redirect('/teaching/uo/251/notes/0-algebra-and-trig-review/0-algebra-and-trig-review.html')">Previous</button>

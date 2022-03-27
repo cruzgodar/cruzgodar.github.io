@@ -6,7 +6,10 @@ iframe
 	border: 2px solid rgb(127, 127, 127);
 	border-radius: 15px;
 	padding: 2px;
-	
+}
+
+.iframe-container
+{
 	margin-top: 5vh;
 	margin-bottom: 5vh;
 }
@@ -78,7 +81,7 @@ iframe
 	display: none;
 }
 
-.notes-example iframe:last-child, .notes-exercise iframe:last-child, .notes-def iframe:last-child, .notes-prop iframe:last-child, .notes-thm iframe:last-child, .notes-proof iframe:last-child, .notes-comment iframe:last-child, .notes-cor iframe:last-child, .notes-lemma iframe:last-child, .notes-axiom iframe:last-child
+.notes-example .iframe-container:last-child, .notes-exercise .iframe-container:last-child, .notes-def .iframe-container:last-child, .notes-prop .iframe-container:last-child, .notes-thm .iframe-container:last-child, .notes-proof .iframe-container:last-child, .notes-comment iframe:last-child, .notes-cor .iframe-container:last-child, .notes-lemma .iframe-container:last-child, .notes-axiom .iframe-container:last-child
 {
 	margin-bottom: 0;
 }

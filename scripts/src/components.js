@@ -507,7 +507,7 @@ Page.Components =
 	get_iframe: function(src)
 	{
 		return `
-			<div data-aos="fade-up" style="width: 100%; display: flex; justify-content: center">
+			<div class="iframe-container" data-aos="fade-up" style="width: 100%; display: flex; justify-content: center">
 				<iframe src="${src}" width="500" height="500"></iframe>
 			</div>
 		`;
