@@ -125,6 +125,13 @@ Page.Components =
 			`;
 		}
 		
+		else if (args[2] === "!iframe")
+		{
+			let src = args.slice(3);
+			
+			return this.get_iframe(src);
+		}
+		
 		else
 		{
 			let text = args.slice(2).join(" ");
