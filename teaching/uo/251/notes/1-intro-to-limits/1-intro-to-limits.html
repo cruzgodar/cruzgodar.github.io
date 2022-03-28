@@ -30,7 +30,9 @@
 
 !begin-text-block
 	
-	Up to this point in your experience with math, most topics and problems have probably revolved around functions. You can evaluate a function at a number, or solve for when a function is zero, or create a function to model a certain quantity. The more we use functions, though, the more certain limitations become clear. For example, if we have a function $s(t)$ that measures your position after $t$ seconds, then how do we determine your velocity $v(t)$? Knowing exactly where you are at all times $t$, we really ought to be able to tell how fast you&#x2019;re moving, but we don&#x2019;t have the tools to do that yet. If you&#x2019;re moving at a constant rate &mdash; say 2 meters per second (written $\frac{m}{s}$), then your position function $s(t)$, which just measures total distance from where you started, is a straight line with slope 2.
+	Up to this point in your experience with math, most topics and problems have probably revolved around functions. You can evaluate a function at a number, or solve for when a function is zero, or create a function to model a certain quantity. The more we use functions, though, the more certain limitations become clear. For example, if we have a function $s(t)$ that measures your position after $t$ seconds, then how do we determine your velocity $v(t)$? Knowing exactly where you are at all times $t$, we really ought to be able to tell how fast you&#x2019;re moving, but we don&#x2019;t have the tools to do that yet.
+	
+	If you&#x2019;re moving at a constant rate &mdash; say 2 meters per second (written $\frac{m}{s}$), then your position function $s(t)$, which just measures total distance from where you started, is a straight line with slope 2.
 	
 !end-text-block
 
@@ -42,7 +44,7 @@
 
 !begin-text-block
 	
-	The slope of a line is informally its rise over its run, and if the run is $1$, that means the slope is how much the output changes when the input increases by 1. For our position example, that&#x2019;s literally meters moved per second, which is velocity. That rise over run definition means that if we want to figure out the rate of change of a function, we should look at slopes of lines. Let&#x2019;s see how well this idea works in practice with the function $f(t) = t^2$.
+	The slope of a line is informally its rise over its run, and if the run is $1$, that means the slope is how much the output changes when the input increases by 1. For our position example, that&#x2019;s literally meters moved per second, which is velocity. That rise over run definition means that if we want to figure out the rate of change of a function, we should look at slopes of lines. Let&#x2019;s see how well this idea works in practice with the function $f(t) = t^2$ &mdash; starting from $t = 0$, we&#x2019;ll divide rise by run, where run is exactly $1$.
 	
 !end-text-block
 
@@ -54,11 +56,11 @@
 
 !begin-text-block
 	
-	Here we&#x2019;re taking a slope in the same way as before: rise over run, where run is exactly $1$: we evaluate one point at $t = 0$ and another at $t = 1$. The rise is also $1$, since $f(0) = 0^2 = 0$ and $f(1) = 1^2 = 1$, and so the slope of that blue line is $\frac{1}{1} = 1$.
+	If it seems strange to talk about the slope of something that&#x2019;s not a curve, you might find it easier to think about the blue line: if we draw it to pass through the two points we&#x2019;re looking at on the red curve, then its slope is the rise over run between those two points, which is the same quantity we&#x2019;re thinking about. Since one point is at $t = 0$ and the other is at $t = 1$, the run is $1$, and the rise is also $1$, since $f(0) = 0^2 = 0$ and $f(1) = 1^2 = 1$. Therefore, the slope of that blue line is $\frac{1}{1} = 1$.
 	
-	Imagine that $f$ is measuring the distance you&#x2019;ve traveled after $t$ seconds. You start off barely moving at all, and only really pick up speed down the line. You definitely don&#x2019;t have velocity $1 \frac{m}{2}$ from the moment you start, or the graph wouldn&#x2019;t have such a slow start from the origin. So what&#x2019;s the problem with the slope we found?
+	Imagine that $f$ is measuring the distance you&#x2019;ve traveled after $t$ seconds. You start off barely moving at all, and only really pick up speed down the line. You definitely don&#x2019;t have velocity $1 \frac{m}{s}$ from the moment you start, or the graph wouldn&#x2019;t have such a slow start from the origin. So what&#x2019;s the problem with the slope we found?
 	
-	Fundamentally, your velocity at time $t = 0$ shouldn&#x2019;t have anything to do with your position at $t = 1$. You might speed up or slow down a lot in that intervening second &mdash; maybe you even walk bacwkward! In our case, we sped up a lot, since our position is increasing faster at $t = 1$ than $t = 0$. In order to take a better measurement, we can make the run smaller in our slope calculation: for example, if we take $t = .1$, only a tenth of a second after we start measuring, then there&#x2019;s much less time for changes in position to affect the rise of the line. As a result, we get a better approximation of the actual velocity at $t = 0$.
+	Fundamentally, your velocity at time $t = 0$ shouldn&#x2019;t have anything to do with your position at $t = 1$. You might speed up or slow down a lot in that intervening second &mdash; maybe you even walk backward! In our case, we sped up a lot, since our position is increasing faster at $t = 1$ than $t = 0$. In order to take a better measurement, we can make the run smaller in our slope calculation: for example, if we take $t = .1$, only a tenth of a second after we start measuring, then there&#x2019;s much less time for changes in position to affect the rise of the line. As a result, we get a better approximation of the actual velocity at $t = 0$.
 	
 !end-text-block
 
@@ -86,7 +88,7 @@
 	
 	secant and tangent lines
 	
-	A <dfn>secant line</dfn> through a curve is a line that passes through two particular points on the curve. A <dfn>tangant line</dfn> is formed from a secant line by sliding one point until it is in the same location as the other.
+	A <dfn>secant line</dfn> through a curve is a line that passes through two particular points on the curve. A <dfn>tangent line</dfn> is formed from a secant line by sliding one point until it is in the same location as the other.
 	
 !end-def
 
@@ -232,7 +234,7 @@
 	
 	!iframe https://www.desmos.com/calculator/4swxaaewth
 	
-	The graph has a hole in it at $x = 0$, but by taking the limit, we found where the hole is: $(0, 1)$. That doesn&#x2019;t make the function any less undefined there, but as we talked about with slopes of tangent lines, limit values are useful despite &mdash; and often because of &mdash; the function is undefined.
+	The graph has a hole in it at $x = 0$, but by taking the limit, we found where the hole is: $(0, 1)$. That doesn&#x2019;t make the function any less undefined there, but as we talked about with slopes of tangent lines, limit values are useful despite &mdash; and often because of &mdash; the function being undefined.
 	
 !end-example
 
@@ -286,7 +288,7 @@
 
 !section
 
-!text s Limits that don&#x2019;t exist
+!text s Limits that Don&#x2019;t Exist
 
 <br>
 
@@ -324,7 +326,7 @@
 	
 	!iframe https://www.desmos.com/calculator/qlgryd0dbu
 	
-	As $x \to 0$ even just from the right, the $y$-values never settle down anything &mdash; in fact, they just get more and more chaotic. Using the previous example&#x2019;s metaphor, there isn&#x2019;t any $y$-value that it would make sense to expect the graph to have at $x = 0$.
+	As $x \to 0$ even just from the right, the $y$-values never settle down to anything &mdash; in fact, they just get more and more chaotic. Using the previous example&#x2019;s metaphor, there isn&#x2019;t any $y$-value that it would make sense to expect the graph to have at $x = 0$.
 	
 !end-example
 
