@@ -186,7 +186,7 @@
 	
 	$$
 		\begin{align*}
-			\lim_{x \to -1} \frac{\sqrt{x + 2} - 1}{x + 1} &= \lim_{x \to -1} \left( \frac{\sqrt{x + 2} - 1}{x + 1} \cdot \frac{-\sqrt{x + 2} - 1}{-\sqrt{x + 2} - 1} \rght)\\
+			\lim_{x \to -1} \frac{\sqrt{x + 2} - 1}{x + 1} &= \lim_{x \to -1} \left( \frac{\sqrt{x + 2} - 1}{x + 1} \cdot \frac{-\sqrt{x + 2} - 1}{-\sqrt{x + 2} - 1} \right)\\
 			&= \lim_{x \to -1} \frac{-(x + 2) - \sqrt{x + 2} + \sqrt{x + 2} + 1}{(x + 1)(-\sqrt{x + 2} - 1)}\\
 			&= \lim_{x \to -1} \frac{-x - 1}{(x + 1)(-\sqrt{x + 2} - 1)}\\
 			&= \lim_{x \to -1} \frac{-1}{(-\sqrt{x + 2} - 1)}\\
@@ -286,7 +286,51 @@
 	
 	$$
 		\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x}	 = \infty.
-	$$	
+	$$
+	
+!end-example
+
+
+
+!section
+
+!text s The Squeeze Theorem
+
+<br>
+
+
+
+!begin-text-block
+	
+	The squeeze theorem is a little complicated to state, but it&#x2019;s a straightforward idea: if you can fit (squeeze) a function between two simpler ones that converge to each other, the limit of the squeezed function only has one place to go.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the Squeeze theorem
+	
+	Let $f(x)$, $g(x)$, and $h(x)$ be functions defined for all $x \neq a$ in some open interval containing $a$. If $f(x) \leq g(x) \leq h(x)$ and $\lim_{x \to a} f(x) = \lim_{x \to a} h(x) = L$, then $\lim_{x \to a} g(x) = L$.
+	
+!end-thm
+
+
+
+!begin-example
+	
+	the Squeeze theorem
+	
+	Find $\lim_{x \to 0} x \sin(x)$.
+	
+	Even though there&#x2019;s no division by zero, we can&#x2019;t just plug in $x = 0$, since our limit rules don&#x2019;t talk about trig functions. Instead, remember that $-1 \leq \sin(x) \leq 1$, since sine measures a $y$-coordinate on the unit circle, and so $-|x| \leq x\sin(x) \leq |x|$. We need to have the absolute value because otherwise the signs will be switched. The graph shows $x\sin(x)$ being squeezed between the other two functions.
+	
+	!iframe https://www.desmos.com/calculator/g6hizfszml
+	
+	Since $\lim_{x \to 0} |x| = 0$ and $\lim_{x \to 0} -|x| = 0$, we must have that $\lim_{x \to 0} x\sin(x) = 0$ too.
+	
+	In general, you won&#x2019;t be asked to come up with squeeze theorem bounds on timed exams or quizzes, but on homework, it&#x2019;s fair game. Try to find functions that meet at the point you&#x2019;re limiting to and that bound the complicated function from above and below.
 	
 !end-example
 
