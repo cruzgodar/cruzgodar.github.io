@@ -1,0 +1,333 @@
+<head>
+	<title>Section 2: Limit Rules</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 2: Limit Rules"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/2-limit-rules/2-limit-rules.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/252/notes/2-limit-rules/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 2: Limit Rules
+
+!text b c Covered in Week 1
+
+<br>
+
+
+
+!begin-text-block
+	
+	A common trend in calculus is the introduction of a new operator &mdash; like limits &mdash; that&#x2019;s annoying or difficult to compute manually. The first thing we usually do is develop shortcuts and rules for working with it so we don&#x2019;t spend so much time working through slow and difficult computations. The only way we can calculate limits at the moment is pretty much by making a table of values and guessing &mdash; that&#x2019;s sloppy and time-consuming. Instead, let&#x2019;s look at some rules that make the process simpler in some special cases.
+	
+!end-text-block
+
+
+
+!begin-prop
+	
+	basic limit rules
+	
+	Let $f(x)$ and $g(x)$ be functions. Then:
+	
+	1. $\lim_{x \to a} (f(x) + g(x)) = \lim_{x \to a} f(x) + \lim_{x \to a} g(x)$.
+	
+	2. $\lim_{x \to a} (f(x) - g(x)) = \lim_{x \to a} f(x) - \lim_{x \to a} g(x)$.
+	
+	3. $\lim_{x \to a} (f(x)g(x)) = \left( \lim_{x \to a} f(x) \right) \left( \lim_{x \to a} g(x) \right)$.
+	
+	4. $\lim_{x \to a} \left( \frac{f(x)}{g(x)} \right) = \dfrac{\lim_{x \to a} f(x)}{\lim_{x \to a} g(x)}$, as long as $\lim_{x \to a} g(x) \neq 0$.
+	
+	5. $\lim_{x \to a} f(x)^n = \left( \lim_{x \to a} f(x) \right)^n$
+	
+	6. $\lim_{x \to a} \sqrt[n]{f(x)} = \sqrt[n]{\lim_{x \to a} f(x)}$.
+	
+!end-prop
+
+
+
+!begin-text-block
+	
+	All this says is that we can move limits inside powers and split them up across addition, subtration, multiplication, and division. In contrast to some things we&#x2019;ll introduce later, this makes limits pretty simple &mdash; all we need to know is how to take limits of basic functions, and then limits of more complicated ones break down into those simpler limits.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	basic limit rules
+	
+	Evaluate $\lim_{x \to -3} (4x + 2)$.
+	
+	Let&#x2019;s take this one step at a time.
+	
+	$$
+		\begin{align*}
+			\lim_{x \to -3} (4x + 2) &= 4\lim_{x \to -3} (x) + \lim_{x \to -3} (2)\\
+			&= 4(-3) + 2\\
+			&= -10.
+		\end{align*}	
+	$$
+	
+	Remember from last section that $\lim_{x \to a} x = a$ and $\lim_{x \to a} c = c$.
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	Two common types of functions are polynomials and rational functions (which are just one polynomial divided by another). Since both of those are just combinations of all the things the basic limit rules, we can take limits of polynomials and rational functions easily.
+	
+!end-text-block
+
+
+
+!begin-prop
+	
+	limits of polynomials and rational functions
+	
+	Let $p(x)$ and $q(x)$ be polynomials. Then $\lim_{x \to a} p(x) = p(a)$ and $\lim_{x \to a} \frac{p(x)}{q(x)} = \frac{p(a)}{q(a)}$, as long as $q(a) \neq 0$.
+	
+!end-prop
+
+
+
+!begin-example
+	
+	limits of polynomials and rational functions
+	
+	Find $\lim_{x \to 3} \frac{2x^2 - 3x + 1}{5x + 4}$.
+	
+	Since plugging in $3$ for $x$ doesn&#x2019;t make the denominator zero, we have
+	
+	$$
+		\lim_{x \to 3} \frac{2x^2 - 3x + 1}{5x + 4} = \frac{2(3)^2 - 3(3) + 1}{5(3) + 4} = \frac{10}{19}.
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	limits of polynomials and rational functions
+	
+	Find $\lim_{x \to -2} \left( 3x^3 - 2x + 7 \right)$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	The example we talked about in the last section &mdash; $g(h) = \frac{h^2}{h}$ &mdash; is a rational function that has a common factor that can be canceled (one copy of $h$ from the numerator and denomator). The result is that $g(h) = h$, unless $h = 0$, so the graph is a straight line with a single hole in it at $h = 0$. Common factors that can almost always cancel like this produce holes in the graph, and since everywhere else the function is described by a simplified equation, we can find the limit approaching a hole by just taking the same limit of the simplified equation. Let&#x2019;s look at an example to see what we mean.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	limits of rational functions with a common factor
+	
+	Find $\lim_{x \to 1} \frac{x^2 - 1}{x - 1}$.
+	
+	First of all, $\frac{x^2 - 1}{x - 1} = \frac{(x - 1)(x + 1)}{x - 1}$.
+	
+	The limit as $x$ approaches $1$ of a function does <strong>not</strong> depend on what the function actually does at $x = 1$. Since that&#x2019;s the only time we&#x2019;re not allowed to cancel the factors of $x - 1$, we&#x2019;re good to go ahead and cancel the factors.
+	
+	$$
+		\lim_{x \to 1} \frac{x^2 - 1}{x - 1} = \lim_{x \to 1} (x + 1).
+	$$
+	
+	Now this is just a polynomial, so we can just plug in $x = 1$ to get that the limit is $2$.
+	
+	!iframe https://www.desmos.com/calculator/avbv2rq88h
+	
+!end-example
+
+!begin-exercise
+	
+	limits of rational functions with a common factor
+	
+	Find $\lim_{x \to 3} \frac{x^2 - 3x}{2x^2 - 5x - 3}$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	It&#x2019;s a little harder when there is a square root in the numerator or denominator and we can&#x2019;t cancel a factor. A good strategy then is to multiply both the numerator and denominator of the fraction by the conjugate of the expression involving the square root. Remember that the conjugate just means the expression with the square root negated.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	limits of rational functions with a square root
+	
+	Find $\lim_{x \to -1} \frac{\sqrt{x + 2} - 1}{x + 1}$.
+	
+	This is an expression involving only arithmetic, powers, and roots, so it seems like we could try just plugging in $x = -1$, but since that makes the denominator (and numerator) zero, we&#x2019;re not allowed to do that. Instead, let&#x2019;s try multiplying both top and bottom by the conjugate of $\sqrt{x + 2} - 1$, which is just $-\sqrt{x + 2} - 1$. Then the result is
+	
+	$$
+		\begin{align*}
+			\lim_{x \to -1} \frac{\sqrt{x + 2} - 1}{x + 1} &= \lim_{x \to -1} \left( \frac{\sqrt{x + 2} - 1}{x + 1} \cdot \frac{-\sqrt{x + 2} - 1}{-\sqrt{x + 2} - 1} \rght)\\
+			&= \lim_{x \to -1} \frac{-(x + 2) - \sqrt{x + 2} + \sqrt{x + 2} + 1}{(x + 1)(-\sqrt{x + 2} - 1)}\\
+			&= \lim_{x \to -1} \frac{-x - 1}{(x + 1)(-\sqrt{x + 2} - 1)}\\
+			&= \lim_{x \to -1} \frac{-1}{(-\sqrt{x + 2} - 1)}\\
+			&= \lim_{x \to -1} \frac{1}{\sqrt{x + 2} + 1}\\
+			&= \frac{1}{\sqrt{-1 + 2} + 1}\\
+			&= \frac{1}{2}.
+		\end{align*}
+	$$
+	
+	Notice that we were careful <em>not</em> to multiply out the denominator, since we expect to be able to cancel a factor of $x + 1$.
+	
+!end-example
+
+!begin-exercise
+	
+	limits of rational functions with a square root
+	
+	Find $\lim_{x \to 5} \frac{\sqrt{x - 1} - 2}{x - 5}$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	Another example that arises involves getting a common denominator for rational functions.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a limit with a common denominator
+	
+	Evaluate $\lim_{y \to 0} \left( \frac{1}{y} + \frac{5}{y(y - 5)} \right)$.
+	
+	Both terms divide by zero when we plug in $y = 0$, so we can&#x2019;t directly evaluate them like that. Instead, let&#x2019;s try adding the fractions together, and maybe things will work out better then. Just like with regular integers, we can find common denominators of polynomials &mdash; here, the common denominator of $y$ and $y(y - 5)$ is $y(y - 5)$, since both denominators divide into it. Then the limit becomes
+	
+	$$
+		\begin{align*}
+			\lim_{y \to 0} \left( \frac{1}{y} + \frac{5}{y(y - 5)} \right) &= \lim_{y \to 0} \left( \frac{y - 5}{y(y - 5)} + \frac{5}{y(y - 5)} \right)\\
+			&= \lim_{y \to 0} \frac{y - 5 + 5}{y(y - 5)}\\
+			&= \lim_{y \to 0} \frac{y}{y(y - 5)}.
+		\end{align*}
+	$$
+	
+	Now we&#x2019;re allowed to cancel the factors of $y$ and plug in $y = 0$ to get that the limit equal to $-\frac{1}{5}$.
+	
+!end-example
+
+
+
+!begin-example
+	
+	a one-sided limit
+	
+	Evaluate $\lim_{t \to 2^-} \sqrt{t - 2}$.
+	
+	This one-sided limit is telling us to consider only numbers smaller than $2$. But if $t < 2$, then $t - 2$ is negative, so the function $\sqrt{t - 2}$ is undefined! Therefore, the limit must be undefined. Visually, we&#x2019;re trying to approach the point $(2, 0)$ from the left in this graph, but there is no graph to the left, so there&#x2019;s no way to approach.
+	
+	!iframe https://www.desmos.com/calculator/yzto1elfvj
+	
+	On the other hand, the limit $\lim_{t \to 2^+} \sqrt{t - 2}$ exists and is equal to zero. Since this function is only defined from one direction near $t = 2$, we write $\lim_{t \to 2} \sqrt{t - 2}$ to mean $\lim_{t \to 2^+} \sqrt{t - 2}$, so the total limit exists and is equal to $2$.
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	What about infinite limits? They can be a little trickier to calculate.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a one-sided limit
+	
+	Evaluate $\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x}$.
+	
+	Plugging in $x = 2$ gives us $\frac{-1}{0}$ &mdash; division by zero that&#x2019;s not of the form $\frac{0}{0}$ indicates that the function is spiking to $\pm \infty$. To figure out which one, it&#x2019;s best to isolate the bit that&#x2019;s dividing by zero from the rest. First, let&#x2019;s factor the denominator.
+	
+	$$
+		\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x} = \lim_{x \to 2^-} \frac{x - 3}{x(x - 2)} = \lim_{x \to 2^-} \frac{x - 3}{x} \cdot \frac{1}{x - 2}.
+	$$
+	
+	Now since limits split over multiplication, we can just plug in $x = 2$ into the first part.
+	
+	$$
+		\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x} = -\frac{1}{2} \lim_{x \to 2^-} \frac{1}{x - 2}.
+	$$
+	
+	Now as $x \to 2$ from the left, $x - 2$ is always negative, but getting closer and closer to zero. Therefore, $\frac{1}{x - 2}$ is getting bigger and bigger, but always negative. Therefore, $\lim_{x \to 2^-} \frac{1}{x - 2} = -\infty$. In total, the minus signs cancel to give
+	
+	$$
+		\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x}	 = \infty.
+	$$	
+	
+!end-example
+
+
+
+<div class="text-buttons">
+	<div class="focus-on-child new-aos-section" data-aos="zoom-out" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="Page.Navigation.redirect('/teaching/uo/251/notes/1-intro-to-limits/1-intro-to-limits.html')">Previous</button>
+	</div>
+	
+	<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="Page.Navigation.redirect('/teaching/uo/251/251.html.html')">Home</button>
+	</div>
+	
+	<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+		<button class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1" onclick="Page.Navigation.redirect('/teaching/uo/251/notes/3-continuity/3-continuity.html')">Next</button>
+	</div>
+</div>
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 2: Limit Rules",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>
