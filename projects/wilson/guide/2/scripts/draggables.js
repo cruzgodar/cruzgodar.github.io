@@ -207,16 +207,5 @@
 	
 	
 	
-	Page.element.querySelector("#previous-part-button").addEventListener("click", () =>
-	{
-		Page.Navigation.redirect("/projects/wilson/guide/1/getting-started.html");
-	});
-	
-	Page.element.querySelector("#next-part-button").addEventListener("click", () =>
-	{
-		Page.Navigation.redirect("/projects/wilson/guide/3/parallelizing.html");
-	});
-	
-	
 	Page.show();
 }()

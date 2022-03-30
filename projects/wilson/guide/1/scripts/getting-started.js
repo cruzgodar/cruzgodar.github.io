@@ -237,12 +237,5 @@
 	
 	
 	
-	Page.element.querySelector("#next-part-button").addEventListener("click", () =>
-	{
-		Page.Navigation.redirect("/projects/wilson/guide/2/draggables.html");
-	});
-	
-	
-	
 	Page.show();
 }()

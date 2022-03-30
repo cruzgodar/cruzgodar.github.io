@@ -216,17 +216,5 @@
 	
 	
 	
-	Page.element.querySelector("#previous-part-button").addEventListener("click", () =>
-	{
-		Page.Navigation.redirect("/projects/wilson/guide/3/parallelizing.html");
-	});
-	
-	Page.element.querySelector("#next-part-button").addEventListener("click", () =>
-	{
-		Page.Navigation.redirect("/projects/wilson/guide/5/fullscreen.html");
-	});
-	
-	
-	
 	Page.show();
 }()

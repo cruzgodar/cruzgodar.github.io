@@ -527,6 +527,27 @@ Page.Components =
 	
 	
 	
+	get_nav_buttons: function()
+	{
+		return `
+			<div class="text-buttons">
+				<div class="focus-on-child new-aos-section" data-aos="zoom-out" tabindex="1">
+					<button id="previous-nav-button" class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1">Previous</button>
+				</div>
+				
+				<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+					<button id="home-nav-button" class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1">Home</button>
+				</div>
+				
+				<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+					<button id="next-nav-button" class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1">Next</button>
+				</div>
+			</div>
+		`;
+	},
+	
+	
+	
 	decode: function(html)
 	{
 		let new_aos_section = false;
@@ -1257,6 +1278,13 @@ Page.Components =
 				else if (words[0] === "!line-break")
 				{
 					lines[i] = this.get_line_break();
+				}
+				
+				
+				
+				else if (words[0] === "!nav-buttons")
+				{
+					lines[i] = this.get_nav_buttons();
 				}
 			}
 		}

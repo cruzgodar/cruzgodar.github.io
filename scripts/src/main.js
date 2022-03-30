@@ -91,6 +91,68 @@ Site.scripts_loaded =
 
 
 
+Site.page_lists =
+{
+	"/teaching/uo/251/notes":
+	[
+		"/teaching/uo/251/251.html",
+		
+		"/teaching/uo/251/notes/0-algebra-and-trig-review/0-algebra-and-trig-review.html",
+		"/teaching/uo/251/notes/1-intro-to-limits/1-intro-to-limits.html",
+		"/teaching/uo/251/notes/2-limit-rules/2-limit-rules.html",
+		"/teaching/uo/251/notes/3-continuity/3-continuity.html",
+		"/teaching/uo/251/notes/4-intro-to-derivatives/4-intro-to-derivatives.html",
+		"/teaching/uo/251/notes/5-derivative-rules/5-derivative-rules.html",
+		"/teaching/uo/251/notes/6-applications-of-derivatives/6-applications-of-derivatives.html",
+		"/teaching/uo/251/notes/7-exp-log-and-trig-derivatives/7-exp-log-and-trig-derivatives.html",
+		"/teaching/uo/251/notes/8-the-chain-rule/8-the-chain-rule.html",
+		"/teaching/uo/251/notes/9-implicit-differentiation/9-implicit-differentiation.html",
+		"/teaching/uo/251/notes/10-linear-approximation/10-linear-approximation.html",
+		"/teaching/uo/251/notes/11-optimization/11-optimization.html",
+		"/teaching/uo/251/notes/12-derivatives-and-graphs/12-derivatives-and-graphs.html",
+		"/teaching/uo/251/notes/13-l-hopitals-rule/13-l-hopitals-rule.html",
+		"/teaching/uo/251/notes/14-related-rates/14-related-rates.html",
+		"/teaching/uo/251/notes/15-applied-optimization/15-applied-optimization.html"
+	],
+	
+	"/teaching/uo/252/notes":
+	[
+		"/teaching/uo/252/252.html",
+		
+		"/teaching/uo/252/notes/0-calc-1-review/0-calc-1-review.html",
+		"/teaching/uo/252/notes/1-riemann-sums/1-riemann-sums.html",
+		"/teaching/uo/252/notes/2-integrals-intro/2-integrals-intro.html",
+		"/teaching/uo/252/notes/3-antiderivatives/3-antiderivatives.html",
+		"/teaching/uo/252/notes/4-ftoc/4-ftoc.html",
+		"/teaching/uo/252/notes/5-simple-applications/5-simple-applications.html",
+		"/teaching/uo/252/notes/6-u-sub/6-u-sub.html",
+		"/teaching/uo/252/notes/7-exp-and-log-integrals/7-exp-and-log-integrals.html",
+		"/teaching/uo/252/notes/8-area-between-curves/8-area-between-curves.html",
+		"/teaching/uo/252/notes/9-solids-of-revolution/9-solids-of-revolution.html",
+		"/teaching/uo/252/notes/10-arc-length-and-surface-area/10-arc-length-and-surface-area.html",
+		"/teaching/uo/252/notes/11-physical-applications/11-physical-applications.html",
+		"/teaching/uo/252/notes/12-integration-by-parts/12-integration-by-parts.html",
+		"/teaching/uo/252/notes/13-trig-sub/13-trig-sub.html",
+		"/teaching/uo/252/notes/14-partial-fractions/14-partial-fractions.html",
+		"/teaching/uo/252/notes/15-improper-integrals/15-improper-integrals.html",
+		"/teaching/uo/252/notes/16-intro-to-des/16-intro-to-des.html"
+	],
+	
+	"/projects/wilson/guide":
+	[
+		"/projects/wilson/wilson.html",
+		
+		"/projects/wilson/guide/1/getting-started.html",
+		"/projects/wilson/guide/2/draggables.html",
+		"/projects/wilson/guide/3/parallelizing.html",
+		"/projects/wilson/guide/4/hidden-canvases.html",
+		"/projects/wilson/guide/5/fullscreen.html",
+		"/projects/wilson/guide/6/interactivity.html"
+	]
+};
+
+
+
 Site.use_js_animation = false;
 
 Site.base_animation_time = 250;

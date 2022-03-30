@@ -1183,19 +1183,5 @@
 	
 	
 	
-	
-	
-	Page.element.querySelector("#previous-part-button").addEventListener("click", () =>
-	{
-		Page.Navigation.redirect("/projects/wilson/guide/5/fullscreen.html");
-	});
-	
-	Page.element.querySelector("#homepage-button").addEventListener("click", () =>
-	{
-		Page.Navigation.redirect("/projects/wilson/wilson.html");
-	});
-	
-	
-	
 	Page.show();
 }()

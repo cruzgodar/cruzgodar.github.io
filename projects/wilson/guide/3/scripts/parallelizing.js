@@ -161,17 +161,5 @@
 	
 	
 	
-	Page.element.querySelector("#previous-part-button").addEventListener("click", () =>
-	{
-		Page.Navigation.redirect("/projects/wilson/guide/2/draggables.html");
-	});
-	
-	Page.element.querySelector("#next-part-button").addEventListener("click", () =>
-	{
-		Page.Navigation.redirect("/projects/wilson/guide/4/hidden-canvases.html");
-	});
-	
-	
-	
 	Page.show();
 }()

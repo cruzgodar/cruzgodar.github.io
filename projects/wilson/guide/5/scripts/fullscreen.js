@@ -496,17 +496,5 @@
 	
 	
 	
-	Page.element.querySelector("#previous-part-button").addEventListener("click", () =>
-	{
-		Page.Navigation.redirect("/projects/wilson/guide/4/hidden-canvases.html");
-	});
-	
-	Page.element.querySelector("#next-part-button").addEventListener("click", () =>
-	{
-		Page.Navigation.redirect("/projects/wilson/guide/6/interactivity.html");
-	});
-	
-	
-	
 	Page.show();
 }()

@@ -83,6 +83,12 @@ Page.load = async function()
 	
 	this.Load.TextButtons.set_up();
 	
+	if ("parent_list" in this.settings)
+	{
+		this.Load.TextButtons.set_up_nav_buttons(this.settings["parent_list"]);
+	}
+	
+	
 	setTimeout(() =>
 	{
 		this.Load.FocusEvents.set_up_weird_elements();
@@ -805,6 +811,48 @@ Page.Load =
 				}
 				
 				elements[i].parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, ${max_width}px)`;
+			}
+		},
+		
+		
+		
+		set_up_nav_buttons: function(parent_list)
+		{
+			let index = Site.page_lists[parent_list].indexOf(Page.url);
+			
+			if (index === -1)
+			{
+				console.error("Page not found in page list!");
+				
+				return;
+			}
+			
+			
+			
+			if (index > 1)
+			{
+				Page.element.querySelector("#previous-nav-button").setAttribute("onclick", `Page.Navigation.redirect("${Site.page_lists[parent_list][index - 1]}")`);
+			}
+			
+			else
+			{
+				Page.element.querySelector("#previous-nav-button").parentNode.remove();
+			}
+			
+			
+			
+			Page.element.querySelector("#home-nav-button").setAttribute("onclick", `Page.Navigation.redirect("${Site.page_lists[parent_list][0]}")`);
+			
+			
+			
+			if (index < Site.page_lists[parent_list].length - 1)
+			{
+				Page.element.querySelector("#next-nav-button").setAttribute("onclick", `Page.Navigation.redirect("${Site.page_lists[parent_list][index + 1]}")`);
+			}
+			
+			else
+			{
+				Page.element.querySelector("#next-nav-button").parentNode.remove();
 			}
 		}
 	},
