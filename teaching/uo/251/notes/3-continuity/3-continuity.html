@@ -40,9 +40,122 @@
 	
 	continuity
 	
-	Let $f(x)$ be a function. If $f(a)$ is defined and $\lim_{x \to a} f(x) = f(a)$, then we say that $f$ is <dfn>continuous</dfn> at $a$. If $f$ is continuous at all $a$ in its domain, then we say that $f$ is continuous.
+	Let $f(x)$ be a function. If $f(a)$ is defined and $\lim_{x \to a} f(x) = f(a)$, then we say that $f$ is <dfn>continuous at $a$</dfn>. If $f$ is continuous at all $a$ in its domain, then we just say that $f$ is <dfn>continuous</dfn>.
 	
 !end-def
+
+
+
+!begin-text-block
+	
+	The simplest way to describe continuous functions is that they&#x2019;re the ones whose graphs can be drawn in one stroke without lifting your pen from the paper. If a function is not continuous at $x = a$, then there are only a few possibilites for what went wrong:
+	
+	1. $f(a)$ is undefined.
+	
+	2. $\lim_{x \to a} f(x)$ DNE.
+	
+	3. $\lim_{x \to a} f(x)$ exists and $f(a)$ is defined, but $\lim_{x \to a} f(x) \neq f(a)$.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	continuity
+	
+	Let $f$ be defined by the following graph. Where is $f$ continuous?
+	
+	!iframe https://www.desmos.com/calculator/dxsxmhf20z
+	
+	This function has three kinds of discontinuities: at $x = -3$, $f(-3) = -1$ but $\lim_{x \to 3} f(x)$ DNE, so it&#x2019;s not continuous there. At $x = 0$, $f(0) = 1$, but $\lim_{x \to 0} f(x) = 0$, so it&#x2019;s not continuous there either. Finally, at $x = 4$, $f(4)$ is undefined, and $\lim_{x \to 4} f(x) = \infty$, so it&#x2019;s not continuous there. In total, $f$ is continuous everywhere except for $x = -3$, $x = 0$, and $x = 4$.
+
+!end-example
+
+!begin-exercise
+	
+	continuity
+	
+	Define a function $f$ by
+	
+	$$
+		f(x) = \begin{cases}
+			\frac{\sin(x)}{x}, & x \neq 0\\
+			1, & x = 0
+		\end{cases}.	
+	$$
+	
+	Show that $f$ is continuous.	
+
+!end-exercise
+
+
+
+!begin-text-block
+	
+	The function in the previous example displays all possible kinds of discontinuities: to make things easier when talking about them, let
+	
+!end-text-block
+
+
+
+!begin-text-block
+	
+	These next two theorems will let calculate limits <strong>much</strong> more easily. The first one  is great news: most of the functions we know so far are continuous wherever they&#x2019;re defined!
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	continuity of elementary functions
+	
+	Polynomials, rational functions, trig functions, exponential functions, and logarithmic functions are all continuous everywhere they&#x2019;re defined.
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	This next theorem tells us that continuity is preserved through composition.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	continuity of compositions
+	
+	Let $f$ and $g$ be functions so that $g$ is continuous at $a$ and $f$ is continuous at $g(a)$. Then $f(g(x))$ is continuous at $a$. In particular, if $f$ and $g$ are simply continuous functions, then $f(g(x))$ is continuous too.
+	
+!end-thm
+
+
+
+!begin-example
+	
+	an easier limit
+	
+	Find 
+	
+	$$
+		\lim_{x \to 0} \frac{\cos(x^2) - x}{2 - \tan(x)}.
+	$$
+	
+	Since all of the functions present are continuous, we can just plug in $x = 0$:
+	
+	$$
+		\lim_{x \to 0} \frac{\cos(x^2) - x}{2 - \tan(x)} = \frac{\cos(0^2) - 0}{2 - \tan(0)} = \frac{1 - 0}{2 - 0} = \frac{1}{2}.
+	$$
+	
+	!iframe https://www.desmos.com/calculator/vbna6q4hx3
+	
+	This is a really complicated-looking function, and it&#x2019;s nice to be able to calculate a limit of it without making a table or writing out long-winded limit rules. The only place we can&#x2019;t plug in a value of $x$ is when it would make the denominator zero, since then the entire function is undefined and therefore not continuous.
+
+!end-example
 
 
 

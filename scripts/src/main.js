@@ -86,6 +86,7 @@ Site.scripts_loaded =
 {
 	"mathjax": false,
 	"complexjs": false,
+	"three": false,
 	"glsl": 0
 };
 

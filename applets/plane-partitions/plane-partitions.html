@@ -1,0 +1,90 @@
+<head>
+	<title>Abelian Sandpiles</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Abelian Sandpiles"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/applets/abelian-sandpiles/abelian-sandpiles.html"/>
+	
+	<meta property="og:description" content="Draw a grid and start dropping sand grains in the center square. As soon as you get to four grains, the pile topples, spilling one grain into each of the four surrounding squares. By the time you&#x2019;ve dropped fifteen grains in the center, you&#x2019;ll have five piles of three grains each. The next grain topples the center pile, and then each of the surrounding four topple themselves. Four of those grains end up back in the center, where they topple again, and then the system is stable again. If we start with a massive number of grains in the center, the pattern that&#x2019;s eventually produced is surprisingly complex. Amazingly, when we have more than one pile that will topple at the same time, the order we topple them in has no effect on the final outcome. Because of this, the model is called Abelian."/>
+
+	<meta property="og:image" content="https://cruzgodar.com/applets/abelian-sandpiles/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Abelian Sandpiles
+
+
+
+!begin-text-block
+	
+	Text
+	
+	!wilson
+
+!end-text-block
+
+
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+
+
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+!canvas
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+!begin-text-buttons
+	
+	download l Download
+	
+!end-text-buttons
+
+</div>
+
+</div>
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Abelian Sandpiles",
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>
