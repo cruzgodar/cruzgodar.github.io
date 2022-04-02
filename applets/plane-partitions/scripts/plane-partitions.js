@@ -21,6 +21,15 @@
 		{
 			console.error("Could not load THREE.js");
 		});
+		
+		
+		
+		await Site.load_script("/scripts/three-meshlines.min.js")
+		
+		.catch((error) =>
+		{
+			console.error("Could not load THREE.js");
+		});
 	}
 	
 	
@@ -29,6 +38,7 @@
 	
 	//FOV, aspect ratio, near clip, far clip
 	const camera = new THREE.PerspectiveCamera(90, 1, .1, 1000);
+	camera.position.z = 5;
 	
 	const renderer = new THREE.WebGLRenderer({canvas: wilson.canvas, antialias: true});
 	
@@ -36,12 +46,25 @@
 	
 	
 	
+	const loader = new THREE.TextureLoader();
+	
+	const texture = loader.load("/applets/plane-partitions/graphics/cube-face.png");
+	texture.minFilter = THREE.LinearFilter;
+	texture.magFilter = THREE.NearestFilter;
+	
 	const geometry = new THREE.BoxGeometry();
-	const material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+	const material = new THREE.MeshStandardMaterial({map: texture});
 	const cube = new THREE.Mesh(geometry, material);
 	scene.add(cube);
-
-	camera.position.z = 5;
+	
+	
+	
+	const ambient_light = new THREE.AmbientLight(0xffffff, .2);
+	scene.add(ambient_light);
+	
+	const point_light = new THREE.PointLight(0xffffff, 5, 100);
+	point_light.position.set(50, 50, 50);
+	scene.add(point_light);
 	
 	
 	
