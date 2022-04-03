@@ -4,7 +4,16 @@
 	
 	
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), {canvas_width: 1000, canvas_height: 1000});
+	let options =
+	{
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		mousedrag_callback: on_drag_canvas,
+		touchmove_callback: on_drag_canvas
+	};
+	
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 	
 	
 	
@@ -21,15 +30,6 @@
 		{
 			console.error("Could not load THREE.js");
 		});
-		
-		
-		
-		await Site.load_script("/scripts/three-meshlines.min.js")
-		
-		.catch((error) =>
-		{
-			console.error("Could not load THREE.js");
-		});
 	}
 	
 	
@@ -38,7 +38,8 @@
 	
 	//FOV, aspect ratio, near clip, far clip
 	const camera = new THREE.PerspectiveCamera(90, 1, .1, 1000);
-	camera.position.z = 5;
+	camera.position.set(5, 5, 5);
+	camera.lookAt(0, 0, 0);
 	
 	const renderer = new THREE.WebGLRenderer({canvas: wilson.canvas, antialias: true});
 	
@@ -48,16 +49,9 @@
 	
 	const loader = new THREE.TextureLoader();
 	
-	const texture = loader.load("/applets/plane-partitions/graphics/cube-face.png");
-	texture.minFilter = THREE.LinearFilter;
-	texture.magFilter = THREE.NearestFilter;
-	
-	const geometry = new THREE.BoxGeometry();
-	const material = new THREE.MeshStandardMaterial({map: texture});
-	const cube = new THREE.Mesh(geometry, material);
-	scene.add(cube);
-	
-	
+	const cube_texture = loader.load("/applets/plane-partitions/graphics/cube-face.png");
+	cube_texture.minFilter = THREE.LinearFilter;
+	cube_texture.magFilter = THREE.NearestFilter;
 	
 	const ambient_light = new THREE.AmbientLight(0xffffff, .2);
 	scene.add(ambient_light);
@@ -66,21 +60,56 @@
 	point_light.position.set(50, 50, 50);
 	scene.add(point_light);
 	
+	const cube_group = new THREE.Object3D();
+	scene.add(cube_group);
+	
+	add_cube(0, 0, 0);
+	add_cube(0, 1, 0);
+	add_cube(0, 1, 1);
+	
+	draw_frame();
+	
+	setTimeout(() => Page.show(), 500);
+	
+	
+	
+	function on_drag_canvas(x, y, x_delta, y_delta, event)
+	{
+		wilson.world_center_x -= x_delta;
+		wilson.world_center_y -= y_delta;
+		
+		wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, wilson.world_width / 2), 4 - wilson.world_width / 2);
+		wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, wilson.world_height / 2), 4 - wilson.world_height / 2);
+		
+		
+		
+		next_pan_velocity_x = -x_delta;
+		next_pan_velocity_y = -y_delta;
+	}
+	
 	
 	
 	function draw_frame()
 	{
 		renderer.render(scene, camera);
 		
-		cube.rotation.x += 0.01;
-		cube.rotation.y += 0.01;
+		cube_group.rotation.z += .01;
 		
 		window.requestAnimationFrame(draw_frame);
 	}
 	
-	draw_frame();
 	
 	
-	
-	setTimeout(() => Page.show(), 500);
+	function add_cube(x, y, z)
+	{
+		const geometry = new THREE.BoxGeometry();
+		const material = new THREE.MeshStandardMaterial({map: cube_texture});
+		const cube = new THREE.Mesh(geometry, material);
+		
+		cube.position.set(x, y, z);
+		
+		cube_group.add(cube);
+		
+		return cube;
+	}
 }()
