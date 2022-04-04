@@ -125,6 +125,7 @@
 	
 	let plane_partition_size = 1;
 	let plane_partition_flat_size = 1;
+	let plane_partition_max_entry = 1;
 	
 	let cubes = [];
 	
@@ -213,7 +214,6 @@
 	
 	function construct_plane_partition()
 	{
-		let max_entry = 0;
 		let max_row_length = 0;
 		
 		cubes = new Array(plane_partition.length);
@@ -231,9 +231,9 @@
 			{
 				cubes[i][j] = new Array(plane_partition[i][j]);
 				
-				if (plane_partition[i][j] > max_entry)
+				if (plane_partition[i][j] > plane_partition_max_entry)
 				{
-					max_entry = plane_partition[i][j];
+					plane_partition_max_entry = plane_partition[i][j];
 				}
 				
 				for (let k = 0; k < plane_partition[i][j]; k++)
@@ -243,9 +243,11 @@
 			}
 		}
 		
+		
+		
 		plane_partition_flat_size = Math.max(plane_partition.length, max_row_length);
 		
-		plane_partition_size = Math.max(plane_partition_flat_size, max_entry);
+		plane_partition_size = Math.max(plane_partition_flat_size, plane_partition_max_entry);
 		
 		orthographic_camera.left = -plane_partition_size;
 		orthographic_camera.right = plane_partition_size;
@@ -398,6 +400,10 @@
 			
 			let font_size = wilson_numbers.canvas_width / (plane_partition_flat_size + 2);
 			
+			let num_characters = `${plane_partition_max_entry}`.length;
+			
+			wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
+			
 			//Show the numbers in the right places.
 			for (let i = 0; i < plane_partition.length; i++)
 			{
@@ -406,18 +412,6 @@
 					if (plane_partition[i][j] === 0)
 					{
 						continue;
-					}
-					
-					if (plane_partition[i][j] <= 9)
-					{
-						wilson_numbers.ctx.font = `${.8 * font_size}px monospace`;
-					}
-					
-					else
-					{
-						let label = `${plane_partition[i][j]}`;
-						
-						wilson_numbers.ctx.font = `${font_size / label.length}px monospace`;
 					}
 					
 					let text_metrics = wilson_numbers.ctx.measureText(plane_partition[i][j]);
