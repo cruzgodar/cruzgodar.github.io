@@ -4,8 +4,10 @@
 	
 	
 	
-	let options =
+	let options_numbers =
 	{
+		renderer: "cpu",
+		
 		canvas_width: 1000,
 		canvas_height: 1000,
 		
@@ -19,7 +21,21 @@
 		touchend_callback: on_release_canvas
 	};
 	
-	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+	let wilson_numbers = new Wilson(Page.element.querySelector("#numbers-canvas"), options_numbers);
+	
+	wilson_numbers.ctx.fillStyle = "rgb(255, 255, 255)";
+	
+	Page.element.querySelector(".wilson-fullscreen-components-container").style.setProperty("z-index", 200, "important");
+	
+	
+	
+	let options =
+	{
+		canvas_width: 1000,
+		canvas_height: 1000
+	};
+	
+	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	
 	
@@ -40,6 +56,8 @@
 	
 	
 	
+	let numbers_canvas_container_element = Page.element.querySelector("#numbers-canvas-container");
+	
 	let show_hex_view_button_element = Page.element.querySelector("#show-hex-view-button");
 	
 	show_hex_view_button_element.addEventListener("click", show_hex_view);
@@ -55,8 +73,6 @@
 	const scene = new THREE.Scene();
 	
 	const orthographic_camera = new THREE.OrthographicCamera(-5, 5, 5, -5, .1, 1000);
-	orthographic_camera.position.set(5, 5, 5);
-	orthographic_camera.lookAt(0, 0, 0);
 	
 	
 	
@@ -75,8 +91,8 @@
 	const ambient_light = new THREE.AmbientLight(0xffffff, .2);
 	scene.add(ambient_light);
 	
-	const point_light = new THREE.PointLight(0xffffff, 1, 1000);
-	point_light.position.set(75, 100, 50);
+	const point_light = new THREE.PointLight(0xffffff, 1, 10000);
+	point_light.position.set(750, 1000, 500);
 	scene.add(point_light);
 	
 	const cube_group = new THREE.Object3D();
@@ -99,7 +115,7 @@
 	
 	let plane_partition = 
 	[
-		[5, 3, 2, 1],
+		[10, 5, 2, 1],
 		[4, 3, 1, 0],
 		[4, 2, 1, 0],
 		[3, 1, 0, 0]
@@ -256,45 +272,50 @@
 	
 	function show_hex_view()
 	{
-		highlight_cubes([[0, 0, 4]], [0, 1, .5]);
+		Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100)
 		
-		anime({
-			targets: orthographic_camera.position,
-			x: plane_partition_size,
-			y: plane_partition_size,
-			z: plane_partition_size,
-			duration: 500,
-			easing: "easeInOutQuad"
-		});
-		
-		anime({
-			targets: orthographic_camera.rotation,
-			x: -0.785398163,
-			y: 0.615479709,
-			z: 0.523598775,
-			duration: 500,
-			easing: "easeInOutQuad"
-		});
-		
-		anime({
-			targets: orthographic_camera,
-			left: -plane_partition_size,
-			right: plane_partition_size,
-			top: plane_partition_size,
-			bottom: -plane_partition_size,
-			duration: 500,
-			easing: "easeInOutQuad",
-			update: () => orthographic_camera.updateProjectionMatrix()
-		});
-		
-		anime({
-			targets: cube_group.rotation,
-			y: 0,
-			duration: 500,
-			easing: "easeInOutQuad"
-		});
-		
-		in_2d_view = false;
+		.then(() =>
+		{
+			highlight_cubes([[0, 0, 5]], [0, 1, .5]);
+			
+			anime({
+				targets: orthographic_camera.position,
+				x: plane_partition_size,
+				y: plane_partition_size,
+				z: plane_partition_size,
+				duration: 500,
+				easing: "easeInOutQuad"
+			});
+			
+			anime({
+				targets: orthographic_camera.rotation,
+				x: -0.785398163,
+				y: 0.615479709,
+				z: 0.523598775,
+				duration: 500,
+				easing: "easeInOutQuad"
+			});
+			
+			anime({
+				targets: orthographic_camera,
+				left: -plane_partition_size,
+				right: plane_partition_size,
+				top: plane_partition_size,
+				bottom: -plane_partition_size,
+				duration: 500,
+				easing: "easeInOutQuad",
+				update: () => orthographic_camera.updateProjectionMatrix()
+			});
+			
+			anime({
+				targets: cube_group.rotation,
+				y: 0,
+				duration: 500,
+				easing: "easeInOutQuad"
+			});
+			
+			in_2d_view = false;
+		});	
 	}
 	
 	function show_2d_view()
@@ -336,6 +357,46 @@
 		});
 		
 		in_2d_view = true;
+		
+		
+		
+		setTimeout(() =>
+		{
+			wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+			
+			let font_size = wilson_numbers.canvas_width / (plane_partition_flat_size + 2);
+			
+			//Show the numbers in the right places.
+			for (let i = 0; i < plane_partition.length; i++)
+			{
+				for (let j = 0; j < plane_partition[i].length; j++)
+				{
+					if (plane_partition[i][j] === 0)
+					{
+						continue;
+					}
+					
+					if (plane_partition[i][j] <= 9)
+					{
+						wilson_numbers.ctx.font = `${.8 * font_size}px monospace`;
+					}
+					
+					else
+					{
+						let label = `${plane_partition[i][j]}`;
+						
+						wilson_numbers.ctx.font = `${font_size / label.length}px monospace`;
+					}
+					
+					let text_metrics = wilson_numbers.ctx.measureText(plane_partition[i][j]);
+					
+					//The height adjustment is an annoying spacing computation.
+					wilson_numbers.ctx.fillText(plane_partition[i][j], font_size * (j + 1) + (font_size - text_metrics.width) / 2, font_size * (i + 1) + (font_size + text_metrics.actualBoundingBoxAscent - text_metrics.actualBoundingBoxDescent) / 2);
+				}
+			}	
+			
+			Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100);
+		}, 500);
 	}
 	
 	
