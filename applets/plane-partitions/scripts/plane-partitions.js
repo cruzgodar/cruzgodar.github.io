@@ -70,6 +70,12 @@
 	
 	
 	
+	let run_hillman_grassl_button_element = Page.element.querySelector("#run-hillman-grassl-button");
+	
+	run_hillman_grassl_button_element.addEventListener("click", hillman_grassl);
+	
+	
+	
 	const scene = new THREE.Scene();
 	
 	const orthographic_camera = new THREE.OrthographicCamera(-5, 5, 5, -5, .1, 1000);
@@ -91,7 +97,7 @@
 	const ambient_light = new THREE.AmbientLight(0xffffff, .2);
 	scene.add(ambient_light);
 	
-	const point_light = new THREE.PointLight(0xffffff, 1, 10000);
+	const point_light = new THREE.PointLight(0xffffff, 1.75, 10000);
 	point_light.position.set(750, 1000, 500);
 	scene.add(point_light);
 	
@@ -263,6 +269,8 @@
 		const geometry = new THREE.BoxGeometry();
 		const material = new THREE.MeshStandardMaterial({map: cube_texture});
 		
+		material.color.setHSL(0, 0, .5);
+		
 		const cube = new THREE.Mesh(geometry, material);
 		
 		cube_group.add(cube);
@@ -296,7 +304,7 @@
 			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100);
 		}	
 		
-		highlight_cubes([[0, 0, 5]], [0, 1, .5]);
+		
 		
 		anime({
 			targets: orthographic_camera.position,
@@ -396,32 +404,7 @@
 		
 		setTimeout(() =>
 		{
-			wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
-			
-			let font_size = wilson_numbers.canvas_width / (plane_partition_flat_size + 2);
-			
-			let num_characters = `${plane_partition_max_entry}`.length;
-			
-			wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
-			
-			//Show the numbers in the right places.
-			for (let i = 0; i < plane_partition.length; i++)
-			{
-				for (let j = 0; j < plane_partition[i].length; j++)
-				{
-					if (plane_partition[i][j] === 0)
-					{
-						continue;
-					}
-					
-					let text_metrics = wilson_numbers.ctx.measureText(plane_partition[i][j]);
-					
-					//The height adjustment is an annoying spacing computation.
-					wilson_numbers.ctx.fillText(plane_partition[i][j], font_size * (j + 1) + (font_size - text_metrics.width) / 2, font_size * (i + 1) + (font_size + text_metrics.actualBoundingBoxAscent - text_metrics.actualBoundingBoxDescent) / 2);
-				}
-			}
-			
-			
+			draw_2d_view_text();
 			
 			Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100)
 			
@@ -436,26 +419,128 @@
 	
 	
 	
+	function draw_2d_view_text()
+	{
+		wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+		
+		let font_size = wilson_numbers.canvas_width / (plane_partition_flat_size + 2);
+		
+		let num_characters = `${plane_partition_max_entry}`.length;
+		
+		wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
+		
+		//Show the numbers in the right places.
+		for (let i = 0; i < plane_partition.length; i++)
+		{
+			for (let j = 0; j < plane_partition[i].length; j++)
+			{
+				if (plane_partition[i][j] === 0)
+				{
+					continue;
+				}
+				
+				let text_metrics = wilson_numbers.ctx.measureText(plane_partition[i][j]);
+				
+				//The height adjustment is an annoying spacing computation.
+				wilson_numbers.ctx.fillText(plane_partition[i][j], font_size * (j + 1) + (font_size - text_metrics.width) / 2, font_size * (i + 1) + (font_size + text_metrics.actualBoundingBoxAscent - text_metrics.actualBoundingBoxDescent) / 2);
+			}
+		}
+	}
+	
+	
+	
 	//coordinates is a list of length-3 arrays [i, j, k] containing the coordinates of the cubes to highlight.
-	function highlight_cubes(coordinates, hsl)
+	function color_cubes(coordinates, hue)
 	{
 		for (let i = 0; i < coordinates.length; i++)
 		{
 			let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.color;
 			
-			let temp_object = {};
+			let temp_object = {s: 0};
 			
-			target.getHSL(temp_object);
+			setTimeout(() =>
+			{
+				anime({
+					targets: temp_object,
+					s: 1,
+					duration: 500,
+					easing: "easeOutQuad",
+					update: () => {target.setHSL(hue, temp_object.s, .5)}
+				});
+			}, 50 * i);	
+		}
+	}
+	
+	
+	
+	async function hillman_grassl()
+	{
+		let plane_partition_copy = JSON.parse(JSON.stringify(plane_partition));
+		
+		let zigzag_paths = [];
+		
+		while (true)
+		{
+			//Find the right-most nonzero entry in the top row.
+			let starting_col = plane_partition_copy[0].length - 1;
 			
-			anime({
-				targets: temp_object,
-				h: hsl[0],
-				s: hsl[1],
-				l: hsl[2],
-				duration: 500,
-				easing: "easeOutQuad",
-				update: () => {target.setHSL(temp_object.h, temp_object.s, temp_object.l)}
-			});
+			while (starting_col >= 0 && plane_partition_copy[0][starting_col] === 0)
+			{
+				starting_col--;
+			}
+			
+			if (starting_col < 0)
+			{
+				break;
+			}
+			
+			
+			
+			let current_row = 0;
+			let current_col = starting_col;
+			
+			let path = [[current_row, current_col, plane_partition_copy[current_row][current_col] - 1]];
+			
+			while (true)
+			{
+				if (current_row < plane_partition_copy.length - 1 && plane_partition_copy[current_row + 1][current_col] === plane_partition_copy[current_row][current_col])
+				{
+					current_row++;
+				}
+				
+				else if (current_col > 0)
+				{
+					current_col--;
+				}
+				
+				else
+				{
+					break;
+				}
+				
+				path.push([current_row, current_col, plane_partition_copy[current_row][current_col] - 1]);
+			}
+			
+			
+			
+			for (let i = 0; i < path.length; i++)
+			{
+				plane_partition_copy[path[i][0]][path[i][1]]--;
+			}
+			
+			zigzag_paths.push(path);
+		}
+		
+		
+		
+		//Now we'll animate those paths actually decrementing, one-by-one.
+		for (let i = 0; i < zigzag_paths.length; i++)
+		{
+			let hue = i / zigzag_paths.length * 6/7;
+			
+			color_cubes(zigzag_paths[i], hue);
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, 500));
 		}
 	}
 }()
