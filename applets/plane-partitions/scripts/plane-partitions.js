@@ -111,6 +111,8 @@
 	
 	let in_2d_view = false;
 	
+	let currently_animating = false;
+	
 	
 	
 	let plane_partition = 
@@ -270,56 +272,88 @@
 	
 	
 	
-	function show_hex_view()
+	async function show_hex_view()
 	{
-		Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100)
-		
-		.then(() =>
+		if (currently_animating)
 		{
-			highlight_cubes([[0, 0, 5]], [0, 1, .5]);
+			return;
+		}
+		
+		currently_animating = true;
+		
+		
+		
+		rotation_y_velocity = 0;
+		
+		next_rotation_y_velocity = 0;
+		
+		
 			
-			anime({
-				targets: orthographic_camera.position,
-				x: plane_partition_size,
-				y: plane_partition_size,
-				z: plane_partition_size,
-				duration: 500,
-				easing: "easeInOutQuad"
-			});
-			
-			anime({
-				targets: orthographic_camera.rotation,
-				x: -0.785398163,
-				y: 0.615479709,
-				z: 0.523598775,
-				duration: 500,
-				easing: "easeInOutQuad"
-			});
-			
-			anime({
-				targets: orthographic_camera,
-				left: -plane_partition_size,
-				right: plane_partition_size,
-				top: plane_partition_size,
-				bottom: -plane_partition_size,
-				duration: 500,
-				easing: "easeInOutQuad",
-				update: () => orthographic_camera.updateProjectionMatrix()
-			});
-			
-			anime({
-				targets: cube_group.rotation,
-				y: 0,
-				duration: 500,
-				easing: "easeInOutQuad"
-			});
-			
-			in_2d_view = false;
-		});	
+		if (in_2d_view)
+		{
+			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100);
+		}	
+		
+		highlight_cubes([[0, 0, 5]], [0, 1, .5]);
+		
+		anime({
+			targets: orthographic_camera.position,
+			x: plane_partition_size,
+			y: plane_partition_size,
+			z: plane_partition_size,
+			duration: 500,
+			easing: "easeInOutQuad"
+		});
+		
+		anime({
+			targets: orthographic_camera.rotation,
+			x: -0.785398163,
+			y: 0.615479709,
+			z: 0.523598775,
+			duration: 500,
+			easing: "easeInOutQuad"
+		});
+		
+		anime({
+			targets: orthographic_camera,
+			left: -plane_partition_size,
+			right: plane_partition_size,
+			top: plane_partition_size,
+			bottom: -plane_partition_size,
+			duration: 500,
+			easing: "easeInOutQuad",
+			update: () => orthographic_camera.updateProjectionMatrix()
+		});
+		
+		anime({
+			targets: cube_group.rotation,
+			y: 0,
+			duration: 500,
+			easing: "easeInOutQuad"
+		});
+		
+		in_2d_view = false;
+		
+		currently_animating = false;
 	}
 	
 	function show_2d_view()
 	{
+		if (currently_animating || in_2d_view)
+		{
+			return;
+		}
+		
+		currently_animating = true;
+		
+		
+		
+		rotation_y_velocity = 0;
+		
+		next_rotation_y_velocity = 0;
+		
+		
+		
 		anime({
 			targets: orthographic_camera.position,
 			x: (plane_partition_flat_size - 1) / 2,
@@ -356,8 +390,6 @@
 			easing: "easeInOutQuad"
 		});
 		
-		in_2d_view = true;
-		
 		
 		
 		setTimeout(() =>
@@ -393,9 +425,18 @@
 					//The height adjustment is an annoying spacing computation.
 					wilson_numbers.ctx.fillText(plane_partition[i][j], font_size * (j + 1) + (font_size - text_metrics.width) / 2, font_size * (i + 1) + (font_size + text_metrics.actualBoundingBoxAscent - text_metrics.actualBoundingBoxDescent) / 2);
 				}
-			}	
+			}
 			
-			Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100);
+			
+			
+			Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100)
+			
+			.then(() =>
+			{
+				currently_animating = false;
+			
+				in_2d_view = true;
+			});
 		}, 500);
 	}
 	
