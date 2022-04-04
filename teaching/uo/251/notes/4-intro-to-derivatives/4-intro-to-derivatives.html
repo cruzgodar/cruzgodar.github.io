@@ -1,0 +1,129 @@
+<head>
+	<title>Section 4: Intro to Derivatives</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 4: Intro to Derivatives"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/4-intro-to-derivatives/4-intro-to-derivatives.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/252/notes/4-intro-to-derivatives/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 4: Intro to Derivatives
+
+!text b c Covered in Week 2
+
+<br>
+
+
+
+!begin-text-block
+	
+	Now that we&#x2019;ve talked about limits, let&#x2019;s return to the idea we discussed in section 1: the slopes of curves. As a reminder, the slope of a curve at $x = a$ is the slope of the tangent line to the curve at $x = a$. In order to calculate this slope, we first find the slope of secant lines, which is just rise over run. If one point of the line is taken at $x = a$ and the other is taken at $x = a + h$, then the run is $h$ and the rise is $f(a + h) - f(a)$, so the slope is just
+	
+	$$
+		\frac{f(a + h) - f(a)}{h}.
+	$$
+	
+	!iframe https://www.desmos.com/calculator/lyfhz3puqb
+	
+	We want to get the tangent line by setting $h = 0$, but since the slope will be $\frac{0}{0}$ then, we need to take a limit instead.
+	
+!end-text-block
+
+
+
+!begin-prop
+
+	Let $f$ be a function that is continuous at $x = a$. Then the slope of the tangent line to the graph of $f$ at $x = a$ is
+	
+	$$
+		\lim_{h \to 0^+} \frac{f(a + h) - f(a)}{h}.
+	$$
+
+!end-prop
+
+
+
+!begin-example
+	
+	slope of a graph
+	
+	Find the slope of the function $f(x) = x^2$ at $x = 1$.
+	
+	By the definition, we have that the slope is
+	
+	$$
+		\begin{align*}
+			\lim_{h \to 0^+} \frac{f(1 + h) - f(1)}{h} &= \lim_{h \to 0^+} \frac{(1 + h)^2 - (1)^2}{h}\\
+			&= \lim_{h \to 0^+} \frac{(1 + 2h + h^2) - 1}{h}\\
+			&= \lim_{h \to 0^+} \frac{2h + h^2}{h}\\
+			&= \lim_{h \to 0^+} (2 + h).
+		\end{align*}
+	$$
+	
+	That last line is justified, since we can cancel common factors in limits. Finishing up, we have
+	
+	$$
+		\begin{align*}
+			\lim_{h \to 0^+} (2 + h) &= 2 + 0\\
+			&= 2.
+		\end{align*}
+	$$
+	
+	This tells us that the slope of the graph (i.e. the slope of the tangent line) at $x = 1$ is $2$.
+	
+	!iframe https://www.desmos.com/calculator/jh1ausctpy
+	
+!end-example
+
+!begin-exercise
+	
+	slope of a graph
+	
+	Find the slope of the function $g(x) = x^3$ at $x = -2$.
+	
+!end-exercise
+
+
+
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 4: Intro to Derivatives",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/251/notes"
+	};
+	
+	Page.load();
+</script>
