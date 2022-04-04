@@ -40,6 +40,18 @@
 	
 	
 	
+	let show_hex_view_button_element = Page.element.querySelector("#show-hex-view-button");
+	
+	show_hex_view_button_element.addEventListener("click", show_hex_view);
+	
+	
+	
+	let show_2d_view_button_element = Page.element.querySelector("#show-2d-view-button");
+	
+	show_2d_view_button_element.addEventListener("click", show_2d_view);
+	
+	
+	
 	const scene = new THREE.Scene();
 	
 	const orthographic_camera = new THREE.OrthographicCamera(-5, 5, 5, -5, .1, 1000);
@@ -81,13 +93,20 @@
 	
 	
 	
+	let in_2d_view = false;
+	
+	
+	
 	let plane_partition = 
 	[
-		[5, 3, 2, 1],
+		[10, 3, 2, 1],
 		[4, 3, 1, 0],
 		[4, 2, 1, 0],
 		[3, 1, 0, 0]
 	];
+	
+	let plane_partition_size = 1;
+	let plane_partition_flat_size = 1;
 	
 	construct_plane_partition();
 	
@@ -108,6 +127,12 @@
 	
 	function on_drag_canvas(x, y, x_delta, y_delta, event)
 	{
+		if (in_2d_view)
+		{
+			return;
+		}
+		
+		
 		cube_group.rotation.y += x_delta;
 		
 		next_rotation_y_velocity = x_delta;
@@ -115,6 +140,12 @@
 	
 	function on_release_canvas(x, y, event)
 	{
+		if (in_2d_view)
+		{
+			return;
+		}
+		
+		
 		if (Math.abs(next_rotation_y_velocity) >= rotation_y_velocity_start_threshhold)
 		{
 			rotation_y_velocity = next_rotation_y_velocity;
@@ -139,6 +170,18 @@
 			{
 				rotation_y_velocity = 0;
 			}
+		}
+		
+		
+		
+		if (cube_group.rotation.y > 3.14159265)
+		{
+			cube_group.rotation.y -= 6.283185301;
+		}
+		
+		else if (cube_group.rotation.y < -3.14159265)
+		{
+			cube_group.rotation.y += 6.283185301;
 		}
 		
 		
@@ -174,13 +217,15 @@
 			}
 		}
 		
-		let size = Math.max(Math.max(plane_partition.length, max_row_length), max_entry);
+		plane_partition_flat_size = Math.max(plane_partition.length, max_row_length);
 		
-		orthographic_camera.left = -size;
-		orthographic_camera.right = size;
-		orthographic_camera.top = size;
-		orthographic_camera.bottom = -size;
-		orthographic_camera.position.set(size, size, size);
+		plane_partition_size = Math.max(plane_partition_flat_size, max_entry);
+		
+		orthographic_camera.left = -plane_partition_size;
+		orthographic_camera.right = plane_partition_size;
+		orthographic_camera.top = plane_partition_size;
+		orthographic_camera.bottom = -plane_partition_size;
+		orthographic_camera.position.set(plane_partition_size, plane_partition_size, plane_partition_size);
 		orthographic_camera.lookAt(0, 0, 0);
 		orthographic_camera.updateProjectionMatrix();
 	}
@@ -196,5 +241,89 @@
 		cube.position.set(x, y, z);
 		
 		return cube;
+	}
+	
+	
+	
+	function show_hex_view()
+	{
+		anime({
+			targets: orthographic_camera.position,
+			x: plane_partition_size,
+			y: plane_partition_size,
+			z: plane_partition_size,
+			duration: 500,
+			easing: "easeInOutQuad"
+		});
+		
+		anime({
+			targets: orthographic_camera.rotation,
+			x: -0.785398163,
+			y: 0.615479709,
+			z: 0.523598775,
+			duration: 500,
+			easing: "easeInOutQuad"
+		});
+		
+		anime({
+			targets: orthographic_camera,
+			left: -plane_partition_size,
+			right: plane_partition_size,
+			top: plane_partition_size,
+			bottom: -plane_partition_size,
+			duration: 500,
+			easing: "easeInOutQuad",
+			update: () => orthographic_camera.updateProjectionMatrix()
+		});
+		
+		anime({
+			targets: cube_group.rotation,
+			y: 0,
+			duration: 500,
+			easing: "easeInOutQuad"
+		});
+		
+		in_2d_view = false;
+	}
+	
+	function show_2d_view()
+	{
+		anime({
+			targets: orthographic_camera.position,
+			x: (plane_partition_flat_size - 1) / 2,
+			y: plane_partition_size,
+			z: (plane_partition_flat_size - 1) / 2,
+			duration: 500,
+			easing: "easeInOutQuad"
+		});
+		
+		anime({
+			targets: orthographic_camera.rotation,
+			x: -1.570796327,
+			y: 0,
+			z: 0,
+			duration: 500,
+			easing: "easeInOutQuad"
+		});
+		
+		anime({
+			targets: orthographic_camera,
+			left: -(plane_partition_flat_size - 1),
+			right: plane_partition_flat_size - 1,
+			top: plane_partition_flat_size - 1,
+			bottom: -(plane_partition_flat_size - 1),
+			duration: 500,
+			easing: "easeInOutQuad",
+			update: () => orthographic_camera.updateProjectionMatrix()
+		});
+		
+		anime({
+			targets: cube_group.rotation,
+			y: 0,
+			duration: 500,
+			easing: "easeInOutQuad"
+		});
+		
+		in_2d_view = true;
 	}
 }()
