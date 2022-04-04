@@ -9,6 +9,9 @@
 		canvas_width: 1000,
 		canvas_height: 1000,
 		
+		mousedown_callback: on_grab_canvas,
+		touchstart_callback: on_grab_canvas,
+		
 		mousedrag_callback: on_drag_canvas,
 		touchmove_callback: on_drag_canvas,
 		
@@ -39,13 +42,9 @@
 	
 	const scene = new THREE.Scene();
 	
-	//FOV, aspect ratio, near clip, far clip
-	const camera = new THREE.PerspectiveCamera(90, 1, .1, 1000);
-	camera.position.set(5, 5, 5);
-	camera.lookAt(0, 0, 0);
-	
-	let theta = camera.rotation.y;
-	let phi = .75 * Math.PI;
+	const orthographic_camera = new THREE.OrthographicCamera(-5, 5, 5, -5, .1, 1000);
+	orthographic_camera.position.set(5, 5, 5);
+	orthographic_camera.lookAt(0, 0, 0);
 	
 	
 	
@@ -64,8 +63,8 @@
 	const ambient_light = new THREE.AmbientLight(0xffffff, .2);
 	scene.add(ambient_light);
 	
-	const point_light = new THREE.PointLight(0xffffff, 5, 100);
-	point_light.position.set(50, 50, 50);
+	const point_light = new THREE.PointLight(0xffffff, 1, 1000);
+	point_light.position.set(75, 100, 50);
 	scene.add(point_light);
 	
 	const cube_group = new THREE.Object3D();
@@ -82,17 +81,30 @@
 	
 	
 	
-	add_cube(0, 0, 0);
-	add_cube(0, 1, 0);
-	add_cube(0, 0, 1);
-	add_cube(1, 0, 0);
-	add_cube(1, 0, 1);
+	let plane_partition = 
+	[
+		[5, 3, 2, 1],
+		[4, 3, 1, 0],
+		[4, 2, 1, 0],
+		[3, 1, 0, 0]
+	];
+	
+	construct_plane_partition();
+	
+	
 	
 	draw_frame();
 	
 	setTimeout(() => Page.show(), 500);
 	
 	
+	
+	function on_grab_canvas(x, y, event)
+	{
+		rotation_y_velocity = 0;
+		
+		next_rotation_y_velocity = 0;
+	}
 	
 	function on_drag_canvas(x, y, x_delta, y_delta, event)
 	{
@@ -113,7 +125,9 @@
 	
 	function draw_frame()
 	{
-		renderer.render(scene, camera);
+		renderer.render(scene, orthographic_camera);
+		
+		
 		
 		if (rotation_y_velocity !== 0)
 		{
@@ -127,10 +141,49 @@
 			}
 		}
 		
+		
+		
 		window.requestAnimationFrame(draw_frame);
 	}
 	
 	
+	
+	function construct_plane_partition()
+	{
+		let max_entry = 0;
+		let max_row_length = 0;
+		
+		for (let i = 0; i < plane_partition.length; i++)
+		{
+			if (plane_partition[i].length > max_row_length)
+			{
+				max_row_length = plane_partition[i].length;
+			}
+			
+			for (let j = 0; j < plane_partition[i].length; j++)
+			{
+				if (plane_partition[i][j] > max_entry)
+				{
+					max_entry = plane_partition[i][j];
+				}
+				
+				for (let k = 0; k < plane_partition[i][j]; k++)
+				{
+					add_cube(j, k, i);
+				}
+			}
+		}
+		
+		let size = Math.max(Math.max(plane_partition.length, max_row_length), max_entry);
+		
+		orthographic_camera.left = -size;
+		orthographic_camera.right = size;
+		orthographic_camera.top = size;
+		orthographic_camera.bottom = -size;
+		orthographic_camera.position.set(size, size, size);
+		orthographic_camera.lookAt(0, 0, 0);
+		orthographic_camera.updateProjectionMatrix();
+	}
 	
 	function add_cube(x, y, z)
 	{
