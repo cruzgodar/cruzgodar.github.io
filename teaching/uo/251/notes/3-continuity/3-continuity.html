@@ -93,7 +93,7 @@
 
 !begin-text-block
 	
-	The function in the previous example displays all possible kinds of discontinuities: to make things easier when talking about them, let&#x2019;s give them names.
+	The function in the previous example displays three common kinds of discontinuities: to make things easier when talking about them, let&#x2019;s give them names.
 	
 !end-text-block
 
@@ -103,7 +103,7 @@
 	
 	discontinuities
 	
-	Let $f(x)$ be a function such that $f(a)$ is defined but $f$ is discontinuous at $x = a$. This discontinuity has one of three forms:
+	Let $f(x)$ be a function such that $f(a)$ is defined but $f$ is discontinuous at $x = a$.
 	
 	1. If $\lim_{x \to a} f(x)$ exists and is finite, we call this a <dfn>removable</dfn> discontinuity, since by changing just that one point, we can make the function continuous.
 	
@@ -111,21 +111,17 @@
 	
 	3. If one or both of the one-sided limits is $\pm \infty$, we call this an <dfn>infinite</dfn> discontinuity, since the function approaches an infinite value.
 	
+	These don&#x2019;t describe all possible kinds of discontinuities &mdash; for example, $\sin\left(\frac{1}{x}\right)$ has a discontinuity at $0$ that doesn&#x2019;t fall into any of these categories.
+	
 !end-def
 
 
 
 !begin-text-block
 	
-	The function in the previous example displays all possible kinds of discontinuities: to make things easier when talking about them, let&#x2019;s give them names.
+	In the previous example, $f(x)$ has a removable discontinuity at $x = 0$, a jump discontinuity at $x = -3$, and an infinite discontinuity at $x = 4$.
 	
-!end-text-block
-
-
-
-!begin-text-block
-	
-	These next two theorems will let calculate limits <strong>much</strong> more easily. The first one  is great news: most of the functions we know so far are continuous wherever they&#x2019;re defined!
+	The next two theorems will let calculate limits <strong>much</strong> more easily. The first one is great news: most of the functions we know so far are continuous wherever they&#x2019;re defined!
 	
 !end-text-block
 
@@ -169,7 +165,7 @@
 		\lim_{x \to 0} \frac{\cos(x^2) - x}{2 - \tan(x)}.
 	$$
 	
-	Since all of the functions present are continuous, we can just plug in $x = 0$:
+	Since all of the functions present are continuous &mdash; including the compositions like $\cos(x^2)$, we can just plug in $x = 0$:
 	
 	$$
 		\lim_{x \to 0} \frac{\cos(x^2) - x}{2 - \tan(x)} = \frac{\cos(0^2) - 0}{2 - \tan(0)} = \frac{1 - 0}{2 - 0} = \frac{1}{2}.
@@ -177,9 +173,69 @@
 	
 	!iframe https://www.desmos.com/calculator/vbna6q4hx3
 	
-	This is a really complicated-looking function, and it&#x2019;s nice to be able to calculate a limit of it without making a table or writing out long-winded limit rules. The only place we can&#x2019;t plug in a value of $x$ is when it would make the denominator zero, since then the entire function is undefined and therefore not continuous.
+	This is a really complicated-looking function, and it&#x2019;s nice to be able to calculate a limit of it without making a table or writing out long-winded limit rules. The only place we can&#x2019;t plug in a value of $x$ to take a limit is when it would make the denominator zero, since then the entire function is undefined and therefore not continuous.
 
 !end-example
+
+
+
+!section
+
+!text s The Intermediate Value Theorem
+
+<br>
+
+
+
+!begin-text-block
+	
+	We have one last theorem to talk about in this section. The result sounds a little confusing at first, but it&#x2019;s just a way to formally state what we mean when we say that continuous functions are the ones that can be drawn without lifting your pencil.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the Intermediate Value Theorem
+	
+	Let $f$ be a continuous function on a closed interval $[a, b]$ and let $y$ be a number between $f(a)$ and $f(b)$. Then there is a number $c$ between $a$ and $b$ so that $f(c) = y$.
+	
+!end-thm
+
+
+
+!begin-text-block
+
+	The IVT says that the graph of $f$ has complete coverage of all the $y$-values between $f(a)$ and $f(b)$.
+	
+	!iframe https://www.desmos.com/calculator/vffazabpke
+	
+	Here, $a = 1$ and $b = 3$. Plotted are three examples of continuous functions satisfying $f(a) = 2$ and $f(b) = 1$. No matter what function we pick, it must pass through all the $y$-values between $2$ and $1$ on its way from $a$ to $b$.
+	
+!end-text-block	
+
+
+
+!begin-example
+	
+	the Intermediate Value Theorem
+	
+	Show that $f(x) = x - \cos(x)$ has at least one zero.
+	
+	This is a pretty interesting question &mdash; how are you supposed to find a value of $x$ that makes $x = \cos(x)$? The answer is... you don&#x2019;t. Rather than find a particular value that works, we&#x2019;ll use the IVT to show that one must exist, even if we can&#x2019;t say exactly what it is. Looking back at the theorem statement, we want to pick two points, one with a $y$-value larger than $0$, and the other with a $y$-value less than $0$. Then the IVT will guarantee a point in-between them with $y$-value equal to zero. Let&#x2019;s try some sample values. $x = 0$ gives us $0 - \cos(0) = -1$, and $x = \frac{\pi}{2}$, the next value that produces a simple output from cosine, gives us $\frac{\pi}{2} - \cos\left(\frac{\pi}{2}\right) = \frac{\pi}{2}$. Since $0$ is a $y$-value in-between those, there is an $x$-value between $0$ and $\frac{\pi}{2}$ with $x - \cos(x) = 0$.
+	
+	!iframe https://www.desmos.com/calculator/uw3fcjadob
+	
+!end-example
+
+!begin-exercise
+	
+	the Intermediate Value Theorem
+	
+	Show that $x^3 - x + 1$ has a zero.
+	
+!end-exercise
 
 
 
