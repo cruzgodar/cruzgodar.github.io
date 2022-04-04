@@ -99,7 +99,7 @@
 	
 	let plane_partition = 
 	[
-		[10, 3, 2, 1],
+		[5, 3, 2, 1],
 		[4, 3, 1, 0],
 		[4, 2, 1, 0],
 		[3, 1, 0, 0]
@@ -107,6 +107,8 @@
 	
 	let plane_partition_size = 1;
 	let plane_partition_flat_size = 1;
+	
+	let cubes = [];
 	
 	construct_plane_partition();
 	
@@ -196,8 +198,12 @@
 		let max_entry = 0;
 		let max_row_length = 0;
 		
+		cubes = new Array(plane_partition.length);
+		
 		for (let i = 0; i < plane_partition.length; i++)
 		{
+			cubes[i] = new Array(plane_partition[i].length);
+			
 			if (plane_partition[i].length > max_row_length)
 			{
 				max_row_length = plane_partition[i].length;
@@ -205,6 +211,8 @@
 			
 			for (let j = 0; j < plane_partition[i].length; j++)
 			{
+				cubes[i][j] = new Array(plane_partition[i][j]);
+				
 				if (plane_partition[i][j] > max_entry)
 				{
 					max_entry = plane_partition[i][j];
@@ -212,7 +220,7 @@
 				
 				for (let k = 0; k < plane_partition[i][j]; k++)
 				{
-					add_cube(j, k, i);
+					cubes[i][j][k] = add_cube(j, k, i);
 				}
 			}
 		}
@@ -234,6 +242,7 @@
 	{
 		const geometry = new THREE.BoxGeometry();
 		const material = new THREE.MeshStandardMaterial({map: cube_texture});
+		
 		const cube = new THREE.Mesh(geometry, material);
 		
 		cube_group.add(cube);
@@ -247,6 +256,8 @@
 	
 	function show_hex_view()
 	{
+		highlight_cubes([[0, 0, 4]], [0, 1, .5]);
+		
 		anime({
 			targets: orthographic_camera.position,
 			x: plane_partition_size,
@@ -325,5 +336,30 @@
 		});
 		
 		in_2d_view = true;
+	}
+	
+	
+	
+	//coordinates is a list of length-3 arrays [i, j, k] containing the coordinates of the cubes to highlight.
+	function highlight_cubes(coordinates, hsl)
+	{
+		for (let i = 0; i < coordinates.length; i++)
+		{
+			let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.color;
+			
+			let temp_object = {};
+			
+			target.getHSL(temp_object);
+			
+			anime({
+				targets: temp_object,
+				h: hsl[0],
+				s: hsl[1],
+				l: hsl[2],
+				duration: 500,
+				easing: "easeOutQuad",
+				update: () => {target.setHSL(temp_object.h, temp_object.s, temp_object.l)}
+			});
+		}
 	}
 }()
