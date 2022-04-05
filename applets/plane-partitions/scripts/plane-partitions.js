@@ -133,6 +133,12 @@
 	
 	generate_random_plane_partition();
 	
+	plane_partition = 
+	[
+		[3, 2],
+		[2, 0]
+	];
+	
 	let plane_partition_size = 1;
 	let plane_partition_flat_size = 1;
 	let plane_partition_max_entry = 1;
@@ -281,6 +287,8 @@
 					plane_partition_max_entry = plane_partition[i][j];
 				}
 				
+				add_floor(j, i);
+				
 				for (let k = 0; k < plane_partition[i][j]; k++)
 				{
 					cubes[i][j][k] = add_cube(j, k, i);
@@ -333,6 +341,25 @@
 		cube_group.add(cube);
 		
 		cube.position.set(x, y, z);
+		
+		return cube;
+	}
+	
+	
+	
+	function add_floor(x, z)
+	{
+		const geometry = new THREE.BoxGeometry(1, .001, 1);
+		const material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
+		
+		material.color.setHSL(0, 0, .2);
+		
+		const cube = new THREE.Mesh(geometry, material);
+		
+		cube_group.add(cube);
+		
+		//This aligns the thing correctly.
+		cube.position.set(x, -.5 - .0005, z);
 		
 		return cube;
 	}
@@ -493,13 +520,6 @@
 	function draw_single_cell_2d_view_text(row, col)
 	{
 		wilson_numbers.ctx.clearRect(font_size * (col + 1), font_size * (row + 1), font_size, font_size);
-		
-		
-		
-		if (plane_partition[row][col] === 0)
-		{
-			return;
-		}
 		
 		let text_metrics = wilson_numbers.ctx.measureText(plane_partition[row][col]);
 		
