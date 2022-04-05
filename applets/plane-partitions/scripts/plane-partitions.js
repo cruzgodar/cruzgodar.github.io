@@ -119,6 +119,8 @@
 	
 	let currently_animating = false;
 	
+	let font_size = 10;
+	
 	
 	
 	let plane_partition = 
@@ -128,6 +130,8 @@
 		[4, 2, 1, 0],
 		[3, 1, 0, 0]
 	];
+	
+	generate_random_plane_partition();
 	
 	let plane_partition_size = 1;
 	let plane_partition_flat_size = 1;
@@ -218,6 +222,41 @@
 	
 	
 	
+	function generate_random_plane_partition()
+	{
+		let side_length = Math.floor(Math.random() * 3) + 5;
+		
+		let max_entry = Math.floor(Math.random() * 5) + 10;
+		
+		
+		
+		plane_partition = new Array(side_length);
+		
+		for (let i = 0; i < side_length; i++)
+		{
+			plane_partition[i] = new Array(side_length);
+		}
+		
+		plane_partition[0][0] = max_entry;
+		
+		for (let j = 1; j < side_length; j++)
+		{
+			plane_partition[0][j] = Math.max(plane_partition[0][j - 1] - Math.floor(Math.random() * 4), 0);
+		}
+		
+		for (let i = 1; i < side_length; i++)
+		{
+			plane_partition[i][0] = Math.max(plane_partition[i - 1][0] - Math.floor(Math.random() * 4), 0);
+			
+			for (let j = 1; j < side_length; j++)
+			{
+				plane_partition[i][j] = Math.max(Math.min(plane_partition[i][j - 1], plane_partition[i - 1][j]) - Math.floor(Math.random() * 4), 0);
+			}
+		}
+	}
+	
+	
+	
 	function construct_plane_partition()
 	{
 		let max_row_length = 0;
@@ -253,6 +292,8 @@
 		
 		plane_partition_flat_size = Math.max(plane_partition.length, max_row_length);
 		
+		font_size = wilson_numbers.canvas_width / (plane_partition_flat_size + 2);
+		
 		plane_partition_size = Math.max(plane_partition_flat_size, plane_partition_max_entry);
 		
 		orthographic_camera.left = -plane_partition_size;
@@ -264,10 +305,12 @@
 		orthographic_camera.updateProjectionMatrix();
 	}
 	
+	
+	
 	function add_cube(x, y, z)
 	{
 		const geometry = new THREE.BoxGeometry();
-		const material = new THREE.MeshStandardMaterial({map: cube_texture});
+		const material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
 		
 		material.color.setHSL(0, 0, .5);
 		
@@ -384,10 +427,10 @@
 		
 		anime({
 			targets: orthographic_camera,
-			left: -(plane_partition_flat_size - 1),
-			right: plane_partition_flat_size - 1,
-			top: plane_partition_flat_size - 1,
-			bottom: -(plane_partition_flat_size - 1),
+			left: -(plane_partition_flat_size / 2 + 1),
+			right: plane_partition_flat_size / 2 + 1,
+			top: plane_partition_flat_size / 2 + 1,
+			bottom: -(plane_partition_flat_size / 2 + 1),
 			duration: 500,
 			easing: "easeInOutQuad",
 			update: () => orthographic_camera.updateProjectionMatrix()
@@ -404,7 +447,7 @@
 		
 		setTimeout(() =>
 		{
-			draw_2d_view_text();
+			draw_all_2d_view_text();
 			
 			Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100)
 			
@@ -419,11 +462,9 @@
 	
 	
 	
-	function draw_2d_view_text()
+	function draw_all_2d_view_text()
 	{
 		wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
-		
-		let font_size = wilson_numbers.canvas_width / (plane_partition_flat_size + 2);
 		
 		let num_characters = `${plane_partition_max_entry}`.length;
 		
@@ -447,13 +488,52 @@
 		}
 	}
 	
+	function draw_single_cell_2d_view_text(row, col)
+	{
+		wilson_numbers.ctx.clearRect(font_size * (col + 1), font_size * (row + 1), font_size, font_size);
+		
+		
+		
+		if (plane_partition[row][col] === 0)
+		{
+			return;
+		}
+		
+		let text_metrics = wilson_numbers.ctx.measureText(plane_partition[row][col]);
+		
+		//The height adjustment is an annoying spacing computation.
+		wilson_numbers.ctx.fillText(plane_partition[row][col], font_size * (col + 1) + (font_size - text_metrics.width) / 2, font_size * (row + 1) + (font_size + text_metrics.actualBoundingBoxAscent - text_metrics.actualBoundingBoxDescent) / 2);
+	}
+	
 	
 	
 	//coordinates is a list of length-3 arrays [i, j, k] containing the coordinates of the cubes to highlight.
 	function color_cubes(coordinates, hue)
 	{
-		for (let i = 0; i < coordinates.length; i++)
+		return new Promise((resolve, reject) =>
 		{
+			for (let i = 0; i < coordinates.length - 1; i++)
+			{
+				let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.color;
+				
+				let temp_object = {s: 0};
+				
+				setTimeout(() =>
+				{
+					anime({
+						targets: temp_object,
+						s: 1,
+						duration: 500,
+						easing: "easeOutQuad",
+						update: () => {target.setHSL(hue, temp_object.s, .5)}
+					});
+				}, 50 * i);	
+			}
+			
+			
+			
+			let i = coordinates.length - 1;
+			
 			let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.color;
 			
 			let temp_object = {s: 0};
@@ -465,10 +545,81 @@
 					s: 1,
 					duration: 500,
 					easing: "easeOutQuad",
-					update: () => {target.setHSL(hue, temp_object.s, .5)}
+					update: () => {target.setHSL(hue, temp_object.s, .5)},
+					complete: resolve
 				});
-			}, 50 * i);	
-		}
+			}, 50 * i);
+		});
+	}
+	
+	
+	
+	//Lifts the specified cubes to the specified height.
+	function raise_cubes(coordinates, height)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			for (let i = 0; i < coordinates.length - 1; i++)
+			{
+				let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].position;
+				
+				anime({
+					targets: target,
+					y: height,
+					duration: 500,
+					easing: "easeInOutQuad"
+				});
+			}
+			
+			
+			
+			let i = coordinates.length - 1;
+			
+			let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].position;
+			
+			anime({
+				targets: target,
+				y: height,
+				duration: 500,
+				easing: "easeInOutQuad",
+				complete: resolve
+			});
+		});	
+	}
+	
+	
+	
+	//Fades the specified cubes' opacity to zero, and then deletes them.
+	function delete_cubes(coordinates)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			for (let i = 0; i < coordinates.length - 1; i++)
+			{
+				let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material;
+				
+				anime({
+					targets: target,
+					opacity: 0,
+					duration: 250,
+					easing: "easeOutQuad"
+				});
+			}
+			
+			
+			
+			let i = coordinates.length - 1;
+			
+			let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material;
+			
+			anime({
+				targets: target,
+				opacity: 0,
+				duration: 250,
+				easing: "easeOutQuad",
+				complete: resolve
+			});
+		});
 	}
 	
 	
@@ -538,9 +689,23 @@
 		{
 			let hue = i / zigzag_paths.length * 6/7;
 			
-			color_cubes(zigzag_paths[i], hue);
+			await color_cubes(zigzag_paths[i], hue);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, 500));
+			if (!in_2d_view)
+			{
+				//Lift all the cubes up.
+				await raise_cubes(zigzag_paths[i], plane_partition[0][0]);
+			}
+			
+			//Now we actually delete the cubes.
+			for (let j = 0; j < zigzag_paths[i].length; j++)
+			{
+				plane_partition[zigzag_paths[i][j][0]][zigzag_paths[i][j][1]]--;
+				
+				draw_single_cell_2d_view_text(zigzag_paths[i][j][0], zigzag_paths[i][j][1]);
+			}
+			
+			await delete_cubes(zigzag_paths[i]);
 		}
 	}
 }()
