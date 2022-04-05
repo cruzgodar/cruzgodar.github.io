@@ -123,21 +123,9 @@
 	
 	
 	
-	let plane_partition = 
-	[
-		[10, 5, 2, 1],
-		[4, 3, 1, 0],
-		[4, 2, 1, 0],
-		[3, 1, 0, 0]
-	];
+	let plane_partition = [];
 	
 	generate_random_plane_partition();
-	
-	plane_partition = 
-	[
-		[3, 2],
-		[2, 0]
-	];
 	
 	let plane_partition_size = 1;
 	let plane_partition_flat_size = 1;
@@ -265,18 +253,15 @@
 	
 	function construct_plane_partition()
 	{
-		let max_row_length = 0;
+		plane_partition_flat_size = plane_partition.length;
+		
+		
 		
 		cubes = new Array(plane_partition.length);
 		
 		for (let i = 0; i < plane_partition.length; i++)
 		{
 			cubes[i] = new Array(plane_partition[i].length);
-			
-			if (plane_partition[i].length > max_row_length)
-			{
-				max_row_length = plane_partition[i].length;
-			}
 			
 			for (let j = 0; j < plane_partition[i].length; j++)
 			{
@@ -298,8 +283,6 @@
 		
 		
 		
-		plane_partition_flat_size = Math.max(plane_partition.length, max_row_length);
-		
 		font_size = wilson_numbers.canvas_width / (plane_partition_flat_size + 2);
 		
 		let num_characters = `${plane_partition_max_entry}`.length;
@@ -312,7 +295,7 @@
 		else
 		{
 			wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
-		}	
+		}
 		
 		
 		
@@ -340,7 +323,7 @@
 		
 		cube_group.add(cube);
 		
-		cube.position.set(x, y, z);
+		cube.position.set(x - (plane_partition_flat_size - 1) / 2, y - (plane_partition_flat_size - 1) / 2, z - (plane_partition_flat_size - 1) / 2);
 		
 		return cube;
 	}
@@ -359,7 +342,7 @@
 		cube_group.add(cube);
 		
 		//This aligns the thing correctly.
-		cube.position.set(x, -.5 - .0005, z);
+		cube.position.set(x - (plane_partition_flat_size - 1) / 2, -.5 - .0005 - (plane_partition_flat_size - 1) / 2, z - (plane_partition_flat_size - 1) / 2);
 		
 		return cube;
 	}
@@ -450,9 +433,9 @@
 		
 		anime({
 			targets: orthographic_camera.position,
-			x: (plane_partition_flat_size - 1) / 2,
+			x: 0,
 			y: plane_partition_size,
-			z: (plane_partition_flat_size - 1) / 2,
+			z: 0,
 			duration: 500,
 			easing: "easeInOutQuad"
 		});
