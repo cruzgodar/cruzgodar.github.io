@@ -101,9 +101,6 @@
 	point_light.position.set(750, 1000, 500);
 	scene.add(point_light);
 	
-	const cube_group = new THREE.Object3D();
-	scene.add(cube_group);
-	
 	
 	
 	let rotation_y_velocity = 0;
@@ -121,19 +118,14 @@
 	
 	let font_size = 10;
 	
+	//A 1D list of the plane partitions, etc, that are stored.
+	let arrays = [];
 	
+	let total_array_footprint = 0;
+	let total_array_height = 0;
+	let total_array_size = 0;
 	
-	let plane_partition = [];
-	
-	generate_random_plane_partition();
-	
-	let plane_partition_size = 1;
-	let plane_partition_flat_size = 1;
-	let plane_partition_max_entry = 1;
-	
-	let cubes = [];
-	
-	construct_plane_partition();
+	add_new_array(generate_random_plane_partition());
 	
 	
 	
@@ -158,7 +150,7 @@
 		}
 		
 		
-		cube_group.rotation.y += x_delta;
+		arrays.forEach(array => array.cube_group.rotation.y += x_delta);
 		
 		next_rotation_y_velocity = x_delta;
 	}
@@ -187,7 +179,7 @@
 		
 		if (rotation_y_velocity !== 0)
 		{
-			cube_group.rotation.y += rotation_y_velocity;
+			arrays.forEach(array => array.cube_group.rotation.y += rotation_y_velocity);
 			
 			rotation_y_velocity *= rotation_y_velocity_friction;
 			
@@ -199,15 +191,18 @@
 		
 		
 		
-		if (cube_group.rotation.y > 3.14159265)
+		arrays.forEach(array =>
 		{
-			cube_group.rotation.y -= 6.283185301;
-		}
-		
-		else if (cube_group.rotation.y < -3.14159265)
-		{
-			cube_group.rotation.y += 6.283185301;
-		}
+			if (array.cube_group.rotation.y > 3.14159265)
+			{
+				array.cube_group.rotation.y -= 6.283185301;
+			}
+			
+			else if (array.cube_group.rotation.y < -3.14159265)
+			{
+				array.cube_group.rotation.y += 6.283185301;
+			}
+		});
 		
 		
 		
@@ -222,9 +217,9 @@
 		
 		let max_entry = Math.floor(Math.random() * 5) + 10;
 		
+		let plane_partition = new Array(side_length);
 		
 		
-		plane_partition = new Array(side_length);
 		
 		for (let i = 0; i < side_length; i++)
 		{
@@ -247,45 +242,77 @@
 				plane_partition[i][j] = Math.max(Math.min(plane_partition[i][j - 1], plane_partition[i - 1][j]) - Math.floor(Math.random() * 4), 0);
 			}
 		}
+		
+		
+		
+		return plane_partition;
 	}
 	
 	
 	
-	function construct_plane_partition()
+	function add_new_array(numbers)
 	{
-		plane_partition_flat_size = plane_partition.length;
-		
-		
-		
-		cubes = new Array(plane_partition.length);
-		
-		for (let i = 0; i < plane_partition.length; i++)
-		{
-			cubes[i] = new Array(plane_partition[i].length);
+		arrays.push({
+			numbers: numbers,
+			cubes: [],
+			floor: [],
 			
-			for (let j = 0; j < plane_partition[i].length; j++)
+			cube_group: null,
+			parent_object: null,
+			
+			footprint: 0,
+			height: 0,
+			size: 0
+		});
+		
+		let array = arrays[arrays.length - 1];
+		
+		array.footprint = array.numbers.length;
+		
+		
+		
+		array.cube_group = new THREE.Object3D();
+		scene.add(array.cube_group);
+		
+		
+		
+		array.cubes = new Array(array.footprint);
+		
+		for (let i = 0; i < array.footprint; i++)
+		{
+			array.cubes[i] = new Array(array.footprint);
+			
+			for (let j = 0; j < array.footprint; j++)
 			{
-				cubes[i][j] = new Array(plane_partition[i][j]);
+				array.cubes[i][j] = new Array(array.numbers[i][j]);
 				
-				if (plane_partition[i][j] > plane_partition_max_entry)
+				if (array.numbers[i][j] > array.height)
 				{
-					plane_partition_max_entry = plane_partition[i][j];
+					array.height = array.numbers[i][j];
 				}
 				
-				add_floor(j, i);
+				add_floor(array, j, i);
 				
-				for (let k = 0; k < plane_partition[i][j]; k++)
+				for (let k = 0; k < array.numbers[i][j]; k++)
 				{
-					cubes[i][j][k] = add_cube(j, k, i);
+					array.cubes[i][j][k] = add_cube(array, j, k, i);
 				}
 			}
 		}
 		
+		array.size = Math.max(array.footprint, array.height);
 		
 		
-		font_size = wilson_numbers.canvas_width / (plane_partition_flat_size + 2);
 		
-		let num_characters = `${plane_partition_max_entry}`.length;
+		total_array_footprint += array.footprint + 1;
+		total_array_height = Math.max(total_array_height, array.height);
+		total_array_size = Math.max(total_array_footprint, total_array_height);
+		
+		
+		
+		font_size = wilson_numbers.canvas_width / (total_array_footprint + 2);
+		
+		let num_characters = `${total_array_height}`.length;
 		
 		if (num_characters === 1)
 		{
@@ -298,21 +325,18 @@
 		}
 		
 		
-		
-		plane_partition_size = Math.max(plane_partition_flat_size, plane_partition_max_entry);
-		
-		orthographic_camera.left = -plane_partition_size;
-		orthographic_camera.right = plane_partition_size;
-		orthographic_camera.top = plane_partition_size;
-		orthographic_camera.bottom = -plane_partition_size;
-		orthographic_camera.position.set(plane_partition_size, plane_partition_size, plane_partition_size);
+		orthographic_camera.left = -total_array_size;
+		orthographic_camera.right = total_array_size;
+		orthographic_camera.top = total_array_size;
+		orthographic_camera.bottom = -total_array_size;
+		orthographic_camera.position.set(total_array_size, total_array_size, total_array_size);
 		orthographic_camera.lookAt(0, 0, 0);
 		orthographic_camera.updateProjectionMatrix();
 	}
 	
 	
 	
-	function add_cube(x, y, z)
+	function add_cube(array, x, y, z)
 	{
 		const geometry = new THREE.BoxGeometry();
 		const material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
@@ -321,16 +345,16 @@
 		
 		const cube = new THREE.Mesh(geometry, material);
 		
-		cube_group.add(cube);
+		array.cube_group.add(cube);
 		
-		cube.position.set(x - (plane_partition_flat_size - 1) / 2, y - (plane_partition_flat_size - 1) / 2, z - (plane_partition_flat_size - 1) / 2);
+		cube.position.set(x - (array.footprint - 1) / 2, y - (array.height - 1) / 2, z - (array.footprint - 1) / 2);
 		
 		return cube;
 	}
 	
 	
 	
-	function add_floor(x, z)
+	function add_floor(array, x, z)
 	{
 		const geometry = new THREE.BoxGeometry(1, .001, 1);
 		const material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
@@ -339,10 +363,10 @@
 		
 		const cube = new THREE.Mesh(geometry, material);
 		
-		cube_group.add(cube);
+		array.cube_group.add(cube);
 		
 		//This aligns the thing correctly.
-		cube.position.set(x - (plane_partition_flat_size - 1) / 2, -.5 - .0005 - (plane_partition_flat_size - 1) / 2, z - (plane_partition_flat_size - 1) / 2);
+		cube.position.set(x - (array.footprint - 1) / 2, -.5 - .0005 - (array.height - 1) / 2, z - (array.footprint - 1) / 2);
 		
 		return cube;
 	}
