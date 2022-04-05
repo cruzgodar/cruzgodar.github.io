@@ -294,6 +294,20 @@
 		
 		font_size = wilson_numbers.canvas_width / (plane_partition_flat_size + 2);
 		
+		let num_characters = `${plane_partition_max_entry}`.length;
+		
+		if (num_characters === 1)
+		{
+			wilson_numbers.ctx.font = `${font_size * .75}px monospace`;
+		}
+		
+		else
+		{
+			wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
+		}	
+		
+		
+		
 		plane_partition_size = Math.max(plane_partition_flat_size, plane_partition_max_entry);
 		
 		orthographic_camera.left = -plane_partition_size;
@@ -466,24 +480,12 @@
 	{
 		wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
 		
-		let num_characters = `${plane_partition_max_entry}`.length;
-		
-		wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
-		
 		//Show the numbers in the right places.
 		for (let i = 0; i < plane_partition.length; i++)
 		{
 			for (let j = 0; j < plane_partition[i].length; j++)
 			{
-				if (plane_partition[i][j] === 0)
-				{
-					continue;
-				}
-				
-				let text_metrics = wilson_numbers.ctx.measureText(plane_partition[i][j]);
-				
-				//The height adjustment is an annoying spacing computation.
-				wilson_numbers.ctx.fillText(plane_partition[i][j], font_size * (j + 1) + (font_size - text_metrics.width) / 2, font_size * (i + 1) + (font_size + text_metrics.actualBoundingBoxAscent - text_metrics.actualBoundingBoxDescent) / 2);
+				draw_single_cell_2d_view_text(i, j);
 			}
 		}
 	}
