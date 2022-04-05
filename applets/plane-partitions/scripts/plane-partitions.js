@@ -103,6 +103,7 @@
 	
 	
 	
+	let rotation_y = 0;
 	let rotation_y_velocity = 0;
 	let next_rotation_y_velocity = 0;
 	
@@ -125,7 +126,11 @@
 	let total_array_height = 0;
 	let total_array_size = 0;
 	
+	let hex_view_camera_pos = [0, 0, 0];
+	
 	add_new_array(generate_random_plane_partition());
+	
+	setTimeout(() => add_new_array(generate_random_plane_partition()), 3000);
 	
 	
 	
@@ -149,8 +154,19 @@
 			return;
 		}
 		
+		rotation_y += x_delta;
 		
-		arrays.forEach(array => array.cube_group.rotation.y += x_delta);
+		if (rotation_y > 3.14159265)
+		{
+			rotation_y -= 6.283185301;
+		}
+		
+		else if (rotation_y < -3.14159265)
+		{
+			rotation_y += 6.283185301;
+		}
+		
+		arrays.forEach(array => array.cube_group.rotation.y = rotation_y);
 		
 		next_rotation_y_velocity = x_delta;
 	}
@@ -179,7 +195,9 @@
 		
 		if (rotation_y_velocity !== 0)
 		{
-			arrays.forEach(array => array.cube_group.rotation.y += rotation_y_velocity);
+			rotation_y += rotation_y_velocity;
+			
+			arrays.forEach(array => array.cube_group.rotation.y = rotation_y);
 			
 			rotation_y_velocity *= rotation_y_velocity_friction;
 			
@@ -191,18 +209,15 @@
 		
 		
 		
-		arrays.forEach(array =>
+		if (rotation_y > 3.14159265)
 		{
-			if (array.cube_group.rotation.y > 3.14159265)
-			{
-				array.cube_group.rotation.y -= 6.283185301;
-			}
-			
-			else if (array.cube_group.rotation.y < -3.14159265)
-			{
-				array.cube_group.rotation.y += 6.283185301;
-			}
-		});
+			rotation_y -= 6.283185301;
+		}
+		
+		else if (rotation_y < -3.14159265)
+		{
+			rotation_y += 6.283185301;
+		}
 		
 		
 		
@@ -260,6 +275,8 @@
 			cube_group: null,
 			parent_object: null,
 			
+			center_offset: 0,
+			
 			footprint: 0,
 			height: 0,
 			size: 0
@@ -269,10 +286,17 @@
 		
 		array.footprint = array.numbers.length;
 		
+		if (arrays.length !== 1)
+		{
+			array.center_offset = arrays[arrays.length - 2].center_offset + arrays[arrays.length - 2].footprint / 2 + array.footprint / 2 + 1;
+		}	
+		
 		
 		
 		array.cube_group = new THREE.Object3D();
 		scene.add(array.cube_group);
+		
+		array.cube_group.position.set(array.center_offset, 0, -array.center_offset);
 		
 		
 		
@@ -304,13 +328,13 @@
 		
 		
 		
-		total_array_footprint += array.footprint + 1;
+		total_array_footprint += array.footprint + .5;
 		total_array_height = Math.max(total_array_height, array.height);
 		total_array_size = Math.max(total_array_footprint, total_array_height);
 		
 		
 		
-		font_size = wilson_numbers.canvas_width / (total_array_footprint + 2);
+		font_size = wilson_numbers.canvas_width / (total_array_footprint + 1);
 		
 		let num_characters = `${total_array_height}`.length;
 		
@@ -325,13 +349,45 @@
 		}
 		
 		
-		orthographic_camera.left = -total_array_size;
-		orthographic_camera.right = total_array_size;
-		orthographic_camera.top = total_array_size;
-		orthographic_camera.bottom = -total_array_size;
-		orthographic_camera.position.set(total_array_size, total_array_size, total_array_size);
-		orthographic_camera.lookAt(0, 0, 0);
-		orthographic_camera.updateProjectionMatrix();
+		if (arrays.length === 1)
+		{
+			hex_view_camera_pos = [total_array_size, total_array_size + total_array_height / 3, total_array_size];
+			
+			orthographic_camera.left = -total_array_size;
+			orthographic_camera.right = total_array_size;
+			orthographic_camera.top = total_array_size;
+			orthographic_camera.bottom = -total_array_size;
+			orthographic_camera.position.set(hex_view_camera_pos[0], hex_view_camera_pos[1], hex_view_camera_pos[2]);
+			orthographic_camera.rotation.set(-0.785398163, 0.615479709, 0.523598775);
+			orthographic_camera.updateProjectionMatrix();
+		}
+		
+		else
+		{
+			let hex_view_camera_offset = (-arrays[0].footprint / 2 + arrays[arrays.length - 1].center_offset + arrays[arrays.length - 1].footprint / 2) / 2;
+			
+			hex_view_camera_pos = [total_array_size + hex_view_camera_offset, total_array_size + total_array_height / 3, total_array_size - hex_view_camera_offset];
+			
+			anime({
+				targets: orthographic_camera.position,
+				x: hex_view_camera_pos[0],
+				y: hex_view_camera_pos[1],
+				z: hex_view_camera_pos[2],
+				duration: 500,
+				easing: "easeInOutQuad"
+			});
+			
+			anime({
+				targets: orthographic_camera,
+				left: -total_array_size,
+				right: total_array_size,
+				top: total_array_size,
+				bottom: -total_array_size,
+				duration: 500,
+				easing: "easeInOutQuad",
+				update: () => orthographic_camera.updateProjectionMatrix()
+			});
+		}	
 	}
 	
 	
@@ -347,7 +403,7 @@
 		
 		array.cube_group.add(cube);
 		
-		cube.position.set(x - (array.footprint - 1) / 2, y - (array.height - 1) / 2, z - (array.footprint - 1) / 2);
+		cube.position.set(x - (array.footprint - 1) / 2, y, z - (array.footprint - 1) / 2);
 		
 		return cube;
 	}
@@ -366,7 +422,7 @@
 		array.cube_group.add(cube);
 		
 		//This aligns the thing correctly.
-		cube.position.set(x - (array.footprint - 1) / 2, -.5 - .0005 - (array.height - 1) / 2, z - (array.footprint - 1) / 2);
+		cube.position.set(x - (array.footprint - 1) / 2, -.5 - .0005, z - (array.footprint - 1) / 2);
 		
 		return cube;
 	}
@@ -399,9 +455,9 @@
 		
 		anime({
 			targets: orthographic_camera.position,
-			x: plane_partition_size,
-			y: plane_partition_size,
-			z: plane_partition_size,
+			x: hex_view_camera_pos[0],
+			y: hex_view_camera_pos[1],
+			z: hex_view_camera_pos[2],
 			duration: 500,
 			easing: "easeInOutQuad"
 		});
@@ -417,21 +473,26 @@
 		
 		anime({
 			targets: orthographic_camera,
-			left: -plane_partition_size,
-			right: plane_partition_size,
-			top: plane_partition_size,
-			bottom: -plane_partition_size,
+			left: -total_array_size,
+			right: total_array_size,
+			top: total_array_size,
+			bottom: -total_array_size,
 			duration: 500,
 			easing: "easeInOutQuad",
 			update: () => orthographic_camera.updateProjectionMatrix()
 		});
 		
-		anime({
-			targets: cube_group.rotation,
-			y: 0,
-			duration: 500,
-			easing: "easeInOutQuad"
+		arrays.forEach(array =>
+		{
+			anime({
+				targets: array.cube_group.rotation,
+				y: 0,
+				duration: 500,
+				easing: "easeInOutQuad"
+			});
 		});
+		
+		rotation_y = 0;
 		
 		in_2d_view = false;
 		
@@ -458,7 +519,7 @@
 		anime({
 			targets: orthographic_camera.position,
 			x: 0,
-			y: plane_partition_size,
+			y: total_array_size,
 			z: 0,
 			duration: 500,
 			easing: "easeInOutQuad"
@@ -475,20 +536,23 @@
 		
 		anime({
 			targets: orthographic_camera,
-			left: -(plane_partition_flat_size / 2 + 1),
-			right: plane_partition_flat_size / 2 + 1,
-			top: plane_partition_flat_size / 2 + 1,
-			bottom: -(plane_partition_flat_size / 2 + 1),
+			left: -(total_array_footprint / 2 + .5),
+			right: total_array_footprint / 2 + .5,
+			top: total_array_footprint / 2 + .5,
+			bottom: -(total_array_footprint / 2 + .5),
 			duration: 500,
 			easing: "easeInOutQuad",
 			update: () => orthographic_camera.updateProjectionMatrix()
 		});
 		
-		anime({
-			targets: cube_group.rotation,
-			y: 0,
-			duration: 500,
-			easing: "easeInOutQuad"
+		arrays.forEach(array =>
+		{
+			anime({
+				targets: array.cube_group.rotation,
+				y: 0,
+				duration: 500,
+				easing: "easeInOutQuad"
+			});
 		});
 		
 		
@@ -509,29 +573,32 @@
 	}
 	
 	
-	
+	//Needs updating to work with
 	function draw_all_2d_view_text()
 	{
 		wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
 		
-		//Show the numbers in the right places.
-		for (let i = 0; i < plane_partition.length; i++)
+		arrays.forEach(array =>
 		{
-			for (let j = 0; j < plane_partition[i].length; j++)
+			//Show the numbers in the right places.
+			for (let i = 0; i < array.footprint; i++)
 			{
-				draw_single_cell_2d_view_text(i, j);
+				for (let j = 0; j < array.footprint; j++)
+				{
+					draw_single_cell_2d_view_text(array, i, j);
+				}
 			}
-		}
+		});
 	}
 	
-	function draw_single_cell_2d_view_text(row, col)
+	function draw_single_cell_2d_view_text(array, row, col)
 	{
 		wilson_numbers.ctx.clearRect(font_size * (col + 1), font_size * (row + 1), font_size, font_size);
 		
-		let text_metrics = wilson_numbers.ctx.measureText(plane_partition[row][col]);
+		let text_metrics = wilson_numbers.ctx.measureText(array.numbers[row][col]);
 		
 		//The height adjustment is an annoying spacing computation.
-		wilson_numbers.ctx.fillText(plane_partition[row][col], font_size * (col + 1) + (font_size - text_metrics.width) / 2, font_size * (row + 1) + (font_size + text_metrics.actualBoundingBoxAscent - text_metrics.actualBoundingBoxDescent) / 2);
+		wilson_numbers.ctx.fillText(array.numbers[row][col], font_size * (col + 1) + (font_size - text_metrics.width) / 2, font_size * (row + 1) + (font_size + text_metrics.actualBoundingBoxAscent - text_metrics.actualBoundingBoxDescent) / 2);
 	}
 	
 	
