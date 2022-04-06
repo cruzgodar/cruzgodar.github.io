@@ -94,6 +94,14 @@
 	cube_texture.minFilter = THREE.LinearFilter;
 	cube_texture.magFilter = THREE.NearestFilter;
 	
+	const cube_geometry = new THREE.BoxGeometry();
+	const cube_material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
+	cube_material.color.setHSL(0, 0, .5);
+	
+	const floor_geometry = new THREE.BoxGeometry(1, .001, 1);
+	const floor_material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
+	floor_material.color.setHSL(0, 0, .2);
+	
 	const ambient_light = new THREE.AmbientLight(0xffffff, .2);
 	scene.add(ambient_light);
 	
@@ -133,6 +141,7 @@
 	
 	setTimeout(() => add_new_array(generate_random_plane_partition()), 3000);
 	setTimeout(() => add_new_array(generate_random_plane_partition()), 6000);
+	setTimeout(() => remove_array(1), 9000);
 	
 	
 	
@@ -434,14 +443,139 @@
 	
 	
 	
+	async function remove_array(index)
+	{
+		scene.remove(arrays[index].cube_group);
+		
+		total_array_footprint -= arrays[index].footprint + 1;
+		
+		arrays.splice(index, 1);
+		
+		
+		
+		//Update the other arrays.
+		for (let i = index; i < arrays.length; i++)
+		{
+			arrays[i].partial_footprint_sum = arrays[i].footprint;
+			
+			if (i !== 0)
+			{
+				arrays[i].center_offset = arrays[i - 1].center_offset + arrays[i - 1].footprint / 2 + arrays[i].footprint / 2 + 1;
+				
+				arrays[i].partial_footprint_sum += arrays[i - 1].partial_footprint_sum + 1;
+			}
+			
+			else
+			{
+				arrays[i].center_offset = 0;
+			}
+			
+			anime({
+				targets: arrays[i].cube_group.position,
+				x: arrays[i].center_offset,
+				y: 0,
+				z: -arrays[i].center_offset,
+				duration: 500,
+				easing: "easeInOutQuad"
+			});	
+		}
+		
+		
+		
+		total_array_height = 0;
+		
+		for (let i = 0; i < arrays.length; i++)
+		{
+			total_array_height = Math.max(total_array_height, arrays[i].height);
+		}
+		
+		total_array_size = Math.max(total_array_footprint, total_array_height);
+		
+		
+		
+		font_size = wilson_numbers.canvas_width / (total_array_footprint + 1);
+		
+		let num_characters = `${total_array_height}`.length;
+		
+		if (num_characters === 1)
+		{
+			wilson_numbers.ctx.font = `${font_size * .75}px monospace`;
+		}
+		
+		else
+		{
+			wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
+		}
+		
+		
+		
+		let hex_view_camera_offset = (-arrays[0].footprint / 2 + arrays[arrays.length - 1].center_offset + arrays[arrays.length - 1].footprint / 2) / 2;
+		
+		hex_view_camera_pos = [total_array_size + hex_view_camera_offset, total_array_size + total_array_height / 3, total_array_size - hex_view_camera_offset];
+		
+		_2d_view_camera_pos = [hex_view_camera_offset, total_array_size, -hex_view_camera_offset];
+		
+		if (in_2d_view)
+		{
+			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100);
+			
+			anime({
+				targets: orthographic_camera.position,
+				x: _2d_view_camera_pos[0],
+				y: _2d_view_camera_pos[1],
+				z: _2d_view_camera_pos[2],
+				duration: 500,
+				easing: "easeInOutQuad"
+			});
+			
+			anime({
+				targets: orthographic_camera,
+				left: -(total_array_footprint / 2 + .5),
+				right: total_array_footprint / 2 + .5,
+				top: total_array_footprint / 2 + .5,
+				bottom: -(total_array_footprint / 2 + .5),
+				duration: 500,
+				easing: "easeInOutQuad",
+				update: () => orthographic_camera.updateProjectionMatrix()
+			});
+			
+			setTimeout(() =>
+			{
+				draw_all_2d_view_text();
+				
+				Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100);
+			}, 500);
+		}
+		
+		else
+		{
+			anime({
+				targets: orthographic_camera.position,
+				x: hex_view_camera_pos[0],
+				y: hex_view_camera_pos[1],
+				z: hex_view_camera_pos[2],
+				duration: 500,
+				easing: "easeInOutQuad"
+			});
+			
+			anime({
+				targets: orthographic_camera,
+				left: -total_array_size,
+				right: total_array_size,
+				top: total_array_size,
+				bottom: -total_array_size,
+				duration: 500,
+				easing: "easeInOutQuad",
+				update: () => orthographic_camera.updateProjectionMatrix()
+			});
+		}
+	}
+	
+	
+	
 	function add_cube(array, x, y, z)
 	{
-		const geometry = new THREE.BoxGeometry();
-		const material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
-		
-		material.color.setHSL(0, 0, .5);
-		
-		const cube = new THREE.Mesh(geometry, material);
+		const cube = new THREE.Mesh(cube_geometry, cube_material);
 		
 		array.cube_group.add(cube);
 		
@@ -454,19 +588,14 @@
 	
 	function add_floor(array, x, z)
 	{
-		const geometry = new THREE.BoxGeometry(1, .001, 1);
-		const material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
+		const floor = new THREE.Mesh(floor_geometry, floor_material);
 		
-		material.color.setHSL(0, 0, .2);
-		
-		const cube = new THREE.Mesh(geometry, material);
-		
-		array.cube_group.add(cube);
+		array.cube_group.add(floor);
 		
 		//This aligns the thing correctly.
-		cube.position.set(x - (array.footprint - 1) / 2, -.5 - .0005, z - (array.footprint - 1) / 2);
+		floor.position.set(x - (array.footprint - 1) / 2, -.5 - .0005, z - (array.footprint - 1) / 2);
 		
-		return cube;
+		return floor;
 	}
 	
 	
@@ -758,7 +887,11 @@
 				opacity: 0,
 				duration: 250,
 				easing: "easeOutQuad",
-				complete: resolve
+				complete: () =>
+				{
+					scene.remove(cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]]);
+					resolve();
+				}
 			});
 		});
 	}
