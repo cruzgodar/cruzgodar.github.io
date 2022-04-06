@@ -235,9 +235,9 @@
 	
 	function generate_random_plane_partition()
 	{
-		let side_length = Math.floor(Math.random() * 3) + 3;
+		let side_length = Math.floor(Math.random() * 3) + 4;
 		
-		let max_entry = Math.floor(Math.random() * 5) + 5;
+		let max_entry = Math.floor(Math.random() * 5) + 10;
 		
 		let plane_partition = new Array(side_length);
 		
@@ -382,7 +382,7 @@
 			if (arrays.length === 1)
 			{
 				hex_view_camera_pos = [total_array_size, total_array_size + total_array_height / 3, total_array_size];
-				_2d_view_camera_pos = [0, total_array_size, 0];
+				_2d_view_camera_pos = [0, total_array_size + 10, 0];
 				
 				orthographic_camera.left = -total_array_size;
 				orthographic_camera.right = total_array_size;
@@ -399,7 +399,7 @@
 				
 				hex_view_camera_pos = [total_array_size + hex_view_camera_offset, total_array_size + total_array_height / 3, total_array_size - hex_view_camera_offset];
 				
-				_2d_view_camera_pos = [hex_view_camera_offset, total_array_size, -hex_view_camera_offset];
+				_2d_view_camera_pos = [hex_view_camera_offset, total_array_size + 10, -hex_view_camera_offset];
 				
 				if (in_2d_view)
 				{
@@ -573,7 +573,7 @@
 		
 		hex_view_camera_pos = [total_array_size + hex_view_camera_offset, total_array_size + total_array_height / 3, total_array_size - hex_view_camera_offset];
 		
-		_2d_view_camera_pos = [hex_view_camera_offset, total_array_size, -hex_view_camera_offset];
+		_2d_view_camera_pos = [hex_view_camera_offset, total_array_size + 10, -hex_view_camera_offset];
 		
 		if (in_2d_view)
 		{
@@ -1096,11 +1096,8 @@
 			
 			await color_cubes(array, zigzag_paths[i], hue);
 			
-			if (!in_2d_view)
-			{
-				//Lift all the cubes up.
-				await raise_cubes(array, zigzag_paths[i], array.numbers[0][0]);
-			}
+			//Lift all the cubes up.
+			await raise_cubes(array, zigzag_paths[i], array.numbers[0][0]);
 			
 			
 			
@@ -1152,7 +1149,17 @@
 			
 			await lower_cubes(output_array, [pivot_coordinates]);
 			
+			
+			
+			top = total_array_footprint - output_array.partial_footprint_sum - 1;
+			left = output_array.partial_footprint_sum - output_array.footprint;
+			
 			output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]++;
+			
+			if (in_2d_view)
+			{
+				draw_single_cell_2d_view_text(output_array, pivot_coordinates[0], pivot_coordinates[1], top, left);
+			}
 			
 			output_array.height = Math.max(output_array.height, output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]);
 			
