@@ -447,13 +447,16 @@
 	async function remove_array(index)
 	{
 		//Dispose of all the materials.
-		for (let i = 0; i < array.cubes.length; i++)
+		for (let i = 0; i < arrays[index].cubes.length; i++)
 		{
-			for (let j = 0; j < array.cubes[i].length; j++)
+			for (let j = 0; j < arrays[index].cubes[i].length; j++)
 			{
-				for (let k = 0; i < array.cubes[i][j].length; k++)
+				for (let k = 0; k < arrays[index].cubes[i][j].length; k++)
 				{
-					array.cubes[i][j][k].material.dispose();
+					if (arrays[index].cubes[i][j][k])
+					{
+						arrays[index].cubes[i][j][k].material.dispose();
+					}	
 				}
 			}
 		}
