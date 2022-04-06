@@ -127,10 +127,12 @@
 	let total_array_size = 0;
 	
 	let hex_view_camera_pos = [0, 0, 0];
+	let _2d_view_camera_pos = [0, 0, 0];
 	
 	add_new_array(generate_random_plane_partition());
 	
 	setTimeout(() => add_new_array(generate_random_plane_partition()), 3000);
+	setTimeout(() => add_new_array(generate_random_plane_partition()), 6000);
 	
 	
 	
@@ -265,7 +267,7 @@
 	
 	
 	
-	function add_new_array(numbers)
+	async function add_new_array(numbers)
 	{
 		arrays.push({
 			numbers: numbers,
@@ -276,6 +278,7 @@
 			parent_object: null,
 			
 			center_offset: 0,
+			partial_footprint_sum: 0,
 			
 			footprint: 0,
 			height: 0,
@@ -285,10 +288,13 @@
 		let array = arrays[arrays.length - 1];
 		
 		array.footprint = array.numbers.length;
+		array.partial_footprint_sum = array.footprint;
 		
 		if (arrays.length !== 1)
 		{
 			array.center_offset = arrays[arrays.length - 2].center_offset + arrays[arrays.length - 2].footprint / 2 + array.footprint / 2 + 1;
+			
+			array.partial_footprint_sum += arrays[arrays.length - 2].partial_footprint_sum + 1;
 		}	
 		
 		
@@ -326,9 +332,7 @@
 		
 		array.size = Math.max(array.footprint, array.height);
 		
-		
-		
-		total_array_footprint += array.footprint + .5;
+		total_array_footprint += array.footprint + 1;
 		total_array_height = Math.max(total_array_height, array.height);
 		total_array_size = Math.max(total_array_footprint, total_array_height);
 		
@@ -352,6 +356,7 @@
 		if (arrays.length === 1)
 		{
 			hex_view_camera_pos = [total_array_size, total_array_size + total_array_height / 3, total_array_size];
+			_2d_view_camera_pos = [0, total_array_size, 0];
 			
 			orthographic_camera.left = -total_array_size;
 			orthographic_camera.right = total_array_size;
@@ -368,25 +373,62 @@
 			
 			hex_view_camera_pos = [total_array_size + hex_view_camera_offset, total_array_size + total_array_height / 3, total_array_size - hex_view_camera_offset];
 			
-			anime({
-				targets: orthographic_camera.position,
-				x: hex_view_camera_pos[0],
-				y: hex_view_camera_pos[1],
-				z: hex_view_camera_pos[2],
-				duration: 500,
-				easing: "easeInOutQuad"
-			});
+			_2d_view_camera_pos = [hex_view_camera_offset, total_array_size, -hex_view_camera_offset];
 			
-			anime({
-				targets: orthographic_camera,
-				left: -total_array_size,
-				right: total_array_size,
-				top: total_array_size,
-				bottom: -total_array_size,
-				duration: 500,
-				easing: "easeInOutQuad",
-				update: () => orthographic_camera.updateProjectionMatrix()
-			});
+			if (in_2d_view)
+			{
+				await Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100);
+				
+				anime({
+					targets: orthographic_camera.position,
+					x: _2d_view_camera_pos[0],
+					y: _2d_view_camera_pos[1],
+					z: _2d_view_camera_pos[2],
+					duration: 500,
+					easing: "easeInOutQuad"
+				});
+				
+				anime({
+					targets: orthographic_camera,
+					left: -(total_array_footprint / 2 + .5),
+					right: total_array_footprint / 2 + .5,
+					top: total_array_footprint / 2 + .5,
+					bottom: -(total_array_footprint / 2 + .5),
+					duration: 500,
+					easing: "easeInOutQuad",
+					update: () => orthographic_camera.updateProjectionMatrix()
+				});
+				
+				setTimeout(() =>
+				{
+					draw_all_2d_view_text();
+					
+					Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100);
+				}, 500);
+			}
+			
+			else
+			{
+				anime({
+					targets: orthographic_camera.position,
+					x: hex_view_camera_pos[0],
+					y: hex_view_camera_pos[1],
+					z: hex_view_camera_pos[2],
+					duration: 500,
+					easing: "easeInOutQuad"
+				});
+				
+				anime({
+					targets: orthographic_camera,
+					left: -total_array_size,
+					right: total_array_size,
+					top: total_array_size,
+					bottom: -total_array_size,
+					duration: 500,
+					easing: "easeInOutQuad",
+					update: () => orthographic_camera.updateProjectionMatrix()
+				});
+			}	
 		}	
 	}
 	
@@ -518,9 +560,9 @@
 		
 		anime({
 			targets: orthographic_camera.position,
-			x: 0,
-			y: total_array_size,
-			z: 0,
+			x: _2d_view_camera_pos[0],
+			y: _2d_view_camera_pos[1],
+			z: _2d_view_camera_pos[2],
 			duration: 500,
 			easing: "easeInOutQuad"
 		});
@@ -573,32 +615,35 @@
 	}
 	
 	
-	//Needs updating to work with
+	
 	function draw_all_2d_view_text()
 	{
 		wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
 		
 		arrays.forEach(array =>
 		{
+			let top = total_array_footprint - array.partial_footprint_sum - 1;
+			let left = array.partial_footprint_sum - array.footprint;
+			
 			//Show the numbers in the right places.
 			for (let i = 0; i < array.footprint; i++)
 			{
 				for (let j = 0; j < array.footprint; j++)
 				{
-					draw_single_cell_2d_view_text(array, i, j);
+					draw_single_cell_2d_view_text(array, i, j, top, left);
 				}
 			}
 		});
 	}
 	
-	function draw_single_cell_2d_view_text(array, row, col)
+	function draw_single_cell_2d_view_text(array, row, col, top, left)
 	{
-		wilson_numbers.ctx.clearRect(font_size * (col + 1), font_size * (row + 1), font_size, font_size);
+		wilson_numbers.ctx.clearRect(font_size * (col + left + 1), font_size * (row + top + 1), font_size, font_size);
 		
 		let text_metrics = wilson_numbers.ctx.measureText(array.numbers[row][col]);
 		
 		//The height adjustment is an annoying spacing computation.
-		wilson_numbers.ctx.fillText(array.numbers[row][col], font_size * (col + 1) + (font_size - text_metrics.width) / 2, font_size * (row + 1) + (font_size + text_metrics.actualBoundingBoxAscent - text_metrics.actualBoundingBoxDescent) / 2);
+		wilson_numbers.ctx.fillText(array.numbers[row][col], font_size * (col + left + 1) + (font_size - text_metrics.width) / 2, font_size * (row + top + 1) + (font_size + text_metrics.actualBoundingBoxAscent - text_metrics.actualBoundingBoxDescent) / 2);
 	}
 	
 	
