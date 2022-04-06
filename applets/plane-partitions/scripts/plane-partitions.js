@@ -4,12 +4,14 @@
 	
 	
 	
+	let resolution = 2000;
+	
 	let options_numbers =
 	{
 		renderer: "cpu",
 		
-		canvas_width: 1000,
-		canvas_height: 1000,
+		canvas_width: resolution,
+		canvas_height: resolution,
 		
 		mousedown_callback: on_grab_canvas,
 		touchstart_callback: on_grab_canvas,
@@ -31,8 +33,8 @@
 	
 	let options =
 	{
-		canvas_width: 1000,
-		canvas_height: 1000
+		canvas_width: resolution,
+		canvas_height: resolution
 	};
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
@@ -84,7 +86,7 @@
 	
 	const renderer = new THREE.WebGLRenderer({canvas: wilson.canvas, antialias: true});
 	
-	renderer.setSize(1000, 1000, false);
+	renderer.setSize(resolution, resolution, false);
 	
 	
 	
@@ -877,7 +879,7 @@
 					easing: "easeInOutQuad",
 					complete: () =>
 					{
-						array.cubes[coordinates[i][0]][array.numbers[coordinates[i][0]][coordinates[i][1]]][coordinates[i][2]] = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]];
+						array.cubes[coordinates[i][0]][coordinates[i][1]][array.numbers[coordinates[i][0]][coordinates[i][1]]] = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]];
 						
 						array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]] = null;
 						
