@@ -345,6 +345,25 @@
 			
 			
 			
+			let things_to_animate = [];
+			
+			array.cube_group.traverse(node =>
+			{
+				if (node.material)
+				{
+					things_to_animate.push(node.material);
+				}
+			});		
+			
+			anime({
+				targets: things_to_animate,
+				opacity: 1,
+				duration: 250,
+				easing: "easeOutQuad"
+			});
+			
+			
+			
 			font_size = wilson_numbers.canvas_width / (total_array_footprint + 1);
 			
 			let num_characters = `${total_array_height}`.length;
@@ -448,6 +467,29 @@
 	
 	async function remove_array(index)
 	{
+		await new Promise((resolve, reject) =>
+		{
+			let things_to_animate = [];
+			
+			arrays[index].cube_group.traverse(node =>
+			{
+				if (node.material)
+				{
+					things_to_animate.push(node.material);
+				}
+			});		
+			
+			anime({
+				targets: things_to_animate,
+				opacity: 0,
+				duration: 250,
+				easing: "easeOutQuad",
+				complete: resolve
+			});
+		});
+		
+		
+			
 		//Dispose of all the materials.
 		for (let i = 0; i < arrays[index].cubes.length; i++)
 		{
@@ -593,7 +635,7 @@
 	
 	function add_cube(array, x, y, z)
 	{
-		const cube_material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
+		const cube_material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0});
 		cube_material.color.setHSL(0, 0, .5);
 		
 		const cube = new THREE.Mesh(cube_geometry, cube_material);
@@ -609,7 +651,7 @@
 	
 	function add_floor(array, x, z)
 	{
-		const floor_material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
+		const floor_material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0});
 		floor_material.color.setHSL(0, 0, .2);
 		
 		const floor = new THREE.Mesh(floor_geometry, floor_material);
