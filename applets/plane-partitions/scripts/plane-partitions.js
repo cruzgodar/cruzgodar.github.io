@@ -133,6 +133,8 @@
 	let hex_view_camera_pos = [0, 0, 0];
 	let _2d_view_camera_pos = [0, 0, 0];
 	
+	
+	
 	add_new_array(generate_random_plane_partition());
 	
 	
@@ -169,7 +171,7 @@
 			rotation_y += 6.283185301;
 		}
 		
-		arrays.forEach(array => array.cube_group.rotation.y = rotation_y);
+		scene.children.forEach(object => object.rotation.y = rotation_y);
 		
 		next_rotation_y_velocity = x_delta;
 	}
@@ -200,7 +202,7 @@
 		{
 			rotation_y += rotation_y_velocity;
 			
-			arrays.forEach(array => array.cube_group.rotation.y = rotation_y);
+			scene.children.forEach(object => object.rotation.y = rotation_y);
 			
 			rotation_y_velocity *= rotation_y_velocity_friction;
 			
@@ -231,9 +233,9 @@
 	
 	function generate_random_plane_partition()
 	{
-		let side_length = Math.floor(Math.random() * 3) + 5;
+		let side_length = Math.floor(Math.random() * 3) + 3;
 		
-		let max_entry = Math.floor(Math.random() * 5) + 10;
+		let max_entry = Math.floor(Math.random() * 5) + 5;
 		
 		let plane_partition = new Array(side_length);
 		
@@ -872,6 +874,10 @@
 					easing: "easeInOutQuad",
 					complete: () =>
 					{
+						array.cubes[coordinates[i][0]][array.numbers[coordinates[i][0]][coordinates[i][1]]][coordinates[i][2]] = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]];
+						
+						array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]] = null;
+						
 						if (i === coordinates.length - 1)
 						{
 							resolve();
@@ -893,38 +899,27 @@
 			{
 				let cube = source_array.cubes[source_coordinates[i][0]][source_coordinates[i][1]][source_coordinates[i][2]];
 				
-				let helper_object = new THREE.Object3D();
-				
-				target_array.cube_group.add(helper_object);
-		
-				helper_object.position.set(target_coordinates[i][1] - (target_array.footprint - 1) / 2, target_coordinates[i][2], target_coordinates[i][0] - (target_array.footprint - 1) / 2);
-				
 				//Once its position is set relative to the target array, we detatch it to get its world coordinates.
-				scene.attach(helper_object);
-				
-				scene.attach(cube);
+				target_array.cube_group.attach(cube);
 				
 				anime({
 					targets: cube.position,
-					x: helper_object.position.x,
-					y: helper_object.position.y,
-					z: helper_object.position.z,
+					x: target_coordinates[i][1] - (target_array.footprint - 1) / 2,
+					y: target_coordinates[i][2],
+					z: target_coordinates[i][0] - (target_array.footprint - 1) / 2,
 					duration: 500,
 					easing: "easeInOutQuad",
 					complete: () =>
 					{
-						target_array.cube_group.attach(cube);
-						
 						//Now we just need to finish the bookkeeping and update the arrays correctly.
-						
 						if (target_array.cubes[target_coordinates[i][0]][target_coordinates[i][1]][target_coordinates[i][2]])
 						{
-							console.warning("Moving a cube to a location that's already occupied -- this is probably not what you want to do.");
+							console.warn(`Moving a cube to a location that's already occupied: ${target_coordinates[i]}. This is probably not what you want to do.`);
 						}
 						
 						target_array.cubes[target_coordinates[i][0]][target_coordinates[i][1]][target_coordinates[i][2]] = cube;
 						
-						source_array.cubes[target_coordinates[i][0]][target_coordinates[i][1]][target_coordinates[i][2]] = null;
+						source_array.cubes[source_coordinates[i][0]][source_coordinates[i][1]][source_coordinates[i][2]] = null;
 						
 						if (i === source_coordinates.length - 1)
 						{
@@ -943,7 +938,7 @@
 	{
 		return new Promise((resolve, reject) =>
 		{
-			for (let i = 0; i < coordinates.length - 1; i++)
+			for (let i = 0; i < coordinates.length; i++)
 			{
 				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material;
 				
@@ -951,28 +946,19 @@
 					targets: target,
 					opacity: 0,
 					duration: 250,
-					easing: "easeOutQuad"
+					easing: "easeOutQuad",
+					complete: () =>
+					{
+						target.dispose();
+						array.cube_group.remove(array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]]);
+						array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]] = null;
+						if (i === coordinates.length - 1)
+						{
+							resolve();
+						}	
+					}
 				});
 			}
-			
-			
-			
-			let i = coordinates.length - 1;
-			
-			let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material;
-			
-			anime({
-				targets: target,
-				opacity: 0,
-				duration: 250,
-				easing: "easeOutQuad",
-				complete: () =>
-				{
-					target.dispose();
-					scene.remove(array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]]);
-					resolve();
-				}
-			});
 		});
 	}
 	
@@ -1101,7 +1087,7 @@
 				target_coordinates[j] = [j, pivot[1], target_height];
 			}
 			
-			for (let j = pivot[0] + 1; j <= zigzag_paths[i].length; j++)
+			for (let j = pivot[0] + 1; j < zigzag_paths[i].length; j++)
 			{
 				target_coordinates[j] = [pivot[0], pivot[1] - (j - pivot[0]), target_height];
 			}
@@ -1124,6 +1110,14 @@
 			output_array.height = Math.max(output_array.height, output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]);
 			
 			output_array.size = Math.max(output_array.size, output_array.height);
+			
+			
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, 100));
 		}
+		
+		
+		
+		remove_array(0);
 	}
 }()
