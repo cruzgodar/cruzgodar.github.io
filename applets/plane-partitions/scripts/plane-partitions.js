@@ -72,7 +72,7 @@
 	
 	let run_hillman_grassl_button_element = Page.element.querySelector("#run-hillman-grassl-button");
 	
-	run_hillman_grassl_button_element.addEventListener("click", hillman_grassl);
+	run_hillman_grassl_button_element.addEventListener("click", () => hillman_grassl(arrays[0]));
 	
 	
 	
@@ -95,12 +95,8 @@
 	cube_texture.magFilter = THREE.NearestFilter;
 	
 	const cube_geometry = new THREE.BoxGeometry();
-	const cube_material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
-	cube_material.color.setHSL(0, 0, .5);
 	
 	const floor_geometry = new THREE.BoxGeometry(1, .001, 1);
-	const floor_material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
-	floor_material.color.setHSL(0, 0, .2);
 	
 	const ambient_light = new THREE.AmbientLight(0xffffff, .2);
 	scene.add(ambient_light);
@@ -138,10 +134,6 @@
 	let _2d_view_camera_pos = [0, 0, 0];
 	
 	add_new_array(generate_random_plane_partition());
-	
-	setTimeout(() => add_new_array(generate_random_plane_partition()), 3000);
-	setTimeout(() => add_new_array(generate_random_plane_partition()), 6000);
-	setTimeout(() => remove_array(1), 9000);
 	
 	
 	
@@ -276,175 +268,194 @@
 	
 	
 	
-	async function add_new_array(numbers)
+	function add_new_array(numbers)
 	{
-		arrays.push({
-			numbers: numbers,
-			cubes: [],
-			floor: [],
-			
-			cube_group: null,
-			parent_object: null,
-			
-			center_offset: 0,
-			partial_footprint_sum: 0,
-			
-			footprint: 0,
-			height: 0,
-			size: 0
-		});
-		
-		let array = arrays[arrays.length - 1];
-		
-		array.footprint = array.numbers.length;
-		array.partial_footprint_sum = array.footprint;
-		
-		if (arrays.length !== 1)
+		return new Promise(async (resolve, reject) =>
 		{
-			array.center_offset = arrays[arrays.length - 2].center_offset + arrays[arrays.length - 2].footprint / 2 + array.footprint / 2 + 1;
+			arrays.push({
+				numbers: numbers,
+				cubes: [],
+				floor: [],
+				
+				cube_group: null,
+				parent_object: null,
+				
+				center_offset: 0,
+				partial_footprint_sum: 0,
+				
+				footprint: 0,
+				height: 0,
+				size: 0
+			});
 			
-			array.partial_footprint_sum += arrays[arrays.length - 2].partial_footprint_sum + 1;
-		}	
-		
-		
-		
-		array.cube_group = new THREE.Object3D();
-		scene.add(array.cube_group);
-		
-		array.cube_group.position.set(array.center_offset, 0, -array.center_offset);
-		
-		
-		
-		array.cubes = new Array(array.footprint);
-		
-		for (let i = 0; i < array.footprint; i++)
-		{
-			array.cubes[i] = new Array(array.footprint);
+			let array = arrays[arrays.length - 1];
 			
-			for (let j = 0; j < array.footprint; j++)
+			array.footprint = array.numbers.length;
+			array.partial_footprint_sum = array.footprint;
+			
+			if (arrays.length !== 1)
 			{
-				array.cubes[i][j] = new Array(array.numbers[i][j]);
+				array.center_offset = arrays[arrays.length - 2].center_offset + arrays[arrays.length - 2].footprint / 2 + array.footprint / 2 + 1;
 				
-				if (array.numbers[i][j] > array.height)
+				array.partial_footprint_sum += arrays[arrays.length - 2].partial_footprint_sum + 1;
+			}	
+			
+			
+			
+			array.cube_group = new THREE.Object3D();
+			scene.add(array.cube_group);
+			
+			array.cube_group.position.set(array.center_offset, 0, -array.center_offset);
+			
+			
+			
+			array.cubes = new Array(array.footprint);
+			
+			for (let i = 0; i < array.footprint; i++)
+			{
+				array.cubes[i] = new Array(array.footprint);
+				
+				for (let j = 0; j < array.footprint; j++)
 				{
-					array.height = array.numbers[i][j];
-				}
-				
-				add_floor(array, j, i);
-				
-				for (let k = 0; k < array.numbers[i][j]; k++)
-				{
-					array.cubes[i][j][k] = add_cube(array, j, k, i);
+					array.cubes[i][j] = new Array(array.numbers[i][j]);
+					
+					if (array.numbers[i][j] > array.height)
+					{
+						array.height = array.numbers[i][j];
+					}
+					
+					add_floor(array, j, i);
+					
+					for (let k = 0; k < array.numbers[i][j]; k++)
+					{
+						array.cubes[i][j][k] = add_cube(array, j, k, i);
+					}
 				}
 			}
-		}
-		
-		array.size = Math.max(array.footprint, array.height);
-		
-		total_array_footprint += array.footprint + 1;
-		total_array_height = Math.max(total_array_height, array.height);
-		total_array_size = Math.max(total_array_footprint, total_array_height);
-		
-		
-		
-		font_size = wilson_numbers.canvas_width / (total_array_footprint + 1);
-		
-		let num_characters = `${total_array_height}`.length;
-		
-		if (num_characters === 1)
-		{
-			wilson_numbers.ctx.font = `${font_size * .75}px monospace`;
-		}
-		
-		else
-		{
-			wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
-		}
-		
-		
-		if (arrays.length === 1)
-		{
-			hex_view_camera_pos = [total_array_size, total_array_size + total_array_height / 3, total_array_size];
-			_2d_view_camera_pos = [0, total_array_size, 0];
 			
-			orthographic_camera.left = -total_array_size;
-			orthographic_camera.right = total_array_size;
-			orthographic_camera.top = total_array_size;
-			orthographic_camera.bottom = -total_array_size;
-			orthographic_camera.position.set(hex_view_camera_pos[0], hex_view_camera_pos[1], hex_view_camera_pos[2]);
-			orthographic_camera.rotation.set(-0.785398163, 0.615479709, 0.523598775);
-			orthographic_camera.updateProjectionMatrix();
-		}
-		
-		else
-		{
-			let hex_view_camera_offset = (-arrays[0].footprint / 2 + arrays[arrays.length - 1].center_offset + arrays[arrays.length - 1].footprint / 2) / 2;
+			array.size = Math.max(array.footprint, array.height);
 			
-			hex_view_camera_pos = [total_array_size + hex_view_camera_offset, total_array_size + total_array_height / 3, total_array_size - hex_view_camera_offset];
+			total_array_footprint += array.footprint + 1;
+			total_array_height = Math.max(total_array_height, array.height);
+			total_array_size = Math.max(total_array_footprint, total_array_height);
 			
-			_2d_view_camera_pos = [hex_view_camera_offset, total_array_size, -hex_view_camera_offset];
 			
-			if (in_2d_view)
+			
+			font_size = wilson_numbers.canvas_width / (total_array_footprint + 1);
+			
+			let num_characters = `${total_array_height}`.length;
+			
+			if (num_characters === 1)
 			{
-				await Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100);
-				
-				anime({
-					targets: orthographic_camera.position,
-					x: _2d_view_camera_pos[0],
-					y: _2d_view_camera_pos[1],
-					z: _2d_view_camera_pos[2],
-					duration: 500,
-					easing: "easeInOutQuad"
-				});
-				
-				anime({
-					targets: orthographic_camera,
-					left: -(total_array_footprint / 2 + .5),
-					right: total_array_footprint / 2 + .5,
-					top: total_array_footprint / 2 + .5,
-					bottom: -(total_array_footprint / 2 + .5),
-					duration: 500,
-					easing: "easeInOutQuad",
-					update: () => orthographic_camera.updateProjectionMatrix()
-				});
-				
-				setTimeout(() =>
-				{
-					draw_all_2d_view_text();
-					
-					Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100);
-				}, 500);
+				wilson_numbers.ctx.font = `${font_size * .75}px monospace`;
 			}
 			
 			else
 			{
-				anime({
-					targets: orthographic_camera.position,
-					x: hex_view_camera_pos[0],
-					y: hex_view_camera_pos[1],
-					z: hex_view_camera_pos[2],
-					duration: 500,
-					easing: "easeInOutQuad"
-				});
+				wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
+			}
+			
+			
+			if (arrays.length === 1)
+			{
+				hex_view_camera_pos = [total_array_size, total_array_size + total_array_height / 3, total_array_size];
+				_2d_view_camera_pos = [0, total_array_size, 0];
 				
-				anime({
-					targets: orthographic_camera,
-					left: -total_array_size,
-					right: total_array_size,
-					top: total_array_size,
-					bottom: -total_array_size,
-					duration: 500,
-					easing: "easeInOutQuad",
-					update: () => orthographic_camera.updateProjectionMatrix()
-				});
-			}	
-		}	
+				orthographic_camera.left = -total_array_size;
+				orthographic_camera.right = total_array_size;
+				orthographic_camera.top = total_array_size;
+				orthographic_camera.bottom = -total_array_size;
+				orthographic_camera.position.set(hex_view_camera_pos[0], hex_view_camera_pos[1], hex_view_camera_pos[2]);
+				orthographic_camera.rotation.set(-0.785398163, 0.615479709, 0.523598775);
+				orthographic_camera.updateProjectionMatrix();
+			}
+			
+			else
+			{
+				let hex_view_camera_offset = (-arrays[0].footprint / 2 + arrays[arrays.length - 1].center_offset + arrays[arrays.length - 1].footprint / 2) / 2;
+				
+				hex_view_camera_pos = [total_array_size + hex_view_camera_offset, total_array_size + total_array_height / 3, total_array_size - hex_view_camera_offset];
+				
+				_2d_view_camera_pos = [hex_view_camera_offset, total_array_size, -hex_view_camera_offset];
+				
+				if (in_2d_view)
+				{
+					await Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100);
+					
+					anime({
+						targets: orthographic_camera.position,
+						x: _2d_view_camera_pos[0],
+						y: _2d_view_camera_pos[1],
+						z: _2d_view_camera_pos[2],
+						duration: 500,
+						easing: "easeInOutQuad"
+					});
+					
+					anime({
+						targets: orthographic_camera,
+						left: -(total_array_footprint / 2 + .5),
+						right: total_array_footprint / 2 + .5,
+						top: total_array_footprint / 2 + .5,
+						bottom: -(total_array_footprint / 2 + .5),
+						duration: 500,
+						easing: "easeInOutQuad",
+						update: () => orthographic_camera.updateProjectionMatrix()
+					});
+					
+					setTimeout(() =>
+					{
+						draw_all_2d_view_text();
+						
+						Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100);
+						
+						resolve(array);
+					}, 500);
+				}
+				
+				else
+				{
+					anime({
+						targets: orthographic_camera.position,
+						x: hex_view_camera_pos[0],
+						y: hex_view_camera_pos[1],
+						z: hex_view_camera_pos[2],
+						duration: 500,
+						easing: "easeInOutQuad"
+					});
+					
+					anime({
+						targets: orthographic_camera,
+						left: -total_array_size,
+						right: total_array_size,
+						top: total_array_size,
+						bottom: -total_array_size,
+						duration: 500,
+						easing: "easeInOutQuad",
+						update: () => orthographic_camera.updateProjectionMatrix()
+					});
+					
+					setTimeout(() => resolve(array), 500);
+				}	
+			}
+		});	
 	}
 	
 	
 	
 	async function remove_array(index)
 	{
+		//Dispose of all the materials.
+		for (let i = 0; i < array.cubes.length; i++)
+		{
+			for (let j = 0; j < array.cubes[i].length; j++)
+			{
+				for (let k = 0; i < array.cubes[i][j].length; k++)
+				{
+					array.cubes[i][j][k].material.dispose();
+				}
+			}
+		}
+		
 		scene.remove(arrays[index].cube_group);
 		
 		total_array_footprint -= arrays[index].footprint + 1;
@@ -575,6 +586,9 @@
 	
 	function add_cube(array, x, y, z)
 	{
+		const cube_material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
+		cube_material.color.setHSL(0, 0, .5);
+		
 		const cube = new THREE.Mesh(cube_geometry, cube_material);
 		
 		array.cube_group.add(cube);
@@ -588,6 +602,9 @@
 	
 	function add_floor(array, x, z)
 	{
+		const floor_material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true});
+		floor_material.color.setHSL(0, 0, .2);
+		
 		const floor = new THREE.Mesh(floor_geometry, floor_material);
 		
 		array.cube_group.add(floor);
@@ -778,13 +795,13 @@
 	
 	
 	//coordinates is a list of length-3 arrays [i, j, k] containing the coordinates of the cubes to highlight.
-	function color_cubes(coordinates, hue)
+	function color_cubes(array, coordinates, hue)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			for (let i = 0; i < coordinates.length - 1; i++)
 			{
-				let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.color;
+				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.color;
 				
 				let temp_object = {s: 0};
 				
@@ -804,7 +821,7 @@
 			
 			let i = coordinates.length - 1;
 			
-			let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.color;
+			let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.color;
 			
 			let temp_object = {s: 0};
 			
@@ -825,13 +842,13 @@
 	
 	
 	//Lifts the specified cubes to the specified height.
-	function raise_cubes(coordinates, height)
+	function raise_cubes(array, coordinates, height)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			for (let i = 0; i < coordinates.length - 1; i++)
 			{
-				let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].position;
+				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].position;
 				
 				anime({
 					targets: target,
@@ -845,7 +862,7 @@
 			
 			let i = coordinates.length - 1;
 			
-			let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].position;
+			let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].position;
 			
 			anime({
 				targets: target,
@@ -860,13 +877,13 @@
 	
 	
 	//Fades the specified cubes' opacity to zero, and then deletes them.
-	function delete_cubes(coordinates)
+	function delete_cubes(array, coordinates)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			for (let i = 0; i < coordinates.length - 1; i++)
 			{
-				let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material;
+				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material;
 				
 				anime({
 					targets: target,
@@ -880,7 +897,7 @@
 			
 			let i = coordinates.length - 1;
 			
-			let target = cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material;
+			let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material;
 			
 			anime({
 				targets: target,
@@ -889,7 +906,8 @@
 				easing: "easeOutQuad",
 				complete: () =>
 				{
-					scene.remove(cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]]);
+					target.dispose();
+					scene.remove(array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]]);
 					resolve();
 				}
 			});
@@ -898,18 +916,18 @@
 	
 	
 	
-	async function hillman_grassl()
+	async function hillman_grassl(array)
 	{
-		let plane_partition_copy = JSON.parse(JSON.stringify(plane_partition));
+		let plane_partition = JSON.parse(JSON.stringify(array.numbers));
 		
 		let zigzag_paths = [];
 		
 		while (true)
 		{
 			//Find the right-most nonzero entry in the top row.
-			let starting_col = plane_partition_copy[0].length - 1;
+			let starting_col = plane_partition[0].length - 1;
 			
-			while (starting_col >= 0 && plane_partition_copy[0][starting_col] === 0)
+			while (starting_col >= 0 && plane_partition[0][starting_col] === 0)
 			{
 				starting_col--;
 			}
@@ -924,11 +942,11 @@
 			let current_row = 0;
 			let current_col = starting_col;
 			
-			let path = [[current_row, current_col, plane_partition_copy[current_row][current_col] - 1]];
+			let path = [[current_row, current_col, plane_partition[current_row][current_col] - 1]];
 			
 			while (true)
 			{
-				if (current_row < plane_partition_copy.length - 1 && plane_partition_copy[current_row + 1][current_col] === plane_partition_copy[current_row][current_col])
+				if (current_row < plane_partition.length - 1 && plane_partition[current_row + 1][current_col] === plane_partition[current_row][current_col])
 				{
 					current_row++;
 				}
@@ -943,18 +961,36 @@
 					break;
 				}
 				
-				path.push([current_row, current_col, plane_partition_copy[current_row][current_col] - 1]);
+				path.push([current_row, current_col, plane_partition[current_row][current_col] - 1]);
 			}
 			
 			
 			
 			for (let i = 0; i < path.length; i++)
 			{
-				plane_partition_copy[path[i][0]][path[i][1]]--;
+				plane_partition[path[i][0]][path[i][1]]--;
 			}
 			
 			zigzag_paths.push(path);
 		}
+		
+		
+		
+		let empty_array = new Array(plane_partition.length);
+		
+		for (let i = 0; i < plane_partition.length; i++)
+		{
+			empty_array[i] = new Array(plane_partition.length);
+			
+			for (let j = 0; j < plane_partition.length; j++)
+			{
+				empty_array[i][j] = 0;
+			}
+		}
+		
+		let output_array = await add_new_array(empty_array);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, 500));
 		
 		
 		
@@ -963,23 +999,29 @@
 		{
 			let hue = i / zigzag_paths.length * 6/7;
 			
-			await color_cubes(zigzag_paths[i], hue);
+			await color_cubes(array, zigzag_paths[i], hue);
 			
 			if (!in_2d_view)
 			{
 				//Lift all the cubes up.
-				await raise_cubes(zigzag_paths[i], plane_partition[0][0]);
+				await raise_cubes(array, zigzag_paths[i], array.numbers[0][0]);
 			}
+			
+			let top = total_array_footprint - array.partial_footprint_sum - 1;
+			let left = array.partial_footprint_sum - array.footprint;
 			
 			//Now we actually delete the cubes.
 			for (let j = 0; j < zigzag_paths[i].length; j++)
 			{
-				plane_partition[zigzag_paths[i][j][0]][zigzag_paths[i][j][1]]--;
+				array.numbers[zigzag_paths[i][j][0]][zigzag_paths[i][j][1]]--;
 				
-				draw_single_cell_2d_view_text(zigzag_paths[i][j][0], zigzag_paths[i][j][1]);
+				if (in_2d_view)
+				{
+					draw_single_cell_2d_view_text(array, zigzag_paths[i][j][0], zigzag_paths[i][j][1], top, left);
+				}	
 			}
 			
-			await delete_cubes(zigzag_paths[i]);
+			await delete_cubes(array, zigzag_paths[i]);
 		}
 	}
 }()
