@@ -799,7 +799,7 @@
 	{
 		return new Promise((resolve, reject) =>
 		{
-			for (let i = 0; i < coordinates.length - 1; i++)
+			for (let i = 0; i < coordinates.length; i++)
 			{
 				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.color;
 				
@@ -812,30 +812,17 @@
 						s: 1,
 						duration: 500,
 						easing: "easeOutQuad",
-						update: () => {target.setHSL(hue, temp_object.s, .5)}
+						update: () => {target.setHSL(hue, temp_object.s, .5)},
+						complete: () =>
+						{
+							if (i === coordinates.length - 1)
+							{
+								resolve();
+							}
+						}
 					});
 				}, 50 * i);	
 			}
-			
-			
-			
-			let i = coordinates.length - 1;
-			
-			let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.color;
-			
-			let temp_object = {s: 0};
-			
-			setTimeout(() =>
-			{
-				anime({
-					targets: temp_object,
-					s: 1,
-					duration: 500,
-					easing: "easeOutQuad",
-					update: () => {target.setHSL(hue, temp_object.s, .5)},
-					complete: resolve
-				});
-			}, 50 * i);
 		});
 	}
 	
@@ -846,7 +833,7 @@
 	{
 		return new Promise((resolve, reject) =>
 		{
-			for (let i = 0; i < coordinates.length - 1; i++)
+			for (let i = 0; i < coordinates.length; i++)
 			{
 				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].position;
 				
@@ -854,24 +841,99 @@
 					targets: target,
 					y: height,
 					duration: 500,
-					easing: "easeInOutQuad"
+					easing: "easeInOutQuad",
+					complete: () =>
+					{
+						if (i === coordinates.length - 1)
+						{
+							resolve();
+						}
+					}
 				});
 			}
-			
-			
-			
-			let i = coordinates.length - 1;
-			
-			let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].position;
-			
-			anime({
-				targets: target,
-				y: height,
-				duration: 500,
-				easing: "easeInOutQuad",
-				complete: resolve
-			});
 		});	
+	}
+	
+	
+	
+	//Lowers the specified cubes onto the array.
+	function lower_cubes(array, coordinates)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			for (let i = 0; i < coordinates.length; i++)
+			{
+				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].position;
+				
+				anime({
+					targets: target,
+					y: array.numbers[coordinates[i][0]][coordinates[i][1]],
+					duration: 500,
+					easing: "easeInOutQuad",
+					complete: () =>
+					{
+						if (i === coordinates.length - 1)
+						{
+							resolve();
+						}
+					}
+				});
+			}
+		});	
+	}
+	
+	
+	
+	//Moves cubes from one array to another and changes their group.
+	function move_cubes(source_array, source_coordinates, target_array, target_coordinates)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			for (let i = 0; i < source_coordinates.length; i++)
+			{
+				let cube = source_array.cubes[source_coordinates[i][0]][source_coordinates[i][1]][source_coordinates[i][2]];
+				
+				let helper_object = new THREE.Object3D();
+				
+				target_array.cube_group.add(helper_object);
+		
+				helper_object.position.set(target_coordinates[i][1] - (target_array.footprint - 1) / 2, target_coordinates[i][2], target_coordinates[i][0] - (target_array.footprint - 1) / 2);
+				
+				//Once its position is set relative to the target array, we detatch it to get its world coordinates.
+				scene.attach(helper_object);
+				
+				scene.attach(cube);
+				
+				anime({
+					targets: cube.position,
+					x: helper_object.position.x,
+					y: helper_object.position.y,
+					z: helper_object.position.z,
+					duration: 500,
+					easing: "easeInOutQuad",
+					complete: () =>
+					{
+						target_array.cube_group.attach(cube);
+						
+						//Now we just need to finish the bookkeeping and update the arrays correctly.
+						
+						if (target_array.cubes[target_coordinates[i][0]][target_coordinates[i][1]][target_coordinates[i][2]])
+						{
+							console.warning("Moving a cube to a location that's already occupied -- this is probably not what you want to do.");
+						}
+						
+						target_array.cubes[target_coordinates[i][0]][target_coordinates[i][1]][target_coordinates[i][2]] = cube;
+						
+						source_array.cubes[target_coordinates[i][0]][target_coordinates[i][1]][target_coordinates[i][2]] = null;
+						
+						if (i === source_coordinates.length - 1)
+						{
+							resolve();
+						}
+					}
+				});
+			}
+		});
 	}
 	
 	
@@ -1007,6 +1069,8 @@
 				await raise_cubes(array, zigzag_paths[i], array.numbers[0][0]);
 			}
 			
+			
+			
 			let top = total_array_footprint - array.partial_footprint_sum - 1;
 			let left = array.partial_footprint_sum - array.footprint;
 			
@@ -1021,7 +1085,45 @@
 				}	
 			}
 			
-			await delete_cubes(array, zigzag_paths[i]);
+			
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, 100));
+			
+			//Find the pivot and rearrange the shape into a hook.
+			let pivot = [zigzag_paths[i][zigzag_paths[i].length - 1][0], zigzag_paths[i][0][1]];
+			
+			let target_coordinates = new Array(zigzag_paths[i].length);
+			
+			let target_height = output_array.height + 1;
+			
+			for (let j = 0; j <= pivot[0]; j++)
+			{
+				target_coordinates[j] = [j, pivot[1], target_height];
+			}
+			
+			for (let j = pivot[0] + 1; j <= zigzag_paths[i].length; j++)
+			{
+				target_coordinates[j] = [pivot[0], pivot[1] - (j - pivot[0]), target_height];
+			}
+			
+			let pivot_coordinates = target_coordinates[pivot[0]];
+			
+			await move_cubes(array, zigzag_paths[i], output_array, target_coordinates);
+			
+			
+			
+			//Now delete everything but the pivot and move that down.
+			target_coordinates.splice(pivot[0], 1);
+			
+			delete_cubes(output_array, target_coordinates);
+			
+			await lower_cubes(output_array, [pivot_coordinates]);
+			
+			output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]++;
+			
+			output_array.height = Math.max(output_array.height, output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]);
+			
+			output_array.size = Math.max(output_array.size, output_array.height);
 		}
 	}
 }()
