@@ -76,7 +76,7 @@
 	
 	let run_hillman_grassl_button_element = Page.element.querySelector("#run-hillman-grassl-button");
 	
-	run_hillman_grassl_button_element.addEventListener("click", () => hillman_grassl(0));
+	run_hillman_grassl_button_element.addEventListener("click", () => hillman_grassl_inverse(0));
 	
 	
 	
@@ -139,7 +139,9 @@
 	
 	
 	
-	add_new_array(0, generate_random_plane_partition());
+	//add_new_array(0, generate_random_plane_partition());
+	
+	add_new_array(0, [[2, 0, 1], [0, 0, 1], [0, 2, 0]]);
 	
 	
 	
@@ -1123,6 +1125,183 @@
 		
 		
 		//Now we'll animate those paths actually decrementing, one-by-one.
+		for (let i = 0; i < zigzag_paths.length; i++)
+		{
+			let hue = i / zigzag_paths.length * 6/7;
+			
+			await color_cubes(array, zigzag_paths[i], hue);
+			
+			
+			
+			//Lift all the cubes up. There's no need to do this if we're in the 2d view.
+			await raise_cubes(array, zigzag_paths[i], array.numbers[0][0]);
+			
+			
+			
+			let top = total_array_footprint - array.partial_footprint_sum - 1;
+			let left = array.partial_footprint_sum - array.footprint;
+			
+			//Now we actually delete the cubes.
+			for (let j = 0; j < zigzag_paths[i].length; j++)
+			{
+				array.numbers[zigzag_paths[i][j][0]][zigzag_paths[i][j][1]]--;
+				
+				if (in_2d_view)
+				{
+					draw_single_cell_2d_view_text(array, zigzag_paths[i][j][0], zigzag_paths[i][j][1], top, left);
+				}	
+			}
+			
+			
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, 100));
+			
+			//Find the pivot and rearrange the shape into a hook.
+			let pivot = [zigzag_paths[i][zigzag_paths[i].length - 1][0], zigzag_paths[i][0][1]];
+			
+			let target_coordinates = new Array(zigzag_paths[i].length);
+			
+			let target_height = output_array.height + 1;
+			
+			for (let j = 0; j <= pivot[0]; j++)
+			{
+				target_coordinates[j] = [j, pivot[1], target_height];
+			}
+			
+			for (let j = pivot[0] + 1; j < zigzag_paths[i].length; j++)
+			{
+				target_coordinates[j] = [pivot[0], pivot[1] - (j - pivot[0]), target_height];
+			}
+			
+			let pivot_coordinates = target_coordinates[pivot[0]];
+			
+			await move_cubes(array, zigzag_paths[i], output_array, target_coordinates);
+			
+			
+			
+			//Now delete everything but the pivot and move that down.
+			target_coordinates.splice(pivot[0], 1);
+			
+			delete_cubes(output_array, target_coordinates);
+			
+			
+			
+			await lower_cubes(output_array, [pivot_coordinates]);
+			
+			
+			
+			top = total_array_footprint - output_array.partial_footprint_sum - 1;
+			left = output_array.partial_footprint_sum - output_array.footprint;
+			
+			output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]++;
+			
+			if (in_2d_view)
+			{
+				draw_single_cell_2d_view_text(output_array, pivot_coordinates[0], pivot_coordinates[1], top, left);
+			}
+			
+			output_array.height = Math.max(output_array.height, output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]);
+			
+			output_array.size = Math.max(output_array.size, output_array.height);
+			
+			
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, 100));
+		}
+		
+		
+		
+		remove_array(index);
+	}
+	
+	
+	
+	async function hillman_grassl_inverse(index)
+	{
+		let array = arrays[index];
+		
+		let tableau = JSON.parse(JSON.stringify(array.numbers));
+		
+		let zigzag_paths = [];
+		
+		
+		
+		let plane_partition = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
+		{
+			plane_partition[i] = new Array(tableau.length);
+			
+			for (let j = 0; j < tableau.length; j++)
+			{
+				plane_partition[i][j] = 0;
+			}
+		}
+		
+		let output_array = await add_new_array(index + 1, plane_partition);
+		
+		
+		
+		//Loop through the tableau in weirdo lex order and reassemble the paths.
+		for (let j = 0; j < tableau.length; j++)
+		{
+			for (let i = tableau.length - 1; i >= 0; i--)
+			{
+				while (tableau[i][j] !== 0)
+				{
+					let path = [];
+					
+					let current_row = i;
+					let current_col = 0;
+					
+					while (current_row >= 0)
+					{
+						//Go up at the last possible place with a matching entry.
+						let k = 0;
+						
+						if (current_row !== 0)
+						{
+							while (plane_partition[current_row][k] !== plane_partition[current_row - 1][k])
+							{
+								k++;
+							}
+						}
+						
+						else
+						{
+							k = j;
+						}
+						
+						//Add all of these boxes.
+						for (let l = current_col; l <= k; l++)
+						{
+							path.push([current_row, l, plane_partition[current_row][l]]);
+						}
+						
+						current_row--;
+						current_col = k;
+					}	
+					
+					
+					for (let k = 0; k < path.length; k++)
+					{
+						plane_partition[path[k][0]][path[k][1]]++;
+					}
+					
+					zigzag_paths.push(path);
+					
+					tableau[i][j]--;
+				}	
+			}	
+		}
+		
+		
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, 500));
+		
+		
+		
+		//Now we'll animate those paths actually incrementing, one-by-one.
 		for (let i = 0; i < zigzag_paths.length; i++)
 		{
 			let hue = i / zigzag_paths.length * 6/7;
