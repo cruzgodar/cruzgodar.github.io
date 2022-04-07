@@ -138,7 +138,7 @@
 	
 	let currently_animating = false;
 	
-	let currently_plane_partition = false;
+	let currently_plane_partition = true;
 	
 	let font_size = 10;
 	
@@ -154,9 +154,7 @@
 	
 	
 	
-	//add_new_array(0, generate_random_plane_partition());
-	
-	add_new_array(0, generate_random_tableau());
+	add_new_array(0, generate_random_plane_partition());
 	
 	
 	
@@ -1094,6 +1092,12 @@
 	{
 		return new Promise((resolve, reject) =>
 		{
+			if (coordinates.length === 0)
+			{
+				resolve();
+				return;
+			}
+			
 			for (let i = 0; i < coordinates.length; i++)
 			{
 				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material;
