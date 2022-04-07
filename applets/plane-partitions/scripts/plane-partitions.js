@@ -76,7 +76,20 @@
 	
 	let run_hillman_grassl_button_element = Page.element.querySelector("#run-hillman-grassl-button");
 	
-	run_hillman_grassl_button_element.addEventListener("click", () => hillman_grassl_inverse(0));
+	run_hillman_grassl_button_element.addEventListener("click", () =>
+	{
+		if (currently_plane_partition)
+		{
+			hillman_grassl(0);
+		}
+		
+		else
+		{
+			hillman_grassl_inverse(0);
+		}
+		
+		currently_plane_partition = !currently_plane_partition;
+	});
 	
 	
 	
@@ -125,6 +138,8 @@
 	
 	let currently_animating = false;
 	
+	let currently_plane_partition = false;
+	
 	let font_size = 10;
 	
 	//A 1D list of the plane partitions, etc, that are stored.
@@ -141,7 +156,7 @@
 	
 	//add_new_array(0, generate_random_plane_partition());
 	
-	add_new_array(0, [[2, 0, 1], [0, 0, 1], [0, 2, 0]]);
+	add_new_array(0, generate_random_tableau());
 	
 	
 	
@@ -272,6 +287,35 @@
 		
 		
 		return plane_partition;
+	}
+	
+	
+	
+	function generate_random_tableau()
+	{
+		let side_length = Math.floor(Math.random() * 3) + 4;
+		
+		let tableau = new Array(side_length);
+		
+		for (let i = 0; i < side_length; i++)
+		{
+			tableau[i] = new Array(side_length);
+			
+			for (let j = 0; j < side_length; j++)
+			{
+				if (Math.random() < 3 / Math.pow(side_length, 1.5))
+				{
+					tableau[i][j] = Math.floor(Math.random() * 2) + 1;
+				}
+				
+				else
+				{
+					tableau[i][j] = 0;
+				}
+			}
+		}
+		
+		return tableau;
 	}
 	
 	
@@ -480,7 +524,7 @@
 				{
 					things_to_animate.push(node.material);
 				}
-			});		
+			});
 			
 			anime({
 				targets: things_to_animate,
@@ -906,6 +950,38 @@
 	
 	
 	
+	function uncolor_cubes(array, coordinates)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			for (let i = 0; i < coordinates.length; i++)
+			{
+				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.color;
+				
+				let temp_object = {};
+				
+				target.getHSL(temp_object);
+				
+				anime({
+					targets: temp_object,
+					s: 0,
+					duration: 500,
+					easing: "easeOutQuad",
+					update: () => {target.setHSL(temp_object.h, temp_object.s, .5)},
+					complete: () =>
+					{
+						if (i === coordinates.length - 1)
+						{
+							resolve();
+						}
+					}
+				});
+			}
+		});
+	}
+	
+	
+	
 	//Lifts the specified cubes to the specified height. The animation is skipped in 2d mode.
 	function raise_cubes(array, coordinates, height)
 	{
@@ -1013,6 +1089,37 @@
 	
 	
 	
+	//Fades the specified cubes' opacity to 1.
+	function reveal_cubes(array, coordinates)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			for (let i = 0; i < coordinates.length; i++)
+			{
+				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material;
+				
+				setTimeout(() =>
+				{
+					anime({
+						targets: target,
+						opacity: 1,
+						duration: 250,
+						easing: "easeOutQuad",
+						complete: () =>
+						{
+							if (i === coordinates.length - 1)
+							{
+								resolve();
+							}	
+						}
+					});
+				}, 25 * i);	
+			}
+		});
+	}
+	
+	
+	
 	//Fades the specified cubes' opacity to zero, and then deletes them.
 	function delete_cubes(array, coordinates)
 	{
@@ -1049,6 +1156,26 @@
 		let array = arrays[index];
 		
 		let plane_partition = JSON.parse(JSON.stringify(array.numbers));
+		
+		
+		
+		let coordinates = [];
+		
+		//Remove any color that's here.
+		for (let i = 0; i < plane_partition.length; i++)
+		{
+			for (let j = 0; j < plane_partition.length; j++)
+			{
+				for (let k = 0; k < plane_partition[i][j]; k++)
+				{
+					coordinates.push([i, j, k]);
+				}
+			}
+		}
+		
+		uncolor_cubes(array, coordinates);
+		
+		
 		
 		let zigzag_paths = [];
 		
@@ -1206,7 +1333,7 @@
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, 100));
+			await new Promise((resolve, reject) => setTimeout(resolve, 500));
 		}
 		
 		
@@ -1226,26 +1353,46 @@
 		
 		
 		
-		let plane_partition = new Array(tableau.length);
+		let coordinates = [];
 		
+		//Remove any color that's here.
 		for (let i = 0; i < tableau.length; i++)
 		{
-			plane_partition[i] = new Array(tableau.length);
-			
 			for (let j = 0; j < tableau.length; j++)
 			{
-				plane_partition[i][j] = 0;
+				for (let k = 0; k < tableau[i][j]; k++)
+				{
+					coordinates.push([i, j, k]);
+				}
 			}
 		}
 		
-		let output_array = await add_new_array(index + 1, plane_partition);
+		uncolor_cubes(array, coordinates);
+			
+		
+		
+		let empty_array = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
+		{
+			empty_array[i] = new Array(tableau.length);
+			
+			for (let j = 0; j < tableau.length; j++)
+			{
+				empty_array[i][j] = 0;
+			}
+		}
+		
+		let plane_partition = JSON.parse(JSON.stringify(empty_array));
+		
+		let output_array = await add_new_array(index + 1, empty_array);
 		
 		
 		
 		//Loop through the tableau in weirdo lex order and reassemble the paths.
 		for (let j = 0; j < tableau.length; j++)
 		{
-			for (let i = tableau.length - 1; i >= 0; i--)
+			for (let i = tableau[j].length - 1; i >= 0; i--)
 			{
 				while (tableau[i][j] !== 0)
 				{
@@ -1257,7 +1404,7 @@
 					while (current_row >= 0)
 					{
 						//Go up at the last possible place with a matching entry.
-						let k = 0;
+						let k = current_col;
 						
 						if (current_row !== 0)
 						{
@@ -1280,7 +1427,8 @@
 						
 						current_row--;
 						current_col = k;
-					}	
+					}
+					
 					
 					
 					for (let k = 0; k < path.length; k++)
@@ -1288,11 +1436,11 @@
 						plane_partition[path[k][0]][path[k][1]]++;
 					}
 					
-					zigzag_paths.push(path);
+					zigzag_paths.push([path, [i, j, tableau[i][j] - 1]]);
 					
 					tableau[i][j]--;
-				}	
-			}	
+				}
+			}
 		}
 		
 		
@@ -1306,84 +1454,111 @@
 		{
 			let hue = i / zigzag_paths.length * 6/7;
 			
-			await color_cubes(array, zigzag_paths[i], hue);
+			await color_cubes(array, [zigzag_paths[i][1]], hue);
+			
+			
+			
+			let row = zigzag_paths[i][1][0];
+			let col = zigzag_paths[i][1][1];
+			let height = array.size;
+			
+			let coordinates = [];
+			
+			//Add a bunch of cubes corresponding to the hook that this thing is a part of.
+			for (let j = 0; j < row; j++)
+			{
+				array.cubes[j][col][height] = add_cube(array, col, height, j);
+				array.cubes[j][col][height].material.color.setHSL(hue, 1, .5);
+			}
+			
+			for (let j = 0; j < col; j++)
+			{
+				array.cubes[row][j][height] = add_cube(array, j, height, row);
+				array.cubes[row][j][height].material.color.setHSL(hue, 1, .5);
+			}
+			
+			for (let j = 1; j <= Math.max(row, col); j++)
+			{
+				if (j <= row)
+				{
+					coordinates.push([row - j, col, height]);
+				}
+				
+				if (j <= col)
+				{
+					coordinates.push([row, col - j, height]);
+				}
+			}
 			
 			
 			
 			//Lift all the cubes up. There's no need to do this if we're in the 2d view.
-			await raise_cubes(array, zigzag_paths[i], array.numbers[0][0]);
+			await raise_cubes(array, [zigzag_paths[i][1]], height);
+			
+			await reveal_cubes(array, coordinates);
 			
 			
 			
-			let top = total_array_footprint - array.partial_footprint_sum - 1;
-			let left = array.partial_footprint_sum - array.footprint;
+			//The coordinates now need to be in a different order to match the zigzag path.
+			coordinates = [];
 			
-			//Now we actually delete the cubes.
-			for (let j = 0; j < zigzag_paths[i].length; j++)
+			for (let j = 0; j < col; j++)
 			{
-				array.numbers[zigzag_paths[i][j][0]][zigzag_paths[i][j][1]]--;
-				
-				if (in_2d_view)
-				{
-					draw_single_cell_2d_view_text(array, zigzag_paths[i][j][0], zigzag_paths[i][j][1], top, left);
-				}	
+				coordinates.push([row, j, height]);
 			}
 			
+			coordinates.push([row, col, array.numbers[row][col] - 1]);
 			
+			for (let j = row - 1; j >= 0; j--)
+			{
+				coordinates.push([j, col, height]);
+			}
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, 100));
-			
-			//Find the pivot and rearrange the shape into a hook.
-			let pivot = [zigzag_paths[i][zigzag_paths[i].length - 1][0], zigzag_paths[i][0][1]];
-			
-			let target_coordinates = new Array(zigzag_paths[i].length);
+			let target_coordinates = zigzag_paths[i][0];
 			
 			let target_height = output_array.height + 1;
 			
-			for (let j = 0; j <= pivot[0]; j++)
-			{
-				target_coordinates[j] = [j, pivot[1], target_height];
-			}
+			target_coordinates.forEach(entry => entry[2] = target_height);
 			
-			for (let j = pivot[0] + 1; j < zigzag_paths[i].length; j++)
-			{
-				target_coordinates[j] = [pivot[0], pivot[1] - (j - pivot[0]), target_height];
-			}
-			
-			let pivot_coordinates = target_coordinates[pivot[0]];
-			
-			await move_cubes(array, zigzag_paths[i], output_array, target_coordinates);
-			
-			
-			
-			//Now delete everything but the pivot and move that down.
-			target_coordinates.splice(pivot[0], 1);
-			
-			delete_cubes(output_array, target_coordinates);
-			
-			
-			
-			await lower_cubes(output_array, [pivot_coordinates]);
-			
-			
-			
-			top = total_array_footprint - output_array.partial_footprint_sum - 1;
-			left = output_array.partial_footprint_sum - output_array.footprint;
-			
-			output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]++;
+			array.numbers[row][col]--;
 			
 			if (in_2d_view)
 			{
-				draw_single_cell_2d_view_text(output_array, pivot_coordinates[0], pivot_coordinates[1], top, left);
+				let top = total_array_footprint - array.partial_footprint_sum - 1;
+				let left = array.partial_footprint_sum - array.footprint;
+				
+				draw_single_cell_2d_view_text(array, row, col, top, left);
 			}
 			
-			output_array.height = Math.max(output_array.height, output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]);
+			await move_cubes(array, coordinates, output_array, target_coordinates);
+			
+			
+			
+			await lower_cubes(output_array, target_coordinates);
+			
+			target_coordinates.forEach((entry) =>
+			{
+				output_array.numbers[entry[0]][entry[1]]++;
+				
+				output_array.height = Math.max(output_array.height, output_array.numbers[entry[0]][entry[1]]);
+			});
 			
 			output_array.size = Math.max(output_array.size, output_array.height);
 			
+			if (in_2d_view)
+			{
+				let top = total_array_footprint - output_array.partial_footprint_sum - 1;
+				let left = output_array.partial_footprint_sum - output_array.footprint;
+				
+				target_coordinates.forEach((entry) =>
+				{
+					draw_single_cell_2d_view_text(output_array, entry[0], entry[1], top, left)
+				});
+			}
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, 100));
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, 500));
 		}
 		
 		
