@@ -110,9 +110,56 @@
 	
 	derivative
 	
-	Let $f$ be a function defined 
+	Let $f$ be a function defined in an interval containing $x = a$, including at $a$ itself. The <dfn>derivative</dfn> of $f$ at $a$, written $f'(a)$ and read $f$ prime of $a$, is the slope of the tangent line to the graph at $x = a$. In other words,
+	
+	$$
+		f'(a) = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h}.
+	$$
 	
 !end-def
+
+
+
+!begin-text-block
+	
+	We use the notation $f'(a)$ because the derivative is a whole new function: $f'(x)$ outputs the slope of the graph of $f$ at the point $x$. Taking a derivative is called <dfn>differentiating</dfn>, not deriving, for some reason.
+	
+	One more notational quirk: sometimes, we don&#x2019;t want to give a function a name just so that we can put a prime on it to indicate that we want to take a derivative. In that case, we can just write $\frac{d}{dx}$ followed by the function in brackets: for example, $\frac{d}{dx}[x^2]$ means the derivative of $x^2$.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	computing a derivative
+	
+	Find $\frac{d}{dx}[x^2]$.
+	
+	By definition, this is
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx}[x^2] &= \lim_{h \to 0} \frac{(x+h)^2 - x^2}{h}\\
+			 &= \lim_{h \to 0} \frac{x^2 + 2xh + h^2 - x^2}{h}\\
+			 &= \lim_{h \to 0} \frac{2xh + h^2}{h}\\
+			 &= \lim_{h \to 0} \frac{h(2x + h)}{h}\\
+			 &= \lim_{h \to 0} (2x + h)\\
+			 &= 2x.
+		\end{align*}
+	$$
+	
+	Therefore, $\frac{d}{dx}[x^2] = 2x$.
+	
+!end-example
+
+!begin-exercise
+	
+	computing a derivative
+	
+	Find $\frac{d}{dx}[x^3]$.
+	
+!end-exercise
 
 
 
