@@ -6,6 +6,8 @@
 	
 	let resolution = 2000;
 	
+	let animation_time = 500;
+	
 	let options_numbers =
 	{
 		renderer: "cpu",
@@ -74,7 +76,7 @@
 	
 	let run_hillman_grassl_button_element = Page.element.querySelector("#run-hillman-grassl-button");
 	
-	run_hillman_grassl_button_element.addEventListener("click", () => hillman_grassl(arrays[0]));
+	run_hillman_grassl_button_element.addEventListener("click", () => hillman_grassl(0));
 	
 	
 	
@@ -137,7 +139,7 @@
 	
 	
 	
-	add_new_array(generate_random_plane_partition());
+	add_new_array(0, generate_random_plane_partition());
 	
 	
 	
@@ -272,17 +274,16 @@
 	
 	
 	
-	function add_new_array(numbers)
+	async function add_new_array(index, numbers)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			arrays.push({
+			let array = {
 				numbers: numbers,
 				cubes: [],
 				floor: [],
 				
 				cube_group: null,
-				parent_object: null,
 				
 				center_offset: 0,
 				partial_footprint_sum: 0,
@@ -290,19 +291,41 @@
 				footprint: 0,
 				height: 0,
 				size: 0
-			});
+			};
 			
-			let array = arrays[arrays.length - 1];
+			arrays.splice(index, 0, array);
 			
 			array.footprint = array.numbers.length;
-			array.partial_footprint_sum = array.footprint;
 			
-			if (arrays.length !== 1)
+			//Update the other arrays.
+			for (let i = index; i < arrays.length; i++)
 			{
-				array.center_offset = arrays[arrays.length - 2].center_offset + arrays[arrays.length - 2].footprint / 2 + array.footprint / 2 + 1;
+				arrays[i].partial_footprint_sum = arrays[i].footprint;
 				
-				array.partial_footprint_sum += arrays[arrays.length - 2].partial_footprint_sum + 1;
-			}	
+				if (i !== 0)
+				{
+					arrays[i].center_offset = arrays[i - 1].center_offset + arrays[i - 1].footprint / 2 + arrays[i].footprint / 2 + 1;
+					
+					arrays[i].partial_footprint_sum += arrays[i - 1].partial_footprint_sum + 1;
+				}
+				
+				else
+				{
+					arrays[i].center_offset = 0;
+				}
+				
+				if (i !== index)
+				{
+					anime({
+						targets: arrays[i].cube_group.position,
+						x: arrays[i].center_offset,
+						y: 0,
+						z: -arrays[i].center_offset,
+						duration: 500,
+						easing: "easeInOutQuad"
+					});
+				}
+			}
 			
 			
 			
@@ -342,25 +365,6 @@
 			total_array_footprint += array.footprint + 1;
 			total_array_height = Math.max(total_array_height, array.height);
 			total_array_size = Math.max(total_array_footprint, total_array_height);
-			
-			
-			
-			let things_to_animate = [];
-			
-			array.cube_group.traverse(node =>
-			{
-				if (node.material)
-				{
-					things_to_animate.push(node.material);
-				}
-			});		
-			
-			anime({
-				targets: things_to_animate,
-				opacity: 1,
-				duration: 250,
-				easing: "easeOutQuad"
-			});
 			
 			
 			
@@ -430,8 +434,6 @@
 						draw_all_2d_view_text();
 						
 						Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100);
-						
-						resolve(array);
 					}, 500);
 				}
 				
@@ -456,10 +458,35 @@
 						easing: "easeInOutQuad",
 						update: () => orthographic_camera.updateProjectionMatrix()
 					});
-					
-					setTimeout(() => resolve(array), 500);
-				}	
+				}
 			}
+			
+			
+			
+			if (index !== arrays.length - 1)
+			{
+				await new Promise((resolve, reject) => setTimeout(resolve, 500));
+			}
+			
+			
+			
+			let things_to_animate = [];
+			
+			array.cube_group.traverse(node =>
+			{
+				if (node.material)
+				{
+					things_to_animate.push(node.material);
+				}
+			});		
+			
+			anime({
+				targets: things_to_animate,
+				opacity: 1,
+				duration: 250,
+				easing: "easeOutQuad",
+				complete: () => resolve(array)
+			});
 		});	
 	}
 	
@@ -877,11 +904,13 @@
 	
 	
 	
-	//Lifts the specified cubes to the specified height.
+	//Lifts the specified cubes to the specified height. The animation is skipped in 2d mode.
 	function raise_cubes(array, coordinates, height)
 	{
 		return new Promise((resolve, reject) =>
 		{
+			let duration = in_2d_view ? 0 : 500;
+			
 			for (let i = 0; i < coordinates.length; i++)
 			{
 				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].position;
@@ -889,7 +918,7 @@
 				anime({
 					targets: target,
 					y: height,
-					duration: 500,
+					duration: duration,
 					easing: "easeInOutQuad",
 					complete: () =>
 					{
@@ -905,11 +934,13 @@
 	
 	
 	
-	//Lowers the specified cubes onto the array.
+	//Lowers the specified cubes onto the array. The animation is skipped in 2d mode.
 	function lower_cubes(array, coordinates)
 	{
 		return new Promise((resolve, reject) =>
 		{
+			let duration = in_2d_view ? 0 : 500;
+			
 			for (let i = 0; i < coordinates.length; i++)
 			{
 				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].position;
@@ -917,7 +948,7 @@
 				anime({
 					targets: target,
 					y: array.numbers[coordinates[i][0]][coordinates[i][1]],
-					duration: 500,
+					duration: duration,
 					easing: "easeInOutQuad",
 					complete: () =>
 					{
@@ -1011,8 +1042,10 @@
 	
 	
 	
-	async function hillman_grassl(array)
+	async function hillman_grassl(index)
 	{
+		let array = arrays[index];
+		
 		let plane_partition = JSON.parse(JSON.stringify(array.numbers));
 		
 		let zigzag_paths = [];
@@ -1083,7 +1116,7 @@
 			}
 		}
 		
-		let output_array = await add_new_array(empty_array);
+		let output_array = await add_new_array(index + 1, empty_array);
 		
 		await new Promise((resolve, reject) => setTimeout(resolve, 500));
 		
@@ -1096,7 +1129,9 @@
 			
 			await color_cubes(array, zigzag_paths[i], hue);
 			
-			//Lift all the cubes up.
+			
+			
+			//Lift all the cubes up. There's no need to do this if we're in the 2d view.
 			await raise_cubes(array, zigzag_paths[i], array.numbers[0][0]);
 			
 			
@@ -1147,6 +1182,8 @@
 			
 			delete_cubes(output_array, target_coordinates);
 			
+			
+			
 			await lower_cubes(output_array, [pivot_coordinates]);
 			
 			
@@ -1172,6 +1209,6 @@
 		
 		
 		
-		remove_array(0);
+		remove_array(index);
 	}
 }()
