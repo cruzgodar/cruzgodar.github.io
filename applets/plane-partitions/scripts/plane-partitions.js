@@ -93,6 +93,17 @@
 	
 	
 	
+	let need_download = false;
+	
+	let download_button_element = Page.element.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", () =>
+	{
+		need_download = true;
+	});
+	
+	
+	
 	const scene = new THREE.Scene();
 	
 	const orthographic_camera = new THREE.OrthographicCamera(-5, 5, 5, -5, .1, 1000);
@@ -137,6 +148,8 @@
 	let in_2d_view = false;
 	
 	let currently_animating_camera = false;
+	
+	let currently_running_algorithm = false;
 	
 	let currently_plane_partition = true;
 	
@@ -241,6 +254,26 @@
 		else if (rotation_y < -3.14159265)
 		{
 			rotation_y += 6.283185301;
+		}
+		
+		
+		
+		if (need_download)
+		{
+			need_download = false;
+			
+			wilson.canvas.toBlob((blob) => 
+			{
+				let link = document.createElement("a");
+				
+				link.download = "a-plane-partition.png";
+				
+				link.href = window.URL.createObjectURL(blob);
+				
+				link.click();
+				
+				link.remove();
+			});
 		}
 		
 		
@@ -1223,6 +1256,15 @@
 	
 	async function hillman_grassl(index)
 	{
+		if (currently_running_algorithm)
+		{
+			return;
+		}
+		
+		currently_running_algorithm = true;
+		
+		
+		
 		let array = arrays[index];
 		
 		let plane_partition = JSON.parse(JSON.stringify(array.numbers));
@@ -1427,12 +1469,23 @@
 		
 		
 		remove_array(index);
+		
+		currently_running_algorithm = false;
 	}
 	
 	
 	
 	async function hillman_grassl_inverse(index)
 	{
+		if (currently_running_algorithm)
+		{
+			return;
+		}
+		
+		currently_running_algorithm = true;
+		
+		
+		
 		let array = arrays[index];
 		
 		let tableau = JSON.parse(JSON.stringify(array.numbers));
@@ -1656,5 +1709,7 @@
 		
 		
 		remove_array(index);
+		
+		currently_running_algorithm = false;
 	}
 }()
