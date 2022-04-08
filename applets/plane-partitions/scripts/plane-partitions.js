@@ -136,7 +136,7 @@
 	
 	let in_2d_view = false;
 	
-	let currently_animating = false;
+	let currently_animating_camera = false;
 	
 	let currently_plane_partition = true;
 	
@@ -377,6 +377,8 @@
 			scene.add(array.cube_group);
 			
 			array.cube_group.position.set(array.center_offset, 0, -array.center_offset);
+			
+			array.cube_group.rotation.y = rotation_y;
 			
 			
 			
@@ -739,36 +741,29 @@
 	
 	async function show_hex_view()
 	{
-		if (currently_animating)
+		if (currently_animating_camera)
 		{
 			return;
 		}
 		
-		currently_animating = true;
+		currently_animating_camera = true;
+		
+		if (in_2d_view)
+		{
+			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100);
+		}
+		
+		in_2d_view = false;
 		
 		
 		
 		rotation_y_velocity = 0;
 		
-		next_rotation_y_velocity = 0;
-		
-		
-			
-		if (in_2d_view)
-		{
-			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100);
-		}	
+		next_rotation_y_velocity = 0;	
 		
 		
 		
-		anime({
-			targets: orthographic_camera.position,
-			x: hex_view_camera_pos[0],
-			y: hex_view_camera_pos[1],
-			z: hex_view_camera_pos[2],
-			duration: 500,
-			easing: "easeInOutQuad"
-		});
+		update_camera_height(true);
 		
 		anime({
 			targets: orthographic_camera.rotation,
@@ -776,18 +771,8 @@
 			y: 0.615479709,
 			z: 0.523598775,
 			duration: 500,
-			easing: "easeInOutQuad"
-		});
-		
-		anime({
-			targets: orthographic_camera,
-			left: -total_array_size,
-			right: total_array_size,
-			top: total_array_size,
-			bottom: -total_array_size,
-			duration: 500,
 			easing: "easeInOutQuad",
-			update: () => orthographic_camera.updateProjectionMatrix()
+			complete: () => currently_animating_camera = false
 		});
 		
 		arrays.forEach(array =>
@@ -801,20 +786,18 @@
 		});
 		
 		rotation_y = 0;
-		
-		in_2d_view = false;
-		
-		currently_animating = false;
 	}
 	
 	function show_2d_view()
 	{
-		if (currently_animating || in_2d_view)
+		if (currently_animating_camera || in_2d_view)
 		{
 			return;
 		}
 		
-		currently_animating = true;
+		currently_animating_camera = true;
+		
+		in_2d_view = true;
 		
 		
 		
@@ -824,14 +807,7 @@
 		
 		
 		
-		anime({
-			targets: orthographic_camera.position,
-			x: _2d_view_camera_pos[0],
-			y: _2d_view_camera_pos[1],
-			z: _2d_view_camera_pos[2],
-			duration: 500,
-			easing: "easeInOutQuad"
-		});
+		update_camera_height(true);
 		
 		anime({
 			targets: orthographic_camera.rotation,
@@ -840,17 +816,6 @@
 			z: 0,
 			duration: 500,
 			easing: "easeInOutQuad"
-		});
-		
-		anime({
-			targets: orthographic_camera,
-			left: -(total_array_footprint / 2 + .5),
-			right: total_array_footprint / 2 + .5,
-			top: total_array_footprint / 2 + .5,
-			bottom: -(total_array_footprint / 2 + .5),
-			duration: 500,
-			easing: "easeInOutQuad",
-			update: () => orthographic_camera.updateProjectionMatrix()
 		});
 		
 		arrays.forEach(array =>
@@ -873,11 +838,109 @@
 			
 			.then(() =>
 			{
-				currently_animating = false;
-			
-				in_2d_view = true;
+				currently_animating_camera = false;
 			});
 		}, 500);
+	}
+	
+	//Makes sure everything is in frame but doesn't affect rotation.
+	function update_camera_height(force = false)
+	{
+		if (!force)
+		{
+			if (currently_animating_camera)
+			{
+				return;
+			}
+			
+			currently_animating_camera = true;
+		}	
+		
+		
+		
+		hex_view_camera_pos[1] = total_array_size + total_array_height / 3;
+		_2d_view_camera_pos[1] = total_array_size + 10;
+		
+		if (in_2d_view)
+		{
+			anime({
+				targets: orthographic_camera.position,
+				x: _2d_view_camera_pos[0],
+				y: _2d_view_camera_pos[1],
+				z: _2d_view_camera_pos[2],
+				duration: 500,
+				easing: "easeInOutQuad"
+			});
+			
+			anime({
+				targets: orthographic_camera,
+				left: -(total_array_footprint / 2 + .5),
+				right: total_array_footprint / 2 + .5,
+				top: total_array_footprint / 2 + .5,
+				bottom: -(total_array_footprint / 2 + .5),
+				duration: 500,
+				easing: "easeInOutQuad",
+				update: () => orthographic_camera.updateProjectionMatrix(),
+				complete: () => {if (!force) {currently_animating_camera = false}}
+			});
+		}
+		
+		else
+		{
+			anime({
+				targets: orthographic_camera.position,
+				x: hex_view_camera_pos[0],
+				y: hex_view_camera_pos[1],
+				z: hex_view_camera_pos[2],
+				duration: 500,
+				easing: "easeInOutQuad"
+			});
+			
+			anime({
+				targets: orthographic_camera,
+				left: -total_array_size,
+				right: total_array_size,
+				top: total_array_size,
+				bottom: -total_array_size,
+				duration: 500,
+				easing: "easeInOutQuad",
+				update: () => orthographic_camera.updateProjectionMatrix(),
+				complete: () => {if (!force) {currently_animating_camera = false}}
+			});
+		}
+	}
+	
+	
+	
+	//Goes through and recomputes the sizes of array and then the total array sizes.
+	function recalculate_heights(array)
+	{
+		array.numbers.forEach(row => row.forEach(entry => array.height = Math.max(entry, array.height)));
+		
+		array.size = Math.max(array.footprint, array.height);
+		
+		
+		
+		let old_total_array_height = total_array_height;
+		
+		if (array.height >= total_array_height)
+		{
+			total_array_height = array.height;
+		}
+		
+		else
+		{
+			total_array_height = 0;
+			
+			arrays.forEach(array => total_array_height = Math.max(array.height, total_array_height));
+		}
+		
+		total_array_size = Math.max(total_array_footprint, total_array_height);
+		
+		if (total_array_height !== old_total_array_height);
+		{
+			update_camera_height();
+		}
 	}
 	
 	
@@ -1117,7 +1180,7 @@
 							}	
 						}
 					});
-				}, 25 * i);	
+				}, 50 * i);	
 			}
 		});
 	}
@@ -1133,22 +1196,25 @@
 			{
 				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material;
 				
-				anime({
-					targets: target,
-					opacity: 0,
-					duration: 250,
-					easing: "easeOutQuad",
-					complete: () =>
-					{
-						target.dispose();
-						array.cube_group.remove(array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]]);
-						array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]] = null;
-						if (i === coordinates.length - 1)
+				setTimeout(() =>
+				{
+					anime({
+						targets: target,
+						opacity: 0,
+						duration: 250,
+						easing: "easeOutQuad",
+						complete: () =>
 						{
-							resolve();
-						}	
-					}
-				});
+							target.dispose();
+							array.cube_group.remove(array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]]);
+							array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]] = null;
+							if (i === coordinates.length - 1)
+							{
+								resolve();
+							}	
+						}
+					});
+				}, 50 * i);	
 			}
 		});
 	}
@@ -1283,6 +1349,8 @@
 				}	
 			}
 			
+			recalculate_heights(array);
+			
 			
 			
 			await new Promise((resolve, reject) => setTimeout(resolve, 100));
@@ -1310,8 +1378,22 @@
 			
 			
 			
-			//Now delete everything but the pivot and move that down.
-			target_coordinates.splice(pivot[0], 1);
+			//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
+			target_coordinates = [];
+			
+			for (let j = 1; j <= pivot[0]; j++)
+			{
+				target_coordinates.push([pivot[0] - j, pivot[1], target_height]);
+			}
+			
+			delete_cubes(output_array, target_coordinates);
+			
+			target_coordinates = [];
+			
+			for (let j = 1; j <= pivot[1]; j++)
+			{
+				target_coordinates.push([pivot[0], pivot[1] - j, target_height]);
+			}
 			
 			delete_cubes(output_array, target_coordinates);
 			
@@ -1325,6 +1407,8 @@
 			left = output_array.partial_footprint_sum - output_array.footprint;
 			
 			output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]++;
+			
+			recalculate_heights(output_array);
 			
 			if (in_2d_view)
 			{
@@ -1449,7 +1533,7 @@
 		
 		
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, 500));
+		await new Promise((resolve, reject) => setTimeout(resolve, 250));
 		
 		
 		
@@ -1466,8 +1550,6 @@
 			let col = zigzag_paths[i][1][1];
 			let height = array.size;
 			
-			let coordinates = [];
-			
 			//Add a bunch of cubes corresponding to the hook that this thing is a part of.
 			for (let j = 0; j < row; j++)
 			{
@@ -1481,25 +1563,31 @@
 				array.cubes[row][j][height].material.color.setHSL(hue, 1, .5);
 			}
 			
-			for (let j = 1; j <= Math.max(row, col); j++)
-			{
-				if (j <= row)
-				{
-					coordinates.push([row - j, col, height]);
-				}
-				
-				if (j <= col)
-				{
-					coordinates.push([row, col - j, height]);
-				}
-			}
 			
 			
-			
-			//Lift all the cubes up. There's no need to do this if we're in the 2d view.
 			await raise_cubes(array, [zigzag_paths[i][1]], height);
 			
-			await reveal_cubes(array, coordinates);
+			
+			
+			let coordinates = [];
+			
+			for (let j = 1; j <= row; j++)
+			{
+				coordinates.push([row - j, col, height]);
+			}
+			
+			let promise_1 = reveal_cubes(array, coordinates);
+			
+			coordinates = [];
+			
+			for (let j = 1; j <= col; j++)
+			{
+				coordinates.push([row, col - j, height]);
+			}
+			
+			let promise_2 = reveal_cubes(array, coordinates);
+			
+			await Promise.all([promise_1, promise_2]);
 			
 			
 			
@@ -1526,6 +1614,8 @@
 			
 			array.numbers[row][col]--;
 			
+			recalculate_heights(array);
+			
 			if (in_2d_view)
 			{
 				let top = total_array_footprint - array.partial_footprint_sum - 1;
@@ -1543,11 +1633,9 @@
 			target_coordinates.forEach((entry) =>
 			{
 				output_array.numbers[entry[0]][entry[1]]++;
-				
-				output_array.height = Math.max(output_array.height, output_array.numbers[entry[0]][entry[1]]);
 			});
 			
-			output_array.size = Math.max(output_array.size, output_array.height);
+			recalculate_heights(output_array);
 			
 			if (in_2d_view)
 			{
@@ -1562,7 +1650,7 @@
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, 500));
+			await new Promise((resolve, reject) => setTimeout(resolve, 250));
 		}
 		
 		
