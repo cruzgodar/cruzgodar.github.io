@@ -213,7 +213,7 @@
 	
 	Here, $a = 1$ and $b = 3$. Plotted are three examples of continuous functions satisfying $f(a) = 2$ and $f(b) = 1$. No matter what function we pick, it must pass through all the $y$-values between $2$ and $1$ on its way from $a$ to $b$.
 	
-!end-text-block	
+!end-text-block
 
 
 
@@ -234,6 +234,116 @@
 	the Intermediate Value Theorem
 	
 	Show that $x^3 - x + 1$ has a zero.
+	
+!end-exercise
+
+
+
+!section
+
+!text s Limits to Infinity
+
+<br>
+
+
+
+!begin-text-block
+
+	We have one last topic to mention before we&#x2019;re done with limits: rather than letting $x$ approach a number, we can let it get larger or smaller forever. We write this as
+	
+	$$
+		\lim_{x \to \infty} f(x)
+	$$
+	
+	and
+	
+	$$
+		\lim_{x \to -\infty} f(x).
+	$$	
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a limit to infinity
+	
+	Find $\lim_{x \to \infty} x^2$.
+	
+	As $x$ gets larger and larger, so does $x^2$, so $\lim_{x \to \infty} x^2 = \infty$.
+	
+!end-example
+
+!begin-example
+	
+	a limit to infinity
+	
+	Find $\lim_{x \to -\infty} \sin(x)$.
+	
+	As $x$ gets more and more and negative, $\sin(x)$ oscillates between $1$ and $-1$ faster and faster, so it never converges to a single value. Therefore, $\lim_{x \to -\infty} \sin(x)$ DNE.
+	
+!end-example
+
+
+
+!begin-text-block
+
+	In the specific case of rational functions, we know the behavior of limits to infinity very well.
+	
+!end-text-block
+
+
+
+!begin-def
+
+	degree and leading coefficient
+
+	Let $p(x)$ be a polynomial. The <dfn>degree</dfn> of $p$, written $\deg(p)$, is the largest exponent on $x$. The <dfn>leading term</dfn> of $p$ is the term with the largest exponent.
+	
+!end-def
+
+
+
+!begin-example
+
+	degree and leading coefficient
+	
+	The degree of $-4x^3 + 2x + 1$ is $3$, and the leading term is $-4x^3$.
+	
+!end-example
+
+
+
+!begin-thm
+	
+	limits of rational functions to infinity
+	
+	Let $p(x)$ and $q(x)$ be polynomials. Then $\lim_{x \to \pm \infty} \frac{p(x)}{q(x)} = \lim_{x \to \pm \infty} \frac{P(x)}{Q(x)}$, where $P(x)$ is the leading term of $p(x)$ and $Q(x)$ is the leading term of $q(x)$. Note: this only works when limiting to $\infty$ or $-\infty$, and not to any other number!
+	
+!end-thm
+
+
+
+!begin-example
+
+	limits of rational functions to infinity
+	
+	Find $\displaystyle\lim_{x \to \infty}\frac{2x^3 + 2x - 1}{-3x}$.
+	
+	Since this is a rational function being limited to infinity, we can drop everything but the leading terms:
+	
+	$$
+		\lim_{x \to \infty} \frac{2x^3}{-3x} = \lim_{x \to \infty} \frac{2x^2}{-3} = -\infty.
+	$$	
+	
+!end-example
+
+!begin-exercise
+
+	limits of rational functions to infinity
+	
+	Find $\displaystyle\lim_{x \to \infty}\frac{6x^2 + 2x - 1}{4x^2}$.
 	
 !end-exercise
 
