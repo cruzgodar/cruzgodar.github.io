@@ -22,7 +22,7 @@
 
 !header Section 4: Intro to Derivatives
 
-!text b c Covered in Week 2
+!text b c Covered in Week 3
 
 <br>
 
@@ -45,7 +45,9 @@
 
 
 !begin-prop
-
+	
+	slope of a tangent line
+	
 	Let $f$ be a function that is continuous at $x = a$. Then the slope of the tangent line to the graph of $f$ at $x = a$ is
 	
 	$$
@@ -151,13 +153,196 @@
 	
 	Therefore, $\frac{d}{dx}[x^2] = 2x$.
 	
+	Let&#x2019;s sketch a graph of these two.
+	
+	!iframe https://www.desmos.com/calculator/qzzdyuud8m
+	
+	Where the orange function is negative, the slope of the blue function is negative, and vice versa. Where the orange function is zero, the slope of the blue function is flat.
+	
 !end-example
 
 !begin-exercise
 	
 	computing a derivative
 	
-	Find $\frac{d}{dx}[x^3]$.
+	Find $\frac{d}{dx}[x^3]$ and sketch a graph of both functions.
+	
+!end-exercise
+
+
+
+!begin-example
+	
+	computing a derivative from a graph
+	
+	Given this graph, sketch a graph of the derivative.
+	
+	!iframe https://www.desmos.com/calculator/rkejvxj92z
+	
+	Whenever the graph is flat, the derivative is zero. It&#x2019;s positive when the graph slopes upward and negative when it slopes downward, and so in total, we get a graph as indicated in the previous figure (click the blank circle next to $f'(x)$).
+	
+!end-example
+
+!begin-exercise
+	
+	computing a derivative from a graph
+	
+	Given this graph, sketch a graph of the derivative.
+	
+	!iframe https://www.desmos.com/calculator/dhxfkmadv8
+	
+!end-exercise
+
+
+
+!section
+
+!text s When is $f(x)$ Differentiable?
+
+<br>
+
+
+
+!begin-text-block
+	
+	This is a complicated question to answer. Being differentiable means the limit of the slopes of secant lines exists, and one requirement for that is that $f$ is a continuous function.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	differentiable functions are continuous
+	
+	Let $f$ be a function differentiable at $x = a$. Then $f$ is continuous at $x = a$.
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	Because of this theorem, if a function is not continuous at $a$, it&#x2019;s not possible for it to be differentiable at $a$. However, not all continuous functions are differentiable: as a first example, let&#x2019;s look at $f(x) = |x|$.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a continuous function that isn&#x2019;t differentiable
+	
+	The graph of the function $f(x) = |x|$ is V-shaped, since the negative part gets reflected over the $x$-axis.
+	
+	!iframe https://www.desmos.com/calculator/4qnd67rvle
+	
+	At $x = 0$, the graph has a corner &mdash; a sharp point. It&#x2019;s not really clear what a tangent line at that point would look like, but we can take the limit anyway and see what happens.
+	
+	$$
+		\begin{align*}
+			f'(0) &= \lim_{h \to 0} \frac{f(0 + h) - f(0)}{h}\\
+			&= \lim_{h \to 0} \frac{|h| - |0|}{h}\\
+			&= \lim_{h \to 0} \frac{|h|}{h}.
+		\end{align*}
+	$$
+	
+	If $h < 0$, then $\frac{|h|}{h} = -1$. If $h > 0$, then $\frac{|h|}{h} = 1$. When $h = 0$, the function is undefined, but that&#x2019;s okay, since we&#x2019;re taking the limit to zero. But what this tells us is that the limit from the right is $1$, while the limit from the left is $-1$. Visually, secant lines to the right all have slope $1$ and secant lines to the left all have slope $-1$, and so they never agree. Since the limit does not exist, $f$ is not differentiable at $x = 0$.
+
+!end-example
+
+
+
+!begin-text-block
+	
+	Any function with a sharp corner like this will fail to be differentiable at that point. There&#x2019;s also one more common way a function can be nondifferentiable: if a function&#x2019;s graph has a vertical tangent line, then the derivative spikes to $\pm \infty$ and so is not defined.
+	
+!end-text-block
+
+
+
+!begin-exercise
+	
+	another continuous function that isn&#x2019;t differentiable
+	
+	Show that $f(x) = \sqrt[3]{x}$ is not differentiable at $x = 0$.
+
+!end-exercise
+
+
+
+!begin-text-block
+	
+	This gives us a nice heuristic for what differentiable functions look like: they&#x2019;re continuous without sharp corners and vertical slopes. Just like with discontinuities, functions may fail to be differentiable in more complicated ways &mdash; we&#x2019;ll get to an example of that in a future section.
+	
+!end-text-block
+
+
+
+!section
+
+!text s Higher-Order Derivatives
+
+<br>
+
+
+
+!begin-text-block
+	
+	Since the derivative of a function $f(x)$ is another function, we can take the derivative of the $f'(x)$ to get yet another function. We call this the <dfn>second derivative</dfn> of $f$ and write it as $f''(x)$. The analgous form for the $\frac{d}{dx}$ notation is
+	
+	$$
+		\frac{d}{dx} \left[ \frac{d}{dx} \left[f\right] \right] = \frac{d^2}{dx^2}[f].
+	$$
+	
+	Sometimes we&#x2019;ll want to talk about the $n$th derivative where $n$ is left as a variable &mdash; instead of trying to write $n$ prime symbols, we just write $f^{(n)}$ instead. So for example, $f^{(2)}(x) = f''(x)$.
+	
+	We&#x2019;ll talk about what visual feature the second derivative measures a little later, but for now let&#x2019;s just work through some examples.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a second derivative
+	
+	Find $\frac{d^2}{dx^2}[2x^2 - x]$.
+	
+	This is a long calculation, but it&#x2019;s not too bad in the end. First, let&#x2019;s find the first derivative.
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx}[2x^2 - x] &= \lim_{h \to 0} \frac{(2(x + h)^2 - (x + h)) - (2x^2 - x)}{h}\\
+			&= \lim_{h \to 0} \frac{2(x^2 + 2xh + h^2) - (x + h) - 2x^2 + x}{h}\\
+			&= \lim_{h \to 0} \frac{2x^2 + 4xh + 2h^2 - x - h - 2x^2 + x}{h}\\
+			&= \lim_{h \to 0} \frac{4xh + 2h^2 - h}{h}\\
+			&= \lim_{h \to 0} (4x + 2h - 1)\\
+			&= 4x - 1.
+		\end{align*}
+	$$
+	
+	Now we&#x2019;ll take the derivative of this function to get the second derivative.
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx}[4x - 1] &= \lim_{h \to 0} \frac{(4(x + h) - 1) - (4x - 1)}{h}\\
+			&= \lim_{h \to 0} \frac{4x + 4h - 1 - 4x + 1}{h}\\
+			&= \lim_{h \to 0} \frac{4h}{h}\\
+			&= \lim_{h \to 0} 4\\
+			&= 4.
+		\end{align*}
+	$$
+	
+	In total, $\frac{d^2}{dx^2}[2x^2 - x] = 4$.
+	
+!end-example
+
+!begin-exercise
+	
+	acceleration
+	
+	Suppose the position of a particle moving along a straight line is $s(t) = 3t^2$ meters after $t$ seconds. Find a function $a(t)$ for the particle&#x2019;s acceleration at time $t$. Note that since velocity is the rate of change of position and acceleration is the rate of change of of velocity, $v(t) = s'(t)$ and $a(t) = v'(t)$, so $a(t) = s''(t)$.
 	
 !end-exercise
 
