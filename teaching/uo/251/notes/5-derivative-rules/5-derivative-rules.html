@@ -1,0 +1,250 @@
+<head>
+	<title>Section 5: Derivative Rules</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 5: Derivative Rules"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/5-derivative-rules/5-derivative-rules.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/252/notes/5-derivative-rules/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 5: Derivative Rules
+
+!text b c Covered in Week 3
+
+<br>
+
+
+
+!begin-text-block
+	
+	In section 1, we introduced limits, but the way we calculated them was often tedious or difficult. In sections 2 and 3, we introduced limit rules and continuous functions, both of which gave us tools to more easily and quickly calculate limits. After introducing derivatives in the previous section, it&#x2019;s time to improve on the initial way we calculate them (called the <dfn>limit definition of the derivative</dfn>. We&#x2019;ll build up a series of rules and techniques that let us differentiate many functions that were much too difficult with the limit definition.
+	
+	The derivative $f'(a)$ is just the slope of the tangent line to the graph of $f$ at $x = a$. If the graph of $f$ is already a horizontal line, then a tangent line at any point is just that same line, and therefore has slope zero.
+	
+!end-text-block
+
+
+
+!iframe https://www.desmos.com/calculator/fwu2uv6gxj
+
+
+
+!begin-text-block
+	
+	The functions whose graphs are horizontal lines are the constant functions $y = c$ for some number $c$. Since the exact value of $c$ is irrelevant, we have the result that all constant functions have derivative zero.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	constant functions have derivative zero
+	
+	Let $f(x) = c$ for a constant $c$. Then $f'(x) = 0$.
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	This is a good start! Just like we did with limits, let&#x2019;s set our sights on polynomials next. There&#x2019;s a couple things we&#x2019;ll have to tackle to get there: for example, $2x^2 - x$ features the terms $x^2$ and $x$, along with subtraction and multiplication by $2$. With limits, we were able to ignore almost all of that, passing them through arithmetic, powers, and roots, but derivatives won&#x2019;t be quite so fluid. Let&#x2019;s begin with terms like $x$ and $x^2$.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the derivative of $x^n$
+	
+	Let $f(x) = x^n$, where $n$ is a positive integer. Then $f'(x) = nx^{n-1}$.
+	
+	You&#x2019;ll often hear this referred to as the power rule, but in comparison to the techniques we&#x2019;ll see later in this section, which let us differentiate combinations of <strong>any</strong> two functions, this is a much more narrowly-focused theorem. For that reason, along with some common mistakes we&#x2019;ll mention later, I tend not to use that name.
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	In other words, to differentiate a function of the form $x^n$, bring down the power in the form of a constant multiple and decrease the power by one. The proof of this theorem is a little bit hairy &mdash; it involves expanding $(x + h)^n$ for an arbitrary integer $n$, which is pretty tricky. It&#x2019;s also worth pointing out that the theorem as stated only works for positive integer powers. We&#x2019;ll later extend it to all nonzero numbers, but for now, we&#x2019;ll have to stick with positive integers.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	the derivative of $x^n$
+	
+	Find $\frac{d}{dx}[x^6]$.
+	
+	To find this, we bring down the $6$ and decrease it by one into a $5$, to get $\frac{d}{dx}[x^6] = 6x^5$.
+	
+!end-example
+
+!begin-exercise
+	
+	the derivative of $x^n$
+	
+	Find $\frac{d}{dt}[t^3]$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	One of the most common mistakes made with derivatives is using the previous theorem on functions it doesn&#x2019;t apply to. For example, although $(\cos(x))^5$ looks like it might have a derivative of $5(\cos(x))^4$, but the theorem only applies to $x^5$. Later on, we&#x2019;ll see how to modify the derivative of $x^5$ to apply to similar-looking functions like this, but for now, we&#x2019;re stuck with only functions of the form $x^n$.
+	
+	Next, let&#x2019;s get the rest of the glue we need to get to polynomials &mdash; specifically, how do derivatives interact with addition, subtraction, and multiplication by constants?
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the sum, difference, and constant multiple rules
+	
+	Let $f$ and $g$ be differentiable functions and $c$ a constant number.
+	
+	1. (The Sum Rule) $\frac{d}{dx}[f(x) + g(x)] = f'(x) + g'(x)$.
+	
+	2. (The Difference Rule) $\frac{d}{dx}[f(x) - g(x)] = f'(x) - g'(x)$.
+	
+	3. (The Constant Multiple Rule) $\frac{d}{dx}[c \cdot f(x)] = c \cdot f'(x)$.
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	These theorems tell us that derivatives split across addition and subtraction, and constant multiples factor out of derivatives. As an example, let&#x2019;s revisit the intense second derivative question from the previous section.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	the sum, difference, and constant multiple rules
+	
+	Find $\frac{d^2}{dx^2}[2x^2 - x]$.
+	
+	As before, we&#x2019;ll handle one derivative at a time.
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx}[2x^2 - x] &= \frac{d}{dx}[2x^2] - \frac{d}{dx}[x]\\
+			&= 2\frac{d}{dx}[x^2] - \frac{d}{dx}[x]\\
+			&= 2(2x^1) - (1x^0)\\
+			&= 2(2x) - (1)\\
+			&= 4x - 1.
+		\end{align*}
+	$$
+	
+	Now we need to find the derivative of $4x - 1$.
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx}[4x - 1] &= \frac{d}{dx}[4x] - \frac{d}{dx}[1]\\
+			&= 4\frac{d}{dx}[x] - \frac{d}{dx}[1]\\
+			&= 4(1) - 0\\
+			&= 4.
+		\end{align*}
+	$$
+	
+	That was a whole lot easier than it was with the limit definition!
+	
+!end-example
+
+!begin-exercise
+	
+	the sum, difference, and constant multiple rules
+	
+	Find $\frac{d}{dt}[t^2 - 5t + 2]$.
+	
+!end-exercise
+
+
+
+!section
+
+!text s The Product and Quotient Rules
+
+<br>
+
+
+
+!begin-text-block
+	
+	Next, let&#x2019;s talk about how to differentiate products and quotients &mdash; unlike limits, which split across both, derivatives require a little more care.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the product rule
+	
+	Let $f$ and $g$ be differentiable functions. Then $\frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x)$.
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	Next, let&#x2019;s talk about how to differentiate products and quotients &mdash; unlike limits, which split across both, derivatives require a little more care.
+	
+!end-text-block
+
+
+
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 5: Derivative Rules",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/251/notes"
+	};
+	
+	Page.load();
+</script>
