@@ -211,9 +211,112 @@
 
 
 
+!begin-example
+	
+	the product rule
+	
+	Let $P(t)$ be a function that gives the population of a town, $t$ years after we start measuring. Given that $P(t) = 3000(3t^2 + 1)(t + 2)$, what is the rate of change of the population after $t$ years?
+	
+	The rate of change is just the derivative, so we want $P'(t)$. Using the constant multiple and product rules, we have
+	
+	$$
+		\begin{align*}
+			P'(t) &= \frac{d}{dt}[ 3000(3t^2 + 1)(t + 2) ]\\
+			&= 3000 \frac{d}{dt}[ (3t^2 + 1)(t + 2) ]\\
+			&= 3000 \left( \frac{d}{dt}[ (3t^2 + 1) ] (t + 2) + (3t^2 + 1) \frac{d}{dt}[ (t + 2) ] \right)\\
+			&= 3000 \left( (6t^2)(t + 2) + (3t^2 + 1)(1) \right)\\
+			&= 3000 \left( 6t^3 + 12t^2 + 3t^2 + 1 \right)\\
+			&= 3000 \left( 6t^3 + 15t^2 + 1 \right).
+		\end{align*}
+	$$
+	
+	While we could also have foiled out the initial expression, this is a nice demonstration of the product rule.
+	
+!end-example
+
+!begin-exercise
+	
+	the product rule
+	
+	Let $f(x) = 2x + 1$ and $g(x) = 1 - x^2$. Find $\frac{d}{dx}[f(x)g(x)]$.
+	
+!end-exercise
+
+
+
 !begin-text-block
 	
-	Next, let&#x2019;s talk about how to differentiate products and quotients &mdash; unlike limits, which split across both, derivatives require a little more care.
+	Our last topic for this section is a rule that lets us differentiate one function divided by another.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the quotient rule
+	
+	Let $f$ and $g$ be differentiable functions. Then
+	
+	$$
+		\frac{d}{dx} \left[\frac{f(x)}{g(x)}\right] = \frac{\frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}.
+	$$
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	I&#x2019;d be remiss if I didn&#x2019;t mention the commonly-quoted mnemonic rhyme that goes along with the quotient rule: &#x201C;Low D high minus high D low, square the bottom and away we go&#x201D;. Here, high and low (and also bottom) refer to the numerator and denominator of the ratio we&#x2019;re differentiating, and D just stands for derivative.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	the quotient rule
+	
+	Find $\frac{d}{dx} \left[\frac{2x^2}{1 - x}\right]$.
+	
+	The derivative of the top (i.e. $2x^2$) is $2 \cdot 2x = 4x$, and the derivative of the bottom is $0 - 1 = -1$. Putting it all together, we get
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx} \left[\frac{2x^2}{1 - x}\right] &= \frac{(4x)(1-x) - (2x^2)(-1)}{(1-x)^2}\\
+			&= \frac{4x - 4x^2 + 2x^2}{(1-x)^2}\\
+			&= \frac{4x - 2x^2}{(1-x)^2}.
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	the quotient rule
+	
+	Find $\frac{d}{dx} \left[\frac{1 - x}{2x^2}\right]$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	The quotient rule has one immediate application: we can find the derivative of $x^n$ for negative integers $n$. If $n$ is a negative integer, then $-n$ is a positive integer, and $x^n = \frac{1}{x^{-n}}$. That may seem like a strange way to write it, but now we can apply the quotient rule:
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx} \left[\frac{1}{x^{-n}}\right] &= \frac{0(x^{-n}) - 1(-nx^{-n - 1})}{(x^{-n})^2}\\
+			&= \frac{nx^{-n - 1}}{x^{-2n}}\\
+			&= nx^{-n-1 - (-2n)}\\
+			&= nx^{-n-1 + 2n}\\
+			&= nx^{n-1}.
+		\end{align*}
+	$$
+	
+	Hey, that&#x2019;s the same result as if $n$ were positive! Because of this, we can safely say that $\frac{d}{dx}[x^n] = nx^{n-1}$ for <strong>any</strong> integer $n$.
 	
 !end-text-block
 
