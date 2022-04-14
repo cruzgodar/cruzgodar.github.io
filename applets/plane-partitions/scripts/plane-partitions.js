@@ -207,7 +207,7 @@
 	
 	
 	
-	add_new_array(0, [[1]]);
+	add_new_array(0, generate_random_plane_partition());
 	
 	
 	
@@ -440,7 +440,7 @@
 						x: arrays[i].center_offset,
 						y: 0,
 						z: -arrays[i].center_offset,
-						duration: 500,
+						duration: animation_time,
 						easing: "easeInOutQuad"
 					});
 				}
@@ -528,14 +528,14 @@
 				
 				if (in_2d_view)
 				{
-					await Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100);
+					await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
 					
 					anime({
 						targets: orthographic_camera.position,
 						x: _2d_view_camera_pos[0],
 						y: _2d_view_camera_pos[1],
 						z: _2d_view_camera_pos[2],
-						duration: 500,
+						duration: animation_time,
 						easing: "easeInOutQuad"
 					});
 					
@@ -545,7 +545,7 @@
 						right: total_array_footprint / 2 + .5,
 						top: total_array_footprint / 2 + .5,
 						bottom: -(total_array_footprint / 2 + .5),
-						duration: 500,
+						duration: animation_time,
 						easing: "easeInOutQuad",
 						update: () => orthographic_camera.updateProjectionMatrix()
 					});
@@ -554,8 +554,8 @@
 					{
 						draw_all_2d_view_text();
 						
-						Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100);
-					}, 500);
+						Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 5);
+					}, animation_time);
 				}
 				
 				else
@@ -565,7 +565,7 @@
 						x: hex_view_camera_pos[0],
 						y: hex_view_camera_pos[1],
 						z: hex_view_camera_pos[2],
-						duration: 500,
+						duration: animation_time,
 						easing: "easeInOutQuad"
 					});
 					
@@ -575,7 +575,7 @@
 						right: total_array_size,
 						top: total_array_size,
 						bottom: -total_array_size,
-						duration: 500,
+						duration: animation_time,
 						easing: "easeInOutQuad",
 						update: () => orthographic_camera.updateProjectionMatrix()
 					});
@@ -586,7 +586,7 @@
 			
 			if (index !== arrays.length - 1)
 			{
-				await new Promise((resolve, reject) => setTimeout(resolve, 500));
+				await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 			}
 			
 			
@@ -604,7 +604,7 @@
 			anime({
 				targets: things_to_animate,
 				opacity: 1,
-				duration: 250,
+				duration: animation_time / 2,
 				easing: "easeOutQuad",
 				complete: () => resolve(array)
 			});
@@ -630,7 +630,7 @@
 			anime({
 				targets: things_to_animate,
 				opacity: 0,
-				duration: 250,
+				duration: animation_time / 2,
 				easing: "easeOutQuad",
 				complete: resolve
 			});
@@ -683,7 +683,7 @@
 				x: arrays[i].center_offset,
 				y: 0,
 				z: -arrays[i].center_offset,
-				duration: 500,
+				duration: animation_time,
 				easing: "easeInOutQuad"
 			});	
 		}
@@ -725,14 +725,14 @@
 		
 		if (in_2d_view)
 		{
-			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100);
+			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
 			
 			anime({
 				targets: orthographic_camera.position,
 				x: _2d_view_camera_pos[0],
 				y: _2d_view_camera_pos[1],
 				z: _2d_view_camera_pos[2],
-				duration: 500,
+				duration: animation_time,
 				easing: "easeInOutQuad"
 			});
 			
@@ -742,7 +742,7 @@
 				right: total_array_footprint / 2 + .5,
 				top: total_array_footprint / 2 + .5,
 				bottom: -(total_array_footprint / 2 + .5),
-				duration: 500,
+				duration: animation_time,
 				easing: "easeInOutQuad",
 				update: () => orthographic_camera.updateProjectionMatrix()
 			});
@@ -751,8 +751,8 @@
 			{
 				draw_all_2d_view_text();
 				
-				Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100);
-			}, 500);
+				Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 5);
+			}, animation_time);
 		}
 		
 		else
@@ -762,7 +762,7 @@
 				x: hex_view_camera_pos[0],
 				y: hex_view_camera_pos[1],
 				z: hex_view_camera_pos[2],
-				duration: 500,
+				duration: animation_time,
 				easing: "easeInOutQuad"
 			});
 			
@@ -772,7 +772,7 @@
 				right: total_array_size,
 				top: total_array_size,
 				bottom: -total_array_size,
-				duration: 500,
+				duration: animation_time,
 				easing: "easeInOutQuad",
 				update: () => orthographic_camera.updateProjectionMatrix()
 			});
@@ -857,7 +857,7 @@
 			
 			if (in_2d_view)
 			{
-				await Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100);
+				await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
 			}
 			
 			in_2d_view = false;
@@ -878,7 +878,7 @@
 				x: -0.785398163,
 				y: 0.615479709,
 				z: 0.523598775,
-				duration: 500,
+				duration: animation_time,
 				easing: "easeInOutQuad",
 				complete: () =>
 				{
@@ -892,7 +892,7 @@
 				anime({
 					targets: array.cube_group.rotation,
 					y: 0,
-					duration: 500,
+					duration: animation_time,
 					easing: "easeInOutQuad"
 				});
 			});
@@ -952,7 +952,7 @@
 				x: -1.570796327,
 				y: 0,
 				z: 0,
-				duration: 500,
+				duration: animation_time,
 				easing: "easeInOutQuad"
 			});
 			
@@ -961,7 +961,7 @@
 				anime({
 					targets: array.cube_group.rotation,
 					y: 0,
-					duration: 500,
+					duration: animation_time,
 					easing: "easeInOutQuad"
 				});
 			});
@@ -972,7 +972,7 @@
 			{
 				draw_all_2d_view_text();
 				
-				Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100)
+				Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 5)
 				
 				.then(() =>
 				{
@@ -980,7 +980,7 @@
 					
 					resolve();
 				});
-			}, 500);
+			}, animation_time);
 		});	
 	}
 	
@@ -1009,7 +1009,7 @@
 				x: _2d_view_camera_pos[0],
 				y: _2d_view_camera_pos[1],
 				z: _2d_view_camera_pos[2],
-				duration: 500,
+				duration: animation_time,
 				easing: "easeInOutQuad"
 			});
 			
@@ -1019,7 +1019,7 @@
 				right: total_array_footprint / 2 + .5,
 				top: total_array_footprint / 2 + .5,
 				bottom: -(total_array_footprint / 2 + .5),
-				duration: 500,
+				duration: animation_time,
 				easing: "easeInOutQuad",
 				update: () => orthographic_camera.updateProjectionMatrix(),
 				complete: () => {if (!force) {currently_animating_camera = false}}
@@ -1033,7 +1033,7 @@
 				x: hex_view_camera_pos[0],
 				y: hex_view_camera_pos[1],
 				z: hex_view_camera_pos[2],
-				duration: 500,
+				duration: animation_time,
 				easing: "easeInOutQuad"
 			});
 			
@@ -1043,7 +1043,7 @@
 				right: total_array_size,
 				top: total_array_size,
 				bottom: -total_array_size,
-				duration: 500,
+				duration: animation_time,
 				easing: "easeInOutQuad",
 				update: () => orthographic_camera.updateProjectionMatrix(),
 				complete: () => {if (!force) {currently_animating_camera = false}}
@@ -1105,7 +1105,7 @@
 				anime({
 					targets: things_to_animate,
 					opacity: 0,
-					duration: 250,
+					duration: animation_time / 2,
 					easing: "easeOutQuad",
 					complete: resolve
 				});
@@ -1123,7 +1123,7 @@
 				anime({
 					targets: things_to_animate,
 					opacity: 1,
-					duration: 250,
+					duration: animation_time / 2,
 					easing: "easeOutQuad",
 					complete: resolve
 				});
@@ -1180,7 +1180,7 @@
 				anime({
 					targets: things_to_animate,
 					opacity: 0,
-					duration: 250,
+					duration: animation_time / 2,
 					easing: "easeOutQuad",
 					complete: resolve
 				});
@@ -1198,7 +1198,7 @@
 				anime({
 					targets: things_to_animate,
 					opacity: 1,
-					duration: 250,
+					duration: animation_time / 2,
 					easing: "easeOutQuad",
 					complete: resolve
 				});
@@ -1297,7 +1297,7 @@
 					anime({
 						targets: temp_object,
 						s: 1,
-						duration: 500,
+						duration: animation_time,
 						easing: "easeOutQuad",
 						update: () => targets.forEach(color => color.setHSL(hue, temp_object.s, .5)),
 						complete: () =>
@@ -1330,7 +1330,7 @@
 				anime({
 					targets: temp_object,
 					s: 0,
-					duration: 500,
+					duration: animation_time,
 					easing: "easeOutQuad",
 					update: () => {target.setHSL(temp_object.h, temp_object.s, .5)},
 					complete: () =>
@@ -1352,7 +1352,7 @@
 	{
 		return new Promise((resolve, reject) =>
 		{
-			let duration = in_2d_view ? 0 : 500;
+			let duration = in_2d_view ? 0 : animation_time;
 			
 			for (let i = 0; i < coordinates.length; i++)
 			{
@@ -1382,7 +1382,7 @@
 	{
 		return new Promise((resolve, reject) =>
 		{
-			let duration = in_2d_view ? 0 : 500;
+			let duration = in_2d_view ? 0 : animation_time;
 			
 			for (let i = 0; i < coordinates.length; i++)
 			{
@@ -1428,7 +1428,7 @@
 					x: target_coordinates[i][1] - (target_array.footprint - 1) / 2,
 					y: target_coordinates[i][2],
 					z: target_coordinates[i][0] - (target_array.footprint - 1) / 2,
-					duration: 500,
+					duration: animation_time,
 					easing: "easeInOutQuad",
 					complete: () =>
 					{
@@ -1476,7 +1476,7 @@
 					anime({
 						targets: targets,
 						opacity: 1,
-						duration: 250,
+						duration: animation_time / 2,
 						easing: "easeOutQuad",
 						complete: () =>
 						{
@@ -1486,7 +1486,7 @@
 							}	
 						}
 					});
-				}, 50 * i);	
+				}, animation_time / 10 * i);	
 			}
 		});
 	}
@@ -1509,7 +1509,7 @@
 					anime({
 						targets: targets,
 						opacity: 0,
-						duration: 250,
+						duration: animation_time / 2,
 						easing: "easeOutQuad",
 						complete: () =>
 						{
@@ -1522,7 +1522,7 @@
 							}	
 						}
 					});
-				}, 50 * i);	
+				}, animation_time / 10 * i);	
 			}
 		});
 	}
@@ -1641,7 +1641,7 @@
 		
 		let output_array = await add_new_array(index + 1, empty_array);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, 500));
+		await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 		
 		
 		
@@ -1677,7 +1677,7 @@
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, 100));
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 5));
 			
 			//Find the pivot and rearrange the shape into a hook.
 			let pivot = [zigzag_paths[i][zigzag_paths[i].length - 1][0], zigzag_paths[i][0][1]];
@@ -1745,7 +1745,7 @@
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, 500));
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 		}
 		
 		
@@ -1875,7 +1875,7 @@
 		
 		
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, 250));
+		await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
 		
 		
 		
@@ -1992,7 +1992,7 @@
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, 250));
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
 		}
 		
 		
