@@ -144,7 +144,7 @@
 	
 	const cube_texture = loader.load("/applets/plane-partitions/graphics/cube-face.png");
 	cube_texture.minFilter = THREE.LinearFilter;
-	cube_texture.magFilter = THREE.NearestFilter;
+	cube_texture.magFilter = THREE.LinearFilter;
 	
 	const cube_geometry = new THREE.BoxGeometry();
 	
@@ -152,11 +152,11 @@
 	
 	const dimer_texture = loader.load("/applets/plane-partitions/graphics/dimer-face.png");
 	dimer_texture.minFilter = THREE.LinearFilter;
-	dimer_texture.magFilter = THREE.NearestFilter;
+	dimer_texture.magFilter = THREE.LinearFilter;
 	
 	const dimer_texture_2 = loader.load("/applets/plane-partitions/graphics/dimer-face-2.png");
 	dimer_texture_2.minFilter = THREE.LinearFilter;
-	dimer_texture_2.magFilter = THREE.NearestFilter;
+	dimer_texture_2.magFilter = THREE.LinearFilter;
 	
 	let dimers_shown = false;
 	
@@ -207,7 +207,7 @@
 	
 	
 	
-	add_new_array(0, generate_random_plane_partition());
+	add_new_array(0, [[1]]);
 	
 	
 	
