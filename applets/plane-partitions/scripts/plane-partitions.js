@@ -62,15 +62,39 @@
 	
 	let numbers_canvas_container_element = Page.element.querySelector("#numbers-canvas-container");
 	
-	let show_hex_view_button_element = Page.element.querySelector("#show-hex-view-button");
-	
-	show_hex_view_button_element.addEventListener("click", show_hex_view);
 	
 	
+	let show_dimers_button_element = Page.element.querySelector("#show-dimers-button");
 	
-	let show_2d_view_button_element = Page.element.querySelector("#show-2d-view-button");
+	show_dimers_button_element.addEventListener("click", () =>
+	{
+		if (dimers_shown)
+		{
+			hide_dimers();
+		}
+		
+		else
+		{
+			show_dimers();
+		}
+	});
 	
-	show_2d_view_button_element.addEventListener("click", show_2d_view);
+	
+	
+	let switch_view_button_element = Page.element.querySelector("#switch-view-button");
+	
+	switch_view_button_element.addEventListener("click", () =>
+	{
+		if (in_2d_view)
+		{
+			show_hex_view();
+		}
+		
+		else
+		{
+			show_2d_view();
+		}
+	});
 	
 	
 	
@@ -124,12 +148,27 @@
 	
 	const cube_geometry = new THREE.BoxGeometry();
 	
+	
+	
+	const dimer_texture = loader.load("/applets/plane-partitions/graphics/dimer-face.png");
+	dimer_texture.minFilter = THREE.LinearFilter;
+	dimer_texture.magFilter = THREE.NearestFilter;
+	
+	const dimer_texture_2 = loader.load("/applets/plane-partitions/graphics/dimer-face-2.png");
+	dimer_texture_2.minFilter = THREE.LinearFilter;
+	dimer_texture_2.magFilter = THREE.NearestFilter;
+	
+	let dimers_shown = false;
+	
+	
+	
 	const floor_geometry = new THREE.BoxGeometry(1, .001, 1);
+	
 	
 	const ambient_light = new THREE.AmbientLight(0xffffff, .2);
 	scene.add(ambient_light);
 	
-	const point_light = new THREE.PointLight(0xffffff, 1.75, 10000);
+	const point_light = new THREE.PointLight(0xffffff, 3, 10000);
 	point_light.position.set(750, 1000, 500);
 	scene.add(point_light);
 	
@@ -146,6 +185,7 @@
 	
 	
 	let in_2d_view = false;
+	let in_exact_hex_view = true;
 	
 	let currently_animating_camera = false;
 	
@@ -179,6 +219,8 @@
 	
 	function on_grab_canvas(x, y, event)
 	{
+		in_exact_hex_view = false;
+		
 		rotation_y_velocity = 0;
 		
 		next_rotation_y_velocity = 0;
@@ -186,7 +228,7 @@
 	
 	function on_drag_canvas(x, y, x_delta, y_delta, event)
 	{
-		if (in_2d_view)
+		if (in_2d_view || dimers_shown)
 		{
 			return;
 		}
@@ -555,7 +597,7 @@
 			{
 				if (node.material)
 				{
-					things_to_animate.push(node.material);
+					node.material.forEach(material => things_to_animate.push(material));
 				}
 			});
 			
@@ -581,7 +623,7 @@
 			{
 				if (node.material)
 				{
-					things_to_animate.push(node.material);
+					node.material.forEach(material => things_to_animate.push(material));
 				}
 			});		
 			
@@ -605,7 +647,7 @@
 				{
 					if (arrays[index].cubes[i][j][k])
 					{
-						arrays[index].cubes[i][j][k].material.dispose();
+						arrays[index].cubes[i][j][k].material.forEach(material => material.dispose());
 					}	
 				}
 			}
@@ -741,10 +783,18 @@
 	
 	function add_cube(array, x, y, z)
 	{
-		const cube_material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0});
-		cube_material.color.setHSL(0, 0, .5);
+		const materials = [
+			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0})
+		];
+
+		materials.forEach(material => material.color.setHSL(0, 0, .5));
 		
-		const cube = new THREE.Mesh(cube_geometry, cube_material);
+		const cube = new THREE.Mesh(cube_geometry, materials);
 		
 		array.cube_group.add(cube);
 		
@@ -757,10 +807,18 @@
 	
 	function add_floor(array, x, z)
 	{
-		const floor_material = new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0});
-		floor_material.color.setHSL(0, 0, .2);
+		const materials = [
+			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0})
+		];
+
+		materials.forEach(material => material.color.setHSL(0, 0, .2));
 		
-		const floor = new THREE.Mesh(floor_geometry, floor_material);
+		const floor = new THREE.Mesh(floor_geometry, materials);
 		
 		array.cube_group.add(floor);
 		
@@ -772,108 +830,158 @@
 	
 	
 	
-	async function show_hex_view()
+	function show_hex_view()
 	{
-		if (currently_animating_camera)
+		return new Promise(async (resolve, reject) =>
 		{
-			return;
-		}
-		
-		currently_animating_camera = true;
-		
-		if (in_2d_view)
-		{
-			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100);
-		}
-		
-		in_2d_view = false;
-		
-		
-		
-		rotation_y_velocity = 0;
-		
-		next_rotation_y_velocity = 0;	
-		
-		
-		
-		update_camera_height(true);
-		
-		anime({
-			targets: orthographic_camera.rotation,
-			x: -0.785398163,
-			y: 0.615479709,
-			z: 0.523598775,
-			duration: 500,
-			easing: "easeInOutQuad",
-			complete: () => currently_animating_camera = false
-		});
-		
-		arrays.forEach(array =>
-		{
-			anime({
-				targets: array.cube_group.rotation,
-				y: 0,
-				duration: 500,
-				easing: "easeInOutQuad"
+			if (currently_animating_camera)
+			{
+				reject();
+				return;
+			}
+			
+			
+			
+			Page.Animate.change_opacity(switch_view_button_element, 0, Site.opacity_animation_time)
+			
+			.then(() =>
+			{
+				switch_view_button_element.textContent = "Show 2D View";
+				
+				Page.Animate.change_opacity(switch_view_button_element, 1, Site.opacity_animation_time);
 			});
-		});
-		
-		rotation_y = 0;
+			
+			
+			
+			currently_animating_camera = true;
+			
+			if (in_2d_view)
+			{
+				await Page.Animate.change_opacity(numbers_canvas_container_element, 0, 100);
+			}
+			
+			in_2d_view = false;
+			in_exact_hex_view = true;
+			
+			
+			
+			rotation_y_velocity = 0;
+			
+			next_rotation_y_velocity = 0;	
+			
+			
+			
+			update_camera_height(true);
+			
+			anime({
+				targets: orthographic_camera.rotation,
+				x: -0.785398163,
+				y: 0.615479709,
+				z: 0.523598775,
+				duration: 500,
+				easing: "easeInOutQuad",
+				complete: () =>
+				{
+					currently_animating_camera = false;
+					resolve();
+				}	
+			});
+			
+			arrays.forEach(array =>
+			{
+				anime({
+					targets: array.cube_group.rotation,
+					y: 0,
+					duration: 500,
+					easing: "easeInOutQuad"
+				});
+			});
+			
+			rotation_y = 0;
+		});	
 	}
 	
 	function show_2d_view()
 	{
-		if (currently_animating_camera || in_2d_view)
+		return new Promise(async (resolve, reject) =>
 		{
-			return;
-		}
-		
-		currently_animating_camera = true;
-		
-		in_2d_view = true;
-		
-		
-		
-		rotation_y_velocity = 0;
-		
-		next_rotation_y_velocity = 0;
-		
-		
-		
-		update_camera_height(true);
-		
-		anime({
-			targets: orthographic_camera.rotation,
-			x: -1.570796327,
-			y: 0,
-			z: 0,
-			duration: 500,
-			easing: "easeInOutQuad"
-		});
-		
-		arrays.forEach(array =>
-		{
-			anime({
-				targets: array.cube_group.rotation,
-				y: 0,
-				duration: 500,
-				easing: "easeInOutQuad"
-			});
-		});
-		
-		
-		
-		setTimeout(() =>
-		{
-			draw_all_2d_view_text();
+			if (currently_animating_camera || in_2d_view)
+			{
+				reject();
+				return;
+			}
 			
-			Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100)
+			
+			
+			Page.Animate.change_opacity(switch_view_button_element, 0, Site.opacity_animation_time)
 			
 			.then(() =>
 			{
-				currently_animating_camera = false;
+				switch_view_button_element.textContent = "Show 3D View";
+				
+				Page.Animate.change_opacity(switch_view_button_element, 1, Site.opacity_animation_time);
 			});
-		}, 500);
+			
+			
+			
+			if (dimers_shown)
+			{
+				await hide_dimers();
+			}
+			
+			
+			
+			currently_animating_camera = true;
+			
+			in_2d_view = true;
+			
+			in_exact_hex_view = false;
+			
+			
+			
+			rotation_y_velocity = 0;
+			
+			next_rotation_y_velocity = 0;
+			
+			
+			
+			update_camera_height(true);
+			
+			anime({
+				targets: orthographic_camera.rotation,
+				x: -1.570796327,
+				y: 0,
+				z: 0,
+				duration: 500,
+				easing: "easeInOutQuad"
+			});
+			
+			arrays.forEach(array =>
+			{
+				anime({
+					targets: array.cube_group.rotation,
+					y: 0,
+					duration: 500,
+					easing: "easeInOutQuad"
+				});
+			});
+			
+			
+			
+			setTimeout(() =>
+			{
+				draw_all_2d_view_text();
+				
+				Page.Animate.change_opacity(numbers_canvas_container_element, 1, 100)
+				
+				.then(() =>
+				{
+					currently_animating_camera = false;
+					
+					resolve();
+				});
+			}, 500);
+		});	
 	}
 	
 	//Makes sure everything is in frame but doesn't affect rotation.
@@ -941,6 +1049,167 @@
 				complete: () => {if (!force) {currently_animating_camera = false}}
 			});
 		}
+	}
+	
+	
+	
+	function show_dimers()
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			if (currently_animating_camera)
+			{
+				reject();
+				return;
+			}
+			
+			dimers_shown = true;
+			
+			Page.Animate.change_opacity(show_dimers_button_element, 0, Site.opacity_animation_time)
+			
+			.then(() =>
+			{
+				show_dimers_button_element.textContent = "Hide Dimers";
+				
+				Page.Animate.change_opacity(show_dimers_button_element, 1, Site.opacity_animation_time);
+			});
+			
+			
+			
+			if (!in_exact_hex_view)
+			{
+				await show_hex_view();
+			}	
+			
+			currently_animating_camera = true;
+			
+			
+			
+			let things_to_animate = [];
+			
+			arrays.forEach(array =>
+			{	
+				array.cube_group.traverse(node =>
+				{
+					if (node.material)
+					{
+						things_to_animate.push(node.material);
+					}
+				});
+			});
+			
+			
+			
+			await new Promise((resolve, reject) =>
+			{
+				anime({
+					targets: things_to_animate,
+					opacity: 0,
+					duration: 250,
+					easing: "easeOutQuad",
+					complete: resolve
+				});
+			});
+			
+			things_to_animate.forEach(material =>
+			{	
+				material[0].map = dimer_texture;
+				material[2].map = dimer_texture;
+				material[4].map = dimer_texture_2;
+			});
+			
+			await new Promise((resolve, reject) =>
+			{
+				anime({
+					targets: things_to_animate,
+					opacity: 1,
+					duration: 250,
+					easing: "easeOutQuad",
+					complete: resolve
+				});
+			});
+			
+			currently_animating_camera = false;
+			
+			resolve();
+		});	
+	}
+	
+	function hide_dimers()
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			if (currently_animating_camera)
+			{
+				reject();
+				return;
+			}
+			
+			dimers_shown = false;
+			
+			Page.Animate.change_opacity(show_dimers_button_element, 0, Site.opacity_animation_time)
+			
+			.then(() =>
+			{
+				show_dimers_button_element.textContent = "Show Dimers";
+				
+				Page.Animate.change_opacity(show_dimers_button_element, 1, Site.opacity_animation_time);
+			});
+			
+			currently_animating_camera = true;
+			
+			
+			
+			let things_to_animate = [];
+			
+			arrays.forEach(array =>
+			{	
+				array.cube_group.traverse(node =>
+				{
+					if (node.material)
+					{
+						things_to_animate.push(node.material);
+					}
+				});
+			});
+			
+			
+			
+			await new Promise((resolve, reject) =>
+			{
+				anime({
+					targets: things_to_animate,
+					opacity: 0,
+					duration: 250,
+					easing: "easeOutQuad",
+					complete: resolve
+				});
+			});
+			
+			things_to_animate.forEach(material =>
+			{	
+				material[0].map = cube_texture;
+				material[2].map = cube_texture;
+				material[4].map = cube_texture;
+			});
+			
+			await new Promise((resolve, reject) =>
+			{
+				anime({
+					targets: things_to_animate,
+					opacity: 1,
+					duration: 250,
+					easing: "easeOutQuad",
+					complete: resolve
+				});
+			});
+			
+			
+			
+			currently_animating_camera = false;
+			
+			resolve();
+		});	
 	}
 	
 	
@@ -1017,7 +1286,9 @@
 		{
 			for (let i = 0; i < coordinates.length; i++)
 			{
-				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.color;
+				let targets = [];
+				
+				array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.forEach(material => targets.push(material.color));
 				
 				let temp_object = {s: 0};
 				
@@ -1028,7 +1299,7 @@
 						s: 1,
 						duration: 500,
 						easing: "easeOutQuad",
-						update: () => {target.setHSL(hue, temp_object.s, .5)},
+						update: () => targets.forEach(color => color.setHSL(hue, temp_object.s, .5)),
 						complete: () =>
 						{
 							if (i === coordinates.length - 1)
@@ -1196,12 +1467,14 @@
 			
 			for (let i = 0; i < coordinates.length; i++)
 			{
-				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material;
+				let targets = [];
+				
+				array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.forEach(material => targets.push(material));
 				
 				setTimeout(() =>
 				{
 					anime({
-						targets: target,
+						targets: targets,
 						opacity: 1,
 						duration: 250,
 						easing: "easeOutQuad",
@@ -1227,18 +1500,20 @@
 		{
 			for (let i = 0; i < coordinates.length; i++)
 			{
-				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material;
+				let targets = [];
+				
+				array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.forEach(material => targets.push(material));
 				
 				setTimeout(() =>
 				{
 					anime({
-						targets: target,
+						targets: targets,
 						opacity: 0,
 						duration: 250,
 						easing: "easeOutQuad",
 						complete: () =>
 						{
-							target.dispose();
+							targets.forEach(material => material.dispose());
 							array.cube_group.remove(array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]]);
 							array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]] = null;
 							if (i === coordinates.length - 1)
@@ -1262,6 +1537,13 @@
 		}
 		
 		currently_running_algorithm = true;
+		
+		
+		
+		if (dimers_shown)
+		{
+			await hide_dimers();
+		}
 		
 		
 		
@@ -1483,6 +1765,13 @@
 		}
 		
 		currently_running_algorithm = true;
+		
+		
+		
+		if (dimers_shown)
+		{
+			await hide_dimers();
+		}
 		
 		
 		
