@@ -43,6 +43,30 @@
 	
 	
 	
+	let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
+	
+	wilson_hidden.ctx.fillStyle = "rgb(63, 63, 63)";
+	wilson_hidden.ctx.fillRect(0, 0, 64, 64);
+	
+	wilson_hidden.ctx.fillStyle = "rgb(127, 127, 127)";
+	wilson_hidden.ctx.fillRect(4, 4, 56, 56);
+	
+	wilson_hidden.ctx.lineWidth = 6;
+	
+	
+	
+	let wilson_hidden_2 = new Wilson(Page.element.querySelector("#hidden-canvas-2"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
+	
+	wilson_hidden_2.ctx.fillStyle = "rgb(63, 63, 63)";
+	wilson_hidden_2.ctx.fillRect(0, 0, 64, 64);
+	
+	wilson_hidden_2.ctx.fillStyle = "rgb(127, 127, 127)";
+	wilson_hidden_2.ctx.fillRect(4, 4, 56, 56);
+	
+	wilson_hidden_2.ctx.lineWidth = 6;
+	
+	
+	
 	if (!Site.scripts_loaded["three"])
 	{
 		await Site.load_script("/scripts/three.min.js")
@@ -142,21 +166,18 @@
 	
 	const loader = new THREE.TextureLoader();
 	
-	const cube_texture = loader.load("/applets/plane-partitions/graphics/cube-face.png");
+	//const cube_texture = loader.load("/applets/plane-partitions/graphics/cube-face.png");
+	const cube_texture = new THREE.CanvasTexture(wilson_hidden.canvas);
 	cube_texture.minFilter = THREE.LinearFilter;
-	cube_texture.magFilter = THREE.LinearFilter;
+	cube_texture.magFilter = THREE.NearestFilter;
+	
+	const cube_texture_2 = new THREE.CanvasTexture(wilson_hidden_2.canvas);
+	cube_texture_2.minFilter = THREE.LinearFilter;
+	cube_texture_2.magFilter = THREE.NearestFilter;
 	
 	const cube_geometry = new THREE.BoxGeometry();
 	
 	
-	
-	const dimer_texture = loader.load("/applets/plane-partitions/graphics/dimer-face.png");
-	dimer_texture.minFilter = THREE.LinearFilter;
-	dimer_texture.magFilter = THREE.LinearFilter;
-	
-	const dimer_texture_2 = loader.load("/applets/plane-partitions/graphics/dimer-face-2.png");
-	dimer_texture_2.minFilter = THREE.LinearFilter;
-	dimer_texture_2.magFilter = THREE.LinearFilter;
 	
 	let dimers_shown = false;
 	
@@ -228,7 +249,7 @@
 	
 	function on_drag_canvas(x, y, x_delta, y_delta, event)
 	{
-		if (in_2d_view || dimers_shown)
+		if (in_2d_view)
 		{
 			return;
 		}
@@ -788,8 +809,8 @@
 			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
 			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
 			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0})
+			new THREE.MeshStandardMaterial({map: cube_texture_2, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: cube_texture_2, transparent: true, opacity: 0})
 		];
 
 		materials.forEach(material => material.color.setHSL(0, 0, .5));
@@ -812,7 +833,7 @@
 			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
 			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
 			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: cube_texture_2, transparent: true, opacity: 0}),
 			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0})
 		];
 
@@ -1085,47 +1106,41 @@
 			
 			
 			
-			let things_to_animate = [];
 			
-			arrays.forEach(array =>
-			{	
-				array.cube_group.traverse(node =>
-				{
-					if (node.material)
+			await new Promise((resolve, reject) =>
+			{
+				let temp_object = {brightness: 127};
+				
+				anime({
+					targets: temp_object,
+					brightness: 255,
+					duration: animation_time / 2,
+					easing: "easeOutQuad",
+					complete: resolve,
+					update: () =>
 					{
-						things_to_animate.push(node.material);
+						wilson_hidden.ctx.strokeStyle = `rgb(${temp_object.brightness}, ${temp_object.brightness}, ${temp_object.brightness})`;
+						
+						wilson_hidden.ctx.fillRect(4, 4, 56, 56);
+						
+						wilson_hidden.ctx.moveTo(42.7, 21.3);
+						wilson_hidden.ctx.lineTo(21.3, 42.7);
+						wilson_hidden.ctx.stroke();
+						
+						cube_texture.needsUpdate = true;
+						
+						
+						
+						wilson_hidden_2.ctx.strokeStyle = `rgb(${temp_object.brightness}, ${temp_object.brightness}, ${temp_object.brightness})`;
+						
+						wilson_hidden_2.ctx.fillRect(4, 4, 56, 56);
+						
+						wilson_hidden_2.ctx.moveTo(21.3, 21.3);
+						wilson_hidden_2.ctx.lineTo(42.7, 42.7);
+						wilson_hidden_2.ctx.stroke();
+						
+						cube_texture_2.needsUpdate = true;
 					}
-				});
-			});
-			
-			
-			
-			await new Promise((resolve, reject) =>
-			{
-				anime({
-					targets: things_to_animate,
-					opacity: 0,
-					duration: animation_time / 2,
-					easing: "easeOutQuad",
-					complete: resolve
-				});
-			});
-			
-			things_to_animate.forEach(material =>
-			{	
-				material[0].map = dimer_texture;
-				material[2].map = dimer_texture;
-				material[4].map = dimer_texture_2;
-			});
-			
-			await new Promise((resolve, reject) =>
-			{
-				anime({
-					targets: things_to_animate,
-					opacity: 1,
-					duration: animation_time / 2,
-					easing: "easeOutQuad",
-					complete: resolve
 				});
 			});
 			
@@ -1160,47 +1175,40 @@
 			
 			
 			
-			let things_to_animate = [];
-			
-			arrays.forEach(array =>
-			{	
-				array.cube_group.traverse(node =>
-				{
-					if (node.material)
+			await new Promise((resolve, reject) =>
+			{
+				let temp_object = {brightness: 255};
+				
+				anime({
+					targets: temp_object,
+					brightness: 127,
+					duration: animation_time / 2,
+					easing: "easeOutQuad",
+					complete: resolve,
+					update: () =>
 					{
-						things_to_animate.push(node.material);
+						wilson_hidden.ctx.strokeStyle = `rgb(${temp_object.brightness}, ${temp_object.brightness}, ${temp_object.brightness})`;
+						
+						wilson_hidden.ctx.fillRect(4, 4, 56, 56);
+						
+						wilson_hidden.ctx.moveTo(42.7, 21.3);
+						wilson_hidden.ctx.lineTo(21.3, 42.7);
+						wilson_hidden.ctx.stroke();
+						
+						cube_texture.needsUpdate = true;
+						
+						
+						
+						wilson_hidden_2.ctx.strokeStyle = `rgb(${temp_object.brightness}, ${temp_object.brightness}, ${temp_object.brightness})`;
+						
+						wilson_hidden_2.ctx.fillRect(4, 4, 56, 56);
+						
+						wilson_hidden_2.ctx.moveTo(21.3, 21.3);
+						wilson_hidden_2.ctx.lineTo(42.7, 42.7);
+						wilson_hidden_2.ctx.stroke();
+						
+						cube_texture_2.needsUpdate = true;
 					}
-				});
-			});
-			
-			
-			
-			await new Promise((resolve, reject) =>
-			{
-				anime({
-					targets: things_to_animate,
-					opacity: 0,
-					duration: animation_time / 2,
-					easing: "easeOutQuad",
-					complete: resolve
-				});
-			});
-			
-			things_to_animate.forEach(material =>
-			{	
-				material[0].map = cube_texture;
-				material[2].map = cube_texture;
-				material[4].map = cube_texture;
-			});
-			
-			await new Promise((resolve, reject) =>
-			{
-				anime({
-					targets: things_to_animate,
-					opacity: 1,
-					duration: animation_time / 2,
-					easing: "easeOutQuad",
-					complete: resolve
 				});
 			});
 			
@@ -1540,13 +1548,6 @@
 		
 		
 		
-		if (dimers_shown)
-		{
-			await hide_dimers();
-		}
-		
-		
-		
 		let array = arrays[index];
 		
 		let plane_partition = JSON.parse(JSON.stringify(array.numbers));
@@ -1765,13 +1766,6 @@
 		}
 		
 		currently_running_algorithm = true;
-		
-		
-		
-		if (dimers_shown)
-		{
-			await hide_dimers();
-		}
 		
 		
 		
