@@ -1292,32 +1292,24 @@
 	{
 		return new Promise((resolve, reject) =>
 		{
-			for (let i = 0; i < coordinates.length; i++)
+			let targets = [];
+			
+			coordinates.forEach(xyz =>
 			{
-				let targets = [];
-				
-				array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.forEach(material => targets.push(material.color));
-				
-				let temp_object = {s: 0};
-				
-				setTimeout(() =>
-				{
-					anime({
-						targets: temp_object,
-						s: 1,
-						duration: animation_time,
-						easing: "easeOutQuad",
-						update: () => targets.forEach(color => color.setHSL(hue, temp_object.s, .5)),
-						complete: () =>
-						{
-							if (i === coordinates.length - 1)
-							{
-								resolve();
-							}
-						}
-					});
-				}, 50 * i);	
-			}
+				array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material.color));
+			});
+			
+			targets.forEach(color => color.getHSL(color));
+			
+			anime({
+				targets: targets,
+				s: 1,
+				duration: animation_time,
+				delay: (element, index) => Math.floor(index / 6) * animation_time / 10,
+				easing: "easeOutQuad",
+				update: () => targets.forEach(color => color.setHSL(hue, color.s, .5)),
+				complete: resolve
+			});
 		});
 	}
 	
@@ -1327,29 +1319,23 @@
 	{
 		return new Promise((resolve, reject) =>
 		{
-			for (let i = 0; i < coordinates.length; i++)
+			let targets = [];
+			
+			coordinates.forEach(xyz =>
 			{
-				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.color;
-				
-				let temp_object = {};
-				
-				target.getHSL(temp_object);
-				
-				anime({
-					targets: temp_object,
-					s: 0,
-					duration: animation_time,
-					easing: "easeOutQuad",
-					update: () => {target.setHSL(temp_object.h, temp_object.s, .5)},
-					complete: () =>
-					{
-						if (i === coordinates.length - 1)
-						{
-							resolve();
-						}
-					}
-				});
-			}
+				array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material.color));
+			});
+			
+			targets.forEach(color => color.getHSL(color));
+			
+			anime({
+				targets: targets,
+				s: 0,
+				duration: animation_time,
+				easing: "easeOutQuad",
+				update: () => targets.forEach(color => color.setHSL(color.h, color.s, .5)),
+				complete: resolve
+			});
 		});
 	}
 	
@@ -1362,24 +1348,17 @@
 		{
 			let duration = in_2d_view ? 0 : animation_time;
 			
-			for (let i = 0; i < coordinates.length; i++)
-			{
-				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].position;
-				
-				anime({
-					targets: target,
-					y: height,
-					duration: duration,
-					easing: "easeInOutQuad",
-					complete: () =>
-					{
-						if (i === coordinates.length - 1)
-						{
-							resolve();
-						}
-					}
-				});
-			}
+			let targets = [];
+			
+			coordinates.forEach(xyz => targets.push(array.cubes[xyz[0]][xyz[1]][xyz[2]].position));
+			
+			anime({
+				targets: targets,
+				y: height,
+				duration: duration,
+				easing: "easeInOutQuad",
+				complete: resolve
+			});
 		});	
 	}
 	
@@ -1392,28 +1371,27 @@
 		{
 			let duration = in_2d_view ? 0 : animation_time;
 			
-			for (let i = 0; i < coordinates.length; i++)
-			{
-				let target = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].position;
-				
-				anime({
-					targets: target,
-					y: array.numbers[coordinates[i][0]][coordinates[i][1]],
-					duration: duration,
-					easing: "easeInOutQuad",
-					complete: () =>
-					{
-						array.cubes[coordinates[i][0]][coordinates[i][1]][array.numbers[coordinates[i][0]][coordinates[i][1]]] = array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]];
+			let targets = [];
+			
+			coordinates.forEach(xyz => targets.push(array.cubes[xyz[0]][xyz[1]][xyz[2]].position));
+			
+			anime({
+				targets: targets,
+				y: (element, index) => array.numbers[coordinates[index][0]][coordinates[index][1]],
+				duration: duration,
+				easing: "easeInOutQuad",
+				complete: () =>
+				{
+					coordinates.forEach(xyz =>
+					{	
+						array.cubes[xyz[0]][xyz[1]][array.numbers[xyz[0]][xyz[1]]] = array.cubes[xyz[0]][xyz[1]][xyz[2]];
 						
-						array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]] = null;
-						
-						if (i === coordinates.length - 1)
-						{
-							resolve();
-						}
-					}
-				});
-			}
+						array.cubes[xyz[0]][xyz[1]][xyz[2]] = null;
+					});
+					
+					resolve();
+				}
+			});
 		});	
 	}
 	
@@ -1424,39 +1402,39 @@
 	{
 		return new Promise((resolve, reject) =>
 		{
-			for (let i = 0; i < source_coordinates.length; i++)
+			let targets = [];
+			
+			source_coordinates.forEach(xyz =>
 			{
-				let cube = source_array.cubes[source_coordinates[i][0]][source_coordinates[i][1]][source_coordinates[i][2]];
-				
-				//Once its position is set relative to the target array, we detatch it to get its world coordinates.
-				target_array.cube_group.attach(cube);
-				
-				anime({
-					targets: cube.position,
-					x: target_coordinates[i][1] - (target_array.footprint - 1) / 2,
-					y: target_coordinates[i][2],
-					z: target_coordinates[i][0] - (target_array.footprint - 1) / 2,
-					duration: animation_time,
-					easing: "easeInOutQuad",
-					complete: () =>
+				targets.push(source_array.cubes[xyz[0]][xyz[1]][xyz[2]].position);
+				target_array.cube_group.attach(source_array.cubes[xyz[0]][xyz[1]][xyz[2]]);
+			});
+			
+			
+			anime({
+				targets: targets,
+				x: (element, index) => target_coordinates[index][1] - (target_array.footprint - 1) / 2,
+				y: (element, index) => target_coordinates[index][2],
+				z: (element, index) => target_coordinates[index][0] - (target_array.footprint - 1) / 2,
+				duration: animation_time,
+				easing: "easeInOutQuad",
+				complete: () =>
+				{
+					target_coordinates.forEach((xyz, index) =>
 					{
-						//Now we just need to finish the bookkeeping and update the arrays correctly.
-						if (target_array.cubes[target_coordinates[i][0]][target_coordinates[i][1]][target_coordinates[i][2]])
+						if (target_array.cubes[xyz[0]][xyz[1]][xyz[2]])
 						{
-							console.warn(`Moving a cube to a location that's already occupied: ${target_coordinates[i]}. This is probably not what you want to do.`);
+							console.warn(`Moving a cube to a location that's already occupied: ${xyz}. This is probably not what you want to do.`);
 						}
 						
-						target_array.cubes[target_coordinates[i][0]][target_coordinates[i][1]][target_coordinates[i][2]] = cube;
+						target_array.cubes[xyz[0]][xyz[1]][xyz[2]] = source_array.cubes[source_coordinates[index][0]][source_coordinates[index][1]][source_coordinates[index][2]];
 						
-						source_array.cubes[source_coordinates[i][0]][source_coordinates[i][1]][source_coordinates[i][2]] = null;
-						
-						if (i === source_coordinates.length - 1)
-						{
-							resolve();
-						}
-					}
-				});
-			}
+						source_array.cubes[source_coordinates[index][0]][source_coordinates[index][1]][source_coordinates[index][2]] = null;
+					});
+					
+					resolve();
+				}
+			});
 		});
 	}
 	
@@ -1473,29 +1451,23 @@
 				return;
 			}
 			
-			for (let i = 0; i < coordinates.length; i++)
+			
+			
+			let targets = [];
+			
+			coordinates.forEach(xyz =>
 			{
-				let targets = [];
-				
-				array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.forEach(material => targets.push(material));
-				
-				setTimeout(() =>
-				{
-					anime({
-						targets: targets,
-						opacity: 1,
-						duration: animation_time / 2,
-						easing: "easeOutQuad",
-						complete: () =>
-						{
-							if (i === coordinates.length - 1)
-							{
-								resolve();
-							}	
-						}
-					});
-				}, animation_time / 10 * i);	
-			}
+				array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material));
+			});
+			
+			anime({
+				targets: targets,
+				opacity: 1,
+				duration: animation_time / 2,
+				delay: (element, index) => Math.floor(index / 6) * animation_time / 10,
+				easing: "easeOutQuad",
+				complete: resolve
+			});
 		});
 	}
 	
@@ -1506,32 +1478,33 @@
 	{
 		return new Promise((resolve, reject) =>
 		{
-			for (let i = 0; i < coordinates.length; i++)
+			let targets = [];
+			
+			coordinates.forEach(xyz =>
 			{
-				let targets = [];
-				
-				array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]].material.forEach(material => targets.push(material));
-				
-				setTimeout(() =>
+				array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material));
+			});
+						
+			anime({
+				targets: targets,
+				opacity: 0,
+				duration: animation_time / 2,
+				delay: (element, index) => Math.floor(index / 6) * animation_time / 10,
+				easing: "easeOutQuad",
+				complete: () =>
 				{
-					anime({
-						targets: targets,
-						opacity: 0,
-						duration: animation_time / 2,
-						easing: "easeOutQuad",
-						complete: () =>
-						{
-							targets.forEach(material => material.dispose());
-							array.cube_group.remove(array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]]);
-							array.cubes[coordinates[i][0]][coordinates[i][1]][coordinates[i][2]] = null;
-							if (i === coordinates.length - 1)
-							{
-								resolve();
-							}	
-						}
+					targets.forEach(material => material.dispose());
+					
+					coordinates.forEach(xyz =>
+					{
+						array.cube_group.remove(array.cubes[xyz[0]][xyz[1]][xyz[2]]);
+						
+						array.cubes[xyz[0]][xyz[1]][xyz[2]] = null;
 					});
-				}, animation_time / 10 * i);	
-			}
+					
+					resolve();
+				}
+			});	
 		});
 	}
 	
@@ -1890,13 +1863,13 @@
 			for (let j = 0; j < row; j++)
 			{
 				array.cubes[j][col][height] = add_cube(array, col, height, j);
-				array.cubes[j][col][height].material.color.setHSL(hue, 1, .5);
+				array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, .5));
 			}
 			
 			for (let j = 0; j < col; j++)
 			{
 				array.cubes[row][j][height] = add_cube(array, j, height, row);
-				array.cubes[row][j][height].material.color.setHSL(hue, 1, .5);
+				array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, .5));
 			}
 			
 			
