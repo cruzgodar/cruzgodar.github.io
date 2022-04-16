@@ -300,7 +300,13 @@
 	
 	let spread_roots_button_element = Page.element.querySelector("#spread-roots-button");
 	
-	spread_roots_button_element.addEventListener("click", () => spread_roots(false));
+	spread_roots_button_element.addEventListener("click", () => spread_roots(false, false));
+	
+	
+	
+	let randomize_roots_button_element = Page.element.querySelector("#randomize-roots-button");
+	
+	randomize_roots_button_element.addEventListener("click", () => spread_roots(false, true));
 	
 	
 	
@@ -329,8 +335,10 @@
 	wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
 	
 	wilson.gl.uniform3fv(wilson.uniforms["colors"], [1, 0, 0,   0, 1, 0,   0, 0, 1,   0, 1, 1,   1, 0, 1,   1, 1, 0,   .5, 0, 1,   1, .5, 0]);
+	//wilson.gl.uniform3fv(wilson.uniforms["colors"], [216/255, 1/255, 42/255,   255/255, 139/255, 56/255,   249/255, 239/255, 20/255,   27/255, 181/255, 61/255,   0/255, 86/255, 195/255,   154/255, 82/255, 164/255,   32/255, 32/255, 32/255,   155/255, 92/255, 15/255,   182/255, 228/255, 254/255,   250/255, 195/255, 218/255,   255/255, 255/255, 255/255]);
 	
 	wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], [1, 0, 0,   0, 1, 0,   0, 0, 1,   0, 1, 1,   1, 0, 1,   1, 1, 0,   .5, 0, 1,   1, .5, 0]);
+	//wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], [216/255, 1/255, 42/255,   255/255, 139/255, 56/255,   249/255, 239/255, 20/255,   27/255, 181/255, 61/255,   0/255, 86/255, 195/255,   154/255, 82/255, 164/255,   32/255, 32/255, 32/255,   155/255, 92/255, 15/255,   182/255, 228/255, 254/255,   250/255, 195/255, 218/255,   255/255, 255/255, 255/255]);
 	
 	window.requestAnimationFrame(draw_newtons_method);
 	
@@ -389,7 +397,7 @@
 	
 	
 	
-	function spread_roots(no_animation = false)
+	function spread_roots(no_animation = false, randomize = false)
 	{
 		if (!currently_spreading_roots)
 		{
@@ -402,16 +410,23 @@
 		
 		for (let i = 0; i < num_roots; i++)
 		{
+			let mag = 1;
+			
+			if (randomize)
+			{
+				mag += .75 * Math.random();
+			}	
+			
 			if (i < num_roots / 2 || num_roots % 2 === 1)
 			{
-				roots_delta[2 * i] = Math.cos(2 * Math.PI * 2 * i / num_roots) - current_roots[2 * i];
-				roots_delta[2 * i + 1] = Math.sin(2 * Math.PI * 2 * i / num_roots) - current_roots[2 * i + 1];
+				roots_delta[2 * i] = mag * Math.cos(2 * Math.PI * 2 * i / num_roots) - current_roots[2 * i];
+			roots_delta[2 * i + 1] = mag * Math.sin(2 * Math.PI * 2 * i / num_roots) - current_roots[2 * i + 1];	
 			}
 			
 			else
 			{
-				roots_delta[2 * i] = Math.cos(2 * Math.PI * (2 * i + 1) / num_roots) - current_roots[2 * i];
-				roots_delta[2 * i + 1] = Math.sin(2 * Math.PI * (2 * i + 1) / num_roots) - current_roots[2 * i + 1];
+				roots_delta[2 * i] = mag * Math.cos(2 * Math.PI * (2 * i + 1) / num_roots) - current_roots[2 * i];
+				roots_delta[2 * i + 1] = mag * Math.sin(2 * Math.PI * (2 * i + 1) / num_roots) - current_roots[2 * i + 1];
 			}
 		}
 		
