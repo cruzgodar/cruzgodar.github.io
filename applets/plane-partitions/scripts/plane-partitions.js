@@ -197,7 +197,7 @@
 	
 	let rotation_y = 0;
 	let rotation_y_velocity = 0;
-	let next_rotation_y_velocity = 0;
+	let last_rotation_y_velocities = [];
 	
 	const rotation_y_velocity_friction = .94;
 	const rotation_y_velocity_start_threshhold = .005;
@@ -234,7 +234,7 @@
 	
 	draw_frame();
 	
-	setTimeout(() => Page.show(), 500);
+	Page.show();
 	
 	
 	
@@ -244,7 +244,7 @@
 		
 		rotation_y_velocity = 0;
 		
-		next_rotation_y_velocity = 0;
+		last_rotation_y_velocities = [0, 0, 0, 0];
 	}
 	
 	function on_drag_canvas(x, y, x_delta, y_delta, event)
@@ -268,21 +268,44 @@
 		
 		scene.children.forEach(object => object.rotation.y = rotation_y);
 		
-		next_rotation_y_velocity = x_delta;
+		last_rotation_y_velocities.push(x_delta);
+		last_rotation_y_velocities.shift();
 	}
 	
 	function on_release_canvas(x, y, event)
 	{
-		if (in_2d_view)
+		if (!in_2d_view)
 		{
-			return;
+			let max_index = 0;
+			rotation_y_velocity = 0;
+			
+			last_rotation_y_velocities.forEach((velocity, index) =>
+			{
+				if (Math.abs(velocity) > rotation_y_velocity)
+				{
+					rotation_y_velocity = Math.abs(velocity);
+					max_index = index;
+				}	
+			});
+			
+			if (rotation_y_velocity < rotation_y_velocity_start_threshhold)
+			{
+				rotation_y_velocity = 0;
+				return;
+			}
+			
+			rotation_y_velocity = last_rotation_y_velocities[max_index];
 		}
 		
 		
-		if (Math.abs(next_rotation_y_velocity) >= rotation_y_velocity_start_threshhold)
+		
+		else
 		{
-			rotation_y_velocity = next_rotation_y_velocity;
-		}
+			let row = Math.floor((1 - y) / 2 * (total_array_footprint + 1));
+			let col = Math.floor((x + 1) / 2 * (total_array_footprint + 1));
+			
+			
+		}	
 	}
 	
 	
@@ -512,17 +535,9 @@
 			
 			font_size = wilson_numbers.canvas_width / (total_array_footprint + 1);
 			
-			let num_characters = `${total_array_height}`.length;
+			let num_characters = Math.max(`${total_array_height}`.length, 2);
 			
-			if (num_characters === 1)
-			{
-				wilson_numbers.ctx.font = `${font_size * .75}px monospace`;
-			}
-			
-			else
-			{
-				wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
-			}
+			wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
 			
 			
 			if (arrays.length === 1)
@@ -888,7 +903,7 @@
 			
 			rotation_y_velocity = 0;
 			
-			next_rotation_y_velocity = 0;	
+			last_rotation_y_velocities = [0, 0, 0, 0];
 			
 			
 			
@@ -962,7 +977,7 @@
 			
 			rotation_y_velocity = 0;
 			
-			next_rotation_y_velocity = 0;
+			last_rotation_y_velocities = [0, 0, 0, 0];
 			
 			
 			
