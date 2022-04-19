@@ -182,37 +182,62 @@
 	
 	
 	
-	let add_pp_button_element = Page.element.querySelector("#add-pp-button");
-	
 	let array_data_textarea_element = Page.element.querySelector("#array-data-textarea");
+	
+	
+	
+	let add_pp_button_element = Page.element.querySelector("#add-pp-button");
 	
 	add_pp_button_element.addEventListener("click", () =>
 	{
-		let data = parse_pp(array_data_textarea_element.value);
+		let plane_partition = parse_array(array_data_textarea_element.value);
 		
-		if (data !== null)
+		if (verify_pp(plane_partition))
 		{
-			add_new_array(arrays.length, data);
+			add_new_array(arrays.length, plane_partition, "pp");
 		}
 	});
 	
 	
 	
+	let add_tableau_button_element = Page.element.querySelector("#add-tableau-button");
+	
+	add_tableau_button_element.addEventListener("click", () =>
+	{
+		let tableau = parse_array(array_data_textarea_element.value);
+		
+		add_new_array(arrays.length, tableau, "tableau");
+	});
+	
+	
+	
+	let remove_array_index_input_element = Page.element.querySelector("#remove-array-index-input");
+	
+	let remove_array_button_element = Page.element.querySelector("#remove-array-button");
+	
+	remove_array_button_element.addEventListener("click", () =>
+	{
+		remove_array(parseInt(remove_array_index_input_element.value));
+	});
+	
+	
+	
+	let algorithm_index_input_element = Page.element.querySelector("#algorithm-index-input");
+	
 	let hillman_grassl_button_element = Page.element.querySelector("#hillman-grassl-button");
 	
 	hillman_grassl_button_element.addEventListener("click", () =>
 	{
-		if (currently_plane_partition)
-		{
-			hillman_grassl(0);
-		}
-		
-		else
-		{
-			hillman_grassl_inverse(0);
-		}
-		
-		currently_plane_partition = !currently_plane_partition;
+		hillman_grassl(parseInt(algorithm_index_input_element.value));
+	});
+	
+	
+	
+	let hillman_grassl_inverse_button_element = Page.element.querySelector("#hillman-grassl-inverse-button");
+	
+	hillman_grassl_inverse_button_element.addEventListener("click", () =>
+	{
+		hillman_grassl_inverse(parseInt(algorithm_index_input_element.value));
 	});
 	
 	
@@ -288,8 +313,6 @@
 	
 	let currently_running_algorithm = false;
 	
-	let currently_plane_partition = true;
-	
 	let font_size = 10;
 	
 	//A 1D list of the plane partitions, etc, that are stored.
@@ -304,7 +327,7 @@
 	
 	
 	
-	add_new_array(0, generate_random_plane_partition());
+	add_new_array(0, generate_random_plane_partition(), "pp");
 	
 	
 	
@@ -513,8 +536,8 @@
 	
 	
 	
-	//Verifies the inequalities that make this a plane partition.
-	function parse_pp(data)
+	//Turns a block of numbers into an array.
+	function parse_array(data)
 	{
 		let split_data = data.split("\n");
 		
@@ -540,46 +563,44 @@
 		
 		let size = Math.max(num_rows, num_cols);
 		
-		let plane_partition = new Array(size);
+		let array = new Array(size);
 		
 		
 		
 		for (let i = 0; i < num_rows; i++)
 		{
-			if (i !== 0 && split_rows[i].length > split_rows[i - 1].length)
-			{
-				display_error(`Not a valid plane partition! Row ${i} is longer than row ${i - 1}`);
-				
-				return null;
-			}
-			
-			
-			
-			plane_partition[i] = new Array(size);
+			array[i] = new Array(size);
 			
 			for (let j = 0; j < split_rows[i].length; j++)
 			{
-				plane_partition[i][j] = parseInt(split_rows[i][j]);
+				array[i][j] = parseInt(split_rows[i][j]);
 			}
 			
 			for (let j = split_rows[i].length; j < size; j++)
 			{
-				plane_partition[i][j] = 0;
+				array[i][j] = 0;
 			}
 		}
 		
 		for (let i = num_rows; i < size; i++)
 		{
-			plane_partition[i] = new Array(size);
+			array[i] = new Array(size);
 				
 			for (let j = 0; j < size; j++)
 			{
-				plane_partition[i][j] = 0;
+				array[i][j] = 0;
 			}
 		}
 		
 		
 		
+		return array;
+	}
+	
+	
+	
+	function verify_pp(plane_partition)
+	{
 		for (let i = 0; i < plane_partition.length - 1; i++)
 		{
 			for (let j = 0; j < plane_partition[i].length - 1; j++)
@@ -588,23 +609,29 @@
 				{
 					display_error(`Not a valid plane partition! Wrong inequality at (${i}, ${j})`);
 					
-					return null;
+					return false;
 				}
 			}
 		}
 		
-		
-		
-		return plane_partition;
+		return true;
 	}
 	
 	
 	
-	async function add_new_array(index, numbers)
+	function display_error(message)
+	{
+		Page.Footer.Floating.show_settings_text(message);
+	}
+	
+	
+	
+	async function add_new_array(index, numbers, type)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
 			let array = {
+				type: type,
 				numbers: numbers,
 				cubes: [],
 				floor: [],
@@ -1701,6 +1728,15 @@
 		
 		let array = arrays[index];
 		
+		if (array.type !== "pp")
+		{
+			display_error(`Array at index ${index} is not a plane partition!`);
+			
+			currently_running_algorithm = false;
+			
+			return;
+		}
+		
 		let plane_partition = JSON.parse(JSON.stringify(array.numbers));
 		
 		
@@ -1921,6 +1957,15 @@
 		
 		
 		let array = arrays[index];
+		
+		if (array.type !== "tableau")
+		{
+			display_error(`Array at index ${index} is not a tableau!`);
+			
+			currently_running_algorithm = false;
+			
+			return;
+		}
 		
 		let tableau = JSON.parse(JSON.stringify(array.numbers));
 		

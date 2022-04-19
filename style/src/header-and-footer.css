@@ -255,7 +255,8 @@
 	position: fixed;
 	
 	top: 20px;
-	width: 100vw;
+	width: 50vw;
+	left: 25vw;
 	
 	z-index: 100;
 }
