@@ -34,10 +34,11 @@
 
 
 
+
+
 <div id="canvas-landscape">
 
 <div id="canvas-landscape-left">
-
 	!begin-dropdown
 		
 		category-selector
@@ -50,10 +51,46 @@
 		
 		algorithms Algorithms
 
-	!end-dropdown
+	!end-dropdown	
+</div>
 
 
 
+<div id="canvas-landscape-middle">
+
+<div data-aos="fade-up" style="position: relative; margin: 0 auto; width: 100%; aspect-ratio: 1; margin-bottom: 5vh">
+	<div style="position: absolute; width: 100%">
+		<canvas id="output-canvas" class="output-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
+	</div>
+	
+	<div id="numbers-canvas-container" style="position: absolute; width: 100%; opacity: 0">
+		<canvas id="numbers-canvas" class="output-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important; border-color: rgba(0, 0, 0, 0)"></canvas>
+	</div>
+</div>
+
+<canvas id="hidden-canvas" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
+
+<canvas id="hidden-canvas-2" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+!begin-text-buttons
+	
+	download l Download
+	
+!end-text-buttons
+
+</div>
+
+</div>
+
+
+
+<div id="category-holder" style="display: none">
 	<div class="view-controls-section category-section">
 		!begin-text-buttons
 			
@@ -69,7 +106,7 @@
 	<div class="add-array-section category-section">
 		<div class="center-content" style="margin-top: 5vh" "data-aos="fade-up">
 			<div class="text-field-container">
-				<textarea cols="16" rows="4" name="code-textarea" id="code-textarea" class="text-field" style="font-family: 'Source Code Pro', monospace"></textarea>
+				<textarea cols="16" rows="4" name="array-data-textarea" id="array-data-textarea" class="text-field" style="font-family: 'Source Code Pro', monospace"></textarea>
 				<p class="body-text" style="text-align: center">Array</p>
 			</div>
 		</div>
@@ -122,40 +159,6 @@
 			
 		!end-text-buttons
 	</div>
-</div>
-
-
-
-<div id="canvas-landscape-middle">
-
-<div data-aos="fade-up" style="position: relative; margin: 0 auto; width: 100%; aspect-ratio: 1; margin-bottom: 5vh">
-	<div style="position: absolute; width: 100%">
-		<canvas id="output-canvas" class="output-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
-	</div>
-	
-	<div id="numbers-canvas-container" style="position: absolute; width: 100%; opacity: 0">
-		<canvas id="numbers-canvas" class="output-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important; border-color: rgba(0, 0, 0, 0)"></canvas>
-	</div>
-</div>
-
-<canvas id="hidden-canvas" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
-
-<canvas id="hidden-canvas-2" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
-
-</div>
-
-
-
-<div id="canvas-landscape-right">
-
-!begin-text-buttons
-	
-	download l Download
-	
-!end-text-buttons
-
-</div>
-
 </div>
 
 

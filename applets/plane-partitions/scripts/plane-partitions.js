@@ -98,6 +98,9 @@
 		"algorithms": Page.element.querySelectorAll(".algorithms-section")
 	}
 	
+	const category_holder_element = Page.element.querySelector("#category-holder");
+	const canvas_landscape_left_element = Page.element.querySelector("#canvas-landscape-left");
+	
 	let visible_section = "view-controls";
 	
 	section_names.forEach(section_name =>
@@ -107,11 +110,16 @@
 			section_elements[section_name].forEach(element =>
 			{
 				element.style.opacity = 0;
-				element.style.display = "none";
-			});	
+			});
 		}	
 	});
 	
+	section_elements[visible_section].forEach(element => canvas_landscape_left_element.appendChild(element));
+	
+	Page.Load.TextButtons.equalize();
+	setTimeout(Page.Load.TextButtons.equalize, 10);
+	
+	Page.Layout.AppletColumns.equalize();
 	
 	
 	
@@ -121,11 +129,14 @@
 	{
 		await Promise.all(Array.from(section_elements[visible_section]).map(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time)));
 		
-		section_elements[visible_section].forEach(element => element.style.display = "none");
+		section_elements[visible_section].forEach(element => category_holder_element.appendChild(element));
+		
+		section_elements[visible_section].forEach(element => element.classList.remove("move-to-left"));
+		section_elements[visible_section].forEach(element => element.classList.remove("move-to-right"));
 		
 		visible_section = category_selector_dropdown_element.value;
 		
-		section_elements[visible_section].forEach(element => element.style.display = "");
+		section_elements[visible_section].forEach(element => canvas_landscape_left_element.appendChild(element));
 		
 		Page.Load.TextButtons.equalize();
 		setTimeout(Page.Load.TextButtons.equalize, 10);
@@ -166,6 +177,22 @@
 		else
 		{
 			show_2d_view();
+		}
+	});
+	
+	
+	
+	let add_pp_button_element = Page.element.querySelector("#add-pp-button");
+	
+	let array_data_textarea_element = Page.element.querySelector("#array-data-textarea");
+	
+	add_pp_button_element.addEventListener("click", () =>
+	{
+		let data = parse_pp(array_data_textarea_element.value);
+		
+		if (data !== null)
+		{
+			add_new_array(arrays.length, data);
 		}
 	});
 	
@@ -482,6 +509,93 @@
 		}
 		
 		return tableau;
+	}
+	
+	
+	
+	//Verifies the inequalities that make this a plane partition.
+	function parse_pp(data)
+	{
+		let split_data = data.split("\n");
+		
+		let num_rows = split_data.length;
+		
+		let split_rows = new Array(split_data.length);
+		
+		for (let i = 0; i < split_rows.length; i++)
+		{
+			split_rows[i] = split_data[i].split(" ");
+			
+			for (let j = 0; j < split_rows[i].length; j++)
+			{
+				if (split_rows[i][j] === "")
+				{
+					split_rows[i].splice(j, 1);
+					j--;
+				}
+			}
+		}
+		
+		let num_cols = split_rows[0].length;
+		
+		let size = Math.max(num_rows, num_cols);
+		
+		let plane_partition = new Array(size);
+		
+		
+		
+		for (let i = 0; i < num_rows; i++)
+		{
+			if (i !== 0 && split_rows[i].length > split_rows[i - 1].length)
+			{
+				display_error(`Not a valid plane partition! Row ${i} is longer than row ${i - 1}`);
+				
+				return null;
+			}
+			
+			
+			
+			plane_partition[i] = new Array(size);
+			
+			for (let j = 0; j < split_rows[i].length; j++)
+			{
+				plane_partition[i][j] = parseInt(split_rows[i][j]);
+			}
+			
+			for (let j = split_rows[i].length; j < size; j++)
+			{
+				plane_partition[i][j] = 0;
+			}
+		}
+		
+		for (let i = num_rows; i < size; i++)
+		{
+			plane_partition[i] = new Array(size);
+				
+			for (let j = 0; j < size; j++)
+			{
+				plane_partition[i][j] = 0;
+			}
+		}
+		
+		
+		
+		for (let i = 0; i < plane_partition.length - 1; i++)
+		{
+			for (let j = 0; j < plane_partition[i].length - 1; j++)
+			{
+				if (plane_partition[i][j] < plane_partition[i + 1][j] || plane_partition[i][j] < plane_partition[i][j + 1])
+				{
+					display_error(`Not a valid plane partition! Wrong inequality at (${i}, ${j})`);
+					
+					return null;
+				}
+			}
+		}
+		
+		
+		
+		return plane_partition;
 	}
 	
 	
