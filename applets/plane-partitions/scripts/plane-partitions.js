@@ -1827,7 +1827,7 @@
 			}
 		}
 		
-		let output_array = await add_new_array(index + 1, empty_array);
+		let output_array = await add_new_array(index + 1, empty_array, "tableau");
 		
 		await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 		
@@ -2005,7 +2005,7 @@
 		
 		let plane_partition = JSON.parse(JSON.stringify(empty_array));
 		
-		let output_array = await add_new_array(index + 1, empty_array);
+		let output_array = await add_new_array(index + 1, empty_array, "pp");
 		
 		
 		
