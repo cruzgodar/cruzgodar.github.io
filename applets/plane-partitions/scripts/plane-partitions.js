@@ -125,6 +125,8 @@
 	
 	let category_selector_dropdown_element = Page.element.querySelector("#category-selector-dropdown");
 	
+	
+	
 	category_selector_dropdown_element.addEventListener("input", async () =>
 	{
 		await Promise.all(Array.from(section_elements[visible_section]).map(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time)));
@@ -186,6 +188,8 @@
 	
 	
 	let array_data_textarea_element = Page.element.querySelector("#array-data-textarea");
+	
+	array_data_textarea_element.value = generate_random_plane_partition();
 	
 	
 	
@@ -325,14 +329,17 @@
 	let total_array_height = 0;
 	let total_array_size = 0;
 	
-	let hex_view_camera_pos = [0, 0, 0];
-	let _2d_view_camera_pos = [0, 0, 0];
+	let hex_view_camera_pos = [15, 15, 15];
+	let _2d_view_camera_pos = [0, 20, 0];
 	
 	
 	
-	add_new_array(0, generate_random_plane_partition(), "pp");
+	let plane_partition = parse_array(array_data_textarea_element.value);
 	
-	
+	if (verify_pp(plane_partition))
+	{
+		add_new_array(arrays.length, plane_partition, "pp");
+	}
 	
 	draw_frame();
 	
@@ -494,38 +501,38 @@
 			}
 		}
 		
+		//Now convert to a string.
 		
-		
-		return plane_partition;
-	}
-	
-	
-	
-	function generate_random_tableau()
-	{
-		let side_length = Math.floor(Math.random() * 3) + 4;
-		
-		let tableau = new Array(side_length);
+		let output_string = "";
 		
 		for (let i = 0; i < side_length; i++)
 		{
-			tableau[i] = new Array(side_length);
-			
 			for (let j = 0; j < side_length; j++)
 			{
-				if (Math.random() < 3 / Math.pow(side_length, 1.5))
+				let entry = plane_partition[i][j];
+				
+				if (entry === 0)
 				{
-					tableau[i][j] = Math.floor(Math.random() * 2) + 1;
+					output_string += "   ";
+				}
+				
+				else if (entry < 10)
+				{
+					output_string += ` ${entry} `;
 				}
 				
 				else
 				{
-					tableau[i][j] = 0;
+					output_string += `${entry} `;
 				}
 			}
+			
+			output_string += "\n";
 		}
 		
-		return tableau;
+		
+		
+		return output_string;
 	}
 	
 	
@@ -624,6 +631,7 @@
 	{
 		return new Promise(async (resolve, reject) =>
 		{
+			console.log(orthographic_camera.position);
 			let array = {
 				type: type,
 				numbers: numbers,

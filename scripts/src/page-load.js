@@ -585,7 +585,7 @@ Page.Load =
 		[
 			["#logo img", 1.05],
 			["#scroll-button", 1.1],
-			[".text-button", 1.075],
+			[".text-button:not(.dropdown)", 1.075],
 			[".dropdown-container", 1.075],
 			[".checkbox-container", 1.1],
 			[".radio-button-container", 1.1],

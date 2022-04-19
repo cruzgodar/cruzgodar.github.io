@@ -464,14 +464,16 @@ Page.Components =
 	
 	
 	
+	//This is an incredibly delicate balance -- modify with caution.
 	get_dropdown: function(args)
 	{
 		let html = "";
 		
 		let id = args[0];
 		
-		html += `<div class="dropdown-container focus-on-child" data-aos="fade-up" tabindex="1">
-				<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1">`;
+		html += `
+			<div class="dropdown-container focus-on-child" tabindex="1">
+				<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1" data-aos="fade-up">`;
 		
 		for (let i = 1; i < args.length; i++)
 		{
@@ -487,6 +489,8 @@ Page.Components =
 		}
 		
 		html += `</select></div></div>`;
+		
+		console.log(html);
 		
 		return html;
 	},
