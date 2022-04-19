@@ -634,7 +634,6 @@
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			console.log(orthographic_camera.position);
 			let array = {
 				type: type,
 				numbers: numbers,

@@ -765,8 +765,8 @@ Page.Footer =
 			
 			for (let i = 0; i < elements.length; i++)
 			{
-				Page.Animate.change_opacity(elements[i], 0, 1.5 * Site.base_animation_time);
-				Page.Animate.change_scale(elements[i], .9, 1.5 * Site.base_animation_time);
+				Page.Animate.change_opacity_js(elements[i], 0, 1.5 * Site.base_animation_time);
+				Page.Animate.change_scale_js(elements[i], .9, 1.5 * Site.base_animation_time);
 			}
 			
 			
@@ -796,19 +796,19 @@ Page.Footer =
 			
 			setTimeout(() =>
 			{
-				Page.Animate.change_opacity(element, 1, 1.5 * Site.base_animation_time);
-				Page.Animate.change_scale(element, 1, 1.5 * Site.base_animation_time);
+				Page.Animate.change_opacity_js(element, 1, 1.5 * Site.base_animation_time);
+				Page.Animate.change_scale_js(element, 1, 1.5 * Site.base_animation_time);
 				
 				setTimeout(() =>
 				{
-					Page.Animate.change_opacity(element, 0, 1.5 * Site.base_animation_time);
-					Page.Animate.change_scale(element, .9, 1.5 * Site.base_animation_time);
+					Page.Animate.change_opacity_js(element, 0, 1.5 * Site.base_animation_time);
+					Page.Animate.change_scale_js(element, .9, 1.5 * Site.base_animation_time);
 					
 					setTimeout(() =>
 					{
 						element.remove();
-					}, Site.opacity_animation_time * 2);
-				}, Site.opacity_animation_time * 8);
+					}, Site.base_animation_time * 2);
+				}, Site.base_animation_time * 8);
 			}, 10);
 		}
 	}
