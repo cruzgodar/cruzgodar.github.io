@@ -38,16 +38,90 @@
 
 <div id="canvas-landscape-left">
 
-!begin-text-buttons
-	
-	switch-view l Show 2D View
-	
-	show-dimers l Show Dimers
-	
-	run-hillman-grassl l Run Hillman-Grassl
-	
-!end-text-buttons
+	!begin-dropdown
+		
+		category-selector
+		
+		view-controls View Controls
+		
+		add-array Add Array
+		
+		remove-array Remove Array
+		
+		algorithms Algorithms
 
+	!end-dropdown
+
+
+
+	<div class="view-controls-section category-section">
+		!begin-text-buttons
+			
+			switch-view l Show 2D View
+			
+			show-dimers l Show Dimers
+			
+		!end-text-buttons
+	</div>
+	
+	
+	
+	<div class="add-array-section category-section">
+		<div class="center-content" style="margin-top: 5vh" "data-aos="fade-up">
+			<div class="text-field-container">
+				<textarea cols="16" rows="4" name="code-textarea" id="code-textarea" class="text-field" style="font-family: 'Source Code Pro', monospace"></textarea>
+				<p class="body-text" style="text-align: center">Array</p>
+			</div>
+		</div>
+	</div>	
+	
+	<div class="add-array-section category-section">
+		!begin-text-buttons
+			
+			add-pp l Add as Plane Partition
+			
+			add-tableau l Add as Tableau
+			
+		!end-text-buttons
+	</div>
+	
+	
+	
+	<div class="remove-array-section category-section">
+		!begin-text-boxes
+			
+			remove-array-index 0 Index to Remove
+			
+		!end-text-boxes
+	</div>
+	
+	<div class="remove-array-section category-section">
+		!begin-text-buttons
+			
+			remove-array l Remove Array
+			
+		!end-text-buttons
+	</div>
+	
+	
+	
+	<div class="algorithms-section category-section">
+		!begin-text-boxes
+			
+			algorithm-index 0 Index to Use
+			
+		!end-text-boxes
+	</div>
+	
+	<div class="algorithms-section category-section">
+		!begin-text-buttons
+			
+			hillman-grassl l Run Hillman-Grassl
+			
+			hillman-grassl-inverse l Run Inverse Hillman-Grassl
+			
+		!end-text-buttons
+	</div>
 </div>
 
 

@@ -88,6 +88,55 @@
 	
 	
 	
+	const section_names = ["view-controls", "add-array", "remove-array", "algorithms"];
+	
+	const section_elements = 
+	{
+		"view-controls": Page.element.querySelectorAll(".view-controls-section"),
+		"add-array": Page.element.querySelectorAll(".add-array-section"),
+		"remove-array": Page.element.querySelectorAll(".remove-array-section"),
+		"algorithms": Page.element.querySelectorAll(".algorithms-section")
+	}
+	
+	let visible_section = "view-controls";
+	
+	section_names.forEach(section_name =>
+	{
+		if (section_name !== visible_section)
+		{
+			section_elements[section_name].forEach(element =>
+			{
+				element.style.opacity = 0;
+				element.style.display = "none";
+			});	
+		}	
+	});
+	
+	
+	
+	
+	let category_selector_dropdown_element = Page.element.querySelector("#category-selector-dropdown");
+	
+	category_selector_dropdown_element.addEventListener("input", async () =>
+	{
+		await Promise.all(Array.from(section_elements[visible_section]).map(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time)));
+		
+		section_elements[visible_section].forEach(element => element.style.display = "none");
+		
+		visible_section = category_selector_dropdown_element.value;
+		
+		section_elements[visible_section].forEach(element => element.style.display = "");
+		
+		Page.Load.TextButtons.equalize();
+		setTimeout(Page.Load.TextButtons.equalize, 10);
+		
+		Page.Layout.AppletColumns.equalize();
+		
+		section_elements[visible_section].forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time))
+	});	
+	
+	
+	
 	let show_dimers_button_element = Page.element.querySelector("#show-dimers-button");
 	
 	show_dimers_button_element.addEventListener("click", () =>
@@ -122,9 +171,9 @@
 	
 	
 	
-	let run_hillman_grassl_button_element = Page.element.querySelector("#run-hillman-grassl-button");
+	let hillman_grassl_button_element = Page.element.querySelector("#hillman-grassl-button");
 	
-	run_hillman_grassl_button_element.addEventListener("click", () =>
+	hillman_grassl_button_element.addEventListener("click", () =>
 	{
 		if (currently_plane_partition)
 		{
