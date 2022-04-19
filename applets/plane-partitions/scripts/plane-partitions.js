@@ -527,7 +527,10 @@
 				}
 			}
 			
-			output_string += "\n";
+			if (i !== side_length - 1)
+			{
+				output_string += "\n";
+			}	
 		}
 		
 		
