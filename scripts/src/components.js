@@ -470,7 +470,7 @@ Page.Components =
 		
 		let id = args[0];
 		
-		html += `<div class="focus-on-child" data-aos="fade-up" tabindex="1">
+		html += `<div class="dropdown-container focus-on-child" data-aos="fade-up" tabindex="1">
 				<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1">`;
 		
 		for (let i = 1; i < args.length; i++)
