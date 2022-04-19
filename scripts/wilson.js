@@ -1884,30 +1884,11 @@ class Wilson
 					
 					if (this.currently_dragging)
 					{
-						try {this.mousedrag_callback(...last_world_coordinates, 0, 0, e);}
+						this.currently_dragging = false;
+						
+						try {this.mouseup_callback(...last_world_coordinates, e);}
 						catch(ex) {}
 					}
-					
-					else
-					{
-						try {this.mousemove_callback(...last_world_coordinates, 0, 0, e);}
-						catch(ex) {}
-					}
-					
-					try {this.touchmove_callback(...last_world_coordinates, 0, 0, e);}
-					catch(ex) {}
-					
-					
-					
-					this.currently_dragging = false;
-					
-					
-					
-					try {this.mouseup_callback(...last_world_coordinates, e);}
-					catch(ex) {}
-					
-					try {this.touchend_callback(...last_world_coordinates, e);}
-					catch(ex) {}
 				});
 			}
 		},

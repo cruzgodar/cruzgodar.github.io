@@ -141,7 +141,10 @@
 		Page.Load.TextButtons.equalize();
 		setTimeout(Page.Load.TextButtons.equalize, 10);
 		
-		Page.Layout.AppletColumns.equalize();
+		if (Page.Layout.aspect_ratio > 1)
+		{
+			Page.Layout.AppletColumns.equalize();
+		}	
 		
 		section_elements[visible_section].forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time))
 	});	
@@ -376,7 +379,6 @@
 		if (!in_2d_view)
 		{
 			let max_index = 0;
-			rotation_y_velocity = 0;
 			
 			last_rotation_y_velocities.forEach((velocity, index) =>
 			{
@@ -396,15 +398,7 @@
 			rotation_y_velocity = last_rotation_y_velocities[max_index];
 		}
 		
-		
-		
-		else
-		{
-			let row = Math.floor((1 - y) / 2 * (total_array_footprint + 1));
-			let col = Math.floor((x + 1) / 2 * (total_array_footprint + 1));
-			
-			
-		}	
+		last_rotation_y_velocities = [0, 0, 0, 0];
 	}
 	
 	

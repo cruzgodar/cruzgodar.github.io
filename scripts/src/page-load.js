@@ -577,9 +577,7 @@ Page.Load =
 	HoverEvents:
 	{
 		element_selectors: `
-			a,
-			
-			select
+			a
 		`,
 		
 		//These elements need to have their scale increased when hovered.
@@ -588,6 +586,7 @@ Page.Load =
 			["#logo img", 1.05],
 			["#scroll-button", 1.1],
 			[".text-button", 1.075],
+			[".dropdown-container", 1.075],
 			[".checkbox-container", 1.1],
 			[".radio-button-container", 1.1],
 			[".footer-image-link img", 1.05],
