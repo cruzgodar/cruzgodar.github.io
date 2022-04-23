@@ -249,6 +249,15 @@
 	
 	
 	
+	let pak_button_element = Page.element.querySelector("#pak-button");
+	
+	pak_button_element.addEventListener("click", () =>
+	{
+		pak(parseInt(algorithm_index_input_element.value));
+	});
+	
+	
+	
 	let need_download = false;
 	
 	let download_button_element = Page.element.querySelector("#download-button");
@@ -2192,6 +2201,154 @@
 		
 		
 		remove_array(index);
+		
+		currently_running_algorithm = false;
+	}
+	
+	
+	
+	async function pak(index)
+	{
+		if (currently_running_algorithm)
+		{
+			return;
+		}
+		
+		currently_running_algorithm = true;
+		
+		
+		
+		let array = arrays[index];
+		
+		if (array.type !== "pp")
+		{
+			display_error(`Array at index ${index} is not a plane partition!`);
+			
+			currently_running_algorithm = false;
+			
+			return;
+		}
+		
+		let plane_partition = JSON.parse(JSON.stringify(array.numbers));
+		
+		
+		
+		let coordinates = [];
+		
+		//Remove any color that's here.
+		for (let i = 0; i < plane_partition.length; i++)
+		{
+			for (let j = 0; j < plane_partition.length; j++)
+			{
+				for (let k = 0; k < plane_partition[i][j]; k++)
+				{
+					coordinates.push([i, j, k]);
+				}
+			}
+		}
+		
+		uncolor_cubes(array, coordinates);
+		
+		
+		
+		let row_lengths = new Array(array.footprint);
+		
+		let num_corners = 0;
+		
+		for (let row = 0; row < array.footprint; row++)
+		{
+			row_lengths[row] = plane_partition[row].indexOf(0);
+			
+			if (row_lengths[row] === -1)
+			{
+				row_lengths[row] = array.footprint;
+			}
+			
+			num_corners += row_lengths[row];
+		}
+		
+		
+		
+		let hue_index = 0;
+		
+		//Get outer corners by just scanning through the array forwards.
+		for (let row = 0; row < array.footprint; row++)
+		{
+			for (let col = 0; col < row_lengths[row]; col++)
+			{
+				//Highlight this diagonal.
+				let diagonal_coordinates = [];
+				
+				let i = 0;
+				
+				while (row + i < array.footprint && col + i < row_lengths[row + i])
+				{
+					diagonal_coordinates.push([row + i, col + i, plane_partition[row + i][col + i] - 1]);
+					
+					i++;
+				}
+				
+				console.log(diagonal_coordinates);
+				
+				hue_index = 0;
+				
+				await color_cubes(array, diagonal_coordinates, hue_index / num_corners);
+				
+				
+				
+				//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
+				let diagonal_change = new Array(diagonal_coordinates.length);
+				
+				diagonal_coordinates.forEach((coordinate, index) =>
+				{
+					let i = coordinate[0];
+					let j = coordinate[1];
+					
+					let neighbor_1 = 0;
+					let neighbor_2 = 0;
+					
+					if (i < array.footprint - 1)
+					{
+						neighbor_1 = plane_partition[i + 1][j];
+					}
+					
+					if (j < row_lengths[i] - 1)
+					{
+						neighbor_2 = plane_partition[i][j + 1];
+					}
+					
+					diagonal_change[index] = Math.max(neighbor_1, neighbor_2);
+					
+					
+					
+					//These don't look quite like the numbers from Pak's algorithm -- that's because we've subtracted plane_partition[i][j] from both, effectively getting the delta.
+					if (index > 0)
+					{
+						neighbor_1 = plane_partition[i - 1][j];
+						neighbor_2 = plane_partition[i][j - 1];
+						
+						diagonal_change[index] += Math.min(neighbor_1, neighbor_2) - 2*plane_partition[i][j];
+					}
+					
+					else
+					{
+						diagonal_change[index] *= -1;
+					}
+				});
+				
+				console.log(diagonal_change);
+				
+				return;
+				
+				
+				
+				hue_index++;
+			}
+		}
+		
+		
+		
+		plane_partition.type = "tableau";
 		
 		currently_running_algorithm = false;
 	}
