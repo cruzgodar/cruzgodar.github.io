@@ -1020,7 +1020,7 @@
 	
 	
 	
-	function add_cube(array, x, y, z)
+	function add_cube(array, x, y, z, h = 0, s = 0, v = .5)
 	{
 		const materials = [
 			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
@@ -1031,7 +1031,7 @@
 			new THREE.MeshStandardMaterial({map: cube_texture_2, transparent: true, opacity: 0})
 		];
 
-		materials.forEach(material => material.color.setHSL(0, 0, .5));
+		materials.forEach(material => material.color.setHSL(h, s, v));
 		
 		const cube = new THREE.Mesh(cube_geometry, materials);
 		
@@ -1044,7 +1044,7 @@
 	
 	
 	
-	function add_floor(array, x, z)
+	function add_floor(array, x, z, h = 0, s = 0, v = .2)
 	{
 		const materials = [
 			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
@@ -1055,7 +1055,7 @@
 			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0})
 		];
 
-		materials.forEach(material => material.color.setHSL(0, 0, .2));
+		materials.forEach(material => material.color.setHSL(h, s, v));
 		
 		const floor = new THREE.Mesh(floor_geometry, materials);
 		
@@ -2229,7 +2229,7 @@
 			return;
 		}
 		
-		let plane_partition = JSON.parse(JSON.stringify(array.numbers));
+		let plane_partition = array.numbers;
 		
 		
 		
@@ -2251,21 +2251,7 @@
 		
 		
 		
-		let row_lengths = new Array(array.footprint);
-		
-		let num_corners = 0;
-		
-		for (let row = 0; row < array.footprint; row++)
-		{
-			row_lengths[row] = plane_partition[row].indexOf(0);
-			
-			if (row_lengths[row] === -1)
-			{
-				row_lengths[row] = array.footprint;
-			}
-			
-			num_corners += row_lengths[row];
-		}
+		let num_corners = array.footprint * array.footprint;
 		
 		
 		
@@ -2274,30 +2260,52 @@
 		//Get outer corners by just scanning through the array forwards.
 		for (let row = 0; row < array.footprint; row++)
 		{
-			for (let col = 0; col < row_lengths[row]; col++)
+			for (let col = 0; col < array.footprint; col++)
 			{
 				//Highlight this diagonal.
 				let diagonal_coordinates = [];
 				
 				let i = 0;
 				
-				while (row + i < array.footprint && col + i < row_lengths[row + i])
+				while (row + i < array.footprint && col + i < array.footprint)
 				{
 					diagonal_coordinates.push([row + i, col + i, plane_partition[row + i][col + i] - 1]);
 					
 					i++;
 				}
 				
-				console.log(diagonal_coordinates);
 				
-				hue_index = 0;
 				
-				await color_cubes(array, diagonal_coordinates, hue_index / num_corners);
+				i = diagonal_coordinates[0][0];
+				let j = diagonal_coordinates[0][1];
+				
+				let coordinates_to_color = [];
+				
+				for (let k = plane_partition[i][j] - 2; k >= 0; k--)
+				{
+					coordinates_to_color.push([i, j, k]);
+				}
+				
+				color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
+				
+				
+				
+				coordinates_to_color = [];
+				
+				diagonal_coordinates.forEach(coordinate =>
+				{
+					if (coordinate[2] >= 0)
+					{
+						coordinates_to_color.push(coordinate);
+					}
+				});
+				
+				await color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
 				
 				
 				
 				//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
-				let diagonal_change = new Array(diagonal_coordinates.length);
+				let new_diagonal_height = new Array(diagonal_coordinates.length);
 				
 				diagonal_coordinates.forEach((coordinate, index) =>
 				{
@@ -2312,37 +2320,121 @@
 						neighbor_1 = plane_partition[i + 1][j];
 					}
 					
-					if (j < row_lengths[i] - 1)
+					if (j < array.footprint - 1)
 					{
 						neighbor_2 = plane_partition[i][j + 1];
 					}
 					
-					diagonal_change[index] = Math.max(neighbor_1, neighbor_2);
+					new_diagonal_height[index] = Math.max(neighbor_1, neighbor_2);
 					
 					
 					
-					//These don't look quite like the numbers from Pak's algorithm -- that's because we've subtracted plane_partition[i][j] from both, effectively getting the delta.
 					if (index > 0)
 					{
 						neighbor_1 = plane_partition[i - 1][j];
 						neighbor_2 = plane_partition[i][j - 1];
 						
-						diagonal_change[index] += Math.min(neighbor_1, neighbor_2) - 2*plane_partition[i][j];
+						new_diagonal_height[index] += Math.min(neighbor_1, neighbor_2) - plane_partition[i][j];
 					}
 					
 					else
 					{
-						diagonal_change[index] *= -1;
+						new_diagonal_height[index] = plane_partition[i][j] - new_diagonal_height[index];
+					}
+				});	
+				
+				
+				
+				//This is async, so we can't use forEach easily.
+				for (let index = 0; index < diagonal_coordinates.length; index++)
+				{
+					i = diagonal_coordinates[index][0];
+					j = diagonal_coordinates[index][1];
+					
+					if (new_diagonal_height[index] > plane_partition[i][j])
+					{
+						let coordinates_to_reveal = [];
+						
+						for (let k = plane_partition[i][j]; k < new_diagonal_height[index]; k++)
+						{
+							array.cubes[i][j][k] = add_cube(array, j, k, i);
+							
+							coordinates_to_reveal.push([i, j, k]);
+						}
+						
+						if (in_2d_view)
+						{
+							reveal_cubes(array, coordinates_to_reveal);
+						}
+						
+						else
+						{
+							await reveal_cubes(array, coordinates_to_reveal);
+						}	
+					}
+					
+					
+					
+					else if (new_diagonal_height[index] < plane_partition[i][j])
+					{
+						let coordinates_to_delete = [];
+						
+						for (let k = plane_partition[i][j] - 1; k >= new_diagonal_height[index]; k--)
+						{
+							coordinates_to_delete.push([i, j, k]);
+						}
+						
+						if (in_2d_view)
+						{
+							delete_cubes(array, coordinates_to_delete);
+						}
+						
+						else
+						{
+							await delete_cubes(array, coordinates_to_delete);
+						}
+					}
+					
+					
+					
+					plane_partition[i][j] = new_diagonal_height[index];
+					
+					if (in_2d_view)
+					{
+						let top = total_array_footprint - array.partial_footprint_sum - 1;
+						let left = array.partial_footprint_sum - array.footprint;
+						
+						draw_single_cell_2d_view_text(array, i, j, top, left);
+					}
+				}
+				
+				
+				
+				let coordinates_to_uncolor = [];
+				
+				coordinates_to_color.forEach((coordinate, index) =>
+				{
+					if (index !== 0 && coordinate[2] < plane_partition[coordinate[0]][coordinate[1]])
+					{
+						coordinates_to_uncolor.push(coordinate);
 					}
 				});
 				
-				console.log(diagonal_change);
+				if (in_2d_view)
+				{
+					uncolor_cubes(array, coordinates_to_uncolor);
+				}
 				
-				return;
+				else
+				{
+					await uncolor_cubes(array, coordinates_to_uncolor);
+				}		
 				
 				
 				
 				hue_index++;
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
 			}
 		}
 		
