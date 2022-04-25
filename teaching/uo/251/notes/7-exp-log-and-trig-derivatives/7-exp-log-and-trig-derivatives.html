@@ -38,7 +38,7 @@
 
 
 
-!begin-prop
+!begin-thm
 	
 	derivatives of trig functions
 	
@@ -54,7 +54,7 @@
 	
 	6. $\frac{d}{dx} [\cot(x)] = -\csc^2(x)$.
 	
-!end-prop
+!end-thm
 
 
 
@@ -106,7 +106,7 @@
 	
 	a higher-order trig derivative
 	
-	Find $\frac{d^74}{dx^74}[\cos(x)]$.
+	Find $\frac{d^{74}}{dx^{74}}[\cos(x)]$.
 	
 	This seems pretty tricky on first glance, but it&#x2019;s actually not so bad. Let&#x2019;s write out the first few derivatives and see if we can spot a pattern.
 	
@@ -118,7 +118,7 @@
 	
 	$\frac{d^4}{dx^4}[\cos(x)] = \cos(x)$.
 	
-	Since the fourth derivative is just $\cos(x)$ again, every four derivatives we take won&#x2019;t matter. Therefore, instead of taking the 74th derivative, we can take the 70th, or 66th, or 62nd, and so on. The largest multiple of 4 less than 74 is $72 = 4 * 18$, so $\frac{d^74}{dx^74}[\cos(x)] = \frac{d^2}{dx^2}[\cos(x)] = -\cos(x)$.
+	Since the fourth derivative is just $\cos(x)$ again, every four derivatives we take won&#x2019;t matter. Therefore, instead of taking the 74th derivative, we can take the 70th, or 66th, or 62nd, and so on. The largest multiple of 4 less than 74 is $72 = 4 * 18$, so $\frac{d^{74}}{dx^{74}}[\cos(x)] = \frac{d^2}{dx^2}[\cos(x)] = -\cos(x)$.
 	
 !end-example
 
@@ -126,7 +126,7 @@
 	
 	a higher-order trig derivative
 	
-	Find $\frac{d^81}{dx^81}[\sin(x)]$.
+	Find $\frac{d^{81}}{dx^{81}}[\sin(x)]$.
 	
 !end-exercise
 
@@ -148,7 +148,7 @@
 
 
 
-!begin-prop
+!begin-thm
 	
 	the derivatives of exponential and logarithmic functions
 	
@@ -158,7 +158,57 @@
 	
 	2. $\frac{d}{dx}[\log_b(x)] = \frac{1}{x \cdot \ln(b)}$.
 	
-!end-prop
+	In particular, when $b = e$, since $\ln(e) = 1$, we get
+	
+	1. $\frac{d}{dx}[e^x] = e^x$.
+	
+	2. $\frac{d}{dx}[\ln(x)] = \frac{1}{x}$.
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	This is really important: $y = e^x$ is the unique function who&#x2019;s its own derivative. The slope of the graph of $y = e^x$ is exactly its height.
+	
+	!iframe https://www.desmos.com/calculator/cajlfcni4l
+	
+	This is why we care so much about the number $e$: it makes derivatives really simple.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	the derivatives of exponential and logarithmic functions
+	
+	Find the equation of the tangent line to $f(x) = x^2e^x$ at $x = 2$.
+	
+	First of all, we need to find $f'(x)$. This is a product rule computation: $f'(x) = 2xe^x + x^2e^x$. For $x = 2$, $f(2) = 4e^2$ and $f'(2) = 8e^2$. Therefore, the equation of the tangent line is
+	
+	$$
+		y = 4e^2 + 8e^2(x - 2).
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	the derivatives of exponential and logarithmic functions
+	
+	The position of a ball rolling through tar is given by $s(t) = 4 + \log_5(t)$ after $t$ seconds. What is the velocity of the ball after $t$ seconds?
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	At this point, there&#x2019;s a lot opened up to us. The rest of the quarter will be spent doing two things: learning how to take derivatives of more functions, like compositions, inverse functions, and implicit functions, and also learning why derivatives are so useful. We&#x2019;ve done some basic applications so far, but there are a handful more that we&#x2019;ll want to talk about &mdash; the most important is optimization, a technique that would justify learning about derivatives even if they weren&#x2019;t useful for anything else. The next three sections will be concerned with the first topic, and the remaining six after that will cover the second.
+	
+!end-text-block
 
 
 
