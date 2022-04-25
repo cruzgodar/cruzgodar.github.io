@@ -417,24 +417,17 @@
 		
 		let max_width = 0;
 		
-		let elements = Page.element.querySelectorAll(".chapter-link a");
-		
-		for (let i = 0; i < elements.length; i++)
+		Page.element.querySelectorAll(".chapter-link a").forEach(element =>
 		{
-			let width = elements[i].offsetWidth;
+			let width = element.offsetWidth;
 			
 			if (width > max_width)
 			{
 				max_width = width;
 			}
-		}
+		});
 		
-		elements = Page.element.querySelectorAll(".chapter-link");
-		
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].style.width = max_width + "px";
-		}
+		Page.element.querySelectorAll(".chapter-link").forEach(element => element.style.width = max_width + "px");
 	}
 	
 	

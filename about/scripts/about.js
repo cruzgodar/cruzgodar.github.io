@@ -12,10 +12,7 @@
 	{
 		if (Page.element.querySelector("#toggle-minor-versions-checkbox").checked)
 		{
-			for (let i = 0; i < version_elements.length; i++)
-			{
-				Page.Animate.change_opacity(version_elements[i], 0, Site.opacity_animation_time);
-			}
+			version_elements.forEach(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time));
 			
 			setTimeout(() =>
 			{
@@ -25,10 +22,7 @@
 				
 				setTimeout(() =>
 				{
-					for (let i = 0; i < version_elements.length; i++)
-					{
-						Page.Animate.change_opacity(version_elements[i], 1, Site.opacity_animation_time);
-					}
+					version_elements.forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
 					
 					Page.Load.AOS.on_resize();
 					Page.Load.AOS.on_scroll();
@@ -38,17 +32,11 @@
 		
 		else
 		{
-			for (let i = 0; i < version_elements.length; i++)
-			{
-				Page.Animate.change_opacity(version_elements[i], 0, Site.opacity_animation_time);
-			}
+			version_elements.forEach(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time));
 			
 			setTimeout(() =>
 			{
-				for (let i = 0; i < version_elements.length; i++)
-				{
-					Page.Animate.change_opacity(version_elements[i], 1, Site.opacity_animation_time);
-				}
+				version_elements.forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
 				
 				Page.set_element_styles(".minor-version", "display", "none");
 				

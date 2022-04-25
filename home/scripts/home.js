@@ -27,17 +27,7 @@
 	
 	setTimeout(() =>
 	{
-		try
-		{
-			let elements = Page.element.querySelectorAll(".footer-button");
-			
-			for (let i = 0; i < elements.length; i++)
-			{
-				Page.Load.HoverEvents.add(elements[i]);
-			}
-		}
-		
-		catch(ex) {}
+		Page.element.querySelectorAll(".footer-button").forEach(element => Page.Load.HoverEvents.add(element));
 	}, 100);
 	
 	
@@ -58,15 +48,15 @@
 		
 		let children = elements[1].querySelectorAll(".image-link");
 		
-		for (let i = 0; i < Page.Load.AOS.elements[2].length; i++)
+		Page.Load.AOS.elements[2].forEach(element =>
 		{
-			Page.Load.AOS.elements[2][i].setAttribute("data-aos", "zoom-out");
+			element.setAttribute("data-aos", "zoom-out");
 			
 			if (Site.use_js_animation)
 			{
-				Page.Load.AOS.elements[2][i].style.transform = "scale(1.3)";
+				element.style.transform = "scale(1.3)";
 			}
-		}
+		});
 		
 		Page.Load.AOS.element_animation_types[2] = 1;
 	});	
