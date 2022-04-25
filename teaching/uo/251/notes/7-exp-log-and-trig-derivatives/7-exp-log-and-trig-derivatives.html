@@ -1,0 +1,171 @@
+<head>
+	<title>Section 7: Exponential, Logarithmic, and Trig Derivatives</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 7: Exponential, Logarithmic, and Trig Derivatives"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/7-exp-log-and-trig-derivatives/7-exp-log-and-trig-derivatives.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/252/notes/7-exp-log-and-trig-derivatives/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 7: Exponential, Logarithmic, and Trig Derivatives
+
+!text b c Covered in Week 5
+
+<br>
+
+
+
+!begin-text-block
+	
+	So far, we&#x2019;ve defined derivatives with a cumbersome limit definition, and then found a cleaner formula for polynomials. We also know how to take derivatives of functions made by adding, subtracting, multiplying, or dividing other functions. There&#x2019;s two major things left for us to do before we have a solid bedrock of derivatives: we need to know how to take derivatives of other basic functions, like $\sin(x)$, $\cos(x)$, $\ln(x)$, and $e^x$, and we also need to know how to differentiate functions made by combining others via composition: for example, $\cos(x^5)$ or $(\cos(x))^5$.
+	
+	Let&#x2019;s start with the first of those two &mdash; we&#x2019;ll save compositions for the next section. The first thing to cover is what the derivatives of trig functions look like. There are six of them, and all the derivatives are combinations of others.
+	
+!end-text-block
+
+
+
+!begin-prop
+	
+	derivatives of trig functions
+	
+	1. $\frac{d}{dx} [\sin(x)] = \cos(x)$.
+	
+	2. $\frac{d}{dx} [\cos(x)] = -\sin(x)$.
+	
+	3. $\frac{d}{dx} [\tan(x)] = \sec^2(x)$.
+	
+	4. $\frac{d}{dx} [\sec(x)] = \sec(x)\tan(x)$.
+	
+	5. $\frac{d}{dx} [\csc(x)] = -\csc(x)\cot(x)$.
+	
+	6. $\frac{d}{dx} [\cot(x)] = -\csc^2(x)$.
+	
+!end-prop
+
+
+
+!begin-text-block
+	
+	The notation $\sec^2(x)$ just means $(\sec(x))^2$ &mdash; we use it to distinguish from $\sec(x^2)$.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	derivatives of trig functions
+	
+	Find $\frac{d}{dx}[x^2\cos(x)]$.
+	
+	This is a product of two functions we know how to differentiate: $x^2$ and $\cos(x)$. In total, we get
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx}[x^2\cos(x)] = 2x\cos(x) + x^2(-\sin(x)).
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	derivatives of trig functions
+	
+	Find $\frac{d}{dx}\left[9x + \frac{\sec(x)}{x}\right]$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	Let&#x2019;s take a closer look at what the relationship between $\sin$ and $\cos$ means. At any point on the two waves, the height of $\cos(x)$ gives the slope of $\sin(x)$, and the height of $\cos(x)$ is the opposite of the slope of $\sin(x)$. It&#x2019;s a fundamental fact of waves that their slopes are given by other wave functions.
+	
+	!iframe https://www.desmos.com/calculator/qudvvbftix
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a higher-order trig derivative
+	
+	Find $\frac{d^74}{dx^74}[\cos(x)]$.
+	
+	This seems pretty tricky on first glance, but it&#x2019;s actually not so bad. Let&#x2019;s write out the first few derivatives and see if we can spot a pattern.
+	
+	$\frac{d}{dx}[\cos(x)] = -\sin(x)$.
+	
+	$\frac{d^2}{dx^2}[\cos(x)] = -\cos(x)$.
+	
+	$\frac{d^3}{dx^3}[\cos(x)] = \sin(x)$.
+	
+	$\frac{d^4}{dx^4}[\cos(x)] = \cos(x)$.
+	
+	Since the fourth derivative is just $\cos(x)$ again, every four derivatives we take won&#x2019;t matter. Therefore, instead of taking the 74th derivative, we can take the 70th, or 66th, or 62nd, and so on. The largest multiple of 4 less than 74 is $72 = 4 * 18$, so $\frac{d^74}{dx^74}[\cos(x)] = \frac{d^2}{dx^2}[\cos(x)] = -\cos(x)$.
+	
+!end-example
+
+!begin-exercise
+	
+	a higher-order trig derivative
+	
+	Find $\frac{d^81}{dx^81}[\sin(x)]$.
+	
+!end-exercise
+
+
+
+!section
+
+!text s Exponential and Logarithmic Derivatives
+
+<br>
+
+
+
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 7: Exponential, Logarithmic, and Trig Derivatives",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/251/notes"
+	};
+	
+	Page.load();
+</script>
