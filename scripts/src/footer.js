@@ -163,28 +163,26 @@ Page.Footer =
 		
 		setTimeout(() =>
 		{
-			let elements = Page.element.querySelectorAll("#gallery-link img, #applets-link img, #writing-link img, #teaching-link img, #about-link img");
-			
-			for (let i = 0; i < elements.length; i++)
+			Page.element.querySelectorAll("#gallery-link img, #applets-link img, #writing-link img, #teaching-link img, #about-link img").forEach(image_link =>
 			{
-				elements[i].addEventListener("mouseenter", () =>
+				image_link.addEventListener("mouseenter", () =>
 				{
 					if (!(Site.Interaction.currently_touch_device))
 					{
-						elements[i].parentNode.parentNode.lastElementChild.style.marginTop = "-32px";
-						Page.Animate.change_opacity(elements[i].parentNode.parentNode.lastElementChild.firstElementChild, 1, 200);
+						image_link.parentNode.parentNode.lastElementChild.style.marginTop = "-32px";
+						Page.Animate.change_opacity(image_link.parentNode.parentNode.lastElementChild.firstElementChild, 1, Site.opacity_animation_time);
 					}
 				});
 				
-				elements[i].addEventListener("mouseleave", () =>
+				image_link.addEventListener("mouseleave", () =>
 				{
 					if (!(Site.Interaction.currently_touch_device))
 					{
-						elements[i].parentNode.parentNode.lastElementChild.style.marginTop = 0;
-						Page.Animate.change_opacity(elements[i].parentNode.parentNode.lastElementChild.firstElementChild, 0, 200);
+						image_link.parentNode.parentNode.lastElementChild.style.marginTop = 0;
+						Page.Animate.change_opacity(image_link.parentNode.parentNode.lastElementChild.firstElementChild, 0, Site.opacity_animation_time);
 					}
 				});
-			}
+			});
 		}, 10);
 		
 		
@@ -371,22 +369,13 @@ Page.Footer =
 					elements.push(this.debug_button);
 				}
 				
-				for (let i = 0; i < elements.length; i++)
-				{
-					Page.Load.HoverEvents.add_with_scale(elements[i], 1.1);
-				}
+				elements.forEach(element => Page.Load.HoverEvents.add_with_scale(element, 1.1));
 				
 				
 				
 				let links = [this.gallery_link, this.applets_link, this.writing_link, this.teaching_link, this.about_link];
 				
-				for (let i = 0; i < links.length; i++)
-				{
-					links[i].addEventListener("click", (e) =>
-					{
-						e.preventDefault();
-					});
-				}
+				links.forEach(link => link.addEventListener("click", e => e.preventDefault()));
 			}, Site.opacity_animation_time / 6);
 			
 			
@@ -761,13 +750,11 @@ Page.Footer =
 		
 		show_settings_text: function(text)
 		{
-			let elements = Page.element.querySelectorAll(".settings-text-container");
-			
-			for (let i = 0; i < elements.length; i++)
+			Page.element.querySelectorAll(".settings-text-container").forEach(element =>
 			{
-				Page.Animate.change_opacity_js(elements[i], 0, 1.5 * Site.base_animation_time);
-				Page.Animate.change_scale_js(elements[i], .9, 1.5 * Site.base_animation_time);
-			}
+				Page.Animate.change_opacity_js(element, 0, 1.5 * Site.base_animation_time);
+				Page.Animate.change_scale_js(element, .9, 1.5 * Site.base_animation_time);
+			});
 			
 			
 			

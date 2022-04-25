@@ -54,11 +54,6 @@ Page.Images =
 	
 	add_extensions: function()
 	{
-		let elements = Page.element.querySelectorAll(".check-webp");
-		
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].src += this.file_extension;
-		}
+		Page.element.querySelectorAll(".check-webp").forEach(image => image.src += this.file_extension);
 	}
 };

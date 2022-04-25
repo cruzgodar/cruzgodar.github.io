@@ -208,10 +208,8 @@ Page.Navigation =
 		
 		
 		
-		for (let i = 0; i < Object.keys(Site.Settings.url_vars).length; i++)
+		Object.keys(Site.Settings.url_vars).forEach(key =>
 		{
-			key = Object.keys(Site.Settings.url_vars)[i];
-			
 			if (Site.Settings.url_vars[key] !== 0 || (window.matchMedia("(prefers-color-scheme: dark)").matches && Site.Settings.url_vars["theme"] === 0 && key === "theme"))
 			{
 				if (DEBUG || found_first_key)
@@ -226,7 +224,7 @@ Page.Navigation =
 					found_first_key = true;
 				}
 			}
-		}
+		});
 		
 		
 		
@@ -238,12 +236,7 @@ Page.Navigation =
 	write_url_vars: function()
 	{
 		//Make the current state persist on refresh.
-		let display_url = Page.url
-		
-		if (DEBUG)
-		{
-			display_url = `/index-testing.html?page=${encodeURIComponent(Page.url)}`;
-		}
+		let display_url = DEBUG ? `/index-testing.html?page=${encodeURIComponent(Page.url)}` : Page.url;
 		
 		history.replaceState({}, document.title, display_url + this.concat_url_vars());
 	}
@@ -383,12 +376,9 @@ Page.Unload =
 Page.unload = function()
 {
 	//Remove JS so it's not executed twice.
-	let elements = document.querySelectorAll("script, style.temporary-style, link.temporary-style");
+	document.querySelectorAll("script, style.temporary-style, link.temporary-style").forEach(element => element.remove());
 	
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].remove();
-	}
+	
 	
 	//Clear temporary things.
 	//Unbind everything transient from the window and the html element.
@@ -403,32 +393,18 @@ Page.unload = function()
 	
 	
 	
-	//Clear any temporary intervals.
-	for (let i = 0; i < Page.temporary_intervals.length; i++)
-	{
-		clearInterval(Page.temporary_intervals[i]);
-	}
+	Page.temporary_intervals.forEach(refresh_id => clearInterval(refresh_id));
 	
 	Page.temporary_intervals = [];
 	
 	
 	
-	//Terminate any temporary web workers.
-	for (let i = 0; i < Page.temporary_web_workers.length; i++)
-	{
-		Page.temporary_web_workers[i].terminate();
-	}
+	Page.temporary_web_workers.forEach(web_worker => web_worker.terminate());
 	
 	Page.temporary_web_workers = [];
 	
 	
 	
-	
 	//Remove everything that's not a script from the page element.
-	elements = Page.element.querySelectorAll(":scope > *");
-	
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].remove();
-	}	
+	Page.element.querySelectorAll(":scope > *").forEach(element => element.remove());
 }

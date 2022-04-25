@@ -23,21 +23,21 @@ let Browser =
 		
 		searchString: function(data)
 		{
-			for (let i = 0; i < data.length; i++)
+			data.forEach(entry =>
 			{
-				let dataString = data[i].string;
-				this.versionSearchString = data[i].subString;
+				const dataString = entry.string;
+				this.versionSearchString = entry.subString;
 
-				if (dataString.indexOf(data[i].subString) !== -1)
+				if (dataString.indexOf(entry.subString) !== -1)
 				{
-					return data[i].identity;
+					return entry.identity;
 				}
-			}
+			});
 		},
 		
 		searchVersion: function(dataString)
 		{
-			let index = dataString.indexOf(this.versionSearchString);
+			const index = dataString.indexOf(this.versionSearchString);
 			
 			if (index === -1)
 			{
@@ -46,7 +46,7 @@ let Browser =
 			
 			
 			
-			let rv = dataString.indexOf("rv:");
+			const rv = dataString.indexOf("rv:");
 			
 			if (this.versionSearchString === "Trident" && rv !== -1)
 			{

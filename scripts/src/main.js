@@ -70,14 +70,9 @@ Page.using_custom_script = true;
 //Sets a whole bunch of elements' styles at once.
 Page.set_element_styles = function(query_string, property, value, important = false)
 {
-	let elements = Page.element.querySelectorAll(query_string);
+	const priority_string = important ? "important" : "";
 	
-	let priority_string = important ? "important" : "";
-	
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].style.setProperty(property, value, priority_string);
-	}
+	Page.element.querySelectorAll(query_string).forEach(element => element.style.setProperty(property, value, priority_string));
 }
 
 
@@ -262,12 +257,7 @@ Site.load = async function(url)
 		document.documentElement.style.userSelect = "none";
 		document.documentElement.style.WebkitTouchCallout = "none";
 		
-		let elements = Page.element.querySelectorAll("body *");
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].setAttribute("draggable", "false");
-		}
-		
+		Page.element.querySelectorAll("body *").forEach(element => element.setAttribute("draggable", "false"));
 		
 		
 		
@@ -343,7 +333,7 @@ Site.load_script = function(src, is_module = false)
 {
 	return new Promise((resolve, reject) =>
 	{
-		const script = document.createElement("script");
+		let script = document.createElement("script");
 		
 		if (is_module)
 		{
@@ -447,7 +437,7 @@ Site.Interaction =
 	
 	set_up_listeners: function()
 	{
-		let bound_function = this.handle_touch_event.bind(this);
+		const bound_function = this.handle_touch_event.bind(this);
 		
 		document.documentElement.addEventListener("touchstart", bound_function, false);
 		document.documentElement.addEventListener("touchmove", bound_function, false);
@@ -458,7 +448,7 @@ Site.Interaction =
 		{
 			if (this.currently_touch_device)
 			{
-				let time_between_mousemoves = Date.now() - this.last_mousemove_event;
+				const time_between_mousemoves = Date.now() - this.last_mousemove_event;
 				
 				this.last_mousemove_event = Date.now();
 				

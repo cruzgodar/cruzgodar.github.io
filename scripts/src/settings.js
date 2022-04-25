@@ -39,11 +39,9 @@ Site.Settings =
 		let query = window.location.search.substring(1);
 		let vars = query.split("&");
 		
-		let pair = [];
-		
 		for (let i = 0; i < vars.length; i++)
 		{
-			pair = vars[i].split("=");
+			let pair = vars[i].split("=");
 			
 			if (pair[0] === id)
 			{
@@ -971,12 +969,7 @@ Site.Settings =
 
 	set_img_button_contrast: function()
 	{
-		let elements = Page.element.querySelectorAll(".scroll-button");
-		
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].setAttribute("src", elements[i].getAttribute("src").replace("chevron-left", "chevron-left-dark").replace("chevron-right", "chevron-right-dark").replace("chevron-down", "chevron-down-dark"));
-		}
+		Page.element.querySelectorAll(".scroll-button").forEach(element => element.setAttribute("src", element.getAttribute("src").replace("chevron-left", "chevron-left-dark").replace("chevron-right", "chevron-right-dark").replace("chevron-down", "chevron-down-dark")));
 	},
 
 
@@ -1023,12 +1016,7 @@ Site.Settings =
 
 	remove_animation: function()
 	{
-		let elements = document.body.querySelectorAll("[data-aos]")
-		
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].removeAttribute("data-aos");
-		}
+		document.body.querySelectorAll("[data-aos]").forEach(element => element.removeAttribute("data-aos"));
 	},
 
 

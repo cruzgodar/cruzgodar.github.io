@@ -74,30 +74,25 @@ Page.Layout =
 		
 		if (this.aspect_ratio > 1 && !this.AppletColumns.are_equalized)
 		{
-			setTimeout(this.AppletColumns.equalize, 100);
+			setTimeout(this.AppletColumns.equalize, 50);
 		}
 		
 		else if (this.aspect_ratio < 1 && this.AppletColumns.are_equalized)
 		{
-			setTimeout(this.AppletColumns.remove, 100)
+			setTimeout(this.AppletColumns.remove, 50);
 		}	
 		
 		
 		
-		for (let i = 0; i < this.Multicols.texts.length; i++)
+		this.Multicols.texts.forEach((text, index) =>
 		{
-			this.Multicols.texts[i].style.marginLeft = this.Multicols.reference.getBoundingClientRect().left + "px";
-			this.Multicols.image_links[i].style.marginLeft = this.Multicols.reference.getBoundingClientRect().left + "px";
-		}
+			text.style.marginLeft = this.Multicols.reference.getBoundingClientRect().left + "px";
+			this.Multicols.image_links[index].style.marginLeft = this.Multicols.reference.getBoundingClientRect().left + "px";
+		});
 		
 		
 		
-		let elements = Page.element.querySelectorAll("iframe");
-		
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].style.height = `${elements[i].offsetWidth - 8}px`;
-		}
+		Page.element.querySelectorAll("iframe").forEach(iframe => iframe.style.height = `${iframe.offsetWidth - 8}px`);
 		
 		
 		
@@ -114,37 +109,22 @@ Page.Layout =
 		
 		
 		//The banner opacity is the big sticking point, though. The solution is to increase the window height slowly and fire scroll events in rapid succession.
-		this.resize_time = 0;
+		let temp_object = {w: this.window_width, h: this.window_height};
 		
-		this.window_width_step_distance = (this.new_window_height - this.window_height) * (8 / Site.opacity_animation_time);
-		this.window_height_step_distance = (this.new_window_height - this.window_height) * (8 / Site.opacity_animation_time);
-		
-		let refresh_id = setInterval(() =>
-		{
-			this.resize_step();
-			
-			if (this.resize_time >= Site.opacity_animation_time)
+		anime({
+			targets: temp_object,
+			w: this.new_window_width,
+			h: this.new_window_height,
+			duration: Site.opacity_animation,
+			easing: "easeInOutQuad",
+			update: () =>
 			{
-				clearInterval(refresh_id);
-				
-				this.window_width = this.new_window_width;
-				this.window_height = this.new_window_height;
+				this.window_width = temp_object.w;
+				this.window_height = temp_object.h;
 				
 				Page.Banner.on_scroll(0);
 			}
-		}, 8);
-	},
-
-
-
-	resize_step: function()
-	{
-		this.window_width += this.window_width_step_distance;
-		this.window_height += this.window_height_step_distance;
-		
-		this.resize_time += 8;
-		
-		Page.Banner.on_scroll(0);
+		});
 	},
 
 
@@ -247,19 +227,19 @@ Page.Layout =
 			
 			
 			
-			for (let i = 0; i < this.texts.length; i++)
+			this.texts.forEach((text, index) =>
 			{
-				this.texts[i].style.marginLeft = "";
+				text.style.marginLeft = "";
 				
 				
 				
-				this.image_links[i].style.width = "";
+				this.image_links[index].style.width = "";
 				
-				this.image_links[i].style.gridRowGap = "";
-				this.image_links[i].style.gridColumnGap = "";
+				this.image_links[index].style.gridRowGap = "";
+				this.image_links[index].style.gridColumnGap = "";
 				
-				this.image_links[i].style.marginLeft = "";
-			}
+				this.image_links[index].style.marginLeft = "";
+			});
 			
 			
 			
@@ -269,26 +249,24 @@ Page.Layout =
 			
 			
 			
-			for (let i = 0; i < containers.length; i++)
+			containers.forEach(container =>
 			{
 				//Remove the container but keep the children.
-				while (containers[i].firstChild)
+				while (container.firstChild)
 				{
-					containers[i].parentNode.insertBefore(containers[i].firstChild, containers[i]);
+					container.parentNode.insertBefore(container.firstChild, container);
 				}
 				
-				containers[i].remove();
-			}
+				container.remove();
+			});
 			
 			
 			
-			let elements = Page.element.querySelectorAll(".old-new-aos-section");
-			
-			for (let i = 0; i < elements.length; i++)
+			Page.element.querySelectorAll(".old-new-aos-section").forEach(section =>
 			{
-				elements[i].classList.remove("old-new-aos-section");
-				elements[i].classList.add("new-aos-section");
-			}
+				section.classList.remove("old-new-aos-section");
+				section.classList.add("new-aos-section");
+			});
 		}
 	},
 	
@@ -342,6 +320,8 @@ Page.Layout =
 				height_sums.push(height_sums[i - 1] + elements[i].clientHeight);
 			}
 			
+			
+			
 			//Find the midpoint.
 			
 			let min_height_difference = Infinity;
@@ -361,7 +341,7 @@ Page.Layout =
 						midpoint_index = i + 1;
 					}
 				}
-			}	
+			}
 			
 			
 			

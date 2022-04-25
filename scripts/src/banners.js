@@ -151,7 +151,7 @@ Page.Banner =
 		
 	scroll_animation_frame: function(timestamp)
 	{
-		let time_elapsed = timestamp - Page.Banner.last_scroll_timestamp;
+		const time_elapsed = timestamp - Page.Banner.last_scroll_timestamp;
 		
 		Page.Banner.last_scroll_timestamp = timestamp;
 		
@@ -169,7 +169,7 @@ Page.Banner =
 		{
 			if (Page.scroll <= Page.Layout.window_height)
 			{
-				let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
+				const opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 				
 				try {Page.element.querySelector("#banner").style.opacity = opacity;}
 				catch(ex) {}
@@ -198,7 +198,7 @@ Page.Banner =
 			
 			if (Page.scroll <= Page.Layout.window_height/3)
 			{
-				let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
+				const opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 				
 				if (this.ScrollButton.exists)
 				{
@@ -295,11 +295,9 @@ Page.Banner =
 	//For every banner page linked to by the current page, this fetches that banner so that the waiting time between pages is minimized.
 	fetch_other_page_banners_in_background: function()
 	{
-		let links = Page.element.querySelectorAll("a");
-		
-		for (let i = 0; i < links.length; i++)
+		Page.element.querySelectorAll("a").forEach(link =>
 		{
-			let href = links[i].getAttribute("href");
+			const href = link.getAttribute("href");
 			
 			if (this.preloadable_pages.includes(href) && !(this.pages_already_fetched.includes(href)))
 			{
@@ -321,7 +319,7 @@ Page.Banner =
 					Site.Fetch.get_next_item_from_queue();
 				}
 			}
-		}
+		});
 	},
 
 
@@ -338,7 +336,7 @@ Page.Banner =
 		
 		insert: function()
 		{
-			let opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
+			const opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 			
 			
 			

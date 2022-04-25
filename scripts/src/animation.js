@@ -39,7 +39,7 @@ Page.Animate =
 			{
 				element.style.opacity = end_value;
 				
-				let timeout_id = setTimeout(() =>
+				const timeout_id = setTimeout(() =>
 				{
 					element.style.transition = "";
 					resolve();
@@ -81,7 +81,7 @@ Page.Animate =
 			{
 				element.style.transform = `scale(${end_value})`;
 				
-				let timeout_id = setTimeout(() =>
+				const timeout_id = setTimeout(() =>
 				{
 					element.style.transition = "";
 					resolve();
@@ -125,7 +125,7 @@ Page.Animate =
 				element.style.transform = `translateX(0px)`;
 				element.style.opacity = 1;
 				
-				let timeout_id = setTimeout(() =>
+				const timeout_id = setTimeout(() =>
 				{
 					element.style.transition = "";
 					resolve();
@@ -160,15 +160,15 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			for (let i = 0; i < elements.length; i++)
+			elements.forEach((element, index) =>
 			{
 				setTimeout(() =>
 				{
-					elements[i].setAttribute("data-aos-offset", -1000000);
+					element.setAttribute("data-aos-offset", -1000000);
 					
 					AOS.refresh();
-				}, delays[i]);
-			}
+				}, delays[index]);
+			});
 			
 			setTimeout(resolve, delays[delays.length - 1] + duration);
 		});
@@ -198,15 +198,15 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			for (let i = 0; i < elements.length; i++)
+			elements.forEach((element, index) =>
 			{
 				setTimeout(() =>
 				{
-					elements[i].setAttribute("data-aos-offset", -1000000);
+					element.setAttribute("data-aos-offset", -1000000);
 					
 					AOS.refresh();
-				}, delays[i]);
-			}
+				}, delays[index]);
+			});
 			
 			setTimeout(resolve, delays[delays.length - 1] + duration);
 		});

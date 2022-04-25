@@ -490,8 +490,6 @@ Page.Components =
 		
 		html += `</select></div></div>`;
 		
-		console.log(html);
-		
 		return html;
 	},
 	

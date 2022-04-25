@@ -53,21 +53,19 @@ Page.load = async function()
 	
 	
 	//We do dropdowns here too.
-	let elements = Page.element.querySelectorAll("select");
-	
-	for (let i = 0; i < elements.length; i++)
+	Page.element.querySelectorAll("select").forEach(element =>
 	{
-		let button_element = elements[i].previousElementSibling;
+		let button_element = element.previousElementSibling;
 		
-		button_element.innerHTML = `${elements[i].querySelector(`[value=${elements[i].value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
+		button_element.innerHTML = `${element.querySelector(`[value=${element.value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
 		
 		button_element.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, 100%)`;
 		
 		elements[i].addEventListener("input", () =>
 		{
-			button_element.innerHTML = `${elements[i].querySelector(`[value=${elements[i].value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
+			button_element.innerHTML = `${element.querySelector(`[value=${element.value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
 		});
-	}
+	});
 	
 	
 	
@@ -176,18 +174,16 @@ Page.Load =
 	//Right, so this is a pain. One of those things jQuery makes really easy and that you might never notice otherwise is that when using $(element).html(data), any non-external script tags in data are automatically excuted. This is great, but it doesn't happen when using element.innerHTML. Weirdly enough, though, it works with element.appendChild. Therefore, we just need to get all our script tags, and for each one, make a new tag with identical contents, append it to the body, and delete the original script.
 	parse_script_tags: function()
 	{
-		let scripts = document.querySelectorAll("script");
-		
-		for (let i = 0; i < scripts.length; i++)
+		document.querySelectorAll("script").forEach(script =>
 		{
 			let new_script = document.createElement("script");
 			
-			new_script.innerHTML = scripts[i].textContent;
+			new_script.innerHTML = script.textContent;
 			
 			document.body.appendChild(new_script);
 			
-			scripts[i].remove();
-		}
+			script.remove();
+		});
 	},
 
 
@@ -383,16 +379,14 @@ Page.Load =
 			this.element_animation_types = [];
 			this.delays = [];
 			
-			let new_elements = Page.element.querySelectorAll("[data-aos]");
-			
 			let current_section = 0;
 			let current_delay = 0;
 			
 			
 			
-			for (let i = 0; i < new_elements.length; i++)
+			Page.element.querySelectorAll("[data-aos]").forEach(new_element =>
 			{
-				if (new_elements[i].classList.contains("new-aos-section"))
+				if (new_element.classList.contains("new-aos-section"))
 				{
 					//Create a new section.
 					this.elements.push([]);
@@ -408,7 +402,7 @@ Page.Load =
 					
 					
 					
-					if (new_elements[i].getAttribute("data-aos") === "zoom-out")
+					if (new_element.getAttribute("data-aos") === "zoom-out")
 					{
 						this.element_animation_types.push(1);
 					}
@@ -420,7 +414,7 @@ Page.Load =
 					
 					
 					
-					this.anchor_positions[current_section - 1] = new_elements[i].getBoundingClientRect().top + Page.scroll;
+					this.anchor_positions[current_section - 1] = new_element.getBoundingClientRect().top + Page.scroll;
 					
 					this.anchors_shown[current_section - 1] = false;
 				}
@@ -428,25 +422,25 @@ Page.Load =
 				
 				if (Site.use_js_animation)
 				{
-					if (new_elements[i].getAttribute("data-aos") === "zoom-out")
+					if (new_element.getAttribute("data-aos") === "zoom-out")
 					{
-						new_elements[i].style.transform = "scale(1.3)";
+						new_element.style.transform = "scale(1.3)";
 					}
 					
 					else
 					{
-						new_elements[i].style.transform = "translateY(100px)";
+						new_element.style.transform = "translateY(100px)";
 					}
 					
-					new_elements[i].style.opacity = 0;
+					new_element.style.opacity = 0;
 				}
 				
-				this.elements[current_section - 1].push(new_elements[i]);
+				this.elements[current_section - 1].push(new_element);
 				
 				
 				
 				
-				let delay_increase = new_elements[i].getAttribute("data-aos-delay-increase");
+				let delay_increase = new_element.getAttribute("data-aos-delay-increase");
 				
 				if (delay_increase !== null)
 				{
@@ -456,7 +450,7 @@ Page.Load =
 				this.delays[current_section - 1].push(current_delay);
 				
 				current_delay += Site.aos_separation_time;
-			}
+			});
 			
 			
 			
@@ -485,10 +479,10 @@ Page.Load =
 				return;
 			}
 			
-			for (let i = 0; i < Page.Load.AOS.elements.length; i++)
+			Page.Load.AOS.elements.forEach((element, index) =>
 			{
-				Page.Load.AOS.anchor_positions[i] = Page.Load.AOS.elements[i][0].getBoundingClientRect().top + Page.scroll;
-			}
+				Page.Load.AOS.anchor_positions[index] = element[0].getBoundingClientRect().top + Page.scroll;
+			});
 			
 			Page.Load.AOS.fix_footer_anchor();
 		},
@@ -528,13 +522,13 @@ Page.Load =
 				return;
 			}
 			
-			for (let i = 0; i < Page.Load.AOS.elements.length; i++)
+			Page.Load.AOS.elements.forEach((element, index) =>
 			{
-				if (Page.scroll + Page.Layout.window_height >= Page.Load.AOS.anchor_positions[i] + Page.Load.AOS.anchor_offsets[i] && Page.Load.AOS.anchors_shown[i] === false)
+				if (Page.scroll + Page.Layout.window_height >= Page.Load.AOS.anchor_positions[index] + Page.Load.AOS.anchor_offsets[index] && Page.Load.AOS.anchors_shown[index] === false)
 				{
-					Page.Load.AOS.show_section(i);
+					Page.Load.AOS.show_section(index);
 				}
-			}
+			});
 		},
 
 
@@ -603,24 +597,12 @@ Page.Load =
 		//Adds a listener to every element that needs a hover event. Yes, you could use CSS for this. No, I don't want to.
 		set_up: function()
 		{
-			let elements = Page.element.querySelectorAll(this.element_selectors);
+			Page.element.querySelectorAll(this.element_selectors).forEach(element => this.add(element));
 			
-			for (let i = 0; i < elements.length; i++)
+			this.element_selectors_with_scale.forEach(selector =>
 			{
-				this.add(elements[i]);
-			}
-			
-			
-			
-			for (let i = 0; i < this.element_selectors_with_scale.length; i++)
-			{
-				let elements = Page.element.querySelectorAll(this.element_selectors_with_scale[i][0]);
-				
-				for (let j = 0; j < elements.length; j++)
-				{
-					this.add_with_scale(elements[j], this.element_selectors_with_scale[i][1]);
-				}
-			}	
+				Page.element.querySelectorAll(selector[0]).forEach(element => this.add_with_scale(element, selector[1]));
+			});
 		},
 
 
@@ -688,12 +670,7 @@ Page.Load =
 
 		remove: function()
 		{
-			let elements = Page.element.querySelectorAll(this.element_selectors);
-			
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].classList.remove("hover");
-			}
+			Page.element.querySelectorAll(this.element_selectors).forEach(element => element.classList.remove("hover"));
 		}
 	},
 	
@@ -703,15 +680,13 @@ Page.Load =
 	{
 		set_up_weird_elements: function()
 		{
-			let elements = Page.element.querySelectorAll(".focus-on-child");
-
-			for (let i = 0; i < elements.length; i++)
+			Page.element.querySelectorAll(".focus-on-child").forEach(element =>
 			{
-				elements[i].addEventListener("focus", () =>
+				element.addEventListener("focus", () =>
 				{
-					elements[i].children[0].focus();
+					element.children[0].focus();
 				});
-			}
+			});
 		}
 	},
 	
@@ -742,16 +717,9 @@ Page.Load =
 		//Makes linked text buttons have the same width and height.
 		equalize: function()
 		{
-			let elements = Page.element.querySelectorAll(".text-button");
-			
-			for (let i = 0; i < elements.length; i++)
-			{
-				elements[i].parentNode.style.margin = "0 auto";
-			}
+			Page.element.querySelectorAll(".text-button").forEach(text_button => text_button.parentNode.style.margin = "0 auto");
 			
 			
-			
-			elements = Page.element.querySelectorAll(".linked-text-button");
 			
 			let heights = [];
 			
@@ -763,54 +731,56 @@ Page.Load =
 			
 			
 			
-			for (let i = 0; i < elements.length; i++)
+			let elements = Page.element.querySelectorAll(".linked-text-button");
+			
+			elements.forEach((element, index) =>
 			{
-				elements[i].style.height = "fit-content";
-				elements[i].style.width = "fit-content";
+				element.style.height = "fit-content";
+				element.style.width = "fit-content";
 				
-				heights.push(elements[i].offsetHeight);
+				heights.push(element.offsetHeight);
 				
-				if (heights[i] > max_height)
+				if (heights[index] > max_height)
 				{
-					max_height = heights[i];
+					max_height = heights[index];
 				}
 				
-				widths.push(elements[i].offsetWidth);
+				widths.push(element.offsetWidth);
 				
-				if (widths[i] > max_width)
+				if (widths[index] > max_width)
 				{
-					max_width = widths[i];
+					max_width = widths[index];
 				}
-			}
+			});
 			
 			
 			
-			for (let i = 0; i < elements.length; i++)
+			elements.forEach((element, index) =>
 			{
-				if (heights[i] < max_height)
+				if (heights[index] < max_height)
 				{
-					elements[i].style.height = max_height + "px";
+					element.style.height = max_height + "px";
 				}
 				
 				else
 				{
-					elements[i].style.height = "fit-content";
+					element.style.height = "fit-content";
 				}
 				
 				
 				
-				if (widths[i] < max_width)
+				if (widths[index] < max_width)
 				{
-					elements[i].style.width = max_width + "px";
+					element.style.width = max_width + "px";
 				}
 				
 				else
 				{
-					elements[i].style.width = "fit-content";
+					element.style.width = "fit-content";
 				}
 				
-				elements[i].parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, ${max_width}px)`;
-			}
+				element.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, ${max_width}px)`;
+			});
 		},
 		
 		
@@ -863,48 +833,36 @@ Page.Load =
 	{
 		set: function()
 		{
-			let links = Page.element.querySelectorAll("a");
-			
-			
-			
 			let url_vars_suffix = Page.Navigation.concat_url_vars();
 			
 			
 			
-			for (let i = 0; i < links.length; i++)
+			Page.element.querySelectorAll("a").forEach(link =>
 			{
-				if (!(links[i].parentNode.classList.contains("footer-image-link")))
+				if (!(link.parentNode.classList.contains("footer-image-link")))
 				{
-					let href = links[i].getAttribute("href");
+					let href = link.getAttribute("href");
 					
 					if (href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data")
 					{
-						links[i].setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + url_vars_suffix);
+						link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + url_vars_suffix);
 						
-						links[i].setAttribute("onclick", `Page.Navigation.redirect("${href}")`);
+						link.setAttribute("onclick", `Page.Navigation.redirect("${href}")`);
 					}
 					
 					else
 					{
-						links[i].setAttribute("onclick", `Page.Navigation.redirect("${href}", true)`);
+						link.setAttribute("onclick", `Page.Navigation.redirect("${href}", true)`);
 					}
 				}
-			}
+			});
 		},
 
 
 
 		disable: function()
 		{
-			let links = Page.element.querySelectorAll("a:not(.real-link)");
-			
-			for (let i = 0; i < links.length; i++)
-			{
-				links[i].addEventListener("click", (e) =>
-				{
-					e.preventDefault();
-				});
-			}
+			Page.element.querySelectorAll("a:not(.real-link)").forEach(link => link.addEventListener("click", e => e.preventDefault()));
 		}
 	},
 	
@@ -948,15 +906,7 @@ Page.Load =
 			
 			
 			
-			setTimeout(() =>
-			{
-				let elements = Page.element.querySelectorAll("mjx-container");
-				
-				for (let i = 0; i < elements.length; i++)
-				{
-					elements[i].setAttribute("tabindex", -1);
-				}
-			}, 500);
+			setTimeout(() => Page.element.querySelectorAll("mjx-container").forEach(element => element.setAttribute("tabindex", -1)), 500);
 		}
 	}
 };
