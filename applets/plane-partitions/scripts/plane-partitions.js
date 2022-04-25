@@ -1510,6 +1510,12 @@
 	{
 		return new Promise((resolve, reject) =>
 		{
+			if (coordinates.length === 0)
+			{
+				resolve();
+				return;
+			}
+			
 			let targets = [];
 			
 			coordinates.forEach(xyz =>
@@ -2434,13 +2440,16 @@
 				
 				hue_index++;
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+				if (coordinates_to_color.length !== 0)
+				{
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+				}	
 			}
 		}
 		
 		
 		
-		plane_partition.type = "tableau";
+		array.type = "tableau";
 		
 		currently_running_algorithm = false;
 	}
