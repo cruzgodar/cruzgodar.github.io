@@ -2536,10 +2536,6 @@
 		{
 			for (let col = array.footprint - 1; col >= 0; col--)
 			{
-				let did_something = false;
-				
-				
-				
 				//Highlight this diagonal.
 				let diagonal_coordinates = [];
 				
@@ -2557,29 +2553,12 @@
 				i = diagonal_coordinates[0][0];
 				let j = diagonal_coordinates[0][1];
 				
-				let coordinates_to_color = [];
-				
-				for (let k = tableau[i][j] - 1; k >= 0; k--)
-				{
-					coordinates_to_color.push([i, j, k]);
-					
-					did_something = true;
-				}
-				
-				color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
-				
-				//This unifies the animation time.
-				if (coordinates_to_color.length !== 0)
-				{
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-				}	
-				
-				
-				
 				
 				
 				//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
 				let new_diagonal_height = new Array(diagonal_coordinates.length);
+				
+				let any_change = false;
 				
 				diagonal_coordinates.forEach((coordinate, index) =>
 				{
@@ -2615,7 +2594,45 @@
 					{
 						new_diagonal_height[index] += tableau[i][j];
 					}
-				});	
+					
+					
+					
+					if (!any_change && new_diagonal_height[index] !== tableau[i][j])
+					{
+						any_change = true;
+					}
+				});
+				
+				
+				
+				if (tableau[i][j] !== 0)
+				{
+					let coordinates_to_color = [];
+					
+					for (let k = tableau[i][j] - 1; k >= 0; k--)
+					{
+						coordinates_to_color.push([i, j, k]);
+					}
+					
+					color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
+				}
+				
+				else if (new_diagonal_height[0] !== 0)
+				{
+					array.cubes[i][j][0] = add_cube(array, j, 0, i, hue_index / num_corners * 6/7, 1, cube_lightness);
+					
+					tableau[i][j] = 1;
+					
+					reveal_cubes(array, [[i, j, 0]]);
+				}
+				
+				else if (!any_change)
+				{
+					hue_index++;
+					continue;
+				}
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 				
 				
 				
@@ -2634,8 +2651,6 @@
 							array.cubes[i][j][k] = add_cube(array, j, k, i, hue_index / num_corners * 6/7, 1, cube_lightness);
 							
 							coordinates_to_reveal.push([i, j, k]);
-							
-							did_something = true;
 						}
 						
 						if (in_2d_view)
@@ -2658,8 +2673,6 @@
 						for (let k = tableau[i][j] - 1; k >= new_diagonal_height[index]; k--)
 						{
 							coordinates_to_delete.push([i, j, k]);
-							
-							did_something = true;
 						}
 						
 						if (in_2d_view)
@@ -2690,10 +2703,7 @@
 				
 				hue_index++;
 				
-				if (did_something)
-				{
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-				}	
+				await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 			}
 		}
 		
