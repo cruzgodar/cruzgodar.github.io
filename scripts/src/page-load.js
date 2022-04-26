@@ -61,7 +61,7 @@ Page.load = async function()
 		
 		button_element.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, 100%)`;
 		
-		elements[i].addEventListener("input", () =>
+		element.addEventListener("input", () =>
 		{
 			button_element.innerHTML = `${element.querySelector(`[value=${element.value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
 		});
