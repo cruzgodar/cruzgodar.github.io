@@ -8,6 +8,8 @@
 	
 	let animation_time = 500;
 	
+	const cube_lightness = .45;
+	
 	let options_numbers =
 	{
 		renderer: "cpu",
@@ -254,6 +256,15 @@
 	pak_button_element.addEventListener("click", () =>
 	{
 		pak(parseInt(algorithm_index_input_element.value));
+	});
+	
+	
+	
+	let pak_inverse_button_element = Page.element.querySelector("#pak-inverse-button");
+	
+	pak_inverse_button_element.addEventListener("click", () =>
+	{
+		pak_inverse(parseInt(algorithm_index_input_element.value));
 	});
 	
 	
@@ -1020,7 +1031,7 @@
 	
 	
 	
-	function add_cube(array, x, y, z, h = 0, s = 0, v = .5)
+	function add_cube(array, x, y, z, h = 0, s = 0, v = cube_lightness)
 	{
 		const materials = [
 			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
@@ -1531,7 +1542,7 @@
 				duration: animation_time,
 				delay: (element, index) => Math.floor(index / 6) * animation_time / 10,
 				easing: "easeOutQuad",
-				update: () => targets.forEach(color => color.setHSL(hue, color.s, .5)),
+				update: () => targets.forEach(color => color.setHSL(hue, color.s, cube_lightness)),
 				complete: resolve
 			});
 		});
@@ -1557,7 +1568,7 @@
 				s: 0,
 				duration: animation_time,
 				easing: "easeOutQuad",
-				update: () => targets.forEach(color => color.setHSL(color.h, color.s, .5)),
+				update: () => targets.forEach(color => color.setHSL(color.h, color.s, cube_lightness)),
 				complete: resolve
 			});
 		});
@@ -2105,13 +2116,13 @@
 			for (let j = 0; j < row; j++)
 			{
 				array.cubes[j][col][height] = add_cube(array, col, height, j);
-				array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, .5));
+				array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
 			}
 			
 			for (let j = 0; j < col; j++)
 			{
 				array.cubes[row][j][height] = add_cube(array, j, height, row);
-				array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, .5));
+				array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
 			}
 			
 			
@@ -2224,6 +2235,13 @@
 		
 		
 		
+		if (!in_2d_view)
+		{
+			await show_2d_view();
+		}
+		
+		
+		
 		let array = arrays[index];
 		
 		if (array.type !== "pp")
@@ -2253,7 +2271,7 @@
 			}
 		}
 		
-		uncolor_cubes(array, coordinates);
+		await uncolor_cubes(array, coordinates);
 		
 		
 		
@@ -2450,6 +2468,238 @@
 		
 		
 		array.type = "tableau";
+		
+		currently_running_algorithm = false;
+	}
+	
+	
+	
+	async function pak_inverse(index)
+	{
+		if (currently_running_algorithm)
+		{
+			return;
+		}
+		
+		currently_running_algorithm = true;
+		
+		
+		
+		if (!in_2d_view)
+		{
+			await show_2d_view();
+		}
+		
+		
+		
+		let array = arrays[index];
+		
+		if (array.type !== "tableau")
+		{
+			display_error(`Array at index ${index} is not a tableau!`);
+			
+			currently_running_algorithm = false;
+			
+			return;
+		}
+		
+		let tableau = array.numbers;
+		
+		
+		
+		let coordinates = [];
+		
+		//Remove any color that's here.
+		for (let i = 0; i < tableau.length; i++)
+		{
+			for (let j = 0; j < tableau.length; j++)
+			{
+				for (let k = 0; k < tableau[i][j]; k++)
+				{
+					coordinates.push([i, j, k]);
+				}
+			}
+		}
+		
+		await uncolor_cubes(array, coordinates);
+		
+		
+		
+		let num_corners = array.footprint * array.footprint;
+		
+		
+		
+		let hue_index = 0;
+		
+		//Get outer corners by just scanning through the array backwards.
+		for (let row = array.footprint - 1; row >= 0; row--)
+		{
+			for (let col = array.footprint - 1; col >= 0; col--)
+			{
+				let did_something = false;
+				
+				
+				
+				//Highlight this diagonal.
+				let diagonal_coordinates = [];
+				
+				let i = 0;
+				
+				while (row + i < array.footprint && col + i < array.footprint)
+				{
+					diagonal_coordinates.push([row + i, col + i, tableau[row + i][col + i] - 1]);
+					
+					i++;
+				}
+				
+				
+				
+				i = diagonal_coordinates[0][0];
+				let j = diagonal_coordinates[0][1];
+				
+				let coordinates_to_color = [];
+				
+				for (let k = tableau[i][j] - 1; k >= 0; k--)
+				{
+					coordinates_to_color.push([i, j, k]);
+					
+					did_something = true;
+				}
+				
+				color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
+				
+				//This unifies the animation time.
+				if (coordinates_to_color.length !== 0)
+				{
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+				}	
+				
+				
+				
+				
+				
+				//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
+				let new_diagonal_height = new Array(diagonal_coordinates.length);
+				
+				diagonal_coordinates.forEach((coordinate, index) =>
+				{
+					let i = coordinate[0];
+					let j = coordinate[1];
+					
+					let neighbor_1 = 0;
+					let neighbor_2 = 0;
+					
+					if (i < array.footprint - 1)
+					{
+						neighbor_1 = tableau[i + 1][j];
+					}
+					
+					if (j < array.footprint - 1)
+					{
+						neighbor_2 = tableau[i][j + 1];
+					}
+					
+					new_diagonal_height[index] = Math.max(neighbor_1, neighbor_2);
+					
+					
+					
+					if (index > 0)
+					{
+						neighbor_1 = tableau[i - 1][j];
+						neighbor_2 = tableau[i][j - 1];
+						
+						new_diagonal_height[index] += Math.min(neighbor_1, neighbor_2) - tableau[i][j];
+					}
+					
+					else
+					{
+						new_diagonal_height[index] += tableau[i][j];
+					}
+				});	
+				
+				
+				
+				//This is async, so we can't use forEach easily.
+				for (let index = 0; index < diagonal_coordinates.length; index++)
+				{
+					i = diagonal_coordinates[index][0];
+					j = diagonal_coordinates[index][1];
+					
+					if (new_diagonal_height[index] > tableau[i][j])
+					{
+						let coordinates_to_reveal = [];
+						
+						for (let k = tableau[i][j]; k < new_diagonal_height[index]; k++)
+						{
+							array.cubes[i][j][k] = add_cube(array, j, k, i, hue_index / num_corners * 6/7, 1, cube_lightness);
+							
+							coordinates_to_reveal.push([i, j, k]);
+							
+							did_something = true;
+						}
+						
+						if (in_2d_view)
+						{
+							reveal_cubes(array, coordinates_to_reveal);
+						}
+						
+						else
+						{
+							await reveal_cubes(array, coordinates_to_reveal);
+						}
+					}
+					
+					
+					
+					else if (new_diagonal_height[index] < tableau[i][j])
+					{
+						let coordinates_to_delete = [];
+						
+						for (let k = tableau[i][j] - 1; k >= new_diagonal_height[index]; k--)
+						{
+							coordinates_to_delete.push([i, j, k]);
+							
+							did_something = true;
+						}
+						
+						if (in_2d_view)
+						{
+							delete_cubes(array, coordinates_to_delete);
+						}
+						
+						else
+						{
+							await delete_cubes(array, coordinates_to_delete);
+						}
+					}
+					
+					
+					
+					tableau[i][j] = new_diagonal_height[index];
+					
+					if (in_2d_view)
+					{
+						let top = total_array_footprint - array.partial_footprint_sum - 1;
+						let left = array.partial_footprint_sum - array.footprint;
+						
+						draw_single_cell_2d_view_text(array, i, j, top, left);
+					}
+				}
+				
+				
+				
+				hue_index++;
+				
+				if (did_something)
+				{
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+				}	
+			}
+		}
+		
+		
+		
+		array.type = "pp";
 		
 		currently_running_algorithm = false;
 	}
