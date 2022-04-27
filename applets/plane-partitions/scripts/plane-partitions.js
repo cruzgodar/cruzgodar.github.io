@@ -2713,4 +2713,259 @@
 		
 		currently_running_algorithm = false;
 	}
+	
+	
+	
+	async function sulzgruber(index)
+	{
+		if (currently_running_algorithm)
+		{
+			return;
+		}
+		
+		currently_running_algorithm = true;
+		
+		
+		
+		let array = arrays[index];
+		
+		if (array.type !== "pp")
+		{
+			display_error(`Array at index ${index} is not a plane partition!`);
+			
+			currently_running_algorithm = false;
+			
+			return;
+		}
+		
+		let plane_partition = JSON.parse(JSON.stringify(array.numbers));
+		
+		
+		
+		let coordinates = [];
+		
+		//Remove any color that's here.
+		for (let i = 0; i < plane_partition.length; i++)
+		{
+			for (let j = 0; j < plane_partition.length; j++)
+			{
+				for (let k = 0; k < plane_partition[i][j]; k++)
+				{
+					coordinates.push([i, j, k]);
+				}
+			}
+		}
+		
+		uncolor_cubes(array, coordinates);
+		
+		
+		
+		//First, find the candidates. This first requires categorizing the diagonals.
+		
+		let candidates = [];
+		
+		let diagonals = {};
+		
+		//First go down along the first column.
+		for (let i = 0; i < plane_partition.length; i++)
+		{
+			let content = -i;
+			
+			let row = i;
+			let col = 0;
+			
+			while (row + 1 < plane_partition.length && col + 1 < plane_partition.length && plane_partition[row + 1][col + 1] !== 0)
+			{
+				row++;
+				col++;
+			}
+			
+			//We've reached something on the boundary.
+		}
+		
+		
+		
+		let rim_hooks = [];
+		
+		while (true)
+		{
+			//Find the right-most nonzero entry in the top row.
+			let starting_col = plane_partition[0].length - 1;
+			
+			while (starting_col >= 0 && plane_partition[0][starting_col] === 0)
+			{
+				starting_col--;
+			}
+			
+			if (starting_col < 0)
+			{
+				break;
+			}
+			
+			
+			
+			let current_row = 0;
+			let current_col = starting_col;
+			
+			let path = [[current_row, current_col, plane_partition[current_row][current_col] - 1]];
+			
+			while (true)
+			{
+				if (current_row < plane_partition.length - 1 && plane_partition[current_row + 1][current_col] === plane_partition[current_row][current_col])
+				{
+					current_row++;
+				}
+				
+				else if (current_col > 0)
+				{
+					current_col--;
+				}
+				
+				else
+				{
+					break;
+				}
+				
+				path.push([current_row, current_col, plane_partition[current_row][current_col] - 1]);
+			}
+			
+			
+			
+			for (let i = 0; i < path.length; i++)
+			{
+				plane_partition[path[i][0]][path[i][1]]--;
+			}
+			
+			zigzag_paths.push(path);
+		}
+		
+		
+		
+		let empty_array = new Array(plane_partition.length);
+		
+		for (let i = 0; i < plane_partition.length; i++)
+		{
+			empty_array[i] = new Array(plane_partition.length);
+			
+			for (let j = 0; j < plane_partition.length; j++)
+			{
+				empty_array[i][j] = 0;
+			}
+		}
+		
+		let output_array = await add_new_array(index + 1, empty_array, "tableau");
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+		
+		
+		
+		//Now we'll animate those paths actually decrementing, one-by-one.
+		for (let i = 0; i < zigzag_paths.length; i++)
+		{
+			let hue = i / zigzag_paths.length * 6/7;
+			
+			await color_cubes(array, zigzag_paths[i], hue);
+			
+			
+			
+			//Lift all the cubes up. There's no need to do this if we're in the 2d view.
+			await raise_cubes(array, zigzag_paths[i], array.numbers[0][0]);
+			
+			
+			
+			let top = total_array_footprint - array.partial_footprint_sum - 1;
+			let left = array.partial_footprint_sum - array.footprint;
+			
+			//Now we actually delete the cubes.
+			for (let j = 0; j < zigzag_paths[i].length; j++)
+			{
+				array.numbers[zigzag_paths[i][j][0]][zigzag_paths[i][j][1]]--;
+				
+				if (in_2d_view)
+				{
+					draw_single_cell_2d_view_text(array, zigzag_paths[i][j][0], zigzag_paths[i][j][1], top, left);
+				}	
+			}
+			
+			recalculate_heights(array);
+			
+			
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 5));
+			
+			//Find the pivot and rearrange the shape into a hook.
+			let pivot = [zigzag_paths[i][zigzag_paths[i].length - 1][0], zigzag_paths[i][0][1]];
+			
+			let target_coordinates = new Array(zigzag_paths[i].length);
+			
+			let target_height = output_array.height + 1;
+			
+			for (let j = 0; j <= pivot[0]; j++)
+			{
+				target_coordinates[j] = [j, pivot[1], target_height];
+			}
+			
+			for (let j = pivot[0] + 1; j < zigzag_paths[i].length; j++)
+			{
+				target_coordinates[j] = [pivot[0], pivot[1] - (j - pivot[0]), target_height];
+			}
+			
+			let pivot_coordinates = target_coordinates[pivot[0]];
+			
+			await move_cubes(array, zigzag_paths[i], output_array, target_coordinates);
+			
+			
+			
+			//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
+			target_coordinates = [];
+			
+			for (let j = 1; j <= pivot[0]; j++)
+			{
+				target_coordinates.push([pivot[0] - j, pivot[1], target_height]);
+			}
+			
+			delete_cubes(output_array, target_coordinates);
+			
+			target_coordinates = [];
+			
+			for (let j = 1; j <= pivot[1]; j++)
+			{
+				target_coordinates.push([pivot[0], pivot[1] - j, target_height]);
+			}
+			
+			delete_cubes(output_array, target_coordinates);
+			
+			
+			
+			await lower_cubes(output_array, [pivot_coordinates]);
+			
+			
+			
+			top = total_array_footprint - output_array.partial_footprint_sum - 1;
+			left = output_array.partial_footprint_sum - output_array.footprint;
+			
+			output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]++;
+			
+			recalculate_heights(output_array);
+			
+			if (in_2d_view)
+			{
+				draw_single_cell_2d_view_text(output_array, pivot_coordinates[0], pivot_coordinates[1], top, left);
+			}
+			
+			output_array.height = Math.max(output_array.height, output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]);
+			
+			output_array.size = Math.max(output_array.size, output_array.height);
+			
+			
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+		}
+		
+		
+		
+		remove_array(index);
+		
+		currently_running_algorithm = false;
+	}
 }()
