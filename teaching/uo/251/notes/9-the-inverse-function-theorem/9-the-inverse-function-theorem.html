@@ -22,7 +22,7 @@
 
 !header Section 9: The Inverse Function Theorem
 
-!text b c Covered in Week 5
+!text b c Covered in Week 6
 
 <br>
 
@@ -30,9 +30,57 @@
 
 !begin-text-block
 	
-	
+	With the Chain Rule under our belt, we can differentiate any combination of two differentiable functions. There is one more way we can construct new functions &mdash; rather than putting two functions together, it starts from a single function. What we&#x2019;re talking about here is function inversion, and it&#x2019;s often a point of confusion in algebra, just like composition. So, just like composition, let&#x2019;s review.
 	
 !end-text-block
+
+
+
+!begin-def
+	
+	one-to-one
+	
+	A function $y = f(x)$ is <dfn>one-to-one</dfn> if it passes the horizontal line test &mdash; that is, every $y$-value comes from only one $x$-value.
+	
+!end-def
+
+
+
+!begin-example
+	
+	one-to-one
+	
+	The function $f(x) = x^2$ is not one-to-one, since $4 = f(-2) = f(2)$. On the other hand, $g(x) = x^5$ is one-to-one, since it passes the horizontal line test: every horizontal line intersects the graph at one point at most.
+	
+!end-example
+
+
+
+!begin-def
+	
+	inverse function
+	
+	Let $y = f(x)$ be a one-to-one function. The <dfn>inverse</dfn> to $f$ is the function $x = f^{-1}(y)$, defined so that if $(x, y)$ is a point on the graph of $f$, then $(y, x)$ is a point on the graph of $f^{-1}$.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	So $f^{-1}$ undoes $f$: it takes outputs of $f$ back to their corresponding inputs. In other words, $f^{-1}(f(x)) = x$ and $f(f^{-1}(x))$. This is why we need $f$ to be one-to-one: if two different $x$-values get sent to the same $y$-value, then the inverse function won&#x2019;t know which one to send that $y$-value back to.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	inverse function
+	
+	The inverse to $f(x) = x^5$ is $f^{-1}(y) = \sqrt[5]{y}$, and the inverse to $f(x) = \frac{1}{x}$ is $f^{-1}(y) = \frac{1}{y}$.
+	
+!end-exaple
 
 
 
