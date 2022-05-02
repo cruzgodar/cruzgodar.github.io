@@ -176,13 +176,74 @@
 	
 	$$
 		\begin{align*}
-			\frac{d}{dx}[(x^{1/b})^a] = a(x^{1/b})^{a-1}\\
-			&= 
-			&= \frac{1}{b} x^{\frac{1}{b} - 1}.
+			\frac{d}{dx}[(x^{1/b})^a] = a(x^{1/b})^{a-1} \cdot \frac{1}{b} x^{\frac{1}{b} - 1}\\
+			&= \frac{a}{b} x^{\frac{a-1}{b} + \frac{1}{b} - 1}\\
+			&= \frac{a}{b} x^{\frac{a}{b} - 1}\\
+			&= nx^{n - 1}.\\
 		\end{align*}
 	$$
 	
 !end-proof
+
+
+
+!section
+
+!text s The Derivatives of the Inverse Trig Functions
+
+<br>
+
+
+
+!begin-text-block
+	
+	Somewhat strangely, the derivatives of the inverse trig functions are not other inverse trig functions &mdash; they&#x2019;re rational functions. We can find these with the IFT, but the process requires drawing right triangles. If you take Calculus II, you&#x2019;ll need to thoroughly learn this technique, and since it&#x2019;s not all that important to us right now, we&#x2019;re not going to cover it in this class. Instead, let&#x2019;s skip straight to the result.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the derivatives of the inverse trig functions
+	
+	1. $\frac{d}{dx}[\sin^{-1}(x)] = \frac{1}{\sqrt{1 - x^2}}$.
+	
+	2. $\frac{d}{dx}[\cos^{-1}(x)] = -\frac{1}{\sqrt{1 - x^2}}$.
+	
+	3. $\frac{d}{dx}[\tan^{-1}(x)] = \frac{1}{1 + x^2}$.
+	
+	4. $\frac{d}{dx}[\sec^{-1}(x)] = \frac{1}{|x|\sqrt{x^2 - 1}}$.
+	
+	5. $\frac{d}{dx}[\csc^{-1}(x)] = -\frac{1}{|x|\sqrt{x^2 - 1}}$.
+	
+	6. $\frac{d}{dx}[\cot^{-1}(x)] = -\frac{1}{1 + x^2}$.
+	
+!end-thm
+
+
+
+!begin-example
+	
+	an inverse trig derivative
+	
+	Find $\frac{d}{dx}[\tan^{-1}(x^3)]$.
+	
+	By the Chain Rule, we have
+	
+	$$
+		\frac{d}{dx}[\tan^{-1}(x^3)] = \frac{1}{1 + (x^3)^2} \cdot 3x^2 = \frac{3x^2}{1 + x^6}.
+	$$	
+	
+!end-example
+
+!begin-exercise
+	
+	an inverse trig derivative
+	
+	Find $\left. \frac{d}{dx}[e^x\csc^{-1}(\ln(x))] \right|_{x = e}$.
+	
+!end-exercise
 
 
 
