@@ -76,11 +76,113 @@
 
 !begin-example
 	
-	inverse function
+	inverse functions
 	
 	The inverse to $f(x) = x^5$ is $f^{-1}(y) = \sqrt[5]{y}$, and the inverse to $f(x) = \frac{1}{x}$ is $f^{-1}(y) = \frac{1}{y}$.
 	
-!end-exaple
+!end-example
+
+!begin-exercise
+	
+	inverse functions
+	
+	Find the inverse functions to $f(x) = e^x$ and $f(x) = \frac{x - 1}{x + 1}$. Hint: let $y = f(x)$ and solve for $x$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	While none of the six trig functions are one-to-one, we still really want to talk about their inverses. To help do that, we restrict their domain until they become one-to-one. This is a somewhat complicated subject that&#x2019;s not all that important for our purposes, so we&#x2019;ll gloss over it. All we need to know is that there are functions $\sin^{-1}(x)$, $\cos^{-1}(x)$, and so on, that undo the corresponding trig functions. For example, since $\sin(\theta)$ gives the $y$-coordinate of a point on the unit circle with angle $\theta$, $\sin^{-1}(y)$ gives the angle $\theta$ with that $y$-coordinate.
+	
+	Now that we&#x2019;ve reviewed inverse functions, let&#x2019;s talk about their inverses.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the Inverse Function Theorem
+	
+	Let $f$ be a differentiable function. Then
+	
+	$$
+		(f^{-1})'(x) = \frac{1}{f'(f^{-1}(x))}.
+	$$
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compose the two.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	the Inverse Function Theorem
+	
+	Find $\frac{d}{dx} [\sqrt{x}]$.
+	
+	To apply the IFT, the left side needs to be the inverse function, which means we need to find a function $f(x)$ so that $f^{-1}(x) = \sqrt{x}$. But since inverting a function twice gives back the original function, we can do this by just inverting $y = \sqrt{x}$, which just means solving for $x$. That gives us $x = y^2$, so we want to define $f(x) = x^2$. Then $f^{-1}(x) = \sqrt{x}$. (There is a minor problem with being one-to-one &mdash; everything is fine, but it can be a little tricky to parse out why. Feel free to ignore it.)
+	
+	Now $f'(x) = 2x$, so $f'(f^{-1}(x)) = 2\sqrt{x}$. Then we have
+	
+	$$
+		\frac{d}{dx} [\sqrt{x}] = \frac{1}{2\sqrt{x}} = \frac{1}{2} x^{-1/2}.
+	$$
+	
+	Hey, that&#x2019;s what we would have expected to get! It seems like the pattern of $\frac{d}{dx}[x^n] = nx^{n-1}$ might work for more than if $n$ is just an integer.
+	
+!end-example
+
+!begin-exercise
+	
+	the Inverse Function Theorem
+	
+	Find $\frac{d}{dx} [\sqrt[3]{x}]$ using the Inverse Function Theorem.
+	
+!end-exercise
+
+
+
+!begin-thm
+	
+	the derivative of $x^n$ for rational $n$
+	
+	Let $n$ be a rational number. Then $\frac{d}{dx}[x^n] = nx^{n-1}$.
+	
+!end-thm
+
+!begin-proof
+	
+	Why not &mdash; we don&#x2019;t get too many chances to do proofs. Write $n = \frac{a}{b}$, where $a$ and $b$ are integers. Then $x^n = x^{a/b} = (x^{1/b})^a$. Let $f(x) = x^b$, so that $f^{-1}(x) = x^{1/b}$. Then $f'(x) = bx^{b - 1}$, which we know because $b$ is an integer, and so $f'(f^{-1}(x)) = bx^{(b-1)/b}$. By the IFT,
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx}[x^{1/b}] &= \frac{1}{bx^{(b-1)/b}}\\
+			&= \frac{1}{b} x^{-(b-1)/b}\\
+			&= \frac{1}{b} x^{\frac{1}{b} - 1}.
+		\end{align*}
+	$$
+	
+	Now we can use the chain rule to find the derivative of $x^{a/b}$.
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx}[(x^{1/b})^a] = a(x^{1/b})^{a-1}\\
+			&= 
+			&= \frac{1}{b} x^{\frac{1}{b} - 1}.
+		\end{align*}
+	$$
+	
+!end-proof
 
 
 
