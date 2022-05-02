@@ -95,7 +95,7 @@
 	
 	The graph of $\cos(\sin(y)) = \cos(x)$ looks like a sequence of braids.
 	
-	https://www.desmos.com/calculator/wufwtocqco
+	!iframe https://www.desmos.com/calculator/wufwtocqco
 	
 	Find $\frac{dy}{dx}$. Looking at the graph, the tangent line seems poorly defined when $x$ is a multiple of $2\pi$ and $y$ is a multiple of $\pi$. Explain what&#x2019;s going on using the equation.
 	
@@ -109,7 +109,7 @@
 	
 	Find $\frac{dy}{dx}$ from the equation $x\sin(xy) = y$.
 	
-	https://www.desmos.com/calculator/9tphhtuorn
+	!iframe https://www.desmos.com/calculator/9tphhtuorn
 	
 	We have
 	
@@ -128,6 +128,78 @@
 	$$
 	
 !end-example
+
+
+
+!section
+
+!text s Logarithmic Differentiation
+
+<br>
+
+
+
+!begin-text-block
+	
+	Implicit differentiation unlocks one extra technique: sometimes, difficult functions to differentiate become much easier when we take a log on both sides. Specifically, functions involving strange exponents will turn into multiplcation, so we can use the product rule. So: if you have a function of the form $y = (f(x))^{g(x)}$, start by rewriting it as $\ln(y) = \ln((f(x))^{g(x)}) = g(x)\ln(f(x))$, and then differentiate implicitly.	
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	logarithmic differentiation
+	
+	Find $\frac{d}{dx}[x^x]$.
+	
+	Since $x$ is in both the base and the exponent, we can&#x2019;t use either the derivative rules for $x^b$ or $b^x$. Instead, we write $\ln(y) = \ln(x^x) = x\ln(x)$, and then differentiate implicitly to get
+	
+	$$
+		\begin{align*}
+			\frac{1}{y} \cdot \frac{dy}{dx} &= \ln(x) + x \cdot \frac{1}{x}\\
+			\frac{dy}{dx} &= y(\ln(x) + 1)\\
+			\frac{dy}{dx} &= x^x(\ln(x) + 1).
+		\end{align*}
+	$$
+	
+!end-example
+
+!begin-exercise
+	
+	logarithmic differentiation
+	
+	Find $\frac{d}{dx}[\sin(x)^{(e^x)}]$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	At long last, we can handle the derivative of $x^n$, where $n$ is not just a rational number, but <strong>any real number</strong>. Thankfully, it&#x2019;s exactly what we&#x2019;d like it to be.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the derivative of $x^n$ for any real $n$	
+	
+	Let $n$ be a real number. Then $\frac{d}{dx}[x^n] = nx^{n-1}$.
+	
+!end-thm
+
+!begin-proof
+	
+	With $y = x^n$, write $\ln(y) = \ln(x^n) = n\ln(x)$. Then $\frac{1}{y} \cdot \frac{dy}{dx} = \frac{n}{x}$, so
+	
+	$$
+		\frac{dy}{dx} = y\frac{n}{x} = \frac{nx^n}{x} = nx^{n-1}.
+	$$	
+	
+!end-proof
 
 
 

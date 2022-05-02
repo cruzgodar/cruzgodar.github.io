@@ -975,7 +975,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-proof")
 				{
-					lines[i] = `<div class="notes-proof" data-aos="fade-in"><span class="notes-proof-title">Proof</span>`;
+					lines[i] = `<div class="notes-proof" data-aos="fade-in"><span class="notes-proof-title">Proof</span><p></p><br>`;
 					
 					
 					
