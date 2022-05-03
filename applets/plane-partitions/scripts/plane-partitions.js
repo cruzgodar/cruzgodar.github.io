@@ -2832,7 +2832,7 @@
 			
 			while (true)
 			{
-				let path = [[row, col]];
+				let path = [[row, col, plane_partition[row][col] - 1]];
 				
 				while (true)
 				{
@@ -2853,7 +2853,7 @@
 						break;
 					}
 					
-					path.push([row, col]);
+					path.push([row, col, plane_partition[row][col] - 1]);
 				}
 				
 				path.forEach(box => plane_partition[box[0]][box[1]]--);
@@ -2878,8 +2878,6 @@
 			}
 		});
 		
-		console.log(q_paths);
-		
 		
 		
 		let empty_array = new Array(plane_partition.length);
@@ -2900,17 +2898,17 @@
 		
 		
 		
-		//Now we'll animate those paths actually decrementing, one-by-one.
-		for (let i = 0; i < zigzag_paths.length; i++)
+		//Now we'll animate those paths actually decrementing, one-by-one. We're using a for loop because we need to await.
+		for (let i = 0; i < q_paths.length; i++)
 		{
-			let hue = i / zigzag_paths.length * 6/7;
+			let hue = i / q_paths.length * 6/7;
 			
-			await color_cubes(array, zigzag_paths[i], hue);
+			await color_cubes(array, q_paths[i], hue);
 			
 			
 			
 			//Lift all the cubes up. There's no need to do this if we're in the 2d view.
-			await raise_cubes(array, zigzag_paths[i], array.numbers[0][0]);
+			await raise_cubes(array, q_paths[i], array.numbers[0][0]);
 			
 			
 			
@@ -2918,15 +2916,15 @@
 			let left = array.partial_footprint_sum - array.footprint;
 			
 			//Now we actually delete the cubes.
-			for (let j = 0; j < zigzag_paths[i].length; j++)
+			q_paths[i].forEach(box =>
 			{
-				array.numbers[zigzag_paths[i][j][0]][zigzag_paths[i][j][1]]--;
+				array.numbers[box[0]][box[1]]--;
 				
 				if (in_2d_view)
 				{
-					draw_single_cell_2d_view_text(array, zigzag_paths[i][j][0], zigzag_paths[i][j][1], top, left);
+					draw_single_cell_2d_view_text(array, box[0], box[1], top, left);
 				}	
-			}
+			});
 			
 			recalculate_heights(array);
 			
@@ -2934,26 +2932,30 @@
 			
 			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 5));
 			
-			//Find the pivot and rearrange the shape into a hook.
-			let pivot = [zigzag_paths[i][zigzag_paths[i].length - 1][0], zigzag_paths[i][0][1]];
+			//Find the pivot and rearrange the shape into a hook. The end of the Q-path is the same as the end of the rim-hook, so it defines the row. To find the column, we need to go row boxes down, and then use the rest of the length to go right.
+			let row = q_paths[i][q_paths[i].length - 1][0];
 			
-			let target_coordinates = new Array(zigzag_paths[i].length);
+			let pivot = [row, q_paths[i].length - row - 1];
 			
-			let target_height = output_array.height + 1;
+			
+			
+			let target_coordinates = new Array(q_paths[i].length);
+			
+			let target_height = Math.max(array.height + 1, output_array.height + 1);
 			
 			for (let j = 0; j <= pivot[0]; j++)
 			{
 				target_coordinates[j] = [j, pivot[1], target_height];
 			}
 			
-			for (let j = pivot[0] + 1; j < zigzag_paths[i].length; j++)
+			for (let j = pivot[0] + 1; j < q_paths[i].length; j++)
 			{
 				target_coordinates[j] = [pivot[0], pivot[1] - (j - pivot[0]), target_height];
 			}
 			
 			let pivot_coordinates = target_coordinates[pivot[0]];
 			
-			await move_cubes(array, zigzag_paths[i], output_array, target_coordinates);
+			await move_cubes(array, q_paths[i], output_array, target_coordinates);
 			
 			
 			
