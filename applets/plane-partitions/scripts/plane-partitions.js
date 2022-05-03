@@ -2789,94 +2789,86 @@
 		
 		
 		
-		//Find the candidates with respect to the content order. Since they only occur in A and O regions, we just start at (0, 0) and move right. Lemmas 5.5 and 5.6 from Sulzgruber's paper guarantee that we can just find them now and they won't change.
-		let candidates = [];
-		
-		for (let j = 0; j < plane_partition.length; j++)
-		{
-			if (plane_partition[0][j] === 0)
-			{
-				break;
-			}
-			
-			let row = 0;
-			let col = j;
-			
-			while (row < plane_partition.length && col < plane_partition.length && plane_partition[row][col] !== 0)
-			{
-				if ((col < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row][col + 1]) || (col === plane_partition.length - 1 && plane_partition[row][col] > 0))
-				{
-					if (j === 0 || (j !== 0 && ((row < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row + 1][col]) || (row === plane_partition.length - 1 && plane_partition[row][col] > 0))))
-					{
-						candidates.push([row, col]);
-					}	
-				}
-				
-				row++;
-				col++;
-			}
-		}
-		
-		
-		
 		//Now we need to move through the candidates.
 		let q_paths = [];
 		let rim_hooks = [];
 		
-		candidates.forEach(candidate =>
+		while (true)
 		{
-			let row = candidate[0];
-			let col = candidate[1];
+			let row = 0;
+			let col = 0;
 			
-			let content = col - row;
+			let found_candidate = false;
 			
-			while (true)
+			//Find the minimum candidate with respect to the content order. Since they only occur in A and O regions, we just start at (0, 0) and move right.
+			for (let j = 0; j < plane_partition.length; j++)
 			{
-				let path = [[row, col, plane_partition[row][col] - 1]];
-				
-				while (true)
-				{
-					let current_content = col - row;
-					
-					if (row < plane_partition.length - 1 && plane_partition[row][col] === plane_partition[row + 1][col] && (diagonals[current_content] === 0 || diagonals[current_content] === 3))
-					{
-						row++;
-					}
-					
-					else if (col > 0 && (row === plane_partition.length - 1 || (row < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row + 1][col])))
-					{
-						col--;
-					}
-					
-					else
-					{
-						break;
-					}
-					
-					path.push([row, col, plane_partition[row][col] - 1]);
-				}
-				
-				path.forEach(box => plane_partition[box[0]][box[1]]--);
-				
-				q_paths.push(path);
-				
-				
-				
-				row = candidate[0];
-				col = candidate[1];
-				
-				//Check if this is still a candidate.
-				if (!((col < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row][col + 1]) || (col === plane_partition.length - 1 && plane_partition[row][col] > 0)))
+				if (plane_partition[0][j] === 0)
 				{
 					break;
 				}
 				
-				if (!(diagonals[content] === 0 || (diagonals[content] === 2 && ((row < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row + 1][col]) || (row === plane_partition.length - 1 && plane_partition[row][col] > 0)))))
+				row = 0;
+				col = j;
+				
+				while (row < plane_partition.length && col < plane_partition.length && plane_partition[row][col] !== 0)
+				{
+					if ((col < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row][col + 1]) || (col === plane_partition.length - 1 && plane_partition[row][col] > 0))
+					{
+						if (j === 0 || (j !== 0 && ((row < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row + 1][col]) || (row === plane_partition.length - 1 && plane_partition[row][col] > 0))))
+						{
+							found_candidate = true;
+							break;
+						}	
+					}
+					
+					row++;
+					col++;
+				}
+				
+				if (found_candidate)
 				{
 					break;
 				}
 			}
-		});
+			
+			if (!found_candidate)
+			{
+				break;
+			}
+			
+			
+			
+			let content = col - row;
+			
+			let path = [[row, col, plane_partition[row][col] - 1]];
+			
+			while (true)
+			{
+				let current_content = col - row;
+				
+				if (row < plane_partition.length - 1 && plane_partition[row][col] === plane_partition[row + 1][col] && (diagonals[current_content] === 0 || diagonals[current_content] === 3))
+				{
+					row++;
+				}
+				
+				else if (col > 0 && (row === plane_partition.length - 1 || (row < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row + 1][col])))
+				{
+					col--;
+				}
+				
+				else
+				{
+					break;
+				}
+				
+				path.push([row, col, plane_partition[row][col] - 1]);
+			}
+			
+			path.forEach(box => plane_partition[box[0]][box[1]]--);
+			
+			q_paths.push(path);
+		}
 		
 		
 		
