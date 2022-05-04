@@ -992,9 +992,15 @@ Site.Settings =
 		if (Page.Layout.layout_string === "ultrawide")
 		{
 			let element = Site.add_style(`
-				.body-text, .nav-buttons, .line-break
+				.body-text, .nav-buttons
 				{
 					width: 50vw;
+				}
+				
+				.line-break
+				{
+					width: 50vw;
+					left: 25vw;
 				}
 				
 				.body-text.narrow

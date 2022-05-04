@@ -332,6 +332,7 @@
 		else if (Page.Banner.done_loading === false)
 		{
 			document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+			Site.Settings.meta_theme_color_element.setAttribute("content", "rgb(0, 0, 0)");
 			Page.Banner.done_loading = true;
 		}
 	}
