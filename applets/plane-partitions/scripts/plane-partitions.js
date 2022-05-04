@@ -278,6 +278,15 @@
 	
 	
 	
+	let sulzgruber_inverse_button_element = Page.element.querySelector("#sulzgruber-inverse-button");
+	
+	sulzgruber_inverse_button_element.addEventListener("click", () =>
+	{
+		sulzgruber_inverse(parseInt(algorithm_index_input_element.value));
+	});
+	
+	
+	
 	let need_download = false;
 	
 	let download_button_element = Page.element.querySelector("#download-button");
@@ -2244,13 +2253,6 @@
 		
 		
 		
-		if (!in_2d_view)
-		{
-			await show_2d_view();
-		}
-		
-		
-		
 		let array = arrays[index];
 		
 		if (array.type !== "pp")
@@ -2263,6 +2265,13 @@
 		}
 		
 		let plane_partition = array.numbers;
+		
+		
+		
+		if (!in_2d_view)
+		{
+			await show_2d_view();
+		}
 		
 		
 		
@@ -2467,10 +2476,12 @@
 				
 				hue_index++;
 				
+				recalculate_heights(array);
+				
 				if (coordinates_to_color.length !== 0)
 				{
 					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-				}	
+				}
 			}
 		}
 		
@@ -2494,13 +2505,6 @@
 		
 		
 		
-		if (!in_2d_view)
-		{
-			await show_2d_view();
-		}
-		
-		
-		
 		let array = arrays[index];
 		
 		if (array.type !== "tableau")
@@ -2513,6 +2517,13 @@
 		}
 		
 		let tableau = array.numbers;
+		
+		
+		
+		if (!in_2d_view)
+		{
+			await show_2d_view();
+		}
 		
 		
 		
@@ -2711,6 +2722,8 @@
 				
 				
 				hue_index++;
+				
+				recalculate_heights(array);
 				
 				await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 			}
@@ -2996,6 +3009,216 @@
 			
 			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 		}
+		
+		
+		
+		remove_array(index);
+		
+		currently_running_algorithm = false;
+	}
+	
+	
+	
+	async function sulzgruber_inverse(index)
+	{
+		if (currently_running_algorithm)
+		{
+			return;
+		}
+		
+		currently_running_algorithm = true;
+		
+		
+		
+		let array = arrays[index];
+		
+		if (array.type !== "tableau")
+		{
+			display_error(`Array at index ${index} is not a tableau!`);
+			
+			currently_running_algorithm = false;
+			
+			return;
+		}
+		
+		let tableau = array.numbers;
+		
+		let q_paths = [];
+		
+		
+		
+		let coordinates = [];
+		
+		//Remove any color that's here.
+		for (let i = 0; i < tableau.length; i++)
+		{
+			for (let j = 0; j < tableau.length; j++)
+			{
+				for (let k = 0; k < tableau[i][j]; k++)
+				{
+					coordinates.push([i, j, k]);
+				}
+			}
+		}
+		
+		uncolor_cubes(array, coordinates);
+		
+		
+		
+		let num_hues = 0;
+		
+		let empty_array = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
+		{
+			empty_array[i] = new Array(tableau.length);
+			
+			for (let j = 0; j < tableau.length; j++)
+			{
+				empty_array[i][j] = 0;
+				
+				num_hues += tableau[i][j];
+			}
+		}
+		
+		let output_array = await add_new_array(index + 1, empty_array, "pp");
+		
+		let plane_partition = output_array.numbers;
+		
+		
+		
+		let current_hue_index = 0;
+		
+		//Loop through the tableau in weirdo lex order and reassemble the paths.
+		for (let j = tableau.length - 1; j >= 0; j--)
+		{
+			for (let i = tableau.length - 1; i >= 0; i--)
+			{
+				while (tableau[i][j] !== 0)
+				{
+					let hue = current_hue_index / num_hues * 6/7;
+					
+					await color_cubes(array, [[i, j, tableau[i][j] - 1]], hue);
+					
+					await raise_cubes(array, [[i, j, tableau[i][j] - 1]], array.size);
+					
+					
+					
+					let row = i;
+					let col = j;
+					let height = Math.max(array.size, output_array.size);
+					
+					//Add a bunch of cubes corresponding to the hook that this thing is a part of.
+					for (let k = 0; k < row; k++)
+					{
+						array.cubes[k][col][height] = add_cube(array, col, height, k);
+						array.cubes[k][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+					}
+					
+					for (let k = 0; k < col; k++)
+					{
+						array.cubes[row][k][height] = add_cube(array, k, height, row);
+						array.cubes[row][k][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+					}
+					
+					
+					
+					let coordinates = [];
+					
+					for (let k = 1; k <= row; k++)
+					{
+						coordinates.push([row - j, col, height]);
+					}
+					
+					let promise_1 = reveal_cubes(array, coordinates);
+					
+					coordinates = [];
+					
+					for (let j = 1; j <= col; j++)
+					{
+						coordinates.push([row, col - j, height]);
+					}
+					
+					let promise_2 = reveal_cubes(array, coordinates);
+					
+					await Promise.all([promise_1, promise_2]);
+					
+					
+					
+					//In order to animate this nicely, we won't just jump straight to the Q-path -- we'll turn it into a rim-hook first.
+					coordinates = [];
+					
+					for (let k = 0; k < col; k++)
+					{
+						coordinates.push([row, k, height]);
+					}
+					
+					coordinates.push([row, col, array.numbers[row][col] - 1]);
+					
+					for (let k = row - 1; k >= 0; k--)
+					{
+						coordinates.push([k, col, height]);
+					}
+					
+					let target_coordinates = [];
+					
+					
+					
+					for (let k = row; k >= 0; k--)
+					{
+						target_coordinates.push([k, 0, height]);
+					}
+					
+					for (let k = 1; k <= col; k++)
+					{
+						target_coordinates.push([0, k, height]);
+					}
+					
+					tableau[row][col]--;
+					
+					recalculate_heights(array);
+					
+					if (in_2d_view)
+					{
+						let top = total_array_footprint - array.partial_footprint_sum - 1;
+						let left = array.partial_footprint_sum - array.footprint;
+						
+						draw_single_cell_2d_view_text(array, row, col, top, left);
+					}
+					
+					await move_cubes(array, coordinates, output_array, target_coordinates);
+					
+					return;
+					/*
+					
+					await lower_cubes(output_array, target_coordinates);
+					
+					target_coordinates.forEach((entry) =>
+					{
+						output_array.numbers[entry[0]][entry[1]]++;
+					});
+					
+					recalculate_heights(output_array);
+					
+					if (in_2d_view)
+					{
+						let top = total_array_footprint - output_array.partial_footprint_sum - 1;
+						let left = output_array.partial_footprint_sum - output_array.footprint;
+						
+						target_coordinates.forEach((entry) =>
+						{
+							draw_single_cell_2d_view_text(output_array, entry[0], entry[1], top, left)
+						});
+					}
+					
+					*/
+					
+					current_hue_index++;
+					
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+				}	
+			}
+		}	
 		
 		
 		
