@@ -765,13 +765,6 @@
 			
 			
 			
-			font_size = wilson_numbers.canvas_width / (total_array_footprint + 1);
-			
-			let num_characters = Math.max(`${total_array_height}`.length, 2);
-			
-			wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
-			
-			
 			if (arrays.length === 1)
 			{
 				hex_view_camera_pos = [total_array_size, total_array_size + total_array_height / 3, total_array_size];
@@ -883,6 +876,13 @@
 	
 	async function remove_array(index)
 	{
+		if (in_2d_view)
+		{
+			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
+		}
+		
+		
+		
 		await new Promise((resolve, reject) =>
 		{
 			let things_to_animate = [];
@@ -893,7 +893,7 @@
 				{
 					node.material.forEach(material => things_to_animate.push(material));
 				}
-			});		
+			});
 			
 			anime({
 				targets: things_to_animate,
@@ -969,22 +969,6 @@
 		
 		
 		
-		font_size = wilson_numbers.canvas_width / (total_array_footprint + 1);
-		
-		let num_characters = `${total_array_height}`.length;
-		
-		if (num_characters === 1)
-		{
-			wilson_numbers.ctx.font = `${font_size * .75}px monospace`;
-		}
-		
-		else
-		{
-			wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
-		}
-		
-		
-		
 		let hex_view_camera_offset = (-arrays[0].footprint / 2 + arrays[arrays.length - 1].center_offset + arrays[arrays.length - 1].footprint / 2) / 2;
 		
 		hex_view_camera_pos = [total_array_size + hex_view_camera_offset, total_array_size + total_array_height / 3, total_array_size - hex_view_camera_offset];
@@ -993,8 +977,6 @@
 		
 		if (in_2d_view)
 		{
-			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
-			
 			anime({
 				targets: orthographic_camera.position,
 				x: _2d_view_camera_pos[0],
@@ -1504,6 +1486,12 @@
 	
 	function draw_all_2d_view_text()
 	{
+		font_size = wilson_numbers.canvas_width / (total_array_footprint + 1);
+		
+		let num_characters = Math.max(`${total_array_height}`.length, 2);
+		
+		wilson_numbers.ctx.font = `${font_size / num_characters}px monospace`;
+		
 		wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
 		
 		arrays.forEach(array =>
@@ -3098,15 +3086,16 @@
 				{
 					let hue = current_hue_index / num_hues * 6/7;
 					
+					let height = Math.max(array.size + 1, output_array.size + 1);
+					
 					await color_cubes(array, [[i, j, tableau[i][j] - 1]], hue);
 					
-					await raise_cubes(array, [[i, j, tableau[i][j] - 1]], array.size);
+					await raise_cubes(array, [[i, j, tableau[i][j] - 1]], height);
 					
 					
 					
 					let row = i;
 					let col = j;
-					let height = Math.max(array.size, output_array.size);
 					
 					//Add a bunch of cubes corresponding to the hook that this thing is a part of.
 					for (let k = 0; k < row; k++)
@@ -3127,16 +3116,16 @@
 					
 					for (let k = 1; k <= row; k++)
 					{
-						coordinates.push([row - j, col, height]);
+						coordinates.push([row - k, col, height]);
 					}
 					
 					let promise_1 = reveal_cubes(array, coordinates);
 					
 					coordinates = [];
 					
-					for (let j = 1; j <= col; j++)
+					for (let k = 1; k <= col; k++)
 					{
-						coordinates.push([row, col - j, height]);
+						coordinates.push([row, col - k, height]);
 					}
 					
 					let promise_2 = reveal_cubes(array, coordinates);
@@ -3188,30 +3177,95 @@
 					
 					await move_cubes(array, coordinates, output_array, target_coordinates);
 					
-					return;
-					/*
 					
-					await lower_cubes(output_array, target_coordinates);
 					
-					target_coordinates.forEach((entry) =>
+					//Now we'll lower one part at a time.
+					let current_index = 0;
+					
+					let current_height = output_array.numbers[target_coordinates[0][0]][target_coordinates[0][1]];
+					
+					while (true)
 					{
-						output_array.numbers[entry[0]][entry[1]]++;
-					});
-					
-					recalculate_heights(output_array);
-					
-					if (in_2d_view)
-					{
-						let top = total_array_footprint - output_array.partial_footprint_sum - 1;
-						let left = output_array.partial_footprint_sum - output_array.footprint;
+						let next_index = current_index;
 						
-						target_coordinates.forEach((entry) =>
+						while (next_index < target_coordinates.length && target_coordinates[next_index][0] === target_coordinates[current_index][0])
 						{
-							draw_single_cell_2d_view_text(output_array, entry[0], entry[1], top, left)
-						});
+							next_index++;
+						}
+						
+						coordinates = target_coordinates.slice(current_index, next_index);
+						
+						
+						
+						//Check if this part can all be inserted at the same height.
+						let insertion_works = true;
+						
+						for (let k = 0; k < coordinates.length; k++)
+						{
+							if (output_array.numbers[coordinates[k][0]][coordinates[k][1]] !== current_height)
+							{
+								insertion_works = false;
+								break;
+							}
+						}
+						
+						
+						
+						if (insertion_works)
+						{
+							await lower_cubes(output_array, coordinates);
+							
+							coordinates.forEach(coordinate => output_array.numbers[coordinate[0]][coordinate[1]]++);
+							
+							recalculate_heights(output_array);
+							
+							if (in_2d_view)
+							{
+								let top = total_array_footprint - output_array.partial_footprint_sum - 1;
+								let left = output_array.partial_footprint_sum - output_array.footprint;
+								
+								coordinates.forEach(entry =>
+								{
+									draw_single_cell_2d_view_text(output_array, entry[0], entry[1], top, left)
+								});
+							}
+							
+							current_index = next_index;
+						}
+						
+						else
+						{
+							let old_target_coordinates = JSON.parse(JSON.stringify(target_coordinates.slice(current_index)));
+							
+							//Shift the rest of the coordinates down and right by 1.
+							for (let k = current_index; k < target_coordinates.length; k++)
+							{
+								target_coordinates[k][0]++;
+								target_coordinates[k][1]++;
+								
+								if (target_coordinates[k][0] > output_array.footprint || target_coordinates[k][1] > output_array.footprint)
+								{
+									console.error("Insertion failed!");
+									return;
+								}
+							}
+							
+							let new_target_coordinates = target_coordinates.slice(current_index);
+							
+							await move_cubes(output_array, old_target_coordinates, output_array, new_target_coordinates);
+							
+							current_height = output_array.numbers[target_coordinates[current_index][0]][target_coordinates[current_index][1]];
+						}
+						
+						
+						
+						if (current_index === target_coordinates.length)
+						{
+							break;
+						}
 					}
 					
-					*/
+					
 					
 					current_hue_index++;
 					
