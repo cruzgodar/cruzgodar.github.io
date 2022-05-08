@@ -1,0 +1,149 @@
+<head>
+	<title>Section 11: Optimization</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 11: Optimization"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/11-optimization/11-optimization.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/252/notes/11-optimization/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 11: Optimization
+
+!text b c Covered in Week 7
+
+<br>
+
+
+
+!begin-text-block
+	
+	With implicit differentiation behind us, we can move on to the applications of differentiation: not just what they can do in terms of slopes, but also other graph features. We&#x2019;ll begin with arguably the most useful thing derivatives are used for: optimizing functions.
+	
+	The idea is to figure out when a function is as large or as small as possible. That can mean maximizing profit, minimizing cost, or just about anything else. Let&#x2019;s give these ideas names so they&#x2019;re a little easier to talk about.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	extrema
+	
+	Let $f$ be a function. A <dfn>local maximum</dfn> of $f$ is a point $x = a$ so that $f(a)$ is larger than any nearby value of $f(x)$. Similarly, a <dfn>local minimum</dfn> of $f$ is a point $x = a$ so that $f(a)$ is small than any nearby value of $f(x)$. Together, local maximina and minima are called <dfn>local extrema</dfn>.
+	
+	The <dfn>absolute maximum</dfn> of $f$, also called the <dfn>global maximum</dfn>, is the point where $f$ has the largest output overall. We have a similar definition for <dfn>global</dfn> or <dfn>absolute minimum</dfn>, and collectively these are called <dfn>global</dfn> or <dfn>absolute extrema</dfn>.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	!iframe https://www.desmos.com/calculator/qwyqv9xbdk
+	
+	Let&#x2019;s examine this graph. There are three ways local extrema occur here: first, at places like $x = \pm .345$, where the derivative is zero and the tangent line to the graph is therefore horizontal. This is the same idea as the midterm problem about height being maximized when velocity is zero.
+	
+	The next type of extremum is at the sharp corners, like $x = -2$. The derivative doesn&#x2019;t exist here, but the function value is still larger than the points nearby.
+	
+	Finally, endpoints of the function, like $x = -3$, are also local extrema: at $x = -3$, the only points nearby have a larger function value.
+	
+	These are in fact the <em>only</em> ways local extrema occur. Let&#x2019;s give the idea a name and then try some examples.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	critical point
+	
+	Let $f$ be a function. A <dfn>critical point</dfn> of $f$ is an $x$-value $x = a$ such that either:
+	
+	1. $f'(a) = 0$.
+	
+	2. $f'(a)$ is undefined.
+	
+	3. $a$ is on the boundary of an interval where $f$ is defined.
+	
+	A <dfn>critical value</dfn> of $f$ is the $y$-value cooresponding to a critical point.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	All local extrema occur at critical points, but not all critical points are extrema. For example, $g(x) = x^3$ has $g'(x) = 3x^2$, so $x = 0$ is a critical point, but that is neither a local maximum nor minimum of $g$: instead, it&#x2019;s something called a <dfn>saddle point</dfn>.
+	
+	!iframe https://www.desmos.com/calculator/k1jbfqaooy
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	critical points
+	
+	Find the local extrema, as well as the global minimum and maximum, of $f(x) = x^5 - 3x^3 + x$ on $[-2, 1.5]$.
+	
+	Let&#x2019;s start by differentiating: $f'(x) = 5x^4 - 9x^2 + 1$. The first kind of critical point is when $f'(x) = 0$, so let&#x2019;s solve that equation. It might have been a little while since you&#x2019;ve solved something quite like this, but the idea is that when there are no $x^3$ or $x$ terms, we can use the quadratic formula on $x^2$:
+	
+	$$
+		\begin{align*}
+			5x^4 - 9x^2 + 1 &= 5(x^2)^2 - 9x^2 + 1\\
+			x^2 &= \frac{9 \pm \sqrt{81 - 20}}{10} \approx 1.681, .119\\
+			x &\approx \pm \sqrt{1.681}, \pm \sqrt{.119} &\approx \pm 1.297, \pm .345.
+		\end{align*}
+	$$
+	
+	On top of these, we need to add in any points where the derivative doesn&#x2019;t exist &mdash; things like dividing by zero, taking the square root of a negative number, or taking the log of a nonpositive number. Since this derivative is just a polynomial, there are no points where it&#x2019;s undefined. The last thing to take into account	
+	
+	!iframe https://www.desmos.com/calculator/h7feo4eowi
+	
+!end-example
+
+
+
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 11: Optimization",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/251/notes"
+	};
+	
+	Page.load();
+</script>
