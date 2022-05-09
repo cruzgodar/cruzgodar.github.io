@@ -241,6 +241,42 @@
 
 
 
+!begin-thm
+	
+	the First Derivative Test
+	
+	Let $f(x)$ be a differentiable function and write down all of its critical points from left to right. Take a critical point $x = a$ and evaluate $f'(x)$ at two places: in between $a$ and the next critical point to the left and in between $x$ and the next critical point to the right. If the derivative switches sign from positive to neagtive, then $a$ is a local maximum. If it switches sign from negative to positive, then $a$ is a local minimum. If it doesn&#x2019;t switch sign, then $a$ is a saddle point.
+	
+!end-thm
+
+
+
+!begin-example
+	
+	critical points
+	
+	Find and classify the extrema of $g(t) = t^6 - t^4$.
+	
+	To find candidates for extrema, we first find the critical points. That means $g'(t) = 6t^5 - 4t^3 = 0$, so $2t^3(3t^2 - 2)$. Therefore, we have $t = 0$ and $t = \pm \sqrt{\frac{2}{3}}$. There are no places where the derivative is undefined and the function is defined on all real numbers, so there is no boundary to take critical points from.
+	
+	The simplest way to classify critical points is with the second derivative test. We have $g''(t) = 30t^4 - 12t^2$, so $g''(0) = 0$ and $g\left(\sqrt{\frac{2}{3}}\right) = \left(-\sqrt{\frac{2}{3}}\right) = \frac{16}{3}$. We can immediately classify those second two as local minima, since the graph is concave up there. On the other hand, the second derivative test is inconclusive at $t = 0$.
+	
+	In order to figure out what&#x2019;s going on there, we can use the first derivative test. Since $\sqrt{\frac{2}{3}} \approx .816$, we just need to pick points in between $0$ and $.816$ and between $0$ and $-.816$. Let&#x2019;s just take $\pm .5$. Evaluating $g'$ there, we have $g'(-.5) = .3125$ and $g'(.5) = -.3125$. Since the derivative is positive before $t = 0$ and negative after, $t = 0$ must be a local maximum of $g$.
+	
+	!iframe https://www.desmos.com/calculator/oi6yvbmoc0
+	
+!end-example
+
+!begin-exercise
+	
+	critical points
+	
+	Find and classify the extrema of $h(x) = x^5 - 2x^3$ on $[-2, \sqrt{2}]$.
+	
+!end-exercise
+
+
+
 !nav-buttons
 
 

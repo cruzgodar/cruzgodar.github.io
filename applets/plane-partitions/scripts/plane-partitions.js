@@ -189,6 +189,15 @@
 	
 	
 	
+	let maximum_speed_checkbox_element = Page.element.querySelector("#maximum-speed-checkbox");
+	
+	maximum_speed_checkbox_element.addEventListener("input", () =>
+	{
+		animation_time = maximum_speed_checkbox_element.checked ? 50 : 500;
+	});
+	
+	
+	
 	let array_data_textarea_element = Page.element.querySelector("#array-data-textarea");
 	
 	array_data_textarea_element.value = generate_random_plane_partition();

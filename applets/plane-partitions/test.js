@@ -78,4 +78,10 @@ for (let i = 0; i < dim; i++)
 
 
 
-console.log(hook_lengths);
+app_hooks.forEach((hooks, hook_length) =>
+{
+	hooks.forEach((hook, index) =>
+	{
+		
+	});
+});

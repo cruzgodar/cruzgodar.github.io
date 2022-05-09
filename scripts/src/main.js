@@ -104,12 +104,11 @@ Site.page_lists =
 		"/teaching/uo/251/notes/8-the-chain-rule/8-the-chain-rule.html",
 		"/teaching/uo/251/notes/9-the-inverse-function-theorem/9-the-inverse-function-theorem.html",
 		"/teaching/uo/251/notes/10-implicit-differentiation/10-implicit-differentiation.html",
-		"/teaching/uo/251/notes/11-linear-approximation/11-linear-approximation.html",
-		"/teaching/uo/251/notes/12-optimization/12-optimization.html",
-		"/teaching/uo/251/notes/13-derivatives-and-graphs/13-derivatives-and-graphs.html",
-		"/teaching/uo/251/notes/14-l-hopitals-rule/14-l-hopitals-rule.html",
-		"/teaching/uo/251/notes/15-related-rates/15-related-rates.html",
-		"/teaching/uo/251/notes/16-applied-optimization/16-applied-optimization.html"
+		"/teaching/uo/251/notes/11-optimization/11-optimization.html",
+		"/teaching/uo/251/notes/12-derivatives-and-graphs/12-derivatives-and-graphs.html",
+		"/teaching/uo/251/notes/13-l-hopitals-rule/13-l-hopitals-rule.html",
+		"/teaching/uo/251/notes/14-related-rates/14-related-rates.html",
+		"/teaching/uo/251/notes/15-applied-optimization/15-applied-optimization.html"
 	],
 	
 	"/teaching/uo/252/notes":
