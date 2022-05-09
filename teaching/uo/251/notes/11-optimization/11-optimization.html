@@ -185,7 +185,57 @@
 	
 	Here, the orange parts of the graph are <dfn>concave up</dfn>, and the blue are <dfn>concave down</dfn>, corresponding to the places where $f''(x)$ is positive and negative, respectively.
 	
-	Suppose $x = a$ is a critical point. If $f''(a) < 0$, then the graph is concave down &mdash; in other words, it&#x2019;s curving down, so $x = a$ must be a local minimum. If $f''(a) > 0$, then $x = a$ must be a local maximum. IF $f''(a) = 0$, we don&#x2019;t know for sure what&#x2019;s going on, but this is still very useful. This is called the <dfn>second derivative test</dfn>, and it lets us classify most extrema.
+	Suppose $x = a$ is the type of critical point with $f'(a) = 0$. If $f''(a) < 0$, then the graph is concave down &mdash; in other words, it&#x2019;s curving down, so $x = a$ must be a local minimum. If $f''(a) > 0$, then $x = a$ must be a local maximum. IF $f''(a) = 0$, we don&#x2019;t know for sure what&#x2019;s going on, but this is still very useful. This is called the <dfn>second derivative test</dfn>, and it lets us classify most extrema.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	critical points
+	
+	Classify the critical points of $f(x) = x^5 - 3x^3 + x$ on $[-2, 1.5]$ using the second derivative test.
+	
+	The second derivative is $\frac{d}{dx}[5x^4 - 9x^2 + 1] = 20x^3 - 18x$. The second derivative test only works on the critical points where $f'(x) = 0$, so only Plugging in our critical points from before, we have
+	
+	$f''(-1.297) = -20.291$
+	
+	$f''(-.345) = 5.389$
+	
+	$f''(.345) = -5.389$
+	
+	$f''(1.297) = -20.291$
+	
+	Therefore, the first and third are local maxima and the second and fourth are local maxima.
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	Similarly to critical points, which are points where the derivative is zero or undefined, we have a similar concept (although not as useful to optimization) for the second derivative.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	inflection point
+	
+	Let $f$ be a function. An <dfn>inflection point</dfn> of $f$ is an $x$-value $x = a$ such that either $f''(a) = 0$ or $f''(a)$ is undefined.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	At critical points, a function often switches from increasing to decreasing or vice versa (not always &mdash; remember that saddle points exist). Similarly, at inflection points, functions often switch from an increasing <em>derivative</em> to a decreasing one, or vice versa. You&#x2019;ll hear the term inflection point commonly used in the media &mdash; of late, it&#x2019;s often used to describe COVID waves. The inflection point on the beginning of a wave is the point where the derivative stops increasing and starts to decrease. Remember that we can interpret the derivative as approximately the change in the function value when the input changes by $1$: if $f(t)$ is the number of new COVID cases on day $t$, then $f'(t)$ is approximately the amount that that number increases between days $t$ and $t + 1$. Therefore, the inflection point on the front side of a wave is the day on which the number of new patients jumps up by less than it jumped up the day before.
+	
+	Back to optimization. Thankfully, even if the second derivative test is inconclusive (i.e. f''(x) = 0$), we can examine the first derivative more closely to tell between maxima and minima.
 	
 !end-text-block
 
