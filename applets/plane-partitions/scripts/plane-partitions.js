@@ -352,6 +352,7 @@
 	
 	let rotation_y = 0;
 	let rotation_y_velocity = 0;
+	let next_rotation_y_velocity = 0;
 	let last_rotation_y_velocities = [];
 	
 	const rotation_y_velocity_friction = .94;
@@ -424,8 +425,7 @@
 		
 		scene.children.forEach(object => object.rotation.y = rotation_y);
 		
-		last_rotation_y_velocities.push(x_delta);
-		last_rotation_y_velocities.shift();
+		next_rotation_y_velocity = x_delta;
 	}
 	
 	function on_release_canvas(x, y, event)
@@ -462,6 +462,11 @@
 		renderer.render(scene, orthographic_camera);
 		
 		
+		
+		last_rotation_y_velocities.push(next_rotation_y_velocity);
+		last_rotation_y_velocities.shift();
+		
+		next_rotation_y_velocity = 0;
 		
 		if (rotation_y_velocity !== 0)
 		{
@@ -1258,8 +1263,22 @@
 		
 		
 		
-		hex_view_camera_pos[1] = total_array_size + total_array_height / 3;
-		_2d_view_camera_pos[1] = total_array_size + 10;
+		total_array_height = 0;
+		
+		for (let i = 0; i < arrays.length; i++)
+		{
+			total_array_height = Math.max(total_array_height, arrays[i].height);
+		}
+		
+		total_array_size = Math.max(total_array_footprint, total_array_height);
+		
+		
+		
+		let hex_view_camera_offset = (-arrays[0].footprint / 2 + arrays[arrays.length - 1].center_offset + arrays[arrays.length - 1].footprint / 2) / 2;
+		
+		hex_view_camera_pos = [total_array_size + hex_view_camera_offset, total_array_size + total_array_height / 3, total_array_size - hex_view_camera_offset];
+		
+		_2d_view_camera_pos = [hex_view_camera_offset, total_array_size + 10, -hex_view_camera_offset];
 		
 		if (in_2d_view)
 		{
@@ -1280,9 +1299,15 @@
 				bottom: -(total_array_footprint / 2 + .5),
 				duration: animation_time,
 				easing: "easeInOutQuad",
-				update: () => orthographic_camera.updateProjectionMatrix(),
-				complete: () => {if (!force) {currently_animating_camera = false}}
+				update: () => orthographic_camera.updateProjectionMatrix()
 			});
+			
+			setTimeout(() =>
+			{
+				draw_all_2d_view_text();
+				
+				Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 5);
+			}, animation_time);
 		}
 		
 		else
@@ -1304,8 +1329,7 @@
 				bottom: -total_array_size,
 				duration: animation_time,
 				easing: "easeInOutQuad",
-				update: () => orthographic_camera.updateProjectionMatrix(),
-				complete: () => {if (!force) {currently_animating_camera = false}}
+				update: () => orthographic_camera.updateProjectionMatrix()
 			});
 		}
 	}
@@ -1463,7 +1487,9 @@
 	//Goes through and recomputes the sizes of array and then the total array sizes.
 	function recalculate_heights(array)
 	{
-		array.numbers.forEach(row => row.forEach(entry => array.height = Math.max(entry, array.height)));
+		array.height = 0;
+		
+		array.numbers.forEach(row => row.forEach(entry => {array.height = Math.max(entry, array.height); console.log(entry)}));
 		
 		array.size = Math.max(array.footprint, array.height);
 		
@@ -1471,21 +1497,15 @@
 		
 		let old_total_array_height = total_array_height;
 		
-		if (array.height >= total_array_height)
-		{
-			total_array_height = array.height;
-		}
+		total_array_height = 0;
 		
-		else
-		{
-			total_array_height = 0;
-			
-			arrays.forEach(array => total_array_height = Math.max(array.height, total_array_height));
-		}
+		arrays.forEach(array => total_array_height = Math.max(array.height, total_array_height));
+		
+		
 		
 		total_array_size = Math.max(total_array_footprint, total_array_height);
 		
-		if (total_array_height !== old_total_array_height);
+		if (total_array_height !== old_total_array_height)
 		{
 			update_camera_height();
 		}
