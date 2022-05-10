@@ -92,10 +92,6 @@ Page.Layout =
 		
 		
 		
-		Page.element.querySelectorAll("iframe").forEach(iframe => iframe.style.height = `${iframe.offsetWidth - 8}px`);
-		
-		
-		
 		if (this.aspect_ratio < 1)
 		{
 			Page.Banner.file_name = "portrait." + Page.Images.file_extension;

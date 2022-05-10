@@ -805,6 +805,8 @@ Page.Load =
 			
 			else
 			{
+				Page.element.querySelector("#previous-nav-button").parentNode.nextElementSibling.classList.add("new-aos-section");
+				
 				Page.element.querySelector("#previous-nav-button").parentNode.remove();
 			}
 			
