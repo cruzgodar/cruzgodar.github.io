@@ -10,6 +10,10 @@
 	
 	const cube_lightness = .45;
 	
+	const infinite_height = 100;
+	
+	
+	
 	let options_numbers =
 	{
 		renderer: "cpu",
@@ -629,7 +633,15 @@
 			
 			for (let j = 0; j < split_rows[i].length; j++)
 			{
-				array[i][j] = parseInt(split_rows[i][j]);
+				if (split_rows[i][j] === "^")
+				{
+					array[i][j] = Infinity;
+				}
+				
+				else
+				{
+					array[i][j] = parseInt(split_rows[i][j]);
+				}	
 			}
 			
 			for (let j = split_rows[i].length; j < size; j++)
@@ -755,18 +767,35 @@
 				
 				for (let j = 0; j < array.footprint; j++)
 				{
-					array.cubes[i][j] = new Array(array.numbers[i][j]);
-					
-					if (array.numbers[i][j] > array.height)
+					if (array.numbers[i][j] !== Infinity)
 					{
-						array.height = array.numbers[i][j];
+						array.cubes[i][j] = new Array(array.numbers[i][j]);
+						
+						if (array.numbers[i][j] > array.height)
+						{
+							array.height = array.numbers[i][j];
+						}
+						
+						add_floor(array, j, i);
+						
+						for (let k = 0; k < array.numbers[i][j]; k++)
+						{
+							array.cubes[i][j][k] = add_cube(array, j, k, i);
+						}
 					}
 					
-					add_floor(array, j, i);
 					
-					for (let k = 0; k < array.numbers[i][j]; k++)
+					
+					else
 					{
-						array.cubes[i][j][k] = add_cube(array, j, k, i);
+						array.cubes[i][j] = new Array(infinite_height);
+						
+						add_floor(array, j, i);
+						
+						for (let k = 0; k < infinite_height; k++)
+						{
+							array.cubes[i][j][k] = add_cube(array, j, k, i, 0, 0, 1);
+						}
 					}
 				}
 			}
@@ -795,66 +824,7 @@
 			
 			else
 			{
-				let hex_view_camera_offset = (-arrays[0].footprint / 2 + arrays[arrays.length - 1].center_offset + arrays[arrays.length - 1].footprint / 2) / 2;
-				
-				hex_view_camera_pos = [total_array_size + hex_view_camera_offset, total_array_size + total_array_height / 3, total_array_size - hex_view_camera_offset];
-				
-				_2d_view_camera_pos = [hex_view_camera_offset, total_array_size + 10, -hex_view_camera_offset];
-				
-				if (in_2d_view)
-				{
-					await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
-					
-					anime({
-						targets: orthographic_camera.position,
-						x: _2d_view_camera_pos[0],
-						y: _2d_view_camera_pos[1],
-						z: _2d_view_camera_pos[2],
-						duration: animation_time,
-						easing: "easeInOutQuad"
-					});
-					
-					anime({
-						targets: orthographic_camera,
-						left: -(total_array_footprint / 2 + .5),
-						right: total_array_footprint / 2 + .5,
-						top: total_array_footprint / 2 + .5,
-						bottom: -(total_array_footprint / 2 + .5),
-						duration: animation_time,
-						easing: "easeInOutQuad",
-						update: () => orthographic_camera.updateProjectionMatrix()
-					});
-					
-					setTimeout(() =>
-					{
-						draw_all_2d_view_text();
-						
-						Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 5);
-					}, animation_time);
-				}
-				
-				else
-				{
-					anime({
-						targets: orthographic_camera.position,
-						x: hex_view_camera_pos[0],
-						y: hex_view_camera_pos[1],
-						z: hex_view_camera_pos[2],
-						duration: animation_time,
-						easing: "easeInOutQuad"
-					});
-					
-					anime({
-						targets: orthographic_camera,
-						left: -total_array_size,
-						right: total_array_size,
-						top: total_array_size,
-						bottom: -total_array_size,
-						duration: animation_time,
-						easing: "easeInOutQuad",
-						update: () => orthographic_camera.updateProjectionMatrix()
-					});
-				}
+				update_camera_height(true);
 			}
 			
 			
@@ -972,75 +942,7 @@
 		
 		
 		
-		total_array_height = 0;
-		
-		for (let i = 0; i < arrays.length; i++)
-		{
-			total_array_height = Math.max(total_array_height, arrays[i].height);
-		}
-		
-		total_array_size = Math.max(total_array_footprint, total_array_height);
-		
-		
-		
-		let hex_view_camera_offset = (-arrays[0].footprint / 2 + arrays[arrays.length - 1].center_offset + arrays[arrays.length - 1].footprint / 2) / 2;
-		
-		hex_view_camera_pos = [total_array_size + hex_view_camera_offset, total_array_size + total_array_height / 3, total_array_size - hex_view_camera_offset];
-		
-		_2d_view_camera_pos = [hex_view_camera_offset, total_array_size + 10, -hex_view_camera_offset];
-		
-		if (in_2d_view)
-		{
-			anime({
-				targets: orthographic_camera.position,
-				x: _2d_view_camera_pos[0],
-				y: _2d_view_camera_pos[1],
-				z: _2d_view_camera_pos[2],
-				duration: animation_time,
-				easing: "easeInOutQuad"
-			});
-			
-			anime({
-				targets: orthographic_camera,
-				left: -(total_array_footprint / 2 + .5),
-				right: total_array_footprint / 2 + .5,
-				top: total_array_footprint / 2 + .5,
-				bottom: -(total_array_footprint / 2 + .5),
-				duration: animation_time,
-				easing: "easeInOutQuad",
-				update: () => orthographic_camera.updateProjectionMatrix()
-			});
-			
-			setTimeout(() =>
-			{
-				draw_all_2d_view_text();
-				
-				Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 5);
-			}, animation_time);
-		}
-		
-		else
-		{
-			anime({
-				targets: orthographic_camera.position,
-				x: hex_view_camera_pos[0],
-				y: hex_view_camera_pos[1],
-				z: hex_view_camera_pos[2],
-				duration: animation_time,
-				easing: "easeInOutQuad"
-			});
-			
-			anime({
-				targets: orthographic_camera,
-				left: -total_array_size,
-				right: total_array_size,
-				top: total_array_size,
-				bottom: -total_array_size,
-				duration: animation_time,
-				easing: "easeInOutQuad",
-				update: () => orthographic_camera.updateProjectionMatrix()
-			});
-		}
+		update_camera_height(true);
 	}
 	
 	
@@ -1299,7 +1201,8 @@
 				bottom: -(total_array_footprint / 2 + .5),
 				duration: animation_time,
 				easing: "easeInOutQuad",
-				update: () => orthographic_camera.updateProjectionMatrix()
+				update: () => orthographic_camera.updateProjectionMatrix(),
+				complete: () => currently_animating_camera = false
 			});
 			
 			setTimeout(() =>
@@ -1329,7 +1232,8 @@
 				bottom: -total_array_size,
 				duration: animation_time,
 				easing: "easeInOutQuad",
-				update: () => orthographic_camera.updateProjectionMatrix()
+				update: () => orthographic_camera.updateProjectionMatrix(),
+				complete: () => currently_animating_camera = false
 			});
 		}
 	}
@@ -1489,7 +1393,16 @@
 	{
 		array.height = 0;
 		
-		array.numbers.forEach(row => row.forEach(entry => {array.height = Math.max(entry, array.height); console.log(entry)}));
+		array.numbers.forEach(row =>
+		{
+			row.forEach(entry =>
+			{
+				if (entry !== Infinity)
+				{
+					array.height = Math.max(entry, array.height);
+				}	
+			});
+		});
 		
 		array.size = Math.max(array.footprint, array.height);
 		
@@ -1543,10 +1456,13 @@
 	{
 		wilson_numbers.ctx.clearRect(font_size * (col + left + 1), font_size * (row + top + 1), font_size, font_size);
 		
-		let text_metrics = wilson_numbers.ctx.measureText(array.numbers[row][col]);
-		
-		//The height adjustment is an annoying spacing computation.
-		wilson_numbers.ctx.fillText(array.numbers[row][col], font_size * (col + left + 1) + (font_size - text_metrics.width) / 2, font_size * (row + top + 1) + (font_size + text_metrics.actualBoundingBoxAscent - text_metrics.actualBoundingBoxDescent) / 2);
+		if (array.numbers[row][col] !== Infinity)
+		{
+			let text_metrics = wilson_numbers.ctx.measureText(array.numbers[row][col]);
+			
+			//The height adjustment is an annoying spacing computation.
+			wilson_numbers.ctx.fillText(array.numbers[row][col], font_size * (col + left + 1) + (font_size - text_metrics.width) / 2, font_size * (row + top + 1) + (font_size + text_metrics.actualBoundingBoxAscent - text_metrics.actualBoundingBoxDescent) / 2);
+		}	
 	}
 	
 	
@@ -1620,7 +1536,15 @@
 			
 			let targets = [];
 			
-			coordinates.forEach(xyz => targets.push(array.cubes[xyz[0]][xyz[1]][xyz[2]].position));
+			coordinates.forEach(xyz =>
+			{
+				targets.push(array.cubes[xyz[0]][xyz[1]][xyz[2]].position);
+				
+				if (array.numbers[xyz[0]][xyz[1]] === Infinity)
+				{
+					console.error("Cannot raise cubes from an infinite height");
+				}
+			});
 			
 			anime({
 				targets: targets,
@@ -1643,7 +1567,15 @@
 			
 			let targets = [];
 			
-			coordinates.forEach(xyz => targets.push(array.cubes[xyz[0]][xyz[1]][xyz[2]].position));
+			coordinates.forEach(xyz =>
+			{
+				targets.push(array.cubes[xyz[0]][xyz[1]][xyz[2]].position);
+				
+				if (array.numbers[xyz[0]][xyz[1]] === Infinity)
+				{
+					console.error("Cannot lower cubes onto an infinite height");
+				}
+			});
 			
 			anime({
 				targets: targets,
@@ -1678,7 +1610,13 @@
 			{
 				targets.push(source_array.cubes[xyz[0]][xyz[1]][xyz[2]].position);
 				target_array.cube_group.attach(source_array.cubes[xyz[0]][xyz[1]][xyz[2]]);
+				
+				if (source_array.numbers[xyz[0]][xyz[1]] === Infinity)
+				{
+					console.error("Cannot move cubes from an infinite height");
+				}
 			});
+			
 			
 			
 			anime({
@@ -1692,6 +1630,11 @@
 				{
 					target_coordinates.forEach((xyz, index) =>
 					{
+						if (target_array.numbers[xyz[0]][xyz[1]] === Infinity)
+						{
+							console.error("Cannot move cubes to an infinite height");
+						}
+						
 						if (target_array.cubes[xyz[0]][xyz[1]][xyz[2]])
 						{
 							console.warn(`Moving a cube to a location that's already occupied: ${xyz}. This is probably not what you want to do.`);
@@ -1728,6 +1671,11 @@
 			coordinates.forEach(xyz =>
 			{
 				array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material));
+				
+				if (array.numbers[xyz[0]][xyz[1]] === Infinity)
+				{
+					console.error("Cannot reveal cubes at an infinite height");
+				}
 			});
 			
 			anime({
@@ -1753,6 +1701,11 @@
 			coordinates.forEach(xyz =>
 			{
 				array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material));
+				
+				if (array.numbers[xyz[0]][xyz[1]] === Infinity)
+				{
+					console.error("Cannot delete cubes at an infinite height");
+				}
 			});
 						
 			anime({
@@ -2288,6 +2241,8 @@
 		if (!in_2d_view)
 		{
 			await show_2d_view();
+			
+			console.log(currently_animating_camera);
 		}
 		
 		
@@ -2503,6 +2458,8 @@
 		}
 		
 		
+		
+		update_camera_height(true);
 		
 		array.type = "tableau";
 		
@@ -2747,6 +2704,8 @@
 		}
 		
 		
+		
+		update_camera_height(true);
 		
 		array.type = "pp";
 		
