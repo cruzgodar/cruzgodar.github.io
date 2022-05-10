@@ -4,6 +4,23 @@
 	
 	
 	
+	if (!Site.scripts_loaded["lodash"])
+	{
+		Site.load_script("/scripts/lodash.min.js")
+		
+		.then(() =>
+		{
+			Site.scripts_loaded["lodash"] = true;
+		})
+		
+		.catch((error) =>
+		{
+			console.error("Could not load Lodash");
+		});
+	}
+	
+	
+	
 	let resolution = 2000;
 	
 	let animation_time = 500;
@@ -641,7 +658,7 @@
 				else
 				{
 					array[i][j] = parseInt(split_rows[i][j]);
-				}	
+				}
 			}
 			
 			for (let j = split_rows[i].length; j < size; j++)
@@ -794,7 +811,7 @@
 						
 						for (let k = 0; k < infinite_height; k++)
 						{
-							array.cubes[i][j][k] = add_cube(array, j, k, i, 0, 0, 1);
+							array.cubes[i][j][k] = add_cube(array, j, k, i, 0, 0, .2);
 						}
 					}
 				}
@@ -860,6 +877,15 @@
 	
 	async function remove_array(index)
 	{
+		if (index >= arrays.length || index < 0)
+		{
+			display_error(`No array at index ${index}`);
+			
+			return;
+		}
+		
+		
+		
 		if (in_2d_view)
 		{
 			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
@@ -1744,6 +1770,15 @@
 		
 		
 		
+		if (index >= arrays.length || index < 0)
+		{
+			display_error(`No array at index ${index}`);
+			
+			return;
+		}
+		
+		
+		
 		let array = arrays[index];
 		
 		if (array.type !== "pp")
@@ -1755,9 +1790,9 @@
 			return;
 		}
 		
-		let plane_partition = JSON.parse(JSON.stringify(array.numbers));
 		
 		
+		let plane_partition = _.cloneDeep(array.numbers);
 		
 		let coordinates = [];
 		
@@ -1766,10 +1801,13 @@
 		{
 			for (let j = 0; j < plane_partition.length; j++)
 			{
-				for (let k = 0; k < plane_partition[i][j]; k++)
+				if (plane_partition[i][j] !== Infinity)
 				{
-					coordinates.push([i, j, k]);
-				}
+					for (let k = 0; k < plane_partition[i][j]; k++)
+					{
+						coordinates.push([i, j, k]);
+					}
+				}	
 			}
 		}
 		
@@ -1777,26 +1815,58 @@
 		
 		
 		
+		let column_starts = new Array(plane_partition.length);
+		
+		for (let i = 0; i < plane_partition.length; i++)
+		{
+			let j = 0;
+			
+			while (j < plane_partition.length && plane_partition[j][i] === Infinity)
+			{
+				j++;
+			}
+			
+			column_starts[i] = j;
+		}
+		
+		
+		
+		let row_starts = new Array(plane_partition.length);
+		
+		for (let i = 0; i < plane_partition.length; i++)
+		{
+			let j = 0;
+			
+			while (j < plane_partition.length && plane_partition[i][j] === Infinity)
+			{
+				j++;
+			}
+			
+			row_starts[i] = j;
+		}
+		
+		
+		
 		let zigzag_paths = [];
 		
 		while (true)
 		{
-			//Find the right-most nonzero entry in the top row.
+			//Find the right-most nonzero entry at the top of its column.
 			let starting_col = plane_partition[0].length - 1;
 			
-			while (starting_col >= 0 && plane_partition[0][starting_col] === 0)
+			while (starting_col >= 0 && column_starts[starting_col] < plane_partition.length && plane_partition[column_starts[starting_col]][starting_col] === 0)
 			{
 				starting_col--;
 			}
 			
-			if (starting_col < 0)
+			if (starting_col < 0 || column_starts[starting_col] === plane_partition.length)
 			{
 				break;
 			}
 			
 			
 			
-			let current_row = 0;
+			let current_row = column_starts[starting_col];
 			let current_col = starting_col;
 			
 			let path = [[current_row, current_col, plane_partition[current_row][current_col] - 1]];
@@ -1808,7 +1878,7 @@
 					current_row++;
 				}
 				
-				else if (current_col > 0)
+				else if (current_col > 0 && plane_partition[current_row][current_col - 1] !== Infinity)
 				{
 					current_col--;
 				}
@@ -1841,7 +1911,7 @@
 			
 			for (let j = 0; j < plane_partition.length; j++)
 			{
-				empty_array[i][j] = 0;
+				empty_array[i][j] = plane_partition[i][j] === Infinity ? Infinity : 0;
 			}
 		}
 		
@@ -1861,7 +1931,7 @@
 			
 			
 			//Lift all the cubes up. There's no need to do this if we're in the 2d view.
-			await raise_cubes(array, zigzag_paths[i], array.numbers[0][0]);
+			await raise_cubes(array, zigzag_paths[i], array.height);
 			
 			
 			
@@ -1888,21 +1958,23 @@
 			//Find the pivot and rearrange the shape into a hook.
 			let pivot = [zigzag_paths[i][zigzag_paths[i].length - 1][0], zigzag_paths[i][0][1]];
 			
-			let target_coordinates = new Array(zigzag_paths[i].length);
+			let target_coordinates = [];
 			
 			let target_height = output_array.height + 1;
 			
-			for (let j = 0; j <= pivot[0]; j++)
+			//This is the vertical part of the hook.
+			for (let j = column_starts[pivot[1]]; j <= pivot[0]; j++)
 			{
-				target_coordinates[j] = [j, pivot[1], target_height];
+				target_coordinates.push([j, pivot[1], target_height]);
 			}
 			
-			for (let j = pivot[0] + 1; j < zigzag_paths[i].length; j++)
-			{
-				target_coordinates[j] = [pivot[0], pivot[1] - (j - pivot[0]), target_height];
-			}
+			let pivot_coordinates = target_coordinates[target_coordinates.length - 1];
 			
-			let pivot_coordinates = target_coordinates[pivot[0]];
+			//And this is the horizontal part.
+			for (let j = pivot[1] - 1; j >= row_starts[pivot[0]]; j--)
+			{
+				target_coordinates.push([pivot[0], j, target_height]);
+			}
 			
 			await move_cubes(array, zigzag_paths[i], output_array, target_coordinates);
 			
@@ -1911,18 +1983,18 @@
 			//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
 			target_coordinates = [];
 			
-			for (let j = 1; j <= pivot[0]; j++)
+			for (let j = pivot[0] - 1; j >= column_starts[pivot[1]]; j--)
 			{
-				target_coordinates.push([pivot[0] - j, pivot[1], target_height]);
+				target_coordinates.push([j, pivot[1], target_height]);
 			}
 			
 			delete_cubes(output_array, target_coordinates);
 			
 			target_coordinates = [];
 			
-			for (let j = 1; j <= pivot[1]; j++)
+			for (let j = pivot[1] - 1; j >= row_starts[pivot[0]]; j--)
 			{
-				target_coordinates.push([pivot[0], pivot[1] - j, target_height]);
+				target_coordinates.push([pivot[0], j, target_height]);
 			}
 			
 			delete_cubes(output_array, target_coordinates);
@@ -1971,6 +2043,15 @@
 		}
 		
 		currently_running_algorithm = true;
+		
+		
+		
+		if (index >= arrays.length || index < 0)
+		{
+			display_error(`No array at index ${index}`);
+			
+			return;
+		}
 		
 		
 		
@@ -2220,6 +2301,15 @@
 		}
 		
 		currently_running_algorithm = true;
+		
+		
+		
+		if (index >= arrays.length || index < 0)
+		{
+			display_error(`No array at index ${index}`);
+			
+			return;
+		}
 		
 		
 		
@@ -2479,6 +2569,15 @@
 		
 		
 		
+		if (index >= arrays.length || index < 0)
+		{
+			display_error(`No array at index ${index}`);
+			
+			return;
+		}
+		
+		
+		
 		let array = arrays[index];
 		
 		if (array.type !== "tableau")
@@ -2722,6 +2821,15 @@
 		}
 		
 		currently_running_algorithm = true;
+		
+		
+		
+		if (index >= arrays.length || index < 0)
+		{
+			display_error(`No array at index ${index}`);
+			
+			return;
+		}
 		
 		
 		
@@ -3003,6 +3111,15 @@
 		}
 		
 		currently_running_algorithm = true;
+		
+		
+		
+		if (index >= arrays.length || index < 0)
+		{
+			display_error(`No array at index ${index}`);
+			
+			return;
+		}
 		
 		
 		
