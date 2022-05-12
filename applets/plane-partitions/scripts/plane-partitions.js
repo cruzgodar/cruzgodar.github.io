@@ -25,7 +25,9 @@
 	
 	let animation_time = 500;
 	
-	const cube_lightness = .45;
+	const asymptote_lightness = .6;
+	const cube_lightness = .4;
+	const floor_lightness = .2;
 	
 	const infinite_height = 100;
 	
@@ -405,9 +407,11 @@
 	
 	let plane_partition = parse_array(array_data_textarea_element.value);
 	
+	add_new_array(arrays.length, [[Infinity, Infinity, 1], [1, 1, 1], [0, 2, 2]], "tableau");
+	
 	if (verify_pp(plane_partition))
 	{
-		add_new_array(arrays.length, plane_partition, "pp");
+		//add_new_array(arrays.length, plane_partition, "pp");
 	}
 	
 	draw_frame();
@@ -777,10 +781,12 @@
 			
 			
 			array.cubes = new Array(array.footprint);
+			array.floor = new Array(array.footprint);
 			
 			for (let i = 0; i < array.footprint; i++)
 			{
 				array.cubes[i] = new Array(array.footprint);
+				array.floor[i] = new Array(array.footprint);
 				
 				for (let j = 0; j < array.footprint; j++)
 				{
@@ -793,7 +799,7 @@
 							array.height = array.numbers[i][j];
 						}
 						
-						add_floor(array, j, i);
+						array.floor[i][j] = add_floor(array, j, i);
 						
 						for (let k = 0; k < array.numbers[i][j]; k++)
 						{
@@ -803,15 +809,15 @@
 					
 					
 					
-					else
+					else if (type !== "tableau")
 					{
 						array.cubes[i][j] = new Array(infinite_height);
 						
-						add_floor(array, j, i);
+						array.floor[i][j] = add_floor(array, j, i);
 						
 						for (let k = 0; k < infinite_height; k++)
 						{
-							array.cubes[i][j][k] = add_cube(array, j, k, i, 0, 0, .2);
+							array.cubes[i][j][k] = add_cube(array, j, k, i, 0, 0, asymptote_lightness);
 						}
 					}
 				}
@@ -915,19 +921,22 @@
 		});
 		
 		
-			
+		
 		//Dispose of all the materials.
 		for (let i = 0; i < arrays[index].cubes.length; i++)
 		{
 			for (let j = 0; j < arrays[index].cubes[i].length; j++)
 			{
-				for (let k = 0; k < arrays[index].cubes[i][j].length; k++)
+				if (arrays[index].cubes[i][j])
 				{
-					if (arrays[index].cubes[i][j][k])
+					for (let k = 0; k < arrays[index].cubes[i][j].length; k++)
 					{
-						arrays[index].cubes[i][j][k].material.forEach(material => material.dispose());
-					}	
-				}
+						if (arrays[index].cubes[i][j][k])
+						{
+							arrays[index].cubes[i][j][k].material.forEach(material => material.dispose());
+						}	
+					}
+				}	
 			}
 		}
 		
@@ -997,7 +1006,7 @@
 	
 	
 	
-	function add_floor(array, x, z, h = 0, s = 0, v = .2)
+	function add_floor(array, x, z, h = 0, s = 0, v = floor_lightness)
 	{
 		const materials = [
 			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
@@ -1759,6 +1768,42 @@
 	
 	
 	
+	//For use with tableaux of skew shape.
+	function remove_floor(array, coordinates)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			let targets = [];
+			
+			coordinates.forEach(xyz =>
+			{
+				array.floor[xyz[0]][xyz[1]].material.forEach(material => targets.push(material));
+			});
+						
+			anime({
+				targets: targets,
+				opacity: 0,
+				duration: animation_time / 2,
+				easing: "easeOutQuad",
+				complete: () =>
+				{
+					targets.forEach(material => material.dispose());
+					
+					coordinates.forEach(xyz =>
+					{
+						array.cube_group.remove(array.floor[xyz[0]][xyz[1]]);
+						
+						array.cubes[xyz[0]][xyz[1]] = null;
+					});
+					
+					resolve();
+				}
+			});	
+		});
+	}
+	
+	
+	
 	async function hillman_grassl(index)
 	{
 		if (currently_running_algorithm)
@@ -1773,6 +1818,8 @@
 		if (index >= arrays.length || index < 0)
 		{
 			display_error(`No array at index ${index}`);
+			
+			currently_running_algorithm = false;
 			
 			return;
 		}
@@ -2050,6 +2097,8 @@
 		{
 			display_error(`No array at index ${index}`);
 			
+			currently_running_algorithm = false;
+			
 			return;
 		}
 		
@@ -2066,7 +2115,7 @@
 			return;
 		}
 		
-		let tableau = JSON.parse(JSON.stringify(array.numbers));
+		let tableau = _.cloneDeep(array.numbers);
 		
 		let zigzag_paths = [];
 		
@@ -2079,14 +2128,49 @@
 		{
 			for (let j = 0; j < tableau.length; j++)
 			{
-				for (let k = 0; k < tableau[i][j]; k++)
+				if (tableau[i][j] !== Infinity)
 				{
-					coordinates.push([i, j, k]);
+					for (let k = 0; k < tableau[i][j]; k++)
+					{
+						coordinates.push([i, j, k]);
+					}
 				}
 			}
 		}
 		
 		uncolor_cubes(array, coordinates);
+		
+		
+		
+		let column_starts = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
+		{
+			let j = 0;
+			
+			while (j < tableau.length && tableau[j][i] === Infinity)
+			{
+				j++;
+			}
+			
+			column_starts[i] = j;
+		}
+		
+		
+		
+		let row_starts = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
+		{
+			let j = 0;
+			
+			while (j < tableau.length && tableau[i][j] === Infinity)
+			{
+				j++;
+			}
+			
+			row_starts[i] = j;
+		}
 			
 		
 		
@@ -2098,11 +2182,11 @@
 			
 			for (let j = 0; j < tableau.length; j++)
 			{
-				empty_array[i][j] = 0;
+				empty_array[i][j] = tableau[i][j] === Infinity ? Infinity : 0;
 			}
 		}
 		
-		let plane_partition = JSON.parse(JSON.stringify(empty_array));
+		let plane_partition = _.cloneDeep(empty_array);
 		
 		let output_array = await add_new_array(index + 1, empty_array, "pp");
 		
@@ -2111,14 +2195,14 @@
 		//Loop through the tableau in weirdo lex order and reassemble the paths.
 		for (let j = 0; j < tableau.length; j++)
 		{
-			for (let i = tableau[j].length - 1; i >= 0; i--)
+			for (let i = tableau.length - 1; i >= column_starts[j]; i--)
 			{
 				while (tableau[i][j] !== 0)
 				{
 					let path = [];
 					
 					let current_row = i;
-					let current_col = 0;
+					let current_col = row_starts[i];
 					
 					while (current_row >= 0)
 					{
@@ -2127,7 +2211,7 @@
 						
 						if (current_row !== 0)
 						{
-							while (plane_partition[current_row][k] !== plane_partition[current_row - 1][k])
+							while (plane_partition[current_row][k] !== plane_partition[current_row - 1][k] && k < j)
 							{
 								k++;
 							}
@@ -2144,8 +2228,16 @@
 							path.push([current_row, l, plane_partition[current_row][l]]);
 						}
 						
-						current_row--;
-						current_col = k;
+						if (current_row - 1 >= column_starts[k])
+						{
+							current_row--;
+							current_col = k;
+						}
+						
+						else
+						{
+							break;
+						}		
 					}
 					
 					
@@ -2182,13 +2274,13 @@
 			let height = array.size;
 			
 			//Add a bunch of cubes corresponding to the hook that this thing is a part of.
-			for (let j = 0; j < row; j++)
+			for (let j = column_starts[col]; j < row; j++)
 			{
 				array.cubes[j][col][height] = add_cube(array, col, height, j);
 				array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
 			}
 			
-			for (let j = 0; j < col; j++)
+			for (let j = row_starts[row]; j < col; j++)
 			{
 				array.cubes[row][j][height] = add_cube(array, j, height, row);
 				array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
@@ -2202,18 +2294,18 @@
 			
 			let coordinates = [];
 			
-			for (let j = 1; j <= row; j++)
+			for (let j = row - 1; j >= column_starts[col]; j--)
 			{
-				coordinates.push([row - j, col, height]);
+				coordinates.push([j, col, height]);
 			}
 			
 			let promise_1 = reveal_cubes(array, coordinates);
 			
 			coordinates = [];
 			
-			for (let j = 1; j <= col; j++)
+			for (let j = col - 1; j >= row_starts[row]; j--)
 			{
-				coordinates.push([row, col - j, height]);
+				coordinates.push([row, j, height]);
 			}
 			
 			let promise_2 = reveal_cubes(array, coordinates);
@@ -2225,14 +2317,14 @@
 			//The coordinates now need to be in a different order to match the zigzag path.
 			coordinates = [];
 			
-			for (let j = 0; j < col; j++)
+			for (let j = row_starts[row]; j < col; j++)
 			{
 				coordinates.push([row, j, height]);
 			}
 			
 			coordinates.push([row, col, array.numbers[row][col] - 1]);
 			
-			for (let j = row - 1; j >= 0; j--)
+			for (let j = row - 1; j >= column_starts[col]; j--)
 			{
 				coordinates.push([j, col, height]);
 			}
@@ -2289,6 +2381,8 @@
 		remove_array(index);
 		
 		currently_running_algorithm = false;
+		
+		console.log("hi!");
 	}
 	
 	
@@ -2307,6 +2401,8 @@
 		if (index >= arrays.length || index < 0)
 		{
 			display_error(`No array at index ${index}`);
+			
+			currently_running_algorithm = false;
 			
 			return;
 		}
@@ -2573,6 +2669,8 @@
 		{
 			display_error(`No array at index ${index}`);
 			
+			currently_running_algorithm = false;
+			
 			return;
 		}
 		
@@ -2827,6 +2925,8 @@
 		if (index >= arrays.length || index < 0)
 		{
 			display_error(`No array at index ${index}`);
+			
+			currently_running_algorithm = false;
 			
 			return;
 		}
@@ -3117,6 +3217,8 @@
 		if (index >= arrays.length || index < 0)
 		{
 			display_error(`No array at index ${index}`);
+			
+			currently_running_algorithm = false;
 			
 			return;
 		}
