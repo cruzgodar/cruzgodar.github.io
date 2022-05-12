@@ -407,11 +407,9 @@
 	
 	let plane_partition = parse_array(array_data_textarea_element.value);
 	
-	add_new_array(arrays.length, [[Infinity, Infinity, 1], [1, 1, 1], [0, 2, 2]], "tableau");
-	
 	if (verify_pp(plane_partition))
 	{
-		//add_new_array(arrays.length, plane_partition, "pp");
+		add_new_array(arrays.length, plane_partition, "pp");
 	}
 	
 	draw_frame();
@@ -1727,7 +1725,7 @@
 	
 	
 	//Fades the specified cubes' opacity to zero, and then deletes them.
-	function delete_cubes(array, coordinates)
+	function delete_cubes(array, coordinates, instant = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -1747,7 +1745,7 @@
 				targets: targets,
 				opacity: 0,
 				duration: animation_time / 2,
-				delay: (element, index) => Math.floor(index / 6) * animation_time / 10,
+				delay: (element, index) => (!instant) * Math.floor(index / 6) * animation_time / 10,
 				easing: "easeOutQuad",
 				complete: () =>
 				{
@@ -2427,8 +2425,6 @@
 		if (!in_2d_view)
 		{
 			await show_2d_view();
-			
-			console.log(currently_animating_camera);
 		}
 		
 		
@@ -2440,10 +2436,13 @@
 		{
 			for (let j = 0; j < plane_partition.length; j++)
 			{
-				for (let k = 0; k < plane_partition[i][j]; k++)
+				if (plane_partition[i][j] !== Infinity)
 				{
-					coordinates.push([i, j, k]);
-				}
+					for (let k = 0; k < plane_partition[i][j]; k++)
+					{
+						coordinates.push([i, j, k]);
+					}
+				}	
 			}
 		}
 		
@@ -2462,6 +2461,19 @@
 		{
 			for (let col = 0; col < array.footprint; col++)
 			{
+				if (plane_partition[row][col] === Infinity)
+				{
+					delete_floor(array, [[row, col]]);
+					
+					let coordinates = [];
+					
+					await delete_cubes(array, array.cubes[row][col], true);
+					
+					array.cubes[row][col] = [];
+					
+					continue;
+				}
+				
 				//Highlight this diagonal.
 				let diagonal_coordinates = [];
 				
