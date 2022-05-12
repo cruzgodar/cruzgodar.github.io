@@ -144,7 +144,10 @@
 	Page.Load.TextButtons.equalize();
 	setTimeout(Page.Load.TextButtons.equalize, 10);
 	
-	Page.Layout.AppletColumns.equalize();
+	if (Page.Layout.aspect_ratio > 1)
+	{
+		Page.Layout.AppletColumns.equalize();
+	}
 	
 	
 	
@@ -1734,11 +1737,6 @@
 			coordinates.forEach(xyz =>
 			{
 				array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material));
-				
-				if (array.numbers[xyz[0]][xyz[1]] === Infinity)
-				{
-					console.error("Cannot delete cubes at an infinite height");
-				}
 			});
 						
 			anime({
@@ -1767,7 +1765,7 @@
 	
 	
 	//For use with tableaux of skew shape.
-	function remove_floor(array, coordinates)
+	function delete_floor(array, coordinates)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -2463,13 +2461,15 @@
 			{
 				if (plane_partition[row][col] === Infinity)
 				{
+					let coordinates = array.cubes[row][col].map((cube, index) => [row, col, index]);
+					
+					await delete_cubes(array, coordinates, true);
+					
 					delete_floor(array, [[row, col]]);
 					
-					let coordinates = [];
-					
-					await delete_cubes(array, array.cubes[row][col], true);
-					
 					array.cubes[row][col] = [];
+					
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 					
 					continue;
 				}
@@ -2717,9 +2717,12 @@
 		{
 			for (let j = 0; j < tableau.length; j++)
 			{
-				for (let k = 0; k < tableau[i][j]; k++)
+				if (tableau[i][j] !== Infinity)
 				{
-					coordinates.push([i, j, k]);
+					for (let k = 0; k < tableau[i][j]; k++)
+					{
+						coordinates.push([i, j, k]);
+					}
 				}
 			}
 		}
@@ -2739,6 +2742,43 @@
 		{
 			for (let col = array.footprint - 1; col >= 0; col--)
 			{
+				if (tableau[row][col] === Infinity)
+				{
+					array.cubes[row][col] = new Array(infinite_height);
+					
+					let things_to_animate = [];
+					
+					for (let i = 0; i < infinite_height; i++)
+					{
+						array.cubes[row][col][i] = add_cube(array, col, i, row, 0, 0, asymptote_lightness);
+						
+						array.cubes[row][col][i].material.forEach(material => things_to_animate.push(material));
+					}
+					
+					array.floor[row][col] = add_floor(array, col, row);
+					
+					array.floor[row][col].material.forEach(material => things_to_animate.push(material));
+					
+					
+					
+					await new Promise((resolve, reject) =>
+					{
+						anime({
+							targets: things_to_animate,
+							opacity: 1,
+							duration: animation_time,
+							easing: "easeOutQuad",
+							complete: resolve
+						});
+					});
+					
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+					
+					continue;
+				}
+				
+				
+				
 				//Highlight this diagonal.
 				let diagonal_coordinates = [];
 				
