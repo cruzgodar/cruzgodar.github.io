@@ -736,6 +736,13 @@
 				size: 0
 			};
 			
+			if (in_2d_view)
+			{
+				await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
+			}
+			
+			
+			
 			arrays.splice(index, 0, array);
 			
 			array.footprint = array.numbers.length;
@@ -870,13 +877,29 @@
 				}
 			});
 			
-			anime({
-				targets: things_to_animate,
-				opacity: 1,
-				duration: animation_time / 2,
-				easing: "easeOutQuad",
-				complete: () => resolve(array)
+			await new Promise(async (resolve, reject) =>
+			{
+				anime({
+					targets: things_to_animate,
+					opacity: 1,
+					duration: animation_time / 2,
+					easing: "easeOutQuad",
+					complete: resolve
+				});
 			});
+			
+			
+			
+			if (in_2d_view)
+			{
+				draw_all_2d_text();
+				
+				await Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 5);
+			}
+			
+			
+			
+			resolve(array);
 		});	
 	}
 	
@@ -3383,14 +3406,80 @@
 		{
 			for (let j = 0; j < tableau.length; j++)
 			{
-				for (let k = 0; k < tableau[i][j]; k++)
+				if (tableau[i][j] !== Infinity)
 				{
-					coordinates.push([i, j, k]);
-				}
+					for (let k = 0; k < tableau[i][j]; k++)
+					{
+						coordinates.push([i, j, k]);
+					}
+				}	
 			}
 		}
 		
 		uncolor_cubes(array, coordinates);
+		
+		
+		
+		let column_starts = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
+		{
+			let j = 0;
+			
+			while (j < tableau.length && tableau[j][i] === Infinity)
+			{
+				j++;
+			}
+			
+			column_starts[i] = j;
+		}
+		
+		
+		
+		let row_starts = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
+		{
+			let j = 0;
+			
+			while (j < tableau.length && tableau[i][j] === Infinity)
+			{
+				j++;
+			}
+			
+			row_starts[i] = j;
+		}
+		
+		
+		
+		//First, find the candidates. This first requires categorizing the diagonals.
+		let diagonal_starts = {};
+		
+		//First the ones along the left edge.
+		for (let i = 0; i < tableau.length; i++)
+		{
+			diagonal_starts[-i] = [i, 0];
+		}
+		
+		//Now the ones along the top edge.
+		for (let i = 1; i < tableau.length; i++)
+		{
+			diagonal_starts[i] = [0, i];
+		}
+		
+		for (let i = -tableau.length + 1; i < tableau.length; i++)
+		{
+			let row = diagonal_starts[i][0];
+			let col = diagonal_starts[i][1];
+			
+			while (row < tableau.length && col < tableau.length && tableau[row][col] === Infinity)
+			{
+				row++;
+				col++;
+			}
+			
+			diagonal_starts[i] = [row, col];
+		}
 		
 		
 		
@@ -3404,9 +3493,17 @@
 			
 			for (let j = 0; j < tableau.length; j++)
 			{
-				empty_array[i][j] = 0;
+				if (tableau[i][j] === Infinity)
+				{
+					empty_array[i][j] = Infinity;
+				}
 				
-				num_hues += tableau[i][j];
+				else
+				{
+					empty_array[i][j] = 0;
+					
+					num_hues += tableau[i][j];
+				}	
 			}
 		}
 		
@@ -3423,6 +3520,13 @@
 		{
 			for (let i = tableau.length - 1; i >= 0; i--)
 			{
+				if (tableau[i][j] === Infinity)
+				{
+					continue;
+				}
+				
+				
+				
 				while (tableau[i][j] !== 0)
 				{
 					let hue = current_hue_index / num_hues * 6/7;
@@ -3439,13 +3543,13 @@
 					let col = j;
 					
 					//Add a bunch of cubes corresponding to the hook that this thing is a part of.
-					for (let k = 0; k < row; k++)
+					for (let k = column_starts[col]; k < row; k++)
 					{
 						array.cubes[k][col][height] = add_cube(array, col, height, k);
 						array.cubes[k][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
 					}
 					
-					for (let k = 0; k < col; k++)
+					for (let k = row_starts[row]; k < col; k++)
 					{
 						array.cubes[row][k][height] = add_cube(array, k, height, row);
 						array.cubes[row][k][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
@@ -3455,18 +3559,18 @@
 					
 					let coordinates = [];
 					
-					for (let k = 1; k <= row; k++)
+					for (let k = row - 1; k >= column_starts[col]; k--)
 					{
-						coordinates.push([row - k, col, height]);
+						coordinates.push([k, col, height]);
 					}
 					
 					let promise_1 = reveal_cubes(array, coordinates);
 					
 					coordinates = [];
 					
-					for (let k = 1; k <= col; k++)
+					for (let k = col - 1; k >= row_starts[row]; k--)
 					{
-						coordinates.push([row, col - k, height]);
+						coordinates.push([row, k, height]);
 					}
 					
 					let promise_2 = reveal_cubes(array, coordinates);
@@ -3478,31 +3582,31 @@
 					//In order to animate this nicely, we won't just jump straight to the Q-path -- we'll turn it into a rim-hook first.
 					coordinates = [];
 					
-					for (let k = 0; k < col; k++)
+					for (let k = row_starts[row]; k < col; k++)
 					{
 						coordinates.push([row, k, height]);
 					}
 					
 					coordinates.push([row, col, array.numbers[row][col] - 1]);
 					
-					for (let k = row - 1; k >= 0; k--)
+					for (let k = row - 1; k >= column_starts[col]; k--)
 					{
 						coordinates.push([k, col, height]);
 					}
 					
+					
+					
+					let start_content = row_starts[row] - row;
+					let end_content = start_content + coordinates.length - 1;
+					
 					let target_coordinates = [];
 					
-					
-					
-					for (let k = row; k >= 0; k--)
+					for (let k = start_content; k <= end_content; k++)
 					{
-						target_coordinates.push([k, 0, height]);
+						target_coordinates.push(_.clone(diagonal_starts[k]));
 					}
 					
-					for (let k = 1; k <= col; k++)
-					{
-						target_coordinates.push([0, k, height]);
-					}
+					
 					
 					tableau[row][col]--;
 					
@@ -3576,7 +3680,7 @@
 						
 						else
 						{
-							let old_target_coordinates = JSON.parse(JSON.stringify(target_coordinates.slice(current_index)));
+							let old_target_coordinates = _.cloneDeep(target_coordinates.slice(current_index));
 							
 							//Shift the rest of the coordinates down and right by 1.
 							for (let k = current_index; k < target_coordinates.length; k++)
