@@ -2996,7 +2996,7 @@
 			return;
 		}
 		
-		let plane_partition = JSON.parse(JSON.stringify(array.numbers));
+		let plane_partition = _.cloneDeep(array.numbers);
 		
 		
 		
@@ -3007,10 +3007,13 @@
 		{
 			for (let j = 0; j < plane_partition.length; j++)
 			{
-				for (let k = 0; k < plane_partition[i][j]; k++)
+				if (plane_partition[i][j] !== Infinity)
 				{
-					coordinates.push([i, j, k]);
-				}
+					for (let k = 0; k < plane_partition[i][j]; k++)
+					{
+						coordinates.push([i, j, k]);
+					}
+				}	
 			}
 		}
 		
@@ -3018,105 +3021,185 @@
 		
 		
 		
-		//First, find the candidates. This first requires categorizing the diagonals.
-		let diagonals = {0: 0};
+		let column_starts = new Array(plane_partition.length);
 		
-		
-		
-		for (let i = 1; i < plane_partition.length; i++)
+		for (let i = 0; i < plane_partition.length; i++)
 		{
-			if (plane_partition[i][0] !== 0)
+			let j = 0;
+			
+			while (j < plane_partition.length && plane_partition[j][i] === Infinity)
 			{
-				diagonals[-i] = 3;
+				j++;
 			}
 			
-			if (plane_partition[0][i] !== 0)
+			column_starts[i] = j;
+		}
+		
+		
+		
+		let row_starts = new Array(plane_partition.length);
+		
+		for (let i = 0; i < plane_partition.length; i++)
+		{
+			let j = 0;
+			
+			while (j < plane_partition.length && plane_partition[i][j] === Infinity)
+			{
+				j++;
+			}
+			
+			row_starts[i] = j;
+		}
+		
+		
+		
+		//First, find the candidates. This first requires categorizing the diagonals.
+		let diagonals = {};
+		
+		let diagonal_starts = {};
+		
+		
+		
+		//First the ones along the left edge.
+		for (let i = 0; i < plane_partition.length; i++)
+		{
+			diagonal_starts[-i] = [i, 0];
+		}
+		
+		//Now the ones along the top edge.
+		for (let i = 1; i < plane_partition.length; i++)
+		{
+			diagonal_starts[i] = [0, i];
+		}
+		
+		
+		
+		//First the ones along the left edge.
+		for (let i = -plane_partition.length + 1; i < plane_partition.length; i++)
+		{
+			let row = diagonal_starts[i][0];
+			let col = diagonal_starts[i][1];
+			
+			while (row < plane_partition.length && col < plane_partition.length && plane_partition[row][col] === Infinity)
+			{
+				row++;
+				col++;
+			}
+			
+			diagonal_starts[i] = [row, col];
+			
+			if (row === plane_partition.length || col === plane_partition.length)
+			{
+				diagonals[i] = -1;
+				continue;
+			}
+			
+			
+			
+			let boundary_left = col === 0 || plane_partition[row][col - 1] === Infinity;
+			let boundary_up = row === 0 || plane_partition[row - 1][col] === Infinity;
+			
+			if (boundary_left && boundary_up)
+			{
+				diagonals[i] = 0;
+			}
+			
+			else if (boundary_left)
+			{
+				diagonals[i] = 3;
+			}
+			
+			else if (boundary_up)
 			{
 				diagonals[i] = 2;
+			}
+			
+			else
+			{
+				diagonals[i] = 1;
 			}
 		}
 		
 		
 		
-		//Now we need to move through the candidates.
+		//Now we need to move through the candidates. They only occur in A and O regions, so we only scan those diagonals, top-left to bottom-right, and then bottom-left to top-right in terms of diagonals.
 		let q_paths = [];
 		let rim_hooks = [];
 		
-		while (true)
+		for (let i = -plane_partition.length + 1; i < plane_partition.length; i++)
 		{
-			let row = 0;
-			let col = 0;
-			
-			let found_candidate = false;
-			
-			//Find the minimum candidate with respect to the content order. Since they only occur in A and O regions, we just start at (0, 0) and move right.
-			for (let j = 0; j < plane_partition.length; j++)
+			if (diagonals[i] === 1 || diagonals[i] === 3)
 			{
-				if (plane_partition[0][j] === 0)
-				{
-					break;
-				}
+				continue;
+			}
+			
+			let start_row = diagonal_starts[i][0];
+			let start_col = diagonal_starts[i][1];
+			
+			if (plane_partition[start_row][start_col] === 0)
+			{
+				continue;
+			}
+			
+			
+			
+			while (true)
+			{
+				let found_candidate = false;	
 				
-				row = 0;
-				col = j;
-				
-				while (row < plane_partition.length && col < plane_partition.length && plane_partition[row][col] !== 0)
+				while (start_row < plane_partition.length && start_col < plane_partition.length && plane_partition[start_row][start_col] !== 0)
 				{
-					if ((col < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row][col + 1]) || (col === plane_partition.length - 1 && plane_partition[row][col] > 0))
+					if ((start_col < plane_partition.length - 1 && plane_partition[start_row][start_col] > plane_partition[start_row][start_col + 1]) || (start_col === plane_partition.length - 1 && plane_partition[start_row][start_col] > 0))
 					{
-						if (j === 0 || (j !== 0 && ((row < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row + 1][col]) || (row === plane_partition.length - 1 && plane_partition[row][col] > 0))))
+						if (diagonals[i] === 0 || (diagonals[i] === 2 && ((start_row < plane_partition.length - 1 && plane_partition[start_row][start_col] > plane_partition[start_row + 1][start_col]) || (start_row === plane_partition.length - 1 && plane_partition[start_row][start_col] > 0))))
 						{
 							found_candidate = true;
 							break;
 						}	
 					}
 					
-					row++;
-					col++;
+					start_row++;
+					start_col++;
 				}
 				
-				if (found_candidate)
-				{
-					break;
-				}
-			}
-			
-			if (!found_candidate)
-			{
-				break;
-			}
-			
-			
-			
-			let content = col - row;
-			
-			let path = [[row, col, plane_partition[row][col] - 1]];
-			
-			while (true)
-			{
-				let current_content = col - row;
-				
-				if (row < plane_partition.length - 1 && plane_partition[row][col] === plane_partition[row + 1][col] && (diagonals[current_content] === 0 || diagonals[current_content] === 3))
-				{
-					row++;
-				}
-				
-				else if (col > 0 && (row === plane_partition.length - 1 || (row < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row + 1][col])))
-				{
-					col--;
-				}
-				
-				else
+				if (!found_candidate)
 				{
 					break;
 				}
 				
-				path.push([row, col, plane_partition[row][col] - 1]);
-			}
-			
-			path.forEach(box => plane_partition[box[0]][box[1]]--);
-			
-			q_paths.push(path);
+				
+				
+				let row = start_row;
+				let col = start_col;
+				
+				let path = [[row, col, plane_partition[row][col] - 1]];
+				
+				while (true)
+				{
+					let current_content = col - row;
+					
+					if (row < plane_partition.length - 1 && plane_partition[row][col] === plane_partition[row + 1][col] && (diagonals[current_content] === 0 || diagonals[current_content] === 3))
+					{
+						row++;
+					}
+					
+					else if (col > row_starts[row] && (row === plane_partition.length - 1 || (row < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row + 1][col])))
+					{
+						col--;
+					}
+					
+					else
+					{
+						break;
+					}
+					
+					path.push([row, col, plane_partition[row][col] - 1]);
+				}
+				
+				path.forEach(box => plane_partition[box[0]][box[1]]--);
+				
+				q_paths.push(path);
+			}	
 		}
 		
 		
@@ -3129,7 +3212,7 @@
 			
 			for (let j = 0; j < plane_partition.length; j++)
 			{
-				empty_array[i][j] = 0;
+				empty_array[i][j] = plane_partition[i][j] === Infinity ? Infinity : 0;
 			}
 		}
 		
@@ -3149,7 +3232,7 @@
 			
 			
 			//Lift all the cubes up. There's no need to do this if we're in the 2d view.
-			await raise_cubes(array, q_paths[i], array.numbers[0][0]);
+			await raise_cubes(array, q_paths[i], array.height + 1);
 			
 			
 			
@@ -3176,25 +3259,28 @@
 			//Find the pivot and rearrange the shape into a hook. The end of the Q-path is the same as the end of the rim-hook, so it defines the row. To find the column, we need to go row boxes down, and then use the rest of the length to go right.
 			let row = q_paths[i][q_paths[i].length - 1][0];
 			
-			let pivot = [row, q_paths[i].length - row - 1];
+			let start_content = q_paths[i][q_paths[i].length - 1][1] - row;
+			
+			//Every step along the rim-hook increases the content by one.
+			let end_content = start_content + q_paths[i].length - 1;
+			
+			let col = diagonal_starts[end_content][1];
 			
 			
 			
-			let target_coordinates = new Array(q_paths[i].length);
+			let target_coordinates = [];
 			
 			let target_height = Math.max(array.height + 1, output_array.height + 1);
 			
-			for (let j = 0; j <= pivot[0]; j++)
+			for (let j = column_starts[col]; j <= row; j++)
 			{
-				target_coordinates[j] = [j, pivot[1], target_height];
+				target_coordinates.push([j, col, target_height]);
 			}
 			
-			for (let j = pivot[0] + 1; j < q_paths[i].length; j++)
+			for (let j = col - 1; j >= row_starts[row]; j--)
 			{
-				target_coordinates[j] = [pivot[0], pivot[1] - (j - pivot[0]), target_height];
+				target_coordinates.push([row, j, target_height]);
 			}
-			
-			let pivot_coordinates = target_coordinates[pivot[0]];
 			
 			await move_cubes(array, q_paths[i], output_array, target_coordinates);
 			
@@ -3203,43 +3289,39 @@
 			//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
 			target_coordinates = [];
 			
-			for (let j = 1; j <= pivot[0]; j++)
+			for (let j = row - 1; j >= column_starts[col]; j--)
 			{
-				target_coordinates.push([pivot[0] - j, pivot[1], target_height]);
+				target_coordinates.push([j, col, target_height]);
 			}
 			
 			delete_cubes(output_array, target_coordinates);
 			
 			target_coordinates = [];
 			
-			for (let j = 1; j <= pivot[1]; j++)
+			for (let j = col - 1; j >= row_starts[row]; j--)
 			{
-				target_coordinates.push([pivot[0], pivot[1] - j, target_height]);
+				target_coordinates.push([row, j, target_height]);
 			}
 			
 			delete_cubes(output_array, target_coordinates);
 			
 			
 			
-			await lower_cubes(output_array, [pivot_coordinates]);
+			await lower_cubes(output_array, [[row, col, target_height]]);
 			
 			
 			
 			top = total_array_footprint - output_array.partial_footprint_sum - 1;
 			left = output_array.partial_footprint_sum - output_array.footprint;
 			
-			output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]++;
-			
-			recalculate_heights(output_array);
+			output_array.numbers[row][col]++;
 			
 			if (in_2d_view)
 			{
-				draw_single_cell_2d_view_text(output_array, pivot_coordinates[0], pivot_coordinates[1], top, left);
+				draw_single_cell_2d_view_text(output_array, row, col, top, left);
 			}
 			
-			output_array.height = Math.max(output_array.height, output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]);
-			
-			output_array.size = Math.max(output_array.size, output_array.height);
+			recalculate_heights(output_array);
 			
 			
 			
