@@ -175,7 +175,17 @@
 		if (Page.Layout.aspect_ratio > 1)
 		{
 			Page.Layout.AppletColumns.equalize();
-		}	
+		}
+		
+		if (visible_section === "edit-array")
+		{
+			let index = parseInt(edit_array_index_input_element.value || 0);
+		
+			if (index < arrays.length && index >= 0)
+			{
+				edit_array_textarea_element.value = array_to_ascii(arrays[index].numbers);
+			}
+		}
 		
 		section_elements[visible_section].forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time))
 	});	
