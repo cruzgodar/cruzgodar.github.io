@@ -7,7 +7,7 @@
 	
 	<meta property="og:url" content="https://cruzgodar.com/applets/plane-partitions/plane-partitions.html"/>
 	
-	<meta property="og:description" content="Text"/>
+	<meta property="og:description" content="This is a behemoth of an applet -- it took two months of work, I had to learn how to use a proper 3D library, and there's more than twice as much code as the previous largest applet. I'm proud of the result, though: this applet visualizes plane partitions, which are stacks of boxes with one restriction: the height doesn't increase when moving down or to the right. The resulting object can be viewed in 2D or 3D -- the 3D view looks like a bunch of rhombi, and drawing a line in the center (called a dimer) produces a one-to-one correspondence between plane partitions and what are called perfect matchings on a hexagonal lattice, where every node is pared with exactly one other."/>
 
 	<meta property="og:image" content="https://cruzgodar.com/applets/plane-partitions/cover.jpg"/>
 	
@@ -28,7 +28,11 @@
 
 !begin-text-block
 	
-	Text
+	This is a behemoth of an applet &mdash; it took two months of work, I had to learn how to use a proper 3D library, and there&#x2019;s more than twice as much code as the previous largest applet. I&#x2019;m proud of the result, though: this applet visualizes <dfn>plane partitions</dfn>, which are stacks of boxes with one restriction: the height doesn&#x2019;t increase when moving down or to the right. The resulting object can be viewed in 2D or 3D &mdash; the 3D view looks like a bunch of rhombi, and drawing a line in the center (called a <dfn>dimer</dfn>) produces a one-to-one correspondence between plane partitions and what are called <dfn>perfect matchings</dfn> on a hexagonal lattice, where every node is pared with exactly one other.
+	
+	Plane partitions can be made <dfn>asymptotic</dfn> to a shape. When adding or editing an array, replace a number with a caret (^) to give that square infinite height, represented with slightly lighter boxes.
+	
+	Plane partitions are a frequently studied object, and a handful of correspondences involving them have been discovered. Three of them have been implemented here, under the Algorithms section. All three take a plane partition and convert it to a <dfn>tableau</dfn> of the same shape: a tableau is a collection of numbers with no restriction on box heights decreasing in any direction. The inverse algorithms take a tableau and convert it back to a plane partition. Pak and Sulzgruber are independently discovered correspondences with wildly different descriptions, but amazingly produce the same results, while Hillman-Grassl is a unique correspondence all its own.
 
 !end-text-block
 
@@ -211,7 +215,7 @@
 <script>
 	if (typeof Page === "undefined")
 	{
-		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 	
 	
