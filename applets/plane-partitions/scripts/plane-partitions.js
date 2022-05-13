@@ -113,12 +113,13 @@
 	
 	
 	
-	const section_names = ["view-controls", "add-array", "remove-array", "algorithms"];
+	const section_names = ["view-controls", "add-array", "edit-array", "remove-array", "algorithms"];
 	
 	const section_elements = 
 	{
 		"view-controls": Page.element.querySelectorAll(".view-controls-section"),
 		"add-array": Page.element.querySelectorAll(".add-array-section"),
+		"edit-array": Page.element.querySelectorAll(".edit-array-section"),
 		"remove-array": Page.element.querySelectorAll(".remove-array-section"),
 		"algorithms": Page.element.querySelectorAll(".algorithms-section")
 	}
@@ -252,6 +253,32 @@
 		
 		add_new_array(arrays.length, tableau, "tableau");
 	});
+	
+	
+	
+	let edit_array_textarea_element = Page.element.querySelector("#edit-array-textarea");
+	
+	
+	
+	let edit_array_index_input_element = Page.element.querySelector("#edit-array-index-input");
+	
+	edit_array_index_input_element.addEventListener("input", () =>
+	{
+		let index = parseInt(edit_array_index_input_element.value || 0);
+		
+		if (index >= arrays.length || index < 0)
+		{
+			return;
+		}
+		
+		edit_array_textarea_element.value = array_to_ascii(arrays[index].numbers);
+	});
+	
+	
+	
+	let edit_array_button_element = Page.element.querySelector("#edit-array-button");
+	
+	edit_array_button_element.addEventListener("click", edit_array);
 	
 	
 	
@@ -409,6 +436,7 @@
 	
 	
 	let plane_partition = parse_array(array_data_textarea_element.value);
+	edit_array_textarea_element.value = array_data_textarea_element.value;
 	
 	if (verify_pp(plane_partition))
 	{
@@ -689,6 +717,65 @@
 	
 	
 	
+	function array_to_ascii(numbers)
+	{
+		let num_characters = 1;
+		
+		for (let i = 0; i < numbers.length; i++)
+		{
+			for (let j = 0; j < numbers.length; j++)
+			{
+				if (numbers[i][j] !== Infinity)
+				{
+					num_characters = Math.max(num_characters, `${numbers[i][j]}`.length);
+				}
+			}	
+		}
+		
+		num_characters++;
+		
+		
+		
+		let text = "";
+		
+		for (let i = 0; i < numbers.length; i++)
+		{
+			for (let j = 0; j < numbers.length; j++)
+			{
+				if (numbers[i][j] === Infinity)
+				{
+					for (let k = 0; k < num_characters - 1 - (j === 0); k++)
+					{
+						text += " ";
+					}
+					
+					text += "^";
+				}
+				
+				else
+				{
+					let len = `${numbers[i][j]}`.length;
+					
+					for (let k = 0; k < num_characters - len - (j === 0); k++)
+					{
+						text += " ";
+					}
+					
+					text += numbers[i][j];
+				}
+			}
+			
+			if (i !== numbers.length - 1)
+			{
+				text += "\n";
+			}	
+		}
+		
+		return text;
+	}
+	
+	
+	
 	function verify_pp(plane_partition)
 	{
 		for (let i = 0; i < plane_partition.length - 1; i++)
@@ -716,7 +803,7 @@
 	
 	
 	
-	async function add_new_array(index, numbers, type)
+	function add_new_array(index, numbers, type)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
@@ -905,103 +992,151 @@
 	
 	
 	
-	async function remove_array(index)
+	function edit_array()
 	{
-		if (index >= arrays.length || index < 0)
+		return new Promise(async (resolve, reject) =>
 		{
-			display_error(`No array at index ${index}`);
+			let index = parseInt(edit_array_index_input_element.value);
 			
-			return;
-		}
-		
-		
-		
-		if (in_2d_view)
-		{
-			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
-		}
-		
-		
-		
-		await new Promise((resolve, reject) =>
-		{
-			let things_to_animate = [];
-			
-			arrays[index].cube_group.traverse(node =>
+			if (index >= arrays.length || index < 0)
 			{
-				if (node.material)
-				{
-					node.material.forEach(material => things_to_animate.push(material));
-				}
-			});
-			
-			anime({
-				targets: things_to_animate,
-				opacity: 0,
-				duration: animation_time / 2,
-				easing: "easeOutQuad",
-				complete: resolve
-			});
-		});
-		
-		
-		
-		//Dispose of all the materials.
-		for (let i = 0; i < arrays[index].cubes.length; i++)
-		{
-			for (let j = 0; j < arrays[index].cubes[i].length; j++)
-			{
-				if (arrays[index].cubes[i][j])
-				{
-					for (let k = 0; k < arrays[index].cubes[i][j].length; k++)
-					{
-						if (arrays[index].cubes[i][j][k])
-						{
-							arrays[index].cubes[i][j][k].material.forEach(material => material.dispose());
-						}	
-					}
-				}	
-			}
-		}
-		
-		scene.remove(arrays[index].cube_group);
-		
-		total_array_footprint -= arrays[index].footprint + 1;
-		
-		arrays.splice(index, 1);
-		
-		
-		
-		//Update the other arrays.
-		for (let i = index; i < arrays.length; i++)
-		{
-			arrays[i].partial_footprint_sum = arrays[i].footprint;
-			
-			if (i !== 0)
-			{
-				arrays[i].center_offset = arrays[i - 1].center_offset + arrays[i - 1].footprint / 2 + arrays[i].footprint / 2 + 1;
+				display_error(`No array at index ${index}`);
 				
-				arrays[i].partial_footprint_sum += arrays[i - 1].partial_footprint_sum + 1;
+				return;
 			}
 			
-			else
+			let array = arrays[index];
+			
+			let new_numbers = parse_array(edit_array_textarea_element.value);
+			
+			
+			
+			let type = array.type;
+			
+			if (type === "pp")
 			{
-				arrays[i].center_offset = 0;
+				if (!verify_pp(new_numbers))
+				{
+					return;
+				}
 			}
 			
-			anime({
-				targets: arrays[i].cube_group.position,
-				x: arrays[i].center_offset,
-				y: 0,
-				z: -arrays[i].center_offset,
-				duration: animation_time,
-				easing: "easeInOutQuad"
-			});	
-		}
-		
-		
-		
-		update_camera_height(true);
+			
+			
+			await remove_array(index);
+			
+			await add_new_array(index, new_numbers, type);
+			
+			resolve();
+		});	
+	}
+	
+	
+	
+	function remove_array(index)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			if (index >= arrays.length || index < 0)
+			{
+				display_error(`No array at index ${index}`);
+				
+				return;
+			}
+			
+			
+			
+			if (in_2d_view)
+			{
+				await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
+			}
+			
+			
+			
+			await new Promise((resolve, reject) =>
+			{
+				let things_to_animate = [];
+				
+				arrays[index].cube_group.traverse(node =>
+				{
+					if (node.material)
+					{
+						node.material.forEach(material => things_to_animate.push(material));
+					}
+				});
+				
+				anime({
+					targets: things_to_animate,
+					opacity: 0,
+					duration: animation_time / 2,
+					easing: "easeOutQuad",
+					complete: resolve
+				});
+			});
+			
+			
+			
+			//Dispose of all the materials.
+			for (let i = 0; i < arrays[index].cubes.length; i++)
+			{
+				for (let j = 0; j < arrays[index].cubes[i].length; j++)
+				{
+					if (arrays[index].cubes[i][j])
+					{
+						for (let k = 0; k < arrays[index].cubes[i][j].length; k++)
+						{
+							if (arrays[index].cubes[i][j][k])
+							{
+								arrays[index].cubes[i][j][k].material.forEach(material => material.dispose());
+							}	
+						}
+					}	
+				}
+			}
+			
+			scene.remove(arrays[index].cube_group);
+			
+			total_array_footprint -= arrays[index].footprint + 1;
+			
+			arrays.splice(index, 1);
+			
+			
+			
+			//Update the other arrays.
+			for (let i = index; i < arrays.length; i++)
+			{
+				arrays[i].partial_footprint_sum = arrays[i].footprint;
+				
+				if (i !== 0)
+				{
+					arrays[i].center_offset = arrays[i - 1].center_offset + arrays[i - 1].footprint / 2 + arrays[i].footprint / 2 + 1;
+					
+					arrays[i].partial_footprint_sum += arrays[i - 1].partial_footprint_sum + 1;
+				}
+				
+				else
+				{
+					arrays[i].center_offset = 0;
+				}
+				
+				anime({
+					targets: arrays[i].cube_group.position,
+					x: arrays[i].center_offset,
+					y: 0,
+					z: -arrays[i].center_offset,
+					duration: animation_time,
+					easing: "easeInOutQuad"
+				});	
+			}
+			
+			
+			if (arrays.length !== 0)
+			{
+				update_camera_height(true);
+			}	
+			
+			resolve();
+		});	
 	}
 	
 	
