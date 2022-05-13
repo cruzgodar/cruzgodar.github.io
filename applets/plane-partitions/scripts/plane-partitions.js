@@ -989,12 +989,8 @@
 			
 			if (in_2d_view)
 			{
-				draw_all_2d_text();
-				
-				await Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 5);
+				draw_all_2d_view_text();
 			}
-			
-			
 			
 			resolve(array);
 		});	
