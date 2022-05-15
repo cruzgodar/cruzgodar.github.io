@@ -106,10 +106,9 @@ Site.page_lists =
 		"/teaching/uo/251/notes/9-the-inverse-function-theorem/9-the-inverse-function-theorem.html",
 		"/teaching/uo/251/notes/10-implicit-differentiation/10-implicit-differentiation.html",
 		"/teaching/uo/251/notes/11-optimization/11-optimization.html",
-		"/teaching/uo/251/notes/12-derivatives-and-graphs/12-derivatives-and-graphs.html",
-		"/teaching/uo/251/notes/13-l-hopitals-rule/13-l-hopitals-rule.html",
-		"/teaching/uo/251/notes/14-related-rates/14-related-rates.html",
-		"/teaching/uo/251/notes/15-applied-optimization/15-applied-optimization.html"
+		"/teaching/uo/251/notes/12-l-hopitals-rule/12-l-hopitals-rule.html",
+		"/teaching/uo/251/notes/13-related-rates/13-related-rates.html",
+		"/teaching/uo/251/notes/14-applied-optimization/14-applied-optimization.html"
 	],
 	
 	"/teaching/uo/252/notes":
