@@ -179,7 +179,7 @@ Site.load = async function(url)
 		this.aos_separation_time = this.base_animation_time / 8;
 		this.button_animation_time = this.base_animation_time / 2;
 		this.opacity_animation_time = this.base_animation_time * .8;
-		this.page_animation_time = this.base_animation_time * .65;
+		this.page_animation_time = this.base_animation_time * .6;
 		this.background_color_animation_time = this.base_animation_time * 2;
 		this.aos_animation_time = this.base_animation_time * 4;
 		
@@ -203,11 +203,9 @@ Site.load = async function(url)
 		this.aos_separation_time = this.base_animation_time / 8;
 		this.button_animation_time = this.base_animation_time * .45;
 		this.opacity_animation_time = this.base_animation_time * .75;
-		this.page_animation_time = this.base_animation_time * .65;
+		this.page_animation_time = this.base_animation_time * .6;
 		this.background_color_animation_time = this.base_animation_time * 2;
 		this.aos_animation_time = Math.ceil(this.base_animation_time * 3.25 / 50) * 50;
-		
-		AOS.init({duration: Site.aos_animation_time, once: true, offset: Math.min(100, Page.Layout.window_height / 10)});
 		
 		Page.Animate.change_opacity = Page.Animate.change_opacity_css;
 		Page.Animate.change_scale = Page.Animate.change_scale_css;

@@ -19,6 +19,8 @@ iframe
 	border-radius: 13px;
 	
 	overflow-y: hidden;
+	
+	transition: border-color .25s ease-in-out;
 }
 
 .iframe-outer-border

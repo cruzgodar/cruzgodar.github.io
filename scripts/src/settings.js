@@ -1087,6 +1087,10 @@ Site.Settings =
 			
 			
 			Page.set_element_styles(".footer-button, .text-button, .nav-button, .checkbox-container, #output-canvas", "border-color", "rgb(127, 127, 127)");
+			
+			
+			
+			Page.set_element_styles(".iframe-clipper", "border-color", "rgb(255, 255, 255)");
 		}
 		
 		
@@ -1134,6 +1138,10 @@ Site.Settings =
 			Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", this.dark_theme_background_color);
 			
 			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(152, 152, 152)");
+			
+			
+			
+			Page.set_element_styles(".iframe-clipper", "border-color", this.dark_theme_background_color);
 			
 			
 			
@@ -1303,6 +1311,8 @@ Site.Settings =
 			
 			Page.set_element_styles(".footer-button, .text-button, .nav-button, #output-canvas", "border-color", "rgb(64, 64, 64)");
 			
+			Page.set_element_styles(".iframe-clipper", "border-color", "rgb(255, 255, 255)");
+			
 			
 			
 			new_gradient_suffix = `-0-1`;
@@ -1359,6 +1369,10 @@ Site.Settings =
 			Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", this.dark_theme_background_color);
 			
 			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(216, 216, 216)");
+			
+			
+			
+			Page.set_element_styles(".iframe-clipper", "border-color", this.dark_theme_background_color);
 			
 			
 			
@@ -1461,6 +1475,10 @@ Site.Settings =
 		Page.set_element_styles(".text-field", "color", "");
 		
 		Page.set_element_styles(".text-field", "border-color", "");
+		
+		
+		
+		Page.set_element_styles(".iframe-clipper", "border-color", "");
 	},
 
 
@@ -1554,6 +1572,13 @@ Site.Settings =
 				.radio-button-container > input:checked ~ .radio-button
 				{
 					background-color: rgb(152, 152, 152);
+				}
+				
+				
+				
+				.iframe-clipper
+				{
+					border-color: ${this.dark_theme_background_color};
 				}
 				
 				
@@ -1813,6 +1838,13 @@ Site.Settings =
 				.radio-button-container > input:checked ~ .radio-button
 				{
 					background-color: rgb(216, 216, 216);
+				}
+				
+				
+				
+				.iframe-clipper
+				{
+					border-color: ${this.dark_theme_background_color};
 				}
 				
 				
