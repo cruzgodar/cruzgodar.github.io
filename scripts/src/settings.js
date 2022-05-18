@@ -1858,3 +1858,8 @@ Site.Settings =
 
 
 Page.url = decodeURIComponent(Site.Settings.get_url_var("page"));
+
+if (Page.url === "null")
+{
+	Page.url = "/home/home.html";
+}

@@ -152,6 +152,8 @@ Site.page_lists =
 Site.use_js_animation = false;
 
 Site.base_animation_time = 250;
+
+Site.navigation_animation_distance = window.innerHeight / 20;
 	
 	
 	
@@ -174,24 +176,34 @@ Site.load = async function(url)
 	{
 		console.log("Using JS animation");
 		
-		this.aos_separation_time = this.base_animation_time / 5;
+		this.aos_separation_time = this.base_animation_time / 8;
 		this.button_animation_time = this.base_animation_time / 2;
 		this.opacity_animation_time = this.base_animation_time * .8;
+		this.page_animation_time = this.base_animation_time * .65;
 		this.background_color_animation_time = this.base_animation_time * 2;
 		this.aos_animation_time = this.base_animation_time * 4;
 		
 		Page.Animate.change_opacity = Page.Animate.change_opacity_js;
 		Page.Animate.change_scale = Page.Animate.change_scale_js;
 		Page.Animate.fade_left = Page.Animate.fade_left_js;
+		
+		Page.Animate.fade_up_in = Page.Animate.fade_up_in_js;
+		Page.Animate.fade_up_out = Page.Animate.fade_up_out_js;
+		Page.Animate.fade_down_in = Page.Animate.fade_down_in_js;
+		Page.Animate.fade_down_out = Page.Animate.fade_down_out_js;
+		Page.Animate.fade_in = Page.Animate.fade_in_js;
+		Page.Animate.fade_out = Page.Animate.fade_out_js;
+		
 		Page.Animate.show_fade_up_section = Page.Animate.show_fade_up_section_js;
 		Page.Animate.show_zoom_out_section = Page.Animate.show_zoom_out_section_js;
 	}
 	
 	else
 	{
-		this.aos_separation_time = this.base_animation_time / 5;
+		this.aos_separation_time = this.base_animation_time / 8;
 		this.button_animation_time = this.base_animation_time * .45;
 		this.opacity_animation_time = this.base_animation_time * .75;
+		this.page_animation_time = this.base_animation_time * .65;
 		this.background_color_animation_time = this.base_animation_time * 2;
 		this.aos_animation_time = Math.ceil(this.base_animation_time * 3.25 / 50) * 50;
 		
@@ -200,6 +212,14 @@ Site.load = async function(url)
 		Page.Animate.change_opacity = Page.Animate.change_opacity_css;
 		Page.Animate.change_scale = Page.Animate.change_scale_css;
 		Page.Animate.fade_left = Page.Animate.fade_left_css;
+		
+		Page.Animate.fade_up_in = Page.Animate.fade_up_in_css;
+		Page.Animate.fade_up_out = Page.Animate.fade_up_out_css;
+		Page.Animate.fade_down_in = Page.Animate.fade_down_in_css;
+		Page.Animate.fade_down_out = Page.Animate.fade_down_out_css;
+		Page.Animate.fade_in = Page.Animate.fade_in_css;
+		Page.Animate.fade_out = Page.Animate.fade_out_css;
+		
 		Page.Animate.show_fade_up_section = Page.Animate.show_fade_up_section_css;
 		Page.Animate.show_zoom_out_section = Page.Animate.show_zoom_out_section_css;
 	}

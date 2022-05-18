@@ -10,10 +10,14 @@ Page.Navigation =
 	
 	elements_to_remove: [],
 	
+	navigation_path: [],
+	
+	transition_type: 0,
+	
 	
 	
 	//Handles virtually all links.
-	redirect: function(url, in_new_tab = false, no_state_push = false, restore_scroll = false, no_fade_out = false)
+	redirect: async function(url, in_new_tab = false, no_state_push = false, restore_scroll = false, no_fade_out = false)
 	{
 		if (this.currently_changing_page)
 		{
@@ -41,6 +45,8 @@ Page.Navigation =
 		
 		
 		
+		this.transition_type = this.get_transition_type(url);
+		
 		Page.url = url;
 		
 		Page.parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
@@ -50,11 +56,12 @@ Page.Navigation =
 		//We need to record this in case we can't successfully load the next page and we need to return to the current one.
 		let background_color = document.documentElement.style.backgroundColor;
 		
+		await Page.Unload.fade_out(no_fade_out, url);
+		
 		
 		
 		//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-		Promise.all([fetch(url), Page.Unload.fade_out(no_fade_out, url), Page.Banner.load()])
-		
+		Promise.all([fetch(url), Page.Banner.load()])
 		
 		.then((response) =>
 		{
@@ -96,7 +103,7 @@ Page.Navigation =
 			
 			
 			
-			Page.element.innerHTML = Page.Components.decode(`<div class="page">${data}</div>${scripts_data}`).replace(/data-aos=/g, `data-aos-offset="1000000" data-aos=`);
+			Page.element.outerHTML = Page.Components.decode(`<div class="page">${data}</div>${scripts_data}`);//.replace(/data-aos=/g, `data-aos-offset="1000000" data-aos=`);
 			
 			Page.Load.parse_script_tags();
 			
@@ -239,6 +246,49 @@ Page.Navigation =
 		let display_url = DEBUG ? `/index-testing.html?page=${encodeURIComponent(Page.url)}` : Page.url;
 		
 		history.replaceState({}, document.title, display_url + this.concat_url_vars());
+	},
+	
+	
+	
+	//Figures out what type of transition to use to get to this url. Returns 1 for deeper, -1 for shallower, and 0 for no depth change.
+	get_transition_type: function(url)
+	{
+		if (!(url in Site.sitemap) || url === Page.url)
+		{
+			return 0;
+		}
+		
+		
+		
+		let parent = Page.url;
+		
+		while (parent !== "")
+		{
+			parent = Site.sitemap[parent].parent;
+			
+			if (url === parent)
+			{
+				return -1;
+			}
+		}
+		
+		
+		
+		parent = url;
+		
+		while (parent !== "")
+		{
+			parent = Site.sitemap[parent].parent;
+			
+			if (Page.url === parent)
+			{
+				return 1;
+			}
+		}
+		
+		
+		
+		return 0;
 	}
 };
 
@@ -303,9 +353,26 @@ Page.Unload =
 			else
 			{
 				//Fade out the current page's content.
-				Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time)
+				let promise = null;
 				
-				.then(() =>
+				if (Page.Navigation.transition_type === 1)
+				{
+					promise = Page.Animate.fade_up_out(document.body, Site.page_animation_time);
+				}
+				
+				else if (Page.Navigation.transition_type === -1)
+				{
+					promise = Page.Animate.fade_down_out(document.body, Site.page_animation_time);
+				}
+				
+				else
+				{
+					promise = Page.Animate.fade_out(document.body, Site.page_animation_time);
+				}
+				
+				
+				
+				promise.then(() =>
 				{
 					//If necessary, take the time to fade back to the default background color, whatever that is.
 					if (Page.background_color_changed)
@@ -407,4 +474,10 @@ Page.unload = function()
 	
 	//Remove everything that's not a script from the page element.
 	Page.element.querySelectorAll(":scope > *").forEach(element => element.remove());
+	
+	//Also get rid of the banner if it was here.
+	/*
+	try {document.body.querySelector("#banner").remove()}
+	catch(ex) {}
+	*/
 }

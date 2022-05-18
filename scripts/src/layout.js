@@ -72,6 +72,10 @@ Page.Layout =
 		
 		
 		
+		Site.navigation_animation_distance = this.new_window_height / 20;
+		
+		
+		
 		if (this.aspect_ratio > 1 && !this.AppletColumns.are_equalized)
 		{
 			setTimeout(this.AppletColumns.equalize, 50);

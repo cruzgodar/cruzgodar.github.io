@@ -2,6 +2,10 @@
 
 
 
+Page.banner_element = null;
+
+
+
 Page.Banner =
 {
 	done_loading: false,
@@ -171,7 +175,7 @@ Page.Banner =
 			{
 				const opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 				
-				try {Page.element.querySelector("#banner").style.opacity = opacity;}
+				try {Page.banner_element.style.opacity = opacity;}
 				catch(ex) {}
 				
 				if (opacity === 0)
@@ -188,7 +192,7 @@ Page.Banner =
 			else if (!this.done_loading)
 			{
 				//We need a try block here in case the user refreshes the page and it's way low down for some reason, even though scrollRestoration should be off.
-				try {Page.element.querySelector("#banner").style.opacity = 0;}
+				try {Page.banner_element.style.opacity = 0;}
 				catch(ex) {}
 				
 				this.done_loading = true;

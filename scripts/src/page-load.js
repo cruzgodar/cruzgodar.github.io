@@ -149,6 +149,8 @@ Page.show = function()
 		{
 			await this.Load.fade_in();
 			
+			return;
+			
 			this.Load.AOS.load();
 			
 			this.Load.AOS.on_resize();
@@ -303,6 +305,8 @@ Page.Load =
 		{
 			if ("banner_page" in Page.settings && Page.settings["banner_page"])
 			{
+				Page.banner_element = Page.element.querySelector("#banner");
+				
 				Site.add_style(`
 					#banner
 					{
@@ -319,8 +323,6 @@ Page.Load =
 						}
 					}
 				`);
-				
-				await Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time, true);
 			}
 			
 			else
@@ -328,9 +330,28 @@ Page.Load =
 				Page.Footer.Floating.show_footer_menu_button.style.opacity = 0;
 				
 				setTimeout(() => Page.Animate.change_opacity(Page.Footer.Floating.show_footer_menu_button, 1, Site.opacity_animation_time), 10);
-				
-				document.body.style.opacity = 1;
 			}
+			
+			
+			
+			let promise = null;
+			
+			if (Page.Navigation.transition_type === 1)
+			{
+				promise = Page.Animate.fade_up_in(document.body, Site.page_animation_time * 2);
+			}
+			
+			else if (Page.Navigation.transition_type === -1)
+			{
+				promise = Page.Animate.fade_down_in(document.body, Site.page_animation_time * 2);
+			}
+			
+			else
+			{
+				promise = Page.Animate.fade_in(document.body, Site.page_animation_time * 2);
+			}
+			
+			await promise;
 			
 			resolve();
 		});	
@@ -366,6 +387,7 @@ Page.Load =
 		//Update: the bug came back even for zero-delay elements. The site's content animation has been optionally moved to the JS-based anime.js.
 		load: function()
 		{
+			return;
 			if (Site.Settings.url_vars["content_animation"] === 1)
 			{
 				return;
