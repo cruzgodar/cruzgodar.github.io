@@ -191,6 +191,10 @@ Site.load = async function(url)
 		Page.Animate.fade_up_out = Page.Animate.fade_up_out_js;
 		Page.Animate.fade_down_in = Page.Animate.fade_down_in_js;
 		Page.Animate.fade_down_out = Page.Animate.fade_down_out_js;
+		Page.Animate.fade_left_in = Page.Animate.fade_left_in_js;
+		Page.Animate.fade_left_out = Page.Animate.fade_left_out_js;
+		Page.Animate.fade_right_in = Page.Animate.fade_right_in_js;
+		Page.Animate.fade_right_out = Page.Animate.fade_right_out_js;
 		Page.Animate.fade_in = Page.Animate.fade_in_js;
 		Page.Animate.fade_out = Page.Animate.fade_out_js;
 		
@@ -215,6 +219,10 @@ Site.load = async function(url)
 		Page.Animate.fade_up_out = Page.Animate.fade_up_out_css;
 		Page.Animate.fade_down_in = Page.Animate.fade_down_in_css;
 		Page.Animate.fade_down_out = Page.Animate.fade_down_out_css;
+		Page.Animate.fade_left_in = Page.Animate.fade_left_in_css;
+		Page.Animate.fade_left_out = Page.Animate.fade_left_out_css;
+		Page.Animate.fade_right_in = Page.Animate.fade_right_in_css;
+		Page.Animate.fade_right_out = Page.Animate.fade_right_out_css;
 		Page.Animate.fade_in = Page.Animate.fade_in_css;
 		Page.Animate.fade_out = Page.Animate.fade_out_css;
 		

@@ -148,22 +148,7 @@ Page.show = function()
 		setTimeout(async () =>
 		{
 			await this.Load.fade_in();
-			
-			return;
-			
-			this.Load.AOS.load();
-			
-			this.Load.AOS.on_resize();
-			
-			setTimeout(() =>
-			{
-				this.Load.AOS.on_resize();
-			}, 1000);
-			
-			this.Load.AOS.show_elements = true;
-			
-			this.Load.AOS.on_scroll();
-			
+				
 			resolve();
 		}, 10);	
 	});
@@ -344,6 +329,16 @@ Page.Load =
 			else if (Page.Navigation.transition_type === -1)
 			{
 				promise = Page.Animate.fade_down_in(document.body, Site.page_animation_time * 2);
+			}
+			
+			else if (Page.Navigation.transition_type === 2)
+			{
+				promise = Page.Animate.fade_left_in(document.body, Site.page_animation_time * 2);
+			}
+			
+			else if (Page.Navigation.transition_type === -2)
+			{
+				promise = Page.Animate.fade_right_in(document.body, Site.page_animation_time * 2);
 			}
 			
 			else

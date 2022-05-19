@@ -324,14 +324,14 @@ Site.sitemap =
 		
 		children:
 		[
-			"/projects/wilson/docs/docs.html",
-			
 			"/projects/wilson/guide/1/getting-started.html",
 			"/projects/wilson/guide/2/draggables.html",
 			"/projects/wilson/guide/3/parallelizing.html",
 			"/projects/wilson/guide/4/hidden-canvases.html",
 			"/projects/wilson/guide/5/fullscreen.html",
-			"/projects/wilson/guide/6/interactivity.html"
+			"/projects/wilson/guide/6/interactivity.html",
+			
+			"/projects/wilson/docs/docs.html"
 		]
 	},
 	
@@ -599,7 +599,22 @@ Site.sitemap =
 	{
 		parent: "/teaching/teaching.html",
 		
-		children: []
+		children:
+		[
+			"/teaching/uo/251/notes/0-algebra-and-trig-review/0-algebra-and-trig-review.html",
+			"/teaching/uo/251/notes/1-intro-to-limits/1-intro-to-limits.html",
+			"/teaching/uo/251/notes/2-limit-rules/2-limit-rules.html",
+			"/teaching/uo/251/notes/3-continuity/3-continuity.html",
+			"/teaching/uo/251/notes/4-intro-to-derivatives/4-intro-to-derivatives.html",
+			"/teaching/uo/251/notes/5-derivative-rules/5-derivative-rules.html",
+			"/teaching/uo/251/notes/6-applications-of-derivatives/6-applications-of-derivatives.html",
+			"/teaching/uo/251/notes/7-exp-log-and-trig-derivatives/7-exp-log-and-trig-derivatives.html",
+			"/teaching/uo/251/notes/8-the-chain-rule/8-the-chain-rule.html",
+			"/teaching/uo/251/notes/9-the-inverse-function-theorem/9-the-inverse-function-theorem.html",
+			"/teaching/uo/251/notes/10-implicit-differentiation/10-implicit-differentiation.html",
+			"/teaching/uo/251/notes/11-optimization/11-optimization.html",
+			"/teaching/uo/251/notes/12-l-hopitals-rule/12-l-hopitals-rule.html"
+		]
 	},
 	
 	"/teaching/uo/251/notes/0-algebra-and-trig-review/0-algebra-and-trig-review.html":

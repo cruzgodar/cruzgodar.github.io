@@ -250,7 +250,7 @@ Page.Navigation =
 	
 	
 	
-	//Figures out what type of transition to use to get to this url. Returns 1 for deeper, -1 for shallower, and 0 for no depth change.
+	//Figures out what type of transition to use to get to this url. Returns 1 for deeper, -1 for shallower, 2 for a sibling to the right, -2 for one to the left, and 0 for anything else.
 	get_transition_type: function(url)
 	{
 		if (!(url in Site.sitemap) || url === Page.url)
@@ -284,6 +284,20 @@ Page.Navigation =
 			{
 				return 1;
 			}
+		}
+		
+		
+		
+		if (Site.sitemap[url].parent === Site.sitemap[Page.url].parent)
+		{
+			let parent = Site.sitemap[url].parent;
+			
+			if (Site.sitemap[parent].children.indexOf(url) > Site.sitemap[parent].children.indexOf(Page.url))
+			{
+				return 2;
+			}
+			
+			return -2;
 		}
 		
 		
@@ -363,6 +377,16 @@ Page.Unload =
 				else if (Page.Navigation.transition_type === -1)
 				{
 					promise = Page.Animate.fade_down_out(document.body, Site.page_animation_time);
+				}
+				
+				else if (Page.Navigation.transition_type === 2)
+				{
+					promise = Page.Animate.fade_left_out(document.body, Site.page_animation_time);
+				}
+				
+				else if (Page.Navigation.transition_type === -2)
+				{
+					promise = Page.Animate.fade_right_out(document.body, Site.page_animation_time);
 				}
 				
 				else

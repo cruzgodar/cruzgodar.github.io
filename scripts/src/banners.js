@@ -367,24 +367,16 @@ Page.Banner =
 					
 					setTimeout(() =>
 					{
-						if (Site.use_js_animation)
-						{
-							Page.element.querySelector("#new-banner-cover").style.opacity = 0;
-							Page.element.querySelector("#new-banner-cover").style.transform = "translateY(-100px)";
-							
-							anime({
-								targets: Page.element.querySelector("#new-banner-cover"),
-								opacity: 1,
-								translateY: 0,
-								duration: Site.aos_animation_time,
-								easing: "easeOutQuad"
-							});
-						}
+						Page.element.querySelector("#new-banner-cover").style.opacity = 0;
+						Page.element.querySelector("#new-banner-cover").style.transform = "translateY(-100px)";
 						
-						else
-						{
-							AOS.refresh();
-						}	
+						anime({
+							targets: Page.element.querySelector("#new-banner-cover"),
+							opacity: 1,
+							translateY: 0,
+							duration: Site.aos_animation_time,
+							easing: "easeOutQuad"
+						});
 						
 						
 						
