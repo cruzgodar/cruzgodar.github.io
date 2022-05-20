@@ -72,7 +72,7 @@ Page.Layout =
 		
 		
 		
-		Site.navigation_animation_distance = this.new_window_height / 20;
+		Site.navigation_animation_distance = Math.min(this.new_window_height, this.new_window_width) / 20;
 		
 		
 		

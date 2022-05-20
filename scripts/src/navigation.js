@@ -372,26 +372,41 @@ Page.Unload =
 				if (Page.Navigation.transition_type === 1)
 				{
 					promise = Page.Animate.fade_up_out(document.body, Site.page_animation_time);
+					
+					try {promise = Page.Animate.fade_up_out(Page.banner_element, Site.page_animation_time, true)}
+					catch(ex) {}
 				}
 				
 				else if (Page.Navigation.transition_type === -1)
 				{
 					promise = Page.Animate.fade_down_out(document.body, Site.page_animation_time);
+					
+					try {promise = Page.Animate.fade_down_out(Page.banner_element, Site.page_animation_time, true)}
+					catch(ex) {}
 				}
 				
 				else if (Page.Navigation.transition_type === 2)
 				{
 					promise = Page.Animate.fade_left_out(document.body, Site.page_animation_time);
+					
+					try {promise = Page.Animate.fade_left_out(Page.banner_element, Site.page_animation_time, true)}
+					catch(ex) {}
 				}
 				
 				else if (Page.Navigation.transition_type === -2)
 				{
 					promise = Page.Animate.fade_right_out(document.body, Site.page_animation_time);
+					
+					try {promise = Page.Animate.fade_right_out(Page.banner_element, Site.page_animation_time, true)}
+					catch(ex) {}
 				}
 				
 				else
 				{
 					promise = Page.Animate.fade_out(document.body, Site.page_animation_time);
+					
+					try {promise = Page.Animate.fade_out(Page.banner_element, Site.page_animation_time, true)}
+					catch(ex) {}
 				}
 				
 				

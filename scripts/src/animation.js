@@ -264,7 +264,7 @@ Page.Animate =
 	
 	
 	
-	fade_up_out_js: function(element, duration)
+	fade_up_out_js: function(element, duration, no_opacity_change = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -272,7 +272,7 @@ Page.Animate =
 			
 			anime({
 				targets: element,
-				opacity: 0,
+				opacity: no_opacity_change,
 				marginTop: `${-Site.navigation_animation_distance}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
@@ -281,7 +281,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_up_out_css: function(element, duration)
+	fade_up_out_css: function(element, duration, no_opacity_change = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -301,7 +301,7 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginTop = `-${Site.navigation_animation_distance}px`;
-					element.style.opacity = 0;
+					element.style.opacity = no_opacity_change;
 					
 					const timeout_id = setTimeout(() =>
 					{
@@ -372,7 +372,7 @@ Page.Animate =
 	
 	
 	
-	fade_down_out_js: function(element, duration)
+	fade_down_out_js: function(element, duration, no_opacity_change = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -380,7 +380,7 @@ Page.Animate =
 			
 			anime({
 				targets: element,
-				opacity: 0,
+				opacity: no_opacity_change,
 				marginTop: `${Site.navigation_animation_distance}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
@@ -389,7 +389,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_down_out_css: function(element, duration)
+	fade_down_out_css: function(element, duration, no_opacity_change = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -409,7 +409,7 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginTop = `${Site.navigation_animation_distance}px`;
-					element.style.opacity = 0;
+					element.style.opacity = no_opacity_change;
 					
 					const timeout_id = setTimeout(() =>
 					{
@@ -478,13 +478,13 @@ Page.Animate =
 	
 	
 	
-	fade_left_out_js: function(element, duration)
+	fade_left_out_js: function(element, duration, no_opacity_change = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			anime({
 				targets: element,
-				opacity: 0,
+				opacity: no_opacity_change,
 				marginLeft: `${-Site.navigation_animation_distance}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
@@ -493,7 +493,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_left_out_css: function(element, duration)
+	fade_left_out_css: function(element, duration, no_opacity_change = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -511,7 +511,7 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginLeft = `${-Site.navigation_animation_distance}px`;
-					element.style.opacity = 0;
+					element.style.opacity = no_opacity_change;
 					
 					const timeout_id = setTimeout(() =>
 					{
@@ -580,13 +580,13 @@ Page.Animate =
 	
 	
 	
-	fade_right_out_js: function(element, duration)
+	fade_right_out_js: function(element, duration, no_opacity_change = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			anime({
 				targets: element,
-				opacity: 0,
+				opacity: no_opacity_change,
 				marginRight: `${-Site.navigation_animation_distance}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
@@ -595,7 +595,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_right_out_css: function(element, duration)
+	fade_right_out_css: function(element, duration, no_opacity_change = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -613,7 +613,7 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginRight = `${-Site.navigation_animation_distance}px`;
-					element.style.opacity = 0;
+					element.style.opacity = no_opacity_change;
 					
 					const timeout_id = setTimeout(() =>
 					{
@@ -676,13 +676,13 @@ Page.Animate =
 	
 	
 	
-	fade_out_js: function(element, duration)
+	fade_out_js: function(element, duration, no_opacity_change = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			anime({
 				targets: element,
-				opacity: 0,
+				opacity: no_opacity_change,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
@@ -690,7 +690,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_out_css: function(element, duration)
+	fade_out_css: function(element, duration, no_opacity_change = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -707,7 +707,7 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					element.style.opacity = 0;
+					element.style.opacity = no_opacity_change;
 					
 					const timeout_id = setTimeout(() =>
 					{
