@@ -348,6 +348,8 @@ Page.Load =
 			
 			await promise;
 			
+			
+			
 			resolve();
 		});	
 	},
@@ -660,7 +662,7 @@ Page.Load =
 		
 		
 		
-		add_with_scale: function(element, scale)
+		add_with_scale: function(element, scale, force_js = false)
 		{
 			element.addEventListener("mouseenter", () =>
 			{
@@ -668,7 +670,15 @@ Page.Load =
 				{
 					element.classList.add("hover");
 					
-					Page.Animate.change_scale(element, scale, Site.button_animation_time);
+					if (force_js)
+					{
+						Page.Animate.change_scale_js(element, scale, Site.button_animation_time);
+					}
+					
+					else
+					{
+						Page.Animate.change_scale(element, scale, Site.button_animation_time);
+					}	
 				}
 			});
 			
@@ -678,7 +688,15 @@ Page.Load =
 				{
 					element.classList.remove("hover");
 					
-					Page.Animate.change_scale(element, 1, Site.button_animation_time);
+					if (force_js)
+					{
+						Page.Animate.change_scale_js(element, 1, Site.button_animation_time);
+					}
+					
+					else
+					{
+						Page.Animate.change_scale(element, 1, Site.button_animation_time);
+					}
 				}
 			});
 		},

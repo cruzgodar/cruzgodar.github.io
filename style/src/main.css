@@ -24,6 +24,11 @@ body
 	-webkit-text-size-adjust: 100%;
 }
 
+.page
+{
+	overflow-x: hidden;
+}
+
 
 
 header

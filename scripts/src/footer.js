@@ -369,7 +369,9 @@ Page.Footer =
 					elements.push(this.debug_button);
 				}
 				
-				elements.forEach(element => Page.Load.HoverEvents.add_with_scale(element, 1.1));
+				elements.forEach(element => Page.Load.HoverEvents.add_with_scale(element, 1.1, true));
+				
+				elements.slice(1).forEach(element => element.style.opacity = 0);
 				
 				
 				
@@ -411,18 +413,21 @@ Page.Footer =
 		
 		show_menu: function()
 		{
+			this.settings_button.style.opacity = 1;
 			this.settings_button.style.left = "10px";
 			
 			Page.Animate.change_opacity(this.show_footer_menu_button, 0, Site.opacity_animation_time);
 			
 			setTimeout(() =>
 			{
+				this.sitemap_button.style.opacity = 1;
 				this.sitemap_button.style.left = "10px";
 				
 				if (DEBUG)
 				{
 					setTimeout(() =>
 					{
+						this.debug_button.style.opacity = 1;
 						this.debug_button.style.left = "10px";
 						
 						this.menu_is_open = true;
@@ -508,12 +513,12 @@ Page.Footer =
 				setTimeout(() =>
 				{
 					//This is called when showing the image links, so we might need to reset the opacity.
-					Page.Animate.change_opacity(this.settings_button, 1, Site.opacity_animation_time);
-					Page.Animate.change_opacity(this.sitemap_button, 1, Site.opacity_animation_time);
+					this.settings_button.style.opacity = 0;
+					this.sitemap_button.style.opacity = 0;
 					
 					if (DEBUG)
 					{
-						Page.Animate.change_opacity(this.debug_button, 1, Site.opacity_animation_time);
+						this.debug_button.style.opacity = 0;
 					}
 				}, Site.opacity_animation_time);
 			}, Site.opacity_animation_time / 6);
@@ -523,18 +528,21 @@ Page.Footer =
 		
 		show_image_links: function()
 		{
+			this.gallery_link.style.opacity = 1;
 			this.gallery_link.style.left = "10px";
 			
 			Page.Animate.change_opacity(this.settings_button, 0, Site.opacity_animation_time);
 			
 			setTimeout(() =>
 			{
+				this.applets_link.style.opacity = 1;
 				this.applets_link.style.left = "10px";
 				
 				Page.Animate.change_opacity(this.sitemap_button, 0, Site.opacity_animation_time);
 				
 				setTimeout(() =>
 				{
+					this.writing_link.style.opacity = 1;
 					this.writing_link.style.left = "10px";
 					
 					if (DEBUG)
@@ -544,10 +552,12 @@ Page.Footer =
 					
 					setTimeout(() =>
 					{
+						this.teaching_link.style.opacity = 1;
 						this.teaching_link.style.left = "10px";
 						
 						setTimeout(() =>
 						{
+							this.about_link.style.opacity = 1;
 							this.about_link.style.left = "10px";
 							
 							this.image_links_is_open = true;
@@ -627,6 +637,15 @@ Page.Footer =
 							this.about_link.style.left = "-40px";
 							
 							this.image_links_is_open = false;
+							
+							setTimeout(() =>
+							{
+								this.gallery_link.style.opacity = 1;
+								this.applets_link.style.opacity = 1;
+								this.writing_link.style.opacity = 1;
+								this.teaching_link.style.opacity = 1;
+								this.about_link.style.opacity = 1;
+							}, Site.opacity_animation_time);
 						}, Site.opacity_animation_time / 6);
 					}, Site.opacity_animation_time / 6);
 				}, Site.opacity_animation_time / 6);
@@ -637,18 +656,21 @@ Page.Footer =
 		
 		show_settings: function()
 		{
+			this.theme_button.style.opacity = 1;
 			this.theme_button.style.left = "10px";
 			
 			Page.Animate.change_opacity(this.settings_button, 0, Site.opacity_animation_time);
 			
 			setTimeout(() =>
 			{
+				this.contrast_button.style.opacity = 1;
 				this.contrast_button.style.left = "10px";
 			
 				Page.Animate.change_opacity(this.sitemap_button, 0, Site.opacity_animation_time);
 				
 				setTimeout(() =>
 				{
+					this.text_size_button.style.opacity = 1;
 					this.text_size_button.style.left = "10px";
 				
 					if (DEBUG)
@@ -658,10 +680,12 @@ Page.Footer =
 					
 					setTimeout(() =>
 					{
+						this.font_button.style.opacity = 1;
 						this.font_button.style.left = "10px";
 						
 						setTimeout(() =>
 						{
+							this.content_animation_button.style.opacity = 1;
 							this.content_animation_button.style.left = "10px";
 							
 							this.settings_is_open = true;
@@ -740,6 +764,15 @@ Page.Footer =
 							this.content_animation_button.style.left = "-40px";
 							
 							this.settings_is_open = false;
+							
+							setTimeout(() =>
+							{
+								this.theme_button.style.opacity = 0;
+								this.contrast_button.style.opacity = 0;
+								this.text_size_button.style.opacity = 0;
+								this.font_button.style.opacity = 0;
+								this.content_animation_button.style.opacity = 0;
+							}, Site.opacity_animation_time);
 						}, Site.opacity_animation_time / 6);
 					}, Site.opacity_animation_time / 6);
 				}, Site.opacity_animation_time / 6);
