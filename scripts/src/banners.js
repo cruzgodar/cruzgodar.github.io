@@ -361,7 +361,7 @@ Page.Banner =
 				{
 					document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
 						<div id="new-banner-cover" data-aos="fade-down">
-							<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: ${opacity}" alt="Scroll down" onclick="Page.Banner.ScrollButton.animate_to(document.querySelector('#scroll-to'))">
+							<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: 0" alt="Scroll down" onclick="Page.Banner.ScrollButton.animate_to(document.querySelector('#scroll-to'))">
 						</div>
 					`);
 					
@@ -374,8 +374,16 @@ Page.Banner =
 							targets: Page.element.querySelector("#new-banner-cover"),
 							opacity: 1,
 							translateY: 0,
-							duration: Site.aos_animation_time,
-							easing: "easeOutQuad"
+							duration: Site.opacity_animation_time * 4,
+							easing: "easeOutCubic"
+						});
+						
+						anime({
+							targets: Page.element.querySelector("#scroll-button"),
+							opacity: opacity,
+							translateY: 0,
+							duration: Site.opacity_animation_time * 4,
+							easing: "easeOutCubic"
 						});
 						
 						
