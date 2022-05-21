@@ -272,7 +272,7 @@ Page.Animate =
 			
 			anime({
 				targets: element,
-				opacity: no_opacity_change,
+				opacity: no_opacity_change ? 1 : 0,
 				marginTop: `${-Site.navigation_animation_distance}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
@@ -301,7 +301,11 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginTop = `-${Site.navigation_animation_distance}px`;
-					element.style.opacity = no_opacity_change;
+					
+					if (!no_opacity_change)
+					{
+						element.style.opacity = 0;
+					}		
 					
 					const timeout_id = setTimeout(() =>
 					{
@@ -380,7 +384,7 @@ Page.Animate =
 			
 			anime({
 				targets: element,
-				opacity: no_opacity_change,
+				opacity: no_opacity_change ? 1 : 0,
 				marginTop: `${Site.navigation_animation_distance}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
@@ -409,7 +413,11 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginTop = `${Site.navigation_animation_distance}px`;
-					element.style.opacity = no_opacity_change;
+					
+					if (!no_opacity_change)
+					{
+						element.style.opacity = 0;
+					}
 					
 					const timeout_id = setTimeout(() =>
 					{
@@ -484,7 +492,7 @@ Page.Animate =
 		{
 			anime({
 				targets: element,
-				opacity: no_opacity_change,
+				opacity: no_opacity_change ? 1 : 0,
 				marginLeft: `${-Site.navigation_animation_distance}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
@@ -511,7 +519,11 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginLeft = `${-Site.navigation_animation_distance}px`;
-					element.style.opacity = no_opacity_change;
+					
+					if (!no_opacity_change)
+					{
+						element.style.opacity = 0;
+					}
 					
 					const timeout_id = setTimeout(() =>
 					{
@@ -586,7 +598,7 @@ Page.Animate =
 		{
 			anime({
 				targets: element,
-				opacity: no_opacity_change,
+				opacity: no_opacity_change ? 1 : 0,
 				marginRight: `${-Site.navigation_animation_distance}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
@@ -613,7 +625,11 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginRight = `${-Site.navigation_animation_distance}px`;
-					element.style.opacity = no_opacity_change;
+					
+					if (!no_opacity_change)
+					{
+						element.style.opacity = 0;
+					}
 					
 					const timeout_id = setTimeout(() =>
 					{
@@ -682,7 +698,7 @@ Page.Animate =
 		{
 			anime({
 				targets: element,
-				opacity: no_opacity_change,
+				opacity: no_opacity_change ? 1 : 0,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
@@ -707,7 +723,10 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					element.style.opacity = no_opacity_change;
+					if (!no_opacity_change)
+					{
+						element.style.opacity = 0;
+					}
 					
 					const timeout_id = setTimeout(() =>
 					{
