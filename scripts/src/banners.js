@@ -67,23 +67,11 @@ Page.Banner =
 				
 					
 				
-				this.file_path = "";
+				this.file_path = Page.parent_folder + "banners/";
 				
-				if (!(this.multibanner_pages.hasOwnProperty(Page.url)))
+				if (this.multibanner_pages.hasOwnProperty(Page.url))
 				{
-					this.file_path = Page.parent_folder + "banners/";
-				}
-				
-				else
-				{
-					this.multibanner_pages[Page.url]["current_banner"]++;
-					
-					if (this.multibanner_pages[Page.url]["current_banner"] === this.multibanner_pages[Page.url]["num_banners"] + 1)
-					{
-						this.multibanner_pages[Page.url]["current_banner"] = 1;
-					}
-					
-					this.file_path = Page.parent_folder + "banners/" + this.multibanner_pages[Page.url]["current_banner"] + "/";
+					this.file_path += this.multibanner_pages[Page.url]["current_banner"] + "/";
 				}
 				
 				
@@ -305,23 +293,18 @@ Page.Banner =
 			
 			if (this.preloadable_pages.includes(href) && !(this.pages_already_fetched.includes(href)))
 			{
-				if (!(this.multibanner_pages.hasOwnProperty(href)))
+				this.pages_already_fetched.push(href);
+				
+				let file_path = href.slice(0, href.lastIndexOf("/") + 1) + "banners/";
+				
+				if (this.multibanner_pages.hasOwnProperty(href))
 				{
-					this.pages_already_fetched.push(href);
-					
-					Site.Fetch.queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + this.file_name);
-					
-					Site.Fetch.get_next_item_from_queue();
+					file_path += (this.multibanner_pages[href]["current_banner"] + 1) + "/";
 				}
 				
-				else
-				{
-					let next_index = this.multibanner_pages[href]["current_banner"] % (this.multibanner_pages[href]["current_banner"] + 1) + 1;
-					
-					Site.Fetch.queue.push(href.slice(0, href.lastIndexOf("/") + 1) + "banners/" + next_index + "/" + this.file_name);
-					
-					Site.Fetch.get_next_item_from_queue();
-				}
+				file_path += this.file_name;
+				
+				Site.Fetch.get_next_item_from_queue();
 			}
 		});
 	},

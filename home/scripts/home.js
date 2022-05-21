@@ -45,20 +45,6 @@
 		elements[0].id = "category-pages";
 		
 		elements[1].id = "newest-pages";
-		
-		let children = elements[1].querySelectorAll(".image-link");
-		
-		Page.Load.AOS.elements[2].forEach(element =>
-		{
-			element.setAttribute("data-aos", "zoom-out");
-			
-			if (Site.use_js_animation)
-			{
-				element.style.transform = "scale(1.3)";
-			}
-		});
-		
-		Page.Load.AOS.element_animation_types[2] = 1;
 	});	
 	
 	
