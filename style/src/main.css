@@ -120,14 +120,14 @@ img
 
 
 
-#logo
+#logo, #logo-no-link
 {
 	width: 100px;
 	height: 100px;
 	margin: 0 auto;
 }
 
-#logo img
+#logo img, #logo-no-link img
 {
 	position: absolute;
 	width: 100px;

@@ -38,6 +38,8 @@ Page.Banner =
 
 	//Filled in with pages when banners are preloaded so the console isn't spammed and caches aren't needlessly checked.
 	pages_already_fetched: [],
+	
+	other_size_pages_already_fetched: [],
 
 
 
@@ -267,19 +269,24 @@ Page.Banner =
 	//Fetches the other size of banner needed for the page, so that if the page is resized, there's no lag time.
 	fetch_other_size_in_background: function()
 	{
-		if (this.file_name === "landscape.webp" || this.file_name === "landscape.jpg")
+		if (this.preloadable_pages.includes(Page.url) && !(this.other_size_pages_already_fetched.includes(Page.url)))
 		{
-			Site.Fetch.queue.push(this.file_path + "portrait." + Page.Images.file_extension);
+			if (this.file_name === "landscape.webp" || this.file_name === "landscape.jpg")
+			{
+				Site.Fetch.queue.push(this.file_path + "portrait." + Page.Images.file_extension);
+				
+				Site.Fetch.get_next_item_from_queue();
+			}
 			
-			Site.Fetch.get_next_item_from_queue();
-		}
-		
-		else
-		{
-			Site.Fetch.queue.push(this.file_path + "landscape." + Page.Images.file_extension);
+			else
+			{
+				Site.Fetch.queue.push(this.file_path + "landscape." + Page.Images.file_extension);
+				
+				Site.Fetch.get_next_item_from_queue();
+			}
 			
-			Site.Fetch.get_next_item_from_queue();
-		}
+			this.other_size_pages_already_fetched.push(Page.url);
+		}	
 	},
 
 
