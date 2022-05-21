@@ -312,7 +312,7 @@ Page.Unload =
 {
 	fade_out: function(no_fade_out, url)
 	{
-		return new Promise((resolve, reject) =>
+		return new Promise(async (resolve, reject) =>
 		{
 			if (Site.force_dark_theme_pages.includes(url) && Site.Settings.url_vars["theme"] !== 1)
 			{
@@ -367,111 +367,113 @@ Page.Unload =
 			else
 			{
 				//Fade out the current page's content.
-				let promise = null;
-				
-				if (Page.Navigation.transition_type === 1)
+				if (Site.Settings.url_vars["content_animation"] !== 1)
 				{
-					promise = Page.Animate.fade_up_out(document.body, Site.page_animation_time);
+					let promise = null;
 					
-					try {promise = Page.Animate.fade_up_out(Page.banner_element, Site.page_animation_time, true)}
-					catch(ex) {}
-				}
-				
-				else if (Page.Navigation.transition_type === -1)
-				{
-					promise = Page.Animate.fade_down_out(document.body, Site.page_animation_time);
-					
-					try {promise = Page.Animate.fade_down_out(Page.banner_element, Site.page_animation_time, true)}
-					catch(ex) {}
-				}
-				
-				else if (Page.Navigation.transition_type === 2)
-				{
-					promise = Page.Animate.fade_left_out(document.body, Site.page_animation_time);
-					
-					try {promise = Page.Animate.fade_left_out(Page.banner_element, Site.page_animation_time, true)}
-					catch(ex) {}
-				}
-				
-				else if (Page.Navigation.transition_type === -2)
-				{
-					promise = Page.Animate.fade_right_out(document.body, Site.page_animation_time);
-					
-					try {promise = Page.Animate.fade_right_out(Page.banner_element, Site.page_animation_time, true)}
-					catch(ex) {}
-				}
-				
-				else
-				{
-					promise = Page.Animate.fade_out(document.body, Site.page_animation_time);
-					
-					try {promise = Page.Animate.fade_out(Page.banner_element, Site.page_animation_time, true)}
-					catch(ex) {}
-				}
-				
-				
-				
-				promise.then(() =>
-				{
-					//If necessary, take the time to fade back to the default background color, whatever that is.
-					if (Page.background_color_changed)
+					if (Page.Navigation.transition_type === 1)
 					{
-						document.documentElement.classList.add("background-transition");
-						document.body.classList.add("background-transition");
+						promise = Page.Animate.fade_up_out(document.body, Site.page_animation_time);
 						
-						if (Site.Settings.url_vars["theme"] === 1)
-						{
-							if (Site.Settings.url_vars["dark_theme_color"] === 1)
-							{
-								document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-								document.body.style.backgroundColor = "rgb(0, 0, 0)";
-								
-								anime({
-									targets: Site.Settings.meta_theme_color_element,
-									content: "#000000",
-									duration: 500,
-									easing: "cubicBezier(.42, 0, .58, 1)"
-								});
-							}
-							
-							else
-							{
-								document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-								document.body.style.backgroundColor = "rgb(24, 24, 24)";
-								
-								anime({
-									targets: Site.Settings.meta_theme_color_element,
-									content: "#161616",
-									duration: 500,
-									easing: "cubicBezier(.42, 0, .58, 1)"
-								});
-							}
-						}
+						try {promise = Page.Animate.fade_up_out(Page.banner_element, Site.page_animation_time, true)}
+						catch(ex) {}
+					}
+					
+					else if (Page.Navigation.transition_type === -1)
+					{
+						promise = Page.Animate.fade_down_out(document.body, Site.page_animation_time);
 						
-						else
+						try {promise = Page.Animate.fade_down_out(Page.banner_element, Site.page_animation_time, true)}
+						catch(ex) {}
+					}
+					
+					else if (Page.Navigation.transition_type === 2)
+					{
+						promise = Page.Animate.fade_left_out(document.body, Site.page_animation_time);
+						
+						try {promise = Page.Animate.fade_left_out(Page.banner_element, Site.page_animation_time, true)}
+						catch(ex) {}
+					}
+					
+					else if (Page.Navigation.transition_type === -2)
+					{
+						promise = Page.Animate.fade_right_out(document.body, Site.page_animation_time);
+						
+						try {promise = Page.Animate.fade_right_out(Page.banner_element, Site.page_animation_time, true)}
+						catch(ex) {}
+					}
+					
+					else
+					{
+						promise = Page.Animate.fade_out(document.body, Site.page_animation_time);
+						
+						try {promise = Page.Animate.fade_out(Page.banner_element, Site.page_animation_time, true)}
+						catch(ex) {}
+					}
+					
+					await promise;
+				}	
+				
+				
+				
+				//If necessary, take the time to fade back to the default background color, whatever that is.
+				if (Page.background_color_changed)
+				{
+					document.documentElement.classList.add("background-transition");
+					document.body.classList.add("background-transition");
+					
+					if (Site.Settings.url_vars["theme"] === 1)
+					{
+						if (Site.Settings.url_vars["dark_theme_color"] === 1)
 						{
-							document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
-							document.body.style.backgroundColor = "rgb(255, 255, 255)";
+							document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
+							document.body.style.backgroundColor = "rgb(0, 0, 0)";
 							
 							anime({
 								targets: Site.Settings.meta_theme_color_element,
-								content: "#ffffff",
+								content: "#000000",
 								duration: 500,
 								easing: "cubicBezier(.42, 0, .58, 1)"
 							});
 						}
 						
-						setTimeout(() =>
+						else
 						{
-							document.body.style.backgroundColor = "";
+							document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
+							document.body.style.backgroundColor = "rgb(24, 24, 24)";
 							
-							document.documentElement.classList.remove("background-transition");
-							document.body.classList.remove("background-transition");
-						}, Site.background_color_animation_time);
+							anime({
+								targets: Site.Settings.meta_theme_color_element,
+								content: "#161616",
+								duration: 500,
+								easing: "cubicBezier(.42, 0, .58, 1)"
+							});
+						}
 					}
 					
-					resolve();
-				});
+					else
+					{
+						document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
+						document.body.style.backgroundColor = "rgb(255, 255, 255)";
+						
+						anime({
+							targets: Site.Settings.meta_theme_color_element,
+							content: "#ffffff",
+							duration: 500,
+							easing: "cubicBezier(.42, 0, .58, 1)"
+						});
+					}
+					
+					setTimeout(() =>
+					{
+						document.body.style.backgroundColor = "";
+						
+						document.documentElement.classList.remove("background-transition");
+						document.body.classList.remove("background-transition");
+					}, Site.background_color_animation_time);
+				}
+				
+				resolve();
 			}
 		});
 	}

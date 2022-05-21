@@ -319,49 +319,52 @@ Page.Load =
 			
 			
 			
-			let promise = null;
-			
-			if (Page.Navigation.transition_type === 1)
+			if (Site.Settings.url_vars["content_animation"] !== 1)
 			{
-				promise = Page.Animate.fade_up_in(document.body, Site.page_animation_time * 2);
+				let promise = null;
 				
-				try {promise = Page.Animate.fade_up_in(Page.banner_element, Site.page_animation_time * 2)}
-				catch(ex) {}
-			}
-			
-			else if (Page.Navigation.transition_type === -1)
-			{
-				promise = Page.Animate.fade_down_in(document.body, Site.page_animation_time * 2);
+				if (Page.Navigation.transition_type === 1)
+				{
+					promise = Page.Animate.fade_up_in(document.body, Site.page_animation_time * 2);
+					
+					try {promise = Page.Animate.fade_up_in(Page.banner_element, Site.page_animation_time * 2)}
+					catch(ex) {}
+				}
 				
-				try {promise = Page.Animate.fade_down_in(Page.banner_element, Site.page_animation_time * 2)}
-				catch(ex) {}
-			}
-			
-			else if (Page.Navigation.transition_type === 2)
-			{
-				promise = Page.Animate.fade_left_in(document.body, Site.page_animation_time * 2);
+				else if (Page.Navigation.transition_type === -1)
+				{
+					promise = Page.Animate.fade_down_in(document.body, Site.page_animation_time * 2);
+					
+					try {promise = Page.Animate.fade_down_in(Page.banner_element, Site.page_animation_time * 2)}
+					catch(ex) {}
+				}
 				
-				try {promise = Page.Animate.fade_left_in(Page.banner_element, Site.page_animation_time * 2)}
-				catch(ex) {}
-			}
-			
-			else if (Page.Navigation.transition_type === -2)
-			{
-				promise = Page.Animate.fade_right_in(document.body, Site.page_animation_time * 2);
+				else if (Page.Navigation.transition_type === 2)
+				{
+					promise = Page.Animate.fade_left_in(document.body, Site.page_animation_time * 2);
+					
+					try {promise = Page.Animate.fade_left_in(Page.banner_element, Site.page_animation_time * 2)}
+					catch(ex) {}
+				}
 				
-				try {promise = Page.Animate.fade_right_in(Page.banner_element, Site.page_animation_time * 2)}
-				catch(ex) {}
-			}
-			
-			else
-			{
-				promise = Page.Animate.fade_in(document.body, Site.page_animation_time * 2);
+				else if (Page.Navigation.transition_type === -2)
+				{
+					promise = Page.Animate.fade_right_in(document.body, Site.page_animation_time * 2);
+					
+					try {promise = Page.Animate.fade_right_in(Page.banner_element, Site.page_animation_time * 2)}
+					catch(ex) {}
+				}
 				
-				try {promise = Page.Animate.fade_in(Page.banner_element, Site.page_animation_time * 2)}
-				catch(ex) {}
-			}
-			
-			await promise;
+				else
+				{
+					promise = Page.Animate.fade_in(document.body, Site.page_animation_time * 2);
+					
+					try {promise = Page.Animate.fade_in(Page.banner_element, Site.page_animation_time * 2)}
+					catch(ex) {}
+				}
+				
+				await promise;
+			}	
 			
 			
 			
