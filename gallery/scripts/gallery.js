@@ -17,17 +17,11 @@
 	
 	let src_separation_time = Site.aos_separation_time;
 	
-	Page.element.querySelectorAll(".gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img").forEach((element, index) =>
+	Page.element.querySelectorAll(".gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img").forEach(element =>
 	{
-		setTimeout(() =>
-		{
-			element.src = `${Page.parent_folder}high-res/${element.getAttribute("data-image-id")}.${Page.Images.file_extension}`;
-		}, src_separation_time * index + 500);	
+		element.src = `${Page.parent_folder}thumbnails/${element.getAttribute("data-image-id")}.${Page.Images.file_extension}`;
 		
-		element.addEventListener("click", e =>
-		{
-			show_full_res_image(e.target.getAttribute("data-image-id"));
-		});
+		element.addEventListener("click", e => show_full_res_image(e.target.getAttribute("data-image-id")));
 	});
 	
 	
