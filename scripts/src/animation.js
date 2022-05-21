@@ -270,14 +270,21 @@ Page.Animate =
 		{
 			element.style.marginBottom = "20vmin";
 			
-			anime({
+			let data =
+			{
 				targets: element,
-				opacity: no_opacity_change ? 1 : 0,
 				marginTop: `${-Site.navigation_animation_distance}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
-			});
+			};
+			
+			if (!no_opacity_change)
+			{
+				data.opacity = 0;
+			}
+			
+			anime(data);
 		});	
 	},
 	
@@ -382,14 +389,21 @@ Page.Animate =
 		{
 			element.style.marginBottom = "20vmin";
 			
-			anime({
+			let data =
+			{
 				targets: element,
-				opacity: no_opacity_change ? 1 : 0,
 				marginTop: `${Site.navigation_animation_distance}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
-			});
+			};
+			
+			if (!no_opacity_change)
+			{
+				data.opacity = 0;
+			}
+			
+			anime(data);
 		});	
 	},
 	
@@ -490,14 +504,21 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			anime({
+			let data =
+			{
 				targets: element,
-				opacity: no_opacity_change ? 1 : 0,
 				marginLeft: `${-Site.navigation_animation_distance}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
-			});
+			};
+			
+			if (!no_opacity_change)
+			{
+				data.opacity = 0;
+			}
+			
+			anime(data);
 		});	
 	},
 	
@@ -596,14 +617,21 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			anime({
+			let data =
+			{
 				targets: element,
-				opacity: no_opacity_change ? 1 : 0,
 				marginRight: `${-Site.navigation_animation_distance}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
-			});
+			};
+			
+			if (!no_opacity_change)
+			{
+				data.opacity = 0;
+			}
+			
+			anime(data);
 		});	
 	},
 	
@@ -696,13 +724,20 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			anime({
+			let data =
+			{
 				targets: element,
-				opacity: no_opacity_change ? 1 : 0,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
-			});
+			};
+			
+			if (!no_opacity_change)
+			{
+				data.opacity = 0;
+			}
+			
+			anime(data);
 		});	
 	},
 	
