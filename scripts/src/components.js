@@ -212,7 +212,7 @@ Page.Components =
 		return `
 			<div class="image-link${light_text}" data-aos="fade-up">
 				<a href="${file_path}" tabindex="-1">
-					<img data-image-id="${id}" src="${src}" alt="${subtext}" tabindex="1"></img>
+					<img data-image-id="${id}" src="${src}" alt="${subtext}" tabindex="1" loading="lazy"></img>
 				</a>
 				
 				<p class="image-link-subtext">${subtext}</p>
@@ -512,7 +512,7 @@ Page.Components =
 			<div class="iframe-container" data-aos="fade-up">	
 				<div class="iframe-outer-border">
 					<div class="iframe-clipper">
-						<iframe src="${src}" width="500" height="500"></iframe>
+						<iframe data-src="${src}" width="500" height="500"></iframe>
 					</div>
 				</div>
 			</div>

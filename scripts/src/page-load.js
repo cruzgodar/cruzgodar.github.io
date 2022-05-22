@@ -81,6 +81,8 @@ Page.load = async function()
 	
 	this.Load.TextButtons.set_up();
 	
+	this.Load.show_iframes();
+	
 	if ("parent_list" in this.settings)
 	{
 		this.Load.TextButtons.set_up_nav_buttons(this.settings["parent_list"]);
@@ -369,7 +371,14 @@ Page.Load =
 			
 			
 			resolve();
-		});	
+		});
+	},
+	
+	
+	
+	show_iframes: function()
+	{
+		Page.element.querySelectorAll("iframe").forEach((iframe, index) => setTimeout(() => iframe.src = iframe.getAttribute("data-src"), (index + 2) * 1000));
 	},
 	
 	
