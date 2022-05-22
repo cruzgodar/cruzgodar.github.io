@@ -212,7 +212,7 @@ Page.Components =
 		return `
 			<div class="image-link${light_text}" data-aos="fade-up">
 				<a href="${file_path}" tabindex="-1">
-					<img data-image-id="${id}" src="${src}" alt="${subtext}" tabindex="1" loading="lazy"></img>
+					<img data-image-id="${id}" data-src="${src}" alt="${subtext}" tabindex="1"></img>
 				</a>
 				
 				<p class="image-link-subtext">${subtext}</p>

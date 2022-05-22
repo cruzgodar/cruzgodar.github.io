@@ -281,7 +281,7 @@
 
 
 /* Compact layout: increase footer image link size to 12vw with gaps of 4vw in between. */
-@media (max-aspect-ratio: 9/16), (max-width: 700px)
+@media (max-width: 700px)
 {
 	.footer-line-break
 	{

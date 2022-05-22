@@ -457,7 +457,7 @@ option
 
 
 
-@media (min-aspect-ratio: 1/1), (max-aspect-ratio: 9/16), (max-width: 700px)
+@media (min-aspect-ratio: 1/1), (max-width: 700px)
 {
 	.text-boxes, .text-buttons, .sliders
 	{

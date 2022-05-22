@@ -81,7 +81,7 @@ Page.load = async function()
 	
 	this.Load.TextButtons.set_up();
 	
-	this.Load.show_iframes();
+	this.Load.show_images_and_iframes();
 	
 	if ("parent_list" in this.settings)
 	{
@@ -376,9 +376,85 @@ Page.Load =
 	
 	
 	
-	show_iframes: function()
+	lazy_loaded_images: [],
+	lazy_loaded_iframes: [],
+	
+	show_images_and_iframes: function()
 	{
-		Page.element.querySelectorAll("iframe").forEach((iframe, index) => setTimeout(() => iframe.src = iframe.getAttribute("data-src"), (index + 2) * 1000));
+		Page.element.querySelectorAll("img:not([src])").forEach(element => this.lazy_loaded_images.push([element, element.getBoundingClientRect().top, null]));
+		
+		Page.element.querySelectorAll("iframe:not([src])").forEach(element => this.lazy_loaded_iframes.push([element, element.getBoundingClientRect().top, null]));
+		
+		this.lazy_loaded_images.forEach((entry, index) =>
+		{
+			if (entry[1] > Page.Layout.window_height + 200)
+			{
+				entry[2] = setTimeout(() => this.load_lazy_element(this.lazy_loaded_images, index), index * 200);
+			}
+			
+			else
+			{
+				this.load_lazy_element(this.lazy_loaded_images, index);
+			}
+		});
+		
+		this.lazy_loaded_iframes.forEach((entry, index) =>
+		{
+			if (entry[1] > Page.Layout.window_height + 200)
+			{
+				entry[2] = setTimeout(() => this.load_lazy_element(this.lazy_loaded_iframes, index), index * 800);
+			}
+			
+			else
+			{
+				this.load_lazy_element(this.lazy_loaded_iframes, index);
+			}
+		});
+	},
+	
+	
+	
+	load_lazy_element: function(list, index)
+	{
+		list[index][0].src = list[index][0].getAttribute("data-src");
+		
+		list[index][2] = -1;
+	},
+	
+	
+	
+	last_lazy_load_scroll_timestamp: 0,
+	
+	lazy_load_scroll: function(timestamp)
+	{
+		const elapsed_time = timestamp - Page.Load.last_lazy_load_scroll_timestamp;
+		
+		Page.Load.last_lazy_load_scroll_timestamp = timestamp;
+		
+		if (elapsed_time < 16)
+		{
+			return;
+		}
+		
+		
+		
+		Page.Load.lazy_loaded_images.forEach((entry, index) =>
+		{
+			if (entry[1] < Page.Layout.window_height + Page.scroll + 200 && entry[2] !== -1)
+			{
+				clearTimeout(entry[2]);
+				Page.Load.load_lazy_element(Page.Load.lazy_loaded_images, index);
+			}
+		});
+		
+		Page.Load.lazy_loaded_iframes.forEach((entry, index) =>
+		{
+			if (entry[1] < Page.Layout.window_height + Page.scroll + 200 && entry[2] !== -1)
+			{
+				clearTimeout(entry[2]);
+				Page.Load.load_lazy_element(Page.Load.lazy_loaded_iframes, index);
+			}
+		});
 	},
 	
 	

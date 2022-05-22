@@ -36,12 +36,12 @@ Page.Layout =
 		
 		this.old_layout_string = this.layout_string;
 		
-		if (this.new_window_width / this.new_window_height < 9/16 || this.new_window_width <= 700)
+		if (this.new_window_width <= 700)
 		{
 			this.layout_string = "compact";
 		}
 		
-		else if (this.new_window_width / this.new_window_height > 16/9 || this.new_window_width >= 1400)
+		else if (this.new_window_width >= 1400)
 		{
 			this.layout_string = "ultrawide";
 		}

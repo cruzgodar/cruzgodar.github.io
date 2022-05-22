@@ -19,8 +19,6 @@
 	
 	Page.element.querySelectorAll(".gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img").forEach(element =>
 	{
-		element.src = `${Page.parent_folder}thumbnails/${element.getAttribute("data-image-id")}.${Page.Images.file_extension}`;
-		
 		element.addEventListener("click", e => show_full_res_image(e.target.getAttribute("data-image-id")));
 	});
 	

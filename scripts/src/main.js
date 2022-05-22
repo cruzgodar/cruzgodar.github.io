@@ -240,13 +240,11 @@ Site.load = async function(url)
 	{
 		Page.Banner.on_scroll(0);
 		
-		window.requestAnimationFrame(Page.Load.AOS.on_scroll);
+		window.requestAnimationFrame(Page.Load.lazy_load_scroll);
 	});
 	
 	window.addEventListener("resize", () =>
 	{
-		window.requestAnimationFrame(Page.Load.AOS.on_resize);
-		
 		Page.Layout.on_resize();
 	});
 	

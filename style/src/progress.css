@@ -30,7 +30,7 @@
 
 
 /* Compact layout: fit to the correct margins. */
-@media (max-aspect-ratio: 9/16), (max-width: 700px)
+@media (max-width: 700px)
 {
 	.progress-bar
 	{
