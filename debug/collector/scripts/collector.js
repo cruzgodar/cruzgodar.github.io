@@ -21,7 +21,8 @@
 			"main.js",
 			"navigation.js",
 			"page-load.js",
-			"settings.js"
+			"settings.js",
+			"sitemap.js"
 		];
 		
 		let bundle = "";
