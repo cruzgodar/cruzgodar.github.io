@@ -327,7 +327,7 @@ Page.Load =
 				
 				if (Page.Navigation.transition_type === 1)
 				{
-					promise = Page.Animate.fade_up_in(document.body, Site.page_animation_time * 2);
+					promise = Page.Animate.fade_up_in(Page.element, Site.page_animation_time * 2);
 					
 					try {promise = Page.Animate.fade_up_in(Page.banner_element, Site.page_animation_time * 2)}
 					catch(ex) {}
@@ -335,7 +335,7 @@ Page.Load =
 				
 				else if (Page.Navigation.transition_type === -1)
 				{
-					promise = Page.Animate.fade_down_in(document.body, Site.page_animation_time * 2);
+					promise = Page.Animate.fade_down_in(Page.element, Site.page_animation_time * 2);
 					
 					try {promise = Page.Animate.fade_down_in(Page.banner_element, Site.page_animation_time * 2)}
 					catch(ex) {}
@@ -343,7 +343,7 @@ Page.Load =
 				
 				else if (Page.Navigation.transition_type === 2)
 				{
-					promise = Page.Animate.fade_left_in(document.body, Site.page_animation_time * 2);
+					promise = Page.Animate.fade_left_in(Page.element, Site.page_animation_time * 2);
 					
 					try {promise = Page.Animate.fade_left_in(Page.banner_element, Site.page_animation_time * 2)}
 					catch(ex) {}
@@ -351,7 +351,7 @@ Page.Load =
 				
 				else if (Page.Navigation.transition_type === -2)
 				{
-					promise = Page.Animate.fade_right_in(document.body, Site.page_animation_time * 2);
+					promise = Page.Animate.fade_right_in(Page.element, Site.page_animation_time * 2);
 					
 					try {promise = Page.Animate.fade_right_in(Page.banner_element, Site.page_animation_time * 2)}
 					catch(ex) {}
@@ -359,7 +359,7 @@ Page.Load =
 				
 				else
 				{
-					promise = Page.Animate.fade_in(document.body, Site.page_animation_time * 2);
+					promise = Page.Animate.fade_in(Page.element, Site.page_animation_time * 2);
 					
 					try {promise = Page.Animate.fade_in(Page.banner_element, Site.page_animation_time * 2)}
 					catch(ex) {}

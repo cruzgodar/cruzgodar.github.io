@@ -103,7 +103,7 @@ Page.Navigation =
 			
 			
 			
-			Page.element.outerHTML = Page.Components.decode(`<div class="page">${data}</div>${scripts_data}`);//.replace(/data-aos=/g, `data-aos-offset="1000000" data-aos=`);
+			document.body.firstElementChild.insertAdjacentHTML("beforebegin", Page.Components.decode(`<div class="page" style="opacity: 0">${data}</div>${scripts_data}`));
 			
 			Page.Load.parse_script_tags();
 			
@@ -327,7 +327,7 @@ Page.Unload =
 			
 			if (no_fade_out)
 			{
-				document.body.style.opacity = 0;
+				Page.element.style.opacity = 0;
 				
 				resolve();
 				return;
@@ -373,7 +373,7 @@ Page.Unload =
 					
 					if (Page.Navigation.transition_type === 1)
 					{
-						promise = Page.Animate.fade_up_out(document.body, Site.page_animation_time);
+						promise = Page.Animate.fade_up_out(Page.element, Site.page_animation_time);
 						
 						try {promise = Page.Animate.fade_up_out(Page.banner_element, Site.page_animation_time, true)}
 						catch(ex) {}
@@ -381,7 +381,7 @@ Page.Unload =
 					
 					else if (Page.Navigation.transition_type === -1)
 					{
-						promise = Page.Animate.fade_down_out(document.body, Site.page_animation_time);
+						promise = Page.Animate.fade_down_out(Page.element, Site.page_animation_time);
 						
 						try {promise = Page.Animate.fade_down_out(Page.banner_element, Site.page_animation_time, true)}
 						catch(ex) {}
@@ -389,7 +389,7 @@ Page.Unload =
 					
 					else if (Page.Navigation.transition_type === 2)
 					{
-						promise = Page.Animate.fade_left_out(document.body, Site.page_animation_time);
+						promise = Page.Animate.fade_left_out(Page.element, Site.page_animation_time);
 						
 						try {promise = Page.Animate.fade_left_out(Page.banner_element, Site.page_animation_time, true)}
 						catch(ex) {}
@@ -397,7 +397,7 @@ Page.Unload =
 					
 					else if (Page.Navigation.transition_type === -2)
 					{
-						promise = Page.Animate.fade_right_out(document.body, Site.page_animation_time);
+						promise = Page.Animate.fade_right_out(Page.element, Site.page_animation_time);
 						
 						try {promise = Page.Animate.fade_right_out(Page.banner_element, Site.page_animation_time, true)}
 						catch(ex) {}
@@ -405,7 +405,7 @@ Page.Unload =
 					
 					else
 					{
-						promise = Page.Animate.fade_out(document.body, Site.page_animation_time);
+						promise = Page.Animate.fade_out(Page.element, Site.page_animation_time);
 						
 						try {promise = Page.Animate.fade_out(Page.banner_element, Site.page_animation_time, true)}
 						catch(ex) {}
@@ -514,11 +514,5 @@ Page.unload = function()
 	
 	
 	//Remove everything that's not a script from the page element.
-	Page.element.querySelectorAll(":scope > *").forEach(element => element.remove());
-	
-	//Also get rid of the banner if it was here.
-	/*
-	try {document.body.querySelector("#banner").remove()}
-	catch(ex) {}
-	*/
+	Page.element.remove();
 }

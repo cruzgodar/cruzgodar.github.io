@@ -1,14 +1,12 @@
 #gallery
 {
-	width: calc(100% - 20px);
-	margin: 10px;
+	width: calc(100vw - 20px);
+	margin-left: 10px;
 	
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	
 	grid-gap: 10px;
-	
-	transition: opacity .8s ease-in-out;
 }
 
 .gallery-block

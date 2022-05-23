@@ -564,11 +564,11 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			element.style.marginRight = `${Site.navigation_animation_distance}px`;
+			element.style.marginLeft = `${-Site.navigation_animation_distance}px`;
 			
 			anime({
 				targets: element,
-				marginRight: "0px",
+				marginLeft: "0px",
 				opacity: 1,
 				duration: duration,
 				easing: "cubicBezier(.4, 1.0, .7, 1.0)",
@@ -588,15 +588,15 @@ Page.Animate =
 			
 			setTimeout(() =>
 			{
-				element.style.marginRight = `${Site.navigation_animation_distance}px`;
+				element.style.marginLeft = `${-Site.navigation_animation_distance}px`;
 				
 				void(element.offsetHeight);
 				
-				element.style.transition = `margin-right ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0), opacity ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0)`;
+				element.style.transition = `margin-left ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0), opacity ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0)`;
 				
 				setTimeout(() =>
 				{
-					element.style.marginRight = 0;
+					element.style.marginLeft = 0;
 					element.style.opacity = 1;
 					
 					const timeout_id = setTimeout(() =>
@@ -620,7 +620,7 @@ Page.Animate =
 			let data =
 			{
 				targets: element,
-				marginRight: `${-Site.navigation_animation_distance}px`,
+				marginLeft: `${Site.navigation_animation_distance}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
@@ -648,11 +648,11 @@ Page.Animate =
 			{
 				void(element.offsetHeight);
 				
-				element.style.transition = `margin-right ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0), opacity ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0)`;
+				element.style.transition = `margin-left ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0), opacity ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0)`;
 				
 				setTimeout(() =>
 				{
-					element.style.marginRight = `${-Site.navigation_animation_distance}px`;
+					element.style.marginLeft = `${-Site.navigation_animation_distance}px`;
 					
 					if (!no_opacity_change)
 					{
