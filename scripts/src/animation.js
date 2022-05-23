@@ -652,7 +652,7 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					element.style.marginLeft = `${-Site.navigation_animation_distance}px`;
+					element.style.marginLeft = `${Site.navigation_animation_distance}px`;
 					
 					if (!no_opacity_change)
 					{
