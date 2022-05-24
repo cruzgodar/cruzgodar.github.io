@@ -613,7 +613,8 @@ Site.sitemap =
 			"/teaching/uo/251/notes/9-the-inverse-function-theorem/9-the-inverse-function-theorem.html",
 			"/teaching/uo/251/notes/10-implicit-differentiation/10-implicit-differentiation.html",
 			"/teaching/uo/251/notes/11-optimization/11-optimization.html",
-			"/teaching/uo/251/notes/12-l-hopitals-rule/12-l-hopitals-rule.html"
+			"/teaching/uo/251/notes/12-l-hopitals-rule/12-l-hopitals-rule.html",
+			"/teaching/uo/251/notes/13-related-rates/13-related-rates.html"
 		]
 	},
 	
@@ -702,6 +703,13 @@ Site.sitemap =
 	},
 
 	"/teaching/uo/251/notes/12-l-hopitals-rule/12-l-hopitals-rule.html":
+	{
+		parent: "/teaching/uo/251/251.html",
+		
+		children: []
+	},
+	
+	"/teaching/uo/251/notes/13-related-rates/13-related-rates.html":
 	{
 		parent: "/teaching/uo/251/251.html",
 		
