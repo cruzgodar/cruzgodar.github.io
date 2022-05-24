@@ -164,7 +164,11 @@ Site.applet_process_id = 0;
 //Redirects to the chosen page and sets up all the miscellaneous things that make the site work.
 Site.load = async function(url)
 {
-	Page.element = document.querySelector(".page");
+	Page.element = document.createElement("div");
+	
+	Page.element.classList.add("page");
+	
+	document.body.insertBefore(Page.element, document.body.firstChild);
 	
 	
 	
@@ -328,26 +332,25 @@ Site.load = async function(url)
 	
 	
 	
-	Page.Images.check_webp_support()
+	await Page.Images.check_webp_support();
 	
-	.then(() =>
+	
+	
+	Page.Footer.Floating.load();
+	
+	
+	
+	//If it's not an html file, it shouldn't be anywhere near redirect().
+	if (url.substring(url.lastIndexOf(".") + 1, url.length) !== "html")
 	{
-		Page.Footer.Floating.load();
-		
-		
-		
-		//If it's not an html file, it shouldn't be anywhere near redirect().
-		if (url.substring(url.lastIndexOf(".") + 1, url.length) !== "html")
-		{
-			//This should really be using history.replaceState(), but that doesn't update the page to make the file show for some reason.
-			window.location.href = url;
-		}
-		
-		else
-		{
-			Page.Navigation.redirect(url, false, true, false, true);
-		}
-	});
+		//This should really be using history.replaceState(), but that doesn't update the page to make the file show for some reason.
+		window.location.href = url;
+	}
+	
+	else
+	{
+		Page.Navigation.redirect(url, false, true, false, true);
+	}
 };
 
 

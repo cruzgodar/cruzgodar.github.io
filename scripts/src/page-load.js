@@ -152,7 +152,7 @@ Page.show = function()
 			await this.Load.fade_in();
 				
 			resolve();
-		}, 10);	
+		}, 10);
 	});
 };
 
@@ -314,6 +314,8 @@ Page.Load =
 			
 			else
 			{
+				Page.banner_element = null;
+				
 				Page.Footer.Floating.show_footer_menu_button.style.opacity = 0;
 				
 				setTimeout(() => Page.Animate.change_opacity(Page.Footer.Floating.show_footer_menu_button, 1, Site.opacity_animation_time), 10);
@@ -329,40 +331,50 @@ Page.Load =
 				{
 					promise = Page.Animate.fade_up_in(Page.element, Site.page_animation_time * 2);
 					
-					try {promise = Page.Animate.fade_up_in(Page.banner_element, Site.page_animation_time * 2)}
-					catch(ex) {}
+					if (Page.banner_element !== null)
+					{
+						promise = Page.Animate.fade_up_in(Page.banner_element, Site.page_animation_time * 2);
+					}
 				}
 				
 				else if (Page.Navigation.transition_type === -1)
 				{
 					promise = Page.Animate.fade_down_in(Page.element, Site.page_animation_time * 2);
 					
-					try {promise = Page.Animate.fade_down_in(Page.banner_element, Site.page_animation_time * 2)}
-					catch(ex) {}
+					if (Page.banner_element !== null)
+					{
+						promise = Page.Animate.fade_down_in(Page.banner_element, Site.page_animation_time * 2);
+					}
 				}
 				
 				else if (Page.Navigation.transition_type === 2)
 				{
 					promise = Page.Animate.fade_left_in(Page.element, Site.page_animation_time * 2);
 					
-					try {promise = Page.Animate.fade_left_in(Page.banner_element, Site.page_animation_time * 2)}
-					catch(ex) {}
+					if (Page.banner_element !== null)
+					{
+						promise = Page.Animate.fade_left_in(Page.banner_element, Site.page_animation_time * 2);
+					}
 				}
 				
 				else if (Page.Navigation.transition_type === -2)
 				{
 					promise = Page.Animate.fade_right_in(Page.element, Site.page_animation_time * 2);
 					
-					try {promise = Page.Animate.fade_right_in(Page.banner_element, Site.page_animation_time * 2)}
-					catch(ex) {}
+					if (Page.banner_element !== null)
+					{
+						promise = Page.Animate.fade_right_in(Page.banner_element, Site.page_animation_time * 2);
+					}
 				}
 				
 				else
 				{
 					promise = Page.Animate.fade_in(Page.element, Site.page_animation_time * 2);
 					
-					try {promise = Page.Animate.fade_in(Page.banner_element, Site.page_animation_time * 2)}
-					catch(ex) {}
+					if (Page.banner_element !== null)
+					{
+						promise = Page.Animate.fade_in(Page.banner_element, Site.page_animation_time * 2);
+					}
 				}
 				
 				await promise;
