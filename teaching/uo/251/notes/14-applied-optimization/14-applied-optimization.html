@@ -131,9 +131,40 @@
 	
 	Since we&#x2019;re only looking in the interval $[0, 2]$, we just want $a = \sqrt{2}$.
 	
-	This is one of our critical points. The others come from the endpoints as usual, so we throw in $0$ and $2$. Next up is finding the second derivative.
+	This is one of our critical points. The others come from the endpoints as usual, so we throw in $0$ and $2$. Next up is finding the second derivative, but just starting that computation looks incredibly bad. The first derivative test always works, though, so we can just use that &mdash; since $\sqrt{2} \approx 1.41$, let&#x2019;s use $a = 1$ and $a = 1.5$ as test points. We have
+	
+	$$
+		\begin{align*}
+			A'(1) &= 4 \left(9 - \frac{9}{4} 1^2\right)^{1/2} - 9 \cdot 1^2 \left(9 - \frac{9}{4} 1^2\right)^{-1/2} &&= 4\sqrt{3}\\
+			A'(1.5) &= 4 \left(9 - \frac{9}{4} 1.5^2\right)^{1/2} - 9 \cdot 1.5^2 \left(9 - \frac{9}{4} 1.5^2\right)^{-1/2} &&\approx -2.268.
+		\end{align*}
+	$$
+	
+	Therefore, both $a = 0$ and $a = 2$ are local minima, and $a = \sqrt{2}$ is a local maximum. It&#x2019;s also the global max, since it&#x2019;s the only local max. Plugging this back into the original area function, we get
+	
+	$$
+		\begin{align*}
+			A(\sqrt{2}) &= 4\sqrt{2}\left(9 - \frac{9}{4}(\sqrt{2})^2\right)^{1/2}\\
+			&= 4\sqrt{2}\left(9 - \frac{9}{2}\right)^{1/2}\\
+			&= 4\sqrt{2}\sqrt{\frac{9}{2}}\\
+			&= 4\sqrt{9}\\
+			&= 12.
+		\end{align*}	
+	$$
+	
+	Therefore, the largest possible rectangle has area 12.
 	
 !end-example
+
+!begin-exercise
+	
+	travel times
+	
+	You&#x2019;re running a race that starts on the bank of a river. The river is 100 feet across, and the finish line is on the other bank of the river, but also 500 feet downstream. You can run at 10 feet per second (a little under a 9 minute mile) while on land, but in the river, you swim at only 4 feet per second. To finish this race as fast as possible, you first run along the bank of the river, and then at some point, you jump in and swim in a straight line to the finish. What is the fastest you can get to the finish line?
+	
+	!iframe https://www.desmos.com/calculator/vhjrkh5dzk
+	
+!end-exercise
 
 
 
