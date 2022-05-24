@@ -94,7 +94,7 @@
 	
 	!iframe https://www.desmos.com/calculator/ip7edd1xiz
 	
-	As before, let&#x2019;s start by giving names to relevant quantities. Once we know a single corner of the rectangle, the other three corners are symmetric about the $x$- and $y$-axes &mdash; in other words, the rectangle is defined by a single corner. Let&#x2019;s say one corner is at $(a, b)$, and let&#x2019;s just assume this is the top-right corner so all of our numbers are positive. Then the width of the rectangle is $2a$ and its height is $2b$, so the area is $A = 4ab$. The constraint is just that $(a, b)$ is actually on the ellipse, so $\frac{a^2}{4} + \frac{b^2}{9} = 1$, or in other words, $b = \sqrt{9(1 - \frac{a^2}{4}}$. (We can ignore any issues of negative square roots or a $\pm$ on the outside because everything is positive).
+	As before, let&#x2019;s start by giving names to relevant quantities. Once we know a single corner of the rectangle, the other three corners are symmetric about the $x$- and $y$-axes &mdash; in other words, the rectangle is defined by a single corner. Let&#x2019;s say one corner is at $(a, b)$, and let&#x2019;s just assume this is the top-right corner so all of our numbers are positive. Then the width of the rectangle is $2a$ and its height is $2b$, so the area is $A = 4ab$. The constraint is just that $(a, b)$ is actually on the ellipse, so $\frac{a^2}{4} + \frac{b^2}{9} = 1$, or in other words, $b = \sqrt{9\left(1 - \frac{a^2}{4} \right)}$. (We can ignore any issues of negative square roots or a $\pm$ on the outside because everything is positive).
 	
 	Now it really helps to have this picture: the largest that $a$ can be is $2$, and the smallest is $0$. Therefore, our goal is to maximize
 	
@@ -103,6 +103,35 @@
 	$$
 	
 	on the interval $[0, 2]$.
+	
+	As always, we start by differentiating. Through a product and chain rule, we have
+	
+	$$
+		\begin{align*}
+			A(a) &= 4a\left(9 - \frac{9}{4}a^2\right)^{1/2}\\
+			A'(a) &= \frac{d}{da}[4a] \left(9 - \frac{9}{4} a^2\right)^{1/2} + (4a) \frac{d}{da}\left[\left(9 - \frac{9}{4} a^2\right)^{1/2}\right]\\
+			&= 4 \left(9 - \frac{9}{4} a^2\right)^{1/2} + (4a) \frac{1}{2}\left(9 - \frac{9}{4} a^2\right)^{-1/2} \cdot \left(-\frac{9}{2} a\right)\\
+			&= 4 \left(9 - \frac{9}{4} a^2\right)^{1/2} - 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2}.
+		\end{align*}
+	$$
+	
+	Setting this equal to zero and solving is a little bit tricky, but not all that bad.
+	
+	$$
+		\begin{align*}
+			4 \left(9 - \frac{9}{4} a^2\right)^{1/2} - 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2} &= 0\\
+			4 \left(9 - \frac{9}{4} a^2\right)^{1/2} &= 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2}\\
+			4 \left(9 - \frac{9}{4} a^2\right) &= 9a^2\\
+			36 - 9a^2 &= 9a^2\\
+			36 &= 18a^2\\
+			a^2 = 2\\
+			a = \pm \sqrt{2}.
+		\end{align*}
+	$$
+	
+	Since we&#x2019;re only looking in the interval $[0, 2]$, we just want $a = \sqrt{2}$.
+	
+	This is one of our critical points. The others come from the endpoints as usual, so we throw in $0$ and $2$. Next up is finding the second derivative.
 	
 !end-example
 
