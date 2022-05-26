@@ -966,7 +966,7 @@ class Wilson
 			//Figure out which marker, if any, this is referencing.
 			for (let i = 0; i < this.num_draggables; i++)
 			{
-				if (e.target.className.includes(`wilson-draggable-${i}`) && e.target.parentNode === this.container)
+				if (e.target.classList.contains(`wilson-draggable-${i}`) && e.target.parentNode === this.container)
 				{
 					e.preventDefault();
 					
@@ -1078,7 +1078,7 @@ class Wilson
 			//Figure out which marker, if any, this is referencing.
 			for (let i = 0; i < this.num_draggables; i++)
 			{
-				if (e.target.className.includes(`wilson-draggable-${i}`) && e.target.parentNode === this.container)
+				if (e.target.classList.contains(`wilson-draggable-${i}`) && e.target.parentNode === this.container)
 				{
 					e.preventDefault();
 					

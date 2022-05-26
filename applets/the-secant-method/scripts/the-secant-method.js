@@ -17,9 +17,9 @@
 		
 		uniform int num_roots;
 		
-		uniform vec2 roots[8];
+		uniform vec2 roots[11];
 		
-		uniform vec3 colors[8];
+		uniform vec3 colors[11];
 		
 		uniform vec2 a;
 		uniform vec2 c;
@@ -53,7 +53,7 @@
 		{
 			vec2 result = vec2(1.0, 0.0);
 			
-			for (int i = 0; i <= 8; i++)
+			for (int i = 0; i <= 11; i++)
 			{
 				if (i == num_roots)
 				{
@@ -103,7 +103,7 @@
 				
 				
 				
-				for (int i = 0; i <= 8; i++)
+				for (int i = 0; i <= 11; i++)
 				{
 					if (i == num_roots)
 					{
@@ -300,7 +300,13 @@
 	
 	let spread_roots_button_element = Page.element.querySelector("#spread-roots-button");
 	
-	spread_roots_button_element.addEventListener("click", () => spread_roots(false));
+	spread_roots_button_element.addEventListener("click", () => spread_roots(false, false));
+	
+	
+	
+	let randomize_roots_button_element = Page.element.querySelector("#randomize-roots-button");
+	
+	randomize_roots_button_element.addEventListener("click", () => spread_roots(false, true));
 	
 	
 	
@@ -321,16 +327,24 @@
 	
 	
 	
+	let root_color_input_element = Page.element.querySelector("#root-color-input");
+	root_color_input_element.addEventListener("input", set_color);
+	
+	
+	
 	let root_setter_element = Page.element.querySelector("#root-setter");
+	
+	let color_setter_element = Page.element.querySelector("#color-setter");
 	
 	
 	
 	//Render the inital frame.
 	wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
 	
-	wilson.gl.uniform3fv(wilson.uniforms["colors"], [1, 0, 0,   0, 1, 0,   0, 0, 1,   0, 1, 1,   1, 0, 1,   1, 1, 0,   .5, 0, 1,   1, .5, 0]);
+	let colors = [216/255, 1/255, 42/255,   255/255, 139/255, 56/255,   249/255, 239/255, 20/255,   27/255, 181/255, 61/255,   0/255, 86/255, 195/255,   154/255, 82/255, 164/255,   32/255, 32/255, 32/255,   155/255, 92/255, 15/255,   182/255, 228/255, 254/255,   250/255, 195/255, 218/255,   255/255, 255/255, 255/255];
 	
-	wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], [1, 0, 0,   0, 1, 0,   0, 0, 1,   0, 1, 1,   1, 0, 1,   1, 1, 0,   .5, 0, 1,   1, .5, 0]);
+	wilson.gl.uniform3fv(wilson.uniforms["colors"], colors);
+	wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], colors);
 	
 	window.requestAnimationFrame(draw_newtons_method);
 	
@@ -342,7 +356,7 @@
 	
 	function add_root()
 	{
-		if (num_roots === 8)
+		if (num_roots === 11)
 		{
 			return;
 		}
@@ -389,7 +403,7 @@
 	
 	
 	
-	function spread_roots(no_animation = false)
+	function spread_roots(no_animation = false, randomize = false)
 	{
 		if (!currently_spreading_roots)
 		{
@@ -398,21 +412,24 @@
 			parameter_animation_frame = 0;
 		}
 		
+		else
+		{
+			return;
+		}
+		
 		old_roots = JSON.parse(JSON.stringify(current_roots));
 		
 		for (let i = 0; i < num_roots; i++)
 		{
-			if (i < num_roots / 2 || num_roots % 2 === 1)
-			{
-				roots_delta[2 * i] = Math.cos(2 * Math.PI * 2 * i / num_roots) - current_roots[2 * i];
-				roots_delta[2 * i + 1] = Math.sin(2 * Math.PI * 2 * i / num_roots) - current_roots[2 * i + 1];
-			}
+			let mag = 1;
 			
-			else
+			if (randomize)
 			{
-				roots_delta[2 * i] = Math.cos(2 * Math.PI * (2 * i + 1) / num_roots) - current_roots[2 * i];
-				roots_delta[2 * i + 1] = Math.sin(2 * Math.PI * (2 * i + 1) / num_roots) - current_roots[2 * i + 1];
-			}
+				mag += .75 * Math.random();
+			}	
+			
+			roots_delta[2 * i] = mag * Math.cos(2 * Math.PI * i / num_roots) - current_roots[2 * i];
+			roots_delta[2 * i + 1] = mag * Math.sin(2 * Math.PI * i / num_roots) - current_roots[2 * i + 1];	
 		}
 		
 		if (no_animation)
@@ -496,6 +513,48 @@
 		window.requestAnimationFrame(draw_newtons_method);
 		
 		wilson.draggables.recalculate_locations();
+	}
+	
+	
+	
+	function set_color()
+	{
+		if (last_active_root < 2)
+		{
+			return;
+		}
+		
+		let index = last_active_root - 2;
+			
+		let result = hex_to_rgb(root_color_input_element.value);
+		
+		let r = result.r / 255;
+		let g = result.g / 255;
+		let b = result.b / 255;
+		
+		result.r = colors[3 * index];
+		result.g = colors[3 * index + 1];
+		result.b = colors[3 * index + 2];
+		
+		anime({
+			targets: result,
+			r: r,
+			g: g,
+			b: b,
+			easing: "easeInOutQuad",
+			duration: 250,
+			update: () =>
+			{
+				colors[3 * index] = result.r;
+				colors[3 * index + 1] = result.g;
+				colors[3 * index + 2] = result.b;
+				
+				wilson.gl.uniform3fv(wilson.uniforms["colors"], colors);
+				wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], colors);
+				
+				window.requestAnimationFrame(draw_newtons_method);
+			}
+		});
 	}
 	
 	
@@ -646,9 +705,10 @@
 	
 	function on_release_draggable(active_draggable, x, y, event)
 	{
-		root_setter_element.style.opacity = 0;
+		Page.Animate.change_opacity(root_setter_element, 0, Site.opacity_animation_time);
+		Page.Animate.change_opacity(color_setter_element, 0, Site.opacity_animation_time)
 		
-		setTimeout(() =>
+		.then(() =>
 		{
 			last_active_root = active_draggable;
 			
@@ -666,12 +726,17 @@
 			
 			else
 			{
-				root_a_input_element.value = Math.round(current_roots[2 * (last_active_root - 2)] * 1000) / 1000;
-				root_b_input_element.value = Math.round(current_roots[2 * (last_active_root - 2) + 1] * 1000) / 1000;
+				let index = last_active_root - 2;
+				
+				root_a_input_element.value = Math.round(current_roots[2 * index] * 1000) / 1000;
+				root_b_input_element.value = Math.round(current_roots[2 * index + 1] * 1000) / 1000;
+				
+				root_color_input_element.value = rgb_to_hex(colors[3 * index] * 255, colors[3 * index + 1] * 255, colors[3 * index + 2] * 255);
 			}
 			
-			root_setter_element.style.opacity = 1;
-		}, Site.opacity_animation_time);
+			Page.Animate.change_opacity(root_setter_element, 1, Site.opacity_animation_time);
+			Page.Animate.change_opacity(color_setter_element, 1, Site.opacity_animation_time);
+		});
 	}
 
 
@@ -852,4 +917,28 @@
 
 	window.addEventListener("resize", change_aspect_ratio);
 	Page.temporary_handlers["resize"].push(change_aspect_ratio);
+	
+	
+	
+	function hex_to_rgb(hex)
+	{
+		let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+		
+		return result ? {
+			r: parseInt(result[1], 16),
+			g: parseInt(result[2], 16),
+			b: parseInt(result[3], 16)
+		} : null;
+	}
+	
+	function component_to_hex(c)
+	{
+		let hex = c.toString(16);
+		return hex.length == 1 ? "0" + hex : hex;
+	}
+
+	function rgb_to_hex(r, g, b)
+	{
+		return "#" + component_to_hex(r) + component_to_hex(g) + component_to_hex(b);
+	}
 }()
