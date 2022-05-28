@@ -278,6 +278,13 @@ Page.Layout =
 		
 		equalize: function()
 		{
+			if (Site.Settings.url_vars["condensed_applets"] === 1)
+			{
+				return;
+			}
+			
+			
+			
 			let left_column = null;
 			let right_column = null;
 			

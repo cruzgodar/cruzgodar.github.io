@@ -39,7 +39,7 @@
 		
 		let element = document.createElement("textarea");
 		
-		element.style.display = "hidden";
+		//element.style.display = "hidden";
 		Page.element.appendChild(element);
 		
 		element.textContent = bundle;
@@ -50,7 +50,7 @@
 		{
 			element.select();
 			document.execCommand("copy");
-			element.remove();
+			//element.remove();
 			
 			console.log("Copied JS to clipboard!");
 		}, 100);
@@ -89,7 +89,7 @@
 		
 		let element = document.createElement("textarea");
 		
-		element.style.display = "hidden";
+		//element.style.display = "hidden";
 		Page.element.appendChild(element);
 		
 		element.textContent = bundle;
@@ -100,7 +100,7 @@
 		{
 			element.select();
 			document.execCommand("copy");
-			element.remove();
+			//element.remove();
 			
 			console.log("Copied CSS to clipboard!");
 		}, 100);

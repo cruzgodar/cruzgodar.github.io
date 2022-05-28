@@ -6,6 +6,15 @@ iframe
 	height: calc(75vmin - 4px + 46px);
 	
 	border: none;
+	
+	background-color: rgb(255, 255, 255);
+}
+
+iframe.noclip
+{
+	margin-top: 0;
+	
+	height: calc(75vmin - 4px);
 }
 
 .iframe-clipper

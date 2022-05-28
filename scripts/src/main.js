@@ -108,7 +108,8 @@ Site.page_lists =
 		"/teaching/uo/251/notes/11-optimization/11-optimization.html",
 		"/teaching/uo/251/notes/12-l-hopitals-rule/12-l-hopitals-rule.html",
 		"/teaching/uo/251/notes/13-related-rates/13-related-rates.html",
-		"/teaching/uo/251/notes/14-applied-optimization/14-applied-optimization.html"
+		"/teaching/uo/251/notes/14-applied-optimization/14-applied-optimization.html",
+		"/teaching/uo/251/notes/15-newtons-method/15-newtons-method.html"
 	],
 	
 	"/teaching/uo/252/notes":

@@ -20,7 +20,8 @@ Site.Settings =
 		"contrast": ["Contrast: normal", "Contrast: high"],
 		"text_size": ["Text size: normal", "Text size: large"],
 		"font": ["Font: always sans serif", "Font: serif on writing"],
-		"content_animation": ["Content animation: enabled", "Content animation: disabled"]
+		"content_animation": ["Content animation: enabled", "Content animation: disabled"],
+		"condensed_applets": ["Applets: normal", "Applets: condensed"]
 	},
 	
 	dark_theme_background_color: "rgb(24, 24, 24)",
@@ -64,6 +65,7 @@ Site.Settings =
 			"text_size": this.get_url_var("text_size"),
 			"font": this.get_url_var("font"),
 			"content_animation": this.get_url_var("content_animation"),
+			"condensed_applets": this.get_url_var("condensed_applets")
 		};
 		
 		
@@ -111,7 +113,7 @@ Site.Settings =
 		
 		for (let key in this.url_vars)
 		{
-			//These are double equals, and that's important, but I can't quite see why. Obviously the this.url_vars are stored as strings and I just didn't realize that when I first coded this, but this bit of code has refused to cooperate with any modifications I make. Who knows.
+			//These are double equals, and that's important, but I can't quite see why. Obviously the url vars are stored as strings and I just didn't realize that when I first coded this, but this bit of code has refused to cooperate with any modifications I make. Who knows.
 			if (this.url_vars[key] == null)
 			{
 				this.url_vars[key] = 0;
@@ -119,8 +121,16 @@ Site.Settings =
 			
 			else if (this.url_vars[key] == 1)
 			{
-				this.url_vars[key] = 0;
-				this.toggle(key, true);
+				if (key === "condensed_applets")
+				{
+					this.url_vars[key] = 1;
+				}
+				
+				else
+				{
+					this.url_vars[key] = 0;
+					this.toggle(key, true);
+				}	
 			}
 		}
 		
@@ -356,6 +366,11 @@ Site.Settings =
 		else if (setting === "content_animation")
 		{
 			this.toggle_content_animation(no_settings_text);
+		}
+		
+		else if (setting === "condensed_applets")
+		{
+			
 		}
 		
 		else
@@ -803,7 +818,7 @@ Site.Settings =
 					{
 						try {Page.Footer.Floating.show_settings_text("Text size: large");}
 					 	catch(ex) {}
-					 }
+					}
 				}, Site.opacity_animation_time);
 			}, Site.opacity_animation_time);
 				
@@ -869,7 +884,7 @@ Site.Settings =
 				{
 					try {Page.Footer.Floating.show_settings_text("Font: serif on writing");}
 				 	catch(ex) {}
-				 }
+				}
 			}, Site.opacity_animation_time);
 			
 			this.url_vars["font"] = 1;
@@ -1023,6 +1038,42 @@ Site.Settings =
 	remove_animation: function()
 	{
 		document.body.querySelectorAll("[data-aos]").forEach(element => element.removeAttribute("data-aos"));
+	},
+	
+	
+	
+	condense_applet: function()
+	{
+		Site.add_style(`
+			p:not(.text-box-subtext, .checkbox-subtext, .radio-button-subtext, .slider-subtext), h1, h2, header, footer, br
+			{
+				display: none;
+			}
+			
+			section:first-of-type
+			{
+				margin-top: 0 !important;
+				margin-bottom: 0 !important;
+			}
+			
+			body
+			{
+				margin-top: -5vh;
+			}
+
+			#canvas-landscape
+			{
+				flex-direction: column !important;
+			}
+
+			#canvas-landscape-left, #canvas-landscape-middle, #canvas-landscape-right
+			{
+				width: 80% !important;
+			}
+		`);
+		
+		try {Page.element.querySelector("#download-button").parentNode.parentNode.style.display = "none"}
+		catch(ex) {}
 	},
 
 

@@ -355,7 +355,7 @@ Page.Components =
 		return `
 			<div class="text-box-container" data-aos="fade-up">
 				<input id="${id}-input" class="text-box" type="text" value="${value}" tabindex="1">
-				<p class="body-text">${text}</p>
+				<p class="body-text text-box-subtext">${text}</p>
 			</div>
 		`;
 	},
@@ -408,7 +408,7 @@ Page.Components =
 				</div>
 				
 				<div style="margin-left: 10px" data-aos="fade-up">
-					<p class="body-text">${text}</p>
+					<p class="body-text checkbox-subtext">${text}</p>
 				</div>
 			</div>
 		`;
@@ -436,7 +436,7 @@ Page.Components =
 				</div>
 				
 				<div style="margin-left: 10px" data-aos="fade-up">
-					<p class="body-text">${text}</p>
+					<p class="body-text radio-button-subtext">${text}</p>
 				</div>
 			</div>
 		`;
@@ -456,7 +456,7 @@ Page.Components =
 			<div class="slider-container" data-aos="fade-up">
 				<input id="${id}-slider" type="range" min="0" max="10000" value="${value}" tabindex="1">
 				<label for="${id}-slider">
-					<p class="body-text">${text}: <span id="${id}-slider-value">0</span></p>
+					<p class="body-text slider-subtext">${text}: <span id="${id}-slider-value">0</span></p>
 				</label>
 			</div>
 		`;
@@ -506,17 +506,26 @@ Page.Components =
 	
 	
 	
-	get_iframe: function(src)
+	get_iframe: function(args)
 	{
+		let class_add = "";
+		let src = args[0];
+		
+		if (src === "u")
+		{
+			class_add = `class="noclip"`;
+			src = args[1];
+		}
+		
 		return `
 			<div class="iframe-container" data-aos="fade-up">	
 				<div class="iframe-outer-border">
 					<div class="iframe-clipper">
-						<iframe data-src="${src}" width="500" height="500"></iframe>
+						<iframe ${class_add} data-src="${src}" width="500" height="500"></iframe>
 					</div>
 				</div>
 			</div>
-		`;
+		`;	
 	},
 	
 	

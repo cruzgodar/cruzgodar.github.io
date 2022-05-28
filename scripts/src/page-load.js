@@ -127,6 +127,11 @@ Page.load = async function()
 		Site.Settings.remove_animation();
 	}
 	
+	if (Site.Settings.url_vars["condensed_applets"] === 1 && Site.sitemap[Page.url].parent === "/applets/applets.html")
+	{
+		Site.Settings.condense_applet();
+	}
+	
 	if ("math_page" in this.settings && this.settings["math_page"])
 	{
 		this.Load.Math.typeset();
