@@ -49,9 +49,60 @@
 	
 	Now this number is almost certainly not a root, but it&#x2019;s probably a better guess than $x = a$. That means we can make this $x$-value our new $a$ and try again, and over time, we will likely get close to an actual root.
 	
-	Let&#x2019;s try this in an actual example: computing the square root of two. This is probably the first time you&#x2019;ve ever seen how this can be done &mdash; it&#x2019;s a really neat process.
+	This process is called <dfn>Newton&#x2019;s method</dfn>, named after the same Newton that discovered most of the rest of calculus. Let&#x2019;s try it in an actual example: computing the square root of two. This is probably the first time you&#x2019;ve ever seen how this can be done &mdash; it&#x2019;s a really neat process.
 	
 !end-text-block
+
+
+
+!begin-example
+	
+	Newton&#x2019;s Method
+	
+	Approximate $\sqrt{2}$ using three iterations of Newton&#x2019;s method.
+	
+	First of all, we need to find a function that has $\sqrt{2}$ as a root. Any one will do, but the simplest is definitely $f(x) = x^2 - 2$. We also need an $x$-value to start with. To keep notation reasonable, we index these with subscripts starting at zero. Let&#x2019;s start with $x_0 = 1$. To use Newton&#x2019;s method, we need to know $f(1)$ and $f'(1)$, which are $-1$ and $2$, respetively. Therefore, we have
+	
+	$$
+		\begin{align*}
+			x_1 &= x_0 - \frac{f(x_0)}{f'(x_0)}\\
+			&= 1 - \frac{-1}{2}\\
+			&= \frac{3}{2}\\
+			&= 1.5.
+		\end{align*}	
+	$$
+	
+	That&#x2019;s definitely closer than $x = 1$! Now we just repeat with this new $x$-value.
+	
+	$$
+		\begin{align*}
+			x_2 &= x_1 - \frac{f(x_1)}{f'(x_1)}\\
+			&= \frac{3}{2} - \frac{1/4}{3}\\
+			&= \frac{17}{12}\\
+			&\approx 1.41667.
+		\end{align*}	
+	$$
+	
+	And now for our third and last iteration.
+	
+	$$
+		\begin{align*}
+			x_3 &= x_2 - \frac{f(x_2)}{f'(x_2)}\\
+			&= \frac{17}{12} - \frac{1/144}{17/6}\\
+			&= \frac{577}{408}
+			&\approx 1.41423.
+		\end{align*}	
+	$$
+	
+	After only three iterations, this is strikingly close to the actual value of $\sqrt{2} = 1.41422...$.
+	
+	Here&#x2019;s what this process actually looks like &mdash; drag the blue point to change the initial guess.
+	
+	!iframe https://www.desmos.com/calculator/sq6o538wxs
+	
+	One important thing to notice: the closer the starting guess is to an actual root, the better the approximation is, and the farther away, the worse. Especially troublesome is when the starting guess $x_0$ is at a nearly equal distance from two roots &mdash; here, that means near zero. This will come up a little bit later.
+	
+!end-example
 
 
 
