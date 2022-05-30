@@ -36,6 +36,10 @@
 
 
 
+!iframe u https://cruzgodar.com/applets/newtons-method/newtons-method.html&condensed_applets=1
+
+
+
 !nav-buttons
 
 
@@ -47,7 +51,15 @@
 <script>
 	if (typeof Page === "undefined")
 	{
-		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
 	}
 	
 	

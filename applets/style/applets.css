@@ -4,7 +4,7 @@
 	width: 13.75vw !important;
 }
 
-@media (max-aspect-ratio: 9/16), (max-width: 700px)
+@media (max-width: 700px)
 {
 	.one-image-link
 	{
@@ -12,7 +12,7 @@
 	}
 }
 
-@media (min-aspect-ratio: 16/9), (min-width: 1400px)
+@media (min-width: 1400px)
 {
 	.one-image-link
 	{

@@ -20,8 +20,6 @@
 	
 	<a href="/debug/collector/collector.html">JS and CSS collector</a>
 	
-	<a href="/applets/plane-partitions/plane-partitions.html">Plane Partitions Applet</a>
-	
 !end-text-block
 
 
@@ -33,7 +31,15 @@
 <script>
 	if (typeof Page === "undefined")
 	{
-		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+		}
 	}
 	
 	
