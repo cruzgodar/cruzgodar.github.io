@@ -57,7 +57,7 @@
 
 !begin-example
 	
-	Newton&#x2019;s Method
+	Newton&#x2019;s method
 	
 	Approximate $\sqrt{2}$ using three iterations of Newton&#x2019;s method.
 	
@@ -100,13 +100,50 @@
 	
 	!iframe https://www.desmos.com/calculator/sq6o538wxs
 	
-	One important thing to notice: the closer the starting guess is to an actual root, the better the approximation is, and the farther away, the worse. Especially troublesome is when the starting guess $x_0$ is at a nearly equal distance from two roots &mdash; here, that means near zero. This will come up a little bit later.
+	One important thing to notice: the closer the starting guess is to an actual root, the better the approximation is, and the farther away, the worse. Especially troublesome is when the starting guess $x_0$ is at a nearly equal distance from two roots &mdash; here, that means near zero. This will come up a little bit later, and it&#x2019;s an important caveat of Newton&#x2019;s method: it doesn&#x2019;t always work or work well (i.e. converge to a root quickly).
 	
 !end-example
 
+!begin-exercise
+	
+	Newton&#x2019;s method
+	
+	Approximate a solution to $\cos(x) = x$ using four iterations of Newton&#x2019;s method.
+	
+!end-exercise
 
 
-!iframe u https://cruzgodar.com/applets/newtons-method/newtons-method.html?condensed_applets=1
+
+!section
+
+!text s Newton Fractals
+
+<br>
+
+
+
+!begin-text-block
+	
+	I&#x2019;d be remiss if I didn&#x2019;t mention one of the most beautiful pictures math can produce. Take a function, say $f(x) = x^3 - 1$, and write down all of its roots. For this particular function $f(x)$, the roots are $x = 1$ (of course), along with $x = -\frac{1}{2} \pm \sqrt{3}{2}i$. Now we&#x2019;re going to draw a number line and color the points on it based on what they do as an initial guess to Newton&#x2019;s method. For example, $x_0 = 1$ does extremely well as a guess, since it&#x2019;s already at a root, while $x_0 = 0$ does terribly: since $f(0) = 0$, we have
+	
+	$$
+		\begin{align*}
+			x_1 &= x_0 - \frac{f(0)}{f'(0)}
+			&= 0 - \frac{1}{0},
+		\end{align*}
+	$$
+	
+	so the process fails to converge to anything at all. We&#x2019;ll give numbers a brightness based on how well they do as a starting guess &mdash; bright means a point converges quickly, like $x = 1$, and dark means it converges slowly or not at all.
+	
+	<div class="center-content"><img class="notes-image" src="/teaching/uo/251/notes/15-newtons-method/graphics/newtons-method-line.png"></img></div>
+	
+	 This is probably not what you&#x2019;d expect. This line is centered at zero, so initial guesses of positive numbers all converge to $x = 1$, while negative numbers sometimes work and sometimes don&#x2019;t. To actually understand what&#x2019;s going on here, we need to look at the bigger picture: since some of the roots of $x^3 - 1$ are complex, we&#x2019;ll have to consider complex initial guesses too. Without going into too much detail, Newton&#x2019;s method works just as well for complex initial guesses as real ones. Since the complex numbers live on a plane instead of a line, we get an actual image of where the gueses go. We&#x2019;ll still use brightness to indicate how fast the guess converges, but now we&#x2019;ll also use color to indicate which of the three roots of $x^3 - 1$ it actually converges to: here, that&#x2019;s red, orange, and yellow.
+	 
+	 !iframe u https://cruzgodar.com/applets/newtons-method/newtons-method.html?condensed_applets=1
+	 
+	 What results is a truly incredible
+	
+!end-text-block
 
 
 
