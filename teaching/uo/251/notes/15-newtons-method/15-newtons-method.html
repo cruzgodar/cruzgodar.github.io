@@ -30,13 +30,32 @@
 
 !begin-text-block
 	
+	It&#x2019;s the last section! We&#x2019;re going to talk about yet another application of derivatives: finding roots of functions.
 	
+	Let $f(x)$ be a differentiable function. The <dfn>roots</dfn> of $f$ are the $x$-values that make $f(x) = 0$. For example, the roots of $f(x) = x^2 - 2x - 3$ are $x = -3$ and $x = 1$, and the roots of $f(x) = x^2 + 1$ are $x = \pm i$. We haven&#x2019;t talked about complex numbers in this class, and they won&#x2019;t be required for any problems you&#x2019;ll be doing, but it will be nice if you&#x2019;ve seen them before for some of the topics we talk about at the end of the section.
+	
+	Okay, so how do we find roots? This is almost as complicated as asking how we solve equations, since we can move everything to one side of the equals sign and wind up with a complicated expression equaling zero &mdash; the only difference here is that that expression is differentiable.
+	
+	Here&#x2019;s the general idea: as with everything in calculus, differentiable functions are pretty well approximated by lines. When we approximated functions back in section 6, we said that near $x = a$, $f(x) \approx f(a) + f'(a)(x - a)$ &mdash; just the equation of the tangent line. That approximation usually gets pretty bad pretty quickly, but it will work for our purposes. We would like to know when $f(x) = 0$, so starting from $x = a$, we solve $0 = f(a) + f'(a)(x - a)$. We have
+	
+	$$
+		\begin{align*}
+			f(a) + f'(a)(x - a) &= 0\\
+			f'(a)(x - a) &= -f(a)\\
+			x - a &= -\frac{f(a)}{f'(a)}\\
+			x &= a -\frac{f(a)}{f'(a)}.
+		\end{align*}
+	$$
+	
+	Now this number is almost certainly not a root, but it&#x2019;s probably a better guess than $x = a$. That means we can make this $x$-value our new $a$ and try again, and over time, we will likely get close to an actual root.
+	
+	Let&#x2019;s try this in an actual example: computing the square root of two. This is probably the first time you&#x2019;ve ever seen how this can be done &mdash; it&#x2019;s a really neat process.
 	
 !end-text-block
 
 
 
-!iframe u https://cruzgodar.com/applets/newtons-method/newtons-method.html&condensed_applets=1
+!iframe u https://cruzgodar.com/applets/newtons-method/newtons-method.html?condensed_applets=1
 
 
 
