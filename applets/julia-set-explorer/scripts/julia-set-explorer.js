@@ -589,7 +589,96 @@
 		resolution = parseInt(resolution_input_element.value || 1000);
 		
 		wilson.change_canvas_size(resolution, resolution);
+		
+		window.requestAnimationFrame(draw_julia_set);
 	});
+	
+	
+	
+	let force_floats_checkbox_element = Page.element.querySelector("#force-floats-checkbox");
+	
+	force_floats_checkbox_element.addEventListener("input", () =>
+	{
+		if (force_floats_checkbox_element.checked)
+		{
+			try {force_doubles_checkbox_element.checked = false;}
+			catch(ex) {}
+			
+			force_doubles = false;
+		}
+		
+		if (force_floats_checkbox_element.checked && double_precision)
+		{
+			double_precision = false;
+			
+			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 0);
+			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 0);
+			
+			wilson.canvas.style.borderColor = "rgb(127, 127, 127)";
+			
+			window.requestAnimationFrame(draw_julia_set);
+		}
+		
+		else if (!force_floats_checkbox_element.checked && !double_precision && zoom_level < double_precision_zoom_threshhold)
+		{
+			double_precision = true;
+			
+			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 1);
+			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 1);
+			
+			wilson.canvas.style.borderColor = "rgb(127, 0, 0)";
+			
+			window.requestAnimationFrame(draw_julia_set);
+		}
+	});
+	
+	
+	
+	let force_doubles = false;
+	
+	let force_doubles_checkbox_element = Page.element.querySelector("#force-doubles-checkbox");
+	
+	if (DEBUG)
+	{
+		force_doubles_checkbox_element.addEventListener("input", () =>
+		{
+			if (force_doubles_checkbox_element.checked)
+			{
+				force_floats_checkbox_element.checked = false;
+			}
+			
+			if (force_doubles_checkbox_element.checked && !double_precision)
+			{
+				double_precision = true;
+				
+				wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 1);
+				wilson.gl.uniform1i(wilson.uniforms["double_precision"], 1);
+				
+				wilson.canvas.style.borderColor = "rgb(127, 0, 0)";
+				
+				window.requestAnimationFrame(draw_julia_set);
+			}
+			
+			else if (!force_doubles_checkbox_element.checked && double_precision && zoom_level > double_precision_zoom_threshhold)
+			{
+				double_precision = false;
+				
+				wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 0);
+				wilson.gl.uniform1i(wilson.uniforms["double_precision"], 0);
+				
+				wilson.canvas.style.borderColor = "rgb(127, 127, 127)";
+				
+				window.requestAnimationFrame(draw_julia_set);
+			}
+			
+			force_doubles = force_doubles_checkbox_element.checked;
+		});
+	}	
+	
+	else
+	{
+		Page.element.querySelectorAll(".checkbox-row")[1].remove();
+	}
 	
 	
 	
@@ -868,26 +957,22 @@
 		
 		
 		
-		if (!double_precision && zoom_level < double_precision_zoom_threshhold)
+		if (!double_precision && zoom_level < double_precision_zoom_threshhold && !force_floats_checkbox_element.checked)
 		{
 			double_precision = true;
 			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 1);
 			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 1);
 			
 			wilson.canvas.style.borderColor = "rgb(127, 0, 0)";
-			
-			console.log("Using double precision");
 		}
 		
-		else if (double_precision && zoom_level > double_precision_zoom_threshhold)
+		else if (double_precision && zoom_level > double_precision_zoom_threshhold && !force_doubles)
 		{
 			double_precision = false;
 			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 0);
 			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 0);
 			
 			wilson.canvas.style.borderColor = "rgb(127, 127, 127)";
-			
-			console.log("Using single precision");
 		}
 		
 		window.requestAnimationFrame(draw_julia_set);
