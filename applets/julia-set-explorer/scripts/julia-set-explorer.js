@@ -13,8 +13,8 @@
 		
 		uniform float aspect_ratio;
 		
-		uniform float world_center_x;
-		uniform float world_center_y;
+		uniform vec2 world_center_x;
+		uniform vec2 world_center_y;
 		uniform float world_size;
 		
 		uniform float a;
@@ -24,151 +24,182 @@
 		
 		
 		
+		float times_frc(float a, float b)
+		{
+			return mix(0.0, a * b, b != 0.0 ? 1.0 : 0.0);
+		}
+
+		float plus_frc(float a, float b)
+		{
+			return mix(a, a + b, b != 0.0 ? 1.0 : 0.0);
+		}
+
+		float minus_frc(float a, float b)
+		{
+			return mix(a, a - b, b != 0.0 ? 1.0 : 0.0);
+		}
+
+		// Double emulation based on GLSL Mandelbrot Shader by Henry Thasler (www.thasler.org/blog)
+		// Emulation based on Fortran-90 double-single package. See http://crd.lbl.gov/~dhbailey/mpdist/
+		// Add: res = ds_add(a, b) => res = a + b
+		vec2 add (vec2 dsa, vec2 dsb)
+		{
+			vec2 dsc;
+			float t1, t2, e;
+			t1 = plus_frc(dsa.x, dsb.x);
+			e = minus_frc(t1, dsa.x);
+			t2 = plus_frc(plus_frc(plus_frc(minus_frc(dsb.x, e), minus_frc(dsa.x, minus_frc(t1, e))), dsa.y), dsb.y);
+			dsc.x = plus_frc(t1, t2);
+			dsc.y = minus_frc(t2, minus_frc(dsc.x, t1));
+			return dsc;
+		}
+
+		// Subtract: res = ds_sub(a, b) => res = a - b
+		vec2 sub (vec2 dsa, vec2 dsb)
+		{
+			vec2 dsc;
+			float e, t1, t2;
+			t1 = minus_frc(dsa.x, dsb.x);
+			e = minus_frc(t1, dsa.x);
+			t2 = minus_frc(plus_frc(plus_frc(minus_frc(minus_frc(0.0, dsb.x), e), minus_frc(dsa.x, minus_frc(t1, e))), dsa.y), dsb.y);
+			dsc.x = plus_frc(t1, t2);
+			dsc.y = minus_frc(t2, minus_frc(dsc.x, t1));
+			return dsc;
+		}
+
+		// Compare: res = -1 if a < b // = 0 if a == b // = 1 if a > b
+		float cmp(vec2 dsa, vec2 dsb)
+		{
+			if (dsa.x < dsb.x)
+			{
+				return -1.;
+			}
+			
+			if (dsa.x > dsb.x)
+			{
+				return 1.;
+			}
+			
+			if (dsa.y < dsb.y)
+			{
+				return -1.;
+			}
+			
+			if (dsa.y > dsb.y)
+			{
+				return 1.;
+			}
+			
+			return 0.;
+		}
+
+		// Multiply: res = ds_mul(a, b) => res = a * b
+
+		vec2 mul (vec2 dsa, vec2 dsb)
+		{
+			vec2 dsc;
+			float c11, c21, c2, e, t1, t2;
+			float a1, a2, b1, b2, cona, conb, split = 8193.;
+			cona = times_frc(dsa.x, split);
+			conb = times_frc(dsb.x, split);
+			a1 = minus_frc(cona, minus_frc(cona, dsa.x));
+			b1 = minus_frc(conb, minus_frc(conb, dsb.x));
+			a2 = minus_frc(dsa.x, a1);
+			b2 = minus_frc(dsb.x, b1);
+			c11 = times_frc(dsa.x, dsb.x);
+			c21 = plus_frc(times_frc(a2, b2), plus_frc(times_frc(a2, b1), plus_frc(times_frc(a1, b2), minus_frc(times_frc(a1, b1), c11))));
+			c2 = plus_frc(times_frc(dsa.x, dsb.y), times_frc(dsa.y, dsb.x));
+			t1 = plus_frc(c11, c2);
+			e = minus_frc(t1, c11);
+			t2 = plus_frc(plus_frc(times_frc(dsa.y, dsb.y), plus_frc(minus_frc(c2, e), minus_frc(c11, minus_frc(t1, e)))), c21);
+			dsc.x = plus_frc(t1, t2);
+			dsc.y = minus_frc(t2, minus_frc(dsc.x, t1));
+			return dsc;
+		}
+
+		// create double-single number from float
+		vec2 set(float a)
+		{
+			return vec2(a, 0.0);
+		}
+
+		float rand(vec2 co)
+		{
+			// implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
+			return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+		}
+
+		vec2 complexMul(vec2 a, vec2 b)
+		{
+			return vec2(a.x*b.x - a.y*b.y,a.x*b.y + a.y * b.x);
+		}
+
+		// double complex multiplication
+		vec4 dcMul(vec4 a, vec4 b)
+		{
+			return vec4(sub(mul(a.xy,b.xy),mul(a.zw,b.zw)),add(mul(a.xy,b.zw),mul(a.zw,b.xy)));
+		}
+
+		vec4 dcAdd(vec4 a, vec4 b)
+		{
+			return vec4(add(a.xy,b.xy),add(a.zw,b.zw));
+		}
+
+		// Length of double complex
+		vec2 dcLength(vec4 a)
+		{
+			return add(mul(a.xy,a.xy),mul(a.zw,a.zw));
+		}
+
+		vec4 dcSet(vec2 a)
+		{
+			return vec4(a.x,0.,a.y,0.);
+		}
+
+		vec4 dcSet(vec2 a, vec2 ad)
+		{
+			return vec4(a.x, ad.x,a.y,ad.y);
+		}
+
+		// Multiply double-complex with double
+		vec4 dcMul(vec4 a, vec2 b)
+		{
+			return vec4(mul(a.xy,b),mul(a.wz,b));
+		}
+		
+		
+		
 		void main(void)
 		{
-			vec2 z;
+			vec4 z = dcAdd(dcMul(dcSet(uv), vec2(world_size, 0.0)), vec4(world_center_x, world_center_y));
 			
-			if (aspect_ratio >= 1.0)
-			{
-				z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
-			}
-			
-			else
-			{
-				z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
-			}
-			
-			vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+			vec3 color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
 			float brightness = exp(-length(z));
 			
 			
 			
-			if (julia_mode == 0)
+			vec4 c = z;
+			
+			for (int iteration = 0; iteration < 3001; iteration++)
 			{
-				vec2 c = z;
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
+				if (iteration == num_iterations)
 				{
-					if (iteration == num_iterations)
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-						return;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-					
-					brightness += exp(-length(z));
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					return;
 				}
 				
+				if (length(z) >= 4.0)
+				{
+					break;
+				}
 				
-				gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+				z = dcAdd(dcMul(z, z), c);
+				
+				brightness += exp(-length(z));
 			}
 			
 			
-			
-			else if (julia_mode == 1)
-			{
-				vec2 c = vec2(a, b);
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
-				{
-					if (iteration == num_iterations)
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-						return;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-					
-					brightness += exp(-length(z));
-				}
-				
-				
-				gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
-			}
-			
-			
-			
-			else
-			{
-				vec2 c = z;
-				
-				bool broken = false;
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
-				{
-					if (iteration == num_iterations)
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-						
-						broken = true;
-						
-						break;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-					
-					brightness += exp(-length(z));
-				}
-				
-				
-				
-				if (!broken)
-				{
-					gl_FragColor = vec4(.5 * brightness / brightness_scale * color, 1.0);
-				}
-				
-				
-				
-				z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
-				color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-				brightness = exp(-length(z));
-				
-				broken = false;
-				
-				c = vec2(a, b);
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
-				{
-					if (iteration == num_iterations)
-					{
-						gl_FragColor.xyz /= 4.0;
-						
-						broken = true;
-						
-						break;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-					
-					brightness += exp(-length(z));
-				}
-				
-				if (!broken)
-				{
-					gl_FragColor += vec4(brightness / brightness_scale * color, 0.0);
-				}
-			}
+			gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
 		}
 	`;
 
@@ -584,9 +615,14 @@
 		
 		
 		
+		let cx = double_to_df(wilson.world_center_x);
+		let cy = double_to_df(wilson.world_center_y);
+		
+		
+		
 		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["julia_mode"], julia_mode);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_x"], wilson.world_center_x);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_y"], wilson.world_center_y);
+		wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms["world_center_x"], cx);
+		wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms["world_center_y"], cy);
 		
 		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
 		
@@ -629,8 +665,8 @@
 		
 		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
 		
-		wilson.gl.uniform1f(wilson.uniforms["world_center_x"], wilson.world_center_x);
-		wilson.gl.uniform1f(wilson.uniforms["world_center_y"], wilson.world_center_y);
+		wilson.gl.uniform2fv(wilson.uniforms["world_center_x"], cx);
+		wilson.gl.uniform2fv(wilson.uniforms["world_center_y"], cy);
 		
 		wilson.gl.uniform1f(wilson.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
 		
@@ -736,4 +772,21 @@
 
 	window.addEventListener("resize", change_aspect_ratio);
 	Page.temporary_handlers["resize"].push(change_aspect_ratio);
+	
+	
+	
+	function double_to_df(d)
+	{
+		let df = new Float32Array(2);
+		const split = (1 << 29) + 1;
+		
+		let a = d * split;
+		let hi = a - (a - d);
+		let lo = d - hi;
+		
+		df[0] = hi;
+		df[1] = lo;
+		
+		return [df[0], df[1]];
+	}	
 }()
