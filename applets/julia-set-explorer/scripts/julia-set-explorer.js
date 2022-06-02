@@ -10,6 +10,7 @@
 		varying vec2 uv;
 		
 		uniform int julia_mode;
+		uniform int double_precision;
 		
 		uniform float aspect_ratio;
 		
@@ -171,35 +172,297 @@
 		
 		void main(void)
 		{
-			vec4 z = dcAdd(dcMul(dcSet(uv), vec2(world_size, 0.0)), vec4(world_center_x, world_center_y));
-			
-			vec3 color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-			float brightness = exp(-length(z));
-			
-			
-			
-			vec4 c = z;
-			
-			for (int iteration = 0; iteration < 3001; iteration++)
+			if (double_precision == 0)
 			{
-				if (iteration == num_iterations)
+				vec2 z;
+				
+				if (aspect_ratio >= 1.0)
 				{
-					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-					return;
+					z = vec2(uv.x * aspect_ratio * world_size + world_center_x.x, uv.y * world_size + world_center_y.x);
 				}
 				
-				if (length(z) >= 4.0)
+				else
 				{
-					break;
+					z = vec2(uv.x * world_size + world_center_x.x, uv.y / aspect_ratio * world_size + world_center_y.x);
 				}
 				
-				z = dcAdd(dcMul(z, z), c);
+				vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				float brightness = exp(-length(z));
 				
-				brightness += exp(-length(z));
+				
+				
+				if (julia_mode == 0)
+				{
+					vec2 c = z;
+					
+					for (int iteration = 0; iteration < 3001; iteration++)
+					{
+						if (iteration == num_iterations)
+						{
+							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+							return;
+						}
+						
+						if (length(z) >= 4.0)
+						{
+							break;
+						}
+						
+						z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+						
+						brightness += exp(-length(z));
+					}
+					
+					
+					gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+				}
+				
+				
+				
+				else if (julia_mode == 1)
+				{
+					vec2 c = vec2(a, b);
+					
+					for (int iteration = 0; iteration < 3001; iteration++)
+					{
+						if (iteration == num_iterations)
+						{
+							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+							return;
+						}
+						
+						if (length(z) >= 4.0)
+						{
+							break;
+						}
+						
+						z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+						
+						brightness += exp(-length(z));
+					}
+					
+					
+					gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+				}
+				
+				
+				
+				else
+				{
+					vec2 c = z;
+					
+					bool broken = false;
+					
+					for (int iteration = 0; iteration < 3001; iteration++)
+					{
+						if (iteration == num_iterations)
+						{
+							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+							
+							broken = true;
+							
+							break;
+						}
+						
+						if (length(z) >= 4.0)
+						{
+							break;
+						}
+						
+						z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+						
+						brightness += exp(-length(z));
+					}
+					
+					
+					
+					if (!broken)
+					{
+						gl_FragColor = vec4(.5 * brightness / brightness_scale * color, 1.0);
+					}
+					
+					
+					
+					z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+					color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+					brightness = exp(-length(z));
+					
+					broken = false;
+					
+					c = vec2(a, b);
+					
+					for (int iteration = 0; iteration < 3001; iteration++)
+					{
+						if (iteration == num_iterations)
+						{
+							gl_FragColor.xyz /= 4.0;
+							
+							broken = true;
+							
+							break;
+						}
+						
+						if (length(z) >= 4.0)
+						{
+							break;
+						}
+						
+						z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+						
+						brightness += exp(-length(z));
+					}
+					
+					if (!broken)
+					{
+						gl_FragColor += vec4(brightness / brightness_scale * color, 0.0);
+					}
+				}
 			}
 			
 			
-			gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+			
+			else
+			{
+				vec4 z;
+				
+				if (aspect_ratio >= 1.0)
+				{
+					z = dcAdd(dcMul(vec4(uv.x * aspect_ratio, 0.0, uv.y, 0.0), vec2(world_size, 0.0)), vec4(world_center_x, world_center_y));
+				}
+				
+				else
+				{
+					z = dcAdd(dcMul(vec4(uv.x, 0.0, uv.y / aspect_ratio, 0.0), vec2(world_size, 0.0)), vec4(world_center_x, world_center_y));
+				}
+				
+				vec3 color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				float brightness = exp(-length(z));
+				
+				
+				
+				if (julia_mode == 0)
+				{
+					vec4 c = z;
+					
+					for (int iteration = 0; iteration < 3001; iteration++)
+					{
+						if (iteration == num_iterations)
+						{
+							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+							return;
+						}
+						
+						if (length(z) >= 4.0)
+						{
+							break;
+						}
+						
+						z = dcAdd(dcMul(z, z), c);
+						
+						brightness += exp(-length(z));
+					}
+					
+					
+					gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+				}
+				
+				else if (julia_mode == 1)
+				{
+					vec4 c = vec4(a, 0.0, b, 0.0);
+					
+					for (int iteration = 0; iteration < 3001; iteration++)
+					{
+						if (iteration == num_iterations)
+						{
+							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+							return;
+						}
+						
+						if (length(z) >= 4.0)
+						{
+							break;
+						}
+						
+						z = dcAdd(dcMul(z, z), c);
+						
+						brightness += exp(-length(z));
+					}
+					
+					
+					gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+				}
+				
+				else
+				{
+					vec4 c = z;
+					
+					bool broken = false;
+					
+					for (int iteration = 0; iteration < 3001; iteration++)
+					{
+						if (iteration == num_iterations)
+						{
+							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+							
+							broken = true;
+							
+							break;
+						}
+						
+						if (length(z) >= 4.0)
+						{
+							break;
+						}
+						
+						z = dcAdd(dcMul(z, z), c);
+						
+						brightness += exp(-length(z));
+					}
+					
+					
+					
+					if (!broken)
+					{
+						gl_FragColor = vec4(.5 * brightness / brightness_scale * color, 1.0);
+					}
+					
+					
+					
+					z = c;
+					color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+					brightness = exp(-length(z));
+					
+					broken = false;
+					
+					c = vec4(a, 0.0, b, 0.0);
+					
+					for (int iteration = 0; iteration < 3001; iteration++)
+					{
+						if (iteration == num_iterations)
+						{
+							gl_FragColor.xyz /= 4.0;
+							
+							broken = true;
+							
+							break;
+						}
+						
+						if (length(z) >= 4.0)
+						{
+							break;
+						}
+						
+						z = dcAdd(dcMul(z, z), c);
+						
+						brightness += exp(-length(z));
+					}
+					
+					if (!broken)
+					{
+						gl_FragColor += vec4(brightness / brightness_scale * color, 0.0);
+					}
+				}
+			}	
 		}
 	`;
 
@@ -262,13 +525,17 @@
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
-	wilson.render.init_uniforms(["julia_mode", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "brightness_scale"]);
+	wilson.render.init_uniforms(["julia_mode", "double_precision", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "brightness_scale"]);
+	
+	wilson.gl.uniform1i(wilson.uniforms["double_precision"], 0);
 	
 	
 	
 	let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), options_hidden);
 	
-	wilson_hidden.render.init_uniforms(["julia_mode", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "brightness_scale"]);
+	wilson_hidden.render.init_uniforms(["julia_mode", "double_precision", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "brightness_scale"]);
+	
+	wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 0);
 	
 	
 	
@@ -279,6 +546,10 @@
 	let num_iterations = 100;
 	
 	let zoom_level = 0;
+	let double_precision = false;
+	
+	//Experimentally, the level at which a 2k x 2k canvas can see the grain of single precision rendering.
+	const double_precision_zoom_threshhold = -16;
 	
 	let past_brightness_scales = [];
 	
@@ -594,6 +865,30 @@
 		}
 		
 		num_iterations = (-zoom_level * 30) + 200;
+		
+		
+		
+		if (!double_precision && zoom_level < double_precision_zoom_threshhold)
+		{
+			double_precision = true;
+			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 1);
+			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 1);
+			
+			wilson.canvas.style.borderColor = "rgb(127, 0, 0)";
+			
+			console.log("Using double precision");
+		}
+		
+		else if (double_precision && zoom_level > double_precision_zoom_threshhold)
+		{
+			double_precision = false;
+			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 0);
+			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 0);
+			
+			wilson.canvas.style.borderColor = "rgb(127, 127, 127)";
+			
+			console.log("Using single precision");
+		}
 		
 		window.requestAnimationFrame(draw_julia_set);
 	}
