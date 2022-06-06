@@ -110,7 +110,7 @@
 		
 		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")
 		{
-			Site.load(Page.url);
+			Site.load(Page.url.replace("index.html", ""));
 		}
 		
 		else

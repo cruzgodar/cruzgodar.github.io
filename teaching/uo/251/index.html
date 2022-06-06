@@ -151,6 +151,8 @@
 		
 		exams/final-worksheet/final-worksheet.pdf l Final Exam Worksheet
 		
+		quizzes/7-solutions/quiz-7-solutions.pdf l Quiz 7 Solutions
+		
 	!end-image-links
 </div>
 
@@ -163,7 +165,15 @@
 <script>
 	if (typeof Page === "undefined")
 	{
-		window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
 	}
 	
 	
