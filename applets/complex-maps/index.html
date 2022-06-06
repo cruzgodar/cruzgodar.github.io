@@ -1,0 +1,176 @@
+<head>
+	<title>Complex Maps</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Complex Maps"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/applets/complex-maps/complex-maps.html"/>
+	
+	<meta property="og:description" content="It&#x2019;s not a coincidence that many of the applets I&#x2019;ve made revolve around the complex numbers &mdash; a complete two-dimensional number system is ideal for making pictures. Two of the applets that support custom complex functions are the generalized Julia set and Newton&#x2019;s method ones, but neither of them uses those functions directly &mdash; the first draws the points that stay bounded when iterated by the function, and the second shows convergence to the function&#x2019;s roots. This applet is somewhat simpler &mdash; it just plots the function itself. The color represents the argument of the output (the angle from the positive x-axis), and the saturation and brightness represent the modulus (the distance from the origin). Dark spots are roots of the function, where the modulus is zero, and white ones are singularities, where the modulus is infinite. As always, drag, pinch, and scroll to move around."/>
+
+	<meta property="og:image" content="https://cruzgodar.com/applets/complex-maps/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Complex Maps
+
+
+
+!begin-text-block
+	
+	It&#x2019;s not a coincidence that many of the applets I&#x2019;ve made revolve around the complex numbers &mdash; a complete two-dimensional number system is ideal for making pictures. Two of the applets that support custom complex functions are the generalized <a href="/applets/generalized-julia-sets/">Julia set</a> and <a href="/applets/newtons-method-extended/">Newton&#x2019;s method</a> ones, but neither of them uses those functions directly &mdash; the first draws the points that stay bounded when iterated by the function, and the second shows convergence to the function&#x2019;s roots. This applet is somewhat simpler &mdash; it just plots the function itself. The color represents the argument of the output (the angle from the positive \(x\)-axis), and the saturation and brightness represent the modulus (the distance from the origin). Dark spots are roots of the function, where the modulus is zero, and white ones are singularities, where the modulus is infinite. To reference a draggable argument in the function, use <code>draggable_arg</code> in the function body. As always, drag, pinch, and scroll to move around.
+	
+	Much of the code implementing complex functions was contributed by <a href="https://ahuchala.com">Andy Huchala.</a> The applet itself was made with <a href="/projects/wilson/">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.
+
+!end-text-block
+
+
+
+<div style="height: 5vh"></div>
+
+
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Trig function: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csin(z)</span></span></p>
+</div>
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Poles: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cinv(cmul(csub(cpow(z, 6.0), 1.0), csub(cpow(z, 3.0), 1.0)))</span></span></p>
+</div>
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Essential singularity: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cexp(cinv(z))</span></span></p>
+</div>
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Tetration: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">ctet(z, 100.0)</span></span></p>
+</div>
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Lattices: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">wp(z, draggable_arg)</span></span></p>
+</div>
+
+<div style="height: 10vh"></div>
+
+
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+
+<div class="center-content" data-aos="fade-up">
+	<div class="text-field-container">
+		<textarea cols="16" rows="4" name="code-textarea" id="code-textarea" class="text-field" style="font-family: 'Source Code Pro', monospace"></textarea>
+		<p class="body-text" style="text-align: center">Generating Function</p>
+	</div>
+</div>
+
+<div style="height: -5vh"></div>
+
+!begin-text-boxes
+	
+	resolution 500 Resolution
+	
+	black-point 1 Black Point
+	
+	white-point 1 White Point
+	
+!end-text-boxes
+
+
+
+!begin-text-buttons
+	
+	generate l Generate
+	
+!end-text-buttons
+
+
+
+!begin-text-buttons
+	
+	selector-mode l Selector Mode
+	
+	benchmark l Benchmark
+	
+!end-text-buttons
+
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+<div id="canvas-location"></div>
+
+<div data-aos="fade-up">
+	<canvas id="output-canvas" class="output-canvas"></canvas>
+</div>
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+!begin-text-buttons
+	
+	download l Download
+	
+!end-text-buttons
+
+</div>
+
+</div>
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Complex Maps",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>

@@ -1,0 +1,196 @@
+<head>
+	<title>Section 15: Newton&#x2019;s Method</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 15: Newton's Method"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/251/notes/15-newtons-method/15-newtons-method.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/251/notes/15-newtons-method/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 15: Newton&#x2019;s Method
+
+!text b c Covered in Week 10
+
+<br>
+
+
+
+!begin-text-block
+	
+	It&#x2019;s the last section! We&#x2019;re going to talk about yet another application of derivatives: finding roots of functions.
+	
+	Let $f(x)$ be a differentiable function. The <dfn>roots</dfn> of $f$ are the $x$-values that make $f(x) = 0$. For example, the roots of $f(x) = x^2 - 2x - 3$ are $x = -3$ and $x = 1$, and the roots of $f(x) = x^2 + 1$ are $x = \pm i$. We haven&#x2019;t talked about complex numbers in this class, and they won&#x2019;t be required for any problems you&#x2019;ll be doing, but it will be nice if you&#x2019;ve seen them before for some of the topics we talk about at the end of the section.
+	
+	Okay, so how do we find roots? This is almost as complicated as asking how we solve equations, since we can move everything to one side of the equals sign and wind up with a complicated expression equaling zero &mdash; the only difference here is that that expression is differentiable.
+	
+	Here&#x2019;s the general idea: as with everything in calculus, differentiable functions are pretty well approximated by lines. When we approximated functions back in section 6, we said that near $x = a$, $f(x) \approx f(a) + f'(a)(x - a)$ &mdash; just the equation of the tangent line. That approximation usually gets pretty bad pretty quickly, but it will work for our purposes. We would like to know when $f(x) = 0$, so starting from $x = a$, we solve $0 = f(a) + f'(a)(x - a)$. We have
+	
+	$$
+		\begin{align*}
+			f(a) + f'(a)(x - a) &= 0\\
+			f'(a)(x - a) &= -f(a)\\
+			x - a &= -\frac{f(a)}{f'(a)}\\
+			x &= a -\frac{f(a)}{f'(a)}.
+		\end{align*}
+	$$
+	
+	Now this number is almost certainly not a root, but it&#x2019;s probably a better guess than $x = a$. That means we can make this $x$-value our new $a$ and try again, and over time, we will likely get close to an actual root.
+	
+	This process is called <dfn>Newton&#x2019;s method</dfn>, named after the same Newton that discovered most of the rest of calculus. Let&#x2019;s try it in an actual example: computing the square root of two. This is probably the first time you&#x2019;ve ever seen how this can be done &mdash; it&#x2019;s a really neat process.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	Newton&#x2019;s method
+	
+	Approximate $\sqrt{2}$ using three iterations of Newton&#x2019;s method.
+	
+	First of all, we need to find a function that has $\sqrt{2}$ as a root. Any one will do, but the simplest is definitely $f(x) = x^2 - 2$. We also need an $x$-value to start with. To keep notation reasonable, we index these with subscripts starting at zero. Let&#x2019;s start with $x_0 = 1$. To use Newton&#x2019;s method, we need to know $f(1)$ and $f'(1)$, which are $-1$ and $2$, respectively. Therefore, we have
+	
+	$$
+		\begin{align*}
+			x_1 &= x_0 - \frac{f(x_0)}{f'(x_0)}\\
+			&= 1 - \frac{-1}{2}\\
+			&= \frac{3}{2}\\
+			&= 1.5.
+		\end{align*}	
+	$$
+	
+	That&#x2019;s definitely closer than $x = 1$! Now we just repeat with this new $x$-value.
+	
+	$$
+		\begin{align*}
+			x_2 &= x_1 - \frac{f(x_1)}{f'(x_1)}\\
+			&= \frac{3}{2} - \frac{1/4}{3}\\
+			&= \frac{17}{12}\\
+			&\approx 1.41667.
+		\end{align*}	
+	$$
+	
+	And now for our third and last iteration.
+	
+	$$
+		\begin{align*}
+			x_3 &= x_2 - \frac{f(x_2)}{f'(x_2)}\\
+			&= \frac{17}{12} - \frac{1/144}{17/6}\\
+			&= \frac{577}{408}
+			&\approx 1.41423.
+		\end{align*}	
+	$$
+	
+	After only three iterations, this is strikingly close to the actual value of $\sqrt{2} = 1.41422...$.
+	
+	Here&#x2019;s what this process actually looks like &mdash; drag the blue point to change the initial guess.
+	
+	!iframe https://www.desmos.com/calculator/sq6o538wxs
+	
+	One important thing to notice: the closer the starting guess is to an actual root, the better the approximation is, and the farther away, the worse. Especially troublesome is when the starting guess $x_0$ is at a nearly equal distance from two roots &mdash; here, that means near zero. This will come up a little bit later, and it&#x2019;s an important caveat of Newton&#x2019;s method: it doesn&#x2019;t always work or work well (i.e. converge to a root quickly).
+	
+!end-example
+
+!begin-exercise
+	
+	Newton&#x2019;s method
+	
+	Approximate a solution to $\cos(x) = x$ using four iterations of Newton&#x2019;s method.
+	
+!end-exercise
+
+
+
+!section
+
+!text s Newton Fractals
+
+<br>
+
+
+
+!begin-text-block
+	
+	I&#x2019;d be remiss if I didn&#x2019;t mention one of the most beautiful pictures math can produce. Take a function, say $f(x) = x^3 - 1$, and write down all of its roots. For this particular function $f(x)$, the roots are $x = 1$ (of course), along with $x = -\frac{1}{2} \pm \sqrt{3}{2}i$. Now we&#x2019;re going to draw a number line and color the points on it based on what they do as an initial guess to Newton&#x2019;s method. For example, $x_0 = 1$ does extremely well as a guess, since it&#x2019;s already at a root, while $x_0 = 0$ does terribly: since $f(0) = 0$, we have
+	
+	$$
+		\begin{align*}
+			x_1 &= x_0 - \frac{f(0)}{f'(0)}\\
+			&= 0 - \frac{1}{0},
+		\end{align*}
+	$$
+	
+	so the process fails to converge to anything at all. We&#x2019;ll give numbers a brightness based on how well they do as a starting guess &mdash; bright means a point converges quickly, like $x = 1$, and dark means it converges slowly or not at all.
+	
+	<div class="center-content"><img class="notes-image" src="/teaching/uo/251/notes/15-newtons-method/graphics/newtons-method-line.png"></img></div>
+	
+	This is probably not what you&#x2019;d expect. This line is centered at zero, so initial guesses of positive numbers all converge to $x = 1$, while negative numbers sometimes work and sometimes don&#x2019;t. To actually understand what&#x2019;s going on here, we need to look at the bigger picture: since some of the roots of $x^3 - 1$ are complex, we&#x2019;ll have to consider complex initial guesses too. Without going into too much detail, Newton&#x2019;s method works just as well for complex initial guesses as real ones. Since the complex numbers live on a plane instead of a line, we get an actual image of where the guesses go. We&#x2019;ll still use brightness to indicate how fast the guess converges, but now we&#x2019;ll also use color to indicate which of the three roots of $x^3 - 1$ it actually converges to: here, that&#x2019;s red, orange, and yellow.
+	
+	!iframe u https://cruzgodar.com/applets/newtons-method/newtons-method.html?condensed_applets=1
+	
+	What results is a truly incredible fractal. This bubble-like pattern repeats however far you zoom in or out, and it&#x2019;s surprisingly beautiful. We&#x2019;d expect Newton&#x2019;s method to take an initial guess and always send it to the closest root, but this picture shows that&#x2019;s not the case: all the red outside of the large area on the right are initial guesses that converge to $x = -1$ despite one of the other two roots being closer.
+	
+	That image is actually an interactive applet I created and worked on over the last few years. You can pan and zoom akin to Google Maps, and dragging the white dots changes the roots of the polynomial. For example,
+	
+	$$
+		x^3 - 1 = (x - 1) \left(x + \frac{1}{2} - \frac{\sqrt{3}}{2}i\right) \left(x + \frac{1}{2} + \frac{\sqrt{3}}{2}i\right),
+	$$
+	
+	so those three complex numbers are indicated by the three white dots in a triangle. The red and blue dots do something else &mdash; if you&#x2019;d like to read more about that and use the applet in proper fullscreen &mdash; both of which I highly recommend &mdash; you can do so <a href="/applets/newtons-method/newtons-method">here</a>.
+	
+	Regardless, thank you for taking this course! It&#x2019;s been fantastic to teach, and I hope taking it has been a positive experience too.
+	
+!end-text-block
+
+
+
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 15: Newton&#x2019;s Method",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/251/notes"
+	};
+	
+	Page.load();
+</script>

@@ -18,18 +18,18 @@ Page.Banner =
 	//A list of every page that has a banner. Only to be used for preloading those banners. For everything else, use page_settings["banner_page"].
 	preloadable_pages:
 	[
-		"/home/home.html",
+		"/home/",
 		
-		"/about/about.html",
+		"/about/",
 		
-		"/writing/mist/mist.html",
-		"/writing/desolation-point/desolation-point.html"
+		"/writing/mist/",
+		"/writing/desolation-point/"
 	],
 
 	//A list of every page that has multiple banners. Again, this is ONLY to be used for preloading those banners. For everything else, use page_settings["num_banners"].
 	multibanner_pages:
 	{
-		"/home/home.html":
+		"/home/":
 		{
 			"current_banner": Math.floor(Math.random() * 16),
 			"num_banners": 16

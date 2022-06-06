@@ -40,8 +40,8 @@ Page.Footer =
 			
 			element.outerHTML = `
 				<div id="gallery-link" class="footer-image-link${first_link_string}" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-					<a class="focus-on-child" href="index.html?page=%2Fgallery%2Fgallery.html${url_vars_suffix}" tabindex="-1">
-						<img onclick="Page.Navigation.redirect('/gallery/gallery.html')" src="/gallery/cover.${Page.Images.file_extension}" alt="Gallery" tabindex="2"></img>
+					<a class="focus-on-child" href="index.html?page=%2Fgallery%2F${url_vars_suffix}" tabindex="-1">
+						<img onclick="Page.Navigation.redirect('/gallery/')" src="/gallery/cover.${Page.Images.file_extension}" alt="Gallery" tabindex="2"></img>
 					</a>
 					
 					<div class="footer-image-link-subtext-container">
@@ -65,8 +65,8 @@ Page.Footer =
 			
 			element.outerHTML = `
 				<div id="applets-link" class="footer-image-link${first_link_string}" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-					<a class="focus-on-child" href="index.html?page=%2Fapplets%2Fapplets.html${url_vars_suffix}" tabindex="-1">
-						<img onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="2"></img>
+					<a class="focus-on-child" href="index.html?page=%2Fapplets%2F${url_vars_suffix}" tabindex="-1">
+						<img onclick="Page.Navigation.redirect('/applets/')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="2"></img>
 					</a>
 					
 					<div class="footer-image-link-subtext-container">
@@ -90,8 +90,8 @@ Page.Footer =
 			
 			element.outerHTML = `
 				<div id="writing-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-					<a href="/index.html?page=%2Fwriting%2Fwriting.html${url_vars_suffix}" tabindex="-1">
-						<img onclick="Page.Navigation.redirect('/writing/writing.html')" src="/writing/cover.${Page.Images.file_extension}" alt="Writing" tabindex="2"></img>
+					<a href="/index.html?page=%2Fwriting%2F${url_vars_suffix}" tabindex="-1">
+						<img onclick="Page.Navigation.redirect('/writing/')" src="/writing/cover.${Page.Images.file_extension}" alt="Writing" tabindex="2"></img>
 					</a>
 					
 					<div class="footer-image-link-subtext-container">
@@ -113,8 +113,8 @@ Page.Footer =
 			
 			element.outerHTML = `
 				<div id="teaching-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-					<a class="focus-on-child" href="/index.html?page=%2Fteaching%2Fteaching.html${url_vars_suffix}" tabindex="-1">
-						<img onclick="Page.Navigation.redirect('/teaching/teaching.html')" src="/teaching/cover.${Page.Images.file_extension}" alt="Teaching" tabindex="2"></img>
+					<a class="focus-on-child" href="/index.html?page=%2Fteaching%2F${url_vars_suffix}" tabindex="-1">
+						<img onclick="Page.Navigation.redirect('/teaching/')" src="/teaching/cover.${Page.Images.file_extension}" alt="Teaching" tabindex="2"></img>
 					</a>
 					
 					<div class="footer-image-link-subtext-container">
@@ -136,8 +136,8 @@ Page.Footer =
 			
 			element.outerHTML = `
 				<div id="about-link" class="footer-image-link" data-aos="zoom-out" data-aos-delay="${delay}" data-aos-offset="0">
-					<a class="focus-on-child" href="/index.html?page=%2Fabout%2Fabout.html${url_vars_suffix}" tabindex="-1">
-						<img onclick="Page.Navigation.redirect('/about/about.html')" src="/about/cover.${Page.Images.file_extension}" alt="About" tabindex="2"></img>
+					<a class="focus-on-child" href="/index.html?page=%2Fabout%2F${url_vars_suffix}" tabindex="-1">
+						<img onclick="Page.Navigation.redirect('/about/')" src="/about/cover.${Page.Images.file_extension}" alt="About" tabindex="2"></img>
 					</a>
 					
 					<div class="footer-image-link-subtext-container">
@@ -255,7 +255,7 @@ Page.Footer =
 			{
 				debug_html = `
 					<div id="debug-button" class="footer-menu-button focus-on-child" tabindex="103">
-						<input type="image" class="footer-button" src="/graphics/button-icons/bug.png" alt="Debug" onclick="Page.Navigation.redirect('/debug/debug.html')" tabindex="-1">
+						<input type="image" class="footer-button" src="/graphics/button-icons/bug.png" alt="Debug" onclick="Page.Navigation.redirect('/debug/')" tabindex="-1">
 					</div>
 				`;
 			}
@@ -283,32 +283,32 @@ Page.Footer =
 					
 					
 					<div id="floating-footer-gallery-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 6.25px">
-						<a href="/gallery/gallery.html" tabindex="-1">
-							<img onclick="Page.Navigation.redirect('/gallery/gallery.html')" src="/gallery/cover.${Page.Images.file_extension}" alt="Gallery" tabindex="1"></img>
+						<a href="/gallery/" tabindex="-1">
+							<img onclick="Page.Navigation.redirect('/gallery/')" src="/gallery/cover.${Page.Images.file_extension}" alt="Gallery" tabindex="1"></img>
 						</a>
 					</div>
 					
 					<div id="floating-footer-applets-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 55.25px">
-						<a href="/applets/applets.html" tabindex="-1">
-							<img onclick="Page.Navigation.redirect('/applets/applets.html')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="1"></img>
+						<a href="/applets/" tabindex="-1">
+							<img onclick="Page.Navigation.redirect('/applets/')" src="/applets/cover.${Page.Images.file_extension}" alt="Applets" tabindex="1"></img>
 						</a>
 					</div>
 					
 					<div id="floating-footer-writing-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 104.25px">
-						<a href="/writing/writing.html" tabindex="-1">
-							<img onclick="Page.Navigation.redirect('/writing/writing.html')" src="/writing/cover.${Page.Images.file_extension}" alt="Writing" tabindex="1"></img>
+						<a href="/writing/" tabindex="-1">
+							<img onclick="Page.Navigation.redirect('/writing/')" src="/writing/cover.${Page.Images.file_extension}" alt="Writing" tabindex="1"></img>
 						</a>
 					</div>
 					
 					<div id="floating-footer-teaching-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 153.25px">
-						<a href="/teaching/teaching.html" tabindex="-1">
-							<img onclick="Page.Navigation.redirect('/teaching/teaching.html')" src="/teaching/cover.${Page.Images.file_extension}" alt="Teaching" tabindex="1"></img>
+						<a href="/teaching/" tabindex="-1">
+							<img onclick="Page.Navigation.redirect('/teaching/')" src="/teaching/cover.${Page.Images.file_extension}" alt="Teaching" tabindex="1"></img>
 						</a>
 					</div>
 					
 					<div id="floating-footer-about-link" class="image-link footer-menu-image-link" style="width: 39px; position: absolute; left: -40px; bottom: 202.25px">
-						<a href="/about/about.html" tabindex="-1">
-							<img onclick="Page.Navigation.redirect('/about/about.html')" src="/about/cover.${Page.Images.file_extension}" alt="Me" tabindex="1"></img>
+						<a href="/about/" tabindex="-1">
+							<img onclick="Page.Navigation.redirect('/about/')" src="/about/cover.${Page.Images.file_extension}" alt="Me" tabindex="1"></img>
 						</a>
 					</div>
 					

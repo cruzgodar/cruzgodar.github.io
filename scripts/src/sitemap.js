@@ -1,386 +1,386 @@
 Site.sitemap =
 {
-	"/home/home.html":
+	"/home/":
 	{
 		parent: "",
 		
 		children:
 		[
-			"/gallery/gallery.html",
-			"/applets/applets.html",
-			"/writing/writing.html",
-			"/teaching/teaching.html",
-			"/about/about.html"
+			"/gallery/",
+			"/applets/",
+			"/writing/",
+			"/teaching/",
+			"/about/"
 		]
 	},
 	
 	
 	
-	"/gallery/gallery.html":
+	"/gallery/":
 	{
-		parent: "/home/home.html",
+		parent: "/home/",
 		
 		children: []
 	},
 	
 	
 	
-	"/applets/applets.html":
+	"/applets/":
 	{
-		parent: "/home/home.html",
+		parent: "/home/",
 		
 		children:
 		[
-			"/applets/plane-partitions/plane-partitions.html",
-			"/applets/quaternionic-julia-sets/quaternionic-julia-sets.html",
-			"/applets/fractal-sounds/fractal-sounds.html",
-			"/applets/sorting-algorithms/sorting-algorithms.html",
-			"/applets/complex-tori/complex-tori.html",
-			"/applets/wordle-scorer/wordle-scorer.html",
-			"/applets/domino-shuffling/domino-shuffling.html",
-			"/applets/pascals-triangle-colorings/pascals-triangle-colorings.html",
-			"/applets/three-body-systems/three-body-systems.html",
-			"/applets/hitomezashi-patterns/hitomezashi-patterns.html",
-			"/applets/double-pendulum-fractal/double-pendulum-fractal.html",
-			"/applets/complex-maps/complex-maps.html",
-			"/applets/lyapunov-fractals/lyapunov-fractals.html",
-			"/applets/newtons-method-extended/newtons-method-extended.html",
-			"/applets/the-secant-method/the-secant-method.html",
-			"/applets/quasi-fuchsian-groups/quasi-fuchsian-groups.html",
-			"/applets/the-mandelbulb/the-mandelbulb.html",
-			"/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html",
-			"/applets/binary-trees/binary-trees.html",
-			"/applets/gravner-griffeath-snowflakes/gravner-griffeath-snowflakes.html",
-			"/applets/finite-subdivisions/finite-subdivisions.html",
-			"/applets/generalized-julia-sets/generalized-julia-sets.html",
-			"/applets/strange-attractors/strange-attractors.html",
-			"/applets/sudoku-generator/sudoku-generator.html",
-			"/applets/julia-set-mosaic/julia-set-mosaic.html",
-			"/applets/the-chaos-game/the-chaos-game.html",
-			"/applets/the-kicked-rotator/the-kicked-rotator.html",
-			"/applets/brownian-trees/brownian-trees.html",
-			"/applets/the-barnsley-fern/the-barnsley-fern.html",
-			"/applets/newtons-method/newtons-method.html",
-			"/applets/calcudoku-generator/calcudoku-generator.html",
-			"/applets/simulated-annealing/simulated-annealing.html",
-			"/applets/abelian-sandpiles/abelian-sandpiles.html",
-			"/applets/wilsons-algorithm/wilsons-algorithm.html",
-			"/applets/julia-set-explorer/julia-set-explorer.html",
+			"/applets/plane-partitions/",
+			"/applets/quaternionic-julia-sets/",
+			"/applets/fractal-sounds/",
+			"/applets/sorting-algorithms/",
+			"/applets/complex-tori/",
+			"/applets/wordle-scorer/",
+			"/applets/domino-shuffling/",
+			"/applets/pascals-triangle-colorings/",
+			"/applets/three-body-systems/",
+			"/applets/hitomezashi-patterns/",
+			"/applets/double-pendulum-fractal/",
+			"/applets/complex-maps/",
+			"/applets/lyapunov-fractals/",
+			"/applets/newtons-method-extended/",
+			"/applets/the-secant-method/",
+			"/applets/quasi-fuchsian-groups/",
+			"/applets/the-mandelbulb/",
+			"/applets/kaleidoscopic-ifs-fractals/",
+			"/applets/binary-trees/",
+			"/applets/gravner-griffeath-snowflakes/",
+			"/applets/finite-subdivisions/",
+			"/applets/generalized-julia-sets/",
+			"/applets/strange-attractors/",
+			"/applets/sudoku-generator/",
+			"/applets/julia-set-mosaic/",
+			"/applets/the-chaos-game/",
+			"/applets/the-kicked-rotator/",
+			"/applets/brownian-trees/",
+			"/applets/the-barnsley-fern/",
+			"/applets/newtons-method/",
+			"/applets/calcudoku-generator/",
+			"/applets/simulated-annealing/",
+			"/applets/abelian-sandpiles/",
+			"/applets/wilsons-algorithm/",
+			"/applets/julia-set-explorer/",
 			
-			"/projects/wilson/wilson.html"
+			"/projects/wilson/"
 		]
 	},
 	
-	"/applets/plane-partitions/plane-partitions.html":
+	"/applets/plane-partitions/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/quaternionic-julia-sets/quaternionic-julia-sets.html":
+	"/applets/quaternionic-julia-sets/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/fractal-sounds/fractal-sounds.html":
+	"/applets/fractal-sounds/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/sorting-algorithms/sorting-algorithms.html":
+	"/applets/sorting-algorithms/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/complex-tori/complex-tori.html":
+	"/applets/complex-tori/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/wordle-scorer/wordle-scorer.html":
+	"/applets/wordle-scorer/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/domino-shuffling/domino-shuffling.html":
+	"/applets/domino-shuffling/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/pascals-triangle-colorings/pascals-triangle-colorings.html":
+	"/applets/pascals-triangle-colorings/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/three-body-systems/three-body-systems.html":
+	"/applets/three-body-systems/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/hitomezashi-patterns/hitomezashi-patterns.html":
+	"/applets/hitomezashi-patterns/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/double-pendulum-fractal/double-pendulum-fractal.html":
+	"/applets/double-pendulum-fractal/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/complex-maps/complex-maps.html":
+	"/applets/complex-maps/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/lyapunov-fractals/lyapunov-fractals.html":
+	"/applets/lyapunov-fractals/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/newtons-method-extended/newtons-method-extended.html":
+	"/applets/newtons-method-extended/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/the-secant-method/the-secant-method.html":
+	"/applets/the-secant-method/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/quasi-fuchsian-groups/quasi-fuchsian-groups.html":
+	"/applets/quasi-fuchsian-groups/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/the-mandelbulb/the-mandelbulb.html":
+	"/applets/the-mandelbulb/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/kaleidoscopic-ifs-fractals/kaleidoscopic-ifs-fractals.html":
+	"/applets/kaleidoscopic-ifs-fractals/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/binary-trees/binary-trees.html":
+	"/applets/binary-trees/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/gravner-griffeath-snowflakes/gravner-griffeath-snowflakes.html":
+	"/applets/gravner-griffeath-snowflakes/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/finite-subdivisions/finite-subdivisions.html":
+	"/applets/finite-subdivisions/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/generalized-julia-sets/generalized-julia-sets.html":
+	"/applets/generalized-julia-sets/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/strange-attractors/strange-attractors.html":
+	"/applets/strange-attractors/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/sudoku-generator/sudoku-generator.html":
+	"/applets/sudoku-generator/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/julia-set-mosaic/julia-set-mosaic.html":
+	"/applets/julia-set-mosaic/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/the-chaos-game/the-chaos-game.html":
+	"/applets/the-chaos-game/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/the-kicked-rotator/the-kicked-rotator.html":
+	"/applets/the-kicked-rotator/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/brownian-trees/brownian-trees.html":
+	"/applets/brownian-trees/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/the-barnsley-fern/the-barnsley-fern.html":
+	"/applets/the-barnsley-fern/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/newtons-method/newtons-method.html":
+	"/applets/newtons-method/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/calcudoku-generator/calcudoku-generator.html":
+	"/applets/calcudoku-generator/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/simulated-annealing/simulated-annealing.html":
+	"/applets/simulated-annealing/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/abelian-sandpiles/abelian-sandpiles.html":
+	"/applets/abelian-sandpiles/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/wilsons-algorithm/wilsons-algorithm.html":
+	"/applets/wilsons-algorithm/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 
-	"/applets/julia-set-explorer/julia-set-explorer.html":
+	"/applets/julia-set-explorer/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children: []
 	},
 	
 	
 	
-	"/projects/wilson/wilson.html":
+	"/projects/wilson/":
 	{
-		parent: "/applets/applets.html",
+		parent: "/applets/",
 		
 		children:
 		[
-			"/projects/wilson/guide/1/getting-started.html",
-			"/projects/wilson/guide/2/draggables.html",
-			"/projects/wilson/guide/3/parallelizing.html",
-			"/projects/wilson/guide/4/hidden-canvases.html",
-			"/projects/wilson/guide/5/fullscreen.html",
-			"/projects/wilson/guide/6/interactivity.html",
+			"/projects/wilson/guide/1-getting-started/",
+			"/projects/wilson/guide/2-draggables/",
+			"/projects/wilson/guide/3-parallelizing/",
+			"/projects/wilson/guide/4-hidden-canvases/",
+			"/projects/wilson/guide/5-fullscreen/",
+			"/projects/wilson/guide/6-interactivity/",
 			
-			"/projects/wilson/docs/docs.html"
+			"/projects/wilson/docs/"
 		]
 	},
 	
-	"/projects/wilson/docs/docs.html":
+	"/projects/wilson/docs/":
 	{
-		parent: "/projects/wilson/wilson.html",
+		parent: "/projects/wilson/",
 		
 		children: []
 	},
 
 
-	"/projects/wilson/guide/1/getting-started.html":
+	"/projects/wilson/guide/1-getting-started/":
 	{
-		parent: "/projects/wilson/wilson.html",
+		parent: "/projects/wilson/",
 		
 		children: []
 	},
 
-	"/projects/wilson/guide/2/draggables.html":
+	"/projects/wilson/guide/2-draggables/":
 	{
-		parent: "/projects/wilson/wilson.html",
+		parent: "/projects/wilson/",
 		
 		children: []
 	},
 
-	"/projects/wilson/guide/3/parallelizing.html":
+	"/projects/wilson/guide/3-parallelizing/":
 	{
-		parent: "/projects/wilson/wilson.html",
+		parent: "/projects/wilson/",
 		
 		children: []
 	},
 
-	"/projects/wilson/guide/4/hidden-canvases.html":
+	"/projects/wilson/guide/4-hidden-canvases/":
 	{
-		parent: "/projects/wilson/wilson.html",
+		parent: "/projects/wilson/",
 		
 		children: []
 	},
 
-	"/projects/wilson/guide/5/fullscreen.html":
+	"/projects/wilson/guide/5-fullscreen/":
 	{
-		parent: "/projects/wilson/wilson.html",
+		parent: "/projects/wilson/",
 		
 		children: []
 	},
 
-	"/projects/wilson/guide/6/interactivity.html":
+	"/projects/wilson/guide/6-interactivity/":
 	{
-		parent: "/projects/wilson/wilson.html",
+		parent: "/projects/wilson/",
 		
 		children: []
 	},
@@ -388,385 +388,385 @@ Site.sitemap =
 	
 	
 	
-	"/writing/writing.html":
+	"/writing/":
 	{
-		parent: "/home/home.html",
+		parent: "/home/",
 		
 		children:
 		[
-			"/writing/caracore/caracore.html",
-			"/writing/caligo/caligo.html",
-			"/writing/desolation-point/desolation-point.html",
-			"/writing/mist/mist.html"
+			"/writing/caracore/",
+			"/writing/caligo/",
+			"/writing/desolation-point/",
+			"/writing/mist/"
 		]
 	},
 	
-	"/writing/caracore/caracore.html":
+	"/writing/caracore/":
 	{
-		parent: "/writing/writing.html",
+		parent: "/writing/",
 		
 		children: []
 	},
 	
-	"/writing/caligo/caligo.html":
+	"/writing/caligo/":
 	{
-		parent: "/writing/writing.html",
+		parent: "/writing/",
 		
 		children: []
 	},
 	
-	"/writing/desolation-point/desolation-point.html":
+	"/writing/desolation-point/":
 	{
-		parent: "/writing/writing.html",
+		parent: "/writing/",
 		
 		children: []
 	},
 	
-	"/writing/mist/mist.html":
+	"/writing/mist/":
 	{
-		parent: "/writing/writing.html",
+		parent: "/writing/",
 		
 		children: []
 	},
 	
 	
 	
-	"/teaching/teaching.html":
+	"/teaching/":
 	{
-		parent: "/home/home.html",
+		parent: "/home/",
 		
 		children:
 		[
-			"/teaching/uo/252/252.html",
-			"/teaching/uo/251/251.html",
-			"/teaching/uo/243/243.html",
-			"/teaching/uo/112/112.html",
-			"/teaching/uo/111/111.html",
-			"/teaching/uo/105/105.html"
+			"/teaching/uo/252/",
+			"/teaching/uo/251/",
+			"/teaching/uo/243/",
+			"/teaching/uo/112/",
+			"/teaching/uo/111/",
+			"/teaching/uo/105/"
 		]
 	},
 	
 	
 	
-	"/teaching/uo/252/252.html":
+	"/teaching/uo/252/":
 	{
-		parent: "/teaching/teaching.html",
+		parent: "/teaching/",
 		
 		children:
 		[
-			"/teaching/uo/252/notes/0-calc-1-review/0-calc-1-review.html",
-			"/teaching/uo/252/notes/1-riemann-sums/1-riemann-sums.html",
-			"/teaching/uo/252/notes/2-integrals-intro/2-integrals-intro.html",
-			"/teaching/uo/252/notes/3-antiderivatives/3-antiderivatives.html",
-			"/teaching/uo/252/notes/4-ftoc/4-ftoc.html",
-			"/teaching/uo/252/notes/5-simple-applications/5-simple-applications.html",
-			"/teaching/uo/252/notes/6-u-sub/6-u-sub.html",
-			"/teaching/uo/252/notes/7-exp-and-log-integrals/7-exp-and-log-integrals.html",
-			"/teaching/uo/252/notes/8-area-between-curves/8-area-between-curves.html",
-			"/teaching/uo/252/notes/9-solids-of-revolution/9-solids-of-revolution.html",
-			"/teaching/uo/252/notes/10-arc-length-and-surface-area/10-arc-length-and-surface-area.html",
-			"/teaching/uo/252/notes/11-physical-applications/11-physical-applications.html",
-			"/teaching/uo/252/notes/12-integration-by-parts/12-integration-by-parts.html",
-			"/teaching/uo/252/notes/13-trig-sub/13-trig-sub.html",
-			"/teaching/uo/252/notes/14-partial-fractions/14-partial-fractions.html",
-			"/teaching/uo/252/notes/15-improper-integrals/15-improper-integrals.html",
-			"/teaching/uo/252/notes/16-intro-to-des/16-intro-to-des.html"
+			"/teaching/uo/252/notes/0-calc-1-review/",
+			"/teaching/uo/252/notes/1-riemann-sums/",
+			"/teaching/uo/252/notes/2-integrals-intro/",
+			"/teaching/uo/252/notes/3-antiderivatives/",
+			"/teaching/uo/252/notes/4-ftoc/",
+			"/teaching/uo/252/notes/5-simple-applications/",
+			"/teaching/uo/252/notes/6-u-sub/",
+			"/teaching/uo/252/notes/7-exp-and-log-integrals/",
+			"/teaching/uo/252/notes/8-area-between-curves/",
+			"/teaching/uo/252/notes/9-solids-of-revolution/",
+			"/teaching/uo/252/notes/10-arc-length-and-surface-area/",
+			"/teaching/uo/252/notes/11-physical-applications/",
+			"/teaching/uo/252/notes/12-integration-by-parts/",
+			"/teaching/uo/252/notes/13-trig-sub/",
+			"/teaching/uo/252/notes/14-partial-fractions/",
+			"/teaching/uo/252/notes/15-improper-integrals/",
+			"/teaching/uo/252/notes/16-intro-to-des/"
 		]
 	},
 	
-	"/teaching/uo/252/notes/0-calc-1-review/0-calc-1-review.html":
+	"/teaching/uo/252/notes/0-calc-1-review/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/1-riemann-sums/1-riemann-sums.html":
+	"/teaching/uo/252/notes/1-riemann-sums/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/2-integrals-intro/2-integrals-intro.html":
+	"/teaching/uo/252/notes/2-integrals-intro/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/3-antiderivatives/3-antiderivatives.html":
+	"/teaching/uo/252/notes/3-antiderivatives/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/4-ftoc/4-ftoc.html":
+	"/teaching/uo/252/notes/4-ftoc/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/5-simple-applications/5-simple-applications.html":
+	"/teaching/uo/252/notes/5-simple-applications/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/6-u-sub/6-u-sub.html":
+	"/teaching/uo/252/notes/6-u-sub/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/7-exp-and-log-integrals/7-exp-and-log-integrals.html":
+	"/teaching/uo/252/notes/7-exp-and-log-integrals/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/8-area-between-curves/8-area-between-curves.html":
+	"/teaching/uo/252/notes/8-area-between-curves/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/9-solids-of-revolution/9-solids-of-revolution.html":
+	"/teaching/uo/252/notes/9-solids-of-revolution/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/10-arc-length-and-surface-area/10-arc-length-and-surface-area.html":
+	"/teaching/uo/252/notes/10-arc-length-and-surface-area/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/11-physical-applications/11-physical-applications.html":
+	"/teaching/uo/252/notes/11-physical-applications/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/12-integration-by-parts/12-integration-by-parts.html":
+	"/teaching/uo/252/notes/12-integration-by-parts/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/13-trig-sub/13-trig-sub.html":
+	"/teaching/uo/252/notes/13-trig-sub/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/14-partial-fractions/14-partial-fractions.html":
+	"/teaching/uo/252/notes/14-partial-fractions/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/15-improper-integrals/15-improper-integrals.html":
+	"/teaching/uo/252/notes/15-improper-integrals/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
-	"/teaching/uo/252/notes/16-intro-to-des/16-intro-to-des.html":
+	"/teaching/uo/252/notes/16-intro-to-des/":
 	{
-		parent: "/teaching/uo/252/252.html",
+		parent: "/teaching/uo/252/",
 		
 		children: []
 	},
 
 
 
-	"/teaching/uo/251/251.html":
+	"/teaching/uo/251/":
 	{
-		parent: "/teaching/teaching.html",
+		parent: "/teaching/",
 		
 		children:
 		[
-			"/teaching/uo/251/notes/0-algebra-and-trig-review/0-algebra-and-trig-review.html",
-			"/teaching/uo/251/notes/1-intro-to-limits/1-intro-to-limits.html",
-			"/teaching/uo/251/notes/2-limit-rules/2-limit-rules.html",
-			"/teaching/uo/251/notes/3-continuity/3-continuity.html",
-			"/teaching/uo/251/notes/4-intro-to-derivatives/4-intro-to-derivatives.html",
-			"/teaching/uo/251/notes/5-derivative-rules/5-derivative-rules.html",
-			"/teaching/uo/251/notes/6-applications-of-derivatives/6-applications-of-derivatives.html",
-			"/teaching/uo/251/notes/7-exp-log-and-trig-derivatives/7-exp-log-and-trig-derivatives.html",
-			"/teaching/uo/251/notes/8-the-chain-rule/8-the-chain-rule.html",
-			"/teaching/uo/251/notes/9-the-inverse-function-theorem/9-the-inverse-function-theorem.html",
-			"/teaching/uo/251/notes/10-implicit-differentiation/10-implicit-differentiation.html",
-			"/teaching/uo/251/notes/11-optimization/11-optimization.html",
-			"/teaching/uo/251/notes/12-l-hopitals-rule/12-l-hopitals-rule.html",
-			"/teaching/uo/251/notes/13-related-rates/13-related-rates.html",
-			"/teaching/uo/251/notes/14-applied-optimization/14-applied-optimization.html",
-			"/teaching/uo/251/notes/15-newtons-method/15-newtons-method.html"
+			"/teaching/uo/251/notes/0-algebra-and-trig-review/",
+			"/teaching/uo/251/notes/1-intro-to-limits/",
+			"/teaching/uo/251/notes/2-limit-rules/",
+			"/teaching/uo/251/notes/3-continuity/",
+			"/teaching/uo/251/notes/4-intro-to-derivatives/",
+			"/teaching/uo/251/notes/5-derivative-rules/",
+			"/teaching/uo/251/notes/6-applications-of-derivatives/",
+			"/teaching/uo/251/notes/7-exp-log-and-trig-derivatives/",
+			"/teaching/uo/251/notes/8-the-chain-rule/",
+			"/teaching/uo/251/notes/9-the-inverse-function-theorem/",
+			"/teaching/uo/251/notes/10-implicit-differentiation/",
+			"/teaching/uo/251/notes/11-optimization/",
+			"/teaching/uo/251/notes/12-l-hopitals-rule/",
+			"/teaching/uo/251/notes/13-related-rates/",
+			"/teaching/uo/251/notes/14-applied-optimization/",
+			"/teaching/uo/251/notes/15-newtons-method/"
 		]
 	},
 	
-	"/teaching/uo/251/notes/0-algebra-and-trig-review/0-algebra-and-trig-review.html":
+	"/teaching/uo/251/notes/0-algebra-and-trig-review/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 
-	"/teaching/uo/251/notes/1-intro-to-limits/1-intro-to-limits.html":
+	"/teaching/uo/251/notes/1-intro-to-limits/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 
-	"/teaching/uo/251/notes/2-limit-rules/2-limit-rules.html":
+	"/teaching/uo/251/notes/2-limit-rules/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 
-	"/teaching/uo/251/notes/3-continuity/3-continuity.html":
+	"/teaching/uo/251/notes/3-continuity/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 
-	"/teaching/uo/251/notes/4-intro-to-derivatives/4-intro-to-derivatives.html":
+	"/teaching/uo/251/notes/4-intro-to-derivatives/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 
-	"/teaching/uo/251/notes/5-derivative-rules/5-derivative-rules.html":
+	"/teaching/uo/251/notes/5-derivative-rules/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 
-	"/teaching/uo/251/notes/6-applications-of-derivatives/6-applications-of-derivatives.html":
+	"/teaching/uo/251/notes/6-applications-of-derivatives/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 
-	"/teaching/uo/251/notes/7-exp-log-and-trig-derivatives/7-exp-log-and-trig-derivatives.html":
+	"/teaching/uo/251/notes/7-exp-log-and-trig-derivatives/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 
-	"/teaching/uo/251/notes/8-the-chain-rule/8-the-chain-rule.html":
+	"/teaching/uo/251/notes/8-the-chain-rule/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 
-	"/teaching/uo/251/notes/9-the-inverse-function-theorem/9-the-inverse-function-theorem.html":
+	"/teaching/uo/251/notes/9-the-inverse-function-theorem/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 
-	"/teaching/uo/251/notes/10-implicit-differentiation/10-implicit-differentiation.html":
+	"/teaching/uo/251/notes/10-implicit-differentiation/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 
-	"/teaching/uo/251/notes/11-optimization/11-optimization.html":
+	"/teaching/uo/251/notes/11-optimization/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 
-	"/teaching/uo/251/notes/12-l-hopitals-rule/12-l-hopitals-rule.html":
+	"/teaching/uo/251/notes/12-l-hopitals-rule/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 	
-	"/teaching/uo/251/notes/13-related-rates/13-related-rates.html":
+	"/teaching/uo/251/notes/13-related-rates/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 	
-	"/teaching/uo/251/notes/14-applied-optimization/14-applied-optimization.html":
+	"/teaching/uo/251/notes/14-applied-optimization/":
 	{
-		parent: "/teaching/uo/251/251.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 	
-	"/teaching/uo/251/notes/15-newtons-method/15-newtons-method.html":
+	"/teaching/uo/251/notes/15-newtons-method/":
 	{
-		parent: "/teaching/uo/251/251.html",
-		
-		children: []
-	},
-	
-	
-	
-	"/teaching/uo/243/243.html":
-	{
-		parent: "/teaching/teaching.html",
-		
-		children: []
-	},
-
-	"/teaching/uo/112/112.html":
-	{
-		parent: "/teaching/teaching.html",
-		
-		children: []
-	},
-
-	"/teaching/uo/111/111.html":
-	{
-		parent: "/teaching/teaching.html",
-		
-		children: []
-	},
-
-	"/teaching/uo/105/105.html":
-	{
-		parent: "/teaching/teaching.html",
+		parent: "/teaching/uo/251/",
 		
 		children: []
 	},
 	
 	
 	
-	"/about/about.html":
+	"/teaching/uo/243/":
 	{
-		parent: "/home/home.html",
+		parent: "/teaching/",
+		
+		children: []
+	},
+
+	"/teaching/uo/112/":
+	{
+		parent: "/teaching/",
+		
+		children: []
+	},
+
+	"/teaching/uo/111/":
+	{
+		parent: "/teaching/",
+		
+		children: []
+	},
+
+	"/teaching/uo/105/":
+	{
+		parent: "/teaching/",
+		
+		children: []
+	},
+	
+	
+	
+	"/about/":
+	{
+		parent: "/home/",
 		
 		children: []
 	}

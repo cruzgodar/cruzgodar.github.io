@@ -1,0 +1,182 @@
+<head>
+	<title>Cruz Godar</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Cruz Godar"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/home/home.html">
+
+    <meta property="og:image" content="https://cruzgodar.com/graphics/general-icons/logo.png"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<noscript>
+	<div style="height: 5vh"></div>
+	
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+	
+<div id="banner"></div>
+
+<div class="name-text-container" style="position: fixed">
+	<p id="cruz-text" class="name-text" style="opacity: 0; transform: translateX(100px)">Cruz</p>
+</div>
+
+<div class="name-text-container" style="position: fixed">
+	<p id="godar-text" class="name-text" style="opacity: 0; transform: translateX(100px)">Godar</p>
+</div>
+
+<div id="banner-gradient"></div>
+
+<div class="name-text"></div>
+
+<div id="banner-cover"></div>
+	
+<div id="content">
+	<div style="height: 6vh"></div>
+	
+	<div id="scroll-to"></div>
+	
+	<div style="height: 4vh"></div>
+	
+	
+	
+	<main>
+		<section>
+			<div class="quote-row">
+				<div class="new-aos-section quote-container" data-aos="fade-down">
+					<p class="quote-text">
+						<q>You can only be truly accomplished at something you love. Don&#x2019;t make money the goal. Instead, pursue the things you love doing, and do them so well that people can&#x2019;t take their eyes off you. All the other tangible rewards will come as a result.</q>
+					</p>
+					
+					<br>
+					
+					<p class="quote-attribution">&mdash;Maya Angelou</p>
+				</div>
+
+				<div class="quote-container" data-aos="fade-down">
+					<p class="quote-text">
+						<q>A mathematician is a blind man in a dark room looking for a black cat which isn&#x2019;t there.</q>
+					</p>
+					
+					<br>
+					
+					<p class="quote-attribution">&mdash;Charles Darwin</p>
+				</div>
+
+				<div class="quote-container" data-aos="fade-down">
+					<p class="quote-text">
+						<q>I hate algebra.</q>
+					</p>
+						
+					<br>
+					
+					<p class="quote-attribution">&mdash;John Conway</p>
+				</div>
+			</div>
+		</section>
+			
+			
+			
+		<section>
+			<div class="new-aos-section" data-aos="fade-up">
+				<div id="logo-no-link">
+					<img src="/graphics/general-icons/logo.png" alt="Logo" tabindex="1"></img>
+				</div>
+			</div>
+				
+			<div style="height: 3vh"></div>
+
+			<div data-aos="fade-up">
+				<h1 class="title-text">Reading, Writing, and Proving</h1>
+			</div>
+
+			<div style="height: 3vh"></div>
+
+			<div data-aos="fade-up">
+				<p class="body-text center-if-needed" id="intro-text">
+					<span>My name is Cruz Godar, and I&#x2019;m a graduate student in the mathematics department at the University of Oregon. I&#x2019;m particularly drawn to the beautiful visualizations some areas of math can create, and I spend some of my free time building polished, high-performance web apps for exploring them. I&#x2019;ve also written a novel and a handful of short stories, and along with the materials for the classes I teach, all of that&#x2019;s hosted on this site. Whether you&#x2019;re here for Caligo, complex maps, or calculus notes, you&#x2019;re in the right place.</span>
+				</p>
+			</div>
+
+			<div style="height: 5vh"></div>
+
+			!begin-image-links
+				
+				/gallery/ Gallery
+				
+				/applets/ Applets
+				
+				/writing/ Writing
+				
+				/teaching/ Teaching
+				
+				/about/ About
+				
+			!end-image-links
+		</section>
+		
+		
+		
+		<div style="height: 5vh"></div>
+		
+		
+		
+		<section>
+			<div id="new-section">
+				<div class="new-aos-section" data-aos="zoom-out">
+					<p class="section-text" style="width: 70vw; margin: 0 auto">Newest Pages</p>
+				</div>
+				
+				<div style="height: 5vh"></div>
+				
+				!begin-image-links
+					
+					/applets/plane-partitions/ Plane Partitions
+					
+					/applets/quaternionic-julia-sets/ Quaternionic Julia Sets
+					
+					/applets/fractal-sounds/ Fractal Sounds
+					
+				!end-image-links
+			</div>
+		</section>
+	</main>
+	
+	
+	
+	<footer class="new-aos-section" data-aos="fade-in"></footer>
+</div>
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Cruz Godar",
+		
+		"banner_page": true,
+		"num_banners": 16,
+		
+		"no_footer": true
+	};
+	
+	Page.load();
+</script>

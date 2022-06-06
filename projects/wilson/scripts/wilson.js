@@ -486,39 +486,39 @@
 	
 	Page.element.querySelector("#part-1-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/1/getting-started.html");
+		Page.Navigation.redirect("/projects/wilson/guide/1-getting-started/");
 	});
 	
 	Page.element.querySelector("#part-2-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/2/draggables.html");
+		Page.Navigation.redirect("/projects/wilson/guide/2-draggables/");
 	});
 	
 	Page.element.querySelector("#part-3-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/3/parallelizing.html");
+		Page.Navigation.redirect("/projects/wilson/guide/3-parallelizing/");
 	});
 	
 	Page.element.querySelector("#part-4-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/4/hidden-canvases.html");
+		Page.Navigation.redirect("/projects/wilson/guide/4-hidden-canvases/");
 	});
 	
 	Page.element.querySelector("#part-5-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/5/fullscreen.html");
+		Page.Navigation.redirect("/projects/wilson/guide/5-fullscreen/");
 	});
 	
 	Page.element.querySelector("#part-6-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/6/interactivity.html");
+		Page.Navigation.redirect("/projects/wilson/guide/6-interactivity/");
 	});
 	
 	
 	
 	Page.element.querySelector("#docs-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/docs/docs.html");
+		Page.Navigation.redirect("/projects/wilson/docs/");
 	});
 	
 	

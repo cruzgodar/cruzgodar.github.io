@@ -25,7 +25,7 @@ Page.Navigation =
 		}
 		
 		//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
-		if (in_new_tab || url.slice(url.length - 5) !== ".html")
+		if (in_new_tab || url.indexOf(".") !== -1)
 		{
 			window.open(url, "_blank");
 			return;
@@ -49,7 +49,7 @@ Page.Navigation =
 		
 		Page.url = url;
 		
-		Page.parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
+		Page.parent_folder = url.slice(0, url.length);
 		
 		
 		
@@ -61,7 +61,7 @@ Page.Navigation =
 		
 		
 		//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-		Promise.all([fetch(url), Page.Banner.load()])
+		Promise.all([fetch(url + "index.html"), Page.Banner.load()])
 		
 		.then((response) =>
 		{

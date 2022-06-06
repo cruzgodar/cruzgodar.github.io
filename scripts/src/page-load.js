@@ -89,6 +89,7 @@ Page.load = async function()
 	}
 	
 	
+	
 	setTimeout(() =>
 	{
 		this.Load.FocusEvents.set_up_weird_elements();
@@ -127,7 +128,7 @@ Page.load = async function()
 		Site.Settings.remove_animation();
 	}
 	
-	if (Site.Settings.url_vars["condensed_applets"] === 1 && Site.sitemap[Page.url].parent === "/applets/applets.html")
+	if (Site.Settings.url_vars["condensed_applets"] === 1 && Site.sitemap[Page.url].parent === "/applets/")
 	{
 		Site.Settings.condense_applet();
 	}
@@ -186,9 +187,7 @@ Page.Load =
 	parse_custom_style: function()
 	{
 		let page_name = Page.url.split("/");
-		page_name = page_name[page_name.length - 1];
-		page_name = page_name.split(".");
-		page_name = page_name[0];
+		page_name = page_name[page_name.length - 2];
 		
 		
 		
@@ -234,9 +233,7 @@ Page.Load =
 		return new Promise((resolve, reject) =>
 		{
 			let page_name = Page.url.split("/");
-			page_name = page_name[page_name.length - 1];
-			page_name = page_name.split(".");
-			page_name = page_name[0];
+			page_name = page_name[page_name.length - 2];
 			
 			
 			
@@ -383,9 +380,7 @@ Page.Load =
 				}
 				
 				await promise;
-			}	
-			
-			
+			}
 			
 			resolve();
 		});
