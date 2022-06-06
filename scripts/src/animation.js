@@ -208,7 +208,7 @@ Page.Animate =
 	////////////////////////////////////////////
 	
 	
-	fade_up_in_js: function(element, duration)
+	fade_up_in_js: function(element, duration, target_opacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -218,7 +218,7 @@ Page.Animate =
 			anime({
 				targets: element,
 				marginTop: "0px",
-				opacity: 1,
+				opacity: target_opacity,
 				duration: duration,
 				easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 				complete: resolve
@@ -226,7 +226,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_up_in_css: function(element, duration)
+	fade_up_in_css: function(element, duration, target_opacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -248,7 +248,7 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginTop = 0;
-					element.style.opacity = 1;
+					element.style.opacity = target_opacity;
 					
 					const timeout_id = setTimeout(() =>
 					{
@@ -328,7 +328,7 @@ Page.Animate =
 	
 	
 	
-	fade_down_in_js: function(element, duration)
+	fade_down_in_js: function(element, duration, target_opacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -338,7 +338,7 @@ Page.Animate =
 			anime({
 				targets: element,
 				marginTop: "0px",
-				opacity: 1,
+				opacity: target_opacity,
 				duration: duration,
 				easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 				complete: resolve
@@ -346,7 +346,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_down_in_css: function(element, duration)
+	fade_down_in_css: function(element, duration, target_opacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -367,7 +367,7 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginTop = 0;
-					element.style.opacity = 1;
+					element.style.opacity = target_opacity;
 					
 					const timeout_id = setTimeout(() =>
 					{
@@ -447,7 +447,7 @@ Page.Animate =
 	
 	
 	
-	fade_left_in_js: function(element, duration)
+	fade_left_in_js: function(element, duration, target_opacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -456,7 +456,7 @@ Page.Animate =
 			anime({
 				targets: element,
 				marginLeft: "0px",
-				opacity: 1,
+				opacity: target_opacity,
 				duration: duration,
 				easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 				complete: resolve
@@ -464,7 +464,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_left_in_css: function(element, duration)
+	fade_left_in_css: function(element, duration, target_opacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -484,7 +484,7 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginLeft = 0;
-					element.style.opacity = 1;
+					element.style.opacity = target_opacity;
 					
 					const timeout_id = setTimeout(() =>
 					{
@@ -560,7 +560,7 @@ Page.Animate =
 	
 	
 	
-	fade_right_in_js: function(element, duration)
+	fade_right_in_js: function(element, duration, target_opacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -569,7 +569,7 @@ Page.Animate =
 			anime({
 				targets: element,
 				marginLeft: "0px",
-				opacity: 1,
+				opacity: target_opacity,
 				duration: duration,
 				easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 				complete: resolve
@@ -577,7 +577,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_right_in_css: function(element, duration)
+	fade_right_in_css: function(element, duration, target_opacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -597,7 +597,7 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginLeft = 0;
-					element.style.opacity = 1;
+					element.style.opacity = target_opacity;
 					
 					const timeout_id = setTimeout(() =>
 					{
@@ -673,13 +673,13 @@ Page.Animate =
 	
 	
 	
-	fade_in_js: function(element, duration)
+	fade_in_js: function(element, duration, target_opacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			anime({
 				targets: element,
-				opacity: 1,
+				opacity: target_opacity,
 				duration: duration,
 				easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 				complete: resolve
@@ -687,7 +687,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_in_css: function(element, duration)
+	fade_in_css: function(element, duration, target_opacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -704,7 +704,7 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					element.style.opacity = 1;
+					element.style.opacity = target_opacity;
 					
 					const timeout_id = setTimeout(() =>
 					{

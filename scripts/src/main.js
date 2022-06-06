@@ -77,6 +77,10 @@ Page.set_element_styles = function(query_string, property, value, important = fa
 
 
 
+Site.visted_homepage = false;
+
+
+
 Site.scripts_loaded =
 {
 	"mathjax": false,

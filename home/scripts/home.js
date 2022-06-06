@@ -4,6 +4,19 @@
 	
 	
 	
+	if (Site.visted_homepage)
+	{
+		Page.element.querySelector("#return-scroll-to").scrollIntoView();
+		
+		Page.Banner.opacity = 0;
+		Page.Banner.done_loading = true;
+		Page.banner_element.style.opacity = 0;
+	}
+	
+	Site.visted_homepage = true;
+	
+	
+	
 	setTimeout(() =>
 	{
 		Page.Animate.fade_left(Page.element.querySelector("#cruz-text"), Site.aos_animation_time * .8);

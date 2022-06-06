@@ -12,6 +12,8 @@ Page.Banner =
 
 	file_name: "",
 	file_path: "",
+	
+	opacity: 1,
 
 
 
@@ -163,12 +165,12 @@ Page.Banner =
 		{
 			if (Page.scroll <= Page.Layout.window_height)
 			{
-				const opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
+				this.opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 				
-				try {Page.banner_element.style.opacity = opacity;}
+				try {Page.banner_element.style.opacity = this.opacity}
 				catch(ex) {}
 				
-				if (opacity === 0)
+				if (this.opacity === 0)
 				{
 					this.done_loading = true;
 				}
@@ -181,8 +183,9 @@ Page.Banner =
 			
 			else if (!this.done_loading)
 			{
-				//We need a try block here in case the user refreshes the page and it's way low down for some reason, even though scrollRestoration should be off.
-				try {Page.banner_element.style.opacity = 0;}
+				this.opacity = 0;
+				
+				try {Page.banner_element.style.opacity = 0}
 				catch(ex) {}
 				
 				this.done_loading = true;

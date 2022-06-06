@@ -4,7 +4,7 @@
 
 Site.force_dark_theme_pages =
 [
-	"/gallery/gallery.html"
+	"/gallery/"
 ];
 
 

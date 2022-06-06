@@ -7,6 +7,33 @@ Page.load = async function()
 {
 	Page.element = document.body.querySelector(".page");
 	
+	if ("banner_page" in Page.settings && Page.settings["banner_page"])
+	{
+		Page.banner_element = Page.element.querySelector("#banner");
+		
+		Site.add_style(`
+			#banner
+			{
+				background: url(${Page.Banner.file_path}landscape.${Page.Images.file_extension}) no-repeat center center;
+				background-size: cover;
+			}
+			
+			@media (max-aspect-ratio: 1/1)
+			{
+				#banner
+				{
+					background: url(${Page.Banner.file_path}portrait.${Page.Images.file_extension}) no-repeat center center;
+					background-size: cover;
+				}
+			}
+		`);
+	}
+	
+	else
+	{
+		Page.banner_element = null;
+	}	
+	
 	Page.using_custom_script = true;
 	
 	Page.ready_to_show = false;
@@ -292,38 +319,9 @@ Page.Load =
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			if ("banner_page" in Page.settings && Page.settings["banner_page"])
-			{
-				Page.banner_element = Page.element.querySelector("#banner");
-				
-				Site.add_style(`
-					#banner
-					{
-						background: url(${Page.Banner.file_path}landscape.${Page.Images.file_extension}) no-repeat center center;
-						background-size: cover;
-					}
-					
-					@media (max-aspect-ratio: 1/1)
-					{
-						#banner
-						{
-							background: url(${Page.Banner.file_path}portrait.${Page.Images.file_extension}) no-repeat center center;
-							background-size: cover;
-						}
-					}
-				`);
-			}
+			Page.Footer.Floating.show_footer_menu_button.style.opacity = 0;
 			
-			else
-			{
-				Page.banner_element = null;
-				
-				Page.Footer.Floating.show_footer_menu_button.style.opacity = 0;
-				
-				setTimeout(() => Page.Animate.change_opacity(Page.Footer.Floating.show_footer_menu_button, 1, Site.opacity_animation_time), 10);
-			}
-			
-			
+			setTimeout(() => Page.Animate.change_opacity(Page.Footer.Floating.show_footer_menu_button, 1, Site.opacity_animation_time), 10);
 			
 			if (Site.Settings.url_vars["content_animation"] !== 1)
 			{
@@ -335,7 +333,7 @@ Page.Load =
 					
 					if (Page.banner_element !== null)
 					{
-						promise = Page.Animate.fade_up_in(Page.banner_element, Site.page_animation_time * 2);
+						promise = Page.Animate.fade_up_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
 					}
 				}
 				
@@ -345,7 +343,7 @@ Page.Load =
 					
 					if (Page.banner_element !== null)
 					{
-						promise = Page.Animate.fade_down_in(Page.banner_element, Site.page_animation_time * 2);
+						promise = Page.Animate.fade_down_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
 					}
 				}
 				
@@ -355,7 +353,7 @@ Page.Load =
 					
 					if (Page.banner_element !== null)
 					{
-						promise = Page.Animate.fade_left_in(Page.banner_element, Site.page_animation_time * 2);
+						promise = Page.Animate.fade_left_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
 					}
 				}
 				
@@ -365,7 +363,7 @@ Page.Load =
 					
 					if (Page.banner_element !== null)
 					{
-						promise = Page.Animate.fade_right_in(Page.banner_element, Site.page_animation_time * 2);
+						promise = Page.Animate.fade_right_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
 					}
 				}
 				
@@ -375,7 +373,7 @@ Page.Load =
 					
 					if (Page.banner_element !== null)
 					{
-						promise = Page.Animate.fade_in(Page.banner_element, Site.page_animation_time * 2);
+						promise = Page.Animate.fade_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
 					}
 				}
 				
