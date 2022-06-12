@@ -1940,7 +1940,7 @@ Site.Settings =
 
 
 
-Page.url = decodeURIComponent(Site.Settings.get_url_var("page"));
+Page.url = decodeURIComponent(Site.Settings.get_url_var("page")).replace("index.html", "");
 
 if (Page.url === "null")
 {
