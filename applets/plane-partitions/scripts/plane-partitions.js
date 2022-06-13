@@ -31,6 +31,9 @@
 	
 	const infinite_height = 100;
 	
+	const dimers_only = false;
+	const add_walls = false;
+	
 	
 	
 	let options_numbers =
@@ -70,10 +73,10 @@
 	
 	let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 	
-	wilson_hidden.ctx.fillStyle = "rgb(64, 64, 64)";
+	wilson_hidden.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(64, 64, 64)"
 	wilson_hidden.ctx.fillRect(0, 0, 64, 64);
 	
-	wilson_hidden.ctx.fillStyle = "rgb(128, 128, 128)";
+	wilson_hidden.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(128, 128, 128)"
 	wilson_hidden.ctx.fillRect(4, 4, 56, 56);
 	
 	wilson_hidden.ctx.lineWidth = 6;
@@ -82,10 +85,10 @@
 	
 	let wilson_hidden_2 = new Wilson(Page.element.querySelector("#hidden-canvas-2"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 	
-	wilson_hidden_2.ctx.fillStyle = "rgb(64, 64, 64)";
+	wilson_hidden_2.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(64, 64, 64)"
 	wilson_hidden_2.ctx.fillRect(0, 0, 64, 64);
 	
-	wilson_hidden_2.ctx.fillStyle = "rgb(128, 128, 128)";
+	wilson_hidden_2.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(128, 128, 128)"
 	wilson_hidden_2.ctx.fillRect(4, 4, 56, 56);
 	
 	wilson_hidden_2.ctx.lineWidth = 6;
@@ -94,10 +97,10 @@
 	
 	let wilson_hidden_3 = new Wilson(Page.element.querySelector("#hidden-canvas-3"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 	
-	wilson_hidden_3.ctx.fillStyle = "rgb(32, 32, 32)";
+	wilson_hidden_3.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(32, 32, 32)"
 	wilson_hidden_3.ctx.fillRect(0, 0, 64, 64);
 	
-	wilson_hidden_3.ctx.fillStyle = "rgb(64, 64, 64)";
+	wilson_hidden_3.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(64, 64, 64)"
 	wilson_hidden_3.ctx.fillRect(4, 4, 56, 56);
 	
 	wilson_hidden_3.ctx.lineWidth = 6;
@@ -106,10 +109,10 @@
 	
 	let wilson_hidden_4 = new Wilson(Page.element.querySelector("#hidden-canvas-4"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 	
-	wilson_hidden_4.ctx.fillStyle = "rgb(32, 32, 32)";
+	wilson_hidden_4.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(32, 32, 32)"
 	wilson_hidden_4.ctx.fillRect(0, 0, 64, 64);
 	
-	wilson_hidden_4.ctx.fillStyle = "rgb(64, 64, 64)";
+	wilson_hidden_4.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(64, 64, 64)";
 	wilson_hidden_4.ctx.fillRect(4, 4, 56, 56);
 	
 	wilson_hidden_4.ctx.lineWidth = 6;
@@ -488,6 +491,11 @@
 	}
 	
 	draw_frame();
+	
+	if (dimers_only)
+	{
+		show_dimers();
+	}
 	
 	Page.show();
 	
@@ -962,17 +970,25 @@
 				}
 			}
 			
-			/*
+			
 			//Add walls. Disabled by default.
-			for (let i = 0; i < array.footprint; i++)
+			if (add_walls)
 			{
-				for (let j = 0; j < array.height; j++)
+				for (let i = 0; i < 30; i++)
 				{
-					add_left_wall(array, j, i);
-					add_right_wall(array, i, j);
+					for (let j = 0; j < 30; j++)
+					{
+						add_left_wall(array, j, i);
+						add_right_wall(array, i, j);
+						
+						if (i >= array.footprint || j >= array.footprint)
+						{
+							add_floor(array, i, j);
+						}
+					}
 				}
-			}
-			*/
+			}	
+			
 			
 			array.size = Math.max(array.footprint, array.height);
 			
