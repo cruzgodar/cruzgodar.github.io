@@ -73,10 +73,13 @@
 	
 	let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 	
-	wilson_hidden.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(64, 64, 64)"
+	wilson_hidden.ctx.strokeStyle = "rgb(255, 255, 255)";
+	wilson_hidden.ctx._alpha = 1;
+	
+	wilson_hidden.ctx.fillStyle = "rgba(64, 64, 64, 1)"
 	wilson_hidden.ctx.fillRect(0, 0, 64, 64);
 	
-	wilson_hidden.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(128, 128, 128)"
+	wilson_hidden.ctx.fillStyle = "rgba(128, 128, 128, 1)"
 	wilson_hidden.ctx.fillRect(4, 4, 56, 56);
 	
 	wilson_hidden.ctx.lineWidth = 6;
@@ -85,10 +88,13 @@
 	
 	let wilson_hidden_2 = new Wilson(Page.element.querySelector("#hidden-canvas-2"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 	
-	wilson_hidden_2.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(64, 64, 64)"
+	wilson_hidden_2.ctx.strokeStyle = "rgb(255, 255, 255)";
+	wilson_hidden_2.ctx._alpha = 1;
+	
+	wilson_hidden_2.ctx.fillStyle = "rgba(64, 64, 64, 1)"
 	wilson_hidden_2.ctx.fillRect(0, 0, 64, 64);
 	
-	wilson_hidden_2.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(128, 128, 128)"
+	wilson_hidden_2.ctx.fillStyle = "rgba(128, 128, 128, 1)"
 	wilson_hidden_2.ctx.fillRect(4, 4, 56, 56);
 	
 	wilson_hidden_2.ctx.lineWidth = 6;
@@ -97,10 +103,13 @@
 	
 	let wilson_hidden_3 = new Wilson(Page.element.querySelector("#hidden-canvas-3"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 	
-	wilson_hidden_3.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(32, 32, 32)"
+	wilson_hidden_3.ctx.strokeStyle = "rgb(255, 255, 255)";
+	wilson_hidden_3.ctx._alpha = 1;
+	
+	wilson_hidden_3.ctx.fillStyle = "rgba(32, 32, 32, 1)"
 	wilson_hidden_3.ctx.fillRect(0, 0, 64, 64);
 	
-	wilson_hidden_3.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(64, 64, 64)"
+	wilson_hidden_3.ctx.fillStyle = "rgba(64, 64, 64, 1)"
 	wilson_hidden_3.ctx.fillRect(4, 4, 56, 56);
 	
 	wilson_hidden_3.ctx.lineWidth = 6;
@@ -109,10 +118,13 @@
 	
 	let wilson_hidden_4 = new Wilson(Page.element.querySelector("#hidden-canvas-4"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 	
-	wilson_hidden_4.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(32, 32, 32)"
+	wilson_hidden_4.ctx.strokeStyle = "rgb(255, 255, 255)";
+	wilson_hidden_4.ctx._alpha = 1;
+	
+	wilson_hidden_4.ctx.fillStyle = "rgb(32, 32, 32)"
 	wilson_hidden_4.ctx.fillRect(0, 0, 64, 64);
 	
-	wilson_hidden_4.ctx.fillStyle = dimers_only ? "rgb(0, 0, 0)" : "rgb(64, 64, 64)";
+	wilson_hidden_4.ctx.fillStyle = "rgb(64, 64, 64)";
 	wilson_hidden_4.ctx.fillRect(4, 4, 56, 56);
 	
 	wilson_hidden_4.ctx.lineWidth = 6;
@@ -1095,6 +1107,8 @@
 			
 			await add_new_array(index, new_numbers, type);
 			
+			update_camera_height();
+			
 			resolve();
 		});	
 	}
@@ -1492,7 +1506,7 @@
 		
 		hex_view_camera_pos = [total_array_size + hex_view_camera_offset, total_array_size + total_array_height / 3, total_array_size - hex_view_camera_offset];
 		
-		_2d_view_camera_pos = [hex_view_camera_offset, total_array_size + 10, -hex_view_camera_offset];
+		_2d_view_camera_pos = [hex_view_camera_offset, total_array_size + 10, -hex_view_camera_offset];	
 		
 		if (in_2d_view)
 		{
@@ -1547,7 +1561,7 @@
 				update: () => orthographic_camera.updateProjectionMatrix(),
 				complete: () => currently_animating_camera = false
 			});
-		}
+		}	
 	}
 	
 	
@@ -1584,21 +1598,27 @@
 			
 			
 			
+			//Hide everything not visible by the camera.
+			
+			
 			
 			await new Promise((resolve, reject) =>
 			{
-				let temp_object = {brightness: 127};
-				
 				anime({
-					targets: temp_object,
-					brightness: 255,
+					targets: [wilson_hidden.ctx, wilson_hidden_2.ctx, wilson_hidden_3.ctx, wilson_hidden_4.ctx],
+					strokeStyle: "rgba(255, 255, 255, 1)",
+					_alpha: 0,
 					duration: animation_time / 2,
 					easing: "easeOutQuad",
 					complete: resolve,
 					update: () =>
 					{
-						wilson_hidden.ctx.strokeStyle = `rgb(${temp_object.brightness}, ${temp_object.brightness}, ${temp_object.brightness})`;
+						wilson_hidden.ctx.clearRect(0, 0, 64, 64);
 						
+						wilson_hidden.ctx.fillStyle = `rgba(64, 64, 64, ${wilson_hidden.ctx._alpha})`;
+						wilson_hidden.ctx.fillRect(0, 0, 64, 64);
+						
+						wilson_hidden.ctx.fillStyle = `rgba(128, 128, 128, ${wilson_hidden.ctx._alpha})`;
 						wilson_hidden.ctx.fillRect(4, 4, 56, 56);
 						
 						wilson_hidden.ctx.moveTo(42.7, 21.3);
@@ -1609,8 +1629,12 @@
 						
 						
 						
-						wilson_hidden_2.ctx.strokeStyle = `rgb(${temp_object.brightness}, ${temp_object.brightness}, ${temp_object.brightness})`;
+						wilson_hidden_2.ctx.clearRect(0, 0, 64, 64);
 						
+						wilson_hidden_2.ctx.fillStyle = `rgba(64, 64, 64, ${wilson_hidden_2.ctx._alpha})`;
+						wilson_hidden_2.ctx.fillRect(0, 0, 64, 64);
+						
+						wilson_hidden_2.ctx.fillStyle = `rgba(128, 128, 128, ${wilson_hidden_2.ctx._alpha})`;
 						wilson_hidden_2.ctx.fillRect(4, 4, 56, 56);
 						
 						wilson_hidden_2.ctx.moveTo(21.3, 21.3);
@@ -1621,8 +1645,12 @@
 						
 						
 						
-						wilson_hidden_3.ctx.strokeStyle = `rgb(${temp_object.brightness}, ${temp_object.brightness}, ${temp_object.brightness})`;
+						wilson_hidden_3.ctx.clearRect(0, 0, 64, 64);
 						
+						wilson_hidden_3.ctx.fillStyle = `rgba(32, 32, 32, ${wilson_hidden_3.ctx._alpha})`;
+						wilson_hidden_3.ctx.fillRect(0, 0, 64, 64);
+						
+						wilson_hidden_3.ctx.fillStyle = `rgba(64, 64, 64, ${wilson_hidden_3.ctx._alpha})`;
 						wilson_hidden_3.ctx.fillRect(4, 4, 56, 56);
 						
 						wilson_hidden_3.ctx.moveTo(42.7, 21.3);
@@ -1633,8 +1661,12 @@
 						
 						
 						
-						wilson_hidden_4.ctx.strokeStyle = `rgb(${temp_object.brightness}, ${temp_object.brightness}, ${temp_object.brightness})`;
+						wilson_hidden_4.ctx.clearRect(0, 0, 64, 64);
 						
+						wilson_hidden_4.ctx.fillStyle = `rgba(32, 32, 32, ${wilson_hidden_4.ctx._alpha})`;
+						wilson_hidden_4.ctx.fillRect(0, 0, 64, 64);
+						
+						wilson_hidden_4.ctx.fillStyle = `rgba(64, 64, 64, ${wilson_hidden_4.ctx._alpha})`;
 						wilson_hidden_4.ctx.fillRect(4, 4, 56, 56);
 						
 						wilson_hidden_4.ctx.moveTo(21.3, 21.3);
@@ -1679,18 +1711,21 @@
 			
 			await new Promise((resolve, reject) =>
 			{
-				let temp_object = {brightness: 255};
-				
 				anime({
-					targets: temp_object,
-					brightness: 128,
+					targets: [wilson_hidden.ctx, wilson_hidden_2.ctx, wilson_hidden_3.ctx, wilson_hidden_4.ctx],
+					strokeStyle: "rgba(255, 255, 255, 0)",
+					_alpha: 1,
 					duration: animation_time / 2,
 					easing: "easeOutQuad",
 					complete: resolve,
 					update: () =>
 					{
-						wilson_hidden.ctx.strokeStyle = `rgb(${temp_object.brightness}, ${temp_object.brightness}, ${temp_object.brightness})`;
+						wilson_hidden.ctx.clearRect(0, 0, 64, 64);
 						
+						wilson_hidden.ctx.fillStyle = `rgba(64, 64, 64, ${wilson_hidden.ctx._alpha})`;
+						wilson_hidden.ctx.fillRect(0, 0, 64, 64);
+						
+						wilson_hidden.ctx.fillStyle = `rgba(128, 128, 128, ${wilson_hidden.ctx._alpha})`;
 						wilson_hidden.ctx.fillRect(4, 4, 56, 56);
 						
 						wilson_hidden.ctx.moveTo(42.7, 21.3);
@@ -1701,8 +1736,12 @@
 						
 						
 						
-						wilson_hidden_2.ctx.strokeStyle = `rgb(${temp_object.brightness}, ${temp_object.brightness}, ${temp_object.brightness})`;
+						wilson_hidden_2.ctx.clearRect(0, 0, 64, 64);
 						
+						wilson_hidden_2.ctx.fillStyle = `rgba(64, 64, 64, ${wilson_hidden_2.ctx._alpha})`;
+						wilson_hidden_2.ctx.fillRect(0, 0, 64, 64);
+						
+						wilson_hidden_2.ctx.fillStyle = `rgba(128, 128, 128, ${wilson_hidden_2.ctx._alpha})`;
 						wilson_hidden_2.ctx.fillRect(4, 4, 56, 56);
 						
 						wilson_hidden_2.ctx.moveTo(21.3, 21.3);
@@ -1710,23 +1749,15 @@
 						wilson_hidden_2.ctx.stroke();
 						
 						cube_texture_2.needsUpdate = true;
-					}
-				});
-				
-				
-				
-				let temp_object_2 = {brightness: 255};
-				
-				anime({
-					targets: temp_object_2,
-					brightness: 64,
-					duration: animation_time / 2,
-					easing: "easeOutQuad",
-					complete: resolve,
-					update: () =>
-					{
-						wilson_hidden_3.ctx.strokeStyle = `rgb(${temp_object_2.brightness}, ${temp_object_2.brightness}, ${temp_object_2.brightness})`;
 						
+						
+						
+						wilson_hidden_3.ctx.clearRect(0, 0, 64, 64);
+						
+						wilson_hidden_3.ctx.fillStyle = `rgba(32, 32, 32, ${wilson_hidden_3.ctx._alpha})`;
+						wilson_hidden_3.ctx.fillRect(0, 0, 64, 64);
+						
+						wilson_hidden_3.ctx.fillStyle = `rgba(64, 64, 64, ${wilson_hidden_3.ctx._alpha})`;
 						wilson_hidden_3.ctx.fillRect(4, 4, 56, 56);
 						
 						wilson_hidden_3.ctx.moveTo(42.7, 21.3);
@@ -1737,8 +1768,12 @@
 						
 						
 						
-						wilson_hidden_4.ctx.strokeStyle = `rgb(${temp_object_2.brightness}, ${temp_object_2.brightness}, ${temp_object_2.brightness})`;
+						wilson_hidden_4.ctx.clearRect(0, 0, 64, 64);
 						
+						wilson_hidden_4.ctx.fillStyle = `rgba(32, 32, 32, ${wilson_hidden_4.ctx._alpha})`;
+						wilson_hidden_4.ctx.fillRect(0, 0, 64, 64);
+						
+						wilson_hidden_4.ctx.fillStyle = `rgba(64, 64, 64, ${wilson_hidden_4.ctx._alpha})`;
 						wilson_hidden_4.ctx.fillRect(4, 4, 56, 56);
 						
 						wilson_hidden_4.ctx.moveTo(21.3, 21.3);
