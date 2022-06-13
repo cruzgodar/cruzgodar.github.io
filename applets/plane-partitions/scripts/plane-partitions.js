@@ -27,7 +27,7 @@
 	
 	const asymptote_lightness = .6;
 	const cube_lightness = .4;
-	const floor_lightness = .2;
+	const floor_lightness = .4;
 	
 	const infinite_height = 100;
 	
@@ -70,10 +70,10 @@
 	
 	let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 	
-	wilson_hidden.ctx.fillStyle = "rgb(63, 63, 63)";
+	wilson_hidden.ctx.fillStyle = "rgb(64, 64, 64)";
 	wilson_hidden.ctx.fillRect(0, 0, 64, 64);
 	
-	wilson_hidden.ctx.fillStyle = "rgb(127, 127, 127)";
+	wilson_hidden.ctx.fillStyle = "rgb(128, 128, 128)";
 	wilson_hidden.ctx.fillRect(4, 4, 56, 56);
 	
 	wilson_hidden.ctx.lineWidth = 6;
@@ -82,13 +82,37 @@
 	
 	let wilson_hidden_2 = new Wilson(Page.element.querySelector("#hidden-canvas-2"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 	
-	wilson_hidden_2.ctx.fillStyle = "rgb(63, 63, 63)";
+	wilson_hidden_2.ctx.fillStyle = "rgb(64, 64, 64)";
 	wilson_hidden_2.ctx.fillRect(0, 0, 64, 64);
 	
-	wilson_hidden_2.ctx.fillStyle = "rgb(127, 127, 127)";
+	wilson_hidden_2.ctx.fillStyle = "rgb(128, 128, 128)";
 	wilson_hidden_2.ctx.fillRect(4, 4, 56, 56);
 	
 	wilson_hidden_2.ctx.lineWidth = 6;
+	
+	
+	
+	let wilson_hidden_3 = new Wilson(Page.element.querySelector("#hidden-canvas-3"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
+	
+	wilson_hidden_3.ctx.fillStyle = "rgb(32, 32, 32)";
+	wilson_hidden_3.ctx.fillRect(0, 0, 64, 64);
+	
+	wilson_hidden_3.ctx.fillStyle = "rgb(64, 64, 64)";
+	wilson_hidden_3.ctx.fillRect(4, 4, 56, 56);
+	
+	wilson_hidden_3.ctx.lineWidth = 6;
+	
+	
+	
+	let wilson_hidden_4 = new Wilson(Page.element.querySelector("#hidden-canvas-4"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
+	
+	wilson_hidden_4.ctx.fillStyle = "rgb(32, 32, 32)";
+	wilson_hidden_4.ctx.fillRect(0, 0, 64, 64);
+	
+	wilson_hidden_4.ctx.fillStyle = "rgb(64, 64, 64)";
+	wilson_hidden_4.ctx.fillRect(4, 4, 56, 56);
+	
+	wilson_hidden_4.ctx.lineWidth = 6;
 	
 	
 	
@@ -393,6 +417,14 @@
 	cube_texture_2.minFilter = THREE.LinearFilter;
 	cube_texture_2.magFilter = THREE.NearestFilter;
 	
+	const floor_texture = new THREE.CanvasTexture(wilson_hidden_3.canvas);
+	floor_texture.minFilter = THREE.LinearFilter;
+	floor_texture.magFilter = THREE.NearestFilter;
+	
+	const floor_texture_2 = new THREE.CanvasTexture(wilson_hidden_4.canvas);
+	floor_texture_2.minFilter = THREE.LinearFilter;
+	floor_texture_2.magFilter = THREE.NearestFilter;
+	
 	const cube_geometry = new THREE.BoxGeometry();
 	
 	
@@ -402,6 +434,8 @@
 	
 	
 	const floor_geometry = new THREE.BoxGeometry(1, .001, 1);
+	const wall_left_geometry = new THREE.BoxGeometry(.001, 1, 1);
+	const wall_right_geometry = new THREE.BoxGeometry(1, 1, .001);
 	
 	
 	const ambient_light = new THREE.AmbientLight(0xffffff, .2);
@@ -928,6 +962,18 @@
 				}
 			}
 			
+			/*
+			//Add walls. Disabled by default.
+			for (let i = 0; i < array.footprint; i++)
+			{
+				for (let j = 0; j < array.height; j++)
+				{
+					add_left_wall(array, j, i);
+					add_right_wall(array, i, j);
+				}
+			}
+			*/
+			
 			array.size = Math.max(array.footprint, array.height);
 			
 			total_array_footprint += array.footprint + 1;
@@ -1174,12 +1220,12 @@
 	function add_floor(array, x, z, h = 0, s = 0, v = floor_lightness)
 	{
 		const materials = [
-			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: cube_texture_2, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: cube_texture, transparent: true, opacity: 0})
+			new THREE.MeshStandardMaterial({map: floor_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture_2, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture_2, transparent: true, opacity: 0})
 		];
 
 		materials.forEach(material => material.color.setHSL(h, s, v));
@@ -1192,6 +1238,56 @@
 		floor.position.set(x - (array.footprint - 1) / 2, -.5 - .0005, z - (array.footprint - 1) / 2);
 		
 		return floor;
+	}
+	
+	
+	
+	function add_left_wall(array, y, z, h = 0, s = 0, v = floor_lightness)
+	{
+		const materials = [
+			new THREE.MeshStandardMaterial({map: floor_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture_2, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture_2, transparent: true, opacity: 0})
+		];
+
+		materials.forEach(material => material.color.setHSL(h, s, v));
+		
+		const wall = new THREE.Mesh(wall_left_geometry, materials);
+		
+		array.cube_group.add(wall);
+		
+		//This aligns the thing correctly.
+		wall.position.set(-.5 - .0005 - (array.footprint - 1) / 2, y, z - (array.footprint - 1) / 2);
+		
+		return wall;
+	}
+	
+	
+	
+	function add_right_wall(array, x, y, h = 0, s = 0, v = floor_lightness)
+	{
+		const materials = [
+			new THREE.MeshStandardMaterial({map: floor_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture_2, transparent: true, opacity: 0}),
+			new THREE.MeshStandardMaterial({map: floor_texture_2, transparent: true, opacity: 0})
+		];
+
+		materials.forEach(material => material.color.setHSL(h, s, v));
+		
+		const wall = new THREE.Mesh(wall_right_geometry, materials);
+		
+		array.cube_group.add(wall);
+		
+		//This aligns the thing correctly.
+		wall.position.set(x - (array.footprint - 1) / 2, y, -.5 - .0005 - (array.footprint - 1) / 2);
+		
+		return wall;
 	}
 	
 	
@@ -1506,6 +1602,30 @@
 						wilson_hidden_2.ctx.stroke();
 						
 						cube_texture_2.needsUpdate = true;
+						
+						
+						
+						wilson_hidden_3.ctx.strokeStyle = `rgb(${temp_object.brightness}, ${temp_object.brightness}, ${temp_object.brightness})`;
+						
+						wilson_hidden_3.ctx.fillRect(4, 4, 56, 56);
+						
+						wilson_hidden_3.ctx.moveTo(42.7, 21.3);
+						wilson_hidden_3.ctx.lineTo(21.3, 42.7);
+						wilson_hidden_3.ctx.stroke();
+						
+						floor_texture.needsUpdate = true;
+						
+						
+						
+						wilson_hidden_4.ctx.strokeStyle = `rgb(${temp_object.brightness}, ${temp_object.brightness}, ${temp_object.brightness})`;
+						
+						wilson_hidden_4.ctx.fillRect(4, 4, 56, 56);
+						
+						wilson_hidden_4.ctx.moveTo(21.3, 21.3);
+						wilson_hidden_4.ctx.lineTo(42.7, 42.7);
+						wilson_hidden_4.ctx.stroke();
+						
+						floor_texture_2.needsUpdate = true;
 					}
 				});
 			});
@@ -1547,7 +1667,7 @@
 				
 				anime({
 					targets: temp_object,
-					brightness: 127,
+					brightness: 128,
 					duration: animation_time / 2,
 					easing: "easeOutQuad",
 					complete: resolve,
@@ -1574,6 +1694,42 @@
 						wilson_hidden_2.ctx.stroke();
 						
 						cube_texture_2.needsUpdate = true;
+					}
+				});
+				
+				
+				
+				let temp_object_2 = {brightness: 255};
+				
+				anime({
+					targets: temp_object_2,
+					brightness: 64,
+					duration: animation_time / 2,
+					easing: "easeOutQuad",
+					complete: resolve,
+					update: () =>
+					{
+						wilson_hidden_3.ctx.strokeStyle = `rgb(${temp_object_2.brightness}, ${temp_object_2.brightness}, ${temp_object_2.brightness})`;
+						
+						wilson_hidden_3.ctx.fillRect(4, 4, 56, 56);
+						
+						wilson_hidden_3.ctx.moveTo(42.7, 21.3);
+						wilson_hidden_3.ctx.lineTo(21.3, 42.7);
+						wilson_hidden_3.ctx.stroke();
+						
+						floor_texture.needsUpdate = true;
+						
+						
+						
+						wilson_hidden_4.ctx.strokeStyle = `rgb(${temp_object_2.brightness}, ${temp_object_2.brightness}, ${temp_object_2.brightness})`;
+						
+						wilson_hidden_4.ctx.fillRect(4, 4, 56, 56);
+						
+						wilson_hidden_4.ctx.moveTo(21.3, 21.3);
+						wilson_hidden_4.ctx.lineTo(42.7, 42.7);
+						wilson_hidden_4.ctx.stroke();
+						
+						floor_texture_2.needsUpdate = true;
 					}
 				});
 			});
