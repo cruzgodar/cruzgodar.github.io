@@ -31,8 +31,8 @@
 	
 	const infinite_height = 100;
 	
-	const dimers_only = false;
 	const add_walls = false;
+	const wall_size = 30;
 	
 	
 	
@@ -504,11 +504,6 @@
 	
 	draw_frame();
 	
-	if (dimers_only)
-	{
-		show_dimers();
-	}
-	
 	Page.show();
 	
 	
@@ -876,6 +871,8 @@
 				numbers: numbers,
 				cubes: [],
 				floor: [],
+				left_wall: [],
+				right_wall: [],
 				
 				cube_group: null,
 				
@@ -933,8 +930,6 @@
 			array.cube_group = new THREE.Object3D();
 			scene.add(array.cube_group);
 			
-			array.cube_group.position.set(array.center_offset, 0, -array.center_offset);
-			
 			array.cube_group.rotation.y = rotation_y;
 			
 			
@@ -983,15 +978,25 @@
 			}
 			
 			
+			
 			//Add walls. Disabled by default.
 			if (add_walls)
 			{
-				for (let i = 0; i < 30; i++)
+				array.left_wall = new Array(wall_size);
+				array.right_wall = new Array(wall_size);
+				
+				for (let i = 0; i < wall_size; i++)
 				{
-					for (let j = 0; j < 30; j++)
+					array.left_wall[i] = new Array(wall_size);
+					array.right_wall[i] = new Array(wall_size);
+				}
+					
+				for (let i = 0; i < wall_size; i++)
+				{
+					for (let j = 0; j < wall_size; j++)
 					{
-						add_left_wall(array, j, i);
-						add_right_wall(array, i, j);
+						array.left_wall[i][j] = add_left_wall(array, j, i);
+						array.right_wall[i][j] = add_right_wall(array, i, j);
 						
 						if (i >= array.footprint || j >= array.footprint)
 						{
@@ -999,7 +1004,7 @@
 						}
 					}
 				}
-			}	
+			}
 			
 			
 			array.size = Math.max(array.footprint, array.height);
@@ -1024,7 +1029,7 @@
 				orthographic_camera.updateProjectionMatrix();
 			}
 			
-			else
+			else if (!add_walls)
 			{
 				update_camera_height(true);
 			}
@@ -1240,7 +1245,7 @@
 		
 		array.cube_group.add(cube);
 		
-		cube.position.set(x - (array.footprint - 1) / 2, y, z - (array.footprint - 1) / 2);
+		cube.position.set(x, y, z);
 		
 		return cube;
 	}
@@ -1265,7 +1270,7 @@
 		array.cube_group.add(floor);
 		
 		//This aligns the thing correctly.
-		floor.position.set(x - (array.footprint - 1) / 2, -.5 - .0005, z - (array.footprint - 1) / 2);
+		floor.position.set(x, -.5 - .0005, z);
 		
 		return floor;
 	}
@@ -1290,7 +1295,7 @@
 		array.cube_group.add(wall);
 		
 		//This aligns the thing correctly.
-		wall.position.set(-.5 - .0005 - (array.footprint - 1) / 2, y, z - (array.footprint - 1) / 2);
+		wall.position.set(-.5 - .0005, y, z);
 		
 		return wall;
 	}
@@ -1315,7 +1320,7 @@
 		array.cube_group.add(wall);
 		
 		//This aligns the thing correctly.
-		wall.position.set(x - (array.footprint - 1) / 2, y, -.5 - .0005 - (array.footprint - 1) / 2);
+		wall.position.set(x, y, -.5 - .0005);
 		
 		return wall;
 	}
@@ -1638,6 +1643,33 @@
 						}
 					}
 				}
+				
+				
+				
+				if (add_walls)
+				{
+					for (let i = 0; i < array.footprint; i++)
+					{
+						let j = 0;
+						
+						for (let k = 0; k < array.cubes[i][j].length; k++)
+						{
+							targets.push(array.left_wall[i][k].material[0]);
+						}
+					}
+					
+					
+					
+					for (let j = 0; j < array.footprint; j++)
+					{
+						let i = 0;
+						
+						for (let k = 0; k < array.cubes[i][j].length; k++)
+						{
+							targets.push(array.right_wall[j][k].material[4]);
+						}
+					}
+				}	
 			});
 			
 			targets.forEach(material => material.opacity = 0);
@@ -1788,6 +1820,33 @@
 						if (array.cubes[i][j].length !== 0)
 						{
 							targets.push(array.floor[i][j].material[2]);
+						}
+					}
+				}
+				
+				
+				
+				if (add_walls)
+				{
+					for (let i = 0; i < array.footprint; i++)
+					{
+						let j = 0;
+						
+						for (let k = 0; k < array.cubes[i][j].length; k++)
+						{
+							targets.push(array.left_wall[i][k].material[0]);
+						}
+					}
+					
+					
+					
+					for (let j = 0; j < array.footprint; j++)
+					{
+						let i = 0;
+						
+						for (let k = 0; k < array.cubes[i][j].length; k++)
+						{
+							targets.push(array.right_wall[j][k].material[4]);
 						}
 					}
 				}
