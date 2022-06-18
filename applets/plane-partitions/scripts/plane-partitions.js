@@ -1598,7 +1598,49 @@
 			
 			
 			
+			let targets = [];
+			
 			//Hide everything not visible by the camera.
+			arrays.forEach(array =>
+			{
+				for (let i = 0; i < array.footprint; i++)
+				{
+					for (let j = 0; j < array.footprint; j++)
+					{
+						for (let k = 0; k < array.cubes[i][j].length; k++)
+						{
+							//Remove the top face.
+							if (k < array.cubes[i][j].length - 1)
+							{
+								targets.push(array.cubes[i][j][k].material[2]);
+							}
+							
+							//The left face.
+							if (i < array.footprint - 1 && array.cubes[i + 1][j].length >= k + 1)
+							{
+								targets.push(array.cubes[i][j][k].material[4]);
+							}
+							
+							//The right face.
+							if (j < array.footprint - 1 && array.cubes[i][j + 1].length >= k + 1)
+							{
+								targets.push(array.cubes[i][j][k].material[0]);
+							}
+							
+							targets.push(array.cubes[i][j][k].material[1]);
+							targets.push(array.cubes[i][j][k].material[3]);
+							targets.push(array.cubes[i][j][k].material[5]);
+						}
+						
+						if (array.cubes[i][j].length !== 0)
+						{
+							targets.push(array.floor[i][j].material[2]);
+						}
+					}
+				}
+			});
+			
+			targets.forEach(material => material.opacity = 0);
 			
 			
 			
@@ -1709,6 +1751,50 @@
 			
 			
 			
+			let targets = [];
+			
+			//Show everything not visible by the camera.
+			arrays.forEach(array =>
+			{
+				for (let i = 0; i < array.footprint; i++)
+				{
+					for (let j = 0; j < array.footprint; j++)
+					{
+						for (let k = 0; k < array.cubes[i][j].length; k++)
+						{
+							//Remove the top face.
+							if (k < array.cubes[i][j].length - 1)
+							{
+								targets.push(array.cubes[i][j][k].material[2]);
+							}
+							
+							//The left face.
+							if (i < array.footprint - 1 && array.cubes[i + 1][j].length >= k + 1)
+							{
+								targets.push(array.cubes[i][j][k].material[4]);
+							}
+							
+							//The right face.
+							if (j < array.footprint - 1 && array.cubes[i][j + 1].length >= k + 1)
+							{
+								targets.push(array.cubes[i][j][k].material[0]);
+							}
+							
+							targets.push(array.cubes[i][j][k].material[1]);
+							targets.push(array.cubes[i][j][k].material[3]);
+							targets.push(array.cubes[i][j][k].material[5]);
+						}
+						
+						if (array.cubes[i][j].length !== 0)
+						{
+							targets.push(array.floor[i][j].material[2]);
+						}
+					}
+				}
+			});
+			
+			
+			
 			await new Promise((resolve, reject) =>
 			{
 				anime({
@@ -1785,7 +1871,7 @@
 				});
 			});
 			
-			
+			targets.forEach(material => material.opacity = 1);
 			
 			currently_animating_camera = false;
 			
