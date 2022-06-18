@@ -930,6 +930,11 @@
 			array.cube_group = new THREE.Object3D();
 			scene.add(array.cube_group);
 			
+			if (!add_walls)
+			{
+				array.cube_group.position.set(array.center_offset, 0, -array.center_offset);
+			}
+			
 			array.cube_group.rotation.y = rotation_y;
 			
 			
