@@ -1245,7 +1245,15 @@
 		
 		array.cube_group.add(cube);
 		
-		cube.position.set(x, y, z);
+		if (add_walls)
+		{
+			cube.position.set(x, y, z);
+		}
+		
+		else
+		{
+			cube.position.set(x - (array.footprint - 1) / 2, y, z - (array.footprint - 1) / 2);
+		}	
 		
 		return cube;
 	}
@@ -1270,7 +1278,15 @@
 		array.cube_group.add(floor);
 		
 		//This aligns the thing correctly.
-		floor.position.set(x, -.5 - .0005, z);
+		if (add_walls)
+		{
+			floor.position.set(x, -.5 - .0005, z);
+		}
+		
+		else
+		{
+			floor.position.set(x - (array.footprint - 1) / 2, -.5 - .0005, z - (array.footprint - 1) / 2);
+		}
 		
 		return floor;
 	}
@@ -1295,7 +1311,15 @@
 		array.cube_group.add(wall);
 		
 		//This aligns the thing correctly.
-		wall.position.set(-.5 - .0005, y, z);
+		if (add_walls)
+		{
+			wall.position.set(-.5 - .0005, y, z);
+		}
+		
+		else
+		{
+			wall.position.set(-.5 - .0005 - (array.footprint - 1) / 2, y, z - (array.footprint - 1) / 2);
+		}
 		
 		return wall;
 	}
@@ -1320,7 +1344,15 @@
 		array.cube_group.add(wall);
 		
 		//This aligns the thing correctly.
-		wall.position.set(x, y, -.5 - .0005);
+		if (add_walls)
+		{
+			wall.position.set(x, y, -.5 - .0005);
+		}
+		
+		else
+		{
+			wall.position.set(x - (array.footprint - 1) / 2, y, -.5 - .0005 - (array.footprint - 1) / 2);
+		}	
 		
 		return wall;
 	}
