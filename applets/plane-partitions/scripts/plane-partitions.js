@@ -227,7 +227,18 @@
 		}
 		
 		section_elements[visible_section].forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time))
-	});	
+	});
+	
+	
+	
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	
+	resolution_input_element.addEventListener("input", () =>
+	{
+		resolution = parseInt(resolution_input_element.value || 2000);
+		
+		renderer.setSize(resolution, resolution, false);
+	});
 	
 	
 	
