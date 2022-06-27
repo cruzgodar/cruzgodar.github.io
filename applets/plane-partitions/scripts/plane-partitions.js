@@ -291,27 +291,11 @@
 	
 	
 	
-	let add_pp_button_element = Page.element.querySelector("#add-pp-button");
+	let add_array_button_element = Page.element.querySelector("#add-array-button");
 	
-	add_pp_button_element.addEventListener("click", () =>
+	add_array_button_element.addEventListener("click", () =>
 	{
-		let plane_partition = parse_array(array_data_textarea_element.value);
-		
-		if (verify_pp(plane_partition))
-		{
-			add_new_array(arrays.length, plane_partition, "pp");
-		}
-	});
-	
-	
-	
-	let add_tableau_button_element = Page.element.querySelector("#add-tableau-button");
-	
-	add_tableau_button_element.addEventListener("click", () =>
-	{
-		let tableau = parse_array(array_data_textarea_element.value);
-		
-		add_new_array(arrays.length, tableau, "tableau");
+		add_new_array(arrays.length, parse_array(array_data_textarea_element.value));
 	});
 	
 	
@@ -434,7 +418,6 @@
 	
 	const loader = new THREE.TextureLoader();
 	
-	//const cube_texture = loader.load("/applets/plane-partitions/graphics/cube-face.png");
 	const cube_texture = new THREE.CanvasTexture(wilson_hidden.canvas);
 	cube_texture.minFilter = THREE.LinearFilter;
 	cube_texture.magFilter = THREE.NearestFilter;
@@ -854,8 +837,6 @@
 			{
 				if (plane_partition[i][j] < plane_partition[i + 1][j] || plane_partition[i][j] < plane_partition[i][j + 1])
 				{
-					display_error(`Not a valid plane partition! Wrong inequality at (${i}, ${j})`);
-					
 					return false;
 				}
 			}
@@ -873,12 +854,11 @@
 	
 	
 	
-	function add_new_array(index, numbers, type)
+	function add_new_array(index, numbers)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
 			let array = {
-				type: type,
 				numbers: numbers,
 				cubes: [],
 				floor: [],
@@ -978,8 +958,7 @@
 					}
 					
 					
-					
-					else if (type !== "tableau")
+					else
 					{
 						array.cubes[i][j] = new Array(infinite_height);
 						
@@ -989,7 +968,7 @@
 						{
 							array.cubes[i][j][k] = add_cube(array, j, k, i, 0, 0, asymptote_lightness);
 						}
-					}
+					}	
 				}
 			}
 			
@@ -1112,21 +1091,9 @@
 			
 			
 			
-			let type = array.type;
-			
-			if (type === "pp")
-			{
-				if (!verify_pp(new_numbers))
-				{
-					return;
-				}
-			}
-			
-			
-			
 			await remove_array(index);
 			
-			await add_new_array(index, new_numbers, type);
+			await add_new_array(index, new_numbers);
 			
 			update_camera_height();
 			
@@ -2388,7 +2355,7 @@
 		
 		let array = arrays[index];
 		
-		if (array.type !== "pp")
+		if (!verify_pp(array.numbers))
 		{
 			display_error(`Array at index ${index} is not a plane partition!`);
 			
@@ -2522,7 +2489,7 @@
 			}
 		}
 		
-		let output_array = await add_new_array(index + 1, empty_array, "tableau");
+		let output_array = await add_new_array(index + 1, empty_array);
 		
 		await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 		
@@ -2666,15 +2633,6 @@
 		
 		let array = arrays[index];
 		
-		if (array.type !== "tableau")
-		{
-			display_error(`Array at index ${index} is not a tableau!`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
 		let tableau = _.cloneDeep(array.numbers);
 		
 		let zigzag_paths = [];
@@ -2748,7 +2706,7 @@
 		
 		let plane_partition = _.cloneDeep(empty_array);
 		
-		let output_array = await add_new_array(index + 1, empty_array, "pp");
+		let output_array = await add_new_array(index + 1, empty_array);
 		
 		
 		
@@ -2971,7 +2929,7 @@
 		
 		let array = arrays[index];
 		
-		if (array.type !== "pp")
+		if (!verify_pp(array.numbers))
 		{
 			display_error(`Array at index ${index} is not a plane partition!`);
 			
@@ -3223,8 +3181,6 @@
 		
 		update_camera_height(true);
 		
-		array.type = "tableau";
-		
 		currently_running_algorithm = false;
 	}
 	
@@ -3253,15 +3209,6 @@
 		
 		
 		let array = arrays[index];
-		
-		if (array.type !== "tableau")
-		{
-			display_error(`Array at index ${index} is not a tableau!`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
 		
 		let tableau = array.numbers;
 		
@@ -3520,8 +3467,6 @@
 		
 		update_camera_height(true);
 		
-		array.type = "pp";
-		
 		currently_running_algorithm = false;
 	}
 	
@@ -3551,7 +3496,7 @@
 		
 		let array = arrays[index];
 		
-		if (array.type !== "pp")
+		if (!verify_pp(array.numbers))
 		{
 			display_error(`Array at index ${index} is not a plane partition!`);
 			
@@ -3925,15 +3870,6 @@
 		
 		let array = arrays[index];
 		
-		if (array.type !== "tableau")
-		{
-			display_error(`Array at index ${index} is not a tableau!`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
 		let tableau = array.numbers;
 		
 		let q_paths = [];
@@ -4048,7 +3984,7 @@
 			}
 		}
 		
-		let output_array = await add_new_array(index + 1, empty_array, "pp");
+		let output_array = await add_new_array(index + 1, empty_array);
 		
 		let plane_partition = output_array.numbers;
 		
