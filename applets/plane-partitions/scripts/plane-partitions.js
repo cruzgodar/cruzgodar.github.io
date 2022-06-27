@@ -393,6 +393,15 @@
 	
 	
 	
+	let rsk_button_element = Page.element.querySelector("#rsk-button");
+	
+	rsk_button_element.addEventListener("click", () =>
+	{
+		rsk(parseInt(algorithm_index_input_element.value));
+	});
+	
+	
+	
 	let need_download = false;
 	
 	let download_button_element = Page.element.querySelector("#download-button");
@@ -836,6 +845,24 @@
 			for (let j = 0; j < plane_partition[i].length - 1; j++)
 			{
 				if (plane_partition[i][j] < plane_partition[i + 1][j] || plane_partition[i][j] < plane_partition[i][j + 1])
+				{
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	
+	
+	function verify_ssyt(ssyt)
+	{
+		for (let i = 0; i < ssyt.length - 1; i++)
+		{
+			for (let j = 0; j < ssyt[i].length - 1; j++)
+			{
+				if ((ssyt[i + 1][j] !== 0 && ssyt[i][j] >= ssyt[i + 1][j]) || (ssyt[i][j + 1] !== 0 && ssyt[i][j] > ssyt[i][j + 1]))
 				{
 					return false;
 				}
@@ -4198,6 +4225,131 @@
 		
 		
 		
+		remove_array(index);
+		
+		currently_running_algorithm = false;
+	}
+	
+	
+	
+	async function rsk(index)
+	{
+		if (currently_running_algorithm)
+		{
+			return;
+		}
+		
+		currently_running_algorithm = true;
+		
+		
+		
+		if (index >= arrays.length || index < 0)
+		{
+			display_error(`No array at index ${index}`);
+			
+			currently_running_algorithm = false;
+			
+			return;
+		}
+		
+		if (index === arrays.length - 1)
+		{
+			display_error(`No second array at index ${index + 1} (RSK requires two adjacent SSYT of the same shape)`);
+			
+			currently_running_algorithm = false;
+			
+			return;
+		}
+		
+		
+		
+		let p_array = arrays[index];
+		let q_array = arrays[index + 1];
+		
+		if (!verify_ssyt(p_array.numbers))
+		{
+			display_error(`Array at index ${index} is not an SSYT!`);
+			
+			currently_running_algorithm = false;
+			
+			return;
+		}
+		
+		if (!verify_ssyt(q_array.numbers))
+		{
+			display_error(`Array at index ${index + 1} is not an SSYT!`);
+			
+			currently_running_algorithm = false;
+			
+			return;
+		}
+		
+		
+		
+		let p_ssyt = p_array.numbers;
+		let q_ssyt = q_array.numbers;
+		
+		if (p_ssyt.length !== q_ssyt.length)
+		{
+			display_error(`The SSYT do not have the same shape!`);
+			
+			currently_running_algorithm = false;
+			
+			return;
+		}
+		
+		for (let i = 0; i < p_ssyt.length; i++)
+		{
+			for (let j = 0; j < p_ssyt.length; j++)
+			{
+				if ((p_ssyt[i][j] === 0 && q_ssyt[i][j] !== 0) || (p_ssyt[i][j] !== 0 && q_ssyt[i][j] === 0))
+				{
+					display_error(`The SSYT do not have the same shape!`);
+					
+					currently_running_algorithm = false;
+					
+					return;
+				}
+			}	
+		}
+		
+		
+		
+		let p_coordinates = [];
+		let q_coordinates = [];
+		
+		//Remove any color that's here.
+		for (let i = 0; i < p_ssyt.length; i++)
+		{
+			for (let j = 0; j < p_ssyt.length; j++)
+			{
+				if (p_ssyt[i][j] === Infinity || q_ssyt[i][j] === Infinity)
+				{
+					display_error(`The SSYT contain infinite values, which is not allowed in RSK!`);
+					
+					currently_running_algorithm = false;
+				
+					return;
+				}
+				
+				for (let k = 0; k < p_ssyt[i][j]; k++)
+				{
+					p_coordinates.push([i, j, k]);
+				}
+				
+				for (let k = 0; k < q_ssyt[i][j]; k++)
+				{
+					q_coordinates.push([i, j, k]);
+				}
+			}
+		}
+		
+		uncolor_cubes(p_array, p_coordinates);
+		uncolor_cubes(q_array, q_coordinates);
+		
+		return;
+		
+		remove_array(index);
 		remove_array(index);
 		
 		currently_running_algorithm = false;
