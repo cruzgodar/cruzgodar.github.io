@@ -23,7 +23,7 @@
 	
 	let resolution = 2000;
 	
-	let animation_time = 500;
+	let animation_time = 1250;
 	
 	const asymptote_lightness = .6;
 	const cube_lightness = .4;
@@ -497,17 +497,27 @@
 	
 	
 	
+	/*
 	let plane_partition = parse_array(array_data_textarea_element.value);
 	edit_array_textarea_element.value = array_data_textarea_element.value;
+	add_new_array(arrays.length, plane_partition, "pp");
+	*/
 	
-	if (verify_pp(plane_partition))
-	{
-		add_new_array(arrays.length, plane_partition, "pp");
-	}
+	
+	
+	add_new_array(arrays.length, parse_array(`1 1 2 2
+2 3
+3`));
+
+	add_new_array(arrays.length, parse_array(`1 1 1 3
+2 2
+3`));
 	
 	draw_frame();
 	
 	Page.show();
+	
+	rsk(0);
 	
 	
 	
@@ -2194,7 +2204,7 @@
 	
 	
 	//Moves cubes from one array to another and changes their group.
-	function move_cubes(source_array, source_coordinates, target_array, target_coordinates)
+	function move_cubes(source_array, source_coordinates, target_array, target_coordinates, update_cube_array = true)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -2222,25 +2232,66 @@
 				easing: "easeInOutQuad",
 				complete: () =>
 				{
-					target_coordinates.forEach((xyz, index) =>
+					if (update_cube_array)
 					{
-						if (target_array.numbers[xyz[0]][xyz[1]] === Infinity)
+						//This is necessary in case the source and target arrays are the same.
+						let source_cubes = source_coordinates.map(xyz => source_array.cubes[xyz[0]][xyz[1]][xyz[2]]);
+						
+						target_coordinates.forEach((xyz, index) =>
 						{
-							console.error("Cannot move cubes to an infinite height");
-						}
-						
-						if (target_array.cubes[xyz[0]][xyz[1]][xyz[2]])
+							
+							if (target_array.numbers[xyz[0]][xyz[1]] === Infinity)
+							{
+								console.error("Cannot move cubes to an infinite height");
+							}
+							
+							if (target_array.cubes[xyz[0]][xyz[1]][xyz[2]] && !(source_coordinates.contains(xyz)))
+							{
+								console.warn(`Moving a cube to a location that's already occupied: ${xyz}. This is probably not what you want to do.`);
+							}
+							
+							target_array.cubes[xyz[0]][xyz[1]][xyz[2]] = source_cubes[index];
+							
+							source_array.cubes[source_coordinates[index][0]][source_coordinates[index][1]][source_coordinates[index][2]] = null;
+						});
+					}
+					
+					/*
+					console.log("Source array");
+					
+					for (let i = 0; i < source_array.cubes.length; i++)
+					{
+						for (let j = 0; j < source_array.cubes[i].length; j++)
 						{
-							console.warn(`Moving a cube to a location that's already occupied: ${xyz}. This is probably not what you want to do.`);
+							for (let k = 0; k < source_array.cubes[i][j].length; k++)
+							{
+								if (source_array.cubes[i][j][k] !== null)
+								{
+									console.log(i, j, k);
+								}
+							}
 						}
-						
-						target_array.cubes[xyz[0]][xyz[1]][xyz[2]] = source_array.cubes[source_coordinates[index][0]][source_coordinates[index][1]][source_coordinates[index][2]];
-						
-						source_array.cubes[source_coordinates[index][0]][source_coordinates[index][1]][source_coordinates[index][2]] = null;
-					});
+					}
+					
+					console.log("Target array");
+					
+					for (let i = 0; i < target_array.cubes.length; i++)
+					{
+						for (let j = 0; j < target_array.cubes[i].length; j++)
+						{
+							for (let k = 0; k < target_array.cubes[i][j].length; k++)
+							{
+								if (target_array.cubes[i][j][k] !== null)
+								{
+									console.log(i, j, k);
+								}
+							}
+						}
+					}
+					*/
 					
 					resolve();
-				}
+				}	
 			});
 		});
 	}
@@ -2926,8 +2977,6 @@
 		remove_array(index);
 		
 		currently_running_algorithm = false;
-		
-		console.log("hi!");
 	}
 	
 	
@@ -4318,6 +4367,10 @@
 		let p_coordinates = [];
 		let q_coordinates = [];
 		
+		let array_size = 0;
+		
+		let num_hues = 0;
+		
 		//Remove any color that's here.
 		for (let i = 0; i < p_ssyt.length; i++)
 		{
@@ -4332,6 +4385,11 @@
 					return;
 				}
 				
+				if (p_ssyt[i][j] !== 0)
+				{
+					num_hues++;
+				}
+				
 				for (let k = 0; k < p_ssyt[i][j]; k++)
 				{
 					p_coordinates.push([i, j, k]);
@@ -4341,13 +4399,206 @@
 				{
 					q_coordinates.push([i, j, k]);
 				}
+				
+				array_size = Math.max(Math.max(array_size, p_ssyt[i][j]), q_ssyt[i][j]);
 			}
+		}
+		
+		if (array_size === 0)
+		{
+			display_error(`The SSYT are empty!`);
+			
+			currently_running_algorithm = false;
+			
+			return;
 		}
 		
 		uncolor_cubes(p_array, p_coordinates);
 		uncolor_cubes(q_array, q_coordinates);
 		
-		return;
+		
+		
+		let empty_array = new Array(array_size);
+		
+		for (let i = 0; i < array_size; i++)
+		{
+			empty_array[i] = new Array(array_size);
+			
+			for (let j = 0; j < array_size; j++)
+			{
+				empty_array[i][j] = 0;
+			}
+		}
+		
+		let output_array = await add_new_array(index + 2, empty_array);
+		
+		
+		
+		//Start building up the entries in w. The first thing to do is to undo the insertion operations in P, using the entries in Q to ensure they're in the right order. The most recently added entry is the rightmost largest number in Q.
+		let w = [];
+		
+		let hue_index = 0;
+		
+		while (q_ssyt[0][0] !== 0)
+		{
+			let hue = hue_index / num_hues * 6/7;
+			
+			let max_entry = 0;
+			let row = 0;
+			let col = 0;
+			
+			for (let i = 0; i < q_ssyt.length; i++)
+			{
+				let j = q_ssyt.length - 1;
+				
+				while (j >= 0 && q_ssyt[i][j] === 0)
+				{
+					j--;
+				}
+				
+				if (j >= 0)
+				{
+					max_entry = Math.max(max_entry, q_ssyt[i][j]);
+				}
+			}
+			
+			for (let i = 0; i < q_ssyt.length; i++)
+			{
+				let j = q_ssyt.length - 1;
+				
+				while (j >= 0 && q_ssyt[i][j] === 0)
+				{
+					j--;
+				}
+				
+				if (q_ssyt[i][j] === max_entry)
+				{
+					row = i;
+					col = j;
+					break;
+				}
+			}
+			
+			
+			
+			//Now row and col are the coordinates of the most recently added element. We just need to un-insert the corresponding element from P.
+			let p_source_coordinates_local = [];
+			let p_target_coordinates_local = [];
+			let p_source_coordinates_external = [];
+			let p_target_coordinates_external = [];
+			let p_coordinates_to_delete = [];
+			
+			let q_source_coordinates_external = [];
+			let q_target_coordinates_external = [];
+			let q_coordinates_to_delete = [];
+			
+			let i = row;
+			let j = col;
+			let p_entry = p_ssyt[i][j];
+			let q_entry = q_ssyt[i][j];
+			
+			let p_coordinate_path = [[i, j]];
+			
+			
+			
+			while (i !== 0)
+			{
+				//Find the rightmost element in the row above that's strictly smaller than this.
+				let new_j = p_ssyt.length - 1;
+				
+				while (p_ssyt[i - 1][new_j] === 0 || p_entry <= p_ssyt[i - 1][new_j])
+				{
+					new_j--;
+				}
+				
+				for (let k = 0; k < p_entry; k++)
+				{
+					p_source_coordinates_local.push([i, j, k]);
+					p_target_coordinates_local.push([i - 1, new_j, k]);
+				}
+				
+				i--;
+				j = new_j;
+				p_entry = p_ssyt[i][j];
+				
+				p_coordinate_path.push([i, j]);
+			}
+			
+			console.log(p_coordinate_path, p_source_coordinates_local, p_target_coordinates_local);
+			
+			//Now we're at the top row. The height of the stack (i.e. the variable entry) determines the column of the box to increment in the array, and the height of the stack in Q determines the row. We'll animate this by moving the top box from P and Q into their places in the first row and column, respectively, then sliding them together into place.
+			for (let k = 0; k < p_entry - 1; k++)
+			{
+				p_coordinates_to_delete.push([i, j, k]);
+			}
+			
+			for (let k = 0; k < q_entry - 1; k++)
+			{
+				q_coordinates_to_delete.push([row, col, k]);
+			}
+			
+			let height = empty_array[q_entry - 1][p_entry - 1] + 1;
+			
+			p_source_coordinates_external.push([i, j, p_entry - 1]);
+			p_target_coordinates_external.push([0, p_entry - 1, height]);
+			
+			q_source_coordinates_external.push([row, col, q_entry - 1]);
+			q_target_coordinates_external.push([q_entry - 1, 0, height]);
+			
+			
+			
+			color_cubes(q_array, q_coordinates_to_delete, hue);
+			color_cubes(q_array, q_source_coordinates_external, hue);
+			color_cubes(p_array, p_coordinates_to_delete, hue);
+			color_cubes(p_array, p_source_coordinates_external, hue);
+			await color_cubes(p_array, p_source_coordinates_local, hue);
+			
+			
+			
+			delete_cubes(p_array, p_coordinates_to_delete);
+			delete_cubes(q_array, q_coordinates_to_delete);
+			
+			move_cubes(q_array, q_source_coordinates_external, output_array, q_target_coordinates_external);
+			move_cubes(p_array, p_source_coordinates_external, output_array, p_target_coordinates_external);
+			await move_cubes(p_array, p_source_coordinates_local, p_array, p_target_coordinates_local);
+			
+			
+			
+			//Update all the numbers.
+			
+			q_ssyt[row][col] = 0;
+			
+			for (let k = p_coordinate_path.length - 1; k > 0; k--)
+			{
+				p_ssyt[p_coordinate_path[k][0]][p_coordinate_path[k][1]] = p_ssyt[p_coordinate_path[k - 1][0]][p_coordinate_path[k - 1][1]];
+			}
+			
+			p_ssyt[row][col] = 0;
+			
+			uncolor_cubes(p_array, p_target_coordinates_local);
+			
+			
+			
+			//Collapse the boxes in the array into one.
+			move_cubes(output_array, [[0, p_entry - 1, height]], output_array, [[q_entry - 1, p_entry - 1, height]], false);
+			await move_cubes(output_array, [[q_entry - 1, 0, height]], output_array, [[q_entry - 1, p_entry - 1, height]]);
+			
+			//Delete one of the cubes (instantly) and drop the other.
+			delete_cubes(output_array, [[0, p_entry - 1, height]]);
+			
+			await lower_cubes(output_array, [[q_entry - 1, p_entry - 1, height]]);
+			
+			empty_array[q_entry - 1][p_entry - 1]++;
+			
+			
+			
+			hue_index++;
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+		}
+		
+		
+		
 		
 		remove_array(index);
 		remove_array(index);
