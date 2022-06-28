@@ -32,7 +32,9 @@
 	
 	Plane partitions can be made <dfn>asymptotic</dfn> to a shape. When adding or editing an array, replace a number with a caret (^) to give that square infinite height, represented with slightly lighter boxes.
 	
-	Plane partitions are a frequently studied object, and a handful of correspondences involving them have been discovered. Three of them have been implemented here, under the Algorithms section. All three take a plane partition and convert it to a <dfn>tableau</dfn> of the same shape: a tableau is a collection of numbers with no restriction on box heights decreasing in any direction. The inverse algorithms take a tableau and convert it back to a plane partition. Pak and Sulzgruber are independently discovered correspondences with wildly different descriptions, but amazingly produce the same results, while Hillman-Grassl is a unique correspondence all its own.
+	Plane partitions are a frequently studied object, and a handful of correspondences involving them have been discovered. A lot of them have been implemented here, under the Algorithms section. The first three take a plane partition and convert it to a <dfn>tableau</dfn> of the same shape: a tableau is a collection of numbers with no restriction on box heights decreasing in any direction. The inverse algorithms take a tableau and convert it back to a plane partition. Pak and Sulzgruber are independently discovered correspondences with wildly different descriptions, but amazingly produce the same results, while Hillman-Grassl is a unique correspondence all its own. RSK is something else entirely: it takes two semi-standard Young tableaux, or SSYT, and converts them to a regular tableau. An SSYT is similar to a plane partition, but rather than the heights needing to decrease along rows and columns, they must <em>increase</em>, and the increasing that happens on columns must be strict (i.e. the heights always increase and never remain the same).
+	
+	Due to the complexity of the algorithms and the difficulty in getting them to work for those unused to plane partitions, applets like this, or both, I&#x2019;ve included a few examples in the final section so that pretty pictures are easy to find without too much tinkering.
 
 !end-text-block
 
@@ -56,6 +58,8 @@
 		remove-array Remove Array
 		
 		algorithms Algorithms
+		
+		examples Examples
 
 	!end-dropdown	
 </div>
@@ -208,6 +212,22 @@
 			sulzgruber l Sulzgruber
 			
 			sulzgruber-inverse l Sulzgruber Inverse
+			
+			rsk l RSK
+			
+		!end-text-buttons
+	</div>
+	
+	
+	
+	<div class="examples-section category-section">
+		!begin-text-buttons
+			
+			example-1 l Hillman-Grassl and Back
+			
+			example-2 l Pak and Sulzgruber
+			
+			example-3 l RSK
 			
 		!end-text-buttons
 	</div>

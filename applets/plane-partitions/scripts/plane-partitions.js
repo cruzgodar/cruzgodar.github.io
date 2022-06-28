@@ -23,7 +23,7 @@
 	
 	let resolution = 2000;
 	
-	let animation_time = 1250;
+	let animation_time = 600;
 	
 	const asymptote_lightness = .6;
 	const cube_lightness = .4;
@@ -160,7 +160,8 @@
 		"add-array": Page.element.querySelectorAll(".add-array-section"),
 		"edit-array": Page.element.querySelectorAll(".edit-array-section"),
 		"remove-array": Page.element.querySelectorAll(".remove-array-section"),
-		"algorithms": Page.element.querySelectorAll(".algorithms-section")
+		"algorithms": Page.element.querySelectorAll(".algorithms-section"),
+		"examples": Page.element.querySelectorAll(".examples-section")
 	}
 	
 	const category_holder_element = Page.element.querySelector("#category-holder");
@@ -280,7 +281,7 @@
 	
 	maximum_speed_checkbox_element.addEventListener("input", () =>
 	{
-		animation_time = maximum_speed_checkbox_element.checked ? 50 : 500;
+		animation_time = maximum_speed_checkbox_element.checked ? 60 : 600;
 	});
 	
 	
@@ -402,6 +403,29 @@
 	
 	
 	
+	let example_1_button_element = Page.element.querySelector("#example-1-button");
+	
+	example_1_button_element.addEventListener("click", () =>
+	{
+		run_example(1);
+	});
+	
+	let example_2_button_element = Page.element.querySelector("#example-2-button");
+	
+	example_2_button_element.addEventListener("click", () =>
+	{
+		run_example(2);
+	});
+	
+	let example_3_button_element = Page.element.querySelector("#example-3-button");
+	
+	example_3_button_element.addEventListener("click", () =>
+	{
+		run_example(3);
+	});
+	
+	
+	
 	let need_download = false;
 	
 	let download_button_element = Page.element.querySelector("#download-button");
@@ -497,27 +521,13 @@
 	
 	
 	
-	/*
 	let plane_partition = parse_array(array_data_textarea_element.value);
 	edit_array_textarea_element.value = array_data_textarea_element.value;
 	add_new_array(arrays.length, plane_partition, "pp");
-	*/
-	
-	
-	
-	add_new_array(arrays.length, parse_array(`1 1 2 2
-2 3
-3`));
-
-	add_new_array(arrays.length, parse_array(`1 1 1 3
-2 2
-3`));
 	
 	draw_frame();
 	
 	Page.show();
-	
-	rsk(0);
 	
 	
 	
@@ -711,7 +721,90 @@
 			}	
 		}
 		
+		return output_string;
+	}
+	
+	
+	
+	function generate_random_ssyt()
+	{
+		let side_length = Math.floor(Math.random() * 3) + 2;
 		
+		let ssyt = new Array(side_length);
+		
+		
+		
+		for (let i = 0; i < side_length; i++)
+		{
+			ssyt[i] = new Array(side_length);
+		}
+		
+		ssyt[0][0] = Math.floor(Math.random() * 2);
+		
+		for (let j = 1; j < side_length; j++)
+		{
+			ssyt[0][j] = ssyt[0][j - 1] + Math.floor(Math.random() * 2);
+		}
+		
+		for (let i = 1; i < side_length; i++)
+		{
+			ssyt[i][0] = ssyt[i - 1][0] + 1 + Math.floor(Math.random() * 2);
+			
+			for (let j = 1; j < side_length; j++)
+			{
+				ssyt[i][j] = Math.max(ssyt[i][j - 1], ssyt[i - 1][j] + 1) + Math.floor(Math.random() * 2);
+			}
+		}
+		
+		
+		
+		//Now convert to a string.
+		
+		let output_string = "";
+		
+		for (let i = 0; i < side_length; i++)
+		{
+			let first_nonzero = false;
+			
+			for (let j = 0; j < side_length; j++)
+			{
+				let entry = ssyt[i][j];
+				
+				if (entry === 0)
+				{
+					if (first_nonzero)
+					{
+						output_string += "   ";
+					}
+					
+					else
+					{
+						output_string += ` 0 `;
+					}	
+				}
+				
+				else if (entry < 10)
+				{
+					output_string += ` ${entry} `;
+					
+					first_nonzero = true;
+				}
+				
+				else
+				{
+					output_string += `${entry} `;
+					
+					first_nonzero = true;
+				}
+			}
+			
+			if (i !== side_length - 1)
+			{
+				output_string += "\n";
+			}	
+		}
+		
+		console.log(output_string);
 		
 		return output_string;
 	}
@@ -2374,1368 +2467,242 @@
 	
 	
 	
-	async function hillman_grassl(index)
+	function run_example(index)
 	{
-		if (currently_running_algorithm)
+		return new Promise(async (resolve, reject) =>
 		{
-			return;
-		}
-		
-		currently_running_algorithm = true;
-		
-		
-		
-		if (index >= arrays.length || index < 0)
-		{
-			display_error(`No array at index ${index}`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
-		
-		
-		let array = arrays[index];
-		
-		if (!verify_pp(array.numbers))
-		{
-			display_error(`Array at index ${index} is not a plane partition!`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
-		
-		
-		let plane_partition = _.cloneDeep(array.numbers);
-		
-		let coordinates = [];
-		
-		//Remove any color that's here.
-		for (let i = 0; i < plane_partition.length; i++)
-		{
-			for (let j = 0; j < plane_partition.length; j++)
+			if (index === 1 || index === 2)
 			{
-				if (plane_partition[i][j] !== Infinity)
+				while (arrays.length > 1)
 				{
-					for (let k = 0; k < plane_partition[i][j]; k++)
-					{
-						coordinates.push([i, j, k]);
-					}
-				}	
-			}
-		}
-		
-		uncolor_cubes(array, coordinates);
-		
-		
-		
-		let column_starts = new Array(plane_partition.length);
-		
-		for (let i = 0; i < plane_partition.length; i++)
-		{
-			let j = 0;
-			
-			while (j < plane_partition.length && plane_partition[j][i] === Infinity)
-			{
-				j++;
-			}
-			
-			column_starts[i] = j;
-		}
-		
-		
-		
-		let row_starts = new Array(plane_partition.length);
-		
-		for (let i = 0; i < plane_partition.length; i++)
-		{
-			let j = 0;
-			
-			while (j < plane_partition.length && plane_partition[i][j] === Infinity)
-			{
-				j++;
-			}
-			
-			row_starts[i] = j;
-		}
-		
-		
-		
-		let zigzag_paths = [];
-		
-		while (true)
-		{
-			//Find the right-most nonzero entry at the top of its column.
-			let starting_col = plane_partition[0].length - 1;
-			
-			while (starting_col >= 0 && column_starts[starting_col] < plane_partition.length && plane_partition[column_starts[starting_col]][starting_col] === 0)
-			{
-				starting_col--;
-			}
-			
-			if (starting_col < 0 || column_starts[starting_col] === plane_partition.length)
-			{
-				break;
-			}
-			
-			
-			
-			let current_row = column_starts[starting_col];
-			let current_col = starting_col;
-			
-			let path = [[current_row, current_col, plane_partition[current_row][current_col] - 1]];
-			
-			while (true)
-			{
-				if (current_row < plane_partition.length - 1 && plane_partition[current_row + 1][current_col] === plane_partition[current_row][current_col])
-				{
-					current_row++;
+					await remove_array(1);
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 				}
 				
-				else if (current_col > 0 && plane_partition[current_row][current_col - 1] !== Infinity)
+				if (arrays.length === 0)
 				{
-					current_col--;
+					let plane_partition = parse_array(generate_random_plane_partition());
+					edit_array_textarea_element.value = array_data_textarea_element.value;
+					await add_new_array(arrays.length, plane_partition);
+				}
+				
+				else if (!verify_pp(arrays[0].numbers))
+				{
+					await remove_array(0);
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+					
+					let plane_partition = parse_array(generate_random_plane_partition());
+					edit_array_textarea_element.value = array_data_textarea_element.value;
+					await add_new_array(arrays.length, plane_partition);
+				}
+				
+				
+				
+				if (index === 1)
+				{
+					await hillman_grassl(0);
+					
+					await new Promise((resolve, reject) => setTimeout(resolve, 3 * animation_time));
+					
+					await hillman_grassl_inverse(0);
 				}
 				
 				else
 				{
-					break;
+					await pak(0);
+					
+					await new Promise((resolve, reject) => setTimeout(resolve, 3 * animation_time));
+					
+					await sulzgruber_inverse(0);
+				}	
+				
+				resolve();
+			}
+			
+			
+			//To-do: make this RSK inverse followed by RSK.
+			/*
+			else if (index === 3)
+			{
+				while (arrays.length > 2)
+				{
+					await remove_array(2);
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 				}
 				
-				path.push([current_row, current_col, plane_partition[current_row][current_col] - 1]);
-			}
-			
-			
-			
-			for (let i = 0; i < path.length; i++)
-			{
-				plane_partition[path[i][0]][path[i][1]]--;
-			}
-			
-			zigzag_paths.push(path);
-		}
-		
-		
-		
-		let empty_array = new Array(plane_partition.length);
-		
-		for (let i = 0; i < plane_partition.length; i++)
-		{
-			empty_array[i] = new Array(plane_partition.length);
-			
-			for (let j = 0; j < plane_partition.length; j++)
-			{
-				empty_array[i][j] = plane_partition[i][j] === Infinity ? Infinity : 0;
-			}
-		}
-		
-		let output_array = await add_new_array(index + 1, empty_array);
-		
-		await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-		
-		
-		
-		//Now we'll animate those paths actually decrementing, one-by-one.
-		for (let i = 0; i < zigzag_paths.length; i++)
-		{
-			let hue = i / zigzag_paths.length * 6/7;
-			
-			await color_cubes(array, zigzag_paths[i], hue);
-			
-			
-			
-			//Lift all the cubes up. There's no need to do this if we're in the 2d view.
-			await raise_cubes(array, zigzag_paths[i], array.height);
-			
-			
-			
-			let top = total_array_footprint - array.partial_footprint_sum - 1;
-			let left = array.partial_footprint_sum - array.footprint;
-			
-			//Now we actually delete the cubes.
-			for (let j = 0; j < zigzag_paths[i].length; j++)
-			{
-				array.numbers[zigzag_paths[i][j][0]][zigzag_paths[i][j][1]]--;
-				
-				if (in_2d_view)
+				if (arrays.length === 0)
 				{
-					draw_single_cell_2d_view_text(array, zigzag_paths[i][j][0], zigzag_paths[i][j][1], top, left);
-				}	
+					let ssyt = parse_array(generate_random_ssyt());
+					await add_new_array(arrays.length, ssyt);
+				}
+				
+				if (arrays.length === 1)
+				{
+					let ssyt = parse_array(generate_random_ssyt());
+					await add_new_array(arrays.length, ssyt);
+				}
+				
+				if (!verify_ssyt(arrays[0].numbers))
+				{
+					await remove_array(0);
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+					
+					let ssyt = parse_array(generate_random_ssyt());
+					await add_new_array(arrays.length, ssyt);
+				}
+				
+				if (!verify_ssyt(arrays[0].numbers))
+				{
+					await remove_array(0);
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+					
+					let ssyt = parse_array(generate_random_ssyt());
+					await add_new_array(arrays.length, ssyt);
+				}
+				
+				
+				
+				await rsk(0);
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+				
+				resolve();
 			}
-			
-			recalculate_heights(array);
-			
-			
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 5));
-			
-			//Find the pivot and rearrange the shape into a hook.
-			let pivot = [zigzag_paths[i][zigzag_paths[i].length - 1][0], zigzag_paths[i][0][1]];
-			
-			let target_coordinates = [];
-			
-			let target_height = output_array.height + 1;
-			
-			//This is the vertical part of the hook.
-			for (let j = column_starts[pivot[1]]; j <= pivot[0]; j++)
-			{
-				target_coordinates.push([j, pivot[1], target_height]);
-			}
-			
-			let pivot_coordinates = target_coordinates[target_coordinates.length - 1];
-			
-			//And this is the horizontal part.
-			for (let j = pivot[1] - 1; j >= row_starts[pivot[0]]; j--)
-			{
-				target_coordinates.push([pivot[0], j, target_height]);
-			}
-			
-			await move_cubes(array, zigzag_paths[i], output_array, target_coordinates);
-			
-			
-			
-			//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
-			target_coordinates = [];
-			
-			for (let j = pivot[0] - 1; j >= column_starts[pivot[1]]; j--)
-			{
-				target_coordinates.push([j, pivot[1], target_height]);
-			}
-			
-			delete_cubes(output_array, target_coordinates);
-			
-			target_coordinates = [];
-			
-			for (let j = pivot[1] - 1; j >= row_starts[pivot[0]]; j--)
-			{
-				target_coordinates.push([pivot[0], j, target_height]);
-			}
-			
-			delete_cubes(output_array, target_coordinates);
-			
-			
-			
-			await lower_cubes(output_array, [pivot_coordinates]);
-			
-			
-			
-			top = total_array_footprint - output_array.partial_footprint_sum - 1;
-			left = output_array.partial_footprint_sum - output_array.footprint;
-			
-			output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]++;
-			
-			recalculate_heights(output_array);
-			
-			if (in_2d_view)
-			{
-				draw_single_cell_2d_view_text(output_array, pivot_coordinates[0], pivot_coordinates[1], top, left);
-			}
-			
-			output_array.height = Math.max(output_array.height, output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]);
-			
-			output_array.size = Math.max(output_array.size, output_array.height);
-			
-			
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-		}
-		
-		
-		
-		remove_array(index);
-		
-		currently_running_algorithm = false;
+			*/
+		});
 	}
 	
 	
 	
-	async function hillman_grassl_inverse(index)
+	function hillman_grassl(index)
 	{
-		if (currently_running_algorithm)
+		return new Promise(async (resolve, reject) =>
 		{
-			return;
-		}
-		
-		currently_running_algorithm = true;
-		
-		
-		
-		if (index >= arrays.length || index < 0)
-		{
-			display_error(`No array at index ${index}`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
-		
-		
-		let array = arrays[index];
-		
-		let tableau = _.cloneDeep(array.numbers);
-		
-		let zigzag_paths = [];
-		
-		
-		
-		let coordinates = [];
-		
-		//Remove any color that's here.
-		for (let i = 0; i < tableau.length; i++)
-		{
-			for (let j = 0; j < tableau.length; j++)
+			if (currently_running_algorithm)
 			{
-				if (tableau[i][j] !== Infinity)
-				{
-					for (let k = 0; k < tableau[i][j]; k++)
-					{
-						coordinates.push([i, j, k]);
-					}
-				}
-			}
-		}
-		
-		uncolor_cubes(array, coordinates);
-		
-		
-		
-		let column_starts = new Array(tableau.length);
-		
-		for (let i = 0; i < tableau.length; i++)
-		{
-			let j = 0;
-			
-			while (j < tableau.length && tableau[j][i] === Infinity)
-			{
-				j++;
+				reject();
+				return;
 			}
 			
-			column_starts[i] = j;
-		}
-		
-		
-		
-		let row_starts = new Array(tableau.length);
-		
-		for (let i = 0; i < tableau.length; i++)
-		{
-			let j = 0;
+			currently_running_algorithm = true;
 			
-			while (j < tableau.length && tableau[i][j] === Infinity)
+			
+			
+			if (index >= arrays.length || index < 0)
 			{
-				j++;
-			}
-			
-			row_starts[i] = j;
-		}
-			
-		
-		
-		let empty_array = new Array(tableau.length);
-		
-		for (let i = 0; i < tableau.length; i++)
-		{
-			empty_array[i] = new Array(tableau.length);
-			
-			for (let j = 0; j < tableau.length; j++)
-			{
-				empty_array[i][j] = tableau[i][j] === Infinity ? Infinity : 0;
-			}
-		}
-		
-		let plane_partition = _.cloneDeep(empty_array);
-		
-		let output_array = await add_new_array(index + 1, empty_array);
-		
-		
-		
-		//Loop through the tableau in weirdo lex order and reassemble the paths.
-		for (let j = 0; j < tableau.length; j++)
-		{
-			for (let i = tableau.length - 1; i >= column_starts[j]; i--)
-			{
-				while (tableau[i][j] !== 0)
-				{
-					let path = [];
-					
-					let current_row = i;
-					let current_col = row_starts[i];
-					
-					while (current_row >= 0)
-					{
-						//Go up at the last possible place with a matching entry.
-						let k = current_col;
-						
-						if (current_row !== 0)
-						{
-							while (plane_partition[current_row][k] !== plane_partition[current_row - 1][k] && k < j)
-							{
-								k++;
-							}
-						}
-						
-						else
-						{
-							k = j;
-						}
-						
-						//Add all of these boxes.
-						for (let l = current_col; l <= k; l++)
-						{
-							path.push([current_row, l, plane_partition[current_row][l]]);
-						}
-						
-						if (current_row - 1 >= column_starts[k])
-						{
-							current_row--;
-							current_col = k;
-						}
-						
-						else
-						{
-							break;
-						}		
-					}
-					
-					
-					
-					for (let k = 0; k < path.length; k++)
-					{
-						plane_partition[path[k][0]][path[k][1]]++;
-					}
-					
-					zigzag_paths.push([path, [i, j, tableau[i][j] - 1]]);
-					
-					tableau[i][j]--;
-				}
-			}
-		}
-		
-		
-		
-		await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
-		
-		
-		
-		//Now we'll animate those paths actually incrementing, one-by-one.
-		for (let i = 0; i < zigzag_paths.length; i++)
-		{
-			let hue = i / zigzag_paths.length * 6/7;
-			
-			await color_cubes(array, [zigzag_paths[i][1]], hue);
-			
-			
-			
-			let row = zigzag_paths[i][1][0];
-			let col = zigzag_paths[i][1][1];
-			let height = array.size;
-			
-			//Add a bunch of cubes corresponding to the hook that this thing is a part of.
-			for (let j = column_starts[col]; j < row; j++)
-			{
-				array.cubes[j][col][height] = add_cube(array, col, height, j);
-				array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
-			}
-			
-			for (let j = row_starts[row]; j < col; j++)
-			{
-				array.cubes[row][j][height] = add_cube(array, j, height, row);
-				array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+				display_error(`No array at index ${index}`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
 			}
 			
 			
 			
-			await raise_cubes(array, [zigzag_paths[i][1]], height);
+			let array = arrays[index];
+			
+			if (!verify_pp(array.numbers))
+			{
+				display_error(`Array at index ${index} is not a plane partition!`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
 			
 			
+			
+			let plane_partition = _.cloneDeep(array.numbers);
 			
 			let coordinates = [];
 			
-			for (let j = row - 1; j >= column_starts[col]; j--)
+			//Remove any color that's here.
+			for (let i = 0; i < plane_partition.length; i++)
 			{
-				coordinates.push([j, col, height]);
-			}
-			
-			let promise_1 = reveal_cubes(array, coordinates);
-			
-			coordinates = [];
-			
-			for (let j = col - 1; j >= row_starts[row]; j--)
-			{
-				coordinates.push([row, j, height]);
-			}
-			
-			let promise_2 = reveal_cubes(array, coordinates);
-			
-			await Promise.all([promise_1, promise_2]);
-			
-			
-			
-			//The coordinates now need to be in a different order to match the zigzag path.
-			coordinates = [];
-			
-			for (let j = row_starts[row]; j < col; j++)
-			{
-				coordinates.push([row, j, height]);
-			}
-			
-			coordinates.push([row, col, array.numbers[row][col] - 1]);
-			
-			for (let j = row - 1; j >= column_starts[col]; j--)
-			{
-				coordinates.push([j, col, height]);
-			}
-			
-			let target_coordinates = zigzag_paths[i][0];
-			
-			let target_height = output_array.height + 1;
-			
-			target_coordinates.forEach(entry => entry[2] = target_height);
-			
-			array.numbers[row][col]--;
-			
-			recalculate_heights(array);
-			
-			if (in_2d_view)
-			{
-				let top = total_array_footprint - array.partial_footprint_sum - 1;
-				let left = array.partial_footprint_sum - array.footprint;
-				
-				draw_single_cell_2d_view_text(array, row, col, top, left);
-			}
-			
-			await move_cubes(array, coordinates, output_array, target_coordinates);
-			
-			
-			
-			await lower_cubes(output_array, target_coordinates);
-			
-			target_coordinates.forEach((entry) =>
-			{
-				output_array.numbers[entry[0]][entry[1]]++;
-			});
-			
-			recalculate_heights(output_array);
-			
-			if (in_2d_view)
-			{
-				let top = total_array_footprint - output_array.partial_footprint_sum - 1;
-				let left = output_array.partial_footprint_sum - output_array.footprint;
-				
-				target_coordinates.forEach((entry) =>
+				for (let j = 0; j < plane_partition.length; j++)
 				{
-					draw_single_cell_2d_view_text(output_array, entry[0], entry[1], top, left)
-				});
-			}
-			
-			
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
-		}
-		
-		
-		
-		remove_array(index);
-		
-		currently_running_algorithm = false;
-	}
-	
-	
-	
-	async function pak(index)
-	{
-		if (currently_running_algorithm)
-		{
-			return;
-		}
-		
-		currently_running_algorithm = true;
-		
-		
-		
-		if (index >= arrays.length || index < 0)
-		{
-			display_error(`No array at index ${index}`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
-		
-		
-		let array = arrays[index];
-		
-		if (!verify_pp(array.numbers))
-		{
-			display_error(`Array at index ${index} is not a plane partition!`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
-		let plane_partition = array.numbers;
-		
-		
-		
-		if (!in_2d_view)
-		{
-			await show_2d_view();
-		}
-		
-		
-		
-		let coordinates = [];
-		
-		//Remove any color that's here.
-		for (let i = 0; i < plane_partition.length; i++)
-		{
-			for (let j = 0; j < plane_partition.length; j++)
-			{
-				if (plane_partition[i][j] !== Infinity)
-				{
-					for (let k = 0; k < plane_partition[i][j]; k++)
+					if (plane_partition[i][j] !== Infinity)
 					{
-						coordinates.push([i, j, k]);
-					}
-				}	
-			}
-		}
-		
-		await uncolor_cubes(array, coordinates);
-		
-		
-		
-		let num_corners = array.footprint * array.footprint;
-		
-		
-		
-		let hue_index = 0;
-		
-		//Get outer corners by just scanning through the array forwards.
-		for (let row = 0; row < array.footprint; row++)
-		{
-			for (let col = 0; col < array.footprint; col++)
-			{
-				if (plane_partition[row][col] === Infinity)
-				{
-					let coordinates = array.cubes[row][col].map((cube, index) => [row, col, index]);
-					
-					await delete_cubes(array, coordinates, true);
-					
-					delete_floor(array, [[row, col]]);
-					
-					array.cubes[row][col] = [];
-					
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-					
-					continue;
-				}
-				
-				//Highlight this diagonal.
-				let diagonal_coordinates = [];
-				
-				let i = 0;
-				
-				while (row + i < array.footprint && col + i < array.footprint)
-				{
-					diagonal_coordinates.push([row + i, col + i, plane_partition[row + i][col + i] - 1]);
-					
-					i++;
-				}
-				
-				
-				
-				i = diagonal_coordinates[0][0];
-				let j = diagonal_coordinates[0][1];
-				
-				let coordinates_to_color = [];
-				
-				for (let k = plane_partition[i][j] - 2; k >= 0; k--)
-				{
-					coordinates_to_color.push([i, j, k]);
-				}
-				
-				color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
-				
-				
-				
-				coordinates_to_color = [];
-				
-				diagonal_coordinates.forEach(coordinate =>
-				{
-					if (coordinate[2] >= 0)
-					{
-						coordinates_to_color.push(coordinate);
-					}
-				});
-				
-				await color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
-				
-				
-				
-				//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
-				let new_diagonal_height = new Array(diagonal_coordinates.length);
-				
-				diagonal_coordinates.forEach((coordinate, index) =>
-				{
-					let i = coordinate[0];
-					let j = coordinate[1];
-					
-					let neighbor_1 = 0;
-					let neighbor_2 = 0;
-					
-					if (i < array.footprint - 1)
-					{
-						neighbor_1 = plane_partition[i + 1][j];
-					}
-					
-					if (j < array.footprint - 1)
-					{
-						neighbor_2 = plane_partition[i][j + 1];
-					}
-					
-					new_diagonal_height[index] = Math.max(neighbor_1, neighbor_2);
-					
-					
-					
-					if (index > 0)
-					{
-						neighbor_1 = plane_partition[i - 1][j];
-						neighbor_2 = plane_partition[i][j - 1];
-						
-						new_diagonal_height[index] += Math.min(neighbor_1, neighbor_2) - plane_partition[i][j];
-					}
-					
-					else
-					{
-						new_diagonal_height[index] = plane_partition[i][j] - new_diagonal_height[index];
-					}
-				});	
-				
-				
-				
-				//This is async, so we can't use forEach easily.
-				for (let index = 0; index < diagonal_coordinates.length; index++)
-				{
-					i = diagonal_coordinates[index][0];
-					j = diagonal_coordinates[index][1];
-					
-					if (new_diagonal_height[index] > plane_partition[i][j])
-					{
-						let coordinates_to_reveal = [];
-						
-						for (let k = plane_partition[i][j]; k < new_diagonal_height[index]; k++)
+						for (let k = 0; k < plane_partition[i][j]; k++)
 						{
-							array.cubes[i][j][k] = add_cube(array, j, k, i);
-							
-							coordinates_to_reveal.push([i, j, k]);
+							coordinates.push([i, j, k]);
 						}
-						
-						if (in_2d_view)
-						{
-							reveal_cubes(array, coordinates_to_reveal);
-						}
-						
-						else
-						{
-							await reveal_cubes(array, coordinates_to_reveal);
-						}	
-					}
-					
-					
-					
-					else if (new_diagonal_height[index] < plane_partition[i][j])
-					{
-						let coordinates_to_delete = [];
-						
-						for (let k = plane_partition[i][j] - 1; k >= new_diagonal_height[index]; k--)
-						{
-							coordinates_to_delete.push([i, j, k]);
-						}
-						
-						if (in_2d_view)
-						{
-							delete_cubes(array, coordinates_to_delete);
-						}
-						
-						else
-						{
-							await delete_cubes(array, coordinates_to_delete);
-						}
-					}
-					
-					
-					
-					plane_partition[i][j] = new_diagonal_height[index];
-					
-					if (in_2d_view)
-					{
-						let top = total_array_footprint - array.partial_footprint_sum - 1;
-						let left = array.partial_footprint_sum - array.footprint;
-						
-						draw_single_cell_2d_view_text(array, i, j, top, left);
-					}
-				}
-				
-				
-				
-				let coordinates_to_uncolor = [];
-				
-				coordinates_to_color.forEach((coordinate, index) =>
-				{
-					if (index !== 0 && coordinate[2] < plane_partition[coordinate[0]][coordinate[1]])
-					{
-						coordinates_to_uncolor.push(coordinate);
-					}
-				});
-				
-				if (in_2d_view)
-				{
-					uncolor_cubes(array, coordinates_to_uncolor);
-				}
-				
-				else
-				{
-					await uncolor_cubes(array, coordinates_to_uncolor);
-				}		
-				
-				
-				
-				hue_index++;
-				
-				recalculate_heights(array);
-				
-				if (coordinates_to_color.length !== 0)
-				{
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+					}	
 				}
 			}
-		}
-		
-		
-		
-		update_camera_height(true);
-		
-		currently_running_algorithm = false;
-	}
-	
-	
-	
-	async function pak_inverse(index)
-	{
-		if (currently_running_algorithm)
-		{
-			return;
-		}
-		
-		currently_running_algorithm = true;
-		
-		
-		
-		if (index >= arrays.length || index < 0)
-		{
-			display_error(`No array at index ${index}`);
 			
-			currently_running_algorithm = false;
+			uncolor_cubes(array, coordinates);
 			
-			return;
-		}
-		
-		
-		
-		let array = arrays[index];
-		
-		let tableau = array.numbers;
-		
-		
-		
-		if (!in_2d_view)
-		{
-			await show_2d_view();
-		}
-		
-		
-		
-		let coordinates = [];
-		
-		//Remove any color that's here.
-		for (let i = 0; i < tableau.length; i++)
-		{
-			for (let j = 0; j < tableau.length; j++)
+			
+			
+			let column_starts = new Array(plane_partition.length);
+			
+			for (let i = 0; i < plane_partition.length; i++)
 			{
-				if (tableau[i][j] !== Infinity)
+				let j = 0;
+				
+				while (j < plane_partition.length && plane_partition[j][i] === Infinity)
 				{
-					for (let k = 0; k < tableau[i][j]; k++)
-					{
-						coordinates.push([i, j, k]);
-					}
-				}
-			}
-		}
-		
-		await uncolor_cubes(array, coordinates);
-		
-		
-		
-		let num_corners = array.footprint * array.footprint;
-		
-		
-		
-		let hue_index = 0;
-		
-		//Get outer corners by just scanning through the array backwards.
-		for (let row = array.footprint - 1; row >= 0; row--)
-		{
-			for (let col = array.footprint - 1; col >= 0; col--)
-			{
-				if (tableau[row][col] === Infinity)
-				{
-					array.cubes[row][col] = new Array(infinite_height);
-					
-					let things_to_animate = [];
-					
-					for (let i = 0; i < infinite_height; i++)
-					{
-						array.cubes[row][col][i] = add_cube(array, col, i, row, 0, 0, asymptote_lightness);
-						
-						array.cubes[row][col][i].material.forEach(material => things_to_animate.push(material));
-					}
-					
-					array.floor[row][col] = add_floor(array, col, row);
-					
-					array.floor[row][col].material.forEach(material => things_to_animate.push(material));
-					
-					
-					
-					await new Promise((resolve, reject) =>
-					{
-						anime({
-							targets: things_to_animate,
-							opacity: 1,
-							duration: animation_time,
-							easing: "easeOutQuad",
-							complete: resolve
-						});
-					});
-					
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-					
-					continue;
+					j++;
 				}
 				
+				column_starts[i] = j;
+			}
+			
+			
+			
+			let row_starts = new Array(plane_partition.length);
+			
+			for (let i = 0; i < plane_partition.length; i++)
+			{
+				let j = 0;
 				
-				
-				//Highlight this diagonal.
-				let diagonal_coordinates = [];
-				
-				let i = 0;
-				
-				while (row + i < array.footprint && col + i < array.footprint)
+				while (j < plane_partition.length && plane_partition[i][j] === Infinity)
 				{
-					diagonal_coordinates.push([row + i, col + i, tableau[row + i][col + i] - 1]);
-					
-					i++;
+					j++;
 				}
 				
-				
-				
-				i = diagonal_coordinates[0][0];
-				let j = diagonal_coordinates[0][1];
-				
-				
-				
-				//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
-				let new_diagonal_height = new Array(diagonal_coordinates.length);
-				
-				let any_change = false;
-				
-				diagonal_coordinates.forEach((coordinate, index) =>
-				{
-					let i = coordinate[0];
-					let j = coordinate[1];
-					
-					let neighbor_1 = 0;
-					let neighbor_2 = 0;
-					
-					if (i < array.footprint - 1)
-					{
-						neighbor_1 = tableau[i + 1][j];
-					}
-					
-					if (j < array.footprint - 1)
-					{
-						neighbor_2 = tableau[i][j + 1];
-					}
-					
-					new_diagonal_height[index] = Math.max(neighbor_1, neighbor_2);
-					
-					
-					
-					if (index > 0)
-					{
-						neighbor_1 = tableau[i - 1][j];
-						neighbor_2 = tableau[i][j - 1];
-						
-						new_diagonal_height[index] += Math.min(neighbor_1, neighbor_2) - tableau[i][j];
-					}
-					
-					else
-					{
-						new_diagonal_height[index] += tableau[i][j];
-					}
-					
-					
-					
-					if (!any_change && new_diagonal_height[index] !== tableau[i][j])
-					{
-						any_change = true;
-					}
-				});
-				
-				
-				
-				if (tableau[i][j] !== 0)
-				{
-					let coordinates_to_color = [];
-					
-					for (let k = tableau[i][j] - 1; k >= 0; k--)
-					{
-						coordinates_to_color.push([i, j, k]);
-					}
-					
-					color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
-				}
-				
-				else if (new_diagonal_height[0] !== 0)
-				{
-					array.cubes[i][j][0] = add_cube(array, j, 0, i, hue_index / num_corners * 6/7, 1, cube_lightness);
-					
-					tableau[i][j] = 1;
-					
-					reveal_cubes(array, [[i, j, 0]]);
-				}
-				
-				else if (!any_change)
-				{
-					hue_index++;
-					continue;
-				}
-				
-				await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-				
-				
-				
-				//This is async, so we can't use forEach easily.
-				for (let index = 0; index < diagonal_coordinates.length; index++)
-				{
-					i = diagonal_coordinates[index][0];
-					j = diagonal_coordinates[index][1];
-					
-					if (new_diagonal_height[index] > tableau[i][j])
-					{
-						let coordinates_to_reveal = [];
-						
-						for (let k = tableau[i][j]; k < new_diagonal_height[index]; k++)
-						{
-							array.cubes[i][j][k] = add_cube(array, j, k, i, hue_index / num_corners * 6/7, 1, cube_lightness);
-							
-							coordinates_to_reveal.push([i, j, k]);
-						}
-						
-						if (in_2d_view)
-						{
-							reveal_cubes(array, coordinates_to_reveal);
-						}
-						
-						else
-						{
-							await reveal_cubes(array, coordinates_to_reveal);
-						}
-					}
-					
-					
-					
-					else if (new_diagonal_height[index] < tableau[i][j])
-					{
-						let coordinates_to_delete = [];
-						
-						for (let k = tableau[i][j] - 1; k >= new_diagonal_height[index]; k--)
-						{
-							coordinates_to_delete.push([i, j, k]);
-						}
-						
-						if (in_2d_view)
-						{
-							delete_cubes(array, coordinates_to_delete);
-						}
-						
-						else
-						{
-							await delete_cubes(array, coordinates_to_delete);
-						}
-					}
-					
-					
-					
-					tableau[i][j] = new_diagonal_height[index];
-					
-					if (in_2d_view)
-					{
-						let top = total_array_footprint - array.partial_footprint_sum - 1;
-						let left = array.partial_footprint_sum - array.footprint;
-						
-						draw_single_cell_2d_view_text(array, i, j, top, left);
-					}
-				}
-				
-				
-				
-				hue_index++;
-				
-				recalculate_heights(array);
-				
-				await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-			}
-		}
-		
-		
-		
-		update_camera_height(true);
-		
-		currently_running_algorithm = false;
-	}
-	
-	
-	
-	async function sulzgruber(index)
-	{
-		if (currently_running_algorithm)
-		{
-			return;
-		}
-		
-		currently_running_algorithm = true;
-		
-		
-		
-		if (index >= arrays.length || index < 0)
-		{
-			display_error(`No array at index ${index}`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
-		
-		
-		let array = arrays[index];
-		
-		if (!verify_pp(array.numbers))
-		{
-			display_error(`Array at index ${index} is not a plane partition!`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
-		let plane_partition = _.cloneDeep(array.numbers);
-		
-		
-		
-		let coordinates = [];
-		
-		//Remove any color that's here.
-		for (let i = 0; i < plane_partition.length; i++)
-		{
-			for (let j = 0; j < plane_partition.length; j++)
-			{
-				if (plane_partition[i][j] !== Infinity)
-				{
-					for (let k = 0; k < plane_partition[i][j]; k++)
-					{
-						coordinates.push([i, j, k]);
-					}
-				}	
-			}
-		}
-		
-		uncolor_cubes(array, coordinates);
-		
-		
-		
-		let column_starts = new Array(plane_partition.length);
-		
-		for (let i = 0; i < plane_partition.length; i++)
-		{
-			let j = 0;
-			
-			while (j < plane_partition.length && plane_partition[j][i] === Infinity)
-			{
-				j++;
-			}
-			
-			column_starts[i] = j;
-		}
-		
-		
-		
-		let row_starts = new Array(plane_partition.length);
-		
-		for (let i = 0; i < plane_partition.length; i++)
-		{
-			let j = 0;
-			
-			while (j < plane_partition.length && plane_partition[i][j] === Infinity)
-			{
-				j++;
-			}
-			
-			row_starts[i] = j;
-		}
-		
-		
-		
-		//First, find the candidates. This first requires categorizing the diagonals.
-		let diagonals = {};
-		
-		let diagonal_starts = {};
-		
-		
-		
-		//First the ones along the left edge.
-		for (let i = 0; i < plane_partition.length; i++)
-		{
-			diagonal_starts[-i] = [i, 0];
-		}
-		
-		//Now the ones along the top edge.
-		for (let i = 1; i < plane_partition.length; i++)
-		{
-			diagonal_starts[i] = [0, i];
-		}
-		
-		
-		
-		//First the ones along the left edge.
-		for (let i = -plane_partition.length + 1; i < plane_partition.length; i++)
-		{
-			let row = diagonal_starts[i][0];
-			let col = diagonal_starts[i][1];
-			
-			while (row < plane_partition.length && col < plane_partition.length && plane_partition[row][col] === Infinity)
-			{
-				row++;
-				col++;
-			}
-			
-			diagonal_starts[i] = [row, col];
-			
-			if (row === plane_partition.length || col === plane_partition.length)
-			{
-				diagonals[i] = -1;
-				continue;
+				row_starts[i] = j;
 			}
 			
 			
 			
-			let boundary_left = col === 0 || plane_partition[row][col - 1] === Infinity;
-			let boundary_up = row === 0 || plane_partition[row - 1][col] === Infinity;
-			
-			if (boundary_left && boundary_up)
-			{
-				diagonals[i] = 0;
-			}
-			
-			else if (boundary_left)
-			{
-				diagonals[i] = 3;
-			}
-			
-			else if (boundary_up)
-			{
-				diagonals[i] = 2;
-			}
-			
-			else
-			{
-				diagonals[i] = 1;
-			}
-		}
-		
-		
-		
-		//Now we need to move through the candidates. They only occur in A and O regions, so we only scan those diagonals, top-left to bottom-right, and then bottom-left to top-right in terms of diagonals.
-		let q_paths = [];
-		let rim_hooks = [];
-		
-		for (let i = -plane_partition.length + 1; i < plane_partition.length; i++)
-		{
-			if (diagonals[i] === 1 || diagonals[i] === 3)
-			{
-				continue;
-			}
-			
-			let start_row = diagonal_starts[i][0];
-			let start_col = diagonal_starts[i][1];
-			
-			if (plane_partition[start_row][start_col] === 0)
-			{
-				continue;
-			}
-			
-			
+			let zigzag_paths = [];
 			
 			while (true)
 			{
-				let found_candidate = false;	
+				//Find the right-most nonzero entry at the top of its column.
+				let starting_col = plane_partition[0].length - 1;
 				
-				while (start_row < plane_partition.length && start_col < plane_partition.length && plane_partition[start_row][start_col] !== 0)
+				while (starting_col >= 0 && column_starts[starting_col] < plane_partition.length && plane_partition[column_starts[starting_col]][starting_col] === 0)
 				{
-					if ((start_col < plane_partition.length - 1 && plane_partition[start_row][start_col] > plane_partition[start_row][start_col + 1]) || (start_col === plane_partition.length - 1 && plane_partition[start_row][start_col] > 0))
-					{
-						if (diagonals[i] === 0 || (diagonals[i] === 2 && ((start_row < plane_partition.length - 1 && plane_partition[start_row][start_col] > plane_partition[start_row + 1][start_col]) || (start_row === plane_partition.length - 1 && plane_partition[start_row][start_col] > 0))))
-						{
-							found_candidate = true;
-							break;
-						}	
-					}
-					
-					start_row++;
-					start_col++;
+					starting_col--;
 				}
 				
-				if (!found_candidate)
+				if (starting_col < 0 || column_starts[starting_col] === plane_partition.length)
 				{
 					break;
 				}
 				
 				
 				
-				let row = start_row;
-				let col = start_col;
+				let current_row = column_starts[starting_col];
+				let current_col = starting_col;
 				
-				let path = [[row, col, plane_partition[row][col] - 1]];
+				let path = [[current_row, current_col, plane_partition[current_row][current_col] - 1]];
 				
 				while (true)
 				{
-					let current_content = col - row;
-					
-					if (row < plane_partition.length - 1 && plane_partition[row][col] === plane_partition[row + 1][col] && (diagonals[current_content] === 0 || diagonals[current_content] === 3))
+					if (current_row < plane_partition.length - 1 && plane_partition[current_row + 1][current_col] === plane_partition[current_row][current_col])
 					{
-						row++;
+						current_row++;
 					}
 					
-					else if (col > row_starts[row] && (row === plane_partition.length - 1 || (row < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row + 1][col])))
+					else if (current_col > 0 && plane_partition[current_row][current_col - 1] !== Infinity)
 					{
-						col--;
+						current_col--;
 					}
 					
 					else
@@ -3743,831 +2710,2153 @@
 						break;
 					}
 					
-					path.push([row, col, plane_partition[row][col] - 1]);
+					path.push([current_row, current_col, plane_partition[current_row][current_col] - 1]);
 				}
 				
-				path.forEach(box => plane_partition[box[0]][box[1]]--);
 				
-				q_paths.push(path);
-			}	
-		}
-		
-		
-		
-		let empty_array = new Array(plane_partition.length);
-		
-		for (let i = 0; i < plane_partition.length; i++)
-		{
-			empty_array[i] = new Array(plane_partition.length);
-			
-			for (let j = 0; j < plane_partition.length; j++)
-			{
-				empty_array[i][j] = plane_partition[i][j] === Infinity ? Infinity : 0;
+				
+				for (let i = 0; i < path.length; i++)
+				{
+					plane_partition[path[i][0]][path[i][1]]--;
+				}
+				
+				zigzag_paths.push(path);
 			}
-		}
-		
-		let output_array = await add_new_array(index + 1, empty_array, "tableau");
-		
-		await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-		
-		
-		
-		//Now we'll animate those paths actually decrementing, one-by-one. We're using a for loop because we need to await.
-		for (let i = 0; i < q_paths.length; i++)
-		{
-			let hue = i / q_paths.length * 6/7;
-			
-			await color_cubes(array, q_paths[i], hue);
 			
 			
 			
-			//Lift all the cubes up. There's no need to do this if we're in the 2d view.
-			await raise_cubes(array, q_paths[i], array.height + 1);
+			let empty_array = new Array(plane_partition.length);
 			
-			
-			
-			let top = total_array_footprint - array.partial_footprint_sum - 1;
-			let left = array.partial_footprint_sum - array.footprint;
-			
-			//Now we actually delete the cubes.
-			q_paths[i].forEach(box =>
+			for (let i = 0; i < plane_partition.length; i++)
 			{
-				array.numbers[box[0]][box[1]]--;
+				empty_array[i] = new Array(plane_partition.length);
+				
+				for (let j = 0; j < plane_partition.length; j++)
+				{
+					empty_array[i][j] = plane_partition[i][j] === Infinity ? Infinity : 0;
+				}
+			}
+			
+			let output_array = await add_new_array(index + 1, empty_array);
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+			
+			
+			
+			//Now we'll animate those paths actually decrementing, one-by-one.
+			for (let i = 0; i < zigzag_paths.length; i++)
+			{
+				let hue = i / zigzag_paths.length * 6/7;
+				
+				await color_cubes(array, zigzag_paths[i], hue);
+				
+				
+				
+				//Lift all the cubes up. There's no need to do this if we're in the 2d view.
+				await raise_cubes(array, zigzag_paths[i], array.height);
+				
+				
+				
+				let top = total_array_footprint - array.partial_footprint_sum - 1;
+				let left = array.partial_footprint_sum - array.footprint;
+				
+				//Now we actually delete the cubes.
+				for (let j = 0; j < zigzag_paths[i].length; j++)
+				{
+					array.numbers[zigzag_paths[i][j][0]][zigzag_paths[i][j][1]]--;
+					
+					if (in_2d_view)
+					{
+						draw_single_cell_2d_view_text(array, zigzag_paths[i][j][0], zigzag_paths[i][j][1], top, left);
+					}	
+				}
+				
+				recalculate_heights(array);
+				
+				
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 5));
+				
+				//Find the pivot and rearrange the shape into a hook.
+				let pivot = [zigzag_paths[i][zigzag_paths[i].length - 1][0], zigzag_paths[i][0][1]];
+				
+				let target_coordinates = [];
+				
+				let target_height = output_array.height + 1;
+				
+				//This is the vertical part of the hook.
+				for (let j = column_starts[pivot[1]]; j <= pivot[0]; j++)
+				{
+					target_coordinates.push([j, pivot[1], target_height]);
+				}
+				
+				let pivot_coordinates = target_coordinates[target_coordinates.length - 1];
+				
+				//And this is the horizontal part.
+				for (let j = pivot[1] - 1; j >= row_starts[pivot[0]]; j--)
+				{
+					target_coordinates.push([pivot[0], j, target_height]);
+				}
+				
+				await move_cubes(array, zigzag_paths[i], output_array, target_coordinates);
+				
+				
+				
+				//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
+				target_coordinates = [];
+				
+				for (let j = pivot[0] - 1; j >= column_starts[pivot[1]]; j--)
+				{
+					target_coordinates.push([j, pivot[1], target_height]);
+				}
+				
+				delete_cubes(output_array, target_coordinates);
+				
+				target_coordinates = [];
+				
+				for (let j = pivot[1] - 1; j >= row_starts[pivot[0]]; j--)
+				{
+					target_coordinates.push([pivot[0], j, target_height]);
+				}
+				
+				delete_cubes(output_array, target_coordinates);
+				
+				
+				
+				await lower_cubes(output_array, [pivot_coordinates]);
+				
+				
+				
+				top = total_array_footprint - output_array.partial_footprint_sum - 1;
+				left = output_array.partial_footprint_sum - output_array.footprint;
+				
+				output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]++;
+				
+				recalculate_heights(output_array);
 				
 				if (in_2d_view)
 				{
-					draw_single_cell_2d_view_text(array, box[0], box[1], top, left);
-				}	
-			});
-			
-			recalculate_heights(array);
-			
-			
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 5));
-			
-			//Find the pivot and rearrange the shape into a hook. The end of the Q-path is the same as the end of the rim-hook, so it defines the row. To find the column, we need to go row boxes down, and then use the rest of the length to go right.
-			let row = q_paths[i][q_paths[i].length - 1][0];
-			
-			let start_content = q_paths[i][q_paths[i].length - 1][1] - row;
-			
-			//Every step along the rim-hook increases the content by one.
-			let end_content = start_content + q_paths[i].length - 1;
-			
-			let col = diagonal_starts[end_content][1];
-			
-			
-			
-			let target_coordinates = [];
-			
-			let target_height = Math.max(array.height + 1, output_array.height + 1);
-			
-			for (let j = column_starts[col]; j <= row; j++)
-			{
-				target_coordinates.push([j, col, target_height]);
+					draw_single_cell_2d_view_text(output_array, pivot_coordinates[0], pivot_coordinates[1], top, left);
+				}
+				
+				output_array.height = Math.max(output_array.height, output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]);
+				
+				output_array.size = Math.max(output_array.size, output_array.height);
+				
+				
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 			}
 			
-			for (let j = col - 1; j >= row_starts[row]; j--)
-			{
-				target_coordinates.push([row, j, target_height]);
-			}
-			
-			await move_cubes(array, q_paths[i], output_array, target_coordinates);
 			
 			
+			await remove_array(index);
 			
-			//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
-			target_coordinates = [];
+			currently_running_algorithm = false;
 			
-			for (let j = row - 1; j >= column_starts[col]; j--)
-			{
-				target_coordinates.push([j, col, target_height]);
-			}
-			
-			delete_cubes(output_array, target_coordinates);
-			
-			target_coordinates = [];
-			
-			for (let j = col - 1; j >= row_starts[row]; j--)
-			{
-				target_coordinates.push([row, j, target_height]);
-			}
-			
-			delete_cubes(output_array, target_coordinates);
-			
-			
-			
-			await lower_cubes(output_array, [[row, col, target_height]]);
-			
-			
-			
-			top = total_array_footprint - output_array.partial_footprint_sum - 1;
-			left = output_array.partial_footprint_sum - output_array.footprint;
-			
-			output_array.numbers[row][col]++;
-			
-			if (in_2d_view)
-			{
-				draw_single_cell_2d_view_text(output_array, row, col, top, left);
-			}
-			
-			recalculate_heights(output_array);
-			
-			
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-		}
-		
-		
-		
-		remove_array(index);
-		
-		currently_running_algorithm = false;
+			resolve();
+		});	
 	}
 	
 	
 	
-	async function sulzgruber_inverse(index)
+	function hillman_grassl_inverse(index)
 	{
-		if (currently_running_algorithm)
+		return new Promise(async (resolve, reject) =>
 		{
-			return;
-		}
-		
-		currently_running_algorithm = true;
-		
-		
-		
-		if (index >= arrays.length || index < 0)
-		{
-			display_error(`No array at index ${index}`);
+			if (currently_running_algorithm)
+			{
+				reject();
+				return;
+			}
+			
+			currently_running_algorithm = true;
+			
+			
+			
+			if (index >= arrays.length || index < 0)
+			{
+				display_error(`No array at index ${index}`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			
+			
+			let array = arrays[index];
+			
+			let tableau = _.cloneDeep(array.numbers);
+			
+			let zigzag_paths = [];
+			
+			
+			
+			let coordinates = [];
+			
+			//Remove any color that's here.
+			for (let i = 0; i < tableau.length; i++)
+			{
+				for (let j = 0; j < tableau.length; j++)
+				{
+					if (tableau[i][j] !== Infinity)
+					{
+						for (let k = 0; k < tableau[i][j]; k++)
+						{
+							coordinates.push([i, j, k]);
+						}
+					}
+				}
+			}
+			
+			uncolor_cubes(array, coordinates);
+			
+			
+			
+			let column_starts = new Array(tableau.length);
+			
+			for (let i = 0; i < tableau.length; i++)
+			{
+				let j = 0;
+				
+				while (j < tableau.length && tableau[j][i] === Infinity)
+				{
+					j++;
+				}
+				
+				column_starts[i] = j;
+			}
+			
+			
+			
+			let row_starts = new Array(tableau.length);
+			
+			for (let i = 0; i < tableau.length; i++)
+			{
+				let j = 0;
+				
+				while (j < tableau.length && tableau[i][j] === Infinity)
+				{
+					j++;
+				}
+				
+				row_starts[i] = j;
+			}
+				
+			
+			
+			let empty_array = new Array(tableau.length);
+			
+			for (let i = 0; i < tableau.length; i++)
+			{
+				empty_array[i] = new Array(tableau.length);
+				
+				for (let j = 0; j < tableau.length; j++)
+				{
+					empty_array[i][j] = tableau[i][j] === Infinity ? Infinity : 0;
+				}
+			}
+			
+			let plane_partition = _.cloneDeep(empty_array);
+			
+			let output_array = await add_new_array(index + 1, empty_array);
+			
+			
+			
+			//Loop through the tableau in weirdo lex order and reassemble the paths.
+			for (let j = 0; j < tableau.length; j++)
+			{
+				for (let i = tableau.length - 1; i >= column_starts[j]; i--)
+				{
+					while (tableau[i][j] !== 0)
+					{
+						let path = [];
+						
+						let current_row = i;
+						let current_col = row_starts[i];
+						
+						while (current_row >= 0)
+						{
+							//Go up at the last possible place with a matching entry.
+							let k = current_col;
+							
+							if (current_row !== 0)
+							{
+								while (plane_partition[current_row][k] !== plane_partition[current_row - 1][k] && k < j)
+								{
+									k++;
+								}
+							}
+							
+							else
+							{
+								k = j;
+							}
+							
+							//Add all of these boxes.
+							for (let l = current_col; l <= k; l++)
+							{
+								path.push([current_row, l, plane_partition[current_row][l]]);
+							}
+							
+							if (current_row - 1 >= column_starts[k])
+							{
+								current_row--;
+								current_col = k;
+							}
+							
+							else
+							{
+								break;
+							}		
+						}
+						
+						
+						
+						for (let k = 0; k < path.length; k++)
+						{
+							plane_partition[path[k][0]][path[k][1]]++;
+						}
+						
+						zigzag_paths.push([path, [i, j, tableau[i][j] - 1]]);
+						
+						tableau[i][j]--;
+					}
+				}
+			}
+			
+			
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+			
+			
+			
+			//Now we'll animate those paths actually incrementing, one-by-one.
+			for (let i = 0; i < zigzag_paths.length; i++)
+			{
+				let hue = i / zigzag_paths.length * 6/7;
+				
+				await color_cubes(array, [zigzag_paths[i][1]], hue);
+				
+				
+				
+				let row = zigzag_paths[i][1][0];
+				let col = zigzag_paths[i][1][1];
+				let height = array.size;
+				
+				//Add a bunch of cubes corresponding to the hook that this thing is a part of.
+				for (let j = column_starts[col]; j < row; j++)
+				{
+					array.cubes[j][col][height] = add_cube(array, col, height, j);
+					array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+				}
+				
+				for (let j = row_starts[row]; j < col; j++)
+				{
+					array.cubes[row][j][height] = add_cube(array, j, height, row);
+					array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+				}
+				
+				
+				
+				await raise_cubes(array, [zigzag_paths[i][1]], height);
+				
+				
+				
+				let coordinates = [];
+				
+				for (let j = row - 1; j >= column_starts[col]; j--)
+				{
+					coordinates.push([j, col, height]);
+				}
+				
+				let promise_1 = reveal_cubes(array, coordinates);
+				
+				coordinates = [];
+				
+				for (let j = col - 1; j >= row_starts[row]; j--)
+				{
+					coordinates.push([row, j, height]);
+				}
+				
+				let promise_2 = reveal_cubes(array, coordinates);
+				
+				await Promise.all([promise_1, promise_2]);
+				
+				
+				
+				//The coordinates now need to be in a different order to match the zigzag path.
+				coordinates = [];
+				
+				for (let j = row_starts[row]; j < col; j++)
+				{
+					coordinates.push([row, j, height]);
+				}
+				
+				coordinates.push([row, col, array.numbers[row][col] - 1]);
+				
+				for (let j = row - 1; j >= column_starts[col]; j--)
+				{
+					coordinates.push([j, col, height]);
+				}
+				
+				let target_coordinates = zigzag_paths[i][0];
+				
+				let target_height = output_array.height + 1;
+				
+				target_coordinates.forEach(entry => entry[2] = target_height);
+				
+				array.numbers[row][col]--;
+				
+				recalculate_heights(array);
+				
+				if (in_2d_view)
+				{
+					let top = total_array_footprint - array.partial_footprint_sum - 1;
+					let left = array.partial_footprint_sum - array.footprint;
+					
+					draw_single_cell_2d_view_text(array, row, col, top, left);
+				}
+				
+				await move_cubes(array, coordinates, output_array, target_coordinates);
+				
+				
+				
+				await lower_cubes(output_array, target_coordinates);
+				
+				target_coordinates.forEach((entry) =>
+				{
+					output_array.numbers[entry[0]][entry[1]]++;
+				});
+				
+				recalculate_heights(output_array);
+				
+				if (in_2d_view)
+				{
+					let top = total_array_footprint - output_array.partial_footprint_sum - 1;
+					let left = output_array.partial_footprint_sum - output_array.footprint;
+					
+					target_coordinates.forEach((entry) =>
+					{
+						draw_single_cell_2d_view_text(output_array, entry[0], entry[1], top, left)
+					});
+				}
+				
+				
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+			}
+			
+			
+			
+			await remove_array(index);
 			
 			currently_running_algorithm = false;
 			
-			return;
-		}
-		
-		
-		
-		let array = arrays[index];
-		
-		let tableau = array.numbers;
-		
-		let q_paths = [];
-		
-		
-		
-		let coordinates = [];
-		
-		//Remove any color that's here.
-		for (let i = 0; i < tableau.length; i++)
+			resolve();
+		});	
+	}
+	
+	
+	
+	function pak(index)
+	{
+		return new Promise(async (resolve, reject) =>
 		{
-			for (let j = 0; j < tableau.length; j++)
+			if (currently_running_algorithm)
 			{
-				if (tableau[i][j] !== Infinity)
+				reject();
+				return;
+			}
+			
+			currently_running_algorithm = true;
+			
+			
+			
+			if (index >= arrays.length || index < 0)
+			{
+				display_error(`No array at index ${index}`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			
+			
+			let array = arrays[index];
+			
+			if (!verify_pp(array.numbers))
+			{
+				display_error(`Array at index ${index} is not a plane partition!`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			let plane_partition = array.numbers;
+			
+			
+			
+			if (!in_2d_view)
+			{
+				await show_2d_view();
+			}
+			
+			
+			
+			let coordinates = [];
+			
+			//Remove any color that's here.
+			for (let i = 0; i < plane_partition.length; i++)
+			{
+				for (let j = 0; j < plane_partition.length; j++)
 				{
-					for (let k = 0; k < tableau[i][j]; k++)
+					if (plane_partition[i][j] !== Infinity)
 					{
-						coordinates.push([i, j, k]);
-					}
-				}	
-			}
-		}
-		
-		uncolor_cubes(array, coordinates);
-		
-		
-		
-		let column_starts = new Array(tableau.length);
-		
-		for (let i = 0; i < tableau.length; i++)
-		{
-			let j = 0;
-			
-			while (j < tableau.length && tableau[j][i] === Infinity)
-			{
-				j++;
+						for (let k = 0; k < plane_partition[i][j]; k++)
+						{
+							coordinates.push([i, j, k]);
+						}
+					}	
+				}
 			}
 			
-			column_starts[i] = j;
-		}
-		
-		
-		
-		let row_starts = new Array(tableau.length);
-		
-		for (let i = 0; i < tableau.length; i++)
-		{
-			let j = 0;
+			await uncolor_cubes(array, coordinates);
 			
-			while (j < tableau.length && tableau[i][j] === Infinity)
+			
+			
+			let num_corners = array.footprint * array.footprint;
+			
+			
+			
+			let hue_index = 0;
+			
+			//Get outer corners by just scanning through the array forwards.
+			for (let row = 0; row < array.footprint; row++)
 			{
-				j++;
-			}
-			
-			row_starts[i] = j;
-		}
-		
-		
-		
-		//First, find the candidates. This first requires categorizing the diagonals.
-		let diagonal_starts = {};
-		
-		//First the ones along the left edge.
-		for (let i = 0; i < tableau.length; i++)
-		{
-			diagonal_starts[-i] = [i, 0];
-		}
-		
-		//Now the ones along the top edge.
-		for (let i = 1; i < tableau.length; i++)
-		{
-			diagonal_starts[i] = [0, i];
-		}
-		
-		for (let i = -tableau.length + 1; i < tableau.length; i++)
-		{
-			let row = diagonal_starts[i][0];
-			let col = diagonal_starts[i][1];
-			
-			while (row < tableau.length && col < tableau.length && tableau[row][col] === Infinity)
-			{
-				row++;
-				col++;
-			}
-			
-			diagonal_starts[i] = [row, col];
-		}
-		
-		
-		
-		let num_hues = 0;
-		
-		let empty_array = new Array(tableau.length);
-		
-		for (let i = 0; i < tableau.length; i++)
-		{
-			empty_array[i] = new Array(tableau.length);
-			
-			for (let j = 0; j < tableau.length; j++)
-			{
-				if (tableau[i][j] === Infinity)
+				for (let col = 0; col < array.footprint; col++)
 				{
-					empty_array[i][j] = Infinity;
+					if (plane_partition[row][col] === Infinity)
+					{
+						let coordinates = array.cubes[row][col].map((cube, index) => [row, col, index]);
+						
+						await delete_cubes(array, coordinates, true);
+						
+						delete_floor(array, [[row, col]]);
+						
+						array.cubes[row][col] = [];
+						
+						await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+						
+						continue;
+					}
+					
+					//Highlight this diagonal.
+					let diagonal_coordinates = [];
+					
+					let i = 0;
+					
+					while (row + i < array.footprint && col + i < array.footprint)
+					{
+						diagonal_coordinates.push([row + i, col + i, plane_partition[row + i][col + i] - 1]);
+						
+						i++;
+					}
+					
+					
+					
+					i = diagonal_coordinates[0][0];
+					let j = diagonal_coordinates[0][1];
+					
+					let coordinates_to_color = [];
+					
+					for (let k = plane_partition[i][j] - 2; k >= 0; k--)
+					{
+						coordinates_to_color.push([i, j, k]);
+					}
+					
+					color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
+					
+					
+					
+					coordinates_to_color = [];
+					
+					diagonal_coordinates.forEach(coordinate =>
+					{
+						if (coordinate[2] >= 0)
+						{
+							coordinates_to_color.push(coordinate);
+						}
+					});
+					
+					await color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
+					
+					
+					
+					//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
+					let new_diagonal_height = new Array(diagonal_coordinates.length);
+					
+					diagonal_coordinates.forEach((coordinate, index) =>
+					{
+						let i = coordinate[0];
+						let j = coordinate[1];
+						
+						let neighbor_1 = 0;
+						let neighbor_2 = 0;
+						
+						if (i < array.footprint - 1)
+						{
+							neighbor_1 = plane_partition[i + 1][j];
+						}
+						
+						if (j < array.footprint - 1)
+						{
+							neighbor_2 = plane_partition[i][j + 1];
+						}
+						
+						new_diagonal_height[index] = Math.max(neighbor_1, neighbor_2);
+						
+						
+						
+						if (index > 0)
+						{
+							neighbor_1 = plane_partition[i - 1][j];
+							neighbor_2 = plane_partition[i][j - 1];
+							
+							new_diagonal_height[index] += Math.min(neighbor_1, neighbor_2) - plane_partition[i][j];
+						}
+						
+						else
+						{
+							new_diagonal_height[index] = plane_partition[i][j] - new_diagonal_height[index];
+						}
+					});	
+					
+					
+					
+					//This is async, so we can't use forEach easily.
+					for (let index = 0; index < diagonal_coordinates.length; index++)
+					{
+						i = diagonal_coordinates[index][0];
+						j = diagonal_coordinates[index][1];
+						
+						if (new_diagonal_height[index] > plane_partition[i][j])
+						{
+							let coordinates_to_reveal = [];
+							
+							for (let k = plane_partition[i][j]; k < new_diagonal_height[index]; k++)
+							{
+								array.cubes[i][j][k] = add_cube(array, j, k, i);
+								
+								coordinates_to_reveal.push([i, j, k]);
+							}
+							
+							if (in_2d_view)
+							{
+								reveal_cubes(array, coordinates_to_reveal);
+							}
+							
+							else
+							{
+								await reveal_cubes(array, coordinates_to_reveal);
+							}	
+						}
+						
+						
+						
+						else if (new_diagonal_height[index] < plane_partition[i][j])
+						{
+							let coordinates_to_delete = [];
+							
+							for (let k = plane_partition[i][j] - 1; k >= new_diagonal_height[index]; k--)
+							{
+								coordinates_to_delete.push([i, j, k]);
+							}
+							
+							if (in_2d_view)
+							{
+								delete_cubes(array, coordinates_to_delete);
+							}
+							
+							else
+							{
+								await delete_cubes(array, coordinates_to_delete);
+							}
+						}
+						
+						
+						
+						plane_partition[i][j] = new_diagonal_height[index];
+						
+						if (in_2d_view)
+						{
+							let top = total_array_footprint - array.partial_footprint_sum - 1;
+							let left = array.partial_footprint_sum - array.footprint;
+							
+							draw_single_cell_2d_view_text(array, i, j, top, left);
+						}
+					}
+					
+					
+					
+					let coordinates_to_uncolor = [];
+					
+					coordinates_to_color.forEach((coordinate, index) =>
+					{
+						if (index !== 0 && coordinate[2] < plane_partition[coordinate[0]][coordinate[1]])
+						{
+							coordinates_to_uncolor.push(coordinate);
+						}
+					});
+					
+					if (in_2d_view)
+					{
+						uncolor_cubes(array, coordinates_to_uncolor);
+					}
+					
+					else
+					{
+						await uncolor_cubes(array, coordinates_to_uncolor);
+					}		
+					
+					
+					
+					hue_index++;
+					
+					recalculate_heights(array);
+					
+					if (coordinates_to_color.length !== 0)
+					{
+						await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+					}
+				}
+			}
+			
+			
+			
+			update_camera_height(true);
+			
+			currently_running_algorithm = false;
+			
+			resolve();
+		});	
+	}
+	
+	
+	
+	function pak_inverse(index)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			if (currently_running_algorithm)
+			{
+				reject();
+				return;
+			}
+			
+			currently_running_algorithm = true;
+			
+			
+			
+			if (index >= arrays.length || index < 0)
+			{
+				display_error(`No array at index ${index}`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			
+			
+			let array = arrays[index];
+			
+			let tableau = array.numbers;
+			
+			
+			
+			if (!in_2d_view)
+			{
+				await show_2d_view();
+			}
+			
+			
+			
+			let coordinates = [];
+			
+			//Remove any color that's here.
+			for (let i = 0; i < tableau.length; i++)
+			{
+				for (let j = 0; j < tableau.length; j++)
+				{
+					if (tableau[i][j] !== Infinity)
+					{
+						for (let k = 0; k < tableau[i][j]; k++)
+						{
+							coordinates.push([i, j, k]);
+						}
+					}
+				}
+			}
+			
+			await uncolor_cubes(array, coordinates);
+			
+			
+			
+			let num_corners = array.footprint * array.footprint;
+			
+			
+			
+			let hue_index = 0;
+			
+			//Get outer corners by just scanning through the array backwards.
+			for (let row = array.footprint - 1; row >= 0; row--)
+			{
+				for (let col = array.footprint - 1; col >= 0; col--)
+				{
+					if (tableau[row][col] === Infinity)
+					{
+						array.cubes[row][col] = new Array(infinite_height);
+						
+						let things_to_animate = [];
+						
+						for (let i = 0; i < infinite_height; i++)
+						{
+							array.cubes[row][col][i] = add_cube(array, col, i, row, 0, 0, asymptote_lightness);
+							
+							array.cubes[row][col][i].material.forEach(material => things_to_animate.push(material));
+						}
+						
+						array.floor[row][col] = add_floor(array, col, row);
+						
+						array.floor[row][col].material.forEach(material => things_to_animate.push(material));
+						
+						
+						
+						await new Promise((resolve, reject) =>
+						{
+							anime({
+								targets: things_to_animate,
+								opacity: 1,
+								duration: animation_time,
+								easing: "easeOutQuad",
+								complete: resolve
+							});
+						});
+						
+						await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+						
+						continue;
+					}
+					
+					
+					
+					//Highlight this diagonal.
+					let diagonal_coordinates = [];
+					
+					let i = 0;
+					
+					while (row + i < array.footprint && col + i < array.footprint)
+					{
+						diagonal_coordinates.push([row + i, col + i, tableau[row + i][col + i] - 1]);
+						
+						i++;
+					}
+					
+					
+					
+					i = diagonal_coordinates[0][0];
+					let j = diagonal_coordinates[0][1];
+					
+					
+					
+					//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
+					let new_diagonal_height = new Array(diagonal_coordinates.length);
+					
+					let any_change = false;
+					
+					diagonal_coordinates.forEach((coordinate, index) =>
+					{
+						let i = coordinate[0];
+						let j = coordinate[1];
+						
+						let neighbor_1 = 0;
+						let neighbor_2 = 0;
+						
+						if (i < array.footprint - 1)
+						{
+							neighbor_1 = tableau[i + 1][j];
+						}
+						
+						if (j < array.footprint - 1)
+						{
+							neighbor_2 = tableau[i][j + 1];
+						}
+						
+						new_diagonal_height[index] = Math.max(neighbor_1, neighbor_2);
+						
+						
+						
+						if (index > 0)
+						{
+							neighbor_1 = tableau[i - 1][j];
+							neighbor_2 = tableau[i][j - 1];
+							
+							new_diagonal_height[index] += Math.min(neighbor_1, neighbor_2) - tableau[i][j];
+						}
+						
+						else
+						{
+							new_diagonal_height[index] += tableau[i][j];
+						}
+						
+						
+						
+						if (!any_change && new_diagonal_height[index] !== tableau[i][j])
+						{
+							any_change = true;
+						}
+					});
+					
+					
+					
+					if (tableau[i][j] !== 0)
+					{
+						let coordinates_to_color = [];
+						
+						for (let k = tableau[i][j] - 1; k >= 0; k--)
+						{
+							coordinates_to_color.push([i, j, k]);
+						}
+						
+						color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
+					}
+					
+					else if (new_diagonal_height[0] !== 0)
+					{
+						array.cubes[i][j][0] = add_cube(array, j, 0, i, hue_index / num_corners * 6/7, 1, cube_lightness);
+						
+						tableau[i][j] = 1;
+						
+						reveal_cubes(array, [[i, j, 0]]);
+					}
+					
+					else if (!any_change)
+					{
+						hue_index++;
+						continue;
+					}
+					
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+					
+					
+					
+					//This is async, so we can't use forEach easily.
+					for (let index = 0; index < diagonal_coordinates.length; index++)
+					{
+						i = diagonal_coordinates[index][0];
+						j = diagonal_coordinates[index][1];
+						
+						if (new_diagonal_height[index] > tableau[i][j])
+						{
+							let coordinates_to_reveal = [];
+							
+							for (let k = tableau[i][j]; k < new_diagonal_height[index]; k++)
+							{
+								array.cubes[i][j][k] = add_cube(array, j, k, i, hue_index / num_corners * 6/7, 1, cube_lightness);
+								
+								coordinates_to_reveal.push([i, j, k]);
+							}
+							
+							if (in_2d_view)
+							{
+								reveal_cubes(array, coordinates_to_reveal);
+							}
+							
+							else
+							{
+								await reveal_cubes(array, coordinates_to_reveal);
+							}
+						}
+						
+						
+						
+						else if (new_diagonal_height[index] < tableau[i][j])
+						{
+							let coordinates_to_delete = [];
+							
+							for (let k = tableau[i][j] - 1; k >= new_diagonal_height[index]; k--)
+							{
+								coordinates_to_delete.push([i, j, k]);
+							}
+							
+							if (in_2d_view)
+							{
+								delete_cubes(array, coordinates_to_delete);
+							}
+							
+							else
+							{
+								await delete_cubes(array, coordinates_to_delete);
+							}
+						}
+						
+						
+						
+						tableau[i][j] = new_diagonal_height[index];
+						
+						if (in_2d_view)
+						{
+							let top = total_array_footprint - array.partial_footprint_sum - 1;
+							let left = array.partial_footprint_sum - array.footprint;
+							
+							draw_single_cell_2d_view_text(array, i, j, top, left);
+						}
+					}
+					
+					
+					
+					hue_index++;
+					
+					recalculate_heights(array);
+					
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+				}
+			}
+			
+			
+			
+			update_camera_height(true);
+			
+			currently_running_algorithm = false;
+			
+			resolve();
+		});	
+	}
+	
+	
+	
+	function sulzgruber(index)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			if (currently_running_algorithm)
+			{
+				reject();
+				return;
+			}
+			
+			currently_running_algorithm = true;
+			
+			
+			
+			if (index >= arrays.length || index < 0)
+			{
+				display_error(`No array at index ${index}`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			
+			
+			let array = arrays[index];
+			
+			if (!verify_pp(array.numbers))
+			{
+				display_error(`Array at index ${index} is not a plane partition!`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			let plane_partition = _.cloneDeep(array.numbers);
+			
+			
+			
+			let coordinates = [];
+			
+			//Remove any color that's here.
+			for (let i = 0; i < plane_partition.length; i++)
+			{
+				for (let j = 0; j < plane_partition.length; j++)
+				{
+					if (plane_partition[i][j] !== Infinity)
+					{
+						for (let k = 0; k < plane_partition[i][j]; k++)
+						{
+							coordinates.push([i, j, k]);
+						}
+					}	
+				}
+			}
+			
+			uncolor_cubes(array, coordinates);
+			
+			
+			
+			let column_starts = new Array(plane_partition.length);
+			
+			for (let i = 0; i < plane_partition.length; i++)
+			{
+				let j = 0;
+				
+				while (j < plane_partition.length && plane_partition[j][i] === Infinity)
+				{
+					j++;
+				}
+				
+				column_starts[i] = j;
+			}
+			
+			
+			
+			let row_starts = new Array(plane_partition.length);
+			
+			for (let i = 0; i < plane_partition.length; i++)
+			{
+				let j = 0;
+				
+				while (j < plane_partition.length && plane_partition[i][j] === Infinity)
+				{
+					j++;
+				}
+				
+				row_starts[i] = j;
+			}
+			
+			
+			
+			//First, find the candidates. This first requires categorizing the diagonals.
+			let diagonals = {};
+			
+			let diagonal_starts = {};
+			
+			
+			
+			//First the ones along the left edge.
+			for (let i = 0; i < plane_partition.length; i++)
+			{
+				diagonal_starts[-i] = [i, 0];
+			}
+			
+			//Now the ones along the top edge.
+			for (let i = 1; i < plane_partition.length; i++)
+			{
+				diagonal_starts[i] = [0, i];
+			}
+			
+			
+			
+			//First the ones along the left edge.
+			for (let i = -plane_partition.length + 1; i < plane_partition.length; i++)
+			{
+				let row = diagonal_starts[i][0];
+				let col = diagonal_starts[i][1];
+				
+				while (row < plane_partition.length && col < plane_partition.length && plane_partition[row][col] === Infinity)
+				{
+					row++;
+					col++;
+				}
+				
+				diagonal_starts[i] = [row, col];
+				
+				if (row === plane_partition.length || col === plane_partition.length)
+				{
+					diagonals[i] = -1;
+					continue;
+				}
+				
+				
+				
+				let boundary_left = col === 0 || plane_partition[row][col - 1] === Infinity;
+				let boundary_up = row === 0 || plane_partition[row - 1][col] === Infinity;
+				
+				if (boundary_left && boundary_up)
+				{
+					diagonals[i] = 0;
+				}
+				
+				else if (boundary_left)
+				{
+					diagonals[i] = 3;
+				}
+				
+				else if (boundary_up)
+				{
+					diagonals[i] = 2;
 				}
 				
 				else
 				{
-					empty_array[i][j] = 0;
-					
-					num_hues += tableau[i][j];
-				}	
+					diagonals[i] = 1;
+				}
 			}
-		}
-		
-		let output_array = await add_new_array(index + 1, empty_array);
-		
-		let plane_partition = output_array.numbers;
-		
-		
-		
-		let current_hue_index = 0;
-		
-		//Loop through the tableau in weirdo lex order and reassemble the paths.
-		for (let j = tableau.length - 1; j >= 0; j--)
-		{
-			for (let i = tableau.length - 1; i >= 0; i--)
+			
+			
+			
+			//Now we need to move through the candidates. They only occur in A and O regions, so we only scan those diagonals, top-left to bottom-right, and then bottom-left to top-right in terms of diagonals.
+			let q_paths = [];
+			let rim_hooks = [];
+			
+			for (let i = -plane_partition.length + 1; i < plane_partition.length; i++)
 			{
-				if (tableau[i][j] === Infinity)
+				if (diagonals[i] === 1 || diagonals[i] === 3)
+				{
+					continue;
+				}
+				
+				let start_row = diagonal_starts[i][0];
+				let start_col = diagonal_starts[i][1];
+				
+				if (plane_partition[start_row][start_col] === 0)
 				{
 					continue;
 				}
 				
 				
 				
-				while (tableau[i][j] !== 0)
+				while (true)
 				{
-					let hue = current_hue_index / num_hues * 6/7;
+					let found_candidate = false;	
 					
-					let height = Math.max(array.size + 1, output_array.size + 1);
-					
-					await color_cubes(array, [[i, j, tableau[i][j] - 1]], hue);
-					
-					await raise_cubes(array, [[i, j, tableau[i][j] - 1]], height);
-					
-					
-					
-					let row = i;
-					let col = j;
-					
-					//Add a bunch of cubes corresponding to the hook that this thing is a part of.
-					for (let k = column_starts[col]; k < row; k++)
+					while (start_row < plane_partition.length && start_col < plane_partition.length && plane_partition[start_row][start_col] !== 0)
 					{
-						array.cubes[k][col][height] = add_cube(array, col, height, k);
-						array.cubes[k][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
-					}
-					
-					for (let k = row_starts[row]; k < col; k++)
-					{
-						array.cubes[row][k][height] = add_cube(array, k, height, row);
-						array.cubes[row][k][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
-					}
-					
-					
-					
-					let coordinates = [];
-					
-					for (let k = row - 1; k >= column_starts[col]; k--)
-					{
-						coordinates.push([k, col, height]);
-					}
-					
-					let promise_1 = reveal_cubes(array, coordinates);
-					
-					coordinates = [];
-					
-					for (let k = col - 1; k >= row_starts[row]; k--)
-					{
-						coordinates.push([row, k, height]);
-					}
-					
-					let promise_2 = reveal_cubes(array, coordinates);
-					
-					await Promise.all([promise_1, promise_2]);
-					
-					
-					
-					//In order to animate this nicely, we won't just jump straight to the Q-path -- we'll turn it into a rim-hook first.
-					coordinates = [];
-					
-					for (let k = row_starts[row]; k < col; k++)
-					{
-						coordinates.push([row, k, height]);
-					}
-					
-					coordinates.push([row, col, array.numbers[row][col] - 1]);
-					
-					for (let k = row - 1; k >= column_starts[col]; k--)
-					{
-						coordinates.push([k, col, height]);
-					}
-					
-					
-					
-					let start_content = row_starts[row] - row;
-					let end_content = start_content + coordinates.length - 1;
-					
-					let target_coordinates = [];
-					
-					for (let k = start_content; k <= end_content; k++)
-					{
-						target_coordinates.push(_.clone(diagonal_starts[k]));
-					}
-					
-					
-					
-					tableau[row][col]--;
-					
-					recalculate_heights(array);
-					
-					if (in_2d_view)
-					{
-						let top = total_array_footprint - array.partial_footprint_sum - 1;
-						let left = array.partial_footprint_sum - array.footprint;
+						if ((start_col < plane_partition.length - 1 && plane_partition[start_row][start_col] > plane_partition[start_row][start_col + 1]) || (start_col === plane_partition.length - 1 && plane_partition[start_row][start_col] > 0))
+						{
+							if (diagonals[i] === 0 || (diagonals[i] === 2 && ((start_row < plane_partition.length - 1 && plane_partition[start_row][start_col] > plane_partition[start_row + 1][start_col]) || (start_row === plane_partition.length - 1 && plane_partition[start_row][start_col] > 0))))
+							{
+								found_candidate = true;
+								break;
+							}	
+						}
 						
-						draw_single_cell_2d_view_text(array, row, col, top, left);
+						start_row++;
+						start_col++;
 					}
 					
-					await move_cubes(array, coordinates, output_array, target_coordinates);
+					if (!found_candidate)
+					{
+						break;
+					}
 					
 					
 					
-					//Now we'll lower one part at a time.
-					let current_index = 0;
+					let row = start_row;
+					let col = start_col;
 					
-					let current_height = output_array.numbers[target_coordinates[0][0]][target_coordinates[0][1]];
+					let path = [[row, col, plane_partition[row][col] - 1]];
 					
 					while (true)
 					{
-						let next_index = current_index;
+						let current_content = col - row;
 						
-						while (next_index < target_coordinates.length && target_coordinates[next_index][0] === target_coordinates[current_index][0])
+						if (row < plane_partition.length - 1 && plane_partition[row][col] === plane_partition[row + 1][col] && (diagonals[current_content] === 0 || diagonals[current_content] === 3))
 						{
-							next_index++;
+							row++;
 						}
 						
-						coordinates = target_coordinates.slice(current_index, next_index);
-						
-						
-						
-						//Check if this part can all be inserted at the same height.
-						let insertion_works = true;
-						
-						for (let k = 0; k < coordinates.length; k++)
+						else if (col > row_starts[row] && (row === plane_partition.length - 1 || (row < plane_partition.length - 1 && plane_partition[row][col] > plane_partition[row + 1][col])))
 						{
-							if (output_array.numbers[coordinates[k][0]][coordinates[k][1]] !== current_height)
+							col--;
+						}
+						
+						else
+						{
+							break;
+						}
+						
+						path.push([row, col, plane_partition[row][col] - 1]);
+					}
+					
+					path.forEach(box => plane_partition[box[0]][box[1]]--);
+					
+					q_paths.push(path);
+				}	
+			}
+			
+			
+			
+			let empty_array = new Array(plane_partition.length);
+			
+			for (let i = 0; i < plane_partition.length; i++)
+			{
+				empty_array[i] = new Array(plane_partition.length);
+				
+				for (let j = 0; j < plane_partition.length; j++)
+				{
+					empty_array[i][j] = plane_partition[i][j] === Infinity ? Infinity : 0;
+				}
+			}
+			
+			let output_array = await add_new_array(index + 1, empty_array, "tableau");
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+			
+			
+			
+			//Now we'll animate those paths actually decrementing, one-by-one. We're using a for loop because we need to await.
+			for (let i = 0; i < q_paths.length; i++)
+			{
+				let hue = i / q_paths.length * 6/7;
+				
+				await color_cubes(array, q_paths[i], hue);
+				
+				
+				
+				//Lift all the cubes up. There's no need to do this if we're in the 2d view.
+				await raise_cubes(array, q_paths[i], array.height + 1);
+				
+				
+				
+				let top = total_array_footprint - array.partial_footprint_sum - 1;
+				let left = array.partial_footprint_sum - array.footprint;
+				
+				//Now we actually delete the cubes.
+				q_paths[i].forEach(box =>
+				{
+					array.numbers[box[0]][box[1]]--;
+					
+					if (in_2d_view)
+					{
+						draw_single_cell_2d_view_text(array, box[0], box[1], top, left);
+					}	
+				});
+				
+				recalculate_heights(array);
+				
+				
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 5));
+				
+				//Find the pivot and rearrange the shape into a hook. The end of the Q-path is the same as the end of the rim-hook, so it defines the row. To find the column, we need to go row boxes down, and then use the rest of the length to go right.
+				let row = q_paths[i][q_paths[i].length - 1][0];
+				
+				let start_content = q_paths[i][q_paths[i].length - 1][1] - row;
+				
+				//Every step along the rim-hook increases the content by one.
+				let end_content = start_content + q_paths[i].length - 1;
+				
+				let col = diagonal_starts[end_content][1];
+				
+				
+				
+				let target_coordinates = [];
+				
+				let target_height = Math.max(array.height + 1, output_array.height + 1);
+				
+				for (let j = column_starts[col]; j <= row; j++)
+				{
+					target_coordinates.push([j, col, target_height]);
+				}
+				
+				for (let j = col - 1; j >= row_starts[row]; j--)
+				{
+					target_coordinates.push([row, j, target_height]);
+				}
+				
+				await move_cubes(array, q_paths[i], output_array, target_coordinates);
+				
+				
+				
+				//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
+				target_coordinates = [];
+				
+				for (let j = row - 1; j >= column_starts[col]; j--)
+				{
+					target_coordinates.push([j, col, target_height]);
+				}
+				
+				delete_cubes(output_array, target_coordinates);
+				
+				target_coordinates = [];
+				
+				for (let j = col - 1; j >= row_starts[row]; j--)
+				{
+					target_coordinates.push([row, j, target_height]);
+				}
+				
+				delete_cubes(output_array, target_coordinates);
+				
+				
+				
+				await lower_cubes(output_array, [[row, col, target_height]]);
+				
+				
+				
+				top = total_array_footprint - output_array.partial_footprint_sum - 1;
+				left = output_array.partial_footprint_sum - output_array.footprint;
+				
+				output_array.numbers[row][col]++;
+				
+				if (in_2d_view)
+				{
+					draw_single_cell_2d_view_text(output_array, row, col, top, left);
+				}
+				
+				recalculate_heights(output_array);
+				
+				
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+			}
+			
+			
+			
+			await remove_array(index);
+			
+			currently_running_algorithm = false;
+			
+			resolve();
+		});	
+	}
+	
+	
+	
+	function sulzgruber_inverse(index)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			if (currently_running_algorithm)
+			{
+				reject();
+				return;
+			}
+			
+			currently_running_algorithm = true;
+			
+			
+			
+			if (index >= arrays.length || index < 0)
+			{
+				display_error(`No array at index ${index}`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			
+			
+			let array = arrays[index];
+			
+			let tableau = array.numbers;
+			
+			let q_paths = [];
+			
+			
+			
+			let coordinates = [];
+			
+			//Remove any color that's here.
+			for (let i = 0; i < tableau.length; i++)
+			{
+				for (let j = 0; j < tableau.length; j++)
+				{
+					if (tableau[i][j] !== Infinity)
+					{
+						for (let k = 0; k < tableau[i][j]; k++)
+						{
+							coordinates.push([i, j, k]);
+						}
+					}	
+				}
+			}
+			
+			uncolor_cubes(array, coordinates);
+			
+			
+			
+			let column_starts = new Array(tableau.length);
+			
+			for (let i = 0; i < tableau.length; i++)
+			{
+				let j = 0;
+				
+				while (j < tableau.length && tableau[j][i] === Infinity)
+				{
+					j++;
+				}
+				
+				column_starts[i] = j;
+			}
+			
+			
+			
+			let row_starts = new Array(tableau.length);
+			
+			for (let i = 0; i < tableau.length; i++)
+			{
+				let j = 0;
+				
+				while (j < tableau.length && tableau[i][j] === Infinity)
+				{
+					j++;
+				}
+				
+				row_starts[i] = j;
+			}
+			
+			
+			
+			//First, find the candidates. This first requires categorizing the diagonals.
+			let diagonal_starts = {};
+			
+			//First the ones along the left edge.
+			for (let i = 0; i < tableau.length; i++)
+			{
+				diagonal_starts[-i] = [i, 0];
+			}
+			
+			//Now the ones along the top edge.
+			for (let i = 1; i < tableau.length; i++)
+			{
+				diagonal_starts[i] = [0, i];
+			}
+			
+			for (let i = -tableau.length + 1; i < tableau.length; i++)
+			{
+				let row = diagonal_starts[i][0];
+				let col = diagonal_starts[i][1];
+				
+				while (row < tableau.length && col < tableau.length && tableau[row][col] === Infinity)
+				{
+					row++;
+					col++;
+				}
+				
+				diagonal_starts[i] = [row, col];
+			}
+			
+			
+			
+			let num_hues = 0;
+			
+			let empty_array = new Array(tableau.length);
+			
+			for (let i = 0; i < tableau.length; i++)
+			{
+				empty_array[i] = new Array(tableau.length);
+				
+				for (let j = 0; j < tableau.length; j++)
+				{
+					if (tableau[i][j] === Infinity)
+					{
+						empty_array[i][j] = Infinity;
+					}
+					
+					else
+					{
+						empty_array[i][j] = 0;
+						
+						num_hues += tableau[i][j];
+					}	
+				}
+			}
+			
+			let output_array = await add_new_array(index + 1, empty_array);
+			
+			let plane_partition = output_array.numbers;
+			
+			
+			
+			let current_hue_index = 0;
+			
+			//Loop through the tableau in weirdo lex order and reassemble the paths.
+			for (let j = tableau.length - 1; j >= 0; j--)
+			{
+				for (let i = tableau.length - 1; i >= 0; i--)
+				{
+					if (tableau[i][j] === Infinity)
+					{
+						continue;
+					}
+					
+					
+					
+					while (tableau[i][j] !== 0)
+					{
+						let hue = current_hue_index / num_hues * 6/7;
+						
+						let height = Math.max(array.size + 1, output_array.size + 1);
+						
+						await color_cubes(array, [[i, j, tableau[i][j] - 1]], hue);
+						
+						await raise_cubes(array, [[i, j, tableau[i][j] - 1]], height);
+						
+						
+						
+						let row = i;
+						let col = j;
+						
+						//Add a bunch of cubes corresponding to the hook that this thing is a part of.
+						for (let k = column_starts[col]; k < row; k++)
+						{
+							array.cubes[k][col][height] = add_cube(array, col, height, k);
+							array.cubes[k][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+						}
+						
+						for (let k = row_starts[row]; k < col; k++)
+						{
+							array.cubes[row][k][height] = add_cube(array, k, height, row);
+							array.cubes[row][k][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+						}
+						
+						
+						
+						let coordinates = [];
+						
+						for (let k = row - 1; k >= column_starts[col]; k--)
+						{
+							coordinates.push([k, col, height]);
+						}
+						
+						let promise_1 = reveal_cubes(array, coordinates);
+						
+						coordinates = [];
+						
+						for (let k = col - 1; k >= row_starts[row]; k--)
+						{
+							coordinates.push([row, k, height]);
+						}
+						
+						let promise_2 = reveal_cubes(array, coordinates);
+						
+						await Promise.all([promise_1, promise_2]);
+						
+						
+						
+						//In order to animate this nicely, we won't just jump straight to the Q-path -- we'll turn it into a rim-hook first.
+						coordinates = [];
+						
+						for (let k = row_starts[row]; k < col; k++)
+						{
+							coordinates.push([row, k, height]);
+						}
+						
+						coordinates.push([row, col, array.numbers[row][col] - 1]);
+						
+						for (let k = row - 1; k >= column_starts[col]; k--)
+						{
+							coordinates.push([k, col, height]);
+						}
+						
+						
+						
+						let start_content = row_starts[row] - row;
+						let end_content = start_content + coordinates.length - 1;
+						
+						let target_coordinates = [];
+						
+						for (let k = start_content; k <= end_content; k++)
+						{
+							target_coordinates.push(_.clone(diagonal_starts[k]));
+						}
+						
+						
+						
+						tableau[row][col]--;
+						
+						recalculate_heights(array);
+						
+						if (in_2d_view)
+						{
+							let top = total_array_footprint - array.partial_footprint_sum - 1;
+							let left = array.partial_footprint_sum - array.footprint;
+							
+							draw_single_cell_2d_view_text(array, row, col, top, left);
+						}
+						
+						await move_cubes(array, coordinates, output_array, target_coordinates);
+						
+						
+						
+						//Now we'll lower one part at a time.
+						let current_index = 0;
+						
+						let current_height = output_array.numbers[target_coordinates[0][0]][target_coordinates[0][1]];
+						
+						while (true)
+						{
+							let next_index = current_index;
+							
+							while (next_index < target_coordinates.length && target_coordinates[next_index][0] === target_coordinates[current_index][0])
 							{
-								insertion_works = false;
+								next_index++;
+							}
+							
+							coordinates = target_coordinates.slice(current_index, next_index);
+							
+							
+							
+							//Check if this part can all be inserted at the same height.
+							let insertion_works = true;
+							
+							for (let k = 0; k < coordinates.length; k++)
+							{
+								if (output_array.numbers[coordinates[k][0]][coordinates[k][1]] !== current_height)
+								{
+									insertion_works = false;
+									break;
+								}
+							}
+							
+							
+							
+							if (insertion_works)
+							{
+								await lower_cubes(output_array, coordinates);
+								
+								coordinates.forEach(coordinate => output_array.numbers[coordinate[0]][coordinate[1]]++);
+								
+								recalculate_heights(output_array);
+								
+								if (in_2d_view)
+								{
+									let top = total_array_footprint - output_array.partial_footprint_sum - 1;
+									let left = output_array.partial_footprint_sum - output_array.footprint;
+									
+									coordinates.forEach(entry =>
+									{
+										draw_single_cell_2d_view_text(output_array, entry[0], entry[1], top, left)
+									});
+								}
+								
+								current_index = next_index;
+							}
+							
+							else
+							{
+								let old_target_coordinates = _.cloneDeep(target_coordinates.slice(current_index));
+								
+								//Shift the rest of the coordinates down and right by 1.
+								for (let k = current_index; k < target_coordinates.length; k++)
+								{
+									target_coordinates[k][0]++;
+									target_coordinates[k][1]++;
+									
+									if (target_coordinates[k][0] > output_array.footprint || target_coordinates[k][1] > output_array.footprint)
+									{
+										console.error("Insertion failed!");
+										return;
+									}
+								}
+								
+								let new_target_coordinates = target_coordinates.slice(current_index);
+								
+								await move_cubes(output_array, old_target_coordinates, output_array, new_target_coordinates);
+								
+								current_height = output_array.numbers[target_coordinates[current_index][0]][target_coordinates[current_index][1]];
+							}
+							
+							
+							
+							if (current_index === target_coordinates.length)
+							{
 								break;
 							}
 						}
 						
 						
 						
-						if (insertion_works)
-						{
-							await lower_cubes(output_array, coordinates);
-							
-							coordinates.forEach(coordinate => output_array.numbers[coordinate[0]][coordinate[1]]++);
-							
-							recalculate_heights(output_array);
-							
-							if (in_2d_view)
-							{
-								let top = total_array_footprint - output_array.partial_footprint_sum - 1;
-								let left = output_array.partial_footprint_sum - output_array.footprint;
-								
-								coordinates.forEach(entry =>
-								{
-									draw_single_cell_2d_view_text(output_array, entry[0], entry[1], top, left)
-								});
-							}
-							
-							current_index = next_index;
-						}
+						current_hue_index++;
 						
-						else
-						{
-							let old_target_coordinates = _.cloneDeep(target_coordinates.slice(current_index));
-							
-							//Shift the rest of the coordinates down and right by 1.
-							for (let k = current_index; k < target_coordinates.length; k++)
-							{
-								target_coordinates[k][0]++;
-								target_coordinates[k][1]++;
-								
-								if (target_coordinates[k][0] > output_array.footprint || target_coordinates[k][1] > output_array.footprint)
-								{
-									console.error("Insertion failed!");
-									return;
-								}
-							}
-							
-							let new_target_coordinates = target_coordinates.slice(current_index);
-							
-							await move_cubes(output_array, old_target_coordinates, output_array, new_target_coordinates);
-							
-							current_height = output_array.numbers[target_coordinates[current_index][0]][target_coordinates[current_index][1]];
-						}
-						
-						
-						
-						if (current_index === target_coordinates.length)
-						{
-							break;
-						}
-					}
-					
-					
-					
-					current_hue_index++;
-					
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
-				}	
-			}
-		}	
-		
-		
-		
-		remove_array(index);
-		
-		currently_running_algorithm = false;
+						await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+					}	
+				}
+			}	
+			
+			
+			
+			await remove_array(index);
+			
+			currently_running_algorithm = false;
+			
+			resolve();
+		});	
 	}
 	
 	
 	
-	async function rsk(index)
+	function rsk(index)
 	{
-		if (currently_running_algorithm)
+		return new Promise(async (resolve, reject) =>
 		{
-			return;
-		}
-		
-		currently_running_algorithm = true;
-		
-		
-		
-		if (index >= arrays.length || index < 0)
-		{
-			display_error(`No array at index ${index}`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
-		if (index === arrays.length - 1)
-		{
-			display_error(`No second array at index ${index + 1} (RSK requires two adjacent SSYT of the same shape)`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
-		
-		
-		let p_array = arrays[index];
-		let q_array = arrays[index + 1];
-		
-		if (!verify_ssyt(p_array.numbers))
-		{
-			display_error(`Array at index ${index} is not an SSYT!`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
-		if (!verify_ssyt(q_array.numbers))
-		{
-			display_error(`Array at index ${index + 1} is not an SSYT!`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
-		
-		
-		let p_ssyt = p_array.numbers;
-		let q_ssyt = q_array.numbers;
-		
-		if (p_ssyt.length !== q_ssyt.length)
-		{
-			display_error(`The SSYT do not have the same shape!`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
-		for (let i = 0; i < p_ssyt.length; i++)
-		{
-			for (let j = 0; j < p_ssyt.length; j++)
+			if (currently_running_algorithm)
 			{
-				if ((p_ssyt[i][j] === 0 && q_ssyt[i][j] !== 0) || (p_ssyt[i][j] !== 0 && q_ssyt[i][j] === 0))
+				reject();
+				return;
+			}
+			
+			currently_running_algorithm = true;
+			
+			
+			
+			if (index >= arrays.length || index < 0)
+			{
+				display_error(`No array at index ${index}`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			if (index === arrays.length - 1)
+			{
+				display_error(`No second array at index ${index + 1} (RSK requires two adjacent SSYT of the same shape)`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			
+			
+			let p_array = arrays[index];
+			let q_array = arrays[index + 1];
+			
+			if (!verify_ssyt(p_array.numbers))
+			{
+				display_error(`Array at index ${index} is not an SSYT!`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			if (!verify_ssyt(q_array.numbers))
+			{
+				display_error(`Array at index ${index + 1} is not an SSYT!`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			
+			
+			let p_ssyt = p_array.numbers;
+			let q_ssyt = q_array.numbers;
+			
+			if (p_ssyt.length !== q_ssyt.length)
+			{
+				display_error(`The SSYT do not have the same shape!`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			for (let i = 0; i < p_ssyt.length; i++)
+			{
+				for (let j = 0; j < p_ssyt.length; j++)
 				{
-					display_error(`The SSYT do not have the same shape!`);
+					if ((p_ssyt[i][j] === 0 && q_ssyt[i][j] !== 0) || (p_ssyt[i][j] !== 0 && q_ssyt[i][j] === 0))
+					{
+						display_error(`The SSYT do not have the same shape!`);
+						
+						currently_running_algorithm = false;
+						
+						reject();
+						return;
+					}
+				}	
+			}
+			
+			
+			
+			let p_coordinates = [];
+			let q_coordinates = [];
+			
+			let array_size = 0;
+			
+			let num_hues = 0;
+			
+			//Remove any color that's here.
+			for (let i = 0; i < p_ssyt.length; i++)
+			{
+				for (let j = 0; j < p_ssyt.length; j++)
+				{
+					if (p_ssyt[i][j] === Infinity || q_ssyt[i][j] === Infinity)
+					{
+						display_error(`The SSYT contain infinite values, which is not allowed in RSK!`);
+						
+						currently_running_algorithm = false;
+						
+						reject();
+						return;
+					}
 					
-					currently_running_algorithm = false;
+					if (p_ssyt[i][j] !== 0)
+					{
+						num_hues++;
+					}
 					
-					return;
-				}
-			}	
-		}
-		
-		
-		
-		let p_coordinates = [];
-		let q_coordinates = [];
-		
-		let array_size = 0;
-		
-		let num_hues = 0;
-		
-		//Remove any color that's here.
-		for (let i = 0; i < p_ssyt.length; i++)
-		{
-			for (let j = 0; j < p_ssyt.length; j++)
-			{
-				if (p_ssyt[i][j] === Infinity || q_ssyt[i][j] === Infinity)
-				{
-					display_error(`The SSYT contain infinite values, which is not allowed in RSK!`);
+					for (let k = 0; k < p_ssyt[i][j]; k++)
+					{
+						p_coordinates.push([i, j, k]);
+					}
 					
-					currently_running_algorithm = false;
-				
-					return;
-				}
-				
-				if (p_ssyt[i][j] !== 0)
-				{
-					num_hues++;
-				}
-				
-				for (let k = 0; k < p_ssyt[i][j]; k++)
-				{
-					p_coordinates.push([i, j, k]);
-				}
-				
-				for (let k = 0; k < q_ssyt[i][j]; k++)
-				{
-					q_coordinates.push([i, j, k]);
-				}
-				
-				array_size = Math.max(Math.max(array_size, p_ssyt[i][j]), q_ssyt[i][j]);
-			}
-		}
-		
-		if (array_size === 0)
-		{
-			display_error(`The SSYT are empty!`);
-			
-			currently_running_algorithm = false;
-			
-			return;
-		}
-		
-		uncolor_cubes(p_array, p_coordinates);
-		uncolor_cubes(q_array, q_coordinates);
-		
-		
-		
-		let empty_array = new Array(array_size);
-		
-		for (let i = 0; i < array_size; i++)
-		{
-			empty_array[i] = new Array(array_size);
-			
-			for (let j = 0; j < array_size; j++)
-			{
-				empty_array[i][j] = 0;
-			}
-		}
-		
-		let output_array = await add_new_array(index + 2, empty_array);
-		
-		
-		
-		//Start building up the entries in w. The first thing to do is to undo the insertion operations in P, using the entries in Q to ensure they're in the right order. The most recently added entry is the rightmost largest number in Q.
-		let w = [];
-		
-		let hue_index = 0;
-		
-		while (q_ssyt[0][0] !== 0)
-		{
-			let hue = hue_index / num_hues * 6/7;
-			
-			let max_entry = 0;
-			let row = 0;
-			let col = 0;
-			
-			for (let i = 0; i < q_ssyt.length; i++)
-			{
-				let j = q_ssyt.length - 1;
-				
-				while (j >= 0 && q_ssyt[i][j] === 0)
-				{
-					j--;
-				}
-				
-				if (j >= 0)
-				{
-					max_entry = Math.max(max_entry, q_ssyt[i][j]);
+					for (let k = 0; k < q_ssyt[i][j]; k++)
+					{
+						q_coordinates.push([i, j, k]);
+					}
+					
+					array_size = Math.max(Math.max(array_size, p_ssyt[i][j]), q_ssyt[i][j]);
 				}
 			}
 			
-			for (let i = 0; i < q_ssyt.length; i++)
+			if (array_size === 0)
 			{
-				let j = q_ssyt.length - 1;
+				display_error(`The SSYT are empty!`);
 				
-				while (j >= 0 && q_ssyt[i][j] === 0)
-				{
-					j--;
-				}
+				currently_running_algorithm = false;
 				
-				if (q_ssyt[i][j] === max_entry)
+				reject();
+				return;
+			}
+			
+			uncolor_cubes(p_array, p_coordinates);
+			uncolor_cubes(q_array, q_coordinates);
+			
+			
+			
+			let empty_array = new Array(array_size);
+			
+			for (let i = 0; i < array_size; i++)
+			{
+				empty_array[i] = new Array(array_size);
+				
+				for (let j = 0; j < array_size; j++)
 				{
-					row = i;
-					col = j;
-					break;
+					empty_array[i][j] = 0;
 				}
 			}
 			
-			
-			
-			//Now row and col are the coordinates of the most recently added element. We just need to un-insert the corresponding element from P.
-			let p_source_coordinates_local = [];
-			let p_target_coordinates_local = [];
-			let p_source_coordinates_external = [];
-			let p_target_coordinates_external = [];
-			let p_coordinates_to_delete = [];
-			
-			let q_source_coordinates_external = [];
-			let q_target_coordinates_external = [];
-			let q_coordinates_to_delete = [];
-			
-			let i = row;
-			let j = col;
-			let p_entry = p_ssyt[i][j];
-			let q_entry = q_ssyt[i][j];
-			
-			let p_coordinate_path = [[i, j]];
+			let output_array = await add_new_array(index + 2, empty_array);
 			
 			
 			
-			while (i !== 0)
+			//Start building up the entries in w. The first thing to do is to undo the insertion operations in P, using the entries in Q to ensure they're in the right order. The most recently added entry is the rightmost largest number in Q.
+			let w = [];
+			
+			let hue_index = 0;
+			
+			while (q_ssyt[0][0] !== 0)
 			{
-				//Find the rightmost element in the row above that's strictly smaller than this.
-				let new_j = p_ssyt.length - 1;
+				let hue = hue_index / num_hues * 6/7;
 				
-				while (p_ssyt[i - 1][new_j] === 0 || p_entry <= p_ssyt[i - 1][new_j])
+				let max_entry = 0;
+				let row = 0;
+				let col = 0;
+				
+				for (let i = 0; i < q_ssyt.length; i++)
 				{
-					new_j--;
+					let j = q_ssyt.length - 1;
+					
+					while (j >= 0 && q_ssyt[i][j] === 0)
+					{
+						j--;
+					}
+					
+					if (j >= 0)
+					{
+						max_entry = Math.max(max_entry, q_ssyt[i][j]);
+					}
 				}
+				
+				for (let i = 0; i < q_ssyt.length; i++)
+				{
+					let j = q_ssyt.length - 1;
+					
+					while (j >= 0 && q_ssyt[i][j] === 0)
+					{
+						j--;
+					}
+					
+					if (q_ssyt[i][j] === max_entry)
+					{
+						row = i;
+						col = j;
+						break;
+					}
+				}
+				
+				
+				
+				//Now row and col are the coordinates of the most recently added element. We just need to un-insert the corresponding element from P.
+				let p_source_coordinates_local = [];
+				let p_target_coordinates_local = [];
+				let p_source_coordinates_external = [];
+				let p_target_coordinates_external = [];
+				
+				let q_source_coordinates_external = [];
+				let q_target_coordinates_external = [];
+				
+				let i = row;
+				let j = col;
+				let p_entry = p_ssyt[i][j];
+				let q_entry = q_ssyt[i][j];
+				
+				let p_coordinate_path = [[i, j]];
+				
+				
+				
+				while (i !== 0)
+				{
+					//Find the rightmost element in the row above that's strictly smaller than this.
+					let new_j = p_ssyt.length - 1;
+					
+					while (p_ssyt[i - 1][new_j] === 0 || p_entry <= p_ssyt[i - 1][new_j])
+					{
+						new_j--;
+					}
+					
+					for (let k = 0; k < p_entry; k++)
+					{
+						p_source_coordinates_local.push([i, j, k]);
+						p_target_coordinates_local.push([i - 1, new_j, k]);
+					}
+					
+					i--;
+					j = new_j;
+					p_entry = p_ssyt[i][j];
+					
+					p_coordinate_path.push([i, j]);
+				}
+				
+				
+				
+				//Alright, time for a stupid hack. The visual result we want is to take the stacks getting popped from both P and Q, move them to the first row and column of the output array to form a hook, delete all but one box (the top box of P), and then lower the other. The issue is that this will risk overwriting one of the two overlapping boxes, causing a memory leak and a glitchy state. The solution is to do a couple things. Only the P corner box will actually move to the output array -- the one from Q will appear to, but it will stay in its own array.
+				
+				let height = output_array.height + 1;
 				
 				for (let k = 0; k < p_entry; k++)
 				{
-					p_source_coordinates_local.push([i, j, k]);
-					p_target_coordinates_local.push([i - 1, new_j, k]);
+					p_source_coordinates_external.push([i, j, k]);
+					p_target_coordinates_external.push([q_entry - 1, k, height]);
 				}
 				
-				i--;
-				j = new_j;
-				p_entry = p_ssyt[i][j];
+				for (let k = 0; k < q_entry - 1; k++)
+				{
+					q_source_coordinates_external.push([row, col, k]);
+					q_target_coordinates_external.push([k, p_entry - 1, height]);
+				}
 				
-				p_coordinate_path.push([i, j]);
+				
+				
+				color_cubes(q_array, q_source_coordinates_external.concat([[row, col, q_entry - 1]]), hue);
+				color_cubes(p_array, p_source_coordinates_local, hue);
+				await color_cubes(p_array, p_source_coordinates_external, hue);
+				
+				
+				
+				//Update all the numbers.
+				q_ssyt[row][col] = 0;
+				
+				for (let k = p_coordinate_path.length - 1; k > 0; k--)
+				{
+					p_ssyt[p_coordinate_path[k][0]][p_coordinate_path[k][1]] = p_ssyt[p_coordinate_path[k - 1][0]][p_coordinate_path[k - 1][1]];
+				}
+				
+				p_ssyt[row][col] = 0;
+				
+				if (in_2d_view)
+				{
+					let top = total_array_footprint - p_array.partial_footprint_sum - 1;
+					let left = p_array.partial_footprint_sum - p_array.footprint;
+					
+					draw_single_cell_2d_view_text(p_array, row, col, top, left);
+					
+					for (let k = p_coordinate_path.length - 1; k > 0; k--)
+					{
+						draw_single_cell_2d_view_text(p_array, p_coordinate_path[k][0], p_coordinate_path[k][1], top, left);
+					}
+					
+					
+					
+					top = total_array_footprint - q_array.partial_footprint_sum - 1;
+					left = q_array.partial_footprint_sum - q_array.footprint;
+					
+					draw_single_cell_2d_view_text(q_array, row, col, top, left);
+				}
+				
+				
+				
+				move_cubes(q_array, q_source_coordinates_external, output_array, q_target_coordinates_external);
+				move_cubes(p_array, p_source_coordinates_external, output_array, p_target_coordinates_external);
+				move_cubes(p_array, p_source_coordinates_local, p_array, p_target_coordinates_local);
+				await move_cubes(q_array, [[row, col, q_entry - 1]], output_array, [[q_entry - 1, p_entry - 1, height]], false);
+				
+				
+				
+				uncolor_cubes(p_array, p_target_coordinates_local);
+				
+				
+				
+				//Delete the non-corner parts of the hook (animated), delete one of the overlapping corner cubes (instantly), and drop the other.
+				
+				//Gross but necessary. delete_cubes() needs to detach the object from its parent cube group, but what we pass isn't actually its parent, so we have to do it manually.
+				output_array.cube_group.remove(q_array.cubes[row][col][q_entry - 1]);
+				delete_cubes(q_array, [[row, col, q_entry - 1]], true, true);
+				
+				p_target_coordinates_external.reverse();
+				q_target_coordinates_external.reverse();
+				
+				delete_cubes(output_array, p_target_coordinates_external.slice(1));
+				delete_cubes(output_array, q_target_coordinates_external);
+				
+				await lower_cubes(output_array, [[q_entry - 1, p_entry - 1, height]]);
+				
+				empty_array[q_entry - 1][p_entry - 1]++;
+				
+				if (in_2d_view)
+				{
+					let top = total_array_footprint - output_array.partial_footprint_sum - 1;
+					let left = output_array.partial_footprint_sum - output_array.footprint;
+					
+					draw_single_cell_2d_view_text(output_array, q_entry - 1, p_entry - 1, top, left);
+				}
+				
+				recalculate_heights(output_array);
+				
+				
+				
+				hue_index++;
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
 			}
 			
-			//Now we're at the top row. The height of the stack (i.e. the variable entry) determines the column of the box to increment in the array, and the height of the stack in Q determines the row. We'll animate this by moving the top box from P and Q into their places in the first row and column, respectively, then sliding them together into place.
-			for (let k = 0; k < p_entry - 1; k++)
-			{
-				p_coordinates_to_delete.push([i, j, k]);
-			}
-			
-			for (let k = 0; k < q_entry - 1; k++)
-			{
-				q_coordinates_to_delete.push([row, col, k]);
-			}
-			
-			let height = output_array.height + 1;
-			
-			//Alright, time for a stupid hack. The visual result we want is to take the top cube of the stack getting popped from both P and Q, move them to the first row and column of the output array, merge them, delete one, and then lower the other. The issue is that this will risk overwriting one of the two boxes, causing a memory leak and a glitchy state. The solution is to do a couple things. Only the P box will actually move to the output array -- the one from Q will appear to, but it will stay in its own array.
-			p_source_coordinates_external.push([i, j, p_entry - 1]);
-			p_target_coordinates_external.push([0, p_entry - 1, height]);
-			
-			q_source_coordinates_external.push([row, col, q_entry - 1]);
-			q_target_coordinates_external.push([q_entry - 1, 0, height]);
 			
 			
 			
-			color_cubes(q_array, q_coordinates_to_delete, hue);
-			color_cubes(q_array, q_source_coordinates_external, hue);
-			color_cubes(p_array, p_coordinates_to_delete, hue);
-			color_cubes(p_array, p_source_coordinates_external, hue);
-			await color_cubes(p_array, p_source_coordinates_local, hue);
+			await remove_array(index);
 			
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 			
+			await remove_array(index);
 			
-			delete_cubes(p_array, p_coordinates_to_delete, true);
-			delete_cubes(q_array, q_coordinates_to_delete, true);
+			currently_running_algorithm = false;
 			
-			move_cubes(q_array, q_source_coordinates_external, output_array, q_target_coordinates_external, false);
-			move_cubes(p_array, p_source_coordinates_external, output_array, p_target_coordinates_external);
-			await move_cubes(p_array, p_source_coordinates_local, p_array, p_target_coordinates_local);
-			
-			
-			
-			//Update all the numbers.
-			q_ssyt[row][col] = 0;
-			
-			for (let k = p_coordinate_path.length - 1; k > 0; k--)
-			{
-				p_ssyt[p_coordinate_path[k][0]][p_coordinate_path[k][1]] = p_ssyt[p_coordinate_path[k - 1][0]][p_coordinate_path[k - 1][1]];
-			}
-			
-			p_ssyt[row][col] = 0;
-			
-			uncolor_cubes(p_array, p_target_coordinates_local);
-			
-			
-			
-			//Collapse the boxes in the array into one.
-			move_cubes(output_array, [[0, p_entry - 1, height]], output_array, [[q_entry - 1, p_entry - 1, height]]);
-			await move_cubes(q_array, q_source_coordinates_external, output_array, [[q_entry - 1, p_entry - 1, height]], false);
-			
-			//Delete one of the cubes (instantly) and drop the other.
-			delete_cubes(q_array, q_source_coordinates_external, true, true);
-			
-			await lower_cubes(output_array, [[q_entry - 1, p_entry - 1, height]]);
-			
-			empty_array[q_entry - 1][p_entry - 1]++;
-			
-			recalculate_heights(output_array);
-			
-			
-			
-			hue_index++;
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
-		}
-		
-		
-		
-		
-		remove_array(index);
-		remove_array(index);
-		
-		currently_running_algorithm = false;
+			resolve();
+		});	
 	}
 }()
