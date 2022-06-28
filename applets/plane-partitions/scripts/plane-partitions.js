@@ -2237,58 +2237,23 @@
 						//This is necessary in case the source and target arrays are the same.
 						let source_cubes = source_coordinates.map(xyz => source_array.cubes[xyz[0]][xyz[1]][xyz[2]]);
 						
+						source_coordinates.forEach(xyz => source_array.cubes[xyz[0]][xyz[1]][xyz[2]] = null);
+						
 						target_coordinates.forEach((xyz, index) =>
 						{
-							
 							if (target_array.numbers[xyz[0]][xyz[1]] === Infinity)
 							{
 								console.error("Cannot move cubes to an infinite height");
 							}
 							
-							if (target_array.cubes[xyz[0]][xyz[1]][xyz[2]] && !(source_coordinates.contains(xyz)))
+							if (target_array.cubes[xyz[0]][xyz[1]][xyz[2]] && !source_coordinates.some(e => e[0] === xyz[0] && e[1] === xyz[1] && e[2] === xyz[2]))
 							{
 								console.warn(`Moving a cube to a location that's already occupied: ${xyz}. This is probably not what you want to do.`);
 							}
 							
 							target_array.cubes[xyz[0]][xyz[1]][xyz[2]] = source_cubes[index];
-							
-							source_array.cubes[source_coordinates[index][0]][source_coordinates[index][1]][source_coordinates[index][2]] = null;
 						});
 					}
-					
-					/*
-					console.log("Source array");
-					
-					for (let i = 0; i < source_array.cubes.length; i++)
-					{
-						for (let j = 0; j < source_array.cubes[i].length; j++)
-						{
-							for (let k = 0; k < source_array.cubes[i][j].length; k++)
-							{
-								if (source_array.cubes[i][j][k] !== null)
-								{
-									console.log(i, j, k);
-								}
-							}
-						}
-					}
-					
-					console.log("Target array");
-					
-					for (let i = 0; i < target_array.cubes.length; i++)
-					{
-						for (let j = 0; j < target_array.cubes[i].length; j++)
-						{
-							for (let k = 0; k < target_array.cubes[i][j].length; k++)
-							{
-								if (target_array.cubes[i][j][k] !== null)
-								{
-									console.log(i, j, k);
-								}
-							}
-						}
-					}
-					*/
 					
 					resolve();
 				}	
@@ -2337,7 +2302,7 @@
 	
 	
 	//Fades the specified cubes' opacity to zero, and then deletes them.
-	function delete_cubes(array, coordinates, instant = false)
+	function delete_cubes(array, coordinates, instant = false, no_animation = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -2351,7 +2316,7 @@
 			anime({
 				targets: targets,
 				opacity: 0,
-				duration: animation_time / 2,
+				duration: animation_time / 2 * !no_animation,
 				delay: (element, index) => (!instant) * Math.floor(index / 6) * animation_time / 10,
 				easing: "easeOutQuad",
 				complete: () =>
@@ -4524,8 +4489,6 @@
 				p_coordinate_path.push([i, j]);
 			}
 			
-			console.log(p_coordinate_path, p_source_coordinates_local, p_target_coordinates_local);
-			
 			//Now we're at the top row. The height of the stack (i.e. the variable entry) determines the column of the box to increment in the array, and the height of the stack in Q determines the row. We'll animate this by moving the top box from P and Q into their places in the first row and column, respectively, then sliding them together into place.
 			for (let k = 0; k < p_entry - 1; k++)
 			{
@@ -4537,8 +4500,9 @@
 				q_coordinates_to_delete.push([row, col, k]);
 			}
 			
-			let height = empty_array[q_entry - 1][p_entry - 1] + 1;
+			let height = output_array.height + 1;
 			
+			//Alright, time for a stupid hack. The visual result we want is to take the top cube of the stack getting popped from both P and Q, move them to the first row and column of the output array, merge them, delete one, and then lower the other. The issue is that this will risk overwriting one of the two boxes, causing a memory leak and a glitchy state. The solution is to do a couple things. Only the P box will actually move to the output array -- the one from Q will appear to, but it will stay in its own array.
 			p_source_coordinates_external.push([i, j, p_entry - 1]);
 			p_target_coordinates_external.push([0, p_entry - 1, height]);
 			
@@ -4555,17 +4519,16 @@
 			
 			
 			
-			delete_cubes(p_array, p_coordinates_to_delete);
-			delete_cubes(q_array, q_coordinates_to_delete);
+			delete_cubes(p_array, p_coordinates_to_delete, true);
+			delete_cubes(q_array, q_coordinates_to_delete, true);
 			
-			move_cubes(q_array, q_source_coordinates_external, output_array, q_target_coordinates_external);
+			move_cubes(q_array, q_source_coordinates_external, output_array, q_target_coordinates_external, false);
 			move_cubes(p_array, p_source_coordinates_external, output_array, p_target_coordinates_external);
 			await move_cubes(p_array, p_source_coordinates_local, p_array, p_target_coordinates_local);
 			
 			
 			
 			//Update all the numbers.
-			
 			q_ssyt[row][col] = 0;
 			
 			for (let k = p_coordinate_path.length - 1; k > 0; k--)
@@ -4580,15 +4543,17 @@
 			
 			
 			//Collapse the boxes in the array into one.
-			move_cubes(output_array, [[0, p_entry - 1, height]], output_array, [[q_entry - 1, p_entry - 1, height]], false);
-			await move_cubes(output_array, [[q_entry - 1, 0, height]], output_array, [[q_entry - 1, p_entry - 1, height]]);
+			move_cubes(output_array, [[0, p_entry - 1, height]], output_array, [[q_entry - 1, p_entry - 1, height]]);
+			await move_cubes(q_array, q_source_coordinates_external, output_array, [[q_entry - 1, p_entry - 1, height]], false);
 			
 			//Delete one of the cubes (instantly) and drop the other.
-			delete_cubes(output_array, [[0, p_entry - 1, height]]);
+			delete_cubes(q_array, q_source_coordinates_external, true, true);
 			
 			await lower_cubes(output_array, [[q_entry - 1, p_entry - 1, height]]);
 			
 			empty_array[q_entry - 1][p_entry - 1]++;
+			
+			recalculate_heights(output_array);
 			
 			
 			
