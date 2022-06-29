@@ -403,6 +403,15 @@
 	
 	
 	
+	let rsk_inverse_button_element = Page.element.querySelector("#rsk-inverse-button");
+	
+	rsk_inverse_button_element.addEventListener("click", () =>
+	{
+		rsk_inverse(parseInt(algorithm_index_input_element.value));
+	});
+	
+	
+	
 	let example_1_button_element = Page.element.querySelector("#example-1-button");
 	
 	example_1_button_element.addEventListener("click", () =>
@@ -4856,6 +4865,375 @@
 			
 			currently_running_algorithm = false;
 			
+			resolve();
+		});	
+	}
+	
+	
+	
+	function rsk_inverse(index)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			if (currently_running_algorithm)
+			{
+				reject();
+				return;
+			}
+			
+			currently_running_algorithm = true;
+			
+			
+			
+			if (index >= arrays.length || index < 0)
+			{
+				display_error(`No array at index ${index}`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			
+			
+			let array = arrays[index];
+			
+			let tableau = _.cloneDeep(array.numbers);
+			
+			let num_entries = 0;
+			
+			tableau.forEach(row => row.forEach(entry => num_entries += entry));
+			
+			//The largest possible shape for these two is a straight line, requiring all the inserted elements to be increasing or decreasing.
+			let p_ssyt = new Array(num_entries);
+			let q_ssyt = new Array(num_entries);
+			
+			for (let i = 0; i < num_entries; i++)
+			{
+				p_ssyt[i] = new Array(num_entries);
+				q_ssyt[i] = new Array(num_entries);
+				
+				for (let j = 0; j < num_entries; j++)
+				{
+					p_ssyt[i][j] = 0;
+					q_ssyt[i][j] = 0;
+				}
+			}	
+			
+			
+			
+			let coordinates = [];
+			
+			for (let i = 0; i < tableau.length; i++)
+			{
+				for (let j = 0; j < tableau.length; j++)
+				{
+					if (tableau[i][j] !== Infinity)
+					{
+						for (let k = 0; k < tableau[i][j]; k++)
+						{
+							coordinates.push([i, j, k]);
+						}
+					}
+				}
+			}
+			
+			uncolor_cubes(array, coordinates);
+			
+			
+			
+			let p_row_lengths = new Array(tableau.length);
+			
+			for (let i = 0; i < tableau.length; i++)
+			{
+				p_row_lengths[i] = 0;
+			}
+			
+			let p_num_cols = 0;
+			
+			
+			
+			//Unfortunately, there's no way to know the shape of P and Q without actually doing RSK, so we need to do all the calculations ahead of time, and only then animate things around.
+			let p_insertion_paths = [];
+			let q_insertion_locations = [];
+			let tableau_removal_locations = [];
+			
+			for (let row = 0; row < tableau.length; row++)
+			{
+				for (let col = 0; col < tableau.length; col++)
+				{
+					while (tableau[row][col] !== 0)
+					{
+						tableau[row][col]--;
+						
+						let new_num = col + 1;
+						
+						let i = 0;
+						
+						let j = 0;
+						
+						let path = [];
+						
+						while (true)
+						{
+							j = p_row_lengths[i];
+							
+							while (j !== 0 && p_ssyt[i][j - 1] > new_num)
+							{
+								j--;
+							}
+							
+							if (j === p_row_lengths[i])
+							{
+								p_ssyt[i][j] = new_num;
+								
+								p_row_lengths[i]++;
+								
+								if (j === 0)
+								{
+									p_num_cols++;
+								}
+								
+								path.push([i, j, new_num]);
+								
+								break;
+							}
+							
+							let temp = p_ssyt[i][j];
+							p_ssyt[i][j] = new_num;
+							new_num = temp;
+							path.push([i, j]);
+							
+							i++;
+						}
+						
+						p_insertion_paths.push(path);
+						
+						q_insertion_locations.push([row + 1, i, j]);
+						
+						q_ssyt[i][j] = row + 1;
+					}
+				}
+			}
+			
+			console.log(p_ssyt, q_ssyt);
+			
+			resolve();
+			return;
+			
+			
+				
+			/*
+			
+			let empty_array = new Array(tableau.length);
+			
+			for (let i = 0; i < tableau.length; i++)
+			{
+				empty_array[i] = new Array(tableau.length);
+				
+				for (let j = 0; j < tableau.length; j++)
+				{
+					empty_array[i][j] = tableau[i][j] === Infinity ? Infinity : 0;
+				}
+			}
+			
+			let plane_partition = _.cloneDeep(empty_array);
+			
+			let output_array = await add_new_array(index + 1, empty_array);
+			
+			
+			
+			//Loop through the tableau in weirdo lex order and reassemble the paths.
+			for (let j = 0; j < tableau.length; j++)
+			{
+				for (let i = tableau.length - 1; i >= column_starts[j]; i--)
+				{
+					while (tableau[i][j] !== 0)
+					{
+						let path = [];
+						
+						let current_row = i;
+						let current_col = row_starts[i];
+						
+						while (current_row >= 0)
+						{
+							//Go up at the last possible place with a matching entry.
+							let k = current_col;
+							
+							if (current_row !== 0)
+							{
+								while (plane_partition[current_row][k] !== plane_partition[current_row - 1][k] && k < j)
+								{
+									k++;
+								}
+							}
+							
+							else
+							{
+								k = j;
+							}
+							
+							//Add all of these boxes.
+							for (let l = current_col; l <= k; l++)
+							{
+								path.push([current_row, l, plane_partition[current_row][l]]);
+							}
+							
+							if (current_row - 1 >= column_starts[k])
+							{
+								current_row--;
+								current_col = k;
+							}
+							
+							else
+							{
+								break;
+							}		
+						}
+						
+						
+						
+						for (let k = 0; k < path.length; k++)
+						{
+							plane_partition[path[k][0]][path[k][1]]++;
+						}
+						
+						zigzag_paths.push([path, [i, j, tableau[i][j] - 1]]);
+						
+						tableau[i][j]--;
+					}
+				}
+			}
+			
+			
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+			
+			
+			
+			//Now we'll animate those paths actually incrementing, one-by-one.
+			for (let i = 0; i < zigzag_paths.length; i++)
+			{
+				let hue = i / zigzag_paths.length * 6/7;
+				
+				await color_cubes(array, [zigzag_paths[i][1]], hue);
+				
+				
+				
+				let row = zigzag_paths[i][1][0];
+				let col = zigzag_paths[i][1][1];
+				let height = array.size;
+				
+				//Add a bunch of cubes corresponding to the hook that this thing is a part of.
+				for (let j = column_starts[col]; j < row; j++)
+				{
+					array.cubes[j][col][height] = add_cube(array, col, height, j);
+					array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+				}
+				
+				for (let j = row_starts[row]; j < col; j++)
+				{
+					array.cubes[row][j][height] = add_cube(array, j, height, row);
+					array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+				}
+				
+				
+				
+				await raise_cubes(array, [zigzag_paths[i][1]], height);
+				
+				
+				
+				let coordinates = [];
+				
+				for (let j = row - 1; j >= column_starts[col]; j--)
+				{
+					coordinates.push([j, col, height]);
+				}
+				
+				let promise_1 = reveal_cubes(array, coordinates);
+				
+				coordinates = [];
+				
+				for (let j = col - 1; j >= row_starts[row]; j--)
+				{
+					coordinates.push([row, j, height]);
+				}
+				
+				let promise_2 = reveal_cubes(array, coordinates);
+				
+				await Promise.all([promise_1, promise_2]);
+				
+				
+				
+				//The coordinates now need to be in a different order to match the zigzag path.
+				coordinates = [];
+				
+				for (let j = row_starts[row]; j < col; j++)
+				{
+					coordinates.push([row, j, height]);
+				}
+				
+				coordinates.push([row, col, array.numbers[row][col] - 1]);
+				
+				for (let j = row - 1; j >= column_starts[col]; j--)
+				{
+					coordinates.push([j, col, height]);
+				}
+				
+				let target_coordinates = zigzag_paths[i][0];
+				
+				let target_height = output_array.height + 1;
+				
+				target_coordinates.forEach(entry => entry[2] = target_height);
+				
+				array.numbers[row][col]--;
+				
+				recalculate_heights(array);
+				
+				if (in_2d_view)
+				{
+					let top = total_array_footprint - array.partial_footprint_sum - 1;
+					let left = array.partial_footprint_sum - array.footprint;
+					
+					draw_single_cell_2d_view_text(array, row, col, top, left);
+				}
+				
+				await move_cubes(array, coordinates, output_array, target_coordinates);
+				
+				
+				
+				await lower_cubes(output_array, target_coordinates);
+				
+				target_coordinates.forEach((entry) =>
+				{
+					output_array.numbers[entry[0]][entry[1]]++;
+				});
+				
+				recalculate_heights(output_array);
+				
+				if (in_2d_view)
+				{
+					let top = total_array_footprint - output_array.partial_footprint_sum - 1;
+					let left = output_array.partial_footprint_sum - output_array.footprint;
+					
+					target_coordinates.forEach((entry) =>
+					{
+						draw_single_cell_2d_view_text(output_array, entry[0], entry[1], top, left)
+					});
+				}
+				
+				
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+			}
+			
+			
+			
+			await remove_array(index);
+			
+			currently_running_algorithm = false;
+			*/
 			resolve();
 		});	
 	}
