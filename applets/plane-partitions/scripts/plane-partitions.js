@@ -735,6 +735,39 @@
 	
 	
 	
+	//Does not return a string, unlike the previous function.
+	function generate_random_tableau()
+	{
+		let side_length = Math.floor(Math.random() * 3) + 4;
+		
+		let tableau = new Array(side_length);
+		
+		
+		
+		for (let i = 0; i < side_length; i++)
+		{
+			tableau[i] = new Array(side_length);
+			
+			for (let j = 0; j < side_length; j++)
+			{
+				if (Math.random() < .75 / side_length)
+				{
+					tableau[i][j] = Math.floor(Math.random() * 3) + 1;
+				}
+				
+				else
+				{
+					tableau[i][j] = 0;
+				}
+			}
+		}
+		
+		return tableau;
+	}
+	
+	
+	
+	//Also doesn't return a string.
 	function generate_random_ssyt()
 	{
 		let side_length = Math.floor(Math.random() * 3) + 2;
@@ -767,55 +800,7 @@
 		
 		
 		
-		//Now convert to a string.
-		
-		let output_string = "";
-		
-		for (let i = 0; i < side_length; i++)
-		{
-			let first_nonzero = false;
-			
-			for (let j = 0; j < side_length; j++)
-			{
-				let entry = ssyt[i][j];
-				
-				if (entry === 0)
-				{
-					if (first_nonzero)
-					{
-						output_string += "   ";
-					}
-					
-					else
-					{
-						output_string += ` 0 `;
-					}	
-				}
-				
-				else if (entry < 10)
-				{
-					output_string += ` ${entry} `;
-					
-					first_nonzero = true;
-				}
-				
-				else
-				{
-					output_string += `${entry} `;
-					
-					first_nonzero = true;
-				}
-			}
-			
-			if (i !== side_length - 1)
-			{
-				output_string += "\n";
-			}	
-		}
-		
-		console.log(output_string);
-		
-		return output_string;
+		return ssyt;
 	}
 	
 	
@@ -2191,15 +2176,25 @@
 				array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material.color));
 			});
 			
-			targets.forEach(color => color.getHSL(color));
+			targets.forEach(color => color.getRGB(color));
+			
+			//Convert HSV to HSL.
+			let v = cube_lightness + 1 * Math.min(cube_lightness, 1 - cube_lightness);
+			let s = v === 0 ? 0 : 2 * (1 - cube_lightness / v);
+			
+			let target_colors = targets.map(color => wilson.utils.hsv_to_rgb(hue, s, v));
+			
+			
 			
 			anime({
 				targets: targets,
-				s: 1,
+				r: (element, index) => target_colors[index][0] / 255,
+				g: (element, index) => target_colors[index][1] / 255,
+				b: (element, index) => target_colors[index][2] / 255,
 				duration: animation_time,
 				delay: (element, index) => Math.floor(index / 6) * animation_time / 10,
 				easing: "easeOutQuad",
-				update: () => targets.forEach(color => color.setHSL(hue, color.s, cube_lightness)),
+				update: () => targets.forEach(color => color.setRGB(color.r, color.g, color.b)),
 				complete: resolve
 			});
 		});
@@ -2485,23 +2480,21 @@
 				while (arrays.length > 1)
 				{
 					await remove_array(1);
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
 				}
 				
 				if (arrays.length === 0)
 				{
 					let plane_partition = parse_array(generate_random_plane_partition());
-					edit_array_textarea_element.value = array_data_textarea_element.value;
 					await add_new_array(arrays.length, plane_partition);
 				}
 				
 				else if (!verify_pp(arrays[0].numbers))
 				{
 					await remove_array(0);
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
 					
 					let plane_partition = parse_array(generate_random_plane_partition());
-					edit_array_textarea_element.value = array_data_textarea_element.value;
 					await add_new_array(arrays.length, plane_partition);
 				}
 				
@@ -2522,6 +2515,10 @@
 					
 					await new Promise((resolve, reject) => setTimeout(resolve, 3 * animation_time));
 					
+					await show_hex_view();
+					
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+					
 					await sulzgruber_inverse(0);
 				}	
 				
@@ -2529,55 +2526,31 @@
 			}
 			
 			
-			//To-do: make this RSK inverse followed by RSK.
-			/*
+			
 			else if (index === 3)
 			{
-				while (arrays.length > 2)
-				{
-					await remove_array(2);
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-				}
-				
-				if (arrays.length === 0)
-				{
-					let ssyt = parse_array(generate_random_ssyt());
-					await add_new_array(arrays.length, ssyt);
-				}
-				
-				if (arrays.length === 1)
-				{
-					let ssyt = parse_array(generate_random_ssyt());
-					await add_new_array(arrays.length, ssyt);
-				}
-				
-				if (!verify_ssyt(arrays[0].numbers))
+				while (arrays.length > 0)
 				{
 					await remove_array(0);
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-					
-					let ssyt = parse_array(generate_random_ssyt());
-					await add_new_array(arrays.length, ssyt);
+					await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
 				}
 				
-				if (!verify_ssyt(arrays[0].numbers))
-				{
-					await remove_array(0);
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-					
-					let ssyt = parse_array(generate_random_ssyt());
-					await add_new_array(arrays.length, ssyt);
-				}
+				await add_new_array(arrays.length, generate_random_tableau());
 				
 				
 				
-				await rsk(0);
+				await show_2d_view();
 				
 				await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 				
+				await rsk_inverse(0);
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, 3 * animation_time));
+				
+				await rsk(0);
+				
 				resolve();
 			}
-			*/
 		});
 	}
 	
@@ -4950,7 +4923,7 @@
 				p_row_lengths[i] = 0;
 			}
 			
-			let p_num_cols = 0;
+			let p_num_rows = 0;
 			
 			
 			
@@ -4970,7 +4943,6 @@
 						let new_num = col + 1;
 						
 						let i = 0;
-						
 						let j = 0;
 						
 						let path = [];
@@ -4992,10 +4964,10 @@
 								
 								if (j === 0)
 								{
-									p_num_cols++;
+									p_num_rows++;
 								}
 								
-								path.push([i, j, new_num]);
+								path.push([i, j]);
 								
 								break;
 							}
@@ -5009,221 +4981,199 @@
 						}
 						
 						p_insertion_paths.push(path);
-						
-						q_insertion_locations.push([row + 1, i, j]);
+						q_insertion_locations.push([i, j]);
+						tableau_removal_locations.push([row, col]);
 						
 						q_ssyt[i][j] = row + 1;
 					}
 				}
 			}
 			
-			console.log(p_ssyt, q_ssyt);
 			
-			resolve();
-			return;
+
+			let ssyt_size = Math.max(p_row_lengths[0], p_num_rows);
 			
+			p_ssyt = new Array(ssyt_size);
+			q_ssyt = new Array(ssyt_size);
 			
-				
-			/*
-			
-			let empty_array = new Array(tableau.length);
-			
-			for (let i = 0; i < tableau.length; i++)
+			for (let i = 0; i < ssyt_size; i++)
 			{
-				empty_array[i] = new Array(tableau.length);
+				p_ssyt[i] = new Array(ssyt_size);
+				q_ssyt[i] = new Array(ssyt_size);
 				
-				for (let j = 0; j < tableau.length; j++)
+				for (let j = 0; j < ssyt_size; j++)
 				{
-					empty_array[i][j] = tableau[i][j] === Infinity ? Infinity : 0;
+					p_ssyt[i][j] = 0;
+					q_ssyt[i][j] = 0;
 				}
 			}
 			
-			let plane_partition = _.cloneDeep(empty_array);
+			let p_array = await add_new_array(index + 1, p_ssyt);
 			
-			let output_array = await add_new_array(index + 1, empty_array);
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
 			
-			
-			
-			//Loop through the tableau in weirdo lex order and reassemble the paths.
-			for (let j = 0; j < tableau.length; j++)
-			{
-				for (let i = tableau.length - 1; i >= column_starts[j]; i--)
-				{
-					while (tableau[i][j] !== 0)
-					{
-						let path = [];
-						
-						let current_row = i;
-						let current_col = row_starts[i];
-						
-						while (current_row >= 0)
-						{
-							//Go up at the last possible place with a matching entry.
-							let k = current_col;
-							
-							if (current_row !== 0)
-							{
-								while (plane_partition[current_row][k] !== plane_partition[current_row - 1][k] && k < j)
-								{
-									k++;
-								}
-							}
-							
-							else
-							{
-								k = j;
-							}
-							
-							//Add all of these boxes.
-							for (let l = current_col; l <= k; l++)
-							{
-								path.push([current_row, l, plane_partition[current_row][l]]);
-							}
-							
-							if (current_row - 1 >= column_starts[k])
-							{
-								current_row--;
-								current_col = k;
-							}
-							
-							else
-							{
-								break;
-							}		
-						}
-						
-						
-						
-						for (let k = 0; k < path.length; k++)
-						{
-							plane_partition[path[k][0]][path[k][1]]++;
-						}
-						
-						zigzag_paths.push([path, [i, j, tableau[i][j] - 1]]);
-						
-						tableau[i][j]--;
-					}
-				}
-			}
-			
-			
+			let q_array = await add_new_array(index + 2, q_ssyt);
 			
 			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
 			
 			
 			
-			//Now we'll animate those paths actually incrementing, one-by-one.
-			for (let i = 0; i < zigzag_paths.length; i++)
+			let hue_index = 0;
+			
+			//Loop through the tableau in weirdo lex order and reassemble the paths.
+			for (let i = 0; i < tableau_removal_locations.length; i++)
 			{
-				let hue = i / zigzag_paths.length * 6/7;
+				let row = tableau_removal_locations[i][0];
+				let col = tableau_removal_locations[i][1];
 				
-				await color_cubes(array, [zigzag_paths[i][1]], hue);
+				let height = array.height + 1;
+				
+				let hue = hue_index / num_entries * 6/7;
 				
 				
-				
-				let row = zigzag_paths[i][1][0];
-				let col = zigzag_paths[i][1][1];
-				let height = array.size;
 				
 				//Add a bunch of cubes corresponding to the hook that this thing is a part of.
-				for (let j = column_starts[col]; j < row; j++)
-				{
-					array.cubes[j][col][height] = add_cube(array, col, height, j);
-					array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
-				}
-				
-				for (let j = row_starts[row]; j < col; j++)
+				for (let j = col; j >= 0; j--)
 				{
 					array.cubes[row][j][height] = add_cube(array, j, height, row);
 					array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
 				}
 				
+				for (let j = row - 1; j >= 0; j--)
+				{
+					array.cubes[j][col][height] = add_cube(array, col, height, j);
+					array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+				}
+				
+				//This is the duplicate cube. As usual, we need to store it somewhere else in the array -- here, we're going to place it one space vertically above its actual location.
+				
+				array.cubes[row][col][height + 1] = add_cube(array, col, height, row);
+				array.cubes[row][col][height + 1].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
 				
 				
-				await raise_cubes(array, [zigzag_paths[i][1]], height);
+				
+				await color_cubes(array, [[row, col, array.numbers[row][col] - 1]], hue);
+				
+				await raise_cubes(array, [[row, col, array.numbers[row][col] - 1]], height);
 				
 				
+				
+				let promise_1 = reveal_cubes(array, [[row, col, height + 1]]);
 				
 				let coordinates = [];
 				
-				for (let j = row - 1; j >= column_starts[col]; j--)
-				{
-					coordinates.push([j, col, height]);
-				}
-				
-				let promise_1 = reveal_cubes(array, coordinates);
-				
-				coordinates = [];
-				
-				for (let j = col - 1; j >= row_starts[row]; j--)
+				for (let j = col - 1; j >= 0; j--)
 				{
 					coordinates.push([row, j, height]);
 				}
 				
 				let promise_2 = reveal_cubes(array, coordinates);
 				
-				await Promise.all([promise_1, promise_2]);
-				
-				
-				
-				//The coordinates now need to be in a different order to match the zigzag path.
 				coordinates = [];
 				
-				for (let j = row_starts[row]; j < col; j++)
-				{
-					coordinates.push([row, j, height]);
-				}
-				
-				coordinates.push([row, col, array.numbers[row][col] - 1]);
-				
-				for (let j = row - 1; j >= column_starts[col]; j--)
+				for (let j = row - 1; j >= 0; j--)
 				{
 					coordinates.push([j, col, height]);
 				}
 				
-				let target_coordinates = zigzag_paths[i][0];
+				let promise_3 = reveal_cubes(array, coordinates);
 				
-				let target_height = output_array.height + 1;
+				await Promise.all([promise_1, promise_2, promise_3]);
 				
-				target_coordinates.forEach(entry => entry[2] = target_height);
+				
+				
+				//First of all, we'll handle the insertion into P. As always, this takes some care. The strictly proper way to animate this would be to move the stacks one at a time, but just like with the forward direction, it is *much* easier (and time-efficient) to just move everything at once.
+				let path = p_insertion_paths[hue_index];
+				
+				let p_source_coordinates_local = [];
+				let p_target_coordinates_local = [];
+				
+				let p_source_coordinates_external = [[row, col, array.numbers[row][col] - 1]];
+				let p_target_coordinates_external = [[path[0][0], path[0][1], col]];
+				
+				let q_source_coordinates_external = [[row, col, height + 1]];
+				let q_target_coordinates_external = [[q_insertion_locations[hue_index][0], q_insertion_locations[hue_index][1], row]];
+				
+				
+				
+				for (let j = col - 1; j >= 0; j--)
+				{
+					p_source_coordinates_external.push([row, j, height]);
+					p_target_coordinates_external.push([path[0][0], path[0][1], j]);
+				}
+				
+				for (let j = 0; j < path.length - 1; j++)
+				{
+					for (let k = 0; k < p_ssyt[path[j][0]][path[j][1]]; k++)
+					{
+						p_source_coordinates_local.push([path[j][0], path[j][1], k]);
+						p_target_coordinates_local.push([path[j + 1][0], path[j + 1][1], k]);
+					}
+				}
+				
+				for (let j = row - 1; j >= 0; j--)
+				{
+					q_source_coordinates_external.push([j, col, height]);
+					q_target_coordinates_external.push([q_insertion_locations[hue_index][0], q_insertion_locations[hue_index][1], j]);
+				}
+				
+				await color_cubes(p_array, p_source_coordinates_local, hue);
+				
+				
+				
+				for (let j = path.length - 1; j > 0; j--)
+				{
+					p_ssyt[path[j][0]][path[j][1]] = p_ssyt[path[j - 1][0]][path[j - 1][1]];
+				}
+				
+				if (path.length !== 0)
+				{
+					p_ssyt[path[0][0]][path[0][1]] = 0;
+				}
+				
+				if (in_2d_view)
+				{
+					draw_all_2d_view_text();
+				}
+				
+				if (p_source_coordinates_local.length !== 0)
+				{
+					await move_cubes(p_array, p_source_coordinates_local, p_array, p_target_coordinates_local);	
+				}	
+				
+				
 				
 				array.numbers[row][col]--;
 				
+				if (in_2d_view)
+				{
+					draw_all_2d_view_text();
+				}
+				
+				move_cubes(array, p_source_coordinates_external, p_array, p_target_coordinates_external);
+				
+				await move_cubes(array, q_source_coordinates_external, q_array, q_target_coordinates_external);
+				
+				
+				
+				p_ssyt[path[0][0]][path[0][1]] = col + 1;
+				
+				q_ssyt[q_insertion_locations[hue_index][0]][q_insertion_locations[hue_index][1]] = row + 1;
+				
+				if (in_2d_view)
+				{
+					draw_all_2d_view_text();
+				}
+				
+				
+				
 				recalculate_heights(array);
-				
-				if (in_2d_view)
-				{
-					let top = total_array_footprint - array.partial_footprint_sum - 1;
-					let left = array.partial_footprint_sum - array.footprint;
-					
-					draw_single_cell_2d_view_text(array, row, col, top, left);
-				}
-				
-				await move_cubes(array, coordinates, output_array, target_coordinates);
+				recalculate_heights(p_array);
+				recalculate_heights(q_array);
 				
 				
 				
-				await lower_cubes(output_array, target_coordinates);
-				
-				target_coordinates.forEach((entry) =>
-				{
-					output_array.numbers[entry[0]][entry[1]]++;
-				});
-				
-				recalculate_heights(output_array);
-				
-				if (in_2d_view)
-				{
-					let top = total_array_footprint - output_array.partial_footprint_sum - 1;
-					let left = output_array.partial_footprint_sum - output_array.footprint;
-					
-					target_coordinates.forEach((entry) =>
-					{
-						draw_single_cell_2d_view_text(output_array, entry[0], entry[1], top, left)
-					});
-				}
-				
-				
+				hue_index++;
 				
 				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
 			}
@@ -5233,7 +5183,7 @@
 			await remove_array(index);
 			
 			currently_running_algorithm = false;
-			*/
+			
 			resolve();
 		});	
 	}
