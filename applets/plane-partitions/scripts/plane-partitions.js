@@ -1139,13 +1139,21 @@
 				hex_view_camera_pos = [total_array_size, total_array_size + total_array_height / 3, total_array_size];
 				_2d_view_camera_pos = [0, total_array_size + 10, 0];
 				
-				orthographic_camera.left = -total_array_size;
-				orthographic_camera.right = total_array_size;
-				orthographic_camera.top = total_array_size;
-				orthographic_camera.bottom = -total_array_size;
-				orthographic_camera.position.set(hex_view_camera_pos[0], hex_view_camera_pos[1], hex_view_camera_pos[2]);
-				orthographic_camera.rotation.set(-0.785398163, 0.615479709, 0.523598775);
-				orthographic_camera.updateProjectionMatrix();
+				if (in_2d_view)
+				{
+					update_camera_height(true);
+				}
+				
+				else
+				{
+					orthographic_camera.left = -total_array_size;
+					orthographic_camera.right = total_array_size;
+					orthographic_camera.top = total_array_size;
+					orthographic_camera.bottom = -total_array_size;
+					orthographic_camera.position.set(hex_view_camera_pos[0], hex_view_camera_pos[1], hex_view_camera_pos[2]);
+					orthographic_camera.rotation.set(-0.785398163, 0.615479709, 0.523598775);
+					orthographic_camera.updateProjectionMatrix();
+				}
 			}
 			
 			else if (!add_walls)
@@ -1219,7 +1227,10 @@
 			
 			await add_new_array(index, new_numbers);
 			
-			update_camera_height();
+			if (!in_2d_view)
+			{
+				update_camera_height();
+			}	
 			
 			resolve();
 		});	
