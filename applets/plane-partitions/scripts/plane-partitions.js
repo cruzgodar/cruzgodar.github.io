@@ -1614,6 +1614,8 @@
 				{
 					currently_animating_camera = false;
 					
+					rotation_y = 0;
+					
 					resolve();
 				});
 			}, animation_time);
