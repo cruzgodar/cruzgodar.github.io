@@ -36,6 +36,60 @@
 	
 	
 	
+	const algorithm_data =
+	{
+		hillman_grassl:
+		{
+			method: hillman_grassl,
+			input_type: ["pp"]
+		},
+		
+		hillman_grassl_inverse:
+		{
+			method: hillman_grassl_inverse,
+			input_type: ["tableau"]
+		},
+		
+		pak:
+		{
+			method: pak,
+			input_type: ["pp"]
+		},
+		
+		pak_inverse:
+		{
+			method: pak_inverse,
+			input_type: ["tableau"]
+		},
+		
+		sulzgruber:
+		{
+			method: sulzgruber,
+			input_type: ["pp"]
+		},
+		
+		sulzgruber_inverse:
+		{
+			method: sulzgruber_inverse,
+			input_type: ["tableau"]
+		},
+		
+		rsk:
+		{
+			method: rsk,
+			input_type: ["ssyt", "ssyt"],
+			same_shape: true
+		},
+		
+		rsk_inverse:
+		{
+			method: rsk_inverse,
+			input_type: ["tableau"]
+		}
+	};
+	
+	
+	
 	let options_numbers =
 	{
 		renderer: "cpu",
@@ -342,73 +396,49 @@
 	
 	let hillman_grassl_button_element = Page.element.querySelector("#hillman-grassl-button");
 	
-	hillman_grassl_button_element.addEventListener("click", () =>
-	{
-		hillman_grassl(parseInt(algorithm_index_input_element.value));
-	});
+	hillman_grassl_button_element.addEventListener("click", () => run_algorithm("hillman_grassl"));
 	
 	
 	
 	let hillman_grassl_inverse_button_element = Page.element.querySelector("#hillman-grassl-inverse-button");
 	
-	hillman_grassl_inverse_button_element.addEventListener("click", () =>
-	{
-		hillman_grassl_inverse(parseInt(algorithm_index_input_element.value));
-	});
+	hillman_grassl_inverse_button_element.addEventListener("click", () => run_algorithm("hillman_grassl_inverse"));
 	
 	
 	
 	let pak_button_element = Page.element.querySelector("#pak-button");
 	
-	pak_button_element.addEventListener("click", () =>
-	{
-		pak(parseInt(algorithm_index_input_element.value));
-	});
+	pak_button_element.addEventListener("click", () => run_algorithm("pak"));
 	
 	
 	
 	let pak_inverse_button_element = Page.element.querySelector("#pak-inverse-button");
 	
-	pak_inverse_button_element.addEventListener("click", () =>
-	{
-		pak_inverse(parseInt(algorithm_index_input_element.value));
-	});
+	pak_inverse_button_element.addEventListener("click", () => run_algorithm("pak_inverse"));
 	
 	
 	
 	let sulzgruber_button_element = Page.element.querySelector("#sulzgruber-button");
 	
-	sulzgruber_button_element.addEventListener("click", () =>
-	{
-		sulzgruber(parseInt(algorithm_index_input_element.value));
-	});
+	sulzgruber_button_element.addEventListener("click", () => run_algorithm("sulzgruber"));
 	
 	
 	
 	let sulzgruber_inverse_button_element = Page.element.querySelector("#sulzgruber-inverse-button");
 	
-	sulzgruber_inverse_button_element.addEventListener("click", () =>
-	{
-		sulzgruber_inverse(parseInt(algorithm_index_input_element.value));
-	});
+	sulzgruber_inverse_button_element.addEventListener("click", () => run_algorithm("sulzgruber_inverse"));
 	
 	
 	
 	let rsk_button_element = Page.element.querySelector("#rsk-button");
 	
-	rsk_button_element.addEventListener("click", () =>
-	{
-		rsk(parseInt(algorithm_index_input_element.value));
-	});
+	rsk_button_element.addEventListener("click", () => run_algorithm("rsk"));
 	
 	
 	
 	let rsk_inverse_button_element = Page.element.querySelector("#rsk-inverse-button");
 	
-	rsk_inverse_button_element.addEventListener("click", () =>
-	{
-		rsk_inverse(parseInt(algorithm_index_input_element.value));
-	});
+	rsk_inverse_button_element.addEventListener("click", () => run_algorithm("rsk_inverse"));
 	
 	
 	
@@ -2515,16 +2545,16 @@
 				
 				if (index === 1)
 				{
-					await hillman_grassl(0);
+					await run_algorithm("hillman_grassl", 0)
 					
 					await new Promise((resolve, reject) => setTimeout(resolve, 3 * animation_time));
 					
-					await hillman_grassl_inverse(0);
+					await run_algorithm("hillman_grassl_inverse", 0)
 				}
 				
 				else
 				{
-					await pak(0);
+					await run_algorithm("pak", 0)
 					
 					await new Promise((resolve, reject) => setTimeout(resolve, 3 * animation_time));
 					
@@ -2532,7 +2562,7 @@
 					
 					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 					
-					await sulzgruber_inverse(0);
+					await run_algorithm("sulzgruber_inverse", 0)
 				}	
 				
 				resolve();
@@ -2556,11 +2586,11 @@
 				
 				await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 				
-				await rsk_inverse(0);
+				await run_algorithm("rsk_inverse", 0)
 				
 				await new Promise((resolve, reject) => setTimeout(resolve, 3 * animation_time));
 				
-				await rsk(0);
+				await run_algorithm("rsk", 0);
 				
 				resolve();
 			}
@@ -2569,11 +2599,18 @@
 	
 	
 	
-	function hillman_grassl(index)
+	function run_algorithm(name, index, sub_algorithm = false)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			if (currently_running_algorithm)
+			if (index === undefined)
+			{
+				index = parseInt(algorithm_index_input_element.value || 0);
+			}
+			
+			
+			
+			if (!sub_algorithm && currently_running_algorithm)
 			{
 				reject();
 				return;
@@ -2583,9 +2620,25 @@
 			
 			
 			
-			if (index >= arrays.length || index < 0)
+			let data = algorithm_data[name];
+			
+			let num_arrays = data.input_type.length;
+			
+			
+			
+			if (index > arrays.length - 1 || index < 0)
 			{
-				display_error(`No array at index ${index}`);
+				display_error(`No array at index ${index}!`);
+				
+				currently_running_algorithm = false;
+				
+				reject();
+				return;
+			}
+			
+			else if (num_arrays > 1 && index > arrays.length - num_arrays)
+			{
+				display_error(`No array at index ${index + num_arrays - 1}! (This algorithm needs ${num_arrays} arrays)`);
 				
 				currently_running_algorithm = false;
 				
@@ -2595,40 +2648,135 @@
 			
 			
 			
-			let array = arrays[index];
-			
-			if (!verify_pp(array.numbers))
+			for (let i = 0; i < num_arrays; i++)
 			{
-				display_error(`Array at index ${index} is not a plane partition!`);
+				let type = data.input_type[i];
 				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
-			
-			
-			let plane_partition = _.cloneDeep(array.numbers);
-			
-			let coordinates = [];
-			
-			//Remove any color that's here.
-			for (let i = 0; i < plane_partition.length; i++)
-			{
-				for (let j = 0; j < plane_partition.length; j++)
+				if (type === "pp" && !verify_pp(arrays[index + i].numbers))
 				{
-					if (plane_partition[i][j] !== Infinity)
+					display_error(`Array at index ${index + i} is not a plane partition!`);
+					
+					currently_running_algorithm = false;
+					
+					reject();
+					return;
+				}
+				
+				if (type === "ssyt" && !verify_ssyt(arrays[index + i].numbers))
+				{
+					display_error(`Array at index ${index + i} is not an SSYT!`);
+					
+					currently_running_algorithm = false;
+					
+					reject();
+					return;
+				}
+			}
+			
+			
+			
+			if (num_arrays > 1 && data.same_shape !== undefined && data.same_shape)
+			{
+				let row_lengths = new Array(num_arrays);
+				
+				let max_num_rows = 0;
+				
+				for (let i = 0; i < num_arrays; i++)
+				{
+					max_num_rows = Math.max(max_num_rows, arrays[index + i].numbers.length);
+				}	
+				
+				for (let i = 0; i < num_arrays; i++)
+				{
+					row_lengths[i] = new Array(max_num_rows);
+					
+					for (let j = 0; j < max_num_rows; j++)
 					{
-						for (let k = 0; k < plane_partition[i][j]; k++)
+						row_lengths[i][j] = 0;
+					}
+					
+					for (let j = 0; j < arrays[index + i].numbers.length; j++)
+					{
+						let k = 0;
+						
+						while (k < arrays[index + i].numbers[j].length && arrays[index + i].numbers[j][k] !== 0)
 						{
-							coordinates.push([i, j, k]);
+							k++;
+						}
+						
+						row_lengths[i][j] = k;
+					}	
+				}
+				
+				
+				
+				for (let i = 1; i < num_arrays; i++)
+				{
+					for (let j = 0; j < max_num_rows; j++)
+					{
+						if (row_lengths[i][j] !== row_lengths[0][j])
+						{
+							display_error(`Arrays are not the same shape!`);
+							
+							currently_running_algorithm = false;
+							
+							reject();
+							return;
 						}
 					}	
 				}
 			}
 			
-			uncolor_cubes(array, coordinates);
+			
+			
+			//Uncolor everything.
+			for (let i = 0; i < num_arrays; i++)
+			{
+				let coordinates = [];
+				
+				let numbers = arrays[index + i].numbers;
+				
+				for (let j = 0; j < numbers.length; j++)
+				{
+					for (let k = 0; k < numbers.length; k++)
+					{
+						if (numbers[j][k] !== Infinity)
+						{
+							for (let l = 0; l < numbers[j][k]; l++)
+							{
+								coordinates.push([j, k, l]);
+							}
+						}	
+					}
+				}
+				
+				uncolor_cubes(arrays[index + i], coordinates);
+			}	
+			
+			
+			
+			await data.method(index);
+			
+			
+			
+			if (!sub_algorithm)
+			{
+				currently_running_algorithm = false;
+			}
+			
+			resolve();
+		});
+	}
+	
+	
+	
+	function hillman_grassl(index)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			let array = arrays[index];
+			
+			let plane_partition = _.cloneDeep(array.numbers);
 			
 			
 			
@@ -2847,8 +2995,6 @@
 			
 			await remove_array(index);
 			
-			currently_running_algorithm = false;
-			
 			resolve();
 		});	
 	}
@@ -2859,54 +3005,11 @@
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			if (currently_running_algorithm)
-			{
-				reject();
-				return;
-			}
-			
-			currently_running_algorithm = true;
-			
-			
-			
-			if (index >= arrays.length || index < 0)
-			{
-				display_error(`No array at index ${index}`);
-				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
-			
-			
 			let array = arrays[index];
 			
 			let tableau = _.cloneDeep(array.numbers);
 			
 			let zigzag_paths = [];
-			
-			
-			
-			let coordinates = [];
-			
-			//Remove any color that's here.
-			for (let i = 0; i < tableau.length; i++)
-			{
-				for (let j = 0; j < tableau.length; j++)
-				{
-					if (tableau[i][j] !== Infinity)
-					{
-						for (let k = 0; k < tableau[i][j]; k++)
-						{
-							coordinates.push([i, j, k]);
-						}
-					}
-				}
-			}
-			
-			uncolor_cubes(array, coordinates);
 			
 			
 			
@@ -3148,8 +3251,6 @@
 			
 			await remove_array(index);
 			
-			currently_running_algorithm = false;
-			
 			resolve();
 		});	
 	}
@@ -3160,69 +3261,14 @@
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			if (currently_running_algorithm)
-			{
-				reject();
-				return;
-			}
-			
-			currently_running_algorithm = true;
-			
-			
-			
-			if (index >= arrays.length || index < 0)
-			{
-				display_error(`No array at index ${index}`);
-				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
-			
-			
 			let array = arrays[index];
 			
-			if (!verify_pp(array.numbers))
-			{
-				display_error(`Array at index ${index} is not a plane partition!`);
-				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
 			let plane_partition = array.numbers;
-			
-			
 			
 			if (!in_2d_view)
 			{
 				await show_2d_view();
 			}
-			
-			
-			
-			let coordinates = [];
-			
-			//Remove any color that's here.
-			for (let i = 0; i < plane_partition.length; i++)
-			{
-				for (let j = 0; j < plane_partition.length; j++)
-				{
-					if (plane_partition[i][j] !== Infinity)
-					{
-						for (let k = 0; k < plane_partition[i][j]; k++)
-						{
-							coordinates.push([i, j, k]);
-						}
-					}	
-				}
-			}
-			
-			await uncolor_cubes(array, coordinates);
 			
 			
 			
@@ -3437,8 +3483,6 @@
 			
 			update_camera_height(true);
 			
-			currently_running_algorithm = false;
-			
 			resolve();
 		});	
 	}
@@ -3449,28 +3493,6 @@
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			if (currently_running_algorithm)
-			{
-				reject();
-				return;
-			}
-			
-			currently_running_algorithm = true;
-			
-			
-			
-			if (index >= arrays.length || index < 0)
-			{
-				display_error(`No array at index ${index}`);
-				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
-			
-			
 			let array = arrays[index];
 			
 			let tableau = array.numbers;
@@ -3481,27 +3503,6 @@
 			{
 				await show_2d_view();
 			}
-			
-			
-			
-			let coordinates = [];
-			
-			//Remove any color that's here.
-			for (let i = 0; i < tableau.length; i++)
-			{
-				for (let j = 0; j < tableau.length; j++)
-				{
-					if (tableau[i][j] !== Infinity)
-					{
-						for (let k = 0; k < tableau[i][j]; k++)
-						{
-							coordinates.push([i, j, k]);
-						}
-					}
-				}
-			}
-			
-			await uncolor_cubes(array, coordinates);
 			
 			
 			
@@ -3730,8 +3731,6 @@
 			
 			update_camera_height(true);
 			
-			currently_running_algorithm = false;
-			
 			resolve();
 		});	
 	}
@@ -3742,62 +3741,9 @@
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			if (currently_running_algorithm)
-			{
-				reject();
-				return;
-			}
-			
-			currently_running_algorithm = true;
-			
-			
-			
-			if (index >= arrays.length || index < 0)
-			{
-				display_error(`No array at index ${index}`);
-				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
-			
-			
 			let array = arrays[index];
 			
-			if (!verify_pp(array.numbers))
-			{
-				display_error(`Array at index ${index} is not a plane partition!`);
-				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
 			let plane_partition = _.cloneDeep(array.numbers);
-			
-			
-			
-			let coordinates = [];
-			
-			//Remove any color that's here.
-			for (let i = 0; i < plane_partition.length; i++)
-			{
-				for (let j = 0; j < plane_partition.length; j++)
-				{
-					if (plane_partition[i][j] !== Infinity)
-					{
-						for (let k = 0; k < plane_partition[i][j]; k++)
-						{
-							coordinates.push([i, j, k]);
-						}
-					}	
-				}
-			}
-			
-			uncolor_cubes(array, coordinates);
 			
 			
 			
@@ -4112,8 +4058,6 @@
 			
 			await remove_array(index);
 			
-			currently_running_algorithm = false;
-			
 			resolve();
 		});	
 	}
@@ -4124,54 +4068,11 @@
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			if (currently_running_algorithm)
-			{
-				reject();
-				return;
-			}
-			
-			currently_running_algorithm = true;
-			
-			
-			
-			if (index >= arrays.length || index < 0)
-			{
-				display_error(`No array at index ${index}`);
-				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
-			
-			
 			let array = arrays[index];
 			
 			let tableau = array.numbers;
 			
 			let q_paths = [];
-			
-			
-			
-			let coordinates = [];
-			
-			//Remove any color that's here.
-			for (let i = 0; i < tableau.length; i++)
-			{
-				for (let j = 0; j < tableau.length; j++)
-				{
-					if (tableau[i][j] !== Infinity)
-					{
-						for (let k = 0; k < tableau[i][j]; k++)
-						{
-							coordinates.push([i, j, k]);
-						}
-					}	
-				}
-			}
-			
-			uncolor_cubes(array, coordinates);
 			
 			
 			
@@ -4478,8 +4379,6 @@
 			
 			await remove_array(index);
 			
-			currently_running_algorithm = false;
-			
 			resolve();
 		});	
 	}
@@ -4490,96 +4389,11 @@
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			if (currently_running_algorithm)
-			{
-				reject();
-				return;
-			}
-			
-			currently_running_algorithm = true;
-			
-			
-			
-			if (index >= arrays.length || index < 0)
-			{
-				display_error(`No array at index ${index}`);
-				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
-			if (index === arrays.length - 1)
-			{
-				display_error(`No second array at index ${index + 1} (RSK requires two adjacent SSYT of the same shape)`);
-				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
-			
-			
 			let p_array = arrays[index];
 			let q_array = arrays[index + 1];
 			
-			if (!verify_ssyt(p_array.numbers))
-			{
-				display_error(`Array at index ${index} is not an SSYT!`);
-				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
-			if (!verify_ssyt(q_array.numbers))
-			{
-				display_error(`Array at index ${index + 1} is not an SSYT!`);
-				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
-			
-			
 			let p_ssyt = p_array.numbers;
 			let q_ssyt = q_array.numbers;
-			
-			if (p_ssyt.length !== q_ssyt.length)
-			{
-				display_error(`The SSYT do not have the same shape!`);
-				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
-			for (let i = 0; i < p_ssyt.length; i++)
-			{
-				for (let j = 0; j < p_ssyt.length; j++)
-				{
-					if ((p_ssyt[i][j] === 0 && q_ssyt[i][j] !== 0) || (p_ssyt[i][j] !== 0 && q_ssyt[i][j] === 0))
-					{
-						display_error(`The SSYT do not have the same shape!`);
-						
-						currently_running_algorithm = false;
-						
-						reject();
-						return;
-					}
-				}	
-			}
-			
-			
-			
-			let p_coordinates = [];
-			let q_coordinates = [];
 			
 			let array_size = 0;
 			
@@ -4605,16 +4419,6 @@
 						num_hues++;
 					}
 					
-					for (let k = 0; k < p_ssyt[i][j]; k++)
-					{
-						p_coordinates.push([i, j, k]);
-					}
-					
-					for (let k = 0; k < q_ssyt[i][j]; k++)
-					{
-						q_coordinates.push([i, j, k]);
-					}
-					
 					array_size = Math.max(Math.max(array_size, p_ssyt[i][j]), q_ssyt[i][j]);
 				}
 			}
@@ -4628,9 +4432,6 @@
 				reject();
 				return;
 			}
-			
-			uncolor_cubes(p_array, p_coordinates);
-			uncolor_cubes(q_array, q_coordinates);
 			
 			
 			
@@ -4849,8 +4650,6 @@
 			
 			await remove_array(index);
 			
-			currently_running_algorithm = false;
-			
 			resolve();
 		});	
 	}
@@ -4861,28 +4660,6 @@
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			if (currently_running_algorithm)
-			{
-				reject();
-				return;
-			}
-			
-			currently_running_algorithm = true;
-			
-			
-			
-			if (index >= arrays.length || index < 0)
-			{
-				display_error(`No array at index ${index}`);
-				
-				currently_running_algorithm = false;
-				
-				reject();
-				return;
-			}
-			
-			
-			
 			let array = arrays[index];
 			
 			let tableau = _.cloneDeep(array.numbers);
@@ -4905,27 +4682,7 @@
 					p_ssyt[i][j] = 0;
 					q_ssyt[i][j] = 0;
 				}
-			}	
-			
-			
-			
-			let coordinates = [];
-			
-			for (let i = 0; i < tableau.length; i++)
-			{
-				for (let j = 0; j < tableau.length; j++)
-				{
-					if (tableau[i][j] !== Infinity)
-					{
-						for (let k = 0; k < tableau[i][j]; k++)
-						{
-							coordinates.push([i, j, k]);
-						}
-					}
-				}
 			}
-			
-			uncolor_cubes(array, coordinates);
 			
 			
 			
@@ -5195,9 +4952,17 @@
 			
 			await remove_array(index);
 			
-			currently_running_algorithm = false;
-			
 			resolve();
+		});	
+	}
+	
+	
+	
+	function godar_1(index)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			
 		});	
 	}
 }()
