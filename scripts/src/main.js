@@ -516,9 +516,14 @@ Site.Interaction =
 		//Remove focus when moving the mouse or touching anything.
 		document.documentElement.addEventListener("mousedown", () =>
 		{
-			if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA")
+			if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA" && document.activeElement.tagName !== "SELECT")
 			{
 				document.activeElement.blur();
+			}
+			
+			else if (document.activeElement.tagName !== "SELECT")
+			{
+				element.previousElementSibling.classList.remove("hover");
 			}
 		});
 	},
@@ -530,7 +535,7 @@ Site.Interaction =
 		this.last_touch_x = e.touches[0].clientX;
 		this.last_touch_y = e.touches[0].clientY;
 		
-		if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA")
+		if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA" && document.activeElement.tagName !== "SELECT")
 		{
 			document.activeElement.blur();
 		}
