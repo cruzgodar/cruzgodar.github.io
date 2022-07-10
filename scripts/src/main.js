@@ -523,7 +523,8 @@ Site.Interaction =
 			
 			else if (document.activeElement.tagName !== "SELECT")
 			{
-				element.previousElementSibling.classList.remove("hover");
+				try {element.previousElementSibling.classList.remove("hover");}
+				catch(ex) {}
 			}
 		});
 	},

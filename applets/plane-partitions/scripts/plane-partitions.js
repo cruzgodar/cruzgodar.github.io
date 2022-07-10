@@ -92,6 +92,12 @@
 			method: godar_1,
 			input_type: ["pp"]
 		},
+		
+		godar_1_inverse:
+		{
+			method: godar_1_inverse,
+			input_type: ["pp", "pp"]
+		}
 	};
 	
 	
@@ -5004,6 +5010,8 @@
 				nu_col_lengths[i] = j;
 			}
 			
+			let rpp_size = Math.max(nu_row_lengths[0], nu_col_lengths[0]);
+			
 			
 			
 			await run_algorithm("hillman_grassl", index, true);
@@ -5030,6 +5038,7 @@
 			}
 			
 			await uncolor_cubes(arrays[index], coordinates);
+			
 			
 			
 			//Organize everything by hook length.
@@ -5068,7 +5077,8 @@
 					
 					else
 					{
-						rpp_pivots_by_hook_length[nu_row_lengths[i] + nu_col_lengths[j] - i - j - 1].push([i, j]);
+						//.unshift rather than .push makes the hooks move in the correct order.
+						rpp_pivots_by_hook_length[nu_row_lengths[i] + nu_col_lengths[j] - i - j - 1].unshift([rpp_size - i - 1, rpp_size - j - 1]);
 					}
 					
 					pp_pivots_by_hook_length[i + j + 1].push([i, j]);
@@ -5108,7 +5118,7 @@
 				
 				if (coordinates.length !== 0)
 				{
-					await color_cubes(arrays[index], coordinates, (i - 1) / (max_app_hook_length - 1) * 6/7);
+					color_cubes(arrays[index], coordinates, (i - 1) / (max_app_hook_length - 1) * 6/7);
 				}
 			}
 			
@@ -5116,13 +5126,24 @@
 			
 			
 			
-			let rpp_size = Math.max(nu_row_lengths[0], nu_col_lengths[0]);
-			
 			let rpp = new Array(rpp_size);
 			
 			for (let i = 0; i < rpp_size; i++)
 			{
 				rpp[i] = new Array(rpp_size);
+				
+				for (let j = 0; j < rpp_size; j++)
+				{
+					if (j < rpp_size - nu_row_lengths[rpp_size - i - 1])
+					{
+						rpp[i][j] = Infinity;
+					}
+					
+					else
+					{
+						rpp[i][j] = 0;
+					}
+				}
 			}
 			
 			let rpp_array = null;
@@ -5139,6 +5160,11 @@
 			for (let i = 0; i < plane_partition.length; i++)
 			{
 				pp[i] = new Array(plane_partition.length);
+				
+				for (let j = 0; j < plane_partition.length; j++)
+				{
+					pp[i][j] = 0;
+				}
 			}
 			
 			let pp_array = await add_new_array(index + 2, pp);
@@ -5166,11 +5192,22 @@
 						if (hook_map[i][j][0] === 0)
 						{
 							await move_cubes(arrays[index], source_coordinates, rpp_array, target_coordinates);
+							
+							rpp[target_row][target_col] = arrays[index].numbers[i][j];
+							arrays[index].numbers[i][j] = 0;
 						}
 						
 						else
 						{
 							await move_cubes(arrays[index], source_coordinates, pp_array, target_coordinates);
+							
+							pp[target_row][target_col] = arrays[index].numbers[i][j];
+							arrays[index].numbers[i][j] = 0;
+						}
+						
+						if (in_2d_view)
+						{
+							draw_all_2d_view_text();
 						}
 					}	
 				}
@@ -5183,8 +5220,267 @@
 			
 			
 			await run_algorithm("hillman_grassl_inverse", index, true);
+				
+			if (rpp_size > 0)
+			{
+				await run_algorithm("hillman_grassl_inverse", index + 1, true);
+			}	
 			
-			await run_algorithm("hillman_grassl_inverse", index + 1, true);
+			resolve();
+		});	
+	}
+	
+	
+	
+	function godar_1_inverse(index)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			//Figure out the shape of nu.
+			let array = arrays[index];
+			let plane_partition = array.numbers;
+			
+			let nu_row_lengths = new Array(plane_partition.length);
+			let nu_col_lengths = new Array(plane_partition.length);
+			
+			for (let i = 0; i < plane_partition.length; i++)
+			{
+				let j = 0;
+				
+				while (j < plane_partition.length && plane_partition[i][j] === Infinity)
+				{
+					j++;
+				}
+				
+				nu_row_lengths[i] = j;
+				
+				
+				
+				j = 0;
+				
+				while (j < plane_partition.length && plane_partition[j][i] === Infinity)
+				{
+					j++;
+				}
+				
+				nu_col_lengths[i] = j;
+			}
+			
+			let rpp_size = Math.max(nu_row_lengths[0], nu_col_lengths[0]);
+			
+			
+			
+			await run_algorithm("hillman_grassl", index, true);
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+			
+			//Uncolor everything.
+			let coordinates = [];
+			
+			let numbers = arrays[index].numbers;
+			
+			for (let i = 0; i < numbers.length; i++)
+			{
+				for (let j = 0; j < numbers.length; j++)
+				{
+					if (numbers[i][j] !== Infinity)
+					{
+						for (let k = 0; k < numbers[i][j]; k++)
+						{
+							coordinates.push([i, j, k]);
+						}
+					}	
+				}
+			}
+			
+			await uncolor_cubes(arrays[index], coordinates);
+			
+			
+			
+			//Organize everything by hook length.
+			let max_app_hook_length = 2 * plane_partition.length - nu_row_lengths[plane_partition.length - 1] - nu_col_lengths[plane_partition.length - 1];
+			let max_rpp_hook_length = nu_row_lengths[0] + nu_col_lengths[0];
+			
+			let app_pivots_by_hook_length = new Array(max_app_hook_length);
+			let rpp_pivots_by_hook_length = new Array(max_rpp_hook_length);
+			let pp_pivots_by_hook_length = new Array(2 * plane_partition.length);
+			
+			for (let i = 0; i < max_app_hook_length; i++)
+			{
+				app_pivots_by_hook_length[i] = new Array();
+			}
+			
+			for (let i = 0; i < max_rpp_hook_length; i++)
+			{
+				rpp_pivots_by_hook_length[i] = new Array();
+			}
+			
+			for (let i = 0; i < 2 * plane_partition.length; i++)
+			{
+				pp_pivots_by_hook_length[i] = new Array();
+			}
+			
+			
+			
+			for (let i = 0; i < plane_partition.length; i++)
+			{
+				for (let j = 0; j < plane_partition.length; j++)
+				{
+					if (j >= nu_row_lengths[i])
+					{
+						app_pivots_by_hook_length[i + j + 1 - nu_row_lengths[i] - nu_col_lengths[j]].push([i, j]);
+					}
+					
+					else
+					{
+						//.unshift rather than .push makes the hooks move in the correct order.
+						rpp_pivots_by_hook_length[nu_row_lengths[i] + nu_col_lengths[j] - i - j - 1].unshift([rpp_size - i - 1, rpp_size - j - 1]);
+					}
+					
+					pp_pivots_by_hook_length[i + j + 1].push([i, j]);
+				}
+			}
+			
+			
+			
+			let hook_map = new Array(plane_partition.length);
+			
+			for (let i = 0; i < plane_partition.length; i++)
+			{
+				hook_map[i] = new Array(plane_partition.length);
+			}
+			
+			for (let i = 1; i < max_app_hook_length; i++)
+			{
+				let coordinates = [];
+				
+				for (let j = 0; j < app_pivots_by_hook_length[i].length; j++)
+				{
+					for (let k = 0; k < arrays[index].numbers[app_pivots_by_hook_length[i][j][0]][app_pivots_by_hook_length[i][j][1]]; k++)
+					{
+						coordinates.push([app_pivots_by_hook_length[i][j][0], app_pivots_by_hook_length[i][j][1], k]);
+					}
+					
+					if (j < pp_pivots_by_hook_length[i].length)
+					{
+						hook_map[app_pivots_by_hook_length[i][j][0]][app_pivots_by_hook_length[i][j][1]] = [1, pp_pivots_by_hook_length[i][j]];
+					}
+					
+					else
+					{
+						hook_map[app_pivots_by_hook_length[i][j][0]][app_pivots_by_hook_length[i][j][1]] = [0, rpp_pivots_by_hook_length[i][j - pp_pivots_by_hook_length[i].length]];
+					}
+				}
+				
+				if (coordinates.length !== 0)
+				{
+					color_cubes(arrays[index], coordinates, (i - 1) / (max_app_hook_length - 1) * 6/7);
+				}
+			}
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+			
+			
+			
+			let rpp = new Array(rpp_size);
+			
+			for (let i = 0; i < rpp_size; i++)
+			{
+				rpp[i] = new Array(rpp_size);
+				
+				for (let j = 0; j < rpp_size; j++)
+				{
+					if (j < rpp_size - nu_row_lengths[rpp_size - i - 1])
+					{
+						rpp[i][j] = Infinity;
+					}
+					
+					else
+					{
+						rpp[i][j] = 0;
+					}
+				}
+			}
+			
+			let rpp_array = null;
+			
+			if (rpp_size > 0)
+			{
+				rpp_array = await add_new_array(index + 1, rpp);
+			}	
+			
+			
+			
+			let pp = new Array(plane_partition.length);
+			
+			for (let i = 0; i < plane_partition.length; i++)
+			{
+				pp[i] = new Array(plane_partition.length);
+				
+				for (let j = 0; j < plane_partition.length; j++)
+				{
+					pp[i][j] = 0;
+				}
+			}
+			
+			let pp_array = await add_new_array(index + 2, pp);
+			
+			
+			
+			for (let i = 0; i < plane_partition.length; i++)
+			{
+				for (let j = nu_row_lengths[i]; j < plane_partition.length; j++)
+				{
+					if (arrays[index].numbers[i][j] > 0)
+					{
+						let source_coordinates = [];
+						let target_coordinates = [];
+						
+						let target_row = hook_map[i][j][1][0];
+						let target_col = hook_map[i][j][1][1];
+						
+						for (let k = 0; k < arrays[index].numbers[i][j]; k++)
+						{
+							source_coordinates.push([i, j, k]);
+							target_coordinates.push([target_row, target_col, k]);
+						}
+						
+						if (hook_map[i][j][0] === 0)
+						{
+							await move_cubes(arrays[index], source_coordinates, rpp_array, target_coordinates);
+							
+							rpp[target_row][target_col] = arrays[index].numbers[i][j];
+							arrays[index].numbers[i][j] = 0;
+						}
+						
+						else
+						{
+							await move_cubes(arrays[index], source_coordinates, pp_array, target_coordinates);
+							
+							pp[target_row][target_col] = arrays[index].numbers[i][j];
+							arrays[index].numbers[i][j] = 0;
+						}
+						
+						if (in_2d_view)
+						{
+							draw_all_2d_view_text();
+						}
+					}	
+				}
+			}
+			
+			
+			
+			await remove_array(index);
+			
+			
+			
+			await run_algorithm("hillman_grassl_inverse", index, true);
+				
+			if (rpp_size > 0)
+			{
+				await run_algorithm("hillman_grassl_inverse", index + 1, true);
+			}	
 			
 			resolve();
 		});	
