@@ -496,6 +496,12 @@
 	download_button_element.addEventListener("click", () =>
 	{
 		need_download = true;
+		
+		/*
+		wilson_numbers.download_frame("numbers.png");
+		
+		setTimeout(() => need_download = true, 3000);
+		*/
 	});
 	
 	
@@ -1919,7 +1925,7 @@
 					{
 						let j = 0;
 						
-						for (let k = 0; k < array.cubes[i][j].length; k++)
+						for (let k = 0; k < Math.min(array.cubes[i][j].length, wall_size); k++)
 						{
 							targets.push(array.left_wall[i][k].material[0]);
 						}
@@ -1931,12 +1937,12 @@
 					{
 						let i = 0;
 						
-						for (let k = 0; k < array.cubes[i][j].length; k++)
+						for (let k = 0; k < Math.min(array.cubes[i][j].length, wall_size); k++)
 						{
 							targets.push(array.right_wall[j][k].material[4]);
 						}
 					}
-				}	
+				}
 			});
 			
 			targets.forEach(material => material.opacity = 0);
@@ -2099,7 +2105,7 @@
 					{
 						let j = 0;
 						
-						for (let k = 0; k < array.cubes[i][j].length; k++)
+						for (let k = 0; k < Math.min(array.cubes[i][j].length, wall_size); k++)
 						{
 							targets.push(array.left_wall[i][k].material[0]);
 						}
@@ -2111,7 +2117,7 @@
 					{
 						let i = 0;
 						
-						for (let k = 0; k < array.cubes[i][j].length; k++)
+						for (let k = 0; k < Math.min(array.cubes[i][j].length, wall_size); k++)
 						{
 							targets.push(array.right_wall[j][k].material[4]);
 						}
