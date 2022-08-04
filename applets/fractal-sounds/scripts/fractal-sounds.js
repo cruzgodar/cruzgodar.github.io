@@ -930,9 +930,14 @@
 	{
 		change_aspect_ratio();
 		
-		Page.set_element_styles(".wilson-applet-canvas-container", "background-color", "rgba(0, 0, 0, 0)", true);
+		try
+		{
+			document.body.querySelectorAll(".wilson-applet-canvas-container").forEach(element => element.style.setProperty("background-color", "rgba(0, 0, 0, 0)", "important"));
+			
+			document.body.querySelector(".wilson-exit-fullscreen-button").style.setProperty("z-index", "300", "important")
+		}
 		
-		Page.set_element_styles(".wilson-exit-fullscreen-button", "z-index", "300", true);
+		catch(ex) {}
 		
 		wilson_line_drawer.fullscreen.switch_fullscreen();
 	}
