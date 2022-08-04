@@ -109,6 +109,10 @@
 		canvas_width: resolution,
 		canvas_height: resolution,
 		
+		use_fullscreen: true,
+		
+		use_fullscreen_button: false,
+		
 		mousedown_callback: on_grab_canvas,
 		touchstart_callback: on_grab_canvas,
 		
@@ -125,12 +129,23 @@
 	
 	Page.element.querySelector(".wilson-fullscreen-components-container").style.setProperty("z-index", 200, "important");
 	
+	Page.set_element_styles(".wilson-applet-canvas-container", "background-color", "rgba(0, 0, 0, 0)", true);
+	
 	
 	
 	let options =
 	{
 		canvas_width: resolution,
-		canvas_height: resolution
+		canvas_height: resolution,
+		
+		use_fullscreen: true,
+		
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+		
+		switch_fullscreen_callback: switch_fullscreen
 	};
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
@@ -722,6 +737,17 @@
 		
 		
 		window.requestAnimationFrame(draw_frame);
+	}
+	
+	
+	
+	function switch_fullscreen()
+	{
+		//Needs to be document.body because that's where Wilson puts this stuff.
+		try {document.body.querySelector(".wilson-exit-fullscreen-button").style.setProperty("z-index", "300", "important")}
+		catch(ex) {};
+		
+		wilson_numbers.fullscreen.switch_fullscreen();
 	}
 	
 	
