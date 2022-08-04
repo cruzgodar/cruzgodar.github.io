@@ -747,7 +747,12 @@
 		try {document.body.querySelector(".wilson-exit-fullscreen-button").style.setProperty("z-index", "300", "important")}
 		catch(ex) {};
 		
-		wilson_numbers.fullscreen.switch_fullscreen();
+		if (!in_2d_view)
+		{
+			wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+		}
+		
+		wilson_numbers.fullscreen.switch_fullscreen();	
 	}
 	
 	
