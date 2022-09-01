@@ -105,8 +105,8 @@
 		
 		
 		
-		applet_link_element.setAttribute("href", `/applets/${gallery_image_data[id]["applet_link"]}/${gallery_image_data[id]["applet_link"]}.html`);
-		applet_link_element.setAttribute("onclick", `Page.Navigation.redirect('/applets/${gallery_image_data[id]["applet_link"]}/${gallery_image_data[id]["applet_link"]}.html')`);
+		applet_link_element.setAttribute("href", `/applets/${gallery_image_data[id]["applet_link"]}/`);
+		applet_link_element.setAttribute("onclick", `Page.Navigation.redirect('/applets/${gallery_image_data[id]["applet_link"]}/')`);
 		
 		full_res_link_element.setAttribute("href", gallery_image_data[id]["image_link"]);
 		full_res_link_element.setAttribute("onclick", `Page.Navigation.redirect('${gallery_image_data[id]["image_link"]}', true)`);
