@@ -21,6 +21,7 @@
 			"main.js",
 			"navigation.js",
 			"page-load.js",
+			"presentations.js",
 			"settings.js",
 			"sitemap.js"
 		];
@@ -71,6 +72,7 @@
 			"image-links.css",
 			"main.css",
 			"notes.css",
+			"presentations.css",
 			"progress.css",
 			"writing.css"
 		];

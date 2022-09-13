@@ -8,6 +8,7 @@ Site.sitemap =
 		[
 			"/gallery/",
 			"/applets/",
+			"/papers/",
 			"/writing/",
 			"/teaching/",
 			"/about/"
@@ -312,6 +313,25 @@ Site.sitemap =
 	"/applets/julia-set-explorer/":
 	{
 		parent: "/applets/",
+		
+		children: []
+	},
+	
+	
+	
+	"/papers/":
+	{
+		parent: "/home/",
+		
+		children:
+		[
+			"/papers/bijectivizing-the-pt-dt-correspondence/"
+		]
+	},
+	
+	"/papers/bijectivizing-the-pt-dt-correspondence/":
+	{
+		parent: "/papers/",
 		
 		children: []
 	},

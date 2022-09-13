@@ -1,0 +1,23 @@
+#slide-container
+{
+	display: flex;
+	flex-direction: column;
+	
+	align-items: center;
+	justify-content: center;
+	
+	width: 100vw;
+	height: 100vh;
+	margin: 0 auto;
+	overflow-y: hidden
+}
+
+.slide
+{
+	width: 95vw;
+	height: 53.4375vw;
+	
+	border-radius: 50px;
+	
+	box-shadow: 0px 0px 8px 0px rgb(127, 127, 127);
+}
