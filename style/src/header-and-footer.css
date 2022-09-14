@@ -134,7 +134,7 @@
 
 .footer-image-link img
 {
-	z-index: 101;
+	z-index: 51;
 	
 	position: absolute;
 	width: 8vw;
@@ -155,7 +155,7 @@
 {
 	margin-top: 0;
 	
-	z-index: 100;
+	z-index: 50;
 	
 	transition: margin-top .2s ease-out;
 }
@@ -176,7 +176,7 @@
 {
 	position: fixed;
 	bottom: 0;
-	z-index: 100;
+	z-index: 50;
 }
 
 .footer-menu-button
@@ -188,12 +188,12 @@
 
 #show-footer-menu-button
 {
-	z-index: 101;
+	z-index: 51;
 }
 
 #about-button, #sitemap-button, #settings-button, #debug-button
 {
-	z-index: 102;
+	z-index: 52;
 	
 	left: -40px;
 	
@@ -223,7 +223,7 @@
 
 #theme-button, #contrast-button, #text-size-button, #font-button, #content-animation-button
 {
-	z-index: 105;
+	z-index: 55;
 	
 	left: -40px;
 	
@@ -258,7 +258,7 @@
 	width: 50vw;
 	left: 25vw;
 	
-	z-index: 100;
+	z-index: 50;
 }
 
 .settings-text

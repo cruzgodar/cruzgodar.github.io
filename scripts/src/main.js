@@ -139,6 +139,23 @@ Site.page_lists =
 		"/teaching/uo/252/notes/16-intro-to-des/"
 	],
 	
+	"/teaching/uo/253/notes":
+	[
+		"/teaching/uo/253/notes/0-calc-2-review/",
+		"/teaching/uo/253/notes/1-sequences-and-series/",
+		"/teaching/uo/253/notes/2-divergence-and-integral-tests/",
+		"/teaching/uo/253/notes/3-comparison-tests/",
+		"/teaching/uo/253/notes/4-alternating-series/",
+		"/teaching/uo/253/notes/5-ratio-and-root-tests/",
+		"/teaching/uo/253/notes/6-power-series/",
+		"/teaching/uo/253/notes/7-properties-of-power-series/",
+		"/teaching/uo/253/notes/8-taylor-series/",
+		"/teaching/uo/253/notes/9-taylor-series-as-representations/",
+		"/teaching/uo/253/notes/10-properties-of-taylor-series/",
+		"/teaching/uo/253/notes/11-applications-of-taylor-series/",
+		"/teaching/uo/253/notes/12-generating-functions/"
+	],
+	
 	"/projects/wilson/guide":
 	[
 		"/projects/wilson/",

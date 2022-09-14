@@ -66,7 +66,11 @@
 	filter: brightness(95%) !important;
 }
 
-
+.one-image-link
+{
+	grid-template-columns: repeat(1, 1fr) !important;
+	width: 13.75vw !important;
+}
 
 /* Compact layout: reduce to two images per row. */
 @media (max-width: 700px)
@@ -79,6 +83,11 @@
 		
 		grid-row-gap: 10vw;
 		grid-column-gap: 10vw;
+	}
+	
+	.one-image-link
+	{
+		width: 40vw !important;
 	}
 }
 
@@ -98,6 +107,11 @@
 	.image-link-subtext
 	{
 		margin-bottom: calc(-1vh - 20px);
+	}
+	
+	.one-image-link
+	{
+		width: 9.167vw !important;
 	}
 }
 

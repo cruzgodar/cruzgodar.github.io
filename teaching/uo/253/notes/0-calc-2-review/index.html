@@ -1,0 +1,328 @@
+<head>
+	<title>Section 0: Calculus I and II Review</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 0: Calculus I and II Review"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/253/notes/0-calc-2-review/">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/253/notes/0/calc-2-review/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 0: Calculus I and II Review
+
+<br>
+
+
+
+!begin-text-block
+	
+	Welcome to Math 253! You&#x2019;re viewing the interactive lecture notes &mdash; reading either these or the textbook is required for the class, since we&#x2019;ll have a very short reading quiz on Canvas due before each lecture. To get started, let&#x2019;s make sure your browser handles equations and graphs correctly. You should see an equation on its own line below and a graph below that.
+	
+	$$
+		x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+	$$
+	
+	!iframe https://www.desmos.com/calculator/zgrogzuagn
+	
+	If anything doesn&#x2019;t appear correctly, update your browser and then reach out if that doesn&#x2019;t work. There&#x2019;s also a non-interactive pdf version of each document available for compatibility &mdash; let me know if you need them.
+	
+!end-text-block
+
+
+
+!section
+
+!text s Limits
+
+<br>
+
+
+
+!begin-text-block
+	
+	The <dfn>limit</dfn> as $x$ approaches $a$ of a function $f(x)$, written $\lim_{x \to a} f(x)$, is a concept that lets us talk about what value $f$ ought to have at $x = a$, without knowing what value $f(a)$ actually takes, or if it&#x2019;s even defined at all. For example, with the function $g$ defined by
+	
+	$$
+		g(t) = \frac{\sin(t)}{t},
+	$$
+	
+	we have that $g(0) = \frac{\sin(0)}{0} = \frac{0}{0}$, which is undefined. However, we can take the limit (and use L&#x2019;H&#244;pital&#x2019;s rule) to find that
+	
+	$$
+		\begin{align*}
+			\lim_{t \to 0} g(t) &= \lim_{t \to 0} \frac{\frac{d}{dt} [\sin(t)] }{\frac{d}{dt}[t]}\\
+			&= \lim_{t \to 0} \frac{\cos(t)}{1}\\
+			&= \frac{1}{1}\\
+			&= 1.
+		\end{align*}
+	$$
+	
+	Even though $g(0)$ is undefined, the value we&#x2019;d expect it to take is $1$.
+	
+	!iframe https://www.desmos.com/calculator/4swxaaewth
+	
+	Limits split across addition, subtraction, multiplication, division, exponentiation, and even function composition. Moreover, most functions we commonly work with are <dfn>continuous</dfn> whenever they are defined. A function $f$ is continuous at $x = a$ if $\lim_{x \to a} f(x) = f(a)$; in other words, it has the value we would expect it to.
+	
+	The limit $\lim_{x \to a} f(x)$ can fail to exist if values of $f(x)$ near $x = a$ fail to settle down to one specific value, or if approaching from the left yields a different result than approaching from the right.
+	
+!end-text-block
+
+
+
+!section
+
+!text s Derivatives
+
+<br>
+
+
+
+!begin-text-block
+	
+	Derivatives measure slopes of tangent lines. The derivative of a function $f(x)$ at $x = a$ is defined as
+	
+	$$
+		f'(a) = \frac{d}{dx}[f(x)]|_{x = a} = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h},
+	$$
+	
+	if the limit exists. The function inside the limit is the slope of a secant line passing through the points $(a, f(a))$ and $(a + h, f(a + h))$, and as $h \to 0$, that secant line approaches a tangent line.
+	
+	!iframe https://www.desmos.com/calculator/lyfhz3puqb
+	
+	In order for a function to be differentiable, it must be continuous, but not all continuous functions are differentiable: for example, $f(x) = |x|$ is not differentiable at $x = 0$ due to the sharp corner.
+	
+	In practice, we don&#x2019;t use the limit definition of the derivative all that often. Instead, we use derivative rules, like the product, quotient, and chain rules, and we memorize a handful of common derivatives to use as building blocks.
+	
+!end-text-block
+
+
+
+!begin-prop
+	
+	derivative rules
+	
+	1. $\frac{d}{dx} [c \cdot f(x)] = c \cdot f'(x)$.
+	
+	2. $\frac{d}{dx} [f(x) + g(x)] = f'(x) + g'(x)$.
+	
+	3. $\frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x)$ (the product rule).
+	
+	4. $\frac{d}{dx} \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}$ (the quotient rule).
+	
+	5. $\frac{d}{dx} [f(g(x))] = f'(g(x))g'(x)$ (the chain rule).
+	
+!end-prop
+
+!begin-prop	
+	
+	common derivatives
+	
+	$\frac{d}{dx} [0] = 0$.
+	
+	$\frac{d}{dx} [x^p] = px^{p - 1}, p \neq 0$ (the power rule).
+	
+	$\frac{d}{dx} [\sin(x)] = \cos(x)$.
+	
+	$\frac{d}{dx} [\cos(x)] = -\sin(x)$.
+	
+	$\frac{d}{dx} [\tan(x)] = \sec^2(x)$.
+	
+	$\frac{d}{dx} [b^x] = b^x \ln(b)$.
+	
+	$\frac{d}{dx} [e^x] = e^x$.
+	
+	$\frac{d}{dx} [\ln(x)] = \frac{1}{x}$.
+	
+!end-prop
+	
+
+
+
+
+!begin-text-block
+	
+	We&#x2019;ll be using limits and derivatives heavily throughout the course. I have a full set of interactive notes available for calculus I &mdash; brush up with those if you&#x2019;re feeling rusty.
+	
+!end-text-block
+
+<div style="height: 5vh"></div>
+
+<div class="image-links one-image-link">
+	<div class="image-link image-link-light" data-aos="fade-up">
+		<a href="/teaching/uo/251/" tabindex="-1">
+			<img class="check-webp no-floating-footer" data-src="/teaching/uo/251/cover." alt="Calculus I Notes" tabindex="1"></img>
+		</a>
+		
+		<p class="image-link-subtext">Calculus I Notes</p>
+	</div>
+</div>
+
+<div style="height: 5vh"></div>
+
+
+
+!section
+
+!text s Integrals
+
+<br>
+
+
+
+!begin-text-block
+	
+	The final building blocks we&#x2019;ll need are integrals. They come in two flavors: definite and indefinite. Indefinite integrals perform the opposite operation as derivatives, taking a function $f(x)$ to an antiderivative, often denoted $F(x)$. For example,
+	
+	$\int x^2\ dx = \frac{x^3}{3} + C$.
+	
+	$\int \sin(2x)\ dx = -\frac{1}{2}\cos(2x) + C$.
+	
+	$\int \frac{1}{y}\ dx = \ln|y| + C$.
+	
+	In contrast, definite integrals measure the area under the graph of a function and take an extra two numbers, written above and below the integral sign. When we say that
+	
+	$$
+		\int_{-2}^4 t^3\ dt = 60,
+	$$
+	
+	we mean that the shaded region in the graph below has area 60. Remember that area below the $x$-axis counts as negative.
+	
+	!iframe https://www.desmos.com/calculator/863i1kldou
+	
+	The two types of integrals are connected through the <dfn>Fundamental Theorem of Calculus</dfn>, which relates area under curves to antiderivatives.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the Fundamental Theorem of Calculus
+	
+	Let $f$ be an integrable function. Then
+	
+	$$
+		\int_a^b f(x)\ dx = \left. \left[ \int f(x)\ dx \right] \right|_a^b.
+	$$	
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	In other words, definite integrals can be calculated by taking an antiderivative, then evaluating that from $a$ to $b$.
+	
+	Much of the study of integrals is devoted to their applications, but we won&#x2019;t many of those in this class. What we will occasionally need is techniques of integration &mdash; these are analogous to derivative rules, but are usually quite a bit harder to use. The most common is $u$-sub, which helps with integrating compositions.
+	
+!end-text-block
+
+
+
+!begin-example
+
+	$u$-sub
+	
+	Find the area under the graph of $f(x) = x \sin(x^2)$ between $x = 0$ and $x = \sqrt{\pi}$.
+	
+	As an integral, this is 
+	
+	$$
+		\int_0^{\sqrt{\pi}} x \sin(x^2)\ dx.
+	$$
+	
+	Since $\sin(x^2)$ is a composition of $\sin(x)$ and $x^2$, let&#x2019;s try $u$-sub. We let $u = x^2$, the inner function, and then differentiate to find that $du = 2x\ dx$. Present in our integral is $x\ dx$, not $2x\ dx$, so we divide by $2$ to get $\frac{1}{2}\ du = x\ dx$, which matches our integral. Now we have
+	
+	$$
+		\begin{align*}
+			\int_0^{\sqrt{\pi}} x \sin(x^2)\ dx &= \int_0^{\sqrt{\pi}} \frac{1}{2} \sin(u)\ du\\
+			&= \frac{1}{2} \int_0^{\sqrt{\pi}} \sin(u)\ du\\
+			&= \frac{1}{2} \left. \left[ -\cos(u) \right] \right|_0^{\sqrt{\pi}}\\
+			&= \frac{1}{2} \left. \left[ - \cos(x^2) \right] \right|_0^{\sqrt{\pi}}\\
+			&= \frac{1}{2} \left( -\cos \left( \sqrt{pi}^2 \right) + \cos(0^2) \right)\\
+			&= \frac{1}{2} \left( -(-1) + 1 \right)\\
+			&= 1.
+		\end{align*}	
+	$$
+	
+	Therefore, the area under the graph is exactly 1.
+	
+	!iframe https://www.desmos.com/calculator/ymvucgdlhk
+
+!end-example
+
+
+
+!begin-text-block
+	
+	The other commonly-used integration techniques are integration by parts, trig sub, and partial fractions. We won&#x2019;t use these too often, but they&#x2019;re good to know. If they don&#x2019;t feel familiar or anything else in calculus II, have a look at those notes.
+	
+!end-text-block
+
+
+
+<div style="height: 5vh"></div>
+
+<div class="image-links one-image-link">
+	<div class="image-link image-link-light" data-aos="fade-up">
+		<a href="/teaching/uo/252/" tabindex="-1">
+			<img class="check-webp no-floating-footer" data-src="/teaching/uo/252/cover." alt="Calculus II Notes" tabindex="1"></img>
+		</a>
+		
+		<p class="image-link-subtext">Calculus II Notes</p>
+	</div>
+</div>
+
+<div style="height: 5vh"></div>
+
+
+
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 0: Calculus I and II Review",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/253/notes"
+	};
+	
+	Page.load();
+</script>
