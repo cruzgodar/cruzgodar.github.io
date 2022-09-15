@@ -185,16 +185,16 @@ img
 
 
 
-/* Centers body text, but only if it's a single line (not long enough to justify). */
-.center-if-needed
-{
-	text-align: center;
-}
-
 .body-text span
 {
 	display: inline-block;
 	text-align: justify;
+}
+
+/* Centers body text, but only if it's a single line (not long enough to justify). */
+.center-if-needed
+{
+	text-align: center;
 }
 
 
