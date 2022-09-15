@@ -33,7 +33,7 @@ Page.Banner =
 	{
 		"/home/":
 		{
-			"current_banner": Math.floor(Math.random() * 16),
+			"current_banner": Math.floor(Math.random() * 16) + 1,
 			"num_banners": 16
 		}
 	},
