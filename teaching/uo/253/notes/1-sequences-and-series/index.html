@@ -1,0 +1,83 @@
+<head>
+	<title>Section 1: Sequences and Series</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 1: Sequences and Series"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/253/notes/1-sequences-and-series/">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/253/notes/1-sequences-and-series/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 1: Sequences and Series
+
+<br>
+
+
+
+!begin-text-block
+	
+	When learning math, it&#x2019;s helpful to have an idea of the big picture at as many levels possible. At times the definitions, theorems, and examples can feel like slogging through tall grass, and without a clear picture of where you&#x2019;re going and why, it can seem a little pointless. First, let&#x2019;s run down what we&#x2019;ll be building over the entire course.
+	
+	Throughout all of calculus I and II, the easiest type of functions to work with are polynomials. Limits, derivatives, and integrals are all easy when the function you&#x2019;re working with is a polynomial, since all three split across addition, so you can take them term-by-term. Moreover, each term of a polynomial is a continuous function, so limits are as easy as plugging in the number you&#x2019;re limiting to, and derivatives and integrals just leverage the power rule.
+	
+	It goes without saying that not all functions are polynomials. $\sin(x)$, $\ln(x)$, and $2^x$ are all substantially more complicated, and there is no way to write any as a sun of monomials. But let&#x2019;s take a close look at $\sin(x)$.
+	
+	!iframe https://www.desmos.com/calculator/dtuvs1pfgn
+	
+	Drag the blue point around, and try increasing $N$. The green function is always a polynomial, and it is almost exactly equal to $\sin(x)$, as long as you only look near the blue point. As $N$ increases, so does the length of the interval where the two functions are almost identical. It will turn out that as $N \to \infty$, that interval becomes infinitely long, and the functions agree everywhere. So $\sin$ may not be a polynomial, but it is a <em>limit</em> of polynomials. This is a very different kind of limit from the one we&#x2019;re used to, though &mdash; rather than a sequence of numbers approaching another number, what we have here is a sequence of <em>functions</em> approaching another function. The upshot of this intricate construction is that many of the best properties of polynomials will carry over to limits of them, so working with $\sin$ &mdash; and more importantly, other more complicated functions &mdash; will be made much easier.
+	
+	We&#x2019;ll spend the first half of the course building tools and machinery in order to understand the ideas of adding together infinitely many functions that can sometimes converge. In the second half, we&#x2019;ll specialize to the specific kind of sums that approximate functions, like we just did with $\sin$. While many of the topics we cover will be interesting in their own right, it&#x2019;s good to keep this rough roadmap in mind as we move from one to the next.
+	
+!end-text-block
+
+
+
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 1: Sequences and Series",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/253/notes"
+	};
+	
+	Page.load();
+</script>
