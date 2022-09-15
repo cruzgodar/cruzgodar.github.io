@@ -11,7 +11,8 @@ Site.sitemap =
 			"/papers/",
 			"/writing/",
 			"/teaching/",
-			"/about/"
+			"/about/",
+			"/404/"
 		]
 	},
 	
@@ -911,6 +912,15 @@ Site.sitemap =
 	
 	
 	"/about/":
+	{
+		parent: "/home/",
+		
+		children: []
+	},
+	
+	
+	
+	"/404/":
 	{
 		parent: "/home/",
 		

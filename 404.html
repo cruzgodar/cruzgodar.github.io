@@ -4,7 +4,15 @@
 
 
 
-<title>Oh No!</title>
+<title>Cruz Godar</title>
+
+<meta property="og:type" content="website">
+
+<meta property="og:title" content="Cruz Godar"/>
+
+<meta property="og:url" content="https://cruzgodar.com/">
+
+<meta property="og:image" content="https://cruzgodar.com/graphics/general-icons/logo.png"/>
 
 <meta name="keywords" content="cruz,godar,cruzgodar,writing,math,teaching,blog,notes,applet">
 <meta name="author" content="Cruz Godar">
@@ -31,7 +39,7 @@
 
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-<meta name="theme-color" content="#ffffff">
+<meta id="theme-color-meta" name="theme-color" content="#ffffff">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -40,11 +48,25 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2K3BXXFW9B"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+
+	gtag('config', 'G-2K3BXXFW9B');
+</script>
+
+
+
 </head>
 
 
 
-<body class="animated-opacity">
+<body>
 	<noscript>
 		<div style="height: 5vh"></div>
 		
@@ -53,14 +75,19 @@
 	
 	
 	
-	<!-- Tells the browser that it's time to get GBB up and running -->
-	<p style="opacity: 0; font-family: 'Gentium Book Basic', serif">a</p>
+	<script src="/scripts/anime.min.js"></script>
+	
+	<script src="/scripts/smoothscroll-polyfill.min.js"></script>
+	
+	<script src="/scripts/highlight.min.js"></script>
 	
 	
-	
-	<script src="/scripts/aos.min.js"></script>
 	
 	<script src="/scripts/js-bundle.min.js"></script>
+	
+	
+	
+	<script src="/scripts/wilson.js"></script>
 	
 	<script>
 		let link = document.createElement("link");
@@ -72,12 +99,16 @@
 		link = document.createElement("link");
 		link.setAttribute("rel", "stylesheet");
 		link.setAttribute("type", "text/css");
-		link.setAttribute("href", "/style/aos.min.css");
+		link.setAttribute("href", "/style/highlight.min.css");
+		document.head.appendChild(link);
+		
+		link = document.createElement("link");
+		link.setAttribute("rel", "stylesheet");
+		link.setAttribute("href", "https://fonts.googleapis.com/css2?family=Gentium+Book+Basic&family=Rubik&family=Source+Code+Pro&display=swap");
 		document.head.appendChild(link);
 		
 		
-		
-		Site.load("/404/404.html");
+		Site.load("/404/");
 	</script>
 </body>
 </html>
