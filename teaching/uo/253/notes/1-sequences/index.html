@@ -179,6 +179,161 @@
 
 
 
+!begin-text-block
+	
+	There are two particular types of sequences that crop up often, and it will help to give them names so we can talk about about them more easily.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	arithmetic and geometric sequences
+	
+	An <dfn>arithmetic</dfn> sequence is one for which the difference between any two consecutive terms is the same. A </dfn>geometric</dfn> sequence is one for which the ratio between any two consecutive terms is the same.
+	
+	Note: the word <em>arithmetic</em> is pronounced differently here than it usually is &mdash; the stress is on the third syllable instead of the second.
+	
+!end-def
+
+
+
+!begin-example
+	
+	arithmetic and geometric sequences
+	
+	The sequence
+	
+	$$
+		(a_n) = (1, -2, -5, -8, -11, -14, ...)
+	$$
+	
+	is arithmetic, since the difference between every pair of consecutive terms is exactly $-3$. Equivalently, we could write $a_1 = 1$ and $a_n = a_{n - 1} - 3$. On the other hand, the sequence
+	
+	$$
+		(b_n) = (3, 6, 12, 24, 48, 96, ...)
+	$$
+	
+	is geometric, since the ratio between every pair of consecutive terms is exactly $2$. Equivalently, $b_1 = 3$ and $b_n = 2b_{n - 1}$.
+	
+!end-example
+
+!begin-example
+	
+	arithmetic and geometric sequences
+	
+	Find explicit formulas for $(a_n)$ and $(b_n)$ and check that they&#x2019;re correct.
+	
+!end-example
+
+
+
+!section
+
+!text s Convergence
+
+<br>
+
+
+
+!begin-text-block
+	
+	Although they&#x2019;re interesting in their own right, we need sequences because of their ability to <dfn>converge</dfn>. The idea is very similar to the limit of a function $f(x)$ as $x \to \infty$, so we already have a lot of intuition for how the limit of a sequence might work. For example,
+	
+	$(1, 2, 3, 4, 5, ...) \to \infty$.
+	
+	$\left(1 + \left(-\frac{1}{2}\right)^n \right) = \left(\frac{1}{2}, \frac{5}{4}, \frac{7}{8}, \frac{17}{16}, \frac{31}{32}, ... \right) \to 1$.
+	
+	$(1, -1, 1, -1, 1, ...)$ does not converge.
+	
+	Chances are good that when you first learned about limits, you were never given a precise definition. This is for good reason &mdash; limits are usually fairly easy to find by inspection, as in the previous three examples, the actual definition is somewhat finicky and precise, and calculus I already has enough concepts that are difficult to digest. Now, though, we need to know that exact definition for sequences, and calculus III is high-level enough that it&#x2019;s reasonable to introduce.
+	
+	Let&#x2019;s begin with the informal definition, which is a good way to think of limits of sequences in practice.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	the limit of a sequence (informal)
+	
+	Let $(a_n)$ be a sequence. If the terms $a_n$ get closer and closer to some finite number $L$ as $n$ gets larger and larger, then we say that $(a_n)$ <dfn>converges</dfn> to $L$, and we write any of the following:
+	
+	$(a_n) \to L$.
+	
+	$\lim_{n \to \infty} (a_n) = L$.
+	
+	$\lim (a_n) = L$ (since the only limit we can take of a sequence is when $n \to \infty$.
+	
+	If $(a_n)$ does not converge, then we say it <dfn>diverges</dfn>.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	The informal parts of this definition are the phrases &#x201C;closer and closer&#x201D; and &#x201C;larger and larger&#x201D;. Let&#x2019;s nail those down.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	the limit of a sequence (formal)
+	
+	Let $(a_n)$ be a sequence. If there is a number $L$ such that for all real numbers $\varepsilon > 0$, there is a positive integer $N$ so that $|a_n - L| < \varepsilon|$ when $n \geq N$, then we say that $(a_n)$ converges to $L$.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	Let&#x2019;s unpack this carefully. First, we start with a candidate $L$ that we think is the limit of $(a_n)$. To check if that&#x2019;s the case, we pick a (small) number $\varepsilon > 0$. We need to find a point in the sequence after which <strong>every</strong> term is within $\varepsilon$ of $L$. If we can find such an $N$ no matter how small $\varepsilon$ is, then the sequence converges to $L$.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	The sequence $(a_n)$ defined by
+	
+	$$
+		a_n = 1 + \left(-\frac{1}{2}\right)^n
+	$$
+	
+	converges to $1$. Find $N$ such that $|a_n - 1| < \varepsilon$ for $\varepsilon = 1$, $\varepsilon = .1$, and $\varepsilon = .001$.
+	
+	Let&#x2019;s take a look at that inequality. We have
+	
+	$$
+		\begin{align*}
+			|a_n - 1| &= \left| 1 + \left(-\frac{1}{2}\right)^n - 1 \right|\\
+			&= \left| \left(-\frac{1}{2}\right)^n\right|\\
+			&= \left(\frac{1}{2}\right)^n
+			&= \frac{1}{2^n}.
+		\end{align*}
+	$$
+	
+	Therefore, when $\varepsilon = 1$, we need to find an $N$ so that whenever $n \geq N$, $\frac{1}{2^n} < 1$. Since $\frac{1}{2^n}$ decreases as $n$ increases and $\frac{1}{2^1} = \frac{1}{2}$, we can just take $N = 1$.
+	
+	For $\varepsilon = .1$, we need to figure out when $\frac{1}{2^n} < .1$. Plugging in a few values of $n$ tells us the first time that happens is when $n = 4$, and since larger values of $n$ only make $\frac{1}{2^n}$ even smaller, we can take $N = 4$.
+	
+	Finally, the first $n$ that makes $\frac{1}{2^n} < .01$ is $n = 10$, so we take $N = 10$.
+	
+	If we plot this sequence like a function, putting values of $n$ on the horizontal axis and $a_n$ on the vertical axis, convergence means that for any thin band around the horizontal line at height $L$, we can find an $N$ so that all the points to the right of $N$ stay in that band.
+	
+	https://www.desmos.com/calculator/if9yje0i3h
+	
+!end-example
+
+
+
 !nav-buttons
 
 
