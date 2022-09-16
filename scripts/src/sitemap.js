@@ -33,6 +33,7 @@ Site.sitemap =
 		
 		children:
 		[
+			"/applets/hyperbolic-isometries/",
 			"/applets/plane-partitions/",
 			"/applets/quaternionic-julia-sets/",
 			"/applets/fractal-sounds/",
@@ -71,6 +72,13 @@ Site.sitemap =
 			
 			"/projects/wilson/"
 		]
+	},
+	
+	"/applets/hyperbolic-isometries/":
+	{
+		parent: "/applets/",
+		
+		children: []
 	},
 	
 	"/applets/plane-partitions/":
@@ -477,18 +485,19 @@ Site.sitemap =
 		children:
 		[
 			"/teaching/uo/253/notes/0-calc-2-review/",
-			"/teaching/uo/253/notes/1-sequences-and-series/",
-			"/teaching/uo/253/notes/2-divergence-and-integral-tests/",
-			"/teaching/uo/253/notes/3-comparison-tests/",
-			"/teaching/uo/253/notes/4-alternating-series/",
-			"/teaching/uo/253/notes/5-ratio-and-root-tests/",
-			"/teaching/uo/253/notes/6-power-series/",
-			"/teaching/uo/253/notes/7-properties-of-power-series/",
-			"/teaching/uo/253/notes/8-taylor-series/",
-			"/teaching/uo/253/notes/9-taylor-series-as-representations/",
-			"/teaching/uo/253/notes/10-properties-of-taylor-series/",
-			"/teaching/uo/253/notes/11-applications-of-taylor-series/",
-			"/teaching/uo/253/notes/12-generating-functions/"
+			"/teaching/uo/253/notes/1-sequences/",
+			"/teaching/uo/253/notes/2-series/",
+			"/teaching/uo/253/notes/3-divergence-and-integral-tests/",
+			"/teaching/uo/253/notes/4-comparison-tests/",
+			"/teaching/uo/253/notes/5-alternating-series/",
+			"/teaching/uo/253/notes/6-ratio-and-root-tests/",
+			"/teaching/uo/253/notes/7-power-series/",
+			"/teaching/uo/253/notes/8-properties-of-power-series/",
+			"/teaching/uo/253/notes/9-taylor-series/",
+			"/teaching/uo/253/notes/10-taylor-series-as-representations/",
+			"/teaching/uo/253/notes/11-properties-of-taylor-series/",
+			"/teaching/uo/253/notes/12-applications-of-taylor-series/",
+			"/teaching/uo/253/notes/13-generating-functions/"
 		]
 	},
 	
@@ -499,30 +508,21 @@ Site.sitemap =
 		children: []
 	},
 	
-	"/teaching/uo/253/notes/1-sequences-and-series/":
+	"/teaching/uo/253/notes/1-sequences/":
 	{
 		parent: "/teaching/uo/253/",
 		
 		children: []
 	},
 	
-	"/teaching/uo/253/notes/2-divergence-and-integral-tests/":
+	"/teaching/uo/253/notes/2-series/":
 	{
 		parent: "/teaching/uo/253/",
 		
 		children: []
 	},
 	
-	
-	"/teaching/uo/253/notes/3-comparison-tests/":
-	{
-		parent: "/teaching/uo/253/",
-		
-		children: []
-	},
-	
-	
-	"/teaching/uo/253/notes/4-alternating-series/":
+	"/teaching/uo/253/notes/3-divergence-and-integral-tests/":
 	{
 		parent: "/teaching/uo/253/",
 		
@@ -530,7 +530,7 @@ Site.sitemap =
 	},
 	
 	
-	"/teaching/uo/253/notes/5-ratio-and-root-tests/":
+	"/teaching/uo/253/notes/4-comparison-tests/":
 	{
 		parent: "/teaching/uo/253/",
 		
@@ -538,7 +538,7 @@ Site.sitemap =
 	},
 	
 	
-	"/teaching/uo/253/notes/6-power-series/":
+	"/teaching/uo/253/notes/5-alternating-series/":
 	{
 		parent: "/teaching/uo/253/",
 		
@@ -546,7 +546,7 @@ Site.sitemap =
 	},
 	
 	
-	"/teaching/uo/253/notes/7-properties-of-power-series/":
+	"/teaching/uo/253/notes/6-ratio-and-root-tests/":
 	{
 		parent: "/teaching/uo/253/",
 		
@@ -554,7 +554,7 @@ Site.sitemap =
 	},
 	
 	
-	"/teaching/uo/253/notes/8-taylor-series/":
+	"/teaching/uo/253/notes/7-power-series/":
 	{
 		parent: "/teaching/uo/253/",
 		
@@ -562,7 +562,7 @@ Site.sitemap =
 	},
 	
 	
-	"/teaching/uo/253/notes/9-taylor-series-as-representations/":
+	"/teaching/uo/253/notes/8-properties-of-power-series/":
 	{
 		parent: "/teaching/uo/253/",
 		
@@ -570,7 +570,7 @@ Site.sitemap =
 	},
 	
 	
-	"/teaching/uo/253/notes/10-properties-of-taylor-series/":
+	"/teaching/uo/253/notes/9-taylor-series/":
 	{
 		parent: "/teaching/uo/253/",
 		
@@ -578,7 +578,7 @@ Site.sitemap =
 	},
 	
 	
-	"/teaching/uo/253/notes/11-applications-of-taylor-series/":
+	"/teaching/uo/253/notes/10-taylor-series-as-representations/":
 	{
 		parent: "/teaching/uo/253/",
 		
@@ -586,7 +586,23 @@ Site.sitemap =
 	},
 	
 	
-	"/teaching/uo/253/notes/12-generating-functions/":
+	"/teaching/uo/253/notes/11-properties-of-taylor-series/":
+	{
+		parent: "/teaching/uo/253/",
+		
+		children: []
+	},
+	
+	
+	"/teaching/uo/253/notes/12-applications-of-taylor-series/":
+	{
+		parent: "/teaching/uo/253/",
+		
+		children: []
+	},
+	
+	
+	"/teaching/uo/253/notes/13-generating-functions/":
 	{
 		parent: "/teaching/uo/253/",
 		
