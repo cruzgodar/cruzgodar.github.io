@@ -44,6 +44,77 @@
 
 
 
+!section
+
+!text s Sequences
+
+<br>
+
+!begin-text-block
+	
+	In order to talk about the complex behavior of the polynomials we just saw, we need to build the groundwork of <dfn>sequences</dfn>. As with every topic, we&#x2019;ll start with a definition, give some examples and exercises, and then talk about some basic properties.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	sequence
+	
+	A <dfn>sequence</dfn> is an infinite list of numbers, written
+	
+	$$
+		(a_1, a_2, a_3, ...).
+	$$
+	
+	We can write this concisely as $(a_n)_{n = 1}^\infty$, or more commonly, just $(a_n)$. The $a_n$ are called <dfn>terms</dfn> of the sequence, and $n$ is called the <dfn>index variable</dfn>.
+	
+	The alternate notation $\{a_n\}$ is often used, including in our textbook. In general, curly braces denote collections of numbers where order and duplicates don&#x2019;t matter, and parentheses denote collections where they do matter, as in ordered pairs $(x, y)$. Since order and duplicates do matter in sequences, we will be using the parentheses notation in these notes.
+	
+!end-def
+
+
+
+!begin-example
+	
+	writing out a sequence from a formula
+	
+	Let $a_n = 2n$, $b_n = n^2 + 1$, and $c_n = (n - 1)!$. Write out the first ten terms of the sequences $(a_n)$, $(b_n)$, and $(c_n)$.
+	
+	Let&#x2019;s start with $(a_n)$. Unless otherwise specified, sequences start with $n = 1$, so the first term is $a_1 = 2 \cdot 1 = 2$. Plugging in $n = 2$ through $n = 5$, we find that
+	
+	$$
+		(a_n) = (2, 4, 6, 8, 10, ...).
+	$$
+	
+	Similarly, we have
+	
+	$$
+		(b_n) = (2, 5, 10, 17, 26, ...).
+	$$
+	
+	Now let&#x2019;s look at $(c_n)$. That exclamation point is a <dfn>factorial</dfn>: to take the factorial of a positive integer $n$, multiply together all the integers less than or equal to $n$. For example,
+	
+	$$
+		\begin{align*}
+			1! &= 1.\\
+			2! &= 2 \cdot 1 = 2.\\
+			3! &= 3 \cdot 2 \cdot 1 = 6.\\
+			4! &= 4 \cdot 3 \cdot 2 \cdot 1 = 24.
+		\end{align*}
+	$$
+	
+	We also define $0! = 1$. That might seem weird, but we&#x2019;ll be making heavy use of factorials later in the course, and we&#x2019;ll really want it to be defined that way. Putting everything together, we have
+	
+	$$
+		(c_n) = (1, 1, 2, 6, 24, ...).
+	$$
+	
+!end-example
+
+
+
 !nav-buttons
 
 
