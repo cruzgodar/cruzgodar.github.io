@@ -301,6 +301,8 @@
 
 !begin-example
 	
+	the formal definition of a limit
+	
 	The sequence $(a_n)$ defined by
 	
 	$$
@@ -315,7 +317,7 @@
 		\begin{align*}
 			|a_n - 1| &= \left| 1 + \left(-\frac{1}{2}\right)^n - 1 \right|\\
 			&= \left| \left(-\frac{1}{2}\right)^n\right|\\
-			&= \left(\frac{1}{2}\right)^n
+			&= \left(\frac{1}{2}\right)^n\\
 			&= \frac{1}{2^n}.
 		\end{align*}
 	$$
@@ -328,12 +330,190 @@
 	
 	If we plot this sequence like a function, putting values of $n$ on the horizontal axis and $a_n$ on the vertical axis, convergence means that for any thin band around the horizontal line at height $L$, we can find an $N$ so that all the points to the right of $N$ stay in that band.
 	
-	https://www.desmos.com/calculator/if9yje0i3h
+	!iframe https://www.desmos.com/calculator/if9yje0i3h
 	
 !end-example
 
 
 
+!begin-exercise
+	
+	the formal definition of a limit
+	
+	The sequence $(b_n)$ defined by
+	
+	$$
+		b_n = \frac{1}{n}
+	$$
+	
+	converges to $0$. Find $N$ such that $|b_n| < \varepsilon$ for $\varepsilon = 1$, $\varepsilon = .1$, and $\varepsilon = .001$.
+	
+!end-exercise
+
+
+
+!section
+
+!text s Properties of Sequences
+
+<br>
+
+
+
+!begin-text-block
+	
+	When we have a sequence $(a_n)$ defined explicitly (i.e. in terms of $n$), taking the limit is as easy as taking the limit of the defining function as $n \to \infty$. For example, let&#x2019;s look at the sequence $(r^n)$. When $0 \leq r < 1$, $r^x \to 0$ as $x \to \infty$, so $(r^n) \to 0$. When $r = 1$, $r^x = 1$ for all $x$, so $(r^n) \to 1$. And when $r > 1$, $r^x \to \infty$ as $x \to \infty$, so the same is true of $(r^n)$. Therefore, $(r^n)$ converges for $0 \leq r \leq 1$ and diverges for $r > 1$.
+	
+	This is the first example of many of a sequence that converges only sometimes, depending on a parameter (here, that parameter is $r$). This sort of construction comes up so often that it will end up being one of the main objects we study in the course.
+	
+	Many of the rules of limits for functions also apply to sequences, so we can often skip annoying computations.
+	
+!end-text-block
+
+
+
+!begin-prop
+	
+	properties of limits
+	
+	Suppose $(a_n) \to a$ and $(b_n) \to b$. Let $c$ be a constant. Then:
+	
+	1. $(c) \to c$ (i.e. a sequence of constants converges to that constant).
+	
+	2. $(c \cdot a_n) \to c \cdot a$.
+	
+	3. $(a_n + b_n) \to a + b$.
+	
+	4. $(a_n b_n) \to ab$.
+	
+	5. If $b \neq 0$ and every $b_n \neq 0$, then $\left(\frac{a_n}{b_n}\right) \to \frac{a}{b}$.
+	
+	6. If $f(x)$ is continuous at $x = a$, then $(f(a_n)) \to f(a)$.
+	
+!end-prop
+
+
+
+!begin-exercise
+	
+	properties of limits
+	
+	Find the limits of the following sequences.
+	
+	1. $(n!)$.
+	
+	2. $\left(1 - \frac{1}{n}\right)$.
+	
+	3. $\left(\sin{\frac{n}{2^n}}\right)$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	Just like with functions, there is a Squeeze theorem for sequences. While the function version is often overlooked, though, the sequence version is critically important.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the Squeeze theorem
+	
+	Let $(a_n)$, $(b_n)$, and $(c_n)$ be sequences such that for all $n$, $a_n \leq b_n \leq c_n$. If $(a_n) \to a$ and $(c_n) \to a$, then $(b_n)$ converges and $(b_n) \to a$.
+	
+!end-thm
+
+
+
+!begin-example
+	
+	the Squeeze theorem
+	
+	Find $\lim \left( \frac{\cos(n)}{n} \right)$.
+	
+	It&#x2019;s not immediately clear that this converges at all. To start, remember that $-1 \leq \cos(n) \leq 1$, so
+	
+	$$
+		-\frac{1}{n} \leq \frac{\cos(n)}{n} \leq \frac{1}{n}.
+	$$
+	
+	Now we know that both of the outer sequences converge to zero, so since they share a limit, the Squeeze theorem guarantees that $\lim \left( \frac{\cos(n)}{n} \right) = 0$ too.
+	
+	!iframe https://www.desmos.com/calculator/unxdthhh1i
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	There&#x2019;s one final point to touch on before we leave this section. We can often tell when a sequence converges, even if we don&#x2019;t know what it converges to.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	bounded sequence
+	
+	A sequence $(a_n)$ is <dfn>bounded above</dfn> if there is some $M$ so that $a_n \leq M$ for all $n$. Similarly, $(a_n)$ is <dfn>bounded below</dfn> if there is some $M$ so that $(a_n) \geq M$ for all $n$.
+	
+!end-def
+
+
+
+!begin-def
+	
+	monotone sequence
+	
+	A sequence $(a_n)$ is <dfn>monotone increasing</dfn> if $a_{n + 1} \geq a_n$ for all $n$, and <dfn>monotone decreasing</dfn> if $a_{n + 1} \leq a_n$ for all $n$.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	For example, $(n^2)$ is monotone increasing and bounded below but not above, $(-\ln(n))$ is monotone decreasing and bounded above but not below, and $(\sin(n))$ is not monotone increasing or decreasing, but it is bounded above and below.
+	
+	If a sequence is monotone increasing and bounded above, then its behavior is very constrained. It must eventually settle down to some number &mdash; it cannot run off to infinity, since it&#x2019;s bounded above, or negative infinity, since it&#x2019;s bounded below. And it cannot fluctuate and avoid settling down to anything in the way $(\sin(n))$ does, since it is increasing. The same logic applies to sequences that are monotone decreasing and bounded below.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the Monotone Convergence theorem
+	
+	Every sequence that is monotone increasing and bounded above, or monotone decreasing and bounded below, converges.
+	
+!end-thm
+
+
+
+!begin-exercise
+	
+	the Monotone Convergence theorem
+	
+	Let $(a_n)$ be a sequence defined recursively by $a_1 = 2$ and
+	
+	$$
+		a_n = \frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}}
+	$$
+	
+	for $n \geq 2$.
+	
+	First, show that $(a_n)$ converges using the MCT. Then find the number it converges to. (Hint: take the limit of both sides of the recurrence.)
+	
+!end-exercise
+
+
+	
 !nav-buttons
 
 
