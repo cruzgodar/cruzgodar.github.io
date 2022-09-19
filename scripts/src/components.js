@@ -944,7 +944,17 @@ Page.Components =
 					
 					i += 2;
 					
-					words = [`<span class="notes-thm-title">Theorem: ${lines[i]}</span>`];
+					if (lines[i].toLowerCase().includes("theorem"))
+					{
+						lines[i] = lines[i][0].toUpperCase() + lines[i].slice(1);
+						
+						words = [`<span class="notes-thm-title">${lines[i]}</span>`];
+					}
+					
+					else
+					{
+						words = [`<span class="notes-thm-title">Theorem: ${lines[i]}</span>`];
+					}
 					
 					lines[i] = this.get_text(["b", "j"].concat(words));
 					

@@ -141,6 +141,8 @@ Site.page_lists =
 	
 	"/teaching/uo/253/notes":
 	[
+		"/teaching/uo/253/",
+		
 		"/teaching/uo/253/notes/0-calc-2-review/",
 		"/teaching/uo/253/notes/1-sequences/",
 		"/teaching/uo/253/notes/2-series/",

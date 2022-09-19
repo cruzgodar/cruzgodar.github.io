@@ -28,15 +28,15 @@
 
 !begin-text-block
 	
-	When learning math, it&#x2019;s helpful to have an idea of the big picture at as many levels possible. At times the definitions, theorems, and examples can feel like slogging through tall grass, and without a clear picture of where you&#x2019;re going and why, it can seem a little pointless. First, let&#x2019;s run down what we&#x2019;ll be building over the entire course.
+	When learning math, it&#x2019;s helpful to have an idea of the big picture at as many levels as possible. At times the definitions, theorems, and examples can feel like slogging through tall grass, and without a clear picture of where you&#x2019;re going and why, it can all seem a little pointless. First, let&#x2019;s run down what we&#x2019;ll be building over the entire course.
 	
-	Throughout all of calculus I and II, the easiest type of functions to work with are polynomials. Limits, derivatives, and integrals are all easy when the function you&#x2019;re working with is a polynomial, since all three split across addition, so you can take them term-by-term. Moreover, each term of a polynomial is a continuous function, so limits are as easy as plugging in the number you&#x2019;re limiting to, and derivatives and integrals just leverage the power rule.
+	Throughout all of calculus I and II, the easiest type of functions to work with are polynomials. Limits, derivatives, and integrals are all easy when the function you&#x2019;re operating on is a polynomial, since all three split across addition, so you can take them term-by-term. Moreover, every term of a polynomial is a continuous function, so limits are as easy as plugging in the number you&#x2019;re limiting to, and derivatives and integrals just leverage the power rule.
 	
-	It goes without saying that not all functions are polynomials. $\sin(x)$, $\ln(x)$, and $2^x$ are all substantially more complicated, and there is no way to write any as a sun of monomials. But let&#x2019;s take a close look at $\sin(x)$.
+	It goes without saying that not all functions are polynomials. $\sin(x)$, $\ln(x)$, and $2^x$ are all substantially more complicated, and there is no way to write any as a sum of monomials. But we&#x2019;re not as far off as you might think &mdash; let&#x2019;s take a close look at $\sin(x)$.
 	
 	!iframe https://www.desmos.com/calculator/dtuvs1pfgn
 	
-	Drag the blue point around, and try increasing $N$. The green function is always a polynomial, and it is almost exactly equal to $\sin(x)$, as long as you only look near the blue point. As $N$ increases, so does the length of the interval where the two functions are almost identical. It will turn out that as $N \to \infty$, that interval becomes infinitely long, and the functions agree everywhere. So $\sin$ may not be a polynomial, but it is a <em>limit</em> of polynomials. This is a very different kind of limit from the one we&#x2019;re used to, though &mdash; rather than a sequence of numbers approaching another number, what we have here is a sequence of <em>functions</em> approaching another function. The upshot of this intricate construction is that many of the best properties of polynomials will carry over to limits of them, so working with $\sin$ &mdash; and more importantly, other more complicated functions &mdash; will be made much easier.
+	Drag the blue point around, and try increasing $N$. The green function is always a polynomial, and it is almost exactly equal to $\sin(x)$, as long as you only look near the blue point. As $N$ increases, so does the length of the interval where the two functions agree. It will turn out that as $N \to \infty$, that interval becomes infinitely long, and the functions become exactly equal to one another. So $\sin$ may not be a polynomial, but it is a <em>limit</em> of polynomials. This is a very different kind of limit from the one we&#x2019;re used to, though &mdash; rather than a sequence of numbers approaching another number, what we have here is a sequence of <em>functions</em> approaching another function. The upshot of this intricate construction is that many of the best properties of polynomials will carry over to their limits, so working with $\sin$ &mdash; and more importantly, other more complicated functions &mdash; will be made much easier.
 	
 	We&#x2019;ll spend the first half of the course building tools and machinery in order to understand the ideas of adding together infinitely many functions that can sometimes converge. In the second half, we&#x2019;ll specialize to the specific kind of sums that approximate functions, like we just did with $\sin$. While many of the topics we cover will be interesting in their own right, it&#x2019;s good to keep this rough roadmap in mind as we move from one to the next.
 	
@@ -52,7 +52,7 @@
 
 !begin-text-block
 	
-	In order to talk about the complex behavior of the polynomials we just saw, we need to build the groundwork of <dfn>sequences</dfn>. As with every topic, we&#x2019;ll start with a definition, give some examples and exercises, and then talk about some basic properties.
+	To talk about the complex behavior of the polynomials we just saw, we need to build the groundwork of <dfn>sequences</dfn>. As with every topic, we&#x2019;ll start with a definition, give some examples and exercises, and then talk about some properties.
 	
 !end-text-block
 
@@ -70,7 +70,7 @@
 	
 	We can write this concisely as $(a_n)_{n = 1}^\infty$, or more commonly, just $(a_n)$. The $a_n$ are called <dfn>terms</dfn> of the sequence, and $n$ is called the <dfn>index variable</dfn>.
 	
-	The alternate notation $\{a_n\}$ is often used, including in our textbook. In general, curly braces denote collections of numbers where order and duplicates don&#x2019;t matter, and parentheses denote collections where they do matter, as in ordered pairs $(x, y)$. Since order and duplicates do matter in sequences, we will be using the parentheses notation in these notes.
+	The alternate notation $\{a_n\}$ is often used, including in our textbook. In general, though, curly braces denote collections of numbers where order and duplicates don&#x2019;t matter, and parentheses denote collections where they do matter, like in ordered pairs $(x, y)$. Since order and duplicates do matter in sequences, we&#x2019;ll use the parentheses notation in these notes.
 	
 !end-def
 
@@ -80,7 +80,7 @@
 	
 	writing out a sequence from a formula
 	
-	Let $a_n = 2n$, $b_n = n^2 + 1$, and $c_n = (n - 1)!$. Write out the first ten terms of the sequences $(a_n)$, $(b_n)$, and $(c_n)$.
+	Let $a_n = 2n$, $b_n = n^2 + 1$, and $c_n = (n - 1)!$. Write out the first five terms of the sequences $(a_n)$, $(b_n)$, and $(c_n)$.
 	
 	Let&#x2019;s start with $(a_n)$. Unless otherwise specified, sequences start with $n = 1$, so the first term is $a_1 = 2 \cdot 1 = 2$. Plugging in $n = 2$ through $n = 5$, we find that
 	
@@ -125,11 +125,11 @@
 
 !begin-example
 	
-	sequences defined recursively
+	a sequence defined recursively
 	
-	Let $a_1 = 1$ and $a_n = 2a_{n - 1}$. Write out the first five terms of $(a_n)$ and find an explicit formula for $(a_n)$.
+	Let $a_1 = 1$ and $a_n = 2a_{n - 1}$. Write out the first five terms of $(a_n)$ and find an explicit formula.
 	
-	Whenever a sequence is defined recursively, there must be at least one term of the sequence written down exactly, so that we have a place to start from. Here, that&#x2019;s $a_1 = 1$. From here, let&#x2019;s use the recursion to find $a_2$. Plugging in $n = 2$ to $a_n = 2a_{n - 1}$, we have 
+	Whenever a sequence is defined recursively, there must be at least one term that&#x2019;s given exactly, so that we have a place to start from. Here, that&#x2019;s $a_1 = 1$. From here, let&#x2019;s use the recursion to find $a_2$. Plugging in $n = 2$ to $a_n = 2a_{n - 1}$, 
 	
 	$$
 		a_2 = 2a_1 = 2 \cdot 1 = 2.
@@ -141,7 +141,7 @@
 		a_3 = 2a_2 = 2 \cdot 2 = 4.
 	$$
 	
-	Continuing in this way, we have
+	Continuing in this way,
 	
 	$$
 		(a_n) = (1, 2, 4, 8, 16, ...).
@@ -171,9 +171,9 @@
 	
 	1. The Fibonacci numbers are a very famous sequence that begin with $F_1 = 1$ and $F_2 = 1$. After this, every Fibonacci number is the sum of the previous two. Find a recursive formula for the Fibonacci sequence $(F_n)$.
 	
-	2. Find a recursive formula for each of the three sequences in the first example.
+	2. Find recursive formulas for each of the three sequences in the first example.
 	
-	3. Let $(d_n)$ be a sequence defined by $d_1 = 0$ and $d_n = d_{n - 1} + \frac{1}{2^n}$. Find an explicit formula for $(d_n)$ by writing out terms and finding a pattern, and verify your answer by plugging it back into the recurrence.
+	3. Let $(d_n)$ be the sequence defined by $d_1 = 0$ and $d_n = d_{n - 1} + \frac{1}{2^n}$. Find an explicit formula for $(d_n)$ by writing out terms and finding a pattern, and verify your answer by plugging it back into the recurrence.
 	
 !end-exercise
 
@@ -247,7 +247,7 @@
 	
 	$(1, -1, 1, -1, 1, ...)$ does not converge.
 	
-	Chances are good that when you first learned about limits, you were never given a precise definition. This is for good reason &mdash; limits are usually fairly easy to find by inspection, as in the previous three examples, the actual definition is somewhat finicky and precise, and calculus I already has enough concepts that are difficult to digest. Now, though, we need to know that exact definition for sequences, and calculus III is high-level enough that it&#x2019;s reasonable to introduce.
+	Chances are good that when you first learned about limits, you were never given a precise definition. This is for good reason: limits are usually fairly easy to find by inspection, as in the previous three examples; the actual definition is somewhat finicky and precise; and calculus I already has enough concepts that are difficult to digest. Now, though, we need to know that exact definition for sequences, and calculus III is high-level enough that it&#x2019;s reasonable to introduce.
 	
 	Let&#x2019;s begin with the informal definition, which is a good way to think of limits of sequences in practice.
 	
@@ -259,13 +259,13 @@
 	
 	the limit of a sequence (informal)
 	
-	Let $(a_n)$ be a sequence. If the terms $a_n$ get closer and closer to some finite number $L$ as $n$ gets larger and larger, then we say that $(a_n)$ <dfn>converges</dfn> to $L$, and we write any of the following:
+	Let $(a_n)$ be a sequence. If the terms $a_n$ get closer and closer to some finite number $a$ as $n$ gets larger and larger, then we say that $(a_n)$ <dfn>converges</dfn> to $a$, and we write any of the following:
 	
-	$(a_n) \to L$.
+	$(a_n) \to a$.
 	
-	$\lim_{n \to \infty} (a_n) = L$.
+	$\lim_{n \to \infty} (a_n) = a$.
 	
-	$\lim (a_n) = L$ (since the only limit we can take of a sequence is when $n \to \infty$.
+	$\lim (a_n) = a$ (since the only limit we can take of a sequence is when $n \to \infty$).
 	
 	If $(a_n)$ does not converge, then we say it <dfn>diverges</dfn>.
 	
@@ -285,7 +285,7 @@
 	
 	the limit of a sequence (formal)
 	
-	Let $(a_n)$ be a sequence. If there is a number $L$ such that for all real numbers $\varepsilon > 0$, there is a positive integer $N$ so that $|a_n - L| < \varepsilon|$ when $n \geq N$, then we say that $(a_n)$ converges to $L$.
+	Let $(a_n)$ be a sequence. If there is a number $a$ such that for all real numbers $\varepsilon > 0$, there is a positive integer $N$ so that $|a_n - a| < \varepsilon$ when $n \geq N$, then we say that $(a_n)$ converges to $a$.
 	
 !end-def
 
@@ -293,7 +293,7 @@
 
 !begin-text-block
 	
-	Let&#x2019;s unpack this carefully. First, we start with a candidate $L$ that we think is the limit of $(a_n)$. To check if that&#x2019;s the case, we pick a (small) number $\varepsilon > 0$. We need to find a point in the sequence after which <strong>every</strong> term is within $\varepsilon$ of $L$. If we can find such an $N$ no matter how small $\varepsilon$ is, then the sequence converges to $L$.
+	Let&#x2019;s unpack this carefully. First, we start with a candidate $a$ that we think is the limit of $(a_n)$. To check if that&#x2019;s the case, we pick a (small) number $\varepsilon > 0$. We need to find a point in the sequence after which <strong>every</strong> term is within $\varepsilon$ of $a$. If we can always find such an $N$ no matter how small $\varepsilon$ is, then the sequence converges to $a$.
 	
 !end-text-block
 
@@ -330,7 +330,7 @@
 	
 	If we plot this sequence like a function, putting values of $n$ on the horizontal axis and $a_n$ on the vertical axis, convergence means that for any thin band around the horizontal line at height $L$, we can find an $N$ so that all the points to the right of $N$ stay in that band.
 	
-	!iframe https://www.desmos.com/calculator/if9yje0i3h
+	!iframe https://www.desmos.com/calculator/6geckzgium
 	
 !end-example
 
@@ -404,7 +404,7 @@
 	
 	2. $\left(1 - \frac{1}{n}\right)$.
 	
-	3. $\left(\sin{\frac{n}{2^n}}\right)$.
+	3. $\left(\sin \left( \frac{n}{2^n} \right) \right)$.
 	
 !end-exercise
 
@@ -422,7 +422,7 @@
 	
 	the Squeeze theorem
 	
-	Let $(a_n)$, $(b_n)$, and $(c_n)$ be sequences such that for all $n$, $a_n \leq b_n \leq c_n$. If $(a_n) \to a$ and $(c_n) \to a$, then $(b_n)$ converges and $(b_n) \to a$.
+	Let $(a_n)$, $(b_n)$, and $(c_n)$ be sequences such that for all $n$, $a_n \leq b_n \leq c_n$. If $(a_n) \to b$ and $(c_n) \to b$, then $(b_n)$ converges and $(b_n) \to b$.
 	
 !end-thm
 
@@ -480,7 +480,7 @@
 	
 	For example, $(n^2)$ is monotone increasing and bounded below but not above, $(-\ln(n))$ is monotone decreasing and bounded above but not below, and $(\sin(n))$ is not monotone increasing or decreasing, but it is bounded above and below.
 	
-	If a sequence is monotone increasing and bounded above, then its behavior is very constrained. It must eventually settle down to some number &mdash; it cannot run off to infinity, since it&#x2019;s bounded above, or negative infinity, since it&#x2019;s bounded below. And it cannot fluctuate and avoid settling down to anything in the way $(\sin(n))$ does, since it is increasing. The same logic applies to sequences that are monotone decreasing and bounded below.
+	If a sequence is monotone increasing and bounded above, then its behavior is very constrained. It must eventually settle down to some number &mdash; it cannot run off to infinity, since it&#x2019;s bounded above, or negative infinity, since it&#x2019;s increasing. And it can&#x2019;t fluctuate and avoid settling down to anything in the way $(\sin(n))$ does, since it is increasing. The same logic applies to sequences that are monotone decreasing and bounded below.
 	
 !end-text-block
 

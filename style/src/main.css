@@ -38,7 +38,7 @@ header
 
 section:not(:last-of-type)
 {
-	margin-bottom: 15vh;
+	margin-bottom: 10vh;
 }
 
 footer
@@ -180,7 +180,7 @@ img
 	font-size: 100%;
 	color: rgb(127, 127, 127);
 	text-align: justify;
-	line-height: 1.4;
+	line-height: 1.7;
 }
 
 
