@@ -153,6 +153,14 @@
 
 
 
+!begin-text-block
+	
+	Notice the difference in notation between sequences and series: if a sequence $(a_n)$ converges to $a$, we write $(a_n) \to a$, with an arrow marking convergence. On the other hand, a convergent series is written $\sum_{n = 1}^\infty b_n = b$, with an equals sign. This is because a convergent series is equal to its limit, whereas a convergent series is still just a list of numbers.
+	
+!end-text-block
+
+
+
 !begin-example
 	
 	convergence of a series
@@ -195,6 +203,158 @@
 	2. $\sum_{m = 1}^\infty \frac{2}{3^m}$.
 	
 	3. $\sum_{n = 1}^\infty \frac{1}{n}$. Note: this is called the <dfn>Harmonic series</dfn>, and is quite famous. To get a handle on its behavior, try grouping the terms in this manner: put the first and second terms by themselves, then put the third and fourth together, then the fifth through the eighth together, then the 9th through the 16th, and so on, doubling the size of each group.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	Since series are determined by their sequences of partial sums, many convenient properties of sequences carry over to series.
+	
+!end-text-block
+
+
+
+!begin-prop
+	
+	properties of series
+	
+	Suppose $\sum_{n = 1}^\infty a_n = a$ and $\sum_{n = 1}^\infty b_n = b$. Then:
+	
+	1. $\sum_{n = 1}^\infty (a_n + b_n) = a + b$.
+	
+	2. For any constant $c$, $\sum_{n = 1}^\infty ca_n = c\sum_{n = 1}^\infty a_n$.
+	
+!end-prop
+
+
+
+!begin-text-block
+	
+	These results are pretty predictable: the first just says that infinite addition is commutative, and the second that it&#x2019;s distributive with respect to multiplication.
+
+!end-text-block
+
+
+
+!section
+
+!text s Geometric Series
+
+<br>	
+
+
+
+!begin-text-block
+	
+	In the last section, we introduced <dfn>geometric sequences</dfn>. These are sequences for which every term can be obtained from the previous one by multiplying by some factor $r$. In other words, they&#x2019;re sequences of the form
+	
+	$$
+		(a, ar, ar^2, ar^3, ...)
+	$$
+	
+	for some values of $a$ and $r$. This pattern is particularly useful for series, and it&#x2019;s worth devoting a fair bit of time to.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	geometric series
+	
+	A <dfn>geometric series</dfn> is the sum of a geometric sequence &mdash; that is, a series of the form
+	
+	$$
+		\sum_{n = 0}^\infty ar^n = a\sum_{n = 0}^\infty r^n.
+	$$
+	
+	The first term of the series must be a constant term (i.e. $r^0$) in order for it to be geometric.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	Let&#x2019;s evaluate $\sum_{n = 0}^\infty r^n$. The $k$th partial sum is
+	
+	$$
+		S_k = 1 + r + r^2 + \cdots + r^{k - 1}.
+	$$
+	
+	While this may look pretty complicated, it&#x2019;s actually a rather fragile expression. Watch what happens when we multiply $S_k$ by $r$:
+	
+	$$
+		rS_k = r + r^2 + r^3 + \cdots + r^k.
+	$$
+	
+	Every term there except for $r^k$ appears in the original expression of $S_k$ &mdash; they&#x2019;re begging to be canceled out.
+	
+	$$
+		S_k - rS_k = (1 + r + r^2 + \cdots + r^{k - 1}) - (r + r^2 + r^3 + \cdots + r^k) = 1 - r^k.
+	$$
+	
+	Factoring and dividing, we have
+	
+	$$
+		\begin{align*}
+			(1 - r)S_k &= 1 - r^k\\
+			S_k &= \frac{1 - r^k}{1 - r}.
+		\end{align*}
+	$$
+	
+	It almost seems like we pulled a trick somewhere, but this is correct: no matter how large $k$ gets and how many terms are in $S_k$, we can always collapse it down to this style of fraction. Now the only question is, when does $(S_k)$ converge? We talked in the last section about the sequence $(r^k)$: it converges to zero when $-1 < r < 1$, to one when $r = 1$, and diverges otherwise. First of all, if $r = 1$, the original series is $\sum_{n = 1}^\infty 1$, which clearly diverges. If $(r^k)$ diverges, then so does $S_k$, since it contains a copy of $r^k$. But when $(r^k) \to 0$, then $(S_k) \to \frac{1}{1 - r}$. Therefore, we&#x2019;re left with the following result:
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the values of geometric series
+	
+	Let $r$ be a constant with $-1 < r < 1$. Then
+	
+	$$
+		\sum_{n = 0}^\infty r^n = \frac{1}{1 - r}.
+	$$
+	
+!end-thm
+
+
+
+!begin-example
+	
+	the value of a geometric series
+	
+	We can put this theorem to the test on the series from before: $\sum_{n = 1}^\infty \frac{1}{2^n}$. This doesn&#x2019;t quite fit the definition of a geometric series, since the first power is $1$ and not $0$. However, we can just start the series at $n = 0$ and remove the first term afterward.
+	
+	$$
+		\begin{align*}
+			\sum_{n = 1}^\infty \frac{1}{2^n} &= \left( \sum_{n = 0}^\infty \frac{1}{2^n} \right) - 1\\
+			&= \left( \sum_{n = 0}^\infty \left(\frac{1}{2}\right)^n \right) - 1\\
+			&= \frac{1}{1 - \frac{1}{2}} - 1\\
+			&= \frac{1}{\frac{1}{2}} - 1\\
+			&= 2 - 1\\
+			&= 1.
+		\end{align*}
+	$$
+	
+	This agrees with the result from earlier!
+	
+!end-example
+
+!begin-exercise
+	
+	the value of a geometric series
+	
+	Evaluate the following series.
+	
+	1. $\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k + 1}}$.
+	
+	2. $\sum_{m = 1}^\infty e^m$.
 	
 !end-exercise
 
