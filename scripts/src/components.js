@@ -146,8 +146,7 @@ Page.Components =
 						</p>
 					</div>
 					
-					<br>
-				`;
+					<br>`; //It's important that there are no characters after the <br>.
 			}
 			
 			//Center if needed
@@ -602,6 +601,11 @@ Page.Components =
 						
 						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
 						{
+							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
+							{
+								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
+							}
+							
 							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
 						
 							i++;
@@ -814,6 +818,11 @@ Page.Components =
 						
 						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
 						{
+							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
+							{
+								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
+							}
+							
 							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
 						
 							i++;
@@ -862,6 +871,11 @@ Page.Components =
 						
 						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
 						{
+							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
+							{
+								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
+							}
+							
 							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
 						
 							i++;
@@ -910,6 +924,11 @@ Page.Components =
 						
 						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
 						{
+							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
+							{
+								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
+							}
+							
 							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
 						
 							i++;
@@ -968,6 +987,11 @@ Page.Components =
 						
 						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
 						{
+							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
+							{
+								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
+							}
+							
 							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
 						
 							i++;
@@ -1010,6 +1034,11 @@ Page.Components =
 						
 						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
 						{
+							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
+							{
+								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
+							}
+							
 							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
 						
 							i++;
@@ -1052,6 +1081,11 @@ Page.Components =
 						
 						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
 						{
+							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
+							{
+								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
+							}
+							
 							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
 						
 							i++;
@@ -1100,6 +1134,11 @@ Page.Components =
 						
 						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
 						{
+							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
+							{
+								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
+							}
+							
 							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
 						
 							i++;
@@ -1148,6 +1187,11 @@ Page.Components =
 						
 						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
 						{
+							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
+							{
+								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
+							}
+							
 							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
 						
 							i++;
@@ -1196,6 +1240,11 @@ Page.Components =
 						
 						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
 						{
+							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
+							{
+								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
+							}
+							
 							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
 						
 							i++;
@@ -1244,6 +1293,11 @@ Page.Components =
 						
 						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
 						{
+							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
+							{
+								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
+							}
+							
 							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
 						
 							i++;
@@ -1314,7 +1368,7 @@ Page.Components =
 			}
 		}
 		
-		
+		console.log(lines);
 		
 		html = lines.join("\n");
 		

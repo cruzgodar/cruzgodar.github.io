@@ -74,7 +74,7 @@
 		\sum_{n = 1}^5 n = 1 + 2 + 3 + 4 + 5 = 15.
 	$$
 	
-	If you&#x2019;ve done any programming before, series look a whole lot like for loops. If you get into coding in the future, for loops will look a lot like series. The idea is very similar to a sequence, except that we don&#x2019;t just write out all the terms &mdash; we add them up, one by one.
+	If you&#x2019;ve done any programming before, series look a whole lot like <code>for</code> loops. If you get into coding in the future, <code>for</code> loops will look a lot like series. The idea is very similar to a sequence, except that we don&#x2019;t just write out all the terms &mdash; we add them up, one by one.
 	
 	2. This time, the index variable is $i$, not $n$. We start it at $-2$, increase it by $1$ until it hits $2$, and add up every term we get along the way. That comes out to
 	
@@ -101,7 +101,7 @@
 	
 	partial sums
 	
-	Let $\sum_{n = 1}^\infty a_n$ be an infinite series. The <dfn>$k$th partial sum</dfn>, written $S_k$, is defined as
+	Let $\sum_{n = 1}^\infty a_n$ be an infinite series. The <dfn>$\mathbf{k}$th partial sum</dfn>, written $S_k$, is defined as
 	
 	$$
 		S_k = \sum_{n = 1}^k a_n.
@@ -131,7 +131,9 @@
 
 !begin-text-block
 	
-	It&#x2019;s common to confuse the terms of a series with its partial sums &mdash; hopefully this helps disambiguate them. The purpose of partial sums is to let us talk about the convergence of series. The behavior of the terms turns out not to be particularly helpful: if we want to assign a value to $\sum_{m = 1}^\infty \frac{1}{m}$, then knowing that $\left( \frac{1}{m} \right) \to 0$ doesn&#x2019;t tell us much. In fact, if we&#x2019;re adding up infinitely many positive things, those things had better converge to zero &mdash; if they don&#x2019;t, there&#x2019;s no chance the sum will be finite. What we want is the limit of a sequence that gives better and better approximations of the infinite sum, and that&#x2019;s exactly what the sequence of partial sums does.
+	It&#x2019;s common to confuse the terms of a series with its partial sums &mdash; hopefully this helps disambiguate them.
+	
+	The purpose of partial sums is to let us talk about the convergence of series. The behavior of the terms we&#x2019;re adding up turns out not to be particularly helpful for this: if we want to assign a value to $\sum_{m = 1}^\infty \frac{1}{m}$, then knowing that $\left( \frac{1}{m} \right) \to 0$ doesn&#x2019;t tell us much. In fact, if we&#x2019;re adding up infinitely many positive things, those things had better converge to zero &mdash; if they don&#x2019;t, there&#x2019;s no chance the sum will be finite. What we want is the limit of a sequence that gives better and better approximations of the infinite sum, and that&#x2019;s exactly what the partial sums do.
 	
 !end-text-block
 
@@ -171,14 +173,14 @@
 	
 	$$
 		\begin{align*}
-			S_1 &= \frac{1}{2}\\
-			S_2 &= \frac{1}{2} + \frac{1}{4} = \frac{3}{4}\\
-			S_3 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} = \frac{7}{8}\\
-			S_4 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} = \frac{15}{16}\\
+			S_1 &= \frac{1}{2} &=& \frac{1}{2}\\
+			S_2 &= \frac{1}{2} + \frac{1}{4} &=& \frac{3}{4}\\
+			S_3 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} &=& \frac{7}{8}\\
+			S_4 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} &=& \frac{15}{16}\\
 		\end{align*}
 	$$
 	
-	Every term is half of the previous and also half of what&#x2019;s needed to reach $1$. Therefore, $(S_k) \to 1$, and so
+	Every term we add is half of the previous and also half of what&#x2019;s needed to reach $1$. Therefore, $(S_k) \to 1$, and so
 	
 	$$
 		\sum_{n = 1}^\infty \frac{1}{2^n} = 1.
@@ -202,7 +204,7 @@
 	
 	2. $\sum_{m = 1}^\infty \frac{2}{3^m}$.
 	
-	3. $\sum_{n = 1}^\infty \frac{1}{n}$. Note: this is called the <dfn>Harmonic series</dfn>, and is quite famous. To get a handle on its behavior, try grouping the terms in this manner: put the first and second terms by themselves, then put the third and fourth together, then the fifth through the eighth together, then the 9th through the 16th, and so on, doubling the size of each group.
+	3. $\sum_{n = 1}^\infty \frac{1}{n}$. Note: this is called the <dfn>Harmonic series</dfn>, and is quite famous. To get a handle on its behavior, try grouping the terms in this manner: put the first and second terms by themselves, then put the third and fourth together, then the fifth through the eighth together, then the 9th through the 16th, and so on, doubling the size of each group. See if you get quantify how large each group is based on its last term.
 	
 !end-exercise
 
@@ -254,7 +256,7 @@
 		(a, ar, ar^2, ar^3, ...)
 	$$
 	
-	for some values of $a$ and $r$. This pattern is particularly useful for series, and it&#x2019;s worth devoting a fair bit of time to.
+	for some values of $a$ and $r$. This pattern is particularly useful for series, and it&#x2019;s worth giving a fair bit of time.
 	
 !end-text-block
 
@@ -329,7 +331,7 @@
 	
 	the value of a geometric series
 	
-	We can put this theorem to the test on the series from before: $\sum_{n = 1}^\infty \frac{1}{2^n}$. This doesn&#x2019;t quite fit the definition of a geometric series, since the first power is $1$ and not $0$. However, we can just start the series at $n = 0$ and remove the first term afterward.
+	We can test this theorem on the series from before: $\sum_{n = 1}^\infty \frac{1}{2^n}$. This doesn&#x2019;t quite fit the definition of a geometric series, since the first power is $1$ and not $0$. However, we can just start the series at $n = 0$ and remove the first term afterward.
 	
 	$$
 		\begin{align*}
@@ -420,13 +422,13 @@
 		\sum_{n = 1}^\infty \left( \cos \left( \frac{1}{n} \right) - \cos \left( \frac{1}{n + 1} \right) \right).
 	$$
 	
-	This series telescopes: every $\cos \left( \frac{1}{n + 1} \right)$ cancels with the $\left( \cos \left( \frac{1}{n} \right)$ in the next term, making the partial sums have the form
+	This series telescopes: every $\cos \left( \frac{1}{n + 1} \right)$ cancels with the $\cos \left( \frac{1}{n} \right)$ in the next term, making the partial sums take the form
 	
 	$$
 		S_k = \cos \left( \frac{1}{1} \right) - \cos \left( \frac{1}{k + 1} \right)
 	$$
 	
-	Moreover, as $k \to \infty$, $\frac{1}{k + 1} \to 0$, so $\left( \cos \left( \frac{1}{k + 1} \right) \to 1$. Therefore, our sum converges to $\cos(1) - 1$.
+	Moreover, as $k \to \infty$, $\frac{1}{k + 1} \to 0$, so $\cos \left( \frac{1}{k + 1} \right) \to 1$. Therefore, our sum converges to $\cos(1) - 1$.
 	
 !end-example
 
