@@ -1,0 +1,126 @@
+<head>
+	<title>Section 3: The Divergence and Integral Tests</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 3: The Divergence and Integral Tests"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/253/notes/3-divergence-and-integral-tests/">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/253/notes/3-divergence-and-integral-tests/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 3: The Divergence and Integral Tests
+
+<br>
+
+
+
+!begin-text-block
+	
+	As we&#x2019;ve mentioned many times by now, this course revolves around series. The later sections will be devoted to Taylor series, the application we care most about, but we have an important question we need to address before then: how do we know if a series will converge? Unfortunately, the answer turns out to be substantially more complicated than we&#x2019;d like, similarly to the question of <em>how do we integrate functions</em> that you spent a whole quarter answering in calculus II. That answer took the form of a handful of piecemeal integration strategies that operated very differently from one another and could only address certain kinds of integrals. In much the same way, our answer to the question of convergence will be a collection of different strategies that handle many situations, but not all. We&#x2019;ll start with the simplest in this section and work our way up from there.
+	
+!end-text-block
+
+
+
+!section
+
+!text s The Divergence Test
+
+<br>
+
+!begin-text-block
+	
+	Take a convergent series $\sum_{n = 1}^\infty a_n$ and its sequence of partial sums $(S_k)$. We can write any term $a_n$ as $a_n = S_n - S_{n - 1}$, as long as $n \geq 2$, since the difference between $S_{n - 1}$ and $S_n$ is that the latter includes $a_n$ while the former doesn&#x2019;t. Since we assumed the series converges, we know that $(S_n) \to S$ for some $S$. Therefore, we can take the limit of both sides of the relation between $a_n$ and $S_n$ and get a meaningful answer:
+	
+	$$
+		\begin{align*}
+			a_n &= S_n - S_{n - 1}\\
+			\lim_{n \to \infty} a_n &= \lim_{n \to \infty} S_n - \lim_{n \to \infty} S_{n - 1}\\
+			\lim_{n \to \infty} a_n &= S - S\\
+			\lim_{n \to \infty} a_n &= 0.
+		\end{align*}
+	$$
+	
+	Taking the limit of $S_{n - 1}$ might feel a little strange, but as $n$ approaches $\infty$, so does $n - 1$, so $S_{n - 1}$ approaches the same thing that $S_n$ does.
+	
+	What we&#x2019;ve shown here is that <strong>every</strong> convergent series $\sum_{n = 1}^\infty a_n$ must satisfy $\lim_{n \to \infty} a_n = 0$. So if that limit either doesn&#x2019;t exist or isn&#x2019;t zero, there&#x2019;s no way the series can converge. This is the content of our first test:
+	
+!end-text-block
+
+
+
+!begin-prop
+	
+	the divergence test
+	
+	Let $\sum_{n = 1}^\infty a_n$ be a series. If $\lim_{n \to \infty} a_n$ does not exist or is nonzero, then $\sum_{n = 1}^\infty a_n$ diverges.
+	
+!end-prop
+
+
+
+!begin-text-block
+	
+	There are two important things to note here: first, the divergence test says nothing about when series <strong>do</strong> converge. If $\lim_{n \to \infty} a_n = 0$, the series might still diverge: for example, $\left( \frac{1}{n} \right) \to 0$, but $\sum_{n = 1}^\infty \frac{1}{n}$ diverges. The other important point is that the divergence test provides no information on the <strong>value</strong> of series, divergent or not. Much like sequences, a series can diverge because its partial sums approach infinity, or simply because they never settle down to one particular value, as we saw in an example in the last section. The divergence test is just the first and easiest test to tell if a series clearly diverges, without having to do a lot of work.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	There are two important things to note here: first, the divergence test says nothing about when series <strong>do</strong> converge. If $\lim_{n \to \infty} a_n = 0$, the series might still diverge: for example, $\left( \frac{1}{n} \right) \to 0$, but $\sum_{n = 1}^\infty \frac{1}{n}$ diverges. The other important point is that the divergence test provides no information on the <strong>value</strong> of series, divergent or not. Much like sequences, a series can diverge because its partial sums approach infinity, or simply because they never settle down to one particular value, as we saw in an example in the last section. The divergence test is just the first and easiest test to tell if a series clearly diverges, without having to do a lot of work.
+	
+!end-example
+
+
+	
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 3: The Divergence and Integral Tests",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/253/notes"
+	};
+	
+	Page.load();
+</script>
