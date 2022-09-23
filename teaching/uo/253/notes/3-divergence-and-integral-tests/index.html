@@ -155,11 +155,36 @@
 	
 	$$
 		\begin{align*}
-		
+			\int_1^\infty \frac{1}{x + 4}\ dx &= \left. \left[ \ln |x + 4| \right] \right|_1^\infty\\
+			&= \lim_{b \to \infty} (\ln |b + 4| - \ln |1 + 4|)\\
+			&= \lim_{b \to \infty} (\ln (b + 4) - \ln(5)), \text{ since } b > 0\\
+			&= \infty.
 		\end{align*}
 	$$
 	
+	Therefore, the integral diverges, and so we also have that the sum $\sum_{n = 1}^\infty \frac{1}{n + 4}$ diverges too.
+	
+	Okay, so what properties did $\frac{1}{n + 4}$ have that we needed? Crucial to the argument was the fact that $\frac{1}{x + 4}$ is decreasing and integrable on $[1, \infty)$. Beyond that, we didn&#x2019;t need any other properties, and so the statement of this result for general series requires only those two facts.
+	
 !end-text-block
+
+
+
+!begin-thm
+
+	the integral test
+	
+	Let $\sum_{n = N}^\infty a_n$ be a series, and let $f(x)$ be a function on $[N, \infty)$ such that
+	
+	1. $f(x)$ is decreasing.
+	
+	2. $f(x)$ is integrable.
+	
+	3. $f(n) = a_n$ for every integer $n \geq N$.
+	
+	Then $\sum_{n = N}^\infty a_n$ and $\int_N^\infty f(x)\ dx$ either both converge or both diverge.
+
+!end-thm
 
 
 	
