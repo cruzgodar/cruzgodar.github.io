@@ -164,7 +164,7 @@
 	
 	Therefore, the integral diverges, and so we also have that the sum $\sum_{n = 1}^\infty \frac{1}{n + 4}$ diverges too.
 	
-	Okay, so what properties did $\frac{1}{n + 4}$ have that we needed? Crucial to the argument was the fact that $\frac{1}{x + 4}$ is decreasing and integrable on $[1, \infty)$. Beyond that, we didn&#x2019;t need any other properties, and so the statement of this result for general series requires only those two facts.
+	Okay, so what properties did $\frac{1}{n + 4}$ have that we needed? Crucial to the argument was the fact that $\frac{1}{x + 4}$ is decreasing and integrable on $[1, \infty)$, and that all the terms of the series are positive. Beyond that, we didn&#x2019;t need any other properties, and so the statement of this result for general series requires only these facts.
 	
 !end-text-block
 
@@ -174,7 +174,7 @@
 
 	the integral test
 	
-	Let $\sum_{n = N}^\infty a_n$ be a series, and let $f(x)$ be a function on $[N, \infty)$ such that
+	Let $\sum_{n = N}^\infty a_n$ be a series with $a_n \geq 0$ for all $n \geq 0$, and let $f(x)$ be a function on $[N, \infty)$ such that
 	
 	1. $f(x)$ is decreasing.
 	
@@ -185,7 +185,115 @@
 	Then $\sum_{n = N}^\infty a_n$ and $\int_N^\infty f(x)\ dx$ either both converge or both diverge.
 
 !end-thm
-h
+
+
+
+!begin-text-block
+
+	The divergence test is almost always easier than the integral test, so start there. If it&#x2019;s inconclusive, then try the integral test if the series matches the necessary requirements. Like the divergence test, the integral test cannot tell you the exact value of a series, but it can confirm that a series converges, something the divergence test cannot.
+
+!end-text-block
+
+
+
+!begin-exercise
+
+	convergence tests
+	
+	determine if the following series converge. Clearly state what conclusions you can draw, if any.
+	
+	1. $\sum_{n = 1}^\infty \frac{1}{n^2}$.
+	
+	2. $\sum_{j = 1}^\infty \frac{1}{j^2} \sin(j)$.
+	
+	3. $\sum_{n = 1}^\infty \frac{1}{\sqrt{n + 1}}$.
+
+!end-exercise
+
+
+
+!begin-text-block
+
+	The integral tests let us classify the behavior of a particular type of series that we&#x2019;ll return to throughout the course.
+
+!end-text-block
+
+
+
+!begin-def
+
+	$p$-series
+	
+	A <dfn>$\mathbf{p}$-series</dfn> is one of the form
+	
+	$$
+		\sum_{n = 1}^\infty \frac{1}{n^p},
+	$$
+	
+	where $p$ is a constant.
+
+!end-def
+
+
+
+!begin-text-block
+
+	We&#x2019;ve seen that for $p = 1$ (i.e. the Harmonic series), the series is divergent, while for $p = 2$, it&#x2019;s convergent. We now have the tools to classify the behavior for all real values of $p$.
+	
+	First of all, if $p < 0$, then the terms $\frac{1}{n^p} = n^{-p}$ are all positive powers of $n$, so $\lim_{n \to \infty} n^{-p} = \infty$. By the divergence test, the $p$-series diverges. Similarly, $p = 0$ has every term equal to $1$, so the series still diverges.
+	
+	When $p > 0$, the divergence test is inconclusive, but $\frac{1}{x^p}$ is a positive, decreasing, integrable function on $[1, \infty)$, so we can apply the integral test.
+	
+	$$
+		\begin{align*}
+			\int \frac{1}{x^p}\ dx &= \int x^{-p}\ dx\\
+			&= \begin{cases}
+				\frac{x^{-p + 1}}{-p + 1}, & p \neq 1\\
+				\ln|x|, & p = 1
+			\end{cases}.
+		\end{align*}
+	$$
+	
+	When $0 < p < 1$, $-p + 1$ is positive, so
+	
+	$$
+		\lim_{x \to \infty} \frac{x^{-p + 1}}{-p + 1} = \infty,
+	$$
+	
+	and therefore the $p$-series diverges. We already know that it diverges for $p = 1$, so all that&#x2019;s left is when $p > 1$. Then $-p + 1$ is negative, and so
+	
+	$$
+		\lim_{x \to \infty} \frac{x^{-p + 1}}{-p + 1} = 0,
+	$$
+	
+	meaning the $p$-series converges. In total, we have the following result:
+
+!end-text-block
+
+
+
+!begin-prop
+
+	convergence of $p$-series
+	
+	The series
+	
+	$$
+		\sum_{n = 1}^\infty \frac{1}{n^p}
+	$$
+	
+	converges for $p > 1$ and diverges for $p \leq 1$.
+
+!end-prop
+
+
+
+!begin-text-block
+
+	We mentioned before that $\sum_{n = 1}^\infty \frac{1}{n}$ grows very slowly, but this really emphasizes <em>how</em> slowly: if you increase the power on $n$ at all, the series will switch from divergent to convergent.
+
+!end-text-block
+
 
 	
 !nav-buttons
