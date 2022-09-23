@@ -28,7 +28,7 @@
 
 !begin-text-block
 	
-	As we&#x2019;ve mentioned many times by now, this course revolves around series. The later sections will be devoted to Taylor series, the application we care most about, but we have an important question we need to address before then: how do we know if a series will converge? Unfortunately, the answer turns out to be substantially more complicated than we&#x2019;d like, similarly to the question of <em>how do we integrate functions</em> that you spent a whole quarter answering in calculus II. That answer took the form of a handful of piecemeal integration strategies that operated very differently from one another and could only address certain kinds of integrals. In much the same way, our answer to the question of convergence will be a collection of different strategies that handle many situations, but not all. We&#x2019;ll start with the simplest in this section and work our way up from there.
+	As we&#x2019;ve mentioned many times by now, this course revolves around series. The later sections will be devoted to Taylor series, the application we care most about, but there&#x2019;s an important question we need to address before then: how do we know if a series will converge? Unfortunately, the answer turns out to be substantially more complicated than we might like, similarly to the question of <em>how do we integrate functions</em> that took a whole quarter to answer in calculus II. That answer took the form of a handful of piecemeal integration strategies that operated very differently from one another and could only address certain kinds of integrals. In much the same way, our answer to the question of convergence will be a collection of different strategies that each handle many situations, but not all. We&#x2019;ll start with the simplest in this section and work our way up from there.
 	
 !end-text-block
 
@@ -57,7 +57,7 @@
 	
 	Taking the limit of $S_{n - 1}$ might feel a little strange, but as $n$ approaches $\infty$, so does $n - 1$, so $S_{n - 1}$ approaches the same thing that $S_n$ does.
 	
-	What we&#x2019;ve shown here is that <strong>every</strong> convergent series $\sum_{n = 1}^\infty a_n$ must satisfy $\lim_{n \to \infty} a_n = 0$. So if that limit either doesn&#x2019;t exist or isn&#x2019;t zero, there&#x2019;s no way the series can converge. This is the content of our first test:
+	What we&#x2019;ve shown here is that <em>every</em> convergent series $\sum_{n = 1}^\infty a_n$ must satisfy $\lim_{n \to \infty} a_n = 0$. So if that limit either doesn&#x2019;t exist or isn&#x2019;t zero, there&#x2019;s no way the series can converge. This is the content of our first test:
 	
 !end-text-block
 
@@ -67,7 +67,7 @@
 	
 	the divergence test
 	
-	Let $\sum_{n = 1}^\infty a_n$ be a series. If $\lim_{n \to \infty} a_n$ does not exist or is nonzero, then $\sum_{n = 1}^\infty a_n$ diverges.
+	Let $\sum_{n = 1}^\infty a_n$ be a series. If $\lim_{n \to \infty} a_n$ doesn&#x2019;t exist or is nonzero, then $\sum_{n = 1}^\infty a_n$ diverges.
 	
 !end-prop
 
@@ -75,7 +75,7 @@
 
 !begin-text-block
 	
-	There are two important things to note here: first, the divergence test says nothing about when series <strong>do</strong> converge. If $\lim_{n \to \infty} a_n = 0$, the series might still diverge: for example, $\left( \frac{1}{n} \right) \to 0$, but $\sum_{n = 1}^\infty \frac{1}{n}$ diverges. The other important point is that the divergence test provides no information on the <strong>value</strong> of series, divergent or not. Much like sequences, a series can diverge because its partial sums approach infinity, or simply because they never settle down to one particular value, as we saw in an example in the last section. The divergence test is just the first and easiest test to tell if a series clearly diverges, without having to do a lot of work.
+	There are two important things to note here: first, the divergence test says nothing about when series <em>do</em> converge. If $\lim_{n \to \infty} a_n = 0$, the series might still diverge: for example, $\left( \frac{1}{n} \right) \to 0$, but $\sum_{n = 1}^\infty \frac{1}{n}$ diverges. The other important point is that the divergence test provides no information on the <em>value</em> of series, divergent or not. Much like sequences, a series can diverge because its partial sums approach infinity, or simply because they never settle down to one particular value, as we saw in an example in the last section. The divergence test is just the first and easiest test to tell if a series clearly diverges, without having to do a lot of work.
 	
 !end-text-block
 
@@ -123,15 +123,15 @@
 		\sum_{n = 1}^\infty a_n = \frac{1}{5} + \frac{1}{6} + \frac{1}{7} + \cdots.
 	$$
 	
-	We know from last section that this series diverges &mdash; sure, it&#x2019;s not exactly equal to the harmonic series, since it&#x2019;s missing the first four terms, but when we&#x2019;re only deciding whether a series converges or not, and not the exact value it converges <em>to</em>, we can always remove any number of terms from the start without changing the answer. Terms in a series are finite, so in our case, knowing that the whole series diverges to $\infty$ means that the infinite &#x201C;tail end&#x201D; is always infinitely large, no matter where we consider the start of the tail. Here, the start is at $\frac{1}{5}$.
+	We know from last section that this series diverges &mdash; it&#x2019;s not exactly equal to the harmonic series, since it&#x2019;s missing the first four terms, but when we&#x2019;re only deciding whether a series converges, and not the exact value it converges <em>to</em>, we can always remove any number of terms from the start without changing the answer. That can be uncomfortable at first, but think of it this way: knowing that the whole series diverges to $\infty$ means that the infinite &#x201C;tail end&#x201D; is always infinitely large, no matter where we consider the start of the tail. Here, the start is at $\frac{1}{5}$.
 	
-	Our goal is to find a function whose integral is approximated by a Riemann sum that looks roughly like $\sum_{n = 1}^\infty \frac{1}{n + 4}$. As we mentioned, if we take $\Delta x = 1$, then the terms in a Riemann sum are exactly function values. Therefore, we can just take $f(x) = \frac{1}{x + 4}$.
+	Our goal is to find a function whose integral is approximated by a Riemann sum of $\sum_{n = 1}^\infty \frac{1}{n + 4}$. As we mentioned, if we take $\Delta x = 1$, then the terms in a Riemann sum are exactly function values, so we can just take $f(x) = \frac{1}{x + 4}$.
 	
-	You may remember from calc 2 that a Riemann sum is allowed to sample its function value from anywhere in the intervals. Two particular kinds of Riemann sums are called <dfn>left</dfn> and <dfn>right Riemann sums</dfn>, named for the way they choose the point to sample: either the left or the right endpoint of each interval.
+	You may remember from calculus II that a Riemann sum is allowed to sample its function value from anywhere in the intervals. Two particular kinds of Riemann sums are called <dfn>left</dfn> and <dfn>right Riemann sums</dfn>, named for the way they choose the point to sample: either the left or the right endpoint of each interval.
 	
 	!iframe https://www.desmos.com/calculator/7coatmahvu
 	
-	Here the function $f(x)$ is shown in purple, the rectangles of a left Riemann sum on $[1, \infty)$ in blue, and the rectangles of a right Riemann sum on $[0, \infty)$ in red. Here&#x2019;s the crucial takeaway: Since $\frac{1}{x + 4}$ is a decreasing function for $x \geq 0$, the left endpoint of every interval is where $f$ reaches its maximum on that interval, and the right endpoint where it reaches its minimum. Therefore, the blue rectangles are always above the graph of the function, and the red rectangles are always below. But because of the way the two Riemann sums are staggered, with the blue startng at $x = 1$ and the red at $x = 0$, they both have exactly the same total area &mash; namely,
+	Here the function $f(x)$ is shown in purple, the rectangles of a left Riemann sum on $[1, \infty)$ in blue, and the rectangles of a right Riemann sum on $[0, \infty)$ in red. Here&#x2019;s the crucial takeaway: Since $\frac{1}{x + 4}$ is a decreasing function for $x \geq 0$, the left endpoint of every interval is where $f$ reaches its maximum on that interval, and the right endpoint is where it reaches its minimum. Therefore, the blue rectangles are always above the graph of the function, and the red rectangles are always below. But because of the way the two Riemann sums are staggered, with the blue startng at $x = 1$ and the red at $x = 0$, they both have exactly the same total area &mdash; namely,
 	
 	$$
 		\sum_{n = 1}^\infty \frac{1}{n + 4}.
@@ -149,7 +149,19 @@
 		\sum_{n = 1}^\infty \frac{1}{n + 4} \leq \int_0^\infty \frac{1}{x + 4}\ dx.
 	$$
 	
-	We&#x2019;ve succeeded in relating the Riemann sums to an integral, and the fact that the two inequalities go in different directions is the best part. If $\int_1^\infty \frac{1}{x + 4}\ dx$ is finite, then our sum must be too, because of the second inequality. On the other hand, if $\int_1^\infty \frac{1}{x + 4}\ dx = \infty$, then the same must be true of $\int_0^\infty \frac{1}{x + 4}\ dx$, since we&#x2019;re only adding area. By the first inequality above, our sum must diverge. Therefore, whether the sum converges or diverges, <strong>the integral does the same thing</strong>. It may not converge to the same value, but this is still an excellent piece of information.
+	By treating the leftmost red rectangle separately and starting our sum at $n = 2$, we can rewrite this as
+	
+	$$
+		\sum_{n = 1}^\infty \frac{1}{n + 4} = \frac{1}{5} + \sum_{n = 2}^\infty \frac{1}{n + 4} \leq \frac{1}{5} + \int_1^\infty \frac{1}{x + 4}\ dx.
+	$$
+	
+	Putting it all together, we have the following bounds on the series:
+	
+	$$
+		\int_1^\infty \frac{1}{x + 4}\ dx \leq \sum_{n = 1}^\infty \frac{1}{n + 4} \leq \frac{1}{5} + \int_1^\infty \frac{1}{x + 4}\ dx.
+	$$
+	
+	We&#x2019;ve succeeded in relating the Riemann sums to an integral, and the fact that the two inequalities go in different directions is the best part. If $\int_1^\infty \frac{1}{x + 4}\ dx$ is infinite, then our sum must be too, because of the left inequality. On the other hand, if $\int_1^\infty \frac{1}{x + 4}\ dx$ is finite, then the same must be true of the sum by the right inequality. Therefore, whether the integral converges or diverges, <strong>the sum does the same thing</strong>. It may not converge to the same value, but this is still an excellent way to test convergence.
 	
 	Let&#x2019;s close out this example by actually evaluating the integral, and then we&#x2019;ll state the general result.
 	
@@ -162,7 +174,7 @@
 		\end{align*}
 	$$
 	
-	Therefore, the integral diverges, and so we also have that the sum $\sum_{n = 1}^\infty \frac{1}{n + 4}$ diverges too.
+	Therefore, the integral diverges, and so $\sum_{n = 1}^\infty \frac{1}{n + 4}$ diverges too.
 	
 	Okay, so what properties did $\frac{1}{n + 4}$ have that we needed? Crucial to the argument was the fact that $\frac{1}{x + 4}$ is decreasing and integrable on $[1, \infty)$, and that all the terms of the series are positive. Beyond that, we didn&#x2019;t need any other properties, and so the statement of this result for general series requires only these facts.
 	
@@ -200,7 +212,7 @@
 
 	convergence tests
 	
-	determine if the following series converge. Clearly state what conclusions you can draw, if any.
+	Determine if the following series converge. Clearly state what conclusions you can draw, if any.
 	
 	1. $\sum_{n = 1}^\infty \frac{1}{n^2}$.
 	
@@ -238,7 +250,7 @@
 
 !begin-text-block
 
-	We&#x2019;ve seen that for $p = 1$ (i.e. the Harmonic series), the series is divergent, while for $p = 2$, it&#x2019;s convergent. We now have the tools to classify the behavior for all real values of $p$.
+	We&#x2019;ve seen that for $p = 1$ (i.e. the Harmonic series), the $p$-series is divergent. We now have the tools to classify the behavior for all real values of $p$.
 	
 	First of all, if $p < 0$, then the terms $\frac{1}{n^p} = n^{-p}$ are all positive powers of $n$, so $\lim_{n \to \infty} n^{-p} = \infty$. By the divergence test, the $p$-series diverges. Similarly, $p = 0$ has every term equal to $1$, so the series still diverges.
 	
@@ -342,19 +354,7 @@
 		\int_{N + 1}^\infty f(x)\ dx \leq R_N \leq \int_N^\infty f(x)\ dx.
 	$$
 	
-	This is a great result! It gives both an upper and lower bound for $R_N$, and since $\sum_{n = 1}^\infty a_n = S_N + R_N$ no matter the value of $N$, it lets us approximate the series itself if we add $S_N$ to both sides.
-	
-	$$
-		S_N + \int_{N + 1}^\infty f(x)\ dx \leq \sum_{n = 1}^\infty a_n \leq S_N + \int_N^\infty f(x)\ dx.
-	$$
-	
-	Finally, the width of this range of possible values the series could take is
-	
-	$$
-		\left( S_N + \int_N^\infty f(x)\ dx \right) - \left( S_N + \int_{N + 1}^\infty f(x)\ dx \right) = \int_N^{N + 1} f(x)\ dx.
-	$$
-	
-	If we&#x2019;re asked to give an approximation of a series that is at most a certain distance away from the true value, we can use this integral to figure out a large enough $N$. Let&#x2019;s work some examples.
+	This is a great result! It gives both an upper and lower bound for $R_N$, so if we&#x2019;re asked to give an approximation of a series that is within certain distance of the true value, we can use this integral to figure out a large enough $N$. Let&#x2019;s work some examples.
 
 !end-text-block
 
@@ -376,7 +376,7 @@
 		\end{align*}
 	$$
 	
-	Now we want upper bound to be below $.01$, which means
+	Now we want that upper bound to be below $.01$, which means
 	
 	$$
 		\begin{align*}
@@ -384,7 +384,7 @@
 			\frac{1}{N^2} &< .02\\
 			1 &< .02N^2\\
 			100 &< N^2\\
-			N > 10\\
+			N &> 10\\
 		\end{align*}
 	$$
 	
