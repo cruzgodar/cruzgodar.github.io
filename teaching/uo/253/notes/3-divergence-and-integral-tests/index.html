@@ -295,6 +295,124 @@
 !end-text-block
 
 
+
+!section
+
+!text s Remainder Estimates
+
+<br>
+
+
+
+!begin-text-block
+
+	So far, we haven&#x2019;t talked much about the actual <em>value</em> of convergent series. If the series $\sum_{n = 1}^\infty a_n$ converges, then how good of an estimate do we get by taking a partial sum of $N$ terms?
+
+!end-text-block
+
+
+
+!begin-def
+
+	remainder of a series
+	
+	Let $\sum_{n = 1}^\infty a_n$ be a convergent series and $N$ a positive integer. The <dfn>$\mathbf{N}$th remainder</dfn> of the series is
+	
+	$$
+		R_N = \sum_{n = 1}^\infty a_n - S_N = \sum_{n = N + 1}^\infty a_n.
+	$$
+
+!end-def
+
+
+
+!begin-text-block
+
+	For a convergent series, we know that $R_N \to 0$ as $N \to \infty$, but it would be nice to know roughly how big $R_N$ is &mdash; that way, we can approximate the value of the series.
+	
+	Since $R_N = \sum_{n = N + 1}^\infty a_n$, it&#x2019;s a series in and of itself that we can possibly apply the integral test to. If that is the case, and there is a positive, decreasing, integrable function $f$ with $f(n) = a_n$, then from our derivation of the integral test, we have that
+	
+	$$
+		\int_{N + 1}^\infty f(x)\ dx \leq \sum_{n = N + 1}^\infty a_n \leq \int_N^\infty f(x)\ dx.
+	$$
+	
+	Since the middle term is just $R_N$, we can rewrite that as
+	
+	$$
+		\int_{N + 1}^\infty f(x)\ dx \leq R_N \leq \int_N^\infty f(x)\ dx.
+	$$
+	
+	This is a great result! It gives both an upper and lower bound for $R_N$, and since $\sum_{n = 1}^\infty a_n = S_N + R_N$ no matter the value of $N$, it lets us approximate the series itself if we add $S_N$ to both sides.
+	
+	$$
+		S_N + \int_{N + 1}^\infty f(x)\ dx \leq \sum_{n = 1}^\infty a_n \leq S_N + \int_N^\infty f(x)\ dx.
+	$$
+	
+	Finally, the width of this range of possible values the series could take is
+	
+	$$
+		\left( S_N + \int_N^\infty f(x)\ dx \right) - \left( S_N + \int_{N + 1}^\infty f(x)\ dx \right) = \int_N^{N + 1} f(x)\ dx.
+	$$
+	
+	If we&#x2019;re asked to give an approximation of a series that is at most a certain distance away from the true value, we can use this integral to figure out a large enough $N$. Let&#x2019;s work some examples.
+
+!end-text-block
+
+
+
+!begin-example
+
+	estimating the value of a series
+	
+	Estimate $\sum_{n = 1}^\infty \frac{1}{n^3}$ to within $.01$ of its actual value.
+	
+	First, we need to make sure this series is compatible with the integral test. We have $f(x) = \frac{1}{x^3}$, which is positive, decreasing, and integrable on $[1, \infty)$. For a positive integer $N$, the $N$th partial sum $S_N$ will produce an approximation with a remainder $R_N$ satisfying
+	
+	$$
+		\begin{align*}
+			R_N < \int_N^\infty \frac{1}{x^3}\ dx &= \left. \left[ -\frac{1}{2} x^{-2} \right] \right|_N^\infty\\
+			&= \lim_{b \to \infty} \left( \frac{1}{2} N^{-2} - \frac{1}{2} b^{-2} \right)\\
+			&= \frac{1}{2} N^{-2}.
+		\end{align*}
+	$$
+	
+	Now we want upper bound to be below $.01$, which means
+	
+	$$
+		\begin{align*}
+			\frac{1}{2} N^{-2} &< .01\\
+			\frac{1}{N^2} &< .02\\
+			1 &< .02N^2\\
+			100 &< N^2\\
+			N > 10\\
+		\end{align*}
+	$$
+	
+	Therefore, let&#x2019;s choose $N = 11$. It&#x2019;s in our best interest to keep $N$ as small as possible so that the next step doesn&#x2019;t get too painful &mdash; we now need to find $S_{11}$.
+	
+	$$
+		\begin{align*}
+			S_{10} &= \sum_{n = 1}^{11} \frac{1}{n^3}\\
+			&= 1 + \frac{1}{8} + \frac{1}{27} + \cdots + \frac{1}{1331}\\
+			&\approx 1.1983.
+		\end{align*}
+	$$
+	
+	The actual value is about $1.201$, which is in fact within $.01$ of our approximation. As an interesting sidenote, the value of this series is actually not known exactly &mdash; in contrast to series like $\sum_{n = 1}^\infty \frac{1}{n^2}$, which has a very interesting exact value that we&#x2019;ll talk about later, the value of the power-3 $p$-series is only known approximately.
+
+!end-example
+
+
+
+!begin-exercise
+	
+	estimating the value of a series
+
+	Estimate $\sum_{n = 1}^\infty \frac{1}{n^4}$ to within $.001$ of its actual value.
+
+!end-exercise
+
+
 	
 !nav-buttons
 
