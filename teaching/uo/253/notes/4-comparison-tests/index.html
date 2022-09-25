@@ -28,7 +28,29 @@
 
 !begin-text-block
 	
+	Our next test for convergence isn&#x2019;t nearly so complicated. Now that we know the behavior of a few series, like all of the $p$-series, we can also determine how other closely related series behave. One limit law for sequences states that if $a_n \geq b_n$ eventually (meaning for all $n \geq N$ for some integer $N$), then $\lim (a_n) \geq \lim (b_n)$, assuming both exist. Applying this to the sequence of partial sums for two series gives us the following straightforward result.
 	
+!end-text-block
+
+
+
+!begin-prop
+	
+	the comparison test
+	
+	Let $\sum_{n = 1}^\infty a_n$ and $\sum_{n = 1}^\infty b_n$ be two series with $a_n \geq b_n \geq 0$ for all $n \geq N$ for some integer $N$. Then:
+	
+	1. If $\sum_{n = 1}^\infty a_n$ converges, then $\sum_{n = 1}^\infty b_n$ also converges.
+	
+	2. If $\sum_{n = 1}^\infty b_n$ diverges, then $\sum_{n = 1}^\infty b_n$ also diverges.
+	
+!end-prop
+
+
+
+!begin-text-block
+	
+	The idea isn&#x2019;t too complicated: if you start with a convergent series with all positive terms and decrease all of them, the new series will still converge. Similarly, taking a divergent series with all positive terms and increasing them all, it&#x2019;s still going to diverge. We need the terms to all be positive so that the 
 	
 !end-text-block
 

@@ -334,7 +334,7 @@ Site.load = async function(url)
 			return;
 		}
 		
-		Page.Navigation.redirect(event.state.url, false, true, true);
+		Page.Navigation.redirect(e.state.url, false, true, true);
 	});
 	
 	

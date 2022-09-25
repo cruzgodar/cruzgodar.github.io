@@ -1368,8 +1368,6 @@ Page.Components =
 			}
 		}
 		
-		console.log(lines);
-		
 		html = lines.join("\n");
 		
 		return html;
