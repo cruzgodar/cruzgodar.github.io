@@ -1,9 +1,9 @@
 <head>
-	<title>Section 4: Comparison Tests</title>
+	<title>Section 4: The Comparison Tests</title>
 	
 	<meta property="og:type" content="website">
 	
-	<meta property="og:title" content="Section 4: Comparison Tests"/>
+	<meta property="og:title" content="Section 4: The Comparison Tests"/>
 	
 	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/253/notes/4-comparison-tests/">
 
@@ -20,7 +20,7 @@
 
 
 
-!header Section 4: Comparison Tests
+!header Section 4: The Comparison Tests
 
 <br>
 
@@ -50,7 +50,91 @@
 
 !begin-text-block
 	
-	The idea isn&#x2019;t too complicated: if you start with a convergent series with all positive terms and decrease all of them, the new series will still converge. Similarly, taking a divergent series with all positive terms and increasing them all, it&#x2019;s still going to diverge. We need the terms to all be positive so that the 
+	The idea isn&#x2019;t too complicated: if you start with a convergent series with all positive terms and decrease all of them, the new series will still converge. Similarly, taking a divergent series with all positive terms and increasing them all, it&#x2019;s still going to diverge. We need the terms to all be positive so that the partial sums of both series have the same inequalities as the terms themselves.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	the comparison test
+	
+	show that $\sum_{n = 1}^\infty \frac{1}{n^2 + 20}$ converges.
+	
+	While we could use the integral test, it would require trig sub, and that&#x2019;s probably something to be avoided if possible. Instead, this looks a whole lot like $\sum_{n = 1}^\infty \frac{1}{n^2}$, a series we already know converges. Increasing a denominator decreases the overall fraction, so
+	
+	$$
+		\frac{1}{n^2 + 20} \leq \frac{1}{n^2}
+	$$
+	
+	for all $n$. Since all the terms are positive and smaller than a series known to converge, our series $\sum_{n = 1}^\infty \frac{1}{n^2 + 20}$ must also converge by the comparison test.
+	
+!end-example
+
+!begin-exercise
+	
+	the comparison test
+	
+	Use the comparision test to determine if the following seriesd converge or diverge.
+	
+	1. $\sum_{n = 1}^\infty \frac{1}{n^4 + n^3}$.
+	
+	2. $\sum_{n = 1}^\infty \frac{1}{\ln(n)}$.
+	
+	3. $\sum_{n = 1}^\infty \frac{1}{2^n + 3}$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	Although it&#x2019;s easy enough to understand and use, the comparison test often falls apart quickly. A series like
+	
+	$$
+		\sum_{n = 1}^\infty \frac{1}{n^2 - \frac{1}{2}}
+	$$
+	
+	is too much for it to handle. The only series we have a hope of comparing it to is $\sum_{n = 1}^\infty \frac{1}{n^2}$, but since all the terms are larger, the comparision test doesn&#x2019;t tell us anything.
+	
+	After two full terms of calculus, you might have a sense of what this series should do &mdash; there&#x2019;s a sense in which $\frac{1}{n^2 - \frac{1}{2}}$ isn&#x2019;t that much larger than $\frac{1}{n^2}$. Compared to something like $\sum_{n = 1}^\infty \frac{1}{n}$, whose terms decrease at a fundamentally slower rate, the terms of $\sum_{n = 1}^\infty \frac{1}{n^2 - \frac{1}{2}}$ decay at a rate nearly identical to $\sum_{n = 1}^\infty \frac{1}{n^2}$, so it feels like it still ought to converge. Thankfully, two full terms of calculus have given us the language to be precise about that feeling.
+	
+	Two positive functions $f(x)$ and $g(x)$ have fundamentally different rates of growth when either $\lim_{x \to \infty} \frac{f(x)}{g(x)} = 0$ or $\infty$. In the first case, $g$ grows much faster than $f$, and in the second case, $f$ much faster than $g$. For example, with $f(x) = x^2 + 1$ and $g(x) = x$, we have
+	
+	$$
+		\begin{align*}
+			\lim_{x \to \infty} \frac{f(x)}{g(x)} &= \lim_{x \to \infty} \frac{\frac{d}{dx} [x^2 + 1]}{\frac{d}{dx} [x]}\\
+			&= \lim_{x \to \infty} \frac{2x}{1}\\
+			&= \infty.
+		\end{align*}
+	$$
+	
+	On the other hand, if $\lim_{x \to \infty} \frac{f(x)}{g(x)} = L$ for some $L$ that&#x2019;s neither $0$ nor $\infty$, then $f$ and $g$ grow at proportional rates, like with $f(x) = 2x^2 + 1$ and $g(x) = x^2$. In this case, $\lim_{x \to \infty} \frac{f(x)}{g(x)} = 2$, which means that for large $x$, $f(x) \approx 2g(x)$.
+	
+	The same logic applies to the terms of a series. For positive $a_n$ and $b_n$, if $\lim_{n \to \infty} \frac{a_n}{b_n} = L \neq 0, \infty$, then $a_n \approx Lb_n$ for large $n$, say for all $n \geq N$ for some large integer $N$. That means
+	
+	$$
+		\sum_{n = N}^\infty a_n \approx \sum{n = N}^\approx Lb_n = L\sum_{n = N}^\infty b_n$.
+	$$
+	
+	Since the two series differ approximately only by a constant multiple, they either both converge or both diverge. Moreover, even if $\lim_{n \to \infty} \frac{a_n}{b_n}$ is $0$ or $\infty$, we can still extract some information. If the limit is zero, then $a_n$ grows at a much slower rate than $b_n$. Therefore, if $\sum_{n = 1}^\infty b_n$ converges, then so does $\sum_{n = 1}^\infty a_n$. Similarly, if $\lim_{n \to \infty} \frac{a_n}{b_n} = \infty$ and $\sum_{n = 1}^\infty b_n$ diverges, then $\sum_{n = 1}^\infty a_n$ must also diverge, since $a_n$ grows at a much faster rate than $b_n$.
+	
+	In our example, we&#x2019;re trying to compare $\frac{1}{n^2 - \frac{1}{2}}$ to $\frac{1}{n^2}$. We&#x2019;ll take $a_n = \frac{1}{n^2 - \frac{1}{2}}$ and $b_n = \frac{1}{n^2}$ and examine $\lim_{n \to \infty} \frac{a_n}{b_n}$.
+	
+	$$
+		\begin{align*}
+			\lim_{n \to \infty} \frac{a_n}{b_n} &= \lim_{n \to \infty} \frac{\frac{1}{n^2 - \frac{1}{2}}}{\frac{1}{n^2}}\\
+			&= \lim_{n \to \infty} \frac{n^2}{n^2 - \frac{1}{2}}\\
+			&= \lim_{n \to \infty} \frac{\frac{d}{dn}[n^2]}{\frac{d}{dn}\left[n^2 - \frac{1}{2}\right]}\\
+			&= \lim_{n \to \infty} \frac{2n}{2n}\\
+			&= 1.
+		\end{align*}
+	$$
+	
+	Since the limit is neither $0$ nor $\infty$, the two series behave identically. Therefore, since $\sum_{n = 1}^\infty \frac{1}{n^2}$ converges, so does $\sum_{n = 1}^\infty \frac{1}{n^2 - \frac{1}{2}}$.
+	
+	Let&#x2019;s state the general form of this result, and then we&#x2019;ll work through some examples.
 	
 !end-text-block
 
@@ -82,7 +166,7 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 4: Comparison Tests",
+		"title": "Section 4: The Comparison Tests",
 		
 		"math_page": true,
 		
