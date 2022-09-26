@@ -1,0 +1,131 @@
+<head>
+	<title>Section 5: Alternating Series</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 5: Alternating Series"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/253/notes/5-alternating-series/">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/253/notes/5-alternating-series/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 5: Alternating Series
+
+<br>
+
+
+
+!begin-text-block
+
+	We&#x2019;ll take a brief diversion from general convergence tests to talk about a particular kind of series that will come up frequently in the second half of the course. While most of the series we&#x2019;ve considered before have had only positive entries, we&#x2019;ll now allow some entries to be negative &mdash; but to keep things relatively well-behaved, we&#x2019;ll require a strict pattern for <em>which</em> entries are negative.
+
+!end-text-block
+
+
+
+!begin-def
+
+	alternating series
+	
+	An <dfn>alternating series</dfn> is one of the form
+	
+	$$
+		\sum_{n = 1}^\infty (-1)^{n + 1} a_n = a_1 - a_2 + a_3 - a_4 + \cdots
+	$$
+	
+	or
+	
+	$$
+		\sum_{n = 1}^\infty (-1)^n a_n = -a_1 + a_2 - a_3 + a_4 - \cdots,
+	$$
+	
+	where every $a_n \geq 0$.
+
+!end-def
+
+
+
+!begin-text-block
+
+	Alternating series are well-named: the terms alternate in sign. This can have some profoud effects on the behavior of the series. For example, one of the most famous alternating series is the <dfn>Alternating Harmonic series</dfn>, defined as
+	
+	$$
+		\sum_{n = 1}^\infty \frac{(-1)^{n + 1}}{n} = 1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \cdots.
+	$$
+	
+	While the standard Harmonic series diverges, the alternating version converges &mdash; in fact, it converges to a rather surprising number. Later in the course, we&#x2019;ll have a very slick way to find that number, but we can bootstrap it right now with a geometric argument.
+	
+	!iframe https://www.desmos.com/calculator/utsjgwdfcr
+	
+	Here, we have the function $f(x) = \frac{1}{x}$ graphed on the interval $[1, 2]$. We&#x2019;re going to construct a left Riemann sum in a rather strange way. We&#x2019;ll start with a single rectangle, which is a square with area $1$. Rather than jumping straight to two rectangles, our next step (set $n = 2$ to see it) is to prepare the way for the second rectangle by removing the entire right half of the square. The total area is the $1$ we started with, minus the $\frac{1}{2}$ we just removed. Now we&#x2019;ll actually add in the next rectangle. It&#x2019;s built on $\left[ \frac{3}{2}, 2 \right]$, and this is a left Riemann sum, so since $f \left( \frac{3}{2} \right) = \frac{2}{3}$, that&#x2019;s our height. The total area is therefore $\frac{1}{2} \cdot \frac{2}{3} = \frac{1}{3}$, and so our total area is now
+	
+	$$
+		1 - \frac{1}{2} + \frac{1}{3}.
+	$$
+	
+	Now we&#x2019;ll repeat this process on both of these rectangles, removing the right half and adding back in whatever rectangle is actually supposed to be there. In this next step, we remove rectangles of area $\frac{1}{4} \cdot 1 = \frac{1}{4}$ and $\frac{1}{4} \cdot \frac{2}{3} = \frac{1}{6}$, and in their places, we add rectangles of area $\frac{1}{4} \cdot f \left( \frac{5}{4} \right) = \frac{1}{5}$ and $\frac{1}{4} \cdot f \left( \frac{7}{4} \right) = \frac{1}{7}$, resulting in a total area of
+	
+	$$
+		1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \frac{1}{5} - \frac{1}{6} + \frac{1}{7}.
+	$$
+	
+	As the number of rectangles limits to $\infty$, our sum approaches the Alternating Harmonic series. But it&#x2019;s also a Riemann sum, approaching
+	
+	$$
+		\int_1^2 \frac{1}{x}\ dx = \left. \left[ \ln |x| \right] \right|_1^2 = \ln(2).
+	$$
+	
+	Rather shockingly, the Alternating Harmonic series converges to $\ln(2)$!
+
+!end-text-block
+
+
+	
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 5: Alternating Series",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/253/notes"
+	};
+	
+	Page.load();
+</script>
