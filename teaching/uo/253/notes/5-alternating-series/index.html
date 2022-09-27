@@ -66,7 +66,7 @@
 	
 	While the standard Harmonic series diverges, the alternating version converges &mdash; in fact, it converges to a rather surprising number. Later in the course, we&#x2019;ll have a very slick way to find that number, but we can bootstrap it right now with a geometric argument.
 	
-	!iframe https://www.desmos.com/calculator/utsjgwdfcr
+	!iframe https://www.desmos.com/calculator/holb7ufhmn
 	
 	Here, we have the function $f(x) = \frac{1}{x}$ graphed on the interval $[1, 2]$. We&#x2019;re going to construct a left Riemann sum in a rather strange way. We&#x2019;ll start with a single rectangle, which is a square with area $1$. Rather than jumping straight to two rectangles, our next step (set $n = 2$ to see it) is to prepare the way for the second rectangle by removing the entire right half of the square. The total area is the $1$ we started with, minus the $\frac{1}{2}$ we just removed. Now we&#x2019;ll actually add in the next rectangle. It&#x2019;s built on $\left[ \frac{3}{2}, 2 \right]$, and this is a left Riemann sum, so since $f \left( \frac{3}{2} \right) = \frac{2}{3}$, that&#x2019;s our height. The total area is therefore $\frac{1}{2} \cdot \frac{2}{3} = \frac{1}{3}$, and so our total area is now
 	
@@ -91,8 +91,60 @@
 	If we don&#x2019;t care about the value, it&#x2019;s not hard to see that this series converges. Every term is less in absolute value than the last, so anything we subtract is always less than the last thing we added. Similarly, anything we add is less than the last thing we subtracted. The result is a series that is constantly doubling back on itself, but with less distance every time, and so it must eventually converge. Drag $M$ to increase the terms of the sequence &mdash; the intersections with the $x$-axis are the partial sums.
 	
 	!iframe https://www.desmos.com/calculator/sjfdmjkotz
+	
+	The result of this reasoning is that alternating series converge much more easily than series with all positive terms. Specifically:
 
 !end-text-block
+
+
+
+!begin-thm
+
+	the alternating series test
+	
+	Let $\sum_{n = 1}^\infty (-1)^n a_n$ be an alternating series. If $a_{n + 1} \leq a_n$ for all $n \geq N$ for some $N$, and if $\lim_{n \to \infty} a_n = 0$, then $\sum_{n = 1}^\infty (-1)^n a_n$ converges.
+
+!end-thm
+
+
+
+!begin-text-block
+
+	This is absolutely not true for non-alternating series! The Harmonic series itself is a perfect example &mdash; while $\frac{1}{n + 1} \leq \frac{1}{n}$ and $\left(\frac{1}{n}\right) \to 0$, the Harmonic series does not converge.
+
+!end-text-block
+
+
+
+!begin-example
+
+	the alternating series test
+	
+	Determine if $\sum_{n = 1}^\infty \frac{(-1)^n}{\sqrt{n}}$ converges.
+	
+	As always, we start with the divergence test. Since $\lim_{n \to \infty} \frac{(-1)^n}{\sqrt{n}} = 0$, it&#x2019;s inconclusive. The integral test and both comparison tests require all positive terms, which we don&#x2019;t have, but the terms do alternate due to the factor of $(-1)^n$, so we can apply the alternating series test. With the alternating sign stripped off the terms, we&#x2019;re left with $\frac{1}{\sqrt{n}}$. Since $\sqrt{n + 1} \geq \sqrt{n}$, we have that
+	
+	$$
+		\frac{1}{\sqrt{n + 1}} \leq \frac{1}{\sqrt{n}},
+	$$
+	
+	which is the first condition of the alternating series test. We also know that $\sqrt{n} \to \infty$, so $\frac{1}{\sqrt{n}} \to 0$, meeting the second condition. By the alternating series test, $\sum_{n = 1}^\infty \frac{(-1)^n}{\sqrt{n}}$ converges.
+
+!end-example
+
+!begin-exercise
+
+	the alternating series test
+	
+	Determine if the following series converge or diverge.
+	
+	1. $\sum_{n = 1}^\infty \frac{(-1)^{n+1}}{\sin(n)}$.
+	
+	2. $\sum_{i = 1}^\infty \left( - \frac{1}{i^2} \right)^i$.
+	
+	3. $\sum_{m = 1}^\infty (-1)^{m + 1} \frac{\sin^2(m)}{m}$.
+
+!end-exercise
 
 
 	
