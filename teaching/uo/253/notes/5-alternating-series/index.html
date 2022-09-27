@@ -68,7 +68,7 @@
 	
 	!iframe https://www.desmos.com/calculator/holb7ufhmn
 	
-	Here, we have the function $f(x) = \frac{1}{x}$ graphed on the interval $[1, 2]$. We&#x2019;re going to construct a left Riemann sum in a rather strange way. We&#x2019;ll start with a single rectangle, which is a square with area $1$. Rather than jumping straight to two rectangles, our next step (set $n = 2$ to see it) is to prepare the way for the second rectangle by removing the entire right half of the square. The total area is the $1$ we started with, minus the $\frac{1}{2}$ we just removed. Now we&#x2019;ll actually add in the next rectangle. It&#x2019;s built on $\left[ \frac{3}{2}, 2 \right]$, and this is a left Riemann sum, so since $f \left( \frac{3}{2} \right) = \frac{2}{3}$, that&#x2019;s our height. The total area is therefore $\frac{1}{2} \cdot \frac{2}{3} = \frac{1}{3}$, and so our total area is now
+	Here, we have the function $f(x) = \frac{1}{x}$ graphed on the interval $[1, 2]$. We&#x2019;re going to construct a left Riemann sum for $f$ in a rather strange way &mdash; first, we&#x2019;ll start with a single rectangle, which is a square with area $1$. Rather than jumping straight to two rectangles, our next step (set $n = 2$ to see it) is to prepare the way for the second rectangle by removing the entire right half of the square. The total area is the $1$ we started with, minus the $\frac{1}{2}$ we just removed. Now we&#x2019;ll actually add in the next rectangle. It&#x2019;s built on $\left[ \frac{3}{2}, 2 \right]$, and this is a left Riemann sum, so since $f \left( \frac{3}{2} \right) = \frac{2}{3}$, that&#x2019;s our height. The area is therefore $\frac{1}{2} \cdot \frac{2}{3} = \frac{1}{3}$, and so our total area is now
 	
 	$$
 		1 - \frac{1}{2} + \frac{1}{3}.
@@ -102,7 +102,13 @@
 
 	the alternating series test
 	
-	Let $\sum_{n = 1}^\infty (-1)^n a_n$ be an alternating series. If $a_{n + 1} \leq a_n$ for all $n \geq N$ for some $N$, and if $\lim_{n \to \infty} a_n = 0$, then $\sum_{n = 1}^\infty (-1)^n a_n$ converges.
+	Let
+	
+	$$
+		\sum_{n = 1}^\infty (-1)^n a_n
+	$$
+	
+	be an alternating series. If $a_{n + 1} \leq a_n$ for all $n \geq N$ for some $N$, and if $\lim_{n \to \infty} a_n = 0$, then the series converges.
 
 !end-thm
 
@@ -162,7 +168,7 @@
 	
 	!iframe https://www.desmos.com/calculator/sjfdmjkotz
 	
-	This diagram pertains specifically to the Alternating Harmonic series, but any series $\sum_{n = 1}^\infty (-1)^n a_n$ satisfying the hypotheses of the alternating series test functions the same way. Since every partial sum gets closer to the actual sum, when we move from $S_n$ to $S_{n + 1}$, the actual $S$ must lie between $S_n$ and $S_{n + 1}$. Put another way, the distance between $S_n$ and $S$ must be smaller than the distance between $S_n$ and $S_{n + 1}$. In symbols, that looks like
+	This diagram pertains specifically to the Alternating Harmonic series, but any series $\sum_{n = 1}^\infty (-1)^n a_n$ satisfying the hypotheses of the alternating series test functions the same way. Every partial sum $S_n$ gets closer to the actual sum $S$, so when we move from $S_n$ to $S_{n + 1}$, $S$ must lie between the two of them. Put another way, the distance between $S_n$ and $S$ must be smaller than the distance between $S_n$ and $S_{n + 1}$. In symbols, that looks like
 	
 	$$
 		|S - S_n| \leq |S_{n + 1} - S_n|.
@@ -254,7 +260,7 @@
 		-\frac{1}{2} - \frac{1}{4} - \cdots - \frac{1}{62} \approx -2.014.
 	$$
 	
-	Then add the first positive term, which is $1$. Next go back to the negative terms, starting with $-\frac{1}{64}$, and keep adding until their sum is below $-2$. The Harmonic series grows incredibly slowly, and it takes until the term $-\frac{1}{3440}$ for the sum to be less than $-2$. Add that, then add the next positive term, which is $\frac{1}{3}$. This bizarre order now looks like this:
+	Then add the first positive term, which is $1$. Next go back to the negative terms, starting with $-\frac{1}{64}$, and keep adding until their sum is below $-2$. The Harmonic series grows incredibly slowly, and it takes until the term $-\frac{1}{3440}$ for the sum to be less than $-2$. Add that, then add the next positive term, which is $\frac{1}{3}$. Our bizarre ordering now looks like this:
 	
 	$$
 		\sum_{n = 1}^\infty \frac{(-1)^{n+1}}{n} = \left( -\frac{1}{2} - \cdots - \frac{1}{62} \right) + 1 + \left( -\frac{1}{64} - \cdots - \frac{1}{3440} \right) + \frac{1}{3} + \cdots.
@@ -262,9 +268,65 @@
 	
 	We pick up every term this way, and since the Harmonic series diverges, we&#x2019;ll never run out of groups of negative terms that add up to less than $-2$. However, since every positive term is no larger than $1$, every pair of groups is at most $-1$. Since there are infinitely many groups, the Alternating Harmonic series diverges to $-\infty$.
 	
-	What happened here? Is this some kind of math riddle, and some part of this was a lie? Not really &mdash; the answer is just that infinite sums often behave in ways that are counter to what we expect. It would be nice to distinguish between series that really do converge and series that do whatever this is, and the good news is that the difference is very clear-cut.
+	...what happened here? The Alternating Harmonic series is supposed to converge to $\ln(2)$. Was there some false step in this process? Not really &mdash; the answer is just that infinite sums often behave in ways that run counter to what we expect. It would be nice to distinguish between series that really do converge and series that do whatever this is, and the good news is that the difference is very clear-cut.
 
 !end-text-block
+
+
+
+!begin-def
+
+	absolute and conditional convergence
+	
+	Let $\sum_{n = 1}^\infty a_n$ be a convergent series. If $\sum_{n = 1}^\infty |a_n|$ converges, then we say that $\sum_{n = 1}^\infty a_n$ <dfn>converges absolutely</dfn>. If not, we say that $\sum_{n = 1}^\infty a_n$ <dfn>converges conditionally</dfn>.
+
+!end-def
+
+
+
+!begin-text-block
+
+	First of all, any series with all positive terms that converges does so absolutely, since taking the absolute value of every term changes nothing. For a more substantial example, $\sum_{n = 1}^\infty \frac{(-1)^{n+1}}{n^2}$ converges absolutely, while $\sum_{n = 1}^\infty \frac{(-1)^{n+1}}{n}$ only converges conditionally.
+	
+	Suppose $\sum_{n = 1}^\infty a_n$ converges absolutely. Since the $a_n$ can be positive or negative, we know that either $a_n = |a_n|$ or $a_n = -|a_n|$. Therefore, $a_n + |a_n|$ is either $2|a_n|$ or zero. That inequality extends to the series too:
+	
+	$$
+		0 \leq \sum_{n = 1}^\infty (a_n + |a_n|) \leq \sum_{n = 1}^\infty 2|a_n|.
+	$$
+	
+	Since the series on the right converges and $0 \leq a_n + |a_n| \leq 2|a_n|$, the comparison test tells us that $\sum_{n = 1}^\infty (a_n + |a_n|)$ converges. Finally, since $\sum_{n = 1}^\infty |a_n|$ converges, so must $\sum_{n = 1}^\infty a_n$. All of this is to say that if a series converges absolutely, it converges. The language makes that sound obvious, but as we just saw, there is something to be shown.
+	
+	Series that converge conditionally have the unfortunate property that they can be rearranged to converge to <em>any real number</em>, or to diverge. Absolutely convergent series, on the other hand, are resilient to rearrangement &mdash; they will always converge to the same value, no matter the order of their terms. The names do a good job of describing the definitions: absolutely convergent series are those whose series of absolute values converge, while conditionally convergent series are conditional on not being rearranged to converge.
+
+!end-text-block
+
+
+
+!begin-example
+
+	absolute and conditional convergence
+	
+	Determine if the series $\sum_{k = 2}^\infty \frac{(-1)^k}{\ln(k)}$ converges absolutely, converges conditionally, or diverges.
+	
+	First, let&#x2019;s check for absolute convergence. Since $\ln(k)$ is always positive, the series of absolute values is
+	
+	$$
+		\sum_{k = 2}^\infty \frac{1}{\ln(k)}.
+	$$
+	
+	As we&#x2019;ve seen, this series can be compared to the Harmonic series: $\ln(k) \leq k$ for all $k \geq 1$, so $\frac{1}{\ln(k)} \geq \frac{1}{k}$. By the comparison test, $\sum_{k = 2}^\infty \frac{1}{\ln(k)}$ diverges, so the original alternating series does not converge absolutely.
+	
+	Let&#x2019;s try for conditional convergence. Since the series alternates, we can try to apply the alternating series test. Since $\ln(k + 1) \geq \ln(k)$ and $\ln(k) \to \infty$ as $k \to \infty$, we have that $\frac{1}{\ln(k + 1)} < \frac{1}{\ln(k)}$ and $\frac{1}{\ln(k)} \to 0$. Both conditions are met, so the alternating series test guarantees that $\sum_{k = 2}^\infty \frac{(-1)^k}{\ln(k)}$ converges conditionally.
+
+!end-example
+
+!begin-exercise
+
+	absolute and conditional convergence
+	
+	Determine if the series $\sum_{k = 1}^\infty \frac{\sin(k)}{k^2}$ converges absolutely, converges conditionally, or diverges.
+
+!end-exercise
 
 
 	
