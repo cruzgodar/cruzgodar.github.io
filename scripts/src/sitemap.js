@@ -413,50 +413,6 @@ Site.sitemap =
 		
 		children: []
 	},
-
-	
-	
-	
-	"/writing/":
-	{
-		parent: "/home/",
-		
-		children:
-		[
-			"/writing/caracore/",
-			"/writing/caligo/",
-			"/writing/desolation-point/",
-			"/writing/mist/"
-		]
-	},
-	
-	"/writing/caracore/":
-	{
-		parent: "/writing/",
-		
-		children: []
-	},
-	
-	"/writing/caligo/":
-	{
-		parent: "/writing/",
-		
-		children: []
-	},
-	
-	"/writing/desolation-point/":
-	{
-		parent: "/writing/",
-		
-		children: []
-	},
-	
-	"/writing/mist/":
-	{
-		parent: "/writing/",
-		
-		children: []
-	},
 	
 	
 	
@@ -921,6 +877,451 @@ Site.sitemap =
 	"/teaching/uo/105/":
 	{
 		parent: "/teaching/",
+		
+		children: []
+	},
+	
+	
+	
+	"/writing/":
+	{
+		parent: "/home/",
+		
+		children:
+		[
+			"/writing/caracore/",
+			"/writing/caligo/",
+			"/writing/desolation-point/",
+			"/writing/mist/"
+		]
+	},
+	
+	"/writing/caracore/":
+	{
+		parent: "/writing/",
+		
+		children: []
+	},
+	
+	"/writing/caligo/":
+	{
+		parent: "/writing/",
+		
+		children:
+		[
+			"/writing/caligo/chapters/p/",
+			"/writing/caligo/chapters/1/",
+			"/writing/caligo/chapters/2/",
+			"/writing/caligo/chapters/3/",
+			"/writing/caligo/chapters/4/",
+			"/writing/caligo/chapters/5/",
+			"/writing/caligo/chapters/6/",
+			"/writing/caligo/chapters/7/",
+			"/writing/caligo/chapters/8/",
+			"/writing/caligo/chapters/9/",
+			"/writing/caligo/chapters/10/",
+			"/writing/caligo/chapters/i1/",
+			"/writing/caligo/chapters/11/",
+			"/writing/caligo/chapters/12/",
+			"/writing/caligo/chapters/13/",
+			"/writing/caligo/chapters/14/",
+			"/writing/caligo/chapters/15/",
+			"/writing/caligo/chapters/16/",
+			"/writing/caligo/chapters/17/",
+			"/writing/caligo/chapters/18/",
+			"/writing/caligo/chapters/19/",
+			"/writing/caligo/chapters/20/",
+			"/writing/caligo/chapters/21/",
+			"/writing/caligo/chapters/22/",
+			"/writing/caligo/chapters/23/",
+			"/writing/caligo/chapters/24/",
+			"/writing/caligo/chapters/i2/",
+			"/writing/caligo/chapters/25/",
+			"/writing/caligo/chapters/26/",
+			"/writing/caligo/chapters/27/",
+			"/writing/caligo/chapters/28/",
+			"/writing/caligo/chapters/29/",
+			"/writing/caligo/chapters/30/",
+			"/writing/caligo/chapters/31/",
+			"/writing/caligo/chapters/32/",
+			"/writing/caligo/chapters/33/",
+			"/writing/caligo/chapters/34/",
+			"/writing/caligo/chapters/i3/",
+			"/writing/caligo/chapters/35/",
+			"/writing/caligo/chapters/36/",
+			"/writing/caligo/chapters/37/",
+			"/writing/caligo/chapters/38/",
+			"/writing/caligo/chapters/39/",
+			"/writing/caligo/chapters/40/",
+			"/writing/caligo/chapters/41/",
+			"/writing/caligo/chapters/42/",
+			"/writing/caligo/chapters/43/",
+			"/writing/caligo/chapters/44/",
+			"/writing/caligo/chapters/45/",
+			"/writing/caligo/chapters/46/"
+		]
+	},
+	
+	"/writing/caligo/chapters/p/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/1/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/2/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/3/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/4/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/5/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/6/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/7/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/8/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/9/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/10/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/i1/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/11/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/12/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/13/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/14/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/15/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/16/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/17/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/18/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/19/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/20/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/21/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/22/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/23/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/24/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/i2/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/25/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/26/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/27/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/28/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/29/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/30/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/31/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/32/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/33/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/34/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/i3/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/35/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/36/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/37/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/38/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/39/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/40/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/41/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/42/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/43/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/44/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/45/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+
+	"/writing/caligo/chapters/46/":
+	{
+		parent: "/writing/caligo/",
+
+		children: []
+	},
+	
+	"/writing/desolation-point/":
+	{
+		parent: "/writing/",
+		
+		children: []
+	},
+	
+	"/writing/mist/":
+	{
+		parent: "/writing/",
 		
 		children: []
 	},
