@@ -319,10 +319,6 @@ Page.Load =
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			Page.Footer.Floating.show_footer_menu_button.style.opacity = 0;
-			
-			setTimeout(() => Page.Animate.change_opacity(Page.Footer.Floating.show_footer_menu_button, 1, Site.opacity_animation_time), 10);
-			
 			if (Site.Settings.url_vars["content_animation"] !== 1)
 			{
 				let promise = null;
