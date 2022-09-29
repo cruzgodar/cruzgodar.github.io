@@ -30,7 +30,7 @@
 
 	Our final two tests for convergence have the nice effect of applying to series with positive and negative terms alike. They&#x2019;re simple to state and apply, and together with the previous five tests, they round out a solid theory of convergence.
 	
-	The Harmonic series diverges because even through its terms shrink to zero, they don&#x2019;t do so fast enough. So far, we haven&#x2019;t had a way to measure what &#x201C;fast enough&#x201D; means exactly, but our final two tests will each provide a possible interpretation. One idea we might pursue is looking at the size of terms not only in an absolute sense, but relative to each other as well. For example, when $n$ is very large, the two successive terms $\frac{1}{n}$ and $\frac{1}{n + 1}$ in the harmonic series are very nearly the same size. The ratio between them is
+	The Harmonic series diverges because even through its terms shrink to zero, they don&#x2019;t do so fast enough. So far, we haven&#x2019;t had a way to measure what &#x201C;fast enough&#x201D; means exactly, but our final two tests will each provide a possible interpretation. One idea we might pursue is looking at the size of terms not only in an absolute sense, but relative to each other as well. For example, when $n$ is very large, the two successive terms $\frac{1}{n}$ and $\frac{1}{n + 1}$ in the Harmonic series are very nearly the same size. The ratio between them is
 	
 	$$
 		\frac{\frac{1}{n + 1}}{\frac{1}{n}} = \frac{n + 1}{n} \to 1
@@ -39,7 +39,7 @@
 	as $n \to \infty$. On the other hand, something like the geometric series $\sum_{n = 0}^\infty \frac{1}{2^n}$ has a ratio of successive terms equal to
 	
 	$$
-		\frac{\frac{1}{2^{n + 1}}}{\frac{1}{2^n} = \frac{2^n}{2^{n + 1}} = \frac{1}{2}.
+		\frac{\frac{1}{2^{n + 1}}}{\frac{1}{2^n}} = \frac{2^n}{2^{n + 1}} = \frac{1}{2}.
 	$$
 	
 	In other words, not only are the terms of that geometric series getting smaller in an absolute sense (i.e. approaching zero), they&#x2019;re also shrinking relative to each other, whereas the terms of the Harmonic series are not consistently smaller relative to each other for large $n$. This idea of quantifying the ratio between successive terms is the centeral mechanic of our first test.
@@ -70,14 +70,15 @@
 	
 	$$
 		\begin{align*}
-			\sum_{n = 1}^\infty a_n &< \sum_{n = 1}^{N - 1} a_n + a_N \sum_{n = 0}^\infty s^n\\
-			&< \sum_{n = 1}^{N - 1} a_n + a_N \cdot \frac{1}{1 - s},
+			\sum_{n = 1}^\infty a_n &= \sum_{n = 1}^{N - 1} a_n + \sum_{n = N}^\infty a_n\\
+			&< \sum_{n = 1}^{N - 1} a_n + a_N \sum_{n = 0}^\infty s^n\\
+			&= \sum_{n = 1}^{N - 1} a_n + a_N \cdot \frac{1}{1 - s},
 		\end{align*}
 	$$
 	
-	which is finite. This is a bit grittier than our justifications usually are, and it&#x2019;s perfectly fine to engage with the ratio test at the level of just remembering the theorem statement, but under the hood, it&#x2019;s all just geometric series.
+	which is finite. This is a bit grittier than our justifications usually are, and it&#x2019;s perfectly fine to engage with the ratio test at the level of just remembering the theorem statement. Under the hood, though, it&#x2019;s all just geometric series.
 	
-	The ratio test, like every other test we know of, is incapable of determining what value a convergent series converges to. It can function on series with negative terms, though, making it fairly versatile.
+	Like every other test we know, the ratio test is incapable of determining what value a convergent series converges to. It can function on series with negative terms, though, making it fairly versatile.
 
 !end-text-block
 
@@ -89,7 +90,7 @@
 	
 	Determine if the series $\sum_{n = 1}^\infty \frac{e^n}{n!}$ converges or diverges.
 	
-	We&#x2019;ll start, as always, with the divergence test. As $n \to \infty$, the behavior of $\frac{e^n}{n!}$ is a little complicated. Which grows faster: an exponential, or a factorial? Since the factorial function is defined only on positive integers, there&#x2019;s no equivalent function we know on real numbers that we can differentiate in order to apply L&#x2019;H&#244;pital &mdash; we just have to reason this one out. Both $e^n$ and $n!$ are products of $n$ numbers: we have
+	As usual, we&#x2019;ll start with the divergence test. As $n \to \infty$, the behavior of $\frac{e^n}{n!}$ is a little complicated. Which grows faster: an exponential, or a factorial? Since the factorial function is defined only on positive integers, there&#x2019;s no equivalent function we know of on the real numbers that we can differentiate in order to apply L&#x2019;H&#244;pital&#x2019;s rule &mdash; we just have to reason this one out. Both $e^n$ and $n!$ are products of $n$ numbers: we have
 	
 	$$
 		\frac{e^n}{n!} = \frac{e \cdot e \cdots e \cdot e}{n \cdot (n-1) \cdots 2 \cdot 1}.
@@ -139,6 +140,94 @@
 	3. $\sum_{n = 1}^\infty (-1)^n$.
 
 !end-exercise
+
+
+
+!section
+
+!text s The Root Test
+
+<br>
+
+
+
+!begin-text-block
+
+	Much like the ratio test, the root test compares a given series to a geometric series. If the terms $a_n$ of a series satisfy $|a_n| \approx r^n$, then $\sqrt[n]{|a_n|} \approx r$. Just like the ratio test, we&#x2019;ll solidify that approximation by taking a limit.
+
+!end-text-block
+
+!begin-thm
+
+	the root test
+	
+	Let $\sum_{n = 1}^\infty a_n$ be a series and define a value $r$ by
+	
+	$$
+		r = \lim_{n \to \infty} \sqrt[n]{|a_n|}.
+	$$
+	
+	If $0 \leq r < 1$, then the series converges. If $r > 1$, the series diverges. If $r = 1$, the test is inconclusive.
+
+!end-thm
+
+
+
+!begin-example
+
+	the root test
+
+	Determine if the series $\sum_{n = 1}^\infty \frac{\sin^n(n)}{n^n}$ converges or diverges.
+	
+	The root test works best when there are lots of expressions raised to the power of $n$ in the terms. Since $\sin^n(n)$ is just another way of writing $(\sin(n))^n$, the terms can be rewritten as
+	
+	$$
+		\left( \frac{\sin(n)}{n} \right)^n.
+	$$
+	
+	Then the root test asks us to find $r$, which is
+	
+	$$
+		\begin{align*}
+			r &= \lim_{n \to \infty} \sqrt[n]{\left| \frac{\sin(n)}{n} \right|^n}\\
+			&= \lim_{n \to \infty} \left| \frac{\sin(n)}{n} \right|\\
+			&= 0.
+		\end{align*}
+	$$
+	
+	Therefore, the series converges.
+
+!end-example
+
+!begin-exercise
+
+	the root test
+
+	Determine if the following series converge or diverge by using the root test.
+	
+	1. $\sum_{k = 1}^\infty \frac{2^k}{(k + 1)^k}$.
+	
+	2. $\sum_{n = 1}^\infty \frac{n}{2^n}$.
+
+!end-exercise
+
+
+
+!begin-text-block
+
+	As a final topic before we move on to series that can approximate functions in the next section, let&#x2019;s discuss how to choose a test for convergence. It&#x2019;s way too much to try all seven, and ususally there are clues that one or two are favored over the others.
+	
+	Given a series $\sum_{n = 1}^\infty a_n$ with all positive terms, the easiest way to test convergence is if the series is a common, recognizable one, like a $p$-series or geometric series &mdash; if that&#x2019;s the case, then you already know the answer based on the parameter of the series. If it looks <em>like</em> a $p$-series or geometric series, but the terms are slightly modified by something you expect will be insignificant (e.g. a constant in one part of a fraction), try applying the comparison test. If that doesn&#x2019;t work, try the limit comparison test.
+	
+	Failing that, if it&#x2019;s easy to take the limit of the terms $a_n$ as $n \to \infty$, then try the divergence test. If that doesn&#x2019;t work, and the terms contain lots of exponentials or factorials, try the ratio or root test. Usually the root test is the better choice if there are only exponentials, and the ratio test is better if there are factorials anywhere. Finally, if all else fails, turn to the integral test.
+	
+	If your series contains negative terms, things work a little differently. If you care about absolute convergence, you need to consider the series of absolute values, which means you&#x2019;re back in the previous case. If you want to test for conditional convergence, you can use the alternating series test if the signs alternate, or the ratio or root tests if they don&#x2019;t (e.g. if $a_n = \sin(n)$).
+	
+	Finally, if you need to estimate the value of a series, you&#x2019;ll have to use the alternating series test if it&#x2019;s alternating and the integral test if it&#x2019;s not. None of the other tests we&#x2019;ve seen provide remainder estimates.
+	
+	Hopefully this helps! There will be plenty of opportunities to practice before the next section, when we move into the second half of the course.
+
+!end-text-block
 
 
 	
