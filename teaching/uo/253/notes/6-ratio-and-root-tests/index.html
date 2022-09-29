@@ -1,0 +1,181 @@
+<head>
+	<title>Section 6: The Ratio and Root Tests</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 6: The Ratio and Root Tests"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/253/notes/6-ratio-and-root-tests/">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/253/notes/6-ratio-and-root-tests/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 6: The Ratio and Root Tests
+
+<br>
+
+
+
+!begin-text-block
+
+	Our final two tests for convergence have the nice effect of applying to series with positive and negative terms alike. They&#x2019;re simple to state and apply, and together with the previous five tests, they round out a solid theory of convergence.
+	
+	The Harmonic series diverges because even through its terms shrink to zero, they don&#x2019;t do so fast enough. So far, we haven&#x2019;t had a way to measure what &#x201C;fast enough&#x201D; means exactly, but our final two tests will each provide a possible interpretation. One idea we might pursue is looking at the size of terms not only in an absolute sense, but relative to each other as well. For example, when $n$ is very large, the two successive terms $\frac{1}{n}$ and $\frac{1}{n + 1}$ in the harmonic series are very nearly the same size. The ratio between them is
+	
+	$$
+		\frac{\frac{1}{n + 1}}{\frac{1}{n}} = \frac{n + 1}{n} \to 1
+	$$
+	
+	as $n \to \infty$. On the other hand, something like the geometric series $\sum_{n = 0}^\infty \frac{1}{2^n}$ has a ratio of successive terms equal to
+	
+	$$
+		\frac{\frac{1}{2^{n + 1}}}{\frac{1}{2^n} = \frac{2^n}{2^{n + 1}} = \frac{1}{2}.
+	$$
+	
+	In other words, not only are the terms of that geometric series getting smaller in an absolute sense (i.e. approaching zero), they&#x2019;re also shrinking relative to each other, whereas the terms of the Harmonic series are not consistently smaller relative to each other for large $n$. This idea of quantifying the ratio between successive terms is the centeral mechanic of our first test.
+
+!end-text-block
+
+
+
+!begin-thm
+
+	the ratio test
+	
+	Let $\sum_{n = 1}^\infty a_n$ be a series and define a value $r$ by
+	
+	$$
+		r = \lim_{n \to \infty} \left| \frac{a_{n + 1}}{a_n} \right|.
+	$$
+	
+	If $0 \leq r < 1$, then the series converges. If $r > 1$, the series diverges. If $r = 1$, the test is inconclusive.
+
+!end-thm
+
+
+
+!begin-text-block
+
+	It&#x2019;s worth briefly justifying why the ratio test works. If $r > 1$, then eventually every term is larger than the previous, so the divergence test tells us the series must diverge. If $r < 1$, then there is some number $s$ with $r < s < 1$ so that for large enough $n$ (say all $n \geq N$), $a_{n + 1} < s a_n$. Then $a_{n + 2} < s a_{n + 1} < s^2 a_n$, and so on. This looks a whole lot like a geometric series, and what we end up with is
+	
+	$$
+		\begin{align*}
+			\sum_{n = 1}^\infty a_n &< \sum_{n = 1}^{N - 1} a_n + a_N \sum_{n = 0}^\infty s^n\\
+			&< \sum_{n = 1}^{N - 1} a_n + a_N \cdot \frac{1}{1 - s},
+		\end{align*}
+	$$
+	
+	which is finite. This is a bit grittier than our justifications usually are, and it&#x2019;s perfectly fine to engage with the ratio test at the level of just remembering the theorem statement, but under the hood, it&#x2019;s all just geometric series.
+	
+	The ratio test, like every other test we know of, is incapable of determining what value a convergent series converges to. It can function on series with negative terms, though, making it fairly versatile.
+
+!end-text-block
+
+
+
+!begin-example
+
+	the ratio test
+	
+	Determine if the series $\sum_{n = 1}^\infty \frac{e^n}{n!}$ converges or diverges.
+	
+	We&#x2019;ll start, as always, with the divergence test. As $n \to \infty$, the behavior of $\frac{e^n}{n!}$ is a little complicated. Which grows faster: an exponential, or a factorial? Since the factorial function is defined only on positive integers, there&#x2019;s no equivalent function we know on real numbers that we can differentiate in order to apply L&#x2019;H&#244;pital &mdash; we just have to reason this one out. Both $e^n$ and $n!$ are products of $n$ numbers: we have
+	
+	$$
+		\frac{e^n}{n!} = \frac{e \cdot e \cdots e \cdot e}{n \cdot (n-1) \cdots 2 \cdot 1}.
+	$$
+	
+	Whenever $n$ increases by $1$, the numerator is increased by a factor of $e$, while the denominator is increased by a factor of $n$. In total, that means multiplying by $\frac{e}{n}$, and since $n \to \infty$ and $e$ is a constant, we&#x2019;re multiplying by smaller and smaller numbers every time. In total, $\frac{e^n}{n!} \to 0$.
+	
+	Therefore, the divergence test is inconclusive. In general, the ratio test works best with series whose terms have lots of exponentials and/or factorials &mdash; this has plenty of both, so let&#x2019;s give it a shot. We have
+	
+	$$
+		\begin{align*}
+			r &= \lim_{n \to \infty} \left| \frac{\frac{e^{n + 1}}{(n + 1)!}}{\frac{e^n}{n!}} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{(n!)(e^{n + 1})}{((n + 1)!)(e^n)} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{(n!)(e)}{(n + 1)!} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{e \cdot n \cdot (n - 1) \cdots 2 \cdot 1}{(n + 1) \cdot n \cdot (n - 1) \cdots 2 \cdot 1} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{e}{n + 1} \right|\\
+			&= 0.
+		\end{align*}
+	$$
+	
+	By the ratio test, the series converges.
+
+!end-example
+
+!begin-exercise
+
+	the ratio test
+	
+	Determine if the following series converge or diverge.
+	
+	1. $\sum_{n = 1}^\infty \frac{(-1)^n n}{2^n}$.
+	
+	2. $\sum_{k = 1}^\infty \frac{(k!)^2}{(2k)!}$.
+
+!end-exercise
+
+!begin-exercise
+
+	the ratio test
+	
+	Let&#x2019;s show that when $r = 1$ in the ratio test, we really can&#x2019;t determine anything about the series. Of the three following series, one is divergent, one is absolutely convergent, and one is conditionally convergent. Determine which is which, and then show that $r = 1$ for all three.
+	
+	1. $\sum_{n = 1}^\infty \frac{(-1)^n}{n}$.
+	
+	2. $\sum_{n = 1}^\infty \frac{(-1)^n}{n^2}$.
+	
+	3. $\sum_{n = 1}^\infty (-1)^n$.
+
+!end-exercise
+
+
+	
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 6: The Ratio and Root Tests",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/253/notes"
+	};
+	
+	Page.load();
+</script>
