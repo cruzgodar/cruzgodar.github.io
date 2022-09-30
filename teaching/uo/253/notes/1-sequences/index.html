@@ -436,7 +436,9 @@
 
 !begin-text-block
 	
-	When we have a sequence $(a_n)$ defined explicitly (i.e. in terms of $n$), taking the limit is as easy as taking the limit of the defining function as $n \to \infty$. For example, let&#x2019;s look at the sequence $(r^n)$. When $0 \leq r < 1$, $r^x \to 0$ as $x \to \infty$, so $(r^n) \to 0$. When $r = 1$, $r^x = 1$ for all $x$, so $(r^n) \to 1$. And when $r > 1$, $r^x \to \infty$ as $x \to \infty$, so the same is true of $(r^n)$. Therefore, $(r^n)$ converges for $0 \leq r \leq 1$ and diverges for $r > 1$.
+	When we have a sequence $(a_n)$ defined explicitly (i.e. $a_n = f(n)$ for some function $f$), <strong>and</strong> when $\lim_{x \to \infty} f(x)$ exists, then the limit of the sequence exists and is the same as the limit of the function. For example, let&#x2019;s look at the sequence $(r^n)$. When $0 \leq r < 1$, $r^x \to 0$ as $x \to \infty$, so $(r^n) \to 0$. When $r = 1$, $r^x = 1$ for all $x$, so $(r^n) \to 1$. And when $r > 1$, $r^x \to \infty$ as $x \to \infty$, so the same is true of $(r^n)$. Therefore, $(r^n)$ converges for $0 \leq r \leq 1$ and diverges for $r > 1$.
+	
+	However, if the limit of the defining function does not exist, we need to be more careful. For example, the sequence $a_n = \cos(2\pi n)$ agrees with the function $f(x) = \cos(2\pi x)$, but while the function alternates between $1$ and $-1$ and therefore has no limit to $\infty$, the sequence only has integer values of $n$, meaning $a_n = 0$ for all $n$. Therefore, the sequence converges to zero.
 	
 	This is the first example of many of a sequence that converges only sometimes, depending on a parameter (here, that parameter is $r$). This sort of construction comes up so often that it will end up being one of the main objects we study in the course.
 	
