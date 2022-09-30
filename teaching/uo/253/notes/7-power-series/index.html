@@ -1,0 +1,180 @@
+<head>
+	<title>Section 7: Power Series</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 7: Power Series"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/253/notes/7-power-series/">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/253/notes/7-power-series/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 7: Power Series
+
+<br>
+
+
+
+!begin-text-block
+
+	In this section, we&#x2019;ll fundamentally change the way we look at and work with series. The change seems innocent enough at first, but its effects will be surprisingly profound.
+	
+	Let&#x2019;s begin with the geometric series $\sum_{n = 0}^\infty r^n$. Right now, we typically think of $r$ as a parameter we can choose before working with the series &mdash; for example, with $r = \frac{1}{2}$, we have the series
+	
+	$$
+		\sum_{n = 0}^\infty \left( \frac{1}{2} \right)^n = \frac{1}{1 - \frac{1}{2}} = 2.
+	$$
+	
+	Now, though, we&#x2019;ll think of $r$ as a <strong>variable</strong>, specifically as an input to a function $f$. To emphasize that change, let&#x2019;s use $x$ instead of $r$. Our series now becomes
+	
+	$$
+		f(x) = \sum_{n = 0}^\infty x^n.
+	$$
+	
+	We know from properties of geometric series that this converges to $\frac{1}{1 - x}$ when $|x| < 1$. Therefore, we have that $f(x) = \frac{1}{1 - x}$, defined on the interval $(-1, 1)$.
+	
+	What if we wanted to change that interval? The easiest way is to modify $x$. The series
+	
+	$$
+		\sum_{n = 0}^\infty (x - 8)^n
+	$$
+	
+	converges when $|x - 8| < 1$, or in other words, when $x$ is in the interval $(7, 9)$.
+	
+	So far, all we&#x2019;ve done is rename a variable to $x$ and introduce a small transformation to the series. But this type of series will form the basis for the rest of the course, and we&#x2019;d do well to give it a name.
+
+!end-text-block
+
+
+
+!begin-def
+
+	power series
+	
+	A <dfn>power series</dfn> centered at $a$ is a series of the form
+	
+	$$
+		\sum_{n = 0}^\infty c_n (x - a)^n
+	$$
+	
+	for some constants $a$ and $c_n$. Note that the series starts at $n = 0$.
+
+!end-def
+
+
+
+!begin-text-block
+
+	To make sure the series are always defined, we&#x2019;ll insist that $(x - a)^0 = 1$, even when $x = a$.
+	
+	A power series centered at $a$ always converges when $x = a$, since every term after the first is zero. Some power series <em>only</em> converge for that value of $x$ and no others &mdash; for example, take the series
+	
+	$$
+		\sum_{n = 0}^\infty n!x^n.
+	$$
+	
+	This is a power series centered at zero, and when $x = 0$, it converges to zero as we expect. When $x$ is nonzero, we can apply the ratio test:
+	
+	$$
+		\begin{align*}
+			\lim_{n \to \infty} \left| \frac{(n+1)!x^{n + 1}}{n!x^n} \right| &= \lim_{n \to \infty} \left| (n+1)x \right|\\
+			&= \infty.
+		\end{align*}
+	$$
+	
+	Therefore, the series converges only for $x = 0$ and diverges otherwise.
+	
+	We&#x2019;ve seen that other power series converge for $x$ inside of an interval and diverge otherwise, like $\sum_{n = 0}^\infty x^n$. One final possibility is that they converge no matter what $x$ is. For an example of that sort of behavior, let&#x2019;s look at the series
+	
+	$$
+		\sum_{n = 0}^\infty \frac{x^n}{n!}.
+	$$
+	
+	This time around, the ratio test tells us that
+	
+	$$
+		\begin{align*}
+			\lim_{n \to \infty} \left| \frac{\frac{x^{n + 1}}{(n+1)!}}{\frac{x^n}{n!}} \right| &= \lim_{n \to \infty} \left| \frac{n!x^{n+1}}{(n+1)!x^n} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{x}{n + 1} \right|\\
+			&= 0.
+		\end{align*}
+	$$
+	
+	Therefore, the series always converges, regardless of the value of $x$.
+	
+	It turns out that these are the <em>only</em> three possibilities for the convergence of a power series &mdash; and in fact, when they converge for $x$ in some interval, we can be more precise about what that interval looks like.
+
+!end-text-block
+
+
+
+!begin-thm
+
+	convergence of power series
+	
+	Let
+	
+	$$
+		f(x) = \sum_{n = 0}^\infty c_n(x - a)^n
+	$$
+	
+	be a power series centered at $a$. Then one of the following must be true:
+	
+	1. $f$ converges when $x = a$ and diverges for all other $x$.
+	
+	2. $f$ converges when $x$ is in some interval centered at $a$ and diverges otherwise.
+	
+	3. $f$ converges for all values of $x$.
+
+!end-thm
+
+
+	
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 7: Power Series",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/253/notes"
+	};
+	
+	Page.load();
+</script>
