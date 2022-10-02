@@ -862,9 +862,13 @@ Site.Settings =
 
 	toggle_font: function(no_settings_text)
 	{
+		let need_to_wait = false;
+		
 		if ("writing_page" in Page.settings && Page.settings["writing_page"])
 		{
-			document.body.style.opacity = 0;
+			need_to_wait = true;
+			
+			Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time);
 		}
 		
 		
@@ -874,7 +878,7 @@ Site.Settings =
 		{
 			setTimeout(() =>
 			{
-				if ("writing_page" in Page.settings && Page.settings["writing_page"])
+				if (need_to_wait)
 				{
 					Page.set_element_styles(".body-text, .heading-text", "font-family", "'Gentium Book Basic', serif");
 				}
@@ -885,7 +889,7 @@ Site.Settings =
 					try {Page.Footer.Floating.show_settings_text("Font: serif on writing");}
 				 	catch(ex) {}
 				}
-			}, Site.opacity_animation_time);
+			}, Site.opacity_animation_time * need_to_wait);
 			
 			this.url_vars["font"] = 1;
 		}
@@ -897,7 +901,7 @@ Site.Settings =
 		{
 			setTimeout(() =>
 			{
-				if ("writing_page" in Page.settings && Page.settings["writing_page"])
+				if (need_to_wait)
 				{
 					Page.set_element_styles(".body-text, .heading-text", "font-family", "'Rubik', sans-serif");
 				}
@@ -909,22 +913,20 @@ Site.Settings =
 					try {Page.Footer.Floating.show_settings_text("Font: always sans serif");}
 			 		catch(ex) {}
 			 	}
-			}, Site.opacity_animation_time);
+			}, Site.opacity_animation_time * need_to_wait);
 			
 			this.url_vars["font"] = 0;
 		}
 		
 		
 		
-		if ("writing_page" in Page.settings && Page.settings["writing_page"])
+		if (need_to_wait)
 		{
 			setTimeout(() =>
 			{
 				setTimeout(() =>
 				{
-					document.body.style.opacity = 1;
-					
-					Page.Load.AOS.on_resize();
+					Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
 				}, 50);
 			}, Site.opacity_animation_time);
 		}
@@ -936,47 +938,47 @@ Site.Settings =
 	{
 		if (this.url_vars["content_animation"] === 0)
 		{
-			//Here, we can just animate out the body as usual.	
-			document.body.style.opacity = 0;
-			
-			setTimeout(() =>
+			if (!no_settings_text)
 			{
-				this.remove_animation();
-			
-				setTimeout(() =>
-				{
-					Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
-				}, 50);
-			}, Site.opacity_animation_time);
-			
-			
-			
-			setTimeout(() =>
-			{
-				if (!no_settings_text)
-				{
-					try {Page.Footer.Floating.show_settings_text("Content animation: disabled");}
-			 		catch(ex) {}
-			 	}
-		 	}, Site.opacity_animation_time * 2);
-		 	
-		 	
+				try {Page.Footer.Floating.show_settings_text("Content animation: disabled");}
+		 		catch(ex) {}
+		 	}
 			
 			this.url_vars["content_animation"] = 1;
+			
+			Site.button_animation_time = 0;
+			Site.opacity_animation_time = 0;
+			Site.page_animation_time = 0;
+			Site.background_color_animation_time = 0;
 		}
 		
 		
 		
 		else
 		{
+			if (!no_settings_text)
+			{
+				try {Page.Footer.Floating.show_settings_text("Content animation: enabled");}
+		 		catch(ex) {}
+		 	}
+			
 			this.url_vars["content_animation"] = 0;
 			
+			if (Site.use_js_animation)
+			{
+				Site.button_animation_time = Site.base_animation_time * .5;
+				Site.opacity_animation_time = Site.base_animation_time * .8;
+				Site.page_animation_time = Site.base_animation_time * .6;
+				Site.background_color_animation_time = Site.base_animation_time * 2;
+			}
 			
-			
-			//This is a little messy, but it's better than the alternative. Removing every single data-aos attribute is way too destructive to undo, so instead, we'll just refresh the page.
-			Page.Navigation.last_page_scroll = window.scrollY;
-			
-			Page.Navigation.redirect(Page.url, false, true, true);
+			else
+			{
+				Site.button_animation_time = Site.base_animation_time * .45;
+				Site.opacity_animation_time = Site.base_animation_time * .75;
+				Site.page_animation_time = Site.base_animation_time * .6;
+				Site.background_color_animation_time = Site.base_animation_time * 2;
+			}
 		}
 	},
 
@@ -1031,13 +1033,6 @@ Site.Settings =
 			
 			element.id = "ultrawide-margin-adjust";
 		}	
-	},
-
-
-
-	remove_animation: function()
-	{
-		document.body.querySelectorAll("[data-aos]").forEach(element => element.removeAttribute("data-aos"));
 	},
 	
 	

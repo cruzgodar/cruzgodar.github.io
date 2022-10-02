@@ -1548,8 +1548,6 @@ class Wilson
 							catch(ex) {}
 							
 							this.parent.draggables.on_resize();
-							
-							Page.Load.AOS.on_resize();
 						}
 						
 						window.scroll(0, 0);
@@ -1567,8 +1565,6 @@ class Wilson
 							catch(ex) {}
 							
 							this.parent.draggables.on_resize();
-							
-							Page.Load.AOS.on_resize();
 						}
 						
 						
@@ -1724,10 +1720,6 @@ class Wilson
 						catch(ex) {}
 						
 						this.parent.draggables.on_resize();
-						
-						
-						
-						Page.Load.AOS.on_resize();
 					}
 					
 					

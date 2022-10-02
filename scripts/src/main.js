@@ -259,12 +259,10 @@ Site.load = async function(url)
 	{
 		console.log("Using JS animation");
 		
-		this.aos_separation_time = this.base_animation_time / 8;
-		this.button_animation_time = this.base_animation_time / 2;
+		this.button_animation_time = this.base_animation_time * .5;
 		this.opacity_animation_time = this.base_animation_time * .8;
 		this.page_animation_time = this.base_animation_time * .6;
 		this.background_color_animation_time = this.base_animation_time * 2;
-		this.aos_animation_time = this.base_animation_time * 4;
 		
 		Page.Animate.change_opacity = Page.Animate.change_opacity_js;
 		Page.Animate.change_scale = Page.Animate.change_scale_js;
@@ -287,12 +285,10 @@ Site.load = async function(url)
 	
 	else
 	{
-		this.aos_separation_time = this.base_animation_time / 8;
 		this.button_animation_time = this.base_animation_time * .45;
 		this.opacity_animation_time = this.base_animation_time * .75;
 		this.page_animation_time = this.base_animation_time * .6;
 		this.background_color_animation_time = this.base_animation_time * 2;
-		this.aos_animation_time = Math.ceil(this.base_animation_time * 3.25 / 50) * 50;
 		
 		Page.Animate.change_opacity = Page.Animate.change_opacity_css;
 		Page.Animate.change_scale = Page.Animate.change_scale_css;
@@ -330,8 +326,6 @@ Site.load = async function(url)
 	{
 		Page.Layout.on_resize();
 	});
-	
-	Page.Load.AOS.on_resize();
 	
 	
 	

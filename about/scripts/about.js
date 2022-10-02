@@ -23,9 +23,6 @@
 				setTimeout(() =>
 				{
 					version_elements.forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
-					
-					Page.Load.AOS.on_resize();
-					Page.Load.AOS.on_scroll();
 				}, 50);
 			}, Site.opacity_animation_time);
 		}
@@ -39,12 +36,6 @@
 				version_elements.forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
 				
 				Page.set_element_styles(".minor-version", "display", "none");
-				
-				setTimeout(() =>
-				{
-					Page.Load.AOS.on_resize();
-					Page.Load.AOS.on_scroll();
-				}, 50);
 			}, Site.opacity_animation_time);
 		}
 	});
@@ -52,11 +43,4 @@
 	
 	
 	Page.show();
-	
-	
-	
-	setTimeout(() =>
-	{
-		Page.Load.AOS.on_resize();
-	}, 500);
 }()

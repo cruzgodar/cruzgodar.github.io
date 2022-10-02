@@ -19,13 +19,13 @@
 	
 	setTimeout(() =>
 	{
-		Page.Animate.fade_left(Page.element.querySelector("#cruz-text"), Site.aos_animation_time * .8);
+		Page.Animate.fade_left(Page.element.querySelector("#cruz-text"), Site.opacity_animation_time * 3.5);
 		
 		setTimeout(() =>
 		{
-			Page.Animate.fade_left(Page.element.querySelector("#godar-text"), Site.aos_animation_time * .8);
-		}, 300);	
-	}, 200);
+			Page.Animate.fade_left(Page.element.querySelector("#godar-text"), Site.opacity_animation_time * 3.5);
+		}, Site.opacity_animation_time);	
+	}, Site.opacity_animation_time);
 	
 	set_name_text_opacity();
 	

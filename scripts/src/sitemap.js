@@ -8,9 +8,9 @@ Site.sitemap =
 		[
 			"/gallery/",
 			"/applets/",
+			"/teaching/",
 			"/papers/",
 			"/writing/",
-			"/teaching/",
 			"/about/",
 			"/404/"
 		]

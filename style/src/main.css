@@ -275,13 +275,13 @@ mjx-container
 		width: 80vw;
 	}
 	
-	pre code
+	pre code.highlightable
 	{
 		width: calc(90vw - 24px);
 	}
 	
 	.line-break
 	{
-		margin-left: 5vw;
+		left: 5vw;
 	}
 }

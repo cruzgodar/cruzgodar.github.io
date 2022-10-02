@@ -116,8 +116,8 @@ Page.Footer =
 		
 		
 		
-		left_names: ["theme", "contrast", "font", "text-size"],
-		left_effects: ["Site.Settings.toggle('theme')", "Site.Settings.toggle('contrast')", "Site.Settings.toggle('font')", "Site.Settings.toggle('text_size')"],
+		left_names: ["theme", "contrast", "font", "text-size", "content-animation"],
+		left_effects: ["Site.Settings.toggle('theme')", "Site.Settings.toggle('contrast')", "Site.Settings.toggle('font')", "Site.Settings.toggle('text_size')", "Site.Settings.toggle('content_animation')"],
 		right_names: ["gallery", "applets", "teaching", "writing", "about"],
 		
 		menu_button: null,

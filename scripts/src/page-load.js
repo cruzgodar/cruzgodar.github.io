@@ -150,11 +150,6 @@ Page.load = async function()
 		Site.Settings.reduce_page_margins();
 	}
 	
-	if (Site.Settings.url_vars["content_animation"] === 1)
-	{
-		Site.Settings.remove_animation();
-	}
-	
 	if (Site.Settings.url_vars["condensed_applets"] === 1 && Site.sitemap[Page.url].parent === "/applets/")
 	{
 		Site.Settings.condense_applet();
@@ -319,62 +314,59 @@ Page.Load =
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			if (Site.Settings.url_vars["content_animation"] !== 1)
+			let promise = null;
+			
+			if (Page.Navigation.transition_type === 1)
 			{
-				let promise = null;
+				promise = Page.Animate.fade_up_in(Page.element, Site.page_animation_time * 2);
 				
-				if (Page.Navigation.transition_type === 1)
+				if (Page.banner_element !== null)
 				{
-					promise = Page.Animate.fade_up_in(Page.element, Site.page_animation_time * 2);
-					
-					if (Page.banner_element !== null)
-					{
-						promise = Page.Animate.fade_up_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
-					}
+					promise = Page.Animate.fade_up_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
 				}
-				
-				else if (Page.Navigation.transition_type === -1)
-				{
-					promise = Page.Animate.fade_down_in(Page.element, Site.page_animation_time * 2);
-					
-					if (Page.banner_element !== null)
-					{
-						promise = Page.Animate.fade_down_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
-					}
-				}
-				
-				else if (Page.Navigation.transition_type === 2)
-				{
-					promise = Page.Animate.fade_left_in(Page.element, Site.page_animation_time * 2);
-					
-					if (Page.banner_element !== null)
-					{
-						promise = Page.Animate.fade_left_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
-					}
-				}
-				
-				else if (Page.Navigation.transition_type === -2)
-				{
-					promise = Page.Animate.fade_right_in(Page.element, Site.page_animation_time * 2);
-					
-					if (Page.banner_element !== null)
-					{
-						promise = Page.Animate.fade_right_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
-					}
-				}
-				
-				else
-				{
-					promise = Page.Animate.fade_in(Page.element, Site.page_animation_time * 2);
-					
-					if (Page.banner_element !== null)
-					{
-						promise = Page.Animate.fade_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
-					}
-				}
-				
-				await promise;
 			}
+			
+			else if (Page.Navigation.transition_type === -1)
+			{
+				promise = Page.Animate.fade_down_in(Page.element, Site.page_animation_time * 2);
+				
+				if (Page.banner_element !== null)
+				{
+					promise = Page.Animate.fade_down_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
+				}
+			}
+			
+			else if (Page.Navigation.transition_type === 2)
+			{
+				promise = Page.Animate.fade_left_in(Page.element, Site.page_animation_time * 2);
+				
+				if (Page.banner_element !== null)
+				{
+					promise = Page.Animate.fade_left_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
+				}
+			}
+			
+			else if (Page.Navigation.transition_type === -2)
+			{
+				promise = Page.Animate.fade_right_in(Page.element, Site.page_animation_time * 2);
+				
+				if (Page.banner_element !== null)
+				{
+					promise = Page.Animate.fade_right_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
+				}
+			}
+			
+			else
+			{
+				promise = Page.Animate.fade_in(Page.element, Site.page_animation_time * 2);
+				
+				if (Page.banner_element !== null)
+				{
+					promise = Page.Animate.fade_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
+				}
+			}
+			
+			await promise;
 			
 			resolve();
 		});
@@ -462,237 +454,6 @@ Page.Load =
 			}
 		});
 	},
-	
-	
-	
-	AOS:
-	{
-		//A list of lists. Each sublist starts with an anchor, then lists all the elements anchored to it in sequence, along with their delays.
-		show_elements: false,
-		
-		elements: [],
-		element_animation_types: [],
-		delays: [],
-
-		anchor_positions: [],
-
-		anchor_offsets: [],
-
-		anchors_shown: [],
-
-		currently_animating: [],
-		
-		
-		
-		//So, there's this bug that's plagued the site since its inception. iOS Safari eventually seems to have a memory leak and starts cutting off all transitions before they've reached their end. It gets progressively worse until quitting the app is required. It can be triggered by drag-and-dropping elements repeatedly *anywhere* in Safari, and affects all webpages with CSS transitions.
-
-		//In iOS 13.4, it seems Apple has miraculously fixed this nightmare. But for whatever reason, AOS is still problematic. If an element has a nonzero delay, it will be bugged, but zero-delay elements behave as usual. And so the solution is, unfortunately, to handle almost all of what AOS does manually.
-
-		//This function puts the proper delays and anchors on aos elements on the page. The first animated element in every section should have a class of new-aos-section.
-		
-		//Update: the bug came back even for zero-delay elements. The site's content animation has been optionally moved to the JS-based anime.js.
-		load: function()
-		{
-			return;
-			if (Site.Settings.url_vars["content_animation"] === 1)
-			{
-				return;
-			}
-			
-			
-			
-			this.show_elements = false;
-			
-			this.elements = [];
-			this.element_animation_types = [];
-			this.delays = [];
-			
-			let current_section = 0;
-			let current_delay = 0;
-			
-			
-			
-			Page.element.querySelectorAll("[data-aos]").forEach(new_element =>
-			{
-				if (new_element.classList.contains("new-aos-section"))
-				{
-					//Create a new section.
-					this.elements.push([]);
-					this.delays.push([]);
-					
-					current_section++;
-					
-					current_delay = 0;
-					
-					
-					
-					this.anchor_offsets[current_section - 1] = 100;
-					
-					
-					
-					if (new_element.getAttribute("data-aos") === "zoom-out")
-					{
-						this.element_animation_types.push(1);
-					}
-					
-					else
-					{
-						this.element_animation_types.push(0);
-					}
-					
-					
-					
-					this.anchor_positions[current_section - 1] = new_element.getBoundingClientRect().top + Page.scroll;
-					
-					this.anchors_shown[current_section - 1] = false;
-				}
-				
-				
-				if (Site.use_js_animation)
-				{
-					if (new_element.getAttribute("data-aos") === "zoom-out")
-					{
-						new_element.style.transform = "scale(1.3)";
-					}
-					
-					else
-					{
-						new_element.style.transform = "translateY(100px)";
-					}
-					
-					new_element.style.opacity = 0;
-				}
-				
-				this.elements[current_section - 1].push(new_element);
-				
-				
-				
-				
-				let delay_increase = new_element.getAttribute("data-aos-delay-increase");
-				
-				if (delay_increase !== null)
-				{
-					current_delay += parseInt(delay_increase);
-				}
-				
-				this.delays[current_section - 1].push(current_delay);
-				
-				current_delay += Site.aos_separation_time;
-			});
-			
-			
-			
-			this.on_resize();
-		},
-
-		
-		
-		last_resize_timestamp: -1,
-
-		on_resize: function(timestamp)
-		{
-			let time_elapsed = timestamp - Page.Load.AOS.last_scroll_timestamp;
-			
-			Page.Load.AOS.last_scroll_timestamp = timestamp;
-			
-			if (time_elapsed === 0)
-			{
-				return;
-			}
-			
-			
-			
-			if (!Page.Load.AOS.show_elements)
-			{
-				return;
-			}
-			
-			Page.Load.AOS.elements.forEach((element, index) =>
-			{
-				Page.Load.AOS.anchor_positions[index] = element[0].getBoundingClientRect().top + Page.scroll;
-			});
-			
-			Page.Load.AOS.fix_footer_anchor();
-		},
-
-
-
-		fix_footer_anchor: function()
-		{
-			if (!("no_footer" in Page.settings && Page.settings["no_footer"]))
-			{
-				this.anchor_positions[this.elements.length - 1] = document.body.scrollHeight - 10;
-				this.anchor_offsets[this.elements.length - 1] = 0;
-				
-				this.element_animation_types[this.elements.length - 1] = 1;
-			}
-		},
-
-		
-		
-		last_scroll_timestamp: -1,
-
-		on_scroll: function(timestamp)
-		{
-			let time_elapsed = timestamp - Page.Load.AOS.last_scroll_timestamp;
-			
-			Page.Load.AOS.last_scroll_timestamp = timestamp;
-			
-			if (time_elapsed === 0)
-			{
-				return;
-			}
-			
-			
-			
-			if (!Page.Load.AOS.show_elements)
-			{
-				return;
-			}
-			
-			Page.Load.AOS.elements.forEach((element, index) =>
-			{
-				if (Page.scroll + Page.Layout.window_height >= Page.Load.AOS.anchor_positions[index] + Page.Load.AOS.anchor_offsets[index] && Page.Load.AOS.anchors_shown[index] === false)
-				{
-					Page.Load.AOS.show_section(index);
-				}
-			});
-		},
-
-
-
-		show_section: function(section, force = false)
-		{
-			if (Site.Settings.url_vars["content_animation"] === 1)
-			{
-				return;
-			}
-			
-			
-			
-			if (Page.scroll !== 0 || section === 0 || force)
-			{
-				this.anchors_shown[section] = true;
-				
-				if (this.element_animation_types[section] === 1)
-				{
-					Page.Animate.show_zoom_out_section(this.elements[section], Site.aos_animation_time, this.delays[section]);
-				}
-				
-				else
-				{
-					Page.Animate.show_fade_up_section(this.elements[section], Site.aos_animation_time, this.delays[section]);
-				}
-				
-				
-				
-				if (Page.scroll === 0 && section + 1 < this.elements.length && Page.Layout.window_height >= this.anchor_positions[section + 1] + this.anchor_offsets[section + 1])
-				{
-					setTimeout(() => this.show_section(section + 1, true), Site.aos_separation_time * this.elements[section].length + parseInt(this.elements[section + 1][0].getAttribute("data-aos-delay-increase") || 0));
-				}
-			}
-		}
-	},	
 
 
 	
@@ -949,8 +710,6 @@ Page.Load =
 			
 			else
 			{
-				Page.element.querySelector("#previous-nav-button").parentNode.nextElementSibling.classList.add("new-aos-section");
-				
 				Page.element.querySelector("#previous-nav-button").parentNode.remove();
 			}
 			
