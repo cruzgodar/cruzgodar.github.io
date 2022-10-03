@@ -32,9 +32,7 @@
 	const infinite_height = 100;
 	
 	const add_walls = false;
-	const wall_size = 30;
-	
-	
+	const wall_size = 40;
 	
 	const algorithm_data =
 	{
@@ -1195,23 +1193,18 @@
 				array.left_wall = new Array(wall_size);
 				array.right_wall = new Array(wall_size);
 				
-				for (let i = 0; i < wall_size; i++)
+				for (let i = 0; i < array.footprint; i++)
 				{
 					array.left_wall[i] = new Array(wall_size);
 					array.right_wall[i] = new Array(wall_size);
 				}
-					
-				for (let i = 0; i < wall_size; i++)
+				
+				for (let i = 0; i < array.footprint; i++)
 				{
 					for (let j = 0; j < wall_size; j++)
 					{
 						array.left_wall[i][j] = add_left_wall(array, j, i);
 						array.right_wall[i][j] = add_right_wall(array, i, j);
-						
-						if (i >= array.footprint || j >= array.footprint)
-						{
-							add_floor(array, i, j);
-						}
 					}
 				}
 			}
@@ -1583,7 +1576,7 @@
 		//This aligns the thing correctly.
 		if (add_walls)
 		{
-			wall.position.set(-.5 - .0005, y, z);
+			wall.position.set(-.5 - .0005 + array.footprint, y, z);
 		}
 		
 		else
@@ -1616,7 +1609,7 @@
 		//This aligns the thing correctly.
 		if (add_walls)
 		{
-			wall.position.set(x, y, -.5 - .0005);
+			wall.position.set(x, y, -.5 - .0005 + array.footprint);
 		}
 		
 		else
@@ -1815,6 +1808,13 @@
 		
 		hex_view_camera_pos = [total_array_size + hex_view_camera_offset, total_array_size + total_array_height / 3, total_array_size - hex_view_camera_offset];
 		
+		if (add_walls)
+		{
+			hex_view_camera_pos[0] += 10;
+			hex_view_camera_pos[1] += 10;
+			hex_view_camera_pos[2] += 10;
+		}
+		
 		_2d_view_camera_pos = [hex_view_camera_offset, total_array_size + 10, -hex_view_camera_offset];	
 		
 		if (in_2d_view)
@@ -1954,23 +1954,10 @@
 				{
 					for (let i = 0; i < array.footprint; i++)
 					{
-						let j = 0;
-						
-						for (let k = 0; k < Math.min(array.cubes[i][j].length, wall_size); k++)
+						for (let j = 0; j < wall_size; j++)
 						{
-							targets.push(array.left_wall[i][k].material[0]);
-						}
-					}
-					
-					
-					
-					for (let j = 0; j < array.footprint; j++)
-					{
-						let i = 0;
-						
-						for (let k = 0; k < Math.min(array.cubes[i][j].length, wall_size); k++)
-						{
-							targets.push(array.right_wall[j][k].material[4]);
+							targets.push(array.right_wall[i][j].material[0]);
+							targets.push(array.left_wall[i][j].material[4]);
 						}
 					}
 				}
@@ -2134,23 +2121,10 @@
 				{
 					for (let i = 0; i < array.footprint; i++)
 					{
-						let j = 0;
-						
-						for (let k = 0; k < Math.min(array.cubes[i][j].length, wall_size); k++)
+						for (let j = 0; j < wall_size; j++)
 						{
-							targets.push(array.left_wall[i][k].material[0]);
-						}
-					}
-					
-					
-					
-					for (let j = 0; j < array.footprint; j++)
-					{
-						let i = 0;
-						
-						for (let k = 0; k < Math.min(array.cubes[i][j].length, wall_size); k++)
-						{
-							targets.push(array.right_wall[j][k].material[4]);
+							targets.push(array.left_wall[i][j].material[0]);
+							targets.push(array.right_wall[i][j].material[4]);
 						}
 					}
 				}
