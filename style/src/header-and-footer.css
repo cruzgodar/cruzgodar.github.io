@@ -170,16 +170,13 @@
 .footer-image-link-subtext-container
 {
 	margin-top: 0;
+	opacity: 0;
 	
 	z-index: 50;
-	
-	transition: margin-top .2s ease-out;
 }
 
 .footer-image-link-subtext-container p
 {
-	opacity: 0;
-	
 	color: rgb(127, 127, 127);
 	text-align: center;
 	font-size: 100%;

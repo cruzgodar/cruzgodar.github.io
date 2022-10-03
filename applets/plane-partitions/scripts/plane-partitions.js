@@ -31,7 +31,7 @@
 	
 	const infinite_height = 100;
 	
-	const add_walls = false;
+	const add_walls = true;
 	const wall_size = 40;
 	
 	const algorithm_data =

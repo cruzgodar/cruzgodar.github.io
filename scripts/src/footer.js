@@ -78,8 +78,7 @@ Page.Footer =
 				{
 					if (!(Site.Interaction.currently_touch_device))
 					{
-						footer_subtexts[index].style.marginTop = "-32px";
-						Page.Animate.change_opacity(footer_subtexts[index].firstElementChild, 1, Site.opacity_animation_time);
+						Page.Animate.change_footer_image_link_text(footer_subtexts[index], 1, Site.opacity_animation_time);
 					}
 				});
 				
@@ -87,8 +86,7 @@ Page.Footer =
 				{
 					if (!(Site.Interaction.currently_touch_device))
 					{
-						footer_subtexts[index].style.marginTop = 0;
-						Page.Animate.change_opacity(footer_subtexts[index].firstElementChild, 0, Site.opacity_animation_time);
+						Page.Animate.change_footer_image_link_text(footer_subtexts[index], 0, Site.opacity_animation_time);
 					}
 				});
 			});

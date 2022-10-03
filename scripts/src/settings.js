@@ -18,9 +18,9 @@ Site.Settings =
 		"theme": ["Theme: light", "Theme: dark"],
 		"dark_theme_color": ["Dark theme color: dark gray", "Dark theme color: black"],
 		"contrast": ["Contrast: normal", "Contrast: high"],
-		"text_size": ["Text size: normal", "Text size: large"],
+		"text_size": ["Text: normal", "Text: large"],
 		"font": ["Font: always sans serif", "Font: serif on writing"],
-		"content_animation": ["Content animation: enabled", "Content animation: disabled"],
+		"content_animation": ["Animation: enabled", "Animation: disabled"],
 		"condensed_applets": ["Applets: normal", "Applets: condensed"]
 	},
 	
@@ -816,7 +816,7 @@ Site.Settings =
 				{
 					if (!no_settings_text)
 					{
-						try {Page.Footer.Floating.show_settings_text("Text size: large");}
+						try {Page.Footer.Floating.show_settings_text("Text: large");}
 					 	catch(ex) {}
 					}
 				}, Site.opacity_animation_time);
@@ -838,7 +838,7 @@ Site.Settings =
 				{
 					if (!no_settings_text)
 					{
-						try {Page.Footer.Floating.show_settings_text("Text size: normal");}
+						try {Page.Footer.Floating.show_settings_text("Text: normal");}
 					 	catch(ex) {}
 					 }
 				}, Site.opacity_animation_time);
@@ -940,7 +940,7 @@ Site.Settings =
 		{
 			if (!no_settings_text)
 			{
-				try {Page.Footer.Floating.show_settings_text("Content animation: disabled");}
+				try {Page.Footer.Floating.show_settings_text("Animation: disabled");}
 		 		catch(ex) {}
 		 	}
 			
@@ -958,7 +958,7 @@ Site.Settings =
 		{
 			if (!no_settings_text)
 			{
-				try {Page.Footer.Floating.show_settings_text("Content animation: enabled");}
+				try {Page.Footer.Floating.show_settings_text("Animation: enabled");}
 		 		catch(ex) {}
 		 	}
 			

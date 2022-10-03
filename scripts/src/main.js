@@ -271,6 +271,8 @@ Site.load = async function(url)
 		Page.Animate.change_left_settings_button = Page.Animate.change_left_settings_button_js;
 		Page.Animate.change_right_settings_button = Page.Animate.change_right_settings_button_js;
 		
+		Page.Animate.change_footer_image_link_text = Page.Animate.change_footer_image_link_text_js;
+		
 		Page.Animate.fade_up_in = Page.Animate.fade_up_in_js;
 		Page.Animate.fade_up_out = Page.Animate.fade_up_out_js;
 		Page.Animate.fade_down_in = Page.Animate.fade_down_in_js;
@@ -296,6 +298,8 @@ Site.load = async function(url)
 		Page.Animate.change_opacity = Page.Animate.change_opacity_css;
 		Page.Animate.change_scale = Page.Animate.change_scale_css;
 		Page.Animate.fade_left = Page.Animate.fade_left_css;
+		
+		Page.Animate.change_footer_image_link_text = Page.Animate.change_footer_image_link_text_css;
 		
 		Page.Animate.change_left_settings_button = Page.Animate.change_left_settings_button_css;
 		Page.Animate.change_right_settings_button = Page.Animate.change_right_settings_button_css;
