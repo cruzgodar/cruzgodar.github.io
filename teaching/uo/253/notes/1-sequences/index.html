@@ -422,6 +422,29 @@
 	
 	converges to $0$. Find $N$ such that $|b_n| < \varepsilon$ for $\varepsilon = 1$, $\varepsilon = .1$, and $\varepsilon = .001$.
 	
+	<strong>Solution:</strong> When $\varepsilon = 1$, the equation becomes
+	
+	$$
+		\left| \frac{1}{n} \right| < 1.
+	$$
+	
+	Since $\frac{1}{n} > 0$, the absolute value disappears, and so we find that
+	
+	$$
+		\begin{align*}
+			\frac{1}{n} &< 1\\
+			n &> 1.
+		\end{align*}
+	$$
+	
+	Therefore, we can take $N = 2$. When $\varepsilon = .1$, the solution becomes
+	
+	$$
+		n > \frac{1}{.1} = 10,
+	$$
+	
+	so a solution is $N = 11$. Similarly, with $\varepsilon = .001$, a solution is $N = 1001$.
+	
 !end-exercise
 
 
@@ -438,7 +461,7 @@
 	
 	When we have a sequence $(a_n)$ defined explicitly (i.e. $a_n = f(n)$ for some function $f$), <strong>and</strong> when $\lim_{x \to \infty} f(x)$ exists, then the limit of the sequence exists and is the same as the limit of the function. For example, let&#x2019;s look at the sequence $(r^n)$. When $0 \leq r < 1$, $r^x \to 0$ as $x \to \infty$, so $(r^n) \to 0$. When $r = 1$, $r^x = 1$ for all $x$, so $(r^n) \to 1$. And when $r > 1$, $r^x \to \infty$ as $x \to \infty$, so the same is true of $(r^n)$. Therefore, $(r^n)$ converges for $0 \leq r \leq 1$ and diverges for $r > 1$.
 	
-	However, if the limit of the defining function does not exist, we need to be more careful. For example, the sequence $a_n = \cos(2\pi n)$ agrees with the function $f(x) = \cos(2\pi x)$, but while the function alternates between $1$ and $-1$ and therefore has no limit to $\infty$, the sequence only has integer values of $n$, meaning $a_n = 0$ for all $n$. Therefore, the sequence converges to zero.
+	However, if the limit of the defining function does not exist, we need to be more careful. For example, the sequence $a_n = \cos(2\pi n)$ agrees with the function $f(x) = \cos(2\pi x)$, but while the function alternates between $1$ and $-1$ and therefore has no limit to $\infty$, the sequence only has integer values of $n$, meaning $a_n = 1$ for all $n$. Therefore, the sequence converges to 1.
 	
 	This is the first example of many of a sequence that converges only sometimes, depending on a parameter (here, that parameter is $r$). This sort of construction comes up so often that it will end up being one of the main objects we study in the course.
 	
