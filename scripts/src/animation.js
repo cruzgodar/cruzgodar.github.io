@@ -132,6 +132,102 @@ Page.Animate =
 	
 	
 	
+	change_right_settings_button_js: function(element, end_value, duration)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			anime({
+				targets: element,
+				opacity: end_value,
+				duration: duration,
+				easing: "easeInOutQuad"
+			});
+			
+			anime({
+				targets: element,
+				right: end_value * 50 - 40,
+				duration: duration,
+				easing: "easeOutQuad",
+				complete: resolve
+			});
+		});	
+	},
+	
+	change_right_settings_button_css: function(element, end_value, duration)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			try {clearTimeout(element.getAttribute("data-opacity-timeout-id"))}
+			catch(ex) {}
+			
+			element.style.transition = `opacity ${duration}ms ease-in-out, right ${duration}ms ease-out`;
+			
+			setTimeout(() =>
+			{
+				element.style.opacity = end_value;
+				element.style.right = `${end_value * 50 - 40}px`;
+				
+				const timeout_id = setTimeout(() =>
+				{
+					element.style.transition = "";
+					resolve();
+				}, duration);
+				
+				element.setAttribute("data-opacity-timeout-id", timeout_id);
+			}, 10);
+		});	
+	},
+	
+	
+	
+	change_left_settings_button_js: function(element, end_value, duration)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			anime({
+				targets: element,
+				opacity: end_value,
+				duration: duration,
+				easing: "easeInOutQuad"
+			});
+			
+			anime({
+				targets: element,
+				left: end_value * 50 - 40,
+				duration: duration,
+				easing: "easeOutQuad",
+				complete: resolve
+			});
+		});	
+	},
+	
+	change_left_settings_button_css: function(element, end_value, duration)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			try {clearTimeout(element.getAttribute("data-opacity-timeout-id"))}
+			catch(ex) {}
+			
+			element.style.transition = `opacity ${duration}ms ease-in-out, left ${duration}ms ease-out`;
+			
+			setTimeout(() =>
+			{
+				element.style.opacity = end_value;
+				element.style.left = `${end_value * 50 - 40}px`;
+				
+				const timeout_id = setTimeout(() =>
+				{
+					element.style.transition = "";
+					resolve();
+				}, duration);
+				
+				element.setAttribute("data-opacity-timeout-id", timeout_id);
+			}, 10);
+		});	
+	},
+	
+	
+	
 	show_fade_up_section_js: function(elements, duration, delays, ease_in_out = false)
 	{
 		return new Promise((resolve, reject) =>

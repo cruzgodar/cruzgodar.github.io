@@ -28,7 +28,133 @@
 
 !begin-text-block
 
-	In this section, we&#x2019;ll fundamentally change the way we look at and work with series. The change seems innocent enough at first, but its effects will be surprisingly profound.
+	When series only contained numbers, we only had to understand them to the extent of determining if they converged or not. Now that they contain variables &mdash; particularly different powers in each term, so that nothing can be combined &mdash; we need to be more comfortable with dealing with series as objects in and of themselves, and not just unresolved sums that may or may not converge.
+	
+	The first and simplest thing we can do to power series is to add two of them together. Thankfully, this works as well as we could hope.
+
+!end-text-block
+
+
+
+!begin-prop
+	
+	adding power series
+	
+	Let $\sum_{n = 0}^\infty a_n x^n$ and $\sum_{n = 0}^\infty b_n x^n$ be two power series that converge to the functions $f$ and $g$ on the intervals $I$ and $J$, respectively. Then the power series
+	
+	$$
+		\sum_{n = 0}^\infty (a_n + b_n) x^n
+	$$
+	
+	converges to $f + g$ on the overlap of $I$ and $J$.
+
+!end-prop
+
+
+
+!begin-example
+
+	adding power series
+	
+	Express the function
+	
+	$$
+		f(x) = \frac{5}{(1 - 2x)(1 + x^2)}
+	$$
+	
+	as a power series and determine the interval of convergence.
+	
+	While we can express this as two series multiplied together, that&#x2019;s not ideal, and we don&#x2019;t know how to handle that sort of construction yet. Instead, let&#x2019;s turn to an old friend: partial fractions. That will let us write $f$ as the sum of two much simpler power series that we understand well, and then we can combine them using the previous proposition.
+	
+	Partial fractions tells us that for some numbers $A$ and $B$,
+	
+	$$
+		\frac{5}{(1 - 2x)(1 + x^2)} = \frac{A}{1 - 2x} + \frac{Bx + C}{1 + x^2}.
+	$$
+	
+	In other words,
+	
+	$$
+		5 = A(1 + x^2) + (Bx + C)(1 - 2x) = (A + C) + (B - 2C)x + (A - 2B)x^2.
+	$$
+	
+	We then separate this into three equations by equating the coefficients.
+	
+	$$
+		\begin{align*}
+			5 &= A + C\\
+			0 &= B - 2C\\
+			0 &= A - 2B.
+		\end{align*}
+	$$
+	
+	Working this out, we wind up with
+	
+	$$
+		\begin{align*}
+			A &= 4\\
+			B &= 2\\
+			C &= 1.
+		\end{align*}
+	$$
+	
+	Therefore, our expansion of the series $f$ becomes
+	
+	$$
+		f(x) = \frac{4}{1 - 2x} + \frac{2x}{1 + x^2} + \frac{1}{1 + x^2}.
+	$$
+	
+	Now all three of these terms have geometric series representations &mdash; we looked at many like them in the last section. First of all,
+	
+	$$
+		\frac{1}{1 - 2x} = \sum_{n = 0}^\infty (2x)^n = \sum_{n = 0}^\infty (2^n x^n),
+	$$
+	
+	which converges when $|2x| < 1$, so $|x| < \frac{1}{2}$. Therefore, the interval of convergence is $\left( -\frac{1}{2}, \frac{1}{2} \right)$.
+	
+	For the other denominator, we have
+	
+	$$
+		\frac{1}{1 + x^2} = \sum_{n = 0}^\infty (-x^2)^n = \sum_{n = 0}^\infty ((-1)^n x^{2n}).
+	$$
+	
+	This series converges when $|-x^2| < 1$, so $|x| < 1$. The interval of convergence is therefore $(-1, 1)$.
+	
+	Let&#x2019;s put it all together. The sum of all three terms becomes
+	
+	$$
+		\begin{align*}
+			f(x) &= \frac{4}{1 - 2x} + \frac{x}{1 + x^2} + \frac{1}{1 + x^2}\\
+			&= 4\sum_{n = 0}^\infty (2^n x^n) + 2x\sum_{n = 0}^\infty ((-1)^n x^{2n}) + \sum_{n = 0}^\infty ((-1)^n x^{2n})\\
+			&= \sum_{n = 0}^\infty (4 \cdot 2^n x^n + 2 \cdot (-1)^n x^{2n + 1} + (-1)^n x^{2n}).
+		\end{align*}
+	$$
+	
+	The two intervals of convergence are $\left( -\frac{1}{2}, \frac{1}{2} \right)$ and $(-1, 1)$, and the overlap of those two is just the first one &mdash; therefore, the interval of convergence of our very complicated series is just $\left( -\frac{1}{2}, \frac{1}{2} \right)$.
+
+!end-example
+
+
+
+!begin-exercise
+
+	adding power series
+	
+	Express the function
+	
+	$$
+		g(x) = \frac{6}{(1 - x)(2 - x)(3 - x)}
+	$$
+	
+	as a power series and determine the interval of convergence.
+
+!end-exercise
+
+
+
+!begin-text-block
+
+	While we&#x2019;re on the subject of adding power series, let&#x2019;s formally confirm a few things we&#x2019;ve already 
 
 !end-text-block
 

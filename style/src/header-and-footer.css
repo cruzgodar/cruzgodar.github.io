@@ -25,7 +25,6 @@
 	left: -40px;
 	
 	opacity: 0;
-	transition: left .25s ease;
 }
 
 #menu-button
@@ -207,8 +206,6 @@
 
 .footer-menu-image-link
 {
-	transition: right .25s ease;
-	
 	z-index: 105;
 	
 	width: 39px !important;

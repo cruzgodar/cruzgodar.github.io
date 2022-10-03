@@ -211,14 +211,13 @@ Page.Footer =
 			
 			this.is_open = true;
 			
-			Page.Animate.change_opacity_js(this.menu_button, 0, Site.opacity_animation_time);
+			Page.Animate.change_opacity(this.menu_button, 0, Site.opacity_animation_time);
 			
 			this.left_buttons.forEach((element, index) =>
 			{
 				setTimeout(() =>
 				{
-					element.style.left = "10px";
-					Page.Animate.change_opacity_js(element, 1, Site.opacity_animation_time, true);
+					Page.Animate.change_left_settings_button(element, 1, Site.opacity_animation_time);
 				}, index * Site.opacity_animation_time / 6);
 			});
 			
@@ -226,8 +225,7 @@ Page.Footer =
 			{
 				setTimeout(() =>
 				{
-					element.style.right = "10px";
-					Page.Animate.change_opacity_js(element, 1, Site.opacity_animation_time, true);
+					Page.Animate.change_right_settings_button(element, 1, Site.opacity_animation_time);
 				}, index * Site.opacity_animation_time / 6);
 			});
 		},
@@ -276,14 +274,13 @@ Page.Footer =
 			
 			this.is_open = false;
 			
-			Page.Animate.change_opacity_js(this.menu_button, 1, Site.opacity_animation_time);
+			Page.Animate.change_opacity(this.menu_button, 1, Site.opacity_animation_time);
 			
 			this.left_buttons.forEach((element, index) =>
 			{
 				setTimeout(() =>
 				{
-					element.style.left = "-40px";
-					Page.Animate.change_opacity_js(element, 0, Site.opacity_animation_time, true);
+					Page.Animate.change_left_settings_button(element, 0, Site.opacity_animation_time);
 				}, index * Site.opacity_animation_time / 6);
 			});
 			
@@ -291,8 +288,7 @@ Page.Footer =
 			{
 				setTimeout(() =>
 				{
-					element.style.right = "-40px";
-					Page.Animate.change_opacity_js(element, 0, Site.opacity_animation_time, true);
+					Page.Animate.change_right_settings_button(element, 0, Site.opacity_animation_time);
 				}, index * Site.opacity_animation_time / 6);
 			});
 		},
