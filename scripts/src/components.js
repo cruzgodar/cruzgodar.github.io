@@ -544,17 +544,17 @@ Page.Components =
 	get_nav_buttons: function()
 	{
 		return `
-			<div class="text-buttons">
+			<div class="text-buttons nav-buttons">
 				<div class="focus-on-child new-aos-section" data-aos="zoom-out" tabindex="1">
-					<button id="previous-nav-button" class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1">Previous</button>
+					<button class="text-button linked-text-button previous-nav-button no-floating-footer" type="button" tabindex="-1">Previous</button>
 				</div>
 				
 				<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
-					<button id="home-nav-button" class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1">Home</button>
+					<button class="text-button linked-text-button home-nav-button no-floating-footer" type="button" tabindex="-1">Home</button>
 				</div>
 				
 				<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
-					<button id="next-nav-button" class="text-button linked-text-button no-floating-footer" type="button" tabindex="-1">Next</button>
+					<button class="text-button linked-text-button next-nav-button no-floating-footer" type="button" tabindex="-1">Next</button>
 				</div>
 			</div>
 		`;

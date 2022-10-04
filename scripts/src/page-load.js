@@ -705,28 +705,28 @@ Page.Load =
 			
 			if (index > 1)
 			{
-				Page.element.querySelector("#previous-nav-button").setAttribute("onclick", `Page.Navigation.redirect("${Site.page_lists[parent_list][index - 1]}")`);
+				Page.element.querySelectorAll(".previous-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${Site.page_lists[parent_list][index - 1]}")`));
 			}
 			
 			else
 			{
-				Page.element.querySelector("#previous-nav-button").parentNode.remove();
+				Page.element.querySelectorAll(".previous-nav-button").forEach(element => element.parentNode.remove());
 			}
 			
 			
 			
-			Page.element.querySelector("#home-nav-button").setAttribute("onclick", `Page.Navigation.redirect("${Site.page_lists[parent_list][0]}")`);
+			Page.element.querySelectorAll(".home-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${Site.page_lists[parent_list][0]}")`));
 			
 			
 			
 			if (index < Site.page_lists[parent_list].length - 1)
 			{
-				Page.element.querySelector("#next-nav-button").setAttribute("onclick", `Page.Navigation.redirect("${Site.page_lists[parent_list][index + 1]}")`);
+				Page.element.querySelectorAll(".next-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${Site.page_lists[parent_list][index + 1]}")`));
 			}
 			
 			else
 			{
-				Page.element.querySelector("#next-nav-button").parentNode.remove();
+				Page.element.querySelectorAll(".next-nav-button").forEach(element => element.parentNode.remove());
 			}
 		}
 	},

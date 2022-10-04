@@ -22,9 +22,7 @@
 
 !header Section 9: Solids of Revolution
 
-!text b c Covered Wednesday of Week 5
-
-<br>
+!nav-buttons
 
 
 
@@ -52,7 +50,7 @@
 	
 	With $f(x) = \sin(x) + 2$ on $[0, 10]$, the solid of revolution of $f$ about the $x$-axis is plotted below.
 	
-	<div class="center-content"><iframe src="https://www.desmos.com/calculator/txwzemcsmi" width="500" height="500"></iframe></div>
+	!iframe https://www.desmos.com/calculator/txwzemcsmi
 	
 	Desmos is obviously not a 3d graphing engine, but it still does a great job of plotting these things. Even if you don&#x2019;t normally, <strong>please take the time to poke around with this one</strong> &mdash; there&#x2019;s a lot to digest. First of all, note that the solid is shown properly when $n = 1$ &mdash; other values of $n$ are to demonstrate the process of revolution. Change $f$ and/or $g$, along with $a$ and $b$, and see what happens.
 	
@@ -159,7 +157,7 @@
 		\end{align*}
 	$$
 	
-	<div class="center-content"><iframe src="https://www.desmos.com/calculator/hfyy4cgwt4" width="500" height="500"></iframe></div>
+	!iframe https://www.desmos.com/calculator/hfyy4cgwt4
 	
 !end-example
 
@@ -198,11 +196,11 @@
 	
 	Let&#x2019;s visualize what&#x2019;s going on here. Just like in the previous section, we set the two functions equal to get $x = 0$ or $x = 1$, and drawing a 2D plot, we can see the area that&#x2019;s going to be rotated.
 	
-	<div class="center-content"><iframe src="https://www.desmos.com/calculator/u1dhi35rfb" width="500" height="500"></iframe></div>
+	!iframe https://www.desmos.com/calculator/u1dhi35rfb
 	
 	So what does this look like when it&#x2019;s revolved about the $x$-axis? Well, both the inner function and outer function produce circles, so cross sections look like large circles with smaller circles cut out of them.
 	
-	<div class="center-content"><iframe src="https://www.desmos.com/calculator/fztvietv2h" width="500" height="500"></iframe></div>
+	!iframe https://www.desmos.com/calculator/fztvietv2h
 	
 	In order to find the area of one of these things, we need just need to take the area of the larger circle and subtract the area of the hole. Since the outer area is $\pi (\sqrt{x})^2$ and the inner one is $\pi x^2$, we have
 	
@@ -307,7 +305,7 @@
 	
 	Following the previous instructions, the first step is to notice that we&#x2019;re revolving about the $y$-axis, so the disk method will integrate $dy$ and the shell method will integrate $dx$. Since our function is currently a function of $x$, we&#x2019;ll try the shell method first.
 	
-	<div class="center-content"><iframe src="https://www.desmos.com/calculator/0i6gal3azj" width="500" height="500"></iframe></div>
+	!iframe https://www.desmos.com/calculator/0i6gal3azj
 	
 	To use the shell method, we need to know two things: the range of radii and the height of each shell. Since $x$ is the radius of the shell and it ranges from $1$ to $3$, those will be our limits of integration. And the height of a cylinder with radius $x$ is just $y = \frac{1}{x}$. In total, the integral becomes
 	
@@ -347,7 +345,7 @@
 	
 	Since we&#x2019;re revolving about the $x$-axis, the disk method with integrate $dx$ and the shell method $dy$. Our functions are in terms of $x$, so let&#x2019;s do the disk method first &mdash; it&#x2019;ll be easier to set up. Let&#x2019;s sketch a 2D picture of the area here.
 	
-	<div class="center-content"><iframe src="https://www.desmos.com/calculator/ulq9d1vbp1" width="500" height="500"></iframe></div>
+	https://www.desmos.com/calculator/ulq9d1vbp1
 	
 	We need to know the limits of our integral, so we solve for that intersection point on the left. That gives $\ln(x) = 1$, so $x = e^1 = e$. Now applying the disk method, the outer radius is $\ln(x)$, the inner radius is $1$, and the integral runs from $x = e$ to $x = e^2$. The integral is therefore
 	
@@ -357,7 +355,7 @@
 	
 	It&#x2019;s good that we don&#x2019;t need to continue with this, because we have no idea how to integrate $(\ln(x))^2$. $u$-sub doesn&#x2019;t work, and we have no other options at the moment. Let&#x2019;s move on to the shell method and see if it&#x2019;s any different.
 	
-	<div class="center-content"><iframe src="https://www.desmos.com/calculator/k9woaie0yg" width="500" height="500"></iframe></div>
+	https://www.desmos.com/calculator/k9woaie0yg
 	
 	Since it integrates $dy$, we need to rewrite everything in terms of $y$. First of all, $y = \ln(x)$ becomes $x = e^y$. Drawing a shell, we can see that its height is $e^2 - e^y$, and all that&#x2019;s left is to figure out the range of radii. The smallest is $y = 1$, and the largest is the $y$-coordinate of the intersection of $x = e^2$ with $y = \ln(x)$ &mdash; and that&#x2019;s just $\ln(e^2) = 2$. Finally, we now have
 	
