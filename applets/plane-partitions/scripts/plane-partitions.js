@@ -32,7 +32,7 @@
 	const infinite_height = 100;
 	
 	const add_walls = false;
-	const wall_size = 40;
+	const wall_size = 30;
 	
 	const algorithm_data =
 	{
@@ -185,10 +185,10 @@
 	wilson_hidden_3.ctx.strokeStyle = "rgb(255, 255, 255)";
 	wilson_hidden_3.ctx._alpha = 1;
 	
-	wilson_hidden_3.ctx.fillStyle = "rgba(32, 32, 32, 1)"
+	wilson_hidden_3.ctx.fillStyle = `rgba(32, 32, 32, ${add_walls ? 0 : 1})`;
 	wilson_hidden_3.ctx.fillRect(0, 0, 64, 64);
 	
-	wilson_hidden_3.ctx.fillStyle = "rgba(64, 64, 64, 1)"
+	wilson_hidden_3.ctx.fillStyle = `rgba(64, 64, 64, ${add_walls ? 0 : 1})`;
 	wilson_hidden_3.ctx.fillRect(4, 4, 56, 56);
 	
 	wilson_hidden_3.ctx.lineWidth = 6;
@@ -200,10 +200,10 @@
 	wilson_hidden_4.ctx.strokeStyle = "rgb(255, 255, 255)";
 	wilson_hidden_4.ctx._alpha = 1;
 	
-	wilson_hidden_4.ctx.fillStyle = "rgb(32, 32, 32)"
+	wilson_hidden_4.ctx.fillStyle = `rgba(32, 32, 32, ${add_walls ? 0 : 1})`;
 	wilson_hidden_4.ctx.fillRect(0, 0, 64, 64);
 	
-	wilson_hidden_4.ctx.fillStyle = "rgb(64, 64, 64)";
+	wilson_hidden_4.ctx.fillStyle = `rgba(64, 64, 64, ${add_walls ? 0 : 1})`;
 	wilson_hidden_4.ctx.fillRect(4, 4, 56, 56);
 	
 	wilson_hidden_4.ctx.lineWidth = 6;
@@ -1193,15 +1193,15 @@
 				array.left_wall = new Array(wall_size);
 				array.right_wall = new Array(wall_size);
 				
-				for (let i = 0; i < array.footprint; i++)
+				for (let i = 0; i < wall_size; i++)
 				{
-					array.left_wall[i] = new Array(wall_size);
-					array.right_wall[i] = new Array(wall_size);
+					array.left_wall[i] = new Array(2 * wall_size);
+					array.right_wall[i] = new Array(2 * wall_size);
 				}
 				
-				for (let i = 0; i < array.footprint; i++)
+				for (let i = 0; i < wall_size; i++)
 				{
-					for (let j = 0; j < wall_size; j++)
+					for (let j = 0; j < 2 * wall_size; j++)
 					{
 						array.left_wall[i][j] = add_left_wall(array, j, i);
 						array.right_wall[i][j] = add_right_wall(array, i, j);
@@ -1576,7 +1576,7 @@
 		//This aligns the thing correctly.
 		if (add_walls)
 		{
-			wall.position.set(-.5 - .0005 + array.footprint, y, z);
+			wall.position.set(-.5 - .0005, y - wall_size, z);
 		}
 		
 		else
@@ -1609,7 +1609,7 @@
 		//This aligns the thing correctly.
 		if (add_walls)
 		{
-			wall.position.set(x, y, -.5 - .0005 + array.footprint);
+			wall.position.set(x, y - wall_size, -.5 - .0005);
 		}
 		
 		else
@@ -1952,9 +1952,9 @@
 				
 				if (add_walls)
 				{
-					for (let i = 0; i < array.footprint; i++)
+					for (let i = 0; i < wall_size; i++)
 					{
-						for (let j = 0; j < wall_size; j++)
+						for (let j = 0; j < 2 * wall_size; j++)
 						{
 							targets.push(array.right_wall[i][j].material[0]);
 							targets.push(array.left_wall[i][j].material[4]);
@@ -2012,10 +2012,10 @@
 						
 						wilson_hidden_3.ctx.clearRect(0, 0, 64, 64);
 						
-						wilson_hidden_3.ctx.fillStyle = `rgba(32, 32, 32, ${wilson_hidden_3.ctx._alpha})`;
+						wilson_hidden_3.ctx.fillStyle = `rgba(32, 32, 32, ${add_walls ? 0 : wilson_hidden_3.ctx._alpha})`;
 						wilson_hidden_3.ctx.fillRect(0, 0, 64, 64);
 						
-						wilson_hidden_3.ctx.fillStyle = `rgba(64, 64, 64, ${wilson_hidden_3.ctx._alpha})`;
+						wilson_hidden_3.ctx.fillStyle = `rgba(64, 64, 64, ${add_walls ? 0 : wilson_hidden_3.ctx._alpha})`;
 						wilson_hidden_3.ctx.fillRect(4, 4, 56, 56);
 						
 						wilson_hidden_3.ctx.moveTo(42.7, 21.3);
@@ -2028,10 +2028,10 @@
 						
 						wilson_hidden_4.ctx.clearRect(0, 0, 64, 64);
 						
-						wilson_hidden_4.ctx.fillStyle = `rgba(32, 32, 32, ${wilson_hidden_4.ctx._alpha})`;
+						wilson_hidden_4.ctx.fillStyle = `rgba(32, 32, 32, ${add_walls ? 0 : wilson_hidden_4.ctx._alpha})`;
 						wilson_hidden_4.ctx.fillRect(0, 0, 64, 64);
 						
-						wilson_hidden_4.ctx.fillStyle = `rgba(64, 64, 64, ${wilson_hidden_4.ctx._alpha})`;
+						wilson_hidden_4.ctx.fillStyle = `rgba(64, 64, 64, ${add_walls ? 0 : wilson_hidden_4.ctx._alpha})`;
 						wilson_hidden_4.ctx.fillRect(4, 4, 56, 56);
 						
 						wilson_hidden_4.ctx.moveTo(21.3, 21.3);
@@ -2119,9 +2119,9 @@
 				
 				if (add_walls)
 				{
-					for (let i = 0; i < array.footprint; i++)
+					for (let i = 0; i < wall_size; i++)
 					{
-						for (let j = 0; j < wall_size; j++)
+						for (let j = 0; j < 2 * wall_size; j++)
 						{
 							targets.push(array.left_wall[i][j].material[0]);
 							targets.push(array.right_wall[i][j].material[4]);
@@ -2177,10 +2177,10 @@
 						
 						wilson_hidden_3.ctx.clearRect(0, 0, 64, 64);
 						
-						wilson_hidden_3.ctx.fillStyle = `rgba(32, 32, 32, ${wilson_hidden_3.ctx._alpha})`;
+						wilson_hidden_3.ctx.fillStyle = `rgba(32, 32, 32, ${add_walls ? 0 : wilson_hidden_3.ctx._alpha})`;
 						wilson_hidden_3.ctx.fillRect(0, 0, 64, 64);
 						
-						wilson_hidden_3.ctx.fillStyle = `rgba(64, 64, 64, ${wilson_hidden_3.ctx._alpha})`;
+						wilson_hidden_3.ctx.fillStyle = `rgba(64, 64, 64, ${add_walls ? 0 : wilson_hidden_3.ctx._alpha})`;
 						wilson_hidden_3.ctx.fillRect(4, 4, 56, 56);
 						
 						wilson_hidden_3.ctx.moveTo(42.7, 21.3);
@@ -2193,10 +2193,10 @@
 						
 						wilson_hidden_4.ctx.clearRect(0, 0, 64, 64);
 						
-						wilson_hidden_4.ctx.fillStyle = `rgba(32, 32, 32, ${wilson_hidden_4.ctx._alpha})`;
+						wilson_hidden_4.ctx.fillStyle = `rgba(32, 32, 32, ${add_walls ? 0 : wilson_hidden_4.ctx._alpha})`;
 						wilson_hidden_4.ctx.fillRect(0, 0, 64, 64);
 						
-						wilson_hidden_4.ctx.fillStyle = `rgba(64, 64, 64, ${wilson_hidden_4.ctx._alpha})`;
+						wilson_hidden_4.ctx.fillStyle = `rgba(64, 64, 64, ${add_walls ? 0 : wilson_hidden_4.ctx._alpha})`;
 						wilson_hidden_4.ctx.fillRect(4, 4, 56, 56);
 						
 						wilson_hidden_4.ctx.moveTo(21.3, 21.3);
