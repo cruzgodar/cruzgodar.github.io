@@ -217,14 +217,6 @@ Page.Banner =
 				
 				if (opacity === 0)
 				{
-					if (this.ScrollButton.exists)
-					{
-						try {Page.element.querySelector("#scroll-button").remove()}
-						catch(ex) {}
-						
-						this.ScrollButton.exists = false;
-					}
-					
 					this.ScrollButton.done_loading = true;
 				}
 				
@@ -232,14 +224,6 @@ Page.Banner =
 				{
 					this.ScrollButton.done_loading = false;
 				}
-			}
-			
-			
-			
-			else if (this.ScrollButton.timeout_id !== null && Page.scroll <= 2*Page.Layout.window_height/3)
-			{
-				clearTimeout(this.ScrollButton.timeout_id);
-				this.ScrollButton.timeout_id = null;
 			}
 			
 			
@@ -253,14 +237,6 @@ Page.Banner =
 				}
 				
 				catch(ex) {}
-				
-				if (this.ScrollButton.exists)
-				{
-					try {Page.element.querySelector("#scroll-button").remove()}
-					catch(ex) {}
-					
-					this.ScrollButton.exists = false;
-				}
 				
 				this.ScrollButton.done_loading = true;
 			}
@@ -335,63 +311,57 @@ Page.Banner =
 		{
 			const opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
 			
+			let chevron_name = "chevron-down";
 			
-			
-			//Only add the scroll button if the user is still on the top of the page.
-			if (Page.scroll <= Page.Layout.window_height / 3)
+			if (Site.Settings.url_vars["contrast"] === 1)
 			{
-				let chevron_name = "chevron-down";
-				
-				if (Site.Settings.url_vars["contrast"] === 1)
-				{
-					chevron_name += "-dark";
-				}
-				
-				
-				
-				//Gotta have a try block here in case the user loads a banner page then navigates to a non-banner page within 3 seconds.
-				try
-				{
-					document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
-						<div id="new-banner-cover" data-aos="fade-down">
-							<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: 0" alt="Scroll down" onclick="Page.Banner.ScrollButton.animate_to(document.querySelector('#scroll-to'))">
-						</div>
-					`);
-					
-					setTimeout(() =>
-					{
-						Page.element.querySelector("#new-banner-cover").style.opacity = 0;
-						Page.element.querySelector("#new-banner-cover").style.transform = "translateY(-100px)";
-						
-						anime({
-							targets: Page.element.querySelector("#new-banner-cover"),
-							opacity: 1,
-							translateY: 0,
-							duration: Site.opacity_animation_time * 4,
-							easing: "easeOutCubic"
-						});
-						
-						anime({
-							targets: Page.element.querySelector("#scroll-button"),
-							opacity: opacity,
-							translateY: 0,
-							duration: Site.opacity_animation_time * 4,
-							easing: "easeOutCubic"
-						});
-						
-						
-						
-						this.exists = true;
-						
-						try {Page.Load.HoverEvents.add_with_scale(document.querySelector("#scroll-button"), 1.1);}
-						catch(ex) {}
-					}, 100);
-					
-					document.querySelector("#banner-cover").remove();
-				}
-				
-				catch(ex) {}
+				chevron_name += "-dark";
 			}
+			
+			
+			
+			//Gotta have a try block here in case the user loads a banner page then navigates to a non-banner page within 3 seconds.
+			try
+			{
+				document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
+					<div id="new-banner-cover" data-aos="fade-down">
+						<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: 0" alt="Scroll down" onclick="Page.Banner.ScrollButton.animate_to(document.querySelector('#scroll-to'))">
+					</div>
+				`);
+				
+				setTimeout(() =>
+				{
+					Page.element.querySelector("#new-banner-cover").style.opacity = 0;
+					Page.element.querySelector("#new-banner-cover").style.transform = "translateY(-100px)";
+					
+					anime({
+						targets: Page.element.querySelector("#new-banner-cover"),
+						opacity: 1,
+						translateY: 0,
+						duration: Site.opacity_animation_time * 4,
+						easing: "easeOutCubic"
+					});
+					
+					anime({
+						targets: Page.element.querySelector("#scroll-button"),
+						opacity: opacity,
+						translateY: 0,
+						duration: Site.opacity_animation_time * 4,
+						easing: "easeOutCubic"
+					});
+					
+					
+					
+					this.exists = true;
+					
+					try {Page.Load.HoverEvents.add_with_scale(document.querySelector("#scroll-button"), 1.1);}
+					catch(ex) {}
+				}, 100);
+				
+				document.querySelector("#banner-cover").remove();
+			}
+			
+			catch(ex) {}
 		},
 
 
