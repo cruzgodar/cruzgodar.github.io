@@ -161,85 +161,85 @@ Page.Banner =
 	
 	scroll_handler: function()
 	{
-		if (Page.scroll >= 0)
+		if (Page.scroll <= Page.Layout.window_height)
 		{
-			if (Page.scroll <= Page.Layout.window_height)
-			{
-				this.opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
-				
-				try {Page.banner_element.style.opacity = this.opacity}
-				catch(ex) {}
-				
-				if (this.opacity === 0)
-				{
-					this.done_loading = true;
-				}
-				
-				else
-				{
-					this.done_loading = false;
-				}
-			}
+			this.opacity = .5 + .5 * Math.sin(Math.PI * Math.min(Math.max(1 - Page.scroll / Page.Layout.window_height, 0), 1) - Math.PI / 2);
 			
-			else if (!this.done_loading)
+			try {Page.banner_element.style.opacity = this.opacity}
+			catch(ex) {}
+			
+			if (this.opacity === 0)
 			{
-				this.opacity = 0;
-				
-				try {Page.banner_element.style.opacity = 0}
-				catch(ex) {}
-				
 				this.done_loading = true;
 			}
 			
-			
-			
-			if (Page.scroll <= Page.Layout.window_height/3)
+			else
 			{
-				const opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
-				
-				if (this.ScrollButton.exists)
-				{
-					try {Page.element.querySelector("#scroll-button").style.opacity = opacity;}
-					catch(ex) {}
-				}
-				
-				
-				
-				try
-				{
-					Page.element.querySelector("#cruz-text").parentNode.style.opacity = opacity;
-					Page.element.querySelector("#godar-text").parentNode.style.opacity = opacity;
-				}
-				
+				this.done_loading = false;
+			}
+		}
+		
+		else if (!this.done_loading)
+		{
+			this.opacity = 0;
+			
+			try {Page.banner_element.style.opacity = 0}
+			catch(ex) {}
+			
+			this.done_loading = true;
+		}
+		
+		
+		
+		if (Page.scroll <= Page.Layout.window_height / 5)
+		{
+			const opacity = .5 + .5 * Math.sin(Math.PI * Math.min(Math.max(1 - 5 * Page.scroll / Page.Layout.window_height, 0), 1) - Math.PI / 2);
+			
+			if (this.ScrollButton.exists)
+			{
+				try {Page.element.querySelector("#scroll-button").style.opacity = opacity;}
 				catch(ex) {}
-				
-				
-				
-				if (opacity === 0)
-				{
-					this.ScrollButton.done_loading = true;
-				}
-				
-				else
-				{
-					this.ScrollButton.done_loading = false;
-				}
 			}
 			
 			
 			
-			else if (this.ScrollButton.done_loading === false)
+			try
 			{
-				try
-				{
-					Page.element.querySelector("#cruz-text").parentNode.style.opacity = 0;
-					Page.element.querySelector("#godar-text").parentNode.style.opacity = 0;
-				}
-				
-				catch(ex) {}
-				
+				Page.element.querySelector("#cruz-text").parentNode.style.opacity = opacity;
+				Page.element.querySelector("#godar-text").parentNode.style.opacity = opacity;
+			}
+			
+			catch(ex) {}
+			
+			
+			
+			if (opacity === 0)
+			{
 				this.ScrollButton.done_loading = true;
 			}
+			
+			else
+			{
+				this.ScrollButton.done_loading = false;
+			}
+		}
+		
+		
+		
+		else if (this.ScrollButton.done_loading === false)
+		{
+			try
+			{
+				Page.element.querySelector("#cruz-text").parentNode.style.opacity = 0;
+				Page.element.querySelector("#godar-text").parentNode.style.opacity = 0;
+			}
+			
+			catch(ex) {}
+			
+			try {Page.element.querySelector("#scroll-button").style.opacity = 0}
+			catch(ex) {}
+			
+			this.ScrollButton.done_loading = true;
 		}
 	},
 	
@@ -309,7 +309,7 @@ Page.Banner =
 		
 		insert: function()
 		{
-			const opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
+			const opacity = .5 + .5 * Math.sin(Math.PI * Math.min(Math.max(1 - 5 * Page.scroll / Page.Layout.window_height, 0), 1) - Math.PI / 2);
 			
 			let chevron_name = "chevron-down";
 			
@@ -352,7 +352,7 @@ Page.Banner =
 					
 					
 					
-					this.exists = true;
+					setTimeout(() => this.exists = true, Site.opacity_animation_time * 4);
 					
 					try {Page.Load.HoverEvents.add_with_scale(document.querySelector("#scroll-button"), 1.1);}
 					catch(ex) {}
