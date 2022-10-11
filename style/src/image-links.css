@@ -72,6 +72,12 @@
 	width: 13.75vw !important;
 }
 
+.new-pages .image-links
+{
+	width: 51.25vw !important;
+	grid-template-columns: repeat(3, 1fr) !important;
+}
+
 /* Compact layout: reduce to two images per row. */
 @media (max-width: 700px)
 {
@@ -88,6 +94,11 @@
 	.one-image-link
 	{
 		width: 40vw !important;
+	}
+	
+	.new-pages .image-links
+	{
+		width: 90vw !important;
 	}
 }
 
@@ -112,6 +123,18 @@
 	.one-image-link
 	{
 		width: 9.167vw !important;
+	}
+	
+	.narrow-image-links .image-links
+	{
+		width: 45.667vw !important;
+		
+		grid-template-columns: repeat(4, 1fr) !important;
+	}
+	
+	.new-pages .image-links
+	{
+		width: 33.5vw !important;
 	}
 }
 

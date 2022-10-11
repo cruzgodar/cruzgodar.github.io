@@ -49,16 +49,7 @@
 	
 	
 	
-	Page.show()
-	
-	.then(() =>
-	{
-		let elements = Page.element.querySelectorAll(".image-links");
-		
-		elements[0].id = "category-pages";
-		
-		elements[1].id = "newest-pages";
-	});	
+	Page.show();
 	
 	
 	

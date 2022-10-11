@@ -68,14 +68,6 @@
 
 
 
-#newest-pages
-{
-	width: 51.25vw !important;
-	grid-template-columns: repeat(3, 1fr) !important;
-}
-
-
-
 #floating-footer-gradient
 {
 	display: none;
@@ -101,7 +93,7 @@
 
 
 /* Compact layout: stack the quote columns on top of one another. */
-@media (max-aspect-ratio: 9/16), (max-width: 700px)
+@media (max-width: 700px)
 {
 	.quote-container
 	{
@@ -113,33 +105,14 @@
 	{
 		flex-direction: column;
 	}
-	
-	
-	
-	#newest-pages
-	{
-		width: 90vw !important;
-	}
 }
 
 
 
-@media (min-aspect-ratio: 16/9), (min-width: 1400px)
+@media (min-width: 1400px)
 {
 	#intro-text
 	{
 		width: 45.667vw !important;
-	}
-	
-	#category-pages
-	{
-		width: 45.667vw !important;
-		
-		grid-template-columns: repeat(4, 1fr) !important;
-	}
-	
-	#newest-pages
-	{
-		width: 33.5vw !important;
 	}
 }
