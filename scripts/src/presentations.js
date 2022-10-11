@@ -29,6 +29,12 @@ Page.Presentation =
 		document.documentElement.addEventListener("keydown", this.handle_keydown_event);
 		Page.temporary_handlers["keydown"].push(this.handle_keydown_event);
 		
+		document.documentElement.addEventListener("touchstart", this.handle_touchstart_event);
+		Page.temporary_handlers["touchstart"].push(this.handle_touchstart_event);
+		
+		document.documentElement.addEventListener("touchend", this.handle_touchend_event);
+		Page.temporary_handlers["touchend"].push(this.handle_touchend_event);
+		
 		
 		
 		this.next_slide();
@@ -133,5 +139,29 @@ Page.Presentation =
 		{
 			Page.Presentation.previous_slide();
 		}
+	},
+	
+	
+	
+	max_touches: 0,
+	
+	handle_touchstart_event: function(e)
+	{
+		Page.Presentation.max_touches = Math.max(Page.Presentation.max_touches, e.touches.length);
+	},
+	
+	handle_touchend_event: function(e)
+	{
+		if (Page.Presentation.max_touches === 2)
+		{
+			Page.Presentation.next_slide();
+		}
+		
+		else if (Page.Presentation.max_touches === 3)
+		{
+			Page.Presentation.previous_slide();
+		}
+		
+		Page.Presentation.max_touches = 0;
 	}
 }

@@ -9,13 +9,13 @@
 	width: 100vw;
 	height: 100vh;
 	margin: 0 auto;
-	overflow-y: hidden
+	overflow-y: hidden;
 }
 
 .slide
 {
-	width: 90vw;
-	height: 50.625vw;
+	width: calc(90vw - 50px);
+	height: calc(50.625vw - 50px);
 	
 	border-radius: 50px;
 	
@@ -31,11 +31,26 @@
 	text-align: center;
 }
 
+.slide .heading-text
+{
+	font-size: 250%;
+}
+
+.slide .section-text
+{
+	font-size: 175%;
+}
+
+.slide .body-text
+{
+	font-size: 125%;
+}
+
 @media (min-aspect-ratio: 90/50.625)
 {
 	.slide
 	{
-		height: 90vh;
-		width: 50.625vh;
+		height: calc(90vh - 50px);
+		width: calc(50.625vh - 50px);
 	}
 }
