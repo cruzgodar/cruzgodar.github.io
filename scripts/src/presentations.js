@@ -163,5 +163,12 @@ Page.Presentation =
 		}
 		
 		Page.Presentation.max_touches = 0;
+	},
+	
+	
+	
+	get_current_slide: function()
+	{
+		return this.slides[this.current_slide];
 	}
 }
