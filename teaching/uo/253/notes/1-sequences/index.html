@@ -299,6 +299,33 @@
 	
 	Find explicit formulas for $(a_n)$ and $(b_n)$ and check that they&#x2019;re correct.
 	
+	<strong>Solution:</strong>
+	
+	We have
+	
+	$$
+		\begin{align*}
+			a_1 &= 1\\
+			a_2 &= 1 - 3\\
+			a_3 &= 1 - 3 - 3\\
+			a_4 &= 1 - 3 - 3 - 3.
+		\end{align*}
+	$$
+	
+	every $a_n$ begins with a $1$ and then subtracts $n - 1$ $3$s, so an explicit formula is $a_n = 1 - 3(n-1)$. Similarly, every $b_n$ begins with a $3$ and then multiplies $n - 1$ $2$s, so we get $b_n = 2(3^{n - 1})$.
+	
+	To check that these formulas are correct, we verify the initial conditions and the recurrence. For $a_n$, $a_1 = 1 - 3(0) = 0$, which is correct, and
+	
+	$$
+		\begin{align*}
+			a_{n - 1} - 3 &= 1 - 3((n-1) - 1) - 3\\
+			&= 1 - 3(n - 1)\\
+			&= a_n.
+		\end{align*}
+	$$
+	
+	Similarly, $b_1 = 2$ and $b_n = 2b_{n - 1}$.
+	
 !end-exercise
 
 
@@ -505,6 +532,20 @@
 	
 	3. $\left(\sin \left( \frac{n}{2^n} \right) \right)$.
 	
+	<strong>Solutions:</strong>
+	
+	1. As $n \to \infty$, $n!$ becomes very large very fast. Increasing $n$ by just $1$ increases the term by a factor of $n$. Therefore, $(n!) \to \infty$.
+	
+	2. This sequence is matched by the function $1 - \frac{1}{x}$. As $x \to \infty$, $\frac{1}{x} \to 0$, so $1 - \frac{1}{x} \to 1$. Therefore, the limit of the sequence is $1$.
+	
+	3. We can use the same strategy as the previous question, but this time we need to apply L&#x2019;H&#244;pital&#x2019;s rule. We have
+	
+	$$
+		\lim_{x \to \infty} \frac{x}{2^x} = \lim_{x \to \infty} \frac{1}{2^x \ln(2)} = 0.
+	$$
+	
+	Therefore, the limit of the sequence is $\sin(0) = 0$.
+	
 !end-exercise
 
 
@@ -552,6 +593,18 @@
 	the Squeeze theorem
 	
 	We already understand the behavior of the sequence $(r^n)$ when $r \geq 0$: it converges to zero for $0 \leq r < 1$, to one for $r = 1$, and it diverges for $r > 1$. Use the Squeeze theorem to classify the behavior of $(r^n)$ for negative $r$.
+	
+	<strong>Solution:</strong> When $r < 0$, $r^n$ is positive for even $n$ and negative for odd $n$. To make our notation a little simpler, let&#x2019;s let $r > 0$ and consider the sequence $(-r)^n$. When $0 < r < 1$, we can squeeze $(-r)^n$ in the following manner:
+	
+	$$
+		-(r^n) \leq (-r)^n \leq r^n.
+	$$
+	
+	Since both outer terms limit to zero, so does $(-r)^n$.
+	
+	We already know how the sequence $(-1)^n$ behaves: it flip-flops between $1$ and $-1$, never settling down and therefore not converging. Finally, for $(-r)^n$ when $r > 1$, it alternates between $r^n$ and $-(r^n)$. Neither of those converges, so $(-r)^n$ cannot converge either.
+	
+	In total, the series $(r^n)$ converges to zero when $-1 < r < 1$, converges to one when $r = 1$, and diverges otherwise.
 	
 !end-exercise
 
@@ -618,6 +671,60 @@
 	for $n \geq 2$.
 	
 	First, show that $(a_n)$ converges using the MCT. Then find the number it converges to. (Hint: take the limit of both sides of the recurrence.)
+	
+	<strong>Solution:</strong> We want to show that $a_n$ is either bounded above and increasing or bounded below and decreasing. Plugging in a few values of $n$, we get
+	
+	$$
+		\begin{align*}
+			a_2 &= \frac{2}{2} + \frac{1}{4} = \frac{5}{4}\\
+			a_3 &= \frac{5/4}{2} + \frac{1}{5/2} = \frac{5}{8} + \frac{2}{5} = \frac{41}{40}.
+			a_3 &= \frac{41/40}{2} + \frac{1}{41/20} = \frac{41}{80} + \frac{20}{41} = \frac{3281}{3280}.
+		\end{align*}
+	$$
+	
+	So far all the terms are decreasing &mdash; hopefully, the sequence is always decreasing and also bounded below. Let&#x2019;s start with bounded &mdash; it certainly seems to be bounded below by $1$, so let&#x2019;s see if we can show that. We&#x2019;ll solve the inequality $a_n \geq 1$ and hope to find that it&#x2019;s always true.
+	
+	$$
+		\begin{align*}
+			a_n &\geq 1\\
+			\frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} & \geq 1\\
+			\frac{a_{n - 1}^2 + 1}{2a_{n - 1}} & \geq 1\\
+			a_{n - 1}^2 + 1 & \geq 2a_{n - 1}\\
+			a_{n - 1}^2 - 2a_{n - 1} + 1 & \geq 0\\
+			\left( a_{n - 1} - 1 \right)^2 & \geq 0.
+		\end{align*}
+	$$
+	
+	Since any number squared is positive, this is always true. Now let&#x2019;s show that the sequence is decreasing, which amounts to showing that $a_n \leq a_{n - 1}$. Expanding, we have
+	
+	$$
+		\begin{align*}
+			a_n & \leq a_{n - 1}\\
+			\frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} & \leq a_{n - 1}\\
+			\frac{a_{n - 1}^2 + 1}{2a_{n - 1}} & \leq a_{n - 1}\\
+			a_{n - 1}^2 + 1 & \leq 2a_{n - 1}^2\\
+			1 & \leq a_{n - 1}^2\\
+			a_{n - 1} & \geq 1 \text{ or } a_{n - 1} & \leq -1.
+		\end{align*}
+	$$
+	
+	Since $a_{n - 1} \geq 1$, this is always the case. Therefore, the MCT applies, the the sequence converges.
+	
+	To find the limit, let&#x2019;s follow the hint and take the limit of both sides. If $\lim_{n \to \infty} a_n = a$, then
+	
+	$$
+		\begin{align*}
+			a_n &= \frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}}\\
+			\lim_{n \to \infty} a_n &= \lim_{n \to \infty} \left( \frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} \right)\\
+			a &= \frac{a}{2} + \frac{1}{2a}\\
+			a &= \frac{a^2 + 1}{2a}\\
+			2a^2 &= a^2 + 1\\
+			a^2 &= 1\\
+			a &= \pm 1.
+		\end{align*}
+	$$
+	
+	Since $a_n \geq 1$ for all $n$, we must have that $a \geq 1$, so $a = 1$.
 	
 !end-exercise
 
