@@ -93,6 +93,14 @@
 	
 	3. $\sum_{i = 0}^\infty \frac{1}{i + 1} \cos(i)$.
 	
+	<strong>Solutions:</strong>
+	
+	1. We have $\lim_{n \to \infty} \frac{1}{n^2} = 0$, so the divergence test tells us nothing &mdash; the series might converge, or it might diverge.
+	
+	2. Since $\lim_{j \to \infty} \ln(j) = \infty \neq 0$, the divergence test tells us that the series must diverge.
+	
+	3. Here, the numerator stays bounded between $-1$ and $1$, while the denominator runs off to $\infty$, so the limit $\lim_{i \to \infty} \frac{1}{i + 1} \cos(i) = 0$. The divergence test therefore tells us nothing.
+	
 !end-exercise
 
 
@@ -219,6 +227,39 @@
 	2. $\sum_{j = 1}^\infty \sin(j)$.
 	
 	3. $\sum_{n = 1}^\infty \frac{1}{\sqrt{n + 1}}$.
+	
+	<strong>Solutions:</strong>
+	
+	1. Let&#x2019;s try the divergence test first. We have $\lim_{n \to \infty} \frac{1}{n^2} = 0$, so it&#x2019;s inconclusive. To apply the integral test, we need to verify that the terms are positive and decreasing &mdash; and they are. As $n$ increases, $\frac{1}{n^2}$ decreases, and it&#x2019;s always positive. The integral test asks us to consider
+	
+	$$
+		\begin{align*}
+			\int_1^\infty \frac{1}{x^2}\ dx &= \lim_{b \to \infty} \int_1^b \frac{1}{x^2}\ dx\\
+			&= \lim_{b \to \infty} \left[ -x^{-1} \right]_1^b\\
+			&= \lim_{b \to \infty} \left( -b^{-1} + 1 \right)\\
+			&= 1.
+		\end{align*}
+	$$
+	
+	Since the integral converges, so does the series. We don&#x2019;t know what value the series converges to (it&#x2019;s actually $\frac{\pi^2}{6}$, which is very different than $1$), but we do know it&#x2019;s guaranteed to converge to <em>something</em>.
+	
+	2. The divergence test rules this one out from the start: $\lim_{j \to \infty} \sin(j)$ doesn&#x2019;t exist, so the series must diverge.
+	
+	3. The divergence test fails on this, since $\lim_{n \to \infty} \frac{1}{\sqrt{n + 1}} = 0$. But since $\frac{1}{\sqrt{n + 1}}$ is positive and decreasing, we can apply the integral test. We have
+	
+	$$
+		\begin{align*}
+			\int_1^\infty \frac{1}{\sqrt{x + 1}}\ dx &= \lim_{b \to \infty} \int_1^b \frac{1}{\sqrt{x + 1}}\ dx\\
+			u &= x + 1,\ du = dx\\
+			&= \lim_{b \to \infty} \int_1^b u^{-1/2}\ du\\
+			&= \lim_{b \to \infty} \left[ 2u^{1/2} \right]_1^b\\
+			&= \lim_{b \to \infty} \left[ 2(x + 1)^{1/2} \right]_1^b\\
+			&= \lim_{b \to \infty} \left( 2(b + 1)^{1/2} - 2\sqrt{2} \right)\\
+			&= \infty.
+		\end{align*}
+	$$
+	
+	Since the integral diverges, so does the series.
 
 !end-exercise
 
@@ -409,6 +450,38 @@
 	estimating the value of a series
 
 	Estimate $\sum_{n = 1}^\infty \frac{1}{n^4}$ to within $.01$ of its actual value.
+	
+	<strong>Solution:</strong> first of all, the terms are positive and decreasing, so we can use the integral test. We have
+	
+	$$
+		\begin{align*}
+			R_N \leq \int_N^\infty \frac{1}{x^4}\ dx\\
+			&= \lim_{b \to \infty} \int_N^b \frac{1}{x^4}\ dx\\
+			&= \lim_{b \to \infty} \left[ \frac{x^{-3}}{-3} \right]_N^b\\
+			&= \lim_{b \to \infty} \left( -\frac{b^{-3}}{3} + \frac{N^{-3}}{3} \right)\\
+			&= 0 + \frac{N^{-3}}{3}\\
+			&= \frac{N^{-3}}{3}.
+		\end{align*}
+	$$
+	
+	We want this to be less than $.01$, so
+	
+	$$
+		\begin{align*}
+			\frac{N^{-3}}{3} &< .01\\
+			N^{-3} &< .03\\
+			N^3 &> \frac{1}{.03}\\
+			N^3 &> 33.33\\
+			N &> \sqrt[3]{33.33}\\
+			N &> 3.218.
+		\end{align*}
+	$$
+	
+	Since $N$ needs to be an integer, we&#x2019;ll take $N = 4$. Therefore, our approximation is
+	
+	$$
+		\sum_{n = 1}^4 \frac{1}{n^4} = 1 + \frac{1}{16} + \frac{1}{81} + \frac{1}{256} \approx 1.079.
+	$$
 
 !end-exercise
 
