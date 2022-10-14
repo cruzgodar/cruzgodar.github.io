@@ -61,32 +61,61 @@
 
 
 
-@media (min-aspect-ratio: 16/9)
+.slide .wilson-applet-canvas-container
+{
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+.slide canvas
+{
+	border-radius: 15px;
+}
+
+.bottom-right-canvas
+{
+	position: absolute;
+	bottom: calc(2.5vw - 4px);
+	right: 2.5vw;
+}
+
+
+
+/* By default, the slide is 95vw wide due to the padding, and the height is 55.625vw. This aspect ratio is 152:89, so when we're larger than that, we switch to measuring in terms of vh instead. At the switching point, 1vw = 1vh * 152/89, which we use for our calculations. */
+@media (min-aspect-ratio: 152/89)
 {
 	.slide
 	{
-		height: 90vh;
-		width: 50.625vh;
+		height: calc(50.625vh * 152 / 89);
+		width: calc(90vh * 152 / 89);
 		
-		border-radius: 2.5vh;
+		border-radius: calc(2.5vh * 152 / 89);
 		
-		padding: 2.5vh;
+		padding: calc(2.5vh * 152 / 89);
 	}
 	
 	.slide .heading-text
 	{
-		font-size: 5vh;
+		font-size: calc(5vh * 152 / 89);
 		
-		margin-top: -1vh;
+		margin-top: calc(-1vh * 152 / 89);
 	}
 
 	.slide .section-text
 	{
-		font-size: 3vh;
+		font-size: calc(3vh * 152 / 89);
 	}
 
 	.slide .body-text
 	{
-		font-size: 2vh;
+		font-size: calc(2vh * 152 / 89);
+	}
+	
+	
+	
+	.bottom-right-canvas
+	{
+		bottom: calc(2.5vh * 152 / 89 - 4px);
+		right: calc(2.5vh * 152 / 89);
 	}
 }
