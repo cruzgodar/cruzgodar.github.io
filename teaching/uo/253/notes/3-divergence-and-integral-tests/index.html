@@ -216,7 +216,7 @@
 	
 	1. $\sum_{n = 1}^\infty \frac{1}{n^2}$.
 	
-	2. $\sum_{j = 1}^\infty \frac{1}{j^2} \sin(j)$.
+	2. $\sum_{j = 1}^\infty \sin(j)$.
 	
 	3. $\sum_{n = 1}^\infty \frac{1}{\sqrt{n + 1}}$.
 
@@ -383,18 +383,18 @@
 			\frac{1}{2} N^{-2} &< .01\\
 			\frac{1}{N^2} &< .02\\
 			1 &< .02N^2\\
-			100 &< N^2\\
-			N &> 10\\
+			50 &< N^2\\
+			N &> \sqrt{50} \approx 7.07\\
 		\end{align*}
 	$$
 	
-	Therefore, let&#x2019;s choose $N = 11$. It&#x2019;s in our best interest to keep $N$ as small as possible so that the next step doesn&#x2019;t get too painful &mdash; we now need to find $S_{11}$.
+	Therefore, let&#x2019;s choose $N = 8$. It&#x2019;s in our best interest to keep $N$ as small as possible so that the next step doesn&#x2019;t get too painful &mdash; we now need to find $S_{8}$.
 	
 	$$
 		\begin{align*}
-			S_{10} &= \sum_{n = 1}^{11} \frac{1}{n^3}\\
-			&= 1 + \frac{1}{8} + \frac{1}{27} + \cdots + \frac{1}{1331}\\
-			&\approx 1.1983.
+			S_{10} &= \sum_{n = 1}^8 \frac{1}{n^3}\\
+			&= 1 + \frac{1}{8} + \frac{1}{27} + \cdots + \frac{1}{512}\\
+			&\approx 1.195.
 		\end{align*}
 	$$
 	
@@ -408,7 +408,7 @@
 	
 	estimating the value of a series
 
-	Estimate $\sum_{n = 1}^\infty \frac{1}{n^4}$ to within $.001$ of its actual value.
+	Estimate $\sum_{n = 1}^\infty \frac{1}{n^4}$ to within $.01$ of its actual value.
 
 !end-exercise
 
