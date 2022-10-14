@@ -71,8 +71,6 @@ Page.Presentation =
 		if (this.current_slide !== -1)
 		{
 			this.slides[this.current_slide].style.display = "none";
-			
-			document.body.appendChild(this.slides[this.current_slide]);
 		}	
 		
 		this.current_slide++;
@@ -85,11 +83,9 @@ Page.Presentation =
 		else
 		{
 			this.slides[this.current_slide].style.display = "block";
-			
-			this.slide_container.appendChild(this.slides[this.current_slide]);
 		}
 		
-		try {this.callbacks[this.current_slide]()}
+		try {this.callbacks[this.current_slide](this.slides[this.current_slide])}
 		catch(ex) {}
 		
 		
@@ -112,15 +108,11 @@ Page.Presentation =
 		
 		this.slides[this.current_slide].style.display = "none";
 		
-		document.body.appendChild(this.slides[this.current_slide]);
-		
 		this.current_slide--;
 		
 		this.slides[this.current_slide].style.display = "block";
-			
-		this.slide_container.appendChild(this.slides[this.current_slide]);
 		
-		try {this.callbacks[this.current_slide]()}
+		try {this.callbacks[this.current_slide](this.slides[this.current_slide])}
 		catch(ex) {}
 		
 		Page.Animate.fade_down_in(Page.element, Site.page_animation_time * 2);

@@ -33,18 +33,24 @@
 		<br>
 		
 		<div class="footer-text">
-			!text b j Aalto University, Summer 2022
+			<p class="body-text">Aalto University, Summer 2022</p>
 		</div>
 		
-		<div class="bottom-right-canvas canvas-medium">
-			<canvas id="output-canvas"></canvas>
+		<div id="canvas-bundle" class="bottom-right-canvas canvas-medium">
+			<div data-aos="fade-up">
+				<div style="position: absolute; width: 100%">
+					<canvas id="output-canvas"></canvas>
+				</div>
+				
+				<div id="numbers-canvas-container" style="width: 100%; opacity: 0">
+					<canvas id="numbers-canvas"></canvas>
+				</div>
+			</div>
 		</div>
 	</div>
 	
 	<div class="slide">
 		!text h Title
-		
-		!canvas
 	</div>
 
 	<div class="slide">
@@ -58,6 +64,13 @@
 			
 		!end-text-block
 	</div>
+</div>
+
+<div style="display: none">
+	<canvas id="hidden-canvas" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
+	<canvas id="hidden-canvas-2" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
+	<canvas id="hidden-canvas-3" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
+	<canvas id="hidden-canvas-4" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
 </div>
 
 !footer
