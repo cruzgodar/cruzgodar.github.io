@@ -1,0 +1,121 @@
+<head>
+	<title>Section 9: Taylor Series</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 9: Taylor Series"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/253/notes/9-taylor-series/">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/253/notes/9-taylor-series/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 9: Taylor Series
+
+!nav-buttons
+
+
+
+!begin-text-block
+
+	By now, we&#x2019;ve built up a robust theory of series. We know when and where they converge, and in a few special cases, we know what they converge to. In this section, we&#x2019;ll extend those few special cases to almost every power series we&#x2019;ve seen, and by the end, we&#x2019;ll be able to pass from functions to power series and back almost effortlessly.
+	
+	Let&#x2019;s return to an old friend: $\frac{1}{1 - x}$. We already know that when $|x| < 1$, it&#x2019;s equal to $\sum_{n = 0}^\infty x^n$, but the way we found that was by directly taking a limit of partial sums and expressing $1 + x + x^2 + \cdots + x^k$ as $\frac{1 - x^{k + 1}}{1 - x}$. That method was specific to this particular series and doesn&#x2019;t really help with any others. Instead, let&#x2019;s try to find series like that in general, without any fancy tricks.
+	
+	Take a power series $\sum_{n = 0}^\infty c_n (x - a)^n$ centered at $x = a$, and suppose that the series converges to a function $f(x)$ on some interval $(a - R, a + R)$. With the logic we used at the end of the previous section, we can extract the derivatives of $f$ from the coefficients of the series. Specifically, we have
+	
+	$$
+		\begin{align*}
+			f(a) &= c_0\\
+			f'(a) &= c_1\\
+			f''(a) &= 2 \cdot c_2\\
+			f'''(a) &= 3 \cdot 2 \cdot c_3\\
+			f''''(a) &= 4 \cdot 3 \cdot 2 \cdot c_4\\
+			& \ \ \vdots\\
+			f^{(n)}(a) &= n!c_n.
+		\end{align*}
+	$$
+	
+	From this perspective, if we know a power series representation of a function $f$, then we can find any derivative of $f$ from the coefficients. But we really want to go the other way: we want to <em>find</em> series representations from a function. To get at that direction, let&#x2019;s solve all of those equations for the $c_n$:
+	
+	$$
+		\begin{align*}
+			c_0 &= \frac{f^{(0)}(a)}{0!} = f(a)\\
+			c_1 &= \frac{f^{(1)}(a)}{1!} = f'(a)\\
+			c_2 &= \frac{f^{(2)}(a)}{2!} = \frac{f''(a)}{2}\\
+			c_3 &= \frac{f^{(3)}(a)}{3!} = \frac{f'''(a)}{3!}\\
+			c_0 &= \frac{f^{(4)}(a)}{4!}\\
+			& \ \ \vdots\\
+			c_n &= \frac{f^{(n)}(a)}{n!}.
+		\end{align*}
+	$$
+	
+	What we&#x2019;ve come to is the idea that underpins the entire section, and to a large extent the course: if $f$ has a power series representation centered at $x = a$, then there is only one possibility for what it can be, since power series representations are unique, and we&#x2019;ve just written down what that one possibility is. We&#x2019;ll be talking quite a lot about these things, and they deserve their own name.
+
+!end-text-block
+
+
+
+!begin-def
+
+	Taylor series
+	
+	Let $f(x)$ be a function that is infinitely differentiable. The <dfn>Taylor series</dfn> expansion of $f$ centered at $a$ is the power series
+	
+	$$
+		\sum_{n = 0}^\infty \frac{f^{(n)}}{n!} (x - a)^n.
+	$$
+	
+	A Taylor series centered at $0$ is called a <dfn>Maclaurin series</dfn>. The partial sums of a Taylor or Maclaurin series are called the <dfn>Taylor</dfn> or <dfn>Maclaurin polynomials</dfn> for $f$ centered at $a$.
+
+!end-def
+
+
+	
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 9: Taylor Series",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/253/notes"
+	};
+	
+	Page.load();
+</script>

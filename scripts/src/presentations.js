@@ -66,12 +66,10 @@ Page.Presentation =
 		
 		await Page.Animate.fade_up_out(Page.element, Site.page_animation_time);
 		
-		
-		
 		if (this.current_slide !== -1)
 		{
 			this.slides[this.current_slide].style.display = "none";
-		}	
+		}
 		
 		this.current_slide++;
 		
@@ -85,10 +83,8 @@ Page.Presentation =
 			this.slides[this.current_slide].style.display = "block";
 		}
 		
-		try {this.callbacks[this.current_slide](this.slides[this.current_slide])}
+		try {await this.callbacks[this.current_slide](this.slides[this.current_slide])}
 		catch(ex) {}
-		
-		
 		
 		Page.Animate.fade_up_in(Page.element, Site.page_animation_time * 2);
 	},
@@ -112,7 +108,7 @@ Page.Presentation =
 		
 		this.slides[this.current_slide].style.display = "block";
 		
-		try {this.callbacks[this.current_slide](this.slides[this.current_slide])}
+		try {await this.callbacks[this.current_slide](this.slides[this.current_slide])}
 		catch(ex) {}
 		
 		Page.Animate.fade_down_in(Page.element, Site.page_animation_time * 2);

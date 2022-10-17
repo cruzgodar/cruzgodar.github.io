@@ -8,7 +8,32 @@
 	{
 		0: function(slide)
 		{
-			slide.appendChild(canvas_bundle);
+			return new Promise(async (resolve, reject) =>
+			{
+				slide.appendChild(canvas_bundle);
+				
+				let plane_partition = [
+					[6, 5, 4, 3, 2, 1],
+					[5, 4, 3, 2, 1, 0],
+					[4, 3, 2, 1, 0, 0],
+					[3, 2, 1, 0, 0, 0],
+					[2, 1, 0, 0, 0, 0],
+					[1, 0, 0, 0, 0, 0]
+				];
+				
+				animation_time = 0;
+				
+				for (let i = 0; i < arrays.length; i++)
+				{
+					await remove_array(0);
+				}
+				
+				await add_new_array(0, plane_partition);
+				
+				animation_time = 600;
+				
+				resolve();
+			});
 		},
 		
 		1: function(slide)
@@ -16,10 +41,6 @@
 			slide.appendChild(canvas_bundle);
 		}
 	};
-	
-	
-	
-	Page.Presentation.init(callbacks);
 	
 	
 	
@@ -159,7 +180,7 @@
 		
 		use_fullscreen: true,
 		
-		use_fullscreen_button: true,
+		use_fullscreen_button: false,
 		
 		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
@@ -373,16 +394,21 @@
 	
 	
 	
-	let plane_partition = parse_array(generate_random_plane_partition());
-	add_new_array(arrays.length, plane_partition, "pp");
-	
-	draw_frame();
-	
 	//Yeesh
 	setTimeout(() => wilson.draggables.on_resize(), 100);
 	setTimeout(() => wilson_numbers.draggables.on_resize(), 100);
 	
-	Page.show();
+	setTimeout(() => wilson.draggables.on_resize(), 500);
+	setTimeout(() => wilson_numbers.draggables.on_resize(), 500);
+	
+	setTimeout(() => wilson.draggables.on_resize(), 1000);
+	setTimeout(() => wilson_numbers.draggables.on_resize(), 1000);
+	
+	draw_frame();
+	
+	Page.Presentation.init(callbacks);
+	
+	setTimeout(Page.show, 10);
 	
 	
 	
