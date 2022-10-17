@@ -449,18 +449,18 @@
 	
 	estimating the value of a series
 
-	Estimate $\sum_{n = 1}^\infty \frac{1}{n^4}$ to within $.01$ of its actual value.
+	Estimate $\sum_{n = 1}^\infty \frac{1}{n^5}$ to within $.01$ of its actual value.
 	
 	<strong>Solution:</strong> first of all, the terms are positive and decreasing, so we can use the integral test. We have
 	
 	$$
 		\begin{align*}
-			R_N \leq \int_N^\infty \frac{1}{x^4}\ dx\\
-			&= \lim_{b \to \infty} \int_N^b \frac{1}{x^4}\ dx\\
-			&= \lim_{b \to \infty} \left[ \frac{x^{-3}}{-3} \right]_N^b\\
-			&= \lim_{b \to \infty} \left( -\frac{b^{-3}}{3} + \frac{N^{-3}}{3} \right)\\
-			&= 0 + \frac{N^{-3}}{3}\\
-			&= \frac{N^{-3}}{3}.
+			R_N \leq \int_N^\infty \frac{1}{x^5}\ dx\\
+			&= \lim_{b \to \infty} \int_N^b \frac{1}{x^5}\ dx\\
+			&= \lim_{b \to \infty} \left[ \frac{x^{-4}}{-4} \right]_N^b\\
+			&= \lim_{b \to \infty} \left( -\frac{b^{-4}}{4} + \frac{N^{-4}}{4} \right)\\
+			&= 0 + \frac{N^{-4}}{4}\\
+			&= \frac{N^{-4}}{4}.
 		\end{align*}
 	$$
 	
@@ -468,19 +468,19 @@
 	
 	$$
 		\begin{align*}
-			\frac{N^{-3}}{3} &< .01\\
-			N^{-3} &< .03\\
-			N^3 &> \frac{1}{.03}\\
-			N^3 &> 33.33\\
-			N &> \sqrt[3]{33.33}\\
-			N &> 3.218.
+			\frac{N^{-4}}{4} &< .01\\
+			N^{-4} &< .04\\
+			N^4 &> \frac{1}{.04}\\
+			N^4 &> 25\\
+			N &> \sqrt{5}\\
+			N &> 2.236\\
 		\end{align*}
 	$$
 	
-	Since $N$ needs to be an integer, we&#x2019;ll take $N = 4$. Therefore, our approximation is
+	Since $N$ needs to be an integer, we&#x2019;ll take $N = 3$. Therefore, our approximation is
 	
 	$$
-		\sum_{n = 1}^4 \frac{1}{n^4} = 1 + \frac{1}{16} + \frac{1}{81} + \frac{1}{256} \approx 1.079.
+		\sum_{n = 1}^3 \frac{1}{n^5} = 1 + \frac{1}{32} + \frac{1}{243} \approx 1.035.
 	$$
 
 !end-exercise
