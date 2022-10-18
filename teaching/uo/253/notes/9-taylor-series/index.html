@@ -81,7 +81,251 @@
 !end-def
 
 
+
+!begin-text-block
+
+	Critically, this definition says nothing about convergence: the Taylor series for a function </strong>does not necessarily converge to that function</strong>. We&#x2019;ll see examples of this a little later, but the takeaway is that we need to verify convergence to show that a Taylor series actually does what it&#x2019;s supposed to.
+
+!end-text-block
+
+
+
+!begin-example
+
+	finding a Maclaurin series
 	
+	Find the Maclaurin series for $\sin(x)$ and determine its interval of convergence. Find the first six Maclaurin polynomials.
+	
+	The Maclaurin series is just the Taylor series centered at $0$, so it is $\sum_{n = 0}^\infty c_n x^n$, where
+	
+	$$
+		c_n = \frac{1}{n!} \frac{d^n}{dx^n} [\sin(x)]|_{x = 0}.
+	$$
+	
+	Okay, so what is that massive derivative? Let&#x2019;s list out a few derivatives of $\sin(x)$ to remind ourselves of the pattern.
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx}[\sin(x)] &= \cos(x)\\
+			\frac{d^2}{dx^2}[\sin(x)] &= -\sin(x)\\
+			\frac{d^3}{dx^3}[\sin(x)] &= -\cos(x)\\
+			\frac{d^4}{dx^4}[\sin(x)] &= \sin(x).
+		\end{align*}
+	$$	
+	
+	When we plug in $x = 0$, $\sin(0) = 0$ while $\cos(0) = 1$. All of the even derivatives have a $\sin$ in them, so they all vanish. The remaining terms alternate in sign as the derivative flips from $\cos(x)$ to $-\cos(x)$. In total, we wind up with
+	
+	$$
+		x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots.
+	$$
+	
+	It&#x2019;s pretty awkward to write those coefficients as a series if we try to include the missing terms. Instead, let&#x2019;s write this as an alternating series by changing the power on $x$:
+	
+	$$
+		\sum_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!}.
+	$$
+	
+	The $2n + 1$ is just a nice way of expressing all the odd numbers.
+	
+	Next, let&#x2019;s determine where this series converges. The ratio test is often the best bet for Taylor series, since they&#x2019;re full of factorials and exponents. Evaluating it on this series, we have
+	
+	$$
+		\begin{align*}
+			\lim_{n \to \infty} \left| \frac{(-1)^{n + 1} \frac{x^{2(n + 1) + 1}}{(2(n + 1) + 1)!}}{(-1)^n \frac{x^{2n + 1}}{(2n + 1)!}} \right| &= \lim_{n \to \infty} \left| -\frac{x^{2(n + 1) + 1}(2n + 1)!}{x^{2n + 1}(2(n + 1) + 1)!} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{x^{2n + 3}(2n + 1)!}{x^{2n + 1}(2n + 3)!} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{x^2}{(2n + 3)(2n + 2)} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{x^2}{(2n + 3)(2n + 2)} \right|\\
+			&= 0.
+		\end{align*}
+	$$
+	
+	Therefore, the series converges everywhere.
+	
+	The Maclaurin polynomials are just partial sums of this series. Denoting the first six polynomials as $p_0, p_1, ..., p_5$, every $p_n$ should have a highest term of $x^n$. Therefore, we have
+	
+	$$
+		\begin{align*}
+			p_0 &= 0\\
+			p_1 &= x\\
+			p_2 &= x\\
+			p_3 &= x - \frac{x^3}{3!}\\
+			p_4 &= x - \frac{x^3}{3!}\\
+			p_5 &= x - \frac{x^3}{3!} + \frac{x^5}{5!}.
+		\end{align*}
+	$$
+	
+	Plotting these polynomials shows that they really do seem to converge to $\sin$: plotted in green is $p_N$, and increasing $N$ increases the interval where $p_N$ is almost identical to $\sin$. You can also change $a$ to see the effect recentering has.
+	
+	!iframe https://www.desmos.com/calculator/dtuvs1pfgn
+
+!end-example
+
+
+
+!begin-exercise
+
+	finding Taylor series
+	
+	Find the following Taylor series. For each, determine the interval of convergence and find the first three Taylor polynomials.
+	
+	1. A Taylor series for $\ln(x)$ centered at $x = 1$.
+	
+	2. A Taylor series for $x^2 + 4x + 4$ centered at $x = -2$.
+	
+	3. A Maclaurin series for $e^x$.
+
+!end-exercise
+
+
+
+!section
+
+!text s Convergence of Taylor Series
+
+<br>
+
+
+
+!begin-text-block
+
+	Now that we have a candidate for general series representations, the natural next thing to figure out is when they converge to the functions they&#x2019;re derived from. Just as we measured our approximation of series with remainders, we&#x2019;ll measure a Taylor series&#x2019;s approximation of a function with a <dfn>remainder functions</dfn>. Given a Taylor series
+	
+	$$
+		\sum_{n = 0}^\infty \frac{f^{(n)}}{n!} (x - a)^n
+	$$
+	
+	centered at $a$, let&#x2019;s define the $N$th remainder function as
+	
+	$$
+		R_N(x) = f(x) - \sum_{n = 0}^N \frac{f^{(n)}}{n!} (x - a)^n.
+	$$
+	
+	In order for the Taylor series to approximate $f$, we need $\lim_{N \to \infty} R_N(x) = 0$. Figuring out when this is true takes a little effort, but the result will be simple enough in the end. A critical part will be the use of the Mean Value theorem &mdash; let&#x2019;s state that now to remind ourselves how it works.
+
+!end-text-block
+
+
+
+!begin-thm
+
+	The Mean Value Theorem
+	
+	Let $f$ be a function differentiable on an open interval $(a, b)$. Then there is a point $c$ with $a < c < b$ with
+	
+	$$
+		f'(c) = \frac{f(b) - f(a)}{b - a}.
+	$$
+
+!end-thm
+
+
+
+!begin-text-block
+
+	The idea behind the MVT is that the fraction on the right is the slope of the line between $(a, f(a))$ and $(b, f(b))$, and there is no way to draw a fucntion between those points without a tangent line somewhere having the same slope as this secant line. We&#x2019;ll be looking at a case where $f(a) = f(b)$, so the conclusion will be that the derivative must be zero somewhere in between.
+	
+	The function we&#x2019;ll be applying the MVT to is somewhat complicated. Fix a value of $x \neq a$ and define a function $g$ by
+	
+	$$
+		g(t) = f(x) - \left( \sum_{n = 0}^N \left( \frac{f^{(n)}(t)}{n!} (x - t)^n \right) + R_N(x) \frac{(x - t)^{N + 1}}{(x - a)^{N + 1}} \right).
+	$$
+	
+	This is a huge function, but it&#x2019;s not quite as complicated as it might seem. Inside the parentheses on the right is the start of a Taylor series for $f$ centered at $t$. If we added on its remainder, we&#x2019;d have a complete Taylor series, but instead we add on $R_N$, which is the remainder of the series centered at $a$, and we multiply it by $\frac{(x - t)^{n + 1}}{(x - a)^{n + 1}}$, which will help us a little later.
+	
+	There&#x2019;s unfortunately not that much motivation for why $g$ is defined this way, and the ends will have to justify the means. First of all, since $f$ is infinitely differentiable, so is $g$ &mdash; it&#x2019;s just a bunch of derivatives of $f$ and polynomials in $t$. Also, we know that $g$ is zero for $t = x$ and $t = a$:
+	
+	$$
+		\begin{align*}
+			g(x) &= f(x) - \left( \sum_{n = 0}^N \left( \frac{f^{(n)}(x)}{n!} (x - x)^n \right) + R_N(x) \frac{(x - x)^{N + 1}}{(x - a)^{N + 1}} \right).
+			&= f(x) - \frac{f^{(0)}(x)}{0!}\\
+			&= f(x) - f(x)\\
+			&= 0.
+		\end{align*}
+	$$
+	
+	$$
+		\begin{align*}
+			g(a) &= f(x) - \left( \sum_{n = 0}^N \left( \frac{f^{(n)}(a)}{n!} (x - a)^n \right) + R_N(x) \frac{(x - a)^{N + 1}}{(x - a)^{N + 1}} \right).
+			&= f(x) - \left( \sum_{n = 0}^N \left( \frac{f^{(n)}(a)}{n!} (x - a)^n \right) + R_N(x) \right)\\
+			&= f(x) - \sum_{n = 0}^N \left( \frac{f^{(n)}(a)}{n!} (x - a)^n \right) - R_N(x)\\
+			&= R_N(x) - R_N(x)\\
+			&= 0.
+		\end{align*}
+	$$
+	
+	In this sense, $g$ is measuring how well a Taylor series centered at $t$ approximates $f$, except we staple on the remainder from a Taylor series centered at $a$ no matter what $t$ is.
+	
+	By the Mean Value theorem, there must be a point $c$ in between $x$ and $a$ where $g'(c) = 0$. So what is $g'(c)$? Let&#x2019;s differentiate and find out. Remember, we&#x2019;re differentiating with respect to $t$, not $x$, so terms with just $x$ are treated as constants.
+	
+	$$
+		\begin{align*}
+			g'(t) &= \frac{d}{dt} \left[ f(x) - \left( f(t) + \sum_{n = 1}^N \left( \frac{f^{(n)}(t)}{n!} (x - t)^n \right) + R_N(x) \frac{(x - t)^{N + 1}}{(x - a)^{N + 1}} \right) \right]\\
+			&= -f'(t) - \sum_{n = 1}^N \left( \frac{f^{(n + 1)}(t)}{n!} (x - t)^n + \frac{f^{(n)}(t)}{n!} n(x - t)^{n-1}(-1) \right) - R_N(x) \frac{(N + 1)(x - t)^N(-1)}{(x - a)^{N + 1}}\\
+			&= -f'(t) - \sum_{n = 1}^N \left( \frac{f^{(n + 1)}(t)}{n!} (x - t)^n - \frac{f^{(n)}(t)}{(n-1)!} (x - t)^{n-1} \right) + R_N(x) \frac{(N + 1)(x - t)^N}{(x - a)^{N + 1}}.
+		\end{align*}
+	$$
+	
+	Incredibly, that sum telescopes! The $n = 1$ term survives on the right, and the $n = N$ survives on the left. In total, we have
+	
+	$$
+		\begin{align*}
+			g'(t) &= -f'(t) - \left( \frac{f^{(N + 1)}(t)}{N!} (x - t)^N - \frac{f'(t)}{(0)!} (x - t)^{0} \right) + R_N(x) \frac{(N + 1)(x - t)^N}{(x - a)^{N + 1}}\\
+			&= -f'(t) + f'(t) - \frac{f^{(N + 1)}(t)}{N!} (x - t)^N + R_N(x) \frac{(N + 1)(x - t)^N}{(x - a)^{N + 1}}\\
+			&= - \frac{f^{(N + 1)}(t)}{N!} (x - t)^N + R_N(x) \frac{(N + 1)(x - t)^N}{(x - a)^{N + 1}}.
+		\end{align*}
+	$$
+	
+	Since $g'(c) = 0$, we have that for some $c$,
+	
+	$$
+		0 = - \frac{f^{(N + 1)}(c)}{N!} (x - c)^N + R_N(x) \frac{(N + 1)(x - c)^N}{(x - a)^{N + 1}}.
+	$$
+	
+	Now we can solve for $R_N(x)$ to find that
+	
+	$$
+		\begin{align*}
+			R_N(x) &= \frac{\frac{f^{(N + 1)}(c)}{N!} (x - c)^N}{\frac{(N + 1)(x - c)^N}{(x - a)^{N + 1}}}\\
+			&= \frac{f^{(N + 1)}(c)}{N!} (x - c)^N \frac{(x - a)^{N + 1}}{(N + 1)(x - c)^N}\\
+			&= \frac{f^{(N + 1)}(c)}{N!(N + 1)} (x - a)^{N + 1}\\
+			&= \frac{f^{(N + 1)}(c)}{(N + 1)!} (x - a)^{N + 1}.
+		\end{align*}
+	$$
+	
+	Specifically, if $f^{(N + 1)}$ is a bounded function, then that bound will carry over to the remainder. This is the core of the main result about the remainders of Taylor series, which we are <em>finally</em> ready to state.
+
+!end-text-block
+
+
+
+!begin-thm
+	
+	Taylor&#x2019;s Theorem
+	
+	Let $f$ be a function that is differentiable $N + 1$ times on some interval $I$, and let $a$ be a number in $I$. Let $R_N(x)$ be the $N$th remainder function of the Taylor series for $f$ centered at $a$. Suppose further that $f^{(N + 1)}$ is bounded on $I$: in other words, there is some number $M$ with
+	
+	$$
+		\left| f^{(N + 1)}(x) \right| \leq M
+	$$
+	
+	for all $x$ in $I$. Then
+	
+	$$
+		\left| R_N(x) \right| \leq \frac{M}{(N + 1)!}|x - a|^{N + 1}.
+	$$
+	
+!end-thm
+
+
+
+!begin-text-block
+
+	That was a lot of very dense work leading up to a pretty dense result &mdash; let&#x2019;s take a second to unpack how we&#x2019;ll actually be using it in practice. When we have a Taylor series for a function $f(x)$, we can determine how good of an approximation the $N$th Taylor polynomial is by <strong>effectively only looking at the next term</strong>. For example, the quality of the approximation of a Taylor polynomial that ends at the $n = 3$ term of the Taylor series is determined only by the behavior of the $n = 4$ term. To make it work, we need to be able to bound that term, which should make some intuitive sense. Polynomials, whose derivatives are eventually zero, will easily be bounded after enough derivatives, which indicates that Taylor polynomials are very good approximations. On the other hand, functions like $e^x$, whose derivatives never settle to zero, will never be bounded unless we restrict to a small interval of $x$-values, which tells us that Taylor polynomials don&#x2019;t approximate $e^x$ quite so well.
+
+!end-text-block
+
+
+
 !nav-buttons
 
 
