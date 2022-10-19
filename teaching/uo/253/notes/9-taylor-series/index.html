@@ -200,7 +200,7 @@
 		R_N(x) = f(x) - \sum_{n = 0}^N \frac{f^{(n)}}{n!} (x - a)^n.
 	$$
 	
-	In order for the Taylor series to approximate $f$, we need $\lim_{N \to \infty} R_N(x) = 0$. Figuring out when this is true takes a little effort, but the result will be simple enough in the end. A critical part will be the use of the Mean Value theorem &mdash; let&#x2019;s state that now to remind ourselves how it works.
+	In order for the Taylor series to approximate $f$, we need $\lim_{N \to \infty} R_N(x) = 0$, and to know when that&#x2019;s true, we have to find a formula for $R_N(x)$. Figuring that formula out takes some effort, but the result will be simple enough in the end. A critical part will be the use of the Mean Value theorem &mdash; let&#x2019;s state that now to remind ourselves how it works.
 
 !end-text-block
 
@@ -321,8 +321,83 @@
 !begin-text-block
 
 	That was a lot of very dense work leading up to a pretty dense result &mdash; let&#x2019;s take a second to unpack how we&#x2019;ll actually be using it in practice. When we have a Taylor series for a function $f(x)$, we can determine how good of an approximation the $N$th Taylor polynomial is by <strong>effectively only looking at the next term</strong>. For example, the quality of the approximation of a Taylor polynomial that ends at the $n = 3$ term of the Taylor series is determined only by the behavior of the $n = 4$ term. To make it work, we need to be able to bound that term, which should make some intuitive sense. Polynomials, whose derivatives are eventually zero, will easily be bounded after enough derivatives, which indicates that Taylor polynomials are very good approximations. On the other hand, functions like $e^x$, whose derivatives never settle to zero, will never be bounded unless we restrict to a small interval of $x$-values, which tells us that Taylor polynomials don&#x2019;t approximate $e^x$ quite so well.
+	
+	If this section has been throwing you for a bit of a loop so far, now&#x2019;s the time to jump back in. We&#x2019;ll return to our example of $\sin$ to determine the remainders for each of the Taylor polynomials.
 
 !end-text-block
+
+
+
+!begin-example
+
+	Taylor&#x2019;s Theorem
+	
+	Determine a bound for the $N$th remainder function of the Maclaurin series for $\sin(x)$. Using a Maclaurin polynomial of degree $5$, estimate $\sin(1)$ and determine the maximum error.
+	
+	First, remember that the Maclaurin series for $\sin(x)$ is
+	
+	$$
+		\sum_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!},
+	$$
+	
+	and in order to determine the remainder, we&#x2019;ll need to bound $\frac{d^{n+1}}{dx^{n+1}} [\sin(x)]$. Every derivative of $\sin(x)$ is either $\pm \sin(x)$ or $\pm \cos(x)$, and so
+	
+	$$
+		\left| \frac{d^{n+1}}{dx^{n+1}} [\sin(x)] \right| \leq 1
+	$$
+	
+	for all $x$. Plugging this into Taylor&#x2019;s remainder formula, we find that
+	
+	$$
+		\begin{align*}
+			\left| R_N(x) \right| &\leq \frac{1}{(N + 1)!}|x - a|^{N + 1}\\
+			&= \frac{|x|^{N + 1}}{(N + 1)!}.
+		\end{align*}
+	$$
+	
+	For example, if we&#x2019;d like to know how well $p_5(x)$ approximates $\sin\left( \frac{\pi}{2} \right)$, we evaluate
+	
+	$$
+		\begin{align*}
+			\left| R_5\left( \frac{\pi}{2} \right) \right| &\leq \frac{\left| \frac{\pi}{2} \right|^6}{6!}\\
+			&\approx .021.
+		\end{align*}
+	$$
+	
+	Therefore, the approximation is off by at most $.021$ in either direction. This is the upper bound &mdash; if we actually evaluate $p_5\left( \frac{\pi}{2} \right)$, we find
+	
+	$$
+		\begin{align*}
+			p_5\left( \frac{\pi}{2} \right) &= \frac{\pi}{2} - \frac{\left( \frac{\pi}{2} \right)^3}{3!} + \frac{\left( \frac{\pi}{2} \right)^5}{5!}\\
+			&\approx 1.0045.
+		\end{align*}
+	$$
+	
+	The actual value of $\sin\left( \frac{\pi}{2} \right)$ is exactly $1$, so in reality, $p_5\left( \frac{\pi}{2} \right)$ is off by only $.0045$.
+	
+	The second part of the example works similarly to this. If we want to approximate $\sin(1)$ with $p_5$, we just evaluate $p_5(1)$:
+	
+	$$
+		\begin{align*}
+			p_5(1) &= 1 - \frac{1^3}{3!} + \frac{1^5}{5!}\\
+			&= \frac{101}{120}
+			&\approx .8417.
+		\end{align*}
+	$$
+	
+	By bounding $|R_5(1)|$, we can tell how good of an approximation this is.
+	
+	$$
+		\begin{align*}
+			\left| R_5(1) \right| &\leq \frac{\left| 1 \right|^6}{6!}\\
+			&= \frac{1}{120}\\
+			&\approx .0083.
+		\end{align*}
+	$$
+	
+	This is actually how calculators and computers compute functions like $\sin(x)$, $\sqrt{x}$, and $\ln(x)$ for values of $x$ that don&#x2019;t have nice expressions: under the hood, it&#x2019;s all Taylor series.
+
+!end-example
 
 
 
