@@ -28,7 +28,7 @@
 
 !begin-text-block
 
-	By now, we&#x2019;ve built up a robust theory of series. We know when and where they converge, and in a few special cases, we know what they converge to. In this section, we&#x2019;ll extend those few special cases to almost every power series we&#x2019;ve seen, and by the end, we&#x2019;ll be able to pass from functions to power series and back almost effortlessly.
+	By now, we&#x2019;ve built up a robust theory of series. We know when and where they converge, and in a few special cases, we even know what they converge to. In this section, we&#x2019;ll extend those few special cases to almost every power series we&#x2019;ve seen, and by the end, we&#x2019;ll be able to pass from functions to power series and back almost effortlessly.
 	
 	Let&#x2019;s return to an old friend: $\frac{1}{1 - x}$. We already know that when $|x| < 1$, it&#x2019;s equal to $\sum_{n = 0}^\infty x^n$, but the way we found that was by directly taking a limit of partial sums and expressing $1 + x + x^2 + \cdots + x^k$ as $\frac{1 - x^{k + 1}}{1 - x}$. That method was specific to this particular series and doesn&#x2019;t really help with any others. Instead, let&#x2019;s try to find series like that in general, without any fancy tricks.
 	
@@ -70,7 +70,7 @@
 
 	Taylor series
 	
-	Let $f(x)$ be a function that is infinitely differentiable. The <dfn>Taylor series</dfn> expansion of $f$ centered at $a$ is the power series
+	Let $f(x)$ be a function that is infinitely differentiable. The <dfn>Taylor series</dfn> of $f$ centered at $a$ is the power series
 	
 	$$
 		\sum_{n = 0}^\infty \frac{f^{(n)}}{n!} (x - a)^n.
@@ -141,7 +141,7 @@
 	
 	Therefore, the series converges everywhere.
 	
-	The Maclaurin polynomials are just partial sums of this series. Denoting the first six polynomials as $p_0, p_1, ..., p_5$, every $p_n$ should have a highest term of $x^n$. Therefore, we have
+	The Maclaurin polynomials are just partial sums of this series. Denoting the first six polynomials as $p_0, p_1, ..., p_5$, every $p_N$ should have a highest term of $x^N$. Therefore, we have
 	
 	$$
 		\begin{align*}
@@ -170,9 +170,11 @@
 	
 	1. A Taylor series for $\ln(x)$ centered at $x = 1$.
 	
-	2. A Taylor series for $x^2 + 4x + 4$ centered at $x = -2$.
+	2. A Taylor series for $x^2 + 4x + 4$ centered at $x = 2$.
 	
-	3. A Maclaurin series for $e^x$.
+	3. A Taylor series for $\frac{1}{1 + x}$ centered at $x = 1$.
+	
+	4. A Maclaurin series for $e^x$.
 
 !end-exercise
 
@@ -188,7 +190,7 @@
 
 !begin-text-block
 
-	Now that we have a candidate for general series representations, the natural next thing to figure out is when they converge to the functions they&#x2019;re derived from. Just as we measured our approximation of series with remainders, we&#x2019;ll measure a Taylor series&#x2019;s approximation of a function with a <dfn>remainder functions</dfn>. Given a Taylor series
+	Now that we have a candidate for general series representations, the natural next thing to figure out is when they converge to the functions they&#x2019;re derived from. Just as we measured our approximation of series with remainders, we&#x2019;ll measure a Taylor series&#x2019;s approximation of a function with a <dfn>remainder function</dfn>. Given a Taylor series
 	
 	$$
 		\sum_{n = 0}^\infty \frac{f^{(n)}}{n!} (x - a)^n
@@ -236,7 +238,7 @@
 	
 	$$
 		\begin{align*}
-			g(x) &= f(x) - \left( \sum_{n = 0}^N \left( \frac{f^{(n)}(x)}{n!} (x - x)^n \right) + R_N(x) \frac{(x - x)^{N + 1}}{(x - a)^{N + 1}} \right).
+			g(x) &= f(x) - \left( \sum_{n = 0}^N \left( \frac{f^{(n)}(x)}{n!} (x - x)^n \right) + R_N(x) \frac{(x - x)^{N + 1}}{(x - a)^{N + 1}} \right).\\
 			&= f(x) - \frac{f^{(0)}(x)}{0!}\\
 			&= f(x) - f(x)\\
 			&= 0.
@@ -245,7 +247,7 @@
 	
 	$$
 		\begin{align*}
-			g(a) &= f(x) - \left( \sum_{n = 0}^N \left( \frac{f^{(n)}(a)}{n!} (x - a)^n \right) + R_N(x) \frac{(x - a)^{N + 1}}{(x - a)^{N + 1}} \right).
+			g(a) &= f(x) - \left( \sum_{n = 0}^N \left( \frac{f^{(n)}(a)}{n!} (x - a)^n \right) + R_N(x) \frac{(x - a)^{N + 1}}{(x - a)^{N + 1}} \right).\\
 			&= f(x) - \left( \sum_{n = 0}^N \left( \frac{f^{(n)}(a)}{n!} (x - a)^n \right) + R_N(x) \right)\\
 			&= f(x) - \sum_{n = 0}^N \left( \frac{f^{(n)}(a)}{n!} (x - a)^n \right) - R_N(x)\\
 			&= R_N(x) - R_N(x)\\
@@ -320,9 +322,7 @@
 
 !begin-text-block
 
-	That was a lot of very dense work leading up to a pretty dense result &mdash; let&#x2019;s take a second to unpack how we&#x2019;ll actually be using it in practice. When we have a Taylor series for a function $f(x)$, we can determine how good of an approximation the $N$th Taylor polynomial is by <strong>effectively only looking at the next term</strong>. For example, the quality of the approximation of a Taylor polynomial that ends at the $n = 3$ term of the Taylor series is determined only by the behavior of the $n = 4$ term. To make it work, we need to be able to bound that term, which should make some intuitive sense. Polynomials, whose derivatives are eventually zero, will easily be bounded after enough derivatives, which indicates that Taylor polynomials are very good approximations. On the other hand, functions like $e^x$, whose derivatives never settle to zero, will never be bounded unless we restrict to a small interval of $x$-values, which tells us that Taylor polynomials don&#x2019;t approximate $e^x$ quite so well.
-	
-	If this section has been throwing you for a bit of a loop so far, now&#x2019;s the time to jump back in. We&#x2019;ll return to our example of $\sin$ to determine the remainders for each of the Taylor polynomials.
+	That was a lot of very dense work leading up to a pretty dense result &mdash; let&#x2019;s take a second to unpack how we&#x2019;ll actually be using it in practice. When we have a Taylor series for a function $f(x)$, we can determine how good of an approximation the $N$th Taylor polynomial is by <strong>effectively only looking at the next term</strong>. For example, the quality of the approximation of a Taylor polynomial that ends at the $n = 3$ term of the Taylor series is determined only by the behavior of the $n = 4$ term. If this section&#x2019;s been throwing you for a bit of a loop so far, now&#x2019;s the time to jump back in. We&#x2019;ll return to our example of $\sin$ to determine the remainders for each of the Taylor polynomials.
 
 !end-text-block
 
@@ -380,7 +380,7 @@
 	$$
 		\begin{align*}
 			p_5(1) &= 1 - \frac{1^3}{3!} + \frac{1^5}{5!}\\
-			&= \frac{101}{120}
+			&= \frac{101}{120}\\
 			&\approx .8417.
 		\end{align*}
 	$$
@@ -407,7 +407,7 @@
 	
 	1. With the Taylor series for $\ln(x)$ centered at $x = 1$, approximate $\ln(2)$ with a Taylor polynomial of degree $4$. Determine the maximum error.
 	
-	2. With the Taylor series for $f(x) = x^2 + 4x + 4$ centered at $x = -2$, approximate $f(0) with a Taylor polynomial of degree $1$ and determine the maximum error. Draw a picture of this &mdash; what&#x2019;s the calculus I name for this process?
+	2. With the Taylor series for $f(x) = x^2 + 4x + 4$ centered at $x = 2$, approximate $f(0)$ with a Taylor polynomial of degree $1$ and determine the maximum error. Draw a picture of this &mdash; what&#x2019;s the calculus I name for this process?
 	
 	3. With the Maclaurin series for $e^x$, approximate $e$ to 4 decimal places.
 
@@ -427,7 +427,7 @@
 
 	convergence of a Taylor series
 	
-	Determine when the Maclaurin series for $\sin(x)$ converges to $\sin(x)$.
+	Determine when the Maclaurin series for $\sin(x)$ actually converges to $\sin(x)$.
 	
 	We know from previous examples that the Maclaurin series for $\sin(x)$ is
 	
@@ -456,7 +456,7 @@
 	
 	!iframe https://www.desmos.com/calculator/hn3bd4hnhj
 	
-	Here, the green and purple functions are degree-$5$ Taylor polynomials for $\sin$ centered at $0$ and $3\pi$, respectively. The actual value of $\sin(10)$ is approximately $-.544021$, but while the purple function predicts a value of $-.544025$, the green function has stopped tracking with $\sin(x)$ long before $x = 10$, and it predicts a garbage value of $676.7$. We can increase the degree of the polynomials to help fix this problem, but there&#x2019;s often no substitute for centering them in the right place to begin with!
+	Here, the green and purple functions are degree-5 Taylor polynomials for $\sin$ centered at $0$ and $3\pi$, respectively. The actual value of $\sin(10)$ is approximately $-.544021$, but while the purple function predicts a value of $-.544025$, the green function has stopped tracking with $\sin(x)$ long before $x = 10$, and it predicts a garbage value of $676.7$. We can increase the degree of the polynomials to help fix this problem, but there&#x2019;s often no substitute for centering them in the right place to begin with!
 
 !end-example
 
@@ -470,9 +470,11 @@
 	
 	1. The Taylor series for $\ln(x)$ centered at $x = 1$.
 	
-	2. The Taylor series for $f(x) = x^2 + 4x + 4$ centered at $x = -2$.
+	2. The Taylor series for $f(x) = x^2 + 4x + 4$ centered at $x = 2$.
 	
-	3. The Maclaurin series for $e^x$.
+	3. The Taylor series for $f(x) = \frac{1}{1 + x}$ centered at $x = 1$.
+	
+	4. The Maclaurin series for $e^x$.
 
 !end-exercise
 
@@ -492,13 +494,13 @@
 	
 	!iframe https://www.desmos.com/calculator/7wrfi62axb
 	
-	Therefore, the Maclaurin series for $f$ is just
+	The Maclaurin series for $f$ is then just
 	
 	$$
 		0 + \frac{0}{1!}x + \frac{0}{2!}x^2 + \frac{0}{3!}x^3 + \cdots = 0.
 	$$
 	
-	Therefore, $f$ is equal to its Maclaurin series <em>only</em> at $x = 0$. As an aside, a function whose Taylor series centered at $x = a$ converges to $f$ in some interval around $a$ is called <dfn>analytic</dfn> at $a$. Functions that are differentiable infinitely many times at $x = a$ are called <dfn>smooth</dfn> at $a$, and since constructing a Taylor series requires being able to take infinitely many derivatives, all analytic functions are necessarily smooth. These consitions slot in at the top end of differentiability conditions, and they all have convenient notation: if a function is continuous, we say it&#x2019;s $C^0$, if it&#x2019;s differentiable with a continuous derivative, we say it&#x2019;s $C^1$, if it&#x2019;s twice-differentiable with a continuous second derivative, we say it&#x2019;s $C^2$, and so on. If a function is smooth, it&#x2019;s $C^\infty$, and if it&#x2019;s analytic, it&#x2019;s $C^\omega$ (here, $\omega$ denotes the idea of the first counting number <em>after</em> all of the positive integers).
+	Therefore, $f$ is equal to its Maclaurin series <em>only</em> at $x = 0$. As an aside, a function whose Taylor series centered at $x = a$ converges to $f$ in some interval around $a$ is called <dfn>analytic</dfn> at $a$. Functions that are differentiable infinitely many times at $x = a$ are called <dfn>smooth</dfn> at $a$, and since constructing a Taylor series requires being able to take infinitely many derivatives, all analytic functions are necessarily smooth. These conditions slot in at the top end of differentiability conditions, and they all have convenient notations: if a function is continuous, we say it&#x2019;s $C^0$, if it&#x2019;s differentiable with a continuous derivative, we say it&#x2019;s $C^1$, if it&#x2019;s twice-differentiable with a continuous second derivative, we say it&#x2019;s $C^2$, and so on. If a function is smooth, it&#x2019;s $C^\infty$, and if it&#x2019;s analytic, it&#x2019;s $C^\omega$ (here, $\omega$ denotes the idea of the first counting number <em>after</em> all of the positive integers).
 	
 	We&#x2019;re almost done with the course! The final section will see us applying Taylor series to all sorts of areas of math to great effect, making good use of all the work we&#x2019;ve done throughout the class.
 
