@@ -469,7 +469,7 @@ Page.Load =
 			["#logo img", 1.05],
 			["#scroll-button", 1.1],
 			[".text-button:not(.dropdown)", 1.075],
-			[".dropdown-container", 1.075],
+			["select", 1.075],
 			[".checkbox-container", 1.1],
 			[".radio-button-container", 1.1],
 			[".footer-image-link img", 1.05],
@@ -508,6 +508,11 @@ Page.Load =
 					{
 						element.previousElementSibling.classList.add("hover");
 					}
+					
+					else if (element.classList.contains("dropdown-container"))
+					{
+						element.firstElementChild.classList.add("hover");
+					}
 				}
 			});
 			
@@ -520,6 +525,11 @@ Page.Load =
 					if (element.tagName === "SELECT")
 					{
 						element.previousElementSibling.classList.remove("hover");
+					}
+					
+					else if (element.classList.contains("dropdown-container"))
+					{
+						element.firstElementChild.classList.remove("hover");
 					}
 					
 					else
@@ -538,16 +548,21 @@ Page.Load =
 			{
 				if (!Site.Interaction.currently_touch_device)
 				{
+					if (element.tagName === "SELECT")
+					{
+						element = element.previousElementSibling;
+					}
+					
 					element.classList.add("hover");
 					
 					if (force_js)
 					{
-						Page.Animate.change_scale_js(element, scale, Site.button_animation_time);
+						Page.Animate.change_hover_js(element, scale, Site.button_animation_time);
 					}
 					
 					else
 					{
-						Page.Animate.change_scale(element, scale, Site.button_animation_time);
+						Page.Animate.change_hover(element, scale, Site.button_animation_time);
 					}	
 				}
 			});
@@ -556,16 +571,21 @@ Page.Load =
 			{
 				if (!Site.Interaction.currently_touch_device)
 				{
+					if (element.tagName === "SELECT")
+					{
+						element = element.previousElementSibling;
+					}
+					
 					element.classList.remove("hover");
 					
 					if (force_js)
 					{
-						Page.Animate.change_scale_js(element, 1, Site.button_animation_time);
+						Page.Animate.change_hover_js(element, 1, Site.button_animation_time);
 					}
 					
 					else
 					{
-						Page.Animate.change_scale(element, 1, Site.button_animation_time);
+						Page.Animate.change_hover(element, 1, Site.button_animation_time);
 					}
 				}
 			});

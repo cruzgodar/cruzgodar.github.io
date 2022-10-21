@@ -47,9 +47,9 @@ Page.Animate =
 			}, 10);
 		});	
 	},
-
-
-
+	
+	
+	
 	change_scale_js: function(element, end_value, duration, ease_in_out = false)
 	{
 		return new Promise((resolve, reject) =>
@@ -76,6 +76,72 @@ Page.Animate =
 			setTimeout(() =>
 			{
 				element.style.transform = `scale(${end_value})`;
+				
+				const timeout_id = setTimeout(() =>
+				{
+					element.style.transition = "";
+					resolve();
+				}, duration);
+				
+				element.setAttribute("data-scale-timeout-id", timeout_id);
+			}, 10);
+		});	
+	},
+
+
+
+	change_hover_js: function(element, end_value, duration, ease_in_out = false)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			let dummy = {t: 0};
+			
+			if (end_value === 1)
+			{
+				dummy.t = 1;
+			}
+			
+			anime({
+				targets: element,
+				scale: end_value,
+				duration: duration,
+				easing: ease_in_out ? "easeInOutQuad" : "easeOutQuad",
+				complete: resolve
+			});
+			
+			anime({
+				targets: dummy,
+				t: end_value === 1 ? 0 : 1,
+				duration: duration,
+				easing: ease_in_out ? "easeInOutQuad" : "easeOutQuad",
+				update: () =>
+				{
+					element.style.boxShadow = `0px 0px ${dummy.t * 10}px 0px ${Site.Settings.url_vars["theme"] ? "rgba(255, 255, 255, .2)" : "rgba(0, 0, 0, .25)"}`;
+				}
+			});
+		});	
+	},
+	
+	change_hover_css: function(element, end_value, duration, ease_in_out = false)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			try {clearTimeout(element.getAttribute("data-scale-timeout-id"))}
+			catch(ex) {}
+			
+			element.style.transition = `transform ${duration}ms ${ease_in_out ? "ease-in-out" : "ease-out"}, box-shadow ${duration}ms ${ease_in_out ? "ease-in-out" : "ease-out"}`;
+			
+			let box_shadow = `0px 0px 10px 0px ${Site.Settings.url_vars["theme"] ? "rgba(255, 255, 255, .2)" : "rgba(0, 0, 0, .25)"}`;
+			
+			if (end_value === 1)
+			{
+				box_shadow = `0px 0px 0px 0px ${Site.Settings.url_vars["theme"] ? "rgba(255, 255, 255, .2)" : "rgba(0, 0, 0, .25)"}`;
+			}
+			
+			setTimeout(() =>
+			{
+				element.style.transform = `scale(${end_value})`;
+				element.style.boxShadow = box_shadow;
 				
 				const timeout_id = setTimeout(() =>
 				{

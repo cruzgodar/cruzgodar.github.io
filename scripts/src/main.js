@@ -266,6 +266,7 @@ Site.load = async function(url)
 		
 		Page.Animate.change_opacity = Page.Animate.change_opacity_js;
 		Page.Animate.change_scale = Page.Animate.change_scale_js;
+		Page.Animate.change_hover = Page.Animate.change_hover_js;
 		Page.Animate.fade_left = Page.Animate.fade_left_js;
 		
 		Page.Animate.change_left_settings_button = Page.Animate.change_left_settings_button_js;
@@ -297,6 +298,7 @@ Site.load = async function(url)
 		
 		Page.Animate.change_opacity = Page.Animate.change_opacity_css;
 		Page.Animate.change_scale = Page.Animate.change_scale_css;
+		Page.Animate.change_hover = Page.Animate.change_hover_css;
 		Page.Animate.fade_left = Page.Animate.fade_left_css;
 		
 		Page.Animate.change_footer_image_link_text = Page.Animate.change_footer_image_link_text_css;
