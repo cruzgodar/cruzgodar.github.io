@@ -401,6 +401,111 @@
 
 
 
+!begin-exercise
+
+	Taylor&#x2019;s Theorem
+	
+	1. With the Taylor series for $\ln(x)$ centered at $x = 1$, approximate $\ln(2)$ with a Taylor polynomial of degree $4$. Determine the maximum error.
+	
+	2. With the Taylor series for $f(x) = x^2 + 4x + 4$ centered at $x = -2$, approximate $f(0) with a Taylor polynomial of degree $1$ and determine the maximum error. Draw a picture of this &mdash; what&#x2019;s the calculus I name for this process?
+	
+	3. With the Maclaurin series for $e^x$, approximate $e$ to 4 decimal places.
+
+!end-exercise
+
+
+
+!begin-text-block
+
+	There&#x2019;s one final question before our basic theory of Taylor series is complete: we can find a Taylor series for a function, and we can determine the interval of convergence of that Taylor series, <em>and</em> we can bound the remainder of the series. But how can we determine if or when the Taylor series actually converges to $f$? This is where Taylor&#x2019;s theorem really shines: since $R_N(x)$ is the difference between the $N$th Taylor polynomial and $f$, a Taylor series converges to $f$ exactly when $\lim_{N \to \infty} R_N(X) = 0$. Once we&#x2019;ve bounded the remainder, we can take the limit and figure out when it&#x2019;s zero.
+
+!end-text-block
+
+
+
+!begin-example
+
+	convergence of a Taylor series
+	
+	Determine when the Maclaurin series for $\sin(x)$ converges to $\sin(x)$.
+	
+	We know from previous examples that the Maclaurin series for $\sin(x)$ is
+	
+	$$
+		\sum_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!},
+	$$
+	
+	and that the $N$th remainder $R_N(x)$ is bounded by
+	
+	$$
+		\left| R_N(x) \right| \leq \frac{|x|^{N + 1}}{(N + 1)!}.
+	$$
+	
+	Now we can take the limit as $N \to \infty$:
+	
+	$$
+		\begin{align*}
+			\lim_{N \to \infty} \left| R_N(x) \right| &\leq \lim_{N \to \infty} \frac{|x|^{N + 1}}{(N + 1)!}\\
+			&= 0.
+		\end{align*}
+	$$
+	
+	To see why the limit is zero, remember that $x$ is fixed. No matter how big $|x|$ is, for large enough $N$ the denominator will be multiplying by massive integers, while the numerator is multiplying only by $|x|$. In other words, a factorial grows faster than any exponential.
+	
+	Since the limit is zero no matter what $x$ is, the series converges to $\sin(x)$ <em>everywhere</em>. This doesn&#x2019;t mean that we should always use a series centered at $x = 0$ to approximate any value of $\sin$, though &mdash; as we&#x2019;ve seen from the graph, Taylor polynomials are better approximations closer to where they&#x2019;re centered, so we should always take the cloest center we can (i.e. a center where we can easily calculate all the derivatives). For example, if we&#x2019;re trying to approximate $\sin(10)$, a good center would be $x = 3\pi \approx 9.425$, since we know the values of $\sin$ and all its derivatives at $3\pi$. Let&#x2019;s briefly draw a graph to illustrate this.
+	
+	!iframe https://www.desmos.com/calculator/hn3bd4hnhj
+	
+	Here, the green and purple functions are degree-$5$ Taylor polynomials for $\sin$ centered at $0$ and $3\pi$, respectively. The actual value of $\sin(10)$ is approximately $-.544021$, but while the purple function predicts a value of $-.544025$, the green function has stopped tracking with $\sin(x)$ long before $x = 10$, and it predicts a garbage value of $676.7$. We can increase the degree of the polynomials to help fix this problem, but there&#x2019;s often no substitute for centering them in the right place to begin with!
+
+!end-example
+
+
+
+!begin-exercise
+
+	convergence of Taylor series
+	
+	Determine when the given Taylor series converge to the functions they were derived from.
+	
+	1. The Taylor series for $\ln(x)$ centered at $x = 1$.
+	
+	2. The Taylor series for $f(x) = x^2 + 4x + 4$ centered at $x = -2$.
+	
+	3. The Maclaurin series for $e^x$.
+
+!end-exercise
+
+
+
+!begin-text-block
+
+	As one final note, Taylor series aren&#x2019;t guaranteed to converge to the function they were derived from for any $x$-value other than their center. Let&#x2019;s take a look at an example of this, where the process of generating the Taylor series goes catastrophically wrong.
+	
+	Consider the function
+	
+	$$
+		f(x) = \begin{cases} e^{-\frac{1}{x^2}}, & x \neq 0 \\ 0, & x = 0 \end{cases}
+	$$
+	
+	This function is differentiable, but it is <em>extremely</em> flat at $x = 0$ &mdash; so flat that every single derivative is zero.
+	
+	!iframe https://www.desmos.com/calculator/7wrfi62axb
+	
+	Therefore, the Maclaurin series for $f$ is just
+	
+	$$
+		0 + \frac{0}{1!}x + \frac{0}{2!}x^2 + \frac{0}{3!}x^3 + \cdots = 0.
+	$$
+	
+	Therefore, $f$ is equal to its Maclaurin series <em>only</em> at $x = 0$. As an aside, a function whose Taylor series centered at $x = a$ converges to $f$ in some interval around $a$ is called <dfn>analytic</dfn> at $a$. Functions that are differentiable infinitely many times at $x = a$ are called <dfn>smooth</dfn> at $a$, and since constructing a Taylor series requires being able to take infinitely many derivatives, all analytic functions are necessarily smooth. These consitions slot in at the top end of differentiability conditions, and they all have convenient notation: if a function is continuous, we say it&#x2019;s $C^0$, if it&#x2019;s differentiable with a continuous derivative, we say it&#x2019;s $C^1$, if it&#x2019;s twice-differentiable with a continuous second derivative, we say it&#x2019;s $C^2$, and so on. If a function is smooth, it&#x2019;s $C^\infty$, and if it&#x2019;s analytic, it&#x2019;s $C^\omega$ (here, $\omega$ denotes the idea of the first counting number <em>after</em> all of the positive integers).
+	
+	We&#x2019;re almost done with the course! The final section will see us applying Taylor series to all sorts of areas of math to great effect, making good use of all the work we&#x2019;ve done throughout the class.
+
+!end-text-block
+
+
+
 !nav-buttons
 
 
