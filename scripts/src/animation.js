@@ -124,7 +124,7 @@ Page.Animate =
 		});	
 	},
 	
-	change_hover_css: function(element, end_value, duration, shadow_darkness, ease_in_out = false)
+	change_hover_css: function(element, end_value, shadow_darkness, duration, ease_in_out = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
