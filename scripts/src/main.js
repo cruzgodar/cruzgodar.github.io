@@ -262,12 +262,12 @@ Site.load = async function(url)
 		Site.add_style(`
 			.image-link img, .footer-image-link img
 			{
-				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .06);
+				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .1);
 			}
 
 			.image-link-light img
 			{
-				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .14);
+				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .15);
 			}
 		`, false);
 	}
@@ -277,7 +277,7 @@ Site.load = async function(url)
 		Site.add_style(`
 			.image-link img, .footer-image-link img
 			{
-				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .15);
+				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .2);
 			}
 
 			.image-link-light img
