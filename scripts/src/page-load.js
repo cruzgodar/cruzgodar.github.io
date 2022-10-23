@@ -557,11 +557,11 @@ Page.Load =
 					
 					
 					
-					let darkness = .1;
+					let darkness = .05;
 					
 					if (element.parentNode.parentNode.classList.contains("image-link-light"))
 					{
-						darkness = .2;
+						darkness = .075;
 					}
 					
 					
@@ -591,11 +591,11 @@ Page.Load =
 					
 					
 					
-					let darkness = .1;
+					let darkness = .05;
 					
 					if (element.parentNode.parentNode.classList.contains("image-link-light"))
 					{
-						darkness = .2;
+						darkness = .075;
 					}
 					
 					

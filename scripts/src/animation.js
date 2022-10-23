@@ -90,7 +90,7 @@ Page.Animate =
 
 
 
-	change_hover_js: function(element, end_value, shadow_darkness, duration, ease_in_out = false)
+	change_hover_js: function(element, end_value, darkness, duration, ease_in_out = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -101,7 +101,7 @@ Page.Animate =
 				dummy.t = 1;
 			}
 			
-			let shadow_color = Site.Settings.url_vars["theme"] ? `rgba(255, 255, 255, ${shadow_darkness})` : `rgba(0, 0, 0, ${shadow_darkness})`;
+			let shadow_color = Site.Settings.url_vars["theme"] ? "rgba(255, 255, 255, " : "rgba(0, 0, 0, ";
 			
 			anime({
 				targets: element,
@@ -118,13 +118,13 @@ Page.Animate =
 				easing: ease_in_out ? "easeInOutQuad" : "easeOutQuad",
 				update: () =>
 				{
-					element.style.boxShadow = `0px 0px ${dummy.t * 20}px 0px ${shadow_color}`;
+					element.style.boxShadow = `0px 0px 30px 0px ${shadow_color} ${dummy.t * darkness})`;
 				}
 			});
 		});	
 	},
 	
-	change_hover_css: function(element, end_value, shadow_darkness, duration, ease_in_out = false)
+	change_hover_css: function(element, end_value, darkness, duration, ease_in_out = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -133,13 +133,13 @@ Page.Animate =
 			
 			element.style.transition = `transform ${duration}ms ${ease_in_out ? "ease-in-out" : "ease-out"}, box-shadow ${duration}ms ${ease_in_out ? "ease-in-out" : "ease-out"}`;
 			
-			let shadow_color = Site.Settings.url_vars["theme"] ? `rgba(255, 255, 255, ${shadow_darkness})` : `rgba(0, 0, 0, ${shadow_darkness})`;
+			let shadow_color = Site.Settings.url_vars["theme"] ? "rgba(255, 255, 255, " : "rgba(0, 0, 0, ";
 			
-			let box_shadow = `0px 0px 20px 0px ${shadow_color}`;
+			let box_shadow = `0px 0px 30px 0px ${shadow_color} ${darkness})`;
 			
 			if (end_value === 1)
 			{
-				box_shadow = `0px 0px 0px 0px ${shadow_color}`;
+				box_shadow = `0px 0px 30px 0px ${shadow_color} 0)`;
 			}
 			
 			setTimeout(() =>

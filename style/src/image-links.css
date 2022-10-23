@@ -63,7 +63,7 @@
 /* Added to images with white around the edges to provide contrast. */
 .image-link-light
 {
-	filter: brightness(95%) !important;
+	filter: brightness(92.5%) !important;
 }
 
 .one-image-link
