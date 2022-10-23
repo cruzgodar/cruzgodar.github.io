@@ -60,12 +60,6 @@
 	font-size: 100%;
 }
 
-/* Added to images with white around the edges to provide contrast. */
-.image-link-light
-{
-	filter: brightness(92.5%) !important;
-}
-
 .one-image-link
 {
 	grid-template-columns: repeat(1, 1fr) !important;

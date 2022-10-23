@@ -557,24 +557,15 @@ Page.Load =
 					
 					
 					
-					let darkness = .05;
-					
-					if (element.parentNode.parentNode.classList.contains("image-link-light"))
-					{
-						darkness = .075;
-					}
-					
-					
-					
 					if (force_js)
 					{
-						Page.Animate.change_hover_js(element, scale, darkness, Site.button_animation_time);
+						Page.Animate.change_scale_js(element, scale, Site.button_animation_time);
 					}
 					
 					else
 					{
-						Page.Animate.change_hover(element, scale, darkness, Site.button_animation_time);
-					}	
+						Page.Animate.change_scale(element, scale, Site.button_animation_time);
+					}
 				}
 			});
 			
@@ -591,23 +582,14 @@ Page.Load =
 					
 					
 					
-					let darkness = .05;
-					
-					if (element.parentNode.parentNode.classList.contains("image-link-light"))
+				if (force_js)
 					{
-						darkness = .075;
-					}
-					
-					
-					
-					if (force_js)
-					{
-						Page.Animate.change_hover_js(element, 1, darkness, Site.button_animation_time);
+						Page.Animate.change_scale_js(element, 1, Site.button_animation_time);
 					}
 					
 					else
 					{
-						Page.Animate.change_hover(element, 1, darkness, Site.button_animation_time);
+						Page.Animate.change_scale(element, 1, Site.button_animation_time);
 					}
 				}
 			});

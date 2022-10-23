@@ -251,7 +251,43 @@ Site.load = async function(url)
 	
 	
 	
-	Site.use_js_animation = Browser.is_ios();
+	const browser_is_ios = Browser.is_ios();
+	
+	
+	
+	//Extremely gross, but I cannot find a better way to deal with the difference between the appearance of box shadows in WebKit vs Chrome.
+	
+	if (browser_is_ios)
+	{
+		Site.add_style(`
+			.image-link img, .footer-image-link img
+			{
+				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .06);
+			}
+
+			.image-link-light img
+			{
+				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .14);
+			}
+		`, false);
+	}
+	
+	else
+	{
+		Site.add_style(`
+			.image-link img, .footer-image-link img
+			{
+				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .15);
+			}
+
+			.image-link-light img
+			{
+				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .25);
+			}
+		`, false);
+	}
+	
+	Site.use_js_animation = browser_is_ios;
 	
 	
 	
@@ -266,7 +302,6 @@ Site.load = async function(url)
 		
 		Page.Animate.change_opacity = Page.Animate.change_opacity_js;
 		Page.Animate.change_scale = Page.Animate.change_scale_js;
-		Page.Animate.change_hover = Page.Animate.change_hover_js;
 		Page.Animate.fade_left = Page.Animate.fade_left_js;
 		
 		Page.Animate.change_left_settings_button = Page.Animate.change_left_settings_button_js;
@@ -298,7 +333,6 @@ Site.load = async function(url)
 		
 		Page.Animate.change_opacity = Page.Animate.change_opacity_css;
 		Page.Animate.change_scale = Page.Animate.change_scale_css;
-		Page.Animate.change_hover = Page.Animate.change_hover_css;
 		Page.Animate.fade_left = Page.Animate.fade_left_css;
 		
 		Page.Animate.change_footer_image_link_text = Page.Animate.change_footer_image_link_text_css;
