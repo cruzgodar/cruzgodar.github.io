@@ -236,9 +236,15 @@ Site.base_animation_time = 250;
 Site.navigation_animation_distance = 50;
 	
 	
-	
+
 Site.applet_process_id = 0;
-	
+
+
+
+const DESMOS_PURPLE = "#6600cc";
+const DESMOS_BLUE = "#0087cc";
+const DESMOS_RED = "#cc0000";
+const DESMOS_BLACK = "#000000";
 	
 	
 //Redirects to the chosen page and sets up all the miscellaneous things that make the site work.

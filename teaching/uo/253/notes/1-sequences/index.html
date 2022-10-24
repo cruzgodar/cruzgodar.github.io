@@ -34,7 +34,7 @@
 	
 	It goes without saying that not all functions are polynomials. $\sin(x)$, $\ln(x)$, and $2^x$ are all substantially more complicated, and there is no way to write any as a sum of monomials. But we&#x2019;re not as far off as you might think &mdash; let&#x2019;s take a close look at $\sin(x)$.
 	
-	!iframe https://www.desmos.com/calculator/dtuvs1pfgn
+	!desmos taylor-series
 	
 	Drag the blue point around, and try increasing $N$. The green function is always a polynomial, and it is almost exactly equal to $\sin(x)$, as long as you only look near the blue point. As $N$ increases, so does the length of the interval where the two functions agree. It will turn out that as $N \to \infty$, that interval becomes infinitely long, and the functions become exactly equal to one another. So $\sin$ may not be a polynomial, but it is a <em>limit</em> of polynomials. This is a very different kind of limit from the one we&#x2019;re used to, though &mdash; rather than a sequence of numbers approaching another number, what we have here is a sequence of <em>functions</em> approaching another function. The upshot of this intricate construction is that many of the best properties of polynomials will carry over to their limits, so working with $\sin$ &mdash; and more importantly, other more complicated functions &mdash; will be made much easier.
 	
@@ -431,7 +431,7 @@
 	
 	If we plot this sequence like a function, putting values of $n$ on the horizontal axis and $a_n$ on the vertical axis, convergence means that for any thin band around the horizontal line at height $L$, we can find an $N$ so that all the points to the right of $N$ stay in that band.
 	
-	!iframe https://www.desmos.com/calculator/6geckzgium
+	!desmos epsilon-definition-of-convergence
 	
 !end-example
 
@@ -582,7 +582,7 @@
 	
 	Now we know that both of the outer sequences converge to zero, so since they share a limit, the Squeeze theorem guarantees that $\lim \left( \frac{\cos(n)}{n} \right) = 0$ too.
 	
-	!iframe https://www.desmos.com/calculator/unxdthhh1i
+	!desmos squeeze-theorem
 	
 !end-example
 

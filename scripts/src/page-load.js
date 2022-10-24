@@ -431,6 +431,8 @@ Page.Load =
 	},
 	
 	
+	
+	
 	create_desmos_graphs: function(data)
 	{
 		return new Promise(async (resolve, reject) =>
@@ -456,6 +458,15 @@ Page.Load =
 					
 					xAxisMinorSubdivisions: 1,
 					yAxisMinorSubdivisions: 1
+				});
+				
+				data[element.id].expressions.forEach(expression =>
+				{
+					expression.latex = expression.latex.replace(/\(/g, String.raw`\left(`);
+					expression.latex = expression.latex.replace(/\)/g, String.raw`\right)`);
+					
+					expression.latex = expression.latex.replace(/\[/g, String.raw`\left[`);
+					expression.latex = expression.latex.replace(/\]/g, String.raw`\right]`);
 				});
 				
 				Page.desmos_graphs[element.id].setMathBounds(data[element.id].bounds);
