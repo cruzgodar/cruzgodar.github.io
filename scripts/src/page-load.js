@@ -108,7 +108,7 @@ Page.load = async function()
 	
 	this.Load.TextButtons.set_up();
 	
-	this.Load.show_images_and_iframes();
+	this.Load.show_images();
 	
 	if ("parent_list" in this.settings)
 	{
@@ -375,13 +375,10 @@ Page.Load =
 	
 	
 	lazy_loaded_images: [],
-	lazy_loaded_iframes: [],
 	
-	show_images_and_iframes: function()
+	show_images: function()
 	{
 		Page.element.querySelectorAll("img:not([src])").forEach(element => this.lazy_loaded_images.push([element, element.getBoundingClientRect().top, null]));
-		
-		Page.element.querySelectorAll("iframe:not([src])").forEach(element => this.lazy_loaded_iframes.push([element, element.getBoundingClientRect().top, null]));
 		
 		this.lazy_loaded_images.forEach((entry, index) =>
 		{
@@ -393,19 +390,6 @@ Page.Load =
 			else
 			{
 				this.load_lazy_element(this.lazy_loaded_images, index);
-			}
-		});
-		
-		this.lazy_loaded_iframes.forEach((entry, index) =>
-		{
-			if (entry[1] > Page.Layout.window_height + 200)
-			{
-				entry[2] = setTimeout(() => this.load_lazy_element(this.lazy_loaded_iframes, index), index * 800);
-			}
-			
-			else
-			{
-				this.load_lazy_element(this.lazy_loaded_iframes, index);
 			}
 		});
 	},
@@ -444,17 +428,46 @@ Page.Load =
 				Page.Load.load_lazy_element(Page.Load.lazy_loaded_images, index);
 			}
 		});
-		
-		Page.Load.lazy_loaded_iframes.forEach((entry, index) =>
-		{
-			if (entry[1] < Page.Layout.window_height + Page.scroll + 200 && entry[2] !== -1)
-			{
-				clearTimeout(entry[2]);
-				Page.Load.load_lazy_element(Page.Load.lazy_loaded_iframes, index);
-			}
-		});
 	},
-
+	
+	
+	create_desmos_graphs: function(data)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			if (!Site.scripts_loaded["desmos"])
+			{
+				await Site.load_script("https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6");
+				
+				Site.scripts_loaded["desmos"] = true;
+			}
+			
+			Page.desmos_graphs = {};
+			
+			Page.element.querySelectorAll(".desmos-container").forEach(element =>
+			{
+				Page.desmos_graphs[element.id] = Desmos.GraphingCalculator(element, {
+					keypad: false,
+					settingsMenu: false,
+					zoomButtons: false,
+					showResetButtonOnGraphpaper: true,
+					border: false,
+					expressionsCollapsed: true,
+					
+					xAxisMinorSubdivisions: 1,
+					yAxisMinorSubdivisions: 1
+				});
+				
+				Page.desmos_graphs[element.id].setMathBounds(data[element.id].bounds);
+				
+				Page.desmos_graphs[element.id].setExpressions(data[element.id].expressions);
+				
+				Page.desmos_graphs[element.id].setDefaultState(Page.desmos_graphs[element.id].getState());
+			});
+			
+			resolve();
+		});	
+	},
 
 	
 	HoverEvents:

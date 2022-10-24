@@ -132,6 +132,13 @@ Page.Components =
 			return this.get_iframe(src);
 		}
 		
+		else if (args[2] === "!desmos")
+		{
+			let id = args.slice(3);
+			
+			return this.get_desmos(id);
+		}
+		
 		else
 		{
 			let text = args.slice(2).join(" ");
@@ -505,26 +512,28 @@ Page.Components =
 	
 	
 	
-	get_iframe: function(args)
+	get_iframe: function(src)
 	{
-		let class_add = "";
-		let src = args[0];
-		
-		if (src === "u")
-		{
-			class_add = `class="noclip"`;
-			src = args[1];
-		}
-		
 		return `
 			<div class="iframe-container" data-aos="fade-up">	
 				<div class="iframe-outer-border">
 					<div class="iframe-clipper">
-						<iframe ${class_add} data-src="${src}" width="500" height="500"></iframe>
+						<iframe src="${src}" width="500" height="500"></iframe>
 					</div>
 				</div>
 			</div>
 		`;	
+	},
+	
+	
+	
+	get_desmos: function(id)
+	{
+		return `
+			<div class="desmos-border">
+				<div id="${id}" class="desmos-container"></div>
+			</div>
+		`;
 	},
 	
 	
@@ -1349,7 +1358,14 @@ Page.Components =
 				
 				else if (words[0] === "!iframe")
 				{
-					lines[i] = this.get_iframe(words.slice(1));
+					lines[i] = this.get_iframe(words[1]);
+				}
+				
+				
+				
+				else if (words[0] === "!desmos")
+				{
+					lines[i] = this.get_desmos(words[1]);
 				}
 				
 				

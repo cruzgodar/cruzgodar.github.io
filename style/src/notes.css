@@ -1,20 +1,11 @@
 iframe
 {
-	margin-top: -46px;
-	
 	width: calc(75vmin - 4px);
-	height: calc(75vmin - 4px + 46px);
+	height: calc(75vmin - 4px);
 	
 	border: none;
 	
 	background-color: rgb(255, 255, 255);
-}
-
-iframe.noclip
-{
-	margin-top: 0;
-	
-	height: calc(75vmin - 4px);
 }
 
 .iframe-clipper
@@ -51,6 +42,37 @@ iframe.noclip
 	
 	margin-top: 5vh;
 	margin-bottom: 5vh;
+}
+
+
+
+.desmos-border
+{
+	width: calc(75vmin + 4px);
+	height: calc(75vmin + 4px);
+	
+	margin: 0 auto;
+	
+	border: 2px solid rgb(127, 127, 127);
+	border-radius: 15px;
+	padding: 2px;
+	
+	margin-top: 5vh;
+	margin-bottom: 5vh;
+}
+
+.desmos-container
+{
+	border-radius: 11px;
+	width: calc(75vmin + 4px);
+	height: calc(75vmin + 4px);
+}
+
+.dcg-container
+{
+	border-radius: 11px !important;
+	width: calc(75vmin + 4px) !important;
+	height: calc(75vmin + 4px) !important;
 }
 
 

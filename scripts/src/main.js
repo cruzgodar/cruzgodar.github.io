@@ -87,6 +87,7 @@ Site.scripts_loaded =
 	"complexjs": false,
 	"three": false,
 	"lodash": false,
+	"desmos": false,
 	"glsl": 0
 };
 
