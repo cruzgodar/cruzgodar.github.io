@@ -257,35 +257,17 @@ Site.load = async function(url)
 	
 	//Extremely gross, but I cannot find a better way to deal with the difference between the appearance of box shadows in WebKit vs Chrome.
 	
-	if (browser_is_ios)
-	{
-		Site.add_style(`
-			.image-link img, .footer-image-link img
-			{
-				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .1);
-			}
+	Site.add_style(`
+		.image-link img, .footer-image-link img
+		{
+			box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, .11);
+		}
 
-			.image-link-light img
-			{
-				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .15);
-			}
-		`, false);
-	}
-	
-	else
-	{
-		Site.add_style(`
-			.image-link img, .footer-image-link img
-			{
-				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .2);
-			}
-
-			.image-link-light img
-			{
-				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .25);
-			}
-		`, false);
-	}
+		.image-link-light img
+		{
+			box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, .16);
+		}
+	`, false);
 	
 	Site.use_js_animation = browser_is_ios;
 	
