@@ -241,9 +241,9 @@ Site.applet_process_id = 0;
 
 
 
-const DESMOS_PURPLE = "#6600cc";
-const DESMOS_BLUE = "#0087cc";
-const DESMOS_RED = "#cc2121";
+const DESMOS_PURPLE = "#772fbf";
+const DESMOS_BLUE = "#2f77bf";
+const DESMOS_RED = "#bf2f2f";
 const DESMOS_BLACK = "#000000";
 	
 	

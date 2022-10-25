@@ -488,6 +488,13 @@ Page.unload = function()
 	
 	
 	
+	for (let key in Page.desmos_graphs)
+	{
+		Page.desmos_graphs[key].destroy();
+	}
+	
+	
+	
 	//Remove everything that's not a script from the page element.
 	Page.element.remove();
 }
