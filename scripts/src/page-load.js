@@ -489,6 +489,42 @@ Page.Load =
 			resolve();
 		});	
 	},
+	
+	
+	
+	//Page.Load.export_desmos_screenshot("");
+	
+	export_desmos_screenshot: function(id)
+	{
+		Page.desmos_graphs[id].updateSettings({showGrid: false, xAxisNumbers: false, yAxisNumbers: false});
+		
+		let expressions = Page.desmos_graphs[id].getExpressions();
+		
+		for (let i = 0; i < expressions.length; i++)
+		{
+			expressions[i].lineWidth = 7.5;
+			expressions[i].pointSize = 27;
+			expressions[i].dragMode = "NONE";
+		}
+		
+		Page.desmos_graphs[id].setExpressions(expressions);
+		
+		Page.desmos_graphs[id].asyncScreenshot({
+			width: 500,
+			height: 500,
+			targetPixelRatio: 8
+		}, image_data =>
+		{
+			let img = document.createElement("img");
+			img.width = 4000;
+			img.height = 4000;
+			img.style.width = "50vmin";
+			img.style.height = "50vmin";
+			img.src = image_data;
+			document.body.appendChild(img);
+		});
+	},
+	
 
 	
 	HoverEvents:

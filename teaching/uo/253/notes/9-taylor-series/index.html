@@ -156,7 +156,7 @@
 	
 	Plotting these polynomials shows that they really do seem to converge to $\sin$: plotted in green is $p_N$, and increasing $N$ increases the interval where $p_N$ is almost identical to $\sin$. You can also change $a$ to see the effect recentering has.
 	
-	!iframe https://www.desmos.com/calculator/dtuvs1pfgn
+	!desmos taylor-series
 
 !end-example
 
@@ -454,7 +454,7 @@
 	
 	Since the limit is zero no matter what $x$ is, the series converges to $\sin(x)$ <em>everywhere</em>. This doesn&#x2019;t mean that we should always use a series centered at $x = 0$ to approximate any value of $\sin$, though &mdash; as we&#x2019;ve seen from the graph, Taylor polynomials are better approximations closer to where they&#x2019;re centered, so we should always take the cloest center we can (i.e. a center where we can easily calculate all the derivatives). For example, if we&#x2019;re trying to approximate $\sin(10)$, a good center would be $x = 3\pi \approx 9.425$, since we know the values of $\sin$ and all its derivatives at $3\pi$. Let&#x2019;s briefly draw a graph to illustrate this.
 	
-	!iframe https://www.desmos.com/calculator/hn3bd4hnhj
+	!desmos taylor-series-comparison
 	
 	Here, the green and purple functions are degree-5 Taylor polynomials for $\sin$ centered at $0$ and $3\pi$, respectively. The actual value of $\sin(10)$ is approximately $-.544021$, but while the purple function predicts a value of $-.544025$, the green function has stopped tracking with $\sin(x)$ long before $x = 10$, and it predicts a garbage value of $676.7$. We can increase the degree of the polynomials to help fix this problem, but there&#x2019;s often no substitute for centering them in the right place to begin with!
 
@@ -492,7 +492,7 @@
 	
 	This function is differentiable, but it is <em>extremely</em> flat at $x = 0$ &mdash; so flat that every single derivative is zero.
 	
-	!iframe https://www.desmos.com/calculator/7wrfi62axb
+	!desmos problematic-taylor-series
 	
 	The Maclaurin series for $f$ is then just
 	
