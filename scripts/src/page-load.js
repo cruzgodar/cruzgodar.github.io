@@ -448,7 +448,7 @@ Page.Load =
 			
 			Page.element.querySelectorAll(".desmos-container").forEach(element =>
 			{
-				Page.desmos_graphs[element.id] = Desmos.GraphingCalculator(element, {
+				let options = {
 					keypad: false,
 					settingsMenu: false,
 					zoomButtons: false,
@@ -458,7 +458,17 @@ Page.Load =
 					
 					xAxisMinorSubdivisions: 1,
 					yAxisMinorSubdivisions: 1
-				});
+				};
+				
+				if (data[element.id].options !== undefined)
+				{
+					for (let key in data[element.id].options)
+					{
+						options[key] = data[element.id].options[key];
+					}
+				}
+				
+				Page.desmos_graphs[element.id] = Desmos.GraphingCalculator(element, options);
 				
 				data[element.id].expressions.forEach(expression =>
 				{
