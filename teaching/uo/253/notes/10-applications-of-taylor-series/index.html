@@ -126,6 +126,20 @@
 	
 	If $r$ is a positive integer, then $\binom{r}{n}$ will eventually contain a factor of $(r - (r + 1) + 1) = 0$ in the numerator, meaning the Maclaurin series will only have terms up to $x^r$. This makes perfect sense, though: when $r$ is a positive integer, $(1 + x)^r$ is a polynomial, so it shouldn&#x2019;t have an infinite series representation centered at $0$. It&#x2019;s the other values of $r$ that we&#x2019;d expect to have infinite representations.
 	
+	So, when does this series converge? The series is full of exponents and factorials, so let&#x2019;s try the ratio test. We have
+	
+	$$
+		\begin{align*}
+			\lim_{n \to \infty} \left| \frac{\binom{r}{n + 1} x^{n + 1}}{\binom{r}{n} x^n} \right| &= \lim_{n \to \infty} \left| \frac{\frac{r(r - 1)(r - 2) \cdots (r - n)}{(n + 1)!} x^{n + 1}}{\frac{r(r - 1)(r - 2) \cdots (r - n + 1)}{n!} x^n} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{r(r - 1)(r - 2) \cdots (r - n) n! x^{n + 1}}{r(r - 1)(r - 2) \cdots (r - n + 1) (n + 1)! x^n} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{(r - n) x}{n + 1} \right|\\
+			&= |x| \lim_{n \to \infty} \left| \frac{r - n}{n + 1} \right|\\
+			&= |x|.
+		\end{align*}
+	$$
+	
+	Therefore, the series converges when $|x| < 1$, and so the interval of convergence is $(-1, 1)$.
+	
 !end-text-block
 
 
