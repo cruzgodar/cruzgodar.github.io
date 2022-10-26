@@ -84,9 +84,49 @@
 	
 	The last factor being $r - n + 1$ and not $r - n$ is a little confusing at first, but it&#x2019;s because we start at $r = 0$.
 	
+	To get Taylor coefficients out of this, we need to evaluate at zero and divide by $n!$. Conveniently, setting $x = 0$ makes $(1 + x)^{r - n} = 1$, so we just have
+	
+	$$
+		\frac{f^{(n)}(0)}{n!} = \frac{r(r - 1)(r - 2) \cdots (r - n + 1)}{n!}.
+	$$
+	
+	You might recognize this expression: when $r$ is a positive integer larger than $n$, the top of the fraction looks a lot like $r!$, except that we remove all the factors up through $(r - n)$. In other words, the fraction is just
+	
+	$$
+		\frac{r!}{n!(r - n)!} = \binom{r}{n}.
+	$$
+	
+	The expression on the right is a <dfn>binomial coefficient</dfn>, read as &#x201C;$r$ choose $n$&#x201D;. It&#x2019;s equal to the number of ways to choose $n$ objects out of a pile of $r$ objects, where the order in which you choose the $n$ doesn&#x2019;t matter. When $r$ is a real number and not necessarily a positive integer, $r!$ isn&#x2019;t defined, but we&#x2019;d really like to have a convenient notation for these Taylor coefficients. The easiest solution is to extend the definition of binomial coefficients to have real-valued top values, allowing us to use them no matter the value of $r$.
+	
 !end-text-block
 
 
+
+!begin-def
+
+	generalized binomial coefficient
+	
+	Let $r$ be a real number and let $n$ be a positive integer. The <dfn>generalized binomial coefficient</dfn> $\binom{r}{n}$ is defined to be
+	
+	$$
+		\binom{r}{n} = \frac{r(r - 1)(r - 2) \cdots (r - n + 1)}{n!}.
+	$$
+
+!end-def
+
+
+
+!begin-text-block
+
+	Now our Taylor coefficients are just generalized binomial coefficients: that is, the Maclaurin series for $(1 + x)^r$ is
+	
+	$$
+		\sum_{n = 0}^\infty \binom{r}{n} x^n.
+	$$
+	
+	If $r$ is a positive integer, then $\binom{r}{n}$ will eventually contain a factor of $(r - (r + 1) + 1) = 0$ in the numerator, meaning the Maclaurin series will only have terms up to $x^r$. This makes perfect sense, though: when $r$ is a positive integer, $(1 + x)^r$ is a polynomial, so it shouldn&#x2019;t have an infinite series representation centered at $0$. It&#x2019;s the other values of $r$ that we&#x2019;d expect to have infinite representations.
+	
+!end-text-block
 
 
 
