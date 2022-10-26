@@ -1,0 +1,137 @@
+<head>
+	<title>Section 10: Applications of Taylor Series</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 10: Applications of Taylor Series"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/253/notes/10-applications-of-taylor-series/">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/253/notes/10-applications-of-taylor-series/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+<div style="height: 5vh"></div>
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 10: Applications of Taylor Series
+
+!nav-buttons
+
+
+
+!begin-text-block
+
+	In this final section, we&#x2019;ll use Taylor series to their full extent, solving two types of problems that were previously impossible to us: differential equations and integrals. We&#x2019;ve seen ways to solve both in Caclulus II, but that was far from a complete description: for example, the differential equation
+	
+	$$
+		y'' = xy
+	$$
+	
+	and the integral
+	
+	$$
+		\int e^{-x^2}\ dx
+	$$
+	
+	both present substantial challanges. By the end of this section, we&#x2019;ll be able to solve both with Taylor series, and the theory we started developing ten sections ago will largely be complete. Before we dive in, let&#x2019;s briefly restate the most important Taylor series we know. If possible, we like to center them at $x = 0$, which occasionally involves adjusting the argument of the function in consideration to make the math work out more easily. After each series is its interval of convergence.
+	
+	$$
+		\begin{align*}
+			\frac{1}{1 - x} &= \sum_{n = 0}^\infty x^n = 1 + x + x^2 + x^3 + \cdots & (-1, 1)\\
+			e^x &= \sum_{n = 0}^\infty \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots & (-\infty, \infty)\\
+			\ln(1 + x) &= \sum_{n = 0}^\infty (-1)^{n + 1} \frac{x^n}{n} = 1 - x + \frac{x^2}{2} - \frac{x^3}{3} + \cdots & (-1, 1]\\
+			\sin(x) &= \sum_{n = 0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!} = x - \frac{x^3}{3!} - \frac{x^5}{5!} + \frac{x^7}{7!} - \cdots & (-\infty, \infty)\\
+			\cos(x) &= \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{(2n)!} = 1 - \frac{x^2}{2!} - \frac{x^4}{4!} + \frac{x^6}{6!} - \cdots & (-\infty, \infty)
+		\end{align*}
+	$$
+	
+!end-text-block
+
+
+
+!section
+
+!text s Power Functions and Binomial Coefficients
+
+<br>
+
+
+
+!begin-text-block
+
+	While that list covers most of the functions we typically come across, there&#x2019;s one glaring omission: power functions! Something as simple as $x^{1/2}$ leaves us unable to form a Taylor series, and before we jump into differential equations and integrals, we&#x2019;ll need to patch up this gap in our knowledge.
+	
+	As with natural log, the math works out <em>much</em> more easily if we consider the function $f(x) = (1 + x)^r$ rather than just $x^r$. This is because we&#x2019;d ideally like to center our series at $x = 0$, and power functions don&#x2019;t do too well there. For some, like $x^{1/2}$, that&#x2019;s the edge of their domain, so our radius of convergence would be forced to be zero. For others, like $x^{1/3}$, the derivative at zero is undefined since the tangent line is vertical, meaning we couldn&#x2019;t extract the Taylor coefficients we need in the first place. By adding $1$ and centering at $0$, we&#x2019;re effectively centering a series for $x^r$ at $x = 1$, which will turn out to be perfect.
+	
+	So, with $f(x) = (1 + x)^r$ for a real number $r$, what is $f^{(n)}(0)$? That&#x2019;s not too bad to figure out: just apply the power rule $n$ times. We wind up with
+	
+	$$
+		\begin{align*}
+			f'(x) &= r(1 + x)^{r - 1}\\
+			f''(x) &= r(r - 1)(1 + x)^{r - 2}\\
+			f'''(x) &= r(r - 1)(r - 2)(1 + x)^{r - 3}\\
+			\ & \vdots\\
+			f^{(n)}(x) &= r(r - 1)(r - 2) \cdots (r - n + 1)(1 + x)^{r - n}.
+		\end{align*}
+	$$
+	
+	The last factor being $r - n + 1$ and not $r - n$ is a little confusing at first, but it&#x2019;s because we start at $r = 0$.
+	
+!end-text-block
+
+
+
+
+
+!begin-text-block
+
+	
+	
+!end-text-block
+
+
+
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 10: Applications of Taylor Series",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/253/notes"
+	};
+	
+	Page.load();
+</script>
