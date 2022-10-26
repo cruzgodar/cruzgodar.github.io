@@ -227,7 +227,37 @@
 	
 	Find a power series solution to $y'' = xy$.
 	
-	We&#x2019;re trying to solve for $y$ here, so let&#x2019;s 
+	We&#x2019;re trying to solve for $y$ here, so let&#x2019;s take a generic power series $y = \sum_{n = 0}^\infty c_n x^n$. We&#x2019;re assuming that $y$ <em>has</em> a power series representation in the first place, which requires $y$ to be infinitely differentiable and also not be some sort of pathological case like $e^{-1/x^2}$. While very few functions meet those criteria, most of the ones we care about do, and so it&#x2019;s not too much to assume. Plus, the worst that can happen is that we figure out that no such representation exists and have to give up, so we might as well try.
+	
+	Getting everything in terms of power series tells us that
+	
+	$$
+		\begin{align*}
+			\frac{d^2}{dx^2} \sum_{n = 0}^\infty c_n x^n &= x \sum_{n = 0}^\infty c_n x^n\\
+			\sum_{n = 2}^\infty c_n(n)(n - 1) x^{n - 2} &= \sum_{n = 0}^\infty c_n x^{n + 1}.
+		\end{align*}
+	$$
+	
+	In order to figure out what the $c_n$ should be, it helps to make the powers on $x$ match. To make them both $x^n$, we can start the left sum at $n = 0$ and the right sum at $n = 1$ to get
+	
+	$$
+		\sum_{n = 0}^\infty c_{n + 2}(n + 2)(n + 1) x^n = \sum_{n = 1}^\infty c_{n - 1} x^n.
+	$$
+	
+	Now we can see that $c_{n + 2}(n + 2)(n + 1) = c_{n - 1}$ for $n \geq 1$. For $n = 0$, the right sum has no $x^0$ term, so the equation is just $c_2(2)(1) = 0$. In total, our system of equations looks like this:
+	
+	$$
+		\begin{align*}
+			c_2 &= 0\\
+			c_3 &= \frac{c_0}{3 \cdot 2}\\
+			c_4 &= \frac{c_1}{4 \cdot 3}\\
+			c_5 &= \frac{c_2}{5 \cdot 4}\\
+			c_6 &= \frac{c_3}{6 \cdot 5}\\
+			& \ \ \vdots
+		\end{align*}
+	$$
+	
+	This is a little tricky to parse, but it&#x2019;s not too terrible. First of all, 
 	
 !end-example
 
