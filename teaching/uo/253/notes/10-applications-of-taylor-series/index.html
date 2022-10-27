@@ -324,7 +324,7 @@
 
 	evaluating an integral with power series
 	
-	Express $\int_{-\infty}^\infty e^{-x^2}\ dx$ as a power series.
+	Approximate $\int_0^1 e^{-x^2}\ dx$ to within $.001$ of its true value.
 	
 	This is a famously difficult integral &mdash; it&#x2019;s usually the first example of one that is not expressible in terms of elementary functions. In other words, there is no combination of polynomials, trig functions, exponentials, and logs whose derivative is $e^{-x^2}$. None of the main four integration techniques works here &mdash; $u$-sub would want $u = -x^2$, but $du = -2x\ dx$ isn&#x2019;t present anywhere, integration by parts needs two things multiplied together to work properly, and trig sub and partial fractions both need setups that aren&#x2019;t present here. Despite all that, $e^{-x^2}$ has a perfectly resaonable Maclaurin series representation, and we can just integrate that. First of all, the series for $e^x$ is
 	
@@ -355,13 +355,51 @@
 		\end{align*}
 	$$
 	
-	We now need to finish the problem by evaluating the definite integral, but this is already wild: while it&#x2019;s definitely preferable to have a closed form of a function rather than a series representation, we were able to bypass the intractable integral immediately by passing to a Maclaurin series. And since integrating doesn&#x2019;t affect the interval of convergence, this is still equal to $e^{-x^2}$ for all values of $x$. That&#x2019;s a good thing, too, because we&#x2019;re about to need all of that interval of convergence: in order to evaluate this improper integral, we need to 
+	We now need to finish the problem by evaluating the definite integral, but this is already wild: while it&#x2019;s definitely preferable to have a closed form of a function rather than a series representation, we were able to bypass the intractable integral immediately by passing to a Maclaurin series. And since integrating doesn&#x2019;t affect the interval of convergence, this is still equal to $e^{-x^2}$ for all values of $x$. We just need to use $x = 0$ and $x = 1$: specifically,
+	
+	$$
+		\begin{align*}
+			\int_0^1 e^{-x^2}\ dx &= \left| \left[ \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{x^{2n + 1}}{2n + 1} \right) + C \right] \right|_0^1\\
+			&= \left( \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{1^{2n + 1}}{2n + 1} \right) + C \right) - \left( \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{0^{2n + 1}}{2n + 1} \right) + C \right)\\
+			&= \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{1}{2n + 1} \right).
+		\end{align*}
+	$$
+	
+	We sadly can&#x2019;t use Taylor&#x2019;s theorem to bound the error since we don&#x2019;t know a closed form of the function that generates this series. However, in a happy coincidence, this is an alternating series with decreasing terms, so we can actually use the alternating series test! The remainder $R_N$ is bounded by
+	
+	$$
+		|R_N| \leq \left| \frac{1}{(N + 1)!} \cdot \frac{1}{2(N + 1) + 1} \right|,
+	$$
+	
+	so if we want that to be less than $.001$, we just need to find a large enough $N$. The factorial makes this tricky to solve explicitly, but plugging in a few values, we find that $N = 4$ bounds $|R_4|$ by $.00076 < .001$. We&#x2019;ll therefore use $S_4$ as our approximation, which is
+	
+	$$
+		\begin{align*}
+			S_4 &= \sum_{n = 0}^4 \left( \frac{(-1)^n}{n!} \frac{1}{2n + 1} \right)\\
+			&= \frac{5651}{7560}\\
+			&\approx .7475.
+		\end{align*}
+	$$
+	
+	Sure enough, the actual value is about $.7468$. As an interesting side note, the integral $\int_{-\infty}^\infty e^{-x^2}\ dx$ is actually equal to $\sqrt{\pi}$, and is also the graph of the Normal distribution in statistics. If you&#x2019;re taking multivariable calculus, you&#x2019;ll see how to compute the $\sqrt{\pi}$ value exactly, and if you take or have taken statistics, you&#x2019;ll see $\sqrt{\pi}$ show up in the formula for Normal distribution functions &mdash; this is to normalize the function so that the total integral becomes exactly $1$, which is necessary for probabilities to make sense.
 	
 !end-example
 
+!begin-exercise
+
+	evaluating an integral with power series
+	
+	Approximate $\int_0^1 \frac{\sin(x)}{x}\ dx$ to within $.001$ of its true value.
+	
+!end-exercise
 
 
 
+!begin-text-block
+
+	We&#x2019;ve made it! Over the past ten weeks, we&#x2019;ve developed a comprehensivbe theory of series, both of numbers and of functions, and understood how, why, and when they converge. The applications of series representation are as wide-ranging as the applications of the functions they represent, and they arise in nearly every field that relies even slightly on math, from computer science to physics. Thank you for being a part of this class &mdash; I hope to see you in future classes!
+	
+!end-text-block
 
 
 
