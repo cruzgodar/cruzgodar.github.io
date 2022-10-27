@@ -227,7 +227,7 @@
 	
 	Find a power series solution to $y'' = xy$.
 	
-	We&#x2019;re trying to solve for $y$ here, so let&#x2019;s take a generic power series $y = \sum_{n = 0}^\infty c_n x^n$. We&#x2019;re assuming that $y$ <em>has</em> a power series representation in the first place, which requires $y$ to be infinitely differentiable and also not be some sort of pathological case like $e^{-1/x^2}$. While very few functions meet those criteria, most of the ones we care about do, and so it&#x2019;s not too much to assume. Plus, the worst that can happen is that we figure out that no such representation exists and have to give up, so we might as well try.
+	We&#x2019;re trying to solve for $y$ here, so let&#x2019;s take a generic power series $y = \sum_{n = 0}^\infty c_n x^n$. We&#x2019;re assuming that $y$ <em>has</em> a power series representation in the first place, which requires $y$ to be infinitely differentiable and also not be some sort of pathological case like $e^{-1/x^2}$. While very few functions actually meet these criteria, most of the ones we care about do, and so it&#x2019;s not too much to assume. Plus, the worst that can happen is that we figure out that no such representation exists and have to give up, so we might as well try.
 	
 	Getting everything in terms of power series tells us that
 	
@@ -257,9 +257,50 @@
 		\end{align*}
 	$$
 	
-	This is a little tricky to parse, but it&#x2019;s not too terrible. First of all, 
+	This is a little tricky to parse, but it&#x2019;s not too terrible. First of all, every $c_n$ satisfies $c_n = \frac{c_{n - 3}}{n(n-1)}$, so $c_5 = \frac{c_2}{20} = 0$, and similarly, $c_8 = c_{11} = \cdots = 0$. What about the others? Well, nothing tells us anything about $c_0$ or $c_1$, so we&#x2019;ll have to leave those as parameters (more on that in a moment). For $c_3, c_6, c_9$, and so on, we have
+	
+	$$
+		\begin{align*}
+			c_3 &= \frac{c_0}{3 \cdot 2}\\
+			c_6 &= \frac{c_3}{6 \cdot 5} = \frac{c_0}{6 \cdot 5 \cdot 3 \cdot 2}\\
+			c_9 &= \frac{c_6}{9 \cdot 8} = \frac{c_0}{9 \cdot 8 \cdot 6 \cdot 5 \cdot 3 \cdot 2}\\
+			& \ \ \vdots
+		\end{align*}
+	$$
+	
+	This is a pretty weird configuration. If we really wanted to, we could express this as a sort of &#x201C;gappy factorial&#x201D; by starting with $n!$ and dividing by one more than each mukltiple of $3$. That&#x2019;s a mess best left avoided, though &mdash; let&#x2019;s look at the pattern for $c_1$ and not worry about getting an explicit formula.
+	
+	$$
+		\begin{align*}
+			c_4 &= \frac{c_1}{4 \cdot 3}\\
+			c_7 &= \frac{c_4}{7 \cdot 6} = \frac{c_1}{7 \cdot 6 \cdot 4 \cdot 3}\\
+			c_{10} &= \frac{c_7}{10 \cdot 9} = \frac{c_1}{10 \cdot 9 \cdot 7 \cdot 6 \cdot 4 \cdot 3}\\
+			& \ \ \vdots
+		\end{align*}
+	$$
+	
+	In total, our power series power series expression for $y$ is
+	
+	$$
+		\begin{align*}
+			y &= c_0 + c_1 x + \frac{c_0}{3 \cdot 2} x^3 + \frac{c_1}{4 \cdot 3} x^4 + \frac{c_0}{6 \cdot 5 \cdot 3 \cdot 2} x^6 + \frac{c_1}{7 \cdot 6 \cdot 4 \cdot 3} x^7 + \cdots\\
+			&= c_0 \left( 1 + \frac{x^3}{3 \cdot 2} + \frac{x^6}{6 \cdot 5 \cdot 3 \cdot 2} + \cdots \right) + c_1 \left( x + \frac{x^4}{4 \cdot 3} + \frac{x^7}{7 \cdot 6 \cdot 4 \cdot 3} + \cdots \right).
+		\end{align*}
+	$$
+	
+	The presence of the $c_0$ and $c_1$ indicate that there are two free variables &mdash; we can take them to be anything we like, and the equation $y'' = xy$ will still be satisfied. If we&#x2019;re given initial conditions, say $y(0) = 1$ and $y'(0) = 2$, then we can solve for them. In this particular case, $y(0) = c_0 = 1$, and $y'(0) = c_1 = 2$.
 	
 !end-example
+
+
+
+!begin-exercise
+
+	solving a differential equation with power series
+	
+	Find a power series solution to the differential equation $y'' = \frac{y}{x}$.
+
+!end-exercise
 
 
 
