@@ -304,6 +304,67 @@
 
 
 
+!section
+
+!text s Taylor Series and Integrals
+
+<br>
+
+
+
+!begin-text-block
+
+	We&#x2019;ve seen this application before too: power series integrate term-by-term, so if we&#x2019;re unable to solve an integral with our usual techniques, we can convert the function to a series and integrate that.
+	
+!end-text-block
+
+
+
+!begin-example
+
+	evaluating an integral with power series
+	
+	Express $\int_{-\infty}^\infty e^{-x^2}\ dx$ as a power series.
+	
+	This is a famously difficult integral &mdash; it&#x2019;s usually the first example of one that is not expressible in terms of elementary functions. In other words, there is no combination of polynomials, trig functions, exponentials, and logs whose derivative is $e^{-x^2}$. None of the main four integration techniques works here &mdash; $u$-sub would want $u = -x^2$, but $du = -2x\ dx$ isn&#x2019;t present anywhere, integration by parts needs two things multiplied together to work properly, and trig sub and partial fractions both need setups that aren&#x2019;t present here. Despite all that, $e^{-x^2}$ has a perfectly resaonable Maclaurin series representation, and we can just integrate that. First of all, the series for $e^x$ is
+	
+	$$
+		e^x = \sum_{n = 0}^\infty \frac{x^n}{n!},
+	$$
+	
+	which is valid on $(-\infty, \infty)$, i.e. no matter what $x$ is. We need to to plug $-x^2$ in for $x$, which results in
+	
+	$$
+		\begin{align*}
+			e^{-x^2} &= \sum_{n = 0}^\infty \frac{(-x^2)^n}{n!}\\
+			&= \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{n!}\\
+			&= -1 + x^2 - \frac{x^4}{2!} + \frac{x^6}{3!} - \cdots.
+		\end{align*}
+	$$
+	
+	This series representation is valid whenever $-x^2$ is in the interval of convergence of the original series. Since that was $(-\infty, \infty)$, $-x^2$ is always in the interval of convergence, so the interval of convergence of this new series is also $(-\infty, \infty)$.
+	
+	Now we need to integrate the new series term by term. This amounts to just applying the power rule:
+	
+	$$
+		\begin{align*}
+			\int e^{-x^2}\ dx &= \int \left( \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{n!} \right)\ dx\\
+			&= \sum_{n = 0}^\infty \left( \int (-1)^n \frac{x^{2n}}{n!}\ dx \right) + C\\
+			&= \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \int x^{2n}\ dx \right) + C\\
+			&= \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{x^{2n + 1}}{2n + 1} \right) + C.
+		\end{align*}
+	$$
+	
+	We now need to finish the problem by evaluating the definite integral, but this is already wild: while it&#x2019;s definitely preferable to have a closed form of a function rather than a series representation, we were able to bypass the intractable integral immediately by passing to a Maclaurin series. And since integrating doesn&#x2019;t affect the interval of convergence, this is still equal to $e^{-x^2}$ for all values of $x$. That&#x2019;s a good thing, too, because we&#x2019;re about to need all of that interval of convergence: in order to evaluate this improper integral, we need to 
+	
+!end-example
+
+
+
+
+
+
+
 !nav-buttons
 
 
