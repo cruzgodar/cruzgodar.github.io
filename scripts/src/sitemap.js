@@ -12,7 +12,9 @@ Site.sitemap =
 			"/papers/",
 			"/writing/",
 			"/about/",
-			"/404/"
+			
+			"/404/",
+			"/debug/"
 		]
 	},
 	
@@ -1322,6 +1324,41 @@ Site.sitemap =
 	"/404/":
 	{
 		parent: "/home/",
+		
+		children: []
+	},
+	
+	
+	
+	"/debug/":
+	{
+		parent: "/home/",
+		
+		children:
+		[
+			"/debug/collector/",
+			"/debug/tests/glsl-test/",
+			"/debug/js-lines/",
+		]
+	},
+	
+	"/debug/collector/":
+	{
+		parent: "/debug/",
+		
+		children: []
+	},
+	
+	"/debug/tests/glsl-test/":
+	{
+		parent: "/debug/",
+		
+		children: []
+	},
+	
+	"/debug/js-lines/":
+	{
+		parent: "/debug/",
 		
 		children: []
 	}

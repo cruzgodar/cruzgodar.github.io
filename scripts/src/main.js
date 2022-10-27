@@ -154,8 +154,7 @@ Site.page_lists =
 		"/teaching/uo/253/notes/7-power-series/",
 		"/teaching/uo/253/notes/8-properties-of-power-series/",
 		"/teaching/uo/253/notes/9-taylor-series/",
-		"/teaching/uo/253/notes/10-applications-of-taylor-series/",
-		"/teaching/uo/253/notes/11-generating-functions/"
+		"/teaching/uo/253/notes/10-applications-of-taylor-series/"
 	],
 	
 	"/projects/wilson/guide":
