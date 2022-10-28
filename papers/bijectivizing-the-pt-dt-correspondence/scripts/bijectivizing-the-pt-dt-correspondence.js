@@ -16,6 +16,7 @@
 			{
 				return new Promise(async (resolve, reject) =>
 				{
+					//Add a colorful plane partition
 					slide.appendChild(canvas_bundle);
 					
 					let plane_partition = [
@@ -36,19 +37,33 @@
 					
 					await add_new_array(0, plane_partition);
 					
+					if (!in_exact_hex_view)
+					{
+						await show_hex_view();
+					}
+					
+					await show_floor();
+					
+					
+					
 					let hue = 0;
 					
 					for (let i = 0; i < 6; i++)
 					{
 						for (let j = 0; j <= i; j++)
 						{
-							color_cubes(arrays[0], [[i - j, j, 5 - i]], hue / 21 * 6/7);
+							for (let k = 0; k < 6 - i; k++)
+							{
+								color_cubes(arrays[0], [[i - j, j, k]], hue / 21 * 6/7);
+							}
 							
 							hue++;
 						}
 					}
 					
 					animation_time = 600;
+					
+					
 					
 					resolve();
 				});
@@ -63,6 +78,12 @@
 			{
 				return new Promise(async (resolve, reject) =>
 				{
+					//Display a Young diagram.
+					canvas_bundle.classList.remove("bottom-right-canvas");
+					canvas_bundle.classList.add("bottom-middle-canvas");
+					
+					
+					
 					slide.appendChild(canvas_bundle);
 					
 					let plane_partition = [
@@ -87,7 +108,13 @@
 						await show_2d_view();
 					}
 					
+					await hide_floor();
+					
+					numbers_canvas_container_element.style.opacity = 0;
+					
 					animation_time = 600;
+					
+					
 					
 					resolve();
 				});
@@ -122,7 +149,7 @@
 	
 	const asymptote_lightness = .6;
 	const cube_lightness = .4;
-	const floor_lightness = .4;
+	let floor_lightness = .4;
 	
 	const infinite_height = 100;
 	
@@ -2324,6 +2351,52 @@
 			
 			resolve();
 		});	
+	}
+	
+	
+	
+	function change_floor_lightness(v)
+	{
+		arrays.forEach(array =>
+		{
+			array.floor.forEach(row =>
+			{
+				row.forEach(floor =>
+				{
+					floor.material.forEach(material => material.color.setHSL(0, 0, v));
+				});
+			});
+		});
+		
+		floor_lightness = v;
+	}
+	
+	function show_floor(target_lightness = .4)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			let dummy = {t: floor_lightness};
+			
+			anime({
+				targets: dummy,
+				t: target_lightness,
+				duration: animation_time / 2,
+				easing: "easeOutQuad",
+				
+				complete: () =>
+				{
+					change_floor_lightness(target_lightness);
+					resolve();
+				},
+				
+				update: () => change_floor_lightness(dummy.t)
+			});
+		});	
+	}
+	
+	function hide_floor()
+	{
+		return show_floor(0);
 	}
 	
 	

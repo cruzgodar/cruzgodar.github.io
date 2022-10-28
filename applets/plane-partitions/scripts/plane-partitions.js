@@ -31,7 +31,7 @@
 	
 	const asymptote_lightness = .6;
 	const cube_lightness = .4;
-	const floor_lightness = .4;
+	let floor_lightness = .4;
 	
 	const infinite_height = 100;
 	
@@ -2233,6 +2233,52 @@
 			
 			resolve();
 		});	
+	}
+	
+	
+	
+	function change_floor_lightness(v)
+	{
+		arrays.forEach(array =>
+		{
+			array.floor.forEach(row =>
+			{
+				row.forEach(floor =>
+				{
+					floor.material.forEach(material => material.color.setHSL(0, 0, v));
+				});
+			});
+		});
+		
+		floor_lightness = v;
+	}
+	
+	function show_floor(target_lightness = .4)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			let dummy = {t: floor_lightness};
+			
+			anime({
+				targets: dummy,
+				t: target_lightness,
+				duration: animation_time / 2,
+				easing: "easeOutQuad",
+				
+				complete: () =>
+				{
+					change_floor_lightness(target_lightness);
+					resolve();
+				},
+				
+				update: () => change_floor_lightness(dummy.t)
+			});
+		});	
+	}
+	
+	function hide_floor()
+	{
+		return show_floor(0);
 	}
 	
 	
