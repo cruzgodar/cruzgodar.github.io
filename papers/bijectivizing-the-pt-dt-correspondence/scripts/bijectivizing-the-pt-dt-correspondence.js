@@ -160,27 +160,125 @@
 			
 			builds:
 			[
-				slide =>
+				(slide, forward) =>
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await show_hex_view();
+						if (forward)
+						{
+							await show_hex_view();
+						}
+						
+						else
+						{
+							await show_2d_view();
+						}
 						
 						resolve();
 					});
 				},
 				
-				slide =>
+				(slide, forward) =>
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await show_2d_view();
+						if (forward)
+						{
+							await show_2d_view();
+						}
+						
+						else
+						{
+							await show_hex_view();
+						}
 						
 						resolve();
 					});
 				}
 			]
-		}
+		},
+		
+		
+		
+		"app-example":
+		{
+			callback: slide =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					slide.appendChild(canvas_bundle);
+					
+					let plane_partition = [
+						[Infinity, Infinity, Infinity, 1, 1],
+						[Infinity, Infinity, 2, 0, 0],
+						[3, 2, 0, 0, 0],
+						[2, 1, 0, 0, 0],
+						[1, 0, 0, 0, 0]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = 0; i < arrays.length; i++)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, plane_partition);
+					
+					if (!in_2d_view)
+					{
+						await show_2d_view();
+					}
+					
+					animation_time = 600;
+					
+					
+					
+					resolve();
+				});
+			},
+			
+			
+			
+			builds:
+			[
+				(slide, forward) =>
+				{
+					return new Promise(async (resolve, reject) =>
+					{
+						if (forward)
+						{
+							await show_hex_view();
+						}
+						
+						else
+						{
+							await show_2d_view();
+						}
+						
+						resolve();
+					});
+				},
+				
+				(slide, forward) =>
+				{
+					return new Promise(async (resolve, reject) =>
+					{
+						if (forward)
+						{
+							await show_2d_view();
+						}
+						
+						else
+						{
+							await show_hex_view();
+						}
+						
+						resolve();
+					});
+				}
+			]
+		},
 	};
 	
 	

@@ -66,7 +66,7 @@ Page.Presentation =
 		{
 			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element => Page.Animate.fade_up_in(element, Site.page_animation_time * 2));
 			
-			try {await this.callbacks[this.slides[this.current_slide].id].builds[this.build_state](this.slides[this.current_slide])}
+			try {await this.callbacks[this.slides[this.current_slide].id].builds[this.build_state](this.slides[this.current_slide], true)}
 			catch(ex) {}
 			
 			this.build_state++;
@@ -124,7 +124,7 @@ Page.Presentation =
 			
 			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element => Page.Animate.fade_down_out(element, Site.page_animation_time));
 			
-			try {await this.callbacks[this.slides[this.current_slide].id].builds[this.build_state](this.slides[this.current_slide])}
+			try {await this.callbacks[this.slides[this.current_slide].id].builds[this.build_state](this.slides[this.current_slide], false)}
 			catch(ex) {}
 			
 			return;
