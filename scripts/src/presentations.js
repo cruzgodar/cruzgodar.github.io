@@ -64,7 +64,10 @@ Page.Presentation =
 	{
 		if (this.num_builds !== 0 && this.build_state !== this.num_builds)
 		{
-			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element => Page.Animate.fade_up_in(element, Site.opacity_animation_time));
+			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element => Page.Animate.fade_up_in(element, Site.page_animation_time * 2));
+			
+			try {await this.callbacks[this.current_slide].builds[this.build_state](this.slides[this.current_slide])}
+			catch(ex) {}
 			
 			this.build_state++;
 			
@@ -100,12 +103,12 @@ Page.Presentation =
 			
 			let builds = this.slides[this.current_slide].querySelectorAll(".build");
 			
-			this.num_builds = builds.length;
+			this.num_builds = Math.max(builds.length, this.callbacks?.[this.current_slide]?.builds?.length ?? 0);
 			
 			builds.forEach(element => element.style.opacity = 0);
 		}
 		
-		try {await this.callbacks[this.current_slide](this.slides[this.current_slide])}
+		try {await this.callbacks[this.current_slide].callback(this.slides[this.current_slide])}
 		catch(ex) {}
 		
 		Page.Animate.fade_up_in(Page.element, Site.page_animation_time * 2);
@@ -119,7 +122,10 @@ Page.Presentation =
 		{
 			this.build_state--;
 			
-			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element => Page.Animate.fade_down_out(element, Site.opacity_animation_time));
+			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element => Page.Animate.fade_down_out(element, Site.page_animation_time));
+			
+			try {await this.callbacks[this.current_slide].builds[this.build_state](this.slides[this.current_slide])}
+			catch(ex) {}
 			
 			return;
 		}
@@ -143,7 +149,7 @@ Page.Presentation =
 		
 		let builds = this.slides[this.current_slide].querySelectorAll(".build");
 		
-		this.num_builds = builds.length;
+		this.num_builds = Math.max(builds.length, this.callbacks?.[this.current_slide]?.builds?.length ?? 0);
 		
 		this.build_state = this.num_builds;
 		
@@ -151,7 +157,7 @@ Page.Presentation =
 		
 		this.slides[this.current_slide].style.display = "block";
 		
-		try {await this.callbacks[this.current_slide](this.slides[this.current_slide])}
+		try {await this.callbacks[this.current_slide].callback(this.slides[this.current_slide])}
 		catch(ex) {}
 		
 		Page.Animate.fade_down_in(Page.element, Site.page_animation_time * 2);

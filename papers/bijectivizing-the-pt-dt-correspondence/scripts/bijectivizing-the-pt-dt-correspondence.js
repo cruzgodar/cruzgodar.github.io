@@ -6,39 +6,60 @@
 	
 	let callbacks =
 	{
-		0: function(slide)
+		0:
 		{
-			return new Promise(async (resolve, reject) =>
+			callback: function(slide)
 			{
-				slide.appendChild(canvas_bundle);
-				
-				let plane_partition = [
-					[6, 5, 4, 3, 2, 1],
-					[5, 4, 3, 2, 1, 0],
-					[4, 3, 2, 1, 0, 0],
-					[3, 2, 1, 0, 0, 0],
-					[2, 1, 0, 0, 0, 0],
-					[1, 0, 0, 0, 0, 0]
-				];
-				
-				animation_time = 0;
-				
-				for (let i = 0; i < arrays.length; i++)
+				return new Promise(async (resolve, reject) =>
 				{
-					await remove_array(0);
-				}
-				
-				await add_new_array(0, plane_partition);
-				
-				animation_time = 600;
-				
-				resolve();
-			});
+					slide.appendChild(canvas_bundle);
+					
+					let plane_partition = [
+						[6, 5, 4, 3, 2, 1],
+						[5, 4, 3, 2, 1, 0],
+						[4, 3, 2, 1, 0, 0],
+						[3, 2, 1, 0, 0, 0],
+						[2, 1, 0, 0, 0, 0],
+						[1, 0, 0, 0, 0, 0]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = 0; i < arrays.length; i++)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, plane_partition);
+					
+					animation_time = 600;
+					
+					resolve();
+				});
+			}
 		},
 		
-		1: function(slide)
+		
+		
+		
+		1:
 		{
-			slide.appendChild(canvas_bundle);
+			callback: function(slide)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					slide.appendChild(canvas_bundle);
+					
+					resolve();
+				});
+			},
+			
+			builds:
+			[
+				slide => console.log("hi!"),
+				slide => console.log("hello!"),
+				slide => console.log("hooray!")
+			]
 		}
 	};
 	
