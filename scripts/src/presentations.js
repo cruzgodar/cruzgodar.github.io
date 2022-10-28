@@ -7,6 +7,9 @@ Page.Presentation =
 	
 	current_slide: -1,
 	
+	build_state: 0,
+	num_builds: 0,
+	
 	
 	
 	init: function(callbacks)
@@ -59,6 +62,17 @@ Page.Presentation =
 	
 	next_slide: async function()
 	{
+		if (this.num_builds !== 0 && this.build_state !== this.num_builds)
+		{
+			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element => Page.Animate.fade_up_in(element, Site.opacity_animation_time));
+			
+			this.build_state++;
+			
+			return;
+		}
+		
+		
+		
 		if (this.current_slide === this.slides.length)
 		{
 			return;
@@ -81,6 +95,14 @@ Page.Presentation =
 		else
 		{
 			this.slides[this.current_slide].style.display = "block";
+			
+			this.build_state = 0;
+			
+			let builds = this.slides[this.current_slide].querySelectorAll(".build");
+			
+			this.num_builds = builds.length;
+			
+			builds.forEach(element => element.style.opacity = 0);
 		}
 		
 		try {await this.callbacks[this.current_slide](this.slides[this.current_slide])}
@@ -93,6 +115,17 @@ Page.Presentation =
 	
 	previous_slide: async function()
 	{
+		if (this.num_builds !== 0 && this.build_state !== 0)
+		{
+			this.build_state--;
+			
+			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element => Page.Animate.fade_down_out(element, Site.opacity_animation_time));
+			
+			return;
+		}
+		
+		
+		
 		if (this.current_slide === 0 || this.current_slide === this.slides.length)
 		{
 			return;
@@ -104,7 +137,17 @@ Page.Presentation =
 		
 		this.slides[this.current_slide].style.display = "none";
 		
+		
+		
 		this.current_slide--;
+		
+		let builds = this.slides[this.current_slide].querySelectorAll(".build");
+		
+		this.num_builds = builds.length;
+		
+		this.build_state = this.num_builds;
+		
+		
 		
 		this.slides[this.current_slide].style.display = "block";
 		
