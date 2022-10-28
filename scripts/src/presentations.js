@@ -165,6 +165,70 @@ Page.Presentation =
 	
 	
 	
+	jump_to_slide: async function(index)
+	{
+		if (index < 0 || index >= this.slides.length || index === this.current_slide)
+		{
+			return;
+		}
+		
+		
+		
+		let forward_animation = false;
+		
+		if (index > this.current_slide)
+		{
+			forward_animation = true;
+		}
+		
+		if (forward_animation)
+		{
+			await Page.Animate.fade_up_out(Page.element, Site.page_animation_time);
+		}
+		
+		else
+		{
+			await Page.Animate.fade_down_out(Page.element, Site.page_animation_time);
+		}
+		
+		
+		
+		this.slides[this.current_slide].style.display = "none";
+		
+		this.current_slide = index;
+		
+		this.slides[this.current_slide].style.display = "block";
+		
+		
+		
+		this.build_state = 0;
+		
+		let builds = this.slides[this.current_slide].querySelectorAll(".build");
+		
+		this.num_builds = Math.max(builds.length, this.callbacks?.[this.slides[this.current_slide].id]?.builds?.length ?? 0);
+		
+		builds.forEach(element => element.style.opacity = 0);
+		
+		
+		
+		try {await this.callbacks[this.slides[this.current_slide].id].callback(this.slides[this.current_slide])}
+		catch(ex) {}
+		
+		
+		
+		if (forward_animation)
+		{
+			await Page.Animate.fade_up_in(Page.element, Site.page_animation_time * 2);
+		}
+		
+		else
+		{
+			await Page.Animate.fade_down_in(Page.element, Site.page_animation_time * 2);
+		}
+	},
+	
+	
+	
 	handle_keydown_event: function(e)
 	{
 		if (e.keyCode === 39 || e.keyCode === 40 || e.keyCode === 32 || e.keyCode === 13)

@@ -230,6 +230,8 @@
 						await show_2d_view();
 					}
 					
+					await show_floor();
+					
 					animation_time = 600;
 					
 					
