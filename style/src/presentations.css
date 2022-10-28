@@ -78,7 +78,7 @@
 	border-radius: 15px;
 }
 
-.bottom-right-canvas
+.bottom-right-canvas #canvas-bundle
 {
 	position: absolute;
 	
@@ -86,7 +86,7 @@
 	bottom: calc(2.5vw - 4px);
 }
 
-.bottom-middle-canvas
+.bottom-middle-canvas #canvas-bundle
 {
 	position: absolute;
 	
@@ -145,13 +145,13 @@
 	
 	
 	
-	.bottom-right-canvas
+	.bottom-right-canvas #canvas-bundle
 	{
 		bottom: calc(2.5vh * 152 / 89 - 4px);
 		right: calc(2.5vh * 152 / 89);
 	}
 	
-	.bottom-middle-canvas
+	.bottom-middle-canvas #canvas-bundle
 	{
 		left: calc(27.5vh * 152 / 89);
 		bottom: calc(2.5vh * 152 / 89 - 4px);

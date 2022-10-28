@@ -10,13 +10,12 @@
 	
 	let callbacks =
 	{
-		0:
+		"title":
 		{
 			callback: slide =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
-					//Add a colorful plane partition
 					slide.appendChild(canvas_bundle);
 					
 					let plane_partition = [
@@ -72,18 +71,12 @@
 		
 		
 		
-		2:
+		"young-diagram-example":
 		{
 			callback: slide =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
-					//Display a Young diagram.
-					canvas_bundle.classList.remove("bottom-right-canvas");
-					canvas_bundle.classList.add("bottom-middle-canvas");
-					
-					
-					
 					slide.appendChild(canvas_bundle);
 					
 					let plane_partition = [
@@ -119,6 +112,74 @@
 					resolve();
 				});
 			}
+		},
+		
+		
+		
+		"plane-partition-example":
+		{
+			callback: slide =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					slide.appendChild(canvas_bundle);
+					
+					let plane_partition = [
+						[6, 4, 3, 1, 1],
+						[4, 3, 2, 0, 0],
+						[3, 2, 0, 0, 0],
+						[2, 1, 0, 0, 0],
+						[1, 0, 0, 0, 0]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = 0; i < arrays.length; i++)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, plane_partition);
+					
+					if (!in_2d_view)
+					{
+						await show_2d_view();
+					}
+					
+					await show_floor();
+					
+					animation_time = 600;
+					
+					
+					
+					resolve();
+				});
+			},
+			
+			
+			
+			builds:
+			[
+				slide =>
+				{
+					return new Promise(async (resolve, reject) =>
+					{
+						await show_hex_view();
+						
+						resolve();
+					});
+				},
+				
+				slide =>
+				{
+					return new Promise(async (resolve, reject) =>
+					{
+						await show_2d_view();
+						
+						resolve();
+					});
+				}
+			]
 		}
 	};
 	

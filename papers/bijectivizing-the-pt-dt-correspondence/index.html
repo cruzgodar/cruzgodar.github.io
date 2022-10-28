@@ -23,7 +23,7 @@
 !header Bijectivizing the PT-DT Correspondence
 
 <div id="slide-container">
-	<div class="slide">
+	<div id="title" class="slide bottom-right-canvas">
 		!text h Bijectivizing the PT-DT Correspondence
 		
 		!text s Cruz Godar, University of Oregon
@@ -32,7 +32,7 @@
 			<p class="body-text">Aalto University, Summer 2022</p>
 		</div>
 		
-		<div id="canvas-bundle" class="bottom-right-canvas medium-canvas">
+		<div id="canvas-bundle" class="medium-canvas">
 			<div data-aos="fade-up">
 				<div style="position: absolute; width: 100%">
 					<canvas id="output-canvas"></canvas>
@@ -69,12 +69,28 @@
 	
 	
 
+	<div id="young-diagram-example" class="slide bottom-middle-canvas">
+		!text b j Ex: the Young diagram of $(5, 3, 2, 2, 1, 0, 0, ...)$.
+	</div>
+	
+	
+	
 	<div class="slide">
-		!begin-text-block
-			
-			Ex: the Young diagram of $(5, 3, 2, 2, 1, 0, 0, ...)$.
-			
-		!end-text-block
+		!text h Plane Partitions
+		
+		<div class="build build-0">
+			!text b j A <dfn>plane partition</dfn> is a placement of nonnegative integers into a Young diagram, such that the rows and columns weakly decrease. We can also think of them as a stacks of boxes, with each number indicating how many boxes are stacked on that square.
+		</div>
+		
+		<div class="build build-1">
+			!text b j The weight of a plane partition $\pi$, written $|\pi|$, is just the sum of its entries, or equivalently the total number of boxes stacked.
+		</div>
+	</div>
+	
+	
+	
+	<div id="plane-partition-example" class="slide bottom-middle-canvas">
+		!text b j Ex: a plane partition of weight $33$.
 	</div>
 </div>
 
