@@ -2,13 +2,17 @@
 {
 	"use strict";
 	
+	const APPLET_VERSION = false;
+	
+	
+	
 	let canvas_bundle = Page.element.querySelector("#canvas-bundle");
 	
 	let callbacks =
 	{
 		0:
 		{
-			callback: function(slide)
+			callback: slide =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -32,6 +36,18 @@
 					
 					await add_new_array(0, plane_partition);
 					
+					let hue = 0;
+					
+					for (let i = 0; i < 6; i++)
+					{
+						for (let j = 0; j <= i; j++)
+						{
+							color_cubes(arrays[0], [[i - j, j, 5 - i]], hue / 21 * 6/7);
+							
+							hue++;
+						}
+					}
+					
 					animation_time = 600;
 					
 					resolve();
@@ -41,25 +57,41 @@
 		
 		
 		
-		
-		1:
+		2:
 		{
-			callback: function(slide)
+			callback: slide =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
 					slide.appendChild(canvas_bundle);
 					
+					let plane_partition = [
+						[1, 1, 1, 1, 1],
+						[1, 1, 1, 0, 0],
+						[1, 1, 0, 0, 0],
+						[1, 1, 0, 0, 0],
+						[1, 0, 0, 0, 0]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = 0; i < arrays.length; i++)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, plane_partition);
+					
+					if (!in_2d_view)
+					{
+						await show_2d_view();
+					}
+					
+					animation_time = 600;
+					
 					resolve();
 				});
-			},
-			
-			builds:
-			[
-				slide => console.log("hi!"),
-				slide => console.log("hello!"),
-				slide => console.log("hooray!")
-			]
+			}
 		}
 	};
 	
@@ -201,7 +233,7 @@
 		
 		use_fullscreen: true,
 		
-		use_fullscreen_button: false,
+		use_fullscreen_button: APPLET_VERSION,
 		
 		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
@@ -324,9 +356,239 @@
 	
 	section_elements[visible_section].forEach(element => canvas_landscape_left_element.appendChild(element));
 	
+	
+	
+	if (APPLET_VERSION)
+	{
+		Page.Load.TextButtons.equalize();
+		setTimeout(Page.Load.TextButtons.equalize, 10);
+	}
+	
+	
+	
 	if (Page.Layout.aspect_ratio > 1)
 	{
 		Page.Layout.AppletColumns.equalize();
+	}
+	
+	
+	
+	let category_selector_dropdown_element = Page.element.querySelector("#category-selector-dropdown");
+	
+	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	
+	let show_dimers_button_element = Page.element.querySelector("#show-dimers-button");
+	
+	let switch_view_button_element = Page.element.querySelector("#switch-view-button");
+	
+	let maximum_speed_checkbox_element = Page.element.querySelector("#maximum-speed-checkbox");
+	
+	let array_data_textarea_element = Page.element.querySelector("#array-data-textarea");
+	
+	let add_array_button_element = Page.element.querySelector("#add-array-button");
+	
+	let edit_array_textarea_element = Page.element.querySelector("#edit-array-textarea");
+		
+	let edit_array_index_input_element = Page.element.querySelector("#edit-array-index-input");
+	
+	let edit_array_button_element = Page.element.querySelector("#edit-array-button");
+	
+	let remove_array_index_input_element = Page.element.querySelector("#remove-array-index-input");
+	
+	let remove_array_button_element = Page.element.querySelector("#remove-array-button");
+	
+	let algorithm_index_input_element = Page.element.querySelector("#algorithm-index-input");
+	
+	let hillman_grassl_button_element = Page.element.querySelector("#hillman-grassl-button");
+	
+	let hillman_grassl_inverse_button_element = Page.element.querySelector("#hillman-grassl-inverse-button");
+	
+	let pak_button_element = Page.element.querySelector("#pak-button");
+	
+	let pak_inverse_button_element = Page.element.querySelector("#pak-inverse-button");
+	
+	let sulzgruber_button_element = Page.element.querySelector("#sulzgruber-button");
+	
+	let sulzgruber_inverse_button_element = Page.element.querySelector("#sulzgruber-inverse-button");
+	
+	let rsk_button_element = Page.element.querySelector("#rsk-button");
+	
+	let rsk_inverse_button_element = Page.element.querySelector("#rsk-inverse-button");
+	
+	let godar_1_button_element = Page.element.querySelector("#godar-1-button");
+	
+	let godar_1_inverse_button_element = Page.element.querySelector("#godar-1-inverse-button");
+	
+	let example_1_button_element = Page.element.querySelector("#example-1-button");
+	
+	let example_2_button_element = Page.element.querySelector("#example-2-button");
+	
+	let example_3_button_element = Page.element.querySelector("#example-3-button");
+	
+	let need_download = false;
+	
+	let download_button_element = Page.element.querySelector("#download-button");
+	
+	
+	
+	if (APPLET_VERSION)
+	{
+		category_selector_dropdown_element.addEventListener("input", async () =>
+		{
+			await Promise.all(Array.from(section_elements[visible_section]).map(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time)));
+			
+			section_elements[visible_section].forEach(element => category_holder_element.appendChild(element));
+			
+			section_elements[visible_section].forEach(element => element.classList.remove("move-to-left"));
+			section_elements[visible_section].forEach(element => element.classList.remove("move-to-right"));
+			
+			visible_section = category_selector_dropdown_element.value;
+			
+			section_elements[visible_section].forEach(element => canvas_landscape_left_element.appendChild(element));
+			
+			Page.Load.TextButtons.equalize();
+			setTimeout(Page.Load.TextButtons.equalize, 10);
+			
+			if (Page.Layout.aspect_ratio > 1)
+			{
+				Page.Layout.AppletColumns.equalize();
+			}
+			
+			if (visible_section === "edit-array")
+			{
+				let index = parseInt(edit_array_index_input_element.value || 0);
+			
+				if (index < arrays.length && index >= 0)
+				{
+					edit_array_textarea_element.value = array_to_ascii(arrays[index].numbers);
+				}
+			}
+			
+			section_elements[visible_section].forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time))
+		});
+		
+		
+		
+		resolution_input_element.addEventListener("input", () =>
+		{
+			resolution = parseInt(resolution_input_element.value || 2000);
+			
+			renderer.setSize(resolution, resolution, false);
+		});
+		
+		
+		
+		show_dimers_button_element.addEventListener("click", () =>
+		{
+			if (dimers_shown)
+			{
+				hide_dimers();
+			}
+			
+			else
+			{
+				show_dimers();
+			}
+		});
+		
+		
+		
+		switch_view_button_element.addEventListener("click", () =>
+		{
+			if (in_2d_view)
+			{
+				show_hex_view();
+			}
+			
+			else
+			{
+				show_2d_view();
+			}
+		});
+		
+		
+		
+		maximum_speed_checkbox_element.addEventListener("input", () =>
+		{
+			animation_time = maximum_speed_checkbox_element.checked ? 60 : 600;
+		});
+		
+		
+		
+		array_data_textarea_element.value = generate_random_plane_partition();
+		
+		
+		
+		add_array_button_element.addEventListener("click", () =>
+		{
+			add_new_array(arrays.length, parse_array(array_data_textarea_element.value));
+		});
+		
+		
+		
+		edit_array_index_input_element.addEventListener("input", () =>
+		{
+			let index = parseInt(edit_array_index_input_element.value || 0);
+			
+			if (index >= arrays.length || index < 0)
+			{
+				return;
+			}
+			
+			edit_array_textarea_element.value = array_to_ascii(arrays[index].numbers);
+		});
+		
+		
+		
+		edit_array_button_element.addEventListener("click", edit_array);
+		
+		
+		
+		remove_array_button_element.addEventListener("click", () =>
+		{
+			remove_array(parseInt(remove_array_index_input_element.value));
+		});
+		
+		
+		
+		hillman_grassl_button_element.addEventListener("click", () => run_algorithm("hillman_grassl"));
+		
+		hillman_grassl_inverse_button_element.addEventListener("click", () => run_algorithm("hillman_grassl_inverse"));
+		
+		pak_button_element.addEventListener("click", () => run_algorithm("pak"));
+		
+		pak_inverse_button_element.addEventListener("click", () => run_algorithm("pak_inverse"));
+		
+		sulzgruber_button_element.addEventListener("click", () => run_algorithm("sulzgruber"));
+		
+		sulzgruber_inverse_button_element.addEventListener("click", () => run_algorithm("sulzgruber_inverse"));
+		
+		rsk_button_element.addEventListener("click", () => run_algorithm("rsk"));
+		
+		rsk_inverse_button_element.addEventListener("click", () => run_algorithm("rsk_inverse"));
+		
+		godar_1_button_element.addEventListener("click", () => run_algorithm("godar_1"));
+		
+		godar_1_inverse_button_element.addEventListener("click", () => run_algorithm("godar_1_inverse"));
+		
+		example_1_button_element.addEventListener("click", () => run_example(1));
+		
+		example_2_button_element.addEventListener("click", () => run_example(2));
+		
+		example_3_button_element.addEventListener("click", () => run_example(3));
+		
+		
+		
+		download_button_element.addEventListener("click", () =>
+		{
+			need_download = true;
+			
+			/*
+			wilson_numbers.download_frame("numbers.png");
+			
+			setTimeout(() => need_download = true, 3000);
+			*/
+		});
 	}
 	
 	
@@ -414,22 +676,26 @@
 	let _2d_view_camera_pos = [0, 20, 0];
 	
 	
-	
-	//Yeesh
-	setTimeout(() => wilson.draggables.on_resize(), 100);
-	setTimeout(() => wilson_numbers.draggables.on_resize(), 100);
-	
-	setTimeout(() => wilson.draggables.on_resize(), 500);
-	setTimeout(() => wilson_numbers.draggables.on_resize(), 500);
-	
-	setTimeout(() => wilson.draggables.on_resize(), 1000);
-	setTimeout(() => wilson_numbers.draggables.on_resize(), 1000);
+	if (APPLET_VERSION)
+	{
+		let plane_partition = parse_array(array_data_textarea_element.value);
+		edit_array_textarea_element.value = array_data_textarea_element.value;
+		add_new_array(arrays.length, plane_partition, "pp");
+	}
 	
 	draw_frame();
 	
-	Page.Presentation.init(callbacks);
+	if (APPLET_VERSION)
+	{
+		Page.show();
+	}
 	
-	setTimeout(Page.show, 10);
+	else
+	{
+		Page.Presentation.init(callbacks);
+		
+		setTimeout(Page.show, 10);
+	}
 	
 	
 	
@@ -530,6 +796,26 @@
 		else if (rotation_y < -3.14159265)
 		{
 			rotation_y += 6.283185301;
+		}
+		
+		
+		
+		if (need_download)
+		{
+			need_download = false;
+			
+			wilson.canvas.toBlob((blob) => 
+			{
+				let link = document.createElement("a");
+				
+				link.download = "a-plane-partition.png";
+				
+				link.href = window.URL.createObjectURL(blob);
+				
+				link.click();
+				
+				link.remove();
+			});
 		}
 		
 		
@@ -1434,14 +1720,17 @@
 			
 			
 			
-			Page.Animate.change_opacity(switch_view_button_element, 0, Site.opacity_animation_time)
-			
-			.then(() =>
+			if (APPLET_VERSION)
 			{
-				switch_view_button_element.textContent = "Show 2D View";
+				Page.Animate.change_opacity(switch_view_button_element, 0, Site.opacity_animation_time)
 				
-				Page.Animate.change_opacity(switch_view_button_element, 1, Site.opacity_animation_time);
-			});
+				.then(() =>
+				{
+					switch_view_button_element.textContent = "Show 2D View";
+					
+					Page.Animate.change_opacity(switch_view_button_element, 1, Site.opacity_animation_time);
+				});
+			}
 			
 			
 			
@@ -1505,14 +1794,17 @@
 			
 			
 			
-			Page.Animate.change_opacity(switch_view_button_element, 0, Site.opacity_animation_time)
-			
-			.then(() =>
+			if (APPLET_VERSION)
 			{
-				switch_view_button_element.textContent = "Show 3D View";
+				Page.Animate.change_opacity(switch_view_button_element, 0, Site.opacity_animation_time)
 				
-				Page.Animate.change_opacity(switch_view_button_element, 1, Site.opacity_animation_time);
-			});
+				.then(() =>
+				{
+					switch_view_button_element.textContent = "Show 3D View";
+					
+					Page.Animate.change_opacity(switch_view_button_element, 1, Site.opacity_animation_time);
+				});
+			}
 			
 			
 			
@@ -1637,7 +1929,11 @@
 				duration: animation_time,
 				easing: "easeInOutQuad",
 				update: () => orthographic_camera.updateProjectionMatrix(),
-				complete: () => currently_animating_camera = false
+				complete: () =>
+				{
+					orthographic_camera.updateProjectionMatrix();
+					currently_animating_camera = false;
+				}
 			});
 			
 			setTimeout(() =>
@@ -1668,7 +1964,11 @@
 				duration: animation_time,
 				easing: "easeInOutQuad",
 				update: () => orthographic_camera.updateProjectionMatrix(),
-				complete: () => currently_animating_camera = false
+				complete: () =>
+				{
+					orthographic_camera.updateProjectionMatrix();
+					currently_animating_camera = false;
+				}
 			});
 		}	
 	}
@@ -1687,14 +1987,19 @@
 			
 			dimers_shown = true;
 			
-			Page.Animate.change_opacity(show_dimers_button_element, 0, Site.opacity_animation_time)
 			
-			.then(() =>
+			
+			if (APPLET_VERSION)
 			{
-				show_dimers_button_element.textContent = "Hide Dimers";
+				Page.Animate.change_opacity(show_dimers_button_element, 0, Site.opacity_animation_time)
 				
-				Page.Animate.change_opacity(show_dimers_button_element, 1, Site.opacity_animation_time);
-			});
+				.then(() =>
+				{
+					show_dimers_button_element.textContent = "Hide Dimers";
+					
+					Page.Animate.change_opacity(show_dimers_button_element, 1, Site.opacity_animation_time);
+				});
+			}
 			
 			
 			
@@ -1861,14 +2166,19 @@
 			
 			dimers_shown = false;
 			
-			Page.Animate.change_opacity(show_dimers_button_element, 0, Site.opacity_animation_time)
 			
-			.then(() =>
+			
+			if (APPLET_VERSION)
 			{
-				show_dimers_button_element.textContent = "Show Dimers";
+				Page.Animate.change_opacity(show_dimers_button_element, 0, Site.opacity_animation_time)
 				
-				Page.Animate.change_opacity(show_dimers_button_element, 1, Site.opacity_animation_time);
-			});
+				.then(() =>
+				{
+					show_dimers_button_element.textContent = "Show Dimers";
+					
+					Page.Animate.change_opacity(show_dimers_button_element, 1, Site.opacity_animation_time);
+				});
+			}
 			
 			currently_animating_camera = true;
 			

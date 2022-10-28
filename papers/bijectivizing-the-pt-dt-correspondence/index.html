@@ -49,20 +49,36 @@
 		</div>
 	</div>
 	
+	
+	
 	<div class="slide">
-		<div class="build build-0">
-			!text h Title
-		</div>
-	</div>
-
-	<div class="slide">
-		!text h Title
+		!text h Integer Partitions and Young Diagrams
 		
 		<br>
 		
+		<div class="build build-0">
+			!text b j A <dfn>partition</dfn> of an integer $n$ is a sequence $(a_1, a_2, ... )$ with $a_i \in \mathbb{N}_{\geq 0}$ and $a_i \geq a_{i + 1}$ for all $i$, such that $\sum_i a_i = n$.
+		</div>
+		
+		<div class="build build-1">
+			!text b j Ex: $(5, 3, 2, 2, 1, 0, 0, ...)$ is a partition of $13$.
+		</div>
+		
+		<div class="build build-2">
+			!text b j The <dfn>Young diagram</dfn> corresponding to a partition $(a_i)$ is the set $\{(i, j) \in \mathbb{N}^2 \mid 1 \leq j \leq a_i\}$.
+		</div>
+		
+		<div class="build build-3">
+			!text b j We usually treat these as top-left-justified sets of squares in a grid, so that $a_i$ is the length of row $i$.
+		</div>
+	</div>
+	
+	
+
+	<div class="slide">
 		!begin-text-block
 			
-			Slide three!
+			Ex: the Young diagram of $(5, 3, 2, 2, 1, 0, 0, ...)$.
 			
 		!end-text-block
 	</div>
@@ -99,7 +115,9 @@
 	
 	Page.settings = 
 	{
-		"title": "Abelian Sandpiles",
+		"title": "Bijectivizing the PT-DT Correspondence",
+		
+		"math_page": true,
 		
 		"small_margins_on_ultrawide": true
 	};

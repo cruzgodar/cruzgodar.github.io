@@ -79,6 +79,18 @@
 	right: 2.5vw;
 }
 
+.canvas-medium canvas
+{
+	width: 40vw;
+	height: 40vw;
+}
+
+.canvas-large canvas
+{
+	width: 50vw;
+	height: 50vw;
+}
+
 
 
 /* By default, the slide is 95vw wide due to the padding, and the height is 55.625vw. This aspect ratio is 152:89, so when we're larger than that, we switch to measuring in terms of vh instead. At the switching point, 1vw = 1vh * 152/89, which we use for our calculations. */
@@ -122,5 +134,17 @@
 	{
 		bottom: calc(2.5vh * 152 / 89 - 4px);
 		right: calc(2.5vh * 152 / 89);
+	}
+	
+	.canvas-medium canvas
+	{
+		width: calc(40vh * 152 / 89);
+		height: calc(40vh * 152 / 89);
+	}
+	
+	.canvas-large canvas
+	{
+		width: calc(40vh * 152 / 89);
+		height: calc(40vh * 152 / 89);
 	}
 }
