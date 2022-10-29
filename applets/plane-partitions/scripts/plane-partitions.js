@@ -1784,6 +1784,13 @@
 			arrays.forEach(array =>
 			{
 				anime({
+					targets: array.cube_group.rotation,
+					y: 0,
+					duration: animation_time,
+					easing: "easeInOutQuad"
+				});
+				
+				anime({
 					targets: array.cube_group.position,
 					x: array.center_offset,
 					y: 0,

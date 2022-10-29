@@ -26,6 +26,7 @@ Page.Presentation =
 		Page.element.firstElementChild.style.display = "none";
 		
 		document.documentElement.style.overflowY = "hidden";
+		document.body.style.overflowY = "hidden";
 		
 		
 		
@@ -60,6 +61,7 @@ Page.Presentation =
 		Page.element.firstElementChild.style.display = "block";
 		
 		document.documentElement.style.overflowY = "visible";
+		document.body.style.overflowY = "visible";
 	},
 	
 	

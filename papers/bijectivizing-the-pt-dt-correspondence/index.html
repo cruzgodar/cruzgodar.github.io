@@ -99,7 +99,7 @@
 		!text h RPPs and APPs
 		
 		<div class="build build-0">
-			!text b j If we require the rows and columns of a plane partition to weakly <em>increase</em> rather than decrease, the resulting object is called a <dfn>reverse plant partition</dfn>, or RPP.
+			!text b j If we require the rows and columns of a plane partition to weakly <em>increase</em> rather than decrease, the resulting object is called a <dfn>reverse plane partition</dfn>, or RPP.
 		</div>
 		
 		<div class="build build-1">
@@ -121,6 +121,86 @@
 	
 	<div id="rpp-example" class="slide bottom-middle-canvas large-canvas">
 		!text b j Ex: an RPP of weight $18$, and the same RPP expressed as an APP.
+	</div>
+	
+	
+	
+	<div class="slide">
+		!text h DT and PT
+		
+		<div class="build build-0">
+			!begin-text-block
+			
+				Donaldson-Thomas and Pandharipande-Thomas (DT and PT) theories are branches of enumerative geometry related to mirror symmetry and string theory.
+			
+				In both, particular generating functions counting topological vertices arise &mdash; those in DT enumerate APP-like objects, and those in PT enumerate RPP-like objects. Specifically,
+			
+			!end-text-block
+		</div>
+		
+		<div class="build build-1 centered">
+			!begin-text-block
+				
+				$V_{(\emptyset, \emptyset, \mu)}(q)$: plane partitions asymptotic to $\mu$.
+				
+				$W_{(\emptyset, \emptyset, \mu)}(q)$: RPPs of shape $\mu$.
+				
+				$M(q)$: plane partitions.
+				
+			!end-text-block
+		</div>
+		
+		<div class="build build-2">
+			!text b j In each, $q$ marks the weight of the partition.
+		</div>
+	</div>
+	
+	
+	
+	<div class="slide">
+		!text h The Main Theorem
+		
+		<div class="build build-0">
+			!begin-text-block
+				
+				For a partition $\mu$,
+				
+				$$
+					V_{(\emptyset, \emptyset, \mu)}(q) = W_{(\emptyset, \emptyset, \mu)}(q) M(q)
+				$$
+			
+			!end-text-block
+			
+			<br>
+		</div>
+		
+		<div class="build build-1">
+			!begin-text-block
+				
+				Combinatorially, every APP $\alpha$ asymptotic to $\mu$ corresponds to a pair $(\rho, \pi)$ of an RPP $\rho$ of shape $\mu$ and a plane partition $\pi$, such that $|\alpha| = |\rho| + |\pi|$.
+			
+				A more general version of the theorem was proven algebraically by Helen Jenne, Gautam Webb, and Benjamin Young in 2020, but a simpler combinatorial proof is desirable &mdash; we will give one such.
+				
+			!end-text-block
+		</div>
+	</div>
+	
+	
+	
+	<div id="hooks" class="slide bottom-right-canvas medium-canvas">
+		!text h Hooks and Hook Lengths
+		
+		<div class="build build-0 left-text">
+			!text b j The <dfn>hook</dfn> corresponding to a box in an APP is the right-angled collection of boxes above and to the left of it. The hook length $h(i, j)$ of a box is the total number of boxes in its hook.
+		</div>
+		
+		<div class="build build-1 left-text">
+			!text b j In an RPP, the direction of hooks is reserved along with the inequalities, and they extend down and right instead.
+		</div>
+		
+		<div class="build build-2 left-text">
+			!text b j Ex: $h(3, 4) = 5$ in the APP on the right.
+		</div>
 	</div>
 </div>
 

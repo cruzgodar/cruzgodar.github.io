@@ -23,7 +23,11 @@
 	
 	padding: 2.5vw;
 	
-	box-shadow: 0px 0px 8px 0px rgb(127, 127, 127);
+	box-shadow: 0px 0px 1vw 0px rgb(127, 127, 127);
+	
+	font-size: 2vw;
+	
+	line-height: 1.25;
 }
 
 .slide .heading-text, .slide .section-text, .slide .body-text
@@ -32,37 +36,49 @@
 	
 	text-align: left;
 	
+	margin-bottom: 1.5vw;
+	
+	line-height: 1.25;
+}
+
+.slide br
+{
 	line-height: 1.25;
 }
 
 .slide .heading-text
 {
-	font-size: 5vw;
+	font-size: 250%;
 	
 	margin-top: -1vw;
-	
-	margin-bottom: 1.5vw;
 }
 
 .slide .section-text
 {
-	font-size: 3vw;
-	
-	margin-bottom: 1.5vw;
+	font-size: 150%;
 }
 
 .slide .body-text
 {
-	font-size: 2vw;
-	
-	margin-bottom: 1.5vw;
+	font-size: 100%;
+}
+
+.centered p
+{
+	text-align: center !important;
+}
+
+.left-text p
+{
+	width: 50% !important;
+	margin-left: 0 !important;
 }
 
 .footer-text
 {
 	width: 100%;
 	position: absolute;
-	bottom: calc(2.5vw - 4px);
+	bottom: 2vw;
 }
 
 .footer-text p
@@ -80,7 +96,7 @@
 
 .slide canvas
 {
-	border-radius: 15px;
+	border-radius: 1.25vw;
 }
 
 .bottom-right-canvas #canvas-bundle
@@ -88,21 +104,21 @@
 	position: absolute;
 	
 	right: 2.5vw;
-	bottom: calc(2.5vw - 4px);
+	bottom: 2vw;
 }
 
 .bottom-middle-canvas #canvas-bundle
 {
 	position: absolute;
 	
-	left: 27.5vw;
+	left: 25vw;
 	bottom: calc(2.5vw - 4px);
 }
 
 .medium-canvas canvas
 {
-	width: 40vw;
-	height: 40vw;
+	width: 40.8vw;
+	height: 40.8vw;
 }
 
 .large-canvas canvas
@@ -123,7 +139,11 @@
 		
 		border-radius: calc(2.5vh * 152 / 89);
 		
+		box-shadow: 0px 0px calc(1vh * 152 / 89) 0px rgb(127, 127, 127);
+		
 		padding: calc(2.5vh * 152 / 89);
+		
+		font-size: calc(2vh * 152 / 89);		
 	}
 	
 	.slide .heading-text
@@ -151,27 +171,32 @@
 	
 	.footer-text
 	{
-		bottom: calc(2.5vh * 152 / 89 - 4px);
+		bottom: calc(2vh * 152 / 89);
 	}
 	
 	
 	
+	.slide canvas
+	{
+		border-radius: calc(1.25vh * 152 / 89);
+	}
+	
 	.bottom-right-canvas #canvas-bundle
 	{
-		bottom: calc(2.5vh * 152 / 89 - 4px);
+		bottom: calc(2vh * 152 / 89);
 		right: calc(2.5vh * 152 / 89);
 	}
 	
 	.bottom-middle-canvas #canvas-bundle
 	{
-		left: calc(27.5vh * 152 / 89);
+		left: calc(25vh * 152 / 89);
 		bottom: calc(2.5vh * 152 / 89 - 4px);
 	}
 	
 	.medium-canvas canvas
 	{
-		width: calc(40vh * 152 / 89);
-		height: calc(40vh * 152 / 89);
+		width: calc(40.8vh * 152 / 89);
+		height: calc(40.8vh * 152 / 89);
 	}
 	
 	.large-canvas canvas

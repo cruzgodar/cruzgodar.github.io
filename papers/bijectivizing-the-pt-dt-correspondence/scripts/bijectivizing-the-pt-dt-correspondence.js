@@ -31,7 +31,7 @@
 					
 					animation_time = 0;
 					
-					for (let i = 0; i < arrays.length; i++)
+					for (let i = arrays.length - 1; i >= 0; i--)
 					{
 						await remove_array(0);
 					}
@@ -91,7 +91,7 @@
 					
 					animation_time = 0;
 					
-					for (let i = 0; i < arrays.length; i++)
+					for (let i = arrays.length - 1; i >= 0; i--)
 					{
 						await remove_array(0);
 					}
@@ -136,7 +136,7 @@
 					
 					animation_time = 0;
 					
-					for (let i = 0; i < arrays.length; i++)
+					for (let i = arrays.length - 1; i >= 0; i--)
 					{
 						await remove_array(0);
 					}
@@ -220,7 +220,7 @@
 					
 					animation_time = 0;
 					
-					for (let i = 0; i < arrays.length; i++)
+					for (let i = arrays.length - 1; i >= 0; i--)
 					{
 						await remove_array(0);
 					}
@@ -308,7 +308,7 @@
 					
 					animation_time = 0;
 					
-					for (let i = 0; i < arrays.length; i++)
+					for (let i = arrays.length - 1; i >= 0; i--)
 					{
 						await remove_array(0);
 					}
@@ -332,6 +332,100 @@
 					resolve();
 				});
 			},
+		},
+		
+		
+		
+		"hooks":
+		{
+			callback: (slide, forward) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					slide.appendChild(canvas_bundle);
+					
+					let plane_partition = [
+						[Infinity, Infinity, Infinity, Infinity, Infinity, 8],
+						[Infinity, Infinity, 7, 7, 6, 4],
+						[11, 10, 7, 7, 3, 2],
+						[8, 8, 6, 4, 1, 0],
+						[6, 6, 6, 3, 0, 0],
+						[6, 3, 3, 2, 0, 0]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = arrays.length - 1; i >= 0; i--)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, plane_partition);
+					
+					if (!in_2d_view)
+					{
+						await show_2d_view();
+					}
+					
+					await show_floor();
+					
+					animation_time = 600;
+					
+					
+					
+					resolve();
+				});
+			},
+			
+			
+			
+			builds:
+			[
+				() => {},
+				() => {},
+				() => {},
+				
+				(slide, forward) =>
+				{
+					return new Promise(async (resolve, reject) =>
+					{
+						let pivot = [2, 3];
+						let cubes = [];
+						
+						for (let j = 0; j <= pivot[1]; j++)
+						{
+							let height = arrays[0].numbers[pivot[0]][j];
+							
+							if (height !== Infinity)
+							{
+								cubes.push([pivot[0], j, height - 1]);
+							}
+						}
+						
+						for (let i = pivot[0] - 1; i >= 0; i--)
+						{
+							let height = arrays[0].numbers[i][pivot[1]];
+							
+							if (height !== Infinity)
+							{
+								cubes.push([i, pivot[1], height - 1]);
+							}
+						}
+						
+						if (forward)
+						{
+							await color_cubes(arrays[0], cubes, .75);
+						}
+						
+						else
+						{
+							await uncolor_cubes(arrays[0], cubes);
+						}
+						
+						resolve();
+					});
+				}
+			]
 		},
 	};
 	
@@ -1631,6 +1725,8 @@
 				draw_all_2d_view_text();
 			}
 			
+			console.log(arrays.length);
+			
 			resolve(array);
 		});	
 	}
@@ -2114,6 +2210,13 @@
 			
 			arrays.forEach(array =>
 			{
+				anime({
+					targets: array.cube_group.rotation,
+					y: 0,
+					duration: animation_time,
+					easing: "easeInOutQuad"
+				});
+				
 				anime({
 					targets: array.cube_group.position,
 					x: array.center_offset,
