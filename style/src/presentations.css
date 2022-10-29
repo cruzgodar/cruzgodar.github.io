@@ -65,6 +65,11 @@
 	bottom: calc(2.5vw - 4px);
 }
 
+.footer-text p
+{
+	margin-bottom: 0 !important;
+}
+
 
 
 .slide .wilson-applet-canvas-container
