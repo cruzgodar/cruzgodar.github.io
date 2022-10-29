@@ -4,6 +4,8 @@
 	
 	const APPLET_VERSION = false;
 	
+	//Page.Presentation.jump_to_slide(Page.Presentation.slides.length - 1);
+	
 	
 	
 	let canvas_bundle = Page.element.querySelector("#canvas-bundle");
@@ -12,7 +14,7 @@
 	{
 		"title":
 		{
-			callback: slide =>
+			callback: (slide, forward) =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -73,7 +75,7 @@
 		
 		"young-diagram-example":
 		{
-			callback: slide =>
+			callback: (slide, forward) =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -118,7 +120,7 @@
 		
 		"plane-partition-example":
 		{
-			callback: slide =>
+			callback: (slide, forward) =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -202,7 +204,7 @@
 		
 		"app-example":
 		{
-			callback: slide =>
+			callback: (slide, forward) =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -280,6 +282,56 @@
 					});
 				}
 			]
+		},
+		
+		
+		
+		"rpp-example":
+		{
+			callback: (slide, forward) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					slide.appendChild(canvas_bundle);
+					
+					let rpp = [
+						[1, 3, 4],
+						[2, 5, 0],
+						[3, 0, 0]
+					];
+					
+					let app = [
+						[Infinity, Infinity, 3],
+						[Infinity, 5, 2],
+						[4, 3, 1],
+					];
+					
+					animation_time = 0;
+					
+					for (let i = 0; i < arrays.length; i++)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, rpp);
+					await add_new_array(1, app);
+					
+					if (!in_2d_view)
+					{
+						await show_2d_view();
+					}
+					
+					await hide_floor();
+					
+					draw_all_2d_view_text();
+					
+					animation_time = 600;
+					
+					
+					
+					resolve();
+				});
+			},
 		},
 	};
 	
@@ -1392,14 +1444,29 @@
 				
 				if (i !== index)
 				{
-					anime({
-						targets: arrays[i].cube_group.position,
-						x: arrays[i].center_offset,
-						y: 0,
-						z: -arrays[i].center_offset,
-						duration: animation_time,
-						easing: "easeInOutQuad"
-					});
+					if (in_2d_view)
+					{
+						anime({
+							targets: arrays[i].cube_group.position,
+							x: arrays[i].center_offset,
+							y: 0,
+							z: 0,
+							duration: animation_time,
+							easing: "easeInOutQuad"
+						});
+					}
+					
+					else
+					{
+						anime({
+							targets: arrays[i].cube_group.position,
+							x: arrays[i].center_offset,
+							y: 0,
+							z: -arrays[i].center_offset,
+							duration: animation_time,
+							easing: "easeInOutQuad"
+						});
+					}
 				}
 			}
 			
@@ -1410,7 +1477,15 @@
 			
 			if (!add_walls)
 			{
-				array.cube_group.position.set(array.center_offset, 0, -array.center_offset);
+				if (in_2d_view)
+				{
+					array.cube_group.position.set(array.center_offset, 0, 0);
+				}
+				
+				else
+				{
+					array.cube_group.position.set(array.center_offset, 0, -array.center_offset);
+				}
 			}
 			
 			array.cube_group.rotation.y = rotation_y;
@@ -1964,6 +2039,15 @@
 					duration: animation_time,
 					easing: "easeInOutQuad"
 				});
+				
+				anime({
+					targets: array.cube_group.position,
+					x: array.center_offset,
+					y: 0,
+					z: -array.center_offset,
+					duration: animation_time,
+					easing: "easeInOutQuad"
+				});
 			});
 			
 			rotation_y = 0;
@@ -2031,8 +2115,10 @@
 			arrays.forEach(array =>
 			{
 				anime({
-					targets: array.cube_group.rotation,
+					targets: array.cube_group.position,
+					x: array.center_offset,
 					y: 0,
+					z: 0,
 					duration: animation_time,
 					easing: "easeInOutQuad"
 				});
@@ -2095,7 +2181,7 @@
 			hex_view_camera_pos[2] += 10;
 		}
 		
-		_2d_view_camera_pos = [hex_view_camera_offset, total_array_size + 10, -hex_view_camera_offset];	
+		_2d_view_camera_pos = [hex_view_camera_offset, total_array_size + 10, 0];	
 		
 		if (in_2d_view)
 		{
@@ -2612,7 +2698,7 @@
 		
 		arrays.forEach(array =>
 		{
-			let top = total_array_footprint - array.partial_footprint_sum - 1;
+			let top = (total_array_footprint - array.footprint - 1) / 2;
 			let left = array.partial_footprint_sum - array.footprint;
 			
 			//Show the numbers in the right places.
@@ -2630,7 +2716,7 @@
 	{
 		wilson_numbers.ctx.clearRect(font_size * (col + left + 1), font_size * (row + top + 1), font_size, font_size);
 		
-		if (array.numbers[row][col] !== Infinity)
+		if (array.numbers[row][col] !== Infinity && (array.numbers[row][col] !== 0 || floor_lightness !== 0))
 		{
 			let text_metrics = wilson_numbers.ctx.measureText(array.numbers[row][col]);
 			

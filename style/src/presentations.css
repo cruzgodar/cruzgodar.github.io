@@ -41,14 +41,14 @@
 	
 	margin-top: -1vw;
 	
-	margin-bottom: 3vw;
+	margin-bottom: 1.5vw;
 }
 
 .slide .section-text
 {
 	font-size: 3vw;
 	
-	margin-bottom: 2vw;
+	margin-bottom: 1.5vw;
 }
 
 .slide .body-text
@@ -127,14 +127,14 @@
 		
 		margin-top: calc(-1vh * 152 / 89);
 		
-		margin-bottom: calc(3vh * 152 / 89);
+		margin-bottom: calc(1.5vh * 152 / 89);
 	}
 
 	.slide .section-text
 	{
 		font-size: calc(3vh * 152 / 89);
 		
-		margin-bottom: calc(2vh * 152 / 89);
+		margin-bottom: calc(1.5vh * 152 / 89);
 	}
 
 	.slide .body-text

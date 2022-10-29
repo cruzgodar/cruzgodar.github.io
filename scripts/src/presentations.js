@@ -29,6 +29,10 @@ Page.Presentation =
 		
 		
 		
+		Page.element.querySelectorAll("h1, h2").forEach(element => element.parentNode.insertAdjacentHTML("afterend", "<br>"));
+		
+		
+		
 		document.documentElement.addEventListener("keydown", this.handle_keydown_event);
 		Page.temporary_handlers["keydown"].push(this.handle_keydown_event);
 		
@@ -108,7 +112,7 @@ Page.Presentation =
 			builds.forEach(element => element.style.opacity = 0);
 		}
 		
-		try {await this.callbacks[this.slides[this.current_slide].id].callback(this.slides[this.current_slide])}
+		try {await this.callbacks[this.slides[this.current_slide].id].callback(this.slides[this.current_slide], true)}
 		catch(ex) {}
 		
 		Page.Animate.fade_up_in(Page.element, Site.page_animation_time * 2);
@@ -157,7 +161,7 @@ Page.Presentation =
 		
 		this.slides[this.current_slide].style.display = "block";
 		
-		try {await this.callbacks[this.slides[this.current_slide].id].callback(this.slides[this.current_slide])}
+		try {await this.callbacks[this.slides[this.current_slide].id].callback(this.slides[this.current_slide], false)}
 		catch(ex) {}
 		
 		Page.Animate.fade_down_in(Page.element, Site.page_animation_time * 2);
@@ -211,7 +215,7 @@ Page.Presentation =
 		
 		
 		
-		try {await this.callbacks[this.slides[this.current_slide].id].callback(this.slides[this.current_slide])}
+		try {await this.callbacks[this.slides[this.current_slide].id].callback(this.slides[this.current_slide], true)}
 		catch(ex) {}
 		
 		
