@@ -10,6 +10,8 @@ Page.Presentation =
 	build_state: 0,
 	num_builds: 0,
 	
+	currently_animating: false,
+	
 	
 	
 	init: function(callbacks)
@@ -68,6 +70,15 @@ Page.Presentation =
 	
 	next_slide: async function()
 	{
+		if (this.currently_animating)
+		{
+			return;
+		}
+		
+		this.currently_animating = true;
+		
+		
+		
 		if (this.num_builds !== 0 && this.build_state !== this.num_builds)
 		{
 			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element => Page.Animate.fade_up_in(element, Site.page_animation_time * 2));
@@ -77,6 +88,8 @@ Page.Presentation =
 			
 			this.build_state++;
 			
+			this.currently_animating = false;
+			
 			return;
 		}
 		
@@ -84,6 +97,8 @@ Page.Presentation =
 		
 		if (this.current_slide === this.slides.length)
 		{
+			this.currently_animating = false;
+			
 			return;
 		}
 		
@@ -117,13 +132,24 @@ Page.Presentation =
 		try {await this.callbacks[this.slides[this.current_slide].id].callback(this.slides[this.current_slide], true)}
 		catch(ex) {}
 		
-		Page.Animate.fade_up_in(Page.element, Site.page_animation_time * 2);
+		await Page.Animate.fade_up_in(Page.element, Site.page_animation_time * 2);
+		
+		this.currently_animating = false;
 	},
 	
 	
 	
 	previous_slide: async function()
 	{
+		if (this.currently_animating)
+		{
+			return;
+		}
+		
+		this.currently_animating = true;
+		
+		
+		
 		if (this.num_builds !== 0 && this.build_state !== 0)
 		{
 			this.build_state--;
@@ -133,6 +159,8 @@ Page.Presentation =
 			try {await this.callbacks[this.slides[this.current_slide].id].builds[this.build_state](this.slides[this.current_slide], false)}
 			catch(ex) {}
 			
+			this.currently_animating = false;
+			
 			return;
 		}
 		
@@ -140,6 +168,8 @@ Page.Presentation =
 		
 		if (this.current_slide === 0 || this.current_slide === this.slides.length)
 		{
+			this.currently_animating = false;
+			
 			return;
 		}
 		
@@ -166,15 +196,28 @@ Page.Presentation =
 		try {await this.callbacks[this.slides[this.current_slide].id].callback(this.slides[this.current_slide], false)}
 		catch(ex) {}
 		
-		Page.Animate.fade_down_in(Page.element, Site.page_animation_time * 2);
+		await Page.Animate.fade_down_in(Page.element, Site.page_animation_time * 2);
+		
+		this.currently_animating = false;
 	},
 	
 	
 	
 	jump_to_slide: async function(index)
 	{
+		if (this.currently_animating)
+		{
+			return;
+		}
+		
+		this.currently_animating = true;
+		
+		
+		
 		if (index < 0 || index >= this.slides.length || index === this.current_slide)
 		{
+			this.currently_animating = false;
+			
 			return;
 		}
 		
@@ -231,6 +274,8 @@ Page.Presentation =
 		{
 			await Page.Animate.fade_down_in(Page.element, Site.page_animation_time * 2);
 		}
+		
+		this.currently_animating = false;
 	},
 	
 	

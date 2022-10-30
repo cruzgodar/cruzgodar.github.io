@@ -14,7 +14,7 @@
 	{
 		"title":
 		{
-			callback: (slide, forward) =>
+			callback: function(slide, forward)
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -36,14 +36,14 @@
 						await remove_array(0);
 					}
 					
+					await show_floor();
+					
 					await add_new_array(0, plane_partition);
 					
 					if (!in_exact_hex_view)
 					{
 						await show_hex_view();
 					}
-					
-					await show_floor();
 					
 					
 					
@@ -75,7 +75,7 @@
 		
 		"young-diagram-example":
 		{
-			callback: (slide, forward) =>
+			callback: function(slide, forward)
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -96,14 +96,14 @@
 						await remove_array(0);
 					}
 					
+					await hide_floor();
+					
 					await add_new_array(0, plane_partition);
 					
 					if (!in_2d_view)
 					{
 						await show_2d_view();
 					}
-					
-					await hide_floor();
 					
 					numbers_canvas_container_element.style.opacity = 0;
 					
@@ -120,7 +120,7 @@
 		
 		"plane-partition-example":
 		{
-			callback: (slide, forward) =>
+			callback: function(slide, forward)
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -141,14 +141,14 @@
 						await remove_array(0);
 					}
 					
+					await show_floor();
+					
 					await add_new_array(0, plane_partition);
 					
 					if (!in_2d_view)
 					{
 						await show_2d_view();
 					}
-					
-					await show_floor();
 					
 					animation_time = 600;
 					
@@ -162,7 +162,7 @@
 			
 			builds:
 			[
-				(slide, forward) =>
+				function(slide, forward)
 				{
 					return new Promise(async (resolve, reject) =>
 					{
@@ -180,7 +180,7 @@
 					});
 				},
 				
-				(slide, forward) =>
+				function(slide, forward)
 				{
 					return new Promise(async (resolve, reject) =>
 					{
@@ -204,7 +204,7 @@
 		
 		"app-example":
 		{
-			callback: (slide, forward) =>
+			callback: function(slide, forward)
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -225,14 +225,14 @@
 						await remove_array(0);
 					}
 					
+					await show_floor();
+					
 					await add_new_array(0, plane_partition);
 					
 					if (!in_2d_view)
 					{
 						await show_2d_view();
 					}
-					
-					await show_floor();
 					
 					animation_time = 600;
 					
@@ -246,7 +246,7 @@
 			
 			builds:
 			[
-				(slide, forward) =>
+				function(slide, forward)
 				{
 					return new Promise(async (resolve, reject) =>
 					{
@@ -264,7 +264,7 @@
 					});
 				},
 				
-				(slide, forward) =>
+				function(slide, forward)
 				{
 					return new Promise(async (resolve, reject) =>
 					{
@@ -288,7 +288,7 @@
 		
 		"rpp-example":
 		{
-			callback: (slide, forward) =>
+			callback: function(slide, forward)
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -313,6 +313,8 @@
 						await remove_array(0);
 					}
 					
+					await hide_floor();
+					
 					await add_new_array(0, rpp);
 					await add_new_array(1, app);
 					
@@ -320,8 +322,6 @@
 					{
 						await show_2d_view();
 					}
-					
-					await hide_floor();
 					
 					draw_all_2d_view_text();
 					
@@ -338,17 +338,17 @@
 		
 		"hooks":
 		{
-			callback: (slide, forward) =>
+			callback: function(slide, forward)
 			{
 				return new Promise(async (resolve, reject) =>
 				{
 					slide.appendChild(canvas_bundle);
 					
 					let plane_partition = [
-						[Infinity, Infinity, Infinity, Infinity, Infinity, 8],
-						[Infinity, Infinity, 7, 7, 6, 4],
-						[11, 10, 7, 7, 3, 2],
-						[8, 8, 6, 4, 1, 0],
+						[Infinity, Infinity, Infinity, Infinity, Infinity, 5],
+						[Infinity, Infinity, 7, 7, 6, 5],
+						[8, 8, 7, 7, 3, 2],
+						[8, 7, 6, 4, 1, 1],
 						[6, 6, 6, 3, 0, 0],
 						[6, 3, 3, 2, 0, 0]
 					];
@@ -360,6 +360,8 @@
 						await remove_array(0);
 					}
 					
+					await show_floor();
+					
 					await add_new_array(0, plane_partition);
 					
 					if (!in_2d_view)
@@ -367,7 +369,12 @@
 						await show_2d_view();
 					}
 					
-					await show_floor();
+					
+					
+					if (!forward)
+					{
+						this.builds[3](slide, true);
+					}
 					
 					animation_time = 600;
 					
@@ -385,7 +392,7 @@
 				() => {},
 				() => {},
 				
-				(slide, forward) =>
+				function(slide, forward)
 				{
 					return new Promise(async (resolve, reject) =>
 					{
@@ -427,6 +434,161 @@
 				}
 			]
 		},
+		
+		
+		
+		"legos":
+		{
+			callback: function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					slide.appendChild(canvas_bundle);
+					
+					let plane_partition = [
+						[1, 1],
+						[1, 0]
+					];
+					
+					let hooks = [
+						[1, 0, 1, 1],
+						[0, 0, 0, 0],
+						[1, 0, 0, 1],
+						[1, 0, 1, 1]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = arrays.length - 1; i >= 0; i--)
+					{
+						await remove_array(0);
+					}
+					
+					await hide_floor();
+					
+					await add_new_array(0, plane_partition);
+					await add_new_array(1, hooks);
+					
+					if (!in_2d_view)
+					{
+						await show_2d_view();
+					}
+					
+					animation_time = 600;
+					
+					
+					
+					resolve();
+				});
+			}
+		},
+		
+		
+		
+		"zigzag-paths":
+		{
+			callback: function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					slide.appendChild(canvas_bundle);
+					
+					let plane_partition = [
+						[Infinity, Infinity, Infinity, Infinity, Infinity, 5],
+						[Infinity, Infinity, 7, 7, 6, 5],
+						[8, 8, 7, 7, 3, 2],
+						[8, 7, 6, 4, 1, 1],
+						[6, 6, 6, 3, 0, 0],
+						[6, 3, 3, 2, 0, 0]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = arrays.length - 1; i >= 0; i--)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, plane_partition);
+					
+					if (!in_2d_view)
+					{
+						await show_2d_view();
+					}
+					
+					await show_floor();
+					
+					
+					
+					if (!forward)
+					{
+						this.builds[2](slide, true);
+						this.builds[4](slide, true);
+					}
+					
+					animation_time = 600;
+					
+					
+					
+					resolve();
+				});
+			},
+			
+			
+			
+			builds:
+			[
+				() => {},
+				() => {},
+				
+				function(slide, forward)
+				{
+					return new Promise(async (resolve, reject) =>
+					{
+						let cubes = [[0, 5], [1, 5], [1, 4], [1, 3], [2, 3], [2, 2], [2, 1], [2, 0], [3, 0]];
+						
+						cubes = cubes.map(cube => [cube[0], cube[1], arrays[0].numbers[cube[0]][cube[1]] - 1]);
+						
+						if (forward)
+						{
+							for (let i = 0; i < cubes.length; i++)
+							{
+								await color_cubes(arrays[0], [cubes[i]], 0);
+							}
+						}
+						
+						else
+						{
+							await uncolor_cubes(arrays[0], cubes);
+						}
+						
+						resolve();
+					});
+				},
+				
+				() => {},
+				
+				function(slide, forward)
+				{
+					return new Promise(async (resolve, reject) =>
+					{
+						let cubes = [[3, 5, arrays[0].numbers[3][5] - 1]];
+						
+						if (forward)
+						{
+							await color_cubes(arrays[0], cubes, .6);
+						}
+						
+						else
+						{
+							await uncolor_cubes(arrays[0], cubes);
+						}
+						
+						resolve();
+					});
+				}
+			]
+		}
 	};
 	
 	
@@ -1724,8 +1886,6 @@
 			{
 				draw_all_2d_view_text();
 			}
-			
-			console.log(arrays.length);
 			
 			resolve(array);
 		});	

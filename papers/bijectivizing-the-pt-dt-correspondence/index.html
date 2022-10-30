@@ -166,7 +166,7 @@
 				For a partition $\mu$,
 				
 				$$
-					V_{(\emptyset, \emptyset, \mu)}(q) = W_{(\emptyset, \emptyset, \mu)}(q) M(q)
+					V_{(\emptyset, \emptyset, \mu)}(q) = W_{(\emptyset, \emptyset, \mu)}(q) M(q).
 				$$
 			
 			!end-text-block
@@ -202,8 +202,50 @@
 			!text b j Ex: $h(3, 4) = 5$ in the APP on the right.
 		</div>
 	</div>
+	
+	
+	
+	<div class="slide">
+		!text h The Hillman-Grassl Correspondence
+		
+		<div class="build build-0">
+			!text b j The generating function $V_{(\emptyset, \emptyset, \mu)}(q)$ has an elegant formulation in terms of hook lengths.
+		</div>
+		
+		<div class="build build-1 centered">
+			!text b j <strong>Thm:</strong> $\displaystyle V_{(\emptyset, \emptyset, \mu)}(q) = \prod_{(i, j) \notin \mu} \frac{1}{1 - q^{h(i, j)}}$.
+		</div>
+		
+		<div class="build build-2">
+			!text b j Combinatorially, APPs are in bijection with multisets of hooks, but it&#x2019;s not immediately clear how that bijection operates.
+		</div>
+	</div>
+	
+	
+	
+	<div id="legos" class="slide bottom-middle-canvas large-canvas">
+		!text b j Ex: how can we create the plane partition on the left using only the hooks on the right?
+	</div>
+	
+	
+	
+	<div id="zigzag-paths" class="slide bottom-right-canvas medium-canvas">
+		!text h Hooks and Hook Lengths
+		
+		<div class="build build-0 left-text">
+			!text b j Hillman and Grassl were the first to bijectivize the hook length formula for $V_{(\emptyset, \emptyset, \mu)}(q)$ by building APPs out of <dfn>zigzag paths</dfn> instead of hooks.
+		</div>
+		
+		<div class="build build-1 left-text">
+			!text b j A zigzag path begins at the rightmost nonzero entry at the top of its column. It moves down if the entries are equal and left otherwise, until it can no longer move.
+		</div>
+		
+		<div class="build build-3 left-text">
+			!text b j The <dfn>pivot</dfn> of a zigzag path is the box with the path&#x2019;s starting column and ending row (indicated here in blue).
+		</div>
+	</div>
 </div>
-
+ 
 <div style="display: none">
 	<canvas id="hidden-canvas" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
 	<canvas id="hidden-canvas-2" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
