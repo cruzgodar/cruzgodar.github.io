@@ -373,7 +373,7 @@
 					
 					if (!forward)
 					{
-						this.builds[3](slide, true);
+						await this.builds[3](slide, true);
 					}
 					
 					animation_time = 600;
@@ -522,8 +522,8 @@
 					
 					if (!forward)
 					{
-						this.builds[2](slide, true);
-						this.builds[4](slide, true);
+						await this.builds[2](slide, true);
+						await this.builds[4](slide, true);
 					}
 					
 					animation_time = 600;
@@ -582,6 +582,110 @@
 						else
 						{
 							await uncolor_cubes(arrays[0], cubes);
+						}
+						
+						resolve();
+					});
+				}
+			]
+		},
+		
+		
+		
+		"zigzag-paths-2":
+		{
+			callback: function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					slide.appendChild(canvas_bundle);
+					
+					let plane_partition = [
+						[Infinity, Infinity, Infinity, Infinity, Infinity, 5],
+						[Infinity, Infinity, 7, 7, 6, 5],
+						[8, 8, 7, 7, 3, 2],
+						[8, 7, 6, 4, 1, 1],
+						[6, 6, 6, 3, 0, 0],
+						[6, 3, 3, 2, 0, 0]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = arrays.length - 1; i >= 0; i--)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, plane_partition);
+					
+					if (!in_2d_view)
+					{
+						await show_2d_view();
+					}
+					
+					await show_floor();
+					
+					
+					
+					let cubes = [[0, 5], [1, 5], [1, 4], [1, 3], [2, 3], [2, 2], [2, 1], [2, 0], [3, 0]];
+					
+					cubes = cubes.map(cube => [cube[0], cube[1], arrays[0].numbers[cube[0]][cube[1]] - 1]);
+					
+					for (let i = 0; i < cubes.length; i++)
+					{
+						await color_cubes(arrays[0], [cubes[i]], 0);
+					}
+					
+					cubes = [[3, 5, arrays[0].numbers[3][5] - 1]];
+					
+					await color_cubes(arrays[0], cubes, .6);
+					
+					
+					
+					if (!forward)
+					{
+						await this.builds[3](slide, true);
+					}
+					
+					animation_time = 600;
+					
+					
+					
+					resolve();
+				});
+			},
+			
+			
+			
+			builds:
+			[
+				() => {},
+				() => {},
+				() => {},
+				
+				function(slide, forward)
+				{
+					return new Promise(async (resolve, reject) =>
+					{
+						let cubes = [[0, 5], [1, 5], [1, 4], [1, 3], [2, 3], [2, 2], [2, 1], [2, 0], [3, 0]];
+						let targets = [[0, 5], [1, 5], [2, 5], [3, 5], [3, 4], [3, 3], [3, 2], [3, 1], [3, 0]];
+						
+						for (let i = 0; i < cubes.length; i++)
+						{
+							let height = arrays[0].numbers[cubes[i][0]][cubes[i][1]] - 1;
+							
+							cubes[i].push(height);
+							targets[i].push(height);
+						}
+						
+						if (forward)
+						{
+							await move_cubes(arrays[0], cubes, arrays[0], targets);
+						}
+						
+						else
+						{
+							await move_cubes(arrays[0], targets, arrays[0], cubes);
 						}
 						
 						resolve();
