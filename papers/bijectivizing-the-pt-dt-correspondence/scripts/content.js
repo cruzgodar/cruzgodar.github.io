@@ -684,5 +684,142 @@ let callbacks =
 				});
 			}
 		]
+	},
+	
+	
+	
+	"hillman-grassl":
+	{
+		callback: function(slide, forward)
+		{
+			return new Promise(async (resolve, reject) =>
+			{
+				slide.appendChild(canvas_bundle);
+				
+				let plane_partition = [
+					[Infinity, Infinity, Infinity, 3],
+					[Infinity, 6, 4, 3],
+					[6, 6, 4, 2],
+					[3, 1, 1, 0]
+				];
+				
+				animation_time = 0;
+				
+				for (let i = arrays.length - 1; i >= 0; i--)
+				{
+					await remove_array(0);
+				}
+				
+				await add_new_array(0, plane_partition);
+				
+				if (!in_2d_view)
+				{
+					await show_2d_view();
+				}
+				
+				await show_floor();
+				
+				animation_time = 600;
+				
+				resolve();
+			});
+		},
+		
+		
+		
+		builds:
+		[
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						await show_hex_view();
+					}
+					
+					else
+					{
+						animation_time = 100;
+						
+						await show_2d_view();
+						
+						animation_time = 600;
+					}
+					
+					resolve();
+				});
+			},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						await run_algorithm("hillman_grassl", 0);
+					}
+					
+					else
+					{
+						animation_time = 100;
+						
+						await run_algorithm("hillman_grassl_inverse", 0);
+						
+						animation_time = 600;
+					}
+					
+					resolve();
+				});
+			},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						animation_time = 300;
+						
+						await run_algorithm("hillman_grassl_inverse", 0);
+						
+						animation_time = 600;
+					}
+					
+					else
+					{
+						animation_time = 100;
+						
+						await run_algorithm("hillman_grassl", 0);
+						
+						animation_time = 600;
+					}
+					
+					resolve();
+				});
+			},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						await show_2d_view();
+					}
+					
+					else
+					{
+						animation_time = 100;
+						
+						await show_hex_view();
+						
+						animation_time = 600;
+					}
+					
+					resolve();
+				});
+			}
+		]
 	}
 };

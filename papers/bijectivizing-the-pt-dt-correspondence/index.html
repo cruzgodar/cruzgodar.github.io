@@ -23,7 +23,7 @@
 !header Bijectivizing the PT-DT Correspondence
 
 <div id="slide-container">
-	<div id="title" class="slide bottom-right-canvas medium-canvas">
+	<div id="title" class="slide medium-canvas">
 		!text h Bijectivizing the PT-DT Correspondence
 		
 		!text s Cruz Godar, University of Oregon
@@ -69,7 +69,7 @@
 	
 	
 
-	<div id="young-diagram-example" class="slide bottom-middle-canvas large-canvas">
+	<div id="young-diagram-example" class="slide large-canvas">
 		!text b j Ex: the Young diagram of $(5, 3, 2, 2, 1, 0, 0, ...)$.
 	</div>
 	
@@ -89,7 +89,7 @@
 	
 	
 	
-	<div id="plane-partition-example" class="slide bottom-middle-canvas large-canvas">
+	<div id="plane-partition-example" class="slide large-canvas">
 		!text b j Ex: a plane partition of weight $33$.
 	</div>
 	
@@ -113,13 +113,13 @@
 	
 	
 	
-	<div id="app-example" class="slide bottom-middle-canvas large-canvas">
+	<div id="app-example" class="slide large-canvas">
 		!text b j Ex: a plane partition of weight $13$ asymptotic to $\mu = (3, 2, 0, 0, ...)$.
 	</div>
 	
 	
 	
-	<div id="rpp-example" class="slide bottom-middle-canvas large-canvas">
+	<div id="rpp-example" class="slide large-canvas">
 		!text b j Ex: an RPP of weight $18$, and the same RPP expressed as an APP.
 	</div>
 	
@@ -187,7 +187,7 @@
 	
 	
 	
-	<div id="hooks" class="slide bottom-right-canvas medium-canvas">
+	<div id="hooks" class="slide medium-canvas">
 		!text h Hooks and Hook Lengths
 		
 		<div class="build build-0 left-text">
@@ -223,13 +223,13 @@
 	
 	
 	
-	<div id="legos" class="slide bottom-middle-canvas large-canvas">
+	<div id="legos" class="slide large-canvas">
 		!text b j Ex: how can we create the plane partition on the left using only the hooks on the right?
 	</div>
 	
 	
 	
-	<div id="zigzag-paths" class="slide bottom-right-canvas medium-canvas">
+	<div id="zigzag-paths" class="slide medium-canvas">
 		!text h Hooks and Hook Lengths
 		
 		<div class="build build-0 left-text">
@@ -247,7 +247,7 @@
 	
 	
 	
-	<div id="zigzag-paths-2" class="slide bottom-right-canvas medium-canvas">
+	<div id="zigzag-paths-2" class="slide medium-canvas">
 		!text b j A few important properties of zigzag paths:
 		
 		<div class="build build-0 left-text">
@@ -260,6 +260,42 @@
 		
 		<div class="build build-2 left-text">
 			!text b j Every zigzag path has length equal to its pivot&#x2019;s hook length.
+		</div>
+	</div>
+	
+	
+	
+	<div class="slide">
+		!text b j The Hillman-Grassl map is a bijection between APPs and multisets of hooks. It operates on an APP by decrementing its zigzag path, finding the zigzag path of the resulting APP and decrementing <em>it</em>, and so on, until eventually the APP has weight zero. At each step, we record the hook formed by reshaping the decremented path.
+		
+		<div class="build build-0">
+			!text b j The removal of a zigzag path is an invertible operation, and it can be shown that the generated sequence of pivots respects an inverted lexicographic ordering, so given a multiset of pivots, the inverse Hillman-Grassl map is well-defined.
+		</div>
+		
+		<div class="build build-1">
+			!text b j Since hooks are in bijection with pivots, we can concisely represent the multiset of hooks as a tableau (an unordered grid of numbers).
+		</div>
+	</div>
+	
+	
+	
+	<div id="hillman-grassl" class="slide full-canvas"></div>
+	
+	
+	
+	<div class="slide medium-canvas">
+		!text h The Structure of the Bijection
+		
+		<div class="build build-0 left-text">
+			!text b j It&#x2019;s generally easier to work with these unordered tableaux than APPs, since we can more freely rearrange the entries.
+		</div>
+		
+		<div class="build build-1 left-text">
+			!text b j In order for this to help us find our bijection, though, it needs to be true on the level of <em>hooks</em>, and not just on the level of boxes.
+		</div>
+		
+		<div class="build build-2 left-text">
+			!text b j Since every plane partition contains $n$ distinct $n$-hooks, we need to show that any APP has exactly enough extra $n$-hooks to fill up an RPP in the shape of its asymptote.
 		</div>
 	</div>
 </div>

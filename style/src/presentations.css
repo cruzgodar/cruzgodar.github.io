@@ -99,7 +99,13 @@
 	border-radius: 1.25vw;
 }
 
-.bottom-right-canvas #canvas-bundle
+.medium-canvas canvas
+{
+	width: 40.8vw;
+	height: 40.8vw;
+}
+
+.medium-canvas #canvas-bundle
 {
 	position: absolute;
 	
@@ -107,7 +113,13 @@
 	bottom: 2vw;
 }
 
-.bottom-middle-canvas #canvas-bundle
+.large-canvas canvas
+{
+	width: 45vw;
+	height: 45vw;
+}
+
+.large-canvas #canvas-bundle
 {
 	position: absolute;
 	
@@ -115,16 +127,18 @@
 	bottom: calc(2.5vw - 4px);
 }
 
-.medium-canvas canvas
+.full-canvas canvas
 {
-	width: 40.8vw;
-	height: 40.8vw;
+	width: calc(50.625vw - 8px);
+	height: calc(50.625vw - 8px);
 }
 
-.large-canvas canvas
+.full-canvas #canvas-bundle
 {
-	width: 45vw;
-	height: 45vw;
+	position: absolute;
+	
+	left: calc((90vw - 50.625vw + 8px) / 2 + 2.5vw);
+	bottom: calc(2.5vw - 4px);
 }
 
 
@@ -143,7 +157,7 @@
 		
 		padding: calc(2.5vh * 152 / 89);
 		
-		font-size: calc(2vh * 152 / 89);		
+		font-size: calc(2vh * 152 / 89);	
 	}
 	
 	.slide .heading-text
@@ -181,27 +195,45 @@
 		border-radius: calc(1.25vh * 152 / 89);
 	}
 	
-	.bottom-right-canvas #canvas-bundle
-	{
-		bottom: calc(2vh * 152 / 89);
-		right: calc(2.5vh * 152 / 89);
-	}
-	
-	.bottom-middle-canvas #canvas-bundle
-	{
-		left: calc(25vh * 152 / 89);
-		bottom: calc(2.5vh * 152 / 89 - 4px);
-	}
-	
 	.medium-canvas canvas
-	{
+	{	
 		width: calc(40.8vh * 152 / 89);
 		height: calc(40.8vh * 152 / 89);
 	}
-	
+
+	.medium-canvas #canvas-bundle
+	{
+		position: absolute;
+		
+		right: calc(2.5vh * 152 / 89);
+		bottom: calc(2vh * 152 / 89);
+	}
+
 	.large-canvas canvas
 	{
 		width: calc(45vh * 152 / 89);
 		height: calc(45vh * 152 / 89);
+	}
+
+	.large-canvas #canvas-bundle
+	{
+		position: absolute;
+		
+		left: calc(25vh * 152 / 89);
+		bottom: calc(2.5vh * 152 / 89 - 4px);
+	}
+	
+	.full-canvas canvas
+	{
+		width: calc(50.625vh * 152 / 89 - 8px);
+		height: calc(50.625vh * 152 / 89 - 8px);
+	}
+
+	.full-canvas #canvas-bundle
+	{
+		position: absolute;
+		
+		left: calc(((90vh - 50.625vh) * 152 / 89 + 8px) / 2 + 2.5vh * 152 / 89);
+		bottom: calc(2.5vh * 152 / 89 - 4px);
 	}
 }
