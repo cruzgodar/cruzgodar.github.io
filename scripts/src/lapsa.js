@@ -9,7 +9,7 @@ Page.Presentation =
 	shelf_is_open: false,
 	shelf_is_animating: false,
 	
-	current_slide: -1,
+	current_slide: 0,
 	
 	build_state: 0,
 	num_builds: 0,
@@ -78,6 +78,10 @@ Page.Presentation =
 		document.body.style.overflowY = "hidden";
 		document.body.style.userSelect = "none";
 		document.body.style.WebkitUserSelect = "none";
+		
+		
+		
+		Page.Load.HoverEvents.add(Page.element.querySelector("#help-link"));
 		
 		
 		
@@ -340,7 +344,7 @@ Page.Presentation =
 		
 		this.slide_shelf.style.display = "";
 		
-		await Page.Animate.show_slide_shelf(this.slide_shelf, Site.opacity_animation_time * 1.1);
+		await Page.Animate.show_slide_shelf(this.slide_shelf, Site.opacity_animation_time * 1.05);
 		
 		this.shelf_is_animating = false;
 	},
@@ -350,7 +354,7 @@ Page.Presentation =
 		this.shelf_is_open = false;
 		this.shelf_is_animating = true;
 		
-		await Page.Animate.hide_slide_shelf(this.slide_shelf, Site.opacity_animation_time * 1.1);
+		await Page.Animate.hide_slide_shelf(this.slide_shelf, Site.opacity_animation_time * 1.05);
 		
 		this.shelf_is_animating = false;
 	},

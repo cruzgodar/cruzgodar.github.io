@@ -13,11 +13,11 @@
 		"components.js",
 		"footer.js",
 		"images.js",
+		"lapsa.js",
 		"layout.js",
 		"main.js",
 		"navigation.js",
 		"page-load.js",
-		"presentations.js",
 		"settings.js",
 		"sitemap.js"
 	];

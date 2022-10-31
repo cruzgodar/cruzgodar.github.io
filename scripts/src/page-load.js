@@ -842,6 +842,11 @@ Page.Load =
 				{
 					let href = link.getAttribute("href");
 					
+					if (href === null)
+					{
+						return;
+					}
+					
 					if (href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data")
 					{
 						link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + url_vars_suffix);

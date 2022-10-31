@@ -53,6 +53,8 @@ a
 	color: rgb(127, 192, 127);
 	text-decoration: none;
 	transition: color .125s ease-in-out;
+	
+	cursor: pointer;
 }
 
 a.hover

@@ -259,8 +259,6 @@ Site.load = async function(url)
 	
 	const browser_is_ios = Browser.is_ios();
 	
-	
-	
 	//Extremely gross, but I cannot find a better way to deal with the difference between the appearance of box shadows in WebKit vs Chrome.
 	
 	Site.add_style(`
@@ -329,8 +327,8 @@ Site.load = async function(url)
 		Page.Animate.change_left_settings_button = Page.Animate.change_left_settings_button_css;
 		Page.Animate.change_right_settings_button = Page.Animate.change_right_settings_button_css;
 		
-		Page.Animate.show_slide_shelf = Page.Animate.show_slide_shelf_css;
-		Page.Animate.hide_slide_shelf = Page.Animate.hide_slide_shelf_css;
+		Page.Animate.show_slide_shelf = Page.Animate.show_slide_shelf_js;
+		Page.Animate.hide_slide_shelf = Page.Animate.hide_slide_shelf_js;
 		
 		Page.Animate.change_footer_image_link_text = Page.Animate.change_footer_image_link_text_css;
 		

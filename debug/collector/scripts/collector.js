@@ -17,11 +17,11 @@
 			"components.js",
 			"footer.js",
 			"images.js",
+			"lapsa.js",
 			"layout.js",
 			"main.js",
 			"navigation.js",
 			"page-load.js",
-			"presentations.js",
 			"settings.js",
 			"sitemap.js"
 		];
@@ -70,9 +70,9 @@
 			"buttons-and-boxes.css",
 			"header-and-footer.css",
 			"image-links.css",
+			"lapsa.css",
 			"main.css",
 			"notes.css",
-			"presentations.css",
 			"progress.css",
 			"writing.css"
 		];

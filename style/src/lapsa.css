@@ -155,9 +155,9 @@
 	position: fixed;
 	
 	width: 100px;
-	height: 285px;
+	height: 325px;
 	
-	top: calc((100vh - 300px) / 2);
+	top: calc((100vh - 325px) / 2);
 	left: 0;
 	
 	display: flex;
@@ -169,6 +169,7 @@
 #slide-shelf
 {
 	width: 50px;
+	margin-right: 0;
 	background-color: rgb(255, 255, 255);
 	
 	display: flex;
