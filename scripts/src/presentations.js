@@ -4,6 +4,7 @@ Page.Presentation =
 	
 	slides: [],
 	slide_container: null,
+	slide_shelf_container: null,
 	
 	current_slide: -1,
 	
@@ -21,6 +22,25 @@ Page.Presentation =
 		this.slides = Page.element.querySelectorAll(".slide");
 		this.slide_container = Page.element.querySelector("#slide-container");
 		
+		this.slide_shelf_container = document.createElement("div");
+		this.slide_shelf_container.classList.add("slide-shelf-container");
+		
+		this.slide_shelf_container.innerHTML = `
+			<div class="slide-shelf">
+				<input type="image" id="up-2-button" class="shelf-button dont-close-shelf" src="/graphics/presentation-icons/up-2.png" onclick="Page.Presentation.previous_slide(true)" tabindex="-1">
+				<input type="image" id="up-1-button" class="shelf-button dont-close-shelf" src="/graphics/presentation-icons/up-1.png" onclick="Page.Presentation.previous_slide()" tabindex="-1">
+				<input type="image" id="down-1-button" class="shelf-button dont-close-shelf" src="/graphics/presentation-icons/down-1.png" onclick="Page.Presentation.next_slide()" tabindex="-1">
+				<input type="image" id="down-2-button" class="shelf-button dont-close-shelf" src="/graphics/presentation-icons/down-2.png" onclick="Page.Presentation.next_slide(true)" tabindex="-1">
+			</div>
+		`;
+		
+		document.body.appendChild(this.slide_shelf_container);
+		
+		setTimeout(() =>
+		{
+			document.body.querySelectorAll(".shelf-button").forEach(element => Page.Load.HoverEvents.add(element));
+		}, 50);
+		
 		this.slides.forEach(element => element.style.display = "none");
 		
 		Page.element.querySelectorAll("header, footer").forEach(element => element.style.display = "none");
@@ -29,6 +49,8 @@ Page.Presentation =
 		
 		document.documentElement.style.overflowY = "hidden";
 		document.body.style.overflowY = "hidden";
+		document.body.style.userSelect = "none";
+		document.body.style.WebkitUserSelect = "none";
 		
 		
 		
@@ -64,11 +86,13 @@ Page.Presentation =
 		
 		document.documentElement.style.overflowY = "visible";
 		document.body.style.overflowY = "visible";
+		document.body.style.userSelect = "auto";
+		document.body.style.WebkitUserSelect = "auto";
 	},
 	
 	
 	
-	next_slide: async function()
+	next_slide: async function(skip_builds = false)
 	{
 		if (this.currently_animating)
 		{
@@ -79,7 +103,7 @@ Page.Presentation =
 		
 		
 		
-		if (this.num_builds !== 0 && this.build_state !== this.num_builds)
+		if (!skip_builds && this.num_builds !== 0 && this.build_state !== this.num_builds)
 		{
 			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element => Page.Animate.fade_up_in(element, Site.page_animation_time * 2));
 			
@@ -139,7 +163,7 @@ Page.Presentation =
 	
 	
 	
-	previous_slide: async function()
+	previous_slide: async function(skip_builds = false)
 	{
 		if (this.currently_animating)
 		{
@@ -150,7 +174,7 @@ Page.Presentation =
 		
 		
 		
-		if (this.num_builds !== 0 && this.build_state !== 0)
+		if (!skip_builds && this.num_builds !== 0 && this.build_state !== 0)
 		{
 			this.build_state--;
 			
@@ -188,6 +212,8 @@ Page.Presentation =
 		this.num_builds = Math.max(builds.length, this.callbacks?.[this.slides[this.current_slide].id]?.builds?.length ?? 0);
 		
 		this.build_state = this.num_builds;
+		
+		builds.forEach(element => element.style.opacity = 1);
 		
 		
 		

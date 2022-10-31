@@ -150,6 +150,55 @@
 
 
 
+.slide-shelf-container
+{
+	position: fixed;
+	
+	width: 50px;
+	height: 100vh;
+	
+	top: 0;
+	right: 25px;
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.slide-shelf
+{
+	width: 50px;
+	background-color: rgb(255, 255, 255);
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	
+	border-radius: 10px;
+	
+	padding: 5px;
+	
+	box-shadow: 0px 0px 5px 0px rgb(127, 127, 127);
+}
+
+.shelf-button
+{
+	width: 50px;
+	border-radius: 5px;
+	
+	transition: background-color .075s ease-in-out;
+	background-color: rgb(255, 255, 255);
+}
+
+.shelf-button.hover
+{
+	background-color: rgb(192, 192, 192);
+}
+
+
+
 /* By default, the slide is 95vw wide due to the padding, and the height is 55.625vw. This aspect ratio is 152:89, so when we're larger than that, we switch to measuring in terms of vh instead. At the switching point, 1vw = 1vh * 152/89, which we use for our calculations. */
 @media (min-aspect-ratio: 152/89)
 {
