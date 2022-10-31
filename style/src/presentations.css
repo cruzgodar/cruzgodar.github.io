@@ -28,6 +28,8 @@
 	font-size: 2vw;
 	
 	line-height: 1.25;
+	
+	overflow: hidden;
 }
 
 .slide .heading-text, .slide .section-text, .slide .body-text
@@ -110,7 +112,7 @@
 	position: absolute;
 	
 	right: 2.5vw;
-	bottom: 2vw;
+	bottom: 2.5vw;
 }
 
 .large-canvas canvas
@@ -124,21 +126,26 @@
 	position: absolute;
 	
 	left: 25vw;
-	bottom: calc(2.5vw - 4px);
+	bottom: 2.5vw;
+}
+
+.slide.full-canvas
+{
+	background-color: rgb(0, 0, 0);
 }
 
 .full-canvas canvas
 {
-	width: calc(50.625vw - 8px);
-	height: calc(50.625vw - 8px);
+	width: 55.625vw;
+	height: 55.625vw;
 }
 
 .full-canvas #canvas-bundle
 {
 	position: absolute;
 	
-	left: calc((90vw - 50.625vw + 8px) / 2 + 2.5vw);
-	bottom: calc(2.5vw - 4px);
+	left: calc((95vw - 55.625vw) / 2);
+	bottom: 0;
 }
 
 
@@ -220,20 +227,20 @@
 		position: absolute;
 		
 		left: calc(25vh * 152 / 89);
-		bottom: calc(2.5vh * 152 / 89 - 4px);
+		bottom: calc(2.5vh * 152 / 89);
 	}
 	
 	.full-canvas canvas
 	{
-		width: calc(50.625vh * 152 / 89 - 8px);
-		height: calc(50.625vh * 152 / 89 - 8px);
+		width: calc(55.625vh * 152 / 89);
+		height: calc(55.625vh * 152 / 89);
 	}
 
 	.full-canvas #canvas-bundle
 	{
 		position: absolute;
 		
-		left: calc(((90vh - 50.625vh) * 152 / 89 + 8px) / 2 + 2.5vh * 152 / 89);
-		bottom: calc(2.5vh * 152 / 89 - 4px);
+		left: calc(((95vh - 55.625vh) * 152 / 89) / 2);
+		bottom: 0;
 	}
 }

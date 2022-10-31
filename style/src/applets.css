@@ -37,6 +37,7 @@
 {
 	margin-top: 5vh !important;
 	margin-bottom: 0 !important;
+	line-height: 0 !important;
 }
 
 .wilson-applet-canvas-container.black-background
