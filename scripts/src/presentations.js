@@ -5,6 +5,9 @@ Page.Presentation =
 	slides: [],
 	slide_container: null,
 	slide_shelf_container: null,
+	slide_shelf: null,
+	shelf_is_open: false,
+	shelf_is_animating: false,
 	
 	current_slide: -1,
 	
@@ -22,24 +25,65 @@ Page.Presentation =
 		this.slides = Page.element.querySelectorAll(".slide");
 		this.slide_container = Page.element.querySelector("#slide-container");
 		
+		
+		
 		this.slide_shelf_container = document.createElement("div");
-		this.slide_shelf_container.classList.add("slide-shelf-container");
+		this.slide_shelf_container.id = "slide-shelf-container";
 		
 		this.slide_shelf_container.innerHTML = `
-			<div class="slide-shelf">
-				<input type="image" id="up-2-button" class="shelf-button dont-close-shelf" src="/graphics/presentation-icons/up-2.png" onclick="Page.Presentation.previous_slide(true)" tabindex="-1">
-				<input type="image" id="up-1-button" class="shelf-button dont-close-shelf" src="/graphics/presentation-icons/up-1.png" onclick="Page.Presentation.previous_slide()" tabindex="-1">
-				<input type="image" id="down-1-button" class="shelf-button dont-close-shelf" src="/graphics/presentation-icons/down-1.png" onclick="Page.Presentation.next_slide()" tabindex="-1">
-				<input type="image" id="down-2-button" class="shelf-button dont-close-shelf" src="/graphics/presentation-icons/down-2.png" onclick="Page.Presentation.next_slide(true)" tabindex="-1">
+			<div id="slide-shelf" style="margin-left: ${Site.navigation_animation_distance}px; opacity: 0">
+				<input type="image" id="up-2-button" class="shelf-button" src="/graphics/presentation-icons/up-2.png" onclick="Page.Presentation.previous_slide(true)" tabindex="-1">
+				<input type="image" id="up-1-button" class="shelf-button" src="/graphics/presentation-icons/up-1.png" onclick="Page.Presentation.previous_slide()" tabindex="-1">
+				<input type="image" id="down-1-button" class="shelf-button" src="/graphics/presentation-icons/down-1.png" onclick="Page.Presentation.next_slide()" tabindex="-1">
+				<input type="image" id="down-2-button" class="shelf-button" src="/graphics/presentation-icons/down-2.png" onclick="Page.Presentation.next_slide(true)" tabindex="-1">
 			</div>
 		`;
 		
 		document.body.appendChild(this.slide_shelf_container);
 		
+		Page.Animate.fade_left_out(this.slide_shelf, 0);
+		
 		setTimeout(() =>
 		{
+			this.slide_shelf = document.querySelector("#slide-shelf");
+			this.slide_shelf.style.display = "none";
+			
 			document.body.querySelectorAll(".shelf-button").forEach(element => Page.Load.HoverEvents.add(element));
+			
+			this.slide_shelf_container.addEventListener("mouseenter", () =>
+			{
+				if (!this.shelf_is_open)
+				{
+					if (!this.shelf_is_animating)
+					{
+						this.show_shelf();
+					}
+					
+					else
+					{
+						setTimeout(() => this.show_shelf(), 250); 
+					}
+				}
+			});
+			
+			this.slide_shelf_container.addEventListener("mouseleave", () =>
+			{
+				if (this.shelf_is_open)
+				{
+					if (!this.shelf_is_animating)
+					{
+						this.hide_shelf();
+					}
+					
+					else
+					{
+						setTimeout(() => this.hide_shelf(), 250); 
+					}
+				}
+			});
 		}, 50);
+		
+		
 		
 		this.slides.forEach(element => element.style.display = "none");
 		
@@ -306,6 +350,32 @@ Page.Presentation =
 	
 	
 	
+	show_shelf: async function()
+	{
+		this.shelf_is_open = true;
+		this.shelf_is_animating = true;
+		
+		this.slide_shelf.style.display = "";
+		
+		await Page.Animate.fade_right_in(this.slide_shelf, Site.opacity_animation_time * 2);
+		
+		this.shelf_is_animating = false;
+	},
+	
+	hide_shelf: async function()
+	{
+		this.shelf_is_open = false;
+		this.shelf_is_animating = true;
+		
+		await Page.Animate.fade_left_out(this.slide_shelf, Site.opacity_animation_time);
+		
+		this.slide_shelf.style.display = "none";
+		
+		this.shelf_is_animating = false;
+	},
+	
+	
+	
 	handle_keydown_event: function(e)
 	{
 		if (e.keyCode === 39 || e.keyCode === 40 || e.keyCode === 32 || e.keyCode === 13)
@@ -335,9 +405,17 @@ Page.Presentation =
 			Page.Presentation.next_slide();
 		}
 		
-		else if (Page.Presentation.max_touches === 3)
+		else if (Page.Presentation.max_touches === 3 && !Page.Presentation.shelf_is_animating)
 		{
-			Page.Presentation.previous_slide();
+			if (!Page.Presentation.shelf_is_open)
+			{
+				Page.Presentation.show_shelf();
+			}
+			
+			else
+			{
+				Page.Presentation.hide_shelf();
+			}
 		}
 		
 		Page.Presentation.max_touches = 0;

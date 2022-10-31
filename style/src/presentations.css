@@ -150,15 +150,15 @@
 
 
 
-.slide-shelf-container
+#slide-shelf-container
 {
 	position: fixed;
 	
-	width: 50px;
-	height: 100vh;
+	width: 100px;
+	height: 285px;
 	
-	top: 0;
-	right: 25px;
+	top: calc((100vh - 300px) / 2);
+	left: 0;
 	
 	display: flex;
 	flex-direction: column;
@@ -166,7 +166,7 @@
 	align-items: center;
 }
 
-.slide-shelf
+#slide-shelf
 {
 	width: 50px;
 	background-color: rgb(255, 255, 255);
@@ -188,7 +188,7 @@
 	width: 50px;
 	border-radius: 5px;
 	
-	transition: background-color .075s ease-in-out;
+	transition: background-color .125s ease-in-out;
 	background-color: rgb(255, 255, 255);
 }
 
