@@ -228,6 +228,104 @@ Page.Animate =
 	
 	
 	
+	hide_slide_shelf_js: function(element, duration)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			anime({
+				targets: element,
+				marginLeft: `${-Site.navigation_animation_distance}px`,
+				opacity: 0,
+				duration: duration,
+				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
+				complete: resolve
+			});
+		});	
+	},
+	
+	hide_slide_shelf_css: function(element, duration)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			try {clearTimeout(element.getAttribute("data-fade-left-out-timeout-id"))}
+			catch(ex) {}
+			
+			element.style.transition = "";
+			
+			setTimeout(() =>
+			{
+				void(element.offsetHeight);
+				
+				element.style.transition = `margin-left ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0), opacity ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0)`;
+				
+				setTimeout(() =>
+				{
+					element.style.marginLeft = `${-Site.navigation_animation_distance}px`;
+					element.style.opacity = 0;
+					
+					const timeout_id = setTimeout(() =>
+					{
+						element.style.transition = "";
+						resolve();
+					}, duration);
+					
+					element.setAttribute("data-fade-left-out-timeout-id", timeout_id);
+				}, 10);
+			}, 10);	
+		});
+	},
+	
+	
+	
+	show_slide_shelf_js: function(element, duration)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			anime({
+				targets: element,
+				marginLeft: "0px",
+				opacity: 1,
+				duration: duration,
+				easing: "cubicBezier(.4, 1.0, .7, 1.0)",
+				complete: resolve
+			});
+		});	
+	},
+	
+	show_slide_shelf_css: function(element, duration)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			try {clearTimeout(element.getAttribute("data-fade-right-in-timeout-id"))}
+			catch(ex) {}
+			
+			element.style.transition = "";
+			
+			setTimeout(() =>
+			{
+				void(element.offsetHeight);
+				
+				element.style.transition = `margin-left ${duration}ms cubic-bezier(.4, 0.0, .7, 0.0), opacity ${duration}ms cubic-bezier(.4, 0.0, .7, 0.0)`;
+				
+				setTimeout(() =>
+				{
+					element.style.marginLeft = 0;
+					element.style.opacity = 1;
+					
+					const timeout_id = setTimeout(() =>
+					{
+						element.style.transition = "";
+						resolve();
+					}, duration);
+					
+					element.setAttribute("data-fade-right-in-timeout-id", timeout_id);
+				}, 10);
+			}, 10);	
+		});
+	},
+	
+	
+	
 	change_footer_image_link_text_js: function(element, end_value, duration)
 	{
 		return new Promise((resolve, reject) =>

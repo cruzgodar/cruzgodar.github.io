@@ -41,12 +41,11 @@ Page.Presentation =
 		
 		document.body.appendChild(this.slide_shelf_container);
 		
-		Page.Animate.fade_left_out(this.slide_shelf, 0);
-		
 		setTimeout(() =>
 		{
 			this.slide_shelf = document.querySelector("#slide-shelf");
 			this.slide_shelf.style.display = "none";
+			Page.Animate.hide_slide_shelf(this.slide_shelf, 0);
 			
 			document.body.querySelectorAll(".shelf-button").forEach(element => Page.Load.HoverEvents.add(element));
 			
@@ -54,15 +53,7 @@ Page.Presentation =
 			{
 				if (!this.shelf_is_open)
 				{
-					if (!this.shelf_is_animating)
-					{
-						this.show_shelf();
-					}
-					
-					else
-					{
-						setTimeout(() => this.show_shelf(), 250); 
-					}
+					this.show_shelf();
 				}
 			});
 			
@@ -70,15 +61,7 @@ Page.Presentation =
 			{
 				if (this.shelf_is_open)
 				{
-					if (!this.shelf_is_animating)
-					{
-						this.hide_shelf();
-					}
-					
-					else
-					{
-						setTimeout(() => this.hide_shelf(), 250); 
-					}
+					this.hide_shelf();
 				}
 			});
 		}, 50);
@@ -357,7 +340,7 @@ Page.Presentation =
 		
 		this.slide_shelf.style.display = "";
 		
-		await Page.Animate.fade_right_in(this.slide_shelf, Site.opacity_animation_time * 2);
+		await Page.Animate.show_slide_shelf(this.slide_shelf, Site.opacity_animation_time * 1.1);
 		
 		this.shelf_is_animating = false;
 	},
@@ -367,9 +350,7 @@ Page.Presentation =
 		this.shelf_is_open = false;
 		this.shelf_is_animating = true;
 		
-		await Page.Animate.fade_left_out(this.slide_shelf, Site.opacity_animation_time);
-		
-		this.slide_shelf.style.display = "none";
+		await Page.Animate.hide_slide_shelf(this.slide_shelf, Site.opacity_animation_time * 1.1);
 		
 		this.shelf_is_animating = false;
 	},
