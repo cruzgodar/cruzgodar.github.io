@@ -537,6 +537,8 @@ let callbacks =
 			{
 				return new Promise(async (resolve, reject) =>
 				{
+					animation_time = 300;
+					
 					let cubes = [[0, 5], [1, 5], [1, 4], [1, 3], [2, 3], [2, 2], [2, 1], [2, 0], [3, 0]];
 					
 					cubes = cubes.map(cube => [cube[0], cube[1], arrays[0].numbers[cube[0]][cube[1]] - 1]);
@@ -553,6 +555,8 @@ let callbacks =
 					{
 						await uncolor_cubes(arrays[0], cubes);
 					}
+					
+					animation_time = 600;
 					
 					resolve();
 				});
@@ -821,5 +825,159 @@ let callbacks =
 				});
 			}
 		]
-	}
+	},
+	
+	
+	
+	"bijection-structure":
+	{
+		callback: function(slide, forward)
+		{
+			return new Promise(async (resolve, reject) =>
+			{
+				slide.appendChild(canvas_bundle);
+				
+				let plane_partition = [];
+				
+				if (forward)
+				{
+					plane_partition = [
+						[1, 1, 1, 1],
+						[0, 0, 0, 0],
+						[0, 0, 0, 0],
+						[0, 0, 0, 0]
+					];
+				}
+				
+				else
+				{
+					plane_partition = [
+						[1, 0, 0, 0],
+						[1, 0, 0, 0],
+						[1, 0, 0, 0],
+						[1, 0, 0, 0]
+					];
+				}	
+				
+				
+				
+				animation_time = 0;
+				
+				for (let i = arrays.length - 1; i >= 0; i--)
+				{
+					await remove_array(0);
+				}
+				
+				await add_new_array(0, plane_partition);
+				
+				if (!in_2d_view)
+				{
+					await show_2d_view();
+				}
+				
+				await show_floor();
+				
+				numbers_canvas_container_element.style.opacity = 0;
+				
+				
+				
+				animation_time = 600;
+				
+				resolve();
+			});
+		},
+		
+		
+		
+		builds:
+		[
+			() => {},
+			() => {},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					let cubes = [];
+					
+					if (forward)
+					{
+						cubes = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0]];
+					}
+					
+					else
+					{
+						cubes = [[0, 0, 0], [1, 0, 0], [2, 0, 0], [3, 0, 0]];
+					}	
+					
+					await color_cubes(arrays[0], cubes, 0);
+					
+					resolve();
+				});
+			},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					let cubes = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0]];
+					let targets = [[1, 0, 0], [1, 1, 0], [1, 2, 0], [0, 2, 0]];
+					
+					if (forward)
+					{
+						await move_cubes(arrays[0], cubes, arrays[0], targets);
+					}
+					
+					else
+					{
+						await move_cubes(arrays[0], targets, arrays[0], cubes);
+					}
+					
+					resolve();
+				});
+			},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					let cubes = [[1, 0, 0], [1, 1, 0], [1, 2, 0], [0, 2, 0]];
+					let targets = [[2, 0, 0], [2, 1, 0], [1, 1, 0], [0, 1, 0]];
+					
+					if (forward)
+					{
+						await move_cubes(arrays[0], cubes, arrays[0], targets);
+					}
+					
+					else
+					{
+						await move_cubes(arrays[0], targets, arrays[0], cubes);
+					}
+					
+					resolve();
+				});
+			},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					let cubes = [[2, 0, 0], [2, 1, 0], [1, 1, 0], [0, 1, 0]];
+					let targets = [[3, 0, 0], [2, 0, 0], [1, 0, 0], [0, 0, 0]];
+					
+					if (forward)
+					{
+						await move_cubes(arrays[0], cubes, arrays[0], targets);
+					}
+					
+					else
+					{
+						await move_cubes(arrays[0], targets, arrays[0], cubes);
+					}
+					
+					resolve();
+				});
+			}
+		]
+	},
 };
