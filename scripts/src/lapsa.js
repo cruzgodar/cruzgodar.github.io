@@ -344,7 +344,7 @@ Page.Presentation =
 		
 		this.slide_shelf.style.display = "";
 		
-		await Page.Animate.show_slide_shelf(this.slide_shelf, Site.opacity_animation_time * 1.05);
+		await Page.Animate.show_slide_shelf(this.slide_shelf, 275);
 		
 		this.shelf_is_animating = false;
 	},
@@ -354,7 +354,7 @@ Page.Presentation =
 		this.shelf_is_open = false;
 		this.shelf_is_animating = true;
 		
-		await Page.Animate.hide_slide_shelf(this.slide_shelf, Site.opacity_animation_time * 1.05);
+		await Page.Animate.hide_slide_shelf(this.slide_shelf, 275);
 		
 		this.shelf_is_animating = false;
 	},

@@ -237,7 +237,7 @@ Page.Animate =
 				marginLeft: `${-Site.navigation_animation_distance}px`,
 				opacity: 0,
 				duration: duration,
-				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
+				easing: "cubicBezier(.4, 0.0, .4, 1.0)",
 				complete: resolve
 			});
 		});	
