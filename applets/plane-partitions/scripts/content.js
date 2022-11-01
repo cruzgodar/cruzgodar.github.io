@@ -2362,22 +2362,22 @@ function draw_all_2d_view_text()
 	
 	arrays.forEach(array =>
 	{
-		let top = (total_array_footprint - array.footprint - 1) / 2;
-		let left = array.partial_footprint_sum - array.footprint;
-		
 		//Show the numbers in the right places.
 		for (let i = 0; i < array.footprint; i++)
 		{
 			for (let j = 0; j < array.footprint; j++)
 			{
-				draw_single_cell_2d_view_text(array, i, j, top, left);
+				draw_single_cell_2d_view_text(array, i, j);
 			}
 		}
 	});
 }
 
-function draw_single_cell_2d_view_text(array, row, col, top, left)
+function draw_single_cell_2d_view_text(array, row, col)
 {
+	let top = (total_array_footprint - array.footprint - 1) / 2;
+	let left = array.partial_footprint_sum - array.footprint;
+	
 	wilson_numbers.ctx.clearRect(font_size * (col + left + 1), font_size * (row + top + 1), font_size, font_size);
 	
 	if (array.numbers[row][col] !== Infinity && (array.numbers[row][col] !== 0 || floor_lightness !== 0))
@@ -3090,9 +3090,6 @@ function hillman_grassl(index)
 			
 			
 			
-			let top = total_array_footprint - array.partial_footprint_sum - 1;
-			let left = array.partial_footprint_sum - array.footprint;
-			
 			//Now we actually delete the cubes.
 			for (let j = 0; j < zigzag_paths[i].length; j++)
 			{
@@ -3100,7 +3097,7 @@ function hillman_grassl(index)
 				
 				if (in_2d_view)
 				{
-					draw_single_cell_2d_view_text(array, zigzag_paths[i][j][0], zigzag_paths[i][j][1], top, left);
+					draw_single_cell_2d_view_text(array, zigzag_paths[i][j][0], zigzag_paths[i][j][1]);
 				}	
 			}
 			
@@ -3160,16 +3157,13 @@ function hillman_grassl(index)
 			
 			
 			
-			top = total_array_footprint - output_array.partial_footprint_sum - 1;
-			left = output_array.partial_footprint_sum - output_array.footprint;
-			
 			output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]++;
 			
 			recalculate_heights(output_array);
 			
 			if (in_2d_view)
 			{
-				draw_single_cell_2d_view_text(output_array, pivot_coordinates[0], pivot_coordinates[1], top, left);
+				draw_single_cell_2d_view_text(output_array, pivot_coordinates[0], pivot_coordinates[1]);
 			}
 			
 			output_array.height = Math.max(output_array.height, output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]);
@@ -3402,10 +3396,7 @@ function hillman_grassl_inverse(index)
 			
 			if (in_2d_view)
 			{
-				let top = total_array_footprint - array.partial_footprint_sum - 1;
-				let left = array.partial_footprint_sum - array.footprint;
-				
-				draw_single_cell_2d_view_text(array, row, col, top, left);
+				draw_single_cell_2d_view_text(array, row, col);
 			}
 			
 			await move_cubes(array, coordinates, output_array, target_coordinates);
@@ -3423,13 +3414,7 @@ function hillman_grassl_inverse(index)
 			
 			if (in_2d_view)
 			{
-				let top = total_array_footprint - output_array.partial_footprint_sum - 1;
-				let left = output_array.partial_footprint_sum - output_array.footprint;
-				
-				target_coordinates.forEach((entry) =>
-				{
-					draw_single_cell_2d_view_text(output_array, entry[0], entry[1], top, left)
-				});
+				target_coordinates.forEach(entry => draw_single_cell_2d_view_text(output_array, entry[0], entry[1]));
 			}
 			
 			
@@ -3627,10 +3612,7 @@ function pak(index)
 					
 					if (in_2d_view)
 					{
-						let top = total_array_footprint - array.partial_footprint_sum - 1;
-						let left = array.partial_footprint_sum - array.footprint;
-						
-						draw_single_cell_2d_view_text(array, i, j, top, left);
+						draw_single_cell_2d_view_text(array, i, j);
 					}
 				}
 				
@@ -3900,10 +3882,7 @@ function pak_inverse(index)
 					
 					if (in_2d_view)
 					{
-						let top = total_array_footprint - array.partial_footprint_sum - 1;
-						let left = array.partial_footprint_sum - array.footprint;
-						
-						draw_single_cell_2d_view_text(array, i, j, top, left);
+						draw_single_cell_2d_view_text(array, i, j);
 					}
 				}
 				
@@ -4152,9 +4131,6 @@ function sulzgruber(index)
 			
 			
 			
-			let top = total_array_footprint - array.partial_footprint_sum - 1;
-			let left = array.partial_footprint_sum - array.footprint;
-			
 			//Now we actually delete the cubes.
 			q_paths[i].forEach(box =>
 			{
@@ -4162,7 +4138,7 @@ function sulzgruber(index)
 				
 				if (in_2d_view)
 				{
-					draw_single_cell_2d_view_text(array, box[0], box[1], top, left);
+					draw_single_cell_2d_view_text(array, box[0], box[1]);
 				}	
 			});
 			
@@ -4227,14 +4203,11 @@ function sulzgruber(index)
 			
 			
 			
-			top = total_array_footprint - output_array.partial_footprint_sum - 1;
-			left = output_array.partial_footprint_sum - output_array.footprint;
-			
 			output_array.numbers[row][col]++;
 			
 			if (in_2d_view)
 			{
-				draw_single_cell_2d_view_text(output_array, row, col, top, left);
+				draw_single_cell_2d_view_text(output_array, row, col);
 			}
 			
 			recalculate_heights(output_array);
@@ -4460,10 +4433,7 @@ function sulzgruber_inverse(index)
 					
 					if (in_2d_view)
 					{
-						let top = total_array_footprint - array.partial_footprint_sum - 1;
-						let left = array.partial_footprint_sum - array.footprint;
-						
-						draw_single_cell_2d_view_text(array, row, col, top, left);
+						draw_single_cell_2d_view_text(array, row, col);
 					}
 					
 					await move_cubes(array, coordinates, output_array, target_coordinates);
@@ -4512,12 +4482,9 @@ function sulzgruber_inverse(index)
 							
 							if (in_2d_view)
 							{
-								let top = total_array_footprint - output_array.partial_footprint_sum - 1;
-								let left = output_array.partial_footprint_sum - output_array.footprint;
-								
 								coordinates.forEach(entry =>
 								{
-									draw_single_cell_2d_view_text(output_array, entry[0], entry[1], top, left)
+									draw_single_cell_2d_view_text(output_array, entry[0], entry[1])
 								});
 							}
 							
@@ -4767,22 +4734,14 @@ function rsk(index)
 			
 			if (in_2d_view)
 			{
-				let top = total_array_footprint - p_array.partial_footprint_sum - 1;
-				let left = p_array.partial_footprint_sum - p_array.footprint;
-				
-				draw_single_cell_2d_view_text(p_array, row, col, top, left);
+				draw_single_cell_2d_view_text(p_array, row, col);
 				
 				for (let k = p_coordinate_path.length - 1; k > 0; k--)
 				{
-					draw_single_cell_2d_view_text(p_array, p_coordinate_path[k][0], p_coordinate_path[k][1], top, left);
+					draw_single_cell_2d_view_text(p_array, p_coordinate_path[k][0], p_coordinate_path[k][1]);
 				}
 				
-				
-				
-				top = total_array_footprint - q_array.partial_footprint_sum - 1;
-				left = q_array.partial_footprint_sum - q_array.footprint;
-				
-				draw_single_cell_2d_view_text(q_array, row, col, top, left);
+				draw_single_cell_2d_view_text(q_array, row, col);
 			}
 			
 			
@@ -4816,10 +4775,7 @@ function rsk(index)
 			
 			if (in_2d_view)
 			{
-				let top = total_array_footprint - output_array.partial_footprint_sum - 1;
-				let left = output_array.partial_footprint_sum - output_array.footprint;
-				
-				draw_single_cell_2d_view_text(output_array, q_entry - 1, p_entry - 1, top, left);
+				draw_single_cell_2d_view_text(output_array, q_entry - 1, p_entry - 1);
 			}
 			
 			recalculate_heights(output_array);
