@@ -263,7 +263,7 @@
 		position: absolute;
 		
 		right: calc(2.5vh * 152 / 89);
-		bottom: calc(2vh * 152 / 89);
+		bottom: calc(2.5vh * 152 / 89);
 	}
 
 	.large-canvas canvas

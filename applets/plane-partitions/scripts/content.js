@@ -5722,5 +5722,107 @@ function godar_1_inverse(index)
 		
 		
 		resolve();
-	});	
+	});
 }
+
+
+
+//A somewhat hacky demonstration of the n-quotient, not meant to be public-facing in the applet. It uses the numbers canvas to draw the appropriate edges and move them around. There needs to be only one array for this to work.
+function animate_n_quotient(index, n)
+{
+	return new Promise(async (resolve, reject) =>
+	{
+		if (!in_2d_view)
+		{
+			await show_2d_view();
+		}
+		
+		await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
+		
+		let array = arrays[index];
+		let plane_partition = array.numbers;
+		
+		wilson_numbers.ctx.save();
+		
+		
+		
+		let rects = [];
+		
+		let j = 0;
+		
+		for (let i = array.footprint - 1; i >= 0; i--)
+		{
+			while (j < array.footprint && plane_partition[i][j] === Infinity)
+			{
+				//Add horizontal edges.
+				if (i === array.footprint - 1 || plane_partition[i + 1][j] !== Infinity)
+				{
+					let x = wilson_numbers.canvas_width * (j + 1) / (array.footprint + 2);
+					let y = wilson_numbers.canvas_height * (i + 1 + 15/16) / (array.footprint + 2) + 1;
+					let width = wilson_numbers.canvas_width / (array.footprint + 2);
+					let height = wilson_numbers.canvas_height * (1/16) / (array.footprint + 2);
+					
+					rects.push([x, y, width, height]);
+				}
+				
+				j++;
+			}
+			
+			//Add a vertical edge.
+			let x = wilson_numbers.canvas_width * (j + 15/16) / (array.footprint + 2);
+			let y = wilson_numbers.canvas_height * (i + 1) / (array.footprint + 2) + 1;
+			let width = wilson_numbers.canvas_width * (1/16) / (array.footprint + 2);
+			let height = wilson_numbers.canvas_height / (array.footprint + 2);
+			
+			rects.push([x, y, width, height]);
+		}
+		
+		//Add all the horizontal edges we missed.
+		let i = -1;
+		
+		while (j < array.footprint)
+		{
+			if (i === array.footprint - 1 || plane_partition[i + 1][j] !== Infinity)
+			{
+				let x = wilson_numbers.canvas_width * (j + 1) / (array.footprint + 2);
+				let y = wilson_numbers.canvas_height * (i + 1 + 15/16) / (array.footprint + 2) + 1;
+				let width = wilson_numbers.canvas_width / (array.footprint + 2);
+				let height = wilson_numbers.canvas_height * (1/16) / (array.footprint + 2);
+				
+				rects.push([x, y, width, height]);
+			}
+			
+			j++;
+		}
+		
+		rects.forEach((rect, index) =>
+		{
+			let h = (index % n) / n;
+			
+			let rgb = wilson.utils.hsv_to_rgb(h, 1, 1);
+			
+			wilson_numbers.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			
+			wilson_numbers.ctx.fillRect(...rect);
+		});
+		
+		
+		
+		wilson_numbers.ctx.rect(wilson_numbers.canvas_width / (array.footprint + 2), wilson_numbers.canvas_height / (array.footprint + 2), wilson_numbers.canvas_width * array.footprint / (array.footprint + 2), wilson_numbers.canvas_height * array.footprint / (array.footprint + 2));
+		
+		//To deal with these lines moving around, it's easiest to just clip the canvas.
+		wilson_numbers.ctx.clip();
+		
+		await Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 5);
+		
+		
+		
+		//wilson_numbers.ctx.restore();
+		
+		resolve();
+	});
+}
+
+
+
+//setTimeout(() => animate_n_quotient(0, 4), 6000);

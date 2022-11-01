@@ -3,6 +3,7 @@
 	"use strict";
 	
 	
+	
 	let min_extension = DEBUG ? "" : "min.";
 	
 	let response = await fetch(`/applets/plane-partitions/scripts/content.${min_extension}js`);

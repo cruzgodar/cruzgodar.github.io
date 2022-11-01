@@ -562,8 +562,6 @@ let callbacks =
 				});
 			},
 			
-			() => {},
-			
 			function(slide, forward)
 			{
 				return new Promise(async (resolve, reject) =>
