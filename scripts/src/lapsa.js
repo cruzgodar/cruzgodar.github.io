@@ -136,10 +136,20 @@ Page.Presentation =
 		
 		if (!skip_builds && this.num_builds !== 0 && this.build_state !== this.num_builds)
 		{
-			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element => Page.Animate.fade_up_in(element, Site.page_animation_time * 2));
+			let promises = [];
 			
-			try {await this.callbacks[this.slides[this.current_slide].id].builds[this.build_state](this.slides[this.current_slide], true)}
+			//Gross code because animation durations are weird as hell -- see the corresponding previous_slide block for a better example.
+			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element =>
+			{
+				Page.Animate.fade_up_in(element, Site.page_animation_time * 2);
+				
+				promises.push(new Promise((resolve, reject) => setTimeout(resolve, Site.page_animation_time)));
+			});
+			
+			try {promises.push(this.callbacks[this.slides[this.current_slide].id].builds[this.build_state](this.slides[this.current_slide], true))}
 			catch(ex) {}
+			
+			await Promise.all(promises);
 			
 			this.build_state++;
 			
@@ -209,10 +219,14 @@ Page.Presentation =
 		{
 			this.build_state--;
 			
-			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element => Page.Animate.fade_down_out(element, Site.page_animation_time));
+			let promises = [];
 			
-			try {await this.callbacks[this.slides[this.current_slide].id].builds[this.build_state](this.slides[this.current_slide], false)}
+			this.slides[this.current_slide].querySelectorAll(`.build-${this.build_state}`).forEach(element => promises.push(Page.Animate.fade_down_out(element, Site.page_animation_time)));
+			
+			try {promises.push(this.callbacks[this.slides[this.current_slide].id].builds[this.build_state](this.slides[this.current_slide], false))}
 			catch(ex) {}
+			
+			await Promise.all(promises);
 			
 			this.currently_animating = false;
 			
