@@ -5112,8 +5112,8 @@ function godar_1(index)
 		let array = arrays[index];
 		let plane_partition = array.numbers;
 		
-		let nu_row_lengths = new Array(plane_partition.length);
-		let nu_col_lengths = new Array(plane_partition.length);
+		let nu_row_lengths = new Array(2 * plane_partition.length);
+		let nu_col_lengths = new Array(2 * plane_partition.length);
 		
 		for (let i = 0; i < plane_partition.length; i++)
 		{
@@ -5136,6 +5136,13 @@ function godar_1(index)
 			}
 			
 			nu_col_lengths[i] = j;
+		}
+		
+		for (let i = plane_partition.length; i < 2 * plane_partition.length; i++)
+		{
+			nu_row_lengths[i] = 0;
+			
+			nu_col_lengths[i] = 0;
 		}
 		
 		let rpp_size = Math.max(nu_row_lengths[0], nu_col_lengths[0]);
@@ -5171,15 +5178,19 @@ function godar_1(index)
 		
 		
 		
+		//In order for the bijection to actually be correct, we need to make sure the rearrangement works the same way each time. The easiest way to do this is to ensure that every hook length actually in the APP has a *full* array of possible locations, so that its index in that is correct.
+		
+		
+		
 		//Organize everything by hook length.
 		let max_app_hook_length = 2 * plane_partition.length - nu_row_lengths[plane_partition.length - 1] - nu_col_lengths[plane_partition.length - 1];
 		let max_rpp_hook_length = nu_row_lengths[0] + nu_col_lengths[0];
 		
-		let app_pivots_by_hook_length = new Array(max_app_hook_length);
+		let app_pivots_by_hook_length = new Array(4 * plane_partition.length);
 		let rpp_pivots_by_hook_length = new Array(max_rpp_hook_length);
-		let pp_pivots_by_hook_length = new Array(2 * plane_partition.length);
+		let pp_pivots_by_hook_length = new Array(4 * plane_partition.length);
 		
-		for (let i = 0; i < max_app_hook_length; i++)
+		for (let i = 0; i < 4 * plane_partition.length; i++)
 		{
 			app_pivots_by_hook_length[i] = new Array();
 		}
@@ -5189,16 +5200,18 @@ function godar_1(index)
 			rpp_pivots_by_hook_length[i] = new Array();
 		}
 		
-		for (let i = 0; i < 2 * plane_partition.length; i++)
+		for (let i = 0; i < 4 * plane_partition.length; i++)
 		{
 			pp_pivots_by_hook_length[i] = new Array();
 		}
 		
+		let pp_size = 1;
 		
+		//If nu = (3, 1) and the APP given is 3x3, then its maximum hook length is 5, and we need to check an 8x8 square.
 		
-		for (let i = 0; i < plane_partition.length; i++)
+		for (let i = 0; i < 2 * plane_partition.length; i++)
 		{
-			for (let j = 0; j < plane_partition.length; j++)
+			for (let j = 0; j < 2 * plane_partition.length; j++)
 			{
 				if (j >= nu_row_lengths[i])
 				{
@@ -5217,11 +5230,11 @@ function godar_1(index)
 		
 		
 		
-		let hook_map = new Array(plane_partition.length);
+		let hook_map = new Array(2 * plane_partition.length);
 		
-		for (let i = 0; i < plane_partition.length; i++)
+		for (let i = 0; i < 2 * plane_partition.length; i++)
 		{
-			hook_map[i] = new Array(plane_partition.length);
+			hook_map[i] = new Array(2 * plane_partition.length);
 		}
 		
 		for (let i = 1; i < max_app_hook_length; i++)
@@ -5230,19 +5243,30 @@ function godar_1(index)
 			
 			for (let j = 0; j < app_pivots_by_hook_length[i].length; j++)
 			{
-				for (let k = 0; k < arrays[index].numbers[app_pivots_by_hook_length[i][j][0]][app_pivots_by_hook_length[i][j][1]]; k++)
+				let row = app_pivots_by_hook_length[i][j][0];
+				let col = app_pivots_by_hook_length[i][j][1];
+				
+				if (row < plane_partition.length && col < plane_partition.length)
 				{
-					coordinates.push([app_pivots_by_hook_length[i][j][0], app_pivots_by_hook_length[i][j][1], k]);
+					for (let k = 0; k < arrays[index].numbers[row][col]; k++)
+					{
+						coordinates.push([row, col, k]);
+					}
 				}
 				
 				if (j < pp_pivots_by_hook_length[i].length)
 				{
-					hook_map[app_pivots_by_hook_length[i][j][0]][app_pivots_by_hook_length[i][j][1]] = [1, pp_pivots_by_hook_length[i][j]];
+					hook_map[row][col] = [1, pp_pivots_by_hook_length[i][j]];
+					
+					if (row < plane_partition.length && col < plane_partition.length && arrays[index].numbers[row][col] > 0)
+					{
+						pp_size = Math.max(Math.max(pp_size, pp_pivots_by_hook_length[i][j][0] + 1), pp_pivots_by_hook_length[i][j][1] + 1);
+					}
 				}
 				
 				else
 				{
-					hook_map[app_pivots_by_hook_length[i][j][0]][app_pivots_by_hook_length[i][j][1]] = [0, rpp_pivots_by_hook_length[i][j - pp_pivots_by_hook_length[i].length]];
+					hook_map[row][col] = [0, rpp_pivots_by_hook_length[i][j - pp_pivots_by_hook_length[i].length]];
 				}
 			}
 			
@@ -5281,17 +5305,19 @@ function godar_1(index)
 		if (rpp_size > 0)
 		{
 			rpp_array = await add_new_array(index + 1, rpp);
-		}	
-		
-		
-		
-		let pp = new Array(plane_partition.length);
-		
-		for (let i = 0; i < plane_partition.length; i++)
-		{
-			pp[i] = new Array(plane_partition.length);
 			
-			for (let j = 0; j < plane_partition.length; j++)
+			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+		}
+		
+		
+		
+		let pp = new Array(pp_size);
+		
+		for (let i = 0; i < pp_size; i++)
+		{
+			pp[i] = new Array(pp_size);
+			
+			for (let j = 0; j < pp_size; j++)
 			{
 				pp[i][j] = 0;
 			}
@@ -5346,10 +5372,6 @@ function godar_1(index)
 		
 		
 		await remove_array(index);
-		
-		
-		
-		await trim_array(index + 1);
 		
 		
 		
