@@ -5861,7 +5861,7 @@ function draw_n_quotient(index, n, m, rects)
 						draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
 					});
 				}
-			})
+			});
 		});
 		
 		
@@ -5926,8 +5926,33 @@ function draw_n_quotient(index, n, m, rects)
 						draw_boundary_rect(array, (1 - dummy.t) * rect[0] + dummy.t * target_rects[index][0], (1 - dummy.t) * rect[1] + dummy.t * target_rects[index][1], rect[2], `${rect[3]} 1)`);
 					});
 				}
-			})
+			});
 		});
+		
+		
+		
+		//We'll start the next animation without waiting for it so that it plays concurrently: any asymptotes where there should no longer be any need to be removed.
+		
+		let cubes_to_delete = [];
+		
+		target_rects.forEach((rect, index) =>
+		{
+			if (!rects[index][2])
+			{
+				for (let j = rect[1]; j < array.footprint; j++)
+				{
+					if (array.numbers[rect[0]][j] === Infinity)
+					{
+						for (let k = 0; k < infinite_height; k++)
+						{
+							cubes_to_delete.push([rect[0], j, k]);
+						}
+					}
+				}
+			}
+		});
+		
+		delete_cubes(array, cubes_to_delete, true);
 		
 		
 		
@@ -5951,7 +5976,7 @@ function draw_n_quotient(index, n, m, rects)
 			anime({
 				targets: dummy,
 				t: 1,
-				duration: animation_time,
+				duration: animation_time / 2,
 				easing: "easeInQuad",
 				
 				complete: () =>
@@ -5985,46 +6010,8 @@ function draw_n_quotient(index, n, m, rects)
 						draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rects[0][3]} ${dummy.t})`);
 					});
 				}
-			})
+			});
 		});
-		
-		await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
-		
-		
-		
-		//Finally, remove the underlying array and replace it with one that matches the correct shape.
-		
-		let empty_array = new Array(array.footprint);
-		
-		for (let i = 0; i < array.footprint; i++)
-		{
-			empty_array[i] = new Array(array.footprint);
-			
-			for (let j = 0; j < array.footprint; j++)
-			{
-				empty_array[i][j] = 0;
-			}
-		}
-		
-		target_rects.forEach((rect, index) =>
-		{
-			if (!rects[index][2])
-			{
-				for (let j = 0; j < rect[1]; j++)
-				{
-					empty_array[rect[0]][j] = Infinity;
-				}
-			}
-		});
-		
-		
-		
-		await remove_array(index, true);
-		
-		await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
-		
-		await add_new_array(index, empty_array, true);
-		
 		
 		
 		wilson_numbers.ctx.fillStyle = "rgb(255, 255, 255)";

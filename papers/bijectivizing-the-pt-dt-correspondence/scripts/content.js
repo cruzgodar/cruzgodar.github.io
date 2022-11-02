@@ -1071,19 +1071,26 @@ let callbacks =
 					
 					else
 					{
+						for (let k = 0; k < infinite_height; k++)
+						{
+							arrays[0].cubes[0][2][k] = add_cube(arrays[0], 2, k, 0, 0, 0, asymptote_lightness);
+							arrays[0].cubes[1][0][k] = add_cube(arrays[0], 0, k, 1, 0, 0, asymptote_lightness);
+						}
+						
+						let things_to_animate = [];
+						
+						arrays[0].cubes[0][2][0].material.forEach(material => things_to_animate.push(material));
+						arrays[0].cubes[1][0][0].material.forEach(material => things_to_animate.push(material));
+						
+						anime({
+							targets: things_to_animate,
+							opacity: 1,
+							duration: animation_time,
+							easing: "easeOutQuad",
+							complete: resolve
+						});
+						
 						await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 3);
-						
-						await remove_array(0, true);
-						
-						let plane_partition = [
-							[Infinity, Infinity, Infinity, 0, 0],
-							[Infinity, 0, 0, 0, 0],
-							[0, 0, 0, 0, 0],
-							[0, 0, 0, 0, 0],
-							[0, 0, 0, 0, 0]
-						];
-						
-						await add_new_array(0, plane_partition, true);
 						
 						rects = await draw_boundary(0, 2);
 					}
@@ -1105,11 +1112,13 @@ let callbacks =
 				slide.appendChild(canvas_bundle);
 				
 				let plane_partition = [
-					[Infinity, Infinity, Infinity, 0, 0],
-					[Infinity, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0]
+					[Infinity, Infinity, Infinity, 0, 0, 0, 0],
+					[Infinity, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0]
 				];
 				
 				
@@ -1136,7 +1145,7 @@ let callbacks =
 				{
 					rects = await draw_boundary(0, 4);
 					
-					await draw_n_quotient(0, 4, 3, rects);
+					await draw_n_quotient(0, 4, 1, rects);
 				}
 				
 				
@@ -1175,24 +1184,34 @@ let callbacks =
 				{
 					if (forward)
 					{
-						await draw_n_quotient(0, 4, 3, rects);
+						await draw_n_quotient(0, 4, 1, rects);
 					}
 					
 					else
 					{
+						for (let k = 0; k < infinite_height; k++)
+						{
+							arrays[0].cubes[0][1][k] = add_cube(arrays[0], 1, k, 0, 0, 0, asymptote_lightness);
+							arrays[0].cubes[0][2][k] = add_cube(arrays[0], 2, k, 0, 0, 0, asymptote_lightness);
+							arrays[0].cubes[1][0][k] = add_cube(arrays[0], 0, k, 1, 0, 0, asymptote_lightness);
+						}
+						
+						let things_to_animate = [];
+						
+						//The animation looks nicer if we only animate in one cube per stack.
+						arrays[0].cubes[0][1][0].material.forEach(material => things_to_animate.push(material));
+						arrays[0].cubes[0][2][0].material.forEach(material => things_to_animate.push(material));
+						arrays[0].cubes[1][0][0].material.forEach(material => things_to_animate.push(material));
+						
+						anime({
+							targets: things_to_animate,
+							opacity: 1,
+							duration: animation_time / 2,
+							easing: "easeOutQuad",
+							complete: resolve
+						});
+						
 						await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 3);
-						
-						await remove_array(0, true);
-						
-						let plane_partition = [
-							[Infinity, Infinity, Infinity, 0, 0],
-							[Infinity, 0, 0, 0, 0],
-							[0, 0, 0, 0, 0],
-							[0, 0, 0, 0, 0],
-							[0, 0, 0, 0, 0]
-						];
-						
-						await add_new_array(0, plane_partition, true);
 						
 						rects = await draw_boundary(0, 4);
 					}
