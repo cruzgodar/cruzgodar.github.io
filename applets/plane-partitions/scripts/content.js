@@ -5825,37 +5825,26 @@ function draw_n_quotient(index, n, m, rects)
 		
 		let dummy = {t: 1};
 		
-		await anime({
-			targets: dummy,
-			t: 0,
-			duration: animation_time,
-			easing: "easeOutQuad",
-			
-			complete: () =>
-			{
-				wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
-				
-				rects.forEach((rect, index) =>
+		await new Promise((resolve, reject) =>
+		{
+			anime({
+				targets: dummy,
+				t: 0,
+				duration: animation_time,
+				easing: "easeOutQuad",
+				complete: resolve,
+				update: () => 
 				{
-					let opacity = index % n === m ? 1 : 0;
+					wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
 					
-					draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
-				});
-				
-				resolve();
-			},
-			
-			update: () => 
-			{
-				wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
-				
-				rects.forEach((rect, index) =>
-				{
-					let opacity = index % n === m ? 1 : dummy.t;
-					
-					draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
-				});
-			}
+					rects.forEach((rect, index) =>
+					{
+						let opacity = index % n === m ? 1 : dummy.t;
+						
+						draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
+					});
+				}
+			})
 		});
 		
 		
@@ -5865,9 +5854,59 @@ function draw_n_quotient(index, n, m, rects)
 		
 		
 		//Collapse the remaining ones. This assumes that the first and last rectangles are part of the endless border.
-		//rects = rects.filter((rect, index) => index % n === m);
+		rects = rects.filter((rect, index) => index % n === m);
 		
 		//If we start from the bottom-left, the only difficult thing to do is figure out the correct starting column. Thankfully, that's easy: it's just the number of vertical edges total.
+		
+		let num_vertical_edges = rects.filter(rect => !rect[2]).length;
+		
+		let target_rects = new Array(rects.length);
+		
+		let row = num_vertical_edges - 1;
+		let col = 0;
+		
+		rects.forEach((rect, index) =>
+		{
+			target_rects[index] = [row, col];
+			
+			if (rect[2])
+			{
+				col++;
+			}
+			
+			else
+			{
+				row--;
+			}
+		});
+		
+		
+		
+		dummy.t = 0;
+		
+		await new Promise((resolve, reject) =>
+		{
+			anime({
+				targets: dummy,
+				t: 1,
+				duration: animation_time,
+				easing: "easeInOutQuad",
+				complete: resolve,
+				update: () => 
+				{
+					wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+					
+					rects.forEach((rect, index) =>
+					{
+						draw_boundary_rect(array, (1 - dummy.t) * rect[0] + dummy.t * target_rects[index][0], (1 - dummy.t) * rect[1] + dummy.t * target_rects[index][1], rect[2], `${rect[3]} 1)`);
+					});
+				}
+			})
+		});
+		
+		
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 		
 		resolve();
 	});
@@ -5877,16 +5916,19 @@ function draw_n_quotient(index, n, m, rects)
 
 function draw_boundary_rect(array, i, j, horizontal, rgba)
 {
+	let top = (total_array_footprint - array.footprint - 1) / 2;
+	let left = array.partial_footprint_sum - array.footprint;
+	
 	wilson_numbers.ctx.fillStyle = rgba;
 	
 	if (horizontal)
 	{
-		wilson_numbers.ctx.fillRect(wilson_numbers.canvas_width * (j + 1) / (array.footprint + 2), wilson_numbers.canvas_height * (i + 1 + 15/16) / (array.footprint + 2) + 1, wilson_numbers.canvas_width / (array.footprint + 2), wilson_numbers.canvas_height * (1/16) / (array.footprint + 2));
+		wilson_numbers.ctx.fillRect(wilson_numbers.canvas_width * (j + left + 1) / (total_array_footprint + 1), wilson_numbers.canvas_height * (i + top + 1 + 15/16) / (total_array_footprint + 1) + 1, wilson_numbers.canvas_width / (total_array_footprint + 1), wilson_numbers.canvas_height * (1/16) / (total_array_footprint + 1));
 	}
 	
 	else
 	{
-		wilson_numbers.ctx.fillRect(wilson_numbers.canvas_width * (j + 15/16) / (array.footprint + 2), wilson_numbers.canvas_height * (i + 1) / (array.footprint + 2) + 1, wilson_numbers.canvas_width * (1/16) / (array.footprint + 2), wilson_numbers.canvas_height / (array.footprint + 2));
+		wilson_numbers.ctx.fillRect(wilson_numbers.canvas_width * (j + left + 15/16) / (total_array_footprint + 1), wilson_numbers.canvas_height * (i + top + 1) / (total_array_footprint + 1) + 1, wilson_numbers.canvas_width * (1/16) / (total_array_footprint + 1), wilson_numbers.canvas_height / (total_array_footprint + 1));
 	}
 }
 
