@@ -155,9 +155,9 @@
 	position: fixed;
 	
 	width: 100px;
-	height: 325px;
+	height: 600px;
 	
-	top: calc((100vh - 325px) / 2);
+	top: calc((100vh - 600px) / 2);
 	left: 0;
 	
 	display: flex;

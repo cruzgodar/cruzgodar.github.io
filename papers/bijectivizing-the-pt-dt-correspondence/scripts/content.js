@@ -978,4 +978,76 @@ let callbacks =
 			}
 		]
 	},
+	
+	
+	
+	"n-quotients":
+	{
+		callback: function(slide, forward)
+		{
+			return new Promise(async (resolve, reject) =>
+			{
+				slide.appendChild(canvas_bundle);
+				
+				let plane_partition = [
+					[Infinity, Infinity, Infinity, 0],
+					[Infinity, 0, 0, 0],
+					[0, 0, 0, 0],
+					[0, 0, 0, 0]
+				];
+				
+				
+				
+				animation_time = 0;
+				
+				for (let i = arrays.length - 1; i >= 0; i--)
+				{
+					await remove_array(0);
+				}
+				
+				await add_new_array(0, plane_partition);
+				
+				if (!in_2d_view)
+				{
+					await show_2d_view();
+				}
+				
+				await show_floor();
+				
+				numbers_canvas_container_element.style.opacity = 0;
+				
+				
+				
+				animation_time = 600;
+				
+				resolve();
+			});
+		},
+		
+		
+		
+		builds:
+		[
+			() => {},
+			() => {},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						await draw_boundary(0, 4);
+					}
+					
+					else
+					{
+						await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 3);
+					}
+					
+					resolve();
+				});
+			}
+		]
+	}
 };

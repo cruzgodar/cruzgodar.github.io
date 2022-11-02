@@ -232,7 +232,7 @@ Site.use_js_animation = false;
 
 Site.base_animation_time = 250;
 
-Site.navigation_animation_distance = 50;
+Site.navigation_animation_distance = Math.min(window.innerHeight, window.innerWidth) / 22;
 	
 	
 

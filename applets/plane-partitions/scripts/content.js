@@ -5728,7 +5728,7 @@ function godar_1_inverse(index)
 
 
 //A demonstration of the n-quotient, not currently public-facing in the applet. It uses the numbers canvas to draw the appropriate edges and move them around. To call this function, the canvas should be in 2d mode but the numbers should be gone.
-function draw_boundary(index, n, m)
+function draw_boundary(index, n)
 {
 	return new Promise(async (resolve, reject) =>
 	{
@@ -5737,7 +5737,10 @@ function draw_boundary(index, n, m)
 			await show_2d_view();
 		}
 		
-		await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
+		if (numbers_canvas_container_element.style.opacity !== "0")
+		{
+			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 3);
+		}
 		
 		wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
 		
@@ -5807,7 +5810,7 @@ function draw_boundary(index, n, m)
 		
 		
 		
-		await Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 5);
+		await Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 3);
 		
 		resolve(rects);
 	});
