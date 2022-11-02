@@ -5728,7 +5728,7 @@ function godar_1_inverse(index)
 
 
 //A somewhat hacky demonstration of the n-quotient, not meant to be public-facing in the applet. It uses the numbers canvas to draw the appropriate edges and move them around. There needs to be only one array for this to work.
-function animate_n_quotient(index, n)
+function draw_boundary(index, n, m)
 {
 	return new Promise(async (resolve, reject) =>
 	{
@@ -5739,14 +5739,16 @@ function animate_n_quotient(index, n)
 		
 		await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
 		
+		wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+		
+		
+		
 		let array = arrays[index];
 		let plane_partition = array.numbers;
 		
-		wilson_numbers.ctx.save();
-		
-		
-		
 		let rects = [];
+		
+		let hue_index = 0;
 		
 		let j = 0;
 		
@@ -5757,24 +5759,26 @@ function animate_n_quotient(index, n)
 				//Add horizontal edges.
 				if (i === array.footprint - 1 || plane_partition[i + 1][j] !== Infinity)
 				{
-					let x = wilson_numbers.canvas_width * (j + 1) / (array.footprint + 2);
-					let y = wilson_numbers.canvas_height * (i + 1 + 15/16) / (array.footprint + 2) + 1;
-					let width = wilson_numbers.canvas_width / (array.footprint + 2);
-					let height = wilson_numbers.canvas_height * (1/16) / (array.footprint + 2);
+					let h = (hue_index % n) / n;
 					
-					rects.push([x, y, width, height]);
+					let rgb = wilson.utils.hsv_to_rgb(h, 1, 1);
+					
+					rects.push([i, j, true, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
+					
+					hue_index++;
 				}
 				
 				j++;
 			}
 			
 			//Add a vertical edge.
-			let x = wilson_numbers.canvas_width * (j + 15/16) / (array.footprint + 2);
-			let y = wilson_numbers.canvas_height * (i + 1) / (array.footprint + 2) + 1;
-			let width = wilson_numbers.canvas_width * (1/16) / (array.footprint + 2);
-			let height = wilson_numbers.canvas_height / (array.footprint + 2);
+			let h = (hue_index % n) / n;
 			
-			rects.push([x, y, width, height]);
+			let rgb = wilson.utils.hsv_to_rgb(h, 1, 1);
+			
+			rects.push([i, j, false, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
+			
+			hue_index++;
 		}
 		
 		//Add all the horizontal edges we missed.
@@ -5784,40 +5788,86 @@ function animate_n_quotient(index, n)
 		{
 			if (i === array.footprint - 1 || plane_partition[i + 1][j] !== Infinity)
 			{
-				let x = wilson_numbers.canvas_width * (j + 1) / (array.footprint + 2);
-				let y = wilson_numbers.canvas_height * (i + 1 + 15/16) / (array.footprint + 2) + 1;
-				let width = wilson_numbers.canvas_width / (array.footprint + 2);
-				let height = wilson_numbers.canvas_height * (1/16) / (array.footprint + 2);
+				let h = (hue_index % n) / n;
 				
-				rects.push([x, y, width, height]);
+				let rgb = wilson.utils.hsv_to_rgb(h, 1, 1);
+				
+				rects.push([i, j, true, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
+				
+				hue_index++;
 			}
 			
 			j++;
 		}
 		
-		rects.forEach((rect, index) =>
+		rects.forEach(rect =>
 		{
-			let h = (index % n) / n;
-			
-			let rgb = wilson.utils.hsv_to_rgb(h, 1, 1);
-			
-			wilson_numbers.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-			
-			wilson_numbers.ctx.fillRect(...rect);
+			draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} 1)`);
 		});
 		
 		
 		
-		wilson_numbers.ctx.rect(wilson_numbers.canvas_width / (array.footprint + 2), wilson_numbers.canvas_height / (array.footprint + 2), wilson_numbers.canvas_width * array.footprint / (array.footprint + 2), wilson_numbers.canvas_height * array.footprint / (array.footprint + 2));
-		
-		//To deal with these lines moving around, it's easiest to just clip the canvas.
-		wilson_numbers.ctx.clip();
-		
 		await Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 5);
 		
+		resolve(rects);
+	});
+}
+
+
+
+function draw_n_quotient(index, n, m, rects)
+{
+	return new Promise(async (resolve, reject) =>
+	{
+		let array = arrays[index];
+		
+		//Fade out the ones we don't care about.
+		
+		let dummy = {t: 1};
+		
+		await anime({
+			targets: dummy,
+			t: 0,
+			duration: animation_time,
+			easing: "easeOutQuad",
+			
+			complete: () =>
+			{
+				wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+				
+				rects.forEach((rect, index) =>
+				{
+					let opacity = index % n === m ? 1 : 0;
+					
+					draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
+				});
+				
+				resolve();
+			},
+			
+			update: () => 
+			{
+				wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+				
+				rects.forEach((rect, index) =>
+				{
+					let opacity = index % n === m ? 1 : dummy.t;
+					
+					draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
+				});
+			}
+		});
 		
 		
-		//wilson_numbers.ctx.restore();
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+		
+		
+		
+		//Collapse the remaining ones. This assumes that the first and last rectangles are part of the endless border.
+		//rects = rects.filter((rect, index) => index % n === m);
+		
+		//If we start from the bottom-left, the only difficult thing to do is figure out the correct starting column. Thankfully, that's easy: it's just the number of vertical edges total.
 		
 		resolve();
 	});
@@ -5825,4 +5875,28 @@ function animate_n_quotient(index, n)
 
 
 
-//setTimeout(() => animate_n_quotient(0, 4), 6000);
+function draw_boundary_rect(array, i, j, horizontal, rgba)
+{
+	wilson_numbers.ctx.fillStyle = rgba;
+	
+	if (horizontal)
+	{
+		wilson_numbers.ctx.fillRect(wilson_numbers.canvas_width * (j + 1) / (array.footprint + 2), wilson_numbers.canvas_height * (i + 1 + 15/16) / (array.footprint + 2) + 1, wilson_numbers.canvas_width / (array.footprint + 2), wilson_numbers.canvas_height * (1/16) / (array.footprint + 2));
+	}
+	
+	else
+	{
+		wilson_numbers.ctx.fillRect(wilson_numbers.canvas_width * (j + 15/16) / (array.footprint + 2), wilson_numbers.canvas_height * (i + 1) / (array.footprint + 2) + 1, wilson_numbers.canvas_width * (1/16) / (array.footprint + 2), wilson_numbers.canvas_height / (array.footprint + 2));
+	}
+}
+
+
+
+setTimeout(async () =>
+{
+	let rects = await draw_boundary(0, 4, 1);
+	
+	await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+	
+	await draw_n_quotient(0, 4, 1, rects);
+}, 5000);
