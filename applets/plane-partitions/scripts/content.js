@@ -577,7 +577,7 @@ if (APPLET_VERSION)
 {
 	let plane_partition = parse_array(array_data_textarea_element.value);
 	edit_array_textarea_element.value = array_data_textarea_element.value;
-	add_new_array(arrays.length, plane_partition, "pp");
+	add_new_array(arrays.length, plane_partition);
 }
 
 draw_frame();
@@ -1050,7 +1050,7 @@ function display_error(message)
 
 
 
-function add_new_array(index, numbers)
+function add_new_array(index, numbers, keep_numbers_canvas_visible = false)
 {
 	return new Promise(async (resolve, reject) =>
 	{
@@ -1071,7 +1071,7 @@ function add_new_array(index, numbers)
 			size: 0
 		};
 		
-		if (in_2d_view)
+		if (in_2d_view && !keep_numbers_canvas_visible)
 		{
 			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
 		}
@@ -1224,12 +1224,12 @@ function add_new_array(index, numbers)
 		
 		
 		
-		if (arrays.length === 1)
+		if (arrays.length === 1 && !keep_numbers_canvas_visible)
 		{
 			hex_view_camera_pos = [total_array_size, total_array_size + total_array_height / 3, total_array_size];
 			_2d_view_camera_pos = [0, total_array_size + 10, 0];
 			
-			if (in_2d_view)
+			if (in_2d_view && !keep_numbers_canvas_visible)
 			{
 				update_camera_height(true);
 			}
@@ -1246,7 +1246,7 @@ function add_new_array(index, numbers)
 			}
 		}
 		
-		else if (!add_walls)
+		else if (!add_walls && !keep_numbers_canvas_visible)
 		{
 			update_camera_height(true);
 		}
@@ -1283,7 +1283,7 @@ function add_new_array(index, numbers)
 		
 		
 		
-		if (in_2d_view)
+		if (in_2d_view && !keep_numbers_canvas_visible)
 		{
 			draw_all_2d_view_text();
 		}
@@ -1389,7 +1389,7 @@ function trim_array(index)
 
 
 
-function remove_array(index)
+function remove_array(index, keep_numbers_canvas_visible = false)
 {
 	return new Promise(async (resolve, reject) =>
 	{
@@ -1402,7 +1402,7 @@ function remove_array(index)
 		
 		
 		
-		if (in_2d_view)
+		if (in_2d_view && !keep_numbers_canvas_visible)
 		{
 			await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 5);
 		}
@@ -1486,7 +1486,7 @@ function remove_array(index)
 		}
 		
 		
-		if (arrays.length !== 0)
+		if (arrays.length !== 0 && !keep_numbers_canvas_visible)
 		{
 			update_camera_height(true);
 		}	
@@ -4111,7 +4111,7 @@ function sulzgruber(index)
 			}
 		}
 		
-		let output_array = await add_new_array(index + 1, empty_array, "tableau");
+		let output_array = await add_new_array(index + 1, empty_array);
 		
 		await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 		
@@ -5727,7 +5727,7 @@ function godar_1_inverse(index)
 
 
 
-//A somewhat hacky demonstration of the n-quotient, not meant to be public-facing in the applet. It uses the numbers canvas to draw the appropriate edges and move them around. There needs to be only one array for this to work.
+//A demonstration of the n-quotient, not currently public-facing in the applet. It uses the numbers canvas to draw the appropriate edges and move them around. To call this function, the canvas should be in 2d mode but the numbers should be gone.
 function draw_boundary(index, n, m)
 {
 	return new Promise(async (resolve, reject) =>
@@ -5906,7 +5906,42 @@ function draw_n_quotient(index, n, m, rects)
 		
 		
 		
+		//Finally, remove the underlying array and replace it with one that matches the correct shape.
+		
+		let empty_array = new Array(array.footprint);
+		
+		for (let i = 0; i < array.footprint; i++)
+		{
+			empty_array[i] = new Array(array.footprint);
+			
+			for (let j = 0; j < array.footprint; j++)
+			{
+				empty_array[i][j] = 0;
+			}
+		}
+		
+		rects.forEach(rect =>
+		{
+			if (!rect[2])
+			{
+				for (let j = 0; j < rect[1]; j++)
+				{
+					empty_array[rect[0]][j] = Infinity;
+				}
+			}
+		});
+		
+		
+		
+		await remove_array(index, true);
+		
 		await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+		
+		await add_new_array(index, empty_array, true);
+		
+		
+		
+		wilson_numbers.ctx.fillStyle = "rgb(255, 255, 255)";
 		
 		resolve();
 	});
@@ -5931,14 +5966,3 @@ function draw_boundary_rect(array, i, j, horizontal, rgba)
 		wilson_numbers.ctx.fillRect(wilson_numbers.canvas_width * (j + left + 15/16) / (total_array_footprint + 1), wilson_numbers.canvas_height * (i + top + 1) / (total_array_footprint + 1) + 1, wilson_numbers.canvas_width * (1/16) / (total_array_footprint + 1), wilson_numbers.canvas_height / (total_array_footprint + 1));
 	}
 }
-
-
-
-setTimeout(async () =>
-{
-	let rects = await draw_boundary(0, 4, 1);
-	
-	await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-	
-	await draw_n_quotient(0, 4, 1, rects);
-}, 5000);
