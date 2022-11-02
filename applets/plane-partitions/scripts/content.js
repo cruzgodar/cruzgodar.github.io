@@ -5835,7 +5835,21 @@ function draw_n_quotient(index, n, m, rects)
 				t: 0,
 				duration: animation_time,
 				easing: "easeOutQuad",
-				complete: resolve,
+				
+				complete: () => 
+				{
+					wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+					
+					rects.forEach((rect, index) =>
+					{
+						let opacity = index % n === m ? 1 : 0;
+						
+						draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
+					});
+					
+					resolve();
+				},
+				
 				update: () => 
 				{
 					wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
@@ -5849,10 +5863,6 @@ function draw_n_quotient(index, n, m, rects)
 				}
 			})
 		});
-		
-		
-		
-		await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
 		
 		
 		
@@ -5894,7 +5904,19 @@ function draw_n_quotient(index, n, m, rects)
 				t: 1,
 				duration: animation_time,
 				easing: "easeInOutQuad",
-				complete: resolve,
+				
+				complete: () =>
+				{
+					wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+					
+					rects.forEach((rect, index) =>
+					{
+						draw_boundary_rect(array, target_rects[index][0], target_rects[index][1], rect[2], `${rect[3]} 1)`);
+					});
+					
+					resolve();
+				},
+				
 				update: () => 
 				{
 					wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
@@ -5906,6 +5928,67 @@ function draw_n_quotient(index, n, m, rects)
 				}
 			})
 		});
+		
+		
+		
+		//Now we'll go through and add more edges to make the whole thing look nicer.
+		let bonus_rects = [];
+		
+		for (let i = array.footprint - 1; i > target_rects[0][0]; i--)
+		{
+			bonus_rects.push([i, 0, false]);
+		}
+		
+		for (let j = target_rects[target_rects.length - 1][1]; j < array.footprint; j++)
+		{
+			bonus_rects.push([-1, j, true]);
+		}
+		
+		dummy.t = 0;
+		
+		await new Promise((resolve, reject) =>
+		{
+			anime({
+				targets: dummy,
+				t: 1,
+				duration: animation_time,
+				easing: "easeInQuad",
+				
+				complete: () =>
+				{
+					wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+					
+					rects.forEach((rect, index) =>
+					{
+						draw_boundary_rect(array, target_rects[index][0], target_rects[index][1], rect[2], `${rect[3]} 1)`);
+					});
+					
+					bonus_rects.forEach((rect, index) =>
+					{
+						draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rects[0][3]} 1)`);
+					});
+					
+					resolve();
+				},
+				
+				update: () => 
+				{
+					wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+					
+					rects.forEach((rect, index) =>
+					{
+						draw_boundary_rect(array, target_rects[index][0], target_rects[index][1], rect[2], `${rect[3]} 1)`);
+					});
+					
+					bonus_rects.forEach((rect, index) =>
+					{
+						draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rects[0][3]} ${dummy.t})`);
+					});
+				}
+			})
+		});
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
 		
 		
 		
@@ -5923,9 +6006,9 @@ function draw_n_quotient(index, n, m, rects)
 			}
 		}
 		
-		rects.forEach(rect =>
+		target_rects.forEach((rect, index) =>
 		{
-			if (!rect[2])
+			if (!rects[index][2])
 			{
 				for (let j = 0; j < rect[1]; j++)
 				{
@@ -5938,7 +6021,7 @@ function draw_n_quotient(index, n, m, rects)
 		
 		await remove_array(index, true);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+		await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
 		
 		await add_new_array(index, empty_array, true);
 		

@@ -2,6 +2,8 @@ const APPLET_VERSION = false;
 
 let canvas_bundle = Page.element.querySelector("#canvas-bundle");
 
+let rects = [];
+
 let callbacks =
 {
 	"title":
@@ -990,10 +992,11 @@ let callbacks =
 				slide.appendChild(canvas_bundle);
 				
 				let plane_partition = [
-					[Infinity, Infinity, Infinity, 0],
-					[Infinity, 0, 0, 0],
-					[0, 0, 0, 0],
-					[0, 0, 0, 0]
+					[Infinity, Infinity, Infinity, 0, 0],
+					[Infinity, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0]
 				];
 				
 				
@@ -1016,6 +1019,13 @@ let callbacks =
 				
 				numbers_canvas_container_element.style.opacity = 0;
 				
+				if (!forward)
+				{
+					rects = await draw_boundary(0, 2);
+					
+					await draw_n_quotient(0, 2, 1, rects);
+				}
+				
 				
 				
 				animation_time = 600;
@@ -1029,7 +1039,6 @@ let callbacks =
 		builds:
 		[
 			() => {},
-			() => {},
 			
 			function(slide, forward)
 			{
@@ -1037,7 +1046,7 @@ let callbacks =
 				{
 					if (forward)
 					{
-						await draw_boundary(0, 4);
+						rects = await draw_boundary(0, 2);
 					}
 					
 					else
@@ -1047,7 +1056,150 @@ let callbacks =
 					
 					resolve();
 				});
-			}
+			},
+			
+			() => {},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						await draw_n_quotient(0, 2, 1, rects);
+					}
+					
+					else
+					{
+						await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 3);
+						
+						await remove_array(0, true);
+						
+						let plane_partition = [
+							[Infinity, Infinity, Infinity, 0, 0],
+							[Infinity, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0]
+						];
+						
+						await add_new_array(0, plane_partition, true);
+						
+						rects = await draw_boundary(0, 2);
+					}
+					
+					resolve();
+				});
+			},
 		]
-	}
+	},
+	
+	
+	
+	"n-quotients-2":
+	{
+		callback: function(slide, forward)
+		{
+			return new Promise(async (resolve, reject) =>
+			{
+				slide.appendChild(canvas_bundle);
+				
+				let plane_partition = [
+					[Infinity, Infinity, Infinity, 0, 0],
+					[Infinity, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0]
+				];
+				
+				
+				
+				animation_time = 0;
+				
+				for (let i = arrays.length - 1; i >= 0; i--)
+				{
+					await remove_array(0);
+				}
+				
+				await add_new_array(0, plane_partition);
+				
+				if (!in_2d_view)
+				{
+					await show_2d_view();
+				}
+				
+				await show_floor();
+				
+				numbers_canvas_container_element.style.opacity = 0;
+				
+				if (!forward)
+				{
+					rects = await draw_boundary(0, 4);
+					
+					await draw_n_quotient(0, 4, 3, rects);
+				}
+				
+				
+				
+				animation_time = 600;
+				
+				resolve();
+			});
+		},
+		
+		
+		
+		builds:
+		[
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						rects = await draw_boundary(0, 4);
+					}
+					
+					else
+					{
+						await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 3);
+					}
+					
+					resolve();
+				});
+			},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						await draw_n_quotient(0, 4, 3, rects);
+					}
+					
+					else
+					{
+						await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 3);
+						
+						await remove_array(0, true);
+						
+						let plane_partition = [
+							[Infinity, Infinity, Infinity, 0, 0],
+							[Infinity, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0]
+						];
+						
+						await add_new_array(0, plane_partition, true);
+						
+						rects = await draw_boundary(0, 4);
+					}
+					
+					resolve();
+				});
+			},
+		]
+	},
 };
