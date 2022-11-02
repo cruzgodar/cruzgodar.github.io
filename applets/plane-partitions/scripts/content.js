@@ -5439,6 +5439,8 @@ function godar_1_inverse(index)
 		
 		await run_algorithm("hillman_grassl", index, true);
 		
+		await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+		
 		await run_algorithm("hillman_grassl", index + 1, true);
 		
 		
@@ -5492,8 +5494,8 @@ function godar_1_inverse(index)
 		
 		
 		
-		//Organize everything by hook length.
-		let app_size = nu_row_lengths[0] + nu_col_lengths[0] + pp.length;
+		//Organize everything by hook length. The largest the APP can be is determined by the maximum hook in the plane partition -- we'll narrow this down later but it suffices for now.
+		let app_size = Math.max(nu_row_lengths[0], nu_col_lengths[0]) + 2 * pp.length - 1;
 		let max_app_hook_length = 2 * app_size;
 		let max_rpp_hook_length = nu_row_lengths[0] + nu_col_lengths[0];
 		let max_pp_hook_length = 2 * pp.length;
@@ -5524,6 +5526,18 @@ function godar_1_inverse(index)
 		
 		
 		
+		while (nu_row_lengths.length < app_size)
+		{
+			nu_row_lengths.push(0);
+		}
+		
+		while (nu_col_lengths.length < app_size)
+		{
+			nu_col_lengths.push(0);
+		}
+		
+		
+		
 		for (let i = 0; i < app_size; i++)
 		{
 			for (let j = 0; j < app_size; j++)
@@ -5549,8 +5563,6 @@ function godar_1_inverse(index)
 			}
 		}
 		
-		
-		
 		let pp_hook_map = new Array(pp.length);
 		
 		for (let i = 0; i < pp.length; i++)
@@ -5567,18 +5579,28 @@ function godar_1_inverse(index)
 		
 		
 		
+		app_size = 1;
+		
 		for (let i = 1; i < max_rpp_hook_length; i++)
 		{
 			let coordinates = [];
 			
 			for (let j = 0; j < rpp_pivots_by_hook_length[i].length; j++)
 			{
-				for (let k = 0; k < arrays[index].numbers[rpp_pivots_by_hook_length[i][j][0]][rpp_pivots_by_hook_length[i][j][1]]; k++)
+				let row = rpp_pivots_by_hook_length[i][j][0];
+				let col = rpp_pivots_by_hook_length[i][j][1];
+				
+				for (let k = 0; k < arrays[index].numbers[row][col]; k++)
 				{
-					coordinates.push([rpp_pivots_by_hook_length[i][j][0], rpp_pivots_by_hook_length[i][j][1], k]);
+					coordinates.push([row, col, k]);
 				}
 				
-				rpp_hook_map[rpp_pivots_by_hook_length[i][j][0]][rpp_pivots_by_hook_length[i][j][1]] = app_pivots_by_hook_length[i][j + pp_pivots_by_hook_length[i].length];
+				rpp_hook_map[row][col] = app_pivots_by_hook_length[i][j + pp_pivots_by_hook_length[i].length];
+				
+				if (arrays[index].numbers[row][col] !== 0)
+				{
+					app_size = Math.max(Math.max(app_size, rpp_hook_map[row][col][0] + 1), rpp_hook_map[row][col][1] + 1);
+				}
 			}
 			
 			if (coordinates.length !== 0)
@@ -5600,12 +5622,20 @@ function godar_1_inverse(index)
 					continue;
 				}
 				
-				for (let k = 0; k < arrays[index + 1].numbers[pp_pivots_by_hook_length[i][j][0]][pp_pivots_by_hook_length[i][j][1]]; k++)
+				let row = pp_pivots_by_hook_length[i][j][0];
+				let col = pp_pivots_by_hook_length[i][j][1];
+				
+				for (let k = 0; k < arrays[index + 1].numbers[row][col]; k++)
 				{
-					coordinates.push([pp_pivots_by_hook_length[i][j][0], pp_pivots_by_hook_length[i][j][1], k]);
+					coordinates.push([row, col, k]);
 				}
 				
-				pp_hook_map[pp_pivots_by_hook_length[i][j][0]][pp_pivots_by_hook_length[i][j][1]] = app_pivots_by_hook_length[i][j];
+				pp_hook_map[row][col] = app_pivots_by_hook_length[i][j];
+				
+				if (arrays[index + 1].numbers[row][col] !== 0)
+				{
+					app_size = Math.max(Math.max(app_size, pp_hook_map[row][col][0] + 1), pp_hook_map[row][col][1] + 1);
+				}
 			}
 			
 			if (coordinates.length !== 0)

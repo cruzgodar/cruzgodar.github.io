@@ -1221,4 +1221,98 @@ let callbacks =
 			},
 		]
 	},
+	
+	
+	
+	"the-bijection":
+	{
+		callback: function(slide, forward)
+		{
+			return new Promise(async (resolve, reject) =>
+			{
+				slide.appendChild(canvas_bundle);
+				
+				let plane_partition = [
+					[Infinity, Infinity, Infinity, 3, 1],
+					[Infinity, 5, 5, 2, 0],
+					[5, 4, 1, 0, 0],
+					[2, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0]
+				];
+				
+				animation_time = 0;
+				
+				for (let i = arrays.length - 1; i >= 0; i--)
+				{
+					await remove_array(0);
+				}
+				
+				await add_new_array(0, plane_partition);
+				
+				if (!in_exact_hex_view)
+				{
+					await show_hex_view();
+				}
+				
+				await show_floor();
+				
+				animation_time = 600;
+				
+				resolve();
+			});
+		},
+		
+		
+		
+		builds:
+		[
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						await run_algorithm("godar_1", 0);
+					}
+					
+					else
+					{
+						animation_time = 50;
+						
+						await run_algorithm("godar_1_inverse", 0);
+						
+						animation_time = 600;
+					}
+					
+					resolve();
+				});
+			},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						animation_time = 300;
+						
+						await run_algorithm("godar_1_inverse", 0);
+						
+						animation_time = 600;
+					}
+					
+					else
+					{
+						animation_time = 50;
+						
+						await run_algorithm("godar_1", 0);
+						
+						animation_time = 600;
+					}
+					
+					resolve();
+				});
+			}
+		]
+	},
 };
