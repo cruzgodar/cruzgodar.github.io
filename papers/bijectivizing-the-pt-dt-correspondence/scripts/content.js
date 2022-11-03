@@ -870,6 +870,11 @@ let callbacks =
 				
 				await add_new_array(0, plane_partition);
 				
+				if (!forward)
+				{
+					await color_cubes(arrays[0], [[3, 0, 0], [2, 0, 0], [1, 0, 0], [0, 0, 0]], 0);
+				}
+				
 				if (!in_2d_view)
 				{
 					await show_2d_view();
@@ -898,19 +903,17 @@ let callbacks =
 			{
 				return new Promise(async (resolve, reject) =>
 				{
-					let cubes = [];
+					let cubes = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0]];
 					
 					if (forward)
 					{
-						cubes = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0]];
+						await color_cubes(arrays[0], cubes, 0);
 					}
 					
 					else
 					{
-						cubes = [[0, 0, 0], [1, 0, 0], [2, 0, 0], [3, 0, 0]];
+						await uncolor_cubes(arrays[0], cubes, 0);
 					}	
-					
-					await color_cubes(arrays[0], cubes, 0);
 					
 					resolve();
 				});
@@ -1306,6 +1309,331 @@ let callbacks =
 						animation_time = 50;
 						
 						await run_algorithm("godar_1", 0);
+						
+						animation_time = 600;
+					}
+					
+					resolve();
+				});
+			}
+		]
+	},
+	
+	
+	
+	"legs":
+	{
+		callback: function(slide, forward)
+		{
+			return new Promise(async (resolve, reject) =>
+			{
+				slide.appendChild(canvas_bundle);
+				
+				animation_time = 0;
+				
+				for (let i = arrays.length - 1; i >= 0; i--)
+				{
+					await remove_array(0);
+				}
+				
+				if (!in_exact_hex_view)
+				{
+					await show_hex_view();
+				}
+				
+				await show_floor();
+				
+				if (!forward)
+				{
+					await this.builds[1](slide, true);
+				}
+				
+				animation_time = 600;
+				
+				resolve();
+			});
+		},
+		
+		
+		
+		builds:
+		[
+			() => {},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						let plane_partition = [
+							[12, 12, 12, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+							[12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+							[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+						];
+						
+						await add_new_array(0, plane_partition);
+					}
+					
+					else
+					{
+						await remove_array(0);
+					}
+					
+					resolve();
+				});
+			}
+		]	
+	},
+	
+	
+	
+	"toggles":
+	{
+		callback: function(slide, forward)
+		{
+			return new Promise(async (resolve, reject) =>
+			{
+				slide.appendChild(canvas_bundle);
+				
+				let plane_partition = [
+					[Infinity, Infinity, Infinity, 3, 1],
+					[Infinity, 5, 3, 2, 0],
+					[5, 2, 2, 1, 0],
+					[3, 2, 2, 0, 0],
+					[0, 0, 0, 0, 0]
+				];
+				
+				animation_time = 0;
+				
+				for (let i = arrays.length - 1; i >= 0; i--)
+				{
+					await remove_array(0);
+				}
+				
+				await add_new_array(0, plane_partition);
+				
+				if (!in_2d_view)
+				{
+					await show_2d_view();
+				}
+				
+				await show_floor();
+				
+				if (!forward)
+				{
+					await this.builds[1](slide, true);
+				}
+				
+				animation_time = 600;
+				
+				resolve();
+			});
+		},
+		
+		
+		
+		builds:
+		[
+			() => {},
+			() => {},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						await color_cubes(arrays[0], [[1, 1, 4]], .75);
+					}
+					
+					else
+					{
+						await uncolor_cubes(arrays[0], [[1, 1, 4]]);
+					}
+					
+					resolve();
+				});
+			},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						arrays[0].numbers[1][1] = 2;
+						
+						draw_all_2d_view_text();
+					}
+					
+					else
+					{
+						arrays[0].numbers[1][1] = 5;
+						
+						draw_all_2d_view_text();
+						
+						await color_cubes(arrays[0], [[1, 1, 4]], .75);
+					}
+					
+					resolve();
+				});
+			},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						await color_cubes(arrays[0], [[2, 2, 1]], .75);
+					}
+					
+					else
+					{
+						await uncolor_cubes(arrays[0], [[2, 2, 1]]);
+					}
+					
+					resolve();
+				});
+			},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						await uncolor_cubes(arrays[0], [[2, 2, 1]]);
+					}
+					
+					else
+					{
+						await color_cubes(arrays[0], [[2, 2, 1]], .75);
+					}
+					
+					resolve();
+				});
+			},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						arrays[0].numbers[3][3] = 1;
+						
+						draw_all_2d_view_text();
+					}
+					
+					else
+					{
+						arrays[0].numbers[3][3] = 0;
+						
+						draw_all_2d_view_text();
+					}
+					
+					resolve();
+				});
+			},
+		]	
+	},
+	
+	
+	
+	
+	"pak-sulzgruber":
+	{
+		callback: function(slide, forward)
+		{
+			return new Promise(async (resolve, reject) =>
+			{
+				slide.appendChild(canvas_bundle);
+				
+				let plane_partition = [
+					[Infinity, Infinity, Infinity, 3, 1],
+					[Infinity, 5, 3, 2, 0],
+					[5, 2, 2, 1, 0],
+					[3, 2, 2, 0, 0],
+					[0, 0, 0, 0, 0]
+				];
+				
+				animation_time = 0;
+				
+				for (let i = arrays.length - 1; i >= 0; i--)
+				{
+					await remove_array(0);
+				}
+				
+				await add_new_array(0, plane_partition);
+				
+				if (!in_2d_view)
+				{
+					await show_2d_view();
+				}
+				
+				await show_floor();
+				
+				animation_time = 600;
+				
+				resolve();
+			});
+		},
+		
+		
+		
+		builds:
+		[
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						await run_algorithm("pak", 0);
+					}
+					
+					else
+					{
+						animation_time = 50;
+						
+						await run_algorithm("pak_inverse", 0);
+						
+						animation_time = 600;
+					}
+					
+					resolve();
+				});
+			},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						animation_time = 300;
+						
+						await run_algorithm("pak_inverse", 0);
+						
+						animation_time = 600;
+					}
+					
+					else
+					{
+						animation_time = 50;
+						
+						await run_algorithm("pak", 0);
 						
 						animation_time = 600;
 					}
