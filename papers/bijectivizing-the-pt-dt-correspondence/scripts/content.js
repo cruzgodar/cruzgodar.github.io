@@ -367,7 +367,7 @@ let callbacks =
 				
 				if (!forward)
 				{
-					await this.builds[3](slide, true);
+					await this.builds[2](slide, true);
 				}
 				
 				animation_time = 600;
@@ -382,7 +382,6 @@ let callbacks =
 		
 		builds:
 		[
-			() => {},
 			() => {},
 			() => {},
 			
@@ -517,7 +516,7 @@ let callbacks =
 				if (!forward)
 				{
 					await this.builds[2](slide, true);
-					await this.builds[4](slide, true);
+					await this.builds[3](slide, true);
 				}
 				
 				animation_time = 600;
@@ -539,8 +538,6 @@ let callbacks =
 			{
 				return new Promise(async (resolve, reject) =>
 				{
-					animation_time = 300;
-					
 					let cubes = [[0, 5], [1, 5], [1, 4], [1, 3], [2, 3], [2, 2], [2, 1], [2, 0], [3, 0]];
 					
 					cubes = cubes.map(cube => [cube[0], cube[1], arrays[0].numbers[cube[0]][cube[1]] - 1]);
@@ -549,7 +546,7 @@ let callbacks =
 					{
 						for (let i = 0; i < cubes.length; i++)
 						{
-							await color_cubes(arrays[0], [cubes[i]], 0);
+							setTimeout(() => color_cubes(arrays[0], [cubes[i]], 0), i * animation_time / 2);
 						}
 					}
 					
@@ -557,8 +554,6 @@ let callbacks =
 					{
 						await uncolor_cubes(arrays[0], cubes);
 					}
-					
-					animation_time = 600;
 					
 					resolve();
 				});
@@ -1331,14 +1326,14 @@ let callbacks =
 				
 				animation_time = 0;
 				
-				for (let i = arrays.length - 1; i >= 0; i--)
-				{
-					await remove_array(0);
-				}
-				
 				if (!in_exact_hex_view)
 				{
 					await show_hex_view();
+				}
+				
+				for (let i = arrays.length - 1; i >= 0; i--)
+				{
+					await remove_array(0);
 				}
 				
 				await show_floor();
@@ -1431,7 +1426,11 @@ let callbacks =
 				
 				if (!forward)
 				{
-					await this.builds[1](slide, true);
+					await this.builds[2](slide, true);
+					await this.builds[3](slide, true);
+					await this.builds[4](slide, true);
+					await this.builds[5](slide, true);
+					await this.builds[6](slide, true);
 				}
 				
 				animation_time = 600;
@@ -1605,7 +1604,7 @@ let callbacks =
 					
 					else
 					{
-						animation_time = 50;
+						animation_time = 100;
 						
 						await run_algorithm("pak_inverse", 0);
 						
@@ -1631,7 +1630,7 @@ let callbacks =
 					
 					else
 					{
-						animation_time = 50;
+						animation_time = 100;
 						
 						await run_algorithm("pak", 0);
 						
@@ -1677,6 +1676,11 @@ let callbacks =
 				}
 				
 				await show_floor();
+				
+				if (!forward)
+				{
+					await this.builds[2](slide, true);
+				}
 				
 				animation_time = 600;
 				

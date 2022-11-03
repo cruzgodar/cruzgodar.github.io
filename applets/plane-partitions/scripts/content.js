@@ -5737,12 +5737,6 @@ function godar_1_inverse(index)
 		
 		await remove_array(index);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-		
-		
-		
-		await trim_array(index);
-		
 		
 		
 		await new Promise((resolve, reject) => setTimeout(resolve, animation_time * 3));
@@ -5845,6 +5839,8 @@ function draw_boundary(index, n)
 		
 		
 		await Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 3);
+		
+		wilson_numbers.ctx.fillStyle = "rgb(255, 255, 255)";
 		
 		resolve(rects);
 	});
