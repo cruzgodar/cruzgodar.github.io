@@ -436,6 +436,105 @@
 			!text b j Ex: $(9, 6, 5, 2, 0, ...) \succ (7, 6, 3, 1, 0, ...)$.
 		</div>
 	</div>
+	
+	
+	
+	<div class="slide">
+		!text h Vertex Operators
+		
+		<div class="build build-0">
+			!text b j Define three operators $\Gamma_+(q)$, $\Gamma_-(q)$, and $Q$ as follows:
+		</div>
+		
+		<div class="build build-1 centered">
+			!begin-text-block
+				
+				$\displaystyle \Gamma_+(q) \left| \lambda \right> = \sum_{\mu \succ \lambda} q^{|\mu| - |\lambda|} \left| \mu \right>$.
+				
+				$\displaystyle \Gamma_-(q) \left| \lambda \right> = \sum_{\mu \prec \lambda} q^{|\lambda| - |\mu|} \left| \mu \right>$.
+				
+				$\displaystyle Q \left| \lambda \right> = q^{|\lambda|} \left| \lambda \right>$.
+				
+			!end-text-block
+		</div>
+		
+		<div class="build build-2">
+			!text b j Here we use the convenient bra-ket notation, where $\{\left| \lambda \right> \mid \lambda \in \text{Par}\}$ is a basis for a formal vector space and $\{\left< \lambda \right| \mid \lambda \in \text{Par}\}$ is the corresponding dual basis.
+		</div>
+	</div>
+	
+	
+	
+	<div class="slide">
+		!text b j These gamma operators sum over all possible ways to make a plane partition larger or smaller, one diagonal at a time, and weight them based on the amount of increase or decrease. The $Q$ operator simply weighs any diagonal it is given, and it commutes neatly with the gammas:
+		
+		<div class="build build-0 centered">
+			!begin-text-block
+				
+				$\displaystyle Q\Gamma_+(a) \left| \lambda \right> = \Gamma_+(qa)Q\left| \lambda \right>$.
+				
+				$\displaystyle \Gamma_-(a)Q \left| \lambda \right> = Q \Gamma_-(qa) \left| \lambda \right>$.
+				
+			!end-text-block
+		</div>
+		
+		<div class="build build-1">
+			!text b j Both of these relations follow directly from the definitions of $\Gamma_+$ and $\Gamma_-$.
+		</div>
+	</div>
+	
+	
+	
+	<div class="slide">
+		!text b j By building a plane partition one diagonal at a time from right to left, we can express $M(q)$ in terms of $\Gamma$s and $Q$s:
+		
+		<div class="build build-0 centered">
+			!text b j $\displaystyle M(q) = \left< \emptyset \right| \cdots \Gamma_-(1) Q \Gamma_-(1) Q \Gamma_+(1) Q \Gamma_+(1) \cdots \left| \emptyset \right>$.
+		</div>
+		
+		<div class="build build-1">
+			!text b j To make this much simpler to handle, we&#x2019;ll commute the $Q$s out to the edges where they&#x2019;ll be absorbed. The middle one needs to be split into two copies of $Q^{1/2}$, and the result is just
+		</div>
+		
+		<div class="build build-2 centered">
+			!text b j $\displaystyle M(q) = \left< \emptyset \right| \cdots \Gamma_-\left(q^{5/2}\right) \Gamma_-\left(q^{3/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_+\left(q^{3/2}\right) \Gamma_+\left(q^{5/2}\right) \cdots \left| \emptyset \right>$.
+		</div>
+	</div>
+	
+	
+	
+	<div class="slide">
+		!text h Commuting $\Gamma$s
+		
+		<div class="build build-0">
+			!text b j For any partitions $\lambda$ and $\mu$,
+		</div>
+		
+		<div class="build build-1 centered">
+			!text b j $\displaystyle \left< \mu \right| \Gamma_-(b) \Gamma_+(a) \left| \lambda \right> = \frac{1}{1 - ab} \left< \mu \right| \Gamma_+(b) \Gamma_-(a) \left| \lambda \right>$.
+		</div>
+		
+		<div class="build build-2">
+			!text b j A result due to Ben Young and myself gives a bijection between these two generating functions: specifically, a term in the left side arising from $\nu$ with $\mu \prec \nu \succ \lambda$ corresponds to the toggle of $\nu$ with respect to $\lambda$ and $\mu$ &mdash; the popped entry is a term of $\frac{1}{1 - ab}$ and the new partition $\nu'$ satisfies $\mu \succ \nu' \prec \lambda$.
+		</div>
+	</div>
+	
+	
+	<div class="slide">
+		!text b j Commuting every $\Gamma_+$ past every $\Gamma_-$ is therefore equivalent to applying Pak-Sulzgruber, and by placing partitions into the ends, we can make the jump to the 2-leg case:
+		
+		<div class="build build-1 centered">
+			!text b j $\displaystyle V_{(\mu_1, \mu_2, \emptyset)} = \left< \mu_1 \right| \cdots \Gamma_-\left(q^{5/2}\right) \Gamma_-\left(q^{3/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_+\left(q^{3/2}\right) \Gamma_+\left(q^{5/2}\right) \cdots \left| \mu_2 \right>$...
+		</div>
+		
+		<div class="build build-1 centered">
+			!text b j ...but that&#x2019;s a story for another time.
+		</div>
+	</div>
+	
+	
+	
+	<div id="thanks" class="slide full-canvas"></div>
 </div>
 
 
