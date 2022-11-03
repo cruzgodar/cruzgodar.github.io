@@ -410,7 +410,7 @@
 			!text b j Amazingly, the order in which the corners are popped has no effect on the outcome, and if we store every popped value in the square it was popped from, the resulting tableau is weighted by hook length in the same manner as the tableaux in Hillman-Grassl. 
 		</div>
 		
-		<div class="build build-1">
+		<div class="build build-2">
 			!text b j A description of the bijection using paths similar to the zigzag paths in Hillman-Grassl was independently discovered by Robin Sulzgruber in 2017, and the algorithm is collectively known as Pak-Sulzgruber.
 		</div>
 	</div>
@@ -418,7 +418,27 @@
 	
 	
 	<div id="pak-sulzgruber" class="slide full-canvas"></div>
+	
+	
+	
+	<div id="interlacing" class="slide medium-canvas">
+		!text h Interlacing
+		
+		<div class="build build-0 left-text">
+			!text b j The structure of toggles and Pak&#x2019;s description of the bijection lend themselves to an expression of $M(q)$, the generating function for plane partitions, different from the usual hook length formula.
+		</div>
+		
+		<div class="build build-1 left-text">
+			!text b j Given two partitions $\lambda$ and $\mu$, we say that $\lambda$ <dfn>interlaces</dfn> $\mu$, written $\lambda \succ \mu$, if $\lambda$ satisfies the plane partition inequalities when written as a diagonal strip to the left to $\mu$.
+		</div>
+		
+		<div class="build build-2 left-text">
+			!text b j Ex: $(9, 6, 5, 2, 0, ...) \succ (7, 6, 3, 1, 0, ...)$.
+		</div>
+	</div>
 </div>
+
+
  
 <div style="display: none">
 	<canvas id="hidden-canvas" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>

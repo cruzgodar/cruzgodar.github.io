@@ -1643,4 +1643,73 @@ let callbacks =
 			}
 		]
 	},
+	
+	
+	
+	"interlacing":
+	{
+		callback: function(slide, forward)
+		{
+			return new Promise(async (resolve, reject) =>
+			{
+				slide.appendChild(canvas_bundle);
+				
+				let plane_partition = [
+					[9, 7, 6, 4, 4],
+					[8, 6, 6, 4, 2],
+					[8, 6, 5, 3, 1],
+					[7, 5, 5, 2, 1],
+					[2, 0, 0, 0, 0]
+				];
+				
+				animation_time = 0;
+				
+				for (let i = arrays.length - 1; i >= 0; i--)
+				{
+					await remove_array(0);
+				}
+				
+				await add_new_array(0, plane_partition);
+				
+				if (!in_2d_view)
+				{
+					await show_2d_view();
+				}
+				
+				await show_floor();
+				
+				animation_time = 600;
+				
+				resolve();
+			});
+		},
+		
+		
+		
+		builds:
+		[
+			() => {},
+			() => {},
+			
+			function(slide, forward)
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						color_cubes(arrays[0], [[0, 1, 6], [1, 2, 5], [2, 3, 2], [3, 4, 0]], .5);
+						await color_cubes(arrays[0], [[0, 0, 8], [1, 1, 5], [2, 2, 4], [3, 3, 1]], .75);
+					}
+					
+					else
+					{
+						uncolor_cubes(arrays[0], [[0, 1, 6], [1, 2, 5], [2, 3, 2], [3, 4, 0]]);
+						await uncolor_cubes(arrays[0], [[0, 0, 8], [1, 1, 5], [2, 2, 4], [3, 3, 1]]);
+					}
+					
+					resolve();
+				});
+			}
+		]
+	},
 };

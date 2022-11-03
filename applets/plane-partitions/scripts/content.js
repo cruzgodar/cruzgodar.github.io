@@ -3447,7 +3447,18 @@ function pak(index)
 		
 		
 		
-		let num_corners = array.footprint * array.footprint;
+		let num_corners = 0;
+		
+		for (let row = array.footprint - 1; row >= 0; row--)
+		{
+			for (let col = array.footprint - 1; col >= 0; col--)
+			{
+				if (plane_partition[row][col] !== Infinity)
+				{
+					num_corners++;
+				}
+			}
+		}
 		
 		
 		
@@ -3460,16 +3471,6 @@ function pak(index)
 			{
 				if (plane_partition[row][col] === Infinity)
 				{
-					let coordinates = array.cubes[row][col].map((cube, index) => [row, col, index]);
-					
-					await delete_cubes(array, coordinates, true);
-					
-					delete_floor(array, [[row, col]]);
-					
-					array.cubes[row][col] = [];
-					
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-					
 					continue;
 				}
 				
@@ -3678,7 +3679,18 @@ function pak_inverse(index)
 		
 		
 		
-		let num_corners = array.footprint * array.footprint;
+		let num_corners = 0;
+		
+		for (let row = array.footprint - 1; row >= 0; row--)
+		{
+			for (let col = array.footprint - 1; col >= 0; col--)
+			{
+				if (tableau[row][col] !== Infinity)
+				{
+					num_corners++;
+				}
+			}
+		}
 		
 		
 		
@@ -3691,36 +3703,6 @@ function pak_inverse(index)
 			{
 				if (tableau[row][col] === Infinity)
 				{
-					array.cubes[row][col] = new Array(infinite_height);
-					
-					let things_to_animate = [];
-					
-					for (let i = 0; i < infinite_height; i++)
-					{
-						array.cubes[row][col][i] = add_cube(array, col, i, row, 0, 0, asymptote_lightness);
-						
-						array.cubes[row][col][i].material.forEach(material => things_to_animate.push(material));
-					}
-					
-					array.floor[row][col] = add_floor(array, col, row);
-					
-					array.floor[row][col].material.forEach(material => things_to_animate.push(material));
-					
-					
-					
-					await new Promise((resolve, reject) =>
-					{
-						anime({
-							targets: things_to_animate,
-							opacity: 1,
-							duration: animation_time,
-							easing: "easeOutQuad",
-							complete: resolve
-						});
-					});
-					
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
-					
 					continue;
 				}
 				
