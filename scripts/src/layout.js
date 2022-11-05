@@ -32,7 +32,8 @@ Page.Layout =
 		this.new_window_width = window.innerWidth;
 		this.new_window_height = window.innerHeight;
 		
-		Site.navigation_animation_distance = Math.min(this.new_window_height, this.new_window_width) / 22;
+		Site.navigation_animation_distance_vertical = window.innerHeight / 20;
+		Site.navigation_animation_distance_horizontal = window.innerWidth / 20;
 		
 		this.aspect_ratio = this.new_window_width / this.new_window_height;
 		

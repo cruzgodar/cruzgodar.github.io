@@ -31,7 +31,7 @@ Page.Presentation =
 		this.slide_shelf_container.id = "slide-shelf-container";
 		
 		this.slide_shelf_container.innerHTML = `
-			<div id="slide-shelf" style="margin-left: ${Site.navigation_animation_distance}px; opacity: 0">
+			<div id="slide-shelf" style="margin-left: ${Site.navigation_animation_distance_vertical}px; opacity: 0">
 				<input type="image" id="up-2-button" class="shelf-button" src="/graphics/presentation-icons/up-2.png" onclick="Page.Presentation.previous_slide(true)" tabindex="-1">
 				<input type="image" id="up-1-button" class="shelf-button" src="/graphics/presentation-icons/up-1.png" onclick="Page.Presentation.previous_slide()" tabindex="-1">
 				<input type="image" id="down-1-button" class="shelf-button" src="/graphics/presentation-icons/down-1.png" onclick="Page.Presentation.next_slide()" tabindex="-1">

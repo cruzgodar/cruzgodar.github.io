@@ -234,7 +234,7 @@ Page.Animate =
 		{
 			anime({
 				targets: element,
-				marginLeft: `${-Site.navigation_animation_distance}px`,
+				marginLeft: `${-Site.navigation_animation_distance_horizontal}px`,
 				opacity: 0,
 				duration: duration,
 				easing: "cubicBezier(.4, 0.0, .4, 1.0)",
@@ -388,7 +388,7 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			element.style.marginTop = `${Site.navigation_animation_distance}px`;
+			element.style.marginTop = `${Site.navigation_animation_distance_vertical}px`;
 			element.style.marginBottom = 0;
 			
 			anime({
@@ -413,7 +413,7 @@ Page.Animate =
 			
 			setTimeout(() =>
 			{
-				element.style.marginTop = `${Site.navigation_animation_distance}px`;
+				element.style.marginTop = `${Site.navigation_animation_distance_vertical}px`;
 				element.style.marginBottom = 0;
 				
 				//Jesus fuck
@@ -449,7 +449,7 @@ Page.Animate =
 			let data =
 			{
 				targets: element,
-				marginTop: `${-Site.navigation_animation_distance}px`,
+				marginTop: `${-Site.navigation_animation_distance_vertical}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
@@ -483,7 +483,7 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					element.style.marginTop = `-${Site.navigation_animation_distance}px`;
+					element.style.marginTop = `-${Site.navigation_animation_distance_vertical}px`;
 					
 					if (!no_opacity_change)
 					{
@@ -508,7 +508,7 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			element.style.marginTop = `${-Site.navigation_animation_distance}px`;
+			element.style.marginTop = `${-Site.navigation_animation_distance_vertical}px`;
 			element.style.marginBottom = 0;
 			
 			anime({
@@ -533,7 +533,7 @@ Page.Animate =
 			
 			setTimeout(() =>
 			{
-				element.style.marginTop = `${-Site.navigation_animation_distance}px`;
+				element.style.marginTop = `${-Site.navigation_animation_distance_vertical}px`;
 				element.style.marginBottom = 0;
 				
 				void(element.offsetHeight);
@@ -568,7 +568,7 @@ Page.Animate =
 			let data =
 			{
 				targets: element,
-				marginTop: `${Site.navigation_animation_distance}px`,
+				marginTop: `${Site.navigation_animation_distance_vertical}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
@@ -602,7 +602,7 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					element.style.marginTop = `${Site.navigation_animation_distance}px`;
+					element.style.marginTop = `${Site.navigation_animation_distance_vertical}px`;
 					
 					if (!no_opacity_change)
 					{
@@ -627,7 +627,7 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			element.style.marginLeft = `${Site.navigation_animation_distance}px`;
+			element.style.marginLeft = `${Site.navigation_animation_distance_horizontal}px`;
 			
 			anime({
 				targets: element,
@@ -651,7 +651,7 @@ Page.Animate =
 			
 			setTimeout(() =>
 			{
-				element.style.marginLeft = `${Site.navigation_animation_distance}px`;
+				element.style.marginLeft = `${Site.navigation_animation_distance_horizontal}px`;
 				
 				void(element.offsetHeight);
 				
@@ -683,7 +683,7 @@ Page.Animate =
 			let data =
 			{
 				targets: element,
-				marginLeft: `${-Site.navigation_animation_distance}px`,
+				marginLeft: `${-Site.navigation_animation_distance_horizontal}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
@@ -715,7 +715,7 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					element.style.marginLeft = `${-Site.navigation_animation_distance}px`;
+					element.style.marginLeft = `${-Site.navigation_animation_distance_horizontal}px`;
 					
 					if (!no_opacity_change)
 					{
@@ -740,7 +740,7 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			element.style.marginLeft = `${-Site.navigation_animation_distance}px`;
+			element.style.marginLeft = `${-Site.navigation_animation_distance_horizontal}px`;
 			
 			anime({
 				targets: element,
@@ -764,7 +764,7 @@ Page.Animate =
 			
 			setTimeout(() =>
 			{
-				element.style.marginLeft = `${-Site.navigation_animation_distance}px`;
+				element.style.marginLeft = `${-Site.navigation_animation_distance_horizontal}px`;
 				
 				void(element.offsetHeight);
 				
@@ -796,7 +796,7 @@ Page.Animate =
 			let data =
 			{
 				targets: element,
-				marginLeft: `${Site.navigation_animation_distance}px`,
+				marginLeft: `${Site.navigation_animation_distance_horizontal}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
@@ -828,7 +828,7 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					element.style.marginLeft = `${Site.navigation_animation_distance}px`;
+					element.style.marginLeft = `${Site.navigation_animation_distance_horizontal}px`;
 					
 					if (!no_opacity_change)
 					{
