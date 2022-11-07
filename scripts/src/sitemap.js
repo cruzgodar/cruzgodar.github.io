@@ -36,6 +36,7 @@ Site.sitemap =
 		children:
 		[
 			"/applets/hyperbolic-isometries/",
+			"/applets/network-puzzle/",
 			"/applets/plane-partitions/",
 			"/applets/quaternionic-julia-sets/",
 			"/applets/fractal-sounds/",
@@ -77,6 +78,13 @@ Site.sitemap =
 	},
 	
 	"/applets/hyperbolic-isometries/":
+	{
+		parent: "/applets/",
+		
+		children: []
+	},
+	
+	"/applets/network-puzzle/":
 	{
 		parent: "/applets/",
 		

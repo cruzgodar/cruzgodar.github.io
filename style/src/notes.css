@@ -48,9 +48,6 @@ iframe
 
 .desmos-border
 {
-	width: calc(75vmin + 4px);
-	height: calc(75vmin + 4px);
-	
 	margin: 0 auto;
 	
 	border: 2px solid rgb(127, 127, 127);
@@ -64,15 +61,23 @@ iframe
 .desmos-container
 {
 	border-radius: 11px;
-	width: calc(75vmin + 4px);
-	height: calc(75vmin + 4px);
 }
 
 .dcg-container
 {
 	border-radius: 11px !important;
-	width: calc(75vmin + 4px) !important;
-	height: calc(75vmin + 4px) !important;
+}
+
+.desmos-border, .desmos-container, .dcg-container
+{
+	width: calc(70vw - 4px) !important;
+	height: calc(70vw - 4px) !important;
+}
+
+.notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
+{
+	width: calc(70vw - 20px) !important;
+	height: calc(70vw - 20px) !important;
 }
 
 
@@ -85,14 +90,19 @@ iframe
 
 
 
-.notes-example, .notes-exercise, .notes-def, .notes-prop, .notes-thm, .notes-proof, .notes-comment, .notes-cor, .notes-lemma, .notes-axiom
+.notes-environment
 {
-	width: calc(70vw - 16px);
+	width: calc(70vw - 12px);
 	margin: 0 auto;
 	margin-bottom: 16px;
 	border-width: 0 0 0 4px;
 	border-style: solid;
-	padding: 0 0 0 10px;
+	padding: 0 0 0 8px;
+}
+
+.notes-environment .body-text
+{
+	width: 100% !important;
 }
 
 .notes-def
@@ -142,12 +152,12 @@ iframe
 
 
 
-.notes-example br:last-child, .notes-exercise br:last-child, .notes-def br:last-child, .notes-prop br:last-child, .notes-thm br:last-child, .notes-proof br:last-child, .notes-comment br:last-child, .notes-cor br:last-child, .notes-lemma br:last-child, .notes-axiom br:last-child
+.notes-environment br:last-child
 {
 	display: none;
 }
 
-.notes-example .iframe-container:last-child, .notes-exercise .iframe-container:last-child, .notes-def .iframe-container:last-child, .notes-prop .iframe-container:last-child, .notes-thm .iframe-container:last-child, .notes-proof .iframe-container:last-child, .notes-comment iframe:last-child, .notes-cor .iframe-container:last-child, .notes-lemma .iframe-container:last-child, .notes-axiom .iframe-container:last-child
+.notes-environment .iframe-container:last-child
 {
 	margin-bottom: 0;
 }
@@ -216,14 +226,21 @@ iframe
 
 @media (max-width: 700px)
 {
-	.notes-example, .notes-exercise, .notes-def, .notes-prop, .notes-thm, .notes-proof, .notes-comment, .notes-cor, .notes-lemma, .notes-axiom
+	.notes-environment
 	{
-		width: calc(90vw - 16px);
+		width: calc(90vw - 12px);
 	}
 	
-	.notes-example .body-text, .notes-exercise .body-text, .notes-def .body-text, .notes-prop .body-text, .notes-thm .body-text, .notes-proof .body-text, .notes-comment .body-text, .notes-cor .body-text, .notes-lemma .body-text, .notes-axiom .body-text
+	.desmos-border, .desmos-container, .dcg-container
 	{
-		width: 100%;
+		width: calc(90vw - 4px) !important;
+		height: calc(90vw - 4px) !important;
+	}
+	
+	.notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
+	{
+		width: calc(90vw - 20px) !important;
+		height: calc(90vw - 20px) !important;
 	}
 }
 
@@ -231,6 +248,18 @@ iframe
 {
 	.notes-example, .notes-exercise, .notes-def, .notes-prop, .notes-thm, .notes-proof, .notes-comment, .notes-cor, .notes-lemma, .notes-axiom
 	{
-		width: calc(50vw - 16px);
+		width: calc(50vw - 12px);
+	}
+	
+	.desmos-border, .desmos-container, .dcg-container
+	{
+		width: calc(50vw - 4px) !important;
+		height: calc(50vw - 4px) !important;
+	}
+	
+	.notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
+	{
+		width: calc(50vw - 20px) !important;
+		height: calc(50vw - 20px) !important;
 	}
 }
