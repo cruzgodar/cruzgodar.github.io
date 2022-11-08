@@ -4,7 +4,7 @@
 	
 	
 	
-	let version_elements = Page.element.querySelectorAll(".minor-version, .medium-version, .major-version");
+	const version_elements = Page.element.querySelectorAll(".minor-version, .medium-version, .major-version");
 	
 	
 	
