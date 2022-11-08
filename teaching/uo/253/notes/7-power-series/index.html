@@ -178,6 +178,45 @@
 	1. $f(x) = \sum_{n = 0}^\infty \frac{(x + 1)^n}{2^n(n + 1)}$.
 	
 	2. $g(x) = \sum_{n = 1}^\infty \frac{x^n}{\sqrt{n}}$.
+	
+	<strong>Solutions:</strong>
+	
+	1. With all the exponents (and no $n$s in the bases), let&#x2019;s try the ratio test. We have
+	
+	$$
+		\begin{align*}
+			r &= \lim_{n \to \infty} \left| \frac{\frac{(x + 1)^{n + 1}}{2^{n + 1}(n + 2)}}{\frac{(x + 1)^n}{2^n(n + 1)}} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{(x + 1)^{n + 1}2^n(n + 1)}{(x + 1)^n 2^{n + 1}(n + 2)} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{(x + 1)(n + 1)}{2(n + 2)} \right|\\
+			&= \lim_{n \to \infty} |x + 1| \frac{n + 1}{2n + 4}\\
+			&= \frac{1}{2} |x + 1|.
+		\end{align*}
+	$$
+	
+	Therefore, this series converges when $r = \frac{1}{2} |x + 1| < 1$. Solving for $x$, we have
+	
+	$$
+		\begin{align*}
+			|x + 1| &< 2\\
+			-2 < x + 1 &< 2\\
+			-3 < x &< 1.
+		\end{align*}
+	$$
+	
+	In total, the interval of convergence is $(-3, 1)$, and the radius is $R = 2$. As a good check, the center of that interval is $-1$, which matches the series containing $(x + 1)^n$.
+	
+	2. The ratio test is also a good choice here:
+	
+	$$
+		\begin{align*}
+			r &= \lim_{n \to \infty} \left| \frac{\frac{x^{n + 1}}{\sqrt{n + 1}}}{\frac{x^n}{\sqrt{n}}} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{x\sqrt{n}}{\sqrt{n + 1}} \right|\\
+			&= \lim_{n \to \infty} |x| \sqrt{\frac{n}{n + 1}}\\
+			&= |x|.
+		\end{align*}
+	$$
+	
+	This time, the series converges when $|x| < 1$, or equivalently, when $-1 < x < 1$. Therefore, the interval of convergence is $(-1, 1)$, and the radius of convergence is $R = 1$.
 
 !end-exercise
 
