@@ -137,7 +137,7 @@
 	
 	This is probably not what you&#x2019;d expect. This line is centered at zero, so initial guesses of positive numbers all converge to $x = 1$, while negative numbers sometimes work and sometimes don&#x2019;t. To actually understand what&#x2019;s going on here, we need to look at the bigger picture: since some of the roots of $x^3 - 1$ are complex, we&#x2019;ll have to consider complex initial guesses too. Without going into too much detail, Newton&#x2019;s method works just as well for complex initial guesses as real ones. Since the complex numbers live on a plane instead of a line, we get an actual image of where the guesses go. We&#x2019;ll still use brightness to indicate how fast the guess converges, but now we&#x2019;ll also use color to indicate which of the three roots of $x^3 - 1$ it actually converges to: here, that&#x2019;s red, orange, and yellow.
 	
-	!iframe u https://cruzgodar.com/applets/newtons-method/?condensed_applets=1
+	!iframe https://cruzgodar.com/applets/newtons-method/?condensed_applets=1
 	
 	What results is a truly incredible fractal. This bubble-like pattern repeats however far you zoom in or out, and it&#x2019;s surprisingly beautiful. We&#x2019;d expect Newton&#x2019;s method to take an initial guess and always send it to the closest root, but this picture shows that&#x2019;s not the case: all the red outside of the large area on the right are initial guesses that converge to $x = -1$ despite one of the other two roots being closer.
 	
