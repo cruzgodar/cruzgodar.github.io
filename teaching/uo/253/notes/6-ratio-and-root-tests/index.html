@@ -169,6 +169,40 @@
 	2. $\sum_{n = 1}^\infty \frac{(-1)^n}{n^2}$.
 	
 	3. $\sum_{n = 1}^\infty (-1)^n$.
+	
+	<strong>Solutions:</strong>
+	
+	1. This converges conditionally by the AST, but not absolutely, since removing the $(-1)^n$ makes it the Harmonic series, which diverges. The ratio test gives us
+	
+	$$
+		\begin{align*}
+			r &= \lim_{n \to \infty} \left| \frac{\frac{(-1)^{n + 1}}{n + 1}}{\frac{(-1)^n}{n}} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{(-1)^{n + 1} n}{(-1)^n (n + 1)} \right|\\
+			&= \lim_{n \to \infty} \left| - \frac{n}{n + 1} \right|\\
+			&= 1.
+		\end{align*}
+	$$
+	
+	2. This one converges absolutely, since stripping off the sign results in $\sum_{n = 1}^\infty \frac{1}{n^2}$, which is a $p$-series with $p = 2$ and therefore converges. Applying the ratio test, we have
+	
+	$$
+		\begin{align*}
+			r &= \lim_{n \to \infty} \left| \frac{\frac{(-1)^{n + 1}}{(n + 1)^2}}{\frac{(-1)^n}{n^2}} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{(-1)^{n + 1} n^2}{(-1)^n (n + 1)^2} \right|\\
+			&= \lim_{n \to \infty} \left| - \frac{n^2}{n^2 + 2n + 1} \right|\\
+			&= 1.
+		\end{align*}
+	$$
+	
+	3. Finally, this is just a divergent series, since it fails the divergence test. The ratio test is even simpler than the previous two:
+	
+	$$
+		\begin{align*}
+			r &= \lim_{n \to \infty} \left| \frac{(-1)^{n + 1}}{(-1)^n} \right|\\
+			&= \lim_{n \to \infty} \left| -1 \right|\\
+			&= 1.
+		\end{align*}
+	$$
 
 !end-exercise
 
@@ -239,6 +273,8 @@
 	1. $\sum_{k = 1}^\infty \frac{2^k}{(k + 1)^k}$.
 	
 	2. $\sum_{n = 1}^\infty \frac{n}{2^n}$.
+	
+	<strong>Solutions:</strong>
 
 !end-exercise
 
