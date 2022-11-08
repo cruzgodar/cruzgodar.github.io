@@ -124,6 +124,37 @@
 	1. $\sum_{n = 1}^\infty \frac{(-1)^n n}{2^n}$.
 	
 	2. $\sum_{k = 1}^\infty \frac{(k!)^2}{(2k)!}$.
+	
+	<strong>Solutions:</strong>
+	
+	1. With all the exponentials, let&#x2019;s try the ratio test. We can also use the alternating series test, but the ratio test will work well enough for our purposes. We have
+	
+	$$
+		\begin{align*}
+			r &= \lim_{n \to \infty} \left| \frac{\frac{(-1)^{n + 1} (n + 1)}{2^{n + 1}}}{\frac{(-1)^n n}{2^n}} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{(-1)^{n + 1} (n + 1) 2^n}{(-1)^n n 2^{n + 1}} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{(-1) (n + 1)}{2n} \right|\\
+			&= \lim_{n \to \infty} \left| \frac{(-1) (n + 1)}{2n} \right|\\
+			&= \lim_{n \to \infty} \frac{n + 1}{2n}\\
+			&= \frac{1}{2}.
+		\end{align*}
+	$$
+	
+	Since $r < 1$, the series converges. As a side note, since we could just as well have taken an absolute value before applying the test and gotten the same result, it must converge absolutely.
+	
+	2. Whenever there are factorials, the ratio test is almost always the best option. We have
+	
+	$$
+		\begin{align*}
+			r &= \lim_{k \to \infty} \left| \frac{\frac{((k + 1)!)^2}{(2(k+1))!}}{\frac{(k!)^2}{(2k)!}} \right|\\
+			&= \lim_{k \to \infty} \left| \frac{((k + 1)!)^2 (2k)!}{(k!)^2 (2k + 2)!} \right|\\
+			&= \lim_{k \to \infty} \left| \frac{(k + 1)^2}{(2k + 2)(2k + 1)} \right|\\
+			&= \lim_{k \to \infty} \left| \frac{k^2 + 2k + 1}{4k^2 + 6k + 2} \right|\\
+			&= \frac{1}{4}.
+		\end{align*}
+	$$
+	
+	Again, since $r < 1$, the series converges.
 
 !end-exercise
 
