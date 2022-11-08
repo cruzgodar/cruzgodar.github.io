@@ -84,6 +84,45 @@
 	
 	3. $\sum_{n = 1}^\infty \frac{1}{2^n + 3}$.
 	
+	<strong>Solutions:</strong>
+	
+	1. The denominator is dominated by $n^4$, so let&#x2019;s try to compare against that. We need
+	
+	$$
+		\begin{align*}
+			\frac{1}{n^4 + n^3} &\leq \frac{1}{n^4}\\
+			n^4 + n^3 &\geq n^4\\
+			n^3 &\geq 0\\
+			n^3 &\geq 0,
+		\end{align*}
+	$$
+	
+	which is always true since $n \geq 1$. Since $\sum_{n = 1}^\infty \frac{1}{n^4}$ is a $p$-series with $p = 4 > 1$, it converges, so by the comparison test, so does $\sum_{n = 1}^\infty \frac{1}{n^4 + n^3}$.
+	
+	2. This one is a little more tricky. We usually want to compare against a $p$-series or geometric series, but this doesn&#x2019;t look like either. However, since $\ln(m)$ is growing incredibly slowly, significantly slower than $m$, we might expect it to diverge. To that end, let&#x2019;s try to compare it to $\sum_{m = 2}^\infty \frac{1}{m}$. For it to succeed, we need
+	
+	$$
+		\begin{align*}
+			\frac{1}{\ln(m)} &\geq \frac{1}{m}\\
+			\ln(m) & \leq m\\
+			m &\leq e^m,
+		\end{align*}
+	$$
+	
+	which is true for $m \geq 0$. Therefore, the comparison test applies, and since $\sum_{m = 2}^\infty \frac{1}{m}$ is (except for the first term) the Harmonic series, $\sum_{m = 2}^\infty \frac{1}{\ln(m)}$ diverges.
+	
+	3. The denominator is dominated by $2^n$, so let&#x2019;s try comparing against $\sum_{n = 1}^\infty \frac{1}{2^n}$. Since that is a geometric series with base $\frac{1}{2}$, it converges, so we need to show
+	
+	$$
+		\begin{align*}
+			\frac{1}{2^n + 3} &\leq \frac{1}{2^n}\\
+			2^n + 3 &\geq 2^n\\
+			3 &\geq 0.
+		\end{align*}
+	$$
+	
+	Therefore, this is always true, and so $\sum_{n = 1}^\infty \frac{1}{2^n + 3}$ converges.
+	
 !end-exercise
 
 
@@ -217,6 +256,46 @@
 	3. $\sum_{k = 1}^\infty \frac{k^2}{k(k + 3)}$.
 	
 	4. $\sum_{n = 1}^\infty \frac{\ln(n)}{n}$.
+	
+	<strong>Solutions:</strong>
+	
+	1. In the limit, the terms look like $\frac{2^n}{3^n} = \left(\frac{2}{3}\right)^n$, so we might try comparing against that. It&#x2019;s worth trying the regular comparison test first: since we&#x2019;re subtracting $n$, a positive number, from the numerator, the entire fraction is made smaller, so we have
+	
+	$$
+		\frac{2^n - n}{3^n} \leq \frac{2^n}{3^n}.
+	$$
+	
+	Since $\sum_{n = 1}^\infty \left(\frac{2}{3}\right)^n$ is a geometric series with $r = \frac{2}{3}$, it converges, so the same is true of $\sum_{n = 1}^\infty \frac{2^n - n}{3^n}$ by the comparison test.
+	
+	2. For large $n$, the terms look like $\frac{2}{\sqrt{n}}$. Those form a $p$-series with $p = \frac{1}{2} \leq 1$, which is divergent. To use the regular comparison test, we&#x2019;d need every term to be larger, but since the denominator is being increased, we have the opposite. Therefore, let&#x2019;s try the limit comparison test. We have
+	
+	$$
+		\begin{align*}
+			\lim_{n \to \infty} \frac{\frac{2}{\sqrt{n} + 10}}{\frac{2}{\sqrt{n}}} &= \lim_{n \to \infty} \frac{\sqrt{n}}{\sqrt{n} + 10}\\
+			&= 1
+		\end{align*}
+	$$
+	
+	by L&#x2019;H&#244;pital&#x2019;s rule. The series therefore have the same behavior, so $\sum_{n = 1}^\infty \frac{2}{\sqrt{n} + 10}$ diverges.
+	
+	3. Multiplying out the denominator, these terms look like $\frac{k^2}{k^2} = 1$ in the limit. That&#x2019;s a clue that this series probably fails the divergence test, and so we don&#x2019;t even need to compare against anything. Properly taking the limit of the terms gives us
+	
+	$$
+		\lim_{k \to \infty} \frac{k^2}{k^2 + 3k} = 1 \neq 0
+	$$
+	
+	since it&#x2019;s a ratio of polynomials, and so it does in fact fail, meaning the series must diverge.
+	
+	4. It&#x2019;s possible to get the regular comparison test to work here, but it&#x2019;s a little annoying &mdash; most of the time, $\ln(n) > 1$, so we can compare against the Harmonic series, but that&#x2019;s not true when $n = 1$, since $\ln(1) = 0$. Let&#x2019;s try the limit comparison test just to save ourselves a headache. We have
+	
+	$$
+		\begin{align*}
+			\lim_{n \to \infty} \frac{\frac{\ln(n)}{n}}{\frac{1}{n}} &= \lim_{n \to \infty} \ln(n)\\
+			&= \infty.
+		\end{align*}
+	$$
+	
+	Since we&#x2019;re comparing against a divergent series, our series must be divergent too.
 	
 !end-exercise
 
