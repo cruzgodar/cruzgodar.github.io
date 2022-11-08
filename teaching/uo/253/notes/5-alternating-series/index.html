@@ -236,7 +236,7 @@
 	
 	Estimate $\sum_{n = 1}^\infty \frac{(-1)^n}{\sqrt{n}}$ to within $.2$ of its actual value.
 	
-	Since $\sqrt{n} \geq 1$ for $n \geq 1$, the series is alternating. The terms are also decreasing:
+	<strong>Solution:</strong> Since $\sqrt{n} \geq 1$ for $n \geq 1$, the series is alternating. The terms are also decreasing:
 	
 	$$
 		\begin{align*}
@@ -255,17 +255,19 @@
 	
 	so we want
 	
-	\begin{align*}
-		\frac{1}{\sqrt{N + 1}} &\leq .2\\
-		\sqrt{N + 1} &\geq 5\\
-		N + 1 &\geq 25\\
-		N &\geq 24.
-	\end{align*}
+	$$
+		\begin{align*}
+			\frac{1}{\sqrt{N + 1}} &\leq .2\\
+			\sqrt{N + 1} &\geq 5\\
+			N + 1 &\geq 25\\
+			N &\geq 24.
+		\end{align*}
+	$$
 	
 	With $N = 24$, the partial sum is
 	
 	$$
-		\sum_{n = 1}^24 \frac{(-1)^n}{\sqrt{n}} \approx -.504.
+		\sum_{n = 1}^{24} \frac{(-1)^n}{\sqrt{n}} \approx -.504.
 	$$
 	
 	The actual value is about $-.605$ &mdash; not too bad!
@@ -369,6 +371,14 @@
 	absolute and conditional convergence
 	
 	Determine if the series $\sum_{k = 1}^\infty \frac{\sin(k)}{k^2}$ converges absolutely, converges conditionally, or diverges.
+	
+	<strong>Solution:</strong> This isn&#x2019;t an alternating series, since $\sin(k)$ doesn&#x2019;t alternate in sign. However, when we take an absolute value, we have
+	
+	$$
+		0 \leq \frac{|\sin(k)|}{k^2} \leq \frac{1}{k^2},
+	$$
+	
+	and so we can apply the comparison test against $\sum_{k = 1}^\infty \frac{1}{k^2}$ to show that $\sum_{k = 1}^\infty \frac{|\sin(k)|}{k^2}$ converges. Therefore, the original series converges absolutely.
 
 !end-exercise
 
