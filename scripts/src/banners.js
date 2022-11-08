@@ -85,7 +85,7 @@ Page.Banner =
 				
 				.then((response) =>
 				{
-					let img = new Image();
+					const img = new Image();
 					
 					img.onload = () =>
 					{

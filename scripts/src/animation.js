@@ -2,9 +2,9 @@
 
 
 
-let Page = {};
+const Page = {};
 
-let Site = {};
+const Site = {};
 
 
 
@@ -446,7 +446,7 @@ Page.Animate =
 		{
 			element.style.marginBottom = "20vmin";
 			
-			let data =
+			const data =
 			{
 				targets: element,
 				marginTop: `${-Site.navigation_animation_distance_vertical}px`,
@@ -565,7 +565,7 @@ Page.Animate =
 		{
 			element.style.marginBottom = "20vmin";
 			
-			let data =
+			const data =
 			{
 				targets: element,
 				marginTop: `${Site.navigation_animation_distance_vertical}px`,
@@ -680,7 +680,7 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			let data =
+			const data =
 			{
 				targets: element,
 				marginLeft: `${-Site.navigation_animation_distance_horizontal}px`,
@@ -793,7 +793,7 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			let data =
+			const data =
 			{
 				targets: element,
 				marginLeft: `${Site.navigation_animation_distance_horizontal}px`,
@@ -900,7 +900,7 @@ Page.Animate =
 	{
 		return new Promise((resolve, reject) =>
 		{
-			let data =
+			const data =
 			{
 				targets: element,
 				duration: duration,

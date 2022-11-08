@@ -82,7 +82,7 @@ Page.load = async function()
 	//We do dropdowns here too.
 	Page.element.querySelectorAll("select").forEach(element =>
 	{
-		let button_element = element.previousElementSibling;
+		const button_element = element.previousElementSibling;
 		
 		button_element.innerHTML = `${element.querySelector(`[value=${element.value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
 		
@@ -193,7 +193,7 @@ Page.Load =
 	{
 		document.querySelectorAll("script").forEach(script =>
 		{
-			let new_script = document.createElement("script");
+			const new_script = document.createElement("script");
 			
 			new_script.innerHTML = script.textContent;
 			
@@ -220,7 +220,7 @@ Page.Load =
 			
 			.then((response) =>
 			{
-				let element = document.createElement("link");
+				const element = document.createElement("link");
 				
 				element.setAttribute("rel", "stylesheet");
 				
@@ -285,7 +285,7 @@ Page.Load =
 				
 				
 				
-				let element = document.createElement("script");
+				const element = document.createElement("script");
 				
 				if (DEBUG)
 				{
@@ -448,7 +448,7 @@ Page.Load =
 			
 			Page.element.querySelectorAll(".desmos-container").forEach(element =>
 			{
-				let options = {
+				const options = {
 					keypad: false,
 					settingsMenu: false,
 					zoomButtons: false,
@@ -515,7 +515,7 @@ Page.Load =
 			targetPixelRatio: 8
 		}, image_data =>
 		{
-			let img = document.createElement("img");
+			const img = document.createElement("img");
 			img.width = 4000;
 			img.height = 4000;
 			img.style.width = "50vmin";
@@ -695,7 +695,7 @@ Page.Load =
 	{
 		set_up: function()
 		{
-			let bound_function = this.equalize.bind(this);
+			const bound_function = this.equalize.bind(this);
 			
 			window.addEventListener("resize", bound_function);
 			Page.temporary_handlers["resize"].push(bound_function);
@@ -730,7 +730,7 @@ Page.Load =
 			
 			
 			
-			let elements = Page.element.querySelectorAll(".linked-text-button");
+			const elements = Page.element.querySelectorAll(".linked-text-button");
 			
 			elements.forEach((element, index) =>
 			{
@@ -786,7 +786,7 @@ Page.Load =
 		
 		set_up_nav_buttons: function(parent_list)
 		{
-			let index = Site.page_lists[parent_list].indexOf(Page.url);
+			const index = Site.page_lists[parent_list].indexOf(Page.url);
 			
 			if (index === -1)
 			{
@@ -832,7 +832,7 @@ Page.Load =
 	{
 		set: function()
 		{
-			let url_vars_suffix = Page.Navigation.concat_url_vars();
+			const url_vars_suffix = Page.Navigation.concat_url_vars();
 			
 			
 			

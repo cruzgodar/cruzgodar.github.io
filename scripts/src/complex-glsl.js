@@ -40,14 +40,14 @@ Site.split_glsl_file = function(filename, text)
 	
 	while (true)
 	{
-		let index = text.indexOf("#function", start_search_index);
+		const index = text.indexOf("#function", start_search_index);
 		
 		if (index === -1)
 		{
 			break;
 		}
 		
-		let end_index = text.indexOf("\n", index + 10);
+		const end_index = text.indexOf("\n", index + 10);
 		
 		if (end_index === -1)
 		{
@@ -153,7 +153,7 @@ Site.load_glsl = function()
 			
 			
 			
-			let texts = {};
+			const texts = {};
 			
 			await Promise.all(this.glsl_filenames.map(filename => new Promise(async (resolve, reject) =>
 			{
@@ -170,7 +170,7 @@ Site.load_glsl = function()
 			
 			//Figure out the depth of everything.
 			
-			let filenames = Object.keys(this.glsl_files);
+			const filenames = Object.keys(this.glsl_files);
 			
 			filenames.forEach(filename => this.glsl_files[filename].parents = []);
 			
@@ -242,7 +242,7 @@ Site.load_glsl = function()
 	{
 		return new Promise((resolve, reject) =>
 		{
-			let refresh_id = setInterval(() =>
+			const refresh_id = setInterval(() =>
 			{
 				if (Site.scripts_loaded["glsl"] === 2)
 				{

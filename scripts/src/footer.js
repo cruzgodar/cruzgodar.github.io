@@ -6,7 +6,7 @@ Page.Footer =
 {
 	load: function()
 	{
-		let url_vars_suffix = Page.Navigation.concat_url_vars();
+		const url_vars_suffix = Page.Navigation.concat_url_vars();
 		
 		
 		
@@ -26,17 +26,17 @@ Page.Footer =
 		
 		
 		
-		let footer_pages = ["gallery", "applets", "teaching", "writing", "about"];
+		const footer_pages = ["gallery", "applets", "teaching", "writing", "about"];
 		
 		footer_pages.forEach(page =>
 		{
 			if (!("footer_exclusion" in Page.settings && Page.settings["footer_exclusion"] === page))
 			{
-				let element = document.createElement("div");
+				const element = document.createElement("div");
 				
 				Page.element.querySelector(".footer-image-links").appendChild(element);
 				
-				let title = page[0].toUpperCase() + page.slice(1);
+				const title = page[0].toUpperCase() + page.slice(1);
 				
 				element.outerHTML = `
 					<div id="${footer_pages}-link" class="footer-image-link">
@@ -127,7 +127,7 @@ Page.Footer =
 		//Initializes the floating footer.
 		load: function()
 		{
-			let floating_footer_element = document.createElement("footer");
+			const floating_footer_element = document.createElement("footer");
 			floating_footer_element.id = "floating-footer";
 			
 			document.body.insertBefore(floating_footer_element, document.body.firstChild);
@@ -191,7 +191,7 @@ Page.Footer =
 			
 			
 			
-			let bound_function = this.hide.bind(this);
+			const bound_function = this.hide.bind(this);
 			
 			document.body.addEventListener("touchstart", bound_function);
 			document.body.addEventListener("touchmove", bound_function);
@@ -303,7 +303,7 @@ Page.Footer =
 			
 			
 			
-			let element = document.createElement("div");
+			const element = document.createElement("div");
 			
 			element.classList.add("settings-text-container");
 			
@@ -314,7 +314,7 @@ Page.Footer =
 			
 			
 			
-			let element_2 = document.createElement("p");
+			const element_2 = document.createElement("p");
 			
 			element_2.classList.add("settings-text");
 			

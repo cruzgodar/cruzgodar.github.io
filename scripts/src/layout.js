@@ -44,10 +44,8 @@ Page.Layout =
 			
 			attempts++;
 			
-			if (attempts === 5)
+			if (attempts === 3)
 			{
-				console.log("Abandoning resize event");
-				
 				return;
 			}
 		}
@@ -135,7 +133,7 @@ Page.Layout =
 		
 		
 		//The banner opacity is the big sticking point, though. The solution is to increase the window height slowly and fire scroll events in rapid succession.
-		let temp_object = {w: this.window_width, h: this.window_height};
+		const temp_object = {w: this.window_width, h: this.window_height};
 		
 		anime({
 			targets: temp_object,
@@ -176,7 +174,7 @@ Page.Layout =
 			
 			
 			
-			let parents = Page.element.querySelectorAll(".multicol-block");
+			const parents = Page.element.querySelectorAll(".multicol-block");
 			
 			if (parents.length === 0)
 			{
@@ -192,7 +190,7 @@ Page.Layout =
 				{
 					if (i < parents.length - 1 && parents[i + 1].querySelector(".image-links").children.length <= 3)
 					{
-						let container = document.createElement("div");
+						const container = document.createElement("div");
 						
 						container.classList.add("image-links-double-column-container");
 						
@@ -202,10 +200,6 @@ Page.Layout =
 						
 						container.appendChild(parents[i]);
 						container.appendChild(parents[i + 1]);
-						
-						let element = parents[i + 1].querySelector(".new-aos-section");
-						element.classList.remove("new-aos-section");
-						element.classList.add("old-new-aos-section");
 						
 						i++;
 					}
@@ -244,7 +238,7 @@ Page.Layout =
 			
 			
 			
-			let containers = Page.element.querySelectorAll(".image-links-double-column-container");
+			const containers = Page.element.querySelectorAll(".image-links-double-column-container");
 			
 			if (containers.length === 0)
 			{
@@ -285,14 +279,6 @@ Page.Layout =
 				
 				container.remove();
 			});
-			
-			
-			
-			Page.element.querySelectorAll(".old-new-aos-section").forEach(section =>
-			{
-				section.classList.remove("old-new-aos-section");
-				section.classList.add("new-aos-section");
-			});
 		}
 	},
 	
@@ -329,8 +315,8 @@ Page.Layout =
 			
 			let elements = [];
 			
-			let num_left_children = left_column.children.length;
-			let num_right_children = right_column.children.length;
+			const num_left_children = left_column.children.length;
+			const num_right_children = right_column.children.length;
 			
 			for (let i = 0; i < num_left_children; i++)
 			{
@@ -363,7 +349,7 @@ Page.Layout =
 			{
 				for (let i = 0; i < elements.length; i++)
 				{
-					let height_difference = Math.abs(height_sums[i] - (height_sums[height_sums.length - 1] - height_sums[i]));
+					const height_difference = Math.abs(height_sums[i] - (height_sums[height_sums.length - 1] - height_sums[i]));
 					
 					if (height_difference < min_height_difference)
 					{
@@ -384,7 +370,7 @@ Page.Layout =
 					left_column.children[i].classList.add("move-to-right");
 				}
 				
-				let elements_to_move = Page.element.querySelectorAll(".move-to-right");
+				const elements_to_move = Page.element.querySelectorAll(".move-to-right");
 				
 				for (let i = elements_to_move.length - 1; i >= 0; i--)
 				{
@@ -399,7 +385,7 @@ Page.Layout =
 					right_column.children[i].classList.add("move-to-left");
 				}
 				
-				let elements_to_move = Page.element.querySelectorAll(".move-to-left");
+				const elements_to_move = Page.element.querySelectorAll(".move-to-left");
 				
 				for (let i = 0; i < elements_to_move.length; i++)
 				{

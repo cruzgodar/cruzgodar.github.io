@@ -465,7 +465,7 @@ Site.load_script = function(src, is_module = false)
 {
 	return new Promise((resolve, reject) =>
 	{
-		let script = document.createElement("script");
+		const script = document.createElement("script");
 		
 		if (is_module)
 		{
@@ -485,7 +485,7 @@ Site.load_script = function(src, is_module = false)
 //Adds a style tag to <head> with the given content. If temporary is true, it will be removed at the next page load. Returns the style element added.
 Site.add_style = function(content, temporary = true, at_beginning_of_head = false)
 {
-	let element = document.createElement("style");
+	const element = document.createElement("style");
 	
 	element.textContent = content;
 	

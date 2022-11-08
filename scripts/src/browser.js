@@ -2,7 +2,7 @@
 
 
 
-let Browser = 
+const Browser = 
 {
 	name: "",
 	

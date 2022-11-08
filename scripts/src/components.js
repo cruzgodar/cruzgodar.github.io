@@ -4,38 +4,23 @@
 
 Page.Components =
 {
-	need_new_aos_section: false,
-	
-	
-	
 	get_header: function(args, banner)
 	{
-		let title = args.join(" ");
+		const title = args.join(" ");
 		
-		let height_adjust = "";
-		
-		if (banner)
-		{
-			height_adjust = ` style="margin-bottom: 10vh"`;
-		}
-		
-		
+		const height_adjust = banner ? ` style="margin-bottom: 10vh"` :  "";
 		
 		return `
 			<header${height_adjust}>
-				<div class="new-aos-section" data-aos="fade-up">
-					<div id="logo">
-						<a href="/home/" tabindex="-1">
-							<img src="/graphics/general-icons/logo.png" alt="Logo" tabindex="1"></img>
-						</a>
-					</div>
+				<div id="logo">
+					<a href="/home/" tabindex="-1">
+						<img src="/graphics/general-icons/logo.png" alt="Logo" tabindex="1"></img>
+					</a>
 				</div>
 				
 				<div style="height: 2vh"></div>
 				
-				<div data-aos="fade-up">
-					<h1 class="heading-text">${title}</h1>
-				</div>
+				<h1 class="heading-text">${title}</h1>
 			</header>
 			
 			<main>
@@ -86,72 +71,55 @@ Page.Components =
 	
 	
 	
-	get_text: function(args, new_aos_section)
+	get_text: function(args)
 	{
-		let aos_section_segment = "";
-		
-		if (this.need_new_aos_section)
-		{
-			aos_section_segment = ` class="new-aos-section"`;
-			
-			this.need_new_aos_section = false;
-		}
-		
-		
-		
 		if (args[0] === "h")
 		{
-			let text = args.slice(1).join(" ");
+			const text = args.slice(1).join(" ");
 			
 			return `
-				<div${aos_section_segment} data-aos="fade-up">
-					<h1 class="heading-text">
-						${text}
-					</h1>
-				</div>
+				<h1 class="heading-text">
+					${text}
+				</h1>
 			`;
 		}
 		
 		else if (args[0] === "s")
 		{
-			let text = args.slice(1).join(" ");
+			const text = args.slice(1).join(" ");
 			
 			return `
-				<div${aos_section_segment} data-aos="fade-up">
-					<h2 class="section-text">
-						${text}
-					</h2>
-				</div>
+				<h2 class="section-text">
+					${text}
+				</h2>
 			`;
 		}
 		
 		else if (args[2] === "!iframe")
 		{
-			let src = args.slice(3);
+			const src = args.slice(3);
 			
 			return this.get_iframe(src);
 		}
 		
 		else if (args[2] === "!desmos")
 		{
-			let id = args.slice(3);
+			const id = args.slice(3);
 			
 			return this.get_desmos(id);
 		}
 		
 		else
 		{
-			let text = args.slice(2).join(" ");
+			const text = args.slice(2).join(" ");
 			
 			//Only this one gets the line break at the end.
 			if (args[1] === "j")
 			{
 				return `
-					<div${aos_section_segment} data-aos="fade-up">
-						<p class="body-text">
-							${text}
-						</p>
-					</div>
+					<p class="body-text">
+						${text}
+					</p>
 					
 					<br>`; //It's important that there are no characters after the <br>.
 			}
@@ -160,13 +128,11 @@ Page.Components =
 			else
 			{
 				return `
-					<div${aos_section_segment} data-aos="fade-up">
-						<p class="body-text center-if-needed">
-							<span>
-								${text}
-							</span>
-						</p>
-					</div>
+					<p class="body-text center-if-needed">
+						<span>
+							${text}
+						</span>
+					</p>
 				`;
 			}
 		}
@@ -211,12 +177,12 @@ Page.Components =
 		
 		
 		
-		let src = `${file_path.slice(0, file_path.lastIndexOf("/") + 1)}cover.${Page.Images.file_extension}`;
+		const src = `${file_path.slice(0, file_path.lastIndexOf("/") + 1)}cover.${Page.Images.file_extension}`;
 		
 		
 		
 		return `
-			<div class="image-link${light_text}" data-aos="fade-up">
+			<div class="image-link${light_text}">
 				<a href="${file_path}" tabindex="-1">
 					<img data-image-id="${id}" data-src="${src}" alt="${subtext}" tabindex="1"></img>
 				</a>
@@ -250,19 +216,22 @@ Page.Components =
 	{
 		let version_string = "medium-version";
 		let version_text = "section-text";
+		let element_type = "h2";
 		
-		let numbers = args[0].split(".");
+		const numbers = args[0].split(".");
 		
 		if (numbers.length === 3)
 		{
 			version_string = "minor-version";
 			version_text = "body-text";
+			element_type = "p";
 		}
 		
 		else if (numbers[1] === "0")
 		{
 			version_string = "major-version";
 			version_text = "heading-text";
+			element_type = "h1";
 		}
 		
 		
@@ -271,53 +240,45 @@ Page.Components =
 		
 		text = text.split(":");
 		
-		let description = text[1].slice(1);
+		const description = text[1].slice(1);
 		
 		
 		
 		if (text.length === 3)
 		{
-			let datetime = text[2];
+			const datetime = text[2];
 			
 			text = text[0];
 			
-			let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+			const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 			
-			let numbers = datetime.split("-");
+			const numbers = datetime.split("-");
 			
-			let year = parseInt(numbers[0]);
+			const year = parseInt(numbers[0]);
 			
-			let month = months[parseInt(numbers[1]) - 1];
+			const month = months[parseInt(numbers[1]) - 1];
 			
-			let day = parseInt(numbers[2]);
+			const day = parseInt(numbers[2]);
 			
 			
 		
 			return `
 				<div class="${version_string}">
-					<div class="new-aos-section" data-aos="fade-up">
-						<h2 class="${version_text}">${args[0]}</h2>
-					</div>
+					<${element_type} class="${version_text}">${args[0]}</${element_type}>
 					
-					<div data-aos="fade-up">
-						<h2 class="${version_text}">${text}</h2>
-					</div>
+					<${element_type} class="${version_text}">${text}</${element_type}>
 					
 					<br>
 					
-					<div data-aos="fade-up">
-						<p class="body-text center-if-needed"><span>${description}</span></p>
-					</div>
+					<p class="body-text center-if-needed"><span>${description}</span></p>
 					
 					<br>
 					
-					<div data-aos="fade-up">
-						<p class="body-text center-if-needed">
-							<span>
-								<time datetime="${datetime}">${month} ${day}, ${year}</time>
-							</span>
-						</p>
-					</div>
+					<p class="body-text center-if-needed">
+						<span>
+							<time datetime="${datetime}">${month} ${day}, ${year}</time>
+						</span>
+					</p>
 				</div>
 			`;
 		}
@@ -330,19 +291,13 @@ Page.Components =
 			
 			return `
 				<div class="${version_string}">
-					<div class="new-aos-section" data-aos="fade-up">
-						<h2 class="${version_text}">${args[0]}</h2>
-					</div>
+					<${element_type} class="${version_text}">${args[0]}</${element_type}>
 					
-					<div data-aos="fade-up">
-						<h2 class="${version_text}">${text}</h2>
-					</div>
+					<${element_type} class="${version_text}">${text}</${element_type}>
 					
 					<br>
 					
-					<div data-aos="fade-up">
-						<p class="body-text center-if-needed"><span>${description}</span></p>
-					</div>
+					<p class="body-text center-if-needed"><span>${description}</span></p>
 				</div>
 			`;
 		}
@@ -352,14 +307,14 @@ Page.Components =
 	
 	get_text_box: function(args)
 	{
-		let id = args[0];
+		const id = args[0];
 		
-		let value = args[1];
+		const value = args[1];
 		
-		let text = args.slice(2).join(" ");
+		const text = args.slice(2).join(" ");
 		
 		return `
-			<div class="text-box-container" data-aos="fade-up">
+			<div class="text-box-container">
 				<input id="${id}-input" class="text-box" type="text" value="${value}" tabindex="1">
 				<p class="body-text text-box-subtext">${text}</p>
 			</div>
@@ -370,7 +325,7 @@ Page.Components =
 	
 	get_text_button: function(args)
 	{
-		let id = args[0];
+		const id = args[0];
 		
 		let text = args.slice(1).join(" ");
 		
@@ -388,7 +343,7 @@ Page.Components =
 		
 		
 		return `
-			<div class="focus-on-child" data-aos="fade-up" tabindex="1">
+			<div class="focus-on-child" tabindex="1">
 				<button class="text-button${linked_string}" type="button" id="${id}-button" tabindex="-1">${text}</button>
 			</div>
 		`;
@@ -398,22 +353,20 @@ Page.Components =
 	
 	get_checkbox: function(args)
 	{
-		let id = args[0];
+		const id = args[0];
 		
-		let text = args.slice(1).join(" ");
+		const text = args.slice(1).join(" ");
 		
 		
 		
 		return `
 			<div class="checkbox-row">
-				<div data-aos="fade-up">
-					<div class="checkbox-container click-on-child" tabindex="1">
-						<input type="checkbox" id="${id}-checkbox">
-						<div class="checkbox"></div>
-					</div>
+				<div class="checkbox-container click-on-child" tabindex="1">
+					<input type="checkbox" id="${id}-checkbox">
+					<div class="checkbox"></div>
 				</div>
 				
-				<div style="margin-left: 10px" data-aos="fade-up">
+				<div style="margin-left: 10px">
 					<p class="body-text checkbox-subtext">${text}</p>
 				</div>
 			</div>
@@ -424,24 +377,22 @@ Page.Components =
 	
 	get_radio_button: function(args)
 	{
-		let name = args[0];
+		const name = args[0];
 		
-		let id = args[1];
+		const id = args[1];
 		
-		let text = args.slice(2).join(" ");
+		const text = args.slice(2).join(" ");
 		
 		
 		
 		return `
 			<div class="radio-button-row">
-				<div data-aos="fade-up">
-					<div class="radio-button-container click-on-child" tabindex="1">
-						<input type="radio" name="${name}" id="${id}-radio-button">
-						<div class="radio-button"></div>
-					</div>
+				<div class="radio-button-container click-on-child" tabindex="1">
+					<input type="radio" name="${name}" id="${id}-radio-button">
+					<div class="radio-button"></div>
 				</div>
 				
-				<div style="margin-left: 10px" data-aos="fade-up">
+				<div style="margin-left: 10px">
 					<p class="body-text radio-button-subtext">${text}</p>
 				</div>
 			</div>
@@ -452,14 +403,14 @@ Page.Components =
 	
 	get_slider: function(args)
 	{
-		let id = args[0];
+		const id = args[0];
 		
-		let value = args[1];
+		const value = args[1];
 		
-		let text = args.slice(2).join(" ");
+		const text = args.slice(2).join(" ");
 		
 		return `
-			<div class="slider-container" data-aos="fade-up">
+			<div class="slider-container">
 				<input id="${id}-slider" type="range" min="0" max="10000" value="${value}" tabindex="1">
 				<label for="${id}-slider">
 					<p class="body-text slider-subtext">${text}: <span id="${id}-slider-value">0</span></p>
@@ -475,16 +426,16 @@ Page.Components =
 	{
 		let html = "";
 		
-		let id = args[0];
+		const id = args[0];
 		
 		html += `
 			<div class="dropdown-container focus-on-child" tabindex="1">
-				<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1" data-aos="fade-up">`;
+				<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1">`;
 		
 		for (let i = 1; i < args.length; i++)
 		{
-			let value = args[i][0];
-			let text = args[i].slice(1).join(" ");
+			const value = args[i][0];
+			const text = args[i].slice(1).join(" ");
 			
 			if (i === 1)
 			{
@@ -504,9 +455,7 @@ Page.Components =
 	get_canvas: function()
 	{
 		return `
-			<div data-aos="fade-up">
-				<canvas id="output-canvas" class="output-canvas"></canvas>
-			</div>
+			<canvas id="output-canvas" class="output-canvas"></canvas>
 		`;
 	},
 	
@@ -515,7 +464,7 @@ Page.Components =
 	get_iframe: function(src)
 	{
 		return `
-			<div class="iframe-container" data-aos="fade-up">	
+			<div class="iframe-container">	
 				<div class="iframe-outer-border">
 					<div class="iframe-clipper">
 						<iframe src="${src}" width="500" height="500"></iframe>
@@ -554,15 +503,15 @@ Page.Components =
 	{
 		return `
 			<div class="text-buttons nav-buttons">
-				<div class="focus-on-child new-aos-section" data-aos="zoom-out" tabindex="1">
+				<div class="focus-on-child tabindex="1">
 					<button class="text-button linked-text-button previous-nav-button no-floating-footer" type="button" tabindex="-1">Previous</button>
 				</div>
 				
-				<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+				<div class="focus-on-child" tabindex="1">
 					<button class="text-button linked-text-button home-nav-button no-floating-footer" type="button" tabindex="-1">Home</button>
 				</div>
 				
-				<div class="focus-on-child" data-aos="zoom-out" tabindex="1">
+				<div class="focus-on-child" tabindex="1">
 					<button class="text-button linked-text-button next-nav-button no-floating-footer" type="button" tabindex="-1">Next</button>
 				</div>
 			</div>
@@ -573,8 +522,6 @@ Page.Components =
 	
 	decode: function(html)
 	{
-		let new_aos_section = false;
-		
 		let banner = false;
 		
 		
@@ -615,7 +562,7 @@ Page.Components =
 								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
 							}
 							
-							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+							lines[i] = `<p class="body-text">$$`;
 						
 							i++;
 							
@@ -624,7 +571,7 @@ Page.Components =
 								i++;
 							}
 							
-							lines[i] = `$$</p></div>`;
+							lines[i] = `$$</p>`;
 							
 							continue;
 						}
@@ -667,8 +614,6 @@ Page.Components =
 				
 				else if (words[0] === "!section")
 				{
-					this.need_new_aos_section = true;
-					
 					lines[i] = this.get_section();
 				}
 				
@@ -676,7 +621,7 @@ Page.Components =
 				
 				else if (words[0] === "!text")
 				{
-					lines[i] = this.get_text(words.slice(1), new_aos_section);
+					lines[i] = this.get_text(words.slice(1));
 				}
 				
 				
@@ -809,7 +754,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-def")
 				{
-					lines[i] = `<div class="notes-def notes-environment" data-aos="fade-in">`;
+					lines[i] = `<div class="notes-def notes-environment">`;
 					
 					i += 2;
 					
@@ -832,7 +777,7 @@ Page.Components =
 								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
 							}
 							
-							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+							lines[i] = `<p class="body-text">$$`;
 						
 							i++;
 							
@@ -841,7 +786,7 @@ Page.Components =
 								i++;
 							}
 							
-							lines[i] = `$$</p></div>`;
+							lines[i] = `$$</p>`;
 							
 							continue;
 						}
@@ -862,7 +807,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-example")
 				{
-					lines[i] = `<div class="notes-example notes-environment" data-aos="fade-in">`;
+					lines[i] = `<div class="notes-example notes-environment">`;
 					
 					i += 2;
 					
@@ -885,7 +830,7 @@ Page.Components =
 								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
 							}
 							
-							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+							lines[i] = `<p class="body-text">$$`;
 						
 							i++;
 							
@@ -894,7 +839,7 @@ Page.Components =
 								i++;
 							}
 							
-							lines[i] = `$$</p></div>`;
+							lines[i] = `$$</p>`;
 							
 							continue;
 						}
@@ -915,7 +860,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-prop")
 				{
-					lines[i] = `<div class="notes-prop notes-environment" data-aos="fade-in">`;
+					lines[i] = `<div class="notes-prop notes-environment">`;
 					
 					i += 2;
 					
@@ -938,7 +883,7 @@ Page.Components =
 								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
 							}
 							
-							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+							lines[i] = `<p class="body-text">$$`;
 						
 							i++;
 							
@@ -947,7 +892,7 @@ Page.Components =
 								i++;
 							}
 							
-							lines[i] = `$$</p></div>`;
+							lines[i] = `$$</p>`;
 							
 							continue;
 						}
@@ -968,7 +913,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-thm")
 				{
-					lines[i] = `<div class="notes-thm notes-environment" data-aos="fade-in">`;
+					lines[i] = `<div class="notes-thm notes-environment">`;
 					
 					i += 2;
 					
@@ -1001,7 +946,7 @@ Page.Components =
 								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
 							}
 							
-							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+							lines[i] = `<p class="body-text">$$`;
 						
 							i++;
 							
@@ -1010,7 +955,7 @@ Page.Components =
 								i++;
 							}
 							
-							lines[i] = `$$</p></div>`;
+							lines[i] = `$$</p>`;
 							
 							continue;
 						}
@@ -1031,7 +976,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-proof")
 				{
-					lines[i] = `<div class="notes-proof notes-environment" data-aos="fade-in"><span class="notes-proof-title">Proof</span><p></p><br>`;
+					lines[i] = `<div class="notes-proof notes-environment"><span class="notes-proof-title">Proof</span><p></p><br>`;
 					
 					
 					
@@ -1048,7 +993,7 @@ Page.Components =
 								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
 							}
 							
-							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+							lines[i] = `<p class="body-text">$$`;
 						
 							i++;
 							
@@ -1057,7 +1002,7 @@ Page.Components =
 								i++;
 							}
 							
-							lines[i] = `$$</p></div>`;
+							lines[i] = `$$</p>`;
 							
 							continue;
 						}
@@ -1078,7 +1023,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-comment")
 				{
-					lines[i] = `<div class="notes-comment notes-environment" data-aos="fade-in"><span class="notes-comment-title">Comment</span><p></p><br>`;
+					lines[i] = `<div class="notes-comment notes-environment"><span class="notes-comment-title">Comment</span><p></p><br>`;
 					
 					
 					
@@ -1095,7 +1040,7 @@ Page.Components =
 								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
 							}
 							
-							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+							lines[i] = `<p class="body-text">$$`;
 						
 							i++;
 							
@@ -1104,7 +1049,7 @@ Page.Components =
 								i++;
 							}
 							
-							lines[i] = `$$</p></div>`;
+							lines[i] = `$$</p>`;
 							
 							continue;
 						}
@@ -1125,7 +1070,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-cor")
 				{
-					lines[i] = `<div class="notes-cor notes-environment" data-aos="fade-in">`;
+					lines[i] = `<div class="notes-cor notes-environment">`;
 					
 					i += 2;
 					
@@ -1148,7 +1093,7 @@ Page.Components =
 								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
 							}
 							
-							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+							lines[i] = `<p class="body-text">$$`;
 						
 							i++;
 							
@@ -1157,7 +1102,7 @@ Page.Components =
 								i++;
 							}
 							
-							lines[i] = `$$</p></div>`;
+							lines[i] = `$$</p>`;
 							
 							continue;
 						}
@@ -1178,7 +1123,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-lemma")
 				{
-					lines[i] = `<div class="notes-lemma notes-environment" data-aos="fade-in">`;
+					lines[i] = `<div class="notes-lemma notes-environment">`;
 					
 					i += 2;
 					
@@ -1201,7 +1146,7 @@ Page.Components =
 								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
 							}
 							
-							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+							lines[i] = `<p class="body-text">$$`;
 						
 							i++;
 							
@@ -1210,7 +1155,7 @@ Page.Components =
 								i++;
 							}
 							
-							lines[i] = `$$</p></div>`;
+							lines[i] = `$$</p>`;
 							
 							continue;
 						}
@@ -1231,7 +1176,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-axiom")
 				{
-					lines[i] = `<div class="notes-axiom notes-environment" data-aos="fade-in">`;
+					lines[i] = `<div class="notes-axiom notes-environment">`;
 					
 					i += 2;
 					
@@ -1254,7 +1199,7 @@ Page.Components =
 								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
 							}
 							
-							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+							lines[i] = `<p class="body-text">$$`;
 						
 							i++;
 							
@@ -1263,7 +1208,7 @@ Page.Components =
 								i++;
 							}
 							
-							lines[i] = `$$</p></div>`;
+							lines[i] = `$$</p>`;
 							
 							continue;
 						}
@@ -1284,7 +1229,7 @@ Page.Components =
 				
 				else if (words[0] === "!begin-exercise")
 				{
-					lines[i] = `<div class="notes-exercise notes-environment" data-aos="fade-in">`;
+					lines[i] = `<div class="notes-exercise notes-environment">`;
 					
 					i += 2;
 					
@@ -1307,7 +1252,7 @@ Page.Components =
 								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
 							}
 							
-							lines[i] = `<div data-aos="fade-up"><p class="body-text">$$`;
+							lines[i] = `<p class="body-text">$$`;
 						
 							i++;
 							
@@ -1316,7 +1261,7 @@ Page.Components =
 								i++;
 							}
 							
-							lines[i] = `$$</p></div>`;
+							lines[i] = `$$</p>`;
 							
 							continue;
 						}

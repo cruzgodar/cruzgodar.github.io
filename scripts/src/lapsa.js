@@ -187,7 +187,7 @@ Page.Presentation =
 			
 			this.build_state = 0;
 			
-			let builds = this.slides[this.current_slide].querySelectorAll(".build");
+			const builds = this.slides[this.current_slide].querySelectorAll(".build");
 			
 			this.num_builds = Math.max(builds.length, this.callbacks?.[this.slides[this.current_slide].id]?.builds?.length ?? 0);
 			
@@ -252,7 +252,7 @@ Page.Presentation =
 		
 		this.current_slide--;
 		
-		let builds = this.slides[this.current_slide].querySelectorAll(".build");
+		const builds = this.slides[this.current_slide].querySelectorAll(".build");
 		
 		this.num_builds = Math.max(builds.length, this.callbacks?.[this.slides[this.current_slide].id]?.builds?.length ?? 0);
 		
@@ -294,12 +294,7 @@ Page.Presentation =
 		
 		
 		
-		let forward_animation = false;
-		
-		if (index > this.current_slide)
-		{
-			forward_animation = true;
-		}
+		const forward_animation = index > this.current_slide;
 		
 		if (forward_animation)
 		{
@@ -323,7 +318,7 @@ Page.Presentation =
 		
 		this.build_state = 0;
 		
-		let builds = this.slides[this.current_slide].querySelectorAll(".build");
+		const builds = this.slides[this.current_slide].querySelectorAll(".build");
 		
 		this.num_builds = Math.max(builds.length, this.callbacks?.[this.slides[this.current_slide].id]?.builds?.length ?? 0);
 		

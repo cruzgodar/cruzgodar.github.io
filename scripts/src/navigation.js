@@ -37,7 +37,7 @@ Page.Navigation =
 		
 		
 		
-		let temp = window.scrollY;
+		const temp = window.scrollY;
 		
 		
 		
@@ -54,7 +54,7 @@ Page.Navigation =
 		
 		
 		//We need to record this in case we can't successfully load the next page and we need to return to the current one.
-		let background_color = document.documentElement.style.backgroundColor;
+		const background_color = document.documentElement.style.backgroundColor;
 		
 		await Page.Unload.fade_out(no_fade_out, url);
 		
@@ -243,7 +243,7 @@ Page.Navigation =
 	write_url_vars: function()
 	{
 		//Make the current state persist on refresh.
-		let display_url = DEBUG ? `/index-testing.html?page=${encodeURIComponent(Page.url)}` : Page.url;
+		const display_url = DEBUG ? `/index-testing.html?page=${encodeURIComponent(Page.url)}` : Page.url;
 		
 		history.replaceState({}, document.title, display_url + this.concat_url_vars());
 	},
@@ -290,7 +290,7 @@ Page.Navigation =
 		
 		if (Site.sitemap[url].parent === Site.sitemap[Page.url].parent)
 		{
-			let parent = Site.sitemap[url].parent;
+			const parent = Site.sitemap[url].parent;
 			
 			if (Site.sitemap[parent].children.indexOf(url) > Site.sitemap[parent].children.indexOf(Page.url))
 			{

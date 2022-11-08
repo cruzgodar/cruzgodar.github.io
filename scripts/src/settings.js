@@ -37,8 +37,8 @@ Site.Settings =
 	
 	get_url_var: function(id)
 	{
-		let query = window.location.search.substring(1);
-		let vars = query.split("&");
+		const query = window.location.search.substring(1);
+		const vars = query.split("&");
 		
 		for (let i = 0; i < vars.length; i++)
 		{
@@ -427,7 +427,7 @@ Site.Settings =
 				
 				setTimeout(() =>
 				{
-					let element = Site.add_style(this.get_settings_style("dark_contrast"), false);
+					const element = Site.add_style(this.get_settings_style("dark_contrast"), false);
 					
 					try {document.querySelector("#theme-contrast-adjust").remove();}
 					catch(ex) {}
@@ -452,7 +452,7 @@ Site.Settings =
 				
 				setTimeout(() =>
 				{
-					let element = Site.add_style(this.get_settings_style("dark"), false);
+					const element = Site.add_style(this.get_settings_style("dark"), false);
 					
 					try {document.querySelector("#theme-contrast-adjust").remove();}
 					catch(ex) {}
@@ -492,7 +492,7 @@ Site.Settings =
 				
 				setTimeout(() =>
 				{
-					let element = Site.add_style(this.get_settings_style("contrast"), false);
+					const element = Site.add_style(this.get_settings_style("contrast"), false);
 					
 					try {document.querySelector("#theme-contrast-adjust").remove();}
 					catch(ex) {}
@@ -672,7 +672,7 @@ Site.Settings =
 				
 				setTimeout(() =>
 				{
-					let element = Site.add_style(this.get_settings_style("dark_contrast"), false);
+					const element = Site.add_style(this.get_settings_style("dark_contrast"), false);
 					
 					try {document.querySelector("#theme-contrast-adjust").remove();}
 					catch(ex) {}
@@ -694,7 +694,7 @@ Site.Settings =
 				
 				setTimeout(() =>
 				{
-					let element = Site.add_style(this.get_settings_style("contrast"), false);
+					const element = Site.add_style(this.get_settings_style("contrast"), false);
 					
 					try {document.querySelector("#theme-contrast-adjust").remove();}
 					catch(ex) {}
@@ -733,7 +733,7 @@ Site.Settings =
 				
 				setTimeout(() =>
 				{
-					let element = Site.add_style(this.get_settings_style("dark"), false);
+					const element = Site.add_style(this.get_settings_style("dark"), false);
 					
 					try {document.querySelector("#theme-contrast-adjust").remove();}
 					catch(ex) {}
@@ -793,7 +793,7 @@ Site.Settings =
 				try {document.querySelector("#text-size-adjust").remove();}
 				catch(ex) {}
 				
-				let element = Site.add_style(`
+				const element = Site.add_style(`
 					html
 					{
 						font-size: 18px;
@@ -1008,7 +1008,7 @@ Site.Settings =
 		//When in ultrawide mode, shrink the margins to 50%.
 		if (Page.Layout.layout_string === "ultrawide")
 		{
-			let element = Site.add_style(`
+			const element = Site.add_style(`
 				.body-text, .nav-buttons
 				{
 					width: 50vw;
@@ -1191,7 +1191,7 @@ Site.Settings =
 			
 			
 			
-			let element = Site.add_style(`
+			const element = Site.add_style(`
 				.slider-container > input
 				{
 					background-color: rgb(80, 80, 80) !important;
@@ -1301,7 +1301,7 @@ Site.Settings =
 			
 			
 			
-			let element = Site.add_style(`
+			const element = Site.add_style(`
 				.slider-container > input
 				{
 					background-color: rgb(100, 100, 100) !important;
@@ -1424,7 +1424,7 @@ Site.Settings =
 			
 			//Page.set_element_styles(".slider-container > input", "background-color", "rgb(180, 180, 180)");
 			
-			let element = Site.add_style(`
+			const element = Site.add_style(`
 				.slider-container > input
 				{
 					background-color: rgb(180, 180, 180) !important;

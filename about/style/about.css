@@ -10,24 +10,24 @@
 
 
 
-.major-version div:first-child .heading-text
+.major-version h1:first-child 
 {
 	font-size: 350%;
 }
 
-.major-version div:nth-child(-n+2) .heading-text
+.major-version h1:nth-child(-n+2)
 {
 	font-weight: bold;
 }
 
 
 
-.medium-version div:first-child .section-text
+.medium-version h2:first-child
 {
 	font-size: 250%;
 }
 
-.medium-version div:nth-child(-n+2) .section-text
+.medium-version h2:nth-child(-n+2)
 {
 	font-weight: bold;
 }
@@ -45,12 +45,12 @@
 	opacity: 0;
 }
 
-.minor-version div:first-child .body-text
+.minor-version p:first-child
 {
 	font-size: 150%;
 }
 
-.minor-version div:nth-child(-n+2) .body-text
+.minor-version p:nth-child(-n+2)
 {
 	font-weight: bold;
 	text-align: center;
