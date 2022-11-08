@@ -275,6 +275,44 @@
 	2. $\sum_{n = 1}^\infty \frac{n}{2^n}$.
 	
 	<strong>Solutions:</strong>
+	
+	1. While we could try the ratio test here, the $(k + 1)^k$ will make that a bit of a nightmare &mdash; nothing will cancel. Instead, all of the powers of $k$ mean the root test is probably the right choice. We have
+	
+	$$
+		\begin{align*}
+			r &= \lim_{k \to \infty} \sqrt[k]{\left| \frac{2}{k + 1} \right|^k}\\
+			&= \lim_{k \to \infty} \frac{2}{k + 1}\\
+			&= 0.
+		\end{align*}
+	$$
+	
+	Since $r < 1$, the series converges.
+	
+	2. This time, there are definitely better choices than the root test: the limit comparison and ratio tests would both work well. But the root test isn&#x2019;t so bad: it gives
+	
+	$$
+		\begin{align*}
+			r &= \lim_{n \to \infty} \sqrt[n]{\left| \frac{n}{2^n} \right|}\\
+			&= \lim_{n \to \infty} \sqrt[n]{\frac{n}{2^n}}\\
+			&= \lim_{n \to \infty} \frac{\sqrt[n]{n}}{2}\\
+			&= \lim_{n \to \infty} \frac{n^{1/n}}{2}.
+		\end{align*}
+	$$
+	
+	Solving this limit is a little bit complicated: since there&#x2019;s an $n$ in both the base and exponent, we need to rewrite it with $\ln$.
+	
+	$$
+		\begin{align*}
+			r &= \frac{1}{2} \lim_{n \to \infty} n^{1/n}\\
+			&= \frac{1}{2} e^{\lim_{n \to \infty} \ln \left( n^{1/n} \right)}\\
+			&= \frac{1}{2} e^{\lim_{n \to \infty} \frac{\ln \left( n \right)}{n}}\\
+			&= \frac{1}{2} e^{\lim_{n \to \infty} \frac{1/n}{1}}\\
+			&= \frac{1}{2} e^0\\
+			&= \frac{1}{2}.
+		\end{align*}
+	$$
+	
+	Since $r < 1$, the series converges.
 
 !end-exercise
 
