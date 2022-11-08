@@ -17,7 +17,8 @@ Page.Layout =
 	new_window_width: 0,
 	new_window_height: 0,
 	
-	
+	old_window_width: 0,
+	old_window_height: 0,
 	
 	window_width_step_distance: 0,
 	window_height_step_distance: 0,
@@ -26,16 +27,37 @@ Page.Layout =
 	
 	
 	
-	on_resize: function()
+	on_resize: async function()
 	{
-		//Everything here can be done immediately.
+		//Absolutely disgusting.
 		this.new_window_width = window.innerWidth;
 		this.new_window_height = window.innerHeight;
+		
+		let attempts = 0;
+		
+		while (this.new_window_width === this.old_window_width && this.new_window_height === this.old_window_height)
+		{
+			await new Promise((resolve, reject) => setTimeout(resolve, 50));
+			
+			this.new_window_width = window.innerWidth;
+			this.new_window_height = window.innerHeight;
+			
+			attempts++;
+			
+			if (attempts === 5)
+			{
+				console.log("Abandoning resize event");
+				
+				return;
+			}
+		}
 		
 		Site.navigation_animation_distance_vertical = window.innerHeight / 20;
 		Site.navigation_animation_distance_horizontal = window.innerWidth / 20;
 		
 		this.aspect_ratio = this.new_window_width / this.new_window_height;
+		
+		
 		
 		this.old_layout_string = this.layout_string;
 		
@@ -77,12 +99,12 @@ Page.Layout =
 		
 		if (this.aspect_ratio > 1 && !this.AppletColumns.are_equalized)
 		{
-			setTimeout(this.AppletColumns.equalize, 50);
+			this.AppletColumns.equalize();
 		}
 		
-		else if (this.aspect_ratio < 1 && this.AppletColumns.are_equalized)
+		else if (this.aspect_ratio <= 1 && this.AppletColumns.are_equalized)
 		{
-			setTimeout(this.AppletColumns.remove, 50);
+			this.AppletColumns.remove();
 		}	
 		
 		
@@ -104,6 +126,11 @@ Page.Layout =
 		{
 			Page.Banner.file_name = "landscape." + Page.Images.file_extension;
 		}
+		
+		
+		
+		this.old_window_width = this.new_window_width;
+		this.old_window_height = this.new_window_height;
 		
 		
 		
@@ -281,8 +308,6 @@ Page.Layout =
 			{
 				return;
 			}
-			
-			
 			
 			let left_column = null;
 			let right_column = null;

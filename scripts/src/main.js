@@ -368,13 +368,6 @@ Site.load = async function(url)
 	
 	
 	
-	setInterval(() =>
-	{
-		window.dispatchEvent(new Event("resize"));
-	}, 5000);
-	
-	
-	
 	Browser.detect();
 	
 	
