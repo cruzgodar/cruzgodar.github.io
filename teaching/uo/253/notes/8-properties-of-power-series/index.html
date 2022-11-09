@@ -161,6 +161,45 @@
 	$$
 	
 	as a power series and determine the interval of convergence.
+	
+	<strong>Solution:</strong> First, let&#x2019;s apply partial fractions and split this up. We have
+	
+	$$
+		\begin{align*}
+			\frac{6}{(1 - x)(2 - x)(3 - x)} &= \frac{A}{1 - x} + \frac{B}{2 - x} + \frac{C}{3 - x}\\
+			6 &= A(2-x)(3-x) + B(1-x)(3-x) + C(1-x)(2-x)\\
+			6 &= 6A - 5Ax + Ax^2 + 3B - 4Bx + Bx^2 + 2C - 3Cx + Cx^2.
+		\end{align*}
+	$$
+	
+	Equating coefficients,
+	
+	$$
+		\begin{cases}
+			0 &= A + B + C\\
+			0 &= -5A - 4B - 3C\\
+			6 &= 6A + 3B + 2C
+		\end{cases}.
+	$$
+	
+	This results in $A = -3$, $B = 6$, and $C = -3$, so the fraction splits as
+	
+	$$
+		g(x) = -\frac{3}{1 - x} + \frac{6}{2 - x} - \frac{3}{3 - x}.
+	$$
+	
+	Rewriting all of them to look like $\frac{1}{1 - x}$ results in
+	
+	$$
+		\begin{align*}
+			g(x) &= -3 \left(\frac{1}{1 - x}\right) + 3\left( \frac{1}{1 - \frac{x}{2})} \right) - \frac{1}{1 - \frac{x}{3}}\\
+			&= -3\sum_{n = 0}^\infty x^n + 3\sum_{n = 0}^\infty \left(\frac{x}{2}\right)^n - \sum_{n = 0}^\infty \left(\frac{x}{3}\right)^n\\
+			&= \sum_{n = 0}^\infty -3 x^n + \sum_{n = 0}^\infty \frac{3}{2^n} x^n + \sum_{n = 0}^\infty -\frac{1}{3^n}x^n\\
+			&= \sum_{n = 0}^\infty \left( -3 + \frac{3}{2^n} -\frac{1}{3^n} \right) x^n.
+		\end{align*}
+	$$
+	
+	These three series have intervals of convergence of $(-1, 1)$, $(-2, 2)$, and $(-3, 3)$, respectively, and so the overlap is just $(-1, 1)$. The radius of convergence is then $R = 1$.
 
 !end-exercise
 
