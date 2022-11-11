@@ -82,7 +82,7 @@
 	
 	
 	
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	const resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
@@ -99,9 +99,9 @@
 	
 	
 	
-	let g2_slider_element = Page.element.querySelector("#g2-slider");
+	const g2_slider_element = Page.element.querySelector("#g2-slider");
 	
-	let g2_slider_value_element = Page.element.querySelector("#g2-slider-value");
+	const g2_slider_value_element = Page.element.querySelector("#g2-slider-value");
 	
 	g2_slider_element.addEventListener("input", () =>
 	{
@@ -122,9 +122,9 @@
 	
 	
 	
-	let g3_slider_element = Page.element.querySelector("#g3-slider");
+	const g3_slider_element = Page.element.querySelector("#g3-slider");
 	
-	let g3_slider_value_element = Page.element.querySelector("#g3-slider-value");
+	const g3_slider_value_element = Page.element.querySelector("#g3-slider-value");
 	
 	g3_slider_element.addEventListener("input", () =>
 	{
@@ -145,7 +145,7 @@
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	const download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -164,7 +164,7 @@
 	
 	function init_canvases()
 	{
-		let frag_shader_source_wp = `
+		const frag_shader_source_wp = `
 			precision highp float;
 			
 			varying vec2 uv;
@@ -256,7 +256,7 @@
 		
 		
 		
-		let frag_shader_source_wpprime = `
+		const frag_shader_source_wpprime = `
 			precision highp float;
 			
 			varying vec2 uv;
@@ -348,7 +348,7 @@
 		
 		
 		
-		let frag_shader_source_ec_plot = `
+		const frag_shader_source_ec_plot = `
 			precision highp float;
 			
 			varying vec2 uv;
@@ -420,7 +420,7 @@
 		
 		
 		
-		let frag_shader_source_ec_plot_2 = `
+		const frag_shader_source_ec_plot_2 = `
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -456,7 +456,7 @@
 		
 		
 		
-		let frag_shader_source_kleinj = `
+		const frag_shader_source_kleinj = `
 			precision highp float;
 			
 			varying vec2 uv;
@@ -547,7 +547,7 @@
 		
 		
 		
-		let frag_shader_source_g2 = `
+		const frag_shader_source_g2 = `
 			precision highp float;
 			
 			varying vec2 uv;
@@ -619,7 +619,7 @@
 		
 		
 
-		let options_wp =
+		const options_wp =
 		{
 			renderer: "gpu",
 			
@@ -663,7 +663,7 @@
 		
 		
 		
-		let options_wpprime =
+		const options_wpprime =
 		{
 			renderer: "gpu",
 			
@@ -707,7 +707,7 @@
 		
 		
 		
-		let options_ec_plot =
+		const options_ec_plot =
 		{
 			renderer: "gpu",
 			
@@ -751,7 +751,7 @@
 		
 		
 		
-		let options_kleinj =
+		const options_kleinj =
 		{
 			renderer: "gpu",
 			
@@ -763,7 +763,7 @@
 		
 		
 		
-		let options_g2 =
+		const options_g2 =
 		{
 			renderer: "gpu",
 			
@@ -1036,7 +1036,7 @@
 	{
 		if (aspect_ratio >= 1)
 		{
-			let new_world_center = wilson_wp.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 3 * Math.pow(2, zoom_level) * aspect_ratio, 3 * Math.pow(2, zoom_level));
+			const new_world_center = wilson_wp.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 3 * Math.pow(2, zoom_level) * aspect_ratio, 3 * Math.pow(2, zoom_level));
 			
 			wilson_wp.world_width = 3 * Math.pow(2, zoom_level) * aspect_ratio;
 			wilson_wp.world_height = 3 * Math.pow(2, zoom_level);
@@ -1055,7 +1055,7 @@
 		
 		else
 		{
-			let new_world_center = wilson_wp.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 3 * Math.pow(2, zoom_level), 3 * Math.pow(2, zoom_level) / aspect_ratio);
+			const new_world_center = wilson_wp.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 3 * Math.pow(2, zoom_level), 3 * Math.pow(2, zoom_level) / aspect_ratio);
 			
 			wilson_wp.world_width = 3 * Math.pow(2, zoom_level);
 			wilson_wp.world_height = 3 * Math.pow(2, zoom_level) / aspect_ratio;
@@ -1079,7 +1079,7 @@
 	{
 		if (aspect_ratio_ec_plot >= 1)
 		{
-			let new_world_center = wilson_ec_plot.input.get_zoomed_world_center(fixed_point_x_ec_plot, fixed_point_y_ec_plot, 3 * Math.pow(2, zoom_level_ec_plot) * aspect_ratio_ec_plot, 3 * Math.pow(2, zoom_level_ec_plot));
+			const new_world_center = wilson_ec_plot.input.get_zoomed_world_center(fixed_point_x_ec_plot, fixed_point_y_ec_plot, 3 * Math.pow(2, zoom_level_ec_plot) * aspect_ratio_ec_plot, 3 * Math.pow(2, zoom_level_ec_plot));
 			
 			wilson_ec_plot.world_width = 3 * Math.pow(2, zoom_level_ec_plot) * aspect_ratio_ec_plot;
 			wilson_ec_plot.world_height = 3 * Math.pow(2, zoom_level_ec_plot);
@@ -1090,7 +1090,7 @@
 		
 		else
 		{
-			let new_world_center = wilson_ec_plot.input.get_zoomed_world_center(fixed_point_x_ec_plot, fixed_point_y_ec_plot, 3 * Math.pow(2, zoom_level_ec_plot), 3 * Math.pow(2, zoom_level_ec_plot) / aspect_ratio_ec_plot);
+			const new_world_center = wilson_ec_plot.input.get_zoomed_world_center(fixed_point_x_ec_plot, fixed_point_y_ec_plot, 3 * Math.pow(2, zoom_level_ec_plot), 3 * Math.pow(2, zoom_level_ec_plot) / aspect_ratio_ec_plot);
 			
 			wilson_ec_plot.world_width = 3 * Math.pow(2, zoom_level_ec_plot);
 			wilson_ec_plot.world_height = 3 * Math.pow(2, zoom_level_ec_plot) / aspect_ratio_ec_plot;
@@ -1124,7 +1124,7 @@
 
 	function draw_frame(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		const time_elapsed = timestamp - last_timestamp;
 		
 		last_timestamp = timestamp;
 		
@@ -1224,7 +1224,7 @@
 	
 	function draw_frame_ec_plot(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp_ec_plot;
+		const time_elapsed = timestamp - last_timestamp_ec_plot;
 		
 		last_timestamp_ec_plot = timestamp;
 		
@@ -1247,7 +1247,7 @@
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_center_x"], wilson_ec_plot.world_center_x);
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_center_y"], wilson_ec_plot.world_center_y);
 		
-		let world_size = Math.min(wilson_ec_plot.world_height, wilson_ec_plot.world_width);
+		const world_size = Math.min(wilson_ec_plot.world_height, wilson_ec_plot.world_width);
 		
 		wilson_ec_plot.gl.uniform1f(wilson_ec_plot.uniforms["world_size"], world_size / 2);
 		
@@ -1272,13 +1272,13 @@
 		let max_interpolation_distance = wilson_ec_plot.canvas_width;
 		
 		//If the distance is at least this small, the number of neighbors is ignored.
-		let min_guaranteed_interpolation_distance = 3;
+		const min_guaranteed_interpolation_distance = 3;
 		
 		//This means a 5x5 square will be searched around each endpoint...
-		let isolation_search_radius = 2;
+		const isolation_search_radius = 2;
 		
 		//...and it will be considered isolated if there are at most 2 pixels in the square.
-		let isolation_threshhold = 1;
+		const isolation_threshhold = 1;
 		
 		for (let i = isolation_search_radius; i < wilson_ec_plot.canvas_height - isolation_search_radius; i++)
 		{
@@ -1289,11 +1289,11 @@
 				if (pixels[4 * index] !== 0)
 				{
 					//This is the sum of a radius 3 square centered at this pixel. It's an endpoint if there are 
-					let close_total = pixels[4 * (index - 1)] + pixels[4 * (index + 1)] + pixels[4 * (index - width)] + pixels[4 * (index + width)] + pixels[4 * (index - 1 - width)] + pixels[4 * (index + 1 - width)] + pixels[4 * (index - 1 + width)] + pixels[4 * (index + 1 + width)];
+					const close_total = pixels[4 * (index - 1)] + pixels[4 * (index + 1)] + pixels[4 * (index - width)] + pixels[4 * (index + width)] + pixels[4 * (index - 1 - width)] + pixels[4 * (index + 1 - width)] + pixels[4 * (index - 1 + width)] + pixels[4 * (index + 1 + width)];
 					
 					if (close_total <= 255)
 					{
-						let far_total = pixels[4 * (index - 2 * width - 2)] + pixels[4 * (index - 2 * width - 1)] + pixels[4 * (index - 2 * width)] + pixels[4 * (index - 2 * width + 1)] + pixels[4 * (index - 2 * width + 2)]   +   pixels[4 * (index + 2 * width - 2)] + pixels[4 * (index + 2 * width - 1)] + pixels[4 * (index + 2 * width)] + pixels[4 * (index + 2 * width + 1)] + pixels[4 * (index + 2 * width + 2)]   +   pixels[4 * (index - width - 2)] + pixels[4 * (index - 2)] + pixels[4 * (index + width - 2)]   +   pixels[4 * (index - width + 2)] + pixels[4 * (index + 2)] + pixels[4 * (index + width + 2)];
+						const far_total = pixels[4 * (index - 2 * width - 2)] + pixels[4 * (index - 2 * width - 1)] + pixels[4 * (index - 2 * width)] + pixels[4 * (index - 2 * width + 1)] + pixels[4 * (index - 2 * width + 2)]   +   pixels[4 * (index + 2 * width - 2)] + pixels[4 * (index + 2 * width - 1)] + pixels[4 * (index + 2 * width)] + pixels[4 * (index + 2 * width + 1)] + pixels[4 * (index + 2 * width + 2)]   +   pixels[4 * (index - width - 2)] + pixels[4 * (index - 2)] + pixels[4 * (index + width - 2)]   +   pixels[4 * (index - width + 2)] + pixels[4 * (index + 2)] + pixels[4 * (index + width + 2)];
 						
 						//This is an endpoint. Now we'll check to see if it's isolated, which means it's connected to only at most two other pixels.
 						if (far_total === 0)
@@ -1349,7 +1349,7 @@
 				
 					
 				
-				let distance = Math.sqrt((endpoints[i][0] - endpoints[j][0])*(endpoints[i][0] - endpoints[j][0]) + (endpoints[i][1] - endpoints[j][1])*(endpoints[i][1] - endpoints[j][1]));
+				const distance = Math.sqrt((endpoints[i][0] - endpoints[j][0])*(endpoints[i][0] - endpoints[j][0]) + (endpoints[i][1] - endpoints[j][1])*(endpoints[i][1] - endpoints[j][1]));
 				
 				if (distance < min_open_distance && distance >= 2)
 				{
@@ -1417,12 +1417,12 @@
 				//Interpolate between the two points.
 				for (let k = 1; k < 2 * min_open_distance; k++)
 				{
-					let t = k / (2 * min_open_distance);
+					const t = k / (2 * min_open_distance);
 					
-					let row = Math.round((1 - t) * endpoints[i][0] + t * endpoints[min_open_j][0]);
-					let col = Math.round((1 - t) * endpoints[i][1] + t * endpoints[min_open_j][1]);
+					const row = Math.round((1 - t) * endpoints[i][0] + t * endpoints[min_open_j][0]);
+					const col = Math.round((1 - t) * endpoints[i][1] + t * endpoints[min_open_j][1]);
 					
-					let index = width * row + col;
+					const index = width * row + col;
 					
 					pixels[4 * index] = 0;
 					pixels[4 * index + 1] = 255;
@@ -1496,7 +1496,7 @@
 	
 	function draw_frame_parameter_column(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp_parameter_column;
+		const time_elapsed = timestamp - last_timestamp_parameter_column;
 		
 		last_timestamp_parameter_column = timestamp;
 		

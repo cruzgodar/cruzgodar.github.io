@@ -4,7 +4,7 @@
 	
 	
 	
-	let options =
+	const options =
 	{
 		renderer: "cpu",
 		
@@ -21,7 +21,7 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	const wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	
 	
@@ -33,13 +33,13 @@
 	
 	
 	
-	let generate_button_element = Page.element.querySelector("#generate-button");
+	const generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", request_sandpile);
 	
 	
 	
-	let num_grains_input_element = Page.element.querySelector("#num-grains-input");
+	const num_grains_input_element = Page.element.querySelector("#num-grains-input");
 	
 	num_grains_input_element.addEventListener("keydown", (e) =>
 	{
@@ -51,7 +51,7 @@
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	const download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -60,7 +60,7 @@
 	
 	
 	
-	let maximum_speed_checkbox_element = Page.element.querySelector("#toggle-maximum-speed-checkbox");
+	const maximum_speed_checkbox_element = Page.element.querySelector("#toggle-maximum-speed-checkbox");
 	
 	
 	
@@ -77,9 +77,9 @@
 	
 	function request_sandpile()
 	{
-		let num_grains = parseInt(num_grains_input_element.value || 10000);
+		const num_grains = parseInt(num_grains_input_element.value || 10000);
 		
-		let maximum_speed = maximum_speed_checkbox_element.checked;
+		const maximum_speed = maximum_speed_checkbox_element.checked;
 		
 		grid_size = Math.floor(Math.sqrt(num_grains)) + 2;
 		
@@ -92,7 +92,7 @@
 		
 		//Make sure that there is a proper density of pixels so that the canvas doesn't look blurry.
 		
-		let canvas_pixel_size = Math.min(Page.Layout.window_width, Page.Layout.window_height);
+		const canvas_pixel_size = Math.min(Page.Layout.window_width, Page.Layout.window_height);
 		
 		canvas_scale_factor = Math.ceil(canvas_pixel_size / grid_size);
 		
@@ -122,28 +122,15 @@
 		
 		web_worker.onmessage = function(e)
 		{
-			if (e.data[0] === "done")
-			{
-				console.log("Finished");
-			}
+			const image = e.data[0];
 			
-			else if (e.data[0] === "log")
+			for (let i = 0; i < grid_size; i++)
 			{
-				console.log(...e.data.slice(1));
-			}
-			
-			else
-			{
-				let image = e.data[0];
-				
-				for (let i = 0; i < grid_size; i++)
+				for (let j = 0; j < grid_size; j++)
 				{
-					for (let j = 0; j < grid_size; j++)
-					{
-						wilson.ctx.fillStyle = image[i][j];
-						
-						wilson.ctx.fillRect(j * canvas_scale_factor, i * canvas_scale_factor, canvas_scale_factor, canvas_scale_factor);
-					}
+					wilson.ctx.fillStyle = image[i][j];
+					
+					wilson.ctx.fillRect(j * canvas_scale_factor, i * canvas_scale_factor, canvas_scale_factor, canvas_scale_factor);
 				}
 			}
 		}
@@ -157,7 +144,7 @@
 	
 	function alert_about_hardware_acceleration()
 	{
-		let elements = Page.element.querySelector("main").children;
+		const elements = Page.element.querySelector("main").children;
 		
 		elements = elements[elements.length - 1].children;
 		

@@ -4,7 +4,7 @@
 	
 	
 	
-	let options =
+	const options =
 	{
 		renderer: "cpu",
 		
@@ -12,7 +12,7 @@
 		canvas_height: 1000
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#calcudoku-grid"), options);
+	const wilson = new Wilson(Page.element.querySelector("#calcudoku-grid"), options);
 	
 	
 	
@@ -34,13 +34,13 @@
 	
 	
 	
-	let generate_button_element = Page.element.querySelector("#generate-button");
+	const generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", request_calcudoku_grid);
 	
 	
 	
-	let grid_size_input_element = Page.element.querySelector("#grid-size-input");
+	const grid_size_input_element = Page.element.querySelector("#grid-size-input");
 	
 	grid_size_input_element.addEventListener("keydown", function(e)
 	{
@@ -52,7 +52,7 @@
 	
 	
 	
-	let max_cage_size_input_element = Page.element.querySelector("#max-cage-size-input");
+	const max_cage_size_input_element = Page.element.querySelector("#max-cage-size-input");
 	
 	max_cage_size_input_element.addEventListener("keydown", function(e)
 	{
@@ -64,7 +64,7 @@
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	const download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -73,11 +73,11 @@
 	
 	
 	
-	let total_time_clock_element = Page.element.querySelector("#total-time-clock");
-	let split_time_clock_element = Page.element.querySelector("#split-time-clock");
+	const total_time_clock_element = Page.element.querySelector("#total-time-clock");
+	const split_time_clock_element = Page.element.querySelector("#split-time-clock");
 	
-	let total_time_label_element = Page.element.querySelector("#total-time-label");
-	let split_time_label_element = Page.element.querySelector("#split-time-label");
+	const total_time_label_element = Page.element.querySelector("#total-time-label");
+	const split_time_label_element = Page.element.querySelector("#split-time-label");
 	
 	
 	
@@ -89,7 +89,7 @@
 	{
 		grid_size = parseInt(grid_size_input_element.value || 6);
 		
-		let max_cage_size = parseInt(max_cage_size_input_element.value || 1000);
+		const max_cage_size = parseInt(max_cage_size_input_element.value || 1000);
 		
 		
 		
@@ -120,12 +120,12 @@
 		
 		else
 		{
-			total_time_label_element.style.opacity = 0;
-			total_time_clock_element.style.opacity = 0;
-			split_time_label_element.style.opacity = 0;
-			split_time_clock_element.style.opacity = 0;
+			Page.Animate.change_opacity(total_time_label_element, 0, Site.opacity_animation_time);
+			Page.Animate.change_opacity(total_time_clock_element, 0, Site.opacity_animation_time);
+			Page.Animate.change_opacity(split_time_label_element, 0, Site.opacity_animation_time);
+			Page.Animate.change_opacity(split_time_clock_element, 0, Site.opacity_animation_time);
 			
-			wilson.canvas.style.opacity = 0;
+			Page.Animate.change_opacity(wilson.canvas, 0, Site.opacity_animation_time);
 			
 			setTimeout(show_timers, 350);
 		}
@@ -134,7 +134,7 @@
 		
 		setTimeout(() =>
 		{
-			let canvas_size = grid_size * 200 + 9;
+			const canvas_size = grid_size * 200 + 9;
 			
 			wilson.change_canvas_size(canvas_size, canvas_size);
 			
@@ -222,23 +222,23 @@
 	
 	function show_timers()
 	{
-		total_time_label_element.style.opacity = 1;
+		Page.Animate.change_opacity(total_time_label_element, 1, Site.opacity_animation_time);
 		
 		setTimeout(() =>
 		{
-			total_time_clock_element.style.opacity = 1;
+			Page.Animate.change_opacity(total_time_clock_element, 1, Site.opacity_animation_time);
 			
 			setTimeout(() =>
 			{
-				split_time_label_element.style.opacity = 1;
+				Page.Animate.change_opacity(split_time_label_element, 1, Site.opacity_animation_time);
 				
 				setTimeout(() =>
 				{
-					split_time_clock_element.style.opacity = 1;
+					Page.Animate.change_opacity(split_time_clock_element, 1, Site.opacity_animation_time);
 					
 					setTimeout(() =>
 					{
-						wilson.canvas.style.opacity = 1;
+						Page.Animate.change_opacity(wilson.canvas, 1, Site.opacity_animation_time);
 					}, Site.aos_separation_time);
 				}, Site.aos_separation_time);
 			}, Site.aos_separation_time);
@@ -321,7 +321,7 @@
 	
 	function draw_calcudoku_grid(print_mode)
 	{
-		let canvas_size = grid_size * 200 + 9;
+		const canvas_size = grid_size * 200 + 9;
 		
 		
 		

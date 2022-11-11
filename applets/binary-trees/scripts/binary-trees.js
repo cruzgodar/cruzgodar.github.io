@@ -4,7 +4,7 @@
 	
 	
 	
-	let options =
+	const options =
 	{
 		renderer: "cpu",
 		
@@ -38,14 +38,14 @@
 		switch_fullscreen_callback: change_aspect_ratio
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	const wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	
 	
 	let root = [];
 	let branch_points = [];
 	
-	let num_preview_iterations = 5;
+	const num_preview_iterations = 5;
 	
 	let web_worker = null;
 	
@@ -54,7 +54,7 @@
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	const download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -109,9 +109,9 @@
 			
 			wilson.ctx.lineWidth = 20 * scale + 1;
 			
-			let r = Math.sqrt(scale) * 139;
-			let g = Math.sqrt(scale) * 69 + (1 - Math.sqrt(scale)) * 128;
-			let b = Math.sqrt(scale) * 19;
+			const r = Math.sqrt(scale) * 139;
+			const g = Math.sqrt(scale) * 69 + (1 - Math.sqrt(scale)) * 128;
+			const b = Math.sqrt(scale) * 19;
 			wilson.ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
 			
 			
@@ -265,7 +265,7 @@
 		
 		let step = 0;
 		
-		let refresh_id = setInterval(() =>
+		const refresh_id = setInterval(() =>
 		{
 			let alpha = step / 37;
 			wilson.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
@@ -338,7 +338,7 @@
 	
 	function alert_about_hardware_acceleration()
 	{
-		let elements = Page.element.querySelector("main").children;
+		const elements = Page.element.querySelector("main").children;
 		
 		elements = elements[elements.length - 1].children;
 		

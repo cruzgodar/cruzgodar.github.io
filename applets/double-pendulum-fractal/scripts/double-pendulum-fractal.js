@@ -20,7 +20,7 @@
 	
 	
 	
-	let frag_shader_source_init = `
+	const frag_shader_source_init = `
 		precision highp float;
 		
 		varying vec2 uv;
@@ -37,7 +37,7 @@
 	
 	
 	
-	let frag_shader_source_update = `
+	const frag_shader_source_update = `
 		precision highp float;
 		precision highp sampler2D;
 		
@@ -73,7 +73,7 @@
 	
 	
 	
-	let frag_shader_source_draw = `
+	const frag_shader_source_draw = `
 		precision highp float;
 		precision highp sampler2D;
 		
@@ -112,7 +112,7 @@
 	
 	
 	
-	let options =
+	const options =
 	{
 		renderer: "gpu",
 		
@@ -132,7 +132,7 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	const wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	wilson.render.load_new_shader(frag_shader_source_update);
 	wilson.render.load_new_shader(frag_shader_source_draw);
@@ -142,11 +142,11 @@
 	
 	
 	
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	const resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	
 	
-	let generate_button_element = Page.element.querySelector("#generate-button");
+	const generate_button_element = Page.element.querySelector("#generate-button");
 	
 	generate_button_element.addEventListener("click", () =>
 	{
@@ -157,7 +157,7 @@
 	
 	
 	
-	let switch_pendulum_drawer_canvas_button_element = Page.element.querySelector("#switch-pendulum-drawer-canvas-button");
+	const switch_pendulum_drawer_canvas_button_element = Page.element.querySelector("#switch-pendulum-drawer-canvas-button");
 	
 	switch_pendulum_drawer_canvas_button_element.style.transition = "filter .125s ease-in-out, opacity .25s ease-in-out";
 	
@@ -200,7 +200,7 @@
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	const download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -247,7 +247,7 @@
 	
 	function draw_frame(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		const time_elapsed = timestamp - last_timestamp;
 		
 		last_timestamp = timestamp;
 		
@@ -333,7 +333,7 @@
 		touchend_callback: start_pendulum_animation
 	};
 	
-	let wilson_pendulum_drawer = new Wilson(Page.element.querySelector("#pendulum-drawer-canvas"), options_pendulum_drawer);
+	const wilson_pendulum_drawer = new Wilson(Page.element.querySelector("#pendulum-drawer-canvas"), options_pendulum_drawer);
 	
 	let theta_1 = 0;
 	let theta_2 = 0;
@@ -463,7 +463,7 @@
 	
 	function draw_frame_pendulum_drawer(timestamp)
 	{	
-		let time_elapsed = timestamp - last_timestamp;
+		const time_elapsed = timestamp - last_timestamp;
 		
 		last_timestamp = timestamp;
 		
@@ -482,20 +482,20 @@
 		
 		
 		
-		let x = theta_1 / Math.PI;
-		let y = theta_2 / Math.PI;
+		const x = theta_1 / Math.PI;
+		const y = theta_2 / Math.PI;
 		
-		let z = p_1 / Math.PI;
-		let w = p_2 / Math.PI;
+		const z = p_1 / Math.PI;
+		const w = p_2 / Math.PI;
 		
-		let hue = Math.atan2(y, x) / Math.PI + 1;
-		let saturation = Math.min(Math.min((x*x + y*y) * 50, (1 - Math.max(Math.abs(x), Math.abs(y))) * 5), 1);
+		const hue = Math.atan2(y, x) / Math.PI + 1;
+		const saturation = Math.min(Math.min((x*x + y*y) * 50, (1 - Math.max(Math.abs(x), Math.abs(y))) * 5), 1);
 		
-		let value_add = .9 * ((1 - initial_theta_1 / (2 * Math.PI)) * (1 - initial_theta_1 / (2 * Math.PI)) + (1 - initial_theta_2 / (2 * Math.PI)) * (1 - initial_theta_2 / (2 * Math.PI))) * 4;
+		const value_add = .9 * ((1 - initial_theta_1 / (2 * Math.PI)) * (1 - initial_theta_1 / (2 * Math.PI)) + (1 - initial_theta_2 / (2 * Math.PI)) * (1 - initial_theta_2 / (2 * Math.PI))) * 4;
 		
-		let value = Math.min(Math.pow(z*z + w*w, .5) + value_add, 1);
+		const value = Math.min(Math.pow(z*z + w*w, .5) + value_add, 1);
 		
-		let rgb = HSVtoRGB(hue, saturation, value);
+		const rgb = HSVtoRGB(hue, saturation, value);
 		
 		wilson_pendulum_drawer.ctx.strokeStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 		
@@ -525,13 +525,13 @@
 	
 	function update_angles()
 	{
-		let d_theta_1 = 6 * (2 * p_1 - 3 * Math.cos(theta_1 - theta_2) * p_2) / (16 - 9 * Math.pow(Math.cos(theta_1 - theta_2), 2));
+		const d_theta_1 = 6 * (2 * p_1 - 3 * Math.cos(theta_1 - theta_2) * p_2) / (16 - 9 * Math.pow(Math.cos(theta_1 - theta_2), 2));
 		
-		let d_theta_2 = 6 * (8 * p_2 - 3 * Math.cos(theta_1 - theta_2) * p_1) / (16 - 9 * Math.pow(Math.cos(theta_1 - theta_2), 2));
+		const d_theta_2 = 6 * (8 * p_2 - 3 * Math.cos(theta_1 - theta_2) * p_1) / (16 - 9 * Math.pow(Math.cos(theta_1 - theta_2), 2));
 		
-		let d_p_1 = -(d_theta_1 * d_theta_2 * Math.sin(theta_1 - theta_2) + 3 * Math.sin(theta_1)) / 2;
+		const d_p_1 = -(d_theta_1 * d_theta_2 * Math.sin(theta_1 - theta_2) + 3 * Math.sin(theta_1)) / 2;
 		
-		let d_p_2 = (d_theta_1 * d_theta_2 * Math.sin(theta_1 - theta_2) - Math.sin(theta_2)) / 2;
+		const d_p_2 = (d_theta_1 * d_theta_2 * Math.sin(theta_1 - theta_2) - Math.sin(theta_2)) / 2;
 		
 		
 		

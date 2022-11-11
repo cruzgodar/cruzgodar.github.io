@@ -4,7 +4,7 @@
 	
 	
 	
-	let options =
+	const options =
 	{
 		renderer: "cpu",
 		
@@ -21,7 +21,7 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	const wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	
 	
@@ -31,13 +31,13 @@
 	
 	
 	
-	let generate_button_element = Page.element.querySelector("#generate-button");
+	const generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", request_brownian_tree);
 	
 	
 	
-	let grid_size_input_element = Page.element.querySelector("#grid-size-input");
+	const grid_size_input_element = Page.element.querySelector("#grid-size-input");
 	
 	grid_size_input_element.addEventListener("keydown", (e) =>
 	{
@@ -49,7 +49,7 @@
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	const download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -71,7 +71,7 @@
 	
 	function request_brownian_tree()
 	{
-		let grid_size = parseInt(grid_size_input_element.value || 1000);
+		const grid_size = parseInt(grid_size_input_element.value || 1000);
 		
 		wilson.change_canvas_size(grid_size, grid_size);
 		
@@ -114,7 +114,7 @@
 	
 	function alert_about_hardware_acceleration()
 	{
-		let elements = Page.element.querySelector("main").children;
+		const elements = Page.element.querySelector("main").children;
 		
 		elements = elements[elements.length - 1].children;
 		

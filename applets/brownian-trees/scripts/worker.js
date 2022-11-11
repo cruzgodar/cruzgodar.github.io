@@ -67,7 +67,7 @@ function draw_brownian_tree()
 		
 		while (grid_size - 2 * spawn_radius > 2 * margin)
 		{
-			let angle = Math.random() * 2 * Math.PI;
+			const angle = Math.random() * 2 * Math.PI;
 			current_row = Math.floor(spawn_radius * Math.cos(angle) + grid_size / 2);
 			current_col = Math.floor(spawn_radius * Math.sin(angle) + grid_size / 2);
 			
@@ -99,18 +99,18 @@ function draw_brownian_tree()
 				
 				
 				
-				let direction = possible_directions[Math.floor(Math.random() * possible_directions.length)];
+				const direction = possible_directions[Math.floor(Math.random() * possible_directions.length)];
 				
-				let new_row = current_row + directions[direction][0];
-				let new_col = current_col + directions[direction][1];
+				const new_row = current_row + directions[direction][0];
+				const new_col = current_col + directions[direction][1];
 				
 				if (brownian_tree_graph[new_row][new_col] === 1)
 				{
 					brownian_tree_graph[current_row][current_col] = 1;
 					
-					let new_hue = (Math.atan2(current_col - Math.floor(grid_size / 2), Math.floor(grid_size / 2) - current_row) + Math.PI) / (2 * Math.PI);
+					const new_hue = (Math.atan2(current_col - Math.floor(grid_size / 2), Math.floor(grid_size / 2) - current_row) + Math.PI) / (2 * Math.PI);
 					
-					let new_color = HSVtoRGB(new_hue, 1, 1);
+					const new_color = HSVtoRGB(new_hue, 1, 1);
 					
 					color[current_row][current_col] = [.9925 * color[new_row][new_col][0] + .0075 * new_color[0], .9925 * color[new_row][new_col][1] + .0075 * new_color[1], .9925 * color[new_row][new_col][2] + .0075 * new_color[2]];
 					
@@ -125,7 +125,7 @@ function draw_brownian_tree()
 						current_brightness = Math.floor(255 * (grid_size / 2 - 10 - spawn_radius) / (grid_size / 2 - 10));
 						
 						//We raise the progress to 2.71 to keep the speed effectively constant.
-						let progress = Math.pow((255 - current_brightness) / 255, 2.71) * 100;
+						const progress = Math.pow((255 - current_brightness) / 255, 2.71) * 100;
 						
 						if (progress > progress_threshhold)
 						{

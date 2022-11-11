@@ -70,7 +70,7 @@ function generate_calcudoku_grid()
 		
 		for (let i = 0; i < cage_order.length; i++)
 		{
-			let cage = cage_order[i];
+			const cage = cage_order[i];
 			
 			if (expand_cages(cage) !== -1)
 			{
@@ -128,7 +128,7 @@ function shuffle_array(array)
 	while (current_index !== 0)
 	{
 		//Pick a remaining element.
-		let random_index = Math.floor(Math.random() * current_index);
+		const random_index = Math.floor(Math.random() * current_index);
 		current_index -= 1;
 		
 		//Swap it with the current element.
@@ -172,7 +172,7 @@ function generate_number_grid()
 	
 	//Now we're going to do three things: shuffle the rows, shuffle the columns, and shuffle the digits themselves. To top it all off, we'll do these three things in random order, twice each.
 	
-	let shuffles = shuffle_array([shuffle_grid_rows, shuffle_grid_rows, shuffle_grid_columns, shuffle_grid_columns, shuffle_grid_digits, shuffle_grid_digits]);
+	const shuffles = shuffle_array([shuffle_grid_rows, shuffle_grid_rows, shuffle_grid_columns, shuffle_grid_columns, shuffle_grid_digits, shuffle_grid_digits]);
 	
 	for (let i = 0; i < 6; i++)
 	{
@@ -184,7 +184,7 @@ function generate_number_grid()
 
 function shuffle_grid_rows()
 {
-	let permutation = shuffle_array([...Array(grid_size).keys()]);
+	const permutation = shuffle_array([...Array(grid_size).keys()]);
 	
 	
 	
@@ -216,7 +216,7 @@ function shuffle_grid_rows()
 
 function shuffle_grid_columns()
 {
-	let permutation = shuffle_array([...Array(grid_size).keys()]);
+	const permutation = shuffle_array([...Array(grid_size).keys()]);
 	
 	
 	
@@ -251,7 +251,7 @@ function shuffle_grid_columns()
 
 function shuffle_grid_digits()
 {
-	let permutation = shuffle_array([...Array(grid_size).keys()]);
+	const permutation = shuffle_array([...Array(grid_size).keys()]);
 	
 	
 	
@@ -300,7 +300,7 @@ function assign_initial_cages()
 		
 		for (let j = 0; j < grid_size; j++)
 		{
-			let value = grid[i][j];
+			const value = grid[i][j];
 			cages.push(["", value, [[i, j]], value, value, value]);
 			cages_by_location[i][j] = cages.length - 1;
 		}
@@ -317,8 +317,8 @@ function expand_cages(cage_to_destroy)
 	
 	
 	//For simplicity, we're only trying to connect the first one to an adjacent cell.
-	let row = cages[cage_to_destroy][2][0][0];
-	let col = cages[cage_to_destroy][2][0][1];
+	const row = cages[cage_to_destroy][2][0][0];
+	const col = cages[cage_to_destroy][2][0][1];
 	
 	//Try left/right first.
 	if (Math.random() < .5)
@@ -451,8 +451,8 @@ function try_to_add_cage_to_cage(cage_to_destroy, cage_to_grow)
 	//Now we don't have easy access to the quotient of cage_to_destroy, so what we'll do in both cases is take the max digit squared over the products of both cages multiplied together. If this division is remainderless, we're golden.
 	else if (cages[cage_to_grow][0] === ":")
 	{
-		let max_digit = Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]);
-		let total_product = cages[cage_to_grow][5] * cages[cage_to_destroy][5];
+		const max_digit = Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]);
+		const total_product = cages[cage_to_grow][5] * cages[cage_to_destroy][5];
 		
 		if ((max_digit * max_digit) % total_product === 0)
 		{
@@ -478,7 +478,7 @@ function add_cage_to_cage(cage_to_destroy, cage_to_grow)
 		
 		
 		
-		let new_max_digit = Math.max(cages[cage_to_grow][1], cages[cage_to_destroy][3]);
+		const new_max_digit = Math.max(cages[cage_to_grow][1], cages[cage_to_destroy][3]);
 		
 		
 		
@@ -545,8 +545,8 @@ function add_cage_to_cage(cage_to_destroy, cage_to_grow)
 	
 	else if (cages[cage_to_grow][0] === ":")
 	{
-		let max_digit = Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]);
-		let total_product = cages[cage_to_grow][5] * cages[cage_to_destroy][5];
+		const max_digit = Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]);
+		const total_product = cages[cage_to_grow][5] * cages[cage_to_destroy][5];
 		
 		cages[cage_to_grow][1] = (max_digit * max_digit) / total_product;
 	}
@@ -564,8 +564,8 @@ function add_cage_to_cage(cage_to_destroy, cage_to_grow)
 	
 	for (let i = 0; i < cages[cage_to_destroy][2].length; i++)
 	{
-		let row = cages[cage_to_destroy][2][i][0];
-		let col = cages[cage_to_destroy][2][i][1];
+		const row = cages[cage_to_destroy][2][i][0];
+		const col = cages[cage_to_destroy][2][i][1];
 		
 		cages_by_location[row][col] = cage_to_grow;
 	}
@@ -579,7 +579,7 @@ function wasm_solve_puzzle()
 	//This contains the operations that each cage uses, where 0 corresponds to "", 1 to "+", 2 to "-", and so on.
 	let cage_operations = [];
 	
-	let cage_operations_table = {"": 0, "+": 1, "x": 2, "-": 3, ":": 4};
+	const cage_operations_table = {"": 0, "+": 1, "x": 2, "-": 3, ":": 4};
 	
 	//This just contains the values of each cage.
 	let cage_values = [];

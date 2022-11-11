@@ -154,10 +154,6 @@ async function draw_sandpile_graph()
 	{
 		await color_piles();
 	}
-	
-	
-	
-	postMessage(["done"]);
 }
 
 
@@ -188,9 +184,9 @@ function color_piles()
 			{
 				if (sandpile_graph[i][j] !== old_sandpile_graph[i][j])
 				{
-					let pile_size = sandpile_graph[i][j];
+					const pile_size = sandpile_graph[i][j];
 					
-					let brightness = pile_size / max_pile_size * 255;
+					const brightness = pile_size / max_pile_size * 255;
 					
 					if (pile_size === 0)
 					{

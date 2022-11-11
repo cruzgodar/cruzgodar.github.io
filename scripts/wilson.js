@@ -179,7 +179,7 @@ class Wilson
 		
 		if (this.render.render_type === 0)
 		{
-			this.ctx = this.canvas.getContext("2d");
+			this.ctx = this.canvas.getContext("2d", {colorSpace: "display-p3"});
 			
 			this.render.img_data = this.ctx.getImageData(0, 0, this.canvas_width, this.canvas_height);
 			

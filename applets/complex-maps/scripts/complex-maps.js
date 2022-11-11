@@ -56,7 +56,7 @@
 	
 	
 	
-	let code_input_element = Page.element.querySelector("#code-textarea");
+	const code_input_element = Page.element.querySelector("#code-textarea");
 	
 	code_input_element.value = "cexp(cinv(z))";
 	
@@ -76,7 +76,7 @@
 	
 	
 	
-	let generate_button_element = Page.element.querySelector("#generate-button");
+	const generate_button_element = Page.element.querySelector("#generate-button");
 	
 	generate_button_element.addEventListener("click", () =>
 	{
@@ -89,7 +89,7 @@
 	
 	
 	
-	let selector_mode_button_element = Page.element.querySelector("#selector-mode-button");
+	const selector_mode_button_element = Page.element.querySelector("#selector-mode-button");
 	
 	selector_mode_button_element.addEventListener("click", () =>
 	{
@@ -98,7 +98,7 @@
 	
 	
 	
-	let benchmark_button_element = Page.element.querySelector("#benchmark-button");
+	const benchmark_button_element = Page.element.querySelector("#benchmark-button");
 	
 	benchmark_button_element.addEventListener("click", run_benchmark);
 	
@@ -111,7 +111,7 @@
 	
 	
 	
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	const resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
@@ -124,7 +124,7 @@
 	
 	
 	
-	let black_point_input_element = Page.element.querySelector("#black-point-input");
+	const black_point_input_element = Page.element.querySelector("#black-point-input");
 	
 	black_point_input_element.addEventListener("input", () =>
 	{
@@ -135,7 +135,7 @@
 	
 	
 	
-	let white_point_input_element = Page.element.querySelector("#white-point-input");
+	const white_point_input_element = Page.element.querySelector("#white-point-input");
 	
 	white_point_input_element.addEventListener("input", () =>
 	{
@@ -146,7 +146,7 @@
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	const download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -155,8 +155,8 @@
 	
 	
 	
-	let canvas_location_element = Page.element.querySelector("#canvas-location");
-	let hidden_canvas_location_element = Page.element.querySelector("#hidden-canvas-location");
+	const canvas_location_element = Page.element.querySelector("#canvas-location");
+	const hidden_canvas_location_element = Page.element.querySelector("#hidden-canvas-location");
 	
 	
 	
@@ -172,7 +172,7 @@
 	
 	function use_new_code(selector_mode = false, world_width = 2, world_height = 2, world_center_x = 0, world_center_y = 0)
 	{
-		let generating_code = code_input_element.value || "cexp(cinv(z))";
+		const generating_code = code_input_element.value || "cexp(cinv(z))";
 		
 		
 		let selector_mode_string = "";
@@ -197,7 +197,7 @@
 		
 		
 		
-		let frag_shader_source = `
+		const frag_shader_source = `
 			precision highp float;
 			
 			varying vec2 uv;
@@ -272,7 +272,7 @@
 		
 
 
-		let options =
+		const options =
 		{
 			renderer: "gpu",
 			
@@ -388,14 +388,14 @@
 			{
 				wilson.render.draw_frame();
 				
-				let coordinates = wilson.utils.interpolate.world_to_canvas(x, y);
+				const coordinates = wilson.utils.interpolate.world_to_canvas(x, y);
 				
 				let pixel = new Uint8Array(4);
 				
 				wilson.gl.readPixels(coordinates[1], wilson.canvas_height - coordinates[0], 1, 1, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, pixel);
 				
-				let z_x = (pixel[0] - 127) + pixel[1] / 256;
-				let z_y = (pixel[2] - 127) + pixel[3] / 256;
+				const z_x = (pixel[0] - 127) + pixel[1] / 256;
+				const z_y = (pixel[2] - 127) + pixel[3] / 256;
 				
 				
 				
@@ -506,7 +506,7 @@
 	{
 		if (aspect_ratio >= 1)
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 3 * Math.pow(2, zoom_level) * aspect_ratio, 3 * Math.pow(2, zoom_level));
+			const new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 3 * Math.pow(2, zoom_level) * aspect_ratio, 3 * Math.pow(2, zoom_level));
 			
 			wilson.world_width = 3 * Math.pow(2, zoom_level) * aspect_ratio;
 			wilson.world_height = 3 * Math.pow(2, zoom_level);
@@ -517,7 +517,7 @@
 		
 		else
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 3 * Math.pow(2, zoom_level), 3 * Math.pow(2, zoom_level) / aspect_ratio);
+			const new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 3 * Math.pow(2, zoom_level), 3 * Math.pow(2, zoom_level) / aspect_ratio);
 			
 			wilson.world_width = 3 * Math.pow(2, zoom_level);
 			wilson.world_height = 3 * Math.pow(2, zoom_level) / aspect_ratio;
@@ -545,7 +545,7 @@
 
 	function draw_frame(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		const time_elapsed = timestamp - last_timestamp;
 		
 		last_timestamp = timestamp;
 		
@@ -666,7 +666,7 @@
 	{
 		wilson.change_canvas_size(benchmark_resolution, benchmark_resolution);
 		
-		let start_time = Date.now();
+		const start_time = Date.now();
 		
 		let pixel = new Uint8Array(4);
 		
@@ -677,7 +677,7 @@
 			wilson.gl.readPixels(0, 0, 1, 1, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, pixel);
 		}
 		
-		let average_time = (Date.now() - start_time) / benchmark_cycles;
+		const average_time = (Date.now() - start_time) / benchmark_cycles;
 				
 		console.log(`Finished benchmark --- average time to draw a ${benchmark_resolution}x${benchmark_resolution} frame is ${average_time}ms`);
 		

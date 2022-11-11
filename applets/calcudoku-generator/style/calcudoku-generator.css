@@ -8,7 +8,6 @@
 {
 	width: 100%;
 	opacity: 0;
-	transition: opacity .3s ease-in-out;
 }
 
 
@@ -17,8 +16,6 @@
 	text-align: center;
 	
 	opacity: 0;
-	
-	transition: opacity .3s ease-in-out;
 }
 
 

@@ -31,7 +31,7 @@
 	
 	
 	
-	let options =
+	const options =
 	{
 		renderer: "cpu",
 		
@@ -48,17 +48,17 @@
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	const wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 
 	
-	let generate_button_element = Page.element.querySelector("#generate-button");
+	const generate_button_element = Page.element.querySelector("#generate-button");
 
 	generate_button_element.addEventListener("click", draw_domino_shuffling);
 	
 	
 	
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	const resolution_input_element = Page.element.querySelector("#resolution-input");
 	
 	resolution_input_element.addEventListener("keydown", (e) =>
 	{
@@ -70,7 +70,7 @@
 	
 	
 	
-	let diamond_size_input_element = Page.element.querySelector("#diamond-size-input");
+	const diamond_size_input_element = Page.element.querySelector("#diamond-size-input");
 	
 	diamond_size_input_element.addEventListener("keydown", (e) =>
 	{
@@ -82,13 +82,13 @@
 	
 	
 	
-	let use_smooth_colors_checkbox_element = Page.element.querySelector("#use-smooth-colors-checkbox");
+	const use_smooth_colors_checkbox_element = Page.element.querySelector("#use-smooth-colors-checkbox");
 	
 	use_smooth_colors_checkbox_element.checked = true;
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	const download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
@@ -215,7 +215,7 @@
 	
 	function draw_frame(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		const time_elapsed = timestamp - last_timestamp;
 		
 		last_timestamp = timestamp;
 		
@@ -277,8 +277,8 @@
 		{
 			for (let j = -current_diamond_size; j < current_diamond_size; j++)
 			{
-				let row = i + diamond_size;
-				let col = j + diamond_size;
+				const row = i + diamond_size;
+				const col = j + diamond_size;
 				
 				if (aztec_diamond[row][col] !== 0)
 				{
@@ -300,18 +300,18 @@
 	
 	function draw_domino(row, col, is_horizontal)
 	{
-		let h = hue[row][col];
+		const h = hue[row][col];
 		
-		let s = 1 - .8 * Math.pow((age[row][col] - 1) / current_diamond_size, 4);
+		const s = 1 - .8 * Math.pow((age[row][col] - 1) / current_diamond_size, 4);
 		
-		let rgb = wilson.utils.hsv_to_rgb(h, s, 1);
+		const rgb = wilson.utils.hsv_to_rgb(h, s, 1);
 		
 		wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 		
 		
 		
-		let x = resolution * (.1 + (col + margin_size) / (diamond_size * 2) * .8);
-		let y = resolution * (.1 + (row + margin_size) / (diamond_size * 2) * .8);
+		const x = resolution * (.1 + (col + margin_size) / (diamond_size * 2) * .8);
+		const y = resolution * (.1 + (row + margin_size) / (diamond_size * 2) * .8);
 		
 		if (is_horizontal)
 		{
@@ -423,8 +423,8 @@
 			{
 				if (Math.abs(i + .5) + Math.abs(j + .5) <= current_diamond_size && Math.abs(i + 1.5) + Math.abs(j + .5) <= current_diamond_size && Math.abs(i + .5) + Math.abs(j + 1.5) <= current_diamond_size && Math.abs(i + 1.5) + Math.abs(j + 1.5) <= current_diamond_size)
 				{
-					let row = i + diamond_size;
-					let col = j + diamond_size;
+					const row = i + diamond_size;
+					const col = j + diamond_size;
 					
 					//The extra checks are needed because we only record the top/bottom square of a domino.
 					if (aztec_diamond[row][col] === 0 && aztec_diamond[row + 1][col] === 0 && aztec_diamond[row][col + 1] === 0 && aztec_diamond[row + 1][col + 1] === 0 && Math.abs(aztec_diamond[row - 1][col]) !== 2 && Math.abs(aztec_diamond[row - 1][col + 1]) !== 2 && Math.abs(aztec_diamond[row][col - 1]) !== 1 && Math.abs(aztec_diamond[row + 1][col - 1]) !== 1)

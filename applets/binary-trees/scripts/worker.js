@@ -17,7 +17,7 @@ onmessage = async function(e)
 let root = [];
 let branch_points = [];
 
-let num_animated_iterations = 10;
+const num_animated_iterations = 10;
 
 
 
@@ -49,12 +49,12 @@ function draw_animated_binary_tree()
 			
 			
 			
-			let line_width = 20 * scale + 1;
+			const line_width = 20 * scale + 1;
 			
-			let r = Math.sqrt(scale) * 139;
-			let g = Math.sqrt(scale) * 69 + (1 - Math.sqrt(scale)) * 128;
-			let b = Math.sqrt(scale) * 19;
-			let color = `rgb(${r}, ${g}, ${b})`;
+			const r = Math.sqrt(scale) * 139;
+			const g = Math.sqrt(scale) * 69 + (1 - Math.sqrt(scale)) * 128;
+			const b = Math.sqrt(scale) * 19;
+			const color = `rgb(${r}, ${g}, ${b})`;
 			
 			
 			
