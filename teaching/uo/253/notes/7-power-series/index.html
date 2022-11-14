@@ -203,7 +203,13 @@
 		\end{align*}
 	$$
 	
-	In total, the interval of convergence is $(-3, 1)$, and the radius is $R = 2$. As a good check, the center of that interval is $-1$, which matches the series containing $(x + 1)^n$.
+	So the interval of convergence is at least $(-3, 1)$, but what about the endpoints? That&#x2019;s when $r = 1$ in the ratio test, so we need to try something else. When $x = -3$, the series becomes 
+	
+	$$
+		\sum_{n = 0}^\infty \frac{(-2)^n}{2^n(n + 1)} = \sum_{n = 0}^\infty \frac{(-1)^n}{n + 1}.
+	$$
+	
+	That&#x2019;s just the Alternating Harmonic series, which converges. For $x = 1$, though, it&#x2019;s the regular Harmonic series, which diverges. In total, the interval of convergence is $[-3, 1)$, and the radius is $R = 2$. As a good check, the center of that interval is $-1$, which matches the series containing $(x + 1)^n$.
 	
 	2. The ratio test is also a good choice here:
 	
@@ -216,7 +222,13 @@
 		\end{align*}
 	$$
 	
-	This time, the series converges when $|x| < 1$, or equivalently, when $-1 < x < 1$. Therefore, the interval of convergence is $(-1, 1)$, and the radius of convergence is $R = 1$.
+	This time, the series converges when $|x| < 1$, or equivalently, when $-1 < x < 1$. Again, the ratio test failed to tell us anything about the endpoints, so we&#x2019;ll have to inspect those manually. When $x = -1$, we have
+	
+	$$
+		\sum_{n = 1}^\infty \frac{(-1)^n}{\sqrt{n}},
+	$$
+	
+	which converges by the alternating series test. When $x = 1$, it&#x2019;s a $p$-series with $p = \frac{1}{2} \leq 1$, which diverges. Therefore, the interval of convergence is $[-1, 1)$, and the radius of convergence is $R = 1$.
 
 !end-exercise
 
