@@ -193,13 +193,13 @@
 	Now that we have a candidate for general series representations, the natural next thing to figure out is when they converge to the functions they&#x2019;re derived from. Just as we measured our approximation of series with remainders, we&#x2019;ll measure a Taylor series&#x2019;s approximation of a function with a <dfn>remainder function</dfn>. Given a Taylor series
 	
 	$$
-		\sum_{n = 0}^\infty \frac{f^{(n)}}{n!} (x - a)^n
+		\sum_{n = 0}^\infty \frac{f^{(n)}(a)}{n!} (x - a)^n
 	$$
 	
 	centered at $a$, let&#x2019;s define the $N$th remainder function as
 	
 	$$
-		R_N(x) = f(x) - \sum_{n = 0}^N \frac{f^{(n)}}{n!} (x - a)^n.
+		R_N(x) = f(x) - \sum_{n = 0}^N \frac{f^{(n)}(a)}{n!} (x - a)^n.
 	$$
 	
 	In order for the Taylor series to approximate $f$, we need $\lim_{N \to \infty} R_N(x) = 0$, and to know when that&#x2019;s true, we have to find a formula for $R_N(x)$. Figuring that formula out takes some effort, but the result will be simple enough in the end. A critical part will be the use of the Mean Value theorem &mdash; let&#x2019;s state that now to remind ourselves how it works.
@@ -390,8 +390,8 @@
 	$$
 		\begin{align*}
 			\left| R_5(1) \right| &\leq \frac{\left| 1 \right|^6}{6!}\\
-			&= \frac{1}{120}\\
-			&\approx .0083.
+			&= \frac{1}{720}\\
+			&\approx .0013.
 		\end{align*}
 	$$
 	
