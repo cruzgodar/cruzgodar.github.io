@@ -521,7 +521,25 @@
 	
 	Therefore, the approximation is within $.2$ of the actual value.
 	
-	2. This time around
+	2. This time around, we&#x2019;re using the polynomial $16 + 8(x - 2)$ to approximate, so we use $x = 0$ to get $16 - 16 = 0$. Now the second derivative is always $2$, so that will serve as our value of $M$. Meanwhile, the interval we should probably use is $[0, 4]$, since it&#x2019;s centered at $2$ and contains $0$. Therefore, we have
+	
+	$$
+		|R_1(0)| \leq \frac{2}{2!}(2)^2 = 4.
+	$$
+	
+	Since a degree-$1$ Taylor polynomial is just a tangent line, this is just linear approximation!
+	
+	3. Finally, we want to make the remainder for $e^x$ to be less than $.0001$. We have $x = 1$ and the series is centered at $0$, so a good interval to use is $[-1, 1]$. All derivatives of $e^x$ are just $e^x$, whose maximum absolute value on $[-1, 1]$ is $e$. Therefore, the remainder is bounded by
+	
+	$$
+		|R_N(1)| \leq \frac{e}{(N + 1)!} 1^{N + 1}.
+	$$
+	
+	We need that to be less than $.0001$ &mdash; trying values experimentally, $N = 7$ works. Therefore, our approximation of $e$ is
+	
+	$$
+		1 + 1 + \frac{1}{2!} + \frac{1}{3!} + \cdots + \frac{1}{7!} = 2.71825.
+	$$
 
 !end-exercise
 
@@ -587,6 +605,10 @@
 	3. The Taylor series for $f(x) = \frac{1}{1 + x}$ centered at $x = 1$.
 	
 	4. The Maclaurin series for $e^x$.
+	
+	<strong>Solutions:</strong>
+	
+	1. Since the $n$th derivative 
 
 !end-exercise
 
