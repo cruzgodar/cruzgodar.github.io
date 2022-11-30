@@ -487,11 +487,41 @@
 
 	Taylor&#x2019;s Theorem
 	
-	1. With the Taylor series for $\ln(x)$ centered at $x = 1$, approximate $\ln(2)$ with a Taylor polynomial of degree $4$. Determine the maximum error.
+	1. With the Taylor series for $\ln(x)$ centered at $x = 1$, approximate $\ln(1.5)$ with a Taylor polynomial of degree $4$. Determine the maximum error.
 	
 	2. With the Taylor series for $f(x) = x^2 + 4x + 4$ centered at $x = 2$, approximate $f(0)$ with a Taylor polynomial of degree $1$ and determine the maximum error. Draw a picture of this &mdash; what&#x2019;s the calculus I name for this process?
 	
 	3. With the Maclaurin series for $e^x$, approximate $e$ to 4 decimal places.
+	
+	<strong>Solutions:</strong>
+	
+	1. Using the series we computed before, the degree-4 Taylor polynomial is
+	
+	$$
+		(x - 1) - \frac{(x - 1)^2}{2} + \frac{(x - 1)^3}{3} - \frac{(x - 1)^4}{4},
+	$$
+	
+	so plugging in $x = 1.5$, we have
+	
+	$$
+		.5 - \frac{(.5)^2}{2} + \frac{(.5)^3}{3} - \frac{(.5)^4}{4} \approx .401.
+	$$
+	
+	In order to bound the remainder, we first look at $\frac{d^5}{dx^5}[\ln(x)]$, the first derviative not part of the polynomial, and try to bound it on an interval centered at $1$ and containing $1.5$. That derivative is $\frac{24}{x^5}$, and a good choice for the interval is $[.5, 1.5]$. Since $\frac{24}{x^5}$ is a decreasing function, the largest it could possibly be in absolute value on that interval is $\frac{24}{(.5)^5} = 768$. Dropping that into the remainder bound, we have
+	
+	$$
+		|R_4(x)| \leq \frac{768}{5!}|x - 1|^5.
+	$$
+	
+	Since $|x - 1| < .5$,
+	
+	$$
+		|R_4(x)| \leq \frac{768}{5!}(.5)^5 = .2.
+	$$
+	
+	Therefore, the approximation is within $.2$ of the actual value.
+	
+	2. This time around
 
 !end-exercise
 
