@@ -385,7 +385,7 @@
 
 	multiplying power series
 	
-	earlier in the section, we expressed the function
+	Earlier in the section, we expressed the function
 	
 	$$
 		f(x) = \frac{5}{(1 - 2x)(1 + x^2)}
@@ -545,6 +545,23 @@
 	$$
 	
 	as a power series earlier by multiplying the series for $\frac{1}{1 - x}$ by itself. Find it a different way by starting from $\frac{1}{1 - x}$ and using calculus, and make sure the interval of convergence matches.
+	
+	<strong>Solution:</strong> In order to make $\frac{1}{1 - x}$ look like $\frac{1}{(1 - x)^2}$ through calculus, we need to differentiate it. If $f(x) = \frac{1}{1 - x}$, then $f'(x) = \frac{1}{(1 - x)^2}$, since the minus sign from bringing down the power of $-1$ cancels with the minus sign from the chain rule. So in order to find a series representation for $f'$, we need to differentiate the series for $f$ term-by-term. That results in
+	
+	$$
+		f'(x) = \sum_{n = 1}^\infty nx^{n - 1} = 1 + 2x + 3x^2 + \cdots.
+	$$
+	
+	We know from before that the interval of convergence should be $(-1, 1)$. To determine that now, we need to use the ratio test, which gives
+	
+	$$
+		\begin{align*}
+			r &= \lim_{n \to \infty} \left| \frac{(n + 1)x^n}{nx^{n-1}} \right|\\
+			&= |x|.
+		\end{align*}
+	$$
+	
+	Therefore, the series converges at least when $|x| < 1$, so the interval of convergence is $(-1, 1)$ at the smallest. Since the ratio test is inconclusive at the endpoints, we test those too, but both $\sum_{n = 1}^\infty n(1)^{n - 1}$ and $\sum_{n = 1}^\infty n(-1)^{n - 1}$ are divergent, so the interval of convergence is just $(-1, 1)$, as we expected.
 
 !end-exercise
 
@@ -597,6 +614,42 @@
 	$$
 	
 	and set it equal to its derivative to solve for the coefficients.
+	
+	Differentiating this series gives
+	
+	$$
+		c_1 + 2c_2x + 3c_3x^2 + 4c_4x^3 + \cdots.
+	$$
+	
+	Since all the coefficients must be equal, we have
+	
+	$$
+		\begin{align*}
+			c_1 &= c_0\\
+			c_2 &= \frac{c_1}{2}\\
+			c_3 &= \frac{c_2}{3}\\
+			& \ \ \vdots\\
+			c_n &= \frac{c_{n - 1}}{n}
+		\end{align*}
+	$$
+	
+	This is a recursively-defined sequence! To solve it we just need to know the initial term $c_0$. Since the series is supposed to equal $e^x$, we have that $e^0 = c_0$, since all higher powers of $x$ cancel out. Therefore, $c_0 = 1$, and so
+	
+	$$
+		\begin{align*}
+			c_1 &= 1\\
+			c_2 &= \frac{1}{2}\\
+			c_3 &= \frac{1}{6}\\
+			& \ \ \vdots\\
+			c_n &= \frac{1}{n!}
+		\end{align*}
+	$$
+	
+	In total, we must have that
+	
+	$$
+		e^x = \sum_{n = 0}^\infty \frac{x^n}{n!}.
+	$$
 
 !end-exercise
 
