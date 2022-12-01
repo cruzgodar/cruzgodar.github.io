@@ -201,6 +201,40 @@
 	
 	Express $(1 + x)^{3/2}$ as a Maclaurin series and determine the interval of convergence. Then approximate $1.5^{1.5}$ with a degree-3 Maclaurin polynomial and bound the error.
 	
+	<strong>Solution:</strong> Plugging this directly into the formula gives us
+	
+	$$
+		(1 + x)^{3/2} = \sum_{n = 0}^\infty \binom{3/2}{n} x^n,
+	$$
+	
+	with an interval of convergence of $(-1, 1)$. The degree $3$ polynomial is then
+	
+	$$
+		\binom{3/2}{0} + \binom{3/2}{1} x + \binom{3/2}{2} x^2 + \binom{3/2}{3} x^3.
+	$$
+	
+	We want to use $x = .5$, which is within the interval of convergence, and gives
+	
+	$$
+		1 + \frac{3}{2} (.5) + \frac{\left(\frac{3}{2}\right)\left(\frac{1}{2}\right)}{2}(.5)^2 + \frac{\left(\frac{3}{2}\right)\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)}{6}(.5)^3 \approx 1.8359.
+	$$
+	
+	To bound the error, we look at the fourth derivative of $(1 + x)^{3/2}$, which is $\left(\frac{3}{2}\right)\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)(1 + x)^{-5/2}$. The largest that can get in absolute value on $[-.5, .5]$ occurs when $x = -.5$, since $(1 + x)^{-5/2}$ is a decreasing function. We wind up with a bound of
+	
+	$$
+		M = \left(\frac{3}{2}\right)\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)(.5)^{-5/2} = 3.182.
+	$$
+	
+	Therefore, our bound on the remainder is
+	
+	$$
+		\begin{align*}
+			|R_3(x)| &\leq \frac{3.182}{4!}|x - 1|^4\\
+			&\leq \frac{3.182}{4!}(.5)^4\\
+			&= .0083.
+		\end{align*}
+	$$
+	
 !end-exercise
 
 
