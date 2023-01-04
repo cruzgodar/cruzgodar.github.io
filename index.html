@@ -89,6 +89,8 @@
 	
 	<script src="/scripts/wilson.js"></script>
 	
+	<script src="/scripts/lapsa.min.js"></script>
+	
 	<script>
 		let link = document.createElement("link");
 		link.setAttribute("rel", "stylesheet");
@@ -104,8 +106,15 @@
 		
 		link = document.createElement("link");
 		link.setAttribute("rel", "stylesheet");
+		link.setAttribute("type", "text/css");
+		link.setAttribute("href", "/style/lapsa.min.css");
+		document.head.appendChild(link);
+		
+		link = document.createElement("link");
+		link.setAttribute("rel", "stylesheet");
 		link.setAttribute("href", "https://fonts.googleapis.com/css2?family=Gentium+Book+Basic&family=Rubik&family=Source+Code+Pro&display=swap");
 		document.head.appendChild(link);
+		
 		
 		
 		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")
