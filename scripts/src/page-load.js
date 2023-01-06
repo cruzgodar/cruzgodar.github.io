@@ -492,7 +492,7 @@ Page.Load =
 	
 	
 	
-	//Page.Load.export_desmos_screenshot("");
+	//Usage: Page.Load.export_desmos_screenshot("");
 	
 	export_desmos_screenshot: function(id)
 	{

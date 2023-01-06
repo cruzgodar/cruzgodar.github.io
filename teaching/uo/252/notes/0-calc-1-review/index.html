@@ -34,15 +34,7 @@
 		x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 	$$
 	
-!end-text-block
-
-
-
-!iframe https://www.desmos.com/calculator/zgrogzuagn
-
-
-
-!begin-text-block
+	!desmos test-graph
 	
 	If anything doesn&#x2019;t appear correctly, update your browser and then reach out if that doesn&#x2019;t work. There&#x2019;s also a non-interactive pdf version of each document available for compatibility &mdash; let me know if you need them.
 	
@@ -60,17 +52,9 @@
 
 !begin-text-block
 	
-	Let&#x2019;s talk about Calc I. There are two main concepts taught there that we&#x2019;ll need in this course: limits and derivatives. We&#x2019;ll skip the formal definition of a limit in favor of the intuitive one: $\lim_{x \to a} f(x)$ is the value that $f(a)$ &#x201C;should&#x201D; have. Should is in quotes because $f(a)$ doesn&#x2019;t actually need to have that value &mdash; or any value. Instead, we take a limit by sliding $x$ closer and closer to $a$, from either above or below, and seeing what value $f(x)$ gets close to. In the graph below, $f(2) = 5$, since there&#x2019;s a hole in the graph at $(2, 4)$. But as $x$ gets closer to $2$ from the right or the left, $f(x)$ gets closer to $4$, so $\lim_{x \to 2} f(x) = 4$.
+	Let&#x2019;s talk about Calc I. There are two main concepts taught there that we&#x2019;ll need in this course: limits and derivatives. We&#x2019;ll skip the formal definition of a limit in favor of the intuitive one: $\lim_{x \to a} f(x)$ is the value that $f(a)$ &#x201C;should&#x201D; have. Should is in quotes because $f(a)$ doesn&#x2019;t actually need to have that value &mdash; or any value. Instead, we take a limit by sliding $x$ closer and closer to $a$, from either above or below, and seeing what value $f(x)$ gets close to. In the graph below, $f(0) = -1$, since there&#x2019;s a hole in the graph at $(0, 1)$. But as $x$ gets closer to $0$ from the right or the left, $f(x)$ gets closer to $1$, so $\lim_{x \to 0} f(x) = 1$.
 	
-!end-text-block
-
-
-
-!iframe https://www.desmos.com/calculator/nda2udjjdp
-
-
-
-!begin-text-block
+	!desmos limit-example
 	
 	There&#x2019;s a sense in which the behavior of the previous example is pathological (i.e. unusual). &#x201C;Nice&#x201D; functions shouldn&#x2019;t have holes in them or strange things like that, and it turns out that what we mean by &#x201C;nice&#x201D; is <dfn>continuous</dfn>.
 	
@@ -90,13 +74,11 @@
 
 !begin-text-block
 	
-	Continuous functions are ones that can be drawn without lifting up your pencil &mdash; there are no holes or jumps. Recall that the <dfn>domain</dfn> of a function is the collection of $x$-values for which $f(x)$ is defined &mdash; we need that in the definition so that $f(a)$ makes sense to write. In the example below, the red function $f(x)$ is continuous while the blue function $g(x)$ is not.
+	Continuous functions are ones that can be drawn without lifting up your pencil &mdash; there are no holes or jumps. Recall that the <dfn>domain</dfn> of a function is the collection of $x$-values for which $f(x)$ is defined &mdash; we need that in the definition so that $f(a)$ makes sense to write. In the example below, the purple function $f(x)$ is continuous while the blue function $g(x)$ is not.
+	
+	!desmos continuity-example
 	
 !end-text-block
-
-
-
-!iframe https://www.desmos.com/calculator/g0pgjrwv3p
 
 
 
@@ -140,17 +122,9 @@
 
 !begin-text-block
 	
-	The <dfn>derivative</dfn> of a function $f(x)$ is a function we call $f'(x)$, defined as the slope of the tangent line to the graph of $f$ at $x$. Not all functions are differentiable &mdash; in order for one to be, it must be continuous and not have any sharp corners. The red function in the graph below is differentiable, while both functions in the previous graph aren&#x2019;t. Drag the red point around below to show the tangent line to $f$ &mdash; its slope is the value of $f'(x)$.
+	The <dfn>derivative</dfn> of a function $f(x)$ is a function we call $f'(x)$, defined as the slope of the tangent line to the graph of $f$ at $x$. Not all functions are differentiable &mdash; in order for one to be, it must be continuous and not have any sharp corners. The purple function in the graph below is differentiable, while both functions in the previous graph aren&#x2019;t. Drag the blue point around below to show the tangent line to $f$ &mdash; its slope is the value of $f'(x)$.
 	
-!end-text-block
-
-
-
-!iframe https://www.desmos.com/calculator/canjr6j4jb
-
-
-
-!begin-text-block
+	!desmos derivative-example
 	
 	Now&#x2019;s a good time to mention that most of the graphs are editable &mdash; for example, you can change the formula of $f(x)$ to any other differentiable function in the previous graph. Try changing it to $\sin(x)$!
 	
@@ -251,21 +225,13 @@
 	
 	Derivatives measure rates of change, so the classic example (in fact, what their original purpose was) is that if $s(t)$ measures the position of something at time $t$, then $s'(t) = v(t)$, the velocity at time $t$, and $s''(t) = v'(t) = a(t)$, the acceleration at time $t$.
 	
-	Derivatives are commonly used to find <dfn>extrema</dfn> of functions, which are local maxima or minima. To do this, we find all of a function&#x2019;s critical points: the $x$-values that make the derivative zero or undefined. To determine whether a critical point is a maximum or minimum, we can use the <dfn>second derivative test</dfn>: since the second derivative measures concavity, if $f''(x) > 0$ for a critical point $x$, then the critical point is a local minimum, and if $f''(x) &lt; 0$, then it&#x2019;s a local maximum. The example below has the critical points marked and the second derivative graphed too.
+	Derivatives are commonly used to find <dfn>extrema</dfn> of functions, which are local maxima or minima. To do this, we find all of a function&#x2019;s critical points: the $x$-values that make the derivative zero or undefined. To determine whether a critical point is a maximum or minimum, we can use the <dfn>second derivative test</dfn>: since the second derivative measures concavity, if $f''(x) > 0$ for a critical point $x$, then the critical point is a local minimum, and if $f''(x) &lt; 0$, then it&#x2019;s a local maximum. The example below has the critical points marked in blue and the second derivative graphed in red.
 	
-	Speaking of the second derivative, $x$-values that make <em>it</em> zero are called <dfn>inflection points</dfn>, and indicate a change in concavity. In the example below, $f(x)$ is concave down to the left of the inflection point and concave up to the right of it.
+	Speaking of the second derivative, $x$-values that make <em>it</em> zero are called <dfn>inflection points</dfn>, and indicate a change in concavity. In the example below, $f(x)$ is concave down to the left of the inflection point (marked in red) and concave up to the right of it.
 	
-!end-text-block
-
-
-
-!iframe https://www.desmos.com/calculator/znzk3fvcmz
-
-
-
-!begin-text-block
+	!desmos second-derivative-test
 	
-	You can click the colored circles next to functions to temporarily hide them if the graphs get too crowded.
+	You can click the colored circles next to functions in the menu to temporarily hide them if the graphs get too crowded.
 	
 	This is just about everything we&#x2019;ll need from Calc I. The last bit is <dfn>L&#x2019;H&#x00F4;pital&#x2019;s rule</dfn>, which lets us calculate difficult limits with derivatives.
 	

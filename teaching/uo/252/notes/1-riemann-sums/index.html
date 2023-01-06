@@ -30,15 +30,7 @@
 	
 	The concepts of Calc I that we just reviewed &mdash; limits and derivatives &mdash; are extremely useful. They have wide-ranging applications across all areas of science, and there are quite a few topics we could choose to explore next. What we&#x2019;ll be spending this class on is one in particular that we&#x2019;re well-prepared for: integration. Our ultimate goal in the class will be to calculate the <dfn>area under curves</dfn>: areas whose top sides are described by functions.
 	
-!end-text-block
-
-
-
-!iframe https://www.desmos.com/calculator/zgrogzuagn
-
-
-
-!begin-text-block
+	!desmos test-graph
 	
 	It&#x2019;s completely unclear how we&#x2019;re going to do this! Just like derivatives, though, a great place to start is by approximating the area, then taking the limit of better and better approximations. With derivatives, approximations meant secant lines, but here, we need to put quite a bit more work into defining what exactly an approximation of the area under a curve is.
 	
@@ -244,15 +236,7 @@
 	
 	This is a really dense definition, but it&#x2019;s not so bad in practice. We&#x2019;ll think of regular partitions as living on the $x$-axis of a graph (it&#x2019;ll make sense why in a moment), so a partition just chops up the interval $[a, b]$ into $n$ equal-sized pieces.
 	
-!end-text-block
-
-
-
-!iframe https://www.desmos.com/calculator/rpc8ko9pye
-
-
-
-!begin-text-block
+	!desmos partitions
 	
 	Okay, so what are we going to do with these regular partitions? We&#x2019;re going to return to our original goal of approximating the area under a curve &mdash; and we&#x2019;re going to do that with a lot of rectangles.
 	
@@ -280,15 +264,7 @@
 	
 	First of all, a Riemann sum is an area. Every one of the $n$ terms in the sum is the area of a rectangle with width $\Delta x$ and height $f(x_i^*)$. Let&#x2019;s get to an example to see what&#x2019;s happening.
 	
-!end-text-block
-
-
-
-!iframe https://www.desmos.com/calculator/q3ovooxz7u
-
-
-
-!begin-text-block
+	!desmos riemann-sum
 	
 	Take a moment to really dig into that Desmos frame. Change $a$ and $b$ and $n$, and change $f$ to another positive function like $x^2$. The two large sum expressions are calculating the left and right Riemann sums, respectively &mdash; notice how they both get close to $10$ as $n$ gets larger. 
 	
@@ -304,7 +280,7 @@
 	
 	If we want to split $[-5, 5]$ into five equal subintervals, we need the partition $\{-5, -3, -1, 1, 3, 5\}$. Now we&#x2019;re doing an upper sum, so for each of the five subintervals, we need to find the $t$-value that maximizes the function. Working this through, we find that the points are $-5, -3, -1, 3, 5$. The $-1$ could also be taken to be $t = 1$, since they both have $g(t) = 1$.
 	
-	!iframe https://www.desmos.com/calculator/brpoti9rzn
+	!desmos riemann-sum-2
 	
 	The base of every rectangle is $\Delta t = 2$, so in total, the sum is
 	
