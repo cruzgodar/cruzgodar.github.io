@@ -51,6 +51,9 @@
 				{latex: String.raw`b = 7`, sliderBounds: {min: 0, max: 8}},
 				{latex: String.raw`n = 6`, sliderBounds: {min: 2, max: 100, step: 1}},
 				
+				{latex: String.raw`\sum_{i = 1}^n s f(L[i])`},
+				{latex: String.raw`\sum_{i = 1}^n s f(R[i])`},
+				
 				{latex: String.raw`s = \frac{b - a}{n}`, secret: true},
 				{latex: String.raw`X = [a, a + s, ..., b]`, secret: true},
 				{latex: String.raw`L = [a, a + s, ..., b - s]`, secret: true},
