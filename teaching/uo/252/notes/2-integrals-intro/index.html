@@ -28,7 +28,7 @@
 
 !begin-text-block
 	
-	Let&#x2019;s get right to it. We have Riemann sums, which approximate the area under the graph of nonnegative functions (i.e. ones that stay on or above the $x$-axis). We can choose the points $x_i^*$ within the subintervals however we like, but for well-behaved functions, it won&#x2019;t end up mattering. As the number of subintervals limits to infinity, the total area of the rectangles approaches the actual area under the curve.
+	Let&#x2019;s get right to it! We have Riemann sums, which approximate the area under the graph of nonnegative functions, and we can choose the points $x_i^*$ within the subintervals however we like (left, right, upper and lower sums are all examples of that choice). For well-behaved functions, it won&#x2019;t end up mattering, though. As the number of subintervals limits to infinity, the total area of the rectangles will approach the actual area under the curve.
 	
 !end-text-block
 
@@ -38,11 +38,13 @@
 	
 	definite integral
 	
-	Let $f$ be a nonnegative function defined on $[a, b]$. The <dfn>definite integral</dfn> of $f$ on $[a, b]$ is the area under the graph of $f$ on $[a, b]$, written $\int_a^b f(x)\ dx$ and defined by
+	Let $f$ be a nonnegative function defined on $[a, b]$. The <dfn>definite integral</dfn> of $f$ on $[a, b]$ is the area under the graph of $f$ on $[a, b]$, written as $\int_a^b f(x)\ dx$ and defined by
 	
-	$$\int_a^b f(x)\ dx = \lim_{n \to \infty} \sum_{i = 1}^n f(x_i^*) \Delta x,$$
+	$$
+		\int_a^b f(x)\ dx = \lim_{n \to \infty} \sum_{i = 1}^n f(x_i^*) \Delta x,
+	$$
 	
-	provided the limit exists. If it does, we say that $f$ is <dfn>integrable</dfn> on $[a, b].$
+	where the sum is a Riemann sum with $n$ rectangles. If the limit exists, we say that $f$ is <dfn>integrable</dfn> on $[a, b]$.
 	
 !end-def
 
@@ -50,9 +52,9 @@
 
 !begin-text-block
 	
-	The notation looks a little strange at first, but it&#x2019;s designed to match a Riemann sum. The $dx$ takes the place of the $\Delta x$ from the sum, and it carries the same meaning as the $dx$ in $\frac{dy}{dx}$ &mdash; it&#x2019;s an infinitesimal change in $x$, indicating that the rectangles have become &#x201C;infinitely thin&#x201D;.
+	The notation looks a little strange at first, but it&#x2019;s designed to match a Riemann sum. The $dx$ takes the place of the $\Delta x$, and it carries the same meaning as the $dx$ in $\frac{dy}{dx}$ &mdash; it&#x2019;s an infinitesimal change in $x$, indicating that the rectangles have become infinitely thin.
 	
-	Being integrable is a complicated condition &mdash; it&#x2019;s not immediately clear what makes the limit of Riemann sums exist. For now, we can say at least one thing:
+	Being integrable is a complicated condition &mdash; it&#x2019;s not clear what properties a function could have that would make the limit of Riemann sums exist. For now, we can say at least one thing:
 	
 !end-text-block
 
@@ -62,7 +64,7 @@
 
 	continuous functions are integrable
 	
-	Let $f$ be a function that is nonnegative and continuous on $[a, b]$. Then $f$ is integrable on $[a, b].$
+	Let $f$ be a function that is nonnegative and continuous on $[a, b]$. Then $f$ is integrable on $[a, b]$.
 
 !end-thm
 
@@ -82,11 +84,17 @@
 	
 	Find $\int_{-1}^3 |x|\ dx$.
 	
-	It&#x2019;s always a good idea to draw a picture of what&#x2019;s going on before digging into the equations.
+	Especially with integrals, it&#x2019;s always a good idea to draw a picture of what&#x2019;s going on before digging into the equations.
 	
 	!desmos geometric-integral
 	
-	The integral we&#x2019;re trying to calculate is, by definition, the area of the shaded region. That region consists of two triangles &mdash; the left one has base and height $1$, while the right one has base and height $3$. The total area is therefore $\frac{1}{2} \cdot 1 \cdot 1 + \frac{1}{2} \cdot 3 \cdot 3 = 5$. In total, $\int_{-1}^3 |x|\ dx = 5$.
+	The integral we&#x2019;re trying to calculate is by definition the area of the shaded region. That region consists of two triangles &mdash; the left one has base and height $1$, while the right one has base and height $3$. The total area is therefore
+	
+	$$
+		\frac{1}{2} \cdot 1 \cdot 1 + \frac{1}{2} \cdot 3 \cdot 3 = 5.
+	$$
+	
+	In total, $\int_{-1}^3 |x|\ dx = 5$.
 
 !end-example
 
@@ -95,13 +103,13 @@
 	computing an integral geometrically
 	
 	Find $\int_1^3 2x \ dx$ geometrically.
-	
+	<!--
 	Solution: the area in question looks like the following:
 	
 	!desmos geometric-integral-2
 	
 	This can be split into a square with side length $2$ and a triangle with base $2$ and height $4$. In total, the area is therefore $4 + \frac{1}{2} \cdot 2 \cdot 4 = 8$.
-	
+	-->
 !end-exercise
 
 
@@ -112,21 +120,25 @@
 	
 	Find $\int_0^2 t^2\ dt$.
 	
-	Of course, the whole point of integrals is that it&#x2019;s not always as easy as the previous example. That was like computing the derivative of a straight line &mdash; we don&#x2019;t need the heavy machinery of derivatives to find its slope. Similarly, we don&#x2019;t need integrals to find the area of a triangle, although it&#x2019;s good practice. This function is a parabola, though, and we don&#x2019;t know a simple formula for the shaded area. There&#x2019;s no getting around it &mdash; we need to use the definition of the integral.
+	It&#x2019;s not always as easy as the previous example. That was a lot like computing the derivative of a straight line &mdash; we don&#x2019;t need the heavy machinery of derivatives to find its slope. Similarly, we don&#x2019;t need integrals to find the area of a triangle, although it&#x2019;s a good example to get our bearings. This time around, what we have is a parabola, and we don&#x2019;t know a simple formula for the shaded area. There&#x2019;s no getting around it &mdash; we need to use the definition of the integral.
 	
-	We need to start with a Riemann sum. Since $f(t) = t^2$ is a continuous function, it&#x2019;s integrable, so it doesn&#x2019;t matter if we choose a left sum, a right one, an upper one, a lower one, or any other type. Let&#x2019;s choose a right sum for simplicity. Critically, since we&#x2019;re eventually going to limit the number of subintervals to infinity, we need to leave it as a variable. If we have $n$ subintervals, then we&#x2019;re dividing the interval $[0, 2]$ into $n$ equal-sized pieces, so each one has width $\frac{2}{n}$.
+	We need to start with a Riemann sum. Since $f(t) = t^2$ is a continuous function, it&#x2019;s integrable, so it doesn&#x2019;t matter if we choose a left sum, a right one, an upper one, a lower one, or any other type. In general, right Riemann sums have the simplest formulas, so let&#x2019;s choose to use one of them. Since we&#x2019;re eventually going to limit the number of subintervals to infinity, we need to leave that number (i.e. $n$) as a variable. If we have $n$ subintervals, then we&#x2019;re dividing the interval $[0, 2]$ into $n$ equal-sized pieces, so each one has width $\frac{2}{n}$.
 	
 	!desmos integral-from-limit-def
 	
-	Now in the $i$th subinterval, the right endpoint has $x$-coordinate $\frac{2}{n} i$ (take a moment to make sure that makes sense). We&#x2019;re trying to find the value of the Riemann sum, so we need to add up the area of all $n$ rectangles. The height of the $i$th one is
+	In the $i$th subinterval, the right endpoint has $x$-coordinate $\frac{2}{n} i$. That&#x2019;s because the right endpoint of the first interval is $\frac{2}{n}$, the right endpoint of the second is $\frac{2}{n}(2)$, and so on. We&#x2019;re trying to find the value of the Riemann sum, so we need to add up the area of all $n$ rectangles. The height of the $i$th one is
 	
-	$$f\left( \frac{2}{n} i \right) = \left( \frac{2}{n} i \right)^2 = \frac{4}{n^2} i^2,$$
+	$$
+		f\left( \frac{2}{n} i \right) = \left( \frac{2}{n} i \right)^2 = \frac{4}{n^2} i^2,
+	$$
 	
 	so in total, our Riemann sum becomes
 	
-	$$\sum_{i = 1}^n \left( \frac{4}{n^2} i^2 \right) \left( \frac{2}{n} \right) = \sum_{i = 1}^n \frac{8}{n^3} i^2.$$
+	$$
+		\sum_{i = 1}^n \left( \frac{4}{n^2} i^2 \right) \left( \frac{2}{n} \right) = \sum_{i = 1}^n \frac{8}{n^3} i^2.
+	$$
 	
-	This is looking pretty rough, but remember &mdash; that $\frac{8}{n^3}$ is a constant for now, since we haven&#x2019;t taken a limit yet. That means we can pull it out of the sum, and then we know how to handle what&#x2019;s left.
+	This is looking pretty rough, but remember &mdash; that $\frac{8}{n^3}$ is a constant as far as the sum is concerned. That means we can pull it out, and then we know how to handle what&#x2019;s left.
 	
 	$$
 		\begin{align*}
@@ -155,8 +167,8 @@
 	computing an integral from the limit definition
 	
 	Find $\int_0^3 t^3\ dt$ from the limit definition.
-	
-	Solution: split $[0, 3]$ into $n$ subintervals. The width of each is therefore $\frac{3}{n}$, and the coordinate of the right endpoint of the $i$th subinterval is $\frac{3}{n}i$. Therefore, the Riemann sum becomes 
+	<!--
+	<strong>Solution:</strong> split $[0, 3]$ into $n$ subintervals. The width of each is therefore $\frac{3}{n}$, and the coordinate of the right endpoint of the $i$th subinterval is $\frac{3}{n}i$. Therefore, the Riemann sum becomes 
 	
 	$$
 		\begin{align*}
@@ -169,7 +181,7 @@
 	$$
 	
 	Now taking the limit as $n \to \infty$ by only considering the leading terms, we get $\frac{81n^4}{4n^4} = \frac{81}{4}$.
-	
+	-->
 !end-exercise
 
 
@@ -228,6 +240,14 @@
 
 
 
+!begin-text-block
+	
+	Since they&#x2019;re defined as limits of sums, integrals have many of the same nice properties.
+	
+!end-text-block
+
+
+
 !begin-prop
 	
 	basic integral properties
@@ -262,7 +282,9 @@
 	
 	Let $f$ be a function on $[a, b]$. The <dfn>average value</dfn> of $f$ on $[a, b]$ is
 	
-	$$\frac{1}{b - a} \int_a^b f(x)\ dx.$$
+	$$
+		\frac{1}{b - a} \int_a^b f(x)\ dx.
+	$$
 	
 !end-def
 
@@ -270,7 +292,7 @@
 
 !begin-text-block
 	
-	This is a reasonable definition, since the integral is adding up the values of $f(x)$ over $[a, b]$, in a sense, and $\frac{1}{b - a}$ is, in the same sense, the number of values added up. Of course, this is all just an analogy &mdash; adding up infinitely many values is meaningless, which is exactly why we need integrals in the first place.
+	This is a reasonable definition, since the integral is adding up the values of $f(x)$ over $[a, b]$, and $\frac{1}{b - a}$ is, in a sense, the amount of values added up.
 	
 !end-text-block
 
@@ -289,16 +311,16 @@
 	average value
 	
 	Find the average value of $g(x) = x^3$ on $[0, 3]$.
-	
-	Using the previous value of $\frac{81}{4}$, we get $\frac{1}{3} \cdot \frac{81}{4} = \frac{27}{4}$.
-	
+	<!--
+	<strong>Solution:</strong> Using the previous value of $\frac{81}{4}$, we get $\frac{1}{3} \cdot \frac{81}{4} = \frac{27}{4}$.
+	-->
 !end-exercise
 
 
 
 !begin-text-block
 	
-	In the next section, we&#x2019;ll take a brief break from computing areas to work on some machinery that will let us bypass the limit definition of the integral.
+	In the next section, we&#x2019;ll take a break from computing areas to work on some machinery that will let us bypass the limit definition of the integral.
 	
 !end-text-block
 
