@@ -28,7 +28,7 @@
 
 !begin-text-block
 	
-	We need to take a brief deviation from definite integrals to develop something slightly different. It won&#x2019;t seem to have any relation at first, but in the next section, we&#x2019;ll relate it back to our main goal.
+	We need to take a brief deviation from definite integrals to work on something different. It&#x2019;ll seem completely unrelated at first, but in the next section, we&#x2019;ll connect it back to our main goal.
 	
 !end-text-block
 
@@ -48,7 +48,11 @@
 	
 	antiderivatives
 	
-	$F(x) = \frac{x^3}{3}$ is an antiderivative of $f(x) = x^2$, since $F'(x) = f(x)$. So is $G(x) = \frac{x^3}{3} + 2$, since the $2$ differentiates to zero. Similarly, for any constant $C$, $\frac{x^3}{3} + C$ is an antiderivative of $x^2$. In fact, <strong>all</strong> antiderivatives of $f$ have this form.
+	$F(x) = \frac{x^3}{3}$ is an antiderivative of $f(x) = x^2$, since $\frac{d}{dx} \left[ \frac{x^3}{3} \right] = x^2$. The function $G(x) = \frac{x^3}{3} + 2$ is also an antiderivative, since the $2$ differentiates to zero. Similarly, for any constant $C$, $\frac{x^3}{3} + C$ is an antiderivative of $x^2$.
+	
+	!desmos antiderivative
+	
+	In fact, <strong>all</strong> antiderivatives of $x^2$ are of the form $\frac{x^3}{3} + C$.
 	
 !end-example
 
@@ -64,13 +68,9 @@
 
 
 
-!iframe https://www.desmos.com/calculator/fyariv28tm
-
-
-
 !begin-text-block
 	
-	It&#x2019;d be nice to have some notation to represent the operation of taking an antiderivative &mdash; something akin to $\frac{d}{dx}$. As strange as it might seem right now, we&#x2019;re actually going to use the integral symbol for this &mdash; despite how confusing that is, it&#x2019;ll actually simplify things for us in the end.
+	It&#x2019;d be nice to have some notation to represent the operation of taking an antiderivative &mdash; something like $\frac{d}{dx}$, but in reverse. As strange as it might seem right now, we&#x2019;re actually going to use the integral symbol for this. It may be confusing right now, but in the next section, we&#x2019;ll see why it&#x2019;s the best possible notation we could choose.
 	
 !end-text-block
 
@@ -80,7 +80,13 @@
 	
 	indefinite integral
 	
-	Let $f$ be a function. The <dfn>indefinite integral</dfn> of $f$ is $\int f(x)\ dx = F(x) + C$, where $F$ is an antiderivative of $f$.
+	Let $f$ be a function. The <dfn>indefinite integral</dfn> of $f$ is
+	
+	$$
+		\int f(x)\ dx = F(x) + C,
+	$$
+	
+	where $F$ is an antiderivative of $f$.
 	
 !end-def
 
@@ -88,7 +94,7 @@
 
 !begin-text-block
 	
-	So the only notational difference between the definite integral that measures area under a graph and the indefinite integral that takes an antiderivative is that the former is written with limits of integration &mdash; $\int_a^b f(x)\ dx$ &mdash; and the latter isn&#x2019;t &mdash; $\int f(x)\ dx$. Again, this should seem like an awful choice of notation, but bear with it for now.
+	So the only notational difference between the definite integral that measures area under a graph and the indefinite integral that takes an antiderivative is that definite integrals are written with the two numbers on the integral sign (called <dfn>limits of integration</dfn>), and indefinite integrals are bare. In other words, $\int_a^b f(x)\ dx$ measures area under the graph of $f$ between $x = a$ and $x = b$, and $\int f(x)\ dx$ is an antiderivative of $f$. Let&#x2019;s focus on indefinite integrals for the moment.
 	
 !end-text-block
 
@@ -112,29 +118,29 @@
 	
 	indefinite integrals
 	
-	Find the following.
+	Find the following:
 	
 	$\int \frac{1}{t^2}\ dt$.
 	
 	$\int \sec^2(y)\ dy$.
 	
 	$\int (mx + b)\ dx$.
-	
-	Solutions:
+	<!--
+	<strong>Solutions:</strong>
 	
 	1. $-\frac{1}{t} + C$.
 	
 	2. $\tan(y) + C$.
 	
 	3. $\frac{m}{2}x^2 + bx + C$.
-	
+	-->
 !end-exercise
 
 
 
 !begin-text-block
 	
-	Because derivatives factor through addition and multiplication by a constant, so do antiderivatives.
+	Because derivatives factor through both addition and multiplication by a constant, so do antiderivatives.
 	
 !end-text-block
 
@@ -156,11 +162,14 @@
 	
 	One immediate use of indefinite integrals is to solve <dfn>initial value problems</dfn> &mdash; problems of the form
 	
-	$$y'(x) = f(x)$$
+	$$
+		\begin{align*}
+			y'(x) &= f(x)\\
+			y(x_0) &= y_0
+		\end{align*}
+	$$
 	
-	$$y(x_0) = y_0$$
-	
-	The idea is that we can solve for $y$ by integrating $f(x)$, but that will leave the constant $C$ in our solution, which we can solve for with the second equation (called the <dfn>initial value</dfn>).
+	The idea is that we can solve for $y$ by integrating $f(x)$, but that will leave the constant $C$ in our solution. But then we can solve for $C$ with the second equation (called the <dfn>initial value</dfn>).
 	
 !end-text-block
 
@@ -170,9 +179,19 @@
 	
 	an initial value problem
 	
-	You&#x2019;re driving a car. After $t$ seconds, your velocity in meters per second is given by $v(t) = 3t + 2$. After one second, you've moved $2$ meters. Find a function $s(t)$ that gives your distance traveled after $t$ seconds.
+	A snail is trying its best to get up to cruising speed. After $t$ seconds, its velocity in millimeters per second is given by $v(t) = 3t + 2$, and one second after taking off, it&#x2019;s moved $2$ millimeters. Find a function $s(t)$ that gives its distance in millimeters traveled after $t$ seconds.
 	
-	Since $v'(t) = s(t)$, we have that $s(t) = \int v(t)\ dt = \frac{3}{2}t^2 + 2t + C$. Now since $s(1) = 2$, we can solve for $C$: $\frac{3}{2} + 2 + C = 2$, so $C = -\frac{3}{2}$. In total, $s(t) = \frac{3}{2}t^2 + 2t - \frac{3}{2}$.
+	Since $v'(t) = s(t)$, we have that
+	
+	$$
+		s(t) = \int v(t)\ dt = \frac{3}{2}t^2 + 2t + C.
+	$$
+	
+	Now since $s(1) = 2$, we can solve for $C$: $\frac{3}{2} + 2 + C = 2$, so $C = -\frac{3}{2}$. In total,
+	
+	$$
+		s(t) = \frac{3}{2}t^2 + 2t - \frac{3}{2}.
+	$$
 	
 !end-example
 
@@ -182,16 +201,16 @@
 	
 	an initial value problem
 	
-	You throw a ball straight up. Acceleration due to gravity is always $a(t) = -9.81 \frac{m}{s^2}$. The ball leaves your hand $1$ meter off the ground with a velocity of $2 \frac{m}{s}$. Find a function $h(t)$ that gives the height of the ball above the ground $t$ seconds after leaving your hand.
-	
-	Solution: We have $h(0) = 1$ and $v(0) = 2$. Now $v(t) = \int a(t)\ dt = -9.81t + C$, so $v(0) = C = 2$. And
+	For as long as you can remember, your life&#x2019;s purpose has been to throw a baseball at escape velocity. Today, decide to throw it vertically upward, and the fastest you can throw is $4 \frac{m}{s}$. The ball leaves your hand $1$ meter off the ground, and acceleration due to gravity is (sadly) always $a(t) = -9.81 \frac{m}{s^2}$. Find a function $h(t)$ that gives the height of the ball above the ground in meters $t$ seconds after leaving your hand.
+	<!--
+	Solution: We have $h(0) = 1$ and $v(0) = 4$. Now $v(t) = \int a(t)\ dt = -9.81t + C$, so $v(0) = C = 4$. And
 	
 	$$
-		h(t) = \int v(t)\ dt = \int (-9.81t + 2)\ dt = -4.905t^2 + 2t + C,
+		h(t) = \int v(t)\ dt = \int (-9.81t + 4)\ dt = -4.905t^2 + 4t + C,
 	$$
 	
-	so $h(0) = C = 1$. Therefore, $h(t) = -4.905t^2 + 2t + 1$.
-	
+	so $h(0) = C = 1$. Therefore, $h(t) = -4.905t^2 + 4t + 1$.
+	-->
 !end-exercise
 
 
