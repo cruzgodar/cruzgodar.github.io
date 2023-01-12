@@ -244,6 +244,7 @@ Site.applet_process_id = 0;
 const DESMOS_PURPLE = "#772fbf";
 const DESMOS_BLUE = "#2f77bf";
 const DESMOS_RED = "#bf2f2f";
+const DESMOS_GREEN = "#2fbf2f";
 const DESMOS_BLACK = "#000000";
 	
 	
