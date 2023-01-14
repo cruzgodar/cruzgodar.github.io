@@ -2,6 +2,93 @@
 
 
 
+#header
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+	
+	width: 100%;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	background-color: rgb(255, 255, 255);
+	
+	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .15);
+	
+	z-index: 1000000;
+}
+
+#header a
+{
+	padding: 7.5px;
+	border-radius: 5px;
+	
+	color: rgb(64, 64, 64);
+	
+	margin-left: 2.5px;
+	margin-right: 2.5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	
+	cursor: pointer;
+}
+
+#header-gallery-link.active
+{
+	background-color: rgba(198, 239, 198, .5);
+}
+
+#header-applets-link.active
+{
+	background-color: rgba(255, 192, 193, .5);
+}
+
+#header-teaching-link.active
+{
+	background-color: rgba(255, 240, 192, .5);
+}
+
+#header-writing-link.active
+{
+	background-color: rgba(195, 224, 255, .5);
+}
+
+#header-about-link.active
+{
+	background-color: rgba(224, 224, 224, .5);
+}
+
+#header-gallery-link.hover
+{
+	background-color: rgba(198, 239, 198, 1);
+}
+
+#header-applets-link.hover
+{
+	background-color: rgba(255, 192, 193, 1);
+}
+
+#header-teaching-link.hover
+{
+	background-color: rgba(255, 240, 192, 1);
+}
+
+#header-writing-link.hover
+{
+	background-color: rgba(195, 224, 255, 1);
+}
+
+#header-about-link.hover
+{
+	background-color: rgba(224, 224, 224, 1);
+}
+
+
+
+
 .footer-button
 {
 	width: 25px;
@@ -286,5 +373,23 @@
 	{
 		width: 12vw;
 		height: 12vw;
+	}
+}
+
+
+
+@media (max-width: 500px)
+{
+	#header a
+	{
+		font-size: 80%;
+		
+		padding: calc(7.5px * .8);
+		border-radius: calc(5px * .8);
+		
+		margin-left: calc(2.5px * .8);
+		margin-right: calc(2.5px * .8);
+		margin-top: calc(5px * .8);
+		margin-bottom: calc(5px * .8);
 	}
 }

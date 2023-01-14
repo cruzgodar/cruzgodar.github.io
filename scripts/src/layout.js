@@ -50,8 +50,8 @@ Page.Layout =
 			}
 		}
 		
-		Site.navigation_animation_distance_vertical = window.innerHeight / 20;
-		Site.navigation_animation_distance_horizontal = window.innerWidth / 20;
+		Site.navigation_animation_distance_vertical = Math.min(window.innerHeight / 20, 25);
+		Site.navigation_animation_distance_horizontal = Math.min(window.innerWidth / 20, 25);
 		
 		this.aspect_ratio = this.new_window_width / this.new_window_height;
 		

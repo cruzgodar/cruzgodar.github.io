@@ -232,8 +232,8 @@ Site.use_js_animation = false;
 
 Site.base_animation_time = 250;
 
-Site.navigation_animation_distance_vertical = window.innerHeight / 20;
-Site.navigation_animation_distance_horizontal = window.innerWidth / 20;
+Site.navigation_animation_distance_vertical = Math.min(window.innerHeight / 20, 25);
+Site.navigation_animation_distance_horizontal = Math.min(window.innerWidth / 20, 25);
 	
 	
 
@@ -442,7 +442,7 @@ Site.load = async function(url)
 	
 	
 	
-	Page.Footer.Floating.load();
+	Page.Footer.Floating.load();	
 	
 	
 	

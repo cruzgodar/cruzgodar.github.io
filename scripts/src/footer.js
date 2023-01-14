@@ -127,6 +127,36 @@ Page.Footer =
 		//Initializes the floating footer.
 		load: function()
 		{
+			document.body.firstChild.insertAdjacentHTML("beforebegin", `
+				<div id="header">
+					<a id="header-gallery-link" href="/gallery/">Gallery</a>
+					<a id="header-applets-link" href="/applets/">Applets</a>
+					<a id="header-teaching-link" href="/teaching/">Teaching</a>
+					<a id="header-writing-link" href="/writing/">Writing</a>
+					<a id="header-about-link" href="/about/">About</a>
+				</div>
+			`);
+			
+			setTimeout(() =>
+			{
+				document.body.querySelectorAll("#header a").forEach(link =>
+				{
+					Page.Load.HoverEvents.add(link);
+					
+					const href = link.getAttribute("href");
+					
+					const url_vars_suffix = Page.Navigation.concat_url_vars();
+			
+					link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + url_vars_suffix);
+					
+					link.setAttribute("onclick", `Page.Navigation.redirect("${href}")`);
+					
+					link.addEventListener("click", e => e.preventDefault());
+				});
+			});
+			
+			
+			
 			const floating_footer_element = document.createElement("footer");
 			floating_footer_element.id = "floating-footer";
 			

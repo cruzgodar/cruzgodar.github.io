@@ -1081,23 +1081,23 @@ Site.Settings =
 		{
 			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(0, 0, 0)");
 			
-			Page.set_element_styles(".section-text", "color", "rgb(96, 96, 96)");
+			Page.set_element_styles(".section-text", "color", "rgb(48, 48, 48)");
 			
-			Page.set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text", "color", "rgb(127, 127, 127)");
+			Page.set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text", "color", "rgb(96, 96, 96)");
 			
-			Page.set_element_styles(".body-text .link", "color", "rgb(127, 192, 127)");
+			Page.set_element_styles(".body-text .link", "color", "rgb(96, 144, 96)");
 			
 			
 			
-			Page.set_element_styles(".quote-text q", "color", "rgb(176, 176, 176)");
+			Page.set_element_styles(".quote-text q", "color", "rgb(96, 96, 96)");
 			
-			Page.set_element_styles(".quote-attribution", "color", "rgb(92, 92, 92)");
+			Page.set_element_styles(".quote-attribution", "color", "rgb(48, 48, 48)");
 			
 			
 			
 			Page.set_element_styles(".text-box", "background-color", "rgb(255, 255, 255)");
 			
-			Page.set_element_styles(".text-box", "color", "rgb(127, 127, 127)");
+			Page.set_element_styles(".text-box", "color", "rgb(96, 96, 96)");
 			
 			Page.set_element_styles(".text-box", "border-color", "rgb(192, 192, 192)");
 			
@@ -1105,7 +1105,7 @@ Site.Settings =
 			
 			Page.set_element_styles(".text-field", "background-color", "rgb(255, 255, 255)");
 			
-			Page.set_element_styles(".text-field", "color", "rgb(127, 127, 127)");
+			Page.set_element_styles(".text-field", "color", "rgb(96, 96, 96)");
 			
 			Page.set_element_styles(".text-field", "border-color", "rgb(192, 192, 192)");
 			
@@ -1113,13 +1113,13 @@ Site.Settings =
 			
 			Page.set_element_styles(".checkbox-container > input ~ .checkbox", "background-color", "rgb(255, 255, 255)");
 			
-			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "rgb(127, 127, 127)");
+			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "rgb(96, 96, 96)");
 			
 			
 			
 			Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", "rgb(255, 255, 255)");
 			
-			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(127, 127, 127)");
+			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(96, 96, 96)");
 			
 			
 			
@@ -1145,23 +1145,23 @@ Site.Settings =
 		{
 			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(255, 255, 255)");
 			
-			Page.set_element_styles(".section-text", "color", "rgb(184, 184, 184)");
+			Page.set_element_styles(".section-text", "color", "rgb(232, 232, 232)");
 			
 			Page.set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text", "color", "rgb(152, 152, 152)");
 			
-			Page.set_element_styles(".body-text .link", "color", "rgb(152, 216, 152)");
+			Page.set_element_styles(".body-text .link", "color", "rgb(184, 255, 184)");
 			
 			
 			
-			Page.set_element_styles(".quote-text q", "color", "rgb(104, 104, 104)");
+			Page.set_element_styles(".quote-text q", "color", "rgb(184, 184, 184)");
 			
-			Page.set_element_styles(".quote-attribution", "color", "rgb(188, 188, 188)");
+			Page.set_element_styles(".quote-attribution", "color", "rgb(232, 232, 232)");
 			
 			
 			
 			Page.set_element_styles(".text-box", "background-color", this.dark_theme_background_color);
 			
-			Page.set_element_styles(".text-box", "color", "rgb(152, 152, 152)");
+			Page.set_element_styles(".text-box", "color", "rgb(184, 184, 184)");
 			
 			Page.set_element_styles(".text-box", "border-color", "rgb(88, 88, 88)");
 			
@@ -1169,7 +1169,7 @@ Site.Settings =
 			
 			Page.set_element_styles(".text-field", "background-color", this.dark_theme_background_color);
 			
-			Page.set_element_styles(".text-field", "color", "rgb(152, 152, 152)");
+			Page.set_element_styles(".text-field", "color", "rgb(184, 184, 184)");
 			
 			Page.set_element_styles(".text-field", "border-color", "rgb(88, 88, 88)");
 			
@@ -1177,13 +1177,13 @@ Site.Settings =
 			
 			Page.set_element_styles(".checkbox-container > input ~ .checkbox", "background-color", this.dark_theme_background_color);
 			
-			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "rgb(152, 152, 152)");
+			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "rgb(184, 184, 184)");
 			
 			
 			
 			Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", this.dark_theme_background_color);
 			
-			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(152, 152, 152)");
+			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(184, 184, 184)");
 			
 			
 			
@@ -1251,238 +1251,6 @@ Site.Settings =
 			
 			
 			new_gradient_suffix = `-1-0`;
-		}
-		
-		
-		
-		else if (settings === "contrast")
-		{
-			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(0, 0, 0)");
-			
-			Page.set_element_styles(".section-text", "color", "rgb(48, 48, 48)");
-			
-			Page.set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text", "color", "rgb(64, 64, 64)");
-			
-			Page.set_element_styles(".body-text .link", "color", "rgb(64, 128, 64)");
-			
-			
-			
-			Page.set_element_styles(".quote-text q", "color", "rgb(88, 88, 88)");
-			
-			Page.set_element_styles(".quote-attribution", "color", "rgb(46, 46, 46)");
-			
-			
-			
-			Page.set_element_styles(".text-box", "background-color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".text-box", "color", "rgb(64, 64, 64)");
-			
-			Page.set_element_styles(".text-box", "border-color", "rgb(96, 96, 96)");
-			
-			
-			
-			Page.set_element_styles(".text-field", "background-color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".text-field", "color", "rgb(64, 64, 64)");
-			
-			Page.set_element_styles(".text-field", "border-color", "rgb(96, 96, 96)");
-			
-			
-			
-			Page.set_element_styles(".checkbox-container > input ~ .checkbox", "background-color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "rgb(64, 64, 64)");
-			
-			
-			
-			Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(64, 64, 64)");
-			
-			
-			
-			const element = Site.add_style(`
-				.slider-container > input
-				{
-					background-color: rgb(100, 100, 100) !important;
-				}
-
-				.slider-container > input::-webkit-slider-thumb
-				{
-					background-color: rgb(80, 80, 80) !important;
-				}
-
-				.slider-container > input::-moz-slider-thumb
-				{
-					background-color: rgb(80, 80, 80) !important;
-				}
-
-				.slider-container > input:active
-				{
-					background-color: rgb(64, 64, 64) !important;
-				}
-
-				.slider-container > input:hover::-webkit-slider-thumb
-				{
-					background-color: rgb(56, 56, 56) !important;
-				}
-
-				.slider-container > input:hover::-moz-slider-thumb
-				{
-					background-color: rgb(56, 56, 56) !important;
-				}
-
-				.slider-container > input:active::-webkit-slider-thumb
-				{
-					background-color: rgb(0, 0, 0) !important;
-				}
-
-				.slider-container > input:active::-moz-slider-thumb
-				{
-					background-color: rgb(0, 0, 0) !important;
-				}
-			`, false);
-			
-			try {document.querySelector("#slider-style").remove();}
-			catch(ex) {}
-			
-			try {element.id = "slider-style";}
-			catch(ex) {}
-			
-			
-			
-			Page.set_element_styles("#floating-footer-content, #floating-footer-button-background", "background-color", "rgb(255, 255, 255)");
-			
-			
-			
-			Page.set_element_styles(".footer-button, .text-button, .nav-button, #output-canvas", "border-color", "rgb(64, 64, 64)");
-			
-			Page.set_element_styles(".iframe-clipper", "border-color", "rgb(255, 255, 255)");
-			
-			
-			
-			new_gradient_suffix = `-0-1`;
-		}
-		
-		
-		
-		else if (settings === "dark_contrast")
-		{
-			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".section-text", "color", "rgb(232, 232, 232)");
-			
-			Page.set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext", "color", "rgb(216, 216, 216)");
-			
-			Page.set_element_styles(".body-text .link", "color", "rgb(216, 255, 216)");
-			
-			Page.set_element_styles(".floating-settings-button-text", "color", "rgb(64, 64, 64)");
-			
-			
-			
-			Page.set_element_styles(".quote-text q", "color", "rgb(192, 192, 192)");
-			
-			Page.set_element_styles(".quote-attribution", "color", "rgb(234, 234, 234)");
-			
-			
-			
-			Page.set_element_styles(".text-box", "background-color", this.dark_theme_background_color);
-			
-			Page.set_element_styles(".text-box", "color", "rgb(216, 216, 216)");
-			
-			Page.set_element_styles(".text-box", "border-color", "rgb(152, 152, 152)");
-			
-			
-			
-			Page.set_element_styles(".text-field", "background-color", this.dark_theme_background_color);
-			
-			Page.set_element_styles(".text-field", "color", "rgb(216, 216, 216)");
-			
-			Page.set_element_styles(".text-field", "border-color", "rgb(152, 152, 152)");
-			
-			
-			
-			Page.set_element_styles(".checkbox-container", "border-color", "rgb(216, 216, 216)");
-			
-			Page.set_element_styles(".checkbox-container > input ~ .checkbox", "background-color", this.dark_theme_background_color);
-			
-			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "rgb(216, 216, 216)");
-			
-			
-			
-			Page.set_element_styles(".radio-button-container", "border-color", "rgb(216, 216, 216)");
-			
-			Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", this.dark_theme_background_color);
-			
-			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(216, 216, 216)");
-			
-			
-			
-			Page.set_element_styles(".iframe-clipper", "border-color", this.dark_theme_background_color);
-			
-			
-			
-			//Page.set_element_styles(".slider-container > input", "background-color", "rgb(180, 180, 180)");
-			
-			const element = Site.add_style(`
-				.slider-container > input
-				{
-					background-color: rgb(180, 180, 180) !important;
-				}
-
-				.slider-container > input::-webkit-slider-thumb
-				{
-					background-color: rgb(200, 200, 200) !important;
-				}
-
-				.slider-container > input::-moz-slider-thumb
-				{
-					background-color: rgb(200, 200, 200) !important;
-				}
-
-				.slider-container > input:active
-				{
-					background-color: rgb(216, 216, 216) !important;
-				}
-
-				.slider-container > input:hover::-webkit-slider-thumb
-				{
-					background-color: rgb(224, 224, 224) !important;
-				}
-
-				.slider-container > input:hover::-moz-slider-thumb
-				{
-					background-color: rgb(224, 224, 224) !important;
-				}
-
-				.slider-container > input:active::-webkit-slider-thumb
-				{
-					background-color: rgb(255, 255, 255) !important;
-				}
-
-				.slider-container > input:active::-moz-slider-thumb
-				{
-					background-color: rgb(255, 255, 255) !important;
-				}
-			`, false);
-			
-			try {document.querySelector("#slider-style").remove();}
-			catch(ex) {}
-			
-			try {element.id = "slider-style";}
-			catch(ex) {}
-			
-			
-			
-			Page.set_element_styles("#floating-footer-content, #floating-footer-button-background", "background-color", this.dark_theme_background_color);
-			
-			
-			
-			Page.set_element_styles(".footer-button, .text-button, .nav-button, #output-canvas", "border-color", "rgb(152, 152, 152)");
-			
-			
-			
-			new_gradient_suffix = `-1-1`;
 		}
 		
 		//These elements have properties that cannot be animated. To get around this, every elemnt has 6 copies of itself -- one for each combination of theme and contrast. Here, we animate the new one in and the old one out.
@@ -1661,270 +1429,6 @@ Site.Settings =
 				
 				
 				.line-break-1-0
-				{
-					opacity: 1;
-				}
-			`;
-		}
-		
-		
-		
-		else if (settings === "contrast")
-		{
-			return `
-				.heading-text, .date-text, .title-text
-				{
-					color: rgb(0, 0, 0);
-				}
-				
-				.section-text
-				{
-					color: rgb(48, 48, 48);
-				}
-				
-				.body-text, .body-text span, .song-lyrics, .image-link-subtext, .text-button
-				{
-					color: rgb(64, 64, 64);
-				}
-				
-				.settings-text
-				{
-					color: rgb(64, 64, 64) !important;
-				}
-				
-				.body-text .link
-				{
-					color: rgb(64, 128, 64);
-				}
-				
-				.floating-settings-button-text
-				{
-					color: rgb(64, 64, 64);
-				}
-				
-				
-				
-				.quote-text
-				{
-					color: rgb(88, 88, 88);
-				}
-				
-				.quote-attribution
-				{
-					color: rgb(46, 46, 46);
-				}
-				
-				
-				
-				.text-box
-				{
-					background-color: rgb(255, 255, 255);
-					color: rgb(64, 64, 64);
-					border-color: rgb(96, 96, 96);
-				}
-				
-				.text-box:focus
-				{
-					border-color: rgb(48, 48, 48);
-					color: rgb(0, 0, 0);
-				}
-				
-				
-				
-				.text-field
-				{
-					background-color: rgb(255, 255, 255);
-					color: rgb(64, 64, 64);
-					border-color: rgb(96, 96, 96);
-				}
-				
-				.text-field:focus
-				{
-					border-color: rgb(48, 48, 48);
-					color: rgb(0, 0, 0);
-				}
-				
-				
-
-				.checkbox-container > input:checked ~ .checkbox
-				{
-					background-color: rgb(64, 64, 64);
-				}
-				
-				
-				
-				.radio-button-container > input:checked ~ .radio-button
-				{
-					background-color: rgb(64, 64, 64);
-				}
-				
-				
-				
-				.loading-spinner:after
-				{
-					border: 2px solid rgb(64, 64, 64);
-					border-color: rgb(64, 64, 64) transparent rgb(64, 64, 64) transparent;
-				}
-				
-				
-				
-				.footer-button, .text-button, .nav-button, .checkbox-container, #output-canvas
-				{
-					border-color: rgb(64, 64, 64);
-				}
-			`;
-		}
-		
-		
-		
-		else if (settings === "dark_contrast")
-		{
-			return `
-				.heading-text, .date-text, .title-text
-				{
-					color: rgb(255, 255, 255);
-				}
-				
-				.section-text
-				{
-					color: rgb(232, 232, 232);
-				}
-				
-				.body-text, .body-text span, .song-lyrics, .image-link-subtext
-				{
-					color: rgb(216, 216, 216);
-				}
-				
-				.settings-text
-				{
-					color: rgb(64, 64, 64) !important;
-				}
-				
-				.body-text .link
-				{
-					color: rgb(216, 255, 216);
-				}
-				
-				.floating-settings-button-text
-				{
-					color: rgb(64, 64, 64);
-				}
-				
-				
-				
-				.quote-text
-				{
-					color: rgb(192, 192, 192);
-				}
-				
-				.quote-attribution
-				{
-					color: rgb(234, 234, 234);
-				}
-				
-				
-				
-				.text-box
-				{
-					background-color: ${this.dark_theme_background_color};
-					color: rgb(216, 216, 216);
-					border-color: rgb(152, 152, 152);
-				}
-				
-				.text-box:focus
-				{
-					border-color: rgb(216, 216, 216);
-					color: rgb(255, 255, 255);
-				}
-				
-				
-				
-				.text-field
-				{
-					background-color: ${this.dark_theme_background_color};
-					color: rgb(216, 216, 216);
-					border-color: rgb(152, 152, 152);
-				}
-				
-				.text-field:focus
-				{
-					border-color: rgb(216, 216, 216);
-					color: rgb(255, 255, 255);
-				}
-				
-				
-				
-				.checkbox-container
-				{
-					border-color: rgb(216, 216, 216);
-				}
-				
-				.checkbox-container > input ~ .checkbox
-				{
-					background-color: ${this.dark_theme_background_color};
-				}
-
-				.checkbox-container > input:checked ~ .checkbox
-				{
-					background-color: rgb(216, 216, 216);
-				}
-				
-				
-				
-				.radio-button-container
-				{
-					border-color: rgb(216, 216, 216);
-				}
-				
-				.radio-button-container > input ~ .radio-button
-				{
-					background-color: ${this.dark_theme_background_color};
-				}
-
-				.radio-button-container > input:checked ~ .radio-button
-				{
-					background-color: rgb(216, 216, 216);
-				}
-				
-				
-				
-				.iframe-clipper
-				{
-					border-color: ${this.dark_theme_background_color};
-				}
-				
-				
-				
-				.loading-spinner:after
-				{
-					border: 2px solid rgb(216, 216, 216);
-					border-color: rgb(216, 216, 216) transparent rgb(216, 216, 216) transparent;
-				}
-				
-				
-				
-				#floating-footer-content, #floating-footer-button-background
-				{
-					background-color: ${this.dark_theme_background_color};
-				}
-				
-				
-				
-				#banner-gradient, #floating-footer-gradient
-				{
-					background: -moz-linear-gradient(top, ${this.dark_theme_background_color_rgba}0) 0%, ${this.dark_theme_background_color_rgba}1) 100%) !important;
-					background: -webkit-linear-gradient(top, ${this.dark_theme_background_color_rgba}0) 0%,${this.dark_theme_background_color_rgba}1) 100%) !important;
-					background: linear-gradient(to bottom, ${this.dark_theme_background_color_rgba}0) 0%,${this.dark_theme_background_color_rgba}1) 100%) !important;
-				}
-						
-				
-				
-				.footer-button, .text-button, .nav-button, #output-canvas
-				{
-					border-color: rgb(152, 152, 152);
-				}
-				
-				.line-break-1-1
 				{
 					opacity: 1;
 				}

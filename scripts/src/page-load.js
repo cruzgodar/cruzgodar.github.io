@@ -54,13 +54,6 @@ Page.load = async function()
 	
 	
 	
-	if (!("no_footer" in this.settings && this.settings["no_footer"]))
-	{
-		this.Footer.load();
-	}
-	
-	
-	
 	Page.Layout.Multicols.active = false;
 	
 	Page.Layout.on_resize();
