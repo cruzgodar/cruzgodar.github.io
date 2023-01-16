@@ -61,8 +61,10 @@
 
 .title-text
 {
+	margin: 0 auto;
 	font-size: 150%;
 	color: rgb(0, 0, 0);
+	width: 70vw;
 	text-align: center;
 }
 
@@ -95,6 +97,11 @@
 /* Compact layout: stack the quote columns on top of one another. */
 @media (max-width: 700px)
 {
+	.title-text
+	{
+		width: 90vw;
+	}
+
 	.quote-container
 	{
 		width: 90vw;
@@ -111,6 +118,11 @@
 
 @media (min-width: 1400px)
 {
+	.title-text
+	{
+		width: 50vw;
+	}
+	
 	#intro-text
 	{
 		width: 45.667vw !important;

@@ -371,7 +371,7 @@ Page.Load =
 	
 	show_images: function()
 	{
-		Page.element.querySelectorAll("img:not([src])").forEach(element => this.lazy_loaded_images.push([element, element.getBoundingClientRect().top, null]));
+		Page.element.querySelectorAll("img[data-src]").forEach(element => this.lazy_loaded_images.push([element, element.getBoundingClientRect().top, null]));
 		
 		this.lazy_loaded_images.forEach((entry, index) =>
 		{
@@ -392,6 +392,8 @@ Page.Load =
 	load_lazy_element: function(list, index)
 	{
 		list[index][0].src = list[index][0].getAttribute("data-src");
+		
+		list[index][0].setAttribute("data-src", "");
 		
 		list[index][2] = -1;
 	},

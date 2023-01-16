@@ -51,6 +51,8 @@ Page.Navigation =
 		
 		Page.parent_folder = url.slice(0, url.length);
 		
+		document.querySelectorAll("#header-links a").forEach(element => element.classList.remove("active"));
+		
 		
 		
 		//We need to record this in case we can't successfully load the next page and we need to return to the current one.

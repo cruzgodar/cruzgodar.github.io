@@ -227,7 +227,7 @@ Site.Settings =
 		if (no_animation === false && (setting === "theme" || setting === "dark_theme_color" || setting === "contrast"))
 		{
 			element = Site.add_style(`
-				html
+				html, #header
 				{
 					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
 				}
@@ -237,7 +237,7 @@ Site.Settings =
 					transition: color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
 				}
 				
-				.text-box, .text-field, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button, .slider-container > input
+				 .text-box, .text-field, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button, .slider-container > input
 				{
 					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease, border-color ${Site.opacity_animation_time * 2 / 1000}s ease, color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
 				}
@@ -253,36 +253,7 @@ Site.Settings =
 		
 		if (setting === "theme")
 		{
-			if (this.url_vars["theme"] === 1 && this.url_vars["dark_theme_color"] !== 1)
-			{
-				this.toggle_dark_theme_color(no_settings_text);
-				
-				if (!no_animation)
-				{
-					anime({
-						targets: this.meta_theme_color_element,
-						content: "#000000",
-						duration: 500,
-						easing: "cubicBezier(.42, 0, .58, 1)"
-					});
-					
-					setTimeout(() =>
-					{
-						if (!no_settings_text)
-						{
-							try {Page.Footer.Floating.show_settings_text("Theme: black");}
-							catch(ex) {}
-						}
-					}, Site.opacity_animation_time * 2);
-				}
-				
-				else
-				{
-					this.meta_theme_color_element.setAttribute("content", "rgb(0, 0, 0)");
-				}
-			}
-			
-			else if (this.url_vars["theme"] === 1 && this.url_vars["dark_theme_color"] === 1)
+			if (this.url_vars["theme"] === 1)
 			{
 				this.toggle_theme(no_settings_text);
 				
@@ -294,17 +265,6 @@ Site.Settings =
 						duration: 500,
 						easing: "cubicBezier(.42, 0, .58, 1)"
 					});
-					
-					setTimeout(() =>
-					{
-						this.toggle_dark_theme_color();
-						
-						if (!no_settings_text)
-						{
-							try {Page.Footer.Floating.show_settings_text("Theme: light");}
-					 		catch(ex) {}
-					 	}
-					}, Site.opacity_animation_time * 2);
 				}
 				
 				else
@@ -325,15 +285,6 @@ Site.Settings =
 						duration: 500,
 						easing: "cubicBezier(.42, 0, .58, 1)"
 					});
-					
-					setTimeout(() =>
-					{
-						if (!no_settings_text)
-						{
-							try {Page.Footer.Floating.show_settings_text("Theme: dark");}
-							catch(ex) {}
-						}
-					}, Site.opacity_animation_time * 2);
 				}
 				
 				else
@@ -1079,6 +1030,19 @@ Site.Settings =
 		
 		if (settings === "")
 		{
+			try
+			{
+				document.querySelector("#header-theme-button").classList.remove("active");
+				
+				document.querySelector("#header").style.backgroundColor = "rgb(255, 255, 255)";
+				
+				document.querySelectorAll("#header-logo span, #header-links a").forEach(element => element.style.color = "rgb(64, 64, 64)");
+			}
+			
+			catch(ex) {}
+			
+			
+			
 			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(0, 0, 0)");
 			
 			Page.set_element_styles(".section-text", "color", "rgb(48, 48, 48)");
@@ -1143,11 +1107,24 @@ Site.Settings =
 		
 		else if (settings === "dark")
 		{
+			try
+			{
+				document.querySelector("#header-theme-button").classList.add("active");
+				
+				document.querySelector("#header").style.backgroundColor = "rgb(24, 24, 24)";
+				
+				document.querySelectorAll("#header-logo span, #header-links a").forEach(element => element.style.color = "rgb(192, 192, 192)");
+			}
+			
+			catch(ex) {}
+			
+			
+			
 			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(255, 255, 255)");
 			
 			Page.set_element_styles(".section-text", "color", "rgb(232, 232, 232)");
 			
-			Page.set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text", "color", "rgb(152, 152, 152)");
+			Page.set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text", "color", "rgb(184, 184, 184)");
 			
 			Page.set_element_styles(".body-text .link", "color", "rgb(184, 255, 184)");
 			
@@ -1302,6 +1279,23 @@ Site.Settings =
 		if (settings === "dark")
 		{
 			return `
+				#header
+				{
+					background-color: rgb(24, 24, 24);
+				}
+				
+				#header-logo span, #header-links a
+				{
+					color: rgb(192, 192, 192);
+				}
+				
+				#header-logo.hover span, #header-links a.hover, #header-logo.active span, #header-links a.active
+				{
+					color: rgb(64, 64, 64) !important;
+				}
+				
+				
+				
 				.heading-text, .date-text, .title-text
 				{
 					color: rgb(255, 255, 255);
@@ -1309,17 +1303,17 @@ Site.Settings =
 				
 				.section-text
 				{
-					color: rgb(184, 184, 184);
+					color: rgb(224, 224, 224);
 				}
 				
 				.body-text, .body-text span, .song-lyrics, .image-link-subtext
 				{
-					color: rgb(152, 152, 152);
+					color: rgb(192, 192, 192);
 				}
 				
 				.body-text .link
 				{
-					color: rgb(152, 216, 152);
+					color: rgb(192, 255, 192);
 				}
 				
 				

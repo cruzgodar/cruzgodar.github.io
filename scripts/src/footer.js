@@ -129,17 +129,28 @@ Page.Footer =
 		{
 			document.body.firstChild.insertAdjacentHTML("beforebegin", `
 				<div id="header">
-					<a id="header-gallery-link" href="/gallery/">Gallery</a>
-					<a id="header-applets-link" href="/applets/">Applets</a>
-					<a id="header-teaching-link" href="/teaching/">Teaching</a>
-					<a id="header-writing-link" href="/writing/">Writing</a>
-					<a id="header-about-link" href="/about/">About</a>
+					<a id="header-logo" href="/home/">
+						<img src="/graphics/general-icons/logo.png"></img>
+						<span>Cruz Godar</span>
+					</a>
+					
+					<div id="header-links">
+						<a id="header-gallery-link" href="/gallery/">Gallery</a>
+						<a id="header-applets-link" href="/applets/">Applets</a>
+						<a id="header-teaching-link" href="/teaching/">Teaching</a>
+						<a id="header-writing-link" href="/writing/">Writing</a>
+						<a id="header-about-link" href="/about/">About</a>
+					</div>
+					
+					<div id="header-theme-button" class="${Site.Settings.url_vars["theme"] === 1 ? "active" : ""}">
+						<input type="image" src="/graphics/general-icons/moon.png">
+					</div>
 				</div>
 			`);
 			
 			setTimeout(() =>
 			{
-				document.body.querySelectorAll("#header a").forEach(link =>
+				document.body.querySelectorAll("#header-logo, #header-links a").forEach(link =>
 				{
 					Page.Load.HoverEvents.add(link);
 					
@@ -149,10 +160,19 @@ Page.Footer =
 			
 					link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + url_vars_suffix);
 					
-					link.setAttribute("onclick", `Page.Navigation.redirect("${href}")`);
-					
-					link.addEventListener("click", e => e.preventDefault());
+					link.addEventListener("click", e =>
+					{
+						e.preventDefault();
+						
+						Page.Navigation.redirect(href);
+					});
 				});
+				
+				const element = document.body.querySelector("#header-theme-button");
+				
+				Page.Load.HoverEvents.add(element);
+				
+				element.addEventListener("click", () => Site.Settings.toggle("theme"));
 			});
 			
 			

@@ -184,7 +184,7 @@ Page.Components =
 		return `
 			<div class="image-link${light_text}">
 				<a href="${file_path}" tabindex="-1">
-					<img data-image-id="${id}" data-src="${src}" alt="${subtext}" tabindex="1"></img>
+					<img src="/graphics/general-icons/placeholder.png" data-image-id="${id}" data-src="${src}" alt="${subtext}" tabindex="1"></img>
 				</a>
 				
 				<p class="image-link-subtext">${subtext}</p>
