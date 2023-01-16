@@ -216,6 +216,11 @@ Site.Settings =
 		
 		if (setting === "theme")
 		{
+			if (this.url_vars["theme"] === 1 && Site.force_dark_theme_pages.includes(Page.url))
+			{
+				return;
+			}
+			
 			if (this.url_vars["theme"] === 1)
 			{
 				this.toggle_theme(no_settings_text);
@@ -225,8 +230,8 @@ Site.Settings =
 					anime({
 						targets: this.meta_theme_color_element,
 						content: "#ffffff",
-						duration: 500,
-						easing: "cubicBezier(.42, 0, .58, 1)"
+						duration: Site.opacity_animation_time * 2,
+						easing: "cubicBezier(.25, .1, .25, 1)"
 					});
 				}
 				
@@ -245,8 +250,8 @@ Site.Settings =
 					anime({
 						targets: this.meta_theme_color_element,
 						content: "#161616",
-						duration: 500,
-						easing: "cubicBezier(.42, 0, .58, 1)"
+						duration: Site.opacity_animation_time * 2,
+						easing: "cubicBezier(.25, .1, .25, 1)"
 					});
 				}
 				
@@ -292,13 +297,6 @@ Site.Settings =
 	//Changes the theme and animates elements.
 	toggle_theme: function(no_settings_text)
 	{
-		if (this.url_vars["theme"] === 1 && Site.force_dark_theme_pages.includes(Page.url))
-		{
-			return;
-		}
-		
-		
-		
 		//Light to dark
 		if (this.url_vars["theme"] === 0)
 		{
