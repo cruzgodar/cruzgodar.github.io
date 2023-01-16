@@ -16,10 +16,6 @@ Site.Settings =
 	texts:
 	{
 		"theme": ["Theme: light", "Theme: dark"],
-		"dark_theme_color": ["Dark theme color: dark gray", "Dark theme color: black"],
-		"contrast": ["Contrast: normal", "Contrast: high"],
-		"text_size": ["Text: normal", "Text: large"],
-		"font": ["Font: always sans serif", "Font: serif on writing"],
 		"content_animation": ["Animation: enabled", "Animation: disabled"],
 		"condensed_applets": ["Applets: normal", "Applets: condensed"]
 	},
@@ -60,10 +56,6 @@ Site.Settings =
 		this.url_vars =
 		{
 			"theme": this.get_url_var("theme"),
-			"dark_theme_color": this.get_url_var("dark_theme_color"),
-			"contrast": this.get_url_var("contrast"),
-			"text_size": this.get_url_var("text_size"),
-			"font": this.get_url_var("font"),
 			"content_animation": this.get_url_var("content_animation"),
 			"condensed_applets": this.get_url_var("condensed_applets")
 		};
@@ -79,34 +71,15 @@ Site.Settings =
 			
 			
 			
-			if (e.matches && this.url_vars["theme"] !== 1)
+			if ((e.matches && this.url_vars["theme"] !== 1) || (!e.matches && this.url_vars["theme"] === 1))
 			{
 				this.toggle_theme();
-			}
-			
-			else if (!e.matches && this.url_vars["theme"] === 1)
-			{
-				this.toggle_theme();
-				
-				if (this.url_vars["dark_theme_color"] === 1)
-				{
-					setTimeout(() =>
-					{
-						this.toggle_dark_theme_color();
-					}, Site.opacity_animation_time * 2);
-				}
 			}
 		});
 
 		if (window.matchMedia("(prefers-color-scheme: dark)").matches && this.url_vars["theme"] === null)
 		{
 			this.url_vars["theme"] = 1;
-		}
-		
-		if (this.url_vars["dark_theme_color"] === 1)
-		{
-			this.dark_theme_background_color = "rgb(0, 0, 0)";
-			this.dark_theme_background_color_rgba = "rgba(0, 0, 0, ";
 		}
 		
 		
@@ -140,19 +113,9 @@ Site.Settings =
 		
 		let element = null;
 		
-		if (this.url_vars["theme"] === 1 && this.url_vars["contrast"] !== 1)
+		if (this.url_vars["theme"] === 1)
 		{
 			element = Site.add_style(this.get_settings_style("dark"), false);
-		}
-		
-		else if (this.url_vars["theme"] !== 1 && this.url_vars["contrast"] === 1)
-		{
-			element = Site.add_style(this.get_settings_style("contrast"), false);
-		}
-		
-		else if (this.url_vars["theme"] === 1 && this.url_vars["contrast"] === 1)
-		{
-			element = Site.add_style(this.get_settings_style("dark_contrast"), false);
 		}
 		
 		try {document.querySelector("#theme-contrast-adjust").remove();}
@@ -294,26 +257,6 @@ Site.Settings =
 			}
 		}
 		
-		else if (setting === "dark_theme_color")
-		{
-			this.toggle_dark_theme_color(no_settings_text);
-		}
-		
-		else if (setting === "contrast")
-		{
-			this.toggle_contrast(no_settings_text);
-		}
-		
-		else if (setting === "text_size")
-		{
-			this.toggle_text_size(no_settings_text);
-		}
-		
-		else if (setting === "font")
-		{
-			this.toggle_font(no_settings_text);
-		}
-		
 		else if (setting === "content_animation")
 		{
 			this.toggle_content_animation(no_settings_text);
@@ -335,7 +278,7 @@ Site.Settings =
 		
 		
 		
-		if (no_animation === false && (setting === "theme" || setting === "dark_theme_color" || setting === "contrast"))
+		if (!no_animation && setting === "theme")
 		{
 			setTimeout(() =>
 			{
@@ -478,408 +421,6 @@ Site.Settings =
 			
 			
 			this.url_vars["theme"] = 0;
-		}
-	},
-
-
-
-	toggle_dark_theme_color: function(no_settings_text)
-	{
-		if (this.url_vars["dark_theme_color"] === 0)
-		{
-			this.dark_theme_background_color = "rgb(0, 0, 0)";
-			this.dark_theme_background_color_rgba = "rgba(0, 0, 0, ";
-			
-			if (this.url_vars["theme"] === 1)
-			{
-				document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-				
-				if (this.url_vars["contrast"] == 1)
-				{
-					this.animate_theme_contrast("dark_contrast");
-				}
-				
-				else
-				{
-					this.animate_theme_contrast("dark");
-				}
-			}
-			
-			
-			
-			setTimeout(() =>
-			{
-				let element = null;
-				
-				if (this.url_vars["theme"] === 1)
-				{
-					if (this.url_vars["contrast"] === 1)
-					{
-						element = Site.add_style(this.get_settings_style("dark_contrast"), false);
-					}
-					
-					else
-					{
-						element = Site.add_style(this.get_settings_style("dark"), false);
-					}
-				}
-				
-				else if (this.url_vars["contrast"] === 1)
-				{
-					element = Site.add_style(this.get_settings_style("contrast"), false);
-				}
-				
-				
-				
-				try {document.querySelector("#theme-contrast-adjust").remove();}
-				catch(ex) {}
-				
-				try {element.id = "theme-contrast-adjust";}
-				catch(ex) {}
-				
-				this.clear_weird_inline_styles();
-			}, Site.opacity_animation_time * 2);
-			
-			
-			
-			this.url_vars["dark_theme_color"] = 1;
-		}
-		
-		
-		
-		else
-		{
-			this.dark_theme_background_color = "rgb(24, 24, 24)";
-			this.dark_theme_background_color_rgba = "rgba(24, 24, 24, ";
-			
-			if (this.url_vars["theme"] === 1)
-			{
-				document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-				
-				if (this.url_vars["contrast"] == 1)
-				{
-					this.animate_theme_contrast("dark_contrast");
-				}
-				
-				else
-				{
-					this.animate_theme_contrast("dark");
-				}
-			}
-			
-			
-			
-			setTimeout(() =>
-			{
-				let element = null;
-				
-				if (this.url_vars["theme"] === 1)
-				{
-					if (this.url_vars["contrast"] === 1)
-					{
-						element = Site.add_style(this.get_settings_style("dark_contrast"), false);
-					}
-					
-					else
-					{
-						element = Site.add_style(this.get_settings_style("dark"), false);
-					}
-				}
-				
-				else if (this.url_vars["contrast"] === 1)
-				{
-					element = Site.add_style(this.get_settings_style("contrast"), false);
-				}
-				
-				
-				
-				try {document.querySelector("#theme-contrast-adjust").remove();}
-				catch(ex) {}
-				
-				try {element.id = "theme-contrast-adjust";}
-				catch(ex) {}
-				
-				this.clear_weird_inline_styles();
-			}, Site.opacity_animation_time * 2);
-			
-			
-			
-			this.url_vars["dark_theme_color"] = 0;
-		}
-	},
-
-
-
-	toggle_contrast: function(no_settings_text)
-	{
-		//Default to high
-		if (this.url_vars["contrast"] === 0)
-		{
-			if (this.url_vars["theme"] === 1)
-			{
-				this.animate_theme_contrast("dark_contrast");
-				
-				
-				
-				setTimeout(() =>
-				{
-					const element = Site.add_style(this.get_settings_style("dark_contrast"), false);
-					
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					try {element.id = "theme-contrast-adjust";}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
-			
-			
-			
-			else
-			{
-				this.animate_theme_contrast("contrast");
-				
-				
-				
-				setTimeout(() =>
-				{
-					const element = Site.add_style(this.get_settings_style("contrast"), false);
-					
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					try {element.id = "theme-contrast-adjust";}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
-			
-			
-			
-			setTimeout(() =>
-			{
-				if (!no_settings_text)
-				{
-					try {Page.Footer.Floating.show_settings_text("Contrast: high");}
-					catch(ex) {}
-				}
-			}, Site.opacity_animation_time * 2 + 50);
-			
-			this.url_vars["contrast"] = 1;
-		}
-		
-		
-		
-		//High to default
-		else
-		{
-			if (this.url_vars["theme"] === 1)
-			{
-				this.animate_theme_contrast("dark");
-				
-				
-				
-				setTimeout(() =>
-				{
-					const element = Site.add_style(this.get_settings_style("dark"), false);
-					
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					try {element.id = "theme-contrast-adjust";}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
-			
-			
-			
-			else
-			{
-				this.animate_theme_contrast("");
-				
-				
-				
-				setTimeout(() =>
-				{
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
-			
-			
-			
-			setTimeout(() =>
-			{
-				if (!no_settings_text)
-				{
-					try {Page.Footer.Floating.show_settings_text("Contrast: normal");}
-					catch(ex) {}
-				}
-			}, Site.opacity_animation_time * 2 + 50);
-			
-			this.url_vars["contrast"] = 0;
-		}
-	},
-
-
-
-	toggle_text_size: function(no_settings_text)
-	{
-		Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time);
-		
-		
-		
-		//Normal to large
-		if (this.url_vars["text_size"] === 0)
-		{
-			setTimeout(() =>
-			{
-				try {document.querySelector("#text-size-adjust").remove();}
-				catch(ex) {}
-				
-				const element = Site.add_style(`
-					html
-					{
-						font-size: 18px;
-					}
-					
-					@media (min-width: 1000px)
-					{
-						html
-						{
-							font-size: 22px;
-						}
-					}
-				`, false);
-				
-				element.id = "text-size-adjust";
-				
-				
-				
-				setTimeout(() =>
-				{
-					if (!no_settings_text)
-					{
-						try {Page.Footer.Floating.show_settings_text("Text: large");}
-					 	catch(ex) {}
-					}
-				}, Site.opacity_animation_time);
-			}, Site.opacity_animation_time);
-				
-			this.url_vars["text_size"] = 1;
-		}
-			
-		else
-		{
-			setTimeout(() =>
-			{
-				try {document.querySelector("#text-size-adjust").remove();}
-				catch(ex) {}
-				
-				
-				
-				setTimeout(() =>
-				{
-					if (!no_settings_text)
-					{
-						try {Page.Footer.Floating.show_settings_text("Text: normal");}
-					 	catch(ex) {}
-					 }
-				}, Site.opacity_animation_time);
-			}, Site.opacity_animation_time);
-				
-			this.url_vars["text_size"] = 0;
-		}
-		
-		
-		
-		setTimeout(() =>
-		{
-			setTimeout(() =>
-			{
-				Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
-			}, 50);
-		}, Site.opacity_animation_time);
-	},
-
-
-
-	toggle_font: function(no_settings_text)
-	{
-		let need_to_wait = false;
-		
-		if ("writing_page" in Page.settings && Page.settings["writing_page"])
-		{
-			need_to_wait = true;
-			
-			Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time);
-		}
-		
-		
-		
-		//Sans to serif
-		if (this.url_vars["font"] === 0)
-		{
-			setTimeout(() =>
-			{
-				if (need_to_wait)
-				{
-					Page.set_element_styles(".body-text, .heading-text", "font-family", "'Gentium Book Basic', serif");
-				}
-				
-				
-				if (!no_settings_text)
-				{
-					try {Page.Footer.Floating.show_settings_text("Font: serif on writing");}
-				 	catch(ex) {}
-				}
-			}, Site.opacity_animation_time * need_to_wait);
-			
-			this.url_vars["font"] = 1;
-		}
-		
-		
-		
-		//Serif to sans
-		else
-		{
-			setTimeout(() =>
-			{
-				if (need_to_wait)
-				{
-					Page.set_element_styles(".body-text, .heading-text", "font-family", "'Rubik', sans-serif");
-				}
-				
-				
-				
-				if (!no_settings_text)
-				{
-					try {Page.Footer.Floating.show_settings_text("Font: always sans serif");}
-			 		catch(ex) {}
-			 	}
-			}, Site.opacity_animation_time * need_to_wait);
-			
-			this.url_vars["font"] = 0;
-		}
-		
-		
-		
-		if (need_to_wait)
-		{
-			setTimeout(() =>
-			{
-				setTimeout(() =>
-				{
-					Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
-				}, 50);
-			}, Site.opacity_animation_time);
 		}
 	},
 
@@ -1113,7 +654,7 @@ Site.Settings =
 				
 				document.querySelector("#header").style.backgroundColor = "rgb(24, 24, 24)";
 				
-				document.querySelectorAll("#header-logo span, #header-links a").forEach(element => element.style.color = "rgb(192, 192, 192)");
+				document.querySelectorAll("#header-logo:not(.hover) span, #header-links a:not(.hover)").forEach(element => element.style.color = "rgb(192, 192, 192)");
 			}
 			
 			catch(ex) {}
@@ -1270,6 +811,10 @@ Site.Settings =
 		
 		
 		Page.set_element_styles(".iframe-clipper", "border-color", "");
+		
+		
+		
+		document.querySelectorAll("#header-logo span, #header-links a").forEach(element => element.style.color = "");
 	},
 
 
@@ -1291,7 +836,7 @@ Site.Settings =
 				
 				#header-logo.hover span, #header-links a.hover, #header-logo.active span, #header-links a.active
 				{
-					color: rgb(64, 64, 64) !important;
+					color: rgb(64, 64, 64);
 				}
 				
 				
