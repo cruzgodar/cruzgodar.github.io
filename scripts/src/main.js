@@ -442,7 +442,7 @@ Site.load = async function(url)
 	
 	
 	
-	Page.Footer.Floating.load();	
+	Page.Load.add_header();
 	
 	
 	

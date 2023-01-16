@@ -37,10 +37,6 @@ Page.Components =
 			return `
 						</section>
 					</main>
-					
-					<footer>
-						<div id="spawn-footer"></div>
-					</footer>
 				</div>
 			`;
 		}
@@ -50,10 +46,6 @@ Page.Components =
 			return `
 					</section>
 				</main>
-				
-				<footer>
-					<div id="spawn-footer"></div>
-				</footer>
 			`;
 		}
 	},
@@ -504,15 +496,15 @@ Page.Components =
 		return `
 			<div class="text-buttons nav-buttons">
 				<div class="focus-on-child tabindex="1">
-					<button class="text-button linked-text-button previous-nav-button no-floating-footer" type="button" tabindex="-1">Previous</button>
+					<button class="text-button linked-text-button previous-nav-button" type="button" tabindex="-1">Previous</button>
 				</div>
 				
 				<div class="focus-on-child" tabindex="1">
-					<button class="text-button linked-text-button home-nav-button no-floating-footer" type="button" tabindex="-1">Home</button>
+					<button class="text-button linked-text-button home-nav-button" type="button" tabindex="-1">Home</button>
 				</div>
 				
 				<div class="focus-on-child" tabindex="1">
-					<button class="text-button linked-text-button next-nav-button no-floating-footer" type="button" tabindex="-1">Next</button>
+					<button class="text-button linked-text-button next-nav-button" type="button" tabindex="-1">Next</button>
 				</div>
 			</div>
 		`;

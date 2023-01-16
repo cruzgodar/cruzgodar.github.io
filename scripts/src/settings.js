@@ -292,20 +292,19 @@ Site.Settings =
 	//Changes the theme and animates elements.
 	toggle_theme: function(no_settings_text)
 	{
+		if (this.url_vars["theme"] === 1 && Site.force_dark_theme_pages.includes(Page.url))
+		{
+			return;
+		}
+		
+		
+		
 		//Light to dark
 		if (this.url_vars["theme"] === 0)
 		{
 			if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
 			{
-				if (this.url_vars["dark_theme_color"] !== 1)
-				{
-					document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-				}
-				
-				else
-				{
-					document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-				}
+				document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
 			}
 			
 			

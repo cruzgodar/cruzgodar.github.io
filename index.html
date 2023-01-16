@@ -37,6 +37,11 @@
 
 <link rel="manifest" href="/manifest.json">
 
+<link rel="stylesheet" type="text/css" href="/style/css-bundle.min.css">
+<link rel="stylesheet" type="text/css" href="/style/highlight.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Basic&family=Rubik&family=Source+Code+Pro&display=swap" rel="stylesheet">
+
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta id="theme-color-meta" name="theme-color" content="#ffffff">
@@ -90,25 +95,6 @@
 	<script src="/scripts/wilson.js"></script>
 	
 	<script>
-		let link = document.createElement("link");
-		link.setAttribute("rel", "stylesheet");
-		link.setAttribute("type", "text/css");
-		link.setAttribute("href", "/style/css-bundle.min.css");
-		document.head.appendChild(link);
-		
-		link = document.createElement("link");
-		link.setAttribute("rel", "stylesheet");
-		link.setAttribute("type", "text/css");
-		link.setAttribute("href", "/style/highlight.min.css");
-		document.head.appendChild(link);
-		
-		link = document.createElement("link");
-		link.setAttribute("rel", "stylesheet");
-		link.setAttribute("href", "https://fonts.googleapis.com/css2?family=Gentium+Book+Basic&family=Rubik&family=Source+Code+Pro&display=swap");
-		document.head.appendChild(link);
-		
-		
-		
 		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")
 		{
 			Site.load(Page.url.replace("index.html", ""));

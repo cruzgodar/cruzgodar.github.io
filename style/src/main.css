@@ -37,14 +37,9 @@ header
 	margin-bottom: 50px;
 }
 
-section:not(:last-of-type)
+section
 {
 	margin-bottom: 10vh;
-}
-
-footer
-{
-	margin-top: 20vh;
 }
 
 
