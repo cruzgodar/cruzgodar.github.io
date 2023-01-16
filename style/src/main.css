@@ -33,7 +33,8 @@ body
 
 header
 {
-	margin-bottom: 5vh;
+	margin-top: 100px;
+	margin-bottom: 50px;
 }
 
 section:not(:last-of-type)

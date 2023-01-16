@@ -114,6 +114,9 @@
 	
 	height: calc(100% - 20px);
 	
+	display: flex;
+	align-items: center;
+	
 	cursor: pointer;
 }
 
@@ -447,7 +450,7 @@
 		margin-bottom: calc(5px * .8);
 	}
 	
-	#header-logo
+	#header-logo, #header-theme-button
 	{
 		padding: 2.5px;
 		
@@ -490,6 +493,17 @@
 	{
 		top: 2.5px;
 		left: 2.5px;
+		
+		padding: 2.5px;
+		border-radius: 2.5px;
+		
+		height: calc(100% - 10px);
+	}
+	
+	#header-theme-button
+	{
+		top: 2.5px;
+		right: 2.5px;
 		
 		padding: 2.5px;
 		border-radius: 2.5px;
