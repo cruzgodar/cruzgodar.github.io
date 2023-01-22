@@ -902,9 +902,30 @@ function parse_array(data)
 	
 	let num_cols = split_rows[0].length;
 	
+	
+	
+	if (data.indexOf(">") === -1)
+	{
+		for (let i = 0; i < split_rows.length; i++)
+		{
+			split_rows[i].push("0");
+		}
+		
+		num_cols++;
+	}
+	
+	if (data.indexOf("v") === -1)
+	{
+		split_rows.push(["0"]);
+		
+		num_rows++;
+	}
+	
 	let size = Math.max(num_rows, num_cols);
 	
 	let array = new Array(size);
+	
+	
 	
 	
 	
@@ -914,9 +935,21 @@ function parse_array(data)
 		
 		for (let j = 0; j < split_rows[i].length; j++)
 		{
+			//A vertically upward leg.
 			if (split_rows[i][j] === "^")
 			{
 				array[i][j] = Infinity;
+			}
+			
+			//A leg pointing right or down.
+			else if (split_rows[i][j] === ">")
+			{
+				array[i][j] = array[i][j - 1];
+			}
+			
+			else if (split_rows[i][j] === "v")
+			{
+				array[i][j] = array[i - 1][j];
 			}
 			
 			else
@@ -969,9 +1002,9 @@ function array_to_ascii(numbers)
 	
 	let text = "";
 	
-	for (let i = 0; i < numbers.length; i++)
+	for (let i = 0; i < numbers.length - 1; i++)
 	{
-		for (let j = 0; j < numbers.length; j++)
+		for (let j = 0; j < numbers.length - 1; j++)
 		{
 			if (numbers[i][j] === Infinity)
 			{
@@ -996,11 +1029,47 @@ function array_to_ascii(numbers)
 			}
 		}
 		
-		if (i !== numbers.length - 1)
+		
+		
+		if (numbers[i][numbers.length - 1] !== 0)
+		{
+			for (let k = 0; k < num_characters - 1; k++)
+			{
+				text += " ";
+			}
+			
+			text += ">";
+		}
+		
+		
+		
+		if (i !== numbers.length - 2)
 		{
 			text += "\n";
-		}	
+		}
 	}
+	
+	
+	
+	if (numbers[numbers.length - 1][0] !== 0)
+	{
+		text += "\n";
+		
+		for (let j = 0; j < numbers.length - 1; j++)
+		{
+			if (numbers[numbers.length - 1][j] !== 0)
+			{
+				for (let k = 0; k < num_characters - 1 - (j === 0); k++)
+				{
+					text += " ";
+				}
+				
+				text += "v";
+			}
+		}
+	}
+	
+	
 	
 	return text;
 }
@@ -1170,7 +1239,16 @@ function add_new_array(index, numbers, keep_numbers_canvas_visible = false)
 					
 					array.floor[i][j] = add_floor(array, j, i);
 					
-					for (let k = 0; k < array.numbers[i][j]; k++)
+					
+					
+					const leg_height = Math.max(array.numbers[i][array.footprint - 1], array.numbers[array.footprint - 1][j]);
+					
+					for (let k = 0; k < leg_height; k++)
+					{
+						array.cubes[i][j][k] = add_cube(array, j, k, i, 0, 0, asymptote_lightness);
+					}
+					
+					for (let k = leg_height; k < array.numbers[i][j]; k++)
 					{
 						array.cubes[i][j][k] = add_cube(array, j, k, i);
 					}
