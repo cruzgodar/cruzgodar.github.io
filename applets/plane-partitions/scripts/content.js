@@ -3525,11 +3525,26 @@ function pak(index)
 		
 		
 		
+		let right_leg_size = 0;
+		let bottom_leg_size = 0;
+		
+		while (right_leg_size < array.footprint && array.numbers[right_leg_size][array.footprint - 1] !== 0)
+		{
+			right_leg_size++;
+		}
+		
+		while (bottom_leg_size < array.footprint && array.numbers[array.footprint - 1][bottom_leg_size	] !== 0)
+		{
+			bottom_leg_size++;
+		}
+		
+		
+		
 		let num_corners = 0;
 		
-		for (let row = array.footprint - 1; row >= 0; row--)
+		for (let row = array.footprint - 1 - bottom_leg_size; row >= 0; row--)
 		{
-			for (let col = array.footprint - 1; col >= 0; col--)
+			for (let col = array.footprint - 1 - right_leg_size; col >= 0; col--)
 			{
 				if (plane_partition[row][col] !== Infinity)
 				{
@@ -3543,9 +3558,9 @@ function pak(index)
 		let hue_index = 0;
 		
 		//Get outer corners by just scanning through the array forwards.
-		for (let row = 0; row < array.footprint; row++)
+		for (let row = 0; row < array.footprint - bottom_leg_size; row++)
 		{
-			for (let col = 0; col < array.footprint; col++)
+			for (let col = 0; col < array.footprint - right_leg_size; col++)
 			{
 				if (plane_partition[row][col] === Infinity)
 				{
@@ -3740,7 +3755,7 @@ function pak(index)
 
 
 
-function pak_inverse(index)
+function pak_inverse(index, right_leg_size = 0, bottom_leg_size = 0)
 {
 	return new Promise(async (resolve, reject) =>
 	{
@@ -3759,9 +3774,9 @@ function pak_inverse(index)
 		
 		let num_corners = 0;
 		
-		for (let row = array.footprint - 1; row >= 0; row--)
+		for (let row = array.footprint - 1 - bottom_leg_size; row >= 0; row--)
 		{
-			for (let col = array.footprint - 1; col >= 0; col--)
+			for (let col = array.footprint - 1 - right_leg_size; col >= 0; col--)
 			{
 				if (tableau[row][col] !== Infinity)
 				{
@@ -3775,9 +3790,9 @@ function pak_inverse(index)
 		let hue_index = 0;
 		
 		//Get outer corners by just scanning through the array backwards.
-		for (let row = array.footprint - 1; row >= 0; row--)
+		for (let row = array.footprint - 1 - bottom_leg_size; row >= 0; row--)
 		{
-			for (let col = array.footprint - 1; col >= 0; col--)
+			for (let col = array.footprint - 1 - right_leg_size; col >= 0; col--)
 			{
 				if (tableau[row][col] === Infinity)
 				{
@@ -5209,32 +5224,117 @@ function godar_1(index)
 		
 		
 		
-		await run_algorithm("hillman_grassl", index, true);
+		let new_array = new Array(plane_partition.length);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, animation_time * 3));
-		
-		
-		
-		//Uncolor everything.
-		let coordinates = [];
-		
-		let numbers = arrays[index].numbers;
-		
-		for (let i = 0; i < numbers.length; i++)
+		for (let i = 0; i < plane_partition.length; i++)
 		{
-			for (let j = 0; j < numbers.length; j++)
+			new_array[i] = new Array(plane_partition.length);
+			
+			for (let j = 0; j < plane_partition.length; j++)
 			{
-				if (numbers[i][j] !== Infinity)
+				if (plane_partition[i][j] === Infinity)
 				{
-					for (let k = 0; k < numbers[i][j]; k++)
-					{
-						coordinates.push([i, j, k]);
-					}
-				}	
+					new_array[i][j] = infinite_height;
+				}
+				
+				else
+				{
+					new_array[i][j] = plane_partition[i][j];
+				}
 			}
 		}
 		
-		await uncolor_cubes(arrays[index], coordinates);
+		await add_new_array(index + 1, new_array);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+		
+		await remove_array(index);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+		
+		array = arrays[index];
+		plane_partition = array.numbers;
+		
+		
+		
+		let right_leg_size = 0;
+		let bottom_leg_size = 0;
+		
+		while (right_leg_size < plane_partition.length && plane_partition[right_leg_size][plane_partition.length - 1] !== 0)
+		{
+			right_leg_size++;
+		}
+		
+		while (bottom_leg_size < plane_partition.length && plane_partition[plane_partition.length - 1][bottom_leg_size] !== 0)
+		{
+			bottom_leg_size++;
+		}
+		
+		
+		
+		await run_algorithm("pak", index, true);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, animation_time * 2));
+		
+		array = arrays[index];
+		plane_partition = array.numbers;
+		
+		
+		
+		//Clip out the finite part of the array.
+		
+		//The -1 is there to ensure the new array has the padding that indicates it's finite on the edges.
+		const leg_size = Math.max(right_leg_size, bottom_leg_size);
+		
+		let finite_array = new Array(plane_partition.length - leg_size + 1);
+		
+		let cubes_to_delete = [];
+		
+		for (let i = 0; i < finite_array.length - 1; i++)
+		{
+			finite_array[i] = new Array(finite_array.length);
+			
+			for (let j = 0; j < finite_array.length - 1; j++)
+			{
+				finite_array[i][j] = plane_partition[i][j];
+				
+				for (let k = 0; k < plane_partition[i][j]; k++)
+				{
+					cubes_to_delete.push([i, j, k]);
+				}
+				
+				plane_partition[i][j] = 0;
+			}
+			
+			finite_array[i][finite_array.length - 1] = 0;
+		}
+		
+		finite_array[finite_array.length - 1] = new Array(finite_array.length);
+		
+		for (let j = 0; j < finite_array.length; j++)
+		{
+			finite_array[finite_array.length - 1][j] = 0;
+		}
+		
+		
+		
+		delete_cubes(array, cubes_to_delete, true, true);
+		
+		await add_new_array(index, finite_array);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+		
+		
+		
+		//Now we unPak the second array.
+		
+		await run_algorithm("pak_inverse", index, true);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, animation_time * 2));
+		
+		
+
+		//We're now clear to pull apart the negative RPP from the finite part.
 		
 		
 		
@@ -5306,7 +5406,7 @@ function godar_1(index)
 				let row = app_pivots_by_hook_length[i][j][0];
 				let col = app_pivots_by_hook_length[i][j][1];
 				
-				if (row < plane_partition.length && col < plane_partition.length)
+				if (row < plane_partition.length - bottom_leg_size && col < plane_partition.length - right_leg_size)
 				{
 					for (let k = 0; k < arrays[index].numbers[row][col]; k++)
 					{
@@ -5387,9 +5487,9 @@ function godar_1(index)
 		
 		
 		
-		for (let i = 0; i < plane_partition.length; i++)
+		for (let i = 0; i < plane_partition.length - bottom_leg_size; i++)
 		{
-			for (let j = nu_row_lengths[i]; j < plane_partition.length; j++)
+			for (let j = nu_row_lengths[i]; j < plane_partition.length - right_leg_size; j++)
 			{
 				if (arrays[index].numbers[i][j] > 0)
 				{
@@ -5431,15 +5531,11 @@ function godar_1(index)
 		
 		
 		
-		await remove_array(index);
-		
-		
-		
 		await new Promise((resolve, reject) => setTimeout(resolve, animation_time * 3));
 		
+		//Now it's time for the palindromic toggle.
 		
-		
-		await run_algorithm("hillman_grassl_inverse", index, true);
+		await run_algorithm("pak_inverse", index, true);
 			
 		if (rpp_size > 0)
 		{
