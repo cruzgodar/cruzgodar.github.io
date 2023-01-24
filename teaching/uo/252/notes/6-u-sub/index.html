@@ -28,7 +28,13 @@
 
 !begin-text-block
 	
-	At the moment, the only reasonable way we can calculate integrals is with the fundamental theorem, which requires taking an antiderivative. With derivatives, we know a handful of them exactly, like $\frac{d}{dx}[\sin(x)] = \cos(x)$, and we developed a handful of rules like the product and chain rules to be able to differentiate more complicated functions. We already have that first part done for antiderivatives, since we can just run all the regular derivatives backward: for example, $\int \cos(x)\ dx = \sin(x) + C$. What we need, though, is rules analogous to the ones for derivatives, only in reverse. We&#x2019;ll start with the simplest and arguably most useful: the opposite of the chain rule.
+	At the moment, the only reasonable way we can calculate definite integrals is with the fundamental theorem, which requires taking an antiderivative. In calculus I, there were some derivatives we had to memorize, like $\frac{d}{dx}[\sin(x)] = \cos(x)$, and a few rules like the product and chain rules that let us differentiate more complicated functions. We already have the first part done for antiderivatives, since we can just run all the regular derivatives backward: for example,
+	
+	$$
+		\int \cos(x)\ dx = \sin(x) + C.
+	$$
+	
+	What we have yet to develop are the rules analogous to the ones for derivatives. In this section, we&#x2019;ll start with the simplest and arguably the most useful: the opposite of the chain rule.
 	
 !end-text-block
 
@@ -38,17 +44,15 @@
 	
 	$u$-substitution
 	
-	If you have an integral of the form
+	Given an integral of the form
 	
 	$$
 		\int f(g(x))g'(x)\ dx,
 	$$
 	
-	then:
-	
 	1. Set $u = g(x)$.
 	
-	2. Write $\frac{du}{dx} = g'(x)$ and multiply both sides by $dx$ to get $du = g'(x) dx$. (This looks weird, but it&#x2019;s okay.)
+	2. Write $\frac{du}{dx} = g'(x)$ and multiply both sides by $dx$ to get $du = g'(x) dx$.
 	
 	3. Rewrite the integral as $\int f(u)\ du$.
 	
@@ -62,7 +66,7 @@
 
 !begin-text-block
 	
-	This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{dx}[F(g(x))] = f(g(x))g'(x)$. In practice, $u$-sub lets us integrate a composition, as long as the derivative of the inside function is being multiplied on the outside one.
+	This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{dx}[F(g(x))] = f(g(x))g'(x)$. In practice, $u$-sub lets us integrate a composition, as long as the derivative of the inside function is present as a factor in the integral.
 	
 !end-text-block
 
@@ -72,15 +76,25 @@
 	
 	$u$-sub
 	
-	Find $\int 6x(3x^2 + 4)^4\ dx$.
+	Find
 	
-	We could foil out $(3x^2 + 4)^4$, but that&#x2019;s way more work than necessary. Instead, we can think of it as a composition of two functions, where the outside function is $x^4$ and the inside one is $3x^2 + 4$. Since $\frac{d}{dx} \left[ 3x^2 + 4 \right] = 6x$, we set $u = 3x^2 + 4$ and $du = 6x\ dx$. Then we have
+	$$
+		\int 6x(3x^2 + 4)^4\ dx.
+	$$
+	
+	We could foil out $(3x^2 + 4)^4$, but that&#x2019;s much more work than is necessary. Instead, we can think of it as a composition of two functions, where the outside function is $x^4$ and the inside one is $3x^2 + 4$. Since
+	
+	$$
+		\frac{d}{dx} \left[ 3x^2 + 4 \right] = 6x,
+	$$
+	
+	we set $u = 3x^2 + 4$ and $du = 6x\ dx$. Then we have
 	
 	$$
 		\begin{align*}
-			\int 6x(3x^2 + 4)^4\ dx &= \int u^4\ du\\
-			&= \frac{u^5}{5}\\
-			&= \frac{(3x^2 + 4)^5}{5}.
+			\int 6x(3x^2 + 4)^4\ dx &= \int u^4\ du + C\\
+			&= \frac{u^5}{5} + C\\
+			&= \frac{(3x^2 + 4)^5}{5} + C.
 		\end{align*}
 	$$
 	
@@ -90,9 +104,13 @@
 	
 	$u$-sub
 	
-	Find $\int 2\sin^3(2x)\cos(2x)\ dx$.
+	Find
 	
-	Solution: Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won&#x2019;t advance the problem forward &mdash; if you don&#x2019;t see why, try it!) Then $du = 2\cos(2x)\ dx$ by the chain rule, and so the integral becomes
+	$$
+		\int 2\sin^3(2x)\cos(2x)\ dx.
+	$$
+	<!--
+	<strong>Solution:</strong> Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won&#x2019;t advance the problem forward &mdash; if you don&#x2019;t see why, try it!) Then $du = 2\cos(2x)\ dx$ by the chain rule, and so the integral becomes
 	
 	$$
 		\begin{align*}
@@ -100,14 +118,14 @@
 			&= \frac{1}{4} \sin^4(2x) + C.
 		\end{align*}
 	$$
-	
+	-->
 !end-exercise
 
 
 
 !begin-text-block
 	
-	The chain rule works for all compositions, but $u$-sub works only in the specific situations where the derivative of the inside is present on the outside. Unfortunately, if this isn&#x2019;t the case, there&#x2019;s usually not a way to get around it.
+	While the chain rule works for all compositions, $u$-sub works only in the particular situations where the derivative of the inside function is present on the outside. Unfortunately, if this isn&#x2019;t the case, there&#x2019;s usually not a way to get around it.
 	
 !end-text-block
 
@@ -117,9 +135,31 @@
 	
 	$u$-sub doesn&#x2019;t always work
 	
-	Find $\int 6x^2(3x^2 + 4)^4\ dx$.
+	Find
 	
-	If we try to set $u = 3x^2 + 4$ again, we get that $du = 6x\ dx$, as before. The integral then becomes $\int xu^4\ du$, and as is, that&#x2019;s a deadend, because the integral contains more than just $u$. The only way to possibly make it work is to solve for $x$ in terms of $u$, which gives $x = \sqrt{\frac{1}{3} (u - 4)}$. But the integral is then $\int u^4\sqrt{\frac{1}{3} (u - 4)}\ du$, and this is significantly worse than what we started with. Unfortunately, there is simply no way to make $u$-sub helpful on this problem. Eventually, we&#x2019;ll talk about a different strategy to handle this kind of integral, but that&#x2019;s for the future.
+	$$
+		\int 6x^2(3x^2 + 4)^4\ dx.
+	$$
+	
+	If we try to set $u = 3x^2 + 4$ again, we get that $du = 6x\ dx$, as before. The integral then becomes
+	
+	$$
+		\int xu^4\ du,
+	$$
+	
+	and that&#x2019;s a dead end, because the integral contains more than just $u$. The only way to possibly make it work is to solve for $x$ in terms of $u$, which gives
+	
+	$$
+		x = \sqrt{\frac{1}{3} (u - 4)}.
+	$$
+	
+	But the integral is then
+	
+	$$
+		\int u^4\sqrt{\frac{1}{3} (u - 4)}\ du,
+	$$
+	
+	and this is significantly worse than what we started with. Unfortunately, there is simply no way to make $u$-sub helpful on this problem. Eventually, we&#x2019;ll talk about a different strategy to handle this kind of integral, but that&#x2019;s still some time away.
 	
 !end-example
 
@@ -129,13 +169,16 @@
 	
 	$u$-sub
 	
-	Find $\int_3^4 z\sqrt{z^2 - 5}\ dz$.
+	Find
+	
+	$$
+		\int_3^4 z\sqrt{z^2 - 5}\ dz.
+	$$
 	
 	When using $u$-sub on a definite integral, we need to be careful. The $3$ and $4$ are things to plug in for $z$, not $u$, so we&#x2019;ll need to remember to backsubstitute before plugging in the limits.
 	
 	$$
 		\begin{align*}
-			\int_3^4 z\sqrt{z^2 - 5}\ dz\\
 			u &= z^2 - 5\\
 			du &= 2z\ dz
 		\end{align*}
@@ -168,9 +211,13 @@
 	
 	$u$-sub
 	
-	Find $\int 2t^2 e^{4t^3 + 3}\ dt$.
+	Find
 	
-	Solution: let $u = 4t^3 + 3$. Then $du = 12t^2\ dt$, but we have $2t^2\ dt$, so we solve for $2t^2\ dt$ to get $2t^2\ dt = 6\ du$. Now we have
+	$$
+		\int 2t^2 e^{4t^3 + 3}\ dt.
+	$$
+	<!--
+	<strong>Solution:</strong> let $u = 4t^3 + 3$. Then $du = 12t^2\ dt$, but we have $2t^2\ dt$, so we solve for $2t^2\ dt$ to get $2t^2\ dt = 6\ du$. Now we have
 	
 	$$
 		\begin{align*}
@@ -179,7 +226,7 @@
 			&= 6e^{4t^3 + 3} + C.
 		\end{align*}
 	$$
-	
+	-->
 !end-exercise
 
 
@@ -220,7 +267,11 @@
 	
 	the half-angle formulas
 	
-	Find $\int 3\cos^2(x)\ dx$.
+	Find
+	
+	$$
+		\int 3\cos^2(x)\ dx.
+	$$
 	
 	First, we need to apply the half-angle formula:
 	
@@ -251,9 +302,13 @@
 	
 	the half-angle formulas
 	
-	Find $\int \sin^4(t)\ dt$.
+	Find
 	
-	Solution: using the half-angle formula, we have
+	$$
+		\int \sin^4(t)\ dt.
+	$$
+	<!--
+	<strong>Solution:</strong> using the half-angle formula, we have
 	
 	$$
 		\begin{align*}
@@ -278,14 +333,14 @@
 	$$
 		\int \sin^4(t)\ dt = \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \left(\frac{1}{2} t + \frac{1}{8} \cos(4t)\right) + C.
 	$$
-	
+	-->
 !end-exercise
 
 
 
 !begin-text-block
 	
-	One last type of $u$-sub problem to explore is where the substitution doesn&#x2019;t quite work. We encountered this in an earlier example where $u$-sub didn&#x2019;t work at all, but sometimes it can be made to work.
+	One last type of $u$-sub problem to explore is where the substitution doesn&#x2019;t <em>quite</em> work, but is close enough that we can fix it.
 	
 !end-text-block
 
@@ -295,13 +350,19 @@
 	
 	another $u$-sub
 	
-	Find $\int \frac{x}{\sqrt{x - 1}}\ dx$.
+	Find
 	
-	The complicated part is the $\sqrt{x - 1}$, so let&#x2019;s try setting $u$ to be the inside function. If $u = x - 1$, then $du = dx$, and so we have
+	$$
+		\int \frac{x}{\sqrt{x - 1}}\ dx.
+	$$
 	
-	$$\int \frac{x}{\sqrt{x - 1}}\ dx = \int \frac{x}{\sqrt{u}}\ du.$$
+	The complicated part here is the $\sqrt{x - 1}$, so let&#x2019;s try setting $u$ to be the inside function. If $u = x - 1$, then $du = dx$, and so we have
 	
-	To get rid of the $x$ left over, we need to solve for $x$ in terms of $u$: $x = u + 1$. Now we have
+	$$
+		\int \frac{x}{\sqrt{x - 1}}\ dx = \int \frac{x}{\sqrt{u}}\ du.
+	$$
+	
+	The only way to get rid of the $x$ left over is to solve for $x$ in terms of $u$: $x = u + 1$. Now we have
 	
 	$$
 		\begin{align*}
