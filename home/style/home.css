@@ -47,13 +47,13 @@
 
 #cruz-text
 {
-	margin-top: 2.1875vmin;
+	margin-top: calc(2.1875vmin + 25px);
 	margin-left: calc(4.9583vmin - 30px);
 }
 
 #godar-text
 {
-	margin-top: 19.6875vmin;
+	margin-top: calc(19.6875vmin + 25px);
 	margin-left: calc(4.9583vmin - 30px);
 }
 
