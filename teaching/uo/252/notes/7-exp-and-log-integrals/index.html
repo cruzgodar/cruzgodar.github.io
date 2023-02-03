@@ -28,7 +28,7 @@
 
 !begin-text-block
 	
-	So far, we know the antiderivatives of functions which are derivatives of other functions, and we can also sometimes compose them with $u$-sub. In this section, we&#x2019;ll talk about a few more common integrals, and then we&#x2019;ll end with a summary of all the integrals we know so far.
+	So far, we know how to find antiderivatives of functions which are derivatives of common functions, and we can also sometimes find antiderivatives of compositions by using $u$-sub. In this section, we&#x2019;ll talk about a few more common integrals, and then we&#x2019;ll end with a summary of all the ones we know so far.
 	
 !end-text-block
 
@@ -38,9 +38,9 @@
 	
 	An integral involving an exponential function
 	
-	A certain strain of bacteria grow at a rate of $3^t$ new bacteria per hour. If the population starts at $100$ bacteria at time $0$, how many will there be after $6$ hours?
+	A certain strain of bacteria grows at a rate of $3^t$ new bacteria per hour. If the population starts at $100$ bacteria at time $0$, how many will there be after $6$ hours?
 	
-	Let $N(t)$ be the number of total bacteria after $t$ hours. Then $N(0) = 0$ and $N'(t) = 3^t$, since the $3^t$ is the rate of growth of $N$. We want to find $N(6)$, so a good place to start is $N(t)$ in general. This is an antiderivative of $N'$, and so we have
+	Let&#x2019;s let $N(t)$ be the number of total bacteria after $t$ hours. Then $N(0) = 0$ and $N'(t) = 3^t$, since the $3^t$ is the rate of growth of $N$. We want to find $N(6)$, so a good place to start is finding $N(t)$ in general. This is an antiderivative of $N'$, and so we have
 	
 	$$
 		\begin{align*}
@@ -49,7 +49,35 @@
 		\end{align*}
 	$$
 	
-	Since $\frac{d}{dt} [3^t] = 3^t \ln(3)$, we can divide both sides by $\ln(3)$ to find that $N(t) = \int 3^t\ dt = \frac{1}{ln(3)} 3^t + C$. Since $N(0) = 100$, we have that $100 = \frac{1}{ln(3)} 3^0 + C$, so $C = 100 - \frac{1}{\ln(3)} \approx 99.09$. Therefore, $N(6) = \frac{3^6}{\ln(3)} + 99.09 = 762.7$.
+	Since
+	
+	$$
+		\frac{d}{dt} [3^t] = 3^t \ln(3),
+	$$
+	
+	we can divide both sides by $\ln(3)$ to find that
+	
+	$$
+		N(t) = \int 3^t\ dt = \frac{1}{ln(3)} 3^t + C.
+	$$
+	
+	Since $N(0) = 100$, we have that
+	
+	$$
+		100 = \frac{1}{ln(3)} 3^0 + C,
+	$$
+	
+	so
+	
+	$$
+		C = 100 - \frac{1}{\ln(3)} \approx 99.09.
+	$$
+	
+	Therefore,
+	
+	$$
+		N(6) = \frac{3^6}{\ln(3)} + 99.09 = 762.7.
+	$$
 	
 !end-example
 
@@ -58,7 +86,7 @@
 	An integral involving an exponential function
 	
 	A radioactive substance degrades at a rate of $-.0953 \cdot 1.1^{-t}$ grams per year after $t$ years. If there is initially $1$ gram of the substance, how much will be left after $20$ years?
-	
+	<!--
 	Solution: if $m(t)$ is the mass of the substance after $t$ years, then $m'(t) = -.0953 \cdot 1.1^{-t} = $ and $m(0) = 1$. Thus
 	
 	$$
@@ -70,7 +98,7 @@
 	$$
 	
 	Then $m(0) = 1 = 1.0105 \cdot .91^0 + C = 1.0105 + C$, so $C = -.0105$. In total, $m(t) = 1.0105 \cdot .91^t - .0105$.
-	
+	-->
 !end-exercise
 
 
@@ -79,9 +107,13 @@
 	
 	Another exponential integral
 	
-	Find $\int \frac{2^{1/x}}{x^2}\ dx$.
+	Find
 	
-	This is too complicated to evaluate directly, so we have to try $u$-sub. If we set $u = x^2$, then the exponential becomes $2^{1/\sqrt{u}}$, which is not helpful. Instead, we can try $u = \frac{1}{x}$. Then $du = -\frac{1}{x^2}\ dx$. This lines up nicely: the integral becomes
+	$$
+		\int \frac{2^{1/x}}{x^2}\ dx.
+	$$
+	
+	This is way too complicated to evaluate directly, so we have to try $u$-sub. If we set $u = x^2$, then the exponential becomes $2^{1/\sqrt{u}}$, which isn&#x2019;t really helpful. Instead, we can try $u = \frac{1}{x}$. Then $du = -\frac{1}{x^2}\ dx$, which lines up nicely: the integral becomes
 	
 	$$
 		\begin{align*}
@@ -96,7 +128,19 @@
 
 !begin-text-block
 	
-	We know that $\int \frac{1}{x}\ dx = \ln|x| + C$, since $\frac{d}{dx}[\ln|x|] = \frac{1}{x}$, but we don&#x2019;t yet know the integral of $\ln(x)$, or more generally of $\log_a(x)$ for any $a$. Let&#x2019;s fix that now.
+	We know that
+	
+	$$
+		\int \frac{1}{x}\ dx = \ln|x| + C,
+	$$
+	
+	since
+	
+	$$
+		\frac{d}{dx}[\ln|x|] = \frac{1}{x},
+	$$
+	
+	but we don&#x2019;t yet know the integral of $\ln(x)$, or more generally of $\log_a(x)$ for any $a$. Let&#x2019;s fix that now.
 	
 !end-text-block
 
@@ -104,18 +148,22 @@
 
 !begin-prop
 	
-	the integral of natural log
+	the integral of $\ln$
 	
-	$\int \ln(x)\ dx = x\ln(x) - x + C$.
+	$$
+		\int \ln(x)\ dx = x\ln(x) - x + C.
+	$$
 	
 !end-prop
 
 !begin-exercise
 	
+	the integral of $\ln$
+	
 	Differentiate $x\ln(x) - x + C$ and verify that you do in fact get $\ln(x)$.
-	
-	Solution: the product rule gives that the derivative is $\ln(x) + 1 - 1 = \ln(x)$.
-	
+	<!--
+	<strong>Solution:</strong> the product rule gives that the derivative is $\ln(x) + 1 - 1 = \ln(x)$.
+	-->
 !end-exercise
 
 
@@ -138,11 +186,17 @@
 	
 	a logarithmic integral
 	
-	Find $\int_2^3 \log_2(5x)\ dx$.
+	Find
+	
+	$$
+		\int_2^3 \log_2(5x)\ dx.
+	$$
 	
 	First, we&#x2019;ll turn this log into a natural log.
 	
-	$$\int_2^3 \log_2(5x)\ dx = \int_2^3 \frac{\ln(5x)}{\ln(2)}\ dx.$$
+	$$
+		\int_2^3 \log_2(5x)\ dx = \int_2^3 \frac{\ln(5x)}{\ln(2)}\ dx.
+	$$
 	
 	Now since $\ln(2)$ is a constant, we can factor it out of the integral and use $u$-sub to handle the rest.
 	
@@ -243,9 +297,13 @@
 	an inverse trig integral
 	
 	Find $\int \frac{1}{x\sqrt{4x^2 - 4}}\ dx$.
+	<!--
+	<strong>Solution:</strong> first we need to factor out a $4$. Then we have
 	
-	Solution: first we need to factor out a $4$. Then we have $\int \frac{1}{2x\sqrt{x^2 - 1}}\ dx = \frac{1}{2} \sec^{-1}(x)$.
-	
+	$$
+		\int \frac{1}{2x\sqrt{x^2 - 1}}\ dx = \frac{1}{2} \sec^{-1}(x).
+	$$
+	-->
 !end-exercise
 
 
@@ -262,7 +320,11 @@
 	
 	a definite inverse trig integral
 	
-	Find $\int_0^2 \frac{1}{\sqrt{16 - x^2}}\ dx$.
+	Find
+	
+	$$
+		\int_0^2 \frac{1}{\sqrt{16 - x^2}}\ dx.
+	$$
 	
 	We have
 	
@@ -282,9 +344,13 @@
 	a definite inverse trig integral
 	
 	Find $\int_{\sqrt{3}/3}^{\sqrt{3}} \frac{1}{1 + x^2}\ dx$.
+	<!--
+	<strong>Solution:</strong> this is
 	
-	Solution: this is $\left. \left[ \tan^{-1}(x) \right] \right_{\sqrt{3}/3}^{\sqrt{3}} = \frac{\pi}{3} - \frac{\pi}{6} = \frac{\pi}{6}$.
-	
+	$$
+		\left. \left[ \tan^{-1}(x) \right] \right_{\sqrt{3}/3}^{\sqrt{3}} = \frac{\pi}{3} - \frac{\pi}{6} = \frac{\pi}{6}.
+	$$
+	-->
 !end-exercise
 
 
