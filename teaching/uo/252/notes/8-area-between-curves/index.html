@@ -28,7 +28,7 @@
 
 !begin-text-block
 	
-	Up to this point, we&#x2019;ve defined integrals via Riemann sums, related them to antiderivatives via the Fundamental Theorem, and then made taking antiderivatives a little easier with $u$-sub. Now, we&#x2019;ll extend what definite integrals can do by exploring how they can calculate area not just under a curve, but between two of them.
+	Up to this point, we&#x2019;ve defined integrals via Riemann sums, related them to antiderivatives via the Fundamental Theorem, and then made taking antiderivatives a little easier with $u$-sub. Now, we&#x2019;ll extend what definite integrals can do by exploring how they can calculate area &mdash; not just under a curve, but between two of them.
 	
 !end-text-block
 
@@ -38,9 +38,11 @@
 	
 	area between curves
 	
-	Let $f(x)$ and $g(x)$ be functions with $f(x) \geq g(x)$ when $a \leq x \leq b$. Then the area between the graphs of $f$ and $g$ on $[a, b]$ is
+	Let $f(x)$ and $g(x)$ be functions with $f(x) \geq g(x)$ on $[a, b]$. Then the area between the graphs of $f$ and $g$ on $[a, b]$ is
 	
-	$$\int_a^b (f(x) - g(x))\ dx.$$
+	$$
+		\int_a^b (f(x) - g(x))\,dx.
+	$$
 	
 !end-prop
 
@@ -54,13 +56,13 @@
 	
 	First, we need to actually figure out where that area is, so that we know the limits of integration.
 	
-	!iframe https://www.desmos.com/calculator/a04wieapqr
+	!desmos area-between-curves
 	
 	To find those limits, we set the two functions equal and solve for $x$. If $x = x^2$, then $x^2 - x = 0$, so $x(x-1) = 0$, and therefore $x = 0$ or $x = 1$. This reflects what we see in the graph. Since $f(x)$ is the function with the larger $y$-value on the region, our integral becomes
 	
 	$$
 		\begin{align*}
-			\int_0^1 (x - x^2)\ dx &= \left. \left[ \frac{x^2}{2} - \frac{x^3}{3} \right] \right|_0^1\\
+			\int_0^1 (x - x^2)\,dx &= \left. \left[ \frac{x^2}{2} - \frac{x^3}{3} \right] \right|_0^1\\
 			&= \frac{1}{2} - \frac{1}{3}\\
 			&= \frac{1}{6}.
 		\end{align*}
@@ -73,17 +75,17 @@
 	area between curves
 	
 	Find the area of the region bounded by $y = 6 - x$ and $y = 9 - \left( \frac{x}{2} \right)^2$.
-	
-	Solution: the intersection occurs when $6 - x = 9 - \left( \frac{x}{2} \right)^2$. This gives $x = -2$ and $x = 6$. Now we can see which function is larger by evaulating them both somewhere in between, say at $0$: $6 - 0 = 6$ and $9 - \left( \frac{0}{2} \right)^2 = 9$. Thus the second one is the larger function, so we have
+	<!--
+	<strong>Solution:</strong> the intersection occurs when $6 - x = 9 - \left( \frac{x}{2} \right)^2$. This gives $x = -2$ and $x = 6$. Now we can see which function is larger by evaulating them both somewhere in between, say at $0$: $6 - 0 = 6$ and $9 - \left( \frac{0}{2} \right)^2 = 9$. That means that the second one is the larger function, so we have
 	
 	$$
 		\begin{align*}
-			\int_{-2}^6 \left(9 - \left( \frac{x}{2} \right)^2 - (6 - x)\right)\ dx &= \int_{-2}^6 \left(3 + x - \frac{x^2}{4} \right)\ dx\\
+			\int_{-2}^6 \left(9 - \left( \frac{x}{2} \right)^2 - (6 - x)\right)\,dx &= \int_{-2}^6 \left(3 + x - \frac{x^2}{4} \right)\,dx\\
 			&= \left. \left[ 3x + \frac{x^2}{2} - \frac{x^3}{12} \right] \right|_{-2}^{6}\\
 			&= 18 + \frac{10}{3}.
 		\end{align*}
 	$$
-	
+	-->
 !end-exercise
 
 
@@ -94,17 +96,18 @@
 	
 	Find the area between $\sin(x)$ and $\cos(x)$ on $[0, \pi]$.
 	
-	This is a little more complicated since the top function changes across the interval. Setting $\sin(x) = \cos(x)$ gives $x = \frac{\pi}{4}$ (using $\tan^{-1}$), so at $x = \frac{\pi}{4}$, the functions meet, which is the only possible place they could cross. Let&#x2019;s try some test points: plugging in $x = 0$ gives $\sin(0) = 0$ and $\cos(0) = 1$, so until $x = \frac{\pi}{4}$, $\cos$ is the larger function. Similarly, $x = \pi$ gives $\sin(\pi) = 0$ and $\cos(\pi) = -1$, so $\sin$ is larger after $\frac{\pi}{4}$. Therefore, we have
+	This is a little more complicated: which function is on top changes across the interval. Setting $\sin(x) = \cos(x)$ is a problem from trigonometry: dividing both sides by $\cos(x)$ results in $\tan(x) = 1$, which on our interval is only true at $x = \frac{\pi}{4}$. So the functions meet at $x = \frac{\pi}{4}$, and since they&#x2019;re both continuous, that&#x2019;s the only possible place they could cross. Let&#x2019;s try some test points: plugging in $x = 0$ gives $\sin(0) = 0$ and $\cos(0) = 1$, so until $x = \frac{\pi}{4}$, $\cos$ is the larger function. Similarly, $x = \pi$ gives $\sin(\pi) = 0$ and $\cos(\pi) = -1$, so $\sin$ is larger after $\frac{\pi}{4}$. Therefore, we have
 	
 	$$
 		\begin{align*}
-			\int_0^{\frac{\pi}{4}} (\cos(x) - \sin(x))\ dx + \int_{\frac{\pi}{4}}^\pi (\sin(x) - \cos(x))\ dx &= \left. \left[ \sin(x) + \cos(x) \right] \right|_0^{\frac{\pi}{4}} + \left. \left[ -\cos(x) - \sin(x) \right] \right|_{\frac{\pi}{4}}^\pi\\
+			&\ \ \int_0^{\frac{\pi}{4}} (\cos(x) - \sin(x))\,dx + \int_{\frac{\pi}{4}}^\pi (\sin(x) - \cos(x))\,dx\\
+			&= \left. \left[ \sin(x) + \cos(x) \right] \right|_0^{\frac{\pi}{4}} + \left. \left[ -\cos(x) - \sin(x) \right] \right|_{\frac{\pi}{4}}^\pi\\
 			&= \left( \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} - 1 - 0 \right) + \left( 1 + 0 + \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} \right)\\
 			&= 2\sqrt{2}.
 		\end{align*}
 	$$
 	
-	!iframe https://www.desmos.com/calculator/vbg64fpffq
+	!desmos area-between-curves-2
 	
 !end-example
 
@@ -116,13 +119,13 @@
 	
 	Find the area of the shaded region bounded by $y = 1$, $y = 3 - x$, and $y = x^2 + 1$, as pictured.
 	
-	!iframe https://www.desmos.com/calculator/ioprgqgyxf
+	!desmos area-between-curves-3
 	
 	First, let&#x2019;s find the limits of integration. The left one is the intersection of $y = x^2 + 1$ with $y = 1$: then $x^2 + 1 = 1$, so $x = 0$. The right endpoint is the intersection of $y = 3 - x$ with $y = 1$, so $x = 2$. Like the last example, though, the bounding functions change as we move left to right along the interval. The point where we switch from $x^2 + 1$ to $3 - x$ being the top function is the intersection of the two: $x^2 + 1 = 3 - x$, so $x^2 + x - 2 = 0$. Factoring this gives $x = 1$ or $x = -2$, and we clearly want $x = 1$. Now the integral becomes
 	
 	$$
 		\begin{align*}
-			\int_0^1 (x^2 + 1 - 1)\ dx + \int_1^2 (3 - x - 1)\ dx &= \left. \left[ \frac{x^3}{3} \right] \right|_0^1 + \left. \left[ 2x - \frac{x^2}{2} \right] \right|_1^2\\
+			\int_0^1 (x^2 + 1 - 1)\,dx + \int_1^2 (3 - x - 1)\,dx &= \left. \left[ \frac{x^3}{3} \right] \right|_0^1 + \left. \left[ 2x - \frac{x^2}{2} \right] \right|_1^2\\
 			&= \frac{1}{3} + \left( 4 - 2 - 2 + \frac{1}{2} \right)\\
 			&= \frac{5}{6}.
 		\end{align*}
@@ -136,14 +139,14 @@
 	
 	Find the area of the shaded region bounded by $y = 1 - x$, $y = x^2$, and $y = \sqrt{x}$, as pictured.
 	
-	!iframe https://www.desmos.com/calculator/1lhzynqlu3
-	
-	Solution: $f$ and $h$ intersect at $x = \frac{3}{2} - \frac{\sqrt{5}}{2}$, $g$ and $h$ intersect at $x = 1$, and $f$ and $g$ intersect at $x = \frac{\sqrt{5}}{2} - \frac{1}{2}$. To save notation, let&#x2019;s call the first number $a$, the second one $b$, and the third one $c$. Then the integral becomes $\int_a^c (h(x) - f(x))\ dx + \int_c^b (h(x) - g(x))\ dx$. This comes out to
+	!desmos area-between-curves-4
+	<!--
+	<strong>Solution:</strong> $f$ and $h$ intersect at $x = \frac{3}{2} - \frac{\sqrt{5}}{2}$, $g$ and $h$ intersect at $x = 1$, and $f$ and $g$ intersect at $x = \frac{\sqrt{5}}{2} - \frac{1}{2}$. To save notation, let&#x2019;s call the first number $a$, the second one $b$, and the third one $c$. Then the integral becomes $\int_a^c (h(x) - f(x))\ dx + \int_c^b (h(x) - g(x))\ dx$. This comes out to
 	
 	$$
 		\left(\frac{7}{7} - \frac{7}{6}\sqrt{5} + \frac{2}{3}\sqrt{\sqrt{5} - 2}\right) - \left(\frac{1}{3} + \frac{1}{3}\sqrt{5} - \frac{2}{3}\sqrt{\sqrt{5} - 2}\right).
 	$$
-	
+	-->
 !end-exercise
 
 
@@ -162,7 +165,7 @@
 	
 	Find the area of the shaded region bounded by $y = 1$, $y = 3 - x$, and $y = x^2 + 1$ by integrating with respect to $y$.
 	
-	!iframe https://www.desmos.com/calculator/ioprgqgyxf
+	!desmos area-between-curves-5
 	
 	The first thing to do is rewrite the functions as <strong>functions of $y$</strong>. That means solving each one for $x$: $y = 3 - x$ becomes $x = 3 - y$, and $y = x^2 + 1$ becomes $x = \sqrt{y - 1}$. Since there is no $x$ in $y = 1$, we can&#x2019;t solve it for $x$, but we&#x2019;ll see that that won&#x2019;t be a problem momentarily.
 	
@@ -176,7 +179,7 @@
 			& u = y - 1,\ du = dy\\
 			&= \int_1^2 (3 - y)\ dy - \int_1^2 \sqrt{u}\ du\\
 			&= \left. \left[ 3y - \frac{y^2}{2} \right] \right|_1^2 - \left. \left[ \frac{u^{3/2}}{3/2} \right] \right|_1^2\\
-			&= \left. \left[ 3y - \frac{y^2}{2} \right] \right|_1^2 - \left. \left[ \frac{(y-1)^{3/2}}{3/2} \right] \right|_1^2
+			&= \left. \left[ 3y - \frac{y^2}{2} \right] \right|_1^2 - \left. \left[ \frac{(y-1)^{3/2}}{3/2} \right] \right|_1^2\\
 			&= \left( 6 - 2 - 3 + \frac{1}{2} \right) - \left( \frac{1}{3/2} \right)\\
 			&= \frac{3}{2} - \frac{2}{3}\\
 			&= \frac{5}{6},
@@ -193,10 +196,10 @@
 	
 	Find the area of the shaded region bounded by $y = 1 - x$, $y = x^2$, and $y = \sqrt{x}$ by integrating with respect to $y$.
 	
-	!iframe https://www.desmos.com/calculator/1lhzynqlu3
-	
+	!desmos area-between-curves-6
+	<!--
 	The functions are now $1 - y$, $\sqrt{y}$, and $y^2$. The integrals are actually exactly the same, since they intersect at the same $y$-coordinates as the previous $x$-coordinates.
-	
+	-->
 !end-exercise
 
 
