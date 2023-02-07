@@ -1492,15 +1492,6 @@ class Wilson
 					
 					
 					
-					this.old_footer_button_offset = Page.Footer.Floating.current_offset;
-					
-					Page.Footer.Floating.current_offset = -43.75;
-					
-					try {document.querySelector("#show-footer-menu-button").style.bottom = "-43.75px";}
-					catch(ex) {}
-					
-					
-					
 					this.old_meta_theme_color = Site.Settings.meta_theme_color_element.getAttribute("content");
 					
 					
@@ -1571,11 +1562,10 @@ class Wilson
 						
 						//One of these is for vertical aspect ratios and the other is for horizontal ones, but we add both in case the user resizes the window while in applet is fullscreen.
 						
-						this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("beforebegin", `<div class="wilson-letterboxed-canvas-background no-floating-footer"></div>`);
-						this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("afterend", `<div class="wilson-letterboxed-canvas-background no-floating-footer"></div>`);
+						this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("beforebegin", `<div class="wilson-letterboxed-canvas-background"></div>`);
+						this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("afterend", `<div class="wilson-letterboxed-canvas-background"></div>`);
 						
 						this.parent.canvas.parentNode.parentNode.classList.add("wilson-black-background");
-						this.parent.canvas.parentNode.parentNode.classList.add("no-floating-footer");
 						
 						
 						
@@ -1683,13 +1673,6 @@ class Wilson
 							this.switch_fullscreen();
 						});
 					}
-					
-					
-					
-					Page.Footer.Floating.current_offset = this.old_footer_button_offset;
-					
-					try {document.querySelector("#show-footer-menu-button").style.bottom = this.old_footer_button_offset + "px";}
-					catch(ex) {}
 					
 					
 					
