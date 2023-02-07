@@ -114,15 +114,12 @@
 	
 	height: calc(100% - 20px);
 	
+	background-color: rgb(255, 255, 255);
+	
 	display: flex;
 	align-items: center;
 	
 	cursor: pointer;
-}
-
-#header-theme-button.active
-{
-	background-color: rgb(239, 239, 239);
 }
 
 #header-theme-button.hover
