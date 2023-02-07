@@ -50,7 +50,7 @@
 	
 	With $f(x) = \sin(x) + 2$ on $[0, 10]$, the solid of revolution of $f$ about the $x$-axis is plotted below.
 	
-	!iframe https://www.desmos.com/calculator/txwzemcsmi
+	!desmos disk-method-x-axis
 	
 	Desmos is obviously not a 3d graphing engine, but it still does a great job of plotting these things. Even if you don&#x2019;t normally, <strong>please take the time to poke around with this one</strong> &mdash; there&#x2019;s a lot to digest. First of all, note that the solid is shown properly when $n = 1$ &mdash; other values of $n$ are to demonstrate the process of revolution. Change $f$ and/or $g$, along with $a$ and $b$, and see what happens.
 	
@@ -64,15 +64,7 @@
 	
 	When we rotate a graph about the $x$-axis, cross sections of the solid taken perpendicular to the $x$-axis are always circles. The example below highlights those cross sections in red &mdash; slide $x_0$ to change which cross section is shown.
 	
-!end-text-block
-
-
-
-!iframe https://www.desmos.com/calculator/1cd65nmsxa
-
-
-
-!begin-text-block
+	!desmos disk-method-x-axis-2
 	
 	Now a definite integral just adds up whatever is inside of it over an interval, creating an area. If we instead add up the areas of all those circles, we&#x2019;ll get the volume of that region. And what is that red area? Well, it&#x2019;s a circle, so we just need its radius. But you can see from the picture that the radius is given by the height of the funciton, which is $f(x)$. Therefore, the area is $\pi r^2 = \pi (f(x))^2$. This leads us to the following result:
 	
@@ -117,8 +109,8 @@
 	the disk method
 	
 	Find the volume of the solid created by revolving $f(x) = \sin(x) + 2$ on $[0, \pi]$ about the $x$-axis.
-	
-	Solution: We have
+	<!--
+	<strong>Solution:</strong> We have
 	
 	$$
 		\begin{align*}
@@ -128,7 +120,7 @@
 			&= 2\pi + \frac{9\pi^2}{2} + 2\pi.
 		\end{align*}
 	$$
-	
+	-->
 !end-exercise
 
 
@@ -157,7 +149,7 @@
 		\end{align*}
 	$$
 	
-	!iframe https://www.desmos.com/calculator/hfyy4cgwt4
+	!desmos disk-method-y-axis
 	
 !end-example
 
@@ -166,8 +158,8 @@
 	the disk method, again
 	
 	The area bounded by $y = \frac{1}{x}$, and $x = 0$ is revolved about the $y$-axis. Find the volume between $y = 1$ and $y = 2$.
-	
-	Solution: to use the disk method, we integrate $dy$, so first we rewrite $y = \frac{1}{x}$ as $x = \frac{1}{y}$. Then the right side of the region is given by $x = \frac{1}{y}$ and the left side by $x = 0$, so in total, we have
+	<!--
+	<strong>Solution:</strong> to use the disk method, we integrate $dy$, so first we rewrite $y = \frac{1}{x}$ as $x = \frac{1}{y}$. Then the right side of the region is given by $x = \frac{1}{y}$ and the left side by $x = 0$, so in total, we have
 	
 	$$
 		\begin{align*}
@@ -175,14 +167,14 @@
 			&= \frac{\pi}{2}.
 		\end{align*}
 	$$
-	
+	-->
 !end-exercise
 
 
 
 !begin-text-block
 	
-	The disk method can be extended to work with problems where we&#x2019;re taking the difference between two functions and rotating that. Some books, including ours, call this the <strong>washer method</strong>, but we won&#x2019;t use that term often for two reasons: it&#x2019;s identical to the disk method, and more importantly, we&#x2019;ll see a method later in this section that is genuinely different and <em>looks</em> like washers, to the point where it&#x2019;s very common for students to get the two confused.
+	The disk method can be extended to work with problems where we&#x2019;re taking the difference between two functions and rotating that. Some books, including ours, call this the <dfn>washer method</dfn>, but we won&#x2019;t use that term often for two reasons: it&#x2019;s identical to the disk method, and more importantly, we&#x2019;ll see a method later in this section that is genuinely different and <em>looks</em> like washers, to the point where it&#x2019;s very common for students to get the two confused.
 	
 !end-text-block
 
@@ -196,11 +188,9 @@
 	
 	Let&#x2019;s visualize what&#x2019;s going on here. Just like in the previous section, we set the two functions equal to get $x = 0$ or $x = 1$, and drawing a 2D plot, we can see the area that&#x2019;s going to be rotated.
 	
-	!iframe https://www.desmos.com/calculator/u1dhi35rfb
-	
 	So what does this look like when it&#x2019;s revolved about the $x$-axis? Well, both the inner function and outer function produce circles, so cross sections look like large circles with smaller circles cut out of them.
 	
-	!iframe https://www.desmos.com/calculator/fztvietv2h
+	!desmos disk-method-x-axis-3
 	
 	In order to find the area of one of these things, we need just need to take the area of the larger circle and subtract the area of the hole. Since the outer area is $\pi (\sqrt{x})^2$ and the inner one is $\pi x^2$, we have
 	
@@ -220,8 +210,8 @@
 	the disk method with a hole
 	
 	The area bounded by $y = \frac{1}{x^2}$, $y = 1$, and $x = 2$ is revolved about the $y$-axis. Find its volume.
-	
-	Solution: let&#x2019;s first rewrite this in terms of $y$: $x = \frac{1}{\sqrt{y}}$. Then the region is bounded on the right by $x = 2$ and on the left by $x = \frac{1}{\sqrt{y}}$. Those two meet when $\frac{1}{\sqrt{y}} = 2$, so $y = \sqrt{\frac{1}{2}} = \frac{1}{4}. Then the integral becomes
+	<!--
+	<strong>Solution:</strong> let&#x2019;s first rewrite this in terms of $y$: $x = \frac{1}{\sqrt{y}}$. Then the region is bounded on the right by $x = 2$ and on the left by $x = \frac{1}{\sqrt{y}}$. Those two meet when $\frac{1}{\sqrt{y}} = 2$, so $y = \sqrt{\frac{1}{2}} = \frac{1}{4}. Then the integral becomes
 	
 	$$
 		\begin{align*}
@@ -230,7 +220,7 @@
 			&= 3\pi + \pi\ln\left(\frac{1}{4}\right).
 		\end{align*}
 	$$
-	
+	-->
 !end-exercise
 
 
@@ -407,7 +397,7 @@
 		
 		else
 		{
-			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
 	
