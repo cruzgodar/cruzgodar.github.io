@@ -28,7 +28,7 @@
 
 !begin-text-block
 	
-	Fundamentally, definite integrals calculate area under curves. If you stick around to Calc IV, you&#x2019;ll learn how to extend integrals to calculate volume under surfaces too, which turns out to be the natural way to extend integrals to three dimensions. But right now, we can use the kind of integrals we&#x2019;ve developed so far to calculate certain volumes, ones called <dfn>solids of revolution</dfn>
+	Fundamentally, definite integrals calculate area under curves. If you stick around to calculus IV, you&#x2019;ll learn how to use integrals to calculate volume under surfaces too, which turns out to be the natural way to extend them to three dimensions. But right now, we can use the kind of integrals we&#x2019;ve already developed to calculate certain volumes, ones called <dfn>solids of revolution</dfn>.
 	
 !end-text-block
 
@@ -52,7 +52,7 @@
 	
 	!desmos disk-method-x-axis
 	
-	Desmos is obviously not a 3d graphing engine, but it still does a great job of plotting these things. Even if you don&#x2019;t normally, <strong>please take the time to poke around with this one</strong> &mdash; there&#x2019;s a lot to digest. First of all, note that the solid is shown properly when $n = 1$ &mdash; other values of $n$ are to demonstrate the process of revolution. Change $f$ and/or $g$, along with $a$ and $b$, and see what happens.
+	Desmos is obviously not a 3D graphing engine, but it still does a great job of plotting these things. Even if you don&#x2019;t normally, <strong>please take the time to poke around with this one</strong> &mdash; there&#x2019;s a lot to digest. First of all, note that the solid is shown properly when $n = 1$ &mdash; other values of $n$ are to demonstrate the process of revolution. Change $f$ and/or $g$, along with $a$ and $b$, and see what happens.
 	
 !end-example
 
@@ -66,7 +66,7 @@
 	
 	!desmos disk-method-x-axis-2
 	
-	Now a definite integral just adds up whatever is inside of it over an interval, creating an area. If we instead add up the areas of all those circles, we&#x2019;ll get the volume of that region. And what is that red area? Well, it&#x2019;s a circle, so we just need its radius. But you can see from the picture that the radius is given by the height of the funciton, which is $f(x)$. Therefore, the area is $\pi r^2 = \pi (f(x))^2$. This leads us to the following result:
+	Now a definite integral just adds up whatever is inside of it over an interval, creating an area. If we instead add up the areas of all those circles, we&#x2019;ll get the volume of that region. And what is that red area? Well, it&#x2019;s a circle, so we just need its radius. But we can see from the picture that the radius is given by the height of the function, which is $f(x)$, and so the area is $\pi r^2 = \pi (f(x))^2$. This leads us to the following result:
 	
 !end-text-block
 
@@ -127,7 +127,7 @@
 
 !begin-text-block
 	
-	That wasn&#x2019;t so bad! We can also use the same method for functions revolved about the $y$-axis, but we&#x2019;ll need to solve them to be defined in terms of $y$ first.
+	That wasn&#x2019;t so bad! We can also use the same method for functions revolved about the $y$-axis, but since the circular slices will be taken perpendicular to the $y$-axis now, all of the functions will need to be rewritten in terms of $y$ first.
 	
 !end-text-block
 
@@ -157,7 +157,7 @@
 	
 	the disk method, again
 	
-	The area bounded by $y = \frac{1}{x}$, and $x = 0$ is revolved about the $y$-axis. Find the volume between $y = 1$ and $y = 2$.
+	The area bounded by $y = \frac{1}{x}$ and $x = 0$ is revolved about the $y$-axis. Find the volume between $y = 1$ and $y = 2$.
 	<!--
 	<strong>Solution:</strong> to use the disk method, we integrate $dy$, so first we rewrite $y = \frac{1}{x}$ as $x = \frac{1}{y}$. Then the right side of the region is given by $x = \frac{1}{y}$ and the left side by $x = 0$, so in total, we have
 	
@@ -174,7 +174,7 @@
 
 !begin-text-block
 	
-	The disk method can be extended to work with problems where we&#x2019;re taking the difference between two functions and rotating that. Some books, including ours, call this the <dfn>washer method</dfn>, but we won&#x2019;t use that term often for two reasons: it&#x2019;s identical to the disk method, and more importantly, we&#x2019;ll see a method later in this section that is genuinely different and <em>looks</em> like washers, to the point where it&#x2019;s very common for students to get the two confused.
+	The disk method can be extended to work with problems where we&#x2019;re taking the difference between two functions and rotating that. Some books, including ours, call this the <dfn>washer method</dfn>, but we won&#x2019;t use that term often for two reasons: first, the formula is identical to the disk method, and more importantly, we&#x2019;ll see a method later in this section that is both genuinely different and <em>looks</em> a lot like washers, to the point where it&#x2019;s very common for students to get the two confused.
 	
 !end-text-block
 
@@ -192,7 +192,7 @@
 	
 	!desmos disk-method-x-axis-3
 	
-	In order to find the area of one of these things, we need just need to take the area of the larger circle and subtract the area of the hole. Since the outer area is $\pi (\sqrt{x})^2$ and the inner one is $\pi x^2$, we have
+	In order to find the area of one of those slices, we just need to take the area of the larger circle and subtract the area of the hole. Since the outer area is $\pi (\sqrt{x})^2$ and the inner one is $\pi x^2$, we have
 	
 	$$
 		\begin{align*}
@@ -235,36 +235,22 @@
 
 !begin-text-block
 	
-	Sometimes, the disk method just won&#x2019;t work: it will produce an integral we cannot solve. But not all hope is lost &mdash; just like with finding the area between curves, we can integrate with respect to a different variable to find the volume. That&#x2019;s a little more complicated than it used to be, though. Let&#x2019;s look at some pictures to walk through this carefully.
+	Sometimes, the disk method just won&#x2019;t work: it&#x2019;ll produce an integral we cannot solve. But not all hope is lost! Just like with finding the area between curves, we can integrate with respect to a different variable to find the volume. That&#x2019;s a little more complicated than it used to be, though. Let&#x2019;s look at some pictures to walk through this carefully.
 	
-!end-text-block
-
-
-
-!iframe https://www.desmos.com/calculator/hfyy4cgwt4
-
-
-
-!begin-text-block
+	!desmos disk-method-y-axis-2
 	
-	Here is the disk method applied to the function from two examples ago. Since it&#x2019;s revolved about the $y$-axis, the disk method integrates with respect to $y$. That means we take a horizontal line at height $y$ and revolve it about the $y$-axis to produce a circle. The function $x = \sqrt[3]{y}$ tells us the radius of that circle.
+	Here&#x2019;s the disk method applied to the function from two examples ago. Since it&#x2019;s revolved about the $y$-axis, the disk method integrates with respect to $y$. That means we take a horizontal line at height $y$ and revolve it about the $y$-axis to produce a circle. The function $x = \sqrt[3]{y}$ tells us the radius of that circle.
 	
-	What we&#x2019;re going to do instead is integrate with respect to $x$. That means that each slice will have no thickness in the $x$-direction, so we take a <strong>vertical</strong> line and revolve it about the $y$-axis. This produces a hollow cylinder instead, called a <dfn>shell.</dfn>
+	What we&#x2019;re going to do instead is integrate with respect to $x$. That means each slice will have no thickness in the $x$-direction, so we take a <strong>vertical</strong> line and revolve it about the $y$-axis. This produces a hollow cylinder instead, called a <dfn>shell.</dfn>
 	
-!end-text-block
-
-
-
-!iframe https://www.desmos.com/calculator/uoa8sq7vhd
-
-
-
-!begin-text-block
+	!desmos shell-method-y-axis
 	
-	The principle is the same: add up all the areas of those cylinders to produce the volume. Since we&#x2019;re integrating $dx$ instead of $dy$, we&#x2019;ll now need to express everything in terms of $x$. The radius of the shell is $x$, and the height is the distance from the bottom bounding function ($y = x^3$) to the top ($y = 2$), which is just $2 - x^3$. And the surface area of a cylinder is the circumference of the edge circles times the height, so for us, it&#x2019;s $2 \pi x (2 - x^3)$. Now we need to integrate that, ranging $x$ over all possible radii. We know from the past example that the intersection occurs at $x = \sqrt[3]{2}$, so our final integral becomes
+	The principle is the same: add up all the areas of those cylinders to produce the volume. A good analogy for the difference between the methods is that the disk method expresses the volume as a stack of pancakes of varying width, while the shell method expresses it as a sequence of nesting dolls that are open on the top and bottom.
+	
+	Since we&#x2019;re integrating $dx$ instead of $dy$, we&#x2019;ll now need to express everything in terms of $x$. The radius of the shell is $x$, and the height is the distance from the bottom bounding function ($y = x^3$) to the top ($y = 2$), which is $2 - x^3$. And the surface area of a cylinder is the circumference of the edge circles multiplied by the height, so for us, it&#x2019;s $2 \pi x (2 - x^3)$. Now we need to integrate that, ranging $x$ over all possible radii. We know from the past example that the intersection occurs at $x = \sqrt[3]{2}$, so our final integral becomes
 	
 	$$
-		\int_0^{\sqrt[3]{2}} 2\pi x (2 - x^3)\ dx.
+		\int_0^{\sqrt[3]{2}} 2\pi x (2 - x^3)\ dx = \frac{6\pi}{5} \sqrt[3]{4}.
 	$$
 	
 	Before we do more examples, let&#x2019;s write down when to apply all of these methods.
@@ -277,11 +263,11 @@
 	
 	finding the volume of solids of revolution
 	
-	1. Identify the axis about which the area is being revolved. The disk will integrate with respect to that variable, and the shell method will not. For example, if the area is revolved about the $x$-axis, then the disk method will integrate $dx$ and the shell method will integrate $dy$.
+	1. Identify the axis about which the area is being revolved. The disk method will integrate with respect to that variable, and the shell method will not. For example, if the area is revolved about the $x$-axis, then the disk method will integrate $dx$ and the shell method will integrate $dy$.
 	
 	2. Try the method that matches your variables first. For example, if you&#x2019;re given a function as $y = e^x + 1$, that is a function of $x$, so try whichever method integrates $dx$.
 	
-	3. If that doesn&#x2019;t work (you don&#x2019;t know how to take the integral), then rewrite your equation in terms of the other variable. For example, $y = e^x + 1$ beocmes $x = \ln(y - 1)$. You&#x2019;ll also need to convert the limits of your integral. Then try the method you didn&#x2019;t try in step 2.
+	3. If that doesn&#x2019;t work (i.e. you don&#x2019;t know how to take the integral), then rewrite your equation in terms of the other variable. For example, $y = e^x + 1$ beocmes $x = \ln(y - 1)$. You&#x2019;ll also need to convert the limits of your integral. Then try the method you didn&#x2019;t try in step 2.
 	
 !end-thm
 
@@ -295,7 +281,7 @@
 	
 	Following the previous instructions, the first step is to notice that we&#x2019;re revolving about the $y$-axis, so the disk method will integrate $dy$ and the shell method will integrate $dx$. Since our function is currently a function of $x$, we&#x2019;ll try the shell method first.
 	
-	!iframe https://www.desmos.com/calculator/0i6gal3azj
+	!desmos shell-method-y-axis-2
 	
 	To use the shell method, we need to know two things: the range of radii and the height of each shell. Since $x$ is the radius of the shell and it ranges from $1$ to $3$, those will be our limits of integration. And the height of a cylinder with radius $x$ is just $y = \frac{1}{x}$. In total, the integral becomes
 	
@@ -313,8 +299,8 @@
 	the shell method
 	
 	Find the volume of the solid created by revolving the region bounded by $y = 2x - x^2 + 2$, $y = x$, and $x = 0$ about the $y$-axis.
-	
-	Solution: for this one, we look to the intersection of $2x - x^2 + 2$ and $x$ to find the limits on $x$: it gives $x = 2$, so we want to integrate from $0$ to $2$. Now a vertical line drawn in the region goes from $y = x$ up to $y = 2x - x^2 + 2$, so its height is $2x - x^2 + 2 - x = x - x^2 + 2$. Therefore, the area of a shell at radius $x$ is $2\pi x (x - x^2 + 2)$. Our integral then becomes
+	<!--
+	<strong>Solution:</strong> for this one, we look to the intersection of $2x - x^2 + 2$ and $x$ to find the limits on $x$: it gives $x = 2$, so we want to integrate from $0$ to $2$. Now a vertical line drawn in the region goes from $y = x$ up to $y = 2x - x^2 + 2$, so its height is $2x - x^2 + 2 - x = x - x^2 + 2$. Therefore, the area of a shell at radius $x$ is $2\pi x (x - x^2 + 2)$. Our integral then becomes
 	
 	$$
 		\begin{align*}
@@ -322,7 +308,7 @@
 			&= \frac{8}{3} - \frac{16}{4} + 4.
 		\end{align*}
 	$$
-	
+	-->
 !end-exercise
 
 
@@ -333,9 +319,9 @@
 	
 	The region bounded by $y = \ln(x)$, $y = 1$, and $x = e^2$ is revolved about the $x$-axis. Set up, but do not solve, the integrals to find its volume using both the disk method and shell method.
 	
-	Since we&#x2019;re revolving about the $x$-axis, the disk method with integrate $dx$ and the shell method $dy$. Our functions are in terms of $x$, so let&#x2019;s do the disk method first &mdash; it&#x2019;ll be easier to set up. Let&#x2019;s sketch a 2D picture of the area here.
+	Since we&#x2019;re revolving about the $x$-axis, the disk method with integrate $dx$ and the shell method $dy$. Our functions are in terms of $x$, so let&#x2019;s do the disk method first &mdash; it&#x2019;ll be easier to set up.
 	
-	https://www.desmos.com/calculator/ulq9d1vbp1
+	!desmos disk-method-x-axis-4
 	
 	We need to know the limits of our integral, so we solve for that intersection point on the left. That gives $\ln(x) = 1$, so $x = e^1 = e$. Now applying the disk method, the outer radius is $\ln(x)$, the inner radius is $1$, and the integral runs from $x = e$ to $x = e^2$. The integral is therefore
 	
@@ -343,9 +329,9 @@
 		\int_e^{e^2} \pi \left( (\ln(x))^2 - 1 \right)\ dx.
 	$$
 	
-	It&#x2019;s good that we don&#x2019;t need to continue with this, because we have no idea how to integrate $(\ln(x))^2$. $u$-sub doesn&#x2019;t work, and we have no other options at the moment. Let&#x2019;s move on to the shell method and see if it&#x2019;s any different.
+	It&#x2019;s good that we don&#x2019;t need to continue with this, because we have no idea how to integrate $(\ln(x))^2$! $u$-sub doesn&#x2019;t work, and we have no other options at the moment. Let&#x2019;s move on to the shell method and see if it&#x2019;s any different.
 	
-	https://www.desmos.com/calculator/k9woaie0yg
+	!desmos shell-method-x-axis
 	
 	Since it integrates $dy$, we need to rewrite everything in terms of $y$. First of all, $y = \ln(x)$ becomes $x = e^y$. Drawing a shell, we can see that its height is $e^2 - e^y$, and all that&#x2019;s left is to figure out the range of radii. The smallest is $y = 1$, and the largest is the $y$-coordinate of the intersection of $x = e^2$ with $y = \ln(x)$ &mdash; and that&#x2019;s just $\ln(e^2) = 2$. Finally, we now have
 	
@@ -362,8 +348,8 @@
 	the shell method, again
 	
 	The region bounded by $y = x^2$, $y = 1$, and $x = 2$ is revolved about the $y$-axis. Set up, but do not solve, the integrals to find its volume using both the disk method and shell method.
-	
-	Solution: for the disk method, we need to get everything in terms of $y$: $x = \sqrt{y}$. Then the region is bounded to the right by $x = 2$ and to the left by $x = \sqrt{y}$, and the top $y$-coordinate is given by the intersection of $\sqrt{y}$ and $2$, so $y = 4$. Then the integral becomes
+	<!--
+	<strong>Solution:</strong> for the disk method, we need to get everything in terms of $y$: $x = \sqrt{y}$. Then the region is bounded to the right by $x = 2$ and to the left by $x = \sqrt{y}$, and the top $y$-coordinate is given by the intersection of $\sqrt{y}$ and $2$, so $y = 4$. Then the integral becomes
 	
 	$$
 		\int_1^4 \left( \pi (2^2) - \pi (\sqrt{y})^2 \right)\ dy.
@@ -374,7 +360,7 @@
 	$$
 		\int_1^2 2\pi x (x^2 - 1)\ dx.
 	$$
-	
+	-->
 !end-exercise
 
 
@@ -397,7 +383,7 @@
 		
 		else
 		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
 	
