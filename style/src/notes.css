@@ -106,47 +106,42 @@ iframe
 
 .notes-def
 {
-	border-color: rgb(63, 127, 63);
+	border-color: rgb(3% 54% 0%);
 }
 
 .notes-example
 {
-	border-color: rgb(127, 127, 127);
+	border-color: rgb(47% 47% 47%);
 }
 
 .notes-exercise
 {
-	border-color: rgb(0, 127, 127);
+	border-color: rgb(0% 50% 74%);
 }
 
 .notes-prop, .notes-thm
 {
-	border-color: rgb(127, 85, 63);
+	border-color: rgb(72% 37% 0%);
 }
 
 .notes-proof
 {
-	border-color: rgb(74, 63, 127);
-}
-
-.notes-comment
-{
-	border-color: rgb(63, 106, 127);
+	border-color: rgb(63% 27% 100%);
 }
 
 .notes-cor
 {
-	border-color: rgb(63, 85, 127);
+	border-color: rgb(0% 4% 57%);
 }
 
 .notes-lemma
 {
-	border-color: rgb(127, 127, 63);
+	border-color: rgb(78% 66% 0%);
 }
 
 .notes-axiom
 {
-	border-color: rgb(127, 63, 63);
+	border-color: rgb(74% 1% 0%);
 }
 
 
@@ -163,7 +158,7 @@ iframe
 
 
 
-.notes-example-title, .notes-exercise-title, .notes-def-title, .notes-prop-title, .notes-thm-title, .notes-proof-title, .notes-comment-title, .notes-cor-title, .notes-lemma-title, .notes-axiom-title
+.notes-example-title, .notes-exercise-title, .notes-def-title, .notes-prop-title, .notes-thm-title, .notes-proof-title, .notes-cor-title, .notes-lemma-title, .notes-axiom-title
 {
 	color: rgb(255, 255, 255) !important;
 	
@@ -178,47 +173,42 @@ iframe
 
 .notes-def-title
 {
-	background-color: rgb(63, 127, 63);
+	background-color: rgb(3% 54% 0%);
 }
 
 .notes-example-title
 {
-	background-color: rgb(127, 127, 127);
+	background-color: rgb(47% 47% 47%);
 }
 
 .notes-exercise-title
 {
-	background-color: rgb(0, 127, 127);
+	background-color: rgb(0% 50% 74%);
 }
 
 .notes-prop-title, .notes-thm-title
 {
-	background-color: rgb(127, 85, 63);
+	background-color: rgb(72% 37% 0%);
 }
 
 .notes-proof-title
 {
-	background-color: rgb(74, 63, 127);
-}
-
-.notes-comment-title
-{
-	background-color: rgb(63, 106, 127);
+	background-color: rgb(63% 27% 100%);
 }
 
 .notes-cor-title
 {
-	background-color: rgb(63, 85, 127);
+	background-color: rgb(0% 4% 57%);
 }
 
 .notes-lemma-title
 {
-	background-color: rgb(127, 127, 63);
+	background-color: rgb(78% 66% 0%);
 }
 
 .notes-axiom-title
 {
-	background-color: rgb(127, 63, 63);
+	background-color: rgb(74% 1% 0%);
 }
 
 
@@ -245,7 +235,7 @@ iframe
 
 @media (min-width: 1400px)
 {
-	.notes-example, .notes-exercise, .notes-def, .notes-prop, .notes-thm, .notes-proof, .notes-comment, .notes-cor, .notes-lemma, .notes-axiom
+	.notes-example, .notes-exercise, .notes-def, .notes-prop, .notes-thm, .notes-proof, .notes-cor, .notes-lemma, .notes-axiom
 	{
 		width: calc(50vw - 12px);
 	}
