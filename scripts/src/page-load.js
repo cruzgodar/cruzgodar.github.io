@@ -480,7 +480,7 @@ Page.Load =
 	
 	
 	
-	create_desmos_graphs: function(dark = false)
+	create_desmos_graphs: function(dark = Site.Settings.url_vars["theme"] === 1)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
