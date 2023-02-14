@@ -241,11 +241,21 @@ Site.applet_process_id = 0;
 
 
 
-const DESMOS_PURPLE = "#772fbf";
-const DESMOS_BLUE = "#2f77bf";
-const DESMOS_RED = "#bf2f2f";
-const DESMOS_GREEN = "#2fbf2f";
-const DESMOS_BLACK = "#000000";
+let DESMOS_PURPLE = "#772fbf";
+let DESMOS_BLUE = "#2f77bf";
+let DESMOS_RED = "#bf2f2f";
+let DESMOS_GREEN = "#2fbf2f";
+let DESMOS_BLACK = "#000000";
+
+/*
+//Dark theme versions
+DESMOS_PURPLE = "#60c000";
+DESMOS_BLUE = "#c06000";
+DESMOS_RED = "#00c0c0";
+DESMOS_GREEN = "#c000c0";
+DESMOS_BLACK = "#000000";
+*/
+
 	
 	
 //Redirects to the chosen page and sets up all the miscellaneous things that make the site work.

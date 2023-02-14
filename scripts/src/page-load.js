@@ -480,8 +480,7 @@ Page.Load =
 	
 	
 	
-	
-	create_desmos_graphs: function(data)
+	create_desmos_graphs: function(dark = false)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
@@ -492,7 +491,29 @@ Page.Load =
 				Site.scripts_loaded["desmos"] = true;
 			}
 			
+			for (let key in Page.desmos_graphs)
+			{
+				try {Page.desmos_graphs[key].destroy()}
+				catch(ex) {}
+			}
+			
 			Page.desmos_graphs = {};
+			
+			
+			
+			const data = this.get_desmos_data();
+			
+			for (let key in data)
+			{
+				data[key].expressions.forEach(expression =>
+				{
+					expression.latex = expression.latex.replace(/\(/g, String.raw`\left(`);
+					expression.latex = expression.latex.replace(/\)/g, String.raw`\right)`);
+					
+					expression.latex = expression.latex.replace(/\[/g, String.raw`\left[`);
+					expression.latex = expression.latex.replace(/\]/g, String.raw`\right]`);
+				});
+			}
 			
 			Page.element.querySelectorAll(".desmos-container").forEach(element =>
 			{
@@ -503,6 +524,7 @@ Page.Load =
 					showResetButtonOnGraphpaper: true,
 					border: false,
 					expressionsCollapsed: true,
+					invertedColors: dark,
 					
 					xAxisMinorSubdivisions: 1,
 					yAxisMinorSubdivisions: 1
@@ -516,16 +538,9 @@ Page.Load =
 					}
 				}
 				
-				Page.desmos_graphs[element.id] = Desmos.GraphingCalculator(element, options);
 				
-				data[element.id].expressions.forEach(expression =>
-				{
-					expression.latex = expression.latex.replace(/\(/g, String.raw`\left(`);
-					expression.latex = expression.latex.replace(/\)/g, String.raw`\right)`);
-					
-					expression.latex = expression.latex.replace(/\[/g, String.raw`\left[`);
-					expression.latex = expression.latex.replace(/\]/g, String.raw`\right]`);
-				});
+				
+				Page.desmos_graphs[element.id] = Desmos.GraphingCalculator(element, options);
 				
 				Page.desmos_graphs[element.id].setMathBounds(data[element.id].bounds);
 				

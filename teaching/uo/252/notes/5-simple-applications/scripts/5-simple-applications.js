@@ -1,35 +1,40 @@
 !function()
 {
-	let data =
+	Page.Load.get_desmos_data = () =>
 	{
-		"displacement":
+		const data =
 		{
-			bounds: {left: -1, right: 4, bottom: -7, top: 8},
+			"displacement":
+			{
+				bounds: {left: -1, right: 4, bottom: -7, top: 8},
+				
+				expressions:
+				[
+					{latex: String.raw`v(t) = 3t - 5 \left\{0 \leq t \leq 3\right\}`, color: DESMOS_PURPLE},
+					{latex: String.raw`s(t) = \int_0^t v(x) dx`, color: DESMOS_BLUE},
+					{latex: String.raw`v_{pos}(t) = \left|v(t)\right|`, color: DESMOS_RED},
+					{latex: String.raw`s_{tot}(t) = \int_0^t v_{pos}(x) dx`, color: DESMOS_GREEN}
+				]
+			},
 			
-			expressions:
-			[
-				{latex: String.raw`v(t) = 3t - 5 \left\{0 \leq t \leq 3\right\}`, color: DESMOS_PURPLE},
-				{latex: String.raw`s(t) = \int_0^t v(x) dx`, color: DESMOS_BLUE},
-				{latex: String.raw`v_{pos}(t) = \left|v(t)\right|`, color: DESMOS_RED},
-				{latex: String.raw`s_{tot}(t) = \int_0^t v_{pos}(x) dx`, color: DESMOS_GREEN}
-			]
-		},
-		
-		
-		
-		"even-and-odd-functions":
-		{
-			bounds: {left: -5, right: 5, bottom: -2.5, top: 2.5},
 			
-			expressions:
-			[
-				{latex: String.raw`x^4 - x^2`, color: DESMOS_PURPLE},
-				{latex: String.raw`\sin(x)`, color: DESMOS_BLUE}
-			]
-		}
+			
+			"even-and-odd-functions":
+			{
+				bounds: {left: -5, right: 5, bottom: -2.5, top: 2.5},
+				
+				expressions:
+				[
+					{latex: String.raw`x^4 - x^2`, color: DESMOS_PURPLE},
+					{latex: String.raw`\sin(x)`, color: DESMOS_BLUE}
+				]
+			}
+		};
+		
+		return data;
 	};
 	
-	Page.Load.create_desmos_graphs(data);
+	Page.Load.create_desmos_graphs();
 	
 	
 	

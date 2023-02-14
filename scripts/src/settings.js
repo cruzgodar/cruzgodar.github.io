@@ -307,53 +307,43 @@ Site.Settings =
 			
 			
 			
-			if (this.url_vars["contrast"] === 1)
+			
+			if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
 			{
-				if (!Page.settings["manual_dark_theme"])
-				{
-					this.animate_theme_contrast("dark_contrast");
-				}
-				
-				
-				
-				setTimeout(() =>
-				{
-					const element = Site.add_style(this.get_settings_style("dark_contrast"), false);
-					
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					try {element.id = "theme-contrast-adjust";}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
+				this.animate_theme_contrast("dark");
 			}
 			
 			
 			
-			else
+			Page.element.querySelectorAll(".desmos-container").forEach(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time));
+			
+			setTimeout(() =>
 			{
-				if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
-				{
-					this.animate_theme_contrast("dark");
-				}
+				DESMOS_PURPLE = "#60c000";
+				DESMOS_BLUE = "#c06000";
+				DESMOS_RED = "#00c0c0";
+				DESMOS_GREEN = "#c000c0";
+				DESMOS_BLACK = "#000000";
 				
+				Page.Load.create_desmos_graphs(true);
 				
+				Page.element.querySelectorAll(".desmos-container").forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
+			}, Site.opacity_animation_time);
+			
+			
+			
+			setTimeout(() =>
+			{
+				const element = Site.add_style(this.get_settings_style("dark"), false);
 				
-				setTimeout(() =>
-				{
-					const element = Site.add_style(this.get_settings_style("dark"), false);
-					
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					try {element.id = "theme-contrast-adjust";}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
+				try {document.querySelector("#theme-contrast-adjust").remove();}
+				catch(ex) {}
+				
+				try {element.id = "theme-contrast-adjust";}
+				catch(ex) {}
+				
+				this.clear_weird_inline_styles();
+			}, Site.opacity_animation_time * 2);
 			
 			
 			
@@ -372,48 +362,37 @@ Site.Settings =
 			
 			
 			
-			if (this.url_vars["contrast"] === 1)
+			if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
 			{
-				if (!Page.settings["manual_dark_theme"])
-				{
-					this.animate_theme_contrast("contrast");
-				}
-				
-				
-				
-				setTimeout(() =>
-				{
-					const element = Site.add_style(this.get_settings_style("contrast"), false);
-					
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					try {element.id = "theme-contrast-adjust";}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
+				this.animate_theme_contrast("");
 			}
 			
 			
 			
-			else
+			Page.element.querySelectorAll(".desmos-container").forEach(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time));
+			
+			setTimeout(() =>
 			{
-				if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
-				{
-					this.animate_theme_contrast("");
-				}
+				DESMOS_PURPLE = "#772fbf";
+				DESMOS_BLUE = "#2f77bf";
+				DESMOS_RED = "#bf2f2f";
+				DESMOS_GREEN = "#2fbf2f";
+				DESMOS_BLACK = "#000000";
 				
+				Page.Load.create_desmos_graphs(false);
 				
+				Page.element.querySelectorAll(".desmos-container").forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
+			}, Site.opacity_animation_time);
+			
+			
+			
+			setTimeout(() =>
+			{
+				try {document.querySelector("#theme-contrast-adjust").remove();}
+				catch(ex) {}
 				
-				setTimeout(() =>
-				{
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
+				this.clear_weird_inline_styles();
+			}, Site.opacity_animation_time * 2);
 			
 			
 			
