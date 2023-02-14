@@ -322,7 +322,7 @@ Page.Unload =
 				
 				Site.Settings.forced_theme = true;
 				
-				Site.Settings.toggle("theme", false, true);
+				Site.Settings.toggle_theme();
 			}
 			
 			

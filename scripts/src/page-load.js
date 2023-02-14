@@ -350,7 +350,7 @@ Page.Load =
 			
 			Page.Load.HoverEvents.add(element);
 			
-			element.addEventListener("click", () => Site.Settings.toggle("theme"));
+			element.addEventListener("click", () => Site.Settings.toggle_theme());
 		});
 	},
 
