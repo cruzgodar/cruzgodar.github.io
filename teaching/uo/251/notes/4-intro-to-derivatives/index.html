@@ -34,7 +34,7 @@
 		\frac{f(a + h) - f(a)}{h}.
 	$$
 	
-	!iframe https://www.desmos.com/calculator/lyfhz3puqb
+	!desmos secant-lines
 	
 	We want to get the tangent line by setting $h = 0$, but since the slope will be $\frac{0}{0}$ then, we need to take a limit instead.
 	
@@ -84,7 +84,7 @@
 	
 	This tells us that the slope of the graph (i.e. the slope of the tangent line) at $x = 1$ is $2$.
 	
-	!iframe https://www.desmos.com/calculator/jh1ausctpy
+	!desmos tangent-lines
 	
 !end-example
 
@@ -134,7 +134,7 @@
 	
 	computing a derivative
 	
-	Find $\frac{d}{dx}[x^2]$.
+	Find $\displaystyle \frac{d}{dx}[x^2]$.
 	
 	By definition, this is
 	
@@ -153,9 +153,9 @@
 	
 	Let&#x2019;s sketch a graph of these two.
 	
-	!iframe https://www.desmos.com/calculator/qzzdyuud8m
+	!desmos derivative-example
 	
-	Where the orange function is negative, the slope of the blue function is negative, and vice versa. Where the orange function is zero, the slope of the blue function is flat.
+	Where the blue function is negative, the slope of the purple function is negative, and vice versa. Where the blue function is zero, the slope of the purple function is flat.
 	
 !end-example
 
@@ -163,7 +163,7 @@
 	
 	computing a derivative
 	
-	Find $\frac{d}{dx}[x^3]$ and sketch a graph of both functions.
+	Find $\displaystyle \frac{d}{dx}[x^3]$ and sketch a graph of both functions.
 	
 !end-exercise
 
@@ -175,9 +175,9 @@
 	
 	Given this graph, sketch a graph of the derivative.
 	
-	!iframe https://www.desmos.com/calculator/rkejvxj92z
+	!desmos derivative-example-2
 	
-	Whenever the graph is flat, the derivative is zero. It&#x2019;s positive when the graph slopes upward and negative when it slopes downward, and so in total, we get a graph as indicated in the previous figure (click the blank circle next to $f'(x)$).
+	Whenever the purple graph is flat, the derivative is zero. It&#x2019;s positive when the graph slopes upward and negative when it slopes downward, and so in total, we wind up with the blue graph (click the circle next to $f'(x)$ to see it).
 	
 !end-example
 
@@ -187,7 +187,7 @@
 	
 	Given this graph, sketch a graph of the derivative.
 	
-	!iframe https://www.desmos.com/calculator/dhxfkmadv8
+	!desmos derivative-example-3
 	
 !end-exercise
 
@@ -233,7 +233,7 @@
 	
 	The graph of the function $f(x) = |x|$ is V-shaped, since the negative part gets reflected over the $x$-axis.
 	
-	!iframe https://www.desmos.com/calculator/4qnd67rvle
+	!desmos derivative-example-4
 	
 	At $x = 0$, the graph has a corner &mdash; a sharp point. It&#x2019;s not really clear what a tangent line at that point would look like, but we can take the limit anyway and see what happens.
 	
@@ -287,15 +287,15 @@
 
 !begin-text-block
 	
-	Since the derivative of a function $f(x)$ is another function, we can take the derivative of the $f'(x)$ to get yet another function. We call this the <dfn>second derivative</dfn> of $f$ and write it as $f''(x)$. The analgous form for the $\frac{d}{dx}$ notation is
+	Since the derivative of a function $f(x)$ is just another function, we can take the derivative of $f'(x)$ to get yet another function, called the <dfn>second derivative</dfn> of $f$ written $f''(x)$. The analgous form for the $\frac{d}{dx}$ notation is
 	
 	$$
 		\frac{d}{dx} \left[ \frac{d}{dx} \left[f\right] \right] = \frac{d^2}{dx^2}[f].
 	$$
 	
-	Sometimes we&#x2019;ll want to talk about the $n$th derivative where $n$ is left as a variable &mdash; instead of trying to write $n$ prime symbols, we just write $f^{(n)}$ instead. So for example, $f^{(2)}(x) = f''(x)$.
+	Sometimes we&#x2019;ll want to talk about the $n$th derivative where $n$ is left as a variable &mdash; instead of trying to write $n$ prime symbols, we just write $f^{(n)}$ instead. So for example, $f^{(3)}(x) = f'''(x)$.
 	
-	We&#x2019;ll talk about what visual feature the second derivative measures a little later, but for now let&#x2019;s just work through some examples.
+	We&#x2019;ll talk about what visual feature of a graph the second derivative measures a little later in the course, but for now let&#x2019;s just work through some examples.
 	
 !end-text-block
 
@@ -305,7 +305,7 @@
 	
 	a second derivative
 	
-	Find $\frac{d^2}{dx^2}[2x^2 - x]$.
+	Find $\displaystyle \frac{d^2}{dx^2}[2x^2 - x]$.
 	
 	This is a long calculation, but it&#x2019;s not too bad in the end. First, let&#x2019;s find the first derivative.
 	

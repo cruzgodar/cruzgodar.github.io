@@ -32,16 +32,6 @@
 	
 	The derivative $f'(a)$ is just the slope of the tangent line to the graph of $f$ at $x = a$. If the graph of $f$ is already a horizontal line, then a tangent line at any point is just that same line, and therefore has slope zero.
 	
-!end-text-block
-
-
-
-!iframe https://www.desmos.com/calculator/fwu2uv6gxj
-
-
-
-!begin-text-block
-	
 	The functions whose graphs are horizontal lines are the constant functions $y = c$ for some number $c$. Since the exact value of $c$ is irrelevant, we have the result that all constant functions have derivative zero.
 	
 !end-text-block
@@ -52,7 +42,7 @@
 	
 	constant functions have derivative zero
 	
-	Let $f(x) = c$ for a constant $c$. Then $f'(x) = 0$.
+	Let $f(x) = c$ for some constant $c$. Then $f'(x) = 0$.
 	
 !end-thm
 
@@ -60,7 +50,7 @@
 
 !begin-text-block
 	
-	This is a good start! Just like we did with limits, let&#x2019;s set our sights on polynomials next. There&#x2019;s a couple things we&#x2019;ll have to tackle to get there: for example, $2x^2 - x$ features the terms $x^2$ and $x$, along with subtraction and multiplication by $2$. With limits, we were able to ignore almost all of that, passing them through arithmetic, powers, and roots, but derivatives won&#x2019;t be quite so fluid. Let&#x2019;s begin with terms like $x$ and $x^2$.
+	This is a good start! Just like we did with limits, let&#x2019;s set our sights on polynomials next. There are a couple things we&#x2019;ll have to tackle to get there: for example, $2x^2 - x$ features the terms $x^2$ and $x$, along with subtraction and multiplication by $2$. With limits, we were able to ignore almost all of that, passing them through arithmetic, powers, and roots, but derivatives won&#x2019;t be quite so fluid. Let&#x2019;s begin with terms like $x$ and $x^2$.
 	
 !end-text-block
 
@@ -68,11 +58,9 @@
 
 !begin-thm
 	
-	the derivative of $x^n$
+	the power rule
 	
 	Let $f(x) = x^n$, where $n$ is a positive integer. Then $f'(x) = nx^{n-1}$.
-	
-	You&#x2019;ll often hear this referred to as the power rule, but in comparison to the techniques we&#x2019;ll see later in this section, which let us differentiate combinations of <strong>any</strong> two functions, this is a much more narrowly-focused theorem. For that reason, along with some common mistakes we&#x2019;ll mention later, I tend not to use that name.
 	
 !end-thm
 
@@ -80,7 +68,7 @@
 
 !begin-text-block
 	
-	In other words, to differentiate a function of the form $x^n$, bring down the power in the form of a constant multiple and decrease the power by one. The proof of this theorem is a little bit hairy &mdash; it involves expanding $(x + h)^n$ for an arbitrary integer $n$, which is pretty tricky. It&#x2019;s also worth pointing out that the theorem as stated only works for positive integer powers. We&#x2019;ll later extend it to all nonzero numbers, but for now, we&#x2019;ll have to stick with positive integers.
+	In other words, to differentiate a function of the form $x^n$, bring down the power in the form of a constant multiple and decrease the power by one. The proof of this theorem is a little bit tricky &mdash; it involves expanding $(x + h)^n$ for an arbitrary integer $n$, which isn&#x2019;t particularly easy. It&#x2019;s also worth pointing out that the theorem as stated only works for positive integer powers. We&#x2019;ll later extend it to all nonzero numbers, but for now, we&#x2019;ll have to stick with positive integers.
 	
 !end-text-block
 
@@ -90,7 +78,7 @@
 	
 	the derivative of $x^n$
 	
-	Find $\frac{d}{dx}[x^6]$.
+	Find $\displaystyle \frac{d}{dx}[x^6]$.
 	
 	To find this, we bring down the $6$ and decrease it by one into a $5$, to get $\frac{d}{dx}[x^6] = 6x^5$.
 	
@@ -100,7 +88,7 @@
 	
 	the derivative of $x^n$
 	
-	Find $\frac{d}{dt}[t^3]$.
+	Find $\displaystyle \frac{d}{dt}[t^3]$.
 	
 !end-exercise
 
@@ -122,11 +110,11 @@
 	
 	Let $f$ and $g$ be differentiable functions and $c$ a constant number.
 	
-	1. (The Sum Rule) $\frac{d}{dx}[f(x) + g(x)] = f'(x) + g'(x)$.
+	1. (The Sum Rule) $\displaystyle \frac{d}{dx}[f(x) + g(x)] = f'(x) + g'(x)$.
 	
-	2. (The Difference Rule) $\frac{d}{dx}[f(x) - g(x)] = f'(x) - g'(x)$.
+	2. (The Difference Rule) $\displaystyle \frac{d}{dx}[f(x) - g(x)] = f'(x) - g'(x)$.
 	
-	3. (The Constant Multiple Rule) $\frac{d}{dx}[c \cdot f(x)] = c \cdot f'(x)$.
+	3. (The Constant Multiple Rule) $\displaystyle \frac{d}{dx}[c \cdot f(x)] = c \cdot f'(x)$.
 	
 !end-thm
 
@@ -134,7 +122,7 @@
 
 !begin-text-block
 	
-	These theorems tell us that derivatives split across addition and subtraction, and constant multiples factor out of derivatives. As an example, let&#x2019;s revisit the intense second derivative question from the previous section.
+	These theorems tell us that derivatives split across addition and subtraction, and that constant multiples factor out of derivatives. As an example, let&#x2019;s revisit the intense second derivative question from the previous section.
 	
 !end-text-block
 
@@ -144,7 +132,7 @@
 	
 	the sum, difference, and constant multiple rules
 	
-	Find $\frac{d^2}{dx^2}[2x^2 - x]$.
+	Find $\displaystyle \frac{d^2}{dx^2}[2x^2 - x]$.
 	
 	As before, we&#x2019;ll handle one derivative at a time.
 	
@@ -177,7 +165,7 @@
 	
 	the sum, difference, and constant multiple rules
 	
-	Find $\frac{d}{dt}[t^2 - 5t + 2]$.
+	Find $\displaystyle \frac{d^2}{dt^2}[t^2 - 5t + 2]$.
 	
 !end-exercise
 
@@ -203,7 +191,11 @@
 	
 	the product rule
 	
-	Let $f$ and $g$ be differentiable functions. Then $\frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x)$.
+	Let $f$ and $g$ be differentiable functions. Then
+	
+	$$
+		\frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x).
+	$$
 	
 !end-thm
 
@@ -213,7 +205,13 @@
 	
 	the product rule
 	
-	Let $P(t)$ be a function that gives the population of a town, $t$ years after we start measuring. Given that $P(t) = 3000(3t^2 + 1)(t + 2)$, what is the rate of change of the population after $t$ years?
+	Let $P(t)$ be a function that gives the population of a town, $t$ years after we start measuring. Given that
+	
+	$$
+		P(t) = 3000(3t^2 + 1)(t + 2),
+	$$
+	
+	what is the rate of change of the population after $t$ years?
 	
 	The rate of change is just the derivative, so we want $P'(t)$. Using the constant multiple and product rules, we have
 	
@@ -236,7 +234,7 @@
 	
 	the product rule
 	
-	Let $f(x) = 2x + 1$ and $g(x) = 1 - x^2$. Find $\frac{d}{dx}[f(x)g(x)]$.
+	Let $f(x) = 2x + 1$ and $g(x) = 1 - x^2$. Find $\displaystyle \frac{d}{dx}[f(x)g(x)]$.
 	
 !end-exercise
 
@@ -278,7 +276,7 @@
 	
 	the quotient rule
 	
-	Find $\frac{d}{dx} \left[\frac{2x^2}{1 - x}\right]$.
+	Find $\displaystyle \frac{d}{dx} \left[\frac{2x^2}{1 - x}\right]$.
 	
 	The derivative of the top (i.e. $2x^2$) is $2 \cdot 2x = 4x$, and the derivative of the bottom is $0 - 1 = -1$. Putting it all together, we get
 	
@@ -296,7 +294,7 @@
 	
 	the quotient rule
 	
-	Find $\frac{d}{dx} \left[\frac{1 - x}{2x^2}\right]$.
+	Find $\displaystyle \frac{d}{dx} \left[\frac{1 - x}{2x^2}\right]$.
 	
 !end-exercise
 
@@ -316,7 +314,13 @@
 		\end{align*}
 	$$
 	
-	Hey, that&#x2019;s the same result as if $n$ were positive! Because of this, we can safely say that $\frac{d}{dx}[x^n] = nx^{n-1}$ for <strong>any</strong> integer $n$.
+	Hey, that&#x2019;s the same result as if $n$ were positive! Because of this, we can safely say that
+	
+	$$
+		\frac{d}{dx}[x^n] = nx^{n-1}
+	$$
+	
+	for <strong>any</strong> integer $n$.
 	
 !end-text-block
 

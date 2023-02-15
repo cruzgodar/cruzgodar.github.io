@@ -69,14 +69,14 @@ iframe
 
 .desmos-border, .desmos-container, .dcg-container
 {
-	width: calc(70vw - 4px) !important;
-	height: calc(70vw - 4px) !important;
+	width: calc(min(70vw, 70vh) - 4px) !important;
+	height: calc(min(70vw, 70vh) - 4px) !important;
 }
 
 .notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
 {
-	width: calc(70vw - 20px) !important;
-	height: calc(70vw - 20px) !important;
+	width: calc(min(70vw, 70vh) - 20px) !important;
+	height: calc(min(70vw, 70vh) - 20px) !important;
 }
 
 
@@ -223,14 +223,14 @@ iframe
 	
 	.desmos-border, .desmos-container, .dcg-container
 	{
-		width: calc(90vw - 4px) !important;
-		height: calc(90vw - 4px) !important;
+		width: calc(min(90vw, 70vh) - 4px) !important;
+		height: calc(min(90vw, 70vh) - 4px) !important;
 	}
 	
 	.notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
 	{
-		width: calc(90vw - 20px) !important;
-		height: calc(90vw - 20px) !important;
+		width: calc(min(90vw, 70vh) - 20px) !important;
+		height: calc(min(90vw, 70vh) - 20px) !important;
 	}
 }
 
@@ -245,36 +245,13 @@ iframe
 	
 	.desmos-border, .desmos-container, .dcg-container
 	{
-		width: calc(50vw - 4px) !important;
-		height: calc(50vw - 4px) !important;
+		width: calc(min(50vw, 70vh) - 4px) !important;
+		height: calc(min(50vw, 70vh) - 4px) !important;
 	}
 	
 	.notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
 	{
-		width: calc(50vw - 20px) !important;
-		height: calc(50vw - 20px) !important;
-	}
-}
-
-
-
-@media (min-aspect-ratio: 7/9) and (max-width: 700px), (min-aspect-ratio: 7/7) and (min-width: 700px) and (max-width: 1400px), (min-aspect-ratio: 7/5) and (min-width: 1400px)
-{
-	html, body
-	{
-		backgorund-color: red;
-		
-	}
-	
-	.desmos-border, .desmos-container, .dcg-container
-	{
-		width: calc(70vh - 4px) !important;
-		height: calc(70vh - 4px) !important;
-	}
-	
-	.notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
-	{
-		width: calc(70vh - 20px) !important;
-		height: calc(70vh - 20px) !important;
+		width: calc(min(50vw, 70vh) - 20px) !important;
+		height: calc(min(50vw, 70vh) - 20px) !important;
 	}
 }
