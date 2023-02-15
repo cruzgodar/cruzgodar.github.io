@@ -259,8 +259,8 @@
 
 .text-box:focus
 {
-	border-color: rgb(48, 48, 48);
-	color: rgb(48, 48, 48);
+	border-color: rgb(0, 0, 0);
+	color: rgb(0, 0, 0);
 }
 
 .text-box-container
@@ -309,8 +309,8 @@
 
 .text-field:focus
 {
-	border-color: rgb(48, 48, 48);
-	color: rgb(48, 48, 48);
+	border-color: rgb(0, 0, 0);
+	color: rgb(0, 0, 0);
 }
 
 .text-field-container

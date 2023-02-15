@@ -341,9 +341,9 @@ Site.Settings =
 			
 			Page.set_element_styles(".section-text, .quote-attribution", "color", "rgb(48, 48, 48)");
 			
-			Page.set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field", "color", "rgb(96, 96, 96)");
+			Page.set_element_styles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field", "color", "rgb(96, 96, 96)");
 			
-			Page.set_element_styles(".body-text .link", "color", "rgb(96, 144, 96)");
+			Page.set_element_styles("a", "color", "rgb(127, 192, 127)");
 			
 			Page.set_element_styles(".text-box, .text-field, .checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button", "background-color", "rgb(255, 255, 255)");
 			
@@ -395,9 +395,9 @@ Site.Settings =
 			
 			Page.set_element_styles(".section-text, .quote-attribution", "color", "rgb(220, 220, 220)");
 			
-			Page.set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field", "color", "rgb(172, 172, 172)");
+			Page.set_element_styles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field", "color", "rgb(172, 172, 172)");
 			
-			Page.set_element_styles(".body-text .link", "color", "rgb(172, 255, 172)");
+			Page.set_element_styles("a", "color", "rgb(144, 216, 144)");
 			
 			Page.set_element_styles(".text-box, .text-field, .checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button", "background-color", "rgb(24, 24, 24)");
 			
@@ -520,9 +520,9 @@ Site.Settings =
 			color: rgb(172, 172, 172);
 		}
 		
-		.body-text .link
+		a
 		{
-			color: rgb(172, 255, 172);
+			color: rgb(144, 216, 144);
 		}
 		
 		
@@ -536,8 +536,8 @@ Site.Settings =
 		
 		.text-box:focus, .text-field:focus
 		{
-			color: rgb(220, 220, 220);
-			border-color: rgb(220, 220, 220);
+			color: rgb(255, 255, 255);
+			border-color: rgb(255, 255, 255);
 		}
 		
 		
