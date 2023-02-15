@@ -1,0 +1,51 @@
+!function()
+{
+	Page.Load.get_desmos_data = () =>
+	{
+		const data =
+		{
+			"limit-example":
+			{
+				bounds: {left: -5, right: 5, bottom: -5, top: 5},
+				
+				expressions:
+				[
+					{latex: String.raw`\frac{x^2 - 1}{x - 1}`, color: DESMOS_PURPLE},
+					{latex: String.raw`(1, 2)`, color: DESMOS_PURPLE, pointStyle: "OPEN"},
+				]
+			},
+			
+			
+			
+			"limit-example-2":
+			{
+				bounds: {left: 0, right: 8, bottom: -3, top: 5},
+				
+				expressions:
+				[
+					{latex: String.raw`f(t) = \sqrt{t - 2}`, color: DESMOS_PURPLE},
+				]
+			},
+			
+			
+			
+			"squeeze-theorem":
+			{
+				bounds: {left: -25*Math.PI / 2, right: 25*Math.PI / 2, bottom: -25*Math.PI / 2, top: 25*Math.PI / 2},
+				
+				expressions:
+				[
+					{latex: String.raw`f(x) = -\left|x\right|`, color: DESMOS_BLUE},
+					{latex: String.raw`g(x) = x\sin(x)`, color: DESMOS_PURPLE},
+					{latex: String.raw`h(x) = \left|x\right|`, color: DESMOS_RED},
+				]
+			},
+		};
+		
+		return data;
+	}
+	
+	Page.Load.create_desmos_graphs();
+	
+	Page.show();
+}()

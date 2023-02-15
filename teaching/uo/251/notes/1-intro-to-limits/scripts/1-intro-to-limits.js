@@ -4,7 +4,7 @@
 	{
 		const data =
 		{
-			"velocity-exaple":
+			"velocity-example":
 			{
 				bounds: {left: -10, right: 10, bottom: -10, top: 10},
 				
