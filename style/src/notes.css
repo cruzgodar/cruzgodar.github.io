@@ -50,7 +50,7 @@ iframe
 {
 	margin: 0 auto;
 	
-	border: 2px solid rgb(127, 127, 127);
+	border: 2px solid rgb(96, 96, 96);
 	border-radius: 15px;
 	padding: 2px;
 	
@@ -234,6 +234,8 @@ iframe
 	}
 }
 
+
+
 @media (min-width: 1400px)
 {
 	.notes-example, .notes-exercise, .notes-def, .notes-prop, .notes-thm, .notes-proof, .notes-cor, .notes-lemma, .notes-axiom
@@ -251,5 +253,28 @@ iframe
 	{
 		width: calc(50vw - 20px) !important;
 		height: calc(50vw - 20px) !important;
+	}
+}
+
+
+
+@media (min-aspect-ratio: 7/9) and (max-width: 700px), (min-aspect-ratio: 7/7) and (min-width: 700px) and (max-width: 1400px), (min-aspect-ratio: 7/5) and (min-width: 1400px)
+{
+	html, body
+	{
+		backgorund-color: red;
+		
+	}
+	
+	.desmos-border, .desmos-container, .dcg-container
+	{
+		width: calc(70vh - 4px) !important;
+		height: calc(70vh - 4px) !important;
+	}
+	
+	.notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
+	{
+		width: calc(70vh - 20px) !important;
+		height: calc(70vh - 20px) !important;
 	}
 }
