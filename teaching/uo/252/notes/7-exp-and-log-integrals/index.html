@@ -107,11 +107,7 @@
 	
 	Another exponential integral
 	
-	Find
-	
-	$$
-		\int \frac{2^{1/x}}{x^2}\ dx.
-	$$
+	Find $\displaystyle \int \frac{2^{1/x}}{x^2}\ dx$.
 	
 	This is way too complicated to evaluate directly, so we have to try $u$-sub. If we set $u = x^2$, then the exponential becomes $2^{1/\sqrt{u}}$, which isn&#x2019;t really helpful. Instead, we can try $u = \frac{1}{x}$. Then $du = -\frac{1}{x^2}\ dx$, which lines up nicely: the integral becomes
 	
@@ -186,11 +182,7 @@
 	
 	a logarithmic integral
 	
-	Find
-	
-	$$
-		\int_2^3 \log_2(5x)\ dx.
-	$$
+	Find $\displaystyle \int_2^3 \log_2(5x)\ dx$.
 	
 	First, we&#x2019;ll turn this log into a natural log.
 	
@@ -217,7 +209,7 @@
 	
 	a logarithmic integral
 	
-	Find $\int_1^2 x\log_3(x^2)\ dx$.
+	Find $\displaystyle \int_1^2 x\log_3(x^2)\ dx$.
 	
 	<strong>Solution:</strong> since we have a composition, we should try $u$-sub. Let $u = x^2$ &mdash; then $du = 2x\ dx$, so we have
 	
@@ -254,11 +246,11 @@
 	
 	inverse trig integrals
 	
-	1. $\int \frac{1}{\sqrt{a^2 - x^2}}\ dx = \sin^{-1}\left( \frac{x}{a} \right) + C$.
+	1. $\displaystyle \int \frac{1}{\sqrt{a^2 - x^2}}\ dx = \sin^{-1}\left( \frac{x}{a} \right) + C$.
 	
-	2. $\int \frac{1}{x^2 + a^2}\ dx = \frac{1}{a} \tan^{-1}\left( \frac{x}{a} \right) + C$.
+	2. $\displaystyle \int \frac{1}{x^2 + a^2}\ dx = \frac{1}{a} \tan^{-1}\left( \frac{x}{a} \right) + C$.
 	
-	3. $\int \frac{1}{x\sqrt{x^2 - a^2}}\ dx = \frac{1}{a} \sec^{-1}\left( \frac{x}{a} \right) + C$.
+	3. $\displaystyle \int \frac{1}{x\sqrt{x^2 - a^2}}\ dx = \frac{1}{a} \sec^{-1}\left( \frac{x}{a} \right) + C$.
 	
 !end-prop
 
@@ -276,7 +268,7 @@
 	
 	an inverse trig integral
 	
-	Find $\int \frac{1}{\sqrt{4 - 9x^2}}\ dx$.
+	Find $\displaystyle \int \frac{1}{\sqrt{4 - 9x^2}}\ dx$.
 	
 	This resembles the first integral in the previous proposition, but we need to remove the $9$ from the $x^2$. This can be done with $u$-sub:
 	
@@ -296,7 +288,7 @@
 	
 	an inverse trig integral
 	
-	Find $\int \frac{1}{x\sqrt{4x^2 - 4}}\ dx$.
+	Find $\displaystyle \int \frac{1}{x\sqrt{4x^2 - 4}}\ dx$.
 	
 	<strong>Solution:</strong> first we need to factor out a $4$. Then we have
 	
@@ -310,7 +302,19 @@
 
 !begin-text-block
 	
-	For definite integrals, we&#x2019;ll need to remember how inverse trig functions are actually evaluated. They are the inverse functions to the standard trig functions, which means they take outputs to their coorsponding inputs. For example, $\sin(\frac{\pi}{3}) = \frac{\sqrt{3}}{2}$, so $\sin^{-1}(\frac{\sqrt{3}}{2}) = \frac{\pi}{3}$. This isn&#x2019;t particularly relevant to this course&#x2019;s material, and your calculator can handle evaluating these, so we won&#x2019;t worry too much about practicing calculations with them. Instead, let&#x2019;s take a look at an integral example involving them.
+	For definite integrals, we&#x2019;ll need to remember how inverse trig functions are actually evaluated. They are the inverse functions to the standard trig functions, which means they take outputs to their coorsponding inputs. For example,
+	
+	$$
+		\sin\left(\frac{\pi}{3}\right) = \frac{\sqrt{3}}{2},
+	$$
+	
+	so
+	
+	$$
+		\sin^{-1}\left(\frac{\sqrt{3}}{2}\right) = \frac{\pi}{3}.
+	$$
+	
+	This isn&#x2019;t particularly relevant to this course&#x2019;s material, and your calculator can handle evaluating these, so we won&#x2019;t worry too much about practicing calculations with them. Instead, let&#x2019;s take a look at an integral example involving them.
 	
 !end-text-block
 
@@ -320,11 +324,7 @@
 	
 	a definite inverse trig integral
 	
-	Find
-	
-	$$
-		\int_0^2 \frac{1}{\sqrt{16 - x^2}}\ dx.
-	$$
+	Find $\displaystyle \int_0^2 \frac{1}{\sqrt{16 - x^2}}\ dx$.
 	
 	We have
 	
@@ -343,12 +343,15 @@
 	
 	a definite inverse trig integral
 	
-	Find $\int_{\sqrt{3}/3}^{\sqrt{3}} \frac{1}{1 + x^2}\ dx$.
+	Find $\displaystyle \int_{\sqrt{3}/3}^{\sqrt{3}} \frac{1}{1 + x^2}\ dx$.
 	
 	<strong>Solution:</strong> this is
 	
 	$$
-		\left. \left[ \tan^{-1}(x) \right] \right|_{\sqrt{3}/3}^{\sqrt{3}} = \frac{\pi}{3} - \frac{\pi}{6} = \frac{\pi}{6}.
+		\begin{align*}
+			\left. \left[ \tan^{-1}(x) \right] \right|_{\sqrt{3}/3}^{\sqrt{3}} &= \frac{\pi}{3} - \frac{\pi}{6}\\
+			&= \frac{\pi}{6}.
+		\end{align*}
 	$$
 	
 !end-exercise

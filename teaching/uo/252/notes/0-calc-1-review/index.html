@@ -158,15 +158,15 @@
 	
 	basic derivative rules
 	
-	$\frac{d}{dx} [c \cdot f(x)] = c \cdot f'(x)$
+	$\displaystyle \frac{d}{dx} [c \cdot f(x)] = c \cdot f'(x)$
 	
-	$\frac{d}{dx} [f(x) + g(x)] = f'(x) + g'(x)$
+	$\displaystyle \frac{d}{dx} [f(x) + g(x)] = f'(x) + g'(x)$
 	
-	$\frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x)$ (the product rule)
+	$\displaystyle \frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x)$ (the product rule)
 	
-	$\frac{d}{dx} \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}$ (the quotient rule)
+	$\displaystyle \frac{d}{dx} \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}$ (the quotient rule)
 	
-	$\frac{d}{dx} [f(g(x))] = f'(g(x))g'(x)$ (the chain rule)
+	$\displaystyle \frac{d}{dx} [f(g(x))] = f'(g(x))g'(x)$ (the chain rule)
 	
 !end-prop
 
@@ -184,7 +184,7 @@
 	
 	the chain rule
 	
-	Find $\frac{d}{dx} [\sin(x^3)]$.
+	Find $\displaystyle \frac{d}{dx} [\sin(x^3)]$.
 	
 	The structure of $\sin(x^3)$ is a composition: the $x^3$ is being plugged into $\sin(x)$. The chain tells us how to differentiate the entire function in terms of the derivatives of the two pieces: first, we differentiate the outer function (in our case, $\sin(x)$) and plug the inner function ($x^3$) into the result. Then we multiply that by the derivative of the inner function. In symbols, that looks like
 	
@@ -201,7 +201,7 @@
 	
 	the chain rule
 	
-	Find $\frac{d}{dx} \left[ \tan(x) \ln(\cos(x^2)) \right]$.
+	Find $\displaystyle \frac{d}{dx} \left[ \tan(x) \ln(\cos(x^2)) \right]$.
 	
 !end-exercise
 
@@ -219,21 +219,21 @@
 	
 	common derivatives
 	
-	$\frac{d}{dx} [0] = 0$
+	$\displaystyle \frac{d}{dx} [0] = 0$
 	
-	$\frac{d}{dx} [x^p] = px^{p - 1}, p \neq 0$ (the power rule)
+	$\displaystyle \frac{d}{dx} [x^p] = px^{p - 1}, p \neq 0$ (the power rule)
 	
-	$\frac{d}{dx} [\sin(x)] = \cos(x)$
+	$\displaystyle \frac{d}{dx} [\sin(x)] = \cos(x)$
 	
-	$\frac{d}{dx} [\cos(x)] = -\sin(x)$
+	$\displaystyle \frac{d}{dx} [\cos(x)] = -\sin(x)$
 	
-	$\frac{d}{dx} [\tan(x)] = \sec^2(x)$
+	$\displaystyle \frac{d}{dx} [\tan(x)] = \sec^2(x)$
 	
-	$\frac{d}{dx} [b^x] = b^x \ln(b)$
+	$\displaystyle \frac{d}{dx} [b^x] = b^x \ln(b)$
 	
-	$\frac{d}{dx} [e^x] = e^x$
+	$\displaystyle \frac{d}{dx} [e^x] = e^x$
 	
-	$\frac{d}{dx} [\ln(x)] = \frac{1}{x}$
+	$\displaystyle \frac{d}{dx} [\ln(x)] = \frac{1}{x}$
 	
 !end-prop
 
@@ -259,7 +259,13 @@
 	
 	L&#x2019;H&#x00F4;pital&#x2019;s rule
 	
-	If $\lim_{x \to a} \frac{f(x)}{g(x)}$ was the form of either $\frac{0}{0}$ or $\frac{\infty}{\infty}$, then
+	If
+	
+	$$
+		\lim_{x \to a} \frac{f(x)}{g(x)}
+	$$
+	
+	has the form of either $\frac{0}{0}$ or $\frac{\infty}{\infty}$, then
 	
 	$$
 		\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}.
@@ -275,7 +281,7 @@
 	
 	L&#x2019;H&#x00F4;pital&#x2019;s rule
 	
-	Find $\lim_{x \to \infty} \frac{x}{x^2 + 1}$.
+	Find $\displaystyle \lim_{x \to \infty} \frac{x}{x^2 + 1}$.
 	
 	Trying to treat the top and bottom separately gives us
 	
@@ -295,7 +301,7 @@
 	
 	L&#x2019;H&#x00F4;pital&#x2019;s rule
 	
-	Find $\lim_{x \to 0} \frac{\sin(x)}{x}$.
+	Find $\displaystyle \lim_{x \to 0} \frac{\sin(x)}{x}$.
 	
 !end-exercise
 
