@@ -33,6 +33,8 @@ Page.Layout =
 		this.new_window_width = window.innerWidth;
 		this.new_window_height = window.innerHeight;
 		
+		Page.Banner.max_scroll = document.body.offsetHeight > this.new_window_height * 1.5 ? this.new_window_height / 2 : document.body.offsetHeight - this.new_window_height;
+		
 		let attempts = 0;
 		
 		while (this.new_window_width === this.old_window_width && this.new_window_height === this.old_window_height)

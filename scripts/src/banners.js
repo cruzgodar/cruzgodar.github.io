@@ -14,6 +14,8 @@ Page.Banner =
 	file_path: "",
 	
 	opacity: 1,
+	
+	max_scroll: null,
 
 
 
@@ -161,11 +163,16 @@ Page.Banner =
 	
 	scroll_handler: function()
 	{
-		if (Page.scroll <= Page.Layout.window_height)
+		if (Page.scroll <= .75 * Page.Layout.window_height)
 		{
-			this.opacity = .5 + .5 * Math.sin(Math.PI * Math.min(Math.max(1 - Page.scroll / Page.Layout.window_height, 0), 1) - Math.PI / 2);
+			this.opacity = .5 + .5 * Math.sin(Math.PI * Math.min(Math.max(1 - Page.scroll / this.max_scroll, 0), 1) - Math.PI / 2);
 			
-			try {Page.banner_element.style.opacity = this.opacity}
+			try
+			{
+				Page.banner_element.style.opacity = this.opacity;
+				Page.element.querySelector("#content").style.opacity = 1 - this.opacity;
+			}
+			
 			catch(ex) {}
 			
 			if (this.opacity === 0)
@@ -193,7 +200,7 @@ Page.Banner =
 		
 		if (Page.scroll <= Page.Layout.window_height / 5)
 		{
-			const opacity = .5 + .5 * Math.sin(Math.PI * Math.min(Math.max(1 - 5 * Page.scroll / Page.Layout.window_height, 0), 1) - Math.PI / 2);
+			const opacity = .5 + .5 * Math.sin(Math.PI * Math.min(Math.max(1 - Page.scroll / (this.max_scroll / 2.5), 0), 1) - Math.PI / 2);
 			
 			if (this.ScrollButton.exists)
 			{
@@ -240,6 +247,12 @@ Page.Banner =
 			catch(ex) {}
 			
 			this.ScrollButton.done_loading = true;
+		}
+		
+		else
+		{
+			try {document.querySelector("#scroll-button").remove();}
+			catch(ex) {}
 		}
 	},
 	
@@ -309,6 +322,13 @@ Page.Banner =
 		
 		insert: function()
 		{
+			if (Page.scroll > Page.Layout.window_height / 5)
+			{
+				return;
+			}
+			
+			
+			
 			const opacity = .5 + .5 * Math.sin(Math.PI * Math.min(Math.max(1 - 5 * Page.scroll / Page.Layout.window_height, 0), 1) - Math.PI / 2);
 			
 			let chevron_name = "chevron-down";
