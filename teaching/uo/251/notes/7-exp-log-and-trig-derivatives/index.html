@@ -40,17 +40,17 @@
 	
 	derivatives of trig functions
 	
-	1. $\frac{d}{dx} [\sin(x)] = \cos(x)$.
+	1. $\displaystyle \frac{d}{dx} [\sin(x)] = \cos(x)$.
 	
-	2. $\frac{d}{dx} [\cos(x)] = -\sin(x)$.
+	2. $\displaystyle \frac{d}{dx} [\cos(x)] = -\sin(x)$.
 	
-	3. $\frac{d}{dx} [\tan(x)] = \sec^2(x)$.
+	3. $\displaystyle \frac{d}{dx} [\tan(x)] = \sec^2(x)$.
 	
-	4. $\frac{d}{dx} [\sec(x)] = \sec(x)\tan(x)$.
+	4. $\displaystyle \frac{d}{dx} [\sec(x)] = \sec(x)\tan(x)$.
 	
-	5. $\frac{d}{dx} [\csc(x)] = -\csc(x)\cot(x)$.
+	5. $\displaystyle \frac{d}{dx} [\csc(x)] = -\csc(x)\cot(x)$.
 	
-	6. $\frac{d}{dx} [\cot(x)] = -\csc^2(x)$.
+	6. $\displaystyle \frac{d}{dx} [\cot(x)] = -\csc^2(x)$.
 	
 !end-thm
 
@@ -68,14 +68,12 @@
 	
 	derivatives of trig functions
 	
-	Find $\frac{d}{dx}[x^2\cos(x)]$.
+	Find $\displaystyle \frac{d}{dx}[x^2\cos(x)]$.
 	
 	This is a product of two functions we know how to differentiate: $x^2$ and $\cos(x)$. In total, we get
 	
 	$$
-		\begin{align*}
-			\frac{d}{dx}[x^2\cos(x)] = 2x\cos(x) + x^2(-\sin(x)).
-		\end{align*}
+		\frac{d}{dx}[x^2\cos(x)] = 2x\cos(x) + x^2(-\sin(x)).
 	$$
 	
 !end-example
@@ -84,7 +82,7 @@
 	
 	derivatives of trig functions
 	
-	Find $\frac{d}{dx}\left[9x + \frac{\sec(x)}{x}\right]$.
+	Find $\displaystyle \frac{d}{dx}\left[9x + \frac{\sec(x)}{x}\right]$.
 	
 !end-exercise
 
@@ -94,7 +92,7 @@
 	
 	Let&#x2019;s take a closer look at what the relationship between $\sin$ and $\cos$ means. At any point on the two waves, the height of $\cos(x)$ gives the slope of $\sin(x)$, and the height of $\cos(x)$ is the opposite of the slope of $\sin(x)$. It&#x2019;s a fundamental fact of waves that their slopes are given by other wave functions.
 	
-	!iframe https://www.desmos.com/calculator/qudvvbftix
+	!desmos sin-and-cos
 	
 !end-text-block
 
@@ -104,19 +102,26 @@
 	
 	a higher-order trig derivative
 	
-	Find $\frac{d^{74}}{dx^{74}}[\cos(x)]$.
+	Find $\displaystyle \frac{d^{74}}{dx^{74}}[\cos(x)]$.
 	
 	This seems pretty tricky on first glance, but it&#x2019;s actually not so bad. Let&#x2019;s write out the first few derivatives and see if we can spot a pattern.
 	
-	$\frac{d}{dx}[\cos(x)] = -\sin(x)$.
+	$\displaystyle \frac{d}{dx}[\cos(x)] = -\sin(x)$.
 	
-	$\frac{d^2}{dx^2}[\cos(x)] = -\cos(x)$.
+	$\displaystyle \frac{d^2}{dx^2}[\cos(x)] = -\cos(x)$.
 	
-	$\frac{d^3}{dx^3}[\cos(x)] = \sin(x)$.
+	$\displaystyle \frac{d^3}{dx^3}[\cos(x)] = \sin(x)$.
 	
-	$\frac{d^4}{dx^4}[\cos(x)] = \cos(x)$.
+	$\displaystyle \frac{d^4}{dx^4}[\cos(x)] = \cos(x)$.
 	
-	Since the fourth derivative is just $\cos(x)$ again, every four derivatives we take won&#x2019;t matter. Therefore, instead of taking the 74th derivative, we can take the 70th, or 66th, or 62nd, and so on. The largest multiple of 4 less than 74 is $72 = 4 * 18$, so $\frac{d^{74}}{dx^{74}}[\cos(x)] = \frac{d^2}{dx^2}[\cos(x)] = -\cos(x)$.
+	Since the fourth derivative is just $\cos(x)$ again, every four derivatives we take won&#x2019;t matter. Therefore, instead of taking the 74th derivative, we can take the 70th, or 66th, or 62nd, and so on. The largest multiple of 4 less than 74 is $72 = 4 * 18$, so
+	
+	$$
+		\begin{align*}
+			\frac{d^{74}}{dx^{74}}[\cos(x)] &= \frac{d^2}{dx^2}[\cos(x)]\\
+			&= -\cos(x).
+		\end{align*}
+	$$
 	
 !end-example
 
@@ -124,7 +129,7 @@
 	
 	a higher-order trig derivative
 	
-	Find $\frac{d^{81}}{dx^{81}}[\sin(x)]$.
+	Find $\displaystyle \frac{d^{81}}{dx^{81}}[\sin(x)]$.
 	
 !end-exercise
 
@@ -152,15 +157,15 @@
 	
 	Let $b > 0$. Then
 	
-	1. $\frac{d}{dx}[b^x] = b^x \cdot \ln(b)$.
+	1. $\displaystyle \frac{d}{dx}[b^x] = b^x \cdot \ln(b)$.
 	
-	2. $\frac{d}{dx}[\log_b(x)] = \frac{1}{x \cdot \ln(b)}$.
+	2. $\displaystyle \frac{d}{dx}[\log_b(x)] = \frac{1}{x \cdot \ln(b)}$.
 	
 	In particular, when $b = e$, since $\ln(e) = 1$, we get
 	
-	1. $\frac{d}{dx}[e^x] = e^x$.
+	1. $\displaystyle \frac{d}{dx}[e^x] = e^x$.
 	
-	2. $\frac{d}{dx}[\ln(x)] = \frac{1}{x}$.
+	2. $\displaystyle \frac{d}{dx}[\ln(x)] = \frac{1}{x}$.
 	
 !end-thm
 
@@ -168,11 +173,11 @@
 
 !begin-text-block
 	
-	This is really important: $y = e^x$ is the unique function who&#x2019;s its own derivative. The slope of the graph of $y = e^x$ is exactly its height.
+	This is really important: $y = e^x$ is the unique function that is its own derivative. In other words, the slope of the graph of $y = e^x$ is exactly its height.
 	
-	!iframe https://www.desmos.com/calculator/cajlfcni4l
+	!desmos exp-derivative
 	
-	This is why we care so much about the number $e$: it makes derivatives really simple.
+	This is one reason why we care so much about the number $e$: derivatives involving it are extremely simple.
 	
 !end-text-block
 
