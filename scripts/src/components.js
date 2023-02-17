@@ -968,58 +968,11 @@ Page.Components =
 				
 				else if (words[0] === "!begin-proof")
 				{
-					lines[i] = `<div class="notes-proof notes-environment"><span class="notes-proof-title">Proof</span><p></p><br>`;
+					lines[i] = `<div class="notes-proof notes-environment"><p class="body-text"><span class="notes-proof-title">Proof</span></p><p></p><br>`;
 					
 					
 					
 					while (words[0] !== "!end-proof")
-					{
-						i += 2;
-						
-						
-						
-						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
-						{
-							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
-							{
-								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
-							}
-							
-							lines[i] = `<p class="body-text">$$`;
-						
-							i++;
-							
-							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
-							{
-								i++;
-							}
-							
-							lines[i] = `$$</p>`;
-							
-							continue;
-						}
-						
-						
-						
-						words = lines[i].split(" ");
-						
-						lines[i] = this.get_text(["b", "j"].concat(words));
-					}
-					
-					
-					
-					lines[i] = `</div>`;
-				}
-				
-				
-				
-				else if (words[0] === "!begin-comment")
-				{
-					lines[i] = `<div class="notes-comment notes-environment"><span class="notes-comment-title">Comment</span><p></p><br>`;
-					
-					
-					
-					while (words[0] !== "!end-comment")
 					{
 						i += 2;
 						

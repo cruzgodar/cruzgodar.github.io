@@ -32,7 +32,7 @@
 	
 	It&#x2019;s possible to write down functions without forcing $y$ to be alone on one side, though. For example, the equation $x^2 + y^2 = 1$ defines a curve: its points are given by all the $x$ and $y$ with $x^2 + y^2 = 1$. Now it&#x2019;s not possible to solve for $y$ explicitly this way, since we&#x2019;d have to take a square root, which results in $y = \pm \sqrt{1 - x^2}$. Visually, this means the curve doesn&#x2019;t pass the vertical line test, which means it&#x2019;s not a function.
 	
-	!iframe https://www.desmos.com/calculator/8fhlrhfkxd
+	!desmos circle
 	
 	We can still talk about slopes of tangent lines, though. Pictured above is a graph of $x^2 + y^2 = 1$, along with two different tangent lines that share the same $x$-value. When a curve is defined with the $x$ and $y$ intermixed and not in the form $y = f(x)$, we say the curve is defined <dfn>implicitly</dfn>, and the process of finding the slopes of tangent lines is called <dfn>implicit differentiation</dfn>.
 	
@@ -93,7 +93,7 @@
 	
 	The graph of $\cos(\sin(y)) = \cos(x)$ looks like a sequence of braids.
 	
-	!iframe https://www.desmos.com/calculator/wufwtocqco
+	!desmos braids
 	
 	Find $\frac{dy}{dx}$. Looking at the graph, the tangent line seems poorly defined when $x$ is a multiple of $2\pi$ and $y$ is a multiple of $\pi$. Explain what&#x2019;s going on using the equation.
 	
@@ -105,9 +105,9 @@
 	
 	implicit differentiation
 	
-	Find $\frac{dy}{dx}$ from the equation $x\sin(xy) = y$.
+	Find $\displaystyle \frac{dy}{dx}$ from the equation $x\sin(xy) = y$.
 	
-	!iframe https://www.desmos.com/calculator/9tphhtuorn
+	!desmos sin-thing
 	
 	We have
 	
@@ -139,7 +139,13 @@
 
 !begin-text-block
 	
-	Implicit differentiation unlocks one extra technique: sometimes, difficult functions to differentiate become much easier when we take a log on both sides. Specifically, functions involving strange exponents will turn into multiplication, so we can use the product rule. So: if you have a function of the form $y = (f(x))^{g(x)}$, start by rewriting it as $\ln(y) = \ln((f(x))^{g(x)}) = g(x)\ln(f(x))$, and then differentiate implicitly.	
+	Implicit differentiation unlocks one extra technique: sometimes, difficult functions to differentiate become much easier when we take a log on both sides. Specifically, functions involving strange exponents will turn into multiplication, so we can use the product rule. So: if you have a function of the form $y = (f(x))^{g(x)}$, start by rewriting it as
+	
+	$$
+		\ln(y) = \ln((f(x))^{g(x)}) = g(x)\ln(f(x)),
+	$$
+	
+	and then differentiate implicitly.
 	
 !end-text-block
 
@@ -149,9 +155,15 @@
 	
 	logarithmic differentiation
 	
-	Find $\frac{d}{dx}[x^x]$.
+	Find $\displaystyle \frac{d}{dx}[x^x]$.
 	
-	Since $x$ is in both the base and the exponent, we can&#x2019;t use either the derivative rules for $x^b$ or $b^x$. Instead, we write $\ln(y) = \ln(x^x) = x\ln(x)$, and then differentiate implicitly to get
+	Since $x$ is in both the base and the exponent, we can&#x2019;t use either the derivative rules for $x^b$ or $b^x$. Instead, we write
+	
+	$$
+		\ln(y) = \ln(x^x) = x\ln(x),
+	$$
+	
+	and then differentiate implicitly to get
 	
 	$$
 		\begin{align*}
@@ -167,7 +179,7 @@
 	
 	logarithmic differentiation
 	
-	Find $\frac{d}{dx}[\sin(x)^{(e^x)}]$.
+	Find $\displaystyle \frac{d}{dx}\left[\sin(x)^{(e^x)}\right]$.
 	
 !end-exercise
 
@@ -185,13 +197,25 @@
 	
 	the derivative of $x^n$ for any real $n$	
 	
-	Let $n$ be a real number. Then $\frac{d}{dx}[x^n] = nx^{n-1}$.
+	Let $n$ be a real number. Then $\displaystyle \frac{d}{dx}[x^n] = nx^{n-1}$.
 	
 !end-thm
 
 !begin-proof
 	
-	With $y = x^n$, write $\ln(y) = \ln(x^n) = n\ln(x)$. Then $\frac{1}{y} \cdot \frac{dy}{dx} = \frac{n}{x}$, so
+	With $y = x^n$, write
+	
+	$$
+		\ln(y) = \ln(x^n) = n\ln(x).
+	$$
+	
+	Then
+	
+	$$
+		\frac{1}{y} \cdot \frac{dy}{dx} = \frac{n}{x},
+	$$
+	
+	so
 	
 	$$
 		\frac{dy}{dx} = y\frac{n}{x} = \frac{nx^n}{x} = nx^{n-1}.

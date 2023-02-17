@@ -28,7 +28,7 @@
 
 !begin-text-block
 	
-	With the Chain Rule under our belt, we can differentiate any combination of two differentiable functions. There is one more way we can construct new functions &mdash; rather than putting two functions together, it starts from a single function. What we&#x2019;re talking about here is function inversion, and it&#x2019;s often a point of confusion in algebra, just like composition. So, just like composition, let&#x2019;s review.
+	With the chain rule under our belt, we can differentiate any combination of two differentiable functions. There is one more way we can construct new functions &mdash; rather than putting two functions together, it starts from a single function. What we&#x2019;re talking about here is function inversion, and it&#x2019;s often a point of confusion in algebra, just like composition. So, just like composition, let&#x2019;s review.
 	
 !end-text-block
 
@@ -76,7 +76,7 @@
 	
 	inverse functions
 	
-	The inverse to $f(x) = x^5$ is $f^{-1}(y) = \sqrt[5]{y}$, and the inverse to $f(x) = \frac{1}{x}$ is $f^{-1}(y) = \frac{1}{y}$.
+	The inverse to $f(x) = x^5$ is $\displaystyle f^{-1}(y) = \sqrt[5]{y}$, and the inverse to $\displaystyle f(x) = \frac{1}{x}$ is $\displaystyle f^{-1}(y) = \frac{1}{y}$.
 	
 !end-example
 
@@ -84,7 +84,7 @@
 	
 	inverse functions
 	
-	Find the inverse functions to $f(x) = e^x$ and $f(x) = \frac{x - 1}{x + 1}$. Hint: let $y = f(x)$ and solve for $x$.
+	Find the inverse functions to $f(x) = e^x$ and $f(x) = \displaystyle \frac{x - 1}{x + 1}$. Hint: let $y = f(x)$ and solve for $x$.
 	
 !end-exercise
 
@@ -94,7 +94,7 @@
 	
 	While none of the six trig functions is one-to-one, we still really want to talk about their inverses. To help do that, we restrict their domain until they become one-to-one. This is a somewhat complicated subject that&#x2019;s not all that important for our purposes, so we&#x2019;ll gloss over it. All we need to know is that there are functions $\sin^{-1}(x)$, $\cos^{-1}(x)$, and so on, that undo the corresponding trig functions. For example, since $\sin(\theta)$ gives the $y$-coordinate of a point on the unit circle with angle $\theta$, $\sin^{-1}(y)$ gives the angle $\theta$ with that $y$-coordinate.
 	
-	Now that we&#x2019;ve reviewed inverse functions, let&#x2019;s talk about their inverses.
+	Now that we&#x2019;ve reviewed inverse functions, let&#x2019;s talk about their derivatives.
 	
 !end-text-block
 
@@ -126,7 +126,7 @@
 	
 	the Inverse Function Theorem
 	
-	Find $\frac{d}{dx} [\sqrt{x}]$.
+	Find $\displaystyle \frac{d}{dx} [\sqrt{x}]$.
 	
 	To apply the IFT, the left side needs to be the inverse function, which means we need to find a function $f(x)$ so that $f^{-1}(x) = \sqrt{x}$. But since inverting a function twice gives back the original function, we can do this by just inverting $y = \sqrt{x}$, which just means solving for $x$. That gives us $x = y^2$, so we want to define $f(x) = x^2$. Then $f^{-1}(x) = \sqrt{x}$. (There is a minor problem with being one-to-one &mdash; everything is fine, but it can be a little tricky to parse out why. Feel free to ignore it.)
 	
@@ -144,7 +144,7 @@
 	
 	the Inverse Function Theorem
 	
-	Find $\frac{d}{dx} [\sqrt[3]{x}]$ using the Inverse Function Theorem.
+	Find $\displaystyle \frac{d}{dx} \left[\sqrt[3]{x}\right]$ using the Inverse Function Theorem.
 	
 !end-exercise
 
@@ -160,11 +160,23 @@
 
 !begin-proof
 	
-	Why not &mdash; we don&#x2019;t get too many chances to do proofs. Write $n = \frac{a}{b}$, where $a$ and $b$ are integers. Then $x^n = x^{a/b} = (x^{1/b})^a$. Let $f(x) = x^b$, so that $f^{-1}(x) = x^{1/b}$. Then $f'(x) = bx^{b - 1}$, which we know because $b$ is an integer, and so $f'(f^{-1}(x)) = bx^{(b-1)/b}$. By the IFT,
+	We can actually do the proof of this one! We don&#x2019;t get too many chances to present them, so let&#x2019;s take this one. Since $n$ is rational, we can write it as $n = \frac{a}{b}$, where $a$ and $b$ are integers. Then
+	
+	$$
+		x^n = x^{a/b} = (x^{1/b})^a.
+	$$
+	
+	Let $f(x) = x^b$, so that $f^{-1}(x) = x^{1/b}$. Then $f'(x) = bx^{b - 1}$, which we know because $b$ is an integer, and so
+	
+	$$
+		f'(f^{-1}(x)) = bx^{(b-1)/b}
+	$$
+	
+	By the IFT,
 	
 	$$
 		\begin{align*}
-			\frac{d}{dx}[x^{1/b}] &= \frac{1}{bx^{(b-1)/b}}\\
+			\frac{d}{dx}\left[x^{1/b}\right] &= \frac{1}{bx^{(b-1)/b}}\\
 			&= \frac{1}{b} x^{-(b-1)/b}\\
 			&= \frac{1}{b} x^{\frac{1}{b} - 1}.
 		\end{align*}
@@ -174,7 +186,7 @@
 	
 	$$
 		\begin{align*}
-			\frac{d}{dx}[(x^{1/b})^a] = a(x^{1/b})^{a-1} \cdot \frac{1}{b} x^{\frac{1}{b} - 1}\\
+			\frac{d}{dx}\left[(x^{1/b})^a\right] &= a(x^{1/b})^{a-1} \cdot \frac{1}{b} x^{\frac{1}{b} - 1}\\
 			&= \frac{a}{b} x^{\frac{a-1}{b} + \frac{1}{b} - 1}\\
 			&= \frac{a}{b} x^{\frac{a}{b} - 1}\\
 			&= nx^{n - 1}.\\
@@ -205,17 +217,17 @@
 	
 	the derivatives of the inverse trig functions
 	
-	1. $\frac{d}{dx}[\sin^{-1}(x)] = \frac{1}{\sqrt{1 - x^2}}$.
+	1. $\displaystyle \frac{d}{dx}[\sin^{-1}(x)] = \frac{1}{\sqrt{1 - x^2}}$.
 	
-	2. $\frac{d}{dx}[\cos^{-1}(x)] = -\frac{1}{\sqrt{1 - x^2}}$.
+	2. $\displaystyle \frac{d}{dx}[\cos^{-1}(x)] = -\frac{1}{\sqrt{1 - x^2}}$.
 	
-	3. $\frac{d}{dx}[\tan^{-1}(x)] = \frac{1}{1 + x^2}$.
+	3. $\displaystyle \frac{d}{dx}[\tan^{-1}(x)] = \frac{1}{1 + x^2}$.
 	
-	4. $\frac{d}{dx}[\sec^{-1}(x)] = \frac{1}{|x|\sqrt{x^2 - 1}}$.
+	4. $\displaystyle \frac{d}{dx}[\sec^{-1}(x)] = \frac{1}{|x|\sqrt{x^2 - 1}}$.
 	
-	5. $\frac{d}{dx}[\csc^{-1}(x)] = -\frac{1}{|x|\sqrt{x^2 - 1}}$.
+	5. $\displaystyle \frac{d}{dx}[\csc^{-1}(x)] = -\frac{1}{|x|\sqrt{x^2 - 1}}$.
 	
-	6. $\frac{d}{dx}[\cot^{-1}(x)] = -\frac{1}{1 + x^2}$.
+	6. $\displaystyle \frac{d}{dx}[\cot^{-1}(x)] = -\frac{1}{1 + x^2}$.
 	
 !end-thm
 
@@ -225,7 +237,7 @@
 	
 	an inverse trig derivative
 	
-	Find $\frac{d}{dx}[\tan^{-1}(x^3)]$.
+	Find $\displaystyle \frac{d}{dx}\left[\tan^{-1}(x^3)\right]$.
 	
 	By the Chain Rule, we have
 	
@@ -239,7 +251,7 @@
 	
 	an inverse trig derivative
 	
-	Find $\left. \frac{d}{dx}[e^x\csc^{-1}(\ln(x))] \right|_{x = e}$.
+	Find $\displaystyle \frac{d}{dx} \left. \left[e^x\csc^{-1}(\ln(x)) \right] \right|_{x = e}$.
 	
 !end-exercise
 
