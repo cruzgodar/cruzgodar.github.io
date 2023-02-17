@@ -40,15 +40,15 @@
 	
 	indeterminate form
 	
-	A limit is in <dfn>indeterminate form</dfn> if it ends up in any of the following forms:
+	A limit is in <dfn>indeterminate form</dfn> if it results in any of the following:
 	
-	1. $\frac{0}{0}$ or $\frac{\infty}{\infty}$.
+	1. $\displaystyle \frac{0}{0}$ or $\displaystyle \frac{\infty}{\infty}$.
 	
-	2. $0 \cdot \infty$.
+	2. $\displaystyle 0 \cdot \infty$.
 	
-	3. $\infty - \infty$.
+	3. $\displaystyle \infty - \infty$.
 	
-	4. $1^\infty$, $\infty^0$, or $0^0$.
+	4. $\displaystyle 1^\infty$, $\displaystyle \infty^0$, or $\displaystyle 0^0$.
 	
 !end-def
 
@@ -66,7 +66,7 @@
 	
 	L&#x2019;H&#244;pital&#x2019;s rule
 	
-	Suppose $\lim_{x \to a} \frac{f(x)}{g(x)}$ is of the form $\frac{0}{0}$ or $\frac{\infty}{\infty}$. Then
+	Suppose $\displaystyle \lim_{x \to a} \frac{f(x)}{g(x)}$ is of the form $\displaystyle \frac{0}{0}$ or $\displaystyle \frac{\infty}{\infty}$. Then
 	
 	$$
 		\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}.
@@ -90,7 +90,13 @@
 	
 	Evaluate $\displaystyle \lim_{x \to 0} \frac{\sin(x)}{x}$.
 	
-	You might recall that this one gave us some trouble back in the first few sections. Since both $x$ and $\sin(x)$ are continuous functions, we have that $\lim_{x \to 0} \frac{\sin(x)}{x} = \frac{\sin(0)}{0} = \frac{0}{0}$. That means we can use L&#x2019;H&#244;pital&#x2019;s rule to try evaluating a different limit and see if we have more success.
+	You might recall that this one gave us some trouble back in the first few sections. Since both $x$ and $\sin(x)$ are continuous functions, we have that
+	
+	$$
+		\lim_{x \to 0} \frac{\sin(x)}{x} = \frac{\sin(0)}{0} = \frac{0}{0}.
+	$$
+	
+	That means we can use L&#x2019;H&#244;pital&#x2019;s rule to try evaluating a different limit and see if we have more success.
 	
 	$$
 		\begin{align*}
@@ -120,7 +126,19 @@
 	
 	In order to apply L&#x2019;H&#244;pital&#x2019;s rule to the other indeterminate forms, we just need to get them in one of the two forms the rule applies to. Let&#x2019;s start wth type 2 and work our way down.
 	
-	If $\lim_{x \to a} (f(x)g(x)) = 0 \cdot \infty$ since $f(x) \to 0$ and $g(x) \to \infty$, then we have two options. First, since $\frac{1}{g(x)} \to 0$, we can rewrite the limit as $\lim_{x \to a} \frac{f(x)}{1/g(x)}$, which will then be in the form $\frac{0}{0}$. Alternatively, since $\frac{1}{f(x)} \to \infty$ or $-\infty$, we can rewrite the original limit as $\lim_{x \to a} \frac{g(x)}{1/f(x)}$, which will then be in the form $\frac{\infty}{\infty}$. Either way, L&#x2019;H&#244;pital&#x2019;s rule will apply.
+	If $\lim_{x \to a} (f(x)g(x)) = 0 \cdot \infty$ since $f(x) \to 0$ and $g(x) \to \infty$, then we have two options. First, since $\frac{1}{g(x)} \to 0$, we can rewrite the limit as
+	
+	$$
+		\lim_{x \to a} \frac{f(x)}{1/g(x)},
+	$$
+		
+	which will then be in the form $\frac{0}{0}$. Alternatively, since $\frac{1}{f(x)} \to \infty$ or $-\infty$, we can rewrite the original limit as
+	
+	$$
+		\lim_{x \to a} \frac{g(x)}{1/f(x)},
+	$$
+	
+	which will then be in the form $\frac{\infty}{\infty}$. Either way, L&#x2019;H&#244;pital&#x2019;s rule will apply.
 	
 !end-text-block
 
@@ -150,7 +168,19 @@
 		\lim_{x \to 2} (2x - 4)\ln(2x - 4) = \frac{\ln(2x-4)}{\frac{1}{2x - 4}}.
 	$$
 	
-	Now this is much easier to deal with. We have $\frac{d}{dx}[\ln(2x - 4)] = \frac{2}{2x - 4}$ and $\frac{d}{dx}\left[\frac{1}{2x - 4}\right] = \frac{-2}{(2x - 4)^2}$. Therefore, the limit becomes
+	Now this is much easier to deal with. We have
+	
+	$$
+		\frac{d}{dx}\left[\ln(2x - 4)\right] = \frac{2}{2x - 4}
+	$$
+	
+	and
+	
+	$$
+		\frac{d}{dx}\left[\frac{1}{2x - 4}\right] = \frac{-2}{(2x - 4)^2}.
+	$$
+	
+	Therefore, the limit becomes
 	
 	$$
 		\begin{align*}
