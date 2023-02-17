@@ -733,6 +733,42 @@
 					{latex: String.raw`(x_R(t), y_R(t))`, secret: true, parametricDomain: {min: .25, max: .5}, color: DESMOS_PURPLE}
 				]
 			},
+			
+			
+			
+			"a-different-axis-1":
+			{
+				bounds: {left: -1, right: 15, bottom: -1, top: 17},
+				
+				expressions:
+				[
+					{latex: String.raw`y = x^2\{0 \leq x \leq 4\}`, color: DESMOS_PURPLE, secret: true},
+					{latex: String.raw`y = 0\{0 \leq x \leq 4\}`, color: DESMOS_PURPLE, secret: true},
+					{latex: String.raw`x = 4\{0 \leq y \leq 16\}`, color: DESMOS_PURPLE, secret: true},
+					{latex: String.raw`x = 6`, color: DESMOS_GREEN, secret: true},
+					
+					{latex: String.raw`y_0 = 8`, sliderBounds: {min: 0, max: 16}},
+					{latex: String.raw`y = y_0\{\sqrt{y} \leq x \leq 4\}`, color: DESMOS_RED, secret: true},
+				]
+			},
+			
+			
+			
+			"a-different-axis-2":
+			{
+				bounds: {left: -1, right: 15, bottom: -1, top: 17},
+				
+				expressions:
+				[
+					{latex: String.raw`y = x^2\{0 \leq x \leq 4\}`, color: DESMOS_PURPLE, secret: true},
+					{latex: String.raw`y = 0\{0 \leq x \leq 4\}`, color: DESMOS_PURPLE, secret: true},
+					{latex: String.raw`x = 4\{0 \leq y \leq 16\}`, color: DESMOS_PURPLE, secret: true},
+					{latex: String.raw`x = 6`, color: DESMOS_GREEN, secret: true},
+					
+					{latex: String.raw`x_0 = 2`, sliderBounds: {min: 0, max: 4}},
+					{latex: String.raw`x = x_0\{0 \leq y \leq x^2\}`, color: DESMOS_RED, secret: true},
+				]
+			}
 		};
 		
 		return data;

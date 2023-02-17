@@ -365,6 +365,50 @@
 
 
 
+!begin-text-block
+	
+	As one final example, let&#x2019;s take a look at a solid of revolution about a line that&#x2019;s not an axis.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a different axis
+	
+	The region bounded by $y = x^2$, $y = 0$, and $x = 4$ is revolved about the line $x = 6$. Set up, but don&#x2019;t solve, the integrals to find its volume using both the disk method and shell method.
+	
+	The key observation is that revolving about the line $x = 6$ is extremely similar to revolving about $x = 0$, i.e. the $y$-axis. The disk method will still produce a vertical stack of pancakes and the shell method a sequence of nested vertical cylinders. The only difference is where they&#x2019;re centered, and therefore their radii.
+	
+	!desmos a-different-axis-1
+	
+	Let&#x2019;s start with the disk method. Plotted in purple is the region, in red a slice taken $dy$, and in green the line we&#x2019;re revolving about. As usual, that red line will revolve into concentric circles, with the outside circle given by $y = x^2$ and the inner one by $x = 4$. Since we&#x2019;re integrating $dy$, we need the first function in terms of $y$, so we solve for $x$ to get $x = \sqrt{y}$. The $y$-limits are $0$ to $16$ since the $x$ limits are $0$ to $4$, and so we wind up with
+	
+	$$
+		\int_0^{16} \left( \pi\left(\sqrt{y}\right)^2 - \pi(4)^2 \right)\,dy = \int_0^{16} \left( \pi y - 16\pi \right)\,dy.
+	$$
+	
+	The shell method also functions a lot like usual: we&#x2019;re taking slices $dx$, which are vertical lines.
+	
+	!desmos a-different-axis-2
+	
+	These revolve into cylinders, and so we need to find their radius and height. The height is just the length of the red line, which is $x^2$. The radius is slightly more complicated: it&#x2019;s the horizontal distance from the red line to the green one. We can find that by taking the difference of the larger and smaller $x$-coordinates, which is $6 - x$. In total, the surface area of a shell produced from a vertical slice at $x$ is
+	
+	$$
+		2\pi(6 - x)(x^2),
+	$$
+	
+	and since our $x$-values range from $0$ to $4$, the shell method integral becomes
+	
+	$$
+		\int_0^4 2\pi(6 - x)(x^2)\,dx.
+	$$
+	
+!end-example
+
+
+
 !nav-buttons
 
 
