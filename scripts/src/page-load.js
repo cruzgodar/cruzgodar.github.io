@@ -10,6 +10,7 @@ Page.load = async function()
 	if ("banner_page" in Page.settings && Page.settings["banner_page"])
 	{
 		Page.banner_element = Page.element.querySelector("#banner");
+		Page.content_element = Page.element.querySelector("#content");
 		
 		Site.add_style(`
 			#banner

@@ -3,6 +3,7 @@
 
 
 Page.banner_element = null;
+Page.content_element = null;
 
 
 
@@ -170,7 +171,7 @@ Page.Banner =
 			try
 			{
 				Page.banner_element.style.opacity = this.opacity;
-				Page.element.querySelector("#content").style.opacity = 1 - this.opacity;
+				Page.content_element.style.opacity = 1 - this.opacity;
 			}
 			
 			catch(ex) {}
@@ -190,7 +191,12 @@ Page.Banner =
 		{
 			this.opacity = 0;
 			
-			try {Page.banner_element.style.opacity = 0}
+			try 
+			{
+				Page.banner_element.style.opacity = 0;
+				Page.content_element.style.opacity = 1;
+			}
+			
 			catch(ex) {}
 			
 			this.done_loading = true;
