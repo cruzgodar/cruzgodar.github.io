@@ -163,9 +163,9 @@ Page.Banner =
 	
 	scroll_handler: function()
 	{
-		if (Page.scroll <= .75 * Page.Layout.window_height)
+		if (Page.scroll <= this.max_scroll)
 		{
-			this.opacity = .5 + .5 * Math.sin(Math.PI * Math.min(Math.max(1 - Page.scroll / this.max_scroll, 0), 1) - Math.PI / 2);
+			this.opacity = Math.min(Math.max(1 - Page.scroll / this.max_scroll, 0), 1);
 			
 			try
 			{
@@ -198,9 +198,9 @@ Page.Banner =
 		
 		
 		
-		if (Page.scroll <= Page.Layout.window_height / 5)
+		if (Page.scroll <= this.max_scroll / 2.5)
 		{
-			const opacity = .5 + .5 * Math.sin(Math.PI * Math.min(Math.max(1 - Page.scroll / (this.max_scroll / 2.5), 0), 1) - Math.PI / 2);
+			const opacity = Math.min(Math.max(1 - Page.scroll / (this.max_scroll / 2.5), 0), 1);
 			
 			if (this.ScrollButton.exists)
 			{
@@ -322,14 +322,14 @@ Page.Banner =
 		
 		insert: function()
 		{
-			if (Page.scroll > Page.Layout.window_height / 5)
+			if (Page.scroll > Page.Banner.max_scroll / 2.5)
 			{
 				return;
 			}
 			
 			
 			
-			const opacity = .5 + .5 * Math.sin(Math.PI * Math.min(Math.max(1 - 5 * Page.scroll / Page.Layout.window_height, 0), 1) - Math.PI / 2);
+			const opacity = Math.min(Math.max(1 - Page.scroll / (Page.Banner.max_scroll / 2.5), 0), 1);
 			
 			let chevron_name = "chevron-down";
 			

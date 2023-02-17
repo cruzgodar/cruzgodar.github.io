@@ -347,9 +347,7 @@ Site.load = async function(url)
 	
 	
 	
-	Page.Layout.window_width = window.innerWidth;
-	Page.Layout.window_height = window.innerHeight;
-	Page.Layout.aspect_ratio = Page.Layout.window_width / Page.Layout.window_height;
+	Page.Layout.aspect_ratio = window.innerWidth / window.innerHeight;
 	
 	window.addEventListener("scroll", () =>
 	{

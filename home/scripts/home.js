@@ -71,9 +71,9 @@
 	{
 		let opacity = 0;
 		
-		if (Page.scroll <= Page.Layout.window_height/3)
+		if (Page.scroll <= window.innerHeight / 3)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / Page.Layout.window_height, 0) - Math.PI / 2);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / window.innerHeight, 0) - Math.PI / 2);
 		}
 		
 		Page.element.querySelector("#cruz-text").parentNode.style.opacity = opacity;

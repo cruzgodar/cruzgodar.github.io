@@ -10,18 +10,7 @@ Page.Layout =
 	
 	
 
-	window_width: 0,
-	window_height: 0,
 	aspect_ratio: 1,
-	
-	new_window_width: 0,
-	new_window_height: 0,
-	
-	old_window_width: 0,
-	old_window_height: 0,
-	
-	window_width_step_distance: 0,
-	window_height_step_distance: 0,
 	
 	resize_time: 0,
 	
@@ -29,44 +18,23 @@ Page.Layout =
 	
 	on_resize: async function()
 	{
-		//Absolutely disgusting.
-		this.new_window_width = window.innerWidth;
-		this.new_window_height = window.innerHeight;
-		
-		Page.Banner.max_scroll = document.body.offsetHeight > this.new_window_height * 1.5 ? this.new_window_height / 2 : document.body.offsetHeight - this.new_window_height;
-		
-		let attempts = 0;
-		
-		while (this.new_window_width === this.old_window_width && this.new_window_height === this.old_window_height)
-		{
-			await new Promise((resolve, reject) => setTimeout(resolve, 50));
-			
-			this.new_window_width = window.innerWidth;
-			this.new_window_height = window.innerHeight;
-			
-			attempts++;
-			
-			if (attempts === 3)
-			{
-				return;
-			}
-		}
+		Page.Banner.max_scroll = document.body.offsetHeight > window.innerHeight * 1.5 ? window.innerHeight / 2 : document.body.offsetHeight - window.innerHeight;
 		
 		Site.navigation_animation_distance_vertical = Math.min(window.innerHeight / 20, 25);
 		Site.navigation_animation_distance_horizontal = Math.min(window.innerWidth / 20, 25);
 		
-		this.aspect_ratio = this.new_window_width / this.new_window_height;
+		this.aspect_ratio = window.innerWidth / window.innerHeight;
 		
 		
 		
 		this.old_layout_string = this.layout_string;
 		
-		if (this.new_window_width <= 700)
+		if (window.innerWidth <= 700)
 		{
 			this.layout_string = "compact";
 		}
 		
-		else if (this.new_window_width >= 1400)
+		else if (window.innerWidth >= 1400)
 		{
 			this.layout_string = "ultrawide";
 		}
@@ -129,28 +97,7 @@ Page.Layout =
 		
 		
 		
-		this.old_window_width = this.new_window_width;
-		this.old_window_height = this.new_window_height;
-		
-		
-		
-		//The banner opacity is the big sticking point, though. The solution is to increase the window height slowly and fire scroll events in rapid succession.
-		const temp_object = {w: this.window_width, h: this.window_height};
-		
-		anime({
-			targets: temp_object,
-			w: this.new_window_width,
-			h: this.new_window_height,
-			duration: Site.opacity_animation,
-			easing: "easeInOutQuad",
-			update: () =>
-			{
-				this.window_width = temp_object.w;
-				this.window_height = temp_object.h;
-				
-				Page.Banner.on_scroll(0);
-			}
-		});
+		Page.Banner.on_scroll(0);
 	},
 
 

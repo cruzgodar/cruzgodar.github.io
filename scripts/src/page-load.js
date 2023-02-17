@@ -428,7 +428,7 @@ Page.Load =
 		
 		this.lazy_loaded_images.forEach((entry, index) =>
 		{
-			if (entry[1] > Page.Layout.window_height + 200)
+			if (entry[1] > window.innerHeight + 200)
 			{
 				entry[2] = setTimeout(() => this.load_lazy_element(this.lazy_loaded_images, index), index * 200);
 			}
@@ -470,7 +470,7 @@ Page.Load =
 		
 		Page.Load.lazy_loaded_images.forEach((entry, index) =>
 		{
-			if (entry[1] < Page.Layout.window_height + Page.scroll + 200 && entry[2] !== -1)
+			if (entry[1] < window.innerHeight + Page.scroll + 200 && entry[2] !== -1)
 			{
 				clearTimeout(entry[2]);
 				Page.Load.load_lazy_element(Page.Load.lazy_loaded_images, index);

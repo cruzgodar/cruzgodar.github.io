@@ -7,8 +7,6 @@
 	let background_color = 255;
 	let opacity = 0;
 	
-	let initial_window_height = Page.Layout.window_height;
-	
 	Page.Banner.done_loading = false;
 	Page.Banner.ScrollButton.done_loading = false;
 	let eclipse_done = false;
@@ -80,9 +78,9 @@
 		
 		
 		
-		else if (Page.scroll <= initial_window_height / 1.25)
+		else if (Page.scroll <= window.innerHeight / 1.25)
 		{
-			background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * Page.scroll / initial_window_height, 0) - .5 * Math.PI);
+			background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * Page.scroll / window.innerHeight, 0) - .5 * Math.PI);
 			
 			if (Site.Settings.url_vars["theme"] === 1)
 			{
@@ -130,9 +128,9 @@
 	
 	function update_scroll_button()
 	{
-		if (Page.scroll <= initial_window_height / 3)
+		if (Page.scroll <= window.innerHeight / 3)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / initial_window_height, 0) - .5 * Math.PI);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / window.innerHeight, 0) - .5 * Math.PI);
 			
 			try {Page.element.querySelector("#scroll-button").style.opacity = opacity;}
 			catch(ex) {}
@@ -164,9 +162,9 @@
 	
 	function update_eclipse()
 	{
-		if (Page.scroll >= 4/5 * initial_window_height && Page.scroll <= initial_window_height * 6/5)
+		if (Page.scroll >= 4/5 * window.innerHeight && Page.scroll <= window.innerHeight * 6/5)
 		{
-			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3.5 * (Page.scroll - (4/5 * initial_window_height)) / initial_window_height, 0) - .5 * Math.PI);
+			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3.5 * (Page.scroll - (4/5 * window.innerHeight)) / window.innerHeight, 0) - .5 * Math.PI);
 			
 			Page.element.querySelector("#eclipse").style.opacity = 1 - opacity;
 			
@@ -181,14 +179,14 @@
 			}
 		}
 		
-		else if (scroll >= 6/5 * initial_window_height && eclipse_done === false)
+		else if (scroll >= 6/5 * window.innerHeight && eclipse_done === false)
 		{
 			Page.element.querySelector("#eclipse").style.opacity = 1;
 			
 			eclipse_done = true;
 		}
 		
-		else if (scroll <= 4/5 * initial_window_height && eclipse_done === false)
+		else if (scroll <= 4/5 * window.innerHeight && eclipse_done === false)
 		{
 			Page.element.querySelector("#eclipse").style.opacity = 0;
 			
