@@ -44,7 +44,7 @@
 	
 	If the premise isn&#x2019;t quite clear, here are a couple of examples. You could make the side opposite the wall 18 feet and the other two sides 1 foot each, for a total of 18 square feet, or you could make all three non-wall sides $\frac{20}{3} \approx 6.67$ feet each, resulting in an area of about 44.44 square feet. In the graph below, you can drag the indicated point up and down to change the vertical side length.
 	
-	!iframe https://www.desmos.com/calculator/vruls5bbu8
+	!desmos walled-garden
 	
 	Since we&#x2019;re trying to optimize area, we need to write it as a function. The challenge of these applied optimization problems is often integrating the constraint (here, the limit of 20 feet of fencing) into that function. The simplest strategy is just to make every value its own variable and then to use the constraint to relate some of them.
 	
@@ -90,7 +90,7 @@
 	
 	A rectangle is said to be <dfn>inscribed</dfn> in an ellipse if all four of its corners are on the ellipse &mdash; this requires the sides of the rectangle to be parallel to the $x$- and $y$-axes. What is the largest-area rectangle we can inscribe in this ellipse?
 	
-	!iframe https://www.desmos.com/calculator/ip7edd1xiz
+	!desmos ellipse
 	
 	As before, let&#x2019;s start by giving names to relevant quantities. Once we know a single corner of the rectangle, the other three corners are symmetric about the $x$- and $y$-axes &mdash; in other words, the rectangle is defined by a single corner. Let&#x2019;s say one corner is at $(a, b)$, and let&#x2019;s just assume this is the top-right corner so all of our numbers are positive. Then the width of the rectangle is $2a$ and its height is $2b$, so the area is $A = 4ab$. The constraint is just that $(a, b)$ is actually on the ellipse, so $\frac{a^2}{4} + \frac{b^2}{9} = 1$, or in other words, $b = \sqrt{9\left(1 - \frac{a^2}{4} \right)}$. (We can ignore any issues of negative square roots or a $\pm$ on the outside because everything is positive).
 	
@@ -122,8 +122,8 @@
 			4 \left(9 - \frac{9}{4} a^2\right) &= 9a^2\\
 			36 - 9a^2 &= 9a^2\\
 			36 &= 18a^2\\
-			a^2 = 2\\
-			a = \pm \sqrt{2}.
+			a^2 &= 2\\
+			a &= \pm \sqrt{2}.
 		\end{align*}
 	$$
 	
@@ -158,9 +158,9 @@
 	
 	travel times
 	
-	You&#x2019;re running a race that starts on the bank of a very slow-moving river. The river is 100 feet across, and the finish line is on the other bank of the river, but also 500 feet downstream. You can run at 10 feet per second (a little under a 9 minute mile) while on land, but in the river, you swim at only 4 feet per second. To finish this race as fast as possible, you first run along the bank of the river, and then at some point, you jump in and swim in a straight line to the finish. The river is flowing slow enough that you can ignore the effects of the current on your swimming speed. What is the fastest you can get to the finish line?
+	You&#x2019;re running a race that starts on the bank of a very slow-moving river. The river is 100 feet across, and the finish line is on the other bank of the river, but also 500 feet downstream. You can run at 10 feet per second (a little under a 9 minute mile) while on land, but in the river, you swim at only 4 feet per second. To finish this race as fast as possible, you first run along the bank of the river, and then at some point, you jump in and swim in a straight line to the finish. The river is flowing slowly enough that you can ignore the effects of the current on your swimming speed. What is the fastest you can get to the finish line?
 	
-	!iframe https://www.desmos.com/calculator/vhjrkh5dzk
+	!desmos river
 	
 !end-exercise
 
