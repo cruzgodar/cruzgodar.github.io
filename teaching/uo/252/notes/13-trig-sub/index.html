@@ -28,15 +28,15 @@
 
 !begin-text-block
 	
-	Our third integration technique is a very specific one: unlike $u$-sub, which allows us to integrate compositions, and integration by parts, which handles integrals of products, trig sub will deal with integrals containing one of the following three expressions:
+	Our third integration technique is a very specific one: unlike $u$-sub, which allows us to integrate compositions, and integration by parts, which handles integrals of products, trig sub will deal with integrals containing one of the following three particular expressions:
 	
-	1. $\sqrt{a^2 - x^2}$
+	1. $\displaystyle \sqrt{a^2 - x^2}$
 	
-	2. $\sqrt{a^2 + x^2}$
+	2. $\displaystyle \sqrt{a^2 + x^2}$
 	
-	3. $\sqrt{x^2 - a^2}$
+	3. $\displaystyle \sqrt{x^2 - a^2}$
 	
-	These might look familiar: some integrals that evaluate to inverse trig functions look like these. This process will be a little more general, though. Let&#x2019;s do an example to see what the process looks like, and then we&#x2019;ll write down the general steps.
+	These might look familiar: some integrals that evaluate to inverse trig functions look a lot like these. This process will be a little more general, though. Let&#x2019;s start with an example to see what the process looks like, and then we&#x2019;ll write down the general steps.
 	
 !end-text-block
 
@@ -46,15 +46,15 @@
 	
 	trig sub
 	
-	Find $\int \sqrt{9 - x^2}\ dx$.
+	Find $\displaystyle \int \sqrt{9 - x^2}\,dx$.
 	
-	We can&#x2019;t use $u$-sub, since we would need to take $u = 9 - x^2$, and $du = 2x\ dx$ doesn&#x2019;t appear anywhere in the expression. We also can&#x2019;t use integration by parts, since there is no product here. Instead, let&#x2019;s do something strange: let $x = 3\sin(\theta)$. Then $dx = 3\cos(\theta)\ d\theta$. This looks like a $u$-sub a little bit, but we&#x2019;re <strong>going the other direction</strong> &mdash; we&#x2019;re letting $x$ be a function of $\theta$ rather than letting $u$ being a function of $x$. But the process now is the same: we just substitute in for $x$.
+	We can&#x2019;t use $u$-sub, since we would need to take $u = 9 - x^2$, and $du = 2x\,dx$ doesn&#x2019;t appear anywhere in the expression. We also can&#x2019;t use integration by parts, since there is no product here. Instead, let&#x2019;s do something strange: let $x = 3\sin(\theta)$. Then $dx = 3\cos(\theta)\,d\theta$. This looks like a $u$-sub a little bit, but we&#x2019;re <strong>going the other direction</strong> &mdash; we&#x2019;re letting $x$ be a function of $\theta$ rather than letting $u$ being a function of $x$. But the process now is the same: we just substitute in for $x$.
 	
 	$$
 		\begin{align*}
-			\int \sqrt{9 - x^2}\ dx &= \int \sqrt{9 - 9\sin^2(\theta)}(3\cos(\theta))\ d\theta\\
-			&= \int \sqrt{9(1 - \sin^2(\theta))}(3\cos(\theta))\ d\theta\\
-			&= \int 3\sqrt{1 - \sin^2(\theta)}(3\cos(\theta))\ d\theta.
+			\int \sqrt{9 - x^2}\,dx &= \int \sqrt{9 - 9\sin^2(\theta)}(3\cos(\theta))\,d\theta\\
+			&= \int \sqrt{9(1 - \sin^2(\theta))}(3\cos(\theta))\,d\theta\\
+			&= \int 3\sqrt{1 - \sin^2(\theta)}(3\cos(\theta))\,d\theta.
 		\end{align*}
 	$$
 	
@@ -62,8 +62,8 @@
 	
 	$$
 		\begin{align*}
-			\int 3\sqrt{\cos^2(\theta)}(3\cos(\theta))\ d\theta &= \int (3\cos(\theta))(3\cos(\theta))\ d\theta\\
-			&= \int 9\cos^2(\theta)\ d\theta.
+			\int 3\sqrt{\cos^2(\theta)}(3\cos(\theta))\,d\theta &= \int (3\cos(\theta))(3\cos(\theta))\,d\theta\\
+			&= \int 9\cos^2(\theta)\,d\theta.
 		\end{align*}
 	$$
 	
@@ -71,9 +71,9 @@
 	
 	$$
 		\begin{align*}
-			\int 9\cos^2(\theta)\ d\theta &= \int \frac{9}{2}(1 + \cos(2\theta))\ d\theta\\
-			&= \int \frac{9}{2} + \frac{9}{2} \cos(2\theta)\ d\theta\\
-			&= \int \frac{9}{2} + \frac{9}{2} \cos(2\theta)\ d\theta\\
+			\int 9\cos^2(\theta)\,d\theta &= \int \frac{9}{2}(1 + \cos(2\theta))\,d\theta\\
+			&= \int \frac{9}{2} + \frac{9}{2} \cos(2\theta)\,d\theta\\
+			&= \int \frac{9}{2} + \frac{9}{2} \cos(2\theta)\,d\theta\\
 			&= \frac{9}{2} \theta + \frac{9}{4} \sin(2\theta) + C.
 		\end{align*}
 	$$
@@ -104,7 +104,7 @@
 
 !begin-text-block
 	
-	If you&#x2019;re thinking this is a pretty intense process to go through, you&#x2019;re right. Trig sub is an involved process, but it does always proceed in the same way as the previous example. Let&#x2019;s write down the general process.
+	If you&#x2019;re thinking this is a pretty intense process to go through... you&#x2019;re right! Trig sub is involved, but it does always proceed in the same way as the previous example. Let&#x2019;s write down the general process.
 	
 !end-text-block
 
@@ -116,13 +116,21 @@
 	
 	1. Determine what to substitute for $x$. If the integral contains $\sqrt{a^2 - x^2}$, use $x = a\sin(\theta)$. If it contains $\sqrt{a^2 + x^2}$, use $x = a\tan(\theta)$. If it contains $\sqrt{x^2 - a^2}$, use $x = a\sec(\theta)$.
 	
-	2. Find $dx$ in terms of $\theta$ and substitute.
+	2. Find $dx$ in terms of $\theta$ and $d\theta$ and substitute.
 	
-	3. Simplify the integral using either $1 - \sin^2(\theta) = \cos^2(\theta)$, $1 + \tan^2(\theta) = \sec^2(\theta)$, or $\sec^2(\theta) - 1 = \tan^2(\theta)$.
+	3. Simplify the integral using one of the following:
+	
+	$$
+		\begin{align*}
+			1 - \sin^2(\theta) &= \cos^2(\theta)\\
+			1 + \tan^2(\theta) &= \sec^2(\theta)\\
+			\sec^2(\theta) - 1 &= \tan^2(\theta)
+		\end{align*}
+	$$
 	
 	4. If necessary, simplify the integral more with a half-angle identity.
 	
-	5. Integrate.
+	5. Integrate!
 	
 	6. Use trig identities to make sure all trig functions only have $\theta$ inside them, and not $2\theta$ or something else.
 	
@@ -146,51 +154,51 @@
 	
 	Definitions:
 	
-	1. $\sin(\theta) = \frac{\text{opp}}{\text{hyp}}$.
+	1. $\displaystyle \sin(\theta) = \frac{\text{opp}}{\text{hyp}}$.
 	
-	2. $\cos(\theta) = \frac{\text{adj}}{\text{hyp}}$.
+	2. $\displaystyle \cos(\theta) = \frac{\text{adj}}{\text{hyp}}$.
 	
-	3. $\tan(\theta) = \frac{\text{opp}}{\text{adj}}$.
+	3. $\displaystyle \tan(\theta) = \frac{\text{opp}}{\text{adj}}$.
 	
-	4. $\sec(\theta) = \frac{\text{hyp}}{\text{adj}}$.
+	4. $\displaystyle \sec(\theta) = \frac{\text{hyp}}{\text{adj}}$.
 	
-	5. $\tan(\theta) = \frac{\sin(\theta)}{\cos(\theta)}$.
+	5. $\displaystyle \tan(\theta) = \frac{\sin(\theta)}{\cos(\theta)}$.
 	
-	6. $\sec(\theta) = \frac{1}{\cos(\theta)}$.
+	6. $\displaystyle \sec(\theta) = \frac{1}{\cos(\theta)}$.
 	
 	
 	
 	Integrals:
 	
-	1. $\int \tan(\theta)\ d\theta = \ln| \sec(\theta) | + C$.
+	1. $\displaystyle \int \tan(\theta)\,d\theta = \ln| \sec(\theta) | + C$.
 	
-	2. $\int \sec(\theta)\ d\theta = \ln| \sec(\theta) + \tan(\theta) | + C$.
+	2. $\displaystyle \int \sec(\theta)\,d\theta = \ln| \sec(\theta) + \tan(\theta) | + C$.
 	
-	3. $\int \sec^2(\theta)\ d\theta = \tan(\theta) + C$.
+	3. $\displaystyle \int \sec^2(\theta)\,d\theta = \tan(\theta) + C$.
 	
-	4. $\int \sec(\theta)\tan(\theta)\ d\theta = \sec(\theta) + C$.
+	4. $\displaystyle \int \sec(\theta)\tan(\theta)\,d\theta = \sec(\theta) + C$.
 	
 	
 	
 	Half-angle identities:
 	
-	1. $\sin(2\theta) = 2\sin(\theta)\cos(\theta)$.
+	1. $\displaystyle \sin(2\theta) = 2\sin(\theta)\cos(\theta)$.
 	
-	2. $\cos(2\theta) = \cos^2(\theta) - \sin^2(\theta)$.
+	2. $\displaystyle \cos(2\theta) = \cos^2(\theta) - \sin^2(\theta)$.
 	
-	3. $\sin^2(\theta) = \frac{1}{2}(1 - \cos(2\theta))$.
+	3. $\displaystyle \sin^2(\theta) = \frac{1}{2}(1 - \cos(2\theta))$.
 	
-	4. $\cos^2(\theta) = \frac{1}{2}(1 + \cos(2\theta))$.
+	4. $\displaystyle \cos^2(\theta) = \frac{1}{2}(1 + \cos(2\theta))$.
 	
 	
 	
 	Relations:
 	
-	1. $1 - \sin^2(\theta) = \cos^2(\theta)$.
+	1. $\displaystyle 1 - \sin^2(\theta) = \cos^2(\theta)$.
 	
-	2. $1 + \tan^2(\theta) = \sec^2(\theta)$.
+	2. $\displaystyle 1 + \tan^2(\theta) = \sec^2(\theta)$.
 	
-	3. $\sec^2(\theta) - 1 = \tan^2(\theta)$.
+	3. $\displaystyle \sec^2(\theta) - 1 = \tan^2(\theta)$.
 	
 !end-prop
 
@@ -198,9 +206,7 @@
 
 !begin-text-block
 	
-	Since this class is on calculus and not trig, that complete list will be provided on exams.
-	
-	Okay, let&#x2019;s get back to integrals and try another trig sub problem.
+	Since this class is on calculus and not trig, that complete list will be provided on exams. For now, let&#x2019;s get back to integrals and try another trig sub problem.
 	
 !end-text-block
 
@@ -210,17 +216,17 @@
 	
 	trig sub
 	
-	Find $\int \frac{1}{\sqrt{4 + t^2}}\ dt$.
+	Find $\displaystyle \int \frac{1}{\sqrt{4 + t^2}}\, dt$.
 	
 	Trying to use $u$-sub or integration by parts fails for the same reasons it did before, so let&#x2019;s turn to trig sub. The square root is of the form $\sqrt{a^2 + t^2}$ for $a = 2$, so let&#x2019;s take $t = 2\tan(\theta)$. Then $dt = 2\sec^2(\theta)\ d\theta$, so we get
 	
 	$$
 		\begin{align*}
-			\int \frac{1}{\sqrt{4 + t^2}}\ dt &= \int \frac{1}{\sqrt{4 + 4\tan^2(\theta)}}(2\sec^2(\theta))\ d\theta\\
-			&= \int \frac{2\sec^2(\theta)}{2\sqrt{1 + \tan^2(\theta)}}\ d\theta\\
-			&= \int \frac{\sec^2(\theta)}{\sqrt{\sec^2(\theta)}}\ d\theta\\
-			&= \int \frac{\sec^2(\theta)}{\sec(\theta)}\ d\theta\\
-			&= \int \sec(\theta)\ d\theta\\
+			\int \frac{1}{\sqrt{4 + t^2}}\,dt &= \int \frac{1}{\sqrt{4 + 4\tan^2(\theta)}}(2\sec^2(\theta))\,d\theta\\
+			&= \int \frac{2\sec^2(\theta)}{2\sqrt{1 + \tan^2(\theta)}}\,d\theta\\
+			&= \int \frac{\sec^2(\theta)}{\sqrt{\sec^2(\theta)}}\,d\theta\\
+			&= \int \frac{\sec^2(\theta)}{\sec(\theta)}\,d\theta\\
+			&= \int \sec(\theta)\,d\theta\\
 			&= \ln|\sec(\theta) + \tan(\theta)| + C.
 		\end{align*}
 	$$
@@ -229,7 +235,13 @@
 	
 	<div class="center-content"><img class="notes-image" src="/teaching/uo/252/notes/13-trig-sub/graphics/triangle-2.png"></img></div>
 	
-	This time, we have an opposite side of $t$ and an adjacent side of $2$. If we call the hypotenuse $c$, then the Pythagorean theorem tells us that $c = \sqrt{t^2 + 2^2}$, so $\sec(\theta) = \frac{c}{2} = \frac{1}{2}\sqrt{t^2 + 4}$. In total, we have
+	This time, we have an opposite side of $t$ and an adjacent side of $2$. If we call the hypotenuse $c$, then the Pythagorean theorem tells us that $c = \sqrt{t^2 + 2^2}$, so
+	
+	$$
+		\sec(\theta) = \frac{c}{2} = \frac{1}{2}\sqrt{t^2 + 4}.
+	$$
+	
+	In total, we have
 	
 	$$
 		\ln\left|\frac{1}{2}\sqrt{t^2 + 4} + \frac{t}{2}\right| + C.
@@ -241,22 +253,32 @@
 	
 	trig sub
 	
-	Find $\int \frac{1}{x^2 \sqrt{x^2 - 1}}\ dx$.
-	
-	Solution: Let $x = \sec(\theta)$. Then $dx = \sec(\theta)\tan(\theta)$, so the intergal becomes
+	Find $\displaystyle \int \frac{1}{x^2 \sqrt{x^2 - 1}}\,dx$.
+	<!--
+	<strong>Solution:</strong> Let $x = \sec(\theta)$. Then $dx = \sec(\theta)\tan(\theta)$, so the integral becomes
 	
 	$$
 		\begin{align*}
-			\int \frac{1}{x^2 \sqrt{x^2 - 1}}\ dx &= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \sqrt{\sec^2(\theta) - 1}}\ d\theta\\
-			&= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \tan(\theta)}\ d\theta\\
-			&= \int \frac{1}{\sec(\theta)}\ d\theta\\
-			&= \int \cos(\theta)\ d\theta\\
+			\int \frac{1}{x^2 \sqrt{x^2 - 1}}\,dx &= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \sqrt{\sec^2(\theta) - 1}}\,d\theta\\
+			&= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \tan(\theta)}\,d\theta\\
+			&= \int \frac{1}{\sec(\theta)}\,d\theta\\
+			&= \int \cos(\theta)\,d\theta\\
 			&= \sin(\theta) + C.
 		\end{align*}
 	$$
 	
-	Since $\sec(\theta) = \frac{x}{2}$, we draw a right triangle with hypotenuse $x$ and adjacent side $2$. Then the remaining leg has length $\sqrt{x^2 - 4}$, so $\sin(\theta) = \dfrac{\sqrt{x^2 - 4}}{x}$. In total, the integral is $\dfrac{\sqrt{x^2 - 4}}{x} + C$.
+	Since $\sec(\theta) = \frac{x}{2}$, we draw a right triangle with hypotenuse $x$ and adjacent side $2$. Then the remaining leg has length $\sqrt{x^2 - 4}$, so
 	
+	$$
+		\sin(\theta) = \frac{\sqrt{x^2 - 4}}{x}.
+	$$
+	
+	In total, the integral is
+	
+	$$
+		\frac{\sqrt{x^2 - 4}}{x} + C.
+	$$
+	-->
 !end-exercise
 
 
