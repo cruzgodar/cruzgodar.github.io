@@ -70,10 +70,25 @@
 	
 	solution to a DE
 	
-	A solution to $y' + 3y = 6x + 11$ is $y = e^{-3x} + 2x + 3$, since $y' = -3e^{-3x} + 2$, and so we get
+	One solution to
 	
 	$$
-		y' + 3y = -3e^{-3x} + 2 + 3e^{-3x} + 6x + 9 = 6x + 11.
+		y' + 3y = 6x + 11
+	$$
+	
+	is
+	
+	$$
+		y = e^{-3x} + 2x + 3,
+	$$
+	
+	since $y' = -3e^{-3x} + 2$, and so
+	
+	$$
+		\begin{align*}
+			y' + 3y &= -3e^{-3x} + 2 + 3e^{-3x} + 6x + 9\\
+			&= 6x + 11.
+		\end{align*}
 	$$	
 	
 !end-example
@@ -90,7 +105,7 @@
 
 !begin-text-block
 	
-	A direction field lets us visualize how a DE acts over time. To draw one, we solve for $y'$, then draw a line segment at every point $(x, y)$ that has the slope given by $y'$.
+	A direction field lets us visualize how a DE acts over time. To draw one, we solve for $y'$, then draw a line segment at every point $(x, y)$ that has the slope given by $y'$. Then a solution to the DE is a function whose slope matches the direction field at all of its points.
 	
 !end-text-block
 
@@ -100,9 +115,11 @@
 	
 	direction field
 	
-	Below is the direction field for the differential equation $y' - \frac{1}{30}xy = 0$.
+	Draw a direction field for the differential equation $y' - \frac{1}{30}xy = 0$.
 	
-	!iframe https://www.desmos.com/calculator/5rnbmsymfx
+	We have $y' = \frac{1}{30}xy$, so on both the $x$- and $y$-axes, $y' = 0$. That means we draw horizontal line segments there. When $x$ and $y$ are both positive or negative, the slope is positive, and when one is positive and the other negative, the slope is negative. The farther away from the axes we get, the larger the slope becomes in absolute value.
+	
+	!desmos direction-field
 	
 !end-example
 
@@ -110,9 +127,9 @@
 	
 	direction field
 	
-	Draw a direction field for $y' = \frac{1}{20}(x^2 - 1)\sin(y)$.
+	Draw a direction field for $\displaystyle y' = \frac{1}{20}(x^2 - 1)\sin(y)$.
 	
-	!iframe https://www.desmos.com/calculator/l1xqxf3srx
+	!desmos direction-field-2
 	
 !end-exercise
 
@@ -130,11 +147,11 @@
 	
 	direction field
 	
-	One solution to $y' - xy = 0$ is $y = e^{x^2 / 60}$.
+	For any value of $c$, $\displaystyle y = c e^{x^2}$ is a solution to $\displaystyle y' - xy = 0$.
 	
-	!iframe https://www.desmos.com/calculator/nwunmcch4d
+	!desmos de-solution
 	
-	As we can see, this function follows the direction field. Another solution that follows the field is $y = 0$, and this is a special type of solution:
+	As we can see, this function follows the direction field. When $c = 0$, the solution is $y = 0$, and this one has a special name:
 	
 !end-example
 
@@ -154,11 +171,11 @@
 	
 	equilibrium solution
 	
-	Find all equilibrium solutions to $y' = \frac{1}{20}(x-3)(y^2 - 4)$.
+	Find all equilibrium solutions to $\displaystyle y' = \frac{1}{20}(x-3)(y^2 - 4)$.
 	
 	If $y = c$, then $y' = 0$, so to find the equilibrium solutions, we just need to set $(x-3)(y^2 - 4) = 0$. Then $x = 3$, $y = -2$, or $y = 2$, and we only want the solutions of the form $y = c$, so we want $y = \pm 2$.
 	
-	!iframe https://www.desmos.com/calculator/5ssixh7zd5
+	!desmos direction-field-3
 	
 !end-example
 
@@ -186,7 +203,7 @@
 	
 	stable and unstable equilibrium solutions
 	
-	In the previous example, $y = 2$ is an unstable solution, since the direction field eventually points away from it for large $x$. Similarly, $y = -2$ is a stable solution. In general, to know how large to draw the direction field to determine if a solution is stable or unstable, make it large enough to capture all the places where the $y' = 0$, including $x$-values. In the previous example, that&#x2019;s $x = 3$.
+	In the previous example, $y = 2$ is an unstable solution, since the direction field eventually points away from it for large $x$. Similarly, $y = -2$ is a stable solution. In general, to know how large to draw the direction field to determine if a solution is stable or unstable, make it large enough to capture all the places where $y' = 0$, including $x$-values. In the previous example, that&#x2019;s $x = 3$.
 	
 !end-example
 
@@ -202,7 +219,7 @@
 
 !section
 
-!text s Separable DEs
+!text s Separable Differential Equations
 
 <br>
 
@@ -210,7 +227,7 @@
 
 !begin-text-block
 	
-	Okay, so how to we solve DEs? This is the subject that all those future classes are devoted to, but we&#x2019;ll just look at the simplest possible type: something called a separable DE.
+	So how do we solve DEs? This is the subject that all those future classes are devoted to, but we&#x2019;ll just look at the simplest possible type: something called a separable DE.
 	
 !end-text-block
 
@@ -220,7 +237,13 @@
 	
 	separable DE
 	
-	A differentiable equation is <dfn>separable</dfn> if it can be written in the form $y' = f(x)g(y)$ for some functions $f$ and $g$.
+	A differentiable equation is <dfn>separable</dfn> if it can be written in the form
+	
+	$$
+		y' = f(x)g(y)
+	$$
+	
+	for some functions $f$ and $g$.
 	
 !end-def
 
@@ -240,11 +263,19 @@
 	
 	To solve a DE of the form $y' = f(x)g(y)$:
 	
-	1. Rewrite $y'$ as $\frac{dy}{dx}$ to get $\frac{dy}{dx} = f(x)g(y)$.
+	1. Rewrite $y'$ as $\displaystyle\frac{dy}{dx}$ to get $\displaystyle\frac{dy}{dx} = f(x)g(y)$.
 	
-	2. Divide both sides by $g(y)$ and multiply both sides by $dx$ to get $\frac{1}{g(y)}\ dy = f(x)\ dx$.
+	2. Divide both sides by $g(y)$ and multiply both sides by $dx$ to get
 	
-	3. Add an integral to both sides: $\int \frac{1}{g(y)}\ dy = \int f(x)\ dx$.
+	$$
+		\frac{1}{g(y)}\,dy = f(x)\,dx.
+	$$
+	
+	3. Add an integral to both sides:
+	
+	$$
+		\int \frac{1}{g(y)}\,dy = \int f(x)\,dx.
+	$$
 	
 	4. Integrate.
 	
@@ -260,13 +291,25 @@
 	
 	separation of variables
 	
-	Solve $y' = (x-2)(y-3)$, given that $y(0) = 5$.
+	Solve $\displaystyle y' = (x-2)(y-3)$, given that $y(0) = 5$.
 	
-	We have $\frac{dy}{dx} = (x-2)(y-3)$. We then divide by the $y$ stuff (i.e. $y-3$) and multiply by $dx$ to get $\frac{1}{y-3}\ dy = (x-2)\ dx$. Then we integrate both sides:
+	We have
+	
+	$$
+		\frac{dy}{dx} = (x-2)(y-3).
+	$$
+	
+	We then divide by the $y$ stuff (i.e. $y-3$) and multiply by $dx$ to get
+	
+	$$
+		\frac{1}{y-3}\,dy = (x-2)\,dx.
+	$$
+	
+	Then we integrate both sides:
 	
 	$$
 		\begin{align*}
-			\int \frac{1}{y-3}\ dy &= \int (x-2)\ dx\\
+			\int \frac{1}{y-3}\,dy &= \int (x-2)\,dx\\
 			\ln |y - 3| &= x^2 - 2x + C.
 		\end{align*}
 	$$
@@ -291,7 +334,11 @@
 		\end{align*}
 	$$
 	
-	Therefore, this solution becomes $y = e^{x^2 - 2x + \ln(2)} + 3$.
+	Therefore, this solution becomes
+	
+	$$
+		y = e^{x^2 - 2x + \ln(2)} + 3.
+	$$
 	
 	Finally, we&#x2019;ll solve for the equilibrium solutions by solving $y - 3 = 0$, so $y = 3$. The reason why the previous method didn&#x2019;t solve for this solution is because it required dividing by $y - 3$, so that&#x2019;s exactly the solution we missed. However, it does not satisfy the initial condition, since $y(0) = 3 \neq 3$. Therefore, only the previous solution is correct.
 	
@@ -302,13 +349,13 @@
 	separation of variables
 	
 	Solve $y' = y\ln(x)$, given that $y(1) = 1$.
-	
-	Solution: separating and integrating, we have
+	<!--
+	<strong>Solution:</strong> separating and integrating, we have
 	
 	$$
 		\begin{align*}
-			\frac{1}{y}\ dy &= \ln(x)\ dx\\
-			\int \frac{1}{y}\ dy &= \int \ln(x)\ dx\\
+			\frac{1}{y}\,dy &= \ln(x)\,dx\\
+			\int \frac{1}{y}\,dy &= \int \ln(x)\,dx\\
 			\ln|y| &= x\ln(x) - x + C\\
 			y &= e^{x\ln(x) - x + C}.
 		\end{align*}
@@ -331,14 +378,14 @@
 	$$
 		y = e^{x\ln(x) - x + 1}.
 	$$
-	
+	-->
 !end-exercise
 
 
 
 !begin-text-block
 	
-	As an final application, let&#x2019;s talk about temperature.
+	As one final application, let&#x2019;s talk about temperature.
 	
 !end-text-block
 
@@ -348,7 +395,7 @@
 	
 	Newton&#x2019;s Law of Cooling
 	
-	Let $T(t)$ be the temperature of an object at time $t$ and let $S$ be the temperature of the material, like air or water, the material is surrounded by. Then for some number $k$
+	Let $T(t)$ be the temperature of an object at time $t$ and let $S$ be the temperature of the material, like air or water, the material is surrounded by. Then for some number $k$,
 	
 	$$
 		T' = k(T - S).
@@ -371,8 +418,8 @@
 	$$
 		\begin{align*}
 			\frac{dT}{dt} &= k(T - 75)\\
-			\frac{1}{T - 75} &= k\ dt\\
-			\int \frac{1}{T - 75} &= \int k\ dt\\
+			\frac{1}{T - 75} &= k\,dt\\
+			\int \frac{1}{T - 75} &= \int k\,dt\\
 			\ln |T - 75| &= kt + C\\
 			T - 75 &= e^{kt + C}\\
 			T &= e^{kt + C} + 75.
@@ -424,8 +471,8 @@
 	Newton&#x2019;s Law of Cooling
 	
 	In the same $75^\circ F$ kitchen, we bake a cake at $400^\circ F$. It&#x2019;s removed from the oven and after $10$ minutes, it has cooled to $300^\circ F$. How long until it cools down to $100^\circ F$?
-	
-	Solution: We have $T' = k(T - 75)$, so following the same procedure as in the above example, we get $T = e^{kt + C} + 75$. Since $T(0) = 400$, we have
+	<!--
+	<strong>Solution:</strong> We have $T' = k(T - 75)$, so following the same procedure as in the above example, we get $T = e^{kt + C} + 75$. Since $T(0) = 400$, we have
 	
 	$$
 		\begin{align*}
@@ -460,7 +507,7 @@
 			t &\approx 70.
 		\end{align*}
 	$$
-	
+	-->
 !end-exercise
 
 

@@ -44,8 +44,8 @@
 	
 	$$
 		\begin{align*}
-			N(t) &= \int N'(t)\ dt\\
-			&= \int 3^t\ dt.
+			N(t) &= \int N'(t)\,dt\\
+			&= \int 3^t\,dt.
 		\end{align*}
 	$$
 	
@@ -58,7 +58,7 @@
 	we can divide both sides by $\ln(3)$ to find that
 	
 	$$
-		N(t) = \int 3^t\ dt = \frac{1}{ln(3)} 3^t + C.
+		N(t) = \int 3^t\,dt = \frac{1}{ln(3)} 3^t + C.
 	$$
 	
 	Since $N(0) = 100$, we have that
@@ -91,7 +91,7 @@
 	
 	$$
 		\begin{align*}
-			m(t) &= \int -.0953 \cdot .91^t\ dt\\
+			m(t) &= \int -.0953 \cdot .91^t\,dt\\
 			&= -.0953 \frac{1}{\ln(.91)} .91^t + C\\
 			&= 1.0105 \cdot .91^t + C.
 		\end{align*}
@@ -107,13 +107,13 @@
 	
 	Another exponential integral
 	
-	Find $\displaystyle \int \frac{2^{1/x}}{x^2}\ dx$.
+	Find $\displaystyle \int \frac{2^{1/x}}{x^2}\,dx$.
 	
-	This is way too complicated to evaluate directly, so we have to try $u$-sub. If we set $u = x^2$, then the exponential becomes $2^{1/\sqrt{u}}$, which isn&#x2019;t really helpful. Instead, we can try $u = \frac{1}{x}$. Then $du = -\frac{1}{x^2}\ dx$, which lines up nicely: the integral becomes
+	This is way too complicated to evaluate directly, so we have to try $u$-sub. If we set $u = x^2$, then the exponential becomes $2^{1/\sqrt{u}}$, which isn&#x2019;t really helpful. Instead, we can try $u = \frac{1}{x}$. Then $du = -\frac{1}{x^2}\,dx$, which lines up nicely: the integral becomes
 	
 	$$
 		\begin{align*}
-			-\int 2^u\ du &= -\frac{1}{\ln(2)} 2^u + C\\
+			-\int 2^u\,du &= -\frac{1}{\ln(2)} 2^u + C\\
 			&= -\frac{1}{\ln(2)} 2^{1/x} + C.
 		\end{align*}
 	$$
@@ -127,7 +127,7 @@
 	We know that
 	
 	$$
-		\int \frac{1}{x}\ dx = \ln|x| + C,
+		\int \frac{1}{x}\,dx = \ln|x| + C,
 	$$
 	
 	since
@@ -147,7 +147,7 @@
 	the integral of $\ln$
 	
 	$$
-		\int \ln(x)\ dx = x\ln(x) - x + C.
+		\int \ln(x)\,dx = x\ln(x) - x + C.
 	$$
 	
 !end-prop
@@ -182,20 +182,20 @@
 	
 	a logarithmic integral
 	
-	Find $\displaystyle \int_2^3 \log_2(5x)\ dx$.
+	Find $\displaystyle \int_2^3 \log_2(5x)\,dx$.
 	
 	First, we&#x2019;ll turn this log into a natural log.
 	
 	$$
-		\int_2^3 \log_2(5x)\ dx = \int_2^3 \frac{\ln(5x)}{\ln(2)}\ dx.
+		\int_2^3 \log_2(5x)\,dx = \int_2^3 \frac{\ln(5x)}{\ln(2)}\,dx.
 	$$
 	
 	Now since $\ln(2)$ is a constant, we can factor it out of the integral and use $u$-sub to handle the rest.
 	
 	$$
 		\begin{align*}
-			\int_2^3 \frac{\ln(5x)}{\ln(2)}\ dx &= \frac{1}{\ln(2)} \int_2^3 \ln(5x)\ dx\\
-			& u = 5x,\ du = 5dx\\
+			\int_2^3 \frac{\ln(5x)}{\ln(2)}\,dx &= \frac{1}{\ln(2)} \int_2^3 \ln(5x)\,dx\\
+			& u = 5x,\,du = 5dx\\
 			&= \frac{1}{\ln(2)} \int_2^3 \ln(u)\ \frac{1}{5}du\\
 			&= \frac{1}{5\ln(2)} \left. \left[ u \ln(u) - u \right] \right|_2^3\\
 			&= \frac{1}{5\ln(2)} \left. \left[ 5x \ln(5x) - 5x \right] \right|_2^3\\
@@ -209,14 +209,14 @@
 	
 	a logarithmic integral
 	
-	Find $\displaystyle \int_1^2 x\log_3(x^2)\ dx$.
+	Find $\displaystyle \int_1^2 x\log_3(x^2)\,dx$.
 	
-	<strong>Solution:</strong> since we have a composition, we should try $u$-sub. Let $u = x^2$ &mdash; then $du = 2x\ dx$, so we have
+	<strong>Solution:</strong> since we have a composition, we should try $u$-sub. Let $u = x^2$ &mdash; then $du = 2x\,dx$, so we have
 	
 	$$
 		\begin{align*}
-			\int_1^2 \frac{1}{2} \log_3(u)\ du &= \int_1^2 \frac{1}{2} \frac{\ln(u)}{\ln(3)}\ du\\
-			&= \frac{1}{2\ln(3)} \int_1^2 \ln(u)\ du\\
+			\int_1^2 \frac{1}{2} \log_3(u)\,du &= \int_1^2 \frac{1}{2} \frac{\ln(u)}{\ln(3)}\,du\\
+			&= \frac{1}{2\ln(3)} \int_1^2 \ln(u)\,du\\
 			&= \frac{1}{2\ln(3)} \left. \left[ u \ln(u) - u \right] \right|_1^2\\
 			&= \frac{1}{2\ln(3)} \left. \left[ x^2 \ln(x^2) - x^2 \right] \right|_1^2\\
 			&= \frac{1}{2\ln(3)} \left( 4 \ln(4) - 4 - \ln(1) + 1 \right)\\
@@ -246,11 +246,11 @@
 	
 	inverse trig integrals
 	
-	1. $\displaystyle \int \frac{1}{\sqrt{a^2 - x^2}}\ dx = \sin^{-1}\left( \frac{x}{a} \right) + C$.
+	1. $\displaystyle \int \frac{1}{\sqrt{a^2 - x^2}}\,dx = \sin^{-1}\left( \frac{x}{a} \right) + C$.
 	
-	2. $\displaystyle \int \frac{1}{x^2 + a^2}\ dx = \frac{1}{a} \tan^{-1}\left( \frac{x}{a} \right) + C$.
+	2. $\displaystyle \int \frac{1}{x^2 + a^2}\,dx = \frac{1}{a} \tan^{-1}\left( \frac{x}{a} \right) + C$.
 	
-	3. $\displaystyle \int \frac{1}{x\sqrt{x^2 - a^2}}\ dx = \frac{1}{a} \sec^{-1}\left( \frac{x}{a} \right) + C$.
+	3. $\displaystyle \int \frac{1}{x\sqrt{x^2 - a^2}}\,dx = \frac{1}{a} \sec^{-1}\left( \frac{x}{a} \right) + C$.
 	
 !end-prop
 
@@ -258,7 +258,7 @@
 
 !begin-text-block
 	
-	It might look like that last one is a $u$-sub problem, but it's actually not, since if we set $u = x^2 - a^2$, then $du = 2x\ dx$, and the integral contains $\frac{1}{x}\ dx$.
+	It might look like that last one is a $u$-sub problem, but it's actually not, since if we set $u = x^2 - a^2$, then $du = 2x\,dx$, and the integral contains $\frac{1}{x}\,dx$.
 	
 !end-text-block
 
@@ -268,14 +268,14 @@
 	
 	an inverse trig integral
 	
-	Find $\displaystyle \int \frac{1}{\sqrt{4 - 9x^2}}\ dx$.
+	Find $\displaystyle \int \frac{1}{\sqrt{4 - 9x^2}}\,dx$.
 	
 	This resembles the first integral in the previous proposition, but we need to remove the $9$ from the $x^2$. This can be done with $u$-sub:
 	
 	$$
 		\begin{align*}
-			\int \frac{1}{\sqrt{4 - 9x^2}}\ dx &= \int \frac{1}{\sqrt{4 - (3x)^2}}\ dx\\
-			& u = 3x,\ du = 3\ dx\\
+			\int \frac{1}{\sqrt{4 - 9x^2}}\,dx &= \int \frac{1}{\sqrt{4 - (3x)^2}}\,dx\\
+			& u = 3x,\,du = 3\,dx\\
 			&= \int \frac{1}{\sqrt{4 - u^2}}\ \frac{1}{3}du\\
 			&= \frac{1}{3} \sin^{-1} \left( \frac{u}{2} \right) + C\\
 			&= \frac{1}{3} \sin^{-1} \left( \frac{3x}{2} \right) + C
@@ -288,12 +288,12 @@
 	
 	an inverse trig integral
 	
-	Find $\displaystyle \int \frac{1}{x\sqrt{4x^2 - 4}}\ dx$.
+	Find $\displaystyle \int \frac{1}{x\sqrt{4x^2 - 4}}\,dx$.
 	
 	<strong>Solution:</strong> first we need to factor out a $4$. Then we have
 	
 	$$
-		\int \frac{1}{2x\sqrt{x^2 - 1}}\ dx = \frac{1}{2} \sec^{-1}(x).
+		\int \frac{1}{2x\sqrt{x^2 - 1}}\,dx = \frac{1}{2} \sec^{-1}(x).
 	$$
 	
 !end-exercise
@@ -324,13 +324,13 @@
 	
 	a definite inverse trig integral
 	
-	Find $\displaystyle \int_0^2 \frac{1}{\sqrt{16 - x^2}}\ dx$.
+	Find $\displaystyle \int_0^2 \frac{1}{\sqrt{16 - x^2}}\,dx$.
 	
 	We have
 	
 	$$
 		\begin{align*}
-			\int_0^2 \frac{1}{\sqrt{16 - x^2}}\ dx &= \left. \left[ \sin^{-1} \left( \frac{x}{4} \right) \right] \right|_0^2\\
+			\int_0^2 \frac{1}{\sqrt{16 - x^2}}\,dx &= \left. \left[ \sin^{-1} \left( \frac{x}{4} \right) \right] \right|_0^2\\
 			&= \sin^{-1} \left( \frac{1}{2} \right) - \sin^{-1}(0)\\
 			&= \frac{\pi}{6} - 0\\
 			&= \frac{\pi}{6}.
@@ -343,7 +343,7 @@
 	
 	a definite inverse trig integral
 	
-	Find $\displaystyle \int_{\sqrt{3}/3}^{\sqrt{3}} \frac{1}{1 + x^2}\ dx$.
+	Find $\displaystyle \int_{\sqrt{3}/3}^{\sqrt{3}} \frac{1}{1 + x^2}\,dx$.
 	
 	<strong>Solution:</strong> this is
 	
@@ -402,4 +402,4 @@
 	};
 	
 	Page.load();
-</script>
+	</script>

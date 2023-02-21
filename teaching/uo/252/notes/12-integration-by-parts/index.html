@@ -126,15 +126,15 @@
 	There are lots of choices for $u$ and $dv$ &mdash; here are just a few:
 	
 	$$
-		u = \ln(t),\ dv = \frac{1}{t^2}\,dt
+		u = \ln(t),\,dv = \frac{1}{t^2}\,dt
 	$$
 	
 	$$
-		u = \frac{\ln(t)}{t^2},\ dv = dt
+		u = \frac{\ln(t)}{t^2},\,dv = dt
 	$$
 	
 	$$
-		u = \frac{1}{t},\ dv = \frac{\ln(t)}{t}\,dt
+		u = \frac{1}{t},\,dv = \frac{\ln(t)}{t}\,dt
 	$$
 	
 	In general, we want to choose $u$ and $dv$ such that the resulting integral is as simple as possible. For example, since the derivative of $\ln(t)$ is $\frac{1}{t}$ but the integral is $t\ln(t) - t + C$, we almost certainly want $\ln(t)$ to be part of $u$ instead of $dv$ so that it gets differentiated. The simplest way to do that is just to take $u = \ln(t)$ and $dv = \frac{1}{t^2}\,dt$ &mdash; let&#x2019;s see how that goes. We have $du = \frac{1}{t}\,dt$ and $v = -\frac{1}{t}$, so we get
@@ -164,7 +164,7 @@
 	
 	Find $\displaystyle \int x^2 e^{3x}\,dx$.
 	
-	We know that $x^2$ gets simpler when we differentiate it, and $e^{3x}$ stays as complicated when integrated, so let&#x2019;s try $u = x^2$ and $dv = e^{3x}\,dx$. Then $du = 2x\ dx$ and $v = \frac{1}{3}e^{3x}$. Now the integral becomes
+	We know that $x^2$ gets simpler when we differentiate it, and $e^{3x}$ stays as complicated when integrated, so let&#x2019;s try $u = x^2$ and $dv = e^{3x}\,dx$. Then $du = 2x\,dx$ and $v = \frac{1}{3}e^{3x}$. Now the integral becomes
 	
 	$$
 		\int x^2 e^{3x}\,dx = \frac{1}{3} x^2 e^{3x} - \int \frac{2}{3} x e^{3x}\,dx.
@@ -186,9 +186,9 @@
 	
 	integration by parts twice
 	
-	Find $\displaystyle \int t^2 \cos(2t)\ dt$.
+	Find $\displaystyle \int t^2 \cos(2t)\,dt$.
 	
-	<strong>Solution:</strong> by the same logic, let $u = t^2$ and $dv = \cos(2t)\,dt$. Then $du = 2t\ dt$ and $v = \frac{1}{2} \sin(2t)\,dt$, so the integral becomes
+	<strong>Solution:</strong> by the same logic, let $u = t^2$ and $dv = \cos(2t)\,dt$. Then $du = 2t\,dt$ and $v = \frac{1}{2} \sin(2t)\,dt$, so the integral becomes
 	
 	$$
 		\frac{1}{2}t^2\sin(2t) - \int \frac{1}{2} \sin(2t) (2t)\,dt = \frac{1}{2}t^2\sin(2t) - \int t \sin(2t)\,dt.

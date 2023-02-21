@@ -148,34 +148,34 @@
 	Since the blue rectangles are always an overapproximation of the actual area, we have that
 	
 	$$
-		\sum_{n = 1}^\infty \frac{1}{n + 4} \geq \int_1^\infty \frac{1}{x + 4}\ dx.
+		\sum_{n = 1}^\infty \frac{1}{n + 4} \geq \int_1^\infty \frac{1}{x + 4}\,dx.
 	$$
 	
 	Similarly, since the red rectangles are always an underapproximation,
 	
 	$$
-		\sum_{n = 1}^\infty \frac{1}{n + 4} \leq \int_0^\infty \frac{1}{x + 4}\ dx.
+		\sum_{n = 1}^\infty \frac{1}{n + 4} \leq \int_0^\infty \frac{1}{x + 4}\,dx.
 	$$
 	
 	By treating the leftmost red rectangle separately and starting our sum at $n = 2$, we can rewrite this as
 	
 	$$
-		\sum_{n = 1}^\infty \frac{1}{n + 4} = \frac{1}{5} + \sum_{n = 2}^\infty \frac{1}{n + 4} \leq \frac{1}{5} + \int_1^\infty \frac{1}{x + 4}\ dx.
+		\sum_{n = 1}^\infty \frac{1}{n + 4} = \frac{1}{5} + \sum_{n = 2}^\infty \frac{1}{n + 4} \leq \frac{1}{5} + \int_1^\infty \frac{1}{x + 4}\,dx.
 	$$
 	
 	Putting it all together, we have the following bounds on the series:
 	
 	$$
-		\int_1^\infty \frac{1}{x + 4}\ dx \leq \sum_{n = 1}^\infty \frac{1}{n + 4} \leq \frac{1}{5} + \int_1^\infty \frac{1}{x + 4}\ dx.
+		\int_1^\infty \frac{1}{x + 4}\,dx \leq \sum_{n = 1}^\infty \frac{1}{n + 4} \leq \frac{1}{5} + \int_1^\infty \frac{1}{x + 4}\,dx.
 	$$
 	
-	We&#x2019;ve succeeded in relating the Riemann sums to an integral, and the fact that the two inequalities go in different directions is the best part. If $\int_1^\infty \frac{1}{x + 4}\ dx$ is infinite, then our sum must be too, because of the left inequality. On the other hand, if $\int_1^\infty \frac{1}{x + 4}\ dx$ is finite, then the same must be true of the sum by the right inequality. Therefore, whether the integral converges or diverges, <strong>the sum does the same thing</strong>. It may not converge to the same value, but this is still an excellent way to test convergence.
+	We&#x2019;ve succeeded in relating the Riemann sums to an integral, and the fact that the two inequalities go in different directions is the best part. If $\int_1^\infty \frac{1}{x + 4}\,dx$ is infinite, then our sum must be too, because of the left inequality. On the other hand, if $\int_1^\infty \frac{1}{x + 4}\,dx$ is finite, then the same must be true of the sum by the right inequality. Therefore, whether the integral converges or diverges, <strong>the sum does the same thing</strong>. It may not converge to the same value, but this is still an excellent way to test convergence.
 	
 	Let&#x2019;s close out this example by actually evaluating the integral, and then we&#x2019;ll state the general result.
 	
 	$$
 		\begin{align*}
-			\int_1^\infty \frac{1}{x + 4}\ dx &= \left. \left[ \ln |x + 4| \right] \right|_1^\infty\\
+			\int_1^\infty \frac{1}{x + 4}\,dx &= \left. \left[ \ln |x + 4| \right] \right|_1^\infty\\
 			&= \lim_{b \to \infty} (\ln |b + 4| - \ln |1 + 4|)\\
 			&= \lim_{b \to \infty} (\ln (b + 4) - \ln(5)), \text{ since } b > 0\\
 			&= \infty.
@@ -202,7 +202,7 @@
 	
 	3. $f(n) = a_n$ for every integer $n \geq N$.
 	
-	Then $\sum_{n = N}^\infty a_n$ and $\int_N^\infty f(x)\ dx$ either both converge or both diverge.
+	Then $\sum_{n = N}^\infty a_n$ and $\int_N^\infty f(x)\,dx$ either both converge or both diverge.
 
 !end-thm
 
@@ -234,7 +234,7 @@
 	
 	$$
 		\begin{align*}
-			\int_1^\infty \frac{1}{x^2}\ dx &= \lim_{b \to \infty} \int_1^b \frac{1}{x^2}\ dx\\
+			\int_1^\infty \frac{1}{x^2}\,dx &= \lim_{b \to \infty} \int_1^b \frac{1}{x^2}\,dx\\
 			&= \lim_{b \to \infty} \left[ -x^{-1} \right]_1^b\\
 			&= \lim_{b \to \infty} \left( -b^{-1} + 1 \right)\\
 			&= 1.
@@ -249,9 +249,9 @@
 	
 	$$
 		\begin{align*}
-			\int_1^\infty \frac{1}{\sqrt{x + 1}}\ dx &= \lim_{b \to \infty} \int_1^b \frac{1}{\sqrt{x + 1}}\ dx\\
-			u &= x + 1,\ du = dx\\
-			&= \lim_{b \to \infty} \int_1^b u^{-1/2}\ du\\
+			\int_1^\infty \frac{1}{\sqrt{x + 1}}\,dx &= \lim_{b \to \infty} \int_1^b \frac{1}{\sqrt{x + 1}}\,dx\\
+			u &= x + 1,\,du = dx\\
+			&= \lim_{b \to \infty} \int_1^b u^{-1/2}\,du\\
 			&= \lim_{b \to \infty} \left[ 2u^{1/2} \right]_1^b\\
 			&= \lim_{b \to \infty} \left[ 2(x + 1)^{1/2} \right]_1^b\\
 			&= \lim_{b \to \infty} \left( 2(b + 1)^{1/2} - 2\sqrt{2} \right)\\
@@ -299,7 +299,7 @@
 	
 	$$
 		\begin{align*}
-			\int \frac{1}{x^p}\ dx &= \int x^{-p}\ dx\\
+			\int \frac{1}{x^p}\,dx &= \int x^{-p}\,dx\\
 			&= \begin{cases}
 				\frac{x^{-p + 1}}{-p + 1}, & p \neq 1\\
 				\ln|x|, & p = 1
@@ -386,13 +386,13 @@
 	Since $R_N = \sum_{n = N + 1}^\infty a_n$, it&#x2019;s a series in and of itself that we can possibly apply the integral test to. If that is the case, and there is a positive, decreasing, integrable function $f$ with $f(n) = a_n$, then from our derivation of the integral test, we have that
 	
 	$$
-		\int_{N + 1}^\infty f(x)\ dx \leq \sum_{n = N + 1}^\infty a_n \leq \int_N^\infty f(x)\ dx.
+		\int_{N + 1}^\infty f(x)\,dx \leq \sum_{n = N + 1}^\infty a_n \leq \int_N^\infty f(x)\,dx.
 	$$
 	
 	Since the middle term is just $R_N$, we can rewrite that as
 	
 	$$
-		\int_{N + 1}^\infty f(x)\ dx \leq R_N \leq \int_N^\infty f(x)\ dx.
+		\int_{N + 1}^\infty f(x)\,dx \leq R_N \leq \int_N^\infty f(x)\,dx.
 	$$
 	
 	This is a great result! It gives both an upper and lower bound for $R_N$, so if we&#x2019;re asked to give an approximation of a series that is within certain distance of the true value, we can use this integral to figure out a large enough $N$. Let&#x2019;s work some examples.
@@ -411,7 +411,7 @@
 	
 	$$
 		\begin{align*}
-			R_N < \int_N^\infty \frac{1}{x^3}\ dx &= \left. \left[ -\frac{1}{2} x^{-2} \right] \right|_N^\infty\\
+			R_N < \int_N^\infty \frac{1}{x^3}\,dx &= \left. \left[ -\frac{1}{2} x^{-2} \right] \right|_N^\infty\\
 			&= \lim_{b \to \infty} \left( \frac{1}{2} N^{-2} - \frac{1}{2} b^{-2} \right)\\
 			&= \frac{1}{2} N^{-2}.
 		\end{align*}
@@ -455,8 +455,8 @@
 	
 	$$
 		\begin{align*}
-			R_N \leq \int_N^\infty \frac{1}{x^5}\ dx\\
-			&= \lim_{b \to \infty} \int_N^b \frac{1}{x^5}\ dx\\
+			R_N \leq \int_N^\infty \frac{1}{x^5}\,dx\\
+			&= \lim_{b \to \infty} \int_N^b \frac{1}{x^5}\,dx\\
 			&= \lim_{b \to \infty} \left[ \frac{x^{-4}}{-4} \right]_N^b\\
 			&= \lim_{b \to \infty} \left( -\frac{b^{-4}}{4} + \frac{N^{-4}}{4} \right)\\
 			&= 0 + \frac{N^{-4}}{4}\\
@@ -523,4 +523,4 @@
 	};
 	
 	Page.load();
-</script>
+	</script>

@@ -41,7 +41,7 @@
 	Let $f(t)$ be a continuous function on $[a, b]$ and define a function $F(x)$ by
 	
 	$$
-		F(x) = \int_a^x f(t)\ dt.
+		F(x) = \int_a^x f(t)\,dt.
 	$$
 	
 	Then $F'(x) = f(x)$.
@@ -54,8 +54,8 @@
 	
 	$$
 		\begin{align*}
-			F(x + 1) - F(x) &= \int_a^{x + 1} f(t)\ dt - \int_a^x f(t)\ dt\\
-			&= \int_x^{x + 1} f(t)\ dt,
+			F(x + 1) - F(x) &= \int_a^{x + 1} f(t)\,dt - \int_a^x f(t)\,dt\\
+			&= \int_x^{x + 1} f(t)\,dt,
 		\end{align*}
 	$$
 	
@@ -63,7 +63,7 @@
 	
 	!desmos ftc-part-1
 	
-	To put it concisely, the red rectangle in the graph has base $1$ and height $f(x)$, so its area is $f(x)$. On the other hand, it&#x2019;s aproximately equal to $\int_x^{x + 1} f(t)\ dt$, which is by definition equal to $F(x + 1) - F(x)$. That in turn is approximately equal to $F'(x)$. As the width of the rectangle shrinks to zero, these approximations become better and better, and in the limit, they&#x2019;re equal.
+	To put it concisely, the red rectangle in the graph has base $1$ and height $f(x)$, so its area is $f(x)$. On the other hand, it&#x2019;s aproximately equal to $\int_x^{x + 1} f(t)\,dt$, which is by definition equal to $F(x + 1) - F(x)$. That in turn is approximately equal to $F'(x)$. As the width of the rectangle shrinks to zero, these approximations become better and better, and in the limit, they&#x2019;re equal.
 	
 !end-text-block
 
@@ -73,12 +73,12 @@
 	
 	FTC Part I
 	
-	Find $\displaystyle \frac{d}{dx} \int_1^x \frac{1}{t^3 + t}\ dt$.
+	Find $\displaystyle \frac{d}{dx} \int_1^x \frac{1}{t^3 + t}\,dt$.
 	
 	Applying the theorem, we just take the inside function and plug in $x$ for $t$:
 	
 	$$
-		\frac{d}{dx} \int_1^x \frac{1}{t^3 + t}\ dt = \frac{1}{x^3 + x}.
+		\frac{d}{dx} \int_1^x \frac{1}{t^3 + t}\,dt = \frac{1}{x^3 + x}.
 	$$
 	
 	It might seem a little strange that the lower limit of $1$ doesn&#x2019;t appear in the final answer, but that&#x2019;s because the derivative is measuring the rate of change of the integral at $x$, and so the area of the function before then is irrelevant.
@@ -91,12 +91,12 @@
 	
 	FTC Part I
 	
-	Find $\displaystyle \frac{d}{dx} \int_2^{\sin(x)} \frac{1}{t^3 + t}\ dt$.
+	Find $\displaystyle \frac{d}{dx} \int_2^{\sin(x)} \frac{1}{t^3 + t}\,dt$.
 	
 	This one is a little more involved. FTC Part I only tells us what to do when the upper limit is $x$, and here it&#x2019;s a <em>function</em> of $x$. The way to approach problems like this is to first get back to the case we understand by defining a function $F$ as follows:
 	
 	$$
-		F(x) = \int_2^x \frac{1}{t^3 + t}\ dt.
+		F(x) = \int_2^x \frac{1}{t^3 + t}\,dt.
 	$$
 	
 	Now we can rewrite the question as finding $\frac{d}{dx} F(\sin(x))$. And we know how to handle this: it&#x2019;s a chain rule problem! We have
@@ -118,9 +118,9 @@
 	
 	FTC Part I
 	
-	Find $\displaystyle \frac{d}{dt} \int_2^{\sqrt{t}} \sin(x)\ dx$.
+	Find $\displaystyle \frac{d}{dt} \int_2^{\sqrt{t}} \sin(x)\,dx$.
 	
-	<strong>Solution:</strong> the roles of $t$ and $x$ are reversed from the previous exmaple. First, write $F(t) = \int_2^t \sin(x)\ dx$. We&#x2019;re trying to find $\frac{d}{dt} [F(\sqrt{t})]$, which by the chain rule is
+	<strong>Solution:</strong> the roles of $t$ and $x$ are reversed from the previous exmaple. First, write $F(t) = \int_2^t \sin(x)\,dx$. We&#x2019;re trying to find $\frac{d}{dt} [F(\sqrt{t})]$, which by the chain rule is
 	
 	$$
 		\begin{align*}
@@ -166,7 +166,7 @@
 	Let $f$ be an integrable function. Then
 	
 	$$
-		\int_a^b f(x)\ dx = \left. \left[ \int f(x)\ dx \right] \right|_a^b.
+		\int_a^b f(x)\,dx = \left. \left[ \int f(x)\,dx \right] \right|_a^b.
 	$$
 	
 !end-thm
@@ -175,10 +175,10 @@
 
 !begin-text-block
 	
-	This is why the two seemingly different concepts of area and antiderivatives are both written with integral signs: they&#x2019;re really two expressions of the same thing. To calculate a definite integral $\int_a^b f(x)\ dx$, we first find an antiderivative $F(x)$ of $f(x)$. Then the integral is just
+	This is why the two seemingly different concepts of area and antiderivatives are both written with integral signs: they&#x2019;re really two expressions of the same thing. To calculate a definite integral $\int_a^b f(x)\,dx$, we first find an antiderivative $F(x)$ of $f(x)$. Then the integral is just
 	
 	$$
-		\left. \left[ \int f(x)\ dx \right] \right|_a^b = F(b) - F(a).
+		\left. \left[ \int f(x)\,dx \right] \right|_a^b = F(b) - F(a).
 	$$
 	
 	In other words, we&#x2019;ve found a way to leave behind all the limits of Riemann sums, so long as we can find antiderivatives. Let&#x2019;s redo the example from the last section to see just how much easier this new way is.
@@ -191,13 +191,13 @@
 	
 	FTC, Part II
 	
-	Find $\displaystyle \int_0^2 t^2\ dt$.
+	Find $\displaystyle \int_0^2 t^2\,dt$.
 	
-	In order to find the definite integral, the Fundamental Theorem tells us to first find $\int t^2\ dt$. This is a function $F(t)$ whose derivative is $t^2$ &mdash; a good first guess is $t^3 + C$, since its derivative is $3t^2$, which is only off by a factor of $3$. Since constant multiplication factors through derivatives, we can just divide $t^3$ by $3$ to fix the issue: $F(t) = \frac{t^3}{3} + C$ has derivative $\frac{3t^2}{3} = t^2$. That&#x2019;s the hard part out of the way &mdash; now we can apply the Fundamental Theorem.
+	In order to find the definite integral, the Fundamental Theorem tells us to first find $\int t^2\,dt$. This is a function $F(t)$ whose derivative is $t^2$ &mdash; a good first guess is $t^3 + C$, since its derivative is $3t^2$, which is only off by a factor of $3$. Since constant multiplication factors through derivatives, we can just divide $t^3$ by $3$ to fix the issue: $F(t) = \frac{t^3}{3} + C$ has derivative $\frac{3t^2}{3} = t^2$. That&#x2019;s the hard part out of the way &mdash; now we can apply the Fundamental Theorem.
 	
 	$$
 		\begin{align*}
-			\int_0^2 t^2\ dt &= \left. \left[ \int t^2\ dt \right] \right|_0^2\\
+			\int_0^2 t^2\,dt &= \left. \left[ \int t^2\,dt \right] \right|_0^2\\
 			&= \left. \left[ \frac{t^3}{3} + C \right] \right|_0^2\\
 			&= \left(\frac{2^3}{3} + C\right) - \left(\frac{0^3}{3} + C\right)\\
 			&= \frac{8}{3}.
@@ -212,13 +212,13 @@
 	
 	FTC, Part II
 	
-	Find $\displaystyle \int_{-\pi}^\pi \sin(\theta)\ d\theta$.
+	Find $\displaystyle \int_{-\pi}^\pi \sin(\theta)\,d\theta$.
 	
-	<strong>Solution:</strong> first, find $\int \sin(\theta)\ d\theta = -\cos(\theta)$. We&#x2019;ve dropped the $C$ because we&#x2019;re about to evaluate it:
+	<strong>Solution:</strong> first, find $\int \sin(\theta)\,d\theta = -\cos(\theta)$. We&#x2019;ve dropped the $C$ because we&#x2019;re about to evaluate it:
 	
 	$$
 		\begin{align*}
-			\int_{-\pi}^\pi \sin(\theta)\ d\theta &= \left. \left[ -\cos(\theta) \right] \right|_{-\pi}^\pi\\
+			\int_{-\pi}^\pi \sin(\theta)\,d\theta &= \left. \left[ -\cos(\theta) \right] \right|_{-\pi}^\pi\\
 			&= -\cos(\pi) - (-\cos(-\pi))\\
 			&= -(-1) - (-(-1))\\
 			&= 1 - 1\\
@@ -250,16 +250,16 @@
 	
 	another definite integral
 	
-	Find $\displaystyle \int_1^9 \frac{x - 1}{\sqrt{x}}\ dx$.
+	Find $\displaystyle \int_1^9 \frac{x - 1}{\sqrt{x}}\,dx$.
 	
 	This function is too complicated to take an antiderivative directly &mdash; I don&#x2019;t know a function off the top of my head whose derivative is $\frac{x - 1}{\sqrt{x}}$. But we can split the fraction over the minus sign, and each of the resulting parts is easier to handle.
 	
 	$$
 		\begin{align*}
-			\int \frac{x - 1}{\sqrt{x}}\ dx &= \int \frac{x}{\sqrt{x}} - \frac{1}{\sqrt{x}}\ dx\\
-			&= \int \frac{x}{\sqrt{x}}\ dx - \int \frac{1}{\sqrt{x}}\ dx\\
-			&= \int \frac{x}{x^{1/2}}\ dx - \int \frac{1}{x^{1/2}}\ dx\\
-			&= \int x^{1/2}\ dx - \int x^{-1/2}\ dx\\
+			\int \frac{x - 1}{\sqrt{x}}\,dx &= \int \frac{x}{\sqrt{x}} - \frac{1}{\sqrt{x}}\,dx\\
+			&= \int \frac{x}{\sqrt{x}}\,dx - \int \frac{1}{\sqrt{x}}\,dx\\
+			&= \int \frac{x}{x^{1/2}}\,dx - \int \frac{1}{x^{1/2}}\,dx\\
+			&= \int x^{1/2}\,dx - \int x^{-1/2}\,dx\\
 			&= \frac{x^{3/2}}{3/2} - \frac{x^{1/2}}{1/2}.
 		\end{align*}
 	$$
@@ -268,7 +268,7 @@
 	
 	$$
 		\begin{align*}
-			\int_1^9 \frac{x - 1}{\sqrt{x}}\ dx &= \left. \left[ \frac{x^{3/2}}{3/2} - \frac{x^{1/2}}{1/2} \right] \right|_1^9\\
+			\int_1^9 \frac{x - 1}{\sqrt{x}}\,dx &= \left. \left[ \frac{x^{3/2}}{3/2} - \frac{x^{1/2}}{1/2} \right] \right|_1^9\\
 			&= \left. \left[ \frac{x^{3/2}}{3/2} - \frac{x^{1/2}}{1/2} \right] \right|_1^9\\
 			&= \left( \frac{9^{3/2}}{3/2} - \frac{1^{3/2}}{3/2} \right) - \left( \frac{9^{1/2}}{1/2} - \frac{1^{1/2}}{1/2} \right)\\
 			&= \left( 27 \cdot \frac{2}{3} - \frac{2}{3} \right) - \left( 3 \cdot \frac{2}{1} - \frac{2}{1} \right)\\
@@ -325,4 +325,4 @@
 	};
 	
 	Page.load();
-</script>
+	</script>

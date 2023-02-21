@@ -464,7 +464,7 @@
 	$$
 		\begin{align*}
 			f'(x) &= \sum_{n = 0}^\infty \frac{d}{dx} \left[ c_n (x - a)^n \right] = \sum_{n = 1}^\infty n c_n (x - a)^{n - 1}\\
-			\int f(x)\ dx &= \sum_{n = 0}^\infty \int c_n (x - a)^n\ dx = C + \sum_{n = 0}^\infty c_n \frac{(x - a)^{n + 1}}{n + 1}.
+			\int f(x)\,dx &= \sum_{n = 0}^\infty \int c_n (x - a)^n\,dx = C + \sum_{n = 0}^\infty c_n \frac{(x - a)^{n + 1}}{n + 1}.
 		\end{align*}
 	$$
 	
@@ -483,18 +483,18 @@
 	Since we really only know the series $\frac{1}{1 - x}$ at the moment, let&#x2019;s try to work with that. The connection to $\ln(x + 1)$ is that
 	
 	$$
-		\int \frac{1}{1 + x}\ dx = \ln(1 + x) + C,
+		\int \frac{1}{1 + x}\,dx = \ln(1 + x) + C,
 	$$
 	
 	so we want to replace $x$ with $-x$ in $\frac{1}{1 - x}$ and integrate the series term-by-term. We have
 	
 	$$
 		\begin{align*}
-			\ln(1 + x) &= \int \frac{1}{1 - (-x)}\ dx + C\\
-			&= \int \left(\sum_{n = 0}^\infty (-x)^n\right)\ dx + C\\
-			&= C + \sum_{n = 0}^\infty \int (-x)^n\ dx\\
-			&= C + \sum_{n = 0}^\infty \int (-1)^n x^n\ dx\\
-			&= C + \sum_{n = 0}^\infty (-1)^n \int x^n\ dx\\
+			\ln(1 + x) &= \int \frac{1}{1 - (-x)}\,dx + C\\
+			&= \int \left(\sum_{n = 0}^\infty (-x)^n\right)\,dx + C\\
+			&= C + \sum_{n = 0}^\infty \int (-x)^n\,dx\\
+			&= C + \sum_{n = 0}^\infty \int (-1)^n x^n\,dx\\
+			&= C + \sum_{n = 0}^\infty (-1)^n \int x^n\,dx\\
 			&= C + \sum_{n = 0}^\infty (-1)^n \frac{x^{n + 1}}{n + 1}\\
 			&= C + x - \frac{x^2}{2} + \frac{x^3}{3} - \cdots.
 		\end{align*}

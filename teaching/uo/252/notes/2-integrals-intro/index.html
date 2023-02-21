@@ -38,10 +38,10 @@
 	
 	definite integral
 	
-	Let $f$ be a nonnegative function defined on $[a, b]$. The <dfn>definite integral</dfn> of $f$ on $[a, b]$ is the area under the graph of $f$ on $[a, b]$, written as $\int_a^b f(x)\ dx$ and defined by
+	Let $f$ be a nonnegative function defined on $[a, b]$. The <dfn>definite integral</dfn> of $f$ on $[a, b]$ is the area under the graph of $f$ on $[a, b]$, written as $\int_a^b f(x)\,dx$ and defined by
 	
 	$$
-		\int_a^b f(x)\ dx = \lim_{n \to \infty} \sum_{i = 1}^n f(x_i^*) \Delta x,
+		\int_a^b f(x)\,dx = \lim_{n \to \infty} \sum_{i = 1}^n f(x_i^*) \Delta x,
 	$$
 	
 	where the sum is a Riemann sum with $n$ rectangles. If the limit exists, we say that $f$ is <dfn>integrable</dfn> on $[a, b]$.
@@ -82,7 +82,7 @@
 
 	computing an integral geometrically
 	
-	Find $\displaystyle \int_{-1}^3 |x|\ dx$.
+	Find $\displaystyle \int_{-1}^3 |x|\,dx$.
 	
 	Especially with integrals, it&#x2019;s always a good idea to draw a picture of what&#x2019;s going on before digging into the equations.
 	
@@ -94,7 +94,7 @@
 		\frac{1}{2} \cdot 1 \cdot 1 + \frac{1}{2} \cdot 3 \cdot 3 = 5.
 	$$
 	
-	In total, $\int_{-1}^3 |x|\ dx = 5$.
+	In total, $\int_{-1}^3 |x|\,dx = 5$.
 
 !end-example
 
@@ -102,7 +102,7 @@
 	
 	computing an integral geometrically
 	
-	Find $\displaystyle \int_1^3 2x \ dx$ geometrically.
+	Find $\displaystyle \int_1^3 2x \,dx$ geometrically.
 	
 	<strong>Solution:</strong> the area in question looks like the following:
 	
@@ -118,7 +118,7 @@
 
 	computing an integral from the limit definition
 	
-	Find $\displaystyle \int_0^2 t^2\ dt$.
+	Find $\displaystyle \int_0^2 t^2\,dt$.
 	
 	It&#x2019;s not always as easy as the previous example. That was a lot like computing the derivative of a straight line &mdash; we don&#x2019;t need the heavy machinery of derivatives to find its slope. Similarly, we don&#x2019;t need integrals to find the area of a triangle, although it&#x2019;s a good example to get our bearings. This time around, what we have is a parabola, and we don&#x2019;t know a simple formula for the shaded area. There&#x2019;s no getting around it &mdash; we need to use the definition of the integral.
 	
@@ -152,7 +152,7 @@
 	
 	$$
 		\begin{align*}
-			\int_0^2 t^2\ dt &= \lim_{n \to \infty} \frac{8(2n^3 + 3n^2 + n)}{6n^3}\\
+			\int_0^2 t^2\,dt &= \lim_{n \to \infty} \frac{8(2n^3 + 3n^2 + n)}{6n^3}\\
 			&= \lim_{n \to \infty} \frac{16n^3}{6n^3}\\
 			&= \frac{8}{3}.
 		\end{align*}
@@ -166,7 +166,7 @@
 	
 	computing an integral from the limit definition
 	
-	Find $\displaystyle \int_0^3 t^3\ dt$ from the limit definition.
+	Find $\displaystyle \int_0^3 t^3\,dt$ from the limit definition.
 	
 	<strong>Solution:</strong> split $[0, 3]$ into $n$ subintervals. The width of each is therefore $\frac{3}{n}$, and the coordinate of the right endpoint of the $i$th subinterval is $\frac{3}{n}i$. Therefore, the Riemann sum becomes 
 	
@@ -198,7 +198,7 @@
 	
 	another geometric integral
 	
-	Compute $\displaystyle \int_3^6 \sqrt{9 - (x - 3)^2}\ dx$.
+	Compute $\displaystyle \int_3^6 \sqrt{9 - (x - 3)^2}\,dx$.
 	
 	As always, it&#x2019;s good to draw a picture. Our function is $y = \sqrt{9 - (x - 3)^2}$, so $(x-3)^2 + y^2 = 3^2$. This is a circle of radius $3$ centered at $(3, 0)$, and since $\sqrt{9 - (x - 3)^2}$ is always positive, so the graph is only the top half of the circle.
 	
@@ -222,7 +222,7 @@
 	
 	signed area
 	
-	Let $f$ be an integrable function on $[a, b]$. The integral $\int_a^b f(x)\ dx$ is the area under the graph of $f$, where area below the $x$-axis is counted as negative.
+	Let $f$ be an integrable function on $[a, b]$. The integral $\int_a^b f(x)\,dx$ is the area under the graph of $f$, where area below the $x$-axis is counted as negative.
 	
 !end-def
 
@@ -232,7 +232,7 @@
 	
 	signed area
 	
-	$\int_{-2}^2 x^3\ dx = 0$, since the areas above (red) and below (blue) the $x$-axis are equal.
+	$\int_{-2}^2 x^3\,dx = 0$, since the areas above (red) and below (blue) the $x$-axis are equal.
 	
 	!desmos signed-area
 	
@@ -252,15 +252,15 @@
 	
 	basic integral properties
 	
-	1. $\displaystyle \int_a^a f(x)\ dx = 0$ (lines have no area).
+	1. $\displaystyle \int_a^a f(x)\,dx = 0$ (lines have no area).
 	
-	2. $\displaystyle \int_a^b (f(x) + g(x))\ dx = \int_a^b f(x)\ dx + \int_a^b g(x)\ dx$.
+	2. $\displaystyle \int_a^b (f(x) + g(x))\,dx = \int_a^b f(x)\,dx + \int_a^b g(x)\,dx$.
 	
-	3. $\displaystyle \int_a^b c \cdot f(x)\ dx = c\int_a^b f(x)\ dx$.
+	3. $\displaystyle \int_a^b c \cdot f(x)\,dx = c\int_a^b f(x)\,dx$.
 	
-	4. For $\displaystyle a \leq c \leq b$, $\displaystyle \int_a^b f(x)\ dx = \int_a^c f(x)\ dx + \int_c^b f(x)\ dx$.
+	4. For $\displaystyle a \leq c \leq b$, $\displaystyle \int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx$.
 	
-	5. If $\displaystyle f(x) \geq g(x)$ on $\displaystyle [a, b]$, then $\displaystyle \int_a^b f(x)\ dx \geq \int_a^b g(x)\ dx$.
+	5. If $\displaystyle f(x) \geq g(x)$ on $\displaystyle [a, b]$, then $\displaystyle \int_a^b f(x)\,dx \geq \int_a^b g(x)\,dx$.
 	
 	Property 4 is the same kind of stitching-together property as the one for sums &mdash; we&#x2019;re just breaking an area into two pieces. This is particularly useful for piecewise-defined functions, since we can integrate each piece separately and add up the results.
 	
@@ -283,7 +283,7 @@
 	Let $f$ be a function on $[a, b]$. The <dfn>average value</dfn> of $f$ on $[a, b]$ is
 	
 	$$
-		\frac{1}{b - a} \int_a^b f(x)\ dx.
+		\frac{1}{b - a} \int_a^b f(x)\,dx.
 	$$
 	
 !end-def
@@ -362,4 +362,4 @@
 	};
 	
 	Page.load();
-</script>
+	</script>

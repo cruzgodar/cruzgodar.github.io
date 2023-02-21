@@ -31,7 +31,7 @@
 	At the moment, the only reasonable way we can calculate definite integrals is with the fundamental theorem, which requires taking an antiderivative. In calculus I, there were some derivatives we had to memorize, like $\frac{d}{dx}[\sin(x)] = \cos(x)$, and a few rules like the product and chain rules that let us differentiate more complicated functions. We already have the first part done for antiderivatives, since we can just run all the regular derivatives backward: for example,
 	
 	$$
-		\int \cos(x)\ dx = \sin(x) + C.
+		\int \cos(x)\,dx = \sin(x) + C.
 	$$
 	
 	What we have yet to develop are the rules analogous to the ones for derivatives. In this section, we&#x2019;ll start with the simplest and arguably the most useful: the opposite of the chain rule.
@@ -44,13 +44,13 @@
 	
 	$u$-substitution
 	
-	Given an integral of the form $\displaystyle \int f(g(x))g'(x)\ dx$,
+	Given an integral of the form $\displaystyle \int f(g(x))g'(x)\,dx$,
 	
 	1. Set $u = g(x)$.
 	
 	2. Write $\frac{du}{dx} = g'(x)$ and multiply both sides by $dx$ to get $du = g'(x) dx$.
 	
-	3. Rewrite the integral as $\int f(u)\ du$.
+	3. Rewrite the integral as $\int f(u)\,du$.
 	
 	4. Integrate as usual to get $F(u) + C$.
 	
@@ -72,7 +72,7 @@
 	
 	$u$-sub
 	
-	Find $\displaystyle \int 6x(3x^2 + 4)^4\ dx$.
+	Find $\displaystyle \int 6x(3x^2 + 4)^4\,dx$.
 	
 	We could foil out $(3x^2 + 4)^4$, but that&#x2019;s much more work than is necessary. Instead, we can think of it as a composition of two functions, where the outside function is $x^4$ and the inside one is $3x^2 + 4$. Since
 	
@@ -80,11 +80,11 @@
 		\frac{d}{dx} \left[ 3x^2 + 4 \right] = 6x,
 	$$
 	
-	we set $u = 3x^2 + 4$ and $du = 6x\ dx$. Then we have
+	we set $u = 3x^2 + 4$ and $du = 6x\,dx$. Then we have
 	
 	$$
 		\begin{align*}
-			\int 6x(3x^2 + 4)^4\ dx &= \int u^4\ du + C\\
+			\int 6x(3x^2 + 4)^4\,dx &= \int u^4\,du + C\\
 			&= \frac{u^5}{5} + C\\
 			&= \frac{(3x^2 + 4)^5}{5} + C.
 		\end{align*}
@@ -96,13 +96,13 @@
 	
 	$u$-sub
 	
-	Find $\displaystyle \int 2\sin^3(2x)\cos(2x)\ dx$.
+	Find $\displaystyle \int 2\sin^3(2x)\cos(2x)\,dx$.
 	
-	<strong>Solution:</strong> Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won&#x2019;t advance the problem forward &mdash; if you don&#x2019;t see why, try it!) Then $du = 2\cos(2x)\ dx$ by the chain rule, and so the integral becomes
+	<strong>Solution:</strong> Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won&#x2019;t advance the problem forward &mdash; if you don&#x2019;t see why, try it!) Then $du = 2\cos(2x)\,dx$ by the chain rule, and so the integral becomes
 	
 	$$
 		\begin{align*}
-			\int u^3\ du &= \frac{u^4}{4} + C\\
+			\int u^3\,du &= \frac{u^4}{4} + C\\
 			&= \frac{1}{4} \sin^4(2x) + C.
 		\end{align*}
 	$$
@@ -123,12 +123,12 @@
 	
 	$u$-sub doesn&#x2019;t always work
 	
-	Find $\displaystyle \int 6x^2(3x^2 + 4)^4\ dx$.
+	Find $\displaystyle \int 6x^2(3x^2 + 4)^4\,dx$.
 	
-	If we try to set $u = 3x^2 + 4$ again, we get that $du = 6x\ dx$, as before. The integral then becomes
+	If we try to set $u = 3x^2 + 4$ again, we get that $du = 6x\,dx$, as before. The integral then becomes
 	
 	$$
-		\int xu^4\ du,
+		\int xu^4\,du,
 	$$
 	
 	and that&#x2019;s a dead end, because the integral contains more than just $u$. The only way to possibly make it work is to solve for $x$ in terms of $u$, which gives
@@ -140,7 +140,7 @@
 	But the integral is then
 	
 	$$
-		\int u^4\sqrt{\frac{1}{3} (u - 4)}\ du,
+		\int u^4\sqrt{\frac{1}{3} (u - 4)}\,du,
 	$$
 	
 	and this is significantly worse than what we started with. Unfortunately, there is simply no way to make $u$-sub helpful on this problem. Eventually, we&#x2019;ll talk about a different strategy to handle this kind of integral, but that&#x2019;s still some time away.
@@ -153,24 +153,24 @@
 	
 	$u$-sub
 	
-	Find $\displaystyle \int_3^4 z\sqrt{z^2 - 5}\ dz$.
+	Find $\displaystyle \int_3^4 z\sqrt{z^2 - 5}\,dz$.
 	
 	When using $u$-sub on a definite integral, we need to be careful. The $3$ and $4$ are things to plug in for $z$, not $u$, so we&#x2019;ll need to remember to backsubstitute before plugging in the limits.
 	
 	$$
 		\begin{align*}
 			u &= z^2 - 5\\
-			du &= 2z\ dz
+			du &= 2z\,dz
 		\end{align*}
 	$$
 	
-	At this point, $du$ isn&#x2019;t exactly present in the integral: it&#x2019;s $2z\ dz$ and we only have $z\ dz$. However, since we&#x2019;re only off by a constant multiple, we can just divide by it on both sides to make the expression fit what we have.
+	At this point, $du$ isn&#x2019;t exactly present in the integral: it&#x2019;s $2z\,dz$ and we only have $z\,dz$. However, since we&#x2019;re only off by a constant multiple, we can just divide by it on both sides to make the expression fit what we have.
 	
 	$$
 		\begin{align*}
-			\frac{1}{2} du &= z\ dz\\
-			\int_3^4 z\sqrt{z^2 - 5}\ dz &= \int_3^4 \frac{1}{2} \sqrt{u}\ du\\
-			&= \int_3^4 \frac{1}{2} u^{1/2}\ du\\
+			\frac{1}{2} du &= z\,dz\\
+			\int_3^4 z\sqrt{z^2 - 5}\,dz &= \int_3^4 \frac{1}{2} \sqrt{u}\,du\\
+			&= \int_3^4 \frac{1}{2} u^{1/2}\,du\\
 			&= \left. \left[ \frac{1}{2} \frac{u^{3/2}}{3/2} \right] \right|_3^4\\
 			&= \left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4\\
 		\end{align*}
@@ -191,13 +191,13 @@
 	
 	$u$-sub
 	
-	Find $\displaystyle \int 2t^2 e^{4t^3 + 3}\ dt$.
+	Find $\displaystyle \int 2t^2 e^{4t^3 + 3}\,dt$.
 	
-	<strong>Solution:</strong> let $u = 4t^3 + 3$. Then $du = 12t^2\ dt$, but we have $2t^2\ dt$, so we solve for $2t^2\ dt$ to get $2t^2\ dt = 6\ du$. Now we have
+	<strong>Solution:</strong> let $u = 4t^3 + 3$. Then $du = 12t^2\,dt$, but we have $2t^2\,dt$, so we solve for $2t^2\,dt$ to get $2t^2\,dt = 6\,du$. Now we have
 	
 	$$
 		\begin{align*}
-			\int 2t^2 e^{4t^3 + 3}\ dt &= \int 6 e^u\ du\\
+			\int 2t^2 e^{4t^3 + 3}\,dt &= \int 6 e^u\,du\\
 			&= 6e^u + C\\
 			&= 6e^{4t^3 + 3} + C.
 		\end{align*}
@@ -241,24 +241,24 @@
 	
 	the half-angle formulas
 	
-	Find $\displaystyle \int 3\cos^2(x)\ dx$.
+	Find $\displaystyle \int 3\cos^2(x)\,dx$.
 	
 	First, we need to apply the half-angle formula:
 	
 	$$
 		\begin{align*}
-			\int 3\cos^2(x)\ dx &= 3\int \cos^2(x)\ dx\\
-			&= 3\int \frac{1 + \cos(2x)}{2}\ dx\\
-			&= 3\int \frac{1}{2} + \frac{1}{2}\cos(2x)\ dx\\
-			&= \frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\ dx
+			\int 3\cos^2(x)\,dx &= 3\int \cos^2(x)\,dx\\
+			&= 3\int \frac{1 + \cos(2x)}{2}\,dx\\
+			&= 3\int \frac{1}{2} + \frac{1}{2}\cos(2x)\,dx\\
+			&= \frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,dx
 		\end{align*}
 	$$
 	
-	To integrate $\cos(2x)$, we set $u = 2x$ and $du = 2\ dx$, so $dx = \frac{1}{2}\ du$. Now
+	To integrate $\cos(2x)$, we set $u = 2x$ and $du = 2\,dx$, so $dx = \frac{1}{2}\,du$. Now
 	
 	$$
 		\begin{align*}
-			\frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\ dx &= \frac{3}{2}x + C + \frac{3}{4}\int \cos(u)\ du\\
+			\frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,dx &= \frac{3}{2}x + C + \frac{3}{4}\int \cos(u)\,du\\
 			&= \frac{3}{2}x + C + \frac{3}{4}\sin(u)\\
 			&= \frac{3}{2}x + \frac{3}{4}\sin(2x) + C.
 		\end{align*}
@@ -272,16 +272,16 @@
 	
 	the half-angle formulas
 	
-	Find $\displaystyle \int \sin^4(t)\ dt$.
+	Find $\displaystyle \int \sin^4(t)\,dt$.
 	
 	<strong>Solution:</strong> using the half-angle formula, we have
 	
 	$$
 		\begin{align*}
-			\int \sin^4(t)\ dt &= \int (\sin^2(t))^2\ dt\\
-			&= \int \left( \frac{1}{2} - \frac{1}{2} \cos(2t) \right)^2\ dt\\
-			&= \int (\frac{1}{4} - \frac{1}{2} \cos(2t) + \frac{1}{4} \cos^2(2t))\ dt\\
-			&= \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \int \cos^2(2t)\ dt\\
+			\int \sin^4(t)\,dt &= \int (\sin^2(t))^2\,dt\\
+			&= \int \left( \frac{1}{2} - \frac{1}{2} \cos(2t) \right)^2\,dt\\
+			&= \int (\frac{1}{4} - \frac{1}{2} \cos(2t) + \frac{1}{4} \cos^2(2t))\,dt\\
+			&= \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \int \cos^2(2t)\,dt\\
 		\end{align*}
 	$$
 	
@@ -289,7 +289,7 @@
 	
 	$$
 		\begin{align*}
-			\int \cos^2(2t)\ dt &= \int \left( \frac{1}{2} + \frac{1}{2} \cos(4t) \right)\ dt\\
+			\int \cos^2(2t)\,dt &= \int \left( \frac{1}{2} + \frac{1}{2} \cos(4t) \right)\,dt\\
 			&= \frac{1}{2} t + \frac{1}{8} \cos(4t) + C.
 		\end{align*}
 	$$
@@ -297,7 +297,7 @@
 	In total, we have
 	
 	$$
-		\int \sin^4(t)\ dt = \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \left(\frac{1}{2} t + \frac{1}{8} \cos(4t)\right) + C.
+		\int \sin^4(t)\,dt = \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \left(\frac{1}{2} t + \frac{1}{8} \cos(4t)\right) + C.
 	$$
 	
 !end-exercise
@@ -316,21 +316,21 @@
 	
 	another $u$-sub
 	
-	Find $\displaystyle \int \frac{x}{\sqrt{x - 1}}\ dx$.
+	Find $\displaystyle \int \frac{x}{\sqrt{x - 1}}\,dx$.
 	
 	The complicated part here is the $\sqrt{x - 1}$, so let&#x2019;s try setting $u$ to be the inside function. If $u = x - 1$, then $du = dx$, and so we have
 	
 	$$
-		\int \frac{x}{\sqrt{x - 1}}\ dx = \int \frac{x}{\sqrt{u}}\ du.
+		\int \frac{x}{\sqrt{x - 1}}\,dx = \int \frac{x}{\sqrt{u}}\,du.
 	$$
 	
 	The only way to get rid of the $x$ left over is to solve for $x$ in terms of $u$: $x = u + 1$. Now we have
 	
 	$$
 		\begin{align*}
-			\int \frac{u + 1}{\sqrt{u}}\ du &= \int \frac{u}{\sqrt{u}} + \frac{1}{\sqrt{u}}\ du\\
-			&= \int \frac{u}{\sqrt{u}}\ du + \int \frac{1}{\sqrt{u}}\ du\\
-			&= \int u^{1/2}\ du + \int u^{-1/2}\ du\\
+			\int \frac{u + 1}{\sqrt{u}}\,du &= \int \frac{u}{\sqrt{u}} + \frac{1}{\sqrt{u}}\,du\\
+			&= \int \frac{u}{\sqrt{u}}\,du + \int \frac{1}{\sqrt{u}}\,du\\
+			&= \int u^{1/2}\,du + \int u^{-1/2}\,du\\
 			&= \frac{2}{3} u^{3/2} + 2u^{1/2} + C\\
 			&= \frac{2}{3} (x - 1)^{3/2} + 2(x - 1)^{1/2} + C.
 		\end{align*}
@@ -376,4 +376,4 @@
 	};
 	
 	Page.load();
-</script>
+	</script>

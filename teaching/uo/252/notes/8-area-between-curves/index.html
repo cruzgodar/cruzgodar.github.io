@@ -141,7 +141,7 @@
 	
 	!desmos area-between-curves-4
 	
-	<strong>Solution:</strong> $f$ and $h$ intersect at $x = \frac{3}{2} - \frac{\sqrt{5}}{2}$, $g$ and $h$ intersect at $x = 1$, and $f$ and $g$ intersect at $x = \frac{\sqrt{5}}{2} - \frac{1}{2}$. To save notation, let&#x2019;s call the first number $a$, the second one $b$, and the third one $c$. Then the integral becomes $\int_a^c (h(x) - f(x))\ dx + \int_c^b (h(x) - g(x))\ dx$. This comes out to
+	<strong>Solution:</strong> $f$ and $h$ intersect at $x = \frac{3}{2} - \frac{\sqrt{5}}{2}$, $g$ and $h$ intersect at $x = 1$, and $f$ and $g$ intersect at $x = \frac{\sqrt{5}}{2} - \frac{1}{2}$. To save notation, let&#x2019;s call the first number $a$, the second one $b$, and the third one $c$. Then the integral becomes $\int_a^c (h(x) - f(x))\,dx + \int_c^b (h(x) - g(x))\,dx$. This comes out to
 	
 	$$
 		\left(\frac{7}{7} - \frac{7}{6}\sqrt{5} + \frac{2}{3}\sqrt{\sqrt{5} - 2}\right) - \left(\frac{1}{3} + \frac{1}{3}\sqrt{5} - \frac{2}{3}\sqrt{\sqrt{5} - 2}\right).
@@ -175,9 +175,9 @@
 	
 	$$
 		\begin{align*}
-			\int_1^2 (3 - y - \sqrt{y - 1})\ dy &= \int_1^2 (3 - y)\ dy - \int_1^2 \sqrt{y - 1}\ dy\\
-			& u = y - 1,\ du = dy\\
-			&= \int_1^2 (3 - y)\ dy - \int_1^2 \sqrt{u}\ du\\
+			\int_1^2 (3 - y - \sqrt{y - 1})\,dy &= \int_1^2 (3 - y)\,dy - \int_1^2 \sqrt{y - 1}\,dy\\
+			& u = y - 1,\,du = dy\\
+			&= \int_1^2 (3 - y)\,dy - \int_1^2 \sqrt{u}\,du\\
 			&= \left. \left[ 3y - \frac{y^2}{2} \right] \right|_1^2 - \left. \left[ \frac{u^{3/2}}{3/2} \right] \right|_1^2\\
 			&= \left. \left[ 3y - \frac{y^2}{2} \right] \right|_1^2 - \left. \left[ \frac{(y-1)^{3/2}}{3/2} \right] \right|_1^2\\
 			&= \left( 6 - 2 - 3 + \frac{1}{2} \right) - \left( \frac{1}{3/2} \right)\\

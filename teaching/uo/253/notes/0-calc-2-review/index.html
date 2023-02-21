@@ -191,16 +191,16 @@
 	
 	The final building blocks we&#x2019;ll need are integrals. They come in two flavors: definite and indefinite. Indefinite integrals perform the opposite operation as derivatives, taking a function $f(x)$ to an antiderivative, often denoted $F(x)$. For example,
 	
-	$\int x^2\ dx = \frac{x^3}{3} + C$.
+	$\int x^2\,dx = \frac{x^3}{3} + C$.
 	
-	$\int \sin(2x)\ dx = -\frac{1}{2}\cos(2x) + C$.
+	$\int \sin(2x)\,dx = -\frac{1}{2}\cos(2x) + C$.
 	
-	$\int \frac{1}{y}\ dx = \ln|y| + C$.
+	$\int \frac{1}{y}\,dx = \ln|y| + C$.
 	
 	In contrast, definite integrals measure the area under the graph of a function and take an extra two numbers, written above and below the integral sign. When we say that
 	
 	$$
-		\int_{-2}^4 t^3\ dt = 60,
+		\int_{-2}^4 t^3\,dt = 60,
 	$$
 	
 	we mean that the shaded region in the graph below has area 60. Remember that area below the $x$-axis counts as negative.
@@ -220,7 +220,7 @@
 	Let $f$ be an integrable function. Then
 	
 	$$
-		\int_a^b f(x)\ dx = \left. \left[ \int f(x)\ dx \right] \right|_a^b = F(b) - F(a).
+		\int_a^b f(x)\,dx = \left. \left[ \int f(x)\,dx \right] \right|_a^b = F(b) - F(a).
 	$$	
 	
 !end-thm
@@ -246,15 +246,15 @@
 	As an integral, this is 
 	
 	$$
-		\int_0^{\sqrt{\pi}} x \sin(x^2)\ dx.
+		\int_0^{\sqrt{\pi}} x \sin(x^2)\,dx.
 	$$
 	
-	Since $\sin(x^2)$ is a composition of $\sin(x)$ and $x^2$, let&#x2019;s try $u$-sub. We let $u = x^2$, the inner function, and then differentiate to find that $du = 2x\ dx$. Present in our integral is $x\ dx$, not $2x\ dx$, so we divide by $2$ to get $\frac{1}{2}\ du = x\ dx$, which matches our integral. Now we have
+	Since $\sin(x^2)$ is a composition of $\sin(x)$ and $x^2$, let&#x2019;s try $u$-sub. We let $u = x^2$, the inner function, and then differentiate to find that $du = 2x\,dx$. Present in our integral is $x\,dx$, not $2x\,dx$, so we divide by $2$ to get $\frac{1}{2}\,du = x\,dx$, which matches our integral. Now we have
 	
 	$$
 		\begin{align*}
-			\int_0^{\sqrt{\pi}} x \sin(x^2)\ dx &= \int_0^{\sqrt{\pi}} \frac{1}{2} \sin(u)\ du\\
-			&= \frac{1}{2} \int_0^{\sqrt{\pi}} \sin(u)\ du\\
+			\int_0^{\sqrt{\pi}} x \sin(x^2)\,dx &= \int_0^{\sqrt{\pi}} \frac{1}{2} \sin(u)\,du\\
+			&= \frac{1}{2} \int_0^{\sqrt{\pi}} \sin(u)\,du\\
 			&= \frac{1}{2} \left. \left[ -\cos(u) \right] \right|_0^{\sqrt{\pi}}\\
 			&= \frac{1}{2} \left. \left[ - \cos(x^2) \right] \right|_0^{\sqrt{\pi}}\\
 			&= \frac{1}{2} \left( -\cos \left( \sqrt{\pi}^2 \right) + \cos(0^2) \right)\\
