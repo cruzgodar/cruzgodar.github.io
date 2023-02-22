@@ -87,7 +87,7 @@
 		\begin{align*}
 			x_3 &= x_2 - \frac{f(x_2)}{f'(x_2)}\\
 			&= \frac{17}{12} - \frac{1/144}{17/6}\\
-			&= \frac{577}{408}
+			&= \frac{577}{408}\\
 			&\approx 1.41423.
 		\end{align*}	
 	$$
@@ -96,7 +96,7 @@
 	
 	Here&#x2019;s what this process actually looks like &mdash; drag the blue point to change the initial guess.
 	
-	!iframe https://www.desmos.com/calculator/sq6o538wxs
+	!desmos newtons-method
 	
 	One important thing to notice: the closer the starting guess is to an actual root, the better the approximation is, and the farther away, the worse. Especially troublesome is when the starting guess $x_0$ is at a nearly equal distance from two roots &mdash; here, that means near zero. This will come up a little bit later, and it&#x2019;s an important caveat of Newton&#x2019;s method: it doesn&#x2019;t always work or work well (i.e. converge to a root quickly).
 	
@@ -122,7 +122,7 @@
 
 !begin-text-block
 	
-	I&#x2019;d be remiss if I didn&#x2019;t mention one of the most beautiful pictures math can produce. Take a function, say $f(x) = x^3 - 1$, and write down all of its roots. For this particular function $f(x)$, the roots are $x = 1$ (of course), along with $x = -\frac{1}{2} \pm \sqrt{3}{2}i$. Now we&#x2019;re going to draw a number line and color the points on it based on what they do as an initial guess to Newton&#x2019;s method. For example, $x_0 = 1$ does extremely well as a guess, since it&#x2019;s already at a root, while $x_0 = 0$ does terribly: since $f(0) = 0$, we have
+	I&#x2019;d be remiss if I didn&#x2019;t mention one of the most beautiful pictures math can produce. Take a function, say $f(x) = x^3 - 1$, and write down all of its roots. For this particular function $f(x)$, the roots are $x = 1$ (of course), along with $x = -\frac{1}{2} \pm \frac{\sqrt{3}}{2}i$. Now we&#x2019;re going to draw a number line and color the points on it based on what they do as an initial guess to Newton&#x2019;s method. For example, $x_0 = 1$ does extremely well as a guess, since it&#x2019;s already at a root, while $x_0 = 0$ does terribly: since $f(0) = 0$, we have
 	
 	$$
 		\begin{align*}
@@ -137,17 +137,29 @@
 	
 	This is probably not what you&#x2019;d expect. This line is centered at zero, so initial guesses of positive numbers all converge to $x = 1$, while negative numbers sometimes work and sometimes don&#x2019;t. To actually understand what&#x2019;s going on here, we need to look at the bigger picture: since some of the roots of $x^3 - 1$ are complex, we&#x2019;ll have to consider complex initial guesses too. Without going into too much detail, Newton&#x2019;s method works just as well for complex initial guesses as real ones. Since the complex numbers live on a plane instead of a line, we get an actual image of where the guesses go. We&#x2019;ll still use brightness to indicate how fast the guess converges, but now we&#x2019;ll also use color to indicate which of the three roots of $x^3 - 1$ it actually converges to: here, that&#x2019;s red, orange, and yellow.
 	
-	!iframe https://cruzgodar.com/applets/newtons-method/?condensed_applets=1
+	<div class="center-content"><img class="notes-image check-webp" data-src="/teaching/uo/251/notes/15-newtons-method/graphics/newton-fractal."></img></div>
 	
 	What results is a truly incredible fractal. This bubble-like pattern repeats however far you zoom in or out, and it&#x2019;s surprisingly beautiful. We&#x2019;d expect Newton&#x2019;s method to take an initial guess and always send it to the closest root, but this picture shows that&#x2019;s not the case: all the red outside of the large area on the right are initial guesses that converge to $x = -1$ despite one of the other two roots being closer.
 	
-	That image is actually an interactive applet I created and worked on over the last few years. You can pan and zoom akin to Google Maps, and dragging the white dots changes the roots of the polynomial. For example,
+	That image is actually taken from an interactive applet I created and worked on over the last few years. You can pan and zoom akin to Google Maps, and dragging the white dots changes the roots of the polynomial. Have a look!
 	
-	$$
-		x^3 - 1 = (x - 1) \left(x + \frac{1}{2} - \frac{\sqrt{3}}{2}i\right) \left(x + \frac{1}{2} + \frac{\sqrt{3}}{2}i\right),
-	$$
-	
-	so those three complex numbers are indicated by the three white dots in a triangle. The red and blue dots do something else &mdash; if you&#x2019;d like to read more about that and use the applet in proper fullscreen &mdash; both of which I highly recommend &mdash; you can do so <a href="/applets/newtons-method/">here</a>.
+!end-text-block
+
+
+
+<div class="image-links one-image-link" style="margin-bottom: 5vh">
+	<div class="image-link">
+		<a href="/applets/newtons-method/" tabindex="-1">
+			<img class="check-webp no-floating-footer" data-src="/applets/newtons-method/cover." alt="Calculus I Notes" tabindex="1"></img>
+		</a>
+		
+		<p class="image-link-subtext">Newton&#x2019;s Method</p>
+	</div>
+</div>
+
+
+
+!begin-text-block
 	
 	Regardless, thank you for taking this course! It&#x2019;s been fantastic to teach, and I hope taking it has been a good experience too.
 	

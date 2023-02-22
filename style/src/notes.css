@@ -1,51 +1,3 @@
-iframe
-{
-	width: calc(75vmin - 4px);
-	height: calc(75vmin - 4px);
-	
-	border: none;
-	
-	background-color: rgb(255, 255, 255);
-}
-
-.iframe-clipper
-{
-	position: absolute;
-	width: calc(75vmin - 4px);
-	height: calc(75vmin - 4px);
-	
-	border: 2px solid rgb(255, 255, 255);
-	
-	border-radius: 13px;
-	
-	overflow-y: hidden;
-	
-	transition: border-color .25s ease-in-out;
-}
-
-.iframe-outer-border
-{
-	border: 2px solid rgb(127, 127, 127);
-	border-radius: 15px;
-	width: 75vmin;
-	height: 75vmin;
-}
-
-.iframe-container
-{
-	position: relative;
-	margin: 0 auto;
-	width: 100%;
-	height: calc(75vmin + 4px);
-	display: flex;
-	justify-content: center;
-	
-	margin-top: 5vh;
-	margin-bottom: 5vh;
-}
-
-
-
 .desmos-border
 {
 	margin: 0 auto;
@@ -83,7 +35,7 @@ iframe
 
 .notes-image
 {
-	width: 70%;
+	width: min(70vw, 70vh);
 	margin: 0 auto;
 	border-radius: 15px;
 }
@@ -150,11 +102,6 @@ iframe
 .notes-environment br:last-child
 {
 	display: none;
-}
-
-.notes-environment .iframe-container:last-child
-{
-	margin-bottom: 0;
 }
 
 
@@ -232,6 +179,11 @@ iframe
 		width: calc(min(90vw, 70vh) - 20px) !important;
 		height: calc(min(90vw, 70vh) - 20px) !important;
 	}
+	
+	.notes-image
+	{
+		width: min(90vw, 70vh) !important;
+	}
 }
 
 
@@ -253,5 +205,10 @@ iframe
 	{
 		width: calc(min(50vw, 70vh) - 20px) !important;
 		height: calc(min(50vw, 70vh) - 20px) !important;
+	}
+	
+	.notes-image
+	{
+		width: min(50vw, 70vh) !important;
 	}
 }
