@@ -63,7 +63,7 @@ Page.Navigation =
 		
 		
 		//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-		Promise.all([fetch(url + "index.html"), Page.Banner.load()])
+		Promise.all([fetch(url + `${DEBUG ? "src" : "index"}.html`), Page.Banner.load()])
 		
 		.then((response) =>
 		{
@@ -104,8 +104,15 @@ Page.Navigation =
 			}
 			
 			
+			if (DEBUG)
+			{
+				document.body.firstElementChild.insertAdjacentHTML("beforebegin", Page.Components.decode(`<div class="page" style="opacity: 0">${data}</div>${scripts_data}`));
+			}
 			
-			document.body.firstElementChild.insertAdjacentHTML("beforebegin", Page.Components.decode(`<div class="page" style="opacity: 0">${data}</div>${scripts_data}`));
+			else
+			{
+				document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="opacity: 0">${data}</div>${scripts_data}`);
+			}
 			
 			Page.Load.parse_script_tags();
 			

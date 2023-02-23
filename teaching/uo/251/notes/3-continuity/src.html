@@ -1,0 +1,396 @@
+<head>
+	<title>Section 3: Continuity</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 3: Continuity"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/251/notes/3-continuity/3-continuity.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/251/notes/3-continuity/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 3: Continuity
+
+!nav-buttons
+
+
+
+!begin-text-block
+	
+	We&#x2019;ve informally defined $\lim_{x \to a} f(x)$ as being the value we would expect $f(a)$ to be, regardless of what $f(a)$ actually is, or even if it&#x2019;s defined at all. When the value we expect to be there is what&#x2019;s actually there, we have a special term for the function.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	continuity
+	
+	Let $f(x)$ be a function. If $f(a)$ is defined and $\lim_{x \to a} f(x) = f(a)$, then we say that $f$ is <dfn>continuous at $a$</dfn>. If $f$ is continuous at all $a$ in its domain, then we just say that $f$ is <dfn>continuous</dfn>.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	The simplest way to describe continuous functions is that they&#x2019;re the ones whose graphs can be drawn in one stroke without lifting your pen from the paper. If a function is not continuous at $x = a$, then there are only a few possibilites for what went wrong:
+	
+	1. $\displaystyle f(a)$ is undefined.
+	
+	2. $\displaystyle \lim_{x \to a} f(x)$ DNE.
+	
+	3. $\displaystyle \lim_{x \to a} f(x)$ exists and $\displaystyle f(a)$ is defined, but $\displaystyle \lim_{x \to a} f(x) \neq f(a)$.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	continuity
+	
+	Let $f$ be defined by the following graph. Where is $f$ continuous?
+	
+	!desmos continuity-example
+	
+	This function has three kinds of discontinuities: at $x = -3$, $f(-3) = -1$ but $\lim_{x \to 3} f(x)$ DNE, so it&#x2019;s not continuous there. At $x = 0$, $f(0) = 1$, but $\lim_{x \to 0} f(x) = 0$, so it&#x2019;s not continuous there either. Finally, at $x = 4$, $f(4)$ is undefined, and $\lim_{x \to 4} f(x) = \infty$, so it&#x2019;s not continuous there. In total, $f$ is continuous everywhere except for $x = -3$, $x = 0$, and $x = 4$.
+
+!end-example
+
+!begin-exercise
+	
+	continuity
+	
+	Define a function $f$ by
+	
+	$$
+		f(x) = \begin{cases}
+			\frac{\sin(x)}{x}, & x \neq 0\\
+			1, & x = 0
+		\end{cases}.	
+	$$
+	
+	Show that $f$ is continuous.	
+
+!end-exercise
+
+
+
+!begin-text-block
+	
+	The function in the previous example displays three common kinds of discontinuities: to make things easier when talking about them, let&#x2019;s give them names.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	discontinuities
+	
+	Let $f(x)$ be a function such that $f(a)$ is defined but $f$ is discontinuous at $x = a$.
+	
+	1. If $\lim_{x \to a} f(x)$ exists and is finite, we call this a <dfn>removable</dfn> discontinuity, since by changing just that one point, we can make the function continuous.
+	
+	2. If $\lim_{x \to a^+} f(x)$ and $\lim_{x \to a^-} f(x)$ exist but are not equal, we call this a <dfn>jump</dfn> discontinuity, since the function &#x201C;jumps&#x201D; from one point to another.
+	
+	3. If one or both of the one-sided limits is $\pm \infty$, we call this an <dfn>infinite</dfn> discontinuity, since the function approaches an infinite value.
+	
+	These don&#x2019;t describe all possible kinds of discontinuities &mdash; for example, $\sin\left(\frac{1}{x}\right)$ has a discontinuity at $0$ that doesn&#x2019;t fall into any of these categories.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	In the previous example, $f(x)$ has a removable discontinuity at $x = 0$, a jump discontinuity at $x = -3$, and an infinite discontinuity at $x = 4$.
+	
+	The next two theorems will let calculate limits <strong>much</strong> more easily. The first one is great news: most of the functions we know so far are continuous wherever they&#x2019;re defined!
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	continuity of elementary functions
+	
+	Polynomials, rational functions, trigonometric functions, exponential functions, and logarithmic functions are all continuous everywhere they&#x2019;re defined.
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	This next theorem tells us that continuity is preserved through composition.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	continuity of compositions
+	
+	Let $f$ and $g$ be functions so that $g$ is continuous at $a$ and $f$ is continuous at $g(a)$. Then $f(g(x))$ is continuous at $a$. In particular, if $f$ and $g$ are simply continuous functions, then $f(g(x))$ is continuous too.
+	
+!end-thm
+
+
+
+!begin-example
+	
+	an easier limit
+	
+	Find 
+	
+	$$
+		\lim_{x \to 0} \frac{\cos(x^2) - x}{2 - \tan(x)}.
+	$$
+	
+	Since all of the functions present are continuous &mdash; including the compositions like $\cos(x^2)$, we can just plug in $x = 0$:
+	
+	$$
+		\begin{align*}
+			\lim_{x \to 0} \frac{\cos(x^2) - x}{2 - \tan(x)} &= \frac{\cos(0^2) - 0}{2 - \tan(0)}\\
+			&= \frac{1 - 0}{2 - 0}\\
+			&= \frac{1}{2}.
+		\end{align*}
+	$$
+	
+	!desmos continuity-limit
+	
+	This is a really complicated-looking function, and it&#x2019;s nice to be able to calculate a limit of it without making a table or writing out long-winded limit rules. The only place we can&#x2019;t plug in a value of $x$ to take a limit is when it would make the denominator zero, since then the entire function is undefined and therefore not continuous.
+
+!end-example
+
+
+
+!section
+
+!text s The Intermediate Value Theorem
+
+<br>
+
+
+
+!begin-text-block
+	
+	We have one last theorem to talk about in this section. The result sounds a little confusing at first, but it&#x2019;s just a way to formally state what we mean when we say that continuous functions are the ones that can be drawn without lifting your pencil.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the Intermediate Value Theorem
+	
+	Let $f$ be a continuous function on a closed interval $[a, b]$ and let $y$ be a number between $f(a)$ and $f(b)$. Then there is a number $c$ between $a$ and $b$ so that $f(c) = y$.
+	
+!end-thm
+
+
+
+!begin-text-block
+
+	The IVT says that the graph of $f$ has complete coverage of all the $y$-values between $f(a)$ and $f(b)$.
+	
+	!desmos ivt-example
+	
+	Here, $a = 1$ and $b = 3$. Plotted are three examples of continuous functions satisfying $f(a) = 2$ and $f(b) = 1$. No matter what function we pick, it must pass through all the $y$-values between $2$ and $1$ on its way from $a$ to $b$. It may pass through more, like $h$ does, but it needs to at least cover all the $y$-values in between.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	the Intermediate Value Theorem
+	
+	Show that $f(x) = x - \cos(x)$ has at least one zero.
+	
+	This is a pretty interesting question &mdash; how are you supposed to find a value of $x$ that makes $x = \cos(x)$? The answer is... you don&#x2019;t. Rather than find a particular value that works, we&#x2019;ll use the IVT to show that one must exist, even if we can&#x2019;t say exactly what it is. Looking back at the theorem statement, we want to pick two points, one with a $y$-value larger than $0$, and the other with a $y$-value less than $0$. Then the IVT will guarantee a point in-between them with $y$-value equal to zero. Let&#x2019;s try some sample values. $x = 0$ gives us $0 - \cos(0) = -1$, and $x = \frac{\pi}{2}$, the next value that produces a simple output from cosine, gives us $\frac{\pi}{2} - \cos\left(\frac{\pi}{2}\right) = \frac{\pi}{2}$. Since $0$ is a $y$-value in-between those, the IVT guarantees an $x$-value between $0$ and $\frac{\pi}{2}$ with $x - \cos(x) = 0$.
+	
+	!desmos ivt-example-2
+	
+!end-example
+
+!begin-exercise
+	
+	the Intermediate Value Theorem
+	
+	Show that $x^3 - x + 1$ has a zero.
+	
+!end-exercise
+
+
+
+!section
+
+!text s Limits to Infinity
+
+<br>
+
+
+
+!begin-text-block
+
+	We have one last topic to mention before we&#x2019;re done with limits: rather than letting $x$ approach a number, we can let it get larger or smaller forever. We write this as
+	
+	$$
+		\lim_{x \to \infty} f(x)
+	$$
+	
+	and
+	
+	$$
+		\lim_{x \to -\infty} f(x).
+	$$	
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a limit to infinity
+	
+	Find $\lim_{x \to \infty} x^2$.
+	
+	As $x$ gets larger and larger, so does $x^2$, so $\lim_{x \to \infty} x^2 = \infty$.
+	
+!end-example
+
+!begin-example
+	
+	a limit to infinity
+	
+	Find $\lim_{x \to -\infty} \sin(x)$.
+	
+	As $x$ gets more and more and negative, $\sin(x)$ oscillates between $1$ and $-1$ faster and faster, so it never converges to a single value. Therefore, $\lim_{x \to -\infty} \sin(x)$ DNE.
+	
+!end-example
+
+
+
+!begin-text-block
+
+	In the specific case of rational functions, we know the behavior of limits to infinity very well.
+	
+!end-text-block
+
+
+
+!begin-def
+
+	degree and leading coefficient
+
+	Let $p(x)$ be a polynomial. The <dfn>degree</dfn> of $p$, written $\deg(p)$, is the largest exponent on $x$. The <dfn>leading term</dfn> of $p$ is the term with the largest exponent.
+	
+!end-def
+
+
+
+!begin-example
+
+	degree and leading coefficient
+	
+	The degree of $-4x^3 + 2x + 1$ is $3$, and the leading term is $-4x^3$.
+	
+!end-example
+
+
+
+!begin-thm
+	
+	limits of rational functions to infinity
+	
+	Let $p(x)$ and $q(x)$ be polynomials. Then
+	
+	$$
+		\lim_{x \to \pm \infty} \frac{p(x)}{q(x)} = \lim_{x \to \pm \infty} \frac{P(x)}{Q(x)},
+	$$
+	
+	where $P(x)$ is the leading term of $p(x)$ and $Q(x)$ is the leading term of $q(x)$. Note: this only works when limiting to $\infty$ or $-\infty$, and not to any other number!
+	
+!end-thm
+
+
+
+!begin-example
+
+	limits of rational functions to infinity
+	
+	Find $\displaystyle\lim_{x \to \infty}\frac{2x^3 + 2x - 1}{-3x}$.
+	
+	Since this is a rational function being limited to infinity, we can drop everything but the leading terms:
+	
+	$$
+		\lim_{x \to \infty} \frac{2x^3}{-3x} = \lim_{x \to \infty} \frac{2x^2}{-3} = -\infty.
+	$$	
+	
+!end-example
+
+!begin-exercise
+
+	limits of rational functions to infinity
+	
+	Find $\displaystyle\lim_{x \to \infty}\frac{6x^2 + 2x - 1}{4x^2}$.
+	
+!end-exercise
+
+
+
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 3: Continuity",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/251/notes"
+	};
+	
+	Page.load();
+</script>

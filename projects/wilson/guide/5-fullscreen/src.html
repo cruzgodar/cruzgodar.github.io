@@ -1,0 +1,338 @@
+<head>
+	<title>Part 5: Fullscreen</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Part 5: Fullscreen"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/projects/wilson/guide/5/fullscreen.html">
+
+    <meta property="og:image" content="https://cruzgodar.com/projects/wilson/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Part 5: Fullscreen
+
+!nav-buttons
+
+
+
+!begin-text-block
+	
+	Next on the list is making better use of screen space. While JavaScript has a built-in fullscreen API, it&#x2019;s often problematic for use with applets &mdash; it streches the content to fill the screen whether we want it to or not, and it renders any interactivity effectively unusable on mobile, since swiping down always exits fullscreen. Wilson provides its own toolkit to help with this &mdash; let&#x2019;s have a look at how it works.
+	
+	As usual, we need to update the options. The bare minimum is adding <code>use_fullscreen: true</code>, but on its own, we have to handle entering and exiting fullscreen on our own using <code>wilson.fullscreen.switch_fullscreen()</code>. Instead, we can add the line <code>use_fullscreen_button: true</code>, and Wilson will place a small button in the top-right of our canvas that enters or exits fullscreen when pressed. We also need to tell Wilson where the icons for that button are located &mdash; we can use our own icons, but let&#x2019;s stick with the deafults.
+	
+!end-text-block
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;renderer: "gpu",
+&#9;
+&#9;shader: frag_shader_source,
+&#9;
+&#9;canvas_width: 1000,
+&#9;canvas_height: 1000,
+&#9;
+&#9;world_width: 4,
+&#9;world_height: 4,
+&#9;world_center_x: 0,
+&#9;world_center_y: 0,
+&#9;
+&#9;
+&#9;
+&#9;use_draggables: true,
+&#9;
+&#9;draggables_mousemove_callback: on_drag,
+&#9;draggables_touchmove_callback: on_drag,
+&#9;
+&#9;
+&#9;
+&#9;use_fullscreen: true,
+&#9;
+&#9;use_fullscreen_button: true,
+&#9;
+&#9;enter_fullscreen_button_icon_path: "/path/to/enter-fullscreen.png",
+&#9;exit_fullscreen_button_icon_path: "/path/to/exit-fullscreen.png"
+};</code></pre>
+
+
+
+!begin-text-boxes
+	
+	resolution-1 1000 Resolution
+	
+!end-text-boxes
+
+
+
+<div class="center-content" data-aos="fade-up">
+	<div style="width: 70vmin">
+		<canvas id="output-canvas-1" class="output-canvas"></canvas>
+		<canvas id="hidden-canvas-1" class="hidden-canvas"></canvas>
+	</div>
+</div>
+
+
+
+!begin-text-buttons
+	
+	download-1 Download
+	
+!end-text-buttons
+
+
+
+!section
+
+!text s True Fullscreen
+
+<br>
+
+!begin-text-block
+	
+	This is definitely an improvement, but if you mess with it a little, you&#x2019;ll quickly realize it&#x2019;s not actually doing that much differently &mdash; the canvas is still a square, and we can&#x2019;t move the draggable outside of it. The output fits inside of that square nicely, but if it weren&#x2019;t dark around the edges, the border would be much more apparent. To actually take advantage of the all the screen space available, we&#x2019;ll need to modify our shader and Wilson&#x2019;s options.
+	
+!end-text-block
+
+
+
+<pre><code class="language-glsl" data-aos="fade-up">let frag_shader_source = `
+&#9;precision highp float;
+&#9;
+&#9;varying vec2 uv;
+&#9;
+&#9;uniform float world_width;
+&#9;uniform float world_height;
+&#9;
+&#9;uniform float a;
+&#9;uniform float b;
+&#9;uniform float brightness_scale;
+&#9;
+&#9;
+&#9;
+&#9;void main(void)
+&#9;{
+&#9;&#9;vec2 z;
+&#9;&#9;
+&#9;&#9;if (aspect_ratio >= 1.0)
+&#9;&#9;{
+&#9;&#9;&#9;z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+&#9;&#9;}
+&#9;&#9;
+&#9;&#9;else
+&#9;&#9;{
+&#9;&#9;&#9;z = vec2(uv.x * 2.0, uv.y / aspect_ratio * 2.0);
+&#9;&#9;}
+&#9;&#9;
+&#9;&#9;...
+&#9;}
+`;</code></pre>
+
+<br>
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;...
+&#9;
+&#9;use_fullscreen: true,
+&#9;
+&#9;true_fullscreen: true,
+&#9;
+&#9;use_fullscreen_button: true,
+&#9;
+&#9;enter_fullscreen_button_image_path: "/path/to/enter-fullscreen.png",
+&#9;exit_fullscreen_button_image_path: "/path/to/exit-fullscreen.png"
+};</code></pre>
+
+<br>
+
+<pre><code class="language-js" data-aos="fade-up">wilson.render.init_uniforms(["aspect_ratio", "a", "b", "brightness_scale"]);
+wilson_hidden.render.init_uniforms(["aspect_ratio", "a", "b", "brightness_scale"]);</code></pre>
+
+<br>
+
+<pre><code class="language-js" data-aos="fade-up">let aspect_ratio = 1;
+
+//Render the first frame.
+wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
+wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], 1);
+
+window.requestAnimationFrame(draw_julia_set);</code></pre>
+
+
+
+<br>
+
+!begin-text-block
+	
+	Now we&#x2019;re prepared for a canvas that isn&#x2019;t square, but we need to actually resize the canvas whenever we enter or exit fullscreen. We can update the options once again to add a callback function that&#x2019;s called whenever this happens, and on our end, we can add a listener to resize the canvas whenever we get a resize event from the window. We&#x2019;ll increase either the world width or height, rather than decrease anything, to ensure that we don&#x2019;t have a smaller view in fullscreen than windowed mode, and we&#x2019;ll do the exact opposite when adjusting the canvas width and height, so that fullscreen never renders more pixels than windowed. This way, extremely narrow aspect ratios will still show the entire Julia set, but won&#x2019;t try to render massive resolutions. This is also the reasoning for the strange-looking calculation of <code>z</code> in the shader.
+	
+!end-text-block
+
+
+
+<pre><code class="language-js" data-aos="fade-up">let options =
+{
+&#9;...
+&#9;
+&#9;use_fullscreen: true,
+&#9;
+&#9;true_fullscreen: true,
+&#9;
+&#9;use_fullscreen_button: true,
+&#9;
+&#9;enter_fullscreen_button_image_path: "/path/to/enter-fullscreen.png",
+&#9;exit_fullscreen_button_image_path: "/path/to/exit-fullscreen.png",
+&#9;
+&#9;switch_fullscreen_callback: change_aspect_ratio
+};</code></pre>
+
+<br>
+
+<pre><code class="language-js" data-aos="fade-up">function draw_julia_set(timestamp)
+{
+&#9;...
+&#9;
+&#9;wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
+&#9;
+&#9;wilson.gl.uniform1f(wilson.uniforms["a"], a);
+&#9;wilson.gl.uniform1f(wilson.uniforms["b"], b);
+&#9;wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
+&#9;
+&#9;wilson.render.draw_frame();
+}</code></pre>
+
+<br>
+
+<pre><code class="language-js" data-aos="fade-up">function change_aspect_ratio()
+{
+&#9;if (wilson.fullscreen.currently_fullscreen)
+&#9;{
+&#9;&#9;aspect_ratio = window.innerWidth / window.innerHeight;
+&#9;&#9;
+&#9;&#9;if (aspect_ratio >= 1)
+&#9;&#9;{
+&#9;&#9;&#9;wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+&#9;&#9;&#9;
+&#9;&#9;&#9;wilson.world_width = 4 * aspect_ratio;
+&#9;&#9;&#9;wilson.world_height = 4;
+&#9;&#9;}
+&#9;&#9;
+&#9;&#9;else
+&#9;&#9;{
+&#9;&#9;&#9;wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+&#9;&#9;&#9;
+&#9;&#9;&#9;wilson.world_width = 4;
+&#9;&#9;&#9;wilson.world_height = 4 / aspect_ratio;
+&#9;&#9;}
+&#9;}
+&#9;
+&#9;else
+&#9;{
+&#9;&#9;wilson.change_canvas_size(resolution, resolution);
+&#9;&#9;
+&#9;&#9;wilson.world_width = 4;
+&#9;&#9;wilson.world_height = 4;
+&#9;}
+&#9;
+&#9;window.requestAnimationFrame(draw_julia_set);
+}
+
+window.addEventListener("resize", change_aspect_ratio);</code></pre>
+
+
+
+<br>
+
+!begin-text-block
+	
+	Note that it would be a bad idea to resize the hidden canvas along with the visible one here &mdash; if we did that, we&#2019;d get more dark pixels in narrow aspect ratios, so the brightness scale would jump up unnaturally when we entered fullscreen or narrowed the window.
+	
+!end-text-block
+
+
+
+!begin-text-boxes
+	
+	resolution-2 1000 Resolution
+	
+!end-text-boxes
+
+
+
+<div class="center-content" data-aos="fade-up">
+	<div style="width: 70vmin">
+		<canvas id="output-canvas-2" class="output-canvas"></canvas>
+		<canvas id="hidden-canvas-2" class="hidden-canvas"></canvas>
+	</div>
+</div>
+
+
+
+!begin-text-buttons
+	
+	download-2 Download
+	
+!end-text-buttons
+
+
+
+!section
+
+!begin-text-block
+	
+	Now <em>this</em> is a Julia set explorer! We could call this done this as-is, but there&#x2019;s one last improvement we can make: adding the ability to pan and zoom into the fractals. In the next section, we&#x2019;ll make the canvas itself interactive, so that we can zoom in with controls that feel as natural as native ones.
+	
+	You can view the code for this page <a href="/projects/wilson/guide/5-fullscreen/scripts/fullscreen.js">here</a>. 
+	
+!end-text-block
+
+
+
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Part 5: Fullscreen",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/projects/wilson/guide"
+	};
+	
+	Page.load();
+</script>

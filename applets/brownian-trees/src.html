@@ -1,0 +1,113 @@
+<head>
+	<title>Brownian Trees</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Brownian Trees"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/applets/brownian-trees/brownian-trees.html"/>
+	
+	<meta property="og:description" content="In a glass of water, every molecule is bumped constantly by the others around it. This makes them jump around in very short, straight lines, not moving far in any direction on average. Brownian motion is a model for this behavior that has wide-ranging applications, one of which is the growth of crystals."/>
+
+	<meta property="og:image" content="https://cruzgodar.com/applets/brownian-trees/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Brownian Trees
+
+
+
+!begin-text-block
+
+	In a glass of water, every molecule is bumped constantly by the others around it. This makes them jump around in very short, straight lines, not moving far in any direction on average. <dfn>Brownian motion</dfn> is a model for this behavior that has wide-ranging applications, one of which is the growth of crystals.
+	
+	The theory of <dfn>Diffusion-limited aggregation</dfn> applies to crystals that form as the result of a substance that can only move through diffusion &mdash; think salt that&#x2019;s dissolved in water and is therefore subject to Brownian motion. When one salt molecule hits another, it sticks, and over time, this forms a crystal structure. This applet colors the salt red and the water black, and centers the starting point of the crystal. The later a salt particle joins the group, the darker it&#x2019;s colored. The resulting  construction is called a <dfn>Brownian tree</dfn>, a beautiful object that often looks more like a tree&#x2019;s roots than its canopy.
+	
+	!wilson
+
+!end-text-block
+
+
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+
+!begin-text-boxes
+	
+	grid-size 500 Image Size
+	
+!end-text-boxes
+
+
+
+!begin-text-buttons
+	
+	generate l Generate
+	
+!end-text-buttons
+
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+!canvas
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+!begin-text-buttons
+	
+	download l Download
+	
+!end-text-buttons
+
+</div>
+
+</div>
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Brownian Trees",
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>

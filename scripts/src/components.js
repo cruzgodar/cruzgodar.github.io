@@ -1274,7 +1274,23 @@ Page.Components =
 			}
 		}
 		
-		html = lines.join("\n");
+		
+		
+		//Remove blank lines and tabs.
+		for (let i = 0; i < lines.length; i++)
+		{
+			lines[i] = lines[i].replace(/\t/g, "").replace(/\n/g, "");
+			
+			if (lines[i].length === 0)
+			{
+				lines.splice(i, 1);
+				i--;
+			}
+		}
+		
+		
+		
+		html = lines.join("");
 		
 		return html;
 	}

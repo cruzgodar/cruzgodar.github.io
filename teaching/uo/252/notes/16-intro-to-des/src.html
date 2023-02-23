@@ -1,0 +1,551 @@
+<head>
+	<title>Section 16: Intro to Differential Equations</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 16: Intro to Differential Equations"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/16-intro-to-des/16-intro-to-des.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/252/notes/16-intro-to-des/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 16: Intro to Differential Equations
+
+!nav-buttons
+
+
+
+!begin-text-block
+	
+	It&#x2019;s the final section! We&#x2019;ll depart from the previous topics to examine a common application of integration: differential equations. This is a deep enough topic that whole courses are dedicated to it, but we&#x2019;ll just be taking a brief overview, split into three parts: what are differential equations, how do we visualize them, and how can we solve them?
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	differential equation
+	
+	A <dfn>differential equation</dfn>, or a <dfn>DE</dfn>, is an equation involving a function $y = f(x)$ and its derivatives. They&#x2019;re like polynomials, but instead of increasing the power on $x$, we increase the order of derivatives.
+	
+!end-def
+
+
+
+!begin-example
+	
+	some differential equations
+	
+	$y' = y + 2x$.
+	
+	$y''' + y' - y = 3$.
+	
+!end-example
+
+
+
+!begin-def
+	
+	solution to a DE
+	
+	A solution to a DE is a function $y = f(x)$ satisfying the equation.
+	
+!end-def
+
+
+
+!begin-example
+	
+	solution to a DE
+	
+	One solution to
+	
+	$$
+		y' + 3y = 6x + 11
+	$$
+	
+	is
+	
+	$$
+		y = e^{-3x} + 2x + 3,
+	$$
+	
+	since $y' = -3e^{-3x} + 2$, and so
+	
+	$$
+		\begin{align*}
+			y' + 3y &= -3e^{-3x} + 2 + 3e^{-3x} + 6x + 9\\
+			&= 6x + 11.
+		\end{align*}
+	$$	
+	
+!end-example
+
+
+
+!section
+
+!text s Direction Fields
+
+<br>
+
+
+
+!begin-text-block
+	
+	A direction field lets us visualize how a DE acts over time. To draw one, we solve for $y'$, then draw a line segment at every point $(x, y)$ that has the slope given by $y'$. Then a solution to the DE is a function whose slope matches the direction field at all of its points.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	direction field
+	
+	Draw a direction field for the differential equation $y' - \frac{1}{30}xy = 0$.
+	
+	We have $y' = \frac{1}{30}xy$, so on both the $x$- and $y$-axes, $y' = 0$. That means we draw horizontal line segments there. When $x$ and $y$ are both positive or negative, the slope is positive, and when one is positive and the other negative, the slope is negative. The farther away from the axes we get, the larger the slope becomes in absolute value.
+	
+	!desmos direction-field
+	
+!end-example
+
+!begin-exercise
+	
+	direction field
+	
+	Draw a direction field for $\displaystyle y' = \frac{1}{20}(x^2 - 1)\sin(y)$.
+	
+	!desmos direction-field-2
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	By definition, a solution to the DE is a function whose slope matches the direction field, so the graph of a solution follows the direction field like guidelines.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	direction field
+	
+	For any value of $c$, $\displaystyle y = c e^{x^2}$ is a solution to $\displaystyle y' - xy = 0$.
+	
+	!desmos de-solution
+	
+	As we can see, this function follows the direction field. When $c = 0$, the solution is $y = 0$, and this one has a special name:
+	
+!end-example
+
+
+
+!begin-def
+	
+	equilibrium solution
+	
+	An <dfn>equilibrium solution</dfn> to a DE is a solution $y = c$ for some number $c$. In a direction field, this appears as a horizontal line.
+	
+!end-def
+
+
+
+!begin-example
+	
+	equilibrium solution
+	
+	Find all equilibrium solutions to $\displaystyle y' = \frac{1}{20}(x-3)(y^2 - 4)$.
+	
+	If $y = c$, then $y' = 0$, so to find the equilibrium solutions, we just need to set $(x-3)(y^2 - 4) = 0$. Then $x = 3$, $y = -2$, or $y = 2$, and we only want the solutions of the form $y = c$, so we want $y = \pm 2$.
+	
+	!desmos direction-field-3
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	Two special types of equilibrium solutions are those that either attract or repel their neighbors.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	stable and unstable equilibrium solutions
+	
+	An equilibrium solution $y = c$ is <dfn>stable</dfn> if for large $x$, the direction field around $y = c$ points toward it. It is <dfn>unstable</dfn> if for large $x$, the direction field around $y = c$ points away. If some points toward it and some points away, then the solution is neither stable nor unstable.
+	
+!end-def
+
+
+
+!begin-example
+	
+	stable and unstable equilibrium solutions
+	
+	In the previous example, $y = 2$ is an unstable solution, since the direction field eventually points away from it for large $x$. Similarly, $y = -2$ is a stable solution. In general, to know how large to draw the direction field to determine if a solution is stable or unstable, make it large enough to capture all the places where $y' = 0$, including $x$-values. In the previous example, that&#x2019;s $x = 3$.
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	A nice way to think about stable solutions is by imagining a small ball placed into a hemispherical dish. It settles to the bottom, and nudging it slightly in any direction will just result it in settling back down to where it was. On the other hand, unstable solutions are akin to turning the bowl upside-down and balancing the ball on the top of it. There is a single point where the ball will balance, but nudging it slightly in any direction makes the ball roll away from the center.
+	
+!end-text-block
+
+
+
+!section
+
+!text s Separable Differential Equations
+
+<br>
+
+
+
+!begin-text-block
+	
+	So how do we solve DEs? This is the subject that all those future classes are devoted to, but we&#x2019;ll just look at the simplest possible type: something called a separable DE.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	separable DE
+	
+	A differentiable equation is <dfn>separable</dfn> if it can be written in the form
+	
+	$$
+		y' = f(x)g(y)
+	$$
+	
+	for some functions $f$ and $g$.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	In other words, a separable equation is one where we can get $y'$ by itself and write the other side as ($x$-stuff)($y$-stuff). If this is the case, we&#x2019;ll go through the following process, called <dfn>separation of variables</dfn>:
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	separation of variables
+	
+	To solve a DE of the form $y' = f(x)g(y)$:
+	
+	1. Rewrite $y'$ as $\displaystyle\frac{dy}{dx}$ to get $\displaystyle\frac{dy}{dx} = f(x)g(y)$.
+	
+	2. Divide both sides by $g(y)$ and multiply both sides by $dx$ to get
+	
+	$$
+		\frac{1}{g(y)}\,dy = f(x)\,dx.
+	$$
+	
+	3. Add an integral to both sides:
+	
+	$$
+		\int \frac{1}{g(y)}\,dy = \int f(x)\,dx.
+	$$
+	
+	4. Integrate.
+	
+	5. Solve for $y$. There will still be the integration constant $C$ in your answer &mdash; either leave it there or use an initial value to solve for it, just like in the initial value problems we solved back in section 3.
+	
+	6. Also list any equilibrium solutions by going back to the initial equation and solving $g(y) = 0$.
+	
+!end-thm
+
+
+
+!begin-example
+	
+	separation of variables
+	
+	Solve $\displaystyle y' = (x-2)(y-3)$, given that $y(0) = 5$.
+	
+	We have
+	
+	$$
+		\frac{dy}{dx} = (x-2)(y-3).
+	$$
+	
+	We then divide by the $y$ stuff (i.e. $y-3$) and multiply by $dx$ to get
+	
+	$$
+		\frac{1}{y-3}\,dy = (x-2)\,dx.
+	$$
+	
+	Then we integrate both sides:
+	
+	$$
+		\begin{align*}
+			\int \frac{1}{y-3}\,dy &= \int (x-2)\,dx\\
+			\ln |y - 3| &= x^2 - 2x + C.
+		\end{align*}
+	$$
+	
+	Now it&#x2019;s time to solve for $y$.
+	
+	$$
+		\begin{align*}
+			\ln |y - 3| &= x^2 - 2x + C\\
+			y - 3 &= e^{x^2 - 2x + C}\\
+			y &= e^{x^2 - 2x + C} + 3.
+		\end{align*}
+	$$
+	
+	Now to get rid of $C$, we need to use the initial value: $y(0) = 5$. That gives us
+	
+	$$
+		\begin{align*}
+			5 &= e^{0^2 - 2(0) + C} + 3\\
+			2 &= e^C\\
+			\ln(2) &= C.
+		\end{align*}
+	$$
+	
+	Therefore, this solution becomes
+	
+	$$
+		y = e^{x^2 - 2x + \ln(2)} + 3.
+	$$
+	
+	Finally, we&#x2019;ll solve for the equilibrium solutions by solving $y - 3 = 0$, so $y = 3$. The reason why the previous method didn&#x2019;t solve for this solution is because it required dividing by $y - 3$, so that&#x2019;s exactly the solution we missed. However, it does not satisfy the initial condition, since $y(0) = 3 \neq 3$. Therefore, only the previous solution is correct.
+	
+!end-example
+
+!begin-exercise
+	
+	separation of variables
+	
+	Solve $y' = y\ln(x)$, given that $y(1) = 1$.
+	<!--
+	<strong>Solution:</strong> separating and integrating, we have
+	
+	$$
+		\begin{align*}
+			\frac{1}{y}\,dy &= \ln(x)\,dx\\
+			\int \frac{1}{y}\,dy &= \int \ln(x)\,dx\\
+			\ln|y| &= x\ln(x) - x + C\\
+			y &= e^{x\ln(x) - x + C}.
+		\end{align*}
+	$$
+	
+	Since $y(1) = 1$,
+	
+	$$
+		\begin{align*}
+			1 &= e^{1\ln(1) - 1 + C}\\
+			1 &= e^{C - 1}\\
+			\ln(1) &= C - 1\\
+			0 &= C - 1\\
+			C &= 1.
+		\end{align*}
+	$$
+	
+	Our final answer is then
+	
+	$$
+		y = e^{x\ln(x) - x + 1}.
+	$$
+	-->
+!end-exercise
+
+
+
+!begin-text-block
+	
+	As one final application, let&#x2019;s talk about temperature.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	Newton&#x2019;s Law of Cooling
+	
+	Let $T(t)$ be the temperature of an object at time $t$ and let $S$ be the temperature of the material, like air or water, the material is surrounded by. Then for some number $k$,
+	
+	$$
+		T' = k(T - S).
+	$$
+	
+	In other words, the rate of cooling is proportional to the difference between the current temperature and the ambient temperature.
+	
+!end-thm
+
+
+
+!begin-example
+	
+	Newton&#x2019;s Law of Cooling
+	
+	A pizza is baked at $350^\circ F$ and removed from the oven. The air temperature of the kitchen is $75^\circ F$, and after $5$ minutes, the pizza is $300^\circ F$. How much longer until it is $200^\circ F$?
+	
+	We have $S = 75$, $T(0) = 350$, and $T(5) = 300$. Newton&#x2019;s Law of Cooling says that $T' = k(T - 75)$, so by separation, we have
+	
+	$$
+		\begin{align*}
+			\frac{dT}{dt} &= k(T - 75)\\
+			\frac{1}{T - 75} &= k\,dt\\
+			\int \frac{1}{T - 75} &= \int k\,dt\\
+			\ln |T - 75| &= kt + C\\
+			T - 75 &= e^{kt + C}\\
+			T &= e^{kt + C} + 75.
+		\end{align*}
+	$$
+	
+	Now we have $T(0) = 350$, so
+	
+	$$
+		\begin{align*}
+			350 &= e^C + 75\\
+			275 &= e^C\\
+			C &= \ln(275).
+		\end{align*}
+	$$
+	
+	Next, $T(5) = 300$. That means
+	
+	$$
+		\begin{align*}
+			300 &= e^{5k + \ln(275)} + 75\\
+			225 &= e^{5k}e^{\ln(275)}\\
+			225 &= 275e^{5k}\\
+			\frac{225}{275} &= e^{5k}\\
+			5k &= \ln\left(\frac{225}{275}\right)\\
+			k &= \frac{1}{5} \ln\left(\frac{225}{275}\right)\\
+			&\approx -.0401.
+		\end{align*}
+	$$
+	
+	In total, we have $T(t) = e^{-.0401t + \ln(275)} + 75$. What we&#x2019;re trying to solve is $T(t) = 200$, so we have
+	
+	$$
+		\begin{align*}
+			200 &= e^{-.0401t + \ln(275)} + 75\\
+			125 &= 275e^{-.0401t}\\
+			\frac{125}{275} &= e^{-.0401t}\\
+			\ln\left(\frac{125}{275}\right) &= -.0401t\\
+			t &\approx 19.66.
+		\end{align*}
+	$$
+	
+	Therefore, it will take just under $20$ minutes for the pizza to cool to $200^\circ F$.
+	
+!end-example
+
+!begin-exercise
+	
+	Newton&#x2019;s Law of Cooling
+	
+	In the same $75^\circ F$ kitchen, we bake a cake at $400^\circ F$. It&#x2019;s removed from the oven and after $10$ minutes, it has cooled to $300^\circ F$. How long until it cools down to $100^\circ F$?
+	<!--
+	<strong>Solution:</strong> We have $T' = k(T - 75)$, so following the same procedure as in the above example, we get $T = e^{kt + C} + 75$. Since $T(0) = 400$, we have
+	
+	$$
+		\begin{align*}
+			400 &= e^C + 75\\
+			325 &= e^C\\
+			C &= \ln(325).
+		\end{align*}
+	$$
+	
+	Since $T(10) = 300$,
+	
+	$$
+		\begin{align*}
+			300 &= e^{10k + \ln(325)} + 75\\
+			225 &= e^{10k}e^{\ln(325)}\\
+			225 &= 325e^{10k}\\
+			\frac{225}{325} &= e^{10k}\\
+			10k &= \ln\left(\frac{225}{325}\right)\\
+			k &= \frac{1}{10} \ln\left(\frac{225}{325}\right)\\
+			&\approx -.0368.
+		\end{align*}
+	$$
+	
+	In total, we have $T(t) = e^{-.0368t + \ln(325)} + 75$, and we want to solve
+	
+	$$
+		\begin{align*}
+			100 &= e^{-.0368t + \ln(325)} + 75\\
+			25 &= 325e^{-.0368t}\\
+			\frac{25}{325} &= e^{-.0368t}\\
+			\ln\left(\frac{25}{325}\right) &= -.0368t\\
+			t &\approx 70.
+		\end{align*}
+	$$
+	-->
+!end-exercise
+
+
+
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 16: Intro to Differential Equations",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/252/notes"
+	};
+	
+	Page.load();
+</script>

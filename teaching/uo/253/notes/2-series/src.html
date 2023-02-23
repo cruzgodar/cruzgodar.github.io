@@ -1,0 +1,573 @@
+<head>
+	<title>Section 2: Series</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 2: Series"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/253/notes/2-series/">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/253/notes/2-series/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 2: Series
+
+!nav-buttons
+
+
+
+!begin-text-block
+	
+	With a strong foundation of sequences built up, let&#x2019;s turn to their main application in this course: infinite series. Where a sequence is an infinite <em>list</em> of numbers, a series is an infinite <em>sum</em>. Keep in mind the course roadmap: eventually, we&#x2019;ll want to add up not just numbers, but monomials, forming an object that&#x2019;s something like a polynomial with infinitely many terms. To start with, though, we&#x2019;ll stick to numbers only.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	series
+	
+	A <dfn>series</dfn> is a sum of the terms in a sequence $(a_n)$, written
+	
+	$$
+		\sum_{n = 1}^\infty a_n = a_1 + a_2 + a_3 + \cdots.
+	$$
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	The zig-zag shape is the Greek letter Sigma &mdash; S for sum. The expressions above and below it don&#x2019;t always have to be $n = 1$ and $\infty$: the bottom expression indicates the index variable (here, that&#x2019;s $n$) and the first value it should take (1), and the top number is the last value it should take (here, the $\infty$ means to keep going and never stop). Let&#x2019;s look at some examples of series to get a sense of how they can differ.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	series
+	
+	Evaluate the following sums.
+	
+	1. $\sum_{n = 1}^5 n$.
+	
+	2. $\sum_{i = -2}^2 \frac{1}{i^2 + 1}$.
+	
+	3. $\sum_{k = 0}^\infty 2$.
+	
+	1. Expanding out the first sum, we have
+	
+	$$
+		\sum_{n = 1}^5 n = 1 + 2 + 3 + 4 + 5 = 15.
+	$$
+	
+	If you&#x2019;ve done any programming before, series look a whole lot like <code>for</code> loops. If you get into coding in the future, <code>for</code> loops will look a lot like series. The idea is very similar to a sequence, except that we don&#x2019;t just write out all the terms &mdash; we add them up, one by one.
+	
+	2. This time, the index variable is $i$, not $n$. We start it at $-2$, increase it by $1$ until it hits $2$, and add up every term we get along the way. That comes out to
+	
+	$$
+		\begin{align*}
+			\sum_{i = -2}^2 \frac{1}{i^2 + 1} &= \frac{1}{5} + \frac{1}{2} + 1 + \frac{1}{2} + \frac{1}{5}\\
+			&= \frac{12}{5}.
+		\end{align*}
+	$$
+	
+	3. This one is a little weird. Our index variable is $k$, but it doesn&#x2019;t appear anywhere in the terms we&#x2019;re adding up. Instead, we&#x2019;re supposed to just add up a bunch of $2$s as $k$ increases. Since there are infinitely many values for $k$ to take, there are infinitely many $2$s to add up. So we get
+	
+	$$
+		\sum_{k = 0}^\infty 2 = 2 + 2 + 2 + \cdots.
+	$$
+	
+	It&#x2019;s pretty clear that this won&#x2019;t have any meaningful value, but we don&#x2019;t yet have the language to describe how or why. With that in mind, let&#x2019;s talk about what it means for a series to converge.
+	
+!end-example
+
+
+
+!begin-def
+	
+	partial sums
+	
+	Let $\sum_{n = 1}^\infty a_n$ be an infinite series. The <dfn>$\mathbf{k}$th partial sum</dfn>, written $S_k$, is defined as
+	
+	$$
+		S_k = \sum_{n = 1}^k a_n.
+	$$
+	
+	In other words, the $k$th partial sum of a series is obtained by adding up its first $k$ terms.
+	
+!end-def
+
+
+
+!begin-exercise
+	
+	partial sums
+	
+	For each of the following series, write out the first five terms. Then find the first, third, and fifth partial sums.
+	
+	1. $\sum_{n = 0}^\infty n$.
+	
+	2. $\sum_{m = 1}^\infty \frac{1}{m}$.
+	
+	3. $\sum_{k = 1}^\infty \frac{2}{3^k}$.
+	
+	<strong>Solutions:</strong>
+	
+	1. The first five terms are $0, 1, 2, 3,$ and $4$, and the relevant partial sums are
+	
+	$$
+		\begin{align*}
+			S_1 &= 0\\
+			S_3 &= 0 + 1 + 2 = 3\\
+			S_5 &= 0 + 1 + 2 + 3 + 4 = 10.
+		\end{align*}
+	$$
+	
+	2. With this series, the terms are $1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}$, and $\frac{1}{5}$, and the partial sums are
+	
+	$$
+		\begin{align*}
+			S_1 &= 1\\
+			S_3 &= \frac{11}{6}\\
+			S_5 &= \frac{137}{60}.
+		\end{align*}
+	$$
+	
+	3. Finally, we have $\frac{2}{3}, \frac{2}{9}, \frac{2}{27}, \frac{2}{81},$ and $\frac{2}{243}$, and partial sums of
+	
+	$$
+		\begin{align*}
+			S_1 &= \frac{2}{3}\\
+			S_3 &= \frac{26}{27}\\
+			S_5 &= \frac{242}{243}.
+		\end{align*}
+	$$
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	It&#x2019;s common to confuse the terms of a series with its partial sums &mdash; hopefully this helps disambiguate them.
+	
+	The purpose of partial sums is to let us talk about the convergence of series. The behavior of the terms we&#x2019;re adding up turns out not to be particularly helpful for this: if we want to assign a value to $\sum_{m = 1}^\infty \frac{1}{m}$, then knowing that $\left( \frac{1}{m} \right) \to 0$ doesn&#x2019;t tell us much. In fact, if we&#x2019;re adding up infinitely many positive things, those things had better converge to zero &mdash; if they don&#x2019;t, there&#x2019;s no chance the sum will be finite. What we want is the limit of a sequence that gives better and better approximations of the infinite sum, and that&#x2019;s exactly what the partial sums do.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	convergence of series
+	
+	Let $\sum_{n = 1}^\infty a_n$ be an infinite series. If the sequence $(S_k)$ of partial sums converges to a limit $S$, then we say that the series converges to $S$, and write
+	
+	$$
+		\sum_{n = 1}^\infty a_n = S.
+	$$
+	
+	If $(S_k)$ diverges, then we say that the series diverges.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	Notice the difference in notation between sequences and series: if a sequence $(a_n)$ converges to $a$, we write $(a_n) \to a$, with an arrow marking convergence. On the other hand, a convergent series is written $\sum_{n = 1}^\infty b_n = b$, with an equals sign. This is because a convergent series is equal to its limit, whereas a convergent series is still just a list of numbers.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	convergence of a series
+	
+	Evaluate $\sum_{n = 1}^\infty \frac{1}{2^n}$ or show it diverges.
+	
+	We start by finding the partial sums. The first few are
+	
+	$$
+		\begin{align*}
+			S_1 &= \frac{1}{2} &=& \frac{1}{2}\\
+			S_2 &= \frac{1}{2} + \frac{1}{4} &=& \frac{3}{4}\\
+			S_3 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} &=& \frac{7}{8}\\
+			S_4 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} &=& \frac{15}{16}\\
+		\end{align*}
+	$$
+	
+	Every term we add is half of the previous and also half of what&#x2019;s needed to reach $1$. Therefore, $(S_k) \to 1$, and so
+	
+	$$
+		\sum_{n = 1}^\infty \frac{1}{2^n} = 1.
+	$$
+	
+	It can be a little counterintuitive that adding up infinitely many numbers, even if they&#x2019;re getting smaller, can ever result in something finite. Conveniently, this sum in particular has a famous visualization that can make it much easier to digest. Begin with a square of side length $1$ and divide it into two equal rectangles of area $\frac{1}{2}$. Shade one and divide the other into two equal squares of area $\frac{1}{4}$. Shade one, divide the other, and repeat. As the number of divisions gets larger and larger, the unshaded area vanishes to zero, and the total area approaches $1$.
+	
+	!desmos geometric-series
+	
+!end-example
+
+
+
+!begin-exercise
+	
+	convergence of series
+	
+	Evaluate the following series or show they don&#x2019;t converge.
+	
+	1. $\sum_{i = 0}^\infty (-1)^i$.
+	
+	2. $\sum_{m = 1}^\infty \frac{2}{3^m}$.
+	
+	3. $\sum_{n = 1}^\infty \frac{1}{n}$. Note: this is called the <dfn>Harmonic series</dfn>, and is quite famous. To get a handle on its behavior, try grouping the terms in this manner: put the first and second terms by themselves, then put the third and fourth together, then the fifth through the eighth together, then the 9th through the 16th, and so on, doubling the size of each group. See if you can quantify how large each group is based on its last term.
+	
+	<strong>Solutions:</strong>
+	
+	1. When $k$ is even, $S_k$ is a sum of equally many $1$s and $-1$s, so $S_k = 0$. When $k$ is odd, there is one more $1$ then $-1$, so $S_k = 1$. Therefore, $(S_k)$ alternates between $0$ and $1$, so $\lim_{k \to \infty} S_k$ doesn&#x2019;t exist and the series diverges.
+	
+	2. Similarly to the example, every term added is $\frac{2}{3}$ of what&#x2019;s required to reach $1$. In symbols, $S_k = \frac{3^k - 1}{3^k}$. Since $\lim_{k \to \infty} S_k = 1$, the series converges to $1$.
+	
+	3. Following the hint, we have
+	
+	$$
+		\sum_{n = 1}^\infty \frac{1}{n} = \left( 1 \right) + \left( \frac{1}{2} \right) + \left( \frac{1}{3} + \frac{1}{4} \right) + \left( \frac{1}{5} + \cdots + \frac{1}{8} \right) + \left( \frac{1}{9} + \cdots + \frac{1}{16} \right) + \cdots.
+	$$
+	
+	in the group that ends in $\frac{1}{4}$, every previous term (just the $\frac{1}{3}$) is larger than $\frac{1}{4}$. There are two terms total, so the group is at least $2 \cdot \frac{1}{4} = \frac{1}{2}$. In the next group, every term is at least $\frac{1}{8}$, so the group is at least $4 \cdot \frac{1}{8} = \frac{1}{2}$. In fact, every group is at least $\frac{1}{2}$, and by doubling the size of each group, we&#x2019;ll never run out of these groups. Therefore, the series is larger than an infinite sum of $\frac{1}{2}$s, and so it diverges.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	Since series are determined by their sequences of partial sums, many convenient properties of sequences carry over to series.
+	
+!end-text-block
+
+
+
+!begin-prop
+	
+	properties of series
+	
+	Suppose $\sum_{n = 1}^\infty a_n = a$ and $\sum_{n = 1}^\infty b_n = b$. Then:
+	
+	1. $\sum_{n = 1}^\infty (a_n + b_n) = a + b$.
+	
+	2. For any constant $c$, $\sum_{n = 1}^\infty ca_n = c\sum_{n = 1}^\infty a_n$.
+	
+!end-prop
+
+
+
+!begin-text-block
+	
+	These results are pretty predictable: the first just says that infinite addition is commutative, and the second that it&#x2019;s distributive with respect to multiplication.
+
+!end-text-block
+
+
+
+!section
+
+!text s Geometric Series
+
+<br>
+
+
+
+!begin-text-block
+	
+	In the last section, we introduced <dfn>geometric sequences</dfn>. These are sequences for which every term can be obtained from the previous one by multiplying by some factor $r$. In other words, they&#x2019;re sequences of the form
+	
+	$$
+		(a, ar, ar^2, ar^3, ...)
+	$$
+	
+	for some values of $a$ and $r$. This pattern is particularly useful for series, and it&#x2019;s worth giving a fair bit of time.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	geometric series
+	
+	A <dfn>geometric series</dfn> is the sum of a geometric sequence &mdash; that is, a series of the form
+	
+	$$
+		\sum_{n = 0}^\infty ar^n = a\sum_{n = 0}^\infty r^n.
+	$$
+	
+	The first term of the series must be a constant term (i.e. $r^0$) in order for it to be geometric.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	Let&#x2019;s evaluate $\sum_{n = 0}^\infty r^n$. The $k$th partial sum is
+	
+	$$
+		S_k = 1 + r + r^2 + \cdots + r^{k - 1}.
+	$$
+	
+	While this may look pretty complicated, it&#x2019;s actually a rather fragile expression. Watch what happens when we multiply $S_k$ by $r$:
+	
+	$$
+		rS_k = r + r^2 + r^3 + \cdots + r^k.
+	$$
+	
+	Every term there except for $r^k$ appears in the original expression of $S_k$ &mdash; they&#x2019;re begging to be canceled out.
+	
+	$$
+		S_k - rS_k = (1 + r + r^2 + \cdots + r^{k - 1}) - (r + r^2 + r^3 + \cdots + r^k) = 1 - r^k.
+	$$
+	
+	Factoring and dividing, we have
+	
+	$$
+		\begin{align*}
+			(1 - r)S_k &= 1 - r^k\\
+			S_k &= \frac{1 - r^k}{1 - r}.
+		\end{align*}
+	$$
+	
+	It almost seems like we pulled a trick somewhere, but this is correct: no matter how large $k$ gets and how many terms are in $S_k$, we can always collapse it down to this style of fraction. Now the only question is, when does $(S_k)$ converge? We talked in the last section about the sequence $(r^k)$: it converges to zero when $-1 < r < 1$, to one when $r = 1$, and diverges otherwise. First of all, if $r = 1$, the original series is $\sum_{n = 1}^\infty 1$, which clearly diverges. If $(r^k)$ diverges, then so does $S_k$, since it contains a copy of $r^k$. But when $(r^k) \to 0$, then $(S_k) \to \frac{1}{1 - r}$. Therefore, we&#x2019;re left with the following result:
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	the values of geometric series
+	
+	Let $r$ be a constant with $-1 < r < 1$. Then
+	
+	$$
+		\sum_{n = 0}^\infty r^n = \frac{1}{1 - r}.
+	$$
+	
+!end-thm
+
+
+
+!begin-example
+	
+	the value of a geometric series
+	
+	We can test this theorem on the series from before: $\sum_{n = 1}^\infty \frac{1}{2^n}$. This doesn&#x2019;t quite fit the definition of a geometric series, since the first power is $1$ and not $0$. However, we can just start the series at $n = 0$ and remove the first term afterward.
+	
+	$$
+		\begin{align*}
+			\sum_{n = 1}^\infty \frac{1}{2^n} &= \left( \sum_{n = 0}^\infty \frac{1}{2^n} \right) - 1\\
+			&= \left( \sum_{n = 0}^\infty \left(\frac{1}{2}\right)^n \right) - 1\\
+			&= \frac{1}{1 - \frac{1}{2}} - 1\\
+			&= \frac{1}{\frac{1}{2}} - 1\\
+			&= 2 - 1\\
+			&= 1.
+		\end{align*}
+	$$
+	
+	This agrees with the result from earlier!
+	
+!end-example
+
+!begin-exercise
+	
+	the value of a geometric series
+	
+	Evaluate the following series.
+	
+	1. $\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k + 1}}$.
+	
+	2. $\sum_{m = 1}^\infty e^m$.
+	
+	<strong>Solutions:</strong>
+	
+	1. Ideally, we&#x2019;d like to have just one power of $k$ in our sum so that we can apply the formula for geometric series. By pulling off two factors of $3$, we get
+	
+	$$
+		\begin{align*}
+			\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k + 1}} &= \frac{1}{3^2}\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k - 1}}\\
+			&= \frac{1}{3^2}\sum_{k = 1}^\infty \left( \frac{2}{3} \right)^{k - 1}\\
+			&= \frac{1}{3^2}\sum_{k = 0}^\infty \left( \frac{2}{3} \right)^k\\
+			&= \frac{1}{3^2} \cdot \frac{1}{1 - \frac{2}{3}}\\
+			&= \frac{1}{3^2} \cdot \frac{1}{\frac{1}{3}}\\
+			&= \frac{1}{3^2} \cdot 3\\
+			&= \frac{1}{3}.
+		\end{align*}
+	$$
+	
+	2. This is a geometric series with $|r| = |e| \geq 1$, so it must diverge. If it did converge, we&#x2019;d care that the series started at $m = 1$ instead of $m = 0$ to apply the geometric series formula properly, but with a divergent series, it&#x2019;s irrelevant.
+	
+!end-exercise
+
+
+
+!section
+
+!text s Telescoping Series
+
+<br>
+
+
+
+!begin-text-block
+	
+	There&#x2019;s one more kind of series to touch on before we wrap up this introductory section. If the process of adding up a series makes almost all of the terms cancel out, then we wind up with a very concise expression for the final value.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	telescoping series
+	
+	A <dfn>telescoping</dfn> series is one for which almost all of the terms cancel with each other.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	The simplest type of telescoping series is any series of the form
+	
+	$$
+		\sum_{n = 0}^\infty (a_{n + 1} - a_n).
+	$$
+	
+	Then the $k$th partial sum is just
+	
+	$$
+		S_k = (a_1 - a_0) + (a_2 - a_1) + \cdots + (a_k - a_{k - 1}) = a_k - a_0.
+	$$
+	
+	Therefore, the sequence of partial sums converging is equivalent to the sequence $(a_k)$ converging. If that is the case, and $(a_k) \to a$ for some $a$, then
+	
+	$$
+		\sum_{n = 0}^\infty (a_{n + 1} - a_n) = a - a_0.
+	$$
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a telescoping series
+	
+	Evaluate the sum
+	
+	$$
+		\sum_{n = 1}^\infty \left( \cos \left( \frac{1}{n} \right) - \cos \left( \frac{1}{n + 1} \right) \right).
+	$$
+	
+	This series telescopes: every $\cos \left( \frac{1}{n + 1} \right)$ cancels with the $\cos \left( \frac{1}{n} \right)$ in the next term, making the partial sums take the form
+	
+	$$
+		S_k = \cos \left( \frac{1}{1} \right) - \cos \left( \frac{1}{k + 1} \right)
+	$$
+	
+	Moreover, as $k \to \infty$, $\frac{1}{k + 1} \to 0$, so $\cos \left( \frac{1}{k + 1} \right) \to 1$. Therefore, our sum converges to $\cos(1) - 1$.
+	
+!end-example
+
+!begin-exercise
+	
+	a telescoping series
+	
+	The series
+	
+	$$
+		\sum_{n = 1}^\infty \frac{1}{n(n + 1)}
+	$$
+	
+	is actually telescoping, even if it doesn&#x2019;t look like it at first glance. Use partial fractions to split apart $\frac{1}{n(n + 1)}$, and then evaluate the sum using properties of telescoping series.
+	
+	<strong>Solution:</strong> let&#x2019;s start with partial fractions.
+	
+	$$
+		\begin{align*}
+			\frac{1}{n(n + 1)} &= \frac{A}{n} + \frac{B}{n + 1}\\
+			1 &= A(n + 1) + Bn\\
+			1 &= (A + B)n + A.
+		\end{align*}
+	$$
+	
+	Now we can split this up into two equations by equating coefficients on $x$:
+	
+	$$
+		\begin{align*}
+			&\begin{cases} 0 &= A + B \\ 1 &= A \end{cases}\\
+			&\begin{cases} A &= 1 \\ B &= -1 \end{cases}\\
+			\frac{1}{n(n + 1)} &= \frac{1}{n} - \frac{1}{n + 1}.
+		\end{align*}
+	$$
+	
+	This is now more clearly telescoping: the limit is $1 - \lim_{n \to \infty} \frac{1}{n + 1} = 1$.
+	
+!end-exercise
+
+
+	
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 2: Series",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/253/notes"
+	};
+	
+	Page.load();
+</script>

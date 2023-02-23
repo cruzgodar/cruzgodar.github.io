@@ -1,0 +1,56 @@
+<head>
+	<style>body {opacity: 0;}</style>
+</head>
+
+
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header GLSL Unit Tests
+
+
+
+<div id="canvas-location">
+
+<div class="center-content" data-aos="fade-up">
+	<div style="width: 70vmin">
+		<div class="canvas-landscape">
+		<canvas id="output-canvas" class="output-canvas"></canvas>
+	</div>
+</div>
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "GLSL Unit Tests",
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>

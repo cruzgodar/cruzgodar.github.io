@@ -1,0 +1,55 @@
+<head>
+	<style>body {opacity: 0;}</style>
+</head>
+
+
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header JS and CSS Collector
+
+
+
+!begin-text-buttons
+
+	collect-js l Collect JS
+	
+	collect-css l Collect CSS
+
+!end-text-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "JS and CSS Collector",
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>

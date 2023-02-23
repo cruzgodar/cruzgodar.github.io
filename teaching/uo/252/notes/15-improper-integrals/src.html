@@ -1,0 +1,358 @@
+<head>
+	<title>Section 15: Improper Integrals</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 15: Improper Integrals"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/252/notes/15-improper-integrals/15-improper-integrals.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/252/notes/15-improper-integrals/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 15: Improper Integrals
+
+!nav-buttons
+
+
+
+!begin-text-block
+	
+	In this penultimate section, we&#x2019;ll expand our definition of the integral to handle two cases that we previously couldn&#x2019;t, both involving infinity.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	improper integral
+	
+	An improper integral has one of two forms. Either:
+	
+	1. one or both of the limits is infinite:
+	
+	$$
+		\int_{-\infty}^b f(x)\,dx, \int_a^\infty f(x)\,dx, \text{or} \int_{-\infty}^\infty f(x)\,dx.
+	$$
+	
+	2. in the integral
+	
+	$$
+		\int_a^b f(x)\,dx,
+	$$
+	
+	$f(x)$ approaches $\infty$ or $-\infty$ somewhere in $[a, b]$.
+	
+	In other words, either the range of $x$-values is infinite or the $y$-values of the function to integrate are sometimes infinite, or both.
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	In order to compute the first type of improper integral, we&#x2019;ll leave the bounds as variables and just take a limit.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	the first type of improper integral
+	
+	Let $f(x)$ be a continuous function. Then
+	
+	$$
+		\begin{align*}
+			\int_{-\infty}^b f(x)\,dx &= \lim_{a \to -\infty} \int_a^b f(x)\,dx\\
+			\int_a^\infty f(x)\,dx &= \lim_{b \to \infty} \int_a^b f(x)\,dx\\
+			\int_{-\infty}^\infty f(x)\,dx &= \int_{-\infty}^0 f(x)\,dx + \int_0^\infty f(x)\,dx.
+		\end{align*}	
+	$$
+	
+	In all of these cases, if the limit is $\infty$, $-\infty$, or does not exist, we say the integral diverges.
+	
+!end-def
+
+
+
+!begin-example
+	
+	the first type of improper integral
+	
+	Find $\displaystyle \int_1^\infty \frac{1}{x^2}\,dx$.
+	
+	We have
+	
+	$$
+		\begin{align*}
+			\int_1^\infty \frac{1}{x^2}\,dx &= \lim_{b \to \infty} \int_1^b \frac{1}{x^2}\,dx\\
+			&= \lim_{b \to \infty} \left. \left[ -\frac{1}{x} \right] \right|_1^b\\
+			&= \lim_{b \to \infty} \left( -\frac{1}{b} + 1 \right)\\
+			&= 0 + 1\\
+			&= 1.	
+		\end{align*}	
+	$$
+	
+	Therefore, although the area we&#x2019;re computing extends infinitely to the right, it&#x2019;s shrinking so quickly that there&#x2019;s actually only a finite total amount.
+	
+	!desmos improper-integral
+	
+!end-example
+
+
+
+!begin-example
+	
+	the first type of improper integral
+	
+	Find $\displaystyle \int_{-\infty}^{-1} \frac{1}{x}\,dx$.
+	
+	We have
+	
+	$$
+		\begin{align*}
+			\int_{-\infty}^{-1} \frac{1}{x}\,dx &= \lim_{a \to -\infty} \int_a^b{-1}\frac{1}{x}\,dx\\
+			&= \lim_{a \to -\infty} \left. \left[ -\ln|x| \right] \right|_a^{-1}\\
+			&= \lim_{a \to -\infty} \left( 0 + \ln|a| \right)\\
+			&= \infty.	
+		\end{align*}	
+	$$
+	
+	So the integral diverges &mdash; there&#x2019;s enough area to the left that it adds up to infinity, even though it slopes to zero.
+	
+	!desmos improper-integral-2
+	
+!end-example
+
+
+
+!begin-text-block
+	
+	As a quick aside, this might seem really confusing. How can we add up infinitely many things and sometimes get a finite number? Even if that seems reasonable, how come you sometimes still get an infinite amount? Here&#x2019;s a quick example to illustrate what&#x2019;s going on.
+	
+	The sum
+	
+	$$
+		\sum_{i = 1}^\infty \frac{1}{2^i} = \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \cdots = 1,
+	$$
+	
+	since each term adds half the remaining amount needed to reach $1$. On the other hand,
+	
+	$$
+		\sum_{i = 1}^\infty \frac{1}{i} = 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \cdots = \infty.
+	$$
+	
+	To see why, notice that the third and fourth terms (i.e. $\frac{1}{3}$ and $\frac{1}{4}$) add up to be more than $\frac{1}{2}$, since they&#x2019;re both at least $\frac{1}{4}$. The same is true for the next four terms, since they&#x2019;re all larger than $\frac{1}{8}$. And then the next eight terms after that, and so on. Therefore, there are are infinitely many groups that add up to be larger than $\frac{1}{2}$, so the total sum is infinite. Even though both their terms decrease, only the first sum&#x2019;s terms decrease fast enough to keep the whole sum finite. Hopefully this allegory makes improper integrals make a little more sense.
+	
+!end-text-block
+
+
+
+!begin-exercise
+	
+	the first type of improper integral
+	
+	Find $\displaystyle \int_{-\infty}^\infty \frac{1}{x^2 + 1}\,dx$.
+	<!--
+	<strong>Solution:</strong> let&#x2019;s focus on finding the antiderivative first. We can just integrate directly to get $\tan^{-1}(x)$, but let&#x2019;s do trig sub to see how it would work. We let $x = \tan(\theta)$, so $dx = \sec^2(\theta)\,d\theta$. Then we get
+	
+	$$
+		\begin{align*}
+			\int \frac{1}{x^2 + 1}\,dx &= \int \frac{1}{\tan^2(\theta) + 1} \sec^2(\theta)\,d\theta\\
+			&= \int \frac{1}{\sec^2(\theta)} \sec^2(\theta)\,d\theta\\
+			&= \int 1\,d\theta\\
+			&= \theta\\
+			&= \tan^{-1}(x).
+		\end{align*}
+	$$
+	
+	Now the improper integral becomes
+	
+	$$
+		\begin{align*}
+			\lim_{a \to -\infty} \left. \left[ \tan^{-1}(x) \right] \right|_a^0 + \lim_{b \to \infty} \left. \left[ \tan^{-1}(x) \right] \right|_0^b &= -\lim_{a \to -\infty} (\tan^{-1}(a)) + \lim_{b \to \infty} (\tan^{-1}(b)).
+		\end{align*}
+	$$
+	
+	Now what is the limit of $\tan^{-1}(x)$? Well, we&#x2019;re looking for angles in radians that make tangent approach $\infty$ or $-\infty$. Those values are $\frac{\pi}{2}$ and $-\frac{\pi}{2}$, respectively, so in total, the answer is $\frac{pi}{2} + \frac{\pi}{2} = \pi$.
+	-->
+!end-exercise
+
+
+
+!section
+
+!text s Infinite Functions
+
+<br>
+
+
+
+!begin-text-block
+	
+	The second kind of improper integral is an integral in which the function spikes to $\infty$ or $-\infty$ somewhere in the range we&#x2019;re integrating over. In order to solve these, we&#x2019;ll also take a limit, but this time up to the place where it spikes.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	the second type of improper integral
+	
+	Let $f(x)$ be a continuous function on $[a, b]$, except at $x = a$, where it approaches $\infty$ or $-\infty$. Then
+	
+	$$
+		\int_a^b f(x)\,dx = \lim_{c \to a} \int_c^b f(x)\,dx.
+	$$
+	
+	If $f$ is continuous on $[a, b]$ except at $x = b$, where it approaches $\infty$ or $-\infty$, then
+	
+	$$
+		\int_a^b f(x)\,dx = \lim_{c \to b} \int_a^c f(x)\,dx.
+	$$
+	
+	If instead $f$ is continuous on $[a, b]$ except for a point $c$ inside $[a, b]$, then
+	
+	$$
+		\int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx,
+	$$
+	
+	and we handle each integral separately.
+	
+	This is just a complicated way of saying that to integrate a function that spikes to $\infty$ or $-\infty$, we just integrate with a variable bound and take a limit as that bound approaches the spike.
+	
+!end-def
+
+
+
+!begin-example
+	
+	the second type of improper integral
+	
+	Find $\displaystyle \int_0^4 \frac{1}{\sqrt{4-x}}\,dx$.
+	
+	This is an improper integral, because in the range $[0, 4]$, $x = 4$ causes a division by $0$. Because of that, we write the integral as
+	
+	$$
+		\lim_{b \to 4} \int_0^b \frac{1}{\sqrt{4-x}}\,dx.
+	$$
+	
+	Now we can handle this as usual &mdash; with $u$-sub. Let $u = 4 - x$. Then $du = -dx$, and we get
+	
+	$$
+		\begin{align*}
+			\lim_{b \to 4} \int_0^b \frac{1}{\sqrt{4-x}}\,dx &= \lim_{b \to 4} \int_0^b -\frac{1}{\sqrt{u}}\,du\\
+			&= \lim_{b \to 4} \int_0^b -u^{-1/2}\,du\\
+			&= \lim_{b \to 4} \left. \left[ -2 u^{1/2} \right] \right|_0^b\\
+			&= \lim_{b \to 4} \left. \left[ -2 (4 - b)^{1/2} + 2(4)^{1/2} \right] \right|_0^b\\
+			&= 2(4)^{1/2}\\
+			&= 4.
+		\end{align*}
+	$$
+	
+	So even though the function spikes to infinity, it does so fast enough that there&#x2019;s only a finite amount of area.
+	
+	!desmos improper-integral-3
+	
+!end-example
+
+
+
+!begin-example
+	
+	the second type of improper integral
+	
+	Find $\displaystyle \int_{-1}^1 \frac{1}{t^3}\,dt$.
+	
+	Since $\frac{1}{t^3}$ spikes when $t = 0$, we have to split the interval $[-1, 1]$ into $[-1, 0]$ and $[0, 1]$. Therefore, we have
+	
+	$$
+		\begin{align*}
+			\int_{-1}^1 \frac{1}{t^3}\,dt &= \lim_{b \to 0} \int_{-1}^b t^{-3}\,dt + \lim_{a \to 0} \int_a^1 t^{-3}\,dt\\
+			&= \lim_{b \to 0} \left. \left[ -\frac{1}{2} t^{-2} \right] \right|_{-1}^b + \lim_{a \to 0} \left. \left[ -\frac{1}{2} t^{-2} \right] \right|_a^1\\
+			&= \lim_{b \to 0} \left( -\frac{1}{2} b^{-2} + \frac{1}{2}(-1)^{-2} \right] + \lim_{a \to 0} \left( -\frac{1}{2} 1^{-2} + \frac{1}{2} a^{-2} \right)\\
+			&= \lim_{b \to 0} \left( -\frac{1}{2} b^{-2} + \frac{1}{2}(-1)^{-2} \right] + \lim_{a \to 0} \left( -\frac{1}{2} 1^{-2} + \frac{1}{2} a^{-2} \right).
+		\end{align*}
+	$$
+	
+	The first limit is $-\infty$, so the entire integral diverges. Now it&#x2019;s true that the second limit is $\infty$, so the entire integral could be written as $\infty - \infty$, but it is not equal to $0$, since the limits are taken individually, and not at the same time.
+	
+	!desmos improper-integral-4
+	
+!end-example
+
+
+
+!begin-exercise
+	
+	the second type of improper integral
+	
+	Find $\displaystyle \int_0^1 \frac{1}{\sqrt[3]{t}}\,dt$.
+	<!--
+	<strong>Solution:</strong> the problem (division by zero) occurs when $t = 0$, so we have
+	
+	$$
+		\begin{align*}
+			\int_0^1 \frac{1}{\sqrt[3]{t}}\,dt &= \lim_{c \to 0} \int_c^1 \frac{1}{\sqrt[3]{t}}\\
+			&= \lim_{c \to 0} \int_c^1 t^{-1/3}\,dt\\
+			&= \lim_{c \to 0} \left. \left[ \frac{3}{2} t^{2/3} \right] \right|_c^1\\
+			&= \lim_{c \to 0} \left( \frac{3}{2} - \frac{3}{2} c^{2/3} \right)\\
+			&= \frac{3}{2}.
+		\end{align*}
+	$$
+	-->
+!end-exercise
+
+
+
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 15: Improper Integrals",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/252/notes"
+	};
+	
+	Page.load();
+	</script>

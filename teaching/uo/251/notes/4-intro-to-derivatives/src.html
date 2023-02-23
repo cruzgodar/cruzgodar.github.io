@@ -1,0 +1,385 @@
+<head>
+	<title>Section 4: Intro to Derivatives</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Section 4: Intro to Derivatives"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/251/notes/4-intro-to-derivatives/4-intro-to-derivatives.html">
+
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/251/notes/4-intro-to-derivatives/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Section 4: Intro to Derivatives
+
+!nav-buttons
+
+
+
+!begin-text-block
+	
+	Now that we&#x2019;ve talked about limits, let&#x2019;s return to the idea we discussed in section 1: the slopes of curves. As a reminder, the slope of a curve at $x = a$ is the slope of the tangent line to the curve at $x = a$. In order to calculate this slope, we first find the slope of secant lines, which is just rise over run. If one point of the line is taken at $x = a$ and the other is taken at $x = a + h$, then the run is $h$ and the rise is $f(a + h) - f(a)$, so the slope is just
+	
+	$$
+		\frac{f(a + h) - f(a)}{h}.
+	$$
+	
+	!desmos secant-lines
+	
+	We want to get the tangent line by setting $h = 0$, but since the slope will be $\frac{0}{0}$ then, we need to take a limit instead.
+	
+!end-text-block
+
+
+
+!begin-prop
+	
+	slope of a tangent line
+	
+	Let $f$ be a function that is continuous at $x = a$. Then the slope of the tangent line to the graph of $f$ at $x = a$ is
+	
+	$$
+		\lim_{h \to 0} \frac{f(a + h) - f(a)}{h}.
+	$$
+
+!end-prop
+
+
+
+!begin-example
+	
+	slope of a graph
+	
+	Find the slope of the function $f(x) = x^2$ at $x = 1$.
+	
+	By the definition, we have that the slope is
+	
+	$$
+		\begin{align*}
+			\lim_{h \to 0} \frac{f(1 + h) - f(1)}{h} &= \lim_{h \to 0^+} \frac{(1 + h)^2 - (1)^2}{h}\\
+			&= \lim_{h \to 0} \frac{(1 + 2h + h^2) - 1}{h}\\
+			&= \lim_{h \to 0} \frac{2h + h^2}{h}\\
+			&= \lim_{h \to 0} (2 + h).
+		\end{align*}
+	$$
+	
+	That last line is justified, since we can cancel common factors in limits. Finishing up, we have
+	
+	$$
+		\begin{align*}
+			\lim_{h \to 0} (2 + h) &= 2 + 0\\
+			&= 2.
+		\end{align*}
+	$$
+	
+	This tells us that the slope of the graph (i.e. the slope of the tangent line) at $x = 1$ is $2$.
+	
+	!desmos tangent-lines
+	
+!end-example
+
+!begin-exercise
+	
+	slope of a graph
+	
+	Find the slope of the function $g(x) = x^3$ at $x = -2$.
+	
+!end-exercise
+
+
+
+!begin-text-block
+	
+	We mentioned in section 1 that the slope of a tangent line measures rate of change of a function: for example, the rate of change of position is velocity. This idea is so important and used so often that we want to give it a name and simple notation, so that we don&#x2019;t have to write down whole sentences to explain what we mean every time.
+	
+!end-text-block
+
+
+
+!begin-def
+	
+	derivative
+	
+	Let $f$ be a function defined in an interval containing $x = a$, including at $a$ itself. The <dfn>derivative</dfn> of $f$ at $a$, written $f'(a)$ and read $f$ prime of $a$, is the slope of the tangent line to the graph at $x = a$. In other words,
+	
+	$$
+		f'(a) = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h}.
+	$$
+	
+!end-def
+
+
+
+!begin-text-block
+	
+	We use the notation $f'(a)$ because the derivative is a whole new function: $f'(x)$ outputs the slope of the graph of $f$ at the point $x$. Taking a derivative is called <dfn>differentiating</dfn>, not deriving, for some reason.
+	
+	One more notational quirk: sometimes, we don&#x2019;t want to give a function a name just so that we can put a prime on it to indicate that we want to take a derivative. In that case, we can just write $\frac{d}{dx}$ followed by the function in brackets: for example, $\frac{d}{dx}[x^2]$ means the derivative of $x^2$.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	computing a derivative
+	
+	Find $\displaystyle \frac{d}{dx}[x^2]$.
+	
+	By definition, this is
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx}[x^2] &= \lim_{h \to 0} \frac{(x+h)^2 - x^2}{h}\\
+			 &= \lim_{h \to 0} \frac{x^2 + 2xh + h^2 - x^2}{h}\\
+			 &= \lim_{h \to 0} \frac{2xh + h^2}{h}\\
+			 &= \lim_{h \to 0} \frac{h(2x + h)}{h}\\
+			 &= \lim_{h \to 0} (2x + h)\\
+			 &= 2x.
+		\end{align*}
+	$$
+	
+	Therefore, $\frac{d}{dx}[x^2] = 2x$.
+	
+	Let&#x2019;s sketch a graph of these two.
+	
+	!desmos derivative-example
+	
+	Where the blue function is negative, the slope of the purple function is negative, and vice versa. Where the blue function is zero, the slope of the purple function is flat.
+	
+!end-example
+
+!begin-exercise
+	
+	computing a derivative
+	
+	Find $\displaystyle \frac{d}{dx}[x^3]$ and sketch a graph of both functions.
+	
+!end-exercise
+
+
+
+!begin-example
+	
+	computing a derivative from a graph
+	
+	Given this graph, sketch a graph of the derivative.
+	
+	!desmos derivative-example-2
+	
+	Whenever the purple graph is flat, the derivative is zero. It&#x2019;s positive when the graph slopes upward and negative when it slopes downward, and so in total, we wind up with the blue graph (click the circle next to $f'(x)$ to see it).
+	
+!end-example
+
+!begin-exercise
+	
+	computing a derivative from a graph
+	
+	Given this graph, sketch a graph of the derivative.
+	
+	!desmos derivative-example-3
+	
+!end-exercise
+
+
+
+!section
+
+!text s When is $f(x)$ Differentiable?
+
+<br>
+
+
+
+!begin-text-block
+	
+	This is a complicated question to answer. Being differentiable means the limit of the slopes of secant lines exists, and one requirement for that is that $f$ is a continuous function.
+	
+!end-text-block
+
+
+
+!begin-thm
+	
+	differentiable functions are continuous
+	
+	Let $f$ be a function differentiable at $x = a$. Then $f$ is continuous at $x = a$.
+	
+!end-thm
+
+
+
+!begin-text-block
+	
+	Because of this theorem, if a function is not continuous at $a$, it&#x2019;s not possible for it to be differentiable at $a$. However, not all continuous functions are differentiable: as a first example, let&#x2019;s look at $f(x) = |x|$.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a continuous function that isn&#x2019;t differentiable
+	
+	The graph of the function $f(x) = |x|$ is V-shaped, since the negative part gets reflected over the $x$-axis.
+	
+	!desmos derivative-example-4
+	
+	At $x = 0$, the graph has a corner &mdash; a sharp point. It&#x2019;s not really clear what a tangent line at that point would look like, but we can take the limit anyway and see what happens.
+	
+	$$
+		\begin{align*}
+			f'(0) &= \lim_{h \to 0} \frac{f(0 + h) - f(0)}{h}\\
+			&= \lim_{h \to 0} \frac{|h| - |0|}{h}\\
+			&= \lim_{h \to 0} \frac{|h|}{h}.
+		\end{align*}
+	$$
+	
+	If $h < 0$, then $\frac{|h|}{h} = -1$. If $h > 0$, then $\frac{|h|}{h} = 1$. When $h = 0$, the function is undefined, but that&#x2019;s okay, since we&#x2019;re taking the limit to zero. But what this tells us is that the limit from the right is $1$, while the limit from the left is $-1$. Visually, secant lines to the right all have slope $1$ and secant lines to the left all have slope $-1$, and so they never agree. Since the limit does not exist, $f$ is not differentiable at $x = 0$.
+
+!end-example
+
+
+
+!begin-text-block
+	
+	Any function with a sharp corner like this will fail to be differentiable at that point. There&#x2019;s also one more common way a function can be nondifferentiable: if a function&#x2019;s graph has a vertical tangent line, then the derivative spikes to $\pm \infty$ and so is not defined.
+	
+!end-text-block
+
+
+
+!begin-exercise
+	
+	another continuous function that isn&#x2019;t differentiable
+	
+	Show that $f(x) = \sqrt[3]{x}$ is not differentiable at $x = 0$.
+
+!end-exercise
+
+
+
+!begin-text-block
+	
+	This gives us a nice heuristic for what differentiable functions look like: they&#x2019;re continuous without sharp corners and vertical slopes. Just like with discontinuities, functions may fail to be differentiable in more complicated ways &mdash; we&#x2019;ll get to an example of that in a future section.
+	
+!end-text-block
+
+
+
+!section
+
+!text s Higher-Order Derivatives
+
+<br>
+
+
+
+!begin-text-block
+	
+	Since the derivative of a function $f(x)$ is just another function, we can take the derivative of $f'(x)$ to get yet another function, called the <dfn>second derivative</dfn> of $f$ written $f''(x)$. The analgous form for the $\frac{d}{dx}$ notation is
+	
+	$$
+		\frac{d}{dx} \left[ \frac{d}{dx} \left[f\right] \right] = \frac{d^2}{dx^2}[f].
+	$$
+	
+	Sometimes we&#x2019;ll want to talk about the $n$th derivative where $n$ is left as a variable &mdash; instead of trying to write $n$ prime symbols, we just write $f^{(n)}$ instead. So for example, $f^{(3)}(x) = f'''(x)$.
+	
+	We&#x2019;ll talk about what visual feature of a graph the second derivative measures a little later in the course, but for now let&#x2019;s just work through some examples.
+	
+!end-text-block
+
+
+
+!begin-example
+	
+	a second derivative
+	
+	Find $\displaystyle \frac{d^2}{dx^2}[2x^2 - x]$.
+	
+	This is a long calculation, but it&#x2019;s not too bad in the end. First, let&#x2019;s find the first derivative.
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx}[2x^2 - x] &= \lim_{h \to 0} \frac{(2(x + h)^2 - (x + h)) - (2x^2 - x)}{h}\\
+			&= \lim_{h \to 0} \frac{2(x^2 + 2xh + h^2) - (x + h) - 2x^2 + x}{h}\\
+			&= \lim_{h \to 0} \frac{2x^2 + 4xh + 2h^2 - x - h - 2x^2 + x}{h}\\
+			&= \lim_{h \to 0} \frac{4xh + 2h^2 - h}{h}\\
+			&= \lim_{h \to 0} (4x + 2h - 1)\\
+			&= 4x - 1.
+		\end{align*}
+	$$
+	
+	Now we&#x2019;ll take the derivative of this function to get the second derivative.
+	
+	$$
+		\begin{align*}
+			\frac{d}{dx}[4x - 1] &= \lim_{h \to 0} \frac{(4(x + h) - 1) - (4x - 1)}{h}\\
+			&= \lim_{h \to 0} \frac{4x + 4h - 1 - 4x + 1}{h}\\
+			&= \lim_{h \to 0} \frac{4h}{h}\\
+			&= \lim_{h \to 0} 4\\
+			&= 4.
+		\end{align*}
+	$$
+	
+	In total, $\frac{d^2}{dx^2}[2x^2 - x] = 4$.
+	
+!end-example
+
+!begin-exercise
+	
+	acceleration
+	
+	Suppose the position of a particle moving along a straight line is $s(t) = 3t^2$ meters after $t$ seconds. Find a function $a(t)$ for the particle&#x2019;s acceleration at time $t$. Note that since velocity is the rate of change of position and acceleration is the rate of change of of velocity, $v(t) = s'(t)$ and $a(t) = v'(t)$, so $a(t) = s''(t)$.
+	
+!end-exercise
+
+
+
+!nav-buttons
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Section 4: Intro to Derivatives",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true,
+		
+		"parent_list": "/teaching/uo/251/notes"
+	};
+	
+	Page.load();
+</script>

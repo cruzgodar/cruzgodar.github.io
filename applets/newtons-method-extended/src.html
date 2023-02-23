@@ -1,0 +1,173 @@
+<head>
+	<title>Newton&#x2019;s Method, Extended</title>
+	
+	<meta property="og:type" content="website">
+	
+	<meta property="og:title" content="Newton&#x2019;s Method, Extended"/>
+	
+	<meta property="og:url" content="https://cruzgodar.com/applets/newtons-method-extended/newtons-method-extended.html"/>
+	
+	<meta property="og:description" content="Newton&#x2019;s method is a famous algorithm for finding roots of functions. As explained in that applet, points are colored based on what root they eventually converge to. Since the only functions allowed in that one are polynomials, the roots are known ahead of time, and the colors are predetermined too. This applet aims to draw Newton&#x2019;s method fractals for any elementary function, not just polynomial. There are a number of challenges with this, chief among them making a palette for a large and potentially infinite number of roots."/>
+
+	<meta property="og:image" content="https://cruzgodar.com/applets/newtons-method-extended/cover.jpg"/>
+	
+	<style>body {opacity: 0;}</style>
+</head>
+
+
+
+<noscript>
+	<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
+</noscript>
+
+
+
+!header Newton&#x2019;s Method, Extended
+
+
+
+!begin-text-block
+	
+	<a href="/applets/newtons-method/">Newton&#x2019;s method</a> is a famous algorithm for finding roots of functions. As explained in that applet, points are colored based on what root they eventually converge to. Since the only functions allowed in that one are polynomials, the roots are known ahead of time, and the colors are predetermined too.
+	
+	This applet aims to draw Newton&#x2019;s method fractals for <em>any</em> elementary function, not just a polynomial. There are a number of challenges with this, chief among them making a palette for a large and potentially infinite number of roots. There&#x2019;s also the issue of knowing when the algorithm is near a root without knowing where those roots are ahead of time, and making sure that different points that converge to the same root always get the same color, again without knowing what they&#x2019;re converging to. But all these problems turned out to be solvable &mdash; even the palette generation part, which was my first time working with color science. It turned out better than expected!
+	
+	The derivative precision determines the accuracy with which the applet computes the derivatives it needs to apply the algorithm. Lower values will result in images with deeper possible zooms and less noise at the cost of mild distortion, while higher values give more accurate images, but usually with shallower possible zooms and slight noise. The syntax is the same as in the <a href="/applets/generalized-julia-sets/">generalized Julia sets</a> applet. Below are some examples to get started &mdash; see what you can come up with!
+	
+	!wilson
+
+!end-text-block
+
+
+
+
+
+
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Classic polynomial: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csub(cpow(z, 6.0), 1.0)</span></span></p>
+</div>
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Trig function: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csin(z)</span></span></p>
+</div>
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Crosshatch: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cmul(csin(z), csin(cmul(z, i)))</span></span></p>
+</div>
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Palette demonstration: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cmul(sin(z), csin(cmul(z, i)))</span></span></p>
+</div>
+
+<br>
+
+<div data-aos="fade-up">
+	<p class="body-text center-if-needed"><span>Butterflies: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cmul(sin(z), tan(z))</span></span></p>
+</div>
+
+<div style="height: 10vh"></div>
+
+
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+
+<div class="center-content" data-aos="fade-up">
+	<div class="text-field-container">
+		<textarea cols="16" rows="4" name="code-textarea" id="code-textarea" class="text-field" style="font-family: 'Source Code Pro', monospace"></textarea>
+		<p class="body-text" style="text-align: center">Generating Function</p>
+	</div>
+</div>
+
+
+
+<div style="height: -5vh"></div>
+
+!begin-text-boxes
+	
+	resolution 500 Resolution
+	
+	derivative-precision 20 Derivative Precision
+	
+!end-text-boxes
+
+
+
+!begin-text-buttons
+	
+	generate l Generate
+	
+	randomize-palette l Regenerate Palette
+	
+!end-text-buttons
+
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+<div id="canvas-location"></div>
+
+<div data-aos="fade-up">
+	<canvas id="output-canvas" class="output-canvas"></canvas>
+	<canvas id="hidden-canvas" class="hidden-canvas"></canvas>
+</div>
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+!begin-text-buttons
+	
+	download l Download
+	
+!end-text-buttons
+
+</div>
+
+</div>
+
+
+
+!footer
+
+
+
+<script>
+	if (typeof Page === "undefined")
+	{
+		if (window.location.search !== "")
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
+		}
+		
+		else
+		{
+			window.location.replace("/index.html?page=" + encodeURIComponent(window.location.pathname));
+		}
+	}
+	
+	
+	
+	Page.settings = 
+	{
+		"title": "Newton&#x2019;s Method, Extended",
+		
+		"math_page": true,
+		
+		"small_margins_on_ultrawide": true
+	};
+	
+	Page.load();
+</script>
