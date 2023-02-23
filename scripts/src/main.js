@@ -277,7 +277,10 @@ Site.load = async function(url)
 	
 	if (Site.use_js_animation)
 	{
-		console.log("Using JS animation");
+		if (DEBUG)
+		{
+			console.log("Using JS animation");
+		}
 		
 		this.button_animation_time = this.base_animation_time * .5;
 		this.opacity_animation_time = this.base_animation_time * .8;
@@ -529,7 +532,10 @@ Site.Fetch =
 		
 		this.busy = true;
 		
-		console.log("Now fetching " + this.queue[0]);
+		if (DEBUG)
+		{
+			console.log("Now fetching " + this.queue[0]);
+		}
 		
 		
 		
