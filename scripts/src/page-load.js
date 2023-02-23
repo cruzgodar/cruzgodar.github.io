@@ -210,7 +210,7 @@ Page.Load =
 		try
 		{
 			//Make sure there's actually something to get.
-			fetch(Page.parent_folder + "style/" + page_name + ".css")
+			fetch(Page.parent_folder + "style/index.css")
 			
 			.then((response) =>
 			{
@@ -222,12 +222,12 @@ Page.Load =
 				
 				if (DEBUG)
 				{
-					element.setAttribute("href", Page.parent_folder + "style/" + page_name + ".css");
+					element.setAttribute("href", Page.parent_folder + "style/index.css");
 				}
 				
 				else
 				{
-					element.setAttribute("href", Page.parent_folder + "style/" + page_name + ".min.css");
+					element.setAttribute("href", Page.parent_folder + "style/index.min.css");
 				}
 				
 				
@@ -254,7 +254,7 @@ Page.Load =
 			
 			
 			//Make sure there's actually something to get.
-			fetch(Page.parent_folder + "scripts/" + page_name + ".js")
+			fetch(Page.parent_folder + "scripts/index.js")
 			
 			.then((response) =>
 			{
@@ -283,12 +283,12 @@ Page.Load =
 				
 				if (DEBUG)
 				{
-					element.setAttribute("src", Page.parent_folder + "scripts/" + page_name + ".js");
+					element.setAttribute("src", Page.parent_folder + "scripts/index.js");
 				}
 				
 				else
 				{
-					element.setAttribute("src", Page.parent_folder + "scripts/" + page_name + ".min.js");
+					element.setAttribute("src", Page.parent_folder + "scripts/index.min.js");
 				}
 				
 				
