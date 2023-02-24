@@ -1260,13 +1260,6 @@ Page.Components =
 				
 				
 				
-				else if (words[0] === "!line-break")
-				{
-					lines[i] = this.get_line_break();
-				}
-				
-				
-				
 				else if (words[0] === "!nav-buttons")
 				{
 					lines[i] = this.get_nav_buttons();
