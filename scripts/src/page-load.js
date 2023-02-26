@@ -51,7 +51,20 @@ Page.load = async function()
 	
 	
 	//Set the page title.
-	document.head.querySelector("title").innerHTML = this.settings["title"];
+	try
+	{
+		if (Page.url === "/home/")
+		{
+			document.head.querySelector("title").textContent = "Cruz Godar";
+		}
+		
+		else
+		{
+			document.head.querySelector("title").textContent = Page.element.querySelector("h1").textContent;
+		}
+	}
+	
+	catch(ex) {}
 	
 	
 	
