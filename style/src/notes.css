@@ -62,12 +62,12 @@
 	border-color: rgb(3% 54% 0%);
 }
 
-.notes-example
+.notes-ex
 {
 	border-color: rgb(47% 47% 47%);
 }
 
-.notes-exercise
+.notes-exc
 {
 	border-color: rgb(0% 50% 74%);
 }
@@ -77,7 +77,7 @@
 	border-color: rgb(72% 37% 0%);
 }
 
-.notes-proof
+.notes-pf
 {
 	border-color: rgb(63% 27% 100%);
 }
@@ -87,12 +87,12 @@
 	border-color: rgb(0% 4% 57%);
 }
 
-.notes-lemma
+.notes-lem
 {
 	border-color: rgb(78% 66% 0%);
 }
 
-.notes-axiom
+.notes-ax
 {
 	border-color: rgb(74% 1% 0%);
 }
@@ -106,7 +106,7 @@
 
 
 
-.notes-example-title, .notes-exercise-title, .notes-def-title, .notes-prop-title, .notes-thm-title, .notes-proof-title, .notes-cor-title, .notes-lemma-title, .notes-axiom-title
+.notes-ex-title, .notes-exc-title, .notes-def-title, .notes-prop-title, .notes-thm-title, .notes-pf-title, .notes-cor-title, .notes-lem-title, .notes-ax-title
 {
 	color: rgb(255, 255, 255) !important;
 	
@@ -124,12 +124,12 @@
 	background-color: rgb(3% 54% 0%);
 }
 
-.notes-example-title
+.notes-ex-title
 {
 	background-color: rgb(47% 47% 47%);
 }
 
-.notes-exercise-title
+.notes-exc-title
 {
 	background-color: rgb(0% 50% 74%);
 }
@@ -139,7 +139,7 @@
 	background-color: rgb(72% 37% 0%);
 }
 
-.notes-proof-title
+.notes-pf-title
 {
 	background-color: rgb(63% 27% 100%);
 }
@@ -149,12 +149,12 @@
 	background-color: rgb(0% 4% 57%);
 }
 
-.notes-lemma-title
+.notes-lem-title
 {
 	background-color: rgb(78% 66% 0%);
 }
 
-.notes-axiom-title
+.notes-ax-title
 {
 	background-color: rgb(74% 1% 0%);
 }
@@ -190,7 +190,7 @@
 
 @media (min-width: 1400px)
 {
-	.notes-example, .notes-exercise, .notes-def, .notes-prop, .notes-thm, .notes-proof, .notes-cor, .notes-lemma, .notes-axiom
+	.notes-environment
 	{
 		width: calc(50vw - 12px);
 	}

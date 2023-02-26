@@ -263,6 +263,32 @@ Page.Components =
 		
 		
 		
+		"notes-environment": (id, ...name) =>
+		{
+			if (name.length !== 0)
+			{
+				name = name.join(" ");
+				
+				//This avoids awkward things like Theorem: The Fundamental Theorem.
+				if (name.toLowerCase().includes(Page.Components.notes_environments[id].toLowerCase()))
+				{
+					return `<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${name}</span></p>`;
+				}
+				
+				else
+				{
+					return `<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${Page.Components.notes_environments[id]}: ${name}</span></p>`;
+				}
+			}
+			
+			else
+			{
+				return `<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${Page.Components.notes_environments[id]}</span></p>`;
+			}
+		},
+		
+		
+		
 		"checkbox": (id, ...name) =>
 		{
 			const text = name.join(" ");
@@ -326,6 +352,19 @@ Page.Components =
 	
 	single_line_environments: ["canvas", "checkbox", "desmos", "nav-buttons", "wilson"],
 	
+	notes_environments:
+	{
+		"ex": "Example",
+		"exc": "Exercise",
+		"def": "Definition",
+		"prop": "Proposition",
+		"thm": "Theorem",
+		"lem": "Lemma",
+		"cor": "Corollary",
+		"pf": "Proof",
+		"ax": "Axiom"
+	},
+	
 	
 	
 	decode: function(html)
@@ -370,12 +409,27 @@ Page.Components =
 			//This is one of the many possible environments.
 			if (lines[i].slice(0, 3) === "###")
 			{
+				if (lines[i] === "###")
+				{
+					//If we find one of these in the wild, we&#x2019;re in a notes environment and just need to end it.
+					
+					lines[i] = `</div>`;
+					continue;
+				}
+				
+				
+				
 				const words = lines[i].slice(4).split(" ");
 				
 				//The first word is the id.
 				if (this.single_line_environments.includes(words[0]))
 				{
 					lines[i] = this.Parse[words[0]](...(words.slice(1)));
+				}
+				
+				else if (words[0] in this.notes_environments)
+				{
+					lines[i] = this.Parse["notes-environment"](...words);
 				}
 				
 				else
@@ -447,491 +501,6 @@ Page.Components =
 			{
 				lines[i] = `<p class="body-text">${this.Parse.text(lines[i])}</p>`;
 			}
-			
-			/*
-			
-			
-				
-				else if (words[0] === "!begin-def")
-				{
-					lines[i] = `<div class="notes-def notes-environment">`;
-					
-					i += 2;
-					
-					words = [`<span class="notes-def-title">Definition: ${lines[i]}</span>`];
-					
-					lines[i] = this.get_text(["b", "j"].concat(words));
-					
-					
-					
-					while (words[0] !== "!end-def")
-					{
-						i += 2;
-						
-						
-						
-						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
-						{
-							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
-							{
-								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
-							}
-							
-							lines[i] = `<p class="body-text">$$`;
-						
-							i++;
-							
-							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
-							{
-								i++;
-							}
-							
-							lines[i] = `$$</p>`;
-							
-							continue;
-						}
-						
-						
-						
-						words = lines[i].split(" ");
-						
-						lines[i] = this.get_text(["b", "j"].concat(words));
-					}
-					
-					
-					
-					lines[i] = `</div>`;
-				}
-				
-				
-				
-				else if (words[0] === "!begin-example")
-				{
-					lines[i] = `<div class="notes-example notes-environment">`;
-					
-					i += 2;
-					
-					words = [`<span class="notes-example-title">Example: ${lines[i]}</span>`];
-					
-					lines[i] = this.get_text(["b", "j"].concat(words));
-					
-					
-					
-					while (words[0] !== "!end-example")
-					{
-						i += 2;
-						
-						
-						
-						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
-						{
-							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
-							{
-								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
-							}
-							
-							lines[i] = `<p class="body-text">$$`;
-						
-							i++;
-							
-							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
-							{
-								i++;
-							}
-							
-							lines[i] = `$$</p>`;
-							
-							continue;
-						}
-						
-						
-						
-						words = lines[i].split(" ");
-						
-						lines[i] = this.get_text(["b", "j"].concat(words));
-					}
-					
-					
-					
-					lines[i] = `</div>`;
-				}
-				
-				
-				
-				else if (words[0] === "!begin-prop")
-				{
-					lines[i] = `<div class="notes-prop notes-environment">`;
-					
-					i += 2;
-					
-					words = [`<span class="notes-prop-title">Proposition: ${lines[i]}</span>`];
-					
-					lines[i] = this.get_text(["b", "j"].concat(words));
-					
-					
-					
-					while (words[0] !== "!end-prop")
-					{
-						i += 2;
-						
-						
-						
-						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
-						{
-							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
-							{
-								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
-							}
-							
-							lines[i] = `<p class="body-text">$$`;
-						
-							i++;
-							
-							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
-							{
-								i++;
-							}
-							
-							lines[i] = `$$</p>`;
-							
-							continue;
-						}
-						
-						
-						
-						words = lines[i].split(" ");
-						
-						lines[i] = this.get_text(["b", "j"].concat(words));
-					}
-					
-					
-					
-					lines[i] = `</div>`;
-				}
-				
-				
-				
-				else if (words[0] === "!begin-thm")
-				{
-					lines[i] = `<div class="notes-thm notes-environment">`;
-					
-					i += 2;
-					
-					if (lines[i].toLowerCase().includes("theorem"))
-					{
-						lines[i] = lines[i][0].toUpperCase() + lines[i].slice(1);
-						
-						words = [`<span class="notes-thm-title">${lines[i]}</span>`];
-					}
-					
-					else
-					{
-						words = [`<span class="notes-thm-title">Theorem: ${lines[i]}</span>`];
-					}
-					
-					lines[i] = this.get_text(["b", "j"].concat(words));
-					
-					
-					
-					while (words[0] !== "!end-thm")
-					{
-						i += 2;
-						
-						
-						
-						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
-						{
-							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
-							{
-								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
-							}
-							
-							lines[i] = `<p class="body-text">$$`;
-						
-							i++;
-							
-							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
-							{
-								i++;
-							}
-							
-							lines[i] = `$$</p>`;
-							
-							continue;
-						}
-						
-						
-						
-						words = lines[i].split(" ");
-						
-						lines[i] = this.get_text(["b", "j"].concat(words));
-					}
-					
-					
-					
-					lines[i] = `</div>`;
-				}
-				
-				
-				
-				else if (words[0] === "!begin-proof")
-				{
-					lines[i] = `<div class="notes-proof notes-environment"><p class="body-text"><span class="notes-proof-title">Proof</span></p><p></p><br>`;
-					
-					
-					
-					while (words[0] !== "!end-proof")
-					{
-						i += 2;
-						
-						
-						
-						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
-						{
-							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
-							{
-								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
-							}
-							
-							lines[i] = `<p class="body-text">$$`;
-						
-							i++;
-							
-							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
-							{
-								i++;
-							}
-							
-							lines[i] = `$$</p>`;
-							
-							continue;
-						}
-						
-						
-						
-						words = lines[i].split(" ");
-						
-						lines[i] = this.get_text(["b", "j"].concat(words));
-					}
-					
-					
-					
-					lines[i] = `</div>`;
-				}
-				
-				
-				
-				else if (words[0] === "!begin-cor")
-				{
-					lines[i] = `<div class="notes-cor notes-environment">`;
-					
-					i += 2;
-					
-					words = [`<span class="notes-cor-title">Corollary: ${lines[i]}</span>`];
-					
-					lines[i] = this.get_text(["b", "j"].concat(words));
-					
-					
-					
-					while (words[0] !== "!end-cor")
-					{
-						i += 2;
-						
-						
-						
-						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
-						{
-							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
-							{
-								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
-							}
-							
-							lines[i] = `<p class="body-text">$$`;
-						
-							i++;
-							
-							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
-							{
-								i++;
-							}
-							
-							lines[i] = `$$</p>`;
-							
-							continue;
-						}
-						
-						
-						
-						words = lines[i].split(" ");
-						
-						lines[i] = this.get_text(["b", "j"].concat(words));
-					}
-					
-					
-					
-					lines[i] = `</div>`;
-				}
-				
-				
-				
-				else if (words[0] === "!begin-lemma")
-				{
-					lines[i] = `<div class="notes-lemma notes-environment">`;
-					
-					i += 2;
-					
-					words = [`<span class="notes-lemma-title">Lemma: ${lines[i]}</span>`];
-					
-					lines[i] = this.get_text(["b", "j"].concat(words));
-					
-					
-					
-					while (words[0] !== "!end-lemma")
-					{
-						i += 2;
-						
-						
-						
-						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
-						{
-							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
-							{
-								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
-							}
-							
-							lines[i] = `<p class="body-text">$$`;
-						
-							i++;
-							
-							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
-							{
-								i++;
-							}
-							
-							lines[i] = `$$</p>`;
-							
-							continue;
-						}
-						
-						
-						
-						words = lines[i].split(" ");
-						
-						lines[i] = this.get_text(["b", "j"].concat(words));
-					}
-					
-					
-					
-					lines[i] = `</div>`;
-				}
-				
-				
-				
-				else if (words[0] === "!begin-axiom")
-				{
-					lines[i] = `<div class="notes-axiom notes-environment">`;
-					
-					i += 2;
-					
-					words = [`<span class="notes-axiom-title">Axiom: ${lines[i]}</span>`];
-					
-					lines[i] = this.get_text(["b", "j"].concat(words));
-					
-					
-					
-					while (words[0] !== "!end-axiom")
-					{
-						i += 2;
-						
-						
-						
-						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
-						{
-							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
-							{
-								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
-							}
-							
-							lines[i] = `<p class="body-text">$$`;
-						
-							i++;
-							
-							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
-							{
-								i++;
-							}
-							
-							lines[i] = `$$</p>`;
-							
-							continue;
-						}
-						
-						
-						
-						words = lines[i].split(" ");
-						
-						lines[i] = this.get_text(["b", "j"].concat(words));
-					}
-					
-					
-					
-					lines[i] = `</div>`;
-				}
-				
-				
-				
-				else if (words[0] === "!begin-exercise")
-				{
-					lines[i] = `<div class="notes-exercise notes-environment">`;
-					
-					i += 2;
-					
-					words = [`<span class="notes-exercise-title">Exercise: ${lines[i]}</span>`];
-					
-					lines[i] = this.get_text(["b", "j"].concat(words));
-					
-					
-					
-					while (words[0] !== "!end-exercise")
-					{
-						i += 2;
-						
-						
-						
-						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
-						{
-							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
-							{
-								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
-							}
-							
-							lines[i] = `<p class="body-text">$$`;
-						
-							i++;
-							
-							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
-							{
-								i++;
-							}
-							
-							lines[i] = `$$</p>`;
-							
-							continue;
-						}
-						
-						
-						
-						words = lines[i].split(" ");
-						
-						lines[i] = this.get_text(["b", "j"].concat(words));
-					}
-					
-					
-					
-					lines[i] = `</div>`;
-				}
-			}
-			*/
 		}
 		
 		
