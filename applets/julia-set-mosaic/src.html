@@ -1,14 +1,8 @@
-!header A Julia Set Mosaic
+# A Julia Set Mosaic
 
-
-
-!begin-text-block
+The <a href="/applets/julia-set-explorer/">Mandelbrot set and Julia sets</a> share a close relationship: the Julia set with parameter $c$ &#x201C;looks like&#x201D; the Mandelbrot set at $z = c$. But just how close is that resemblance? Something we might try is picking a bunch of points in the complex plane and drawing a small Julia set at every one. We&#x2019;d expect to get something vaguely resembling the Mandelbrot set &mdash; but it&#x2019;s remarkable just how accurate that picture is.
 	
-	The <a href="/applets/julia-set-explorer/">Mandelbrot set and Julia sets</a> share a close relationship: the Julia set with parameter \(c\) &#x201C;looks like&#x201D; the Mandelbrot set at \(z = c\). But just how close is that resemblance? Something we might try is picking a bunch of points in the complex plane and drawing a small Julia set at every one. We&#x2019;d expect to get something vaguely resembling the Mandelbrot set &mdash; but it&#x2019;s remarkable just how accurate that picture is.
-	
-	!wilson
-	
-!end-text-block
+### wilson
 
 
 
@@ -16,21 +10,17 @@
 
 <div id="canvas-landscape-left">
 
-!begin-text-boxes
+### text-boxes
 	
 	num-julias 100 Sets per Side
 	
 	julia-size 20 Set Size
 	
-!end-text-boxes
+###
 
-
-
-!begin-text-buttons
-	
+### buttons
 	generate l Generate
-	
-!end-text-buttons
+###
 
 </div>
 
@@ -38,7 +28,7 @@
 
 <div id="canvas-landscape-middle">
 
-!canvas
+### canvas
 
 </div>
 
@@ -46,19 +36,13 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
 </div>
-
-
-
-!footer
 
 
 
@@ -75,17 +59,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "A Julia Set Mosaic",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

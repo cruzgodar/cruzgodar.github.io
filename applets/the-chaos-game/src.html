@@ -1,14 +1,8 @@
-!header The Chaos Game
+# The Chaos Game
 
+Draw a pentagon and a single dot in the center. Now roll a five-sided die to randomly pick one of the vertices of the pentagon and draw a new dot halfway between the first dot and that vertex. Roll the die again, draw a dot halfway between that one and the new vertex, and repeat. If you have a few hundred years on hand, you&#x2019;ll have a very interesting picture. Depending on the inital polygon drawn, we can get some wild results &mdash; see if you recognize the triangle version, for example. Like <a href="/applets/the-barnsley-fern/">the Barnsley Fern</a> and <a href="/applets/the-kicked-rotator/">the Kicked Rotator</a>, this process, often called the Chaos Game, is an example of an iterated function system, where we repeatedly apply a given function. It differs from examples like the <a href="/applets/julia-set-explorer/">Mandelbrot set</a>, though, in that we&#x2019;re tracking the movement of one point over time rather than iterating every point individually.
 
-
-!begin-text-block
-	
-	Draw a pentagon and a single dot in the center. Now roll a five-sided die to randomly pick one of the vertices of the pentagon and draw a new dot halfway between the first dot and that vertex. Roll the die again, draw a dot halfway between that one and the new vertex, and repeat. If you have a few hundred years on hand, you&#x2019;ll have a very interesting picture. Depending on the inital polygon drawn, we can get some wild results &mdash; see if you recognize the triangle version, for example. Like <a href="/applets/the-barnsley-fern/">the Barnsley Fern</a> and <a href="/applets/the-kicked-rotator/">the Kicked Rotator</a>, this process, often called the Chaos Game, is an example of an iterated function system, where we repeatedly apply a given function. It differs from examples like the <a href="/applets/julia-set-explorer/">Mandelbrot set</a>, though, in that we&#x2019;re tracking the movement of one point over time rather than iterating every point individually.
-	
-	!wilson
-	
-!end-text-block
+### wilson
 
 
 
@@ -16,21 +10,17 @@
 
 <div id="canvas-landscape-left">
 
-!begin-text-boxes
+### text-boxes
 	
 	num-vertices 5 Vertices
 	
 	grid-size 1000 Image Size
 	
-!end-text-boxes
+###
 
-
-
-!begin-text-buttons
-	
+### buttons
 	generate l Generate
-	
-!end-text-buttons
+###
 
 </div>
 
@@ -38,7 +28,7 @@
 
 <div id="canvas-landscape-middle">
 
-!canvas
+### canvas
 
 </div>
 
@@ -46,19 +36,13 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
 </div>
-
-
-
-!footer
 
 
 
@@ -75,15 +59,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "The Chaos Game",
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

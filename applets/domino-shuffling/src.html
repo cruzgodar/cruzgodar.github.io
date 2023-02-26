@@ -1,14 +1,8 @@
-!header Domino Shuffling
+# Domino Shuffling
 
-
-
-!begin-text-block
+A **perfect matching** on a graph is a pairing of adjacent vertices so that every vertex is paired with exactly one other. On a square lattice, this amounts to filling a shape with $2 \times 1$ dominos so that no gaps are left. Here, that shape is the **Aztec Diamond**, a collection of squares that form a ragged-edged diamond. Choosing a (uniformly) random tiling by dominos seems like a difficult task, but we can actually build one up from tilings of smaller diamonds, one step at a time. Dominos are colored by their starting location, and more saturated the longer they stay on screen.
 	
-	A <dfn>perfect matching</dfn> on a graph is a pairing of adjacent vertices so that every vertex is paired with exactly one other. On a square lattice, this amounts to filling a shape with $2 \times 1$ dominos so that no gaps are left. Here, that shape is the <dfn>Aztec Diamond</dfn>, a collection of squares that form a ragged-edged diamond. Choosing a (uniformly) random tiling by dominos seems like a difficult task, but we can actually build one up from tilings of smaller diamonds, one step at a time. Dominos are colored by their starting location, and more saturated the longer they stay on screen.
-	
-	!wilson
-
-!end-text-block
+### wilson
 
 
 
@@ -16,25 +10,19 @@
 
 <div id="canvas-landscape-left">
 
-!begin-text-boxes
+### text-boxes
 	
 	resolution 2000 Resolution
 	
 	diamond-size 20 Diamond Size
 	
-!end-text-boxes
+###
 
+### checkbox use-smooth-colors Use smooth colors
 
-
-!checkbox use-smooth-colors Use smooth colors
-
-
-
-!begin-text-buttons
-	
+### buttons
 	generate l Generate
-	
-!end-text-buttons
+###
 
 </div>
 
@@ -42,7 +30,7 @@
 
 <div id="canvas-landscape-middle">
 
-!canvas
+### canvas
 
 </div>
 
@@ -50,19 +38,13 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
 </div>
-
-
-
-!footer
 
 
 
@@ -79,17 +61,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "Domino Shuffling",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

@@ -106,7 +106,7 @@ Page.Navigation =
 			
 			if (DEBUG)
 			{
-				document.body.firstElementChild.insertAdjacentHTML("beforebegin", Page.Components.decode(`<div class="page" style="opacity: 0">\n${data}</div>${scripts_data}`));
+				document.body.firstElementChild.insertAdjacentHTML("beforebegin", Page.Components.decode(`<div class="page" style="opacity: 0">\n${data}</div>`) + scripts_data);
 			}
 			
 			else

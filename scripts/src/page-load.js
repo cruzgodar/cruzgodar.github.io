@@ -139,7 +139,7 @@ Page.load = async function()
 		Site.Settings.set_writing_page_font();
 	}
 	
-	if (this.Layout.layout_string === "ultrawide" && "small_margins_on_ultrawide" in this.settings && this.settings["small_margins_on_ultrawide"])
+	if (this.Layout.layout_string === "ultrawide")
 	{
 		Site.Settings.reduce_page_margins();
 	}
@@ -149,10 +149,7 @@ Page.load = async function()
 		Site.Settings.condense_applet();
 	}
 	
-	if ("math_page" in this.settings && this.settings["math_page"])
-	{
-		this.Load.Math.typeset();
-	}
+	this.Load.Math.typeset();
 	
 	
 	

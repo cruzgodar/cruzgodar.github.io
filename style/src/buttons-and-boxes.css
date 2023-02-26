@@ -21,7 +21,7 @@
 	grid-row-gap: 10px;
 	grid-column-gap: 10px;
 	
-	margin-top: 5vh;
+	margin-top: 32px;
 }
 
 .text-boxes
@@ -33,7 +33,7 @@
 {
 	margin-top: 0;
 	
-	margin-bottom: 5vh;
+	margin-bottom: 32px;
 }
 
 
@@ -83,7 +83,7 @@
 	height: 32px;
 	margin: 0 auto;
 	
-	margin-top: 5vh;
+	margin-top: 32px;
 	
 	display: flex;
 	align-items: center;
@@ -93,6 +93,11 @@
 .checkbox-row p
 {
 	width: auto;
+}
+
+.checkbox-subtext
+{
+	margin-bottom: 0 !important;
 }
 
 
@@ -154,89 +159,6 @@
 {
 	background-color: rgb(96, 96, 96);
 }
-
-
-
-
-
-.radio-button-row
-{
-	width: 70%;
-	height: 32px;
-	margin: 0 auto;
-	
-	margin-top: 5vh;
-	
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.radio-button-row p
-{
-	width: auto;
-}
-
-
-
-.radio-button-container
-{
-	position: relative;
-	
-	width: 24px;
-	height: 24px;
-	
-	border: 2px solid rgb(96, 96, 96);
-	border-radius: 50%;
-	padding: 2px;
-}
-
-.radio-button-container:not(:hover):focus
-{
-	transform: scale(1.1);
-	
-	outline: none;
-}
-
-
-
-
-
-.radio-button-container > input
-{
-	position: absolute;
-	
-	width: calc(100% - 4px);
-	height: calc(100% - 4px);
-	
-	margin: 0 0 0 0;
-	
-	opacity: 0;
-	
-	cursor: pointer;
-}
-
-.radio-button-container > input ~ .radio-button
-{
-	width: 100%;
-	height: 100%;
-	
-	border-radius: 50%;
-	
-	background: rgb(255, 255, 255); 
-	
-	cursor: pointer;
-	
-	transition: background-color .125s ease-in-out, width .125s ease-in-out, height .125s ease-in-out;
-}
-
-.radio-button-container > input:checked ~ .radio-button
-{
-	background-color: rgb(96, 96, 96);
-}
-
-
-
 
 
 .text-box

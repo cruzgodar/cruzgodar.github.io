@@ -1,14 +1,8 @@
-!header Finite Subdivisions
+# Finite Subdivisions
 
-
-
-!begin-text-block
+This one isn&#x2019;t too complicated! Draw a polygon and connect its center of mass to every vertex, splitting it into triangles. Do the same thing for every triangle, and repeat until you have a beautiful, crystal-like spiderweb. This is called **barycentric subdivision**, and similarly to the <a href="/applets/strange-attractors/">strange attractors</a> applet, it&#x2019;s only one kind of finite subdivision, but it&#x2019;s one of the most picturesque.
 	
-	This one isn&#x2019;t too complicated! Draw a polygon and connect its center of mass to every vertex, splitting it into triangles. Do the same thing for every triangle, and repeat until you have a beautiful, crystal-like spiderweb. This is called <dfn>barycentric subdivision</dfn>, and similarly to the <a href="/applets/strange-attractors/">strange attractors</a> applet, it&#x2019;s only one kind of finite subdivision, but it&#x2019;s one of the most picturesque.
-	
-	!wilson
-	
-!end-text-block
+### wilson
 
 
 
@@ -16,25 +10,19 @@
 
 <div id="canvas-landscape-left">
 
-!begin-text-boxes
-	
+### text-boxes
+
 	num-vertices 6 Vertices
 	
 	num-iterations 5 Iterations
 	
-!end-text-boxes
+###
 
+### checkbox toggle-maximum-speed Maximum speed
 
-
-!checkbox toggle-maximum-speed Maximum speed
-
-
-
-!begin-text-buttons
-	
+### buttons
 	generate l Generate
-	
-!end-text-buttons
+###
 
 </div>
 
@@ -42,7 +30,7 @@
 
 <div id="canvas-landscape-middle">
 
-!canvas
+### canvas
 
 </div>
 
@@ -50,19 +38,13 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
 </div>
-
-
-
-!footer
 
 
 
@@ -79,15 +61,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "Finite Subdivisions",
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

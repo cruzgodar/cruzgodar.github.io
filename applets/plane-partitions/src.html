@@ -1,18 +1,12 @@
-!header Plane Partitions
+# Plane Partitions
 
+This is a behemoth of an applet &mdash; it took two months of work, I had to learn to use a proper 3D library, and there&#x2019;s more than twice as much code as the previous largest applet. I&#x2019;m proud of the result, though: this applet visualizes **plane partitions**, which are stacks of boxes with one restriction: the height doesn&#x2019;t increase when moving down or to the right. The resulting objects can be viewed in 2D or 3D &mdash; the 3D view looks like a bunch of rhombi, and drawing a line in the center (called a **dimer**) produces a one-to-one correspondence between plane partitions and what are called **perfect matchings** on a hexagonal lattice, where every node is paired with exactly one other.
 
+Plane partitions can be made **asymptotic** to a shape. When adding or editing an array, replace a number with a caret (`^`) to give that square infinite height, represented with slightly lighter boxes. You can also add the symbols `&gt;` and `v` to the right and bottom margins, respectively, to create 3-leg APPs. For example, &#x201C;`7 >`&#x201D; at the end of the first line means the row of height 7 should continue forever, indicated by the same lighter boxes.
 
-!begin-text-block
-	
-	This is a behemoth of an applet &mdash; it took two months of work, I had to learn to use a proper 3D library, and there&#x2019;s more than twice as much code as the previous largest applet. I&#x2019;m proud of the result, though: this applet visualizes <dfn>plane partitions</dfn>, which are stacks of boxes with one restriction: the height doesn&#x2019;t increase when moving down or to the right. The resulting objects can be viewed in 2D or 3D &mdash; the 3D view looks like a bunch of rhombi, and drawing a line in the center (called a <dfn>dimer</dfn>) produces a one-to-one correspondence between plane partitions and what are called <dfn>perfect matchings</dfn> on a hexagonal lattice, where every node is paired with exactly one other.
-	
-	Plane partitions can be made <dfn>asymptotic</dfn> to a shape. When adding or editing an array, replace a number with a caret (<code>^</code>) to give that square infinite height, represented with slightly lighter boxes. You can also add the symbols <code>&gt;</code> and <code>v</code> to the right and bottom margins, respectively, to create 3-leg APPs. For example, &#x201C;<code>7 ></code>&#x201D; at the end of the first line means the row of height 7 should continue forever, indicated by the same lighter boxes.
-	
-	Plane partitions are frequently studied, and many correspondences involving them have been implemented here. The first three take a plane partition and convert it to a <dfn>tableau</dfn> of the same shape &mdash; a tableau is a collection of numbers with no restriction on box heights decreasing in any direction. The inverse algorithms take a tableau and convert it back to a plane partition. Pak and Sulzgruber are independently discovered correspondences with wildly different descriptions that amazingly produce the same results, while Hillman-Grassl is a unique correspondence all its own. RSK is something else entirely: it takes two semi-standard Young tableaux, or SSYT, and converts them to a regular tableau. An SSYT is similar to a plane partition, but rather than heights needing to decrease along rows and columns, they must <em>increase</em>, and the increasing that happens on columns must be strict (i.e. the heights always increase and never remain the same).
-	
-	Due to the complexity of the algorithms and the difficulty in getting them to work for those unused to plane partitions, applets like this, or both, I&#x2019;ve included a few examples in the final section so that pretty pictures are easy to find without too much tinkering.
+Plane partitions are frequently studied, and many correspondences involving them have been implemented here. The first three take a plane partition and convert it to a **tableau** of the same shape &mdash; a tableau is a collection of numbers with no restriction on box heights decreasing in any direction. The inverse algorithms take a tableau and convert it back to a plane partition. Pak and Sulzgruber are independently discovered correspondences with wildly different descriptions that amazingly produce the same results, while Hillman-Grassl is a unique correspondence all its own. RSK is something else entirely: it takes two semi-standard Young tableaux, or SSYT, and converts them to a regular tableau. An SSYT is similar to a plane partition, but rather than heights needing to decrease along rows and columns, they must **increase**, and the increasing that happens on columns must be strict (i.e. the heights always increase and never remain the same).
 
-!end-text-block
+Due to the complexity of the algorithms and the difficulty in getting them to work for those unused to plane partitions, applets like this, or both, I&#x2019;ve included a few examples in the final section so that pretty pictures are easy to find without too much tinkering.
 
 
 
@@ -21,23 +15,23 @@
 <div id="canvas-landscape">
 
 <div id="canvas-landscape-left">
-	!begin-dropdown
-		
-		category-selector
-		
-		view-controls View Controls
-		
-		add-array Add Array
-		
-		edit-array Edit Array
-		
-		remove-array Remove Array
-		
-		algorithms Algorithms
-		
-		examples Examples
+### dropdown
+	
+	category-selector
+	
+	view-controls View Controls
+	
+	add-array Add Array
+	
+	edit-array Edit Array
+	
+	remove-array Remove Array
+	
+	algorithms Algorithms
+	
+	examples Examples
 
-	!end-dropdown	
+###	
 </div>
 
 
@@ -65,11 +59,9 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
@@ -79,25 +71,23 @@
 
 <div id="category-holder" style="display: none">
 	<div class="view-controls-section category-section">
-		!begin-text-boxes
-			
+		### text-boxes
 			resolution 2000 Resolution
-			
-		!end-text-boxes
+		###
 	</div>
 		
 	<div class="view-controls-section category-section">
-		!begin-text-buttons
+		### buttons
 			
 			switch-view l Show 2D View
 			
 			show-dimers l Show Dimers
 			
-		!end-text-buttons
+		###
 	</div>
 	
 	<div class="view-controls-section category-section">
-		!checkbox maximum-speed Maximum speed
+		### checkbox maximum-speed Maximum speed
 	</div>
 	
 	
@@ -112,21 +102,17 @@
 	</div>	
 	
 	<div class="add-array-section category-section">
-		!begin-text-buttons
-			
+		### buttons
 			add-array l Add
-			
-		!end-text-buttons
+		###
 	</div>
 	
 	
 	
 	<div class="edit-array-section category-section">
-		!begin-text-boxes
-			
+		### text-boxes
 			edit-array-index 0 Index to Edit
-			
-		!end-text-boxes
+		###
 	</div>
 	
 	<div class="edit-array-section category-section">
@@ -139,43 +125,35 @@
 	</div>	
 	
 	<div class="edit-array-section category-section">
-		!begin-text-buttons
-			
+		### buttons
 			edit-array l Edit
-			
-		!end-text-buttons
+		###
 	</div>
 	
 	
 	
 	<div class="remove-array-section category-section">
-		!begin-text-boxes
-			
+		### text-boxes
 			remove-array-index 0 Index to Remove
-			
-		!end-text-boxes
+		###
 	</div>
 	
 	<div class="remove-array-section category-section">
-		!begin-text-buttons
-			
+		### buttons
 			remove-array l Remove Array
-			
-		!end-text-buttons
+		###
 	</div>
 	
 	
 	
 	<div class="algorithms-section category-section">
-		!begin-text-boxes
-			
+		### text-boxes
 			algorithm-index 0 Index to Use
-			
-		!end-text-boxes
+		###
 	</div>
 	
 	<div class="algorithms-section category-section">
-		!begin-text-buttons
+		### buttons
 			
 			hillman-grassl l Hillman-Grassl
 			
@@ -197,13 +175,13 @@
 			
 			godar-1-inverse l Godar I Inverse
 			
-		!end-text-buttons
+		###
 	</div>
 	
 	
 	
 	<div class="examples-section category-section">
-		!begin-text-buttons
+		### buttons
 			
 			example-1 l Hillman-Grassl and Back
 			
@@ -211,13 +189,9 @@
 			
 			example-3 l RSK and Back
 			
-		!end-text-buttons
+		###
 	</div>
 </div>
-
-
-
-!footer
 
 
 
@@ -234,15 +208,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "Plane Partitions",
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

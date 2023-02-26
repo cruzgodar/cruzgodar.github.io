@@ -25,9 +25,6 @@ Page.scroll = 0;
 	"title_page_text_size": .1,
 	
 	"writing_page": false,
-	"math_page": false,
-	
-	"small_margins_on_ultrawide": false,
 	
 	"manual_banner": false,
 	"manual_dark_theme": false,

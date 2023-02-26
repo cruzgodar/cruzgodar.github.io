@@ -1,18 +1,12 @@
-!header Kaleidoscopic IFS Fractals
+# Kaleidoscopic IFS Fractals
 
-
-
-!begin-text-block
+In 2010, as graphics cards were becoming commonplace, a <a href="http://www.fractalforums.com/sierpinski-gasket/kaleidoscopic-(escape-time-ifs)/">user on FractalForums</a> posted something that would quickly become famous. Called Kaleidoscopic IFS (iterated function system) fractals, they generalize the Sierpinski tetrahedron to the rest of the platonic solids and add rotation and scaling to create truly fascinating objects.
 	
-	In 2010, as graphics cards were becoming commonplace, a <a href="http://www.fractalforums.com/sierpinski-gasket/kaleidoscopic-(escape-time-ifs)/">user on FractalForums</a> posted something that would quickly become famous. Called Kaleidoscopic IFS (iterated function system) fractals, they generalize the Sierpinski tetrahedron to the rest of the platonic solids and add rotation and scaling to create truly fascinating objects.
+As interesting as the fractals is the technique used to render them &mdash; <a href="http://blog.hvidtfeldts.net/index.php/2011/06/distance-estimated-3d-fractals-part-i/">raymarching</a>, an seldom-seen algorithm that&#x2019;s ideal for this purpose. It&#x2019;s not hard to implement, makes detailed images, and runs fast enough to render in real time. If you find yourself interested in creating 3D fractals, researching raymarching is the place to start.
 	
-	As interesting as the fractals is the technique used to render them &mdash; <a href="http://blog.hvidtfeldts.net/index.php/2011/06/distance-estimated-3d-fractals-part-i/">raymarching</a>, an seldom-seen algorithm that&#x2019;s ideal for this purpose. It&#x2019;s not hard to implement, makes detailed images, and runs fast enough to render in real time. If you find yourself interested in creating 3D fractals, researching raymarching is the place to start.
+Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
 	
-	Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
-	
-	!wilson
-
-!end-text-block
+### wilson
 
 
 
@@ -20,7 +14,7 @@
 
 <div id="canvas-landscape-left">
 
-!begin-dropdown
+### dropdown
 	
 	polyhedron-selector
 	
@@ -30,11 +24,11 @@
 	
 	octahedron Octahedron
 
-!end-dropdown
+###
 
 
 
-!begin-text-boxes
+### text-boxes
 	
 	resolution 500 Resolution
 	
@@ -50,15 +44,13 @@
 	
 	rotation-angle-z-2 0 \(\phi_z\)
 	
-!end-text-boxes
+###
 
 
 
-!begin-text-buttons
-	
+### buttons
 	randomize-parameters Randomize Parameters
-	
-!end-text-buttons
+###
 
 </div>
 
@@ -66,7 +58,7 @@
 
 <div id="canvas-landscape-middle">
 
-!canvas
+### canvas
 
 </div>
 
@@ -74,19 +66,13 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
 </div>
-
-
-
-!footer
 
 
 
@@ -103,17 +89,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "Kaleidoscopic IFS Fractals",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

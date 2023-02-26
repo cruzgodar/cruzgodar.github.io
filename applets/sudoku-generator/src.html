@@ -1,16 +1,10 @@
-!header Sudoku Generator
+# Sudoku Generator
 
+About six months ago, I wrote <a href="/applets/calcudoku-generator/">this thing</a> over the span of a week. Not counting the website as a whole, it was the largest coding project I&#x2019;d ever attempted, and I&#x2019;m still amazed it works. If others on the internet have written their own generators, they&#x2019;re not sharing as far as I can tell.
 
+Maybe I should have started with this applet before building that one, but the upshot of making the more complicated one first was this only took two hours. Since it uses the same code base as the calcudoku generator, it has no way to measure difficulty, and will always create as difficult a puzzle as possible &mdash; but at least it&#x2019;s quite a bit faster!
 
-!begin-text-block
-	
-	About six months ago, I wrote <a href="/applets/calcudoku-generator/">this thing</a> over the span of a week. Not counting the website as a whole, it was the largest coding project I&#x2019;d ever attempted, and I&#x2019;m still amazed it works. If others on the internet have written their own generators, they&#x2019;re not sharing as far as I can tell.
-	
-	Maybe I should have started with this applet before building that one, but the upshot of making the more complicated one first was this only took two hours. Since it uses the same code base as the calcudoku generator, it has no way to measure difficulty, and will always create as difficult a puzzle as possible &mdash; but at least it&#x2019;s quite a bit faster!
-	
-	!wilson
-
-!end-text-block
+### wilson
 
 
 
@@ -18,11 +12,9 @@
 
 <div id="canvas-landscape-left">
 
-!begin-text-buttons
-	
+### buttons
 	generate l Generate
-	
-!end-text-buttons
+###
 
 </div>
 
@@ -40,19 +32,13 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
 </div>
-
-
-
-!footer
 
 
 
@@ -69,15 +55,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "Sudoku Generator",
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

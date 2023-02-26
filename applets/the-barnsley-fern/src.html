@@ -1,14 +1,8 @@
-!header The Barnsley Fern
+# The Barnsley Fern
 
+Have you ever looked at a fern up close? The tiny leaves are exactly the same shape as the big ones. This is a textbook example of a fractal, and while a fern may seem firmly rooted in the physical world, it&#x2019;s just as naturally a product of math. Placing a tiny green dot on a canvas, repeatedly applying a simple kind of function (called an affine transformation) to it, and drawing a new dot in every place it visits, we wind up with the Barnsley fern, named after its creator. The function we apply may have been carefully engineered, but it&#x2019;s no less remarkable that something so beautiful and complex can arise from something so simple.
 
-
-!begin-text-block
-	
-	Have you ever looked at a fern up close? The tiny leaves are exactly the same shape as the big ones. This is a textbook example of a fractal, and while a fern may seem firmly rooted in the physical world, it&#x2019;s just as naturally a product of math. Placing a tiny green dot on a canvas, repeatedly applying a simple kind of function (called an affine transformation) to it, and drawing a new dot in every place it visits, we wind up with the Barnsley fern, named after its creator. The function we apply may have been carefully engineered, but it&#x2019;s no less remarkable that something so beautiful and complex can arise from something so simple.
-	
-	!wilson
-	
-!end-text-block
+### wilson
 
 
 
@@ -16,19 +10,13 @@
 
 <div id="canvas-landscape-left">
 
-!begin-text-boxes
-	
+### text-boxes
 	num-iterations 10000 Iterations (x1000)
-	
-!end-text-boxes
+###
 
-
-
-!begin-text-buttons
-	
+### buttons
 	generate l Generate
-	
-!end-text-buttons
+###
 
 </div>
 
@@ -36,7 +24,7 @@
 
 <div id="canvas-landscape-middle">
 
-!canvas
+### canvas
 
 </div>
 
@@ -44,19 +32,13 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
 </div>
-
-
-
-!footer
 
 
 
@@ -73,15 +55,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "The Barnsley Fern",
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

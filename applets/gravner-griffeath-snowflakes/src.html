@@ -1,24 +1,18 @@
-!header Gravner-Griffeath Snowflakes
+# Gravner-Griffeath Snowflakes
 
+In 2007, two mathematicians collaborated to <a href="https://psoup.math.wisc.edu/papers/h2l.pdf">create a detailed model</a> for snowflake generation. In contrast to other models for crystal growth like <a href="/applets/brownian-trees/">diffusion-limited aggregation</a>, this one simulates a striking level of detail, all the way down to the diffusion of water vapor in the air. It even has a massive selection of parameters that allow for careful fine-tuning:
 
+$\rho$: the density of water vapor in the air. Higher values will produce faster-growing, more intricate flakes.
 
-!begin-text-block
+$\beta$: the difficulty of water vapor to attach to the flake when not surrounded by much ice. Higher values will produce more plate-like, less intricate flakes.
 
-	In 2007, two mathematicians collaborated to <a href="https://psoup.math.wisc.edu/papers/h2l.pdf">create a detailed model</a> for snowflake generation. In contrast to other models for crystal growth like <a href="/applets/brownian-trees/">diffusion-limited aggregation</a>, this one simulates a striking level of detail, all the way down to the diffusion of water vapor in the air. It even has a massive selection of parameters that allow for careful fine-tuning:
-	
-	\(\rho\): the density of water vapor in the air. Higher values will produce faster-growing, more intricate flakes.
-	
-	\(\beta\): the difficulty of water vapor to attach to the flake when not surrounded by much ice. Higher values will produce more plate-like, less intricate flakes.
-	
-	\(\kappa\): the amount of vapor that freezes directly before even attaching to the flake. Higher values will produce flakes with thinner main branches and more side branches.
-	
-	\(\mu\): the tendency of ice on the boundary of the flake to revert back to vapor. Higher values will produce flakes with less detail and more mass distributed far from the center.
-	
-	\(\alpha\), \(\theta\), and \(\gamma\) affect the process in more complicated ways that are somewhat out of the scope of a blurb this short. If you&#x2019;re interested, check out the paper and mess with their values here!
-	
-	!wilson
+$\kappa$: the amount of vapor that freezes directly before even attaching to the flake. Higher values will produce flakes with thinner main branches and more side branches.
 
-!end-text-block
+$\mu$: the tendency of ice on the boundary of the flake to revert back to vapor. Higher values will produce flakes with less detail and more mass distributed far from the center.
+
+$\alpha$, $\theta$, and $\gamma$ affect the process in more complicated ways that are somewhat out of the scope of a blurb this short. If you&#x2019;re interested, have a look at the paper or just experiment with their values here!
+
+### wilson
 
 
 
@@ -26,35 +20,33 @@
 
 <div id="canvas-landscape-left">
 
-!begin-text-boxes
+### text-boxes
 	
 	grid-size 200 Image Size
 	
-	rho .635 \(\rho\)
+	rho .635 $\rho$
 	
-	beta 1.6 \(\beta\)
+	beta 1.6 $\beta$
 	
-	alpha .4 \(\alpha\)
+	alpha .4 $\alpha$
 	
-	theta .025 \(\theta\)
+	theta .025 $\theta$
 	
-	kappa .0025 \(\kappa\)
+	kappa .0025 $\kappa$
 	
-	mu .015 \(\mu\)
+	mu .015 $\mu$
 	
-	gamma .0005 \(\gamma\)
+	gamma .0005 $\gamma$
 	
-!end-text-boxes
+###
 
-
-
-!begin-text-buttons
+### buttons
 	
 	randomize-parameters l Randomize Parameters
 	
 	generate l Generate
 	
-!end-text-buttons
+###
 
 </div>
 
@@ -62,7 +54,7 @@
 
 <div id="canvas-landscape-middle">
 
-!canvas
+### canvas
 
 </div>
 
@@ -70,19 +62,13 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
 </div>
-
-
-
-!footer
 
 
 
@@ -99,17 +85,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "Gravner-Griffeath Snowflakes",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

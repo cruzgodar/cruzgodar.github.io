@@ -1,16 +1,10 @@
-!header Calcudoku Generator
+# Calcudoku Generator
 
-
-
-!begin-text-block
-
-	<dfn>Calcudoku</dfn> is a variation on Sudoku &mdash; given an \(n \times n\) grid, fill it with the digits \(1, ..., n\) so that no row or column contains a repeated digit, and so that every cage&#x2019;s condition is satisfied. A cage with 5+ in a corner needs its contents to sum to 5, for example. A 2- cage is a little more complicated &mdash; it means that choosing some cell in the cage and subtracting the others results in 2 &mdash; so a 3-cell cage containing 5, 2, and 1 would work, for instance. Division cages are written with a colon and work the same. Finally, some cages have no operation at all. They&#x2019;re always \(1 \times 1\), and simply contain the number in their corner.
+**Calcudoku** is a variation on Sudoku &mdash; given an $n \times n$ grid, fill it with the digits $1, ..., n$ so that no row or column contains a repeated digit, and so that every cage&#x2019;s condition is satisfied. A cage with 5+ in a corner needs its contents to sum to 5, for example. A 2- cage is a little more complicated &mdash; it means that choosing some cell in the cage and subtracting the others results in 2 &mdash; so a 3-cell cage containing 5, 2, and 1 would work, for instance. Division cages are written with a colon and work the same. Finally, some cages have no operation at all. They&#x2019;re always $1 \times 1$, and simply contain the number in their corner.
 	
-	The core of the algorithm is written in a language called WebAssembly that runs much faster than JavaScript &mdash; the standard language of the web &mdash; but even still, generating these puzzles takes time. They&#x2019;re built by successive modifications that each make the puzzle slightly harder, so the longer you wait, the more challenging the final result will be. For the best results, let the program run for five to ten minutes and make some tea. It&#x2019;s not too much to ask &mdash; after all, you&#x2019;re probably going to spend longer than that actually solving the puzzle.
+The core of the algorithm is written in a language called WebAssembly that runs much faster than JavaScript &mdash; the standard language of the web &mdash; but even still, generating these puzzles takes time. They&#x2019;re built by successive modifications that each make the puzzle slightly harder, so the longer you wait, the more challenging the final result will be. For the best results, let the program run for five to ten minutes and make some tea.
 	
-	!wilson
-
-!end-text-block
+### wilson
 
 
 
@@ -18,21 +12,17 @@
 
 <div id="canvas-landscape-left">
 
-!begin-text-boxes
+### text-boxes
 	
 	grid-size 6 Grid Size
 	
 	max-cage-size 2 Max Cage Size
 	
-!end-text-boxes
+###
 
-
-
-!begin-text-buttons
-	
+### buttons
 	generate l Generate
-	
-!end-text-buttons
+###
 
 
 
@@ -72,19 +62,13 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
 </div>
-
-
-
-!footer
 
 
 
@@ -101,17 +85,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "Calcudoku Generator",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

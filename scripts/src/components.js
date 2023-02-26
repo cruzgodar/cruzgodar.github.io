@@ -4,134 +4,6 @@
 
 Page.Components =
 {
-	get_header: function(args, banner)
-	{
-		const title = args.join(" ");
-		
-		const height_adjust = banner ? ` style="margin-bottom: 10vh"` :  "";
-		
-		return `
-			<header${height_adjust}>
-				<div id="logo">
-					<a href="/home/" tabindex="-1">
-						<img src="/graphics/general-icons/logo.png" alt="Logo" tabindex="1"></img>
-					</a>
-				</div>
-				
-				<div style="height: 2vh"></div>
-				
-				<h1 class="heading-text">${title}</h1>
-			</header>
-			
-			<main>
-				<section>
-		`;
-	},
-	
-	
-	
-	get_footer: function(banner)
-	{
-		if (banner)
-		{
-			return `
-						</section>
-					</main>
-				</div>
-			`;
-		}
-		
-		else
-		{
-			return `
-					</section>
-				</main>
-			`;
-		}
-	},
-	
-	
-	
-	get_section: function()
-	{
-		return `
-			</section>
-			
-			<section>
-		`;
-	},
-	
-	
-	
-	get_text: function(args)
-	{
-		if (args[0] === "h")
-		{
-			const text = args.slice(1).join(" ");
-			
-			return `
-				<h1 class="heading-text">
-					${text}
-				</h1>
-			`;
-		}
-		
-		else if (args[0] === "s")
-		{
-			const text = args.slice(1).join(" ");
-			
-			return `
-				<h2 class="section-text">
-					${text}
-				</h2>
-			`;
-		}
-		
-		else if (args[2] === "!iframe")
-		{
-			const src = args.slice(3);
-			
-			return this.get_iframe(src);
-		}
-		
-		else if (args[2] === "!desmos")
-		{
-			const id = args.slice(3);
-			
-			return this.get_desmos(id);
-		}
-		
-		else
-		{
-			const text = args.slice(2).join(" ");
-			
-			//Only this one gets the line break at the end.
-			if (args[1] === "j")
-			{
-				return `
-					<p class="body-text">
-						${text}
-					</p>
-					
-					<br>`; //It's important that there are no characters after the <br>.
-			}
-			
-			//Center if needed
-			else
-			{
-				return `
-					<p class="body-text center-if-needed">
-						<span>
-							${text}
-						</span>
-					</p>
-				`;
-			}
-		}
-	},
-	
-	
-	
 	get_image_link: function(args)
 	{
 		let file_path = args[0];
@@ -169,14 +41,14 @@ Page.Components =
 		
 		
 		
-		const src = `${file_path.slice(0, file_path.lastIndexOf("/") + 1)}cover.${Page.Images.file_extension}`;
+		const src = `${file_path.slice(0, file_path.lastIndexOf("/") + 1)}cover.`;
 		
 		
 		
 		return `
 			<div class="image-link${light_text}">
 				<a href="${file_path}" tabindex="-1">
-					<img src="/graphics/general-icons/placeholder.png" data-image-id="${id}" data-src="${src}" alt="${subtext}" tabindex="1"></img>
+					<img class="check-webp" src="/graphics/general-icons/placeholder.png" data-image-id="${id}" data-src="${src}" alt="${subtext}" tabindex="1"></img>
 				</a>
 				
 				<p class="image-link-subtext">${subtext}</p>
@@ -200,99 +72,6 @@ Page.Components =
 				
 				<div style="height: 5vh"></div>
 		`;
-	},
-	
-	
-	
-	get_about_page_version: function(args)
-	{
-		let version_string = "medium-version";
-		let version_text = "section-text";
-		let element_type = "h2";
-		
-		const numbers = args[0].split(".");
-		
-		if (numbers.length === 3)
-		{
-			version_string = "minor-version";
-			version_text = "body-text";
-			element_type = "p";
-		}
-		
-		else if (numbers[1] === "0")
-		{
-			version_string = "major-version";
-			version_text = "heading-text";
-			element_type = "h1";
-		}
-		
-		
-		
-		let text = args.slice(1).join(" ");
-		
-		text = text.split(":");
-		
-		const description = text[1].slice(1);
-		
-		
-		
-		if (text.length === 3)
-		{
-			const datetime = text[2];
-			
-			text = text[0];
-			
-			const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-			
-			const numbers = datetime.split("-");
-			
-			const year = parseInt(numbers[0]);
-			
-			const month = months[parseInt(numbers[1]) - 1];
-			
-			const day = parseInt(numbers[2]);
-			
-			
-		
-			return `
-				<div class="${version_string}">
-					<${element_type} class="${version_text}">${args[0]}</${element_type}>
-					
-					<${element_type} class="${version_text}">${text}</${element_type}>
-					
-					<br>
-					
-					<p class="body-text center-if-needed"><span>${description}</span></p>
-					
-					<br>
-					
-					<p class="body-text center-if-needed">
-						<span>
-							<time datetime="${datetime}">${month} ${day}, ${year}</time>
-						</span>
-					</p>
-				</div>
-			`;
-		}
-		
-		
-		
-		else
-		{
-			text = text[0];
-			
-			return `
-				<div class="${version_string}">
-					<${element_type} class="${version_text}">${args[0]}</${element_type}>
-					
-					<${element_type} class="${version_text}">${text}</${element_type}>
-					
-					<br>
-					
-					<p class="body-text center-if-needed"><span>${description}</span></p>
-				</div>
-			`;
-		}
 	},
 	
 	
@@ -343,56 +122,6 @@ Page.Components =
 	
 	
 	
-	get_checkbox: function(args)
-	{
-		const id = args[0];
-		
-		const text = args.slice(1).join(" ");
-		
-		
-		
-		return `
-			<div class="checkbox-row">
-				<div class="checkbox-container click-on-child" tabindex="1">
-					<input type="checkbox" id="${id}-checkbox">
-					<div class="checkbox"></div>
-				</div>
-				
-				<div style="margin-left: 10px">
-					<p class="body-text checkbox-subtext">${text}</p>
-				</div>
-			</div>
-		`;
-	},
-	
-	
-	
-	get_radio_button: function(args)
-	{
-		const name = args[0];
-		
-		const id = args[1];
-		
-		const text = args.slice(2).join(" ");
-		
-		
-		
-		return `
-			<div class="radio-button-row">
-				<div class="radio-button-container click-on-child" tabindex="1">
-					<input type="radio" name="${name}" id="${id}-radio-button">
-					<div class="radio-button"></div>
-				</div>
-				
-				<div style="margin-left: 10px">
-					<p class="body-text radio-button-subtext">${text}</p>
-				</div>
-			</div>
-		`;
-	},
-	
-	
-	
 	get_slider: function(args)
 	{
 		const id = args[0];
@@ -413,110 +142,197 @@ Page.Components =
 	
 	
 	
-	//This is an incredibly delicate balance -- modify with caution.
-	get_dropdown: function(args)
+	Parse:
 	{
-		let html = "";
-		
-		const id = args[0];
-		
-		html += `
-			<div class="dropdown-container focus-on-child" tabindex="1">
-				<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1">`;
-		
-		for (let i = 1; i < args.length; i++)
+		"text": (text) =>
 		{
-			const value = args[i][0];
-			const text = args[i].slice(1).join(" ");
+			//None of the delimiters * and ` can be parsed if they're inside math mode, so we'll modify those things and put them back afterward. The syntax [.^\$] means any character other than a dollar sign.
 			
-			if (i === 1)
+			//First, we replace ending dollar signs with [END$] to differentiate them for later. Otherwise, delimiters between dollar signs would be matched too.
+			let html = text.replaceAll(/\$(.*?)\$/g, "\$ $1 [END\$]");
+			
+			while (html.match(/\$([.^\$]*?)\*([.^\$]*?)\[END\$\]/))
 			{
-				html += `${text}</button><select id="${id}-dropdown">`;
+				html = html.replaceAll(/\$([.^\$]*?)\*([.^\$]*?)%/g, "\$ $1[ASTERISK]$2 [END\$]");
 			}
 			
-			html += `<option value="${value}">${text}</option>`;
-		}
+			while (html.match(/\$([.^\$]*?)`([.^\$]*?)\[END\$\]/))
+			{
+				html = html.replaceAll(/\$([.^\$]*?)`([.^\$]*?)\[END\$\]/g, "\$ $1[BACKTICK]$2 [END\$]");
+			}
+			
+			html = html.replaceAll(/\*\*(.*?)\*\*/g, "<strong>$1</strong>").replaceAll(/\*(.*?)\*/g, "<em>$1</em>").replaceAll(/`(.*?)`/g, "<code>$1</code>");
+			
+			return html.replaceAll(/\[ASTERISK\]/g, "*").replaceAll(/\[BACKTICK\]/g, "`").replaceAll(/\[END\$\]/g, "\$");
+		},
 		
-		html += `</select></div></div>`;
 		
-		return html;
-	},
-	
-	
-	
-	get_canvas: function()
-	{
-		return `
-			<canvas id="output-canvas" class="output-canvas"></canvas>
-		`;
-	},
-	
-	
-	
-	get_iframe: function(src)
-	{
-		return `
-			<div class="iframe-container">	
-				<div class="iframe-outer-border">
-					<div class="iframe-clipper">
-						<iframe src="${src}" width="500" height="500"></iframe>
+		
+		"image-links": (content) =>
+		{
+			let html = `<div class="image-links">`;
+			
+			content.forEach(line =>
+			{
+				html = `${html}${Page.Components.get_image_link(line.split(" "))}`
+			});
+			
+			html = `${html}</div>`
+			
+			return html;
+		},
+		
+		
+		
+		"buttons": (content) =>
+		{
+			let html = `<div class="text-buttons">`;
+			
+			content.forEach(line =>
+			{
+				html = `${html}${Page.Components.get_text_button(line.split(" "))}`
+			});
+			
+			html = `${html}</div>`
+			
+			return html;
+		},
+		
+		
+		
+		"text-boxes": (content) =>
+		{
+			let html = `<div class="text-boxes">`;
+			
+			content.forEach(line =>
+			{
+				html = `${html}${Page.Components.get_text_box(line.split(" "))}`
+			});
+			
+			html = `${html}</div>`
+			
+			return html;
+		},
+		
+		
+		
+		"sliders": (content) =>
+		{
+			let html = `<div class="sliders">`;
+			
+			content.forEach(line =>
+			{
+				html = `${html}${Page.Components.get_slider(line.split(" "))}`
+			});
+			
+			html = `${html}</div>`
+			
+			return html;
+		},
+		
+		
+		
+		"dropdown": (content) =>
+		{
+			const id = content[0];
+			
+			let html = `
+				<div class="text-buttons">
+					<div class="dropdown-container focus-on-child" tabindex="1">
+						<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1">`;
+			
+			for (let i = 1; i < content.length; i++)
+			{
+				const words = content[i].split(" ");
+				
+				const value = words[0];
+				const text = words.slice(1).join(" ");
+				
+				if (i === 1)
+				{
+					html += `${text}</button><select id="${id}-dropdown">`;
+				}
+				
+				html += `<option value="${value}">${text}</option>`;
+			}
+			
+			html += `</select></div></div>`;
+			
+			return html;
+		},
+		
+		
+		
+		"checkbox": (id, ...name) =>
+		{
+			const text = name.join(" ");
+			
+			return `
+				<div class="checkbox-row">
+					<div class="checkbox-container click-on-child" tabindex="1">
+						<input type="checkbox" id="${id}-checkbox">
+						<div class="checkbox"></div>
+					</div>
+					
+					<div style="margin-left: 10px">
+						<p class="body-text checkbox-subtext">${text}</p>
 					</div>
 				</div>
-			</div>
-		`;	
-	},
-	
-	
-	
-	get_desmos: function(id)
-	{
-		return `
-			<div class="desmos-border">
-				<div id="${id}" class="desmos-container"></div>
-			</div>
-		`;
-	},
-	
-	
-	
-	get_line_break: function()
-	{
-		return `
-			<div class="line-break line-break-0-0"></div>
-			<div class="line-break line-break-1-0"></div>
-			<div class="line-break line-break-0-1"></div>
-			<div class="line-break line-break-1-1"></div>
-		`;
-	},
-	
-	
-	
-	get_nav_buttons: function()
-	{
-		return `
-			<div class="text-buttons nav-buttons">
-				<div class="focus-on-child tabindex="1">
-					<button class="text-button linked-text-button previous-nav-button" type="button" tabindex="-1">Previous</button>
+			`;
+		},
+		
+		
+		
+		"canvas": () =>
+		{
+			return `<canvas id="output-canvas" class="output-canvas"></canvas>`;
+		},
+		
+		
+		
+		"desmos": (id) =>
+		{
+			return `<div class="desmos-border"><div id="${id}" class="desmos-container"></div></div>`;
+		},
+		
+		
+		
+		"nav-buttons": () =>
+		{
+			return `
+				<div class="text-buttons nav-buttons">
+					<div class="focus-on-child tabindex="1">
+						<button class="text-button linked-text-button previous-nav-button" type="button" tabindex="-1">Previous</button>
+					</div>
+					
+					<div class="focus-on-child" tabindex="1">
+						<button class="text-button linked-text-button home-nav-button" type="button" tabindex="-1">Home</button>
+					</div>
+					
+					<div class="focus-on-child" tabindex="1">
+						<button class="text-button linked-text-button next-nav-button" type="button" tabindex="-1">Next</button>
+					</div>
 				</div>
-				
-				<div class="focus-on-child" tabindex="1">
-					<button class="text-button linked-text-button home-nav-button" type="button" tabindex="-1">Home</button>
-				</div>
-				
-				<div class="focus-on-child" tabindex="1">
-					<button class="text-button linked-text-button next-nav-button" type="button" tabindex="-1">Next</button>
-				</div>
-			</div>
-		`;
+			`;
+		},
+		
+		
+		
+		"wilson": () =>
+		{
+			return `<p class="body-text">This applet was made with <a href="/projects/wilson/">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.</p>`;
+		}
 	},
+	
+	single_line_environments: ["canvas", "checkbox", "desmos", "nav-buttons", "wilson"],
 	
 	
 	
 	decode: function(html)
 	{
-		let banner = false;
+		const banner = html.match(/"banner_page": "true"/) ? true : false;
 		
-		
+		let page_title = "";
 		
 		let lines = html.replace(/\t/g, "").replace(/    /g, "").replace(/\r/g, "").split("\n");
 		
@@ -524,225 +340,117 @@ Page.Components =
 		
 		for (let i = 0; i < lines.length; i++)
 		{
+			//filtering out lines beginning with < is a little rough, but pretty much necessary.
+			if (lines[i].length === 0 || lines[i][0] === "<")
+			{
+				continue;
+			}
+			
+			//A ! at the start of a line indicates we should treat it as text after all.
 			if (lines[i][0] === "!")
 			{
-				let words = lines[i].split(" ");
+				lines[i] = lines[i].slice(1);
+			}
+			
+			
+			
+			//Leave math alone.
+			if (lines[i].slice(0, 2) === "$$")
+			{
+				i++;
 				
-				if (words[0] === "!begin-text-block")
+				while (lines[i].slice(0, 2) !== "$$")
 				{
-					lines[i] = "";
+					i++;
+				}
+				
+				i++;
+			}
+			
+			//This is one of the many possible environments.
+			if (lines[i].slice(0, 3) === "###")
+			{
+				const words = lines[i].slice(4).split(" ");
+				
+				//The first word is the id.
+				if (this.single_line_environments.includes(words[0]))
+				{
+					lines[i] = this.Parse[words[0]](...(words.slice(1)));
+				}
+				
+				else
+				{
+					let content = [];
 					
+					const start_i = i;
 					
+					i++;
 					
-					while (words[0] !== "!end-text-block")
+					while (lines[i] !== "###")
 					{
-						i += 2;
-						
-						
-						
-						if (lines[i] === "!wilson")
+						if (lines[i].length !== 0)
 						{
-							lines[i] = `This applet was made with <a href="/projects/wilson/">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.`
+							content.push(lines[i]);
 						}
 						
-						
-						
-						if (lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$")
-						{
-							if (lines[i - 2].slice(lines[i - 2].length - 4) === "<br>")
-							{
-								lines[i - 2] = lines[i - 2].slice(0, lines[i - 2].length - 4);
-							}
-							
-							lines[i] = `<p class="body-text">$$`;
-						
-							i++;
-							
-							while (!(lines[i].length === 2 && lines[i][0] === "$" && lines[i][1] === "$"))
-							{
-								i++;
-							}
-							
-							lines[i] = `$$</p>`;
-							
-							continue;
-						}
-						
-						
-						
-						words = lines[i].split(" ");
-						
-						lines[i] = this.get_text(["b", "j"].concat(words));
+						i++;
 					}
 					
+					lines[start_i] = this.Parse[words[0]](content, ...(words.slice(1)));
 					
-					
-					lines[i] = "";
-				}
-				
-				
-				
-				else if (words[0] === "!begin-image-links")
-				{
-					lines[i] = `<div class="image-links">`;
-					
-					i += 2;
-					
-					words = lines[i].split(" ");
-					
-					while (words[0] !== "!end-image-links")
+					for (let j = start_i + 1; j <= i; j++)
 					{
-						lines[i] = this.get_image_link(words);
-						
-						i += 2;
-						
-						words = lines[i].split(" ");
+						lines[j] = "";
 					}
 					
-					lines[i] = `</div>`;
 				}
+			}
+			
+			//A new section.
+			else if (lines[i].slice(0, 2) === "##")
+			{
+				let title = this.Parse.text(lines[i].slice(2));
 				
+				//The first word is the id.
+				lines[i] = `</section><h2 class="section-text">${title}</h2><section>`;
+			}
+			
+			//A heading. Only one of these per file.
+			else if (lines[i][0] === "#")
+			{
+				const title = this.Parse.text(lines[i].slice(2));
 				
+				page_title = title;
 				
-				else if (words[0] === "!section")
-				{
-					lines[i] = this.get_section();
-				}
+				const height_adjust = banner ? ` style="margin-bottom: 10vh"` :  "";
 				
-				
-				
-				else if (words[0] === "!text")
-				{
-					lines[i] = this.get_text(words.slice(1));
-				}
-				
-				
-				
-				else if (words[0] === "!banner")
-				{
-					banner = true;
-					
-					lines[i] = this.get_banner();
-				}
-				
-				
-				
-				else if (words[0] === "!footer")
-				{
-					lines[i] = this.get_footer(banner);
-				}
-				
-				
-				
-				else if (words[0] === "!header")
-				{
-					lines[i] = this.get_header(words.slice(1), banner);
-				}
-				
-				
-				
-				else if (words[0] === "!version")
-				{
-					lines[i] = this.get_about_page_version(words.slice(1));
-				}
-				
-				
-				
-				else if (words[0] === "!begin-text-boxes")
-				{
-					lines[i] = `<div class="text-boxes">`;
-					
-					i += 2;
-					
-					words = lines[i].split(" ");
-					
-					while (words[0] !== "!end-text-boxes")
-					{
-						lines[i] = this.get_text_box(words);
+				lines[i] = `
+					<header${height_adjust}>
+						<div id="logo">
+							<a href="/home/" tabindex="-1">
+								<img src="/graphics/general-icons/logo.png" alt="Logo" tabindex="1"></img>
+							</a>
+						</div>
 						
-						i += 2;
+						<div style="height: 20px"></div>
 						
-						words = lines[i].split(" ");
-					}
+						<h1 class="heading-text">${title}</h1>
+					</header>
 					
-					lines[i] = `</div>`;
-				}
-				
-				
-				
-				else if (words[0] === "!begin-text-buttons")
-				{
-					lines[i] = `<div class="text-buttons">`;
-					
-					i += 2;
-					
-					let first = true;
-					
-					words = lines[i].split(" ");
-					
-					while (words[0] !== "!end-text-buttons")
-					{
-						lines[i] = this.get_text_button(words, first);
-						
-						i += 2;
-						
-						words = lines[i].split(" ");
-						
-						first = false;
-					}
-					
-					lines[i] = `</div>`;
-				}
-				
-				
-				
-				else if (words[0] === "!begin-sliders")
-				{
-					lines[i] = `<div class="sliders">`;
-					
-					i += 2;
-					
-					words = lines[i].split(" ");
-					
-					while (words[0] !== "!end-sliders")
-					{
-						lines[i] = this.get_slider(words);
-						
-						i += 2;
-						
-						words = lines[i].split(" ");
-					}
-					
-					lines[i] = `</div>`;
-				}
-				
-				
-				
-				else if (words[0] === "!begin-dropdown")
-				{
-					lines[i] = `<div class="text-buttons">`;
-					
-					i += 2;
-					
-					words = lines[i].split(" ");
-					
-					let args = [];
-					
-					while (words[0] !== "!end-dropdown")
-					{
-						args.push(words);
-						
-						lines[i] = "";
-						
-						i += 2;
-						
-						words = lines[i].split(" ");
-					}
-						
-					lines[i] = `${this.get_dropdown(args)}`;
-				}
-				
-				
+					<main>
+						<section>
+				`;
+			}
+			
+			//Regular text!
+			else
+			{
+				lines[i] = `<p class="body-text">${this.Parse.text(lines[i])}</p>`;
+			}
+			
+			/*
+			
+			
 				
 				else if (words[0] === "!begin-def")
 				{
@@ -1222,49 +930,8 @@ Page.Components =
 					
 					lines[i] = `</div>`;
 				}
-				
-				
-				
-				else if (words[0] === "!checkbox")
-				{
-					lines[i] = this.get_checkbox(words.slice(1));
-				}
-				
-				
-				
-				else if (words[0] === "!radio-button")
-				{
-					lines[i] = this.get_radio_button(words.slice(1));
-				}
-				
-				
-				
-				else if (words[0] === "!canvas")
-				{
-					lines[i] = this.get_canvas();
-				}
-				
-				
-				
-				else if (words[0] === "!iframe")
-				{
-					lines[i] = this.get_iframe(words[1]);
-				}
-				
-				
-				
-				else if (words[0] === "!desmos")
-				{
-					lines[i] = this.get_desmos(words[1]);
-				}
-				
-				
-				
-				else if (words[0] === "!nav-buttons")
-				{
-					lines[i] = this.get_nav_buttons();
-				}
 			}
+			*/
 		}
 		
 		
@@ -1284,6 +951,36 @@ Page.Components =
 		
 		
 		html = lines.join("");
+		
+		
+		
+		//End the HTML properly.
+		
+		html = `${html}</section></main>`;
+		
+		if (banner)
+		{
+			html = `${html}</div>`;
+		}
+		
+		
+		
+		if (!DEBUG)
+		{
+			//This is for the published html, so it shouldn't be in debug mode.
+			html = html.replace(/index-testing.html/g, "index.html");
+			
+			if (page_title === "")
+			{
+				page_title = "Cruz Godar";
+			}
+			
+			const head_html = `<title>${page_title}</title><meta property="og:title" content="${page_title}"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cruzgodar.com${args.plainTexts[1]}"/><meta property="og:image" content="https://cruzgodar.com${args.plainTexts[1]}cover.jpg"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Cruz Godar"/>`;
+			
+			html = `<!DOCTYPE html><html lang="en"><head>${head_html}<style>body {opacity: 0;}</style></head><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript>${html}</html>`;
+		}
+		
+		
 		
 		return html;
 	}

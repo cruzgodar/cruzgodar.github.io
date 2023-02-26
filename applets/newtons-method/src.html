@@ -1,18 +1,36 @@
-!header Newton&#x2019;s Method
+# Newton&#x2019;s Method
 
+Newton&#x2019;s method is a technique to find the roots of a function, commonly taught in beginning calculus courses. Given a function $f(x)$ and an initial guess $x_0$ at a root (a value of $x$ for which $f(x) = 0$), we can make a better guess:
 
+$$
+	x_1 = x_0 - \frac{f(x_0)}{f'(x_0)}.
+$$
 
-!begin-text-block
-	
-	Newton&#x2019;s method is a technique to find the roots of a function, commonly taught in beginning calculus courses. Given a function \(f(x)\) and an initial guess \(x_0\) at a root (a value of \(x\) for which \(f(x) = 0\)), we can make a better guess: \(x_1 = x_0 - \frac{f(x_0)}{f'(x_0)}\). If we take \(x_2 = x_1 - \frac{f(x_1)}{f'(x_1)}\), and repeat this recursively to create an \(x_n\) for every positive integer \(n\), then the sequence \((x_n)\) usually converges to a root of \(f\).
-	
-	It turns out that Newton&#x2019;s method generalizes to polynomials defined over the complex numbers. Just like the <a href="/applets/julia-set-explorer/">Mandelbrot set</a>, this makes it easy to create images. For a function \(f\), we color every point in the plane based on which root of \(f\) that point eventually converges to when chosen as the initial guess. We also give it a brightness based on how long it takes to converge: bright for a short time and dark for a long one.
-	
-	This applet applies Newton&#x2019;s method to polynomials only. The white dots represent the roots, so an arrangement of them uniquely determines the (monic) polynomial with those roots. The polynomials \(f(z) = z^n - 1\) have their roots spaced evenly around the point \(0\), and have plots that look particularly nice, so there&#x2019;s a button to align the roots that way. The algorithm can also be generalized to produce incredible &mdash; and wildly chaotic &mdash; results. Changing the original formula \(x_{n + 1} = x_n - \frac{f(x_n)}{f'(x_n)}\) to \(x_{n + 1} = x_n - a\frac{f(x_n)}{f'(x_n)} + c\) gives us two new parameters to modify &mdash; here, \(a\) and \(c\) are represented by the red and blue dots, respectively. Drag on the scene to move around, and either pinch on a touchscreen or use the scrollwheel on a mouse to zoom.
-	
-	!wilson
+If we take
 
-!end-text-block
+$$
+	x_2 = x_1 - \frac{f(x_1)}{f'(x_1)}
+$$
+
+and repeat this recursively to create an $x_n$ for every positive integer $n$, then the sequence $(x_n)$ usually converges to a root of $f$.
+
+It turns out that Newton&#x2019;s method generalizes to polynomials defined over the complex numbers. Just like the <a href="/applets/julia-set-explorer/">Mandelbrot set</a>, this makes it easy to create images. For a function $f$, we color every point in the plane based on which root of $f$ that point eventually converges to when chosen as the initial guess. We also give it a brightness based on how long it takes to converge: bright for a short time and dark for a long one.
+
+This applet applies Newton&#x2019;s method to polynomials only. The white dots represent the roots, so an arrangement of them uniquely determines the (monic) polynomial with those roots. The polynomials $f(z) = z^n - 1$ have their roots spaced evenly around the point $0$, and have plots that look particularly nice, so there&#x2019;s a button to align the roots that way. The algorithm can also be generalized to produce incredible &mdash; and wildly chaotic &mdash; results. Changing the original formula
+
+$$
+	x_{n + 1} = x_n - \frac{f(x_n)}{f'(x_n)}
+$$
+
+to
+
+$$
+	x_{n + 1} = x_n - a\frac{f(x_n)}{f'(x_n)} + c
+$$
+
+gives us two new parameters to modify &mdash; here, $a$ and $c$ are represented by the red and blue dots, respectively. Drag on the scene to move around, and either pinch on a touchscreen or use the scrollwheel on a mouse to zoom.
+	
+### wilson
 
 
 
@@ -20,15 +38,11 @@
 
 <div id="canvas-landscape-left">
 
-!begin-text-boxes
-	
+### text-boxes
 	resolution 500 Resolution
-	
-!end-text-boxes
+###
 
-
-
-!begin-text-buttons
+### buttons
 	
 	add-root l Add Root
 	
@@ -38,7 +52,7 @@
 	
 	randomize-roots l Randomize Roots
 	
-!end-text-buttons
+###
 
 
 
@@ -46,14 +60,14 @@
 	<div class="text-box-container" data-aos="fade-up">
 		<input id="root-a-input" class="text-box no-floating-footer" type="text" value="0">
 		<label for="root-a-input">
-			<p class="body-text text-box-subtext">Root \(a\)</p>
+			<p class="body-text text-box-subtext">Root $a$</p>
 		</label>
 	</div>
 	
 	<div class="text-box-container" data-aos="fade-up">
 		<input id="root-b-input" class="text-box no-floating-footer" type="text" value="0">
 		<label for="root-b-input">
-			<p class="body-text text-box-subtext">Root \(b\)</p>
+			<p class="body-text text-box-subtext">Root $b$</p>
 		</label>
 	</div>
 </div>
@@ -82,19 +96,13 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
 </div>
-
-
-
-!footer
 
 
 
@@ -111,17 +119,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "Newton&#x2019;s Method",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

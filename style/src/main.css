@@ -33,13 +33,13 @@ body
 
 header
 {
-	margin-top: 100px;
-	margin-bottom: 50px;
+	margin-top: 80px;
+	margin-bottom: 32px;
 }
 
 section
 {
-	margin-bottom: 10vh;
+	margin-bottom: 128px;
 }
 
 
@@ -147,6 +147,7 @@ img
 	position: relative;
 	width: 70vw;
 	margin: 0 auto;
+	margin-bottom: 16px;
 }
 
 .body-text.narrow

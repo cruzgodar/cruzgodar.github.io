@@ -1,16 +1,10 @@
-!header Strange Attractors
-
-
-
-!begin-text-block
+# Strange Attractors
 	
-	The Butterfly Effect is one of those results in physics that&#x2019;s percolated all the way down to pop culture &mdash; the smallest action can lead to complete unpredictability. We see it everywhere from weather forecasts to time travel stories, and yet the math behind it isn&#x2019;t as commonly known. That&#x2019;s perfectly understandable, but it&#x2019;s still something worth seeing.
-	
-	The <dfn>Lorenz system</dfn> is a bare-bones model of atmospheric convection. Constants \(\sigma\), \(\rho\), and \(\beta\) specify the particular conditions, and once they&#x2019;re chosen, a particle is placed into empty space and allowed to move around. The path it traces is sometimes a simple one, converging to a specific location, but some choices of the three constants make the particle behave bizarrely &mdash; its path has a fractal structure. True to the butterfly effect, two points chosen arbitrarily close together in these situations will eventually diverge completely, but the picture drawn makes it clear that the paths need not be staticky chaos &mdash; here, they&#x2019;re surprisingly beautiful. This is just one example of a strange atractor, but it&#x2019;s a classic, and it&#x2019;s not hard to see why.
-	
-	!wilson
+The Butterfly Effect is one of those results in physics that&#x2019;s percolated all the way down to pop culture &mdash; the smallest action can lead to complete unpredictability. We see it everywhere from weather forecasts to time travel stories, and yet the math behind it isn&#x2019;t as commonly known. That&#x2019;s perfectly understandable, but it&#x2019;s still something worth seeing.
 
-!end-text-block
+The **Lorenz system** is a bare-bones model of atmospheric convection. Constants $\sigma$, $\rho$, and $\beta$ specify the particular conditions, and once they&#x2019;re chosen, a particle is placed into empty space and allowed to move around. The path it traces is sometimes a simple one, converging to a specific location, but some choices of the three constants make the particle behave bizarrely &mdash; its path has a fractal structure. True to the butterfly effect, two points chosen arbitrarily close together in these situations will eventually diverge completely, but the picture drawn makes it clear that the paths need not be staticky chaos &mdash; here, they&#x2019;re surprisingly beautiful. This is just one example of a strange atractor, but it&#x2019;s a classic, and it&#x2019;s not hard to see why.
+
+### wilson
 
 
 
@@ -18,7 +12,7 @@
 
 <div id="canvas-landscape-left">
 
-!begin-text-boxes
+### text-boxes
 	
 	grid-size 1000 Image Size
 	
@@ -28,19 +22,13 @@
 	
 	beta 2.67 \(\beta\)
 	
-!end-text-boxes
+###
 
+### checkbox toggle-maximum-speed Maximum speed
 
-
-!checkbox toggle-maximum-speed Maximum speed
-
-
-
-!begin-text-buttons
-	
+### buttons
 	generate l Generate
-	
-!end-text-buttons
+###
 
 </div>
 
@@ -48,7 +36,7 @@
 
 <div id="canvas-landscape-middle">
 
-!canvas
+### canvas
 
 </div>
 
@@ -56,19 +44,13 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
 </div>
-
-
-
-!footer
 
 
 
@@ -85,17 +67,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "Strange Attractors",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

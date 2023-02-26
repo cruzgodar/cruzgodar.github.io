@@ -1,18 +1,8 @@
+# The Secant Method
 
+!<a href="/applets/newtons-method/">Newton&#x2019;s method</a> is famous for producing beautiful fractals, but as a root-finding algorithm, it leaves a lot to be desired. There are dozens of successors to the method with better root-finding performance, but interestingly, all of them produce less interesting fractals. To find something better, we can turn to the secant method &mdash; an algorithm that predates Newton&#x2019;s method by thousands of years and doesn&#x2019;t even require taking a derivative. Its ability to find roots is markedly worse, and it&#x2019;s for that reason that the fractals it makes are more intricate and interesting. As in the Newton&#x2019;s method applet, the white dots represent the roots and the red and blue dots parameters that modify the algorithm.
 
-
-
-!header The Secant Method
-
-
-
-!begin-text-block
-	
-	<a href="/applets/newtons-method/">Newton&#x2019;s method</a> is famous for producing beautiful fractals, but as a root-finding algorithm, it leaves a lot to be desired. There are dozens of successors to the method with better root-finding performance, but interestingly, all of them produce less interesting fractals. To find something better, we can turn to the secant method &mdash; an algorithm that predates Newton&#x2019;s method by thousands of years and doesn&#x2019;t even require taking a derivative. Its ability to find roots is markedly worse, and it&#x2019;s for that reason that the fractals it makes are more intricate and interesting. As in the Newton&#x2019;s method applet, the white dots represent the roots and the red and blue dots parameters that modify the algorithm.
-	
-	!wilson
-	
-!end-text-block
+### wilson
 
 
 
@@ -20,15 +10,11 @@
 
 <div id="canvas-landscape-left">
 
-!begin-text-boxes
-	
+### text-boxes
 	resolution 500 Resolution
-	
-!end-text-boxes
+###
 
-
-
-!begin-text-buttons
+### buttons
 	
 	add-root l Add Root
 	
@@ -38,7 +24,7 @@
 	
 	randomize-roots l Randomize Roots
 	
-!end-text-buttons
+###
 
 
 
@@ -46,14 +32,14 @@
 	<div class="text-box-container" data-aos="fade-up">
 		<input id="root-a-input" class="text-box no-floating-footer" type="text" value="0">
 		<label for="root-a-input">
-			<p class="body-text">Root \(a\)</p>
+			<p class="body-text">Root $a$</p>
 		</label>
 	</div>
 	
 	<div class="text-box-container" data-aos="fade-up">
 		<input id="root-b-input" class="text-box no-floating-footer" type="text" value="0">
 		<label for="root-b-input">
-			<p class="body-text">Root \(b\)</p>
+			<p class="body-text">Root $b$</p>
 		</label>
 	</div>
 </div>
@@ -82,19 +68,13 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
 </div>
-
-
-
-!footer
 
 
 
@@ -111,17 +91,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "The Secant Method",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

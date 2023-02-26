@@ -1,16 +1,10 @@
-!header Three-Body Systems
+# Three-Body Systems
 
+Fix three planets in space and drop a particle somewhere in between them. If we ignore the forces of the planets on one another and only consider the path the particle takes around them, what will happen over time? Like the <a href="/applets/double-pendulum-fractal/">double pendulum fractal</a>, this applet answers that question by plotting the **parameter space** of possible starting positions. Every point in the plane is given a color, and every pixel in the image is colored by starting a particle at its location and tracking its color over time.
 
+This can be a little counter-intuitive: for example, since particles near a planet crash into it and stop moving, we initially see circles expanding from each planet, rather than contracting into them. This is because it takes longer for faraway particles to crash than close ones, and so those pixels enter the circle later. Particles that are close to more than one planet might have many complicated interactions before finally crashing somewhere, so the boundaries between the solid-color regions become extremely detailed &mdash; and of course, this is the whole point.
 
-!begin-text-block
-	
-	Fix three planets in space and drop a particle somewhere in between them. If we ignore the forces of the planets on one another and only consider the path the particle takes around them, what will happen over time? Like the <a href="/applets/double-pendulum-fractal/">double pendulum fractal</a>, this applet answers that question by plotting the <dfn>parameter space</dfn> of possible starting positions. Every point in the plane is given a color, and every pixel in the image is colored by starting a particle at its location and tracking its color over time.
-	
-	This can be a little counter-intuitive: for example, since particles near a planet crash into it and stop moving, we initially see circles expanding from each planet, rather than contracting into them. This is because it takes longer for faraway particles to crash than close ones, and so those pixels enter the circle later. Particles that are close to more than one planet might have many complicated interactions before finally crashing somewhere, so the boundaries between the solid-color regions become extremely detailed &mdash; and of course, this is the whole point.
-	
-	!wilson
-	
-!end-text-block
+### wilson
 
 
 
@@ -18,21 +12,17 @@
 
 <div id="canvas-landscape-left">
 
-!begin-text-boxes
-	
+### text-boxes
 	resolution 1000 Resolution
-	
-!end-text-boxes
+###
 
-
-
-!begin-text-buttons
+### buttons
 	
 	generate l Generate
 	
 	switch-planet-drawer-canvas l Pick Particle
 	
-!end-text-buttons
+###
 
 </div>
 
@@ -40,7 +30,7 @@
 
 <div id="canvas-landscape-middle">
 
-<div data-aos="fade-up" style="position: relative; margin: 0 auto; width: 100%; aspect-ratio: 1; margin-top: 5vh">
+<div data-aos="fade-up" style="position: relative; margin: 0 auto; width: 100%; aspect-ratio: 1; margin-bottom: 5vh">
 	<div style="position: absolute">
 		<canvas id="output-canvas" class="output-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
 	</div>
@@ -56,19 +46,13 @@
 
 <div id="canvas-landscape-right">
 
-!begin-text-buttons
-	
+### buttons
 	download l Download
-	
-!end-text-buttons
+###
 
 </div>
 
 </div>
-
-
-
-!footer
 
 
 
@@ -85,15 +69,6 @@
 			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 		}
 	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "Three-Body Systems",
-		
-		"small_margins_on_ultrawide": true
-	};
 	
 	Page.load();
 </script>

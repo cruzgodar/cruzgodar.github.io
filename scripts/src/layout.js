@@ -46,7 +46,7 @@ Page.Layout =
 		
 		
 		
-		if (this.old_layout_string !== this.layout_string && "small_margins_on_ultrawide" in Page.settings && Page.settings["small_margins_on_ultrawide"])
+		if (this.old_layout_string !== this.layout_string)
 		{
 			Site.Settings.reduce_page_margins();
 		}
