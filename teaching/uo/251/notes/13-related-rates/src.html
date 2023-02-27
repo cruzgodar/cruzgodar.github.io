@@ -1,32 +1,20 @@
+# Section 13: Related Rates
+
+### nav-buttons
+
+This is one of the last topics we&#x2019;ll cover, and mercifully, there&#x2019;s not a substantial amount here. The idea is simple: if we have two quantities that are related to one another &mdash; say the radius of a circle and its area &mdash; then their derivatives are related to. That&#x2019;s really not saying anything crazy: the area $A$ of a circle with radius $r$ is $A = \pi r^2$, so if the radius $r$ is increasing over time, then $r$, and therefore $A$, is a function of $t$. Differentiating both sides implicitly with respect to $t$, we get
+
+$$
+	\frac{dA}{dt} = 2 \pi r \frac{dr}{dt}.
+$$
+
+What this tells us is the relationship between the rate of change of the radius and the rate of change of the area. If at some time $t$, the radius is currently $3$ meters and is increasing at a rate of $4$ meters per second, then the area is increasing at $2\pi \cdot 3 \cdot 4 = 24\pi$ square meters per second.
+
+The technology behind related rates is just implicit differentiation, except that typically, there will be **two** variables depending on the one you&#x2019;re differentiating with respect to, rather than just one. Previously, we had $y$ dependent on $x$, and only $y$ had to be handled differently. In the motivating example before, both $r$ and $A$ depend on $t$, and so they both effectively become chain rule problems.
 
 
 
-
-!header Section 13: Related Rates
-
-!nav-buttons
-
-
-
-!begin-text-block
-	
-	This is one of the last topics we&#x2019;ll cover, and mercifully, there&#x2019;s not a substantial amount here. The idea is simple: if we have two quantities that are related to one another &mdash; say the radius of a circle and its area &mdash; then their derivatives are related to. That&#x2019;s really not saying anything crazy: the area $A$ of a circle with radius $r$ is $A = \pi r^2$, so if the radius $r$ is increasing over time, then $r$, and therefore $A$, is a function of $t$. Differentiating both sides implicitly with respect to $t$, we get
-	
-	$$
-		\frac{dA}{dt} = 2 \pi r \frac{dr}{dt}.
-	$$
-	
-	What this tells us is the relationship between the rate of change of the radius and the rate of change of the area. If at some time $t$, the radius is currently $3$ meters and is increasing at a rate of $4$ meters per second, then the area is increasing at $2\pi \cdot 3 \cdot 4 = 24\pi$ square meters per second.
-	
-	The technology behind related rates is just implicit differentiation, except that typically, there will be <strong>two</strong> variables depending on the one you&#x2019;re differentiating with respect to, rather than just one. Previously, we had $y$ dependent on $x$, and only $y$ had to be handled differently. In the motivating example before, both $r$ and $A$ depend on $t$, and so they both effectively become chain rule problems.
-	
-!end-text-block
-
-
-
-!begin-example
-	
-	related rates
+### ex related rates
 	
 	A bird is flying 100 feet off the ground at 10 feet per second. At some point, the bird passes directly above you &mdash; let $s$ be the distance from you to the bird, $t$ seconds after that happens. When $s = 200$, how fast is it increasing?
 	
@@ -38,7 +26,7 @@
 		s = \sqrt{x^2 + 100^2}.
 	$$
 	
-	!desmos related-rates
+	### desmos related-rates
 	
 	Now we can differentiate both sides implicitly.
 	
@@ -67,23 +55,17 @@
 	
 	This is a pretty reasonable answer! The diagonal distance should never be increasing faster than the horizontal distance, but the farther away the bird is, the more those two rates should approach one another.
 	
-!end-example
+###
 
-!begin-exercise
-	
-	related rates
+### exc related rates
 	
 	You&#x2019;re trying to blow up a spherical balloon. As the balloon fills up, the pressure makes it harder to inflate, so the rate of increase of volume decreases over time. Specifically, after $t$ seconds, the balloon is inflating at a rate of $5 \cdot 2^{-t}$ cubic centimeters per second. After 4 seconds, the volume is 20 cubic centimeters. How fast is the radius increasing at that point in time?
 	
-!end-exercise
+###
 
 
 
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -105,12 +87,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 13: Related Rates",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/251/notes"
 	};
 	

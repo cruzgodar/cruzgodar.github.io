@@ -1,24 +1,12 @@
+# Section 2: Limit Rules
+
+### nav-buttons
+
+A common trend in calculus is the introduction of a new operator &mdash; like limits &mdash; that&#x2019;s annoying or difficult to compute manually. The first thing we usually do is develop shortcuts and rules for working with it so we don&#x2019;t spend so much time working through slow and difficult computations. The only way we can calculate limits at the moment is pretty much by making a table of values and guessing &mdash; that&#x2019;s sloppy and time-consuming. Instead, let&#x2019;s look at some rules that make the process simpler in some special cases.
 
 
 
-
-!header Section 2: Limit Rules
-
-!nav-buttons
-
-
-
-!begin-text-block
-	
-	A common trend in calculus is the introduction of a new operator &mdash; like limits &mdash; that&#x2019;s annoying or difficult to compute manually. The first thing we usually do is develop shortcuts and rules for working with it so we don&#x2019;t spend so much time working through slow and difficult computations. The only way we can calculate limits at the moment is pretty much by making a table of values and guessing &mdash; that&#x2019;s sloppy and time-consuming. Instead, let&#x2019;s look at some rules that make the process simpler in some special cases.
-	
-!end-text-block
-
-
-
-!begin-prop
-	
-	basic limit rules
+### prop basic limit rules
 	
 	Let $f(x)$ and $g(x)$ be functions. Then:
 	
@@ -34,21 +22,15 @@
 	
 	6. $\displaystyle \lim_{x \to a} \sqrt[n]{f(x)} = \sqrt[n]{\lim_{x \to a} f(x)}$.
 	
-!end-prop
+###
 
 
 
-!begin-text-block
-	
-	All this says is that we can move limits inside powers and split them up across addition, subtration, multiplication, and division. In contrast to some things we&#x2019;ll introduce later, this makes limits pretty simple &mdash; all we need to know is how to take limits of basic functions, and then limits of more complicated ones break down into those simpler limits.
-	
-!end-text-block
+All this says is that we can move limits inside powers and split them up across addition, subtration, multiplication, and division. In contrast to some things we&#x2019;ll introduce later, this makes limits pretty simple &mdash; all we need to know is how to take limits of basic functions, and then limits of more complicated ones break down into those simpler limits.
 
 
 
-!begin-example
-	
-	basic limit rules
+### ex basic limit rules
 	
 	Evaluate $\displaystyle \lim_{x \to -3} (4x + 2)$.
 	
@@ -64,21 +46,15 @@
 	
 	Remember from last section that $\lim_{x \to a} x = a$ and $\lim_{x \to a} c = c$.
 	
-!end-example
+###
 
 
 
-!begin-text-block
-	
-	Two common types of functions are polynomials and rational functions (which are just one polynomial divided by another). Since both of those are just combinations of all the things the basic limit rules, we can take limits of polynomials and rational functions easily.
-	
-!end-text-block
+Two common types of functions are polynomials and rational functions (which are just one polynomial divided by another). Since both of those are just combinations of all the things the basic limit rules, we can take limits of polynomials and rational functions easily.
 
 
 
-!begin-prop
-	
-	limits of polynomials and rational functions
+### prop limits of polynomials and rational functions
 	
 	Let $p(x)$ and $q(x)$ be polynomials. Then
 	
@@ -94,13 +70,11 @@
 	
 	as long as $q(a) \neq 0$.
 	
-!end-prop
+###
 
 
 
-!begin-example
-	
-	limits of polynomials and rational functions
+### ex limits of polynomials and rational functions
 	
 	Find $\displaystyle \lim_{x \to 3} \frac{2x^2 - 3x + 1}{5x + 4}$.
 	
@@ -113,27 +87,21 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	limits of polynomials and rational functions
+### exc limits of polynomials and rational functions
 	
 	Find $\displaystyle \lim_{x \to -2} \left( 3x^3 - 2x + 7 \right)$.
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	The example we talked about in the last section &mdash; $g(h) = \frac{h^2}{h}$ &mdash; is a rational function that has a common factor that can be canceled (one copy of $h$ from the numerator and denomator). The result is that $g(h) = h$, unless $h = 0$, so the graph is a straight line with a single hole in it at $h = 0$. Common factors that can almost always cancel like this produce holes in the graph, and since everywhere else the function is described by a simplified equation, we can find the limit approaching a hole by just taking the same limit of the simplified equation. Let&#x2019;s look at an example to see what we mean.
-	
-!end-text-block
+The example we talked about in the last section &mdash; $g(h) = \frac{h^2}{h}$ &mdash; is a rational function that has a common factor that can be canceled (one copy of $h$ from the numerator and denomator). The result is that $g(h) = h$, unless $h = 0$, so the graph is a straight line with a single hole in it at $h = 0$. Common factors that can almost always cancel like this produce holes in the graph, and since everywhere else the function is described by a simplified equation, we can find the limit approaching a hole by just taking the same limit of the simplified equation. Let&#x2019;s look at an example to see what we mean.
 
 
 
-!begin-example
+### ex
 	
 	limits of rational functions with a common factor
 	
@@ -145,7 +113,7 @@
 		\frac{x^2 - 1}{x - 1} = \frac{(x - 1)(x + 1)}{x - 1}.
 	$$
 	
-	The limit as $x$ approaches $1$ of a function does <strong>not</strong> depend on what the function actually does at $x = 1$. Since that&#x2019;s the only time we&#x2019;re not allowed to cancel the factors of $x - 1$, we&#x2019;re good to go ahead and cancel the factors.
+	The limit as $x$ approaches $1$ of a function does **not** depend on what the function actually does at $x = 1$. Since that&#x2019;s the only time we&#x2019;re not allowed to cancel the factors of $x - 1$, we&#x2019;re good to go ahead and cancel the factors.
 	
 	$$
 		\lim_{x \to 1} \frac{x^2 - 1}{x - 1} = \lim_{x \to 1} (x + 1).
@@ -155,29 +123,21 @@
 	
 	!desmos limit-example
 	
-!end-example
+###
 
-!begin-exercise
-	
-	limits of rational functions with a common factor
+### exc limits of rational functions with a common factor
 	
 	Find $\displaystyle \lim_{x \to 3} \frac{x^2 - 3x}{2x^2 - 5x - 3}$.
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	It&#x2019;s a little harder when there is a square root in the numerator or denominator and we can&#x2019;t cancel a factor. A good strategy then is to multiply both the numerator and denominator of the fraction by the conjugate of the expression involving the square root. Remember that the conjugate just means the expression with the square root negated.
-	
-!end-text-block
+It&#x2019;s a little harder when there is a square root in the numerator or denominator and we can&#x2019;t cancel a factor. A good strategy then is to multiply both the numerator and denominator of the fraction by the conjugate of the expression involving the square root. Remember that the conjugate just means the expression with the square root negated.
 
 
 
-!begin-example
-	
-	limits of rational functions with a square root
+### ex limits of rational functions with a square root
 	
 	Find $\displaystyle \lim_{x \to -1} \frac{\sqrt{x + 2} - 1}{x + 1}$.
 	
@@ -195,31 +155,23 @@
 		\end{align*}
 	$$
 	
-	Notice that we were careful <em>not</em> to multiply out the denominator, since we expect to be able to cancel a factor of $x + 1$.
+	Notice that we were careful *not* to multiply out the denominator, since we expect to be able to cancel a factor of $x + 1$.
 	
-!end-example
+###
 
-!begin-exercise
-	
-	limits of rational functions with a square root
+### exc limits of rational functions with a square root
 	
 	Find $\displaystyle \lim_{x \to 5} \frac{\sqrt{x - 1} - 2}{x - 5}$.
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	Another example that arises involves getting a common denominator for rational functions.
-	
-!end-text-block
+Another example that arises involves getting a common denominator for rational functions.
 
 
 
-!begin-example
-	
-	a limit with a common denominator
+### ex a limit with a common denominator
 	
 	Evaluate $\displaystyle \lim_{y \to 0} \left( \frac{1}{y} + \frac{5}{y(y - 5)} \right)$.
 	
@@ -235,37 +187,29 @@
 	
 	Now we&#x2019;re allowed to cancel the factors of $y$ and plug in $y = 0$ to get that the limit is equal to $-\frac{1}{5}$.
 	
-!end-example
+###
 
 
 
-!begin-example
-	
-	a one-sided limit
+### ex a one-sided limit
 	
 	Evaluate $\displaystyle \lim_{t \to 2^-} \sqrt{t - 2}$.
 	
 	This one-sided limit is telling us to consider only numbers smaller than $2$. But if $t < 2$, then $t - 2$ is negative, so the function $\sqrt{t - 2}$ is undefined! Therefore, the limit must be undefined. Visually, we&#x2019;re trying to approach the point $(2, 0)$ from the left in this graph, but there is no graph to the left, so there&#x2019;s no way to approach.
 	
-	!desmos limit-example-2
+	### desmos limit-example-2
 	
 	On the other hand, the limit $\lim_{t \to 2^+} \sqrt{t - 2}$ exists and is equal to zero. Since this function is only defined from one direction near $t = 2$, we write $\lim_{t \to 2} \sqrt{t - 2}$ to mean $\lim_{t \to 2^+} \sqrt{t - 2}$, so the total limit exists and is equal to $2$.
 	
-!end-example
+###
 
 
 
-!begin-text-block
-	
-	What about infinite limits? They can be a little trickier to calculate.
-	
-!end-text-block
+What about infinite limits? They can be a little trickier to calculate.
 
 
 
-!begin-example
-	
-	a one-sided limit
+### ex a one-sided limit
 	
 	Evaluate $\displaystyle \lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x}$.
 	
@@ -296,29 +240,17 @@
 		\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x} = \infty.
 	$$
 	
-!end-example
+###
 
 
 
-!section
+## The Squeeze theorem
 
-!text s The Squeeze Theorem
-
-<br>
+The squeeze theorem is a little complicated to state, but it&#x2019;s a straightforward idea: if you can fit (squeeze) a function between two simpler ones that converge to each other, the limit of the squeezed function only has one place to go.
 
 
 
-!begin-text-block
-	
-	The squeeze theorem is a little complicated to state, but it&#x2019;s a straightforward idea: if you can fit (squeeze) a function between two simpler ones that converge to each other, the limit of the squeezed function only has one place to go.
-	
-!end-text-block
-
-
-
-!begin-thm
-	
-	the Squeeze theorem
+### thm The Squeeze Theorem
 	
 	Let $f(x)$, $g(x)$, and $h(x)$ be functions defined for all $x \neq a$ in some open interval containing $a$. If
 	
@@ -338,13 +270,11 @@
 		\lim_{x \to a} g(x) = L.
 	$$
 	
-!end-thm
+###
 
 
 
-!begin-example
-	
-	the Squeeze theorem
+### ex the Squeeze theorem
 	
 	Find $\displaystyle \lim_{x \to 0} x \sin(x)$.
 	
@@ -356,7 +286,7 @@
 	
 	We need to have the absolute value because otherwise the signs will be switched when $x$ is negative. Graphing the functions, we can see $x\sin(x)$ being squeezed between the other two functions.
 	
-	!desmos squeeze-theorem
+	### desmos squeeze-theorem
 	
 	Since $\lim_{x \to 0} |x| = 0$ and $\lim_{x \to 0} -|x| = 0$, we must have that
 	
@@ -366,15 +296,11 @@
 	
 	too. In general, you won&#x2019;t be asked to come up with squeeze theorem bounds on timed exams or quizzes, but on homework, it&#x2019;s fair game. Try to find functions that meet at the point you&#x2019;re limiting to and that bound the complicated function from above and below.
 	
-!end-example
+###
 
 
 
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -396,12 +322,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 2: Limit Rules",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/251/notes"
 	};
 	

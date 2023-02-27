@@ -38,6 +38,7 @@
 	width: min(70vw, 70vh);
 	margin: 0 auto;
 	border-radius: 15px;
+	margin-bottom: 16px;
 }
 
 
@@ -79,7 +80,7 @@
 
 .notes-pf
 {
-	border-color: rgb(63% 27% 100%);
+	border-color: rgb(46% 8% 83%);
 }
 
 .notes-cor
@@ -141,7 +142,7 @@
 
 .notes-pf-title
 {
-	background-color: rgb(63% 27% 100%);
+	background-color: rgb(46% 8% 83%);
 }
 
 .notes-cor-title

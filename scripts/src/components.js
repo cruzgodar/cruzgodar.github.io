@@ -393,15 +393,20 @@ Page.Components =
 			
 			
 			
-			//Leave math alone.
+			//Leave math alone (but wrap it in body text).
 			if (lines[i].slice(0, 2) === "$$")
 			{
+				lines[i] = `<p class="body-text">$$`;
+				
 				i++;
 				
 				while (lines[i].slice(0, 2) !== "$$")
 				{
+					lines[i] = lines[i].replace(/\\\\/g, "\\\\[4px]")
 					i++;
 				}
+				
+				lines[i] = `$$</p>`;
 				
 				i++;
 			}

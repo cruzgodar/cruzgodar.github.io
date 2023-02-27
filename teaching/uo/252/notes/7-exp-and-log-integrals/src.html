@@ -1,20 +1,12 @@
-!header Section 7: A Handful of Integrals
+# Section 7: A Handful of Integrals
 
-!nav-buttons
+### nav-buttons
 
-
-
-!begin-text-block
-	
-	So far, we know how to find antiderivatives of functions which are derivatives of common functions, and we can also sometimes find antiderivatives of compositions by using $u$-sub. In this section, we&#x2019;ll talk about a few more common integrals, and then we&#x2019;ll end with a summary of all the ones we know so far.
-	
-!end-text-block
+So far, we know how to find antiderivatives of functions which are derivatives of common functions, and we can also sometimes find antiderivatives of compositions by using $u$-sub. In this section, we&#x2019;ll talk about a few more common integrals, and then we&#x2019;ll end with a summary of all the ones we know so far.
 
 
 
-!begin-example
-	
-	An integral involving an exponential function
+### ex an integral involving an exponential function
 	
 	A certain strain of bacteria grows at a rate of $3^t$ new bacteria per hour. If the population starts at $100$ bacteria at time $0$, how many will there be after $6$ hours?
 	
@@ -57,15 +49,13 @@
 		N(6) = \frac{3^6}{\ln(3)} + 99.09 = 762.7.
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	An integral involving an exponential function
+### exc an integral involving an exponential function
 	
 	A radioactive substance degrades at a rate of $-.0953 \cdot 1.1^{-t}$ grams per year after $t$ years. If there is initially $1$ gram of the substance, how much will be left after $20$ years?
 	
-	Solution: if $m(t)$ is the mass of the substance after $t$ years, then $m'(t) = -.0953 \cdot 1.1^{-t} = $ and $m(0) = 1$. Thus
+	**Solution:** if $m(t)$ is the mass of the substance after $t$ years, then $m'(t) = -.0953 \cdot 1.1^{-t} = $ and $m(0) = 1$. Thus
 	
 	$$
 		\begin{align*}
@@ -77,13 +67,11 @@
 	
 	Then $m(0) = 1 = 1.0105 \cdot .91^0 + C = 1.0105 + C$, so $C = -.0105$. In total, $m(t) = 1.0105 \cdot .91^t - .0105$.
 	
-!end-exercise
+###
 
 
 
-!begin-example
-	
-	Another exponential integral
+### ex another exponential integral
 	
 	Find $\displaystyle \int \frac{2^{1/x}}{x^2}\,dx$.
 	
@@ -96,69 +84,55 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
+
+
+	
+We know that
+
+$$
+	\int \frac{1}{x}\,dx = \ln|x| + C,
+$$
+
+since
+
+$$
+	\frac{d}{dx}[\ln|x|] = \frac{1}{x},
+$$
+
+but we don&#x2019;t yet know the integral of $\ln(x)$, or more generally of $\log_a(x)$ for any $a$. Let&#x2019;s fix that now.
 
 
 
-!begin-text-block
-	
-	We know that
-	
-	$$
-		\int \frac{1}{x}\,dx = \ln|x| + C,
-	$$
-	
-	since
-	
-	$$
-		\frac{d}{dx}[\ln|x|] = \frac{1}{x},
-	$$
-	
-	but we don&#x2019;t yet know the integral of $\ln(x)$, or more generally of $\log_a(x)$ for any $a$. Let&#x2019;s fix that now.
-	
-!end-text-block
-
-
-
-!begin-prop
-	
-	the integral of $\ln$
+### prop the integral of $\ln$
 	
 	$$
 		\int \ln(x)\,dx = x\ln(x) - x + C.
 	$$
 	
-!end-prop
+###
 
-!begin-exercise
-	
-	the integral of $\ln$
+### exc the integral of $\ln$
 	
 	Differentiate $x\ln(x) - x + C$ and verify that you do in fact get $\ln(x)$.
 	
-	<strong>Solution:</strong> the product rule gives that the derivative is $\ln(x) + 1 - 1 = \ln(x)$.
+	**Solution:** the product rule gives that the derivative is $\ln(x) + 1 - 1 = \ln(x)$.
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	It&#x2019;s not at all clear how we were supposed to find this integral out, but it isn&#x2019;t all that hard to verify. Now we can integrate functions involving $\ln(x)$, and for logs with different bases, we can use the following formula:
-	
-	$$
-		\log_a(x) = \frac{\ln(x)}{\ln(a)}.
-	$$
-	
-	Remember that $\log_a(x)$ is the number you raise $a$ to in order to get $x$ &mdash; for example, $\log_2(8) = 3$, since $2^3 = 8$. And $\ln(x)$ is just a shorthand for $\log_e(x)$.
-	
-!end-text-block
+It&#x2019;s not at all clear how we were supposed to find this integral out, but it isn&#x2019;t all that hard to verify. Now we can integrate functions involving $\ln(x)$, and for logs with different bases, we can use the following formula:
+
+$$
+	\log_a(x) = \frac{\ln(x)}{\ln(a)}.
+$$
+
+Remember that $\log_a(x)$ is the number you raise $a$ to in order to get $x$ &mdash; for example, $\log_2(8) = 3$, since $2^3 = 8$. And $\ln(x)$ is just a shorthand for $\log_e(x)$.
 
 
 
-!begin-example
-	
-	a logarithmic integral
+### ex a logarithmic integral
 	
 	Find $\displaystyle \int_2^3 \log_2(5x)\,dx$.
 	
@@ -181,15 +155,13 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	a logarithmic integral
+### exc a logarithmic integral
 	
 	Find $\displaystyle \int_1^2 x\log_3(x^2)\,dx$.
 	
-	<strong>Solution:</strong> since we have a composition, we should try $u$-sub. Let $u = x^2$ &mdash; then $du = 2x\,dx$, so we have
+	**Solution:** since we have a composition, we should try $u$-sub. Let $u = x^2$ &mdash; then $du = 2x\,dx$, so we have
 	
 	$$
 		\begin{align*}
@@ -202,27 +174,17 @@
 		\end{align*}
 	$$
 	
-!end-exercise
+###
 
 
 
-!section
+## Inverse Trig Functions
 
-!text s Inverse Trig Functions
-
-<br>
+You may or may not have talked about derivatives of the inverse trig functions in Calc I, but we&#x2019;ll need them here to evaluate a few more integrals.
 
 
 
-!begin-text-block
-	
-	You may or may not have talked about derivatives of the inverse trig functions in Calc I, but we&#x2019;ll need them here to evaluate a few more integrals.
-	
-!end-text-block
-
-!begin-prop
-	
-	inverse trig integrals
+### prop inverse trig integrals
 	
 	1. $\displaystyle \int \frac{1}{\sqrt{a^2 - x^2}}\,dx = \sin^{-1}\left( \frac{x}{a} \right) + C$.
 	
@@ -230,21 +192,15 @@
 	
 	3. $\displaystyle \int \frac{1}{x\sqrt{x^2 - a^2}}\,dx = \frac{1}{a} \sec^{-1}\left( \frac{x}{a} \right) + C$.
 	
-!end-prop
+###
 
 
 
-!begin-text-block
-	
-	It might look like that last one is a $u$-sub problem, but it's actually not, since if we set $u = x^2 - a^2$, then $du = 2x\,dx$, and the integral contains $\frac{1}{x}\,dx$.
-	
-!end-text-block
+It might look like that last one is a $u$-sub problem, but it's actually not, since if we set $u = x^2 - a^2$, then $du = 2x\,dx$, and the integral contains $\frac{1}{x}\,dx$.
 
 
 
-!begin-example
-	
-	an inverse trig integral
+### ex an inverse trig integral
 	
 	Find $\displaystyle \int \frac{1}{\sqrt{4 - 9x^2}}\,dx$.
 	
@@ -260,47 +216,39 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	an inverse trig integral
+### exc an inverse trig integral
 	
 	Find $\displaystyle \int \frac{1}{x\sqrt{4x^2 - 4}}\,dx$.
 	
-	<strong>Solution:</strong> first we need to factor out a $4$. Then we have
+	**Solution:** first we need to factor out a $4$. Then we have
 	
 	$$
 		\int \frac{1}{2x\sqrt{x^2 - 1}}\,dx = \frac{1}{2} \sec^{-1}(x).
 	$$
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	For definite integrals, we&#x2019;ll need to remember how inverse trig functions are actually evaluated. They are the inverse functions to the standard trig functions, which means they take outputs to their coorsponding inputs. For example,
-	
-	$$
-		\sin\left(\frac{\pi}{3}\right) = \frac{\sqrt{3}}{2},
-	$$
-	
-	so
-	
-	$$
-		\sin^{-1}\left(\frac{\sqrt{3}}{2}\right) = \frac{\pi}{3}.
-	$$
-	
-	This isn&#x2019;t particularly relevant to this course&#x2019;s material, and your calculator can handle evaluating these, so we won&#x2019;t worry too much about practicing calculations with them. Instead, let&#x2019;s take a look at an integral example involving them.
-	
-!end-text-block
+For definite integrals, we&#x2019;ll need to remember how inverse trig functions are actually evaluated. They are the inverse functions to the standard trig functions, which means they take outputs to their coorsponding inputs. For example,
+
+$$
+	\sin\left(\frac{\pi}{3}\right) = \frac{\sqrt{3}}{2},
+$$
+
+so
+
+$$
+	\sin^{-1}\left(\frac{\sqrt{3}}{2}\right) = \frac{\pi}{3}.
+$$
+
+This isn&#x2019;t particularly relevant to this course&#x2019;s material, and your calculator can handle evaluating these, so we won&#x2019;t worry too much about practicing calculations with them. Instead, let&#x2019;s take a look at an integral example involving them.
 
 
 
-!begin-example
-	
-	a definite inverse trig integral
+### ex a definite inverse trig integral
 	
 	Find $\displaystyle \int_0^2 \frac{1}{\sqrt{16 - x^2}}\,dx$.
 	
@@ -315,15 +263,13 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	a definite inverse trig integral
+### exc a definite inverse trig integral
 	
 	Find $\displaystyle \int_{\sqrt{3}/3}^{\sqrt{3}} \frac{1}{1 + x^2}\,dx$.
 	
-	<strong>Solution:</strong> this is
+	**Solution:** this is
 	
 	$$
 		\begin{align*}
@@ -332,23 +278,15 @@
 		\end{align*}
 	$$
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	In the next section, we&#x2019;ll start looking at different applications of integrals, starting with the area between curves.
-	
-!end-text-block
+In the next section, we&#x2019;ll start looking at different applications of integrals, starting with the area between curves.
 
 
 
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -370,14 +308,8 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 7: Exponential, Logarithmic, and Inverse Trig Integrals",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/252/notes"
 	};
 	
 	Page.load();
-	</script>
+</script>

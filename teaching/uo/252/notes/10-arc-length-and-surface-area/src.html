@@ -1,76 +1,56 @@
+# Section 10: Arc Length and Surface Area
+
+### nav-buttons
+
+We&#x2019;re going to take a welcome break from 3D objects to talk about a simpler application of integrals... and then we&#x2019;ll get right back to the 3D stuff later in this section. Let&#x2019;s open with what arc length means, and then we&#x2019;ll see how to compute it.
 
 
 
-
-!header Section 10: Arc Length and Surface Area
-
-!nav-buttons
-
-
-
-!begin-text-block
-	
-	We&#x2019;re going to take a welcome break from 3D objects to talk about a simpler application of integrals... and then we&#x2019;ll get right back to the 3D stuff later in this section. Let&#x2019;s open with what arc length means, and then we&#x2019;ll see how to compute it.
-	
-!end-text-block
-
-
-
-!begin-def
-	
-	arc length
+### def arc length
 	
 	The arc length of a function $f(x)$ on $[a, b]$ is the length of the graph of $f$ between $x = a$ and $x = b$.
 	
-!end-def
+###
 
 
 
-!begin-example
-	
-	arc length
+### ex arc length
 	
 	The arc length of $f(x) = 2x + 1$ on $[0, 2]$ is $\sqrt{2^2 + 4^2} = \sqrt{20}$.
 	
-	!desmos line-arc-length
+	### desmos line-arc-length
 	
-!end-example
+###
 
 
 
-!begin-text-block
-	
-	As is quickly becoming standard, we don&#x2019;t really know how to do anything but the simplest case of straight lines, but as long as the function is smooth, we can approximate it with a bunch of tiny lines, each of whose length we can compute.
-	
-	!desmos arc-length-approximation
-	
-	Let&#x2019;s take a look at one of those small line segments. If it has rise $\Delta y$ and run $\Delta x$, then its length is
-	
-	$$
-		\sqrt{\Delta x^2 + \Delta y^2}
-	$$
-	
-	by the Pythagorean theorem, and factoring out the $\Delta x^2$ results in
-	
-	$$
-		\sqrt{1 + \left( \frac{\Delta y}{\Delta x} \right)^2} \cdot \Delta x.
-	$$
-	
-	Now as $\Delta x \to 0$, the approximation gets better and better. We have that
-	
-	$$
-		\frac{\Delta y}{\Delta x} \to f'(x)
-	$$
-	
-	and $\Delta x \to dx$. Since we&#x2019;re adding up all of these shrinking segment lengths, we need to integrate what we get, which in total has become...
-	
-!end-text-block
+As is quickly becoming standard, we don&#x2019;t really know how to do anything but the simplest case of straight lines, but as long as the function is smooth, we can approximate it with a bunch of tiny lines, each of whose length we can compute.
+
+### desmos arc-length-approximation
+
+Let&#x2019;s take a look at one of those small line segments. If it has rise $\Delta y$ and run $\Delta x$, then its length is
+
+$$
+	\sqrt{\Delta x^2 + \Delta y^2}
+$$
+
+by the Pythagorean theorem, and factoring out the $\Delta x^2$ results in
+
+$$
+	\sqrt{1 + \left( \frac{\Delta y}{\Delta x} \right)^2} \cdot \Delta x.
+$$
+
+Now as $\Delta x \to 0$, the approximation gets better and better. We have that
+
+$$
+	\frac{\Delta y}{\Delta x} \to f'(x)
+$$
+
+and $\Delta x \to dx$. Since we&#x2019;re adding up all of these shrinking segment lengths, we need to integrate what we get, which in total has become...
 
 
 
-!begin-thm
-	
-	arc length
+### thm arc length
 	
 	Let $f(x)$ be a differentiable function on $[a, b]$. The arc length of $f$ is
 	
@@ -78,13 +58,11 @@
 		\int_a^b \sqrt{1 + f'(x)^2}\,dx.
 	$$
 	
-!end-thm
+###
 
 
 
-!begin-example
-	
-	arc length
+### ex arc length
 	
 	Find the arc length of $\displaystyle f(x) = 2x^{3/2}$ on $[0, 1]$.
 	
@@ -102,15 +80,13 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	arc length
+### exc arc length
 	
 	Find the arc length of $\displaystyle y = x^{2/3}$ on $[0, 2]$. (Hint: rewrite it as a function of $y$.)
 	
-	<strong>Solution:</strong> as a function of $y$, we have $x = y^{3/2}$, and the interval runs from $y = 0^{3/2} = 0$ to $y = 2^{3/2} = \sqrt{8}$. As before, we have $f'(y) = 3y^{1/2}$, so $f'(y)^2 = 9y$. Then the arc length is
+	**Solution:** as a function of $y$, we have $x = y^{3/2}$, and the interval runs from $y = 0^{3/2} = 0$ to $y = 2^{3/2} = \sqrt{8}$. As before, we have $f'(y) = 3y^{1/2}$, so $f'(y)^2 = 9y$. Then the arc length is
 	
 	$$
 		\begin{align*}
@@ -123,31 +99,19 @@
 		\end{align*}
 	$$
 	
-!end-exercise
+###
 
 
 
-!section
+## Surface Area
 
-!text s Surface Area
+By know, we know how to find the volume of a solid of revolution, but what about its surface area? This is thankfully much easier &mdash; repeating our same straight-line argument but scaling by $2 \pi f(x)$ &mdash; the circumference of a circle &mdash; changes the integral to adding up lots of thin circles around the outside of the solid, which is exactly what we need.
 
-<br>
-
-
-
-!begin-text-block
-	
-	By know, we know how to find the volume of a solid of revolution, but what about its surface area? This is thankfully much easier &mdash; repeating our same straight-line argument but scaling by $2 \pi f(x)$ &mdash; the circumference of a circle &mdash; changes the integral to adding up lots of thin circles around the outside of the solid, which is exactly what we need.
-	
-	!desmos surface-area
-	
-!end-text-block
+### desmos surface-area
 
 
 
-!begin-thm
-	
-	surface area
+### thm surface area
 	
 	Let $f(x)$ be a differentiable function on $[a, b]$. The surface area of the solid of revolution generated by revolving the graph of $f$ about the $x$-axis is
 	
@@ -155,13 +119,11 @@
 		\int_a^b 2\pi f(x) \sqrt{1 + f'(x)^2}\,dx.
 	$$
 	
-!end-thm
+###
 
 
 
-!begin-example
-	
-	surface area
+### ex surface area
 	
 	Find the surface area of the solid created by revolving the graph of $y = x^2$ on $[0, 6]$ about the $y$-axis.
 	
@@ -179,29 +141,23 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	surface area
+### exc surface area
 	
 	Find the surface area of the solid created by revolving the graph of $y = x$ on $[1, 3]$ about the $x$-axis.
 	
-	<strong>Solution:</strong> we have $f'(x) = 1$, so $(f'(x))^2 = 1$. Then the integral becomes
+	**Solution:** we have $f'(x) = 1$, so $(f'(x))^2 = 1$. Then the integral becomes
 	
 	$$
 		\int_1^3 2\pi x \sqrt{2}\,dx = 2\pi\sqrt{2}\left( \frac{9}{2} - \frac{1}{2} \right).
 	$$
 	
-!end-exercise
+###
 
 
 
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -223,12 +179,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 10: Arc Length and Surface Area",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/252/notes"
 	};
 	

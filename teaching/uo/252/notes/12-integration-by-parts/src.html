@@ -1,49 +1,38 @@
+# Section 12: Integration by Parts
+
+### nav-buttons
+
+The only technique we have to compute integrals at the moment is $u$-sub, which is an analogue of the chain rule. What we&#x2019;ll introduce in this section is an analogue of the product rule. As before, it will look different in practice, but we&#x2019;ll see that it&#x2019;s really just the same thing in the end.
+
+If $u$ and $v$ are differentiable functions, then
+
+$$
+	\frac{d}{dx} [uv] = \frac{d}{dx}[u] \cdot v + u \cdot \frac{d}{dx}[v].
+$$
+
+Equivalently,
+
+$$
+	u \cdot \frac{dv}{dx} = \frac{d(uv)}{dx} - v \cdot \frac{du}{dx}
+$$
+
+Taking the strange step of multiplying both sides of this equation by $dx$, we have
+
+$$
+	u\,dv = d(uv) - v\,du.
+$$
+
+And now if we integrate both sides, we get
+
+$$
+	\int u\,dv = uv - \int v\,du.
+$$
+
+This is the form we&#x2019;ll use, but just like with $u$-sub, we have a process to make it easier than having to interpret this somewhat obscure formula.
 
 
 
-
-!header Section 12: Integration by Parts
-
-!nav-buttons
-
-
-!begin-text-block
-	
-	The only technique we have to compute integrals at the moment is $u$-sub, which is an analogue of the chain rule. What we&#x2019;ll introduce in this section is an analogue of the product rule. As before, it will look different in practice, but we&#x2019;ll see that it&#x2019;s really just the same thing in the end.
-	
-	If $u$ and $v$ are differentiable functions, then
-	
-	$$
-		\frac{d}{dx} [uv] = \frac{d}{dx}[u] \cdot v + u \cdot \frac{d}{dx}[v].
-	$$
-	
-	Equivalently,
-	
-	$$
-		u \cdot \frac{dv}{dx} = \frac{d(uv)}{dx} - v \cdot \frac{du}{dx}
-	$$
-	
-	Taking the strange step of multiplying both sides of this equation by $dx$, we have
-	
-	$$
-		u\,dv = d(uv) - v\,du.
-	$$
-	
-	And now if we integrate both sides, we get
-	
-	$$
-		\int u\,dv = uv - \int v\,du.
-	$$
-	
-	This is the form we&#x2019;ll use, but just like with $u$-sub, we have a process to make it easier than having to interpret this somewhat obscure formula.
-	
-!end-text-block
-
-
-
-!begin-thm
-	
-	integration by parts
+### thm integration by parts
 	
 	To evaluate $\int f(x) g(x)\,dx$ with integration by parts, we need to be able differentiate $f(x)$ and integrate $g(x)$. Let $u = f(x)$ and $dv = g(x)\,dx$. Then find $du = f'(x)\,dx$ and $v = \int g(x)\,dx$, and rewrite the integral as
 	
@@ -53,17 +42,15 @@
 	
 	Then attempt to solve the integral left in this equation &mdash; if the process was successful, it will now be integrable. We may need to repeat the process on this new integral.
 	
-!end-thm
+###
 
 
 
-!begin-example
-	
-	integration by parts
+### ex integration by parts
 	
 	Find $\displaystyle \int x\sin(x)\,dx$.
 	
-	We can&#x2019;t do this directly, since we (probably) don&#x2019;t know a function whose derivative is $x\sin(x)$. There&#x2019;s also no composition here, so all we have left is integration by parts. The two parts are $x$ and $\sin(x)$, and we&#x2019;re going to differentiate one and integrate the other. If we integrate $x$, we&#x2019;re going to get $\frac{x^2}{2}$, and that&#x2019;s <strong>more complicated,</strong> which means it&#x2019;s probably a bad idea. Instead, let&#x2019;s try differentiating it. That means letting $u = x$ and $dv = \sin(x)\,dx$. Then $du = dx$ and
+	We can&#x2019;t do this directly, since we (probably) don&#x2019;t know a function whose derivative is $x\sin(x)$. There&#x2019;s also no composition here, so all we have left is integration by parts. The two parts are $x$ and $\sin(x)$, and we&#x2019;re going to differentiate one and integrate the other. If we integrate $x$, we&#x2019;re going to get $\frac{x^2}{2}$, and that&#x2019;s **more complicated**, which means it&#x2019;s probably a bad idea. Instead, let&#x2019;s try differentiating it. That means letting $u = x$ and $dv = \sin(x)\,dx$. Then $du = dx$ and
 	
 	$$
 		v = \int \sin(x)\,dx = -\cos(x)
@@ -79,29 +66,25 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	integration by parts
+### exc integration by parts
 	
 	Find $\displaystyle \int ye^y\,dy$.
-	<!--
-	<strong>Solution:</strong> just like in the last example, let $u = y$ and $dv = e^y\,dy$. Then $du = dy$ and $v = e^y$, so we get
+	
+	**Solution:** just like in the last example, let $u = y$ and $dv = e^y\,dy$. Then $du = dy$ and $v = e^y$, so we get
 	
 	$$
 		\begin{align*}
 			ye^y - \int e^y\,dy &= ye^y - e^y + C.
 		\end{align*}
 	$$
-	-->
-!end-exercise
-
-
-
-!begin-example
 	
-	integration by parts
+###
+
+
+
+### ex integration by parts
 	
 	Find $\displaystyle \int \frac{\ln(t)}{t^2}\,dt$.
 	
@@ -128,21 +111,15 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
 
 
-!begin-text-block
-	
-	Sometimes, we&#x2019;ll need to apply integration by parts more than once.
-	
-!end-text-block
+Sometimes, we&#x2019;ll need to apply integration by parts more than once.
 
 
 
-!begin-example
-	
-	integration by parts twice
+### ex integration by parts twice
 	
 	Find $\displaystyle \int x^2 e^{3x}\,dx$.
 	
@@ -162,15 +139,13 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	integration by parts twice
+### exc integration by parts twice
 	
 	Find $\displaystyle \int t^2 \cos(2t)\,dt$.
 	
-	<strong>Solution:</strong> by the same logic, let $u = t^2$ and $dv = \cos(2t)\,dt$. Then $du = 2t\,dt$ and $v = \frac{1}{2} \sin(2t)\,dt$, so the integral becomes
+	**Solution:** by the same logic, let $u = t^2$ and $dv = \cos(2t)\,dt$. Then $du = 2t\,dt$ and $v = \frac{1}{2} \sin(2t)\,dt$, so the integral becomes
 	
 	$$
 		\frac{1}{2}t^2\sin(2t) - \int \frac{1}{2} \sin(2t) (2t)\,dt = \frac{1}{2}t^2\sin(2t) - \int t \sin(2t)\,dt.
@@ -182,21 +157,15 @@
 		\frac{1}{2}t^2\sin(2t) - \left(-\frac{1}{2} t \cos(2t) - \int -\frac{1}{2} \cos(2t)\,dt \right) = \frac{1}{2}t^2\sin(2t) + \frac{1}{2} t \cos(2t) - \frac{1}{4} \sin(2t) + C.
 	$$
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	Things can get a little more complicated when multiple integration strategies are involved. First of all, <strong>try $u$-sub first.</strong> If you&#x2019;re trying to integrate $x\sin(x^2)$, trying to do it by parts will never work, since it&#x2019;s impossible to integrate $\sin(x^2)$ without that extra $x$ for $u$-sub. If it doesn&#x2019;t seem like $u$-sub will help, then try integrating by parts. Sometimes you&#x2019;ll even need to use both.
-	
-!end-text-block
+Things can get a little more complicated when multiple integration strategies are involved. First of all, <strong>try $u$-sub first.</strong> If you&#x2019;re trying to integrate $x\sin(x^2)$, trying to do it by parts will never work, since it&#x2019;s impossible to integrate $\sin(x^2)$ without that extra $x$ for $u$-sub. If it doesn&#x2019;t seem like $u$-sub will help, then try integrating by parts. Sometimes you&#x2019;ll even need to use both.
 
 
 
-!begin-example
-	
-	integration by parts and $u$-sub
+### ex integration by parts and $u$-sub
 	
 	Find $\displaystyle \int y^3 e^{y^2}\,dy$.
 	
@@ -218,13 +187,11 @@
 		y^2 e^{y^2} - \frac{1}{2} e^{y^2} + C.
 	$$
 	
-!end-example
+###
 
 
 
-!begin-example
-	
-	integration by parts on definite integrals
+### ex integration by parts on definite integrals
 	
 	The region bounded by $y = \cos(x)$, $y = 0$, and $x = 0$ is revolved about the $y$-axis. Find its volume.
 	
@@ -244,15 +211,13 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	integration by parts on definite integrals
+### exc integration by parts on definite integrals
 	
 	Find $\displaystyle \int_1^3 x^3 \sin(x^2)\,dx$.
-	<!--
-	<strong>Solution:</strong> we see a composition ($\sin(x^2)$), so we should try $u$-sub before integrating by parts. Let $u = x^2$, so that $du = 2x\,dx$. Then $\frac{1}{2}\,du = x\,dx$, so the integral becomes
+	
+	**Solution:** we see a composition ($\sin(x^2)$), so we should try $u$-sub before integrating by parts. Let $u = x^2$, so that $du = 2x\,dx$. Then $\frac{1}{2}\,du = x\,dx$, so the integral becomes
 	
 	$$
 		\int_1^3 \frac{1}{2} u \sin(u)\,du.
@@ -275,16 +240,12 @@
 	$$
 		\left. \left[ -\frac{1}{2} x^2 \cos(x^2) + \frac{1}{2} \sin(x^2) \right] \right|_1^3 = \frac{1}{2} (\sin(9) - 9\cos(9) - \sin(1) + \cos(1)).
 	$$
-	-->
-!end-exercise
+	
+###
 
 
 
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -306,12 +267,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 12: Integration by Parts",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/252/notes"
 	};
 	

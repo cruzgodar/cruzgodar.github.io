@@ -1,34 +1,20 @@
+# Section 14: Partial Fractions
+
+### nav-buttons
+
+We&#x2019;re ready for our final integration technique. This one will let us handle complicated rational functions, which are just functions that are one polynomial divided by another. Compared to the first three techniques, which tell us substitutions we can make to simplify the integral, this one just splits one complicated function into many simple ones, each of which we can then integrate separately.
 
 
 
-
-!header Section 14: Partial Fractions
-
-!nav-buttons
-
-
-
-!begin-text-block
+### def degree of a polynomial
 	
-	We&#x2019;re ready for our final integration technique. This one will let us handle complicated rational functions, which are just functions that are one polynomial divided by another. Compared to the first three techniques, which tell us substitutions we can make to simplify the integral, this one just splits one complicated function into many simple ones, each of which we can then integrate separately.
+	Let $P(x)$ be a polynomial. The **degree** of $P$, written $\deg(P)$, is the largest exponent on $x$ in $P(x)$.
 	
-!end-text-block
+###
 
 
 
-!begin-def
-	
-	degree of a polynomial
-	
-	Let $P(x)$ be a polynomial. The degree of $P$, written $\deg(P)$, is the largest exponent on $x$ in $P(x)$.
-	
-!end-def
-
-
-
-!begin-example
-	
-	degree of a polynomial
+### ex degree of a polynomial
 	
 	$\displaystyle \deg(x^5 + 2x^4 - 2) = 5$.
 	
@@ -36,27 +22,21 @@
 	
 	$\displaystyle \deg(x^3 + 2x^2 - x^3) = 2$.
 	
-!end-example
+###
 
 
 
-!begin-text-block
-	
-	In general, partial fractions will work on functions of the form $\frac{P(x)}{Q(x)}$, where $P$ and $Q$ are polynomials and $\deg(P) &lt; \deg(Q)$. It will always require us to factor $Q$, so let&#x2019;s take a moment to remember how polynomials can factor. Ideally, a polynomial splits into <dfn>linear factors</dfn>. For example, if $Q(x) = x^2 - 5x + 6$, it factors into $(x - 2)(x - 3)$. We call them linear factors because $x - 2$ and $x - 3$ are both linear functions. Sometimes these factors might be repeated: $(x-2)^2(x-3)^2$ is written with linear factors, but both $(x-2)$ and $(x-3)$ appear twice.
-	
-	Finally, there are some polynomials that cannot be split into linear factors. For example, $x^2 + x + 1$ cannot factor &mdash; if we try to use the quadratic formula on it, the part under the square root is $\sqrt{b^2 - 4ac} = \sqrt{1 - 4} = \sqrt{-3}$, so there are no real numbers that solve the equation. We call a factor like $x^2 + x + 1$ an <strong>irreducible quadratic</strong>, because it is quadratic and doesn&#x2019;t split any further.
-	
-	Although the reason why is out of the scope of this class, every polynomial splits into linear and irreducible quadratic factors, possibly repeated. Partial fractions will split $\frac{P(x)}{Q(x)}$ into a handful of terms based on the factors of $Q(x)$, and we&#x2019;ll handle each one with a previous integration technique.
-	
-!end-text-block
+In general, partial fractions will work on functions of the form $\frac{P(x)}{Q(x)}$, where $P$ and $Q$ are polynomials and $\deg(P) &lt; \deg(Q)$. It will always require us to factor $Q$, so let&#x2019;s take a moment to remember how polynomials can factor. Ideally, a polynomial splits into **linear factors**. For example, if $Q(x) = x^2 - 5x + 6$, it factors into $(x - 2)(x - 3)$. We call them linear factors because $x - 2$ and $x - 3$ are both linear functions. Sometimes these factors might be repeated: $(x-2)^2(x-3)^2$ is written with linear factors, but both $(x-2)$ and $(x-3)$ appear twice.
+
+Finally, there are some polynomials that cannot be split into linear factors. For example, $x^2 + x + 1$ cannot factor &mdash; if we try to use the quadratic formula on it, the part under the square root is $\sqrt{b^2 - 4ac} = \sqrt{1 - 4} = \sqrt{-3}$, so there are no real numbers that solve the equation. We call a factor like $x^2 + x + 1$ an **irreducible quadratic**, because it is quadratic and doesn&#x2019;t split any further.
+
+Although the reason why is out of the scope of this class, every polynomial splits into linear and irreducible quadratic factors, possibly repeated. Partial fractions will split $\frac{P(x)}{Q(x)}$ into a handful of terms based on the factors of $Q(x)$, and we&#x2019;ll handle each one with a previous integration technique.
 
 
 
-!begin-thm
+### thm partial fractions
 	
-	partial fractions
-	
-	Let $\displaystyle \frac{P(x)}{Q(x)}$ be a ratio of polynomials. Factor $Q$ into linear and <strong>irreducible</strong> quadratic factors, and handle one factor at a time.
+	Let $\displaystyle \frac{P(x)}{Q(x)}$ be a ratio of polynomials. Factor $Q$ into linear and **irreducible** quadratic factors, and handle one factor at a time.
 	
 	For a linear factor $(x - a)^n$, add
 	
@@ -64,7 +44,7 @@
 		\frac{A}{x - a} + \frac{B}{(x - a)^2} + \frac{C}{(x - a)^3} + \cdots + \frac{D}{(x - a)^n}
 	$$
 	
-	to a running total. For an <strong>irreducible</strong> quadratic factor $(x^2 + ax + b)^n$, add
+	to a running total. For an **irreducible** quadratic factor $(x^2 + ax + b)^n$, add
 	
 	$$
 		\frac{Ax + B}{x^2 + ax + b} + \frac{Cx + D}{(x^2 + ax + b)^2} + \frac{Ex + F}{(x^2 + ax + b)^3} + \cdots + \frac{Gx + H}{(x^2 + ax + b)^n}.
@@ -72,21 +52,15 @@
 	
 	The capital letter variables here are just examples &mdash; make sure they&#x2019;re all different. At the end, you&#x2019;ll have a large sum of terms. Set it equal to $\frac{P(x)}{Q(x)}$ and multiply both sides by the factored form of $Q(x)$. Then foil out everything on the right side and set corresponding coefficients of $x$ equal to one another to solve for all the variables.
 	
-!end-thm
+###
 
 
 
-!begin-text-block
-	
-	There&#x2019;s a lot to deal with here, but it&#x2019;s not so bad in practice. Let&#x2019;s start with a simple example and work our way up.
-	
-!end-text-block
+There&#x2019;s a lot to deal with here, but it&#x2019;s not so bad in practice. Let&#x2019;s start with a simple example and work our way up.
 
 
 
-!begin-example
-	
-	partial fractions
+### ex partial fractions
 	
 	Find $\displaystyle \int \frac{3x + 2}{x^3 - x^2 - 2x}\,dx$.
 	
@@ -145,15 +119,13 @@
 		\int \left( -\frac{1}{x} - \frac{1/3}{x + 1} + \frac{4/3}{x - 2} \right)\,dx = -\ln|x| - \frac{1}{3} \ln|x + 1| + \frac{4}{3} \ln|x - 2| + C.
 	$$
 	
-!end-example
+###
 
-!begin-exercise
+### exc partial fractions
 	
-	partial fractions
-	
-	Find $\int \frac{x - 2}{(x - 1)(2x - 1)}\,dx$.
-	
-	Solution: By partial fractions, this becomes
+	Find $\displaystyle \int \frac{x - 2}{(x - 1)(2x - 1)}\,dx$.
+	<!--
+	**Solution:** By partial fractions, this becomes
 	
 	$$
 		\begin{align*}
@@ -172,22 +144,16 @@
 	$$
 	
 	via a $u$-sub.
-	
-!end-exercise
+	-->
+###
 
 
 
-!begin-text-block
-	
-	The next most complicated type of example involves linear factors raised to a power. Partial fractions tells us to write as many terms as the power, incrementing the power of the denominator by one each time.
-	
-!end-text-block
+The next most complicated type of example involves linear factors raised to a power. Partial fractions tells us to write as many terms as the power, incrementing the power of the denominator by one each time.
 
 
 
-!begin-example
-	
-	partial fractions with a linear factor to a power
+### ex partial fractions with a linear factor to a power
 	
 	Find $\displaystyle \int \frac{8x}{(x-1)(x+1)^3}\,dx$.
 	
@@ -248,15 +214,13 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	partial fractions with a linear factor to a power
+### exc partial fractions with a linear factor to a power
 	
 	Find $\displaystyle \int \frac{27x^2}{(x+1)(x-2)^2}\,dx$.
 	<!--
-	<strong>Solution:</strong> Partial fractions tells us that
+	**Solution:** Partial fractions tells us that
 	
 	$$
 		\begin{align*}
@@ -277,19 +241,13 @@
 	
 	via two $u$-subs.
 	-->
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	The final thing to deal with is when there is an irreducible quadratic factor, like $x^2 + 1$. For these, we just change the numerator from $A$ to $Ax + B$, but we leave everything else the same.
-	
-!end-text-block
+The final thing to deal with is when there is an irreducible quadratic factor, like $x^2 + 1$. For these, we just change the numerator from $A$ to $Ax + B$, but we leave everything else the same.
 
-!begin-example
-	
-	partial fractions with an irreducible quadratic factor
+### ex partial fractions with an irreducible quadratic factor
 	
 	Find $\displaystyle \int \frac{9}{(x^2 + 2)(x+1)^2}\,dx$.
 	
@@ -361,11 +319,9 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	partial fractions with an irreducible quadratic factor
+### exc partial fractions with an irreducible quadratic factor
 	
 	Find $\displaystyle \int \frac{16}{x(x^2 + 4)^2}\,dx$.
 	<!--
@@ -389,15 +345,11 @@
 	
 	using $u = x^2 + 4$.
 	-->
-!end-exercise
+###
 
 
 
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -419,12 +371,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 14: Partial Fractions",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/252/notes"
 	};
 	

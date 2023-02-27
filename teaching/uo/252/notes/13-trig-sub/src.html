@@ -1,36 +1,24 @@
+# Section 13: Trig Sub
+
+### nav-buttons
+
+Our third integration technique is a very specific one: unlike $u$-sub, which allows us to integrate compositions, and integration by parts, which handles integrals of products, trig sub will deal with integrals containing one of the following three particular expressions:
+
+1. $\displaystyle \sqrt{a^2 - x^2}$
+
+2. $\displaystyle \sqrt{a^2 + x^2}$
+
+3. $\displaystyle \sqrt{x^2 - a^2}$
+
+These might look familiar: some integrals that evaluate to inverse trig functions look a lot like these. This process will be a little more general, though. Let&#x2019;s start with an example to see what the process looks like, and then we&#x2019;ll write down the general steps.
 
 
 
-
-!header Section 13: Trig Sub
-
-!nav-buttons
-
-
-
-!begin-text-block
-	
-	Our third integration technique is a very specific one: unlike $u$-sub, which allows us to integrate compositions, and integration by parts, which handles integrals of products, trig sub will deal with integrals containing one of the following three particular expressions:
-	
-	1. $\displaystyle \sqrt{a^2 - x^2}$
-	
-	2. $\displaystyle \sqrt{a^2 + x^2}$
-	
-	3. $\displaystyle \sqrt{x^2 - a^2}$
-	
-	These might look familiar: some integrals that evaluate to inverse trig functions look a lot like these. This process will be a little more general, though. Let&#x2019;s start with an example to see what the process looks like, and then we&#x2019;ll write down the general steps.
-	
-!end-text-block
-
-
-
-!begin-example
-	
-	trig sub
+### ex trig sub
 	
 	Find $\displaystyle \int \sqrt{9 - x^2}\,dx$.
 	
-	We can&#x2019;t use $u$-sub, since we would need to take $u = 9 - x^2$, and $du = 2x\,dx$ doesn&#x2019;t appear anywhere in the expression. We also can&#x2019;t use integration by parts, since there is no product here. Instead, let&#x2019;s do something strange: let $x = 3\sin(\theta)$. Then $dx = 3\cos(\theta)\,d\theta$. This looks like a $u$-sub a little bit, but we&#x2019;re <strong>going the other direction</strong> &mdash; we&#x2019;re letting $x$ be a function of $\theta$ rather than letting $u$ being a function of $x$. But the process now is the same: we just substitute in for $x$.
+	We can&#x2019;t use $u$-sub, since we would need to take $u = 9 - x^2$, and $du = 2x\,dx$ doesn&#x2019;t appear anywhere in the expression. We also can&#x2019;t use integration by parts, since there is no product here. Instead, let&#x2019;s do something strange: let $x = 3\sin(\theta)$. Then $dx = 3\cos(\theta)\,d\theta$. This looks like a $u$-sub a little bit, but we&#x2019;re **going the other direction** &mdash; we&#x2019;re letting $x$ be a function of $\theta$ rather than letting $u$ being a function of $x$. But the process now is the same: we just substitute in for $x$.
 	
 	$$
 		\begin{align*}
@@ -80,21 +68,15 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
 
 
-!begin-text-block
-	
-	If you&#x2019;re thinking this is a pretty intense process to go through... you&#x2019;re right! Trig sub is involved, but it does always proceed in the same way as the previous example. Let&#x2019;s write down the general process.
-	
-!end-text-block
+If you&#x2019;re thinking this is a pretty intense process to go through... you&#x2019;re right! Trig sub is involved, but it does always proceed in the same way as the previous example. Let&#x2019;s write down the general process.
 
 
 
-!begin-thm
-	
-	trig sub
+### thm trig sub
 	
 	1. Determine what to substitute for $x$. If the integral contains $\sqrt{a^2 - x^2}$, use $x = a\sin(\theta)$. If it contains $\sqrt{a^2 + x^2}$, use $x = a\tan(\theta)$. If it contains $\sqrt{x^2 - a^2}$, use $x = a\sec(\theta)$.
 	
@@ -118,23 +100,17 @@
 	
 	7. Substitute back for $x$. If there are any trig functions other than the one you set equal to $x$, you&#x2019;ll need to draw a right triangle.
 	
-!end-thm
+###
 
 
 
-!begin-text-block
+While we&#x2019;re on the subject, let&#x2019;s talk about a few of the identities and formulas you should know about trig functions.
+
+
+
+### prop trig identities
 	
-	While we&#x2019;re on the subject, let&#x2019;s talk about a few of the identities and formulas you should know about trig functions.
-	
-!end-text-block
-
-
-
-!begin-prop
-	
-	trig identities
-	
-	Definitions:
+	**Definitions:**
 	
 	1. $\displaystyle \sin(\theta) = \frac{\text{opp}}{\text{hyp}}$.
 	
@@ -150,7 +126,7 @@
 	
 	
 	
-	Integrals:
+	**Integrals:**
 	
 	1. $\displaystyle \int \tan(\theta)\,d\theta = \ln| \sec(\theta) | + C$.
 	
@@ -162,7 +138,7 @@
 	
 	
 	
-	Half-angle identities:
+	**Half-angle identities:**
 	
 	1. $\displaystyle \sin(2\theta) = 2\sin(\theta)\cos(\theta)$.
 	
@@ -174,7 +150,7 @@
 	
 	
 	
-	Relations:
+	**Relations:**
 	
 	1. $\displaystyle 1 - \sin^2(\theta) = \cos^2(\theta)$.
 	
@@ -182,21 +158,15 @@
 	
 	3. $\displaystyle \sec^2(\theta) - 1 = \tan^2(\theta)$.
 	
-!end-prop
+###
 
 
 
-!begin-text-block
-	
-	Since this class is on calculus and not trig, that complete list will be provided on exams. For now, let&#x2019;s get back to integrals and try another trig sub problem.
-	
-!end-text-block
+Since this class is on calculus and not trig, that complete list will be provided on exams. For now, let&#x2019;s get back to integrals and try another trig sub problem.
 
 
 
-!begin-example
-	
-	trig sub
+### ex trig sub
 	
 	Find $\displaystyle \int \frac{1}{\sqrt{4 + t^2}}\, dt$.
 	
@@ -229,15 +199,13 @@
 		\ln\left|\frac{1}{2}\sqrt{t^2 + 4} + \frac{t}{2}\right| + C.
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	trig sub
+### exc trig sub
 	
 	Find $\displaystyle \int \frac{1}{x^2 \sqrt{x^2 - 1}}\,dx$.
 	<!--
-	<strong>Solution:</strong> Let $x = \sec(\theta)$. Then $dx = \sec(\theta)\tan(\theta)$, so the integral becomes
+	**Solution:** Let $x = \sec(\theta)$. Then $dx = \sec(\theta)\tan(\theta)$, so the integral becomes
 	
 	$$
 		\begin{align*}
@@ -261,15 +229,11 @@
 		\frac{\sqrt{x^2 - 4}}{x} + C.
 	$$
 	-->
-!end-exercise
+###
 
 
 
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -291,12 +255,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 13: Trig Sub",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/252/notes"
 	};
 	

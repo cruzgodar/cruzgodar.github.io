@@ -1,56 +1,38 @@
+# Section 11: Optimization
+
+### nav-buttons
+
+With implicit differentiation behind us, we can move on to the applications of differentiation: not just what they can do in terms of slopes, but also other graph features. We&#x2019;ll begin with arguably the most useful thing derivatives are used for: optimizing functions.
+
+The idea is to figure out when a function is as large or as small as possible. That can mean maximizing profit, minimizing cost, or just about anything else. Let&#x2019;s give these ideas names so they&#x2019;re a little easier to talk about.
 
 
 
-
-!header Section 11: Optimization
-
-!nav-buttons
-
-
-
-!begin-text-block
+### def extrema
 	
-	With implicit differentiation behind us, we can move on to the applications of differentiation: not just what they can do in terms of slopes, but also other graph features. We&#x2019;ll begin with arguably the most useful thing derivatives are used for: optimizing functions.
+	Let $f$ be a function. A **local maximum** of $f$ is a point $x = a$ so that $f(a)$ is larger than any nearby value of $f(x)$. Similarly, a **local minimum** of $f$ is a point $x = a$ so that $f(a)$ is small than any nearby value of $f(x)$. Together, local maximina and minima are called **local extrema**.
 	
-	The idea is to figure out when a function is as large or as small as possible. That can mean maximizing profit, minimizing cost, or just about anything else. Let&#x2019;s give these ideas names so they&#x2019;re a little easier to talk about.
+	The **absolute maximum** of $f$, also called the **global maximum**, is the point where $f$ has the largest output overall. We have a similar definition for **global** or **absolute minimum**, and collectively these are called **global** or **absolute extrema**.
 	
-!end-text-block
+###
 
 
 
-!begin-def
-	
-	extrema
-	
-	Let $f$ be a function. A <dfn>local maximum</dfn> of $f$ is a point $x = a$ so that $f(a)$ is larger than any nearby value of $f(x)$. Similarly, a <dfn>local minimum</dfn> of $f$ is a point $x = a$ so that $f(a)$ is small than any nearby value of $f(x)$. Together, local maximina and minima are called <dfn>local extrema</dfn>.
-	
-	The <dfn>absolute maximum</dfn> of $f$, also called the <dfn>global maximum</dfn>, is the point where $f$ has the largest output overall. We have a similar definition for <dfn>global</dfn> or <dfn>absolute minimum</dfn>, and collectively these are called <dfn>global</dfn> or <dfn>absolute extrema</dfn>.
-	
-!end-def
+### desmos extrema
+
+Let&#x2019;s examine this graph. There are three ways local extrema occur here: first, at places like $x = \pm .345$, where the derivative is zero and the tangent line to the graph is therefore horizontal. This is the same idea as the midterm problem about height being maximized when velocity is zero.
+
+The next type of extremum is at the sharp corners, like $x = -2$. The derivative doesn&#x2019;t exist here, but the function value is still larger than the points nearby.
+
+Finally, endpoints of the function, like $x = -3$, are also local extrema: at $x = -3$, the only points nearby have a larger function value.
+
+These are in fact the *only* ways local extrema occur. Let&#x2019;s give the idea a name and then try some examples.
 
 
 
-!begin-text-block
+### def critical point
 	
-	!desmos extrema
-	
-	Let&#x2019;s examine this graph. There are three ways local extrema occur here: first, at places like $x = \pm .345$, where the derivative is zero and the tangent line to the graph is therefore horizontal. This is the same idea as the midterm problem about height being maximized when velocity is zero.
-	
-	The next type of extremum is at the sharp corners, like $x = -2$. The derivative doesn&#x2019;t exist here, but the function value is still larger than the points nearby.
-	
-	Finally, endpoints of the function, like $x = -3$, are also local extrema: at $x = -3$, the only points nearby have a larger function value.
-	
-	These are in fact the <em>only</em> ways local extrema occur. Let&#x2019;s give the idea a name and then try some examples.
-	
-!end-text-block
-
-
-
-!begin-def
-	
-	critical point
-	
-	Let $f$ be a function. A <dfn>critical point</dfn> of $f$ is an $x$-value $x = a$ such that either:
+	Let $f$ be a function. A **critical point** of $f$ is an $x$-value $x = a$ such that either:
 	
 	1. $f'(a) = 0$.
 	
@@ -58,25 +40,19 @@
 	
 	3. $a$ is on the boundary of an interval where $f$ is defined.
 	
-	A <dfn>critical value</dfn> of $f$ is the $y$-value cooresponding to a critical point.
+	A **critical value** of $f$ is the $y$-value cooresponding to a critical point.
 	
-!end-def
+###
 
 
 
-!begin-text-block
-	
-	All local extrema occur at critical points, but not all critical points are extrema. For example, $g(x) = x^3$ has $g'(x) = 3x^2$, so $x = 0$ is a critical point, but that is neither a local maximum nor minimum of $g$: instead, it&#x2019;s something called a <dfn>saddle point</dfn>.
-	
-	!desmos saddle-point
-	
-!end-text-block
+All local extrema occur at critical points, but not all critical points are extrema. For example, $g(x) = x^3$ has $g'(x) = 3x^2$, so $x = 0$ is a critical point, but that is neither a local maximum nor minimum of $g$: instead, it&#x2019;s something called a **saddle point**.
+
+### desmos saddle-point
 
 
 
-!begin-example
-	
-	critical points
+### ex critical points
 	
 	Find the critical points of $\displaystyle f(x) = x^5 - 3x^3 + x$ on $\displaystyle [-2, 1.5]$.
 	
@@ -109,13 +85,11 @@
 	
 	Assuming the function has a global max and min, the max is at $x = -1.297$ and the min is at $x = -2$. Looking at the graph backs this up.
 	
-	!desmos critical-points
+	### desmos critical-points
 	
-!end-example
+###
 
-!begin-exercise
-	
-	critical points
+### exc critical points
 	
 	Let $g(t)$ be defined by
 	
@@ -128,53 +102,35 @@
 	
 	Find the critical points of $g$ and explain why $g$ doesn&#x2019;t have either a global maximum or minimum.
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
+That last exercise illustrates an important point: functions aren&#x2019;t guaranteed to have global maxima or minima. In the first example, though, the function did, and there&#x2019;s a reason for that.
+
+
+
+### thm The Extreme Value Theorem
 	
-	That last exercise illustrates an important point: functions aren&#x2019;t guaranteed to have global maxima or minima. In the first example, though, the function did, and there&#x2019;s a reason for that.
+	Let $f$ be a function defined and continuous **everywhere** on an interval $[a, b]$. Then $f$ has a global maximum and minimum.
 	
-!end-text-block
+###
 
 
 
-!begin-thm
+## Concavity
+
+This is a fine start, but we really ought to know whether critical points are local minima, maxima, or saddle points. The way we&#x2019;ll get at this is via the second derivative: in the same way that the first derivative measures slope, the second one measures something called **concavity**. Remember that $f''(x)$ is just the derivative &mdash; and therefore the rate of change &mdash; of $f'(x)$. If $f''(x) > 0$, then the slope is increasing, and if $f''(x) < 0$, the slope is decreasing. Visually, this looks like the curve of the graph opening upward or downward.
 	
-	the Extreme Value Theorem
-	
-	Let $f$ be a function defined and continuous <strong>everywhere</strong> on an interval $[a, b]$. Then $f$ has a global maximum and minimum.
-	
-!end-thm
+### desmos concavity
+
+Here, the red parts of the graph are **concave up**, and the blue are **concave down**, corresponding to the places where $f''(x)$ is positive and negative, respectively. Click the empty circle next to $f''(x)$ in the Desmos shelf to plot it.
+
+Suppose $x = a$ is the type of critical point with $f'(a) = 0$. If $f''(a) < 0$, then the graph is concave down &mdash; in other words, it&#x2019;s curving down, so $x = a$ must be a local maximum. If $f''(a) > 0$, then $x = a$ must be a local minimum. If $f''(a) = 0$, we don&#x2019;t know for sure what&#x2019;s going on, but still, this process is very useful for classifying critical points. This is called the **second derivative test**, and it lets us classify most extrema.
 
 
 
-!section
-
-!text s Concavity
-
-<br>
-
-
-
-!begin-text-block
-	
-	This is a fine start, but we really ought to know whether critical points are local minima, maxima, or saddle points. The way we&#x2019;ll get at this is via the second derivative: in the same way that the first derivative measures slope, the second one measures something called <dfn>concavity</dfn>. Remember that $f''(x)$ is just the derivative &mdash; and therefore the rate of change &mdash; of $f'(x)$. If $f''(x) > 0$, then the slope is increasing, and if $f''(x) < 0$, the slope is decreasing. Visually, this looks like the curve of the graph opening upward or downward.
-	
-	!desmos concavity
-	
-	Here, the red parts of the graph are <dfn>concave up</dfn>, and the blue are <dfn>concave down</dfn>, corresponding to the places where $f''(x)$ is positive and negative, respectively. Click the empty circle next to $f''(x)$ in the Desmos shelf to plot it.
-	
-	Suppose $x = a$ is the type of critical point with $f'(a) = 0$. If $f''(a) < 0$, then the graph is concave down &mdash; in other words, it&#x2019;s curving down, so $x = a$ must be a local maximum. If $f''(a) > 0$, then $x = a$ must be a local minimum. If $f''(a) = 0$, we don&#x2019;t know for sure what&#x2019;s going on, but still, this process is very useful for classifying critical points. This is called the <dfn>second derivative test</dfn>, and it lets us classify most extrema.
-	
-!end-text-block
-
-
-
-!begin-example
-	
-	critical points
+### ex critical points
 	
 	Classify the critical points of $\displaystyle f(x) = x^5 - 3x^3 + x$ on $\displaystyle [-2, 1.5]$ using the second derivative test.
 	
@@ -196,51 +152,37 @@
 	
 	Therefore, the first and third are local maxima and the second and fourth are local minima.
 	
-!end-example
+###
 
 
 
-!begin-text-block
+Similarly to critical points, which are points where the derivative is zero or undefined, we have a similar concept (although not as useful to optimization) for the second derivative.
+
+
+
+### def inflection point
 	
-	Similarly to critical points, which are points where the derivative is zero or undefined, we have a similar concept (although not as useful to optimization) for the second derivative.
+	Let $f$ be a function. An **inflection point** of $f$ is an $x$-value $x = a$ where $f''(a) = 0$ and $f''(x)$ changes sign at $x = a$.
 	
-!end-text-block
+###
 
 
 
-!begin-def
-	
-	inflection point
-	
-	Let $f$ be a function. An <dfn>inflection point</dfn> of $f$ is an $x$-value $x = a$ where $f''(a) = 0$ and $f''(x)$ changes sign at $x = a$.
-	
-!end-def
+At critical points, a function often switches from increasing to decreasing or vice versa (not always &mdash; remember that saddle points exist). Similarly, at inflection points, functions switch from an increasing *derivative* to a decreasing one, or vice versa. You&#x2019;ll hear the term inflection point commonly used in the media &mdash; of late, it&#x2019;s often used to describe waves of case numbers for diseases. The inflection point on the beginning of a wave is the point where the derivative stops increasing and starts to decrease. Remember that we can interpret the derivative as approximately the change in the function value when the input changes by $1$: if $f(t)$ is the number of new cases on day $t$, then $f'(t)$ is approximately the amount that that number increases between days $t$ and $t + 1$. Therefore, the inflection point on the front side of a wave is the first day on which the number of new cases jumps up by more than it jumped up the day before.
+
+Back to optimization. Thankfully, even if the second derivative test is inconclusive (i.e. $f''(x) = 0$), we can examine the first derivative more closely to tell between maxima and minima.
 
 
 
-!begin-text-block
-	
-	At critical points, a function often switches from increasing to decreasing or vice versa (not always &mdash; remember that saddle points exist). Similarly, at inflection points, functions switch from an increasing <em>derivative</em> to a decreasing one, or vice versa. You&#x2019;ll hear the term inflection point commonly used in the media &mdash; of late, it&#x2019;s often used to describe waves of case numbers for diseases. The inflection point on the beginning of a wave is the point where the derivative stops increasing and starts to decrease. Remember that we can interpret the derivative as approximately the change in the function value when the input changes by $1$: if $f(t)$ is the number of new cases on day $t$, then $f'(t)$ is approximately the amount that that number increases between days $t$ and $t + 1$. Therefore, the inflection point on the front side of a wave is the first day on which the number of new cases jumps up by more than it jumped up the day before.
-	
-	Back to optimization. Thankfully, even if the second derivative test is inconclusive (i.e. $f''(x) = 0$), we can examine the first derivative more closely to tell between maxima and minima.
-	
-!end-text-block
-
-
-
-!begin-thm
-	
-	the First Derivative Test
+### thm the First Derivative Test
 	
 	Let $f(x)$ be a differentiable function and write down all of its critical points from left to right. Take a critical point $x = a$ and evaluate $f'(x)$ at two places: in between $a$ and the next critical point to the left and in between $x$ and the next critical point to the right. If the derivative switches sign from positive to negative, then $a$ is a local maximum. If it switches sign from negative to positive, then $a$ is a local minimum. If it doesn&#x2019;t switch sign, then $a$ is a saddle point.
 	
-!end-thm
+###
 
 
 
-!begin-example
-	
-	critical points
+### ex critical points
 	
 	Find and classify the extrema of $\displaystyle g(t) = t^6 - t^4$.
 	
@@ -256,25 +198,19 @@
 	
 	In order to figure out what&#x2019;s going on there, we can use the first derivative test. Since $\sqrt{2/3} \approx .816$, we just need to pick points in between $0$ and $.816$ and between $0$ and $-.816$. Let&#x2019;s just take $\pm .5$. Evaluating $g'$ there, we have $g'(-.5) = .3125$ and $g'(.5) = -.3125$. Since the derivative is positive before $t = 0$ and negative after, $t = 0$ must be a local maximum of $g$.
 	
-	!desmos first-derivative-test
+	### desmos first-derivative-test
 	
-!end-example
+###
 
-!begin-exercise
-	
-	critical points
+### exc critical points
 	
 	Find and classify the extrema of $h(x) = x^5 - 2x^3$ on $\displaystyle \left[-2, \sqrt{2}\right]$.
 	
-!end-exercise
+###
 
 
 
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -296,12 +232,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 11: Optimization",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/251/notes"
 	};
 	

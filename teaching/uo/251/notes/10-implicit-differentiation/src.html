@@ -1,48 +1,34 @@
+# Section 10: Implicit Differentiation
+
+### nav-buttons
+
+We typically define functions **explicitly**. All that means is that $y$ is written as a function of $x$, so that we have an equation of the form $y = f(x)$. The plot of this function is all of the $(x, y)$-pairs that satisfy the equation, and since $y$ is on its own, we can just plug in a bunch of $x$-values to $f$ and get the $y$-values directly.
+
+It&#x2019;s possible to write down functions without forcing $y$ to be alone on one side, though. For example, the equation $x^2 + y^2 = 1$ defines a curve: its points are given by all the $x$ and $y$ with $x^2 + y^2 = 1$. Now it&#x2019;s not possible to solve for $y$ explicitly this way, since we&#x2019;d have to take a square root, which results in $y = \pm \sqrt{1 - x^2}$. Visually, this means the curve doesn&#x2019;t pass the vertical line test, which means it&#x2019;s not a function.
+
+### desmos circle
+
+We can still talk about slopes of tangent lines, though. Pictured above is a graph of $x^2 + y^2 = 1$, along with two different tangent lines that share the same $x$-value. When a curve is defined with the $x$ and $y$ intermixed and not in the form $y = f(x)$, we say the curve is defined **implicitly**, and the process of finding the slopes of tangent lines is called **implicit differentiation**.
+
+The process takes a second to get used to, because it typically involves heavy use of the chain rule in situations where it might not seem to apply at first glance.
 
 
 
-
-!header Section 10: Implicit Differentiation
-
-!nav-buttons
-
-
-
-!begin-text-block
-	
-	We typically define functions <dfn>explicitly</dfn>. All that means is that $y$ is written as a function of $x$, so that we have an equation of the form $y = f(x)$. The plot of this function is all of the $(x, y)$-pairs that satisfy the equation, and since $y$ is on its own, we can just plug in a bunch of $x$-values to $f$ and get the $y$-values directly.
-	
-	It&#x2019;s possible to write down functions without forcing $y$ to be alone on one side, though. For example, the equation $x^2 + y^2 = 1$ defines a curve: its points are given by all the $x$ and $y$ with $x^2 + y^2 = 1$. Now it&#x2019;s not possible to solve for $y$ explicitly this way, since we&#x2019;d have to take a square root, which results in $y = \pm \sqrt{1 - x^2}$. Visually, this means the curve doesn&#x2019;t pass the vertical line test, which means it&#x2019;s not a function.
-	
-	!desmos circle
-	
-	We can still talk about slopes of tangent lines, though. Pictured above is a graph of $x^2 + y^2 = 1$, along with two different tangent lines that share the same $x$-value. When a curve is defined with the $x$ and $y$ intermixed and not in the form $y = f(x)$, we say the curve is defined <dfn>implicitly</dfn>, and the process of finding the slopes of tangent lines is called <dfn>implicit differentiation</dfn>.
-	
-	The process takes a second to get used to, because it typically involves heavy use of the Chain Rule in situations where it might not seem to apply at first glance.
-	
-!end-text-block
-
-
-
-!begin-thm
-	
-	implicit differentiation
+### thm implicit differentiation
 	
 	To find the derivative of a function defined implicitly in terms of $x$ and $y$:
 	
-	1. Take $\frac{d}{dx}$ of both sides. While derivatives of $x$ work normally, $y$ is a function of $x$, so it&#x2019;s necessary to use the Chain Rule. We have $\frac{d}{dx}[y] = \frac{dy}{dx}$, so for example, $\frac{d}{dx}[\tan(y)] = \sec^2(y) \cdot \frac{dy}{dx}$.
+	1. Take $\frac{d}{dx}$ of both sides. While derivatives of $x$ work normally, $y$ is a function of $x$, so it&#x2019;s necessary to use the chain rule. We have $\frac{d}{dx}[y] = \frac{dy}{dx}$, so for example, $\frac{d}{dx}[\tan(y)] = \sec^2(y) \cdot \frac{dy}{dx}$.
 	
 	2. Move all terms containing $\frac{dy}{dx}$ to one side of the equation and all the other terms to the other side.
 	
 	3. Factor out $\frac{dy}{dx}$ and divide by whatever is left over.
 	
-!end-thm
+###
 
 
 
-!begin-example
-	
-	implicit differentiation
+### ex implicit differentiation
 	
 	The curve $x^2 + y^2 = 1$ has two points with $x = \frac{1}{2}$. Find the slopes of the tangent lines for each point.
 	
@@ -67,29 +53,25 @@
 	
 	Similarly, the slope at the bottom point is $\frac{1}{\sqrt{3}}$. This looks about right given the previous picture.
 	
-!end-example
+###
 
-!begin-exercise
-	
-	implicit differentiation
+### exc implicit differentiation
 	
 	The graph of $\cos(\sin(y)) = \cos(x)$ looks like a sequence of braids.
 	
-	!desmos braids
+	### desmos braids
 	
 	Find $\frac{dy}{dx}$. Looking at the graph, the tangent line seems poorly defined when $x$ is a multiple of $2\pi$ and $y$ is a multiple of $\pi$. Explain what&#x2019;s going on using the equation.
 	
-!end-exercise
+###
 
 
 
-!begin-example
-	
-	implicit differentiation
+### ex implicit differentiation
 	
 	Find $\displaystyle \frac{dy}{dx}$ from the equation $x\sin(xy) = y$.
 	
-	!desmos sin-thing
+	### desmos sin-thing
 	
 	We have
 	
@@ -107,35 +89,23 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
 
 
-!section
+## Logarithmic Differentiation
 
-!text s Logarithmic Differentiation
+Implicit differentiation unlocks one extra technique: sometimes, difficult functions to differentiate become much easier when we take a log on both sides. Specifically, functions involving strange exponents will turn into multiplication, so we can use the product rule. So: if you have a function of the form $y = (f(x))^{g(x)}$, start by rewriting it as
 
-<br>
+$$
+	\ln(y) = \ln((f(x))^{g(x)}) = g(x)\ln(f(x)),
+$$
 
-
-
-!begin-text-block
-	
-	Implicit differentiation unlocks one extra technique: sometimes, difficult functions to differentiate become much easier when we take a log on both sides. Specifically, functions involving strange exponents will turn into multiplication, so we can use the product rule. So: if you have a function of the form $y = (f(x))^{g(x)}$, start by rewriting it as
-	
-	$$
-		\ln(y) = \ln((f(x))^{g(x)}) = g(x)\ln(f(x)),
-	$$
-	
-	and then differentiate implicitly.
-	
-!end-text-block
+and then differentiate implicitly.
 
 
 
-!begin-example
-	
-	logarithmic differentiation
+### ex logarithmic differentiation
 	
 	Find $\displaystyle \frac{d}{dx}[x^x]$.
 	
@@ -155,35 +125,27 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	logarithmic differentiation
+### exc logarithmic differentiation
 	
 	Find $\displaystyle \frac{d}{dx}\left[\sin(x)^{(e^x)}\right]$.
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	At long last, we can handle the derivative of $x^n$, where $n$ is not just a rational number, but <strong>any real number</strong>. Thankfully, it&#x2019;s exactly what we&#x2019;d like it to be.
-	
-!end-text-block
+At long last, we can handle the derivative of $x^n$, where $n$ is not just a rational number, but <strong>any real number</strong>. Thankfully, it&#x2019;s exactly what we&#x2019;d like it to be.
 
 
 
-!begin-thm
-	
-	the derivative of $x^n$ for any real $n$	
+### thm the derivative of $x^n$ for any real $n$	
 	
 	Let $n$ be a real number. Then $\displaystyle \frac{d}{dx}[x^n] = nx^{n-1}$.
 	
-!end-thm
+###
 
-!begin-proof
+### pf
 	
 	With $y = x^n$, write
 	
@@ -203,15 +165,11 @@
 		\frac{dy}{dx} = y\frac{n}{x} = \frac{nx^n}{x} = nx^{n-1}.
 	$$	
 	
-!end-proof
+###
 
 
 
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -233,12 +191,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 10: Implicit Differentiation",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/251/notes"
 	};
 	

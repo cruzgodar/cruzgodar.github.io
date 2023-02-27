@@ -1,90 +1,60 @@
+# Section 9: The Inverse Function Theorem
+
+### nav-buttons
+
+With the chain rule under our belt, we can differentiate any combination of two differentiable functions. There is one more way we can construct new functions &mdash; rather than putting two functions together, it starts from a single function. What we&#x2019;re talking about here is function inversion, and it&#x2019;s often a point of confusion in algebra, just like composition. So, just like composition, let&#x2019;s review.
 
 
 
-
-!header Section 9: The Inverse Function Theorem
-
-!nav-buttons
-
-
-
-!begin-text-block
+### def one-to-one
 	
-	With the chain rule under our belt, we can differentiate any combination of two differentiable functions. There is one more way we can construct new functions &mdash; rather than putting two functions together, it starts from a single function. What we&#x2019;re talking about here is function inversion, and it&#x2019;s often a point of confusion in algebra, just like composition. So, just like composition, let&#x2019;s review.
+	A function $y = f(x)$ is **one-to-one** if it passes the horizontal line test &mdash; that is, every $y$-value comes from only one $x$-value.
 	
-!end-text-block
+###
 
 
 
-!begin-def
-	
-	one-to-one
-	
-	A function $y = f(x)$ is <dfn>one-to-one</dfn> if it passes the horizontal line test &mdash; that is, every $y$-value comes from only one $x$-value.
-	
-!end-def
-
-
-
-!begin-example
-	
-	one-to-one
+### ex one-to-one
 	
 	The function $f(x) = x^2$ is not one-to-one, since $4 = f(-2) = f(2)$. On the other hand, $g(x) = x^5$ is one-to-one, since it passes the horizontal line test: every horizontal line intersects the graph at one point at most.
 	
-!end-example
+###
 
 
 
-!begin-def
+### def inverse function
 	
-	inverse function
+	Let $y = f(x)$ be a one-to-one function. The **inverse** to $f$ is the function $x = f^{-1}(y)$, defined so that if $(x, y)$ is a point on the graph of $f$, then $(y, x)$ is a point on the graph of $f^{-1}$.
 	
-	Let $y = f(x)$ be a one-to-one function. The <dfn>inverse</dfn> to $f$ is the function $x = f^{-1}(y)$, defined so that if $(x, y)$ is a point on the graph of $f$, then $(y, x)$ is a point on the graph of $f^{-1}$.
-	
-!end-def
+###
 
 
 
-!begin-text-block
-	
-	So $f^{-1}$ undoes $f$: it takes outputs of $f$ back to their corresponding inputs. In other words, $f^{-1}(f(x)) = x$ and $f(f^{-1}(x))$. This is why we need $f$ to be one-to-one: if two different $x$-values get sent to the same $y$-value, then the inverse function won&#x2019;t know which one to send that $y$-value back to.
-	
-!end-text-block
+So $f^{-1}$ undoes $f$: it takes outputs of $f$ back to their corresponding inputs. In other words, $f^{-1}(f(x)) = x$ and $f(f^{-1}(x))$. This is why we need $f$ to be one-to-one: if two different $x$-values get sent to the same $y$-value, then the inverse function won&#x2019;t know which one to send that $y$-value back to.
 
 
 
-!begin-example
-	
-	inverse functions
+### ex inverse functions
 	
 	The inverse to $f(x) = x^5$ is $\displaystyle f^{-1}(y) = \sqrt[5]{y}$, and the inverse to $\displaystyle f(x) = \frac{1}{x}$ is $\displaystyle f^{-1}(y) = \frac{1}{y}$.
 	
-!end-example
+###
 
-!begin-exercise
-	
-	inverse functions
+### exc inverse functions
 	
 	Find the inverse functions to $f(x) = e^x$ and $f(x) = \displaystyle \frac{x - 1}{x + 1}$. Hint: let $y = f(x)$ and solve for $x$.
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	While none of the six trig functions is one-to-one, we still really want to talk about their inverses. To help do that, we restrict their domain until they become one-to-one. This is a somewhat complicated subject that&#x2019;s not all that important for our purposes, so we&#x2019;ll gloss over it. All we need to know is that there are functions $\sin^{-1}(x)$, $\cos^{-1}(x)$, and so on, that undo the corresponding trig functions. For example, since $\sin(\theta)$ gives the $y$-coordinate of a point on the unit circle with angle $\theta$, $\sin^{-1}(y)$ gives the angle $\theta$ with that $y$-coordinate.
-	
-	Now that we&#x2019;ve reviewed inverse functions, let&#x2019;s talk about their derivatives.
-	
-!end-text-block
+While none of the six trig functions is one-to-one, we still really want to talk about their inverses. To help do that, we restrict their domain until they become one-to-one. This is a somewhat complicated subject that&#x2019;s not all that important for our purposes, so we&#x2019;ll gloss over it. All we need to know is that there are functions $\sin^{-1}(x)$, $\cos^{-1}(x)$, and so on, that undo the corresponding trig functions. For example, since $\sin(\theta)$ gives the $y$-coordinate of a point on the unit circle with angle $\theta$, $\sin^{-1}(y)$ gives the angle $\theta$ with that $y$-coordinate.
+
+Now that we&#x2019;ve reviewed inverse functions, let&#x2019;s talk about their derivatives.
 
 
 
-!begin-thm
-	
-	the Inverse Function Theorem
+### thm the Inverse Function Theorem
 	
 	Let $f$ be a differentiable function. Then
 	
@@ -92,21 +62,15 @@
 		(f^{-1})'(x) = \frac{1}{f'(f^{-1}(x))}.
 	$$
 	
-!end-thm
+###
 
 
 
-!begin-text-block
-	
-	So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compose the two.
-	
-!end-text-block
+So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compose the two.
 
 
 
-!begin-example
-	
-	the Inverse Function Theorem
+### ex the Inverse Function Theorem
 	
 	Find $\displaystyle \frac{d}{dx} [\sqrt{x}]$.
 	
@@ -120,27 +84,23 @@
 	
 	Hey, that&#x2019;s what we would have expected to get! It seems like the pattern of $\frac{d}{dx}[x^n] = nx^{n-1}$ might work for more than if $n$ is just an integer.
 	
-!end-example
+###
 
-!begin-exercise
-	
-	the Inverse Function Theorem
+### exc the Inverse Function Theorem
 	
 	Find $\displaystyle \frac{d}{dx} \left[\sqrt[3]{x}\right]$ using the Inverse Function Theorem.
 	
-!end-exercise
+###
 
 
 
-!begin-thm
-	
-	the derivative of $x^n$ for rational $n$
+### thm the derivative of $x^n$ for rational $n$
 	
 	Let $n$ be a rational number. Then $\frac{d}{dx}[x^n] = nx^{n-1}$.
 	
-!end-thm
+###
 
-!begin-proof
+### pf
 	
 	We can actually do the proof of this one! We don&#x2019;t get too many chances to present them, so let&#x2019;s take this one. Since $n$ is rational, we can write it as $n = \frac{a}{b}$, where $a$ and $b$ are integers. Then
 	
@@ -175,29 +135,17 @@
 		\end{align*}
 	$$
 	
-!end-proof
+###
 
 
 
-!section
-
-!text s The Derivatives of the Inverse Trig Functions
-
-<br>
-
-
-
-!begin-text-block
+## The Derivatives of the Inverse Trig Functions
 	
-	Somewhat strangely, the derivatives of the inverse trig functions are not other inverse trig functions &mdash; they&#x2019;re rational functions. We can find these with the IFT, but the process requires drawing right triangles. If you take Calculus II, you&#x2019;ll need to thoroughly learn this technique, and since it&#x2019;s not all that important to us right now, we&#x2019;re not going to cover it in this class. Instead, let&#x2019;s skip straight to the result.
-	
-!end-text-block
+Somewhat strangely, the derivatives of the inverse trig functions are not other inverse trig functions &mdash; they&#x2019;re rational functions. We can find these with the IFT, but the process requires drawing right triangles. If you take Calculus II, you&#x2019;ll need to thoroughly learn this technique, and since it&#x2019;s not all that important to us right now, we&#x2019;re not going to cover it in this class. Instead, let&#x2019;s skip straight to the result.
 
 
 
-!begin-thm
-	
-	the derivatives of the inverse trig functions
+### thm the derivatives of the inverse trig functions
 	
 	1. $\displaystyle \frac{d}{dx}[\sin^{-1}(x)] = \frac{1}{\sqrt{1 - x^2}}$.
 	
@@ -211,13 +159,11 @@
 	
 	6. $\displaystyle \frac{d}{dx}[\cot^{-1}(x)] = -\frac{1}{1 + x^2}$.
 	
-!end-thm
+###
 
 
 
-!begin-example
-	
-	an inverse trig derivative
+### ex an inverse trig derivative
 	
 	Find $\displaystyle \frac{d}{dx}\left[\tan^{-1}(x^3)\right]$.
 	
@@ -227,23 +173,17 @@
 		\frac{d}{dx}[\tan^{-1}(x^3)] = \frac{1}{1 + (x^3)^2} \cdot 3x^2 = \frac{3x^2}{1 + x^6}.
 	$$	
 	
-!end-example
+###
 
-!begin-exercise
-	
-	an inverse trig derivative
+### exc an inverse trig derivative
 	
 	Find $\displaystyle \frac{d}{dx} \left. \left[e^x\csc^{-1}(\ln(x)) \right] \right|_{x = e}$.
 	
-!end-exercise
+###
 
 
 
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -265,12 +205,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 9: The Inverse Function Theorem",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/251/notes"
 	};
 	

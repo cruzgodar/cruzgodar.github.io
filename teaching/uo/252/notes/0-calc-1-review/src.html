@@ -1,72 +1,44 @@
+# Section 0: Calculus I Review
+
+### nav-buttons
+
+Welcome to Math 252! You&#x2019;re viewing the interactive lecture notes &mdash; reading either these or the textbook is required for the class, since we&#x2019;ll have a very short reading quiz on Canvas due before each lecture. To get started, let&#x2019;s make sure your browser handles equations and graphs correctly. You should see an equation on its own line below and a graph below that.
+
+$$
+	x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+$$
+
+### desmos test-graph
+
+If anything doesn&#x2019;t appear correctly, update your browser and then reach out if that doesn&#x2019;t work. There&#x2019;s also a non-interactive pdf version of each document available for compatibility &mdash; let me know if you need them.
 
 
 
+## Limits
 
-!header Section 0: Calculus I Review
+Let&#x2019;s begin by briefly reviewing the two most important topics from calculus I: limits and derivatives. We&#x2019;ll skip the formal definition of a limit in favor of the intuitive one: $\lim_{x \to a} f(x)$ is the value that $f(a)$ &#x201C;should&#x201D; have, regardless of the value $f(a)$ actually has, if it&#x2019;s even defined at all. We take a limit by sliding $x$ closer and closer to $a$, from both the right and the left, and seeing what value $f(x)$ gets close to. In the graph below, $f(0) = -1$, since there&#x2019;s a hole in the graph at $(0, 1)$. But as $x$ gets closer to $0$ from the right or the left, $f(x)$ gets closer to $1$, so $\lim_{x \to 0} f(x) = 1$.
 
-!nav-buttons
+### desmos limit-example
+
+There&#x2019;s a sense in which that function is poorly behaved at $x = 0$. &#x201C;Nice&#x201D; functions shouldn&#x2019;t have holes in their graphs or similar issues &mdash; and it turns out that what we mean by &#x201C;nice&#x201D; is **continuous**.
 
 
 
-!begin-text-block
+### def continuity
 	
-	Welcome to Math 252! You&#x2019;re viewing the interactive lecture notes &mdash; reading either these or the textbook is required for the class, since we&#x2019;ll have a very short reading quiz on Canvas due before each lecture. To get started, let&#x2019;s make sure your browser handles equations and graphs correctly. You should see an equation on its own line below and a graph below that.
+	A function $f$ is **continuous** if for all $a$ in its domain, $\lim_{x \to a} f(x) = f(a)$.
 	
-	$$
-		x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
-	$$
-	
-	!desmos test-graph
-	
-	If anything doesn&#x2019;t appear correctly, update your browser and then reach out if that doesn&#x2019;t work. There&#x2019;s also a non-interactive pdf version of each document available for compatibility &mdash; let me know if you need them.
-	
-!end-text-block
+###
 
 
 
-!section
+Continuous functions are the ones whose graphs can be drawn without lifting up your pencil: there are no holes or jumps. Recall that the **domain** of a function is the collection of $x$-values for which $f(x)$ is defined &mdash; we need that in the definition so that $f(a)$ makes sense to write. In the example below, the purple function $f(x)$ is continuous while the blue function $g(x)$ is not.
 
-!text s Limits
-
-<br>
+### desmos continuity-example
 
 
 
-!begin-text-block
-	
-	Let&#x2019;s begin by briefly reviewing the two most important topics from calculus I: limits and derivatives. We&#x2019;ll skip the formal definition of a limit in favor of the intuitive one: $\lim_{x \to a} f(x)$ is the value that $f(a)$ &#x201C;should&#x201D; have, regardless of the value $f(a)$ actually has, if it&#x2019;s even defined at all. We take a limit by sliding $x$ closer and closer to $a$, from both the right and the left, and seeing what value $f(x)$ gets close to. In the graph below, $f(0) = -1$, since there&#x2019;s a hole in the graph at $(0, 1)$. But as $x$ gets closer to $0$ from the right or the left, $f(x)$ gets closer to $1$, so $\lim_{x \to 0} f(x) = 1$.
-	
-	!desmos limit-example
-	
-	There&#x2019;s a sense in which that function is poorly behaved at $x = 0$. &#x201C;Nice&#x201D; functions shouldn&#x2019;t have holes in their graphs or similar issues &mdash; and it turns out that what we mean by &#x201C;nice&#x201D; is <dfn>continuous</dfn>.
-	
-!end-text-block
-
-
-
-!begin-def
-	
-	continuity
-	
-	A function $f$ is <dfn>continuous</dfn> if for all $a$ in its domain, $\lim_{x \to a} f(x) = f(a)$.
-	
-!end-def
-
-
-
-!begin-text-block
-	
-	Continuous functions are the ones whose graphs can be drawn without lifting up your pencil: there are no holes or jumps. Recall that the <dfn>domain</dfn> of a function is the collection of $x$-values for which $f(x)$ is defined &mdash; we need that in the definition so that $f(a)$ makes sense to write. In the example below, the purple function $f(x)$ is continuous while the blue function $g(x)$ is not.
-	
-	!desmos continuity-example
-	
-!end-text-block
-
-
-
-!begin-example
-	
-	limits
+### ex limits
 	
 	Using the previous graph, find $g(0)$, $g(1)$, $g(3)$, $\lim_{x \to 1^-} g(x)$, $\lim_{x \to 1^+} g(x)$, and $\lim_{x \to 1} g(x)$.
 	
@@ -80,13 +52,9 @@
 	
 	For the limits, the superscript plus or minus indicates a direction to approach from. So $\lim_{x \to 1^-} g(x) = 0$, since we only look at the portion of the graph to the left of $x = 1$. Similarly, $\lim_{x \to 1^+} g(x) = -1$. When we remove that superscript, we get $\lim_{x \to 1} g(x)$, which is actually undefined: in order for a limit to exist, the limits from both the left and right have to exist and be equal to one another, and that&#x2019;s not the case here.
 	
-!end-example
+###
 
-
-
-!begin-exercise
-	
-	limits
+### exc limits
 	
 	Find $\lim_{x \to \infty} g(x)$, $\lim_{x \to -\infty} g(x)$, and $\lim_{x \to 0} g(x)$. Since there isn&#x2019;t any portion of the graph to the left of zero, there&#x2019;s only one way to approach $x = 0$, so
 	
@@ -94,51 +62,37 @@
 		\lim_{x \to 0} g(x) = \lim_{x \to 0^+} g(x).
 	$$
 	
-!end-exercise
+###
 
 
 
-!section
+## Derivatives
 
-!text s Derivatives
+The **derivative** of a function $f(x)$ is another function that&#x2019;s written $f'(x)$. It&#x2019;s defined as the slope of the tangent line to the graph of $f$ at $x$, and it measures the rate of change of $f$. The classic example is that if $s(t)$ is a function measuring the position of something at time $t$, then $s'(t) = v(t)$ is the velocity at time $t$, and $s''(t) = v'(t) = a(t)$ is the acceleration.
 
-<br>
+Not every function is differentiable &mdash; in order for one to be, it must be continuous and not have any sharp corners. The purple function in the graph below is differentiable, while both functions in the previous graph aren&#x2019;t. Drag the blue point around below to show the tangent line to $f$ &mdash; its slope is the value of $f'(x)$.
+
+### desmos derivative-example
+
+Now&#x2019;s a good time to mention that most of the graphs are editable &mdash; for example, you can change the formula for $f(x)$ to any other differentiable function in the previous graph. Try changing it to $\sin(x)$!
+
+While the formal definition of a limit is quite intricate and often considered outside the scope of calculus I, the definition of a derivative isn&#x2019;t too bad: it&#x2019;s just the limit of slopes of secant lines.
 
 
 
-!begin-text-block
+### def the derivative
 	
-	The <dfn>derivative</dfn> of a function $f(x)$ is another function that&#x2019;s written $f'(x)$. It&#x2019;s defined as the slope of the tangent line to the graph of $f$ at $x$, and it measures the rate of change of $f$. The classic example is that if $s(t)$ is a function measuring the position of something at time $t$, then $s'(t) = v(t)$ is the velocity at time $t$, and $s''(t) = v'(t) = a(t)$ is the acceleration.
-	
-	Not every function is differentiable &mdash; in order for one to be, it must be continuous and not have any sharp corners. The purple function in the graph below is differentiable, while both functions in the previous graph aren&#x2019;t. Drag the blue point around below to show the tangent line to $f$ &mdash; its slope is the value of $f'(x)$.
-	
-	!desmos derivative-example
-	
-	Now&#x2019;s a good time to mention that most of the graphs are editable &mdash; for example, you can change the formula for $f(x)$ to any other differentiable function in the previous graph. Try changing it to $\sin(x)$!
-	
-	While the formal definition of a limit is quite intricate and often considered outside the scope of calculus I, the definition of a derivative isn&#x2019;t too bad: it&#x2019;s just the limit of slopes of secant lines.
-	
-!end-text-block
-
-
-
-!begin-def
-	
-	the derivative
-	
-	Let $f(x)$ be a continuous function. The <dfn>derivative</dfn> of $f$ at $x = a$, if it exists, is
+	Let $f(x)$ be a continuous function. The **derivative** of $f$ at $x = a$, if it exists, is
 	
 	$$
 		f'(a) = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h}.
 	$$
 	
-!end-def
+###
 
 
 
-!begin-prop
-	
-	basic derivative rules
+### prop basic derivative rules
 	
 	$\displaystyle \frac{d}{dx} [c \cdot f(x)] = c \cdot f'(x)$
 	
@@ -150,21 +104,15 @@
 	
 	$\displaystyle \frac{d}{dx} [f(g(x))] = f'(g(x))g'(x)$ (the chain rule)
 	
-!end-prop
+###
 
 
 
-!begin-text-block
-	
-	The chain rule is a common stumbling point, so let&#x2019;s take a moment to work through an example.
-	
-!end-text-block
+The chain rule is a common stumbling point, so let&#x2019;s take a moment to work through an example.
 
 
 
-!begin-example
-	
-	the chain rule
+### ex the chain rule
 	
 	Find $\displaystyle \frac{d}{dx} [\sin(x^3)]$.
 	
@@ -177,29 +125,21 @@
 		\end{align*}
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	the chain rule
+### exc the chain rule
 	
 	Find $\displaystyle \frac{d}{dx} \left[ \tan(x) \ln(\cos(x^2)) \right]$.
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	Some notational quirks to remember: $\frac{d}{dx}$ means derivative with respect to $x$, the $|_{x^3}$ tells us to plug $x^3$ in for $x$ after we take a derivative, and the derivative of $\sin(x)$ is $\cos(x)$. On the subject of good derivatives to know, here&#x2019;s a short list.
-	
-!end-text-block
+Some notational quirks to remember: $\frac{d}{dx}$ means derivative with respect to $x$, the $|_{x^3}$ tells us to plug $x^3$ in for $x$ after we take a derivative, and the derivative of $\sin(x)$ is $\cos(x)$. On the subject of good derivatives to know, here&#x2019;s a short list.
 
 
 
-!begin-prop
-	
-	common derivatives
+### prop common derivatives
 	
 	$\displaystyle \frac{d}{dx} [0] = 0$
 	
@@ -217,29 +157,23 @@
 	
 	$\displaystyle \frac{d}{dx} [\ln(x)] = \frac{1}{x}$
 	
-!end-prop
+###
 
 
 
-!begin-text-block
-	
-	Derivatives are often used to find <dfn>extrema</dfn> of functions, which are local maxima or minima. To do this, we find all of a function&#x2019;s critical points: the $x$-values that make the derivative zero or undefined. All extrema are critical points, but the reverse isn&#x2019;t necessarily true, so our work isn&#x2019;t finished. To determine whether a critical point is a maximum, a minimum, or neither, we can use the <dfn>second derivative test</dfn>: since $f''(x)$ measures concavity, if $f''(a) > 0$ for a critical point $a$, then $a$ is a local minimum, and if $f''(a) &lt; 0$, then it&#x2019;s a local maximum. The graph below has the critical points marked in blue and the second derivative graphed in red.
-	
-	Speaking of the second derivative, $x$-values that make <em>it</em> zero are called <dfn>inflection points</dfn>, and indicate a change in concavity. In the example below, $f(x)$ is concave down to the left of the inflection point (marked in red) and concave up to the right of it.
-	
-	!desmos second-derivative-test
-	
-	You can click the colored circles next to functions in the menu to temporarily hide them if the graphs get too crowded.
-	
-	This is just about everything we&#x2019;ll need from calculus I! The last bit is <dfn>L&#x2019;H&#x00F4;pital&#x2019;s rule</dfn>, which lets us calculate difficult limits with derivatives.
-	
-!end-text-block
+Derivatives are often used to find **extrema** of functions, which are local maxima or minima. To do this, we find all of a function&#x2019;s critical points: the $x$-values that make the derivative zero or undefined. All extrema are critical points, but the reverse isn&#x2019;t necessarily true, so our work isn&#x2019;t finished. To determine whether a critical point is a maximum, a minimum, or neither, we can use the **second derivative test**: since $f''(x)$ measures concavity, if $f''(a) > 0$ for a critical point $a$, then $a$ is a local minimum, and if $f''(a) &lt; 0$, then it&#x2019;s a local maximum. The graph below has the critical points marked in blue and the second derivative graphed in red.
+
+Speaking of the second derivative, $x$-values that make *it* zero are called **inflection points**, and indicate a change in concavity. In the example below, $f(x)$ is concave down to the left of the inflection point (marked in red) and concave up to the right of it.
+
+### desmos second-derivative-test
+
+You can click the colored circles next to functions in the menu to temporarily hide them if the graphs get too crowded.
+
+This is just about everything we&#x2019;ll need from calculus I! The last bit is **L&#x2019;H&#x00F4;pital&#x2019;s rule**, which lets us calculate difficult limits with derivatives.
 
 
 
-!begin-prop
-	
-	L&#x2019;H&#x00F4;pital&#x2019;s rule
+### prop L&#x2019;H&#x00F4;pital&#x2019;s rule
 	
 	If
 	
@@ -253,15 +187,13 @@
 		\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}.
 	$$
 	
-	This is <strong>only</strong> allowed when the limit is originally in one of these indeterminate forms. As an important note, we differentiate the top and bottom of the fraction separately &mdash; although it&#x2019;s a quotient, the quotient rule isn&#x2019;t present here.
+	This is **only** allowed when the limit is originally in one of these indeterminate forms. As an important note, we differentiate the top and bottom of the fraction separately &mdash; although it&#x2019;s a quotient, the quotient rule isn&#x2019;t present here.
 	
-!end-prop
+###
 
 
 
-!begin-example
-	
-	L&#x2019;H&#x00F4;pital&#x2019;s rule
+### ex L&#x2019;H&#x00F4;pital&#x2019;s rule
 	
 	Find $\displaystyle \lim_{x \to \infty} \frac{x}{x^2 + 1}$.
 	
@@ -277,29 +209,23 @@
 		\lim_{x \to \infty} \frac{x}{x^2 + 1} = \lim_{x \to \infty} \frac{1}{2x} = 0.
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	L&#x2019;H&#x00F4;pital&#x2019;s rule
+### exc L&#x2019;H&#x00F4;pital&#x2019;s rule
 	
 	Find $\displaystyle \lim_{x \to 0} \frac{\sin(x)}{x}$.
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	That&#x2019;s it! If some or most of this feels unfamiliar, I have a full set of calculus I notes that I highly recommend you take a look at. 
-	
-!end-text-block
+That&#x2019;s it! If some or most of this feels unfamiliar, I have a full set of calculus I notes that I highly recommend you take a look at.
 
 
 
 
 
-<div class="image-links one-image-link">
+<div class="image-links one-image-link" style="margin-bottom: 5vh">
 	<div class="image-link image-link-light" data-aos="fade-up">
 		<a href="/teaching/uo/251/" tabindex="-1">
 			<img class="check-webp no-floating-footer" data-src="/teaching/uo/251/cover." alt="Calculus I Notes" tabindex="1"></img>
@@ -313,11 +239,7 @@
 
 
 
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -339,12 +261,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 0: Calculus I Review",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/252/notes"
 	};
 	

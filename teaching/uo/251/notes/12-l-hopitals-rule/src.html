@@ -1,28 +1,16 @@
+# Section 12: L&#x2019;H&#244;pital&#x2019;s Rule
+
+### nav-buttons
+
+It&#x2019;s time to take a brief detour from furthering our understanding of derivatives to return to limits &mdash; some of them that were annoying to calculate before have very easy solutions with a single rule in terms of derivatives.
+
+Let&#x2019;s recap a little. Since most common functions are continuous where they are defined, $\lim_{x \to a} f(x)$ is very often just $f(a)$. The main times when this is not the case are the following: first, $f$ is a piecewise-defined function that changes definition at $a$, so we need to deal with both the one-sided limits. A second possibility is that $f(a)$ involves division by zero, in which case the limit is typically $\infty$ or $-\infty$. Finally, $f(a)$ is in some kind of form like $\frac{0}{0}$, which usually means that the limit is actually a number that we can find by simplifying the expression somehow. Unfortunately, that simplification is often annoying or difficult or both, and any improvement on this would be great. This third case is what we&#x2019;ll be tackling, and the first thing to do is to give names to the kind of forms like $\frac{0}{0}$.
 
 
 
-
-!header Section 12: L&#x2019;H&#244;pital&#x2019;s Rule
-
-!nav-buttons
-
-
-
-!begin-text-block
+### def indeterminate form
 	
-	It&#x2019;s time to take a brief detour from furthering our understanding of derivatives to return to limits &mdash; some of them that were annoying to calculate before have very easy solutions with a single rule in terms of derivatives.
-	
-	Let&#x2019;s recap a little. Since most common functions are continuous where they are defined, $\lim_{x \to a} f(x)$ is very often just $f(a)$. The main times when this is not the case are the following: first, $f$ is a piecewise-defined function that changes definition at $a$, so we need to deal with both the one-sided limits. A second possibility is that $f(a)$ involves division by zero, in which case the limit is typically $\infty$ or $-\infty$. Finally, $f(a)$ is in some kind of form like $\frac{0}{0}$, which usually means that the limit is actually a number that we can find by simplifying the expression somehow. Unfortunately, that simplification is often annoying or difficult or both, and any improvement on this would be great. This third case is what we&#x2019;ll be tackling, and the first thing to do is to give names to the kind of forms like $\frac{0}{0}$.
-	
-!end-text-block
-
-
-
-!begin-def
-	
-	indeterminate form
-	
-	A limit is in <dfn>indeterminate form</dfn> if it results in any of the following:
+	A limit is in **indeterminate form** if it results in any of the following:
 	
 	1. $\displaystyle \frac{0}{0}$ or $\displaystyle \frac{\infty}{\infty}$.
 	
@@ -32,21 +20,15 @@
 	
 	4. $\displaystyle 1^\infty$, $\displaystyle \infty^0$, or $\displaystyle 0^0$.
 	
-!end-def
+###
 
 
 
-!begin-text-block
-	
-	First, let&#x2019;s talk about type 1. This will be the simplest type for us to handle, and thankfully, the rule is simple to write down.
-	
-!end-text-block
+First, let&#x2019;s talk about type 1. This will be the simplest type for us to handle, and thankfully, the rule is simple to write down.
 
 
 
-!begin-thm
-	
-	L&#x2019;H&#244;pital&#x2019;s rule
+### thm L&#x2019;H&#244;pital&#x2019;s rule
 	
 	Suppose $\displaystyle \lim_{x \to a} \frac{f(x)}{g(x)}$ is of the form $\displaystyle \frac{0}{0}$ or $\displaystyle \frac{\infty}{\infty}$. Then
 	
@@ -54,21 +36,15 @@
 		\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}.
 	$$
 	
-!end-thm
+###
 
 
 
-!begin-text-block
-	
-	In other words, if you&#x2019;re getting $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out of a limit, differentiate the top and bottom and try again. Two very important things to note: first of all, you can only do this if the limit is of one of those two forms &mdash; although it&#x2019;d be nice to be able to differentiate the top and bottom of any limit, it only works for these. Secondly, we&#x2019;re <strong>not</strong> using the quotient rule here: the top and bottom of the fraction get differentiated separately.
-	
-!end-text-block
+In other words, if you&#x2019;re getting $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out of a limit, differentiate the top and bottom and try again. Two very important things to note: first of all, you can only do this if the limit is of one of those two forms &mdash; although it&#x2019;d be nice to be able to differentiate the top and bottom of any limit, it only works for these. Secondly, we&#x2019;re **not** using the quotient rule here: the top and bottom of the fraction get differentiated separately.
 
 
 
-!begin-example
-	
-	L&#x2019;H&#244;pital&#x2019;s rule
+### ex L&#x2019;H&#244;pital&#x2019;s rule
 	
 	Evaluate $\displaystyle \lim_{x \to 0} \frac{\sin(x)}{x}$.
 	
@@ -92,43 +68,35 @@
 	
 	Much easier than this process used to be!
 	
-!end-example
+###
 
-!begin-exercise
-	
-	L&#x2019;H&#244;pital&#x2019;s rule
+### exc L&#x2019;H&#244;pital&#x2019;s rule
 	
 	Evaluate $\displaystyle \lim_{x \to \infty} \frac{x^3 + 3x^2 + x}{\ln(x)}$. 
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
+In order to apply L&#x2019;H&#244;pital&#x2019;s rule to the other indeterminate forms, we just need to get them in one of the two forms the rule applies to. Let&#x2019;s start wth type 2 and work our way down.
+
+If $\lim_{x \to a} (f(x)g(x)) = 0 \cdot \infty$ since $f(x) \to 0$ and $g(x) \to \infty$, then we have two options. First, since $\frac{1}{g(x)} \to 0$, we can rewrite the limit as
+
+$$
+	\lim_{x \to a} \frac{f(x)}{1/g(x)},
+$$
 	
-	In order to apply L&#x2019;H&#244;pital&#x2019;s rule to the other indeterminate forms, we just need to get them in one of the two forms the rule applies to. Let&#x2019;s start wth type 2 and work our way down.
-	
-	If $\lim_{x \to a} (f(x)g(x)) = 0 \cdot \infty$ since $f(x) \to 0$ and $g(x) \to \infty$, then we have two options. First, since $\frac{1}{g(x)} \to 0$, we can rewrite the limit as
-	
-	$$
-		\lim_{x \to a} \frac{f(x)}{1/g(x)},
-	$$
-		
-	which will then be in the form $\frac{0}{0}$. Alternatively, since $\frac{1}{f(x)} \to \infty$ or $-\infty$, we can rewrite the original limit as
-	
-	$$
-		\lim_{x \to a} \frac{g(x)}{1/f(x)},
-	$$
-	
-	which will then be in the form $\frac{\infty}{\infty}$. Either way, L&#x2019;H&#244;pital&#x2019;s rule will apply.
-	
-!end-text-block
+which will then be in the form $\frac{0}{0}$. Alternatively, since $\frac{1}{f(x)} \to \infty$ or $-\infty$, we can rewrite the original limit as
+
+$$
+	\lim_{x \to a} \frac{g(x)}{1/f(x)},
+$$
+
+which will then be in the form $\frac{\infty}{\infty}$. Either way, L&#x2019;H&#244;pital&#x2019;s rule will apply.
 
 
 
-!begin-example
-	
-	L&#x2019;H&#244;pital&#x2019;s rule in the case $0 \cdot \infty$
+### ex L&#x2019;H&#244;pital&#x2019;s rule in the case $0 \cdot \infty$
 	
 	Evaluate $\displaystyle \lim_{x \to 2} (2x - 4)\ln(2x - 4)$.
 	
@@ -174,39 +142,27 @@
 		\end{align*}	
 	$$
 	
-!end-example
+###
 
 
 
-!begin-text-block
-	
-	We handle the $\infty - \infty$ case similarly: we first force both terms to be fractions, then combine them with common denominators in order to apply L&#x2019;H&#244;pital&#x2019;s rule.
-	
-!end-text-block
+We handle the $\infty - \infty$ case similarly: we first force both terms to be fractions, then combine them with common denominators in order to apply L&#x2019;H&#244;pital&#x2019;s rule.
 
 
 
-!begin-exercise
-	
-	L&#x2019;H&#244;pital&#x2019;s rule in the case $\infty - \infty$
+### exc L&#x2019;H&#244;pital&#x2019;s rule in the case $\infty - \infty$
 	
 	Evaluate $\displaystyle \lim_{x \to 0} \left( \frac{1}{\sin(x)} - \frac{1}{x} \right)$.
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	The final type of indeterminate form involves exponents. To handle these, we follow a process reminiscent of logarithmic differentiation: for $\lim_{x \to a} f(x)^{g(x)}$, we set $y = f(x)^{g(x)}$, take the natural log of both sides to get $\ln(y) = g(x) \ln(f(x))$, and then evaluate the limit on the right, possibly with L&#x2019;H&#244;pital&#x2019;s rule. Since $\ln$ is continuous, $\lim_{x \to a} \ln(y) = \ln(\lim_{x \to a} y)$, so once we&#x2019;ve found the limit on the right side, all we need to do is raise $e$ to that power to find the original limit we were looking for.
-	
-!end-text-block
+The final type of indeterminate form involves exponents. To handle these, we follow a process reminiscent of logarithmic differentiation: for $\lim_{x \to a} f(x)^{g(x)}$, we set $y = f(x)^{g(x)}$, take the natural log of both sides to get $\ln(y) = g(x) \ln(f(x))$, and then evaluate the limit on the right, possibly with L&#x2019;H&#244;pital&#x2019;s rule. Since $\ln$ is continuous, $\lim_{x \to a} \ln(y) = \ln(\lim_{x \to a} y)$, so once we&#x2019;ve found the limit on the right side, all we need to do is raise $e$ to that power to find the original limit we were looking for.
 
 
 
-!begin-example
-	
-	L&#x2019;H&#244;pital&#x2019;s rule in the case $1^\infty$
+### ex L&#x2019;H&#244;pital&#x2019;s rule in the case $1^\infty$
 	
 	Evaluate $\displaystyle \lim_{x \to \infty} (1 + e^{-x})^{x}$.
 	
@@ -261,23 +217,17 @@
 		\lim_{x \to \infty} (1 + e^{-x})^{x} = \lim_{x \to \infty} y = e^0 = 1.
 	$$
 	
-!end-example
+###
 
-!begin-exercise
-	
-	L&#x2019;H&#244;pital&#x2019;s rule in the case $0^0$
+### exc L&#x2019;H&#244;pital&#x2019;s rule in the case $0^0$
 	
 	Evaluate $\displaystyle \lim_{x \to 0} x^x$.
 	
-!end-exercise
+###
 
 
 
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -299,12 +249,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 12: L'Hopital's Rule",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/251/notes"
 	};
 	
