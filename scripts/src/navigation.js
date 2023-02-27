@@ -106,11 +106,17 @@ Page.Navigation =
 			
 			if (DEBUG)
 			{
-				document.body.firstElementChild.insertAdjacentHTML("beforebegin", Page.Components.decode(`<div class="page" style="opacity: 0">\n${data}</div>`) + scripts_data);
+				let new_html = Page.Components.decode(`<div class="page" style="opacity: 0">\n${data}</div>${scripts_data}`);
+				
+				new_html = new_html.slice(new_html.indexOf("<body>") + 6, new_html.indexOf("</body>"));
+				
+				document.body.firstElementChild.insertAdjacentHTML("beforebegin", new_html);
 			}
 			
 			else
 			{
+				data = data.slice(data.indexOf("<body>") + 6, data.indexOf("</body>"));
+				
 				document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="opacity: 0">${data}</div>${scripts_data}`);
 			}
 			

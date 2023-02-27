@@ -369,11 +369,25 @@ Page.Components =
 	
 	decode: function(html)
 	{
-		const banner = html.match(/"banner_page": "true"/) ? true : false;
+		const banner = html.indexOf(`"banner_page": true`) !== -1;
+		
+		html = html.replaceAll(/[\t\r]/g, "").replaceAll(/    /g, "");
+		
+		//We need to ignore the scripts at the bottom.
+		const index = html.indexOf("<script>");
+		
+		let scripts_data = "";
+		
+		if (index !== -1)
+		{
+			scripts_data = html.slice(index);
+			
+			html = html.slice(0, index);
+		}
 		
 		let page_title = "";
 		
-		let lines = html.replace(/\t/g, "").replace(/    /g, "").replace(/\r/g, "").split("\n");
+		let lines = html.split("\n");
 		
 		
 		
@@ -482,8 +496,10 @@ Page.Components =
 				page_title = title;
 				
 				const height_adjust = banner ? ` style="margin-bottom: 10vh"` :  "";
+				const banner_html = banner ? this.get_banner() :  "";
 				
 				lines[i] = `
+					${banner_html}
 					<header${height_adjust}>
 						<div id="logo">
 							<a href="/home/" tabindex="-1">
@@ -538,6 +554,20 @@ Page.Components =
 		}
 		
 		
+		
+		//It looks a little nicer to minify the JS here properly. Here, we reduce scripts_data to being only the page settings.
+		if (scripts_data.indexOf("Page.settings") !== -1)
+		{
+			scripts_data = scripts_data.replaceAll(/\n/g, "").replaceAll(/.*?(Page\.settings.*?}).+/g, "$1");
+			scripts_data = `${scripts_data},`;
+		}
+		
+		else
+		{
+			scripts_data = "";
+		}
+			
+		html = `<html><body>${html}<script>"undefined"==typeof Page&&(""!==window.location.search?window.location.replace("/index-testing.html?page="+encodeURIComponent(window.location.pathname)+"&"+window.location.search.slice(1)):window.location.replace("/index-testing.html?page="+encodeURIComponent(window.location.pathname))),${scripts_data}Page.load()</script></body></html>`;
 		
 		return html;
 	}
