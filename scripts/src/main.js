@@ -16,21 +16,10 @@ Page.scroll = 0;
 /*
 	Defaults:
 	
-	"title": "",
-	
 	"banner_page": false,
 	"num_banners": 0,
 	
-	"title_page_text": "",
-	"title_page_text_size": .1,
-	
-	"writing_page": false,
-	
-	"manual_banner": false,
 	"manual_dark_theme": false,
-	
-	"no_footer": false,
-	"footer_exclusion": ""
 */
 
 Page.settings = {};

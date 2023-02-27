@@ -58,6 +58,19 @@ const components =
 	
 	
 	
+	get_gallery_image: function(id, size, ...name)
+	{
+		const text = name.join(" ");
+		
+		return `
+			<div class="gallery-image-${size}-${size}">
+				<img class="check-webp" data-image-id="${id}" onclick="" src="/graphics/general-icons/placeholder.png" data-src="/gallery/thumbnails/${id}." alt="${name}"></img>
+			</div>
+		`;
+	},
+	
+	
+	
 	get_banner: function()
 	{
 		return `
@@ -257,6 +270,22 @@ const components =
 			}
 			
 			html += `</select></div></div>`;
+			
+			return html;
+		},
+		
+		
+		
+		"gallery-block": (content) =>
+		{
+			let html = `<div class="gallery-block">`;
+			
+			content.forEach(line =>
+			{
+				html = `${html}${components.get_gallery_image(...(line.split(" ")))}`;
+			});
+			
+			html = `${html}</div>`
 			
 			return html;
 		},
