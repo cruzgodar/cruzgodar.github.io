@@ -1,40 +1,18 @@
+# Section 8: Properties of Power Series
+
+### nav-buttons
+
+When series only contained numbers, we just had to understand them to the extent of determining whether they converged or not. Now that the terms have variables in them &mdash; in particular, different powers in each term, so that nothing can be combined &mdash; we need to be more comfortable dealing with series as objects in their own right, and not just unresolved sums that may or may not converge.
 
 
 
+## Adding Power Series
 
-!header Section 8: Properties of Power Series
-
-!nav-buttons
-
-
-
-!begin-text-block
-
-	When series only contained numbers, we just had to understand them to the extent of determining whether they converged or not. Now that the terms have variables in them &mdash; in particular, different powers in each term, so that nothing can be combined &mdash; we need to be more comfortable dealing with series as objects in their own right, and not just unresolved sums that may or may not converge.
-
-!end-text-block
+The first and simplest thing we can do to power series is to add two of them together. Thankfully, this works as well as we could hope.
 
 
 
-!section
-
-!text s Adding Power Series
-
-<br>
-
-	
-
-!begin-text-block
-	
-	The first and simplest thing we can do to power series is to add two of them together. Thankfully, this works as well as we could hope.
-
-!end-text-block
-
-
-
-!begin-prop
-	
-	adding power series
+### prop adding power series
 	
 	Let $\sum_{n = 0}^\infty a_n x^n$ and $\sum_{n = 0}^\infty b_n x^n$ be two power series that converge to the functions $f$ and $g$ on the intervals $I$ and $J$, respectively. Then the power series
 	
@@ -44,13 +22,11 @@
 	
 	converges to $f + g$ on the overlap of $I$ and $J$.
 
-!end-prop
+###
 
 
 
-!begin-example
-
-	adding power series
+### ex adding power series
 	
 	Express the function
 	
@@ -128,13 +104,9 @@
 	
 	The two intervals of convergence are $\left( -\frac{1}{2}, \frac{1}{2} \right)$ and $(-1, 1)$, and the overlap of those two is just the first one &mdash; therefore, the interval of convergence of our very complicated series is just $\left( -\frac{1}{2}, \frac{1}{2} \right)$.
 
-!end-example
+###
 
-
-
-!begin-exercise
-
-	adding power series
+### exc adding power series
 	
 	Express the function
 	
@@ -144,7 +116,7 @@
 	
 	as a power series and determine the interval of convergence.
 	
-	<strong>Solution:</strong> First, let&#x2019;s apply partial fractions and split this up. We have
+	**Solution:** First, let&#x2019;s apply partial fractions and split this up. We have
 	
 	$$
 		\begin{align*}
@@ -183,21 +155,15 @@
 	
 	These three series have intervals of convergence of $(-1, 1)$, $(-2, 2)$, and $(-3, 3)$, respectively, and so the overlap is just $(-1, 1)$. The radius of convergence is then $R = 1$.
 
-!end-exercise
+###
 
 
 
-!begin-text-block
-
-	For many series, we now have the tools to go backward: determine the function it&#x2019;s converging to given just the series.
-
-!end-text-block
+For many series, we now have the tools to go backward: determine the function it&#x2019;s converging to given just the series.
 
 
 
-!begin-example
-	
-	finding a closed form of a series
+### ex finding a closed form of a series
 	
 	Define a function $f$ by
 	
@@ -228,100 +194,87 @@
 		\end{align*}
 	$$
 
-!end-example
+###
 
 
 
-!section
+## Multiplying Power Series
 
-!text s Multiplying Power Series
+The process of adding power series closely mirrors adding polynomials: we just add the coefficients of like terms. Multiplying polynomials is a much more complicated process, though, and multiplying power series will take some extra work to pin down too. Let&#x2019;s start with a motivating example and see what we can determine.
 
-<br>
+Let $f(x) = 1 + 2x + 3x^2$ and $g(x) = 4 + 5x + 6x^2$. We normally write polynomials in descending order of their terms&#x2019; exponents, but this reverse order matches how power series are structured &mdash; low exponents come first.
 
+What is $f(x)g(x)$? We typically find this by foiling out the terms, but the end result is that every term of $f$ gets multiplied with every term of $g$, resulting in 9 terms total. Let&#x2019;s arrange that in a table.
 
+$$
+	\begin{array}{r|ccc}
+		& 4 & 5x & 6x^2\\
+		\hline
+		1 & 4 & 5x & 6x^2\\
+		2x & 8x & 10x^2 & 12x^3\\
+		3x^2 & 12x^2 & 15x^3 & 18x^4
+	\end{array}
+$$
 
-!begin-text-block
+The product $fg$ is just the sum of all nine entries in the table, but there&#x2019;s a cleaner way to think of it that comes from the diagonals running from the bottom-left to the top-right.
 
-	The process of adding power series closely mirrors adding polynomials: we just add the coefficients of like terms. Multiplying polynomials is a much more complicated process, though, and multiplying power series will take some extra work to pin down too. Let&#x2019;s start with a motivating example and see what we can determine.
+$$
+	\definecolor{textred}{rgb}{.8, 0, 0}
+	\definecolor{textyellow}{rgb}{.8, .6, 0}
+	\definecolor{textgreen}{rgb}{0, .6, 0}
+	\definecolor{textcyan}{rgb}{0, .6, 1}
+	\definecolor{textblue}{rgb}{0, 0, 1}
 	
-	Let $f(x) = 1 + 2x + 3x^2$ and $g(x) = 4 + 5x + 6x^2$. We normally write polynomials in descending order of their terms&#x2019; exponents, but this reverse order matches how power series are structured &mdash; low exponents come first.
-	
-	What is $f(x)g(x)$? We typically find this by foiling out the terms, but the end result is that every term of $f$ gets multiplied with every term of $g$, resulting in 9 terms total. Let&#x2019;s arrange that in a table.
-	
-	$$
-		\begin{array}{r|ccc}
-			& 4 & 5x & 6x^2\\
-			\hline
-			1 & 4 & 5x & 6x^2\\
-			2x & 8x & 10x^2 & 12x^3\\
-			3x^2 & 12x^2 & 15x^3 & 18x^4
-		\end{array}
-	$$
-	
-	The product $fg$ is just the sum of all nine entries in the table, but there&#x2019;s a cleaner way to think of it that comes from the diagonals running from the bottom-left to the top-right.
-	
-	$$
-		\definecolor{textred}{rgb}{.8, 0, 0}
-		\definecolor{textyellow}{rgb}{.8, .6, 0}
-		\definecolor{textgreen}{rgb}{0, .6, 0}
-		\definecolor{textcyan}{rgb}{0, .6, 1}
-		\definecolor{textblue}{rgb}{0, 0, 1}
-		
-		\begin{array}{r|ccc}
-			& 4 & 5x & 6x^2\\
-			\hline
-			1 & {\color{textred} 4} & {\color{textyellow} 5x} & {\color{textgreen} 6x^2}\\
-			2x & {\color{textyellow} 8x} & {\color{textgreen} 10x^2} & {\color{textcyan} 12x^3}\\
-			3x^2 & {\color{textgreen} 12x^2} & {\color{textcyan} 15x^3} & {\color{textblue} 18x^4}
-		\end{array}
-	$$
-	
-	The key observation is that those diagonals (represented here as different colors) correspond to different exponents on $x$: for example, the green diagonal in the middle contains every $x^2$ term. Therefore, if we want to know the coefficient on $x^2$ in $f(x)g(x)$, we just need to add up those three.
-	
-	Let&#x2019;s make the jump from polynomials to series. If $f(x) = \sum_{n = 0}^\infty a_n x^n$ and $g(x) = \sum_{n = 0}^\infty b_n x^n$, then the product $f(x)g(x)$ will be the sum of an infinite table:
-	
-	$$
-		\definecolor{textred}{rgb}{.8, 0, 0}
-		\definecolor{textyellow}{rgb}{.8, .6, 0}
-		\definecolor{textgreen}{rgb}{0, .6, 0}
-		\definecolor{textcyan}{rgb}{0, .6, 1}
-		\definecolor{textblue}{rgb}{0, 0, 1}
-		\definecolor{textmagenta}{rgb}{.8, 0, 1}
-		
-		\begin{array}{r|ccccccc}
-			& b_0 & b_1 x & b_2 x^2 & b_3 x^3 & b_4 x^4 & b_5 x^5 & \cdots\\
-			\hline
-			a_0 & {\color{textred} a_0 b_0} & {\color{textyellow} a_0 b_1 x} & {\color{textgreen} a_0 b_2 x^2} & {\color{textcyan} a_0 b_3 x^3} & {\color{textblue} a_0 b_4 x^4} & {\color{textmagenta} a_0 b_5 x^5} & \ddots\\
-			a_1 x & {\color{textyellow} a_1 b_0 x} & {\color{textgreen} a_1 b_1 x^2} & {\color{textcyan} a_1 b_2 x^3} & {\color{textblue} a_1 b_3 x^4} & {\color{textmagenta} a_1 b_4 x^5} & \ddots\\
-			a_2 x^2 & {\color{textgreen} a_2 b_0 x^2} & {\color{textcyan} a_2 b_1 x^3} & {\color{textblue} a_2 b_2 x^4} & {\color{textmagenta} a_2 b_3 x^5} & \ddots\\
-			a_3 x^3 & {\color{textcyan} a_3 b_0 x^3} & {\color{textblue} a_3 b_1 x^4} & {\color{textmagenta} a_3 b_2 x^5} & \ddots\\
-			a_4 x^4 & {\color{textblue} a_4 b_0 x^4} & {\color{textmagenta} a_4 b_1 x^5} & \ddots\\
-			a_5 x^5 & {\color{textmagenta} a_5 b_0 x^5} & \ddots\\
-			\vdots & \ddots
-		\end{array}
-	$$
-	
-	To extract the coefficient of $x^n$ in $fg$, we need to sum the $n$th diagonal. Now all of the terms $a_n x^n$ and $b_n x^n$ have the convenient property that their coefficients&#x2019; subscripts match the exponent on $x$, and multiplying two terms together makes the exponents add together. Therefore, the terms in the $n$th diagonal of our infinite table are the products of terms whose subscripts add to $n$. For instance, the sum of the $n = 3$ (i.e. green) diagonal is
-	
-	$$
-		(a_0 b_3 + a_1 b_2 + a_2 b_1 + a_3 b_0) x^3,
-	$$
-	
-	which are the four pairs of coefficients whose subscripts sum to $3$. To express that symbolically, the subscript on $a$ runs from $0$ to $3$, and if that subscript is $k$, then the subscript on $b$ must be $3 - k$, since they have to sum to $3$. In general, the final term becomes
-	
-	$$
-		\left( \sum_{k = 0}^n a_k b_{n - k} \right) x^n.
-	$$
-	
-	This is the main result about multiplying power series &mdash; all that&#x2019;s left is determining the interval of convergence.
+	\begin{array}{r|ccc}
+		& 4 & 5x & 6x^2\\
+		\hline
+		1 & {\color{textred} 4} & {\color{textyellow} 5x} & {\color{textgreen} 6x^2}\\
+		2x & {\color{textyellow} 8x} & {\color{textgreen} 10x^2} & {\color{textcyan} 12x^3}\\
+		3x^2 & {\color{textgreen} 12x^2} & {\color{textcyan} 15x^3} & {\color{textblue} 18x^4}
+	\end{array}
+$$
 
-!end-text-block
+The key observation is that those diagonals (represented here as different colors) correspond to different exponents on $x$: for example, the green diagonal in the middle contains every $x^2$ term. Therefore, if we want to know the coefficient on $x^2$ in $f(x)g(x)$, we just need to add up those three.
+
+Let&#x2019;s make the jump from polynomials to series. If $f(x) = \sum_{n = 0}^\infty a_n x^n$ and $g(x) = \sum_{n = 0}^\infty b_n x^n$, then the product $f(x)g(x)$ will be the sum of an infinite table:
+
+$$
+	\definecolor{textred}{rgb}{.8, 0, 0}
+	\definecolor{textyellow}{rgb}{.8, .6, 0}
+	\definecolor{textgreen}{rgb}{0, .6, 0}
+	\definecolor{textcyan}{rgb}{0, .6, 1}
+	\definecolor{textblue}{rgb}{0, 0, 1}
+	\definecolor{textmagenta}{rgb}{.8, 0, 1}
+	
+	\begin{array}{r|ccccccc}
+		& b_0 & b_1 x & b_2 x^2 & b_3 x^3 & b_4 x^4 & b_5 x^5 & \cdots\\
+		\hline a_0 & {\color{textred} a_0 b_0} & {\color{textyellow} a_0 b_1 x} & {\color{textgreen} a_0 b_2 x^2} & {\color{textcyan} a_0 b_3 x^3} & {\color{textblue} a_0 b_4 x^4} & {\color{textmagenta} a_0 b_5 x^5} & \ddots\\
+		a_1 x & {\color{textyellow} a_1 b_0 x} & {\color{textgreen} a_1 b_1 x^2} & {\color{textcyan} a_1 b_2 x^3} & {\color{textblue} a_1 b_3 x^4} & {\color{textmagenta} a_1 b_4 x^5} & \ddots\\
+		a_2 x^2 & {\color{textgreen} a_2 b_0 x^2} & {\color{textcyan} a_2 b_1 x^3} & {\color{textblue} a_2 b_2 x^4} & {\color{textmagenta} a_2 b_3 x^5} & \ddots\\
+		a_3 x^3 & {\color{textcyan} a_3 b_0 x^3} & {\color{textblue} a_3 b_1 x^4} & {\color{textmagenta} a_3 b_2 x^5} & \ddots\\
+		a_4 x^4 & {\color{textblue} a_4 b_0 x^4} & {\color{textmagenta} a_4 b_1 x^5} & \ddots\\
+		a_5 x^5 & {\color{textmagenta} a_5 b_0 x^5} & \ddots\\
+		\vdots & \ddots
+	\end{array}
+$$
+
+To extract the coefficient of $x^n$ in $fg$, we need to sum the $n$th diagonal. Now all of the terms $a_n x^n$ and $b_n x^n$ have the convenient property that their coefficients&#x2019; subscripts match the exponent on $x$, and multiplying two terms together makes the exponents add together. Therefore, the terms in the $n$th diagonal of our infinite table are the products of terms whose subscripts add to $n$. For instance, the sum of the $n = 3$ (i.e. green) diagonal is
+
+$$
+	(a_0 b_3 + a_1 b_2 + a_2 b_1 + a_3 b_0) x^3,
+$$
+
+which are the four pairs of coefficients whose subscripts sum to $3$. To express that symbolically, the subscript on $a$ runs from $0$ to $3$, and if that subscript is $k$, then the subscript on $b$ must be $3 - k$, since they have to sum to $3$. In general, the final term becomes
+
+$$
+	\left( \sum_{k = 0}^n a_k b_{n - k} \right) x^n.
+$$
+
+This is the main result about multiplying power series &mdash; all that&#x2019;s left is determining the interval of convergence.
 
 
 
-!begin-thm
-
-	multiplying power series
+### thm multiplying power series
 	
 	Let $\sum_{n = 0}^\infty a_n x^n$ and $\sum_{n = 0}^\infty b_n x^n$ be two power series that converge to the functions $f$ and $g$ on the intervals $I$ and $J$, respectively. Then the power series
 	
@@ -331,15 +284,11 @@
 	
 	converges to $fg$ on the overlap of $I$ and $J$.
 	
-!end-thm
+###
 
 
 
-
-
-!begin-example
-
-	multiplying power series
+### ex multiplying power series
 	
 	Express
 	
@@ -359,13 +308,9 @@
 		\end{align*}
 	$$
 
-!end-example
+###
 
-
-
-!begin-exercise
-
-	multiplying power series
+### exc multiplying power series
 	
 	Earlier in the section, we expressed the function
 	
@@ -375,7 +320,7 @@
 	
 	as a power series using partial fractions. Instead, express it as the product of two power series and verify that it matches the previous result through the first six terms.
 	
-	<strong>Solution:</strong> Let&#x2019;s leave the $5$ alone for now and take a look at the other two series. We have
+	**Solution:** Let&#x2019;s leave the $5$ alone for now and take a look at the other two series. We have
 	
 	$$
 		\begin{align*}
@@ -417,29 +362,17 @@
 	
 	It&#x2019;s remarkable that these two sums are equal despite having wildly different descriptions! We&#x2019;ll see more like this on a future homework.
 
-!end-exercise
+###
 
 
 
-!section
+## Calculus on Power Series
 
-!text s Calculus on Power Series
-
-<br>
+Now that we understand how basic algebraic operations work with power series, the natural next step is to ask how we do calculus with them: how do we differentiate and integrate? This is part of the magic of power series: they&#x2019;re just as easy to work with as polynomials, even though they&#x2019;re limits of partial sums behind the scenes. Both derivatives and integrals commute with those limits for reasons substantially more complicated than we have time to discuss in this course, and the end result is incredibly simple.
 
 
 
-!begin-text-block
-
-	Now that we understand how basic algebraic operations work with power series, the natural next step is to ask how we do calculus with them: how do we differentiate and integrate? This is part of the magic of power series: they&#x2019;re just as easy to work with as polynomials, even though they&#x2019;re limits of partial sums behind the scenes. Both derivatives and integrals commute with those limits for reasons substantially more complicated than we have time to discuss in this course, and the end result is incredibly simple.
-
-!end-text-block
-
-
-
-!begin-thm
-
-	calculus on power series
+### thm calculus on power series
 	
 	Let $f(x) = \sum_{n = 0}^\infty c_n (x - a)^n$ be a power series converging on $(a - R, a + R)$. Then $f$ is differentiable and integrable on $(a - R, a + R)$, and
 	
@@ -452,13 +385,11 @@
 	
 	Importantly, this theorem does not mention the endpoints of the interval of convergence. If $f(x)$ converges there, its derivative and integral may too, or they may not.
 
-!end-thm
+###
 
 
 
-!begin-example
-
-	calculus on power series
+### ex calculus on power series
 	
 	Find a power series representation for $\ln(x + 1)$ and state the interval of convergence.
 	
@@ -482,7 +413,7 @@
 		\end{align*}
 	$$
 	
-	Now leaving the constant $C$ in our answer is fine if we&#x2019;re asked to take the integral of some random function, but in this situation, we know that our answer is equal to $\ln(1 + x)$: it&#x2019;s only true for <em>one</em> value of $C$, not any. How can we figure it out? Well, $C$ is the only term of the series without an $x$, so if we plug in $x = 0$, we&#x2019;ll figure out what $C$ should be.
+	Now leaving the constant $C$ in our answer is fine if we&#x2019;re asked to take the integral of some random function, but in this situation, we know that our answer is equal to $\ln(1 + x)$: it&#x2019;s only true for *one* value of $C$, not any. How can we figure it out? Well, $C$ is the only term of the series without an $x$, so if we plug in $x = 0$, we&#x2019;ll figure out what $C$ should be.
 	
 	$$
 		\begin{align*}
@@ -512,13 +443,11 @@
 		\sum_{n = 1}^\infty (-1)^{n + 1} \frac{1}{n}.
 	$$
 	
-	In contrast, this is the <em>Alternating</em> Harmonic series, which does converge, and so the interval of convergence is $(-1, 1]$. This is an especially good example, since it slots beautifully into our existing theory of series: we know the Alternating Harmonic series converges to $\ln(2)$, and this example verifies that in a different way. When we plugged $x = 1$ into the series, the other side of the equation became $\ln(1 + 1) = \ln(2)$.
+	In contrast, this is the *Alternating* Harmonic series, which does converge, and so the interval of convergence is $(-1, 1]$. This is an especially good example, since it slots beautifully into our existing theory of series: we know the Alternating Harmonic series converges to $\ln(2)$, and this example verifies that in a different way. When we plugged $x = 1$ into the series, the other side of the equation became $\ln(1 + 1) = \ln(2)$.
 
-!end-example
+###
 
-!begin-exercise
-
-	calculus on power series
+### exc calculus on power series
 	
 	We expressed
 	
@@ -528,7 +457,7 @@
 	
 	as a power series earlier by multiplying the series for $\frac{1}{1 - x}$ by itself. Find it a different way by starting from $\frac{1}{1 - x}$ and using calculus, and make sure the interval of convergence matches.
 	
-	<strong>Solution:</strong> In order to make $\frac{1}{1 - x}$ look like $\frac{1}{(1 - x)^2}$ through calculus, we need to differentiate it. If $f(x) = \frac{1}{1 - x}$, then $f'(x) = \frac{1}{(1 - x)^2}$, since the minus sign from bringing down the power of $-1$ cancels with the minus sign from the chain rule. So in order to find a series representation for $f'$, we need to differentiate the series for $f$ term-by-term. That results in
+	**Solution:** In order to make $\frac{1}{1 - x}$ look like $\frac{1}{(1 - x)^2}$ through calculus, we need to differentiate it. If $f(x) = \frac{1}{1 - x}$, then $f'(x) = \frac{1}{(1 - x)^2}$, since the minus sign from bringing down the power of $-1$ cancels with the minus sign from the chain rule. So in order to find a series representation for $f'$, we need to differentiate the series for $f$ term-by-term. That results in
 	
 	$$
 		f'(x) = \sum_{n = 1}^\infty nx^{n - 1} = 1 + 2x + 3x^2 + \cdots.
@@ -545,51 +474,39 @@
 	
 	Therefore, the series converges at least when $|x| < 1$, so the interval of convergence is $(-1, 1)$ at the smallest. Since the ratio test is inconclusive at the endpoints, we test those too, but both $\sum_{n = 1}^\infty n(1)^{n - 1}$ and $\sum_{n = 1}^\infty n(-1)^{n - 1}$ are divergent, so the interval of convergence is just $(-1, 1)$, as we expected.
 
-!end-exercise
+###
 
 
 
-!begin-text-block
-
-	Let&#x2019;s look at one more nice property of power series: for the most part, they&#x2019;re all absolutely convergent, except possibly at the endpoints of the interval of convergence.
-
-!end-text-block
+Let&#x2019;s look at one more nice property of power series: for the most part, they&#x2019;re all absolutely convergent, except possibly at the endpoints of the interval of convergence.
 
 
 
-!begin-thm
-
-	absolute convergence of power series
+### thm absolute convergence of power series
 	
 	Let $\sum_{n = 0}^\infty c_n (x - a)^n$ be a power series converging on $(a - R, a + R)$. Then the series converges absolutely on that interval.
 
-!end-thm
+###
 
 
 
-!begin-text-block
+Again, this refers only to open intervals: if a series converges at the endpoint $a + R$, the convergence may be either conditional or absolute. In the case of the Alternating Harmonic series, it&#x2019;s right on the edge. We&#x2019;ve seen that it converges conditionally, but moving inward any amount causes the convergence to become absolute.
 
-	Again, this refers only to open intervals: if a series converges at the endpoint $a + R$, the convergence may be either conditional or absolute. In the case of the Alternating Harmonic series, it&#x2019;s right on the edge. We&#x2019;ve seen that it converges conditionally, but moving inward any amount causes the convergence to become absolute.
+One final result of this section is that we can confirm that power series representations of functions are unique: there can&#x2019;t be two different ways to represent one function as a power series if the interval of convergence matches. Suppose some function $f$ had two representations:
+
+$$
+	f(x) = \sum_{n = 0}^\infty c_n (x - a)^n = \sum_{n = 0}^\infty d_n (x - a)^n.
+$$
+
+By plugging in $x = a$ like in the last example (where $a$ was $0$), we have $f(a) = c_0 = d_0$, so the constant terms agree. Similarly, $f'(a) = c_1 = d_1$, since the constant terms vanish in the derivative. Now we know the first two terms match, and this process continues: $f''(a) = 2c_2 = 2d_2$, and so on. Any function expressible as a power series is differentiable and results in another power series which must itself be differentiable, and so **every power series is infinitely differentiable!** That means we can continue this process forever, and so the series must completely agree. We assumed that the two representations were centered at the same point $a$, and that&#x2019;s a necessary assumption: in the future, we&#x2019;ll see multiple different series representations of a function that differ by where they&#x2019;re centered. What we learned here is that for a given center, there&#x2019;s only one power series representation.
+
+So far, we&#x2019;ve got a good handle on how power series work and interact, and we even know representations of a few common functions. In the next section &mdash; the most important in the course &mdash; we&#x2019;ll extend the library of functions we can represent as power series to almost every function we&#x2019;ve ever seen, finally achieving the goal we layed out in the first section.
+
+
+
+### exc expressing $e^x$ as a power series
 	
-	One final result of this section is that we can confirm that power series representations of functions are unique: there can&#x2019;t be two different ways to represent one function as a power series if the interval of convergence matches. Suppose some function $f$ had two representations:
-	
-	$$
-		f(x) = \sum_{n = 0}^\infty c_n (x - a)^n = \sum_{n = 0}^\infty d_n (x - a)^n.
-	$$
-	
-	By plugging in $x = a$ like in the last example (where $a$ was $0$), we have $f(a) = c_0 = d_0$, so the constant terms agree. Similarly, $f'(a) = c_1 = d_1$, since the constant terms vanish in the derivative. Now we know the first two terms match, and this process continues: $f''(a) = 2c_2 = 2d_2$, and so on. Any function expressible as a power series is differentiable and results in another power series which must itself be differentiable, and so <strong>every power series is infinitely differentiable!</strong> That means we can continue this process forever, and so the series must completely agree. We assumed that the two representations were centered at the same point $a$, and that&#x2019;s a necessary assumption: in the future, we&#x2019;ll see multiple different series representations of a function that differ by where they&#x2019;re centered. What we learned here is that for a given center, there&#x2019;s only one power series representation.
-	
-	So far, we&#x2019;ve got a good handle on how power series work and interact, and we even know representations of a few common functions. In the next section &mdash; the most important in the course &mdash; we&#x2019;ll extend the library of functions we can represent as power series to almost every function we&#x2019;ve ever seen, finally achieving the goal we layed out in the first section.
-
-!end-text-block
-
-
-
-!begin-exercise
-
-	expressing $e^x$ as a power series
-	
-	We know that $e^x$ has the special property of being the only function (other than constant multiples of $e^x$) which is its own derivative. We can represent $e^x$ as a power series by finding a power series which is <em>its</em> own derivative. Begin with a general power series
+	We know that $e^x$ has the special property of being the only function (other than constant multiples of $e^x$) which is its own derivative. We can represent $e^x$ as a power series by finding a power series which is *its* own derivative. Begin with a general power series
 	
 	$$
 		c_0 + c_1x + c_2x^2 + c_3x^3 + \cdots
@@ -633,15 +550,11 @@
 		e^x = \sum_{n = 0}^\infty \frac{x^n}{n!}.
 	$$
 
-!end-exercise
+###
 
 
 	
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -663,12 +576,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 8: Properties of Power Series",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/253/notes"
 	};
 	

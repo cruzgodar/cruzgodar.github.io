@@ -1,50 +1,38 @@
+# Section 7: Power Series
+
+### nav-buttons
+
+In this section, we&#x2019;ll fundamentally change the way we look at and work with series. The change seems innocent enough at first, but its effects will be surprisingly profound.
+
+Let&#x2019;s begin with the geometric series $\sum_{n = 0}^\infty r^n$. Right now, we typically think of $r$ as a parameter we can choose before working with the series &mdash; for example, with $r = \frac{1}{2}$, we have the series
+
+$$
+	\sum_{n = 0}^\infty \left( \frac{1}{2} \right)^n = \frac{1}{1 - \frac{1}{2}} = 2.
+$$
+
+Now, though, we&#x2019;ll think of $r$ as a **variable**, specifically as an input to a function $f$. To emphasize that change, let&#x2019;s use $x$ instead of $r$. Our series now becomes
+
+$$
+	f(x) = \sum_{n = 0}^\infty x^n.
+$$
+
+We know from properties of geometric series that this converges to $\frac{1}{1 - x}$ when $|x| < 1$. Therefore, we have that $f(x) = \frac{1}{1 - x}$, defined on the interval $(-1, 1)$.
+
+What if we wanted to change that interval? The easiest way is to modify $x$. The series
+
+$$
+	\sum_{n = 0}^\infty (x - 8)^n
+$$
+
+converges when $|x - 8| < 1$, or in other words, when $x$ is in the interval $(7, 9)$.
+
+So far, all we&#x2019;ve done is rename a variable to $x$ and introduce a small transformation to the series. But this type of series will form the basis for the rest of the course, and we&#x2019;d do well to give it a name.
 
 
 
-
-!header Section 7: Power Series
-
-!nav-buttons
-
-
-
-!begin-text-block
-
-	In this section, we&#x2019;ll fundamentally change the way we look at and work with series. The change seems innocent enough at first, but its effects will be surprisingly profound.
+### def power series
 	
-	Let&#x2019;s begin with the geometric series $\sum_{n = 0}^\infty r^n$. Right now, we typically think of $r$ as a parameter we can choose before working with the series &mdash; for example, with $r = \frac{1}{2}$, we have the series
-	
-	$$
-		\sum_{n = 0}^\infty \left( \frac{1}{2} \right)^n = \frac{1}{1 - \frac{1}{2}} = 2.
-	$$
-	
-	Now, though, we&#x2019;ll think of $r$ as a <strong>variable</strong>, specifically as an input to a function $f$. To emphasize that change, let&#x2019;s use $x$ instead of $r$. Our series now becomes
-	
-	$$
-		f(x) = \sum_{n = 0}^\infty x^n.
-	$$
-	
-	We know from properties of geometric series that this converges to $\frac{1}{1 - x}$ when $|x| < 1$. Therefore, we have that $f(x) = \frac{1}{1 - x}$, defined on the interval $(-1, 1)$.
-	
-	What if we wanted to change that interval? The easiest way is to modify $x$. The series
-	
-	$$
-		\sum_{n = 0}^\infty (x - 8)^n
-	$$
-	
-	converges when $|x - 8| < 1$, or in other words, when $x$ is in the interval $(7, 9)$.
-	
-	So far, all we&#x2019;ve done is rename a variable to $x$ and introduce a small transformation to the series. But this type of series will form the basis for the rest of the course, and we&#x2019;d do well to give it a name.
-
-!end-text-block
-
-
-
-!begin-def
-
-	power series
-	
-	A <dfn>power series</dfn> centered at $a$ is a series of the form
+	A **power series** centered at $a$ is a series of the form
 	
 	$$
 		\sum_{n = 0}^\infty c_n (x - a)^n
@@ -52,58 +40,52 @@
 	
 	for some constants $a$ and $c_n$. Note that the series starts at $n = 0$.
 
-!end-def
+###
 
 
 
-!begin-text-block
+To make sure that power series are always defined, we&#x2019;ll insist that $(x - a)^0 = 1$, even when $x = a$.
 
-	To make sure that power series are always defined, we&#x2019;ll insist that $(x - a)^0 = 1$, even when $x = a$.
-	
-	A power series centered at $a$ always converges when $x = a$, since every term after the first is zero. Some power series <em>only</em> converge for that value of $x$ and no others &mdash; for example, take the series
-	
-	$$
-		\sum_{n = 0}^\infty n!x^n.
-	$$
-	
-	This is a power series centered at zero, and when $x = 0$, it converges to zero as we expect. When $x$ is nonzero, we can apply the ratio test:
-	
-	$$
-		\begin{align*}
-			\lim_{n \to \infty} \left| \frac{(n+1)!x^{n + 1}}{n!x^n} \right| &= \lim_{n \to \infty} \left| (n+1)x \right|\\
-			&= \begin{cases} \infty, & x \neq 0 \\ 0, & x = 0 \end{cases}.
-		\end{align*}
-	$$
-	
-	Therefore, the series converges only for $x = 0$ and diverges otherwise.
-	
-	We&#x2019;ve seen that other power series converge for $x$ inside of an interval and diverge otherwise, like $\sum_{n = 0}^\infty x^n$. One final possibility is that they converge no matter what $x$ is. For an example of that sort of behavior, let&#x2019;s look at the series
-	
-	$$
-		\sum_{n = 0}^\infty \frac{x^n}{n!}.
-	$$
-	
-	This time around, the ratio test tells us that
-	
-	$$
-		\begin{align*}
-			\lim_{n \to \infty} \left| \frac{\frac{x^{n + 1}}{(n+1)!}}{\frac{x^n}{n!}} \right| &= \lim_{n \to \infty} \left| \frac{n!x^{n+1}}{(n+1)!x^n} \right|\\
-			&= \lim_{n \to \infty} \left| \frac{x}{n + 1} \right|\\
-			&= 0.
-		\end{align*}
-	$$
-	
-	Therefore, the series always converges, regardless of the value of $x$.
-	
-	It turns out that these are the <em>only</em> three possibilities for the convergence of a power series &mdash; and in fact, when they converge for $x$ in some interval, we can be more precise about what that interval looks like.
+A power series centered at $a$ always converges when $x = a$, since every term after the first is zero. Some power series <em>only</em> converge for that value of $x$ and no others &mdash; for example, take the series
 
-!end-text-block
+$$
+	\sum_{n = 0}^\infty n!x^n.
+$$
+
+This is a power series centered at zero, and when $x = 0$, it converges to zero as we expect. When $x$ is nonzero, we can apply the ratio test:
+
+$$
+	\begin{align*}
+		\lim_{n \to \infty} \left| \frac{(n+1)!x^{n + 1}}{n!x^n} \right| &= \lim_{n \to \infty} \left| (n+1)x \right|\\
+		&= \begin{cases} \infty, & x \neq 0 \\ 0, & x = 0 \end{cases}.
+	\end{align*}
+$$
+
+Therefore, the series converges only for $x = 0$ and diverges otherwise.
+
+We&#x2019;ve seen that other power series converge for $x$ inside of an interval and diverge otherwise, like $\sum_{n = 0}^\infty x^n$. One final possibility is that they converge no matter what $x$ is. For an example of that sort of behavior, let&#x2019;s look at the series
+
+$$
+	\sum_{n = 0}^\infty \frac{x^n}{n!}.
+$$
+
+This time around, the ratio test tells us that
+
+$$
+	\begin{align*}
+		\lim_{n \to \infty} \left| \frac{\frac{x^{n + 1}}{(n+1)!}}{\frac{x^n}{n!}} \right| &= \lim_{n \to \infty} \left| \frac{n!x^{n+1}}{(n+1)!x^n} \right|\\
+		&= \lim_{n \to \infty} \left| \frac{x}{n + 1} \right|\\
+		&= 0.
+	\end{align*}
+$$
+
+Therefore, the series always converges, regardless of the value of $x$.
+
+It turns out that these are the *only* three possibilities for the convergence of a power series &mdash; and in fact, when they converge for $x$ in some interval, we can be more precise about what that interval looks like.
 
 
 
-!begin-thm
-
-	convergence of power series
+### thm convergence of power series
 	
 	Let
 	
@@ -119,41 +101,29 @@
 	
 	3. $f$ converges for all values of $x$.
 
-!end-thm
+###
 
 
 
-!begin-text-block
+In case 2, what we mean by an interval centered at $a$ is something of the form $(a - R, a + R)$, where $R$ is some positive number. For example, the series $\sum_{n = 0}^\infty x^n$ has $R = 1$, since it converges on $(-1, 1)$. The interval of convergence can also sometimes include its endpoints, which we denote with square brackets, as in $[a - R, a + R]$.
 
-	In case 2, what we mean by an interval centered at $a$ is something of the form $(a - R, a + R)$, where $R$ is some positive number. For example, the series $\sum_{n = 0}^\infty x^n$ has $R = 1$, since it converges on $(-1, 1)$. The interval of convergence can also sometimes include its endpoints, which we denote with square brackets, as in $[a - R, a + R]$.
-	
-	These three cases can all be collected into one, and it even helpfully comes along with its own definition.
-
-!end-text-block
+These three cases can all be collected into one, and it even helpfully comes along with its own definition.
 
 
 
-!begin-def
+### def radius of convergence
 
-	radius of convergence
+	Let $f(x) = \sum_{n = 0}^\infty c_n(x - a)^n$ be a power series centered at $a$. The **radius of convergence** $R$ of $f$ is half the width of the interval on which $f$ converges. If $f$ converges only at $a$, we say $R = 0$, and if it converges everywhere, we say $R = \infty$.
 
-	Let $f(x) = \sum_{n = 0}^\infty c_n(x - a)^n$ be a power series centered at $a$. The <dfn>radius of convergence</dfn> $R$ of $f$ is half the width of the interval on which $f$ converges. If $f$ converges only at $a$, we say $R = 0$, and if it converges everywhere, we say $R = \infty$.
-
-!end-def
+###
 
 
 
-!begin-text-block
-
-	For example, $\sum_{n = 0}^\infty x^n$ has a radius of convergence of $R = 1$, and $\sum_{n = 0}^\infty n!x^n$ has $R = 0$.
-
-!end-text-block
+For example, $\sum_{n = 0}^\infty x^n$ has a radius of convergence of $R = 1$, and $\sum_{n = 0}^\infty n!x^n$ has $R = 0$.
 
 
 
-!begin-exercise
-	
-	radius of convergence
+### exc radius of convergence
 	
 	Find the radius and interval of convergence of the following series.
 	
@@ -161,7 +131,7 @@
 	
 	2. $g(x) = \sum_{n = 1}^\infty \frac{x^n}{\sqrt{n}}$.
 	
-	<strong>Solutions:</strong>
+	**Solutions:**
 	
 	1. With all the exponents (and no $n$s in the bases), let&#x2019;s try the ratio test. We have
 	
@@ -212,21 +182,15 @@
 	
 	which converges by the alternating series test. When $x = 1$, it&#x2019;s a $p$-series with $p = \frac{1}{2} \leq 1$, which diverges. Therefore, the interval of convergence is $[-1, 1)$, and the radius of convergence is $R = 1$.
 
-!end-exercise
+###
 
 
 
-!begin-text-block
-
-	By starting with the geometric series $\sum_{n = 0}^\infty x^n$ and modifying it slightly, we can represent functions that look like $\frac{1}{1 - x}$ as power series.
-
-!end-text-block
+By starting with the geometric series $\sum_{n = 0}^\infty x^n$ and modifying it slightly, we can represent functions that look like $\frac{1}{1 - x}$ as power series.
 
 
 
-!begin-example
-
-	representing a function as a power series
+### ex representing a function as a power series
 	
 	Write $f(x) = \frac{x}{1 + 3x^2}$ as a power series, and state the interval and radius of convergence.
 	
@@ -257,15 +221,13 @@
 		\left( -\frac{1}{\sqrt{3}}, \frac{1}{\sqrt{3}} \right).
 	$$
 
-!end-example
+###
 
-!begin-exercise
-
-	representing a function as a power series
+### exc representing a function as a power series
 	
 	Write the function $g(x) = \frac{x^3}{2 + x^2}$ as a power series, and find the interval and radius of convergence. Hint: $2 + x^2 = 2\left(1 + \frac{x^2}{2}\right)$.
 	
-	<strong>Solution:</strong> as in the example, we&#x2019;ll rewrite this to look like $\frac{1}{1 - x}$:
+	**Solution:** as in the example, we&#x2019;ll rewrite this to look like $\frac{1}{1 - x}$:
 	
 	$$
 		\begin{align*}
@@ -278,15 +240,11 @@
 	
 	This series converges when $\left|-\frac{x^2}{2}\right| < 1$, so we need $x^2 < 2$. Therefore, the interval of convergence is $\left( -\sqrt{2}, \sqrt{2} \right)$, and the radius is $\sqrt{2}$.
 
-!end-exercise
+###
 
 
 	
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -308,12 +266,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 7: Power Series",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/253/notes"
 	};
 	

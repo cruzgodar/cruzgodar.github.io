@@ -429,7 +429,7 @@ Page.Unload =
 						
 						anime({
 							targets: Site.Settings.meta_theme_color_element,
-							content: "#161616",
+							content: "#181818",
 							duration: 500,
 							easing: "cubicBezier(.42, 0, .58, 1)"
 						});

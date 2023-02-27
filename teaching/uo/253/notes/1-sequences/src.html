@@ -1,66 +1,44 @@
+# Section 1: Sequences
+
+### nav-buttons
+
+When learning math, it&#x2019;s nice to have an idea of the big picture as often as possible. The definitions and theorems and examples can feel like slogging through tall grass, and without a clear picture of where you&#x2019;re going and why, it can all seem a little pointless. First, let&#x2019;s run down what we&#x2019;ll be building over the entire course.
+
+Throughout all of calculus I and II, the easiest type of functions to work with are polynomials. Limits, derivatives, and integrals are all easy when the function you&#x2019;re operating on is a polynomial, since all three split across addition, so you can take them term-by-term. Moreover, every term of a polynomial is a continuous function, so limits are as easy as plugging in the number you&#x2019;re limiting to, and derivatives and integrals just leverage the power rule.
+
+It goes without saying that not all functions are polynomials. $\sin(x)$, $\ln(x)$, and $2^x$ are all substantially more complicated, and there is no way to write any as a sum of monomials. But we&#x2019;re not as far off as you might think &mdash; let&#x2019;s take a close look at $\sin(x)$.
+
+### desmos taylor-series
+
+Drag the blue point around, and try increasing $N$. The blue function is always a polynomial, and it is almost exactly equal to $\sin(x)$, as long as you only look near the blue point. As $N$ increases, so does the length of the interval where the two functions agree. It will turn out that as $N \to \infty$, that interval becomes infinitely long, and the functions become exactly equal to one another. So $\sin$ may not be a polynomial, but it is a *limit* of polynomials. This is a very different kind of limit from the one we&#x2019;re used to, though &mdash; rather than a sequence of numbers approaching another number, what we have here is a sequence of *functions* approaching another function. The upshot of this intricate construction is that many of the best properties of polynomials will carry over to their limits, so working with $\sin$ &mdash; and more importantly, other more complicated functions &mdash; will be made much easier.
+
+We&#x2019;ll spend the first half of the course building tools and machinery in order to understand the ideas of adding together infinitely many functions that can sometimes converge. In the second half, we&#x2019;ll specialize to the specific kind of sums that approximate functions, like we just did with $\sin$. While many of the topics we cover will be interesting in their own right, it&#x2019;s good to keep this rough roadmap in mind as we move from one to the next.
 
 
 
+## Sequences
 
-!header Section 1: Sequences
-
-!nav-buttons
-
+To talk about the complex behavior of the polynomials we just saw, we need to build the groundwork of **sequences**. As with every topic, we&#x2019;ll start with a definition, give some examples and exercises, and then talk about some properties.
 
 
-!begin-text-block
+
+### def sequence
 	
-	When learning math, it&#x2019;s nice to have an idea of the big picture as often as possible. The definitions and theorems and examples can feel like slogging through tall grass, and without a clear picture of where you&#x2019;re going and why, it can all seem a little pointless. First, let&#x2019;s run down what we&#x2019;ll be building over the entire course.
-	
-	Throughout all of calculus I and II, the easiest type of functions to work with are polynomials. Limits, derivatives, and integrals are all easy when the function you&#x2019;re operating on is a polynomial, since all three split across addition, so you can take them term-by-term. Moreover, every term of a polynomial is a continuous function, so limits are as easy as plugging in the number you&#x2019;re limiting to, and derivatives and integrals just leverage the power rule.
-	
-	It goes without saying that not all functions are polynomials. $\sin(x)$, $\ln(x)$, and $2^x$ are all substantially more complicated, and there is no way to write any as a sum of monomials. But we&#x2019;re not as far off as you might think &mdash; let&#x2019;s take a close look at $\sin(x)$.
-	
-	!desmos taylor-series
-	
-	Drag the blue point around, and try increasing $N$. The blue function is always a polynomial, and it is almost exactly equal to $\sin(x)$, as long as you only look near the blue point. As $N$ increases, so does the length of the interval where the two functions agree. It will turn out that as $N \to \infty$, that interval becomes infinitely long, and the functions become exactly equal to one another. So $\sin$ may not be a polynomial, but it is a <em>limit</em> of polynomials. This is a very different kind of limit from the one we&#x2019;re used to, though &mdash; rather than a sequence of numbers approaching another number, what we have here is a sequence of <em>functions</em> approaching another function. The upshot of this intricate construction is that many of the best properties of polynomials will carry over to their limits, so working with $\sin$ &mdash; and more importantly, other more complicated functions &mdash; will be made much easier.
-	
-	We&#x2019;ll spend the first half of the course building tools and machinery in order to understand the ideas of adding together infinitely many functions that can sometimes converge. In the second half, we&#x2019;ll specialize to the specific kind of sums that approximate functions, like we just did with $\sin$. While many of the topics we cover will be interesting in their own right, it&#x2019;s good to keep this rough roadmap in mind as we move from one to the next.
-	
-!end-text-block
-
-
-
-!section
-
-!text s Sequences
-
-<br>
-
-!begin-text-block
-	
-	To talk about the complex behavior of the polynomials we just saw, we need to build the groundwork of <dfn>sequences</dfn>. As with every topic, we&#x2019;ll start with a definition, give some examples and exercises, and then talk about some properties.
-	
-!end-text-block
-
-
-
-!begin-def
-	
-	sequence
-	
-	A <dfn>sequence</dfn> is an infinite list of numbers, written
+	A **sequence** is an infinite list of numbers, written
 	
 	$$
 		(a_1, a_2, a_3, ...).
 	$$
 	
-	We can write this concisely as $(a_n)_{n = 1}^\infty$, or more commonly, just $(a_n)$. The $a_n$ are called <dfn>terms</dfn> of the sequence, and $n$ is called the <dfn>index variable</dfn>.
+	We can write this concisely as $(a_n)_{n = 1}^\infty$, or more commonly, just $(a_n)$. The $a_n$ are called **terms** of the sequence, and $n$ is called the **index variable**.
 	
 	The alternate notation $\{a_n\}$ is often used, including in our textbook. In general, though, curly braces denote collections of numbers where order and duplicates don&#x2019;t matter, and parentheses denote collections where they do matter, like in ordered pairs $(x, y)$. Since order and duplicates do matter in sequences, we&#x2019;ll use the parentheses notation in these notes.
 	
-!end-def
+###
 
 
 
-!begin-example
-	
-	writing out a sequence from a formula
+### ex writing out a sequence from a formula
 	
 	Let $a_n = 2n$, $b_n = n^2 + 1$, and $c_n = (n - 1)!$. Write out the first five terms of the sequences $(a_n)$, $(b_n)$, and $(c_n)$.
 	
@@ -93,21 +71,15 @@
 		(c_n) = (1, 1, 2, 6, 24, ...).
 	$$
 	
-!end-example
+###
 
 
 
-!begin-text-block
-	
-	A formula in terms of $n$ that defines a sequence &mdash; like all three in the previous example &mdash; is called an <dfn>explicit formula</dfn>. We can also define sequences <dfn>recursively</dfn> by writing $a_n$ in terms of $a_{n - 1}$, $a_{n - 2}$, and so on. Let&#x2019;s take a look at how these work.
-	
-!end-text-block
+A formula in terms of $n$ that defines a sequence &mdash; like all three in the previous example &mdash; is called an **explicit formula**. We can also define sequences **recursively** by writing $a_n$ in terms of $a_{n - 1}$, $a_{n - 2}$, and so on. Let&#x2019;s take a look at how these work.
 
 
 
-!begin-example
-	
-	a sequence defined recursively
+### ex a sequence defined recursively
 	
 	Let $a_1 = 1$ and $a_n = 2a_{n - 1}$. Write out the first five terms of $(a_n)$ and find an explicit formula.
 	
@@ -143,13 +115,9 @@
 	
 	which is exactly correct!
 	
-!end-example
+###
 
-
-
-!begin-exercise
-	
-	sequences
+### exc sequences
 	
 	1. The Fibonacci numbers are a very famous sequence that begin with $F_1 = 1$ and $F_2 = 1$. After this, every Fibonacci number is the sum of the previous two. Find a recursive formula for the Fibonacci sequence $(F_n)$.
 	
@@ -157,7 +125,7 @@
 	
 	3. Let $(d_n)$ be the sequence defined by $d_1 = 0$ and $d_n = d_{n - 1} + \frac{1}{2^n}$. Find an explicit formula for $(d_n)$ by writing out terms and finding a pattern, and verify your answer by plugging it back into the recurrence.
 	
-	<strong>Solutions:</strong>
+	**Solutions:**
 	
 	1. Since every $F_n$ is the sum of the previous two, $F_n = F_{n - 1} + F_{n - 2}$. A full recursive formula is
 	
@@ -231,33 +199,25 @@
 	
 	which is also exactly what we wanted.
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
+There are two particular types of sequences that crop up often, and it will help to give them names so we can talk about about them more easily.
+
+
+
+### def arithmetic and geometric sequences
 	
-	There are two particular types of sequences that crop up often, and it will help to give them names so we can talk about about them more easily.
+	An **arithmetic** sequence is one for which the difference between any two consecutive terms is the same. A **geometric** sequence is one for which the ratio between any two consecutive terms is the same.
 	
-!end-text-block
+	Note: the word *arithmetic* is pronounced differently here than it usually is &mdash; the stress is on the third syllable instead of the second.
+	
+###
 
 
 
-!begin-def
-	
-	arithmetic and geometric sequences
-	
-	An <dfn>arithmetic</dfn> sequence is one for which the difference between any two consecutive terms is the same. A </dfn>geometric</dfn> sequence is one for which the ratio between any two consecutive terms is the same.
-	
-	Note: the word <em>arithmetic</em> is pronounced differently here than it usually is &mdash; the stress is on the third syllable instead of the second.
-	
-!end-def
-
-
-
-!begin-example
-	
-	arithmetic and geometric sequences
+### ex arithmetic and geometric sequences
 	
 	The sequence
 	
@@ -273,15 +233,13 @@
 	
 	is geometric, since the ratio between every pair of consecutive terms is exactly $2$. Equivalently, $b_1 = 3$ and $b_n = 2b_{n - 1}$.
 	
-!end-example
+###
 
-!begin-exercise
-	
-	arithmetic and geometric sequences
+### exc arithmetic and geometric sequences
 	
 	Find explicit formulas for $(a_n)$ and $(b_n)$ and check that they&#x2019;re correct.
 	
-	<strong>Solution:</strong>
+	**Solution:**
 	
 	We have
 	
@@ -308,41 +266,29 @@
 	
 	Similarly, $b_1 = 2$ and $b_n = 2b_{n - 1}$.
 	
-!end-exercise
+###
 
 
 
-!section
+## Convergence
 
-!text s Convergence
+Although they&#x2019;re interesting in their own right, we need sequences because of their ability to **converge**. The idea is very similar to the limit of a function $f(x)$ as $x \to \infty$, so we already have a lot of intuition for how the limit of a sequence might work. For example,
 
-<br>
+$(1, 2, 3, 4, 5, ...) \to \infty$.
+
+$\left(1 + \left(-\frac{1}{2}\right)^n \right) = \left(\frac{1}{2}, \frac{5}{4}, \frac{7}{8}, \frac{17}{16}, \frac{31}{32}, ... \right) \to 1$.
+
+$(1, -1, 1, -1, 1, ...)$ does not converge.
+
+Chances are good that when you first learned about limits, you were never given a precise definition. This is for good reason: limits are usually fairly easy to find by inspection, as in the previous three examples; the actual definition is somewhat finicky and precise; and calculus I already has enough concepts that are difficult to digest. Now, though, we need to know that exact definition for sequences, and calculus III is high-level enough that it&#x2019;s reasonable to introduce.
+
+Let&#x2019;s begin with the informal definition, which is a good way to think of limits of sequences in practice.
 
 
 
-!begin-text-block
+### def the limit of a sequence (informal)
 	
-	Although they&#x2019;re interesting in their own right, we need sequences because of their ability to <dfn>converge</dfn>. The idea is very similar to the limit of a function $f(x)$ as $x \to \infty$, so we already have a lot of intuition for how the limit of a sequence might work. For example,
-	
-	$(1, 2, 3, 4, 5, ...) \to \infty$.
-	
-	$\left(1 + \left(-\frac{1}{2}\right)^n \right) = \left(\frac{1}{2}, \frac{5}{4}, \frac{7}{8}, \frac{17}{16}, \frac{31}{32}, ... \right) \to 1$.
-	
-	$(1, -1, 1, -1, 1, ...)$ does not converge.
-	
-	Chances are good that when you first learned about limits, you were never given a precise definition. This is for good reason: limits are usually fairly easy to find by inspection, as in the previous three examples; the actual definition is somewhat finicky and precise; and calculus I already has enough concepts that are difficult to digest. Now, though, we need to know that exact definition for sequences, and calculus III is high-level enough that it&#x2019;s reasonable to introduce.
-	
-	Let&#x2019;s begin with the informal definition, which is a good way to think of limits of sequences in practice.
-	
-!end-text-block
-
-
-
-!begin-def
-	
-	the limit of a sequence (informal)
-	
-	Let $(a_n)$ be a sequence. If the terms $a_n$ get closer and closer to some finite number $a$ as $n$ gets larger and larger, then we say that $(a_n)$ <dfn>converges</dfn> to $a$, and we write any of the following:
+	Let $(a_n)$ be a sequence. If the terms $a_n$ get closer and closer to some finite number $a$ as $n$ gets larger and larger, then we say that $(a_n)$ **converges** to $a$, and we write any of the following:
 	
 	$(a_n) \to a$.
 	
@@ -350,41 +296,29 @@
 	
 	$\lim (a_n) = a$ (since the only limit we can take of a sequence is when $n \to \infty$).
 	
-	If $(a_n)$ does not converge, then we say it <dfn>diverges</dfn>.
+	If $(a_n)$ does not converge, then we say it **diverges**.
 	
-!end-def
+###
 
 
 
-!begin-text-block
-	
-	The informal parts of this definition are the phrases &#x201C;closer and closer&#x201D; and &#x201C;larger and larger&#x201D;. Let&#x2019;s nail those down.
-	
-!end-text-block
+The informal parts of this definition are the phrases &#x201C;closer and closer&#x201D; and &#x201C;larger and larger&#x201D;. Let&#x2019;s nail those down.
 
 
 
-!begin-def
-	
-	the limit of a sequence (formal)
+### def the limit of a sequence (formal)
 	
 	Let $(a_n)$ be a sequence. If there is a number $a$ such that for all real numbers $\varepsilon > 0$, there is a positive integer $N$ so that $|a_n - a| < \varepsilon$ when $n \geq N$, then we say that $(a_n)$ converges to $a$.
 	
-!end-def
+###
 
 
 
-!begin-text-block
-	
-	Let&#x2019;s unpack this carefully. First, we start with a candidate $a$ that we think is the limit of $(a_n)$. To check if that&#x2019;s the case, we pick a (small) number $\varepsilon > 0$. We need to find a point in the sequence after which <strong>every</strong> term is within $\varepsilon$ of $a$. If we can always find such an $N$ no matter how small $\varepsilon$ is, then the sequence converges to $a$.
-	
-!end-text-block
+Let&#x2019;s unpack this carefully. First, we start with a candidate $a$ that we think is the limit of $(a_n)$. To check if that&#x2019;s the case, we pick a (small) number $\varepsilon > 0$. We need to find a point in the sequence after which **every** term is within $\varepsilon$ of $a$. If we can always find such an $N$ no matter how small $\varepsilon$ is, then the sequence converges to $a$.
 
 
 
-!begin-example
-	
-	the formal definition of a limit
+### ex the formal definition of a limit
 	
 	The sequence $(a_n)$ defined by
 	
@@ -415,13 +349,9 @@
 	
 	!desmos epsilon-definition-of-convergence
 	
-!end-example
+###
 
-
-
-!begin-exercise
-	
-	the formal definition of a limit
+### exc the formal definition of a limit
 	
 	The sequence $(b_n)$ defined by
 	
@@ -431,7 +361,7 @@
 	
 	converges to $0$. Find $N$ such that $|b_n| < \varepsilon$ for $\varepsilon = 1$, $\varepsilon = .1$, and $\varepsilon = .001$.
 	
-	<strong>Solution:</strong> When $\varepsilon = 1$, the equation becomes
+	**Solution:** When $\varepsilon = 1$, the equation becomes
 	
 	$$
 		\left| \frac{1}{n} \right| < 1.
@@ -454,35 +384,23 @@
 	
 	so a solution is $N = 11$. Similarly, with $\varepsilon = .001$, a solution is $N = 1001$.
 	
-!end-exercise
+###
 
 
 
-!section
+## Properties of Sequences
 
-!text s Properties of Sequences
+When we have a sequence $(a_n)$ defined explicitly (i.e. $a_n = f(n)$ for some function $f$), **and** when $\lim_{x \to \infty} f(x)$ exists, then the limit of the sequence exists and is the same as the limit of the function. For example, let&#x2019;s look at the sequence $(r^n)$. When $0 \leq r < 1$, $r^x \to 0$ as $x \to \infty$, so $(r^n) \to 0$. When $r = 1$, $r^x = 1$ for all $x$, so $(r^n) \to 1$. And when $r > 1$, $r^x \to \infty$ as $x \to \infty$, so the same is true of $(r^n)$. Therefore, $(r^n)$ converges for $0 \leq r \leq 1$ and diverges for $r > 1$.
 
-<br>
+However, if the limit of the defining function does not exist, we need to be more careful. For example, the sequence $a_n = \cos(2\pi n)$ agrees with the function $f(x) = \cos(2\pi x)$, but while the function alternates between $1$ and $-1$ and therefore has no limit to $\infty$, the sequence only has integer values of $n$, meaning $a_n = 1$ for all $n$. Therefore, the sequence converges to 1.
 
+This is the first example of many of a sequence that converges only sometimes, depending on a parameter (here, that parameter is $r$). This sort of construction comes up so often that it will end up being one of the main objects we study in the course.
 
-
-!begin-text-block
-	
-	When we have a sequence $(a_n)$ defined explicitly (i.e. $a_n = f(n)$ for some function $f$), <strong>and</strong> when $\lim_{x \to \infty} f(x)$ exists, then the limit of the sequence exists and is the same as the limit of the function. For example, let&#x2019;s look at the sequence $(r^n)$. When $0 \leq r < 1$, $r^x \to 0$ as $x \to \infty$, so $(r^n) \to 0$. When $r = 1$, $r^x = 1$ for all $x$, so $(r^n) \to 1$. And when $r > 1$, $r^x \to \infty$ as $x \to \infty$, so the same is true of $(r^n)$. Therefore, $(r^n)$ converges for $0 \leq r \leq 1$ and diverges for $r > 1$.
-	
-	However, if the limit of the defining function does not exist, we need to be more careful. For example, the sequence $a_n = \cos(2\pi n)$ agrees with the function $f(x) = \cos(2\pi x)$, but while the function alternates between $1$ and $-1$ and therefore has no limit to $\infty$, the sequence only has integer values of $n$, meaning $a_n = 1$ for all $n$. Therefore, the sequence converges to 1.
-	
-	This is the first example of many of a sequence that converges only sometimes, depending on a parameter (here, that parameter is $r$). This sort of construction comes up so often that it will end up being one of the main objects we study in the course.
-	
-	Many of the rules of limits for functions also apply to sequences, so we can often skip annoying computations.
-	
-!end-text-block
+Many of the rules of limits for functions also apply to sequences, so we can often skip annoying computations.
 
 
 
-!begin-prop
-	
-	properties of limits
+### prop properties of limits
 	
 	Suppose $(a_n) \to a$ and $(b_n) \to b$. Let $c$ be a constant. Then:
 	
@@ -498,13 +416,11 @@
 	
 	6. If $f(x)$ is continuous at $x = a$, then $(f(a_n)) \to f(a)$.
 	
-!end-prop
+###
 
 
 
-!begin-exercise
-	
-	properties of limits
+### exc properties of limits
 	
 	Find the limits of the following sequences.
 	
@@ -514,7 +430,7 @@
 	
 	3. $\left(\sin \left( \frac{n}{2^n} \right) \right)$.
 	
-	<strong>Solutions:</strong>
+	**Solutions:**
 	
 	1. As $n \to \infty$, $n!$ becomes very large very fast. Increasing $n$ by just $1$ increases the term by a factor of $n$. Therefore, $(n!) \to \infty$.
 	
@@ -528,31 +444,23 @@
 	
 	Therefore, the limit of the sequence is $\sin(0) = 0$.
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
-	
-	Just like with functions, there is a Squeeze theorem for sequences. While the function version is often overlooked, though, the sequence version is critically important.
-	
-!end-text-block
+Just like with functions, there is a Squeeze theorem for sequences. While the function version is often overlooked, though, the sequence version is critically important.
 
 
 
-!begin-thm
-	
-	the Squeeze theorem
+### thm The Squeeze Theorem
 	
 	Let $(a_n)$, $(b_n)$, and $(c_n)$ be sequences such that for all $n$, $a_n \leq b_n \leq c_n$. If $(a_n) \to b$ and $(c_n) \to b$, then $(b_n)$ converges and $(b_n) \to b$.
 	
-!end-thm
+###
 
 
 
-!begin-example
-	
-	the Squeeze theorem
+### ex the Squeeze theorem
 	
 	Find $\lim \left( \frac{\cos(n)}{n} \right)$.
 	
@@ -564,19 +472,17 @@
 	
 	Now we know that both of the outer sequences converge to zero, so since they share a limit, the Squeeze theorem guarantees that $\lim \left( \frac{\cos(n)}{n} \right) = 0$ too.
 	
-	!desmos squeeze-theorem
+	### desmos squeeze-theorem
 	
-!end-example
+###
 
 
 
-!begin-exercise
-	
-	the Squeeze theorem
+### exc the Squeeze theorem
 	
 	We already understand the behavior of the sequence $(r^n)$ when $r \geq 0$: it converges to zero for $0 \leq r < 1$, to one for $r = 1$, and it diverges for $r > 1$. Use the Squeeze theorem to classify the behavior of $(r^n)$ for negative $r$.
 	
-	<strong>Solution:</strong> When $r < 0$, $r^n$ is positive for even $n$ and negative for odd $n$. To make our notation a little simpler, let&#x2019;s let $r > 0$ and consider the sequence $(-r)^n$. When $0 < r < 1$, we can squeeze $(-r)^n$ in the following manner:
+	**Solution:** When $r < 0$, $r^n$ is positive for even $n$ and negative for odd $n$. To make our notation a little simpler, let&#x2019;s let $r > 0$ and consider the sequence $(-r)^n$. When $0 < r < 1$, we can squeeze $(-r)^n$ in the following manner:
 	
 	$$
 		-(r^n) \leq (-r)^n \leq r^n.
@@ -588,61 +494,45 @@
 	
 	In total, the series $(r^n)$ converges to zero when $-1 < r < 1$, converges to one when $r = 1$, and diverges otherwise.
 	
-!end-exercise
+###
 
 
 
-!begin-text-block
+There&#x2019;s one final point to touch on before we leave this section. We can often tell when a sequence converges, even if we don&#x2019;t know what it converges to.
+
+
+
+### def bounded sequence
 	
-	There&#x2019;s one final point to touch on before we leave this section. We can often tell when a sequence converges, even if we don&#x2019;t know what it converges to.
+	A sequence $(a_n)$ is **bounded above** if there is some $M$ so that $a_n \leq M$ for all $n$. Similarly, $(a_n)$ is **bounded below** if there is some $M$ so that $(a_n) \geq M$ for all $n$.
 	
-!end-text-block
+###
 
 
 
-!begin-def
+### def monotone sequence
 	
-	bounded sequence
+	A sequence $(a_n)$ is **monotone increasing** if $a_{n + 1} \geq a_n$ for all $n$, and **monotone decreasing** if $a_{n + 1} \leq a_n$ for all $n$.
 	
-	A sequence $(a_n)$ is <dfn>bounded above</dfn> if there is some $M$ so that $a_n \leq M$ for all $n$. Similarly, $(a_n)$ is <dfn>bounded below</dfn> if there is some $M$ so that $(a_n) \geq M$ for all $n$.
-	
-!end-def
+###
 
 
 
-!begin-def
-	
-	monotone sequence
-	
-	A sequence $(a_n)$ is <dfn>monotone increasing</dfn> if $a_{n + 1} \geq a_n$ for all $n$, and <dfn>monotone decreasing</dfn> if $a_{n + 1} \leq a_n$ for all $n$.
-	
-!end-def
+For example, $(n^2)$ is monotone increasing and bounded below but not above, $(-\ln(n))$ is monotone decreasing and bounded above but not below, and $(\sin(n))$ is not monotone increasing or decreasing, but it is bounded above and below.
+
+If a sequence is monotone increasing and bounded above, then its behavior is very constrained. It must eventually settle down to some number &mdash; it cannot run off to infinity, since it&#x2019;s bounded above, or negative infinity, since it&#x2019;s increasing. And it can&#x2019;t fluctuate and avoid settling down to anything in the way $(\sin(n))$ does, since it is increasing. The same logic applies to sequences that are monotone decreasing and bounded below.
 
 
 
-!begin-text-block
-	
-	For example, $(n^2)$ is monotone increasing and bounded below but not above, $(-\ln(n))$ is monotone decreasing and bounded above but not below, and $(\sin(n))$ is not monotone increasing or decreasing, but it is bounded above and below.
-	
-	If a sequence is monotone increasing and bounded above, then its behavior is very constrained. It must eventually settle down to some number &mdash; it cannot run off to infinity, since it&#x2019;s bounded above, or negative infinity, since it&#x2019;s increasing. And it can&#x2019;t fluctuate and avoid settling down to anything in the way $(\sin(n))$ does, since it is increasing. The same logic applies to sequences that are monotone decreasing and bounded below.
-	
-!end-text-block
-
-
-
-!begin-thm
-	
-	the Monotone Convergence theorem
+### thm The Monotone Convergence Theorem
 	
 	Every sequence that is monotone increasing and bounded above, or monotone decreasing and bounded below, converges.
 	
-!end-thm
+###
 
 
 
-!begin-exercise
-	
-	the Monotone Convergence theorem
+### exc the Monotone Convergence theorem
 	
 	Let $(a_n)$ be a sequence defined recursively by $a_1 = 2$ and
 	
@@ -654,7 +544,7 @@
 	
 	First, show that $(a_n)$ converges using the MCT. Then find the number it converges to. (Hint: take the limit of both sides of the recurrence.)
 	
-	<strong>Solution:</strong> We want to show that $a_n$ is either bounded above and increasing or bounded below and decreasing. Plugging in a few values of $n$, we get
+	**Solution:** We want to show that $a_n$ is either bounded above and increasing or bounded below and decreasing. Plugging in a few values of $n$, we get
 	
 	$$
 		\begin{align*}
@@ -708,15 +598,11 @@
 	
 	Since $a_n \geq 1$ for all $n$, we must have that $a \geq 1$, so $a = 1$.
 	
-!end-exercise
+###
 
 
 	
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -738,12 +624,6 @@
 	
 	Page.settings = 
 	{
-		"title": "Section 1: Sequences",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/teaching/uo/253/notes"
 	};
 	

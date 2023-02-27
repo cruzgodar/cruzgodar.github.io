@@ -217,7 +217,7 @@ Site.Settings =
 		{
 			anime({
 				targets: this.meta_theme_color_element,
-				content: this.url_vars["theme"] === 1 ? "#161616" : "#ffffff",
+				content: this.url_vars["theme"] === 1 ? "#181818" : "#ffffff",
 				duration: Site.opacity_animation_time * 2,
 				easing: "cubicBezier(.25, .1, .25, 1)"
 			});
@@ -225,7 +225,7 @@ Site.Settings =
 		
 		else
 		{
-			this.meta_theme_color_element.setAttribute("content", this.url_vars["theme"] === 1 ? "#161616" : "#ffffff");
+			this.meta_theme_color_element.setAttribute("content", this.url_vars["theme"] === 1 ? "#181818" : "#ffffff");
 		}
 		
 		
