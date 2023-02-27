@@ -369,6 +369,10 @@ const components =
 	
 	decode: function(html)
 	{
+		const banner = html.indexOf(`"banner_page": true`) !== -1;
+		
+		html = html.replaceAll(/[\t\r]/g, "").replaceAll(/    /g, "");
+		
 		//We need to ignore the scripts at the bottom.
 		const index = html.indexOf("<script>");
 		
@@ -381,11 +385,9 @@ const components =
 			html = html.slice(0, index);
 		}
 		
-		const banner = html.match(/"banner_page": "true"/) ? true : false;
-		
 		let page_title = "";
 		
-		let lines = html.replace(/\t/g, "").replace(/    /g, "").replace(/\r/g, "").split("\n");
+		let lines = html.split("\n");
 		
 		
 		
@@ -494,8 +496,10 @@ const components =
 				page_title = title;
 				
 				const height_adjust = banner ? ` style="margin-bottom: 10vh"` :  "";
+				const banner_html = banner ? this.get_banner() :  "";
 				
 				lines[i] = `
+					${banner_html}
 					<header${height_adjust}>
 						<div id="logo">
 							<a href="/home/" tabindex="-1">
@@ -551,20 +555,27 @@ const components =
 		
 		
 		
-		if (!DEBUG)
+		//It looks a little nicer to minify the JS here properly. Here, we reduce scripts_data to being only the page settings.
+		if (scripts_data.indexOf("Page.settings") !== -1)
 		{
-			//This is for the published html, so it shouldn't be in debug mode.
-			scripts_data = scripts_data.replace(/index-testing.html/g, "index.html");
-			
-			if (page_title === "")
-			{
-				page_title = "Cruz Godar";
-			}
-			
-			const head_html = `<title>${page_title}</title><meta property="og:title" content="${page_title}"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cruzgodar.com${args.plainTexts[1]}"/><meta property="og:image" content="https://cruzgodar.com${args.plainTexts[1]}cover.jpg"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Cruz Godar"/>`;
-			
-			html = `<!DOCTYPE html><html lang="en"><head>${head_html}<style>body {opacity: 0;}</style></head><body><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript>${html}${scripts_data}</body></html>`;
+			scripts_data = scripts_data.replaceAll(/\n/g, "").replaceAll(/.*?(Page\.settings.*?}).+/g, "$1");
+			scripts_data = `${scripts_data},`;
 		}
+		
+		else
+		{
+			scripts_data = "";
+		}
+		
+		
+		if (page_title === "")
+		{
+			page_title = "Cruz Godar";
+		}
+		
+		const head_html = `<title>${page_title}</title><meta property="og:title" content="${page_title}"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cruzgodar.com${args.plainTexts[1]}"/><meta property="og:image" content="https://cruzgodar.com${args.plainTexts[1]}cover.jpg"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Cruz Godar"/>`;
+			
+		html = `<!DOCTYPE html><html lang="en"><head>${head_html}<style>body {opacity: 0;}</style></head><body><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript>${html}<script>"undefined"==typeof Page&&(""!==window.location.search?window.location.replace("/index.html?page="+encodeURIComponent(window.location.pathname)+"&"+window.location.search.slice(1)):window.location.replace("/index.html?page="+encodeURIComponent(window.location.pathname))),${scripts_data}Page.load()</script></body></html>`;
 		
 		return html;
 	}

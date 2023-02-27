@@ -32,6 +32,7 @@ footer
 	text-align: justify;
 	font-size: 100%;
 	font-family: 'Gentium Book Basic', serif;
+	margin-bottom: 16px;
 }
 
 .body-text
@@ -48,6 +49,8 @@ footer
 	position: relative;
 	
 	opacity: 0;
+	
+	margin-bottom: 100px;
 }
 
 #flame-container img

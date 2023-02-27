@@ -539,23 +539,6 @@ Page.Components =
 		
 		
 		
-		if (!DEBUG)
-		{
-			//This is for the published html, so it shouldn't be in debug mode.
-			html = html.replace(/index-testing.html/g, "index.html");
-			
-			if (page_title === "")
-			{
-				page_title = "Cruz Godar";
-			}
-			
-			const head_html = `<title>${page_title}</title><meta property="og:title" content="${page_title}"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cruzgodar.com${args.plainTexts[1]}"/><meta property="og:image" content="https://cruzgodar.com${args.plainTexts[1]}cover.jpg"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Cruz Godar"/>`;
-			
-			html = `<!DOCTYPE html><html lang="en"><head>${head_html}<style>body {opacity: 0;}</style></head><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript>${html}</html>`;
-		}
-		
-		
-		
 		return html;
 	}
 };
