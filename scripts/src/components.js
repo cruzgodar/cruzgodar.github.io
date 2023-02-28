@@ -391,7 +391,8 @@ Page.Components =
 		"lem": "Lemma",
 		"cor": "Corollary",
 		"pf": "Proof",
-		"ax": "Axiom"
+		"ax": "Axiom",
+		"as": "Aside"
 	},
 	
 	

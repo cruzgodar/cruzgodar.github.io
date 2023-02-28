@@ -1,7 +1,5 @@
 const parent_folder = args.plainTexts[1];
 
-DEBUG = false;
-
 const components =
 {
 	get_image_link: function(args)
@@ -318,6 +316,20 @@ const components =
 		
 		
 		
+		"banner": () =>
+		{
+			return "";
+		},
+		
+		
+		
+		"canvas": () =>
+		{
+			return `<canvas id="output-canvas" class="output-canvas"></canvas>`;
+		},
+		
+		
+		
 		"checkbox": (id, ...name) =>
 		{
 			const text = name.join(" ");
@@ -334,13 +346,6 @@ const components =
 					</div>
 				</div>
 			`;
-		},
-		
-		
-		
-		"canvas": () =>
-		{
-			return `<canvas id="output-canvas" class="output-canvas"></canvas>`;
 		},
 		
 		
@@ -379,7 +384,7 @@ const components =
 		}
 	},
 	
-	single_line_environments: ["canvas", "checkbox", "desmos", "nav-buttons", "wilson"],
+	single_line_environments: ["banner", "canvas", "checkbox", "desmos", "nav-buttons", "wilson"],
 	
 	notes_environments:
 	{
@@ -391,19 +396,20 @@ const components =
 		"lem": "Lemma",
 		"cor": "Corollary",
 		"pf": "Proof",
-		"ax": "Axiom"
+		"ax": "Axiom",
+		"as": "Aside"
 	},
 	
 	
 	
 	decode: function(html)
 	{
-		const banner = html.indexOf(`"banner_page": true`) !== -1;
+		const banner = html.indexOf("### banner") !== -1;
 		
 		html = html.replaceAll(/[\t\r]/g, "").replaceAll(/    /g, "");
 		
 		//We need to ignore the scripts at the bottom.
-		const index = html.indexOf("<script>");
+		const index = html.indexOf("<script");
 		
 		let scripts_data = "";
 		
@@ -621,17 +627,8 @@ const components =
 		
 		
 		
-		//It looks a little nicer to minify the JS here properly. Here, we reduce scripts_data to being only the page settings.
-		if (scripts_data.indexOf("Page.settings") !== -1)
-		{
-			scripts_data = scripts_data.replaceAll(/\n/g, "").replaceAll(/.*?(Page\.settings.*?}).+/g, "$1");
-			scripts_data = `${scripts_data},`;
-		}
+		scripts_data = scripts_data.replace(/init\.js/g, "init.min.js");
 		
-		else
-		{
-			scripts_data = "";
-		}
 		
 		
 		if (page_title === "")
@@ -641,7 +638,7 @@ const components =
 		
 		const head_html = `<title>${page_title}</title><meta property="og:title" content="${page_title}"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cruzgodar.com${args.plainTexts[1]}"/><meta property="og:image" content="https://cruzgodar.com${args.plainTexts[1]}cover.jpg"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Cruz Godar"/>`;
 			
-		html = `<!DOCTYPE html><html lang="en"><head>${head_html}<style>body {opacity: 0;}</style></head><body><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript>${html}<script>"undefined"==typeof Page&&(""!==window.location.search?window.location.replace("/index.html?page="+encodeURIComponent(window.location.pathname)+"&"+window.location.search.slice(1)):window.location.replace("/index.html?page="+encodeURIComponent(window.location.pathname))),${scripts_data}Page.load()</script></body></html>`;
+		html = `<!DOCTYPE html><html lang="en"><head>${head_html}<style>body {opacity: 0;}</style></head><body><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript>${html}${scripts_data}</body></html>`;
 		
 		return html;
 	}
