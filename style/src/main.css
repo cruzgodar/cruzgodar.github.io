@@ -195,7 +195,7 @@ img
 /* Centers body text, but only if it's a single line (not long enough to justify). */
 .center-if-needed
 {
-	text-align: center;
+	text-align: center !important;
 }
 
 
