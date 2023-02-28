@@ -92,21 +92,10 @@ Page.Navigation =
 				data = data.slice(index + 7);
 			}
 			
-			index = data.indexOf("<script>");
-			
-			let scripts_data = "";
-			
-			if (index !== -1)
-			{
-				scripts_data = data.slice(index);
-				
-				data = data.slice(0, index);
-			}
-			
 			
 			if (DEBUG)
 			{
-				let new_html = Page.Components.decode(`<div class="page" style="opacity: 0">\n${data}</div>${scripts_data}`);
+				let new_html = Page.Components.decode(`<div class="page" style="opacity: 0">\n${data}</div>`);
 				
 				new_html = new_html.slice(new_html.indexOf("<body>") + 6, new_html.indexOf("</body>"));
 				
@@ -117,10 +106,10 @@ Page.Navigation =
 			{
 				data = data.slice(data.indexOf("<body>") + 6, data.indexOf("</body>"));
 				
-				document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="opacity: 0">${data}</div>${scripts_data}`);
+				document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="opacity: 0">${data}</div>`);
 			}
 			
-			Page.Load.parse_script_tags();
+			Page.load();
 			
 			
 			

@@ -403,7 +403,7 @@ Page.Components =
 		html = html.replaceAll(/[\t\r]/g, "").replaceAll(/    /g, "");
 		
 		//We need to ignore the scripts at the bottom.
-		const index = html.indexOf("<script>");
+		const index = html.indexOf("<script");
 		
 		let scripts_data = "";
 		
@@ -620,20 +620,8 @@ Page.Components =
 		}
 		
 		
-		
-		//It looks a little nicer to minify the JS here properly. Here, we reduce scripts_data to being only the page settings.
-		if (scripts_data.indexOf("Page.settings") !== -1)
-		{
-			scripts_data = scripts_data.replaceAll(/\n/g, "").replaceAll(/.*?(Page\.settings.*?}).+/g, "$1");
-			scripts_data = `${scripts_data},`;
-		}
-		
-		else
-		{
-			scripts_data = "";
-		}
 			
-		html = `<html><body>${html}<script>"undefined"==typeof Page&&(""!==window.location.search?window.location.replace("/index-testing.html?page="+encodeURIComponent(window.location.pathname)+"&"+window.location.search.slice(1)):window.location.replace("/index-testing.html?page="+encodeURIComponent(window.location.pathname))),${scripts_data}Page.load()</script></body></html>`;
+		html = `<html><body>${html}${scripts_data}</body></html>`;
 		
 		return html;
 	}

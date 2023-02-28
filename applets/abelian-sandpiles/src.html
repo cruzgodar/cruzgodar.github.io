@@ -50,19 +50,4 @@ Piles with no grains are colored black, piles with one colored blue, those with 
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>
