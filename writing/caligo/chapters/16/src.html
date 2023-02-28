@@ -154,26 +154,4 @@ Something had changed in him, and although he would make a show of thinking it o
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	
-	
-	Page.settings =
-	{
-		"parent_list": "/writing/caligo"
-	};
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>

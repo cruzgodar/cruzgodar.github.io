@@ -42,19 +42,4 @@ Maybe I should have started with this applet before building that one, but the u
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>

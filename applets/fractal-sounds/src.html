@@ -74,19 +74,4 @@ The colors roughly indicate the fundamental frequencies of each point. Hover or 
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>

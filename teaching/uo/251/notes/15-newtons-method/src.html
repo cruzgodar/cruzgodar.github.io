@@ -125,26 +125,4 @@ Regardless, thank you for taking this course! It&#x2019;s been fantastic to teac
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	
-	
-	Page.settings = 
-	{
-		"parent_list": "/teaching/uo/251/notes"
-	};
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>

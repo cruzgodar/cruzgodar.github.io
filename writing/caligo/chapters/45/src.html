@@ -226,26 +226,4 @@ And then, sounding like the death throes of a titan, the sky began to fall.
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	
-	
-	Page.settings =
-	{
-		"parent_list": "/writing/caligo"
-	};
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>

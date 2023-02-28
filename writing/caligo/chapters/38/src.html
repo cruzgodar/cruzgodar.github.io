@@ -468,26 +468,4 @@ Amelia was quiet for a while, thinking. The thick stack of thousand dollar bills
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	
-	
-	Page.settings =
-	{
-		"parent_list": "/writing/caligo"
-	};
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>

@@ -48,19 +48,4 @@ Pascal&#x2019;s Triangle is a commonly-seen construction that proves useful from
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>

@@ -106,29 +106,4 @@ Graph theory, particularly large networks with power-law degree distributions.
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	
-	
-	Page.settings = 
-	{
-		"banner_page": true,
-		"num_banners": 1,
-		
-		"small_margins_on_ultrawide": true,
-	};
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>

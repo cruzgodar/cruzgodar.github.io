@@ -310,26 +310,4 @@ Series that converge conditionally have the unfortunate property that they can b
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	
-	
-	Page.settings = 
-	{
-		"parent_list": "/teaching/uo/253/notes"
-	};
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>

@@ -26,26 +26,4 @@ Material for the classes I&#x2019;m teaching and have previously taught. For Mat
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	
-	
-	Page.settings = 
-	{
-		"title": "Teaching &mdash; Cruz Godar",
-	};
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>

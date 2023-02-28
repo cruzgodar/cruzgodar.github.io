@@ -20,19 +20,4 @@ The <a href="/applets/the-barnsley-fern/">Barnsley fern</a> is an example of mat
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>

@@ -249,26 +249,4 @@ Things can get a little more complicated when multiple integration strategies ar
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	
-	
-	Page.settings = 
-	{
-		"parent_list": "/teaching/uo/252/notes"
-	};
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>

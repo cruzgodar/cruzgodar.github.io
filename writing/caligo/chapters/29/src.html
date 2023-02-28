@@ -76,26 +76,4 @@ And then Kate was wrenching her and Travis away, and through her numbness, barel
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	
-	
-	Page.settings =
-	{
-		"parent_list": "/writing/caligo"
-	};
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>

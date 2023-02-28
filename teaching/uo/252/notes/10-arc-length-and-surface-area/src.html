@@ -161,26 +161,4 @@ By know, we know how to find the volume of a solid of revolution, but what about
 
 
 
-<script>
-	if (typeof Page === "undefined")
-	{
-		if (window.location.search !== "")
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname) + "&" + window.location.search.slice(1));
-		}
-		
-		else
-		{
-			window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
-		}
-	}
-	
-	
-	
-	Page.settings = 
-	{
-		"parent_list": "/teaching/uo/252/notes"
-	};
-	
-	Page.load();
-</script>
+<script src="/scripts/init.js"></script>
