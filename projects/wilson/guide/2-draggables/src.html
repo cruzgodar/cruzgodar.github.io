@@ -1,239 +1,203 @@
+# Part 2: Draggables
+
+### nav-buttons
+
+Since every Julia set corresponds to a unique complex number \(c\), we should be able to use the canvas for choosing \(c\) and displaying its Julia set at the same time. Wilson provides a type of element for this, called a draggable. We can add any number of them to a canvas, but right now, we only need one. To get this set up, we just need to modify our options once again &mdash; after that, we can add a draggable at any time.
 
 
 
+```js
+	let options =
+	{
+	&#9;renderer: "hybrid",
+	&#9;
+	&#9;canvas_width: 1000,
+	&#9;canvas_height: 1000,
+	&#9;
+	&#9;world_width: 4,
+	&#9;world_height: 4,
+	&#9;world_center_x: 0,
+	&#9;world_center_y: 0,
+	&#9;
+	&#9;
+	&#9;
+	&#9;use_draggables: true
+	};
 
-!header Part 2: Draggables
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 
-!nav-buttons
-
-
-
-!begin-text-block
-	
-	Since every Julia set corresponds to a unique complex number \(c\), we should be able to use the canvas for choosing \(c\) and displaying its Julia set at the same time. Wilson provides a type of element for this, called a draggable. We can add any number of them to a canvas, but right now, we only need one. To get this set up, we just need to modify our options once again &mdash; after that, we can add a draggable at any time.
-	
-!end-text-block
-
-
-
-<pre><code class="language-js" data-aos="fade-up">let options =
-{
-&#9;renderer: "hybrid",
-&#9;
-&#9;canvas_width: 1000,
-&#9;canvas_height: 1000,
-&#9;
-&#9;world_width: 4,
-&#9;world_height: 4,
-&#9;world_center_x: 0,
-&#9;world_center_y: 0,
-&#9;
-&#9;
-&#9;
-&#9;use_draggables: true
-};
-
-let wilson = new Wilson(document.querySelector("#output-canvas"), options);
-
-let draggable = wilson.draggables.add(0, 1);</code></pre>
+	let draggable = wilson.draggables.add(0, 1);
+```
 
 
 
-<br>
+We now have a little white circle that can be freely dragged around the canvas. The style can be customized by modifying `.wilson-draggable`, but let&#x2019;s just stick with the default. The element is returned from `wilson.draggables.add` and also has a class of `wilson-draggable-0` if we want to reference it in the future. Note that `wilson.draggables.add` accepts world coordinates, not canvas ones.
 
-!begin-text-block
-	
-	We now have a little white circle that can be freely dragged around the canvas. The style can be customized by modifying <code>.wilson-draggable</code>, but let&#x2019;s just stick with the default. The element is returned from <code>wilson.draggables.add</code> and also has a class of <code>wilson-draggable-0</code> if we want to reference it in the future. Note that <code>wilson.draggables.add</code> accepts world coordinates, not canvas ones.
-	
-	Now we have to actually do something with this draggable, which is accomplished by passing callback functions in the Wilson options. The index of the current draggable being moved is passed to the callback, as well as the world coordinates and the original event that was captured in case we need to do anything with that. Here, we&#x2019;d like to have callbacks for grabbing the draggable, moving it, and letting it go &mdash; we&#x2019;ll render low resolution frames while moving so that the framerate stays high, then a single higher resolution frame when we let go. Since the resolution will be low while dragging, we can bump the default high resolution up to 1000.
-	
-	We&#x2019;ll no longer need the input fields for \(a\) and \(b\) &mdash; just the one for resolution. It&#x2019;d be a little awkward to have to press the generate button just to change the resolution, so instead we&#x2019;ll add a listener to that field and update the variables as needed.
-	
-!end-text-block
+Now we have to actually do something with this draggable, which is accomplished by passing callback functions in the Wilson options. The index of the current draggable being moved is passed to the callback, as well as the world coordinates and the original event that was captured in case we need to do anything with that. Here, we&#x2019;d like to have callbacks for grabbing the draggable, moving it, and letting it go &mdash; we&#x2019;ll render low resolution frames while moving so that the framerate stays high, then a single higher resolution frame when we let go. Since the resolution will be low while dragging, we can bump the default high resolution up to 1000.
+
+We&#x2019;ll no longer need the input fields $a$ and $b$ &mdash; just the one for resolution. It&#x2019;d be a little awkward to have to press the generate button just to change the resolution, so instead we&#x2019;ll add a listener to that field and update the variables as needed.
 
 
 
-<pre><code class="language-js" data-aos="fade-up">let options =
-{
-&#9;renderer: "hybrid",
-&#9;
-&#9;canvas_width: 1000,
-&#9;canvas_height: 1000,
-&#9;
-&#9;world_width: 4,
-&#9;world_height: 4,
-&#9;world_center_x: 0,
-&#9;world_center_y: 0,
-&#9;
-&#9;
-&#9;
-&#9;use_draggables: true,
-&#9;
-&#9;draggables_mousedown_callback: on_grab,
-&#9;draggables_mousemove_callback: on_drag,
-&#9;draggables_mouseup_callback: on_release,
-&#9;
-&#9;draggables_touchstart_callback: on_grab,
-&#9;draggables_touchmove_callback: on_drag,
-&#9;draggables_touchend_callback: on_release
-};
+```js
+	let options =
+	{
+	&#9;renderer: "hybrid",
+	&#9;
+	&#9;canvas_width: 1000,
+	&#9;canvas_height: 1000,
+	&#9;
+	&#9;world_width: 4,
+	&#9;world_height: 4,
+	&#9;world_center_x: 0,
+	&#9;world_center_y: 0,
+	&#9;
+	&#9;
+	&#9;
+	&#9;use_draggables: true,
+	&#9;
+	&#9;draggables_mousedown_callback: on_grab,
+	&#9;draggables_mousemove_callback: on_drag,
+	&#9;draggables_mouseup_callback: on_release,
+	&#9;
+	&#9;draggables_touchstart_callback: on_grab,
+	&#9;draggables_touchmove_callback: on_drag,
+	&#9;draggables_touchend_callback: on_release
+	};
 
 
 
-let wilson = new Wilson(document.querySelector("#output-canvas"), options);
-	
-let draggable = wilson.draggables.add(0, 1);
+	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
+		
+	let draggable = wilson.draggables.add(0, 1);
 
 
 
-let resolution_input_element = document.querySelector("#resolution-input");
+	let resolution_input_element = document.querySelector("#resolution-input");
 
-let large_resolution = 1000;
-let small_resolution = 200;
+	let large_resolution = 1000;
+	let small_resolution = 200;
 
-resolution_input_element.addEventListener("input", () =>
-{
-&#9;large_resolution = parseInt(resolution_input_element.value || 1000);
-&#9;small_resolution = Math.floor(large_resolution / 5);
-});
-
-
-
-let download_button_element = document.querySelector("#download-button");
-
-download_button_element.addEventListener("click", () =>
-{
-&#9;wilson.download_frame("a-julia-set.png");
-});</code></pre>
+	resolution_input_element.addEventListener("input", () =>
+	{
+	&#9;large_resolution = parseInt(resolution_input_element.value || 1000);
+	&#9;small_resolution = Math.floor(large_resolution / 5);
+	});
 
 
 
-<br>
+	let download_button_element = document.querySelector("#download-button");
 
-!begin-text-block
-	
-	Now that we&#x2019;re drawing frames so often, we need to be careful not to draw multiple within a single frame&#x2019;s time. This is why we introduced <code>window.requestAnimationFrame</code> in the previous part, but it&#x2019;s not quite enough on its own &mdash; instead, we&#x2019;ll make a new function <code>draw_julia_set</code> that only calls <code>wilson.render.draw_frame</code> if either some time has passed since the previous frame or the resolution has changed. Note that <code>window.requestAnimationFrame</code> automatically passes the current timestamp to its argument.
-	
-!end-text-block
-
-
-
-<pre><code class="language-js" data-aos="fade-up">let a = 0;
-let b = 1;
-
-let resolution = 200;
-let last_resolution = 0;
-
-let last_timestamp = -1;
+	download_button_element.addEventListener("click", () =>
+	{
+	&#9;wilson.download_frame("a-julia-set.png");
+	});
+```
 
 
 
-function draw_julia_set(timestamp)
-{
-&#9;let time_elapsed = timestamp - last_timestamp;
-&#9;
-&#9;last_timestamp = timestamp;
-&#9;
-&#9;
-&#9;
-&#9;if (time_elapsed === 0 && last_resolution === resolution)
-&#9;{
-&#9;	&#9;return;
-&#9;}
-&#9;
-&#9;last_resolution = resolution;
-&#9;
-&#9;
-&#9;
-&#9;wilson.render.draw_frame(generate_julia_set(a, b, resolution));
-}
+Now that we&#x2019;re drawing frames so often, we need to be careful not to draw multiple within a single frame&#x2019;s time. This is why we introduced `window.requestAnimationFrame` in the previous part, but it&#x2019;s not quite enough on its own &mdash; instead, we&#x2019;ll make a new function `draw_julia_set` that only calls `wilson.render.draw_frame` if either some time has passed since the previous frame or the resolution has changed. Note that `window.requestAnimationFrame` automatically passes the current timestamp to its argument.
 
 
 
-//Draw the initial frame.
-wilson.change_canvas_size(small_resolution, small_resolution);
-window.requestAnimationFrame(draw_julia_set);
+```js
+	let a = 0;
+	let b = 1;
+
+	let resolution = 200;
+	let last_resolution = 0;
+
+	let last_timestamp = -1;
 
 
 
-function on_grab(active_draggable, x, y, event)
-{
-&#9;wilson.change_canvas_size(small_resolution, small_resolution);
-&#9;
-&#9;a = x;
-&#9;b = y;
-&#9;resolution = small_resolution;
-&#9;
-&#9;window.requestAnimationFrame(draw_julia_set);
-}
-
-function on_drag(active_draggable, x, y, event)
-{
-&#9;a = x;
-&#9;b = y;
-&#9;resolution = small_resolution;
-&#9;
-&#9;window.requestAnimationFrame(draw_julia_set);
-}
-
-function on_release(active_draggable, x, y, event)
-{
-&#9;wilson.change_canvas_size(large_resolution, large_resolution);
-&#9;
-&#9;a = x;
-&#9;b = y;
-&#9;resolution = large_resolution;
-&#9;
-&#9;window.requestAnimationFrame(draw_julia_set);
-}</code></pre>
+	function draw_julia_set(timestamp)
+	{
+	&#9;let time_elapsed = timestamp - last_timestamp;
+	&#9;
+	&#9;last_timestamp = timestamp;
+	&#9;
+	&#9;
+	&#9;
+	&#9;if (time_elapsed === 0 && last_resolution === resolution)
+	&#9;{
+	&#9;	&#9;return;
+	&#9;}
+	&#9;
+	&#9;last_resolution = resolution;
+	&#9;
+	&#9;
+	&#9;
+	&#9;wilson.render.draw_frame(generate_julia_set(a, b, resolution));
+	}
 
 
 
-<br>
+	//Draw the initial frame.
+	wilson.change_canvas_size(small_resolution, small_resolution);
+	window.requestAnimationFrame(draw_julia_set);
 
 
 
-!begin-text-boxes
-	
+	function on_grab(active_draggable, x, y, event)
+	{
+	&#9;wilson.change_canvas_size(small_resolution, small_resolution);
+	&#9;
+	&#9;a = x;
+	&#9;b = y;
+	&#9;resolution = small_resolution;
+	&#9;
+	&#9;window.requestAnimationFrame(draw_julia_set);
+	}
+
+	function on_drag(active_draggable, x, y, event)
+	{
+	&#9;a = x;
+	&#9;b = y;
+	&#9;resolution = small_resolution;
+	&#9;
+	&#9;window.requestAnimationFrame(draw_julia_set);
+	}
+
+	function on_release(active_draggable, x, y, event)
+	{
+	&#9;wilson.change_canvas_size(large_resolution, large_resolution);
+	&#9;
+	&#9;a = x;
+	&#9;b = y;
+	&#9;resolution = large_resolution;
+	&#9;
+	&#9;window.requestAnimationFrame(draw_julia_set);
+	}
+```
+
+
+
+### text-boxes
 	resolution 1000 Resolution
-	
-!end-text-boxes
+###
 
-
-
-<div class="center-content" data-aos="fade-up">
-	<div style="width: 70vmin">
+<div class="center-content">
+	<div id="canvas-landscape-middle">
 		<canvas id="output-canvas" class="output-canvas"></canvas>
 	</div>
 </div>
 
-
-
-!begin-text-buttons
-	
+### buttons
 	download Download
-	
-!end-text-buttons
+###
 
 
 
-!section
+<div style="height: 32px"></div>
 
-!begin-text-block
-	
-	We&#x2019;re making progress! In the next section, we&#x2019;ll move the math for this applet onto the GPU, dramatically improving performance.
+We&#x2019;re making progress! In the next section, we&#x2019;ll move the math for this applet onto the GPU, dramatically improving performance.
 
-	You can view the code for this page <a href="/projects/wilson/guide/2-draggables/scripts/draggables.js">here</a>. 
-	
-!end-text-block
+You can view the code for this page <a href="/projects/wilson/guide/2-draggables/scripts/index.js">here</a>. 
 
 
 
-!nav-buttons
-
-
-
-!footer
+### nav-buttons
 
 
 
@@ -255,12 +219,6 @@ function on_release(active_draggable, x, y, event)
 	
 	Page.settings = 
 	{
-		"title": "Part 2: Draggables",
-		
-		"math_page": true,
-		
-		"small_margins_on_ultrawide": true,
-		
 		"parent_list": "/projects/wilson/guide"
 	};
 	

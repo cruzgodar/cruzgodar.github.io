@@ -276,3 +276,11 @@ mjx-container
 		left: 5vw;
 	}
 }
+
+@media (min-width: 1400px)
+{
+	pre code.highlightable
+	{
+		width: calc(50vw - 24px);
+	}
+}

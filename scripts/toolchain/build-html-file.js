@@ -454,8 +454,42 @@ const components =
 				i++;
 			}
 			
+			
+			
+			//Handle code blocks.
+			else if (lines[i].slice(0, 3) === "```")
+			{
+				if (lines[i].length > 3)
+				{
+					lines[i] = `<pre><code class="language-${lines[i].slice(3)}">`;
+				}
+				
+				else
+				{
+					lines[i] = `<pre><code>`;
+				}
+				
+				lines[i] = `${lines[i]}${lines[i + 1]}[ESCAPEDNEWLINE]`;
+				
+				lines.splice(i + 1, 1);
+				
+				i++;
+				
+				while (lines[i].slice(0, 3) !== "```")
+				{
+					lines[i] = `${lines[i]}[ESCAPEDNEWLINE]`;
+					i++;
+				}
+				
+				lines[i - 1] = `${lines[i - 1]}</code></pre>`;
+				
+				lines.splice(i, 1);
+			}
+			
+			
+			
 			//This is one of the many possible environments.
-			if (lines[i].slice(0, 3) === "###")
+			else if (lines[i].slice(0, 3) === "###")
 			{
 				if (lines[i] === "###")
 				{
@@ -570,6 +604,9 @@ const components =
 		
 		
 		html = lines.join("");
+		
+		//Gross
+		html = html.replaceAll(/\[ESCAPEDNEWLINE\]/g, "\n");
 		
 		
 		
