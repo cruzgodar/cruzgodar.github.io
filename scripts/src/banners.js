@@ -17,11 +17,9 @@ Page.Banner =
 	opacity: 1,
 	
 	max_scroll: null,
-
-
-
-	//A list of every page that has a banner. Only to be used for preloading those banners. For everything else, use page_settings["banner_page"].
-	preloadable_pages:
+	
+	
+	banner_pages:
 	[
 		"/home/",
 		
@@ -31,7 +29,6 @@ Page.Banner =
 		"/writing/desolation-point/"
 	],
 
-	//A list of every page that has multiple banners. Again, this is ONLY to be used for preloading those banners. For everything else, use page_settings["num_banners"].
 	multibanner_pages:
 	{
 		"/home/":
@@ -53,7 +50,7 @@ Page.Banner =
 		return new Promise((resolve, reject) =>
 		{
 			//Only do banner things if the banner things are in the standard places.
-			if (!(this.preloadable_pages.includes(Page.url)))
+			if (!(this.banner_pages.includes(Page.url)))
 			{
 				resolve();
 			}
@@ -267,7 +264,7 @@ Page.Banner =
 	//Fetches the other size of banner needed for the page, so that if the page is resized, there's no lag time.
 	fetch_other_size_in_background: function()
 	{
-		if (this.preloadable_pages.includes(Page.url) && !(this.other_size_pages_already_fetched.includes(Page.url)))
+		if (this.banner_pages.includes(Page.url) && !(this.other_size_pages_already_fetched.includes(Page.url)))
 		{
 			if (this.file_name === "landscape.webp" || this.file_name === "landscape.jpg")
 			{
@@ -296,7 +293,7 @@ Page.Banner =
 		{
 			const href = link.getAttribute("href");
 			
-			if (this.preloadable_pages.includes(href) && !(this.pages_already_fetched.includes(href)))
+			if (this.banner_pages.includes(href) && !(this.pages_already_fetched.includes(href)))
 			{
 				this.pages_already_fetched.push(href);
 				

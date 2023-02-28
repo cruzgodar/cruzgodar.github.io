@@ -318,6 +318,13 @@ Page.Components =
 		
 		
 		
+		"banner": () =>
+		{
+			return "";
+		},
+		
+		
+		
 		"checkbox": (id, ...name) =>
 		{
 			const text = name.join(" ");
@@ -334,13 +341,6 @@ Page.Components =
 					</div>
 				</div>
 			`;
-		},
-		
-		
-		
-		"canvas": () =>
-		{
-			return `<canvas id="output-canvas" class="output-canvas"></canvas>`;
 		},
 		
 		
@@ -379,7 +379,7 @@ Page.Components =
 		}
 	},
 	
-	single_line_environments: ["canvas", "checkbox", "desmos", "nav-buttons", "wilson"],
+	single_line_environments: ["banner", "canvas", "checkbox", "desmos", "nav-buttons", "wilson"],
 	
 	notes_environments:
 	{
@@ -398,7 +398,7 @@ Page.Components =
 	
 	decode: function(html)
 	{
-		const banner = html.indexOf(`"banner_page": true`) !== -1;
+		const banner = html.indexOf("### banner") !== -1;
 		
 		html = html.replaceAll(/[\t\r]/g, "").replaceAll(/    /g, "");
 		

@@ -7,7 +7,7 @@ Page.load = async function()
 {
 	Page.element = document.body.querySelector(".page");
 	
-	if ("banner_page" in Page.settings && Page.settings["banner_page"])
+	if (Page.Banner.banner_pages.includes(Page.url))
 	{
 		Page.banner_element = Page.element.querySelector("#banner");
 		Page.content_element = Page.element.querySelector("#content");
@@ -137,19 +137,9 @@ Page.load = async function()
 	
 	
 	
-	if ("banner_page" in this.settings && this.settings["banner_page"])
+	if (Page.Banner.banner_pages.includes(Page.url))
 	{
 		this.Banner.fetch_other_size_in_background();
-	}
-	
-	if (Site.Settings.url_vars["contrast"] === 1)
-	{
-		Site.Settings.set_img_button_contrast();
-	}
-	
-	if ("writing_page" in this.settings && this.settings["writing_page"] && Site.Settings.url_vars["font"] === 1)
-	{
-		Site.Settings.set_writing_page_font();
 	}
 	
 	if (this.Layout.layout_string === "ultrawide")
