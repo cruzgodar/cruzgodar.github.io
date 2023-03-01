@@ -10,5 +10,3 @@ if (typeof Page === "undefined")
 		window.location.replace("/index-testing.html?page=" + encodeURIComponent(window.location.pathname));
 	}
 }
-
-Page.load();
