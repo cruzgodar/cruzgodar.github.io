@@ -35,8 +35,6 @@ Site.sitemap =
 		
 		children:
 		[
-			"/applets/hyperbolic-isometries/",
-			"/applets/network-puzzle/",
 			"/applets/plane-partitions/",
 			"/applets/quaternionic-julia-sets/",
 			"/applets/fractal-sounds/",
@@ -75,20 +73,6 @@ Site.sitemap =
 			
 			"/projects/wilson/"
 		]
-	},
-	
-	"/applets/hyperbolic-isometries/":
-	{
-		parent: "/applets/",
-		
-		children: []
-	},
-	
-	"/applets/network-puzzle/":
-	{
-		parent: "/applets/",
-		
-		children: []
 	},
 	
 	"/applets/plane-partitions/":
@@ -461,7 +445,6 @@ Site.sitemap =
 			"/teaching/uo/253/notes/8-properties-of-power-series/",
 			"/teaching/uo/253/notes/9-taylor-series/",
 			"/teaching/uo/253/notes/10-applications-of-taylor-series/",
-			"/teaching/uo/253/notes/11-generating-functions/"
 		]
 	},
 	
@@ -543,14 +526,6 @@ Site.sitemap =
 	
 	
 	"/teaching/uo/253/notes/10-applications-of-taylor-series/":
-	{
-		parent: "/teaching/uo/253/",
-		
-		children: []
-	},
-	
-	
-	"/teaching/uo/253/notes/11-generating-functions/":
 	{
 		parent: "/teaching/uo/253/",
 		

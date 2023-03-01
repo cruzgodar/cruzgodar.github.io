@@ -117,10 +117,7 @@ Page.load = async function()
 	
 	this.Load.show_images();
 	
-	if ("parent_list" in this.settings)
-	{
-		this.Load.TextButtons.set_up_nav_buttons(this.settings["parent_list"]);
-	}
+	this.Load.TextButtons.set_up_nav_buttons();
 	
 	
 	
@@ -847,9 +844,10 @@ Page.Load =
 		
 		
 		
-		set_up_nav_buttons: function(parent_list)
+		set_up_nav_buttons: function()
 		{
-			const index = Site.page_lists[parent_list].indexOf(Page.url);
+			const list = Site.sitemap[Site.sitemap[Page.url].parent].children;
+			const index = list.indexOf(Page.url);
 			
 			if (index === -1)
 			{
@@ -860,9 +858,9 @@ Page.Load =
 			
 			
 			
-			if (index > 1)
+			if (index > 0)
 			{
-				Page.element.querySelectorAll(".previous-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${Site.page_lists[parent_list][index - 1]}")`));
+				Page.element.querySelectorAll(".previous-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${list[index - 1]}")`));
 			}
 			
 			else
@@ -872,13 +870,13 @@ Page.Load =
 			
 			
 			
-			Page.element.querySelectorAll(".home-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${Site.page_lists[parent_list][0]}")`));
+			Page.element.querySelectorAll(".home-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${Site.sitemap[Page.url].parent}")`));
 			
 			
 			
-			if (index < Site.page_lists[parent_list].length - 1)
+			if (index < list.length - 1)
 			{
-				Page.element.querySelectorAll(".next-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${Site.page_lists[parent_list][index + 1]}")`));
+				Page.element.querySelectorAll(".next-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${list[index + 1]}")`));
 			}
 			
 			else
