@@ -80,6 +80,13 @@
 					<string>comment</string>
 				</dict>
 			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>$self</string>
+				</dict>
+			</array>
 		</dict>
 		
 		<dict>
@@ -250,7 +257,7 @@
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>string</string>
+					<string>markup.raw</string>
 				</dict>
 				<key>3</key>
 				<dict>
@@ -273,9 +280,22 @@
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>string</string>
+					<string>markup.raw</string>
 				</dict>
 				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<dict>
+			<key>match</key>
+			<string>(&lt;script.*?&lt;/script&gt;)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
 				<dict>
 					<key>name</key>
 					<string>comment</string>
