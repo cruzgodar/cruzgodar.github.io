@@ -2,9 +2,9 @@
 
 ### nav-buttons
 
-By now, we&#x2019;ve built up a robust theory of series. We know when and where they converge, and in a few special cases, we even know what they converge to. In this section, we&#x2019;ll extend those few special cases to almost every power series we&#x2019;ve seen, and by the end, we&#x2019;ll be able to pass from functions to power series and back almost effortlessly.
+By now, we've built up a robust theory of series. We know when and where they converge, and in a few special cases, we even know what they converge to. In this section, we'll extend those few special cases to almost every power series we've seen, and by the end, we'll be able to pass from functions to power series and back almost effortlessly.
 
-Let&#x2019;s return to an old friend: $\frac{1}{1 - x}$. We already know that when $|x| < 1$, it&#x2019;s equal to $\sum_{n = 0}^\infty x^n$, but the way we found that was by directly taking a limit of partial sums and expressing $1 + x + x^2 + \cdots + x^k$ as $\frac{1 - x^{k + 1}}{1 - x}$. That method was specific to this particular series and doesn&#x2019;t really help with any others. Instead, let&#x2019;s try to find series like that in general, without any fancy tricks.
+Let's return to an old friend: $\frac{1}{1 - x}$. We already know that when $|x| < 1$, it's equal to $\sum_{n = 0}^\infty x^n$, but the way we found that was by directly taking a limit of partial sums and expressing $1 + x + x^2 + \cdots + x^k$ as $\frac{1 - x^{k + 1}}{1 - x}$. That method was specific to this particular series and doesn't really help with any others. Instead, let's try to find series like that in general, without any fancy tricks.
 
 Take a power series $\sum_{n = 0}^\infty c_n (x - a)^n$ centered at $x = a$, and suppose that the series converges to a function $f(x)$ on some interval $(a - R, a + R)$. With the logic we used at the end of the previous section, we can extract the derivatives of $f$ from the coefficients of the series. Specifically, we have
 
@@ -20,7 +20,7 @@ $$
 	\end{align*}
 $$
 
-From this perspective, if we know a power series representation of a function $f$, then we can find any derivative of $f$ from the coefficients. But we really want to go the other way: we want to *find* series representations from a function. To get at that direction, let&#x2019;s solve all of those equations for the $c_n$:
+From this perspective, if we know a power series representation of a function $f$, then we can find any derivative of $f$ from the coefficients. But we really want to go the other way: we want to *find* series representations from a function. To get at that direction, let's solve all of those equations for the $c_n$:
 
 $$
 	\begin{align*}
@@ -34,7 +34,7 @@ $$
 	\end{align*}
 $$
 
-What we&#x2019;ve come to is the idea that underpins the entire section, and to a large extent the course: if $f$ has a power series representation centered at $x = a$, then there is only one possibility for what it can be, since power series representations are unique, and we&#x2019;ve just written down what that one possibility is. We&#x2019;ll be talking quite a lot about these things, and they deserve their own name.
+What we've come to is the idea that underpins the entire section, and to a large extent the course: if $f$ has a power series representation centered at $x = a$, then there is only one possibility for what it can be, since power series representations are unique, and we've just written down what that one possibility is. We'll be talking quite a lot about these things, and they deserve their own name.
 
 
 
@@ -52,7 +52,7 @@ What we&#x2019;ve come to is the idea that underpins the entire section, and to 
 
 
 
-Critically, this definition says nothing about convergence: the Taylor series for a function </strong>does not necessarily converge to that function</strong>. We&#x2019;ll see examples of this a little later, but the takeaway is that we need to verify convergence to show that a Taylor series actually does what it&#x2019;s supposed to.
+Critically, this definition says nothing about convergence: the Taylor series for a function </strong>does not necessarily converge to that function</strong>. We'll see examples of this a little later, but the takeaway is that we need to verify convergence to show that a Taylor series actually does what it's supposed to.
 
 
 
@@ -66,7 +66,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 		c_n = \frac{1}{n!} \frac{d^n}{dx^n} [\sin(x)]|_{x = 0}.
 	$$
 	
-	Okay, so what is that massive derivative? Let&#x2019;s list out a few derivatives of $\sin(x)$ to remind ourselves of the pattern.
+	Okay, so what is that massive derivative? Let's list out a few derivatives of $\sin(x)$ to remind ourselves of the pattern.
 	
 	$$
 		\begin{align*}
@@ -83,7 +83,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 		x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots.
 	$$
 	
-	It&#x2019;s pretty awkward to write those coefficients as a series if we try to include the missing terms. Instead, let&#x2019;s write this as an alternating series by changing the power on $x$:
+	It's pretty awkward to write those coefficients as a series if we try to include the missing terms. Instead, let's write this as an alternating series by changing the power on $x$:
 	
 	$$
 		\sum_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!}.
@@ -91,7 +91,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 	
 	The $2n + 1$ is just a nice way of expressing all the odd numbers.
 	
-	Next, let&#x2019;s determine where this series converges. The ratio test is often the best bet for Taylor series, since they&#x2019;re full of factorials and exponents. Evaluating it on this series, we have
+	Next, let's determine where this series converges. The ratio test is often the best bet for Taylor series, since they're full of factorials and exponents. Evaluating it on this series, we have
 	
 	$$
 		\begin{align*}
@@ -138,7 +138,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 	
 	**Solutions:**
 	
-	1. Let&#x2019;s start by making a list of the first few derivatives. We have
+	1. Let's start by making a list of the first few derivatives. We have
 	
 	$$
 		\begin{align*}
@@ -189,7 +189,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 		16 + 8(x - 2) + (x - 2)^2.
 	$$
 	
-	This makes sense &mdash; if you expand this out, it&#x2019;s equal to $x^2 + 4x + 4$! The interval of convergence is $(-\infty, \infty)$, since a finite series can never diverge, and the first three Taylor polynomials are $16$, $16 + 8(x - 2)$, and $16 + 8(x - 2) + (x - 2)^2$.
+	This makes sense --- if you expand this out, it's equal to $x^2 + 4x + 4$! The interval of convergence is $(-\infty, \infty)$, since a finite series can never diverge, and the first three Taylor polynomials are $16$, $16 + 8(x - 2)$, and $16 + 8(x - 2) + (x - 2)^2$.
 	
 	3. We already know a series representation of this, but to get a Taylor series, we just take derivatives. We have
 	
@@ -224,19 +224,19 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 
 ## The Convergence of Taylor Series
 
-Now that we have a candidate for general series representations, the natural next thing to figure out is when they converge to the functions they&#x2019;re derived from. Just as we measured our approximation of series with remainders, we&#x2019;ll measure a Taylor series&#x2019;s approximation of a function with a <dfn>remainder function</dfn>. Given a Taylor series
+Now that we have a candidate for general series representations, the natural next thing to figure out is when they converge to the functions they're derived from. Just as we measured our approximation of series with remainders, we'll measure a Taylor series's approximation of a function with a <dfn>remainder function</dfn>. Given a Taylor series
 
 $$
 	\sum_{n = 0}^\infty \frac{f^{(n)}(a)}{n!} (x - a)^n
 $$
 
-centered at $a$, let&#x2019;s define the $N$th remainder function as
+centered at $a$, let's define the $N$th remainder function as
 
 $$
 	R_N(x) = f(x) - \sum_{n = 0}^N \frac{f^{(n)}(a)}{n!} (x - a)^n.
 $$
 
-In order for the Taylor series to approximate $f$, we need $\lim_{N \to \infty} R_N(x) = 0$, and to know when that&#x2019;s true, we have to find a formula for $R_N(x)$. Figuring that formula out takes some effort, but the result will be simple enough in the end. A critical part will be the use of the Mean Value theorem &mdash; let&#x2019;s state that now to remind ourselves how it works.
+In order for the Taylor series to approximate $f$, we need $\lim_{N \to \infty} R_N(x) = 0$, and to know when that's true, we have to find a formula for $R_N(x)$. Figuring that formula out takes some effort, but the result will be simple enough in the end. A critical part will be the use of the Mean Value theorem --- let's state that now to remind ourselves how it works.
 
 
 
@@ -252,17 +252,17 @@ In order for the Taylor series to approximate $f$, we need $\lim_{N \to \infty} 
 
 
 
-The idea behind the MVT is that the fraction on the right is the slope of the line between $(a, f(a))$ and $(b, f(b))$, and there is no way to draw a fucntion between those points without a tangent line somewhere having the same slope as this secant line. We&#x2019;ll be looking at a case where $f(a) = f(b)$, so the conclusion will be that the derivative must be zero somewhere in between.
+The idea behind the MVT is that the fraction on the right is the slope of the line between $(a, f(a))$ and $(b, f(b))$, and there is no way to draw a fucntion between those points without a tangent line somewhere having the same slope as this secant line. We'll be looking at a case where $f(a) = f(b)$, so the conclusion will be that the derivative must be zero somewhere in between.
 
-The function we&#x2019;ll be applying the MVT to is somewhat complicated. Fix a value of $x \neq a$ and define a function $g$ by
+The function we'll be applying the MVT to is somewhat complicated. Fix a value of $x \neq a$ and define a function $g$ by
 
 $$
 	g(t) = f(x) - \left( \sum_{n = 0}^N \left( \frac{f^{(n)}(t)}{n!} (x - t)^n \right) + R_N(x) \frac{(x - t)^{N + 1}}{(x - a)^{N + 1}} \right).
 $$
 
-This is a huge function, but it&#x2019;s not quite as complicated as it might seem. Inside the parentheses on the right is the start of a Taylor series for $f$ centered at $t$. If we added on its remainder, we&#x2019;d have a complete Taylor series, but instead we add on $R_N$, which is the remainder of the series centered at $a$, and we multiply it by $\frac{(x - t)^{n + 1}}{(x - a)^{n + 1}}$, which will help us a little later.
+This is a huge function, but it's not quite as complicated as it might seem. Inside the parentheses on the right is the start of a Taylor series for $f$ centered at $t$. If we added on its remainder, we'd have a complete Taylor series, but instead we add on $R_N$, which is the remainder of the series centered at $a$, and we multiply it by $\frac{(x - t)^{n + 1}}{(x - a)^{n + 1}}$, which will help us a little later.
 
-There&#x2019;s unfortunately not that much motivation for why $g$ is defined this way, and the ends will have to justify the means. First of all, since $f$ is infinitely differentiable, so is $g$ &mdash; it&#x2019;s just a bunch of derivatives of $f$ and polynomials in $t$. Also, we know that $g$ is zero for $t = x$ and $t = a$:
+There's unfortunately not that much motivation for why $g$ is defined this way, and the ends will have to justify the means. First of all, since $f$ is infinitely differentiable, so is $g$ --- it's just a bunch of derivatives of $f$ and polynomials in $t$. Also, we know that $g$ is zero for $t = x$ and $t = a$:
 
 $$
 	\begin{align*}
@@ -285,7 +285,7 @@ $$
 
 In this sense, $g$ is measuring how well a Taylor series centered at $t$ approximates $f$, except we staple on the remainder from a Taylor series centered at $a$ no matter what $t$ is.
 
-By the Mean Value theorem, there must be a point $c$ in between $x$ and $a$ where $g'(c) = 0$. So what is $g'(c)$? Let&#x2019;s differentiate and find out. Remember, we&#x2019;re differentiating with respect to $t$, not $x$, so terms with just $x$ are treated as constants.
+By the Mean Value theorem, there must be a point $c$ in between $x$ and $a$ where $g'(c) = 0$. So what is $g'(c)$? Let's differentiate and find out. Remember, we're differentiating with respect to $t$, not $x$, so terms with just $x$ are treated as constants.
 
 $$
 	\begin{align*}
@@ -326,7 +326,7 @@ Specifically, if $f^{(N + 1)}$ is a bounded function, then that bound will carry
 
 
 
-### thm Taylor&#x2019;s Theorem
+### thm Taylor's Theorem
 	
 	Let $f$ be a function that is differentiable $N + 1$ times on some interval $I$, and let $a$ be a number in $I$. Let $R_N(x)$ be the $N$th remainder function of the Taylor series for $f$ centered at $a$. Suppose further that $f^{(N + 1)}$ is bounded on $I$: in other words, there is some number $M$ with
 	
@@ -344,11 +344,11 @@ Specifically, if $f^{(N + 1)}$ is a bounded function, then that bound will carry
 
 
 
-That was a lot of very dense work leading up to a pretty dense result &mdash; let&#x2019;s take a second to unpack how we&#x2019;ll actually be using it in practice. When we have a Taylor series for a function $f(x)$, we can determine how good of an approximation the $N$th Taylor polynomial is by **effectively only looking at the next term**. For example, the quality of the approximation of a Taylor polynomial that ends at the $n = 3$ term of the Taylor series is determined only by the behavior of the $n = 4$ term. If this section&#x2019;s been throwing you for a bit of a loop so far, now&#x2019;s the time to jump back in. We&#x2019;ll return to our example of $\sin$ to determine the remainders for each of the Taylor polynomials.
+That was a lot of very dense work leading up to a pretty dense result --- let's take a second to unpack how we'll actually be using it in practice. When we have a Taylor series for a function $f(x)$, we can determine how good of an approximation the $N$th Taylor polynomial is by **effectively only looking at the next term**. For example, the quality of the approximation of a Taylor polynomial that ends at the $n = 3$ term of the Taylor series is determined only by the behavior of the $n = 4$ term. If this section's been throwing you for a bit of a loop so far, now's the time to jump back in. We'll return to our example of $\sin$ to determine the remainders for each of the Taylor polynomials.
 
 
 
-### ex Taylor&#x2019;s Theorem
+### ex Taylor's Theorem
 	
 	Determine a bound for the $N$th remainder function of the Maclaurin series for $\sin(x)$. Using a Maclaurin polynomial of degree $5$, estimate $\sin(1)$ and determine the maximum error.
 	
@@ -358,13 +358,13 @@ That was a lot of very dense work leading up to a pretty dense result &mdash; le
 		\sum_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!},
 	$$
 	
-	and in order to determine the remainder, we&#x2019;ll need to bound $\frac{d^{n+1}}{dx^{n+1}} [\sin(x)]$. Every derivative of $\sin(x)$ is either $\pm \sin(x)$ or $\pm \cos(x)$, and so
+	and in order to determine the remainder, we'll need to bound $\frac{d^{n+1}}{dx^{n+1}} [\sin(x)]$. Every derivative of $\sin(x)$ is either $\pm \sin(x)$ or $\pm \cos(x)$, and so
 	
 	$$
 		\left| \frac{d^{n+1}}{dx^{n+1}} [\sin(x)] \right| \leq 1
 	$$
 	
-	for all $x$. Plugging this into Taylor&#x2019;s remainder formula, we find that
+	for all $x$. Plugging this into Taylor's remainder formula, we find that
 	
 	$$
 		\begin{align*}
@@ -373,7 +373,7 @@ That was a lot of very dense work leading up to a pretty dense result &mdash; le
 		\end{align*}
 	$$
 	
-	For example, if we&#x2019;d like to know how well $p_5(x)$ approximates $\sin\left( \frac{\pi}{2} \right)$, we evaluate
+	For example, if we'd like to know how well $p_5(x)$ approximates $\sin\left( \frac{\pi}{2} \right)$, we evaluate
 	
 	$$
 		\begin{align*}
@@ -382,7 +382,7 @@ That was a lot of very dense work leading up to a pretty dense result &mdash; le
 		\end{align*}
 	$$
 	
-	Therefore, the approximation is off by at most $.021$ in either direction. This is the upper bound &mdash; if we actually evaluate $p_5\left( \frac{\pi}{2} \right)$, we find
+	Therefore, the approximation is off by at most $.021$ in either direction. This is the upper bound --- if we actually evaluate $p_5\left( \frac{\pi}{2} \right)$, we find
 	
 	$$
 		\begin{align*}
@@ -413,15 +413,15 @@ That was a lot of very dense work leading up to a pretty dense result &mdash; le
 		\end{align*}
 	$$
 	
-	This is actually how calculators and computers compute functions like $\sin(x)$, $\sqrt{x}$, and $\ln(x)$ for values of $x$ that don&#x2019;t have nice expressions: under the hood, it&#x2019;s all Taylor series.
+	This is actually how calculators and computers compute functions like $\sin(x)$, $\sqrt{x}$, and $\ln(x)$ for values of $x$ that don't have nice expressions: under the hood, it's all Taylor series.
 
 ###
 
-### exc Taylor&#x2019;s Theorem
+### exc Taylor's Theorem
 	
 	1. With the Taylor series for $\ln(x)$ centered at $x = 1$, approximate $\ln(1.5)$ with a Taylor polynomial of degree $4$. Determine the maximum error.
 	
-	2. With the Taylor series for $f(x) = x^2 + 4x + 4$ centered at $x = 2$, approximate $f(0)$ with a Taylor polynomial of degree $1$ and determine the maximum error. Draw a picture of this &mdash; what&#x2019;s the calculus I name for this process?
+	2. With the Taylor series for $f(x) = x^2 + 4x + 4$ centered at $x = 2$, approximate $f(0)$ with a Taylor polynomial of degree $1$ and determine the maximum error. Draw a picture of this --- what's the calculus I name for this process?
 	
 	3. With the Maclaurin series for $e^x$, approximate $e$ to 4 decimal places.
 	
@@ -453,7 +453,7 @@ That was a lot of very dense work leading up to a pretty dense result &mdash; le
 	
 	Therefore, the approximation is within $.2$ of the actual value.
 	
-	2. This time around, we&#x2019;re using the polynomial $16 + 8(x - 2)$ to approximate, so we use $x = 0$ to get $16 - 16 = 0$. Now the second derivative is always $2$, so that will serve as our value of $M$. Meanwhile, the interval we should probably use is $[0, 4]$, since it&#x2019;s centered at $2$ and contains $0$. Therefore, we have
+	2. This time around, we're using the polynomial $16 + 8(x - 2)$ to approximate, so we use $x = 0$ to get $16 - 16 = 0$. Now the second derivative is always $2$, so that will serve as our value of $M$. Meanwhile, the interval we should probably use is $[0, 4]$, since it's centered at $2$ and contains $0$. Therefore, we have
 	
 	$$
 		|R_1(0)| \leq \frac{2}{2!}(2)^2 = 4.
@@ -467,7 +467,7 @@ That was a lot of very dense work leading up to a pretty dense result &mdash; le
 		|R_N(1)| \leq \frac{e}{(N + 1)!} 1^{N + 1}.
 	$$
 	
-	We need that to be less than $.0001$ &mdash; trying values experimentally, $N = 7$ works. Therefore, our approximation of $e$ is
+	We need that to be less than $.0001$ --- trying values experimentally, $N = 7$ works. Therefore, our approximation of $e$ is
 	
 	$$
 		1 + 1 + \frac{1}{2!} + \frac{1}{3!} + \cdots + \frac{1}{7!} = 2.71825.
@@ -477,7 +477,7 @@ That was a lot of very dense work leading up to a pretty dense result &mdash; le
 
 
 
-There&#x2019;s one final question before our basic theory of Taylor series is complete: we can find a Taylor series for a function, and we can determine the interval of convergence of that Taylor series, *and* we can bound the remainder of the series. But how can we determine if or when the Taylor series actually converges to $f$? This is where Taylor&#x2019;s theorem really shines: since $R_N(x)$ is the difference between the $N$th Taylor polynomial and $f$, a Taylor series converges to $f$ exactly when $\lim_{N \to \infty} R_N(X) = 0$. Once we&#x2019;ve bounded the remainder, we can take the limit and figure out when it&#x2019;s zero.
+There's one final question before our basic theory of Taylor series is complete: we can find a Taylor series for a function, and we can determine the interval of convergence of that Taylor series, *and* we can bound the remainder of the series. But how can we determine if or when the Taylor series actually converges to $f$? This is where Taylor's theorem really shines: since $R_N(x)$ is the difference between the $N$th Taylor polynomial and $f$, a Taylor series converges to $f$ exactly when $\lim_{N \to \infty} R_N(X) = 0$. Once we've bounded the remainder, we can take the limit and figure out when it's zero.
 
 
 
@@ -508,17 +508,17 @@ There&#x2019;s one final question before our basic theory of Taylor series is co
 	
 	To see why the limit is zero, remember that $x$ is fixed. No matter how big $|x|$ is, for large enough $N$ the denominator will be multiplying by massive integers, while the numerator is multiplying only by $|x|$. In other words, a factorial grows faster than any exponential.
 	
-	Since the limit is zero no matter what $x$ is, the series converges to $\sin(x)$ *everywhere*. This doesn&#x2019;t mean that we should always use a series centered at $x = 0$ to approximate any value of $\sin$, though &mdash; as we&#x2019;ve seen from the graph, Taylor polynomials are better approximations closer to where they&#x2019;re centered, so we should always take the cloest center we can (i.e. a center where we can easily calculate all the derivatives). For example, if we&#x2019;re trying to approximate $\sin(10)$, a good center would be $x = 3\pi \approx 9.425$, since we know the values of $\sin$ and all its derivatives at $3\pi$. Let&#x2019;s briefly draw a graph to illustrate this.
+	Since the limit is zero no matter what $x$ is, the series converges to $\sin(x)$ *everywhere*. This doesn't mean that we should always use a series centered at $x = 0$ to approximate any value of $\sin$, though --- as we've seen from the graph, Taylor polynomials are better approximations closer to where they're centered, so we should always take the cloest center we can (i.e. a center where we can easily calculate all the derivatives). For example, if we're trying to approximate $\sin(10)$, a good center would be $x = 3\pi \approx 9.425$, since we know the values of $\sin$ and all its derivatives at $3\pi$. Let's briefly draw a graph to illustrate this.
 	
 	### desmos taylor-series-comparison
 	
-	Here, the green and purple functions are degree-5 Taylor polynomials for $\sin$ centered at $0$ and $3\pi$, respectively. The actual value of $\sin(10)$ is approximately $-.544021$, but while the purple function predicts a value of $-.544025$, the green function has stopped tracking with $\sin(x)$ long before $x = 10$, and it predicts a garbage value of $676.7$. We can increase the degree of the polynomials to help fix this problem, but there&#x2019;s often no substitute for centering them in the right place to begin with!
+	Here, the green and purple functions are degree-5 Taylor polynomials for $\sin$ centered at $0$ and $3\pi$, respectively. The actual value of $\sin(10)$ is approximately $-.544021$, but while the purple function predicts a value of $-.544025$, the green function has stopped tracking with $\sin(x)$ long before $x = 10$, and it predicts a garbage value of $676.7$. We can increase the degree of the polynomials to help fix this problem, but there's often no substitute for centering them in the right place to begin with!
 
 ###
 
 
 
-As one final note, Taylor series aren&#x2019;t guaranteed to converge to the function they were derived from for any $x$-value other than their center. Let&#x2019;s take a look at an example of this, where the process of generating the Taylor series goes catastrophically wrong.
+As one final note, Taylor series aren't guaranteed to converge to the function they were derived from for any $x$-value other than their center. Let's take a look at an example of this, where the process of generating the Taylor series goes catastrophically wrong.
 
 Consider the function
 
@@ -526,7 +526,7 @@ $$
 	f(x) = \begin{cases} e^{-\frac{1}{x^2}}, & x \neq 0 \\ 0, & x = 0 \end{cases}
 $$
 
-This function is differentiable, but it is *extremely* flat at $x = 0$ &mdash; so flat that every single derivative is zero.
+This function is differentiable, but it is *extremely* flat at $x = 0$ --- so flat that every single derivative is zero.
 
 ### desmos problematic-taylor-series
 
@@ -542,11 +542,11 @@ Therefore, $f$ is equal to its Maclaurin series *only* at $x = 0$.
 
 ### as analytic functions
 
-	A function $f$ whose Taylor series centered at $x = a$ converges to $f$ in some interval around $a$ is called **analytic** at $a$. Functions that are differentiable infinitely many times at $x = a$ are called **smooth** at $a$, and since constructing a Taylor series requires being able to take infinitely many derivatives, all analytic functions are necessarily smooth. These conditions slot in at the top end of differentiability conditions, and they all have convenient notations: if a function is continuous, we say it&#x2019;s $C^0$, if it&#x2019;s differentiable with a continuous derivative, we say it&#x2019;s $C^1$, if it&#x2019;s twice-differentiable with a continuous second derivative, we say it&#x2019;s $C^2$, and so on. If a function is smooth, it&#x2019;s $C^\infty$, and if it&#x2019;s analytic, it&#x2019;s $C^\omega$ (here, $\omega$ denotes the idea of the first counting number *after* all of the positive integers).
+	A function $f$ whose Taylor series centered at $x = a$ converges to $f$ in some interval around $a$ is called **analytic** at $a$. Functions that are differentiable infinitely many times at $x = a$ are called **smooth** at $a$, and since constructing a Taylor series requires being able to take infinitely many derivatives, all analytic functions are necessarily smooth. These conditions slot in at the top end of differentiability conditions, and they all have convenient notations: if a function is continuous, we say it's $C^0$, if it's differentiable with a continuous derivative, we say it's $C^1$, if it's twice-differentiable with a continuous second derivative, we say it's $C^2$, and so on. If a function is smooth, it's $C^\infty$, and if it's analytic, it's $C^\omega$ (here, $\omega$ denotes the idea of the first counting number *after* all of the positive integers).
 	
 ###
 
-We&#x2019;re almost done with the course! The final section will see us applying Taylor series to all sorts of areas of math to great effect, making good use of all the work we&#x2019;ve done throughout the class.
+We're almost done with the course! The final section will see us applying Taylor series to all sorts of areas of math to great effect, making good use of all the work we've done throughout the class.
 
 
 

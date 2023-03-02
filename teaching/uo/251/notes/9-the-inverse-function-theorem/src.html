@@ -2,13 +2,13 @@
 
 ### nav-buttons
 
-With the chain rule under our belt, we can differentiate any combination of two differentiable functions. There is one more way we can construct new functions &mdash; rather than putting two functions together, it starts from a single function. What we&#x2019;re talking about here is function inversion, and it&#x2019;s often a point of confusion in algebra, just like composition. So, just like composition, let&#x2019;s review.
+With the chain rule under our belt, we can differentiate any combination of two differentiable functions. There is one more way we can construct new functions --- rather than putting two functions together, it starts from a single function. What we're talking about here is function inversion, and it's often a point of confusion in algebra, just like composition. So, just like composition, let's review.
 
 
 
 ### def one-to-one
 	
-	A function $y = f(x)$ is **one-to-one** if it passes the horizontal line test &mdash; that is, every $y$-value comes from only one $x$-value.
+	A function $y = f(x)$ is **one-to-one** if it passes the horizontal line test --- that is, every $y$-value comes from only one $x$-value.
 	
 ###
 
@@ -30,7 +30,7 @@ With the chain rule under our belt, we can differentiate any combination of two 
 
 
 
-So $f^{-1}$ undoes $f$: it takes outputs of $f$ back to their corresponding inputs. In other words, $f^{-1}(f(x)) = x$ and $f(f^{-1}(x))$. This is why we need $f$ to be one-to-one: if two different $x$-values get sent to the same $y$-value, then the inverse function won&#x2019;t know which one to send that $y$-value back to.
+So $f^{-1}$ undoes $f$: it takes outputs of $f$ back to their corresponding inputs. In other words, $f^{-1}(f(x)) = x$ and $f(f^{-1}(x))$. This is why we need $f$ to be one-to-one: if two different $x$-values get sent to the same $y$-value, then the inverse function won't know which one to send that $y$-value back to.
 
 
 
@@ -48,9 +48,9 @@ So $f^{-1}$ undoes $f$: it takes outputs of $f$ back to their corresponding inpu
 
 
 
-While none of the six trig functions is one-to-one, we still really want to talk about their inverses. To help do that, we restrict their domain until they become one-to-one. This is a somewhat complicated subject that&#x2019;s not all that important for our purposes, so we&#x2019;ll gloss over it. All we need to know is that there are functions $\sin^{-1}(x)$, $\cos^{-1}(x)$, and so on, that undo the corresponding trig functions. For example, since $\sin(\theta)$ gives the $y$-coordinate of a point on the unit circle with angle $\theta$, $\sin^{-1}(y)$ gives the angle $\theta$ with that $y$-coordinate.
+While none of the six trig functions is one-to-one, we still really want to talk about their inverses. To help do that, we restrict their domain until they become one-to-one. This is a somewhat complicated subject that's not all that important for our purposes, so we'll gloss over it. All we need to know is that there are functions $\sin^{-1}(x)$, $\cos^{-1}(x)$, and so on, that undo the corresponding trig functions. For example, since $\sin(\theta)$ gives the $y$-coordinate of a point on the unit circle with angle $\theta$, $\sin^{-1}(y)$ gives the angle $\theta$ with that $y$-coordinate.
 
-Now that we&#x2019;ve reviewed inverse functions, let&#x2019;s talk about their derivatives.
+Now that we've reviewed inverse functions, let's talk about their derivatives.
 
 
 
@@ -74,7 +74,7 @@ So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compo
 	
 	Find $\displaystyle \frac{d}{dx} [\sqrt{x}]$.
 	
-	To apply the IFT, the left side needs to be the inverse function, which means we need to find a function $f(x)$ so that $f^{-1}(x) = \sqrt{x}$. But since inverting a function twice gives back the original function, we can do this by just inverting $y = \sqrt{x}$, which just means solving for $x$. That gives us $x = y^2$, so we want to define $f(x) = x^2$. Then $f^{-1}(x) = \sqrt{x}$. (There is a minor problem with being one-to-one &mdash; everything is fine, but it can be a little tricky to parse out why. Feel free to ignore it.)
+	To apply the IFT, the left side needs to be the inverse function, which means we need to find a function $f(x)$ so that $f^{-1}(x) = \sqrt{x}$. But since inverting a function twice gives back the original function, we can do this by just inverting $y = \sqrt{x}$, which just means solving for $x$. That gives us $x = y^2$, so we want to define $f(x) = x^2$. Then $f^{-1}(x) = \sqrt{x}$. (There is a minor problem with being one-to-one --- everything is fine, but it can be a little tricky to parse out why. Feel free to ignore it.)
 	
 	Now $f'(x) = 2x$, so $f'(f^{-1}(x)) = 2\sqrt{x}$. Then we have
 	
@@ -82,7 +82,7 @@ So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compo
 		\frac{d}{dx} [\sqrt{x}] = \frac{1}{2\sqrt{x}} = \frac{1}{2} x^{-1/2}.
 	$$
 	
-	Hey, that&#x2019;s what we would have expected to get! It seems like the pattern of $\frac{d}{dx}[x^n] = nx^{n-1}$ might work for more than if $n$ is just an integer.
+	Hey, that's what we would have expected to get! It seems like the pattern of $\frac{d}{dx}[x^n] = nx^{n-1}$ might work for more than if $n$ is just an integer.
 	
 ###
 
@@ -102,7 +102,7 @@ So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compo
 
 ### pf
 	
-	We can actually do the proof of this one! We don&#x2019;t get too many chances to present them, so let&#x2019;s take this one. Since $n$ is rational, we can write it as $n = \frac{a}{b}$, where $a$ and $b$ are integers. Then
+	We can actually do the proof of this one! We don't get too many chances to present them, so let's take this one. Since $n$ is rational, we can write it as $n = \frac{a}{b}$, where $a$ and $b$ are integers. Then
 	
 	$$
 		x^n = x^{a/b} = (x^{1/b})^a.
@@ -141,7 +141,7 @@ So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compo
 
 ## The Derivatives of the Inverse Trig Functions
 	
-Somewhat strangely, the derivatives of the inverse trig functions are not other inverse trig functions &mdash; they&#x2019;re rational functions. We can find these with the IFT, but the process requires drawing right triangles. If you take Calculus II, you&#x2019;ll need to thoroughly learn this technique, and since it&#x2019;s not all that important to us right now, we&#x2019;re not going to cover it in this class. Instead, let&#x2019;s skip straight to the result.
+Somewhat strangely, the derivatives of the inverse trig functions are not other inverse trig functions --- they're rational functions. We can find these with the IFT, but the process requires drawing right triangles. If you take Calculus II, you'll need to thoroughly learn this technique, and since it's not all that important to us right now, we're not going to cover it in this class. Instead, let's skip straight to the result.
 
 
 

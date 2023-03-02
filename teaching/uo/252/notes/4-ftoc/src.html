@@ -4,7 +4,7 @@
 
 
 
-At this point, we&#x2019;re ready to put it all together. This section forms the basis for the entire rest of the class by letting us calculate definite integrals via indefinite ones, almost completely eliminating the need for Riemann sums. The main theorem in this section comes in two parts, and although we won&#x2019;t use the first one as often, it&#x2019;s still important to know.
+At this point, we're ready to put it all together. This section forms the basis for the entire rest of the class by letting us calculate definite integrals via indefinite ones, almost completely eliminating the need for Riemann sums. The main theorem in this section comes in two parts, and although we won't use the first one as often, it's still important to know.
 
 
 
@@ -22,7 +22,7 @@ At this point, we&#x2019;re ready to put it all together. This section forms the
 
 
 	
-There&#x2019;s a lot to digest here. This key takeaway is that every continuous function has an antiderivative, but it&#x2019;s worth thinking a little about exactly **why** $F' = f$. The derivative of $F$ at $x$ is very approximately $F(x + 1) - F(x)$, since that&#x2019;s the limit definition of the derivative with $h = 1$. We can expand that value to
+There's a lot to digest here. This key takeaway is that every continuous function has an antiderivative, but it's worth thinking a little about exactly **why** $F' = f$. The derivative of $F$ at $x$ is very approximately $F(x + 1) - F(x)$, since that's the limit definition of the derivative with $h = 1$. We can expand that value to
 
 $$
 	\begin{align*}
@@ -35,7 +35,7 @@ which is the area under the curve of $f$ between $x$ and $x + 1$.
 
 ### desmos ftc-part-1
 
-To put it concisely, the red rectangle in the graph has base $1$ and height $f(x)$, so its area is $f(x)$. On the other hand, it&#x2019;s aproximately equal to $\int_x^{x + 1} f(t)\,dt$, which is by definition equal to $F(x + 1) - F(x)$. That in turn is approximately equal to $F'(x)$. As the width of the rectangle shrinks to zero, these approximations become better and better, and in the limit, they&#x2019;re equal.
+To put it concisely, the red rectangle in the graph has base $1$ and height $f(x)$, so its area is $f(x)$. On the other hand, it's aproximately equal to $\int_x^{x + 1} f(t)\,dt$, which is by definition equal to $F(x + 1) - F(x)$. That in turn is approximately equal to $F'(x)$. As the width of the rectangle shrinks to zero, these approximations become better and better, and in the limit, they're equal.
 
 
 
@@ -49,7 +49,7 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 		\frac{d}{dx} \int_1^x \frac{1}{t^3 + t}\,dt = \frac{1}{x^3 + x}.
 	$$
 	
-	It might seem a little strange that the lower limit of $1$ doesn&#x2019;t appear in the final answer, but that&#x2019;s because the derivative is measuring the rate of change of the integral at $x$, and so the area of the function before then is irrelevant.
+	It might seem a little strange that the lower limit of $1$ doesn't appear in the final answer, but that's because the derivative is measuring the rate of change of the integral at $x$, and so the area of the function before then is irrelevant.
 	
 ###
 
@@ -59,13 +59,13 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 	
 	Find $\displaystyle \frac{d}{dx} \int_2^{\sin(x)} \frac{1}{t^3 + t}\,dt$.
 	
-	This one is a little more involved. FTC Part I only tells us what to do when the upper limit is $x$, and here it&#x2019;s a *function* of $x$. The way to approach problems like this is to first get back to the case we understand by defining a function $F$ as follows:
+	This one is a little more involved. FTC Part I only tells us what to do when the upper limit is $x$, and here it's a *function* of $x$. The way to approach problems like this is to first get back to the case we understand by defining a function $F$ as follows:
 	
 	$$
 		F(x) = \int_2^x \frac{1}{t^3 + t}\,dt.
 	$$
 	
-	Now we can rewrite the question as finding $\frac{d}{dx} F(\sin(x))$. And we know how to handle this: it&#x2019;s a chain rule problem! We have
+	Now we can rewrite the question as finding $\frac{d}{dx} F(\sin(x))$. And we know how to handle this: it's a chain rule problem! We have
 	
 	$$
 		\begin{align*}
@@ -84,7 +84,7 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 	
 	Find $\displaystyle \frac{d}{dt} \int_2^{\sqrt{t}} \sin(x)\,dx$.
 	
-	**Solution:** the roles of $t$ and $x$ are reversed from the previous exmaple. First, write $F(t) = \int_2^t \sin(x)\,dx$. We&#x2019;re trying to find $\frac{d}{dt} [F(\sqrt{t})]$, which by the chain rule is
+	**Solution:** the roles of $t$ and $x$ are reversed from the previous exmaple. First, write $F(t) = \int_2^t \sin(x)\,dx$. We're trying to find $\frac{d}{dt} [F(\sqrt{t})]$, which by the chain rule is
 	
 	$$
 		\begin{align*}
@@ -97,7 +97,7 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 
 
 
-Now for the more memorable part of the Fundamental Theorem. We need part I to tell us that continuous functions have antiderivatives, but that integral formula doesn&#x2019;t actually help us calculate them. Instead, we&#x2019;ll use part II to turn antiderivatives we already know into definite integrals. To begin, we need a small piece of notation.
+Now for the more memorable part of the Fundamental Theorem. We need part I to tell us that continuous functions have antiderivatives, but that integral formula doesn't actually help us calculate them. Instead, we'll use part II to turn antiderivatives we already know into definite integrals. To begin, we need a small piece of notation.
 
 
 
@@ -109,7 +109,7 @@ Now for the more memorable part of the Fundamental Theorem. We need part I to te
 
 
 
-The vertical bar just means plug in the top and bottom numbers and subtract the two. You&#x2019;ve probably seen something like this from calculus I, except without a top number.
+The vertical bar just means plug in the top and bottom numbers and subtract the two. You've probably seen something like this from calculus I, except without a top number.
 
 
 
@@ -125,13 +125,13 @@ The vertical bar just means plug in the top and bottom numbers and subtract the 
 
 
 
-This is why the two seemingly different concepts of area and antiderivatives are both written with integral signs: they&#x2019;re really two expressions of the same thing. To calculate a definite integral $\int_a^b f(x)\,dx$, we first find an antiderivative $F(x)$ of $f(x)$. Then the integral is just
+This is why the two seemingly different concepts of area and antiderivatives are both written with integral signs: they're really two expressions of the same thing. To calculate a definite integral $\int_a^b f(x)\,dx$, we first find an antiderivative $F(x)$ of $f(x)$. Then the integral is just
 
 $$
 	\left. \left[ \int f(x)\,dx \right] \right|_a^b = F(b) - F(a).
 $$
 
-In other words, we&#x2019;ve found a way to leave behind all the limits of Riemann sums, so long as we can find antiderivatives. Let&#x2019;s redo the example from the last section to see just how much easier this new way is.
+In other words, we've found a way to leave behind all the limits of Riemann sums, so long as we can find antiderivatives. Let's redo the example from the last section to see just how much easier this new way is.
 
 
 
@@ -139,7 +139,7 @@ In other words, we&#x2019;ve found a way to leave behind all the limits of Riema
 	
 	Find $\displaystyle \int_0^2 t^2\,dt$.
 	
-	In order to find the definite integral, the Fundamental Theorem tells us to first find $\int t^2\,dt$. This is a function $F(t)$ whose derivative is $t^2$ &mdash; a good first guess is $t^3 + C$, since its derivative is $3t^2$, which is only off by a factor of $3$. Since constant multiplication factors through derivatives, we can just divide $t^3$ by $3$ to fix the issue: $F(t) = \frac{t^3}{3} + C$ has derivative $\frac{3t^2}{3} = t^2$. That&#x2019;s the hard part out of the way &mdash; now we can apply the Fundamental Theorem.
+	In order to find the definite integral, the Fundamental Theorem tells us to first find $\int t^2\,dt$. This is a function $F(t)$ whose derivative is $t^2$ --- a good first guess is $t^3 + C$, since its derivative is $3t^2$, which is only off by a factor of $3$. Since constant multiplication factors through derivatives, we can just divide $t^3$ by $3$ to fix the issue: $F(t) = \frac{t^3}{3} + C$ has derivative $\frac{3t^2}{3} = t^2$. That's the hard part out of the way --- now we can apply the Fundamental Theorem.
 	
 	$$
 		\begin{align*}
@@ -158,7 +158,7 @@ In other words, we&#x2019;ve found a way to leave behind all the limits of Riema
 	
 	Find $\displaystyle \int_{-\pi}^\pi \sin(\theta)\,d\theta$.
 	
-	**Solution:** first, find $\int \sin(\theta)\,d\theta = -\cos(\theta)$. We&#x2019;ve dropped the $C$ because we&#x2019;re about to evaluate it:
+	**Solution:** first, find $\int \sin(\theta)\,d\theta = -\cos(\theta)$. We've dropped the $C$ because we're about to evaluate it:
 	
 	$$
 		\begin{align*}
@@ -174,7 +174,7 @@ In other words, we&#x2019;ve found a way to leave behind all the limits of Riema
 
 
 
-In that example, we calculated our antiderivative with the constant $C$, but it ended up canceling out when we evaluated it. That means that we can pick whatever value we want for $C$, and it won&#x2019;t end up mattering &mdash; specifically, ignoring $C$ by taking $C = 0$ is allowed.
+In that example, we calculated our antiderivative with the constant $C$, but it ended up canceling out when we evaluated it. That means that we can pick whatever value we want for $C$, and it won't end up mattering --- specifically, ignoring $C$ by taking $C = 0$ is allowed.
 
 **Caution!** Dropping $C$ is **only** correct when taking a definite integral. When a problem requires an indefinite integral, the $C$ must be there.
 
@@ -182,7 +182,7 @@ Just like the geometric interpretation of a derivative is the slope of a tangent
 
 ### desmos ftc-part-2
 
-Let&#x2019;s wrap this section up with one more example.
+Let's wrap this section up with one more example.
 
 
 
@@ -190,7 +190,7 @@ Let&#x2019;s wrap this section up with one more example.
 	
 	Find $\displaystyle \int_1^9 \frac{x - 1}{\sqrt{x}}\,dx$.
 	
-	This function is too complicated to take an antiderivative directly &mdash; I don&#x2019;t know a function off the top of my head whose derivative is $\frac{x - 1}{\sqrt{x}}$. But we can split the fraction over the minus sign, and each of the resulting parts is easier to handle.
+	This function is too complicated to take an antiderivative directly --- I don't know a function off the top of my head whose derivative is $\frac{x - 1}{\sqrt{x}}$. But we can split the fraction over the minus sign, and each of the resulting parts is easier to handle.
 	
 	$$
 		\begin{align*}
@@ -202,7 +202,7 @@ Let&#x2019;s wrap this section up with one more example.
 		\end{align*}
 	$$
 	
-	We&#x2019;ve dropped the $C$, but only because we&#x2019;re about to use this in a definite integral.
+	We've dropped the $C$, but only because we're about to use this in a definite integral.
 	
 	$$
 		\begin{align*}
@@ -219,7 +219,7 @@ Let&#x2019;s wrap this section up with one more example.
 
 
 
-With that, we&#x2019;ve laid all the groundwork necessary for the rest of the course. We&#x2019;ll focus out efforts on two things from here: how to find antiderivatives, and why anyone would care about the area under curves in the first place. 
+With that, we've laid all the groundwork necessary for the rest of the course. We'll focus out efforts on two things from here: how to find antiderivatives, and why anyone would care about the area under curves in the first place. 
 
 
 

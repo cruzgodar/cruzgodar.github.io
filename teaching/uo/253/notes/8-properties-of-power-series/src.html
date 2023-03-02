@@ -2,7 +2,7 @@
 
 ### nav-buttons
 
-When series only contained numbers, we just had to understand them to the extent of determining whether they converged or not. Now that the terms have variables in them &mdash; in particular, different powers in each term, so that nothing can be combined &mdash; we need to be more comfortable dealing with series as objects in their own right, and not just unresolved sums that may or may not converge.
+When series only contained numbers, we just had to understand them to the extent of determining whether they converged or not. Now that the terms have variables in them --- in particular, different powers in each term, so that nothing can be combined --- we need to be more comfortable dealing with series as objects in their own right, and not just unresolved sums that may or may not converge.
 
 
 
@@ -36,7 +36,7 @@ The first and simplest thing we can do to power series is to add two of them tog
 	
 	as a power series and determine the interval of convergence.
 	
-	While we can express this as two series multiplied together, we don&#x2019;t really know how to handle that kind of construction yet. Instead, let&#x2019;s turn to an old friend: partial fractions. That will let us write $f$ as the sum of two much simpler power series that we understand well, and then we can combine them using the previous proposition.
+	While we can express this as two series multiplied together, we don't really know how to handle that kind of construction yet. Instead, let's turn to an old friend: partial fractions. That will let us write $f$ as the sum of two much simpler power series that we understand well, and then we can combine them using the previous proposition.
 	
 	Partial fractions tells us that for some numbers $A$ and $B$,
 	
@@ -76,7 +76,7 @@ The first and simplest thing we can do to power series is to add two of them tog
 		f(x) = \frac{4}{1 - 2x} + \frac{2x}{1 + x^2} + \frac{1}{1 + x^2}.
 	$$
 	
-	Now all three of these terms have geometric series representations &mdash; we looked at many like them in the last section. First of all,
+	Now all three of these terms have geometric series representations --- we looked at many like them in the last section. First of all,
 	
 	$$
 		\frac{1}{1 - 2x} = \sum_{n = 0}^\infty (2x)^n = \sum_{n = 0}^\infty (2^n x^n),
@@ -92,7 +92,7 @@ The first and simplest thing we can do to power series is to add two of them tog
 	
 	This series converges when $|-x^2| < 1$, so $|x| < 1$. The interval of convergence is therefore $(-1, 1)$.
 	
-	Let&#x2019;s put it all together. The sum of all three terms becomes
+	Let's put it all together. The sum of all three terms becomes
 	
 	$$
 		\begin{align*}
@@ -102,7 +102,7 @@ The first and simplest thing we can do to power series is to add two of them tog
 		\end{align*}
 	$$
 	
-	The two intervals of convergence are $\left( -\frac{1}{2}, \frac{1}{2} \right)$ and $(-1, 1)$, and the overlap of those two is just the first one &mdash; therefore, the interval of convergence of our very complicated series is just $\left( -\frac{1}{2}, \frac{1}{2} \right)$.
+	The two intervals of convergence are $\left( -\frac{1}{2}, \frac{1}{2} \right)$ and $(-1, 1)$, and the overlap of those two is just the first one --- therefore, the interval of convergence of our very complicated series is just $\left( -\frac{1}{2}, \frac{1}{2} \right)$.
 
 ###
 
@@ -116,7 +116,7 @@ The first and simplest thing we can do to power series is to add two of them tog
 	
 	as a power series and determine the interval of convergence.
 	
-	**Solution:** First, let&#x2019;s apply partial fractions and split this up. We have
+	**Solution:** First, let's apply partial fractions and split this up. We have
 	
 	$$
 		\begin{align*}
@@ -159,7 +159,7 @@ The first and simplest thing we can do to power series is to add two of them tog
 
 
 
-For many series, we now have the tools to go backward: determine the function it&#x2019;s converging to given just the series.
+For many series, we now have the tools to go backward: determine the function it's converging to given just the series.
 
 
 
@@ -173,7 +173,7 @@ For many series, we now have the tools to go backward: determine the function it
 	
 	Find a closed form for $f$ (i.e. a form without an infinite series).
 	
-	This looks a bit like a geometric series, but to apply the formula, we need every term to be raised to the power of $n$, not $-2n$. To that end, let&#x2019;s rewrite $2^{-2n}$ as $4^{-n} = \left(\frac{1}{4}\right)^n$, so that the series becomes
+	This looks a bit like a geometric series, but to apply the formula, we need every term to be raised to the power of $n$, not $-2n$. To that end, let's rewrite $2^{-2n}$ as $4^{-n} = \left(\frac{1}{4}\right)^n$, so that the series becomes
 	
 	$$
 		\begin{align*}
@@ -182,7 +182,7 @@ For many series, we now have the tools to go backward: determine the function it
 		\end{align*}
 	$$
 	
-	Now this is very close to a geometric series, but it&#x2019;s starting at $n = 1$ instead of $n = 0$. To remedy that, we&#x2019;ll start it at $0$ and then remove the first term later.
+	Now this is very close to a geometric series, but it's starting at $n = 1$ instead of $n = 0$. To remedy that, we'll start it at $0$ and then remove the first term later.
 	
 	$$
 		\begin{align*}
@@ -200,11 +200,11 @@ For many series, we now have the tools to go backward: determine the function it
 
 ## Multiplying Power Series
 
-The process of adding power series closely mirrors adding polynomials: we just add the coefficients of like terms. Multiplying polynomials is a much more complicated process, though, and multiplying power series will take some extra work to pin down too. Let&#x2019;s start with a motivating example and see what we can determine.
+The process of adding power series closely mirrors adding polynomials: we just add the coefficients of like terms. Multiplying polynomials is a much more complicated process, though, and multiplying power series will take some extra work to pin down too. Let's start with a motivating example and see what we can determine.
 
-Let $f(x) = 1 + 2x + 3x^2$ and $g(x) = 4 + 5x + 6x^2$. We normally write polynomials in descending order of their terms&#x2019; exponents, but this reverse order matches how power series are structured &mdash; low exponents come first.
+Let $f(x) = 1 + 2x + 3x^2$ and $g(x) = 4 + 5x + 6x^2$. We normally write polynomials in descending order of their terms' exponents, but this reverse order matches how power series are structured --- low exponents come first.
 
-What is $f(x)g(x)$? We typically find this by foiling out the terms, but the end result is that every term of $f$ gets multiplied with every term of $g$, resulting in 9 terms total. Let&#x2019;s arrange that in a table.
+What is $f(x)g(x)$? We typically find this by foiling out the terms, but the end result is that every term of $f$ gets multiplied with every term of $g$, resulting in 9 terms total. Let's arrange that in a table.
 
 $$
 	\begin{array}{r|ccc}
@@ -216,7 +216,7 @@ $$
 	\end{array}
 $$
 
-The product $fg$ is just the sum of all nine entries in the table, but there&#x2019;s a cleaner way to think of it that comes from the diagonals running from the bottom-left to the top-right.
+The product $fg$ is just the sum of all nine entries in the table, but there's a cleaner way to think of it that comes from the diagonals running from the bottom-left to the top-right.
 
 $$
 	\definecolor{textred}{rgb}{.8, 0, 0}
@@ -236,7 +236,7 @@ $$
 
 The key observation is that those diagonals (represented here as different colors) correspond to different exponents on $x$: for example, the green diagonal in the middle contains every $x^2$ term. Therefore, if we want to know the coefficient on $x^2$ in $f(x)g(x)$, we just need to add up those three.
 
-Let&#x2019;s make the jump from polynomials to series. If $f(x) = \sum_{n = 0}^\infty a_n x^n$ and $g(x) = \sum_{n = 0}^\infty b_n x^n$, then the product $f(x)g(x)$ will be the sum of an infinite table:
+Let's make the jump from polynomials to series. If $f(x) = \sum_{n = 0}^\infty a_n x^n$ and $g(x) = \sum_{n = 0}^\infty b_n x^n$, then the product $f(x)g(x)$ will be the sum of an infinite table:
 
 $$
 	\definecolor{textred}{rgb}{.8, 0, 0}
@@ -258,7 +258,7 @@ $$
 	\end{array}
 $$
 
-To extract the coefficient of $x^n$ in $fg$, we need to sum the $n$th diagonal. Now all of the terms $a_n x^n$ and $b_n x^n$ have the convenient property that their coefficients&#x2019; subscripts match the exponent on $x$, and multiplying two terms together makes the exponents add together. Therefore, the terms in the $n$th diagonal of our infinite table are the products of terms whose subscripts add to $n$. For instance, the sum of the $n = 3$ (i.e. green) diagonal is
+To extract the coefficient of $x^n$ in $fg$, we need to sum the $n$th diagonal. Now all of the terms $a_n x^n$ and $b_n x^n$ have the convenient property that their coefficients' subscripts match the exponent on $x$, and multiplying two terms together makes the exponents add together. Therefore, the terms in the $n$th diagonal of our infinite table are the products of terms whose subscripts add to $n$. For instance, the sum of the $n = 3$ (i.e. green) diagonal is
 
 $$
 	(a_0 b_3 + a_1 b_2 + a_2 b_1 + a_3 b_0) x^3,
@@ -270,7 +270,7 @@ $$
 	\left( \sum_{k = 0}^n a_k b_{n - k} \right) x^n.
 $$
 
-This is the main result about multiplying power series &mdash; all that&#x2019;s left is determining the interval of convergence.
+This is the main result about multiplying power series --- all that's left is determining the interval of convergence.
 
 
 
@@ -320,7 +320,7 @@ This is the main result about multiplying power series &mdash; all that&#x2019;s
 	
 	as a power series using partial fractions. Instead, express it as the product of two power series and verify that it matches the previous result through the first six terms.
 	
-	**Solution:** Let&#x2019;s leave the $5$ alone for now and take a look at the other two series. We have
+	**Solution:** Let's leave the $5$ alone for now and take a look at the other two series. We have
 	
 	$$
 		\begin{align*}
@@ -348,7 +348,7 @@ This is the main result about multiplying power series &mdash; all that&#x2019;s
 		5 + 10x + 15x^2 + 30x^3 + 65x^4 + 130x^5.
 	$$
 	
-	Let&#x2019;s evaluate the explicit formula we found earlier to see if it matches.
+	Let's evaluate the explicit formula we found earlier to see if it matches.
 	
 	$$
 		\begin{align*}
@@ -360,7 +360,7 @@ This is the main result about multiplying power series &mdash; all that&#x2019;s
 	
 	We know when to the partial sum at the term we did since past that, there are no terms with $x^5$ or lower.
 	
-	It&#x2019;s remarkable that these two sums are equal despite having wildly different descriptions! We&#x2019;ll see more like this on a future homework.
+	It's remarkable that these two sums are equal despite having wildly different descriptions! We'll see more like this on a future homework.
 
 ###
 
@@ -368,7 +368,7 @@ This is the main result about multiplying power series &mdash; all that&#x2019;s
 
 ## Calculus on Power Series
 
-Now that we understand how basic algebraic operations work with power series, the natural next step is to ask how we do calculus with them: how do we differentiate and integrate? This is part of the magic of power series: they&#x2019;re just as easy to work with as polynomials, even though they&#x2019;re limits of partial sums behind the scenes. Both derivatives and integrals commute with those limits for reasons substantially more complicated than we have time to discuss in this course, and the end result is incredibly simple.
+Now that we understand how basic algebraic operations work with power series, the natural next step is to ask how we do calculus with them: how do we differentiate and integrate? This is part of the magic of power series: they're just as easy to work with as polynomials, even though they're limits of partial sums behind the scenes. Both derivatives and integrals commute with those limits for reasons substantially more complicated than we have time to discuss in this course, and the end result is incredibly simple.
 
 
 
@@ -393,7 +393,7 @@ Now that we understand how basic algebraic operations work with power series, th
 	
 	Find a power series representation for $\ln(x + 1)$ and state the interval of convergence.
 	
-	Since we really only know the series $\frac{1}{1 - x}$ at the moment, let&#x2019;s try to work with that. The connection to $\ln(x + 1)$ is that
+	Since we really only know the series $\frac{1}{1 - x}$ at the moment, let's try to work with that. The connection to $\ln(x + 1)$ is that
 	
 	$$
 		\int \frac{1}{1 + x}\,dx = \ln(1 + x) + C,
@@ -413,7 +413,7 @@ Now that we understand how basic algebraic operations work with power series, th
 		\end{align*}
 	$$
 	
-	Now leaving the constant $C$ in our answer is fine if we&#x2019;re asked to take the integral of some random function, but in this situation, we know that our answer is equal to $\ln(1 + x)$: it&#x2019;s only true for *one* value of $C$, not any. How can we figure it out? Well, $C$ is the only term of the series without an $x$, so if we plug in $x = 0$, we&#x2019;ll figure out what $C$ should be.
+	Now leaving the constant $C$ in our answer is fine if we're asked to take the integral of some random function, but in this situation, we know that our answer is equal to $\ln(1 + x)$: it's only true for *one* value of $C$, not any. How can we figure it out? Well, $C$ is the only term of the series without an $x$, so if we plug in $x = 0$, we'll figure out what $C$ should be.
 	
 	$$
 		\begin{align*}
@@ -431,13 +431,13 @@ Now that we understand how basic algebraic operations work with power series, th
 		\end{align*}
 	$$
 	
-	We started with $\frac{1}{1 - x}$, which has an interval of convergence of $(-1, 1)$. Replacing $x$ with $-x$ flips that horizontally, which results in the same interval. Then we integrate, which doesn&#x2019;t change the interval, so we still have $(-1, 1)$ at the end. What about the endpoints? The original series doesn&#x2019;t converge at $1$ or $-1$, but as the theorem mentioned, that doesn&#x2019;t provide any information about what this series does. At $x = -1$, all of the terms become negative, and we wind up with
+	We started with $\frac{1}{1 - x}$, which has an interval of convergence of $(-1, 1)$. Replacing $x$ with $-x$ flips that horizontally, which results in the same interval. Then we integrate, which doesn't change the interval, so we still have $(-1, 1)$ at the end. What about the endpoints? The original series doesn't converge at $1$ or $-1$, but as the theorem mentioned, that doesn't provide any information about what this series does. At $x = -1$, all of the terms become negative, and we wind up with
 	
 	$$
 		\sum_{n = 1}^\infty -\frac{1}{n}.
 	$$
 	
-	That&#x2019;s just the Harmonic series with a minus sign in front of it, so it diverges. On the other hand, plugging in $x = 1$ gives us
+	That's just the Harmonic series with a minus sign in front of it, so it diverges. On the other hand, plugging in $x = 1$ gives us
 	
 	$$
 		\sum_{n = 1}^\infty (-1)^{n + 1} \frac{1}{n}.
@@ -478,7 +478,7 @@ Now that we understand how basic algebraic operations work with power series, th
 
 
 
-Let&#x2019;s look at one more nice property of power series: for the most part, they&#x2019;re all absolutely convergent, except possibly at the endpoints of the interval of convergence.
+Let's look at one more nice property of power series: for the most part, they're all absolutely convergent, except possibly at the endpoints of the interval of convergence.
 
 
 
@@ -490,17 +490,17 @@ Let&#x2019;s look at one more nice property of power series: for the most part, 
 
 
 
-Again, this refers only to open intervals: if a series converges at the endpoint $a + R$, the convergence may be either conditional or absolute. In the case of the Alternating Harmonic series, it&#x2019;s right on the edge. We&#x2019;ve seen that it converges conditionally, but moving inward any amount causes the convergence to become absolute.
+Again, this refers only to open intervals: if a series converges at the endpoint $a + R$, the convergence may be either conditional or absolute. In the case of the Alternating Harmonic series, it's right on the edge. We've seen that it converges conditionally, but moving inward any amount causes the convergence to become absolute.
 
-One final result of this section is that we can confirm that power series representations of functions are unique: there can&#x2019;t be two different ways to represent one function as a power series if the interval of convergence matches. Suppose some function $f$ had two representations:
+One final result of this section is that we can confirm that power series representations of functions are unique: there can't be two different ways to represent one function as a power series if the interval of convergence matches. Suppose some function $f$ had two representations:
 
 $$
 	f(x) = \sum_{n = 0}^\infty c_n (x - a)^n = \sum_{n = 0}^\infty d_n (x - a)^n.
 $$
 
-By plugging in $x = a$ like in the last example (where $a$ was $0$), we have $f(a) = c_0 = d_0$, so the constant terms agree. Similarly, $f'(a) = c_1 = d_1$, since the constant terms vanish in the derivative. Now we know the first two terms match, and this process continues: $f''(a) = 2c_2 = 2d_2$, and so on. Any function expressible as a power series is differentiable and results in another power series which must itself be differentiable, and so **every power series is infinitely differentiable!** That means we can continue this process forever, and so the series must completely agree. We assumed that the two representations were centered at the same point $a$, and that&#x2019;s a necessary assumption: in the future, we&#x2019;ll see multiple different series representations of a function that differ by where they&#x2019;re centered. What we learned here is that for a given center, there&#x2019;s only one power series representation.
+By plugging in $x = a$ like in the last example (where $a$ was $0$), we have $f(a) = c_0 = d_0$, so the constant terms agree. Similarly, $f'(a) = c_1 = d_1$, since the constant terms vanish in the derivative. Now we know the first two terms match, and this process continues: $f''(a) = 2c_2 = 2d_2$, and so on. Any function expressible as a power series is differentiable and results in another power series which must itself be differentiable, and so **every power series is infinitely differentiable!** That means we can continue this process forever, and so the series must completely agree. We assumed that the two representations were centered at the same point $a$, and that's a necessary assumption: in the future, we'll see multiple different series representations of a function that differ by where they're centered. What we learned here is that for a given center, there's only one power series representation.
 
-So far, we&#x2019;ve got a good handle on how power series work and interact, and we even know representations of a few common functions. In the next section &mdash; the most important in the course &mdash; we&#x2019;ll extend the library of functions we can represent as power series to almost every function we&#x2019;ve ever seen, finally achieving the goal we layed out in the first section.
+So far, we've got a good handle on how power series work and interact, and we even know representations of a few common functions. In the next section --- the most important in the course --- we'll extend the library of functions we can represent as power series to almost every function we've ever seen, finally achieving the goal we layed out in the first section.
 
 
 

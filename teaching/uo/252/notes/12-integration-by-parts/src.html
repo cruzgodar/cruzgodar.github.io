@@ -2,7 +2,7 @@
 
 ### nav-buttons
 
-The only technique we have to compute integrals at the moment is $u$-sub, which is an analogue of the chain rule. What we&#x2019;ll introduce in this section is an analogue of the product rule. As before, it will look different in practice, but we&#x2019;ll see that it&#x2019;s really just the same thing in the end.
+The only technique we have to compute integrals at the moment is $u$-sub, which is an analogue of the chain rule. What we'll introduce in this section is an analogue of the product rule. As before, it will look different in practice, but we'll see that it's really just the same thing in the end.
 
 If $u$ and $v$ are differentiable functions, then
 
@@ -28,7 +28,7 @@ $$
 	\int u\,dv = uv - \int v\,du.
 $$
 
-This is the form we&#x2019;ll use, but just like with $u$-sub, we have a process to make it easier than having to interpret this somewhat obscure formula.
+This is the form we'll use, but just like with $u$-sub, we have a process to make it easier than having to interpret this somewhat obscure formula.
 
 
 
@@ -40,7 +40,7 @@ This is the form we&#x2019;ll use, but just like with $u$-sub, we have a process
 		uv - \int v\,du.
 	$$
 	
-	Then attempt to solve the integral left in this equation &mdash; if the process was successful, it will now be integrable. We may need to repeat the process on this new integral.
+	Then attempt to solve the integral left in this equation --- if the process was successful, it will now be integrable. We may need to repeat the process on this new integral.
 	
 ###
 
@@ -50,7 +50,7 @@ This is the form we&#x2019;ll use, but just like with $u$-sub, we have a process
 	
 	Find $\displaystyle \int x\sin(x)\,dx$.
 	
-	We can&#x2019;t do this directly, since we (probably) don&#x2019;t know a function whose derivative is $x\sin(x)$. There&#x2019;s also no composition here, so all we have left is integration by parts. The two parts are $x$ and $\sin(x)$, and we&#x2019;re going to differentiate one and integrate the other. If we integrate $x$, we&#x2019;re going to get $\frac{x^2}{2}$, and that&#x2019;s **more complicated**, which means it&#x2019;s probably a bad idea. Instead, let&#x2019;s try differentiating it. That means letting $u = x$ and $dv = \sin(x)\,dx$. Then $du = dx$ and
+	We can't do this directly, since we (probably) don't know a function whose derivative is $x\sin(x)$. There's also no composition here, so all we have left is integration by parts. The two parts are $x$ and $\sin(x)$, and we're going to differentiate one and integrate the other. If we integrate $x$, we're going to get $\frac{x^2}{2}$, and that's **more complicated**, which means it's probably a bad idea. Instead, let's try differentiating it. That means letting $u = x$ and $dv = \sin(x)\,dx$. Then $du = dx$ and
 	
 	$$
 		v = \int \sin(x)\,dx = -\cos(x)
@@ -88,7 +88,7 @@ This is the form we&#x2019;ll use, but just like with $u$-sub, we have a process
 	
 	Find $\displaystyle \int \frac{\ln(t)}{t^2}\,dt$.
 	
-	There are lots of choices for $u$ and $dv$ &mdash; here are just a few:
+	There are lots of choices for $u$ and $dv$ --- here are just a few:
 	
 	$$
 		u = \ln(t),\,dv = \frac{1}{t^2}\,dt
@@ -102,7 +102,7 @@ This is the form we&#x2019;ll use, but just like with $u$-sub, we have a process
 		u = \frac{1}{t},\,dv = \frac{\ln(t)}{t}\,dt
 	$$
 	
-	In general, we want to choose $u$ and $dv$ such that the resulting integral is as simple as possible. For example, since the derivative of $\ln(t)$ is $\frac{1}{t}$ but the integral is $t\ln(t) - t + C$, we almost certainly want $\ln(t)$ to be part of $u$ instead of $dv$ so that it gets differentiated. The simplest way to do that is just to take $u = \ln(t)$ and $dv = \frac{1}{t^2}\,dt$ &mdash; let&#x2019;s see how that goes. We have $du = \frac{1}{t}\,dt$ and $v = -\frac{1}{t}$, so we get
+	In general, we want to choose $u$ and $dv$ such that the resulting integral is as simple as possible. For example, since the derivative of $\ln(t)$ is $\frac{1}{t}$ but the integral is $t\ln(t) - t + C$, we almost certainly want $\ln(t)$ to be part of $u$ instead of $dv$ so that it gets differentiated. The simplest way to do that is just to take $u = \ln(t)$ and $dv = \frac{1}{t^2}\,dt$ --- let's see how that goes. We have $du = \frac{1}{t}\,dt$ and $v = -\frac{1}{t}$, so we get
 	
 	$$
 		\begin{align*}
@@ -115,7 +115,7 @@ This is the form we&#x2019;ll use, but just like with $u$-sub, we have a process
 
 
 
-Sometimes, we&#x2019;ll need to apply integration by parts more than once.
+Sometimes, we'll need to apply integration by parts more than once.
 
 
 
@@ -123,7 +123,7 @@ Sometimes, we&#x2019;ll need to apply integration by parts more than once.
 	
 	Find $\displaystyle \int x^2 e^{3x}\,dx$.
 	
-	We know that $x^2$ gets simpler when we differentiate it, and $e^{3x}$ stays as complicated when integrated, so let&#x2019;s try $u = x^2$ and $dv = e^{3x}\,dx$. Then $du = 2x\,dx$ and $v = \frac{1}{3}e^{3x}$. Now the integral becomes
+	We know that $x^2$ gets simpler when we differentiate it, and $e^{3x}$ stays as complicated when integrated, so let's try $u = x^2$ and $dv = e^{3x}\,dx$. Then $du = 2x\,dx$ and $v = \frac{1}{3}e^{3x}$. Now the integral becomes
 	
 	$$
 		\int x^2 e^{3x}\,dx = \frac{1}{3} x^2 e^{3x} - \int \frac{2}{3} x e^{3x}\,dx.
@@ -151,7 +151,7 @@ Sometimes, we&#x2019;ll need to apply integration by parts more than once.
 		\frac{1}{2}t^2\sin(2t) - \int \frac{1}{2} \sin(2t) (2t)\,dt = \frac{1}{2}t^2\sin(2t) - \int t \sin(2t)\,dt.
 	$$
 	
-	This is similar to the previous examples we&#x2019;ve done: let $u = t$ and $dv = \sin(2t)\,dt$. Then $du = dt$ and $v = -\frac{1}{2} \cos(2t)$, so we get
+	This is similar to the previous examples we've done: let $u = t$ and $dv = \sin(2t)\,dt$. Then $du = dt$ and $v = -\frac{1}{2} \cos(2t)$, so we get
 	
 	$$
 		\frac{1}{2}t^2\sin(2t) - \left(-\frac{1}{2} t \cos(2t) - \int -\frac{1}{2} \cos(2t)\,dt \right) = \frac{1}{2}t^2\sin(2t) + \frac{1}{2} t \cos(2t) - \frac{1}{4} \sin(2t) + C.
@@ -161,7 +161,7 @@ Sometimes, we&#x2019;ll need to apply integration by parts more than once.
 
 
 
-Things can get a little more complicated when multiple integration strategies are involved. First of all, <strong>try $u$-sub first.</strong> If you&#x2019;re trying to integrate $x\sin(x^2)$, trying to do it by parts will never work, since it&#x2019;s impossible to integrate $\sin(x^2)$ without that extra $x$ for $u$-sub. If it doesn&#x2019;t seem like $u$-sub will help, then try integrating by parts. Sometimes you&#x2019;ll even need to use both.
+Things can get a little more complicated when multiple integration strategies are involved. First of all, <strong>try $u$-sub first.</strong> If you're trying to integrate $x\sin(x^2)$, trying to do it by parts will never work, since it's impossible to integrate $\sin(x^2)$ without that extra $x$ for $u$-sub. If it doesn't seem like $u$-sub will help, then try integrating by parts. Sometimes you'll even need to use both.
 
 
 
@@ -169,13 +169,13 @@ Things can get a little more complicated when multiple integration strategies ar
 	
 	Find $\displaystyle \int y^3 e^{y^2}\,dy$.
 	
-	Let&#x2019;s follow the instructions above and try $u$-sub first. The only option is to let $u = y^2$ and $du = 2y\,dy$, which gives us
+	Let's follow the instructions above and try $u$-sub first. The only option is to let $u = y^2$ and $du = 2y\,dy$, which gives us
 	
 	$$
 		\int \frac{1}{2} ue^u\,du.
 	$$
 	
-	Now we have an integration by parts problem, since there is no composition in this integral and it&#x2019;s a product we don&#x2019;t know how to integrate. Normally we use $u$ and $v$ for variables, but now we&#x2019;ve already used $u$, so let&#x2019;s pick another variable &mdash; say $w$. Therefore, $w = \frac{1}{2} u$, $dv = e^u\,du$, and so $dw = \frac{1}{2}\,du$ and $v = e^u$. Now we get
+	Now we have an integration by parts problem, since there is no composition in this integral and it's a product we don't know how to integrate. Normally we use $u$ and $v$ for variables, but now we've already used $u$, so let's pick another variable --- say $w$. Therefore, $w = \frac{1}{2} u$, $dv = e^u\,du$, and so $dw = \frac{1}{2}\,du$ and $v = e^u$. Now we get
 	
 	$$
 		u e^u - \int \frac{1}{2} e^u\,du = u e^u - \frac{1}{2} e^u + C.
@@ -195,7 +195,7 @@ Things can get a little more complicated when multiple integration strategies ar
 	
 	The region bounded by $y = \cos(x)$, $y = 0$, and $x = 0$ is revolved about the $y$-axis. Find its volume.
 	
-	Since we&#x2019;re revolving about the $y$-axis and have a function given in terms of $x$, we should try the shell method first. The intersection of $\cos(x)$ with $y = 0$ gives $x = \frac{\pi}{2}$, so the integral comes out to
+	Since we're revolving about the $y$-axis and have a function given in terms of $x$, we should try the shell method first. The intersection of $\cos(x)$ with $y = 0$ gives $x = \frac{\pi}{2}$, so the integral comes out to
 	
 	$$
 		\int_0^{\pi / 2} 2\pi x\cos(x)\,dx.
@@ -223,13 +223,13 @@ Things can get a little more complicated when multiple integration strategies ar
 		\int_1^3 \frac{1}{2} u \sin(u)\,du.
 	$$
 	
-	Now there&#x2019;s nothing left to do but integrate by parts. We&#x2019;re already using $u$ as a variable, so let&#x2019;s set $w = \frac{1}{2}u$ and $dv = \sin(u)\,du$. Then we have $dw = \frac{1}{2}\,du$ and $v = -\cos(u)$, so the integral becomes
+	Now there's nothing left to do but integrate by parts. We're already using $u$ as a variable, so let's set $w = \frac{1}{2}u$ and $dv = \sin(u)\,du$. Then we have $dw = \frac{1}{2}\,du$ and $v = -\cos(u)$, so the integral becomes
 	
 	$$
 		-\frac{1}{2} u \cos(u) + \int \frac{1}{2} \cos(u)\,du = -\frac{1}{2} u \cos(u) + \frac{1}{2} \sin(u).
 	$$
 	
-	Now it&#x2019;s time to back-substitute for $u$.
+	Now it's time to back-substitute for $u$.
 	
 	$$
 		-\frac{1}{2} x^2 \cos(x^2) + \frac{1}{2} \sin(x^2).

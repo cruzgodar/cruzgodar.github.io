@@ -2,7 +2,7 @@
 
 ### nav-buttons
 
-We&#x2019;ll take a brief diversion from general convergence tests to talk about a particular kind of series that will come up frequently in the second half of the course. While most of the series we&#x2019;ve considered before have had only positive entries, we&#x2019;ll now allow some entries to be negative &mdash; but to keep things relatively well-behaved, we&#x2019;ll require a strict pattern for *which* entries are negative.
+We'll take a brief diversion from general convergence tests to talk about a particular kind of series that will come up frequently in the second half of the course. While most of the series we've considered before have had only positive entries, we'll now allow some entries to be negative --- but to keep things relatively well-behaved, we'll require a strict pattern for *which* entries are negative.
 
 
 
@@ -32,23 +32,23 @@ $$
 	\sum_{n = 1}^\infty \frac{(-1)^{n + 1}}{n} = 1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \cdots.
 $$
 
-While the standard Harmonic series diverges, the alternating version converges &mdash; in fact, it converges to a rather surprising number. Later in the course, we&#x2019;ll have a very slick way to find that number, but we can bootstrap it right now with a geometric argument.
+While the standard Harmonic series diverges, the alternating version converges --- in fact, it converges to a rather surprising number. Later in the course, we'll have a very slick way to find that number, but we can bootstrap it right now with a geometric argument.
 
 ### desmos alternating-harmonic-series
 
-Here, we have the function $f(x) = \frac{1}{x}$ graphed on the interval $[1, 2]$. We&#x2019;re going to construct a left Riemann sum for $f$ in a rather strange way &mdash; first, we&#x2019;ll start with a single rectangle, which is a square with area $1$. Rather than jumping straight to two rectangles, our next step (set $n = 2$ to see it) is to prepare the way for the second rectangle by removing the entire right half of the square. The total area is the $1$ we started with, minus the $\frac{1}{2}$ we just removed. Now we&#x2019;ll actually add in the next rectangle. It&#x2019;s built on $\left[ \frac{3}{2}, 2 \right]$, and this is a left Riemann sum, so since $f \left( \frac{3}{2} \right) = \frac{2}{3}$, that&#x2019;s our height. The area is therefore $\frac{1}{2} \cdot \frac{2}{3} = \frac{1}{3}$, and so our total area is now
+Here, we have the function $f(x) = \frac{1}{x}$ graphed on the interval $[1, 2]$. We're going to construct a left Riemann sum for $f$ in a rather strange way --- first, we'll start with a single rectangle, which is a square with area $1$. Rather than jumping straight to two rectangles, our next step (set $n = 2$ to see it) is to prepare the way for the second rectangle by removing the entire right half of the square. The total area is the $1$ we started with, minus the $\frac{1}{2}$ we just removed. Now we'll actually add in the next rectangle. It's built on $\left[ \frac{3}{2}, 2 \right]$, and this is a left Riemann sum, so since $f \left( \frac{3}{2} \right) = \frac{2}{3}$, that's our height. The area is therefore $\frac{1}{2} \cdot \frac{2}{3} = \frac{1}{3}$, and so our total area is now
 
 $$
 	1 - \frac{1}{2} + \frac{1}{3}.
 $$
 
-Now we&#x2019;ll repeat this process on both of these rectangles, removing the right half and adding back in whatever rectangle is actually supposed to be there. In this next step, we remove rectangles of area $\frac{1}{4} \cdot 1 = \frac{1}{4}$ and $\frac{1}{4} \cdot \frac{2}{3} = \frac{1}{6}$, and in their places, we add rectangles of area $\frac{1}{4} \cdot f \left( \frac{5}{4} \right) = \frac{1}{5}$ and $\frac{1}{4} \cdot f \left( \frac{7}{4} \right) = \frac{1}{7}$, resulting in a total area of
+Now we'll repeat this process on both of these rectangles, removing the right half and adding back in whatever rectangle is actually supposed to be there. In this next step, we remove rectangles of area $\frac{1}{4} \cdot 1 = \frac{1}{4}$ and $\frac{1}{4} \cdot \frac{2}{3} = \frac{1}{6}$, and in their places, we add rectangles of area $\frac{1}{4} \cdot f \left( \frac{5}{4} \right) = \frac{1}{5}$ and $\frac{1}{4} \cdot f \left( \frac{7}{4} \right) = \frac{1}{7}$, resulting in a total area of
 
 $$
 	1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \frac{1}{5} - \frac{1}{6} + \frac{1}{7}.
 $$
 
-As the number of rectangles limits to $\infty$, our sum approaches the Alternating Harmonic series. But it&#x2019;s also a Riemann sum, approaching
+As the number of rectangles limits to $\infty$, our sum approaches the Alternating Harmonic series. But it's also a Riemann sum, approaching
 
 $$
 	\int_1^2 \frac{1}{x}\,dx = \left. \left[ \ln |x| \right] \right|_1^2 = \ln(2).
@@ -56,7 +56,7 @@ $$
 
 Rather shockingly, the Alternating Harmonic series converges to $\ln(2)$!
 
-If we don&#x2019;t care about the value, it&#x2019;s not hard to see that this series converges. Every term is less in absolute value than the last, so anything we subtract is always less than the last thing we added. Similarly, anything we add is less than the last thing we subtracted. The result is a series that is constantly doubling back on itself, but with less distance every time, and so it must eventually converge. Drag $M$ to increase the terms of the sequence &mdash; the intersections with the $x$-axis are the partial sums.
+If we don't care about the value, it's not hard to see that this series converges. Every term is less in absolute value than the last, so anything we subtract is always less than the last thing we added. Similarly, anything we add is less than the last thing we subtracted. The result is a series that is constantly doubling back on itself, but with less distance every time, and so it must eventually converge. Drag $M$ to increase the terms of the sequence --- the intersections with the $x$-axis are the partial sums.
 
 ### desmos alternating-harmonic-series-2
 
@@ -78,7 +78,7 @@ The result of this reasoning is that alternating series converge much more easil
 
 
 
-This is absolutely not true for non-alternating series! The Harmonic series itself is a perfect example &mdash; while $\frac{1}{n + 1} \leq \frac{1}{n}$ and $\left(\frac{1}{n}\right) \to 0$, the Harmonic series does not converge.
+This is absolutely not true for non-alternating series! The Harmonic series itself is a perfect example --- while $\frac{1}{n + 1} \leq \frac{1}{n}$ and $\left(\frac{1}{n}\right) \to 0$, the Harmonic series does not converge.
 
 
 
@@ -86,7 +86,7 @@ This is absolutely not true for non-alternating series! The Harmonic series itse
 	
 	Determine if $\sum_{n = 1}^\infty \frac{(-1)^n}{\sqrt{n}}$ converges.
 	
-	As always, we start with the divergence test. Since $\lim_{n \to \infty} \frac{(-1)^n}{\sqrt{n}} = 0$, it&#x2019;s inconclusive. The integral test and both comparison tests require all positive terms, which we don&#x2019;t have, but the terms do alternate due to the factor of $(-1)^n$, so we can apply the alternating series test. With the alternating sign stripped off the terms, we&#x2019;re left with $\frac{1}{\sqrt{n}}$. Since $\sqrt{n + 1} \geq \sqrt{n}$, we have that
+	As always, we start with the divergence test. Since $\lim_{n \to \infty} \frac{(-1)^n}{\sqrt{n}} = 0$, it's inconclusive. The integral test and both comparison tests require all positive terms, which we don't have, but the terms do alternate due to the factor of $(-1)^n$, so we can apply the alternating series test. With the alternating sign stripped off the terms, we're left with $\frac{1}{\sqrt{n}}$. Since $\sqrt{n + 1} \geq \sqrt{n}$, we have that
 	
 	$$
 		\frac{1}{\sqrt{n + 1}} \leq \frac{1}{\sqrt{n}},
@@ -106,9 +106,9 @@ This is absolutely not true for non-alternating series! The Harmonic series itse
 	
 	**Solutions:**
 	
-	1. Here, it&#x2019;s helpful to pull out the minus sign to get $(-1)^i \left( \frac{1}{i^i} \right)$. Since the second factor is always positive, the series is alternating, and we also have that the terms are decreasing. Since it certainly satisfies $\lim_{i \to \infty} \left( \frac{1}{i^i} \right) = 0$, the series converges by the AST.
+	1. Here, it's helpful to pull out the minus sign to get $(-1)^i \left( \frac{1}{i^i} \right)$. Since the second factor is always positive, the series is alternating, and we also have that the terms are decreasing. Since it certainly satisfies $\lim_{i \to \infty} \left( \frac{1}{i^i} \right) = 0$, the series converges by the AST.
 	
-	2. While that factor of $(-1)^{n+1}$ makes this look a lot like an alternating series, the $\sin(n)$ in the denomator says otherwise: it&#x2019;s often negative, without any consistent pattern for when (since $n$ is an integer and not a multiple of $\pi$). We can&#x2019;t apply the AST, but we can actually just use the divergence test: since neither the numerator or denominator settle down to any one for large $n$, we must have that
+	2. While that factor of $(-1)^{n+1}$ makes this look a lot like an alternating series, the $\sin(n)$ in the denomator says otherwise: it's often negative, without any consistent pattern for when (since $n$ is an integer and not a multiple of $\pi$). We can't apply the AST, but we can actually just use the divergence test: since neither the numerator or denominator settle down to any one for large $n$, we must have that
 	
 	$$
 		\lim_{n \to \infty} \frac{(-1)^{n+1}}{\sin(n)}
@@ -122,7 +122,7 @@ This is absolutely not true for non-alternating series! The Harmonic series itse
 
 ## Remainder Estimates
 
-Much like the integral test, the alternating series test provides an estimate on remainders $R_n$, and therefore an estimate on the value of convergent series. To see how, let&#x2019;s return to the diagram of partial sums of the Alternating Harmonic series homing in on the actual value.
+Much like the integral test, the alternating series test provides an estimate on remainders $R_n$, and therefore an estimate on the value of convergent series. To see how, let's return to the diagram of partial sums of the Alternating Harmonic series homing in on the actual value.
 
 ### desmos alternating-harmonic-series-3
 
@@ -212,7 +212,7 @@ since $a_{n + 1}$ is guaranteed to be positive. This is thankfully a very simple
 		\sum_{n = 1}^{24} \frac{(-1)^n}{\sqrt{n}} \approx -.504.
 	$$
 	
-	The actual value is about $-.605$ &mdash; not too bad!
+	The actual value is about $-.605$ --- not too bad!
 
 ###
 
@@ -220,7 +220,7 @@ since $a_{n + 1}$ is guaranteed to be positive. This is thankfully a very simple
 
 ## Types of Convergence
 
-In previous sections, we&#x2019;ve looked mostly at series with only positive terms. Now that those with negative terms are on the table, we need to be a little more precise about what it means for a series to converge. While it is true that the Alternating Harmonic series converges, that convergence isn&#x2019;t as strong as we might like. To demonstrate this, we&#x2019;ll add up the terms, but in a different order than usual. First, let&#x2019;s examine the negative terms. These are the ones with even denominators, i.e.
+In previous sections, we've looked mostly at series with only positive terms. Now that those with negative terms are on the table, we need to be a little more precise about what it means for a series to converge. While it is true that the Alternating Harmonic series converges, that convergence isn't as strong as we might like. To demonstrate this, we'll add up the terms, but in a different order than usual. First, let's examine the negative terms. These are the ones with even denominators, i.e.
 
 $$
 	-\frac{1}{2}, -\frac{1}{4}, -\frac{1}{6}, ...
@@ -232,7 +232,7 @@ $$
 	-\frac{1}{2} \cdot \sum_{n = 1}^\infty \frac{1}{n} = -\frac{1}{2} - \frac{1}{4} - \frac{1}{6} - \cdots
 $$
 
-diverges to $-\infty$. Knowing this, we&#x2019;ll add up the Alternating Harmonic series in the following manner.
+diverges to $-\infty$. Knowing this, we'll add up the Alternating Harmonic series in the following manner.
 
 First, find enough even-denominator terms that their sum is less than $-2$. We need the first 31 of them to make this happen:
 
@@ -246,9 +246,9 @@ $$
 	\sum_{n = 1}^\infty \frac{(-1)^{n+1}}{n} = \left( -\frac{1}{2} - \cdots - \frac{1}{62} \right) + 1 + \left( -\frac{1}{64} - \cdots - \frac{1}{3440} \right) + \frac{1}{3} + \cdots.
 $$
 
-We pick up every term this way, and since the Harmonic series diverges, we&#x2019;ll never run out of groups of negative terms that add up to less than $-2$. However, since every positive term is no larger than $1$, every pair of groups is at most $-1$. Since there are infinitely many groups, the Alternating Harmonic series diverges to $-\infty$.
+We pick up every term this way, and since the Harmonic series diverges, we'll never run out of groups of negative terms that add up to less than $-2$. However, since every positive term is no larger than $1$, every pair of groups is at most $-1$. Since there are infinitely many groups, the Alternating Harmonic series diverges to $-\infty$.
 
-...what happened here? The Alternating Harmonic series is supposed to converge to $\ln(2)$. Was there some false step in this process? Not really &mdash; the answer is just that infinite sums often behave in ways that run counter to what we expect. It would be nice to distinguish between series that really do converge and series that do whatever this is, and the good news is that the difference is very clear-cut.
+...what happened here? The Alternating Harmonic series is supposed to converge to $\ln(2)$. Was there some false step in this process? Not really --- the answer is just that infinite sums often behave in ways that run counter to what we expect. It would be nice to distinguish between series that really do converge and series that do whatever this is, and the good news is that the difference is very clear-cut.
 
 
 
@@ -270,7 +270,7 @@ $$
 
 Since the series on the right converges and $0 \leq a_n + |a_n| \leq 2|a_n|$, the comparison test tells us that $\sum_{n = 1}^\infty (a_n + |a_n|)$ converges. Finally, since $\sum_{n = 1}^\infty |a_n|$ converges, so must $\sum_{n = 1}^\infty a_n$. All of this is to say that if a series converges absolutely, it converges. The language makes that sound obvious, but as we just saw, there is something to be shown.
 
-Series that converge conditionally have the unfortunate property that they can be rearranged to converge to <em>any real number</em>, or to diverge. Absolutely convergent series, on the other hand, are resilient to rearrangement &mdash; they will always converge to the same value, no matter the order of their terms. The names do a good job of describing the definitions: absolutely convergent series are those whose series of absolute values converge, while conditionally convergent series are conditional on not being rearranged to converge.
+Series that converge conditionally have the unfortunate property that they can be rearranged to converge to <em>any real number</em>, or to diverge. Absolutely convergent series, on the other hand, are resilient to rearrangement --- they will always converge to the same value, no matter the order of their terms. The names do a good job of describing the definitions: absolutely convergent series are those whose series of absolute values converge, while conditionally convergent series are conditional on not being rearranged to converge.
 
 
 
@@ -278,15 +278,15 @@ Series that converge conditionally have the unfortunate property that they can b
 	
 	Determine if the series $\sum_{k = 2}^\infty \frac{(-1)^k}{\ln(k)}$ converges absolutely, converges conditionally, or diverges.
 	
-	First, let&#x2019;s check for absolute convergence. Since $\ln(k)$ is always positive, the series of absolute values is
+	First, let's check for absolute convergence. Since $\ln(k)$ is always positive, the series of absolute values is
 	
 	$$
 		\sum_{k = 2}^\infty \frac{1}{\ln(k)}.
 	$$
 	
-	As we&#x2019;ve seen, this series can be compared to the Harmonic series: $\ln(k) \leq k$ for all $k \geq 1$, so $\frac{1}{\ln(k)} \geq \frac{1}{k}$. By the comparison test, $\sum_{k = 2}^\infty \frac{1}{\ln(k)}$ diverges, so the original alternating series does not converge absolutely.
+	As we've seen, this series can be compared to the Harmonic series: $\ln(k) \leq k$ for all $k \geq 1$, so $\frac{1}{\ln(k)} \geq \frac{1}{k}$. By the comparison test, $\sum_{k = 2}^\infty \frac{1}{\ln(k)}$ diverges, so the original alternating series does not converge absolutely.
 	
-	Let&#x2019;s try for conditional convergence. Since the series alternates, we can try to apply the alternating series test. Since $\ln(k + 1) \geq \ln(k)$ and $\ln(k) \to \infty$ as $k \to \infty$, we have that $\frac{1}{\ln(k + 1)} < \frac{1}{\ln(k)}$ and $\frac{1}{\ln(k)} \to 0$. Both conditions are met, so the alternating series test guarantees that $\sum_{k = 2}^\infty \frac{(-1)^k}{\ln(k)}$ converges conditionally.
+	Let's try for conditional convergence. Since the series alternates, we can try to apply the alternating series test. Since $\ln(k + 1) \geq \ln(k)$ and $\ln(k) \to \infty$ as $k \to \infty$, we have that $\frac{1}{\ln(k + 1)} < \frac{1}{\ln(k)}$ and $\frac{1}{\ln(k)} \to 0$. Both conditions are met, so the alternating series test guarantees that $\sum_{k = 2}^\infty \frac{(-1)^k}{\ln(k)}$ converges conditionally.
 
 ###
 
@@ -294,7 +294,7 @@ Series that converge conditionally have the unfortunate property that they can b
 	
 	Determine if the series $\sum_{k = 1}^\infty \frac{\sin(k)}{k^2}$ converges absolutely, converges conditionally, or diverges.
 	
-	**Solution:** This isn&#x2019;t an alternating series, since $\sin(k)$ doesn&#x2019;t alternate in sign. However, when we take an absolute value, we have
+	**Solution:** This isn't an alternating series, since $\sin(k)$ doesn't alternate in sign. However, when we take an absolute value, we have
 	
 	$$
 		0 \leq \frac{|\sin(k)|}{k^2} \leq \frac{1}{k^2},

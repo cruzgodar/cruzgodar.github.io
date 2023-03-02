@@ -2,9 +2,9 @@
 
 ### nav-buttons
 
-One problem you probably noticed with the CPU canvas was a rapid fluctuation in brightness due to a high variation in the value of the brightest pixel. Now we have a different problem &mdash; there&#x2019;s not a clear way to automatically control the brightness at all. One option is to try a value, then see how many pixels are at max brightness and slightly adjust the brightness scale on the next frame. This is expensive, though, and if the brightness changes suddenly, it will take a while to catch up. A better solution is to render a second canvas with the same shader at a very low resolution &mdash; say 100x100 &mdash; and no brightness scale at all. Then we can read off the max brightness from that canvas and use it for the output one.
+One problem you probably noticed with the CPU canvas was a rapid fluctuation in brightness due to a high variation in the value of the brightest pixel. Now we have a different problem --- there's not a clear way to automatically control the brightness at all. One option is to try a value, then see how many pixels are at max brightness and slightly adjust the brightness scale on the next frame. This is expensive, though, and if the brightness changes suddenly, it will take a while to catch up. A better solution is to render a second canvas with the same shader at a very low resolution --- say 100x100 --- and no brightness scale at all. Then we can read off the max brightness from that canvas and use it for the output one.
 
-This process is simple &mdash; all we have to do is register a second canvas with Wilson and give it a similar set of options.
+This process is simple --- all we have to do is register a second canvas with Wilson and give it a similar set of options.
 
 
 
@@ -68,7 +68,7 @@ This process is simple &mdash; all we have to do is register a second canvas wit
 	&#9;
 	&#9;/*
 	&#9;&#9;Like range in a photo, the brightness will get clipped if we let it go above 1.
-	&#9;&#9;Therefore, we divide by a large number to make sure that doesn&#x2019;t happen.
+	&#9;&#9;Therefore, we divide by a large number to make sure that doesn't happen.
 	&#9;&#9;Too large and everything will get compressed into too few dark values instead,
 	&#9;&#9;so we need to pick a brightness scale in the middle.
 	&#9;*/
@@ -106,7 +106,7 @@ This process is simple &mdash; all we have to do is register a second canvas wit
 
 
 
-Notice that we&#x2019;re sorting the brightnesses and throwing out the top 2% &mdash; this effectively removes outlier pixels and keeps the brightness stable frame-to-frame. Since the hidden canvas is so small, this sorting isn&#x2019;t expensive.
+Notice that we're sorting the brightnesses and throwing out the top 2% --- this effectively removes outlier pixels and keeps the brightness stable frame-to-frame. Since the hidden canvas is so small, this sorting isn't expensive.
 
 
 
@@ -129,7 +129,7 @@ Notice that we&#x2019;re sorting the brightnesses and throwing out the top 2% &m
 
 <div style="height: 32px"></div>
 
-In the next section, we&#x2019;ll add the ability to run the applet in fullscreen, leveraging as much screen space as possible.
+In the next section, we'll add the ability to run the applet in fullscreen, leveraging as much screen space as possible.
 
 You can view the code for this page <a href="/projects/wilson/guide/4-hidden-canvases/scripts/index.js">here</a>.
 

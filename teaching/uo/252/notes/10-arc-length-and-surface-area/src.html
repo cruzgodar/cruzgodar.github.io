@@ -2,7 +2,7 @@
 
 ### nav-buttons
 
-We&#x2019;re going to take a welcome break from 3D objects to talk about a simpler application of integrals... and then we&#x2019;ll get right back to the 3D stuff later in this section. Let&#x2019;s open with what arc length means, and then we&#x2019;ll see how to compute it.
+We're going to take a welcome break from 3D objects to talk about a simpler application of integrals... and then we'll get right back to the 3D stuff later in this section. Let's open with what arc length means, and then we'll see how to compute it.
 
 
 
@@ -24,11 +24,11 @@ We&#x2019;re going to take a welcome break from 3D objects to talk about a simpl
 
 
 
-As is quickly becoming standard, we don&#x2019;t really know how to do anything but the simplest case of straight lines, but as long as the function is smooth, we can approximate it with a bunch of tiny lines, each of whose length we can compute.
+As is quickly becoming standard, we don't really know how to do anything but the simplest case of straight lines, but as long as the function is smooth, we can approximate it with a bunch of tiny lines, each of whose length we can compute.
 
 ### desmos arc-length-approximation
 
-Let&#x2019;s take a look at one of those small line segments. If it has rise $\Delta y$ and run $\Delta x$, then its length is
+Let's take a look at one of those small line segments. If it has rise $\Delta y$ and run $\Delta x$, then its length is
 
 $$
 	\sqrt{\Delta x^2 + \Delta y^2}
@@ -46,7 +46,7 @@ $$
 	\frac{\Delta y}{\Delta x} \to f'(x)
 $$
 
-and $\Delta x \to dx$. Since we&#x2019;re adding up all of these shrinking segment lengths, we need to integrate what we get, which in total has become...
+and $\Delta x \to dx$. Since we're adding up all of these shrinking segment lengths, we need to integrate what we get, which in total has become...
 
 
 
@@ -105,7 +105,7 @@ and $\Delta x \to dx$. Since we&#x2019;re adding up all of these shrinking segme
 
 ## Surface Area
 
-By know, we know how to find the volume of a solid of revolution, but what about its surface area? This is thankfully much easier &mdash; repeating our same straight-line argument but scaling by $2 \pi f(x)$ &mdash; the circumference of a circle &mdash; changes the integral to adding up lots of thin circles around the outside of the solid, which is exactly what we need.
+By know, we know how to find the volume of a solid of revolution, but what about its surface area? This is thankfully much easier --- repeating our same straight-line argument but scaling by $2 \pi f(x)$ --- the circumference of a circle --- changes the integral to adding up lots of thin circles around the outside of the solid, which is exactly what we need.
 
 ### desmos surface-area
 
@@ -127,7 +127,7 @@ By know, we know how to find the volume of a solid of revolution, but what about
 	
 	Find the surface area of the solid created by revolving the graph of $y = x^2$ on $[0, 6]$ about the $y$-axis.
 	
-	Unlike volume, where we have a choice between integrating with respect to either variable (i.e. using the disk vs. shell methods), here we only have a theorem that can be used when we integrate with respect to the same variable whose axis we revolved about. In this case, that&#x2019;s the $y$-axis, so we need to get everything in terms of $y$. $y = x^2$ gets rewritten as $x = \sqrt{y}$, and $x = 0$ to $x = 6$ corresponds to $y = 0$ to $y = 36$. Then we have $f'(y) = \frac{1}{2} y^{-1/2}$, so the surface area is
+	Unlike volume, where we have a choice between integrating with respect to either variable (i.e. using the disk vs. shell methods), here we only have a theorem that can be used when we integrate with respect to the same variable whose axis we revolved about. In this case, that's the $y$-axis, so we need to get everything in terms of $y$. $y = x^2$ gets rewritten as $x = \sqrt{y}$, and $x = 0$ to $x = 6$ corresponds to $y = 0$ to $y = 36$. Then we have $f'(y) = \frac{1}{2} y^{-1/2}$, so the surface area is
 	
 	$$
 		\begin{align*}

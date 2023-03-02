@@ -10,7 +10,7 @@ Our third integration technique is a very specific one: unlike $u$-sub, which al
 
 3. $\displaystyle \sqrt{x^2 - a^2}$
 
-These might look familiar: some integrals that evaluate to inverse trig functions look a lot like these. This process will be a little more general, though. Let&#x2019;s start with an example to see what the process looks like, and then we&#x2019;ll write down the general steps.
+These might look familiar: some integrals that evaluate to inverse trig functions look a lot like these. This process will be a little more general, though. Let's start with an example to see what the process looks like, and then we'll write down the general steps.
 
 
 
@@ -18,7 +18,7 @@ These might look familiar: some integrals that evaluate to inverse trig function
 	
 	Find $\displaystyle \int \sqrt{9 - x^2}\,dx$.
 	
-	We can&#x2019;t use $u$-sub, since we would need to take $u = 9 - x^2$, and $du = 2x\,dx$ doesn&#x2019;t appear anywhere in the expression. We also can&#x2019;t use integration by parts, since there is no product here. Instead, let&#x2019;s do something strange: let $x = 3\sin(\theta)$. Then $dx = 3\cos(\theta)\,d\theta$. This looks like a $u$-sub a little bit, but we&#x2019;re **going the other direction** &mdash; we&#x2019;re letting $x$ be a function of $\theta$ rather than letting $u$ being a function of $x$. But the process now is the same: we just substitute in for $x$.
+	We can't use $u$-sub, since we would need to take $u = 9 - x^2$, and $du = 2x\,dx$ doesn't appear anywhere in the expression. We also can't use integration by parts, since there is no product here. Instead, let's do something strange: let $x = 3\sin(\theta)$. Then $dx = 3\cos(\theta)\,d\theta$. This looks like a $u$-sub a little bit, but we're **going the other direction** --- we're letting $x$ be a function of $\theta$ rather than letting $u$ being a function of $x$. But the process now is the same: we just substitute in for $x$.
 	
 	$$
 		\begin{align*}
@@ -48,7 +48,7 @@ These might look familiar: some integrals that evaluate to inverse trig function
 		\end{align*}
 	$$
 	
-	Now in general, this process will require us to simplify any expressions with $2\theta$ inside a trig function. There&#x2019;s another trig formula that&#x2019;s relevant here: $\sin(2\theta) = 2\sin(\theta)\cos(\theta)$. Our expression therefore becomes
+	Now in general, this process will require us to simplify any expressions with $2\theta$ inside a trig function. There's another trig formula that's relevant here: $\sin(2\theta) = 2\sin(\theta)\cos(\theta)$. Our expression therefore becomes
 	
 	$$
 		\begin{align*}
@@ -56,11 +56,11 @@ These might look familiar: some integrals that evaluate to inverse trig function
 		\end{align*}
 	$$
 	
-	Now it&#x2019;s time to back-substitute. Since $x = 3\sin(\theta)$, $\sin(\theta) = \frac{x}{3}$, which isn&#x2019;t too bad. We still need to handle the $\theta$ and the $\cos(\theta)$, though. For the former, we can solve $\sin(\theta) = \frac{x}{3}$ for $\theta$ to get $\theta = \sin^{-1}\left( \frac{x}{3} \right)$. The cosine is going to be slightly harder, though. Let&#x2019;s draw a right triangle to help figure it out.
+	Now it's time to back-substitute. Since $x = 3\sin(\theta)$, $\sin(\theta) = \frac{x}{3}$, which isn't too bad. We still need to handle the $\theta$ and the $\cos(\theta)$, though. For the former, we can solve $\sin(\theta) = \frac{x}{3}$ for $\theta$ to get $\theta = \sin^{-1}\left( \frac{x}{3} \right)$. The cosine is going to be slightly harder, though. Let's draw a right triangle to help figure it out.
 	
 	<div class="center-content"><img class="notes-image" src="/teaching/uo/252/notes/13-trig-sub/graphics/triangle-1.png"></img></div>
 	
-	In a right triangle with an angle $\theta$, $\sin(\theta)$ is the ratio of the opposite side to the hypotenuse, so to get a right triangle that works for us, we can draw one with opposite side $x$ and hypotenuse $3$. Let&#x2019;s call the third side $b$ for now. We&#x2019;re trying to find $\cos(\theta)$ in terms of $x$ &mdash; since $\cos(\theta) = \frac{b}{3}$, we just need to find $b$. By the Pythagorean theorem, $x^2 + b^2 = 3^2$, so $b = \sqrt{9 - x^2}$. Therefore, $\cos(\theta) = \frac{1}{3}\sqrt{9 - x^2}$. Now we finally have all the necessary information, and we can back-substitute.
+	In a right triangle with an angle $\theta$, $\sin(\theta)$ is the ratio of the opposite side to the hypotenuse, so to get a right triangle that works for us, we can draw one with opposite side $x$ and hypotenuse $3$. Let's call the third side $b$ for now. We're trying to find $\cos(\theta)$ in terms of $x$ --- since $\cos(\theta) = \frac{b}{3}$, we just need to find $b$. By the Pythagorean theorem, $x^2 + b^2 = 3^2$, so $b = \sqrt{9 - x^2}$. Therefore, $\cos(\theta) = \frac{1}{3}\sqrt{9 - x^2}$. Now we finally have all the necessary information, and we can back-substitute.
 	
 	$$
 		\begin{align*}
@@ -72,7 +72,7 @@ These might look familiar: some integrals that evaluate to inverse trig function
 
 
 
-If you&#x2019;re thinking this is a pretty intense process to go through... you&#x2019;re right! Trig sub is involved, but it does always proceed in the same way as the previous example. Let&#x2019;s write down the general process.
+If you're thinking this is a pretty intense process to go through... you're right! Trig sub is involved, but it does always proceed in the same way as the previous example. Let's write down the general process.
 
 
 
@@ -98,13 +98,13 @@ If you&#x2019;re thinking this is a pretty intense process to go through... you&
 	
 	6. Use trig identities to make sure all trig functions only have $\theta$ inside them, and not $2\theta$ or something else.
 	
-	7. Substitute back for $x$. If there are any trig functions other than the one you set equal to $x$, you&#x2019;ll need to draw a right triangle.
+	7. Substitute back for $x$. If there are any trig functions other than the one you set equal to $x$, you'll need to draw a right triangle.
 	
 ###
 
 
 
-While we&#x2019;re on the subject, let&#x2019;s talk about a few of the identities and formulas you should know about trig functions.
+While we're on the subject, let's talk about a few of the identities and formulas you should know about trig functions.
 
 
 
@@ -162,7 +162,7 @@ While we&#x2019;re on the subject, let&#x2019;s talk about a few of the identiti
 
 
 
-Since this class is on calculus and not trig, that complete list will be provided on exams. For now, let&#x2019;s get back to integrals and try another trig sub problem.
+Since this class is on calculus and not trig, that complete list will be provided on exams. For now, let's get back to integrals and try another trig sub problem.
 
 
 
@@ -170,7 +170,7 @@ Since this class is on calculus and not trig, that complete list will be provide
 	
 	Find $\displaystyle \int \frac{1}{\sqrt{4 + t^2}}\, dt$.
 	
-	Trying to use $u$-sub or integration by parts fails for the same reasons it did before, so let&#x2019;s turn to trig sub. The square root is of the form $\sqrt{a^2 + t^2}$ for $a = 2$, so let&#x2019;s take $t = 2\tan(\theta)$. Then $dt = 2\sec^2(\theta)\,d\theta$, so we get
+	Trying to use $u$-sub or integration by parts fails for the same reasons it did before, so let's turn to trig sub. The square root is of the form $\sqrt{a^2 + t^2}$ for $a = 2$, so let's take $t = 2\tan(\theta)$. Then $dt = 2\sec^2(\theta)\,d\theta$, so we get
 	
 	$$
 		\begin{align*}

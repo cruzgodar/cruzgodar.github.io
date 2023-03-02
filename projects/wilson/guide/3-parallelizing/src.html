@@ -2,13 +2,13 @@
 
 ### nav-buttons
 	
-There are a handful of features we could build in next, but we&#x2019;re overdue for one in particular: moving the math onto the GPU. This is called *parallelizing*, and it&#x2019;s not something that&#x2019;s possible for every applet: every pixel will be processed independently of every other, so information cannot be shared between them. For example, an applet that renders an iterated function system by tracking the orbit of a single point across millions of iterations will not lend itself well to parallelization. A Julia set, on the other hand, is a perfect candidate.
+There are a handful of features we could build in next, but we're overdue for one in particular: moving the math onto the GPU. This is called *parallelizing*, and it's not something that's possible for every applet: every pixel will be processed independently of every other, so information cannot be shared between them. For example, an applet that renders an iterated function system by tracking the orbit of a single point across millions of iterations will not lend itself well to parallelization. A Julia set, on the other hand, is a perfect candidate.
 
-The technology for GPU-based applets on the web is called WebGL &mdash; traditionally, it&#x2019;s used for 3D applets and games that use raster graphics. Wilson does *not* support any of that &mdash; if you need high-performance raster graphics, look to something like <a href="https://threejs.org">three.js</a> instead. What Wilson provides is a stripped-down environment where getting WebGL to work only requires a fragment shader, something that normally takes hundreds of lines of boilerplate.
+The technology for GPU-based applets on the web is called WebGL --- traditionally, it's used for 3D applets and games that use raster graphics. Wilson does *not* support any of that --- if you need high-performance raster graphics, look to something like <a href="https://threejs.org">three.js</a> instead. What Wilson provides is a stripped-down environment where getting WebGL to work only requires a fragment shader, something that normally takes hundreds of lines of boilerplate.
 
-Although it&#x2019;s nice to only have to write that fragment shader, actually writing it can be challenging. It&#x2019;s not written in JavaScript, but rather in a language called GLSL that&#x2019;s very unforgiving &mdash; for example, writing a number as `3` instead of `3.0` or `3.` will most likely cause the entire program to crash with a generic error message and no ability to debug. Writing GLSL is an exercise in extreme caution and frequent testing, but the upshot is *massively* improved performance &mdash; it&#x2019;s not at all uncommon to see a 100x jump in the number of pixels that can be rendered per frame, though this of course depends on the relative power of the CPU and the GPU. If your applet is parallelizable, you owe it to yourself to get it working in GLSL.
+Although it's nice to only have to write that fragment shader, actually writing it can be challenging. It's not written in JavaScript, but rather in a language called GLSL that's very unforgiving --- for example, writing a number as `3` instead of `3.0` or `3.` will most likely cause the entire program to crash with a generic error message and no ability to debug. Writing GLSL is an exercise in extreme caution and frequent testing, but the upshot is *massively* improved performance --- it's not at all uncommon to see a 100x jump in the number of pixels that can be rendered per frame, though this of course depends on the relative power of the CPU and the GPU. If your applet is parallelizable, you owe it to yourself to get it working in GLSL.
 
-To get started, we&#x2019;ll change the renderer setting once again, this time to `renderer: "gpu"`. After that, we need to write our shader, tell Wilson what uniforms (i.e. parameters) the shader has, and then change some of our existing code to set those variables properly. Let&#x2019;s take this one step at a time, starting with the shader.
+To get started, we'll change the renderer setting once again, this time to `renderer: "gpu"`. After that, we need to write our shader, tell Wilson what uniforms (i.e. parameters) the shader has, and then change some of our existing code to set those variables properly. Let's take this one step at a time, starting with the shader.
 
 
 
@@ -60,23 +60,23 @@ To get started, we&#x2019;ll change the renderer setting once again, this time t
 
 
 
-While a proper introduction to GLSL is well outside the scope of this guide, let&#x2019;s touch on some of the important points from this shader in particular.
+While a proper introduction to GLSL is well outside the scope of this guide, let's touch on some of the important points from this shader in particular.
 
-`precision highp float`: this should go at the start of every shader since it maximizes precision. `mediump` can also be used, but for a math applet, that tends to be a bad idea &mdash; WebGL doesn&#x2019;t even support doubles, so we need all the precision we can get.
+`precision highp float`: this should go at the start of every shader since it maximizes precision. `mediump` can also be used, but for a math applet, that tends to be a bad idea --- WebGL doesn't even support doubles, so we need all the precision we can get.
 
 `varying vec2 uv`: here, `varying` means varying from pixel to pixel. This is the variable that gives the position of the current pixel, on a scale from -1 to 1 in both the x and y directions, and when using Wilson, the variable name `uv` must be used. Looking through the rest of the shader, we can see `int`, `float`, and other C-like variable declarations, along with `vec2` and `vec3`. These last two are effectively float arrays with multiplication and addition implemented componentwise. The maximum size is a `vec4`, and there are 2&ndash;4 dimensional matrices available, too. In general, math should be done with vectors whenever possible, though optimizing for the GPU is its own topic.
 
-`uniform float a`: as opposed to `varying`, `uniform` means a value that is the same across all the pixels, but can be changed frame-to-frame without reloading the entire shader. Once we&#x2019;ve given Wilson our shader, we&#x2019;ll have to tell it where the uniforms are in order to actually do that.
+`uniform float a`: as opposed to `varying`, `uniform` means a value that is the same across all the pixels, but can be changed frame-to-frame without reloading the entire shader. Once we've given Wilson our shader, we'll have to tell it where the uniforms are in order to actually do that.
 
 `vec2 z = vec2(uv.x * 2.0, uv.y * 2.0)`: this scales `uv` to world coordinates. Note that `vec2` is a constructor as well as a type, and that we can access the first component of `uv` with `uv.x`. More complicated syntax is possible, called *swizzling*: `uv.xyyx` gets a `vec4` whose first and last elements are `uv.x` and whose middle two are `uv.y`.
 
-`length`, `normalize`, `abs`, etc.: GLSL has a large number of built-in functions for performing operations on vectors. Before writing some potentially inefficient code to handle a common operation, it&#x2019;s worth checking if it&#2019;s natively implemented first.
+`length`, `normalize`, `abs`, etc.: GLSL has a large number of built-in functions for performing operations on vectors. Before writing some potentially inefficient code to handle a common operation, it's worth checking if it&#2019;s natively implemented first.
 
-`gl_FragColor`: this is how we actually set the pixel color &mdash; the data is given as a `vec4` corresponding to the RGBA values on a scale of 0&ndash;1.
+`gl_FragColor`: this is how we actually set the pixel color --- the data is given as a `vec4` corresponding to the RGBA values on a scale of 0&ndash;1.
 
-The color choice at the start is just something I came up with through trial and error, and creates a palette I think looks nice &mdash; definitely better than the uniform cyan we had before.
+The color choice at the start is just something I came up with through trial and error, and creates a palette I think looks nice --- definitely better than the uniform cyan we had before.
 
-This should be enough to get started writing your own shaders. Remember &mdash; test your code every handful of lines, or you&#x2019;ll have a painful debugging process ahead of you!
+This should be enough to get started writing your own shaders. Remember --- test your code every handful of lines, or you'll have a painful debugging process ahead of you!
 
 Now we need to add the shader in the options, and we also have to tell Wilson where the uniforms are so we can change them. This is done with a single function call.
 
@@ -101,7 +101,7 @@ Now we need to add the shader in the options, and we also have to tell Wilson wh
 
 
 
-A few other things need to change. We no longer need `generate_julia_set`, since that computation will be done on the GPU. Similarly, we also no longer pass anything to `wilson.render.draw_frame`. The performance increase will be large enough that 1000 is now a reasonable resolution for most users, and that&#x2019;s high enough that we won&#x2019;t bother with raising the resolution when we let the draggable go. Finally, we need to actually set those uniforms.
+A few other things need to change. We no longer need `generate_julia_set`, since that computation will be done on the GPU. Similarly, we also no longer pass anything to `wilson.render.draw_frame`. The performance increase will be large enough that 1000 is now a reasonable resolution for most users, and that's high enough that we won't bother with raising the resolution when we let the draggable go. Finally, we need to actually set those uniforms.
 
 
 
@@ -175,9 +175,9 @@ A few other things need to change. We no longer need `generate_julia_set`, since
 
 
 
-The name of the function that sets the uniforms changes depending on the type of the variable: For a single `float`, it&#x2019;s `uniform1f`, but for an `int`, it would be `uniform1i`. Vectors can be set in two ways: to give a `vec2` a value of `2` in its first coordinate and `4` in its second, we can use `uniform2f(wilson.uniforms["var_name"], 2, 4)` or `uniform2fv(wilson.uniforms["var_name"], [2, 4])`.
+The name of the function that sets the uniforms changes depending on the type of the variable: For a single `float`, it's `uniform1f`, but for an `int`, it would be `uniform1i`. Vectors can be set in two ways: to give a `vec2` a value of `2` in its first coordinate and `4` in its second, we can use `uniform2f(wilson.uniforms["var_name"], 2, 4)` or `uniform2fv(wilson.uniforms["var_name"], [2, 4])`.
 
-Hopefully WebGL doesn&#x2019;t seem quite so scary anymore! If you haven&#x2019;t been copying the code into your own project so far, now is a great time to start &mdash; experimenting with the shader is a great way to get familiar with GLSL.
+Hopefully WebGL doesn't seem quite so scary anymore! If you haven't been copying the code into your own project so far, now is a great time to start --- experimenting with the shader is a great way to get familiar with GLSL.
 
 
 
@@ -197,7 +197,7 @@ Hopefully WebGL doesn&#x2019;t seem quite so scary anymore! If you haven&#x2019;
 
 <div style="height: 32px"></div>
 
-Hopefully the performance increase is apparent! At the time of writing, my computer can only handle about a 500x500 CPU-driven canvas before it starts to drop below 60fps, but a 5000x5000 GPU-driven one is still silky smooth. In the next section, we&#x2019;ll add a second, hidden canvas that we can leverage to efficiently find a good brightness scale.
+Hopefully the performance increase is apparent! At the time of writing, my computer can only handle about a 500x500 CPU-driven canvas before it starts to drop below 60fps, but a 5000x5000 GPU-driven one is still silky smooth. In the next section, we'll add a second, hidden canvas that we can leverage to efficiently find a good brightness scale.
 
 You can view the code for this page <a href="/projects/wilson/guide/3-parallelizing/scripts/index.js">here</a>.
 

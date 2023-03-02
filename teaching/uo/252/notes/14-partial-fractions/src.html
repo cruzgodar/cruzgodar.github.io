@@ -2,7 +2,7 @@
 
 ### nav-buttons
 
-We&#x2019;re ready for our final integration technique. This one will let us handle complicated rational functions, which are just functions that are one polynomial divided by another. Compared to the first three techniques, which tell us substitutions we can make to simplify the integral, this one just splits one complicated function into many simple ones, each of which we can then integrate separately.
+We're ready for our final integration technique. This one will let us handle complicated rational functions, which are just functions that are one polynomial divided by another. Compared to the first three techniques, which tell us substitutions we can make to simplify the integral, this one just splits one complicated function into many simple ones, each of which we can then integrate separately.
 
 
 
@@ -26,11 +26,11 @@ We&#x2019;re ready for our final integration technique. This one will let us han
 
 
 
-In general, partial fractions will work on functions of the form $\frac{P(x)}{Q(x)}$, where $P$ and $Q$ are polynomials and $\deg(P) &lt; \deg(Q)$. It will always require us to factor $Q$, so let&#x2019;s take a moment to remember how polynomials can factor. Ideally, a polynomial splits into **linear factors**. For example, if $Q(x) = x^2 - 5x + 6$, it factors into $(x - 2)(x - 3)$. We call them linear factors because $x - 2$ and $x - 3$ are both linear functions. Sometimes these factors might be repeated: $(x-2)^2(x-3)^2$ is written with linear factors, but both $(x-2)$ and $(x-3)$ appear twice.
+In general, partial fractions will work on functions of the form $\frac{P(x)}{Q(x)}$, where $P$ and $Q$ are polynomials and $\deg(P) &lt; \deg(Q)$. It will always require us to factor $Q$, so let's take a moment to remember how polynomials can factor. Ideally, a polynomial splits into **linear factors**. For example, if $Q(x) = x^2 - 5x + 6$, it factors into $(x - 2)(x - 3)$. We call them linear factors because $x - 2$ and $x - 3$ are both linear functions. Sometimes these factors might be repeated: $(x-2)^2(x-3)^2$ is written with linear factors, but both $(x-2)$ and $(x-3)$ appear twice.
 
-Finally, there are some polynomials that cannot be split into linear factors. For example, $x^2 + x + 1$ cannot factor &mdash; if we try to use the quadratic formula on it, the part under the square root is $\sqrt{b^2 - 4ac} = \sqrt{1 - 4} = \sqrt{-3}$, so there are no real numbers that solve the equation. We call a factor like $x^2 + x + 1$ an **irreducible quadratic**, because it is quadratic and doesn&#x2019;t split any further.
+Finally, there are some polynomials that cannot be split into linear factors. For example, $x^2 + x + 1$ cannot factor --- if we try to use the quadratic formula on it, the part under the square root is $\sqrt{b^2 - 4ac} = \sqrt{1 - 4} = \sqrt{-3}$, so there are no real numbers that solve the equation. We call a factor like $x^2 + x + 1$ an **irreducible quadratic**, because it is quadratic and doesn't split any further.
 
-Although the reason why is out of the scope of this class, every polynomial splits into linear and irreducible quadratic factors, possibly repeated. Partial fractions will split $\frac{P(x)}{Q(x)}$ into a handful of terms based on the factors of $Q(x)$, and we&#x2019;ll handle each one with a previous integration technique.
+Although the reason why is out of the scope of this class, every polynomial splits into linear and irreducible quadratic factors, possibly repeated. Partial fractions will split $\frac{P(x)}{Q(x)}$ into a handful of terms based on the factors of $Q(x)$, and we'll handle each one with a previous integration technique.
 
 
 
@@ -50,13 +50,13 @@ Although the reason why is out of the scope of this class, every polynomial spli
 		\frac{Ax + B}{x^2 + ax + b} + \frac{Cx + D}{(x^2 + ax + b)^2} + \frac{Ex + F}{(x^2 + ax + b)^3} + \cdots + \frac{Gx + H}{(x^2 + ax + b)^n}.
 	$$
 	
-	The capital letter variables here are just examples &mdash; make sure they&#x2019;re all different. At the end, you&#x2019;ll have a large sum of terms. Set it equal to $\frac{P(x)}{Q(x)}$ and multiply both sides by the factored form of $Q(x)$. Then foil out everything on the right side and set corresponding coefficients of $x$ equal to one another to solve for all the variables.
+	The capital letter variables here are just examples --- make sure they're all different. At the end, you'll have a large sum of terms. Set it equal to $\frac{P(x)}{Q(x)}$ and multiply both sides by the factored form of $Q(x)$. Then foil out everything on the right side and set corresponding coefficients of $x$ equal to one another to solve for all the variables.
 	
 ###
 
 
 
-There&#x2019;s a lot to deal with here, but it&#x2019;s not so bad in practice. Let&#x2019;s start with a simple example and work our way up.
+There's a lot to deal with here, but it's not so bad in practice. Let's start with a simple example and work our way up.
 
 
 
@@ -64,7 +64,7 @@ There&#x2019;s a lot to deal with here, but it&#x2019;s not so bad in practice. 
 	
 	Find $\displaystyle \int \frac{3x + 2}{x^3 - x^2 - 2x}\,dx$.
 	
-	Let&#x2019;s go down the checklist. We can&#x2019;t use $u$-sub, because nothing in the denominator has a derivative matching something in the numerator. We can&#x2019;t integrate by parts, because we don&#x2019;t know how to integrate $\frac{1}{x^3 - x^2 - 2x}$ and differentiating it just makes it worse. Trig sub is a non-starter because there are no patterns matching it. Instead, since this is one polynomial divided by another and the degree of the top (1) is less than the degree of the bottom (3), we can use partial fractions. The first step is to factor the denominator. First we can take an $x$ out: $x(x^2 - x - 2)$. Next we can factor the remaining quadratic as $(x+1)(x-2)$, so the total polynomial becomes $x(x+1)(x-2)$. Now each of these is a linear factor (since there&#x2019;s no $x^2$), so partial fractions says that the whole function decomposes as
+	Let's go down the checklist. We can't use $u$-sub, because nothing in the denominator has a derivative matching something in the numerator. We can't integrate by parts, because we don't know how to integrate $\frac{1}{x^3 - x^2 - 2x}$ and differentiating it just makes it worse. Trig sub is a non-starter because there are no patterns matching it. Instead, since this is one polynomial divided by another and the degree of the top (1) is less than the degree of the bottom (3), we can use partial fractions. The first step is to factor the denominator. First we can take an $x$ out: $x(x^2 - x - 2)$. Next we can factor the remaining quadratic as $(x+1)(x-2)$, so the total polynomial becomes $x(x+1)(x-2)$. Now each of these is a linear factor (since there's no $x^2$), so partial fractions says that the whole function decomposes as
 	
 	$$
 		\frac{3x + 2}{x(x+1)(x-2)} = \frac{A}{x} + \frac{B}{x + 1} + \frac{C}{x - 2}.
@@ -76,7 +76,7 @@ There&#x2019;s a lot to deal with here, but it&#x2019;s not so bad in practice. 
 		3x + 2 = A(x+1)(x-2) + B(x)(x-2) + C(x)(x+1).
 	$$
 	
-	Now we&#x2019;re supposed to foil everything out.
+	Now we're supposed to foil everything out.
 	
 	$$
 		3x + 2 = Ax^2 - Ax - 2A + Bx^2 - 2Bx + Cx^2 + Cx.
@@ -335,7 +335,7 @@ The final thing to deal with is when there is an irreducible quadratic factor, l
 		\end{align*}
 	$$
 	
-	This looks bad, but it&#x2019;s actually not that hard to solve. We end up with $A = 1$, $B = -1$, $C = 0$, $D = -12$, and $E = 0$. In total, the integral then becomes
+	This looks bad, but it's actually not that hard to solve. We end up with $A = 1$, $B = -1$, $C = 0$, $D = -12$, and $E = 0$. In total, the integral then becomes
 	
 	$$
 		\begin{align*}

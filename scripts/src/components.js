@@ -174,6 +174,8 @@ Page.Components =
 			.replaceAll(/\\\'/g, "[SINGLEQUOTE]")
 			.replaceAll(/\$(.*?)\$/g, "\$ $1 [END\$]");
 			
+			
+			
 			//Escape every asterisk, backtick, and quote inside dollar signs.
 			while (html.match(/\$([^\$]*?)\*([^\$]*?)\[END\$\]/))
 			{
@@ -195,6 +197,8 @@ Page.Components =
 				html = html.replaceAll(/\$([^\$]*?)\'([^\$]*?)\[END\$\]/g, "\$ $1[SINGLEQUOTE]$2 [END\$]");
 			}
 			
+			
+			
 			//Now we can handle the backticks. Since all of the ones still present aren't inside math mode, we know they must be code. That means we need to play the same game we just did. First we can put back the dollar signs though.
 			
 			html = html.replaceAll(/\[END\$\]/g, "\$").replaceAll(/`(.*?)`/g, "` $1 [END`]");
@@ -215,6 +219,21 @@ Page.Components =
 				html = html.replaceAll(/`([^`]*?)\'([^`]*?)\[END`\]/g, "` $1[SINGLEQUOTE]$2 [END`]");
 			}
 			
+			
+			
+			//Escape every quote inside a tag.
+			while (html.match(/<([^<>]*?)\"([^<>]*?)>/))
+			{
+				html = html.replaceAll(/<([^<>]*?)\"([^<>]*?)>/g, "<$1[DOUBLEQUOTE]$2>");
+			}
+			
+			while (html.match(/<([^<>]*?)\'([^<>]*?)>/))
+			{
+				html = html.replaceAll(/<([^<>]*?)\'([^<>]*?)>/g, "<$1[SINGLEQUOTE]$2>");
+			}
+			
+			
+			
 			//Now we're finally ready to add the code tags, and then the remaining em and strong tags, and then modify the quotes. Then at long last, we can unescape the remaining characters.
 			return html
 			.replaceAll(/`(.*?)\[END`\]/g, "<code>$1</code>")
@@ -226,6 +245,7 @@ Page.Components =
 			.replaceAll(/(\s)\'(\S)/g, "$1&#x2018;$2")
 			.replaceAll(/^\'(\S)/g, "&#x2018;$1")
 			.replaceAll(/\'/g, "&#x2019;")
+			.replaceAll(/---/g, "&mdash;")
 			.replaceAll(/\[DOUBLEQUOTE\]/g, "\"")
 			.replaceAll(/\[SINGLEQUOTE\]/g, "\'")
 			.replaceAll(/\[ASTERISK\]/g, "*")

@@ -2,7 +2,7 @@
 
 ### nav-buttons
 
-Since every Julia set corresponds to a unique complex number \(c\), we should be able to use the canvas for choosing \(c\) and displaying its Julia set at the same time. Wilson provides a type of element for this, called a draggable. We can add any number of them to a canvas, but right now, we only need one. To get this set up, we just need to modify our options once again &mdash; after that, we can add a draggable at any time.
+Since every Julia set corresponds to a unique complex number \(c\), we should be able to use the canvas for choosing \(c\) and displaying its Julia set at the same time. Wilson provides a type of element for this, called a draggable. We can add any number of them to a canvas, but right now, we only need one. To get this set up, we just need to modify our options once again --- after that, we can add a draggable at any time.
 
 
 
@@ -31,11 +31,11 @@ Since every Julia set corresponds to a unique complex number \(c\), we should be
 
 
 
-We now have a little white circle that can be freely dragged around the canvas. The style can be customized by modifying `.wilson-draggable`, but let&#x2019;s just stick with the default. The element is returned from `wilson.draggables.add` and also has a class of `wilson-draggable-0` if we want to reference it in the future. Note that `wilson.draggables.add` accepts world coordinates, not canvas ones.
+We now have a little white circle that can be freely dragged around the canvas. The style can be customized by modifying `.wilson-draggable`, but let's just stick with the default. The element is returned from `wilson.draggables.add` and also has a class of `wilson-draggable-0` if we want to reference it in the future. Note that `wilson.draggables.add` accepts world coordinates, not canvas ones.
 
-Now we have to actually do something with this draggable, which is accomplished by passing callback functions in the Wilson options. The index of the current draggable being moved is passed to the callback, as well as the world coordinates and the original event that was captured in case we need to do anything with that. Here, we&#x2019;d like to have callbacks for grabbing the draggable, moving it, and letting it go &mdash; we&#x2019;ll render low resolution frames while moving so that the framerate stays high, then a single higher resolution frame when we let go. Since the resolution will be low while dragging, we can bump the default high resolution up to 1000.
+Now we have to actually do something with this draggable, which is accomplished by passing callback functions in the Wilson options. The index of the current draggable being moved is passed to the callback, as well as the world coordinates and the original event that was captured in case we need to do anything with that. Here, we'd like to have callbacks for grabbing the draggable, moving it, and letting it go --- we'll render low resolution frames while moving so that the framerate stays high, then a single higher resolution frame when we let go. Since the resolution will be low while dragging, we can bump the default high resolution up to 1000.
 
-We&#x2019;ll no longer need the input fields $a$ and $b$ &mdash; just the one for resolution. It&#x2019;d be a little awkward to have to press the generate button just to change the resolution, so instead we&#x2019;ll add a listener to that field and update the variables as needed.
+We'll no longer need the input fields $a$ and $b$ --- just the one for resolution. It'd be a little awkward to have to press the generate button just to change the resolution, so instead we'll add a listener to that field and update the variables as needed.
 
 
 
@@ -96,7 +96,7 @@ We&#x2019;ll no longer need the input fields $a$ and $b$ &mdash; just the one fo
 
 
 
-Now that we&#x2019;re drawing frames so often, we need to be careful not to draw multiple within a single frame&#x2019;s time. This is why we introduced `window.requestAnimationFrame` in the previous part, but it&#x2019;s not quite enough on its own &mdash; instead, we&#x2019;ll make a new function `draw_julia_set` that only calls `wilson.render.draw_frame` if either some time has passed since the previous frame or the resolution has changed. Note that `window.requestAnimationFrame` automatically passes the current timestamp to its argument.
+Now that we're drawing frames so often, we need to be careful not to draw multiple within a single frame's time. This is why we introduced `window.requestAnimationFrame` in the previous part, but it's not quite enough on its own --- instead, we'll make a new function `draw_julia_set` that only calls `wilson.render.draw_frame` if either some time has passed since the previous frame or the resolution has changed. Note that `window.requestAnimationFrame` automatically passes the current timestamp to its argument.
 
 
 
@@ -191,7 +191,7 @@ Now that we&#x2019;re drawing frames so often, we need to be careful not to draw
 
 <div style="height: 32px"></div>
 
-We&#x2019;re making progress! In the next section, we&#x2019;ll move the math for this applet onto the GPU, dramatically improving performance.
+We're making progress! In the next section, we'll move the math for this applet onto the GPU, dramatically improving performance.
 
 You can view the code for this page <a href="/projects/wilson/guide/2-draggables/scripts/index.js">here</a>. 
 

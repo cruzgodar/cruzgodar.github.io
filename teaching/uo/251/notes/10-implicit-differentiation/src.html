@@ -4,7 +4,7 @@
 
 We typically define functions **explicitly**. All that means is that $y$ is written as a function of $x$, so that we have an equation of the form $y = f(x)$. The plot of this function is all of the $(x, y)$-pairs that satisfy the equation, and since $y$ is on its own, we can just plug in a bunch of $x$-values to $f$ and get the $y$-values directly.
 
-It&#x2019;s possible to write down functions without forcing $y$ to be alone on one side, though. For example, the equation $x^2 + y^2 = 1$ defines a curve: its points are given by all the $x$ and $y$ with $x^2 + y^2 = 1$. Now it&#x2019;s not possible to solve for $y$ explicitly this way, since we&#x2019;d have to take a square root, which results in $y = \pm \sqrt{1 - x^2}$. Visually, this means the curve doesn&#x2019;t pass the vertical line test, which means it&#x2019;s not a function.
+It's possible to write down functions without forcing $y$ to be alone on one side, though. For example, the equation $x^2 + y^2 = 1$ defines a curve: its points are given by all the $x$ and $y$ with $x^2 + y^2 = 1$. Now it's not possible to solve for $y$ explicitly this way, since we'd have to take a square root, which results in $y = \pm \sqrt{1 - x^2}$. Visually, this means the curve doesn't pass the vertical line test, which means it's not a function.
 
 ### desmos circle
 
@@ -18,7 +18,7 @@ The process takes a second to get used to, because it typically involves heavy u
 	
 	To find the derivative of a function defined implicitly in terms of $x$ and $y$:
 	
-	1. Take $\frac{d}{dx}$ of both sides. While derivatives of $x$ work normally, $y$ is a function of $x$, so it&#x2019;s necessary to use the chain rule. We have $\frac{d}{dx}[y] = \frac{dy}{dx}$, so for example, $\frac{d}{dx}[\tan(y)] = \sec^2(y) \cdot \frac{dy}{dx}$.
+	1. Take $\frac{d}{dx}$ of both sides. While derivatives of $x$ work normally, $y$ is a function of $x$, so it's necessary to use the chain rule. We have $\frac{d}{dx}[y] = \frac{dy}{dx}$, so for example, $\frac{d}{dx}[\tan(y)] = \sec^2(y) \cdot \frac{dy}{dx}$.
 	
 	2. Move all terms containing $\frac{dy}{dx}$ to one side of the equation and all the other terms to the other side.
 	
@@ -32,7 +32,7 @@ The process takes a second to get used to, because it typically involves heavy u
 	
 	The curve $x^2 + y^2 = 1$ has two points with $x = \frac{1}{2}$. Find the slopes of the tangent lines for each point.
 	
-	First, let&#x2019;s find $\frac{dy}{dx}$. We do this by differentiating both sides $dx$.
+	First, let's find $\frac{dy}{dx}$. We do this by differentiating both sides $dx$.
 	
 	$$
 		\begin{align*}
@@ -45,7 +45,7 @@ The process takes a second to get used to, because it typically involves heavy u
 		\end{align*}
 	$$
 	
-	Notice how the derivative is in terms of both $x$ and $y$. It&#x2019;s not enough to specify $x$, because this isn&#x2019;t necessarily a function, so there can be multiple points with the same $x$-value. For our purposes, we need to find the points with $x$-coordinate $\frac{1}{2}$, so we solve $\left(\frac{1}{2}\right)^2 + y^2 = 1$. That gives $y^2 = \frac{3}{4}$, and so $y = \pm \frac{\sqrt{3}}{2}$. Therefore, the slope of the tangent line at the top point is
+	Notice how the derivative is in terms of both $x$ and $y$. It's not enough to specify $x$, because this isn't necessarily a function, so there can be multiple points with the same $x$-value. For our purposes, we need to find the points with $x$-coordinate $\frac{1}{2}$, so we solve $\left(\frac{1}{2}\right)^2 + y^2 = 1$. That gives $y^2 = \frac{3}{4}$, and so $y = \pm \frac{\sqrt{3}}{2}$. Therefore, the slope of the tangent line at the top point is
 	
 	$$
 		\frac{dy}{dx} = -\frac{1/2}{\sqrt{3}/2} = -\frac{1}{\sqrt{3}}.
@@ -61,7 +61,7 @@ The process takes a second to get used to, because it typically involves heavy u
 	
 	### desmos braids
 	
-	Find $\frac{dy}{dx}$. Looking at the graph, the tangent line seems poorly defined when $x$ is a multiple of $2\pi$ and $y$ is a multiple of $\pi$. Explain what&#x2019;s going on using the equation.
+	Find $\frac{dy}{dx}$. Looking at the graph, the tangent line seems poorly defined when $x$ is a multiple of $2\pi$ and $y$ is a multiple of $\pi$. Explain what's going on using the equation.
 	
 ###
 
@@ -109,7 +109,7 @@ and then differentiate implicitly.
 	
 	Find $\displaystyle \frac{d}{dx}[x^x]$.
 	
-	Since $x$ is in both the base and the exponent, we can&#x2019;t use either the derivative rules for $x^b$ or $b^x$. Instead, we write
+	Since $x$ is in both the base and the exponent, we can't use either the derivative rules for $x^b$ or $b^x$. Instead, we write
 	
 	$$
 		\ln(y) = \ln(x^x) = x\ln(x),
@@ -135,7 +135,7 @@ and then differentiate implicitly.
 
 
 
-At long last, we can handle the derivative of $x^n$, where $n$ is not just a rational number, but <strong>any real number</strong>. Thankfully, it&#x2019;s exactly what we&#x2019;d like it to be.
+At long last, we can handle the derivative of $x^n$, where $n$ is not just a rational number, but <strong>any real number</strong>. Thankfully, it's exactly what we'd like it to be.
 
 
 

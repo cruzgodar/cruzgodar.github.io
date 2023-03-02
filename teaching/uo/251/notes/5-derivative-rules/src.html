@@ -2,7 +2,7 @@
 
 ### nav-buttons
 
-In section 1, we introduced limits, but the way we calculated them was often tedious or difficult. In sections 2 and 3, we introduced limit rules and continuous functions, both of which gave us tools to more easily and quickly calculate limits. After introducing derivatives in the previous section, it&#x2019;s time to improve on the initial way we calculate them (called the **limit definition of the derivative**). We&#x2019;ll build up a series of rules and techniques that let us differentiate many functions that were much too difficult with the limit definition.
+In section 1, we introduced limits, but the way we calculated them was often tedious or difficult. In sections 2 and 3, we introduced limit rules and continuous functions, both of which gave us tools to more easily and quickly calculate limits. After introducing derivatives in the previous section, it's time to improve on the initial way we calculate them (called the **limit definition of the derivative**). We'll build up a series of rules and techniques that let us differentiate many functions that were much too difficult with the limit definition.
 
 The derivative $f'(a)$ is just the slope of the tangent line to the graph of $f$ at $x = a$. If the graph of $f$ is already a horizontal line, then a tangent line at any point is just that same line, and therefore has slope zero.
 
@@ -18,7 +18,7 @@ The functions whose graphs are horizontal lines are the constant functions $y = 
 
 
 
-This is a good start! Just like we did with limits, let&#x2019;s set our sights on polynomials next. There are a couple things we&#x2019;ll have to tackle to get there: for example, $2x^2 - x$ features the terms $x^2$ and $x$, along with subtraction and multiplication by $2$. With limits, we were able to ignore almost all of that, passing them through arithmetic, powers, and roots, but derivatives won&#x2019;t be quite so fluid. Let&#x2019;s begin with terms like $x$ and $x^2$.
+This is a good start! Just like we did with limits, let's set our sights on polynomials next. There are a couple things we'll have to tackle to get there: for example, $2x^2 - x$ features the terms $x^2$ and $x$, along with subtraction and multiplication by $2$. With limits, we were able to ignore almost all of that, passing them through arithmetic, powers, and roots, but derivatives won't be quite so fluid. Let's begin with terms like $x$ and $x^2$.
 
 
 
@@ -30,7 +30,7 @@ This is a good start! Just like we did with limits, let&#x2019;s set our sights 
 
 
 
-In other words, to differentiate a function of the form $x^n$, bring down the power in the form of a constant multiple and decrease the power by one. The proof of this theorem is a little bit tricky &mdash; it involves expanding $(x + h)^n$ for an arbitrary integer $n$, which isn&#x2019;t particularly easy. It&#x2019;s also worth pointing out that the theorem as stated only works for positive integer powers. We&#x2019;ll later extend it to all nonzero numbers, but for now, we&#x2019;ll have to stick with positive integers.
+In other words, to differentiate a function of the form $x^n$, bring down the power in the form of a constant multiple and decrease the power by one. The proof of this theorem is a little bit tricky --- it involves expanding $(x + h)^n$ for an arbitrary integer $n$, which isn't particularly easy. It's also worth pointing out that the theorem as stated only works for positive integer powers. We'll later extend it to all nonzero numbers, but for now, we'll have to stick with positive integers.
 
 
 
@@ -50,9 +50,9 @@ In other words, to differentiate a function of the form $x^n$, bring down the po
 
 
 
-One of the most common mistakes made with derivatives is using the previous theorem on functions it doesn&#x2019;t apply to. For example, although $(\cos(x))^5$ looks like it might have a derivative of $5(\cos(x))^4$, but the theorem only applies to $x^5$. Later on, we&#x2019;ll see how to modify the derivative of $x^5$ to apply to similar-looking functions like this, but for now, we&#x2019;re stuck with only functions of the form $x^n$.
+One of the most common mistakes made with derivatives is using the previous theorem on functions it doesn't apply to. For example, although $(\cos(x))^5$ looks like it might have a derivative of $5(\cos(x))^4$, but the theorem only applies to $x^5$. Later on, we'll see how to modify the derivative of $x^5$ to apply to similar-looking functions like this, but for now, we're stuck with only functions of the form $x^n$.
 
-Next, let&#x2019;s get the rest of the glue we need to get to polynomials &mdash; specifically, how do derivatives interact with addition, subtraction, and multiplication by constants?
+Next, let's get the rest of the glue we need to get to polynomials --- specifically, how do derivatives interact with addition, subtraction, and multiplication by constants?
 
 
 
@@ -70,7 +70,7 @@ Next, let&#x2019;s get the rest of the glue we need to get to polynomials &mdash
 
 
 
-These theorems tell us that derivatives split across addition and subtraction, and that constant multiples factor out of derivatives. As an example, let&#x2019;s revisit the intense second derivative question from the previous section.
+These theorems tell us that derivatives split across addition and subtraction, and that constant multiples factor out of derivatives. As an example, let's revisit the intense second derivative question from the previous section.
 
 
 
@@ -78,7 +78,7 @@ These theorems tell us that derivatives split across addition and subtraction, a
 	
 	Find $\displaystyle \frac{d^2}{dx^2}[2x^2 - x]$.
 	
-	As before, we&#x2019;ll handle one derivative at a time.
+	As before, we'll handle one derivative at a time.
 	
 	$$
 		\begin{align*}
@@ -115,7 +115,7 @@ These theorems tell us that derivatives split across addition and subtraction, a
 
 ## The Product and Quotient Rules
 
-Next, let&#x2019;s talk about how to differentiate products and quotients &mdash; unlike limits, which split across both, derivatives require a little more care.
+Next, let's talk about how to differentiate products and quotients --- unlike limits, which split across both, derivatives require a little more care.
 
 
 
@@ -184,7 +184,7 @@ Our last topic for this section is a rule that lets us differentiate one functio
 
 
 
-I&#x2019;d be remiss if I didn&#x2019;t mention the commonly-quoted mnemonic rhyme that goes along with the quotient rule: &#x201C;Low D high minus high D low, square the bottom and away we go&#x201D;. Here, high and low (and also bottom) refer to the numerator and denominator of the ratio we&#x2019;re differentiating, and D just stands for derivative.
+I'd be remiss if I didn't mention the commonly-quoted mnemonic rhyme that goes along with the quotient rule: "Low D high minus high D low, square the bottom and away we go". Here, high and low (and also bottom) refer to the numerator and denominator of the ratio we're differentiating, and D just stands for derivative.
 
 
 
@@ -223,7 +223,7 @@ $$
 	\end{align*}
 $$
 
-Hey, that&#x2019;s the same result as if $n$ were positive! Because of this, we can safely say that
+Hey, that's the same result as if $n$ were positive! Because of this, we can safely say that
 
 $$
 	\frac{d}{dx}[x^n] = nx^{n-1}

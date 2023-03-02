@@ -2,7 +2,7 @@
 
 ### nav-buttons
 
-A common trend in calculus is the introduction of a new operator &mdash; like limits &mdash; that&#x2019;s annoying or difficult to compute manually. The first thing we usually do is develop shortcuts and rules for working with it so we don&#x2019;t spend so much time working through slow and difficult computations. The only way we can calculate limits at the moment is pretty much by making a table of values and guessing &mdash; that&#x2019;s sloppy and time-consuming. Instead, let&#x2019;s look at some rules that make the process simpler in some special cases.
+A common trend in calculus is the introduction of a new operator --- like limits --- that's annoying or difficult to compute manually. The first thing we usually do is develop shortcuts and rules for working with it so we don't spend so much time working through slow and difficult computations. The only way we can calculate limits at the moment is pretty much by making a table of values and guessing --- that's sloppy and time-consuming. Instead, let's look at some rules that make the process simpler in some special cases.
 
 
 
@@ -26,7 +26,7 @@ A common trend in calculus is the introduction of a new operator &mdash; like li
 
 
 
-All this says is that we can move limits inside powers and split them up across addition, subtration, multiplication, and division. In contrast to some things we&#x2019;ll introduce later, this makes limits pretty simple &mdash; all we need to know is how to take limits of basic functions, and then limits of more complicated ones break down into those simpler limits.
+All this says is that we can move limits inside powers and split them up across addition, subtration, multiplication, and division. In contrast to some things we'll introduce later, this makes limits pretty simple --- all we need to know is how to take limits of basic functions, and then limits of more complicated ones break down into those simpler limits.
 
 
 
@@ -34,7 +34,7 @@ All this says is that we can move limits inside powers and split them up across 
 	
 	Evaluate $\displaystyle \lim_{x \to -3} (4x + 2)$.
 	
-	Let&#x2019;s take this one step at a time.
+	Let's take this one step at a time.
 	
 	$$
 		\begin{align*}
@@ -78,7 +78,7 @@ Two common types of functions are polynomials and rational functions (which are 
 	
 	Find $\displaystyle \lim_{x \to 3} \frac{2x^2 - 3x + 1}{5x + 4}$.
 	
-	Since plugging in $3$ for $x$ doesn&#x2019;t make the denominator zero, we have
+	Since plugging in $3$ for $x$ doesn't make the denominator zero, we have
 	
 	$$
 		\begin{align*}
@@ -97,7 +97,7 @@ Two common types of functions are polynomials and rational functions (which are 
 
 
 
-The example we talked about in the last section &mdash; $g(h) = \frac{h^2}{h}$ &mdash; is a rational function that has a common factor that can be canceled (one copy of $h$ from the numerator and denomator). The result is that $g(h) = h$, unless $h = 0$, so the graph is a straight line with a single hole in it at $h = 0$. Common factors that can almost always cancel like this produce holes in the graph, and since everywhere else the function is described by a simplified equation, we can find the limit approaching a hole by just taking the same limit of the simplified equation. Let&#x2019;s look at an example to see what we mean.
+The example we talked about in the last section --- $g(h) = \frac{h^2}{h}$ --- is a rational function that has a common factor that can be canceled (one copy of $h$ from the numerator and denomator). The result is that $g(h) = h$, unless $h = 0$, so the graph is a straight line with a single hole in it at $h = 0$. Common factors that can almost always cancel like this produce holes in the graph, and since everywhere else the function is described by a simplified equation, we can find the limit approaching a hole by just taking the same limit of the simplified equation. Let's look at an example to see what we mean.
 
 
 
@@ -113,7 +113,7 @@ The example we talked about in the last section &mdash; $g(h) = \frac{h^2}{h}$ &
 		\frac{x^2 - 1}{x - 1} = \frac{(x - 1)(x + 1)}{x - 1}.
 	$$
 	
-	The limit as $x$ approaches $1$ of a function does **not** depend on what the function actually does at $x = 1$. Since that&#x2019;s the only time we&#x2019;re not allowed to cancel the factors of $x - 1$, we&#x2019;re good to go ahead and cancel the factors.
+	The limit as $x$ approaches $1$ of a function does **not** depend on what the function actually does at $x = 1$. Since that's the only time we're not allowed to cancel the factors of $x - 1$, we're good to go ahead and cancel the factors.
 	
 	$$
 		\lim_{x \to 1} \frac{x^2 - 1}{x - 1} = \lim_{x \to 1} (x + 1).
@@ -133,7 +133,7 @@ The example we talked about in the last section &mdash; $g(h) = \frac{h^2}{h}$ &
 
 
 
-It&#x2019;s a little harder when there is a square root in the numerator or denominator and we can&#x2019;t cancel a factor. A good strategy then is to multiply both the numerator and denominator of the fraction by the conjugate of the expression involving the square root. Remember that the conjugate just means the expression with the square root negated.
+It's a little harder when there is a square root in the numerator or denominator and we can't cancel a factor. A good strategy then is to multiply both the numerator and denominator of the fraction by the conjugate of the expression involving the square root. Remember that the conjugate just means the expression with the square root negated.
 
 
 
@@ -141,7 +141,7 @@ It&#x2019;s a little harder when there is a square root in the numerator or deno
 	
 	Find $\displaystyle \lim_{x \to -1} \frac{\sqrt{x + 2} - 1}{x + 1}$.
 	
-	This is an expression involving only arithmetic, powers, and roots, so it seems like we could try just plugging in $x = -1$, but since that makes the denominator (and numerator) zero, we&#x2019;re not allowed to do that. Instead, let&#x2019;s try multiplying both top and bottom by the conjugate of $\sqrt{x + 2} - 1$, which is just $-\sqrt{x + 2} - 1$. Then the result is
+	This is an expression involving only arithmetic, powers, and roots, so it seems like we could try just plugging in $x = -1$, but since that makes the denominator (and numerator) zero, we're not allowed to do that. Instead, let's try multiplying both top and bottom by the conjugate of $\sqrt{x + 2} - 1$, which is just $-\sqrt{x + 2} - 1$. Then the result is
 	
 	$$
 		\begin{align*}
@@ -175,7 +175,7 @@ Another example that arises involves getting a common denominator for rational f
 	
 	Evaluate $\displaystyle \lim_{y \to 0} \left( \frac{1}{y} + \frac{5}{y(y - 5)} \right)$.
 	
-	Both terms divide by zero when we plug in $y = 0$, so we can&#x2019;t directly evaluate them like that. Instead, let&#x2019;s try adding the fractions together, and maybe things will work out better then. Just like with regular integers, we can find common denominators of polynomials &mdash; here, the common denominator of $y$ and $y(y - 5)$ is $y(y - 5)$, since both denominators divide into it. Then the limit becomes
+	Both terms divide by zero when we plug in $y = 0$, so we can't directly evaluate them like that. Instead, let's try adding the fractions together, and maybe things will work out better then. Just like with regular integers, we can find common denominators of polynomials --- here, the common denominator of $y$ and $y(y - 5)$ is $y(y - 5)$, since both denominators divide into it. Then the limit becomes
 	
 	$$
 		\begin{align*}
@@ -185,7 +185,7 @@ Another example that arises involves getting a common denominator for rational f
 		\end{align*}
 	$$
 	
-	Now we&#x2019;re allowed to cancel the factors of $y$ and plug in $y = 0$ to get that the limit is equal to $-\frac{1}{5}$.
+	Now we're allowed to cancel the factors of $y$ and plug in $y = 0$ to get that the limit is equal to $-\frac{1}{5}$.
 	
 ###
 
@@ -195,7 +195,7 @@ Another example that arises involves getting a common denominator for rational f
 	
 	Evaluate $\displaystyle \lim_{t \to 2^-} \sqrt{t - 2}$.
 	
-	This one-sided limit is telling us to consider only numbers smaller than $2$. But if $t < 2$, then $t - 2$ is negative, so the function $\sqrt{t - 2}$ is undefined! Therefore, the limit must be undefined. Visually, we&#x2019;re trying to approach the point $(2, 0)$ from the left in this graph, but there is no graph to the left, so there&#x2019;s no way to approach.
+	This one-sided limit is telling us to consider only numbers smaller than $2$. But if $t < 2$, then $t - 2$ is negative, so the function $\sqrt{t - 2}$ is undefined! Therefore, the limit must be undefined. Visually, we're trying to approach the point $(2, 0)$ from the left in this graph, but there is no graph to the left, so there's no way to approach.
 	
 	### desmos limit-example-2
 	
@@ -213,7 +213,7 @@ What about infinite limits? They can be a little trickier to calculate.
 	
 	Evaluate $\displaystyle \lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x}$.
 	
-	Plugging in $x = 2$ gives us $\frac{-1}{0}$ &mdash; division by zero that&#x2019;s not of the form $\frac{0}{0}$ indicates that the function is spiking to $\pm \infty$. To figure out which one, it&#x2019;s best to isolate the bit that&#x2019;s dividing by zero from the rest. First, let&#x2019;s factor the denominator.
+	Plugging in $x = 2$ gives us $\frac{-1}{0}$ --- division by zero that's not of the form $\frac{0}{0}$ indicates that the function is spiking to $\pm \infty$. To figure out which one, it's best to isolate the bit that's dividing by zero from the rest. First, let's factor the denominator.
 	
 	$$
 		\begin{align*}
@@ -228,7 +228,7 @@ What about infinite limits? They can be a little trickier to calculate.
 		\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x} = -\frac{1}{2} \lim_{x \to 2^-} \frac{1}{x - 2}.
 	$$
 	
-	As $x \to 2$ from the left, $x - 2$ is always negative, but it&#x2019;s getting closer and closer to zero. Therefore, $\frac{1}{x - 2}$ is getting bigger and bigger, but is always negative, so
+	As $x \to 2$ from the left, $x - 2$ is always negative, but it's getting closer and closer to zero. Therefore, $\frac{1}{x - 2}$ is getting bigger and bigger, but is always negative, so
 	
 	$$
 		\lim_{x \to 2^-} \frac{1}{x - 2} = -\infty.
@@ -246,7 +246,7 @@ What about infinite limits? They can be a little trickier to calculate.
 
 ## The Squeeze theorem
 
-The squeeze theorem is a little complicated to state, but it&#x2019;s a straightforward idea: if you can fit (squeeze) a function between two simpler ones that converge to each other, the limit of the squeezed function only has one place to go.
+The squeeze theorem is a little complicated to state, but it's a straightforward idea: if you can fit (squeeze) a function between two simpler ones that converge to each other, the limit of the squeezed function only has one place to go.
 
 
 
@@ -278,7 +278,7 @@ The squeeze theorem is a little complicated to state, but it&#x2019;s a straight
 	
 	Find $\displaystyle \lim_{x \to 0} x \sin(x)$.
 	
-	Even though there&#x2019;s no division by zero, we can&#x2019;t just plug in $x = 0$, since our limit rules don&#x2019;t talk about trig functions. Instead, remember that $-1 \leq \sin(x) \leq 1$, since sine measures a $y$-coordinate on the unit circle, and so
+	Even though there's no division by zero, we can't just plug in $x = 0$, since our limit rules don't talk about trig functions. Instead, remember that $-1 \leq \sin(x) \leq 1$, since sine measures a $y$-coordinate on the unit circle, and so
 	
 	$$
 		-|x| \leq x\sin(x) \leq |x|.
@@ -294,7 +294,7 @@ The squeeze theorem is a little complicated to state, but it&#x2019;s a straight
 		\lim_{x \to 0} x\sin(x) = 0
 	$$
 	
-	too. In general, you won&#x2019;t be asked to come up with squeeze theorem bounds on timed exams or quizzes, but on homework, it&#x2019;s fair game. Try to find functions that meet at the point you&#x2019;re limiting to and that bound the complicated function from above and below.
+	too. In general, you won't be asked to come up with squeeze theorem bounds on timed exams or quizzes, but on homework, it's fair game. Try to find functions that meet at the point you're limiting to and that bound the complicated function from above and below.
 	
 ###
 

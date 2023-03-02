@@ -1,12 +1,12 @@
-# Wilson&#x2019;s Algorithm
+# Wilson's Algorithm
 
-Ever wanted to make your own maze? If you&#x2019;ve tried, you might find it&#x2019;s not as easy as you might think. Draw just one long path, and it&#x2019;s too easy; draw lots of small ones and you&#x2019;ll often run into the same problem. If even a small maze is tricky to make, a massive one seems downright impossible &mdash; and yet pick up any puzzle book for children and you&#x2019;ll see pages upon pages of them. How do they do it?
+Ever wanted to make your own maze? If you've tried, you might find it's not as easy as you might think. Draw just one long path, and it's too easy; draw lots of small ones and you'll often run into the same problem. If even a small maze is tricky to make, a massive one seems downright impossible --- and yet pick up any puzzle book for children and you'll see pages upon pages of them. How do they do it?
 
-Enter Wilson&#x2019;s Algorithm. It&#x2019;s a method that makes maze-making as easy as following a recipe, and what&#x2019;s more, it produces a truly random one &mdash; every possible maze of a given size has the same chance of being created.
+Enter Wilson's Algorithm. It's a method that makes maze-making as easy as following a recipe, and what's more, it produces a truly random one --- every possible maze of a given size has the same chance of being created.
 
-It&#x2019;s not too hard to describe the algorithm. Draw a square grid of black dots and pick a random one to color white. Now pick another random black dot to start from and color it white too. From this black dot, take a single step in a random direction, coloring the new dot white and drawing a line between the two dots. Now take a single step from that dot, draw another line, and so on. You'll end up with a white path drawing a squiggle across the grid. There are two things that you need to watch out for: first, if you walk back into your own path, like a failed game of snake, don&#x2019;t make a loop &mdash; instead, backtrack along your path until you&#x2019;re back at the dot that you were trying to color white for a second time. As you backtrack, turn every white dot you pass back to black, erase all the lines you pass over, and then start again from the new end of the path.
+It's not too hard to describe the algorithm. Draw a square grid of black dots and pick a random one to color white. Now pick another random black dot to start from and color it white too. From this black dot, take a single step in a random direction, coloring the new dot white and drawing a line between the two dots. Now take a single step from that dot, draw another line, and so on. You'll end up with a white path drawing a squiggle across the grid. There are two things that you need to watch out for: first, if you walk back into your own path, like a failed game of snake, don't make a loop --- instead, backtrack along your path until you're back at the dot that you were trying to color white for a second time. As you backtrack, turn every white dot you pass back to black, erase all the lines you pass over, and then start again from the new end of the path.
 
-The other thing to watch out for is hitting the single white dot you selected at the very start. When you do, stop drawing your path, pick a new black point, and start again. This time, stop not just when you hit the first white dot, but when you hit any of the white dots along the old path, too. Keep this up until every dot is white, and you&#x2019;ll have yourself a maze.
+The other thing to watch out for is hitting the single white dot you selected at the very start. When you do, stop drawing your path, pick a new black point, and start again. This time, stop not just when you hit the first white dot, but when you hit any of the white dots along the old path, too. Keep this up until every dot is white, and you'll have yourself a maze.
 
 ### wilson
 
@@ -22,7 +22,7 @@ The other thing to watch out for is hitting the single white dot you selected at
 
 ### checkbox toggle-maximum-speed Maximum speed
 
-### checkbox no-borders Don&#x2019;t draw black borders
+### checkbox no-borders Don't draw black borders
 
 ### buttons
 	generate l Generate

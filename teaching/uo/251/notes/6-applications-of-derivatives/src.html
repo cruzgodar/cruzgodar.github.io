@@ -3,15 +3,15 @@
 ### nav-buttons
 
 
-While we&#x2019;ve touched on a few applications of derivatives so far, let&#x2019;s take a section to talk about a handful more.
+While we've touched on a few applications of derivatives so far, let's take a section to talk about a handful more.
 
-The most important thing to mention is an alternate way to interpret derivatives. For some functions, we understand their rate of change as its own concept &mdash; the derivative of position is velocity, and we don&#x2019;t need any metaphors to understand what a velocity function measures &mdash; it&#x2019;s just speed in a certain direction. On the other hand, if we have a function $P(t)$ that gives population of a city after $t$ years of measurement, what exactly is $P'(t)$ doing? We&#x2019;ve mentioned in class that it has units of people per year, but unlike velocity, which we understand in its own right, we don&#x2019;t have a preconceived notion of what the instantaneous rate of change of population *means*. Thankfully, there is a sense in which we can understand it a little bit more easily.
+The most important thing to mention is an alternate way to interpret derivatives. For some functions, we understand their rate of change as its own concept --- the derivative of position is velocity, and we don't need any metaphors to understand what a velocity function measures --- it's just speed in a certain direction. On the other hand, if we have a function $P(t)$ that gives population of a city after $t$ years of measurement, what exactly is $P'(t)$ doing? We've mentioned in class that it has units of people per year, but unlike velocity, which we understand in its own right, we don't have a preconceived notion of what the instantaneous rate of change of population *means*. Thankfully, there is a sense in which we can understand it a little bit more easily.
 
-The derivative $f'(a)$ is the slope of a tangent line, which is just rise over run. When run is exactly $1$, the slope is just the rise. Since the tangent line by definition touches the graph at $(a, f(a))$, the tangent line can&#x2019;t get *that* far away from the graph when $x$ increases by just $1$. In total, the derivative $f'(a)$ is approximately the difference between $f(a)$ and $f(a + 1)$.
+The derivative $f'(a)$ is the slope of a tangent line, which is just rise over run. When run is exactly $1$, the slope is just the rise. Since the tangent line by definition touches the graph at $(a, f(a))$, the tangent line can't get *that* far away from the graph when $x$ increases by just $1$. In total, the derivative $f'(a)$ is approximately the difference between $f(a)$ and $f(a + 1)$.
 
 ### desmos derivative-interpretation
 
-Here, the two red points indicate show where the tangent line predicts the point on the graph will be, and also where it actually is. When $a = 0$, $g'(a) = -\frac{1}{2}$, so $g(1) - g(0) \approx -\frac{1}{2}$. In reality, it&#x2019;s actually $-\frac{3}{8}$, but that&#x2019;s not too far off. The point is this:
+Here, the two red points indicate show where the tangent line predicts the point on the graph will be, and also where it actually is. When $a = 0$, $g'(a) = -\frac{1}{2}$, so $g(1) - g(0) \approx -\frac{1}{2}$. In reality, it's actually $-\frac{3}{8}$, but that's not too far off. The point is this:
 
 $$
 	g'(x) \approx g(x + 1) - g(x).
@@ -19,7 +19,7 @@ $$
 
 For our population example, $P'(t)$ is approximately the amount the population increased between years $t$ and $t + 1$.
 
-We don&#x2019;t just need to make the run exactly $1$, either. If it is $a$, then we get the following approximation:
+We don't just need to make the run exactly $1$, either. If it is $a$, then we get the following approximation:
 
 $$
 	a \cdot g'(x) \approx g(x + a) - g(x).
@@ -31,7 +31,7 @@ Therefore, $g(x + a) \approx g(x) + a \cdot g(x)$. For example, if the populatio
 
 ## Average Velocity
 
-We&#x2019;ve already seen how derivatives relate to position, velocity, and acceleration: if those functions are given by $s(t)$, $v(t)$, and $a(t)$ respectively, then $v(t) = s'(t)$ and $a(t) = v'(t) = s''(t)$. One more thing to mention is **average velocity**, which is defined to just be the change in position between two points in time, divided by the change in time.
+We've already seen how derivatives relate to position, velocity, and acceleration: if those functions are given by $s(t)$, $v(t)$, and $a(t)$ respectively, then $v(t) = s'(t)$ and $a(t) = v'(t) = s''(t)$. One more thing to mention is **average velocity**, which is defined to just be the change in position between two points in time, divided by the change in time.
 
 
 
@@ -47,7 +47,7 @@ We&#x2019;ve already seen how derivatives relate to position, velocity, and acce
 
 
 
-This is how you probably approximate velocity in your head: if a car drives 45 miles in half in hour, it&#x2019;s probably going about 90 miles an hour. The way we make that formal is with average velocity: over those 30 minutes, the car&#x2019;s average velocity is 90 miles per hour.
+This is how you probably approximate velocity in your head: if a car drives 45 miles in half in hour, it's probably going about 90 miles an hour. The way we make that formal is with average velocity: over those 30 minutes, the car's average velocity is 90 miles per hour.
 
 
 
@@ -71,7 +71,7 @@ Another small topic to cover: the derivative of a function gives the slope of a 
 
 ## Applications to Business
 
-One last handful of applications: we can apply derivatives to some functions used in business and economics. We need a few quick definitions first. If we&#x2019;re selling items for profit, the cost function $C(x)$ gives the total cost to **us** for aquiring $x$ items &mdash; not the selling price, but the cost we pay to get the supply. Similarly, $R(x)$ is the revenue we receive from selling $x$ items. Finally, $P(x)$ is the profit we make from selling $x$ items &mdash; so $P(x) = R(x) - C(x)$.
+One last handful of applications: we can apply derivatives to some functions used in business and economics. We need a few quick definitions first. If we're selling items for profit, the cost function $C(x)$ gives the total cost to **us** for aquiring $x$ items --- not the selling price, but the cost we pay to get the supply. Similarly, $R(x)$ is the revenue we receive from selling $x$ items. Finally, $P(x)$ is the profit we make from selling $x$ items --- so $P(x) = R(x) - C(x)$.
 
 Of particular use to us are the derivatives of these functions. In the terminology of business applications, we call these **marginal functions**. The marginal cost function is $MC(x) = C'(x)$, and similarly for the marginal revenue and profit functions, $MR(x) = R'(x)$ and $MP(x) = P'(x)$. Using the interpretation of the derivative from earlier in the section, these marginal functions are approximately the cost, revenue, and profit we get from selling item number $x + 1$. For example,
 
@@ -85,7 +85,7 @@ which is the cost to us to acquire the fifth item.
 
 ### ex business applications
 	
-	You&#x2019;re selling whiteboard markers. When you sell $x$ of them, you charge $p(x) = 1 - .01x$ dollars per marker. Each one costs you $5$ cents to produce. What is the profit you make from selling the 20th marker?
+	You're selling whiteboard markers. When you sell $x$ of them, you charge $p(x) = 1 - .01x$ dollars per marker. Each one costs you $5$ cents to produce. What is the profit you make from selling the 20th marker?
 	
 	The total cost to us to get $x$ markers is $0.05$ dollars per marker times $x$ markers, so $C(x) = .05x$. Similarly,
 	

@@ -2,7 +2,7 @@
 
 ### nav-buttons
 
-Let&#x2019;s get right to it! We have Riemann sums, which approximate the area under the graph of nonnegative functions, and we can choose the points $x_i^*$ within the subintervals however we like (left, right, upper and lower sums are all examples of that choice). For well-behaved functions, it won&#x2019;t end up mattering, though. As the number of subintervals limits to infinity, the total area of the rectangles will approach the actual area under the curve.
+Let's get right to it! We have Riemann sums, which approximate the area under the graph of nonnegative functions, and we can choose the points $x_i^*$ within the subintervals however we like (left, right, upper and lower sums are all examples of that choice). For well-behaved functions, it won't end up mattering, though. As the number of subintervals limits to infinity, the total area of the rectangles will approach the actual area under the curve.
 
 
 
@@ -20,9 +20,9 @@ Let&#x2019;s get right to it! We have Riemann sums, which approximate the area u
 
 
 
-The notation looks a little strange at first, but it&#x2019;s designed to match a Riemann sum. The $dx$ takes the place of the $\Delta x$, and it carries the same meaning as the $dx$ in $\frac{dy}{dx}$ &mdash; it&#x2019;s an infinitesimal change in $x$, indicating that the rectangles have become infinitely thin.
+The notation looks a little strange at first, but it's designed to match a Riemann sum. The $dx$ takes the place of the $\Delta x$, and it carries the same meaning as the $dx$ in $\frac{dy}{dx}$ --- it's an infinitesimal change in $x$, indicating that the rectangles have become infinitely thin.
 
-Being integrable is a complicated condition &mdash; it&#x2019;s not clear what properties a function could have that would make the limit of Riemann sums exist. For now, we can say at least one thing:
+Being integrable is a complicated condition --- it's not clear what properties a function could have that would make the limit of Riemann sums exist. For now, we can say at least one thing:
 
 
 
@@ -34,7 +34,7 @@ Being integrable is a complicated condition &mdash; it&#x2019;s not clear what p
 
 
 
-At this point, we&#x2019;re in desperate need of examples. Let&#x2019;s start with something we can do without even needing to worry about limits.
+At this point, we're in desperate need of examples. Let's start with something we can do without even needing to worry about limits.
 
 
 
@@ -42,11 +42,11 @@ At this point, we&#x2019;re in desperate need of examples. Let&#x2019;s start wi
 	
 	Find $\displaystyle \int_{-1}^3 |x|\,dx$.
 	
-	Especially with integrals, it&#x2019;s always a good idea to draw a picture of what&#x2019;s going on before digging into the equations.
+	Especially with integrals, it's always a good idea to draw a picture of what's going on before digging into the equations.
 	
 	### desmos geometric-integral
 	
-	The integral we&#x2019;re trying to calculate is by definition the area of the shaded region. That region consists of two triangles &mdash; the left one has base and height $1$, while the right one has base and height $3$. The total area is therefore
+	The integral we're trying to calculate is by definition the area of the shaded region. That region consists of two triangles --- the left one has base and height $1$, while the right one has base and height $3$. The total area is therefore
 	
 	$$
 		\frac{1}{2} \cdot 1 \cdot 1 + \frac{1}{2} \cdot 3 \cdot 3 = 5.
@@ -74,13 +74,13 @@ At this point, we&#x2019;re in desperate need of examples. Let&#x2019;s start wi
 	
 	Find $\displaystyle \int_0^2 t^2\,dt$.
 	
-	It&#x2019;s not always as easy as the previous example. That was a lot like computing the derivative of a straight line &mdash; we don&#x2019;t need the heavy machinery of derivatives to find its slope. Similarly, we don&#x2019;t need integrals to find the area of a triangle, although it&#x2019;s a good example to get our bearings. This time around, what we have is a parabola, and we don&#x2019;t know a simple formula for the shaded area. There&#x2019;s no getting around it &mdash; we need to use the definition of the integral.
+	It's not always as easy as the previous example. That was a lot like computing the derivative of a straight line --- we don't need the heavy machinery of derivatives to find its slope. Similarly, we don't need integrals to find the area of a triangle, although it's a good example to get our bearings. This time around, what we have is a parabola, and we don't know a simple formula for the shaded area. There's no getting around it --- we need to use the definition of the integral.
 	
-	We need to start with a Riemann sum. Since $f(t) = t^2$ is a continuous function, it&#x2019;s integrable, so it doesn&#x2019;t matter if we choose a left sum, a right one, an upper one, a lower one, or any other type. In general, right Riemann sums have the simplest formulas, so let&#x2019;s choose to use one of them. Since we&#x2019;re eventually going to limit the number of subintervals to infinity, we need to leave that number (i.e. $n$) as a variable. If we have $n$ subintervals, then we&#x2019;re dividing the interval $[0, 2]$ into $n$ equal-sized pieces, so each one has width $\frac{2}{n}$.
+	We need to start with a Riemann sum. Since $f(t) = t^2$ is a continuous function, it's integrable, so it doesn't matter if we choose a left sum, a right one, an upper one, a lower one, or any other type. In general, right Riemann sums have the simplest formulas, so let's choose to use one of them. Since we're eventually going to limit the number of subintervals to infinity, we need to leave that number (i.e. $n$) as a variable. If we have $n$ subintervals, then we're dividing the interval $[0, 2]$ into $n$ equal-sized pieces, so each one has width $\frac{2}{n}$.
 	
 	### desmos integral-from-limit-def
 	
-	In the $i$th subinterval, the right endpoint has $x$-coordinate $\frac{2}{n} i$. That&#x2019;s because the right endpoint of the first interval is $\frac{2}{n}$, the right endpoint of the second is $\frac{2}{n}(2)$, and so on. We&#x2019;re trying to find the value of the Riemann sum, so we need to add up the area of all $n$ rectangles. The height of the $i$th one is
+	In the $i$th subinterval, the right endpoint has $x$-coordinate $\frac{2}{n} i$. That's because the right endpoint of the first interval is $\frac{2}{n}$, the right endpoint of the second is $\frac{2}{n}(2)$, and so on. We're trying to find the value of the Riemann sum, so we need to add up the area of all $n$ rectangles. The height of the $i$th one is
 	
 	$$
 		f\left( \frac{2}{n} i \right) = \left( \frac{2}{n} i \right)^2 = \frac{4}{n^2} i^2,
@@ -92,7 +92,7 @@ At this point, we&#x2019;re in desperate need of examples. Let&#x2019;s start wi
 		\sum_{i = 1}^n \left( \frac{4}{n^2} i^2 \right) \left( \frac{2}{n} \right) = \sum_{i = 1}^n \frac{8}{n^3} i^2.
 	$$
 	
-	This is looking pretty rough, but remember &mdash; that $\frac{8}{n^3}$ is a constant as far as the sum is concerned. That means we can pull it out, and then we know how to handle what&#x2019;s left.
+	This is looking pretty rough, but remember --- that $\frac{8}{n^3}$ is a constant as far as the sum is concerned. That means we can pull it out, and then we know how to handle what's left.
 	
 	$$
 		\begin{align*}
@@ -102,7 +102,7 @@ At this point, we&#x2019;re in desperate need of examples. Let&#x2019;s start wi
 		\end{align*}
 	$$
 	
-	Almost there! The integral we&#x2019;re trying to find is the limit of this as $n \to \infty$. It&#x2019;s a rational function, so we can consider only the highest-degree terms: $16n^3$ on top and $6n^3$ on bottom. Therefore,
+	Almost there! The integral we're trying to find is the limit of this as $n \to \infty$. It's a rational function, so we can consider only the highest-degree terms: $16n^3$ on top and $6n^3$ on bottom. Therefore,
 	
 	$$
 		\begin{align*}
@@ -112,7 +112,7 @@ At this point, we&#x2019;re in desperate need of examples. Let&#x2019;s start wi
 		\end{align*}
 	$$
 	
-	We did it! And along the way we learned that we **really** need a better way to do this. Unlike derivatives, though, the rules for integration won&#x2019;t come easily.
+	We did it! And along the way we learned that we **really** need a better way to do this. Unlike derivatives, though, the rules for integration won't come easily.
 
 ###
 
@@ -138,7 +138,7 @@ At this point, we&#x2019;re in desperate need of examples. Let&#x2019;s start wi
 
 
 
-Let&#x2019;s look at one more type of integral that we can handle geometrically, and then we&#x2019;ll write down a few properties of integrals.
+Let's look at one more type of integral that we can handle geometrically, and then we'll write down a few properties of integrals.
 
 
 
@@ -146,17 +146,17 @@ Let&#x2019;s look at one more type of integral that we can handle geometrically,
 	
 	Compute $\displaystyle \int_3^6 \sqrt{9 - (x - 3)^2}\,dx$.
 	
-	As always, it&#x2019;s good to draw a picture. Our function is $y = \sqrt{9 - (x - 3)^2}$, so $(x-3)^2 + y^2 = 3^2$. This is a circle of radius $3$ centered at $(3, 0)$, and since $\sqrt{9 - (x - 3)^2}$ is always positive, so the graph is only the top half of the circle.
+	As always, it's good to draw a picture. Our function is $y = \sqrt{9 - (x - 3)^2}$, so $(x-3)^2 + y^2 = 3^2$. This is a circle of radius $3$ centered at $(3, 0)$, and since $\sqrt{9 - (x - 3)^2}$ is always positive, so the graph is only the top half of the circle.
 	
 	### desmos geometric-integral-3
 	
-	The shaded area is just a quarter of the area of a full circle with radius $3$, so in total, it&#x2019;s $\frac{1}{4} \cdot 9\pi$.
+	The shaded area is just a quarter of the area of a full circle with radius $3$, so in total, it's $\frac{1}{4} \cdot 9\pi$.
 	
 ###
 
 
 
-So far, we&#x2019;ve only defined integrals for functions that are nonnegative. We&#x2019;ll need to integrate functions other than these too, but the definition of area under a curve needs a slight adjustment.
+So far, we've only defined integrals for functions that are nonnegative. We'll need to integrate functions other than these too, but the definition of area under a curve needs a slight adjustment.
 
 
 
@@ -178,7 +178,7 @@ So far, we&#x2019;ve only defined integrals for functions that are nonnegative. 
 
 
 
-Since they&#x2019;re defined as limits of sums, integrals have many of the same nice properties.
+Since they're defined as limits of sums, integrals have many of the same nice properties.
 
 
 
@@ -194,13 +194,13 @@ Since they&#x2019;re defined as limits of sums, integrals have many of the same 
 	
 	5. If $\displaystyle f(x) \geq g(x)$ on $\displaystyle [a, b]$, then $\displaystyle \int_a^b f(x)\,dx \geq \int_a^b g(x)\,dx$.
 	
-	Property 4 is the same kind of stitching-together property as the one for sums &mdash; we&#x2019;re just breaking an area into two pieces. This is particularly useful for piecewise-defined functions, since we can integrate each piece separately and add up the results.
+	Property 4 is the same kind of stitching-together property as the one for sums --- we're just breaking an area into two pieces. This is particularly useful for piecewise-defined functions, since we can integrate each piece separately and add up the results.
 	
 ###
 
 
 
-One quantity integrals let us calculate conveniently is average value &mdash; for a list of values, we add them all up and divide by the number of values, but for a function, we&#x2019;ll need to be a little more careful.
+One quantity integrals let us calculate conveniently is average value --- for a list of values, we add them all up and divide by the number of values, but for a function, we'll need to be a little more careful.
 
 
 
@@ -236,7 +236,7 @@ This is a reasonable definition, since the integral is adding up the values of $
 
 
 
-In the next section, we&#x2019;ll take a break from computing areas to work on some machinery that will let us bypass the limit definition of the integral.
+In the next section, we'll take a break from computing areas to work on some machinery that will let us bypass the limit definition of the integral.
 
 
 

@@ -4,11 +4,11 @@
 
 
 
-Welcome! In this guide, we&#x2019;ll use Wilson to create the Julia set explorer featured on the main page. We&#x2019;ll do this one step at a time, starting with the simplest and most stripped-down version possible and gradually adding features. You might want to have the <a href="/projects/wilson/docs/">documentation</a> open while going through this.
+Welcome! In this guide, we'll use Wilson to create the Julia set explorer featured on the main page. We'll do this one step at a time, starting with the simplest and most stripped-down version possible and gradually adding features. You might want to have the <a href="/projects/wilson/docs/">documentation</a> open while going through this.
 
-First, some background: a Julia set is a famous type of fractal closely related to the Mandelbrot set. Unlike the Mandelbrot, though, there are infinitely many Julia sets, each one corresponding to a different complex number. Because of this, Julia set applets often focus on generating different Julia sets rather than zooms of a single one, and this is where we&#x2019;ll start too. Right now, let&#x2019;s not worry about interactivity: we&#x2019;ll just have the user enter the complex number \(c\) and display the Julia set corresponding to it.
+First, some background: a Julia set is a famous type of fractal closely related to the Mandelbrot set. Unlike the Mandelbrot, though, there are infinitely many Julia sets, each one corresponding to a different complex number. Because of this, Julia set applets often focus on generating different Julia sets rather than zooms of a single one, and this is where we'll start too. Right now, let's not worry about interactivity: we'll just have the user enter the complex number \(c\) and display the Julia set corresponding to it.
 
-Once we&#x2019;ve included `wilson.js`, we need to make a canvas and some input fields in the HTML.
+Once we've included `wilson.js`, we need to make a canvas and some input fields in the HTML.
 
 
 
@@ -35,7 +35,7 @@ Once we&#x2019;ve included `wilson.js`, we need to make a canvas and some input 
 
 
 
-This obviously doesn&#x2019;t look too great without any added CSS. The displayed canvases and input fields on this page will be styled, but the CSS will be omitted for brevity.
+This obviously doesn't look too great without any added CSS. The displayed canvases and input fields on this page will be styled, but the CSS will be omitted for brevity.
 
 On the JS side, we need to tell Wilson we want it to work with this canvas.
 
@@ -74,9 +74,9 @@ On the JS side, we need to tell Wilson we want it to work with this canvas.
 
 
 
-Those initial values of 500 are just placeholders &mdash; they&#x2019;re changed whenever the generate button is pressed. Now we just need to write a function that generates a Julia set given these parameters. The first step for that function will be to convert between pixel coordinates on the canvas and complex numbers in the plane, and this is a common enough occurance in math applets that Wilson has built-in functions for handling it: we need to add information in the options about the &#x201C;world coordinates&#x201D;, as Wilson calls them, and then we can call `wilson.utils.interpolate.canvas_to_world` and `wilson.utils.interpolate.world_to_canvas`, which convert between pairs (row, col) of canvas coordinates and (x, y) of world coordinates. Note that `row` increases from top to bottom, while `y` does the opposite.
+Those initial values of 500 are just placeholders --- they're changed whenever the generate button is pressed. Now we just need to write a function that generates a Julia set given these parameters. The first step for that function will be to convert between pixel coordinates on the canvas and complex numbers in the plane, and this is a common enough occurance in math applets that Wilson has built-in functions for handling it: we need to add information in the options about the "world coordinates", as Wilson calls them, and then we can call `wilson.utils.interpolate.canvas_to_world` and `wilson.utils.interpolate.world_to_canvas`, which convert between pairs (row, col) of canvas coordinates and (x, y) of world coordinates. Note that `row` increases from top to bottom, while `y` does the opposite.
 
-The algorithm to color a single point \(z_0\) of the Julia set corresponding to \(c = a + bi\) is relatively simple: with \(f(z) = z^2 + c\), we let \(z_1 = f(z_0)\), \(z_2 = f(z_1)\), and so on. If the \(z_n\) grow without bound, then the point \(z_0\) is *not* in the Julia set, and we give it a color based on how quickly it grew. If the \(z_n\) stay bounded, then \(z_0\) is in the set, and we color it black. In practice, we pick a maximum value for \(n\), say 100, and see if the sequence is smaller than a certain bound after that many iterations. It can be shown that if the magnitude of any \(z_n\) is ever larger than 2, then the subsequent terms will grow without bound, so that&#x2019;s the typical threshhold to measure against.
+The algorithm to color a single point \(z_0\) of the Julia set corresponding to \(c = a + bi\) is relatively simple: with \(f(z) = z^2 + c\), we let \(z_1 = f(z_0)\), \(z_2 = f(z_1)\), and so on. If the \(z_n\) grow without bound, then the point \(z_0\) is *not* in the Julia set, and we give it a color based on how quickly it grew. If the \(z_n\) stay bounded, then \(z_0\) is in the set, and we color it black. In practice, we pick a maximum value for \(n\), say 100, and see if the sequence is smaller than a certain bound after that many iterations. It can be shown that if the magnitude of any \(z_n\) is ever larger than 2, then the subsequent terms will grow without bound, so that's the typical threshhold to measure against.
 
 
 
@@ -185,13 +185,13 @@ The algorithm to color a single point \(z_0\) of the Julia set corresponding to 
 
 
 
-The weirdness with the exponentials is a technique to reduce color banding &mdash; if we just used the raw iteration numbers for brightness values, we&#x2019;d see stripes of different brightness wherever that number increased or decreased by one. Basing the color partly on the values of the \(z_n\) introduces dithering &mdash; just enough noise that the color bands are blurred out.
+The weirdness with the exponentials is a technique to reduce color banding --- if we just used the raw iteration numbers for brightness values, we'd see stripes of different brightness wherever that number increased or decreased by one. Basing the color partly on the values of the \(z_n\) introduces dithering --- just enough noise that the color bands are blurred out.
 
-The brightness scale variable is a value that I found experimentally. When we make Julia set renders, there will typically be a handful of pixels that are significanly brighter than the rest, resulting in a much darker image overall. This is hard to exactly counteract without sorting the list of brightnesses and picking one a little bit down from the top &mdash; and we&#x2019;ll get there eventually &mdash; but right now, that would require a massive sort every frame. Instead, we can get a good result by just finding a factor experimentally that gets the majority of the pixels in full range of 0&ndash;255.
+The brightness scale variable is a value that I found experimentally. When we make Julia set renders, there will typically be a handful of pixels that are significanly brighter than the rest, resulting in a much darker image overall. This is hard to exactly counteract without sorting the list of brightnesses and picking one a little bit down from the top --- and we'll get there eventually --- but right now, that would require a massive sort every frame. Instead, we can get a good result by just finding a factor experimentally that gets the majority of the pixels in full range of 0&ndash;255.
 
-If you&#x2019;re not famaliar with `window.requestAnimationFrame`, it calls the function we pass it on the first frame when the page can handle it. Nothing else on this page is going to impact performance to make this important, but later on we&#x2019;ll need it to keep our code from rendering multiple frames within a one-frame interval, needlessly impacting performance. Because of that, it&#x2019;s good practice to always use `requestAnimationFrame`.
+If you're not famaliar with `window.requestAnimationFrame`, it calls the function we pass it on the first frame when the page can handle it. Nothing else on this page is going to impact performance to make this important, but later on we'll need it to keep our code from rendering multiple frames within a one-frame interval, needlessly impacting performance. Because of that, it's good practice to always use `requestAnimationFrame`.
 
-With all that explanation out of the way, let&#x2019;s see how the applet turned out!
+With all that explanation out of the way, let's see how the applet turned out!
 
 
 
@@ -219,9 +219,9 @@ With all that explanation out of the way, let&#x2019;s see how the applet turned
 
 ## A Different Renderer
 
-This is a great start, but we have a lot more to do, and the first and easiest change to make is to modify the renderer. We currently have the line `renderer: "cpu"` in our options, which means that when we pass Wilson our pixel data, it gets copied into the canvas by JavaScript. A slightly better alternative is to render the canvas with WebGL and pass in the pixel data as a texture. This can marginally increase performance, and on some browers, it also increases the maximum possible canvas size. Hearing the word WebGL might make you a little nervous, and maybe rightfully so, but we don&#x2019;t actually have to interface with it at all right now. Just replacing that line in the options with `renderer: "hybrid"` is enough to change everything necessary on the backend.
+This is a great start, but we have a lot more to do, and the first and easiest change to make is to modify the renderer. We currently have the line `renderer: "cpu"` in our options, which means that when we pass Wilson our pixel data, it gets copied into the canvas by JavaScript. A slightly better alternative is to render the canvas with WebGL and pass in the pixel data as a texture. This can marginally increase performance, and on some browers, it also increases the maximum possible canvas size. Hearing the word WebGL might make you a little nervous, and maybe rightfully so, but we don't actually have to interface with it at all right now. Just replacing that line in the options with `renderer: "hybrid"` is enough to change everything necessary on the backend.
 
-As another improvement, let&#x2019;s add a button to download the current state of the canvas &mdash; we need a better way to get the applet&#x2019;s output than taking a screenshot.
+As another improvement, let's add a button to download the current state of the canvas --- we need a better way to get the applet's output than taking a screenshot.
 
 
 
@@ -279,7 +279,7 @@ As another improvement, let&#x2019;s add a button to download the current state 
 
 <div style="height: 32px"></div>
 
-We&#x2019;re getting somewhere! In the next section, we&#x2019;ll add the first bit of interactivity in the form of a draggable selector for $c$.
+We're getting somewhere! In the next section, we'll add the first bit of interactivity in the form of a draggable selector for $c$.
 
 You can view the code for this page <a href="/projects/wilson/guide/1-getting-started/scripts/index.js">here</a>.
 

@@ -2,11 +2,11 @@
 
 ### nav-buttons
 
-The concepts of calculus I that we just reviewed &mdash; limits and derivatives &mdash; are incredibly useful, with wide-ranging applications across all areas of science. There are quite a few places we could go next, but the one we&#x2019;ll be spending this class on is something we&#x2019;re very well-prepared for: integration. Our ultimate goal in the class will be to calculate the **area under curves**: areas which are bounded by functions.
+The concepts of calculus I that we just reviewed --- limits and derivatives --- are incredibly useful, with wide-ranging applications across all areas of science. There are quite a few places we could go next, but the one we'll be spending this class on is something we're very well-prepared for: integration. Our ultimate goal in the class will be to calculate the **area under curves**: areas which are bounded by functions.
 
 ### desmos test-graph
 
-It&#x2019;s totally not clear how we&#x2019;re going to do this! But just like with derivatives, we&#x2019;ll start by approximating the area, and then taking the limit of better and better approximations. With derivatives, approximations meant secant lines, but here, it&#x2019;ll take a bit more work.
+It's totally not clear how we're going to do this! But just like with derivatives, we'll start by approximating the area, and then taking the limit of better and better approximations. With derivatives, approximations meant secant lines, but here, it'll take a bit more work.
 
 
 
@@ -14,7 +14,7 @@ It&#x2019;s totally not clear how we&#x2019;re going to do this! But just like w
 
 ### def sigma notation
 	
-	We write $\sum_{i = 1}^n a_i$ to mean $a_1 + a_2 + a_3 + \cdots + a_n$, and we read it as &#x201C;the sum from $i = 1$ to $n$ of $a_i$&#x201D;. The variable $i$ is called the **index variable** &mdash; like most variables, you can use other letters, too.
+	We write $\sum_{i = 1}^n a_i$ to mean $a_1 + a_2 + a_3 + \cdots + a_n$, and we read it as "the sum from $i = 1$ to $n$ of $a_i$". The variable $i$ is called the **index variable** --- like most variables, you can use other letters, too.
 	
 ###
 
@@ -26,7 +26,7 @@ It&#x2019;s totally not clear how we&#x2019;re going to do this! But just like w
 		\sum_{i = 1}^4 i^2 = 1^2 + 2^2 + 3^2 + 4^2 = 1 + 4 + 9 + 16 = 30.
 	$$
 	
-	We don&#x2019;t always need to start at $1$, either:
+	We don't always need to start at $1$, either:
 	
 	$$
 		\sum_{j = -2}^1 e^j = e^{-2} + e^{-1} + 1 + e.
@@ -56,7 +56,7 @@ It&#x2019;s totally not clear how we&#x2019;re going to do this! But just like w
 
 
 
-Let&#x2019;s write down a few basic properties of sums. Like with derivative rules, these can look a little like alphabet soup at first, but they&#x2019;re just formalizing some convenient properties we&#x2019;d expect sums to have.
+Let's write down a few basic properties of sums. Like with derivative rules, these can look a little like alphabet soup at first, but they're just formalizing some convenient properties we'd expect sums to have.
 
 
 
@@ -104,7 +104,7 @@ There are a few special sums whose values we know exactly. Showing why is a litt
 		\end{align*}
 	$$
 	
-	This is pretty impressive! Without this formula, we&#x2019;d be stuck adding up 1 through 100 by hand.
+	This is pretty impressive! Without this formula, we'd be stuck adding up 1 through 100 by hand.
 	
 	2. There is a slightly more complicated situation, but we can still take advantage of these formulas. Intuition says that we should try to use the one for the sum of squares, but that only works when we start at $1$ and go up from there. To figure out how to use it, we first need to write the sum in sigma notation.
 	
@@ -112,13 +112,13 @@ There are a few special sums whose values we know exactly. Showing why is a litt
 		-50^2 - 49^2 - 48^2 - \cdots - 20^2 = \sum_{i = 20}^{50} -i^2.
 	$$
 	
-	Since the sum of squares formula doesn&#x2019;t have a minus sign inside the sum, let&#x2019;s factor it out.
+	Since the sum of squares formula doesn't have a minus sign inside the sum, let's factor it out.
 	
 	$$
 		\sum_{i = 20}^{50} -i^2 = -\sum_{i = 20}^{50} i^2.
 	$$
 	
-	Now the trickiest step: we have a sum that starts at $20$, but we only have a formula for a sum that starts at $1$. But there&#x2019;s a way to place our sum in an equation that only involves sums that start at $1$.
+	Now the trickiest step: we have a sum that starts at $20$, but we only have a formula for a sum that starts at $1$. But there's a way to place our sum in an equation that only involves sums that start at $1$.
 	
 	$$
 		\sum_{i = 1}^{19} i^2 + \sum_{i = 20}^{50} i^2 = \sum_{i = 1}^{50} i^2.
@@ -166,7 +166,7 @@ There are a few special sums whose values we know exactly. Showing why is a litt
 
 ## Riemann Sums
 
-Sums are useful in general, but in this class, we need them for one specific purpose: approximating the area under curves. We&#x2019;ll do this one axis at a time, starting with what needs to happen on the $x$-axis: regular partitions.
+Sums are useful in general, but in this class, we need them for one specific purpose: approximating the area under curves. We'll do this one axis at a time, starting with what needs to happen on the $x$-axis: regular partitions.
 
 
 
@@ -178,11 +178,11 @@ Sums are useful in general, but in this class, we need them for one specific pur
 
 
 
-This is a really dense definition, but it&#x2019;s not so bad in practice. We&#x2019;ll think of regular partitions as living on the $x$-axis of a graph, so a regular partition just chops up the interval $[a, b]$ into $n$ equal-sized pieces.
+This is a really dense definition, but it's not so bad in practice. We'll think of regular partitions as living on the $x$-axis of a graph, so a regular partition just chops up the interval $[a, b]$ into $n$ equal-sized pieces.
 
 ### desmos partitions
 
-Okay, so what are we going to do with these? Let&#x2019;s return to our original goal of approximating the area under a curve &mdash; we&#x2019;re going to do that with a lot of rectangles.
+Okay, so what are we going to do with these? Let's return to our original goal of approximating the area under a curve --- we're going to do that with a lot of rectangles.
 
 
 
@@ -202,13 +202,13 @@ Okay, so what are we going to do with these? Let&#x2019;s return to our original
 
 
 
-This is the most complicated definition in the entire course, and it&#x2019;s an important one. We&#x2019;ll spend the rest of this section getting a grip on exactly what&#x2019;s going on.
+This is the most complicated definition in the entire course, and it's an important one. We'll spend the rest of this section getting a grip on exactly what's going on.
 
-First of all, Riemann sums are areas. Every one of the $n$ terms in a sum is the area of a rectangle with width $\Delta x$ and height $f(x_i^*)$. Let&#x2019;s get to an example to see what&#x2019;s happening.
+First of all, Riemann sums are areas. Every one of the $n$ terms in a sum is the area of a rectangle with width $\Delta x$ and height $f(x_i^*)$. Let's get to an example to see what's happening.
 
 ### desmos riemann-sum
 
-Take a moment to really dig into that Desmos frame. Change $a$ and $b$ and $n$, and change $f$ to another positive function like $x^2$. The two large sum expressions are calculating the left and right Riemann sums, respectively &mdash; notice how they both get close to $10$ as $n$ gets larger. 
+Take a moment to really dig into that Desmos frame. Change $a$ and $b$ and $n$, and change $f$ to another positive function like $x^2$. The two large sum expressions are calculating the left and right Riemann sums, respectively --- notice how they both get close to $10$ as $n$ gets larger. 
 
 
 
@@ -216,7 +216,7 @@ Take a moment to really dig into that Desmos frame. Change $a$ and $b$ and $n$, 
 	
 	Compute the upper Riemann sum with $5$ intervals for the function $g(t) = t^2$ on the interval $[-5, 5]$.
 	
-	If we want to split $[-5, 5]$ into five equal subintervals, we need the partition $\{-5, -3, -1, 1, 3, 5\}$. Now we&#x2019;re doing an upper sum, so for each of the five subintervals, we need to find the $t$-value that maximizes the function. Working this through, we find that the points are $-5, -3, -1, 3, 5$. The $-1$ could also be taken to be $t = 1$, since they both have $g(t) = 1$.
+	If we want to split $[-5, 5]$ into five equal subintervals, we need the partition $\{-5, -3, -1, 1, 3, 5\}$. Now we're doing an upper sum, so for each of the five subintervals, we need to find the $t$-value that maximizes the function. Working this through, we find that the points are $-5, -3, -1, 3, 5$. The $-1$ could also be taken to be $t = 1$, since they both have $g(t) = 1$.
 	
 	### desmos riemann-sum-2
 	
@@ -242,7 +242,7 @@ Take a moment to really dig into that Desmos frame. Change $a$ and $b$ and $n$, 
 
 
 
-So what? Well, just like we defined the derivative to be the slope of a tangent line, but we actually computed it by taking the limit of slopes of secant lines, we&#x2019;re going to define another object that gives the area under a curve, and then we&#x2019;ll compute it by taking the limit of Riemann sums as the number of subintervals approaches infinity. Also like derivatives, the limit definition is going to be a major pain to actually use, so we&#x2019;ll spend much of the course building formulas and rules that let us compute that area without going to so much trouble. In the next section, we&#x2019;ll get the limit definition working and use it to compute some areas.
+So what? Well, just like we defined the derivative to be the slope of a tangent line, but we actually computed it by taking the limit of slopes of secant lines, we're going to define another object that gives the area under a curve, and then we'll compute it by taking the limit of Riemann sums as the number of subintervals approaches infinity. Also like derivatives, the limit definition is going to be a major pain to actually use, so we'll spend much of the course building formulas and rules that let us compute that area without going to so much trouble. In the next section, we'll get the limit definition working and use it to compute some areas.
 
 
 

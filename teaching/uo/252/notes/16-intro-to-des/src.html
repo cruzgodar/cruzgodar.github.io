@@ -2,11 +2,11 @@
 
 ### nav-buttons
 
-It&#x2019;s the final section! We&#x2019;ll depart from the previous topics to examine a common application of integration: differential equations. This is a deep enough topic that whole courses are dedicated to it, but we&#x2019;ll just be taking a brief overview, split into three parts: what are differential equations, how do we visualize them, and how can we solve them?
+It's the final section! We'll depart from the previous topics to examine a common application of integration: differential equations. This is a deep enough topic that whole courses are dedicated to it, but we'll just be taking a brief overview, split into three parts: what are differential equations, how do we visualize them, and how can we solve them?
 
 ### def differential equation
 	
-	A **differential equation**, or a **DE**, is an equation involving a function $y = f(x)$ and its derivatives. They&#x2019;re like polynomials, but instead of increasing the power on $x$, we increase the order of derivatives.
+	A **differential equation**, or a **DE**, is an equation involving a function $y = f(x)$ and its derivatives. They're like polynomials, but instead of increasing the power on $x$, we increase the order of derivatives.
 	
 ###
 
@@ -133,7 +133,7 @@ Two special types of equilibrium solutions are those that either attract or repe
 
 ### ex stable and unstable equilibrium solutions
 	
-	In the previous example, $y = 2$ is an unstable solution, since the direction field eventually points away from it for large $x$. Similarly, $y = -2$ is a stable solution. In general, to know how large to draw the direction field to determine if a solution is stable or unstable, make it large enough to capture all the places where $y' = 0$, including $x$-values. In the previous example, that&#x2019;s $x = 3$.
+	In the previous example, $y = 2$ is an unstable solution, since the direction field eventually points away from it for large $x$. Similarly, $y = -2$ is a stable solution. In general, to know how large to draw the direction field to determine if a solution is stable or unstable, make it large enough to capture all the places where $y' = 0$, including $x$-values. In the previous example, that's $x = 3$.
 	
 ###
 
@@ -145,7 +145,7 @@ A nice way to think about stable solutions is by imagining a small ball placed i
 
 ## Separable Differential Equations
 
-So how do we solve DEs? This is the subject that all those future classes are devoted to, but we&#x2019;ll just look at the simplest possible type: something called a separable DE.
+So how do we solve DEs? This is the subject that all those future classes are devoted to, but we'll just look at the simplest possible type: something called a separable DE.
 
 
 
@@ -163,7 +163,7 @@ So how do we solve DEs? This is the subject that all those future classes are de
 
 
 
-In other words, a separable equation is one where we can get $y'$ by itself and write the other side as ($x$-stuff)($y$-stuff). If this is the case, we&#x2019;ll go through the following process.
+In other words, a separable equation is one where we can get $y'$ by itself and write the other side as ($x$-stuff)($y$-stuff). If this is the case, we'll go through the following process.
 
 
 
@@ -187,7 +187,7 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 	
 	4. Integrate.
 	
-	5. Solve for $y$. There will still be the integration constant $C$ in your answer &mdash; either leave it there or use an initial value to solve for it, just like in the initial value problems we solved back in section 3.
+	5. Solve for $y$. There will still be the integration constant $C$ in your answer --- either leave it there or use an initial value to solve for it, just like in the initial value problems we solved back in section 3.
 	
 	6. Also list any equilibrium solutions by going back to the initial equation and solving $g(y) = 0$.
 	
@@ -220,7 +220,7 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 		\end{align*}
 	$$
 	
-	Now it&#x2019;s time to solve for $y$.
+	Now it's time to solve for $y$.
 	
 	$$
 		\begin{align*}
@@ -246,7 +246,7 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 		y = e^{x^2 - 2x + \ln(2)} + 3.
 	$$
 	
-	Finally, we&#x2019;ll solve for the equilibrium solutions by solving $y - 3 = 0$, so $y = 3$. The reason why the previous method didn&#x2019;t solve for this solution is because it required dividing by $y - 3$, so that&#x2019;s exactly the solution we missed. However, it does not satisfy the initial condition, since $y(0) = 3 \neq 3$. Therefore, only the previous solution is correct.
+	Finally, we'll solve for the equilibrium solutions by solving $y - 3 = 0$, so $y = 3$. The reason why the previous method didn't solve for this solution is because it required dividing by $y - 3$, so that's exactly the solution we missed. However, it does not satisfy the initial condition, since $y(0) = 3 \neq 3$. Therefore, only the previous solution is correct.
 	
 ###
 
@@ -287,11 +287,11 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 
 
 
-As one final application, let&#x2019;s talk about temperature.
+As one final application, let's talk about temperature.
 
 
 
-### thm Newton&#x2019;s Law of Cooling
+### thm Newton's Law of Cooling
 	
 	Let $T(t)$ be the temperature of an object at time $t$ and let $S$ be the temperature of the material, like air or water, the material is surrounded by. Then for some number $k$,
 	
@@ -305,11 +305,11 @@ As one final application, let&#x2019;s talk about temperature.
 
 
 
-### ex Newton&#x2019;s Law of Cooling
+### ex Newton's Law of Cooling
 	
 	A pizza is baked at $350^\circ F$ and removed from the oven. The air temperature of the kitchen is $75^\circ F$, and after $5$ minutes, the pizza is $300^\circ F$. How much longer until it is $200^\circ F$?
 	
-	We have $S = 75$, $T(0) = 350$, and $T(5) = 300$. Newton&#x2019;s Law of Cooling says that $T' = k(T - 75)$, so by separation, we have
+	We have $S = 75$, $T(0) = 350$, and $T(5) = 300$. Newton's Law of Cooling says that $T' = k(T - 75)$, so by separation, we have
 	
 	$$
 		\begin{align*}
@@ -346,7 +346,7 @@ As one final application, let&#x2019;s talk about temperature.
 		\end{align*}
 	$$
 	
-	In total, we have $T(t) = e^{-.0401t + \ln(275)} + 75$. What we&#x2019;re trying to solve is $T(t) = 200$, so we have
+	In total, we have $T(t) = e^{-.0401t + \ln(275)} + 75$. What we're trying to solve is $T(t) = 200$, so we have
 	
 	$$
 		\begin{align*}
@@ -362,9 +362,9 @@ As one final application, let&#x2019;s talk about temperature.
 	
 ###
 
-### exc Newton&#x2019;s Law of Cooling
+### exc Newton's Law of Cooling
 	
-	In the same $75^\circ F$ kitchen, we bake a cake at $400^\circ F$. It&#x2019;s removed from the oven and after $10$ minutes, it has cooled to $300^\circ F$. How long until it cools down to $100^\circ F$?
+	In the same $75^\circ F$ kitchen, we bake a cake at $400^\circ F$. It's removed from the oven and after $10$ minutes, it has cooled to $300^\circ F$. How long until it cools down to $100^\circ F$?
 	<!--
 	**Solution:** We have $T' = k(T - 75)$, so following the same procedure as in the above example, we get $T = e^{kt + C} + 75$. Since $T(0) = 400$, we have
 	

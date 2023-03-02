@@ -2,7 +2,7 @@
 
 ### nav-buttons
 
-Up to this point, we&#x2019;ve defined integrals via Riemann sums, related them to antiderivatives via the Fundamental Theorem, and then made taking antiderivatives a little easier with $u$-sub. Now, we&#x2019;ll extend what definite integrals can do by exploring how they can calculate area &mdash; not just under a curve, but between two of them.
+Up to this point, we've defined integrals via Riemann sums, related them to antiderivatives via the Fundamental Theorem, and then made taking antiderivatives a little easier with $u$-sub. Now, we'll extend what definite integrals can do by exploring how they can calculate area --- not just under a curve, but between two of them.
 
 
 
@@ -60,7 +60,7 @@ Up to this point, we&#x2019;ve defined integrals via Riemann sums, related them 
 	
 	Find the area between $\sin(x)$ and $\cos(x)$ on $[0, \pi]$.
 	
-	This is a little more complicated: which function is on top changes across the interval. Setting $\sin(x) = \cos(x)$ is a problem from trigonometry: dividing both sides by $\cos(x)$ results in $\tan(x) = 1$, which on our interval is only true at $x = \frac{\pi}{4}$. So the functions meet at $x = \frac{\pi}{4}$, and since they&#x2019;re both continuous, that&#x2019;s the only possible place they could cross. Let&#x2019;s try some test points: plugging in $x = 0$ gives $\sin(0) = 0$ and $\cos(0) = 1$, so until $x = \frac{\pi}{4}$, $\cos$ is the larger function. Similarly, $x = \pi$ gives $\sin(\pi) = 0$ and $\cos(\pi) = -1$, so $\sin$ is larger after $\frac{\pi}{4}$. Therefore, we have
+	This is a little more complicated: which function is on top changes across the interval. Setting $\sin(x) = \cos(x)$ is a problem from trigonometry: dividing both sides by $\cos(x)$ results in $\tan(x) = 1$, which on our interval is only true at $x = \frac{\pi}{4}$. So the functions meet at $x = \frac{\pi}{4}$, and since they're both continuous, that's the only possible place they could cross. Let's try some test points: plugging in $x = 0$ gives $\sin(0) = 0$ and $\cos(0) = 1$, so until $x = \frac{\pi}{4}$, $\cos$ is the larger function. Similarly, $x = \pi$ gives $\sin(\pi) = 0$ and $\cos(\pi) = -1$, so $\sin$ is larger after $\frac{\pi}{4}$. Therefore, we have
 	
 	$$
 		\begin{align*}
@@ -83,7 +83,7 @@ Up to this point, we&#x2019;ve defined integrals via Riemann sums, related them 
 	
 	### desmos area-between-curves-3
 	
-	First, let&#x2019;s find the limits of integration. The left one is the intersection of $y = x^2 + 1$ with $y = 1$: then $x^2 + 1 = 1$, so $x = 0$. The right endpoint is the intersection of $y = 3 - x$ with $y = 1$, so $x = 2$. Like the last example, though, the bounding functions change as we move left to right along the interval. The point where we switch from $x^2 + 1$ to $3 - x$ being the top function is the intersection of the two: $x^2 + 1 = 3 - x$, so $x^2 + x - 2 = 0$. Factoring this gives $x = 1$ or $x = -2$, and we clearly want $x = 1$. Now the integral becomes
+	First, let's find the limits of integration. The left one is the intersection of $y = x^2 + 1$ with $y = 1$: then $x^2 + 1 = 1$, so $x = 0$. The right endpoint is the intersection of $y = 3 - x$ with $y = 1$, so $x = 2$. Like the last example, though, the bounding functions change as we move left to right along the interval. The point where we switch from $x^2 + 1$ to $3 - x$ being the top function is the intersection of the two: $x^2 + 1 = 3 - x$, so $x^2 + x - 2 = 0$. Factoring this gives $x = 1$ or $x = -2$, and we clearly want $x = 1$. Now the integral becomes
 	
 	$$
 		\begin{align*}
@@ -101,7 +101,7 @@ Up to this point, we&#x2019;ve defined integrals via Riemann sums, related them 
 	
 	### desmos area-between-curves-4
 	
-	**Solution:** $f$ and $h$ intersect at $x = \frac{3}{2} - \frac{\sqrt{5}}{2}$, $g$ and $h$ intersect at $x = 1$, and $f$ and $g$ intersect at $x = \frac{\sqrt{5}}{2} - \frac{1}{2}$. To save notation, let&#x2019;s call the first number $a$, the second one $b$, and the third one $c$. Then the integral becomes $\int_a^c (h(x) - f(x))\,dx + \int_c^b (h(x) - g(x))\,dx$. This comes out to
+	**Solution:** $f$ and $h$ intersect at $x = \frac{3}{2} - \frac{\sqrt{5}}{2}$, $g$ and $h$ intersect at $x = 1$, and $f$ and $g$ intersect at $x = \frac{\sqrt{5}}{2} - \frac{1}{2}$. To save notation, let's call the first number $a$, the second one $b$, and the third one $c$. Then the integral becomes $\int_a^c (h(x) - f(x))\,dx + \int_c^b (h(x) - g(x))\,dx$. This comes out to
 	
 	$$
 		\left(\frac{7}{7} - \frac{7}{6}\sqrt{5} + \frac{2}{3}\sqrt{\sqrt{5} - 2}\right) - \left(\frac{1}{3} + \frac{1}{3}\sqrt{5} - \frac{2}{3}\sqrt{\sqrt{5} - 2}\right).
@@ -111,7 +111,7 @@ Up to this point, we&#x2019;ve defined integrals via Riemann sums, related them 
 
 
 
-Sometimes &mdash; particularly in cases like the previous example with multiple bounding functions, we can make things much simpler by changing the variable we integrate with respect to. This is not $u$-sub, but something else entirely: integrating with respect to $y$. Let&#x2019;s redo the previous example to see how it works.
+Sometimes --- particularly in cases like the previous example with multiple bounding functions, we can make things much simpler by changing the variable we integrate with respect to. This is not $u$-sub, but something else entirely: integrating with respect to $y$. Let's redo the previous example to see how it works.
 
 
 
@@ -121,11 +121,11 @@ Sometimes &mdash; particularly in cases like the previous example with multiple 
 	
 	### desmos area-between-curves-5
 	
-	The first thing to do is rewrite the functions as **functions of $y$**. That means solving each one for $x$: $y = 3 - x$ becomes $x = 3 - y$, and $y = x^2 + 1$ becomes $x = \sqrt{y - 1}$. Since there is no $x$ in $y = 1$, we can&#x2019;t solve it for $x$, but we&#x2019;ll see that that won&#x2019;t be a problem momentarily.
+	The first thing to do is rewrite the functions as **functions of $y$**. That means solving each one for $x$: $y = 3 - x$ becomes $x = 3 - y$, and $y = x^2 + 1$ becomes $x = \sqrt{y - 1}$. Since there is no $x$ in $y = 1$, we can't solve it for $x$, but we'll see that that won't be a problem momentarily.
 	
 	Now we need to identify the limits, which are $y$-values now. The minimum $y$-value is clearly $y = 1$, and to find the maximum one, we intersect the other two functions. That gave us $x = 1$ before, but we want the $y$-value this time, so we can just plug $x = 1$ into either formula to get $y = 2$. Alternatively, we could have just solved $\sqrt{y - 1} = 3 - y$.
 	
-	The next thing to reverse is the way the integral is set up. Normally we take the top function minus the bottom one &mdash; i.e. the larger $y$-value minus the smaller $y$-value. Now we&#x2019;re using $x$ instead, so to take the larger $x$-value minus the smaller $x$-value, we take the right function minus the left one. And here&#x2019;s the reason this is an easier way to do things for this example in particular: the right and left functions stay the same across the entire region, so there&#x2019;s no need to split up the region. We just have
+	The next thing to reverse is the way the integral is set up. Normally we take the top function minus the bottom one --- i.e. the larger $y$-value minus the smaller $y$-value. Now we're using $x$ instead, so to take the larger $x$-value minus the smaller $x$-value, we take the right function minus the left one. And here's the reason this is an easier way to do things for this example in particular: the right and left functions stay the same across the entire region, so there's no need to split up the region. We just have
 	
 	$$
 		\begin{align*}
@@ -156,7 +156,7 @@ Sometimes &mdash; particularly in cases like the previous example with multiple 
 
 
 
-In general, you&#x2019;ll need to choose which variable is better to integrate with respect to. Sometimes one will be a little easier than the other, and other times only one will be possible at all. Integrating with respect to $y$ will continue to crop up throughout the coming sections, so it&#x2019;s a good thing to get accustomed to sooner rather than later.
+In general, you'll need to choose which variable is better to integrate with respect to. Sometimes one will be a little easier than the other, and other times only one will be possible at all. Integrating with respect to $y$ will continue to crop up throughout the coming sections, so it's a good thing to get accustomed to sooner rather than later.
 
 
 

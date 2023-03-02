@@ -2,7 +2,7 @@
 
 ### nav-buttons
 
-Now that we&#x2019;ve talked about limits, let&#x2019;s return to the idea we discussed in section 1: the slopes of curves. As a reminder, the slope of a curve at $x = a$ is the slope of the tangent line to the curve at $x = a$. In order to calculate this slope, we first find the slope of secant lines, which is just rise over run. If one point of the line is taken at $x = a$ and the other is taken at $x = a + h$, then the run is $h$ and the rise is $f(a + h) - f(a)$, so the slope is just
+Now that we've talked about limits, let's return to the idea we discussed in section 1: the slopes of curves. As a reminder, the slope of a curve at $x = a$ is the slope of the tangent line to the curve at $x = a$. In order to calculate this slope, we first find the slope of secant lines, which is just rise over run. If one point of the line is taken at $x = a$ and the other is taken at $x = a + h$, then the run is $h$ and the rise is $f(a + h) - f(a)$, so the slope is just
 
 $$
 	\frac{f(a + h) - f(a)}{h}.
@@ -64,7 +64,7 @@ We want to get the tangent line by setting $h = 0$, but since the slope will be 
 
 
 
-We mentioned in section 1 that the slope of a tangent line measures rate of change of a function: for example, the rate of change of position is velocity. This idea is so important and used so often that we want to give it a name and simple notation, so that we don&#x2019;t have to write down whole sentences to explain what we mean every time.
+We mentioned in section 1 that the slope of a tangent line measures rate of change of a function: for example, the rate of change of position is velocity. This idea is so important and used so often that we want to give it a name and simple notation, so that we don't have to write down whole sentences to explain what we mean every time.
 
 
 
@@ -82,7 +82,7 @@ We mentioned in section 1 that the slope of a tangent line measures rate of chan
 
 We use the notation $f'(a)$ because the derivative is a whole new function: $f'(x)$ outputs the slope of the graph of $f$ at the point $x$. Taking a derivative is called **differentiating**, not deriving, for some reason.
 
-One more notational quirk: sometimes, we don&#x2019;t want to give a function a name just so that we can put a prime on it to indicate that we want to take a derivative. In that case, we can just write $\frac{d}{dx}$ followed by the function in brackets: for example, $\frac{d}{dx}[x^2]$ means the derivative of $x^2$.
+One more notational quirk: sometimes, we don't want to give a function a name just so that we can put a prime on it to indicate that we want to take a derivative. In that case, we can just write $\frac{d}{dx}$ followed by the function in brackets: for example, $\frac{d}{dx}[x^2]$ means the derivative of $x^2$.
 
 
 
@@ -105,7 +105,7 @@ One more notational quirk: sometimes, we don&#x2019;t want to give a function a 
 	
 	Therefore, $\frac{d}{dx}[x^2] = 2x$.
 	
-	Let&#x2019;s sketch a graph of these two.
+	Let's sketch a graph of these two.
 	
 	### desmos derivative-example
 	
@@ -127,7 +127,7 @@ One more notational quirk: sometimes, we don&#x2019;t want to give a function a 
 	
 	### desmos derivative-example-2
 	
-	Whenever the purple graph is flat, the derivative is zero. It&#x2019;s positive when the graph slopes upward and negative when it slopes downward, and so in total, we wind up with the blue graph (click the circle next to $f'(x)$ to see it).
+	Whenever the purple graph is flat, the derivative is zero. It's positive when the graph slopes upward and negative when it slopes downward, and so in total, we wind up with the blue graph (click the circle next to $f'(x)$ to see it).
 	
 ###
 
@@ -155,17 +155,17 @@ This is a complicated question to answer. Being differentiable means the limit o
 
 
 
-Because of this theorem, if a function is not continuous at $a$, it&#x2019;s not possible for it to be differentiable at $a$. However, not all continuous functions are differentiable: as a first example, let&#x2019;s look at $f(x) = |x|$.
+Because of this theorem, if a function is not continuous at $a$, it's not possible for it to be differentiable at $a$. However, not all continuous functions are differentiable: as a first example, let's look at $f(x) = |x|$.
 
 
 
-### ex a continuous function that isn&#x2019;t differentiable
+### ex a continuous function that isn't differentiable
 	
 	The graph of the function $f(x) = |x|$ is V-shaped, since the negative part gets reflected over the $x$-axis.
 	
 	### desmos derivative-example-4
 	
-	At $x = 0$, the graph has a corner &mdash; a sharp point. It&#x2019;s not really clear what a tangent line at that point would look like, but we can take the limit anyway and see what happens.
+	At $x = 0$, the graph has a corner --- a sharp point. It's not really clear what a tangent line at that point would look like, but we can take the limit anyway and see what happens.
 	
 	$$
 		\begin{align*}
@@ -175,17 +175,17 @@ Because of this theorem, if a function is not continuous at $a$, it&#x2019;s not
 		\end{align*}
 	$$
 	
-	If $h < 0$, then $\frac{|h|}{h} = -1$. If $h > 0$, then $\frac{|h|}{h} = 1$. When $h = 0$, the function is undefined, but that&#x2019;s okay, since we&#x2019;re taking the limit to zero. But what this tells us is that the limit from the right is $1$, while the limit from the left is $-1$. Visually, secant lines to the right all have slope $1$ and secant lines to the left all have slope $-1$, and so they never agree. Since the limit does not exist, $f$ is not differentiable at $x = 0$.
+	If $h < 0$, then $\frac{|h|}{h} = -1$. If $h > 0$, then $\frac{|h|}{h} = 1$. When $h = 0$, the function is undefined, but that's okay, since we're taking the limit to zero. But what this tells us is that the limit from the right is $1$, while the limit from the left is $-1$. Visually, secant lines to the right all have slope $1$ and secant lines to the left all have slope $-1$, and so they never agree. Since the limit does not exist, $f$ is not differentiable at $x = 0$.
 
 ###
 
 
 
-Any function with a sharp corner like this will fail to be differentiable at that point. There&#x2019;s also one more common way a function can be nondifferentiable: if a function&#x2019;s graph has a vertical tangent line, then the derivative spikes to $\pm \infty$ and so is not defined.
+Any function with a sharp corner like this will fail to be differentiable at that point. There's also one more common way a function can be nondifferentiable: if a function's graph has a vertical tangent line, then the derivative spikes to $\pm \infty$ and so is not defined.
 
 
 
-### exc another continuous function that isn&#x2019;t differentiable
+### exc another continuous function that isn't differentiable
 	
 	Show that $f(x) = \sqrt[3]{x}$ is not differentiable at $x = 0$.
 
@@ -193,7 +193,7 @@ Any function with a sharp corner like this will fail to be differentiable at tha
 
 
 
-This gives us a nice heuristic for what differentiable functions look like: they&#x2019;re continuous without sharp corners and vertical slopes. Just like with discontinuities, functions may fail to be differentiable in more complicated ways &mdash; we&#x2019;ll get to an example of that in a future section.
+This gives us a nice heuristic for what differentiable functions look like: they're continuous without sharp corners and vertical slopes. Just like with discontinuities, functions may fail to be differentiable in more complicated ways --- we'll get to an example of that in a future section.
 
 
 
@@ -205,9 +205,9 @@ $$
 	\frac{d}{dx} \left[ \frac{d}{dx} \left[f\right] \right] = \frac{d^2}{dx^2}[f].
 $$
 
-Sometimes we&#x2019;ll want to talk about the $n$th derivative where $n$ is left as a variable &mdash; instead of trying to write $n$ prime symbols, we just write $f^{(n)}$ instead. So for example, $f^{(3)}(x) = f'''(x)$.
+Sometimes we'll want to talk about the $n$th derivative where $n$ is left as a variable --- instead of trying to write $n$ prime symbols, we just write $f^{(n)}$ instead. So for example, $f^{(3)}(x) = f'''(x)$.
 
-We&#x2019;ll talk about what visual feature of a graph the second derivative measures a little later in the course, but for now let&#x2019;s just work through some examples.
+We'll talk about what visual feature of a graph the second derivative measures a little later in the course, but for now let's just work through some examples.
 
 
 
@@ -215,7 +215,7 @@ We&#x2019;ll talk about what visual feature of a graph the second derivative mea
 	
 	Find $\displaystyle \frac{d^2}{dx^2}[2x^2 - x]$.
 	
-	This is a long calculation, but it&#x2019;s not too bad in the end. First, let&#x2019;s find the first derivative.
+	This is a long calculation, but it's not too bad in the end. First, let's find the first derivative.
 	
 	$$
 		\begin{align*}
@@ -228,7 +228,7 @@ We&#x2019;ll talk about what visual feature of a graph the second derivative mea
 		\end{align*}
 	$$
 	
-	Now we&#x2019;ll take the derivative of this function to get the second derivative.
+	Now we'll take the derivative of this function to get the second derivative.
 	
 	$$
 		\begin{align*}
@@ -246,7 +246,7 @@ We&#x2019;ll talk about what visual feature of a graph the second derivative mea
 
 ### exc acceleration
 	
-	Suppose the position of a particle moving along a straight line is $s(t) = 3t^2$ meters after $t$ seconds. Find a function $a(t)$ for the particle&#x2019;s acceleration at time $t$. Note that since velocity is the rate of change of position and acceleration is the rate of change of of velocity, $v(t) = s'(t)$ and $a(t) = v'(t)$, so $a(t) = s''(t)$.
+	Suppose the position of a particle moving along a straight line is $s(t) = 3t^2$ meters after $t$ seconds. Find a function $a(t)$ for the particle's acceleration at time $t$. Note that since velocity is the rate of change of position and acceleration is the rate of change of of velocity, $v(t) = s'(t)$ and $a(t) = v'(t)$, so $a(t) = s''(t)$.
 	
 ###
 

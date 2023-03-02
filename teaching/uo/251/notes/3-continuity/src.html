@@ -2,7 +2,7 @@
 
 ### nav-buttons
 
-We&#x2019;ve informally defined $\lim_{x \to a} f(x)$ as being the value we would expect $f(a)$ to be, regardless of what $f(a)$ actually is, or even if it&#x2019;s defined at all. When the value we expect to be there is what&#x2019;s actually there, we have a special term for the function.
+We've informally defined $\lim_{x \to a} f(x)$ as being the value we would expect $f(a)$ to be, regardless of what $f(a)$ actually is, or even if it's defined at all. When the value we expect to be there is what's actually there, we have a special term for the function.
 
 
 
@@ -14,7 +14,7 @@ We&#x2019;ve informally defined $\lim_{x \to a} f(x)$ as being the value we woul
 
 
 
-The simplest way to describe continuous functions is that they&#x2019;re the ones whose graphs can be drawn in one stroke without lifting your pen from the paper. If a function is not continuous at $x = a$, then there are only a few possibilites for what went wrong:
+The simplest way to describe continuous functions is that they're the ones whose graphs can be drawn in one stroke without lifting your pen from the paper. If a function is not continuous at $x = a$, then there are only a few possibilites for what went wrong:
 
 1. $\displaystyle f(a)$ is undefined.
 
@@ -30,7 +30,7 @@ The simplest way to describe continuous functions is that they&#x2019;re the one
 	
 	### desmos continuity-example
 	
-	This function has three kinds of discontinuities: at $x = -3$, $f(-3) = -1$ but $\lim_{x \to 3} f(x)$ DNE, so it&#x2019;s not continuous there. At $x = 0$, $f(0) = 1$, but $\lim_{x \to 0} f(x) = 0$, so it&#x2019;s not continuous there either. Finally, at $x = 4$, $f(4)$ is undefined, and $\lim_{x \to 4} f(x) = \infty$, so it&#x2019;s not continuous there. In total, $f$ is continuous everywhere except for $x = -3$, $x = 0$, and $x = 4$.
+	This function has three kinds of discontinuities: at $x = -3$, $f(-3) = -1$ but $\lim_{x \to 3} f(x)$ DNE, so it's not continuous there. At $x = 0$, $f(0) = 1$, but $\lim_{x \to 0} f(x) = 0$, so it's not continuous there either. Finally, at $x = 4$, $f(4)$ is undefined, and $\lim_{x \to 4} f(x) = \infty$, so it's not continuous there. In total, $f$ is continuous everywhere except for $x = -3$, $x = 0$, and $x = 4$.
 
 ###
 
@@ -51,7 +51,7 @@ The simplest way to describe continuous functions is that they&#x2019;re the one
 
 
 
-The function in the previous example displays three common kinds of discontinuities: to make things easier when talking about them, let&#x2019;s give them names.
+The function in the previous example displays three common kinds of discontinuities: to make things easier when talking about them, let's give them names.
 
 
 
@@ -61,11 +61,11 @@ The function in the previous example displays three common kinds of discontinuit
 	
 	1. If $\lim_{x \to a} f(x)$ exists and is finite, we call this a **removable** discontinuity, since by changing just that one point, we can make the function continuous.
 	
-	2. If $\lim_{x \to a^+} f(x)$ and $\lim_{x \to a^-} f(x)$ exist but are not equal, we call this a **jump** discontinuity, since the function &#x201C;jumps&#x201D; from one point to another.
+	2. If $\lim_{x \to a^+} f(x)$ and $\lim_{x \to a^-} f(x)$ exist but are not equal, we call this a **jump** discontinuity, since the function "jumps" from one point to another.
 	
 	3. If one or both of the one-sided limits is $\pm \infty$, we call this an **infinite** discontinuity, since the function approaches an infinite value.
 	
-	These don&#x2019;t describe all possible kinds of discontinuities &mdash; for example, $\sin\left(\frac{1}{x}\right)$ has a discontinuity at $0$ that doesn&#x2019;t fall into any of these categories.
+	These don't describe all possible kinds of discontinuities --- for example, $\sin\left(\frac{1}{x}\right)$ has a discontinuity at $0$ that doesn't fall into any of these categories.
 	
 ###
 
@@ -73,13 +73,13 @@ The function in the previous example displays three common kinds of discontinuit
 
 In the previous example, $f(x)$ has a removable discontinuity at $x = 0$, a jump discontinuity at $x = -3$, and an infinite discontinuity at $x = 4$.
 	
-The next two theorems will let calculate limits **much** more easily. The first one is great news: most of the functions we know so far are continuous wherever they&#x2019;re defined!
+The next two theorems will let calculate limits **much** more easily. The first one is great news: most of the functions we know so far are continuous wherever they're defined!
 
 
 
 ### thm continuity of elementary functions
 	
-	Polynomials, rational functions, trigonometric functions, exponential functions, and logarithmic functions are all continuous everywhere they&#x2019;re defined.
+	Polynomials, rational functions, trigonometric functions, exponential functions, and logarithmic functions are all continuous everywhere they're defined.
 	
 ###
 
@@ -105,7 +105,7 @@ Let $f$ and $g$ be functions so that $g$ is continuous at $a$ and $f$ is continu
 		\lim_{x \to 0} \frac{\cos(x^2) - x}{2 - \tan(x)}.
 	$$
 	
-	Since all of the functions present are continuous &mdash; including the compositions like $\cos(x^2)$, we can just plug in $x = 0$:
+	Since all of the functions present are continuous --- including the compositions like $\cos(x^2)$, we can just plug in $x = 0$:
 	
 	$$
 		\begin{align*}
@@ -117,7 +117,7 @@ Let $f$ and $g$ be functions so that $g$ is continuous at $a$ and $f$ is continu
 	
 	### desmos continuity-limit
 	
-	This is a really complicated-looking function, and it&#x2019;s nice to be able to calculate a limit of it without making a table or writing out long-winded limit rules. The only place we can&#x2019;t plug in a value of $x$ to take a limit is when it would make the denominator zero, since then the entire function is undefined and therefore not continuous.
+	This is a really complicated-looking function, and it's nice to be able to calculate a limit of it without making a table or writing out long-winded limit rules. The only place we can't plug in a value of $x$ to take a limit is when it would make the denominator zero, since then the entire function is undefined and therefore not continuous.
 
 ###
 
@@ -125,7 +125,7 @@ Let $f$ and $g$ be functions so that $g$ is continuous at $a$ and $f$ is continu
 
 ## The Intermediate Value Theorem
 
-We have one last theorem to talk about in this section. The result sounds a little confusing at first, but it&#x2019;s just a way to formally state what we mean when we say that continuous functions are the ones that can be drawn without lifting your pencil.
+We have one last theorem to talk about in this section. The result sounds a little confusing at first, but it's just a way to formally state what we mean when we say that continuous functions are the ones that can be drawn without lifting your pencil.
 
 
 
@@ -149,7 +149,7 @@ Here, $a = 1$ and $b = 3$. Plotted are three examples of continuous functions sa
 	
 	Show that $f(x) = x - \cos(x)$ has at least one zero.
 	
-	This is a pretty interesting question &mdash; how are you supposed to find a value of $x$ that makes $x = \cos(x)$? The answer is... you don&#x2019;t. Rather than find a particular value that works, we&#x2019;ll use the IVT to show that one must exist, even if we can&#x2019;t say exactly what it is. Looking back at the theorem statement, we want to pick two points, one with a $y$-value larger than $0$, and the other with a $y$-value less than $0$. Then the IVT will guarantee a point in-between them with $y$-value equal to zero. Let&#x2019;s try some sample values. $x = 0$ gives us $0 - \cos(0) = -1$, and $x = \frac{\pi}{2}$, the next value that produces a simple output from cosine, gives us $\frac{\pi}{2} - \cos\left(\frac{\pi}{2}\right) = \frac{\pi}{2}$. Since $0$ is a $y$-value in-between those, the IVT guarantees an $x$-value between $0$ and $\frac{\pi}{2}$ with $x - \cos(x) = 0$.
+	This is a pretty interesting question --- how are you supposed to find a value of $x$ that makes $x = \cos(x)$? The answer is... you don't. Rather than find a particular value that works, we'll use the IVT to show that one must exist, even if we can't say exactly what it is. Looking back at the theorem statement, we want to pick two points, one with a $y$-value larger than $0$, and the other with a $y$-value less than $0$. Then the IVT will guarantee a point in-between them with $y$-value equal to zero. Let's try some sample values. $x = 0$ gives us $0 - \cos(0) = -1$, and $x = \frac{\pi}{2}$, the next value that produces a simple output from cosine, gives us $\frac{\pi}{2} - \cos\left(\frac{\pi}{2}\right) = \frac{\pi}{2}$. Since $0$ is a $y$-value in-between those, the IVT guarantees an $x$-value between $0$ and $\frac{\pi}{2}$ with $x - \cos(x) = 0$.
 	
 	### desmos ivt-example-2
 	
@@ -165,7 +165,7 @@ Here, $a = 1$ and $b = 3$. Plotted are three examples of continuous functions sa
 
 ## Limits to Infinity
 
-We have one last topic to mention before we&#x2019;re done with limits: rather than letting $x$ approach a number, we can let it get larger or smaller forever. We write this as
+We have one last topic to mention before we're done with limits: rather than letting $x$ approach a number, we can let it get larger or smaller forever. We write this as
 
 $$
 	\lim_{x \to \infty} f(x)

@@ -2,9 +2,9 @@
 
 ### nav-buttons
 
-Direct interaction with the canvas is the only part of Wilson that we haven&#x2019;t discussed yet, and it will require slightly more work on our end than the others, since panning and zooming aren&#x2019;t the only possible effects we could want.
+Direct interaction with the canvas is the only part of Wilson that we haven't discussed yet, and it will require slightly more work on our end than the others, since panning and zooming aren't the only possible effects we could want.
 
-Panning is easier, so let&#x2019;s start with that. As you can probably guess by now, we attach callbacks in the options that fire when different kinds of interaction with the canvas take place, just like with draggables. The mouse movement callbacks are separated into <code>mousemove</code> and <code>mousedrag</code> &mdash; the first is called when the mouse is not being clicked, and the second when it is. We&#x2019;re going for something akin to Google Maps here, so we&#x2019;ll use <code>mousedrag</code>. For touchscreens, there&#x2019;s only one event for movement &mdash; <code>touchmove</code> &mdash; since it&#x2019;s not possible to drag without touching the screen. This callback shouldn&#x2019;t be used for pinch gestures &mdash; we&#x2019;ll handle those later.
+Panning is easier, so let's start with that. As you can probably guess by now, we attach callbacks in the options that fire when different kinds of interaction with the canvas take place, just like with draggables. The mouse movement callbacks are separated into <code>mousemove</code> and <code>mousedrag</code> --- the first is called when the mouse is not being clicked, and the second when it is. We're going for something akin to Google Maps here, so we'll use <code>mousedrag</code>. For touchscreens, there's only one event for movement --- <code>touchmove</code> --- since it's not possible to drag without touching the screen. This callback shouldn't be used for pinch gestures --- we'll handle those later.
 
 ```glsl
 	let frag_shader_source = `
@@ -72,9 +72,9 @@ Panning is easier, so let&#x2019;s start with that. As you can probably guess by
 	}
 ```
 
-All we&#x2019;re doing here is moving the center of the canvas however the callbacks tell us. Since all the parameters are given in world coordinates, we don&#x2019;t need to convert anything, and we also don&#x2019;t have to deal with the headache of calculating the deltas ourselves when we&#x2019;re changing the very parameters used to calculate them as we go. The only delicate part is remembering to subtract the deltas rather than add them &mdash; if we drag one unit to the right, then the want the scene to move one unit to the right, which means the x-coordinate of the center of the scene needs to move one unit to the <em>left</em>.
+All we're doing here is moving the center of the canvas however the callbacks tell us. Since all the parameters are given in world coordinates, we don't need to convert anything, and we also don't have to deal with the headache of calculating the deltas ourselves when we're changing the very parameters used to calculate them as we go. The only delicate part is remembering to subtract the deltas rather than add them --- if we drag one unit to the right, then the want the scene to move one unit to the right, which means the x-coordinate of the center of the scene needs to move one unit to the <em>left</em>.
 
-A few other things to note: it&#x2019;s a good idea to clamp the center values here to prevent the brightness skyrocketing if we leave the Julia set. Less optionally, we need to tell Wilson to recalculate where the draggable should be. It does this automataically when the window is resized or we change fullscreen modes, but for more custom behavior like this, it needs to be called manually.
+A few other things to note: it's a good idea to clamp the center values here to prevent the brightness skyrocketing if we leave the Julia set. Less optionally, we need to tell Wilson to recalculate where the draggable should be. It does this automataically when the window is resized or we change fullscreen modes, but for more custom behavior like this, it needs to be called manually.
 
 
 
@@ -97,7 +97,7 @@ A few other things to note: it&#x2019;s a good idea to clamp the center values h
 
 ## Zooming
 
-This is slightly trickier to implement for a few reasons: we typically want to support zooming with either a scroll wheel or a pinch gesture, so there&#x2019;s more code to write, but the real trouble is making it feel &#x201C;natural&#x201D; &mdash; specifically, we want the position of the mouse or the center of the pinch to be the fixed point of the zoom, so that everything else moves around it. This is a <em>very</em> annoying series of calculations, but thankfully Wilson will handle it all for us. Let&#x2019;s see how it works.
+This is slightly trickier to implement for a few reasons: we typically want to support zooming with either a scroll wheel or a pinch gesture, so there's more code to write, but the real trouble is making it feel "natural" --- specifically, we want the position of the mouse or the center of the pinch to be the fixed point of the zoom, so that everything else moves around it. This is a <em>very</em> annoying series of calculations, but thankfully Wilson will handle it all for us. Let's see how it works.
 
 
 
@@ -208,9 +208,9 @@ So far, this is just a fancier way of doing the same thing. The new uniform <cod
 
 
 
-We haven&#x2019;t defined <code>zoom_canvas</code> yet, but the idea here is fairly straightforward. Wheel events can vary wildly in reported scroll amount &mdash; just comparing two of my computers, iOS Safari with a trackpad reports continuous scroll amounts that are typically between -1 and 1, while Firefox on Windows with a discrete scroll wheel reports exclusively 192 and -192. Dividing the scroll amounts by 100 seemed to be a good way to handle this discrepancy without writing different code for different browsers.
+We haven't defined <code>zoom_canvas</code> yet, but the idea here is fairly straightforward. Wheel events can vary wildly in reported scroll amount --- just comparing two of my computers, iOS Safari with a trackpad reports continuous scroll amounts that are typically between -1 and 1, while Firefox on Windows with a discrete scroll wheel reports exclusively 192 and -192. Dividing the scroll amounts by 100 seemed to be a good way to handle this discrepancy without writing different code for different browsers.
 
-On the touchscreen side, <code>touch_distance_delta</code> is the difference between two distances &mdash; the current pinch and the last one &mdash; as measured in world coordinates. As with the drag callbacks, there&#x2019;s some complicated stuff going on behind the scenes to ensure that this value is correct even if the last pinch distance was measured relative to different world coordinates. The multiplication by 10 is an experimental value that I found worked well &mdash; ideally, we want the world coordinates at the touch points to always remain the same, so that it feels as much as possible like pinching is physically moving the scene. That&#x2019;s not always possible in practice, but this comes pretty close.
+On the touchscreen side, <code>touch_distance_delta</code> is the difference between two distances --- the current pinch and the last one --- as measured in world coordinates. As with the drag callbacks, there's some complicated stuff going on behind the scenes to ensure that this value is correct even if the last pinch distance was measured relative to different world coordinates. The multiplication by 10 is an experimental value that I found worked well --- ideally, we want the world coordinates at the touch points to always remain the same, so that it feels as much as possible like pinching is physically moving the scene. That's not always possible in practice, but this comes pretty close.
 
 
 
@@ -247,9 +247,9 @@ On the touchscreen side, <code>touch_distance_delta</code> is the difference bet
 
 
 
-This isn&#x2019;t as bad as it looks. <code>wilson.input.get_zoomed_world_center</code> tells us what the new world center values should be in order to fix a certain point, given that fixed point along with what the world width and height will be after the zoom &mdash; this is why we have to handle the two aspect ratio cases separately. After that, we use <code>zoom_level</code> as an exponent. To see why this is the case, remember that pinching or scrolling should zoom in a constant speed relative to the current world size, which means we need to scale to a proportion of the it, and repeated multiplication by that proportion gives us an exponential function. Another important thing to note is that we use <code>wilson</code>&#x2019;s values of world width and height to set <code>wilson_hidden</code>&#x2019;s uniforms, since we&#x2019;re only keeping track of those values in the non-hidden canvas.
+This isn't as bad as it looks. <code>wilson.input.get_zoomed_world_center</code> tells us what the new world center values should be in order to fix a certain point, given that fixed point along with what the world width and height will be after the zoom --- this is why we have to handle the two aspect ratio cases separately. After that, we use <code>zoom_level</code> as an exponent. To see why this is the case, remember that pinching or scrolling should zoom in a constant speed relative to the current world size, which means we need to scale to a proportion of the it, and repeated multiplication by that proportion gives us an exponential function. Another important thing to note is that we use <code>wilson</code>'s values of world width and height to set <code>wilson_hidden</code>'s uniforms, since we're only keeping track of those values in the non-hidden canvas.
 
-We&#x2019;re almost done &mdash; all that&#x2019;s left is a small tweak to the aspect ratio changer.
+We're almost done --- all that's left is a small tweak to the aspect ratio changer.
 
 
 
@@ -312,9 +312,9 @@ We&#x2019;re almost done &mdash; all that&#x2019;s left is a small tweak to the 
 
 ## Inertia
 
-We talked about making the zoom gestures feel natural, but if panning and zooming don&#x2019;t carry inertia, they will never feel truly native. This takes just a bit more effort than what we&#x2019;ve done already, and the result is well worth it.
+We talked about making the zoom gestures feel natural, but if panning and zooming don't carry inertia, they will never feel truly native. This takes just a bit more effort than what we've done already, and the result is well worth it.
 
-When we stop dragging or pinching, we&#x2019;ll take the last adjustment we made to the world center or zoom level and repeat it over the next second or two, multiplying it by a constant between 0 and 1 every frame. When that velocity is below a certain threshhold, we&#x2019;ll stop it completely to avoid endlessly drawing the same frame. Similarly, we&#x2019;ll only start the process if the velocity is above a different threshhold in order to avoid the annoying situation where making precise adjustments is impossible and the whole applet feels slippery.
+When we stop dragging or pinching, we'll take the last adjustment we made to the world center or zoom level and repeat it over the next second or two, multiplying it by a constant between 0 and 1 every frame. When that velocity is below a certain threshhold, we'll stop it completely to avoid endlessly drawing the same frame. Similarly, we'll only start the process if the velocity is above a different threshhold in order to avoid the annoying situation where making precise adjustments is impossible and the whole applet feels slippery.
 
 
 
@@ -372,7 +372,7 @@ When we stop dragging or pinching, we&#x2019;ll take the last adjustment we made
 
 
 
-All of the constant values here were found experimentally &mdash; these seem to give a good balance between glide and control. The fixed point coordinates are globals now, since we need to remember them in order to continue a zoom after the pinch gesture ends.
+All of the constant values here were found experimentally --- these seem to give a good balance between glide and control. The fixed point coordinates are globals now, since we need to remember them in order to continue a zoom after the pinch gesture ends.
 
 
 
@@ -427,7 +427,7 @@ All of the constant values here were found experimentally &mdash; these seem to 
 
 
 
-While we&#x2019;re dragging, we store what the velocity would be if we released at that moment, and when we finally do release, we use that velocity as long as it&#x2019;s above the threshhold. Note that we divide by a factor involding the world size, since the velocities will shrink proportionally to the world as we zoom in.
+While we're dragging, we store what the velocity would be if we released at that moment, and when we finally do release, we use that velocity as long as it's above the threshhold. Note that we divide by a factor involding the world size, since the velocities will shrink proportionally to the world as we zoom in.
 
 
 
@@ -481,7 +481,7 @@ While we&#x2019;re dragging, we store what the velocity would be if we released 
 
 
 
-We do the same thing for zooming. We don&#x2019;t have divide by a factor related to world size, since <code>zoom_level</code> is unitless. The two scroll wheel cases are a way to differentiate continuous ones (like trackpads) from discrete ones. Here, continuous scrolling will directly translate to zooming, just like pinching, while discrete scrolling will only add velocity, giving it a bouncing effect.
+We do the same thing for zooming. We don't have divide by a factor related to world size, since <code>zoom_level</code> is unitless. The two scroll wheel cases are a way to differentiate continuous ones (like trackpads) from discrete ones. Here, continuous scrolling will directly translate to zooming, just like pinching, while discrete scrolling will only add velocity, giving it a bouncing effect.
 
 
 
@@ -558,7 +558,7 @@ We do the same thing for zooming. We don&#x2019;t have divide by a factor relate
 
 <div style="height: 32px"></div>
 
-At last, we have a Julia set explorer with excellent performance, graphics, and controls. If it weren&#x2019;t for the url bar, this could be mistaken for a native application &mdash; but in my opinion, the massive feature set of modern JavaScript combined with the universal use of the web make applets like these better in almost every respect than their native equivalents. And that&#x2019;s the design philosophy of Wilson &mdash; to make that feature set simple to use, so you can create beautiful applets like this without getting stuck in boilerplate hell.
+At last, we have a Julia set explorer with excellent performance, graphics, and controls. If it weren't for the url bar, this could be mistaken for a native application --- but in my opinion, the massive feature set of modern JavaScript combined with the universal use of the web make applets like these better in almost every respect than their native equivalents. And that's the design philosophy of Wilson --- to make that feature set simple to use, so you can create beautiful applets like this without getting stuck in boilerplate hell.
 	
 You can view the code for this page <a href="/projects/wilson/guide/6-interactivity/scripts/index.js">here</a>.
 

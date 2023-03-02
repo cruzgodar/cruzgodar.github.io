@@ -2,9 +2,9 @@
 
 ### nav-buttons
 
-So far, we&#x2019;ve defined derivatives with a cumbersome limit definition, and then found a cleaner formula for polynomials. We also know how to take derivatives of functions made by adding, subtracting, multiplying, or dividing other functions. There&#x2019;s two major things left for us to do before we have a solid bedrock of derivatives: we need to know how to take derivatives of other basic functions, like $\sin(x)$, $\cos(x)$, $\ln(x)$, and $e^x$, and we also need to know how to differentiate functions made by combining others via composition: for example, $\cos(x^5)$ or $(\cos(x))^5$.
+So far, we've defined derivatives with a cumbersome limit definition, and then found a cleaner formula for polynomials. We also know how to take derivatives of functions made by adding, subtracting, multiplying, or dividing other functions. There's two major things left for us to do before we have a solid bedrock of derivatives: we need to know how to take derivatives of other basic functions, like $\sin(x)$, $\cos(x)$, $\ln(x)$, and $e^x$, and we also need to know how to differentiate functions made by combining others via composition: for example, $\cos(x^5)$ or $(\cos(x))^5$.
 
-Let&#x2019;s start with the first of those two &mdash; we&#x2019;ll save compositions for the next section. The first thing to cover is what the derivatives of trig functions look like. There are six of them, and all the derivatives are combinations of others.
+Let's start with the first of those two --- we'll save compositions for the next section. The first thing to cover is what the derivatives of trig functions look like. There are six of them, and all the derivatives are combinations of others.
 
 
 
@@ -26,7 +26,7 @@ Let&#x2019;s start with the first of those two &mdash; we&#x2019;ll save composi
 
 
 
-The notation $\sec^2(x)$ just means $(\sec(x))^2$ &mdash; we use it to distinguish from $\sec(x^2)$.
+The notation $\sec^2(x)$ just means $(\sec(x))^2$ --- we use it to distinguish from $\sec(x^2)$.
 
 
 
@@ -50,7 +50,7 @@ The notation $\sec^2(x)$ just means $(\sec(x))^2$ &mdash; we use it to distingui
 
 
 
-Let&#x2019;s take a closer look at what the relationship between $\sin$ and $\cos$ means. At any point on the two waves, the height of $\cos(x)$ gives the slope of $\sin(x)$, and the height of $\cos(x)$ is the opposite of the slope of $\sin(x)$. It&#x2019;s a fundamental fact of waves that their slopes are given by other wave functions.
+Let's take a closer look at what the relationship between $\sin$ and $\cos$ means. At any point on the two waves, the height of $\cos(x)$ gives the slope of $\sin(x)$, and the height of $\cos(x)$ is the opposite of the slope of $\sin(x)$. It's a fundamental fact of waves that their slopes are given by other wave functions.
 
 ### desmos sin-and-cos
 
@@ -60,7 +60,7 @@ Let&#x2019;s take a closer look at what the relationship between $\sin$ and $\co
 	
 	Find $\displaystyle \frac{d^{74}}{dx^{74}}[\cos(x)]$.
 	
-	This seems pretty tricky on first glance, but it&#x2019;s actually not so bad. Let&#x2019;s write out the first few derivatives and see if we can spot a pattern.
+	This seems pretty tricky on first glance, but it's actually not so bad. Let's write out the first few derivatives and see if we can spot a pattern.
 	
 	$\displaystyle \frac{d}{dx}[\cos(x)] = -\sin(x)$.
 	
@@ -70,7 +70,7 @@ Let&#x2019;s take a closer look at what the relationship between $\sin$ and $\co
 	
 	$\displaystyle \frac{d^4}{dx^4}[\cos(x)] = \cos(x)$.
 	
-	Since the fourth derivative is just $\cos(x)$ again, every four derivatives we take won&#x2019;t matter. Therefore, instead of taking the 74th derivative, we can take the 70th, or 66th, or 62nd, and so on. The largest multiple of 4 less than 74 is $72 = 4 * 18$, so
+	Since the fourth derivative is just $\cos(x)$ again, every four derivatives we take won't matter. Therefore, instead of taking the 74th derivative, we can take the 70th, or 66th, or 62nd, and so on. The largest multiple of 4 less than 74 is $72 = 4 * 18$, so
 	
 	$$
 		\begin{align*}
@@ -91,7 +91,7 @@ Let&#x2019;s take a closer look at what the relationship between $\sin$ and $\co
 
 ## Exponential and Logarithmic Derivatives
 
-The final functions to talk about are exponential functions ($y = b^x$) and logarithmic ones ($y = \log_b(x)$). In case logs aren&#x2019;t particularly familiar, let&#x2019;s review them briefly. The log base $b$ of $x$ is the number you need to raise $b$ to in order to get $x$. For example, $\log_2(8) = 3$, since $8 = 2^3$. Of special importantance is the **natural log**, which is $\ln(x) = \log_e(x)$. That number $e$ is **Euler&#x2019;s constant**: an irrational number defined as $e \approx 2.71828...$.
+The final functions to talk about are exponential functions ($y = b^x$) and logarithmic ones ($y = \log_b(x)$). In case logs aren't particularly familiar, let's review them briefly. The log base $b$ of $x$ is the number you need to raise $b$ to in order to get $x$. For example, $\log_2(8) = 3$, since $8 = 2^3$. Of special importantance is the **natural log**, which is $\ln(x) = \log_e(x)$. That number $e$ is **Euler's constant**: an irrational number defined as $e \approx 2.71828...$.
 
 
 
@@ -141,7 +141,7 @@ This is one reason why we care so much about the number $e$: derivatives involvi
 
 
 
-At this point, there&#x2019;s a lot opened up to us. The rest of the quarter will be spent doing two things: learning how to take derivatives of more functions, like compositions, inverse functions, and implicit functions, and also learning why derivatives are so useful. We&#x2019;ve done some basic applications so far, but there are a handful more that we&#x2019;ll want to talk about &mdash; the most important is optimization, a technique that would justify learning about derivatives even if they weren&#x2019;t useful for anything else. The next three sections will be concerned with the first topic, and the remaining six after that will cover the second.
+At this point, there's a lot opened up to us. The rest of the quarter will be spent doing two things: learning how to take derivatives of more functions, like compositions, inverse functions, and implicit functions, and also learning why derivatives are so useful. We've done some basic applications so far, but there are a handful more that we'll want to talk about --- the most important is optimization, a technique that would justify learning about derivatives even if they weren't useful for anything else. The next three sections will be concerned with the first topic, and the remaining six after that will cover the second.
 
 
 

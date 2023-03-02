@@ -2,7 +2,7 @@
 
 ### nav-buttons
 
-With the hardest conceptual work behind us, let&#x2019;s turn to some simple applications of integrals. The first one we&#x2019;ve touched on before, and you probably saw plenty of it in calc I: the relationship between position, velocity, and acceleration. Remember that **displacement** means signed distance: if you move $3$ meters right and $2$ left, then your net displacement is only $1$ meter, while your total distance traveled is $5$.
+With the hardest conceptual work behind us, let's turn to some simple applications of integrals. The first one we've touched on before, and you probably saw plenty of it in calc I: the relationship between position, velocity, and acceleration. Remember that **displacement** means signed distance: if you move $3$ meters right and $2$ left, then your net displacement is only $1$ meter, while your total distance traveled is $5$.
 
 
 
@@ -10,7 +10,7 @@ With the hardest conceptual work behind us, let&#x2019;s turn to some simple app
 	
 	A particle is traveling in a straight line with a velocity of $v(t) = 3t - 5 \frac{m}{s}$ after $t$ seconds. Find the net displacement of the particle over $3$ seconds and its total distance traveled.
 	
-	Let&#x2019;s start with net displacement, which is just $s(3) - s(0)$. Since $s$ is an antiderivative of $v$, we have that
+	Let's start with net displacement, which is just $s(3) - s(0)$. Since $s$ is an antiderivative of $v$, we have that
 	
 	$$
 		\begin{align*}
@@ -24,7 +24,7 @@ With the hardest conceptual work behind us, let&#x2019;s turn to some simple app
 	
 	Therefore, the particle ended up $1.5$ meters to the left of where it started after $3$ seconds.
 	
-	This is just the end result, though, and it doesn&#x2019;t tell us how much the particle moved in total. For that, there&#x2019;s an easy change we can make: rather than integrating $v$, which is sometimes negative and sometimes positive, we&#x2019;ll integrate $|v|$. This makes all velocity count as positive, whether it&#x2019;s to the left or right, and so integrating that will give us total distance traveled. There&#x2019;s some nuance to just taking that absolute value, though, because we need to know <em>when</em> $v$ is positive and when it&#x2019;s negative. To do this, we&#x2019;ll first set it equal to zero: if $3t - 5 = 0$, then $t = \frac{5}{3}$, and since $v$ is a line with positive slope, it must be negative for $t &lt; \frac{5}{3}$ and positive for $t > \frac{5}{3}$. In order to take the absolute value, we need to negate $v$ when it&#x2019;s negative and not when it&#x2019;s positive. This means doing different things on different parts of the domain, so we need to split up the integral itself. If we let $s_{\text{tot}}(t)$ be the total distance traveled after $t$ seconds, then we have
+	This is just the end result, though, and it doesn't tell us how much the particle moved in total. For that, there's an easy change we can make: rather than integrating $v$, which is sometimes negative and sometimes positive, we'll integrate $|v|$. This makes all velocity count as positive, whether it's to the left or right, and so integrating that will give us total distance traveled. There's some nuance to just taking that absolute value, though, because we need to know <em>when</em> $v$ is positive and when it's negative. To do this, we'll first set it equal to zero: if $3t - 5 = 0$, then $t = \frac{5}{3}$, and since $v$ is a line with positive slope, it must be negative for $t &lt; \frac{5}{3}$ and positive for $t > \frac{5}{3}$. In order to take the absolute value, we need to negate $v$ when it's negative and not when it's positive. This means doing different things on different parts of the domain, so we need to split up the integral itself. If we let $s_{\text{tot}}(t)$ be the total distance traveled after $t$ seconds, then we have
 	
 	$$
 		\begin{align*}
@@ -87,7 +87,7 @@ With the hardest conceptual work behind us, let&#x2019;s turn to some simple app
 
 
 
-Let&#x2019;s finish the section with something a little easier. You might have seen even and odd functions before &mdash; let&#x2019;s briefly review what they are.
+Let's finish the section with something a little easier. You might have seen even and odd functions before --- let's briefly review what they are.
 
 
 
@@ -123,7 +123,7 @@ Geometrically, even functions are ones whose graphs are symmetric about the $y$-
 
 
 
-This shouldn&#x2019;t be terribly surprising. If a function is even and we&#x2019;re integrating over an interval centered at $0$, then the total area is evenly split over the parts to the left and right of $x = 0$. If the function is odd, then those two areas exactly cancel out instead.
+This shouldn't be terribly surprising. If a function is even and we're integrating over an interval centered at $0$, then the total area is evenly split over the parts to the left and right of $x = 0$. If the function is odd, then those two areas exactly cancel out instead.
 
 
 
@@ -169,13 +169,13 @@ This shouldn&#x2019;t be terribly surprising. If a function is even and we&#x201
 		\end{align*}
 	$$
 	
-	The symmetry of the graph of $\cos$ on $[0, \pi]$ caused its integral to be zero too, even though it wasn&#x2019;t an odd function. 
+	The symmetry of the graph of $\cos$ on $[0, \pi]$ caused its integral to be zero too, even though it wasn't an odd function. 
 	
 ###
 
 
 
-In the next section, we&#x2019;ll start talking about the first technique we have to calculate more complicated integrals.
+In the next section, we'll start talking about the first technique we have to calculate more complicated integrals.
 
 
 

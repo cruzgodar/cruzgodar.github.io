@@ -1,6 +1,6 @@
 # Wilson Documentation
 
-An explanation of Wilson&#x2019;s properties and methods. At the time of writing, private variables are barely implemented in JavaScript, so although all variables are public, only the ones listed here are intended to be.
+An explanation of Wilson's properties and methods. At the time of writing, private variables are barely implemented in JavaScript, so although all variables are public, only the ones listed here are intended to be.
 
 
 
@@ -10,7 +10,7 @@ An explanation of Wilson&#x2019;s properties and methods. At the time of writing
 
 
 
-`render`: determines the type of canvas and the method used to render it. Valid values are `"cpu"`, `"hybrid"` (default), or `"gpu"`. `"cpu"` uses a standard canvas and draws frames by modifying its image data. `"hybrid"` uses a WebGL canvas and draws frames by rendering them as textures. This mode can increase the maximum canvas size in some browsers and should generally be used over `"cpu"`. Finally, `"gpu"` uses a WebGL canvas and renders a fragment shader that&#x2019;s also passed in the options.
+`render`: determines the type of canvas and the method used to render it. Valid values are `"cpu"`, `"hybrid"` (default), or `"gpu"`. `"cpu"` uses a standard canvas and draws frames by modifying its image data. `"hybrid"` uses a WebGL canvas and draws frames by rendering them as textures. This mode can increase the maximum canvas size in some browsers and should generally be used over `"cpu"`. Finally, `"gpu"` uses a WebGL canvas and renders a fragment shader that's also passed in the options.
 
 `shader`: a fragment shader for a WebGL canvas. Ignored unless `render` is `"gpu"`.
 
@@ -20,7 +20,7 @@ An explanation of Wilson&#x2019;s properties and methods. At the time of writing
 
 `world_center_x, world_center_y`: the coordinates that the center pixel of the canvas represents, similarly to `world_width` and `world_height`. Default to `0`.
 
-`auto_arrange_canvases`: a boolean indicating whether to the canvas into the container structure necessary to use draggables and fullscreen. Defaults to `true`, and strongly recommended to stay that way unless you know what you&#x2019;re doing.
+`auto_arrange_canvases`: a boolean indicating whether to the canvas into the container structure necessary to use draggables and fullscreen. Defaults to `true`, and strongly recommended to stay that way unless you know what you're doing.
 
 
 
@@ -116,7 +116,7 @@ An explanation of Wilson&#x2019;s properties and methods. At the time of writing
 
 `wilson.draggables.add(x, y)`: adds a new draggable at the specified world coordinates.
 
-`wilson.draggables.recalculate_locations()`: recalculates all of the draggables&#x2019; page coordinates based on their world coordinates.
+`wilson.draggables.recalculate_locations()`: recalculates all of the draggables' page coordinates based on their world coordinates.
 
 
 

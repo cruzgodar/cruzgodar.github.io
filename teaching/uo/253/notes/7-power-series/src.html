@@ -2,15 +2,15 @@
 
 ### nav-buttons
 
-In this section, we&#x2019;ll fundamentally change the way we look at and work with series. The change seems innocent enough at first, but its effects will be surprisingly profound.
+In this section, we'll fundamentally change the way we look at and work with series. The change seems innocent enough at first, but its effects will be surprisingly profound.
 
-Let&#x2019;s begin with the geometric series $\sum_{n = 0}^\infty r^n$. Right now, we typically think of $r$ as a parameter we can choose before working with the series &mdash; for example, with $r = \frac{1}{2}$, we have the series
+Let's begin with the geometric series $\sum_{n = 0}^\infty r^n$. Right now, we typically think of $r$ as a parameter we can choose before working with the series --- for example, with $r = \frac{1}{2}$, we have the series
 
 $$
 	\sum_{n = 0}^\infty \left( \frac{1}{2} \right)^n = \frac{1}{1 - \frac{1}{2}} = 2.
 $$
 
-Now, though, we&#x2019;ll think of $r$ as a **variable**, specifically as an input to a function $f$. To emphasize that change, let&#x2019;s use $x$ instead of $r$. Our series now becomes
+Now, though, we'll think of $r$ as a **variable**, specifically as an input to a function $f$. To emphasize that change, let's use $x$ instead of $r$. Our series now becomes
 
 $$
 	f(x) = \sum_{n = 0}^\infty x^n.
@@ -26,7 +26,7 @@ $$
 
 converges when $|x - 8| < 1$, or in other words, when $x$ is in the interval $(7, 9)$.
 
-So far, all we&#x2019;ve done is rename a variable to $x$ and introduce a small transformation to the series. But this type of series will form the basis for the rest of the course, and we&#x2019;d do well to give it a name.
+So far, all we've done is rename a variable to $x$ and introduce a small transformation to the series. But this type of series will form the basis for the rest of the course, and we'd do well to give it a name.
 
 
 
@@ -44,9 +44,9 @@ So far, all we&#x2019;ve done is rename a variable to $x$ and introduce a small 
 
 
 
-To make sure that power series are always defined, we&#x2019;ll insist that $(x - a)^0 = 1$, even when $x = a$.
+To make sure that power series are always defined, we'll insist that $(x - a)^0 = 1$, even when $x = a$.
 
-A power series centered at $a$ always converges when $x = a$, since every term after the first is zero. Some power series <em>only</em> converge for that value of $x$ and no others &mdash; for example, take the series
+A power series centered at $a$ always converges when $x = a$, since every term after the first is zero. Some power series <em>only</em> converge for that value of $x$ and no others --- for example, take the series
 
 $$
 	\sum_{n = 0}^\infty n!x^n.
@@ -63,7 +63,7 @@ $$
 
 Therefore, the series converges only for $x = 0$ and diverges otherwise.
 
-We&#x2019;ve seen that other power series converge for $x$ inside of an interval and diverge otherwise, like $\sum_{n = 0}^\infty x^n$. One final possibility is that they converge no matter what $x$ is. For an example of that sort of behavior, let&#x2019;s look at the series
+We've seen that other power series converge for $x$ inside of an interval and diverge otherwise, like $\sum_{n = 0}^\infty x^n$. One final possibility is that they converge no matter what $x$ is. For an example of that sort of behavior, let's look at the series
 
 $$
 	\sum_{n = 0}^\infty \frac{x^n}{n!}.
@@ -81,7 +81,7 @@ $$
 
 Therefore, the series always converges, regardless of the value of $x$.
 
-It turns out that these are the *only* three possibilities for the convergence of a power series &mdash; and in fact, when they converge for $x$ in some interval, we can be more precise about what that interval looks like.
+It turns out that these are the *only* three possibilities for the convergence of a power series --- and in fact, when they converge for $x$ in some interval, we can be more precise about what that interval looks like.
 
 
 
@@ -133,7 +133,7 @@ For example, $\sum_{n = 0}^\infty x^n$ has a radius of convergence of $R = 1$, a
 	
 	**Solutions:**
 	
-	1. With all the exponents (and no $n$s in the bases), let&#x2019;s try the ratio test. We have
+	1. With all the exponents (and no $n$s in the bases), let's try the ratio test. We have
 	
 	$$
 		\begin{align*}
@@ -155,13 +155,13 @@ For example, $\sum_{n = 0}^\infty x^n$ has a radius of convergence of $R = 1$, a
 		\end{align*}
 	$$
 	
-	So the interval of convergence is at least $(-3, 1)$, but what about the endpoints? That&#x2019;s when $r = 1$ in the ratio test, so we need to try something else. When $x = -3$, the series becomes 
+	So the interval of convergence is at least $(-3, 1)$, but what about the endpoints? That's when $r = 1$ in the ratio test, so we need to try something else. When $x = -3$, the series becomes 
 	
 	$$
 		\sum_{n = 0}^\infty \frac{(-2)^n}{2^n(n + 1)} = \sum_{n = 0}^\infty \frac{(-1)^n}{n + 1}.
 	$$
 	
-	That&#x2019;s just the Alternating Harmonic series, which converges. For $x = 1$, though, it&#x2019;s the regular Harmonic series, which diverges. In total, the interval of convergence is $[-3, 1)$, and the radius is $R = 2$. As a good check, the center of that interval is $-1$, which matches the series containing $(x + 1)^n$.
+	That's just the Alternating Harmonic series, which converges. For $x = 1$, though, it's the regular Harmonic series, which diverges. In total, the interval of convergence is $[-3, 1)$, and the radius is $R = 2$. As a good check, the center of that interval is $-1$, which matches the series containing $(x + 1)^n$.
 	
 	2. The ratio test is also a good choice here:
 	
@@ -174,13 +174,13 @@ For example, $\sum_{n = 0}^\infty x^n$ has a radius of convergence of $R = 1$, a
 		\end{align*}
 	$$
 	
-	This time, the series converges when $|x| < 1$, or equivalently, when $-1 < x < 1$. Again, the ratio test failed to tell us anything about the endpoints, so we&#x2019;ll have to inspect those manually. When $x = -1$, we have
+	This time, the series converges when $|x| < 1$, or equivalently, when $-1 < x < 1$. Again, the ratio test failed to tell us anything about the endpoints, so we'll have to inspect those manually. When $x = -1$, we have
 	
 	$$
 		\sum_{n = 1}^\infty \frac{(-1)^n}{\sqrt{n}},
 	$$
 	
-	which converges by the alternating series test. When $x = 1$, it&#x2019;s a $p$-series with $p = \frac{1}{2} \leq 1$, which diverges. Therefore, the interval of convergence is $[-1, 1)$, and the radius of convergence is $R = 1$.
+	which converges by the alternating series test. When $x = 1$, it's a $p$-series with $p = \frac{1}{2} \leq 1$, which diverges. Therefore, the interval of convergence is $[-1, 1)$, and the radius of convergence is $R = 1$.
 
 ###
 
@@ -194,7 +194,7 @@ By starting with the geometric series $\sum_{n = 0}^\infty x^n$ and modifying it
 	
 	Write $f(x) = \frac{x}{1 + 3x^2}$ as a power series, and state the interval and radius of convergence.
 	
-	First of all, if we&#x2019;re going to use the fact that $\frac{1}{1 - x} = \sum_{n = 0}^\infty x^n$, we&#x2019;d like our numerator to be equal to $1$. To get us to that point, we&#x2019;ll factor out the $x$ and deal with $\frac{1}{1 + 3x^2}$ on its own. To make it conform to the format we know, the denominator should be $1$ minus something instead of $1$ plus something, so we&#x2019;ll rewrite it as
+	First of all, if we're going to use the fact that $\frac{1}{1 - x} = \sum_{n = 0}^\infty x^n$, we'd like our numerator to be equal to $1$. To get us to that point, we'll factor out the $x$ and deal with $\frac{1}{1 + 3x^2}$ on its own. To make it conform to the format we know, the denominator should be $1$ minus something instead of $1$ plus something, so we'll rewrite it as
 	
 	$$
 		\frac{1}{1 - (-3x^2)}.
@@ -227,7 +227,7 @@ By starting with the geometric series $\sum_{n = 0}^\infty x^n$ and modifying it
 	
 	Write the function $g(x) = \frac{x^3}{2 + x^2}$ as a power series, and find the interval and radius of convergence. Hint: $2 + x^2 = 2\left(1 + \frac{x^2}{2}\right)$.
 	
-	**Solution:** as in the example, we&#x2019;ll rewrite this to look like $\frac{1}{1 - x}$:
+	**Solution:** as in the example, we'll rewrite this to look like $\frac{1}{1 - x}$:
 	
 	$$
 		\begin{align*}

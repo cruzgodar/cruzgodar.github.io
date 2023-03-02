@@ -8,7 +8,7 @@ $$
 	\int \cos(x)\,dx = \sin(x) + C.
 $$
 
-What we have yet to develop are the rules analogous to the ones for derivatives. In this section, we&#x2019;ll start with the simplest and arguably the most useful: the opposite of the chain rule.
+What we have yet to develop are the rules analogous to the ones for derivatives. In this section, we'll start with the simplest and arguably the most useful: the opposite of the chain rule.
 
 
 
@@ -38,7 +38,7 @@ This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{d
 	
 	Find $\displaystyle \int 6x(3x^2 + 4)^4\,dx$.
 	
-	We could foil out $(3x^2 + 4)^4$, but that&#x2019;s much more work than is necessary. Instead, we can think of it as a composition of two functions, where the outside function is $x^4$ and the inside one is $3x^2 + 4$. Since
+	We could foil out $(3x^2 + 4)^4$, but that's much more work than is necessary. Instead, we can think of it as a composition of two functions, where the outside function is $x^4$ and the inside one is $3x^2 + 4$. Since
 	
 	$$
 		\frac{d}{dx} \left[ 3x^2 + 4 \right] = 6x,
@@ -60,7 +60,7 @@ This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{d
 	
 	Find $\displaystyle \int 2\sin^3(2x)\cos(2x)\,dx$.
 	
-	**Solution:** Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won&#x2019;t advance the problem forward &mdash; if you don&#x2019;t see why, try it!) Then $du = 2\cos(2x)\,dx$ by the chain rule, and so the integral becomes
+	**Solution:** Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won't advance the problem forward --- if you don't see why, try it!) Then $du = 2\cos(2x)\,dx$ by the chain rule, and so the integral becomes
 	
 	$$
 		\begin{align*}
@@ -73,11 +73,11 @@ This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{d
 
 
 
-While the chain rule works for all compositions, $u$-sub works only in the particular situations where the derivative of the inside function is present on the outside. Unfortunately, if this isn&#x2019;t the case, there&#x2019;s usually not a way to get around it.
+While the chain rule works for all compositions, $u$-sub works only in the particular situations where the derivative of the inside function is present on the outside. Unfortunately, if this isn't the case, there's usually not a way to get around it.
 
 
 
-### ex $u$-sub doesn&#x2019;t always work
+### ex $u$-sub doesn't always work
 	
 	Find $\displaystyle \int 6x^2(3x^2 + 4)^4\,dx$.
 	
@@ -87,7 +87,7 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 		\int xu^4\,du,
 	$$
 	
-	and that&#x2019;s a dead end, because the integral contains more than just $u$. The only way to possibly make it work is to solve for $x$ in terms of $u$, which gives
+	and that's a dead end, because the integral contains more than just $u$. The only way to possibly make it work is to solve for $x$ in terms of $u$, which gives
 	
 	$$
 		x = \sqrt{\frac{1}{3} (u - 4)}.
@@ -99,7 +99,7 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 		\int u^4\sqrt{\frac{1}{3} (u - 4)}\,du,
 	$$
 	
-	and this is significantly worse than what we started with. Unfortunately, there is simply no way to make $u$-sub helpful on this problem. Eventually, we&#x2019;ll talk about a different strategy to handle this kind of integral, but that&#x2019;s still some time away.
+	and this is significantly worse than what we started with. Unfortunately, there is simply no way to make $u$-sub helpful on this problem. Eventually, we'll talk about a different strategy to handle this kind of integral, but that's still some time away.
 	
 ###
 
@@ -107,7 +107,7 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 	
 	Find $\displaystyle \int_3^4 z\sqrt{z^2 - 5}\,dz$.
 	
-	When using $u$-sub on a definite integral, we need to be careful. The $3$ and $4$ are things to plug in for $z$, not $u$, so we&#x2019;ll need to remember to backsubstitute before plugging in the limits.
+	When using $u$-sub on a definite integral, we need to be careful. The $3$ and $4$ are things to plug in for $z$, not $u$, so we'll need to remember to backsubstitute before plugging in the limits.
 	
 	$$
 		\begin{align*}
@@ -116,7 +116,7 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 		\end{align*}
 	$$
 	
-	At this point, $du$ isn&#x2019;t exactly present in the integral: it&#x2019;s $2z\,dz$ and we only have $z\,dz$. However, since we&#x2019;re only off by a constant multiple, we can just divide by it on both sides to make the expression fit what we have.
+	At this point, $du$ isn't exactly present in the integral: it's $2z\,dz$ and we only have $z\,dz$. However, since we're only off by a constant multiple, we can just divide by it on both sides to make the expression fit what we have.
 	
 	$$
 		\begin{align*}
@@ -240,7 +240,7 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 
 
 
-One last type of $u$-sub problem to explore is where the substitution doesn&#x2019;t *quite* work, but is close enough that we can fix it.
+One last type of $u$-sub problem to explore is where the substitution doesn't *quite* work, but is close enough that we can fix it.
 
 
 
@@ -248,7 +248,7 @@ One last type of $u$-sub problem to explore is where the substitution doesn&#x20
 	
 	Find $\displaystyle \int \frac{x}{\sqrt{x - 1}}\,dx$.
 	
-	The complicated part here is the $\sqrt{x - 1}$, so let&#x2019;s try setting $u$ to be the inside function. If $u = x - 1$, then $du = dx$, and so we have
+	The complicated part here is the $\sqrt{x - 1}$, so let's try setting $u$ to be the inside function. If $u = x - 1$, then $du = dx$, and so we have
 	
 	$$
 		\int \frac{x}{\sqrt{x - 1}}\,dx = \int \frac{x}{\sqrt{u}}\,du.

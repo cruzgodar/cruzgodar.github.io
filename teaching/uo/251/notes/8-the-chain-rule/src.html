@@ -2,9 +2,9 @@
 
 ### nav-buttons
 
-It&#x2019;s worth prefacing this section with a small warning: this is a section students often find particularly difficult. When I first took this course, the chain rule took me a while to digest. Actually applying the rule isn&#x2019;t usually too hard, but recognizing when and how to use it can be tricky.
+It's worth prefacing this section with a small warning: this is a section students often find particularly difficult. When I first took this course, the chain rule took me a while to digest. Actually applying the rule isn't usually too hard, but recognizing when and how to use it can be tricky.
 
-Through the sum, difference, product, and quotient rules, we know how to differentiate functions made by combining other differentiable functions via addition, subtraction, multiplication, and division. Unlike numbers, where those are the only four basic methods of combination, functions have one more: composition. The chain rule will let us differentiate compositions, but we&#x2019;ll have to identify them in order to use it, so let&#x2019;s take some time to work on that.
+Through the sum, difference, product, and quotient rules, we know how to differentiate functions made by combining other differentiable functions via addition, subtraction, multiplication, and division. Unlike numbers, where those are the only four basic methods of combination, functions have one more: composition. The chain rule will let us differentiate compositions, but we'll have to identify them in order to use it, so let's take some time to work on that.
 
 
 
@@ -18,9 +18,9 @@ Through the sum, difference, product, and quotient rules, we know how to differe
 	
 	3. $\displaystyle (x + 1)\sin(x + 1)$.
 	
-	Let&#x2019;s take these one-by-one. For each, we can identify $g(x)$ by the operation that&#x2019;s closest to $x$. Then $f(x)$ comes from the operation that&#x2019;s happening to $g(x)$. This can be tricky to figure out, but it gets easier with practice.
+	Let's take these one-by-one. For each, we can identify $g(x)$ by the operation that's closest to $x$. Then $f(x)$ comes from the operation that's happening to $g(x)$. This can be tricky to figure out, but it gets easier with practice.
 	
-	1. Here, the fifth power is the closest thing to $x$, so $g(x) = x^5$. What&#x2019;s happening to $x^5$ is a cosine, so $f(x) = \cos(x)$. It might be easier to see what $f$ should be by starting with $\cos(x^5)$ and replacing $x^5$ with $x$.
+	1. Here, the fifth power is the closest thing to $x$, so $g(x) = x^5$. What's happening to $x^5$ is a cosine, so $f(x) = \cos(x)$. It might be easier to see what $f$ should be by starting with $\cos(x^5)$ and replacing $x^5$ with $x$.
 	
 	2. Remember from the last section that this is the same thing as $(\ln(x))^3$. Then $g(x) = \ln(x)$ and $f(x) = x^3$.
 	
@@ -30,7 +30,7 @@ Through the sum, difference, product, and quotient rules, we know how to differe
 
 
 
-The chain rule will tell us how to differentiate compositions, but we&#x2019;ll need to identify each separate part in this way in order to use it.
+The chain rule will tell us how to differentiate compositions, but we'll need to identify each separate part in this way in order to use it.
 
 
 
@@ -46,7 +46,7 @@ The chain rule will tell us how to differentiate compositions, but we&#x2019;ll 
 
 
 
-Okay, let&#x2019;s walk through that one. To differentiate a composition, first identify the inner and outer functions. Then differentiate each, plug undifferentiated $g$ into $f'$, and multiply the two together.
+Okay, let's walk through that one. To differentiate a composition, first identify the inner and outer functions. Then differentiate each, plug undifferentiated $g$ into $f'$, and multiply the two together.
 
 
 
@@ -96,7 +96,7 @@ Okay, let&#x2019;s walk through that one. To differentiate a composition, first 
 
 
 
-Just like we can use the chain rule with the product and quotient rules, we can also use it with... the chain rule. This boils down to compositions of more than two functions, like $\sin(\cos(\tan(x)))$. In general, it&#x2019;s easiest to peel off functions from the outside in. Let&#x2019;s see how this works.
+Just like we can use the chain rule with the product and quotient rules, we can also use it with... the chain rule. This boils down to compositions of more than two functions, like $\sin(\cos(\tan(x)))$. In general, it's easiest to peel off functions from the outside in. Let's see how this works.
 
 
 
@@ -104,7 +104,7 @@ Just like we can use the chain rule with the product and quotient rules, we can 
 	
 	Find the derivative of $\displaystyle \sin(\cos(\tan(x)))$.
 	
-	Okay, so what does the chain rule say? We take the outer function, differentiate it and plug in the inner function, then multiply that by the derivative of the inner function. Let&#x2019;s run that through here. The outermost function is $\sin(x)$, and its derivative is $\cos(x)$. So we have
+	Okay, so what does the chain rule say? We take the outer function, differentiate it and plug in the inner function, then multiply that by the derivative of the inner function. Let's run that through here. The outermost function is $\sin(x)$, and its derivative is $\cos(x)$. So we have
 	
 	$$
 		\frac{d}{dx}[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) \frac{d}{dx}[\cos(\tan(x))].
@@ -132,9 +132,9 @@ Just like we can use the chain rule with the product and quotient rules, we can 
 
 
 
-Let&#x2019;s mention another way the chain rule is often stated. The derivative $\frac{d}{dx}[y]$ is often written as $\frac{dy}{dx}$. Although they both mean derivative, $\frac{d}{dx}$ is a verb and $\frac{dy}{dx}$ is a noun.
+Let's mention another way the chain rule is often stated. The derivative $\frac{d}{dx}[y]$ is often written as $\frac{dy}{dx}$. Although they both mean derivative, $\frac{d}{dx}$ is a verb and $\frac{dy}{dx}$ is a noun.
 
-The advantage of writing things in this way is that the chain rule becomes quite simple to write down. I&#x2019;m not partial to this notation for reasons that will shortly become clear, but it is undeniably slick.
+The advantage of writing things in this way is that the chain rule becomes quite simple to write down. I'm not partial to this notation for reasons that will shortly become clear, but it is undeniably slick.
 
 Let $y = f(g(x))$ and define a new variable $u = g(x)$. Then $y = f(u)$, so
 
@@ -154,7 +154,7 @@ $$
 	\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}.
 $$
 
-We get a somewhat bizarre-looking equation that seems to imply that we can cancel the $du$. While this isn&#x2019;t completely inaccurate, it&#x2019;s best not to get too used to thinking this way from the start &mdash; it makes it easier to make mistakes.
+We get a somewhat bizarre-looking equation that seems to imply that we can cancel the $du$. While this isn't completely inaccurate, it's best not to get too used to thinking this way from the start --- it makes it easier to make mistakes.
 
 
 
