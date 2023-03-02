@@ -143,6 +143,8 @@ Site.Settings =
 	//Changes a setting.
 	toggle_theme: function(no_animation = false)
 	{
+		console.log("changing theme!");
+		
 		if (this.url_vars["theme"] === 1 && Site.force_dark_theme_pages.includes(Page.url))
 		{
 			return;
@@ -209,7 +211,8 @@ Site.Settings =
 		
 		
 		
-		this.animate_theme(this.url_vars["theme"] === 1);
+		try {this.animate_theme(this.url_vars["theme"] === 1)}
+		catch(ex) {}
 		
 		
 		
@@ -219,7 +222,7 @@ Site.Settings =
 				targets: this.meta_theme_color_element,
 				content: this.url_vars["theme"] === 1 ? "#181818" : "#ffffff",
 				duration: Site.opacity_animation_time * 2,
-				easing: "cubicBezier(.25, .1, .25, 1)"
+				easing: "cubicBezier(.25, .1, .25, 1)",
 			});
 		}
 		
@@ -227,10 +230,6 @@ Site.Settings =
 		{
 			this.meta_theme_color_element.setAttribute("content", this.url_vars["theme"] === 1 ? "#181818" : "#ffffff");
 		}
-		
-		
-		
-		Page.Navigation.write_url_vars();
 		
 		
 		
