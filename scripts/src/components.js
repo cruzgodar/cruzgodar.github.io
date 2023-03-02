@@ -157,26 +157,80 @@ Page.Components =
 	
 	Parse:
 	{
+		/*
+			Test cases: *italics*, **bold**, `code`, $math$, ***bold and italic***, $*asterisks in math*$, $**bold in math**$, $`code in math`$, `*asterisks in code*`, \$escaped dollar signs\$, \`escaped backticks\`, \*escaped asterisks\*, `$dollar signs in code$`
+		*/
+		
 		"text": (text) =>
 		{
-			//None of the delimiters * and ` can be parsed if they're inside math mode, so we'll modify those things and put them back afterward. The syntax [.^\$] means any character other than a dollar sign.
+			//None of the delimiters * and ` can be parsed if they're inside math mode, so we'll modify those things and put them back afterward. The syntax [^\$] means any character other than a dollar sign.
 			
-			//First, we replace ending dollar signs with [END$] to differentiate them for later. Otherwise, delimiters between dollar signs would be matched too.
-			let html = text.replaceAll(/\$(.*?)\$/g, "\$ $1 [END\$]");
+			//First, we replace ending dollar signs with [END$] to differentiate them for later. Otherwise, delimiters between dollar signs would be matched too. We also replace escaped characters.
+			let html = text
+			.replaceAll(/\\\$/g, "[DOLLARSIGN]")
+			.replaceAll(/\\`/g, "[BACKTICK]")
+			.replaceAll(/\\\*/g, "[ASTERISK]")
+			.replaceAll(/\\\"/g, "[DOUBLEQUOTE]")
+			.replaceAll(/\\\'/g, "[SINGLEQUOTE]")
+			.replaceAll(/\$(.*?)\$/g, "\$ $1 [END\$]");
 			
-			while (html.match(/\$([.^\$]*?)\*([.^\$]*?)\[END\$\]/))
+			//Escape every asterisk, backtick, and quote inside dollar signs.
+			while (html.match(/\$([^\$]*?)\*([^\$]*?)\[END\$\]/))
 			{
-				html = html.replaceAll(/\$([.^\$]*?)\*([.^\$]*?)%/g, "\$ $1[ASTERISK]$2 [END\$]");
+				html = html.replaceAll(/\$([^\$]*?)\*([^\$]*?)\[END\$\]/g, "\$ $1[ASTERISK]$2 [END\$]");
 			}
 			
-			while (html.match(/\$([.^\$]*?)`([.^\$]*?)\[END\$\]/))
+			while (html.match(/\$([^\$]*?)`([^\$]*?)\[END\$\]/))
 			{
-				html = html.replaceAll(/\$([.^\$]*?)`([.^\$]*?)\[END\$\]/g, "\$ $1[BACKTICK]$2 [END\$]");
+				html = html.replaceAll(/\$([^\$]*?)`([^\$]*?)\[END\$\]/g, "\$ $1[BACKTICK]$2 [END\$]");
 			}
 			
-			html = html.replaceAll(/\*\*(.*?)\*\*/g, "<strong>$1</strong>").replaceAll(/\*(.*?)\*/g, "<em>$1</em>").replaceAll(/`(.*?)`/g, "<code>$1</code>");
+			while (html.match(/\$([^\$]*?)\"([^\$]*?)\[END\$\]/))
+			{
+				html = html.replaceAll(/\$([^\$]*?)\"([^\$]*?)\[END\$\]/g, "\$ $1[DOUBLEQUOTE]$2 [END\$]");
+			}
 			
-			return html.replaceAll(/\[ASTERISK\]/g, "*").replaceAll(/\[BACKTICK\]/g, "`").replaceAll(/\[END\$\]/g, "\$");
+			while (html.match(/\$([^\$]*?)\'([^\$]*?)\[END\$\]/))
+			{
+				html = html.replaceAll(/\$([^\$]*?)\'([^\$]*?)\[END\$\]/g, "\$ $1[SINGLEQUOTE]$2 [END\$]");
+			}
+			
+			//Now we can handle the backticks. Since all of the ones still present aren't inside math mode, we know they must be code. That means we need to play the same game we just did. First we can put back the dollar signs though.
+			
+			html = html.replaceAll(/\[END\$\]/g, "\$").replaceAll(/`(.*?)`/g, "` $1 [END`]");
+			
+			//Escape every asterisk and quote inside backticks.
+			while (html.match(/`([^`]*?)\*([^`]*?)\[END`\]/))
+			{
+				html = html.replaceAll(/`([^`]*?)\*([^`]*?)\[END`\]/g, "` $1[ASTERISK]$2 [END`]");
+			}
+			
+			while (html.match(/`([^`]*?)\"([^`]*?)\[END`\]/))
+			{
+				html = html.replaceAll(/`([^`]*?)\"([^`]*?)\[END`\]/g, "` $1[DOUBLEQUOTE]$2 [END`]");
+			}
+			
+			while (html.match(/`([^`]*?)\'([^`]*?)\[END`\]/))
+			{
+				html = html.replaceAll(/`([^`]*?)\'([^`]*?)\[END`\]/g, "` $1[SINGLEQUOTE]$2 [END`]");
+			}
+			
+			//Now we're finally ready to add the code tags, and then the remaining em and strong tags, and then modify the quotes. Then at long last, we can unescape the remaining characters.
+			return html
+			.replaceAll(/`(.*?)\[END`\]/g, "<code>$1</code>")
+			.replaceAll(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+			.replaceAll(/\*(.*?)\*/g, "<em>$1</em>")
+			.replaceAll(/(\s)\"(\S)/g, "$1&#x201C;$2")
+			.replaceAll(/^\"(\S)/g, "&#x201C;$1")
+			.replaceAll(/\"/g, "&#x201D;")
+			.replaceAll(/(\s)\'(\S)/g, "$1&#x2018;$2")
+			.replaceAll(/^\'(\S)/g, "&#x2018;$1")
+			.replaceAll(/\'/g, "&#x2019;")
+			.replaceAll(/\[DOUBLEQUOTE\]/g, "\"")
+			.replaceAll(/\[SINGLEQUOTE\]/g, "\'")
+			.replaceAll(/\[ASTERISK\]/g, "*")
+			.replaceAll(/\[BACKTICK\]/g, "`")
+			.replaceAll(/\[DOLLARSIGN\]/g, "\\$");
 		},
 		
 		
