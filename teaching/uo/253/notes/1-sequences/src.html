@@ -57,12 +57,13 @@ To talk about the complex behavior of the polynomials we just saw, we need to bu
 	Now let's look at $(c_n)$. That exclamation point is a <dfn>factorial</dfn>: to take the factorial of a positive integer $n$, multiply together all the integers less than or equal to $n$. For example,
 	
 	$$
-		\begin{align*}
-			1! &= 1.\\
-			2! &= 2 \cdot 1 = 2.\\
-			3! &= 3 \cdot 2 \cdot 1 = 6.\\
-			4! &= 4 \cdot 3 \cdot 2 \cdot 1 = 24.
-		\end{align*}
+		1! &= 1.
+		
+		2! &= 2 \cdot 1 = 2.
+		
+		3! &= 3 \cdot 2 \cdot 1 = 6.
+		
+		4! &= 4 \cdot 3 \cdot 2 \cdot 1 = 24.
 	$$
 	
 	We also define $0! = 1$. That might seem weird, but we'll be making heavy use of factorials later in the course, and we'll really want it to be defined that way. Putting everything together, we have
@@ -106,11 +107,11 @@ A formula in terms of $n$ that defines a sequence --- like all three in the prev
 	To check our answer, let's plug it into the recurrence. We have $a_1 = 2^{1 - 1} = 1$ and
 	
 	$$
-		\begin{align*}
-			a_n &= 2a_{n - 1}\\
-			&= 2(2^{n - 1})\\
-			&= 2^n,
-		\end{align*}
+		a_n &= 2a_{n - 1}
+		
+		&= 2(2^{n - 1})
+		
+		&= 2^n,
 	$$
 	
 	which is exactly correct!
@@ -142,12 +143,13 @@ A formula in terms of $n$ that defines a sequence --- like all three in the prev
 	The $b_n$ are a little more complicated. Looking at the differences between successive terms, we have
 	
 	$$
-		\begin{align*}
-			5 - 2 &= 3\\
-			10 - 5 &= 5\\
-			17 - 10 &= 7\\
-			26 - 17 &= 9.
-		\end{align*}
+		5 - 2 &= 3
+		
+		10 - 5 &= 5
+		
+		17 - 10 &= 7
+		
+		26 - 17 &= 9.
 	$$
 	
 	We seem to be adding $2$ more every time, starting with $2$. So $b_2 = 2\cdot 1 + 1 + b_1$, $b_3 = 2\cdot 2 + 1 + b_2$, and so on. The pattern winds up looking like
@@ -159,11 +161,11 @@ A formula in terms of $n$ that defines a sequence --- like all three in the prev
 	An alternative way to arrive at the same solution is to look at $b_n - b_{n - 1}$. Using the explicit formula, this becomes
 	
 	$$
-		\begin{align*}
-			n^2 + 1 - ((n-1)^2 + 1) &= n^2 - (n-1)^2\\
-			&= n^2 - (n^2 - 2n + 1)\\
-			&= 2n - 1.
-		\end{align*}
+		n^2 + 1 - ((n-1)^2 + 1) &= n^2 - (n-1)^2
+		
+		&= n^2 - (n^2 - 2n + 1)
+		
+		&= 2n - 1.
 	$$
 	
 	Therefore, $b_n = b_{n - 1} + 2n - 1$.
@@ -189,12 +191,13 @@ A formula in terms of $n$ that defines a sequence --- like all three in the prev
 	Let's verify this. We have $d_1 = \frac{2^0}{2^1} = 0$, which is correct, and
 	
 	$$
-		\begin{align*}
-			d_{n - 1} + \frac{1}{2^n} &= \frac{2^{n - 2} - 1}{2^{n - 1}} + \frac{1}{2^n}\\
-			&= \frac{2^{n - 1} - 2}{2^n} + \frac{1}{2^n}\\
-			&= \frac{2^{n - 1} - 1}{2^n}\\
-			&= d_n,
-		\end{align*}
+		d_{n - 1} + \frac{1}{2^n} &= \frac{2^{n - 2} - 1}{2^{n - 1}} + \frac{1}{2^n}
+		
+		&= \frac{2^{n - 1} - 2}{2^n} + \frac{1}{2^n}
+		
+		&= \frac{2^{n - 1} - 1}{2^n}
+		
+		&= d_n,
 	$$
 	
 	which is also exactly what we wanted.
@@ -244,12 +247,13 @@ There are two particular types of sequences that crop up often, and it will help
 	We have
 	
 	$$
-		\begin{align*}
-			a_1 &= 1\\
-			a_2 &= 1 - 3\\
-			a_3 &= 1 - 3 - 3\\
-			a_4 &= 1 - 3 - 3 - 3.
-		\end{align*}
+		a_1 &= 1
+		
+		a_2 &= 1 - 3
+		
+		a_3 &= 1 - 3 - 3
+		
+		a_4 &= 1 - 3 - 3 - 3.
 	$$
 	
 	every $a_n$ begins with a $1$ and then subtracts $n - 1$ $3$s, so an explicit formula is $a_n = 1 - 3(n-1)$. Similarly, every $b_n$ begins with a $3$ and then multiplies $n - 1$ $2$s, so we get $b_n = 2(3^{n - 1})$.
@@ -257,11 +261,11 @@ There are two particular types of sequences that crop up often, and it will help
 	To check that these formulas are correct, we verify the initial conditions and the recurrence. For $a_n$, $a_1 = 1 - 3(0) = 0$, which is correct, and
 	
 	$$
-		\begin{align*}
-			a_{n - 1} - 3 &= 1 - 3((n-1) - 1) - 3\\
-			&= 1 - 3(n - 1)\\
-			&= a_n.
-		\end{align*}
+		a_{n - 1} - 3 &= 1 - 3((n-1) - 1) - 3
+		
+		&= 1 - 3(n - 1)
+		
+		&= a_n.
 	$$
 	
 	Similarly, $b_1 = 2$ and $b_n = 2b_{n - 1}$.
@@ -274,11 +278,11 @@ There are two particular types of sequences that crop up often, and it will help
 
 Although they're interesting in their own right, we need sequences because of their ability to **converge**. The idea is very similar to the limit of a function $f(x)$ as $x \to \infty$, so we already have a lot of intuition for how the limit of a sequence might work. For example,
 
-$(1, 2, 3, 4, 5, ...) \to \infty$.
+$\displaystyle (1, 2, 3, 4, 5, ...) \to \infty$.
 
-$\left(1 + \left(-\frac{1}{2}\right)^n \right) = \left(\frac{1}{2}, \frac{5}{4}, \frac{7}{8}, \frac{17}{16}, \frac{31}{32}, ... \right) \to 1$.
+$\displaystyle \left(1 + \left(-\frac{1}{2}\right)^n \right) = \left(\frac{1}{2}, \frac{5}{4}, \frac{7}{8}, \frac{17}{16}, \frac{31}{32}, ... \right) \to 1$.
 
-$(1, -1, 1, -1, 1, ...)$ does not converge.
+$\displaystyle (1, -1, 1, -1, 1, ...)$ does not converge.
 
 Chances are good that when you first learned about limits, you were never given a precise definition. This is for good reason: limits are usually fairly easy to find by inspection, as in the previous three examples; the actual definition is somewhat finicky and precise; and calculus I already has enough concepts that are difficult to digest. Now, though, we need to know that exact definition for sequences, and calculus III is high-level enough that it's reasonable to introduce.
 
@@ -290,11 +294,11 @@ Let's begin with the informal definition, which is a good way to think of limits
 	
 	Let $(a_n)$ be a sequence. If the terms $a_n$ get closer and closer to some finite number $a$ as $n$ gets larger and larger, then we say that $(a_n)$ **converges** to $a$, and we write any of the following:
 	
-	$(a_n) \to a$.
+	$\displaystyle (a_n) \to a$.
 	
-	$\lim_{n \to \infty} (a_n) = a$.
+	$\displaystyle \lim_{n \to \infty} (a_n) = a$.
 	
-	$\lim (a_n) = a$ (since the only limit we can take of a sequence is when $n \to \infty$).
+	$\displaystyle \lim (a_n) = a$ (since the only limit we can take of a sequence is when $n \to \infty$).
 	
 	If $(a_n)$ does not converge, then we say it **diverges**.
 	
@@ -331,12 +335,13 @@ Let's unpack this carefully. First, we start with a candidate $a$ that we think 
 	Let's take a look at that inequality. We have
 	
 	$$
-		\begin{align*}
-			|a_n - 1| &= \left| 1 + \left(-\frac{1}{2}\right)^n - 1 \right|\\
-			&= \left| \left(-\frac{1}{2}\right)^n\right|\\
-			&= \left(\frac{1}{2}\right)^n\\
-			&= \frac{1}{2^n}.
-		\end{align*}
+		|a_n - 1| &= \left| 1 + \left(-\frac{1}{2}\right)^n - 1 \right|
+		
+		&= \left| \left(-\frac{1}{2}\right)^n\right|
+		
+		&= \left(\frac{1}{2}\right)^n
+		
+		&= \frac{1}{2^n}.
 	$$
 	
 	Therefore, when $\varepsilon = 1$, we need to find an $N$ so that whenever $n \geq N$, $\frac{1}{2^n} < 1$. Since $\frac{1}{2^n}$ decreases as $n$ increases and $\frac{1}{2^1} = \frac{1}{2}$, we can just take $N = 1$.
@@ -370,10 +375,9 @@ Let's unpack this carefully. First, we start with a candidate $a$ that we think 
 	Since $\frac{1}{n} > 0$, the absolute value disappears, and so we find that
 	
 	$$
-		\begin{align*}
-			\frac{1}{n} &< 1\\
-			n &> 1.
-		\end{align*}
+		\frac{1}{n} &< 1
+		
+		n &> 1.
 	$$
 	
 	Therefore, we can take $N = 2$. When $\varepsilon = .1$, the solution becomes
@@ -404,17 +408,17 @@ Many of the rules of limits for functions also apply to sequences, so we can oft
 	
 	Suppose $(a_n) \to a$ and $(b_n) \to b$. Let $c$ be a constant. Then:
 	
-	1. $(c) \to c$ (i.e. a sequence of constants converges to that constant).
+	1. $\displaystyle (c) \to c$ (i.e. a sequence of constants converges to that constant).
 	
-	2. $(c \cdot a_n) \to c \cdot a$.
+	2. $\displaystyle (c \cdot a_n) \to c \cdot a$.
 	
-	3. $(a_n + b_n) \to a + b$.
+	3. $\displaystyle (a_n + b_n) \to a + b$.
 	
-	4. $(a_n b_n) \to ab$.
+	4. $\displaystyle (a_n b_n) \to ab$.
 	
-	5. If $b \neq 0$ and every $b_n \neq 0$, then $\left(\frac{a_n}{b_n}\right) \to \frac{a}{b}$.
+	5. If $\displaystyle b \neq 0$ and every $\displaystyle b_n \neq 0$, then $\displaystyle \left(\frac{a_n}{b_n}\right) \to \frac{a}{b}$.
 	
-	6. If $f(x)$ is continuous at $x = a$, then $(f(a_n)) \to f(a)$.
+	6. If $\displaystyle f(x)$ is continuous at $\displaystyle x = a$, then $\displaystyle (f(a_n)) \to f(a)$.
 	
 ###
 
@@ -424,11 +428,11 @@ Many of the rules of limits for functions also apply to sequences, so we can oft
 	
 	Find the limits of the following sequences.
 	
-	1. $(n!)$.
+	1. $\displaystyle (n!)$.
 	
-	2. $\left(1 - \frac{1}{n}\right)$.
+	2. $\displaystyle \left(1 - \frac{1}{n}\right)$.
 	
-	3. $\left(\sin \left( \frac{n}{2^n} \right) \right)$.
+	3. $\displaystyle \left(\sin \left( \frac{n}{2^n} \right) \right)$.
 	
 	**Solutions:**
 	
@@ -547,37 +551,43 @@ If a sequence is monotone increasing and bounded above, then its behavior is ver
 	**Solution:** We want to show that $a_n$ is either bounded above and increasing or bounded below and decreasing. Plugging in a few values of $n$, we get
 	
 	$$
-		\begin{align*}
-			a_2 &= \frac{2}{2} + \frac{1}{4} = \frac{5}{4}\\
-			a_3 &= \frac{5/4}{2} + \frac{1}{5/2} = \frac{5}{8} + \frac{2}{5} = \frac{41}{40}.
-			a_3 &= \frac{41/40}{2} + \frac{1}{41/20} = \frac{41}{80} + \frac{20}{41} = \frac{3281}{3280}.
-		\end{align*}
+		a_2 &= \frac{2}{2} + \frac{1}{4} = \frac{5}{4}
+		
+		a_3 &= \frac{5/4}{2} + \frac{1}{5/2} = \frac{5}{8} + \frac{2}{5} = \frac{41}{40}.
+		
+		a_4 &= \frac{41/40}{2} + \frac{1}{41/20} = \frac{41}{80} + \frac{20}{41} = \frac{3281}{3280}.
 	$$
 	
 	So far all the terms are decreasing --- hopefully, the sequence is always decreasing and also bounded below. Let's start with bounded --- it certainly seems to be bounded below by $1$, so let's see if we can show that. We'll solve the inequality $a_n \geq 1$ and hope to find that it's always true.
 	
 	$$
-		\begin{align*}
-			a_n &\geq 1\\
-			\frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} & \geq 1\\
-			\frac{a_{n - 1}^2 + 1}{2a_{n - 1}} & \geq 1\\
-			a_{n - 1}^2 + 1 & \geq 2a_{n - 1}\\
-			a_{n - 1}^2 - 2a_{n - 1} + 1 & \geq 0\\
-			\left( a_{n - 1} - 1 \right)^2 & \geq 0.
-		\end{align*}
+		a_n &\geq 1
+		
+		\frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} & \geq 1
+		
+		\frac{a_{n - 1}^2 + 1}{2a_{n - 1}} & \geq 1
+		
+		a_{n - 1}^2 + 1 & \geq 2a_{n - 1}
+		
+		a_{n - 1}^2 - 2a_{n - 1} + 1 & \geq 0
+		
+		\left( a_{n - 1} - 1 \right)^2 & \geq 0.
 	$$
 	
 	Since any number squared is positive, this is always true. Now let's show that the sequence is decreasing, which amounts to showing that $a_n \leq a_{n - 1}$. Expanding, we have
 	
 	$$
-		\begin{align*}
-			a_n & \leq a_{n - 1}\\
-			\frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} & \leq a_{n - 1}\\
-			\frac{a_{n - 1}^2 + 1}{2a_{n - 1}} & \leq a_{n - 1}\\
-			a_{n - 1}^2 + 1 & \leq 2a_{n - 1}^2\\
-			1 & \leq a_{n - 1}^2\\
-			a_{n - 1} & \geq 1 \text{ or } a_{n - 1} & \leq -1.
-		\end{align*}
+		a_n & \leq a_{n - 1}
+		
+		\frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} & \leq a_{n - 1}
+		
+		\frac{a_{n - 1}^2 + 1}{2a_{n - 1}} & \leq a_{n - 1}
+		
+		a_{n - 1}^2 + 1 & \leq 2a_{n - 1}^2
+		
+		1 & \leq a_{n - 1}^2
+		
+		a_{n - 1} & \geq 1 \text{ or } a_{n - 1} & \leq -1.
 	$$
 	
 	Since $a_{n - 1} \geq 1$, this is always the case. Therefore, the MCT applies, the the sequence converges.
@@ -585,15 +595,19 @@ If a sequence is monotone increasing and bounded above, then its behavior is ver
 	To find the limit, let's follow the hint and take the limit of both sides. If $\lim_{n \to \infty} a_n = a$, then
 	
 	$$
-		\begin{align*}
-			a_n &= \frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}}\\
-			\lim_{n \to \infty} a_n &= \lim_{n \to \infty} \left( \frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} \right)\\
-			a &= \frac{a}{2} + \frac{1}{2a}\\
-			a &= \frac{a^2 + 1}{2a}\\
-			2a^2 &= a^2 + 1\\
-			a^2 &= 1\\
-			a &= \pm 1.
-		\end{align*}
+		a_n &= \frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}}
+		
+		\lim_{n \to \infty} a_n &= \lim_{n \to \infty} \left( \frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} \right)
+		
+		a &= \frac{a}{2} + \frac{1}{2a}
+		
+		a &= \frac{a^2 + 1}{2a}
+		
+		2a^2 &= a^2 + 1
+		
+		a^2 &= 1
+		
+		a &= \pm 1.
 	$$
 	
 	Since $a_n \geq 1$ for all $n$, we must have that $a \geq 1$, so $a = 1$.

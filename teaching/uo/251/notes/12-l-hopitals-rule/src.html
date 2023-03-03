@@ -57,13 +57,15 @@ In other words, if you're getting $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out o
 	That means we can use L'H&#244;pital's rule to try evaluating a different limit and see if we have more success.
 	
 	$$
-		\begin{align*}
-			\lim_{x \to 0} \frac{\sin(x)}{x} &= \lim_{x \to 0} \frac{\frac{d}{dx}[\sin(x)]}{\frac{d}{dx}[x]}\\
-			&= \lim_{x \to 0} \frac{\cos(x)}{1}\\
-			&= \lim_{x \to 0} \cos(x)\\
-			&= \cos(0)\\
-			&= 1.
-		\end{align*}
+		\lim_{x \to 0} \frac{\sin(x)}{x} &= \lim_{x \to 0} \frac{\frac{d}{dx}[\sin(x)]}{\frac{d}{dx}[x]}
+		
+		&= \lim_{x \to 0} \frac{\cos(x)}{1}
+		
+		&= \lim_{x \to 0} \cos(x)
+		
+		&= \cos(0)
+		
+		&= 1.
 	$$
 	
 	Much easier than this process used to be!
@@ -133,13 +135,15 @@ which will then be in the form $\frac{\infty}{\infty}$. Either way, L'H&#244;pit
 	Therefore, the limit becomes
 	
 	$$
-		\begin{align*}
-			\lim_{x \to 2} (2x - 4)\ln(2x - 4) &= \lim_{x \to 2} \frac{\frac{2}{2x - 4}}{\frac{-2}{(2x - 4)^2}}\\
-			&= \lim_{x \to 2} \frac{2(2x - 4)^2}{-2(2x - 4)}\\
-			&= \lim_{x \to 2} -(2x - 4)\\
-			&= -(2\cdot 0 - 4)\\
-			&= 0.
-		\end{align*}	
+		\lim_{x \to 2} (2x - 4)\ln(2x - 4) &= \lim_{x \to 2} \frac{\frac{2}{2x - 4}}{\frac{-2}{(2x - 4)^2}}
+		
+		&= \lim_{x \to 2} \frac{2(2x - 4)^2}{-2(2x - 4)}
+		
+		&= \lim_{x \to 2} -(2x - 4)
+		
+		&= -(2\cdot 0 - 4)
+		
+		&= 0.
 	$$
 	
 ###
@@ -175,10 +179,9 @@ The final type of indeterminate form involves exponents. To handle these, we fol
 	Since this is of the form $\frac{0}{0}$, we can differentiate top and bottom to get 
 	
 	$$
-		\begin{align*}
-			\lim_{x \to \infty} x\ln(1 + e^{-x}) &= \lim_{x \to \infty} \frac{\frac{-1}{1 + e^{-x}} \cdot e^{-x}}{-\frac{1}{x^2}}\\
-			&= \lim_{x \to \infty} \frac{x^2e^{-x}}{1 + e^{-x}}.
-		\end{align*}	
+		\lim_{x \to \infty} x\ln(1 + e^{-x}) &= \lim_{x \to \infty} \frac{\frac{-1}{1 + e^{-x}} \cdot e^{-x}}{-\frac{1}{x^2}}
+		
+		&= \lim_{x \to \infty} \frac{x^2e^{-x}}{1 + e^{-x}}.
 	$$
 	
 	Unfortunately, we're not quite done yet. While the denominator limits to $1$, the numerator is another case of $0 \cdot \infty$, since $x^2 \to \infty$ and $e^{-x} \to 0$. The easiest way to rewrite this as something that L'H&#244;pital's rule can handle is to move the $e^{-x}$ to the denominator to make it have a positive exponent:

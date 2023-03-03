@@ -119,10 +119,9 @@ The chain rule is a common stumbling point, so let's take a moment to work throu
 	The structure of $\sin(x^3)$ is a composition: the $x^3$ is being plugged into $\sin(x)$. The chain tells us how to differentiate the entire function in terms of the derivatives of the two pieces: first, we differentiate the outer function (in our case, $\sin(x)$) and plug the inner function ($x^3$) into the result. Then we multiply that by the derivative of the inner function. In symbols, that looks like
 	
 	$$
-		\begin{align*}
-			\frac{d}{dx} [\sin(x^3)] &= \left( \frac{d}{dx} [\sin(x)]|_{x^3} \right) \left( \frac{d}{dx} [x^3] \right)\\
-			&= 3x^2 \cos(x^3).
-		\end{align*}
+		\frac{d}{dx} [\sin(x^3)] &= \left( \frac{d}{dx} [\sin(x)]|_{x^3} \right) \left( \frac{d}{dx} [x^3] \right)
+		
+		&= 3x^2 \cos(x^3).
 	$$
 	
 ###

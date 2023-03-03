@@ -117,22 +117,23 @@ So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compo
 	By the IFT,
 	
 	$$
-		\begin{align*}
-			\frac{d}{dx}\left[x^{1/b}\right] &= \frac{1}{bx^{(b-1)/b}}\\
-			&= \frac{1}{b} x^{-(b-1)/b}\\
-			&= \frac{1}{b} x^{\frac{1}{b} - 1}.
-		\end{align*}
+		\frac{d}{dx}\left[x^{1/b}\right] &= \frac{1}{bx^{(b-1)/b}}
+		
+		&= \frac{1}{b} x^{-(b-1)/b}
+		
+		&= \frac{1}{b} x^{\frac{1}{b} - 1}.
 	$$
 	
 	Now we can use the chain rule to find the derivative of $x^{a/b}$.
 	
 	$$
-		\begin{align*}
-			\frac{d}{dx}\left[(x^{1/b})^a\right] &= a(x^{1/b})^{a-1} \cdot \frac{1}{b} x^{\frac{1}{b} - 1}\\
-			&= \frac{a}{b} x^{\frac{a-1}{b} + \frac{1}{b} - 1}\\
-			&= \frac{a}{b} x^{\frac{a}{b} - 1}\\
-			&= nx^{n - 1}.\\
-		\end{align*}
+		\frac{d}{dx}\left[(x^{1/b})^a\right] &= a(x^{1/b})^{a-1} \cdot \frac{1}{b} x^{\frac{1}{b} - 1}
+		
+		&= \frac{a}{b} x^{\frac{a-1}{b} + \frac{1}{b} - 1}
+		
+		&= \frac{a}{b} x^{\frac{a}{b} - 1}
+		
+		&= nx^{n - 1}.
 	$$
 	
 ###

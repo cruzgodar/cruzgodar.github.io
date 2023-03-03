@@ -26,11 +26,11 @@ The zig-zag shape is the Greek letter Sigma --- S for sum. The expressions above
 	
 	Evaluate the following sums.
 	
-	1. $\sum_{n = 1}^5 n$.
+	1. $\displaystyle \sum_{n = 1}^5 n$.
 	
-	2. $\sum_{i = -2}^2 \frac{1}{i^2 + 1}$.
+	2. $\displaystyle \sum_{i = -2}^2 \frac{1}{i^2 + 1}$.
 	
-	3. $\sum_{k = 0}^\infty 2$.
+	3. $\displaystyle \sum_{k = 0}^\infty 2$.
 	
 	1. Expanding out the first sum, we have
 	
@@ -43,10 +43,9 @@ The zig-zag shape is the Greek letter Sigma --- S for sum. The expressions above
 	2. This time, the index variable is $i$, not $n$. We start it at $-2$, increase it by $1$ until it hits $2$, and add up every term we get along the way. That comes out to
 	
 	$$
-		\begin{align*}
-			\sum_{i = -2}^2 \frac{1}{i^2 + 1} &= \frac{1}{5} + \frac{1}{2} + 1 + \frac{1}{2} + \frac{1}{5}\\
-			&= \frac{12}{5}.
-		\end{align*}
+		\sum_{i = -2}^2 \frac{1}{i^2 + 1} &= \frac{1}{5} + \frac{1}{2} + 1 + \frac{1}{2} + \frac{1}{5}
+		
+		&= \frac{12}{5}.
 	$$
 	
 	3. This one is a little weird. Our index variable is $k$, but it doesn't appear anywhere in the terms we're adding up. Instead, we're supposed to just add up a bunch of $2$s as $k$ increases. Since there are infinitely many values for $k$ to take, there are infinitely many $2$s to add up. So we get
@@ -79,42 +78,42 @@ The zig-zag shape is the Greek letter Sigma --- S for sum. The expressions above
 	
 	For each of the following series, write out the first five terms. Then find the first, third, and fifth partial sums.
 	
-	1. $\sum_{n = 0}^\infty n$.
+	1. $\displaystyle \sum_{n = 0}^\infty n$.
 	
-	2. $\sum_{m = 1}^\infty \frac{1}{m}$.
+	2. $\displaystyle \sum_{m = 1}^\infty \frac{1}{m}$.
 	
-	3. $\sum_{k = 1}^\infty \frac{2}{3^k}$.
+	3. $\displaystyle \sum_{k = 1}^\infty \frac{2}{3^k}$.
 	
 	**Solutions:**
 	
 	1. The first five terms are $0, 1, 2, 3,$ and $4$, and the relevant partial sums are
 	
 	$$
-		\begin{align*}
-			S_1 &= 0\\
-			S_3 &= 0 + 1 + 2 = 3\\
-			S_5 &= 0 + 1 + 2 + 3 + 4 = 10.
-		\end{align*}
+		S_1 &= 0
+		
+		S_3 &= 0 + 1 + 2 = 3
+		
+		S_5 &= 0 + 1 + 2 + 3 + 4 = 10.
 	$$
 	
 	2. With this series, the terms are $1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}$, and $\frac{1}{5}$, and the partial sums are
 	
 	$$
-		\begin{align*}
-			S_1 &= 1\\
-			S_3 &= \frac{11}{6}\\
-			S_5 &= \frac{137}{60}.
-		\end{align*}
+		S_1 &= 1
+		
+		S_3 &= \frac{11}{6}
+		
+		S_5 &= \frac{137}{60}.
 	$$
 	
 	3. Finally, we have $\frac{2}{3}, \frac{2}{9}, \frac{2}{27}, \frac{2}{81},$ and $\frac{2}{243}$, and partial sums of
 	
 	$$
-		\begin{align*}
-			S_1 &= \frac{2}{3}\\
-			S_3 &= \frac{26}{27}\\
-			S_5 &= \frac{242}{243}.
-		\end{align*}
+		S_1 &= \frac{2}{3}
+		
+		S_3 &= \frac{26}{27}
+		
+		S_5 &= \frac{242}{243}.
 	$$
 	
 ###
@@ -147,17 +146,18 @@ Notice the difference in notation between sequences and series: if a sequence $(
 
 ### ex convergence of a series
 	
-	Evaluate $\sum_{n = 1}^\infty \frac{1}{2^n}$ or show it diverges.
+	Evaluate $\displaystyle \sum_{n = 1}^\infty \frac{1}{2^n}$ or show it diverges.
 	
 	We start by finding the partial sums. The first few are
 	
 	$$
-		\begin{align*}
-			S_1 &= \frac{1}{2} &=& \frac{1}{2}\\
-			S_2 &= \frac{1}{2} + \frac{1}{4} &=& \frac{3}{4}\\
-			S_3 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} &=& \frac{7}{8}\\
-			S_4 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} &=& \frac{15}{16}\\
-		\end{align*}
+		S_1 &= \frac{1}{2} &=& \frac{1}{2}
+		
+		S_2 &= \frac{1}{2} + \frac{1}{4} &=& \frac{3}{4}
+		
+		S_3 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} &=& \frac{7}{8}
+		
+		S_4 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} &=& \frac{15}{16}
 	$$
 	
 	Every term we add is half of the previous and also half of what's needed to reach $1$. Therefore, $(S_k) \to 1$, and so
@@ -176,11 +176,11 @@ Notice the difference in notation between sequences and series: if a sequence $(
 	
 	Evaluate the following series or show they don't converge.
 	
-	1. $\sum_{i = 0}^\infty (-1)^i$.
+	1. $\displaystyle \sum_{i = 0}^\infty (-1)^i$.
 	
-	2. $\sum_{m = 1}^\infty \frac{2}{3^m}$.
+	2. $\displaystyle \sum_{m = 1}^\infty \frac{2}{3^m}$.
 	
-	3. $\sum_{n = 1}^\infty \frac{1}{n}$. Note: this is called the **Harmonic series**, and is quite famous. To get a handle on its behavior, try grouping the terms in this manner: put the first and second terms by themselves, then put the third and fourth together, then the fifth through the eighth together, then the 9th through the 16th, and so on, doubling the size of each group. See if you can quantify how large each group is based on its last term.
+	3. $\displaystyle \sum_{n = 1}^\infty \frac{1}{n}$. Note: this is called the **Harmonic series**, and is quite famous. To get a handle on its behavior, try grouping the terms in this manner: put the first and second terms by themselves, then put the third and fourth together, then the fifth through the eighth together, then the 9th through the 16th, and so on, doubling the size of each group. See if you can quantify how large each group is based on its last term.
 	
 	**Solutions:**
 	
@@ -206,11 +206,11 @@ Since series are determined by their sequences of partial sums, many convenient 
 
 ### prop properties of series
 	
-	Suppose $\sum_{n = 1}^\infty a_n = a$ and $\sum_{n = 1}^\infty b_n = b$. Then:
+	Suppose $\displaystyle \sum_{n = 1}^\infty a_n = a$ and $\displaystyle \sum_{n = 1}^\infty b_n = b$. Then:
 	
-	1. $\sum_{n = 1}^\infty (a_n + b_n) = a + b$.
+	1. $\displaystyle \sum_{n = 1}^\infty (a_n + b_n) = a + b$.
 	
-	2. For any constant $c$, $\sum_{n = 1}^\infty ca_n = c\sum_{n = 1}^\infty a_n$.
+	2. For any constant $c$, $\displaystyle \sum_{n = 1}^\infty ca_n = c\sum_{n = 1}^\infty a_n$.
 	
 ###
 
@@ -267,10 +267,9 @@ $$
 Factoring and dividing, we have
 
 $$
-	\begin{align*}
-		(1 - r)S_k &= 1 - r^k\\
-		S_k &= \frac{1 - r^k}{1 - r}.
-	\end{align*}
+	(1 - r)S_k &= 1 - r^k
+	
+	S_k &= \frac{1 - r^k}{1 - r}.
 $$
 
 It almost seems like we pulled a trick somewhere, but this is correct: no matter how large $k$ gets and how many terms are in $S_k$, we can always collapse it down to this style of fraction. Now the only question is, when does $(S_k)$ converge? We talked in the last section about the sequence $(r^k)$: it converges to zero when $-1 < r < 1$, to one when $r = 1$, and diverges otherwise. First of all, if $r = 1$, the original series is $\sum_{n = 1}^\infty 1$, which clearly diverges. If $(r^k)$ diverges, then so does $S_k$, since it contains a copy of $r^k$. But when $(r^k) \to 0$, then $(S_k) \to \frac{1}{1 - r}$. Therefore, we're left with the following result:
@@ -294,14 +293,17 @@ It almost seems like we pulled a trick somewhere, but this is correct: no matter
 	We can test this theorem on the series from before: $\sum_{n = 1}^\infty \frac{1}{2^n}$. This doesn't quite fit the definition of a geometric series, since the first power is $1$ and not $0$. However, we can just start the series at $n = 0$ and remove the first term afterward.
 	
 	$$
-		\begin{align*}
-			\sum_{n = 1}^\infty \frac{1}{2^n} &= \left( \sum_{n = 0}^\infty \frac{1}{2^n} \right) - 1\\
-			&= \left( \sum_{n = 0}^\infty \left(\frac{1}{2}\right)^n \right) - 1\\
-			&= \frac{1}{1 - \frac{1}{2}} - 1\\
-			&= \frac{1}{\frac{1}{2}} - 1\\
-			&= 2 - 1\\
-			&= 1.
-		\end{align*}
+		\sum_{n = 1}^\infty \frac{1}{2^n} &= \left( \sum_{n = 0}^\infty \frac{1}{2^n} \right) - 1
+		
+		&= \left( \sum_{n = 0}^\infty \left(\frac{1}{2}\right)^n \right) - 1
+		
+		&= \frac{1}{1 - \frac{1}{2}} - 1
+		
+		&= \frac{1}{\frac{1}{2}} - 1
+		
+		&= 2 - 1
+		
+		&= 1.
 	$$
 	
 	This agrees with the result from earlier!
@@ -312,24 +314,28 @@ It almost seems like we pulled a trick somewhere, but this is correct: no matter
 	
 	Evaluate the following series.
 	
-	1. $\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k + 1}}$.
+	1. $\displaystyle \sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k + 1}}$.
 	
-	2. $\sum_{m = 1}^\infty e^m$.
+	2. $\displaystyle \sum_{m = 1}^\infty e^m$.
 	
 	**Solutions:**
 	
 	1. Ideally, we'd like to have just one power of $k$ in our sum so that we can apply the formula for geometric series. By pulling off two factors of $3$, we get
 	
 	$$
-		\begin{align*}
-			\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k + 1}} &= \frac{1}{3^2}\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k - 1}}\\
-			&= \frac{1}{3^2}\sum_{k = 1}^\infty \left( \frac{2}{3} \right)^{k - 1}\\
-			&= \frac{1}{3^2}\sum_{k = 0}^\infty \left( \frac{2}{3} \right)^k\\
-			&= \frac{1}{3^2} \cdot \frac{1}{1 - \frac{2}{3}}\\
-			&= \frac{1}{3^2} \cdot \frac{1}{\frac{1}{3}}\\
-			&= \frac{1}{3^2} \cdot 3\\
-			&= \frac{1}{3}.
-		\end{align*}
+		\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k + 1}} &= \frac{1}{3^2}\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k - 1}}
+		
+		&= \frac{1}{3^2}\sum_{k = 1}^\infty \left( \frac{2}{3} \right)^{k - 1}
+		
+		&= \frac{1}{3^2}\sum_{k = 0}^\infty \left( \frac{2}{3} \right)^k
+		
+		&= \frac{1}{3^2} \cdot \frac{1}{1 - \frac{2}{3}}
+		
+		&= \frac{1}{3^2} \cdot \frac{1}{\frac{1}{3}}
+		
+		&= \frac{1}{3^2} \cdot 3
+		
+		&= \frac{1}{3}.
 	$$
 	
 	2. This is a geometric series with $|r| = |e| \geq 1$, so it must diverge. If it did converge, we'd care that the series started at $m = 1$ instead of $m = 0$ to apply the geometric series formula properly, but with a divergent series, it's irrelevant.
@@ -403,21 +409,21 @@ $$
 	**Solution:** let's start with partial fractions.
 	
 	$$
-		\begin{align*}
-			\frac{1}{n(n + 1)} &= \frac{A}{n} + \frac{B}{n + 1}\\
-			1 &= A(n + 1) + Bn\\
-			1 &= (A + B)n + A.
-		\end{align*}
+		\frac{1}{n(n + 1)} &= \frac{A}{n} + \frac{B}{n + 1}
+		
+		1 &= A(n + 1) + Bn
+		
+		1 &= (A + B)n + A.
 	$$
 	
 	Now we can split this up into two equations by equating coefficients on $x$:
 	
 	$$
-		\begin{align*}
-			&\begin{cases} 0 &= A + B \\ 1 &= A \end{cases}\\
-			&\begin{cases} A &= 1 \\ B &= -1 \end{cases}\\
-			\frac{1}{n(n + 1)} &= \frac{1}{n} - \frac{1}{n + 1}.
-		\end{align*}
+		&\begin{cases} 0 &= A + B \\ 1 &= A \end{cases}
+		
+		&\begin{cases} A &= 1 \\ B &= -1 \end{cases}
+		
+		\frac{1}{n(n + 1)} &= \frac{1}{n} - \frac{1}{n + 1}.
 	$$
 	
 	This is now more clearly telescoping: the limit is $1 - \lim_{n \to \infty} \frac{1}{n + 1} = 1$.

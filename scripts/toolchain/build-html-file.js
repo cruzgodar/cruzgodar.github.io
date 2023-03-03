@@ -155,10 +155,6 @@ const components =
 	
 	Parse:
 	{
-		/*
-			Test cases: *italics*, **bold**, `code`, $math$, ***bold and italic***, $*asterisks in math*$, $**bold in math**$, $`code in math`$, `*asterisks in code*`, \$escaped dollar signs\$, \`escaped backticks\`, \*escaped asterisks\*, `$dollar signs in code$`
-		*/
-		
 		"text": (text) =>
 		{
 			//None of the delimiters * and ` can be parsed if they're inside math mode, so we'll modify those things and put them back afterward. The syntax [^\$] means any character other than a dollar sign.
@@ -170,51 +166,51 @@ const components =
 			.replaceAll(/\\\*/g, "[ASTERISK]")
 			.replaceAll(/\\\"/g, "[DOUBLEQUOTE]")
 			.replaceAll(/\\\'/g, "[SINGLEQUOTE]")
-			.replaceAll(/\$(.*?)\$/g, "\$ $1 [END\$]");
+			.replaceAll(/\$(.*?)\$/g, (match, $1) => `\$${$1}[END\$]`);
 			
 			
 			
 			//Escape every asterisk, backtick, and quote inside dollar signs.
 			while (html.match(/\$([^\$]*?)\*([^\$]*?)\[END\$\]/))
 			{
-				html = html.replaceAll(/\$([^\$]*?)\*([^\$]*?)\[END\$\]/g, "\$ $1[ASTERISK]$2 [END\$]");
+				html = html.replaceAll(/\$([^\$]*?)\*([^\$]*?)\[END\$\]/g, (match, $1, $2) => `\$${$1}[ASTERISK]${$2}[END\$]`);
 			}
 			
 			while (html.match(/\$([^\$]*?)`([^\$]*?)\[END\$\]/))
 			{
-				html = html.replaceAll(/\$([^\$]*?)`([^\$]*?)\[END\$\]/g, "\$ $1[BACKTICK]$2 [END\$]");
+				html = html.replaceAll(/\$([^\$]*?)`([^\$]*?)\[END\$\]/g, (match, $1, $2) => `\$${$1}[BACKTICK]${$2}[END\$]`);
 			}
 			
 			while (html.match(/\$([^\$]*?)\"([^\$]*?)\[END\$\]/))
 			{
-				html = html.replaceAll(/\$([^\$]*?)\"([^\$]*?)\[END\$\]/g, "\$ $1[DOUBLEQUOTE]$2 [END\$]");
+				html = html.replaceAll(/\$([^\$]*?)\"([^\$]*?)\[END\$\]/g, (match, $1, $2) => `\$${$1}[DOUBLEQUOTE]${$2}[END\$]`);
 			}
 			
 			while (html.match(/\$([^\$]*?)\'([^\$]*?)\[END\$\]/))
 			{
-				html = html.replaceAll(/\$([^\$]*?)\'([^\$]*?)\[END\$\]/g, "\$ $1[SINGLEQUOTE]$2 [END\$]");
+				html = html.replaceAll(/\$([^\$]*?)\'([^\$]*?)\[END\$\]/g, (match, $1, $2) => `\$${$1}[SINGLEQUOTE]${$2}[END\$]`);
 			}
 			
 			
 			
 			//Now we can handle the backticks. Since all of the ones still present aren't inside math mode, we know they must be code. That means we need to play the same game we just did. First we can put back the dollar signs though.
 			
-			html = html.replaceAll(/\[END\$\]/g, "\$").replaceAll(/`(.*?)`/g, "` $1 [END`]");
+			html = html.replaceAll(/\[END\$\]/g, "\$").replaceAll(/`(.*?)`/g, (match, $1) => `\`${$1}[END\`]`);
 			
 			//Escape every asterisk and quote inside backticks.
 			while (html.match(/`([^`]*?)\*([^`]*?)\[END`\]/))
 			{
-				html = html.replaceAll(/`([^`]*?)\*([^`]*?)\[END`\]/g, "` $1[ASTERISK]$2 [END`]");
+				html = html.replaceAll(/`([^`]*?)\*([^`]*?)\[END`\]/g, (match, $1, $2) => `\`${$1}[ASTERISK]${$2}[END\`]`);
 			}
 			
 			while (html.match(/`([^`]*?)\"([^`]*?)\[END`\]/))
 			{
-				html = html.replaceAll(/`([^`]*?)\"([^`]*?)\[END`\]/g, "` $1[DOUBLEQUOTE]$2 [END`]");
+				html = html.replaceAll(/`([^`]*?)\"([^`]*?)\[END`\]/g, (match, $1, $2) => `\`${$1}[DOUBLEQUOTE]${$2}[END\`]`);
 			}
 			
 			while (html.match(/`([^`]*?)\'([^`]*?)\[END`\]/))
 			{
-				html = html.replaceAll(/`([^`]*?)\'([^`]*?)\[END`\]/g, "` $1[SINGLEQUOTE]$2 [END`]");
+				html = html.replaceAll(/`([^`]*?)\'([^`]*?)\[END`\]/g, (match, $1, $2) => `\`${$1}[SINGLEQUOTE]${$2}[END\`]`);
 			}
 			
 			
@@ -222,26 +218,26 @@ const components =
 			//Escape every quote inside a tag.
 			while (html.match(/<([^<>]*?)\"([^<>]*?)>/))
 			{
-				html = html.replaceAll(/<([^<>]*?)\"([^<>]*?)>/g, "<$1[DOUBLEQUOTE]$2>");
+				html = html.replaceAll(/<([^<>]*?)\"([^<>]*?)>/g, (match, $1, $2) => `<${$1}[DOUBLEQUOTE]${$2}>`);
 			}
 			
 			while (html.match(/<([^<>]*?)\'([^<>]*?)>/))
 			{
-				html = html.replaceAll(/<([^<>]*?)\'([^<>]*?)>/g, "<$1[SINGLEQUOTE]$2>");
+				html = html.replaceAll(/<([^<>]*?)\'([^<>]*?)>/g, (match, $1, $2) => `<${$1}[SINGLEQUOTE]${$2}>`);
 			}
 			
 			
 			
 			//Now we're finally ready to add the code tags, and then the remaining em and strong tags, and then modify the quotes. Then at long last, we can unescape the remaining characters.
 			return html
-			.replaceAll(/`(.*?)\[END`\]/g, "<code>$1</code>")
-			.replaceAll(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-			.replaceAll(/\*(.*?)\*/g, "<em>$1</em>")
-			.replaceAll(/(\s)\"(\S)/g, "$1&#x201C;$2")
-			.replaceAll(/^\"(\S)/g, "&#x201C;$1")
+			.replaceAll(/`(.*?)\[END`\]/g, (match, $1) => `<code>${$1}</code>`)
+			.replaceAll(/\*\*(.*?)\*\*/g, (match, $1) => `<strong>${$1}</strong>`)
+			.replaceAll(/\*(.*?)\*/g, (match, $1) => `<em>${$1}</em>`)
+			.replaceAll(/(\s)\"(\S)/g, (match, $1, $2) => `${$1}&#x201C;${$2}`)
+			.replaceAll(/^\"(\S)/g, (match, $1) => `&#x201C;${$1}`)
 			.replaceAll(/\"/g, "&#x201D;")
-			.replaceAll(/(\s)\'(\S)/g, "$1&#x2018;$2")
-			.replaceAll(/^\'(\S)/g, "&#x2018;$1")
+			.replaceAll(/(\s)\'(\S)/g, (match, $1, $2) => `${$1}&#x2018;${$2}`)
+			.replaceAll(/^\'(\S)/g, (match, $1) => `&#x2018;${$1}`)
 			.replaceAll(/\'/g, "&#x2019;")
 			.replaceAll(/---/g, "&mdash;")
 			.replaceAll(/\[DOUBLEQUOTE\]/g, "\"")
@@ -516,20 +512,34 @@ const components =
 			
 			
 			
-			//Leave math alone (but wrap it in body text).
 			if (lines[i].slice(0, 2) === "$$")
 			{
-				lines[i] = `<p class="body-text">$$`;
+				lines[i] = `<p class="body-text">$$\\begin{align*}`;
 				
 				i++;
 				
 				while (lines[i].slice(0, 2) !== "$$")
 				{
-					lines[i] = lines[i].replace(/\\\\/g, "\\\\[4px]")
-					i++;
+					if (lines[i] === "")
+					{
+						lines.splice(i, 1);
+					}
+					
+					else
+					{
+						if ([...lines[i].matchAll(/\\(begin|end){.*?}/g)].length !== 1)
+						{
+							lines[i] = `${lines[i]}\\\\[4px]`;
+						}
+						
+						i++;
+					}
 				}
 				
-				lines[i] = `$$</p>`;
+				//Remove the last line break.
+				lines[i - 1] = lines[i - 1].replace(/\\\\\[4px\]$/, "");
+				
+				lines[i] = `\\end{align*}$$</p>`;
 				
 				i++;
 			}

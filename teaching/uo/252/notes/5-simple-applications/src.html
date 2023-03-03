@@ -13,13 +13,15 @@ With the hardest conceptual work behind us, let's turn to some simple applicatio
 	Let's start with net displacement, which is just $s(3) - s(0)$. Since $s$ is an antiderivative of $v$, we have that
 	
 	$$
-		\begin{align*}
-			s(3) - s(0) &= \int_0^3 v(t)\,dt\\
-			&= \int_0^3 (3t - 5)\,dt\\
-			&= \left. \left[ \frac{3}{2}t^2 - 5t \right] \right|_0^3\\
-			&= \left( \frac{3}{2} \cdot 9 - 15 \right) - 0\\
-			&= -\frac{3}{2}.
-		\end{align*}
+		s(3) - s(0) &= \int_0^3 v(t)\,dt
+		
+		&= \int_0^3 (3t - 5)\,dt
+		
+		&= \left. \left[ \frac{3}{2}t^2 - 5t \right] \right|_0^3
+		
+		&= \left( \frac{3}{2} \cdot 9 - 15 \right) - 0
+		
+		&= -\frac{3}{2}.
 	$$
 	
 	Therefore, the particle ended up $1.5$ meters to the left of where it started after $3$ seconds.
@@ -27,14 +29,17 @@ With the hardest conceptual work behind us, let's turn to some simple applicatio
 	This is just the end result, though, and it doesn't tell us how much the particle moved in total. For that, there's an easy change we can make: rather than integrating $v$, which is sometimes negative and sometimes positive, we'll integrate $|v|$. This makes all velocity count as positive, whether it's to the left or right, and so integrating that will give us total distance traveled. There's some nuance to just taking that absolute value, though, because we need to know <em>when</em> $v$ is positive and when it's negative. To do this, we'll first set it equal to zero: if $3t - 5 = 0$, then $t = \frac{5}{3}$, and since $v$ is a line with positive slope, it must be negative for $t &lt; \frac{5}{3}$ and positive for $t > \frac{5}{3}$. In order to take the absolute value, we need to negate $v$ when it's negative and not when it's positive. This means doing different things on different parts of the domain, so we need to split up the integral itself. If we let $s_{\text{tot}}(t)$ be the total distance traveled after $t$ seconds, then we have
 	
 	$$
-		\begin{align*}
-			s_{\text{tot}}(3) - s_{\text{tot}}(0) &= \int_0^3 |v(t)|\,dt\\
-			&= \int_0^{\frac{5}{3}} -v(t)\,dt + \int_{\frac{5}{3}}^3 v(t)\,dt\\
-			&= -\int_0^{\frac{5}{3}} (3t - 5)\,dt + \int_{\frac{5}{3}}^3 (3t - 5)\,dt\\
-			&= -\left. \left[ \frac{3}{2}t^2 - 5t \right] \right|_0^{\frac{5}{3}} + \left. \left[ \frac{3}{2}t^2 - 5t \right] \right|_{\frac{5}{3}}^3\\
-			&= -\left( \frac{3}{2} \cdot \frac{25}{9} - \frac{25}{3} \right) - 0 + \left( \frac{3}{2} \cdot 9 - 15 \right) - \left( \frac{3}{2} \cdot \frac{25}{9} - \frac{25}{3} \right)\\
-			&= \frac{41}{6}.
-		\end{align*}
+		s_{\text{tot}}(3) - s_{\text{tot}}(0) &= \int_0^3 |v(t)|\,dt
+		
+		&= \int_0^{\frac{5}{3}} -v(t)\,dt + \int_{\frac{5}{3}}^3 v(t)\,dt
+		
+		&= -\int_0^{\frac{5}{3}} (3t - 5)\,dt + \int_{\frac{5}{3}}^3 (3t - 5)\,dt
+		
+		&= -\left. \left[ \frac{3}{2}t^2 - 5t \right] \right|_0^{\frac{5}{3}} + \left. \left[ \frac{3}{2}t^2 - 5t \right] \right|_{\frac{5}{3}}^3
+		
+		&= -\left( \frac{3}{2} \cdot \frac{25}{9} - \frac{25}{3} \right) - 0 + \left( \frac{3}{2} \cdot 9 - 15 \right) - \left( \frac{3}{2} \cdot \frac{25}{9} - \frac{25}{3} \right)
+		
+		&= \frac{41}{6}.
 	$$
 	
 	The particle therefore traveled a total of $\frac{41}{6} \approx 6.83$ meters total.
@@ -50,29 +55,39 @@ With the hardest conceptual work behind us, let's turn to some simple applicatio
 	**Solution:** The net displacement is
 	
 	$$
-		\begin{align*}
-			s(4) - s(0) &= \int_0^4 v(t)\,dt\\
-			&= \int_0^4 (4t^2 - 16t + 12)\,dt\\
-			&= \left. \left[ 4\frac{t^3}{3} - 8t^2 + 12t \right] \right|_0^4\\
-			&= \frac{16}{3}.
-		\end{align*}
+		s(4) - s(0) &= \int_0^4 v(t)\,dt
+		
+		&= \int_0^4 (4t^2 - 16t + 12)\,dt
+		
+		&= \left. \left[ 4\frac{t^3}{3} - 8t^2 + 12t \right] \right|_0^4
+		
+		&= \frac{16}{3}.
 	$$
 	
 	The total distance requires integrating $|v(t)|$, so we need to know when $v(t) < 0$. To do that, we solve $v(t) = 0$ to get
 	
 	$$
-		\begin{align*}
-			4t^2 - 16t + 12 &= 0\\
-			t^2 - 4t + 3 &= 0\\
-			(t - 1)(t - 3) &= 0\\
-			t = 1, & t = 3.
-		\end{align*}
+		4t^2 - 16t + 12 &= 0
+		
+		t^2 - 4t + 3 &= 0
+		
+		(t - 1)(t - 3) &= 0
+		
+		t = 1, & t = 3.
 	$$
 	
 	Plugging in some test points, $v(0) = 12 > 0$, $v(2) = -4$, and $v(4) = 12$. Therefore, the only region where $v$ is negative is $(1, 3)$, so the absolute value is defined by
 	
 	$$
-		|v(t)| = \begin{cases} 4t^2 - 16t + 12, & t \leq 1 \\ -(4t^2 - 16t + 12), & 1 \leq t \leq 3 \\ 4t^2 - 16t + 12, & 3 \leq t \end{cases}.
+		|v(t)| = \begin{cases}
+			
+			4t^2 - 16t + 12, & t \leq 1
+			
+			-(4t^2 - 16t + 12), & 1 \leq t \leq 3
+			
+			4t^2 - 16t + 12, & 3 \leq t
+			
+		\end{cases}.
 	$$
 	
 	In total, the integral is
@@ -132,12 +147,13 @@ This shouldn't be terribly surprising. If a function is even and we're integrati
 	We have
 	
 	$$
-		\begin{align*}
-			\int_{-2}^2 (x^4 - x^2)\,dx &= 2\int_0^2 (x^4 - x^2)\,dx\\
-			&= 2 \left. \left[ \frac{x^5}{5} - \frac{x^3}{3} \right] \right|_0^2\\
-			&= 2 \left(\frac{32}{5} - \frac{8}{3}\right)\\
-			&= \frac{112}{15}.
-		\end{align*}
+		\int_{-2}^2 (x^4 - x^2)\,dx &= 2\int_0^2 (x^4 - x^2)\,dx
+		
+		&= 2 \left. \left[ \frac{x^5}{5} - \frac{x^3}{3} \right] \right|_0^2
+		
+		&= 2 \left(\frac{32}{5} - \frac{8}{3}\right)
+		
+		&= \frac{112}{15}.
 	$$
 	
 	And
@@ -161,12 +177,13 @@ This shouldn't be terribly surprising. If a function is even and we're integrati
 	Similarly, since $\cos$ is even,
 	
 	$$
-		\begin{align*}
-			\int_{-\pi}^\pi \cos(\theta)\,d\theta &= 2\int_0^\pi \cos(\theta)\,d\theta\\
-			&= 2 \left. \left[ \sin(\theta) \right] \right|_0^\pi\\
-			&= 2 (\sin(\pi) - \sin(0))\\
-			&= 0.
-		\end{align*}
+		\int_{-\pi}^\pi \cos(\theta)\,d\theta &= 2\int_0^\pi \cos(\theta)\,d\theta
+		
+		&= 2 \left. \left[ \sin(\theta) \right] \right|_0^\pi
+		
+		&= 2 (\sin(\pi) - \sin(0))
+		
+		&= 0.
 	$$
 	
 	The symmetry of the graph of $\cos$ on $[0, \pi]$ caused its integral to be zero too, even though it wasn't an odd function. 

@@ -53,21 +53,21 @@ The first and simplest thing we can do to power series is to add two of them tog
 	We then separate this into three equations by equating the coefficients.
 	
 	$$
-		\begin{align*}
-			5 &= A + C\\
-			0 &= B - 2C\\
-			0 &= A - 2B.
-		\end{align*}
+		5 &= A + C
+		
+		0 &= B - 2C
+		
+		0 &= A - 2B.
 	$$
 	
 	Working this out, we wind up with
 	
 	$$
-		\begin{align*}
-			A &= 4\\
-			B &= 2\\
-			C &= 1.
-		\end{align*}
+		A &= 4
+		
+		B &= 2
+		
+		C &= 1.
 	$$
 	
 	Therefore, our expansion of the series $f$ becomes
@@ -95,11 +95,11 @@ The first and simplest thing we can do to power series is to add two of them tog
 	Let's put it all together. The sum of all three terms becomes
 	
 	$$
-		\begin{align*}
-			f(x) &= \frac{4}{1 - 2x} + \frac{2x}{1 + x^2} + \frac{1}{1 + x^2}\\
-			&= 4\sum_{n = 0}^\infty (2^n x^n) + 2x\sum_{n = 0}^\infty ((-1)^n x^{2n}) + \sum_{n = 0}^\infty ((-1)^n x^{2n})\\
-			&= \sum_{n = 0}^\infty (4 \cdot 2^n x^n + 2 \cdot (-1)^n x^{2n + 1} + (-1)^n x^{2n}).
-		\end{align*}
+		f(x) &= \frac{4}{1 - 2x} + \frac{2x}{1 + x^2} + \frac{1}{1 + x^2}
+		
+		&= 4\sum_{n = 0}^\infty (2^n x^n) + 2x\sum_{n = 0}^\infty ((-1)^n x^{2n}) + \sum_{n = 0}^\infty ((-1)^n x^{2n})
+		
+		&= \sum_{n = 0}^\infty (4 \cdot 2^n x^n + 2 \cdot (-1)^n x^{2n + 1} + (-1)^n x^{2n}).
 	$$
 	
 	The two intervals of convergence are $\left( -\frac{1}{2}, \frac{1}{2} \right)$ and $(-1, 1)$, and the overlap of those two is just the first one --- therefore, the interval of convergence of our very complicated series is just $\left( -\frac{1}{2}, \frac{1}{2} \right)$.
@@ -119,21 +119,21 @@ The first and simplest thing we can do to power series is to add two of them tog
 	**Solution:** First, let's apply partial fractions and split this up. We have
 	
 	$$
-		\begin{align*}
-			\frac{6}{(1 - x)(2 - x)(3 - x)} &= \frac{A}{1 - x} + \frac{B}{2 - x} + \frac{C}{3 - x}\\
-			6 &= A(2-x)(3-x) + B(1-x)(3-x) + C(1-x)(2-x)\\
-			6 &= 6A - 5Ax + Ax^2 + 3B - 4Bx + Bx^2 + 2C - 3Cx + Cx^2.
-		\end{align*}
+		\frac{6}{(1 - x)(2 - x)(3 - x)} &= \frac{A}{1 - x} + \frac{B}{2 - x} + \frac{C}{3 - x}
+		
+		6 &= A(2-x)(3-x) + B(1-x)(3-x) + C(1-x)(2-x)
+		
+		6 &= 6A - 5Ax + Ax^2 + 3B - 4Bx + Bx^2 + 2C - 3Cx + Cx^2.
 	$$
 	
 	Equating coefficients,
 	
 	$$
-		\begin{cases}
-			0 &= A + B + C\\
-			0 &= -5A - 4B - 3C\\
-			6 &= 6A + 3B + 2C
-		\end{cases}.
+		0 &= A + B + C
+		
+		0 &= -5A - 4B - 3C
+		
+		6 &= 6A + 3B + 2C
 	$$
 	
 	This results in $A = -3$, $B = 6$, and $C = -3$, so the fraction splits as
@@ -145,12 +145,13 @@ The first and simplest thing we can do to power series is to add two of them tog
 	Rewriting all of them to look like $\frac{1}{1 - x}$ results in
 	
 	$$
-		\begin{align*}
-			g(x) &= -3 \left(\frac{1}{1 - x}\right) + 3\left( \frac{1}{1 - \frac{x}{2})} \right) - \frac{1}{1 - \frac{x}{3}}\\
-			&= -3\sum_{n = 0}^\infty x^n + 3\sum_{n = 0}^\infty \left(\frac{x}{2}\right)^n - \sum_{n = 0}^\infty \left(\frac{x}{3}\right)^n\\
-			&= \sum_{n = 0}^\infty -3 x^n + \sum_{n = 0}^\infty \frac{3}{2^n} x^n + \sum_{n = 0}^\infty -\frac{1}{3^n}x^n\\
-			&= \sum_{n = 0}^\infty \left( -3 + \frac{3}{2^n} -\frac{1}{3^n} \right) x^n.
-		\end{align*}
+		g(x) &= -3 \left(\frac{1}{1 - x}\right) + 3\left( \frac{1}{1 - \frac{x}{2})} \right) - \frac{1}{1 - \frac{x}{3}}
+		
+		&= -3\sum_{n = 0}^\infty x^n + 3\sum_{n = 0}^\infty \left(\frac{x}{2}\right)^n - \sum_{n = 0}^\infty \left(\frac{x}{3}\right)^n
+		
+		&= \sum_{n = 0}^\infty -3 x^n + \sum_{n = 0}^\infty \frac{3}{2^n} x^n + \sum_{n = 0}^\infty -\frac{1}{3^n}x^n
+		
+		&= \sum_{n = 0}^\infty \left( -3 + \frac{3}{2^n} -\frac{1}{3^n} \right) x^n.
 	$$
 	
 	These three series have intervals of convergence of $(-1, 1)$, $(-2, 2)$, and $(-3, 3)$, respectively, and so the overlap is just $(-1, 1)$. The radius of convergence is then $R = 1$.
@@ -176,22 +177,23 @@ For many series, we now have the tools to go backward: determine the function it
 	This looks a bit like a geometric series, but to apply the formula, we need every term to be raised to the power of $n$, not $-2n$. To that end, let's rewrite $2^{-2n}$ as $4^{-n} = \left(\frac{1}{4}\right)^n$, so that the series becomes
 	
 	$$
-		\begin{align*}
-			f(x) &= \sum_{n = 1}^\infty \left( \frac{1}{4} \right)^n x^n\\
-			&= \sum_{n = 1}^\infty \left( \frac{x}{4} \right)^n.
-		\end{align*}
+		f(x) &= \sum_{n = 1}^\infty \left( \frac{1}{4} \right)^n x^n
+		
+		&= \sum_{n = 1}^\infty \left( \frac{x}{4} \right)^n.
 	$$
 	
 	Now this is very close to a geometric series, but it's starting at $n = 1$ instead of $n = 0$. To remedy that, we'll start it at $0$ and then remove the first term later.
 	
 	$$
-		\begin{align*}
-			f(x) &= -\left( \frac{x}{4} \right)^0 + \sum_{n = 0}^\infty \left( \frac{x}{4} \right)^n\\
-			&= -1 + \frac{1}{1 - \frac{x}{4}}\\
-			&= -1 + \frac{1}{\frac{4 - x}{4}}\\
-			&= -1 + \frac{4}{4 - x}\\
-			&= \frac{x}{4 - x}.
-		\end{align*}
+		f(x) &= -\left( \frac{x}{4} \right)^0 + \sum_{n = 0}^\infty \left( \frac{x}{4} \right)^n
+		
+		&= -1 + \frac{1}{1 - \frac{x}{4}}
+		
+		&= -1 + \frac{1}{\frac{4 - x}{4}}
+		
+		&= -1 + \frac{4}{4 - x}
+		
+		&= \frac{x}{4 - x}.
 	$$
 
 ###
@@ -208,29 +210,31 @@ What is $f(x)g(x)$? We typically find this by foiling out the terms, but the end
 
 $$
 	\begin{array}{r|ccc}
-		& 4 & 5x & 6x^2\\
-		\hline
-		1 & 4 & 5x & 6x^2\\
-		2x & 8x & 10x^2 & 12x^3\\
+		
+		& 4 & 5x & 6x^2
+		
+		\hline 1 & 4 & 5x & 6x^2
+		
+		2x & 8x & 10x^2 & 12x^3
+		
 		3x^2 & 12x^2 & 15x^3 & 18x^4
+		
 	\end{array}
 $$
 
 The product $fg$ is just the sum of all nine entries in the table, but there's a cleaner way to think of it that comes from the diagonals running from the bottom-left to the top-right.
 
 $$
-	\definecolor{textred}{rgb}{.8, 0, 0}
-	\definecolor{textyellow}{rgb}{.8, .6, 0}
-	\definecolor{textgreen}{rgb}{0, .6, 0}
-	\definecolor{textcyan}{rgb}{0, .6, 1}
-	\definecolor{textblue}{rgb}{0, 0, 1}
-	
-	\begin{array}{r|ccc}
-		& 4 & 5x & 6x^2\\
-		\hline
-		1 & {\color{textred} 4} & {\color{textyellow} 5x} & {\color{textgreen} 6x^2}\\
-		2x & {\color{textyellow} 8x} & {\color{textgreen} 10x^2} & {\color{textcyan} 12x^3}\\
+	\definecolor{textred}{rgb}{.8, 0, 0} \definecolor{textyellow}{rgb}{.8, .6, 0} \definecolor{textgreen}{rgb}{0, .6, 0} \definecolor{textcyan}{rgb}{0, .6, 1} \definecolor{textblue}{rgb}{0, 0, 1} \begin{array}{r|ccc}
+		
+		& 4 & 5x & 6x^2
+		
+		\hline 1 & {\color{textred} 4} & {\color{textyellow} 5x} & {\color{textgreen} 6x^2}
+		
+		2x & {\color{textyellow} 8x} & {\color{textgreen} 10x^2} & {\color{textcyan} 12x^3}
+		
 		3x^2 & {\color{textgreen} 12x^2} & {\color{textcyan} 15x^3} & {\color{textblue} 18x^4}
+		
 	\end{array}
 $$
 
@@ -239,22 +243,24 @@ The key observation is that those diagonals (represented here as different color
 Let's make the jump from polynomials to series. If $f(x) = \sum_{n = 0}^\infty a_n x^n$ and $g(x) = \sum_{n = 0}^\infty b_n x^n$, then the product $f(x)g(x)$ will be the sum of an infinite table:
 
 $$
-	\definecolor{textred}{rgb}{.8, 0, 0}
-	\definecolor{textyellow}{rgb}{.8, .6, 0}
-	\definecolor{textgreen}{rgb}{0, .6, 0}
-	\definecolor{textcyan}{rgb}{0, .6, 1}
-	\definecolor{textblue}{rgb}{0, 0, 1}
-	\definecolor{textmagenta}{rgb}{.8, 0, 1}
-	
-	\begin{array}{r|ccccccc}
-		& b_0 & b_1 x & b_2 x^2 & b_3 x^3 & b_4 x^4 & b_5 x^5 & \cdots\\
-		\hline a_0 & {\color{textred} a_0 b_0} & {\color{textyellow} a_0 b_1 x} & {\color{textgreen} a_0 b_2 x^2} & {\color{textcyan} a_0 b_3 x^3} & {\color{textblue} a_0 b_4 x^4} & {\color{textmagenta} a_0 b_5 x^5} & \ddots\\
-		a_1 x & {\color{textyellow} a_1 b_0 x} & {\color{textgreen} a_1 b_1 x^2} & {\color{textcyan} a_1 b_2 x^3} & {\color{textblue} a_1 b_3 x^4} & {\color{textmagenta} a_1 b_4 x^5} & \ddots\\
-		a_2 x^2 & {\color{textgreen} a_2 b_0 x^2} & {\color{textcyan} a_2 b_1 x^3} & {\color{textblue} a_2 b_2 x^4} & {\color{textmagenta} a_2 b_3 x^5} & \ddots\\
-		a_3 x^3 & {\color{textcyan} a_3 b_0 x^3} & {\color{textblue} a_3 b_1 x^4} & {\color{textmagenta} a_3 b_2 x^5} & \ddots\\
-		a_4 x^4 & {\color{textblue} a_4 b_0 x^4} & {\color{textmagenta} a_4 b_1 x^5} & \ddots\\
-		a_5 x^5 & {\color{textmagenta} a_5 b_0 x^5} & \ddots\\
+	\definecolor{textred}{rgb}{.8, 0, 0} \definecolor{textyellow}{rgb}{.8, .6, 0} \definecolor{textgreen}{rgb}{0, .6, 0} \definecolor{textcyan}{rgb}{0, .6, 1} \definecolor{textblue}{rgb}{0, 0, 1} \begin{array}{r|ccccccc}
+		
+		& b_0 & b_1 x & b_2 x^2 & b_3 x^3 & b_4 x^4 & b_5 x^5 & \cdots
+		
+		\hline a_0 & {\color{textred} a_0 b_0} & {\color{textyellow} a_0 b_1 x} & {\color{textgreen} a_0 b_2 x^2} & {\color{textcyan} a_0 b_3 x^3} & {\color{textblue} a_0 b_4 x^4} & {\color{textmagenta} a_0 b_5 x^5} & \ddots
+		
+		a_1 x & {\color{textyellow} a_1 b_0 x} & {\color{textgreen} a_1 b_1 x^2} & {\color{textcyan} a_1 b_2 x^3} & {\color{textblue} a_1 b_3 x^4} & {\color{textmagenta} a_1 b_4 x^5} & \ddots
+		
+		a_2 x^2 & {\color{textgreen} a_2 b_0 x^2} & {\color{textcyan} a_2 b_1 x^3} & {\color{textblue} a_2 b_2 x^4} & {\color{textmagenta} a_2 b_3 x^5} & \ddots
+		
+		a_3 x^3 & {\color{textcyan} a_3 b_0 x^3} & {\color{textblue} a_3 b_1 x^4} & {\color{textmagenta} a_3 b_2 x^5} & \ddots
+		
+		a_4 x^4 & {\color{textblue} a_4 b_0 x^4} & {\color{textmagenta} a_4 b_1 x^5} & \ddots
+		
+		a_5 x^5 & {\color{textmagenta} a_5 b_0 x^5} & \ddots
+		
 		\vdots & \ddots
+		
 	\end{array}
 $$
 
@@ -290,22 +296,18 @@ This is the main result about multiplying power series --- all that's left is de
 
 ### ex multiplying power series
 	
-	Express
-	
-	$$
-		\frac{1}{(1 - x)^2}
-	$$
+	Express $\displaystyle \frac{1}{(1 - x)^2}$
 	
 	as a power series and determine the interval and radius of convergence.
 	
 	This is just the series for $\frac{1}{1 - x}$ multiplied by itself. Since all the coefficients are $1$, the product is
 	
 	$$
-		\begin{align*}
-			\frac{1}{(1 - x)^2} &= \sum_{n = 0}^\infty \left( \sum_{k = 0}^n 1 \cdot 1 \right) x^n\\
-			&= \sum_{n = 0}^\infty (n + 1) x^n\\
-			&= 1 + 2x + 3x^2 + 4x^3 + \cdots.
-		\end{align*}
+		\frac{1}{(1 - x)^2} &= \sum_{n = 0}^\infty \left( \sum_{k = 0}^n 1 \cdot 1 \right) x^n
+		
+		&= \sum_{n = 0}^\infty (n + 1) x^n
+		
+		&= 1 + 2x + 3x^2 + 4x^3 + \cdots.
 	$$
 
 ###
@@ -323,23 +325,25 @@ This is the main result about multiplying power series --- all that's left is de
 	**Solution:** Let's leave the $5$ alone for now and take a look at the other two series. We have
 	
 	$$
-		\begin{align*}
-			\frac{1}{1 - 2x} &= \sum_{n = 0}^\infty 2^n x^n\\
-			\frac{1}{1 + x^2} &= \sum_{n = 0}^\infty (-1)^n x^{2n},
-		\end{align*}
+		\frac{1}{1 - 2x} &= \sum_{n = 0}^\infty 2^n x^n
+		
+		\frac{1}{1 + x^2} &= \sum_{n = 0}^\infty (-1)^n x^{2n},
 	$$
 	
 	valid on $\left(-\frac{1}{2}, \frac{1}{2}\right)$ and $(-1, 1)$, respectively. The product is a little hard to write down, since the second series has $x^{2n}$ instead of $x^n$, but we can pretty easily evaluate the first six terms:
 	
 	$$
-		\begin{align*}
-			2^0(-1)^0 &= 1\\
-			(2^1 (-1)^0)x &= 2x\\
-			(2^2 (-1)^0 + 2^0 (-1)^1) x^2 &= 3x^2\\
-			(2^3 (-1)^0 + 2^1 (-1)^1) x^3 &= 6x^3\\
-			(2^4 (-1)^0 + 2^2(-1)^1 + 2^0 (-1)^2)x^4 &= 13x^4\\
-			(2^5 (-1)^0 + 2^3(-1)^1 + 2^1 (-1)^2)x^5 &= 26x^5
-		\end{align*}
+		2^0(-1)^0 &= 1
+		
+		(2^1 (-1)^0)x &= 2x
+		
+		(2^2 (-1)^0 + 2^0 (-1)^1) x^2 &= 3x^2
+		
+		(2^3 (-1)^0 + 2^1 (-1)^1) x^3 &= 6x^3
+		
+		(2^4 (-1)^0 + 2^2(-1)^1 + 2^0 (-1)^2)x^4 &= 13x^4
+		
+		(2^5 (-1)^0 + 2^3(-1)^1 + 2^1 (-1)^2)x^5 &= 26x^5
 	$$
 	
 	This is the usual product, but we just need to be careful that the coefficients $(-1)^n$ are attached to $x^{2n}$ when figuring out what everything sums to. We also need to multiply everything by $5$, which makes the first six terms of this series become
@@ -351,11 +355,11 @@ This is the main result about multiplying power series --- all that's left is de
 	Let's evaluate the explicit formula we found earlier to see if it matches.
 	
 	$$
-		\begin{align*}
-			&\ \ \ \ \ \ \sum_{n = 0}^\infty (4 \cdot 2^n x^n + 2 \cdot (-1)^n x^{2n + 1} + (-1)^n x^{2n})\\
-			&= (4 + 2x + 1) + (8x - 2x^3 - x^2) + (16x^2 + 2x^5 + x^4) + (32x^3 - 2x^7 - x^6) + (64x^4 + 2x^9 + x^8) + (128x^5 - 2x^{11} - x^{10}) + \cdots\\
-			&= 5 + 10x + 15x^2 + 30x^3 + 65x^4 + 130x^5 + \cdots.
-		\end{align*}
+		&\ \ \ \ \ \ \sum_{n = 0}^\infty (4 \cdot 2^n x^n + 2 \cdot (-1)^n x^{2n + 1} + (-1)^n x^{2n})
+		
+		&= (4 + 2x + 1) + (8x - 2x^3 - x^2) + (16x^2 + 2x^5 + x^4) + (32x^3 - 2x^7 - x^6) + (64x^4 + 2x^9 + x^8) + (128x^5 - 2x^{11} - x^{10}) + \cdots
+		
+		&= 5 + 10x + 15x^2 + 30x^3 + 65x^4 + 130x^5 + \cdots.
 	$$
 	
 	We know when to the partial sum at the term we did since past that, there are no terms with $x^5$ or lower.
@@ -377,10 +381,9 @@ Now that we understand how basic algebraic operations work with power series, th
 	Let $f(x) = \sum_{n = 0}^\infty c_n (x - a)^n$ be a power series converging on $(a - R, a + R)$. Then $f$ is differentiable and integrable on $(a - R, a + R)$, and
 	
 	$$
-		\begin{align*}
-			f'(x) &= \sum_{n = 0}^\infty \frac{d}{dx} \left[ c_n (x - a)^n \right] = \sum_{n = 1}^\infty n c_n (x - a)^{n - 1}\\
-			\int f(x)\,dx &= \sum_{n = 0}^\infty \int c_n (x - a)^n\,dx = C + \sum_{n = 0}^\infty c_n \frac{(x - a)^{n + 1}}{n + 1}.
-		\end{align*}
+		f'(x) &= \sum_{n = 0}^\infty \frac{d}{dx} \left[ c_n (x - a)^n \right] = \sum_{n = 1}^\infty n c_n (x - a)^{n - 1}
+		
+		\int f(x)\,dx &= \sum_{n = 0}^\infty \int c_n (x - a)^n\,dx = C + \sum_{n = 0}^\infty c_n \frac{(x - a)^{n + 1}}{n + 1}.
 	$$
 	
 	Importantly, this theorem does not mention the endpoints of the interval of convergence. If $f(x)$ converges there, its derivative and integral may too, or they may not.
@@ -402,33 +405,35 @@ Now that we understand how basic algebraic operations work with power series, th
 	so we want to replace $x$ with $-x$ in $\frac{1}{1 - x}$ and integrate the series term-by-term. We have
 	
 	$$
-		\begin{align*}
-			\ln(1 + x) &= \int \frac{1}{1 - (-x)}\,dx + C\\
-			&= \int \left(\sum_{n = 0}^\infty (-x)^n\right)\,dx + C\\
-			&= C + \sum_{n = 0}^\infty \int (-x)^n\,dx\\
-			&= C + \sum_{n = 0}^\infty \int (-1)^n x^n\,dx\\
-			&= C + \sum_{n = 0}^\infty (-1)^n \int x^n\,dx\\
-			&= C + \sum_{n = 0}^\infty (-1)^n \frac{x^{n + 1}}{n + 1}\\
-			&= C + x - \frac{x^2}{2} + \frac{x^3}{3} - \cdots.
-		\end{align*}
+		\ln(1 + x) &= \int \frac{1}{1 - (-x)}\,dx + C
+		
+		&= \int \left(\sum_{n = 0}^\infty (-x)^n\right)\,dx + C
+		
+		&= C + \sum_{n = 0}^\infty \int (-x)^n\,dx
+		
+		&= C + \sum_{n = 0}^\infty \int (-1)^n x^n\,dx
+		
+		&= C + \sum_{n = 0}^\infty (-1)^n \int x^n\,dx
+		
+		&= C + \sum_{n = 0}^\infty (-1)^n \frac{x^{n + 1}}{n + 1}
+		
+		&= C + x - \frac{x^2}{2} + \frac{x^3}{3} - \cdots.
 	$$
 	
 	Now leaving the constant $C$ in our answer is fine if we're asked to take the integral of some random function, but in this situation, we know that our answer is equal to $\ln(1 + x)$: it's only true for *one* value of $C$, not any. How can we figure it out? Well, $C$ is the only term of the series without an $x$, so if we plug in $x = 0$, we'll figure out what $C$ should be.
 	
 	$$
-		\begin{align*}
-			\ln(1 + 0) &= C + 0 - \frac{0^2}{2} + \frac{0^3}{3} - \cdots\\
-			0 &= C.
-		\end{align*}
+		\ln(1 + 0) &= C + 0 - \frac{0^2}{2} + \frac{0^3}{3} - \cdots
+		
+		0 &= C.
 	$$
 	
 	Therefore, we can now say that a series representation for $\ln(1 + x)$ is
 	
 	$$
-		\begin{align*}
-			\ln(1 + x) &= \sum_{n = 0}^\infty (-1)^n \frac{x^{n + 1}}{n + 1}\\
-			&= \sum_{n = 1}^\infty (-1)^{n + 1} \frac{x^n}{n}.
-		\end{align*}
+		\ln(1 + x) &= \sum_{n = 0}^\infty (-1)^n \frac{x^{n + 1}}{n + 1}
+		
+		&= \sum_{n = 1}^\infty (-1)^{n + 1} \frac{x^n}{n}.
 	$$
 	
 	We started with $\frac{1}{1 - x}$, which has an interval of convergence of $(-1, 1)$. Replacing $x$ with $-x$ flips that horizontally, which results in the same interval. Then we integrate, which doesn't change the interval, so we still have $(-1, 1)$ at the end. What about the endpoints? The original series doesn't converge at $1$ or $-1$, but as the theorem mentioned, that doesn't provide any information about what this series does. At $x = -1$, all of the terms become negative, and we wind up with
@@ -466,10 +471,9 @@ Now that we understand how basic algebraic operations work with power series, th
 	We know from before that the interval of convergence should be $(-1, 1)$. To determine that now, we need to use the ratio test, which gives
 	
 	$$
-		\begin{align*}
-			r &= \lim_{n \to \infty} \left| \frac{(n + 1)x^n}{nx^{n-1}} \right|\\
-			&= |x|.
-		\end{align*}
+		r &= \lim_{n \to \infty} \left| \frac{(n + 1)x^n}{nx^{n-1}} \right|
+		
+		&= |x|.
 	$$
 	
 	Therefore, the series converges at least when $|x| < 1$, so the interval of convergence is $(-1, 1)$ at the smallest. Since the ratio test is inconclusive at the endpoints, we test those too, but both $\sum_{n = 1}^\infty n(1)^{n - 1}$ and $\sum_{n = 1}^\infty n(-1)^{n - 1}$ are divergent, so the interval of convergence is just $(-1, 1)$, as we expected.
@@ -523,25 +527,29 @@ So far, we've got a good handle on how power series work and interact, and we ev
 	Since all the coefficients must be equal, we have
 	
 	$$
-		\begin{align*}
-			c_1 &= c_0\\
-			c_2 &= \frac{c_1}{2}\\
-			c_3 &= \frac{c_2}{3}\\
-			& \ \ \vdots\\
-			c_n &= \frac{c_{n - 1}}{n}
-		\end{align*}
+		c_1 &= c_0
+		
+		c_2 &= \frac{c_1}{2}
+		
+		c_3 &= \frac{c_2}{3}
+		
+		& \ \ \vdots
+		
+		c_n &= \frac{c_{n - 1}}{n}
 	$$
 	
 	This is a recursively-defined sequence! To solve it, we just need to know the initial term $c_0$. Since the series is supposed to equal $e^x$, we have that $e^0 = c_0$, since all higher powers of $x$ cancel out. Therefore, $c_0 = 1$, and so
 	
 	$$
-		\begin{align*}
-			c_1 &= 1\\
-			c_2 &= \frac{1}{2}\\
-			c_3 &= \frac{1}{6}\\
-			& \ \ \vdots\\
-			c_n &= \frac{1}{n!}
-		\end{align*}
+		c_1 &= 1
+		
+		c_2 &= \frac{1}{2}
+		
+		c_3 &= \frac{1}{6}
+		
+		& \ \ \vdots
+		
+		c_n &= \frac{1}{n!}
 	$$
 	
 	In total, we must have that

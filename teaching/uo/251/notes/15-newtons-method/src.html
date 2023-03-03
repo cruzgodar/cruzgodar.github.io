@@ -11,12 +11,13 @@ Okay, so how do we find roots? This is almost as complicated as asking how we so
 Here's the general idea: as with everything in calculus, differentiable functions are pretty well approximated by lines. When we approximated functions back in section 6, we said that near $x = a$, $f(x) \approx f(a) + f'(a)(x - a)$ --- just the equation of the tangent line. That approximation usually gets pretty bad pretty quickly, but it will work for our purposes. We would like to know when $f(x) = 0$, so starting from $x = a$, we solve $0 = f(a) + f'(a)(x - a)$. We have
 
 $$
-	\begin{align*}
-		f(a) + f'(a)(x - a) &= 0\\
-		f'(a)(x - a) &= -f(a)\\
-		x - a &= -\frac{f(a)}{f'(a)}\\
-		x &= a -\frac{f(a)}{f'(a)}.
-	\end{align*}
+	f(a) + f'(a)(x - a) &= 0
+	
+	f'(a)(x - a) &= -f(a)
+	
+	x - a &= -\frac{f(a)}{f'(a)}
+	
+	x &= a -\frac{f(a)}{f'(a)}.
 $$
 
 Now this number is almost certainly not a root, but it's probably a better guess than $x = a$. That means we can make this $x$-value our new $a$ and try again, and over time, we will likely get close to an actual root.
@@ -32,34 +33,37 @@ This process is called **Newton's method**, named after the same Newton that dis
 	First of all, we need to find a function that has $\sqrt{2}$ as a root. Any one will do, but the simplest is definitely $f(x) = x^2 - 2$. We also need an $x$-value to start with. To keep notation reasonable, we index these with subscripts starting at zero. Let's start with $x_0 = 1$. To use Newton's method, we need to know $f(1)$ and $f'(1)$, which are $-1$ and $2$, respectively. Therefore, we have
 	
 	$$
-		\begin{align*}
-			x_1 &= x_0 - \frac{f(x_0)}{f'(x_0)}\\
-			&= 1 - \frac{-1}{2}\\
-			&= \frac{3}{2}\\
-			&= 1.5.
-		\end{align*}	
+		x_1 &= x_0 - \frac{f(x_0)}{f'(x_0)}
+		
+		&= 1 - \frac{-1}{2}
+		
+		&= \frac{3}{2}
+		
+		&= 1.5.
 	$$
 	
 	That's definitely closer than $x = 1$! Now we just repeat with this new $x$-value.
 	
 	$$
-		\begin{align*}
-			x_2 &= x_1 - \frac{f(x_1)}{f'(x_1)}\\
-			&= \frac{3}{2} - \frac{1/4}{3}\\
-			&= \frac{17}{12}\\
-			&\approx 1.41667.
-		\end{align*}	
+		x_2 &= x_1 - \frac{f(x_1)}{f'(x_1)}
+		
+		&= \frac{3}{2} - \frac{1/4}{3}
+		
+		&= \frac{17}{12}
+		
+		&\approx 1.41667.
 	$$
 	
 	And now for our third and last iteration.
 	
 	$$
-		\begin{align*}
-			x_3 &= x_2 - \frac{f(x_2)}{f'(x_2)}\\
-			&= \frac{17}{12} - \frac{1/144}{17/6}\\
-			&= \frac{577}{408}\\
-			&\approx 1.41423.
-		\end{align*}	
+		x_3 &= x_2 - \frac{f(x_2)}{f'(x_2)}
+		
+		&= \frac{17}{12} - \frac{1/144}{17/6}
+		
+		&= \frac{577}{408}
+		
+		&\approx 1.41423.
 	$$
 	
 	After only three iterations, this is strikingly close to the actual value of $\sqrt{2} = 1.41422...$.
@@ -85,10 +89,9 @@ This process is called **Newton's method**, named after the same Newton that dis
 I'd be remiss if I didn't mention one of the most beautiful pictures math can produce. Take a function, say $f(x) = x^3 - 1$, and write down all of its roots. For this particular function $f(x)$, the roots are $x = 1$ (of course), along with $x = -\frac{1}{2} \pm \frac{\sqrt{3}}{2}i$. Now we're going to draw a number line and color the points on it based on what they do as an initial guess to Newton's method. For example, $x_0 = 1$ does extremely well as a guess, since it's already at a root, while $x_0 = 0$ does terribly: since $f(0) = 0$, we have
 
 $$
-	\begin{align*}
-		x_1 &= x_0 - \frac{f(0)}{f'(0)}\\
-		&= 0 - \frac{1}{0},
-	\end{align*}
+	x_1 &= x_0 - \frac{f(0)}{f'(0)}
+	
+	&= 0 - \frac{1}{0},
 $$
 
 so the process fails to converge to anything at all. We'll give numbers a brightness based on how well they do as a starting guess --- bright means a point converges quickly, like $x = 1$, and dark means it converges slowly or not at all.

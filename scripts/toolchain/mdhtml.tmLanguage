@@ -91,7 +91,7 @@
 		
 		<dict>
 			<key>match</key>
-			<string>(###) (banner|canvas|checkbox|desmos|nav\-buttons|wilson)\s*$</string>
+			<string>(###) (banner|canvas|checkbox|desmos|nav\-buttons|wilson)(.*?)$</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -103,6 +103,11 @@
 				<dict>
 					<key>name</key>
 					<string>keyword</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>string</string>
 				</dict>
 			</dict>
 		</dict>

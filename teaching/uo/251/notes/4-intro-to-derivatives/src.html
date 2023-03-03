@@ -33,21 +33,21 @@ We want to get the tangent line by setting $h = 0$, but since the slope will be 
 	By the definition, we have that the slope is
 	
 	$$
-		\begin{align*}
-			\lim_{h \to 0} \frac{f(1 + h) - f(1)}{h} &= \lim_{h \to 0^+} \frac{(1 + h)^2 - (1)^2}{h}\\
-			&= \lim_{h \to 0} \frac{(1 + 2h + h^2) - 1}{h}\\
-			&= \lim_{h \to 0} \frac{2h + h^2}{h}\\
-			&= \lim_{h \to 0} (2 + h).
-		\end{align*}
+		\lim_{h \to 0} \frac{f(1 + h) - f(1)}{h} &= \lim_{h \to 0^+} \frac{(1 + h)^2 - (1)^2}{h}
+		
+		&= \lim_{h \to 0} \frac{(1 + 2h + h^2) - 1}{h}
+		
+		&= \lim_{h \to 0} \frac{2h + h^2}{h}
+		
+		&= \lim_{h \to 0} (2 + h).
 	$$
 	
 	That last line is justified, since we can cancel common factors in limits. Finishing up, we have
 	
 	$$
-		\begin{align*}
-			\lim_{h \to 0} (2 + h) &= 2 + 0\\
-			&= 2.
-		\end{align*}
+		\lim_{h \to 0} (2 + h) &= 2 + 0
+		
+		&= 2.
 	$$
 	
 	This tells us that the slope of the graph (i.e. the slope of the tangent line) at $x = 1$ is $2$.
@@ -93,14 +93,17 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 	By definition, this is
 	
 	$$
-		\begin{align*}
-			\frac{d}{dx}[x^2] &= \lim_{h \to 0} \frac{(x+h)^2 - x^2}{h}\\
-			 &= \lim_{h \to 0} \frac{x^2 + 2xh + h^2 - x^2}{h}\\
-			 &= \lim_{h \to 0} \frac{2xh + h^2}{h}\\
-			 &= \lim_{h \to 0} \frac{h(2x + h)}{h}\\
-			 &= \lim_{h \to 0} (2x + h)\\
-			 &= 2x.
-		\end{align*}
+		\frac{d}{dx}[x^2] &= \lim_{h \to 0} \frac{(x+h)^2 - x^2}{h}
+		
+		&= \lim_{h \to 0} \frac{x^2 + 2xh + h^2 - x^2}{h}
+		
+		&= \lim_{h \to 0} \frac{2xh + h^2}{h}
+		
+		&= \lim_{h \to 0} \frac{h(2x + h)}{h}
+		
+		&= \lim_{h \to 0} (2x + h)
+		
+		&= 2x.
 	$$
 	
 	Therefore, $\frac{d}{dx}[x^2] = 2x$.
@@ -168,11 +171,11 @@ Because of this theorem, if a function is not continuous at $a$, it's not possib
 	At $x = 0$, the graph has a corner --- a sharp point. It's not really clear what a tangent line at that point would look like, but we can take the limit anyway and see what happens.
 	
 	$$
-		\begin{align*}
-			f'(0) &= \lim_{h \to 0} \frac{f(0 + h) - f(0)}{h}\\
-			&= \lim_{h \to 0} \frac{|h| - |0|}{h}\\
-			&= \lim_{h \to 0} \frac{|h|}{h}.
-		\end{align*}
+		f'(0) &= \lim_{h \to 0} \frac{f(0 + h) - f(0)}{h}
+		
+		&= \lim_{h \to 0} \frac{|h| - |0|}{h}
+		
+		&= \lim_{h \to 0} \frac{|h|}{h}.
 	$$
 	
 	If $h < 0$, then $\frac{|h|}{h} = -1$. If $h > 0$, then $\frac{|h|}{h} = 1$. When $h = 0$, the function is undefined, but that's okay, since we're taking the limit to zero. But what this tells us is that the limit from the right is $1$, while the limit from the left is $-1$. Visually, secant lines to the right all have slope $1$ and secant lines to the left all have slope $-1$, and so they never agree. Since the limit does not exist, $f$ is not differentiable at $x = 0$.
@@ -218,26 +221,31 @@ We'll talk about what visual feature of a graph the second derivative measures a
 	This is a long calculation, but it's not too bad in the end. First, let's find the first derivative.
 	
 	$$
-		\begin{align*}
-			\frac{d}{dx}[2x^2 - x] &= \lim_{h \to 0} \frac{(2(x + h)^2 - (x + h)) - (2x^2 - x)}{h}\\
-			&= \lim_{h \to 0} \frac{2(x^2 + 2xh + h^2) - (x + h) - 2x^2 + x}{h}\\
-			&= \lim_{h \to 0} \frac{2x^2 + 4xh + 2h^2 - x - h - 2x^2 + x}{h}\\
-			&= \lim_{h \to 0} \frac{4xh + 2h^2 - h}{h}\\
-			&= \lim_{h \to 0} (4x + 2h - 1)\\
-			&= 4x - 1.
-		\end{align*}
+		\frac{d}{dx}[2x^2 - x] &= \lim_{h \to 0} \frac{(2(x + h)^2 - (x + h)) - (2x^2 - x)}{h}
+		
+		&= \lim_{h \to 0} \frac{2(x^2 + 2xh + h^2) - (x + h) - 2x^2 + x}{h}
+		
+		&= \lim_{h \to 0} \frac{2x^2 + 4xh + 2h^2 - x - h - 2x^2 + x}{h}
+		
+		&= \lim_{h \to 0} \frac{4xh + 2h^2 - h}{h}
+		
+		&= \lim_{h \to 0} (4x + 2h - 1)
+		
+		&= 4x - 1.
 	$$
 	
 	Now we'll take the derivative of this function to get the second derivative.
 	
 	$$
-		\begin{align*}
-			\frac{d}{dx}[4x - 1] &= \lim_{h \to 0} \frac{(4(x + h) - 1) - (4x - 1)}{h}\\
-			&= \lim_{h \to 0} \frac{4x + 4h - 1 - 4x + 1}{h}\\
-			&= \lim_{h \to 0} \frac{4h}{h}\\
-			&= \lim_{h \to 0} 4\\
-			&= 4.
-		\end{align*}
+		\frac{d}{dx}[4x - 1] &= \lim_{h \to 0} \frac{(4(x + h) - 1) - (4x - 1)}{h}
+		
+		&= \lim_{h \to 0} \frac{4x + 4h - 1 - 4x + 1}{h}
+		
+		&= \lim_{h \to 0} \frac{4h}{h}
+		
+		&= \lim_{h \to 0} 4
+		
+		&= 4.
 	$$
 	
 	In total, $\frac{d^2}{dx^2}[2x^2 - x] = 4$.

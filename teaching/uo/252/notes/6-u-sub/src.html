@@ -47,11 +47,11 @@ This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{d
 	we set $u = 3x^2 + 4$ and $du = 6x\,dx$. Then we have
 	
 	$$
-		\begin{align*}
-			\int 6x(3x^2 + 4)^4\,dx &= \int u^4\,du + C\\
-			&= \frac{u^5}{5} + C\\
-			&= \frac{(3x^2 + 4)^5}{5} + C.
-		\end{align*}
+		\int 6x(3x^2 + 4)^4\,dx &= \int u^4\,du + C
+		
+		&= \frac{u^5}{5} + C
+		
+		&= \frac{(3x^2 + 4)^5}{5} + C.
 	$$
 	
 ###
@@ -63,10 +63,9 @@ This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{d
 	**Solution:** Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won't advance the problem forward --- if you don't see why, try it!) Then $du = 2\cos(2x)\,dx$ by the chain rule, and so the integral becomes
 	
 	$$
-		\begin{align*}
-			\int u^3\,du &= \frac{u^4}{4} + C\\
-			&= \frac{1}{4} \sin^4(2x) + C.
-		\end{align*}
+		\int u^3\,du &= \frac{u^4}{4} + C
+		
+		&= \frac{1}{4} \sin^4(2x) + C.
 	$$
 	
 ###
@@ -110,31 +109,31 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 	When using $u$-sub on a definite integral, we need to be careful. The $3$ and $4$ are things to plug in for $z$, not $u$, so we'll need to remember to backsubstitute before plugging in the limits.
 	
 	$$
-		\begin{align*}
-			u &= z^2 - 5\\
-			du &= 2z\,dz
-		\end{align*}
+		u &= z^2 - 5
+		
+		du &= 2z\,dz
 	$$
 	
 	At this point, $du$ isn't exactly present in the integral: it's $2z\,dz$ and we only have $z\,dz$. However, since we're only off by a constant multiple, we can just divide by it on both sides to make the expression fit what we have.
 	
 	$$
-		\begin{align*}
-			\frac{1}{2} du &= z\,dz\\
-			\int_3^4 z\sqrt{z^2 - 5}\,dz &= \int_3^4 \frac{1}{2} \sqrt{u}\,du\\
-			&= \int_3^4 \frac{1}{2} u^{1/2}\,du\\
-			&= \left. \left[ \frac{1}{2} \frac{u^{3/2}}{3/2} \right] \right|_3^4\\
-			&= \left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4\\
-		\end{align*}
+		\frac{1}{2} du &= z\,dz
+		
+		\int_3^4 z\sqrt{z^2 - 5}\,dz &= \int_3^4 \frac{1}{2} \sqrt{u}\,du
+		
+		&= \int_3^4 \frac{1}{2} u^{1/2}\,du
+		
+		&= \left. \left[ \frac{1}{2} \frac{u^{3/2}}{3/2} \right] \right|_3^4
+		
+		&= \left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4
 	$$
 	
 	Now we need to backsubstitute before plugging in the limits.
 	
 	$$
-		\begin{align*}
-			\left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4 &= \left. \left[ \frac{1}{3} (z^2 - 5)^{3/2} \right] \right|_3^4\\
-			&= \frac{1}{3} 11^{3/2} - \frac{1}{3} 4^{3/2}.
-		\end{align*}
+		\left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4 &= \left. \left[ \frac{1}{3} (z^2 - 5)^{3/2} \right] \right|_3^4
+		
+		&= \frac{1}{3} 11^{3/2} - \frac{1}{3} 4^{3/2}.
 	$$
 	
 ###
@@ -146,11 +145,11 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 	**Solution:** let $u = 4t^3 + 3$. Then $du = 12t^2\,dt$, but we have $2t^2\,dt$, so we solve for $2t^2\,dt$ to get $2t^2\,dt = 6\,du$. Now we have
 	
 	$$
-		\begin{align*}
-			\int 2t^2 e^{4t^3 + 3}\,dt &= \int 6 e^u\,du\\
-			&= 6e^u + C\\
-			&= 6e^{4t^3 + 3} + C.
-		\end{align*}
+		\int 2t^2 e^{4t^3 + 3}\,dt &= \int 6 e^u\,du
+		
+		&= 6e^u + C
+		
+		&= 6e^{4t^3 + 3} + C.
 	$$
 	
 ###
@@ -184,22 +183,23 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 	First, we need to apply the half-angle formula:
 	
 	$$
-		\begin{align*}
-			\int 3\cos^2(x)\,dx &= 3\int \cos^2(x)\,dx\\
-			&= 3\int \frac{1 + \cos(2x)}{2}\,dx\\
-			&= 3\int \frac{1}{2} + \frac{1}{2}\cos(2x)\,dx\\
-			&= \frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,dx
-		\end{align*}
+		\int 3\cos^2(x)\,dx &= 3\int \cos^2(x)\,dx
+		
+		&= 3\int \frac{1 + \cos(2x)}{2}\,dx
+		
+		&= 3\int \frac{1}{2} + \frac{1}{2}\cos(2x)\,dx
+		
+		&= \frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,dx
 	$$
 	
 	To integrate $\cos(2x)$, we set $u = 2x$ and $du = 2\,dx$, so $dx = \frac{1}{2}\,du$. Now
 	
 	$$
-		\begin{align*}
-			\frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,dx &= \frac{3}{2}x + C + \frac{3}{4}\int \cos(u)\,du\\
-			&= \frac{3}{2}x + C + \frac{3}{4}\sin(u)\\
-			&= \frac{3}{2}x + \frac{3}{4}\sin(2x) + C.
-		\end{align*}
+		\frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,dx &= \frac{3}{2}x + C + \frac{3}{4}\int \cos(u)\,du
+		
+		&= \frac{3}{2}x + C + \frac{3}{4}\sin(u)
+		
+		&= \frac{3}{2}x + \frac{3}{4}\sin(2x) + C.
 	$$
 	
 	Although we have two integrals, we only need one $C$, since it can take on any numerical value.
@@ -213,21 +213,21 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 	**Solution:** using the half-angle formula, we have
 	
 	$$
-		\begin{align*}
-			\int \sin^4(t)\,dt &= \int (\sin^2(t))^2\,dt\\
-			&= \int \left( \frac{1}{2} - \frac{1}{2} \cos(2t) \right)^2\,dt\\
-			&= \int (\frac{1}{4} - \frac{1}{2} \cos(2t) + \frac{1}{4} \cos^2(2t))\,dt\\
-			&= \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \int \cos^2(2t)\,dt\\
-		\end{align*}
+		\int \sin^4(t)\,dt &= \int (\sin^2(t))^2\,dt
+		
+		&= \int \left( \frac{1}{2} - \frac{1}{2} \cos(2t) \right)^2\,dt
+		
+		&= \int (\frac{1}{4} - \frac{1}{2} \cos(2t) + \frac{1}{4} \cos^2(2t))\,dt
+		
+		&= \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \int \cos^2(2t)\,dt
 	$$
 	
 	Now we use half-angles **again**, this time on $\cos^2(2t)$.
 	
 	$$
-		\begin{align*}
-			\int \cos^2(2t)\,dt &= \int \left( \frac{1}{2} + \frac{1}{2} \cos(4t) \right)\,dt\\
-			&= \frac{1}{2} t + \frac{1}{8} \cos(4t) + C.
-		\end{align*}
+		\int \cos^2(2t)\,dt &= \int \left( \frac{1}{2} + \frac{1}{2} \cos(4t) \right)\,dt
+		
+		&= \frac{1}{2} t + \frac{1}{8} \cos(4t) + C.
 	$$
 	
 	In total, we have
@@ -257,13 +257,15 @@ One last type of $u$-sub problem to explore is where the substitution doesn't *q
 	The only way to get rid of the $x$ left over is to solve for $x$ in terms of $u$: $x = u + 1$. Now we have
 	
 	$$
-		\begin{align*}
-			\int \frac{u + 1}{\sqrt{u}}\,du &= \int \frac{u}{\sqrt{u}} + \frac{1}{\sqrt{u}}\,du\\
-			&= \int \frac{u}{\sqrt{u}}\,du + \int \frac{1}{\sqrt{u}}\,du\\
-			&= \int u^{1/2}\,du + \int u^{-1/2}\,du\\
-			&= \frac{2}{3} u^{3/2} + 2u^{1/2} + C\\
-			&= \frac{2}{3} (x - 1)^{3/2} + 2(x - 1)^{1/2} + C.
-		\end{align*}
+		\int \frac{u + 1}{\sqrt{u}}\,du &= \int \frac{u}{\sqrt{u}} + \frac{1}{\sqrt{u}}\,du
+		
+		&= \int \frac{u}{\sqrt{u}}\,du + \int \frac{1}{\sqrt{u}}\,du
+		
+		&= \int u^{1/2}\,du + \int u^{-1/2}\,du
+		
+		&= \frac{2}{3} u^{3/2} + 2u^{1/2} + C
+		
+		&= \frac{2}{3} (x - 1)^{3/2} + 2(x - 1)^{1/2} + C.
 	$$
 	
 ###

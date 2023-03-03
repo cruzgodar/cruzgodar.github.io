@@ -21,39 +21,37 @@ These might look familiar: some integrals that evaluate to inverse trig function
 	We can't use $u$-sub, since we would need to take $u = 9 - x^2$, and $du = 2x\,dx$ doesn't appear anywhere in the expression. We also can't use integration by parts, since there is no product here. Instead, let's do something strange: let $x = 3\sin(\theta)$. Then $dx = 3\cos(\theta)\,d\theta$. This looks like a $u$-sub a little bit, but we're **going the other direction** --- we're letting $x$ be a function of $\theta$ rather than letting $u$ being a function of $x$. But the process now is the same: we just substitute in for $x$.
 	
 	$$
-		\begin{align*}
-			\int \sqrt{9 - x^2}\,dx &= \int \sqrt{9 - 9\sin^2(\theta)}(3\cos(\theta))\,d\theta\\
-			&= \int \sqrt{9(1 - \sin^2(\theta))}(3\cos(\theta))\,d\theta\\
-			&= \int 3\sqrt{1 - \sin^2(\theta)}(3\cos(\theta))\,d\theta.
-		\end{align*}
+		\int \sqrt{9 - x^2}\,dx &= \int \sqrt{9 - 9\sin^2(\theta)}(3\cos(\theta))\,d\theta
+		
+		&= \int \sqrt{9(1 - \sin^2(\theta))}(3\cos(\theta))\,d\theta
+		
+		&= \int 3\sqrt{1 - \sin^2(\theta)}(3\cos(\theta))\,d\theta.
 	$$
 	
 	Remember from trig that $\sin^2(\theta) + \cos^2(\theta) = 1$ for any $\theta$, so we can rewrite $1 - \sin^2(\theta)$ as $\cos^2(\theta)$. This is the reason that we did this strange substitution in the first place: it lets us turn the thing under the square root into a singe expression, which will even cancel with that root. Now we have
 	
 	$$
-		\begin{align*}
-			\int 3\sqrt{\cos^2(\theta)}(3\cos(\theta))\,d\theta &= \int (3\cos(\theta))(3\cos(\theta))\,d\theta\\
-			&= \int 9\cos^2(\theta)\,d\theta.
-		\end{align*}
+		\int 3\sqrt{\cos^2(\theta)}(3\cos(\theta))\,d\theta &= \int (3\cos(\theta))(3\cos(\theta))\,d\theta
+		
+		&= \int 9\cos^2(\theta)\,d\theta.
 	$$
 	
 	We talked about how to handle integrals like this much earlier in the course: we use a half-angle identity.
 	
 	$$
-		\begin{align*}
-			\int 9\cos^2(\theta)\,d\theta &= \int \frac{9}{2}(1 + \cos(2\theta))\,d\theta\\
-			&= \int \frac{9}{2} + \frac{9}{2} \cos(2\theta)\,d\theta\\
-			&= \int \frac{9}{2} + \frac{9}{2} \cos(2\theta)\,d\theta\\
-			&= \frac{9}{2} \theta + \frac{9}{4} \sin(2\theta) + C.
-		\end{align*}
+		\int 9\cos^2(\theta)\,d\theta &= \int \frac{9}{2}(1 + \cos(2\theta))\,d\theta
+		
+		&= \int \frac{9}{2} + \frac{9}{2} \cos(2\theta)\,d\theta
+		
+		&= \int \frac{9}{2} + \frac{9}{2} \cos(2\theta)\,d\theta
+		
+		&= \frac{9}{2} \theta + \frac{9}{4} \sin(2\theta) + C.
 	$$
 	
 	Now in general, this process will require us to simplify any expressions with $2\theta$ inside a trig function. There's another trig formula that's relevant here: $\sin(2\theta) = 2\sin(\theta)\cos(\theta)$. Our expression therefore becomes
 	
 	$$
-		\begin{align*}
-			\frac{9}{2} \theta + \frac{9}{4} \sin(2\theta) + C &= \frac{9}{2} \theta + \frac{9}{2} \sin(\theta) \cos(\theta) + C.
-		\end{align*}
+		\frac{9}{2} \theta + \frac{9}{4} \sin(2\theta) + C = \frac{9}{2} \theta + \frac{9}{2} \sin(\theta) \cos(\theta) + C.
 	$$
 	
 	Now it's time to back-substitute. Since $x = 3\sin(\theta)$, $\sin(\theta) = \frac{x}{3}$, which isn't too bad. We still need to handle the $\theta$ and the $\cos(\theta)$, though. For the former, we can solve $\sin(\theta) = \frac{x}{3}$ for $\theta$ to get $\theta = \sin^{-1}\left( \frac{x}{3} \right)$. The cosine is going to be slightly harder, though. Let's draw a right triangle to help figure it out.
@@ -63,9 +61,7 @@ These might look familiar: some integrals that evaluate to inverse trig function
 	In a right triangle with an angle $\theta$, $\sin(\theta)$ is the ratio of the opposite side to the hypotenuse, so to get a right triangle that works for us, we can draw one with opposite side $x$ and hypotenuse $3$. Let's call the third side $b$ for now. We're trying to find $\cos(\theta)$ in terms of $x$ --- since $\cos(\theta) = \frac{b}{3}$, we just need to find $b$. By the Pythagorean theorem, $x^2 + b^2 = 3^2$, so $b = \sqrt{9 - x^2}$. Therefore, $\cos(\theta) = \frac{1}{3}\sqrt{9 - x^2}$. Now we finally have all the necessary information, and we can back-substitute.
 	
 	$$
-		\begin{align*}
-			\frac{9}{2} \theta + \frac{9}{2} \sin(\theta) \cos(\theta) + C &= \frac{9}{2} \sin^{-1}\left( \frac{x}{3} \right) + \left(\frac{9}{2}\right) \left(\frac{x}{3}\right) \left(\frac{1}{3}\sqrt{9 - x^2}\right) + C.
-		\end{align*}
+		\frac{9}{2} \theta + \frac{9}{2} \sin(\theta) \cos(\theta) + C = \frac{9}{2} \sin^{-1}\left( \frac{x}{3} \right) + \left(\frac{9}{2}\right) \left(\frac{x}{3}\right) \left(\frac{1}{3}\sqrt{9 - x^2}\right) + C.
 	$$
 	
 ###
@@ -85,11 +81,11 @@ If you're thinking this is a pretty intense process to go through... you're righ
 	3. Simplify the integral using one of the following:
 	
 	$$
-		\begin{align*}
-			1 - \sin^2(\theta) &= \cos^2(\theta)\\
-			1 + \tan^2(\theta) &= \sec^2(\theta)\\
-			\sec^2(\theta) - 1 &= \tan^2(\theta)
-		\end{align*}
+		1 - \sin^2(\theta) &= \cos^2(\theta)
+		
+		1 + \tan^2(\theta) &= \sec^2(\theta)
+		
+		\sec^2(\theta) - 1 &= \tan^2(\theta)
 	$$
 	
 	4. If necessary, simplify the integral more with a half-angle identity.
@@ -173,14 +169,17 @@ Since this class is on calculus and not trig, that complete list will be provide
 	Trying to use $u$-sub or integration by parts fails for the same reasons it did before, so let's turn to trig sub. The square root is of the form $\sqrt{a^2 + t^2}$ for $a = 2$, so let's take $t = 2\tan(\theta)$. Then $dt = 2\sec^2(\theta)\,d\theta$, so we get
 	
 	$$
-		\begin{align*}
-			\int \frac{1}{\sqrt{4 + t^2}}\,dt &= \int \frac{1}{\sqrt{4 + 4\tan^2(\theta)}}(2\sec^2(\theta))\,d\theta\\
-			&= \int \frac{2\sec^2(\theta)}{2\sqrt{1 + \tan^2(\theta)}}\,d\theta\\
-			&= \int \frac{\sec^2(\theta)}{\sqrt{\sec^2(\theta)}}\,d\theta\\
-			&= \int \frac{\sec^2(\theta)}{\sec(\theta)}\,d\theta\\
-			&= \int \sec(\theta)\,d\theta\\
-			&= \ln|\sec(\theta) + \tan(\theta)| + C.
-		\end{align*}
+		\int \frac{1}{\sqrt{4 + t^2}}\,dt &= \int \frac{1}{\sqrt{4 + 4\tan^2(\theta)}}(2\sec^2(\theta))\,d\theta
+		
+		&= \int \frac{2\sec^2(\theta)}{2\sqrt{1 + \tan^2(\theta)}}\,d\theta
+		
+		&= \int \frac{\sec^2(\theta)}{\sqrt{\sec^2(\theta)}}\,d\theta
+		
+		&= \int \frac{\sec^2(\theta)}{\sec(\theta)}\,d\theta
+		
+		&= \int \sec(\theta)\,d\theta
+		
+		&= \ln|\sec(\theta) + \tan(\theta)| + C.
 	$$
 	
 	Now we back-substitute. We know $t = 2\tan(\theta)$, so $\tan(\theta) = \frac{t}{2}$. That leaves us to solve for $\sec(\theta)$ with a right triangle.
@@ -204,17 +203,19 @@ Since this class is on calculus and not trig, that complete list will be provide
 ### exc trig sub
 	
 	Find $\displaystyle \int \frac{1}{x^2 \sqrt{x^2 - 1}}\,dx$.
-	<!--
+	
 	**Solution:** Let $x = \sec(\theta)$. Then $dx = \sec(\theta)\tan(\theta)$, so the integral becomes
 	
 	$$
-		\begin{align*}
-			\int \frac{1}{x^2 \sqrt{x^2 - 1}}\,dx &= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \sqrt{\sec^2(\theta) - 1}}\,d\theta\\
-			&= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \tan(\theta)}\,d\theta\\
-			&= \int \frac{1}{\sec(\theta)}\,d\theta\\
-			&= \int \cos(\theta)\,d\theta\\
-			&= \sin(\theta) + C.
-		\end{align*}
+		\int \frac{1}{x^2 \sqrt{x^2 - 1}}\,dx &= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \sqrt{\sec^2(\theta) - 1}}\,d\theta
+		
+		&= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \tan(\theta)}\,d\theta
+		
+		&= \int \frac{1}{\sec(\theta)}\,d\theta
+		
+		&= \int \cos(\theta)\,d\theta
+		
+		&= \sin(\theta) + C.
 	$$
 	
 	Since $\sec(\theta) = \frac{x}{2}$, we draw a right triangle with hypotenuse $x$ and adjacent side $2$. Then the remaining leg has length $\sqrt{x^2 - 4}$, so
@@ -228,7 +229,6 @@ Since this class is on calculus and not trig, that complete list will be provide
 	$$
 		\frac{\sqrt{x^2 - 4}}{x} + C.
 	$$
-	-->
 ###
 
 

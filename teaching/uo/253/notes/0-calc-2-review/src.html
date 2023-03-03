@@ -33,12 +33,13 @@ $$
 we have that $g(0) = \frac{\sin(0)}{0} = \frac{0}{0}$, which is undefined. However, we can take the limit (and use L'H&#244;pital's rule) to find that
 
 $$
-	\begin{align*}
-		\lim_{t \to 0} g(t) &= \lim_{t \to 0} \frac{\frac{d}{dt} [\sin(t)] }{\frac{d}{dt}[t]}\\
-		&= \lim_{t \to 0} \frac{\cos(t)}{1}\\
-		&= \frac{1}{1}\\
-		&= 1.
-	\end{align*}
+	\lim_{t \to 0} g(t) &= \lim_{t \to 0} \frac{\frac{d}{dt} [\sin(t)] }{\frac{d}{dt}[t]}
+	
+	&= \lim_{t \to 0} \frac{\cos(t)}{1}
+	
+	&= \frac{1}{1}
+	
+	&= 1.
 $$
 
 Even though $g(0)$ is undefined, the value we'd expect it to take is $1$.
@@ -174,15 +175,19 @@ Much of the study of integrals is devoted to their applications, but we won't ne
 	Since $\sin(x^2)$ is a composition of $\sin(x)$ and $x^2$, let's try $u$-sub. We let $u = x^2$, the inner function, and then differentiate to find that $du = 2x\,dx$. Present in our integral is $x\,dx$, not $2x\,dx$, so we divide by $2$ to get $\frac{1}{2}\,du = x\,dx$, which matches our integral. Now we have
 	
 	$$
-		\begin{align*}
-			\int_0^{\sqrt{\pi}} x \sin(x^2)\,dx &= \int_0^{\sqrt{\pi}} \frac{1}{2} \sin(u)\,du\\
-			&= \frac{1}{2} \int_0^{\sqrt{\pi}} \sin(u)\,du\\
-			&= \frac{1}{2} \left. \left[ -\cos(u) \right] \right|_0^{\sqrt{\pi}}\\
-			&= \frac{1}{2} \left. \left[ - \cos(x^2) \right] \right|_0^{\sqrt{\pi}}\\
-			&= \frac{1}{2} \left( -\cos \left( \sqrt{\pi}^2 \right) + \cos(0^2) \right)\\
-			&= \frac{1}{2} \left( -(-1) + 1 \right)\\
-			&= 1.
-		\end{align*}	
+		\int_0^{\sqrt{\pi}} x \sin(x^2)\,dx &= \int_0^{\sqrt{\pi}} \frac{1}{2} \sin(u)\,du
+		
+		&= \frac{1}{2} \int_0^{\sqrt{\pi}} \sin(u)\,du
+		
+		&= \frac{1}{2} \left. \left[ -\cos(u) \right] \right|_0^{\sqrt{\pi}}
+		
+		&= \frac{1}{2} \left. \left[ - \cos(x^2) \right] \right|_0^{\sqrt{\pi}}
+		
+		&= \frac{1}{2} \left( -\cos \left( \sqrt{\pi}^2 \right) + \cos(0^2) \right)
+		
+		&= \frac{1}{2} \left( -(-1) + 1 \right)
+		
+		&= 1.
 	$$
 	
 	Therefore, the area under the graph is exactly 1.

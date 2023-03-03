@@ -29,11 +29,11 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 	To find those limits, we set the two functions equal and solve for $x$. If $x = x^2$, then $x^2 - x = 0$, so $x(x-1) = 0$, and therefore $x = 0$ or $x = 1$. This reflects what we see in the graph. Since $f(x)$ is the function with the larger $y$-value on the region, our integral becomes
 	
 	$$
-		\begin{align*}
-			\int_0^1 (x - x^2)\,dx &= \left. \left[ \frac{x^2}{2} - \frac{x^3}{3} \right] \right|_0^1\\
-			&= \frac{1}{2} - \frac{1}{3}\\
-			&= \frac{1}{6}.
-		\end{align*}
+		\int_0^1 (x - x^2)\,dx &= \left. \left[ \frac{x^2}{2} - \frac{x^3}{3} \right] \right|_0^1
+		
+		&= \frac{1}{2} - \frac{1}{3}
+		
+		&= \frac{1}{6}.
 	$$
 	
 ###
@@ -45,11 +45,11 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 	**Solution:** the intersection occurs when $6 - x = 9 - \left( \frac{x}{2} \right)^2$. This gives $x = -2$ and $x = 6$. Now we can see which function is larger by evaulating them both somewhere in between, say at $0$: $6 - 0 = 6$ and $9 - \left( \frac{0}{2} \right)^2 = 9$. That means that the second one is the larger function, so we have
 	
 	$$
-		\begin{align*}
-			\int_{-2}^6 \left(9 - \left( \frac{x}{2} \right)^2 - (6 - x)\right)\,dx &= \int_{-2}^6 \left(3 + x - \frac{x^2}{4} \right)\,dx\\
-			&= \left. \left[ 3x + \frac{x^2}{2} - \frac{x^3}{12} \right] \right|_{-2}^{6}\\
-			&= 18 + \frac{10}{3}.
-		\end{align*}
+		\int_{-2}^6 \left(9 - \left( \frac{x}{2} \right)^2 - (6 - x)\right)\,dx &= \int_{-2}^6 \left(3 + x - \frac{x^2}{4} \right)\,dx
+		
+		&= \left. \left[ 3x + \frac{x^2}{2} - \frac{x^3}{12} \right] \right|_{-2}^{6}
+		
+		&= 18 + \frac{10}{3}.
 	$$
 	
 ###
@@ -63,12 +63,13 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 	This is a little more complicated: which function is on top changes across the interval. Setting $\sin(x) = \cos(x)$ is a problem from trigonometry: dividing both sides by $\cos(x)$ results in $\tan(x) = 1$, which on our interval is only true at $x = \frac{\pi}{4}$. So the functions meet at $x = \frac{\pi}{4}$, and since they're both continuous, that's the only possible place they could cross. Let's try some test points: plugging in $x = 0$ gives $\sin(0) = 0$ and $\cos(0) = 1$, so until $x = \frac{\pi}{4}$, $\cos$ is the larger function. Similarly, $x = \pi$ gives $\sin(\pi) = 0$ and $\cos(\pi) = -1$, so $\sin$ is larger after $\frac{\pi}{4}$. Therefore, we have
 	
 	$$
-		\begin{align*}
-			&\ \ \int_0^{\frac{\pi}{4}} (\cos(x) - \sin(x))\,dx + \int_{\frac{\pi}{4}}^\pi (\sin(x) - \cos(x))\,dx\\
-			&= \left. \left[ \sin(x) + \cos(x) \right] \right|_0^{\frac{\pi}{4}} + \left. \left[ -\cos(x) - \sin(x) \right] \right|_{\frac{\pi}{4}}^\pi\\
-			&= \left( \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} - 1 - 0 \right) + \left( 1 + 0 + \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} \right)\\
-			&= 2\sqrt{2}.
-		\end{align*}
+		&\ \ \int_0^{\frac{\pi}{4}} (\cos(x) - \sin(x))\,dx + \int_{\frac{\pi}{4}}^\pi (\sin(x) - \cos(x))\,dx
+		
+		&= \left. \left[ \sin(x) + \cos(x) \right] \right|_0^{\frac{\pi}{4}} + \left. \left[ -\cos(x) - \sin(x) \right] \right|_{\frac{\pi}{4}}^\pi
+		
+		&= \left( \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} - 1 - 0 \right) + \left( 1 + 0 + \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} \right)
+		
+		&= 2\sqrt{2}.
 	$$
 	
 	### desmos area-between-curves-2
@@ -86,11 +87,11 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 	First, let's find the limits of integration. The left one is the intersection of $y = x^2 + 1$ with $y = 1$: then $x^2 + 1 = 1$, so $x = 0$. The right endpoint is the intersection of $y = 3 - x$ with $y = 1$, so $x = 2$. Like the last example, though, the bounding functions change as we move left to right along the interval. The point where we switch from $x^2 + 1$ to $3 - x$ being the top function is the intersection of the two: $x^2 + 1 = 3 - x$, so $x^2 + x - 2 = 0$. Factoring this gives $x = 1$ or $x = -2$, and we clearly want $x = 1$. Now the integral becomes
 	
 	$$
-		\begin{align*}
-			\int_0^1 (x^2 + 1 - 1)\,dx + \int_1^2 (3 - x - 1)\,dx &= \left. \left[ \frac{x^3}{3} \right] \right|_0^1 + \left. \left[ 2x - \frac{x^2}{2} \right] \right|_1^2\\
-			&= \frac{1}{3} + \left( 4 - 2 - 2 + \frac{1}{2} \right)\\
-			&= \frac{5}{6}.
-		\end{align*}
+		\int_0^1 (x^2 + 1 - 1)\,dx + \int_1^2 (3 - x - 1)\,dx &= \left. \left[ \frac{x^3}{3} \right] \right|_0^1 + \left. \left[ 2x - \frac{x^2}{2} \right] \right|_1^2
+		
+		&= \frac{1}{3} + \left( 4 - 2 - 2 + \frac{1}{2} \right)
+		
+		&= \frac{5}{6}.
 	$$
 	
 ###
@@ -128,16 +129,21 @@ Sometimes --- particularly in cases like the previous example with multiple boun
 	The next thing to reverse is the way the integral is set up. Normally we take the top function minus the bottom one --- i.e. the larger $y$-value minus the smaller $y$-value. Now we're using $x$ instead, so to take the larger $x$-value minus the smaller $x$-value, we take the right function minus the left one. And here's the reason this is an easier way to do things for this example in particular: the right and left functions stay the same across the entire region, so there's no need to split up the region. We just have
 	
 	$$
-		\begin{align*}
-			\int_1^2 (3 - y - \sqrt{y - 1})\,dy &= \int_1^2 (3 - y)\,dy - \int_1^2 \sqrt{y - 1}\,dy\\
-			& u = y - 1,\,du = dy\\
-			&= \int_1^2 (3 - y)\,dy - \int_1^2 \sqrt{u}\,du\\
-			&= \left. \left[ 3y - \frac{y^2}{2} \right] \right|_1^2 - \left. \left[ \frac{u^{3/2}}{3/2} \right] \right|_1^2\\
-			&= \left. \left[ 3y - \frac{y^2}{2} \right] \right|_1^2 - \left. \left[ \frac{(y-1)^{3/2}}{3/2} \right] \right|_1^2\\
-			&= \left( 6 - 2 - 3 + \frac{1}{2} \right) - \left( \frac{1}{3/2} \right)\\
-			&= \frac{3}{2} - \frac{2}{3}\\
-			&= \frac{5}{6},
-		\end{align*}
+		\int_1^2 (3 - y - \sqrt{y - 1})\,dy &= \int_1^2 (3 - y)\,dy - \int_1^2 \sqrt{y - 1}\,dy
+		
+		& u = y - 1,\,du = dy
+		
+		&= \int_1^2 (3 - y)\,dy - \int_1^2 \sqrt{u}\,du
+		
+		&= \left. \left[ 3y - \frac{y^2}{2} \right] \right|_1^2 - \left. \left[ \frac{u^{3/2}}{3/2} \right] \right|_1^2
+		
+		&= \left. \left[ 3y - \frac{y^2}{2} \right] \right|_1^2 - \left. \left[ \frac{(y-1)^{3/2}}{3/2} \right] \right|_1^2
+		
+		&= \left( 6 - 2 - 3 + \frac{1}{2} \right) - \left( \frac{1}{3/2} \right)
+		
+		&= \frac{3}{2} - \frac{2}{3}
+		
+		&= \frac{5}{6},
 	$$
 	
 	which agrees with what we got before.

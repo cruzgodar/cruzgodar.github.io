@@ -47,10 +47,9 @@ It's the final section! We'll depart from the previous topics to examine a commo
 	since $y' = -3e^{-3x} + 2$, and so
 	
 	$$
-		\begin{align*}
-			y' + 3y &= -3e^{-3x} + 2 + 3e^{-3x} + 6x + 9\\
-			&= 6x + 11.
-		\end{align*}
+		y' + 3y &= -3e^{-3x} + 2 + 3e^{-3x} + 6x + 9
+		
+		&= 6x + 11.
 	$$	
 	
 ###
@@ -214,30 +213,29 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 	Then we integrate both sides:
 	
 	$$
-		\begin{align*}
-			\int \frac{1}{y-3}\,dy &= \int (x-2)\,dx\\
-			\ln |y - 3| &= x^2 - 2x + C.
-		\end{align*}
+		\int \frac{1}{y-3}\,dy &= \int (x-2)\,dx
+		q
+		\ln |y - 3| &= x^2 - 2x + C.
 	$$
 	
 	Now it's time to solve for $y$.
 	
 	$$
-		\begin{align*}
-			\ln |y - 3| &= x^2 - 2x + C\\
-			y - 3 &= e^{x^2 - 2x + C}\\
-			y &= e^{x^2 - 2x + C} + 3.
-		\end{align*}
+		\ln |y - 3| &= x^2 - 2x + C
+		
+		y - 3 &= e^{x^2 - 2x + C}
+		
+		y &= e^{x^2 - 2x + C} + 3.
 	$$
 	
 	Now to get rid of $C$, we need to use the initial value: $y(0) = 5$. That gives us
 	
 	$$
-		\begin{align*}
-			5 &= e^{0^2 - 2(0) + C} + 3\\
-			2 &= e^C\\
-			\ln(2) &= C.
-		\end{align*}
+		5 &= e^{0^2 - 2(0) + C} + 3
+		
+		2 &= e^C
+		
+		\ln(2) &= C.
 	$$
 	
 	Therefore, this solution becomes
@@ -257,24 +255,27 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 	**Solution:** separating and integrating, we have
 	
 	$$
-		\begin{align*}
-			\frac{1}{y}\,dy &= \ln(x)\,dx\\
-			\int \frac{1}{y}\,dy &= \int \ln(x)\,dx\\
-			\ln|y| &= x\ln(x) - x + C\\
-			y &= e^{x\ln(x) - x + C}.
-		\end{align*}
+		\frac{1}{y}\,dy &= \ln(x)\,dx
+		
+		\int \frac{1}{y}\,dy &= \int \ln(x)\,dx
+		
+		\ln|y| &= x\ln(x) - x + C
+		
+		y &= e^{x\ln(x) - x + C}.
 	$$
 	
 	Since $y(1) = 1$,
 	
 	$$
-		\begin{align*}
-			1 &= e^{1\ln(1) - 1 + C}\\
-			1 &= e^{C - 1}\\
-			\ln(1) &= C - 1\\
-			0 &= C - 1\\
-			C &= 1.
-		\end{align*}
+		1 &= e^{1\ln(1) - 1 + C}
+		
+		1 &= e^{C - 1}
+		
+		\ln(1) &= C - 1
+		
+		0 &= C - 1
+		
+		C &= 1.
 	$$
 	
 	Our final answer is then
@@ -312,50 +313,59 @@ As one final application, let's talk about temperature.
 	We have $S = 75$, $T(0) = 350$, and $T(5) = 300$. Newton's Law of Cooling says that $T' = k(T - 75)$, so by separation, we have
 	
 	$$
-		\begin{align*}
-			\frac{dT}{dt} &= k(T - 75)\\
-			\frac{1}{T - 75} &= k\,dt\\
-			\int \frac{1}{T - 75} &= \int k\,dt\\
-			\ln |T - 75| &= kt + C\\
-			T - 75 &= e^{kt + C}\\
-			T &= e^{kt + C} + 75.
-		\end{align*}
+		\frac{dT}{dt} &= k(T - 75)
+		
+		\frac{1}{T - 75} &= k\,dt
+		
+		\int \frac{1}{T - 75} &= \int k\,dt
+		
+		\ln |T - 75| &= kt + C
+		
+		T - 75 &= e^{kt + C}
+		
+		T &= e^{kt + C} + 75.
 	$$
 	
 	Now we have $T(0) = 350$, so
 	
 	$$
-		\begin{align*}
-			350 &= e^C + 75\\
-			275 &= e^C\\
-			C &= \ln(275).
-		\end{align*}
+		350 &= e^C + 75
+		
+		275 &= e^C
+		
+		C &= \ln(275).
 	$$
 	
 	Next, $T(5) = 300$. That means
 	
 	$$
-		\begin{align*}
-			300 &= e^{5k + \ln(275)} + 75\\
-			225 &= e^{5k}e^{\ln(275)}\\
-			225 &= 275e^{5k}\\
-			\frac{225}{275} &= e^{5k}\\
-			5k &= \ln\left(\frac{225}{275}\right)\\
-			k &= \frac{1}{5} \ln\left(\frac{225}{275}\right)\\
-			&\approx -.0401.
-		\end{align*}
+		300 &= e^{5k + \ln(275)} + 75
+		
+		225 &= e^{5k}e^{\ln(275)}
+		
+		225 &= 275e^{5k}
+		
+		\frac{225}{275} &= e^{5k}
+		
+		5k &= \ln\left(\frac{225}{275}\right)
+		
+		k &= \frac{1}{5} \ln\left(\frac{225}{275}\right)
+		
+		&\approx -.0401.
 	$$
 	
 	In total, we have $T(t) = e^{-.0401t + \ln(275)} + 75$. What we're trying to solve is $T(t) = 200$, so we have
 	
 	$$
-		\begin{align*}
-			200 &= e^{-.0401t + \ln(275)} + 75\\
-			125 &= 275e^{-.0401t}\\
-			\frac{125}{275} &= e^{-.0401t}\\
-			\ln\left(\frac{125}{275}\right) &= -.0401t\\
-			t &\approx 19.66.
-		\end{align*}
+		200 &= e^{-.0401t + \ln(275)} + 75
+		
+		125 &= 275e^{-.0401t}
+		
+		\frac{125}{275} &= e^{-.0401t}
+		
+		\ln\left(\frac{125}{275}\right) &= -.0401t
+		
+		t &\approx 19.66.
 	$$
 	
 	Therefore, it will take just under $20$ minutes for the pizza to cool to $200^\circ F$.
@@ -369,37 +379,43 @@ As one final application, let's talk about temperature.
 	**Solution:** We have $T' = k(T - 75)$, so following the same procedure as in the above example, we get $T = e^{kt + C} + 75$. Since $T(0) = 400$, we have
 	
 	$$
-		\begin{align*}
-			400 &= e^C + 75\\
-			325 &= e^C\\
-			C &= \ln(325).
-		\end{align*}
+		400 &= e^C + 75
+		
+		325 &= e^C
+		
+		C &= \ln(325).
 	$$
 	
 	Since $T(10) = 300$,
 	
 	$$
-		\begin{align*}
-			300 &= e^{10k + \ln(325)} + 75\\
-			225 &= e^{10k}e^{\ln(325)}\\
-			225 &= 325e^{10k}\\
-			\frac{225}{325} &= e^{10k}\\
-			10k &= \ln\left(\frac{225}{325}\right)\\
-			k &= \frac{1}{10} \ln\left(\frac{225}{325}\right)\\
-			&\approx -.0368.
-		\end{align*}
+		300 &= e^{10k + \ln(325)} + 75
+		
+		225 &= e^{10k}e^{\ln(325)}
+		
+		225 &= 325e^{10k}
+		
+		\frac{225}{325} &= e^{10k}
+		
+		10k &= \ln\left(\frac{225}{325}\right)
+		
+		k &= \frac{1}{10} \ln\left(\frac{225}{325}\right)
+		
+		&\approx -.0368.
 	$$
 	
 	In total, we have $T(t) = e^{-.0368t + \ln(325)} + 75$, and we want to solve
 	
 	$$
-		\begin{align*}
-			100 &= e^{-.0368t + \ln(325)} + 75\\
-			25 &= 325e^{-.0368t}\\
-			\frac{25}{325} &= e^{-.0368t}\\
-			\ln\left(\frac{25}{325}\right) &= -.0368t\\
-			t &\approx 70.
-		\end{align*}
+		100 &= e^{-.0368t + \ln(325)} + 75
+		
+		25 &= 325e^{-.0368t}
+		
+		\frac{25}{325} &= e^{-.0368t}
+		
+		\ln\left(\frac{25}{325}\right) &= -.0368t
+		
+		t &\approx 70.
 	$$
 	-->
 ###

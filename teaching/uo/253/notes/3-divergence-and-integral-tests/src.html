@@ -11,12 +11,13 @@ As we've mentioned many times by now, this course revolves around series. The la
 Take a convergent series $\sum_{n = 1}^\infty a_n$ and its sequence of partial sums $(S_k)$. We can write any term $a_n$ as $a_n = S_n - S_{n - 1}$, as long as $n \geq 2$, since the difference between $S_{n - 1}$ and $S_n$ is that the latter includes $a_n$ while the former doesn't. Since we assumed the series converges, we know that $(S_n) \to S$ for some $S$. Therefore, we can take the limit of both sides of the relation between $a_n$ and $S_n$ and get a meaningful answer:
 
 $$
-	\begin{align*}
-		a_n &= S_n - S_{n - 1}\\
-		\lim_{n \to \infty} a_n &= \lim_{n \to \infty} S_n - \lim_{n \to \infty} S_{n - 1}\\
-		\lim_{n \to \infty} a_n &= S - S\\
-		\lim_{n \to \infty} a_n &= 0.
-	\end{align*}
+	a_n &= S_n - S_{n - 1}
+	
+	\lim_{n \to \infty} a_n &= \lim_{n \to \infty} S_n - \lim_{n \to \infty} S_{n - 1}
+	
+	\lim_{n \to \infty} a_n &= S - S
+	
+	\lim_{n \to \infty} a_n &= 0.
 $$
 
 Taking the limit of $S_{n - 1}$ might feel a little strange, but as $n$ approaches $\infty$, so does $n - 1$, so $S_{n - 1}$ approaches the same thing that $S_n$ does.
@@ -41,11 +42,11 @@ There are two important things to note here: first, the divergence test says not
 	
 	Apply the divergence test to the following series and clearly state what conclusion you can draw.
 	
-	1. $\sum_{n = 1}^\infty \frac{1}{n^2}$.
+	1. $\displaystyle \sum_{n = 1}^\infty \frac{1}{n^2}$.
 	
-	2. $\sum_{j = 2}^\infty \ln(j)$.
+	2. $\displaystyle \sum_{j = 2}^\infty \ln(j)$.
 	
-	3. $\sum_{i = 0}^\infty \frac{1}{i + 1} \cos(i)$.
+	3. $\displaystyle \sum_{i = 0}^\infty \frac{1}{i + 1} \cos(i)$.
 	
 	**Solutions:**
 	
@@ -120,12 +121,13 @@ We've succeeded in relating the Riemann sums to an integral, and the fact that t
 Let's close out this example by actually evaluating the integral, and then we'll state the general result.
 
 $$
-	\begin{align*}
-		\int_1^\infty \frac{1}{x + 4}\,dx &= \left. \left[ \ln |x + 4| \right] \right|_1^\infty\\
-		&= \lim_{b \to \infty} (\ln |b + 4| - \ln |1 + 4|)\\
-		&= \lim_{b \to \infty} (\ln (b + 4) - \ln(5)), \text{ since } b > 0\\
-		&= \infty.
-	\end{align*}
+	\int_1^\infty \frac{1}{x + 4}\,dx &= \left. \left[ \ln |x + 4| \right] \right|_1^\infty
+	
+	&= \lim_{b \to \infty} (\ln |b + 4| - \ln |1 + 4|)
+	
+	&= \lim_{b \to \infty} (\ln (b + 4) - \ln(5)), \text{ since } b > 0
+	
+	&= \infty.
 $$
 
 Therefore, the integral diverges, and so $\sum_{n = 1}^\infty \frac{1}{n + 4}$ diverges too.
@@ -158,23 +160,24 @@ The divergence test is almost always easier than the integral test, so start the
 	
 	Determine if the following series converge. Clearly state what conclusions you can draw, if any.
 	
-	1. $\sum_{n = 1}^\infty \frac{1}{n^2}$.
+	1. $\displaystyle \sum_{n = 1}^\infty \frac{1}{n^2}$.
 	
-	2. $\sum_{j = 1}^\infty \sin(j)$.
+	2. $\displaystyle \sum_{j = 1}^\infty \sin(j)$.
 	
-	3. $\sum_{n = 1}^\infty \frac{1}{\sqrt{n + 1}}$.
+	3. $\displaystyle \sum_{n = 1}^\infty \frac{1}{\sqrt{n + 1}}$.
 	
 	**Solutions:**
 	
 	1. Let's try the divergence test first. We have $\lim_{n \to \infty} \frac{1}{n^2} = 0$, so it's inconclusive. To apply the integral test, we need to verify that the terms are positive and decreasing --- and they are. As $n$ increases, $\frac{1}{n^2}$ decreases, and it's always positive. The integral test asks us to consider
 	
 	$$
-		\begin{align*}
-			\int_1^\infty \frac{1}{x^2}\,dx &= \lim_{b \to \infty} \int_1^b \frac{1}{x^2}\,dx\\
-			&= \lim_{b \to \infty} \left[ -x^{-1} \right]_1^b\\
-			&= \lim_{b \to \infty} \left( -b^{-1} + 1 \right)\\
-			&= 1.
-		\end{align*}
+		\int_1^\infty \frac{1}{x^2}\,dx &= \lim_{b \to \infty} \int_1^b \frac{1}{x^2}\,dx
+		
+		&= \lim_{b \to \infty} \left[ -x^{-1} \right]_1^b
+		
+		&= \lim_{b \to \infty} \left( -b^{-1} + 1 \right)
+		
+		&= 1.
 	$$
 	
 	Since the integral converges, so does the series. We don't know what value the series converges to (it's actually $\frac{\pi^2}{6}$, which is very different than $1$), but we do know it's guaranteed to converge to *something*.
@@ -184,15 +187,19 @@ The divergence test is almost always easier than the integral test, so start the
 	3. The divergence test fails on this, since $\lim_{n \to \infty} \frac{1}{\sqrt{n + 1}} = 0$. But since $\frac{1}{\sqrt{n + 1}}$ is positive and decreasing, we can apply the integral test. We have
 	
 	$$
-		\begin{align*}
-			\int_1^\infty \frac{1}{\sqrt{x + 1}}\,dx &= \lim_{b \to \infty} \int_1^b \frac{1}{\sqrt{x + 1}}\,dx\\
-			u &= x + 1,\,du = dx\\
-			&= \lim_{b \to \infty} \int_1^b u^{-1/2}\,du\\
-			&= \lim_{b \to \infty} \left[ 2u^{1/2} \right]_1^b\\
-			&= \lim_{b \to \infty} \left[ 2(x + 1)^{1/2} \right]_1^b\\
-			&= \lim_{b \to \infty} \left( 2(b + 1)^{1/2} - 2\sqrt{2} \right)\\
-			&= \infty.
-		\end{align*}
+		\int_1^\infty \frac{1}{\sqrt{x + 1}}\,dx &= \lim_{b \to \infty} \int_1^b \frac{1}{\sqrt{x + 1}}\,dx
+		
+		u &= x + 1,\,du = dx
+		
+		&= \lim_{b \to \infty} \int_1^b u^{-1/2}\,du
+		
+		&= \lim_{b \to \infty} \left[ 2u^{1/2} \right]_1^b
+		
+		&= \lim_{b \to \infty} \left[ 2(x + 1)^{1/2} \right]_1^b
+		
+		&= \lim_{b \to \infty} \left( 2(b + 1)^{1/2} - 2\sqrt{2} \right)
+		
+		&= \infty.
 	$$
 	
 	Since the integral diverges, so does the series.
@@ -226,13 +233,15 @@ First of all, if $p < 0$, then the terms $\frac{1}{n^p} = n^{-p}$ are all positi
 When $p > 0$, the divergence test is inconclusive, but $\frac{1}{x^p}$ is a positive, decreasing, integrable function on $[1, \infty)$, so we can apply the integral test.
 
 $$
-	\begin{align*}
-		\int \frac{1}{x^p}\,dx &= \int x^{-p}\,dx\\
-		&= \begin{cases}
-			\frac{x^{-p + 1}}{-p + 1}, & p \neq 1\\
-			\ln|x|, & p = 1
-		\end{cases}.
-	\end{align*}
+	\int \frac{1}{x^p}\,dx &= \int x^{-p}\,dx
+	
+	&= \begin{cases}
+		
+		\frac{x^{-p + 1}}{-p + 1}, & p \neq 1
+		
+		\ln|x|, & p = 1
+		
+	\end{cases}.
 $$
 
 When $0 < p < 1$, $-p + 1$ is positive, so
@@ -307,38 +316,40 @@ This is a great result! It gives both an upper and lower bound for $R_N$, so if 
 
 ### ex estimating the value of a series
 	
-	Estimate $\sum_{n = 1}^\infty \frac{1}{n^3}$ to within $.01$ of its actual value.
+	Estimate $\displaystyle \sum_{n = 1}^\infty \frac{1}{n^3}$ to within $.01$ of its actual value.
 	
 	First, we need to make sure this series is compatible with the integral test. We have $f(x) = \frac{1}{x^3}$, which is positive, decreasing, and integrable on $[1, \infty)$. For a positive integer $N$, the $N$th partial sum $S_N$ will produce an approximation with a remainder $R_N$ satisfying
 	
 	$$
-		\begin{align*}
-			R_N < \int_N^\infty \frac{1}{x^3}\,dx &= \left. \left[ -\frac{1}{2} x^{-2} \right] \right|_N^\infty\\
-			&= \lim_{b \to \infty} \left( \frac{1}{2} N^{-2} - \frac{1}{2} b^{-2} \right)\\
-			&= \frac{1}{2} N^{-2}.
-		\end{align*}
+		R_N < \int_N^\infty \frac{1}{x^3}\,dx &= \left. \left[ -\frac{1}{2} x^{-2} \right] \right|_N^\infty
+		
+		&= \lim_{b \to \infty} \left( \frac{1}{2} N^{-2} - \frac{1}{2} b^{-2} \right)
+		
+		&= \frac{1}{2} N^{-2}.
 	$$
 	
 	Now we want that upper bound to be below $.01$, which means
 	
 	$$
-		\begin{align*}
-			\frac{1}{2} N^{-2} &< .01\\
-			\frac{1}{N^2} &< .02\\
-			1 &< .02N^2\\
-			50 &< N^2\\
-			N &> \sqrt{50} \approx 7.07\\
-		\end{align*}
+		\frac{1}{2} N^{-2} &< .01
+		
+		\frac{1}{N^2} &< .02
+		
+		1 &< .02N^2
+		
+		50 &< N^2
+		
+		N &> \sqrt{50} \approx 7.07
 	$$
 	
 	Therefore, let's choose $N = 8$. It's in our best interest to keep $N$ as small as possible so that the next step doesn't get too painful --- we now need to find $S_{8}$.
 	
 	$$
-		\begin{align*}
-			S_{10} &= \sum_{n = 1}^8 \frac{1}{n^3}\\
-			&= 1 + \frac{1}{8} + \frac{1}{27} + \cdots + \frac{1}{512}\\
-			&\approx 1.195.
-		\end{align*}
+		S_{10} &= \sum_{n = 1}^8 \frac{1}{n^3}
+		
+		&= 1 + \frac{1}{8} + \frac{1}{27} + \cdots + \frac{1}{512}
+		
+		&\approx 1.195.
 	$$
 	
 	The actual value is about $1.201$, which is in fact within $.01$ of our approximation. As an interesting sidenote, the value of this series is actually not known exactly --- in contrast to series like $\sum_{n = 1}^\infty \frac{1}{n^2}$, which has a very interesting exact value that we'll talk about later, the value of the power-3 $p$-series is only known approximately.
@@ -349,32 +360,38 @@ This is a great result! It gives both an upper and lower bound for $R_N$, so if 
 
 ### exc estimating the value of a series
 
-	Estimate $\sum_{n = 1}^\infty \frac{1}{n^5}$ to within $.01$ of its actual value.
+	Estimate $\displaystyle \sum_{n = 1}^\infty \frac{1}{n^5}$ to within $.01$ of its actual value.
 	
 	**Solution:** first of all, the terms are positive and decreasing, so we can use the integral test. We have
 	
 	$$
-		\begin{align*}
-			R_N \leq \int_N^\infty \frac{1}{x^5}\,dx\\
-			&= \lim_{b \to \infty} \int_N^b \frac{1}{x^5}\,dx\\
-			&= \lim_{b \to \infty} \left[ \frac{x^{-4}}{-4} \right]_N^b\\
-			&= \lim_{b \to \infty} \left( -\frac{b^{-4}}{4} + \frac{N^{-4}}{4} \right)\\
-			&= 0 + \frac{N^{-4}}{4}\\
-			&= \frac{N^{-4}}{4}.
-		\end{align*}
+		R_N \leq \int_N^\infty \frac{1}{x^5}\,dx
+		
+		&= \lim_{b \to \infty} \int_N^b \frac{1}{x^5}\,dx
+		
+		&= \lim_{b \to \infty} \left[ \frac{x^{-4}}{-4} \right]_N^b
+		
+		&= \lim_{b \to \infty} \left( -\frac{b^{-4}}{4} + \frac{N^{-4}}{4} \right)
+		
+		&= 0 + \frac{N^{-4}}{4}
+		
+		&= \frac{N^{-4}}{4}.
 	$$
 	
 	We want this to be less than $.01$, so
 	
 	$$
-		\begin{align*}
-			\frac{N^{-4}}{4} &< .01\\
-			N^{-4} &< .04\\
-			N^4 &> \frac{1}{.04}\\
-			N^4 &> 25\\
-			N &> \sqrt{5}\\
-			N &> 2.236\\
-		\end{align*}
+		\frac{N^{-4}}{4} &< .01
+		
+		N^{-4} &< .04
+		
+		N^4 &> \frac{1}{.04}
+		
+		N^4 &> 25
+		
+		N &> \sqrt{5}
+		
+		N &> 2.236
 	$$
 	
 	Since $N$ needs to be an integer, we'll take $N = 3$. Therefore, our approximation is

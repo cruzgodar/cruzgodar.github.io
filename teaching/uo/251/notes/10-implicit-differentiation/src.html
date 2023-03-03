@@ -35,14 +35,17 @@ The process takes a second to get used to, because it typically involves heavy u
 	First, let's find $\frac{dy}{dx}$. We do this by differentiating both sides $dx$.
 	
 	$$
-		\begin{align*}
-			x^2 + y^2 &= 1\\
-			\frac{d}{dx}[x^2 + y^2] &= \frac{d}{dx}[1]\\
-			\frac{d}{dx}[x^2] + \frac{d}{dx}[y^2] &= 0\\
-			2x + 2y\frac{dy}{dx} &= 0\\
-			2y\frac{dy}{dx} &= -2x\\
-			\frac{dy}{dx} &= -\frac{x}{y}.
-		\end{align*}
+		x^2 + y^2 &= 1
+		
+		\frac{d}{dx}[x^2 + y^2] &= \frac{d}{dx}[1]
+		
+		\frac{d}{dx}[x^2] + \frac{d}{dx}[y^2] &= 0
+		
+		2x + 2y\frac{dy}{dx} &= 0
+		
+		2y\frac{dy}{dx} &= -2x
+		
+		\frac{dy}{dx} &= -\frac{x}{y}.
 	$$
 	
 	Notice how the derivative is in terms of both $x$ and $y$. It's not enough to specify $x$, because this isn't necessarily a function, so there can be multiple points with the same $x$-value. For our purposes, we need to find the points with $x$-coordinate $\frac{1}{2}$, so we solve $\left(\frac{1}{2}\right)^2 + y^2 = 1$. That gives $y^2 = \frac{3}{4}$, and so $y = \pm \frac{\sqrt{3}}{2}$. Therefore, the slope of the tangent line at the top point is
@@ -76,17 +79,23 @@ The process takes a second to get used to, because it typically involves heavy u
 	We have
 	
 	$$
-		\begin{align*}
-			x\sin(xy) &= y\\
-			\frac{d}{dx}[x\sin(xy)] &= \frac{d}{dx}[y]\\
-			\frac{d}{dx}[x] \cdot \sin(xy) + x \cdot \frac{d}{dx}[\sin(xy)] &= \frac{dy}{dx}\\
-			\sin(xy) + x \cos(xy) \cdot \frac{d}{dx}[xy] &= \frac{dy}{dx}\\
-			\sin(xy) + x \cos(xy) \left(\frac{d}{dx}[x] \cdot y + x \cdot \frac{d}{dx}[y]\right) &= \frac{dy}{dx}\\
-			\sin(xy) + x \cos(xy) \left(y + x \cdot \frac{dy}{dx}\right) &= \frac{dy}{dx}\\
-			\sin(xy) + xy \cos(xy) + x^2\cos(xy) \cdot \frac{dy}{dx} &= \frac{dy}{dx}\\
-			(x^2\cos(xy) - 1) \frac{dy}{dx} &= -\sin(xy) - xy \cos(xy)\\
-			\frac{dy}{dx} &= \frac{-\sin(xy) - xy \cos(xy)}{x^2\cos(xy) - 1}.
-		\end{align*}
+		x\sin(xy) &= y
+		
+		\frac{d}{dx}[x\sin(xy)] &= \frac{d}{dx}[y]
+		
+		\frac{d}{dx}[x] \cdot \sin(xy) + x \cdot \frac{d}{dx}[\sin(xy)] &= \frac{dy}{dx}
+		
+		\sin(xy) + x \cos(xy) \cdot \frac{d}{dx}[xy] &= \frac{dy}{dx}
+		
+		\sin(xy) + x \cos(xy) \left(\frac{d}{dx}[x] \cdot y + x \cdot \frac{d}{dx}[y]\right) &= \frac{dy}{dx}
+		
+		\sin(xy) + x \cos(xy) \left(y + x \cdot \frac{dy}{dx}\right) &= \frac{dy}{dx}
+		
+		\sin(xy) + xy \cos(xy) + x^2\cos(xy) \cdot \frac{dy}{dx} &= \frac{dy}{dx}
+		
+		(x^2\cos(xy) - 1) \frac{dy}{dx} &= -\sin(xy) - xy \cos(xy)
+		
+		\frac{dy}{dx} &= \frac{-\sin(xy) - xy \cos(xy)}{x^2\cos(xy) - 1}.
 	$$
 	
 ###
@@ -118,11 +127,11 @@ and then differentiate implicitly.
 	and then differentiate implicitly to get
 	
 	$$
-		\begin{align*}
-			\frac{1}{y} \cdot \frac{dy}{dx} &= \ln(x) + x \cdot \frac{1}{x}\\
-			\frac{dy}{dx} &= y(\ln(x) + 1)\\
-			\frac{dy}{dx} &= x^x(\ln(x) + 1).
-		\end{align*}
+		\frac{1}{y} \cdot \frac{dy}{dx} &= \ln(x) + x \cdot \frac{1}{x}
+		
+		\frac{dy}{dx} &= y(\ln(x) + 1)
+		
+		\frac{dy}{dx} &= x^x(\ln(x) + 1).
 	$$
 	
 ###

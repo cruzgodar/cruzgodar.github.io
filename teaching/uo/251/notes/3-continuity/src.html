@@ -40,8 +40,11 @@ The simplest way to describe continuous functions is that they're the ones whose
 	
 	$$
 		f(x) = \begin{cases}
-			\frac{\sin(x)}{x}, & x \neq 0\\
+			
+			\frac{\sin(x)}{x}, & x \neq 0
+			
 			1, & x = 0
+			
 		\end{cases}.	
 	$$
 	
@@ -108,11 +111,11 @@ Let $f$ and $g$ be functions so that $g$ is continuous at $a$ and $f$ is continu
 	Since all of the functions present are continuous --- including the compositions like $\cos(x^2)$, we can just plug in $x = 0$:
 	
 	$$
-		\begin{align*}
-			\lim_{x \to 0} \frac{\cos(x^2) - x}{2 - \tan(x)} &= \frac{\cos(0^2) - 0}{2 - \tan(0)}\\
-			&= \frac{1 - 0}{2 - 0}\\
-			&= \frac{1}{2}.
-		\end{align*}
+		\lim_{x \to 0} \frac{\cos(x^2) - x}{2 - \tan(x)} &= \frac{\cos(0^2) - 0}{2 - \tan(0)}
+		
+		&= \frac{1 - 0}{2 - 0}
+		
+		&= \frac{1}{2}.
 	$$
 	
 	### desmos continuity-limit

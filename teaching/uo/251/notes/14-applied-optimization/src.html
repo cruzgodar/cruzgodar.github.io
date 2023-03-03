@@ -67,26 +67,31 @@ This pattern of optimizing with respect to a constaint applies to all sorts of p
 	As always, we start by differentiating. Through a product and chain rule, we have
 	
 	$$
-		\begin{align*}
-			A(a) &= 4a\left(9 - \frac{9}{4}a^2\right)^{1/2}\\
-			A'(a) &= \frac{d}{da}[4a] \left(9 - \frac{9}{4} a^2\right)^{1/2} + (4a) \frac{d}{da}\left[\left(9 - \frac{9}{4} a^2\right)^{1/2}\right]\\
-			&= 4 \left(9 - \frac{9}{4} a^2\right)^{1/2} + (4a) \frac{1}{2}\left(9 - \frac{9}{4} a^2\right)^{-1/2} \cdot \left(-\frac{9}{2} a\right)\\
-			&= 4 \left(9 - \frac{9}{4} a^2\right)^{1/2} - 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2}.
-		\end{align*}
+		A(a) &= 4a\left(9 - \frac{9}{4}a^2\right)^{1/2}
+		
+		A'(a) &= \frac{d}{da}[4a] \left(9 - \frac{9}{4} a^2\right)^{1/2} + (4a) \frac{d}{da}\left[\left(9 - \frac{9}{4} a^2\right)^{1/2}\right]
+		
+		&= 4 \left(9 - \frac{9}{4} a^2\right)^{1/2} + (4a) \frac{1}{2}\left(9 - \frac{9}{4} a^2\right)^{-1/2} \cdot \left(-\frac{9}{2} a\right)
+		
+		&= 4 \left(9 - \frac{9}{4} a^2\right)^{1/2} - 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2}.
 	$$
 	
 	Setting this equal to zero and solving is a little bit tricky, but not all that bad.
 	
 	$$
-		\begin{align*}
-			4 \left(9 - \frac{9}{4} a^2\right)^{1/2} - 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2} &= 0\\
-			4 \left(9 - \frac{9}{4} a^2\right)^{1/2} &= 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2}\\
-			4 \left(9 - \frac{9}{4} a^2\right) &= 9a^2\\
-			36 - 9a^2 &= 9a^2\\
-			36 &= 18a^2\\
-			a^2 &= 2\\
-			a &= \pm \sqrt{2}.
-		\end{align*}
+		4 \left(9 - \frac{9}{4} a^2\right)^{1/2} - 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2} &= 0
+		
+		4 \left(9 - \frac{9}{4} a^2\right)^{1/2} &= 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2}
+		
+		4 \left(9 - \frac{9}{4} a^2\right) &= 9a^2
+		
+		36 - 9a^2 &= 9a^2
+		
+		36 &= 18a^2
+		
+		a^2 &= 2
+		
+		a &= \pm \sqrt{2}.
 	$$
 	
 	Since we're only looking in the interval $[0, 2]$, we just want $a = \sqrt{2}$.
@@ -94,22 +99,23 @@ This pattern of optimizing with respect to a constaint applies to all sorts of p
 	This is one of our critical points. The others come from the endpoints as usual, so we throw in $0$ and $2$. Next up is finding the second derivative, but just starting that computation looks incredibly bad. The first derivative test always works, though, so we can just use that --- since $\sqrt{2} \approx 1.41$, let's use $a = 1$ and $a = 1.5$ as test points. We have
 	
 	$$
-		\begin{align*}
-			A'(1) &= 4 \left(9 - \frac{9}{4} 1^2\right)^{1/2} - 9 \cdot 1^2 \left(9 - \frac{9}{4} 1^2\right)^{-1/2} &&= 4\sqrt{3}\\
-			A'(1.5) &= 4 \left(9 - \frac{9}{4} 1.5^2\right)^{1/2} - 9 \cdot 1.5^2 \left(9 - \frac{9}{4} 1.5^2\right)^{-1/2} &&\approx -2.268.
-		\end{align*}
+		A'(1) &= 4 \left(9 - \frac{9}{4} 1^2\right)^{1/2} - 9 \cdot 1^2 \left(9 - \frac{9}{4} 1^2\right)^{-1/2} &&= 4\sqrt{3}
+		
+		A'(1.5) &= 4 \left(9 - \frac{9}{4} 1.5^2\right)^{1/2} - 9 \cdot 1.5^2 \left(9 - \frac{9}{4} 1.5^2\right)^{-1/2} &&\approx -2.268.
 	$$
 	
 	Therefore, both $a = 0$ and $a = 2$ are local minima, and $a = \sqrt{2}$ is a local maximum. It's also the global max, since it's the only local max. Plugging this back into the original area function, we get
 	
 	$$
-		\begin{align*}
-			A(\sqrt{2}) &= 4\sqrt{2}\left(9 - \frac{9}{4}(\sqrt{2})^2\right)^{1/2}\\
-			&= 4\sqrt{2}\left(9 - \frac{9}{2}\right)^{1/2}\\
-			&= 4\sqrt{2}\sqrt{\frac{9}{2}}\\
-			&= 4\sqrt{9}\\
-			&= 12.
-		\end{align*}	
+		A(\sqrt{2}) &= 4\sqrt{2}\left(9 - \frac{9}{4}(\sqrt{2})^2\right)^{1/2}
+		
+		&= 4\sqrt{2}\left(9 - \frac{9}{2}\right)^{1/2}
+		
+		&= 4\sqrt{2}\sqrt{\frac{9}{2}}
+		
+		&= 4\sqrt{9}
+		
+		&= 12.
 	$$
 	
 	Therefore, the largest possible rectangle has area 12.

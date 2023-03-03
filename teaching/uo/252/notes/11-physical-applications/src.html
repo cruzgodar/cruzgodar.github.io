@@ -27,10 +27,9 @@ Let's start with the simplest part: work. If you've taken a physics course, you 
 	We have
 	
 	$$
-		\begin{align*}
-			\int_0^5 x^2\,dx &= \left. \left[ \frac{x^3}{3} \right] \right|_0^5\\
-			&= \frac{125}{3}\ Nm.
-		\end{align*}
+		\int_0^5 x^2\,dx &= \left. \left[ \frac{x^3}{3} \right] \right|_0^5
+		
+		&= \frac{125}{3}\ Nm.
 	$$
 	
 ###
@@ -42,10 +41,9 @@ Let's start with the simplest part: work. If you've taken a physics course, you 
 	**Solution:** the integral is
 	
 	$$
-		\begin{align*}
-			\int_0^3 -x\,dx &= \left. \left[ -\frac{x^2}{2} \right] \right|_0^3\\
-			&= -\frac{9}{2}.
-		\end{align*}
+		\int_0^3 -x\,dx &= \left. \left[ -\frac{x^2}{2} \right] \right|_0^3
+		
+		&= -\frac{9}{2}.
 	$$
 	
 ###
@@ -71,19 +69,17 @@ Moving on to other work problems, let's look at springs. We can do this using so
 	The work done to compress the spring is
 	
 	$$
-		\begin{align*}
-			\int_0^{.2} kx\,dx &= \frac{.2^2}{2}k\\
-			&= .02k.
-		\end{align*}
+		\int_0^{.2} kx\,dx &= \frac{.2^2}{2}k
+		
+		&= .02k.
 	$$
 	
 	Since this is equal to $10$, we have that $k = 500$. Now in order to stretch the spring $.5\ m$, the work done is
 	
 	$$
-		\begin{align*}
-			\int_0^{.5} 500x\,dx &= 500 \cdot \frac{.5^2}{2}\\
-			&= 62.5\ Nm.
-		\end{align*}
+		\int_0^{.5} 500x\,dx &= 500 \cdot \frac{.5^2}{2}
+		
+		&= 62.5\ Nm.
 	$$
 	
 ###
@@ -95,10 +91,9 @@ Moving on to other work problems, let's look at springs. We can do this using so
 	**Solution:** since the force is given by $F(x) = kx$ and $F(1) = 5$, we have that $k = 5$. We now want to find the work, which is
 	
 	$$
-		\begin{align*}
-			\int_0^{.1} 5x\,dx &= \left. \left[ \frac{5x^2}{2} \right] \right|_0^{.1}\\
-			&= .025\ Nm.
-		\end{align*}
+		\int_0^{.1} 5x\,dx &= \left. \left[ \frac{5x^2}{2} \right] \right|_0^{.1}
+		
+		&= .025\ Nm.
 	$$
 	
 ###
@@ -130,10 +125,9 @@ Just like work is force times distance, mass is density times amount. Here, amou
 	This is just
 	
 	$$
-		\begin{align*}
-			\int_{\frac{\pi}{2}}^\pi \sin(x)\,dx &= -\cos(\pi) + \cos\left(\frac{\pi}{2}\right)\\
-			&= 1.
-		\end{align*}
+		\int_{\frac{\pi}{2}}^\pi \sin(x)\,dx &= -\cos(\pi) + \cos\left(\frac{\pi}{2}\right)
+		
+		&= 1.
 	$$
 	
 ###
@@ -145,11 +139,11 @@ Just like work is force times distance, mass is density times amount. Here, amou
 	**Solution:** we have
 	
 	$$
-		\begin{align*}
-			\int_1^e \ln(x)\,dx &= \left. \left[ x\ln(x) - x \right] \right|_1^e\\
-			&= (e - e) - (-1)\\
-			&= 1.
-		\end{align*}
+		\int_1^e \ln(x)\,dx &= \left. \left[ x\ln(x) - x \right] \right|_1^e
+		
+		&= (e - e) - (-1)
+		
+		&= 1.
 	$$
 	
 ###
@@ -175,11 +169,11 @@ Just like work is force times distance, mass is density times amount. Here, amou
 	We have
 	
 	$$
-		\begin{align*}
-			\int_0^4 2\pi r \sqrt{r}\,dr &= \left. \left[ 2\pi \frac{r^{5/2}}{5/2} \right] \right|_0^4\\
-			&= \frac{4\pi}{5} \left( 32 - 0 \right).\\
-			&= \frac{128\pi}{5}.
-		\end{align*}
+		\int_0^4 2\pi r \sqrt{r}\,dr &= \left. \left[ 2\pi \frac{r^{5/2}}{5/2} \right] \right|_0^4
+		
+		&= \frac{4\pi}{5} \left( 32 - 0 \right)
+		
+		&= \frac{128\pi}{5}.
 	$$
 	
 ###
@@ -191,10 +185,9 @@ Just like work is force times distance, mass is density times amount. Here, amou
 	**Solution:** we have
 	
 	$$
-		\begin{align*}
-			\int_2^4 2\pi r \frac{1}{r^2}\,dr &= \left. \left[ 2\pi \ln(r) \right] \right|_2^4\\
-			&= 2\pi(\ln(4) - \ln(2)).
-		\end{align*}
+		\int_2^4 2\pi r \frac{1}{r^2}\,dr &= \left. \left[ 2\pi \ln(r) \right] \right|_2^4
+		
+		&= 2\pi(\ln(4) - \ln(2)).
 	$$
 	
 ###
@@ -216,11 +209,11 @@ The last type of problem we'll explore in this section has to do with the work d
 	Like we said before, we just need to find the work done by lifting each slice out of the tank, and then integrate that work over all the slices. Taking a cross-section at height $y$ off the ground, we have a circle with radius $4$. Its area is then $16\pi$, so the force applied to it is $9800 \cdot 16\pi$. The distance it needs to travel is $10 - y$, since it needs to go up to the top of the tank. Therefore, our integral becomes
 	
 	$$
-		\begin{align*}
-			\int_0^8 (9800)(16\pi)(10 - y)\,dy &= \left. \left[ (9800)(16\pi) \left(10y - \frac{y^2}{2}\right) \right] \right|_0^8\\
-			&= (9800)(16\pi) \left(80 - 32\right)\\
-			&= 7526400\pi.
-		\end{align*}
+		\int_0^8 (9800)(16\pi)(10 - y)\,dy &= \left. \left[ (9800)(16\pi) \left(10y - \frac{y^2}{2}\right) \right] \right|_0^8
+		
+		&= (9800)(16\pi) \left(80 - 32\right)
+		
+		&= 7526400\pi.
 	$$
 	
 	The amount of work done is pretty massive, but that makes sense --- you're emptying an entire water tower's worth of liquid.
@@ -242,12 +235,13 @@ The last type of problem we'll explore in this section has to do with the work d
 	If we take a slice at height $y$, then we cut the triangle and create a smaller triangle at the bottom. Since these two triangles have the same angles, they're **similar.** That means the ratios of corresponding sides are the same: specifically, $\frac{y}{6} = \frac{b}{5}$. Therefore, $b = \frac{5}{6} y$, and $b$ is the side length of the square cross-section, so the area is $b^2 = \frac{25}{36} y^2$. Now the integral takes the same form as before:
 	
 	$$
-		\begin{align*}
-			\int_0^6 (1000)\left(\frac{25}{36}y^2\right)(6 - y)\,dy &= (1000) \left(\frac{25}{36}\right) \int_0^6 (6y^2 - y^3)\,dy\\
-			&= (1000) \left(\frac{25}{36}\right) \left. \left[ 2y^3 - \frac{1}{4}y^4 \right] \right|_0^6\\
-			&= (1000) \left(\frac{25}{36}\right) \left( 432 - 324 \right)\\
-			&= 75000.
-		\end{align*}
+		\int_0^6 (1000)\left(\frac{25}{36}y^2\right)(6 - y)\,dy &= (1000) \left(\frac{25}{36}\right) \int_0^6 (6y^2 - y^3)\,dy
+		
+		&= (1000) \left(\frac{25}{36}\right) \left. \left[ 2y^3 - \frac{1}{4}y^4 \right] \right|_0^6
+		
+		&= (1000) \left(\frac{25}{36}\right) \left( 432 - 324 \right)
+		
+		&= 75000.
 	$$
 	
 ###

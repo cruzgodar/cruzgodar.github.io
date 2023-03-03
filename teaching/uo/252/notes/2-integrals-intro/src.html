@@ -95,21 +95,21 @@ At this point, we're in desperate need of examples. Let's start with something w
 	This is looking pretty rough, but remember --- that $\frac{8}{n^3}$ is a constant as far as the sum is concerned. That means we can pull it out, and then we know how to handle what's left.
 	
 	$$
-		\begin{align*}
-			\sum_{i = 1}^n \frac{8}{n^3} i^2 &= \frac{8}{n^3} \sum_{i = 1}^n i^2\\
-			&= \frac{8}{n^3} \cdot \frac{n(n + 1)(2n + 1)}{6}\\
-			&= \frac{8(2n^3 + 3n^2 + n)}{6n^3}.
-		\end{align*}
+		\sum_{i = 1}^n \frac{8}{n^3} i^2 &= \frac{8}{n^3} \sum_{i = 1}^n i^2
+		
+		&= \frac{8}{n^3} \cdot \frac{n(n + 1)(2n + 1)}{6}
+		
+		&= \frac{8(2n^3 + 3n^2 + n)}{6n^3}.
 	$$
 	
 	Almost there! The integral we're trying to find is the limit of this as $n \to \infty$. It's a rational function, so we can consider only the highest-degree terms: $16n^3$ on top and $6n^3$ on bottom. Therefore,
 	
 	$$
-		\begin{align*}
-			\int_0^2 t^2\,dt &= \lim_{n \to \infty} \frac{8(2n^3 + 3n^2 + n)}{6n^3}\\
-			&= \lim_{n \to \infty} \frac{16n^3}{6n^3}\\
-			&= \frac{8}{3}.
-		\end{align*}
+		\int_0^2 t^2\,dt &= \lim_{n \to \infty} \frac{8(2n^3 + 3n^2 + n)}{6n^3}
+		
+		&= \lim_{n \to \infty} \frac{16n^3}{6n^3}
+		
+		&= \frac{8}{3}.
 	$$
 	
 	We did it! And along the way we learned that we **really** need a better way to do this. Unlike derivatives, though, the rules for integration won't come easily.
@@ -123,13 +123,15 @@ At this point, we're in desperate need of examples. Let's start with something w
 	**Solution:** split $[0, 3]$ into $n$ subintervals. The width of each is therefore $\frac{3}{n}$, and the coordinate of the right endpoint of the $i$th subinterval is $\frac{3}{n}i$. Therefore, the Riemann sum becomes 
 	
 	$$
-		\begin{align*}
-			\sum_{i = 1}^n f \left( \frac{3}{n} i \right) \left( \frac{3}{n} \right) &= \sum_{i = 1}^n \left( \frac{27}{n^3} i^3 \right) \left( \frac{3}{n} \right)\\
-			&= \sum_{i = 1}^n \frac{81}{n^4} i^3\\
-			&= \frac{81}{n^4} \sum_{i = 1}^n i^3\\
-			&= \frac{81}{n^4} \cdot \frac{n^2(n+1)^2}{4}\\
-			&= \frac{81n^4 + 162n^3 + 81n^2}{4n^4}.\\
-		\end{align*}
+		\sum_{i = 1}^n f \left( \frac{3}{n} i \right) \left( \frac{3}{n} \right) &= \sum_{i = 1}^n \left( \frac{27}{n^3} i^3 \right) \left( \frac{3}{n} \right)
+		
+		&= \sum_{i = 1}^n \frac{81}{n^4} i^3
+		
+		&= \frac{81}{n^4} \sum_{i = 1}^n i^3
+		
+		&= \frac{81}{n^4} \cdot \frac{n^2(n+1)^2}{4}
+		
+		&= \frac{81n^4 + 162n^3 + 81n^2}{4n^4}.
 	$$
 	
 	Now taking the limit as $n \to \infty$ by only considering the leading terms, we get $\frac{81n^4}{4n^4} = \frac{81}{4}$.

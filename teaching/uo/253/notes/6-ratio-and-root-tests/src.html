@@ -37,11 +37,11 @@ In other words, not only are the terms of that geometric series getting smaller 
 It's worth briefly justifying why the ratio test works. If $r > 1$, then eventually every term is larger than the previous, so the divergence test tells us the series must diverge. If $r < 1$, then there is some number $s$ with $r < s < 1$ so that for large enough $n$ (say all $n \geq N$), $a_{n + 1} < s a_n$. Then $a_{n + 2} < s a_{n + 1} < s^2 a_n$, and so on. This looks a whole lot like a geometric series, and what we end up with is
 
 $$
-	\begin{align*}
-		\sum_{n = 1}^\infty a_n &= \sum_{n = 1}^{N - 1} a_n + \sum_{n = N}^\infty a_n\\
-		&< \sum_{n = 1}^{N - 1} a_n + a_N \sum_{n = 0}^\infty s^n\\
-		&= \sum_{n = 1}^{N - 1} a_n + a_N \cdot \frac{1}{1 - s},
-	\end{align*}
+	\sum_{n = 1}^\infty a_n &= \sum_{n = 1}^{N - 1} a_n + \sum_{n = N}^\infty a_n
+	
+	&< \sum_{n = 1}^{N - 1} a_n + a_N \sum_{n = 0}^\infty s^n
+	
+	&= \sum_{n = 1}^{N - 1} a_n + a_N \cdot \frac{1}{1 - s},
 $$
 
 which is finite. This is a bit grittier than our justifications usually are, and it's perfectly fine to engage with the ratio test at the level of just remembering the theorem statement. Under the hood, though, it's all just geometric series.
@@ -52,7 +52,7 @@ Like every other test we know, the ratio test is incapable of determining what v
 
 ### ex the ratio test
 	
-	Determine if the series $\sum_{n = 1}^\infty \frac{e^n}{n!}$ converges or diverges.
+	Determine if the series $\displaystyle \sum_{n = 1}^\infty \frac{e^n}{n!}$ converges or diverges.
 	
 	As usual, we'll start with the divergence test. As $n \to \infty$, the behavior of $\frac{e^n}{n!}$ is a little complicated. Which grows faster: an exponential, or a factorial? Since the factorial function is defined only on positive integers, there's no equivalent function we know of on the real numbers that we can differentiate in order to apply L'H&#244;pital's rule --- we just have to reason this one out. Both $e^n$ and $n!$ are products of $n$ numbers: we have
 	
@@ -65,14 +65,17 @@ Like every other test we know, the ratio test is incapable of determining what v
 	Therefore, the divergence test is inconclusive. In general, the ratio test works best with series whose terms have lots of exponentials and/or factorials --- this has plenty of both, so let's give it a shot. We have
 	
 	$$
-		\begin{align*}
-			r &= \lim_{n \to \infty} \left| \frac{\frac{e^{n + 1}}{(n + 1)!}}{\frac{e^n}{n!}} \right|\\
-			&= \lim_{n \to \infty} \left| \frac{(n!)(e^{n + 1})}{((n + 1)!)(e^n)} \right|\\
-			&= \lim_{n \to \infty} \left| \frac{(n!)(e)}{(n + 1)!} \right|\\
-			&= \lim_{n \to \infty} \left| \frac{e \cdot n \cdot (n - 1) \cdots 2 \cdot 1}{(n + 1) \cdot n \cdot (n - 1) \cdots 2 \cdot 1} \right|\\
-			&= \lim_{n \to \infty} \left| \frac{e}{n + 1} \right|\\
-			&= 0.
-		\end{align*}
+		r &= \lim_{n \to \infty} \left| \frac{\frac{e^{n + 1}}{(n + 1)!}}{\frac{e^n}{n!}} \right|
+		
+		&= \lim_{n \to \infty} \left| \frac{(n!)(e^{n + 1})}{((n + 1)!)(e^n)} \right|
+		
+		&= \lim_{n \to \infty} \left| \frac{(n!)(e)}{(n + 1)!} \right|
+		
+		&= \lim_{n \to \infty} \left| \frac{e \cdot n \cdot (n - 1) \cdots 2 \cdot 1}{(n + 1) \cdot n \cdot (n - 1) \cdots 2 \cdot 1} \right|
+		
+		&= \lim_{n \to \infty} \left| \frac{e}{n + 1} \right|
+		
+		&= 0.
 	$$
 	
 	By the ratio test, the series converges.
@@ -83,23 +86,26 @@ Like every other test we know, the ratio test is incapable of determining what v
 	
 	Determine if the following series converge or diverge.
 	
-	1. $\sum_{n = 1}^\infty \frac{(-1)^n n}{2^n}$.
+	1. $\displaystyle \sum_{n = 1}^\infty \frac{(-1)^n n}{2^n}$.
 	
-	2. $\sum_{k = 1}^\infty \frac{(k!)^2}{(2k)!}$.
+	2. $\displaystyle \sum_{k = 1}^\infty \frac{(k!)^2}{(2k)!}$.
 	
 	**Solutions:**
 	
 	1. With all the exponentials, let's try the ratio test. We can also use the alternating series test, but the ratio test will work well enough for our purposes. We have
 	
 	$$
-		\begin{align*}
-			r &= \lim_{n \to \infty} \left| \frac{\frac{(-1)^{n + 1} (n + 1)}{2^{n + 1}}}{\frac{(-1)^n n}{2^n}} \right|\\
-			&= \lim_{n \to \infty} \left| \frac{(-1)^{n + 1} (n + 1) 2^n}{(-1)^n n 2^{n + 1}} \right|\\
-			&= \lim_{n \to \infty} \left| \frac{(-1) (n + 1)}{2n} \right|\\
-			&= \lim_{n \to \infty} \left| \frac{(-1) (n + 1)}{2n} \right|\\
-			&= \lim_{n \to \infty} \frac{n + 1}{2n}\\
-			&= \frac{1}{2}.
-		\end{align*}
+		r &= \lim_{n \to \infty} \left| \frac{\frac{(-1)^{n + 1} (n + 1)}{2^{n + 1}}}{\frac{(-1)^n n}{2^n}} \right|
+		
+		&= \lim_{n \to \infty} \left| \frac{(-1)^{n + 1} (n + 1) 2^n}{(-1)^n n 2^{n + 1}} \right|
+		
+		&= \lim_{n \to \infty} \left| \frac{(-1) (n + 1)}{2n} \right|
+		
+		&= \lim_{n \to \infty} \left| \frac{(-1) (n + 1)}{2n} \right|
+		
+		&= \lim_{n \to \infty} \frac{n + 1}{2n}
+		
+		&= \frac{1}{2}.
 	$$
 	
 	Since $r < 1$, the series converges. As a side note, since we could just as well have taken an absolute value before applying the test and gotten the same result, it must converge absolutely.
@@ -107,13 +113,15 @@ Like every other test we know, the ratio test is incapable of determining what v
 	2. Whenever there are factorials, the ratio test is almost always the best option. We have
 	
 	$$
-		\begin{align*}
-			r &= \lim_{k \to \infty} \left| \frac{\frac{((k + 1)!)^2}{(2(k+1))!}}{\frac{(k!)^2}{(2k)!}} \right|\\
-			&= \lim_{k \to \infty} \left| \frac{((k + 1)!)^2 (2k)!}{(k!)^2 (2k + 2)!} \right|\\
-			&= \lim_{k \to \infty} \left| \frac{(k + 1)^2}{(2k + 2)(2k + 1)} \right|\\
-			&= \lim_{k \to \infty} \left| \frac{k^2 + 2k + 1}{4k^2 + 6k + 2} \right|\\
-			&= \frac{1}{4}.
-		\end{align*}
+		r &= \lim_{k \to \infty} \left| \frac{\frac{((k + 1)!)^2}{(2(k+1))!}}{\frac{(k!)^2}{(2k)!}} \right|
+		
+		&= \lim_{k \to \infty} \left| \frac{((k + 1)!)^2 (2k)!}{(k!)^2 (2k + 2)!} \right|
+		
+		&= \lim_{k \to \infty} \left| \frac{(k + 1)^2}{(2k + 2)(2k + 1)} \right|
+		
+		&= \lim_{k \to \infty} \left| \frac{k^2 + 2k + 1}{4k^2 + 6k + 2} \right|
+		
+		&= \frac{1}{4}.
 	$$
 	
 	Again, since $r < 1$, the series converges.
@@ -124,44 +132,46 @@ Like every other test we know, the ratio test is incapable of determining what v
 	
 	Let's show that when $r = 1$ in the ratio test, we really can't determine anything about the series. Of the three following series, one is divergent, one is absolutely convergent, and one is conditionally convergent. Determine which is which, and then show that $r = 1$ for all three.
 	
-	1. $\sum_{n = 1}^\infty \frac{(-1)^n}{n}$.
+	1. $\displaystyle \sum_{n = 1}^\infty \frac{(-1)^n}{n}$.
 	
-	2. $\sum_{n = 1}^\infty \frac{(-1)^n}{n^2}$.
+	2. $\displaystyle \sum_{n = 1}^\infty \frac{(-1)^n}{n^2}$.
 	
-	3. $\sum_{n = 1}^\infty (-1)^n$.
+	3. $\displaystyle \sum_{n = 1}^\infty (-1)^n$.
 	
 	**Solutions:**
 	
 	1. This converges conditionally by the AST, but not absolutely, since removing the $(-1)^n$ makes it the Harmonic series, which diverges. The ratio test gives us
 	
 	$$
-		\begin{align*}
-			r &= \lim_{n \to \infty} \left| \frac{\frac{(-1)^{n + 1}}{n + 1}}{\frac{(-1)^n}{n}} \right|\\
-			&= \lim_{n \to \infty} \left| \frac{(-1)^{n + 1} n}{(-1)^n (n + 1)} \right|\\
-			&= \lim_{n \to \infty} \left| - \frac{n}{n + 1} \right|\\
-			&= 1.
-		\end{align*}
+		r &= \lim_{n \to \infty} \left| \frac{\frac{(-1)^{n + 1}}{n + 1}}{\frac{(-1)^n}{n}} \right|
+		
+		&= \lim_{n \to \infty} \left| \frac{(-1)^{n + 1} n}{(-1)^n (n + 1)} \right|
+		
+		&= \lim_{n \to \infty} \left| - \frac{n}{n + 1} \right|
+		
+		&= 1.
 	$$
 	
 	2. This one converges absolutely, since stripping off the sign results in $\sum_{n = 1}^\infty \frac{1}{n^2}$, which is a $p$-series with $p = 2$ and therefore converges. Applying the ratio test, we have
 	
 	$$
-		\begin{align*}
-			r &= \lim_{n \to \infty} \left| \frac{\frac{(-1)^{n + 1}}{(n + 1)^2}}{\frac{(-1)^n}{n^2}} \right|\\
-			&= \lim_{n \to \infty} \left| \frac{(-1)^{n + 1} n^2}{(-1)^n (n + 1)^2} \right|\\
-			&= \lim_{n \to \infty} \left| - \frac{n^2}{n^2 + 2n + 1} \right|\\
-			&= 1.
-		\end{align*}
+		r &= \lim_{n \to \infty} \left| \frac{\frac{(-1)^{n + 1}}{(n + 1)^2}}{\frac{(-1)^n}{n^2}} \right|
+		
+		&= \lim_{n \to \infty} \left| \frac{(-1)^{n + 1} n^2}{(-1)^n (n + 1)^2} \right|
+		
+		&= \lim_{n \to \infty} \left| - \frac{n^2}{n^2 + 2n + 1} \right|
+		
+		&= 1.
 	$$
 	
 	3. Finally, this is just a divergent series, since it fails the divergence test. The ratio test is even simpler than the previous two:
 	
 	$$
-		\begin{align*}
-			r &= \lim_{n \to \infty} \left| \frac{(-1)^{n + 1}}{(-1)^n} \right|\\
-			&= \lim_{n \to \infty} \left| -1 \right|\\
-			&= 1.
-		\end{align*}
+		r &= \lim_{n \to \infty} \left| \frac{(-1)^{n + 1}}{(-1)^n} \right|
+		
+		&= \lim_{n \to \infty} \left| -1 \right|
+		
+		&= 1.
 	$$
 
 ###
@@ -188,7 +198,7 @@ Much like the ratio test, the root test compares a given series to a geometric s
 
 ### ex the root test
 
-	Determine if the series $\sum_{n = 1}^\infty \frac{\sin^n(n)}{n^n}$ converges or diverges.
+	Determine if the series $\displaystyle \sum_{n = 1}^\infty \frac{\sin^n(n)}{n^n}$ converges or diverges.
 	
 	The root test works best when there are lots of expressions raised to the power of $n$ in the terms. Since $\sin^n(n)$ is just another way of writing $(\sin(n))^n$, the terms can be rewritten as
 	
@@ -199,11 +209,11 @@ Much like the ratio test, the root test compares a given series to a geometric s
 	Then the root test asks us to find $r$, which is
 	
 	$$
-		\begin{align*}
-			r &= \lim_{n \to \infty} \sqrt[n]{\left| \frac{\sin(n)}{n} \right|^n}\\
-			&= \lim_{n \to \infty} \left| \frac{\sin(n)}{n} \right|\\
-			&= 0.
-		\end{align*}
+		r &= \lim_{n \to \infty} \sqrt[n]{\left| \frac{\sin(n)}{n} \right|^n}
+		
+		&= \lim_{n \to \infty} \left| \frac{\sin(n)}{n} \right|
+		
+		&= 0.
 	$$
 	
 	Therefore, the series converges.
@@ -214,20 +224,20 @@ Much like the ratio test, the root test compares a given series to a geometric s
 
 	Determine if the following series converge or diverge by using the root test.
 	
-	1. $\sum_{k = 1}^\infty \frac{2^k}{(k + 1)^k}$.
+	1. $\displaystyle \sum_{k = 1}^\infty \frac{2^k}{(k + 1)^k}$.
 	
-	2. $\sum_{n = 1}^\infty \frac{n}{2^n}$.
+	2. $\displaystyle \sum_{n = 1}^\infty \frac{n}{2^n}$.
 	
 	**Solutions:**
 	
 	1. While we could try the ratio test here, the $(k + 1)^k$ will make that a bit of a nightmare --- nothing will cancel. Instead, all of the powers of $k$ mean the root test is probably the right choice. We have
 	
 	$$
-		\begin{align*}
-			r &= \lim_{k \to \infty} \sqrt[k]{\left| \frac{2}{k + 1} \right|^k}\\
-			&= \lim_{k \to \infty} \frac{2}{k + 1}\\
-			&= 0.
-		\end{align*}
+		r &= \lim_{k \to \infty} \sqrt[k]{\left| \frac{2}{k + 1} \right|^k}
+		
+		&= \lim_{k \to \infty} \frac{2}{k + 1}
+		
+		&= 0.
 	$$
 	
 	Since $r < 1$, the series converges.
@@ -235,25 +245,29 @@ Much like the ratio test, the root test compares a given series to a geometric s
 	2. This time, there are definitely better choices than the root test: the limit comparison and ratio tests would both work well. But the root test isn't so bad: it gives
 	
 	$$
-		\begin{align*}
-			r &= \lim_{n \to \infty} \sqrt[n]{\left| \frac{n}{2^n} \right|}\\
-			&= \lim_{n \to \infty} \sqrt[n]{\frac{n}{2^n}}\\
-			&= \lim_{n \to \infty} \frac{\sqrt[n]{n}}{2}\\
-			&= \lim_{n \to \infty} \frac{n^{1/n}}{2}.
-		\end{align*}
+		r &= \lim_{n \to \infty} \sqrt[n]{\left| \frac{n}{2^n} \right|}
+		
+		&= \lim_{n \to \infty} \sqrt[n]{\frac{n}{2^n}}
+		
+		&= \lim_{n \to \infty} \frac{\sqrt[n]{n}}{2}
+		
+		&= \lim_{n \to \infty} \frac{n^{1/n}}{2}.
 	$$
 	
 	Solving this limit is a little bit complicated: since there's an $n$ in both the base and exponent, we need to rewrite it with $\ln$.
 	
 	$$
-		\begin{align*}
-			r &= \frac{1}{2} \lim_{n \to \infty} n^{1/n}\\
-			&= \frac{1}{2} e^{\lim_{n \to \infty} \ln \left( n^{1/n} \right)}\\
-			&= \frac{1}{2} e^{\lim_{n \to \infty} \frac{\ln \left( n \right)}{n}}\\
-			&= \frac{1}{2} e^{\lim_{n \to \infty} \frac{1/n}{1}}\\
-			&= \frac{1}{2} e^0\\
-			&= \frac{1}{2}.
-		\end{align*}
+		r &= \frac{1}{2} \lim_{n \to \infty} n^{1/n}
+		
+		&= \frac{1}{2} e^{\lim_{n \to \infty} \ln \left( n^{1/n} \right)}
+		
+		&= \frac{1}{2} e^{\lim_{n \to \infty} \frac{\ln \left( n \right)}{n}}
+		
+		&= \frac{1}{2} e^{\lim_{n \to \infty} \frac{1/n}{1}}
+		
+		&= \frac{1}{2} e^0
+		
+		&= \frac{1}{2}.
 	$$
 	
 	Since $r < 1$, the series converges.

@@ -81,24 +81,27 @@ These theorems tell us that derivatives split across addition and subtraction, a
 	As before, we'll handle one derivative at a time.
 	
 	$$
-		\begin{align*}
-			\frac{d}{dx}[2x^2 - x] &= \frac{d}{dx}[2x^2] - \frac{d}{dx}[x]\\
-			&= 2\frac{d}{dx}[x^2] - \frac{d}{dx}[x]\\
-			&= 2(2x^1) - (1x^0)\\
-			&= 2(2x) - (1)\\
-			&= 4x - 1.
-		\end{align*}
+		\frac{d}{dx}[2x^2 - x] &= \frac{d}{dx}[2x^2] - \frac{d}{dx}[x]
+		
+		&= 2\frac{d}{dx}[x^2] - \frac{d}{dx}[x]
+		
+		&= 2(2x^1) - (1x^0)
+		
+		&= 2(2x) - (1)
+		
+		&= 4x - 1.
 	$$
 	
 	Now we need to find the derivative of $4x - 1$.
 	
 	$$
-		\begin{align*}
-			\frac{d}{dx}[4x - 1] &= \frac{d}{dx}[4x] - \frac{d}{dx}[1]\\
-			&= 4\frac{d}{dx}[x] - \frac{d}{dx}[1]\\
-			&= 4(1) - 0\\
-			&= 4.
-		\end{align*}
+		\frac{d}{dx}[4x - 1] &= \frac{d}{dx}[4x] - \frac{d}{dx}[1]
+		
+		&= 4\frac{d}{dx}[x] - \frac{d}{dx}[1]
+		
+		&= 4(1) - 0
+		
+		&= 4.
 	$$
 	
 	That was a whole lot easier than it was with the limit definition!
@@ -144,14 +147,17 @@ Next, let's talk about how to differentiate products and quotients --- unlike li
 	The rate of change is just the derivative, so we want $P'(t)$. Using the constant multiple and product rules, we have
 	
 	$$
-		\begin{align*}
-			P'(t) &= \frac{d}{dt}[ 3000(3t^2 + 1)(t + 2) ]\\
-			&= 3000 \frac{d}{dt}[ (3t^2 + 1)(t + 2) ]\\
-			&= 3000 \left( \frac{d}{dt}[ (3t^2 + 1) ] (t + 2) + (3t^2 + 1) \frac{d}{dt}[ (t + 2) ] \right)\\
-			&= 3000 \left( (6t)(t + 2) + (3t^2 + 1)(1) \right)\\
-			&= 3000 \left( 6t^2 + 12t + 3t^2 + 1 \right)\\
-			&= 3000 \left( 9t^2 + 12t + 1 \right).
-		\end{align*}
+		P'(t) &= \frac{d}{dt}[ 3000(3t^2 + 1)(t + 2) ]
+		
+		&= 3000 \frac{d}{dt}[ (3t^2 + 1)(t + 2) ]
+		
+		&= 3000 \left( \frac{d}{dt}[ (3t^2 + 1) ] (t + 2) + (3t^2 + 1) \frac{d}{dt}[ (t + 2) ] \right)
+		
+		&= 3000 \left( (6t)(t + 2) + (3t^2 + 1)(1) \right)
+		
+		&= 3000 \left( 6t^2 + 12t + 3t^2 + 1 \right)
+		
+		&= 3000 \left( 9t^2 + 12t + 1 \right).
 	$$
 	
 	While we could also have foiled out the initial expression, this is a nice demonstration of the product rule.
@@ -195,11 +201,11 @@ I'd be remiss if I didn't mention the commonly-quoted mnemonic rhyme that goes a
 	The derivative of the top (i.e. $2x^2$) is $2 \cdot 2x = 4x$, and the derivative of the bottom is $0 - 1 = -1$. Putting it all together, we get
 	
 	$$
-		\begin{align*}
-			\frac{d}{dx} \left[\frac{2x^2}{1 - x}\right] &= \frac{(4x)(1-x) - (2x^2)(-1)}{(1-x)^2}\\
-			&= \frac{4x - 4x^2 + 2x^2}{(1-x)^2}\\
-			&= \frac{4x - 2x^2}{(1-x)^2}.
-		\end{align*}
+		\frac{d}{dx} \left[\frac{2x^2}{1 - x}\right] &= \frac{(4x)(1-x) - (2x^2)(-1)}{(1-x)^2}
+		
+		&= \frac{4x - 4x^2 + 2x^2}{(1-x)^2}
+		
+		&= \frac{4x - 2x^2}{(1-x)^2}.
 	$$
 	
 ###
@@ -214,13 +220,15 @@ I'd be remiss if I didn't mention the commonly-quoted mnemonic rhyme that goes a
 The quotient rule has one immediate application: we can find the derivative of $x^n$ for negative integers $n$. If $n$ is a negative integer, then $-n$ is a positive integer, and $x^n = \frac{1}{x^{-n}}$. That may seem like a strange way to write it, but now we can apply the quotient rule:
 
 $$
-	\begin{align*}
-		\frac{d}{dx} \left[\frac{1}{x^{-n}}\right] &= \frac{0(x^{-n}) - 1(-nx^{-n - 1})}{(x^{-n})^2}\\
-		&= \frac{nx^{-n - 1}}{x^{-2n}}\\
-		&= nx^{-n-1 - (-2n)}\\
-		&= nx^{-n-1 + 2n}\\
-		&= nx^{n-1}.
-	\end{align*}
+	\frac{d}{dx} \left[\frac{1}{x^{-n}}\right] &= \frac{0(x^{-n}) - 1(-nx^{-n - 1})}{(x^{-n})^2}
+	
+	&= \frac{nx^{-n - 1}}{x^{-2n}}
+	
+	&= nx^{-n-1 - (-2n)}
+	
+	&= nx^{-n-1 + 2n}
+	
+	&= nx^{n-1}.
 $$
 
 Hey, that's the same result as if $n$ were positive! Because of this, we can safely say that
