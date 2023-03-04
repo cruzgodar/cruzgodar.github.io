@@ -51,6 +51,11 @@
 	background-color: rgb(224, 224, 224);
 }
 
+#header-logo.hover span
+{
+	color: rgb(48, 48, 48) !important;
+}
+
 #header-links
 {
 	margin: 0 auto;

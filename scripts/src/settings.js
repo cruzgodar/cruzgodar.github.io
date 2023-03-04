@@ -327,7 +327,7 @@ Site.Settings =
 			{
 				document.querySelector("#header").style.backgroundColor = "rgb(255, 255, 255)";
 				
-				document.querySelectorAll("#header-logo span, #header-links a").forEach(element => element.style.color = "rgb(64, 64, 64)");
+				document.querySelectorAll("#header-logo span, #header-links a").forEach(element => element.style.color = "rgb(48, 48, 48)");
 			}
 			
 			catch(ex) {}
@@ -381,7 +381,7 @@ Site.Settings =
 			{
 				document.querySelector("#header").style.backgroundColor = "rgb(24, 24, 24)";
 				
-				document.querySelectorAll("#header-logo:not(.hover) span, #header-links a:not(.hover)").forEach(element => element.style.color = "rgb(192, 192, 192)");
+				document.querySelectorAll("#header-logo span, #header-links a").forEach(element => element.style.color = "rgb(192, 192, 192)");
 			}
 			
 			catch(ex) {}
@@ -497,9 +497,9 @@ Site.Settings =
 			color: rgb(172, 172, 172);
 		}
 		
-		#header-logo.hover span, #header-links a.hover, #header-logo.active span, #header-links a.active
+		#header-logo.hover span, #header-links a.hover
 		{
-			color: rgb(96, 96, 96);
+			color: rgb(48, 48, 48) !important;
 		}
 		
 		
