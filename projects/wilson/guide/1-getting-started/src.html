@@ -6,7 +6,7 @@
 
 Welcome! In this guide, we'll use Wilson to create the Julia set explorer featured on the main page. We'll do this one step at a time, starting with the simplest and most stripped-down version possible and gradually adding features. You might want to have the <a href="/projects/wilson/docs/">documentation</a> open while going through this.
 
-First, some background: a Julia set is a famous type of fractal closely related to the Mandelbrot set. Unlike the Mandelbrot, though, there are infinitely many Julia sets, each one corresponding to a different complex number. Because of this, Julia set applets often focus on generating different Julia sets rather than zooms of a single one, and this is where we'll start too. Right now, let's not worry about interactivity: we'll just have the user enter the complex number \(c\) and display the Julia set corresponding to it.
+First, some background: a Julia set is a famous type of fractal closely related to the Mandelbrot set. Unlike the Mandelbrot, though, there are infinitely many Julia sets, each one corresponding to a different complex number. Because of this, Julia set applets often focus on generating different Julia sets rather than zooms of a single one, and this is where we'll start too. Right now, let's not worry about interactivity: we'll just have the user enter the complex number $c$ and display the Julia set corresponding to it.
 
 Once we've included `wilson.js`, we need to make a canvas and some input fields in the HTML.
 
@@ -76,7 +76,7 @@ On the JS side, we need to tell Wilson we want it to work with this canvas.
 
 Those initial values of 500 are just placeholders --- they're changed whenever the generate button is pressed. Now we just need to write a function that generates a Julia set given these parameters. The first step for that function will be to convert between pixel coordinates on the canvas and complex numbers in the plane, and this is a common enough occurance in math applets that Wilson has built-in functions for handling it: we need to add information in the options about the "world coordinates", as Wilson calls them, and then we can call `wilson.utils.interpolate.canvas_to_world` and `wilson.utils.interpolate.world_to_canvas`, which convert between pairs (row, col) of canvas coordinates and (x, y) of world coordinates. Note that `row` increases from top to bottom, while `y` does the opposite.
 
-The algorithm to color a single point \(z_0\) of the Julia set corresponding to \(c = a + bi\) is relatively simple: with \(f(z) = z^2 + c\), we let \(z_1 = f(z_0)\), \(z_2 = f(z_1)\), and so on. If the \(z_n\) grow without bound, then the point \(z_0\) is *not* in the Julia set, and we give it a color based on how quickly it grew. If the \(z_n\) stay bounded, then \(z_0\) is in the set, and we color it black. In practice, we pick a maximum value for \(n\), say 100, and see if the sequence is smaller than a certain bound after that many iterations. It can be shown that if the magnitude of any \(z_n\) is ever larger than 2, then the subsequent terms will grow without bound, so that's the typical threshhold to measure against.
+The algorithm to color a single point $z_0$ of the Julia set corresponding to $c = a + bi$ is relatively simple: with $f(z) = z^2 + c$, we let $z_1 = f(z_0)$, $z_2 = f(z_1)$, and so on. If the $z_n$ grow without bound, then the point $z_0$ is *not* in the Julia set, and we give it a color based on how quickly it grew. If the $z_n$ stay bounded, then $z_0$ is in the set, and we color it black. In practice, we pick a maximum value for $n$, say 100, and see if the sequence is smaller than a certain bound after that many iterations. It can be shown that if the magnitude of any $z_n$ is ever larger than 2, then the subsequent terms will grow without bound, so that's the typical threshhold to measure against.
 
 
 
@@ -185,7 +185,7 @@ The algorithm to color a single point \(z_0\) of the Julia set corresponding to 
 
 
 
-The weirdness with the exponentials is a technique to reduce color banding --- if we just used the raw iteration numbers for brightness values, we'd see stripes of different brightness wherever that number increased or decreased by one. Basing the color partly on the values of the \(z_n\) introduces dithering --- just enough noise that the color bands are blurred out.
+The weirdness with the exponentials is a technique to reduce color banding --- if we just used the raw iteration numbers for brightness values, we'd see stripes of different brightness wherever that number increased or decreased by one. Basing the color partly on the values of the $z_n$ introduces dithering --- just enough noise that the color bands are blurred out.
 
 The brightness scale variable is a value that I found experimentally. When we make Julia set renders, there will typically be a handful of pixels that are significanly brighter than the rest, resulting in a much darker image overall. This is hard to exactly counteract without sorting the list of brightnesses and picking one a little bit down from the top --- and we'll get there eventually --- but right now, that would require a massive sort every frame. Instead, we can get a good result by just finding a factor experimentally that gets the majority of the pixels in full range of 0&ndash;255.
 

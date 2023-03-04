@@ -45,8 +45,13 @@
 					<string>comment</string>
 				</dict>
 			</dict>
-			<key>contentName</key>
-			<string>markup.list.numbered</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>$self</string>
+				</dict>
+			</array>
 		</dict>
 		
 		<dict>
@@ -265,6 +270,39 @@
 					<string>markup.raw</string>
 				</dict>
 				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<dict>
+			<key>match</key>
+			<string>(&lt;a href=\")(.*?)(\".*?&gt;)(.*?)(&lt;/a&gt;)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+				<key>4</key>
+				<dict>
+					<key>name</key>
+					<string>markup.quote</string>
+				</dict>
+				<key>5</key>
 				<dict>
 					<key>name</key>
 					<string>comment</string>
