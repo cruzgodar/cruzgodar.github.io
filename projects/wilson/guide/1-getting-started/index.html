@@ -65,48 +65,48 @@ generate_button_element.addEventListener("click", () =>
 &#9;
 &#9;for (let i = 0; i &lt; resolution; i++)
 &#9;{
-&#9;&#9;for (let j = 0; j &lt; resolution; j++)
+&#9;for (let j = 0; j &lt; resolution; j++)
+&#9;{
+&#9;&#9;let world_coordinates = wilson.utils.interpolate.canvas_to_world(i, j);
+&#9;&#9;let x = world_coordinates[0];
+&#9;&#9;let y = world_coordinates[1];
+&#9;&#9;
+&#9;&#9;//This helps remove color banding.
+&#9;&#9;let brightness = Math.exp(-Math.sqrt(x*x + y*y));
+&#9;&#9;
+&#9;&#9;let k = 0;
+&#9;&#9;
+&#9;&#9;for (k = 0; k &lt; num_iterations; k++)
 &#9;&#9;{
-&#9;&#9;&#9;let world_coordinates = wilson.utils.interpolate.canvas_to_world(i, j);
-&#9;&#9;&#9;let x = world_coordinates[0];
-&#9;&#9;&#9;let y = world_coordinates[1];
-&#9;&#9;&#9;
-&#9;&#9;&#9;//This helps remove color banding.
-&#9;&#9;&#9;let brightness = Math.exp(-Math.sqrt(x*x + y*y));
-&#9;&#9;&#9;
-&#9;&#9;&#9;let k = 0;
-&#9;&#9;&#9;
-&#9;&#9;&#9;for (k = 0; k &lt; num_iterations; k++)
-&#9;&#9;&#9;{
-&#9;&#9;&#9;&#9;//z = z^2 + c = (x^2 - y^2 + a) + (2xy + b)i
-&#9;&#9;&#9;&#9;let temp = x*x - y*y + a;
-&#9;&#9;&#9;&#9;y = 2*x*y + b;
-&#9;&#9;&#9;&#9;x = temp;
-&#9;&#9;&#9;&#9;
-&#9;&#9;&#9;&#9;brightness += Math.exp(-Math.sqrt(x*x + y*y));
-&#9;&#9;&#9;&#9;
-&#9;&#9;&#9;&#9;if (x*x + y*y > 4)
-&#9;&#9;&#9;&#9;{
-&#9;&#9;&#9;&#9;&#9;break;
-&#9;&#9;&#9;&#9;}
-&#9;&#9;&#9;}
-&#9;&#9;&#9;
-&#9;&#9;&#9;if (k === num_iterations)
-&#9;&#9;&#9;{
-&#9;&#9;&#9;&#9;//Color this pixel black.
-&#9;&#9;&#9;&#9;brightnesses[resolution * i + j] = 0;
-&#9;&#9;&#9;}
-&#9;&#9;&#9;
-&#9;&#9;&#9;else
-&#9;&#9;&#9;{
-&#9;&#9;&#9;&#9;brightnesses[resolution * i + j] = brightness;
-&#9;&#9;&#9;&#9;
-&#9;&#9;&#9;&#9;if (brightness > max_brightness)
-&#9;&#9;&#9;&#9;{
-&#9;&#9;&#9;&#9;&#9;max_brightness = brightness;
-&#9;&#9;&#9;&#9;}
-&#9;&#9;&#9;}
+&#9;&#9;//z = z^2 + c = (x^2 - y^2 + a) + (2xy + b)i
+&#9;&#9;let temp = x*x - y*y + a;
+&#9;&#9;y = 2*x*y + b;
+&#9;&#9;x = temp;
+&#9;&#9;
+&#9;&#9;brightness += Math.exp(-Math.sqrt(x*x + y*y));
+&#9;&#9;
+&#9;&#9;if (x*x + y*y > 4)
+&#9;&#9;{
+&#9;&#9;&#9;break;
 &#9;&#9;}
+&#9;&#9;}
+&#9;&#9;
+&#9;&#9;if (k === num_iterations)
+&#9;&#9;{
+&#9;&#9;//Color this pixel black.
+&#9;&#9;brightnesses[resolution * i + j] = 0;
+&#9;&#9;}
+&#9;&#9;
+&#9;&#9;else
+&#9;&#9;{
+&#9;&#9;brightnesses[resolution * i + j] = brightness;
+&#9;&#9;
+&#9;&#9;if (brightness > max_brightness)
+&#9;&#9;{
+&#9;&#9;&#9;max_brightness = brightness;
+&#9;&#9;}
+&#9;&#9;}
+&#9;}
 &#9;}
 &#9;
 &#9;//Now we need to create the actual pixel data in a Uint8ClampedArray to pass to Wilson.
@@ -114,10 +114,10 @@ generate_button_element.addEventListener("click", () =>
 &#9;
 &#9;for (let i = 0; i &lt; resolution * resolution; i++)
 &#9;{
-&#9;&#9;image_data[4 * i] = 0; //Red
-&#9;&#9;image_data[4 * i + 1] = brightness_scale * brightnesses[i] / max_brightness * 255; //Green
-&#9;&#9;image_data[4 * i + 2] = brightness_scale * brightnesses[i] / max_brightness * 255; //Blue
-&#9;&#9;image_data[4 * i + 3] = 255; //Alpha
+&#9;image_data[4 * i] = 0; //Red
+&#9;image_data[4 * i + 1] = brightness_scale * brightnesses[i] / max_brightness * 255; //Green
+&#9;image_data[4 * i + 2] = brightness_scale * brightnesses[i] / max_brightness * 255; //Blue
+&#9;image_data[4 * i + 3] = 255; //Alpha
 &#9;}
 &#9;
 &#9;return image_data;
@@ -138,7 +138,7 @@ generate_button_element.addEventListener("click", () =>
 &#9;
 &#9;window.requestAnimationFrame(() => wilson.render.draw_frame(generate_julia_set(a, b, resolution)));
 });
-</code></pre><p class="body-text">The weirdness with the exponentials is a technique to reduce color banding &mdash; if we just used the raw iteration numbers for brightness values, we&#x2019;d see stripes of different brightness wherever that number increased or decreased by one. Basing the color partly on the values of the $z_n$ introduces dithering &mdash; just enough noise that the color bands are blurred out.</p><p class="body-text">The brightness scale variable is a value that I found experimentally. When we make Julia set renders, there will typically be a handful of pixels that are significanly brighter than the rest, resulting in a much darker image overall. This is hard to exactly counteract without sorting the list of brightnesses and picking one a little bit down from the top &mdash; and we&#x2019;ll get there eventually &mdash; but right now, that would require a massive sort every frame. Instead, we can get a good result by just finding a factor experimentally that gets the majority of the pixels in full range of 0&ndash;255.</p><p class="body-text">If you&#x2019;re not famaliar with <code>window.requestAnimationFrame</code>, it calls the function we pass it on the first frame when the page can handle it. Nothing else on this page is going to impact performance to make this important, but later on we&#x2019;ll need it to keep our code from rendering multiple frames within a one-frame interval, needlessly impacting performance. Because of that, it&#x2019;s good practice to always use <code>requestAnimationFrame</code>.</p><p class="body-text">With all that explanation out of the way, let&#x2019;s see how the applet turned out!</p><div class="text-boxes"><div class="text-box-container"><input id="a-1-input" class="text-box" type="text" value="0" tabindex="1"><p class="body-text text-box-subtext">$a$</p></div><div class="text-box-container"><input id="b-1-input" class="text-box" type="text" value="1" tabindex="1"><p class="body-text text-box-subtext">$b$</p></div><div class="text-box-container"><input id="resolution-1-input" class="text-box" type="text" value="500" tabindex="1"><p class="body-text text-box-subtext">Resolution</p></div></div><div class="text-buttons"><div class="focus-on-child" tabindex="1"><button class="text-button" type="button" id="generate-1-button" tabindex="-1">Generate</button></div></div><div class="center-content"><div id="canvas-landscape-middle"><canvas id="output-canvas-1" class="output-canvas"></canvas></div></div></section><h2 class="section-text"> A Different Renderer</h2><section><p class="body-text">This is a great start, but we have a lot more to do, and the first and easiest change to make is to modify the renderer. We currently have the line <code>renderer: "cpu"</code> in our options, which means that when we pass Wilson our pixel data, it gets copied into the canvas by JavaScript. A slightly better alternative is to render the canvas with WebGL and pass in the pixel data as a texture. This can marginally increase performance, and on some browers, it also increases the maximum possible canvas size. Hearing the word WebGL might make you a little nervous, and maybe rightfully so, but we don&#x2019;t actually have to interface with it at all right now. Just replacing that line in the options with <code>renderer: "hybrid"</code> is enough to change everything necessary on the backend.</p><p class="body-text">As another improvement, let&#x2019;s add a button to download the current state of the canvas &mdash; we need a better way to get the applet&#x2019;s output than taking a screenshot.</p><pre><code class="language-js">let options =
+</code></pre><p class="body-text">The weirdness with the exponentials is a technique to reduce color banding &mdash; if we just used the raw iteration numbers for brightness values, we&#x2019;d see stripes of different brightness wherever that number increased or decreased by one. Basing the color partly on the values of the $z_n$ introduces dithering &mdash; just enough noise that the color bands are blurred out.</p><p class="body-text">The brightness scale variable is a value that I found experimentally. When we make Julia set renders, there will typically be a handful of pixels that are significanly brighter than the rest, resulting in a much darker image overall. This is hard to exactly counteract without sorting the list of brightnesses and picking one a little bit down from the top &mdash; and we&#x2019;ll get there eventually &mdash; but right now, that would require a massive sort every frame. Instead, we can get a good result by just finding a factor experimentally that gets the majority of the pixels in full range of 0&ndash;255.</p><p class="body-text">If you&#x2019;re not famaliar with <code>window.requestAnimationFrame</code>, it calls the function we pass it on the first frame when the page can handle it. Nothing else on this page is going to impact performance to make this important, but later on we&#x2019;ll need it to keep our code from rendering multiple frames within a one-frame interval, needlessly impacting performance. Because of that, it&#x2019;s good practice to always use <code>requestAnimationFrame</code>.</p><p class="body-text">With all that explanation out of the way, let&#x2019;s see how the applet turned out!</p><div class="text-boxes"><div class="text-box-container"><input id="a-1-input" class="text-box" type="text" value="0" tabindex="1"><p class="body-text text-box-subtext">$a$</p></div><div class="text-box-container"><input id="b-1-input" class="text-box" type="text" value="1" tabindex="1"><p class="body-text text-box-subtext">$b$</p></div><div class="text-box-container"><input id="resolution-1-input" class="text-box" type="text" value="500" tabindex="1"><p class="body-text text-box-subtext">Resolution</p></div></div><div class="text-buttons"><div class="focus-on-child" tabindex="1"><button class="text-button" type="button" id="generate-1-button" tabindex="-1">Generate</button></div></div><div class="center-content"><div id="canvas-landscape-middle"><p class="body-text">&#9;<canvas id="output-canvas-1" class="output-canvas"></canvas></p></div></div></section><h2 class="section-text"> A Different Renderer</h2><section><p class="body-text">This is a great start, but we have a lot more to do, and the first and easiest change to make is to modify the renderer. We currently have the line <code>renderer: "cpu"</code> in our options, which means that when we pass Wilson our pixel data, it gets copied into the canvas by JavaScript. A slightly better alternative is to render the canvas with WebGL and pass in the pixel data as a texture. This can marginally increase performance, and on some browers, it also increases the maximum possible canvas size. Hearing the word WebGL might make you a little nervous, and maybe rightfully so, but we don&#x2019;t actually have to interface with it at all right now. Just replacing that line in the options with <code>renderer: "hybrid"</code> is enough to change everything necessary on the backend.</p><p class="body-text">As another improvement, let&#x2019;s add a button to download the current state of the canvas &mdash; we need a better way to get the applet&#x2019;s output than taking a screenshot.</p><pre><code class="language-js">let options =
 {
 &#9;renderer: "hybrid",
 &#9;

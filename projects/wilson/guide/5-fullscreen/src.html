@@ -9,33 +9,33 @@ As usual, we need to update the options. The bare minimum is adding `use_fullscr
 ```js
 	let options =
 	{
-	&#9;renderer: "gpu",
-	&#9;
-	&#9;shader: frag_shader_source,
-	&#9;
-	&#9;canvas_width: 1000,
-	&#9;canvas_height: 1000,
-	&#9;
-	&#9;world_width: 4,
-	&#9;world_height: 4,
-	&#9;world_center_x: 0,
-	&#9;world_center_y: 0,
-	&#9;
-	&#9;
-	&#9;
-	&#9;use_draggables: true,
-	&#9;
-	&#9;draggables_mousemove_callback: on_drag,
-	&#9;draggables_touchmove_callback: on_drag,
-	&#9;
-	&#9;
-	&#9;
-	&#9;use_fullscreen: true,
-	&#9;
-	&#9;use_fullscreen_button: true,
-	&#9;
-	&#9;enter_fullscreen_button_icon_path: "/path/to/enter-fullscreen.png",
-	&#9;exit_fullscreen_button_icon_path: "/path/to/exit-fullscreen.png"
+		renderer: "gpu",
+		
+		shader: frag_shader_source,
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0,
+		
+		
+		
+		use_draggables: true,
+		
+		draggables_mousemove_callback: on_drag,
+		draggables_touchmove_callback: on_drag,
+		
+		
+		
+		use_fullscreen: true,
+		
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_icon_path: "/path/to/enter-fullscreen.png",
+		exit_fullscreen_button_icon_path: "/path/to/exit-fullscreen.png"
 	};
 ```
 
@@ -66,51 +66,51 @@ This is definitely an improvement, but if you mess with it a little, you'll quic
 
 ```glsl
 	let frag_shader_source = `
-	&#9;precision highp float;
-	&#9;
-	&#9;varying vec2 uv;
-	&#9;
-	&#9;uniform float world_width;
-	&#9;uniform float world_height;
-	&#9;
-	&#9;uniform float a;
-	&#9;uniform float b;
-	&#9;uniform float brightness_scale;
-	&#9;
-	&#9;
-	&#9;
-	&#9;void main(void)
-	&#9;{
-	&#9;&#9;vec2 z;
-	&#9;&#9;
-	&#9;&#9;if (aspect_ratio >= 1.0)
-	&#9;&#9;{
-	&#9;&#9;&#9;z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
-	&#9;&#9;}
-	&#9;&#9;
-	&#9;&#9;else
-	&#9;&#9;{
-	&#9;&#9;&#9;z = vec2(uv.x * 2.0, uv.y / aspect_ratio * 2.0);
-	&#9;&#9;}
-	&#9;&#9;
-	&#9;&#9;...
-	&#9;}
+		precision highp float;
+		
+		varying vec2 uv;
+		
+		uniform float world_width;
+		uniform float world_height;
+		
+		uniform float a;
+		uniform float b;
+		uniform float brightness_scale;
+		
+		
+		
+		void main(void)
+		{
+			vec2 z;
+			
+			if (aspect_ratio >= 1.0)
+			{
+				z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+			}
+			
+			else
+			{
+				z = vec2(uv.x * 2.0, uv.y / aspect_ratio * 2.0);
+			}
+			
+			...
+		}
 	`;
 ```
 
 ```js
 	let options =
 	{
-	&#9;...
-	&#9;
-	&#9;use_fullscreen: true,
-	&#9;
-	&#9;true_fullscreen: true,
-	&#9;
-	&#9;use_fullscreen_button: true,
-	&#9;
-	&#9;enter_fullscreen_button_image_path: "/path/to/enter-fullscreen.png",
-	&#9;exit_fullscreen_button_image_path: "/path/to/exit-fullscreen.png"
+		...
+		
+		use_fullscreen: true,
+		
+		true_fullscreen: true,
+		
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_image_path: "/path/to/enter-fullscreen.png",
+		exit_fullscreen_button_image_path: "/path/to/exit-fullscreen.png"
 	};
 ```
 
@@ -138,69 +138,69 @@ Now we're prepared for a canvas that isn't square, but we need to actually resiz
 ```js
 	let options =
 	{
-	&#9;...
-	&#9;
-	&#9;use_fullscreen: true,
-	&#9;
-	&#9;true_fullscreen: true,
-	&#9;
-	&#9;use_fullscreen_button: true,
-	&#9;
-	&#9;enter_fullscreen_button_image_path: "/path/to/enter-fullscreen.png",
-	&#9;exit_fullscreen_button_image_path: "/path/to/exit-fullscreen.png",
-	&#9;
-	&#9;switch_fullscreen_callback: change_aspect_ratio
+		...
+		
+		use_fullscreen: true,
+		
+		true_fullscreen: true,
+		
+		use_fullscreen_button: true,
+		
+		enter_fullscreen_button_image_path: "/path/to/enter-fullscreen.png",
+		exit_fullscreen_button_image_path: "/path/to/exit-fullscreen.png",
+		
+		switch_fullscreen_callback: change_aspect_ratio
 	};
 ```
 
 ```js
 	function draw_julia_set(timestamp)
 	{
-	&#9;...
-	&#9;
-	&#9;wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
-	&#9;
-	&#9;wilson.gl.uniform1f(wilson.uniforms["a"], a);
-	&#9;wilson.gl.uniform1f(wilson.uniforms["b"], b);
-	&#9;wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
-	&#9;
-	&#9;wilson.render.draw_frame();
+		...
+		
+		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
+		
+		wilson.gl.uniform1f(wilson.uniforms["a"], a);
+		wilson.gl.uniform1f(wilson.uniforms["b"], b);
+		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
+		
+		wilson.render.draw_frame();
 	}
 ```
 
 ```js
 	function change_aspect_ratio()
 	{
-	&#9;if (wilson.fullscreen.currently_fullscreen)
-	&#9;{
-	&#9;&#9;aspect_ratio = window.innerWidth / window.innerHeight;
-	&#9;&#9;
-	&#9;&#9;if (aspect_ratio >= 1)
-	&#9;&#9;{
-	&#9;&#9;&#9;wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
-	&#9;&#9;&#9;
-	&#9;&#9;&#9;wilson.world_width = 4 * aspect_ratio;
-	&#9;&#9;&#9;wilson.world_height = 4;
-	&#9;&#9;}
-	&#9;&#9;
-	&#9;&#9;else
-	&#9;&#9;{
-	&#9;&#9;&#9;wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
-	&#9;&#9;&#9;
-	&#9;&#9;&#9;wilson.world_width = 4;
-	&#9;&#9;&#9;wilson.world_height = 4 / aspect_ratio;
-	&#9;&#9;}
-	&#9;}
-	&#9;
-	&#9;else
-	&#9;{
-	&#9;&#9;wilson.change_canvas_size(resolution, resolution);
-	&#9;&#9;
-	&#9;&#9;wilson.world_width = 4;
-	&#9;&#9;wilson.world_height = 4;
-	&#9;}
-	&#9;
-	&#9;window.requestAnimationFrame(draw_julia_set);
+		if (wilson.fullscreen.currently_fullscreen)
+		{
+			aspect_ratio = window.innerWidth / window.innerHeight;
+			
+			if (aspect_ratio >= 1)
+			{
+				wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+				
+				wilson.world_width = 4 * aspect_ratio;
+				wilson.world_height = 4;
+			}
+			
+			else
+			{
+				wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+				
+				wilson.world_width = 4;
+				wilson.world_height = 4 / aspect_ratio;
+			}
+		}
+		
+		else
+		{
+			wilson.change_canvas_size(resolution, resolution);
+			
+			wilson.world_width = 4;
+			wilson.world_height = 4;
+		}
+		
+		window.requestAnimationFrame(draw_julia_set);
 	}
 
 	window.addEventListener("resize", change_aspect_ratio);

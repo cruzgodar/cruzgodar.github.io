@@ -9,19 +9,19 @@ Since every Julia set corresponds to a unique complex number $c$, we should be a
 ```js
 	let options =
 	{
-	&#9;renderer: "hybrid",
-	&#9;
-	&#9;canvas_width: 1000,
-	&#9;canvas_height: 1000,
-	&#9;
-	&#9;world_width: 4,
-	&#9;world_height: 4,
-	&#9;world_center_x: 0,
-	&#9;world_center_y: 0,
-	&#9;
-	&#9;
-	&#9;
-	&#9;use_draggables: true
+		renderer: "hybrid",
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0,
+		
+		
+		
+		use_draggables: true
 	};
 
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
@@ -42,27 +42,27 @@ We'll no longer need the input fields $a$ and $b$ --- just the one for resolutio
 ```js
 	let options =
 	{
-	&#9;renderer: "hybrid",
-	&#9;
-	&#9;canvas_width: 1000,
-	&#9;canvas_height: 1000,
-	&#9;
-	&#9;world_width: 4,
-	&#9;world_height: 4,
-	&#9;world_center_x: 0,
-	&#9;world_center_y: 0,
-	&#9;
-	&#9;
-	&#9;
-	&#9;use_draggables: true,
-	&#9;
-	&#9;draggables_mousedown_callback: on_grab,
-	&#9;draggables_mousemove_callback: on_drag,
-	&#9;draggables_mouseup_callback: on_release,
-	&#9;
-	&#9;draggables_touchstart_callback: on_grab,
-	&#9;draggables_touchmove_callback: on_drag,
-	&#9;draggables_touchend_callback: on_release
+		renderer: "hybrid",
+		
+		canvas_width: 1000,
+		canvas_height: 1000,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0,
+		
+		
+		
+		use_draggables: true,
+		
+		draggables_mousedown_callback: on_grab,
+		draggables_mousemove_callback: on_drag,
+		draggables_mouseup_callback: on_release,
+		
+		draggables_touchstart_callback: on_grab,
+		draggables_touchmove_callback: on_drag,
+		draggables_touchend_callback: on_release
 	};
 
 
@@ -80,8 +80,8 @@ We'll no longer need the input fields $a$ and $b$ --- just the one for resolutio
 
 	resolution_input_element.addEventListener("input", () =>
 	{
-	&#9;large_resolution = parseInt(resolution_input_element.value || 1000);
-	&#9;small_resolution = Math.floor(large_resolution / 5);
+		large_resolution = parseInt(resolution_input_element.value || 1000);
+		small_resolution = Math.floor(large_resolution / 5);
 	});
 
 
@@ -90,7 +90,7 @@ We'll no longer need the input fields $a$ and $b$ --- just the one for resolutio
 
 	download_button_element.addEventListener("click", () =>
 	{
-	&#9;wilson.download_frame("a-julia-set.png");
+		wilson.download_frame("a-julia-set.png");
 	});
 ```
 
@@ -113,22 +113,22 @@ Now that we're drawing frames so often, we need to be careful not to draw multip
 
 	function draw_julia_set(timestamp)
 	{
-	&#9;let time_elapsed = timestamp - last_timestamp;
-	&#9;
-	&#9;last_timestamp = timestamp;
-	&#9;
-	&#9;
-	&#9;
-	&#9;if (time_elapsed === 0 && last_resolution === resolution)
-	&#9;{
-	&#9;	&#9;return;
-	&#9;}
-	&#9;
-	&#9;last_resolution = resolution;
-	&#9;
-	&#9;
-	&#9;
-	&#9;wilson.render.draw_frame(generate_julia_set(a, b, resolution));
+		let time_elapsed = timestamp - last_timestamp;
+		
+		last_timestamp = timestamp;
+		
+		
+		
+		if (time_elapsed === 0 && last_resolution === resolution)
+		{
+				return;
+		}
+		
+		last_resolution = resolution;
+		
+		
+		
+		wilson.render.draw_frame(generate_julia_set(a, b, resolution));
 	}
 
 
@@ -141,33 +141,33 @@ Now that we're drawing frames so often, we need to be careful not to draw multip
 
 	function on_grab(active_draggable, x, y, event)
 	{
-	&#9;wilson.change_canvas_size(small_resolution, small_resolution);
-	&#9;
-	&#9;a = x;
-	&#9;b = y;
-	&#9;resolution = small_resolution;
-	&#9;
-	&#9;window.requestAnimationFrame(draw_julia_set);
+		wilson.change_canvas_size(small_resolution, small_resolution);
+		
+		a = x;
+		b = y;
+		resolution = small_resolution;
+		
+		window.requestAnimationFrame(draw_julia_set);
 	}
 
 	function on_drag(active_draggable, x, y, event)
 	{
-	&#9;a = x;
-	&#9;b = y;
-	&#9;resolution = small_resolution;
-	&#9;
-	&#9;window.requestAnimationFrame(draw_julia_set);
+		a = x;
+		b = y;
+		resolution = small_resolution;
+		
+		window.requestAnimationFrame(draw_julia_set);
 	}
 
 	function on_release(active_draggable, x, y, event)
 	{
-	&#9;wilson.change_canvas_size(large_resolution, large_resolution);
-	&#9;
-	&#9;a = x;
-	&#9;b = y;
-	&#9;resolution = large_resolution;
-	&#9;
-	&#9;window.requestAnimationFrame(draw_julia_set);
+		wilson.change_canvas_size(large_resolution, large_resolution);
+		
+		a = x;
+		b = y;
+		resolution = large_resolution;
+		
+		window.requestAnimationFrame(draw_julia_set);
 	}
 ```
 

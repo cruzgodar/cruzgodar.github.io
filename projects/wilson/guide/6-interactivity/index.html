@@ -16,19 +16,19 @@
 &#9;
 &#9;void main(void)
 &#9;{
-&#9;&#9;vec2 z;
-&#9;&#9;
-&#9;&#9;if (aspect_ratio > 1.0)
-&#9;&#9;{
-&#9;&#9;&#9;z = vec2(uv.x * aspect_ratio * 2.0 + world_center_x, uv.y * 2.0 + world_center_y);
-&#9;&#9;}
-&#9;&#9;
-&#9;&#9;else
-&#9;&#9;{
-&#9;&#9;&#9;z = vec2(uv.x * 2.0 + world_center_x, uv.y / aspect_ratio * 2.0 + world_center_y);
-&#9;&#9;}
-&#9;&#9;
-&#9;&#9;...
+&#9;vec2 z;
+&#9;
+&#9;if (aspect_ratio > 1.0)
+&#9;{
+&#9;&#9;z = vec2(uv.x * aspect_ratio * 2.0 + world_center_x, uv.y * 2.0 + world_center_y);
+&#9;}
+&#9;
+&#9;else
+&#9;{
+&#9;&#9;z = vec2(uv.x * 2.0 + world_center_x, uv.y / aspect_ratio * 2.0 + world_center_y);
+&#9;}
+&#9;
+&#9;...
 &#9;}
 `;
 </code></pre><pre><code class="language-js">let options =
@@ -52,7 +52,7 @@ wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_cen
 &#9;
 &#9;wilson.draggables.recalculate_locations();
 }
-</code></pre><p class="body-text">All we&#x2019;re doing here is moving the center of the canvas however the callbacks tell us. Since all the parameters are given in world coordinates, we don&#x2019;t need to convert anything, and we also don&#x2019;t have to deal with the headache of calculating the deltas ourselves when we&#x2019;re changing the very parameters used to calculate them as we go. The only delicate part is remembering to subtract the deltas rather than add them &mdash; if we drag one unit to the right, then the want the scene to move one unit to the right, which means the x-coordinate of the center of the scene needs to move one unit to the <em>left</em>.</p><p class="body-text">A few other things to note: it&#x2019;s a good idea to clamp the center values here to prevent the brightness skyrocketing if we leave the Julia set. Less optionally, we need to tell Wilson to recalculate where the draggable should be. It does this automataically when the window is resized or we change fullscreen modes, but for more custom behavior like this, it needs to be called manually.</p><div class="text-boxes"><div class="text-box-container"><input id="resolution-1-input" class="text-box" type="text" value="1000" tabindex="1"><p class="body-text text-box-subtext">Resolution</p></div></div><div class="center-content"><div id="canvas-landscape-middle"><canvas id="output-canvas-1" class="output-canvas"></canvas><canvas id="hidden-canvas-1" class="hidden-canvas"></canvas></div></div><div class="text-buttons"><div class="focus-on-child" tabindex="1"><button class="text-button" type="button" id="download-1-button" tabindex="-1">Download</button></div></div></section><h2 class="section-text"> Zooming</h2><section><p class="body-text">This is slightly trickier to implement for a few reasons: we typically want to support zooming with either a scroll wheel or a pinch gesture, so there&#x2019;s more code to write, but the real trouble is making it feel &#x201C;natural&#x201D; &mdash; specifically, we want the position of the mouse or the center of the pinch to be the fixed point of the zoom, so that everything else moves around it. This is a <em>very</em> annoying series of calculations, but thankfully Wilson will handle it all for us. Let&#x2019;s see how it works.</p><pre><code class="language-glsl">let frag_shader_source = `
+</code></pre><p class="body-text">All we&#x2019;re doing here is moving the center of the canvas however the callbacks tell us. Since all the parameters are given in world coordinates, we don&#x2019;t need to convert anything, and we also don&#x2019;t have to deal with the headache of calculating the deltas ourselves when we&#x2019;re changing the very parameters used to calculate them as we go. The only delicate part is remembering to subtract the deltas rather than add them &mdash; if we drag one unit to the right, then the want the scene to move one unit to the right, which means the x-coordinate of the center of the scene needs to move one unit to the <em>left</em>.</p><p class="body-text">A few other things to note: it&#x2019;s a good idea to clamp the center values here to prevent the brightness skyrocketing if we leave the Julia set. Less optionally, we need to tell Wilson to recalculate where the draggable should be. It does this automataically when the window is resized or we change fullscreen modes, but for more custom behavior like this, it needs to be called manually.</p><div class="text-boxes"><div class="text-box-container"><input id="resolution-1-input" class="text-box" type="text" value="1000" tabindex="1"><p class="body-text text-box-subtext">Resolution</p></div></div><div class="center-content"><div id="canvas-landscape-middle"><p class="body-text">&#9;<canvas id="output-canvas-1" class="output-canvas"></canvas></p><p class="body-text">&#9;<canvas id="hidden-canvas-1" class="hidden-canvas"></canvas></p></div></div><div class="text-buttons"><div class="focus-on-child" tabindex="1"><button class="text-button" type="button" id="download-1-button" tabindex="-1">Download</button></div></div></section><h2 class="section-text"> Zooming</h2><section><p class="body-text">This is slightly trickier to implement for a few reasons: we typically want to support zooming with either a scroll wheel or a pinch gesture, so there&#x2019;s more code to write, but the real trouble is making it feel &#x201C;natural&#x201D; &mdash; specifically, we want the position of the mouse or the center of the pinch to be the fixed point of the zoom, so that everything else moves around it. This is a <em>very</em> annoying series of calculations, but thankfully Wilson will handle it all for us. Let&#x2019;s see how it works.</p><pre><code class="language-glsl">let frag_shader_source = `
 &#9;precision highp float;
 &#9;
 &#9;varying vec2 uv;
@@ -71,19 +71,19 @@ wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_cen
 &#9;
 &#9;void main(void)
 &#9;{
-&#9;&#9;vec2 z;
-&#9;&#9;
-&#9;&#9;if (aspect_ratio > 1.0)
-&#9;&#9;{
-&#9;&#9;&#9;z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
-&#9;&#9;}
-&#9;&#9;
-&#9;&#9;else
-&#9;&#9;{
-&#9;&#9;&#9;z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
-&#9;&#9;}
-&#9;&#9;
-&#9;&#9;...
+&#9;vec2 z;
+&#9;
+&#9;if (aspect_ratio > 1.0)
+&#9;{
+&#9;&#9;z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
+&#9;}
+&#9;
+&#9;else
+&#9;{
+&#9;&#9;z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
+&#9;}
+&#9;
+&#9;...
 &#9;}
 `;
 </code></pre><pre><code class="language-js">wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "brightness_scale"]);
@@ -124,12 +124,12 @@ function on_pinch_canvas(x, y, touch_distance_delta, event)
 {
 &#9;if (aspect_ratio >= 1)
 &#9;{
-&#9;&#9;zoom_level -= touch_distance_delta / wilson.world_width * 10;
+&#9;zoom_level -= touch_distance_delta / wilson.world_width * 10;
 &#9;}
 &#9;
 &#9;else
 &#9;{
-&#9;&#9;zoom_level -= touch_distance_delta / wilson.world_height * 10;
+&#9;zoom_level -= touch_distance_delta / wilson.world_height * 10;
 &#9;}
 &#9;
 &#9;zoom_level = Math.min(zoom_level, 1);
@@ -140,24 +140,24 @@ function on_pinch_canvas(x, y, touch_distance_delta, event)
 {
 &#9;if (aspect_ratio >= 1)
 &#9;{
-&#9;&#9;let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level) * aspect_ratio, 4 * Math.pow(2, zoom_level));
-&#9;&#9;
-&#9;&#9;wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
-&#9;&#9;wilson.world_height = 4 * Math.pow(2, zoom_level);
-&#9;&#9;
-&#9;&#9;wilson.world_center_x = new_world_center[0];
-&#9;&#9;wilson.world_center_y = new_world_center[1];
+&#9;let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level) * aspect_ratio, 4 * Math.pow(2, zoom_level));
+&#9;
+&#9;wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
+&#9;wilson.world_height = 4 * Math.pow(2, zoom_level);
+&#9;
+&#9;wilson.world_center_x = new_world_center[0];
+&#9;wilson.world_center_y = new_world_center[1];
 &#9;}
 &#9;
 &#9;else
 &#9;{
-&#9;&#9;let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level), 4 * Math.pow(2, zoom_level) / aspect_ratio);
-&#9;&#9;
-&#9;&#9;wilson.world_width = 4 * Math.pow(2, zoom_level);
-&#9;&#9;wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
-&#9;&#9;
-&#9;&#9;wilson.world_center_x = new_world_center[0];
-&#9;&#9;wilson.world_center_y = new_world_center[1];
+&#9;let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level), 4 * Math.pow(2, zoom_level) / aspect_ratio);
+&#9;
+&#9;wilson.world_width = 4 * Math.pow(2, zoom_level);
+&#9;wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+&#9;
+&#9;wilson.world_center_x = new_world_center[0];
+&#9;wilson.world_center_y = new_world_center[1];
 &#9;}
 &#9;
 &#9;window.requestAnimationFrame(draw_julia_set);
@@ -168,38 +168,38 @@ function on_pinch_canvas(x, y, touch_distance_delta, event)
 {
 &#9;if (wilson.fullscreen.currently_fullscreen)
 &#9;{
-&#9;&#9;aspect_ratio = window.innerWidth / window.innerHeight;
+&#9;aspect_ratio = window.innerWidth / window.innerHeight;
+&#9;
+&#9;if (aspect_ratio >= 1)
+&#9;{
+&#9;&#9;wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
 &#9;&#9;
-&#9;&#9;if (aspect_ratio >= 1)
-&#9;&#9;{
-&#9;&#9;&#9;wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
-&#9;&#9;&#9;
-&#9;&#9;&#9;wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
-&#9;&#9;&#9;wilson.world_height = 4 * Math.pow(2, zoom_level);
-&#9;&#9;}
-&#9;&#9;
-&#9;&#9;else
-&#9;&#9;{
-&#9;&#9;&#9;wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
-&#9;&#9;&#9;
-&#9;&#9;&#9;wilson.world_width = 4 * Math.pow(2, zoom_level);
-&#9;&#9;&#9;wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
-&#9;&#9;}
+&#9;&#9;wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
+&#9;&#9;wilson.world_height = 4 * Math.pow(2, zoom_level);
 &#9;}
 &#9;
 &#9;else
 &#9;{
-&#9;&#9;aspect_ratio = 1;
-&#9;&#9;
-&#9;&#9;wilson.change_canvas_size(resolution, resolution);
+&#9;&#9;wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
 &#9;&#9;
 &#9;&#9;wilson.world_width = 4 * Math.pow(2, zoom_level);
-&#9;&#9;wilson.world_height = 4 * Math.pow(2, zoom_level);
+&#9;&#9;wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+&#9;}
+&#9;}
+&#9;
+&#9;else
+&#9;{
+&#9;aspect_ratio = 1;
+&#9;
+&#9;wilson.change_canvas_size(resolution, resolution);
+&#9;
+&#9;wilson.world_width = 4 * Math.pow(2, zoom_level);
+&#9;wilson.world_height = 4 * Math.pow(2, zoom_level);
 &#9;}
 &#9;
 &#9;window.requestAnimationFrame(draw_julia_set);
 }
-</code></pre><div class="text-boxes"><div class="text-box-container"><input id="resolution-2-input" class="text-box" type="text" value="1000" tabindex="1"><p class="body-text text-box-subtext">Resolution</p></div></div><div class="center-content"><div id="canvas-landscape-middle"><canvas id="output-canvas-2" class="output-canvas"></canvas><canvas id="hidden-canvas-2" class="hidden-canvas"></canvas></div></div><div class="text-buttons"><div class="focus-on-child" tabindex="1"><button class="text-button" type="button" id="download-2-button" tabindex="-1">Download</button></div></div></section><h2 class="section-text"> Inertia</h2><section><p class="body-text">We talked about making the zoom gestures feel natural, but if panning and zooming don&#x2019;t carry inertia, they will never feel truly native. This takes just a bit more effort than what we&#x2019;ve done already, and the result is well worth it.</p><p class="body-text">When we stop dragging or pinching, we&#x2019;ll take the last adjustment we made to the world center or zoom level and repeat it over the next second or two, multiplying it by a constant between 0 and 1 every frame. When that velocity is below a certain threshhold, we&#x2019;ll stop it completely to avoid endlessly drawing the same frame. Similarly, we&#x2019;ll only start the process if the velocity is above a different threshhold in order to avoid the annoying situation where making precise adjustments is impossible and the whole applet feels slippery.</p><pre><code class="language-js">let options =
+</code></pre><div class="text-boxes"><div class="text-box-container"><input id="resolution-2-input" class="text-box" type="text" value="1000" tabindex="1"><p class="body-text text-box-subtext">Resolution</p></div></div><div class="center-content"><div id="canvas-landscape-middle"><p class="body-text">&#9;<canvas id="output-canvas-2" class="output-canvas"></canvas></p><p class="body-text">&#9;<canvas id="hidden-canvas-2" class="hidden-canvas"></canvas></p></div></div><div class="text-buttons"><div class="focus-on-child" tabindex="1"><button class="text-button" type="button" id="download-2-button" tabindex="-1">Download</button></div></div></section><h2 class="section-text"> Inertia</h2><section><p class="body-text">We talked about making the zoom gestures feel natural, but if panning and zooming don&#x2019;t carry inertia, they will never feel truly native. This takes just a bit more effort than what we&#x2019;ve done already, and the result is well worth it.</p><p class="body-text">When we stop dragging or pinching, we&#x2019;ll take the last adjustment we made to the world center or zoom level and repeat it over the next second or two, multiplying it by a constant between 0 and 1 every frame. When that velocity is below a certain threshhold, we&#x2019;ll stop it completely to avoid endlessly drawing the same frame. Similarly, we&#x2019;ll only start the process if the velocity is above a different threshhold in order to avoid the annoying situation where making precise adjustments is impossible and the whole applet feels slippery.</p><pre><code class="language-js">let options =
 {
 &#9;...
 &#9;
@@ -281,12 +281,12 @@ function on_release_canvas(x, y, event)
 &#9;if (Math.sqrt(next_pan_velocity_x * next_pan_velocity_x + next_pan_velocity_y * next_pan_velocity_y) >= pan_velocity_start_threshhold * Math.min(wilson.world_width, wilson.world_height))
 &#9;{
 &#9;&#9;pan_velocity_x = next_pan_velocity_x;
-&#9;&#9;pan_velocity_y = next_pan_velocity_y;
+&#9;pan_velocity_y = next_pan_velocity_y;
 &#9;}
 &#9;
 &#9;if (Math.abs(next_zoom_velocity) >= zoom_velocity_start_threshhold)
 &#9;{
-&#9;&#9;zoom_velocity = next_zoom_velocity;
+&#9;zoom_velocity = next_zoom_velocity;
 &#9;}
 &#9;
 &#9;window.requestAnimationFrame(draw_julia_set);
@@ -298,14 +298,14 @@ function on_release_canvas(x, y, event)
 &#9;
 &#9;if (Math.abs(scroll_amount / 100) &lt; .3)
 &#9;{
-&#9;&#9;zoom_level += scroll_amount / 100;
-&#9;&#9;
-&#9;&#9;zoom_level = Math.min(zoom_level, 1);
+&#9;zoom_level += scroll_amount / 100;
+&#9;
+&#9;zoom_level = Math.min(zoom_level, 1);
 &#9;}
 &#9;
 &#9;else
 &#9;{
-&#9;&#9;zoom_velocity += Math.sign(scroll_amount) * .05;
+&#9;zoom_velocity += Math.sign(scroll_amount) * .05;
 &#9;}
 &#9;
 &#9;zoom_canvas(x, y);
@@ -317,16 +317,16 @@ function on_pinch_canvas(x, y, touch_distance_delta, event)
 {
 &#9;if (aspect_ratio >= 1)
 &#9;{
-&#9;&#9;zoom_level -= touch_distance_delta / wilson.world_width * 10;
-&#9;&#9;
-&#9;&#9;next_zoom_velocity = -touch_distance_delta / wilson.world_width * 10;
+&#9;zoom_level -= touch_distance_delta / wilson.world_width * 10;
+&#9;
+&#9;next_zoom_velocity = -touch_distance_delta / wilson.world_width * 10;
 &#9;}
 &#9;
 &#9;else
 &#9;{
-&#9;&#9;zoom_level -= touch_distance_delta / wilson.world_height * 10;
-&#9;&#9;
-&#9;&#9;next_zoom_velocity = -touch_distance_delta / wilson.world_height * 10;
+&#9;zoom_level -= touch_distance_delta / wilson.world_height * 10;
+&#9;
+&#9;next_zoom_velocity = -touch_distance_delta / wilson.world_height * 10;
 &#9;}
 &#9;
 &#9;zoom_level = Math.min(zoom_level, 1);
@@ -346,43 +346,43 @@ function on_pinch_canvas(x, y, touch_distance_delta, event)
 &#9;
 &#9;if (pan_velocity_x !== 0 || pan_velocity_y !== 0 || zoom_velocity !== 0)
 &#9;{
-&#9;&#9;wilson.world_center_x += pan_velocity_x;
-&#9;&#9;wilson.world_center_y += pan_velocity_y;
-&#9;&#9;
-&#9;&#9;wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
-&#9;&#9;wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
-&#9;&#9;
-&#9;&#9;
-&#9;&#9;
-&#9;&#9;pan_velocity_x *= pan_friction;
-&#9;&#9;pan_velocity_y *= pan_friction;
-&#9;&#9;
-&#9;&#9;if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) &lt; pan_velocity_stop_threshhold * Math.min(wilson.world_width, wilson.world_height))
-&#9;&#9;{
-&#9;&#9;&#9;pan_velocity_x = 0;
-&#9;&#9;&#9;pan_velocity_y = 0;
-&#9;&#9;}
-&#9;&#9;
-&#9;&#9;
-&#9;&#9;
-&#9;&#9;zoom_level += zoom_velocity;
-&#9;&#9;
-&#9;&#9;zoom_level = Math.min(zoom_level, 1);
-&#9;&#9;
-&#9;&#9;zoom_canvas(fixed_point_x, fixed_point_y);
-&#9;&#9;
-&#9;&#9;zoom_velocity *= zoom_friction;
-&#9;&#9;
-&#9;&#9;if (Math.abs(zoom_velocity) &lt; zoom_velocity_stop_threshhold)
-&#9;&#9;{
-&#9;&#9;&#9;zoom_velocity = 0;
-&#9;&#9;}
-&#9;&#9;
-&#9;&#9;
-&#9;&#9;
-&#9;&#9;window.requestAnimationFrame(draw_julia_set);
-&#9;&#9;
-&#9;&#9;wilson.draggables.recalculate_locations();
+&#9;wilson.world_center_x += pan_velocity_x;
+&#9;wilson.world_center_y += pan_velocity_y;
+&#9;
+&#9;wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
+&#9;wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
+&#9;
+&#9;
+&#9;
+&#9;pan_velocity_x *= pan_friction;
+&#9;pan_velocity_y *= pan_friction;
+&#9;
+&#9;if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) &lt; pan_velocity_stop_threshhold * Math.min(wilson.world_width, wilson.world_height))
+&#9;{
+&#9;&#9;pan_velocity_x = 0;
+&#9;&#9;pan_velocity_y = 0;
+&#9;}
+&#9;
+&#9;
+&#9;
+&#9;zoom_level += zoom_velocity;
+&#9;
+&#9;zoom_level = Math.min(zoom_level, 1);
+&#9;
+&#9;zoom_canvas(fixed_point_x, fixed_point_y);
+&#9;
+&#9;zoom_velocity *= zoom_friction;
+&#9;
+&#9;if (Math.abs(zoom_velocity) &lt; zoom_velocity_stop_threshhold)
+&#9;{
+&#9;&#9;zoom_velocity = 0;
+&#9;}
+&#9;
+&#9;
+&#9;
+&#9;window.requestAnimationFrame(draw_julia_set);
+&#9;
+&#9;wilson.draggables.recalculate_locations();
 &#9;}
 }
 </code></pre><div class="text-boxes"><div class="text-box-container"><input id="resolution-3-input" class="text-box" type="text" value="1000" tabindex="1"><p class="body-text text-box-subtext">Resolution</p></div></div><div class="center-content"><div id="canvas-landscape-middle"><canvas id="output-canvas-3" class="output-canvas"></canvas><canvas id="hidden-canvas-3" class="hidden-canvas"></canvas></div></div><div class="text-buttons"><div class="focus-on-child" tabindex="1"><button class="text-button" type="button" id="download-3-button" tabindex="-1">Download</button></div></div><div style="height: 32px"></div><p class="body-text">At last, we have a Julia set explorer with excellent performance, graphics, and controls. If it weren&#x2019;t for the url bar, this could be mistaken for a native application &mdash; but in my opinion, the massive feature set of modern JavaScript combined with the universal use of the web make applets like these better in almost every respect than their native equivalents. And that&#x2019;s the design philosophy of Wilson &mdash; to make that feature set simple to use, so you can create beautiful applets like this without getting stuck in boilerplate hell.</p><p class="body-text">You can view the code for this page <a href="/projects/wilson/guide/6-interactivity/scripts/index.js">here</a>.</p><div class="text-buttons nav-buttons"><div class="focus-on-child tabindex="1"><button class="text-button linked-text-button previous-nav-button" type="button" tabindex="-1">Previous</button></div><div class="focus-on-child" tabindex="1"><button class="text-button linked-text-button home-nav-button" type="button" tabindex="-1">Home</button></div><div class="focus-on-child" tabindex="1"><button class="text-button linked-text-button next-nav-button" type="button" tabindex="-1">Next</button></div></div></section></main><script src="/scripts/init.min.js"></script></body></html>

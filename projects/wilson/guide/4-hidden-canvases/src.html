@@ -11,7 +11,7 @@ This process is simple --- all we have to do is register a second canvas with Wi
 ```html
 	&lt;input id="resolution-input" type="text" value="1000"&gt;
 	&lt;label for="resolution-input"&gt;
-	&#9;&lt;p&gt;Resolution&lt;/p&gt;
+		&lt;p&gt;Resolution&lt;/p&gt;
 	&lt;/label&gt;
 
 	&lt;canvas id="hidden-canvas"&gt&lt;/canvas&gt;
@@ -22,22 +22,22 @@ This process is simple --- all we have to do is register a second canvas with Wi
 ```css
 	#hidden-canvas
 	{
-	&#9;position: fixed;
-	&#9;left: -100px;
-	&#9;width: 10px;
-	&#9;height: 10px;
+		position: fixed;
+		left: -100px;
+		width: 10px;
+		height: 10px;
 	}
 ```
 
 ```js
 	let options_hidden =
 	{
-	&#9;renderer: "gpu",
-	&#9;
-	&#9;shader: frag_shader_source,
-	&#9;
-	&#9;canvas_width: 100,
-	&#9;canvas_height: 100
+		renderer: "gpu",
+		
+		shader: frag_shader_source,
+		
+		canvas_width: 100,
+		canvas_height: 100
 	};
 
 
@@ -50,57 +50,57 @@ This process is simple --- all we have to do is register a second canvas with Wi
 ```js
 	function draw_julia_set(timestamp)
 	{
-	&#9;let time_elapsed = timestamp - last_timestamp;
-	&#9;
-	&#9;last_timestamp = timestamp;
-	&#9;
-	&#9;
-	&#9;
-	&#9;if (time_elapsed === 0)
-	&#9;{
-	&#9;&#9;	return;
-	&#9;}
-	&#9;
-	&#9;
-	&#9;
-	&#9;wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["a"], a);
-	&#9;wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["b"], b);
-	&#9;
-	&#9;/*
-	&#9;&#9;Like range in a photo, the brightness will get clipped if we let it go above 1.
-	&#9;&#9;Therefore, we divide by a large number to make sure that doesn't happen.
-	&#9;&#9;Too large and everything will get compressed into too few dark values instead,
-	&#9;&#9;so we need to pick a brightness scale in the middle.
-	&#9;*/
-	&#9;wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 20);
-	&#9;
-	&#9;wilson_hidden.render.draw_frame();
-	&#9;
-	&#9;
-	&#9;
-	&#9;let pixel_data = wilson_hidden.render.get_pixel_data();
-	&#9;
-	&#9;let brightnesses = new Array(resolution_hidden * resolution_hidden);
-	&#9;
-	&#9;for (let i = 0; i &lt; resolution_hidden * resolution_hidden; i++)
-	&#9;{
-	&#9;&#9;brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
-	&#9;}
-	&#9;
-	&#9;brightnesses.sort((a, b) => a - b);
-	&#9;
-	&#9;//Both the .98 and 18 here were found experimentally.
-	&#9;let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)] / 255 * 18;
-	&#9;
+		let time_elapsed = timestamp - last_timestamp;
+		
+		last_timestamp = timestamp;
+		
+		
+		
+		if (time_elapsed === 0)
+		{
+				return;
+		}
+		
+		
+		
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["a"], a);
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["b"], b);
+		
+		/*
+			Like range in a photo, the brightness will get clipped if we let it go above 1.
+			Therefore, we divide by a large number to make sure that doesn't happen.
+			Too large and everything will get compressed into too few dark values instead,
+			so we need to pick a brightness scale in the middle.
+		*/
+		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 20);
+		
+		wilson_hidden.render.draw_frame();
+		
+		
+		
+		let pixel_data = wilson_hidden.render.get_pixel_data();
+		
+		let brightnesses = new Array(resolution_hidden * resolution_hidden);
+		
+		for (let i = 0; i &lt; resolution_hidden * resolution_hidden; i++)
+		{
+			brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
+		}
+		
+		brightnesses.sort((a, b) => a - b);
+		
+		//Both the .98 and 18 here were found experimentally.
+		let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)] / 255 * 18;
+		
 	brightness_scale = Math.max(brightness_scale, .1);
-	&#9;
-	&#9;
-	&#9;
-	&#9;wilson.gl.uniform1f(wilson.uniforms["a"], a);
-	&#9;wilson.gl.uniform1f(wilson.uniforms["b"], b);
-	&#9;wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
-	&#9;
-	&#9;wilson.render.draw_frame();
+		
+		
+		
+		wilson.gl.uniform1f(wilson.uniforms["a"], a);
+		wilson.gl.uniform1f(wilson.uniforms["b"], b);
+		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
+		
+		wilson.render.draw_frame();
 	}
 ```
 

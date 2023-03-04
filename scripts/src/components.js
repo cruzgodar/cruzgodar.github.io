@@ -482,7 +482,17 @@ Page.Components =
 	{
 		const banner = html.indexOf("### banner") !== -1;
 		
-		html = html.replaceAll(/[\t\r]/g, "").replaceAll(/    /g, "");
+		html = html.replaceAll(/\r/g, "").replaceAll(/    /g, "\t");
+		
+		//Tabs in code blocks stay, but the rest can go. We match two tabs here so that we can still indent the whole block by one.
+		while (html.match(/(```.+\n[\s\S]*?)\t\t([\s\S]*?```\n)/))
+		{
+			html = html.replaceAll(/(```.+\n[\s\S]*?)\t\t([\s\S]*?```\n)/g, (match, $1, $2) => `${$1}&#9;${$2}`);
+		}
+		
+		html = html.replaceAll(/\t/g, "");
+		
+		
 		
 		//We need to ignore the scripts at the bottom.
 		const index = html.indexOf("<script");

@@ -11,34 +11,34 @@
 &#9;
 &#9;void main(void)
 &#9;{
-&#9;&#9;vec2 z = vec2(uv.x * 2.0, uv.y * 2.0);
-&#9;&#9;vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-&#9;&#9;float brightness = exp(-length(z));
-&#9;&#9;
-&#9;&#9;
-&#9;&#9;
-&#9;&#9;vec2 c = vec2(a, b);
-&#9;&#9;
-&#9;&#9;for (int iteration = 0; iteration &lt; 100; iteration++)
+&#9;vec2 z = vec2(uv.x * 2.0, uv.y * 2.0);
+&#9;vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+&#9;float brightness = exp(-length(z));
+&#9;
+&#9;
+&#9;
+&#9;vec2 c = vec2(a, b);
+&#9;
+&#9;for (int iteration = 0; iteration &lt; 100; iteration++)
+&#9;{
+&#9;&#9;if (iteration == 99)
 &#9;&#9;{
-&#9;&#9;&#9;if (iteration == 99)
-&#9;&#9;&#9;{
-&#9;&#9;&#9;&#9;gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-&#9;&#9;&#9;&#9;return;
-&#9;&#9;&#9;}
-&#9;&#9;&#9;
-&#9;&#9;&#9;if (length(z) >= 2.0)
-&#9;&#9;&#9;{
-&#9;&#9;&#9;&#9;break;
-&#9;&#9;&#9;}
-&#9;&#9;&#9;
-&#9;&#9;&#9;z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-&#9;&#9;&#9;
-&#9;&#9;&#9;brightness += exp(-length(z));
+&#9;&#9;gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+&#9;&#9;return;
 &#9;&#9;}
 &#9;&#9;
+&#9;&#9;if (length(z) >= 2.0)
+&#9;&#9;{
+&#9;&#9;break;
+&#9;&#9;}
 &#9;&#9;
-&#9;&#9;gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+&#9;&#9;z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+&#9;&#9;
+&#9;&#9;brightness += exp(-length(z));
+&#9;}
+&#9;
+&#9;
+&#9;gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
 &#9;}
 `;
 </code></pre><p class="body-text">While a proper introduction to GLSL is well outside the scope of this guide, let&#x2019;s touch on some of the important points from this shader in particular.</p><p class="body-text"><code>precision highp float</code>: this should go at the start of every shader since it maximizes precision. <code>mediump</code> can also be used, but for a math applet, that tends to be a bad idea &mdash; WebGL doesn&#x2019;t even support doubles, so we need all the precision we can get.</p><p class="body-text"><code>varying vec2 uv</code>: here, <code>varying</code> means varying from pixel to pixel. This is the variable that gives the position of the current pixel, on a scale from -1 to 1 in both the x and y directions, and when using Wilson, the variable name <code>uv</code> must be used. Looking through the rest of the shader, we can see <code>int</code>, <code>float</code>, and other C-like variable declarations, along with <code>vec2</code> and <code>vec3</code>. These last two are effectively float arrays with multiplication and addition implemented componentwise. The maximum size is a <code>vec4</code>, and there are 2&ndash;4 dimensional matrices available, too. In general, math should be done with vectors whenever possible, though optimizing for the GPU is its own topic.</p><p class="body-text"><code>uniform float a</code>: as opposed to <code>varying</code>, <code>uniform</code> means a value that is the same across all the pixels, but can be changed frame-to-frame without reloading the entire shader. Once we&#x2019;ve given Wilson our shader, we&#x2019;ll have to tell it where the uniforms are in order to actually do that.</p><p class="body-text"><code>vec2 z = vec2(uv.x * 2.0, uv.y * 2.0)</code>: this scales <code>uv</code> to world coordinates. Note that <code>vec2</code> is a constructor as well as a type, and that we can access the first component of <code>uv</code> with <code>uv.x</code>. More complicated syntax is possible, called <em>swizzling</em>: <code>uv.xyyx</code> gets a <code>vec4</code> whose first and last elements are <code>uv.x</code> and whose middle two are <code>uv.y</code>.</p><p class="body-text"><code>length</code>, <code>normalize</code>, <code>abs</code>, etc.: GLSL has a large number of built-in functions for performing operations on vectors. Before writing some potentially inefficient code to handle a common operation, it&#x2019;s worth checking if it&#2019;s natively implemented first.</p><p class="body-text"><code>gl_FragColor</code>: this is how we actually set the pixel color &mdash; the data is given as a <code>vec4</code> corresponding to the RGBA values on a scale of 0&ndash;1.</p><p class="body-text">The color choice at the start is just something I came up with through trial and error, and creates a palette I think looks nice &mdash; definitely better than the uniform cyan we had before.</p><p class="body-text">This should be enough to get started writing your own shaders. Remember &mdash; test your code every handful of lines, or you&#x2019;ll have a painful debugging process ahead of you!</p><p class="body-text">Now we need to add the shader in the options, and we also have to tell Wilson where the uniforms are so we can change them. This is done with a single function call.</p><pre><code class="language-js">let options =

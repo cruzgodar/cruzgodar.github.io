@@ -15,17 +15,17 @@ Once we've included `wilson.js`, we need to make a canvas and some input fields 
 ```html
 	&lt;input id="a-input" type="text" value="0"&gt;
 	&lt;label for="a-input"&gt;
-	&#9;&lt;p&gt;a&lt;/p&gt;
+		&lt;p&gt;a&lt;/p&gt;
 	&lt;/label&gt;
 
 	&lt;input id="b-input" type="text" value="1"&gt;
 	&lt;label for="b-input"&gt;
-	&#9;&lt;p&gt;b&lt;/p&gt;
+		&lt;p&gt;b&lt;/p&gt;
 	&lt;/label&gt;
 
 	&lt;input id="resolution-input" type="text" value="500"&gt;
 	&lt;label for="resolution-input"&gt;
-	&#9;&lt;p&gt;Resolution&lt;/p&gt;
+		&lt;p&gt;Resolution&lt;/p&gt;
 	&lt;/label&gt;
 
 	&lt;button id="generate-button" type="button"&gt;Generate&lt;/button&gt;
@@ -44,10 +44,10 @@ On the JS side, we need to tell Wilson we want it to work with this canvas.
 ```js
 	let options =
 	{
-	&#9;renderer: "cpu",
-	&#9;
-	&#9;canvas_width: 500,
-	&#9;canvas_height: 500
+		renderer: "cpu",
+		
+		canvas_width: 500,
+		canvas_height: 500
 	};
 
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
@@ -62,13 +62,13 @@ On the JS side, we need to tell Wilson we want it to work with this canvas.
 
 	generate_button_element.addEventListener("click", () =>
 	{
-	&#9;let a = parseFloat(a_input_element.value || 0);
-	&#9;let b = parseFloat(b_input_element.value || 1);
-	&#9;let resolution = parseInt(resolution_input_element.value || 500);
-	&#9;
-	&#9;wilson.change_canvas_size(resolution, resolution);
-	&#9;
-	&#9;//Do something with a and b.
+		let a = parseFloat(a_input_element.value || 0);
+		let b = parseFloat(b_input_element.value || 1);
+		let resolution = parseInt(resolution_input_element.value || 500);
+		
+		wilson.change_canvas_size(resolution, resolution);
+		
+		//Do something with a and b.
 	});
 ```
 
@@ -83,84 +83,84 @@ The algorithm to color a single point $z_0$ of the Julia set corresponding to $c
 ```js
 	let options =
 	{
-	&#9;renderer: "cpu",
-	&#9;
-	&#9;canvas_width: 500,
-	&#9;canvas_height: 500,
-	&#9;
-	&#9;world_width: 4,
-	&#9;world_height: 4,
-	&#9;world_center_x: 0,
-	&#9;world_center_y: 0
+		renderer: "cpu",
+		
+		canvas_width: 500,
+		canvas_height: 500,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0
 	};
 ```
 
 ```js
 	function generate_julia_set(a, b, resolution)
 	{
-	&#9;let brightnesses = new Array(resolution * resolution);
-	&#9;let max_brightness = 0;
-	&#9;let brightness_scale = 1.5;
-	&#9;const num_iterations = 100;
-	&#9;
-	&#9;for (let i = 0; i &lt; resolution; i++)
-	&#9;{
-	&#9;&#9;for (let j = 0; j &lt; resolution; j++)
-	&#9;&#9;{
-	&#9;&#9;&#9;let world_coordinates = wilson.utils.interpolate.canvas_to_world(i, j);
-	&#9;&#9;&#9;let x = world_coordinates[0];
-	&#9;&#9;&#9;let y = world_coordinates[1];
-	&#9;&#9;&#9;
-	&#9;&#9;&#9;//This helps remove color banding.
-	&#9;&#9;&#9;let brightness = Math.exp(-Math.sqrt(x*x + y*y));
-	&#9;&#9;&#9;
-	&#9;&#9;&#9;let k = 0;
-	&#9;&#9;&#9;
-	&#9;&#9;&#9;for (k = 0; k &lt; num_iterations; k++)
-	&#9;&#9;&#9;{
-	&#9;&#9;&#9;&#9;//z = z^2 + c = (x^2 - y^2 + a) + (2xy + b)i
-	&#9;&#9;&#9;&#9;let temp = x*x - y*y + a;
-	&#9;&#9;&#9;&#9;y = 2*x*y + b;
-	&#9;&#9;&#9;&#9;x = temp;
-	&#9;&#9;&#9;&#9;
-	&#9;&#9;&#9;&#9;brightness += Math.exp(-Math.sqrt(x*x + y*y));
-	&#9;&#9;&#9;&#9;
-	&#9;&#9;&#9;&#9;if (x*x + y*y > 4)
-	&#9;&#9;&#9;&#9;{
-	&#9;&#9;&#9;&#9;&#9;break;
-	&#9;&#9;&#9;&#9;}
-	&#9;&#9;&#9;}
-	&#9;&#9;&#9;
-	&#9;&#9;&#9;if (k === num_iterations)
-	&#9;&#9;&#9;{
-	&#9;&#9;&#9;&#9;//Color this pixel black.
-	&#9;&#9;&#9;&#9;brightnesses[resolution * i + j] = 0;
-	&#9;&#9;&#9;}
-	&#9;&#9;&#9;
-	&#9;&#9;&#9;else
-	&#9;&#9;&#9;{
-	&#9;&#9;&#9;&#9;brightnesses[resolution * i + j] = brightness;
-	&#9;&#9;&#9;&#9;
-	&#9;&#9;&#9;&#9;if (brightness > max_brightness)
-	&#9;&#9;&#9;&#9;{
-	&#9;&#9;&#9;&#9;&#9;max_brightness = brightness;
-	&#9;&#9;&#9;&#9;}
-	&#9;&#9;&#9;}
-	&#9;&#9;}
-	&#9;}
-	&#9;
-	&#9;//Now we need to create the actual pixel data in a Uint8ClampedArray to pass to Wilson.
-	&#9;let image_data = new Uint8ClampedArray(resolution * resolution * 4);
-	&#9;
-	&#9;for (let i = 0; i &lt; resolution * resolution; i++)
-	&#9;{
-	&#9;&#9;image_data[4 * i] = 0; //Red
-	&#9;&#9;image_data[4 * i + 1] = brightness_scale * brightnesses[i] / max_brightness * 255; //Green
-	&#9;&#9;image_data[4 * i + 2] = brightness_scale * brightnesses[i] / max_brightness * 255; //Blue
-	&#9;&#9;image_data[4 * i + 3] = 255; //Alpha
-	&#9;}
-	&#9;
-	&#9;return image_data;
+		let brightnesses = new Array(resolution * resolution);
+		let max_brightness = 0;
+		let brightness_scale = 1.5;
+		const num_iterations = 100;
+		
+		for (let i = 0; i &lt; resolution; i++)
+		{
+			for (let j = 0; j &lt; resolution; j++)
+			{
+				let world_coordinates = wilson.utils.interpolate.canvas_to_world(i, j);
+				let x = world_coordinates[0];
+				let y = world_coordinates[1];
+				
+				//This helps remove color banding.
+				let brightness = Math.exp(-Math.sqrt(x*x + y*y));
+				
+				let k = 0;
+				
+				for (k = 0; k &lt; num_iterations; k++)
+				{
+					//z = z^2 + c = (x^2 - y^2 + a) + (2xy + b)i
+					let temp = x*x - y*y + a;
+					y = 2*x*y + b;
+					x = temp;
+					
+					brightness += Math.exp(-Math.sqrt(x*x + y*y));
+					
+					if (x*x + y*y > 4)
+					{
+						break;
+					}
+				}
+				
+				if (k === num_iterations)
+				{
+					//Color this pixel black.
+					brightnesses[resolution * i + j] = 0;
+				}
+				
+				else
+				{
+					brightnesses[resolution * i + j] = brightness;
+					
+					if (brightness > max_brightness)
+					{
+						max_brightness = brightness;
+					}
+				}
+			}
+		}
+		
+		//Now we need to create the actual pixel data in a Uint8ClampedArray to pass to Wilson.
+		let image_data = new Uint8ClampedArray(resolution * resolution * 4);
+		
+		for (let i = 0; i &lt; resolution * resolution; i++)
+		{
+			image_data[4 * i] = 0; //Red
+			image_data[4 * i + 1] = brightness_scale * brightnesses[i] / max_brightness * 255; //Green
+			image_data[4 * i + 2] = brightness_scale * brightnesses[i] / max_brightness * 255; //Blue
+			image_data[4 * i + 3] = 255; //Alpha
+		}
+		
+		return image_data;
 	}
 ```
 
@@ -173,13 +173,13 @@ The algorithm to color a single point $z_0$ of the Julia set corresponding to $c
 
 	generate_button_element.addEventListener("click", () =>
 	{
-	&#9;let a = parseFloat(a_input_element.value || 0);
-	&#9;let b = parseFloat(b_input_element.value || 1);
-	&#9;let resolution = parseInt(resolution_input_element.value || 500);
-	&#9;
-	&#9;wilson.change_canvas_size(resolution, resolution);
-	&#9;
-	&#9;window.requestAnimationFrame(() => wilson.render.draw_frame(generate_julia_set(a, b, resolution)));
+		let a = parseFloat(a_input_element.value || 0);
+		let b = parseFloat(b_input_element.value || 1);
+		let resolution = parseInt(resolution_input_element.value || 500);
+		
+		wilson.change_canvas_size(resolution, resolution);
+		
+		window.requestAnimationFrame(() => wilson.render.draw_frame(generate_julia_set(a, b, resolution)));
 	});
 ```
 
@@ -228,15 +228,15 @@ As another improvement, let's add a button to download the current state of the 
 ```js
 	let options =
 	{
-	&#9;renderer: "hybrid",
-	&#9;
-	&#9;canvas_width: 500,
-	&#9;canvas_height: 500,
-	&#9;
-	&#9;world_width: 4,
-	&#9;world_height: 4,
-	&#9;world_center_x: 0,
-	&#9;world_center_y: 0
+		renderer: "hybrid",
+		
+		canvas_width: 500,
+		canvas_height: 500,
+		
+		world_width: 4,
+		world_height: 4,
+		world_center_x: 0,
+		world_center_y: 0
 	};
 ```
 
@@ -245,7 +245,7 @@ As another improvement, let's add a button to download the current state of the 
 
 	download_button_element.addEventListener("click", () =>
 	{
-	&#9;wilson.download_frame("a-julia-set.png");
+		wilson.download_frame("a-julia-set.png");
 	});
 ```
 
