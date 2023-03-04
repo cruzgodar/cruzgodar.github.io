@@ -14,11 +14,12 @@
 	<string>^#+\s+</string>
 	<key>patterns</key>
 	<array>
+		<!-- Multi-line page elements -->
 		<dict>
 			<key>begin</key>
-			<string>(###) (image\-links|buttons|text\-boxes|sliders|dropdown|gallery\-block)(.*$)</string>
+			<string>^\t*?(###) (image\-links|buttons|text\-boxes|sliders|dropdown|gallery\-block)(.*$)</string>
 			<key>end</key>
-			<string>(###\s*$)</string>
+			<string>^\t*?(###)\s*$</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -54,11 +55,14 @@
 			</array>
 		</dict>
 		
+		
+		
+		<!-- Multi-line notes blocks -->
 		<dict>
 			<key>begin</key>
-			<string>(###) (ex|exc|def|prop|thm|lem|cor|pf|ax|as)(.*$)</string>
+			<string>^\t*?(###) (ex|exc|def|prop|thm|lem|cor|pf|ax|as)(.*$)</string>
 			<key>end</key>
-			<string>(###\s*$)</string>
+			<string>^\t*?(###)\s*$</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -94,9 +98,12 @@
 			</array>
 		</dict>
 		
+		
+		
+		<!-- Single-line page elements -->
 		<dict>
 			<key>match</key>
-			<string>(###) (banner|canvas|checkbox|desmos|nav\-buttons|wilson)(.*?)$</string>
+			<string>^\t*?(###) (banner|canvas|checkbox|desmos|nav\-buttons|wilson)(.*?)$</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -117,9 +124,12 @@
 			</dict>
 		</dict>
 		
+		
+		
+		<!-- Sections -->
 		<dict>
 			<key>match</key>
-			<string>^(##) (.*$)</string>
+			<string>^\t*?(##) (.*$)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -135,9 +145,12 @@
 			</dict>
 		</dict>
 		
+		
+		
+		<!-- Headings -->
 		<dict>
 			<key>match</key>
-			<string>^(#) (.*$)</string>
+			<string>^\t*?(#) (.*$)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -153,11 +166,14 @@
 			</dict>
 		</dict>
 		
+		
+		
+		<!-- Multi-line math -->
 		<dict>
 			<key>begin</key>
-			<string>(\$\$\s*$)</string>
+			<string>^\t*?(\$\$)\s*$</string>
 			<key>end</key>
-			<string>(\$\$\s*$)</string>
+			<string>^\t*?(\$\$)\s*$</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -178,11 +194,14 @@
 			<string>markup.raw</string>
 		</dict>
 		
+		
+		
+		<!-- Multi-line code blocks -->
 		<dict>
 			<key>begin</key>
-			<string>(```)(.*$)</string>
+			<string>^\t*?(```)(.*$)</string>
 			<key>end</key>
-			<string>(```\s*$)</string>
+			<string>^\t*?(```)\s*$</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -208,9 +227,12 @@
 			<string>markup.raw</string>
 		</dict>
 		
+		
+		
+		<!-- Bold text -->
 		<dict>
 			<key>match</key>
-			<string>(\*\*)(.+?)(\*\*)</string>
+			<string>[^\\](\*\*)(.*?[^\\])(\*\*)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -233,7 +255,33 @@
 		
 		<dict>
 			<key>match</key>
-			<string>(\*)(.+?)(\*)</string>
+			<string>^(\*\*)(.*?[^\\])(\*\*)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>markup.bold</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		
+		
+		<!-- Italic text -->
+		<dict>
+			<key>match</key>
+			<string>[^\\](\*)(.*?[^\\])(\*)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -256,7 +304,33 @@
 		
 		<dict>
 			<key>match</key>
-			<string>(`)(.+?)(`)</string>
+			<string>^(\*)(.*?[^\\])(\*)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>markup.italic</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		
+		
+		<!-- Inline code -->
+		<dict>
+			<key>match</key>
+			<string>[^\\](`)(.*?[^\\])(`)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -277,6 +351,32 @@
 			</dict>
 		</dict>
 		
+		<dict>
+			<key>match</key>
+			<string>^(`)(.*?[^\\])(`)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>markup.raw</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		
+		
+		<!-- Links -->
 		<dict>
 			<key>match</key>
 			<string>(&lt;a href=\")(.*?)(\".*?&gt;)(.*?)(&lt;/a&gt;)</string>
@@ -310,9 +410,12 @@
 			</dict>
 		</dict>
 		
+		
+		
+		<!-- Inline math -->
 		<dict>
 			<key>match</key>
-			<string>(\$)(.+?)(\$)</string>
+			<string>[^\\](\$)(.*?[^\\])(\$)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -335,13 +438,247 @@
 		
 		<dict>
 			<key>match</key>
-			<string>(&lt;script.*?&lt;/script&gt;)</string>
+			<string>^(\$)(.*?[^\\])(\$)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
 				<dict>
 					<key>name</key>
 					<string>comment</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>markup.raw</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		
+		
+		<!-- Ending script tags -->
+		<dict>
+			<key>match</key>
+			<string>^\t*?(&lt;script.*?&lt;/script&gt;)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		
+		
+		<!-- Invalid blocks -->
+		<dict>
+			<key>match</key>
+			<string>(###).*?$</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<!-- Invalid sections -->
+		<dict>
+			<key>match</key>
+			<string>(##).*?$</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<!-- Invalid headings -->
+		<dict>
+			<key>match</key>
+			<string>(#).*?$</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<!-- Invalid multi-line math -->
+		<dict>
+			<key>match</key>
+			<string>(\$\$).*?$</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<!-- Invalid multi-line code blocks -->
+		<dict>
+			<key>match</key>
+			<string>(```).*?$</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<!-- Invalid bold text -->
+		<dict>
+			<key>match</key>
+			<string>[^\\](\*\*)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<dict>
+			<key>match</key>
+			<string>^(\*\*)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<!-- Invalid italic text -->
+		<dict>
+			<key>match</key>
+			<string>[^\\](\*)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<dict>
+			<key>match</key>
+			<string>^(\*)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<!-- Invalid inline code -->
+		<dict>
+			<key>match</key>
+			<string>[^\\](`)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<dict>
+			<key>match</key>
+			<string>^(`)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<!-- Invalid links -->
+		<dict>
+			<key>match</key>
+			<string>(&lt;a)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<!-- Invalid inline math -->
+		<dict>
+			<key>match</key>
+			<string>[^\\](\$)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<dict>
+			<key>match</key>
+			<string>^(\$)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<!-- Invalid ending script tags -->
+		<dict>
+			<key>match</key>
+			<string>(&lt;script.*?$)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal</string>
 				</dict>
 			</dict>
 		</dict>
