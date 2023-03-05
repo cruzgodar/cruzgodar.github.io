@@ -85,18 +85,6 @@ Page.Layout =
 		
 		
 		
-		if (this.aspect_ratio < 1)
-		{
-			Page.Banner.file_name = "portrait." + Page.Images.file_extension;
-		}
-		
-		else
-		{
-			Page.Banner.file_name = "landscape." + Page.Images.file_extension;
-		}
-		
-		
-		
 		Page.Banner.on_scroll(0);
 	},
 

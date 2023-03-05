@@ -33,8 +33,8 @@ Page.Banner =
 	{
 		"/home/":
 		{
-			"current_banner": Math.floor(Math.random() * 16) + 1,
-			"num_banners": 16
+			"current_banner": Math.floor(Math.random() * 11) + 1,
+			"num_banners": 11
 		}
 	},
 
@@ -45,7 +45,7 @@ Page.Banner =
 
 
 
-	load: function()
+	load: function(large = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -59,15 +59,7 @@ Page.Banner =
 			
 			else
 			{
-				if (Page.Layout.aspect_ratio < 1)
-				{
-					this.file_name = "portrait." + Page.Images.file_extension;
-				}
-				
-				else
-				{
-					this.file_name = "landscape." + Page.Images.file_extension;
-				}
+				this.file_name = `${large ? "large." : "small."}${Page.Images.file_extension}`;
 				
 					
 				
@@ -91,10 +83,13 @@ Page.Banner =
 					{
 						img.remove();
 						
-						this.ScrollButton.timeout_id = setTimeout(() =>
+						if (!large)
 						{
-							this.ScrollButton.insert();
-						}, 2000);
+							this.ScrollButton.timeout_id = setTimeout(() =>
+							{
+								this.ScrollButton.insert();
+							}, 2000);
+						}
 						
 						resolve();
 					};
@@ -258,31 +253,6 @@ Page.Banner =
 			catch(ex) {}
 		}
 	},
-	
-	
-	
-	//Fetches the other size of banner needed for the page, so that if the page is resized, there's no lag time.
-	fetch_other_size_in_background: function()
-	{
-		if (this.banner_pages.includes(Page.url) && !(this.other_size_pages_already_fetched.includes(Page.url)))
-		{
-			if (this.file_name === "landscape.webp" || this.file_name === "landscape.jpg")
-			{
-				Site.Fetch.queue.push(this.file_path + "portrait." + Page.Images.file_extension);
-				
-				Site.Fetch.get_next_item_from_queue();
-			}
-			
-			else
-			{
-				Site.Fetch.queue.push(this.file_path + "landscape." + Page.Images.file_extension);
-				
-				Site.Fetch.get_next_item_from_queue();
-			}
-			
-			this.other_size_pages_already_fetched.push(Page.url);
-		}	
-	},
 
 
 
@@ -304,7 +274,7 @@ Page.Banner =
 					file_path += (this.multibanner_pages[href]["current_banner"] + 1) + "/";
 				}
 				
-				file_path += this.file_name;
+				file_path += `small.${Page.Images.file_extension}`;
 				
 				Site.Fetch.get_next_item_from_queue();
 			}

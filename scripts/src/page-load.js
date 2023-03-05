@@ -12,22 +12,36 @@ Page.load = async function()
 		Page.banner_element = Page.element.querySelector("#banner");
 		Page.content_element = Page.element.querySelector("#content");
 		
+		if (DEBUG)
+		{
+			console.log("Adding small banner style");
+		}
+		
 		Site.add_style(`
 			#banner
 			{
-				background: url(${Page.Banner.file_path}landscape.${Page.Images.file_extension}) no-repeat center center;
+				background: url(${Page.Banner.file_path}small.${Page.Images.file_extension}) no-repeat center center;
 				background-size: cover;
 			}
-			
-			@media (max-aspect-ratio: 1/1)
+		`);
+		
+		Page.Banner.load(true)
+		
+		.then(() =>
+		{
+			if (DEBUG)
 			{
+				console.log("Adding large banner style");
+			}
+			
+			Site.add_style(`
 				#banner
 				{
-					background: url(${Page.Banner.file_path}portrait.${Page.Images.file_extension}) no-repeat center center;
+					background: url(${Page.Banner.file_path}large.${Page.Images.file_extension}) no-repeat center center;
 					background-size: cover;
 				}
-			}
-		`);
+			`);
+		});
 	}
 	
 	else
@@ -133,11 +147,6 @@ Page.load = async function()
 	Site.Settings.handle_theme_revert();
 	
 	
-	
-	if (Page.Banner.banner_pages.includes(Page.url))
-	{
-		this.Banner.fetch_other_size_in_background();
-	}
 	
 	if (this.Layout.layout_string === "ultrawide")
 	{
