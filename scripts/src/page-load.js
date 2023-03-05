@@ -30,7 +30,7 @@ Page.load = async function()
 		
 		.then(() =>
 		{
-			Page.Animate.change_opacity(Page.element.querySelector("#banner-small"), 0, 500);
+			Page.Animate.change_opacity(Page.element.querySelector("#banner-small"), 0, 1000);
 		});
 	}
 	
