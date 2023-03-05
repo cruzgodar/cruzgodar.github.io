@@ -1,6 +1,6 @@
 /* Provides suppport for full-page, parallax banners at the top of the page, complete with scroll buttons. */
 
-#banner
+#banner, #banner-small, #banner-large
 {
 	position: fixed;
 	width: calc(100vw + 10vmin);
@@ -14,6 +14,16 @@
 	
 	/* Some magic that prevents the banner from abruptly resizing on mobile devices on which the size of the url bar changes on scroll. */
 	transform: translate3d(0, 0, 0);
+}
+
+#banner-small
+{
+	z-index: 10;
+}
+
+#banner-large
+{
+	z-index: 5;
 }
 
 

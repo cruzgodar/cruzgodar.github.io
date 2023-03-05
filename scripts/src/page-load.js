@@ -12,15 +12,16 @@ Page.load = async function()
 		Page.banner_element = Page.element.querySelector("#banner");
 		Page.content_element = Page.element.querySelector("#content");
 		
-		if (DEBUG)
-		{
-			console.log("Adding small banner style");
-		}
-		
 		Site.add_style(`
-			#banner
+			#banner-small
 			{
 				background: url(${Page.Banner.file_path}small.${Page.Images.file_extension}) no-repeat center center;
+				background-size: cover;
+			}
+			
+			#banner-large
+			{
+				background: url(${Page.Banner.file_path}large.${Page.Images.file_extension}) no-repeat center center;
 				background-size: cover;
 			}
 		`);
@@ -29,18 +30,7 @@ Page.load = async function()
 		
 		.then(() =>
 		{
-			if (DEBUG)
-			{
-				console.log("Adding large banner style");
-			}
-			
-			Site.add_style(`
-				#banner
-				{
-					background: url(${Page.Banner.file_path}large.${Page.Images.file_extension}) no-repeat center center;
-					background-size: cover;
-				}
-			`);
+			Page.Animate.change_opacity(Page.element.querySelector("#banner-small"), 0, 500);
 		});
 	}
 	
