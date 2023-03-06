@@ -26,12 +26,11 @@ Page.load = async function()
 			}
 		`);
 		
-		Page.Banner.load(true)
+		await Page.Banner.load(true);
 		
-		.then(() =>
-		{
-			Page.Animate.change_opacity(Page.element.querySelector("#banner-small"), 0, 700);
-		});
+		await Page.Animate.change_opacity(Page.element.querySelector("#banner-small"), 0, 700);
+		
+		Page.element.querySelector("#banner-small").remove();
 	}
 	
 	else
