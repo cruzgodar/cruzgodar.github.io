@@ -30,7 +30,7 @@ Page.load = async function()
 		
 		.then(() =>
 		{
-			Page.Animate.change_opacity(Page.element.querySelector("#banner-small"), 0, 1000);
+			Page.Animate.change_opacity(Page.element.querySelector("#banner-small"), 0, 700);
 		});
 	}
 	
@@ -108,8 +108,6 @@ Page.load = async function()
 	
 	
 	this.Images.add_extensions();
-	
-	Page.Banner.fetch_other_page_banners_in_background();
 	
 	this.Load.Links.set();
 	

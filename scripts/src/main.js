@@ -362,49 +362,6 @@ Site.add_style = function(content, temporary = true, at_beginning_of_head = fals
 
 
 
-Site.Fetch =
-{
-	//A list of things that need to be fetched (for example, banners that need to be preloaded). The items at the start of the list get fetched first.
-	queue: [],
-
-	busy: false,
-	
-	
-	
-	//Gets the next item from the fetch queue.
-	get_next_item_from_queue: function()
-	{
-		if (this.queue.length === 0 || this.busy)
-		{
-			return;
-		}
-		
-		
-		
-		this.busy = true;
-		
-		if (DEBUG)
-		{
-			console.log("Now fetching " + this.queue[0]);
-		}
-		
-		
-		
-		fetch(this.queue[0])
-		
-		.then(() =>
-		{
-			this.busy = false;
-			
-			this.queue.shift();
-			
-			this.get_next_item_from_queue();
-		});
-	}
-};
-
-
-
 Site.Interaction =
 {
 	//Whether this is a touchscreen device on the current page. It's assumed to be false on every page until a touchstart or touchmove event is detected, at which point it's set to true.

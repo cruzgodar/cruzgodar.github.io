@@ -275,8 +275,6 @@ Page.Banner =
 				}
 				
 				file_path += `small.${Page.Images.file_extension}`;
-				
-				Site.Fetch.get_next_item_from_queue();
 			}
 		});
 	},
