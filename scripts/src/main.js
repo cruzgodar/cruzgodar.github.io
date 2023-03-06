@@ -280,15 +280,7 @@ Site.load = async function(url)
 	
 	Page.Banner.ScrollButton.exists = false;
 	
-	
-	
 	Site.Settings.set_up();
-	
-	
-	
-	await Page.Images.check_webp_support();
-	
-	
 	
 	Page.Load.add_header();
 	

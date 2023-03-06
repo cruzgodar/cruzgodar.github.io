@@ -143,8 +143,6 @@ Site.Settings =
 	//Changes a setting.
 	toggle_theme: function(no_animation = false)
 	{
-		console.log("changing theme!");
-		
 		if (this.url_vars["theme"] === 1 && Site.force_dark_theme_pages.includes(Page.url))
 		{
 			return;

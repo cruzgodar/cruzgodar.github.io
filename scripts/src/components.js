@@ -560,8 +560,6 @@ Page.Components =
 				lines[i - 1] = lines[i - 1].replace(/\\\\\[4px\]$/, "");
 				
 				lines[i] = `\\end{align*}$$</p>`;
-				
-				i++;
 			}
 			
 			
@@ -594,6 +592,8 @@ Page.Components =
 				lines[i - 1] = `${lines[i - 1]}</code></pre>`;
 				
 				lines.splice(i, 1);
+				
+				i--;
 			}
 			
 			
