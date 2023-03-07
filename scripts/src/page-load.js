@@ -118,7 +118,8 @@ Page.load = async function()
 	
 	this.Load.show_images();
 	
-	this.Load.TextButtons.set_up_nav_buttons();
+	try {this.Load.TextButtons.set_up_nav_buttons();}
+	catch(ex) {}
 	
 	
 	

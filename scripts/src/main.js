@@ -323,6 +323,23 @@ Site.load_script = function(src, is_module = false)
 
 
 
+//Loads a style with the given href.
+Site.load_style = function(href)
+{
+	const style = document.createElement("link");
+	
+	style.setAttribute("rel", "stylesheet");
+	style.setAttribute("type", "text/css");
+	
+	document.head.appendChild(style);
+	
+	style.setAttribute("href", href);
+	
+	return style;
+};
+
+
+
 //Adds a style tag to <head> with the given content. If temporary is true, it will be removed at the next page load. Returns the style element added.
 Site.add_style = function(content, temporary = true, at_beginning_of_head = false)
 {

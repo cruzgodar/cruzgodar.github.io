@@ -113,11 +113,11 @@ let options_numbers =
 	touchend_callback: on_release_canvas
 };
 
-let wilson_numbers = new Wilson(Page.element.querySelector("#numbers-canvas"), options_numbers);
+let wilson_numbers = new Wilson(document.body.querySelector("#numbers-canvas"), options_numbers);
 
 wilson_numbers.ctx.fillStyle = "rgb(255, 255, 255)";
 
-Page.element.querySelector(".wilson-fullscreen-components-container").style.setProperty("z-index", 200, "important");
+document.body.querySelector(".wilson-fullscreen-components-container").style.setProperty("z-index", 200, "important");
 
 Page.set_element_styles(".wilson-applet-canvas-container", "background-color", "rgba(0, 0, 0, 0)", true);
 
@@ -138,11 +138,11 @@ let options =
 	switch_fullscreen_callback: switch_fullscreen
 };
 
-let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+let wilson = new Wilson(document.body.querySelector("#output-canvas"), options);
 
 
 
-let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
+let wilson_hidden = new Wilson(document.body.querySelector("#hidden-canvas"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 
 wilson_hidden.ctx.strokeStyle = "rgb(255, 255, 255)";
 wilson_hidden.ctx._alpha = 1;
@@ -157,7 +157,7 @@ wilson_hidden.ctx.lineWidth = 6;
 
 
 
-let wilson_hidden_2 = new Wilson(Page.element.querySelector("#hidden-canvas-2"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
+let wilson_hidden_2 = new Wilson(document.body.querySelector("#hidden-canvas-2"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 
 wilson_hidden_2.ctx.strokeStyle = "rgb(255, 255, 255)";
 wilson_hidden_2.ctx._alpha = 1;
@@ -172,7 +172,7 @@ wilson_hidden_2.ctx.lineWidth = 6;
 
 
 
-let wilson_hidden_3 = new Wilson(Page.element.querySelector("#hidden-canvas-3"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
+let wilson_hidden_3 = new Wilson(document.body.querySelector("#hidden-canvas-3"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 
 wilson_hidden_3.ctx.strokeStyle = "rgb(255, 255, 255)";
 wilson_hidden_3.ctx._alpha = 1;
@@ -187,7 +187,7 @@ wilson_hidden_3.ctx.lineWidth = 6;
 
 
 
-let wilson_hidden_4 = new Wilson(Page.element.querySelector("#hidden-canvas-4"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
+let wilson_hidden_4 = new Wilson(document.body.querySelector("#hidden-canvas-4"), {renderer: "cpu", canvas_width: 64, canvas_height: 64});
 
 wilson_hidden_4.ctx.strokeStyle = "rgb(255, 255, 255)";
 wilson_hidden_4.ctx._alpha = 1;
@@ -219,7 +219,7 @@ if (!Site.scripts_loaded["three"])
 
 
 
-let numbers_canvas_container_element = Page.element.querySelector("#numbers-canvas-container");
+let numbers_canvas_container_element = document.body.querySelector("#numbers-canvas-container");
 
 
 
@@ -227,16 +227,16 @@ const section_names = ["view-controls", "add-array", "edit-array", "remove-array
 
 const section_elements = 
 {
-	"view-controls": Page.element.querySelectorAll(".view-controls-section"),
-	"add-array": Page.element.querySelectorAll(".add-array-section"),
-	"edit-array": Page.element.querySelectorAll(".edit-array-section"),
-	"remove-array": Page.element.querySelectorAll(".remove-array-section"),
-	"algorithms": Page.element.querySelectorAll(".algorithms-section"),
-	"examples": Page.element.querySelectorAll(".examples-section")
+	"view-controls": document.body.querySelectorAll(".view-controls-section"),
+	"add-array": document.body.querySelectorAll(".add-array-section"),
+	"edit-array": document.body.querySelectorAll(".edit-array-section"),
+	"remove-array": document.body.querySelectorAll(".remove-array-section"),
+	"algorithms": document.body.querySelectorAll(".algorithms-section"),
+	"examples": document.body.querySelectorAll(".examples-section")
 }
 
-const category_holder_element = Page.element.querySelector("#category-holder");
-const canvas_landscape_left_element = Page.element.querySelector("#canvas-landscape-left");
+const category_holder_element = document.body.querySelector("#category-holder");
+const canvas_landscape_left_element = document.body.querySelector("#canvas-landscape-left");
 
 let visible_section = "view-controls";
 
@@ -270,61 +270,61 @@ if (Page.Layout.aspect_ratio > 1)
 
 
 
-let category_selector_dropdown_element = Page.element.querySelector("#category-selector-dropdown");
+let category_selector_dropdown_element = document.body.querySelector("#category-selector-dropdown");
 
-let resolution_input_element = Page.element.querySelector("#resolution-input");
+let resolution_input_element = document.body.querySelector("#resolution-input");
 
-let show_dimers_button_element = Page.element.querySelector("#show-dimers-button");
+let show_dimers_button_element = document.body.querySelector("#show-dimers-button");
 
-let switch_view_button_element = Page.element.querySelector("#switch-view-button");
+let switch_view_button_element = document.body.querySelector("#switch-view-button");
 
-let maximum_speed_checkbox_element = Page.element.querySelector("#maximum-speed-checkbox");
+let maximum_speed_checkbox_element = document.body.querySelector("#maximum-speed-checkbox");
 
-let array_data_textarea_element = Page.element.querySelector("#array-data-textarea");
+let array_data_textarea_element = document.body.querySelector("#array-data-textarea");
 
-let add_array_button_element = Page.element.querySelector("#add-array-button");
+let add_array_button_element = document.body.querySelector("#add-array-button");
 
-let edit_array_textarea_element = Page.element.querySelector("#edit-array-textarea");
+let edit_array_textarea_element = document.body.querySelector("#edit-array-textarea");
 	
-let edit_array_index_input_element = Page.element.querySelector("#edit-array-index-input");
+let edit_array_index_input_element = document.body.querySelector("#edit-array-index-input");
 
-let edit_array_button_element = Page.element.querySelector("#edit-array-button");
+let edit_array_button_element = document.body.querySelector("#edit-array-button");
 
-let remove_array_index_input_element = Page.element.querySelector("#remove-array-index-input");
+let remove_array_index_input_element = document.body.querySelector("#remove-array-index-input");
 
-let remove_array_button_element = Page.element.querySelector("#remove-array-button");
+let remove_array_button_element = document.body.querySelector("#remove-array-button");
 
-let algorithm_index_input_element = Page.element.querySelector("#algorithm-index-input");
+let algorithm_index_input_element = document.body.querySelector("#algorithm-index-input");
 
-let hillman_grassl_button_element = Page.element.querySelector("#hillman-grassl-button");
+let hillman_grassl_button_element = document.body.querySelector("#hillman-grassl-button");
 
-let hillman_grassl_inverse_button_element = Page.element.querySelector("#hillman-grassl-inverse-button");
+let hillman_grassl_inverse_button_element = document.body.querySelector("#hillman-grassl-inverse-button");
 
-let pak_button_element = Page.element.querySelector("#pak-button");
+let pak_button_element = document.body.querySelector("#pak-button");
 
-let pak_inverse_button_element = Page.element.querySelector("#pak-inverse-button");
+let pak_inverse_button_element = document.body.querySelector("#pak-inverse-button");
 
-let sulzgruber_button_element = Page.element.querySelector("#sulzgruber-button");
+let sulzgruber_button_element = document.body.querySelector("#sulzgruber-button");
 
-let sulzgruber_inverse_button_element = Page.element.querySelector("#sulzgruber-inverse-button");
+let sulzgruber_inverse_button_element = document.body.querySelector("#sulzgruber-inverse-button");
 
-let rsk_button_element = Page.element.querySelector("#rsk-button");
+let rsk_button_element = document.body.querySelector("#rsk-button");
 
-let rsk_inverse_button_element = Page.element.querySelector("#rsk-inverse-button");
+let rsk_inverse_button_element = document.body.querySelector("#rsk-inverse-button");
 
-let godar_1_button_element = Page.element.querySelector("#godar-1-button");
+let godar_1_button_element = document.body.querySelector("#godar-1-button");
 
-let godar_1_inverse_button_element = Page.element.querySelector("#godar-1-inverse-button");
+let godar_1_inverse_button_element = document.body.querySelector("#godar-1-inverse-button");
 
-let example_1_button_element = Page.element.querySelector("#example-1-button");
+let example_1_button_element = document.body.querySelector("#example-1-button");
 
-let example_2_button_element = Page.element.querySelector("#example-2-button");
+let example_2_button_element = document.body.querySelector("#example-2-button");
 
-let example_3_button_element = Page.element.querySelector("#example-3-button");
+let example_3_button_element = document.body.querySelector("#example-3-button");
 
 let need_download = false;
 
-let download_button_element = Page.element.querySelector("#download-button");
+let download_button_element = document.body.querySelector("#download-button");
 
 
 
@@ -582,17 +582,7 @@ if (APPLET_VERSION)
 
 draw_frame();
 
-if (APPLET_VERSION)
-{
-	Page.show();
-}
-
-else
-{
-	Page.Presentation.init(callbacks);
-	
-	setTimeout(Page.show, 10);
-}
+Page.show();
 
 
 

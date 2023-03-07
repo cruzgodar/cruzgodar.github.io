@@ -1,14 +1,18 @@
 const APPLET_VERSION = false;
 
-let canvas_bundle = Page.element.querySelector("#canvas-bundle");
+const canvas_bundle = document.body.querySelector("#canvas-bundle");
 
-let rects = [];
+const rects = [];
 
-let callbacks =
+
+const lapsa_options =
 {
+	shelfIconPaths: ["/graphics/lapsa-icons/up-2.png", "/graphics/lapsa-icons/up-1.png", "/graphics/lapsa-icons/table.png", "/graphics/lapsa-icons/down-1.png", "/graphics/lapsa-icons/down-2.png"],
+	
+	
 	"title":
 	{
-		callback: function(slide, forward)
+		reset: (slide, forward, duration) =>
 		{
 			return new Promise(async (resolve, reject) =>
 			{
@@ -66,10 +70,10 @@ let callbacks =
 	},
 	
 	
-	
+	/*
 	"young-diagram-example":
 	{
-		callback: function(slide, forward)
+		reset: (slide, forward, duration) =>
 		{
 			return new Promise(async (resolve, reject) =>
 			{
@@ -114,7 +118,7 @@ let callbacks =
 	
 	"plane-partition-example":
 	{
-		callback: function(slide, forward)
+		reset: (slide, forward, duration) =>
 		{
 			return new Promise(async (resolve, reject) =>
 			{
@@ -154,51 +158,48 @@ let callbacks =
 		
 		
 		
-		builds:
-		[
-			function(slide, forward)
+		0: (slide, forward, duration = animation_time) =>
+		{
+			return new Promise(async (resolve, reject) =>
 			{
-				return new Promise(async (resolve, reject) =>
+				if (forward)
 				{
-					if (forward)
-					{
-						await show_hex_view();
-					}
-					
-					else
-					{
-						await show_2d_view();
-					}
-					
-					resolve();
-				});
-			},
+					await show_hex_view();
+				}
+				
+				else
+				{
+					await show_2d_view();
+				}
+				
+				resolve();
+			});
+		},
 			
-			function(slide, forward)
+		1: (slide, forward, duration = animation_time) =>
+		{
+			return new Promise(async (resolve, reject) =>
 			{
-				return new Promise(async (resolve, reject) =>
+				if (forward)
 				{
-					if (forward)
-					{
-						await show_2d_view();
-					}
-					
-					else
-					{
-						await show_hex_view();
-					}
-					
-					resolve();
-				});
-			}
-		]
+					await show_2d_view();
+				}
+				
+				else
+				{
+					await show_hex_view();
+				}
+				
+				resolve();
+			});
+		}
 	},
 	
 	
 	
 	"app-example":
 	{
-		callback: function(slide, forward)
+		reset: (slide, forward, duration) =>
 		{
 			return new Promise(async (resolve, reject) =>
 			{
@@ -238,51 +239,50 @@ let callbacks =
 		
 		
 		
-		builds:
-		[
-			function(slide, forward)
+		0: (slide, forward, duration = animation_time) =>
+		{
+			return new Promise(async (resolve, reject) =>
 			{
-				return new Promise(async (resolve, reject) =>
+				if (forward)
 				{
-					if (forward)
-					{
-						await show_hex_view();
-					}
-					
-					else
-					{
-						await show_2d_view();
-					}
-					
-					resolve();
-				});
-			},
-			
-			function(slide, forward)
+					await show_hex_view();
+				}
+				
+				else
+				{
+					await show_2d_view();
+				}
+				
+				resolve();
+			});
+		},
+		
+		
+		
+		1: (slide, forward, duration = animation_time) =>
+		{
+			return new Promise(async (resolve, reject) =>
 			{
-				return new Promise(async (resolve, reject) =>
+				if (forward)
 				{
-					if (forward)
-					{
-						await show_2d_view();
-					}
-					
-					else
-					{
-						await show_hex_view();
-					}
-					
-					resolve();
-				});
-			}
-		]
+					await show_2d_view();
+				}
+				
+				else
+				{
+					await show_hex_view();
+				}
+				
+				resolve();
+			});
+		}
 	},
-	
+	/*
 	
 	
 	"rpp-example":
 	{
-		callback: function(slide, forward)
+		reset: (slide, forward, duration = animation_time) =>
 		{
 			return new Promise(async (resolve, reject) =>
 			{
@@ -1831,4 +1831,8 @@ let callbacks =
 			}
 		]
 	}
+	*/
 };
+
+
+const lapsa = new Lapsa(lapsa_options);
