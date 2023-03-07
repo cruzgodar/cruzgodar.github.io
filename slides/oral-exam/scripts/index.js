@@ -16,7 +16,7 @@
 	
 	let applet_data = await applet_response.text();
 	
-	let presentation_response = await fetch(`/papers/oral-exam/scripts/content.js`);
+	let presentation_response = await fetch(`/slides/oral-exam/scripts/content.js`);
 	
 	let presentation_data = await presentation_response.text();
 	
