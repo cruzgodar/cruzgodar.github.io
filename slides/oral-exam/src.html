@@ -19,12 +19,44 @@
 		</div>
 	</div>
 	
+	
+	
 	<div class="slide">
-		<h1>Prelude to an Oral Exam</h1>
+		<h1>Background</h1>
 		
-		<h2>Cruz Godar</h2>
+		<p class="build">A <dfn>partition</dfn> of an integer $n$ is a sequence $(a_1, a_2, ... )$ of decreasing nonnegative integers $a_i$ with $\sum_i a_i = n$.</p>
+		
+		<p class="build">Ex: $(5, 3, 2, 2, 1, 0, 0, ...)$ is a partition of $13$.</p>
+		
+		<p class="build">The <dfn>Young diagram</dfn> corresponding to a partition $(a_i)$ is the set $\{(i, j) \in \mathbb{N}^2 \mid 1 \leq j \leq a_i\}$.</p>
+		
+		<p class="build">We usually treat these as top-left-justified sets of squares in a grid, so that $a_i$ is the length of row $i$.</p>
+	</div>
+	
+	
+	
+	<div id="young-diagram-example" class="slide large-canvas">
+		<p>Ex: the Young diagram of $(5, 3, 2, 2, 1, 0, 0, ...)$.</p>
+	</div>
+	
+	
+	
+	<div class="slide">
+		<h1>Plane Partitions</h1>
+		
+		<p class="build">A <dfn>plane partition</dfn> is a placement of nonnegative integers into a Young diagram, such that the rows and columns weakly decrease. We can also think of them as a stacks of boxes, with each number indicating how many boxes are stacked on that square.</p>
+		
+		<p class="build">The <dfn>weight</dfn> of a plane partition $\pi$, written $|\pi|$, is just the sum of its entries, or equivalently the total number of boxes stacked.</p>
+	</div>
+	
+	
+	
+	<div id="plane-partition-example" class="slide large-canvas">
+		Ex: a plane partition of weight $33$.
 	</div>
 </div>
+
+
 
 <div id="hidden-canvases" style="display: none">
 	<canvas id="hidden-canvas" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
@@ -32,5 +64,7 @@
 	<canvas id="hidden-canvas-3" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
 	<canvas id="hidden-canvas-4" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
 </div>
+
+
 
 <script src="/scripts/init.js"></script>

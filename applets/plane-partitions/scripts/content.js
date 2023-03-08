@@ -491,6 +491,7 @@ if (APPLET_VERSION)
 
 
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x000000);
 
 const orthographic_camera = new THREE.OrthographicCamera(-5, 5, 5, -5, .1, 1000);
 
@@ -2334,42 +2335,33 @@ function hide_dimers()
 
 
 
-function change_floor_lightness(v)
-{
-	arrays.forEach(array =>
-	{
-		array.floor.forEach(row =>
-		{
-			row.forEach(floor =>
-			{
-				floor.material.forEach(material => material.color.setHSL(0, 0, v));
-			});
-		});
-	});
-	
-	floor_lightness = v;
-}
-
-function show_floor(target_lightness = .4)
+function show_floor(opacity = 1)
 {
 	return new Promise(async (resolve, reject) =>
 	{
-		let dummy = {t: floor_lightness};
+		let targets = [];
 		
+		arrays.forEach(array =>
+		{
+			array.floor.forEach(row =>
+			{
+				row.forEach(floor =>
+				{
+					floor.material.forEach(material => targets.push(material));
+				});
+			});
+		});
+					
 		anime({
-			targets: dummy,
-			t: target_lightness,
+			targets: targets,
+			opacity: opacity,
 			duration: animation_time / 2,
 			easing: "easeOutQuad",
-			
 			complete: () =>
 			{
-				change_floor_lightness(target_lightness);
 				resolve();
-			},
-			
-			update: () => change_floor_lightness(dummy.t)
-		});
+			}
+		});	
 	});	
 }
 

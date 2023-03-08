@@ -5,6 +5,8 @@
 	Site.load_style("/style/lapsa.min.css");
 	await Site.load_script("/scripts/lapsa.min.js");
 	
+	document.head.querySelector("#theme-color-meta").setAttribute("content", "#181818");
+	
 	document.body.appendChild(Page.element.querySelector("#lapsa-slide-container"));
 	document.body.appendChild(Page.element.querySelector("#hidden-canvases"));
 	Page.element.remove();

@@ -18,6 +18,10 @@ const lapsa_options =
 			{
 				return new Promise(async (resolve, reject) =>
 				{
+					await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+					
+					animation_time = 0;
+					
 					slide.appendChild(canvas_bundle);
 					
 					let plane_partition = [
@@ -29,14 +33,10 @@ const lapsa_options =
 						[1, 0, 0, 0, 0, 0]
 					];
 					
-					animation_time = 0;
-					
 					for (let i = arrays.length - 1; i >= 0; i--)
 					{
 						await remove_array(0);
 					}
-					
-					await show_floor();
 					
 					await add_new_array(0, plane_partition);
 					
@@ -62,9 +62,7 @@ const lapsa_options =
 						}
 					}
 					
-					animation_time = 600;
-					
-					
+					await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
 					
 					resolve();
 				});
@@ -72,44 +70,45 @@ const lapsa_options =
 		},
 		
 		
-		/*
+		
 		"young-diagram-example":
 		{
 			reset: (slide, forward, duration) =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
+					await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+					
+					animation_time = 0;
+					
 					slide.appendChild(canvas_bundle);
 					
 					let plane_partition = [
-						[1, 1, 1, 1, 1],
-						[1, 1, 1, 0, 0],
-						[1, 1, 0, 0, 0],
-						[1, 1, 0, 0, 0],
-						[1, 0, 0, 0, 0]
+						[1, 1, 1, 1, 1, 0],
+						[1, 1, 1, 0, 0, 0],
+						[1, 1, 0, 0, 0, 0],
+						[1, 1, 0, 0, 0, 0],
+						[1, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0]
 					];
 					
-					animation_time = 0;
+					animation_time = duration;
 					
 					for (let i = arrays.length - 1; i >= 0; i--)
 					{
 						await remove_array(0);
 					}
 					
-					await hide_floor();
-					
 					await add_new_array(0, plane_partition);
+					
+					await hide_floor();
 					
 					if (!in_2d_view)
 					{
 						await show_2d_view();
 					}
 					
-					numbers_canvas_container_element.style.opacity = 0;
-					
-					animation_time = 600;
-					
-					
+					await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
 					
 					resolve();
 				});
@@ -124,24 +123,25 @@ const lapsa_options =
 			{
 				return new Promise(async (resolve, reject) =>
 				{
+					await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+					
+					animation_time = 0;
+					
 					slide.appendChild(canvas_bundle);
 					
 					let plane_partition = [
-						[6, 4, 3, 1, 1],
-						[4, 3, 2, 0, 0],
-						[3, 2, 0, 0, 0],
-						[2, 1, 0, 0, 0],
-						[1, 0, 0, 0, 0]
+						[6, 4, 3, 1, 1, 0],
+						[4, 3, 2, 0, 0, 0],
+						[3, 2, 0, 0, 0, 0],
+						[2, 1, 0, 0, 0, 0],
+						[1, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0]
 					];
-					
-					animation_time = 0;
 					
 					for (let i = arrays.length - 1; i >= 0; i--)
 					{
 						await remove_array(0);
 					}
-					
-					await show_floor();
 					
 					await add_new_array(0, plane_partition);
 					
@@ -150,9 +150,7 @@ const lapsa_options =
 						await show_2d_view();
 					}
 					
-					animation_time = 600;
-					
-					
+					await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
 					
 					resolve();
 				});
@@ -160,10 +158,12 @@ const lapsa_options =
 			
 			
 			
-			0: (slide, forward, duration = animation_time) =>
+			0: (slide, forward, duration = 600) =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
+					animation_time = duration;
+					
 					if (forward)
 					{
 						await show_hex_view();
@@ -178,10 +178,12 @@ const lapsa_options =
 				});
 			},
 				
-			1: (slide, forward, duration = animation_time) =>
+			1: (slide, forward, duration = 600) =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
+					animation_time = duration;
+					
 					if (forward)
 					{
 						await show_2d_view();
@@ -198,7 +200,7 @@ const lapsa_options =
 		},
 		
 		
-		
+		/*
 		"app-example":
 		{
 			reset: (slide, forward, duration) =>
@@ -1838,3 +1840,5 @@ const lapsa_options =
 };
 
 const lapsa = new Lapsa(lapsa_options);
+
+//setTimeout(() => lapsa.jumpToSlide(lapsa.slides.length - 1), 1500);
