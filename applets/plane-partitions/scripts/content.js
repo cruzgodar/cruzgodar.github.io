@@ -1232,27 +1232,27 @@ function add_new_array(index, numbers, keep_numbers_canvas_visible = false, hori
 					
 					
 					
-					const leg_height = Math.max(array.numbers[i][array.footprint - 1], array.numbers[array.footprint - 1][j]);
-					
 					if (horizontal_legs)
 					{
+						const leg_height = Math.max(array.numbers[i][array.footprint - 1], array.numbers[array.footprint - 1][j]);
+						
 						for (let k = 0; k < leg_height; k++)
 						{
 							array.cubes[i][j][k] = add_cube(array, j, k, i, 0, 0, asymptote_lightness);
 						}
-					}
-					
-					else
-					{
-						for (let k = 0; k < leg_height; k++)
+						
+						for (let k = leg_height; k < array.numbers[i][j]; k++)
 						{
 							array.cubes[i][j][k] = add_cube(array, j, k, i);
 						}
 					}
 					
-					for (let k = leg_height; k < array.numbers[i][j]; k++)
+					else
 					{
-						array.cubes[i][j][k] = add_cube(array, j, k, i);
+						for (let k = 0; k < array.numbers[i][j]; k++)
+						{
+							array.cubes[i][j][k] = add_cube(array, j, k, i);
+						}
 					}
 				}
 				

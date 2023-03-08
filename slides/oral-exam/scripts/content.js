@@ -4,11 +4,11 @@ const canvas_bundle = document.body.querySelector("#canvas-bundle");
 
 const rects = [];
 
-
 const lapsa_options =
 {
 	shelfIconPaths: ["/graphics/lapsa-icons/up-2.png", "/graphics/lapsa-icons/up-1.png", "/graphics/lapsa-icons/table.png", "/graphics/lapsa-icons/down-1.png", "/graphics/lapsa-icons/down-2.png"],
 	
+	startingSlide: 1,
 	
 	builds:
 	{
@@ -198,21 +198,23 @@ const lapsa_options =
 		},
 		
 		
-		/*
-		"app-example":
+		
+		"hooks":
 		{
 			reset: (slide, forward, duration) =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
+					await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+					
 					slide.appendChild(canvas_bundle);
 					
-					let plane_partition = [
-						[Infinity, Infinity, Infinity, 1, 1],
-						[Infinity, Infinity, 2, 0, 0],
-						[3, 2, 0, 0, 0],
-						[2, 1, 0, 0, 0],
-						[1, 0, 0, 0, 0]
+					const rpp =
+					[
+						[0, 2, 2, 4],
+						[1, 2, 3, 0],
+						[1, 3, 3, 0],
+						[2, 3, 0, 0],
 					];
 					
 					animation_time = 0;
@@ -222,143 +224,9 @@ const lapsa_options =
 						await remove_array(0);
 					}
 					
-					await show_floor();
-					
-					await add_new_array(0, plane_partition);
-					
-					if (!in_2d_view)
-					{
-						await show_2d_view();
-					}
-					
-					animation_time = 600;
 					
 					
-					
-					resolve();
-				});
-			},
-			
-			
-			
-			0: (slide, forward, duration = animation_time) =>
-			{
-				return new Promise(async (resolve, reject) =>
-				{
-					if (forward)
-					{
-						await show_hex_view();
-					}
-					
-					else
-					{
-						await show_2d_view();
-					}
-					
-					resolve();
-				});
-			},
-			
-			
-			
-			1: (slide, forward, duration = animation_time) =>
-			{
-				return new Promise(async (resolve, reject) =>
-				{
-					if (forward)
-					{
-						await show_2d_view();
-					}
-					
-					else
-					{
-						await show_hex_view();
-					}
-					
-					resolve();
-				});
-			}
-		},
-		/*
-		
-		
-		"rpp-example":
-		{
-			reset: (slide, forward, duration = animation_time) =>
-			{
-				return new Promise(async (resolve, reject) =>
-				{
-					slide.appendChild(canvas_bundle);
-					
-					let rpp = [
-						[1, 3, 4],
-						[2, 5, 0],
-						[3, 0, 0]
-					];
-					
-					let app = [
-						[Infinity, Infinity, 3],
-						[Infinity, 5, 2],
-						[4, 3, 1],
-					];
-					
-					animation_time = 0;
-					
-					for (let i = arrays.length - 1; i >= 0; i--)
-					{
-						await remove_array(0);
-					}
-					
-					await hide_floor();
-					
-					await add_new_array(0, rpp);
-					await add_new_array(1, app);
-					
-					if (!in_2d_view)
-					{
-						await show_2d_view();
-					}
-					
-					draw_all_2d_view_text();
-					
-					animation_time = 600;
-					
-					
-					
-					resolve();
-				});
-			},
-		},
-		
-		
-		
-		"hooks":
-		{
-			callback: function(slide, forward)
-			{
-				return new Promise(async (resolve, reject) =>
-				{
-					slide.appendChild(canvas_bundle);
-					
-					let plane_partition = [
-						[Infinity, Infinity, Infinity, Infinity, Infinity, 5],
-						[Infinity, Infinity, 7, 7, 6, 5],
-						[8, 8, 7, 7, 3, 2],
-						[8, 7, 6, 4, 1, 1],
-						[6, 6, 6, 3, 0, 0],
-						[6, 3, 3, 2, 0, 0]
-					];
-					
-					animation_time = 0;
-					
-					for (let i = arrays.length - 1; i >= 0; i--)
-					{
-						await remove_array(0);
-					}
-					
-					await show_floor();
-					
-					await add_new_array(0, plane_partition);
+					await add_new_array(0, rpp, false, false);
 					
 					if (!in_2d_view)
 					{
@@ -369,12 +237,10 @@ const lapsa_options =
 					
 					if (!forward)
 					{
-						await this.builds[2](slide, true);
+						await this[0](slide, true, 0);
 					}
 					
-					animation_time = 600;
-					
-					
+					await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
 					
 					resolve();
 				});
@@ -382,56 +248,31 @@ const lapsa_options =
 			
 			
 			
-			builds:
-			[
-				() => {},
-				() => {},
-				
-				function(slide, forward)
+			0: (slide, forward, duration = 600) =>
+			{
+				return new Promise(async (resolve, reject) =>
 				{
-					return new Promise(async (resolve, reject) =>
+					animation_time = duration;
+					
+					const cubes = [[3, 0, 1], [2, 0, 0], [1, 0, 0], [1, 1, 1], [1, 2, 2]];
+					
+					if (forward)
 					{
-						let pivot = [2, 3];
-						let cubes = [];
-						
-						for (let j = 0; j <= pivot[1]; j++)
-						{
-							let height = arrays[0].numbers[pivot[0]][j];
-							
-							if (height !== Infinity)
-							{
-								cubes.push([pivot[0], j, height - 1]);
-							}
-						}
-						
-						for (let i = pivot[0] - 1; i >= 0; i--)
-						{
-							let height = arrays[0].numbers[i][pivot[1]];
-							
-							if (height !== Infinity)
-							{
-								cubes.push([i, pivot[1], height - 1]);
-							}
-						}
-						
-						if (forward)
-						{
-							await color_cubes(arrays[0], cubes, .75);
-						}
-						
-						else
-						{
-							await uncolor_cubes(arrays[0], cubes);
-						}
-						
-						resolve();
-					});
-				}
-			]
+						await color_cubes(arrays[0], cubes, .75);
+					}
+					
+					else
+					{
+						await uncolor_cubes(arrays[0], cubes);
+					}
+					
+					resolve();
+				});
+			}
 		},
 		
 		
-		
+		/*
 		"legos":
 		{
 			callback: function(slide, forward)
@@ -1839,6 +1680,11 @@ const lapsa_options =
 
 let lapsa;
 
-setTimeout(() => lapsa = new Lapsa(lapsa_options), 500);
+setTimeout(() =>
+{
+	lapsa = new Lapsa(lapsa_options);
+	
+	document.body.querySelector("#help-link").addEventListener("click", () => lapsa.jumpToSlide(0));
+}, 500);
 
 //setTimeout(() => lapsa.jumpToSlide(lapsa.slides.length - 1), 1500);
