@@ -47,12 +47,30 @@
 		<p class="build">A <dfn>plane partition</dfn> is a placement of nonnegative integers into a Young diagram, such that the rows and columns weakly decrease. We can also think of them as a stacks of boxes, with each number indicating how many boxes are stacked on that square.</p>
 		
 		<p class="build">The <dfn>weight</dfn> of a plane partition $\pi$, written $|\pi|$, is just the sum of its entries, or equivalently the total number of boxes stacked.</p>
+		
+		<p class="build">If we require the rows and columns of a plane partition to weakly <em>increase</em> rather than decrease, the resulting object is called a <dfn>reverse plane partition</dfn>, or RPP.</p>
 	</div>
 	
 	
 	
 	<div id="plane-partition-example" class="slide large-canvas">
-		Ex: a plane partition of weight $33$.
+		<p>Ex: a plane partition of weight $33$.<p>
+	</div>
+	
+	
+	
+	<div class="slide">
+		<h1>Hooks and Hook Lengths</h1>
+		
+		<p class="build">The <dfn>hook</dfn> corresponding to a box in an APP is the right-angled collection of boxes above and to the left of it. The hook length $h(i, j)$ of a box is the total number of boxes in its hook.</p>
+		
+		<p class="build">In an RPP, the direction of hooks is reserved along with the inequalities, and they extend down and right instead.</p>
+	</div>
+	
+	
+	
+	<div id="hooks" class="slide large-canvas">
+		<p>Ex: $h(3, 4) = 5$ in this RPP.</p>
 	</div>
 </div>
 

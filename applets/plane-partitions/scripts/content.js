@@ -1110,7 +1110,7 @@ function display_error(message)
 
 
 
-function add_new_array(index, numbers, keep_numbers_canvas_visible = false)
+function add_new_array(index, numbers, keep_numbers_canvas_visible = false, horizontal_legs = true)
 {
 	return new Promise(async (resolve, reject) =>
 	{
@@ -1234,9 +1234,20 @@ function add_new_array(index, numbers, keep_numbers_canvas_visible = false)
 					
 					const leg_height = Math.max(array.numbers[i][array.footprint - 1], array.numbers[array.footprint - 1][j]);
 					
-					for (let k = 0; k < leg_height; k++)
+					if (horizontal_legs)
 					{
-						array.cubes[i][j][k] = add_cube(array, j, k, i, 0, 0, asymptote_lightness);
+						for (let k = 0; k < leg_height; k++)
+						{
+							array.cubes[i][j][k] = add_cube(array, j, k, i, 0, 0, asymptote_lightness);
+						}
+					}
+					
+					else
+					{
+						for (let k = 0; k < leg_height; k++)
+						{
+							array.cubes[i][j][k] = add_cube(array, j, k, i);
+						}
 					}
 					
 					for (let k = leg_height; k < array.numbers[i][j]; k++)

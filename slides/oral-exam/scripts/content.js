@@ -38,7 +38,7 @@ const lapsa_options =
 						await remove_array(0);
 					}
 					
-					await add_new_array(0, plane_partition);
+					await add_new_array(0, plane_partition, false, false);
 					
 					if (!in_exact_hex_view)
 					{
@@ -55,7 +55,7 @@ const lapsa_options =
 						{
 							for (let k = 0; k < 6 - i; k++)
 							{
-								color_cubes(arrays[0], [[i - j, j, k]], hue / 21 * 6/7);
+								color_cubes(arrays[0], [[i - j, j, k]], ((hue + 2.5*(5 - i - k)) % 21) / 21 * 6/7);
 							}
 							
 							hue++;
@@ -84,12 +84,11 @@ const lapsa_options =
 					slide.appendChild(canvas_bundle);
 					
 					let plane_partition = [
-						[1, 1, 1, 1, 1, 0],
-						[1, 1, 1, 0, 0, 0],
-						[1, 1, 0, 0, 0, 0],
-						[1, 1, 0, 0, 0, 0],
-						[1, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0]
+						[1, 1, 1, 1, 1],
+						[1, 1, 1, 0, 0],
+						[1, 1, 0, 0, 0],
+						[1, 1, 0, 0, 0],
+						[1, 0, 0, 0, 0]
 					];
 					
 					animation_time = duration;
@@ -99,7 +98,7 @@ const lapsa_options =
 						await remove_array(0);
 					}
 					
-					await add_new_array(0, plane_partition);
+					await add_new_array(0, plane_partition, false, false);
 					
 					await hide_floor();
 					
@@ -130,12 +129,11 @@ const lapsa_options =
 					slide.appendChild(canvas_bundle);
 					
 					let plane_partition = [
-						[6, 4, 3, 1, 1, 0],
-						[4, 3, 2, 0, 0, 0],
-						[3, 2, 0, 0, 0, 0],
-						[2, 1, 0, 0, 0, 0],
-						[1, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0]
+						[6, 4, 3, 1, 1],
+						[4, 3, 2, 0, 0],
+						[3, 2, 0, 0, 0],
+						[2, 1, 0, 0, 0],
+						[1, 0, 0, 0, 0]
 					];
 					
 					for (let i = arrays.length - 1; i >= 0; i--)
@@ -143,7 +141,7 @@ const lapsa_options =
 						await remove_array(0);
 					}
 					
-					await add_new_array(0, plane_partition);
+					await add_new_array(0, plane_partition, false, false);
 					
 					if (!in_2d_view)
 					{
@@ -1839,6 +1837,8 @@ const lapsa_options =
 	}
 };
 
-const lapsa = new Lapsa(lapsa_options);
+let lapsa;
+
+setTimeout(() => lapsa = new Lapsa(lapsa_options), 500);
 
 //setTimeout(() => lapsa.jumpToSlide(lapsa.slides.length - 1), 1500);
