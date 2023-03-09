@@ -13,6 +13,8 @@ if (!Site.scripts_loaded["lodash"])
 	});
 }
 
+
+
 let resolution = 2000;
 
 let animation_time = 600;

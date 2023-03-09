@@ -62,7 +62,7 @@ Page.Animate =
 				complete: resolve
 			});
 		});	
-	},
+	},	
 	
 	change_scale_css: function(element, end_value, duration, ease_in_out = false)
 	{
