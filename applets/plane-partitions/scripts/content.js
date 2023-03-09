@@ -3531,7 +3531,9 @@ function pak(index)
 			bottom_leg_size++;
 		}
 		
-		
+		//Todo: remove eventually
+		right_leg_size = 0;
+		bottom_leg_size = 0;
 		
 		let num_corners = 0;
 		
