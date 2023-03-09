@@ -67,7 +67,7 @@ body
 
 .slide canvas
 {
-	border-radius: 1.25vw;
+	border-radius: 3vw !important;
 }
 
 .medium-canvas canvas
@@ -145,7 +145,7 @@ body
 
 	.slide canvas
 	{
-		border-radius: calc(1.25 * var(--safe-vh) * 152 / 89);
+		border-radius: calc(3 * var(--safe-vh) * 152 / 89);
 	}
 	
 	.medium-canvas canvas
