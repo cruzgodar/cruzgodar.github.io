@@ -17,18 +17,6 @@
 		<h2>Cruz Godar</h2>
 		
 		<a id="help-link" class="lapsa-align-bottom">How do I control these slides?</a>
-		
-		<div id="canvas-bundle">
-			<div data-aos="fade-up">
-				<div style="position: absolute; width: 100%">
-					<canvas id="output-canvas"></canvas>
-				</div>
-				
-				<div id="numbers-canvas-container" style="width: 100%; opacity: 0">
-					<canvas id="numbers-canvas"></canvas>
-				</div>
-			</div>
-		</div>
 	</div>
 	
 	
@@ -92,7 +80,7 @@
 		
 		<p class="build">A famous result (due to Stanley in his Ph.D. thesis) expresses the generating function for RPPs of shape $\lambda$ as a product involving hook lengths:</p>
 		
-		<p class="build">$$\text{Thm: } \sum_\pi q^{|\pi|} = \prod_{(i, j) \in \lambda} \frac{1}{1 - q^{h(i, j)}},$$</p>
+		<p class="build" style="text-align: center">Thm: $\displaystyle \sum_\pi q^{|\pi|} = \prod_{(i, j) \in \lambda} \frac{1}{1 - q^{h(i, j)}},$</p>
 		
 		<p data-build="1">where the sum is taken over all RPPs $\pi$ of shape $\lambda$. Since boxes and hooks are in bijection, the combinatorial interpretation is that RPPs are in bijection with multi-sets of hooks.</p>
 	</div>
@@ -100,12 +88,32 @@
 	
 	
 	<div class="slide">
-		<p>The Hillman-Grassl Algorithm</p>
+		<h1>The Hillman-Grassl Algorithm</h1>
 		
-		<p class="build">The first bijective proof of the hook length formula is due to Hillman and Grassl in 1975. Given a multi-set of hooks, it is not possible to place them unmodified to construct an RPP: for example, the hook </p>
+		<p class="build">The first bijective proof of the hook length formula is due to Hillman and Grassl in 1975. Given a multi-set of hooks, it is not possible to place them unmodified to construct an RPP: for example, with $\lambda = (2, 2)$, the hook with pivot $(1, 1)$ makes the tableau</p>
 		
-		<p data-build="1">where the sum is taken over all RPPs $\pi$ of shape $\lambda$. Since boxes and hooks are in bijection, the combinatorial interpretation of the theorem is that RPPs are in bijection with multi-sets of hooks.</p>
+		<p data-build="0" style="text-align: center">$\begin{array}{cc}1 & 1 \\ 1 & 0\end{array}$</p>
+		
+		<p data-build="0">which isn't a valid RPP.</p>
 	</div>
+	
+	
+	
+	<div class="slide">
+		<h1>Zigzag Paths</h1>
+		
+		<p>The Hillman-Grassl map decomposes RPPs into <dfn>zigzag paths</dfn> instead of hooks.</p>
+		
+		<p class="build">A zigzag path begins at the leftmost nonzero entry at the bottom of its column. It moves up if the entries are equal and right otherwise, until it can no longer move.</p>
+		
+		<p class="build">The <dfn>pivot</dfn> of a zigzag path is the entry with the path's starting column and ending row.</p>
+		
+		<p class="build">Every nonzero RPP has a unique zigzag path, and decrementing its entries preserves the RPP inequalities. Critically, every zigzag path has length equal to its pivot's hook length.</p>
+	</div>
+	
+	
+	
+	<div id="zigzag-paths" class="slide full-canvas"></div>
 </div>
 
 
@@ -115,6 +123,18 @@
 	<canvas id="hidden-canvas-2" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
 	<canvas id="hidden-canvas-3" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
 	<canvas id="hidden-canvas-4" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
+	
+	<div id="canvas-bundle">
+		<div data-aos="fade-up">
+			<div style="position: absolute; width: 100%">
+				<canvas id="output-canvas"></canvas>
+			</div>
+			
+			<div id="numbers-canvas-container" style="width: 100%; opacity: 0">
+				<canvas id="numbers-canvas"></canvas>
+			</div>
+		</div>
+	</div>
 </div>
 
 
