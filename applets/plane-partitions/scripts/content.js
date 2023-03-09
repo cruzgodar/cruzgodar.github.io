@@ -1555,14 +1555,29 @@ function remove_array(index, keep_numbers_canvas_visible = false)
 				arrays[i].center_offset = 0;
 			}
 			
-			anime({
-				targets: arrays[i].cube_group.position,
-				x: arrays[i].center_offset,
-				y: 0,
-				z: -arrays[i].center_offset,
-				duration: animation_time,
-				easing: "easeInOutQuad"
-			});	
+			if (in_2d_view)
+			{
+				anime({
+					targets: arrays[i].cube_group.position,
+					x: arrays[i].center_offset,
+					y: 0,
+					z: 0,
+					duration: animation_time,
+					easing: "easeInOutQuad"
+				});
+			}
+			
+			else
+			{
+				anime({
+					targets: arrays[i].cube_group.position,
+					x: arrays[i].center_offset,
+					y: 0,
+					z: -arrays[i].center_offset,
+					duration: animation_time,
+					easing: "easeInOutQuad"
+				});
+			}
 		}
 		
 		
@@ -2889,7 +2904,7 @@ function run_algorithm(name, index, sub_algorithm = false)
 		
 		if (index > arrays.length - 1 || index < 0)
 		{
-			display_error(`No array at index ${index}!`);
+			console.log(`No array at index ${index}!`);
 			
 			currently_running_algorithm = false;
 			
@@ -2899,7 +2914,7 @@ function run_algorithm(name, index, sub_algorithm = false)
 		
 		else if (num_arrays > 1 && index > arrays.length - num_arrays)
 		{
-			display_error(`No array at index ${index + num_arrays - 1}! (This algorithm needs ${num_arrays} arrays)`);
+			console.log(`No array at index ${index + num_arrays - 1}! (This algorithm needs ${num_arrays} arrays)`);
 			
 			currently_running_algorithm = false;
 			
@@ -2915,7 +2930,7 @@ function run_algorithm(name, index, sub_algorithm = false)
 			
 			if (type === "pp" && !verify_pp(arrays[index + i].numbers))
 			{
-				display_error(`Array at index ${index + i} is not a plane partition!`);
+				console.log(`Array at index ${index + i} is not a plane partition!`);
 				
 				currently_running_algorithm = false;
 				
@@ -2925,7 +2940,7 @@ function run_algorithm(name, index, sub_algorithm = false)
 			
 			if (type === "ssyt" && !verify_ssyt(arrays[index + i].numbers))
 			{
-				display_error(`Array at index ${index + i} is not an SSYT!`);
+				console.log(`Array at index ${index + i} is not an SSYT!`);
 				
 				currently_running_algorithm = false;
 				

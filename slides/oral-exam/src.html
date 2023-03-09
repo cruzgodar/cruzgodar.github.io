@@ -80,7 +80,7 @@
 		
 		<p class="build">A famous result (due to Stanley in his Ph.D. thesis) expresses the generating function for RPPs of shape $\lambda$ as a product involving hook lengths:</p>
 		
-		<p class="build" style="text-align: center">Thm: $\displaystyle \sum_\pi q^{|\pi|} = \prod_{(i, j) \in \lambda} \frac{1}{1 - q^{h(i, j)}},$</p>
+		<p class="build" style="text-align: center"><strong>Thm:</strong> $\displaystyle \sum_\pi q^{|\pi|} = \prod_{(i, j) \in \lambda} \frac{1}{1 - q^{h(i, j)}},$</p>
 		
 		<p data-build="1">where the sum is taken over all RPPs $\pi$ of shape $\lambda$. Since boxes and hooks are in bijection, the combinatorial interpretation is that RPPs are in bijection with multi-sets of hooks.</p>
 	</div>
@@ -102,9 +102,7 @@
 	<div class="slide">
 		<h1>Zigzag Paths</h1>
 		
-		<p>The Hillman-Grassl map decomposes RPPs into <dfn>zigzag paths</dfn> instead of hooks.</p>
-		
-		<p class="build">A zigzag path begins at the leftmost nonzero entry at the bottom of its column. It moves up if the entries are equal and right otherwise, until it can no longer move.</p>
+		<p>The Hillman-Grassl map decomposes RPPs into <dfn>zigzag paths</dfn> instead of hooks. A zigzag path begins at the leftmost nonzero entry at the bottom of its column. It moves up if the entries are equal and right otherwise, until it can no longer move.</p>
 		
 		<p class="build">The <dfn>pivot</dfn> of a zigzag path is the entry with the path's starting column and ending row.</p>
 		
@@ -118,7 +116,7 @@
 	
 	
 	<div class="slide">
-		<p>The Hillman-Grassl map $HG$ is a bijection between RPPs and multisets of hooks. It operates on an RPP by decrementing its zigzag path, finding the zigzag path of the resulting RPP and decrementing <em>it</em>, and so on, until eventually the RPP has weight zero. At each step, we record the corresponding hook formed</p>
+		<p>The Hillman-Grassl map $\operatorname{HG}$ is a bijection between RPPs and multisets of hooks. It operates on an RPP by decrementing its zigzag path, finding the zigzag path of the resulting RPP and decrementing <em>it</em>, and so on, until eventually the RPP has weight zero. At each step, we record the corresponding hook formed</p>
 		
 		<p class="build">The removal of a zigzag path is an invertible operation, and it can be shown that the generated sequence of pivots respects a reverse lexicographic ordering, so given a multiset of pivots, the inverse Hillman-Grassl map is well-defined.</p>
 		
@@ -202,7 +200,29 @@
 	
 	
 	<div class="slide">
-		<p class="build">Given an RPP $\pi$, we define the set of <dfn>candidates</dfn></p>
+		<p>Given an RPP $\pi$, we define the set of <dfn>candidates</dfn> $C(\pi)$ to be the cells $x \in \mathcal{O}$ with $\pi(\mathbf{w}u) < \pi(u)$, along with the cells $x \in \mathcal{A}$ with $\pi(\mathbf{w}u) < \pi(u) > \pi(\mathbf{n}u)$.</p>
+		
+		<p class="build">We select the minimum candidate $x$ with respect to content order &mdash; that is, whose diagonal is as north-east as possible, with preference within a diagonal given to the south-east end. With $x$ as a starting position, we build a path as follows:</p>
+		
+		<p class="build">If the current cell $x$ belongs to $\mathcal{O} \cup \mathcal{B}$ and $\pi(\mathbf{nx}) = \pi(x)$, we move one cell north. Otherwise, we move cell east unless that move leaves the diagram, in which case we stop. As with Hillman-Grassl, we decrement this path, store its pivot in a tableau, and repeat until the RPP is empty.</p>
+	</div>
+	
+	
+	
+	<div id="sulzgruber" class="slide full-canvas"></div>
+	
+	
+	
+	<div id="ps-rsk" class="slide medium-canvas">
+		<p class="left-text">Incredibly, Pak and Sulzgruber's maps produce identical results despite wildly differing descriptions. We refer to the map collectively as $\operatorname{PS}$.</p>
+		
+		<p class="build left-text">There is a surprising connection between $\operatorname{PS}$ and the $\operatorname{RSK}$ algorithm. Given a square tableau $T$, the diagonals of $\operatorname{PS}^{-1}(T)$ give the shapes of restrictions of $P$ and $Q$ in $(P, Q) = \operatorname{RSK}(T)$.</p>
+	</div>
+	
+	
+	
+	<div class="slide" style="display: flex; flex-direction: column; justify-content: center">
+		<h1 style="text-align: center">That's all for now!</h1>
 	</div>
 </div>
 
@@ -215,7 +235,7 @@
 	<canvas id="hidden-canvas-4" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
 	
 	<div id="canvas-bundle">
-		<div data-aos="fade-up">
+		<div>
 			<div style="position: absolute; width: 100%">
 				<canvas id="output-canvas"></canvas>
 			</div>

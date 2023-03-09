@@ -30,6 +30,8 @@ const lapsa_options =
 					
 					slide.appendChild(canvas_bundle);
 					
+					wilson_numbers.draggables.on_resize();
+					
 					let plane_partition = [
 						[6, 5, 4, 3, 2, 1],
 						[5, 4, 3, 2, 1, 0],
@@ -95,6 +97,8 @@ const lapsa_options =
 					
 					slide.appendChild(canvas_bundle);
 					
+					wilson_numbers.draggables.on_resize();
+					
 					let plane_partition = [
 						[1, 1, 1, 1, 1],
 						[1, 1, 1, 0, 0],
@@ -145,6 +149,8 @@ const lapsa_options =
 					animation_time = 0;
 					
 					slide.appendChild(canvas_bundle);
+					
+					wilson_numbers.draggables.on_resize();
 					
 					let plane_partition = [
 						[6, 4, 3, 1, 1],
@@ -227,6 +233,8 @@ const lapsa_options =
 					
 					slide.appendChild(canvas_bundle);
 					
+					wilson_numbers.draggables.on_resize();
+					
 					const rpp =
 					[
 						[0, 2, 2, 4],
@@ -302,6 +310,8 @@ const lapsa_options =
 					await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
 					
 					slide.appendChild(canvas_bundle);
+					
+					wilson_numbers.draggables.on_resize();
 					
 					const rpp =
 					[
@@ -430,6 +440,8 @@ const lapsa_options =
 					
 					slide.appendChild(canvas_bundle);
 					
+					wilson_numbers.draggables.on_resize();
+					
 					const rpp =
 					[
 						[6, 6, 6, 2],
@@ -556,6 +568,8 @@ const lapsa_options =
 					await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
 					
 					slide.appendChild(canvas_bundle);
+					
+					wilson_numbers.draggables.on_resize();
 					
 					const rpp =
 					[
@@ -685,6 +699,8 @@ const lapsa_options =
 					animation_time = 0;
 					
 					slide.appendChild(canvas_bundle);
+					
+					wilson_numbers.draggables.on_resize();
 					
 					let plane_partition = [
 						[1, 1, 1, 1, 1, 1, 1, 1],
@@ -819,6 +835,339 @@ const lapsa_options =
 				});
 			},
 		},
+		
+		
+		
+		"sulzgruber":
+		{
+			reset: (slide, forward, duration) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+					
+					slide.appendChild(canvas_bundle);
+					
+					wilson_numbers.draggables.on_resize();
+					
+					const rpp =
+					[
+						[6, 6, 6, 2],
+						[4, 2, 2, 0],
+						[2, 1, 0, 0],
+						[1, 1, 0, 0]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = arrays.length - 1; i >= 0; i--)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, rpp, false, false);
+					
+					if (!in_exact_hex_view)
+					{
+						await show_hex_view();
+					}
+					
+					await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+					
+					resolve();
+				});
+			},
+			
+			
+			
+			0: (slide, forward, duration = 600) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						animation_time = duration;
+						
+						await run_algorithm("sulzgruber", 0);
+					}
+					
+					else
+					{
+						animation_time = duration / 6;
+						
+						await run_algorithm("sulzgruber_inverse", 0);
+					}
+					
+					resolve();
+				});
+			},
+			
+			1: (slide, forward, duration = 600) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					animation_time = duration;
+					
+					if (forward)
+					{
+						await show_2d_view();
+					}
+					
+					else
+					{
+						await show_hex_view();
+					}
+					
+					resolve();
+				});
+			},
+			
+			2: (slide, forward, duration = 600) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					animation_time = duration;
+					
+					if (forward)
+					{
+						await show_hex_view();
+					}
+					
+					else
+					{
+						await show_2d_view();
+					}
+					
+					resolve();
+				});
+			},
+				
+			3: (slide, forward, duration = 200) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						animation_time = duration;
+						
+						await run_algorithm("sulzgruber_inverse", 0);
+					}
+					
+					else
+					{
+						animation_time = duration / 3;
+						
+						await run_algorithm("sulzgruber", 0);
+					}
+					
+					resolve();
+				});
+			}
+		},
+		
+		
+		
+		"ps-rsk":
+		{
+			reset: (slide, forward, duration) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+					
+					slide.appendChild(canvas_bundle);
+					
+					wilson_numbers.draggables.on_resize();
+					
+					const rpp =
+					[
+						[4, 4, 4],
+						[4, 3, 2],
+						[4, 1, 1]
+					];
+					
+					const rpp_2 =
+					[
+						[4, 4, 4],
+						[4, 3, 2],
+						[4, 1, 1]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = arrays.length - 1; i >= 0; i--)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, rpp, false, false);
+					
+					await add_new_array(1, rpp_2, false, false);
+					
+					if (!in_exact_hex_view)
+					{
+						await show_hex_view();
+					}
+					
+					if (!forward)
+					{
+						await lapsa_options.builds["ps-rsk"][1](slide, true, 0);
+						await lapsa_options.builds["ps-rsk"][2](slide, true, 0);
+						await lapsa_options.builds["ps-rsk"][3](slide, true, 0);
+						await lapsa_options.builds["ps-rsk"][4](slide, true, 0);
+						await lapsa_options.builds["ps-rsk"][5](slide, true, 0);
+					}
+					
+					await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+					
+					resolve();
+				});
+			},
+			
+			
+			
+			1: (slide, forward, duration = 300) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					if (forward)
+					{
+						animation_time = duration;
+						
+						await show_hex_view();
+						
+						await run_algorithm("sulzgruber", 1);
+						
+						await show_2d_view();
+					}
+					
+					else
+					{
+						animation_time = duration / 3;
+						
+						await show_hex_view();
+						
+						await run_algorithm("sulzgruber_inverse", 1);
+					}
+					
+					resolve();
+				});
+			},
+			
+			2: (slide, forward, duration = 600) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					animation_time = duration;
+					
+					if (forward)
+					{
+						await remove_array(1);
+						
+						const tableau =
+						[
+							[1, 1, 2],
+							[0, 1, 0],
+							[3, 0, 0]
+						];
+						
+						await add_new_array(1, tableau, false, false);
+					}
+					
+					else
+					{
+						await remove_array(1);
+						
+						const tableau =
+						[
+							[0, 0, 3],
+							[0, 1, 0],
+							[2, 1, 1]
+						];
+						
+						await add_new_array(1, tableau, false, false);
+					}
+					
+					resolve();
+				});
+			},
+			
+			3: (slide, forward, duration = 600) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					animation_time = duration;
+					
+					if (forward)
+					{
+						await run_algorithm("rsk_inverse", 1);
+						
+						const cubes_1 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [1, 0, 1], [1, 1, 1], [1, 2, 2], [2, 0, 2]];
+						const cubes_2 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [1, 0, 1], [1, 1, 2], [1, 2, 2], [2, 0, 2]];
+						
+						await uncolor_cubes(arrays[1], cubes_1);
+						await uncolor_cubes(arrays[2], cubes_2);
+					}
+					
+					else
+					{
+						await run_algorithm("rsk", 1);
+					}
+					
+					resolve();
+				});
+			},
+			
+			4: (slide, forward, duration = 600) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					animation_time = duration;
+					
+					const cubes_0 = [[0, 1, 3], [1, 2, 1]];
+					const cubes_1 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [1, 0, 1], [1, 1, 1]];
+					
+					if (forward)
+					{
+						await color_cubes(arrays[0], cubes_0, 0);
+						await color_cubes(arrays[1], cubes_1, 0);
+					}
+					
+					else
+					{
+						await uncolor_cubes(arrays[0], cubes_0);
+						await uncolor_cubes(arrays[1], cubes_1);
+					}
+					
+					resolve();
+				});
+			},
+			
+			5: (slide, forward, duration = 600) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					animation_time = duration;
+					
+					const cubes_0 = [[2, 0, 3]];
+					const cubes_2 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0]];
+					
+					if (forward)
+					{
+						await color_cubes(arrays[0], cubes_0, .6);
+						await color_cubes(arrays[2], cubes_2, .6);
+					}
+					
+					else
+					{
+						await uncolor_cubes(arrays[0], cubes_0);
+						await uncolor_cubes(arrays[2], cubes_2);
+					}
+					
+					resolve();
+				});
+			},
+		},
 	}
 };
 
@@ -830,5 +1179,3 @@ setTimeout(() =>
 	
 	document.body.querySelector("#help-link").addEventListener("click", () => lapsa.jumpToSlide(0));
 }, 500);
-
-//setTimeout(() => lapsa.jumpToSlide(lapsa.slides.length - 1), 1500);

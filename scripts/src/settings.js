@@ -365,7 +365,8 @@ Site.Settings =
 				DESMOS_GREEN = "#2fbf2f";
 				DESMOS_BLACK = "#000000";
 				
-				Page.Load.create_desmos_graphs(false);
+				try {Page.Load.create_desmos_graphs(false);}
+				catch(ex) {}
 				
 				Page.element.querySelectorAll(".desmos-container").forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
 			}, Site.opacity_animation_time);
@@ -414,7 +415,8 @@ Site.Settings =
 				DESMOS_GREEN = "#c000c0";
 				DESMOS_BLACK = "#000000";
 				
-				Page.Load.create_desmos_graphs(true);
+				try {Page.Load.create_desmos_graphs(true);}
+				catch(ex) {}
 				
 				Page.element.querySelectorAll(".desmos-container").forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
 			}, Site.opacity_animation_time);
