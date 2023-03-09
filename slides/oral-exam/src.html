@@ -90,7 +90,7 @@
 	
 	
 	<div class="slide">
-		<h1>The Hillman-Grassl Algorithm</h1>
+		<h1>Hillman-Grassl</h1>
 		
 		<p class="build">The first bijective proof of the hook length formula is due to Hillman and Grassl in 1975. Given a multi-set of hooks, it is not possible to place them unmodified to construct an RPP: for example, with $\lambda = (2, 2)$, the hook with pivot $(1, 1)$ makes the tableau</p>
 		
@@ -118,9 +118,9 @@
 	
 	
 	<div class="slide">
-		<p>The Hillman-Grassl map $\operatorname{HG}$ is a bijection between RPPs and multisets of hooks. It operates on an RPP by decrementing its zigzag path, finding the zigzag path of the resulting RPP and decrementing <em>it</em>, and so on, until eventually the RPP has weight zero. At each step, we record the corresponding hook formed</p>
+		<p>The Hillman-Grassl map $\operatorname{HG}$ is a bijection between RPPs and multisets of hooks. It operates on an RPP by decrementing its zigzag path, finding the zigzag path of the resulting RPP and decrementing <em>it</em>, and so on, until eventually the RPP has weight zero. At each step, we record the corresponding hook formed.</p>
 		
-		<p class="build">The removal of a zigzag path is an invertible operation, and it can be shown that the generated sequence of pivots respects a reverse lexicographic ordering, so given a multiset of pivots, the inverse Hillman-Grassl map is well-defined.</p>
+		<p class="build">The removal of a zigzag path is an invertible operation, and it can be shown that the generated sequence of pivots respects a reverse lexicographic ordering, so given a multiset of pivots, the inverse map $\operatorname{HG}^{-1}$ is well-defined.</p>
 		
 		<p class="build">Since hooks are in bijection with pivots, we can concisely represent the multiset of hooks as a tableau (an unrestricted grid of numbers).</p>
 	</div>
@@ -134,7 +134,7 @@
 	<div class="slide">
 		<h1>Pak</h1>
 		
-		<p>In 2002, Igor Pak discovered a different bijection between RPPs and multisets of hooks. In contrast to Hillman-Grassl, Pak's bijection operates on the level of boxes rather than hooks.</p>
+		<p>In 2002, Igor Pak found a different bijection between RPPs and multisets of hooks. In contrast to Hillman-Grassl, Pak's bijection operates on the level of boxes rather than hooks.</p>
 		
 		<p>For ease of notation, let $\lambda$ be a partition and $x \in \lambda$ (i.e. a box in the Young diagram), and define $\mathbf{n}x$, $\mathbf{s}x$, $\mathbf{e}x$, and $\mathbf{w}x$ to be the boxes above, below, right, and left of $x$, respectively.</p>
 	</div>
@@ -174,7 +174,7 @@
 		
 		<p class="build">Toggling a non-corner entry is an involution, and knowing the entry recorded to the tableau from a toggled corner lets us recover the corner's entry in the RPP. Therefore, the inverse bijection is well-defined.</p>
 		
-		<p class="build">While the algorithm is simple enough, the fact that it outputs multisets of hooks seems to hint at a description of the algorithm closer in style to Hillman-Grassl.</p>
+		<p class="build">While the algorithm is simple enough, the fact that it outputs multisets of hooks seems to hint at a description closer in style to Hillman-Grassl.</p>
 	</div>
 	
 	

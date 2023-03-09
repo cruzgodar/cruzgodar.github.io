@@ -4,7 +4,8 @@
 
 Site.force_dark_theme_pages =
 [
-	"/gallery/"
+	"/gallery/",
+	"/slides/oral-exam/"
 ];
 
 

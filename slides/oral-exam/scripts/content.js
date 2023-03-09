@@ -1178,4 +1178,10 @@ setTimeout(() =>
 	lapsa = new Lapsa(lapsa_options);
 	
 	document.body.querySelector("#help-link").addEventListener("click", () => lapsa.jumpToSlide(0));
+	
+	document.body.querySelector(".slide").addEventListener("click", () =>
+	{
+		document.documentElement.webkitRequestFullscreen();
+		document.documentElement.requestFullscreen();
+	});
 }, 500);
