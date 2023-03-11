@@ -103,7 +103,7 @@
 		<!-- Single-line page elements -->
 		<dict>
 			<key>match</key>
-			<string>^\t*?(###) (banner|canvas|checkbox|desmos|nav\-buttons|wilson)(.*?)$</string>
+			<string>^\t*?(###) (banner|canvas|center|checkbox|desmos|nav\-buttons|wilson)(.*?)$</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>

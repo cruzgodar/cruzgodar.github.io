@@ -260,7 +260,7 @@ Page.Components =
 		
 		"image-links": (content) =>
 		{
-			let html = `<div class="image-links">`;
+			let html = `<div class="image-links${content.length === 1 ? " one-image-link" : ""}">`;
 			
 			content.forEach(line =>
 			{
@@ -409,6 +409,15 @@ Page.Components =
 		
 		
 		
+		"center": (...words) =>
+		{
+			const text = words.join(" ");
+			
+			return `<p class="body-text center-if-needed"><span>${Page.Components.Parse.text(text)}</span></p>`;
+		},
+		
+		
+		
 		"checkbox": (id, ...name) =>
 		{
 			const text = name.join(" ");
@@ -463,7 +472,7 @@ Page.Components =
 		}
 	},
 	
-	single_line_environments: ["banner", "canvas", "checkbox", "desmos", "nav-buttons", "wilson"],
+	single_line_environments: ["banner", "canvas", "center", "checkbox", "desmos", "nav-buttons", "wilson"],
 	
 	notes_environments:
 	{
