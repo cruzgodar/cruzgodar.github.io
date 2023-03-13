@@ -246,6 +246,76 @@ mjx-container
 
 
 
+#card-container
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+	
+	width: 100vw;
+	height: 100vh;
+	
+	z-index: 1000;
+	
+	display: none;
+	justify-content: center;
+	align-items: center;
+}
+
+.card
+{
+	display: none;
+	
+	position: relative;
+	
+	width: min(70vw, 100vw - 64px);
+	padding: 16px;
+	border-radius: 16px;
+	
+	background-color: rgb(255, 255, 255);
+	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .3);
+}
+
+.card .body-text, .card .section-text, .card .heading-text
+{
+	width: 100% !important;
+}
+
+#card-container .card
+{
+	display: block;
+}
+
+#card-close-button
+{
+	position: absolute;
+	
+	top: 0;
+	right: 0;
+	
+	font-size: 32px;
+	color: rgb(64, 64, 64);
+	
+	cursor: pointer;
+	
+	border-radius: 10px;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	width: 38px;
+	
+	margin: 6px;
+}
+
+#card-close-button.hover
+{
+	background-color: rgb(224, 224, 224);
+}
+
+
+
 *:focus
 {
 	outline: none;
@@ -268,12 +338,17 @@ mjx-container
 	
 	pre code.highlightable
 	{
-		width: calc(90vw - 24px);
+		width: 90vw;
 	}
 	
 	.line-break
 	{
 		left: 5vw;
+	}
+	
+	.card
+	{
+		width: min(90vw, 100vw - 64px);
 	}
 }
 
@@ -282,5 +357,10 @@ mjx-container
 	pre code.highlightable
 	{
 		width: calc(50vw - 24px);
+	}
+	
+	.card
+	{
+		width: min(50vw, 100vw - 64px);
 	}
 }

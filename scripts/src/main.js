@@ -286,6 +286,14 @@ Site.load = async function(url)
 	
 	
 	
+	const card_close_button = document.querySelector("#card-close-button");
+	
+	Page.Load.HoverEvents.add(card_close_button);
+	
+	card_close_button.addEventListener("click", Page.Cards.hide);
+	
+	
+	
 	//If it's not an html file, it shouldn't be anywhere near redirect().
 	if (url.indexOf(".") !== -1)
 	{

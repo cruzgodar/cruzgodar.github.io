@@ -4,54 +4,52 @@ const components =
 {
 	get_image_link: function(args)
 	{
-		let file_path = args[0];
-		
-		if (file_path[0] !== "/")
-		{
-			file_path = parent_folder + args[0];
-		}
-		
-		
-		
-		let subtext = "";
-		
-		
-		
-		let light_text = "";
-		
-		if (args[1] === "l")
-		{
-			light_text = " image-link-light";
-			
-			subtext = args.slice(2).join(" ");
-		}
-		
-		else
-		{
-			subtext = args.slice(1).join(" ");
-		}
-		
-		
-		
 		let id = args[0].split(".")[0].split("/");
 		
 		id = id[id.length - 1];
 		
 		
 		
-		const src = `${file_path.slice(0, file_path.lastIndexOf("/") + 1)}cover.`;
+		if (args[1] === "c")
+		{
+			const subtext = args.slice(2).join(" ");
+			
+			const src = `${parent_folder}cards/${id}.`;
+			
+			return `
+				<div class="image-link">
+					<a onclick="Page.Cards.show('${id}')" tabindex="-1">
+						<img class="check-webp" src="/graphics/general-icons/placeholder.png" data-image-id="${id}" data-src="${src}" alt="${subtext}" tabindex="1"></img>
+					</a>
+					
+					<p class="image-link-subtext">${subtext}</p>
+				</div>
+			`;
+		}
 		
-		
-		
-		return `
-			<div class="image-link${light_text}">
-				<a href="${file_path}" tabindex="-1">
-					<img class="check-webp" src="/graphics/general-icons/placeholder.png" data-image-id="${id}" data-src="${src}" alt="${subtext}" tabindex="1"></img>
-				</a>
-				
-				<p class="image-link-subtext">${subtext}</p>
-			</div>
-		`;
+		else
+		{
+			let file_path = args[0];
+			
+			if (file_path[0] !== "/")
+			{
+				file_path = parent_folder + args[0];
+			}
+			
+			const subtext = args.slice(1).join(" ");
+			
+			const src = `${file_path.slice(0, file_path.lastIndexOf("/") + 1)}cover.`;
+			
+			return `
+				<div class="image-link">
+					<a href="${file_path}" tabindex="-1">
+						<img class="check-webp" src="/graphics/general-icons/placeholder.png" data-image-id="${id}" data-src="${src}" alt="${subtext}" tabindex="1"></img>
+					</a>
+					
+					<p class="image-link-subtext">${subtext}</p>
+				</div>
+			`;
+		}
 	},
 	
 	
@@ -364,6 +362,13 @@ const components =
 		
 		
 		
+		"card": (id) =>
+		{
+			return `<div id="${id}-card" class="card">`;
+		},
+		
+		
+		
 		"notes-environment": (id, ...name) =>
 		{
 			if (name.length !== 0)
@@ -467,7 +472,7 @@ const components =
 		}
 	},
 	
-	single_line_environments: ["banner", "canvas", "center", "checkbox", "desmos", "nav-buttons", "wilson"],
+	single_line_environments: ["banner", "canvas", "card", "center", "checkbox", "desmos", "nav-buttons", "wilson"],
 	
 	notes_environments:
 	{

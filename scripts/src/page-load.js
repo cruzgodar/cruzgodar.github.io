@@ -967,5 +967,64 @@ Page.Load =
 			
 			setTimeout(() => Page.element.querySelectorAll("mjx-container").forEach(element => element.setAttribute("tabindex", -1)), 500);
 		}
+	},
+};
+
+
+
+Page.Cards =
+{
+	container: document.querySelector("#card-container"),
+	
+	show: function(id)
+	{
+		this.container.style.display = "flex";
+		this.container.style.opacity = 0;
+		this.container.style.transform = "scale(.95)";
+		
+		this.container.appendChild(document.querySelector(`#${id}-card`));
+		
+		document.querySelector(`#${id}-card`).appendChild(document.querySelector("#card-close-button"));
+		
+		anime({
+			targets: this.container,
+			opacity: 1,
+			scale: 1,
+			duration: 350,
+			easing: "easeOutQuint"
+		});
+		
+		document.documentElement.addEventListener("click", this.handle_click_event);
+	},
+	
+	hide: async function()
+	{
+		await new Promise((resolve, reject) =>
+		{
+			anime({
+				targets: Page.Cards.container,
+				opacity: 0,
+				scale: .95,
+				duration: 350,
+				easing: "easeOutQuint",
+				complete: resolve
+			});
+		});
+			
+		Page.Cards.container.style.display = "none";
+		
+		Page.element.appendChild(Page.Cards.container.querySelector(".card"));
+		
+		Page.Cards.container.appendChild(document.querySelector("#card-close-button"));
+		
+		document.documentElement.removeEventListener("click", this.handle_click_event);
+	},
+	
+	handle_click_event: function(e)
+	{
+		if (e.target.id === "card-container")
+		{
+			Page.Cards.hide();
+		}
 	}
 };

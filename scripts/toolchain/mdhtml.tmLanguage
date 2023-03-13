@@ -17,50 +17,7 @@
 		<!-- Multi-line page elements -->
 		<dict>
 			<key>begin</key>
-			<string>^\t*?(###) (image\-links|buttons|text\-boxes|sliders|dropdown|gallery\-block)(.*$)</string>
-			<key>end</key>
-			<string>^\t*?(###)\s*$</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>comment</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>keyword</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>string</string>
-				</dict>
-			</dict>
-			<key>endCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>comment</string>
-				</dict>
-			</dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>$self</string>
-				</dict>
-			</array>
-		</dict>
-		
-		
-		
-		<!-- Multi-line notes blocks -->
-		<dict>
-			<key>begin</key>
-			<string>^\t*?(###) (ex|exc|def|prop|thm|lem|cor|pf|ax|as)(.*$)</string>
+			<string>^\t*?(###) (image\-links|buttons|text\-boxes|sliders|dropdown|gallery\-block|ex|exc|def|prop|thm|lem|cor|pf|ax|as|card)(.*$)</string>
 			<key>end</key>
 			<string>^\t*?(###)\s*$</string>
 			<key>beginCaptures</key>
