@@ -1168,6 +1168,218 @@ const lapsa_options =
 				});
 			},
 		},
+		
+		
+		
+		"garver-patrias":
+		{
+			reset: (slide, forward, duration) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+					
+					slide.appendChild(canvas_bundle);
+					
+					wilson_numbers.draggables.on_resize();
+					
+					const rpp =
+					[
+						[1, 2, 3],
+						[4, 5, 6],
+						[7, 8, 9]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = arrays.length - 1; i >= 0; i--)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, rpp, false, false);
+					
+					if (!in_2d_view)
+					{
+						await show_2d_view();
+					}
+					
+					await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+					
+					resolve();
+				});
+			},
+		},
+		
+		
+		
+		"garver-patrias-2":
+		{
+			reset: (slide, forward, duration) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+					
+					slide.appendChild(canvas_bundle);
+					
+					wilson_numbers.draggables.on_resize();
+					
+					const rpp =
+					[
+						[1, 0, 1],
+						[1, 2, 0],
+						[0, 0, 1]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = arrays.length - 1; i >= 0; i--)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, rpp, false, false);
+					
+					if (!in_2d_view)
+					{
+						await show_2d_view();
+					}
+					
+					await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+					
+					resolve();
+				});
+			},
+		},
+		
+		
+		
+		"garver-patrias-3":
+		{
+			reset: (slide, forward, duration) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+					
+					slide.appendChild(canvas_bundle);
+					
+					wilson_numbers.draggables.on_resize();
+					
+					const rpp =
+					[
+						[1, 0, 1],
+						[1, 2, 0],
+						[0, 0, 1]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = arrays.length - 1; i >= 0; i--)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, rpp, false, false);
+					
+					if (!in_2d_view)
+					{
+						await show_2d_view();
+					}
+					
+					await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+					
+					resolve();
+				});
+			},
+		},
+		
+		
+		
+		"garver-patrias-4":
+		{
+			reset: (slide, forward, duration) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+					
+					slide.appendChild(canvas_bundle);
+					
+					wilson_numbers.draggables.on_resize();
+					
+					const rpp =
+					[
+						[0, 1, 2],
+						[0, 1, 4],
+						[2, 4, 5]
+					];
+					
+					animation_time = 0;
+					
+					for (let i = arrays.length - 1; i >= 0; i--)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, rpp, false, false);
+					
+					if (!in_2d_view)
+					{
+						await show_2d_view();
+					}
+					
+					await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+					
+					resolve();
+				});
+			},
+		},
+		
+		
+		
+		"app":
+		{
+			reset: (slide, forward, duration) =>
+			{
+				return new Promise(async (resolve, reject) =>
+				{
+					await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+					
+					slide.appendChild(canvas_bundle);
+					
+					wilson_numbers.draggables.on_resize();
+					
+					const app =
+					[
+						[Infinity, Infinity, Infinity, 9, 5],
+						[Infinity, Infinity, 5,        4, 1],
+						[6,        4,        4,        3, 0],
+						[6,        3,        2,        1, 0],
+						[4,        1,        1,        0, 0],
+					];
+					
+					animation_time = 0;
+					
+					for (let i = arrays.length - 1; i >= 0; i--)
+					{
+						await remove_array(0);
+					}
+					
+					await add_new_array(0, app, false, false);
+					
+					if (!in_2d_view)
+					{
+						await show_2d_view();
+					}
+					
+					await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+					
+					resolve();
+				});
+			},
+		},
 	}
 };
 

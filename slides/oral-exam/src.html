@@ -72,7 +72,7 @@
 	
 	
 	<div id="hooks" class="slide large-canvas">
-		<p>Ex: $h(1, 0) = 5$ in this RPP.</p>
+		<p>Ex: $h(2, 1) = 5$ in this RPP.</p>
 	</div>
 	
 	
@@ -219,6 +219,72 @@
 		<p class="left-text">Incredibly, Pak and Sulzgruber's maps produce identical results despite wildly differing descriptions. We refer to the map collectively as $\operatorname{PS}$.</p>
 		
 		<p class="build left-text">There is a surprising connection between $\operatorname{PS}$ and the $\operatorname{RSK}$ algorithm. Given a square tableau $T$, the diagonals of $\operatorname{PS}^{-1}(T)$ give the shapes of restrictions of $P$ and $Q$ in $(P, Q) = \operatorname{RSK}(T)$.</p>
+	</div>
+	
+	
+	
+	<div id="garver-patrias" class="slide medium-canvas">
+		<h1>Garver-Patrias</h1>
+		
+		<p class="left-text">This result is stated in a different but equivalent manner in a paper by Garver and Patrias. Given a Young diagram of shape $\lambda$, we first label each box in reading order.</p>
+	</div>
+	
+	
+	
+	<div id="garver-patrias-2" class="slide medium-canvas">
+		<p class="left-text">Given a tableau $T$ of shape $\lambda$, which is equivalent to a multiset of hooks, we write them in the order the Sulzgruber algorithm inserts them, and then read off the labels of their pivots to form a word $w$. In this example, $w = 145539$.</p>
+	</div>
+	
+	
+	
+	<div id="garver-patrias-3" class="slide medium-canvas">
+		<p class="left-text">For each diagonal $d$, we form the subword $w_d$ of $w$ by selecting only the labels whose hooks intersect diagonal $d$.</p>
+		
+		<p class="left-text">Here, $w_{-2} = 14$, $w_{-1} = 1455$, $w_0 = 145539$, $w_1 = 14553$, and $w_2 = 13$.</p>
+	</div>
+	
+	
+	
+	<div id="garver-patrias-4" class="slide medium-canvas">
+		<p class="left-text">We now run $\operatorname{RSK}$ on each $w_d$ and store the shape of the resulting tableaux in the corresponding diagonal.</p>
+		
+		<p class="left-text build">For example, the tableau $P$ in $\operatorname{RSK}(w_1) = \operatorname{RSK}(14355)$ is</p>
+		
+		<p data-build="0" class="left-text" style="text-align: center">$\displaystyle\begin{array}{cccc}1 & 3 & 5 & 5 \\ 4\end{array},$</p>
+		
+		<p data-build="0" class="left-text">so we place the partition $(4, 1)$ into the diagonal $d = 1$ (in reverse order).</p>
+	</div>
+	
+	
+	
+	<div class="slide">
+		<p><strong>Thm:</strong> This process is equivalent to $\operatorname{PS}$</p>.
+		
+		<p class="build">We can describe $\operatorname{HG}$ in an identical way by changing the labeling order to be right to left, top to bottom, and then changing the hook ordering to match $\operatorname{HG}$'s insertion order. The result is a much more clear connection between the two bijections.</p>
+	</div>
+	
+	
+	
+	<div class="slide">
+		<h1>What's the Use?</h1>
+		
+		<p class="build">My research uses these bijections in order to develop new ones between generalizations of plane partitions. A central result deals with plane partitions <dfn>asymptotic</dfn> to a Young diagram $\lambda$, which are analogous to skew semi-standard Young tableaux.</p>
+	</div>
+	
+	
+	
+	<div id="app" class="slide large-canvas">
+		<p>Ex: a plane partition asymptotic to $\lambda = (3, 2)$.</p>
+	</div>
+	
+	
+	
+	<div class="slide">
+		<p><strong>Thm:</strong> With $\operatorname{M}(q)$, $\operatorname{RPP}_\lambda(q)$, and $\operatorname{APP}_\lambda(q)$ denoting the generating functions for plane partitions, RPPs of shape $\lambda$, and plane partitions asymptotic to lambda, respectively,</p>
+		
+		<p style="text-align: center">$\displaystyle \operatorname{APP}_\lambda(q) = \operatorname{RPP}_\lambda(q)M(q)$.</p>
+		
+		<p>This relation was formerly known only algebraically, but showing it bijectively was possible using $\operatorname{HG}$. A generalization of the relation was also bijectivized using Pak, and a bijectivizing a further generalization, which was shown algebraically by Jenne, Webb, and Young in 2020, remains an open problem.</p>
 	</div>
 	
 	
