@@ -624,7 +624,7 @@ Page.Load =
 			{
 				this.add_for_tex_holder(element);
 				
-				element.addEventListener("pointerdown", () => Page.Load.Math.copy_tex(element));
+				element.addEventListener("pointerdown", () => Page.Load.Math.show_tex(element));
 			});
 		},
 
@@ -737,7 +737,7 @@ Page.Load =
 			
 			element.addEventListener("mouseenter", () =>
 			{
-				if (!Site.Interaction.currently_touch_device)
+				if (!Site.Interaction.currently_touch_device && element.getAttribute("data-showing-tex") !== "1")
 				{
 					element.classList.add("hover");
 					
@@ -991,34 +991,83 @@ Page.Load =
 			});
 		},
 		
-		copy_tex: function(element)
+		show_tex: async function(element)
 		{
+			if (element.getAttribute("data-showing-tex") === "1")
+			{
+				return;
+			}
+			
+			element.setAttribute("data-showing-tex", "1");
+			
+			
+			element.classList.remove("active");
+			element.classList.remove("hover");
+			
+			const color = Site.Settings.url_vars["theme"] === 1 ? "rgba(24, 24, 24, 0)" : "rgba(255, 255, 255, 0)";
+			
+			await new Promise((resolve, reject) =>
+			{
+				anime({
+					targets: element,
+					scale: 1,
+					borderRadius: "0px",
+					backgroundColor: color,
+					duration: 0,
+					complete: resolve
+				});
+			});
+			
+			
+			
 			const tex = element.getAttribute("data-source-tex").replaceAll(/\[NEWLINE\]/g, "\n");
 			
-			navigator.permissions.query({name: "clipboard-write"})
 			
-			.then((result) =>
+			
+			const old_height = element.getBoundingClientRect().height;
+			element.style.minHeight = `${old_height}px`;
+			
+			
+			
+			const junk_drawer = document.createElement("div");
+			junk_drawer.style.display = "none";
+			Page.element.appendChild(junk_drawer);
+			junk_drawer.appendChild(element.firstElementChild);
+			
+			
+			
+			let tex_element = null;
+			
+			if (tex.indexOf("\n") !== -1)
 			{
-				if (result.state === "granted" || result.state === "prompt")
-				{
-					navigator.clipboard.writeText(tex)
-					
-					.then(() =>
-					{
-						console.log("Copied!");
-					})
-					
-					.catch(() =>
-					{
-						console.log("Failed to copy!");
-					});
-				}
+				tex_element = document.createElement("textarea");
+				tex_element.textContent = tex;
+			}
+			
+			else
+			{
+				tex_element = document.createElement("input");
+				tex_element.setAttribute("type", "text");
+				tex_element.setAttribute("value", tex);
+			}
+			
+			tex_element.style.fontFamily = "'Source Code Pro', monospace";
+			element.appendChild(tex_element);
+			
+			tex_element.select();
+			setTimeout(() => tex_element.select(), 50);
+			setTimeout(() => tex_element.select(), 250);
+			
+			tex_element.onblur = () =>
+			{
+				tex_element.remove();
+				element.appendChild(junk_drawer.firstElementChild);
+				element.style.minHeight = "";
+				junk_drawer.remove();
 				
-				else
-				{
-					console.log("Failed to copy!");
-				}
-			});
+				element.setAttribute("data-showing-tex", "0");
+				element.classList.add("active");
+			};
 		}
 	},
 };
@@ -1039,10 +1088,29 @@ Page.Cards =
 		
 		document.querySelector(`#${id}-card`).appendChild(document.querySelector("#card-close-button"));
 		
+		Page.element.style.filter = "brightness(1)";
+		document.querySelector("#header").style.filter = "brightness(1)";
+		
 		anime({
 			targets: this.container,
 			opacity: 1,
 			scale: 1,
+			duration: 350,
+			easing: "easeOutQuint"
+		});
+		
+		anime({
+			targets: [Page.element, document.querySelector("#header")],
+			filter: "brightness(.5)",
+			duration: 350,
+			easing: "easeOutQuint"
+		});
+		
+		const color = Site.Settings.url_vars["theme"] === 1 ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
+		
+		anime({
+			targets: document.documentElement,
+			backgroundColor: color,
 			duration: 350,
 			easing: "easeOutQuint"
 		});
@@ -1054,6 +1122,22 @@ Page.Cards =
 	{
 		await new Promise((resolve, reject) =>
 		{
+			anime({
+				targets: [Page.element, document.querySelector("#header")],
+				filter: "brightness(1)",
+				duration: 350,
+				easing: "easeOutQuint"
+			});
+			
+			const color = Site.Settings.url_vars["theme"] === 1 ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
+		
+			anime({
+				targets: document.documentElement,
+				backgroundColor: color,
+				duration: 350,
+				easing: "easeOutQuint"
+			});
+		
 			anime({
 				targets: Page.Cards.container,
 				opacity: 0,
