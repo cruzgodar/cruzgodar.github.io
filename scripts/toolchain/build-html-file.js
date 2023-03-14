@@ -192,6 +192,16 @@ const components =
 				html = html.replaceAll(/\$([^\$]*?)\'([^\$]*?)\[END\$\]/g, (match, $1, $2) => `\$${$1}[SINGLEQUOTE]${$2}[END\$]`);
 			}
 			
+			while (html.match(/\$([^\$]*?)\[END\$\]([^<])/))
+			{
+				html = html.replaceAll(/\$([^\$]*?)\[END\$\]([^<])/g, (match, $1, $2) => `<span class="tex-holder">\$${$1}[END\$]</span>${$2}`);
+			}
+			
+			while (html.match(/\$([^\$]*?)\[END\$\]$/))
+			{
+				html = html.replaceAll(/\$([^\$]*?)\[END\$\]$/g, (match, $1) => `<span class="tex-holder">\$${$1}[END\$]</span>`);
+			}
+			
 			
 			
 			//Now we can handle the backticks. Since all of the ones still present aren't inside math mode, we know they must be code. That means we need to play the same game we just did. First we can put back the dollar signs though.
@@ -212,16 +222,6 @@ const components =
 			while (html.match(/`([^`]*?)\'([^`]*?)\[END`\]/))
 			{
 				html = html.replaceAll(/`([^`]*?)\'([^`]*?)\[END`\]/g, (match, $1, $2) => `\`${$1}[SINGLEQUOTE]${$2}[END\`]`);
-			}
-			
-			while (html.match(/\$([^\$]*?)\[END\$\]([^<])/))
-			{
-				html = html.replaceAll(/\$([^\$]*?)\[END\$\]([^<])/g, (match, $1, $2) => `<span class="tex-holder">\$${$1}[END\$]</span>${$2}`);
-			}
-			
-			while (html.match(/\$([^\$]*?)\[END\$\]$/))
-			{
-				html = html.replaceAll(/\$([^\$]*?)\[END\$\]$/g, (match, $1) => `<span class="tex-holder">\$${$1}[END\$]</span>`);
 			}
 			
 			
