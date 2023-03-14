@@ -587,7 +587,7 @@ const components =
 				
 				lines[i] = `\\end{align*}$$</span></p>`;
 				
-				lines[start_i] = `<p class="body-text" style="text-align: center"><span class="tex-holder" data-source-tex="${source_tex}">$$\\begin{align*}`;
+				lines[start_i] = `<p class="body-text" style="text-align: center"><span class="tex-holder" style="padding: 8px" data-source-tex="${source_tex}">$$\\begin{align*}`;
 			}
 			
 			
