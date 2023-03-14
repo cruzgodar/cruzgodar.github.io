@@ -605,7 +605,7 @@ Page.Load =
 			["#exit-fullscreen-button", 1.1],
 			[".gallery-image-1-1 img", 1.075],
 			[".gallery-image-2-2 img", 1.0375],
-			[".gallery-image-3-3 img", 1.025]
+			[".gallery-image-3-3 img", 1.025],
 		],
 		
 		
@@ -618,6 +618,13 @@ Page.Load =
 			this.element_selectors_with_scale.forEach(selector =>
 			{
 				Page.element.querySelectorAll(selector[0]).forEach(element => this.add_with_scale(element, selector[1]));
+			});
+			
+			Page.element.querySelectorAll(".card .tex-holder").forEach(element =>
+			{
+				this.add_for_tex_holder(element);
+				
+				element.addEventListener("click", () => Page.Load.Math.copy_tex(element));
 			});
 		},
 
@@ -718,6 +725,45 @@ Page.Load =
 					{
 						Page.Animate.change_scale(element, 1, Site.button_animation_time);
 					}
+				}
+			});
+		},
+		
+		
+		
+		add_for_tex_holder: function(element)
+		{
+			element.addEventListener("mouseenter", () =>
+			{
+				if (!Site.Interaction.currently_touch_device)
+				{
+					element.classList.add("hover");
+					
+					anime({
+						targets: element,
+						scale: 1.05,
+						borderRadius: "4px",
+						backgroundColor: "rgba(255, 255, 255, 1)",
+						duration: Site.button_animation_time,
+						easing: "easeOutQuad",
+					});
+				}
+			});
+			
+			element.addEventListener("mouseleave", () =>
+			{
+				if (!Site.Interaction.currently_touch_device)
+				{
+					element.classList.remove("hover");
+					
+					anime({
+						targets: element,
+						scale: 1,
+						borderRadius: "0px",
+						backgroundColor: "rgba(255, 255, 255, 0)",
+						duration: Site.button_animation_time,
+						easing: "easeInOutQuad",
+					});
 				}
 			});
 		},
@@ -931,41 +977,42 @@ Page.Load =
 	{
 		typeset: function()
 		{
-			if (!Site.scripts_loaded["mathjax"])
+			MathJax.typesetPromise()
+			
+			.then(() =>
 			{
-				window.MathJax =
+				Page.element.querySelectorAll("mjx-container").forEach(element => element.setAttribute("tabindex", -1));
+			});
+		},
+		
+		copy_tex: function(element)
+		{
+			const tex = element.getAttribute("data-source-tex").replaceAll(/\[NEWLINE\]/g, "\n");
+			
+			navigator.permissions.query({name: "clipboard-write"})
+			
+			.then((result) =>
+			{
+				if (result.state === "granted" || result.state === "prompt")
 				{
-					tex:
+					navigator.clipboard.writeText(tex)
+					
+					.then(() =>
 					{
-						inlineMath: [["$", "$"], ["\\(", "\\)"]]
-					}
-				};
+						console.log("Copied!");
+					})
+					
+					.catch(() =>
+					{
+						console.log("Failed to copy!");
+					});
+				}
 				
-				Site.load_script("https://polyfill.io/v3/polyfill.min.js?features=es6");
-				
-				
-				
-				Site.load_script("https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js")
-				
-				.then(function()
+				else
 				{
-					Site.scripts_loaded["mathjax"] = true;
-				})
-				
-				.catch(function(error)
-				{
-					console.error("Could not load MathJax");
-				});
-			}
-			
-			else
-			{
-				MathJax.typeset();
-			}
-			
-			
-			
-			setTimeout(() => Page.element.querySelectorAll("mjx-container").forEach(element => element.setAttribute("tabindex", -1)), 500);
+					console.log("Failed to copy!");
+				}
+			});
 		}
 	},
 };

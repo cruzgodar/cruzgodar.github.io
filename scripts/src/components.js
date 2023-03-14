@@ -198,6 +198,16 @@ Page.Components =
 				html = html.replaceAll(/\$([^\$]*?)\'([^\$]*?)\[END\$\]/g, (match, $1, $2) => `\$${$1}[SINGLEQUOTE]${$2}[END\$]`);
 			}
 			
+			while (html.match(/\$([^\$]*?)\[END\$\]([^<])/))
+			{
+				html = html.replaceAll(/\$([^\$]*?)\[END\$\]([^<])/g, (match, $1, $2) => `<span class="tex-holder">\$${$1}[END\$]</span>${$2}`);
+			}
+			
+			while (html.match(/\$([^\$]*?)\[END\$\]$/))
+			{
+				html = html.replaceAll(/\$([^\$]*?)\[END\$\]$/g, (match, $1) => `<span class="tex-holder">\$${$1}[END\$]</span>`);
+			}
+			
 			
 			
 			//Now we can handle the backticks. Since all of the ones still present aren't inside math mode, we know they must be code. That means we need to play the same game we just did. First we can put back the dollar signs though.
@@ -251,7 +261,8 @@ Page.Components =
 			.replaceAll(/\[SINGLEQUOTE\]/g, "\'")
 			.replaceAll(/\[ASTERISK\]/g, "*")
 			.replaceAll(/\[BACKTICK\]/g, "`")
-			.replaceAll(/\[DOLLARSIGN\]/g, "\\$");
+			.replaceAll(/\[DOLLARSIGN\]/g, "\\$")
+			.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>/g, (match, $1) => `<span class="tex-holder" data-source-tex="${$1}">\$${$1}\$</span>`);
 		},
 		
 		
@@ -548,12 +559,16 @@ Page.Components =
 			//Leave math alone (but wrap it in body text).
 			if (lines[i].slice(0, 2) === "$$")
 			{
-				lines[i] = `<p class="body-text">$$\\begin{align*}`;
+				let source_tex = "\\begin{align*}";
+				
+				const start_i = i;
 				
 				i++;
 				
 				while (lines[i].slice(0, 2) !== "$$")
 				{
+					source_tex = source_tex + "[NEWLINE]" + lines[i];
+					
 					if (lines[i] === "")
 					{
 						lines.splice(i, 1);
@@ -570,10 +585,14 @@ Page.Components =
 					}
 				}
 				
+				source_tex = source_tex + "[NEWLINE]\\end{align*}";
+				
 				//Remove the last line break.
 				lines[i - 1] = lines[i - 1].replace(/\\\\\[4px\]$/, "");
 				
-				lines[i] = `\\end{align*}$$</p>`;
+				lines[i] = `\\end{align*}$$</span></p>`;
+				
+				lines[start_i] = `<p class="body-text" style="text-align: center"><span class="tex-holder" data-source-tex="${source_tex}">$$\\begin{align*}`;
 			}
 			
 			

@@ -225,6 +225,30 @@ Site.load = async function(url)
 	
 	
 	
+	window.MathJax =
+	{
+		tex:
+		{
+			inlineMath: [["$", "$"], ["\\(", "\\)"]]
+		}
+	};
+	
+	Site.load_script("https://polyfill.io/v3/polyfill.min.js?features=es6");
+	
+	Site.load_script("https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js")
+	
+	.then(function()
+	{
+		Site.scripts_loaded["mathjax"] = true;
+	})
+	
+	.catch(function(error)
+	{
+		console.error("Could not load MathJax");
+	});
+	
+	
+	
 	if ("scrollRestoration" in history)
 	{
 		history.scrollRestoration = "manual";
