@@ -1082,11 +1082,21 @@ Page.Cards =
 	{
 		this.container.style.display = "flex";
 		this.container.style.opacity = 0;
-		this.container.style.transform = "scale(.95)";
+		this.container.style.transform = "scale(1)";
 		
 		this.container.appendChild(document.querySelector(`#${id}-card`));
 		
 		document.querySelector(`#${id}-card`).appendChild(document.querySelector("#card-close-button"));
+		
+		
+		
+		const rect = document.querySelector(`#${id}-card`).getBoundingClientRect();
+		
+		document.querySelector("#card-close-button").style.top = `${rect.top}px`;
+		document.querySelector("#card-close-button").style.left = `${rect.right - 50}px`;
+		
+		
+		this.container.style.transform = "scale(.95)";
 		
 		Page.element.style.filter = "brightness(1)";
 		document.querySelector("#header").style.filter = "brightness(1)";
@@ -1095,15 +1105,24 @@ Page.Cards =
 			targets: this.container,
 			opacity: 1,
 			scale: 1,
-			duration: 350,
+			duration: 400,
 			easing: "easeOutQuint"
 		});
 		
 		anime({
 			targets: [Page.element, document.querySelector("#header")],
 			filter: "brightness(.5)",
-			duration: 350,
+			duration: 400,
 			easing: "easeOutQuint"
+		});
+		
+		const theme_color = Site.Settings.url_vars["theme"] === 1 ? "#0c0c0c" : "#7f7f7f";
+		
+		anime({
+			targets: Site.Settings.meta_theme_color_element,
+			content: theme_color,
+			duration: 400,
+			easing: "easeOutQuint",
 		});
 		
 		const color = Site.Settings.url_vars["theme"] === 1 ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
@@ -1111,7 +1130,7 @@ Page.Cards =
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
-			duration: 350,
+			duration: 400,
 			easing: "easeOutQuint"
 		});
 		
@@ -1125,8 +1144,17 @@ Page.Cards =
 			anime({
 				targets: [Page.element, document.querySelector("#header")],
 				filter: "brightness(1)",
-				duration: 350,
+				duration: 400,
 				easing: "easeOutQuint"
+			});
+			
+			const theme_color = Site.Settings.url_vars["theme"] === 1 ? "#181818" : "#ffffff";
+			
+			anime({
+				targets: Site.Settings.meta_theme_color_element,
+				content: theme_color,
+				duration: 400,
+				easing: "easeOutQuint",
 			});
 			
 			const color = Site.Settings.url_vars["theme"] === 1 ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
@@ -1134,7 +1162,7 @@ Page.Cards =
 			anime({
 				targets: document.documentElement,
 				backgroundColor: color,
-				duration: 350,
+				duration: 400,
 				easing: "easeOutQuint"
 			});
 		
@@ -1142,7 +1170,7 @@ Page.Cards =
 				targets: Page.Cards.container,
 				opacity: 0,
 				scale: .95,
-				duration: 350,
+				duration: 400,
 				easing: "easeOutQuint",
 				complete: resolve
 			});

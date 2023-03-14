@@ -242,6 +242,7 @@ mjx-container
 {
 	overflow-x: auto;
 	overflow-y: hidden;
+	margin: 0 !important;
 }
 
 .tex-holder
@@ -279,6 +280,9 @@ mjx-container
 	display: none;
 	justify-content: center;
 	align-items: center;
+	
+	overflow: hidden;
+	-webkit-overflow-scrolling: touch;
 }
 
 .card
@@ -291,8 +295,13 @@ mjx-container
 	padding: 16px;
 	border-radius: 16px;
 	
+	max-height: calc(100vh - 64px);
+	
 	background-color: rgb(255, 255, 255);
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .3);
+	
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
 }
 
 .card .body-text, .card .section-text, .card .heading-text
@@ -307,7 +316,7 @@ mjx-container
 
 #card-close-button
 {
-	position: absolute;
+	position: fixed;
 	
 	top: 0;
 	right: 0;
@@ -322,6 +331,8 @@ mjx-container
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	
+	background-color: rgb(255, 255, 255);
 	
 	width: 38px;
 	

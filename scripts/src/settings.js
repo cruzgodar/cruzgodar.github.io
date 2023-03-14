@@ -573,17 +573,22 @@ Site.Settings =
 		
 		.tex-holder.hover
 		{
-			box-shadow: 0px 0px 16px 8px rgba(0, 0, 0, 1);
+			box-shadow: 0px 0px 16px 2px rgba(0, 0, 0, 1);
 		}
 		
 		.card
 		{
-			box-shadow: 0px 0px 16px 8px rgba(0, 0, 0, 1);
+			box-shadow: 0px 0px 16px 4px rgba(0, 0, 0, 1);
+		}
+		
+		#card-close-button
+		{
+			background-color: rgb(24, 24, 24);
 		}
 		
 		#card-close-button.hover
 		{
-			background-color: rgb(96, 96, 96);
+			background-color: rgb(64, 64, 64);
 		}
 	`
 };
