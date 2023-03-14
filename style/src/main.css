@@ -372,9 +372,4 @@ mjx-container
 	{
 		width: calc(50vw - 24px);
 	}
-	
-	.card
-	{
-		width: min(50vw, 100vw - 64px);
-	}
 }

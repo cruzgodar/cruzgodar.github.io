@@ -624,7 +624,7 @@ Page.Load =
 			{
 				this.add_for_tex_holder(element);
 				
-				element.addEventListener("click", () => Page.Load.Math.copy_tex(element));
+				element.addEventListener("pointerdown", () => Page.Load.Math.copy_tex(element));
 			});
 		},
 
