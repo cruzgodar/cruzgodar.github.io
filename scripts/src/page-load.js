@@ -733,17 +733,21 @@ Page.Load =
 		
 		add_for_tex_holder: function(element)
 		{
+			element.classList.add("active");
+			
 			element.addEventListener("mouseenter", () =>
 			{
 				if (!Site.Interaction.currently_touch_device)
 				{
 					element.classList.add("hover");
 					
+					const color = Site.Settings.url_vars["theme"] === 1 ? "rgba(24, 24, 24, 1)" : "rgba(255, 255, 255, 1)";
+					
 					anime({
 						targets: element,
 						scale: 1.05,
-						borderRadius: "4px",
-						backgroundColor: "rgba(255, 255, 255, 1)",
+						borderRadius: "8px",
+						backgroundColor: color,
 						duration: Site.button_animation_time,
 						easing: "easeOutQuad",
 					});
@@ -756,11 +760,13 @@ Page.Load =
 				{
 					element.classList.remove("hover");
 					
+					const color = Site.Settings.url_vars["theme"] === 1 ? "rgba(24, 24, 24, 0)" : "rgba(255, 255, 255, 0)";
+					
 					anime({
 						targets: element,
 						scale: 1,
 						borderRadius: "0px",
-						backgroundColor: "rgba(255, 255, 255, 0)",
+						backgroundColor: color,
 						duration: Site.button_animation_time,
 						easing: "easeInOutQuad",
 					});

@@ -258,6 +258,11 @@ mjx-container
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .2);
 }
 
+.tex-holder.active
+{
+	cursor: pointer;
+}
+
 
 
 #card-container
@@ -308,7 +313,7 @@ mjx-container
 	right: 0;
 	
 	font-size: 32px;
-	color: rgb(64, 64, 64);
+	color: rgb(48, 48, 48);
 	
 	cursor: pointer;
 	

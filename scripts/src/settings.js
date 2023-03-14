@@ -161,7 +161,7 @@ Site.Settings =
 					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
 				}
 				
-				p, span, h1, h2, a, q, em, strong, dfn
+				p, span, h1, h2, a, q, em, strong, dfn, #card-close-button
 				{
 					transition: color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
 				}
@@ -169,6 +169,11 @@ Site.Settings =
 				 .text-box, .text-field, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button, .slider-container > input
 				{
 					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease, border-color ${Site.opacity_animation_time * 2 / 1000}s ease, color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
+				}
+				
+				.tex-holder, .card
+				{
+					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease, box-shadow ${Site.opacity_animation_time * 2 / 1000}s ease;
 				}
 			`);
 		}
@@ -337,7 +342,7 @@ Site.Settings =
 			
 			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(0, 0, 0)");
 			
-			Page.set_element_styles(".section-text, .quote-attribution", "color", "rgb(48, 48, 48)");
+			Page.set_element_styles(".section-text, .quote-attribution, #card-close-button", "color", "rgb(48, 48, 48)");
 			
 			Page.set_element_styles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field", "color", "rgb(96, 96, 96)");
 			
@@ -392,7 +397,7 @@ Site.Settings =
 			
 			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(255, 255, 255)");
 			
-			Page.set_element_styles(".section-text, .quote-attribution", "color", "rgb(220, 220, 220)");
+			Page.set_element_styles(".section-text, .quote-attribution, #card-close-button", "color", "rgb(220, 220, 220)");
 			
 			Page.set_element_styles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field", "color", "rgb(172, 172, 172)");
 			
@@ -488,7 +493,7 @@ Site.Settings =
 	
 	
 	dark_theme_style: `
-		#header
+		#header, .card
 		{
 			background-color: rgb(24, 24, 24);
 		}
@@ -510,7 +515,7 @@ Site.Settings =
 			color: rgb(255, 255, 255);
 		}
 		
-		.section-text, .quote-attribution
+		.section-text, .quote-attribution, #card-close-button
 		{
 			color: rgb(220, 220, 220);
 		}
@@ -555,6 +560,30 @@ Site.Settings =
 		.text-button, .checkbox-container, #output-canvas
 		{
 			border-color: rgb(172, 172, 172);
+		}
+		
+		
+		
+		.tex-holder
+		{
+			background-color: rgba(24, 24, 24, 0);
+			
+			box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+		}
+		
+		.tex-holder.hover
+		{
+			box-shadow: 0px 0px 16px 8px rgba(0, 0, 0, 1);
+		}
+		
+		.card
+		{
+			box-shadow: 0px 0px 32px 16px rgba(0, 0, 0, 1);
+		}
+		
+		#card-close-button.hover
+		{
+			background-color: rgb(96, 96, 96);
 		}
 	`
 };
