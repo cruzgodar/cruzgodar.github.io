@@ -378,8 +378,15 @@ Page.Components =
 		
 		
 		
-		"card": (id) =>
+		"card": (id, ...name) =>
 		{
+			if (name.length !== 0)
+			{
+				name = name.join(" ");
+				
+				return `<div id="${id}-card" class="card"><h1 class="heading-text">${name}</h1>`;
+			}
+			
 			return `<div id="${id}-card" class="card">`;
 		},
 		
