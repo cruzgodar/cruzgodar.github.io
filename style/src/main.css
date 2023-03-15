@@ -287,9 +287,9 @@ mjx-container
 
 .card
 {
-	display: none;
-	
 	position: relative;
+	
+	opacity: 0;
 	
 	width: min(70vw, 100vw - 64px);
 	padding: 16px;
@@ -302,6 +302,18 @@ mjx-container
 	
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
+	
+	scrollbar-width: none;
+}
+
+.card::-webkit-scrollbar
+{
+	display: none;
+}
+
+.card::-webkit-scrollbar
+{
+	display: none;
 }
 
 .card .body-text, .card .section-text, .card .heading-text
@@ -320,7 +332,7 @@ mjx-container
 
 #card-container .card
 {
-	display: block;
+	display: block !important;
 }
 
 #card-close-button

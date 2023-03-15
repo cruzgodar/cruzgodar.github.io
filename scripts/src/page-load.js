@@ -148,6 +148,8 @@ Page.load = async function()
 	
 	this.Load.Math.typeset();
 	
+	this.Cards.init();
+	
 	
 	
 	if (!Page.using_custom_script)
@@ -1077,6 +1079,15 @@ Page.Load =
 Page.Cards =
 {
 	container: document.querySelector("#card-container"),
+	
+	init: function()
+	{
+		Page.element.querySelectorAll(".card").forEach(card =>
+		{
+			card.style.opacity = 1;
+			card.style.display = "none";
+		});
+	},
 	
 	show: function(id)
 	{
