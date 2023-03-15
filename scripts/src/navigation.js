@@ -31,6 +31,11 @@ Page.Navigation =
 			return;
 		}
 		
+		if (Page.Cards.is_open)
+		{
+			await Page.Cards.hide();
+		}
+		
 		
 		
 		this.currently_changing_page = true;

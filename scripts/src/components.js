@@ -517,6 +517,8 @@ Page.Components =
 	{
 		const banner = html.indexOf("### banner") !== -1;
 		
+		let in_environment = false;
+		
 		html = html.replaceAll(/\r/g, "").replaceAll(/    /g, "\t");
 		
 		//Tabs in code blocks stay, but the rest can go. We match two tabs here so that we can still indent the whole block by one.
@@ -643,7 +645,9 @@ Page.Components =
 			{
 				if (lines[i] === "###")
 				{
-					//If we find one of these in the wild, we&#x2019;re in a notes environment and just need to end it.
+					//If we find one of these in the wild, we&#x2019;re in an environment and just need to end it.
+					
+					in_environment = false;
 					
 					lines[i] = `</div>`;
 					continue;
@@ -657,11 +661,18 @@ Page.Components =
 				if (this.single_line_environments.includes(words[0]))
 				{
 					lines[i] = this.Parse[words[0]](...(words.slice(1)));
+					
+					if (words[0] === "card")
+					{
+						in_environment = true;
+					}
 				}
 				
 				else if (words[0] in this.notes_environments)
 				{
 					lines[i] = this.Parse["notes-environment"](...words);
+					
+					in_environment = true;
 				}
 				
 				else
@@ -697,8 +708,15 @@ Page.Components =
 			{
 				let title = this.Parse.text(lines[i].slice(2));
 				
-				//The first word is the id.
-				lines[i] = `</section><h2 class="section-text">${title}</h2><section>`;
+				if (in_environment)
+				{
+					lines[i] = `<h2 class="section-text">${title}</h2>`;
+				}
+				
+				else
+				{
+					lines[i] = `</section><h2 class="section-text">${title}</h2><section>`;
+				}
 			}
 			
 			//A heading. Only one of these per file.
