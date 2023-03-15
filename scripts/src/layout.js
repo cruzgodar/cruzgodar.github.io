@@ -85,6 +85,16 @@ Page.Layout =
 		
 		
 		
+		if (Page.Cards.is_open)
+		{
+			const rect = Page.Cards.current_card.getBoundingClientRect();
+			
+			Page.Cards.close_button.style.top = `${rect.top}px`;
+			Page.Cards.close_button.style.left = `${rect.right - 50}px`;
+		}
+		
+		
+		
 		Page.Banner.on_scroll(0);
 	},
 

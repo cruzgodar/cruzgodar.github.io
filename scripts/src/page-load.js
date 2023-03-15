@@ -1079,6 +1079,10 @@ Page.Load =
 Page.Cards =
 {
 	container: document.querySelector("#card-container"),
+	current_card: null,
+	close_button: document.querySelector("#card-close-button"),
+	
+	is_open: false,
 	
 	init: function()
 	{
@@ -1091,20 +1095,23 @@ Page.Cards =
 	
 	show: function(id)
 	{
+		this.is_open = true;
+		
 		this.container.style.display = "flex";
 		this.container.style.opacity = 0;
 		this.container.style.transform = "scale(1)";
 		
-		this.container.appendChild(document.querySelector(`#${id}-card`));
+		this.current_card = document.querySelector(`#${id}-card`);
 		
-		document.querySelector(`#${id}-card`).appendChild(document.querySelector("#card-close-button"));
+		this.container.appendChild(this.current_card);
+		this.current_card.appendChild(this.close_button);
 		
 		
 		
-		const rect = document.querySelector(`#${id}-card`).getBoundingClientRect();
+		const rect = this.current_card.getBoundingClientRect();
 		
-		document.querySelector("#card-close-button").style.top = `${rect.top}px`;
-		document.querySelector("#card-close-button").style.left = `${rect.right - 50}px`;
+		this.close_button.style.top = `${rect.top}px`;
+		this.close_button.style.left = `${rect.right - 50}px`;
 		
 		
 		this.container.style.transform = "scale(.95)";
@@ -1150,6 +1157,8 @@ Page.Cards =
 	
 	hide: async function()
 	{
+		this.is_open = false;
+		
 		await new Promise((resolve, reject) =>
 		{
 			anime({
@@ -1186,12 +1195,12 @@ Page.Cards =
 				complete: resolve
 			});
 		});
-			
+		
 		Page.Cards.container.style.display = "none";
 		
-		Page.element.appendChild(Page.Cards.container.querySelector(".card"));
+		Page.element.appendChild(Page.Cards.current_card);
 		
-		Page.Cards.container.appendChild(document.querySelector("#card-close-button"));
+		Page.Cards.container.appendChild(Page.Cards.close_button);
 		
 		document.documentElement.removeEventListener("click", this.handle_click_event);
 	},

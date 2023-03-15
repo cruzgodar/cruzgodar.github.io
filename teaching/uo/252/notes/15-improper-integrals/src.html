@@ -85,7 +85,7 @@ In order to compute the first type of improper integral, we'll leave the bounds 
 	We have
 	
 	$$
-		\int_{-\infty}^{-1} \frac{1}{x}\,dx &= \lim_{a \to -\infty} \int_a^b{-1}\frac{1}{x}\,dx
+		\int_{-\infty}^{-1} \frac{1}{x}\,dx &= \lim_{a \to -\infty} \int_a^{-1}\frac{1}{x}\,dx
 		
 		&= \lim_{a \to -\infty} \left. \left[ -\ln|x| \right] \right|_a^{-1}
 		
@@ -127,7 +127,7 @@ In order to compute the first type of improper integral, we'll leave the bounds 
 ### exc the first type of improper integral
 	
 	Find $\displaystyle \int_{-\infty}^\infty \frac{1}{x^2 + 1}\,dx$.
-	<!--
+	
 	**Solution:** let's focus on finding the antiderivative first. We can just integrate directly to get $\tan^{-1}(x)$, but let's do trig sub to see how it would work. We let $x = \tan(\theta)$, so $dx = \sec^2(\theta)\,d\theta$. Then we get
 	
 	$$
@@ -149,7 +149,7 @@ In order to compute the first type of improper integral, we'll leave the bounds 
 	$$
 	
 	Now what is the limit of $\tan^{-1}(x)$? Well, we're looking for angles in radians that make tangent approach $\infty$ or $-\infty$. Those values are $\frac{\pi}{2}$ and $-\frac{\pi}{2}$, respectively, so in total, the answer is $\frac{pi}{2} + \frac{\pi}{2} = \pi$.
-	-->
+	
 ###
 
 
@@ -245,7 +245,7 @@ The second kind of improper integral is an integral in which the function spikes
 ### exc the second type of improper integral
 	
 	Find $\displaystyle \int_0^1 \frac{1}{\sqrt[3]{t}}\,dt$.
-	<!--
+	
 	**Solution:** the problem (division by zero) occurs when $t = 0$, so we have
 	
 	$$
@@ -259,7 +259,7 @@ The second kind of improper integral is an integral in which the function spikes
 		
 		&= \frac{3}{2}.
 	$$
-	-->
+	
 ###
 
 

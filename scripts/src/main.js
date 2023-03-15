@@ -310,11 +310,8 @@ Site.load = async function(url)
 	
 	
 	
-	const card_close_button = document.querySelector("#card-close-button");
-	
-	Page.Load.HoverEvents.add(card_close_button);
-	
-	card_close_button.addEventListener("click", Page.Cards.hide);
+	Page.Load.HoverEvents.add(Page.Cards.close_button);
+	Page.Cards.close_button.addEventListener("click", Page.Cards.hide);
 	
 	
 	
