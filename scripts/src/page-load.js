@@ -146,9 +146,9 @@ Page.load = async function()
 		Site.Settings.condense_applet();
 	}
 	
-	this.Load.Math.typeset();
+	this.Load.Math.typeset()
 	
-	this.Cards.init();
+	.then(this.Cards.init);
 	
 	
 	
@@ -985,17 +985,19 @@ Page.Load =
 	{
 		typeset: function()
 		{
-			MathJax.typesetPromise()
-			
-			.then(() =>
+			return new Promise(async (resolve, reject) =>
 			{
+				await MathJax.typesetPromise();
+				
 				Page.element.querySelectorAll("mjx-container").forEach(element => element.setAttribute("tabindex", -1));
+				
+				resolve();
 			});
 		},
 		
 		show_tex: async function(element)
 		{
-			if (element.getAttribute("data-showing-tex") === "1")
+			if (!Page.Cards.is_open || element.getAttribute("data-showing-tex") === "1")
 			{
 				return;
 			}
@@ -1119,6 +1121,14 @@ Page.Cards =
 		
 		this.close_button.style.top = `${rect.top}px`;
 		this.close_button.style.left = `${rect.right - 50}px`;
+		
+		setTimeout(() =>
+		{
+			const rect = this.current_card.getBoundingClientRect();
+			
+			this.close_button.style.top = `${rect.top}px`;
+			this.close_button.style.left = `${rect.right - 50}px`;
+		}, 500);
 		
 		
 		this.container.style.transform = "scale(.95)";
