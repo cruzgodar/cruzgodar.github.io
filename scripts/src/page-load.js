@@ -1029,6 +1029,7 @@ Page.Load =
 			const old_height = element.getBoundingClientRect().height;
 			element.style.minHeight = `${old_height}px`;
 			
+			const old_padding = element.style.padding;
 			
 			
 			const junk_drawer = document.createElement("div");
@@ -1044,6 +1045,7 @@ Page.Load =
 			{
 				tex_element = document.createElement("textarea");
 				tex_element.textContent = tex;
+				tex_element.style.minHeight = `${old_height - 17}px`;
 			}
 			
 			else
@@ -1051,10 +1053,13 @@ Page.Load =
 				tex_element = document.createElement("input");
 				tex_element.setAttribute("type", "text");
 				tex_element.setAttribute("value", tex);
+				tex_element.style.minHeight = `${old_height - 11}px`;
 			}
 			
 			tex_element.style.fontFamily = "'Source Code Pro', monospace";
 			element.appendChild(tex_element);
+			
+			element.style.padding = 0;
 			
 			tex_element.select();
 			setTimeout(() => tex_element.select(), 50);
@@ -1063,6 +1068,8 @@ Page.Load =
 			tex_element.onblur = () =>
 			{
 				tex_element.remove();
+				
+				element.style.padding = old_padding;
 				element.appendChild(junk_drawer.firstElementChild);
 				element.style.minHeight = "";
 				junk_drawer.remove();

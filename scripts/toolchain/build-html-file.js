@@ -571,8 +571,6 @@ const components =
 				
 				while (lines[i].slice(0, 2) !== "$$")
 				{
-					source_tex = source_tex + "[NEWLINE]" + lines[i];
-					
 					if (lines[i] === "")
 					{
 						lines.splice(i, 1);
@@ -580,6 +578,8 @@ const components =
 					
 					else
 					{
+						source_tex = `${source_tex}${i === start_i + 1 ? "" : "\\\\"}[NEWLINE]${lines[i]}`;
+						
 						if ([...lines[i].matchAll(/\\(begin|end){.*?}/g)].length !== 1)
 						{
 							lines[i] = `${lines[i]}\\\\[4px]`;
@@ -589,7 +589,7 @@ const components =
 					}
 				}
 				
-				source_tex = source_tex + "[NEWLINE]\\end{align*}";
+				source_tex = `${source_tex}[NEWLINE]\\end{align*}`;
 				
 				//Remove the last line break.
 				lines[i - 1] = lines[i - 1].replace(/\\\\\[4px\]$/, "");

@@ -214,24 +214,24 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 	
 	$$
 		\int \frac{1}{y-3}\,dy &= \int (x-2)\,dx
-		q
-		\ln |y - 3| &= x^2 - 2x + C.
+		
+		\ln |y - 3| &= \frac{x^2}{2} - 2x + C.
 	$$
 	
 	Now it's time to solve for $y$.
 	
 	$$
-		\ln |y - 3| &= x^2 - 2x + C
+		\ln |y - 3| &= \frac{x^2}{2} - 2x + C
 		
-		y - 3 &= e^{x^2 - 2x + C}
+		y - 3 &= e^{\frac{x^2}{2} - 2x + C}
 		
-		y &= e^{x^2 - 2x + C} + 3.
+		y &= e^{\frac{x^2}{2} - 2x + C} + 3.
 	$$
 	
 	Now to get rid of $C$, we need to use the initial value: $y(0) = 5$. That gives us
 	
 	$$
-		5 &= e^{0^2 - 2(0) + C} + 3
+		5 &= e^{\frac{0^2}{2} - 2(0) + C} + 3
 		
 		2 &= e^C
 		
@@ -241,7 +241,7 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 	Therefore, this solution becomes
 	
 	$$
-		y = e^{x^2 - 2x + \ln(2)} + 3.
+		y = e^{\frac{x^2}{2} - 2x + \ln(2)} + 3.
 	$$
 	
 	Finally, we'll solve for the equilibrium solutions by solving $y - 3 = 0$, so $y = 3$. The reason why the previous method didn't solve for this solution is because it required dividing by $y - 3$, so that's exactly the solution we missed. However, it does not satisfy the initial condition, since $y(0) = 3 \neq 3$. Therefore, only the previous solution is correct.
