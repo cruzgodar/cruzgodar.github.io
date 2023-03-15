@@ -291,7 +291,7 @@ mjx-container
 {
 	position: relative;
 	
-	opacity: 0;
+	opacity: 0.01;
 	
 	width: min(70vw, 100vw - 64px);
 	padding: 16px;
