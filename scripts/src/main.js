@@ -135,7 +135,7 @@ Site.load = async function(url)
 		
 		this.button_animation_time = this.base_animation_time * .5;
 		this.opacity_animation_time = this.base_animation_time * .8;
-		this.page_animation_time = this.base_animation_time * .6;
+		this.page_animation_time = this.base_animation_time * .55;
 		this.background_color_animation_time = this.base_animation_time * 2;
 		
 		Page.Animate.change_opacity = Page.Animate.change_opacity_js;
@@ -169,7 +169,7 @@ Site.load = async function(url)
 	{
 		this.button_animation_time = this.base_animation_time * .45;
 		this.opacity_animation_time = this.base_animation_time * .75;
-		this.page_animation_time = this.base_animation_time * .6;
+		this.page_animation_time = this.base_animation_time * .55;
 		this.background_color_animation_time = this.base_animation_time * 2;
 		
 		Page.Animate.change_opacity = Page.Animate.change_opacity_css;
