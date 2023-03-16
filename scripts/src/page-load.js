@@ -146,9 +146,12 @@ Page.load = async function()
 		Site.Settings.condense_applet();
 	}
 	
-	this.Load.Math.typeset()
-	
-	.then(this.Cards.init);
+	if (Site.scripts_loaded["mathjax"])
+	{
+		this.Load.Math.typeset()
+		
+		.then(this.Cards.init);
+	}
 	
 	
 	

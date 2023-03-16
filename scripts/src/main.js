@@ -240,6 +240,8 @@ Site.load = async function(url)
 	.then(function()
 	{
 		Site.scripts_loaded["mathjax"] = true;
+		
+		Page.Cards.init();
 	})
 	
 	.catch(function(error)
