@@ -78,13 +78,13 @@
 	
 	
 	<div class="slide">
-		<h1>The Hook Length Formula</h1>
+		<h1>A Generating Function for RPPs</h1>
 		
 		<p class="build">A famous result (due to Stanley in his Ph.D. thesis) expresses the generating function for RPPs of shape $\lambda$ as a product involving hook lengths:</p>
 		
 		<p class="build" style="text-align: center"><strong>Thm:</strong> $\displaystyle \sum_\pi q^{|\pi|} = \prod_{(i, j) \in \lambda} \frac{1}{1 - q^{h(i, j)}},$</p>
 		
-		<p data-build="1">where the sum is taken over all RPPs $\pi$ of shape $\lambda$. Since boxes and hooks are in bijection, the combinatorial interpretation is that RPPs are in bijection with multi-sets of hooks.</p>
+		<p data-build="1">where the sum is taken over all RPPs $\pi$ of shape $\lambda$. Since boxes and hooks are in bijection, the combinatorial interpretation is that RPPs of shape $\lambda$ are in bijection with multi-sets of hooks in a diagram of shape $\lambda$.</p>
 	</div>
 	
 	
@@ -122,7 +122,7 @@
 		
 		<p class="build">The removal of a zigzag path is an invertible operation, and it can be shown that the generated sequence of pivots respects a reverse lexicographic ordering, so given a multiset of pivots, the inverse map $\operatorname{HG}^{-1}$ is well-defined.</p>
 		
-		<p class="build">Since hooks are in bijection with pivots, we can concisely represent the multiset of hooks as a tableau (an unrestricted grid of numbers).</p>
+		<p class="build">Since hooks are in bijection with pivots, we can concisely represent the multiset of hooks as a tableau of shape $\lambda$, weighted by hook length.</p>
 	</div>
 	
 	
@@ -258,7 +258,7 @@
 	
 	
 	<div class="slide">
-		<p><strong>Thm:</strong> This process is equivalent to $\operatorname{PS}$</p>.
+		<p><strong>Thm:</strong> This process is equivalent to $\operatorname{PS}$.</p>
 		
 		<p class="build">We can describe $\operatorname{HG}$ in an identical way by changing the labeling order to be right to left, top to bottom, and then changing the hook ordering to match $\operatorname{HG}$'s insertion order. The result is a much more clear connection between the two bijections.</p>
 	</div>

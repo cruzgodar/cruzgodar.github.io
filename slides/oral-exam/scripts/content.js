@@ -534,7 +534,7 @@ const lapsa_options =
 				});
 			},
 				
-			3: (slide, forward, duration = 200) =>
+			3: (slide, forward, duration = 150) =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -621,7 +621,7 @@ const lapsa_options =
 				});
 			},
 			
-			1: (slide, forward, duration = 1500) =>
+			1: (slide, forward, duration = 600) =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -643,7 +643,7 @@ const lapsa_options =
 				});
 			},
 				
-			2: (slide, forward, duration = 900) =>
+			2: (slide, forward, duration = 150) =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -942,7 +942,7 @@ const lapsa_options =
 				});
 			},
 				
-			3: (slide, forward, duration = 200) =>
+			3: (slide, forward, duration = 150) =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
@@ -1092,7 +1092,7 @@ const lapsa_options =
 				});
 			},
 			
-			3: (slide, forward, duration = 600) =>
+			3: (slide, forward, duration = 400) =>
 			{
 				return new Promise(async (resolve, reject) =>
 				{
