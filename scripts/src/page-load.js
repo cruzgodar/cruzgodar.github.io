@@ -328,6 +328,12 @@ Page.Load =
 		
 		setTimeout(() =>
 		{
+			const image_element = document.body.querySelector("#header-logo img");
+			
+			image_element.style.width = `${image_element.getBoundingClientRect().height}px`;
+			
+			
+			
 			document.body.querySelectorAll("#header-logo, #header-links a").forEach(link =>
 			{
 				Page.Load.HoverEvents.add(link);
@@ -346,11 +352,17 @@ Page.Load =
 				});
 			});
 			
+			
+			
 			const element = document.body.querySelector("#header-theme-button");
 			
 			Page.Load.HoverEvents.add(element);
 			
 			element.addEventListener("click", () => Site.Settings.toggle_theme());
+			
+			
+			
+			Site.header_element = document.body.querySelector("#header");
 		});
 	},
 

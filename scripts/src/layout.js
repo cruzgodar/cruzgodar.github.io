@@ -95,6 +95,12 @@ Page.Layout =
 		
 		
 		
+		//Fix the logo cause Firefox is dumb.
+		const element = Site.header_element.children[0].children[0];
+		element.style.width = `${element.getBoundingClientRect().height}px`;
+		
+		
+		
 		Page.Banner.on_scroll(0);
 	},
 
