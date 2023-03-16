@@ -711,7 +711,7 @@ Page.Components =
 				
 				if (in_environment)
 				{
-					lines[i] = `<h2 class="section-text" style="margin-top: 32px">${title}</h2>`;
+					lines[i] = `<h2 class="section-text" style="margin-top: 48px">${title}</h2>`;
 				}
 				
 				else
