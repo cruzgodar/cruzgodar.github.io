@@ -322,7 +322,7 @@ mjx-container
 {
 	width: 100% !important;
 	
-	text-align: justify;
+	text-align: left;
 }
 
 .card .heading-text
@@ -330,6 +330,13 @@ mjx-container
 	/* Makes things look just a little nicer. */
 	
 	margin-top: -4.5px;
+	width: calc(100% - 50px) !important;
+	margin-left: 0;
+}
+
+.card > *:last-child
+{
+	margin-bottom: 0;
 }
 
 #card-container .card
@@ -360,6 +367,8 @@ mjx-container
 	width: 38px;
 	
 	margin: 6px;
+	
+	z-index: 1001;
 }
 
 #card-close-button.hover

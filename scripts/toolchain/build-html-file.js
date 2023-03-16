@@ -251,6 +251,7 @@ const components =
 			.replaceAll(/^\'(\S)/g, (match, $1) => `&#x2018;${$1}`)
 			.replaceAll(/\'/g, "&#x2019;")
 			.replaceAll(/---/g, "&mdash;")
+			.replaceAll(/--/g, "&ndash;")
 			.replaceAll(/\[DOUBLEQUOTE\]/g, "\"")
 			.replaceAll(/\[SINGLEQUOTE\]/g, "\'")
 			.replaceAll(/\[ASTERISK\]/g, "*")
@@ -705,7 +706,7 @@ const components =
 				
 				if (in_environment)
 				{
-					lines[i] = `<h2 class="section-text">${title}</h2>`;
+					lines[i] = `<h2 class="section-text" style="margin-top: 32px">${title}</h2>`;
 				}
 				
 				else
