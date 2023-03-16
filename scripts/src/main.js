@@ -443,9 +443,9 @@ Site.Interaction =
 
 
 
-		//Click the focused element when the enter key is pressed.
 		document.documentElement.addEventListener("keydown", (e) =>
 		{
+			//Click the focused element when the enter key is pressed.
 			if (e.keyCode === 13)
 			{
 				if (document.activeElement.classList.contains("click-on-child"))
@@ -457,6 +457,12 @@ Site.Interaction =
 				{
 					document.activeElement.click();
 				}
+			}
+			
+			//Close cards when escape is pressed.
+			else if (e.keyCode === 27 && Page.Cards.is_open)
+			{
+				Page.Cards.hide();
 			}
 		});
 
