@@ -277,8 +277,10 @@ mjx-container
 	width: 100%;
 	
 	/* This is to make the scale animations look just a little nicer. */
-	height: calc(100% * 1.05263);
-	margin-top: calc(-100% * 0.02632);
+	height: calc(100% * 1.1);
+	
+	/* For some reason this needs to be in terms of vh or Chrome starts changing it wrt width. */
+	margin-top: calc(-100vh * .05);
 	
 	z-index: 1000;
 	
@@ -308,8 +310,8 @@ mjx-container
 	margin-left: 16px;
 	margin-right: 16px;
 	
-	margin-top: calc(16px + 100% * 0.02632);
-	margin-bottom: calc(16px + 100% * 0.02632);
+	margin-top: calc(16px + 100vh * .05);
+	margin-bottom: calc(16px + 100vh * .05);
 	
 	border-radius: 16px;
 	
