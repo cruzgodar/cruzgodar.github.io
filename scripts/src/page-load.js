@@ -1039,7 +1039,7 @@ Page.Load =
 			
 			
 			
-			const tex = element.getAttribute("data-source-tex").replaceAll(/\[NEWLINE\]/g, "\n");
+			const tex = element.getAttribute("data-source-tex").replaceAll(/\[NEWLINE\]/g, "\n").replaceAll(/\[TAB\]/g, "\t");
 			
 			
 			
@@ -1063,6 +1063,9 @@ Page.Load =
 				tex_element = document.createElement("textarea");
 				tex_element.textContent = tex;
 				tex_element.style.minHeight = `${old_height - 17}px`;
+				tex_element.style.width = "100%";
+				tex_element.style.marginLeft = "-6px";
+				element.style.width = "75%";
 			}
 			
 			else
@@ -1086,6 +1089,7 @@ Page.Load =
 			{
 				tex_element.remove();
 				
+				element.style.removeProperty("width");
 				element.style.padding = old_padding;
 				element.appendChild(junk_drawer.firstElementChild);
 				element.style.minHeight = "";

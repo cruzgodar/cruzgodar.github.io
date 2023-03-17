@@ -566,10 +566,10 @@ Page.Components =
 			
 			
 			
-			//Leave math alone (but wrap it in body text).
+			//Leave math mostly alone (but wrap it in body text).
 			if (lines[i].slice(0, 2) === "$$")
 			{
-				let source_tex = "\\begin{align*}";
+				let source_tex = "";
 				
 				const start_i = i;
 				
@@ -584,7 +584,7 @@ Page.Components =
 					
 					else
 					{
-						source_tex = `${source_tex}${i === start_i + 1 ? "" : "\\\\"}[NEWLINE]${lines[i]}`;
+						source_tex = `${source_tex}${i === start_i + 1 ? "" : "\\\\"}[NEWLINE][TAB]${lines[i]}`;
 						
 						if ([...lines[i].matchAll(/\\(begin|end){.*?}/g)].length !== 1)
 						{
@@ -595,7 +595,19 @@ Page.Components =
 					}
 				}
 				
-				source_tex = `${source_tex}[NEWLINE]\\end{align*}`;
+				source_tex = `${source_tex}[NEWLINE]`;
+				
+				if (source_tex.indexOf("&") === -1)
+				{
+					source_tex = `$$${source_tex}$$`;
+				}
+				
+				else
+				{
+					source_tex = `\\begin{align*}${source_tex}\\end{align*}`;
+				}
+				
+				
 				
 				//Remove the last line break.
 				lines[i - 1] = lines[i - 1].replace(/\\\\\[4px\]$/, "");
