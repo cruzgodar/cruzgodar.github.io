@@ -91,6 +91,18 @@ Page.Layout =
 			
 			Page.Cards.close_button.style.top = `${rect.top}px`;
 			Page.Cards.close_button.style.left = `${rect.right - 50}px`;
+			
+			
+			
+			if (rect.height > window.innerHeight - 32)
+			{
+				Page.Cards.container.style.justifyContent = "flex-start";
+			}
+			
+			else
+			{
+				Page.Cards.container.style.justifyContent = "center";
+			}
 		}
 		
 		

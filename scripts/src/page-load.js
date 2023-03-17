@@ -1139,11 +1139,23 @@ Page.Cards =
 		
 		setTimeout(() =>
 		{
-			const rect = this.current_card.getBoundingClientRect();
+			rect = this.current_card.getBoundingClientRect();
 			
 			this.close_button.style.top = `${rect.top}px`;
 			this.close_button.style.left = `${rect.right - 50}px`;
 		}, 500);
+		
+		
+		
+		if (rect.height > window.innerHeight - 32)
+		{
+			this.container.style.justifyContent = "flex-start";
+		}
+		
+		else
+		{
+			this.container.style.justifyContent = "center";
+		}
 		
 		
 		this.container.style.transform = "scale(.95)";
