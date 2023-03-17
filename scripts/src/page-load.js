@@ -1117,7 +1117,7 @@ Page.Cards =
 		});
 	},
 	
-	show: function(id)
+	show: async function(id)
 	{
 		this.is_open = true;
 		
@@ -1125,27 +1125,24 @@ Page.Cards =
 		this.container.style.opacity = 0;
 		this.container.style.transform = "scale(1)";
 		
+		
+		
+		//Makes the animation look a little nicer (since it doesn't cut off the bottom of long cards).
+		
+		
+		
+		this.container.style.display = "flex";
+		
 		this.current_card = document.querySelector(`#${id}-card`);
 		
 		this.container.appendChild(this.current_card);
-		this.current_card.insertBefore(this.close_button, this.current_card.firstChild);
+		this.current_card.appendChild(this.close_button);
+		
+		this.container.scroll(0, 0);
 		
 		
 		
 		const rect = this.current_card.getBoundingClientRect();
-		
-		this.close_button.style.top = `${rect.top}px`;
-		this.close_button.style.left = `${rect.right - 50}px`;
-		
-		setTimeout(() =>
-		{
-			rect = this.current_card.getBoundingClientRect();
-			
-			this.close_button.style.top = `${rect.top}px`;
-			this.close_button.style.left = `${rect.right - 50}px`;
-		}, 500);
-		
-		
 		
 		if (rect.height > window.innerHeight - 32)
 		{
@@ -1158,45 +1155,52 @@ Page.Cards =
 		}
 		
 		
+		
 		this.container.style.transform = "scale(.95)";
 		
 		Page.element.style.filter = "brightness(1)";
 		document.querySelector("#header").style.filter = "brightness(1)";
 		
-		anime({
-			targets: this.container,
-			opacity: 1,
-			scale: 1,
-			duration: 400,
-			easing: "easeOutQuint"
-		});
-		
-		anime({
-			targets: [Page.element, document.querySelector("#header")],
-			filter: "brightness(.5)",
-			duration: 400,
-			easing: "easeOutQuint"
-		});
-		
-		const theme_color = Site.Settings.url_vars["theme"] === 1 ? "#0c0c0c" : "#7f7f7f";
-		
-		anime({
-			targets: Site.Settings.meta_theme_color_element,
-			content: theme_color,
-			duration: 400,
-			easing: "easeOutQuint",
-		});
-		
-		const color = Site.Settings.url_vars["theme"] === 1 ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
-		
-		anime({
-			targets: document.documentElement,
-			backgroundColor: color,
-			duration: 400,
-			easing: "easeOutQuint"
-		});
-		
 		document.documentElement.addEventListener("click", this.handle_click_event);
+		
+		
+		
+		await new Promise((resolve, reject) =>
+		{
+			anime({
+				targets: this.container,
+				opacity: 1,
+				scale: 1,
+				duration: 400,
+				easing: "easeOutQuint"
+			});
+			
+			anime({
+				targets: [Page.element, document.querySelector("#header")],
+				filter: "brightness(.5)",
+				duration: 400,
+				easing: "easeOutQuint"
+			});
+			
+			const theme_color = Site.Settings.url_vars["theme"] === 1 ? "#0c0c0c" : "#7f7f7f";
+			
+			anime({
+				targets: Site.Settings.meta_theme_color_element,
+				content: theme_color,
+				duration: 400,
+				easing: "easeOutQuint",
+			});
+			
+			const color = Site.Settings.url_vars["theme"] === 1 ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
+			
+			anime({
+				targets: document.documentElement,
+				backgroundColor: color,
+				duration: 400,
+				easing: "easeOutQuint",
+				complete: resolve
+			});
+		});
 	},
 	
 	hide: async function()

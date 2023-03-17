@@ -275,7 +275,10 @@ mjx-container
 	left: 0;
 	
 	width: 100%;
-	height: 100%;
+	
+	/* This is to make the scale animations look just a little nicer. */
+	height: calc(100% * 1.05263);
+	margin-top: calc(-100% * 0.02632);
 	
 	z-index: 1000;
 	
@@ -301,7 +304,13 @@ mjx-container
 	
 	width: min(70%, 100% - 64px);
 	padding: 16px;
-	margin: 16px;
+	
+	margin-left: 16px;
+	margin-right: 16px;
+	
+	margin-top: calc(16px + 100% * 0.02632);
+	margin-bottom: calc(16px + 100% * 0.02632);
+	
 	border-radius: 16px;
 	
 	background-color: rgb(255, 255, 255);
@@ -336,7 +345,7 @@ mjx-container
 
 #card-close-button
 {
-	position: fixed;
+	position: absolute;
 	
 	top: 0;
 	right: 0;

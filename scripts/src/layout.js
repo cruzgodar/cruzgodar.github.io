@@ -89,11 +89,6 @@ Page.Layout =
 		{
 			const rect = Page.Cards.current_card.getBoundingClientRect();
 			
-			Page.Cards.close_button.style.top = `${rect.top}px`;
-			Page.Cards.close_button.style.left = `${rect.right - 50}px`;
-			
-			
-			
 			if (rect.height > window.innerHeight - 32)
 			{
 				Page.Cards.container.style.justifyContent = "flex-start";
