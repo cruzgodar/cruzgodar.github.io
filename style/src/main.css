@@ -266,6 +266,13 @@ mjx-container
 	transition: box-shadow .1s ease-out;
 }
 
+.tex-holder textarea
+{
+	tab-size: 4;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+}
+
 
 
 #card-container
