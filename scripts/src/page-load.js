@@ -1136,7 +1136,7 @@ Page.Cards =
 		this.current_card = document.querySelector(`#${id}-card`);
 		
 		this.container.appendChild(this.current_card);
-		this.current_card.appendChild(this.close_button);
+		this.current_card.insertBefore(this.close_button, this.current_card.firstElementChild);
 		
 		this.container.scroll(0, 0);
 		
