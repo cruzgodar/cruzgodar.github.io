@@ -48,7 +48,8 @@
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \left| \frac{1}{6} x^2 - \frac{1}{40} x^3 + 1 \right|`, color: DESMOS_PURPLE},
+					{latex: String.raw`f(x) = 1+\frac{1}{4}(\sin(x) + \cos(2x))`, color: DESMOS_PURPLE},
+					/*
 					{latex: String.raw`a = 1`, sliderBounds: {min: 0, max: 8}},
 					{latex: String.raw`b = 7`, sliderBounds: {min: 0, max: 8}},
 					{latex: String.raw`n = 6`, sliderBounds: {min: 2, max: 100, step: 1}},
@@ -63,6 +64,7 @@
 					{latex: String.raw`0 \leq y \leq f(L) \{ L \leq x \leq R \}`, color: DESMOS_RED, secret: true},
 					{latex: String.raw`x = L \{ 0 \leq y \leq f(L) \}`, color: DESMOS_RED, secret: true},
 					{latex: String.raw`x = R \{ 0 \leq y \leq f(L) \}`, color: DESMOS_RED, secret: true}
+					*/
 				]
 			},
 			

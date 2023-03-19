@@ -569,16 +569,16 @@ Page.Load =
 	
 	//Usage: Page.Load.export_desmos_screenshot("");
 	
-	export_desmos_screenshot: function(id)
+	export_desmos_screenshot: function(id, for_pdf = false)
 	{
-		Page.desmos_graphs[id].updateSettings({showGrid: false, xAxisNumbers: false, yAxisNumbers: false});
+		Page.desmos_graphs[id].updateSettings({showGrid: for_pdf, xAxisNumbers: for_pdf, yAxisNumbers: for_pdf});
 		
 		let expressions = Page.desmos_graphs[id].getExpressions();
 		
 		for (let i = 0; i < expressions.length; i++)
 		{
-			expressions[i].lineWidth = 7.5;
-			expressions[i].pointSize = 27;
+			expressions[i].lineWidth = for_pdf ? 5 : 7.5;
+			expressions[i].pointSize = for_pdf ? 15 : 27;
 			expressions[i].dragMode = "NONE";
 		}
 		
