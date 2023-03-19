@@ -22,6 +22,7 @@
 	
 	let free_particle_slots = [];
 	
+	let skip_drawing = false;
 	let paused = false;
 	
 	let image_data = null;
@@ -53,7 +54,23 @@
 		use_fullscreen_button: true,
 		
 		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+		
+		switch_fullscreen_callback: change_aspect_ratio,
+		
+		
+		
+		mousedown_callback: on_grab_canvas,
+		touchstart_callback: on_grab_canvas,
+		
+		mousedrag_callback: on_drag_canvas,
+		touchmove_callback: on_drag_canvas,
+		
+		mouseup_callback: on_release_canvas,
+		touchend_callback: on_release_canvas,
+		
+		wheel_callback: on_wheel_canvas,
+		pinch_callback: on_pinch_canvas
 	};
 	
 	const wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
@@ -80,6 +97,10 @@
 	{
 		wilson.download_frame("a-vector-field.png");
 	});
+	
+	
+	
+	Page.show();
 	
 	
 	
@@ -165,35 +186,44 @@
 		}
 		
 		
-		
-		//Draw all the particles, lower their lifetimes, and update them according to the vector field.
-		for (let i = 0; i < particles.length; i++)
+		if (skip_drawing)
 		{
-			const canvas_coordinates = wilson.utils.interpolate.world_to_canvas(particles[i][0], particles[i][1]);
-			
-			if (canvas_coordinates[0] >= 0 && canvas_coordinates[0] < resolution && canvas_coordinates[1] >= 0 && canvas_coordinates[1] < resolution)
+			skip_drawing = false;
+		}
+		
+		else
+		{
+			//Draw all the particles, lower their lifetimes, and update them according to the vector field.
+			for (let i = 0; i < particles.length; i++)
 			{
-				const dx = dt * x_function(particles[i][0], particles[i][1]);
-				const dy = dt * y_function(particles[i][0], particles[i][1]);
+				const row = Math.round((.5 - (particles[i][1] - wilson.world_center_y) / wilson.world_height) * wilson.canvas_height);
 				
-				grid[canvas_coordinates[0]][canvas_coordinates[1]][0] = lifetime;
-				grid[canvas_coordinates[0]][canvas_coordinates[1]][1] = (Math.atan2(dy, dx) + Math.PI) / (2 * Math.PI);
+				const col = Math.round(((particles[i][0] - wilson.world_center_x) / wilson.world_width + .5) * wilson.canvas_width);
 				
-				particles[i][0] += dx;
-				particles[i][1] += dy;
+				if (row >= 0 && row < resolution && col >= 0 && col < resolution)
+				{
+					const dx = dt * x_function(particles[i][0], particles[i][1]);
+					const dy = dt * y_function(particles[i][0], particles[i][1]);
+					
+					grid[row][col][0] = lifetime;
+					grid[row][col][1] = (Math.atan2(dy, dx) + Math.PI) / (2 * Math.PI);
+					
+					particles[i][0] += dx;
+					particles[i][1] += dy;
+					
+					particles[i][2]--;
+					
+					if (particles[i][2] <= 0)
+					{
+						destroy_particle(i);
+					}
+				}
 				
-				particles[i][2]--;
-				
-				if (particles[i][2] <= 0)
+				else
 				{
 					destroy_particle(i);
+					continue;
 				}
-			}
-			
-			else
-			{
-				destroy_particle(i);
-				continue;
 			}
 		}
 		
@@ -227,6 +257,78 @@
 		
 		
 		wilson.render.draw_frame(image_data);
+		
+		
+		
+		last_pan_velocities_x.push(next_pan_velocity_x);
+		last_pan_velocities_y.push(next_pan_velocity_y);
+		last_pan_velocities_x.shift();
+		last_pan_velocities_y.shift();
+		
+		next_pan_velocity_x = 0;
+		next_pan_velocity_y = 0;
+		
+		if (pan_velocity_x !== 0 || pan_velocity_y !== 0 || zoom_velocity !== 0)
+		{
+			const x_delta = -pan_velocity_x * wilson.world_width;
+			const y_delta = -pan_velocity_y * wilson.world_height;
+			
+			const row_pan = Math.round(-y_delta / wilson.world_height * wilson.canvas_height);
+			const col_pan = Math.round(x_delta / wilson.world_width * wilson.canvas_width);
+			
+			pan_grid(row_pan, col_pan);
+			
+			if (row_pan)
+			{
+				wilson.world_center_y -= y_delta;
+				
+				pan_velocity_y *= pan_friction;
+			}
+			
+			else
+			{
+				pan_velocity_y = 0;
+			}
+			
+			if (col_pan)
+			{
+				wilson.world_center_x -= x_delta;
+				
+				pan_velocity_x *= pan_friction;
+			}
+			
+			else
+			{
+				pan_velocity_x = 0;
+			}
+			
+			if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) < pan_velocity_stop_threshhold)
+			{
+				pan_velocity_x = 0;
+				pan_velocity_y = 0;
+			}
+			
+			/*
+			
+			
+			zoom_level += zoom_velocity;
+			
+			zoom_level = Math.min(zoom_level, 1);
+			
+			zoom_canvas(fixed_point_x, fixed_point_y);
+			
+			zoom_velocity *= zoom_friction;
+			
+			if (Math.abs(zoom_velocity) < zoom_velocity_stop_threshhold)
+			{
+				zoom_velocity = 0;
+			}
+			
+			
+			
+			window.requestAnimationFrame(draw_julia_set);
+			*/
+		}
 		
 		
 		
@@ -268,9 +370,351 @@
 	
 	
 	
+	//Call this before changing the world parameters!
+	function pan_grid(row_pan, col_pan)
+	{
+		//We overwrite top to bottom, left to right.
+		if (row_pan <= 0 && col_pan <= 0)
+		{
+			for (let i = 0; i < resolution; i++)
+			{
+				for (let j = 0; j < resolution; j++)
+				{
+					if (i - row_pan < resolution && j - col_pan < resolution)
+					{
+						grid[i][j] = grid[i - row_pan][j - col_pan];
+					}
+					
+					else
+					{
+						grid[i][j] = [0, 0];
+					}
+				}
+			}
+		}
+		
+		//We overwrite bottom to top, left to right.
+		else if (row_pan > 0 && col_pan <= 0)
+		{
+			for (let i = resolution - 1; i >= 0; i--)
+			{
+				for (let j = 0; j < resolution; j++)
+				{
+					if (i - row_pan >= 0 && j - col_pan < resolution)
+					{
+						grid[i][j] = grid[i - row_pan][j - col_pan];
+					}
+					
+					else
+					{
+						grid[i][j] = [0, 0];
+					}
+				}
+			}
+		}
+		
+		//We overwrite top to bottom, right to left.
+		else if (row_pan <= 0 && col_pan > 0)
+		{
+			for (let i = 0; i < resolution; i++)
+			{
+				for (let j = resolution - 1; j >= 0; j--)
+				{
+					if (i - row_pan < resolution && j - col_pan >= 0)
+					{
+						grid[i][j] = grid[i - row_pan][j - col_pan];
+					}
+					
+					else
+					{
+						grid[i][j] = [0, 0];
+					}
+				}
+			}
+		}
+		
+		//We overwrite bottom to top, right to left.
+		else
+		{
+			for (let i = resolution - 1; i >= 0; i--)
+			{
+				for (let j = resolution - 1; j >= 0; j--)
+				{
+					if (i - row_pan >= 0 && j - col_pan >= 0)
+					{
+						grid[i][j] = grid[i - row_pan][j - col_pan];
+					}
+					
+					else
+					{
+						grid[i][j] = [0, 0];
+					}
+				}
+			}
+		}
+	}
 	
 	
-	Page.show();
+	
+	let pan_velocity_x = 0;
+	let pan_velocity_y = 0;
+	let zoom_velocity = 0;
+	
+	let next_pan_velocity_x = 0;
+	let next_pan_velocity_y = 0;
+	let next_zoom_velocity = 0;
+	
+	let last_pan_velocities_x = [];
+	let last_pan_velocities_y = [];
+	let last_zoom_velocities = [];
+
+	const pan_friction = .96;
+	const pan_velocity_start_threshhold = .003;
+	const pan_velocity_stop_threshhold = .003;
+	
+	const zoom_friction = .93;
+	const zoom_velocity_start_threshhold = .01;
+	const zoom_velocity_stop_threshhold = .001;
+	
+	function on_grab_canvas(x, y, event)
+	{
+		pan_velocity_x = 0;
+		pan_velocity_y = 0;
+		zoom_velocity = 0;
+		
+		last_pan_velocities_x = [0, 0, 0, 0];
+		last_pan_velocities_y = [0, 0, 0, 0];
+		last_zoom_velocities = [0, 0, 0, 0];
+	}
+	
+	function on_drag_canvas(x, y, x_delta, y_delta, event)
+	{
+		const row_pan = Math.round(-y_delta / wilson.world_height * wilson.canvas_height);
+		const col_pan = Math.round(x_delta / wilson.world_width * wilson.canvas_width);
+		
+		pan_grid(row_pan, col_pan);
+		
+		if (row_pan)
+		{
+			wilson.world_center_y -= y_delta;
+			
+			next_pan_velocity_y = -y_delta / wilson.world_height;
+		}
+		
+		else
+		{
+			next_pan_velocity_y = 0;
+		}
+		
+		if (col_pan)
+		{
+			wilson.world_center_x -= x_delta;
+			
+			next_pan_velocity_x = -x_delta / wilson.world_width;
+		}
+		
+		else
+		{
+			next_pan_velocity_x = 0;
+		}
+	}
+	
+	function on_release_canvas(x, y, event)
+	{
+		let max_index = 0;
+		
+		last_pan_velocities_x.forEach((velocity, index) =>
+		{
+			if (Math.abs(velocity) > pan_velocity_x)
+			{
+				pan_velocity_x = Math.abs(velocity);
+				max_index = index;
+			}
+		});
+		
+		if (pan_velocity_x < pan_velocity_start_threshhold)
+		{
+			pan_velocity_x = 0;
+		}
+		
+		else
+		{
+			pan_velocity_x = last_pan_velocities_x[max_index];
+		}
+		
+		last_pan_velocities_x = [0, 0, 0, 0];
+		
+		
+		
+		last_pan_velocities_y.forEach((velocity, index) =>
+		{
+			if (Math.abs(velocity) > pan_velocity_y)
+			{
+				pan_velocity_y = Math.abs(velocity);
+				max_index = index;
+			}	
+		});
+		
+		if (pan_velocity_y < pan_velocity_start_threshhold)
+		{
+			pan_velocity_y = 0;
+		}
+		
+		else
+		{
+			pan_velocity_y = last_pan_velocities_y[max_index];
+		}
+		
+		last_pan_velocities_y = [0, 0, 0, 0];
+	}
+	
+	
+	
+	function on_wheel_canvas(x, y, scroll_amount, event)
+	{
+		/*
+		fixed_point_x = x;
+		fixed_point_y = y;
+		
+		if (Math.abs(scroll_amount / 100) < .3)
+		{
+			zoom_level += scroll_amount / 100;
+			
+			zoom_level = Math.min(zoom_level, 1);
+		}
+		
+		else
+		{
+			zoom_velocity += Math.sign(scroll_amount) * .05;
+		}
+		
+		zoom_canvas();
+		*/
+	}
+	
+	
+	
+	function on_pinch_canvas(x, y, touch_distance_delta, event)
+	{
+		/*
+		if (julia_mode === 2)
+		{
+			return;
+		}
+		
+		
+		
+		if (aspect_ratio >= 1)
+		{
+			zoom_level -= touch_distance_delta / wilson.world_width * 10;
+			
+			next_zoom_velocity = -touch_distance_delta / wilson.world_width * 10;
+		}
+		
+		else
+		{
+			zoom_level -= touch_distance_delta / wilson.world_height * 10;
+			
+			next_zoom_velocity = -touch_distance_delta / wilson.world_height * 10;
+		}
+		
+		zoom_level = Math.min(zoom_level, 1);
+		
+		fixed_point_x = x;
+		fixed_point_y = y;
+		
+		zoom_canvas();
+		*/
+	}
+	
+	
+	
+	function zoom_canvas()
+	{
+		/*
+		if (aspect_ratio >= 1)
+		{
+			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level) * aspect_ratio, 4 * Math.pow(2, zoom_level));
+			
+			wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
+			wilson.world_height = 4 * Math.pow(2, zoom_level);
+			
+			wilson.world_center_x = new_world_center[0];
+			wilson.world_center_y = new_world_center[1];
+		}
+		
+		else
+		{
+			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level), 4 * Math.pow(2, zoom_level) / aspect_ratio);
+			
+			wilson.world_width = 4 * Math.pow(2, zoom_level);
+			wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+			
+			wilson.world_center_x = new_world_center[0];
+			wilson.world_center_y = new_world_center[1];
+		}
+		
+		num_iterations = (-zoom_level * 30) + 200;
+		
+		
+		
+		if (!double_precision && zoom_level < double_precision_zoom_threshhold && !force_floats_checkbox_element.checked)
+		{
+			double_precision = true;
+			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 1);
+			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 1);
+			
+			wilson.canvas.style.borderColor = "rgb(127, 0, 0)";
+		}
+		
+		else if (double_precision && zoom_level > double_precision_zoom_threshhold && !force_doubles)
+		{
+			double_precision = false;
+			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 0);
+			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 0);
+			
+			wilson.canvas.style.borderColor = "rgb(127, 127, 127)";
+		}
+		
+		window.requestAnimationFrame(draw_julia_set);
+		*/
+	}
+	
+	
+	
+	function change_aspect_ratio()
+	{
+		if (wilson.fullscreen.currently_fullscreen)
+		{
+			aspect_ratio = window.innerWidth / window.innerHeight;
+			
+			if (aspect_ratio >= 1)
+			{
+				wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+				
+				wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
+				wilson.world_height = 4 * Math.pow(2, zoom_level);
+			}
+			
+			else
+			{
+				wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+				
+				wilson.world_width = 4 * Math.pow(2, zoom_level);
+				wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+			}
+		}
+		
+		else
+		{
+			aspect_ratio = 1;
+			
+			wilson.change_canvas_size(resolution, resolution);
+			
+			wilson.world_width = 4 * Math.pow(2, zoom_level);
+			wilson.world_height = 4 * Math.pow(2, zoom_level);
+		}
+	}
 	
 	
 	
