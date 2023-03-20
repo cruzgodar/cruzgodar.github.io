@@ -4,7 +4,7 @@
 	
 	
 	
-	let resolution = 500;
+	let resolution = 400;
 	
 	let num_particles = 0;
 	let max_particles = 3000;
@@ -16,8 +16,7 @@
 	
 	let dt = .0075;
 	
-	//Average lifetime in frames -- actual values are .5 to 1.5x this.
-	let lifetime = 200;
+	const lifetime = 255;
 	
 	//A full array representing the grid -- we need this to do trails.
 	let grid = [];
@@ -209,18 +208,11 @@
 		
 		uniform sampler2D u_texture;
 		
-		const float dt = .005;
-		
 		void main(void)
 		{
-			vec4 sample = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
+			vec3 v = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).xyz;
 			
-			if (int(sample.z) == 0)
-			{
-				return;
-			}
-			
-			vec2 v = sample.xy;
+			gl_FragColor = vec4((v.x - 1.0) / 255.0, v.y, v.z, 1.0);
 		}
 	`;
 	
@@ -230,9 +222,60 @@
 		
 		shader: frag_shader_source_dim,
 		
-		canvas_width: 100,
-		canvas_height: 100,
+		canvas_width: resolution,
+		canvas_height: resolution,
 	};
+	
+	const wilson_dim = new Wilson(Page.element.querySelector("#dim-canvas"), options_dim);
+	
+	wilson_dim.render.create_framebuffer_texture_pair();
+	
+	wilson_dim.gl.bindTexture(wilson_dim.gl.TEXTURE_2D, wilson_dim.render.framebuffers[0].texture);
+	wilson_dim.gl.bindFramebuffer(wilson_dim.gl.FRAMEBUFFER, null);
+	
+	let dim_texture = new Float32Array(resolution * resolution * 4);
+	
+	
+	
+	const frag_shader_source_draw = `
+		precision highp float;
+		precision highp sampler2D;
+		
+		varying vec2 uv;
+		
+		uniform sampler2D u_texture;
+		
+		vec3 hsv2rgb(vec3 c)
+		{
+			vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+			vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+			return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+		}
+		
+		void main(void)
+		{
+			vec3 v = texture2D(u_texture, (-uv + vec2(1.0, 1.0)) / 2.0).xyz;
+			
+			gl_FragColor = vec4(hsv2rgb(vec3(v.y, v.z, v.x / 255.0)), 1.0);
+		}
+	`;
+	
+	const options_draw =
+	{
+		renderer: "gpu",
+		
+		shader: frag_shader_source_draw,
+		
+		canvas_width: resolution,
+		canvas_height: resolution,
+	};
+	
+	const wilson_draw = new Wilson(Page.element.querySelector("#draw-canvas"), options_draw);
+	
+	wilson_draw.render.create_framebuffer_texture_pair();
+	
+	wilson_draw.gl.bindTexture(wilson_draw.gl.TEXTURE_2D, wilson_draw.render.framebuffers[0].texture);
+	wilson_draw.gl.bindFramebuffer(wilson_draw.gl.FRAMEBUFFER, null);
 	
 	
 	
@@ -334,12 +377,6 @@
 	
 	
 	
-	const lifetime_input_element = Page.element.querySelector("#lifetime-input");
-	
-	lifetime_input_element.addEventListener("input", generate_new_field);
-	
-	
-	
 	const download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
@@ -368,8 +405,6 @@
 		wilson_update.change_canvas_size(update_resolution, update_resolution);
 		
 		dt = parseFloat(speed_input_element.value || 1) / 100;
-		
-		lifetime = parseInt(lifetime_input_element.value || 200);
 		
 		change_aspect_ratio();
 		
@@ -494,12 +529,26 @@
 						image_data[4 * (wilson.canvas_width * i + j) + 1] = 0;
 						image_data[4 * (wilson.canvas_width * i + j) + 2] = 0;
 					}
+					
+					const index = wilson_dim.canvas_width * i + j;
+					
+					dim_texture[4 * index] = grid[i][j][0];
+					dim_texture[4 * index + 1] = grid[i][j][1];
+					dim_texture[4 * index + 2] = grid[i][j][2];
 				}
 			}
 			
 			
 			
 			wilson.render.draw_frame(image_data);
+			
+			wilson_dim.gl.texImage2D(wilson_dim.gl.TEXTURE_2D, 0, wilson_dim.gl.RGBA, wilson_dim.canvas_width, wilson_dim.canvas_height, 0, wilson_dim.gl.RGBA, wilson_dim.gl.FLOAT, dim_texture);
+			
+			wilson_dim.render.draw_frame();
+			
+			wilson_draw.gl.texImage2D(wilson_draw.gl.TEXTURE_2D, 0, wilson_draw.gl.RGBA, wilson_draw.canvas_width, wilson_draw.canvas_height, 0, wilson_draw.gl.RGBA, wilson_draw.gl.FLOAT, dim_texture);
+			
+			wilson_draw.render.draw_frame();
 			
 			
 			
