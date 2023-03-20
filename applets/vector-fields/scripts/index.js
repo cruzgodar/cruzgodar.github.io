@@ -41,7 +41,7 @@
 	
 	
 	
-	const frag_shader_source_update_x = `
+	const frag_shader_source_update_base = `
 		precision highp float;
 		precision highp sampler2D;
 		
@@ -107,6 +107,10 @@
 			}
 			
 			vec2 v = sample.xy;
+	`;
+	
+	const frag_shader_source_update_x = `
+			${frag_shader_source_update_base}
 			
 			float dx = sin(v.y);
 			
@@ -117,75 +121,37 @@
 	`;
 	
 	const frag_shader_source_update_y = `
-		precision highp float;
-		precision highp sampler2D;
-		
-		varying vec2 uv;
-		
-		uniform sampler2D u_texture;
-		
-		const float dt = .005;
-		
-		
-		
-		float shift_right(float v, float amt)
-		{
-			v = floor(v) + 0.5;
-			return floor(v / exp2(amt));
-		}
-		
-		float shift_left(float v, float amt)
-		{
-			return floor(v * exp2(amt) + 0.5);
-		}
-		
-		float mask_last(float v, float bits)
-		{
-			return mod(v, shift_left(1.0, bits));
-		}
-		
-		float extract_bits(float num, float from, float to)
-		{
-			from = floor(from + 0.5); to = floor(to + 0.5);
-			return mask_last(shift_right(num, from), to - from);
-		}
-		
-		vec4 encode_float(float val)
-		{
-			if (val == 0.0) return vec4(0, 0, 0, 0);
-			float sign = val > 0.0 ? 0.0 : 1.0;
-			val = abs(val);
-			float exponent = floor(log2(val));
-			float biased_exponent = exponent + 127.0;
-			float fraction = ((val / exp2(exponent)) - 1.0) * 8388608.0;
-			float t = biased_exponent / 2.0;
-			float last_bit_of_biased_exponent = fract(t) * 2.0;
-			float remaining_bits_of_biased_exponent = floor(t);
-			float byte4 = extract_bits(fraction, 0.0, 8.0) / 255.0;
-			float byte3 = extract_bits(fraction, 8.0, 16.0) / 255.0;
-			float byte2 = (last_bit_of_biased_exponent * 128.0 + extract_bits(fraction, 16.0, 23.0)) / 255.0;
-			float byte1 = (sign * 128.0 + remaining_bits_of_biased_exponent) / 255.0; 
-			return vec4(byte4, byte3, byte2, byte1);
-		}
-		
-		
-		
-		void main(void)
-		{
-			vec4 sample = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
-			
-			if (int(sample.z) == 0)
-			{
-				return;
-			}
-			
-			vec2 v = sample.xy;
+			${frag_shader_source_update_base}
 			
 			float dy = sin(v.x + 3.14159265);
 			
 			float y = dt * dy + v.y;
 			
 			gl_FragColor = encode_float(y);
+		}
+	`;
+	
+	const frag_shader_source_update_h = `
+			${frag_shader_source_update_base}
+			
+			float dx = sin(v.y);
+			float dy = sin(v.x + 3.14159265);
+			
+			float h = (atan(dy, dx) + 3.14159265) / 6.28318531;
+			
+			gl_FragColor = encode_float(h);
+		}
+	`;
+	
+	const frag_shader_source_update_s = `
+			${frag_shader_source_update_base}
+			
+			float dx = sin(v.y);
+			float dy = sin(v.x + 3.14159265);
+			
+			float s = 1.0 - exp(-1.2 * (dx * dx + dy * dy));
+			
+			gl_FragColor = encode_float(s);
 		}
 	`;
 	
@@ -202,6 +168,8 @@
 	const wilson_update = new Wilson(Page.element.querySelector("#update-canvas"), options_update);
 	
 	wilson_update.render.load_new_shader(frag_shader_source_update_y);
+	wilson_update.render.load_new_shader(frag_shader_source_update_h);
+	wilson_update.render.load_new_shader(frag_shader_source_update_s);
 	
 	wilson_update.render.create_framebuffer_texture_pair();
 	
@@ -357,6 +325,7 @@
 		
 		for (let i = 0; i < max_particles; i++)
 		{
+			//x, y, lifetime, hue, saturation
 			particles[i] = [0, 0, 0];
 			free_particle_slots[i] = i;
 		}
@@ -433,40 +402,6 @@
 			{
 				//Draw all the particles, lower their lifetimes, and update them according to the vector field.
 				update_particles();
-				
-				for (let i = 0; i < particles.length; i++)
-				{
-					const row = Math.round((.5 - (particles[i][1] - wilson.world_center_y) / wilson.world_height) * wilson.canvas_height);
-					
-					const col = Math.round(((particles[i][0] - wilson.world_center_x) / wilson.world_width + .5) * wilson.canvas_width);
-					
-					if (row >= 0 && row < wilson.canvas_height && col >= 0 && col < wilson.canvas_width)
-					{
-						const result = vf_function(particles[i][0], particles[i][1]);
-						const dx = dt * result[0];
-						const dy = dt * result[1];
-						
-						grid[row][col][0] = lifetime;
-						grid[row][col][1] = (Math.atan2(dy, dx) + Math.PI) / (2 * Math.PI);
-						grid[row][col][2] = 1 - Math.exp(-1.2 * (dx * dx + dy * dy) / (dt * dt));
-						
-						//particles[i][0] += dx;
-						//particles[i][1] += dy;
-						
-						particles[i][2]--;
-						
-						if (particles[i][2] <= 0)
-						{
-							destroy_particle(i);
-						}
-					}
-					
-					else
-					{
-						destroy_particle(i);
-						continue;
-					}
-				}
 			}
 			
 			
@@ -645,19 +580,28 @@
 		wilson_update.gl.useProgram(wilson_update.render.shader_programs[0]);
 		wilson_update.render.draw_frame();
 		
-		/*
-		let pixel_data_x = new Uint8Array(wilson_update.canvas_height * wilson_update.canvas_width * 4);
-		wilson_update.gl.readPixels(0, 0, wilson_update.canvas_width, wilson_update.canvas_height, wilson_update.RGBA, wilson_update.UNSIGNED_BYTE, pixel_data_x);
-		*/
+		const floats_x = new Float32Array(wilson_update.render.get_pixel_data().buffer);
 		
-		const pixel_data_x = wilson_update.render.get_pixel_data();
-		const floats_x = new Float32Array(pixel_data_x.buffer);
+		
 		
 		wilson_update.gl.useProgram(wilson_update.render.shader_programs[1]);
 		wilson_update.render.draw_frame();
 		
-		const pixel_data_y = wilson_update.render.get_pixel_data();
-		const floats_y = new Float32Array(pixel_data_y.buffer);
+		const floats_y = new Float32Array(wilson_update.render.get_pixel_data().buffer);
+		
+		
+		
+		wilson_update.gl.useProgram(wilson_update.render.shader_programs[2]);
+		wilson_update.render.draw_frame();
+		
+		const floats_h = new Float32Array(wilson_update.render.get_pixel_data().buffer);
+		
+		
+		
+		wilson_update.gl.useProgram(wilson_update.render.shader_programs[3]);
+		wilson_update.render.draw_frame();
+		
+		const floats_s = new Float32Array(wilson_update.render.get_pixel_data().buffer);
 		
 		
 		
@@ -669,9 +613,32 @@
 				
 				if (index < particles.length && particles[index][2])
 				{
-					//These are in the range (0, 255).
 					particles[index][0] = floats_x[index];
 					particles[index][1] = floats_y[index];
+					
+					const row = Math.round((.5 - (particles[index][1] - wilson.world_center_y) / wilson.world_height) * wilson.canvas_height);
+					
+					const col = Math.round(((particles[index][0] - wilson.world_center_x) / wilson.world_width + .5) * wilson.canvas_width);
+					
+					if (row >= 0 && row < wilson.canvas_height && col >= 0 && col < wilson.canvas_width)
+					{
+						grid[row][col][0] = lifetime;
+						grid[row][col][1] = floats_h[index];
+						grid[row][col][2] = floats_s[index];
+						
+						particles[index][2]--;
+						
+						if (particles[index][2] <= 0)
+						{
+							destroy_particle(index);
+						}
+					}
+					
+					else
+					{
+						destroy_particle(index);
+						continue;
+					}
 				}
 			}
 		}
