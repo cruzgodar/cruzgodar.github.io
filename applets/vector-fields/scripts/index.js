@@ -14,7 +14,7 @@
 	let fixed_point_x = 0;
 	let fixed_point_y = 0;
 	
-	let dt = .01;
+	let dt = .005;
 	
 	//Average lifetime in frames -- actual values are .5 to 1.5x this.
 	let lifetime = 200;
@@ -38,6 +38,191 @@
 	
 	let x_function = (x, y) => Math.sin(y + Math.PI);
 	let y_function = (x, y) => Math.sin(x);
+	
+	
+	
+	const frag_shader_source_update_x = `
+		precision highp float;
+		precision highp sampler2D;
+		
+		varying vec2 uv;
+		
+		uniform sampler2D u_texture;
+		
+		const float dt = .005;
+		
+		
+		
+		//Don't know how, but this writes an honest float32 to the 32 bits of output, which JS then decodes.
+		
+		float shift_right(float v, float amt)
+		{
+			v = floor(v) + 0.5;
+			return floor(v / exp2(amt));
+		}
+		
+		float shift_left(float v, float amt)
+		{
+			return floor(v * exp2(amt) + 0.5);
+		}
+		
+		float mask_last(float v, float bits)
+		{
+			return mod(v, shift_left(1.0, bits));
+		}
+		
+		float extract_bits(float num, float from, float to)
+		{
+			from = floor(from + 0.5); to = floor(to + 0.5);
+			return mask_last(shift_right(num, from), to - from);
+		}
+		
+		vec4 encode_float(float val)
+		{
+			if (val == 0.0) return vec4(0, 0, 0, 0);
+			float sign = val > 0.0 ? 0.0 : 1.0;
+			val = abs(val);
+			float exponent = floor(log2(val));
+			float biased_exponent = exponent + 127.0;
+			float fraction = ((val / exp2(exponent)) - 1.0) * 8388608.0;
+			float t = biased_exponent / 2.0;
+			float last_bit_of_biased_exponent = fract(t) * 2.0;
+			float remaining_bits_of_biased_exponent = floor(t);
+			float byte4 = extract_bits(fraction, 0.0, 8.0) / 255.0;
+			float byte3 = extract_bits(fraction, 8.0, 16.0) / 255.0;
+			float byte2 = (last_bit_of_biased_exponent * 128.0 + extract_bits(fraction, 16.0, 23.0)) / 255.0;
+			float byte1 = (sign * 128.0 + remaining_bits_of_biased_exponent) / 255.0; 
+			return vec4(byte4, byte3, byte2, byte1);
+		}
+		
+		
+		
+		void main(void)
+		{
+			vec4 sample = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
+			
+			if (int(sample.z) == 0)
+			{
+				return;
+			}
+			
+			vec2 v = sample.xy;
+			
+			float dx = sin(v.y);
+			
+			float x = dt * dx + v.x;
+			
+			gl_FragColor = encode_float(x);
+		}
+	`;
+	
+	const frag_shader_source_update_y = `
+		precision highp float;
+		precision highp sampler2D;
+		
+		varying vec2 uv;
+		
+		uniform sampler2D u_texture;
+		
+		const float dt = .005;
+		
+		
+		
+		float shift_right(float v, float amt)
+		{
+			v = floor(v) + 0.5;
+			return floor(v / exp2(amt));
+		}
+		
+		float shift_left(float v, float amt)
+		{
+			return floor(v * exp2(amt) + 0.5);
+		}
+		
+		float mask_last(float v, float bits)
+		{
+			return mod(v, shift_left(1.0, bits));
+		}
+		
+		float extract_bits(float num, float from, float to)
+		{
+			from = floor(from + 0.5); to = floor(to + 0.5);
+			return mask_last(shift_right(num, from), to - from);
+		}
+		
+		vec4 encode_float(float val)
+		{
+			if (val == 0.0) return vec4(0, 0, 0, 0);
+			float sign = val > 0.0 ? 0.0 : 1.0;
+			val = abs(val);
+			float exponent = floor(log2(val));
+			float biased_exponent = exponent + 127.0;
+			float fraction = ((val / exp2(exponent)) - 1.0) * 8388608.0;
+			float t = biased_exponent / 2.0;
+			float last_bit_of_biased_exponent = fract(t) * 2.0;
+			float remaining_bits_of_biased_exponent = floor(t);
+			float byte4 = extract_bits(fraction, 0.0, 8.0) / 255.0;
+			float byte3 = extract_bits(fraction, 8.0, 16.0) / 255.0;
+			float byte2 = (last_bit_of_biased_exponent * 128.0 + extract_bits(fraction, 16.0, 23.0)) / 255.0;
+			float byte1 = (sign * 128.0 + remaining_bits_of_biased_exponent) / 255.0; 
+			return vec4(byte4, byte3, byte2, byte1);
+		}
+		
+		
+		
+		void main(void)
+		{
+			vec4 sample = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
+			
+			if (int(sample.z) == 0)
+			{
+				return;
+			}
+			
+			vec2 v = sample.xy;
+			
+			float dy = sin(v.x + 3.14159265);
+			
+			float y = dt * dy + v.y;
+			
+			gl_FragColor = encode_float(y);
+		}
+	`;
+	
+	const options_update =
+	{
+		renderer: "gpu",
+		
+		shader: frag_shader_source_update_x,
+		
+		canvas_width: 100,
+		canvas_height: 100,
+	};
+	
+	const wilson_update = new Wilson(Page.element.querySelector("#update-canvas"), options_update);
+	
+	wilson_update.render.load_new_shader(frag_shader_source_update_y);
+	
+	wilson_update.render.create_framebuffer_texture_pair();
+	
+	let update_texture = new Float32Array(wilson_update.canvas_width * wilson_update.canvas_height * 4);
+	
+	for (let i = 0; i < wilson_update.canvas_height; i++)
+	{
+		for (let j = 0; j < wilson_update.canvas_width; j++)
+		{
+			const index = wilson_update.canvas_height * i + j;
+			
+			update_texture[4 * index] = 0.0;
+			update_texture[4 * index + 1] = 0.0;
+			update_texture[4 * index + 2] = 0.0;
+			update_texture[4 * index + 3] = 0.0;
+		}
+	}
+	
+	wilson_update.gl.bindTexture(wilson_update.gl.TEXTURE_2D, wilson_update.render.framebuffers[0].texture);
+	wilson_update.gl.bindFramebuffer(wilson_update.gl.FRAMEBUFFER, null);
+	
 	
 	
 	
@@ -247,6 +432,8 @@
 			else
 			{
 				//Draw all the particles, lower their lifetimes, and update them according to the vector field.
+				update_particles();
+				
 				for (let i = 0; i < particles.length; i++)
 				{
 					const row = Math.round((.5 - (particles[i][1] - wilson.world_center_y) / wilson.world_height) * wilson.canvas_height);
@@ -263,8 +450,8 @@
 						grid[row][col][1] = (Math.atan2(dy, dx) + Math.PI) / (2 * Math.PI);
 						grid[row][col][2] = 1 - Math.exp(-1.2 * (dx * dx + dy * dy) / (dt * dt));
 						
-						particles[i][0] += dx;
-						particles[i][1] += dy;
+						//particles[i][0] += dx;
+						//particles[i][1] += dy;
 						
 						particles[i][2]--;
 						
@@ -427,6 +614,67 @@
 		free_particle_slots.push(index);
 		
 		num_particles--;
+	}
+	
+	function update_particles()
+	{
+		for (let i = 0; i < wilson_update.canvas_height; i++)
+		{
+			for (let j = 0; j < wilson_update.canvas_width; j++)
+			{
+				const index = wilson_update.canvas_height * i + j;
+				
+				if (index < particles.length && particles[index][2])
+				{
+					update_texture[4 * index] = particles[index][0];
+					update_texture[4 * index + 1] = particles[index][1];
+					update_texture[4 * index + 2] = 1.0;
+				}
+				
+				else
+				{
+					update_texture[4 * index + 2] = 0.0;
+				}
+			}
+		}
+		
+		
+		
+		wilson_update.gl.texImage2D(wilson_update.gl.TEXTURE_2D, 0, wilson_update.gl.RGBA, wilson_update.canvas_width, wilson_update.canvas_height, 0, wilson_update.gl.RGBA, wilson_update.gl.FLOAT, update_texture);
+		
+		wilson_update.gl.useProgram(wilson_update.render.shader_programs[0]);
+		wilson_update.render.draw_frame();
+		
+		/*
+		let pixel_data_x = new Uint8Array(wilson_update.canvas_height * wilson_update.canvas_width * 4);
+		wilson_update.gl.readPixels(0, 0, wilson_update.canvas_width, wilson_update.canvas_height, wilson_update.RGBA, wilson_update.UNSIGNED_BYTE, pixel_data_x);
+		*/
+		
+		const pixel_data_x = wilson_update.render.get_pixel_data();
+		const floats_x = new Float32Array(pixel_data_x.buffer);
+		
+		wilson_update.gl.useProgram(wilson_update.render.shader_programs[1]);
+		wilson_update.render.draw_frame();
+		
+		const pixel_data_y = wilson_update.render.get_pixel_data();
+		const floats_y = new Float32Array(pixel_data_y.buffer);
+		
+		
+		
+		for (let i = 0; i < wilson_update.canvas_height; i++)
+		{
+			for (let j = 0; j < wilson_update.canvas_width; j++)
+			{
+				const index = wilson_update.canvas_height * i + j;
+				
+				if (index < particles.length && particles[index][2])
+				{
+					//These are in the range (0, 255).
+					particles[index][0] = floats_x[index];
+					particles[index][1] = floats_y[index];
+				}
+			}
+		}
 	}
 	
 	
