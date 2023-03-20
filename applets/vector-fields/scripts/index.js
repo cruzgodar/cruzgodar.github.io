@@ -254,7 +254,7 @@
 		
 		void main(void)
 		{
-			vec3 v = texture2D(u_texture, (-uv + vec2(1.0, 1.0)) / 2.0).xyz;
+			vec3 v = texture2D(u_texture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0).xyz;
 			
 			gl_FragColor = vec4(hsv2rgb(vec3(v.y, v.z, v.x / 255.0)), 1.0);
 		}
@@ -507,44 +507,23 @@
 			
 			
 			
-			//Deal with the image data.
+			wilson_dim.gl.texImage2D(wilson_dim.gl.TEXTURE_2D, 0, wilson_dim.gl.RGBA, wilson_dim.canvas_width, wilson_dim.canvas_height, 0, wilson_dim.gl.RGBA, wilson_dim.gl.FLOAT, dim_texture);
+			
+			wilson_dim.render.draw_frame();
+			
+			const pixels = wilson_dim.render.get_pixel_data();
+			
 			for (let i = 0; i < wilson.canvas_height; i++)
 			{
 				for (let j = 0; j < wilson.canvas_width; j++)
 				{
-					if (grid[i][j][0])
-					{
-						const rgb = HSVtoRGB(grid[i][j][1], grid[i][j][2], grid[i][j][0] / lifetime);
-						
-						image_data[4 * (wilson.canvas_width * i + j) + 0] = rgb[0];
-						image_data[4 * (wilson.canvas_width * i + j) + 1] = rgb[1];
-						image_data[4 * (wilson.canvas_width * i + j) + 2] = rgb[2];
-						
-						grid[i][j][0]--;
-					}
+					const index = wilson.canvas_width * i + j;
 					
-					else
-					{
-						image_data[4 * (wilson.canvas_width * i + j) + 0] = 0;
-						image_data[4 * (wilson.canvas_width * i + j) + 1] = 0;
-						image_data[4 * (wilson.canvas_width * i + j) + 2] = 0;
-					}
-					
-					const index = wilson_dim.canvas_width * i + j;
-					
-					dim_texture[4 * index] = grid[i][j][0];
-					dim_texture[4 * index + 1] = grid[i][j][1];
-					dim_texture[4 * index + 2] = grid[i][j][2];
+					dim_texture[4 * index] = pixels[4 * index];
+					dim_texture[4 * index + 1] = pixels[4 * index + 1] / 255;
+					dim_texture[4 * index + 2] = pixels[4 * index + 2] / 255;
 				}
 			}
-			
-			
-			
-			wilson.render.draw_frame(image_data);
-			
-			wilson_dim.gl.texImage2D(wilson_dim.gl.TEXTURE_2D, 0, wilson_dim.gl.RGBA, wilson_dim.canvas_width, wilson_dim.canvas_height, 0, wilson_dim.gl.RGBA, wilson_dim.gl.FLOAT, dim_texture);
-			
-			wilson_dim.render.draw_frame();
 			
 			wilson_draw.gl.texImage2D(wilson_draw.gl.TEXTURE_2D, 0, wilson_draw.gl.RGBA, wilson_draw.canvas_width, wilson_draw.canvas_height, 0, wilson_draw.gl.RGBA, wilson_draw.gl.FLOAT, dim_texture);
 			
@@ -672,7 +651,7 @@
 		{
 			for (let j = 0; j < wilson_update.canvas_width; j++)
 			{
-				const index = wilson_update.canvas_height * i + j;
+				const index = wilson_update.canvas_width * i + j;
 				
 				if (index < particles.length && particles[index][2])
 				{
@@ -737,9 +716,11 @@
 					
 					if (row >= 0 && row < wilson.canvas_height && col >= 0 && col < wilson.canvas_width)
 					{
-						grid[row][col][0] = lifetime;
-						grid[row][col][1] = floats_h[index];
-						grid[row][col][2] = floats_s[index];
+						const new_index = row * wilson.canvas_width + col;
+						
+						dim_texture[4 * new_index] = lifetime;
+						dim_texture[4 * new_index + 1] = floats_h[index];
+						dim_texture[4 * new_index + 2] = floats_s[index];
 						
 						particles[index][2]--;
 						
