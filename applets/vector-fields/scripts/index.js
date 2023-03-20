@@ -14,7 +14,7 @@
 	let fixed_point_x = 0;
 	let fixed_point_y = 0;
 	
-	let dt = .005;
+	let dt = .0075;
 	
 	//Average lifetime in frames -- actual values are .5 to 1.5x this.
 	let lifetime = 200;
@@ -49,7 +49,7 @@
 		
 		uniform sampler2D u_texture;
 		
-		const float dt = .005;
+		uniform float dt;
 		
 		
 		
@@ -167,29 +167,72 @@
 	
 	const wilson_update = new Wilson(Page.element.querySelector("#update-canvas"), options_update);
 	
+	
+	
 	wilson_update.render.load_new_shader(frag_shader_source_update_y);
 	wilson_update.render.load_new_shader(frag_shader_source_update_h);
 	wilson_update.render.load_new_shader(frag_shader_source_update_s);
 	
+	wilson_update.render.init_uniforms(["dt"], 0);
+	wilson_update.render.init_uniforms(["dt"], 1);
+	wilson_update.render.init_uniforms(["dt"], 2);
+	wilson_update.render.init_uniforms(["dt"], 3);
+	
+	wilson_update.gl.useProgram(wilson_update.render.shader_programs[0]);
+	wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][0], dt);
+	
+	wilson_update.gl.useProgram(wilson_update.render.shader_programs[1]);
+	wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][1], dt);
+	
+	wilson_update.gl.useProgram(wilson_update.render.shader_programs[2]);
+	wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][2], dt);
+	
+	wilson_update.gl.useProgram(wilson_update.render.shader_programs[3]);
+	wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][3], dt);
+	
+	
+	
 	wilson_update.render.create_framebuffer_texture_pair();
 	
-	let update_texture = new Float32Array(wilson_update.canvas_width * wilson_update.canvas_height * 4);
-	
-	for (let i = 0; i < wilson_update.canvas_height; i++)
-	{
-		for (let j = 0; j < wilson_update.canvas_width; j++)
-		{
-			const index = wilson_update.canvas_height * i + j;
-			
-			update_texture[4 * index] = 0.0;
-			update_texture[4 * index + 1] = 0.0;
-			update_texture[4 * index + 2] = 0.0;
-			update_texture[4 * index + 3] = 0.0;
-		}
-	}
+	let update_texture = null;
 	
 	wilson_update.gl.bindTexture(wilson_update.gl.TEXTURE_2D, wilson_update.render.framebuffers[0].texture);
 	wilson_update.gl.bindFramebuffer(wilson_update.gl.FRAMEBUFFER, null);
+	
+	
+	
+	const frag_shader_source_dim = `
+		precision highp float;
+		precision highp sampler2D;
+		
+		varying vec2 uv;
+		
+		uniform sampler2D u_texture;
+		
+		const float dt = .005;
+		
+		void main(void)
+		{
+			vec4 sample = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
+			
+			if (int(sample.z) == 0)
+			{
+				return;
+			}
+			
+			vec2 v = sample.xy;
+		}
+	`;
+	
+	const options_dim =
+	{
+		renderer: "gpu",
+		
+		shader: frag_shader_source_dim,
+		
+		canvas_width: 100,
+		canvas_height: 100,
+	};
 	
 	
 	
@@ -266,10 +309,7 @@
 	
 	const max_particles_input_element = Page.element.querySelector("#max-particles-input");
 	
-	max_particles_input_element.addEventListener("input", () =>
-	{
-		max_particles = parseInt(max_particles_input_element.value || 3000);
-	});
+	max_particles_input_element.addEventListener("input", generate_new_field);
 	
 	
 	
@@ -277,7 +317,19 @@
 	
 	speed_input_element.addEventListener("input", () =>
 	{
-		dt = parseFloat(speed_input_element.value || 1) / 100;
+		dt = parseFloat(speed_input_element.value || 1) / 75;
+		
+		wilson_update.gl.useProgram(wilson_update.render.shader_programs[0]);
+		wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][0], dt);
+		
+		wilson_update.gl.useProgram(wilson_update.render.shader_programs[1]);
+		wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][1], dt);
+		
+		wilson_update.gl.useProgram(wilson_update.render.shader_programs[2]);
+		wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][2], dt);
+		
+		wilson_update.gl.useProgram(wilson_update.render.shader_programs[3]);
+		wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][3], dt);
 	});
 	
 	
@@ -310,7 +362,10 @@
 		resolution = parseInt(resolution_input_element.value || 500);
 		
 		num_particles = 0;
-		max_particles = parseInt(max_particles_input_element.value || 3000);
+		max_particles = Math.max(parseInt(max_particles_input_element.value || 3000), 100);
+		
+		const update_resolution = Math.ceil(Math.sqrt(max_particles));
+		wilson_update.change_canvas_size(update_resolution, update_resolution);
 		
 		dt = parseFloat(speed_input_element.value || 1) / 100;
 		
@@ -347,6 +402,23 @@
 		
 		
 		
+		update_texture = new Float32Array(wilson_update.canvas_width * wilson_update.canvas_height * 4);
+		
+		for (let i = 0; i < wilson_update.canvas_height; i++)
+		{
+			for (let j = 0; j < wilson_update.canvas_width; j++)
+			{
+				const index = wilson_update.canvas_height * i + j;
+				
+				update_texture[4 * index] = 0.0;
+				update_texture[4 * index + 1] = 0.0;
+				update_texture[4 * index + 2] = 0.0;
+				update_texture[4 * index + 3] = 0.0;
+			}
+		}
+		
+		
+		
 		image_data = new Uint8ClampedArray(wilson.canvas_height * wilson.canvas_width * 4);
 		
 		for (let i = 0; i < wilson.canvas_height; i++)
@@ -378,11 +450,13 @@
 				return;
 			}
 			
+			
+			
 			//If there's not enough particles, we add what's missing, capped at 1% of the total particle count.
 			if (num_particles < max_particles)
 			{
 				//We find the first open slot we can and search from the end of the list so that we can slice more efficiently.
-				const num_to_add = Math.min(max_particles / 100, max_particles - num_particles);
+				const num_to_add = Math.min(max_particles / 80, max_particles - num_particles);
 				
 				for (let i = free_particle_slots.length - num_to_add; i < free_particle_slots.length; i++)
 				{
@@ -393,16 +467,8 @@
 			}
 			
 			
-			if (skip_drawing)
-			{
-				skip_drawing = false;
-			}
 			
-			else
-			{
-				//Draw all the particles, lower their lifetimes, and update them according to the vector field.
-				update_particles();
-			}
+			update_particles();
 			
 			
 			
@@ -764,6 +830,21 @@
 				else
 				{
 					new_grid[i][j] = [0, 0, 0];
+				}
+			}
+		}
+		
+		//When we zoom out, we also cull the particles a little.
+		const chance = Math.pow(2, zoom_delta * 2);
+		let num_destroyed = 0;
+		if (zoom_delta > 0)
+		{
+			for (let i = 0; i < particles.length; i++)
+			{
+				if (particles[i][2] && (i % chance >= 1))
+				{
+					destroy_particle(i);
+					num_destroyed++;
 				}
 			}
 		}

@@ -738,11 +738,27 @@ class Wilson
 		
 		
 		//Initializes all of the uniforms for a gpu canvas. Takes in an array of variable names as strings (that match the uniforms in the fragment shader), and stores the locations in Wilson.uniforms.
-		init_uniforms(variable_names)
+		init_uniforms(variable_names, shader_program_index = -1)
 		{
-			for (let i = 0; i < variable_names.length; i++)
+			if (shader_program_index === -1)
 			{
-				this.parent.uniforms[variable_names[i]] = this.parent.gl.getUniformLocation(this.shader_program, variable_names[i]);
+				for (let i = 0; i < variable_names.length; i++)
+				{
+					this.parent.uniforms[variable_names[i]] = this.parent.gl.getUniformLocation(this.shader_program, variable_names[i]);
+				}
+			}
+			
+			else
+			{
+				for (let i = 0; i < variable_names.length; i++)
+				{
+					if (typeof this.parent.uniforms[variable_names[i]] === "undefined")
+					{
+						this.parent.uniforms[variable_names[i]] = {};
+					}
+					
+					this.parent.uniforms[variable_names[i]][shader_program_index] = this.parent.gl.getUniformLocation(this.shader_programs[shader_program_index], variable_names[i]);
+				}
 			}
 		},
 		
