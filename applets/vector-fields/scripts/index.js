@@ -57,12 +57,14 @@
 		
 		use_fullscreen: true,
 		
+		true_fullscreen: true,
+		
 		use_fullscreen_button: true,
 		
 		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
 		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
 		
-		switch_fullscreen_callback: change_aspect_ratio,
+		switch_fullscreen_callback: generate_new_field,
 		
 		
 		
@@ -160,7 +162,7 @@
 		
 		lifetime = parseInt(lifetime_input_element.value || 200);
 		
-		wilson.change_canvas_size(resolution, resolution);
+		change_aspect_ratio();
 		
 		
 		
@@ -175,13 +177,13 @@
 		
 		
 		
-		grid = new Array(resolution);
+		grid = new Array(wilson.canvas_height);
 		
-		for (let i = 0; i < resolution; i++)
+		for (let i = 0; i < wilson.canvas_height; i++)
 		{
-			grid[i] = new Array(resolution);
+			grid[i] = new Array(wilson.canvas_width);
 			
-			for (let j = 0; j < resolution; j++)
+			for (let j = 0; j < wilson.canvas_width; j++)
 			{
 				//Lifetime, hue, saturation
 				grid[i][j] = [0, 0, 0];
@@ -190,13 +192,13 @@
 		
 		
 		
-		image_data = new Uint8ClampedArray(resolution * resolution * 4);
+		image_data = new Uint8ClampedArray(wilson.canvas_height * wilson.canvas_width * 4);
 		
-		for (let i = 0; i < resolution; i++)
+		for (let i = 0; i < wilson.canvas_height; i++)
 		{
-			for (let j = 0; j < resolution; j++)
+			for (let j = 0; j < wilson.canvas_width; j++)
 			{
-				image_data[4 * (resolution * i + j) + 3] = 255;
+				image_data[4 * (wilson.canvas_width * i + j) + 3] = 255;
 			}
 		}
 		
@@ -209,192 +211,198 @@
 	
 	function draw_frame(timestamp)
 	{
-		const time_elapsed = timestamp - last_timestamp;
-		
-		last_timestamp = timestamp;
-		
-		if (time_elapsed === 0)
+		//Wrapping everything in a try block and eating the occasional error is pretty gross, but it's actually a decent solution: everything is fine unless the user resizes the window faster than the screen refresh rate, meaning we access out of bounds in the middle of this function. We can fix that by just restarting whenever that happens.
+		try
 		{
-			return;
-		}
-		
-		//If there's not enough particles, we add what's missing, capped at 1% of the total particle count.
-		if (num_particles < max_particles)
-		{
-			//We find the first open slot we can and search from the end of the list so that we can slice more efficiently.
-			const num_to_add = Math.min(max_particles / 100, max_particles - num_particles);
+			const time_elapsed = timestamp - last_timestamp;
 			
-			for (let i = free_particle_slots.length - num_to_add; i < free_particle_slots.length; i++)
+			last_timestamp = timestamp;
+			
+			if (time_elapsed === 0)
 			{
-				create_particle(free_particle_slots[i]);
+				return;
 			}
 			
-			free_particle_slots.splice(free_particle_slots.length - num_to_add, num_to_add);
-		}
-		
-		
-		if (skip_drawing)
-		{
-			skip_drawing = false;
-		}
-		
-		else
-		{
-			//Draw all the particles, lower their lifetimes, and update them according to the vector field.
-			for (let i = 0; i < particles.length; i++)
+			//If there's not enough particles, we add what's missing, capped at 1% of the total particle count.
+			if (num_particles < max_particles)
 			{
-				const row = Math.round((.5 - (particles[i][1] - wilson.world_center_y) / wilson.world_height) * wilson.canvas_height);
+				//We find the first open slot we can and search from the end of the list so that we can slice more efficiently.
+				const num_to_add = Math.min(max_particles / 100, max_particles - num_particles);
 				
-				const col = Math.round(((particles[i][0] - wilson.world_center_x) / wilson.world_width + .5) * wilson.canvas_width);
-				
-				if (row >= 0 && row < resolution && col >= 0 && col < resolution)
+				for (let i = free_particle_slots.length - num_to_add; i < free_particle_slots.length; i++)
 				{
-					const result = vf_function(particles[i][0], particles[i][1]);
-					const dx = dt * result[0];
-					const dy = dt * result[1];
+					create_particle(free_particle_slots[i]);
+				}
+				
+				free_particle_slots.splice(free_particle_slots.length - num_to_add, num_to_add);
+			}
+			
+			
+			if (skip_drawing)
+			{
+				skip_drawing = false;
+			}
+			
+			else
+			{
+				//Draw all the particles, lower their lifetimes, and update them according to the vector field.
+				for (let i = 0; i < particles.length; i++)
+				{
+					const row = Math.round((.5 - (particles[i][1] - wilson.world_center_y) / wilson.world_height) * wilson.canvas_height);
 					
-					grid[row][col][0] = lifetime;
-					grid[row][col][1] = (Math.atan2(dy, dx) + Math.PI) / (2 * Math.PI);
-					grid[row][col][2] = 1 - Math.exp(-1.2 * (dx * dx + dy * dy) / (dt * dt));
+					const col = Math.round(((particles[i][0] - wilson.world_center_x) / wilson.world_width + .5) * wilson.canvas_width);
 					
-					particles[i][0] += dx;
-					particles[i][1] += dy;
+					if (row >= 0 && row < wilson.canvas_height && col >= 0 && col < wilson.canvas_width)
+					{
+						const result = vf_function(particles[i][0], particles[i][1]);
+						const dx = dt * result[0];
+						const dy = dt * result[1];
+						
+						grid[row][col][0] = lifetime;
+						grid[row][col][1] = (Math.atan2(dy, dx) + Math.PI) / (2 * Math.PI);
+						grid[row][col][2] = 1 - Math.exp(-1.2 * (dx * dx + dy * dy) / (dt * dt));
+						
+						particles[i][0] += dx;
+						particles[i][1] += dy;
+						
+						particles[i][2]--;
+						
+						if (particles[i][2] <= 0)
+						{
+							destroy_particle(i);
+						}
+					}
 					
-					particles[i][2]--;
-					
-					if (particles[i][2] <= 0)
+					else
 					{
 						destroy_particle(i);
+						continue;
 					}
 				}
+			}
+			
+			
+			
+			//Deal with the image data.
+			for (let i = 0; i < wilson.canvas_height; i++)
+			{
+				for (let j = 0; j < wilson.canvas_width; j++)
+				{
+					if (grid[i][j][0])
+					{
+						const rgb = HSVtoRGB(grid[i][j][1], grid[i][j][2], grid[i][j][0] / lifetime);
+						
+						image_data[4 * (wilson.canvas_width * i + j) + 0] = rgb[0];
+						image_data[4 * (wilson.canvas_width * i + j) + 1] = rgb[1];
+						image_data[4 * (wilson.canvas_width * i + j) + 2] = rgb[2];
+						
+						grid[i][j][0]--;
+					}
+					
+					else
+					{
+						image_data[4 * (wilson.canvas_width * i + j) + 0] = 0;
+						image_data[4 * (wilson.canvas_width * i + j) + 1] = 0;
+						image_data[4 * (wilson.canvas_width * i + j) + 2] = 0;
+					}
+				}
+			}
+			
+			
+			
+			wilson.render.draw_frame(image_data);
+			
+			
+			
+			last_pan_velocities_x.push(next_pan_velocity_x);
+			last_pan_velocities_y.push(next_pan_velocity_y);
+			last_pan_velocities_x.shift();
+			last_pan_velocities_y.shift();
+			
+			next_pan_velocity_x = 0;
+			next_pan_velocity_y = 0;
+			
+			if (pan_velocity_x !== 0 || pan_velocity_y !== 0)
+			{
+				const x_delta = -pan_velocity_x * wilson.world_width;
+				const y_delta = -pan_velocity_y * wilson.world_height;
+				
+				const row_pan = Math.round(-y_delta / wilson.world_height * wilson.canvas_height);
+				const col_pan = Math.round(x_delta / wilson.world_width * wilson.canvas_width);
+				
+				pan_grid(row_pan, col_pan);
+				
+				if (row_pan)
+				{
+					wilson.world_center_y -= y_delta;
+					
+					pan_velocity_y *= pan_friction;
+				}
 				
 				else
 				{
-					destroy_particle(i);
-					continue;
+					pan_velocity_y = 0;
 				}
-			}
-		}
-		
-		
-		
-		//Deal with the image data.
-		for (let i = 0; i < resolution; i++)
-		{
-			for (let j = 0; j < resolution; j++)
-			{
-				if (grid[i][j][0])
+				
+				if (col_pan)
 				{
-					const rgb = HSVtoRGB(grid[i][j][1], grid[i][j][2], grid[i][j][0] / lifetime);
+					wilson.world_center_x -= x_delta;
 					
-					image_data[4 * (resolution * i + j) + 0] = rgb[0];
-					image_data[4 * (resolution * i + j) + 1] = rgb[1];
-					image_data[4 * (resolution * i + j) + 2] = rgb[2];
-					
-					grid[i][j][0]--;
+					pan_velocity_x *= pan_friction;
 				}
 				
 				else
 				{
-					image_data[4 * (resolution * i + j) + 0] = 0;
-					image_data[4 * (resolution * i + j) + 1] = 0;
-					image_data[4 * (resolution * i + j) + 2] = 0;
+					pan_velocity_x = 0;
+				}
+				
+				if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) < pan_velocity_stop_threshhold)
+				{
+					pan_velocity_x = 0;
+					pan_velocity_y = 0;
 				}
 			}
-		}
-		
-		
-		
-		wilson.render.draw_frame(image_data);
-		
-		
-		
-		last_pan_velocities_x.push(next_pan_velocity_x);
-		last_pan_velocities_y.push(next_pan_velocity_y);
-		last_pan_velocities_x.shift();
-		last_pan_velocities_y.shift();
-		
-		next_pan_velocity_x = 0;
-		next_pan_velocity_y = 0;
-		
-		if (pan_velocity_x !== 0 || pan_velocity_y !== 0)
-		{
-			const x_delta = -pan_velocity_x * wilson.world_width;
-			const y_delta = -pan_velocity_y * wilson.world_height;
-			
-			const row_pan = Math.round(-y_delta / wilson.world_height * wilson.canvas_height);
-			const col_pan = Math.round(x_delta / wilson.world_width * wilson.canvas_width);
-			
-			pan_grid(row_pan, col_pan);
-			
-			if (row_pan)
-			{
-				wilson.world_center_y -= y_delta;
 				
-				pan_velocity_y *= pan_friction;
-			}
 			
-			else
-			{
-				pan_velocity_y = 0;
-			}
 			
-			if (col_pan)
-			{
-				wilson.world_center_x -= x_delta;
+			last_zoom_velocities.push(next_zoom_velocity);
+			last_zoom_velocities.shift();
+			next_zoom_velocity = 0;
 				
-				pan_velocity_x *= pan_friction;
-			}
-			
-			else
+			if (zoom_velocity !== 0)	
 			{
-				pan_velocity_x = 0;
+				zoom_grid(fixed_point_x, fixed_point_y, zoom_velocity)
+				
+				zoom_level += zoom_velocity;
+				
+				zoom_level = Math.min(Math.max(zoom_level, -5), 5);
+				
+				zoom_canvas(fixed_point_x, fixed_point_y);
+				
+				zoom_velocity *= zoom_friction;
+				
+				if (Math.abs(zoom_velocity) < zoom_velocity_stop_threshhold)
+				{
+					zoom_velocity = 0;
+				}
 			}
 			
-			if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) < pan_velocity_stop_threshhold)
+			
+			
+			if (starting_process_id !== Site.applet_process_id)
 			{
-				pan_velocity_x = 0;
-				pan_velocity_y = 0;
+				console.log("Terminated applet process");
+				
+				return;
 			}
-		}
 			
-		
-		
-		last_zoom_velocities.push(next_zoom_velocity);
-		last_zoom_velocities.shift();
-		next_zoom_velocity = 0;
-			
-		if (zoom_velocity !== 0)	
-		{
-			zoom_grid(fixed_point_x, fixed_point_y, zoom_velocity)
-			
-			zoom_level += zoom_velocity;
-			
-			zoom_level = Math.min(Math.max(zoom_level, -5), 5);
-			
-			zoom_canvas(fixed_point_x, fixed_point_y);
-			
-			zoom_velocity *= zoom_friction;
-			
-			if (Math.abs(zoom_velocity) < zoom_velocity_stop_threshhold)
+			if (!paused)
 			{
-				zoom_velocity = 0;
+				window.requestAnimationFrame(draw_frame);
 			}
 		}
 		
-		
-		
-		if (starting_process_id !== Site.applet_process_id)
-		{
-			console.log("Terminated applet process");
-			
-			return;
-		}
-		
-		if (!paused)
-		{
-			window.requestAnimationFrame(draw_frame);
-		}
+		catch(ex) {generate_new_field()}
 	}
 	
 	
@@ -428,11 +436,11 @@
 		//We overwrite top to bottom, left to right.
 		if (row_pan <= 0 && col_pan <= 0)
 		{
-			for (let i = 0; i < resolution; i++)
+			for (let i = 0; i < wilson.canvas_height; i++)
 			{
-				for (let j = 0; j < resolution; j++)
+				for (let j = 0; j < wilson.canvas_width; j++)
 				{
-					if (i - row_pan < resolution && j - col_pan < resolution)
+					if (i - row_pan < wilson.canvas_height && j - col_pan < wilson.canvas_width)
 					{
 						grid[i][j] = grid[i - row_pan][j - col_pan];
 					}
@@ -448,11 +456,11 @@
 		//We overwrite bottom to top, left to right.
 		else if (row_pan > 0 && col_pan <= 0)
 		{
-			for (let i = resolution - 1; i >= 0; i--)
+			for (let i = wilson.canvas_height - 1; i >= 0; i--)
 			{
-				for (let j = 0; j < resolution; j++)
+				for (let j = 0; j < wilson.canvas_width; j++)
 				{
-					if (i - row_pan >= 0 && j - col_pan < resolution)
+					if (i - row_pan >= 0 && j - col_pan < wilson.canvas_width)
 					{
 						grid[i][j] = grid[i - row_pan][j - col_pan];
 					}
@@ -468,11 +476,11 @@
 		//We overwrite top to bottom, right to left.
 		else if (row_pan <= 0 && col_pan > 0)
 		{
-			for (let i = 0; i < resolution; i++)
+			for (let i = 0; i < wilson.canvas_height; i++)
 			{
-				for (let j = resolution - 1; j >= 0; j--)
+				for (let j = wilson.canvas_width - 1; j >= 0; j--)
 				{
-					if (i - row_pan < resolution && j - col_pan >= 0)
+					if (i - row_pan < wilson.canvas_height && j - col_pan >= 0)
 					{
 						grid[i][j] = grid[i - row_pan][j - col_pan];
 					}
@@ -488,9 +496,9 @@
 		//We overwrite bottom to top, right to left.
 		else
 		{
-			for (let i = resolution - 1; i >= 0; i--)
+			for (let i = wilson.canvas_height - 1; i >= 0; i--)
 			{
-				for (let j = resolution - 1; j >= 0; j--)
+				for (let j = wilson.canvas_width - 1; j >= 0; j--)
 				{
 					if (i - row_pan >= 0 && j - col_pan >= 0)
 					{
@@ -520,18 +528,18 @@
 		const fixed_row = Math.round((.5 - (fixed_point_y - wilson.world_center_y) / wilson.world_height) * wilson.canvas_height);
 		const fixed_col = Math.round(((fixed_point_x - wilson.world_center_x) / wilson.world_width + .5) * wilson.canvas_width);
 		
-		let new_grid = new Array(resolution);
+		let new_grid = new Array(wilson.canvas_height);
 		
-		for (let i = 0; i < resolution; i++)
+		for (let i = 0; i < wilson.canvas_height; i++)
 		{
-			new_grid[i] = new Array(resolution);
+			new_grid[i] = new Array(wilson.canvas_width);
 			
-			for (let j = 0; j < resolution; j++)
+			for (let j = 0; j < wilson.canvas_width; j++)
 			{
 				const new_row = Math.round((i - fixed_row) * scale + fixed_row);
 				const new_col = Math.round((j - fixed_col) * scale + fixed_col);
 				
-				if (new_row >= 0 && new_row < resolution && new_col >= 0 && new_col < resolution)
+				if (new_row >= 0 && new_row < wilson.canvas_height && new_col >= 0 && new_col < wilson.canvas_width)
 				{
 					//1.08 is large enough that the artifacts disappear quickly, but small enough that the trails don't seem to snap out of existence.
 					new_grid[i][j] = [Math.ceil(grid[new_row][new_col][0] / 1.08), grid[new_row][new_col][1], grid[new_row][new_col][2]]
@@ -764,7 +772,7 @@
 			
 			if (aspect_ratio >= 1)
 			{
-				wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+				wilson.change_canvas_size(Math.ceil(resolution * aspect_ratio), resolution);
 				
 				wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
 				wilson.world_height = 4 * Math.pow(2, zoom_level);
@@ -772,7 +780,7 @@
 			
 			else
 			{
-				wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+				wilson.change_canvas_size(resolution, Math.ceil(resolution / aspect_ratio));
 				
 				wilson.world_width = 4 * Math.pow(2, zoom_level);
 				wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
