@@ -40,6 +40,7 @@
 	let y_function = (x, y) => Math.sin(x);
 	
 	
+	
 	const options =
 	{
 		renderer: "hybrid",
@@ -375,7 +376,7 @@
 				
 				zoom_level += zoom_velocity;
 				
-				zoom_level = Math.min(Math.max(zoom_level, -5), 5);
+				zoom_level = Math.min(Math.max(zoom_level, -3), 3);
 				
 				zoom_canvas(fixed_point_x, fixed_point_y);
 				
@@ -517,7 +518,7 @@
 	//Call this before changing the world parameters!
 	function zoom_grid(fixed_point_x, fixed_point_y, zoom_delta)
 	{
-		if (zoom_level <= -5 || zoom_level >= 5)
+		if (zoom_level <= -3 || zoom_level >= 3)
 		{
 			return;
 		}
@@ -697,7 +698,7 @@
 		{
 			zoom_grid(x, y, scroll_amount / 100);
 			
-			zoom_level = Math.min(Math.max(zoom_level + scroll_amount / 100, -5), 5);
+			zoom_level = Math.min(Math.max(zoom_level + scroll_amount / 100, -3), 3);
 		}
 		
 		else
@@ -726,7 +727,7 @@
 		
 		zoom_grid(x, y, -zoom_delta);
 		
-		zoom_level = Math.min(Math.max(zoom_level - zoom_delta, -5), 5);
+		zoom_level = Math.min(Math.max(zoom_level - zoom_delta, -3), 3);
 		next_zoom_velocity = -zoom_delta;
 		
 		fixed_point_x = x;
