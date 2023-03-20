@@ -2,6 +2,7 @@ home
 	gallery
 	
 	applets
+		vector-fields
 		plane-partitions
 		quaternionic-julia-sets
 		fractal-sounds

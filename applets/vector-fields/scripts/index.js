@@ -10,7 +10,7 @@
 	let max_particles = 3000;
 	
 	let aspect_ratio = 1;
-	let zoom_level = 2;
+	let zoom_level = .6515;
 	let fixed_point_x = 0;
 	let fixed_point_y = 0;
 	
@@ -34,9 +34,10 @@
 	
 	let starting_process_id = Site.applet_process_id;
 	
-	let x_function = (x, y) => 1;
-	let y_function = (x, y) => y / (x*x + 1);
+	let vf_function = null;
 	
+	let x_function = (x, y) => Math.sin(y + Math.PI);
+	let y_function = (x, y) => Math.sin(x);
 	
 	
 	const options =
@@ -46,8 +47,8 @@
 		canvas_width: resolution,
 		canvas_height: resolution,
 		
-		world_width: 16,
-		world_height: 16,
+		world_width: 2 * Math.PI,
+		world_height: 2 * Math.PI,
 		world_center_x: 0,
 		world_center_y: 0,
 		
@@ -82,19 +83,52 @@
 	
 	
 	
-	const resolution_input_element = Page.element.querySelector("#resolution-input");
-	
-	const max_particles_input_element = Page.element.querySelector("#max-particles-input");
-	
-	const speed_input_element = Page.element.querySelector("#speed-input");
-	
-	const lifetime_input_element = Page.element.querySelector("#lifetime-input");
+	const code_textarea_element = Page.element.querySelector("#code-textarea");
 	
 	
 	
 	const generate_button_element = Page.element.querySelector("#generate-button");
 	
-	generate_button_element.addEventListener("click", generate_new_field);
+	generate_button_element.addEventListener("click", () =>
+	{
+		wilson.world_center_x = 0;
+		wilson.world_center_y = 0;
+		wilson.world_width = 2 * Math.PI;
+		wilson.world_height = 2 * Math.PI;
+		zoom_level = .6515;
+		
+		generate_new_field();
+	});
+	
+	
+	
+	const resolution_input_element = Page.element.querySelector("#resolution-input");
+	
+	resolution_input_element.addEventListener("input", generate_new_field);
+	
+	
+	
+	const max_particles_input_element = Page.element.querySelector("#max-particles-input");
+	
+	max_particles_input_element.addEventListener("input", () =>
+	{
+		max_particles = parseInt(max_particles_input_element.value || 3000);
+	});
+	
+	
+	
+	const speed_input_element = Page.element.querySelector("#speed-input");
+	
+	speed_input_element.addEventListener("input", () =>
+	{
+		dt = parseFloat(speed_input_element.value || 1) / 100;
+	});
+	
+	
+	
+	const lifetime_input_element = Page.element.querySelector("#lifetime-input");
+	
+	lifetime_input_element.addEventListener("input", generate_new_field);
 	
 	
 	
@@ -107,18 +141,22 @@
 	
 	
 	
+	generate_new_field();
+	
 	Page.show();
 	
 	
 	
 	function generate_new_field()
 	{
+		vf_function = new Function("x", "y", `return ${code_textarea_element.value}`);
+		
 		resolution = parseInt(resolution_input_element.value || 500);
 		
 		num_particles = 0;
 		max_particles = parseInt(max_particles_input_element.value || 3000);
 		
-		dt = parseFloat(speed_input_element.value || .01);
+		dt = parseFloat(speed_input_element.value || 1) / 100;
 		
 		lifetime = parseInt(lifetime_input_element.value || 200);
 		
@@ -131,7 +169,7 @@
 		
 		for (let i = 0; i < max_particles; i++)
 		{
-			particles[i] = [0, 0];
+			particles[i] = [0, 0, 0];
 			free_particle_slots[i] = i;
 		}
 		
@@ -145,8 +183,8 @@
 			
 			for (let j = 0; j < resolution; j++)
 			{
-				//Lifetime, hue
-				grid[i][j] = [0, 0];
+				//Lifetime, hue, saturation
+				grid[i][j] = [0, 0, 0];
 			}
 		}
 		
@@ -211,11 +249,13 @@
 				
 				if (row >= 0 && row < resolution && col >= 0 && col < resolution)
 				{
-					const dx = dt * x_function(particles[i][0], particles[i][1]);
-					const dy = dt * y_function(particles[i][0], particles[i][1]);
+					const result = vf_function(particles[i][0], particles[i][1]);
+					const dx = dt * result[0];
+					const dy = dt * result[1];
 					
 					grid[row][col][0] = lifetime;
 					grid[row][col][1] = (Math.atan2(dy, dx) + Math.PI) / (2 * Math.PI);
+					grid[row][col][2] = 1 - Math.exp(-1.2 * (dx * dx + dy * dy) / (dt * dt));
 					
 					particles[i][0] += dx;
 					particles[i][1] += dy;
@@ -245,7 +285,7 @@
 			{
 				if (grid[i][j][0])
 				{
-					const rgb = HSVtoRGB(grid[i][j][1], 1, grid[i][j][0] / lifetime);
+					const rgb = HSVtoRGB(grid[i][j][1], grid[i][j][2], grid[i][j][0] / lifetime);
 					
 					image_data[4 * (resolution * i + j) + 0] = rgb[0];
 					image_data[4 * (resolution * i + j) + 1] = rgb[1];
@@ -365,7 +405,7 @@
 		
 		particles[index][1] = wilson.world_center_y + wilson.world_height * (Math.random() - .5);
 		
-		particles[index][2] = Math.floor(lifetime * (Math.random() + .5));
+		particles[index][2] = Math.round(lifetime * (Math.random() * .5 + .75));
 		
 		num_particles++;
 	}
@@ -399,7 +439,7 @@
 					
 					else
 					{
-						grid[i][j] = [0, 0];
+						grid[i][j] = [0, 0, 0];
 					}
 				}
 			}
@@ -419,7 +459,7 @@
 					
 					else
 					{
-						grid[i][j] = [0, 0];
+						grid[i][j] = [0, 0, 0];
 					}
 				}
 			}
@@ -439,7 +479,7 @@
 					
 					else
 					{
-						grid[i][j] = [0, 0];
+						grid[i][j] = [0, 0, 0];
 					}
 				}
 			}
@@ -459,7 +499,7 @@
 					
 					else
 					{
-						grid[i][j] = [0, 0];
+						grid[i][j] = [0, 0, 0];
 					}
 				}
 			}
@@ -494,12 +534,12 @@
 				if (new_row >= 0 && new_row < resolution && new_col >= 0 && new_col < resolution)
 				{
 					//1.08 is large enough that the artifacts disappear quickly, but small enough that the trails don't seem to snap out of existence.
-					new_grid[i][j] = [Math.ceil(grid[new_row][new_col][0] / 1.08), grid[new_row][new_col][1]]
+					new_grid[i][j] = [Math.ceil(grid[new_row][new_col][0] / 1.08), grid[new_row][new_col][1], grid[new_row][new_col][2]]
 				}
 				
 				else
 				{
-					new_grid[i][j] = [0, 0];
+					new_grid[i][j] = [0, 0, 0];
 				}
 			}
 		}

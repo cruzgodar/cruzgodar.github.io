@@ -29,6 +29,7 @@ Site.sitemap =
 		
 		children:
 		[
+			"/applets/vector-fields/",
 			"/applets/plane-partitions/",
 			"/applets/quaternionic-julia-sets/",
 			"/applets/fractal-sounds/",
@@ -68,6 +69,13 @@ Site.sitemap =
 		]
 	},
 		
+	"/applets/vector-fields/":
+	{
+		parent: "/applets/",
+		
+		children: []
+	},
+	
 	"/applets/plane-partitions/":
 	{
 		parent: "/applets/",
