@@ -4,10 +4,10 @@
 	
 	
 	
-	let resolution = 400;
+	let resolution = 500;
 	
 	let num_particles = 0;
-	let max_particles = 3000;
+	let max_particles = 6000;
 	
 	let aspect_ratio = 1;
 	let zoom_level = .6515;
@@ -25,11 +25,6 @@
 	let particles = [];
 	
 	let free_particle_slots = [];
-	
-	let skip_drawing = false;
-	let paused = false;
-	
-	let image_data = null;
 	
 	let starting_process_id = Site.applet_process_id;
 	
@@ -212,7 +207,7 @@
 		{
 			vec3 v = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).xyz;
 			
-			gl_FragColor = vec4((v.x - 1.0) / 255.0, v.y, v.z, 1.0);
+			gl_FragColor = vec4(v.x - 1.0 / 255.0, v.y, v.z, 1.0);
 		}
 	`;
 	
@@ -228,12 +223,12 @@
 	
 	const wilson_dim = new Wilson(Page.element.querySelector("#dim-canvas"), options_dim);
 	
-	wilson_dim.render.create_framebuffer_texture_pair();
+	wilson_dim.render.create_framebuffer_texture_pair(wilson_dim.gl.UNSIGNED_BYTE);
 	
 	wilson_dim.gl.bindTexture(wilson_dim.gl.TEXTURE_2D, wilson_dim.render.framebuffers[0].texture);
 	wilson_dim.gl.bindFramebuffer(wilson_dim.gl.FRAMEBUFFER, null);
 	
-	let dim_texture = new Float32Array(resolution * resolution * 4);
+	let dim_texture = new Uint8Array(resolution * resolution * 4);
 	
 	
 	
@@ -256,33 +251,15 @@
 		{
 			vec3 v = texture2D(u_texture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0).xyz;
 			
-			gl_FragColor = vec4(hsv2rgb(vec3(v.y, v.z, v.x / 255.0)), 1.0);
+			gl_FragColor = vec4(hsv2rgb(vec3(v.y, v.z, v.x)), 1.0);
 		}
 	`;
 	
-	const options_draw =
+	const options =
 	{
 		renderer: "gpu",
 		
 		shader: frag_shader_source_draw,
-		
-		canvas_width: resolution,
-		canvas_height: resolution,
-	};
-	
-	const wilson_draw = new Wilson(Page.element.querySelector("#draw-canvas"), options_draw);
-	
-	wilson_draw.render.create_framebuffer_texture_pair();
-	
-	wilson_draw.gl.bindTexture(wilson_draw.gl.TEXTURE_2D, wilson_draw.render.framebuffers[0].texture);
-	wilson_draw.gl.bindFramebuffer(wilson_draw.gl.FRAMEBUFFER, null);
-	
-	
-	
-	
-	const options =
-	{
-		renderer: "hybrid",
 		
 		canvas_width: resolution,
 		canvas_height: resolution,
@@ -322,6 +299,11 @@
 	};
 	
 	const wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	
+	wilson.render.create_framebuffer_texture_pair(wilson.gl.UNSIGNED_BYTE);
+	
+	wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, wilson.render.framebuffers[0].texture);
+	wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, null);
 	
 	
 	
@@ -394,8 +376,6 @@
 	
 	function generate_new_field()
 	{
-		vf_function = new Function("x", "y", `return ${code_textarea_element.value}`);
-		
 		resolution = parseInt(resolution_input_element.value || 500);
 		
 		num_particles = 0;
@@ -422,28 +402,13 @@
 		
 		
 		
-		grid = new Array(wilson.canvas_height);
-		
-		for (let i = 0; i < wilson.canvas_height; i++)
-		{
-			grid[i] = new Array(wilson.canvas_width);
-			
-			for (let j = 0; j < wilson.canvas_width; j++)
-			{
-				//Lifetime, hue, saturation
-				grid[i][j] = [0, 0, 0];
-			}
-		}
-		
-		
-		
 		update_texture = new Float32Array(wilson_update.canvas_width * wilson_update.canvas_height * 4);
 		
 		for (let i = 0; i < wilson_update.canvas_height; i++)
 		{
 			for (let j = 0; j < wilson_update.canvas_width; j++)
 			{
-				const index = wilson_update.canvas_height * i + j;
+				const index = wilson_update.canvas_width * i + j;
 				
 				update_texture[4 * index] = 0.0;
 				update_texture[4 * index + 1] = 0.0;
@@ -454,15 +419,21 @@
 		
 		
 		
-		image_data = new Uint8ClampedArray(wilson.canvas_height * wilson.canvas_width * 4);
+		dim_texture = new Uint8Array(wilson.canvas_width * wilson.canvas_height * 4);
 		
 		for (let i = 0; i < wilson.canvas_height; i++)
 		{
 			for (let j = 0; j < wilson.canvas_width; j++)
 			{
-				image_data[4 * (wilson.canvas_width * i + j) + 3] = 255;
+				const index = wilson.canvas_width * i + j;
+				
+				dim_texture[4 * index] = 0;
+				dim_texture[4 * index + 1] = 0;
+				dim_texture[4 * index + 2] = 0;
 			}
 		}
+		
+		
 		
 		window.requestAnimationFrame(draw_frame);
 	}
@@ -491,7 +462,7 @@
 			if (num_particles < max_particles)
 			{
 				//We find the first open slot we can and search from the end of the list so that we can slice more efficiently.
-				const num_to_add = Math.min(max_particles / 80, max_particles - num_particles);
+				const num_to_add = Math.min(Math.ceil(max_particles / 80), max_particles - num_particles);
 				
 				for (let i = free_particle_slots.length - num_to_add; i < free_particle_slots.length; i++)
 				{
@@ -505,29 +476,7 @@
 			
 			update_particles();
 			
-			
-			
-			wilson_dim.gl.texImage2D(wilson_dim.gl.TEXTURE_2D, 0, wilson_dim.gl.RGBA, wilson_dim.canvas_width, wilson_dim.canvas_height, 0, wilson_dim.gl.RGBA, wilson_dim.gl.FLOAT, dim_texture);
-			
-			wilson_dim.render.draw_frame();
-			
-			const pixels = wilson_dim.render.get_pixel_data();
-			
-			for (let i = 0; i < wilson.canvas_height; i++)
-			{
-				for (let j = 0; j < wilson.canvas_width; j++)
-				{
-					const index = wilson.canvas_width * i + j;
-					
-					dim_texture[4 * index] = pixels[4 * index];
-					dim_texture[4 * index + 1] = pixels[4 * index + 1] / 255;
-					dim_texture[4 * index + 2] = pixels[4 * index + 2] / 255;
-				}
-			}
-			
-			wilson_draw.gl.texImage2D(wilson_draw.gl.TEXTURE_2D, 0, wilson_draw.gl.RGBA, wilson_draw.canvas_width, wilson_draw.canvas_height, 0, wilson_draw.gl.RGBA, wilson_draw.gl.FLOAT, dim_texture);
-			
-			wilson_draw.render.draw_frame();
+			draw_field();
 			
 			
 			
@@ -588,7 +537,7 @@
 				
 			if (zoom_velocity !== 0)	
 			{
-				zoom_grid(fixed_point_x, fixed_point_y, zoom_velocity)
+				//zoom_grid(fixed_point_x, fixed_point_y, zoom_velocity)
 				
 				zoom_level += zoom_velocity;
 				
@@ -613,10 +562,7 @@
 				return;
 			}
 			
-			if (!paused)
-			{
-				window.requestAnimationFrame(draw_frame);
-			}
+			window.requestAnimationFrame(draw_frame);
 		}
 		
 		catch(ex) {generate_new_field()}
@@ -703,7 +649,7 @@
 		{
 			for (let j = 0; j < wilson_update.canvas_width; j++)
 			{
-				const index = wilson_update.canvas_height * i + j;
+				const index = wilson_update.canvas_width * i + j;
 				
 				if (index < particles.length && particles[index][2])
 				{
@@ -719,8 +665,8 @@
 						const new_index = row * wilson.canvas_width + col;
 						
 						dim_texture[4 * new_index] = lifetime;
-						dim_texture[4 * new_index + 1] = floats_h[index];
-						dim_texture[4 * new_index + 2] = floats_s[index];
+						dim_texture[4 * new_index + 1] = floats_h[index] * 255;
+						dim_texture[4 * new_index + 2] = floats_s[index] * 255;
 						
 						particles[index][2]--;
 						
@@ -738,6 +684,21 @@
 				}
 			}
 		}
+	}
+	
+	
+	
+	function draw_field()
+	{
+		wilson_dim.gl.texImage2D(wilson_dim.gl.TEXTURE_2D, 0, wilson_dim.gl.RGBA, wilson_dim.canvas_width, wilson_dim.canvas_height, 0, wilson_dim.gl.RGBA, wilson_dim.gl.UNSIGNED_BYTE, dim_texture);
+		
+		wilson_dim.render.draw_frame();
+		
+		dim_texture = wilson_dim.render.get_pixel_data();
+		
+		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvas_width, wilson.canvas_height, 0, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, dim_texture);
+		
+		wilson.render.draw_frame();
 	}
 	
 	
@@ -1100,6 +1061,7 @@
 			if (aspect_ratio >= 1)
 			{
 				wilson.change_canvas_size(Math.ceil(resolution * aspect_ratio), resolution);
+				wilson_dim.change_canvas_size(Math.ceil(resolution * aspect_ratio), resolution);
 				
 				wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
 				wilson.world_height = 4 * Math.pow(2, zoom_level);
@@ -1108,6 +1070,7 @@
 			else
 			{
 				wilson.change_canvas_size(resolution, Math.ceil(resolution / aspect_ratio));
+				wilson_dim.change_canvas_size(resolution, Math.ceil(resolution / aspect_ratio));
 				
 				wilson.world_width = 4 * Math.pow(2, zoom_level);
 				wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
@@ -1119,6 +1082,7 @@
 			aspect_ratio = 1;
 			
 			wilson.change_canvas_size(resolution, resolution);
+			wilson_dim.change_canvas_size(resolution, resolution);
 			
 			wilson.world_width = 4 * Math.pow(2, zoom_level);
 			wilson.world_height = 4 * Math.pow(2, zoom_level);
@@ -1127,29 +1091,4 @@
 	
 	window.addEventListener("resize", change_aspect_ratio);
 	Page.temporary_handlers["resize"].push(change_aspect_ratio);
-	
-	
-	
-	function HSVtoRGB(h, s, v)
-	{
-		let r, g, b, i, f, p, q, t;
-		
-		i = Math.floor(h * 6);
-		f = h * 6 - i;
-		p = v * (1 - s);
-		q = v * (1 - f * s);
-		t = v * (1 - (1 - f) * s);
-		
-		switch (i % 6)
-		{
-			case 0: r = v, g = t, b = p; break;
-			case 1: r = q, g = v, b = p; break;
-			case 2: r = p, g = v, b = t; break;
-			case 3: r = p, g = q, b = v; break;
-			case 4: r = t, g = p, b = v; break;
-			case 5: r = v, g = p, b = q; break;
-		}
-	    
-		return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-	}
 }()
