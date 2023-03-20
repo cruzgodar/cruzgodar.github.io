@@ -7,12 +7,17 @@
 	let resolution = 500;
 	
 	let num_particles = 0;
-	let max_particles = 2000;
+	let max_particles = 3000;
 	
-	let dt = .005;
+	let aspect_ratio = 1;
+	let zoom_level = 2;
+	let fixed_point_x = 0;
+	let fixed_point_y = 0;
+	
+	let dt = .01;
 	
 	//Average lifetime in frames -- actual values are .5 to 1.5x this.
-	let lifetime = 240;
+	let lifetime = 200;
 	
 	//A full array representing the grid -- we need this to do trails.
 	let grid = [];
@@ -29,8 +34,8 @@
 	
 	let starting_process_id = Site.applet_process_id;
 	
-	let x_function = (x, y) => -Math.sin(y);
-	let y_function = (x, y) => Math.sin(x);
+	let x_function = (x, y) => 1;
+	let y_function = (x, y) => y / (x*x + 1);
 	
 	
 	
@@ -41,8 +46,8 @@
 		canvas_width: resolution,
 		canvas_height: resolution,
 		
-		world_width: 15,
-		world_height: 15,
+		world_width: 16,
+		world_height: 16,
 		world_center_x: 0,
 		world_center_y: 0,
 		
@@ -83,6 +88,8 @@
 	
 	const speed_input_element = Page.element.querySelector("#speed-input");
 	
+	const lifetime_input_element = Page.element.querySelector("#lifetime-input");
+	
 	
 	
 	const generate_button_element = Page.element.querySelector("#generate-button");
@@ -109,9 +116,11 @@
 		resolution = parseInt(resolution_input_element.value || 500);
 		
 		num_particles = 0;
-		max_particles = parseInt(max_particles_input_element.value || 2000);
+		max_particles = parseInt(max_particles_input_element.value || 3000);
 		
-		dt = parseFloat(speed_input_element.value || .005);
+		dt = parseFloat(speed_input_element.value || .01);
+		
+		lifetime = parseInt(lifetime_input_element.value || 200);
 		
 		wilson.change_canvas_size(resolution, resolution);
 		
@@ -171,11 +180,11 @@
 			return;
 		}
 		
-		//If there's not enough particles, we add half of what's missing, capped at 1% of the total particle count.
+		//If there's not enough particles, we add what's missing, capped at 1% of the total particle count.
 		if (num_particles < max_particles)
 		{
 			//We find the first open slot we can and search from the end of the list so that we can slice more efficiently.
-			const num_to_add = Math.floor(Math.min(max_particles / 100, (max_particles - num_particles) / 2));
+			const num_to_add = Math.min(max_particles / 100, max_particles - num_particles);
 			
 			for (let i = free_particle_slots.length - num_to_add; i < free_particle_slots.length; i++)
 			{
@@ -268,7 +277,7 @@
 		next_pan_velocity_x = 0;
 		next_pan_velocity_y = 0;
 		
-		if (pan_velocity_x !== 0 || pan_velocity_y !== 0 || zoom_velocity !== 0)
+		if (pan_velocity_x !== 0 || pan_velocity_y !== 0)
 		{
 			const x_delta = -pan_velocity_x * wilson.world_width;
 			const y_delta = -pan_velocity_y * wilson.world_height;
@@ -307,13 +316,21 @@
 				pan_velocity_x = 0;
 				pan_velocity_y = 0;
 			}
+		}
 			
-			/*
+		
+		
+		last_zoom_velocities.push(next_zoom_velocity);
+		last_zoom_velocities.shift();
+		next_zoom_velocity = 0;
 			
+		if (zoom_velocity !== 0)	
+		{
+			zoom_grid(fixed_point_x, fixed_point_y, zoom_velocity)
 			
 			zoom_level += zoom_velocity;
 			
-			zoom_level = Math.min(zoom_level, 1);
+			zoom_level = Math.min(Math.max(zoom_level, -5), 5);
 			
 			zoom_canvas(fixed_point_x, fixed_point_y);
 			
@@ -323,11 +340,6 @@
 			{
 				zoom_velocity = 0;
 			}
-			
-			
-			
-			window.requestAnimationFrame(draw_julia_set);
-			*/
 		}
 		
 		
@@ -454,6 +466,47 @@
 		}
 	}
 	
+	//Call this before changing the world parameters!
+	function zoom_grid(fixed_point_x, fixed_point_y, zoom_delta)
+	{
+		if (zoom_level <= -5 || zoom_level >= 5)
+		{
+			return;
+		}
+		
+		//Ex: if the scale is 2 and goes to 3, the delta is +1, so we actually want to multiply things by 2^(-1) to get the source places.
+		const scale = Math.pow(2, zoom_delta);
+		
+		const fixed_row = Math.round((.5 - (fixed_point_y - wilson.world_center_y) / wilson.world_height) * wilson.canvas_height);
+		const fixed_col = Math.round(((fixed_point_x - wilson.world_center_x) / wilson.world_width + .5) * wilson.canvas_width);
+		
+		let new_grid = new Array(resolution);
+		
+		for (let i = 0; i < resolution; i++)
+		{
+			new_grid[i] = new Array(resolution);
+			
+			for (let j = 0; j < resolution; j++)
+			{
+				const new_row = Math.round((i - fixed_row) * scale + fixed_row);
+				const new_col = Math.round((j - fixed_col) * scale + fixed_col);
+				
+				if (new_row >= 0 && new_row < resolution && new_col >= 0 && new_col < resolution)
+				{
+					//1.08 is large enough that the artifacts disappear quickly, but small enough that the trails don't seem to snap out of existence.
+					new_grid[i][j] = [Math.ceil(grid[new_row][new_col][0] / 1.08), grid[new_row][new_col][1]]
+				}
+				
+				else
+				{
+					new_grid[i][j] = [0, 0];
+				}
+			}
+		}
+		
+		grid = new_grid;
+	}
+	
 	
 	
 	let pan_velocity_x = 0;
@@ -469,12 +522,12 @@
 	let last_zoom_velocities = [];
 
 	const pan_friction = .96;
-	const pan_velocity_start_threshhold = .003;
-	const pan_velocity_stop_threshhold = .003;
+	const pan_velocity_start_threshhold = .002;
+	const pan_velocity_stop_threshhold = .002;
 	
 	const zoom_friction = .93;
-	const zoom_velocity_start_threshhold = .01;
-	const zoom_velocity_stop_threshhold = .001;
+	const zoom_velocity_start_threshhold = .002;
+	const zoom_velocity_stop_threshhold = .002;
 	
 	function on_grab_canvas(x, y, event)
 	{
@@ -542,8 +595,6 @@
 			pan_velocity_x = last_pan_velocities_x[max_index];
 		}
 		
-		last_pan_velocities_x = [0, 0, 0, 0];
-		
 		
 		
 		last_pan_velocities_y.forEach((velocity, index) =>
@@ -565,22 +616,40 @@
 			pan_velocity_y = last_pan_velocities_y[max_index];
 		}
 		
-		last_pan_velocities_y = [0, 0, 0, 0];
+		
+		
+		last_zoom_velocities.forEach((velocity, index) =>
+		{
+			if (Math.abs(velocity) > zoom_velocity)
+			{
+				zoom_velocity = Math.abs(velocity);
+				max_index = index;
+			}	
+		});
+		
+		if (zoom_velocity < zoom_velocity_start_threshhold)
+		{
+			zoom_velocity = 0;
+		}
+		
+		else
+		{
+			zoom_velocity = last_zoom_velocities[max_index];
+		}
 	}
 	
 	
 	
 	function on_wheel_canvas(x, y, scroll_amount, event)
 	{
-		/*
 		fixed_point_x = x;
 		fixed_point_y = y;
 		
 		if (Math.abs(scroll_amount / 100) < .3)
 		{
-			zoom_level += scroll_amount / 100;
+			zoom_grid(x, y, scroll_amount / 100);
 			
-			zoom_level = Math.min(zoom_level, 1);
+			zoom_level = Math.min(Math.max(zoom_level + scroll_amount / 100, -5), 5);
 		}
 		
 		else
@@ -589,49 +658,39 @@
 		}
 		
 		zoom_canvas();
-		*/
 	}
 	
 	
 	
 	function on_pinch_canvas(x, y, touch_distance_delta, event)
 	{
-		/*
-		if (julia_mode === 2)
-		{
-			return;
-		}
-		
-		
+		let zoom_delta;
 		
 		if (aspect_ratio >= 1)
 		{
-			zoom_level -= touch_distance_delta / wilson.world_width * 10;
-			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_width * 10;
+			zoom_delta = touch_distance_delta / wilson.world_width * 10;
 		}
 		
 		else
 		{
-			zoom_level -= touch_distance_delta / wilson.world_height * 10;
-			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_height * 10;
+			zoom_delta = touch_distance_delta / wilson.world_height * 10;
 		}
 		
-		zoom_level = Math.min(zoom_level, 1);
+		zoom_grid(x, y, -zoom_delta);
+		
+		zoom_level = Math.min(Math.max(zoom_level - zoom_delta, -5), 5);
+		next_zoom_velocity = -zoom_delta;
 		
 		fixed_point_x = x;
 		fixed_point_y = y;
 		
 		zoom_canvas();
-		*/
 	}
 	
 	
 	
 	function zoom_canvas()
 	{
-		/*
 		if (aspect_ratio >= 1)
 		{
 			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level) * aspect_ratio, 4 * Math.pow(2, zoom_level));
@@ -653,31 +712,6 @@
 			wilson.world_center_x = new_world_center[0];
 			wilson.world_center_y = new_world_center[1];
 		}
-		
-		num_iterations = (-zoom_level * 30) + 200;
-		
-		
-		
-		if (!double_precision && zoom_level < double_precision_zoom_threshhold && !force_floats_checkbox_element.checked)
-		{
-			double_precision = true;
-			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 1);
-			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 1);
-			
-			wilson.canvas.style.borderColor = "rgb(127, 0, 0)";
-		}
-		
-		else if (double_precision && zoom_level > double_precision_zoom_threshhold && !force_doubles)
-		{
-			double_precision = false;
-			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 0);
-			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 0);
-			
-			wilson.canvas.style.borderColor = "rgb(127, 127, 127)";
-		}
-		
-		window.requestAnimationFrame(draw_julia_set);
-		*/
 	}
 	
 	
@@ -715,6 +749,9 @@
 			wilson.world_height = 4 * Math.pow(2, zoom_level);
 		}
 	}
+	
+	window.addEventListener("resize", change_aspect_ratio);
+	Page.temporary_handlers["resize"].push(change_aspect_ratio);
 	
 	
 	
