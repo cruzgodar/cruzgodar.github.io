@@ -1,41 +1,26 @@
-!function()
+"use strict";
+
+!async function()
 {
-	"use strict";
+	await Site.load_applet("abelian-sandpiles");
+	
+	const applet = new AbelianSandpile(Page.element.querySelector("#output-canvas"));
 	
 	
 	
-	const options =
+	function run()
 	{
-		renderer: "cpu",
+		const num_grains = parseInt(num_grains_input_element.value || 10000);
+		const maximum_speed = maximum_speed_checkbox_element.checked;
 		
-		canvas_width: 1000,
-		canvas_height: 1000,
-		
-		
-		
-		use_fullscreen: true,
-	
-		use_fullscreen_button: true,
-		
-		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
-	};
-	
-	const wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
-	
-	
-	
-	let grid_size = null;
-	
-	let canvas_scale_factor = 5;
-	
-	let web_worker = null;
+		applet.run(num_grains, maximum_speed);
+	}
 	
 	
 	
 	const generate_button_element = Page.element.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", request_sandpile);
+	generate_button_element.addEventListener("click", run);
 	
 	
 	
@@ -45,17 +30,8 @@
 	{
 		if (e.keyCode === 13)
 		{
-			request_sandpile();
+			run();
 		}
-	});
-	
-	
-	
-	const download_button_element = Page.element.querySelector("#download-button");
-	
-	download_button_element.addEventListener("click", () =>
-	{
-		wilson.download_frame("an-abelian-sandpile.png");
 	});
 	
 	
@@ -64,98 +40,14 @@
 	
 	
 	
-	if (Browser.name === "Chrome" || Browser.name === "Opera")
+	const download_button_element = Page.element.querySelector("#download-button");
+	
+	download_button_element.addEventListener("click", () =>
 	{
-		alert_about_hardware_acceleration();
-	}
+		applet.wilson.download_frame("an-abelian-sandpile.png");
+	});
 	
 	
 	
 	Page.show();
-	
-	
-	
-	function request_sandpile()
-	{
-		const num_grains = parseInt(num_grains_input_element.value || 10000);
-		
-		const maximum_speed = maximum_speed_checkbox_element.checked;
-		
-		grid_size = Math.floor(Math.sqrt(num_grains)) + 2;
-		
-		if (grid_size % 2 === 0)
-		{
-			grid_size++;
-		}
-		
-		
-		
-		//Make sure that there is a proper density of pixels so that the canvas doesn't look blurry.
-		
-		const canvas_pixel_size = Math.min(window.innerWidth, window.innerWidth	);
-		
-		canvas_scale_factor = Math.ceil(canvas_pixel_size / grid_size);
-		
-		
-		
-		wilson.change_canvas_size(grid_size * canvas_scale_factor, grid_size * canvas_scale_factor);
-		
-		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		wilson.ctx.fillRect(0, 0, grid_size * canvas_scale_factor, grid_size * canvas_scale_factor);
-		
-		
-		
-		try {web_worker.terminate();}
-		catch(ex) {}
-		
-		if (DEBUG)
-		{
-			web_worker = new Worker("/applets/abelian-sandpiles/scripts/worker.js");
-		}
-		
-		else
-		{
-			web_worker = new Worker("/applets/abelian-sandpiles/scripts/worker.min.js");
-		}
-		
-		Page.temporary_web_workers.push(web_worker);
-		
-		web_worker.onmessage = function(e)
-		{
-			const image = e.data[0];
-			
-			for (let i = 0; i < grid_size; i++)
-			{
-				for (let j = 0; j < grid_size; j++)
-				{
-					wilson.ctx.fillStyle = image[i][j];
-					
-					wilson.ctx.fillRect(j * canvas_scale_factor, i * canvas_scale_factor, canvas_scale_factor, canvas_scale_factor);
-				}
-			}
-		}
-		
-		
-		
-		web_worker.postMessage([grid_size, num_grains, maximum_speed]);
-	}
-	
-	
-	
-	function alert_about_hardware_acceleration()
-	{
-		const elements = Page.element.querySelector("main").children;
-		
-		elements = elements[elements.length - 1].children;
-		
-		elements[elements.length - 1].insertAdjacentHTML("afterend", `
-			<div data-aos="fade-up" style="margin-top: 10vh">
-				<p class="body-text">
-					Your browser treats canvases in a way that may make this applet stutter excessively. If this happens, try temporarily turning off hardware acceleration in the browser&#x2019;s settings.
-				</p>
-			</div>
-		`);
-		
-		Page.Load.AOS.on_resize();
-	}
 }()

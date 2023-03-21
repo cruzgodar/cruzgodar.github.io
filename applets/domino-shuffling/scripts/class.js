@@ -1,3 +1,5 @@
+"use strict";
+
 class DominoShuffling extends Applet
 {
 	resolution = 2000;

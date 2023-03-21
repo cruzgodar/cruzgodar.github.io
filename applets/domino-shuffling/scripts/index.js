@@ -1,10 +1,21 @@
+"use strict";
+
 !async function()
 {
-	"use strict";
-	
 	await Site.load_applet("domino-shuffling");
 	
 	const applet = new DominoShuffling(Page.element.querySelector("#output-canvas"));
+	
+	
+	
+	function run()
+	{
+		const resolution = parseInt(resolution_input_element.value || 2000);
+		const diamond_size = parseInt(diamond_size_input_element.value || 20) + 1;
+		const use_smooth_colors = use_smooth_colors_checkbox_element.checked;
+		
+		applet.run(resolution, diamond_size, use_smooth_colors);
+	}
 	
 	
 	
@@ -49,17 +60,6 @@
 	{
 		applet.wilson.download_frame("an-aztec-diamond.png");
 	});
-
-
-
-	function run()
-	{
-		const resolution = parseInt(resolution_input_element.value || 2000);
-		const diamond_size = parseInt(diamond_size_input_element.value || 20) + 1;
-		const use_smooth_colors = use_smooth_colors_checkbox_element.checked;
-		
-		applet.run(resolution, diamond_size, use_smooth_colors);
-	}
 	
 	
 	
