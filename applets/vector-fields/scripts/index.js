@@ -1,6 +1,10 @@
-!function()
+!async function()
 {
 	"use strict";
+	
+	
+	
+	await Site.load_glsl();
 	
 	
 	
@@ -28,161 +32,17 @@
 	
 	let starting_process_id = Site.applet_process_id;
 	
-	let vf_function = null;
 	
-	let x_function = (x, y) => Math.sin(y + Math.PI);
-	let y_function = (x, y) => Math.sin(x);
-	
-	
-	
-	const frag_shader_source_update_base = `
-		precision highp float;
-		precision highp sampler2D;
-		
-		varying vec2 uv;
-		
-		uniform sampler2D u_texture;
-		
-		uniform float dt;
-		
-		
-		
-		//Don't know how, but this writes an honest float32 to the 32 bits of output, which JS then decodes.
-		
-		float shift_right(float v, float amt)
-		{
-			v = floor(v) + 0.5;
-			return floor(v / exp2(amt));
-		}
-		
-		float shift_left(float v, float amt)
-		{
-			return floor(v * exp2(amt) + 0.5);
-		}
-		
-		float mask_last(float v, float bits)
-		{
-			return mod(v, shift_left(1.0, bits));
-		}
-		
-		float extract_bits(float num, float from, float to)
-		{
-			from = floor(from + 0.5); to = floor(to + 0.5);
-			return mask_last(shift_right(num, from), to - from);
-		}
-		
-		vec4 encode_float(float val)
-		{
-			if (val == 0.0) return vec4(0, 0, 0, 0);
-			float sign = val > 0.0 ? 0.0 : 1.0;
-			val = abs(val);
-			float exponent = floor(log2(val));
-			float biased_exponent = exponent + 127.0;
-			float fraction = ((val / exp2(exponent)) - 1.0) * 8388608.0;
-			float t = biased_exponent / 2.0;
-			float last_bit_of_biased_exponent = fract(t) * 2.0;
-			float remaining_bits_of_biased_exponent = floor(t);
-			float byte4 = extract_bits(fraction, 0.0, 8.0) / 255.0;
-			float byte3 = extract_bits(fraction, 8.0, 16.0) / 255.0;
-			float byte2 = (last_bit_of_biased_exponent * 128.0 + extract_bits(fraction, 16.0, 23.0)) / 255.0;
-			float byte1 = (sign * 128.0 + remaining_bits_of_biased_exponent) / 255.0; 
-			return vec4(byte4, byte3, byte2, byte1);
-		}
-		
-		
-		
-		void main(void)
-		{
-			vec4 sample = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
-			
-			if (int(sample.z) == 0)
-			{
-				return;
-			}
-			
-			vec2 v = sample.xy;
-	`;
-	
-	const frag_shader_source_update_x = `
-			${frag_shader_source_update_base}
-			
-			float dx = sin(v.y);
-			
-			float x = dt * dx + v.x;
-			
-			gl_FragColor = encode_float(x);
-		}
-	`;
-	
-	const frag_shader_source_update_y = `
-			${frag_shader_source_update_base}
-			
-			float dy = sin(v.x + 3.14159265);
-			
-			float y = dt * dy + v.y;
-			
-			gl_FragColor = encode_float(y);
-		}
-	`;
-	
-	const frag_shader_source_update_h = `
-			${frag_shader_source_update_base}
-			
-			float dx = sin(v.y);
-			float dy = sin(v.x + 3.14159265);
-			
-			float h = (atan(dy, dx) + 3.14159265) / 6.28318531;
-			
-			gl_FragColor = encode_float(h);
-		}
-	`;
-	
-	const frag_shader_source_update_s = `
-			${frag_shader_source_update_base}
-			
-			float dx = sin(v.y);
-			float dy = sin(v.x + 3.14159265);
-			
-			float s = 1.0 - exp(-1.2 * (dx * dx + dy * dy));
-			
-			gl_FragColor = encode_float(s);
-		}
-	`;
 	
 	const options_update =
 	{
 		renderer: "gpu",
-		
-		shader: frag_shader_source_update_x,
 		
 		canvas_width: 100,
 		canvas_height: 100,
 	};
 	
 	const wilson_update = new Wilson(Page.element.querySelector("#update-canvas"), options_update);
-	
-	
-	
-	wilson_update.render.load_new_shader(frag_shader_source_update_y);
-	wilson_update.render.load_new_shader(frag_shader_source_update_h);
-	wilson_update.render.load_new_shader(frag_shader_source_update_s);
-	
-	wilson_update.render.init_uniforms(["dt"], 0);
-	wilson_update.render.init_uniforms(["dt"], 1);
-	wilson_update.render.init_uniforms(["dt"], 2);
-	wilson_update.render.init_uniforms(["dt"], 3);
-	
-	wilson_update.gl.useProgram(wilson_update.render.shader_programs[0]);
-	wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][0], dt);
-	
-	wilson_update.gl.useProgram(wilson_update.render.shader_programs[1]);
-	wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][1], dt);
-	
-	wilson_update.gl.useProgram(wilson_update.render.shader_programs[2]);
-	wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][2], dt);
-	
-	wilson_update.gl.useProgram(wilson_update.render.shader_programs[3]);
-	wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][3], dt);
 	
 	
 	
@@ -385,20 +245,21 @@
 	
 	const code_textarea_element = Page.element.querySelector("#code-textarea");
 	
+	code_textarea_element.addEventListener("keydown", (e) =>
+	{
+		if (e.keyCode === 13)
+		{
+			e.preventDefault();
+			
+			use_new_code();
+		}
+	});
+	
 	
 	
 	const generate_button_element = Page.element.querySelector("#generate-button");
 	
-	generate_button_element.addEventListener("click", () =>
-	{
-		wilson.world_center_x = 0;
-		wilson.world_center_y = 0;
-		wilson.world_width = 2 * Math.PI;
-		wilson.world_height = 2 * Math.PI;
-		zoom_level = .6515;
-		
-		generate_new_field();
-	});
+	generate_button_element.addEventListener("click", use_new_code);
 	
 	
 	
@@ -444,9 +305,160 @@
 	
 	
 	
-	generate_new_field();
+	use_new_code();
 	
 	Page.show();
+	
+	
+	
+	function use_new_code()
+	{
+		wilson.world_center_x = 0;
+		wilson.world_center_y = 0;
+		wilson.world_width = 2 * Math.PI;
+		wilson.world_height = 2 * Math.PI;
+		zoom_level = .6515;
+		
+		const generating_code = code_textarea_element.value;
+		
+		const frag_shader_source_update_base = `
+			precision highp float;
+			precision highp sampler2D;
+			
+			varying vec2 uv;
+			
+			uniform sampler2D u_texture;
+			
+			uniform float dt;
+			
+			
+			
+			${Site.get_glsl_bundle(generating_code)}
+			
+			
+			
+			//Don't know how, but this writes an honest float32 to the 32 bits of output, which JS then decodes.
+			
+			float shift_right(float v, float amt)
+			{
+				v = floor(v) + 0.5;
+				return floor(v / exp2(amt));
+			}
+			
+			float shift_left(float v, float amt)
+			{
+				return floor(v * exp2(amt) + 0.5);
+			}
+			
+			float mask_last(float v, float bits)
+			{
+				return mod(v, shift_left(1.0, bits));
+			}
+			
+			float extract_bits(float num, float from, float to)
+			{
+				from = floor(from + 0.5); to = floor(to + 0.5);
+				return mask_last(shift_right(num, from), to - from);
+			}
+			
+			vec4 encode_float(float val)
+			{
+				if (val == 0.0) return vec4(0, 0, 0, 0);
+				float sign = val > 0.0 ? 0.0 : 1.0;
+				val = abs(val);
+				float exponent = floor(log2(val));
+				float biased_exponent = exponent + 127.0;
+				float fraction = ((val / exp2(exponent)) - 1.0) * 8388608.0;
+				float t = biased_exponent / 2.0;
+				float last_bit_of_biased_exponent = fract(t) * 2.0;
+				float remaining_bits_of_biased_exponent = floor(t);
+				float byte4 = extract_bits(fraction, 0.0, 8.0) / 255.0;
+				float byte3 = extract_bits(fraction, 8.0, 16.0) / 255.0;
+				float byte2 = (last_bit_of_biased_exponent * 128.0 + extract_bits(fraction, 16.0, 23.0)) / 255.0;
+				float byte1 = (sign * 128.0 + remaining_bits_of_biased_exponent) / 255.0; 
+				return vec4(byte4, byte3, byte2, byte1);
+			}
+			
+			
+			
+			void main(void)
+			{
+				vec4 sample = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
+				
+				if (int(sample.z) == 0)
+				{
+					return;
+				}
+				
+				vec2 v = sample.xy;
+				
+				float x = v.x;
+				float y = v.y;
+		`;
+		
+		const frag_shader_source_update_x = `
+				${frag_shader_source_update_base}
+				
+				vec2 d = vec2${generating_code};
+				
+				gl_FragColor = encode_float(dt * d.x + x);
+			}
+		`;
+		
+		const frag_shader_source_update_y = `
+				${frag_shader_source_update_base}
+				
+				vec2 d = vec2${generating_code};
+				
+				gl_FragColor = encode_float(dt * d.y + y);
+			}
+		`;
+		
+		const frag_shader_source_update_h = `
+				${frag_shader_source_update_base}
+				
+				vec2 d = vec2${generating_code};
+				
+				gl_FragColor = encode_float((atan(d.y, d.x) + 3.14159265) / 6.28318531);
+			}
+		`;
+		
+		const frag_shader_source_update_s = `
+				${frag_shader_source_update_base}
+				
+				vec2 d = vec2${generating_code};
+				
+				gl_FragColor = encode_float(1.0 - exp(-1.2 * (d.x * d.x + d.y * d.y)));
+			}
+		`;
+		
+		wilson_update.render.shader_programs = [];
+		
+		wilson_update.render.load_new_shader(frag_shader_source_update_x);
+		wilson_update.render.load_new_shader(frag_shader_source_update_y);
+		wilson_update.render.load_new_shader(frag_shader_source_update_h);
+		wilson_update.render.load_new_shader(frag_shader_source_update_s);
+		
+		wilson_update.render.init_uniforms(["dt"], 0);
+		wilson_update.render.init_uniforms(["dt"], 1);
+		wilson_update.render.init_uniforms(["dt"], 2);
+		wilson_update.render.init_uniforms(["dt"], 3);
+		
+		wilson_update.gl.useProgram(wilson_update.render.shader_programs[0]);
+		wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][0], dt);
+		
+		wilson_update.gl.useProgram(wilson_update.render.shader_programs[1]);
+		wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][1], dt);
+		
+		wilson_update.gl.useProgram(wilson_update.render.shader_programs[2]);
+		wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][2], dt);
+		
+		wilson_update.gl.useProgram(wilson_update.render.shader_programs[3]);
+		wilson_update.gl.uniform1f(wilson_update.uniforms["dt"][3], dt);
+		
+		generate_new_field();
+	}
+	
 	
 	
 	
