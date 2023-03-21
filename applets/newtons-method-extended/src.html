@@ -8,15 +8,23 @@ The derivative precision determines the accuracy with which the applet computes 
 
 ### wilson
 
-### center Classic polynomial: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csub(cpow(z, 6.0), 1.0)</span>
+### dropdown
+	
+	example-selector
+	
+	none Examples
+	
+	polynomial Classic Polynomial
+	
+	trig Trig Function
+	
+	crosshatch Crosshatch
+	
+	palette Palette Demonstration
+	
+	butterflies Butterflies
 
-### center Trig function: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csin(z)</span>
-
-### center Crosshatch: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cmul(csin(z), csin(cmul(z, i)))</span>
-
-### center Palette demonstration: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cmul(sin(z), csin(cmul(z, i)))</span>
-
-### center Butterflies: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cmul(sin(z), tan(z))</span>
+###
 
 
 
@@ -24,7 +32,7 @@ The derivative precision determines the accuracy with which the applet computes 
 
 <div id="canvas-landscape-left">
 
-<div class="center-content" data-aos="fade-up">
+<div class="center-content" style="margin-top: 5vh">
 	<div class="text-field-container">
 		<textarea cols="16" rows="4" name="code-textarea" id="code-textarea" class="text-field" style="font-family: 'Source Code Pro', monospace"></textarea>
 		<p class="body-text" style="text-align: center">Generating Function</p>

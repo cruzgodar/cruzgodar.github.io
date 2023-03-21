@@ -8,21 +8,25 @@ This is far from the most user-friendly applet, but hopefully you can get someth
 	
 ### wilson
 
-### center Classical Mandelbrot: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(cpow(z, 2.0), c)</span>
+### dropdown
+	
+	example-selector
+	
+	none Examples
+	
+	mandelbrot Classical Mandelbrot
+	
+	var-exp Varied Exponent
+	
+	trig Trig Example
+	
+	burning-ship The Burning Ship
+	
+	rational-map Rational Map
+	
+	mandelbrot-dust Mandelbrot Dust
 
-### center Varied exponent: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(cpow(z, 4.0), c)</span>
-
-### center Trig example: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csin(cmul(z, c))</span>
-
-### center The Burning Ship: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(cpow(vec2(abs(z.x), -abs(z.y)), 2.0), c)</span>
-
-### center Rational map example:
-
-### center <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(csub(cpow(z, 2.0), cmul(.05, cpow(z, -2.0))), c)</span>
-
-### center Creating a complex number from scratch:
-
-### center <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cadd(csub(cpow(z, 2.0), vec2(0.0, cmul(.05, cpow(z, -2.0).y))), c)</span>
+###
 
 
 
@@ -30,7 +34,7 @@ This is far from the most user-friendly applet, but hopefully you can get someth
 
 <div id="canvas-landscape-left">
 
-<div class="center-content" data-aos="fade-up">
+<div class="center-content" style="margin-top: 5vh">
 	<div class="text-field-container">
 		<textarea cols="16" rows="4" name="code-textarea" id="code-textarea" class="text-field" style="font-family: 'Source Code Pro', monospace"></textarea>
 		<p class="body-text" style="text-align: center">Generating Function</p>

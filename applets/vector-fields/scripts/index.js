@@ -305,6 +305,30 @@
 	
 	
 	
+	const examples =
+	{
+		"none": "",
+		"div": "(x, y)",
+		"curl": "(-y, x)",
+		"clockwork": "(sin(y), sin(x + 3.14159265))",
+		"df": "(1.0, sin(y) / (x*x + 1.0))"
+	};
+	
+	const example_selector_dropdown_element = Page.element.querySelector("#example-selector-dropdown");
+	
+	example_selector_dropdown_element.addEventListener("input", () =>
+	{
+		if (example_selector_dropdown_element.value !== "none")
+		{
+			code_textarea_element.value = examples[example_selector_dropdown_element.value];
+			
+			use_new_code();
+		}
+	});
+	
+	
+	
+	
 	use_new_code();
 	
 	Page.show();

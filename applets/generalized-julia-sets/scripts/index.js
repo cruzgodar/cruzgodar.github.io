@@ -181,6 +181,31 @@
 	
 	
 	
+	const examples =
+	{
+		"none": "",
+		"mandelbrot": "cadd(cpow(z, 2.0), c)",
+		"var-exp": "cadd(cpow(z, 4.0), c)",
+		"trig": "csin(cmul(z, c))",
+		"burning-ship": "cadd(cpow(vec2(abs(z.x), -abs(z.y)), 2.0), c)",
+		"rational-map": "cadd(csub(cpow(z, 2.0), cmul(.05, cpow(z, -2.0))), c)",
+		"mandelbrot-dust": "cadd(csub(cpow(z, 2.0), vec2(0.0, cmul(.05, cpow(z, -2.0).y))), c)"
+	};
+	
+	const example_selector_dropdown_element = Page.element.querySelector("#example-selector-dropdown");
+	
+	example_selector_dropdown_element.addEventListener("input", () =>
+	{
+		if (example_selector_dropdown_element.value !== "none")
+		{
+			code_input_element.value = examples[example_selector_dropdown_element.value];
+			
+			use_new_code();
+		}
+	});
+	
+	
+	
 	use_new_code();
 	
 	

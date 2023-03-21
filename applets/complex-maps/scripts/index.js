@@ -155,6 +155,30 @@
 	
 	
 	
+	const examples =
+	{
+		"none": "",
+		"trig": "csin(z)",
+		"poles": "cinv(cmul(csub(cpow(z, 6.0), 1.0), csub(cpow(z, 3.0), 1.0)))",
+		"es": "cexp(cinv(z))",
+		"tet": "ctet(z, 100.0)",
+		"lattices": "wp(z, draggable_arg)"
+	};
+	
+	const example_selector_dropdown_element = Page.element.querySelector("#example-selector-dropdown");
+	
+	example_selector_dropdown_element.addEventListener("input", () =>
+	{
+		if (example_selector_dropdown_element.value !== "none")
+		{
+			code_input_element.value = examples[example_selector_dropdown_element.value];
+			
+			use_new_code();
+		}
+	});
+	
+	
+	
 	const canvas_location_element = Page.element.querySelector("#canvas-location");
 	const hidden_canvas_location_element = Page.element.querySelector("#hidden-canvas-location");
 	

@@ -133,6 +133,30 @@
 	
 	
 	
+	const examples =
+	{
+		"none": "",
+		"polynomial": "csub(cpow(z, 6.0), 1.0)",
+		"trig": "csin(z)",
+		"crosshatch": "cmul(csin(z), csin(cmul(z, i)))",
+		"palette": "cmul(sin(z), csin(cmul(z, i)))",
+		"butterflies": "cmul(sin(z), tan(z))"
+	};
+	
+	const example_selector_dropdown_element = Page.element.querySelector("#example-selector-dropdown");
+	
+	example_selector_dropdown_element.addEventListener("input", () =>
+	{
+		if (example_selector_dropdown_element.value !== "none")
+		{
+			code_input_element.value = examples[example_selector_dropdown_element.value];
+			
+			use_new_code();
+		}
+	});
+	
+	
+	
 	use_new_code();
 	
 	

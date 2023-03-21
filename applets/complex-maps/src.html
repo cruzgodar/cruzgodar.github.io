@@ -4,15 +4,23 @@ It's not a coincidence that many of the applets I've made revolve around the com
 	
 Much of the code implementing complex functions was contributed by <a href="https://ahuchala.com">Andy Huchala.</a> The applet itself was made with <a href="/projects/wilson/">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.
 
-### center Trig function: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">csin(z)</span>
+### dropdown
+	
+	example-selector
+	
+	none Examples
+	
+	trig Trig Function
+	
+	poles Poles
+	
+	es Essential Singluarity
+	
+	tet Tetration
+	
+	lattices Lattices
 
-### center Poles: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cinv(cmul(csub(cpow(z, 6.0), 1.0), csub(cpow(z, 3.0), 1.0)))</span>
-
-### center Essential singularity: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">cexp(cinv(z))</span>
-
-### center Tetration: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">ctet(z, 100.0)</span>
-
-### center Lattices: <span style="font-family: 'Source Code Pro', monospace; margin-left: 10px">wp(z, draggable_arg)</span>
+###
 
 
 
@@ -20,8 +28,8 @@ Much of the code implementing complex functions was contributed by <a href="http
 
 <div id="canvas-landscape-left">
 
-<div class="center-content" data-aos="fade-up">
-	<div class="text-field-container">
+<div class="center-content">
+	<div class="text-field-container" style="margin-top: 5vh">
 		<textarea cols="16" rows="4" name="code-textarea" id="code-textarea" class="text-field" style="font-family: 'Source Code Pro', monospace"></textarea>
 		<p class="body-text" style="text-align: center">Generating Function</p>
 	</div>
