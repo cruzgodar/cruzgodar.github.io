@@ -44,7 +44,7 @@ Site.sitemap =
 			"/applets/complex-maps/",
 			"/applets/lyapunov-fractals/",
 			"/applets/newtons-method-extended/",
-			"/applets/the-secant-method/",
+			"/applets/secant-method/",
 			"/applets/quasi-fuchsian-groups/",
 			"/applets/the-mandelbulb/",
 			"/applets/kaleidoscopic-ifs-fractals/",
@@ -55,10 +55,10 @@ Site.sitemap =
 			"/applets/strange-attractors/",
 			"/applets/sudoku-generator/",
 			"/applets/julia-set-mosaic/",
-			"/applets/the-chaos-game/",
-			"/applets/the-kicked-rotator/",
+			"/applets/chaos-game/",
+			"/applets/kicked-rotator/",
 			"/applets/brownian-trees/",
-			"/applets/the-barnsley-fern/",
+			"/applets/barnsley-fern/",
 			"/applets/newtons-method/",
 			"/applets/calcudoku-generator/",
 			"/applets/simulated-annealing/",
@@ -174,7 +174,7 @@ Site.sitemap =
 		children: []
 	},
 	
-	"/applets/the-secant-method/":
+	"/applets/secant-method/":
 	{
 		parent: "/applets/",
 		
@@ -251,14 +251,14 @@ Site.sitemap =
 		children: []
 	},
 	
-	"/applets/the-chaos-game/":
+	"/applets/chaos-game/":
 	{
 		parent: "/applets/",
 		
 		children: []
 	},
 	
-	"/applets/the-kicked-rotator/":
+	"/applets/kicked-rotator/":
 	{
 		parent: "/applets/",
 		
@@ -272,7 +272,7 @@ Site.sitemap =
 		children: []
 	},
 	
-	"/applets/the-barnsley-fern/":
+	"/applets/barnsley-fern/":
 	{
 		parent: "/applets/",
 		
@@ -1283,6 +1283,7 @@ Site.sitemap =
 			"/debug/collector/",
 			"/debug/tests/glsl-test/",
 			"/debug/js-lines/",
+			"/debug//",
 		]
 	},
 		
@@ -1301,6 +1302,13 @@ Site.sitemap =
 	},
 	
 	"/debug/js-lines/":
+	{
+		parent: "/debug/",
+		
+		children: []
+	},
+	
+	"/debug//":
 	{
 		parent: "/debug/",
 		
