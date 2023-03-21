@@ -26,11 +26,14 @@ Page.load = async function()
 			}
 		`);
 		
-		await Page.Banner.load(true);
+		Page.Banner.load(true)
 		
-		await Page.Animate.change_opacity(Page.element.querySelector("#banner-small"), 0, 700);
-		
-		Page.element.querySelector("#banner-small").remove();
+		.then(() =>
+		{
+			Page.Animate.change_opacity(Page.element.querySelector("#banner-small"), 0, 700)
+			
+			.then(() => Page.element.querySelector("#banner-small").remove());
+		});
 	}
 	
 	else
