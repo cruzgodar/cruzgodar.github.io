@@ -311,7 +311,8 @@
 		"div": "(x, y)",
 		"curl": "(-y, x)",
 		"clockwork": "(sin(y), sin(x + 3.14159265))",
-		"df": "(1.0, sin(y) / (x*x + 1.0))"
+		"df": "(1.0, sin(y) / (x*x + 1.0))",
+		"cross": "(sin(y / 2.5), tan(x / 2.5))"
 	};
 	
 	const example_selector_dropdown_element = Page.element.querySelector("#example-selector-dropdown");
