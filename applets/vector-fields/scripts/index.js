@@ -1091,6 +1091,16 @@
 		}
 	}
 	
-	window.addEventListener("resize", generate_new_field);
-	Page.temporary_handlers["resize"].push(generate_new_field);
+	
+	
+	function handle_resize_event()
+	{
+		if (wilson.fullscreen.currently_fullscreen)
+		{
+			generate_new_field();
+		}
+	}
+	
+	window.addEventListener("resize", handle_resize_event);
+	Page.temporary_handlers["resize"].push(handle_resize_event);
 }()
