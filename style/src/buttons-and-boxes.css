@@ -354,6 +354,11 @@
 
 
 
+.dropdown-container
+{
+	position: relative;
+}
+
 select
 {
 	-webkit-appearance: none;
