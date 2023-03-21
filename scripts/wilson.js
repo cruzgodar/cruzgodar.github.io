@@ -1304,13 +1304,6 @@ class Wilson
 							border-radius: 25%;
 							padding: 5px;
 							
-							right: 10px;
-							top: 10px;
-							
-							z-index: 80;
-							
-							z-index: 80;
-							
 							cursor: pointer;
 							outline: none;
 						}
@@ -1318,11 +1311,21 @@ class Wilson
 						.wilson-enter-fullscreen-button
 						{
 							position: absolute;
+							
+							right: 10px;
+							top: 10px;
+							
+							z-index: 100;
 						}
 
 						.wilson-exit-fullscreen-button
 						{
 							position: fixed;
+							
+							right: 10px;
+							top: 10px;
+							
+							z-index: 100;
 						}
 					`;
 					
@@ -1469,6 +1472,8 @@ class Wilson
 				setTimeout(() =>
 				{
 					document.body.appendChild(this.fullscreen_components_container);
+					
+					document.body.querySelector("#header").style.zIndex = 90;
 					
 					
 					
@@ -1627,6 +1632,8 @@ class Wilson
 				setTimeout(() =>
 				{
 					this.fullscreen_components_container_location.appendChild(this.fullscreen_components_container);
+					
+					document.body.querySelector("#header").style.zIndex = 110;
 					
 					
 					
