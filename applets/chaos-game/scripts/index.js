@@ -6,7 +6,7 @@
 	
 	let options =
 	{
-		renderer: "hybrid",
+		renderer: "cpu",
 		
 		canvas_width: 1000,
 		canvas_height: 1000,
@@ -25,28 +25,37 @@
 	
 	
 	
-	let num_iterations = 10000000;
-	let grid_size = 1000;
+	let grid_size = null;
 	
 	let web_worker = null;
-	
-	let fern_graph = [];
 	
 	
 	
 	let generate_button_element = Page.element.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", request_fern);
+	generate_button_element.addEventListener("click", request_chaos_game);
 	
 	
 	
-	let num_iterations_input_element = Page.element.querySelector("#num-iterations-input");
+	let grid_size_input_element = Page.element.querySelector("#grid-size-input");
 	
-	num_iterations_input_element.addEventListener("keydown", (e) =>
+	let num_vertices_input_element = Page.element.querySelector("#num-vertices-input");
+	
+	
+	
+	grid_size_input_element.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
-			request_fern();
+			request_chaos_game();
+		}
+	});
+	
+	num_vertices_input_element.addEventListener("keydown", (e) =>
+	{
+		if (e.keyCode === 13)
+		{
+			request_chaos_game();
 		}
 	});
 	
@@ -56,7 +65,7 @@
 	
 	download_button_element.addEventListener("click", () =>
 	{
-		wilson.download_frame("the-barnsley-fern.png");
+		wilson.download_frame("a-chaos-game.png");
 	});
 	
 	
@@ -65,11 +74,11 @@
 	
 	
 	
-	function request_fern()
+	function request_chaos_game()
 	{
-		num_iterations = 1000 * parseInt(num_iterations_input_element.value || 10000);
+		let num_vertices = parseInt(num_vertices_input_element.value || 5);
 		
-		grid_size = Math.floor(Math.sqrt(num_iterations / 10));
+		grid_size = parseInt(grid_size_input_element.value || 1000);
 		
 		
 		
@@ -82,12 +91,12 @@
 		
 		if (DEBUG)
 		{
-			web_worker = new Worker("/applets/the-barnsley-fern/scripts/worker.js");
+			web_worker = new Worker("/applets/chaos-game/scripts/worker.js");
 		}
 		
 		else
 		{
-			web_worker = new Worker("/applets/the-barnsley-fern/scripts/worker.min.js");
+			web_worker = new Worker("/applets/chaos-game/scripts/worker.min.js");
 		}
 		
 		Page.temporary_web_workers.push(web_worker);
@@ -101,6 +110,6 @@
 		
 		
 		
-		web_worker.postMessage([grid_size, num_iterations]);
+		web_worker.postMessage([num_vertices, grid_size]);
 	}
 }()

@@ -6,7 +6,7 @@
 	
 	let options =
 	{
-		renderer: "cpu",
+		renderer: "hybrid",
 		
 		canvas_width: 1000,
 		canvas_height: 1000,
@@ -25,37 +25,28 @@
 	
 	
 	
-	let grid_size = null;
+	let num_iterations = 10000000;
+	let grid_size = 1000;
 	
 	let web_worker = null;
+	
+	let fern_graph = [];
 	
 	
 	
 	let generate_button_element = Page.element.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", request_chaos_game);
+	generate_button_element.addEventListener("click", request_fern);
 	
 	
 	
-	let grid_size_input_element = Page.element.querySelector("#grid-size-input");
+	let num_iterations_input_element = Page.element.querySelector("#num-iterations-input");
 	
-	let num_vertices_input_element = Page.element.querySelector("#num-vertices-input");
-	
-	
-	
-	grid_size_input_element.addEventListener("keydown", (e) =>
+	num_iterations_input_element.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
-			request_chaos_game();
-		}
-	});
-	
-	num_vertices_input_element.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			request_chaos_game();
+			request_fern();
 		}
 	});
 	
@@ -65,7 +56,7 @@
 	
 	download_button_element.addEventListener("click", () =>
 	{
-		wilson.download_frame("a-chaos-game.png");
+		wilson.download_frame("the-barnsley-fern.png");
 	});
 	
 	
@@ -74,11 +65,11 @@
 	
 	
 	
-	function request_chaos_game()
+	function request_fern()
 	{
-		let num_vertices = parseInt(num_vertices_input_element.value || 5);
+		num_iterations = 1000 * parseInt(num_iterations_input_element.value || 10000);
 		
-		grid_size = parseInt(grid_size_input_element.value || 1000);
+		grid_size = Math.floor(Math.sqrt(num_iterations / 10));
 		
 		
 		
@@ -91,12 +82,12 @@
 		
 		if (DEBUG)
 		{
-			web_worker = new Worker("/applets/the-chaos-game/scripts/worker.js");
+			web_worker = new Worker("/applets/barnsley-fern/scripts/worker.js");
 		}
 		
 		else
 		{
-			web_worker = new Worker("/applets/the-chaos-game/scripts/worker.min.js");
+			web_worker = new Worker("/applets/barnsley-fern/scripts/worker.min.js");
 		}
 		
 		Page.temporary_web_workers.push(web_worker);
@@ -110,6 +101,6 @@
 		
 		
 		
-		web_worker.postMessage([num_vertices, grid_size]);
+		web_worker.postMessage([grid_size, num_iterations]);
 	}
 }()

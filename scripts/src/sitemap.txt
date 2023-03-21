@@ -17,7 +17,7 @@ home
 		complex-maps
 		lyapunov-fractals
 		newtons-method-extended
-		the-secant-method
+		secant-method
 		quasi-fuchsian-groups
 		the-mandelbulb
 		kaleidoscopic-ifs-fractals
@@ -28,10 +28,10 @@ home
 		strange-attractors
 		sudoku-generator
 		julia-set-mosaic
-		the-chaos-game
-		the-kicked-rotator
+		chaos-game
+		kicked-rotator
 		brownian-trees
-		the-barnsley-fern
+		barnsley-fern
 		newtons-method
 		calcudoku-generator
 		simulated-annealing
