@@ -1365,7 +1365,7 @@ class Wilson
 					.wilson-true-fullscreen-canvas
 					{
 						width: 100vw !important;
-						height: calc(100vh + 4px) !important;
+						height: calc(100% + 4px) !important;
 						
 						border: none !important;
 						border-radius: 0 !important;
@@ -1393,7 +1393,7 @@ class Wilson
 					.wilson-black-background
 					{
 						width: 100vw !important;
-						height: calc(100vh + 4px) !important;
+						height: calc(100% + 4px) !important;
 						
 						background-color: rgb(0, 0, 0) !important;
 					}
@@ -1522,7 +1522,7 @@ class Wilson
 					document.body.style.overflowY = "hidden";
 					
 					document.body.style.width = "100vw";
-					document.body.style.height = "100vh";
+					document.body.style.height = "100%";
 					
 					document.documentElement.style.userSelect = "none";
 					document.documentElement.style.WebkitUserSelect = "none";
