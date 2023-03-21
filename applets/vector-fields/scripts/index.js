@@ -238,6 +238,34 @@
 		}
 	`;
 	
+	const frag_shader_source_zoom = `
+		precision highp float;
+		precision highp sampler2D;
+		
+		varying vec2 uv;
+		
+		uniform sampler2D u_texture;
+		
+		uniform float scale;
+		uniform vec2 fixed_point;
+		
+		void main(void)
+		{
+			vec2 tex_coord = ((uv + vec2(1.0, 1.0)) / 2.0 - fixed_point) * scale + fixed_point;
+			
+			if (tex_coord.x >= 0.0 && tex_coord.x < 1.0 && tex_coord.y >= 0.0 && tex_coord.y < 1.0)
+			{
+				vec3 v = texture2D(u_texture, tex_coord).xyz;
+				
+				gl_FragColor = vec4(v.x / 1.06, v.y, v.z, 1.0);
+				
+				return;
+			}
+			
+			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+		}
+	`;
+	
 	const options_dim =
 	{
 		renderer: "gpu",
@@ -249,12 +277,27 @@
 	};
 	
 	const wilson_dim = new Wilson(Page.element.querySelector("#dim-canvas"), options_dim);
+	
+	wilson_dim.gl.texParameteri(wilson_dim.gl.TEXTURE_2D, wilson_dim.gl.TEXTURE_MAG_FILTER, wilson_dim.gl.LINEAR);
+	wilson_dim.gl.texParameteri(wilson_dim.gl.TEXTURE_2D, wilson_dim.gl.TEXTURE_MIN_FILTER, wilson_dim.gl.LINEAR);
+	
+	
 		
 	wilson_dim.render.load_new_shader(frag_shader_source_pan);
 	
 	wilson_dim.render.init_uniforms(["pan"], 1);
 	
 	wilson_dim.gl.useProgram(wilson_dim.render.shader_programs[0]);
+	
+	
+	
+	wilson_dim.render.load_new_shader(frag_shader_source_zoom);
+	
+	wilson_dim.render.init_uniforms(["scale", "fixed_point"], 2);
+	
+	wilson_dim.gl.useProgram(wilson_dim.render.shader_programs[0]);
+	
+	
 	
 	wilson_dim.render.create_framebuffer_texture_pair(wilson_dim.gl.UNSIGNED_BYTE);
 	
@@ -507,12 +550,6 @@
 			
 			
 			
-			update_particles();
-			
-			draw_field();
-			
-			
-			
 			last_pan_velocities_x.push(next_pan_velocity_x);
 			last_pan_velocities_y.push(next_pan_velocity_y);
 			last_pan_velocities_x.shift();
@@ -590,17 +627,23 @@
 			
 			last_zoom_velocities.push(next_zoom_velocity);
 			last_zoom_velocities.shift();
-			next_zoom_velocity = 0;
+			
+			if (next_zoom_velocity !== 0)
+			{
+				zoom_canvas();
+				
+				zoom_grid(fixed_point_x, fixed_point_y, next_zoom_velocity);
+				
+				next_zoom_velocity = 0;
+			}
 				
 			if (zoom_velocity !== 0)	
 			{
-				//zoom_grid(fixed_point_x, fixed_point_y, zoom_velocity)
-				
-				zoom_level += zoom_velocity;
-				
-				zoom_level = Math.min(Math.max(zoom_level, -3), 3);
-				
 				zoom_canvas(fixed_point_x, fixed_point_y);
+				
+				zoom_grid(fixed_point_x, fixed_point_y, zoom_velocity)
+				
+				zoom_level = Math.min(Math.max(zoom_level + zoom_velocity, -3), 3);
 				
 				zoom_velocity *= zoom_friction;
 				
@@ -609,6 +652,12 @@
 					zoom_velocity = 0;
 				}
 			}
+			
+			
+			
+			update_particles();
+			
+			draw_field();
 			
 			
 			
@@ -785,49 +834,34 @@
 		//Ex: if the scale is 2 and goes to 3, the delta is +1, so we actually want to multiply things by 2^(-1) to get the source places.
 		const scale = Math.pow(2, zoom_delta);
 		
-		const fixed_row = Math.round((.5 - (fixed_point_y - wilson.world_center_y) / wilson.world_height) * wilson.canvas_height);
-		const fixed_col = Math.round(((fixed_point_x - wilson.world_center_x) / wilson.world_width + .5) * wilson.canvas_width);
+		const fixed_x = (fixed_point_x - wilson.world_center_x) / wilson.world_width + .5;
+		const fixed_y = (wilson.world_center_y - fixed_point_y) / wilson.world_height + .5;
 		
-		let new_grid = new Array(wilson.canvas_height);
 		
-		for (let i = 0; i < wilson.canvas_height; i++)
-		{
-			new_grid[i] = new Array(wilson.canvas_width);
-			
-			for (let j = 0; j < wilson.canvas_width; j++)
-			{
-				const new_row = Math.round((i - fixed_row) * scale + fixed_row);
-				const new_col = Math.round((j - fixed_col) * scale + fixed_col);
-				
-				if (new_row >= 0 && new_row < wilson.canvas_height && new_col >= 0 && new_col < wilson.canvas_width)
-				{
-					//1.08 is large enough that the artifacts disappear quickly, but small enough that the trails don't seem to snap out of existence.
-					new_grid[i][j] = [Math.ceil(grid[new_row][new_col][0] / 1.08), grid[new_row][new_col][1], grid[new_row][new_col][2]]
-				}
-				
-				else
-				{
-					new_grid[i][j] = [0, 0, 0];
-				}
-			}
-		}
+		
+		wilson_dim.gl.useProgram(wilson_dim.render.shader_programs[2]);
+		
+		wilson_dim.gl.uniform1f(wilson_dim.uniforms["scale"][2], scale);
+		wilson_dim.gl.uniform2f(wilson_dim.uniforms["fixed_point"][2], fixed_x, fixed_y);
+		
+		draw_field();
+		
+		wilson_dim.gl.useProgram(wilson_dim.render.shader_programs[0]);
+		
 		
 		//When we zoom out, we also cull the particles a little.
-		const chance = Math.pow(2, zoom_delta * 2);
-		let num_destroyed = 0;
 		if (zoom_delta > 0)
 		{
+			const chance = Math.pow(2, zoom_delta * 1.5);
+			
 			for (let i = 0; i < particles.length; i++)
 			{
 				if (particles[i][2] && (i % chance >= 1))
 				{
 					destroy_particle(i);
-					num_destroyed++;
 				}
 			}
 		}
-		
-		grid = new_grid;
 	}
 	
 	
@@ -848,7 +882,7 @@
 	const pan_velocity_start_threshhold = .00025;
 	const pan_velocity_stop_threshhold = .00025;
 	
-	const zoom_friction = .93;
+	const zoom_friction = .9;
 	const zoom_velocity_start_threshhold = .002;
 	const zoom_velocity_stop_threshhold = .002;
 	
@@ -945,7 +979,7 @@
 		
 		if (Math.abs(scroll_amount / 100) < .3)
 		{
-			zoom_grid(x, y, scroll_amount / 100);
+			next_zoom_velocity = scroll_amount / 100;
 			
 			zoom_level = Math.min(Math.max(zoom_level + scroll_amount / 100, -3), 3);
 		}
@@ -954,8 +988,6 @@
 		{
 			zoom_velocity += Math.sign(scroll_amount) * .05;
 		}
-		
-		zoom_canvas();
 	}
 	
 	
@@ -974,15 +1006,11 @@
 			zoom_delta = touch_distance_delta / wilson.world_height * 10;
 		}
 		
-		zoom_grid(x, y, -zoom_delta);
-		
 		zoom_level = Math.min(Math.max(zoom_level - zoom_delta, -3), 3);
 		next_zoom_velocity = -zoom_delta;
 		
 		fixed_point_x = x;
 		fixed_point_y = y;
-		
-		zoom_canvas();
 	}
 	
 	
