@@ -1091,6 +1091,6 @@
 		}
 	}
 	
-	window.addEventListener("resize", change_aspect_ratio);
-	Page.temporary_handlers["resize"].push(change_aspect_ratio);
+	window.addEventListener("resize", generate_new_field);
+	Page.temporary_handlers["resize"].push(generate_new_field);
 }()
