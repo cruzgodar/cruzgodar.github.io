@@ -7,7 +7,7 @@
 	let resolution = 500;
 	
 	let num_particles = 0;
-	let max_particles = 6000;
+	let max_particles = 5000;
 	
 	let aspect_ratio = 1;
 	let zoom_level = .6515;
@@ -211,6 +211,33 @@
 		}
 	`;
 	
+	const frag_shader_source_pan = `
+		precision highp float;
+		precision highp sampler2D;
+		
+		varying vec2 uv;
+		
+		uniform sampler2D u_texture;
+		
+		uniform vec2 pan;
+		
+		void main(void)
+		{
+			vec2 tex_coord = (uv + vec2(1.0, 1.0)) / 2.0 - pan;
+			
+			if (tex_coord.x >= 0.0 && tex_coord.x < 1.0 && tex_coord.y >= 0.0 && tex_coord.y < 1.0)
+			{
+				vec3 v = texture2D(u_texture, tex_coord).xyz;
+				
+				gl_FragColor = vec4(v.x, v.y, v.z, 1.0);
+				
+				return;
+			}
+			
+			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+		}
+	`;
+	
 	const options_dim =
 	{
 		renderer: "gpu",
@@ -222,6 +249,12 @@
 	};
 	
 	const wilson_dim = new Wilson(Page.element.querySelector("#dim-canvas"), options_dim);
+		
+	wilson_dim.render.load_new_shader(frag_shader_source_pan);
+	
+	wilson_dim.render.init_uniforms(["pan"], 1);
+	
+	wilson_dim.gl.useProgram(wilson_dim.render.shader_programs[0]);
 	
 	wilson_dim.render.create_framebuffer_texture_pair(wilson_dim.gl.UNSIGNED_BYTE);
 	
@@ -485,42 +518,66 @@
 			last_pan_velocities_x.shift();
 			last_pan_velocities_y.shift();
 			
-			next_pan_velocity_x = 0;
-			next_pan_velocity_y = 0;
-			
-			if (pan_velocity_x !== 0 || pan_velocity_y !== 0)
+			//This lets us only move the canvas when we have at least one pixel to move.
+			if (next_pan_velocity_x !== 0 || next_pan_velocity_y !== 0)
 			{
-				const x_delta = -pan_velocity_x * wilson.world_width;
-				const y_delta = -pan_velocity_y * wilson.world_height;
+				let x_delta = -next_pan_velocity_x;
+				let y_delta = -next_pan_velocity_y;
 				
-				const row_pan = Math.round(-y_delta / wilson.world_height * wilson.canvas_height);
-				const col_pan = Math.round(x_delta / wilson.world_width * wilson.canvas_width);
 				
-				pan_grid(row_pan, col_pan);
 				
-				if (row_pan)
+				if (Math.abs(x_delta / wilson.world_width * wilson.canvas_width) < 1)
 				{
-					wilson.world_center_y -= y_delta;
-					
-					pan_velocity_y *= pan_friction;
+					x_delta = 0;
 				}
 				
 				else
 				{
-					pan_velocity_y = 0;
+					next_pan_velocity_x = 0;
 				}
 				
-				if (col_pan)
+				
+				
+				if (Math.abs(y_delta / wilson.world_height * wilson.canvas_height) < 1)
 				{
-					wilson.world_center_x -= x_delta;
-					
-					pan_velocity_x *= pan_friction;
+					y_delta = 0;
 				}
 				
 				else
 				{
-					pan_velocity_x = 0;
+					next_pan_velocity_y = 0;
 				}
+				
+				
+				
+				pan_grid(x_delta, y_delta);
+				
+				wilson.world_center_y -= y_delta;
+				wilson.world_center_x -= x_delta;
+			}
+			
+			else if (pan_velocity_x !== 0 || pan_velocity_y !== 0)
+			{
+				let x_delta = -pan_velocity_x;
+				let y_delta = -pan_velocity_y;
+				
+				if (Math.abs(x_delta / wilson.world_width * wilson.canvas_width) < 1)
+				{
+					x_delta = 0;
+				}
+				
+				if (Math.abs(y_delta / wilson.world_height * wilson.canvas_height) < 1)
+				{
+					y_delta = 0;
+				}
+				
+				pan_grid(x_delta, y_delta)
+				
+				wilson.world_center_y -= y_delta;
+				pan_velocity_y *= pan_friction;
+				
+				wilson.world_center_x -= x_delta;
+				pan_velocity_x *= pan_friction;
 				
 				if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) < pan_velocity_stop_threshhold)
 				{
@@ -565,7 +622,10 @@
 			window.requestAnimationFrame(draw_frame);
 		}
 		
-		catch(ex) {generate_new_field()}
+		catch(ex)
+		{
+			generate_new_field();
+		}
 	}
 	
 	
@@ -643,8 +703,6 @@
 		
 		const floats_s = new Float32Array(wilson_update.render.get_pixel_data().buffer);
 		
-		
-		
 		for (let i = 0; i < wilson_update.canvas_height; i++)
 		{
 			for (let j = 0; j < wilson_update.canvas_width; j++)
@@ -679,7 +737,6 @@
 					else
 					{
 						destroy_particle(index);
-						continue;
 					}
 				}
 			}
@@ -704,88 +761,18 @@
 	
 	
 	//Call this before changing the world parameters!
-	function pan_grid(row_pan, col_pan)
+	function pan_grid(x_delta, y_delta)
 	{
-		//We overwrite top to bottom, left to right.
-		if (row_pan <= 0 && col_pan <= 0)
-		{
-			for (let i = 0; i < wilson.canvas_height; i++)
-			{
-				for (let j = 0; j < wilson.canvas_width; j++)
-				{
-					if (i - row_pan < wilson.canvas_height && j - col_pan < wilson.canvas_width)
-					{
-						grid[i][j] = grid[i - row_pan][j - col_pan];
-					}
-					
-					else
-					{
-						grid[i][j] = [0, 0, 0];
-					}
-				}
-			}
-		}
+		wilson_dim.gl.useProgram(wilson_dim.render.shader_programs[1]);
 		
-		//We overwrite bottom to top, left to right.
-		else if (row_pan > 0 && col_pan <= 0)
-		{
-			for (let i = wilson.canvas_height - 1; i >= 0; i--)
-			{
-				for (let j = 0; j < wilson.canvas_width; j++)
-				{
-					if (i - row_pan >= 0 && j - col_pan < wilson.canvas_width)
-					{
-						grid[i][j] = grid[i - row_pan][j - col_pan];
-					}
-					
-					else
-					{
-						grid[i][j] = [0, 0, 0];
-					}
-				}
-			}
-		}
+		wilson_dim.gl.uniform2f(wilson_dim.uniforms["pan"][1], x_delta / wilson.world_width, -y_delta / wilson.world_height);
 		
-		//We overwrite top to bottom, right to left.
-		else if (row_pan <= 0 && col_pan > 0)
-		{
-			for (let i = 0; i < wilson.canvas_height; i++)
-			{
-				for (let j = wilson.canvas_width - 1; j >= 0; j--)
-				{
-					if (i - row_pan < wilson.canvas_height && j - col_pan >= 0)
-					{
-						grid[i][j] = grid[i - row_pan][j - col_pan];
-					}
-					
-					else
-					{
-						grid[i][j] = [0, 0, 0];
-					}
-				}
-			}
-		}
+		draw_field();
 		
-		//We overwrite bottom to top, right to left.
-		else
-		{
-			for (let i = wilson.canvas_height - 1; i >= 0; i--)
-			{
-				for (let j = wilson.canvas_width - 1; j >= 0; j--)
-				{
-					if (i - row_pan >= 0 && j - col_pan >= 0)
-					{
-						grid[i][j] = grid[i - row_pan][j - col_pan];
-					}
-					
-					else
-					{
-						grid[i][j] = [0, 0, 0];
-					}
-				}
-			}
-		}
+		wilson_dim.gl.useProgram(wilson_dim.render.shader_programs[0]);
 	}
+	
+	
 	
 	//Call this before changing the world parameters!
 	function zoom_grid(fixed_point_x, fixed_point_y, zoom_delta)
@@ -858,8 +845,8 @@
 	let last_zoom_velocities = [];
 
 	const pan_friction = .96;
-	const pan_velocity_start_threshhold = .002;
-	const pan_velocity_stop_threshhold = .002;
+	const pan_velocity_start_threshhold = .00025;
+	const pan_velocity_stop_threshhold = .00025;
 	
 	const zoom_friction = .93;
 	const zoom_velocity_start_threshhold = .002;
@@ -878,34 +865,9 @@
 	
 	function on_drag_canvas(x, y, x_delta, y_delta, event)
 	{
-		const row_pan = Math.round(-y_delta / wilson.world_height * wilson.canvas_height);
-		const col_pan = Math.round(x_delta / wilson.world_width * wilson.canvas_width);
-		
-		pan_grid(row_pan, col_pan);
-		
-		if (row_pan)
-		{
-			wilson.world_center_y -= y_delta;
-			
-			next_pan_velocity_y = -y_delta / wilson.world_height;
-		}
-		
-		else
-		{
-			next_pan_velocity_y = 0;
-		}
-		
-		if (col_pan)
-		{
-			wilson.world_center_x -= x_delta;
-			
-			next_pan_velocity_x = -x_delta / wilson.world_width;
-		}
-		
-		else
-		{
-			next_pan_velocity_x = 0;
-		}
+		//The += here lets us only move the canvas when we have at least one pixel to move.
+		next_pan_velocity_x += -x_delta;
+		next_pan_velocity_y += -y_delta;
 	}
 	
 	function on_release_canvas(x, y, event)
