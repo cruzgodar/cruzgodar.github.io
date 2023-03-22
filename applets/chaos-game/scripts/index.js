@@ -1,116 +1,58 @@
-!function()
-{
-	"use strict";
-	
-	
-	
-	
-	let options =
-	{
-		renderer: "cpu",
-		
-		canvas_width: 1000,
-		canvas_height: 1000,
-		
-		
-		
-		use_fullscreen: true,
-	
-		use_fullscreen_button: true,
-		
-		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
-	};
-	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
-	
-	
-	
-	let grid_size = null;
-	
-	let web_worker = null;
-	
-	
-	
-	let generate_button_element = Page.element.querySelector("#generate-button");
+"use strict";
 
-	generate_button_element.addEventListener("click", request_chaos_game);
+!async function()
+{
+	await Site.load_applet("chaos-game");
+	
+	const applet = new ChaosGame(Page.element.querySelector("#output-canvas"));
 	
 	
 	
-	let grid_size_input_element = Page.element.querySelector("#grid-size-input");
+	function run()
+	{
+		const resolution = parseInt(resolution_input_element.value || 1000);
+		const num_vertices = parseInt(num_vertices_input_element.value || 5);
+		
+		applet.run(resolution, num_vertices);
+	}
 	
-	let num_vertices_input_element = Page.element.querySelector("#num-vertices-input");
+	
+	
+	const generate_button_element = Page.element.querySelector("#generate-button");
+
+	generate_button_element.addEventListener("click", run);
 	
 	
 	
-	grid_size_input_element.addEventListener("keydown", (e) =>
+	const resolution_input_element = Page.element.querySelector("#resolution-input");
+	
+	resolution_input_element.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
-			request_chaos_game();
+			run();
 		}
 	});
+	
+	
+	
+	const num_vertices_input_element = Page.element.querySelector("#num-vertices-input");
 	
 	num_vertices_input_element.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
-			request_chaos_game();
+			run();
 		}
 	});
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	const download_button_element = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () =>
-	{
-		wilson.download_frame("a-chaos-game.png");
-	});
+	download_button_element.addEventListener("click", () => applet.wilson.download_frame("a-chaos-game.png"));
 	
 	
 	
 	Page.show();
-	
-	
-	
-	function request_chaos_game()
-	{
-		let num_vertices = parseInt(num_vertices_input_element.value || 5);
-		
-		grid_size = parseInt(grid_size_input_element.value || 1000);
-		
-		
-		
-		wilson.change_canvas_size(grid_size, grid_size);
-		
-		
-		
-		try {web_worker.terminate();}
-		catch(ex) {}
-		
-		if (DEBUG)
-		{
-			web_worker = new Worker("/applets/chaos-game/scripts/worker.js");
-		}
-		
-		else
-		{
-			web_worker = new Worker("/applets/chaos-game/scripts/worker.min.js");
-		}
-		
-		Page.temporary_web_workers.push(web_worker);
-		
-		
-		
-		web_worker.onmessage = function(e)
-		{
-			wilson.render.draw_frame(e.data[0]);
-		}
-		
-		
-		
-		web_worker.postMessage([num_vertices, grid_size]);
-	}
 }()
