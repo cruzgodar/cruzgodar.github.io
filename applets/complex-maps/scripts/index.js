@@ -41,11 +41,6 @@
 	
 	selector_mode_button_element.addEventListener("click", () => applet.use_selector_mode = true);
 	
-	if (!DEBUG)
-	{
-		Page.element.querySelector("#debug-buttons").remove();
-	}
-	
 	
 	
 	const benchmark_button_element = Page.element.querySelector("#benchmark-button");
@@ -54,7 +49,10 @@
 	
 	
 	
-	
+	if (!DEBUG)
+	{
+		Page.element.querySelector("#debug-buttons").remove();
+	}
 	
 	
 	
