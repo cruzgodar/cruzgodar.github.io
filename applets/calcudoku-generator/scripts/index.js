@@ -55,7 +55,7 @@
 	{
 		applet.draw_grid(true);
 		
-		wilson.download_frame("a-calcudoku-puzzle.png");
+		applet.wilson.download_frame("a-calcudoku-puzzle.png");
 		
 		applet.draw_grid(false);
 	});
