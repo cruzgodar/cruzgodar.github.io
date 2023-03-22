@@ -3,11 +3,70 @@ class Applet
 	canvas;
 	wilson;
 	
+	//Temporary things that should be destroyed when calling Applet.destroy.
+	
+	workers = [];
+	timeout_ids = [];
+	refresh_ids = [];
+	//Every entry is a length-3 array, e.g. [window, "scroll", listener_function]
+	handlers = [];
+	hidden_canvases = [];
+	
+	animation_paused = false;
+	
+	
+	
 	constructor(canvas)
 	{
 		this.canvas = canvas;
+		
+		Page.current_applets.push(this);
+	}
+	
+	
+	
+	destroy()
+	{
+		this.animation_paused = true;
+		
+		this.workers.forEach(worker =>
+		{
+			try {worker.terminate()}
+			catch(ex) {}
+		});
+		
+		this.timeout_ids.forEach(timeout_id =>
+		{
+			try {clearTimeout(timeout_id)}
+			catch(ex) {}
+		});
+		
+		this.refresh_ids.forEach(refresh_id =>
+		{
+			try {clearTimeout(refresh_id)}
+			catch(ex) {}
+		});
+		
+		this.handlers.forEach(handler =>
+		{
+			try {handler[0].removeEventListener(handler[1], handler[2])}
+			catch(ex) {}
+		});
+		
+		this.hidden_canvases.forEach(hidden_canvas =>
+		{
+			try {hidden_canvas.remove()}
+			catch(ex) {}
+		});
+		
+		if (DEBUG)
+		{
+			console.log(`Destroyed an applet of type ${this.constructor.name}`)
+		}
 	}
 }
+
+Page.current_applets = [];
 
 Site.loaded_applets = [];
 

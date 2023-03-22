@@ -159,7 +159,7 @@ class BinaryTree extends Applet
 		
 		this.web_worker = new Worker(`/applets/binary-trees/scripts/worker.${DEBUG ? "" : "min."}js`);
 		
-		Page.temporary_web_workers.push(this.web_worker);
+		this.workers.push(this.web_worker);
 		
 		
 		
@@ -167,10 +167,12 @@ class BinaryTree extends Applet
 		{
 			if (e.data[0] === "done")
 			{
-				setTimeout(() =>
+				const timeout_id = setTimeout(() =>
 				{
 					Page.set_element_styles(".wilson-draggable", "opacity", 1);
 				}, 500);
+				
+				this.timeout_ids.push(timeout_id);	
 				
 				return;
 			}
@@ -257,9 +259,11 @@ class BinaryTree extends Applet
 			step++;
 		}, 8);
 		
+		this.refresh_ids.push(refresh_id);
 		
 		
-		setTimeout(() =>
+		
+		const timeout_id = setTimeout(() =>
 		{
 			clearInterval(refresh_id);
 			
@@ -268,6 +272,8 @@ class BinaryTree extends Applet
 			
 			that.animate(that.root, that.branch_points);
 		}, Site.opacity_animation_time);
+		
+		this.timeout_ids.push(timeout_id);
 	}
 	
 	

@@ -50,13 +50,9 @@ class BarnsleyFern extends Applet
 		
 		this.web_worker = new Worker(`/applets/barnsley-fern/scripts/worker.${DEBUG ? "" : "min."}js`);
 		
-		Page.temporary_web_workers.push(this.web_worker);
-		
-		
+		this.workers.push(this.web_worker);
 		
 		this.web_worker.onmessage = (e) => this.wilson.render.draw_frame(e.data[0]);
-		
-		
 		
 		this.web_worker.postMessage([this.resolution, this.num_iterations]);
 	}

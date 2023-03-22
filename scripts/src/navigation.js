@@ -504,6 +504,12 @@ Page.unload = function()
 	
 	
 	
+	Page.current_applets.forEach(applet => applet.destroy());
+	
+	Page.current_applets = [];
+	
+	
+	
 	//Remove everything that's not a script from the page element.
 	Page.element.remove();
 }

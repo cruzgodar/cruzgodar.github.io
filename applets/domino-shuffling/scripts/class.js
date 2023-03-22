@@ -26,8 +26,6 @@ class DominoShuffling extends Applet
 	
 	last_timestamp = -1;
 	
-	starting_process_id = null;
-	
 	
 	
 	constructor(canvas)
@@ -58,8 +56,6 @@ class DominoShuffling extends Applet
 	
 	run(resolution, diamond_size, use_smooth_colors)
 	{
-		this.starting_process_id = Site.applet_process_id;
-		
 		this.resolution = resolution;
 		
 		this.wilson.change_canvas_size(this.resolution, this.resolution);
@@ -197,10 +193,8 @@ class DominoShuffling extends Applet
 		
 		
 			
-		if (this.starting_process_id !== Site.applet_process_id)
+		if (this.animation_paused)
 		{
-			console.log("Terminated applet process");
-			
 			return;
 		}
 		

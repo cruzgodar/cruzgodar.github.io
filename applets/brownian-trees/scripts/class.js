@@ -50,9 +50,7 @@ class BrownianTree extends Applet
 		
 		this.web_worker = new Worker(`/applets/brownian-trees/scripts/worker.${DEBUG ? "" : "min."}js`);
 		
-		Page.temporary_web_workers.push(this.web_worker);
-		
-		
+		this.workers.push(this.web_worker);
 		
 		this.web_worker.onmessage = (e) =>
 		{
