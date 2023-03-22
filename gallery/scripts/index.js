@@ -257,17 +257,17 @@
 			"image_link": "https://drive.google.com/uc?id=1sRCKC-WE8a2iYNW942uKgAJbHVkAYDrQ&export=download"
 		},
 		
-		"complex-map-3":
+		"vector-field":
 		{
-			"title": "A Complex Map",
+			"title": "A Vector Field",
 			
-			"resolution": "5000x5000",
+			"resolution": "2000x2000",
 			
-			"parameters": "Generated from wp(rho, z)",
+			"parameters": "Generated from (sin(y / 2.5), tan(x / 2.5))",
 			
-			"applet_link": "complex-maps",
+			"applet_link": "vector-fields",
 			
-			"image_link": "https://drive.google.com/uc?id=1VHOdSrwJYkUH18f2UhLVrwQ2OBJC0_op&export=download"
+			"image_link": "https://drive.google.com/uc?id=1016R9thI8dQdvEhTJGNMFehaCRhrbSxA&export=download"
 		},
 		
 		"julia-set-1":
