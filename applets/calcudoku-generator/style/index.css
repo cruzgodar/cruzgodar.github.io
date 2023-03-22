@@ -4,17 +4,9 @@
 	margin: 0 auto;
 }
 
-#calcudoku-grid
+#output-canvas
 {
 	width: 100%;
-	opacity: 0;
-}
-
-
-#total-time-label, #total-time-clock, #split-time-label, #split-time-clock
-{
-	text-align: center;
-	
 	opacity: 0;
 }
 
@@ -22,7 +14,7 @@
 
 @media (min-aspect-ratio: 1/1)
 {
-	#calcudoku-grid
+	#output-canvas
 	{	
 		width: 100%;
 	}
