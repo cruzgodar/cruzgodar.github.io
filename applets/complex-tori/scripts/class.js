@@ -321,8 +321,6 @@ class EllipticCurve extends Applet
 				}
 			}
 			
-			
-			
 			if (min_open_j !== -1)
 			{
 				//Interpolate between the two points.

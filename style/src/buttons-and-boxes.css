@@ -279,6 +279,8 @@
 	outline: none;
 	box-shadow: none;
 	
+	z-index: 10;
+	
 	transition: background-color .125s ease-in-out;
 }
 
@@ -350,6 +352,11 @@
 .slider-container p
 {
 	text-align: center;
+}
+
+.slider-container > label
+{
+	z-index: 5;
 }
 
 

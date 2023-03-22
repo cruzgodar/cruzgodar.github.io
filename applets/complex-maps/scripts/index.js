@@ -4,7 +4,7 @@
 {
 	await Site.load_applet("complex-maps");
 	
-	const applet = new ComplexMap(Page.element.querySelector("#output-canvas"), "cexp(cinv(z))", 0, 0, -.585, false);
+	const applet = new ComplexMap(Page.element.querySelector("#output-canvas"), "cexp(cinv(z))");
 	
 	
 	
@@ -12,7 +12,7 @@
 	{
 		const generating_code = code_input_element.value || "cexp(cinv(z))";
 		
-		applet.run(generating_code, 0, 0, -.585);
+		applet.run(generating_code);
 	}
 	
 	

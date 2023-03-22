@@ -2,7 +2,10 @@
 
 class ComplexMap extends Applet
 {
+	load_promise = null;
+	
 	generating_code = "";
+	uniform_code = "";
 	
 	aspect_ratio = 1;
 	
@@ -17,6 +20,8 @@ class ComplexMap extends Applet
 	
 	fixed_point_x = 0;
 	fixed_point_y = 0;
+	
+	draggable_callback = null;
 	
 	next_pan_velocity_x = 0;
 	next_pan_velocity_y = 0;
@@ -36,6 +41,7 @@ class ComplexMap extends Applet
 	
 	last_timestamp = -1;
 	
+	add_indicator_draggable = false;
 	use_selector_mode = false;
 	
 	total_benchmark_time = 0;
@@ -45,7 +51,7 @@ class ComplexMap extends Applet
 	
 	
 	
-	constructor(canvas, generating_code, world_center_x, world_center_y, zoom_level, selector_mode)
+	constructor(canvas, generating_code, uniform_code = "", world_center_x = 0, world_center_y = 0, zoom_level = -.585, add_indicator_draggable = false, draggable_callback = null, selector_mode = false)
 	{
 		super(canvas);
 		
@@ -101,19 +107,22 @@ class ComplexMap extends Applet
 		window.addEventListener("resize", bound_function);
 		this.handlers.push([window, "resize", bound_function]);
 		
-		Site.load_glsl()
-		
-		.then(() =>
+		this.load_promise = new Promise(async (resolve, reject) =>
 		{
-			this.run(generating_code, world_center_x, world_center_y, zoom_level, selector_mode)
+			await Site.load_glsl();
+			
+			this.run(generating_code, uniform_code, world_center_x, world_center_y, zoom_level, add_indicator_draggable, draggable_callback, selector_mode);
+			
+			resolve();
 		});
 	}
 		
 		
 		
-	run(generating_code, world_center_x = 0, world_center_y = 0, zoom_level = -.585, selector_mode = false)
+	run(generating_code, uniform_code = "", world_center_x = 0, world_center_y = 0, zoom_level = -.585, add_indicator_draggable = false, draggable_callback = null, selector_mode = false)
 	{
 		this.generating_code = generating_code;
+		this.uniform_code = uniform_code;
 		
 		this.zoom_level = zoom_level;
 		
@@ -122,6 +131,9 @@ class ComplexMap extends Applet
 		
 		this.wilson.world_center_x = world_center_x;
 		this.wilson.world_center_y = world_center_y;
+		
+		this.add_indicator_draggable = add_indicator_draggable;
+		this.draggable_callback = draggable_callback;
 		
 		let selector_mode_string = "";
 		
@@ -160,6 +172,8 @@ class ComplexMap extends Applet
 			uniform float white_point;
 			
 			uniform vec2 draggable_arg;
+			
+			${uniform_code}
 			
 			
 			
@@ -236,11 +250,11 @@ class ComplexMap extends Applet
 		
 		
 		
-		const need_draggable = generating_code.indexOf("draggable_arg") !== -1;
+		const need_draggable = add_indicator_draggable || (generating_code.indexOf("draggable_arg") !== -1);
 		
 		if (need_draggable && this.wilson.draggables.num_draggables === 0)
 		{
-			this.wilson.draggables.add(.5, .5);
+			this.wilson.draggables.add(.5, .5, !add_indicator_draggable);
 			
 			this.wilson.gl.uniform2f(this.wilson.uniforms["draggable_arg"], .5, .5);
 		}
@@ -275,9 +289,8 @@ class ComplexMap extends Applet
 		
 		if (this.use_selector_mode)
 		{
-			this.run(this.generating_code, this.wilson.world_center_x, this.wilson.world_center_y, this.zoom_level, true);
+			this.run(this.generating_code, this.uniform_code, this.wilson.world_center_x, this.wilson.world_center_y, this.zoom_level, this.force_add_draggable, true);
 			
-			//Possibly wrap everything below this in a settimeout for 20ms.
 			const timeout_id = setTimeout(() =>
 			{
 				this.wilson.render.draw_frame();
@@ -309,7 +322,7 @@ class ComplexMap extends Applet
 				
 				console.log(`${x} ${plus_1} ${Math.abs(y)}i |---> ${z_x} ${plus_2} ${Math.abs(z_y)}i`);
 				
-				this.run(this.generating_code, this.wilson.world_center_x, this.wilson.world_center_y, this.zoom_level);
+				this.run(this.generating_code, this.uniform_code, this.wilson.world_center_x, this.wilson.world_center_y, this.zoom_level, this.force_add_draggable, false);
 				
 				this.use_selector_mode = false;
 			}, 20);
@@ -432,6 +445,9 @@ class ComplexMap extends Applet
 	
 	on_drag_draggable(active_draggable, x, y, event)
 	{
+		try {this.draggable_callback(active_draggable, x, y, event)}
+		catch(ex) {}
+		
 		this.wilson.gl.uniform2f(this.wilson.uniforms["draggable_arg"], x, y);
 		
 		window.requestAnimationFrame(this.draw_frame.bind(this));
