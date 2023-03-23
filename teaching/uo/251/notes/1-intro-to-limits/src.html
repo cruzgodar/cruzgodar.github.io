@@ -114,25 +114,25 @@ In practice, we can calculate $\lim_{x \to a} f(x)$ by making a table that conta
 
 ### ex calculating a limit with a table
 	
-	Find $\displaystyle\lim_{x \to 0} \frac{\sin(x)}{x}$ with a table.
+	Find $$\lim_{x \to 0} \frac{\sin(x)}{x}$$ with a table.
 	
 	We can't plug in $x = 0$, since $\sin(0) = 0$ and so we'd get $\frac{0}{0}$, but that's okay --- the limit doesn't have anything to do with what the function actually does at $0$, only very close to it.
 	
 	Let's plug in some values for $x$ that get closer and closer to zero. We need to do this from both above and below, but let's just start with above. That means positive numbers getting smaller and smaller --- let's try $.1$, $.01$, and $.001$.
 	
-	$\displaystyle f(.1) = \frac{\sin(.1)}{.1} \approx .998334$
+	$$f(.1) = \frac{\sin(.1)}{.1} \approx .998334$$
 	
-	$\displaystyle f(.01) = \frac{\sin(.01)}{.01} \approx .999983$
+	$$f(.01) = \frac{\sin(.01)}{.01} \approx .999983$$
 	
-	$\displaystyle f(.001) = \frac{\sin(.1)}{.1} \approx .999999$
+	$$f(.001) = \frac{\sin(.1)}{.1} \approx .999999$$
 	
 	It's pretty clear that these values are approaching $1$. Now let's try approaching from below, which means negative numbers getting closer and closer to zero.
 	
-	$\displaystyle f(-.1) = \frac{\sin(-.1)}{-.1} \approx .998334$
+	$$f(-.1) = \frac{\sin(-.1)}{-.1} \approx .998334$$
 	
-	$\displaystyle f(-.01) = \frac{\sin(-.01)}{-.01} \approx .999983$
+	$$f(-.01) = \frac{\sin(-.01)}{-.01} \approx .999983$$
 	
-	$\displaystyle f(-.001) = \frac{\sin(-.1)}{-.1} \approx .999999$
+	$$f(-.001) = \frac{\sin(-.1)}{-.1} \approx .999999$$
 	
 	It turns out these numbers are exactly the same, but all we need to know is that they are also approaching $1$. Since the two numbers agree, we can declare that
 	
@@ -150,7 +150,7 @@ In practice, we can calculate $\lim_{x \to a} f(x)$ by making a table that conta
 
 ### exc calculating a limit with a table
 	
-	Find $\displaystyle\lim_{x \to 4} \frac{\sqrt{x} - 2}{x - 4}$ with a table.
+	Find $$\lim_{x \to 4} \frac{\sqrt{x} - 2}{x - 4}$$ with a table.
 	
 	Exercises like this will often follow examples --- we'll do some of them as group work in class. They're a great source of possible quiz and test questions, so it's a good idea to do them as practice problems.
 	
@@ -164,7 +164,7 @@ In this next example, let's start with the graph.
 
 ### ex calculating a limit from a graph
 	
-	Find $\displaystyle\lim_{x \to 1} g(x)$ and $\displaystyle\lim_{x \to -1} g(x)$.
+	Find $$\lim_{x \to 1} g(x)$$ and $$\lim_{x \to -1} g(x)$$.
 	
 	### desmos limit-example-2
 	
@@ -178,7 +178,7 @@ In this next example, let's start with the graph.
 
 ### prop some simple limits
 	
-	For real numbers $a$ and $c$, $\displaystyle\lim_{x \to a} x = a$ and $\displaystyle\lim_{x \to a} c = c$.
+	For real numbers $a$ and $c$, $$\lim_{x \to a} x = a$$ and $$\lim_{x \to a} c = c$$.
 	
 ###
 
@@ -194,21 +194,21 @@ How could a limit not exist? There are two possibilities for this, generally spe
 
 ### ex a limit that doesn't exist
 	
-	Find $\displaystyle\lim_{x \to 0} \sin\left( \frac{1}{x} \right)$.
+	Find $$\lim_{x \to 0} \sin\left( \frac{1}{x} \right)$$.
 	
 	Without a graph to go on, let's plug in a handful of values.
 	
-	$\displaystyle f(.1) \approx -.544021$
+	$$f(.1) \approx -.544021$$
 	
-	$\displaystyle f(.01) \approx -.506366$
+	$$f(.01) \approx -.506366$$
 	
-	$\displaystyle f(.001) \approx .826880$
+	$$f(.001) \approx .826880$$
 	
-	$\displaystyle f(.0001) \approx -.305614$
+	$$f(.0001) \approx -.305614$$
 	
-	$\displaystyle f(.00001) \approx .035749$
+	$$f(.00001) \approx .035749$$
 	
-	$\displaystyle f(.000001) \approx -.349994$
+	$$f(.000001) \approx -.349994$$
 	
 	These values aren't moving toward anything. While it's possible that the function only begins converging <em>incredibly</em> close to zero, the safest bet is that
 	
@@ -226,23 +226,23 @@ How could a limit not exist? There are two possibilities for this, generally spe
 
 ### exc another limit that doesn't exist
 	
-	Find $\displaystyle\lim_{x \to 2} \frac{|x - 2|}{x - 2}$.
+	Find $$\lim_{x \to 2} \frac{|x - 2|}{x - 2}$$.
 	
 	As usual, let's plug in some values. Calling the function $f(x)$, we have
 	
-	$\displaystyle f(2.1) = \frac{|.1|}{.1} = 1$
+	$$f(2.1) = \frac{|.1|}{.1} = 1$$
 	
-	$\displaystyle f(2.01) = \frac{|.01|}{.01} = 1$
+	$$f(2.01) = \frac{|.01|}{.01} = 1$$
 	
-	$\displaystyle f(2.001) = \frac{|.001|}{.001} = 1$
+	$$f(2.001) = \frac{|.001|}{.001} = 1$$
 	
 	So approaching $x = 2$ from above tells us that the limit is probably $1$. Let's try approaching from below.
 	
-	$\displaystyle f(1.9) = \frac{|-.1|}{-.1} = -1$
+	$$f(1.9) = \frac{|-.1|}{-.1} = -1$$
 	
-	$\displaystyle f(1.99) = \frac{|-.01|}{-.01} = -1$
+	$$f(1.99) = \frac{|-.01|}{-.01} = -1$$
 	
-	$\displaystyle f(1.999) = \frac{|-.001|}{-.001} = -1$
+	$$f(1.999) = \frac{|-.001|}{-.001} = -1$$
 	
 	These values tell a different story --- that the limit really ought to be $-1$. So what do we do? The limit can't be two values at once, so we just say it doesn't exist. But look at this graph --- it's so much more well-behaved than the previous one we looked at, and we should be able to say something, at least.
 	
@@ -293,7 +293,7 @@ both still do not exist --- the problem there wasn't that the two sides didn't a
 
 ### exc some one-sided limits
 	
-	Find $\displaystyle \lim_{x \to 2^+} g(x)$ and $\displaystyle \lim_{x \to 2^-} g(x)$, where
+	Find $$\lim_{x \to 2^+} g(x)$$ and $$\lim_{x \to 2^-} g(x)$$, where
 	
 	$$
 		g(x) = \frac{|x^2 - 4|}{x - 2}.
@@ -311,23 +311,23 @@ There's one possibility we haven't mentioned yet: what if the function values ju
 
 ### ex an infinite limit
 	
-	Find $\displaystyle \lim_{x \to 0} f(x)$, where $\displaystyle f(x) = \frac{1}{x^2}$.
+	Find $$\lim_{x \to 0} f(x)$$, where $$f(x) = \frac{1}{x^2}$$.
 	
 	Plugging in values, we have
 	
-	$\displaystyle f(.1) = \frac{1}{.1^2} = 100$
+	$$f(.1) = \frac{1}{.1^2} = 100$$
 	
-	$\displaystyle f(.01) = \frac{1}{.01^2} = 10000$
+	$$f(.01) = \frac{1}{.01^2} = 10000$$
 	
-	$\displaystyle f(.001) = \frac{1}{.001^2} = 1000000$
+	$$f(.001) = \frac{1}{.001^2} = 1000000$$
 	
 	Since these numbers are getting larger and larger with no upper bound, $\lim_{x \to 0^+} f(x) = \infty$. Now let's compute the limit from below.
 	
-	$\displaystyle f(-.1) = \frac{1}{(-.1)^2} = 100$
+	$$f(-.1) = \frac{1}{(-.1)^2} = 100$$
 	
-	$\displaystyle f(-.01) = \frac{1}{(-.01)^2} = 10000$
+	$$f(-.01) = \frac{1}{(-.01)^2} = 10000$$
 	
-	$\displaystyle f(-.001) = \frac{1}{(-.001)^2} = 1000000$
+	$$f(-.001) = \frac{1}{(-.001)^2} = 1000000$$
 	
 	Similarly, $\lim_{x \to 0^-} f(x) = \infty$. Since the limits from above and below agree, we have that $\lim_{x \to 0} f(x) = \infty$. Graphically, limits equalling $\pm \infty$ correspond to vertical asymptotes in the graph.
 	
@@ -345,11 +345,11 @@ There's one possibility we haven't mentioned yet: what if the function values ju
 	
 	$f(-3)$, $f(0)$, $f(1)$
 	
-	$\displaystyle \lim_{x \to -3^+} f(x)$, $\displaystyle \lim_{x \to 0^+} f(x)$, $\displaystyle \lim_{x \to 1^+} f(x)$
+	$$\lim_{x \to -3^+} f(x)$$, $$\lim_{x \to 0^+} f(x)$$, $$\lim_{x \to 1^+} f(x)$$
 	
-	$\displaystyle \lim_{x \to -3^-} f(x)$, $\displaystyle \lim_{x \to 0^-} f(x)$, $\displaystyle \lim_{x \to 1^-} f(x)$
+	$$\lim_{x \to -3^-} f(x)$$, $$\lim_{x \to 0^-} f(x)$$, $$\lim_{x \to 1^-} f(x)$$
 	
-	$\displaystyle \lim_{x \to -3} f(x)$, $\displaystyle \lim_{x \to 0} f(x)$, $\displaystyle \lim_{x \to 1} f(x)$
+	$$\lim_{x \to -3} f(x)$$, $$\lim_{x \to 0} f(x)$$, $$\lim_{x \to 1} f(x)$$
 	
 ###
 

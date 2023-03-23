@@ -10,17 +10,17 @@ A common trend in calculus is the introduction of a new operator --- like limits
 	
 	Let $f(x)$ and $g(x)$ be functions. Then:
 	
-	1. $\displaystyle \lim_{x \to a} (f(x) + g(x)) = \lim_{x \to a} f(x) + \lim_{x \to a} g(x)$.
+	1. $$\lim_{x \to a} (f(x) + g(x)) = \lim_{x \to a} f(x) + \lim_{x \to a} g(x)$$.
 	
-	2. $\displaystyle \lim_{x \to a} (f(x) - g(x)) = \lim_{x \to a} f(x) - \lim_{x \to a} g(x)$.
+	2. $$\lim_{x \to a} (f(x) - g(x)) = \lim_{x \to a} f(x) - \lim_{x \to a} g(x)$$.
 	
-	3. $\displaystyle \lim_{x \to a} (f(x)g(x)) = \left( \lim_{x \to a} f(x) \right) \left( \lim_{x \to a} g(x) \right)$.
+	3. $$\lim_{x \to a} (f(x)g(x)) = \left( \lim_{x \to a} f(x) \right) \left( \lim_{x \to a} g(x) \right)$$.
 	
-	4. $\displaystyle \lim_{x \to a} \left( \frac{f(x)}{g(x)} \right) = \dfrac{\lim_{x \to a} f(x)}{\lim_{x \to a} g(x)}$, as long as $\displaystyle \lim_{x \to a} g(x) \neq 0$.
+	4. $$\lim_{x \to a} \left( \frac{f(x)}{g(x)} \right) = \dfrac{\lim_{x \to a} f(x)}{\lim_{x \to a} g(x)}$$, as long as $$\lim_{x \to a} g(x) \neq 0$$.
 	
-	5. $\displaystyle \lim_{x \to a} f(x)^n = \left( \lim_{x \to a} f(x) \right)^n$
+	5. $$\lim_{x \to a} f(x)^n = \left( \lim_{x \to a} f(x) \right)^n$$
 	
-	6. $\displaystyle \lim_{x \to a} \sqrt[n]{f(x)} = \sqrt[n]{\lim_{x \to a} f(x)}$.
+	6. $$\lim_{x \to a} \sqrt[n]{f(x)} = \sqrt[n]{\lim_{x \to a} f(x)}$$.
 	
 ###
 
@@ -32,7 +32,7 @@ All this says is that we can move limits inside powers and split them up across 
 
 ### ex basic limit rules
 	
-	Evaluate $\displaystyle \lim_{x \to -3} (4x + 2)$.
+	Evaluate $$\lim_{x \to -3} (4x + 2)$$.
 	
 	Let's take this one step at a time.
 	
@@ -76,7 +76,7 @@ Two common types of functions are polynomials and rational functions (which are 
 
 ### ex limits of polynomials and rational functions
 	
-	Find $\displaystyle \lim_{x \to 3} \frac{2x^2 - 3x + 1}{5x + 4}$.
+	Find $$\lim_{x \to 3} \frac{2x^2 - 3x + 1}{5x + 4}$$.
 	
 	Since plugging in $3$ for $x$ doesn't make the denominator zero, we have
 	
@@ -90,7 +90,7 @@ Two common types of functions are polynomials and rational functions (which are 
 
 ### exc limits of polynomials and rational functions
 	
-	Find $\displaystyle \lim_{x \to -2} \left( 3x^3 - 2x + 7 \right)$.
+	Find $$\lim_{x \to -2} \left( 3x^3 - 2x + 7 \right)$$.
 	
 ###
 
@@ -104,7 +104,7 @@ The example we talked about in the last section --- $g(h) = \frac{h^2}{h}$ --- i
 	
 	limits of rational functions with a common factor
 	
-	Find $\displaystyle \lim_{x \to 1} \frac{x^2 - 1}{x - 1}$.
+	Find $$\lim_{x \to 1} \frac{x^2 - 1}{x - 1}$$.
 	
 	First of all,
 	
@@ -126,7 +126,7 @@ The example we talked about in the last section --- $g(h) = \frac{h^2}{h}$ --- i
 
 ### exc limits of rational functions with a common factor
 	
-	Find $\displaystyle \lim_{x \to 3} \frac{x^2 - 3x}{2x^2 - 5x - 3}$.
+	Find $$\lim_{x \to 3} \frac{x^2 - 3x}{2x^2 - 5x - 3}$$.
 	
 ###
 
@@ -138,7 +138,7 @@ It's a little harder when there is a square root in the numerator or denominator
 
 ### ex limits of rational functions with a square root
 	
-	Find $\displaystyle \lim_{x \to -1} \frac{\sqrt{x + 2} - 1}{x + 1}$.
+	Find $$\lim_{x \to -1} \frac{\sqrt{x + 2} - 1}{x + 1}$$.
 	
 	This is an expression involving only arithmetic, powers, and roots, so it seems like we could try just plugging in $x = -1$, but since that makes the denominator (and numerator) zero, we're not allowed to do that. Instead, let's try multiplying both top and bottom by the conjugate of $\sqrt{x + 2} - 1$, which is just $-\sqrt{x + 2} - 1$. Then the result is
 	
@@ -164,7 +164,7 @@ It's a little harder when there is a square root in the numerator or denominator
 
 ### exc limits of rational functions with a square root
 	
-	Find $\displaystyle \lim_{x \to 5} \frac{\sqrt{x - 1} - 2}{x - 5}$.
+	Find $$\lim_{x \to 5} \frac{\sqrt{x - 1} - 2}{x - 5}$$.
 	
 ###
 
@@ -176,7 +176,7 @@ Another example that arises involves getting a common denominator for rational f
 
 ### ex a limit with a common denominator
 	
-	Evaluate $\displaystyle \lim_{y \to 0} \left( \frac{1}{y} + \frac{5}{y(y - 5)} \right)$.
+	Evaluate $$\lim_{y \to 0} \left( \frac{1}{y} + \frac{5}{y(y - 5)} \right)$$.
 	
 	Both terms divide by zero when we plug in $y = 0$, so we can't directly evaluate them like that. Instead, let's try adding the fractions together, and maybe things will work out better then. Just like with regular integers, we can find common denominators of polynomials --- here, the common denominator of $y$ and $y(y - 5)$ is $y(y - 5)$, since both denominators divide into it. Then the limit becomes
 	
@@ -196,7 +196,7 @@ Another example that arises involves getting a common denominator for rational f
 
 ### ex a one-sided limit
 	
-	Evaluate $\displaystyle \lim_{t \to 2^-} \sqrt{t - 2}$.
+	Evaluate $$\lim_{t \to 2^-} \sqrt{t - 2}$$.
 	
 	This one-sided limit is telling us to consider only numbers smaller than $2$. But if $t < 2$, then $t - 2$ is negative, so the function $\sqrt{t - 2}$ is undefined! Therefore, the limit must be undefined. Visually, we're trying to approach the point $(2, 0)$ from the left in this graph, but there is no graph to the left, so there's no way to approach.
 	
@@ -214,7 +214,7 @@ What about infinite limits? They can be a little trickier to calculate.
 
 ### ex a one-sided limit
 	
-	Evaluate $\displaystyle \lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x}$.
+	Evaluate $$\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x}$$.
 	
 	Plugging in $x = 2$ gives us $\frac{-1}{0}$ --- division by zero that's not of the form $\frac{0}{0}$ indicates that the function is spiking to $\pm \infty$. To figure out which one, it's best to isolate the bit that's dividing by zero from the rest. First, let's factor the denominator.
 	
@@ -278,7 +278,7 @@ The squeeze theorem is a little complicated to state, but it's a straightforward
 
 ### ex the Squeeze theorem
 	
-	Find $\displaystyle \lim_{x \to 0} x \sin(x)$.
+	Find $$\lim_{x \to 0} x \sin(x)$$.
 	
 	Even though there's no division by zero, we can't just plug in $x = 0$, since our limit rules don't talk about trig functions. Instead, remember that $-1 \leq \sin(x) \leq 1$, since sine measures a $y$-coordinate on the unit circle, and so
 	

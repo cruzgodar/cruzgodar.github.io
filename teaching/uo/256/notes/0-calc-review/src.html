@@ -1,0 +1,297 @@
+# Section 0: Calculus Review
+
+### nav-buttons
+
+
+
+Welcome to Math 256! You're viewing the interactive lecture notes --- reading these is required for the class, since we'll have a short reading quiz on Canvas due before most lectures. To get started, let's make sure your browser handles equations and graphs correctly. You should see an equation on its own line below and a graph below that.
+
+$$
+	x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+$$
+
+### desmos test-graph
+
+If anything doesn't appear correctly, update your browser and then reach out if that doesn't work.
+
+Differential equations and linear algebra are two of math's most incredibly useful exports. Traditional equations, like $x^2 + x + 1 = 0$, equate functions and have numbers as solutions. Differential equations, in comparison, have *functions* as their solutions, and describe a function in terms of its derivatives. For example, $y' - y = x$ describes a function $y = y(x)$ by specifying that for any $x$, the difference between $y$ and its rate of change is the input $x$. As we'll learn in the next few sections, the solution to this DE is
+
+$$
+	y(x) = c_1e^x - x - 1
+$$
+
+for any value $c_1$. Differential equations form the backbone of physics, chemistry, biology, and any other situation in which dynamical systems show up. A dynamical system is nothing more than a system in which a thing changes over time --- if that sounds remarkably generic, that's the idea! Whether it's convection currents in air, complex chemical reactions, or predator-prey population dynamics, it's often significantly easier to find a formula for a function's derivatives in terms of its current state than to find one for the function itself for every possible state. Think of the weather: trying to find some sort of formula to predict the weather at all future times is hopeless, but carefully studying how the weather at one point in time influences the weather that comes immediately after is meteorology. Once we have a DE written down, we'd like to actually solve it explicitly whenever possible, and we'll work toward that goal for the first six to seven weeks of the course.
+
+On the surface, linear algebra sounds so simple as to be barely useful: it formalizes and streamlines the process of solving systems of equations. Along the way to that goal, though, we'll end up developing a slew of results. We'll find a way to cleanly and efficiently represent certain kinds of functions, to apply them to points, and compose them with each other. If that *also* sounds remarkably generic, it's a testament to the versatility of these tools. Linear algebra is most often used in computer science and statistics --- and more than differential equations, it underpins most higher-level math. Few other math classes can claim such wide-ranging use.
+
+The expectation for a four-unit class is to spend eight hours every week outside of class on studying and homework. Even if you haven't needed that much time in previous math courses, **budget that much for this one.** One of the best things you can do is to find at least two office hours you can regularly make per week, and commit to always attending them. Even if you don't have questions, it's a great environment to focus on homework, make friends to study with, and get help if questions do come up. Most students who consistently attend office hours succeed in the course, and most students who succeed regularly attend them.
+
+Before we dive into the new material, let's take a section to go over the core concepts of calculus I--III to make sure we're all on the same page.
+
+
+
+## Limits
+
+The **limit** as $x$ approaches $a$ of a function $f(x)$, written $\lim_{x \to a} f(x)$, is a concept that lets us talk about what value $f$ ought to have at $x = a$, without knowing what value $f(a)$ actually takes, or if it's even defined at all. For example, with the function $g$ defined by
+
+$$
+	g(t) = \frac{\sin(t)}{t},
+$$
+
+we have that $g(0) = \frac{\sin(0)}{0} = \frac{0}{0}$, which is undefined. However, we can take the limit (and use L'H&#244;pital's rule) to find that
+
+$$
+	\lim_{t \to 0} g(t) &= \lim_{t \to 0} \frac{\frac{d}{dt} [\sin(t)] }{\frac{d}{dt}[t]}
+	
+	&= \lim_{t \to 0} \frac{\cos(t)}{1}
+	
+	&= \frac{1}{1}
+	
+	&= 1.
+$$
+
+Even though $g(0)$ is undefined, the value we'd expect it to take is $1$.
+
+### desmos limit-example
+
+Limits split across addition, subtraction, multiplication, division, exponentiation, and even function composition. Moreover, most functions we commonly work with are **continuous** wherever they're defined. A function $f$ is continuous at $x = a$ if $\lim_{x \to a} f(x) = f(a)$; in other words, the value is what we would expect.
+
+The limit $\lim_{x \to a} f(x)$ can fail to exist if values of $f(x)$ near $x = a$ fail to settle down to one specific value, or if approaching from the left yields a different result than approaching from the right.
+
+
+
+## Derivatives
+
+Derivatives measure slopes of tangent lines. The derivative of a function $f(x)$ at $x = a$ is defined as
+
+$$
+	f'(a) = \frac{d}{dx}[f(x)]|_{x = a} = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h},
+$$
+
+if the limit exists. The function inside the limit is the slope of a secant line passing through the points $(a, f(a))$ and $(a + h, f(a + h))$, and as $h \to 0$, that secant line approaches a tangent line.
+
+### desmos secant-line-example
+
+In order for a function to be differentiable, it must be continuous, but not all continuous functions are differentiable: for example, $f(x) = |x|$ is not differentiable at $x = 0$ due to the sharp corner.
+
+In practice, we don't use the limit definition of the derivative all that often. Instead, we use derivative rules, like the product, quotient, and chain rules, and we memorize a handful of common derivatives to use as building blocks.
+
+
+
+### prop derivative rules
+	
+	1. $$\frac{d}{dx} [c \cdot f(x)] = c \cdot f'(x)$$.
+	
+	2. $$\frac{d}{dx} [f(x) + g(x)] = f'(x) + g'(x)$$.
+	
+	3. $$\frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x)$$ (the product rule).
+	
+	4. $$\frac{d}{dx} \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}$$ (the quotient rule).
+	
+	5. $$\frac{d}{dx} [f(g(x))] = f'(g(x))g'(x)$$ (the chain rule).
+	
+###
+
+### prop common derivatives
+	
+	$$\frac{d}{dx} [c] = 0$$ for any constant $c$.
+	
+	$$\frac{d}{dx} [x^p] = px^{p - 1}, p \neq 0$$ (the power rule).
+	
+	$$\frac{d}{dx} [\sin(x)] = \cos(x)$$.
+	
+	$$\frac{d}{dx} [\cos(x)] = -\sin(x)$$.
+	
+	$$\frac{d}{dx} [\tan(x)] = \sec^2(x)$$.
+	
+	$$\frac{d}{dx} [\sec(x)] = \sec(x)\tan(x)$$.
+	
+	$$\frac{d}{dx} [b^x] = b^x \ln(b)$$.
+	
+	$$\frac{d}{dx} [e^x] = e^x$$.
+	
+	$$\frac{d}{dx} [\ln(x)] = \frac{1}{x}$$.
+	
+###
+	
+We'll be using limits and derivatives quite a bit throughout the course --- derivatives are in the title, after all! I have a full set of interactive notes available for calculus I, so if you're feeling rusty, have a look at those.
+
+
+
+### image-links
+	
+	/teaching/uo/251/ Calculus I Notes
+	
+###
+
+
+
+## Integrals
+
+The next building blocks we'll need are integrals, which come in two flavors: definite and indefinite. Indefinite integrals perform antidifferentiation, taking a function $f(x)$ to its general antiderivative, often denoted $F(x)$. For example,
+
+$$\int x^2\,dx = \frac{x^3}{3} + C$$.
+
+$$\int \sin(2x)\,dx = -\frac{1}{2}\cos(2x) + C$$.
+
+$$\int \frac{1}{y}\,dy = \ln|y| + C$$.
+
+In contrast, definite integrals measure the area under the graph of a function and take an extra two numbers, written above and below the integral sign. When we say that
+
+$$
+	\int_{-2}^4 t^3\,dt = 60,
+$$
+
+we mean that the shaded region in the graph below has area 60. Remember that area below the $x$-axis (here, the $t$-axis) counts as negative.
+
+### desmos definite-integral-example
+
+The two types of integrals are connected through the **Fundamental Theorem of Calculus**, which relates area under curves to antiderivatives.
+
+
+
+### thm The Fundamental Theorem of Calculus
+	
+	Let $f$ be an integrable function. Then
+	
+	$$
+		\int_a^b f(x)\,dx = \left. \left[ \int f(x)\,dx \right] \right|_a^b = F(b) - F(a).
+	$$	
+	
+###
+
+
+
+In other words, definite integrals can be calculated by taking an antiderivative, then evaluating that from $a$ to $b$.
+
+Much of the study of integrals is devoted to their applications, but we won't need many of those in this class. What we will occasionally need is techniques of integration --- these are analogous to derivative rules, but are usually quite a bit harder to use. The most common is $u$-sub, which helps with integrating compositions.
+
+
+
+### ex $u$-sub
+	
+	Find the area under the graph of $f(x) = x \sin(x^2)$ between $x = 0$ and $x = \sqrt{\pi}$.
+	
+	As an integral, this is 
+	
+	$$
+		\int_0^{\sqrt{\pi}} x \sin(x^2)\,dx.
+	$$
+	
+	Since $\sin(x^2)$ is a composition of $\sin(x)$ and $x^2$, let's try $u$-sub. We let $u = x^2$, the inner function, and then differentiate to find that $du = 2x\,dx$. Present in our integral is $x\,dx$, not $2x\,dx$, so we divide by $2$ to get $\frac{1}{2}\,du = x\,dx$, which matches our integral. Now we have
+	
+	$$
+		\int_0^{\sqrt{\pi}} x \sin(x^2)\,dx &= \int_0^{\sqrt{\pi}} \frac{1}{2} \sin(u)\,du
+		
+		&= \frac{1}{2} \int_0^{\sqrt{\pi}} \sin(u)\,du
+		
+		&= \frac{1}{2} \left. \left[ -\cos(u) \right] \right|_0^{\sqrt{\pi}}
+		
+		&= \frac{1}{2} \left. \left[ - \cos(x^2) \right] \right|_0^{\sqrt{\pi}}
+		
+		&= \frac{1}{2} \left( -\cos \left( \sqrt{\pi}^2 \right) + \cos(0^2) \right)
+		
+		&= \frac{1}{2} \left( -(-1) + 1 \right)
+		
+		&= 1.
+	$$
+	
+	Therefore, the area under the graph is exactly 1.
+	
+	### desmos u-sub-example
+
+###
+
+
+
+The other commonly-used integration techniques are integration by parts, trig sub, and partial fractions. We won't use these too often, but they're good to know. If they don't feel familiar, or if calculus II in general is a little fuzzy, have a look at those notes.
+
+
+
+### image-links
+	
+	/teaching/uo/252/ Calculus II Notes
+	
+###
+
+
+
+## Series
+
+While we won't use calculus III to quite the same extent in this course, it's still worth reviewing. Much like calculus II, its results apply almost exclusively to one kind of operation --- sums --- which come in two flavors. The first half of the course is devoted to series of numbers, like $\sum_{n = 1}^\infty \frac{1}{n}$, $\sum_{i = 1}^\infty 2^{-i}$, and $\sum_{m = 0}^\infty (-1)^m$. There are a handful of tests we can apply to determine whether a series converges, which just means the limit of its partial sums exists and is finite.
+
+
+
+### thm !Series Tests
+	
+	Let $$\sum_{n = 1}^\infty a_n$$ be a series.
+	
+	1. (The Divergence Test) If $\lim_{n \to \infty} a_n \neq 0$, then $\sum_{n = 1}^\infty a_n$ diverges.
+	
+	2. (The Integral Test) If $a_n = f(n)$ for a positive, decreasing, integrable function $f$, then $\sum_{n = 1}^\infty a_n$ converges if and only if $$int_1^\infty f(x)\,dx$ does.
+	
+	3. (The Comparison Test) If $0 \leq a_n \geq b_n$, where $\sum_{n = 1}^\infty b_n$ converges, then $\sum_{n = 1}^\infty a_n$ converges. Similarly, if $0 \leq b_n \geq a_n$ and $\sum_{n = 1}^\infty b_n$ diverges, then $\sum_{n = 1}^\infty a_n$ diverges.
+	
+	4. (The Limit Comparison Test) If $a_n \geq 0$, $b_n \geq 0$, and $\lim_{n \to \infty} \frac{a_n}{b_n} = L$ with $L$ neither $0$ nor $\infty$, then the series $\sum_{n = 1}^\infty a_n$ and $\sum_{n = 1}^\infty b_n$ either both converge or both diverge.
+	
+	5. (The Alternating Series Test) If the sequence $(a_n)$ is positive and decreasing, then the series $\sum_{n = 1}^\infty (-1)^{n + 1} a_n$ converges.
+	
+	6. (The Ratio Test) Let $r = \lim_{n \to \infty} \left| \frac{a_{n + 1}}{a_n} \right|$. If $0 \leq r < 1$, then $\sum_{n = 1}^\infty a_n$ converges, and if $r > 1$, then it diverges.
+	
+	7. (The Root Test) Let $r = \lim_{n \to \infty} \sqrt[n]{|a_n|}$. If $0 \leq r < 1$, then $\sum_{n = 1}^\infty a_n$ converges, and if $r > 1$, then it diverges.
+
+###
+
+
+
+The second half of the course deals with series of functions --- specifically, powers of a single variable. These are fittingly called **power series**, and a particular type designed to converge to a specific function are called **Taylor series**. To create one for an infinitely differentiable function $f$, choose an $x$-value $a$ to **center** the series at, and then find a formula for $f^{(n)}(a)$, the $n$th derivative of $f$ at $a$. Then the Taylor series for $f$ about $a$ is
+
+$$
+	\sum_{n = 0}^\infty \frac{f^{(n)}(a)}{n!}(x - a).
+$$
+
+This series is guaranteed to converge to $f$ in some interval centered at $x = a$. That interval might be just $a$ itself, all real numbers, or something in between, and once we find that interval of convergence, we can pass back and forth between the function and the series, often to great benefit. Some of the most important series to know, along with their intervals of convergence, are:
+
+
+
+### thm !Common Taylor Series
+	
+	$$
+		\frac{1}{1 - x} &= \sum_{n = 0}^\infty x^n = 1 + x + x^2 + x^3 + \cdots & (-1, 1)
+		
+		e^x &= \sum_{n = 0}^\infty \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots & (-\infty, \infty)
+		
+		\ln(1 + x) &= \sum_{n = 1}^\infty (-1)^{n + 1} \frac{x^n}{n} = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots & (-1, 1]
+		
+		\sin(x) &= \sum_{n = 0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!} = x - \frac{x^3}{3!} - \frac{x^5}{5!} + \frac{x^7}{7!} - \cdots & (-\infty, \infty)
+		
+		\cos(x) &= \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{(2n)!} = 1 - \frac{x^2}{2!} - \frac{x^4}{4!} + \frac{x^6}{6!} - \cdots & (-\infty, \infty)
+		
+		(1 + x)^r &= \sum_{n = 0}^\infty \binom{r}{n} x^n = 1 + rx + \frac{r(r - 1)}{2!}x^2 + \frac{r(r - 1)(r - 2)}{3!}x^3 + \cdots & (-1, 1)
+	$$
+	
+###
+
+
+
+One reason power series are so useful is that both derivatives and integrals often split across them --- in other words, we can differentiate and integrate a power series by just differentiating or integrating its terms, and since those are just polynomials, that's always easy to do. For differential equations or integrals that we can't solve exactly, this approach lets us at least express the solution as a power series.
+
+That's all we'll need from calculus III. As with the previous two, I have a full set of notes available --- have a look if anything here feels unfamiliar!
+
+
+
+### image-links
+	
+	/teaching/uo/253/ Calculus III Notes
+	
+###
+
+<div style="height: 5vh"></div>
+
+
+
+### nav-buttons
+
+
+
+<script src="/scripts/init.js"></script>

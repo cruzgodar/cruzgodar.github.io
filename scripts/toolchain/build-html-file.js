@@ -167,6 +167,7 @@ const components =
 			.replaceAll(/\\\*/g, "[ASTERISK]")
 			.replaceAll(/\\\"/g, "[DOUBLEQUOTE]")
 			.replaceAll(/\\\'/g, "[SINGLEQUOTE]")
+			.replaceAll(/\$\$(.*?)\$\$/g, (match, $1) => `\$\\displaystyle ${$1}\$`)
 			.replaceAll(/\$(.*?)\$/g, (match, $1) => `\$${$1}[END\$]`);
 			
 			
@@ -395,7 +396,13 @@ const components =
 				name = name.join(" ");
 				
 				//This avoids awkward things like Theorem: The Fundamental Theorem.
-				if (name.toLowerCase().includes(components.notes_environments[id].toLowerCase()))
+				//These two avoid awkward things like Theorem: The Fundamental Theorem.
+				if (name[0] === "!")
+				{
+					return `<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${name.slice(1)}</span></p>`;
+				}
+				
+				else if (name.toLowerCase().includes(components.notes_environments[id].toLowerCase()))
 				{
 					return `<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${name}</span></p>`;
 				}
@@ -562,7 +569,7 @@ const components =
 			
 			
 			//Leave math mostly alone (but wrap it in body text).
-			if (lines[i].slice(0, 2) === "$$")
+			if (lines[i] === "$$")
 			{
 				let source_tex = "";
 				

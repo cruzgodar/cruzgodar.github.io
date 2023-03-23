@@ -50,7 +50,7 @@ Now a definite integral just adds up whatever is inside of it over an interval, 
 
 ### ex the disk method
 	
-	Find the volume of the solid created by revolving $\displaystyle f(x) = \frac{3}{x}$ on $[1, 5]$ about the $x$-axis.
+	Find the volume of the solid created by revolving $$f(x) = \frac{3}{x}$$ on $[1, 5]$ about the $x$-axis.
 	
 	This solid is plotted in the previous graph. Applying the disk method, we have
 	
@@ -108,7 +108,7 @@ That wasn't so bad! We can also use the same method for functions revolved about
 
 ### exc the disk method, again
 	
-	The area bounded by $\displaystyle y = \frac{1}{x}$ and $x = 0$ is revolved about the $y$-axis. Find the volume between $y = 1$ and $y = 2$.
+	The area bounded by $$y = \frac{1}{x}$$ and $x = 0$ is revolved about the $y$-axis. Find the volume between $y = 1$ and $y = 2$.
 	
 	**Solution:** to use the disk method, we integrate $dy$, so first we rewrite $y = \frac{1}{x}$ as $x = \frac{1}{y}$. Then the right side of the region is given by $x = \frac{1}{y}$ and the left side by $x = 0$, so in total, we have
 	
@@ -152,7 +152,7 @@ The disk method can be extended to work with problems where we're taking the dif
 
 ### exc the disk method with a hole
 	
-	The area bounded by $\displaystyle y = \frac{1}{x^2}$, $y = 1$, and $x = 2$ is revolved about the $y$-axis. Find its volume.
+	The area bounded by $$y = \frac{1}{x^2}$$, $y = 1$, and $x = 2$ is revolved about the $y$-axis. Find its volume.
 	
 	**Solution:** let's first rewrite this in terms of $y$: $x = \frac{1}{\sqrt{y}}$. Then the region is bounded on the right by $x = 2$ and on the left by $x = \frac{1}{\sqrt{y}}$. Those two meet when $\frac{1}{\sqrt{y}} = 2$, so $y = \sqrt{\frac{1}{2}} = \frac{1}{4}$. Then the integral becomes
 	
@@ -206,7 +206,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 
 ### ex the shell method
 	
-	Find the volume of the solid created by revolving the region bounded by $\displaystyle y = \frac{1}{x}$ and $y = 0$ on $[1, 3]$ about the $y$-axis.
+	Find the volume of the solid created by revolving the region bounded by $$y = \frac{1}{x}$$ and $y = 0$ on $[1, 3]$ about the $y$-axis.
 	
 	Following the previous instructions, the first step is to notice that we're revolving about the $y$-axis, so the disk method will integrate $dy$ and the shell method will integrate $dx$. Since our function is currently a function of $x$, we'll try the shell method first.
 	
@@ -301,14 +301,16 @@ As one final example, let's take a look at a solid of revolution about a line th
 	Let's start with the disk method. Plotted in purple is the region, in red a slice taken $dy$, and in green the line we're revolving about. As usual, that red line will revolve into concentric circles, with the outside circle given by $y = x^2$ and the inner one by $x = 4$. Since we're integrating $dy$, we need the first function in terms of $y$, so we solve for $x$ to get $x = \sqrt{y}$. The $y$-limits are $0$ to $16$ since the $x$ limits are $0$ to $4$, and so we wind up with
 	
 	$$
-		\int_0^{16} \left( \pi\left(\sqrt{y}\right)^2 - \pi(4)^2 \right)\,dy = \int_0^{16} \left( \pi y - 16\pi \right)\,dy.
+		\int_0^{16} \left( \pi\left(6 - \sqrt{y}\right)^2 - \pi(6 - 4)^2 \right)\,dy.
 	$$
+	
+	Notice the role of 6 in the integral: if we were revolving about the $y$-axis, then the circles' radii would just be $\sqrt{y}$ and $4$, since that's their distance from the $y$-axis, but now we need their horizontal distance away from the line $x = 6$.
 	
 	The shell method also functions a lot like usual: we're taking slices $dx$, which are vertical lines.
 	
 	### desmos a-different-axis-2
 	
-	These revolve into cylinders, and so we need to find their radius and height. The height is just the length of the red line, which is $x^2$. The radius is slightly more complicated: it's the horizontal distance from the red line to the green one. We can find that by taking the difference of the larger and smaller $x$-coordinates, which is $6 - x$. In total, the surface area of a shell produced from a vertical slice at $x$ is
+	These revolve into cylinders, and so we need to find their radius and height. The height is just the length of the red line, which is $x^2$. As before, the radius is slightly more complicated: it's the horizontal distance from the red line to the green one. We can find that by taking the difference of the larger and smaller $x$-coordinates, which is $6 - x$. In total, the surface area of a shell produced from a vertical slice at $x$ is
 	
 	$$
 		2\pi(6 - x)(x^2),

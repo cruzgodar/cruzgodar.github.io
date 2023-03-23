@@ -17,7 +17,7 @@
 		<!-- Multi-line page elements -->
 		<dict>
 			<key>begin</key>
-			<string>^\t*?(###) (image\-links|buttons|text\-boxes|sliders|dropdown|gallery\-block|ex|exc|def|prop|thm|lem|cor|pf|ax|as|card)(.*$)</string>
+			<string>^\t*?(###) (image\-links|buttons|text\-boxes|sliders|dropdown|gallery\-block|exc|ex|def|prop|thm|lem|cor|pf|ax|as|card)(.*$)</string>
 			<key>end</key>
 			<string>^\t*?(###)\s*$</string>
 			<key>beginCaptures</key>
@@ -370,6 +370,52 @@
 		
 		
 		<!-- Inline math -->
+		<dict>
+			<key>match</key>
+			<string>[^\\](\$\$)(.*?[^\\])(\$\$)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>markup.raw</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+		</dict>
+		
+		<dict>
+			<key>match</key>
+			<string>^(\$\$)(.*?[^\\])(\$\$)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>markup.raw</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+		</dict>
+		
 		<dict>
 			<key>match</key>
 			<string>[^\\](\$)(.*?[^\\])(\$)</string>

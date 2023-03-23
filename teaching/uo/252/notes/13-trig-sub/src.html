@@ -4,11 +4,11 @@
 
 Our third integration technique is a very specific one: unlike $u$-sub, which allows us to integrate compositions, and integration by parts, which handles integrals of products, trig sub will deal with integrals containing one of the following three particular expressions:
 
-1. $\displaystyle \sqrt{a^2 - x^2}$
+1. $$\sqrt{a^2 - x^2}$$
 
-2. $\displaystyle \sqrt{a^2 + x^2}$
+2. $$\sqrt{a^2 + x^2}$$
 
-3. $\displaystyle \sqrt{x^2 - a^2}$
+3. $$\sqrt{x^2 - a^2}$$
 
 These might look familiar: some integrals that evaluate to inverse trig functions look a lot like these. This process will be a little more general, though. Let's start with an example to see what the process looks like, and then we'll write down the general steps.
 
@@ -16,7 +16,7 @@ These might look familiar: some integrals that evaluate to inverse trig function
 
 ### ex trig sub
 	
-	Find $\displaystyle \int \sqrt{9 - x^2}\,dx$.
+	Find $$\int \sqrt{9 - x^2}\,dx$$.
 	
 	We can't use $u$-sub, since we would need to take $u = 9 - x^2$, and $du = 2x\,dx$ doesn't appear anywhere in the expression. We also can't use integration by parts, since there is no product here. Instead, let's do something strange: let $x = 3\sin(\theta)$. Then $dx = 3\cos(\theta)\,d\theta$. This looks like a $u$-sub a little bit, but we're **going the other direction** --- we're letting $x$ be a function of $\theta$ rather than letting $u$ being a function of $x$. But the process now is the same: we just substitute in for $x$.
 	
@@ -108,51 +108,51 @@ While we're on the subject, let's talk about a few of the identities and formula
 	
 	**Definitions:**
 	
-	1. $\displaystyle \sin(\theta) = \frac{\text{opp}}{\text{hyp}}$.
+	1. $$\sin(\theta) = \frac{\text{opp}}{\text{hyp}}$$.
 	
-	2. $\displaystyle \cos(\theta) = \frac{\text{adj}}{\text{hyp}}$.
+	2. $$\cos(\theta) = \frac{\text{adj}}{\text{hyp}}$$.
 	
-	3. $\displaystyle \tan(\theta) = \frac{\text{opp}}{\text{adj}}$.
+	3. $$\tan(\theta) = \frac{\text{opp}}{\text{adj}}$$.
 	
-	4. $\displaystyle \sec(\theta) = \frac{\text{hyp}}{\text{adj}}$.
+	4. $$\sec(\theta) = \frac{\text{hyp}}{\text{adj}}$$.
 	
-	5. $\displaystyle \tan(\theta) = \frac{\sin(\theta)}{\cos(\theta)}$.
+	5. $$\tan(\theta) = \frac{\sin(\theta)}{\cos(\theta)}$$.
 	
-	6. $\displaystyle \sec(\theta) = \frac{1}{\cos(\theta)}$.
+	6. $$\sec(\theta) = \frac{1}{\cos(\theta)}$$.
 	
 	
 	
 	**Integrals:**
 	
-	1. $\displaystyle \int \tan(\theta)\,d\theta = \ln| \sec(\theta) | + C$.
+	1. $$\int \tan(\theta)\,d\theta = \ln| \sec(\theta) | + C$$.
 	
-	2. $\displaystyle \int \sec(\theta)\,d\theta = \ln| \sec(\theta) + \tan(\theta) | + C$.
+	2. $$\int \sec(\theta)\,d\theta = \ln| \sec(\theta) + \tan(\theta) | + C$$.
 	
-	3. $\displaystyle \int \sec^2(\theta)\,d\theta = \tan(\theta) + C$.
+	3. $$\int \sec^2(\theta)\,d\theta = \tan(\theta) + C$$.
 	
-	4. $\displaystyle \int \sec(\theta)\tan(\theta)\,d\theta = \sec(\theta) + C$.
+	4. $$\int \sec(\theta)\tan(\theta)\,d\theta = \sec(\theta) + C$$.
 	
 	
 	
 	**Half-angle identities:**
 	
-	1. $\displaystyle \sin(2\theta) = 2\sin(\theta)\cos(\theta)$.
+	1. $$\sin(2\theta) = 2\sin(\theta)\cos(\theta)$$.
 	
-	2. $\displaystyle \cos(2\theta) = \cos^2(\theta) - \sin^2(\theta)$.
+	2. $$\cos(2\theta) = \cos^2(\theta) - \sin^2(\theta)$$.
 	
-	3. $\displaystyle \sin^2(\theta) = \frac{1}{2}(1 - \cos(2\theta))$.
+	3. $$\sin^2(\theta) = \frac{1}{2}(1 - \cos(2\theta))$$.
 	
-	4. $\displaystyle \cos^2(\theta) = \frac{1}{2}(1 + \cos(2\theta))$.
+	4. $$\cos^2(\theta) = \frac{1}{2}(1 + \cos(2\theta))$$.
 	
 	
 	
 	**Relations:**
 	
-	1. $\displaystyle 1 - \sin^2(\theta) = \cos^2(\theta)$.
+	1. $$1 - \sin^2(\theta) = \cos^2(\theta)$$.
 	
-	2. $\displaystyle 1 + \tan^2(\theta) = \sec^2(\theta)$.
+	2. $$1 + \tan^2(\theta) = \sec^2(\theta)$$.
 	
-	3. $\displaystyle \sec^2(\theta) - 1 = \tan^2(\theta)$.
+	3. $$\sec^2(\theta) - 1 = \tan^2(\theta)$$.
 	
 ###
 
@@ -164,7 +164,7 @@ Since this class is on calculus and not trig, that complete list will be provide
 
 ### ex trig sub
 	
-	Find $\displaystyle \int \frac{1}{\sqrt{4 + t^2}}\, dt$.
+	Find $$\int \frac{1}{\sqrt{4 + t^2}}\, dt$$.
 	
 	Trying to use $u$-sub or integration by parts fails for the same reasons it did before, so let's turn to trig sub. The square root is of the form $\sqrt{a^2 + t^2}$ for $a = 2$, so let's take $t = 2\tan(\theta)$. Then $dt = 2\sec^2(\theta)\,d\theta$, so we get
 	
@@ -202,7 +202,7 @@ Since this class is on calculus and not trig, that complete list will be provide
 
 ### exc trig sub
 	
-	Find $\displaystyle \int \frac{1}{x^2 \sqrt{x^2 - 1}}\,dx$.
+	Find $$\int \frac{1}{x^2 \sqrt{x^2 - 1}}\,dx$$.
 	
 	**Solution:** Let $x = \sec(\theta)$. Then $dx = \sec(\theta)\tan(\theta)$, so the integral becomes
 	

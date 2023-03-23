@@ -48,7 +48,7 @@ This is the form we'll use, but just like with $u$-sub, we have a process to mak
 
 ### ex integration by parts
 	
-	Find $\displaystyle \int x\sin(x)\,dx$.
+	Find $$\int x\sin(x)\,dx$$.
 	
 	We can't do this directly, since we (probably) don't know a function whose derivative is $x\sin(x)$. There's also no composition here, so all we have left is integration by parts. The two parts are $x$ and $\sin(x)$, and we're going to differentiate one and integrate the other. If we integrate $x$, we're going to get $\frac{x^2}{2}$, and that's **more complicated**, which means it's probably a bad idea. Instead, let's try differentiating it. That means letting $u = x$ and $dv = \sin(x)\,dx$. Then $du = dx$ and
 	
@@ -70,7 +70,7 @@ This is the form we'll use, but just like with $u$-sub, we have a process to mak
 
 ### exc integration by parts
 	
-	Find $\displaystyle \int ye^y\,dy$.
+	Find $$\int ye^y\,dy$$.
 	
 	**Solution:** just like in the last example, let $u = y$ and $dv = e^y\,dy$. Then $du = dy$ and $v = e^y$, so we get
 	
@@ -84,7 +84,7 @@ This is the form we'll use, but just like with $u$-sub, we have a process to mak
 
 ### ex integration by parts
 	
-	Find $\displaystyle \int \frac{\ln(t)}{t^2}\,dt$.
+	Find $$\int \frac{\ln(t)}{t^2}\,dt$$.
 	
 	There are lots of choices for $u$ and $dv$ --- here are just a few:
 	
@@ -118,7 +118,7 @@ Sometimes, we'll need to apply integration by parts more than once.
 
 ### ex integration by parts twice
 	
-	Find $\displaystyle \int x^2 e^{3x}\,dx$.
+	Find $$\int x^2 e^{3x}\,dx$$.
 	
 	We know that $x^2$ gets simpler when we differentiate it, and $e^{3x}$ stays as complicated when integrated, so let's try $u = x^2$ and $dv = e^{3x}\,dx$. Then $du = 2x\,dx$ and $v = \frac{1}{3}e^{3x}$. Now the integral becomes
 	
@@ -140,7 +140,7 @@ Sometimes, we'll need to apply integration by parts more than once.
 
 ### exc integration by parts twice
 	
-	Find $\displaystyle \int t^2 \cos(2t)\,dt$.
+	Find $$\int t^2 \cos(2t)\,dt$$.
 	
 	**Solution:** by the same logic, let $u = t^2$ and $dv = \cos(2t)\,dt$. Then $du = 2t\,dt$ and $v = \frac{1}{2} \sin(2t)\,dt$, so the integral becomes
 	
@@ -164,7 +164,7 @@ Things can get a little more complicated when multiple integration strategies ar
 
 ### ex integration by parts and $u$-sub
 	
-	Find $\displaystyle \int y^3 e^{y^2}\,dy$.
+	Find $$\int y^3 e^{y^2}\,dy$$.
 	
 	Let's follow the instructions above and try $u$-sub first. The only option is to let $u = y^2$ and $du = 2y\,dy$, which gives us
 	
@@ -212,7 +212,7 @@ Things can get a little more complicated when multiple integration strategies ar
 
 ### exc integration by parts on definite integrals
 	
-	Find $\displaystyle \int_1^3 x^3 \sin(x^2)\,dx$.
+	Find $$\int_1^3 x^3 \sin(x^2)\,dx$$.
 	
 	**Solution:** we see a composition ($\sin(x^2)$), so we should try $u$-sub before integrating by parts. Let $u = x^2$, so that $du = 2x\,dx$. Then $\frac{1}{2}\,du = x\,dx$, so the integral becomes
 	

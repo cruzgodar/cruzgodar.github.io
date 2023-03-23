@@ -108,7 +108,7 @@ Therefore, the series converges when $|x| < 1$, and so the interval of convergen
 
 ### ex the Maclaurin series for $(1 + x)^r$
 	
-	Approximate $\displaystyle \frac{1}{\sqrt{2}}$ with a degree-4 Taylor polynomial and bound the error.
+	Approximate $$\frac{1}{\sqrt{2}}$$ with a degree-4 Taylor polynomial and bound the error.
 	
 	At first glance, we might want to express this as $2^{-1/2}$ and use the Maclaurin series for $(1 + x)^{-1/2}$, but that would require setting $x = 1$, which is just barely outside the interval of convergence. Instead, we can write $\frac{1}{\sqrt{2}}$ as $\left( \frac{1}{2} \right)^{1/2}$. That way, we can use $(1 + x)^{1/2}$ with $x = -\frac{1}{2}$, which is in $(-1, 1)$.
 	
@@ -154,7 +154,7 @@ Therefore, the series converges when $|x| < 1$, and so the interval of convergen
 
 ### exc the Maclaurin series for $(1 + x)^{3/2}$
 	
-	Express $\displaystyle (1 + x)^{3/2}$ as a Maclaurin series and determine the interval of convergence. Then approximate $\displaystyle 1.5^{1.5}$ with a degree-3 Maclaurin polynomial and bound the error.
+	Express $$(1 + x)^{3/2}$$ as a Maclaurin series and determine the interval of convergence. Then approximate $$1.5^{1.5}$$ with a degree-3 Maclaurin polynomial and bound the error.
 	
 	**Solution:** Plugging this directly into the formula gives us
 	
@@ -204,7 +204,7 @@ As we mentioned in section 8, power series have the excellent property of being 
 
 ### ex solving a differential equation with power series
 	
-	Find a power series solution to $\displaystyle y'' = xy$.
+	Find a power series solution to $$y'' = xy$$.
 	
 	We're trying to solve for $y$ here, so let's take a generic power series $y = \sum_{n = 0}^\infty c_n x^n$. We're assuming that $y$ *has* a power series representation in the first place, which requires $y$ to be infinitely differentiable and also not be some sort of pathological case like $e^{-1/x^2}$. While very few functions actually meet these criteria, most of the ones we care about do, and so it's not too much to assume. Plus, the worst that can happen is that we figure out that no such representation exists and have to give up, so we might as well try.
 	
@@ -276,7 +276,7 @@ As we mentioned in section 8, power series have the excellent property of being 
 
 ### exc solving a differential equation with power series
 	
-	Find a power series solution to the differential equation $\displaystyle y'' = \frac{y}{x}$.
+	Find a power series solution to the differential equation $$y'' = \frac{y}{x}$$.
 
 ###
 
@@ -290,7 +290,7 @@ We've seen this application before too: power series integrate term-by-term, so 
 
 ### ex evaluating an integral with power series
 	
-	Approximate $\displaystyle \int_0^1 e^{-x^2}\,dx$ to within $.001$ of its true value.
+	Approximate $$\int_0^1 e^{-x^2}\,dx$$ to within $.001$ of its true value.
 	
 	This is a famously difficult integral --- it's usually the first example of one that isn't expressible in terms of elementary functions. In other words, there is no combination of polynomials, trig functions, exponentials, and logs whose derivative is $e^{-x^2}$. None of the main four integration techniques works here --- $u$-sub would want $u = -x^2$, but $du = -2x\,dx$ isn't present anywhere, integration by parts needs two things multiplied together to work properly, and trig sub and partial fractions both need setups that aren't present here. Despite all that, $e^{-x^2}$ has a perfectly resaonable Maclaurin series representation, and we can just integrate that. First of all, the series for $e^x$ is
 	
@@ -354,7 +354,7 @@ We've seen this application before too: power series integrate term-by-term, so 
 
 ### exc evaluating an integral with power series
 	
-	Approximate $\displaystyle \int_0^1 \frac{\sin(x)}{x}\,dx$ to within $.001$ of its true value.
+	Approximate $$\int_0^1 \frac{\sin(x)}{x}\,dx$$ to within $.001$ of its true value.
 	
 ###
 

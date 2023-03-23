@@ -14,7 +14,7 @@ What we have yet to develop are the rules analogous to the ones for derivatives.
 
 ### thm $u$-substitution
 	
-	Given an integral of the form $\displaystyle \int f(g(x))g'(x)\,dx$,
+	Given an integral of the form $$\int f(g(x))g'(x)\,dx$$,
 	
 	1. Set $u = g(x)$.
 	
@@ -36,7 +36,7 @@ This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{d
 
 ### ex $u$-sub
 	
-	Find $\displaystyle \int 6x(3x^2 + 4)^4\,dx$.
+	Find $$\int 6x(3x^2 + 4)^4\,dx$$.
 	
 	We could foil out $(3x^2 + 4)^4$, but that's much more work than is necessary. Instead, we can think of it as a composition of two functions, where the outside function is $x^4$ and the inside one is $3x^2 + 4$. Since
 	
@@ -58,7 +58,7 @@ This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{d
 
 ### exc $u$-sub
 	
-	Find $\displaystyle \int 2\sin^3(2x)\cos(2x)\,dx$.
+	Find $$\int 2\sin^3(2x)\cos(2x)\,dx$$.
 	
 	**Solution:** Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won't advance the problem forward --- if you don't see why, try it!) Then $du = 2\cos(2x)\,dx$ by the chain rule, and so the integral becomes
 	
@@ -78,7 +78,7 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 
 ### ex $u$-sub doesn't always work
 	
-	Find $\displaystyle \int 6x^2(3x^2 + 4)^4\,dx$.
+	Find $$\int 6x^2(3x^2 + 4)^4\,dx$$.
 	
 	If we try to set $u = 3x^2 + 4$ again, we get that $du = 6x\,dx$, as before. The integral then becomes
 	
@@ -104,7 +104,7 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 
 ### ex $u$-sub
 	
-	Find $\displaystyle \int_3^4 z\sqrt{z^2 - 5}\,dz$.
+	Find $$\int_3^4 z\sqrt{z^2 - 5}\,dz$$.
 	
 	When using $u$-sub on a definite integral, we need to be careful. The $3$ and $4$ are things to plug in for $z$, not $u$, so we'll need to remember to backsubstitute before plugging in the limits.
 	
@@ -140,7 +140,7 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 
 ### exc $u$-sub
 	
-	Find $\displaystyle \int 2t^2 e^{4t^3 + 3}\,dt$.
+	Find $$\int 2t^2 e^{4t^3 + 3}\,dt$$.
 	
 	**Solution:** let $u = 4t^3 + 3$. Then $du = 12t^2\,dt$, but we have $2t^2\,dt$, so we solve for $2t^2\,dt$ to get $2t^2\,dt = 6\,du$. Now we have
 	
@@ -164,9 +164,9 @@ One common type of integral involves $\sin^2(x)$ or $\cos^2(x)$ (remember that t
 	
 	For any angle $\theta$,
 	
-	1. $\displaystyle \sin^2(\theta) = \frac{1 - \cos(2\theta)}{2}$.
+	1. $$\sin^2(\theta) = \frac{1 - \cos(2\theta)}{2}$$.
 	
-	2. $\displaystyle \cos^2(\theta) = \frac{1 + \cos(2\theta)}{2}$.
+	2. $$\cos^2(\theta) = \frac{1 + \cos(2\theta)}{2}$$.
 	
 ###
 
@@ -178,7 +178,7 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 
 ### ex the half-angle formulas
 	
-	Find $\displaystyle \int 3\cos^2(x)\,dx$.
+	Find $$\int 3\cos^2(x)\,dx$$.
 	
 	First, we need to apply the half-angle formula:
 	
@@ -208,7 +208,7 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 
 ### exc the half-angle formulas
 	
-	Find $\displaystyle \int \sin^4(t)\,dt$.
+	Find $$\int \sin^4(t)\,dt$$.
 	
 	**Solution:** using the half-angle formula, we have
 	
@@ -246,7 +246,7 @@ One last type of $u$-sub problem to explore is where the substitution doesn't *q
 
 ### ex another $u$-sub
 	
-	Find $\displaystyle \int \frac{x}{\sqrt{x - 1}}\,dx$.
+	Find $$\int \frac{x}{\sqrt{x - 1}}\,dx$$.
 	
 	The complicated part here is the $\sqrt{x - 1}$, so let's try setting $u$ to be the inside function. If $u = x - 1$, then $du = dx$, and so we have
 	

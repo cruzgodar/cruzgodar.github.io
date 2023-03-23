@@ -40,7 +40,7 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 
 ### ex FTC Part I
 	
-	Find $\displaystyle \frac{d}{dx} \int_1^x \frac{1}{t^3 + t}\,dt$.
+	Find $$\frac{d}{dx} \int_1^x \frac{1}{t^3 + t}\,dt$$.
 	
 	Applying the theorem, we just take the inside function and plug in $x$ for $t$:
 	
@@ -56,7 +56,7 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 
 ### ex FTC Part I
 	
-	Find $\displaystyle \frac{d}{dx} \int_2^{\sin(x)} \frac{1}{t^3 + t}\,dt$.
+	Find $$\frac{d}{dx} \int_2^{\sin(x)} \frac{1}{t^3 + t}\,dt$$.
 	
 	This one is a little more involved. FTC Part I only tells us what to do when the upper limit is $x$, and here it's a *function* of $x$. The way to approach problems like this is to first get back to the case we understand by defining a function $F$ as follows:
 	
@@ -80,7 +80,7 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 
 ### exc FTC Part I
 	
-	Find $\displaystyle \frac{d}{dt} \int_2^{\sqrt{t}} \sin(x)\,dx$.
+	Find $$\frac{d}{dt} \int_2^{\sqrt{t}} \sin(x)\,dx$$.
 	
 	**Solution:** the roles of $t$ and $x$ are reversed from the previous exmaple. First, write $F(t) = \int_2^t \sin(x)\,dx$. We're trying to find $\frac{d}{dt} [F(\sqrt{t})]$, which by the chain rule is
 	
@@ -134,7 +134,7 @@ In other words, we've found a way to leave behind all the limits of Riemann sums
 
 ### ex FTC, Part II
 	
-	Find $\displaystyle \int_0^2 t^2\,dt$.
+	Find $$\int_0^2 t^2\,dt$$.
 	
 	In order to find the definite integral, the Fundamental Theorem tells us to first find $\int t^2\,dt$. This is a function $F(t)$ whose derivative is $t^2$ --- a good first guess is $t^3 + C$, since its derivative is $3t^2$, which is only off by a factor of $3$. Since constant multiplication factors through derivatives, we can just divide $t^3$ by $3$ to fix the issue: $F(t) = \frac{t^3}{3} + C$ has derivative $\frac{3t^2}{3} = t^2$. That's the hard part out of the way --- now we can apply the Fundamental Theorem.
 	
@@ -154,7 +154,7 @@ In other words, we've found a way to leave behind all the limits of Riemann sums
 
 ### exc FTC, Part II
 	
-	Find $\displaystyle \int_{-\pi}^\pi \sin(\theta)\,d\theta$.
+	Find $$\int_{-\pi}^\pi \sin(\theta)\,d\theta$$.
 	
 	**Solution:** first, find $\int \sin(\theta)\,d\theta = -\cos(\theta)$. We've dropped the $C$ because we're about to evaluate it:
 	
@@ -188,7 +188,7 @@ Let's wrap this section up with one more example.
 
 ### ex another definite integral
 	
-	Find $\displaystyle \int_1^9 \frac{x - 1}{\sqrt{x}}\,dx$.
+	Find $$\int_1^9 \frac{x - 1}{\sqrt{x}}\,dx$$.
 	
 	This function is too complicated to take an antiderivative directly --- I don't know a function off the top of my head whose derivative is $\frac{x - 1}{\sqrt{x}}$. But we can split the fraction over the minus sign, and each of the resulting parts is easier to handle.
 	

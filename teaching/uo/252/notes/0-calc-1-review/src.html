@@ -94,15 +94,15 @@ While the formal definition of a limit is quite intricate and often considered o
 
 ### prop basic derivative rules
 	
-	$\displaystyle \frac{d}{dx} [c \cdot f(x)] = c \cdot f'(x)$
+	$$\frac{d}{dx} [c \cdot f(x)] = c \cdot f'(x)$$
 	
-	$\displaystyle \frac{d}{dx} [f(x) + g(x)] = f'(x) + g'(x)$
+	$$\frac{d}{dx} [f(x) + g(x)] = f'(x) + g'(x)$$
 	
-	$\displaystyle \frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x)$ (the product rule)
+	$$\frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x)$$ (the product rule)
 	
-	$\displaystyle \frac{d}{dx} \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}$ (the quotient rule)
+	$$\frac{d}{dx} \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}$$ (the quotient rule)
 	
-	$\displaystyle \frac{d}{dx} [f(g(x))] = f'(g(x))g'(x)$ (the chain rule)
+	$$\frac{d}{dx} [f(g(x))] = f'(g(x))g'(x)$$ (the chain rule)
 	
 ###
 
@@ -114,7 +114,7 @@ The chain rule is a common stumbling point, so let's take a moment to work throu
 
 ### ex the chain rule
 	
-	Find $\displaystyle \frac{d}{dx} [\sin(x^3)]$.
+	Find $$\frac{d}{dx} [\sin(x^3)]$$.
 	
 	The structure of $\sin(x^3)$ is a composition: the $x^3$ is being plugged into $\sin(x)$. The chain tells us how to differentiate the entire function in terms of the derivatives of the two pieces: first, we differentiate the outer function (in our case, $\sin(x)$) and plug the inner function ($x^3$) into the result. Then we multiply that by the derivative of the inner function. In symbols, that looks like
 	
@@ -128,7 +128,7 @@ The chain rule is a common stumbling point, so let's take a moment to work throu
 
 ### exc the chain rule
 	
-	Find $\displaystyle \frac{d}{dx} \left[ \tan(x) \ln(\cos(x^2)) \right]$.
+	Find $$\frac{d}{dx} \left[ \tan(x) \ln(\cos(x^2)) \right]$$.
 	
 ###
 
@@ -140,21 +140,23 @@ Some notational quirks to remember: $\frac{d}{dx}$ means derivative with respect
 
 ### prop common derivatives
 	
-	$\displaystyle \frac{d}{dx} [0] = 0$
+	$$\frac{d}{dx} [0] = 0$$
 	
-	$\displaystyle \frac{d}{dx} [x^p] = px^{p - 1}, p \neq 0$ (the power rule)
+	$$\frac{d}{dx} [x^p] = px^{p - 1}, p \neq 0$$ (the power rule)
 	
-	$\displaystyle \frac{d}{dx} [\sin(x)] = \cos(x)$
+	$$\frac{d}{dx} [\sin(x)] = \cos(x)$$
 	
-	$\displaystyle \frac{d}{dx} [\cos(x)] = -\sin(x)$
+	$$\frac{d}{dx} [\cos(x)] = -\sin(x)$$
 	
-	$\displaystyle \frac{d}{dx} [\tan(x)] = \sec^2(x)$
+	$$\frac{d}{dx} [\tan(x)] = \sec^2(x)$$
 	
-	$\displaystyle \frac{d}{dx} [b^x] = b^x \ln(b)$
+	$$\frac{d}{dx} [\sec(x)] = \sec(x)\tan(x)$$.
 	
-	$\displaystyle \frac{d}{dx} [e^x] = e^x$
+	$$\frac{d}{dx} [b^x] = b^x \ln(b)$$
 	
-	$\displaystyle \frac{d}{dx} [\ln(x)] = \frac{1}{x}$
+	$$\frac{d}{dx} [e^x] = e^x$$
+	
+	$$\frac{d}{dx} [\ln(x)] = \frac{1}{x}$$
 	
 ###
 
@@ -194,7 +196,7 @@ This is just about everything we'll need from calculus I! The last bit is **L'H&
 
 ### ex L'H&#x00F4;pital's rule
 	
-	Find $\displaystyle \lim_{x \to \infty} \frac{x}{x^2 + 1}$.
+	Find $$\lim_{x \to \infty} \frac{x}{x^2 + 1}$$.
 	
 	Trying to treat the top and bottom separately gives us
 	
@@ -212,7 +214,7 @@ This is just about everything we'll need from calculus I! The last bit is **L'H&
 
 ### exc L'H&#x00F4;pital's rule
 	
-	Find $\displaystyle \lim_{x \to 0} \frac{\sin(x)}{x}$.
+	Find $$\lim_{x \to 0} \frac{\sin(x)}{x}$$.
 	
 ###
 
