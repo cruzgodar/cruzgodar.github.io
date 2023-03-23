@@ -1,0 +1,488 @@
+"use strict";
+
+class DoublePendulumFractal extends Applet
+{
+	resolution = 1000;
+	
+	dt = .01;
+	
+	drawn_fractal = false;
+	
+	pendulum_canvas = null;
+	
+	last_timestamp = -1;
+	
+	drawing_fractal = true;
+	
+	
+	
+	wilson_pendulum = null;
+	
+	resolution_pendulum = 2000;
+	
+	last_timestamp_pendulum = -1;
+	
+	pendulum_canvas_visible = 0;
+	
+	theta_1 = 0;
+	theta_2 = 0;
+	p_1 = 0;
+	p_2 = 0;
+	
+	frame = 0;
+	
+	initial_theta_1 = 0;
+	initial_theta_2 = 0;
+	
+	
+	
+	constructor(canvas, pendulum_canvas)
+	{
+		super(canvas);
+		
+		this.pendulum_canvas = pendulum_canvas;
+		
+		
+		
+		const frag_shader_source_init = `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			
+			
+			void main(void)
+			{
+				gl_FragColor = vec4((uv + vec2(1.0, 1.0)) / 2.0, 0.5, 0.5);
+				
+				return;
+			}
+		`;
+		
+		
+		
+		const frag_shader_source_update = `
+			precision highp float;
+			precision highp sampler2D;
+			
+			varying vec2 uv;
+			
+			uniform sampler2D u_texture;
+			
+			const float dt = .01;
+			
+			
+			
+			void main(void)
+			{
+				vec4 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0) - vec4(.5, .5, .5, .5)) * (3.14159265358 * 2.0);
+				
+				float denom = 16.0 - 9.0 * cos(state.x - state.y) * cos(state.x - state.y);
+				
+				vec4 d_state = vec4(6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / denom, 6.0 * (8.0 * state.w - 3.0 * cos(state.x - state.y) * state.z) / denom, 0.0, 0.0);
+				
+				d_state.z = -(d_state.x * d_state.y * sin(state.x - state.y) + 3.0 * sin(state.x)) / 2.0;
+				
+				d_state.w = (d_state.x * d_state.y * sin(state.x - state.y) - sin(state.y)) / 2.0;
+				
+				
+				
+				state = ((dt * d_state + state) / (3.14159265358 * 2.0)) + vec4(.5, .5, .5, .5);
+				
+				state.xy = fract(state.xy);
+				
+				gl_FragColor = state;
+			}
+		`;
+		
+		
+		
+		const frag_shader_source_draw = `
+			precision highp float;
+			precision highp sampler2D;
+			
+			varying vec2 uv;
+			
+			uniform sampler2D u_texture;
+			
+			
+			
+			vec3 hsv2rgb(vec3 c)
+			{
+				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+			}
+			
+			
+			
+			void main(void)
+			{
+				vec4 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0) - vec4(.5, .5, .5, .5));
+				
+				float h = atan(state.y, state.x) / 3.14159265258 + 1.0;
+				
+				float s = min((state.x * state.x + state.y * state.y) * 100.0, 1.0);
+				
+				float v_add = .9 * (1.0 - 4.0 * ((uv.x * uv.x) / 4.0 + (uv.y * uv.y) / 4.0));
+				
+				float v = min(sqrt(state.z * state.z + state.w * state.w) + v_add, 1.0);
+				
+				vec3 rgb = hsv2rgb(vec3(h, s, v));
+				
+				gl_FragColor = vec4(rgb, 1.0);
+			}
+		`;
+		
+		
+		
+		const options =
+		{
+			renderer: "gpu",
+			
+			shader: frag_shader_source_init,
+			
+			canvas_width: this.resolution,
+			canvas_height: this.resolution,
+			
+			
+			
+			
+			use_fullscreen: true,
+			
+			use_fullscreen_button: true,
+			
+			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
+			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+		};
+		
+		this.wilson = new Wilson(canvas, options);
+		
+		this.wilson.render.load_new_shader(frag_shader_source_update);
+		this.wilson.render.load_new_shader(frag_shader_source_draw);
+		
+		this.wilson.render.create_framebuffer_texture_pair();
+		this.wilson.render.create_framebuffer_texture_pair();
+		
+		
+		
+		const options_pendulum =
+		{
+			renderer: "cpu",
+			
+			canvas_width: this.resolution_pendulum,
+			canvas_height: this.resolution_pendulum,
+			
+			mousemove_callback: this.draw_preview_pendulum.bind(this),
+			touchmove_callback: this.draw_preview_pendulum.bind(this),
+			
+			mousedown_callback: this.start_pendulum_animation.bind(this),
+			touchend_callback: this.start_pendulum_animation.bind(this)
+		};
+		
+		this.wilson_pendulum = new Wilson(this.pendulum_canvas, options_pendulum);
+		
+		this.wilson_pendulum.ctx.lineWidth = this.resolution_pendulum / 100;
+			
+		this.wilson_pendulum.ctx.strokeStyle = "rgb(127, 0, 255)";
+		
+		this.wilson_pendulum.ctx.fillStyle = "rgb(0, 0, 0)";
+		
+		this.wilson_pendulum.draggables.container.addEventListener("mouseleave", () =>
+		{
+			if (this.pendulum_canvas_visible === 1 || this.frame < 3)
+			{
+				Page.Animate.change_opacity(this.pendulum_canvas, 0, Site.button_animation_time);
+				
+				this.pendulum_canvas_visible = 0;
+			}
+		});
+	}
+	
+	
+	
+	run(resolution)
+	{
+		this.drawn_fractal = false;
+		this.drawing_fractal = true;
+		
+		this.resolution = resolution;
+		this.wilson.change_canvas_size(this.resolution, this.resolution);
+		
+		
+		
+		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvas_width, this.wilson.canvas_height, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, null);
+		
+		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
+		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvas_width, this.wilson.canvas_height, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, null);
+		
+		
+		
+		this.wilson.gl.useProgram(this.wilson.render.shader_programs[0]);
+		
+		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
+		
+		this.wilson.render.draw_frame();
+	
+	
+		
+		window.requestAnimationFrame(this.draw_frame.bind(this));
+		
+		
+		
+		this.drawn_fractal = true;
+	}
+	
+	
+	
+	draw_frame(timestamp)
+	{
+		const time_elapsed = timestamp - this.last_timestamp;
+		
+		this.last_timestamp = timestamp;
+		
+		if (time_elapsed === 0)
+		{
+			return;
+		}
+		
+		
+		
+		this.wilson.gl.useProgram(this.wilson.render.shader_programs[1]);
+		
+		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
+		
+		this.wilson.render.draw_frame();
+		
+		
+		
+		this.wilson.gl.useProgram(this.wilson.render.shader_programs[2]);
+		
+		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
+		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
+		
+		this.wilson.render.draw_frame();
+		
+		
+		
+		//At this point, we've gone Init --> F1 --> T1 --> Update --> F2 --> T2 --> Draw. T2 is still bound, which is correct, but we cannot be bound to F2, so we bind to F1.
+		
+		this.wilson.gl.useProgram(this.wilson.render.shader_programs[1]);
+		
+		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
+		
+		this.wilson.render.draw_frame();
+		
+		
+		
+		this.wilson.gl.useProgram(this.wilson.render.shader_programs[2]);
+		
+		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
+		
+		this.wilson.render.draw_frame();
+		
+		
+		
+		if (this.drawing_fractal && !this.animation_paused)
+		{
+			window.requestAnimationFrame(this.draw_frame.bind(this));
+		}
+	}
+	
+	
+	
+	draw_preview_pendulum(x, y, x_delta, y_delta, e)
+	{
+		if (this.drawing_fractal)
+		{
+			return;
+		}
+		
+		if (this.pendulum_canvas_visible === 0)
+		{
+			this.show_pendulum_canvas_preview();
+		}
+		
+		if (this.pendulum_canvas_visible !== 2)
+		{
+			this.theta_1 = x * Math.PI;
+			this.theta_2 = y * Math.PI;
+			
+			this.p_1 = 0;
+			this.p_2 = 0;
+			
+			window.requestAnimationFrame(this.draw_frame_pendulum.bind(this));
+		}
+	}
+	
+	
+	
+	start_pendulum_animation(x, y, e)
+	{
+		if (this.pendulum_canvas_visible === 1)
+		{
+			this.initial_theta_1 = this.theta_1;
+			this.initial_theta_2 = this.theta_2;
+			
+			this.p_1 = 0;
+			this.p_2 = 0;
+			
+			this.frame = 0;
+			
+			this.show_pendulum_canvas();
+		}
+	}
+	
+	
+	
+	show_pendulum_canvas_preview()
+	{
+		if (!this.drawn_fractal)
+		{
+			return;
+		}
+		
+		this.drawing_fractal = false;
+		
+		Page.Animate.change_opacity(this.pendulum_canvas, .5, Site.button_animation_time);
+		
+		this.pendulum_canvas_visible = 1;
+	}
+	
+	show_pendulum_canvas()
+	{
+		if (!this.drawn_fractal)
+		{
+			return;
+		}
+		
+		Page.Animate.change_opacity(this.pendulum_canvas, 1, Site.button_animation_time);
+		
+		this.pendulum_canvas_visible = 2;
+		
+		window.requestAnimationFrame(this.draw_frame_pendulum.bind(this));
+	}
+	
+	hide_pendulum_drawer_canvas()
+	{
+		if (!this.drawn_fractal)
+		{
+			return;
+		}
+		
+		this.drawing_fractal = true;
+		
+		Page.Animate.change_opacity(this.pendulum_canvas, 0, Site.button_animation_time);
+		
+		this.pendulum_canvas_visible = 0;
+		
+		window.requestAnimationFrame(this.draw_frame.bind(this));
+	}
+	
+	
+	
+	draw_frame_pendulum(timestamp)
+	{	
+		const time_elapsed = timestamp - this.last_timestamp_pendulum;
+		
+		this.last_timestamp_pendulum = timestamp;
+		
+		
+		
+		if (time_elapsed === 0)
+		{
+			return;
+		}
+		
+		this.frame++;
+		
+		
+		
+		this.wilson_pendulum.ctx.fillRect(0, 0, this.resolution_pendulum, this.resolution_pendulum);
+		
+		
+		
+		const x = this.theta_1 / Math.PI;
+		const y = this.theta_2 / Math.PI;
+		
+		const z = this.p_1 / Math.PI;
+		const w = this.p_2 / Math.PI;
+		
+		const hue = Math.atan2(y, x) / Math.PI + 1;
+		const saturation = Math.min(Math.min((x*x + y*y) * 50, (1 - Math.max(Math.abs(x), Math.abs(y))) * 5), 1);
+		
+		const value_add = .9 * ((1 - this.initial_theta_1 / (2 * Math.PI)) * (1 - this.initial_theta_1 / (2 * Math.PI)) + (1 - this.initial_theta_2 / (2 * Math.PI)) * (1 - this.initial_theta_2 / (2 * Math.PI))) * 4;
+		
+		const value = Math.min(Math.pow(z*z + w*w, .5) + value_add, 1);
+		
+		const rgb = this.wilson_pendulum.utils.hsv_to_rgb(hue, saturation, value);
+		
+		this.wilson_pendulum.ctx.strokeStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+		
+		
+		
+		this.wilson_pendulum.ctx.beginPath();
+		this.wilson_pendulum.ctx.moveTo(this.resolution_pendulum / 2, this.resolution_pendulum / 2);
+		this.wilson_pendulum.ctx.lineTo(this.resolution_pendulum / 2 + this.resolution_pendulum / 6 * Math.sin(this.theta_1), this.resolution_pendulum / 2 + this.resolution_pendulum / 6 * Math.cos(this.theta_1));
+		this.wilson_pendulum.ctx.stroke();
+		
+		this.wilson_pendulum.ctx.beginPath();
+		this.wilson_pendulum.ctx.moveTo(this.resolution_pendulum / 2 + (this.resolution_pendulum / 6 - this.resolution_pendulum / 200) * Math.sin(this.theta_1), this.resolution_pendulum / 2 + (this.resolution_pendulum / 6 - this.resolution_pendulum / 200) * Math.cos(this.theta_1));
+		this.wilson_pendulum.ctx.lineTo(this.resolution_pendulum / 2 + this.resolution_pendulum / 6 * Math.sin(this.theta_1) + this.resolution_pendulum / 6 * Math.sin(this.theta_2), this.resolution_pendulum / 2 + this.resolution_pendulum / 6 * Math.cos(this.theta_1) + this.resolution_pendulum / 6 * Math.cos(this.theta_2));
+		this.wilson_pendulum.ctx.stroke();
+		
+		
+		
+		if (this.pendulum_canvas_visible === 2)
+		{
+			this.update_angles();
+			
+			window.requestAnimationFrame(this.draw_frame_pendulum.bind(this));
+		}
+	}
+	
+	
+	
+	update_angles()
+	{
+		const d_theta_1 = 6 * (2 * this.p_1 - 3 * Math.cos(this.theta_1 - this.theta_2) * this.p_2) / (16 - 9 * Math.pow(Math.cos(this.theta_1 - this.theta_2), 2));
+		
+		const d_theta_2 = 6 * (8 * this.p_2 - 3 * Math.cos(this.theta_1 - this.theta_2) * this.p_1) / (16 - 9 * Math.pow(Math.cos(this.theta_1 - this.theta_2), 2));
+		
+		const d_p_1 = -(d_theta_1 * d_theta_2 * Math.sin(this.theta_1 - this.theta_2) + 3 * Math.sin(this.theta_1)) / 2;
+		
+		const d_p_2 = (d_theta_1 * d_theta_2 * Math.sin(this.theta_1 - this.theta_2) - Math.sin(this.theta_2)) / 2;
+		
+		
+		
+		this.theta_1 += d_theta_1 * this.dt * 2.5;
+		this.theta_2 += d_theta_2 * this.dt * 2.5;
+		this.p_1 += d_p_1 * this.dt * 2.5;
+		this.p_2 += d_p_2 * this.dt * 2.5;
+		
+		
+		
+		if (this.theta_1 >= Math.PI)
+		{
+			this.theta_1 -= 2*Math.PI;
+		}
+		
+		else if (this.theta_1 < -Math.PI)
+		{
+			this.theta_1 += 2*Math.PI;
+		}
+		
+		if (this.theta_2 >= Math.PI)
+		{
+			this.theta_2 -= 2*Math.PI;
+		}
+		
+		else if (this.theta_2 < -Math.PI)
+		{
+			this.theta_2 += 2*Math.PI;
+		}
+	}
+}

@@ -14,10 +14,10 @@ $$
 
 If anything doesn't appear correctly, update your browser and then reach out if that doesn't work.
 
-Differential equations and linear algebra are two of math's most incredibly useful exports. Traditional equations, like $x^2 + x + 1 = 0$, equate functions and have numbers as solutions. Differential equations, in comparison, have *functions* as their solutions, and describe a function in terms of its derivatives. For example, $y' - y = x$ describes a function $y = y(x)$ by specifying that for any $x$, the difference between $y$ and its rate of change is the input $x$. As we'll learn in the next few sections, the solution to this DE is
+Differential equations and linear algebra are two of math's most incredibly useful exports. Traditional equations, like $t^2 + t + 1 = 0$, equate functions and have numbers as solutions. Differential equations, in comparison, have *functions* as their solutions, and describe a function in terms of its derivatives. For example, $y' - y = t$ describes a function $y = y(t)$ by specifying that at any time $t$, the difference between $y$ and its rate of change is $t$. As we'll learn in the next few sections, the solution to this DE is
 
 $$
-	y(x) = c_1e^x - x - 1
+	y(t) = c_1e^t - t - 1
 $$
 
 for any value $c_1$. Differential equations form the backbone of physics, chemistry, biology, and any other situation in which dynamical systems show up. A dynamical system is nothing more than a system in which a thing changes over time --- if that sounds remarkably generic, that's the idea! Whether it's convection currents in air, complex chemical reactions, or predator-prey population dynamics, it's often significantly easier to find a formula for a function's derivatives in terms of its current state than to find one for the function itself for every possible state. Think of the weather: trying to find some sort of formula to predict the weather at all future times is hopeless, but carefully studying how the weather at one point in time influences the weather that comes immediately after is meteorology. Once we have a DE written down, we'd like to actually solve it explicitly whenever possible, and we'll work toward that goal for the first six to seven weeks of the course.
