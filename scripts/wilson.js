@@ -1465,6 +1465,8 @@ class Wilson
 				
 				this.currently_animating = true;
 				
+				this.fullscreen_old_scroll = window.scrollY;
+				
 				
 				
 				Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time);
@@ -1511,10 +1513,6 @@ class Wilson
 					
 					
 					this.old_meta_theme_color = Site.Settings.meta_theme_color_element.getAttribute("content");
-					
-					
-					
-					this.fullscreen_old_scroll = window.scrollY;
 					
 					
 					
@@ -1627,6 +1625,13 @@ class Wilson
 				
 				
 				
+				anime({
+					targets: Site.Settings.meta_theme_color_element,
+					content: this.old_meta_theme_color,
+					duration: Site.opacity_animation_time,
+					easing: "cubicBezier(.42, 0, .58, 1)"
+				});
+				
 				Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time);
 				
 				setTimeout(() =>
@@ -1655,17 +1660,6 @@ class Wilson
 					document.removeEventListener("gesturestart", this.prevent_gestures);
 					document.removeEventListener("gesturechange", this.prevent_gestures);
 					document.removeEventListener("gestureend", this.prevent_gestures);
-					
-					anime({
-						targets: Site.Settings.meta_theme_color_element,
-						content: this.old_meta_theme_color,
-						duration: Site.opacity_animation_time,
-						easing: "cubicBezier(.42, 0, .58, 1)"
-					});
-					
-					
-					
-					window.scroll(0, this.fullscreen_old_scroll);
 					
 					
 					
@@ -1733,13 +1727,17 @@ class Wilson
 					}
 					
 					
-					
-					Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
-					
 					setTimeout(() =>
 					{
-						this.currently_animating = false;
-					}, Site.opacity_animation_time);
+						window.scroll(0, this.fullscreen_old_scroll);
+						
+						Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
+						
+						setTimeout(() =>
+						{
+							this.currently_animating = false;
+						}, Site.opacity_animation_time);
+					}, 10);
 				}, Site.opacity_animation_time);
 			}
 		},

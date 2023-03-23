@@ -153,7 +153,10 @@ Page.load = async function()
 	{
 		this.Load.Math.typeset()
 		
-		.then(this.Cards.init);
+		.then(() =>
+		{
+			setTimeout(() => this.Cards.init(), 30);
+		});
 	}
 	
 	
