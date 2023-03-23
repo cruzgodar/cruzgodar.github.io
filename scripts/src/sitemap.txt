@@ -51,6 +51,7 @@ home
 	
 	teaching
 		uo/256
+			notes/0-calc-review
 		
 		uo/253
 			notes/0-calc-2-review
