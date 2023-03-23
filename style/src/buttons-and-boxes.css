@@ -199,6 +199,8 @@
 	width: 100% !important;
 	height: fit-content;
 	
+	margin-bottom: 0 !important;
+	
 	text-align: center;
 }
 
@@ -362,6 +364,7 @@
 .slider-container p
 {
 	text-align: center;
+	margin-bottom: 0 !important;
 }
 
 .slider-container > label
