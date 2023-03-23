@@ -6,7 +6,8 @@
 	border-radius: 15px;
 	padding: 2px;
 	
-	margin-bottom: 16px;
+	margin-top: 32px;
+	margin-bottom: 32px;
 }
 
 .desmos-container
@@ -35,7 +36,7 @@
 
 .notes-image
 {
-	width: min(70vw, 70vh);
+	width: min(70vw - 32px, 70vh - 32px);
 	margin: 0 auto;
 	border-radius: 15px;
 	margin-bottom: 16px;

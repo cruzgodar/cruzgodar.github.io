@@ -35,7 +35,7 @@
 
 .wilson-applet-canvas-container
 {
-	margin-top: 5vh !important;
+	margin-top: 32px !important;
 	margin-bottom: 0 !important;
 	line-height: 0 !important;
 }
@@ -53,7 +53,7 @@
 	display: flex;
 	flex-direction: column;
 	
-	width: 100vw;
+	width: 100%;
 	
 	justify-content: space-between;
 	

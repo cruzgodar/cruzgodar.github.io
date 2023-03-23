@@ -98,7 +98,7 @@ code
 pre code.highlightable
 {
 	position: relative;
-	width: calc(70vw - 24px);
+	width: calc(70% - 24px);
 	margin: 0 auto;
 	tab-size: 4;
 	-moz-tab-size: 4;
@@ -145,7 +145,7 @@ img
 .heading-text, .section-text, .body-text, .date-text, .song-lyrics
 {
 	position: relative;
-	width: 70vw;
+	width: 70%;
 	margin: 0 auto;
 	margin-bottom: 16px;
 }
@@ -398,22 +398,17 @@ mjx-container
 {
 	.heading-text, .section-text, .body-text, .date-text, .line-break
 	{
-		width: 90vw;
+		width: 90%;
 	}
 	
 	.body-text.narrow
 	{
-		width: 80vw;
+		width: 80%;
 	}
 	
 	pre code.highlightable
 	{
-		width: 90vw;
-	}
-	
-	.line-break
-	{
-		left: 5vw;
+		width: 90%;
 	}
 	
 	.card
@@ -426,7 +421,7 @@ mjx-container
 {
 	pre code.highlightable
 	{
-		width: calc(50vw - 24px);
+		width: calc(50% - 24px);
 	}
 	
 	.card

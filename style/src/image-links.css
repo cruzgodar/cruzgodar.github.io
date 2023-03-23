@@ -15,7 +15,7 @@
 	width: 70vw;
 	margin: 0 auto;
 	
-	margin-top: 50px;
+	margin-top: 48px;
 }
 
 .image-links-double-column-container
@@ -135,41 +135,4 @@
 	{
 		width: 33.5vw !important;
 	}
-}
-
-
-
-.multicol-block
-{
-	margin-top: 10vh;
-}
-
-.image-links-double-column-container .multicol-block
-{
-	margin-top: 10vh;
-}
-
-section ~ section .image-links-double-column-container .multicol-block
-{
-	margin-top: 0;
-}
-
-.image-links-double-column-container .section-text, .image-links-double-column-container .heading-text
-{
-	width: 30.5vw;
-}
-
-.image-links-double-column-container .image-links
-{
-	width: 30.5vw;
-	
-	grid-template-columns: repeat(3, 1fr);
-	
-	grid-row-gap: 1.5vw;
-	grid-column-gap: 1.5vw;
-}
-
-.multicol-text
-{
-	width: 30.5vw;
 }

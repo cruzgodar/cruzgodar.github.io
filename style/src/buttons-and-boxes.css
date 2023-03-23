@@ -223,6 +223,9 @@
 	box-sizing: border-box;
 	-webkit-appearance: none;
 	
+	margin-left: 16px;
+	margin-right: 16px;
+	
 	color: rgb(96, 96, 96);
 	font-size: 100%;
 	
@@ -242,11 +245,16 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	
+	margin: 0 auto;
+	
+	margin-top: 32px;
 }
 
 .text-field-container p
 {
 	width: 70%;
+	margin-bottom: 0 !important;
 }
 
 
@@ -258,6 +266,8 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	
+	margin-top: 32px;
 }
 
 .slider-container > input
@@ -364,6 +374,8 @@
 .dropdown-container
 {
 	position: relative;
+	
+	margin-top: 32px;
 }
 
 select
