@@ -1,0 +1,69 @@
+# Section 1: Intro to DEs
+
+### nav-buttons
+
+
+
+You may have already seen differential equations in calculus II, but even if you have, it's probably been a while. Let's start from the beginning, and properly define the things we'll be devoting so much time to.
+
+
+
+### def differential equation
+	
+	A **differential equation**, or DE, is an equation involving a function $y(t)$, its derivatives, and the input variable $t$. We typically use $t$ instead of $x$, since the vast majority of our applications will have time as the input variable. A **solution** to a DE is a function $y(t)$ that satisfies the equation.
+	
+###
+
+
+
+For example, $y' = ty$ is a DE, and a solution is $y(t) = e^{\frac{1}{2} t^2}$. In fact, so is $y(t) = ce^{\frac{1}{2} t^2}$ for any value of $c$. To see why, we just need to slve for $y'$ and check if the equation works. We have
+
+$$
+	y'(t) &= \frac{d}{dt} \left[ ce^{\frac{1}{2} t^2}\right]
+	
+	&= ce^{\frac{1}{2} t^2} \cdot \frac{1}{2}(2t)
+	
+	&= cte^{\frac{1}{2} t^2}
+	
+	&= ty(t).
+$$
+
+It shouldn't be too surprising that we have the free parameter $c$ in our solution: when we specify a function in terms of its first derivative, finding it usually involves integrating, and integrating means writing $+C$ at some point. Here, our value of $c$ isn't being added to the function --- it's being multiplied. We'll see why momentarily, but it's a good heads-up that things won't be quite as simple as integrals in calculus II.
+
+
+
+### ex a simple DE
+	
+	A rock falling off a cliff has vertical velocity $v(t) = -10t$ after falling for $t$ seconds. Set up and solve a DE for the function $h(t)$ that gives the vertical height of the rock after $t$ seconds.
+	
+	We know from calculus I that $h'(t) = v(t)$, so our DE is $h' = -10t$. We can solve this just by integrating --- in fact, all of calculus II is really just about solving DEs of the form $y' = f(t)$. Here, we have
+	
+	$$
+		h(t) &= \int -10t\,dt
+		
+		&= -5t^2 + c.
+	$$
+	
+	We're using a lowercase $c$ instead of an uppercase one, which is typical for DE solutions --- we're going to need to put subscripts on the $c$s soon, and capital variables would get a bit unwieldy.
+	
+###
+
+
+
+### exc a simple DE
+	
+	A buoy has a fixed horizontal position but bobs up and down with waves, and its acceleration after $t$ seconds is given by $a(t) = \cos\left( \frac{t}{5} \right)$. Set up and solve a DE for the function $v(t)$ that gives the vertical velocity of the buoy after $t$ seconds.
+	
+###
+
+
+
+## Direction fields
+
+
+
+### nav-buttons
+
+
+
+<script src="/scripts/init.js"></script>
