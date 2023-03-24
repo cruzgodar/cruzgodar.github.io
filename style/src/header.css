@@ -45,7 +45,7 @@
 
 #header-logo span
 {
-	color: rgb(48, 48, 48);
+	color: rgb(0, 0, 0);
 	padding-left: 5px;
 }
 
@@ -56,7 +56,7 @@
 
 #header-logo.hover span
 {
-	color: rgb(48, 48, 48) !important;
+	color: rgb(0, 0, 0) !important;
 }
 
 
@@ -95,7 +95,7 @@
 
 #header-links a span
 {
-	color: rgb(48, 48, 48);
+	color: rgb(0, 0, 0);
 }
 
 #header-links a img
@@ -109,7 +109,7 @@
 	background-color: rgb(74.84% 93.59% 73.79%);
 	background-color: lch(90% 30 140);
 	
-	color: rgb(48, 48, 48) !important;
+	color: rgb(0, 0, 0) !important;
 }
 
 #header-applets-link.hover
@@ -117,7 +117,7 @@
 	background-color: rgb(100% 85.16% 85.31%);
 	background-color: lch(90% 35 20);
 	
-	color: rgb(48, 48, 48) !important;
+	color: rgb(0, 0, 0) !important;
 }
 
 #header-teaching-link.hover
@@ -125,7 +125,7 @@
 	background-color: rgb(96.61% 88.19% 58.38%);
 	background-color: lch(95% 35 90);
 	
-	color: rgb(48, 48, 48) !important;
+	color: rgb(0, 0, 0) !important;
 }
 
 #header-slides-link.hover
@@ -133,7 +133,7 @@
 	background-color: rgb(91.32% 86.89% 100%);
 	background-color: lch(90% 35 300);
 	
-	color: rgb(48, 48, 48) !important;
+	color: rgb(0, 0, 0) !important;
 }
 
 #header-writing-link.hover
@@ -141,7 +141,7 @@
 	background-color: rgb(80.89% 90.01% 100%);
 	background-color: lch(90% 20 255);
 	
-	color: rgb(48, 48, 48) !important;
+	color: rgb(0, 0, 0) !important;
 }
 
 #header-about-link.hover
@@ -149,10 +149,13 @@
 	background-color: rgb(88.76% 88.76% 88.76%);
 	background-color: lch(90% 0 0);
 	
-	color: rgb(48, 48, 48) !important;
+	color: rgb(0, 0, 0) !important;
 }
 
-
+:root
+{
+	--invert: 0;
+}
 
 #header-theme-button
 {
@@ -168,8 +171,6 @@
 	height: calc(100% - 22px);
 	width: fit-content;
 	
-	background-color: rgb(255, 255, 255);
-	
 	display: flex;
 	align-items: center;
 	
@@ -184,6 +185,13 @@
 #header-theme-button input
 {
 	height: 100%;
+	
+	filter: invert(var(--invert));
+}
+
+#header-theme-button.hover input
+{
+	filter: invert(0);
 }
 
 

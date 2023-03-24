@@ -176,7 +176,7 @@ Site.Settings =
 					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease, box-shadow ${Site.opacity_animation_time * 2 / 1000}s ease;
 				}
 				
-				#header-links a img
+				#header-logo img, #header-links a img
 				{
 					transition: filter ${Site.opacity_animation_time * 2 / 1000}s ease;
 				}
@@ -336,9 +336,21 @@ Site.Settings =
 			{
 				document.querySelector("#header").style.backgroundColor = "rgb(255, 255, 255)";
 				
-				document.querySelectorAll("#header-logo span, #header-links a span").forEach(element => element.style.color = "rgb(48, 48, 48)");
+				document.querySelectorAll("#header-logo span, #header-links a span").forEach(element => element.style.color = "rgb(0, 0, 0)");
 				
-				document.querySelectorAll("#header-links a img").forEach(element => element.style.filter = "invert(0)");
+				document.querySelectorAll("#header-logo img, #header-links a img").forEach(element => element.style.filter = "invert(0)");
+				
+				const root_selector = document.querySelector(":root");
+				
+				let dummy = {t: 1};
+				
+				anime({
+					targets: dummy,
+					t: 0,
+					duration: Site.opacity_animation_time * 2,
+					easing: "cubicBezier(.25, .1, .25, 1)",
+					update: () => root_selector.style.setProperty("--invert", dummy.t)
+				});
 			}
 			
 			catch(ex) {}
@@ -393,9 +405,21 @@ Site.Settings =
 			{
 				document.querySelector("#header").style.backgroundColor = "rgb(24, 24, 24)";
 				
-				document.querySelectorAll("#header-logo span, #header-links a span").forEach(element => element.style.color = "rgb(192, 192, 192)");
+				document.querySelectorAll("#header-logo span, #header-links a span").forEach(element => element.style.color = "rgb(255, 255, 255)");
 				
-				document.querySelectorAll("#header-links a img").forEach(element => element.style.filter = "invert(1)");
+				document.querySelectorAll("#header-logo img, #header-links a img").forEach(element => element.style.filter = "invert(1)");
+				
+				const root_selector = document.querySelector(":root");
+				
+				let dummy = {t: 0};
+				
+				anime({
+					targets: dummy,
+					t: 1,
+					duration: Site.opacity_animation_time * 2,
+					easing: "cubicBezier(.25, .1, .25, 1)",
+					update: () => root_selector.style.setProperty("--invert", dummy.t)
+				});
 			}
 			
 			catch(ex) {}
@@ -517,12 +541,12 @@ Site.Settings =
 			color: rgb(48, 48, 48) !important;
 		}
 		
-		#header-links a img
+		#header-logo img, #header-links a img
 		{
 			filter: invert(1);
 		}
 		
-		#header-links a.hover img
+		#header-logo.hover img, #header-links a.hover imginput
 		{
 			filter: invert(0) !important;
 		}
