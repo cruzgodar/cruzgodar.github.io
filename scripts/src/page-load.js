@@ -336,7 +336,7 @@ Page.Load =
 					
 					<a id="header-slides-link" href="/slides/">
 						<span>Slides</span>
-						<img src="/graphics/header-icons/teaching.webp"></img>
+						<img src="/graphics/header-icons/slides.webp"></img>
 					</a>
 					
 					<a id="header-writing-link" href="/writing/">

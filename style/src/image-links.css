@@ -71,11 +71,45 @@
 	width: 13.75vw !important;
 }
 
-.new-pages .image-links
+
+
+.image-link a[href="/index.html?page=%2Fgallery%2F"] img
 {
-	width: 51.25vw !important;
-	grid-template-columns: repeat(3, 1fr) !important;
+	background-color: rgb(74.84% 93.59% 73.79%);
+	background-color: lch(90% 30 140);
 }
+
+.image-link a[href="/index.html?page=%2Fapplets%2F"] img
+{
+	background-color: rgb(100% 85.16% 85.31%);
+	background-color: lch(90% 35 20);
+}
+
+.image-link a[href="/index.html?page=%2Fteaching%2F"] img
+{
+	background-color: rgb(96.61% 88.19% 58.38%);
+	background-color: lch(95% 35 90);
+}
+
+.image-link a[href="/index.html?page=%2Fslides%2F"] img
+{
+	background-color: rgb(91.32% 86.89% 100%);
+	background-color: lch(90% 35 300);
+}
+
+.image-link a[href="/index.html?page=%2Fwriting%2F"] img
+{
+	background-color: rgb(80.89% 90.01% 100%);
+	background-color: lch(90% 20 255);
+}
+
+.image-link a[href="/index.html?page=%2Fabout%2F"] img
+{
+	background-color: rgb(88.76% 88.76% 88.76%);
+	background-color: lch(90% 0 0);
+}
+
+
 
 /* Compact layout: reduce to two images per row. */
 @media (max-width: 700px)
