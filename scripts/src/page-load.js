@@ -314,20 +314,44 @@ Page.Load =
 		document.body.firstChild.insertAdjacentHTML("beforebegin", `
 			<div id="header">
 				<a id="header-logo" href="/home/">
-					<img src="/graphics/general-icons/logo.png"></img>
+					<img src="/graphics/header-icons/logo.webp"></img>
 					<span>Cruz Godar</span>
 				</a>
 				
 				<div id="header-links">
-					<a id="header-gallery-link" href="/gallery/">Gallery</a>
-					<a id="header-applets-link" href="/applets/">Applets</a>
-					<a id="header-teaching-link" href="/teaching/">Teaching</a>
-					<a id="header-writing-link" href="/writing/">Writing</a>
-					<a id="header-about-link" href="/about/">About</a>
+					<a id="header-gallery-link" href="/gallery/">
+						<span>Gallery</span>
+						<img src="/graphics/header-icons/gallery.webp"></img>
+					</a>
+					
+					<a id="header-applets-link" href="/applets/">
+						<span>Applets</span>
+						<img src="/graphics/header-icons/applets.webp"></img>
+					</a>
+					
+					<a id="header-teaching-link" href="/teaching/">
+						<span>Teaching</span>
+						<img src="/graphics/header-icons/teaching.webp"></img>
+					</a>
+					
+					<a id="header-slides-link" href="/slides/">
+						<span>Slides</span>
+						<img src="/graphics/header-icons/teaching.webp"></img>
+					</a>
+					
+					<a id="header-writing-link" href="/writing/">
+						<span>Writing</span>
+						<img src="/graphics/header-icons/writing.webp"></img>
+					</a>
+					
+					<a id="header-about-link" href="/about/">
+						<span>About</span>
+						<img src="/graphics/header-icons/about.webp"></img>
+					</a>
 				</div>
 				
 				<div id="header-theme-button" class="${Site.Settings.url_vars["theme"] === 1 ? "active" : ""}">
-					<input type="image" src="/graphics/general-icons/moon.png">
+					<input type="image" src="/graphics/header-icons/moon.webp">
 				</div>
 			</div>
 		`);

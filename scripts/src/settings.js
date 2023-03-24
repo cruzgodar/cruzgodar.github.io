@@ -175,6 +175,11 @@ Site.Settings =
 				{
 					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease, box-shadow ${Site.opacity_animation_time * 2 / 1000}s ease;
 				}
+				
+				#header-links a img
+				{
+					transition: filter ${Site.opacity_animation_time * 2 / 1000}s ease;
+				}
 			`);
 		}
 		
@@ -331,7 +336,9 @@ Site.Settings =
 			{
 				document.querySelector("#header").style.backgroundColor = "rgb(255, 255, 255)";
 				
-				document.querySelectorAll("#header-logo span, #header-links a").forEach(element => element.style.color = "rgb(48, 48, 48)");
+				document.querySelectorAll("#header-logo span, #header-links a span").forEach(element => element.style.color = "rgb(48, 48, 48)");
+				
+				document.querySelectorAll("#header-links a img").forEach(element => element.style.filter = "invert(0)");
 			}
 			
 			catch(ex) {}
@@ -386,7 +393,9 @@ Site.Settings =
 			{
 				document.querySelector("#header").style.backgroundColor = "rgb(24, 24, 24)";
 				
-				document.querySelectorAll("#header-logo span, #header-links a").forEach(element => element.style.color = "rgb(192, 192, 192)");
+				document.querySelectorAll("#header-logo span, #header-links a span").forEach(element => element.style.color = "rgb(192, 192, 192)");
+				
+				document.querySelectorAll("#header-links a img").forEach(element => element.style.filter = "invert(1)");
 			}
 			
 			catch(ex) {}
@@ -498,14 +507,24 @@ Site.Settings =
 			background-color: rgb(24, 24, 24);
 		}
 		
-		#header-logo span, #header-links a
+		#header-logo span, #header-links a span
 		{
 			color: rgb(172, 172, 172);
 		}
 		
-		#header-logo.hover span, #header-links a.hover
+		#header-logo.hover span, #header-links a.hover span
 		{
 			color: rgb(48, 48, 48) !important;
+		}
+		
+		#header-links a img
+		{
+			filter: invert(1);
+		}
+		
+		#header-links a.hover img
+		{
+			filter: invert(0) !important;
 		}
 		
 		
