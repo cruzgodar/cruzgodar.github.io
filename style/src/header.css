@@ -213,12 +213,6 @@
 		padding: 2.5px;
 		height: calc(100% - 15px);
 	}
-	
-	#header-theme-button
-	{
-		padding: 5px;
-		height: calc(100% - 20px);
-	}
 }
 
 @media (max-width: 300px)
