@@ -3,7 +3,7 @@
 	width: calc(100% - 8px) !important;
 	height: auto;
 	
-	border: 2px solid rgb(127, 127, 127);
+	border: 2px solid rgb(96, 96, 96);
 	border-radius: 15px;
 	padding: 2px;
 	
@@ -65,14 +65,29 @@
 	width: 80%;
 }
 
+.desmos-border .output-canvas
+{
+	border: none;
+	padding: 0;
+	border-radius: 11px;
+	width: 100% !important;
+}
+
+.desmos-border .wilson-applet-canvas-container
+{
+	margin-top: 0 !important;
+}
+
+.desmos-border .wilson-enter-fullscreen-button
+{
+	right: 4px;
+	top: 4px;
+}
+
 
 
 @media (min-aspect-ratio: 1/1)
 {
-	.output-canvas
-	{
-		width: calc(100% - 8px);
-	}
 	
 	#canvas-landscape
 	{

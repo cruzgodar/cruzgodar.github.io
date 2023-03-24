@@ -557,7 +557,7 @@ Site.Settings =
 			background-color: rgb(172, 172, 172);
 		}
 		
-		.text-button, .checkbox-container, #output-canvas
+		.text-button, .checkbox-container, .output-canvas, .desmos-border
 		{
 			border-color: rgb(172, 172, 172);
 		}
