@@ -108,7 +108,7 @@
 	
 	await Site.load_applet("vector-fields");
 	
-	const output_canvas = Page.element.querySelector("#output-canvas");
+	const output_canvas = Page.element.querySelector("#vector-field-canvas");
 	
 	let shown_vector_field = false;
 	
