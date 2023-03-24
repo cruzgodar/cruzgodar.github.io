@@ -19,7 +19,7 @@ for (let i = 0; i < lines.length; i++)
 
 
 
-let sitemap = `Site.sitemap =\n{${get_page_string("/home/", "", ["/gallery/", "/applets/", "/teaching/", "/writing/", "/about/", "/404/", "/debug/"])}`;
+let sitemap = `Site.sitemap =\n{${get_page_string("/home/", "", ["/gallery/", "/applets/", "/teaching/", "/slides/", "/writing/", "/about/", "/404/", "/debug/"])}`;
 
 lines[0] = "/home/";
 

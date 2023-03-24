@@ -86,7 +86,7 @@ Site.base_animation_time = 250;
 Site.navigation_animation_distance_vertical = Math.min(window.innerHeight / 20, 25);
 Site.navigation_animation_distance_horizontal = Math.min(window.innerWidth / 20, 25);
 	
-	
+Site.showing_presentation = false;	
 
 Site.applet_process_id = 0;
 
@@ -112,9 +112,26 @@ DESMOS_BLACK = "#000000";
 //Redirects to the chosen page and sets up all the miscellaneous things that make the site work.
 Site.load = async function(url)
 {
+	if (Site.sitemap["/slides/"].children.includes(Page.url))
+	{
+		if (DEBUG)
+		{
+			console.log("Showing a presentation!");
+		}
+		
+		Site.showing_presentation = true;
+	}
+	
+	
+	
 	Page.element = document.createElement("div");
 	
 	Page.element.classList.add("page");
+	
+	if (Site.showing_presentation)
+	{
+		Page.element.style.display = "none";
+	}
 	
 	document.body.insertBefore(Page.element, document.body.firstChild);
 	
@@ -308,7 +325,10 @@ Site.load = async function(url)
 	
 	Site.Settings.set_up();
 	
-	Page.Load.add_header();
+	if (!Site.showing_presentation)
+	{
+		Page.Load.add_header();
+	}
 	
 	
 	

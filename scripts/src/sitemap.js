@@ -9,6 +9,7 @@ Site.sitemap =
 			"/gallery/",
 			"/applets/",
 			"/teaching/",
+			"/slides/",
 			"/writing/",
 			"/about/",
 			"/404/",
@@ -823,6 +824,31 @@ Site.sitemap =
 	"/teaching/uo/105/":
 	{
 		parent: "/teaching/",
+		
+		children: []
+	},
+	
+	"/slides/":
+	{
+		parent: "/home/",
+		
+		children:
+		[
+			"/slides/oral-exam/",
+			"/projects/lapsa/",
+		]
+	},
+		
+	"/slides/oral-exam/":
+	{
+		parent: "/slides/",
+		
+		children: []
+	},
+	
+	"/projects/lapsa/":
+	{
+		parent: "/slides/",
 		
 		children: []
 	},

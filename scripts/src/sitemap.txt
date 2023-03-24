@@ -108,6 +108,10 @@ home
 		uo/111
 		uo/105
 	
+	slides
+		oral-exam
+		/projects/lapsa
+	
 	writing
 		caracore
 		caligo

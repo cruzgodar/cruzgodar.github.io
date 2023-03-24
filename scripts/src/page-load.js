@@ -1002,7 +1002,7 @@ Page.Load =
 					return;
 				}
 				
-				if (href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data")
+				if (href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data" && !(link.getAttribute("data-in-new-tab") == 1))
 				{
 					link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + url_vars_suffix);
 					

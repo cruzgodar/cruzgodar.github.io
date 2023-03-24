@@ -60,7 +60,7 @@
 		<!-- Single-line page elements -->
 		<dict>
 			<key>match</key>
-			<string>^\t*?(###) (banner|canvas|center|checkbox|desmos|nav\-buttons|wilson)(.*?)$</string>
+			<string>^\t*?(###) (banner|canvas|checkbox|desmos|nav\-buttons|wilson)(.*?)$</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -79,6 +79,35 @@
 					<string>string</string>
 				</dict>
 			</dict>
+		</dict>
+		
+		
+		<!-- Centered-if-needed text -->
+		<dict>
+			<key>begin</key>
+			<string>^\t*?(###) (center)</string>
+			<key>end</key>
+			<string>$</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>$self</string>
+				</dict>
+			</array>
 		</dict>
 		
 		
