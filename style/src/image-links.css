@@ -73,37 +73,37 @@
 
 
 
-.image-link a[href="/index.html?page=%2Fgallery%2F"] img, .image-link a[href="/index.html?page=%2Fgallery%2F&theme=1"] img
+img[src="/gallery/cover.webp"]
 {
 	background-color: rgb(74.84% 93.59% 73.79%);
 	background-color: lch(90% 30 140);
 }
 
-.image-link a[href="/index.html?page=%2Fapplets%2F"] img, .image-link a[href="/index.html?page=%2Fapplets%2F&theme=1"] img
+img[src="/applets/cover.webp"]
 {
 	background-color: rgb(100% 85.16% 85.31%);
 	background-color: lch(90% 35 20);
 }
 
-.image-link a[href="/index.html?page=%2Fteaching%2F"] img, .image-link a[href="/index.html?page=%2Fteaching%2F&theme=1"] img
+img[src="/teaching/cover.webp"]
 {
 	background-color: rgb(96.61% 88.19% 58.38%);
 	background-color: lch(95% 35 90);
 }
 
-.image-link a[href="/index.html?page=%2Fslides%2F"] img, .image-link a[href="/index.html?page=%2Fslides%2F&theme=1"] img
+img[src="/slides/cover.webp"]
 {
 	background-color: rgb(91.32% 86.89% 100%);
 	background-color: lch(90% 35 300);
 }
 
-.image-link a[href="/index.html?page=%2Fwriting%2F"] img, .image-link a[href="/index.html?page=%2Fwriting%2F&theme=1"] img
+img[src="/writing/cover.webp"]
 {
 	background-color: rgb(80.89% 90.01% 100%);
 	background-color: lch(90% 20 255);
 }
 
-.image-link a[href="/index.html?page=%2Fabout%2F"] img, .image-link a[href="/index.html?page=%2Fabout%2F&theme=1"] img
+img[src="/about/cover.webp"]
 {
 	background-color: rgb(88.76% 88.76% 88.76%);
 	background-color: lch(90% 0 0);

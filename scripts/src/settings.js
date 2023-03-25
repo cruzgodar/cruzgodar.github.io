@@ -238,6 +238,8 @@ Site.Settings =
 		else
 		{
 			this.meta_theme_color_element.setAttribute("content", this.url_vars["theme"] === 1 ? "#181818" : "#ffffff");
+			
+			document.querySelector(":root").style.setProperty("--invert", this.url_vars["theme"] === 1 ? 1 : 0);
 		}
 		
 		
@@ -533,12 +535,12 @@ Site.Settings =
 		
 		#header-logo span, #header-links a span
 		{
-			color: rgb(172, 172, 172);
+			color: rgb(255, 255, 255);
 		}
 		
 		#header-logo.hover span, #header-links a.hover span
 		{
-			color: rgb(48, 48, 48) !important;
+			color: rgb(0, 0, 0) !important;
 		}
 		
 		#header-logo img, #header-links a img

@@ -853,6 +853,13 @@ Site.sitemap =
 		children: []
 	},
 	
+	"//":
+	{
+		parent: "/home/",
+		
+		children: []
+	},
+	
 	"/writing/":
 	{
 		parent: "/home/",

@@ -29,6 +29,15 @@ const components =
 		
 		else
 		{
+			let in_new_tab = false;
+				
+			if (args[1] === "t")
+			{
+				in_new_tab = true;
+				
+				args.splice(1, 1);
+			}
+			
 			let file_path = args[0];
 			
 			if (file_path[0] !== "/")
@@ -42,7 +51,7 @@ const components =
 			
 			return `
 				<div class="image-link">
-					<a href="${file_path}" tabindex="-1">
+					<a href="${file_path}" data-in-new-tab="${in_new_tab ? 1 : 0}" tabindex="-1">
 						<img class="check-webp" src="/graphics/general-icons/placeholder.png" data-image-id="${id}" data-src="${src}" alt="${subtext}" tabindex="1"></img>
 					</a>
 					
