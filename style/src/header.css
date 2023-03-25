@@ -115,7 +115,7 @@
 #header-applets-link.hover
 {
 	background-color: rgb(100% 77.37% 79.36%);
-	background-color: lch(85% 40 15);
+	background-color: lch(90% 40 15);
 	
 	color: rgb(0, 0, 0) !important;
 }
