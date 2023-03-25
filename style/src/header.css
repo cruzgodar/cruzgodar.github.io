@@ -114,8 +114,8 @@
 
 #header-applets-link.hover
 {
-	background-color: rgb(100% 77.37% 79.36%);
-	background-color: lch(90% 40 15);
+	background-color: rgb(100% 81.25% 82.79%);
+	background-color: lch(87.5% 32.5 15);
 	
 	color: rgb(0, 0, 0) !important;
 }
@@ -131,7 +131,7 @@
 #header-slides-link.hover
 {
 	background-color: rgb(91.32% 86.89% 100%);
-	background-color: lch(90% 35 300);
+	background-color: lch(90% 32.5 300);
 	
 	color: rgb(0, 0, 0) !important;
 }
