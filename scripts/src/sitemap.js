@@ -411,10 +411,18 @@ Site.sitemap =
 		children:
 		[
 			"/teaching/uo/256/notes/0-calc-review/",
+			"/teaching/uo/256/notes/1-intro-to-des/",
 		]
 	},
 		
 	"/teaching/uo/256/notes/0-calc-review/":
+	{
+		parent: "/teaching/uo/256/",
+		
+		children: []
+	},
+	
+	"/teaching/uo/256/notes/1-intro-to-des/":
 	{
 		parent: "/teaching/uo/256/",
 		

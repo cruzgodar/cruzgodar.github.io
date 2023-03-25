@@ -1,99 +1,42 @@
-!function()
+!async function()
 {
 	Page.Load.get_desmos_data = () =>
 	{
 		const data =
 		{
-			"test-graph":
-			{
-				bounds: {left: -1, right: 3, bottom: -1, top: 3},
-				
-				expressions:
-				[
-					{latex: String.raw`f(x) = x^3 - 2x^2 + 2`, color: DESMOS_PURPLE},
-					{latex: String.raw`a = 0`},
-					{latex: String.raw`b = 2`},
-					
-					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: DESMOS_PURPLE, secret: true}
-				]
-			},
-			
-			
-			
-			"limit-example":
-			{
-				bounds: {left: -20, right: 20, bottom: -2, top: 2},
-				
-				expressions:
-				[
-					{latex: String.raw`f(x) = \frac{\sin(x)}{x}`, color: DESMOS_BLUE},
-					{latex: String.raw`(0, 1)`, color: DESMOS_BLUE, pointStyle: "OPEN"}
-				]
-			},
-			
-			
-			
-			"secant-line-example":
-			{
-				bounds: {left: -2.5, right: 2.5, bottom: -1, top: 4},
-				
-				expressions:
-				[
-					{latex: String.raw`f(x) = x^2`, color: DESMOS_PURPLE},
-					{latex: String.raw`a = 1`},
-					{latex: String.raw`h = 0.1`},
-					{latex: String.raw`m = \frac{f(a + h) - f(a)}{h}`},
-					
-					{latex: String.raw`(a, f(a))`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`(a + h, f(a + h))`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`y - f(a) = m(x - a)`, color: DESMOS_BLUE, secret: true}
-				]
-			},
-			
-			
-			
-			"definite-integral-example":
-			{
-				bounds: {left: -5, right: 5, bottom: -100, top: 100},
-				
-				expressions:
-				[
-					{latex: String.raw`f(x) = x^3`, color: DESMOS_BLUE},
-					{latex: String.raw`a = -2`},
-					{latex: String.raw`b = 4`},
-					{latex: String.raw`\int_a^b f(x)\ dx`},
-					
-					{latex: String.raw`(a, f(a))`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`(b, f(b))`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: DESMOS_BLUE, secret: true}
-				]
-			},
-			
-			
-			
-			"u-sub-example":
+			"direction-field":
 			{
 				bounds: {left: -5, right: 5, bottom: -5, top: 5},
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x\sin(x^2)`, color: DESMOS_PURPLE},
-					{latex: String.raw`F(x) = \int_0^x f(t)\ dt`, hidden: true},
-					{latex: String.raw`F(\sqrt{\pi}) - F(0)`},
-					
-					
-					{latex: String.raw`a = 0`, secret: true},
-					{latex: String.raw`b = \sqrt{\pi}`, secret: true},
-					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: DESMOS_PURPLE, secret: true}
+					{latex: String.raw`f(t, y) = \frac{\sin(y)}{t^2 + 1}`},
+					{latex: String.raw`y(t) = 2\arccot(e^{c - \arctan(t)})`, color: DESMOS_BLUE},
+					{latex: String.raw`c = 0`, sliderBounds: {min: -5, max: 5}},
+					{latex: String.raw`n = 10`, sliderBounds: {min: 1, max: 20, step: 1}},
+					{latex: String.raw`I = [0, 1, ..., (2n + 1)^2 - 1]`, secret: true},
+					{latex: String.raw`A = [-n, -n + 1, ..., n]`, secret: true},
+					{latex: String.raw`X = A[\mod(I, 2n + 1) + 1]`, secret: true},
+					{latex: String.raw`Y = X[\floor(I / (2n + 1)) + 1]`, secret: true},
+					{latex: String.raw`f(X, Y)(x - X) + Y \{\left|x - X\right| \leq \frac{.3}{\sqrt{1 + f(X, Y)^2}}\}`, color: DESMOS_PURPLE, secret: true},
 				]
-			}
+			},
+			
+			"direction-field-2":
+			{
+				bounds: {left: -10, right: 10, bottom: -10, top: 10},
+				
+				expressions:
+				[
+					{latex: String.raw`f(t, y) = \frac{1}{50}(y^2 - 4)\left|y - 4\right|(t - 3)`},
+					{latex: String.raw`n = 10`, sliderBounds: {min: 1, max: 20, step: 1}},
+					{latex: String.raw`I = [0, 1, ..., (2n + 1)^2 - 1]`, secret: true},
+					{latex: String.raw`A = [-n, -n + 1, ..., n]`, secret: true},
+					{latex: String.raw`X = A[\mod(I, 2n + 1) + 1]`, secret: true},
+					{latex: String.raw`Y = X[\floor(I / (2n + 1)) + 1]`, secret: true},
+					{latex: String.raw`f(X, Y)(x - X) + Y \{\left|x - X\right| \leq \frac{.3}{\sqrt{1 + f(X, Y)^2}}\}`, color: DESMOS_PURPLE, secret: true},
+				]
+			},
 		};
 		
 		return data;
@@ -104,4 +47,18 @@
 	
 	
 	Page.show();
+	
+	await Site.load_applet("vector-fields");
+	
+	const output_canvas = Page.element.querySelector("#vector-field-canvas");
+	
+	const applet = new VectorField(output_canvas);
+	
+	applet.load_promise.then(() =>
+	{
+		applet.run("(1, sin(y) / (x*x + 1.0))", 500, 5000, .0075, 0, 0, 1.3219);
+		applet.pause();
+	});
+	
+	Site.pause_applet_when_offscreen(applet);
 }()
