@@ -951,6 +951,8 @@ const lapsa_options =
 						animation_time = duration;
 						
 						await run_algorithm("sulzgruber_inverse", 0);
+						
+						need_download = true;
 					}
 					
 					else

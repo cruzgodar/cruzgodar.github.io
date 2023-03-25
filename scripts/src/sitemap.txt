@@ -110,7 +110,7 @@ home
 	
 	slides
 		oral-exam
-		/projects/lapsa
+		lapsa
 	
 	writing
 		caracore

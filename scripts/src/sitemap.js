@@ -835,7 +835,7 @@ Site.sitemap =
 		children:
 		[
 			"/slides/oral-exam/",
-			"/projects/lapsa/",
+			"/slides/lapsa/",
 		]
 	},
 		
@@ -846,7 +846,7 @@ Site.sitemap =
 		children: []
 	},
 	
-	"/projects/lapsa/":
+	"/slides/lapsa/":
 	{
 		parent: "/slides/",
 		

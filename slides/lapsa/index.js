@@ -2,7 +2,7 @@
 {
 	const options =
 	{
-		shelfIconPaths: ["../icons/up-2.png", "../icons/up-1.png", "../icons/table.png", "../icons/down-1.png", "../icons/down-2.png"],
+		shelfIconPaths: ["/graphics/lapsa-icons/up-2.png", "/graphics/lapsa-icons/up-1.png", "/graphics/lapsa-icons/table.png", "/graphics/lapsa-icons/down-1.png", "/graphics/lapsa-icons/down-2.png"],
 		
 		builds:
 		{
