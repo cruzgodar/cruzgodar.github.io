@@ -274,7 +274,7 @@ Page.Components =
 			.replaceAll(/\[ASTERISK\]/g, "*")
 			.replaceAll(/\[BACKTICK\]/g, "`")
 			.replaceAll(/\[DOLLARSIGN\]/g, "\\$")
-			.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>/g, (match, $1) => `<span class="tex-holder" data-source-tex="${$1}">\$${$1}\$</span>`);
+			.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>/g, (match, $1) => `<span class="tex-holder" data-source-tex="${$1.replaceAll(/\\displaystyle\s*/g, "")}">\$${$1}\$</span>`);
 		},
 		
 		
