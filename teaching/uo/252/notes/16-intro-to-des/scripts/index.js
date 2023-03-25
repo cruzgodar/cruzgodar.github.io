@@ -104,26 +104,17 @@
 	
 	Page.show();
 	
-	
-	
 	await Site.load_applet("vector-fields");
 	
 	const output_canvas = Page.element.querySelector("#vector-field-canvas");
 	
-	let shown_vector_field = false;
+	const applet = new VectorField(output_canvas);
 	
-	function on_scroll()
+	applet.load_promise.then(() =>
 	{
-		if (!shown_vector_field && output_canvas.getBoundingClientRect().top < window.innerHeight)
-		{
-			shown_vector_field = true;
-			
-			const applet = new VectorField(output_canvas);
-			
-			applet.load_promise.then(() => applet.run("(1, sin(y) / (x*x + 1.0))", 500, 5000, .0075, 0, 0, 1.3219));
-		}
-	}
+		applet.run("(1, sin(y) / (x*x + 1.0))", 500, 5000, .0075, 0, 0, 1.3219);
+		applet.pause();
+	});
 	
-	window.addEventListener("scroll", on_scroll);
-	Page.temporary_handlers["scroll"].push(on_scroll);
+	Site.pause_applet_when_offscreen(applet);
 }()

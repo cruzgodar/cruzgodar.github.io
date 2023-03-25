@@ -25,6 +25,20 @@ class Applet
 	
 	
 	
+	pause()
+	{
+		this.animation_paused = true;
+	}
+	
+	
+	
+	resume()
+	{
+		this.animation_paused = false;
+	}
+	
+	
+	
 	destroy()
 	{
 		this.animation_paused = true;
@@ -66,9 +80,13 @@ class Applet
 	}
 }
 
+
+
 Page.current_applets = [];
 
 Site.loaded_applets = [];
+
+
 
 Site.load_applet = function(id)
 {
@@ -96,4 +114,29 @@ Site.load_applet = function(id)
 		
 		resolve();
 	});
+};
+
+
+
+Site.pause_applet_when_offscreen = function(applet)
+{
+	function on_scroll()
+	{
+		const rect = applet.canvas.getBoundingClientRect(); 
+		const top = rect.top;
+		const height = rect.height;
+		
+		if (top >= -height && top < window.innerHeight)
+		{
+			applet.resume();
+		}
+		
+		else
+		{
+			applet.pause();
+		}
+	}
+	
+	window.addEventListener("scroll", on_scroll);
+	applet.handlers.push([window, "scroll", on_scroll]);
 };

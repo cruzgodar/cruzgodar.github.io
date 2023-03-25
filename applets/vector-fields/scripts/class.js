@@ -507,11 +507,20 @@ class VectorField extends Applet
 	
 	
 	
+	resume()
+	{
+		this.animation_paused = false;
+		
+		window.requestAnimationFrame(this.draw_frame.bind(this));
+	}
+	
+	
+	
 	draw_frame(timestamp)
 	{
 		//Wrapping everything in a try block and eating the occasional error is pretty gross, but it's actually a decent solution: everything is fine unless the user resizes the window faster than the screen refresh rate, meaning we access out of bounds in the middle of this function. We can fix that by just restarting whenever it happens.
-		//try
-		//{
+		try
+		{
 			const time_elapsed = timestamp - this.last_timestamp;
 			
 			this.last_timestamp = timestamp;
@@ -655,15 +664,16 @@ class VectorField extends Applet
 			
 			if (!this.animation_paused)
 			{
+				console.log("hi!");
+				
 				window.requestAnimationFrame(this.draw_frame.bind(this));
 			}
-		//}
-		/*
+		}
+		
 		catch(ex)
 		{
 			this.generate_new_field();
 		}
-		*/
 	}
 	
 	
