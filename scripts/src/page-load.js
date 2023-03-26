@@ -541,55 +541,58 @@ Page.Load =
 			
 			Page.desmos_graphs = {};
 			
-			
-			
-			const data = this.get_desmos_data();
-			
-			for (let key in data)
+			try
 			{
-				data[key].expressions.forEach(expression =>
+				const data = this.get_desmos_data();
+				
+				for (let key in data)
 				{
-					expression.latex = expression.latex.replace(/\(/g, String.raw`\left(`);
-					expression.latex = expression.latex.replace(/\)/g, String.raw`\right)`);
+					data[key].expressions.forEach(expression =>
+					{
+						expression.latex = expression.latex.replace(/\(/g, String.raw`\left(`);
+						expression.latex = expression.latex.replace(/\)/g, String.raw`\right)`);
+						
+						expression.latex = expression.latex.replace(/\[/g, String.raw`\left[`);
+						expression.latex = expression.latex.replace(/\]/g, String.raw`\right]`);
+					});
+				}
+				
+				Page.element.querySelectorAll(".desmos-container").forEach(element =>
+				{
+					const options = {
+						keypad: false,
+						settingsMenu: false,
+						zoomButtons: false,
+						showResetButtonOnGraphpaper: true,
+						border: false,
+						expressionsCollapsed: true,
+						invertedColors: dark,
+						
+						xAxisMinorSubdivisions: 1,
+						yAxisMinorSubdivisions: 1
+					};
 					
-					expression.latex = expression.latex.replace(/\[/g, String.raw`\left[`);
-					expression.latex = expression.latex.replace(/\]/g, String.raw`\right]`);
+					if (data[element.id].options !== undefined)
+					{
+						for (let key in data[element.id].options)
+						{
+							options[key] = data[element.id].options[key];
+						}
+					}
+					
+					
+					
+					Page.desmos_graphs[element.id] = Desmos.GraphingCalculator(element, options);
+					
+					Page.desmos_graphs[element.id].setMathBounds(data[element.id].bounds);
+					
+					Page.desmos_graphs[element.id].setExpressions(data[element.id].expressions);
+					
+					Page.desmos_graphs[element.id].setDefaultState(Page.desmos_graphs[element.id].getState());
 				});
 			}
 			
-			Page.element.querySelectorAll(".desmos-container").forEach(element =>
-			{
-				const options = {
-					keypad: false,
-					settingsMenu: false,
-					zoomButtons: false,
-					showResetButtonOnGraphpaper: true,
-					border: false,
-					expressionsCollapsed: true,
-					invertedColors: dark,
-					
-					xAxisMinorSubdivisions: 1,
-					yAxisMinorSubdivisions: 1
-				};
-				
-				if (data[element.id].options !== undefined)
-				{
-					for (let key in data[element.id].options)
-					{
-						options[key] = data[element.id].options[key];
-					}
-				}
-				
-				
-				
-				Page.desmos_graphs[element.id] = Desmos.GraphingCalculator(element, options);
-				
-				Page.desmos_graphs[element.id].setMathBounds(data[element.id].bounds);
-				
-				Page.desmos_graphs[element.id].setExpressions(data[element.id].expressions);
-				
-				Page.desmos_graphs[element.id].setDefaultState(Page.desmos_graphs[element.id].getState());
-			});
+			catch(ex) {}
 			
 			resolve();
 		});	

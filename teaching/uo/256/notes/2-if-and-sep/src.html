@@ -1,0 +1,238 @@
+# Section 2: Integrating Factors and Separability
+
+### nav-buttons
+
+
+
+With the initial definitions out of the way, let's get starting actually solving some DEs. We'll stick to first-order DEs for the next few sections, which means the only derivative in the equation will be $y'$. If we also narrow our attention exclusively to linear DEs, the problems become simple enough that we can develop a general solving method.
+
+
+
+## Integrating Factors
+
+At first glance, our first solving method can seem like some sort of black magic: we'll take a first-order linear DE, multiply both sides by something seemingly random, and then the equation will collapse into something much simpler. Let's first see it in action in an example, and then we'll dig into the specifics.
+
+
+
+### ex an integrating factor
+	
+	Solve $y' + ty = 1$, given $y(0) = 3$.
+	
+	It's worth pointing out why we can't just solve this directly: to get rid of the derivative on $y$, we'd like to integrate, but we have to integrate $dt$, and solving for $y'$ puts it in terms of $t$ *and* $y$, ruining our chances of integrating. Instead, let's take the (bizarre) step of multiplying both sides by $e^{t^2 / 2}$, which gives us
+	
+	$$
+		e^{t^2 / 2}y' + te^{t^2 / 2}y = te^{t^2 / 2}.
+	$$
+	
+	Now let's take a close look at the left side of the equation. The derivative of $e^{t^2 / 2}$ is
+	
+	$$
+		\frac{d}{dt} \left[ e^{t^2 / 2} \right] = te^{t^2 / 2},
+	$$
+	
+	so if we define $\mu(t) = e^{t^2 / 2}$ to save space, then we can rewrite the DE as
+	
+	$$
+		\mu(t)y'(t) + \mu'(t)y(t) = t\mu(t).
+	$$
+	
+	It's true that the right side is also equal to $\mu'(t)$, but since that won't end up being the case in general, we'll leave it as $t\mu(t)$ here. Now it's time for a step seemingly out of nowhere: the left side of the DE looks like a derivative that came from the product rule! Specifically, we can rewrite it as
+	
+	$$
+		\frac{d}{dt} \left[ \mu(t)y(t) \right] = t\mu(t),
+	$$
+	
+	and since everything is now a function of $t$, we can integrate both sides $dt$ to get
+	
+	$$
+		\mu(t)y(t) &= \int t\mu(t)\,dt
+		
+		&= \int te^{t^2 / 2}\,dt.
+	$$
+	
+	With $u = \frac{t^2}{2}$ and $du = t\,dt$, we have
+	
+	$$
+		\mu(t)y(t) &= \int e^u\,du
+		
+		&= e^u + c
+		
+		&= e^{t^2 / 2} + c.
+	$$
+	
+	To solve for $y$, we just need to divide both sides by $\mu(t) = e^{t^2 / 2}$, so in total, the result is
+	
+	$$
+		y &= \frac{e^{t^2 / 2}}{e^{t^2 / 2}} + \frac{c}{e^{t^2 / 2}}
+		
+		&= 1 + ce^{-t^2 / 2}.
+	$$
+	
+	This is the general solution, since we can choose any value for $c$. To solve for the particular solution we're looking for, we plug in $t = 0$ and $y = 3$:
+	
+	$$
+		3 &= 1 + ce^{-0^2 / 2} = 1 + c
+		
+		2 &= c.
+	$$
+	
+	In total, our solution is
+	
+	$$
+		y &= 1 + 2e^{-t^2 / 2}.
+	$$
+	
+###
+
+
+
+This was a really slick way to solve the problem, but it couldn't be less general. If this is going to help us solve more DEs than this specific one, we need to know exactly how to find the particular value of $\mu(t)$ that makes the left side of the equation collapse with the product rule. First of all, we need $y$ and $y'$ to be separate for the product rule to work, and there can't be any higher derivatives. That's exactly what it means to be a first-order linear DE, and the general form of one of those is
+
+$$
+	y' + p(t)y = q(t).
+$$
+
+Here, we've divided by whatever factor used to be on $y'$. Now if we multiply both sides by some function $\mu(t)$ (that we don't know yet), we get
+
+$$
+	\mu(t)y' + \mu(t)p(t)y = \mu(t)q(t).
+$$
+
+For the left side to collapse with the product rule, we need the coefficient of $y$ to be equal to $\mu'(t)$: specifically,
+
+$$
+	\mu'(t) &= \mu(t)p(t)
+	\frac{1}{\mu(t)} \mu'(t) &= p(t).
+$$
+
+This looks a little like alphabet soup, but we're actually almost done. If we integrate both sides $dt$, we have
+
+$$
+	\int \frac{1}{\mu(t)} \mu'(t)\,dt = \int p(t)\,dt,
+$$
+
+and if we take $u = \mu(t)$, then $du = \mu'(t)\,dt$, so
+
+$$
+	\int \frac{1}{u}\,du &= \int p(t)\,dt
+	
+	\ln|u| + C &= \int p(t)\,dt
+	
+	\ln|u| &= \int p(t)\,dt - C
+	
+	|u| &= e^{\int p(t)\,dt - C}.
+$$
+
+Since any value of $C$ will work here, let's just take $C = 0$. We can also drop the absolute value, since any power of $e$ will always be positive. And $u = \mu(t)$, so in total,
+
+$$
+	\mu(t) = e^{\int p(t)\,dt}.
+$$
+
+Since it's a little awkward to write big expressions like integrals inside an exponent, we often write this as
+
+$$
+	\mu(t) = \exp \left( \int p(t)\,dt \right),
+$$
+
+where $\exp(x)$ just means $e^x$.
+
+This is a pretty great first step for the class --- we now have a method to solve any first-order linear DE, as long as we can evaluate the necessary integrals! Since $\mu(t)$ is a factor multiplying every term and both finding it and using involve integrating, we call $\mu(t)$ an **integrating factor**. Let's write down the general method and then work through some examples.
+
+
+
+### thm !Method: integrating factors
+	
+	To solve a first-order linear DE:
+	
+	1. Rewrite the equation as $$y' + p(t)y = q(t)$$.
+	
+	2. Set $$\mu(t) = \exp \left( \int p(t)\,dt \right)$$ and evaluate the integral to find $\mu$. Since any value of $C$ works, just pick a convenient one (usually $C = 0$).
+	
+	3. Multiply both sides of the DE by $\mu(t)$. The left side should now collapse from the product rule, resulting in $$\frac{d}{dt} [\mu(t) y] = \mu(t)q(t)$$.
+	
+	4. Integrate both sides and solve for $y$. If it's possible, evaluate the integral --- if not, then express it as a definite integral with an upper limit or $t$ in order to make initial value problems work correctly. With this integral, make sure *not* to drop the $+c$, since it's a part of the solution.
+	
+###
+
+
+
+### ex integrating factors
+	
+	Solve the DE $$ty' + 2y = t^2$$, given $$y(2) = 2$$.
+	
+	This DE is first-order and linear, so we can use integrating factors. First, we need to make sure there's no coefficient on $y'$, so we divide both sides by $t$:
+	
+	$$
+		y' + \frac{2}{t} y = t.
+	$$
+	
+	Now our integrating factor is
+	
+	$$
+		\mu(t) &= \exp \left( \int \frac{2}{t}\,dt \right)
+		
+		&= \exp \left( 2\ln|t| \right)
+		
+		&= t^2.
+	$$
+	
+	Be careful with canceling exponentials and logarithms! Here, we either need to move the 2 into the $\ln$ as a power on $t$ or use the fact that multiplication of exponents is successive exponentiation before we can cancel.
+	
+	Now we can multiply both sides by $\mu$ and collapse the left side.
+	
+	$$
+		t^2y' + 2ty &= t^3
+		
+		\frac{d}{dt} \left[ t^2y \right] &= t^3
+		
+		t^2 y &= \int t^3\,dt
+		
+		t^2 y &= \frac{t^4}{4} + c
+		
+		y &= \frac{t^2}{4} + \frac{c}{t^2}.
+	$$
+	
+	The final step is to plug in the initial value $y(2) = 2$, which gives us
+	
+	$$
+		2 &= \frac{4}{4} + \frac{c}{4}
+		
+		c = 4.
+	$$
+	
+	So in total, the solution is
+	
+	$$
+		y = \frac{t^2}{4} + \frac{4}{t^2}.
+	$$
+	
+###
+
+### exc integrating factors
+	
+	A colony of ants have made the unfortunate decision to build their colony out of uranium. As they scale up construction, the colony radioactively decays faster, and the mass $M(t)$ of the structure satisfies the DE
+	
+	$$
+		M'(t) = t - M(t),
+	$$
+	
+	where $t$ is measured in days and $M(t)$ in grams. If the colony begins at $100$ grams, what will the mass be after a week?
+	
+###
+
+
+
+We have to be able to integrate $p(t)$ to find $\mu(t)$, but we won't always be able to evaluate the second integral to finish solving for $y$. In that case, we need to be a little more careful with how we write the solution --- let's take a look at an example.
+
+
+
+
+
+
+
+### nav-buttons
+
+
+
+<script src="/scripts/init.js"></script>

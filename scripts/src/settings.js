@@ -336,11 +336,11 @@ Site.Settings =
 		{
 			try
 			{
-				document.querySelector("#header").style.backgroundColor = "rgb(255, 255, 255)";
+				document.body.querySelector("#header").style.backgroundColor = "rgb(255, 255, 255)";
 				
-				document.querySelectorAll("#header-logo span, #header-links a span").forEach(element => element.style.color = "rgb(0, 0, 0)");
+				document.body.querySelectorAll("#header-logo span, #header-links a span").forEach(element => element.style.color = "rgb(0, 0, 0)");
 				
-				document.querySelectorAll("#header-logo img, #header-links a img").forEach(element => element.style.filter = "invert(0)");
+				document.body.querySelectorAll("#header-logo img, #header-links a img").forEach(element => element.style.filter = "invert(0)");
 				
 				const root_selector = document.querySelector(":root");
 				
@@ -405,10 +405,10 @@ Site.Settings =
 		{
 			try
 			{
-				document.querySelector("#header").style.backgroundColor = "rgb(24, 24, 24)";
+				document.body.querySelector("#header").style.backgroundColor = "rgb(24, 24, 24)";
 				
-				document.querySelectorAll("#header-logo span, #header-links a:not(.hover) span").forEach(element => element.style.color = "rgb(255, 255, 255)");
-				document.querySelectorAll("#header-logo span, #header-links a.hover span").forEach(element => element.style.removeProperty("color"));
+				document.body.querySelectorAll("#header-logo span, #header-links a:not(.hover) span").forEach(element => element.style.setProperty("color", "rgb(255, 255, 255)", "important"));
+				document.body.querySelectorAll("#header-links a.hover span").forEach(element => element.style.removeProperty("color"));
 				
 				document.querySelectorAll("#header-logo img, #header-links a img").forEach(element => element.style.filter = "invert(1)");
 				

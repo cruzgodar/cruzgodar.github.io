@@ -74,7 +74,15 @@ A common theme in math when developing a new topic is to find that many facts on
 
 
 
-PDEs are substantially more complicated than ODEs --- in fact, they have entire classes devoted to them --- and we'll be sticking exclusively to ODEs in this course. We'll have more classifying definitions in the future, but we only need one more for now.
+PDEs are substantially more complicated than ODEs --- in fact, they have entire classes devoted to them --- and we'll be sticking exclusively to ODEs in this course. We'll have more classifying definitions in the future, but we only need two more for now.
+
+
+
+### def linearity
+	
+	A DE is **linear** if it is a linear function of $y, y', ..., y^{(n)}$.
+	
+###
 
 
 
@@ -86,7 +94,27 @@ PDEs are substantially more complicated than ODEs --- in fact, they have entire 
 
 
 
-For example, the order of the DE $y'' + y + 1 = t$ is $2$, and the order of $y + 1 = t$ is $0$, since there aren't any derivatives to be seen. We'll begin by solving first-order DEs --- those with order $1$ --- then move to second-order DEs a little later down the road, and higher-order ones after that.
+These are concise definitions, but not ones that are easy to internalize right away. Let's go through a few examples to get used to them.
+
+
+
+### ex linearity and order
+	
+	The DE $y'' - ty' = t^2$ is linear: even though $t$ is squared on the right and multiplied by $y'$ in the middle, this is a linear function of the derivatives of $y$. Since $t$ is never mentioned in the definition, we can treat as a constant for this definition --- if we do that, the DE becomes
+	
+	$$
+		y'' - c_1y' = c_2,
+	$$
+	
+	which is much more clearly linear. The order of this DE is $2$, since the highest-order derivative that appears is $y'' = y^{(2)}$.
+	
+	On the other hand, the DE $y^2 - yy' = \sqrt{t}$ is not linear. The $\sqrt{t}$ isn't a problem, but both $y^2$ and $yy'$ aren't linear functions of $y$. Since the highest derivative that appears is $y'$, its order is $1$.
+	
+###
+
+
+
+We'll begin the class by solving first-order DEs, then move to second-order DEs a little later down the road, and higher-order ones after that.
 
 If we can solve a first-order DE for $y'$, then the other side of the equation is a function $f(t, y)$ of two variables. Let's take the DE
 
