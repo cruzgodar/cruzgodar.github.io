@@ -16,7 +16,7 @@ At first glance, our first solving method can seem like some sort of black magic
 
 ### ex an integrating factor
 	
-	Solve $y' + ty = 1$, given $y(0) = 3$.
+	Solve $y' + ty = t$, given $y(0) = 3$.
 	
 	It's worth pointing out why we can't just solve this directly: to get rid of the derivative on $y$, we'd like to integrate, but we have to integrate $dt$, and solving for $y'$ puts it in terms of $t$ *and* $y$, ruining our chances of integrating. Instead, let's take the (bizarre) step of multiplying both sides by $e^{t^2 / 2}$, which gives us
 	
@@ -227,9 +227,132 @@ We have to be able to integrate $p(t)$ to find $\mu(t)$, but we won't always be 
 
 
 
-### ex complicating factors
+### ex a complicating factor
 	
+	Solve the initial value problem $$y' + ty = 1$$, given $$y(1) = 1$$.
 	
+	As usual, we'll solve for $\mu$:
+	
+	$$
+		\mu(t) &= \exp \left(\int t\,dt\right)
+		
+		&= e^{t^2 / 2}.
+	$$
+	
+	The DE then becomes
+	
+	$$
+		e^{t^2 / 2}y' + te^{t^2 / 2}y &= e^{t^2 / 2}
+		
+		\frac{d}{dt} \left[ e^{t^2 / 2}y \right] &= e^{t^2 / 2}
+		
+		e^{t^2 / 2}y &= \int e^{t^2 / 2}\,dt
+		
+		y &= e^{-t^2 / 2}\int e^{t^2 / 2}\,dt.
+	$$
+	
+	Unfortunately, we're at the end of the road with that integral. $e^{t^2}$ is famously not an integrable function --- there is no combination of power functions, exponential functions, logarithms, and trig functions whose derivative is $e^{t^2}$. In and of itself that's not a huge problem --- we can just leave $y$ expressed in terms of this intergral --- but there's a subtlety with the initial value. While it looks like plugging in $1$ for $t$ should mean replacing every value of $t$ with $1$, the $t$s inside the integral can't be treated the same way, since they're being integrated away. It's the same reason we can't plug in values before differentiaing. For example, if $f(t) = 2t$ and $F(t) = \int f(t)\,dt$, then we have
+	
+	$$
+		F(5) &= 5^2 = 25
+		\int 2 \cdot 5\,dt &= 10t + C,
+	$$
+	
+	which are so different from one another that one is a number and the other is a function. The easiest way to actually plug in a value to a function inside an integral is to rewrite it using the Fundamental Theorem of Calculus --- not part II, which is the version expressing definite integrals in terms of antiderivatives that we use all the time, but the less-often-remembered part I, which states that
+	
+	$$
+		\int f(t)\,dt = \int_a^t f(s)\,ds + C
+	$$
+	
+	for any value of $a$ (since differentiating both sides will make it vanish). The advantage of this form is that it properly scopes the $t$ without requiring us to actually integrate: we can correctly plug in values for $t$ now. In our example, we have
+	
+	$$
+		y = e^{-t^2 / 2} \left( \int_a^t e^{s^2 / 2}\,ds + c \right).
+	$$
+	
+	We can choose any value for $a$, but there is one choice that's signifcantly better than any other: since we're about to set $t = 1$ to solve the initial value problem, we should take $a = 1$ so that the integral will disappear. With $y(1) = 1$,
+	
+	$$
+		1 &= e^{-1^2 / 2} \left( \int_1^1 e^{s^2 / 2}\,ds + c \right)
+		
+		1 &= e^{-\frac{1}{2}} \left( 0 + c \right)
+		
+		c &= e^{\frac{1}{2}}.
+	$$
+	
+	After a little rearranging, our solution becomes
+	
+	$$
+		y = e^{\frac{1 - t^2}{2}} + e^{-t^2 / 2} \int_1^t e^{s^2 / 2}\,ds.
+	$$
+	
+###
+
+### exc a complicating factor
+	
+	Solve the initial value problem $$x' + x - \frac{1}{t} = 0$$, given $$x(3) = 2$$.
+	
+###
+
+
+
+## Separation of Variables
+
+Our next technique involves quite a bit less sleight of hand --- rather than introducing a mysterious new factor like $\mu$, we'll just be solving equations directly. As before, let's open with an example, and then we'll write down the general method.
+
+
+
+### ex separation of variables
+	
+	Solve $$y' - \frac{2t + \sin(t)}{y^2} = 0$$, given $y(0) = 0$.
+	
+	To get started, we'll isolate $y'$:
+	
+	$$
+		y' = \frac{2t + \sin(t)}{y^2}.
+	$$
+	
+	Now we can write $y'$ as $\frac{dy}{dt}$ and take the somewhat unsettling step of multiplying both sides by $dt$, followed by $y^2$.
+	
+	$$
+		\frac{dy}{dt} &= \frac{2t + \sin(t)}{y^2}
+		
+		dy &= \frac{2t + \sin(t)}{y^2}\,dt
+		
+		y^2\,dy &= (2t + \sin(t))\,dt.
+	$$
+	
+	Both sides look like integrals without the integral symbol, and that's exactly what they are! Let's write it in and then integrate.
+	
+	$$
+		\int y^2\,dy &= \int (2t + \sin(t))\,dt
+		
+		\frac{y^3}{3} &= t^2 - \cos(t) + c
+	$$
+	
+	Since we have integrals on both sides, we only need one $+c$. Now we'll solve for $y$:
+	
+	$$
+		y = \sqrt[3]{3t^2 - 3\cos(t) + 3c}.
+	$$
+	
+	And just like that, we've found our general solution! Plugging in $y(0) = 0$ gives us
+	
+	$$
+		0 &= \sqrt[3]{3(0) - 3(1) + 3c}
+		
+		0 &= \sqrt[3]{3c - 3}
+		
+		0 &= 3c - 3
+		
+		c &= 1.
+	$$
+	
+	Our final answer is
+	
+	$$
+		y = \sqrt[3]{3t^2 - 3\cos(t) + 3}.
+	$$
 	
 ###
 
