@@ -86,7 +86,7 @@ class AbelianSandpile extends Applet
 					this.wilson.ctx.fillRect(j * this.canvas_scale_factor, i * this.canvas_scale_factor, this.canvas_scale_factor, this.canvas_scale_factor);
 				}
 			}
-		}
+		};
 		
 		this.web_worker.postMessage([this.grid_size, this.num_grains, this.maximum_speed]);
 	}
