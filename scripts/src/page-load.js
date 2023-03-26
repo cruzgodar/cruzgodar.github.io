@@ -369,10 +369,8 @@ Page.Load =
 				Page.Load.HoverEvents.add(link);
 				
 				const href = link.getAttribute("href");
-				
-				const url_vars_suffix = Page.Navigation.concat_url_vars();
 		
-				link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + url_vars_suffix);
+				link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href));
 				
 				link.addEventListener("click", e =>
 				{
@@ -992,10 +990,6 @@ Page.Load =
 	{
 		set: function()
 		{
-			const url_vars_suffix = Page.Navigation.concat_url_vars();
-			
-			
-			
 			Page.element.querySelectorAll("a").forEach(link =>
 			{
 				let href = link.getAttribute("href");
@@ -1007,7 +1001,7 @@ Page.Load =
 				
 				if (href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data" && !(link.getAttribute("data-in-new-tab") == 1))
 				{
-					link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href) + url_vars_suffix);
+					link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href));
 					
 					link.setAttribute("onclick", `Page.Navigation.redirect("${href}")`);
 				}

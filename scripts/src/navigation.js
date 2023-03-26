@@ -128,12 +128,12 @@ Page.Navigation =
 			//Record the page change in the url bar and in the browser history.
 			if (!no_state_push)
 			{
-				history.pushState({url: url}, document.title, display_url + this.concat_url_vars());
+				history.pushState({url: url}, document.title, display_url);
 			}
 			
 			else
 			{
-				history.replaceState({url: url}, document.title, display_url + this.concat_url_vars());
+				history.replaceState({url: url}, document.title, display_url);
 			}
 			
 			
@@ -209,52 +209,6 @@ Page.Navigation =
 				}
 			}, Site.opacity_animation_time);
 		});
-	},
-
-
-
-	//Returns a string of url vars that can be attached to any url.
-	concat_url_vars: function()
-	{
-		let string = "";
-		let key = "";
-		let temp = "";
-		
-		let found_first_key = false;
-		
-		
-		
-		Object.keys(Site.Settings.url_vars).forEach(key =>
-		{
-			if (Site.Settings.url_vars[key] !== 0 || (window.matchMedia("(prefers-color-scheme: dark)").matches && Site.Settings.url_vars["theme"] === 0 && key === "theme"))
-			{
-				if (DEBUG || found_first_key)
-				{
-					string += "&" + key + "=" + Site.Settings.url_vars[key];
-				}
-				
-				else
-				{
-					string += "?" + key + "=" + Site.Settings.url_vars[key];
-					
-					found_first_key = true;
-				}
-			}
-		});
-		
-		
-		
-		return string;
-	},
-	
-	
-
-	write_url_vars: function()
-	{
-		//Make the current state persist on refresh.
-		const display_url = DEBUG ? `/index-testing.html?page=${encodeURIComponent(Page.url)}` : Page.url;
-		
-		history.replaceState({}, document.title, display_url + this.concat_url_vars());
 	},
 	
 	
