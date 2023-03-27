@@ -249,6 +249,35 @@ const components =
 			
 			
 			
+			//Add leading tabs and bullet points.
+			let num_tabs = 0;
+			
+			while (html[num_tabs] === ">")
+			{
+				num_tabs++;
+			}
+			
+			if (num_tabs !== 0)
+			{
+				let slice_start = num_tabs;
+				
+				while (html[slice_start] === " ")
+				{
+					slice_start++;
+				}
+				
+				html = html.slice(slice_start);
+				
+				if (html[0] === "." && html[1] === " ")
+				{
+					html = `&#8226; ${html}`;
+				}
+				
+				html = `<span style=[DOUBLEQUOTE]width: ${32 * num_tabs}px[DOUBLEQUOTE]></span>${html}`;
+			}
+			
+			
+			
 			//Now we're finally ready to add the code tags, and then the remaining em and strong tags, and then modify the quotes. Then at long last, we can unescape the remaining characters.
 			return html
 			.replaceAll(/`(.*?)\[END`\]/g, (match, $1) => `<code>${$1}</code>`)
