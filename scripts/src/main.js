@@ -250,20 +250,23 @@ Site.load = async function(url)
 		}
 	};
 	
-	Site.load_script("https://polyfill.io/v3/polyfill.min.js?features=es6");
-	
-	Site.load_script("https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js")
-	
-	.then(function()
+	Site.scripts_loaded["mathjax"] = new Promise((resolve, reject) =>
 	{
-		Site.scripts_loaded["mathjax"] = true;
+		Site.load_script("https://polyfill.io/v3/polyfill.min.js?features=es6");
 		
-		Page.Cards.init();
-	})
-	
-	.catch(function(error)
-	{
-		console.error("Could not load MathJax");
+		Site.load_script("https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js")
+		
+		.then(function()
+		{
+			resolve();
+			
+			Page.Cards.init();
+		})
+		
+		.catch(function(error)
+		{
+			console.error("Could not load MathJax");
+		});
 	});
 	
 	

@@ -1025,8 +1025,10 @@ Page.Load =
 	
 	Math:
 	{
-		typeset: function()
+		typeset: async function()
 		{
+			await Site.scripts_loaded["mathjax"];
+			
 			return new Promise(async (resolve, reject) =>
 			{
 				await MathJax.typesetPromise();
