@@ -145,11 +145,11 @@ This is a pretty great first step for the class --- we now have a method to solv
 	
 	To solve a first-order linear DE:
 	
-	1. Rewrite the equation as $$y' + p(t)y = q(t)$$.
+	1. Rewrite the equation as $y' + p(t)y = q(t)$.
 	
-	2. Set $$\mu(t) = \exp \left( \int p(t)\,dt \right)$$ and evaluate the integral to find $\mu$. Since any value of $C$ works, just pick a convenient one (usually $C = 0$).
+	2. Set $\mu(t) = \exp \left( \int p(t)\,dt \right)$ and evaluate the integral to find $\mu$. Since any value of $C$ works, just pick a convenient one (usually $C = 0$).
 	
-	3. Multiply both sides of the DE by $\mu(t)$. The left side should now collapse from the product rule, resulting in $$\frac{d}{dt} [\mu(t) y] = \mu(t)q(t)$$.
+	3. Multiply both sides of the DE by $\mu(t)$. The left side should now collapse from the product rule, resulting in $\frac{d}{dt} [\mu(t) y] = \mu(t)q(t)$.
 	
 	4. Integrate both sides and solve for $y$. If it's possible, evaluate the integral --- if not, then express it as a definite integral with an upper limit or $t$ in order to make initial value problems work correctly. With this integral, make sure *not* to drop the $+c$, since it's a part of the solution.
 	
