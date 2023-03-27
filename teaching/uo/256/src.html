@@ -52,13 +52,13 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	1. $$y'' - y = 0, y(t) = e^{-t} - 2$$.
 	
-	2. $$y'' + y + y = 0, y(t) = e^{-\frac{t}{2}}\sin\left( \frac{\sqrt{3}}{2} t \right)$$.
+	2. $$y'' + y + y = 0, y(t) = e^{-t / 2}\sin\left( \frac{\sqrt{3}}{2} t \right)$$.
 	
 	3. $$y''' = t, y(t) = \frac{t^4}{24}$$.
 	
-	4. $$y' + ty = t, y(t) = 2e^{-\frac{t^2}{2}} + 1$$.
+	4. $$y' + ty = t, y(t) = 2e^{-t^2 / 2} + 1$$.
 	
-	5. $$(y'')^2 = e^t, y(t) = t - 4e^{\frac{t}{2}}$$.
+	5. $$(y'')^2 = e^t, y(t) = t - 4e^{t / 2}$$.
 	
 	## 
 	In problems 6--10, solve the initial value problem.
@@ -115,13 +115,17 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	## 
 	26. The population $P(t)$ of a colony of bacteria after $t$ hours (in thousands) follows the equation $$P' + P = 2^{-t} + 1$$. After enough time, what will the population settle down to?
 	
-	27. The function $$y = f(x)$$ satisfies $y' = y\ln(x)$ with $$f(1) = \frac{1}{e}$$.
+	27. The function $y$ satisfies $y' = y\ln(x)$ with $$y(1) = \frac{1}{e}$$.
 	
 	> a) Express $y''$ in terms of $x, y$, and $y'$.
 	
 	> b) Solve the original DE, find $y''$ in terms of $x$ only, and verify that your answer to part a) was correct.
 	
-	28.
+	28. Construct a DE whose solutions are of the form $$ce^{-t} + t$$.
+	
+	29. Solve the DE $$y' + xy = x$$ in two ways: first with integrating factors and then with separation of variables. Ensure your answers are the same.
+	
+	30. True or false: if a DE is separable, then its direction field is symmetric about the origin (i.e. the slope at $(x, y)$ is the same as the slope at $(-x, -y)$). If it's true, briefly explain why, and if it's false, give a counterexample.
 	
 ###
 
@@ -149,12 +153,12 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	Your grade is determined by your class participation and scores on a number of different assignments, weighted as follows:
 	
-	In-class participation: 5%
-	Reading quizzes: 5%
-	In-class quizzes: 10%
-	Homework: 15%
-	Midterms: 20% each (40% total)
-	Final: 25%
+	> In-class participation: 5%
+	> Reading quizzes: 5%
+	> In-class quizzes: 10%
+	> Homework: 15%
+	> Midterms: 20% each (40% total)
+	> Final: 25%
 	
 	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
 	
@@ -216,17 +220,17 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	We will learn how to:
 	
-	!<span style="width: 32px"></span>&#8226; Recognize ODEs
+	> . Recognize ODEs
 	
-	!<span style="width: 32px"></span>&#8226; Solve many types of them
+	> . Solve many types of them
 	
-	!<span style="width: 32px"></span>&#8226; Identify when they can and can't be solved uniquely
+	> . Identify when they can and can't be solved uniquely
 	
-	!<span style="width: 32px"></span>&#8226; Use linear algebra to solve systems of first-order ODEs
+	> . Use linear algebra to solve systems of first-order ODEs
 	
-	!<span style="width: 32px"></span>&#8226; Analyze the stability and limiting behavior of solutions
+	> . Analyze the stability and limiting behavior of solutions
 	
-	!<span style="width: 32px"></span>&#8226; Use ODEs to model and predict the behavior of physical systems
+	> . Use ODEs to model and predict the behavior of physical systems
 	
 	
 	
