@@ -53,6 +53,7 @@ home
 		uo/256
 			notes/0-calc-review
 			notes/1-intro-to-des
+			notes/2-if-and-sep
 		
 		uo/253
 			notes/0-calc-2-review

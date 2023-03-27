@@ -4,7 +4,7 @@
 
 
 
-With the initial definitions out of the way, let's get starting actually solving some DEs. We'll stick to first-order DEs for the next few sections, which means the only derivative in the equation will be $y'$. If we also narrow our attention exclusively to linear DEs, the problems become simple enough that we can develop a general solving method.
+With the initial definitions out of the way, let's get started actually solving some DEs. We'll stick to first-order ones for the next few sections, which means the only derivative in the equation will be $y'$. If we also narrow our attention exclusively to linear DEs, the problems become simple enough that we can develop a general solving method.
 
 
 
@@ -151,7 +151,7 @@ This is a pretty great first step for the class --- we now have a method to solv
 	
 	3. Multiply both sides of the DE by $\mu(t)$. The left side should now collapse from the product rule, resulting in $\frac{d}{dt} [\mu(t) y] = \mu(t)q(t)$.
 	
-	4. Integrate both sides and solve for $y$. If it's possible, evaluate the integral --- if not, then express it as a definite integral with an upper limit or $t$ in order to make initial value problems work correctly. With this integral, make sure *not* to drop the $+c$, since it's a part of the solution.
+	4. Integrate both sides and solve for $y$. If it's possible, evaluate the integral --- if not, then express it as a definite integral with an upper limit or $t$ in order to make initial value problems work correctly. With this integral, make sure *not* to drop the $+c$, since it's part of the solution.
 	
 ###
 
@@ -211,7 +211,7 @@ This is a pretty great first step for the class --- we now have a method to solv
 
 ### exc integrating factors
 	
-	A colony of ants have made the unfortunate decision to build their colony out of uranium. As they scale up construction, the colony radioactively decays faster, and the mass $M(t)$ of the structure satisfies the DE
+	A colony of ants have made the unfortunate decision to build their nest out of uranium. As they scale up construction, the colony radioactively decays faster, and the mass $M(t)$ of the structure satisfies the DE
 	
 	$$
 		M'(t) = t - M(t),
@@ -251,7 +251,7 @@ We have to be able to integrate $p(t)$ to find $\mu(t)$, but we won't always be 
 		y &= e^{-t^2 / 2}\int e^{t^2 / 2}\,dt.
 	$$
 	
-	Unfortunately, we're at the end of the road with that integral. $e^{t^2}$ is famously not an integrable function --- there is no combination of power functions, exponential functions, logarithms, and trig functions whose derivative is $e^{t^2}$. In and of itself that's not a huge problem --- we can just leave $y$ expressed in terms of this intergral --- but there's a subtlety with the initial value. While it looks like plugging in $1$ for $t$ should mean replacing every value of $t$ with $1$, the $t$s inside the integral can't be treated the same way, since they're being integrated away. It's the same reason we can't plug in values before differentiaing. For example, if $f(t) = 2t$ and $F(t) = \int f(t)\,dt$, then we have
+	Unfortunately, we're at the end of the road with that integral. $e^{t^2}$ is famously not an integrable function --- there is no combination of power functions, exponential functions, logarithms, and trig functions whose derivative is $e^{t^2}$. In and of itself that's not a huge problem --- we can just leave $y$ expressed in terms of this integral --- but there's a subtlety with the initial value. While it looks like plugging in $1$ for $t$ should mean replacing every value of $t$ with $1$, the $t$s inside the integral can't be treated the same way, since they're being integrated away. It's the same reason we can't plug in values before differentiating. For example, if $f(t) = 2t$ and $F(t) = \int f(t)\,dt$, then we have
 	
 	$$
 		F(5) &= 5^2 = 25
@@ -270,7 +270,7 @@ We have to be able to integrate $p(t)$ to find $\mu(t)$, but we won't always be 
 		y = e^{-t^2 / 2} \left( \int_a^t e^{s^2 / 2}\,ds + c \right).
 	$$
 	
-	We can choose any value for $a$, but there is one choice that's signifcantly better than any other: since we're about to set $t = 1$ to solve the initial value problem, we should take $a = 1$ so that the integral will disappear. With $y(1) = 1$,
+	We can choose any value for $a$, but there is one choice that's significantly better than any other: since we're about to set $t = 1$ to solve the initial value problem, we should take $a = 1$ so that the integral will disappear. With $y(1) = 1$,
 	
 	$$
 		1 &= e^{-1^2 / 2} \left( \int_1^1 e^{s^2 / 2}\,ds + c \right)
@@ -353,6 +353,102 @@ Our next technique involves quite a bit less sleight of hand --- rather than int
 	$$
 		y = \sqrt[3]{3t^2 - 3\cos(t) + 3}.
 	$$
+	
+###
+
+
+
+There's not much difference between this example and the general process for separation of variables --- just separate the variables to opposite sides of the equals sign, integrate, and solve. For this to work, we can only have $y'$ in the DE, so it needs to be first-order, and critically, we have to be able to actually *do* the separation step.
+
+
+
+### def separable differential equation
+	
+	A DE is **separable** if it can be written in the form $y' = f(y)g(t)$ for some $f$ and $g$.
+	
+###
+
+
+
+In other words, we need to be able to write $y'$ as a product of only $y$-stuff with only $t$-stuff.
+
+
+
+### thm !Method: Separation of Variables
+	
+	To solve a separable DE $y' = f(y)g(t)$:
+	
+	1. Rewrite $y'$ as $\frac{dy}{dt}$ and get all the $y$s on the left and $t$s on the right:
+	
+	$$
+		\frac{1}{f(y)}\,dy = g(t)\,dt.
+	$$
+	
+	2. Integrate both sides and solve for $y$.
+	
+###
+
+
+
+Not so bad! Let's work through another example.
+
+
+
+### ex separation of variables
+	
+	Solve $$y' = \frac{x^2}{e^y(x^2 + 4)}$$, given that $y(0) = 0$.
+	
+	This DE is more or less already separated as is. Moving the $y$s to the left and the $x$s to the right gives us
+	
+	$$
+		e^y\,dy &= \frac{x^2}{x^2 + 4}\,dx
+		
+		\int e^y\,dy &= \int \frac{x^2}{x^2 + 4}\,dx
+	$$
+	
+	The $y$ integral is simple enough, but the one on the right is a trig sub problem! Let's go through it --- it's a good chance for review. The denominator is of the form $x^2 + a^2$ with $a = 2$, so we'll substitute $x = 2\tan(\theta)$. Then $dx = 2\sec^2(\theta)\,d\theta$, and so we have
+	
+	$$
+		e^y &= \int \frac{8\tan^2(\theta)\sec^2(\theta)}{4\left(\tan^2(\theta) + 1\right)}\,d\theta
+		
+		e^y &= \int \frac{2\tan^2(\theta)\sec^2(\theta)}{\sec^2(\theta)}\,d\theta
+		
+		e^y &= \int 2\tan^2(\theta)\,d\theta
+		
+		e^y &= 2\int \left( \sec^2(\theta) - 1 \right) \,d\theta
+		
+		e^y &= 2 \left( \tan(\theta) - \theta + c\right)
+		
+		e^y &= 2 \tan(\theta) - 2\theta + 2c
+		
+		e^y &= 2 \left( \frac{x}{2} \right) - 2\arctan\left( \frac{x}{2} \right) + 2c
+		
+		y &= \ln \left( x - 2\arctan\left( \frac{x}{2} \right) + 2c \right).
+	$$
+	
+	Plugging in our initial condition results in
+	
+	$$
+		0 &= \ln \left( 0 - 2\arctan\left( 0 \right) + 2c \right)
+		
+		0 &= \ln \left( 2c \right)
+		
+		e^0 &= 2c
+		
+		c &= \frac{1}{2},
+	$$
+	
+	so our solution is
+	
+	$$
+		y = \ln \left( x - 2\arctan\left( \frac{x}{2} \right) + 1 \right).
+	$$
+	
+###
+
+### exc separation of variables
+	
+	Find the solution to $$y' - x - y - xy = 1$$ with $$y(0) = 1$$.
 	
 ###
 
