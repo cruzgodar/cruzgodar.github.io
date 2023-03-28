@@ -298,6 +298,7 @@ mjx-container
 	align-items: center;
 	
 	overflow-y: scroll;
+	overflow-x: hidden;
 	scrollbar-width: none;
 }
 
