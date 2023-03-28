@@ -106,14 +106,16 @@ In practice, we don't use the limit definition of the derivative all that often.
 	
 	$$\frac{d}{dx} [\sec(x)] = \sec(x)\tan(x)$$.
 	
-	$$\frac{d}{dx} [b^x] = b^x \ln(b)$$.
+	$$\frac{d}{dx} [b^x] = b^x \log(b)$$.
 	
 	$$\frac{d}{dx} [e^x] = e^x$$.
 	
-	$$\frac{d}{dx} [\ln(x)] = \frac{1}{x}$$.
+	$$\frac{d}{dx} [\log(x)] = \frac{1}{x}$$.
 	
 ###
-	
+
+Beware! This course uses $\log$ to denote the base-$e$ logarithm --- what you've probably seen as $\ln$ before. This is standard for higher-level math courses, and while I'll of course understand what you nean if you write $\ln$, I encourage you to use $\log$!
+
 We'll be using limits and derivatives quite a bit throughout the course --- derivatives are in the title, after all! I have a full set of interactive notes available for calculus I, so if you're feeling rusty, have a look at those.
 
 
@@ -134,7 +136,7 @@ $$\int x^2\,dx = \frac{x^3}{3} + C$$.
 
 $$\int \sin(2x)\,dx = -\frac{1}{2}\cos(2x) + C$$.
 
-$$\int \frac{1}{y}\,dy = \ln|y| + C$$.
+$$\int \frac{1}{y}\,dy = \log|y| + C$$.
 
 In contrast, definite integrals measure the area under the graph of a function and take an extra two numbers, written above and below the integral sign. When we say that
 
@@ -261,7 +263,7 @@ This series is guaranteed to converge to $f$ in some interval centered at $x = a
 		
 		e^x &= \sum_{n = 0}^\infty \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots & (-\infty, \infty)
 		
-		\ln(1 + x) &= \sum_{n = 1}^\infty (-1)^{n + 1} \frac{x^n}{n} = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots & (-1, 1]
+		\log(1 + x) &= \sum_{n = 1}^\infty (-1)^{n + 1} \frac{x^n}{n} = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots & (-1, 1]
 		
 		\sin(x) &= \sum_{n = 0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!} = x - \frac{x^3}{3!} - \frac{x^5}{5!} + \frac{x^7}{7!} - \cdots & (-\infty, \infty)
 		

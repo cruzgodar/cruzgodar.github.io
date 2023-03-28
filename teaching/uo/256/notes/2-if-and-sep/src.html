@@ -116,9 +116,9 @@ and if we take $u = \mu(t)$, then $du = \mu'(t)\,dt$, so
 $$
 	\int \frac{1}{u}\,du &= \int p(t)\,dt
 	
-	\ln|u| + C &= \int p(t)\,dt
+	\log |u| + C &= \int p(t)\,dt
 	
-	\ln|u| &= \int p(t)\,dt - C
+	\log |u| &= \int p(t)\,dt - C
 	
 	|u| &= e^{\int p(t)\,dt - C}.
 $$
@@ -172,12 +172,12 @@ This is a pretty great first step for the class --- we now have a method to solv
 	$$
 		\mu(t) &= \exp \left( \int \frac{2}{t}\,dt \right)
 		
-		&= \exp \left( 2\ln|t| \right)
+		&= \exp \left( 2\log|t| \right)
 		
 		&= t^2.
 	$$
 	
-	Be careful with canceling exponentials and logarithms! Here, we either need to move the 2 into the $\ln$ as a power on $t$ or use the fact that multiplication of exponents is successive exponentiation before we can cancel.
+	Be careful with canceling exponentials and logarithms! Here, we either need to move the 2 into the $\log$ as a power on $t$ or use the fact that multiplication of exponents is successive exponentiation before we can cancel.
 	
 	Now we can multiply both sides by $\mu$ and collapse the left side.
 	
@@ -423,15 +423,15 @@ Not so bad! Let's work through another example.
 		
 		e^y &= 2 \left( \frac{x}{2} \right) - 2\arctan\left( \frac{x}{2} \right) + 2c
 		
-		y &= \ln \left( x - 2\arctan\left( \frac{x}{2} \right) + 2c \right).
+		y &= \log \left( x - 2\arctan\left( \frac{x}{2} \right) + 2c \right).
 	$$
 	
 	Plugging in our initial condition results in
 	
 	$$
-		0 &= \ln \left( 0 - 2\arctan\left( 0 \right) + 2c \right)
+		0 &= \log \left( 0 - 2\arctan\left( 0 \right) + 2c \right)
 		
-		0 &= \ln \left( 2c \right)
+		0 &= \log \left( 2c \right)
 		
 		e^0 &= 2c
 		
@@ -441,7 +441,7 @@ Not so bad! Let's work through another example.
 	so our solution is
 	
 	$$
-		y = \ln \left( x - 2\arctan\left( \frac{x}{2} \right) + 1 \right).
+		y = \log \left( x - 2\arctan\left( \frac{x}{2} \right) + 1 \right).
 	$$
 	
 ###
