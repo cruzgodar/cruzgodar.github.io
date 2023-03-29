@@ -62,11 +62,167 @@ $$
 
 read "partial $g$ partial $c$". When we differentiate with respect to $x$, $c$ is a constant, and now it's reversed: $g$ is just a linear function of $c$. So despite the unusual notation and name, $\frac{\partial f}{\partial y}$ just means the derivative of $f$ with $t$ treated as a constant.
 
+
+
+### exc
+	
+	Let $h(x, y) = 2\log\left(\sin^2(x) + y\right)$. Find $\frac{\partial h}{\partial x}$ and $\frac{\partial h}{\partial y}$.
+	
+###
+
+
+
 The proof of this theorem is well beyond the scope of this class, but the key takeaway is simple: solutions to nonlinear DEs are guaranteed to exist and be unique when the expression equal to $y'$ is continuous and differentiating it with respect to $y$ also produces a continuous function. If one or both of those conditions fails to hold, there may still be a unique solution, but there might be no solutions or many.
 
 
 
+### ex existence and uniqueness
+	
+	Show that there's a unique solution to the DE
+	
+	$$
+		y' = \frac{xe^y - y}{\sin(xy) + 2}, y(0) = 0.
+	$$
+	
+	We have almost no chance of actually solving this thing, but since it's created by arithmetic and composition of elementary functions and is never undefined, it's a continuous function. Since the DE is nonlinear, we need to differentiate with respect to $y$ and show that that function is continuous. By the quotient rule, we have
+	
+	$$
+		\frac{\partial y'}{\partial y} &= \frac{\frac{\partial}{\partial y} \left[ xe^y - y \right]\left(\sin(xy) + 2\right) - \left( xe^y - y \right)\frac{\partial}{\partial y}\left[\sin(xy) + 2\right]}{\left(\sin(xy) + 2\right)^2}
+		
+		&= \frac{\left( xe^y - 1 \right)\left(\sin(xy) + 2\right) - \left( xe^y - y \right)\left(\cos(xy)\cdot x\right)}{\left(\sin(xy) + 2\right)^2}.
+	$$
+	
+	It looks incredibly complicated, but this is continuous for the same reason that $y'$ itself was. So there must be a unique solution to this DE, even though we don't have a chance of actually finding it.
+	
+###
+
+
+
 ## Exact Differential Equations
+
+Our final solving method for first-order DEs looks quite a lot like integrating factors. Instead of collapsing the left side of the equation with the product rule, though, we'll be using the *chain* rule. As with all of our methods, we'll open with an example before writing down the particular steps, but first, we need a brief result from calculus IV.
+
+
+
+### thm the multivariable chain rule
+	
+	Let $f(x, y)$ be a function of two variables and suppose $x(t)$ and $y(t)$ are each differentable functions of the same variable $t$. Then $f(x, y)$ is a function of the single variable $t$, and its derivative is
+	
+	$$
+		\frac{d f(x, y)}{dt} = \frac{\partial f}{\partial x} \frac{dx}{dt} + \frac{\partial f}{\partial y} \frac{dy}{dt}.
+	$$
+	
+###
+
+
+
+Let's unpack that a little. The reason we're writing $f(x, y)$ on the left is because the output of $f(x, y)$ *is a function* --- specifically, $(f(x, y))(t) = f(x(t), y(t))$. It also only takes in $t$, so it's a function of one variable --- hence the use of $d$ and not $\partial$ on the left side of the equation. The right side is just the chain rule applied to both the input variables of $f$ --- when $f$ is a function of just $x$, it says
+
+$$
+	\frac{d f(x)}{dt} = \frac{df}{dx} \frac{dx}{dt},
+$$
+
+which is just the chain rule from calculus I.
+
+
+
+### ex the multivariable chain rule
+	
+	Let $f(x, y) = \sin\left(x^2y\right)$. If $x(t) = 2t$ and $y(t) = t^3$, find $\frac{d f(x, y)}{dt}$.
+	
+	Let's find all four pieces on the right side of the equation:
+	
+	$$
+		\frac{\partial f}{\partial x} &= 2xy\cos\left(x^2y\right)
+		
+		\frac{\partial f}{\partial y} &= x^2\cos\left(x^2y\right)
+		
+		\frac{dx}{dt} &= 2.
+		
+		\frac{dy}{dt} &= 3t^2.
+	$$
+	
+	In total, the derivative should be
+	
+	$$
+		\frac{d f(x, y)}{dt} &= 2(2t)(t^3)\cos\left(4t^2 \cdot t^3\right) \cdot 2 + 4t^2\cos\left(4t^2 \cdot t^3\right) \cdot 3t^2
+		
+		&= 20t^4 \cos\left( 4t^5 \right).
+	$$
+	
+	Here, we've replaced every occurance of $x$ and $y$ with $x(t)$ and $y(t)$. We can double-check the result by just finding $f(x(t), y(t))$ and differentiating that directly.
+	
+	$$
+		f(x(t), y(t)) &= \sin\left( 4t^5 \right)
+		
+		\frac{d f(x, y)}{dt} &= \cos\left( 4t^5 \right) \cdot 20t^4.
+	$$
+	
+	It works! That second way was much faster, but the much of the point of this theorem is to help in situations where we can't find $f$ in terms of $t$ explicitly like that.
+	
+###
+
+### exc the multivariable chain rule
+	
+	Let $g(x, y) = x\tan(x + y)$, $x(t) = t$, and $y(t) = e^t$. Find $\frac{d g(x, y)}{dt}$ with the multivariable chain rule.
+	
+###
+
+
+
+Equipped with the multivariable chain rule, we're ready to dive into our first example of the new solving method.
+
+
+
+### ex solving with exactness
+	
+	Solve the DE $$2t + y^2 + 2tyy' = 0$$.
+	
+	Let's check the methods we know already. This DE isn't linear because of the $y^2$ and the $yy'$, and it's not separable either: if we solve for $y'$, we get
+	
+	$$
+		y' = -\frac{2t + y^2}{2ty},
+	$$
+	
+	which can't be separated into a $t$-factor and a $y$-factor. So we need to find another way, and just like with integrating factors, the first step will seem to appear out of nowhere. Let's define a function $\psi$ (pronounced "psee") by
+	
+	$$
+		\psi(t, y) = t^2 + ty^2.
+	$$
+	
+	This is a very, very strange step to take, but the idea will start to take shape when we look at the partial derivatives of $\psi$:
+	
+	$$
+		\frac{\partial \psi}{\partial t} &= 2t + y^2
+		
+		\frac{\partial \psi}{\partial y} &= 2ty
+	$$
+	
+	Those partial derivatives look a lot like components of our DE! Specifically, we can rewrite it as
+	
+	$$
+		\frac{\partial \psi}{\partial t} + \frac{\partial \psi}{\partial y} \frac{dy}{dt} = 0.
+	$$
+	
+	Written this way, it's hard not to see the similarity to the multivariable chain rule. In fact, all we're missing is a factor of the form $\frac{dt}{dt}$ on the first term, but that's just $1$ (or equivalently, only the second variable of $f$ is a function of $t$ in the first place). Therefore, the entire left side of the equation collapses:
+	
+	$$
+		\frac{d \psi(t, y)}{dt} &= 0
+		
+		\psi(t, y) &= \int 0\,dt
+		
+		\psi(t, y) &= c
+		
+		t^2 + ty^2 &= c.
+	$$
+	
+	While we can solve this equation for $y$, solving equations in this way typically leads to final solutions that can't be solved explicitly, so we'll usually just leave them in this form.
+	
+###
+
+
+
+The main questions we have here are similar to those from integrating factors: how do we recognize when a DE can be solved like this, and how do we find $\psi$? 
 
 
 
