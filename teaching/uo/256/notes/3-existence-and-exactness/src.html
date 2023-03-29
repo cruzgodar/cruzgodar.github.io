@@ -2,9 +2,71 @@
 
 ### nav-buttons
 
+We've almost finished out discussion of first-order DEs! We'll spend this section looking at the existence and uniqueness of solutions and a third solving method, and then we'll start looking at second-order DEs in the next section.
 
 
 
+## Existence of Solutions
+
+With so much work required to solve DEs, it'd be nice to have simple heuristics that tell us if a given one even has any solutions at all before we start solving it. As is becoming a theme with the class, linear DEs will be simpler to handle than nonlinear ones.
+
+
+
+### prop existence and uniqueness of solutions for first-order linear equations
+	
+	For continuous functions $p$ and $q$, the DE
+	
+	$$
+		y' + p(t)y = q(t), y(t_0) = y_0
+	$$
+	
+	has a unique solution. 
+	
+###
+
+
+
+That's a nice result! Every first-order linear DE with an initial value not only has a solution, but it has exactly one. As the lengthy title suggests, we use the term **existence and uniqueness** to describe that property.
+
+There's not much going on beneath the surface of this result --- we need $p$ and $q$ to be continuous so that they're integrable (and in fact simply integrable but not necessarily continuous functions will suffice). Then we just solve the DE with an integrating factor. The proposition makes no claim that the solution will be nice, and in fact we've seen just the opposite --- sometimes we'll end up with a solution in terms of a nonelementary integral. If that sort of behavior is on the table, then this proposition is the best we could hope for.
+
+When a first-order DE $y' = f(t, y)$ is nonlinear, we don't have a general solving method, but we surprisingly get almost as nice of a result.
+
+
+
+### thm existence and uniqueness of solutions for first-order nonlinear equations
+	
+	For a continuous function $f(t, y)$ with a continuous partial derivative $$\frac{\partial f}{\partial y}$$, the DE
+	
+	$$
+		y' = f(t, y), y(t_0) = y_0
+	$$
+	
+	has a unique solution. 
+	
+###
+
+
+
+We're now faced with the question of what a partial derivative is --- it's a topic from calculus IV, so you may have seen it already, but thankfully it's not complicated if you haven't. When we have a function of a single variable like $g(x)$, we can only differentiate it with respect to $x$. But say we define $f$ as
+
+$$
+	g(x) = cx^2
+$$
+
+for some fixed constant $c$. Then the derivative $\frac{dg}{dx} = 2cx$ tells us how fast $g(x)$ is changing relative to $x$. What if we wanted to know how fast $g$ was changing relative to $c$? We first need to formally make $c$ an input variable to $g$, which means it's now a function of two variables: $g(x, c) = cx^2$, and to remind us that we're only taking a *partial* derivative (since we're only looking at one variable at a time), we curl the $d$ symbols in the derivative a little:
+
+$$
+	\frac{\partial g}{\partial c} = x^2,
+$$
+
+read "partial $g$ partial $c$". When we differentiate with respect to $x$, $c$ is a constant, and now it's reversed: $g$ is just a linear function of $c$. So despite the unusual notation and name, $\frac{\partial f}{\partial y}$ just means the derivative of $f$ with $t$ treated as a constant.
+
+The proof of this theorem is well beyond the scope of this class, but the key takeaway is simple: solutions to nonlinear DEs are guaranteed to exist and be unique when the expression equal to $y'$ is continuous and differentiating it with respect to $y$ also produces a continuous function. If one or both of those conditions fails to hold, there may still be a unique solution, but there might be no solutions or many.
+
+
+
+## Exact Differential Equations
 
 
 

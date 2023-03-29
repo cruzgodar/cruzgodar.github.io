@@ -149,15 +149,12 @@ Page.load = async function()
 		Site.Settings.condense_applet();
 	}
 	
-	if (Site.scripts_loaded["mathjax"])
+	Site.scripts_loaded["mathjax"].then(async () =>
 	{
-		this.Load.Math.typeset()
+		await this.Load.Math.typeset();
 		
-		.then(() =>
-		{
-			setTimeout(() => this.Cards.init(), 30);
-		});
-	}
+		setTimeout(() => this.Cards.init(), 30);
+	});
 	
 	
 	
