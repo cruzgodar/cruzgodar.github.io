@@ -414,6 +414,7 @@ Site.sitemap =
 			"/teaching/uo/256/notes/1-intro-to-des/",
 			"/teaching/uo/256/notes/2-if-and-sep/",
 			"/teaching/uo/256/notes/3-existence-and-exactness/",
+			"/teaching/uo/256/notes/4-intro-to-second-order-linear/",
 		]
 	},
 		
@@ -439,6 +440,13 @@ Site.sitemap =
 	},
 	
 	"/teaching/uo/256/notes/3-existence-and-exactness/":
+	{
+		parent: "/teaching/uo/256/",
+		
+		children: []
+	},
+	
+	"/teaching/uo/256/notes/4-intro-to-second-order-linear/":
 	{
 		parent: "/teaching/uo/256/",
 		

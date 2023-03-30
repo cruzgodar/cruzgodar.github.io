@@ -296,7 +296,7 @@ const components =
 			.replaceAll(/\[ASTERISK\]/g, "*")
 			.replaceAll(/\[BACKTICK\]/g, "`")
 			.replaceAll(/\[DOLLARSIGN\]/g, "\\$")
-			.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>/g, (match, $1) => `<span class="tex-holder" data-source-tex="${$1.replaceAll(/\\displaystyle\s*/g, "")}">\$${$1}\$</span>`);
+			.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>/g, (match, $1) => `<span class="tex-holder inline-math" data-source-tex="${$1.replaceAll(/\\displaystyle\s*/g, "")}">\$${$1}\$</span>`);
 		},
 		
 		
@@ -814,7 +814,7 @@ const components =
 			{
 				const content = this.Parse.text(lines[i]);
 				
-				if (content.match(/^[0-9]+?\./) && content.indexOf(`class="tex-holder"`) !== -1)
+				if (content.match(/^[0-9]+?\./) && content.indexOf("tex-holder") !== -1)
 				{
 					lines[i] = `<p class="body-text homework-problem">${content}</p>`;
 				}

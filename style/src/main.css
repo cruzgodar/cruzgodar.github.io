@@ -274,6 +274,11 @@ mjx-container
 	-o-tab-size: 4;
 }
 
+.bad-math
+{
+	color: rgb(255, 127, 0);
+}
+
 
 
 #card-container

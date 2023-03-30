@@ -153,7 +153,7 @@ Page.load = async function()
 	{
 		await this.Load.Math.typeset();
 		
-		setTimeout(() => this.Cards.init(), 30);
+		setTimeout(() => this.Cards.init(), 100);
 	});
 	
 	
@@ -1022,6 +1022,8 @@ Page.Load =
 	
 	Math:
 	{
+		length_cap: 200,
+		
 		typeset: async function()
 		{
 			await Site.scripts_loaded["mathjax"];
@@ -1031,6 +1033,19 @@ Page.Load =
 				await MathJax.typesetPromise();
 				
 				Page.element.querySelectorAll("mjx-container").forEach(element => element.setAttribute("tabindex", -1));
+				
+				if (DEBUG)
+				{
+					Page.element.querySelectorAll(".inline-math").forEach(element =>
+					{
+						if (element.getBoundingClientRect().width >= this.length_cap)
+						{
+							console.log(`Inline math is too long! Source: ${element.getAttribute("data-source-tex")}`);
+							
+							element.classList.add("bad-math");
+						}
+					});
+				}
 				
 				resolve();
 			});

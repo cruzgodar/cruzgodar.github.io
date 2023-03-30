@@ -55,6 +55,7 @@ home
 			notes/1-intro-to-des
 			notes/2-if-and-sep
 			notes/3-existence-and-exactness
+			notes/4-intro-to-second-order-linear
 		
 		uo/253
 			notes/0-calc-2-review

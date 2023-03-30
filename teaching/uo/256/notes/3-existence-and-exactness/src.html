@@ -70,7 +70,13 @@ read "partial $g$ partial $c$". When we differentiate with respect to $x$, $c$ i
 
 ### exc partial derivatives
 	
-	Let $h(x, y) = 2\log\left(\sin^2(x) + y\right)$. Find $$\frac{\partial h}{\partial x}$$ and $$\frac{\partial h}{\partial y}$$.
+	Define a function $h$ by
+	
+	$$
+		h(x, y) = 2\log\left(\sin^2(x) + y\right).
+	$$
+	
+	Find $$\frac{\partial h}{\partial x}$$ and $$\frac{\partial h}{\partial y}$$.
 	
 ###
 
@@ -122,7 +128,13 @@ Our final solving method for first-order DEs looks quite a lot like integrating 
 
 
 
-Let's unpack that a little. The reason we're writing $f(x, y)$ on the left is because the output of $f(x, y)$ *is a function* --- specifically, $(f(x, y))(t) = f(x(t), y(t))$. It also only takes in $t$, so it's a function of one variable --- hence the use of $d$ and not $\partial$ on the left side of the equation. The right side is just the chain rule applied to both the input variables of $f$ --- when $f$ is a function of just $x$, it says
+Let's unpack that a little. The reason we're writing $f(x, y)$ on the left is because the output of $f(x, y)$ *is a function* --- specifically,
+
+$$
+	(f(x, y))(t) = f(x(t), y(t)).
+$$
+
+It also only takes in $t$, so it's a function of one variable --- hence the use of $d$ and not $\partial$ on the left side of the equation. The right side is just the chain rule applied to both the input variables of $f$ --- when $f$ is a function of just $x$, it says
 
 $$
 	\frac{d f(x)}{dt} = \frac{df}{dx} \frac{dx}{dt},
@@ -170,7 +182,7 @@ which is just the chain rule from calculus I.
 
 ### exc the multivariable chain rule
 	
-	Let $g(x, y) = x\tan(x + y)$, $x(t) = t$, and $y(t) = e^t$. Find $\frac{d g(x, y)}{dt}$ with the multivariable chain rule.
+	Let $g(x, y) = x\tan(x + y)$, $x(t) = t$, and $y(t) = e^t$. Find $$\frac{d g(x, y)}{dt}$$ with the multivariable chain rule.
 	
 ###
 
