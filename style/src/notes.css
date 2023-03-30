@@ -133,6 +133,8 @@
 	
 	font-weight: bold;
 	font-style: normal;
+	
+	text-align: left !important;
 }
 
 .notes-def-title
