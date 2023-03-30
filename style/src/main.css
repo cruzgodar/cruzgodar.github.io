@@ -335,6 +335,11 @@ mjx-container
 	text-align: left;
 }
 
+.card .body-text.homework-problem
+{
+	margin-top: 48px;
+}
+
 .card .heading-text
 {
 	/* Makes things look just a little nicer. */

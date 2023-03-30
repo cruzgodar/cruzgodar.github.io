@@ -812,7 +812,17 @@ const components =
 			//Regular text!
 			else
 			{
-				lines[i] = `<p class="body-text">${this.Parse.text(lines[i])}</p>`;
+				const content = this.Parse.text(lines[i]);
+				
+				if (content.match(/^[0-9]+?\./) && content.indexOf(`class="tex-holder"`) !== -1)
+				{
+					lines[i] = `<p class="body-text homework-problem">${content}</p>`;
+				}
+				
+				else
+				{
+					lines[i] = `<p class="body-text">${content}</p>`;
+				}
 			}
 		}
 		
