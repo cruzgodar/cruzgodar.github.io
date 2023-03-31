@@ -153,7 +153,12 @@ Page.load = async function()
 	{
 		await this.Load.Math.typeset();
 		
+		//I try to hide my sudness
+		this.Cards.init();
+		
 		setTimeout(() => this.Cards.init(), 100);
+		
+		setTimeout(() => this.Cards.init(), 1000);
 	});
 	
 	

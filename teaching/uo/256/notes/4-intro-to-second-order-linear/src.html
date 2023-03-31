@@ -2,11 +2,292 @@
 
 ### nav-buttons
 
-Let's take a moment to summarize where we are in the course so far. First-order DEs are complicated, but we have a handful of results about them. We can solve any first-order linear DE with integrating factors, and there are two special types of first-order nonlinear DEs --- separable and exact --- that we can also solve with other methods. As a stark example of the general difficulty of the subject of differential equations, moving just one order higher will force us to narrow our scope drastically. We'll only be considering second-order linear DEs, and even then, it will take us a handful of sections to develop partial solving methods. It may come as little surprise that we will have a relatively small amount to say about third-order and higher DEs --- the difficulty curve is drastic.
+Let's take a moment to summarize where we are in the course so far. First-order DEs are complicated, but we have a handful of results about them. We can solve any first-order linear DE with integrating factors, and there are two special types of first-order nonlinear DEs --- separable and exact --- that we can solve with other methods. As a stark example of the general difficulty of the subject of differential equations, moving just one order higher will force us to narrow our scope drastically. We'll only be considering second-order linear DEs, and even then, it will take us a handful of sections to develop partial solving methods. It may come as little surprise that we will have a relatively small amount to say about third-order and higher DEs --- the difficulty curve is just drastic.
+
+A general second-order DE has the form
+
+$$
+	F(y'', y', y, t) = 0,
+$$
+
+which is just a symbol-heavy way of saying it's an equation involving $y''$, $y'$, $y$, and $t$. The general study of these is beyond our scope, and we'll restrict our attention to second-order *linear* DEs, which have the form
+
+$$
+	f_2(t)y'' + f_1(t)y' + f_0(t)y = g(t).
+$$
+
+In other words, the function $F$ from before is a linear function of $y$, $y'$, and $y''$, but not necessarily of $t$. Since we'd expect solving for $y$ will require two integrations to get rid of the $y''$, and each integration produces an arbitrary constant, we'll typically need *two* initial conditions to solve for a particular solution. Most often, we'll have one of the form $y(t_0) = y_0$ as usual, and then another of the form $y'(t_0) = y'_0$, telling us the initial value of the derivative.
+
+We're going to build up our theory of these DEs from the ground up, and the starting place is as simple as possible. Let's define a few terms and then outline the problem we're trying to solve.
 
 
 
+### def homogenous DE
+	
+	A linear DE is **homogeneous** if $g(t) = 0$. In other words, there is no constant term relative to $y$.
+	
+###
 
+
+
+Our first type of second-order linear DEs will be homogeneous and constant-coefficient: that is, they'll be of the form
+
+$$
+	ay'' + by' + cy = 0
+$$
+
+for constants $a$, $b$, and $c$. Even in such a simple case, we have absolutely no tools to get started. Our best hope is just to guess a solution, so let's try to make it a good guess. Without any $t$s present anywhere, it seems reasonable that $e^t$ might be relavent to the solution. It's definitely not enough by itself, so let's try $e^{rt}$ for a variable $r$ and see if we can narrow down what it would need to be. We have
+
+$$
+	ar^2e^{rt} + bre^{rt} + ce^{rt} = 0,
+$$
+
+and $e^{rt}$ is never zero, so we can divide through by it to get
+
+$$
+	ar^2 + br + c = 0.
+$$
+
+Since $r$ is just a number, this is a regular quadratic equation! If we can solve for $r$, say $r = r_1$ and $r = r_2$, then we'll have our solutions: $y = e^{r_1t}$ and $y = e^{r_2 t}$. Actually, for any $c_1$ and $c_2$, a solution is
+
+$$
+	y = c_1e^{r_1 t} + c_2 e^{r_2 t}.
+$$
+
+To verify that, we just plug it back into the DE:
+
+$$
+	&\ \ a \left( c_1 r_1^2 e^{r_1 t} + c_2 r_2^2 e^{r_2 t} \right) + b \left( c_1 r_1 e^{r_1 t} + c_2 r_2 e^{r_2 t} \right) + c \left( c_1 e^{r_1 t} + c_2 e^{r_2 t} \right)
+	
+	&= c_1 e^{r_1 t} \left( ar_1^2 + br_1 + c \right) + c_2 e^{r_2 t} \left( ar_2^2 + br_2 + c \right)
+	
+	&= 0.
+$$
+
+This is an important enough technique that we'll want to give that quadratic equation its own name.
+
+
+
+### def characteristic equation
+	
+	The **characteristic equation** for the second-order linear constant-coefficient homogeneous DE
+	
+	$$
+		ay'' + by' + cy = 0
+	$$
+	
+	is the quadratic equation
+	
+	$$
+		ar^2 + br + c = 0.
+	$$
+	
+###
+
+
+
+Let's try using a characteristic equation in a concrete example to see how it works.
+
+
+
+### ex a characteristic equation
+	
+	Solve $y'' + 3y' + 2y = 0$, given $y(0) = 1$ and $y'(0) = 2$.
+	
+	The corresponding characteristic equation is
+	
+	$$
+		r^2 + 3r + 2 = 0,
+	$$
+	
+	which factors to give $r = -1$ and $r = -2$. These correspond to the solutions $y = e^{-t}$ and $y = e^{-2t}$, so our general solution is
+	
+	$$
+		y = c_1e^{-t} + c_2e^{-2t}.
+	$$
+	
+	Now our initial conditions give us
+	
+	$$
+		y(0) = c_1 + c_2 &= 1
+		y'(0) = -c_1 - 2c_2 &= 2,
+	$$
+	
+	and by adding the equations together, we get $c_2 = -3$, so $c_1 = 4$. Our particular solution is therefore
+	
+	$$
+		y = 4e^{-t} - 3e^{-2t}.
+	$$
+	
+###
+
+### exc a characteristic equation
+	
+	Solve $y'' = 4y$, given $y(0) = 4$ and $y'(0) = -4$.
+	
+###
+
+
+
+We'll have to wait a little while before writing down the general method for solving this type of DE, but it will look a lot like the previous examples. Between here and there, we desparately need some theory --- is this method with the characteristic equation always going to work? How can we tell? Is there even guaranteed to be a unique solution to a second-order DE? To begin finding answers, let's first write down a general second-order homogeneous DE as an operator: for continuous functions $p$ and $q$, define $L$ by
+
+$$
+	L[y] = y'' + p(t)y' + q(t)y.
+$$
+
+We use brackets on $L$ for the same reason we do with operators like $\frac{d}{dt}$: its inputs are functions rather than just numbers. Setting $L[y] = 0$ gives us a general second-order homogeneous DE, and setting it equal to some other function $g(t)$ results in the more complicated nonhomogeneous case. Thankfully, even the complicated case is well-behaved with regard to the existence of solutions:
+
+
+
+### thm existence and uniqueness of solutions for second-order DEs
+	
+	Let $p$, $q$, and $g$ be continuous functions and define the operator $L$ by
+	
+	$$
+		L[y] = y'' + p(t)y' + q(t)y.
+	$$
+	
+	Then the DE $L[y] = g(t)$, given $y(t_0) = y_0$ and $y'(t_0) = y'_0$, has a unique solution.
+	
+###
+
+
+
+Earlier, we alluded to the idea that once we find two solutions $y_1$ and $y_2$, we can take any linear combination $c_1 y_1 + c_2 y_2$ to produce a new solution. This is true in general for homogeneous DEs only.
+
+
+
+### prop combination of solutions
+	
+	Define the operator $L$ by
+	
+	$$
+		L[y] = y'' + p(t)y' + q(t)y
+	$$
+	
+	for continuous functions $p$ and $q$. If $y = y_1(t)$ and $y = y_2(t)$ are both solutions of $L[y] = 0$, then so is $y = c_1 y_1 + c_2 y_2$ for any $c_1$ and $c_2$.
+	
+###
+
+
+
+There's no magic here: since derivatives split across addition and scalar multiplication, we have
+
+$$
+	L[c_1 y_1 + c_2 y_2] = c_1 L[y_1] + c_2 L[y_2].
+$$
+
+In other words, $L$ is a **linear** operator. Since both $y_1$ and $y_2$ are solutions, this whole expression is zero and therefore also a solution. We'll have a lot more to say about linear operators later in the course, but this is all we'll need for now.
+
+So we can produce many solutions with the previous proposition, but the big question that's still unanswered is whether we can get *all* of them that way: for any solution $y$ of $L[y] = 0$ with initial conditions $y(t_0) = y_0$ and $y'(t_0) = y'_0$, is there some choice of $c_1$ and $c_2$ so that $y = c_1 y_1 + c_2 y_2$? If that's the case, then we get a system of equations involving $c_1$ and $c_2$:
+
+$$
+	y(t_0) &= c_1 y_1(t_0) + c_2 y_2(t_0) &&= y_0
+	
+	y'(t_0) &= c_1 y_1'(t_0) + c_2 y_2'(t_0) &&= y'_0.
+$$
+
+So when does this have a unique solution for $c_1$ and $c_2$? As with linear operators, we'll have a lot more to say about this in the future, but here's the result we'll need for now: we can represent this system as a **matrix**, which is a rectangular grid of numbers. It turns out that if all we care about is whether a unique solution exists, and not what it is exactly, then we don't need to worry about the right sides of the equations at all --- the only things that matter are the coefficients on $c_1$ and $c_2$. Arranging these into a $2 \times 2$ matrix gives us
+
+$$
+	\left[ \begin{array}{cc} y_1(t_0) & y_2(t_0) \\ y_1'(t_0) & y_2'(t_0) \end{array} \right].
+$$
+
+Again, more on this in a few weeks, but the important result here is that the system of equations has a unique solution if and only if the **determinant** of this matrix is nonzero. The determinant of a matrix is a complicated operation in general, but it's not bad at all for a $2 \times 2$:
+
+$$
+	\det \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right] = ad - bc.
+$$
+
+In our case, we want to take the determinant of the particular $2 \times 2$ matrix made from our initial conditions, and it has a special name:
+
+
+
+### def the Wronskian
+	
+	Let $p$ and $q$ be continuous functions and consider the second-order linear homogenous DE
+	
+	$$
+		y'' + p(t)y' + q(t)y &= 0
+		y(t_0) &= y_0
+		y'(t_0) &= y'_0.
+	$$
+	
+	Given two general solutions $y = y_1(t)$ and $y = y_2(t)$, the **Wronskian** is the determinant
+	
+	$$
+		W[y_1, y_2](t_0) = \det \left[ \begin{array}{cc} y_1(t_0) & y_2(t_0) \\ y_1'(t_0) & y_2'(t_0) \end{array} \right].
+	$$
+	
+	We often write this more concisely as just
+	
+	$$
+		W[y_1, y_2] = \det \left[ \begin{array}{cc} y_1 & y_2 \\ y_1' & y_2' \end{array} \right].
+	$$
+	
+	The DE has a unique solution if and only if $W \neq 0$.
+	
+###
+
+
+
+While there is a formula for actually finding $c_1$ and $c_2$ in terms of $W$ if we know it's nonzero, it's a mess to write down and involves two more determinants. Instead, it's easy enough to just solve the system of equations for $c_1$ and $c_2$ directly. Moreover, the true power of the Wronskian is that as long as it isn't *always* zero, we can produce all possible solutions to a given DE:
+
+
+
+### thm the Wronskian and general solutions
+	
+	Let $p$ and $q$ be continuous functions and consider the second-order linear homogenous DE
+	
+	$$
+		y'' + p(t)y' + q(t)y &= 0
+	$$
+	
+	Given two general solutions $y = y_1(t)$ and $y = y_2(t)$, if the Wronskian $W[y_1, y_2]$ is nonzero for *some* value of $t$, then all solutions of the DE are of the form $c_1y_1 + c_2y_2$.
+	
+###
+
+
+
+Let's (finally) return to an example and put all of this into practice.
+
+
+
+### ex solving a DE with the Wronskian
+	
+	Solve $y'' + 6y' + 8y = 0$ and verify that you've found all possible solutions.
+	
+	The corresponding characteristic equation is
+	
+	$$
+		r^2 + 6r + 8 &= 0
+		
+		(r + 2)(r + 4) &= 0,
+	$$
+	
+	so $r = -2$ or $r = -4$. Our two solutions are then $y_1 = e^{-2t}$ and $y_2 = e^{-4t}$, so the Wronskian is
+	
+	$$
+		W\left[ e^{-2t}, e^{-4t} \right] &= \det \left[ \begin{array}{cc} e^{-2t} & e^{-4t} \\ -2e^{-2t} & -4e^{-4t} \end{array} \right]
+		
+		&= -4e^{-2t}e^{-4t} + 2e^{-4t}e^{-2t}
+		
+		&= -2e^{-6t}.
+	$$
+	
+	This is never zero for any value of $t$, so in particular, it's nonzero for *some* value of $t$ --- say $t = 0$. Therefore, the general solution is
+	
+	$$
+		y = c_1e^{-2t} + c_2e^{-4t}.
+	$$
+	
+###
+
+### exc solving a DE with the Wronskian
+	
+	Solve $2y'' + 8y' + 6y = 0$ and verify that you've found all possible solutions.
+	
+###
 
 
 
