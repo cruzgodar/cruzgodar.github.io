@@ -151,14 +151,7 @@ Page.load = async function()
 	
 	Site.scripts_loaded["mathjax"].then(async () =>
 	{
-		await this.Load.Math.typeset();
-		
-		//I try to hide my sudness
-		this.Cards.init();
-		
-		setTimeout(() => this.Cards.init(), 100);
-		
-		setTimeout(() => this.Cards.init(), 1000);
+		this.Load.Math.typeset();
 	});
 	
 	
@@ -1158,14 +1151,7 @@ Page.Cards =
 	
 	is_open: false,
 	
-	init: function()
-	{
-		Page.element.querySelectorAll(".card").forEach(card =>
-		{
-			card.style.opacity = 1;
-			card.style.display = "none";
-		});
-	},
+	animation_time: 500,
 	
 	show: async function(id)
 	{
@@ -1221,14 +1207,14 @@ Page.Cards =
 				targets: this.container,
 				opacity: 1,
 				scale: 1,
-				duration: 400,
+				duration: this.animation_time,
 				easing: "easeOutQuint"
 			});
 			
 			anime({
 				targets: [Page.element, document.querySelector("#header")],
 				filter: "brightness(.5)",
-				duration: 400,
+				duration: this.animation_time,
 				easing: "easeOutQuint"
 			});
 			
@@ -1237,7 +1223,7 @@ Page.Cards =
 			anime({
 				targets: Site.Settings.meta_theme_color_element,
 				content: theme_color,
-				duration: 400,
+				duration: this.animation_time,
 				easing: "easeOutQuint",
 			});
 			
@@ -1246,7 +1232,7 @@ Page.Cards =
 			anime({
 				targets: document.documentElement,
 				backgroundColor: color,
-				duration: 400,
+				duration: this.animation_time,
 				easing: "easeOutQuint",
 				complete: resolve
 			});
@@ -1262,7 +1248,7 @@ Page.Cards =
 			anime({
 				targets: [Page.element, document.querySelector("#header")],
 				filter: "brightness(1)",
-				duration: 400,
+				duration: this.animation_time,
 				easing: "easeOutQuint"
 			});
 			
@@ -1271,7 +1257,7 @@ Page.Cards =
 			anime({
 				targets: Site.Settings.meta_theme_color_element,
 				content: theme_color,
-				duration: 400,
+				duration: this.animation_time,
 				easing: "easeOutQuint",
 			});
 			
@@ -1280,7 +1266,7 @@ Page.Cards =
 			anime({
 				targets: document.documentElement,
 				backgroundColor: color,
-				duration: 400,
+				duration: this.animation_time,
 				easing: "easeOutQuint"
 			});
 		
@@ -1288,7 +1274,7 @@ Page.Cards =
 				targets: Page.Cards.container,
 				opacity: 0,
 				scale: .95,
-				duration: 400,
+				duration: this.animation_time,
 				easing: "easeOutQuint",
 				complete: resolve
 			});

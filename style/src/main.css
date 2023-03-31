@@ -314,9 +314,11 @@ mjx-container
 
 .card
 {
+	display: none;
+	
 	position: relative;
 	
-	opacity: 0;
+	opacity: 1;
 	
 	width: min(70%, 100% - 64px);
 	padding: 16px;
@@ -361,7 +363,7 @@ mjx-container
 
 #card-container .card
 {
-	display: block !important;
+	display: block;
 }
 
 #card-close-button

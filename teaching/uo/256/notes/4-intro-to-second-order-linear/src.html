@@ -22,7 +22,7 @@ We're going to build up our theory of these DEs from the ground up, and the star
 
 
 
-### def homogenous DE
+### def homogeneous DE
 	
 	A linear DE is **homogeneous** if $g(t) = 0$. In other words, there is no constant term relative to $y$.
 	
@@ -153,7 +153,7 @@ We use brackets on $L$ for the same reason we do with operators like $\frac{d}{d
 
 
 
-Earlier, we alluded to the idea that once we find two solutions $y_1$ and $y_2$, we can take any linear combination $c_1 y_1 + c_2 y_2$ to produce a new solution. This is true in general for homogeneous DEs only.
+Earlier, we alluded to the idea that once we find two solutions $y_1$ and $y_2$ --- which we typically call **fundamental solutions** --- we can take any linear combination $c_1 y_1 + c_2 y_2$ to produce a new solution. This is true in general, but for homogeneous DEs only.
 
 
 
@@ -187,7 +187,7 @@ $$
 	y'(t_0) &= c_1 y_1'(t_0) + c_2 y_2'(t_0) &&= y'_0.
 $$
 
-So when does this have a unique solution for $c_1$ and $c_2$? As with linear operators, we'll have a lot more to say about this in the future, but here's the result we'll need for now: we can represent this system as a **matrix**, which is a rectangular grid of numbers. It turns out that if all we care about is whether a unique solution exists, and not what it is exactly, then we don't need to worry about the right sides of the equations at all --- the only things that matter are the coefficients on $c_1$ and $c_2$. Arranging these into a $2 \times 2$ matrix gives us
+When does this have a unique solution for $c_1$ and $c_2$? As with linear operators, we'll have a lot more to say about this in the future, but here's the result we'll need for now: we can represent this system as a **matrix**, which is a rectangular grid of numbers. It turns out that if all we care about is whether a unique solution exists, and not what it is exactly, then we don't need to worry about the right sides of the equations at all --- the only things that matter are the coefficients on $c_1$ and $c_2$. Arranging these into a $2 \times 2$ matrix gives us
 
 $$
 	\left[ \begin{array}{cc} y_1(t_0) & y_2(t_0) \\ y_1'(t_0) & y_2'(t_0) \end{array} \right].
@@ -205,7 +205,7 @@ In our case, we want to take the determinant of the particular $2 \times 2$ matr
 
 ### def the Wronskian
 	
-	Let $p$ and $q$ be continuous functions and consider the second-order linear homogenous DE
+	Let $p$ and $q$ be continuous functions and consider the second-order linear homogeneous DE
 	
 	$$
 		y'' + p(t)y' + q(t)y &= 0
@@ -213,7 +213,7 @@ In our case, we want to take the determinant of the particular $2 \times 2$ matr
 		y'(t_0) &= y'_0.
 	$$
 	
-	Given two general solutions $y = y_1(t)$ and $y = y_2(t)$, the **Wronskian** is the determinant
+	Given two fundamental solutions $y = y_1(t)$ and $y = y_2(t)$, the **Wronskian** is the determinant
 	
 	$$
 		W[y_1, y_2](t_0) = \det \left[ \begin{array}{cc} y_1(t_0) & y_2(t_0) \\ y_1'(t_0) & y_2'(t_0) \end{array} \right].
@@ -237,13 +237,13 @@ While there is a formula for actually finding $c_1$ and $c_2$ in terms of $W$ if
 
 ### thm the Wronskian and general solutions
 	
-	Let $p$ and $q$ be continuous functions and consider the second-order linear homogenous DE
+	Let $p$ and $q$ be continuous functions and consider the second-order linear homogeneous DE
 	
 	$$
 		y'' + p(t)y' + q(t)y &= 0
 	$$
 	
-	Given two general solutions $y = y_1(t)$ and $y = y_2(t)$, if the Wronskian $W[y_1, y_2]$ is nonzero for *some* value of $t$, then all solutions of the DE are of the form $c_1y_1 + c_2y_2$.
+	Given two fundamental solutions $y = y_1(t)$ and $y = y_2(t)$, if the Wronskian $W[y_1, y_2]$ is nonzero for *some* value of $t$, then all solutions of the DE are of the form $c_1y_1 + c_2y_2$.
 	
 ###
 
@@ -288,6 +288,12 @@ Let's (finally) return to an example and put all of this into practice.
 	Solve $2y'' + 8y' + 6y = 0$ and verify that you've found all possible solutions.
 	
 ###
+
+
+
+For a second-order linear homogeneous DE, we'll always be able to choose initial conditions to make the Wronskian nonzero, meaning there is always a general solution.
+
+There is a fairly large question we've left implied so far: what if the roots of the characteristic equation are complex, or if they're the same? In the first case, we have the concerning sight of raising $e$ to a complex number, and in the second, there's only one fundamental solution when there should be two. We'll answer both questions 
 
 
 
