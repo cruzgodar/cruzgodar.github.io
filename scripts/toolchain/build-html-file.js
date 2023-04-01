@@ -814,9 +814,9 @@ const components =
 			{
 				const content = this.Parse.text(lines[i]);
 				
-				if (content.match(/^[0-9]+?\./) && content.indexOf("tex-holder") !== -1)
+				if (content.match(/^[0-9]+?\./))
 				{
-					lines[i] = `<p class="body-text homework-problem">${content}</p>`;
+					lines[i] = `<p class="body-text numbered-list-item">${content}</p>`;
 				}
 				
 				else
