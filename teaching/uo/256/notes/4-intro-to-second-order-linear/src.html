@@ -36,7 +36,7 @@ $$
 	ay'' + by' + cy = 0
 $$
 
-for constants $a$, $b$, and $c$. Even in such a simple case, we have absolutely no tools to get started. Our best hope is just to guess a solution, so let's try to make it a good guess. Without any $t$s present anywhere, it seems reasonable that $e^t$ might be relavent to the solution. It's definitely not enough by itself, so let's try $e^{rt}$ for a variable $r$ and see if we can narrow down what it would need to be. We have
+for constants $a$, $b$, and $c$. Even in such a simple case, we have absolutely no tools to get started. Our best hope is just to guess a solution, so let's try to make it a good guess. Without any $t$s present anywhere, it seems reasonable that $e^t$ might be relevent to the solution. It's definitely not enough by itself, so let's try $e^{rt}$ for a variable $r$ and see if we can narrow down what it would need to be. We have
 
 $$
 	ar^2e^{rt} + bre^{rt} + ce^{rt} = 0,
@@ -129,7 +129,7 @@ Let's try using a characteristic equation in a concrete example to see how it wo
 
 
 
-We'll have to wait a little while before writing down the general method for solving this type of DE, but it will look a lot like the previous examples. Between here and there, we desparately need some theory --- is this method with the characteristic equation always going to work? How can we tell? Is there even guaranteed to be a unique solution to a second-order DE? To begin finding answers, let's first write down a general second-order homogeneous DE as an operator: for continuous functions $p$ and $q$, define $L$ by
+We'll have to wait a little while before writing down the general method for solving this type of DE, but it will look a lot like the previous examples. Between here and there, we desperately need some theory --- is this method with the characteristic equation always going to work? How can we tell? Is there even guaranteed to be a unique solution to a second-order DE? To begin finding answers, let's first write down a general second-order homogeneous DE as an operator: for continuous functions $p$ and $q$, define $L$ by
 
 $$
 	L[y] = y'' + p(t)y' + q(t)y.
@@ -293,7 +293,7 @@ Let's (finally) return to an example and put all of this into practice.
 
 For a second-order linear homogeneous DE, we'll always be able to choose initial conditions to make the Wronskian nonzero, meaning there is always a general solution.
 
-There is a fairly large question we've left implied so far: what if the roots of the characteristic equation are complex, or if they're the same? In the first case, we have the concerning sight of raising $e$ to a complex number, and in the second, there's only one fundamental solution when there should be two. We'll answer both questions 
+There is a fairly large question we've left implied so far: what if the roots of the characteristic equation are complex, or if they're the same? In the first case, we have the concerning sight of raising $e$ to a complex number, and in the second, there's only one fundamental solution when there should be two. We'll answer both questions in the next section, but for now, it's worth noting that our solving method works only for characteristic equations with distinct real roots.
 
 
 

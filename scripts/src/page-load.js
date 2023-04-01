@@ -1241,14 +1241,14 @@ Page.Cards =
 	
 	hide: async function()
 	{
-		this.is_open = false;
+		Page.Cards.is_open = false;
 		
 		await new Promise((resolve, reject) =>
 		{
 			anime({
 				targets: [Page.element, document.querySelector("#header")],
 				filter: "brightness(1)",
-				duration: this.animation_time,
+				duration: Page.Cards.animation_time,
 				easing: "easeOutQuint"
 			});
 			
@@ -1257,7 +1257,7 @@ Page.Cards =
 			anime({
 				targets: Site.Settings.meta_theme_color_element,
 				content: theme_color,
-				duration: this.animation_time,
+				duration: Page.Cards.animation_time,
 				easing: "easeOutQuint",
 			});
 			
@@ -1266,7 +1266,7 @@ Page.Cards =
 			anime({
 				targets: document.documentElement,
 				backgroundColor: color,
-				duration: this.animation_time,
+				duration: Page.Cards.animation_time,
 				easing: "easeOutQuint"
 			});
 		
@@ -1274,7 +1274,7 @@ Page.Cards =
 				targets: Page.Cards.container,
 				opacity: 0,
 				scale: .95,
-				duration: this.animation_time,
+				duration: Page.Cards.animation_time,
 				easing: "easeOutQuint",
 				complete: resolve
 			});
@@ -1286,7 +1286,7 @@ Page.Cards =
 		
 		Page.Cards.container.appendChild(Page.Cards.close_button);
 		
-		document.documentElement.removeEventListener("click", this.handle_click_event);
+		document.documentElement.removeEventListener("click", Page.Cards.handle_click_event);
 	},
 	
 	handle_click_event: function(e)

@@ -324,6 +324,8 @@ Site.load = async function(url)
 	
 	
 	
+	Page.Cards.close_button.addEventListener("click", Page.Cards.hide);
+	
 	Page.Banner.ScrollButton.exists = false;
 	
 	Site.Settings.set_up();
