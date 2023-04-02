@@ -34,6 +34,19 @@ class GravnerGriffeathSnowflake extends Applet
 			
 			uniform sampler2D u_texture;
 			
+			const float rho = .5;
+			const float beta = 1.3;
+			const float alpha = .08;
+			const float theta = .025;
+			const float kappa = .003;
+			const float mu = .07;
+			const float gamma = .00005;
+			const float sigma = 0.0;
+			
+			const float resolution = 500.0;
+			const float step = 1.0 / 500.0;
+			
+			
 			
 			
 			//Don't know how, but this writes an honest float32 to the 32 bits of output, which JS then decodes.
@@ -82,17 +95,120 @@ class GravnerGriffeathSnowflake extends Applet
 			
 			void main(void)
 			{
-				vec4 sample = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
+				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
+				vec4 state = texture2D(u_texture, center);
+				vec4 new_state;
 				
-				if (int(sample.z) == 0)
+				vec4 state_1 = texture2D(u_texture, center + vec2(step, 0.0));
+				vec4 state_2 = texture2D(u_texture, center + vec2(-step, 0.0));
+				vec4 state_3 = texture2D(u_texture, center + vec2(0.0, step));
+				vec4 state_4 = texture2D(u_texture, center + vec2(0.0, -step));
+				vec4 state_5;
+				vec4 state_6;
+				
+				if (mod(center.x * resolution, 2.0) == 0.0)
 				{
-					return;
+					state_5 = texture2D(u_texture, center + vec2(-step, -step));
+					state_6 = texture2D(u_texture, center + vec2(-step, step));
 				}
 				
-				vec2 v = sample.xy;
+				else
+				{
+					state_5 = texture2D(u_texture, center + vec2(step, -step));
+					state_6 = texture2D(u_texture, center + vec2(step, step));
+				}
 				
-				float x = v.x;
-				float y = v.y;
+				
+				
+				//Figure out if we're on the boundary: if we're not in the flake but a neighbor is.
+				if (state.x == 0.0 && (state_1.x == 1.0 || state_2.x == 1.0 || state_3.x == 1.0 || state_4.x == 1.0 || state_5.x == 1.0 || state_6.x == 1.0))
+				{
+					state.x = 0.5;
+				}
+				
+				
+				
+				//The diffusion step: distribute the vapor mass. If it's on the boundary, only distribute mass from other cells not in the flake.
+				if (state.x != 1.0)
+				{
+					float nearby_mass = state.w;
+					
+					
+					
+					if (state_1.x == 0.0)
+					{
+						nearby_mass += state_1.w;
+					}
+					
+					else
+					{
+						nearby_mass += state.w;
+					}
+					
+					
+					
+					if (state_2.x == 0.0)
+					{
+						nearby_mass += state_2.w;
+					}
+					
+					else
+					{
+						nearby_mass += state.w;
+					}
+					
+					
+					
+					if (state_3.x == 0.0)
+					{
+						nearby_mass += state_3.w;
+					}
+					
+					else
+					{
+						nearby_mass += state.w;
+					}
+					
+					
+					
+					if (state_4.x == 0.0)
+					{
+						nearby_mass += state_4.w;
+					}
+					
+					else
+					{
+						nearby_mass += state.w;
+					}
+					
+					
+					
+					if (state_5.x == 0.0)
+					{
+						nearby_mass += state_5.w;
+					}
+					
+					else
+					{
+						nearby_mass += state.w;
+					}
+					
+					
+					
+					if (state_6.x == 0.0)
+					{
+						nearby_mass += state_6.w;
+					}
+					
+					else
+					{
+						nearby_mass += state.w;
+					}
+					
+					
+					
+					new_state.w = nearby_mass / 7.0;
+				}
 		`;
 		
 		const frag_shader_source_update_a = `
@@ -105,14 +221,14 @@ class GravnerGriffeathSnowflake extends Applet
 		const frag_shader_source_update_b = `
 			${frag_shader_source_update_base}
 			
-				gl_FragColor = encode_float(1.0);
+				gl_FragColor = encode_float(0.0);
 			}
 		`;
 		
 		const frag_shader_source_update_c = `
 			${frag_shader_source_update_base}
 			
-				gl_FragColor = encode_float(1.0);
+				gl_FragColor = encode_float(0.0);
 			}
 		`;
 		
@@ -198,6 +314,13 @@ class GravnerGriffeathSnowflake extends Applet
 	{
 		this.resolution = resolution;
 		this.update_texture = new Float32Array(this.resolution * this.resolution * 4);
+		
+		const middle_row = Math.floor(this.resolution / 2);
+		const index = middle_row * this.resolution + middle_row;
+		this.update_texture[4 * index] = 1;
+		this.update_texture[4 * index + 2] = 1;
+		
+		
 		
 		this.wilson.change_canvas_size(this.resolution, this.resolution);
 		this.wilson_update.change_canvas_size(this.resolution, this.resolution);
