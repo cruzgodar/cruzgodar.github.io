@@ -270,7 +270,7 @@ const components =
 				
 				if (html[0] === "." && html[1] === " ")
 				{
-					html = `&#8226; ${html}`;
+					html = `<strong>&#8226;</strong> ${html.slice(2)}`;
 				}
 				
 				html = `<span style=[DOUBLEQUOTE]width: ${32 * num_tabs}px[DOUBLEQUOTE]></span>${html}`;
