@@ -1149,6 +1149,8 @@ Page.Cards =
 	current_card: null,
 	close_button: document.querySelector("#card-close-button"),
 	
+	close_button_is_fixed: false,
+	
 	is_open: false,
 	
 	animation_time: 500,
@@ -1294,6 +1296,31 @@ Page.Cards =
 		if (e.target.id === "card-container")
 		{
 			Page.Cards.hide();
+		}
+	},
+	
+	on_scroll: function()
+	{
+		const rect = Page.Cards.current_card.getBoundingClientRect();
+		
+		if (rect.top <= 0 && !Page.Cards.close_button_is_fixed)
+		{
+			Page.Cards.close_button.style.position = "fixed";
+			Page.Cards.close_button.style.right = `${window.innerWidth - rect.right}px`;
+			
+			document.body.appendChild(Page.Cards.close_button);
+			
+			Page.Cards.close_button_is_fixed = true;
+		}
+		
+		else if (rect.top > 0 && Page.Cards.close_button_is_fixed)
+		{
+			Page.Cards.close_button.style.position = "absolute";
+			Page.Cards.close_button.style.right = "0";
+			
+			Page.Cards.current_card.insertBefore(Page.Cards.close_button, Page.Cards.current_card.firstElementChild);
+			
+			Page.Cards.close_button_is_fixed = false;
 		}
 	}
 };
