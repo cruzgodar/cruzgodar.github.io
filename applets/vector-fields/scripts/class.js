@@ -664,8 +664,6 @@ class VectorField extends Applet
 			
 			if (!this.animation_paused)
 			{
-				console.log("hi!");
-				
 				window.requestAnimationFrame(this.draw_frame.bind(this));
 			}
 		}
