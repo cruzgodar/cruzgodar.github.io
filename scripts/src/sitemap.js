@@ -50,7 +50,7 @@ Site.sitemap =
 			"/applets/the-mandelbulb/",
 			"/applets/kaleidoscopic-ifs-fractals/",
 			"/applets/binary-trees/",
-			"/applets/gravner-griffeath-snowflakes/",
+			"/applets/snowflakes/",
 			"/applets/finite-subdivisions/",
 			"/applets/generalized-julia-sets/",
 			"/applets/strange-attractors/",
@@ -210,7 +210,7 @@ Site.sitemap =
 		children: []
 	},
 	
-	"/applets/gravner-griffeath-snowflakes/":
+	"/applets/snowflakes/":
 	{
 		parent: "/applets/",
 		

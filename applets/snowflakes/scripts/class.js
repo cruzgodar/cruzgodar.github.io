@@ -1,12 +1,14 @@
 "use strict";
 
-class GravnerGriffeathSnowflake extends Applet
+class Snowflake extends Applet
 {
 	load_promise = null;
 	
 	resolution = 500;
 	
 	last_timestamp = -1;
+	
+	computations_per_frame = 20;
 	
 	
 	
@@ -24,17 +26,16 @@ class GravnerGriffeathSnowflake extends Applet
 			
 			uniform sampler2D u_texture;
 			
-			const float rho = .635;
-			const float beta = 1.6;
-			const float alpha = .4;
-			const float theta = .025;
-			const float kappa = .0025;
-			const float mu = .015;
-			const float gamma = .0005;
-			const float sigma = 0.0;
+			uniform float rho;
+			uniform float beta;
+			uniform float alpha;
+			uniform float theta;
+			uniform float kappa;
+			uniform float mu;
+			uniform float gamma;
 			
-			const float resolution = 500.0;
-			const float step = 1.0 / 500.0;
+			uniform float resolution;
+			uniform float step;
 			
 			
 			
@@ -63,17 +64,16 @@ class GravnerGriffeathSnowflake extends Applet
 			
 			uniform sampler2D u_texture;
 			
-			const float rho = .635;
-			const float beta = 1.6;
-			const float alpha = .4;
-			const float theta = .025;
-			const float kappa = .0025;
-			const float mu = .015;
-			const float gamma = .0005;
-			const float sigma = 0.0;
+			uniform float rho;
+			uniform float beta;
+			uniform float alpha;
+			uniform float theta;
+			uniform float kappa;
+			uniform float mu;
+			uniform float gamma;
 			
-			const float resolution = 500.0;
-			const float step = 1.0 / 500.0;
+			uniform float resolution;
+			uniform float step;
 			
 			
 			
@@ -206,17 +206,16 @@ class GravnerGriffeathSnowflake extends Applet
 			
 			uniform sampler2D u_texture;
 			
-			const float rho = .635;
-			const float beta = 1.6;
-			const float alpha = .4;
-			const float theta = .025;
-			const float kappa = .0025;
-			const float mu = .015;
-			const float gamma = .0005;
-			const float sigma = 0.0;
+			uniform float rho;
+			uniform float beta;
+			uniform float alpha;
+			uniform float theta;
+			uniform float kappa;
+			uniform float mu;
+			uniform float gamma;
 			
-			const float resolution = 500.0;
-			const float step = 1.0 / 500.0;
+			uniform float resolution;
+			uniform float step;
 			
 			
 			
@@ -276,17 +275,16 @@ class GravnerGriffeathSnowflake extends Applet
 			
 			uniform sampler2D u_texture;
 			
-			const float rho = .635;
-			const float beta = 1.6;
-			const float alpha = .4;
-			const float theta = .025;
-			const float kappa = .0025;
-			const float mu = .015;
-			const float gamma = .0005;
-			const float sigma = 0.0;
+			uniform float rho;
+			uniform float beta;
+			uniform float alpha;
+			uniform float theta;
+			uniform float kappa;
+			uniform float mu;
+			uniform float gamma;
 			
-			const float resolution = 500.0;
-			const float step = 1.0 / 500.0;
+			uniform float resolution;
+			uniform float step;
 			
 			
 			
@@ -417,17 +415,16 @@ class GravnerGriffeathSnowflake extends Applet
 			
 			uniform sampler2D u_texture;
 			
-			const float rho = .635;
-			const float beta = 1.6;
-			const float alpha = .4;
-			const float theta = .025;
-			const float kappa = .0025;
-			const float mu = .015;
-			const float gamma = .0005;
-			const float sigma = 0.0;
+			uniform float rho;
+			uniform float beta;
+			uniform float alpha;
+			uniform float theta;
+			uniform float kappa;
+			uniform float mu;
+			uniform float gamma;
 			
-			const float resolution = 500.0;
-			const float step = 1.0 / 500.0;
+			uniform float resolution;
+			uniform float step;
 			
 			
 			
@@ -492,7 +489,7 @@ class GravnerGriffeathSnowflake extends Applet
 				//We stretch the y-coordinate by 2/sqrt(3) to account for the squishing of the flake.
 				vec3 v = texture2D(u_texture, vec2(uv.x + 1.0, uv.y / 1.15470053838 + 1.0) / 2.0).zzz;
 				
-				gl_FragColor = vec4(v * .75, 1.0);
+				gl_FragColor = vec4(v * .8, 1.0);
 			}
 		`;
 		
@@ -524,6 +521,12 @@ class GravnerGriffeathSnowflake extends Applet
 		this.wilson.render.load_new_shader(frag_shader_source_melt);
 		this.wilson.render.load_new_shader(frag_shader_source_draw);
 		
+		this.wilson.render.init_uniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 0);
+		this.wilson.render.init_uniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 1);
+		this.wilson.render.init_uniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 2);
+		this.wilson.render.init_uniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 3);
+		this.wilson.render.init_uniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 4);
+		
 		this.wilson.render.create_framebuffer_texture_pair();
 		this.wilson.render.create_framebuffer_texture_pair();
 		
@@ -533,13 +536,31 @@ class GravnerGriffeathSnowflake extends Applet
 	
 	
 	
-	run(resolution = 500)
+	run(resolution = 500, computations_per_frame = 25, rho = .635, beta = 1.6, alpha = .4, theta = .025, kappa = .0025, mu = .015, gamma = .0005)
 	{
+		this.resume();
+		
 		this.resolution = resolution;
+		this.computations_per_frame = computations_per_frame;
+		
+		for (let i = 0; i <= 4; i++)
+		{
+			this.wilson.gl.useProgram(this.wilson.render.shader_programs[i]);
+			
+			this.wilson.gl.uniform1f(this.wilson.uniforms["resolution"][i], this.resolution);
+			this.wilson.gl.uniform1f(this.wilson.uniforms["step"][i], 1 / this.resolution);
+			this.wilson.gl.uniform1f(this.wilson.uniforms["rho"][i], rho);
+			this.wilson.gl.uniform1f(this.wilson.uniforms["beta"][i], beta);
+			this.wilson.gl.uniform1f(this.wilson.uniforms["alpha"][i], alpha);
+			this.wilson.gl.uniform1f(this.wilson.uniforms["theta"][i], theta);
+			this.wilson.gl.uniform1f(this.wilson.uniforms["kappa"][i], kappa);
+			this.wilson.gl.uniform1f(this.wilson.uniforms["mu"][i], mu);
+			this.wilson.gl.uniform1f(this.wilson.uniforms["gamma"][i], gamma);
+		}
+		
+		
 		
 		this.wilson.change_canvas_size(this.resolution, this.resolution);
-		
-		
 		
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvas_width, this.wilson.canvas_height, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, null);
@@ -576,47 +597,70 @@ class GravnerGriffeathSnowflake extends Applet
 		
 		
 		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[1]);
-		
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
-		
-		this.wilson.render.draw_frame();
-		
-		
-		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[2]);
-		
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
-		
-		this.wilson.render.draw_frame();
-		
-		
-		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[3]);
-		
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
-		
-		this.wilson.render.draw_frame();
-		
-		
-		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[4]);
-		
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
-		
-		this.wilson.render.draw_frame();
-		
-		
+		for (let i = 0; i < this.computations_per_frame; i++)
+		{
+			this.wilson.gl.useProgram(this.wilson.render.shader_programs[1]);
+			
+			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
+			
+			this.wilson.render.draw_frame();
+			
+			
+			
+			this.wilson.gl.useProgram(this.wilson.render.shader_programs[2]);
+			
+			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
+			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
+			
+			this.wilson.render.draw_frame();
+			
+			
+			
+			this.wilson.gl.useProgram(this.wilson.render.shader_programs[3]);
+			
+			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
+			
+			this.wilson.render.draw_frame();
+			
+			
+			
+			this.wilson.gl.useProgram(this.wilson.render.shader_programs[4]);
+			
+			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
+			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
+			
+			this.wilson.render.draw_frame();
+			
+			
+			
+			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+		}
 		
 		this.wilson.gl.useProgram(this.wilson.render.shader_programs[5]);
 		
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 		
 		this.wilson.render.draw_frame();
+		
+		
+		
+		const pixels = this.wilson.render.get_pixel_data();
+		
+		const threshhold = Math.floor(this.resolution / 10);
+		
+		for (let i = threshhold; i < this.resolution - threshhold; i++)
+		{
+			const index_1 = this.resolution * i + threshhold;
+			const index_2 = this.resolution * i + (this.resolution - threshhold);
+			const index_3 = this.resolution * threshhold + i;
+			const index_4 = this.resolution * (this.resolution - threshhold) + i;
+			
+			if (pixels[4 * index_1] || pixels[4 * index_2] || pixels[4 * index_3] || pixels[4 * index_4])
+			{
+				this.pause();
+			}
+		}
 		
 		
 		

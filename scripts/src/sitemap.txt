@@ -22,7 +22,7 @@ home
 		the-mandelbulb
 		kaleidoscopic-ifs-fractals
 		binary-trees
-		gravner-griffeath-snowflakes
+		snowflakes
 		finite-subdivisions
 		generalized-julia-sets
 		strange-attractors
