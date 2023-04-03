@@ -281,17 +281,17 @@
 			"image_link": "https://drive.google.com/uc?id=1V4B0ULle-Dq0-ludCNyQg5lQ8Hm6cm_X&export=download"
 		},
 		
-		"gravner-griffeath-snowflake":
+		"snowflake":
 		{
 			"title": "A Gravner-Griffeath Snowflake",
 			
-			"resolution": "5000x5000",
+			"resolution": "2000x2000",
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
 			
-			"applet_link": "gravner-griffeath-snowflakes",
+			"applet_link": "snowflakes",
 			
-			"image_link": "https://drive.google.com/uc?id=1WOE3ICzhl9IiQ-WezIVH1J6p-IRHxzEv&export=download"
+			"image_link": "https://drive.google.com/uc?id=1qCDJIacawSFc8rAJK57YbqQjVC_79Lu9&export=download"
 		},
 		
 		
@@ -574,7 +574,7 @@
 			
 			"resolution": "5000x5000",
 			
-			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
+			"featured": "Featured in the 2022 Bridges Conference, as well as UO&#x2019;s Erb Memorial Union and currently in University Hall",
 			
 			"applet_link": "the-mandelbulb",
 			
