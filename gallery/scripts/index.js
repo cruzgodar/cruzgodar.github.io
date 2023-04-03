@@ -2,106 +2,52 @@
 {
 	"use strict";
 	
-	let current_id = "";
 	
+	const title_element = Page.element.querySelector("#high-res-viewer-card h1");
+	const description_text_element = Page.element.querySelector("#description-text");
+	const featured_text_element = Page.element.querySelector("#featured-text");
+	const applet_link_element = Page.element.querySelector("#applet-link");
+	const full_res_link_element = Page.element.querySelector("#full-res-link");
 	
-	
-	let full_res_viewer_element = Page.element.querySelector("#full-res-viewer");
-	let full_res_viewer_image_element = Page.element.querySelector("#full-res-viewer-image");
-	let full_res_viewer_text_container_element = Page.element.querySelector("#full-res-viewer-text-container");
-	let main_text_container_element = Page.element.querySelector("#main-text-container");
-	let applet_link_element = Page.element.querySelector("#applet-link");
-	let full_res_link_element = Page.element.querySelector("#full-res-link");
-	
-	
-	
-	let src_separation_time = Site.aos_separation_time;
 	
 	Page.element.querySelectorAll(".gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img").forEach(element =>
 	{
-		element.addEventListener("click", e => show_full_res_image(e.target.getAttribute("data-image-id")));
+		element.addEventListener("click", e => show_card(e.target.getAttribute("data-image-id")));
 	});
 	
 	
 	
-	full_res_viewer_element.addEventListener("click", e =>
+	function show_card(id)
 	{
-		if (e.target.id === "full-res-viewer-image-container" || e.target.id === "full-res-viewer-text-container" || e.target.id === "full-res-viewer")
+		title_element.innerHTML = gallery_image_data[id]["title"];
+		
+		
+		
+		if (gallery_image_data[id]["parameters"])
 		{
-			hide_full_res_image();
-		}
-	});
-	
-	
-	
-	full_res_viewer_image_element.addEventListener("click", e =>
-	{
-		if (current_id !== "")
-		{
-			Page.Navigation.redirect(gallery_image_data[current_id]["image_link"], true);
-		}
-	});
-	
-	
-	
-	function show_full_res_image(id)
-	{
-		current_id = id;
-		
-		
-		
-		full_res_viewer_element.style.display = "block";
-		full_res_viewer_image_element.style.backgroundImage = `url(${Page.parent_folder}high-res/${id}.${Page.Images.file_extension})`;
-		
-		
-		
-		let new_html = `
-			<h1 class="heading-text center-if-needed">
-				<span>${gallery_image_data[id]["title"]}</span>
-			</h1>
+			description_text_element.innerHTML = gallery_image_data[id]["parameters"];
 			
-			<br>
-			
-			<h2 class="section-text center-if-needed">
-				<span>${gallery_image_data[id]["resolution"]}</span>
-			</h2>
-			
-			<br>
-		`;
+			description_text_element.parentElement.style.display = "block";
+		}
 		
-		
-		
-		let parameters = gallery_image_data[id]["parameters"];
-		
-		if (parameters !== undefined)
+		else
 		{
-			new_html += `
-				<p class="body-text center-if-needed">
-					<span>${parameters}</span>
-				</p>
-				
-				<br>
-			`;
+			description_text_element.parentElement.style.display = "none";
 		}
 		
 		
 		
-		let featured = gallery_image_data[id]["featured"];
-		
-		if (featured !== undefined)
+		if (gallery_image_data[id]["featured"])
 		{
-			new_html += `
-				<p class="body-text center-if-needed">
-					<span>${featured}</span>
-				</p>
-				
-				<br>
-			`;
+			featured_text_element.innerHTML = gallery_image_data[id]["featured"];
+			
+			featured_text_element.parentElement.style.display = "block";
 		}
 		
-		
-		
-		main_text_container_element.innerHTML = new_html;
+		else
+		{
+			featured_text_element.parentElement.style.display = "none";
+		}
 		
 		
 		
@@ -113,25 +59,15 @@
 		
 		
 		
-		setTimeout(() =>
-		{
-			Page.Animate.change_opacity(full_res_viewer_element, 1, Site.opacity_animation_time);
-		}, 10);
-	}
-	
-	
-	
-	function hide_full_res_image()
-	{
-		current_id = "";
+		const high_res_image_element = document.createElement("img");
 		
-		Page.Animate.change_opacity(full_res_viewer_element, 0, Site.opacity_animation_time)
+		const element = Page.element.querySelector("#high-res-viewer-card img");
+		element.parentNode.insertBefore(high_res_image_element, element);
+		element.remove();
 		
-		.then(() =>
-		{
-			full_res_viewer_image_element.style.backgroundImage = "";
-			full_res_viewer_element.style.display = "none";
-		});
+		high_res_image_element.onload = () => Page.Cards.show("high-res-viewer");
+		
+		high_res_image_element.setAttribute("src", `/gallery/high-res/${id}.webp`);
 	}
 	
 	
