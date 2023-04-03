@@ -226,6 +226,8 @@
 			
 			"resolution": "2000x2000",
 			
+			"parameters": "Generated with &#x03c1; = .3673, &#x03b2; = 1.1016, &#x03b1; = .4022, &#x03b8; = .0311, &#x03ba; = .0013, &#x03bc; = .019, &#x03b3; = .0005",
+			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
 			
 			"applet_link": "snowflakes",
