@@ -12,13 +12,13 @@
 	{
 		const resolution = parseInt(resolution_input_element.value || 500);
 		const computations_per_frame = parseInt(computations_per_frame_input_element.value || 25);
-		const rho = parseFloat(rho_input_element.value || .635);
-		const beta = parseFloat(beta_input_element.value || 1.6);
+		const rho = parseFloat(rho_input_element.value || .45);
+		const beta = parseFloat(beta_input_element.value || 1.3);
 		const alpha = parseFloat(alpha_input_element.value || .4);
-		const theta = parseFloat(theta_input_element.value || .025);
-		const kappa = parseFloat(kappa_input_element.value || .0025);
-		const mu = parseFloat(mu_input_element.value || .015);
-		const gamma = parseFloat(gamma_input_element.value || .0005);
+		const theta = parseFloat(theta_input_element.value || .03);
+		const kappa = parseFloat(kappa_input_element.value || .005);
+		const mu = parseFloat(mu_input_element.value || .0325);
+		const gamma = parseFloat(gamma_input_element.value || .025);
 		
 		applet.run(resolution, computations_per_frame, rho, beta, alpha, theta, kappa, mu, gamma);
 	}
@@ -41,13 +41,13 @@
 
 	randomize_parameters_button_element.addEventListener("click", () =>
 	{
-		rho_input_element.value = Math.round(.635 * (Math.random() + .5) * 100000) / 100000;
-		beta_input_element.value = Math.round(1.6 * (Math.random() + .5) * 100000) / 100000;
-		alpha_input_element.value = Math.round(.4 * (Math.random() + .5) * 100000) / 100000;
-		theta_input_element.value = Math.round(.025 * (Math.random() + .5) * 100000) / 100000;
-		kappa_input_element.value = Math.round(.0025 * (Math.random() + .5) * 100000) / 100000;
-		mu_input_element.value = Math.round(.015 * (Math.random() + .5) * 100000) / 100000;
-		gamma_input_element.value = Math.round(.0005 * (Math.random() + .5) * 100000) / 100000;
+		rho_input_element.value = Math.round((.3 + (.6 - .3) * Math.random()) * 100000) / 100000;
+		beta_input_element.value = Math.round((.9 + (1.7 - .9) * Math.random()) * 100000) / 100000;
+		alpha_input_element.value = Math.round((.2 + (.6 - .2) * Math.random()) * 100000) / 100000;
+		theta_input_element.value = Math.round((.01 + (.05 - .01) * Math.random()) * 100000) / 100000;
+		kappa_input_element.value = Math.round((0 + (.01 - 0) * Math.random()) * 100000) / 100000;
+		mu_input_element.value = Math.round((0 + (.065 - 0) * Math.random()) * 100000) / 100000;
+		mu_input_element.value = Math.round((0 + (.05 - 0) * Math.random()) * 100000) / 100000;
 	});
 	
 	
