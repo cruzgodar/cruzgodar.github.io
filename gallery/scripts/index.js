@@ -65,9 +65,12 @@
 		element.parentNode.insertBefore(high_res_image_element, element);
 		element.remove();
 		
-		high_res_image_element.onload = () => Page.Cards.show("high-res-viewer");
+		high_res_image_element.onload = () =>
+		{
+			setTimeout(() => Page.Cards.show("high-res-viewer"), 10);
+		};
 		
-		high_res_image_element.setAttribute("src", `/gallery/high-res/${id}.webp`);
+		high_res_image_element.src = `/gallery/high-res/${id}.webp`;
 	}
 	
 	
