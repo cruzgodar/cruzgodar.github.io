@@ -1,0 +1,178 @@
+# Section 5: Complex and Repeated Roots
+
+### nav-buttons
+
+To finish our introduction to second-order linear DEs, let's handle the cases when the characteristic equation has complex or repeated roots. When the roots are complex, most of our results still apply, so let's start there.
+
+First of all, complex roots of a quadratic equation come in conjugate pairs: if we take a DE $ay'' + by' + cy = 0$, and $r_1 = \alpha + \beta i$ is a root of $ar^2 + br + c = 0$, then the imaginary part $\beta i$ must have arisen from the root in the quadratic formula. Since that has a $\pm$ on the outside, the other root is the complex conjugate of $r$: $r_2 = \alpha - \beta i$.
+
+Plugging these values of $r_1$ and $r_2$ into our exponential formula to get a general solution of
+
+$$
+	c_1e^{(\alpha + \beta i)t} + c_2e^{(\alpha - \beta i)t}
+$$
+
+doesn't have any problems on the surface, but it'd be nice to express the solution in the usual form of $a + bi$, especially because (homework 2, problem 22) we would then know that both the real and imaginary parts are solutions themselves. We can rewrite the exponential formula as
+
+$$
+	c_1e^{\alpha t}e^{\beta i t} + c_2e^{\alpha t}e^{-\beta i t},
+$$
+
+so our real question is how to deal with $e^{i\theta}$ for a real value of $\theta$. Here we need perhaps the most famous result in all of mathematics: Euler's exponential formula.
+
+
+
+### thm Euler's formula
+	
+	For any real number $\theta$,
+	
+	$$
+		e^{i\theta} = \cos(\theta) + i\sin(\theta).
+	$$
+	
+###
+
+### pf
+	
+	We don't get many opportunities for proofs in this class, so let's take this one! The Taylor series for $e^x$ centered at $x = 0$ is
+	
+	$$
+		e^x = \sum_{n = 0}^\infty \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots,
+	$$
+	
+	and the series for $\cos(x)$ and $\sin(x)$ are
+	
+	$$
+		\cos(x) &= \sum_{n = 0}^\infty (-1)^n\frac{x^{2n}}{(2n)!} &&= 1 - \frac{x^2}{2!} + \frac{x^4}{4!} + \cdots
+		\sin(x) &= \sum_{n = 0}^\infty (-1)^n\frac{x^{2n + 1}}{(2n + 1)!} &&= x - \frac{x^3}{3!} + \frac{x^5}{5!} + \cdots.
+	$$
+	
+	All three series converge to their respective functions for all real values of $x$. By setting $x = i\theta$ in the first series, we can pull apart the series into those for $\sin$ and $\cos$.
+	
+	$$
+		e^{i\theta} &= \sum_{n = 0}^\infty \frac{(i\theta)^n}{n!}
+		
+		&= 1 + i\theta + \frac{i^2\theta^2}{2!} + \frac{i^3\theta^3}{3!} + \frac{i^4\theta^4}{4!} + \frac{i^5\theta^5}{5!} + \cdots
+		
+		&= 1 + i\theta - \frac{\theta^2}{2!} - i\frac{\theta^3}{3!} + \frac{\theta^4}{4!} + i\frac{\theta^5}{5!} + \cdots
+		
+		&= \left( 1 - \frac{\theta^2}{2!} + \frac{\theta^4}{4!} - \cdots \right) + i\left( \theta - \frac{\theta^3}{3!} + \frac{\theta^5}{5!} + \cdots \right)
+		
+		&= \cos(\theta) + i\sin(\theta).
+	$$
+	
+###
+
+
+
+The most well-known application of Euler's formula is with $\theta = \pi$, producing the incredible result of $e^{i\pi} = -1$. For our purposes, we can rewrite our general solution with sines and cosines.
+
+$$
+	& \ \ c_1e^{\alpha t}e^{\beta i t} + c_2e^{\alpha t}e^{-\beta i t}
+	
+	&= c_1e^{\alpha t}\left( \cos(\beta t) + i\sin(\beta t) \right) + c_2e^{\alpha t}\left( \cos(-\beta t) + i\sin(-\beta t) \right).
+$$
+
+We desperately need to simplify this! First of all, we can use the fact that $\cos$ is an even function and $\sin$ is an odd one to get
+
+$$
+	c_1e^{\alpha t}\left( \cos(\beta t) + i\sin(\beta t) \right) + c_2e^{\alpha t}\left( \cos(\beta t) - i\sin(\beta t) \right).
+$$
+
+Now for some magic: by the homework problem mentioned earlier, the real and imaginary parts of both of our fundamental solutions must be solutions themselves. Specifically,
+
+$$
+	y &= c_1 e^{\alpha t} \cos(\beta t)
+	
+	y &= c_1 e^{\alpha t} \sin(\beta t)
+	
+	y &= c_2 e^{\alpha t} \cos(\beta t)
+	
+	y &= c_2 e^{\alpha t} \sin(\beta t)
+$$
+
+are all solutions. Since we can cover all possible sums of these four with just the first and fourth, the general solution is
+
+$$
+	y = c_1 e^{\alpha t} \cos(\beta t) + c_2 e^{\alpha t} \sin(\beta t).
+$$
+
+The imaginary numbers have disappeared --- we could take $c_1$ and $c_2$ to be complex numbers if we like, but if we want to only consider real solutions (as is often the case), then this is the form we're after.
+
+
+
+### ex a characteristic equation with complex roots
+	
+	Solve the DE $y'' + 2y' + 5y = 0$ and verify that you've found the general solution with the Wronskian. Then find the particular solution with $y(0) = 1$ and $y'(0) = 3$.
+	
+	To get started, the characteristic equation is $r^2 + 2r + 5$. This doesn't factor easily, and we instead turn to the quadratic formula:
+	
+	$$
+		r &= \frac{-2 \pm \sqrt{4 - 20}}{2}
+		
+		&= -1 \pm 2i.
+	$$
+	
+	Dropping $\alpha = -1$ and $\beta = 2$ into our general solution from before gives us
+	
+	$$
+		y = c_1 e^{-t} \cos(2t) + c_2 e^{-t} \sin(2t).
+	$$
+	
+	It's worth actually plugging this back into the original DE just to make sure it's a solution in the first place. We have
+	
+	$$
+		y' &= c_1 \left( -e^{-t}\cos(2t) - 2e^{-t}\sin(2t) \right) + c_2 \left( -e^{-t}\sin(2t) + 2e^{-t}\cos(2t) \right)
+		
+		&= (-c_1 + 2c_2) e^{-t}\cos(2t) + (-2c_1 - c_2) e^{-t}\sin(2t)
+		
+		y'' &= (-c_1 + 2c_2) \left( -e^{-t}\cos(2t) - 2e^{-t}\sin(2t) \right) + (-2c_1 - c_2) \left( -e^{-t}\sin(2t) + 2e^{-t}\cos(2t) \right)
+		
+		&= (-3c_1 - 4c_2) e^{-t}\cos(2t) + (4c_1 - 3c_2) e^{-t}\sin(2t),
+	$$
+	
+	so the DE itself becomes
+	
+	$$
+		((-3c_1 - 4c_2) + 2(-c_1 + 2c_2) + 5c_1) e^{-t}\cos(2t) + ((4c_1 - 3c_2) + 2(-2c_1 - c_2) + 5c_2) e^{-t}\sin(2t) = 0
+	$$
+	
+	It still seems a little wild that this works, but it definitely does! Let's now look at the Wronskian to make sure that *all* solutions are picked up by this general form.
+	
+	$$
+		W\left[ e^{-t} \cos(2t), e^{-t} \sin(2t) \right] &= \det \left[ \begin{array}{cc} e^{-t} \cos(2t) & e^{-t} \sin(2t) \\ -e^{-t}\cos(2t) - 2e^{-t}\sin(2t) & -e^{-t}\sin(2t) + 2e^{-t}\cos(2t) \end{array} \right]
+		
+		&= 2e^{-2t}\sin^2(2t) + 2e^{-2t}\cos^2(2t)
+		
+		&= 2e^{-2t}\left( \sin^2(2t) + \cos^2(2t) \right)
+		
+		&= 2e^{-2t}.
+	$$
+	
+	Here we're using the trig identity that $\sin^2(\theta) + \cos^2(\theta) = 1$ for any angle $\theta$, which is just the Pythagorean theorem applied to a triangle in the unit circle. Since $2e^{-2t}$ is nonzero for all $t$, the Wronskian is never zero, which means we have the general solution.
+	
+	For the initial condition, we have
+	
+	$$
+		y(0) &= c_1 e^{0} \cos(0) + c_2 e^{0} \sin(0) &&= c_1 &&= 1
+		
+		y'(0) &= (-c_1 + 2c_2) e^{0}\cos(0) + (-2c_1 - c_2) e^{0}\sin(0) &&= -c_1 + 2c_2 &&= 3
+	$$
+	
+	The first equation gives us $c_1 = 1$ and the second $c_2 = 2$, so the particular solution is
+	
+	$$
+		y = e^{-t} \cos(2t) + 2e^{-t} \sin(2t).
+	$$
+	
+###
+
+### exc a characteristic equation with complex roots
+	
+Solve the DE $y'' + 4y' + 13y = 0$ and verify that you've found the general solution with the Wronskian. Then find the particular solution with $y(0) = -3$ and $y'(0) = 9$.
+	
+###
+
+
+
+<script src="/scripts/init.js"></script>
