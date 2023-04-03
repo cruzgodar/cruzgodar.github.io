@@ -1199,6 +1199,9 @@ Page.Cards =
 		Page.element.style.filter = "brightness(1)";
 		document.querySelector("#header").style.filter = "brightness(1)";
 		
+		Page.element.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
+		document.querySelector("#header").style.transformOrigin = `50% 0`;
+		
 		document.documentElement.addEventListener("click", this.handle_click_event);
 		
 		
@@ -1214,8 +1217,15 @@ Page.Cards =
 			});
 			
 			anime({
+				targets: Page.element,
+				duration: this.animation_time,
+				easing: "easeOutQuint"
+			});
+			
+			anime({
 				targets: [Page.element, document.querySelector("#header")],
 				filter: "brightness(.5)",
+				scale: .975,
 				duration: this.animation_time,
 				easing: "easeOutQuint"
 			});
@@ -1245,11 +1255,15 @@ Page.Cards =
 	{
 		Page.Cards.is_open = false;
 		
+		Page.element.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
+		document.querySelector("#header").style.transformOrigin = `50% 0`;
+		
 		await new Promise((resolve, reject) =>
 		{
 			anime({
 				targets: [Page.element, document.querySelector("#header")],
 				filter: "brightness(1)",
+				scale: 1,
 				duration: Page.Cards.animation_time,
 				easing: "easeOutQuint"
 			});
