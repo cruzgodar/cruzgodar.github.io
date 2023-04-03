@@ -1255,9 +1255,6 @@ Page.Cards =
 	{
 		Page.Cards.is_open = false;
 		
-		Page.element.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
-		document.querySelector("#header").style.transformOrigin = `50% 0`;
-		
 		await new Promise((resolve, reject) =>
 		{
 			anime({
