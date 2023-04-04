@@ -503,7 +503,8 @@ Site.sitemap =
 			"/teaching/uo/256/notes/2-if-and-sep/",
 			"/teaching/uo/256/notes/3-existence-and-exactness/",
 			"/teaching/uo/256/notes/4-intro-to-second-order-linear/",
-			"/teaching/uo/256/notes/5-complex-and-repeated-roots/"
+			"/teaching/uo/256/notes/5-complex-and-repeated-roots/",
+			"/teaching/uo/256/notes/6-nonhomogeneous-second-order-des/"
 		]
 	},
 		
@@ -555,6 +556,15 @@ Site.sitemap =
 	"/teaching/uo/256/notes/5-complex-and-repeated-roots/":
 	{
 		"title": "Section 5: Complex and Repeated Roots",
+		
+		"parent": "/teaching/uo/256/",
+		
+		"children": []
+	},
+	
+	"/teaching/uo/256/notes/6-nonhomogeneous-second-order-des/":
+	{
+		"title": "Section 6: Nonhomogeneous Second-Order DEs",
 		
 		"parent": "/teaching/uo/256/",
 		

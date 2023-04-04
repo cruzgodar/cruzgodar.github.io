@@ -56,6 +56,7 @@ home Cruz Godar
 			notes/3-existence-and-exactness Section 3: Existence and Exactness
 			notes/4-intro-to-second-order-linear Section 4: Intro to Second-Order Linear DEs
 			notes/5-complex-and-repeated-roots Section 5: Complex and Repeated Roots
+			notes/6-nonhomogeneous-second-order-des Section 6: Nonhomogeneous Second-Order DEs
 		
 		uo/253 Math 253
 			notes/0-calc-2-review Section 0: Calculus I and II Review
