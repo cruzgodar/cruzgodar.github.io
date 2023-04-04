@@ -1,186 +1,183 @@
-home
-	gallery
+home Cruz Godar
+	gallery Gallery
 	
-	applets
-		vector-fields
-		plane-partitions
-		quaternionic-julia-sets
-		fractal-sounds
-		sorting-algorithms
-		complex-tori
-		wordle-scorer
-		domino-shuffling
-		pascals-triangle-colorings
-		three-body-systems
-		hitomezashi-patterns
-		double-pendulum-fractal
-		complex-maps
-		lyapunov-fractals
-		newtons-method-extended
-		secant-method
-		quasi-fuchsian-groups
-		the-mandelbulb
-		kaleidoscopic-ifs-fractals
-		binary-trees
-		snowflakes
-		finite-subdivisions
-		generalized-julia-sets
-		strange-attractors
-		sudoku-generator
-		julia-set-mosaic
-		chaos-game
-		kicked-rotator
-		brownian-trees
-		barnsley-fern
-		newtons-method
-		calcudoku-generator
-		simulated-annealing
-		abelian-sandpiles
-		wilsons-algorithm
-		julia-set-explorer
+	applets Applets
+		vector-fields Vector Fields
+		plane-partitions Plane Partitions
+		quaternionic-julia-sets Quaternionic Julia Sets
+		fractal-sounds Fractal Sounds
+		sorting-algorithms Sorting Algorithms
+		complex-tori Complex Tori
+		domino-shuffling Domino Shuffling
+		pascals-triangle-colorings Pascal's Triangle Colorings
+		three-body-systems Three-Body Systems
+		hitomezashi-patterns Hitomezashi Patterns
+		double-pendulum-fractal The Double Pendulum Fractal
+		complex-maps Complex Maps
+		lyapunov-fractals Lyapunov Fractals
+		newtons-method-extended Newton's Method, Extended
+		secant-method The Secant Method
+		quasi-fuchsian-groups Quasi-Fuchsian Groups
+		the-mandelbulb The Mandelbulb
+		kaleidoscopic-ifs-fractals Kaleidoscopic IFS Fractals
+		binary-trees Binary Trees
+		snowflakes Gravner-Griffeath Snowflakes
+		finite-subdivisions Finite Subdivisions
+		generalized-julia-sets Generalized Julia Sets
+		strange-attractors Strange Attractors
+		sudoku-generator Sudoku Generator
+		julia-set-mosaic A Julia Set Mosaic
+		chaos-game The Chaos Game
+		kicked-rotator The Kicked Rotator
+		brownian-trees Brownian Trees
+		barnsley-fern The Barnsley Fern
+		newtons-method Newton's Method
+		calcudoku-generator Calcudoku Generator
+		simulated-annealing Simulated Annealing
+		abelian-sandpiles Abelian Sandpiles
+		wilsons-algorithm Wilson's Algorithm
+		julia-set-explorer Julia Set Explorer
 		
-		/projects/wilson
-			guide/1-getting-started
-			guide/2-draggables
-			guide/3-parallelizing
-			guide/4-hidden-canvases
-			guide/5-fullscreen
-			guide/6-interactivity
+		/projects/wilson Wilson
+			guide/1-getting-started Part 1: Getting Started
+			guide/2-draggables Part 2: Draggables
+			guide/3-parallelizing Part 3: Parallelizing
+			guide/4-hidden-canvases Part 4: Hidden Canvases
+			guide/5-fullscreen Part 5: Fullscreen
+			guide/6-interactivity Part 6: Interactivity
 			
-			docs
+			docs Wilson Documentation
 	
-	teaching
-		uo/256
-			notes/0-calc-review
-			notes/1-intro-to-des
-			notes/2-if-and-sep
-			notes/3-existence-and-exactness
-			notes/4-intro-to-second-order-linear
-			notes/5-complex-and-repeated-roots
+	teaching Teaching
+		uo/256 Math 256
+			notes/0-calc-review Section 0: Calculus Review
+			notes/1-intro-to-des Section 1: Intro to DEs
+			notes/2-if-and-sep Section 2: Integrating Factors and Separability
+			notes/3-existence-and-exactness Section 3: Existence and Exactness
+			notes/4-intro-to-second-order-linear Section 4: Intro to Second-Order Linear DEs
+			notes/5-complex-and-repeated-roots Section 5: Complex and Repeated Roots
 		
-		uo/253
-			notes/0-calc-2-review
-			notes/1-sequences
-			notes/2-series
-			notes/3-divergence-and-integral-tests
-			notes/4-comparison-tests
-			notes/5-alternating-series
-			notes/6-ratio-and-root-tests
-			notes/7-power-series
-			notes/8-properties-of-power-series
-			notes/9-taylor-series
-			notes/10-applications-of-taylor-series
+		uo/253 Math 253
+			notes/0-calc-2-review Section 0: Calculus I and II Review
+			notes/1-sequences Section 1: Sequences
+			notes/2-series Section 2: Series
+			notes/3-divergence-and-integral-tests Section 3: The Divergence and Integral Tests
+			notes/4-comparison-tests The Comparison Tests
+			notes/5-alternating-series Alternating Series
+			notes/6-ratio-and-root-tests The Ratio and Root Tests
+			notes/7-power-series Power Series
+			notes/8-properties-of-power-series Properties of Power Series
+			notes/9-taylor-series Taylor Series
+			notes/10-applications-of-taylor-series Section 10: Applications of Taylor Series
 			
-		uo/252
-			notes/0-calc-1-review
-			notes/1-riemann-sums
-			notes/2-integrals-intro
-			notes/3-antiderivatives
-			notes/4-ftoc
-			notes/5-simple-applications
-			notes/6-u-sub
-			notes/7-exp-and-log-integrals
-			notes/8-area-between-curves
-			notes/9-solids-of-revolution
-			notes/10-arc-length-and-surface-area
-			notes/11-physical-applications
-			notes/12-integration-by-parts
-			notes/13-trig-sub
-			notes/14-partial-fractions
-			notes/15-improper-integrals
-			notes/16-intro-to-des
+		uo/252 Math 252
+			notes/0-calc-1-review Section 0: Calculus I Review
+			notes/1-riemann-sums Section 1: Riemann Sums
+			notes/2-integrals-intro Section 2: Intro to Integrals
+			notes/3-antiderivatives Section 3: Antiderivatives
+			notes/4-ftoc Section 4: The Fundamental Theorem
+			notes/5-simple-applications Section 5: Simple Applications
+			notes/6-u-sub Section 6: $u$-Substitution
+			notes/7-exp-and-log-integrals Section 7: A Handful of Integrals
+			notes/8-area-between-curves Section 8: The Area Between Curves
+			notes/9-solids-of-revolution Section 9: Solids of Revolution
+			notes/10-arc-length-and-surface-area Section 10: Arc Length and Surface Area
+			notes/11-physical-applications Section 11: Physical Applications
+			notes/12-integration-by-parts Section 12: Integration by Parts
+			notes/13-trig-sub Section 13: Trig Sub
+			notes/14-partial-fractions Section 14: Partial Fractions
+			notes/15-improper-integrals Section 15: Improper Integrals
+			notes/16-intro-to-des Section 16: Intro to Differential Equations
 			
-		uo/251
-			notes/0-algebra-and-trig-review
-			notes/1-intro-to-limits
-			notes/2-limit-rules
-			notes/3-continuity
-			notes/4-intro-to-derivatives
-			notes/5-derivative-rules
-			notes/6-applications-of-derivatives
-			notes/7-exp-log-and-trig-derivatives
-			notes/8-the-chain-rule
-			notes/9-the-inverse-function-theorem
-			notes/10-implicit-differentiation
-			notes/11-optimization
-			notes/12-l-hopitals-rule
-			notes/13-related-rates
-			notes/14-applied-optimization
-			notes/15-newtons-method
+		uo/251 Math 251
+			notes/0-algebra-and-trig-review Section 0: Algebra and Trig Review
+			notes/1-intro-to-limits Section 1: Intro To Limits
+			notes/2-limit-rules Section 2: Limit Rules
+			notes/3-continuity Section 3: Continuity
+			notes/4-intro-to-derivatives Section 4: Intro to Derivatives
+			notes/5-derivative-rules Section 5: Derivative Rules
+			notes/6-applications-of-derivatives Section 6: Applications of Derivatives
+			notes/7-exp-log-and-trig-derivatives Section 7: A Handful of Derivatives
+			notes/8-the-chain-rule Section 8: The Chain Rule
+			notes/9-the-inverse-function-theorem Section 9: The Inverse Function Theorem
+			notes/10-implicit-differentiation Section 10: Implicit Differentiation
+			notes/11-optimization Section 11: Optimization
+			notes/12-l-hopitals-rule Section 12: L'H&#244;pital's Rule
+			notes/13-related-rates Section 13: Related Rates
+			notes/14-applied-optimization Section 14: Applied Optimization
+			notes/15-newtons-method Section 15: Newton's Method
 			
-		uo/243
-		uo/112
-		uo/111
-		uo/105
+		uo/243 Math 243
+		uo/112 Math 112
+		uo/111 Math 111
+		uo/105 Math 105
 	
-	slides
-		oral-exam
-		lapsa
+	slides Slides
+		oral-exam Prelude to an Oral Exam
+		lapsa Lapsa
 	
 	
-	writing
-		caracore
-		caligo
-			chapters/p
-			chapters/1
-			chapters/2
-			chapters/3
-			chapters/4
-			chapters/5
-			chapters/6
-			chapters/7
-			chapters/8
-			chapters/9
-			chapters/10
-			chapters/i1
-			chapters/11
-			chapters/12
-			chapters/13
-			chapters/14
-			chapters/15
-			chapters/16
-			chapters/17
-			chapters/18
-			chapters/19
-			chapters/20
-			chapters/21
-			chapters/22
-			chapters/23
-			chapters/24
-			chapters/i2
-			chapters/25
-			chapters/26
-			chapters/27
-			chapters/28
-			chapters/29
-			chapters/30
-			chapters/31
-			chapters/32
-			chapters/33
-			chapters/34
-			chapters/i3
-			chapters/35
-			chapters/36
-			chapters/37
-			chapters/38
-			chapters/39
-			chapters/40
-			chapters/41
-			chapters/42
-			chapters/43
-			chapters/44
-			chapters/45
-			chapters/46
+	writing Writing
+		caracore Caracore
+		caligo Caligo
+			chapters/p Prologue
+			chapters/1 I: Bright Lights
+			chapters/2 II: Industry
+			chapters/3 III: The Point
+			chapters/4 IV: A Day in The Life
+			chapters/5 V: Dividends
+			chapters/6 VI: Ivory
+			chapters/7 VII: High Interest
+			chapters/8 VIII: Hid Men
+			chapters/9 IX: Grounding Wires
+			chapters/10 X: Late
+			chapters/i1 Interlude I
+			chapters/11 XI: Repetition
+			chapters/12 XII: Negotiation
+			chapters/13 XIII: Brawl Talk
+			chapters/14 XIV: Investigated Journalism
+			chapters/15 XV: Lizards and Trains
+			chapters/16 XVI: Making Connections
+			chapters/17 XVII: Speaking of Sneaking
+			chapters/18 XVIII: Assurances
+			chapters/19 XIX: Daylight and Dark Night
+			chapters/20 XX: Base Invaders
+			chapters/21 XXI: Arctic
+			chapters/22 XXII: Beasts and Burdens
+			chapters/23 XXIII: Out Running
+			chapters/24 XXIV: Quotients
+			chapters/i2 Interlude II
+			chapters/25 XXV: The Best Laid Plans
+			chapters/26 XXVI: Loud and Clear
+			chapters/27 XXVII: Foiled
+			chapters/28 XXVIII: Once More
+			chapters/29 XXIX: Whiplash
+			chapters/30 XXX: Sentences
+			chapters/31 XXXI: Morbid Curiosity
+			chapters/32 XXXII: Bound, Together
+			chapters/33 XXXIII: Breaking it Down
+			chapters/34 XXXIV: Stage Left
+			chapters/i3 Interlude III
+			chapters/35 XXXV: Back
+			chapters/36 XXXVI: Coming up for Air
+			chapters/37 XXXVII: Cold Blood
+			chapters/38 XXXVIII: Inward-Facing
+			chapters/39 XXXIX: Surging In
+			chapters/40 XXXX: Jug Money
+			chapters/41 XXXXI: Dawn
+			chapters/42 XXXXII: Moments Past
+			chapters/43 XXXXIII: Convergent Revolution
+			chapters/44 XXXXIV: End Behavior
+			chapters/45 XXXXV: Titanic
+			chapters/46 XXXXVI: Leaving the New World Behind
 		
-		desolation-point
-		mist
+		desolation-point Desolation Point
+		mist Mist
 	
-	about
+	about About
 	
-	404
+	404 Oh No!
 	
-	debug
-		collector
-		tests/glsl-test
-		js-lines
-		
+	debug Debug
+		tests/glsl-test GLSL Tests
+		js-lines JS Line Counter

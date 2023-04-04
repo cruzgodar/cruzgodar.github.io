@@ -19,7 +19,7 @@ for (let i = 0; i < lines.length; i++)
 
 
 
-let sitemap = `Site.sitemap =\n{${get_page_string("/home/", "", ["/gallery/", "/applets/", "/teaching/", "/slides/", "/writing/", "/about/", "/404/", "/debug/"])}`;
+let sitemap = `Site.sitemap =\n{${get_page_string("/home/", "", ["/gallery/", "/applets/", "/teaching/", "/slides/", "/writing/", "/about/", "/404/", "/debug/"], "Cruz Godar")}`;
 
 lines[0] = "/home/";
 
@@ -39,6 +39,10 @@ for (let i = 1; i < lines.length; i++)
 	let parent = lines[j].replace("/home", "");
 	
 	//This is part of the magic: we replace the current line with its correct form (i.e. the full path and trailing slash) now, which also makes sure future pages have correctly-formed parents.
+
+	const index = lines[i].indexOf(" ");
+	const title = lines[i].slice(index + 1);
+	lines[i] = lines[i].slice(0, index);
 	
 	if (lines[i][0] !== "/")
 	{
@@ -60,15 +64,18 @@ for (let i = 1; i < lines.length; i++)
 	{
 		if (depths[j] === depth + 1)
 		{
+			const index = lines[j].indexOf(" ");
+			const child = lines[j].slice(0, index);
+			
 			//On the other hand, these are guaranteed *not* to be formatted correctly, so we modify them (but not in place, since we'll get to them later).
 			if (lines[j][0] !== "/")
 			{
-				children.push(`${lines[i]}${lines[j]}/`);
+				children.push(`${lines[i]}${child}/`);
 			}
 			
 			else
 			{
-				children.push(`${lines[j]}/`);
+				children.push(`${child}/`);
 			}
 		}
 		
@@ -79,29 +86,41 @@ for (let i = 1; i < lines.length; i++)
 	
 	const real_parent = parent === "/" ? "/home/" : parent;
 	
-	sitemap = `${sitemap}${get_page_string(lines[i], real_parent, children)}`;
+	sitemap = `${sitemap}${get_page_string(lines[i], real_parent, children, title)}`;
 }
 
-sitemap = `${sitemap.slice(0, sitemap.length - 1)}};`;
+sitemap = `${sitemap.slice(0, sitemap.length - 3)}\n};`;
 
 return sitemap;
 
 
 
-function get_page_string(url, parent, children)
+function get_page_string(url, parent, children, title)
 {
 	if (children.length !== 0)
 	{
 		let children_string = "";
 		
-		children.forEach(child => children_string = `${children_string}\t\t\t"${child}",\n`);
+		for (let i = 0; i < children.length; i++)
+		{
+			children_string = `${children_string}\t\t\t"${children[i]}"`;
+			
+			if (i !== children.length - 1)
+			{
+				children_string = `${children_string},`;
+			}
+			
+			children_string = `${children_string}\n`;
+		}
 		
 		return `
 	"${url}":
 	{
-		parent: "${parent}",
+		"title": "${title}",
 		
-		children:
+		"parent": "${parent}",
+		
+		"children":
 		[
 ${children_string}\t\t]
 	},
@@ -111,9 +130,11 @@ ${children_string}\t\t]
 	return `
 	"${url}":
 	{
-		parent: "${parent}",
+		"title": "${title}",
 		
-		children: []
+		"parent": "${parent}",
+		
+		"children": []
 	},
 	`;
 }

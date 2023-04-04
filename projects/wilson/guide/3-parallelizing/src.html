@@ -1,5 +1,3 @@
-# Part 3: Parallelizing
-
 ### nav-buttons
 	
 There are a handful of features we could build in next, but we're overdue for one in particular: moving the math onto the GPU. This is called *parallelizing*, and it's not something that's possible for every applet: every pixel will be processed independently of every other, so information cannot be shared between them. For example, an applet that renders an iterated function system by tracking the orbit of a single point across millions of iterations will not lend itself well to parallelization. A Julia set, on the other hand, is a perfect candidate.

@@ -2,9 +2,11 @@ Site.sitemap =
 {
 	"/home/":
 	{
-		parent: "",
+		"title": "Cruz Godar",
 		
-		children:
+		"parent": "",
+		
+		"children":
 		[
 			"/gallery/",
 			"/applets/",
@@ -13,22 +15,26 @@ Site.sitemap =
 			"/writing/",
 			"/about/",
 			"/404/",
-			"/debug/",
+			"/debug/"
 		]
 	},
 		
 	"/gallery/":
 	{
-		parent: "/home/",
+		"title": "Gallery",
 		
-		children: []
+		"parent": "/home/",
+		
+		"children": []
 	},
 	
 	"/applets/":
 	{
-		parent: "/home/",
+		"title": "Applets",
 		
-		children:
+		"parent": "/home/",
+		
+		"children":
 		[
 			"/applets/vector-fields/",
 			"/applets/plane-partitions/",
@@ -36,7 +42,6 @@ Site.sitemap =
 			"/applets/fractal-sounds/",
 			"/applets/sorting-algorithms/",
 			"/applets/complex-tori/",
-			"/applets/wordle-scorer/",
 			"/applets/domino-shuffling/",
 			"/applets/pascals-triangle-colorings/",
 			"/applets/three-body-systems/",
@@ -66,267 +71,332 @@ Site.sitemap =
 			"/applets/abelian-sandpiles/",
 			"/applets/wilsons-algorithm/",
 			"/applets/julia-set-explorer/",
-			"/projects/wilson/",
+			"/projects/wilson/"
 		]
 	},
 		
 	"/applets/vector-fields/":
 	{
-		parent: "/applets/",
+		"title": "Vector Fields",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/plane-partitions/":
 	{
-		parent: "/applets/",
+		"title": "Plane Partitions",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/quaternionic-julia-sets/":
 	{
-		parent: "/applets/",
+		"title": "Quaternionic Julia Sets",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/fractal-sounds/":
 	{
-		parent: "/applets/",
+		"title": "Fractal Sounds",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/sorting-algorithms/":
 	{
-		parent: "/applets/",
+		"title": "Sorting Algorithms",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/complex-tori/":
 	{
-		parent: "/applets/",
+		"title": "Complex Tori",
 		
-		children: []
-	},
-	
-	"/applets/wordle-scorer/":
-	{
-		parent: "/applets/",
+		"parent": "/applets/",
 		
-		children: []
+		"children": []
 	},
 	
 	"/applets/domino-shuffling/":
 	{
-		parent: "/applets/",
+		"title": "Domino Shuffling",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/pascals-triangle-colorings/":
 	{
-		parent: "/applets/",
+		"title": "Pascal's Triangle Colorings",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/three-body-systems/":
 	{
-		parent: "/applets/",
+		"title": "Three-Body Systems",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/hitomezashi-patterns/":
 	{
-		parent: "/applets/",
+		"title": "Hitomezashi Patterns",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/double-pendulum-fractal/":
 	{
-		parent: "/applets/",
+		"title": "The Double Pendulum Fractal",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/complex-maps/":
 	{
-		parent: "/applets/",
+		"title": "Complex Maps",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/lyapunov-fractals/":
 	{
-		parent: "/applets/",
+		"title": "Lyapunov Fractals",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/newtons-method-extended/":
 	{
-		parent: "/applets/",
+		"title": "Newton's Method, Extended",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/secant-method/":
 	{
-		parent: "/applets/",
+		"title": "The Secant Method",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/quasi-fuchsian-groups/":
 	{
-		parent: "/applets/",
+		"title": "Quasi-Fuchsian Groups",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/the-mandelbulb/":
 	{
-		parent: "/applets/",
+		"title": "The Mandelbulb",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/kaleidoscopic-ifs-fractals/":
 	{
-		parent: "/applets/",
+		"title": "Kaleidoscopic IFS Fractals",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/binary-trees/":
 	{
-		parent: "/applets/",
+		"title": "Binary Trees",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/snowflakes/":
 	{
-		parent: "/applets/",
+		"title": "Gravner-Griffeath Snowflakes",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/finite-subdivisions/":
 	{
-		parent: "/applets/",
+		"title": "Finite Subdivisions",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/generalized-julia-sets/":
 	{
-		parent: "/applets/",
+		"title": "Generalized Julia Sets",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/strange-attractors/":
 	{
-		parent: "/applets/",
+		"title": "Strange Attractors",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/sudoku-generator/":
 	{
-		parent: "/applets/",
+		"title": "Sudoku Generator",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/julia-set-mosaic/":
 	{
-		parent: "/applets/",
+		"title": "A Julia Set Mosaic",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/chaos-game/":
 	{
-		parent: "/applets/",
+		"title": "The Chaos Game",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/kicked-rotator/":
 	{
-		parent: "/applets/",
+		"title": "The Kicked Rotator",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/brownian-trees/":
 	{
-		parent: "/applets/",
+		"title": "Brownian Trees",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/barnsley-fern/":
 	{
-		parent: "/applets/",
+		"title": "The Barnsley Fern",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/newtons-method/":
 	{
-		parent: "/applets/",
+		"title": "Newton's Method",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/calcudoku-generator/":
 	{
-		parent: "/applets/",
+		"title": "Calcudoku Generator",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/simulated-annealing/":
 	{
-		parent: "/applets/",
+		"title": "Simulated Annealing",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/abelian-sandpiles/":
 	{
-		parent: "/applets/",
+		"title": "Abelian Sandpiles",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/wilsons-algorithm/":
 	{
-		parent: "/applets/",
+		"title": "Wilson's Algorithm",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/applets/julia-set-explorer/":
 	{
-		parent: "/applets/",
+		"title": "Julia Set Explorer",
 		
-		children: []
+		"parent": "/applets/",
+		
+		"children": []
 	},
 	
 	"/projects/wilson/":
 	{
-		parent: "/applets/",
+		"title": "Wilson",
 		
-		children:
+		"parent": "/applets/",
+		
+		"children":
 		[
 			"/projects/wilson/guide/1-getting-started/",
 			"/projects/wilson/guide/2-draggables/",
@@ -334,64 +404,80 @@ Site.sitemap =
 			"/projects/wilson/guide/4-hidden-canvases/",
 			"/projects/wilson/guide/5-fullscreen/",
 			"/projects/wilson/guide/6-interactivity/",
-			"/projects/wilson/docs/",
+			"/projects/wilson/docs/"
 		]
 	},
 		
 	"/projects/wilson/guide/1-getting-started/":
 	{
-		parent: "/projects/wilson/",
+		"title": "Part 1: Getting Started",
 		
-		children: []
+		"parent": "/projects/wilson/",
+		
+		"children": []
 	},
 	
 	"/projects/wilson/guide/2-draggables/":
 	{
-		parent: "/projects/wilson/",
+		"title": "Part 2: Draggables",
 		
-		children: []
+		"parent": "/projects/wilson/",
+		
+		"children": []
 	},
 	
 	"/projects/wilson/guide/3-parallelizing/":
 	{
-		parent: "/projects/wilson/",
+		"title": "Part 3: Parallelizing",
 		
-		children: []
+		"parent": "/projects/wilson/",
+		
+		"children": []
 	},
 	
 	"/projects/wilson/guide/4-hidden-canvases/":
 	{
-		parent: "/projects/wilson/",
+		"title": "Part 4: Hidden Canvases",
 		
-		children: []
+		"parent": "/projects/wilson/",
+		
+		"children": []
 	},
 	
 	"/projects/wilson/guide/5-fullscreen/":
 	{
-		parent: "/projects/wilson/",
+		"title": "Part 5: Fullscreen",
 		
-		children: []
+		"parent": "/projects/wilson/",
+		
+		"children": []
 	},
 	
 	"/projects/wilson/guide/6-interactivity/":
 	{
-		parent: "/projects/wilson/",
+		"title": "Part 6: Interactivity",
 		
-		children: []
+		"parent": "/projects/wilson/",
+		
+		"children": []
 	},
 	
 	"/projects/wilson/docs/":
 	{
-		parent: "/projects/wilson/",
+		"title": "Wilson Documentation",
 		
-		children: []
+		"parent": "/projects/wilson/",
+		
+		"children": []
 	},
 	
 	"/teaching/":
 	{
-		parent: "/home/",
+		"title": "Teaching",
 		
-		children:
+		"parent": "/home/",
+		
+		"children":
 		[
 			"/teaching/uo/256/",
 			"/teaching/uo/253/",
@@ -400,72 +486,88 @@ Site.sitemap =
 			"/teaching/uo/243/",
 			"/teaching/uo/112/",
 			"/teaching/uo/111/",
-			"/teaching/uo/105/",
+			"/teaching/uo/105/"
 		]
 	},
 		
 	"/teaching/uo/256/":
 	{
-		parent: "/teaching/",
+		"title": "Math 256",
 		
-		children:
+		"parent": "/teaching/",
+		
+		"children":
 		[
 			"/teaching/uo/256/notes/0-calc-review/",
 			"/teaching/uo/256/notes/1-intro-to-des/",
 			"/teaching/uo/256/notes/2-if-and-sep/",
 			"/teaching/uo/256/notes/3-existence-and-exactness/",
 			"/teaching/uo/256/notes/4-intro-to-second-order-linear/",
-			"/teaching/uo/256/notes/5-complex-and-repeated-roots/",
+			"/teaching/uo/256/notes/5-complex-and-repeated-roots/"
 		]
 	},
 		
 	"/teaching/uo/256/notes/0-calc-review/":
 	{
-		parent: "/teaching/uo/256/",
+		"title": "Section 0: Calculus Review",
 		
-		children: []
+		"parent": "/teaching/uo/256/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/256/notes/1-intro-to-des/":
 	{
-		parent: "/teaching/uo/256/",
+		"title": "Section 1: Intro to DEs",
 		
-		children: []
+		"parent": "/teaching/uo/256/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/256/notes/2-if-and-sep/":
 	{
-		parent: "/teaching/uo/256/",
+		"title": "Section 2: Integrating Factors and Separability",
 		
-		children: []
+		"parent": "/teaching/uo/256/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/256/notes/3-existence-and-exactness/":
 	{
-		parent: "/teaching/uo/256/",
+		"title": "Section 3: Existence and Exactness",
 		
-		children: []
+		"parent": "/teaching/uo/256/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/256/notes/4-intro-to-second-order-linear/":
 	{
-		parent: "/teaching/uo/256/",
+		"title": "Section 4: Intro to Second-Order Linear DEs",
 		
-		children: []
+		"parent": "/teaching/uo/256/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/256/notes/5-complex-and-repeated-roots/":
 	{
-		parent: "/teaching/uo/256/",
+		"title": "Section 5: Complex and Repeated Roots",
 		
-		children: []
+		"parent": "/teaching/uo/256/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/253/":
 	{
-		parent: "/teaching/",
+		"title": "Math 253",
 		
-		children:
+		"parent": "/teaching/",
+		
+		"children":
 		[
 			"/teaching/uo/253/notes/0-calc-2-review/",
 			"/teaching/uo/253/notes/1-sequences/",
@@ -477,92 +579,116 @@ Site.sitemap =
 			"/teaching/uo/253/notes/7-power-series/",
 			"/teaching/uo/253/notes/8-properties-of-power-series/",
 			"/teaching/uo/253/notes/9-taylor-series/",
-			"/teaching/uo/253/notes/10-applications-of-taylor-series/",
+			"/teaching/uo/253/notes/10-applications-of-taylor-series/"
 		]
 	},
 		
 	"/teaching/uo/253/notes/0-calc-2-review/":
 	{
-		parent: "/teaching/uo/253/",
+		"title": "Section 0: Calculus I and II Review",
 		
-		children: []
+		"parent": "/teaching/uo/253/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/253/notes/1-sequences/":
 	{
-		parent: "/teaching/uo/253/",
+		"title": "Section 1: Sequences",
 		
-		children: []
+		"parent": "/teaching/uo/253/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/253/notes/2-series/":
 	{
-		parent: "/teaching/uo/253/",
+		"title": "Section 2: Series",
 		
-		children: []
+		"parent": "/teaching/uo/253/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/253/notes/3-divergence-and-integral-tests/":
 	{
-		parent: "/teaching/uo/253/",
+		"title": "Section 3: The Divergence and Integral Tests",
 		
-		children: []
+		"parent": "/teaching/uo/253/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/253/notes/4-comparison-tests/":
 	{
-		parent: "/teaching/uo/253/",
+		"title": "The Comparison Tests",
 		
-		children: []
+		"parent": "/teaching/uo/253/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/253/notes/5-alternating-series/":
 	{
-		parent: "/teaching/uo/253/",
+		"title": "Alternating Series",
 		
-		children: []
+		"parent": "/teaching/uo/253/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/253/notes/6-ratio-and-root-tests/":
 	{
-		parent: "/teaching/uo/253/",
+		"title": "The Ratio and Root Tests",
 		
-		children: []
+		"parent": "/teaching/uo/253/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/253/notes/7-power-series/":
 	{
-		parent: "/teaching/uo/253/",
+		"title": "Power Series",
 		
-		children: []
+		"parent": "/teaching/uo/253/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/253/notes/8-properties-of-power-series/":
 	{
-		parent: "/teaching/uo/253/",
+		"title": "Properties of Power Series",
 		
-		children: []
+		"parent": "/teaching/uo/253/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/253/notes/9-taylor-series/":
 	{
-		parent: "/teaching/uo/253/",
+		"title": "Taylor Series",
 		
-		children: []
+		"parent": "/teaching/uo/253/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/253/notes/10-applications-of-taylor-series/":
 	{
-		parent: "/teaching/uo/253/",
+		"title": "Section 10: Applications of Taylor Series",
 		
-		children: []
+		"parent": "/teaching/uo/253/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/":
 	{
-		parent: "/teaching/",
+		"title": "Math 252",
 		
-		children:
+		"parent": "/teaching/",
+		
+		"children":
 		[
 			"/teaching/uo/252/notes/0-calc-1-review/",
 			"/teaching/uo/252/notes/1-riemann-sums/",
@@ -580,134 +706,170 @@ Site.sitemap =
 			"/teaching/uo/252/notes/13-trig-sub/",
 			"/teaching/uo/252/notes/14-partial-fractions/",
 			"/teaching/uo/252/notes/15-improper-integrals/",
-			"/teaching/uo/252/notes/16-intro-to-des/",
+			"/teaching/uo/252/notes/16-intro-to-des/"
 		]
 	},
 		
 	"/teaching/uo/252/notes/0-calc-1-review/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 0: Calculus I Review",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/1-riemann-sums/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 1: Riemann Sums",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/2-integrals-intro/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 2: Intro to Integrals",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/3-antiderivatives/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 3: Antiderivatives",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/4-ftoc/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 4: The Fundamental Theorem",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/5-simple-applications/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 5: Simple Applications",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/6-u-sub/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 6: $u$-Substitution",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/7-exp-and-log-integrals/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 7: A Handful of Integrals",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/8-area-between-curves/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 8: The Area Between Curves",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/9-solids-of-revolution/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 9: Solids of Revolution",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/10-arc-length-and-surface-area/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 10: Arc Length and Surface Area",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/11-physical-applications/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 11: Physical Applications",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/12-integration-by-parts/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 12: Integration by Parts",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/13-trig-sub/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 13: Trig Sub",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/14-partial-fractions/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 14: Partial Fractions",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/15-improper-integrals/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 15: Improper Integrals",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/252/notes/16-intro-to-des/":
 	{
-		parent: "/teaching/uo/252/",
+		"title": "Section 16: Intro to Differential Equations",
 		
-		children: []
+		"parent": "/teaching/uo/252/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/":
 	{
-		parent: "/teaching/",
+		"title": "Math 251",
 		
-		children:
+		"parent": "/teaching/",
+		
+		"children":
 		[
 			"/teaching/uo/251/notes/0-algebra-and-trig-review/",
 			"/teaching/uo/251/notes/1-intro-to-limits/",
@@ -724,207 +886,261 @@ Site.sitemap =
 			"/teaching/uo/251/notes/12-l-hopitals-rule/",
 			"/teaching/uo/251/notes/13-related-rates/",
 			"/teaching/uo/251/notes/14-applied-optimization/",
-			"/teaching/uo/251/notes/15-newtons-method/",
+			"/teaching/uo/251/notes/15-newtons-method/"
 		]
 	},
 		
 	"/teaching/uo/251/notes/0-algebra-and-trig-review/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 0: Algebra and Trig Review",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/1-intro-to-limits/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 1: Intro To Limits",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/2-limit-rules/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 2: Limit Rules",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/3-continuity/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 3: Continuity",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/4-intro-to-derivatives/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 4: Intro to Derivatives",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/5-derivative-rules/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 5: Derivative Rules",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/6-applications-of-derivatives/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 6: Applications of Derivatives",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/7-exp-log-and-trig-derivatives/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 7: A Handful of Derivatives",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/8-the-chain-rule/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 8: The Chain Rule",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/9-the-inverse-function-theorem/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 9: The Inverse Function Theorem",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/10-implicit-differentiation/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 10: Implicit Differentiation",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/11-optimization/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 11: Optimization",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/12-l-hopitals-rule/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 12: L'H&#244;pital's Rule",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/13-related-rates/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 13: Related Rates",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/14-applied-optimization/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 14: Applied Optimization",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/251/notes/15-newtons-method/":
 	{
-		parent: "/teaching/uo/251/",
+		"title": "Section 15: Newton's Method",
 		
-		children: []
+		"parent": "/teaching/uo/251/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/243/":
 	{
-		parent: "/teaching/",
+		"title": "Math 243",
 		
-		children: []
+		"parent": "/teaching/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/112/":
 	{
-		parent: "/teaching/",
+		"title": "Math 112",
 		
-		children: []
+		"parent": "/teaching/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/111/":
 	{
-		parent: "/teaching/",
+		"title": "Math 111",
 		
-		children: []
+		"parent": "/teaching/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/105/":
 	{
-		parent: "/teaching/",
+		"title": "Math 105",
 		
-		children: []
+		"parent": "/teaching/",
+		
+		"children": []
 	},
 	
 	"/slides/":
 	{
-		parent: "/home/",
+		"title": "Slides",
 		
-		children:
+		"parent": "/home/",
+		
+		"children":
 		[
 			"/slides/oral-exam/",
-			"/slides/lapsa/",
+			"/slides/lapsa/"
 		]
 	},
 		
 	"/slides/oral-exam/":
 	{
-		parent: "/slides/",
+		"title": "Prelude to an Oral Exam",
 		
-		children: []
+		"parent": "/slides/",
+		
+		"children": []
 	},
 	
 	"/slides/lapsa/":
 	{
-		parent: "/slides/",
+		"title": "Lapsa",
 		
-		children: []
+		"parent": "/slides/",
+		
+		"children": []
 	},
 	
 	"//":
 	{
-		parent: "/home/",
+		"title": "",
 		
-		children: []
+		"parent": "/home/",
+		
+		"children": []
 	},
 	
 	"/writing/":
 	{
-		parent: "/home/",
+		"title": "Writing",
 		
-		children:
+		"parent": "/home/",
+		
+		"children":
 		[
 			"/writing/caracore/",
 			"/writing/caligo/",
 			"/writing/desolation-point/",
-			"/writing/mist/",
+			"/writing/mist/"
 		]
 	},
 		
 	"/writing/caracore/":
 	{
-		parent: "/writing/",
+		"title": "Caracore",
 		
-		children: []
+		"parent": "/writing/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/":
 	{
-		parent: "/writing/",
+		"title": "Caligo",
 		
-		children:
+		"parent": "/writing/",
+		
+		"children":
 		[
 			"/writing/caligo/chapters/p/",
 			"/writing/caligo/chapters/1/",
@@ -975,426 +1191,524 @@ Site.sitemap =
 			"/writing/caligo/chapters/43/",
 			"/writing/caligo/chapters/44/",
 			"/writing/caligo/chapters/45/",
-			"/writing/caligo/chapters/46/",
+			"/writing/caligo/chapters/46/"
 		]
 	},
 		
 	"/writing/caligo/chapters/p/":
 	{
-		parent: "/writing/caligo/",
+		"title": "Prologue",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/1/":
 	{
-		parent: "/writing/caligo/",
+		"title": "I: Bright Lights",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/2/":
 	{
-		parent: "/writing/caligo/",
+		"title": "II: Industry",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/3/":
 	{
-		parent: "/writing/caligo/",
+		"title": "III: The Point",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/4/":
 	{
-		parent: "/writing/caligo/",
+		"title": "IV: A Day in The Life",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/5/":
 	{
-		parent: "/writing/caligo/",
+		"title": "V: Dividends",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/6/":
 	{
-		parent: "/writing/caligo/",
+		"title": "VI: Ivory",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/7/":
 	{
-		parent: "/writing/caligo/",
+		"title": "VII: High Interest",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/8/":
 	{
-		parent: "/writing/caligo/",
+		"title": "VIII: Hid Men",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/9/":
 	{
-		parent: "/writing/caligo/",
+		"title": "IX: Grounding Wires",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/10/":
 	{
-		parent: "/writing/caligo/",
+		"title": "X: Late",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/i1/":
 	{
-		parent: "/writing/caligo/",
+		"title": "Interlude I",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/11/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XI: Repetition",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/12/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XII: Negotiation",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/13/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XIII: Brawl Talk",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/14/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XIV: Investigated Journalism",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/15/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XV: Lizards and Trains",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/16/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XVI: Making Connections",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/17/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XVII: Speaking of Sneaking",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/18/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XVIII: Assurances",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/19/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XIX: Daylight and Dark Night",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/20/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XX: Base Invaders",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/21/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXI: Arctic",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/22/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXII: Beasts and Burdens",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/23/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXIII: Out Running",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/24/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXIV: Quotients",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/i2/":
 	{
-		parent: "/writing/caligo/",
+		"title": "Interlude II",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/25/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXV: The Best Laid Plans",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/26/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXVI: Loud and Clear",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/27/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXVII: Foiled",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/28/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXVIII: Once More",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/29/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXIX: Whiplash",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/30/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXX: Sentences",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/31/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXI: Morbid Curiosity",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/32/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXII: Bound, Together",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/33/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXIII: Breaking it Down",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/34/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXIV: Stage Left",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/i3/":
 	{
-		parent: "/writing/caligo/",
+		"title": "Interlude III",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/35/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXV: Back",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/36/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXVI: Coming up for Air",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/37/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXVII: Cold Blood",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/38/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXVIII: Inward-Facing",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/39/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXIX: Surging In",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/40/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXX: Jug Money",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/41/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXXI: Dawn",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/42/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXXII: Moments Past",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/43/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXXIII: Convergent Revolution",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/44/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXXIV: End Behavior",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/45/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXXV: Titanic",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/caligo/chapters/46/":
 	{
-		parent: "/writing/caligo/",
+		"title": "XXXXVI: Leaving the New World Behind",
 		
-		children: []
+		"parent": "/writing/caligo/",
+		
+		"children": []
 	},
 	
 	"/writing/desolation-point/":
 	{
-		parent: "/writing/",
+		"title": "Desolation Point",
 		
-		children: []
+		"parent": "/writing/",
+		
+		"children": []
 	},
 	
 	"/writing/mist/":
 	{
-		parent: "/writing/",
+		"title": "Mist",
 		
-		children: []
+		"parent": "/writing/",
+		
+		"children": []
 	},
 	
 	"/about/":
 	{
-		parent: "/home/",
+		"title": "About",
 		
-		children: []
+		"parent": "/home/",
+		
+		"children": []
 	},
 	
 	"/404/":
 	{
-		parent: "/home/",
+		"title": "Oh No!",
 		
-		children: []
+		"parent": "/home/",
+		
+		"children": []
 	},
 	
 	"/debug/":
 	{
-		parent: "/home/",
+		"title": "Debug",
 		
-		children:
+		"parent": "/home/",
+		
+		"children":
 		[
-			"/debug/collector/",
 			"/debug/tests/glsl-test/",
-			"/debug/js-lines/",
-			"/debug//",
+			"/debug/js-lines/"
 		]
 	},
 		
-	"/debug/collector/":
-	{
-		parent: "/debug/",
-		
-		children: []
-	},
-	
 	"/debug/tests/glsl-test/":
 	{
-		parent: "/debug/",
+		"title": "GLSL Tests",
 		
-		children: []
+		"parent": "/debug/",
+		
+		"children": []
 	},
 	
 	"/debug/js-lines/":
 	{
-		parent: "/debug/",
+		"title": "JS Line Counter",
 		
-		children: []
-	},
-	
-	"/debug//":
-	{
-		parent: "/debug/",
+		"parent": "/debug/",
 		
-		children: []
-	},
+		"children": []
+	}
 };

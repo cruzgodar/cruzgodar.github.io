@@ -1,5 +1,9 @@
 const parent_folder = args.plainTexts[1];
 
+const sitemap = JSON.parse(args.plainTexts[2].replace("Site.sitemap =\n", "").replace("};", "}").replaceAll(/[\t]/g, ""));
+
+
+
 const components =
 {
 	get_image_link: function(args)
@@ -10,7 +14,7 @@ const components =
 		
 		
 		
-		if (args[1] === "c")
+		if (args.length >= 2 && args[1] === "c")
 		{
 			const subtext = args.slice(2).join(" ");
 			
@@ -31,12 +35,14 @@ const components =
 		{
 			let in_new_tab = false;
 				
-			if (args[1] === "t")
+			if (args.length >= 2 && args[1] === "t")
 			{
 				in_new_tab = true;
 				
 				args.splice(1, 1);
 			}
+			
+			
 			
 			let file_path = args[0];
 			
@@ -45,7 +51,21 @@ const components =
 				file_path = parent_folder + args[0];
 			}
 			
-			const subtext = args.slice(1).join(" ");
+			
+			
+			let subtext = "";
+			
+			if (args.length >= 2)
+			{
+				subtext = args.slice(1).join(" ");
+			}
+			
+			else
+			{
+				subtext = sitemap[file_path].title;
+			}
+			
+			
 			
 			const src = `${file_path.slice(0, file_path.lastIndexOf("/") + 1)}cover.`;
 			
@@ -577,6 +597,16 @@ const components =
 		}
 		
 		html = html.replaceAll(/\t/g, "");
+		
+		
+		
+		//Automatically add a header if there's not one already here.
+		if (!html.match(/\n#\s/g) && parent_folder !== "/home/")
+		{
+			const title = sitemap[parent_folder].title;
+			
+			html = html.replaceAll(/(<div.*?>)?(### banner)?([\s\S]+)/g, (match, $1, $2, $3) => `${$1 ? $1 : ""}${$2 ? $2 : ""}\n\n# ${title}\n\n${$3 ? $3 : ""}`);
+		}
 		
 		
 		

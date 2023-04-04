@@ -1,5 +1,3 @@
-# Part 4: Hidden Canvases
-
 ### nav-buttons
 
 One problem you probably noticed with the CPU canvas was a rapid fluctuation in brightness due to a high variation in the value of the brightest pixel. Now we have a different problem --- there's not a clear way to automatically control the brightness at all. One option is to try a value, then see how many pixels are at max brightness and slightly adjust the brightness scale on the next frame. This is expensive, though, and if the brightness changes suddenly, it will take a while to catch up. A better solution is to render a second canvas with the same shader at a very low resolution --- say 100x100 --- and no brightness scale at all. Then we can read off the max brightness from that canvas and use it for the output one.

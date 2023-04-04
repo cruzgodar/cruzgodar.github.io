@@ -13,7 +13,7 @@ Page.Components =
 		
 		
 		//A card.
-		if (args[1] === "c")
+		if (args.length >= 2 && args[1] === "c")
 		{
 			const subtext = args.slice(2).join(" ");
 			
@@ -34,12 +34,14 @@ Page.Components =
 		{
 			let in_new_tab = false;
 				
-			if (args[1] === "t")
+			if (args.length >= 2 && args[1] === "t")
 			{
 				in_new_tab = true;
 				
 				args.splice(1, 1);
 			}
+			
+			
 			
 			let file_path = args[0];
 			
@@ -48,7 +50,21 @@ Page.Components =
 				file_path = Page.parent_folder + args[0];
 			}
 			
-			const subtext = args.slice(1).join(" ");
+			
+			
+			let subtext = "";
+			
+			if (args.length >= 2)
+			{
+				subtext = args.slice(1).join(" ");
+			}
+			
+			else
+			{
+				subtext = Site.sitemap[file_path].title;
+			}
+			
+			
 			
 			const src = `${file_path.slice(0, file_path.lastIndexOf("/") + 1)}cover.`;
 			
@@ -582,6 +598,16 @@ Page.Components =
 		}
 		
 		html = html.replaceAll(/\t/g, "");
+		
+		
+		
+		//Automatically add a header if there's not one already here.
+		if (!html.match(/\n#\s/g) && Page.url !== "/home/")
+		{
+			const title = Site.sitemap[Page.url].title;
+			
+			html = html.replaceAll(/(<div.*?>)?(### banner)?([\s\S]+)/g, (match, $1, $2, $3) => `${$1 ? $1 : ""}${$2 ? $2 : ""}\n\n# ${title}\n\n${$3 ? $3 : ""}`);
+		}
 		
 		
 		
