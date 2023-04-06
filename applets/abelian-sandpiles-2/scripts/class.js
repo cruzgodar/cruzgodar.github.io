@@ -19,8 +19,6 @@ class AbelianSandpile extends Applet
 	{
 		super(canvas);
 		
-		
-		
 		const frag_shader_source_init = `
 			precision highp float;
 			precision highp sampler2D;
@@ -193,7 +191,7 @@ class AbelianSandpile extends Applet
 				
 				if (state.y >= 4.0)
 				{
-					float brightness = (state.y - 3.0) / 253.0;
+					float brightness = (state.y - 3.0) / 512.0 + .5;
 					gl_FragColor = vec4(brightness, brightness, brightness, 1.0);
 					return;
 				}
@@ -243,12 +241,12 @@ class AbelianSandpile extends Applet
 	{
 		this.resume();
 		
-		this.num_grains = 200000;//num_grains;
+		this.num_grains = num_grains;
 		
 		this.resolution = Math.floor(Math.sqrt(this.num_grains)) + 2;
 		this.resolution = this.resolution + 1 - (this.resolution % 2);
 		
-		this.computations_per_frame = 25;//computations_per_frame;
+		this.computations_per_frame = computations_per_frame;
 		
 		const grains_4 = (this.num_grains % 256) / 256;
 		const grains_3 = (Math.floor(this.num_grains / 256) % 256) / 256;
@@ -299,7 +297,7 @@ class AbelianSandpile extends Applet
 			return;
 		}
 		
-		
+		this.wilson.gl.viewport(0, 0, this.resolution, this.resolution);
 		
 		for (let i = 0; i < this.computations_per_frame; i++)
 		{
@@ -353,6 +351,7 @@ class AbelianSandpile extends Applet
 		}
 		
 		this.last_pixel_data = pixel_data;
+		
 		
 		
 		if (!this.animation_paused)
