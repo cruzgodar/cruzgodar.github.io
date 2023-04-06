@@ -4,11 +4,14 @@ class AbelianSandpile extends Applet
 {
 	load_promise = null;
 	
+	num_grains = 10000;
 	resolution = 500;
 	
 	last_timestamp = -1;
 	
 	computations_per_frame = 20;
+	
+	last_pixel_data = null;
 	
 	
 	
@@ -28,15 +31,17 @@ class AbelianSandpile extends Applet
 			
 			uniform float step;
 			
+			uniform vec4 start_grains;
+			
 			
 			
 			void main(void)
 			{
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
 				
-				if (length(center - vec2(.5, .5)) < step)
+				if (length(center - vec2(.5, .5)) < step / 2.0)
 				{
-					gl_FragColor = vec4(0.0, 0.0, 1.0, 0.0);
+					gl_FragColor = start_grains;
 					
 					return;
 				}
@@ -78,53 +83,53 @@ class AbelianSandpile extends Applet
 				
 				
 				
-				//The general idea: this is carrying in reverse. The largest place is supposed to be divided by four, so we start by extracting the portion that is too small for it to see and adding it to the next place down (/64 instead of /256 effectively multiplies it by 4). Then what's left is divided by 4 and effectively floored.
-				state_1.y += mod(floor(state_1.x * 256.0), 4.0) / 64.0;
+				//The general idea: this is carrying in reverse. The largest place is supposed to be divided by four, so we start by extracting the portion that is too small for it to see and adding it to the next place down (not dividing by 256 effectively multiplies it by 256). Then what's left is divided by 4 and effectively floored.
+				state_1.y += mod(floor(state_1.x * 256.0), 4.0);
 				state_1.x = floor(state_1.x * 64.0) / 256.0;
 				
-				state_1.z += mod(floor(state_1.y * 256.0), 4.0) / 64.0;
+				state_1.z += mod(floor(state_1.y * 256.0), 4.0);
 				state_1.y = floor(state_1.y * 64.0) / 256.0;
 				
-				state_1.w += mod(floor(state_1.z * 256.0), 4.0) / 64.0;
+				state_1.w += mod(floor(state_1.z * 256.0), 4.0);
 				state_1.z = floor(state_1.z * 64.0) / 256.0;
 				
 				state_1.w = floor(state_1.w * 64.0) / 256.0;
 				
 				
 				
-				state_2.y += mod(floor(state_2.x * 256.0), 4.0) / 64.0;
+				state_2.y += mod(floor(state_2.x * 256.0), 4.0);
 				state_2.x = floor(state_2.x * 64.0) / 256.0;
 				
-				state_2.z += mod(floor(state_2.y * 256.0), 4.0) / 64.0;
+				state_2.z += mod(floor(state_2.y * 256.0), 4.0);
 				state_2.y = floor(state_2.y * 64.0) / 256.0;
 				
-				state_2.w += mod(floor(state_2.z * 256.0), 4.0) / 64.0;
+				state_2.w += mod(floor(state_2.z * 256.0), 4.0);
 				state_2.z = floor(state_2.z * 64.0) / 256.0;
 				
 				state_2.w = floor(state_2.w * 64.0) / 256.0;
 				
 				
 				
-				state_3.y += mod(floor(state_3.x * 256.0), 4.0) / 64.0;
+				state_3.y += mod(floor(state_3.x * 256.0), 4.0);
 				state_3.x = floor(state_3.x * 64.0) / 256.0;
 				
-				state_3.z += mod(floor(state_3.y * 256.0), 4.0) / 64.0;
+				state_3.z += mod(floor(state_3.y * 256.0), 4.0);
 				state_3.y = floor(state_3.y * 64.0) / 256.0;
 				
-				state_3.w += mod(floor(state_3.z * 256.0), 4.0) / 64.0;
+				state_3.w += mod(floor(state_3.z * 256.0), 4.0);
 				state_3.z = floor(state_3.z * 64.0) / 256.0;
 				
 				state_3.w = floor(state_3.w * 64.0) / 256.0;
 				
 				
 				
-				state_4.y += mod(floor(state_4.x * 256.0), 4.0) / 64.0;
+				state_4.y += mod(floor(state_4.x * 256.0), 4.0);
 				state_4.x = floor(state_4.x * 64.0) / 256.0;
 				
-				state_4.z += mod(floor(state_4.y * 256.0), 4.0) / 64.0;
+				state_4.z += mod(floor(state_4.y * 256.0), 4.0);
 				state_4.y = floor(state_4.y * 64.0) / 256.0;
 				
-				state_4.w += mod(floor(state_4.z * 256.0), 4.0) / 64.0;
+				state_4.w += mod(floor(state_4.z * 256.0), 4.0);
 				state_4.z = floor(state_4.z * 64.0) / 256.0;
 				
 				state_4.w = floor(state_4.w * 64.0) / 256.0;
@@ -133,16 +138,15 @@ class AbelianSandpile extends Applet
 				
 				
 				//The new state should be what used to be here, mod 4, plus the floor of 1/4 of each of the neighbors.
-				vec4 new_state = vec4(0.0, 0.0, 0.0, leftover);
-				new_state = new_state + state_1 + state_2 + state_3 + state_4;
+				vec4 new_state = vec4(0.0, 0.0, 0.0, leftover) + state_1 + state_2 + state_3 + state_4;
 				
-				new_state.z += floor(new_state.w);
+				new_state.z += floor(new_state.w) / 256.0;
 				new_state.w = mod(new_state.w, 1.0);
 				
-				new_state.y += floor(new_state.z);
+				new_state.y += floor(new_state.z) / 256.0;
 				new_state.z = mod(new_state.z, 1.0);
 				
-				new_state.x += floor(new_state.y);
+				new_state.x += floor(new_state.y) / 256.0;
 				new_state.y = mod(new_state.y, 1.0);
 				
 				gl_FragColor = new_state;
@@ -161,30 +165,40 @@ class AbelianSandpile extends Applet
 			
 			void main(void)
 			{
-				//gl_FragColor = vec4(texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).xyz, 1.0);
+				vec2 state = floor(256.0 * texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).zw);
 				
-				int state = int(256.0 * texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).w);
-				
-				if (state == 1)
+				if (state.x != 0.0)
 				{
-					gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+					gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 					return;
 				}
 				
-				if (state == 2)
+				if (state.y == 1.0)
+				{
+					gl_FragColor = vec4(0.0, 0.25, 1.0, 1.0);
+					return;
+				}
+				
+				if (state.y == 2.0)
 				{
 					gl_FragColor = vec4(0.5, 0.0, 1.0, 1.0);
 					return;
 				}
 				
-				if (state == 3)
+				if (state.y == 3.0)
 				{
-					gl_FragColor = vec4(.75, 0.0, 0.0, 1.0);
+					gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);
+					return;
+				}
+				
+				if (state.y >= 4.0)
+				{
+					float brightness = (state.y - 3.0) / 253.0;
+					gl_FragColor = vec4(brightness, brightness, brightness, 1.0);
 					return;
 				}
 				
 				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-				
 			}
 		`;
 		
@@ -213,7 +227,7 @@ class AbelianSandpile extends Applet
 		this.wilson.render.load_new_shader(frag_shader_source_update);
 		this.wilson.render.load_new_shader(frag_shader_source_draw);
 		
-		this.wilson.render.init_uniforms(["step"], 0);
+		this.wilson.render.init_uniforms(["step", "start_grains"], 0);
 		this.wilson.render.init_uniforms(["step"], 1);
 		
 		this.wilson.render.create_framebuffer_texture_pair();
@@ -225,15 +239,25 @@ class AbelianSandpile extends Applet
 	
 	
 	
-	run(resolution = 500, computations_per_frame = 25)
+	run(num_grains = 10000, computations_per_frame = 1000)
 	{
 		this.resume();
 		
-		this.resolution = resolution;
-		this.computations_per_frame = 1;//computations_per_frame;
+		this.num_grains = 200000;//num_grains;
+		
+		this.resolution = Math.floor(Math.sqrt(this.num_grains)) + 2;
+		this.resolution = this.resolution + 1 - (this.resolution % 2);
+		
+		this.computations_per_frame = 25;//computations_per_frame;
+		
+		const grains_4 = (this.num_grains % 256) / 256;
+		const grains_3 = (Math.floor(this.num_grains / 256) % 256) / 256;
+		const grains_2 = (Math.floor(this.num_grains / (256 * 256)) % 256) / 256;
+		const grains_1 = (Math.floor(this.num_grains / (256 * 256 * 256)) % 256) / 256;
 		
 		this.wilson.gl.useProgram(this.wilson.render.shader_programs[0]);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["step"][0], 1 / this.resolution);
+		this.wilson.gl.uniform4f(this.wilson.uniforms["start_grains"][0], grains_1, grains_2, grains_3, grains_4);
 		
 		this.wilson.gl.useProgram(this.wilson.render.shader_programs[1]);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["step"][1], 1 / this.resolution);
@@ -297,32 +321,39 @@ class AbelianSandpile extends Applet
 			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		}
 		
+		
+		
 		this.wilson.gl.useProgram(this.wilson.render.shader_programs[2]);
 		
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 		
 		this.wilson.render.draw_frame();
 		
-		/*
 		
-		const pixels = this.wilson.render.get_pixel_data();
 		
-		const threshhold = Math.floor(this.resolution / 10);
+		const pixel_data = this.wilson.render.get_pixel_data();
 		
-		for (let i = threshhold; i < this.resolution - threshhold; i++)
+		if (this.last_pixel_data !== null)
 		{
-			const index_1 = this.resolution * i + threshhold;
-			const index_2 = this.resolution * i + (this.resolution - threshhold);
-			const index_3 = this.resolution * threshhold + i;
-			const index_4 = this.resolution * (this.resolution - threshhold) + i;
+			let found_diff = false;
 			
-			if (pixels[4 * index_1] || pixels[4 * index_2] || pixels[4 * index_3] || pixels[4 * index_4])
+			for (let i = 0; i < pixel_data.length; i++)
 			{
-				this.pause();
+				if (pixel_data[i] !== this.last_pixel_data[i])
+				{
+					found_diff = true;
+					break;
+				}
+			}
+			
+			if (!found_diff)
+			{
+				return;
 			}
 		}
 		
-		*/
+		this.last_pixel_data = pixel_data;
+		
 		
 		if (!this.animation_paused)
 		{
