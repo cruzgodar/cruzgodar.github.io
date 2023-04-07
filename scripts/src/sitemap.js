@@ -631,7 +631,7 @@ Site.sitemap =
 	
 	"/teaching/uo/253/notes/4-comparison-tests/":
 	{
-		"title": "The Comparison Tests",
+		"title": "Section 4: The Comparison Tests",
 		
 		"parent": "/teaching/uo/253/",
 		
@@ -640,7 +640,7 @@ Site.sitemap =
 	
 	"/teaching/uo/253/notes/5-alternating-series/":
 	{
-		"title": "Alternating Series",
+		"title": "Section 5: Alternating Series",
 		
 		"parent": "/teaching/uo/253/",
 		
@@ -649,7 +649,7 @@ Site.sitemap =
 	
 	"/teaching/uo/253/notes/6-ratio-and-root-tests/":
 	{
-		"title": "The Ratio and Root Tests",
+		"title": "Section 6: The Ratio and Root Tests",
 		
 		"parent": "/teaching/uo/253/",
 		
@@ -658,7 +658,7 @@ Site.sitemap =
 	
 	"/teaching/uo/253/notes/7-power-series/":
 	{
-		"title": "Power Series",
+		"title": "Section 7: Power Series",
 		
 		"parent": "/teaching/uo/253/",
 		
@@ -667,7 +667,7 @@ Site.sitemap =
 	
 	"/teaching/uo/253/notes/8-properties-of-power-series/":
 	{
-		"title": "Properties of Power Series",
+		"title": "Section 8: Properties of Power Series",
 		
 		"parent": "/teaching/uo/253/",
 		
@@ -676,7 +676,7 @@ Site.sitemap =
 	
 	"/teaching/uo/253/notes/9-taylor-series/":
 	{
-		"title": "Taylor Series",
+		"title": "Section 9: Taylor Series",
 		
 		"parent": "/teaching/uo/253/",
 		

@@ -602,7 +602,7 @@ Page.Components =
 		
 		
 		//Automatically add a header if there's not one already here.
-		if (!html.match(/\n#\s/g) && Page.url !== "/home/")
+		if (!html.match(/\n#\s/g) && !Site.manual_header_pages.includes(Page.url))
 		{
 			const title = Site.sitemap[Page.url].title;
 			

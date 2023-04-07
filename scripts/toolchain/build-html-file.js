@@ -2,6 +2,13 @@ const parent_folder = args.plainTexts[1];
 
 const sitemap = JSON.parse(args.plainTexts[2].replace("Site.sitemap =\n", "").replace("};", "}").replaceAll(/[\t]/g, ""));
 
+const manual_header_pages =
+[
+	"/home/",
+	
+	"/writing/caligo/"
+]
+
 
 
 const components =
@@ -601,7 +608,7 @@ const components =
 		
 		
 		//Automatically add a header if there's not one already here.
-		if (!html.match(/\n#\s/g) && parent_folder !== "/home/")
+		if (!html.match(/\n#\s/g) && !manual_header_pages.includes(parent_folder))
 		{
 			const title = sitemap[parent_folder].title;
 			
@@ -907,4 +914,4 @@ const components =
 	}
 };
 
-return components.decode(args.plainTexts[0]);
+return components.decode("\n" + args.plainTexts[0]);

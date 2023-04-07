@@ -13,18 +13,18 @@ Page.ready_to_show = false;
 
 Page.scroll = 0;
 
-/*
-	Defaults:
-	
-	"banner_page": false,
-	"num_banners": 0,
-	
-	"manual_dark_theme": false,
-*/
-
 Page.settings = {};
 
 Page.parent_folder = "/";
+
+
+
+Site.manual_header_pages =
+[
+	"/home/",
+	
+	"/writing/caligo/"
+];
 
 
 

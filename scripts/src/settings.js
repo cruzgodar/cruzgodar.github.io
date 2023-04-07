@@ -8,6 +8,14 @@ Site.force_dark_theme_pages =
 	"/slides/oral-exam/"
 ];
 
+Site.prevent_theme_change_pages =
+[
+	"/gallery/",
+	"/slides/oral-exam/",
+	"/writing/caracore/",
+	"/writing/caligo/"
+];
+
 
 
 Site.Settings =
@@ -144,7 +152,7 @@ Site.Settings =
 	//Changes a setting.
 	toggle_theme: function(no_animation = false)
 	{
-		if (this.url_vars["theme"] === 1 && Site.force_dark_theme_pages.includes(Page.url))
+		if (Site.prevent_theme_change_pages.includes(Page.url))
 		{
 			return;
 		}

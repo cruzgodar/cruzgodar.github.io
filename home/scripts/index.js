@@ -28,21 +28,7 @@
 		}, Site.opacity_animation_time);	
 	}, Site.opacity_animation_time);
 	
-	set_name_text_opacity();
-	
-	
-	
-	if (Browser.name === "MS Edge")
-	{
-		alert_on_edge();
-	}
-	
-	
-	
-	setTimeout(() =>
-	{
-		Page.element.querySelectorAll(".footer-button").forEach(element => Page.Load.HoverEvents.add(element));
-	}, 100);
+	setTimeout(() => set_name_text_opacity(), 100);
 	
 	
 	
@@ -51,20 +37,6 @@
 	
 	
 	Page.show();
-	
-	
-	
-	
-	function alert_on_edge()
-	{
-		Page.element.querySelector("#logo").insertAdjacentHTML("beforebegin", `
-			<div class="body-text" style="text-align: center">
-				<strong>Microsoft Edge is not fully supported on this site. Using <a href="https://www.google.com/chrome/">Chrome</a>, <a href="https://www.apple.com/safari/">Safari</a>, <a href="https://www.mozilla.org/en-US/firefox/?v=a">Firefox</a>, or <a href="https://www.opera.com/">Opera</a> is highly recommended.<strong>
-			</div>
-			
-			<div style="height: 5vh"></div>
-		`);
-	}
 	
 	
 	

@@ -63,12 +63,12 @@ home Cruz Godar
 			notes/1-sequences Section 1: Sequences
 			notes/2-series Section 2: Series
 			notes/3-divergence-and-integral-tests Section 3: The Divergence and Integral Tests
-			notes/4-comparison-tests The Comparison Tests
-			notes/5-alternating-series Alternating Series
-			notes/6-ratio-and-root-tests The Ratio and Root Tests
-			notes/7-power-series Power Series
-			notes/8-properties-of-power-series Properties of Power Series
-			notes/9-taylor-series Taylor Series
+			notes/4-comparison-tests Section 4: The Comparison Tests
+			notes/5-alternating-series Section 5: Alternating Series
+			notes/6-ratio-and-root-tests Section 6: The Ratio and Root Tests
+			notes/7-power-series Section 7: Power Series
+			notes/8-properties-of-power-series Section 8: Properties of Power Series
+			notes/9-taylor-series Section 9: Taylor Series
 			notes/10-applications-of-taylor-series Section 10: Applications of Taylor Series
 			
 		uo/252 Math 252
