@@ -122,12 +122,12 @@
 		
 		if (DEBUG)
 		{
-			web_worker = new Worker("/applets/the-kicked-rotator/scripts/worker.js");
+			web_worker = new Worker("/applets/kicked-rotator/scripts/worker.js");
 		}
 		
 		else
 		{
-			web_worker = new Worker("/applets/the-kicked-rotator/scripts/worker.min.js");
+			web_worker = new Worker("/applets/kicked-rotator/scripts/worker.min.js");
 		}
 		
 		Page.temporary_web_workers.push(web_worker);
