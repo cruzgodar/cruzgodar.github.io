@@ -150,14 +150,12 @@ Site.Settings =
 
 
 	//Changes a setting.
-	toggle_theme: function(no_animation = false)
+	toggle_theme: function(no_animation = false, force = false)
 	{
-		if (Site.prevent_theme_change_pages.includes(Page.url))
+		if (!force && Site.prevent_theme_change_pages.includes(Page.url))
 		{
 			return;
 		}
-		
-		
 		
 		let element = null;
 		
