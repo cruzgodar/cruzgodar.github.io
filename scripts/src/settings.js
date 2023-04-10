@@ -387,8 +387,7 @@ Site.Settings =
 			catch(ex) {}
 			
 			
-			
-			Page.element.querySelectorAll(".desmos-container").forEach(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time));
+			Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time));
 			
 			setTimeout(() =>
 			{
@@ -401,8 +400,11 @@ Site.Settings =
 				try {Page.Load.create_desmos_graphs(false);}
 				catch(ex) {}
 				
-				Page.element.querySelectorAll(".desmos-container").forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
-			}, Site.opacity_animation_time);
+				setTimeout(() =>
+				{
+					Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
+				}, Site.opacity_animation_time);
+			}, 2 * Site.opacity_animation_time);
 		}
 		
 		
@@ -453,7 +455,9 @@ Site.Settings =
 			
 			
 			
-			Page.element.querySelectorAll(".desmos-container").forEach(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time));
+			
+			
+			Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time));
 			
 			setTimeout(() =>
 			{
@@ -466,8 +470,11 @@ Site.Settings =
 				try {Page.Load.create_desmos_graphs(true);}
 				catch(ex) {}
 				
-				Page.element.querySelectorAll(".desmos-container").forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
-			}, Site.opacity_animation_time);
+				setTimeout(() =>
+				{
+					Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
+				}, Site.opacity_animation_time);
+			}, 2 * Site.opacity_animation_time);
 			
 			
 			
