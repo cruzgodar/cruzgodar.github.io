@@ -1,57 +1,21 @@
 "use strict";
 
-class VectorField extends Applet
+class QuasiFuchsianGroup extends Applet
 {
 	load_promise = null;
 	
 	resolution = 500;
 	
-	num_particles = 0;
-	max_particles = 5000;
-	
-	aspect_ratio = 1;
-	zoom_level = .6515;
-	fixed_point_x = 0;
-	fixed_point_y = 0;
-	
-	dt = .0075;
-	
-	lifetime = 255;
+	coefficients = [[[1,0],[0,0],[0,-2],[1,0]],[[1,-1],[1,0],[1,0],[1,1]],[[1,0],[0,0],[0,2],[1,0]],[[1,1],[-1,0],[-1,0],[1,-1]]];
 	
 	last_timestamp = -1;
 	
-	//A long array of particles of the form [x, y, remaining lifetime].
-	particles = [];
-	
-	free_particle_slots = [];
+	update_resolution = 243;
 	
 	update_texture = null;
-	dim_texture = null;
 	
 	update_canvas = null;
-	dim_canvas = null;
 	wilson_update = null;
-	wilson_dim = null;
-	
-	pan_velocity_x = 0;
-	pan_velocity_y = 0;
-	zoom_velocity = 0;
-	
-	next_pan_velocity_x = 0;
-	next_pan_velocity_y = 0;
-	next_zoom_velocity = 0;
-	
-	last_pan_velocities_x = [];
-	last_pan_velocities_y = [];
-	last_zoom_velocities = [];
-
-	pan_friction = .96;
-	pan_velocity_start_threshhold = .00025;
-	pan_velocity_stop_threshhold = .00025;
-	
-	zoom_friction = .9;
-	zoom_velocity_start_threshhold = .002;
-	zoom_velocity_stop_threshhold = .002;
 	
 	
 	
@@ -64,23 +28,114 @@ class VectorField extends Applet
 		this.hidden_canvases.push(this.update_canvas);
 		Page.element.appendChild(this.update_canvas);
 		
-		this.dim_canvas = document.createElement("canvas");
-		this.dim_canvas.classList.add("hidden-canvas");
-		this.hidden_canvases.push(this.dim_canvas);
-		Page.element.appendChild(this.dim_canvas);
 		
 		
-		
-		const temp_shader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
+		const update_shader = `
+			precision highp float;
+			precision highp sampler2D;
+			
+			varying vec2 uv;
+			
+			uniform sampler2D u_texture;
+			
+			const vec2 m0a = vec2(1.0, 0.0);
+			const vec2 m0b = vec2(0.0, 0.0);
+			const vec2 m0c = vec2(0.0, -2.0);
+			const vec2 m0d = vec2(1.0, 0.0);
+			
+			const vec2 m1a = vec2(1.0, -1.0);
+			const vec2 m1b = vec2(1.0, 0.0);
+			const vec2 m1c = vec2(1.0, 0.0);
+			const vec2 m1d = vec2(1.0, 1.0);
+			
+			const vec2 m2a = vec2(1.0, 0.0);
+			const vec2 m2b = vec2(0.0, 0.0);
+			const vec2 m2c = vec2(0.0, 2.0);
+			const vec2 m2d = vec2(1.0, 0.0);
+			
+			const vec2 m3a = vec2(1.0, 1.0);
+			const vec2 m3b = vec2(-1.0, 0.0);
+			const vec2 m3c = vec2(-1.0, -2.0);
+			const vec2 m3d = vec2(1.0, -1.0);
+			
+			
+			
+			vec2 cmul(vec2 z, vec2 w)
+			{
+				return vec2(z.x * w.x - z.y * w.y, z.x * w.y + z.y * w.x);
+			}
+			
+			void m0(inout vec2 a, inout vec2 b, inout vec2 c, inout vec2 d)
+			{
+				vec2 new_a = cmul(m0a, a) + cmul(m0b, c);
+				vec2 new_b = cmul(m0a, b) + cmul(m0b, d);
+				vec2 new_c = cmul(m0c, a) + cmul(m0d, c);
+				d = cmul(m0c, b) + cmul(m0d, d);
+				
+				a = new_a;
+				b = new_b;
+				c = new_c;
+			}
+			
+			void m1(inout vec2 a, inout vec2 b, inout vec2 c, inout vec2 d)
+			{
+				vec2 new_a = cmul(m1a, a) + cmul(m1b, c);
+				vec2 new_b = cmul(m1a, b) + cmul(m1b, d);
+				vec2 new_c = cmul(m1c, a) + cmul(m1d, c);
+				d = cmul(m1c, b) + cmul(m1d, d);
+				
+				a = new_a;
+				b = new_b;
+				c = new_c;
+			}
+			
+			void m2(inout vec2 a, inout vec2 b, inout vec2 c, inout vec2 d)
+			{
+				vec2 new_a = cmul(m2a, a) + cmul(m2b, c);
+				vec2 new_b = cmul(m2a, b) + cmul(m2b, d);
+				vec2 new_c = cmul(m2c, a) + cmul(m2d, c);
+				d = cmul(m2c, b) + cmul(m2d, d);
+				
+				a = new_a;
+				b = new_b;
+				c = new_c;
+			}
+			
+			void m3(inout vec2 a, inout vec2 b, inout vec2 c, inout vec2 d)
+			{
+				vec2 new_a = cmul(m3a, a) + cmul(m3b, c);
+				vec2 new_b = cmul(m3a, b) + cmul(m3b, d);
+				vec2 new_c = cmul(m3c, a) + cmul(m3d, c);
+				d = cmul(m3c, b) + cmul(m3d, d);
+				
+				a = new_a;
+				b = new_b;
+				c = new_c;
+			}
+			
+			
+			
+			void main(void)
+			{
+				vec2 z = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).xy;
+				
+				vec2 a = vec2(1.0, 0.0);
+				vec2 b = vec2(0.0, 0.0);
+				vec2 c = vec2(0.0, 0.0);
+				vec2 d = vec2(1.0, 0.0);
+				
+				
+			}
+		`;
 		
 		const options_update =
 		{
 			renderer: "gpu",
 			
-			shader: temp_shader,
+			shader: update_shader,
 			
-			canvas_width: 100,
-			canvas_height: 100,
+			canvas_width: this.update_resolution,
+			canvas_height: this.update_resolution,
 		};
 		
 		this.wilson_update = new Wilson(this.update_canvas, options_update);

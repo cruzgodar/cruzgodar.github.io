@@ -2,9 +2,9 @@
 
 !async function()
 {
-	await Site.load_applet("vector-fields");
+	await Site.load_applet("quasi-fuchsian-groups-2");
 	
-	const applet = new VectorField(Page.element.querySelector("#output-canvas"));
+	const applet = new QuasiFuchsianGroup(Page.element.querySelector("#output-canvas"));
 	
 	applet.load_promise.then(() => run());
 	
