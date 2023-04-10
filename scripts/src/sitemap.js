@@ -36,6 +36,7 @@ Site.sitemap =
 		
 		"children":
 		[
+			"/applets/quasi-fuchsian-groups-2/",
 			"/applets/vector-fields/",
 			"/applets/plane-partitions/",
 			"/applets/quaternionic-julia-sets/",
@@ -75,6 +76,15 @@ Site.sitemap =
 		]
 	},
 		
+	"/applets/quasi-fuchsian-groups-2/":
+	{
+		"title": "Quasi-Fuchsian Groups",
+		
+		"parent": "/applets/",
+		
+		"children": []
+	},
+	
 	"/applets/vector-fields/":
 	{
 		"title": "Vector Fields",

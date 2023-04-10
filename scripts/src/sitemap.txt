@@ -2,6 +2,7 @@ home Cruz Godar
 	gallery Gallery
 	
 	applets Applets
+		quasi-fuchsian-groups-2 Quasi-Fuchsian Groups
 		vector-fields Vector Fields
 		plane-partitions Plane Partitions
 		quaternionic-julia-sets Quaternionic Julia Sets
