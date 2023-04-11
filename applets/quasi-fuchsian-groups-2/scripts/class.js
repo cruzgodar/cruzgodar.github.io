@@ -24,7 +24,7 @@ class QuasiFuchsianGroup extends Applet
 		super(canvas);
 		
 		this.update_canvas = document.createElement("canvas");
-		this.update_canvas.classList.add("hidden-canvas");
+		this.update_canvas.classList.add("output-canvas");
 		this.hidden_canvases.push(this.update_canvas);
 		Page.element.appendChild(this.update_canvas);
 		
@@ -32,11 +32,14 @@ class QuasiFuchsianGroup extends Applet
 		
 		const update_shader = `
 			precision highp float;
+			precision highp int;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
 			uniform sampler2D u_texture;
+			
+			const float resolution = 243.0;
 			
 			const vec2 m0a = vec2(1.0, 0.0);
 			const vec2 m0b = vec2(0.0, 0.0);
@@ -63,6 +66,18 @@ class QuasiFuchsianGroup extends Applet
 			vec2 cmul(vec2 z, vec2 w)
 			{
 				return vec2(z.x * w.x - z.y * w.y, z.x * w.y + z.y * w.x);
+			}
+			
+			vec2 cdiv(vec2 z, vec2 w)
+			{
+				float len_w = w.x * w.x + w.y * w.y;
+				
+				if (len_w == 0.0)
+				{
+					return vec2(1.0, 0.0);
+				}
+				
+				return vec2(z.x * w.x + z.y * w.y, -z.x * w.y + z.y * w.x) / len_w;
 			}
 			
 			void m0(inout vec2 a, inout vec2 b, inout vec2 c, inout vec2 d)
@@ -117,13 +132,64 @@ class QuasiFuchsianGroup extends Applet
 			
 			void main(void)
 			{
-				vec2 z = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).xy;
+				vec2 location = (uv + vec2(1.0, 1.0)) / 2.0;
+				
+				vec4 state = texture2D(u_texture, location);
+				
+				vec2 z = state.xy;
+				int m = int(state.z);
+				
+				location *= resolution;
+				
+				int m_string[10];
 				
 				vec2 a = vec2(1.0, 0.0);
 				vec2 b = vec2(0.0, 0.0);
 				vec2 c = vec2(0.0, 0.0);
 				vec2 d = vec2(1.0, 0.0);
 				
+				m_string[0] = int(mod(floor(location.x / 81.0), 3.0));
+				m_string[1] = int(mod(floor(location.x / 27.0), 3.0));
+				m_string[2] = int(mod(floor(location.x / 9.0), 3.0));
+				m_string[3] = int(mod(floor(location.x / 3.0), 3.0));
+				m_string[4] = int(mod(floor(location.x), 3.0));
+				
+				m_string[5] = int(mod(floor(location.y / 81.0), 3.0));
+				m_string[6] = int(mod(floor(location.y / 27.0), 3.0));
+				m_string[7] = int(mod(floor(location.y / 9.0), 3.0));
+				m_string[8] = int(mod(floor(location.y / 3.0), 3.0));
+				m_string[9] = int(mod(floor(location.y), 3.0));
+				
+				
+				
+				for (int i = 0; i < 10; i++)
+				{
+					m = int(mod(float(m) + float(m_string[i]), 4.0));
+					
+					if (m == 0)
+					{
+						m0(a, b, c, d);
+					}
+					
+					else if (m == 1)
+					{
+						m1(a, b, c, d);
+					}
+					
+					else if (m == 2)
+					{
+						m2(a, b, c, d);
+					}
+					
+					else
+					{
+						m3(a, b, c, d);
+					}
+				}
+				
+				z = cdiv(cmul(a, z) + b, cmul(c, z) + d);
+				
+				gl_FragColor = vec4(z, float(m), 1.0);
 				
 			}
 		`;
@@ -140,203 +206,9 @@ class QuasiFuchsianGroup extends Applet
 		
 		this.wilson_update = new Wilson(this.update_canvas, options_update);
 		
+		this.wilson_update.render.draw_frame();
 		
-		
-		this.wilson_update.render.create_framebuffer_texture_pair();
-		
-		this.wilson_update.gl.bindTexture(this.wilson_update.gl.TEXTURE_2D, this.wilson_update.render.framebuffers[0].texture);
-		this.wilson_update.gl.bindFramebuffer(this.wilson_update.gl.FRAMEBUFFER, null);
-		
-		
-		
-		const frag_shader_source_dim = `
-			precision highp float;
-			precision highp sampler2D;
-			
-			varying vec2 uv;
-			
-			uniform sampler2D u_texture;
-			
-			void main(void)
-			{
-				vec3 v = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).xyz;
-				
-				gl_FragColor = vec4(v.x - 1.0 / 255.0, v.y, v.z, 1.0);
-			}
-		`;
-		
-		const frag_shader_source_pan = `
-			precision highp float;
-			precision highp sampler2D;
-			
-			varying vec2 uv;
-			
-			uniform sampler2D u_texture;
-			
-			uniform vec2 pan;
-			
-			void main(void)
-			{
-				vec2 tex_coord = (uv + vec2(1.0, 1.0)) / 2.0 - pan;
-				
-				if (tex_coord.x >= 0.0 && tex_coord.x < 1.0 && tex_coord.y >= 0.0 && tex_coord.y < 1.0)
-				{
-					vec3 v = texture2D(u_texture, tex_coord).xyz;
-					
-					gl_FragColor = vec4(v.x, v.y, v.z, 1.0);
-					
-					return;
-				}
-				
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-			}
-		`;
-		
-		const frag_shader_source_zoom = `
-			precision highp float;
-			precision highp sampler2D;
-			
-			varying vec2 uv;
-			
-			uniform sampler2D u_texture;
-			
-			uniform float scale;
-			uniform vec2 fixed_point;
-			
-			void main(void)
-			{
-				vec2 tex_coord = ((uv + vec2(1.0, 1.0)) / 2.0 - fixed_point) * scale + fixed_point;
-				
-				if (tex_coord.x >= 0.0 && tex_coord.x < 1.0 && tex_coord.y >= 0.0 && tex_coord.y < 1.0)
-				{
-					vec3 v = texture2D(u_texture, tex_coord).xyz;
-					
-					gl_FragColor = vec4(v.x / 1.06, v.y, v.z, 1.0);
-					
-					return;
-				}
-				
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-			}
-		`;
-		
-		const options_dim =
-		{
-			renderer: "gpu",
-			
-			shader: frag_shader_source_dim,
-			
-			canvas_width: this.resolution,
-			canvas_height: this.resolution,
-		};
-		
-		this.wilson_dim = new Wilson(this.dim_canvas, options_dim);
-		
-		
-			
-		this.wilson_dim.render.load_new_shader(frag_shader_source_pan);
-		
-		this.wilson_dim.render.init_uniforms(["pan"], 1);
-		
-		this.wilson_dim.gl.useProgram(this.wilson_dim.render.shader_programs[0]);
-		
-		
-		
-		this.wilson_dim.render.load_new_shader(frag_shader_source_zoom);
-		
-		this.wilson_dim.render.init_uniforms(["scale", "fixed_point"], 2);
-		
-		this.wilson_dim.gl.useProgram(this.wilson_dim.render.shader_programs[0]);
-		
-		
-		
-		this.wilson_dim.render.create_framebuffer_texture_pair(this.wilson_dim.gl.UNSIGNED_BYTE);
-		
-		this.wilson_dim.gl.bindTexture(this.wilson_dim.gl.TEXTURE_2D, this.wilson_dim.render.framebuffers[0].texture);
-		this.wilson_dim.gl.bindFramebuffer(this.wilson_dim.gl.FRAMEBUFFER, null);
-		
-		this.dim_texture = new Uint8Array(this.resolution * this.resolution * 4);
-		
-		
-		
-		const frag_shader_source_draw = `
-			precision highp float;
-			precision highp sampler2D;
-			
-			varying vec2 uv;
-			
-			uniform sampler2D u_texture;
-			
-			vec3 hsv2rgb(vec3 c)
-			{
-				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-			}
-			
-			void main(void)
-			{
-				vec3 v = texture2D(u_texture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0).xyz;
-				
-				gl_FragColor = vec4(hsv2rgb(vec3(v.y, v.z, v.x)), 1.0);
-			}
-		`;
-		
-		const options =
-		{
-			renderer: "gpu",
-			
-			shader: frag_shader_source_draw,
-			
-			canvas_width: this.resolution,
-			canvas_height: this.resolution,
-			
-			world_width: 2 * Math.PI,
-			world_height: 2 * Math.PI,
-			world_center_x: 0,
-			world_center_y: 0,
-			
-			
-			
-			
-			use_fullscreen: true,
-			
-			true_fullscreen: true,
-			
-			use_fullscreen_button: true,
-			
-			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
-			
-			switch_fullscreen_callback: this.generate_new_field.bind(this),
-			
-			
-			
-			mousedown_callback: this.on_grab_canvas.bind(this),
-			touchstart_callback: this.on_grab_canvas.bind(this),
-			
-			mousedrag_callback: this.on_drag_canvas.bind(this),
-			touchmove_callback: this.on_drag_canvas.bind(this),
-			
-			mouseup_callback: this.on_release_canvas.bind(this),
-			touchend_callback: this.on_release_canvas.bind(this),
-			
-			wheel_callback: this.on_wheel_canvas.bind(this),
-			pinch_callback: this.on_pinch_canvas.bind(this)
-		};
-		
-		this.wilson = new Wilson(canvas, options);
-		
-		this.wilson.render.create_framebuffer_texture_pair(this.wilson.gl.UNSIGNED_BYTE);
-		
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-		
-		
-		
-		const bound_function = this.handle_resize_event.bind(this);
-		window.addEventListener("resize", bound_function);
-		this.handlers.push(window, "resize", bound_function);
+		this.wilson_update.download_frame("test.png");
 		
 		
 		
