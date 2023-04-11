@@ -6,8 +6,6 @@
 	
 	const applet = new QuasiFuchsianGroup(Page.element.querySelector("#output-canvas"));
 	
-	applet.load_promise.then(() => run());
-	
 	
 	
 	function run()
