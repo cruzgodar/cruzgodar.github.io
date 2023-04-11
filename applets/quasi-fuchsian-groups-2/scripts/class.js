@@ -41,25 +41,17 @@ class QuasiFuchsianGroup extends Applet
 			
 			const float resolution = 243.0;
 			
-			const vec2 m0a = vec2(1.0, 0.0);
-			const vec2 m0b = vec2(0.0, 0.0);
-			const vec2 m0c = vec2(0.0, -2.0);
-			const vec2 m0d = vec2(1.0, 0.0);
+			const mat2 m0a = mat2(1.0, 0.0, 0.0, 1.0);
+			const mat2 m0b = mat2(0.0, -2.0, 0.0, 0.0);
 			
-			const vec2 m1a = vec2(1.0, -1.0);
-			const vec2 m1b = vec2(1.0, 0.0);
-			const vec2 m1c = vec2(1.0, 0.0);
-			const vec2 m1d = vec2(1.0, 1.0);
+			const mat2 m1a = mat2(1.0, 1.0, 1.0, 1.0);
+			const mat2 m1b = mat2(-1.0, 0.0, 0.0, 1.0);
 			
-			const vec2 m2a = vec2(1.0, 0.0);
-			const vec2 m2b = vec2(0.0, 0.0);
-			const vec2 m2c = vec2(0.0, 2.0);
-			const vec2 m2d = vec2(1.0, 0.0);
+			const mat2 m2a = mat2(1.0, 0.0, 0.0, 1.0);
+			const mat2 m2b = mat2(0.0, 2.0, 0.0, 0.0);
 			
-			const vec2 m3a = vec2(1.0, 1.0);
-			const vec2 m3b = vec2(-1.0, 0.0);
-			const vec2 m3c = vec2(-1.0, -2.0);
-			const vec2 m3d = vec2(1.0, -1.0);
+			const mat2 m3a = mat2(1.0, -1.0, -1.0, 1.0);
+			const mat2 m3b = mat2(1.0, 0.0, 0.0, -1.0);
 			
 			
 			
@@ -124,52 +116,32 @@ class QuasiFuchsianGroup extends Applet
 				return vec2(z.x * w.x + z.y * w.y, -z.x * w.y + z.y * w.x) / len_w;
 			}
 			
-			void m0(inout vec2 a, inout vec2 b, inout vec2 c, inout vec2 d)
+			void m0(inout mat2 a, inout mat2 b)
 			{
-				vec2 new_a = cmul(m0a, a) + cmul(m0b, c);
-				vec2 new_b = cmul(m0a, b) + cmul(m0b, d);
-				vec2 new_c = cmul(m0c, a) + cmul(m0d, c);
-				d = cmul(m0c, b) + cmul(m0d, d);
-				
-				a = new_a;
-				b = new_b;
-				c = new_c;
+				mat2 temp = m0a * a - m0b * b;
+				b = m0a * b + m0b * a;
+				a = temp;
 			}
 			
-			void m1(inout vec2 a, inout vec2 b, inout vec2 c, inout vec2 d)
+			void m1(inout mat2 a, inout mat2 b)
 			{
-				vec2 new_a = cmul(m1a, a) + cmul(m1b, c);
-				vec2 new_b = cmul(m1a, b) + cmul(m1b, d);
-				vec2 new_c = cmul(m1c, a) + cmul(m1d, c);
-				d = cmul(m1c, b) + cmul(m1d, d);
-				
-				a = new_a;
-				b = new_b;
-				c = new_c;
+				mat2 temp = m1a * a - m1b * b;
+				b = m1a * b + m1b * a;
+				a = temp;
 			}
 			
-			void m2(inout vec2 a, inout vec2 b, inout vec2 c, inout vec2 d)
+			void m2(inout mat2 a, inout mat2 b)
 			{
-				vec2 new_a = cmul(m2a, a) + cmul(m2b, c);
-				vec2 new_b = cmul(m2a, b) + cmul(m2b, d);
-				vec2 new_c = cmul(m2c, a) + cmul(m2d, c);
-				d = cmul(m2c, b) + cmul(m2d, d);
-				
-				a = new_a;
-				b = new_b;
-				c = new_c;
+				mat2 temp = m2a * a - m2b * b;
+				b = m2a * b + m2b * a;
+				a = temp;
 			}
 			
-			void m3(inout vec2 a, inout vec2 b, inout vec2 c, inout vec2 d)
+			void m3(inout mat2 a, inout mat2 b)
 			{
-				vec2 new_a = cmul(m3a, a) + cmul(m3b, c);
-				vec2 new_b = cmul(m3a, b) + cmul(m3b, d);
-				vec2 new_c = cmul(m3c, a) + cmul(m3d, c);
-				d = cmul(m3c, b) + cmul(m3d, d);
-				
-				a = new_a;
-				b = new_b;
-				c = new_c;
+				mat2 temp = m3a * a - m3b * b;
+				b = m3a * b + m3b * a;
+				a = temp;
 			}
 			
 			
@@ -178,7 +150,7 @@ class QuasiFuchsianGroup extends Applet
 			{
 				vec2 location = (uv + vec2(1.0, 1.0)) / 2.0;
 				
-				vec4 state = vec4(0.0, 0.0, 0.0, 0.0);//texture2D(u_texture, location);
+				vec4 state = texture2D(u_texture, location);
 				
 				vec2 z = state.xy;
 				int m = int(state.z);
@@ -187,10 +159,8 @@ class QuasiFuchsianGroup extends Applet
 				
 				int m_string[10];
 				
-				vec2 a = vec2(1.0, 0.0);
-				vec2 b = vec2(0.0, 0.0);
-				vec2 c = vec2(0.0, 0.0);
-				vec2 d = vec2(1.0, 0.0);
+				mat2 a = mat2(1.0, 0.0, 0.0, 1.0);
+				mat2 b = mat2(0.0, 0.0, 0.0, 0.0);
 				
 				m_string[0] = int(mod(floor(location.x / 81.0), 3.0));
 				m_string[1] = int(mod(floor(location.x / 27.0), 3.0));
@@ -210,32 +180,34 @@ class QuasiFuchsianGroup extends Applet
 				{
 					m = int(mod(float(m) + float(m_string[i]) + 1.0, 4.0));
 					
-					if (m == 0)
-					{
-						m0(a, b, c, d);
-					}
 					
-					else if (m == 1)
-					{
-						m1(a, b, c, d);
-					}
-					
-					else if (m == 2)
-					{
-						m2(a, b, c, d);
-					}
-					
-					else
-					{
-						m3(a, b, c, d);
-					}
-				}
-				
-				z = cdiv(cmul(a, z) + b, cmul(c, z) + d);
 		`;
 		
 		const update_shader_x = `
 			${update_shader_base}
+			
+					if (m == 0)
+					{
+						m0(a, b);
+					}
+					
+					else if (m == 1)
+					{
+						m1(a, b);
+					}
+					
+					else if (m == 2)
+					{
+						m2(a, b);
+					}
+					
+					else
+					{
+						m3(a, b);
+					}
+				}
+				
+				z = cdiv(cmul(vec2(a[0][0], b[0][0]), z) + vec2(a[1][0], b[1][0]), cmul(vec2(a[0][1], b[0][1]), z) + vec2(a[1][1], b[1][1]));
 				
 				gl_FragColor = encode_float(z.x);
 			}
@@ -243,8 +215,39 @@ class QuasiFuchsianGroup extends Applet
 		
 		const update_shader_y = `
 			${update_shader_base}
+			
+					if (m == 0)
+					{
+						m0(a, b);
+					}
+					
+					else if (m == 1)
+					{
+						m1(a, b);
+					}
+					
+					else if (m == 2)
+					{
+						m2(a, b);
+					}
+					
+					else
+					{
+						m3(a, b);
+					}
+				}
+				
+				z = cdiv(cmul(vec2(a[0][0], b[0][0]), z) + vec2(a[1][0], b[1][0]), cmul(vec2(a[0][1], b[0][1]), z) + vec2(a[1][1], b[1][1]));
 				
 				gl_FragColor = encode_float(z.y);
+			}
+		`;
+		
+		const update_shader_m = `
+			${update_shader_base}
+				}
+				
+				gl_FragColor = vec4(float(m) / 4.0, 0.0, 0.0, 1.0);
 			}
 		`;
 		
@@ -262,6 +265,8 @@ class QuasiFuchsianGroup extends Applet
 		
 		this.wilson_update.render.load_new_shader(update_shader_y);
 		
+		this.wilson_update.render.load_new_shader(update_shader_m);
+		
 		
 		
 		const draw_shader = `
@@ -274,9 +279,18 @@ class QuasiFuchsianGroup extends Applet
 			
 			
 			
+			vec3 hsv2rgb(vec3 c)
+			{
+				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+			}
+			
 			void main(void)
 			{
-				gl_FragColor = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
+				float state = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).x;
+				
+				gl_FragColor = vec4(hsv2rgb(vec3(atan(uv.y, uv.x) / 6.28318530718, 1.0, state)), 1.0);
 			}
 		`;
 		
@@ -363,6 +377,14 @@ class QuasiFuchsianGroup extends Applet
 		
 		
 		
+		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[2]);
+		
+		this.wilson_update.render.draw_frame();
+		
+		const last_m = this.wilson_update.render.get_pixel_data();
+		
+		
+		
 		for (let i = 0; i < floats_x.length; i++)
 		{
 			const coordinates = this.wilson.utils.interpolate.world_to_canvas(floats_x[i], floats_y[i]);
@@ -371,7 +393,7 @@ class QuasiFuchsianGroup extends Applet
 			{
 				const index = 4 * (this.resolution * coordinates[0] + coordinates[1]);
 				
-				this.draw_texture[index] = 255;
+				this.draw_texture[index]++;
 			}
 		}
 		
