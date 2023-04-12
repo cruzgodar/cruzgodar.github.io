@@ -6,7 +6,7 @@ class QuasiFuchsianGroup extends Applet
 	
 	computations_per_frame = 25;
 	
-	max_brightness = 50;
+	max_brightness = 10;
 	max_depth = 10;
 	epsilon = .01;
 	
@@ -14,7 +14,7 @@ class QuasiFuchsianGroup extends Applet
 	
 	last_timestamp = -1;
 	
-	update_resolution = 243;
+	update_resolution = 81;
 	
 	update_texture = null;
 	
@@ -39,26 +39,25 @@ class QuasiFuchsianGroup extends Applet
 		const update_shader_base = `
 			precision highp float;
 			precision highp int;
-			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
 			uniform vec2 start_z;
 			uniform int last_m;
 			
-			const float resolution = 243.0;
+			const float resolution = 81.0;
 			
-			const mat2 m0a = mat2(1.0, 0.0, 0.0, 1.0);
-			const mat2 m0b = mat2(0.0, -2.0, 0.0, 0.0);
+			uniform mat2 m0a;
+			uniform mat2 m0b;
 			
-			const mat2 m1a = mat2(1.0, 1.0, 1.0, 1.0);
-			const mat2 m1b = mat2(-1.0, 0.0, 0.0, 1.0);
+			uniform mat2 m1a;
+			uniform mat2 m1b;
 			
-			const mat2 m2a = mat2(1.0, 0.0, 0.0, 1.0);
-			const mat2 m2b = mat2(0.0, 2.0, 0.0, 0.0);
+			uniform mat2 m2a;
+			uniform mat2 m2b;
 			
-			const mat2 m3a = mat2(1.0, -1.0, -1.0, 1.0);
-			const mat2 m3b = mat2(1.0, 0.0, 0.0, -1.0);
+			uniform mat2 m3a;
+			uniform mat2 m3b;
 			
 			
 			
@@ -165,21 +164,19 @@ class QuasiFuchsianGroup extends Applet
 				mat2 a = mat2(1.0, 0.0, 0.0, 1.0);
 				mat2 b = mat2(0.0, 0.0, 0.0, 0.0);
 				
-				m_string[0] = int(mod(floor(location.x / 81.0), 3.0));
-				m_string[1] = int(mod(floor(location.x / 27.0), 3.0));
-				m_string[2] = int(mod(floor(location.x / 9.0), 3.0));
-				m_string[3] = int(mod(floor(location.x / 3.0), 3.0));
-				m_string[4] = int(mod(floor(location.x), 3.0));
+				m_string[0] = int(mod(floor(location.x / 27.0), 3.0));
+				m_string[1] = int(mod(floor(location.x / 9.0), 3.0));
+				m_string[2] = int(mod(floor(location.x / 3.0), 3.0));
+				m_string[3] = int(mod(floor(location.x), 3.0));
 				
-				m_string[5] = int(mod(floor(location.y / 81.0), 3.0));
-				m_string[6] = int(mod(floor(location.y / 27.0), 3.0));
-				m_string[7] = int(mod(floor(location.y / 9.0), 3.0));
-				m_string[8] = int(mod(floor(location.y / 3.0), 3.0));
-				m_string[9] = int(mod(floor(location.y), 3.0));
+				m_string[4] = int(mod(floor(location.y / 27.0), 3.0));
+				m_string[5] = int(mod(floor(location.y / 9.0), 3.0));
+				m_string[6] = int(mod(floor(location.y / 3.0), 3.0));
+				m_string[7] = int(mod(floor(location.y), 3.0));
 				
 				
 				
-				for (int i = 0; i < 10; i++)
+				for (int i = 0; i < 8; i++)
 				{
 					m = int(mod(float(m) + float(m_string[i]) + 1.0, 4.0));
 					
@@ -247,7 +244,38 @@ class QuasiFuchsianGroup extends Applet
 		`;
 		
 		const update_shader_m = `
-			${update_shader_base}
+			precision highp float;
+			precision highp int;
+			
+			varying vec2 uv;
+			
+			uniform int last_m;
+			
+			const float resolution = 81.0;
+			
+			void main(void)
+			{
+				vec2 location = (uv + vec2(1.0, 1.0)) / 2.0 * resolution;
+				
+				int m = last_m;
+				
+				int m_string[8];
+				
+				m_string[0] = int(mod(floor(location.x / 27.0), 3.0));
+				m_string[1] = int(mod(floor(location.x / 9.0), 3.0));
+				m_string[2] = int(mod(floor(location.x / 3.0), 3.0));
+				m_string[3] = int(mod(floor(location.x), 3.0));
+				
+				m_string[4] = int(mod(floor(location.y / 27.0), 3.0));
+				m_string[5] = int(mod(floor(location.y / 9.0), 3.0));
+				m_string[6] = int(mod(floor(location.y / 3.0), 3.0));
+				m_string[7] = int(mod(floor(location.y), 3.0));
+				
+				
+				
+				for (int i = 0; i < 8; i++)
+				{
+					m = int(mod(float(m) + float(m_string[i]) + 1.0, 4.0));
 				}
 				
 				gl_FragColor = vec4(float(m) / 4.0, 0.0, 0.0, 0.0);
@@ -266,12 +294,19 @@ class QuasiFuchsianGroup extends Applet
 		
 		this.wilson_update = new Wilson(this.update_canvas, options_update);
 		
+		this.wilson_update.render.init_uniforms(["start_z", "last_m", "m0a", "m0b", "m1a", "m1b", "m2a", "m2b", "m3a", "m3b"], 0);
+		
+		
+		
 		this.wilson_update.render.load_new_shader(update_shader_y);
+		
+		this.wilson_update.render.init_uniforms(["start_z", "last_m", "m0a", "m0b", "m1a", "m1b", "m2a", "m2b", "m3a", "m3b"], 1);
+		
+		
+		
 		this.wilson_update.render.load_new_shader(update_shader_m);
 		
-		this.wilson_update.render.init_uniforms(["start_z", "last_m"], 0);
-		this.wilson_update.render.init_uniforms(["start_z", "last_m"], 1);
-		this.wilson_update.render.init_uniforms(["start_z", "last_m"], 2);
+		this.wilson_update.render.init_uniforms(["last_m"], 2);
 		
 		
 		
@@ -283,7 +318,7 @@ class QuasiFuchsianGroup extends Applet
 			
 			uniform sampler2D u_texture;
 			
-			const float max_brightness = 50.0;
+			const float max_brightness = 5.0;
 			
 			
 			
@@ -312,7 +347,15 @@ class QuasiFuchsianGroup extends Applet
 			canvas_height: this.resolution,
 			
 			world_width: 4,
-			world_height: 4
+			world_height: 4,
+			
+			use_draggables: true,
+			
+			draggables_mousedown_callback: this.bake_coefficients.bind(this),
+			draggables_touchstart_callback: this.bake_coefficients.bind(this),
+			
+			draggables_mousemove_callback: this.bake_coefficients.bind(this),
+			draggables_touchmove_callback: this.bake_coefficients.bind(this)
 		};
 		
 		this.wilson = new Wilson(canvas, options);
@@ -324,12 +367,37 @@ class QuasiFuchsianGroup extends Applet
 		
 		
 		
-		this.run();
+		this.wilson.draggables.add(0, 0);
+		this.wilson.draggables.add(0, 0);
+		
+		
+		
+		if (!Site.scripts_loaded["complexjs"])
+		{
+			Site.load_script("/scripts/complex.min.js")
+			
+			.then(() =>
+			{
+				Site.scripts_loaded["complexjs"] = true;
+				
+				this.run();
+			})
+			
+			.catch((error) =>
+			{
+				console.error("Could not load ComplexJS");
+			});
+		}
+		
+		else
+		{
+			this.run();
+		}
 	}
 	
 	
 	
-	run(resolution = 500, computations_per_frame = 10)
+	run(resolution = 500, computations_per_frame = 12)
 	{
 		this.resolution = resolution;
 		
@@ -341,17 +409,7 @@ class QuasiFuchsianGroup extends Applet
 		
 		this.draw_texture = new Uint8Array(this.resolution * this.resolution * 4);
 		
-		for (let i = 0; i < this.resolution * this.resolution; i++)
-		{
-			const index = 4 * i;
-			
-			this.draw_texture[index] = 0;
-			this.draw_texture[index + 1] = 0;
-			this.draw_texture[index + 2] = 0;
-			this.draw_texture[index + 3] = 255;
-		}
-		
-		this.particles = [[[0, 0], 0, 0]];
+		this.bake_coefficients();
 		
 		
 		
@@ -359,6 +417,9 @@ class QuasiFuchsianGroup extends Applet
 	}
 	
 	
+	
+	num_frames = 0;
+	total_time = 0;
 	
 	draw_frame(timestamp)
 	{
@@ -371,12 +432,18 @@ class QuasiFuchsianGroup extends Applet
 			return;
 		}
 		
-		
+		this.total_time = 0;
 		
 		for (let iteration = 0; iteration < this.computations_per_frame; iteration++)
 		{
-			const particle_index = Math.floor(Math.random() * this.particles.length);
+			if (this.particles.length === 0)
+			{
+				return;
+			}
 			
+			
+			
+			const particle_index = Math.floor(Math.random() * this.particles.length);
 			
 			
 			this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[0]);
@@ -403,7 +470,6 @@ class QuasiFuchsianGroup extends Applet
 			
 			this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[2]);
 			
-			this.wilson_update.gl.uniform2fv(this.wilson_update.uniforms["start_z"][2], this.particles[particle_index][0]);
 			this.wilson_update.gl.uniform1i(this.wilson_update.uniforms["last_m"][2], this.particles[particle_index][1]);
 			
 			this.wilson_update.render.draw_frame();
@@ -430,30 +496,11 @@ class QuasiFuchsianGroup extends Applet
 						//Add this point to the queue for further processing.
 						if (this.particles[particle_index][2] < this.max_depth)
 						{
-							//Make sure this particle isn't already in the queue.
-							let found_match = false;
-							
-							for (let j = 0; j < this.particles.length; j++)
-							{
-								const dx = this.particles[j][0][0] - floats_x[i];
-								const dy = this.particles[j][0][1] - floats_y[i];
-								
-								if (dx * dx + dy * dy < this.epsilon * this.epsilon)
-								{
-									found_match = true;
-									break;
-								}
-							}
-							
-							if (!found_match)
-							{
-								this.particles.push([[floats_x[i], floats_y[i]], last_m[i], this.particles[particle_index][2] + 1]);
-							}
+							this.particles.push([[floats_x[i], floats_y[i]], last_m[i], this.particles[particle_index][2] + 1]);
 						}
 					}
 				}
 			}
-			
 			
 			this.particles.splice(particle_index, 1);
 		}
@@ -464,12 +511,138 @@ class QuasiFuchsianGroup extends Applet
 		
 		this.wilson.render.draw_frame();
 		
-		
-		
 		if (!this.animation_paused)
 		{
 			window.requestAnimationFrame(this.draw_frame.bind(this));
 		}
+	}
+	
+	
+	
+	bake_coefficients()
+	{
+		const start = Date.now();
+		
+		for (let i = 0; i < this.resolution * this.resolution; i++)
+		{
+			const index = 4 * i;
+			
+			this.draw_texture[index] = 0;
+			this.draw_texture[index + 1] = 0;
+			this.draw_texture[index + 2] = 0;
+			this.draw_texture[index + 3] = 255;
+		}
+		
+		this.particles = [[[0, 0], 0, 0]];
+		
+		
+		
+		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
+		let ta = new Complex(this.wilson.draggables.world_coordinates[0][0] + 2, this.wilson.draggables.world_coordinates[0][1]);
+		let tb = new Complex(this.wilson.draggables.world_coordinates[1][0] + 2, this.wilson.draggables.world_coordinates[1][1]);
+		
+		let b = new Complex([0, 0]);
+		b = ta.mul(tb);
+		
+		let c = new Complex([0, 0]);
+		c = ta.mul(ta).add(tb.mul(tb));
+		
+		let tab = new Complex([0, 0]);
+		
+		if (b.mul(b).sub(c.mul(4)).arg() > 0)
+		{
+			tab = b.sub(b.mul(b).sub(c.mul(4)).sqrt()).div(2);
+		}
+		
+		else
+		{
+			tab = b.add(b.mul(b).sub(c.mul(4)).sqrt()).div(2);
+		}
+		
+		let z0 = new Complex([0, 0]);
+		z0 = tab.sub(2).mul(tb).div(tb.mul(tab).sub(ta.mul(2)).add(tab.mul(new Complex([0, 2]))));
+		
+		let temp = new Complex([0, 0]);
+		
+		
+		
+		let coefficients = [[[0, 0], [0, 0], [0, 0], [0, 0]], [[0, 0], [0, 0], [0, 0], [0, 0]], [[0, 0], [0, 0], [0, 0], [0, 0]], [[0, 0], [0, 0], [0, 0], [0, 0]]];
+		
+		temp = ta.div(2);
+		
+		coefficients[0][0][0] = temp.re;
+		coefficients[0][0][1] = temp.im;
+		coefficients[0][3][0] = temp.re;
+		coefficients[0][3][1] = temp.im;
+		
+		temp = ta.mul(tab).sub(tb.mul(2)).add(new Complex([0, 4])).div(tab.mul(2).add(4).mul(z0));
+		
+		coefficients[0][1][0] = temp.re;
+		coefficients[0][1][1] = temp.im;
+		
+		temp = ta.mul(tab).sub(tb.mul(2)).sub(new Complex([0, 4])).mul(z0).div(tab.mul(2).sub(4));
+		
+		coefficients[0][2][0] = temp.re;
+		coefficients[0][2][1] = temp.im;
+		
+		
+		
+		temp = tb.sub(new Complex([0, 2])).div(2);
+		
+		coefficients[1][0][0] = temp.re;
+		coefficients[1][0][1] = temp.im;
+		
+		temp = tb.div(2);
+		
+		coefficients[1][1][0] = temp.re;
+		coefficients[1][1][1] = temp.im;
+		coefficients[1][2][0] = temp.re;
+		coefficients[1][2][1] = temp.im;
+		
+		temp = tb.add(new Complex([0, 2])).div(2);
+		
+		coefficients[1][3][0] = temp.re;
+		coefficients[1][3][1] = temp.im;
+		
+		
+		
+		//This weirdness lets us do 3 - index to reference an inverse.
+		for (let i = 0; i < 2; i++)
+		{
+			let ax = coefficients[i][0][0];
+			let ay = coefficients[i][0][1];
+			let bx = coefficients[i][1][0];
+			let by = coefficients[i][1][1];
+			let cx = coefficients[i][2][0];
+			let cy = coefficients[i][2][1];
+			let dx = coefficients[i][3][0];
+			let dy = coefficients[i][3][1];
+			
+			coefficients[i + 2] = [[dx, dy], [-bx, -by], [-cx, -cy], [ax, ay]];
+		}
+		
+		
+		
+		for (let i = 0; i < 2; i++)
+		{
+			this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[i]);
+			
+			this.wilson_update.gl.uniformMatrix2fv(this.wilson_update.uniforms["m0a"][i], false, [coefficients[0][0][0], coefficients[0][2][0], coefficients[0][1][0], coefficients[0][3][0]]);
+			this.wilson_update.gl.uniformMatrix2fv(this.wilson_update.uniforms["m0b"][i], false, [coefficients[0][0][1], coefficients[0][2][1], coefficients[0][1][1], coefficients[0][3][1]]);
+			
+			this.wilson_update.gl.uniformMatrix2fv(this.wilson_update.uniforms["m1a"][i], false, [coefficients[1][0][0], coefficients[1][2][0], coefficients[1][1][0], coefficients[1][3][0]]);
+			this.wilson_update.gl.uniformMatrix2fv(this.wilson_update.uniforms["m1b"][i], false, [coefficients[1][0][1], coefficients[1][2][1], coefficients[1][1][1], coefficients[1][3][1]]);
+			
+			this.wilson_update.gl.uniformMatrix2fv(this.wilson_update.uniforms["m2a"][i], false, [coefficients[2][0][0], coefficients[2][2][0], coefficients[2][1][0], coefficients[2][3][0]]);
+			this.wilson_update.gl.uniformMatrix2fv(this.wilson_update.uniforms["m2b"][i], false, [coefficients[2][0][1], coefficients[2][2][1], coefficients[2][1][1], coefficients[2][3][1]]);
+			
+			this.wilson_update.gl.uniformMatrix2fv(this.wilson_update.uniforms["m3a"][i], false, [coefficients[3][0][0], coefficients[3][2][0], coefficients[3][1][0], coefficients[3][3][0]]);
+			this.wilson_update.gl.uniformMatrix2fv(this.wilson_update.uniforms["m3b"][i], false, [coefficients[3][0][1], coefficients[3][2][1], coefficients[3][1][1], coefficients[3][3][1]]);
+		}
+		
+		console.log(Date.now() - start);
+		
+		window.requestAnimationFrame(this.draw_frame.bind(this));
 	}
 	
 	
@@ -508,16 +681,6 @@ class QuasiFuchsianGroup extends Applet
 			
 			this.wilson.world_width = 4 * Math.pow(2, this.zoom_level);
 			this.wilson.world_height = 4 * Math.pow(2, this.zoom_level);
-		}
-	}
-	
-	
-	
-	handle_resize_event()
-	{
-		if (this.wilson.fullscreen.currently_fullscreen)
-		{
-			this.generate_new_field();
 		}
 	}
 }
