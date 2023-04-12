@@ -6,8 +6,8 @@ class QuasiFuchsianGroup extends Applet
 	
 	computations_per_frame = 25;
 	
-	max_brightness = 5;
-	max_depth = 5;
+	max_brightness = 1;
+	max_depth = 100;
 	
 	particles = [];
 	
@@ -179,12 +179,6 @@ class QuasiFuchsianGroup extends Applet
 				{
 					m = int(mod(float(m) + float(m_string[i]) + 1.0, 4.0));
 					
-					
-		`;
-		
-		const update_shader_x = `
-			${update_shader_base}
-			
 					if (m == 0)
 					{
 						m0(a, b);
@@ -206,8 +200,22 @@ class QuasiFuchsianGroup extends Applet
 					}
 				}
 				
-				z = cdiv(cmul(vec2(a[0][0], b[0][0]), z) + vec2(a[1][0], b[1][0]), cmul(vec2(a[0][1], b[0][1]), z) + vec2(a[1][1], b[1][1]));
+				vec2 num = cmul(vec2(a[0][0], b[0][0]), z) + vec2(a[1][0], b[1][0]);
+				vec2 den = cmul(vec2(a[0][1], b[0][1]), z) + vec2(a[1][1], b[1][1]);
 				
+				if (den.x * den.x + den.y * den.y < .01)
+				{
+					gl_FragColor = encode_float(-10.0);
+					
+					return;
+				}
+				
+				z = cdiv(num, den);
+		`;
+		
+		const update_shader_x = `
+			${update_shader_base}
+			
 				gl_FragColor = encode_float(z.x);
 			}
 		`;
@@ -215,29 +223,6 @@ class QuasiFuchsianGroup extends Applet
 		const update_shader_y = `
 			${update_shader_base}
 			
-					if (m == 0)
-					{
-						m0(a, b);
-					}
-					
-					else if (m == 1)
-					{
-						m1(a, b);
-					}
-					
-					else if (m == 2)
-					{
-						m2(a, b);
-					}
-					
-					else
-					{
-						m3(a, b);
-					}
-				}
-				
-				z = cdiv(cmul(vec2(a[0][0], b[0][0]), z) + vec2(a[1][0], b[1][0]), cmul(vec2(a[0][1], b[0][1]), z) + vec2(a[1][1], b[1][1]));
-				
 				gl_FragColor = encode_float(z.y);
 			}
 		`;
@@ -317,7 +302,9 @@ class QuasiFuchsianGroup extends Applet
 			
 			uniform sampler2D u_texture;
 			
-			const float max_brightness = 5.0;
+			const float max_brightness = 1.0;
+			
+			const float step = 1.0 / 1000.0;
 			
 			
 			
@@ -330,7 +317,18 @@ class QuasiFuchsianGroup extends Applet
 			
 			void main(void)
 			{
-				float state = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).x;
+				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
+				
+				float state = texture2D(u_texture, center).x;
+				
+				float state_around = texture2D(u_texture, center + vec2(step, 0.0)).x + texture2D(u_texture, center + vec2(-step, 0.0)).x + texture2D(u_texture, center + vec2(0.0, step)).x + texture2D(u_texture, center + vec2(0.0, -step)).x + texture2D(u_texture, center + vec2(step, step)).x + texture2D(u_texture, center + vec2(step, -step)).x + texture2D(u_texture, center + vec2(-step, step)).x + texture2D(u_texture, center + vec2(-step, -step)).x;
+				
+				if (state_around <= 1.0 / 255.0)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					
+					return;
+				}
 				
 				gl_FragColor = vec4(hsv2rgb(vec3(atan(uv.y, uv.x) / 6.28318530718, 1.0, state)) * 255.0 / max_brightness, 1.0);
 			}
@@ -396,7 +394,7 @@ class QuasiFuchsianGroup extends Applet
 	
 	
 	
-	run(resolution = 500, computations_per_frame = 10)
+	run(resolution = 1000, computations_per_frame = 10)
 	{
 		this.resolution = resolution;
 		
@@ -439,7 +437,7 @@ class QuasiFuchsianGroup extends Applet
 			
 			
 			
-			const particle_index = Math.floor(Math.random() * this.particles.length);
+			const particle_index = this.particles.length - 1;//Math.floor(Math.random() * this.particles.length);
 			
 			
 			this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[0]);
@@ -532,7 +530,7 @@ class QuasiFuchsianGroup extends Applet
 		
 		
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
-		let ta = new Complex((this.wilson.draggables.world_coordinates[0][0] + 2) / 4 + 2, this.wilson.draggables.world_coordinates[0][1] / 2);
+		let ta = new Complex((this.wilson.draggables.world_coordinates[0][0] + 2) / 4 + 1.85, this.wilson.draggables.world_coordinates[0][1] / 2);
 		let tb = new Complex((this.wilson.draggables.world_coordinates[1][0] + 2) / 4 + 2, this.wilson.draggables.world_coordinates[1][1] / 2);
 		
 		let b = new Complex([0, 0]);
