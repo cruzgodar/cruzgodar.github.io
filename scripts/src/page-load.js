@@ -149,10 +149,7 @@ Page.load = async function()
 		Site.Settings.condense_applet();
 	}
 	
-	Site.scripts_loaded["mathjax"].then(async () =>
-	{
-		this.Load.Math.typeset();
-	});
+	this.Load.Math.typeset();
 	
 	
 	
@@ -1024,8 +1021,6 @@ Page.Load =
 		
 		typeset: async function()
 		{
-			await Site.scripts_loaded["mathjax"];
-			
 			return new Promise(async (resolve, reject) =>
 			{
 				await MathJax.typesetPromise();
