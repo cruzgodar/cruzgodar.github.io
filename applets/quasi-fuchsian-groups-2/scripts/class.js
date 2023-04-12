@@ -6,9 +6,8 @@ class QuasiFuchsianGroup extends Applet
 	
 	computations_per_frame = 25;
 	
-	max_brightness = 10;
-	max_depth = 10;
-	epsilon = .01;
+	max_brightness = 5;
+	max_depth = 5;
 	
 	particles = [];
 	
@@ -397,7 +396,7 @@ class QuasiFuchsianGroup extends Applet
 	
 	
 	
-	run(resolution = 500, computations_per_frame = 12)
+	run(resolution = 500, computations_per_frame = 10)
 	{
 		this.resolution = resolution;
 		
@@ -417,9 +416,6 @@ class QuasiFuchsianGroup extends Applet
 	}
 	
 	
-	
-	num_frames = 0;
-	total_time = 0;
 	
 	draw_frame(timestamp)
 	{
@@ -521,8 +517,6 @@ class QuasiFuchsianGroup extends Applet
 	
 	bake_coefficients()
 	{
-		const start = Date.now();
-		
 		for (let i = 0; i < this.resolution * this.resolution; i++)
 		{
 			const index = 4 * i;
@@ -538,8 +532,8 @@ class QuasiFuchsianGroup extends Applet
 		
 		
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
-		let ta = new Complex(this.wilson.draggables.world_coordinates[0][0] + 2, this.wilson.draggables.world_coordinates[0][1]);
-		let tb = new Complex(this.wilson.draggables.world_coordinates[1][0] + 2, this.wilson.draggables.world_coordinates[1][1]);
+		let ta = new Complex((this.wilson.draggables.world_coordinates[0][0] + 2) / 4 + 2, this.wilson.draggables.world_coordinates[0][1] / 2);
+		let tb = new Complex((this.wilson.draggables.world_coordinates[1][0] + 2) / 4 + 2, this.wilson.draggables.world_coordinates[1][1] / 2);
 		
 		let b = new Complex([0, 0]);
 		b = ta.mul(tb);
@@ -639,8 +633,6 @@ class QuasiFuchsianGroup extends Applet
 			this.wilson_update.gl.uniformMatrix2fv(this.wilson_update.uniforms["m3a"][i], false, [coefficients[3][0][0], coefficients[3][2][0], coefficients[3][1][0], coefficients[3][3][0]]);
 			this.wilson_update.gl.uniformMatrix2fv(this.wilson_update.uniforms["m3b"][i], false, [coefficients[3][0][1], coefficients[3][2][1], coefficients[3][1][1], coefficients[3][3][1]]);
 		}
-		
-		console.log(Date.now() - start);
 		
 		window.requestAnimationFrame(this.draw_frame.bind(this));
 	}
