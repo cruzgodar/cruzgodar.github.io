@@ -258,45 +258,6 @@ Site.Settings =
 			}, Site.opacity_animation_time * 2);
 		}
 	},
-
-
-
-	reduce_page_margins: function()
-	{
-		try {document.querySelector("#ultrawide-margin-adjust").remove();}
-		catch(ex) {}
-		
-		
-		
-		//When in ultrawide mode, shrink the margins to 50%.
-		if (Page.Layout.layout_string === "ultrawide")
-		{
-			const element = Site.add_style(`
-				.body-text, .nav-buttons
-				{
-					width: 50vw;
-				}
-				
-				.line-break
-				{
-					width: 50vw;
-					left: 25vw;
-				}
-				
-				.body-text.narrow
-				{
-					width: 40vw;
-				}
-				
-				pre code
-				{
-					width: calc(50vw - 24px);
-				}
-			`);
-			
-			element.id = "ultrawide-margin-adjust";
-		}	
-	},
 	
 	
 	

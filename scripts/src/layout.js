@@ -46,13 +46,6 @@ Page.Layout =
 		
 		
 		
-		if (this.old_layout_string !== this.layout_string)
-		{
-			Site.Settings.reduce_page_margins();
-		}
-		
-		
-		
 		if (this.old_layout_string !== this.layout_string && this.layout_string === "ultrawide")
 		{
 			this.Multicols.create();

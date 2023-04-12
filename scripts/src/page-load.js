@@ -139,11 +139,6 @@ Page.load = async function()
 	
 	
 	
-	if (this.Layout.layout_string === "ultrawide")
-	{
-		Site.Settings.reduce_page_margins();
-	}
-	
 	if (Site.Settings.url_vars["condensed_applets"] === 1 && Site.sitemap[Page.url].parent === "/applets/")
 	{
 		Site.Settings.condense_applet();

@@ -321,7 +321,13 @@ class QuasiFuchsianGroup extends Applet
 				
 				float state = texture2D(u_texture, center).x;
 				
-				float state_around = texture2D(u_texture, center + vec2(step, 0.0)).x + texture2D(u_texture, center + vec2(-step, 0.0)).x + texture2D(u_texture, center + vec2(0.0, step)).x + texture2D(u_texture, center + vec2(0.0, -step)).x + texture2D(u_texture, center + vec2(step, step)).x + texture2D(u_texture, center + vec2(step, -step)).x + texture2D(u_texture, center + vec2(-step, step)).x + texture2D(u_texture, center + vec2(-step, -step)).x;
+				float state_around = texture2D(u_texture, center + vec2(step, 0.0)).x +
+				texture2D(u_texture, center + vec2(-step, 0.0)).x +
+				texture2D(u_texture, center + vec2(0.0, step)).x +
+				texture2D(u_texture, center + vec2(0.0, -step)).x +
+				
+				texture2D(u_texture, center + vec2(step, step)).x +
+				texture2D(u_texture, center + vec2(step, -step)).x + texture2D(u_texture, center + vec2(-step, step)).x + texture2D(u_texture, center + vec2(-step, -step)).x + texture2D(u_texture, center + vec2(step, 0.0)).x + texture2D(u_texture, center + vec2(-step, 0.0)).x + texture2D(u_texture, center + vec2(0.0, step)).x + texture2D(u_texture, center + vec2(0.0, -step)).x + texture2D(u_texture, center + vec2(step, step)).x + texture2D(u_texture, center + vec2(step, -step)).x + texture2D(u_texture, center + vec2(-step, step)).x + texture2D(u_texture, center + vec2(-step, -step)).x;
 				
 				if (state_around <= 1.0 / 255.0)
 				{

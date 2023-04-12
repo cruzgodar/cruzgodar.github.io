@@ -433,6 +433,16 @@ mjx-container
 
 @media (min-width: 1400px)
 {
+	.body-text, .nav-buttons
+	{
+		width: 50%;
+	}
+	
+	.body-text.narrow
+	{
+		width: 40%;
+	}
+	
 	pre code.highlightable
 	{
 		width: calc(50% - 24px);
@@ -440,6 +450,6 @@ mjx-container
 	
 	.card
 	{
-		width: min(50%, 100% - 64px);
+		width: min(50%, calc(100% - 64px));
 	}
 }
