@@ -299,6 +299,8 @@ Page.Load =
 	add_header: function()
 	{
 		document.body.firstChild.insertAdjacentHTML("beforebegin", `
+			<div id="header-container"></div>
+			
 			<div id="header">
 				<a id="header-logo" href="/home/">
 					<img src="/graphics/header-icons/logo.webp"></img>
@@ -1188,9 +1190,9 @@ Page.Cards =
 		
 		Page.element.style.filter = "brightness(1)";
 		document.querySelector("#header").style.filter = "brightness(1)";
+		document.querySelector("#header-container").style.filter = "brightness(1)";
 		
 		Page.element.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
-		document.querySelector("#header").style.transformOrigin = `50% 0`;
 		
 		document.documentElement.addEventListener("click", this.handle_click_event);
 		
@@ -1213,7 +1215,7 @@ Page.Cards =
 			});
 			
 			anime({
-				targets: [Page.element, document.querySelector("#header")],
+				targets: [Page.element, document.querySelector("#header"), document.querySelector("#header-container")],
 				filter: "brightness(.5)",
 				scale: .975,
 				duration: this.animation_time,
@@ -1248,7 +1250,7 @@ Page.Cards =
 		await new Promise((resolve, reject) =>
 		{
 			anime({
-				targets: [Page.element, document.querySelector("#header")],
+				targets: [Page.element, document.querySelector("#header"), document.querySelector("#header-container")],
 				filter: "brightness(1)",
 				scale: 1,
 				duration: Page.Cards.animation_time,

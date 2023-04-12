@@ -1,4 +1,19 @@
-/* Adds support for the footer, floating or not, and the scroll up button. */
+#header-container
+{
+	position: fixed;
+	top: -50vh;
+	left: -50vw;
+	
+	height: calc(40px + 50vh);
+	width: calc(100% + 100vw);
+	
+	background-color: rgb(255, 255, 255);
+	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .15);
+	
+	z-index: 105;
+	
+	transform-origin: 50% calc(40px + 100vh);
+}
 
 
 
@@ -11,11 +26,10 @@
 	height: 40px;
 	
 	width: 100%;
-	background-color: rgb(255, 255, 255);
-	
-	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .15);
 	
 	z-index: 110;
+	
+	transform-origin: 50% 50vh;
 }
 
 

@@ -162,7 +162,7 @@ Site.Settings =
 		if (no_animation === false)
 		{
 			element = Site.add_style(`
-				html, #header
+				html, #header-container
 				{
 					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
 				}
@@ -303,7 +303,7 @@ Site.Settings =
 		{
 			try
 			{
-				document.body.querySelector("#header").style.backgroundColor = "rgb(255, 255, 255)";
+				document.body.querySelector("#header-container").style.backgroundColor = "rgb(255, 255, 255)";
 				
 				document.body.querySelectorAll("#header-logo span, #header-links a span").forEach(element => element.style.color = "rgb(0, 0, 0)");
 				
@@ -374,7 +374,7 @@ Site.Settings =
 		{
 			try
 			{
-				document.body.querySelector("#header").style.backgroundColor = "rgb(24, 24, 24)";
+				document.body.querySelector("#header-container").style.backgroundColor = "rgb(24, 24, 24)";
 				
 				document.body.querySelectorAll("#header-logo span, #header-links a:not(.hover) span").forEach(element => element.style.setProperty("color", "rgb(255, 255, 255)", "important"));
 				document.body.querySelectorAll("#header-links a.hover span").forEach(element => element.style.removeProperty("color"));
@@ -505,7 +505,7 @@ Site.Settings =
 	
 	
 	dark_theme_style: `
-		#header, .card
+		#header-container, .card
 		{
 			background-color: rgb(24, 24, 24);
 		}
