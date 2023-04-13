@@ -1476,6 +1476,7 @@ class Wilson
 					document.body.appendChild(this.fullscreen_components_container);
 					
 					document.body.querySelector("#header").style.zIndex = 90;
+					document.body.querySelector("#header-container").style.zIndex = 90;
 					
 					
 					
@@ -1639,6 +1640,7 @@ class Wilson
 					this.fullscreen_components_container_location.appendChild(this.fullscreen_components_container);
 					
 					document.body.querySelector("#header").style.zIndex = 110;
+					document.body.querySelector("#header-container").style.zIndex = 105;
 					
 					
 					
