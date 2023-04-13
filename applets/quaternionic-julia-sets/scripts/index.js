@@ -256,7 +256,7 @@
 			//Uncomment to use 2x antialiasing.
 			//vec3 final_color = (raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size)))) / 4.0;
 			
-			gl_FragColor = vec4(raymarch(image_plane_center_pos + right_vec * uv.x * aspect_ratio_x + up_vec * uv.y / aspect_ratio_y), 1.0);
+			gl_FragColor = vec4(raymarch(image_plane_center_pos + right_vec * (uv.x) * aspect_ratio_x + up_vec * (uv.y) / aspect_ratio_y), 1.0);
 		}
 	`;
 	
@@ -345,8 +345,8 @@
 	
 	
 	
-	let theta = 1.4824;
-	let phi =  1.9469;
+	let theta = 1.21557;
+	let phi =  2.10801;
 	
 	let next_theta_velocity = 0;
 	let next_phi_velocity = 0;
@@ -374,13 +374,13 @@
 	let right_vec = [];
 	let up_vec = [];
 	
-	let camera_pos = [-.3796, -3.4871, 1.4271];
+	let camera_pos = [-1.11619, -2.63802, 1.67049];
 	
 	let focal_length = 2;
 	
 	let light_pos = [-5, -5, 5];
 	
-	let c = [-0.528783, 0.123638, 0.672392];
+	let c = [-.54, -.25, -.668];
 	let c_old = [0, 0, 0];
 	let c_delta = [0, 0, 0];
 	
