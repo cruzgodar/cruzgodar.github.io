@@ -2,7 +2,7 @@
 
 class QuasiFuchsianGroup extends Applet
 {
-	resolution = 500;
+	resolution = 2000;
 	
 	computations_per_frame = 25;
 	
@@ -304,7 +304,7 @@ class QuasiFuchsianGroup extends Applet
 			
 			const float max_brightness = 1.0;
 			
-			const float step = 1.0 / 1000.0;
+			const float step = 1.0 / 2000.0;
 			
 			
 			
@@ -327,7 +327,9 @@ class QuasiFuchsianGroup extends Applet
 				texture2D(u_texture, center + vec2(0.0, -step)).x +
 				
 				texture2D(u_texture, center + vec2(step, step)).x +
-				texture2D(u_texture, center + vec2(step, -step)).x + texture2D(u_texture, center + vec2(-step, step)).x + texture2D(u_texture, center + vec2(-step, -step)).x + texture2D(u_texture, center + vec2(step, 0.0)).x + texture2D(u_texture, center + vec2(-step, 0.0)).x + texture2D(u_texture, center + vec2(0.0, step)).x + texture2D(u_texture, center + vec2(0.0, -step)).x + texture2D(u_texture, center + vec2(step, step)).x + texture2D(u_texture, center + vec2(step, -step)).x + texture2D(u_texture, center + vec2(-step, step)).x + texture2D(u_texture, center + vec2(-step, -step)).x;
+				texture2D(u_texture, center + vec2(step, -step)).x +
+				texture2D(u_texture, center + vec2(-step, step)).x +
+				texture2D(u_texture, center + vec2(-step, -step)).x;
 				
 				if (state_around <= 1.0 / 255.0)
 				{
@@ -400,7 +402,7 @@ class QuasiFuchsianGroup extends Applet
 	
 	
 	
-	run(resolution = 1000, computations_per_frame = 10)
+	run(resolution = 2000, computations_per_frame = 30)
 	{
 		this.resolution = resolution;
 		
@@ -488,7 +490,7 @@ class QuasiFuchsianGroup extends Applet
 					
 					if (this.draw_texture[index] < this.max_brightness)
 					{
-						if (this.particles[particle_index][2] >= 2)
+						if (this.particles[particle_index][2] >= 5)
 						{
 							this.draw_texture[index]++;
 						}
@@ -536,8 +538,15 @@ class QuasiFuchsianGroup extends Applet
 		
 		
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
-		let ta = new Complex((this.wilson.draggables.world_coordinates[0][0] + 2) / 4 + 1.85, this.wilson.draggables.world_coordinates[0][1] / 2);
-		let tb = new Complex((this.wilson.draggables.world_coordinates[1][0] + 2) / 4 + 2, this.wilson.draggables.world_coordinates[1][1] / 2);
+		let ta = new Complex(this.wilson.draggables.world_coordinates[0][0] / 4 + 2, this.wilson.draggables.world_coordinates[0][1]);
+		let tb = new Complex(this.wilson.draggables.world_coordinates[1][0] / 4 + 2, this.wilson.draggables.world_coordinates[1][1]);
+		
+		console.log(ta, tb);
+		
+		/*
+			let ta = new Complex(wilson.draggables.world_coordinates[0][0], wilson.draggables.world_coordinates[0][1]);
+			let tb = new Complex(wilson.draggables.world_coordinates[1][0], wilson.draggables.world_coordinates[1][1]);
+		*/
 		
 		let b = new Complex([0, 0]);
 		b = ta.mul(tb);

@@ -243,6 +243,8 @@
 			
 			"resolution": "5000x5000",
 			
+			"parameters": "Generated with c = (-0.54, -0.25, -0.668, 0)",
+			
 			"applet_link": "quaternionic-julia-sets",
 			
 			"image_link": "https://drive.google.com/uc?id=1092d-V4qcvcW5_lsf5xsyDQvlDs1LdO9&export=download"
