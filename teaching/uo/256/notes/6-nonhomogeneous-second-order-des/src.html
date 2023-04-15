@@ -36,7 +36,133 @@ for some function $g(t)$. We'd like to reuse as much as possible from the previo
 
 
 
-So to find the general solution to a nonhomogeneous DE, we just need to find a single solution and add it to the general solution of the homogeneous version. This isn't incredibly surprising: plugging $y = y_c + Y$ into the DE results in the $y_c$ terms combining to zero and the $Y$ terms combining to $g(t)$.
+So to find the general solution to a nonhomogeneous DE, we just need to find a single solution and add it to the general solution of the homogeneous version. This isn't incredibly surprising: plugging $y = y_c + Y$ into the DE results in the $y_c$ terms combining to zero and the $Y$ terms combining to $g(t)$. Since we already know how to find $y_c$ from the previous two sections, we can focus completely on finding a particular solution $Y$. Our first method here will be a little more cobbled-together than previous ones, but for many DEs, it will still let us find solutions.
+
+
+
+## Undetermined Coefficients
+
+As always, we'll begin with a few examples and dig into the general method afterward.
+
+
+
+### ex undetermined coefficients
+	
+	Solve the DE $$y'' + 3y' + 2y = e^t$$.
+	
+	Let's begin by solving the homogeneous version $y'' + 3y' + 2y = 0$. We have a characteristic equation of $r^2 + 3r + 2 = 0$, which factors and gives $r = -1$ and $r = -2$. Therefore, the general solution is
+	
+	$$
+		y_c = c_1e^{-t} + c_2e^{-2t}.
+	$$
+	
+	The new part of the problem is finding a particular solution $Y(t)$ to the nonhomogeneous version. It doesn't seem too unlikely that the solution is of the form $Y(t) = Ae^{t}$ for some constant $A$, since then we'll have a factor of $e^t$ in $Y$, $Y'$, and $Y''$. Specifically,
+	
+	$$
+		Y'' + 3Y' + 2Y &= e^t
+		
+		Ae^t + 3Ae^t + 2Ae^t &= e^t
+		
+		6Ae^t = e^t
+		
+		A = \frac{1}{6}.
+	$$
+	
+	Therefore, the general solution to the equation is
+	
+	$$
+		y &= y_c + Y
+		
+		&= c_1e^{-t} + c_2e^{-2t} + \frac{1}{6}e^t.
+	$$
+	
+###
+
+
+
+This key part of that method required us to guess that the solution was of the form $Ae^t$, which is a little worrying: how are we supposed to know the form to guess in general, and what happens if solving for the coefficients doesn't work? We'll make progress toward answering both questions in the next example.
+
+
+
+### ex undetermined coefficients, again
+	
+	Find the general solution to $$y'' + 2y' + y = \cos(t)$$.
+	
+	The homogeneous equation gives us the characteristic equation $r^2 + 2r + 1 = 0$, which factors and gives $r = -1$ as a repeated root. Our general solution is therefore
+	
+	$$
+		y_c = c_1e^{-t} + c_2te^{-t}.
+	$$
+	
+	Now we turn to undetermined coefficients. If we're looking for a function whose derivatives could combine to make $\cos(t)$, a good place to start is with $\cos$ itself: let's try $Y = A\cos(t)$. Then
+	
+	$$
+		Y'' + 2Y' + Y &= \cos(t)
+		
+		-A\cos(t) - 2A\sin(t) + A\cos(t) &= \cos(t)
+		
+		-2A\sin(t) &= \cos(t)
+	$$
+	
+	Unfortunately, there's no way to turn $\sin$ into $\cos$, no matter how we choose $A$. But there's a good reason we're stuck, and it's staring us in the face: if we stick a $\cos$ function into a DE, there are almost certainly going to be sines that appear, but by the same token, if we stick $\sin$ in, there will be cosines that appear. Specifically, both $\cos$ *and* $\sin$ can differentiate to $\cos$, and so we should widen our search to include $\sin$ as well: if
+	
+	$$
+		Y = A\sin(t) + B\cos(t),
+	$$
+	
+	then we have
+	
+	$$
+		Y'' + 2Y' + Y &= \cos(t)
+		
+		\left(-A\sin(t) - B\cos(t) \right) + \left(2A\cos(t) - 2B\sin(t)\right) + \left( A\sin(t) + B\cos(t) \right) &= \cos(t)
+		
+		(-A - 2B + A)\sin(t) + (-B + 2A + B)\cos(t) &= \cos(t)
+		
+		-2B\sin(t) + 2A\cos(t) &= \cos(t).
+	$$
+	
+	Therefore, $A = \frac{1}{2}$ and $B = 0$. In total, our general solution is
+	
+	$$
+		y = c_1e^{-t} + c_2te^{-t} + \frac{1}{2}\sin(t).
+	$$
+	
+###
+
+
+
+This method, called **undetermined coefficients**, can work when the right side of the DE is a product of exponentials, sines and cosines, and polynomials. If there are multiple terms on the right, we can just handle them one at a time and add all the resulting particular solutions together.
+
+
+
+### thm !Method: Undetermined Coefficients
+	
+	To find a particular solution $Y$ to a DE of the form
+	
+	$$
+		ay'' + by' + cy = g(t),
+	$$
+	
+	where $g(t)$ is a product of exponentials, sines and cosines, and polynomials, first determine the form of $Y$.
+	
+	> . If $g(t) = e^{\alpha t}$, assume $Y = Ae^{\alpha t}$.
+	
+	> . If $g(t) = \sin(\beta t)$ or $\cos(\beta t)$, then assume $Y = A\sin(\beta t) + B\cos(\beta t)$.
+	
+	> . If $g(t) = p(t)$ for a polynomial $p$ of degree $n$, then assume $Y = A_0 + A_1t + \cdots + A_n t^n$.
+	
+	> . If $g(t)$ is a product of any of the previous possibilities, then assume $Y$ is a product of the corresponding forms. For example, if $g(t) = e^{2t}\sin(4t)$, then assume
+	
+	$$
+		Y = Ae^{2t}\sin(4t) + Be^{2t}\cos(4t).
+	$$
+	
+	If any terms of $Y$ are solutions to the homogeneous DE, multiply all of $Y$ by $t$ and check again, possibly multiplying by $t$ a second time. This is analogous to the extra factor of $t$ in repeated roots.
+	
+	Now plug in the value of $Y$ to the DE and solve for all of the undetermined coefficients.
+	
+###
 
 
 
