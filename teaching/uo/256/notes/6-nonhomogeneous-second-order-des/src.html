@@ -166,4 +166,74 @@ This method, called **undetermined coefficients**, can work when the right side 
 
 
 
+### ex undetermined coefficients
+	
+	Find the general solution to $$y'' - 6y' + 9y = 6(t + 1)e^{3t}$$.
+	
+	Let's first solve the homogeneous version. We have $r^2 - 6r + 9 = 0$, so $r = 3$ is a repeated root. The general solution is therefore
+	
+	$$
+		y = c_1e^{3t} + c_2te^{3t}.
+	$$
+	
+	Now the nonhomogeneous part is a degree-2 polynomial multiplied by an exponential, so the form to assume is
+	
+	$$
+		Y = (A_0 + A_1t)e^{3t}.
+	$$
+	
+	But there's a problem here: if we plug this form of $Y$ into the DE, we're going to run into problems. We already know that the two terms of $Y$ are exactly the general form of the solution to the homogeneous DE --- in other words, $Y$ is guaranteed to collapse to zero when we plug it in. Just like in the previous example with $\sin$, it's crucial that we have enough degrees of freedom for our variables, and this is where the last bit of the previous theorem comes in: just like we multiplied the initial solution of $e^{3t}$ by $t$ to produce the second fundamental solution, we can multiply all of $Y$ by $t$ to separate it from the solutions to the homogeneous equation:
+	
+	$$
+		Y = (A_0t + A_1t^2)e^{3t}.
+	$$
+	
+	The first term still overlaps with the homogeneous solution, though, so we need to multiply by $t$ a second time:
+	
+	$$
+		Y = (A_0t^2 + A_1t^3)e^{3t}.
+	$$
+	
+	Now we're finally good to go. The derivatives of $Y$ are
+	
+	$$
+		Y' &= (2A_0t + 3A_1t^2)e^{3t} + (A_0t^2 + A_1t^3)e^{3t} \cdot 3
+		
+		&= (2A_0t + (3A_0 + 3A_1)t^2 + 3A_1t^3)e^{3t}
+		
+		Y'' &= (2A_0 + (6A_0 + 6A_1)t + 9A_1t^2)e^{3t} + (2A_0t + (3A_0 + 3A_1)t^2 + 3A_1t^3)e^{3t} \cdot 3
+		
+		&= (2A_0 + (12A_0 + 6A_1)t + (9A_0 + 18A_1)t^2 + 9A_1t^3)e^{3t}
+	$$
+	
+	Plugging these into the original DE and gathering like terms results in the surprisingly short
+	
+	$$
+		Y'' - 6Y' + 9Y &= 6(t + 1)e^{3t}
+		
+		(2A_0 + 6A_1t)e^{3t} &= 6(t + 1)e^{3t}
+		
+		2A_0 + 6A_1t &= 6t + 6.
+	$$
+	
+	Therefore, $A_0 = 3$ and $A_1 = 1$, and so our general solution is
+	
+	$$
+		y = c_1e^{3t} + c_2te^{3t} + (3t^2 + t^3)e^{3t}.
+	$$
+	
+###
+
+### exc undetermined coefficients
+	
+	Find the general solution to $$y'' - 2y' + 10y = 6e^t\sin(t) + 18e^t$$.
+	
+###
+
+
+
+## Variation of Parameters
+
+
+
 <script src="/scripts/init.js"></script>
