@@ -2,7 +2,7 @@
 
 
 
-The type of DE we've been studying for the past two sections has the extremely particular description of second-order, linear, constant-coefficient, and homogeneous --- put simply, they're DEs of the form $ay'' + by' + cy = 0$. Now that we completely understand how to solve them, we'd like to move on to slightly more general DEs by dropping one of the four adjectives. We'll get to higher-order DEs in the next section, but there's still plenty to say about second-order ones, so we'll keep that here for now. Nonlinear second-order equations are substantially more difficult to solve and are well outside the scope of the class, so we'll be sticking with linear ones. Unfortunately, DEs with non-constant coefficients are also quite difficult to solve, and while we'll have a small amount to say about them later this section, we won't be discussing them in general. The only part we can generalize is homogeneity --- in other words, we'll be looking at DEs of the form
+The type of DE we've been studying for the past two sections has the extremely particular description of second-order, linear, constant-coefficient, and homogeneous --- put simply, they're DEs of the form $ay'' + by' + cy = 0$. Now that we completely understand how to solve them, we'd like to move on to slightly more general DEs by dropping one of the four adjectives. We'll get to higher-order DEs in the next section, but there's still plenty to say about second-order ones, so we'll keep that here for now. Nonlinear second-order equations are substantially more difficult to solve and are well outside the scope of the class, so we'll be sticking with linear ones. Unfortunately, DEs with non-constant coefficients are also quite difficult to solve, and while we'll have a small amount to say about them later in this section, we won't be discussing them in general. The only part we can generalize is homogeneity --- in other words, we'll be looking at DEs of the form
 
 $$
 	ay'' + by' + cy = g(t)
@@ -80,7 +80,7 @@ As always, we'll begin with a few examples and dig into the general method after
 
 
 
-This key part of that method required us to guess that the solution was of the form $Ae^t$, which is a little worrying: how are we supposed to know the form to guess in general, and what happens if solving for the coefficients doesn't work? We'll make progress toward answering both questions in the next example.
+The key part of that method required us to guess that the solution was of the form $Ae^t$, which is a little worrying: how are we supposed to know the form to guess in general, and what happens if solving for the coefficients doesn't work? We'll make progress toward answering both questions in the next example.
 
 
 
@@ -233,6 +233,94 @@ This method, called **undetermined coefficients**, can work when the right side 
 
 
 ## Variation of Parameters
+
+Our second method will be more general than Undetermined Coefficients, but somewhat more complicated to actually use. Its derivation veers decidedly off the narrative path and into the weeds, but it's definitely worth asking about outside of class if you're interested.
+
+
+
+### thm !Method: Variation of Parameters
+	
+	Suppose the general solution to $y'' + p(t)y' + q(t)y = g(t)$ is $y_c = c_1y_1 + c_2y_2$. Then a particular solution is
+	
+	$$
+		Y = -y_1 \int \frac{y_2(t)g(t)}{W[y_1, y_2]}\,dt + y_2 \int \frac{y_1(t)g(t)}{W[y_1, y_2]}\,dt.
+	$$
+	
+###
+
+
+
+The advantage here is clear: we aren't restricted to the right side of the DE being made of just exponentials, sines and cosines, and polynomials. The downside is also pretty clear, though --- we have to integrate a potentially awful expression. As always with integral solutions to DEs, we can leave them in terms of integrals by replacing $t$ with $s$ and setting the upper limit to $t$ (and the lower limit to the input to the initial value). In fact, the integrals are so often either intractable or just nightmarish that we'll almost always just leave them and not attempt to integrate.
+
+
+
+### ex variation of parameters
+	
+	Solve $$y'' + y = \tan(x)$$, given $y(0) = 1$ and $y'(0) = 1$. 
+	
+	Solving the homogeneous version, we have $r^2 + 1 = 0$, so $r = \pm i$. Therefore, the general solution is
+	
+	$$
+		y = c_1\cos(t) + c_2\sin(t),
+	$$
+	
+	and so the Wronskian is
+	
+	$$
+		W[y_1, y_2] &= \cos^2(t) + \sin^2(t)
+		
+		&= 1.
+	$$
+	
+	Now variation of parameters gives us a particular solution of
+	
+	$$
+		Y &= -\cos(t) \int \sin(t)\tan(t)\,dt + \sin(t) \int \cos(t)\tan(t)\,dt
+		
+		&= -\cos(t) \int \frac{\sin^2(t)}{\cos(t)}\,dt + \sin(t) \int \sin(t)\,dt
+		
+		&= -\cos(t) \int \frac{\sin^2(t)}{\cos(t)}\,dt - \sin(t)\cos(t).
+	$$
+	
+	While the first integral is solvable, it's rather intense, and we'll just leave it as-is. Let's make sure all of the $t$s are in the same scope by rewriting the first integral with the fundamental theorem of calculus part I (choosing a lower limit of $t = 0$ to match the initial conditions.)
+	
+	$$
+		Y = -\cos(t) \int_0^t \frac{\sin^2(s)}{\cos(s)}\,ds - \sin(t)\cos(t).
+	$$
+	
+	Our final solution is now
+	
+	$$
+		y = c_1\cos(t) + c_2\sin(t) -\cos(t) \int_0^t \frac{\sin^2(s)}{\cos(s)}\,ds - \sin(t)\cos(t).
+	$$
+	
+	Plugging in the first initial condition gives us that $c_1 = 1$, and to get the second, we need to differentiate. Remember that the derivative of that integral in the middle is just the expression inside with $s$ replaced with $t$ --- that's the main result of the fundamental theorem.
+	
+	$$
+		y' &= -\sin(t) + c_2\cos(t) + \sin(t) \int_0^t \frac{\sin^2(s)}{\cos(s)}\,ds - \cos(t) \left( \frac{\sin^2(t)}{\cos(t)}\right) - \cos^2(t) + \sin^2(t).
+		
+		1 &= c_2 - 1
+		
+		c_2 &= 2.
+	$$
+	
+	In total, our solution is
+	
+	$$
+		y = \cos(t) + 2\sin(t) - \cos(t) \int_0^t \frac{\sin^2(s)}{\cos(s)}\,ds - \sin(t)\cos(t).
+	$$
+	
+###
+
+### exc variation of parameters
+	
+	Solve $$y'' + 6y' + 9y = \log(t)$$, $y(1) = 0$, $y'(1) = 1$.
+	
+###
+
+
+
+### nav-buttons
 
 
 
