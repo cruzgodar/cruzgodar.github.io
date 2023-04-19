@@ -1,0 +1,85 @@
+### nav-buttons
+
+
+
+We'll conclude the first part of the class by discussing DEs of order higher than 2. We could solve many first-order DEs all of the time, but only some second-order DEs some of the time, and this trend continues as we increase the order. To get started, a generic linear $n$th-order DE has the form
+
+$$
+	y^{(n)} + p_{n - 1}(t)y^{(n - 1)} + \cdots + p_1(t)y' + p_0(t)y = g(t).
+$$
+
+Following the pattern of needing one initial condition for a first-order DE and two for a second-order one to completely determine the coefficients, we'll typically need $n$ initial conditions to find a particular solution to an $n$th-order DE. At the very least, we do still have a result that guarantees a unique solution when the coefficient functions $p_i$ and $g$ are continuous:
+
+
+
+### thm existence and uniqueness of solutions for $n$th-order DEs
+	
+	If the functions $g$ and $p_0, p_1, ..., p_{n - 1}$ are all continuous, then the DE
+	
+	$$
+		y^{(n)} + p_{n - 1}(t)y^{(n - 1)} + \cdots + p_1(t)y' + p_0(t)y &= g(t)
+		
+		y(t_0) &= y_0
+		
+		y'(t_0) &= y'_0
+		
+		& \ \ \vdots
+		
+		y^{(n - 1)}(t_0) &= y^{(n - 1)}_0
+	$$
+	
+	has a unique solution.
+	
+###
+
+
+
+Many of our results about second-order DEs apply to $n$th-order ones too. If we find $n$ different fundamental solutions $y_1, ..., y_n$, then we would expect our general solution to be
+
+$$
+	y = c_1y_1 + \cdots + c_ny_n.
+$$
+
+In order for this to actually capture all possible solutions, we need the system of equations given by plugging in all $n$ initial conditions to be solvable for the $c_i$: specifically,
+
+$$
+	c_1y_1 + \cdots + c_ny_n &= y_0
+	
+	c_1y_1' + \cdots + c_ny_n' &= y'_0
+	
+	& \ \ \vdots
+	
+	c_1y_1^{(n - 1)} + \cdots + c_ny_n^{(n - 1)} &= y^{(n - 1)}_0.
+$$
+
+Just as we were able to relate the solvability of the system to the determinant of a $2 \times 2$ matrix for a second-order matrix before, this system will be solvable if and only if the determinant of a similar $n \times n$ matrix is nonzero. Specifially, we want to define the Wronskian for $n$ fundamental solutions.
+
+
+
+### def Wronskian
+	
+	The **Wronskian** of the $n$ different fundamental solutions $y_1, ..., y_n$ is the determinant
+	
+	$$
+		W[y_1, ..., y_n] = \det \left[ \begin{array}{cccc} y_1 & y_2 & \cdots & y_n \\ y_1' & y_2' & \cdots & y_n' \\ \vdots & \vdots & \ddots & \vdots \\ y_1^{(n - 1)} & y_2^{(n - 1)} & \cdots & y_n^{(n - 1)} \end{array} \right].
+	$$
+	
+###
+
+
+
+Just as before, the Wronskian is nonzero if and only if the system of equations is solvable, and if it is nonzero for at least one value of $t$, then the general solution is
+
+$$
+	y = c_1y_1 + \cdots + c_ny_n.
+$$
+
+Unfortunately, computing an $n \times n$ determinant is substantially more complex than a $2 \times 2$ one. We'll talk a little bit about them later, but for now, it's just worth noting that there is a generalization of the Wronskian that still retains the same function.
+
+
+
+### nav-buttons
+
+
+
+<script src="/scripts/init.js"></script>

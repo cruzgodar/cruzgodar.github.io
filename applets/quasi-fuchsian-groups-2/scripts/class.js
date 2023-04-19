@@ -7,7 +7,7 @@ class QuasiFuchsianGroup extends Applet
 	computations_per_frame = 25;
 	
 	max_brightness = 1;
-	max_depth = 100;
+	max_depth = 20;
 	
 	particles = [];
 	
@@ -402,7 +402,7 @@ class QuasiFuchsianGroup extends Applet
 	
 	
 	
-	run(resolution = 2000, computations_per_frame = 30)
+	run(resolution = 500, computations_per_frame = 30)
 	{
 		this.resolution = resolution;
 		
@@ -434,7 +434,7 @@ class QuasiFuchsianGroup extends Applet
 			return;
 		}
 		
-		this.total_time = 0;
+		
 		
 		for (let iteration = 0; iteration < this.computations_per_frame; iteration++)
 		{
@@ -540,8 +540,6 @@ class QuasiFuchsianGroup extends Applet
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
 		let ta = new Complex(this.wilson.draggables.world_coordinates[0][0] / 4 + 2, this.wilson.draggables.world_coordinates[0][1]);
 		let tb = new Complex(this.wilson.draggables.world_coordinates[1][0] / 4 + 2, this.wilson.draggables.world_coordinates[1][1]);
-		
-		console.log(ta, tb);
 		
 		/*
 			let ta = new Complex(wilson.draggables.world_coordinates[0][0], wilson.draggables.world_coordinates[0][1]);

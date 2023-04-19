@@ -581,11 +581,235 @@ if (APPLET_VERSION)
 	let plane_partition = parse_array(array_data_textarea_element.value);
 	edit_array_textarea_element.value = array_data_textarea_element.value;
 	add_new_array(arrays.length, plane_partition);
+	
+	//garver_patrias_stress_test();
 }
 
 draw_frame();
 
 Page.show();
+
+
+
+function garver_patrias_stress_test()
+{
+	const footprint = 3;
+	const order = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+	const labels = [[1, 4, 7], [2, 5, 8], [3, 6, 9]];
+	
+	const max_entry = 3;
+	
+	let numbers = new Array(footprint);
+	
+	for (let i = 0; i < footprint; i++)
+	{
+		numbers[i] = new Array(footprint);
+	}
+	
+	let outputs = [];
+	
+	
+	
+	for (let i = 0; i < Math.pow(max_entry, footprint * footprint); i++)
+	{
+		set_numbers(i, numbers, footprint, max_entry);
+		
+		const output = garver_patrias(numbers, footprint, order, labels);
+		
+		outputs.push(output);
+	}
+	
+	
+	
+	//Test if the outputs are unique.
+	for (let i = 0; i < outputs.length - 1; i++)
+	{
+		for (let j = i + 1; j < outputs.length; j++)
+		{
+			let found_diff = false;
+			
+			for (let row = 0; row < footprint; row++)
+			{
+				for (let col = 0; col < footprint; col++)
+				{
+					if (outputs[i][row][col] !== outputs[j][row][col])
+					{
+						found_diff = true;
+						break;
+					}
+				}
+				
+				if (found_diff)
+				{
+					break;
+				}
+			}
+			
+			if (!found_diff)
+			{
+				console.log("bad!");
+				
+				set_numbers(i, numbers, footprint, max_entry);
+				console.log(numbers);
+				
+				set_numbers(j, numbers, footprint, max_entry);
+				console.log(numbers);
+			}
+		}
+	}
+}
+
+function set_numbers(i, numbers, footprint, max_entry)
+{
+	let temp = i;
+	
+	for (let j = 0; j < footprint; j++)
+	{
+		for (let k = 0; k < footprint; k++)
+		{
+			numbers[j][k] = temp % max_entry;
+			temp = Math.floor(temp / max_entry);
+		}
+	}
+}
+
+function garver_patrias(numbers, footprint, order, labels)
+{
+	let cells_in_order = [];
+	
+	while (true)
+	{
+		let found_box = false;
+		
+		for (let i = 0; i < order.length; i++)
+		{
+			for (let j = 0; j < order[i].length; j++)
+			{
+				if (order[i][j] === cells_in_order.length + 1)
+				{
+					cells_in_order.push([i, j]);
+					found_box = true;
+					break;
+				}
+			}
+			
+			if (found_box)
+			{
+				break;
+			}
+		}
+		
+		if (!found_box)
+		{
+			break;
+		}
+	}
+	
+	
+	
+	let app = new Array(footprint);
+	
+	for (let i = 0; i < footprint; i++)
+	{
+		app[i] = new Array(footprint);
+	}
+	
+	
+	
+	for (let d = -footprint + 1; d <= footprint - 1; d++)
+	{
+		//Find the start of this diagonal.
+		
+		let end_box = [0, 0];
+		
+		if (d < 0)
+		{
+			end_box[0] = -d;
+		}
+		
+		else
+		{
+			end_box[1] = d;
+		}
+		
+		while (end_box[0] < footprint && end_box[1] < footprint && numbers[end_box[0]][end_box[1]] === Infinity)
+		{
+			end_box[0]++;
+			end_box[1]++;
+		}
+		
+		//Look right and down to find all the hooks that intersect.
+		let word = [];
+		
+		cells_in_order.forEach(cell =>
+		{
+			if (cell[0] >= end_box[0] && cell[1] >= end_box[1])
+			{
+				for (let i = 0; i < numbers[cell[0]][cell[1]]; i++)
+				{
+					word.push(labels[cell[0]][cell[1]]);
+				}
+			}
+		});
+		
+		
+		
+		//Run RSK on this word.
+		let ssyt = [[]];
+		
+		for (let i = 0; i < word.length; i++)
+		{
+			let letter = word[i];
+			let row = 0;
+			
+			while (true)
+			{
+				if (ssyt[row].length === 0 || ssyt[row][ssyt[row].length - 1] <= letter)
+				{
+					ssyt[row].push(letter);
+					
+					break;
+				}
+				
+				//Look from the right until we find a place this thing can go.
+				let j = ssyt[row].length - 1;
+				
+				while (j > 0 && ssyt[row][j - 1] > letter)
+				{
+					j--;
+				}
+				
+				let temp = ssyt[row][j];
+				ssyt[row][j] = letter;
+				letter = temp;
+				
+				row++;
+				
+				if (ssyt.length <= row)
+				{
+					ssyt.push([]);
+				}
+			}
+		}
+		
+		const row_lengths = ssyt.map(row => row.length);
+		
+		let row = end_box[0];
+		let col = end_box[1];
+		let j = 0;
+		
+		while (row < footprint && col < footprint)
+		{
+			app[row][col] = row_lengths[j] ?? 0;
+			
+			row++;
+			col++;
+			j++;
+		}
+	}
+	
+	return app;
+}
 
 
 
