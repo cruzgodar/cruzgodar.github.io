@@ -582,7 +582,7 @@ if (APPLET_VERSION)
 	edit_array_textarea_element.value = array_data_textarea_element.value;
 	add_new_array(arrays.length, plane_partition);
 	
-	//garver_patrias_stress_test();
+	//test_labels();
 }
 
 draw_frame();
@@ -591,11 +591,200 @@ Page.show();
 
 
 
-function garver_patrias_stress_test()
+function test_labels()
 {
-	const footprint = 3;
-	const order = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-	const labels = [[1, 4, 7], [2, 5, 8], [3, 6, 9]];
+	for (const i of syt([3, 3, 3]))
+	{
+		for (const j of syt([3, 3, 3]))
+		{
+			if (garver_patrias_stress_test(i, j))
+			{
+				console.log(i, j);
+			}
+			
+		}
+	}
+	
+	console.log("Done!");
+}
+
+function* syt(shape)
+{
+	let tableau = new Array(shape.length);
+	let size = 0;
+	
+	for (let i = 0; i < tableau.length; i++)
+	{
+		tableau[i] = new Array(shape[i]);
+		
+		for (let j = 0; j < tableau[i].length; j++)
+		{
+			tableau[i][j] = 0;
+		}
+		
+		size += shape[i];
+	}
+	
+	
+	
+	let entry = 1;
+	
+	let tableau_vector = new Array(size);
+	
+	//Fill the tableau going down the columns.
+	for (let j = 0; j < tableau[0].length; j++)
+	{
+		let i = 0;
+		
+		while (i < tableau.length && j < tableau[i].length)
+		{
+			tableau[i][j] = entry;
+			
+			tableau_vector[entry - 1] = i;
+			
+			i++;
+			entry++;
+		}
+	}
+	
+	yield tableau;
+	
+	
+	
+	//This one will mark the end.
+	let last_tableau_vector = new Array(size);
+	
+	entry = 0;
+	
+	//Fill the tableau going down the columns.
+	for (let i = 0; i < tableau.length; i++)
+	{
+		for (let j = 0; j < tableau[i].length; j++)
+		{
+			last_tableau_vector[entry] = i;
+			entry++;
+		}
+	}
+	
+	
+	
+	while (true)
+	{
+		let l = new Array(size);
+		l[0] = 1;
+		
+		for (let i = 1; i < size; i++)
+		{
+			l[i] = 0;
+		}
+		
+		
+		
+		let j = 0;
+		
+		for (let i = 1; i < size; i++)
+		{
+			l[tableau_vector[i]]++;
+			
+			if (tableau_vector[i] < tableau_vector[i - 1])
+			{
+				j = i;
+				break;
+			}
+		}
+		
+		let i = size - 1;
+		
+		while (l[i] === 0)
+		{
+			i--;
+		}
+		
+		k = i;
+		
+		
+		
+		let t = l[1 + tableau_vector[j]]
+		
+		i = k;
+		
+		while (l[i] !== t)
+		{
+			i--;
+		}
+		
+		
+		
+		tableau_vector[j] = i;
+		
+		l[i]--;
+		
+		
+		
+		let m = 0;
+		
+		while (m < j)
+		{
+			let r = 0;
+			
+			while (l[r] !== 0)
+			{
+				tableau_vector[m] = r;
+				l[r]--;
+				m++;
+				r++;
+			}
+		}
+		
+		
+		
+		let row_count = new Array(shape.length);
+		
+		for (let i = 0; i < shape.length; i++)
+		{
+			row_count[i] = 0;
+		}
+		
+		
+		
+		let tableau = new Array(shape.length);
+		
+		for (let i = 0; i < shape.length; i++)
+		{
+			tableau[i] = new Array(shape[i]);
+		}
+		
+		for (let i = 0; i < size; i++)
+		{
+			tableau[tableau_vector[i]][row_count[tableau_vector[i]]] = i + 1;
+			row_count[tableau_vector[i]]++;
+		}
+		
+		yield tableau;
+		
+		
+		
+		let found_diff = false;
+		
+		for (let i = 0; i < tableau_vector.length; i++)
+		{
+			if (tableau_vector[i] !== last_tableau_vector[i])
+			{
+				found_diff = true;
+				break;
+			}
+		}
+		
+		if (!found_diff)
+		{
+			break;
+		}
+	}
+}
+
+function garver_patrias_stress_test(order, labels)
+{
+	const footprint = order.length;
 	
 	const max_entry = 3;
 	
@@ -647,6 +836,7 @@ function garver_patrias_stress_test()
 			
 			if (!found_diff)
 			{
+				/*
 				console.log("bad!");
 				
 				set_numbers(i, numbers, footprint, max_entry);
@@ -654,9 +844,14 @@ function garver_patrias_stress_test()
 				
 				set_numbers(j, numbers, footprint, max_entry);
 				console.log(numbers);
+				*/
+				
+				return false;
 			}
 		}
 	}
+	
+	return true;
 }
 
 function set_numbers(i, numbers, footprint, max_entry)
