@@ -593,19 +593,108 @@ Page.show();
 
 function test_labels()
 {
-	for (const i of syt([3, 3, 3]))
+	let count = 0;
+	
+	for (const i of permutations(9))
 	{
-		for (const j of syt([3, 3, 3]))
+		for (const j of permutations(9))
 		{
-			if (garver_patrias_stress_test(i, j))
+			const order = [[i[0] + 1, i[1] + 1, i[2] + 1], [i[3] + 1, i[4] + 1, i[5] + 1], [i[6] + 1, i[7] + 1, i[8] + 1]];
+			const labels = [[j[0] + 1, j[1] + 1, j[2] + 1], [j[3] + 1, j[4] + 1, j[5] + 1], [j[6] + 1, j[7] + 1, j[8] + 1]];
+			
+			if (garver_patrias_stress_test(order, labels))
 			{
 				console.log(i, j);
 			}
-			
+		}
+		
+		count++;
+		
+		if (count % 5040 === 0)
+		{
+			console.log(`[${count / 5040} / 72]`);
 		}
 	}
 	
 	console.log("Done!");
+}
+
+function* permutations(n)
+{
+	let pool = new Array(n);
+	let indices = new Array(n);
+	let cycles = new Array(n);
+	
+	for (let i = 0; i < n; i++)
+	{
+		pool[i] = i;
+		indices[i] = i;
+		cycles[i] = n - i;
+	}
+	
+	
+	
+	let permutation = new Array(n);
+	
+	for (let i = 0; i < n; i++)
+	{
+		permutation[i] = pool[indices[i]];
+	}
+	
+	yield permutation;
+	
+	
+	
+	while (true)
+	{
+		let broken = false;
+		
+		for (let i = n - 1; i >= 0; i--)
+		{
+			cycles[i]--;
+			
+			if (!cycles[i])
+			{
+				const temp = indices[i];
+				
+				for (let j = i; j < n - 1; j++)
+				{
+					indices[j] = indices[j + 1];
+				}
+				
+				indices[n - 1] = temp;
+				
+				cycles[i] = n - i;
+			}
+			
+			else
+			{
+				const j = cycles[i];
+				
+				const temp = indices[i];
+				indices[i] = indices[n - j];
+				indices[n - j] = temp;
+				
+				let permutation = new Array(n);
+				
+				for (let k = 0; k < n; k++)
+				{
+					permutation[k] = pool[indices[k]];
+				}
+				
+				yield permutation;
+				
+				broken = true;
+				
+				break;
+			}
+		}
+		
+		if (!broken)
+		{
+			return;
+		}
+	}
 }
 
 function* syt(shape)
@@ -836,16 +925,6 @@ function garver_patrias_stress_test(order, labels)
 			
 			if (!found_diff)
 			{
-				/*
-				console.log("bad!");
-				
-				set_numbers(i, numbers, footprint, max_entry);
-				console.log(numbers);
-				
-				set_numbers(j, numbers, footprint, max_entry);
-				console.log(numbers);
-				*/
-				
 				return false;
 			}
 		}
