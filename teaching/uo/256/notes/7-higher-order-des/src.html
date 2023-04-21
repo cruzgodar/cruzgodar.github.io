@@ -40,7 +40,7 @@ $$
 	y = c_1y_1 + \cdots + c_ny_n.
 $$
 
-In order for this to actually capture all possible solutions, we need the system of equations given by plugging in all $n$ initial conditions to be solvable for the $c_i$: specifically,
+For this to actually capture all possible solutions, we need the system of equations given by plugging in all $n$ initial conditions to be solvable for the $c_i$: specifically,
 
 $$
 	c_1y_1 + \cdots + c_ny_n &= y_0
@@ -68,13 +68,135 @@ Just as we were able to relate the solvability of the system to the determinant 
 
 
 
-Just as before, the Wronskian is nonzero if and only if the system of equations is solvable, and if it is nonzero for at least one value of $t$, then the general solution is
+Just as before, the Wronskian is nonzero if and only if the system of equations is solvable, and if it's nonzero for at least one value of $t$, then the general solution is
 
 $$
 	y = c_1y_1 + \cdots + c_ny_n.
 $$
 
 Unfortunately, computing an $n \times n$ determinant is substantially more complex than a $2 \times 2$ one. We'll talk a little bit about them later, but for now, it's just worth noting that there is a generalization of the Wronskian that still retains the same function.
+
+Our work with characteristic equations applies directly to higher-order DEs that are linear, homogeneous, and constant-coefficient. By changing a DE into a polynomial in $r$ and solving for the roots, real values $r = r_1$ correspond to solutions of the form $y = e^{r_1 t}$, and complex conjugate solutions $r = \alpha \pm \beta i$ correspond to the pair of solutions $y = e^{\alpha t}\cos(\beta t)$ and $y = e^{\alpha t}\sin(\beta t)$. Since the degree of the polynomial is higher than $2$, though, roots can now be repeated more than once. In that case, we multiply by $t$ as many times as necessary to separate the solution. For example, if a DE has a characteristic equation that factors as
+
+$$
+	(r - 4)^3 = 0,
+$$
+
+then the general solution will have the form
+
+$$
+	y = c_1 e^{4t} + c_2 t e^{4t} + c_3 t^2 e^{4t}.
+$$
+
+The main challenge now is just to solve polynomials with high degree, which is a surprisingly hard problem in general. While there are formulas for degree-3 and degree-4 polynomials, there is no general formula for the roots of a polynomial with degree 5 or higher. We'll keep things simple and look at a few examples where the polynomials are factorable without too much work.
+
+
+
+### ex a higher-order DE
+	
+	Solve $y^{(4)} + y'' = 0$.
+	
+	Our characteristic equation is
+	
+	$$
+		r^4 + r^2 &= 0
+		
+		r^2(r^2 + 1) &= 0
+		
+		r &= 0, 0, \pm i.
+	$$
+	
+	Since $r = 0$ is repeated, we'll have both $e^{0t} = 1$ and $te^{0t} = t$ as solutions, so in total, our general solution is
+	
+	$$
+		y = c_1 + c_2t + c_3\cos(t) + c_4\sin(t).
+	$$
+	
+###
+
+### exc a higher-order DE
+	
+	Solve $y^{(4)} + 4y'' + 4y = 0$.
+	
+###
+
+
+
+## Nonhomogeneous Higher-Order DEs
+
+Let's return to the general form of a linear DE of order $n$:
+
+$$
+	y^{(n)} + p_{n - 1}(t)y^{(n - 1)} + \cdots + p_1(t)y' + p_0(t)y = g(t).
+$$
+
+When the DE is nonhomogeneous --- i.e. $g(t) \neq 0$ --- both of our previous methods of undetermined coefficients and variation of parameters still apply, although in keeping with the pattern of higher-order DEs so far, they'll both be quite a bit more complex than their second-order counterparts. Since variation of parameters will still require the Wronskian and we haven't discussed how to compute it for any order above $2$, we'll skip variation of parameters and focus on undetermined coefficients only. And there's good news on that front: the method is exactly the same as with second-order DEs! Plugging in values of $Y$ can take a little longer, and sometimes we may need to multiply by $t$ more times to separate the particular solution from the homogeneous one, but there isn't anything fundamentally different about higher-order DEs in this regard.
+
+
+
+### ex undetermined coefficients
+	
+	Find the general solution to
+	
+	$$
+		y''' + 3y'' + 3y' + y = t + 125e^t\sin(t).
+	$$
+	
+	The homogeneous version has a characteristic equation $r^3 + 3r^2 + 3r + 1 = 0$, which factors as $(r + 1)^3$. Therefore, the general solution is
+	
+	$$
+		y = c_1 e^{-t} + c_2 t e^{-t} + c_3 t^2 e^{-t}.
+	$$
+	
+	We'll handle each of the two terms on the right separately. First of all, we have $t$, which corresponds to the form $Y_1(t) = A_1t + A_0$, since that's a generic polynomial of degree $1$. We have
+	
+	$$
+		Y_1''' + 3Y_1'' + 3Y_1' + Y_1 &= t
+		
+		0 + 0 + 3A_1 + A_1t + A_0 &= t
+		
+		A_1 = 1, & A_0 = -3,
+	$$
+	
+	so our first particular solution is $Y_1 = t - 3$. For the other, we have $Y_2 = Ae^t\cos(t) + Be^t\sin(t)$, and computing the first few derivatives gives us
+	
+	$$
+		Y_2' &= Ae^t\cos(t) - Ae^t\sin(t) + Be^t\sin(t) + Be^t\cos(t)
+		
+		&= (A + B)e^t\cos(t) + (-A + B)e^t\sin(t)
+		
+		Y_2'' &= (A + B)e^t\cos(t) - (A + B)e^t\sin(t) + (-A + B)e^t\sin(t) + (-A + B)e^t\cos(t)
+		
+		&= 2Be^t\cos(t) - 2Ae^t\sin(t)
+		
+		Y_2''' &= 2Be^t\cos(t) - 2Be^t\sin(t) - 2Ae^t\sin(t) - 2Ae^t\cos(t)
+		
+		&= (2B - 2A)e^t\cos(t) + (-2A - 2B)e^t\sin(t).
+	$$
+	
+	Plugging these into the initial DE, we have
+	
+	$$
+		Y_2''' + 3Y_2'' + 3Y_2' + Y_2 &= 125e^t\sin(t)
+		
+		((2B - 2A) + 3(2B) + 3(A + B) + A)e^t\cos(t) + ((-2A - 2B) + 3(-2A) + 3(-A + B) + B) &= 125e^t\sin(t)
+		
+		(2A + 11B)e^t\cos(t) + (-11A + 2B)e^t\sin(t) &= 125e^t\sin(t)
+	$$
+	
+	We must have that $2A + 11B = 0$ and $-11A + 2B = 125$. In total, we wind up with $A = -11$ and $B = 2$, and so we get a general solution of
+	
+	$$
+		y = c_1 e^{-t} + c_2 t e^{-t} + c_3 t^2 e^{-t} + t - 3 - 11e^t\cos(t) + 2e^t\sin(t).
+	$$
+	
+###
+
+### exc undetermined coefficients
+	
+	Find the general solution to $y''' - 3y'' + 4y = 1 + e^{2t}$. (Hint: $r^3 - 3r^2 + 4 = (r - 2)^2(r + 1)$.)
+	
+###
 
 
 

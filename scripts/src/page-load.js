@@ -1014,7 +1014,7 @@ Page.Load =
 	
 	Math:
 	{
-		length_cap: 300,
+		length_cap: 250,
 		
 		typeset: async function()
 		{
