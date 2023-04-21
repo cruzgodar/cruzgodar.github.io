@@ -87,6 +87,7 @@ section
 {
 	max-width: 100%;
 	max-height: calc(100vh - 100px);
+	border-radius: 16px;
 }
 
 
