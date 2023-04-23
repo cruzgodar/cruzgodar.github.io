@@ -60,7 +60,7 @@ Site.Settings =
 		
 		window.matchMedia("(prefers-color-scheme: dark)").addListener((e) =>
 		{
-			if (this.revert_theme !== -1)
+			if (this.revert_theme !== -1 || Page.Cards.is_open)
 			{
 				return;
 			}
