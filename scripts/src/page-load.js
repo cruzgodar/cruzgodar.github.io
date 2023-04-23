@@ -1075,6 +1075,7 @@ Page.Load =
 			
 			
 			const old_height = element.getBoundingClientRect().height;
+			const old_width = element.getBoundingClientRect().width;
 			element.style.minHeight = `${old_height}px`;
 			
 			const old_padding = element.style.padding;
@@ -1104,7 +1105,8 @@ Page.Load =
 				tex_element = document.createElement("input");
 				tex_element.setAttribute("type", "text");
 				tex_element.setAttribute("value", tex);
-				tex_element.style.minHeight = `${old_height - 11}px`;
+				tex_element.style.height = `${old_height - 13}px`;
+				tex_element.style.width = `${old_width - 13}px`;
 			}
 			
 			tex_element.style.fontFamily = "'Source Code Pro', monospace";
