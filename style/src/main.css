@@ -398,6 +398,12 @@ mjx-container
 	background-color: rgb(224, 224, 224);
 }
 
+#card-close-button span
+{
+	margin-top: -1.35px;
+	margin-bottom: 1.35px;
+}
+
 
 
 *:focus
