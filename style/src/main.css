@@ -252,7 +252,7 @@ mjx-container
 	
 	box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, .2);
 	
-	max-width: 100%;
+	max-width: calc(100% - 16px);
 }
 
 .tex-holder.hover
