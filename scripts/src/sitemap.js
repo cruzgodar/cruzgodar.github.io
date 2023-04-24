@@ -515,7 +515,8 @@ Site.sitemap =
 			"/teaching/uo/256/notes/4-intro-to-second-order-linear/",
 			"/teaching/uo/256/notes/5-complex-and-repeated-roots/",
 			"/teaching/uo/256/notes/6-nonhomogeneous-second-order-des/",
-			"/teaching/uo/256/notes/7-higher-order-des/"
+			"/teaching/uo/256/notes/7-higher-order-des/",
+			"/teaching/uo/256/notes/8-intro-to-linear-algebra/"
 		]
 	},
 		
@@ -585,6 +586,15 @@ Site.sitemap =
 	"/teaching/uo/256/notes/7-higher-order-des/":
 	{
 		"title": "Section 7: Higher-Order DEs",
+		
+		"parent": "/teaching/uo/256/",
+		
+		"children": []
+	},
+	
+	"/teaching/uo/256/notes/8-intro-to-linear-algebra/":
+	{
+		"title": "Section 8: Intro to Linear Algebra",
 		
 		"parent": "/teaching/uo/256/",
 		
