@@ -254,13 +254,13 @@ Our second method will be more general than undetermined coefficients, but somew
 
 
 
-The advantage here is clear: we aren't restricted to the right side of the DE being made of just exponentials, sines and cosines, and polynomials. The downside is also pretty clear, though --- we have to integrate a potentially awful expression. As always with integral solutions to DEs, we can leave them in terms of integrals by replacing $t$ with $s$ and setting the upper limit to $t$ (and the lower limit to the input to the initial value). In fact, the integrals are so often either intractable or just nightmarish that we'll almost always just leave them and not attempt to integrate.
+The advantage here is clear: we aren't restricted to the right side of the DE being made of just exponentials, sines and cosines, and polynomials. The downside is also pretty clear, though --- we have to integrate a potentially awful expression. As always with integral solutions to DEs, we can leave them in terms of integrals by replacing $t$ with $s$ and setting the upper limit to $t$ (and the lower limit to the input to the initial value). The space of problems that can't be solved by undetermined coefficients but can by variation of parameters is somewhat small, but they definitely do exist --- let's have a look at some now.
 
 
 
 ### ex variation of parameters
 	
-	Solve $$y'' + y = \tan(x)$$, given $y(0) = 1$ and $y'(0) = 1$. 
+	Find the general solution to $$y'' + y = \sec(t)$$.
 	
 	Solving the homogeneous version, we have $r^2 + 1 = 0$, so $r = \pm i$. Therefore, the general solution is
 	
@@ -279,46 +279,26 @@ The advantage here is clear: we aren't restricted to the right side of the DE be
 	Now variation of parameters gives us a particular solution of
 	
 	$$
-		Y &= -\cos(t) \int \sin(t)\tan(t)\,dt + \sin(t) \int \cos(t)\tan(t)\,dt
+		Y &= -\cos(t) \int \sin(t)\sec(t)\,dt + \sin(t) \int \cos(t)\sec(t)\,dt
 		
-		&= -\cos(t) \int \frac{\sin^2(t)}{\cos(t)}\,dt + \sin(t) \int \sin(t)\,dt
+		&= -\cos(t) \int \frac{\sin(t)}{\cos(t)}\,dt + \sin(t) \int \frac{\cos(t)}{\cos(t)}\,dt
 		
-		&= -\cos(t) \int \frac{\sin^2(t)}{\cos(t)}\,dt - \sin(t)\cos(t).
-	$$
-	
-	While the first integral is solvable, it's rather intense, and we'll just leave it as-is. Let's make sure all of the $t$s are in the same scope by rewriting the first integral with the fundamental theorem of calculus part I (choosing a lower limit of $t = 0$ to match the initial conditions.)
-	
-	$$
-		Y = -\cos(t) \int_0^t \frac{\sin^2(s)}{\cos(s)}\,ds - \sin(t)\cos(t).
-	$$
-	
-	Our final solution is now
-	
-	$$
-		y = c_1\cos(t) + c_2\sin(t) -\cos(t) \int_0^t \frac{\sin^2(s)}{\cos(s)}\,ds - \sin(t)\cos(t).
-	$$
-	
-	Plugging in the first initial condition gives us that $c_1 = 1$, and to get the second, we need to differentiate. Remember that the derivative of that integral in the middle is just the expression inside with $s$ replaced with $t$ --- that's the main result of the fundamental theorem.
-	
-	$$
-		y' &= -\sin(t) + c_2\cos(t) + \sin(t) \int_0^t \frac{\sin^2(s)}{\cos(s)}\,ds - \cos(t) \left( \frac{\sin^2(t)}{\cos(t)}\right) - \cos^2(t) + \sin^2(t).
+		&= -\cos(t) \int \tan(t)\,dt + \sin(t) \int 1\,dt
 		
-		1 &= c_2 - 1
-		
-		c_2 &= 2.
+		&= \cos(t) \log(\cos(t)) + t\sin(t).
 	$$
 	
-	In total, our solution is
+	Not so bad! But those integrals being solvable depended both on the $\sec(t)$ *and* the general solution to the DE, and very often, the stars won't align quite so nicely. In total, our solution here is
 	
 	$$
-		y = \cos(t) + 2\sin(t) - \cos(t) \int_0^t \frac{\sin^2(s)}{\cos(s)}\,ds - \sin(t)\cos(t).
+		y = \cos(t) + \sin(t) + \cos(t) \log(\cos(t)) + t\sin(t).
 	$$
 	
 ###
 
 ### exc variation of parameters
 	
-	Solve $$y'' + 6y' + 9y = \log(t)$$, $y(1) = 0$, $y'(1) = 1$.
+	Find the general solution to $$y'' - 2y' + y = \frac{e^t}{t^2 + 1}$$.
 	
 ###
 
