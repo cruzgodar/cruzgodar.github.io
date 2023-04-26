@@ -53,11 +53,11 @@ home Cruz Godar
 		uo/256 Math 256
 			notes/0-calc-review Section 0: Calculus Review
 			notes/1-intro-to-des Section 1: Intro to DEs
-			notes/2-if-and-sep Section 2: Integrating Factors and Separability
+			notes/2-if-and-sep Section 2: Linear and Separable DEs
 			notes/3-existence-and-exactness Section 3: Existence and Exactness
 			notes/4-intro-to-second-order-linear Section 4: Intro to Second-Order Linear DEs
 			notes/5-complex-and-repeated-roots Section 5: Complex and Repeated Roots
-			notes/6-nonhomogeneous-second-order-des Section 6: Nonhomogeneous Second-Order DEs
+			notes/6-nonhomogeneous-second-order-des Section 6: Nonhomogeneous DEs
 			notes/7-higher-order-des Section 7: Higher-Order DEs
 			notes/8-intro-to-linear-algebra Section 8: Intro to Linear Algebra
 		

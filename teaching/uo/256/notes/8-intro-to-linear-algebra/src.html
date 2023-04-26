@@ -2,7 +2,31 @@
 
 
 
-We've largely 
+So far in the course, we've covered many of the most important techniques for solving DEs. There are a lot more we could discuss, but just like with integration techniques, they become less and less generally applicable the farther we go, both among DEs in general and among those that actually occur in science. Instead, we'll turn to another type of problem that's both solvable and extremely common: systems of DEs. Here's the one-sentence pitch: most physical systems whose rates of change we can express with a differential equation depend not only on their own state and derivatives, but on other systems' states and derivatives too. One of the most famous examples is a **predator-prey system**: if $x(t)$ gives the population of a prey animal at time $t$ and $y(t)$ gives the population of a predator animal, then $x'$ and $y'$ will both depend on $x$ and $y$, since the population growth rate of the prey depends both on its current population and the population of the predators. To write down some concrete equations, let's look at the **Lotka-Volterra model**, which aims to model such a system:
+
+$$
+	x' &= ax - bxy
+	
+	y' &= -cy + dxy,
+$$
+
+where $a$, $b$, $c$, and $d$ are constants that describe the particular conditions of the system. Breaking this apart, it makes quite a bit of sense: prey animals (e.g. rabbits) typically grow exponentially in number (ignoring the carrying capacity of the environment itself), so for a variable $a$ determining the growth rate, we'd expect $x' = ax$. That's not the only thing influencing the rabbit population, though --- the more of the predator (e.g. foxes) are present, *and* the more rabbits there are, the more will be eaten: hence the $bxy$ term, which increases with both $x$ and $y$. Foxes' and other predators' populations typically do *not* grow exponentially. When food is scarce or nonexistent, they decay exponentially instead --- and this is reflected by the $-cy$ term. The fox population increases when both it and the rabbit population are high, and this is the point of the $dxy$ term.
+
+The Lotka-Volterra model does a surprisingly great job of modeling real-life predator-prey systems while being simple enough to be solvable. We currently don't have a single technique to help us solve it, but in just a few sections, we'll be able to return to systems like this one and solve them without too much trouble.
+
+The tools we'll need to solve systems of DEs reach far beyond the subject of differential equations, and we'll take this section to get acquainted with many of the key ideas before returning to DEs in the next.
+
+
+
+## Matrices and Vectors
+
+Let's return to the world of systems of algebraic equations. A system of two equations and two unknowns, say $x_1$ and $x_2$, might look something like this:
+
+$$
+	2x_1 - x_2 &= 3
+	
+	x_1 + 5x_2 &= -1
+$$
 
 
 

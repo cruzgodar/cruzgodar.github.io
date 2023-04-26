@@ -540,7 +540,7 @@ Site.sitemap =
 	
 	"/teaching/uo/256/notes/2-if-and-sep/":
 	{
-		"title": "Section 2: Integrating Factors and Separability",
+		"title": "Section 2: Linear and Separable DEs",
 		
 		"parent": "/teaching/uo/256/",
 		
@@ -576,7 +576,7 @@ Site.sitemap =
 	
 	"/teaching/uo/256/notes/6-nonhomogeneous-second-order-des/":
 	{
-		"title": "Section 6: Nonhomogeneous Second-Order DEs",
+		"title": "Section 6: Nonhomogeneous DEs",
 		
 		"parent": "/teaching/uo/256/",
 		
