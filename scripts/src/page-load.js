@@ -1022,56 +1022,6 @@ Page.Load =
 			{
 				await MathJax.typesetPromise();
 				
-				let missing_readables = {};
-				
-				Page.element.querySelectorAll(".tex-holder").forEach(element =>
-				{
-					const tex = element.getAttribute("data-source-tex").replaceAll(/\$\$/g, "").replaceAll(/\[TAB\]/g, "").replaceAll(/\\begin{align*}/g, "").replaceAll(/\\end{align*}/g, "").replaceAll(/^\[NEWLINE\]/g, "").replaceAll(/\[NEWLINE\]$/g, "").split("[NEWLINE]");
-					
-					let readable = true;
-					let readable_string = "";
-					
-					for (let i = 0; i < tex.length; i++)
-					{
-						if (tex[i] in Site.readable_math)
-						{
-							readable_string += `Site.readable_math[tex[i]]`;
-							
-							if (i !== tex.length - 1)
-							{
-								readable_string += ". ";
-							}
-						}
-						
-						else
-						{
-							readable = false;
-							
-							if (DEBUG)
-							{
-								missing_readables[tex[i]] = "";
-							}
-						}
-					}
-					
-					
-					
-					if (readable)
-					{
-						element.setAttribute("role", "math");
-						element.setAttribute("aria-label", readable_string);
-					}
-					
-					else if (DEBUG)
-					{
-						element.classList.add("bad-math");
-					}
-				});
-				
-				Page.element.querySelectorAll("mjx-assistive-mml").forEach(element => element.remove());
-				
-				
-				
 				if (DEBUG)
 				{
 					Page.element.querySelectorAll(".inline-math").forEach(element =>
@@ -1083,20 +1033,6 @@ Page.Load =
 							element.classList.add("bad-math");
 						}
 					});
-					
-					if (Object.keys(missing_readables).length > 0)
-					{
-						let bad_string = "";
-						
-						for (let missing_readable in missing_readables)
-						{
-							bad_string += `"${missing_readable}": \n\n`;
-						}
-						
-						console.log("Missing readables!");
-						
-						console.log(bad_string);
-					}
 				}
 				
 				resolve();

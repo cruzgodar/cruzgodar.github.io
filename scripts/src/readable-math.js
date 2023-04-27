@@ -1,4 +1,0 @@
-Site.readable_math =
-{
-	
-};
