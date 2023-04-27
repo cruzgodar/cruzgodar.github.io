@@ -1084,8 +1084,6 @@ Page.Load =
 						}
 					});
 					
-					console.log(missing_readables);
-					
 					if (Object.keys(missing_readables).length > 0)
 					{
 						let bad_string = "";

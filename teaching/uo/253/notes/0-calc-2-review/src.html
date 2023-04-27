@@ -70,15 +70,35 @@ In practice, we don't use the limit definition of the derivative all that often.
 
 ### prop derivative rules
 	
-	1. $$\frac{d}{dx} [c \cdot f(x)] = c \cdot f'(x)$$.
+	1. The constant multiple rule:
 	
-	2. $$\frac{d}{dx} [f(x) + g(x)] = f'(x) + g'(x)$$.
+	$$
+		\frac{d}{dx} [c \cdot f(x)] = c \cdot f'(x).
+	$$
 	
-	3. $$\frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x)$$ (the product rule).
+	2. The sum rule:
 	
-	4. $$\frac{d}{dx} \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}$$ (the quotient rule).
+	$$
+		\frac{d}{dx} [f(x) + g(x)] = f'(x) + g'(x)
+	$$
 	
-	5. $$\frac{d}{dx} [f(g(x))] = f'(g(x))g'(x)$$ (the chain rule).
+	3. The product rule:
+	
+	$$
+		\frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x).
+	$$
+	
+	4. The quotient rule:
+	
+	$$
+		\frac{d}{dx} \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}
+	$$
+	
+	5. The chain rule:
+	
+	$$
+		\frac{d}{dx} [f(g(x))] = f'(g(x))g'(x).
+	$$
 	
 ###
 
@@ -120,11 +140,13 @@ We'll be using limits and derivatives heavily throughout the course. I have a fu
 
 The final building blocks we'll need are integrals. They come in two flavors: definite and indefinite. Indefinite integrals perform the opposite operation as derivatives, taking a function $f(x)$ to an antiderivative, often denoted $F(x)$. For example,
 
-$$\int x^2\,dx = \frac{x^3}{3} + C$$.
+$$
+	\int x^2\,dx &= \frac{x^3}{3} + C
 
-$$\int \sin(2x)\,dx = -\frac{1}{2}\cos(2x) + C$$.
+	\int \sin(2x)\,dx &= -\frac{1}{2}\cos(2x) + C
 
-$$\int \frac{1}{y}\,dy = \ln|y| + C$$.
+	\int \frac{1}{y}\,dy &= \log|y| + C
+$$
 
 In contrast, definite integrals measure the area under the graph of a function and take an extra two numbers, written above and below the integral sign. When we say that
 
