@@ -18,15 +18,92 @@ The tools we'll need to solve systems of DEs reach far beyond the subject of dif
 
 
 
-## Matrices and Vectors
+## Vectors and Matrices
 
 Let's return to the world of systems of algebraic equations. A system of two equations and two unknowns, say $x_1$ and $x_2$, might look something like this:
 
 $$
 	2x_1 - x_2 &= 3
 	
-	x_1 + 5x_2 &= -1
+	x_1 + 5x_2 &= -1.
 $$
+
+The details that distinguish this system from any other aren't the $x_1$ and $x_2$, but the *coefficients* --- the six numbers specify the exact system we're dealing with. Let's focus on the left sides in particular. By forgetting the $x_i$, we get a $2 \times 2$ grid of numbers:
+
+$$
+	\begin{array}{cc} 2 & -1 \\ 1 & 5 \end{array}
+$$
+
+The big leap is to treat these four numbers as one large object. To indicate the distinction, we'll wrap it in brackets (parantheses are also commonly used), and to remind ourselves that it's a somewhat more complex variable than a single number, we'll represent it with a capital --- and in printed text, bold --- letter.
+
+$$
+	\mathbf{A} = \left[ \begin{array}{cc} 2 & -1 \\ 1 & 5 \end{array} \right].
+$$
+
+We call $\mathbf{A}$ a $2 \times 2$ **matrix** --- other sizes, including non-square ones, are also possible, and we'll look at examples momentarily.
+
+In the same way that an ordered pair $(x, y)$ has two degrees of freedom --- both $x$ and $y$ can be changed independently --- $\mathbf{A}$ has four. To reference the individual elements of $\mathbf{A}$, we typically use the corresponding lowercase letter with indices. For example, the elements of $\mathbf{A}$ are $a_{11}$, $a_{12}$, $a_{21}$, and $a_{22}$. The first number indexes the row and the second the column, so
+
+$$
+	a_{11} &= 2
+	
+	a_{12} &= -1
+	
+	a_{21} &= 1
+	
+	a_{22} &= 5.
+$$
+
+You might find the idea of matrices fascinating in its own right, or you might be waiting for the applications --- either way, we need to actually use these things for something to justify the extra notation and definitions. Getting back to our systems of equations, we want to be able to represent both left sides of the equations at once with some sort of expression involving $\mathbf{A}$. A clue toward the answer lies in the right side of the equation. This time, there aren't any $x_i$ to drop, and we can just assemble the numbers into a matrix directly.
+
+$$
+	\mathbf{b} = \left[ \begin{array}{c} 3 \\ -1 \end{array} \right].
+$$
+
+When a matrix only has a single column, we call is a **column vector** and denote it with a bold but lowercase letter. In handwriting, we'll typically denote vectors with a little arrow above them, as in $\vec{b}$.
+
+In order for two vectors to be equal, all of their entries must be the same, and this indicates the direction we should go: we can represent the two equations in the system as a single equation involving vectors:
+
+$$
+	\left[ \begin{array}{c} 2x_1 - x_2 \\ x_1 + 5x_2 \end{array} \right] = \mathbf{b}.
+$$
+
+On the surface, we haven't changed much of anything, but we're actually getting close to something profound. Since $\mathbf{A}$ is providing the coefficients for all the $x_i$, we should be able to just have $\mathbf{A}$ *be a coefficient itself*. To that end, let's define a vector $\mathbf{x}$ that stores both of our variables:
+
+$$
+	\mathbf{x} = \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right].
+$$
+
+Now the final part: if $\mathbf{A}$ is going be a single coeffecient, we want to be able to write $\mathbf{Ax}$, multiplying a matrix and a column vector, to mean
+
+$$
+	\mathbf{Ax} = \left[ \begin{array}{cc} 2 & -1 \\ 1 & 5 \end{array} \right] \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right] = \left[ \begin{array}{c} 2x_1 - x_2 \\ x_1 + 5x_2 \end{array} \right].
+$$
+
+So, to bring it all together: for matrices to actually represent coefficients in the way we want them to, this is how matrix-vector multiplication should be defined. Let's write this out in a little more generality.
+
+
+
+### def matrix-vector multiplication
+	
+	Let $\mathbf{A}$ and $\mathbf{x}$ be a matrix and vector, respectively, defined as
+	
+	$$
+		\mathbf{A} &= \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right]
+		\mathbf{x} &= \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right].
+	$$
+	
+	Then the product $\mathbf{Ax}$ is a column vector, defined to be
+	
+	$$
+		\mathbf{Ax} = \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right] \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right] = \left[ \begin{array}{c} ax_1 + bx_2 \\ cx_1 + dx_2 \end{array} \right].
+	$$
+	
+	One way to visualize this is by taking the vector $\mathbf{x}$, rotating it sideways so that it reads $\left[ \begin{array}{cc} x_1 & x_2 \end{array} \right]$, and then for each row of $\mathbf{A}$, multiplying the two together and adding the results.
+	
+###
+
+As we'll see in the next few examples, matrix-vector multiplication is defined for larger than $2 \times 2$ matrices: for the definition to work, the only restriction is that the length of $\mathbf{x}$ is equal to the row length of $\mathbf{A}$ --- otherwise there'd be a mismatch we turn $\mathbf{x}$ sideways.
 
 
 
