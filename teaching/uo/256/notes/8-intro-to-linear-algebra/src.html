@@ -34,7 +34,7 @@ $$
 	\begin{array}{cc} 2 & -1 \\ 1 & 5 \end{array}
 $$
 
-The big leap is to treat these four numbers as one large object. To indicate the distinction, we'll wrap it in brackets (parantheses are also commonly used), and to remind ourselves that it's a somewhat more complex variable than a single number, we'll represent it with a capital --- and in printed text, bold --- letter.
+The big leap is to treat these four numbers as one large object. To indicate the distinction, we'll wrap it in brackets (parentheses are also commonly used), and to remind ourselves that it's a somewhat more complex variable than a single number, we'll represent it with a capital --- and in printed text, bold --- letter.
 
 $$
 	\mathbf{A} = \left[ \begin{array}{cc} 2 & -1 \\ 1 & 5 \end{array} \right].
@@ -60,7 +60,7 @@ $$
 	\mathbf{b} = \left[ \begin{array}{c} 3 \\ -1 \end{array} \right].
 $$
 
-When a matrix only has a single column, we call is a **column vector** and denote it with a bold but lowercase letter. In handwriting, we'll typically denote vectors with a little arrow above them, as in $\vec{b}$.
+When a matrix only has a single column, we call it a **column vector** and denote it with a bold but lowercase letter. In handwriting, we'll typically denote vectors with a little arrow above them, as in $\vec{b}$.
 
 In order for two vectors to be equal, all of their entries must be the same, and this indicates the direction we should go: we can represent the two equations in the system as a single equation involving vectors:
 
@@ -74,7 +74,7 @@ $$
 	\mathbf{x} = \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right].
 $$
 
-Now the final part: if $\mathbf{A}$ is going be a single coeffecient, we want to be able to write $\mathbf{Ax}$, multiplying a matrix and a column vector, to mean
+Now the final part: if $\mathbf{A}$ is going be a single coefficient, we want to be able to write $\mathbf{Ax}$, multiplying a matrix and a column vector, to mean
 
 $$
 	\mathbf{Ax} = \left[ \begin{array}{cc} 2 & -1 \\ 1 & 5 \end{array} \right] \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right] = \left[ \begin{array}{c} 2x_1 - x_2 \\ x_1 + 5x_2 \end{array} \right].
@@ -193,13 +193,83 @@ $$
 
 This one topic has a hefty amount of explanation behind it. Far, far too often, matrix multiplication is introduced as a quirky, complicated operation and then never justified or dug into. It'll take us a minute to go through the details, but we're going to make sure we understand why matrices multiply the way they do.
 
-To really hammer home the point, matrices are functions. An $n \times k$ matrix $\mathbf{B}$ takes in an $m$-dimensional vector $\mathbf{x}$ and gives back an $n$-dimensional one by doing matrix-vector multiplication, which we write $\mathbf{Bx}$. If we have another matrix $\mathbf{A}$ and we want the product $\mathbf{AB}$ to make any sense at all, then when we multiply by $\mathbf{x}$, the following equality should hold:
+To really hammer home the point, matrices are functions. An $n \times k$ matrix $\mathbf{B}$ takes in a $k$-dimensional vector $\mathbf{x}$ and gives back an $n$-dimensional one by doing matrix-vector multiplication, which we write $\mathbf{Bx}$. If we have another matrix $\mathbf{A}$ and we want the product $\mathbf{AB}$ to make any sense at all, then when we multiply by $\mathbf{x}$, the following equality should hold:
 
 $$
 	(\mathbf{AB})\mathbf{x} = \mathbf{A}(\mathbf{Bx}).
 $$
 
 On the left is a matrix called $\mathbf{AB}$ that we don't know how to calculate yet, but on the right, there's just matrix-vector multiplication happening twice. Since we're thinking of matrices as being functions that act by multiplication, the right side is function composition, so, crucially, the left side should be too. In other words, **matrix multiplication should be defined to be composition of functions**. This point is glossed over or ignored in many introductory classes, and that's really a shame! Understanding why matrices work they way they do is half the battle in using them properly.
+
+So --- how do we do that? First of all, not any two matrices can be multiplied together. Since an $n \times k$ matrix $\mathbf{B}$ takes in a $k$-dimensional vector $\mathbf{x}$ and gives back an $n$-dimensional one $\mathbf{Bx}$, a matrix $\mathbf{A}$ that makes $\mathbf{AB}$ make sense needs to take in $n$-dimensional vectors. In other words, $\mathbf{A}$ needs to be an $m \times n$ matrix for some $n$. Since $\mathbf{ABx} = (\mathbf{A})\mathbf{Bx}$, the matrix $\mathbf{AB}$ should be $m \times k$.
+
+To figure out the exact formula for matrix multiplication, let's look at a few vectors in particular. Let $\mathbf{e_j}$ be a $k$-dimensional column vector defined by
+
+$$
+	\mathbf{e_j} = \left[ \begin{array}{c} 0 \\ \vdots \\ 0 \\ 1 \\ 0 \\ \vdots \\ 0 \end{array} \right],
+$$
+
+where the $1$ is in position $j$. When we evaluate $\mathbf{Be_j}$ by turning $\mathbf{e_j}$ sideways, only column $j$ of $\mathbf{B}$ is picked out --- in other words, if we write
+
+$$
+	\mathbf{B} = \left[ \begin{array}{ccccc} \mathbf{|} & \mathbf{|} & & \mathbf{|} & \mathbf{|} \\ \mathbf{b_1} & \mathbf{b_2} & \cdots & \mathbf{b_{k - 1}} & \mathbf{b_k} \\ \mathbf{|} & \mathbf{|} & & \mathbf{|} & \mathbf{|} \end{array} \right],
+$$
+
+so that $\mathbf{b_j}$ is the $j$th column of $\mathbf{B}$, then $\mathbf{Be_j} = \mathbf{b_j}$. By the same token, $(\mathbf{AB})\mathbf{e_j} = \mathbf{Ab_j}$ is the $j$th column of $\mathbf{AB}$. So the matrix product $\mathbf{AB}$ is defined by
+
+$$
+	\mathbf{AB} = \left[ \begin{array}{ccccc} \mathbf{|} & \mathbf{|} & & \mathbf{|} & \mathbf{|} \\ \mathbf{Ab_1} & \mathbf{Ab_2} & \cdots & \mathbf{Ab_{k - 1}} & \mathbf{Ab_k} \\ \mathbf{|} & \mathbf{|} & & \mathbf{|} & \mathbf{|} \end{array} \right].
+$$
+
+Thankfully, we can streamline this formula a little to make it easier to remember. To get the $i$th entry of $\mathbf{Ab_j}$, we turn $\mathbf{b_j}$ sideways and look at its product with the $i$th row of $\mathbf{A}$. So we can get a formula for $\mathbf{AB}$ one entry at a time.
+
+
+
+### thm matrix multiplication
+	
+	Let $\mathbf{A}$ be an $m \times n$ matrix and let $\mathbf{B}$ be an $n \times k$ one. Then $\mathbf{AB}$ is an $m \times k$ matrix, and the entry in row $i$ and column $j$ is defined by
+	
+	$$
+		\mathbf{AB}_{ij} = \sum_{l = 1}^n a_{il}b_{lj}.
+	$$
+	
+	In other words, we take row $i$ from $\mathbf{A}$ and column $j$ from $\mathbf{B}$, multiply the corresponding entries, and add all $n$ together. When thinking of a matrix as a function operating on vectors, matrix multiplication *is* function composition. In other words,
+	
+	$$
+		(\mathbf{AB})\mathbf{x} = \mathbf{ABx} = \mathbf{A}(\mathbf{Bx}).
+	$$
+	
+###
+
+
+
+That was a whole lot of work! Let's turn to some examples to see this in action.
+
+
+
+### ex matrix multiplication
+	
+	Let $$A = \left[ \begin{array}{cc} 5 & 0 \\ -2 & 1 \end{array} \right]$$ and $$\mathbf{B} = \left[ \begin{array}{ccc} 3 & 1 & -1 \\ -1 & 0 & 2 \end{array} \right]$$. Evaluate $\mathbf{AB}$.
+	
+	This is a valid product to take, since the number of columns $\mathbf{A}$ and the number of rows of $\mathbf{B}$ are the same ($2$). And the dimensions of $\mathbf{AB}$ will be $2 \times 3$, since $\mathbf{A}$ has $2$ rows and $\mathbf{B}$ has $3$ columns. To get the element $\mathbf{AB}_{11}$ --- the top-left entry --- we take the first row of $\mathbf{A}$, which is $(5, 0)$, and the first column of $B$, which is $(3, -1)$, and multiply them together to get $5(3) + 0(-1) = 15$. Repeating this for the other five entries, we get
+	
+	$$
+		\mathbf{AB} = \left[ \begin{array}{ccc} 15 & 5 & -5 \\ -7 & -2 & 4 \end{array} \right].
+	$$
+	
+###
+
+### exc matrix multiplication
+	
+	Let $\mathbf{x} = \left[ \begin{array}{c} 1 \\ 2 \\ -1 \end{array} \right]$. With the same matrices from the previous example, evaluate $(\mathbf{AB})\mathbf{x}$ and $\mathbf{A}(\mathbf{Bx})$ and show they're the same.
+	
+###
+
+
+
+Let's mention another critical aspect of matrices: multiplication isn't commutative, meaning $\mathbf{AB} \neq \mathbf{BA}$. In fact, even if we know $\mathbf{AB}$, it's not guaranteed that $\mathbf{BA}$ is even defined. The matrices $\mathbf{A}$ and $\mathbf{B}$ from the previous example can't be multiplied in the other order. Just like two functions $f$ and $g$ almost never satisfy $f(g(x)) = g(f(x))$, matrices almost never commute.
+
+In the next section, we'll begin putting matrices to use --- our first application will be solving large systems of equations incredibly efficiently.
 
 
 
