@@ -181,6 +181,26 @@ $$
 	&= \left[ \begin{array}{ccc} 5 & 2 & 2 \\ -3 & 3 & 2 \end{array} \right].
 $$
 
+For exactly the same reason, scalar multiplication works the same way: for a number $c$, the matrix $c\mathbf{A}$ is created by multiplying every entry by $c$. For example,
+
+$$
+	-4\left[ \begin{array}{ccc} 5 & 0 & 2 \\ 2 & 3 & 0 \end{array} \right] = \left[ \begin{array}{ccc} -20 & 0 & -8 \\ -8 & -12 & 0 \end{array} \right].
+$$
+
+
+
+## Matrix Multiplication
+
+This one topic has a hefty amount of explanation behind it. Far, far too often, matrix multiplication is introduced as a quirky, complicated operation and then never justified or dug into. It'll take us a minute to go through the details, but we're going to make sure we understand why matrices multiply the way they do.
+
+To really hammer home the point, matrices are functions. An $n \times k$ matrix $\mathbf{B}$ takes in an $m$-dimensional vector $\mathbf{x}$ and gives back an $n$-dimensional one by doing matrix-vector multiplication, which we write $\mathbf{Bx}$. If we have another matrix $\mathbf{A}$ and we want the product $\mathbf{AB}$ to make any sense at all, then when we multiply by $\mathbf{x}$, the following equality should hold:
+
+$$
+	(\mathbf{AB})\mathbf{x} = \mathbf{A}(\mathbf{Bx}).
+$$
+
+On the left is a matrix called $\mathbf{AB}$ that we don't know how to calculate yet, but on the right, there's just matrix-vector multiplication happening twice. Since we're thinking of matrices as being functions that act by multiplication, the right side is function composition, so, crucially, the left side should be too. In other words, **matrix multiplication should be defined to be composition of functions**. This point is glossed over or ignored in many introductory classes, and that's really a shame! Understanding why matrices work they way they do is half the battle in using them properly.
+
 
 
 ### nav-buttons
