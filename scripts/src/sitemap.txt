@@ -60,6 +60,7 @@ home Cruz Godar
 			notes/6-nonhomogeneous-second-order-des Section 6: Nonhomogeneous DEs
 			notes/7-higher-order-des Section 7: Higher-Order DEs
 			notes/8-intro-to-linear-algebra Section 8: Intro to Linear Algebra
+			notes/9-inverses-and-determinants Section 9: Inverses and Determinants
 		
 		uo/253 Math 253
 			notes/0-calc-2-review Section 0: Calculus I and II Review
