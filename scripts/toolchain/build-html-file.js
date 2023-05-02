@@ -204,7 +204,7 @@ const components =
 			.replaceAll(/\\\"/g, "[DOUBLEQUOTE]")
 			.replaceAll(/\\\'/g, "[SINGLEQUOTE]")
 			.replaceAll(/\$\$(.*?)\$\$/g, (match, $1) => `\$\\displaystyle ${$1}\$`)
-			.replaceAll(/\$(.*?)\$/g, (match, $1) => `\$${$1}[END\$]`);
+			.replaceAll(/\$(.*?)\$/g, (match, $1) => `\$${components.Parse.latex($1)}[END\$]`);
 			
 			
 			
@@ -324,6 +324,14 @@ const components =
 			.replaceAll(/\[BACKTICK\]/g, "`")
 			.replaceAll(/\[DOLLARSIGN\]/g, "\\$")
 			.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>/g, (match, $1) => `<span class="tex-holder inline-math" data-source-tex="${$1.replaceAll(/\\displaystyle\s*/g, "")}">\$${$1}\$</span>`);
+		},
+		
+		
+		
+		"latex": (content) =>
+		{
+			return content.replaceAll(/[^\\]\\te/g, "\\ \\times\\!\\!=")
+			.replaceAll(/[^\\]\\pe/g, "\\ +\\!\\!=");
 		},
 		
 		
@@ -669,6 +677,8 @@ const components =
 					
 					else
 					{
+						lines[i] = this.Parse.latex(lines[i]);
+						
 						source_tex = `${source_tex}${i === start_i + 1 ? "" : "\\\\"}[NEWLINE][TAB]${lines[i]}`;
 						
 						if ([...lines[i].matchAll(/\\(begin|end){.*?}/g)].length !== 1)

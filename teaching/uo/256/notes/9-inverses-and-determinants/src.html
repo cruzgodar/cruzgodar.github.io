@@ -10,7 +10,157 @@ $$
 	\mathbf{I} = \left[ \begin{array}{ccccc} 1 & 0 & \cdots & 0 & 0 \\ 0 & 1 & \cdots & 0 & 0 \\ \vdots & \vdots & \ddots & \vdots & \vdots \\ 0 & 0 & \cdots & 1 & 0 \\ 0 & 0 & \cdots & 0 & 1 \end{array} \right],
 $$
 
-and its purpose is to serve as the identity function, meaning it leaves things unchanged when multiplied by them. (You'll verify in a homework problem that $\mathbf{AI} = \mathbf{IA} = \mathbf{A}$ for any matrix $\mathbf{A}$). In the language of multiplication, $\mathbf{I}$ is the equivalent of the number $1$, and in the language of functions, it is the equivalent of the identity function $f(x) = x$.
+and its purpose is to serve as the identity function, meaning it leaves matrices and vectors unchanged when multiplied by them. (You'll verify in a homework problem that $\mathbf{AI} = \mathbf{IA} = \mathbf{A}$ for any matrix $\mathbf{A}$). In the language of multiplication, $\mathbf{I}$ is the equivalent of the number $1$, and in the language of functions, it's the equivalent of the identity function $f(x) = x$.
+
+
+
+## Row Operations
+
+Matrices represent systems of equations, which are things that change as we solve them, so it'd be nice to have some sort of equivalence relation, where two matrices are equivalent if they represent the same system of equations. When we solve systems by hand with methods like substitution, variables are moving all over the place, including to the right side of the equals signs, but matrices don't have any support for that --- the $i$th column is where $x_i$ lives, and it can't leave. To comply with the rather strict conditions of matrices, there are actually only three things we can do to a matrix to solve it. Since any sort of operation like this will affect the right side of the equations too (i.e. it will change $\mathbf{b}$ in $\mathbf{Ax} = \mathbf{b}$), we'll want to put $\mathbf{A}$ and $\mathbf{b}$ together. The simplest way is by **augmenting** the matrix $\mathbf{A}$. This isn't a fancy solution, but it gets the job done: we'll just shove $\mathbf{b}$ in on the right side of $\mathbf{A}$. For example, the system of equations
+
+$$
+	2x_1 - x_2 &= 3
+	
+	x_1 + 5x_2 &= -1.
+$$
+
+Has the matrix form
+
+$$
+	\left[ \begin{array}{cc} 2 & -1 \\ 1 & 5 \end{array} \right] \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right] = \left[ \begin{array}{c} 3 \\ -1 \end{array} \right].
+$$
+
+To represent this system in a single augmented matrix, we write it as
+
+$$
+	[\mathbf{A} \mid \mathbf{b}] = \left[ \begin{array}{cc|c} 2 & -1 & 3 \\ 1 & 5 & -1 \end{array} \right].
+$$
+
+So: what operations can we do that preserve the equation structure? Since each row represents its own equation, we can definitely swap any two rows. We can't add or subtract a single number or variable on both sides, because there can't be any constants on the left or variables on the right --- but we can multiply an entire row by a nonzero constant (multiplying both sides by zero is the fastest way to destroy information when solving an equation). Finally, we can add any multiple of one row to another, analogous to the method of addition for solving systems. Together, these form the three **elementary row operations** on matrices, and they let us reduce matrices to simpler forms through a step-by-step process. Let's define that simpler form and then describe how to get there.
+
+
+
+### def reduced row echelon form
+	
+	A matrix $\mathbf{A}$ is in **reduced row echelon form** if every row is either all zero or contains a $1$ as its first nonzero entry, and every column with one of those leading $1$s has $0$s for all its other entries.
+	
+###
+
+
+
+In practice, matrices in reduced row echelon form look like the identity matrix, but some rows may be zero and there may be some extra columns inserted. For example,
+
+$$
+	\left[ \begin{array}{ccccc} 1 & 0 & 5 & 0 & 0 \\ 0 & 1 & -2 & 0 & 0 \\ 0 & 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0 & 0 \end{array} \right]
+$$
+
+is in reduced row echelon form. The idea here is that matrices in this form correspond to a solved system of equations: all of the rows with a leading $1$ have a variable isolated, and the extra columns are free parameters.
+
+
+
+### thm !Method: Row Reduction
+	
+	To perform elementary row operations on a matrix $\mathbf{A}$ to convert it to reduced row echelon form, find a row with a nonzero first entry, move it to the top of the matrix, and then add multiples of that row to all the ones below it to make their first terms zero. Now find a row with a nonzero second entry, move it to the second row down from the top, and add multiples of it to all the rows below it to make their second entries zero. Repeat this with every row --- at the end, you'll have a matrix with a triangular region of zeros in the bottom-left and a strip of $1$s diagonally from the top-left to bottom-right. Now take the bottom row and add multiples of it to every row above it to zero out their entries, and repeat with all of the rows. Finally, divide through by the nonzero entries in each row to make them $1$.
+	
+###
+
+
+
+This is a method best explained with examples, so let's dive right in.
+
+
+
+### ex row reduction
+	
+	Solve the system of equations
+	
+	$$
+		4x - y + 3z &= -1
+		
+		x + 2y &= 20
+		
+		-6x + z &= -12.
+	$$
+	
+	To begin, we'll place this into an augmented matrix:
+	
+	$$
+		\left[ \begin{array}{ccc|c} 4 & -1 & 3 & -1 \\ 1 & 2 & 0 & 20 \\ -6 & 0 & 1 & -12 \end{array} \right].
+	$$
+	
+	And now we'll get reducing! For ease of language, let's call the rows $\mathbf{r_1}$, $\mathbf{r_2}$, and $\mathbf{r_3}$ --- as we move the rows around, what they refer to will change. Let's start with $\mathbf{r_2}$, since it already has a $1$ in the first position, and move it to the top by swapping it with $\mathbf{r_1}$:
+	
+	$$
+		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 4 & -1 & 3 & -1 \\ -6 & 0 & 1 & -12 \end{array} \right].
+	$$
+	
+	Notice that the part of the row to the right of the bar comes along for the ride. Now we can add $-4\mathbf{r_1}$ to $\mathbf{r_2}$ and $6\mathbf{r_1}$ to $\mathbf{r_3}$ to remove their first entries.
+	
+	$$
+		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 0 & -9 & 3 & -81 \\ 0 & 12 & 1 & 108 \end{array} \right].
+	$$
+	
+	We can clean up $\mathbf{r_2}$ by dividing it through by $-3$ to get
+	
+	$$
+		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 0 & 3 & -1 & 27 \\ 0 & 12 & 1 & 108 \end{array} \right].
+	$$
+	
+	Now if we add $-4\mathbf{r_2}$ to $\mathbf{r_3}$, we can clear its second entry.
+	
+	$$
+		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 0 & 3 & -1 & 27 \\ 0 & 0 & 5 & 0 \end{array} \right].
+	$$
+	
+	That's the first half of row reduction done! For the second half, we start with $\mathbf{r_3}$. Let's first divide by $5$:
+	
+	$$
+		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 0 & 3 & -1 & 27 \\ 0 & 0 & 1 & 0 \end{array} \right].
+	$$
+	
+	Now we can add $\mathbf{r_3}$ to $\mathbf{r_2}$ to clear its last entry. There's no need to do anything to $\mathbf{r_1}$, since its last entry is already zero.
+	
+	$$
+		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 0 & 3 & 0 & 27 \\ 0 & 0 & 1 & 0 \end{array} \right].
+	$$
+	
+	Dividing $\mathbf{r_2}$ by $3$ gives
+	
+	$$
+		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 0 & 1 & 0 & 9 \\ 0 & 0 & 1 & 0 \end{array} \right],
+	$$
+	
+	and then finally, we can add $-2\mathbf{r_2}$ to $\mathbf{r_1}$ to get
+	
+	$$
+		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 2 \\ 0 & 1 & 0 & 9 \\ 0 & 0 & 1 & 0 \end{array} \right],
+	$$
+	
+	If we rewrite this as a matrix equation, we have
+	
+	$$
+		\left[ \begin{array}{ccc} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{array} \right]\left[ \begin{array}{c} x \\ y \\ z \end{array} \right] &= \left[ \begin{array}{c} 2 \\ 9 \\ 0 \end{array} \right]
+		
+		\left[ \begin{array}{c} x \\ y \\ z \end{array} \right] &= \left[ \begin{array}{c} 2 \\ 9 \\ 0 \end{array} \right],
+	$$
+	
+	so $x = 2$, $y = 9$, and $z = 0$.
+	
+###
+
+
+
+In order to streamline the process while still explaining what we're doing at each step, it's helpful to have a notation for elementary row operations. These vary quite a bit, but I'm personally fond of the following:
+
+$$
+	\text{swap } \mathbf{r_i}, \mathbf{r_j}
+	
+	\mathbf{r_i} \te c
+	
+	\mathbf{r_i} \pe c\mathbf{r_j}
+$$
+
+These are reminiscent of common programming operations, and
 
 
 
