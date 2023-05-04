@@ -296,7 +296,7 @@ html.dark-futuristic-theme-1
 	.text-button
 	{
 		border: calc(.35 * var(--safe-vh) * 152 / 89) solid rgb(64, 64, 64);
-		border-radius: calc(1.5 * var(--safe-vh) * 152 / 89)
+		border-radius: calc(1.5 * var(--safe-vh) * 152 / 89);
 		padding: calc(1 * var(--safe-vh) * 152 / 89);
 	}
 	
