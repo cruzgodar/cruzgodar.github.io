@@ -169,11 +169,67 @@ These are shorthand for swapping rows $i$ and $j$, multiplying row $i$ by a cons
 	Solve the system of equations
 	
 	$$
-		x_1 + 4x_2 - x_4 &= -12
+		x_1 + 4x_2 - 14x_4 &= -11
 		
-		2x_1 + 5x_2 + x_3 + x_4
+		2x_1 + 5x_2 + x_3 + 14x_4 &= -15
 		
-		-6x + z &= -12.
+		x_2 - 5x_3 + 28x_4 &= 7.
+	$$
+	
+	Once this is in a matrix, we're off to the races:
+	
+	$$
+		\left[ \begin{array}{cccc|c} 1 & 4 & 0 & -14 & -11 \\ 2 & 5 & 1 & 14 & -15 \\ 0 & 1 & -5 & 28 & 7 \end{array} \right] & 
+		
+		\left[ \begin{array}{cccc|c} 1 & 4 & 0 & -14 & -11 \\ 0 & -3 & 1 & 42 & 7 \\ 0 & 1 & -5 & 28 & 7 \end{array} \right] & \qquad \mathbf{r_2} \pe -2\mathbf{r_1}
+		
+		\left[ \begin{array}{cccc|c} 1 & 4 & 0 & -14 & -11 \\ 0 & 1 & -5 & 28 & 7 \\ 0 & -3 & 1 & 42 & 7 \end{array} \right] & \qquad \text{swap } \mathbf{r_2}, \mathbf{r_3}
+		
+		\left[ \begin{array}{cccc|c} 1 & 4 & 0 & -14 & -11 \\ 0 & 1 & -5 & 28 & 7 \\ 0 & 0 & -14 & 126 & 28 \end{array} \right] & \qquad \mathbf{r_3} \pe 3\mathbf{r_2}
+		
+		\left[ \begin{array}{cccc|c} 1 & 4 & 0 & -14 & -11 \\ 0 & 1 & -5 & 28 & 7 \\ 0 & 0 & 1 & -9 & -2 \end{array} \right] & \qquad \mathbf{r_3} \te -\frac{1}{14}
+		
+		\left[ \begin{array}{cccc|c} 1 & 4 & 0 & -14 & -11 \\ 0 & 1 & 0 & -17 & -3 \\ 0 & 0 & 1 & -9 & -2 \end{array} \right] & \qquad \mathbf{r_2} \pe 5\mathbf{r_3}
+		
+		\left[ \begin{array}{cccc|c} 1 & 0 & 0 & 54 & -3 \\ 0 & 1 & 0 & -17 & -3 \\ 0 & 0 & 1 & -9 & -2 \end{array} \right] & \qquad \mathbf{r_1} \pe -4\mathbf{r_2}
+	$$
+	
+	The matrix is now fully reduced, even though there are still a bunch of ugly-looking numbers in it. What's going on with that? Every row of a matrix represents an equation and every column represents a different variable, so if a matrix is square, the number of equations and the number of unknowns are equal, meaning that we'd expect to be able to solve for all of them. If the matrix has more rows than columns --- it's a tall rectangle --- then the balance is tipped to having more equations than unknowns, meaning we'd expect there to be *no* solution unless things align just right. We'll see examples of this later, but it typically looks like one of the rows having all zeros on the left and a nonzero value on the right, which is impossible.
+	
+	On the other hand, a matrix like this with more columns than rows means there are extra unknowns, and in general, we can only solve for as many unknowns as there are equations. A great side effect of matrix reduction is that it's made the extra step of writing the general solution in terms of a parameter a whole lot easier. If we set $t = x_4$, then our equations are
+	
+	$$
+		x_1 + 54t &= -3
+		
+		x_2 - 17t &= -3
+		
+		x_3 - 9t &= -2,
+	$$
+	
+	so the general solution is
+	
+	$$
+		x_1 &= -3 - 54t
+		
+		x_2 &= -3 + 17t
+		
+		x_3 &= -2 + 9t
+	$$
+	
+	for any value of $t$.
+	
+###
+
+### exc row reduction
+	
+	Solve the system
+	
+	$$
+		x_1 + x_2 - 4x_3 &= 6
+		
+		x_1 + 5x_2 &= 2
+		
+		-2x_1 + 2x_2 + 12x_3 & = -16.
 	$$
 	
 ###
