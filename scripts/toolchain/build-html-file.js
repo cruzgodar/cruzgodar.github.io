@@ -330,8 +330,8 @@ const components =
 		
 		"latex": (content) =>
 		{
-			return content.replaceAll(/[^\\]\\te/g, "\\ \\times\\!\\!=")
-			.replaceAll(/[^\\]\\pe/g, "\\ +\\!\\!=");
+			return content.replaceAll(/[^\\]\\te([^a-zA-Z])/g, (match, $1) => `\\ \\times\\!\\!=${$1}`)
+			.replaceAll(/[^\\]\\pe([^a-zA-Z])/g, (match, $1) => `\\ +\\!\\!=${$1}`);
 		},
 		
 		
