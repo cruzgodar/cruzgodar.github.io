@@ -517,7 +517,7 @@ Site.sitemap =
 			"/teaching/uo/256/notes/6-nonhomogeneous-second-order-des/",
 			"/teaching/uo/256/notes/7-higher-order-des/",
 			"/teaching/uo/256/notes/8-intro-to-linear-algebra/",
-			"/teaching/uo/256/notes/9-inverses-and-determinants/"
+			"/teaching/uo/256/notes/9-systems-and-inverses/"
 		]
 	},
 		
@@ -602,9 +602,9 @@ Site.sitemap =
 		"children": []
 	},
 	
-	"/teaching/uo/256/notes/9-inverses-and-determinants/":
+	"/teaching/uo/256/notes/9-systems-and-inverses/":
 	{
-		"title": "Section 9: Inverses and Determinants",
+		"title": "Section 9: Systems and Inverses",
 		
 		"parent": "/teaching/uo/256/",
 		

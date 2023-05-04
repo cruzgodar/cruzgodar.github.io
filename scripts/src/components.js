@@ -828,12 +828,11 @@ Page.Components =
 				
 				page_title = title;
 				
-				const height_adjust = banner ? ` style="margin-bottom: 10vh"` :  "";
 				const banner_html = banner ? this.get_banner() :  "";
 				
 				lines[i] = `
 					${banner_html}
-					<header${height_adjust}>
+					<header>
 						<div id="logo">
 							<a href="/home/" tabindex="-1">
 								<img src="/graphics/general-icons/logo.png" alt="Logo" tabindex="1"></img>
