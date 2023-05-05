@@ -517,7 +517,8 @@ Site.sitemap =
 			"/teaching/uo/256/notes/6-nonhomogeneous-second-order-des/",
 			"/teaching/uo/256/notes/7-higher-order-des/",
 			"/teaching/uo/256/notes/8-intro-to-linear-algebra/",
-			"/teaching/uo/256/notes/9-systems-and-inverses/"
+			"/teaching/uo/256/notes/9-systems-and-inverses/",
+			"/teaching/uo/256/notes/10-eigenthings/"
 		]
 	},
 		
@@ -605,6 +606,15 @@ Site.sitemap =
 	"/teaching/uo/256/notes/9-systems-and-inverses/":
 	{
 		"title": "Section 9: Systems and Inverses",
+		
+		"parent": "/teaching/uo/256/",
+		
+		"children": []
+	},
+	
+	"/teaching/uo/256/notes/10-eigenthings/":
+	{
+		"title": "Section 10: Eigenthings",
 		
 		"parent": "/teaching/uo/256/",
 		
