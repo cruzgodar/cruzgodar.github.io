@@ -20,13 +20,19 @@ for some constants $c_i$, where $\mathbf{0}$ is the row vector of all zeros. Som
 		c_1\mathbf{v_1} + c_2\mathbf{v_2} + \cdots + c_k\mathbf{v_k} = \mathbf{0}
 	$$
 	
-	for some choice of $c_1, c_2, ..., c_k$, and **linearly independent** if no such $c_i$ exist.
+	for some choice of $c_1, c_2, ..., c_k$, and **linearly independent** if no such $c_i$ exist. We say that
+	
+	$$
+		c_1\mathbf{v_1} + c_2\mathbf{v_2} + \cdots + c_k\mathbf{v_k}
+	$$
+	
+	is a **linear combination** of the $\mathbf{v_i}$.
 	
 ###
 
 
 
-For example, $\mathbf{v_1} = \left[ \begin{array}{ccc} 2 & -5 & 1 \end{array} \right]$ and $\mathbf{v_2} = \left[ \begin{array}{ccc} -4 & 10 & -2 \end{array} \right]$ are linearly dependent, since $-2\mathbf{v_1} + \mathbf{v_2} = \mathbf{0}$. To determine if a more complicated set of vectors is linearly dependent, just throw them into a matrix as row vectors and tr to row reduce the matrix. If a row becomes the zero vector, they're linearly dependent, and if not, they're linearly independent.
+For example, $\mathbf{v_1} = \left[ \begin{array}{ccc} 2 & -5 & 1 \end{array} \right]$ and $\mathbf{v_2} = \left[ \begin{array}{ccc} -4 & 10 & -2 \end{array} \right]$ are linearly dependent, since $-2\mathbf{v_1} + \mathbf{v_2} = \mathbf{0}$. To determine if a more complicated set of vectors is linearly dependent, just throw them into a matrix as row vectors and try to row reduce the matrix. If a row becomes the zero vector, they're linearly dependent, and if not, they're linearly independent.
 
 If we're looking at $n$-dimensional vectors, any collection of more than $n$ of them is *guaranteed* to be linearly dependent. That's because putting the into a matrix results in one that is taller than it is wide, and so even if the first $n$ rows are linearly independent, meaning they reduce to the identity matrix, the rows after it will reduce to zero: once we have the identity matrix, we can destroy any other row, meaning the matrix has the form
 
@@ -43,6 +49,46 @@ Since linear dependence of the rows is the only problem that can arise when row 
 	Let $\mathbf{A}$ be an $n \times n$ matrix. Then $\mathbf{A}$ is invertible if and only if the rows of $\mathbf{A}$ are linearly independent.
 	
 ###
+
+
+
+This definition lets us go back and clarify something from earlier sections: fundamental solutions to linear homogeneous DEs must be linearly independent, and the general solution is an arbitrary linear combination of the $y_i$. In fact, we can even express an $n$th order linear homogeneous DE as a matrix product:
+
+$$
+	p_n(t)y^{(n)} + p_{n-1}(t)y^{(n - 1)} + \cdots + p_1(t)y' + p_0(t)y &= 0
+	
+	\left[ \begin{array}{ccccc} p_n(t) & p_{n-1}(t) & \cdots & p_1(t) & p_0(t) \end{array} \right] \left[ \begin{array}{c} y^{(n)} \\ y^{(n - 1)} \\ \vdots \\ y' \\ y \end{array} \right] &= 0.
+$$
+
+This gives us our first hint of how matrices will relate to systems of DEs, and we'll begin exploring that connection properly in the next section. For now, let's get back to matrices.
+
+
+
+## Eigenvalues and Eigenvectors
+
+When matrices and vectors are small, multiplying them together isn't a particularly long operation, but as the dimension increases, it gets progressively more intensive. But for some very special vectors, multiplication isn't difficult at all. For example, let's look at the matrix
+
+$$
+	\mathbf{A} = \left[ \begin{array}{cc} 2 & 2 \\ 3 & 1 \end{array} \right].
+$$
+
+If we evaluate the following two products, they're equal to multiples of the vector we plug in:
+
+$$
+	\mathbf{A} \left[ \begin{array}{c} 1 \\ 1 \end{array} \right] &= \left[ \begin{array}{cc} 2 & 2 \\ 3 & 1 \end{array} \right] \left[ \begin{array}{c} 1 \\ 1 \end{array} \right]
+	
+	&= \left[ \begin{array}{c} 4 \\ 4 \end{array} \right]
+	
+	&= 4\left[ \begin{array}{c} 1 \\ 1 \end{array} \right].
+	
+	\mathbf{A} \left[ \begin{array}{c} -2 \\ 3 \end{array} \right] &= \left[ \begin{array}{cc} 2 & 2 \\ 3 & 1 \end{array} \right] \left[ \begin{array}{c} -2 \\ 3 \end{array} \right]
+	
+	&= \left[ \begin{array}{c} 2 \\ -3 \end{array} \right]
+	
+	&= -\left[ \begin{array}{c} -2 \\ 3 \end{array} \right].
+$$
+
+
 
 
 
