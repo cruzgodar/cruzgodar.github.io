@@ -2,7 +2,47 @@
 
 
 
-When a matrix failts to be invertible, it's because at some point in the row reduction process, a row became completely zero. In other words, 
+When a matrix failts to be invertible, it's because at some point in the row reduction process, a row became completely zero. All that row reduction can do is turn rows into sums of multiples of all the rows. Specifically, if some row becomes all zero, then
+
+$$
+	c_1\mathbf{r_1} + c_2\mathbf{r_2} + \cdots + c_n\mathbf{r_n} = \mathbf{0}
+$$
+
+for some constants $c_i$, where $\mathbf{0}$ is the row vector of all zeros. Some of the $c_i$ may be zero and some negative, but the point is that this is a much more concise description of when a matrix is invertible. In fact, this is such an important concept in linear algebra that it deserves its own name.
+
+
+
+### def linear independence
+	
+	Let $\mathbf{v_1}$, $\mathbf{v_2}$, ..., $\mathbf{v_k}$ be $n$-dimensional vectors. The $\mathbf{v_i}$ are **linearly dependent** if
+	
+	$$
+		c_1\mathbf{v_1} + c_2\mathbf{v_2} + \cdots + c_k\mathbf{v_k} = \mathbf{0}
+	$$
+	
+	for some choice of $c_1, c_2, ..., c_k$, and **linearly independent** if no such $c_i$ exist.
+	
+###
+
+
+
+For example, $\mathbf{v_1} = \left[ \begin{array}{ccc} 2 & -5 & 1 \end{array} \right]$ and $\mathbf{v_2} = \left[ \begin{array}{ccc} -4 & 10 & -2 \end{array} \right]$ are linearly dependent, since $-2\mathbf{v_1} + \mathbf{v_2} = \mathbf{0}$. To determine if a more complicated set of vectors is linearly dependent, just throw them into a matrix as row vectors and tr to row reduce the matrix. If a row becomes the zero vector, they're linearly dependent, and if not, they're linearly independent.
+
+If we're looking at $n$-dimensional vectors, any collection of more than $n$ of them is *guaranteed* to be linearly dependent. That's because putting the into a matrix results in one that is taller than it is wide, and so even if the first $n$ rows are linearly independent, meaning they reduce to the identity matrix, the rows after it will reduce to zero: once we have the identity matrix, we can destroy any other row, meaning the matrix has the form
+
+$$
+	\left[ \begin{array}{c} \mathbf{I} \\ \hline \mathbf{0} \end{array} \right].
+$$
+
+Since linear dependence of the rows is the only problem that can arise when row reducing, we have a clean result relating it to matrix inversion.
+
+
+
+### prop linear independence and matrix inversion
+	
+	Let $\mathbf{A}$ be an $n \times n$ matrix. Then $\mathbf{A}$ is invertible if and only if the rows of $\mathbf{A}$ are linearly independent.
+	
+###
 
 
 
