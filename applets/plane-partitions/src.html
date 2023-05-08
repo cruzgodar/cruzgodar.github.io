@@ -2,7 +2,7 @@ This is a behemoth of an applet --- it took two months of work, I had to learn t
 
 Plane partitions can be made **asymptotic** to a shape. When adding or editing an array, replace a number with a caret (`^`) to give that square infinite height, represented with slightly lighter boxes. You can also add the symbols `&gt;` and `v` to the right and bottom margins, respectively, to create 3-leg APPs. For example, "`7 >`" at the end of the first line means the row of height 7 should continue forever, indicated by the same lighter boxes.
 
-Plane partitions are frequently studied, and many correspondences involving them have been implemented here. The first three take a plane partition and convert it to a **tableau** of the same shape --- a tableau is a collection of numbers with no restriction on box heights decreasing in any direction. The inverse algorithms take a tableau and convert it back to a plane partition. Pak and Sulzgruber are independently discovered correspondences with wildly different descriptions that amazingly produce the same results, while Hillman-Grassl is a unique correspondence all its own. RSK is something else entirely: it takes two semi-standard Young tableaux, or SSYT, and converts them to a regular tableau. An SSYT is similar to a plane partition, but rather than heights needing to decrease along rows and columns, they must **increase**, and the increasing that happens on columns must be strict (i.e. the heights always increase and never remain the same).
+Plane partitions are frequently studied, and many correspondences involving them have been implemented here. The first three take a plane partition and convert it to a **tableau** of the same shape --- a tableau is a collection of numbers with no restriction on box heights decreasing in any direction. The inverse algorithms take a tableau and convert it back to a plane partition. Pak and Sulzgruber are independently discovered correspondences with wildly different descriptions that amazingly produce the same results, while Hillman-Grassl is a unique correspondence all its own. RSK is something else entirely: it takes two semi-standard Young tableaux, or SSYT, and converts them to a regular tableau. An SSYT is similar to a plane partition, but rather than heights needing to decrease along rows and columns, they must *increase*, and the increasing that happens on columns must be strict (i.e. the heights always increase and never remain the same).
 
 Due to the complexity of the algorithms and the difficulty in getting them to work for those unused to plane partitions, applets like this, or both, I've included a few examples in the final section so that pretty pictures are easy to find without too much tinkering.
 
@@ -45,11 +45,6 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 		<canvas id="numbers-canvas" class="output-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important; border-color: rgba(0, 0, 0, 0)"></canvas>
 	</div>
 </div>
-
-<canvas id="hidden-canvas" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
-<canvas id="hidden-canvas-2" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
-<canvas id="hidden-canvas-3" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
-<canvas id="hidden-canvas-4" class="hidden-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
 
 </div>
 
