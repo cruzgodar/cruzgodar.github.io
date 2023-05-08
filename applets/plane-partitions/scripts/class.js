@@ -69,6 +69,8 @@ class PlanePartitions extends Applet
 	
 	currently_running_algorithm = false;
 	
+	need_download = false;
+	
 	font_size = 10;
 	
 	arrays = [];
@@ -300,7 +302,7 @@ class PlanePartitions extends Applet
 				Site.scripts_loaded["three"] = true;
 			}
 			
-			if (Site.scripts_loaded["lodash"])
+			if (!Site.scripts_loaded["lodash"])
 			{
 				await Site.load_script("/scripts/lodash.min.js");
 				
@@ -558,7 +560,7 @@ class PlanePartitions extends Applet
 	//Does not return a string, unlike the previous function.
 	generate_random_tableau()
 	{
-		const side_length = Math.floor(Math.random() * 3) + 4;
+		const side_length = Math.floor(Math.random() * 3) + 5;
 		
 		let tableau = new Array(side_length);
 		
@@ -580,6 +582,12 @@ class PlanePartitions extends Applet
 					tableau[i][j] = 0;
 				}
 			}
+		}
+		
+		for (let i = 0; i < side_length; i++)
+		{
+			tableau[i][side_length - 1] = 0;
+			tableau[side_length - 1][i] = 0;
 		}
 		
 		return tableau;
@@ -630,7 +638,7 @@ class PlanePartitions extends Applet
 	{
 		const split_data = data.split("\n");
 		
-		const num_rows = split_data.length;
+		let num_rows = split_data.length;
 		
 		let split_rows = new Array(split_data.length);
 		
@@ -648,7 +656,7 @@ class PlanePartitions extends Applet
 			}
 		}
 		
-		const num_cols = split_rows[0].length;
+		let num_cols = split_rows[0].length;
 		
 		
 		
@@ -871,6 +879,14 @@ class PlanePartitions extends Applet
 	{
 		return new Promise(async (resolve, reject) =>
 		{
+			if (this.currently_animating)
+			{
+				resolve();
+				return;
+			}
+			
+			
+			
 			let array = {
 				numbers: numbers,
 				cubes: [],
@@ -890,7 +906,7 @@ class PlanePartitions extends Applet
 			
 			if (this.in_2d_view && !keep_numbers_canvas_visible)
 			{
-				await Page.Animate.change_opacity(wilson_numbers.canvas, 0, animation_time / 5);
+				await Page.Animate.change_opacity(this.wilson_numbers.canvas, 0, this.animation_time / 5);
 			}
 			
 			
@@ -1135,6 +1151,14 @@ class PlanePartitions extends Applet
 	{
 		return new Promise(async (resolve, reject) =>
 		{
+			if (this.currently_animating)
+			{
+				resolve();
+				return;
+			}
+			
+			
+			
 			if (index >= this.arrays.length || index < 0)
 			{
 				this.display_error(`No array at index ${index}`);
@@ -1161,6 +1185,14 @@ class PlanePartitions extends Applet
 	{
 		return new Promise(async (resolve, reject) =>
 		{
+			if (this.currently_animating)
+			{
+				resolve();
+				return;
+			}
+			
+			
+			
 			if (index >= this.arrays.length || index < 0)
 			{
 				this.display_error(`No array at index ${index}`);
@@ -1222,6 +1254,14 @@ class PlanePartitions extends Applet
 	{
 		return new Promise(async (resolve, reject) =>
 		{
+			if (this.currently_animating)
+			{
+				resolve();
+				return;
+			}
+			
+			
+			
 			if (index >= this.arrays.length || index < 0)
 			{
 				this.display_error(`No array at index ${index}`);
@@ -1320,7 +1360,7 @@ class PlanePartitions extends Applet
 				{
 					anime({
 						targets: this.arrays[i].cube_group.position,
-						x: arrays[i].center_offset,
+						x: this.arrays[i].center_offset,
 						y: 0,
 						z: -this.arrays[i].center_offset,
 						duration: this.animation_time,
@@ -2111,7 +2151,7 @@ class PlanePartitions extends Applet
 		
 		this.total_array_height = 0;
 		
-		arrays.forEach(array => this.total_array_height = Math.max(array.height, this.total_array_height));
+		this.arrays.forEach(array => this.total_array_height = Math.max(array.height, this.total_array_height));
 		
 		
 		
@@ -2512,16 +2552,16 @@ class PlanePartitions extends Applet
 				
 				if (index === 1)
 				{
-					await this.run_algorithm("hillman_grassl", 0)
+					await this.run_algorithm("hillman_grassl", 0);
 					
 					await new Promise((resolve, reject) => setTimeout(resolve, 3 * this.animation_time));
 					
-					await this.run_algorithm("hillman_grassl_inverse", 0)
+					await this.run_algorithm("hillman_grassl_inverse", 0);
 				}
 				
 				else
 				{
-					await this.run_algorithm("pak", 0)
+					await this.run_algorithm("pak", 0);
 					
 					await new Promise((resolve, reject) => setTimeout(resolve, 3 * this.animation_time));
 					
@@ -2529,7 +2569,7 @@ class PlanePartitions extends Applet
 					
 					await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time));
 					
-					await this.run_algorithm("sulzgruber_inverse", 0)
+					await this.run_algorithm("sulzgruber_inverse", 0);
 				}	
 				
 				resolve();
@@ -2583,8 +2623,6 @@ class PlanePartitions extends Applet
 			const data = this.algorithm_data[name];
 			
 			const num_arrays = data.input_type.length;
-			
-			
 			
 			if (index > this.arrays.length - 1 || index < 0)
 			{
@@ -2710,12 +2748,14 @@ class PlanePartitions extends Applet
 					}
 				}
 				
-				uncolor_cubes(this.arrays[index + i], coordinates);
+				this.uncolor_cubes(this.arrays[index + i], coordinates);
 			}	
 			
 			
 			
-			await data.method(index);
+			const bound_function = data.method.bind(this);
+			
+			await bound_function(index);
 			
 			
 			
@@ -2727,14 +2767,13 @@ class PlanePartitions extends Applet
 			resolve();
 		});
 	}
-	/*
 	
 	
-	function hillman_grassl(index)
+	hillman_grassl(index)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			let array = arrays[index];
+			let array = this.arrays[index];
 			
 			let plane_partition = _.cloneDeep(array.numbers);
 			
@@ -2840,9 +2879,9 @@ class PlanePartitions extends Applet
 				}
 			}
 			
-			let output_array = await add_new_array(index + 1, empty_array);
+			let output_array = await this.add_new_array(index + 1, empty_array);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time));
 			
 			
 			
@@ -2851,12 +2890,12 @@ class PlanePartitions extends Applet
 			{
 				let hue = i / zigzag_paths.length * 6/7;
 				
-				await color_cubes(array, zigzag_paths[i], hue);
+				await this.color_cubes(array, zigzag_paths[i], hue);
 				
 				
 				
 				//Lift all the cubes up. There's no need to do this if we're in the 2d view.
-				await raise_cubes(array, zigzag_paths[i], array.height);
+				await this.raise_cubes(array, zigzag_paths[i], array.height);
 				
 				
 				
@@ -2865,17 +2904,17 @@ class PlanePartitions extends Applet
 				{
 					array.numbers[zigzag_paths[i][j][0]][zigzag_paths[i][j][1]]--;
 					
-					if (in_2d_view)
+					if (this.in_2d_view)
 					{
-						draw_single_cell_2d_view_text(array, zigzag_paths[i][j][0], zigzag_paths[i][j][1]);
+						this.draw_single_cell_2d_view_text(array, zigzag_paths[i][j][0], zigzag_paths[i][j][1]);
 					}	
 				}
 				
-				recalculate_heights(array);
+				this.recalculate_heights(array);
 				
 				
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 5));
+				await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 5));
 				
 				//Find the pivot and rearrange the shape into a hook.
 				let pivot = [zigzag_paths[i][zigzag_paths[i].length - 1][0], zigzag_paths[i][0][1]];
@@ -2898,7 +2937,7 @@ class PlanePartitions extends Applet
 					target_coordinates.push([pivot[0], j, target_height]);
 				}
 				
-				await move_cubes(array, zigzag_paths[i], output_array, target_coordinates);
+				await this.move_cubes(array, zigzag_paths[i], output_array, target_coordinates);
 				
 				
 				
@@ -2910,7 +2949,7 @@ class PlanePartitions extends Applet
 					target_coordinates.push([j, pivot[1], target_height]);
 				}
 				
-				delete_cubes(output_array, target_coordinates);
+				this.delete_cubes(output_array, target_coordinates);
 				
 				target_coordinates = [];
 				
@@ -2919,21 +2958,21 @@ class PlanePartitions extends Applet
 					target_coordinates.push([pivot[0], j, target_height]);
 				}
 				
-				delete_cubes(output_array, target_coordinates);
+				this.delete_cubes(output_array, target_coordinates);
 				
 				
 				
-				await lower_cubes(output_array, [pivot_coordinates]);
+				await this.lower_cubes(output_array, [pivot_coordinates]);
 				
 				
 				
 				output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]++;
 				
-				recalculate_heights(output_array);
+				this.recalculate_heights(output_array);
 				
-				if (in_2d_view)
+				if (this.in_2d_view)
 				{
-					draw_single_cell_2d_view_text(output_array, pivot_coordinates[0], pivot_coordinates[1]);
+					this.draw_single_cell_2d_view_text(output_array, pivot_coordinates[0], pivot_coordinates[1]);
 				}
 				
 				output_array.height = Math.max(output_array.height, output_array.numbers[pivot_coordinates[0]][pivot_coordinates[1]]);
@@ -2942,12 +2981,12 @@ class PlanePartitions extends Applet
 				
 				
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+				await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time));
 			}
 			
 			
 			
-			await remove_array(index);
+			await this.remove_array(index);
 			
 			resolve();
 		});	
@@ -2955,11 +2994,11 @@ class PlanePartitions extends Applet
 	
 	
 	
-	function hillman_grassl_inverse(index)
+	hillman_grassl_inverse(index)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			let array = arrays[index];
+			let array = this.arrays[index];
 			
 			let tableau = _.cloneDeep(array.numbers);
 			
@@ -3013,7 +3052,7 @@ class PlanePartitions extends Applet
 			
 			let plane_partition = _.cloneDeep(empty_array);
 			
-			let output_array = await add_new_array(index + 1, empty_array);
+			let output_array = await this.add_new_array(index + 1, empty_array);
 			
 			
 			
@@ -3081,7 +3120,7 @@ class PlanePartitions extends Applet
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 			
 			
 			
@@ -3090,7 +3129,7 @@ class PlanePartitions extends Applet
 			{
 				let hue = i / zigzag_paths.length * 6/7;
 				
-				await color_cubes(array, [zigzag_paths[i][1]], hue);
+				await this.color_cubes(array, [zigzag_paths[i][1]], hue);
 				
 				
 				
@@ -3101,19 +3140,19 @@ class PlanePartitions extends Applet
 				//Add a bunch of cubes corresponding to the hook that this thing is a part of.
 				for (let j = column_starts[col]; j < row; j++)
 				{
-					array.cubes[j][col][height] = add_cube(array, col, height, j);
-					array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+					array.cubes[j][col][height] = this.add_cube(array, col, height, j);
+					array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, this.cube_lightness));
 				}
 				
 				for (let j = row_starts[row]; j < col; j++)
 				{
-					array.cubes[row][j][height] = add_cube(array, j, height, row);
-					array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+					array.cubes[row][j][height] = this.add_cube(array, j, height, row);
+					array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, this.cube_lightness));
 				}
 				
 				
 				
-				await raise_cubes(array, [zigzag_paths[i][1]], height);
+				await this.raise_cubes(array, [zigzag_paths[i][1]], height);
 				
 				
 				
@@ -3124,7 +3163,7 @@ class PlanePartitions extends Applet
 					coordinates.push([j, col, height]);
 				}
 				
-				let promise_1 = reveal_cubes(array, coordinates);
+				let promise_1 = this.reveal_cubes(array, coordinates);
 				
 				coordinates = [];
 				
@@ -3133,7 +3172,7 @@ class PlanePartitions extends Applet
 					coordinates.push([row, j, height]);
 				}
 				
-				let promise_2 = reveal_cubes(array, coordinates);
+				let promise_2 = this.reveal_cubes(array, coordinates);
 				
 				await Promise.all([promise_1, promise_2]);
 				
@@ -3162,39 +3201,39 @@ class PlanePartitions extends Applet
 				
 				array.numbers[row][col]--;
 				
-				recalculate_heights(array);
+				this.recalculate_heights(array);
 				
-				if (in_2d_view)
+				if (this.in_2d_view)
 				{
-					draw_single_cell_2d_view_text(array, row, col);
+					this.draw_single_cell_2d_view_text(array, row, col);
 				}
 				
-				await move_cubes(array, coordinates, output_array, target_coordinates);
+				await this.move_cubes(array, coordinates, output_array, target_coordinates);
 				
 				
 				
-				await lower_cubes(output_array, target_coordinates);
+				await this.lower_cubes(output_array, target_coordinates);
 				
 				target_coordinates.forEach((entry) =>
 				{
 					output_array.numbers[entry[0]][entry[1]]++;
 				});
 				
-				recalculate_heights(output_array);
+				this.recalculate_heights(output_array);
 				
-				if (in_2d_view)
+				if (this.in_2d_view)
 				{
-					target_coordinates.forEach(entry => draw_single_cell_2d_view_text(output_array, entry[0], entry[1]));
+					target_coordinates.forEach(entry => this.draw_single_cell_2d_view_text(output_array, entry[0], entry[1]));
 				}
 				
 				
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+				await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 			}
 			
 			
 			
-			await remove_array(index);
+			await this.remove_array(index);
 			
 			resolve();
 		});	
@@ -3202,17 +3241,17 @@ class PlanePartitions extends Applet
 	
 	
 	
-	function pak(index)
+	pak(index)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			let array = arrays[index];
+			let array = this.arrays[index];
 			
 			let plane_partition = array.numbers;
 			
-			if (!in_2d_view)
+			if (!this.in_2d_view)
 			{
-				await show_2d_view();
+				await this.show_2d_view();
 			}
 			
 			
@@ -3225,7 +3264,7 @@ class PlanePartitions extends Applet
 				right_leg_size++;
 			}
 			
-			while (bottom_leg_size < array.footprint && array.numbers[array.footprint - 1][bottom_leg_size	] !== 0)
+			while (bottom_leg_size < array.footprint && array.numbers[array.footprint - 1][bottom_leg_size] !== 0)
 			{
 				bottom_leg_size++;
 			}
@@ -3285,7 +3324,7 @@ class PlanePartitions extends Applet
 						coordinates_to_color.push([i, j, k]);
 					}
 					
-					color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
+					this.color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
 					
 					
 					
@@ -3299,7 +3338,7 @@ class PlanePartitions extends Applet
 						}
 					});
 					
-					await color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
+					await this.color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
 					
 					
 					
@@ -3356,19 +3395,19 @@ class PlanePartitions extends Applet
 							
 							for (let k = plane_partition[i][j]; k < new_diagonal_height[index]; k++)
 							{
-								array.cubes[i][j][k] = add_cube(array, j, k, i);
+								array.cubes[i][j][k] = this.add_cube(array, j, k, i);
 								
 								coordinates_to_reveal.push([i, j, k]);
 							}
 							
-							if (in_2d_view)
+							if (this.in_2d_view)
 							{
-								reveal_cubes(array, coordinates_to_reveal);
+								this.reveal_cubes(array, coordinates_to_reveal);
 							}
 							
 							else
 							{
-								await reveal_cubes(array, coordinates_to_reveal);
+								await this.reveal_cubes(array, coordinates_to_reveal);
 							}	
 						}
 						
@@ -3383,14 +3422,14 @@ class PlanePartitions extends Applet
 								coordinates_to_delete.push([i, j, k]);
 							}
 							
-							if (in_2d_view)
+							if (this.in_2d_view)
 							{
-								delete_cubes(array, coordinates_to_delete);
+								this.delete_cubes(array, coordinates_to_delete);
 							}
 							
 							else
 							{
-								await delete_cubes(array, coordinates_to_delete);
+								await this.delete_cubes(array, coordinates_to_delete);
 							}
 						}
 						
@@ -3398,9 +3437,9 @@ class PlanePartitions extends Applet
 						
 						plane_partition[i][j] = new_diagonal_height[index];
 						
-						if (in_2d_view)
+						if (this.in_2d_view)
 						{
-							draw_single_cell_2d_view_text(array, i, j);
+							this.draw_single_cell_2d_view_text(array, i, j);
 						}
 					}
 					
@@ -3416,32 +3455,32 @@ class PlanePartitions extends Applet
 						}
 					});
 					
-					if (in_2d_view)
+					if (this.in_2d_view)
 					{
-						uncolor_cubes(array, coordinates_to_uncolor);
+						this.uncolor_cubes(array, coordinates_to_uncolor);
 					}
 					
 					else
 					{
-						await uncolor_cubes(array, coordinates_to_uncolor);
+						await this.uncolor_cubes(array, coordinates_to_uncolor);
 					}		
 					
 					
 					
 					hue_index++;
 					
-					recalculate_heights(array);
+					this.recalculate_heights(array);
 					
 					if (coordinates_to_color.length !== 0)
 					{
-						await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+						await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time));
 					}
 				}
 			}
 			
 			
 			
-			update_camera_height(true);
+			this.update_camera_height(true);
 			
 			resolve();
 		});	
@@ -3449,19 +3488,19 @@ class PlanePartitions extends Applet
 	
 	
 	
-	function pak_inverse(index, right_leg_size = 0, bottom_leg_size = 0)
+	pak_inverse(index, right_leg_size = 0, bottom_leg_size = 0)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			let array = arrays[index];
+			let array = this.arrays[index];
 			
 			let tableau = array.numbers;
 			
 			
 			
-			if (!in_2d_view)
+			if (!this.in_2d_view)
 			{
-				await show_2d_view();
+				await this.show_2d_view();
 			}
 			
 			
@@ -3573,16 +3612,16 @@ class PlanePartitions extends Applet
 							coordinates_to_color.push([i, j, k]);
 						}
 						
-						color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
+						this.color_cubes(array, coordinates_to_color, hue_index / num_corners * 6/7);
 					}
 					
 					else if (new_diagonal_height[0] !== 0)
 					{
-						array.cubes[i][j][0] = add_cube(array, j, 0, i, hue_index / num_corners * 6/7, 1, cube_lightness);
+						array.cubes[i][j][0] = this.add_cube(array, j, 0, i, hue_index / num_corners * 6/7, 1, this.cube_lightness);
 						
 						tableau[i][j] = 1;
 						
-						reveal_cubes(array, [[i, j, 0]]);
+						this.reveal_cubes(array, [[i, j, 0]]);
 					}
 					
 					else if (!any_change)
@@ -3591,7 +3630,7 @@ class PlanePartitions extends Applet
 						continue;
 					}
 					
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+					await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time));
 					
 					
 					
@@ -3607,19 +3646,19 @@ class PlanePartitions extends Applet
 							
 							for (let k = tableau[i][j]; k < new_diagonal_height[index]; k++)
 							{
-								array.cubes[i][j][k] = add_cube(array, j, k, i, hue_index / num_corners * 6/7, 1, cube_lightness);
+								array.cubes[i][j][k] = this.add_cube(array, j, k, i, hue_index / num_corners * 6/7, 1, this.cube_lightness);
 								
 								coordinates_to_reveal.push([i, j, k]);
 							}
 							
-							if (in_2d_view)
+							if (this.in_2d_view)
 							{
-								reveal_cubes(array, coordinates_to_reveal);
+								this.reveal_cubes(array, coordinates_to_reveal);
 							}
 							
 							else
 							{
-								await reveal_cubes(array, coordinates_to_reveal);
+								await this.reveal_cubes(array, coordinates_to_reveal);
 							}
 						}
 						
@@ -3634,14 +3673,14 @@ class PlanePartitions extends Applet
 								coordinates_to_delete.push([i, j, k]);
 							}
 							
-							if (in_2d_view)
+							if (this.in_2d_view)
 							{
-								delete_cubes(array, coordinates_to_delete);
+								this.delete_cubes(array, coordinates_to_delete);
 							}
 							
 							else
 							{
-								await delete_cubes(array, coordinates_to_delete);
+								await this.delete_cubes(array, coordinates_to_delete);
 							}
 						}
 						
@@ -3649,9 +3688,9 @@ class PlanePartitions extends Applet
 						
 						tableau[i][j] = new_diagonal_height[index];
 						
-						if (in_2d_view)
+						if (this.in_2d_view)
 						{
-							draw_single_cell_2d_view_text(array, i, j);
+							this.draw_single_cell_2d_view_text(array, i, j);
 						}
 					}
 					
@@ -3659,15 +3698,15 @@ class PlanePartitions extends Applet
 					
 					hue_index++;
 					
-					recalculate_heights(array);
+					this.recalculate_heights(array);
 					
-					await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+					await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time));
 				}
 			}
 			
 			
 			
-			update_camera_height(true);
+			this.update_camera_height(true);
 			
 			resolve();
 		});	
@@ -3675,11 +3714,11 @@ class PlanePartitions extends Applet
 	
 	
 	
-	function sulzgruber(index)
+	sulzgruber(index)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			let array = arrays[index];
+			let array = this.arrays[index];
 			
 			let plane_partition = _.cloneDeep(array.numbers);
 			
@@ -3880,9 +3919,9 @@ class PlanePartitions extends Applet
 				}
 			}
 			
-			let output_array = await add_new_array(index + 1, empty_array);
+			let output_array = await this.add_new_array(index + 1, empty_array);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time));
 			
 			
 			
@@ -3891,12 +3930,12 @@ class PlanePartitions extends Applet
 			{
 				let hue = i / q_paths.length * 6/7;
 				
-				await color_cubes(array, q_paths[i], hue);
+				await this.color_cubes(array, q_paths[i], hue);
 				
 				
 				
 				//Lift all the cubes up. There's no need to do this if we're in the 2d view.
-				await raise_cubes(array, q_paths[i], array.height + 1);
+				await this.raise_cubes(array, q_paths[i], array.height + 1);
 				
 				
 				
@@ -3905,17 +3944,17 @@ class PlanePartitions extends Applet
 				{
 					array.numbers[box[0]][box[1]]--;
 					
-					if (in_2d_view)
+					if (this.in_2d_view)
 					{
-						draw_single_cell_2d_view_text(array, box[0], box[1]);
+						this.draw_single_cell_2d_view_text(array, box[0], box[1]);
 					}	
 				});
 				
-				recalculate_heights(array);
+				this.recalculate_heights(array);
 				
 				
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 5));
+				await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 5));
 				
 				//Find the pivot and rearrange the shape into a hook. The end of the Q-path is the same as the end of the rim-hook, so it defines the row. To find the column, we need to go row boxes down, and then use the rest of the length to go right.
 				let row = q_paths[i][q_paths[i].length - 1][0];
@@ -3943,7 +3982,7 @@ class PlanePartitions extends Applet
 					target_coordinates.push([row, j, target_height]);
 				}
 				
-				await move_cubes(array, q_paths[i], output_array, target_coordinates);
+				await this.move_cubes(array, q_paths[i], output_array, target_coordinates);
 				
 				
 				
@@ -3955,7 +3994,7 @@ class PlanePartitions extends Applet
 					target_coordinates.push([j, col, target_height]);
 				}
 				
-				delete_cubes(output_array, target_coordinates);
+				this.delete_cubes(output_array, target_coordinates);
 				
 				target_coordinates = [];
 				
@@ -3964,31 +4003,31 @@ class PlanePartitions extends Applet
 					target_coordinates.push([row, j, target_height]);
 				}
 				
-				delete_cubes(output_array, target_coordinates);
+				this.delete_cubes(output_array, target_coordinates);
 				
 				
 				
-				await lower_cubes(output_array, [[row, col, target_height]]);
+				await this.lower_cubes(output_array, [[row, col, target_height]]);
 				
 				
 				
 				output_array.numbers[row][col]++;
 				
-				if (in_2d_view)
+				if (this.in_2d_view)
 				{
-					draw_single_cell_2d_view_text(output_array, row, col);
+					this.draw_single_cell_2d_view_text(output_array, row, col);
 				}
 				
-				recalculate_heights(output_array);
+				this.recalculate_heights(output_array);
 				
 				
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+				await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time));
 			}
 			
 			
 			
-			await remove_array(index);
+			await this.remove_array(index);
 			
 			resolve();
 		});	
@@ -3996,11 +4035,11 @@ class PlanePartitions extends Applet
 	
 	
 	
-	function sulzgruber_inverse(index)
+	sulzgruber_inverse(index)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			let array = arrays[index];
+			let array = this.arrays[index];
 			
 			let tableau = array.numbers;
 			
@@ -4095,7 +4134,7 @@ class PlanePartitions extends Applet
 				}
 			}
 			
-			let output_array = await add_new_array(index + 1, empty_array);
+			let output_array = await this.add_new_array(index + 1, empty_array);
 			
 			let plane_partition = output_array.numbers;
 			
@@ -4121,9 +4160,9 @@ class PlanePartitions extends Applet
 						
 						let height = Math.max(array.size + 1, output_array.size + 1);
 						
-						await color_cubes(array, [[i, j, tableau[i][j] - 1]], hue);
+						await this.color_cubes(array, [[i, j, tableau[i][j] - 1]], hue);
 						
-						await raise_cubes(array, [[i, j, tableau[i][j] - 1]], height);
+						await this.raise_cubes(array, [[i, j, tableau[i][j] - 1]], height);
 						
 						
 						
@@ -4133,14 +4172,14 @@ class PlanePartitions extends Applet
 						//Add a bunch of cubes corresponding to the hook that this thing is a part of.
 						for (let k = column_starts[col]; k < row; k++)
 						{
-							array.cubes[k][col][height] = add_cube(array, col, height, k);
-							array.cubes[k][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+							array.cubes[k][col][height] = this.add_cube(array, col, height, k);
+							array.cubes[k][col][height].material.forEach(material => material.color.setHSL(hue, 1, this.cube_lightness));
 						}
 						
 						for (let k = row_starts[row]; k < col; k++)
 						{
-							array.cubes[row][k][height] = add_cube(array, k, height, row);
-							array.cubes[row][k][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+							array.cubes[row][k][height] = this.add_cube(array, k, height, row);
+							array.cubes[row][k][height].material.forEach(material => material.color.setHSL(hue, 1, this.cube_lightness));
 						}
 						
 						
@@ -4152,7 +4191,7 @@ class PlanePartitions extends Applet
 							coordinates.push([k, col, height]);
 						}
 						
-						let promise_1 = reveal_cubes(array, coordinates);
+						let promise_1 = this.reveal_cubes(array, coordinates);
 						
 						coordinates = [];
 						
@@ -4161,7 +4200,7 @@ class PlanePartitions extends Applet
 							coordinates.push([row, k, height]);
 						}
 						
-						let promise_2 = reveal_cubes(array, coordinates);
+						let promise_2 = this.reveal_cubes(array, coordinates);
 						
 						await Promise.all([promise_1, promise_2]);
 						
@@ -4198,14 +4237,14 @@ class PlanePartitions extends Applet
 						
 						tableau[row][col]--;
 						
-						recalculate_heights(array);
+						this.recalculate_heights(array);
 						
-						if (in_2d_view)
+						if (this.in_2d_view)
 						{
-							draw_single_cell_2d_view_text(array, row, col);
+							this.draw_single_cell_2d_view_text(array, row, col);
 						}
 						
-						await move_cubes(array, coordinates, output_array, target_coordinates);
+						await this.move_cubes(array, coordinates, output_array, target_coordinates);
 						
 						
 						
@@ -4243,17 +4282,17 @@ class PlanePartitions extends Applet
 							
 							if (insertion_works)
 							{
-								await lower_cubes(output_array, coordinates);
+								await this.lower_cubes(output_array, coordinates);
 								
 								coordinates.forEach(coordinate => output_array.numbers[coordinate[0]][coordinate[1]]++);
 								
-								recalculate_heights(output_array);
+								this.recalculate_heights(output_array);
 								
-								if (in_2d_view)
+								if (this.in_2d_view)
 								{
 									coordinates.forEach(entry =>
 									{
-										draw_single_cell_2d_view_text(output_array, entry[0], entry[1])
+										this.draw_single_cell_2d_view_text(output_array, entry[0], entry[1])
 									});
 								}
 								
@@ -4279,7 +4318,7 @@ class PlanePartitions extends Applet
 								
 								let new_target_coordinates = target_coordinates.slice(current_index);
 								
-								await move_cubes(output_array, old_target_coordinates, output_array, new_target_coordinates);
+								await this.move_cubes(output_array, old_target_coordinates, output_array, new_target_coordinates);
 								
 								current_height = output_array.numbers[target_coordinates[current_index][0]][target_coordinates[current_index][1]];
 							}
@@ -4296,14 +4335,14 @@ class PlanePartitions extends Applet
 						
 						current_hue_index++;
 						
-						await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+						await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 					}	
 				}
 			}	
 			
 			
 			
-			await remove_array(index);
+			await this.remove_array(index);
 			
 			resolve();
 		});	
@@ -4311,12 +4350,12 @@ class PlanePartitions extends Applet
 	
 	
 	
-	function rsk(index)
+	rsk(index)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			let p_array = arrays[index];
-			let q_array = arrays[index + 1];
+			let p_array = this.arrays[index];
+			let q_array = this.arrays[index + 1];
 			
 			let p_ssyt = p_array.numbers;
 			let q_ssyt = q_array.numbers;
@@ -4332,11 +4371,11 @@ class PlanePartitions extends Applet
 				{
 					if (p_ssyt[i][j] === Infinity || q_ssyt[i][j] === Infinity)
 					{
-						display_error(`The SSYT contain infinite values, which is not allowed in RSK!`);
+						this.display_error(`The SSYT contain infinite values, which is not allowed in RSK!`);
 						
-						currently_running_algorithm = false;
+						this.currently_running_algorithm = false;
 						
-						reject();
+						resolve();
 						return;
 					}
 					
@@ -4355,7 +4394,7 @@ class PlanePartitions extends Applet
 				
 				currently_running_algorithm = false;
 				
-				reject();
+				resolve();
 				return;
 			}
 			
@@ -4373,7 +4412,7 @@ class PlanePartitions extends Applet
 				}
 			}
 			
-			let output_array = await add_new_array(index + 2, empty_array);
+			let output_array = await this.add_new_array(index + 2, empty_array);
 			
 			
 			
@@ -4485,9 +4524,9 @@ class PlanePartitions extends Applet
 				
 				
 				
-				color_cubes(q_array, q_source_coordinates_external.concat([[row, col, q_entry - 1]]), hue);
-				color_cubes(p_array, p_source_coordinates_local, hue);
-				await color_cubes(p_array, p_source_coordinates_external, hue);
+				this.color_cubes(q_array, q_source_coordinates_external.concat([[row, col, q_entry - 1]]), hue);
+				this.color_cubes(p_array, p_source_coordinates_local, hue);
+				await this.color_cubes(p_array, p_source_coordinates_external, hue);
 				
 				
 				
@@ -4501,28 +4540,28 @@ class PlanePartitions extends Applet
 				
 				p_ssyt[row][col] = 0;
 				
-				if (in_2d_view)
+				if (this.in_2d_view)
 				{
-					draw_single_cell_2d_view_text(p_array, row, col);
+					this.draw_single_cell_2d_view_text(p_array, row, col);
 					
 					for (let k = p_coordinate_path.length - 1; k > 0; k--)
 					{
-						draw_single_cell_2d_view_text(p_array, p_coordinate_path[k][0], p_coordinate_path[k][1]);
+						this.draw_single_cell_2d_view_text(p_array, p_coordinate_path[k][0], p_coordinate_path[k][1]);
 					}
 					
-					draw_single_cell_2d_view_text(q_array, row, col);
+					this.draw_single_cell_2d_view_text(q_array, row, col);
 				}
 				
 				
 				
-				move_cubes(q_array, q_source_coordinates_external, output_array, q_target_coordinates_external);
-				move_cubes(p_array, p_source_coordinates_external, output_array, p_target_coordinates_external);
-				move_cubes(p_array, p_source_coordinates_local, p_array, p_target_coordinates_local);
-				await move_cubes(q_array, [[row, col, q_entry - 1]], output_array, [[q_entry - 1, p_entry - 1, height]], false);
+				this.move_cubes(q_array, q_source_coordinates_external, output_array, q_target_coordinates_external);
+				this.move_cubes(p_array, p_source_coordinates_external, output_array, p_target_coordinates_external);
+				this.move_cubes(p_array, p_source_coordinates_local, p_array, p_target_coordinates_local);
+				await this.move_cubes(q_array, [[row, col, q_entry - 1]], output_array, [[q_entry - 1, p_entry - 1, height]], false);
 				
 				
 				
-				uncolor_cubes(p_array, p_target_coordinates_local);
+				this.uncolor_cubes(p_array, p_target_coordinates_local);
 				
 				
 				
@@ -4530,40 +4569,40 @@ class PlanePartitions extends Applet
 				
 				//Gross but necessary. delete_cubes() needs to detach the object from its parent cube group, but what we pass isn't actually its parent, so we have to do it manually.
 				output_array.cube_group.remove(q_array.cubes[row][col][q_entry - 1]);
-				delete_cubes(q_array, [[row, col, q_entry - 1]], true, true);
+				this.delete_cubes(q_array, [[row, col, q_entry - 1]], true, true);
 				
 				p_target_coordinates_external.reverse();
 				q_target_coordinates_external.reverse();
 				
-				delete_cubes(output_array, p_target_coordinates_external.slice(1));
-				delete_cubes(output_array, q_target_coordinates_external);
+				this.delete_cubes(output_array, p_target_coordinates_external.slice(1));
+				this.delete_cubes(output_array, q_target_coordinates_external);
 				
-				await lower_cubes(output_array, [[q_entry - 1, p_entry - 1, height]]);
+				await this.lower_cubes(output_array, [[q_entry - 1, p_entry - 1, height]]);
 				
 				empty_array[q_entry - 1][p_entry - 1]++;
 				
-				if (in_2d_view)
+				if (this.in_2d_view)
 				{
-					draw_single_cell_2d_view_text(output_array, q_entry - 1, p_entry - 1);
+					this.draw_single_cell_2d_view_text(output_array, q_entry - 1, p_entry - 1);
 				}
 				
-				recalculate_heights(output_array);
+				this.recalculate_heights(output_array);
 				
 				
 				
 				hue_index++;
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+				await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 			}
 			
 			
 			
 			
-			await remove_array(index);
+			await this.remove_array(index);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time));
 			
-			await remove_array(index);
+			await this.remove_array(index);
 			
 			resolve();
 		});	
@@ -4571,11 +4610,11 @@ class PlanePartitions extends Applet
 	
 	
 	
-	function rsk_inverse(index)
+	rsk_inverse(index)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			let array = arrays[index];
+			let array = this.arrays[index];
 			
 			let tableau = _.cloneDeep(array.numbers);
 			
@@ -4693,13 +4732,13 @@ class PlanePartitions extends Applet
 				}
 			}
 			
-			let p_array = await add_new_array(index + 1, p_ssyt);
+			let p_array = await this.add_new_array(index + 1, p_ssyt);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 			
-			let q_array = await add_new_array(index + 2, q_ssyt);
+			let q_array = await this.add_new_array(index + 2, q_ssyt);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 			
 			
 			
@@ -4720,30 +4759,30 @@ class PlanePartitions extends Applet
 				//Add a bunch of cubes corresponding to the hook that this thing is a part of.
 				for (let j = col; j >= 0; j--)
 				{
-					array.cubes[row][j][height] = add_cube(array, j, height, row);
-					array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+					array.cubes[row][j][height] = this.add_cube(array, j, height, row);
+					array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, this.cube_lightness));
 				}
 				
 				for (let j = row - 1; j >= 0; j--)
 				{
-					array.cubes[j][col][height] = add_cube(array, col, height, j);
-					array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+					array.cubes[j][col][height] = this.add_cube(array, col, height, j);
+					array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, this.cube_lightness));
 				}
 				
 				//This is the duplicate cube. As usual, we need to store it somewhere else in the array -- here, we're going to place it one space vertically above its actual location.
 				
-				array.cubes[row][col][height + 1] = add_cube(array, col, height, row);
-				array.cubes[row][col][height + 1].material.forEach(material => material.color.setHSL(hue, 1, cube_lightness));
+				array.cubes[row][col][height + 1] = this.add_cube(array, col, height, row);
+				array.cubes[row][col][height + 1].material.forEach(material => material.color.setHSL(hue, 1, this.cube_lightness));
 				
 				
 				
-				await color_cubes(array, [[row, col, array.numbers[row][col] - 1]], hue);
+				await this.color_cubes(array, [[row, col, array.numbers[row][col] - 1]], hue);
 				
-				await raise_cubes(array, [[row, col, array.numbers[row][col] - 1]], height);
+				await this.raise_cubes(array, [[row, col, array.numbers[row][col] - 1]], height);
 				
 				
 				
-				let promise_1 = reveal_cubes(array, [[row, col, height + 1]]);
+				let promise_1 = this.reveal_cubes(array, [[row, col, height + 1]]);
 				
 				let coordinates = [];
 				
@@ -4752,7 +4791,7 @@ class PlanePartitions extends Applet
 					coordinates.push([row, j, height]);
 				}
 				
-				let promise_2 = reveal_cubes(array, coordinates);
+				let promise_2 = this.reveal_cubes(array, coordinates);
 				
 				coordinates = [];
 				
@@ -4761,7 +4800,7 @@ class PlanePartitions extends Applet
 					coordinates.push([j, col, height]);
 				}
 				
-				let promise_3 = reveal_cubes(array, coordinates);
+				let promise_3 = this.reveal_cubes(array, coordinates);
 				
 				await Promise.all([promise_1, promise_2, promise_3]);
 				
@@ -4802,7 +4841,7 @@ class PlanePartitions extends Applet
 					q_target_coordinates_external.push([q_insertion_locations[hue_index][0], q_insertion_locations[hue_index][1], j]);
 				}
 				
-				await color_cubes(p_array, p_source_coordinates_local, hue);
+				await this.color_cubes(p_array, p_source_coordinates_local, hue);
 				
 				
 				
@@ -4816,28 +4855,28 @@ class PlanePartitions extends Applet
 					p_ssyt[path[0][0]][path[0][1]] = 0;
 				}
 				
-				if (in_2d_view)
+				if (this.in_2d_view)
 				{
-					draw_all_2d_view_text();
+					this.draw_all_2d_view_text();
 				}
 				
 				if (p_source_coordinates_local.length !== 0)
 				{
-					await move_cubes(p_array, p_source_coordinates_local, p_array, p_target_coordinates_local);	
+					await this.move_cubes(p_array, p_source_coordinates_local, p_array, p_target_coordinates_local);	
 				}	
 				
 				
 				
 				array.numbers[row][col]--;
 				
-				if (in_2d_view)
+				if (this.in_2d_view)
 				{
-					draw_all_2d_view_text();
+					this.draw_all_2d_view_text();
 				}
 				
-				move_cubes(array, p_source_coordinates_external, p_array, p_target_coordinates_external);
+				this.move_cubes(array, p_source_coordinates_external, p_array, p_target_coordinates_external);
 				
-				await move_cubes(array, q_source_coordinates_external, q_array, q_target_coordinates_external);
+				await this.move_cubes(array, q_source_coordinates_external, q_array, q_target_coordinates_external);
 				
 				
 				
@@ -4845,27 +4884,27 @@ class PlanePartitions extends Applet
 				
 				q_ssyt[q_insertion_locations[hue_index][0]][q_insertion_locations[hue_index][1]] = row + 1;
 				
-				if (in_2d_view)
+				if (this.in_2d_view)
 				{
-					draw_all_2d_view_text();
+					this.draw_all_2d_view_text();
 				}
 				
 				
 				
-				recalculate_heights(array);
-				recalculate_heights(p_array);
-				recalculate_heights(q_array);
+				this.recalculate_heights(array);
+				this.recalculate_heights(p_array);
+				this.recalculate_heights(q_array);
 				
 				
 				
 				hue_index++;
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+				await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 			}
 			
 			
 			
-			await remove_array(index);
+			await this.remove_array(index);
 			
 			resolve();
 		});	
@@ -4873,12 +4912,12 @@ class PlanePartitions extends Applet
 	
 	
 	
-	function godar_1(index)
+	godar_1(index)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
 			//Figure out the shape of nu.
-			let array = arrays[index];
+			let array = this.arrays[index];
 			let plane_partition = array.numbers;
 			
 			let nu_row_lengths = new Array(2 * plane_partition.length);
@@ -4928,7 +4967,7 @@ class PlanePartitions extends Applet
 				{
 					if (plane_partition[i][j] === Infinity)
 					{
-						new_array[i][j] = infinite_height;
+						new_array[i][j] = this.infinite_height;
 					}
 					
 					else
@@ -4938,15 +4977,15 @@ class PlanePartitions extends Applet
 				}
 			}
 			
-			await add_new_array(index + 1, new_array);
+			await this.add_new_array(index + 1, new_array);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 			
-			await remove_array(index);
+			await this.remove_array(index);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 			
-			array = arrays[index];
+			array = this.arrays[index];
 			plane_partition = array.numbers;
 			
 			
@@ -4966,11 +5005,11 @@ class PlanePartitions extends Applet
 			
 			
 			
-			await run_algorithm("pak", index, true);
+			await this.run_algorithm("pak", index, true);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time * 2));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time * 2));
 			
-			array = arrays[index];
+			array = this.arrays[index];
 			plane_partition = array.numbers;
 			
 			
@@ -5012,19 +5051,19 @@ class PlanePartitions extends Applet
 			
 			
 			
-			delete_cubes(array, cubes_to_delete, true, true);
+			this.delete_cubes(array, cubes_to_delete, true, true);
 			
-			await add_new_array(index, finite_array);
+			await this.add_new_array(index, finite_array);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 			
 			
 			
 			//Now we unPak the second array.
 			
-			await run_algorithm("pak_inverse", index, true);
+			await this.run_algorithm("pak_inverse", index, true);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time * 2));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time * 2));
 			
 			
 	
@@ -5102,7 +5141,7 @@ class PlanePartitions extends Applet
 					
 					if (row < plane_partition.length - bottom_leg_size && col < plane_partition.length - right_leg_size)
 					{
-						for (let k = 0; k < arrays[index].numbers[row][col]; k++)
+						for (let k = 0; k < this.arrays[index].numbers[row][col]; k++)
 						{
 							coordinates.push([row, col, k]);
 						}
@@ -5112,7 +5151,7 @@ class PlanePartitions extends Applet
 					{
 						hook_map[row][col] = [1, pp_pivots_by_hook_length[i][j]];
 						
-						if (row < plane_partition.length && col < plane_partition.length && arrays[index].numbers[row][col] > 0)
+						if (row < plane_partition.length && col < plane_partition.length && this.arrays[index].numbers[row][col] > 0)
 						{
 							pp_size = Math.max(Math.max(pp_size, pp_pivots_by_hook_length[i][j][0] + 1), pp_pivots_by_hook_length[i][j][1] + 1);
 						}
@@ -5126,11 +5165,11 @@ class PlanePartitions extends Applet
 				
 				if (coordinates.length !== 0)
 				{
-					color_cubes(arrays[index], coordinates, (i - 1) / (max_app_hook_length - 1) * 6/7);
+					this.color_cubes(this.arrays[index], coordinates, (i - 1) / (max_app_hook_length - 1) * 6/7);
 				}
 			}
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time * 3));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time * 3));
 			
 			
 			
@@ -5158,9 +5197,9 @@ class PlanePartitions extends Applet
 			
 			if (rpp_size > 0)
 			{
-				rpp_array = await add_new_array(index + 1, rpp);
+				rpp_array = await this.add_new_array(index + 1, rpp);
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+				await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 			}
 			
 			
@@ -5177,7 +5216,7 @@ class PlanePartitions extends Applet
 				}
 			}
 			
-			let pp_array = await add_new_array(index + 2, pp);
+			let pp_array = await this.add_new_array(index + 2, pp);
 			
 			
 			
@@ -5185,7 +5224,7 @@ class PlanePartitions extends Applet
 			{
 				for (let j = nu_row_lengths[i]; j < plane_partition.length - right_leg_size; j++)
 				{
-					if (arrays[index].numbers[i][j] > 0)
+					if (this.arrays[index].numbers[i][j] > 0)
 					{
 						let source_coordinates = [];
 						let target_coordinates = [];
@@ -5193,7 +5232,7 @@ class PlanePartitions extends Applet
 						let target_row = hook_map[i][j][1][0];
 						let target_col = hook_map[i][j][1][1];
 						
-						for (let k = 0; k < arrays[index].numbers[i][j]; k++)
+						for (let k = 0; k < this.arrays[index].numbers[i][j]; k++)
 						{
 							source_coordinates.push([i, j, k]);
 							target_coordinates.push([target_row, target_col, k]);
@@ -5201,23 +5240,23 @@ class PlanePartitions extends Applet
 						
 						if (hook_map[i][j][0] === 0)
 						{
-							await move_cubes(arrays[index], source_coordinates, rpp_array, target_coordinates);
+							await this.move_cubes(this.arrays[index], source_coordinates, rpp_array, target_coordinates);
 							
-							rpp[target_row][target_col] = arrays[index].numbers[i][j];
-							arrays[index].numbers[i][j] = 0;
+							rpp[target_row][target_col] = this.arrays[index].numbers[i][j];
+							this.arrays[index].numbers[i][j] = 0;
 						}
 						
 						else
 						{
-							await move_cubes(arrays[index], source_coordinates, pp_array, target_coordinates);
+							await this.move_cubes(this.arrays[index], source_coordinates, pp_array, target_coordinates);
 							
-							pp[target_row][target_col] = arrays[index].numbers[i][j];
-							arrays[index].numbers[i][j] = 0;
+							pp[target_row][target_col] = this.arrays[index].numbers[i][j];
+							this.arrays[index].numbers[i][j] = 0;
 						}
 						
-						if (in_2d_view)
+						if (this.in_2d_view)
 						{
-							draw_all_2d_view_text();
+							this.draw_all_2d_view_text();
 						}
 					}	
 				}
@@ -5225,31 +5264,31 @@ class PlanePartitions extends Applet
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time * 3));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time * 3));
 			
 			//Now it's time for the palindromic toggle.
 			
-			await run_algorithm("pak_inverse", index, true);
+			await this.run_algorithm("pak_inverse", index, true);
 				
 			if (rpp_size > 0)
 			{
-				await run_algorithm("hillman_grassl_inverse", index + 1, true);
+				await this.run_algorithm("hillman_grassl_inverse", index + 1, true);
 			}	
 			
-			resolve();
+			this.resolve();
 		});	
 	}
 	
 	
 	
-	function godar_1_inverse(index)
+	godar_1_inverse(index)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			let pp_array = arrays[index + 1];
+			let pp_array = this.arrays[index + 1];
 			let pp = pp_array.numbers;
 			
-			let rpp_array = arrays[index];
+			let rpp_array = this.arrays[index];
 			let rpp = rpp_array.numbers;
 			
 			let nu_row_lengths = new Array(pp.length + 2 * rpp.length);
@@ -5287,22 +5326,22 @@ class PlanePartitions extends Applet
 			
 			
 			
-			await run_algorithm("hillman_grassl", index, true);
+			await this.run_algorithm("pak", index, true);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 			
-			await run_algorithm("hillman_grassl", index + 1, true);
+			await this.run_algorithm("pak", index + 1, true);
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time * 3));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time * 3));
 			
 			
 			
 			//Uncolor everything.
 			let coordinates = [];
 			
-			let numbers = arrays[index].numbers;
+			let numbers = this.arrays[index].numbers;
 			
 			for (let i = 0; i < numbers.length; i++)
 			{
@@ -5318,13 +5357,13 @@ class PlanePartitions extends Applet
 				}
 			}
 			
-			uncolor_cubes(arrays[index], coordinates);
+			this.uncolor_cubes(this.arrays[index], coordinates);
 			
 			
 			
 			coordinates = [];
 			
-			numbers = arrays[index + 1].numbers;
+			numbers = this.arrays[index + 1].numbers;
 			
 			for (let i = 0; i < numbers.length; i++)
 			{
@@ -5340,7 +5379,7 @@ class PlanePartitions extends Applet
 				}
 			}
 			
-			await uncolor_cubes(arrays[index + 1], coordinates);
+			await this.uncolor_cubes(arrays[index + 1], coordinates);
 			
 			
 			
@@ -5447,7 +5486,7 @@ class PlanePartitions extends Applet
 					
 					rpp_hook_map[row][col] = app_pivots_by_hook_length[i][j + pp_pivots_by_hook_length[i].length];
 					
-					if (arrays[index].numbers[row][col] !== 0)
+					if (this.arrays[index].numbers[row][col] !== 0)
 					{
 						app_size = Math.max(Math.max(app_size, rpp_hook_map[row][col][0] + 1), rpp_hook_map[row][col][1] + 1);
 					}
@@ -5455,7 +5494,7 @@ class PlanePartitions extends Applet
 				
 				if (coordinates.length !== 0)
 				{
-					color_cubes(arrays[index], coordinates, (i - 1) / (max_rpp_hook_length - 1) * 6/7);
+					this.color_cubes(this.arrays[index], coordinates, (i - 1) / (max_rpp_hook_length - 1) * 6/7);
 				}
 			}
 			
@@ -5482,7 +5521,7 @@ class PlanePartitions extends Applet
 					
 					pp_hook_map[row][col] = app_pivots_by_hook_length[i][j];
 					
-					if (arrays[index + 1].numbers[row][col] !== 0)
+					if (this.arrays[index + 1].numbers[row][col] !== 0)
 					{
 						app_size = Math.max(Math.max(app_size, pp_hook_map[row][col][0] + 1), pp_hook_map[row][col][1] + 1);
 					}
@@ -5490,13 +5529,13 @@ class PlanePartitions extends Applet
 				
 				if (coordinates.length !== 0)
 				{
-					color_cubes(arrays[index + 1], coordinates, (i - 1) / (max_pp_hook_length - 1) * 6/7);
+					this.color_cubes(this.arrays[index + 1], coordinates, (i - 1) / (max_pp_hook_length - 1) * 6/7);
 				}
 			}
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time * 3));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time * 3));
 			
 			
 			
@@ -5520,9 +5559,9 @@ class PlanePartitions extends Applet
 				}
 			}
 			
-			let app_array = await add_new_array(index + 2, app);
+			let app_array = await this.add_new_array(index + 2, app);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 			
 			
 			
@@ -5530,7 +5569,7 @@ class PlanePartitions extends Applet
 			{
 				for (let j = 0; j < rpp.length; j++)
 				{
-					if (arrays[index].numbers[i][j] > 0 && arrays[index].numbers[i][j] !== Infinity)
+					if (arrays[index].numbers[i][j] > 0 && this.arrays[index].numbers[i][j] !== Infinity)
 					{
 						let source_coordinates = [];
 						let target_coordinates = [];
@@ -5538,23 +5577,23 @@ class PlanePartitions extends Applet
 						let target_row = rpp_hook_map[i][j][0];
 						let target_col = rpp_hook_map[i][j][1];
 						
-						for (let k = 0; k < arrays[index].numbers[i][j]; k++)
+						for (let k = 0; k < this.arrays[index].numbers[i][j]; k++)
 						{
 							source_coordinates.push([i, j, k]);
 							target_coordinates.push([target_row, target_col, k]);
 						}
 						
-						await move_cubes(arrays[index], source_coordinates, app_array, target_coordinates);
+						await this.move_cubes(this.arrays[index], source_coordinates, app_array, target_coordinates);
 						
-						app[target_row][target_col] = arrays[index].numbers[i][j];
+						app[target_row][target_col] = this.arrays[index].numbers[i][j];
 						
-						arrays[index].numbers[i][j] = 0;
+						this.arrays[index].numbers[i][j] = 0;
 						
 						
 						
-						if (in_2d_view)
+						if (this.in_2d_view)
 						{
-							draw_all_2d_view_text();
+							this.draw_all_2d_view_text();
 						}
 					}	
 				}
@@ -5566,7 +5605,7 @@ class PlanePartitions extends Applet
 			{
 				for (let j = 0; j < pp.length; j++)
 				{
-					if (arrays[index + 1].numbers[i][j] > 0 && arrays[index + 1].numbers[i][j] !== Infinity)
+					if (this.arrays[index + 1].numbers[i][j] > 0 && arrays[index + 1].numbers[i][j] !== Infinity)
 					{
 						let source_coordinates = [];
 						let target_coordinates = [];
@@ -5574,7 +5613,7 @@ class PlanePartitions extends Applet
 						let target_row = pp_hook_map[i][j][0];
 						let target_col = pp_hook_map[i][j][1];
 						
-						for (let k = 0; k < arrays[index + 1].numbers[i][j]; k++)
+						for (let k = 0; k < this.arrays[index + 1].numbers[i][j]; k++)
 						{
 							source_coordinates.push([i, j, k]);
 							target_coordinates.push([target_row, target_col, k]);
@@ -5582,16 +5621,16 @@ class PlanePartitions extends Applet
 						
 						
 						
-						await move_cubes(arrays[index + 1], source_coordinates, app_array, target_coordinates);
+						await this.move_cubes(this.arrays[index + 1], source_coordinates, app_array, target_coordinates);
 						
-						app[target_row][target_col] = arrays[index + 1].numbers[i][j];
-						arrays[index + 1].numbers[i][j] = 0;
+						app[target_row][target_col] = this.arrays[index + 1].numbers[i][j];
+						this.arrays[index + 1].numbers[i][j] = 0;
 						
 						
 						
-						if (in_2d_view)
+						if (this.in_2d_view)
 						{
-							draw_all_2d_view_text();
+							this.draw_all_2d_view_text();
 						}
 					}	
 				}
@@ -5599,21 +5638,21 @@ class PlanePartitions extends Applet
 			
 			
 			
-			await remove_array(index);
+			await this.remove_array(index);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time / 2));
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time / 2));
 			
-			await remove_array(index);
-			
-			
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time * 3));
+			await this.remove_array(index);
 			
 			
 			
-			await run_algorithm("hillman_grassl_inverse", index, true);
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time * 3));
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, animation_time));
+			
+			
+			await this.run_algorithm("pak_inverse", index, true);
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animation_time));
 			
 			
 			
@@ -5624,25 +5663,25 @@ class PlanePartitions extends Applet
 	
 	
 	//A demonstration of the n-quotient, not currently public-facing in the applet. It uses the numbers canvas to draw the appropriate edges and move them around. To call this function, the canvas should be in 2d mode but the numbers should be gone.
-	function draw_boundary(index, n)
+	draw_boundary(index, n)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			if (!in_2d_view)
+			if (!this.in_2d_view)
 			{
-				await show_2d_view();
+				await this.show_2d_view();
 			}
 			
-			if (numbers_canvas_container_element.style.opacity !== "0")
+			if (this.wilson_numbers.canvas.style.opacity !== "0")
 			{
-				await Page.Animate.change_opacity(numbers_canvas_container_element, 0, animation_time / 3);
+				await Page.Animate.change_opacity(this.wilson_numbers.canvas, 0, this.animation_time / 3);
 			}
 			
-			wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+			this.wilson_numbers.ctx.clearRect(0, 0, this.wilson_numbers.canvas_width, this.wilson_numbers.canvas_height);
 			
 			
 			
-			let array = arrays[index];
+			let array = this.arrays[index];
 			let plane_partition = array.numbers;
 			
 			let rects = [];
@@ -5660,7 +5699,7 @@ class PlanePartitions extends Applet
 					{
 						let h = (hue_index % n) / n;
 						
-						let rgb = wilson.utils.hsv_to_rgb(h, 1, 1);
+						let rgb = this.wilson.utils.hsv_to_rgb(h, 1, 1);
 						
 						rects.push([i, j, true, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
 						
@@ -5673,7 +5712,7 @@ class PlanePartitions extends Applet
 				//Add a vertical edge.
 				let h = (hue_index % n) / n;
 				
-				let rgb = wilson.utils.hsv_to_rgb(h, 1, 1);
+				let rgb = this.wilson.utils.hsv_to_rgb(h, 1, 1);
 				
 				rects.push([i, j, false, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
 				
@@ -5689,7 +5728,7 @@ class PlanePartitions extends Applet
 				{
 					let h = (hue_index % n) / n;
 					
-					let rgb = wilson.utils.hsv_to_rgb(h, 1, 1);
+					let rgb = this.wilson.utils.hsv_to_rgb(h, 1, 1);
 					
 					rects.push([i, j, true, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
 					
@@ -5701,14 +5740,14 @@ class PlanePartitions extends Applet
 			
 			rects.forEach(rect =>
 			{
-				draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} 1)`);
+				this.draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} 1)`);
 			});
 			
 			
 			
-			await Page.Animate.change_opacity(numbers_canvas_container_element, 1, animation_time / 3);
+			await Page.Animate.change_opacity(this.wilson_numbers.canvas, 1, this.animation_time / 3);
 			
-			wilson_numbers.ctx.fillStyle = "rgb(255, 255, 255)";
+			this.wilson_numbers.ctx.fillStyle = "rgb(255, 255, 255)";
 			
 			resolve(rects);
 		});
@@ -5716,11 +5755,11 @@ class PlanePartitions extends Applet
 	
 	
 	
-	function draw_n_quotient(index, n, m, rects)
+	draw_n_quotient(index, n, m, rects)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			let array = arrays[index];
+			let array = this.arrays[index];
 			
 			//Fade out the ones we don't care about.
 			
@@ -5731,18 +5770,18 @@ class PlanePartitions extends Applet
 				anime({
 					targets: dummy,
 					t: 0,
-					duration: animation_time,
+					duration: this.animation_time,
 					easing: "easeOutQuad",
 					
 					complete: () => 
 					{
-						wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+						this.wilson_numbers.ctx.clearRect(0, 0, this.wilson_numbers.canvas_width, this.wilson_numbers.canvas_height);
 						
 						rects.forEach((rect, index) =>
 						{
 							let opacity = index % n === m ? 1 : 0;
 							
-							draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
+							this.draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
 						});
 						
 						resolve();
@@ -5750,13 +5789,13 @@ class PlanePartitions extends Applet
 					
 					update: () => 
 					{
-						wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+						this.wilson_numbers.ctx.clearRect(0, 0, this.wilson_numbers.canvas_width, this.wilson_numbers.canvas_height);
 						
 						rects.forEach((rect, index) =>
 						{
 							let opacity = index % n === m ? 1 : dummy.t;
 							
-							draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
+							this.draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
 						});
 					}
 				});
@@ -5800,16 +5839,16 @@ class PlanePartitions extends Applet
 				anime({
 					targets: dummy,
 					t: 1,
-					duration: animation_time,
+					duration: this.animation_time,
 					easing: "easeInOutQuad",
 					
 					complete: () =>
 					{
-						wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+						this.wilson_numbers.ctx.clearRect(0, 0, this.wilson_numbers.canvas_width, this.wilson_numbers.canvas_height);
 						
 						rects.forEach((rect, index) =>
 						{
-							draw_boundary_rect(array, target_rects[index][0], target_rects[index][1], rect[2], `${rect[3]} 1)`);
+							this.draw_boundary_rect(array, target_rects[index][0], target_rects[index][1], rect[2], `${rect[3]} 1)`);
 						});
 						
 						resolve();
@@ -5817,11 +5856,11 @@ class PlanePartitions extends Applet
 					
 					update: () => 
 					{
-						wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+						this.wilson_numbers.ctx.clearRect(0, 0, this.wilson_numbers.canvas_width, this.wilson_numbers.canvas_height);
 						
 						rects.forEach((rect, index) =>
 						{
-							draw_boundary_rect(array, (1 - dummy.t) * rect[0] + dummy.t * target_rects[index][0], (1 - dummy.t) * rect[1] + dummy.t * target_rects[index][1], rect[2], `${rect[3]} 1)`);
+							this.draw_boundary_rect(array, (1 - dummy.t) * rect[0] + dummy.t * target_rects[index][0], (1 - dummy.t) * rect[1] + dummy.t * target_rects[index][1], rect[2], `${rect[3]} 1)`);
 						});
 					}
 				});
@@ -5841,7 +5880,7 @@ class PlanePartitions extends Applet
 					{
 						if (array.numbers[rect[0]][j] === Infinity)
 						{
-							for (let k = 0; k < infinite_height; k++)
+							for (let k = 0; k < this.infinite_height; k++)
 							{
 								cubes_to_delete.push([rect[0], j, k]);
 							}
@@ -5850,7 +5889,7 @@ class PlanePartitions extends Applet
 				}
 			});
 			
-			delete_cubes(array, cubes_to_delete, true);
+			this.delete_cubes(array, cubes_to_delete, true);
 			
 			
 			
@@ -5874,21 +5913,21 @@ class PlanePartitions extends Applet
 				anime({
 					targets: dummy,
 					t: 1,
-					duration: animation_time / 2,
+					duration: this.animation_time / 2,
 					easing: "easeInQuad",
 					
 					complete: () =>
 					{
-						wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+						this.wilson_numbers.ctx.clearRect(0, 0, this.wilson_numbers.canvas_width, this.wilson_numbers.canvas_height);
 						
 						rects.forEach((rect, index) =>
 						{
-							draw_boundary_rect(array, target_rects[index][0], target_rects[index][1], rect[2], `${rect[3]} 1)`);
+							this.draw_boundary_rect(array, target_rects[index][0], target_rects[index][1], rect[2], `${rect[3]} 1)`);
 						});
 						
 						bonus_rects.forEach((rect, index) =>
 						{
-							draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rects[0][3]} 1)`);
+							this.draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rects[0][3]} 1)`);
 						});
 						
 						resolve();
@@ -5896,23 +5935,23 @@ class PlanePartitions extends Applet
 					
 					update: () => 
 					{
-						wilson_numbers.ctx.clearRect(0, 0, wilson_numbers.canvas_width, wilson_numbers.canvas_height);
+						this.wilson_numbers.ctx.clearRect(0, 0, this.wilson_numbers.canvas_width, this.wilson_numbers.canvas_height);
 						
 						rects.forEach((rect, index) =>
 						{
-							draw_boundary_rect(array, target_rects[index][0], target_rects[index][1], rect[2], `${rect[3]} 1)`);
+							this.draw_boundary_rect(array, target_rects[index][0], target_rects[index][1], rect[2], `${rect[3]} 1)`);
 						});
 						
 						bonus_rects.forEach((rect, index) =>
 						{
-							draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rects[0][3]} ${dummy.t})`);
+							this.draw_boundary_rect(array, rect[0], rect[1], rect[2], `${rects[0][3]} ${dummy.t})`);
 						});
 					}
 				});
 			});
 			
 			
-			wilson_numbers.ctx.fillStyle = "rgb(255, 255, 255)";
+			this.wilson_numbers.ctx.fillStyle = "rgb(255, 255, 255)";
 			
 			resolve();
 		});
@@ -5920,22 +5959,21 @@ class PlanePartitions extends Applet
 	
 	
 	
-	function draw_boundary_rect(array, i, j, horizontal, rgba)
+	draw_boundary_rect(array, i, j, horizontal, rgba)
 	{
-		let top = (total_array_footprint - array.footprint - 1) / 2;
+		let top = (this.total_array_footprint - array.footprint - 1) / 2;
 		let left = array.partial_footprint_sum - array.footprint;
 		
-		wilson_numbers.ctx.fillStyle = rgba;
+		this.wilson_numbers.ctx.fillStyle = rgba;
 		
 		if (horizontal)
 		{
-			wilson_numbers.ctx.fillRect(wilson_numbers.canvas_width * (j + left + 1) / (total_array_footprint + 1), wilson_numbers.canvas_height * (i + top + 1 + 15/16) / (total_array_footprint + 1) + 1, wilson_numbers.canvas_width / (total_array_footprint + 1), wilson_numbers.canvas_height * (1/16) / (total_array_footprint + 1));
+			this.wilson_numbers.ctx.fillRect(this.wilson_numbers.canvas_width * (j + left + 1) / (this.total_array_footprint + 1), this.wilson_numbers.canvas_height * (i + top + 1 + 15/16) / (this.total_array_footprint + 1) + 1, this.wilson_numbers.canvas_width / (this.total_array_footprint + 1), this.wilson_numbers.canvas_height * (1/16) / (this.total_array_footprint + 1));
 		}
 		
 		else
 		{
-			wilson_numbers.ctx.fillRect(wilson_numbers.canvas_width * (j + left + 15/16) / (total_array_footprint + 1), wilson_numbers.canvas_height * (i + top + 1) / (total_array_footprint + 1) + 1, wilson_numbers.canvas_width * (1/16) / (total_array_footprint + 1), wilson_numbers.canvas_height / (total_array_footprint + 1));
+			this.wilson_numbers.ctx.fillRect(this.wilson_numbers.canvas_width * (j + left + 15/16) / (this.total_array_footprint + 1), this.wilson_numbers.canvas_height * (i + top + 1) / (this.total_array_footprint + 1) + 1, this.wilson_numbers.canvas_width * (1/16) / (this.total_array_footprint + 1), this.wilson_numbers.canvas_height / (this.total_array_footprint + 1));
 		}
 	}
-	*/
 }

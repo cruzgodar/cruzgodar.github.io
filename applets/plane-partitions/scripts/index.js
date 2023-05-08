@@ -6,123 +6,109 @@
 	
 	const applet = new PlanePartitions(Page.element.querySelector("#output-canvas"), Page.element.querySelector("#numbers-canvas"));
 	
-	applet.load_promise.then(() =>
+	applet.load_promise.then(async () =>
 	{
-		applet.add_new_array(0, applet.generate_random_plane_partition());
+		const plane_partition = applet.generate_random_plane_partition();
+		array_data_textarea_element.value = applet.array_to_ascii(plane_partition);
+		await applet.add_new_array(0, plane_partition);
 	});
 	
-	Page.show();
-}()
-	/*
+	const section_names = ["view-controls", "add-array", "edit-array", "remove-array", "algorithms"];
 	
-
-
-
-const section_names = ["view-controls", "add-array", "edit-array", "remove-array", "algorithms"];
-
-const section_elements = 
-{
-	"view-controls": document.body.querySelectorAll(".view-controls-section"),
-	"add-array": document.body.querySelectorAll(".add-array-section"),
-	"edit-array": document.body.querySelectorAll(".edit-array-section"),
-	"remove-array": document.body.querySelectorAll(".remove-array-section"),
-	"algorithms": document.body.querySelectorAll(".algorithms-section"),
-	"examples": document.body.querySelectorAll(".examples-section")
-}
-
-const category_holder_element = document.body.querySelector("#category-holder");
-const canvas_landscape_left_element = document.body.querySelector("#canvas-landscape-left");
-
-let visible_section = "view-controls";
-
-section_names.forEach(section_name =>
-{
-	if (section_name !== visible_section)
+	const section_elements = 
 	{
-		section_elements[section_name].forEach(element =>
+		"view-controls": Page.element.querySelectorAll(".view-controls-section"),
+		"add-array": Page.element.querySelectorAll(".add-array-section"),
+		"edit-array": Page.element.querySelectorAll(".edit-array-section"),
+		"remove-array": Page.element.querySelectorAll(".remove-array-section"),
+		"algorithms": Page.element.querySelectorAll(".algorithms-section"),
+		"examples": Page.element.querySelectorAll(".examples-section")
+	}
+	
+	const category_holder_element = Page.element.querySelector("#category-holder");
+	const canvas_landscape_left_element = Page.element.querySelector("#canvas-landscape-left");
+	
+	let visible_section = "view-controls";
+	
+	section_names.forEach(section_name =>
+	{
+		if (section_name !== visible_section)
 		{
-			element.style.opacity = 0;
-		});
-	}	
-});
-
-section_elements[visible_section].forEach(element => canvas_landscape_left_element.appendChild(element));
-
-
-
-if (APPLET_VERSION)
-{
+			section_elements[section_name].forEach(element =>
+			{
+				element.style.opacity = 0;
+			});
+		}	
+	});
+	
+	section_elements[visible_section].forEach(element => canvas_landscape_left_element.appendChild(element));
+	
+	
+	
 	Page.Load.TextButtons.equalize();
 	setTimeout(Page.Load.TextButtons.equalize, 10);
-}
-
-
-
-if (Page.Layout.aspect_ratio > 1)
-{
-	Page.Layout.AppletColumns.equalize();
-}
-
-
-
-let category_selector_dropdown_element = document.body.querySelector("#category-selector-dropdown");
-
-let resolution_input_element = document.body.querySelector("#resolution-input");
-
-let show_dimers_button_element = document.body.querySelector("#show-dimers-button");
-
-let switch_view_button_element = document.body.querySelector("#switch-view-button");
-
-let maximum_speed_checkbox_element = document.body.querySelector("#maximum-speed-checkbox");
-
-let array_data_textarea_element = document.body.querySelector("#array-data-textarea");
-
-let add_array_button_element = document.body.querySelector("#add-array-button");
-
-let edit_array_textarea_element = document.body.querySelector("#edit-array-textarea");
 	
-let edit_array_index_input_element = document.body.querySelector("#edit-array-index-input");
-
-let edit_array_button_element = document.body.querySelector("#edit-array-button");
-
-let remove_array_index_input_element = document.body.querySelector("#remove-array-index-input");
-
-let remove_array_button_element = document.body.querySelector("#remove-array-button");
-
-let algorithm_index_input_element = document.body.querySelector("#algorithm-index-input");
-
-let hillman_grassl_button_element = document.body.querySelector("#hillman-grassl-button");
-
-let hillman_grassl_inverse_button_element = document.body.querySelector("#hillman-grassl-inverse-button");
-
-let pak_button_element = document.body.querySelector("#pak-button");
-
-let pak_inverse_button_element = document.body.querySelector("#pak-inverse-button");
-
-let sulzgruber_button_element = document.body.querySelector("#sulzgruber-button");
-
-let sulzgruber_inverse_button_element = document.body.querySelector("#sulzgruber-inverse-button");
-
-let rsk_button_element = document.body.querySelector("#rsk-button");
-
-let rsk_inverse_button_element = document.body.querySelector("#rsk-inverse-button");
-
-let godar_1_button_element = document.body.querySelector("#godar-1-button");
-
-let godar_1_inverse_button_element = document.body.querySelector("#godar-1-inverse-button");
-
-let example_1_button_element = document.body.querySelector("#example-1-button");
-
-let example_2_button_element = document.body.querySelector("#example-2-button");
-
-let example_3_button_element = document.body.querySelector("#example-3-button");
-
-let need_download = false;
-
-let download_button_element = document.body.querySelector("#download-button");
-
-
-
+	
+	
+	if (Page.Layout.aspect_ratio > 1)
+	{
+		Page.Layout.AppletColumns.equalize();
+	}
+	
+	
+	
+	const category_selector_dropdown_element = Page.element.querySelector("#category-selector-dropdown");
+	
+	const resolution_input_element = Page.element.querySelector("#resolution-input");
+	
+	const show_dimers_button_element = Page.element.querySelector("#show-dimers-button");
+	
+	const switch_view_button_element = Page.element.querySelector("#switch-view-button");
+	
+	const maximum_speed_checkbox_element = Page.element.querySelector("#maximum-speed-checkbox");
+	
+	const array_data_textarea_element = Page.element.querySelector("#array-data-textarea");
+	
+	const add_array_button_element = Page.element.querySelector("#add-array-button");
+	
+	const edit_array_textarea_element = Page.element.querySelector("#edit-array-textarea");
+		
+	const edit_array_index_input_element = Page.element.querySelector("#edit-array-index-input");
+	
+	const edit_array_button_element = Page.element.querySelector("#edit-array-button");
+	
+	const remove_array_index_input_element = Page.element.querySelector("#remove-array-index-input");
+	
+	const remove_array_button_element = Page.element.querySelector("#remove-array-button");
+	
+	const algorithm_index_input_element = Page.element.querySelector("#algorithm-index-input");
+	
+	const hillman_grassl_button_element = Page.element.querySelector("#hillman-grassl-button");
+	
+	const hillman_grassl_inverse_button_element = Page.element.querySelector("#hillman-grassl-inverse-button");
+	
+	const pak_button_element = Page.element.querySelector("#pak-button");
+	
+	const pak_inverse_button_element = Page.element.querySelector("#pak-inverse-button");
+	
+	const sulzgruber_button_element = Page.element.querySelector("#sulzgruber-button");
+	
+	const sulzgruber_inverse_button_element = Page.element.querySelector("#sulzgruber-inverse-button");
+	
+	const rsk_button_element = Page.element.querySelector("#rsk-button");
+	
+	const rsk_inverse_button_element = Page.element.querySelector("#rsk-inverse-button");
+	
+	const example_1_button_element = Page.element.querySelector("#example-1-button");
+	
+	const example_2_button_element = Page.element.querySelector("#example-2-button");
+	
+	const example_3_button_element = Page.element.querySelector("#example-3-button");
+	
+	const download_button_element = Page.element.querySelector("#download-button");
+	
+	
+	
 	category_selector_dropdown_element.addEventListener("input", async () =>
 	{
 		await Promise.all(Array.from(section_elements[visible_section]).map(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time)));
@@ -148,9 +134,9 @@ let download_button_element = document.body.querySelector("#download-button");
 		{
 			let index = parseInt(edit_array_index_input_element.value || 0);
 		
-			if (index < arrays.length && index >= 0)
+			if (index < applet.arrays.length && index >= 0)
 			{
-				edit_array_textarea_element.value = array_to_ascii(arrays[index].numbers);
+				edit_array_textarea_element.value = applet.array_to_ascii(applet.arrays[index].numbers);
 			}
 		}
 		
@@ -161,23 +147,23 @@ let download_button_element = document.body.querySelector("#download-button");
 	
 	resolution_input_element.addEventListener("input", () =>
 	{
-		resolution = parseInt(resolution_input_element.value || 2000);
+		applet.resolution = parseInt(resolution_input_element.value || 2000);
 		
-		renderer.setSize(resolution, resolution, false);
+		applet.renderer.setSize(applet.resolution, applet.resolution, false);
 	});
 	
 	
 	
 	show_dimers_button_element.addEventListener("click", () =>
 	{
-		if (dimers_shown)
+		if (applet.dimers_shown)
 		{
-			hide_dimers();
+			applet.hide_dimers();
 		}
 		
 		else
 		{
-			show_dimers();
+			applet.show_dimers();
 		}
 	});
 	
@@ -185,14 +171,14 @@ let download_button_element = document.body.querySelector("#download-button");
 	
 	switch_view_button_element.addEventListener("click", () =>
 	{
-		if (in_2d_view)
+		if (applet.in_2d_view)
 		{
-			show_hex_view();
+			applet.show_hex_view();
 		}
 		
 		else
 		{
-			show_2d_view();
+			applet.show_2d_view();
 		}
 	});
 	
@@ -200,77 +186,75 @@ let download_button_element = document.body.querySelector("#download-button");
 	
 	maximum_speed_checkbox_element.addEventListener("input", () =>
 	{
-		animation_time = maximum_speed_checkbox_element.checked ? 60 : 600;
+		applet.animation_time = maximum_speed_checkbox_element.checked ? 60 : 600;
 	});
-	
-	
-	
-	array_data_textarea_element.value = generate_random_plane_partition();
 	
 	
 	
 	add_array_button_element.addEventListener("click", () =>
 	{
-		add_new_array(arrays.length, parse_array(array_data_textarea_element.value));
+		applet.add_new_array(applet.arrays.length, applet.parse_array(array_data_textarea_element.value));
 	});
 	
 	
 	
 	edit_array_index_input_element.addEventListener("input", () =>
 	{
-		let index = parseInt(edit_array_index_input_element.value || 0);
+		const index = parseInt(edit_array_index_input_element.value || 0);
 		
-		if (index >= arrays.length || index < 0)
+		if (index >= applet.arrays.length || index < 0)
 		{
 			return;
 		}
 		
-		edit_array_textarea_element.value = array_to_ascii(arrays[index].numbers);
+		applet.edit_array_textarea_element.value = applet.array_to_ascii(applet.arrays[index].numbers);
 	});
 	
 	
 	
-	edit_array_button_element.addEventListener("click", edit_array);
+	edit_array_button_element.addEventListener("click", async () =>
+	{
+		const index = parseInt(edit_array_index_input_element.value || 0);
+		
+		await applet.edit_array(index, applet.parse_array(edit_array_textarea_element.value));
+		
+		edit_array_textarea_element.value = applet.array_to_ascii(applet.arrays[index].numbers);
+	});
 	
 	
 	
 	remove_array_button_element.addEventListener("click", () =>
 	{
-		remove_array(parseInt(remove_array_index_input_element.value));
+		applet.remove_array(parseInt(remove_array_index_input_element.value));
 	});
 	
 	
 	
-	hillman_grassl_button_element.addEventListener("click", () => run_algorithm("hillman_grassl"));
+	hillman_grassl_button_element.addEventListener("click", () => applet.run_algorithm("hillman_grassl", parseInt(algorithm_index_input_element.value)));
 	
-	hillman_grassl_inverse_button_element.addEventListener("click", () => run_algorithm("hillman_grassl_inverse"));
+	hillman_grassl_inverse_button_element.addEventListener("click", () => applet.run_algorithm("hillman_grassl_inverse", parseInt(algorithm_index_input_element.value)));
 	
-	pak_button_element.addEventListener("click", () => run_algorithm("pak"));
+	pak_button_element.addEventListener("click", () => applet.run_algorithm("pak", parseInt(algorithm_index_input_element.value)));
 	
-	pak_inverse_button_element.addEventListener("click", () => run_algorithm("pak_inverse"));
+	pak_inverse_button_element.addEventListener("click", () => applet.run_algorithm("pak_inverse", parseInt(algorithm_index_input_element.value)));
 	
-	sulzgruber_button_element.addEventListener("click", () => run_algorithm("sulzgruber"));
+	sulzgruber_button_element.addEventListener("click", () => applet.run_algorithm("sulzgruber", parseInt(algorithm_index_input_element.value)));
 	
-	sulzgruber_inverse_button_element.addEventListener("click", () => run_algorithm("sulzgruber_inverse"));
+	sulzgruber_inverse_button_element.addEventListener("click", () => applet.run_algorithm("sulzgruber_inverse", parseInt(algorithm_index_input_element.value)));
 	
-	rsk_button_element.addEventListener("click", () => run_algorithm("rsk"));
+	rsk_button_element.addEventListener("click", () => applet.run_algorithm("rsk", parseInt(algorithm_index_input_element.value)));
 	
-	rsk_inverse_button_element.addEventListener("click", () => run_algorithm("rsk_inverse"));
+	rsk_inverse_button_element.addEventListener("click", () => applet.run_algorithm("rsk_inverse", parseInt(algorithm_index_input_element.value)));
 	
-	godar_1_button_element.addEventListener("click", () => run_algorithm("godar_1"));
+	example_1_button_element.addEventListener("click", () => applet.run_example(1));
 	
-	godar_1_inverse_button_element.addEventListener("click", () => run_algorithm("godar_1_inverse"));
+	example_2_button_element.addEventListener("click", () => applet.run_example(2));
 	
-	example_1_button_element.addEventListener("click", () => run_example(1));
+	example_3_button_element.addEventListener("click", () => applet.run_example(3));
 	
-	example_2_button_element.addEventListener("click", () => run_example(2));
-	
-	example_3_button_element.addEventListener("click", () => run_example(3));
+	download_button_element.addEventListener("click", () => applet.need_download = true);
 	
 	
 	
-	download_button_element.addEventListener("click", () =>
-	{
-		need_download = true;
-	});
-*/
+	Page.show();
+}()
