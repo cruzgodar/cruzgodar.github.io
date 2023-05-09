@@ -2106,7 +2106,7 @@ class PlanePartitions extends Applet
 					});
 				});
 			});
-						
+			
 			anime({
 				targets: targets,
 				opacity: opacity,
@@ -2122,7 +2122,7 @@ class PlanePartitions extends Applet
 	
 	hide_floor()
 	{
-		return show_floor(0);
+		return this.show_floor(0);
 	}
 	
 	
