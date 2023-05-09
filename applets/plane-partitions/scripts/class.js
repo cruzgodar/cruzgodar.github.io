@@ -2127,6 +2127,43 @@ class PlanePartitions extends Applet
 	
 	
 	
+	//Removes the floor from right to left in each row until a box with positive size is reached --- used to make RPPs display a little better.
+	remove_outside_floor(array)
+	{
+		let targets = [];
+		let removals = [];
+		
+		for (let i = 0; i < array.footprint; i++)
+		{
+			for (let j = array.footprint - 1; j >= 0; j--)
+			{
+				if (array.numbers[i][j] !== 0)
+				{
+					break;
+				}
+				
+				array.floor[i][j].material.forEach(material => targets.push(material));
+				removals.push([i, j]);
+			}
+		}
+		
+		removals.forEach(coordinates =>
+		{
+			array.floor[coordinates[0]][coordinates[1]].material.forEach(material => material.dispose());
+			
+			array.cube_group.remove(array.floor[coordinates[0]][coordinates[1]]);
+			
+			array.floor[coordinates[0]][coordinates[1]] = null;
+		});
+		
+		if (this.in_2d_view)
+		{
+			this.draw_all_2d_view_text();
+		}
+	}
+	
+	
+	
 	//Goes through and recomputes the sizes of array and then the total array sizes.
 	recalculate_heights(array)
 	{
@@ -2182,7 +2219,10 @@ class PlanePartitions extends Applet
 			{
 				for (let j = 0; j < array.footprint; j++)
 				{
-					this.draw_single_cell_2d_view_text(array, i, j);
+					if (array.floor[i][j] !== null)
+					{
+						this.draw_single_cell_2d_view_text(array, i, j);
+					}
 				}
 			}
 		});
