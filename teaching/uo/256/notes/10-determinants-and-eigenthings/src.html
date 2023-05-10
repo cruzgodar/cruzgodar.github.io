@@ -1,0 +1,267 @@
+### nav-buttons
+
+
+
+When a matrix fails to be invertible, it's because at some point in the row reduction process, a row became completely zero. The only thing row reduction can do is turn rows into sums of multiples of all the rows, so if some row becomes all zero, then
+
+$$
+	c_1\mathbf{r_1} + c_2\mathbf{r_2} + \cdots + c_n\mathbf{r_n} = \mathbf{0}
+$$
+
+for some constants $c_i$, where $\mathbf{0}$ is the row vector of all zeros. Some of the $c_i$ may be zero and some negative, but the point is that this is a much more concise description of when a matrix is invertible. In fact, this is such an important concept in linear algebra that it deserves its own name.
+
+
+
+### def linear independence
+	
+	Let $\mathbf{v_1}$, $\mathbf{v_2}$, ..., $\mathbf{v_k}$ be $n$-dimensional vectors. The $\mathbf{v_i}$ are **linearly dependent** if
+	
+	$$
+		c_1\mathbf{v_1} + c_2\mathbf{v_2} + \cdots + c_k\mathbf{v_k} = \mathbf{0}
+	$$
+	
+	for some choice of $c_1, c_2, ..., c_k$, and **linearly independent** if no such $c_i$ exist. We say that
+	
+	$$
+		c_1\mathbf{v_1} + c_2\mathbf{v_2} + \cdots + c_k\mathbf{v_k}
+	$$
+	
+	is a **linear combination** of the $\mathbf{v_i}$.
+	
+###
+
+
+
+For example, $\mathbf{v_1} = \left[ \begin{array}{ccc} 2 & -5 & 1 \end{array} \right]$ and $\mathbf{v_2} = \left[ \begin{array}{ccc} -4 & 10 & -2 \end{array} \right]$ are linearly dependent, since $-2\mathbf{v_1} + \mathbf{v_2} = \mathbf{0}$. To determine if a more complicated set of vectors is linearly dependent, just throw them into a matrix as row vectors and try to row reduce the matrix. If a row becomes the zero vector, they're linearly dependent, and if not, they're linearly independent.
+
+If we're looking at $n$-dimensional vectors, any collection of more than $n$ of them is *guaranteed* to be linearly dependent. That's because putting the into a matrix results in one that is taller than it is wide, and so even if the first $n$ rows are linearly independent, meaning they reduce to the identity matrix, the rows after it will reduce to zero: once we have the identity matrix, we can destroy any other row, meaning the matrix has the form
+
+$$
+	\left[ \begin{array}{c} \mathbf{I} \\ \hline \mathbf{0} \end{array} \right].
+$$
+
+Since linear dependence of the rows is the only problem that can arise when row reducing, we have a clean result relating it to matrix inversion.
+
+
+
+### prop linear independence and matrix inversion
+	
+	Let $\mathbf{A}$ be an $n \times n$ matrix. Then $\mathbf{A}$ is invertible if and only if the rows of $\mathbf{A}$ are linearly independent.
+	
+###
+
+
+
+This definition lets us go back and clarify something from earlier sections: fundamental solutions to linear homogeneous DEs must be linearly independent, and the general solution is an arbitrary linear combination of the $y_i$. In fact, we can even express an $n$th order linear homogeneous DE as a matrix product:
+
+$$
+	p_n(t)y^{(n)} + p_{n-1}(t)y^{(n - 1)} + \cdots + p_1(t)y' + p_0(t)y &= 0
+	
+	\left[ \begin{array}{ccccc} p_n(t) & p_{n-1}(t) & \cdots & p_1(t) & p_0(t) \end{array} \right] \left[ \begin{array}{c} y^{(n)} \\ y^{(n - 1)} \\ \vdots \\ y' \\ y \end{array} \right] &= 0.
+$$
+
+This gives us our first hint of how matrices will relate to systems of DEs, and we'll begin exploring that connection properly in the next section. For now, let's get back to matrices.
+
+
+
+## Determinants
+
+It's time to properly talk about determinants. We've seen plenty of them for $2 \times 2$ matrices with Wronskians and occasionally for $3 \times 3$ matrices. We'll soon need them for matrices of any size, so we'll need a general definition.
+
+
+
+### def determinant
+	
+	Let $\mathbf{A}$ be an $n \times n$ matrix. The **determinant** of $\mathbf{A}$, written $\det \mathbf{A}$, is a single number (that measures the factor by which $\mathbf{A}$ scales volume). The determinant of a $1 \times 1$ matrix --- i.e. a number --- is its single entry, and the determinant of a larger matrix can be found expanding along any row or column: pick a row or column, and for every entry in it, cross off its row and column and find the determinant of the remaining $(n - 1) \times (n - 1)$ matrix. Multiply that by the entry in consideration and then add these up for all $n$ entries, alternating sign according to the following checkerboard pattern:
+	
+	$$
+		\left[ \begin{array}{ccccc} + & - & + & - & \cdots \\ - & + & - & + & \cdots \\ + & - & + & - & \cdots \\ - & + & - & + & \cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \end{array} \right]
+	$$
+	
+###
+
+
+
+### ex determinant
+	
+	Evaluate $$\det \left[ \begin{array}{ccc} 1 & 4 & 7 \\ 3 & 6 & 9 \\ 2 & 5 & 8 \end{array} \right].$$
+	
+	Let's expand along row $2$. For the entry $3$, crossing off its row and column leaves the following matrix:
+	
+	$$
+		\left[ \begin{array}{ccc}   & 4 & 7 \\   &   &   \\   & 5 & 8 \end{array} \right].
+	$$
+	
+	The determinant of this is just $4(8) - 7(5) = -3$, and so our first term in the determinant is this times the $3$, making $-9$. Repeating this for the other two terms in the row, we have
+	
+	$$
+		6 \det \left[ \begin{array}{ccc} 1 &   & 7 \\   &   &   \\ 2 &   & 8 \end{array} \right] &= 6(1(8) - 7(2))
+		
+		&= -36.
+		
+		9 \det \left[ \begin{array}{ccc} 1 & 4 &   \\   &   &   \\ 2 & 5 &   \end{array} \right] &= 9(1(5) - 4(2))
+		
+		&= -27.
+	$$
+	
+	Finally, we'll add these three up and modify their signs according to the checkerboard pattern. The second row begins with $-$, so in total, we have
+	
+	$$
+		\det \left[ \begin{array}{ccc} 1 & 4 & 7 \\ 3 & 6 & 9 \\ 2 & 5 & 8 \end{array} \right] &= -(-9) + (-36) - (-27)
+		
+		&= 0.
+	$$
+	
+###
+
+### exc determinant
+	
+Evaluate $$\det \left[ \begin{array}{ccc} 2 & 1 & 0 \\ 2 & 7 & 1 \\ -1 & 2 & -5 \end{array} \right].$$
+	
+###
+
+
+
+One of the most important results regarding determinants is their straightforward relationship to inverses:
+
+
+
+### thm determinants and inverses
+	
+	A square matrix $\mathbf{A}$ is invertible if and only if $\det \mathbf{A} \neq 0$.
+	
+###
+
+
+
+The short explanation here is that writing down a general formula for the inverse of a matrix is possible, though extremely complicated, and it always requires dividing by the determinant.
+
+
+
+## Eigenvalues and Eigenvectors
+
+When matrices and vectors are small, multiplying them together isn't a particularly long operation, but as the dimension increases, it gets progressively more intensive. For some very special vectors, though, multiplication isn't difficult at all. For example, let's look at the matrix
+
+$$
+	\mathbf{A} = \left[ \begin{array}{cc} 2 & 2 \\ 3 & 1 \end{array} \right].
+$$
+
+If we evaluate the following two products, they're equal to multiples of the vector we plug in:
+
+$$
+	\mathbf{A} \left[ \begin{array}{c} 1 \\ 1 \end{array} \right] &= \left[ \begin{array}{cc} 2 & 2 \\ 3 & 1 \end{array} \right] \left[ \begin{array}{c} 1 \\ 1 \end{array} \right]
+	
+	&= \left[ \begin{array}{c} 4 \\ 4 \end{array} \right]
+	
+	&= 4\left[ \begin{array}{c} 1 \\ 1 \end{array} \right].
+	
+	\mathbf{A} \left[ \begin{array}{c} -2 \\ 3 \end{array} \right] &= \left[ \begin{array}{cc} 2 & 2 \\ 3 & 1 \end{array} \right] \left[ \begin{array}{c} -2 \\ 3 \end{array} \right]
+	
+	&= \left[ \begin{array}{c} 2 \\ -3 \end{array} \right]
+	
+	&= -\left[ \begin{array}{c} -2 \\ 3 \end{array} \right].
+$$
+
+Although it might not seem like a pivotal topic at first, vectors like these play an incredibly important role in the study of matrices, and it'll be helpful to give them a name.
+
+
+
+### def eigenvalues and eigenvectors
+	
+	Let $\mathbf{A}$ be a square matrix. An **eigenvector of $\mathbf{A}$** is a vector $\mathbf{v}$ with $\mathbf{Av} = \lambda\mathbf{v}$ for some nonzero value $\lambda$, called the **eigenvalue** corresponding to $\mathbf{v}$.
+	
+###
+
+
+
+Any eigenvector $\mathbf{v}$ of a matrix $\mathbf{A}$ satisfies $\mathbf{Av} = \lambda\mathbf{Iv}$, or in other words,
+
+$$
+	(\mathbf{A} - \lambda\mathbf{I})\mathbf{v} = \mathbf{0}.
+$$
+
+We're used to solving that for $\mathbf{v}$, but since we don't know $\lambda$, that isn't possible directly. Instead, let's solve for $\lambda$ first. When we multiply by $\mathbf{v}$, we're taking a linear combination of the columns of $\mathbf{A} - \lambda\mathbf{I}$ and asking for it to be zero. That means the columns need to be linearly dependent, so the matrix $\mathbf{A} - \lambda\mathbf{I}$ needs to be *not* invertible. That isn't particularly useful on its own, but now that we know the connection between invertibility and determinants, we can solve the equation
+
+$$
+	\det (\mathbf{A} - \lambda\mathbf{I}) = 0.
+$$
+
+In a deeply unfortunate naming collision, this equation is called the **characteristic polynomial** of the matrix $\mathbf{A}$. Once we've solved it for the eigenvalues, we can then return to the setup of $\mathbf{Av} &= \lambda v$ to find the corresponding eigenvectors. In a surprising turn, though, many of the applications we'll use eigenvalues for don't require the eigenvectors at all, meaning we can stop early.
+
+
+
+### ex finding eigenvectors and eigenvalues
+	
+	Find the eigenvalues and eigenvectors of
+	
+	$$
+		\mathbf{A} = \left[ \begin{array}{cc} 5 & -3 \\ 2 & -2 \end{array} \right].
+	$$
+	
+	To get the characteristic polynomial, we subtract $\lambda \mathbf{I}$, which just means subtracting $\lambda$ from every entry in the diagonal, and then take the determinant.
+	
+	$$
+		\det (\mathbf{A} - \lambda \mathbf{I}) &= \det \left[ \begin{array}{cc} 5 - \lambda & -3 \\ 2 & -2 - \lambda \end{array} \right]
+		
+		&= (5 - \lambda)(-2 - \lambda) - (-3)(2)
+		
+		&= -10 - 3\lambda + \lambda^2 + 6
+		
+		&= \lambda^2 - 3\lambda - 4
+		
+		&= (\lambda - 4)(\lambda + 1).
+	$$
+	
+	Since the characteristic polynomial is supposed to equal zero, the eigenvalues are $4$ and $-1$. We'll handle them one at a time to find the eigenvectors.
+	
+	First, let's take $\lambda = 4$. That gives us the system $(\mathbf{A} - 4 \mathbf{I})\mathbf{v} = \mathbf{0}$, which corresponds to the augmented matrix
+	
+	$$
+		\left[ \begin{array}{cc|c} 1 & -3 & 0 \\ 2 & -6 & 0 \end{array} \right]
+		
+		\left[ \begin{array}{cc|c} 1 & -3 & 0 \\ 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -2\mathbf{r_1}.
+	$$
+	
+	In the form of an equation, $v_1 - 3v_2 = 0$, so $v_1 = 3v_2$. We just need one eigenvector, so let's take $v_2 = 1$ and $v_1 = 3$ to get our first eigenvector of
+	
+	$$
+		\mathbf{v} = \left[ \begin{array}{c} 3 \\ 1 \end{array} \right]
+	$$
+	
+	with $\lambda_1 = 4$. For the other eigenvalue, we have
+	
+	$$
+		\left[ \begin{array}{cc|c} 6 & -3 & 0 \\ 2 & -1 & 0 \end{array} \right]
+			
+		\left[ \begin{array}{cc|c} 6 & -3 & 0 \\ 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -\frac{1}{3}\mathbf{r_1}.
+	$$
+	
+	Now $6v_1 - 3v_2 = 0$, so $2v_1 = v_2$. We'll just take $v_1 = 1$ and $v_2 = 2$ to get our second eigenvector of
+	
+	$$
+		\mathbf{v} = \left[ \begin{array}{c} 1 \\ 2 \end{array} \right].
+	$$
+	
+###
+
+### exc finding eigenvectors and eigenvalues
+	
+	Find the eigenvalues and eigenvectors of
+	
+	$$
+		\mathbf{A} = \left[ \begin{array}{ccc} 1 & 1 & 0 \\ 0 & 0 & 0 \\ 0 & 1 & 1 \end{array} \right].
+	$$
+	
+###
+
+
+
+We'll begin to reap the benefits of eigenvalues and eigenvectors in the next section, when we return at long last to the world of differential equations.
+
+
+
+### nav-buttons
+
+
+
+<script src="/scripts/init.js"></script>
