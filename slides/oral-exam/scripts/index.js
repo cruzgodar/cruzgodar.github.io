@@ -17,7 +17,7 @@
 
 	const options =
 	{
-		shelfIconPaths: ["/graphics/lapsa-icons/up-2.png", "/graphics/lapsa-icons/up-1.png", "/graphics/lapsa-icons/table.png", "/graphics/lapsa-icons/down-1.png", "/graphics/lapsa-icons/down-2.png"],
+		shelfIconPaths: "/graphics/lapsa-icons/",
 		
 		startingSlide: 1,
 		
