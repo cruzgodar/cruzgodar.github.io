@@ -14,6 +14,10 @@
 	document.body.appendChild(Page.element.querySelector("#lapsa-slide-container"));
 	
 	const canvas_bundle = document.body.querySelector("#canvas-bundle");
+	
+	document.body.querySelectorAll(".wilson-draggables-container").forEach(element => element.classList.add("lapsa-interactable"));
+	
+	
 
 	const options =
 	{

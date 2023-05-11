@@ -518,7 +518,8 @@ Site.sitemap =
 			"/teaching/uo/256/notes/7-higher-order-des/",
 			"/teaching/uo/256/notes/8-intro-to-linear-algebra/",
 			"/teaching/uo/256/notes/9-systems-and-inverses/",
-			"/teaching/uo/256/notes/10-determinants-and-eigenthings/"
+			"/teaching/uo/256/notes/10-determinants-and-eigenthings/",
+			"/teaching/uo/256/notes/11-intro-to-systems/"
 		]
 	},
 		
@@ -615,6 +616,15 @@ Site.sitemap =
 	"/teaching/uo/256/notes/10-determinants-and-eigenthings/":
 	{
 		"title": "Section 10: Determinants and Eigenthings",
+		
+		"parent": "/teaching/uo/256/",
+		
+		"children": []
+	},
+	
+	"/teaching/uo/256/notes/11-intro-to-systems/":
+	{
+		"title": "Section 11: Intro to Systems of DEs",
 		
 		"parent": "/teaching/uo/256/",
 		

@@ -62,6 +62,7 @@ home Cruz Godar
 			notes/8-intro-to-linear-algebra Section 8: Intro to Linear Algebra
 			notes/9-systems-and-inverses Section 9: Systems and Inverses
 			notes/10-determinants-and-eigenthings Section 10: Determinants and Eigenthings
+			notes/11-intro-to-systems Section 11: Intro to Systems of DEs
 		
 		uo/253 Math 253
 			notes/0-calc-2-review Section 0: Calculus I and II Review
