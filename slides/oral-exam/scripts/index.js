@@ -23,8 +23,6 @@
 	{
 		shelfIconPaths: "/graphics/lapsa-icons/",
 		
-		startingSlide: 1,
-		
 		builds:
 		{
 			"title":
