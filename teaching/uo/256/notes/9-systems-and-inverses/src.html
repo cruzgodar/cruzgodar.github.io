@@ -290,17 +290,21 @@ With the tool of row reduction, we're ready to talk about inverse matrices. Firs
 		\left[ \begin{array}{ccc|ccc} 1 & 2 & -3 & 1 & 0 & 0 \\ 0 & 1 & -7 & 1 & 0 & -1 \\ 0 & 4 & -4 & 2 & 1 & 0 \end{array} \right] & \qquad \mathbf{r_2} \te -1
 		
 		\left[ \begin{array}{ccc|ccc} 1 & 2 & -3 & 1 & 0 & 0 \\ 0 & 1 & -7 & 1 & 0 & -1 \\ 0 & 0 & 24 & -2 & 1 & 4 \end{array} \right] & \qquad \mathbf{r_3} \pe -4\mathbf{r_2}
-		
-		\left[ \begin{array}{ccc|ccc} 1 & 2 & -3 & 1 & 0 & 0 \\ 0 & 1 & -7 & 1 & 0 & -1 \\ 0 & 0 & 1 & -\frac{1}{12} & \frac{1}{24} & \frac{1}{6} \end{array} \right] & \qquad \mathbf{r_3} \te \frac{1}{24}
-		
-		\left[ \begin{array}{ccc|ccc} 1 & 2 & -3 & 1 & 0 & 0 \\ 0 & 1 & 0 & \frac{5}{12} & \frac{7}{24} & \frac{1}{6} \\ 0 & 0 & 1 & -\frac{1}{12} & \frac{1}{24} & \frac{1}{6} \end{array} \right] & \qquad \mathbf{r_2} \pe 7\mathbf{r_3}
-		
-		\left[ \begin{array}{ccc|ccc} 1 & 2 & 0 & \frac{3}{4} & \frac{1}{8} & \frac{1}{2} \\ 0 & 1 & 0 & \frac{5}{12} & \frac{7}{24} & \frac{1}{6} \\ 0 & 0 & 1 & -\frac{1}{12} & \frac{1}{24} & \frac{1}{6} \end{array} \right] & \qquad \mathbf{r_1} \pe 3\mathbf{r_3}
-		
-		\left[ \begin{array}{ccc|ccc} 1 & 0 & 0 & -\frac{1}{12} & -\frac{11}{24} & \frac{1}{6} \\ 0 & 1 & 0 & \frac{5}{12} & \frac{7}{24} & \frac{1}{6} \\ 0 & 0 & 1 & -\frac{1}{12} & \frac{1}{24} & \frac{1}{6} \end{array} \right] & \qquad \mathbf{r_1} \pe -2\mathbf{r_2}
 	$$
 	
-	And we're done! The right side now contains $\mathbf{A}^{-1}$, which we can write a little more cleanly by factoring out $\frac{1}{24}$:
+	At this point, we could divide $\mathbf{r_3}$ through by $24$, but then we're going to be swamped in fractions. We have to get a $1$ where that $24$ is --- but only eventually. For now, we can make the process a whole lot easier by multiplying every *other* row by $24$:
+	
+	$$
+		\left[ \begin{array}{ccc|ccc} 24 & 48 & -72 & 24 & 0 & 0 \\ 0 & 24 & -168 & 24 & 0 & -24 \\ 0 & 0 & 24 & -2 & 1 & 4 \end{array} \right] & \qquad \mathbf{r_1} \te 24,\ \mathbf{r_2} \te 24
+		
+		\left[ \begin{array}{ccc|ccc} 24 & 48 & -72 & 24 & 0 & 0 \\ 0 & 24 & 0 & 10 & 7 & 4 \\ 0 & 0 & 24 & -2 & 1 & 4 \end{array} \right] & \qquad \mathbf{r_2} \pe 7\mathbf{r_3}
+		
+		\left[ \begin{array}{ccc|ccc} 24 & 48 & 0 & 18 & 3 & 12 \\ 0 & 24 & 0 & 10 & 7 & 4 \\ 0 & 0 & 24 & -2 & 1 & 4 \end{array} \right] & \qquad \mathbf{r_1} \pe 3\mathbf{r_3}
+		
+		\left[ \begin{array}{ccc|ccc} 24 & 0 & 0 & -2 & -11 & 4 \\ 0 & 24 & 0 & 10 & 7 & 4 \\ 0 & 0 & 24 & -2 & 1 & 4 \end{array} \right] & \qquad \mathbf{r_1} \pe -2\mathbf{r_2}
+	$$
+	
+	We're almost done! If we divide through every row by $24$, then the right side will contain $\mathbf{A}^{-1}$ so we can write it as the right matrix times $\frac{1}{24}$.
 	
 	$$
 		\mathbf{A}^{-1} = \frac{1}{24} \left[ \begin{array}{ccc} -2 & -11 & 4 \\ 10 & 7 & 4 \\ -2 & 1 & 4 \end{array} \right]
