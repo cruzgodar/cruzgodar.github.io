@@ -2,6 +2,68 @@
 
 
 
+After three sections of linear algebra, let's parlay our knowledge of matrices into differential equations. As mentioned before, we'll be looking at *systems* of DEs now, and that hopefully isn't too surprising, given how we've been using matrices to solve systems of algebraic equations.
+
+Let's start small, with first-order linear DEs. If we have $n$ variables $x_1, ..., x_n$ which are all functions of $t$, then in general, every $x_i$ can be a function of all $n$ of the other $x_j$, as well as a function of $t$ itself. In symbols, there are functions $p_{ij}$ with
+
+$$
+	x_1' &= p_{11}(t)x_1 + p_{12}(t)x_2 + \cdots + p_{1n}(t)x_n + g_1(t)
+	
+	x_2' &= p_{21}(t)x_1 + p_{22}(t)x_2 + \cdots + p_{2n}(t)x_n + g_2(t)
+	
+	& \ \ \vdots
+	
+	x_n' &= p_{n1}(t)x_1 + p_{n2}(t)x_2 + \cdots + p_{nn}(t)x_n + g_n(t).
+$$
+
+This couldn't look much more like a matrix! If we define a vector $\mathbf{x}$ as
+
+$$
+	\mathbf{x}(t) = \left[ \begin{array}{c} x_1(t) \\ \vdots \\ x_n(t) \end{array} \right],
+$$
+
+and define differentiation to be componentwise --- i.e.
+
+$$
+	\mathbf{x}' = \left[ \begin{array}{c} x_1' \\ \vdots \\ x_n' \end{array} \right],
+$$
+
+then we're most of the way there. Let's define an $n \times n$ matrix $\mathbf{P}$ and a vector $\mathbf{g}$ of length $n$ as
+
+$$
+	\mathbf{P}(t) &= \left[ \begin{array}{ccc} p_{11}(t) & \cdots & p_{1n}(t) \\ \vdots & \ddots & \vdots \\ p_{n1}(t) & \cdots & p_{nn}(t) \end{array} \right]
+	
+	\mathbf{g}(t) &= \left[ \begin{array}{c} g_1(t) \\ \vdots \\ g_n(t) \end{array} \right].
+$$
+
+Now we can restate the $n$ interdependent DEs as simply
+
+$$
+	\mathbf{x}' = \mathbf{Px} + \mathbf{g}.
+$$
+
+The story of systems of DEs parallels the story of individual ones incredibly closely, and we'll want to start by looking at **homogeneous** systems: the ones where $\mathbf{g} = \mathbf{0}$. For exactly the same reason as with individial linear homogeneous DEs, if two solutions are $\mathbf{x_1}$ and $\mathbf{x_2}$, then any linear combination $c_1\mathbf{x_1} + c_2\mathbf{x_2}$ will be a solution. In general, a system of $n$ first-order linear DEs will have $n$ fundamental (i.e. linearly independent) solutions, so the general solution will be
+
+$$
+	\mathbf{x} = c_1 \mathbf{x_1} + \cdots + c_n \mathbf{x_n}.
+$$
+
+Let's take a moment to notice the notation conflict here: in this conflict, $\mathbf{x_1}$ is an entire length-$n$ vector, as opposed to the first entry of a vector $\mathbf{x}$, which is also written $\mathbf{x}_1$. There's technically a difference in notation, but it's tiny: the first subscript $1$ is bold, because it's actually a part of the name of a vector, and the second isn't. In the equation above, we have
+
+$$
+	\mathbf{x}_1 = c_1 \mathbf{x}_{\mathbf{1}1} + \cdots + c_n \mathbf{x}_{\mathbf{n}1}.
+$$
+
+Thankfully, the situations where we need to distinguish between the two notations will be few and far between.
+
+We didn't talk about the Wronskian for first-order linear DEs because it's not very interesting: an order-$1$ DE has a Wronskian that's just the determinant of a $1 \times 1$ matrix --- i.e. its single entry. On the other hand, the Wronskian of a system of $n$ DEs is quite a bit more substantial. Picking through the details is a little bit tedious, but the end result is similar to an $n$th order DE: for fundamental solutions $\mathbf{x_1}, ..., \mathbf{x_n}$, the Wronskian is
+
+$$
+	W[\mathbf{x_1}, ..., \mathbf{x_n}] = \det \left[ \begin{array}{ccc} \mid &  & \mid \\ \mathbf{x_1} & \cdots & \mathbf{x_n} \\ \mid &  & \mid \end{array} \right].
+$$
+
+In other words, we just put the $\mathbf{x_i}$ in as column vectors and take the determinant. The result is a familiar one: if the Wronskian is ever nonzero, then we've successfully found the general solution, and if it's nonzero when we plug in $t = t_0$, then the initial condition $\mathbf{x}(t_0) = \mathbf{x_0}$ is solvable. (As an aside, both of those statements should make a lot more sense now that we've seen what determinants tell us!)
+
 
 
 
