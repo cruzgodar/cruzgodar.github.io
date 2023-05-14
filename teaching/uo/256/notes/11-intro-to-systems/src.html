@@ -48,13 +48,7 @@ $$
 	\mathbf{x} = c_1 \mathbf{x_1} + \cdots + c_n \mathbf{x_n}.
 $$
 
-Let's take a moment to notice the notation conflict here: in this conflict, $\mathbf{x_1}$ is an entire length-$n$ vector, as opposed to the first entry of a vector $\mathbf{x}$, which is also written $\mathbf{x}_1$. There's technically a difference in notation, but it's tiny: the first subscript $1$ is bold, because it's actually a part of the name of a vector, and the second isn't. In the equation above, we have
-
-$$
-	\mathbf{x}_1 = c_1 \mathbf{x}_{\mathbf{1}1} + \cdots + c_n \mathbf{x}_{\mathbf{n}1}.
-$$
-
-Thankfully, the situations where we need to distinguish between the two notations will be few and far between.
+Let's take a moment to notice the notation conflict here: in this equation, $\mathbf{x_1}$ is an entire length-$n$ vector, as opposed to the first entry of a vector $\mathbf{x}$, which is written $x_1$. Thankfully, the situations where we need to distinguish between the two notations will be few and far between.
 
 We didn't talk about the Wronskian for first-order linear DEs because it's not very interesting: an order-$1$ DE has a Wronskian that's just the determinant of a $1 \times 1$ matrix --- i.e. its single entry. On the other hand, the Wronskian of a system of $n$ DEs is quite a bit more substantial. Picking through the details is a little bit tedious, but the end result is similar to an $n$th order DE: for fundamental solutions $\mathbf{x_1}, ..., \mathbf{x_n}$, the Wronskian is
 
@@ -65,6 +59,174 @@ $$
 In other words, we just put the $\mathbf{x_i}$ in as column vectors and take the determinant. The result is a familiar one: if the Wronskian is ever nonzero, then we've successfully found the general solution, and if it's nonzero when we plug in $t = t_0$, then the initial condition $\mathbf{x}(t_0) = \mathbf{x_0}$ is solvable. (As an aside, both of those statements should make a lot more sense now that we've seen what determinants tell us!)
 
 
+
+## Solving First-Order Systems
+
+Enough abstract work --- let's get to solving some systems! As usual, we'll start small and work our way to general results.
+
+
+
+### ex a first-order system
+	
+	Find the general solution to
+	
+	$$
+		x_1' &= 5x_1
+		
+		x_2' &= -7x_2.
+	$$
+	
+	The matrix form of the DE is
+	
+	$$
+		\mathbf{x}' = \left[ \begin{array}{cc} 5 & 0 \\ 0 & -7 \end{array} \right]\mathbf{x},
+	$$
+	
+	but since the two DEs are completely independent, this barely qualifies as a system. We can just solve them separately (with integrating factors, separation, or even a characteristic equation) and then tack the solutions together:
+	
+	$$
+		x_1 &= c_1e^{5t}
+		
+		x_2 &= c_2e^{-7t}
+	$$
+	
+	Our fundamental solutions need to be vectors, so there's a slight modification needed here: the first one doesn't depend on $x_2$ and the second doesn't depend on $x_1$, so our final answer is
+	
+	$$
+		\mathbf{x} = c_1 \left[ \begin{array}{c} e^{5t} \\ 0 \end{array} \right] + c_2 \left[ \begin{array}{c} 0 \\ e^{-7t} \end{array} \right].
+	$$
+	
+###
+
+
+
+That might seem like a poor choice of first example --- there wasn't anything substantively different than solving two first-order equations separately. But it actually will motivate quite a bit of the more complicated systems to come by telling us that exponential functions are a decent guess. We probably won't have the luxury of having half of the vector be zero, but let's see what information we can extract with a more general guess. For a general system $\mathbf{x}' = \mathbf{Ax}$, let's guess that a solution is $\mathbf{x} = e^{\lambda t}\mathbf{v}$ for some value $\lambda$ and vector $v$. In our previous example, the first solution had $\lambda = 5$ and
+
+$$
+	\mathbf{v} = \left[ \begin{array}{c} 1 \\ 0 \end{array} \right].
+$$
+
+If we assume $\mathbf{x}$ is a solution, then
+
+$$
+	\mathbf{x}' &= \mathbf{Ax}
+	
+	\lambda e^{\lambda t}\mathbf{v} &= e^{\lambda t} \mathbf{Av}
+	
+	\lambda \mathbf{v} &= \mathbf{Av},
+$$
+
+and in a single equation, we've justified the entire previous section: we need to find the eigenvalues and eigenvalues! Specifically,
+
+
+
+### thm solving first-order linear homogeneous systems
+	
+	Let $\mathbf{x}' = \mathbf{Ax}$ be a first-order linear homogeneous system of DEs, where $\mathbf{A}$ is a real-valued matrix. If $\mathbf{v}$ is an eigenvalue of $\mathbf{A}$ with eigenvalue $\lambda$, $\mathbf{x} = e^{\lambda t} \mathbf{v}$ is a solution to the system.
+	
+###
+
+
+
+If all $n$ eigenvalues of $\mathbf{A}$ are real and different, then it's guaranteed that the corresponding $n$ eigenvectors are different too (if two were the same, they'd have to have the same eigenvalue). If some eigenvalues are complex, we'll have to mess with complex exponentials a bit. Since they're roots of a polynomial with real coefficients, though, they'll have to occur in conjugate pairs, so it won't be too bad. Finally, if some eigenvalues are repeated, then there may not be $n$ linearly independent eigenvectors, and we'll have to apply something like reduction of order. Hopefully this is all sounding familiar! The story of $n$th-*order* individual DEs and that of $n \times n$ first-order *systems* play out in much the same way. We'll deal with distinct real eigenvalues first, and complex and repeated eigenvalues in the next section.
+
+
+
+### ex a first-order system
+	
+	Solve 
+	
+	$$
+		x_1' &= x_1 + 3x_2
+		
+		x_2' &= 4x_1 + 2x_2.
+	$$
+	
+	and verify that you've found the general solution with the Wronskian.
+	
+	First of all, the matrix form is
+	
+	$$
+		\mathbf{x}' = \left[ \begin{array}{cc} 1 & 3 \\ 4 & 2 \end{array} \right] \mathbf{x},
+	$$
+	
+	so we need to find the eigenvalues and eigenvectors of that matrix. Subtracting $\lambda$ from the diagonal and taking the determinant gives us
+	
+	$$
+		\det \left[ \begin{array}{cc} 1 - \lambda & 3 \\ 4 & 2 - \lambda \end{array} \right] &= 0
+		
+		(1 - \lambda)(2 - \lambda) - (3)(4) &= 0
+		
+		2 - 3\lambda + \lambda^2 - 12 &= 0
+		
+		\lambda^2 - 3\lambda - 10 &= 0
+		
+		(\lambda - 5)(\lambda + 2) &= 0
+		
+		\lambda = 5,\ \lambda &= -2.
+	$$
+	
+	Now we can find the eigenvectors by plugging these values of $\lambda$ back in:
+	
+	$$
+		\left[ \begin{array}{cc} 1 - 5 & 3 \\ 4 & 2 - 5 \end{array} \right] \mathbf{v} &= \mathbf{0}
+		
+		\left[ \begin{array}{cc|c} -4 & 3 & 0 \\ 4 & -3 & 0 \end{array} \right] &
+		
+		\left[ \begin{array}{cc|c} -4 & 3 & 0 \\ 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -1\mathbf{r_1}
+		
+		-4v_1 + 3v_2 &= 0.
+	$$
+	
+	Therefore, $v_1 = \frac{3}{4}v_2$, so to keep the numbers nice, let's take $v_2 = 4$ and $v_1 = 3$ to get out first fundamental solution of
+	
+	$$
+		\mathbf{x_1} = e^{5t} \left[ \begin{array}{c} 3 \\ 4 \end{array} \right].
+	$$
+	
+	Now we'll repeat the process with the other eigenvalue:
+	
+	$$
+		\left[ \begin{array}{cc} 1 + 2 & 3 \\ 4 & 2 + 2 \end{array} \right] \mathbf{v} &= \mathbf{0}
+		
+		\left[ \begin{array}{cc|c} 3 & 3 & 0 \\ 4 & 4 & 0 \end{array} \right] &
+		
+		\left[ \begin{array}{cc|c} 1 & 1 & 0 \\ 4 & 4 & 0 \end{array} \right] & \qquad \mathbf{r_1} \te \frac{1}{3}
+		
+		\left[ \begin{array}{cc|c} 1 & 1 & 0 \\ 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -4\mathbf{r_1}
+		
+		v_1 + v_2 &= 0.
+	$$
+	
+	This time around, $v_1 = -v_2$, so a good choice is $v_2 = 1$ and $v_1 = -1$, making our second fundamental solution
+	
+	$$
+		\mathbf{x_2} = e^{-2t} \left[ \begin{array}{c} -1 \\ 1 \end{array} \right].
+	$$
+	
+	Our general solution is therefore
+	
+	$$
+		\mathbf{x} &= c_1\mathbf{x_1} + c_2\mathbf{x_2}
+		
+		&= c_1 e^{5t} \left[ \begin{array}{c} 3 \\ 4 \end{array} \right] + c_2 e^{-2t} \left[ \begin{array}{c} -1 \\ 1 \end{array} \right].
+	$$
+	
+	To verify this with the Wronskian, we just put $\mathbf{x_1}$ and $\mathbf{x_2}$ as column vectors in a matrix and take the determinant:
+	
+	$$
+		W[\mathbf{x_1}, \mathbf{x_2}] &= \det \left[ \begin{array}{cc} 3e^{5t} & -e^{-2t} \\ 4e^{5t} & e^{-2t} \end{array} \right]
+		
+		&= 3e^{3t} + 4e^{3t}
+		
+		&= 7e^{3t}.
+	$$
+	
+	That's never zero, so any initial condition will have a solution, and it's not constantly equal to zero, meaning we successfully found the general solution.
+	
+	This example's been going for a while, but there's one more thing to discuss: now that we're back with first-order DEs, we can talk about direction fields again! Previously, $y'$ was a function of $y$ and $t$, but $t'$ was just equal to $1$, so although $y$ could move around, $t$ advanced at a constant rate. In the direction field, this meant we only plotted slopes, and in the particle flow visualization, it meant everything was always flowing to the right. Here, things are different: we'll need to plot $x_1$ and $x_2$ on the $x$- and $y$-axes, and they're *both* changing over time, so the fields will be much more complex. Instead of direction fields, these are called **vector fields**, since every point gets an entire vector associated with it.
+	
+###
 
 
 
