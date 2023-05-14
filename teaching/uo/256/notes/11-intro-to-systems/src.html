@@ -226,6 +226,26 @@ If all $n$ eigenvalues of $\mathbf{A}$ are real and different, then it's guarant
 	
 	This example's been going for a while, but there's one more thing to discuss: now that we're back with first-order DEs, we can talk about direction fields again! Previously, $y'$ was a function of $y$ and $t$, but $t'$ was just equal to $1$, so although $y$ could move around, $t$ advanced at a constant rate. In the direction field, this meant we only plotted slopes, and in the particle flow visualization, it meant everything was always flowing to the right. Here, things are different: we'll need to plot $x_1$ and $x_2$ on the $x$- and $y$-axes, and they're *both* changing over time, so the fields will be much more complex. Instead of direction fields, these are called **vector fields**, since every point gets an entire vector associated with it.
 	
+	### desmos vector-field
+	
+	It's critical to emphasize that although this looks like a direction field, **neither axis is time**. Both $x_1$ and $x_2$ change over time, but the important thing is that they change based on their own values and each other's values. Curves flowing through this field take a pair of states $x_1$ and $x_2$ independent of $t$ and show how $x_1$ and $x_2$ will change over time. For example, if $x_1 = 0$ and $x_2 = 2$, then both $x_1$ and $x_2$ will eventually grow without bound --- the point gets swept up and to the right. Just like with direction fields, we can visualize the entire field as a flow of thousands of particles, and with more directions available, it's even more beautiful than before.
+	
+	### canvas vector-field
+	
+###
+
+### exc a first-order system
+	
+	Solve the system
+	
+	$$
+		x_1' &= -2x_1 + 4x_2
+		
+		x_2' &= x_1 + x_2.
+	$$
+	
+	Verify that you've found the general solution with the Wronskian, and then sketch a direction field.
+	
 ###
 
 
