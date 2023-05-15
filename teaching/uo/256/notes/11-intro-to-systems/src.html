@@ -250,7 +250,7 @@ If all $n$ eigenvalues of $\mathbf{A}$ are real and different, then it's guarant
 
 
 
-## The Endless Parade of Applications
+## Applications
 
 Systems of first-order DEs crop up all the time in physical applications --- for our first, let's look at a variation on the tank problems from section 2.
 
@@ -258,7 +258,7 @@ Systems of first-order DEs crop up all the time in physical applications --- for
 
 ### ex multiple tanks
 	
-	Three tanks are set up next to one another. Tank 1 initially contains $100\,L$ of water in which $1000\,g$ of salt is dissolved, tank 2 initially contains $1\,L$ of water in which $100\,g$ of salt is dissolved, and tank 3 initially contains $50\,L$ of water. At time $t = 0$, we open a lot of valves: a pure water solution is poured into tank 1 at a rate of $2\,\frac{L}{s}$, and the well-mixed solution from tank 1 is drained into tank 2 at the same rate. Similarly, the mixed solution in tank 2 drains into tank 3, and the mixed solution in tank 3 drains and is discarded, all at $2\,\frac{L}{s}$. Find the concentration of salt in each tank after 5 minutes.
+	Three tanks are set up next to one another. Tank 1 initially contains $100\,L$ of water in which $990\,g$ of salt is dissolved, tank 2 initially contains $1\,L$ of water in which $500\,g$ of salt is dissolved, and tank 3 initially contains $50\,L$ of water. At time $t = 0$, we open a lot of valves: a pure water solution is poured into tank 1 at a rate of $2\,\frac{L}{s}$, and the well-mixed solution from tank 1 is drained into tank 2 at the same rate. Similarly, the mixed solution in tank 2 drains into tank 3, and the mixed solution in tank 3 drains and is discarded, all at $2\,\frac{L}{s}$. Find the mass of salt in each tank after 5 minutes.
 	
 	There's a lot to do here! First of all, let's define some variables. Let $x_1$, $x_2$, and $x_3$ be the *masses* of salt in tanks 1, 2, and 3 at time $t$. Then the derivative of each is the inflow rate minus the outflow rate to that particular tank.
 	
@@ -297,18 +297,108 @@ Systems of first-order DEs crop up all the time in physical applications --- for
 		
 		\left[ \begin{array}{ccc|c} 0 & 0 & 0 & 0 \\ \frac{1}{50} & \frac{-99}{50} & 0 & 0 \\ 0 & 2 & -\frac{1}{50} & 0 \end{array} \right] & 
 		
-		\left[ \begin{array}{ccc|c} 0 & 0 & 0 & 0 \\ 1 & -99 & 0 & 0 \\ 0 & -100 & 1 & 0 \end{array} \right] & \qquad \mathbf{r_2} \te 50, \quad \mathbf{r_3} \te -50
+		\left[ \begin{array}{ccc|c} 0 & 0 & 0 & 0 \\ 1 & -99 & 0 & 0 \\ 0 & -100 & 1 & 0 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_2} \te 50 \\ \mathbf{r_3} \te -50 \end{array}
 		
-		v_1 = 99v_2, \quad v_3 = 100v_2.
+		v_1 = 99v_2, & \quad v_3 = 100v_2.
 	$$
 	
 	Taking $v_2 = 1$, our first eigenvector is
 	
 	$$
-		\mathbf{v} = \left[ \begin{array}{c} 99 \\ 1 \\ 100 \end{array}. \right].
+		\mathbf{v} = \left[ \begin{array}{c} 99 \\ 1 \\ 100 \end{array} \right].
 	$$
 	
-	Now we just need to repeat this for the other eigenvalues. When $\lambda = 2$, 
+	Now we just need to repeat this for the other eigenvalues. When $\lambda = 2$, we have
+	
+	$$
+		\left[ \begin{array}{ccc|c} -\frac{1}{50} + 2 & 0 & 0 & 0 \\ \frac{1}{50} & -2 + 2 & 0 & 0 \\ 0 & 2 & -\frac{1}{25} + 2 & 0 \end{array} \right] & 
+		
+		\left[ \begin{array}{ccc|c} \frac{99}{50} & 0 & 0 & 0 \\ \frac{1}{50} & 0 & 0 & 0 \\ 0 & 2 & \frac{49}{25} & 0 \end{array} \right] & 
+		
+		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 0 \\ 1 & 0 & 0 & 0 \\ 0 & 50 & 49 & 0 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_1} \te \frac{50}{99} \\ \mathbf{r_2} \te 50 \\ \mathbf{r_3} \te 25 \end{array}
+		
+		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 50 & 49 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -\mathbf{r_1}
+		
+		v_1 = 0, & \quad v_2 = -\frac{49}{50} v_3.
+	$$
+	
+	With $v_3 = 50$, we have an eigenvector of
+	
+	$$
+		\mathbf{v} = \left[ \begin{array}{c} 0 \\ -49 \\ 50 \end{array} \right].
+	$$
+	
+	Finally, we have $\lambda = \frac{1}{25}$:
+	
+	$$
+		\left[ \begin{array}{ccc|c} -\frac{1}{50} + \frac{1}{25} & 0 & 0 & 0 \\ \frac{1}{50} & -2 + \frac{1}{25} & 0 & 0 \\ 0 & 2 & -\frac{1}{25} + \frac{1}{25} & 0 \end{array} \right] & 
+		
+		\left[ \begin{array}{ccc|c} \frac{1}{50} & 0 & 0 & 0 \\ \frac{1}{50} & -\frac{49}{25} & 0 & 0 \\ 0 & 2 & 0 & 0 \end{array} \right] & 
+		
+		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 0 \\ 1 & -98 & 0 & 0 \\ 0 & 1 & 0 & 0 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_1} \te 50 \\ \mathbf{r_2} \te 50 \\ \mathbf{r_3} \te \frac{1}{2} \end{array}
+		
+		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_2} \pe -\mathbf{r_1} \\ \mathbf{r_2} \pe 98\mathbf{r_3} \end{array}
+		
+		v_1 = 0, & \quad v_2 = 0.
+	$$
+	
+	That leaves $v_3$ undetermined, so let's just set $v_3 = 1$. Then our eigenvector is
+	
+	$$
+		\mathbf{v} = \left[ \begin{array}{c} 0 \\ 0 \\ 1 \end{array} \right].
+	$$
+	
+	At long last, we're done! Our solution is
+	
+	$$
+		\mathbf{x} = c_1 e^{-t / 50} \left[ \begin{array}{c} 99 \\ 1 \\ 100 \end{array} \right] + c_2 e^{-2t} \left[ \begin{array}{c} 0 \\ -49 \\ 50 \end{array} \right] + c_3 e^{-t / 25} \left[ \begin{array}{c} 0 \\ 0 \\ 1 \end{array} \right].
+	$$
+	
+	Now we just need to find our particular solution:
+	
+	$$
+		c_1 e^{0} \left[ \begin{array}{c} 99 \\ 1 \\ 100 \end{array} \right] + c_2 e^{0} \left[ \begin{array}{c} 0 \\ -49 \\ 50 \end{array} \right] + c_3 e^{0} \left[ \begin{array}{c} 0 \\ 0 \\ 1 \end{array} \right] &= \left[ \begin{array}{c} 990 \\ 500 \\ 0 \end{array} \right]
+		
+		\left[ \begin{array}{ccc|c} 99 & 0 & 0 & 990 \\ 1 & -49 & 0 & 500 \\ 100 & 50 & 1 & 0 \end{array} \right] & 
+		
+		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 10 \\ 1 & -49 & 0 & 500 \\ 100 & 50 & 1 & 0 \end{array} \right] & \qquad \mathbf{r_1} \te \frac{1}{99}
+		
+		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 10 \\ 0 & -49 & 0 & 490 \\ 100 & 50 & 1 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -\mathbf{r_1}
+		
+		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 10 \\ 0 & 1 & 0 & -10 \\ 100 & 50 & 1 & 0 \end{array} \right] & \qquad \mathbf{r_2} \te -\frac{1}{49}
+		
+		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 10 \\ 0 & 1 & 0 & -10 \\ 0 & 0 & 1 & -500 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_3} \pe -100\mathbf{r_1} \\ \mathbf{r_3} \pe -50\mathbf{r_2} \end{array}
+		
+		c_1 = 10, \quad c_2 = -10, & \quad c_3 = -500.
+	$$
+	
+	The original problem asked for the masses of salt after 5 minutes, which is when $t = 300$:
+	
+	$$
+		\mathbf{x} &= 10 e^{-300 / 50} \left[ \begin{array}{c} 99 \\ 1 \\ 100 \end{array} \right] -10 e^{-2(300)} \left[ \begin{array}{c} 0 \\ -49 \\ 50 \end{array} \right] - 500 e^{-300 / 25} \left[ \begin{array}{c} 0 \\ 0 \\ 1 \end{array} \right]
+		
+		&\approx \left[ \begin{array}{c} 2.454 \\ 0.025 \\ 2.479 \end{array} \right] + \left[ \begin{array}{c} 0 \\ 0 \\ 0 \end{array} \right] + \left[ \begin{array}{c} 0 \\ 0 \\ -0.003 \end{array} \right]
+		
+		&= \left[ \begin{array}{c} 2.454 \\ 0.025 \\ 2.482 \end{array} \right].
+	$$
+	
+	As we might expect, not much salt is left after so much time has passed.
+	
+###
+
+### exc $\text{TREE}(3)$
+	
+	The life cycle of trees in a forest can be divided into three sections: when they're alive, when they've died, and when they've then decomposed into soil. Suppose $m_1(t)$, $m_2(t)$, and $m_3(t)$ give the mass of living trees, fallen trees, and soil from fallen trees in century $t$, respectively, and that they satisfy the following system of DEs:
+	
+	$$
+		m_1' &= -3m_1
+		
+		m_2' &= 3m_1 - 2m_2
+		
+		m_3' &= 2m_2 - m_3.
+	$$
+	
+	Find the general solution to the system.
 	
 ###
 
