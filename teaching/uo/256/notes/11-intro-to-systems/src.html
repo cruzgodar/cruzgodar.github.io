@@ -163,7 +163,7 @@ If all $n$ eigenvalues of $\mathbf{A}$ are real and different, then it's guarant
 		
 		(\lambda - 5)(\lambda + 2) &= 0
 		
-		\lambda = 5,\ \lambda &= -2.
+		\lambda = 5, \quad \lambda &= -2.
 	$$
 	
 	Now we can find the eigenvectors by plugging these values of $\lambda$ back in:
@@ -245,6 +245,70 @@ If all $n$ eigenvalues of $\mathbf{A}$ are real and different, then it's guarant
 	$$
 	
 	Verify that you've found the general solution with the Wronskian, and then sketch a direction field.
+	
+###
+
+
+
+## The Endless Parade of Applications
+
+Systems of first-order DEs crop up all the time in physical applications --- for our first, let's look at a variation on the tank problems from section 2.
+
+
+
+### ex multiple tanks
+	
+	Three tanks are set up next to one another. Tank 1 initially contains $100\,L$ of water in which $1000\,g$ of salt is dissolved, tank 2 initially contains $1\,L$ of water in which $100\,g$ of salt is dissolved, and tank 3 initially contains $50\,L$ of water. At time $t = 0$, we open a lot of valves: a pure water solution is poured into tank 1 at a rate of $2\,\frac{L}{s}$, and the well-mixed solution from tank 1 is drained into tank 2 at the same rate. Similarly, the mixed solution in tank 2 drains into tank 3, and the mixed solution in tank 3 drains and is discarded, all at $2\,\frac{L}{s}$. Find the concentration of salt in each tank after 5 minutes.
+	
+	There's a lot to do here! First of all, let's define some variables. Let $x_1$, $x_2$, and $x_3$ be the *masses* of salt in tanks 1, 2, and 3 at time $t$. Then the derivative of each is the inflow rate minus the outflow rate to that particular tank.
+	
+	$$
+		x_1' &= -2\frac{x_1}{100} = -\frac{1}{50}x_1
+		
+		x_2' &= 2\frac{x_1}{100} - 2\frac{x_2}{1} = \frac{1}{50}x_1 - 2x_2
+		
+		x_3' &= 2\frac{x_2}{1} - 2\frac{x_3}{50} = 2x_2 - \frac{1}{25}x_3.
+	$$
+	
+	In total, our matrix equation is
+	
+	$$
+		\mathbf{x}' = \left[ \begin{array}{ccc} -\frac{1}{50} & 0 & 0 \\ \frac{1}{50} & -2 & 0 \\ 0 & 2 & -\frac{1}{25} \end{array} \right]\mathbf{x}.
+	$$
+	
+	Solving for the eigenvalues, we have
+	
+	$$
+		\det \left[ \begin{array}{ccc} -\frac{1}{50} - \lambda & 0 & 0 \\ \frac{1}{50} & -2 - \lambda & 0 \\ 0 & 2 & -\frac{1}{25} - \lambda \end{array} \right] = 0.
+	$$
+	
+	To take this determinant, let's expand along the first row.
+	
+	$$
+		\left(-\frac{1}{50} - \lambda\right) \left( \left(-2 - \lambda\right)\left(-\frac{1}{25} - \lambda\right) - 0 \right) &= 0
+		
+		\lambda = -\frac{1}{50}, \quad \lambda = -2, \quad \lambda &= -\frac{1}{25}.
+	$$
+	
+	Now each of these gets plugged back in to solve for the corresponding eigenvector.
+	
+	$$
+		\left[ \begin{array}{ccc|c} -\frac{1}{50} + \frac{1}{50} & 0 & 0 & 0 \\ \frac{1}{50} & -2 + \frac{1}{50} & 0 & 0 \\ 0 & 2 & -\frac{1}{25} + \frac{1}{50} & 0 \end{array} \right] & 
+		
+		\left[ \begin{array}{ccc|c} 0 & 0 & 0 & 0 \\ \frac{1}{50} & \frac{-99}{50} & 0 & 0 \\ 0 & 2 & -\frac{1}{50} & 0 \end{array} \right] & 
+		
+		\left[ \begin{array}{ccc|c} 0 & 0 & 0 & 0 \\ 1 & -99 & 0 & 0 \\ 0 & -100 & 1 & 0 \end{array} \right] & \qquad \mathbf{r_2} \te 50, \quad \mathbf{r_3} \te -50
+		
+		v_1 = 99v_2, \quad v_3 = 100v_2.
+	$$
+	
+	Taking $v_2 = 1$, our first eigenvector is
+	
+	$$
+		\mathbf{v} = \left[ \begin{array}{c} 99 \\ 1 \\ 100 \end{array}. \right].
+	$$
+	
+	Now we just need to repeat this for the other eigenvalues. When $\lambda = 2$, 
 	
 ###
 
