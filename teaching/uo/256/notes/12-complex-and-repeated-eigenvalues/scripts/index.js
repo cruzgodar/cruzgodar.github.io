@@ -14,10 +14,6 @@
 					
 					{latex: String.raw`F(x_1, x_2) = \frac{1}{2.5} f(x_1, x_2)`, secret: true},
 					
-					{latex: String.raw`(3c_1 e^{5t} - c_2 e^{-t}, 4c_1 e^{5t} + c_2 e^{-t})`, color: DESMOS_BLUE, parametricDomain: {min: -1000, max: 1000}},
-					{latex: String.raw`c_1 = 1`, sliderBounds: {min: -5, max: 5}},
-					{latex: String.raw`c_2 = 1`, sliderBounds: {min: -5, max: 5}},
-					
 					{latex: String.raw`z = -2.86`, secret: true},
 					{latex: String.raw`k = .33`, secret: true},
 					

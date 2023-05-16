@@ -519,7 +519,8 @@ Site.sitemap =
 			"/teaching/uo/256/notes/8-intro-to-linear-algebra/",
 			"/teaching/uo/256/notes/9-systems-and-inverses/",
 			"/teaching/uo/256/notes/10-determinants-and-eigenthings/",
-			"/teaching/uo/256/notes/11-intro-to-systems/"
+			"/teaching/uo/256/notes/11-intro-to-systems/",
+			"/teaching/uo/256/notes/12-complex-and-repeated-eigenvalues/"
 		]
 	},
 		
@@ -625,6 +626,15 @@ Site.sitemap =
 	"/teaching/uo/256/notes/11-intro-to-systems/":
 	{
 		"title": "Section 11: Intro to Systems of DEs",
+		
+		"parent": "/teaching/uo/256/",
+		
+		"children": []
+	},
+	
+	"/teaching/uo/256/notes/12-complex-and-repeated-eigenvalues/":
+	{
+		"title": "Section 12: Complex and Repeated Eigenvalues",
 		
 		"parent": "/teaching/uo/256/",
 		
