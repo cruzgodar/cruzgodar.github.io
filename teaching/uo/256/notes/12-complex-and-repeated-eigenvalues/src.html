@@ -8,7 +8,33 @@ So far, we know how to handle systems of the form $\mathbf{x}' = \mathbf{Ax}$ wh
 
 ## Complex Eigenvalues
 
-When the 
+Much like we only discussed $n$th-order DEs with real coefficients, we'll only be considering matrices with real entries. That means the characteristic polynomials will have only real coefficients, and so any complex eigenvalues will come in conjugate pairs. If $\mathbf{A}$ has eigenvalues of $\lambda = \alpha \pm \beta i$ corresponding to eigenvectors $\mathbf{v_+}$ and $\mathbf{v_-}$, then
+
+$$
+	\mathbf{A}\mathbf{v_+} &= \left(\alpha + \beta i \right) \mathbf{v_+}.
+$$
+
+Let's now take the complex conjugate of both sides (flipping the sign of any imaginary number), which is typically indicated by putting a bar above a variable.
+
+$$
+	\overline{\mathbf{A}\mathbf{v_+}} &= \overline{\left(\alpha + \beta i \right) \mathbf{v_+}}.
+$$
+
+For reasons slightly out of scope of this class, conjugation splits across multiplication, so we have
+
+$$
+	\overline{\mathbf{A}} \overline{\mathbf{v_+}} &= \overline{\left(\alpha + \beta i \right)} \overline{\mathbf{v_+}}.
+$$
+
+Finally, $\overline{\alpha + \beta i} = \alpha - \beta i$, and $\overline{\mathbf{A}} = \mathbf{A}$, since all the entries of $\mathbf{A}$ are real by assumption. Therefore,
+
+$$
+	\mathbf{A} \overline{\mathbf{v_+}} &= \left(\alpha - \beta i \right) \overline{\mathbf{v_+}}.
+$$
+
+But that's exactly what it means to be $\mathbf{v_-}$! What we've shown is that if $\mathbf{A}$ has real entries, then it's not just its eigenvalues that come in conjugate pairs --- the corresponding eigenvectors do too.
+
+With individual DEs, we were able to extract two fundamental solutions immediately from a pair of conjugate roots to the characteristic equation by taking the real and imaginary parts of a single one of the two solutions, and we'll do the same here.
 
 
 
