@@ -43,12 +43,116 @@ With individual DEs, we were able to extract two fundamental solutions immediate
 	A species of fish in a pond feeds primarily on a certain strain of algae --- with $p_1(t)$ and $p_2(t)$ giving the total biomass of fish and algae in $\text{kg}$ after $t$ days, respectively, they satisfy the system
 	
 	$$
-		p_1' = p_1 + p_2
+		p_1' &= p_1 + p_2
 		
-		p_2' = -2p_1 + 3p_2.
+		p_2' &= -2p_1 + 3p_2.
 	$$
 	
-	At time $t = 0$, there are $100\,\text{kg}$ of both fish and algae. How much of each will there be after a week? What will the long-term masses approach?
+	At time $t = 0$, there are $100\,\text{kg}$ of both fish and algae. Find $\mathbf{p}$ as a function of $t$ and sketch a vector field.
+	
+	This problem proceeds familiarly, but we'll have the added wrinkle of complex eigenvalues. To get started, let's write it as a matrix.
+	
+	$$
+		\mathbf{p}' = \left[ \begin{array}{cc} 1 & 1 \\ -2 & 3 \end{array} \right] \mathbf{p}.
+	$$
+	
+	Calling that matrix $\mathbf{A}$, we first need to solve $\det (\mathbf{A} - \lambda \mathbf{I}) = 0$. That gives us
+	
+	$$
+		\det \left[ \begin{array}{cc} 1 - \lambda & 1 \\ -2 & 3 - \lambda \end{array} \right] &= 0
+		
+		(1 - \lambda)(3 - \lambda) - (1)(-2) &= 0
+		
+		\lambda^2 - 4\lambda + 5 &= 0
+		
+		\lambda &= \frac{4 \pm \sqrt{16 - 20}}{2}
+		
+		\lambda &= \frac{4 \pm 2i}{2}
+		
+		\lambda &= 2 \pm i.
+	$$
+	
+	That's the eigenvalues done --- now we need to find the corresponding eigenvectors. Let's start with $\lambda = 2 + i$ --- we haven't had to deal with row reducing a complex-values matrix before, but it takes a little bit of care: in general, we want to avoid dividing by imaginary numbers even more than we want to avoid dividing by real ones.
+	
+	$$
+		\left[ \begin{array}{cc|c} 1 - (2 + i) & 1 & 0 \\ -2 & 3 - (2 + i) & 0 \end{array} \right] &
+		
+		\left[ \begin{array}{cc|c} -1 - i & 1 & 0 \\ -2 & 1 - i & 0 \end{array} \right] &
+		
+		\left[ \begin{array}{cc|c} -2 & 1 - i & 0 \\ -1 - i & 1 & 0 \end{array} \right] & \qquad \text{swap } \mathbf{r_1}, \mathbf{r_2}
+		
+		\left[ \begin{array}{cc|c} -2 & 1 - i & 0 \\ -2 - 2i & 2 & 0 \end{array} \right] & \qquad \mathbf{r_2} \te 2
+		
+		\left[ \begin{array}{cc|c} -2 & 1 - i & 0 \\ -2i & 1 + i & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -\mathbf{r_1}
+		
+		\left[ \begin{array}{cc|c} -2 & 1 - i & 0 \\ 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -i\mathbf{r_1}
+		
+		-2v_1 + (1 - i)v_2 &= 0
+		
+		v_1 &= \frac{1 - i}{2}v_2.
+	$$
+	
+	With $v_2 = 2$, we have
+	
+	$$
+		\mathbf{v} = \left[ \begin{array}{c} 1 - i \\ 2 \end{array} \right].
+	$$
+	
+	Although row reducing a complex matrix is a little more work, the bright side is that we also know the eigenvector corresponding to $\lambda = 2 - i$: it's the conjugate of the vector $\mathbf{v}$ we found. So the eigenvalues and eigenvectors are
+	
+	$$
+		\lambda = 2 + i: & \quad \left[ \begin{array}{c} 1 - i \\ 2 \end{array} \right]
+		
+		\lambda = 2 - i: & \quad \left[ \begin{array}{c} 1 + i \\ 2 \end{array} \right].
+	$$
+	
+	However, we won't actually need the other eigenvector --- just like with complex roots of the characteristic equation, all the data we need is contained in the real and imaginary parts of a single eigenvalue and eigenvector. Let's write out the part of the solution that comes from $\lambda = 2 + i$:
+	
+	$$
+		\mathbf{p} &= e^{(2 + i)t} \left[ \begin{array}{c} 1 - i \\ 2 \end{array} \right]
+		
+		&= e^{2t}(\cos(t) + i\sin(t)) \left( \left[ \begin{array}{c} 1 \\ 2 \end{array} \right] + i\left[ \begin{array}{c} - 1 \\ 0 \end{array} \right] \right).
+	$$
+	
+	The amount of terms can seem a little off-putting, but we actually want to foil this out --- that way, we can completely separate the real and imaginary parts.
+	
+	$$
+		\mathbf{p} &= e^{2t}\cos(t)\left[ \begin{array}{c} 1 \\ 2 \end{array} \right] + ie^{2t}\cos(t)\left[ \begin{array}{c} - 1 \\ 0 \end{array} \right] + ie^{2t}\sin(t)\left[ \begin{array}{c} 1 \\ 2 \end{array} \right] + i^2e^{2t}\sin(t)\left[ \begin{array}{c} - 1 \\ 0 \end{array} \right]
+		
+		&= e^{2t} \left[ \begin{array}{c} \cos(t) + \sin(t) \\ 2\cos(t) \end{array} \right] + ie^{2t}\left[ \begin{array}{c} \sin(t) - \cos(t) \\ 2\sin(t) \end{array} \right].
+	$$
+	
+	The real and imaginary parts here are fundamental solutions: they're both solutions and linearly independent. Therefore, our general solution is
+	
+	$$
+		\mathbf{p} = c_1 e^{2t} \left[ \begin{array}{c} \cos(t) + \sin(t) \\ 2\cos(t) \end{array} \right] + c_2 e^{2t}\left[ \begin{array}{c} \sin(t) - \cos(t) \\ 2\sin(t) \end{array} \right].
+	$$
+	
+	Now for the rest of the bookkeeping. The initial condition is
+	
+	$$
+		\mathbf{p}(0) &= \left[ \begin{array}{c} 100 \\ 100 \end{array} \right]
+		
+		c_1 e^{0} \left[ \begin{array}{c} \cos(0) + \sin(0) \\ 2\cos(0) \end{array} \right] + c_2 e^{0}\left[ \begin{array}{c} \sin(0) - \cos(0) \\ 2\sin(0) \end{array} \right] &= \left[ \begin{array}{c} 100 \\ 100 \end{array} \right]
+		
+		c_1 \left[ \begin{array}{c} 1 \\ 2 \end{array} \right] + c_2 \left[ \begin{array}{c} -1 \\ 0 \end{array} \right] &= \left[ \begin{array}{c} 100 \\ 100 \end{array} \right].
+	$$
+	
+	We can form a matrix and row reduce to solve for $c_1$ and $c_2$, but here it's easier to just solve it manually: the bottom equation reads $2c_1 = 100$, so $c_1 = 50$, and then $c_1 - c_2 = 100$, so $c_2 = -50$. Our particular solution is therefore
+	
+	$$
+		\mathbf{p} &= 50 e^{2t} \left[ \begin{array}{c} \cos(t) + \sin(t) \\ 2\cos(t) \end{array} \right] - 50 e^{2t}\left[ \begin{array}{c} \sin(t) - \cos(t) \\ 2\sin(t) \end{array} \right]
+		
+		&= 100 e^{2t} \left[ \begin{array}{c} \cos(t) \\ \cos(t) - \sin(t) \end{array} \right].
+	$$
+	
+	This system is exhibiting unbounded exponential growth, so it's probably not the complete story: maybe an ecosystem consisting only of these two species would be mutually beneficial to an extreme degree, but factors like other predators and the carrying capacity of the ecosystem play roles unaccounted for here.
+	
+	Sketching a direction field, we can see a distinct spiral shape. When a $2 \times 2$ system of DEs has complex conjugate eigenvalues, we see either a spiral into or out from the origin, depending on whether the sign of the real part of the eigenvalues is positive or negative.
+	
+	### desmos vector-field
+	
+	### canvas vector-field
 	
 ###
 

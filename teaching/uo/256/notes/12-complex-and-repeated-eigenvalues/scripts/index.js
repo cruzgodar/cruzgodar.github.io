@@ -10,7 +10,7 @@
 				
 				expressions:
 				[
-					{latex: String.raw`f(x_1, x_2) = [ x_1 + 3x_2, 4x_1 + 2x_2 ]`},
+					{latex: String.raw`f(x_1, x_2) = [ x_1 + x_2, -2x_1 + 3x_2 ]`},
 					
 					{latex: String.raw`F(x_1, x_2) = \frac{1}{2.5} f(x_1, x_2)`, secret: true},
 					
@@ -53,7 +53,7 @@
 	
 	applet.load_promise.then(() =>
 	{
-		applet.run("((x + 3.0 * y) / 8.0, (4.0 * x + 2.0 * y) / 8.0)", 500, 5000, .0075, 0, 0, 1);
+		applet.run("(.23 * (x + y), .23 * (-2.0 * x + 3.0 * y))", 500, 5000, .0075, 0, 0, 1);
 		applet.pause();
 	});
 	
