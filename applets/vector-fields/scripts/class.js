@@ -408,17 +408,28 @@ class VectorField extends Applet
 			}
 		`;
 		
+		const frag_shader_source_update_s_2 = `
+				${frag_shader_source_update_base}
+				
+				vec2 d = vec2${generating_code};
+				
+				gl_FragColor = encode_float(1.0 - exp(-1.2 * .9 * (d.x * d.x + d.y * d.y)));
+			}
+		`;
+		
 		this.wilson_update.render.shader_programs = [];
 		
 		this.wilson_update.render.load_new_shader(frag_shader_source_update_x);
 		this.wilson_update.render.load_new_shader(frag_shader_source_update_y);
 		this.wilson_update.render.load_new_shader(frag_shader_source_update_h);
 		this.wilson_update.render.load_new_shader(frag_shader_source_update_s);
+		this.wilson_update.render.load_new_shader(frag_shader_source_update_s_2);
 		
 		this.wilson_update.render.init_uniforms(["dt"], 0);
 		this.wilson_update.render.init_uniforms(["dt"], 1);
 		this.wilson_update.render.init_uniforms(["dt"], 2);
 		this.wilson_update.render.init_uniforms(["dt"], 3);
+		this.wilson_update.render.init_uniforms(["dt"], 4);
 		
 		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[0]);
 		this.wilson_update.gl.uniform1f(this.wilson_update.uniforms["dt"][0], this.dt);
@@ -431,6 +442,9 @@ class VectorField extends Applet
 		
 		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[3]);
 		this.wilson_update.gl.uniform1f(this.wilson_update.uniforms["dt"][3], this.dt);
+		
+		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[4]);
+		this.wilson_update.gl.uniform1f(this.wilson_update.uniforms["dt"][4], this.dt);
 		
 		this.generate_new_field(resolution, max_particles, dt, world_center_x, world_center_y, zoom_level);
 	}
@@ -749,6 +763,17 @@ class VectorField extends Applet
 		
 		const floats_s = new Float32Array(this.wilson_update.render.get_pixel_data().buffer);
 		
+		
+		
+		//Extremely hacky way to fix the saturation bug on iOS.
+		
+		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[4]);
+		this.wilson_update.render.draw_frame();
+		
+		const floats_s_2 = new Float32Array(this.wilson_update.render.get_pixel_data().buffer);
+		
+		
+		
 		for (let i = 0; i < this.wilson_update.canvas_height; i++)
 		{
 			for (let j = 0; j < this.wilson_update.canvas_width; j++)
@@ -770,7 +795,7 @@ class VectorField extends Applet
 						
 						this.dim_texture[4 * new_index] = this.lifetime;
 						this.dim_texture[4 * new_index + 1] = floats_h[index] * 255;
-						this.dim_texture[4 * new_index + 2] = floats_s[index] * 255;
+						this.dim_texture[4 * new_index + 2] = Math.max(floats_s[index], floats_s_2[index]) * 255;
 						
 						this.particles[index][2]--;
 						
