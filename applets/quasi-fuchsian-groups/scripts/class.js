@@ -104,22 +104,11 @@ class QuasiFuchsianGroups extends Applet
 	
 	
 	
-	draw_frame(timestamp)
+	bake_coefficients(x1 = this.wilson.draggables.world_coordinates[0][0], y1 = this.wilson.draggables.world_coordinates[0][1], x2 = this.wilson.draggables.world_coordinates[1][0], y2 = this.wilson.draggables.world_coordinates[1][1])
 	{
-		const time_elapsed = timestamp - this.last_timestamp;
-		
-		this.last_timestamp = timestamp;
-		
-		if (time_elapsed === 0)
-		{
-			return;
-		}
-		
-		
-		
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
-		const ta = new Complex(this.wilson.draggables.world_coordinates[0][0], this.wilson.draggables.world_coordinates[0][1]);
-		const tb = new Complex(this.wilson.draggables.world_coordinates[1][0], this.wilson.draggables.world_coordinates[1][1]);
+		const ta = new Complex(x1, y1);
+		const tb = new Complex(x2, y2);
 		
 		const b = ta.mul(tb);
 		
@@ -180,8 +169,24 @@ class QuasiFuchsianGroups extends Applet
 			
 			this.coefficients[i + 2] = [[dx, dy], [-bx, -by], [-cx, -cy], [ax, ay]];
 		}
+	}
+	
+	
+	
+	draw_frame(timestamp)
+	{
+		const time_elapsed = timestamp - this.last_timestamp;
+		
+		this.last_timestamp = timestamp;
+		
+		if (time_elapsed === 0)
+		{
+			return;
+		}
 		
 		
+		
+		this.bake_coefficients();
 		
 		for (let i = 0; i < 4; i++)
 		{
@@ -361,6 +366,13 @@ class QuasiFuchsianGroups extends Applet
 	
 	on_release_draggable(active_draggable, x, y, event)
 	{
+		if (DEBUG)
+		{
+			console.log(active_draggable, x, y);
+		}
+		
+		
+		
 		this.image_size = this.resolution_large;
 		
 		if (this.wilson.fullscreen.currently_fullscreen)
@@ -415,13 +427,14 @@ class QuasiFuchsianGroups extends Applet
 	
 	
 	
-	request_high_res_frame(image_size, max_depth, max_pixel_brightness)
+	request_high_res_frame(image_size, max_depth, max_pixel_brightness, box_size = this.box_size)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			this.image_size = image_size;
 			this.max_depth = max_depth
 			this.max_pixel_brightness = max_pixel_brightness;
+			this.box_size = box_size;
 			
 			
 			
@@ -483,7 +496,6 @@ class QuasiFuchsianGroups extends Applet
 				}
 				
 				this.wilson.render.draw_frame(this.image);
-				
 				
 				resolve();
 			};

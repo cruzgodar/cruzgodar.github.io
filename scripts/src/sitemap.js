@@ -1158,11 +1158,21 @@ Site.sitemap =
 		
 		"children":
 		[
+			"/slides/grandmas-recipe/",
 			"/slides/oral-exam/",
 			"/slides/lapsa/"
 		]
 	},
 		
+	"/slides/grandmas-recipe/":
+	{
+		"title": "Grandma's Recipe for Quasi-Fuchsian Groups",
+		
+		"parent": "/slides/",
+		
+		"children": []
+	},
+	
 	"/slides/oral-exam/":
 	{
 		"title": "Prelude to an Oral Exam",

@@ -121,6 +121,7 @@ home Cruz Godar
 		uo/105 Math 105
 	
 	slides Slides
+		grandmas-recipe Grandma's Recipe for Quasi-Fuchsian Groups
 		oral-exam Prelude to an Oral Exam
 		lapsa Lapsa
 	
