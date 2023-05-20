@@ -4,6 +4,8 @@ class QuasiFuchsianGroups extends Applet
 {
 	load_promise = null;
 	
+	wilson_hidden = null;
+	
 	resolution_small = 300;
 	resolution_large = 900;
 	
@@ -40,9 +42,64 @@ class QuasiFuchsianGroups extends Applet
 	{
 		super(canvas);
 		
+		
+		
+		const frag_shader_source = `
+			precision highp float;
+			precision highp sampler2D;
+			
+			varying vec2 uv;
+			
+			uniform sampler2D u_texture;
+			
+			uniform float texture_step;
+			
+			
+			
+			vec3 hsv2rgb(vec3 c)
+			{
+				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+			}
+			
+			void main(void)
+			{
+				//Dilate the pixels to make a thicker line.
+				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
+				
+				float brightness =
+					max(max(max(texture2D(u_texture, center + vec2(texture_step, 0.0)).z,
+					texture2D(u_texture, center - vec2(texture_step, 0.0)).z),
+					max(texture2D(u_texture, center + vec2(0.0, texture_step)).z,
+					texture2D(u_texture, center - vec2(0.0, texture_step)).z)),
+					
+					max(max(texture2D(u_texture, center + vec2(texture_step, texture_step)).z,
+					texture2D(u_texture, center + vec2(texture_step, -texture_step)).z),
+					max(texture2D(u_texture, center + vec2(-texture_step, texture_step)).z,
+					texture2D(u_texture, center + vec2(-texture_step, -texture_step)).z)));
+					
+				brightness = max(brightness, texture2D(u_texture, center).z);	
+				
+				if (brightness < .5)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					
+					return;
+				}
+				
+				
+				gl_FragColor = vec4(hsv2rgb(vec3(texture2D(u_texture, center).x, 1.0, brightness)), 1.0);
+			}
+		`;
+		
+		
+		
 		const options =
 		{
-			renderer: "hybrid",
+			renderer: "gpu",
+			
+			shader: frag_shader_source,
 			
 			canvas_width: this.resolution_small,
 			canvas_height: this.resolution_small,
@@ -80,6 +137,17 @@ class QuasiFuchsianGroups extends Applet
 		};
 		
 		this.wilson = new Wilson(canvas, options);
+		
+		this.wilson.render.init_uniforms(["texture_step"]);
+		
+		this.wilson.gl.uniform1f(this.wilson.uniforms["texture_step"], 1 / this.image_size);
+		
+		this.wilson.render.create_framebuffer_texture_pair();
+		
+		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
+		
+		this.image = new Float32Array(this.image_width * this.image_height * 4);
 		
 		
 		
@@ -201,39 +269,22 @@ class QuasiFuchsianGroups extends Applet
 		
 		
 		
-		//Run a pass to remove any isolated pixels.
-		if (this.image_size !== this.resolution_small)
-		{
-			for (let i = 1; i < this.image_height - 1; i++)
-			{
-				for (let j = 1; j < this.image_width - 1; j++)
-				{
-					if (this.brightness[this.image_width * i + j] !== 0 && this.brightness[this.image_width * (i - 1) + j] === 0 && this.brightness[this.image_width * (i - 1) + (j + 1)] === 0 && this.brightness[this.image_width * i + (j + 1)] === 0 && this.brightness[this.image_width * (i + 1) + (j + 1)] === 0 && this.brightness[this.image_width * (i + 1) + j] === 0 && this.brightness[this.image_width * (i + 1) + (j - 1)] === 0 && this.brightness[this.image_width * i + (j - 1)] === 0 && this.brightness[this.image_width * (i - 1) + (j - 1)] === 0)
-					{
-						this.brightness[this.image_width * i + j] = 0;
-					}
-				}
-			}
-		}
-		
-		
-		
 		for (let i = 0; i < this.image_height; i++)
 		{
 			for (let j = 0; j < this.image_width; j++)
 			{
 				const index = (4 * i * this.image_width) + (4 * j);
 				
-				const rgb = this.wilson.utils.hsv_to_rgb(this.hue[this.image_width * i + j], 1, Math.pow(this.brightness[this.image_width * i + j] / max_brightness, .25)); 
-				
-				this.image[index] = rgb[0];
-				this.image[index + 1] = rgb[1];
-				this.image[index + 2] = rgb[2];
-				this.image[index + 3] = 255;
+				this.image[index] = this.hue[this.image_width * i + j];
+				this.image[index + 1] = 1;
+				this.image[index + 2] = Math.pow(this.brightness[this.image_width * i + j] / max_brightness, .25);
+				this.image[index + 3] = 1;
 			}
 		}
 		
-		this.wilson.render.draw_frame(this.image);
+		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvas_width, this.wilson.canvas_height, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, this.image);
+		
+		this.wilson.render.draw_frame();
 	}
 	
 	
@@ -508,9 +559,11 @@ class QuasiFuchsianGroups extends Applet
 	
 	regenerate_hue_and_brightness()
 	{
-		this.hue = new Array(this.image_width * this.image_height);
-		this.brightness = new Array(this.image_width * this.image_height);
-		this.image = new Uint8ClampedArray(this.image_width * this.image_height * 4);
+		this.hue = new Float32Array(this.image_width * this.image_height);
+		this.brightness = new Float32Array(this.image_width * this.image_height);
+		this.image = new Float32Array(this.image_width * this.image_height * 4);
+		
+		this.wilson.gl.uniform1f(this.wilson.uniforms["texture_step"], 1 / this.image_size);
 		
 		for (let i = 0; i < this.image_height; i++)
 		{
