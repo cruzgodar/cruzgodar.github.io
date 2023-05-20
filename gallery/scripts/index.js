@@ -320,7 +320,7 @@
 			
 			"applet_link": "quasi-fuchsian-groups",
 			
-			"image_link": "https://drive.google.com/uc?id=1IBT9iwv34NUjaxETx7C22a_NyoqDRcZj&export=download"
+			"image_link": "https://drive.google.com/uc?id=1mAQCyO3bHIL7yAV1I8uxVFmLBGbhQwRQ&export=download"
 		},
 		
 		"chaos-game-1":
