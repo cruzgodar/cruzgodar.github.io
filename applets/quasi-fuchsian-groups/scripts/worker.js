@@ -38,12 +38,9 @@ function draw_quasi_fuchsian_group()
 	{
 		brightness = new Array(canvas_width * canvas_height);
 		
-		for (let i = 0; i < canvas_height; i++)
+		for (let i = 0; i < brightness.length; i++)
 		{
-			for (let j = 0; j < canvas_width; j++)
-			{
-				brightness[canvas_width * i + j] = 0;
-			}
+			brightness[i] = 0;
 		}
 		
 		
@@ -55,30 +52,18 @@ function draw_quasi_fuchsian_group()
 		
 		
 		
-		let brightness_sorted = brightness.flat().sort(function(a, b) {return a - b});
+		let max_brightness = 0;
 		
-		let	max_brightness = brightness_sorted[Math.round(brightness_sorted.length * .999) - 1];
-		
-		for (let i = 0; i < canvas_height; i++)
+		for (let i = 0; i < brightness.length; i++)
 		{
-			for (let j = 0; j < canvas_width; j++)
-			{
-				brightness[canvas_width * i + j] = Math.min(Math.sqrt(brightness[canvas_width * i + j] / max_brightness), 1);
-			}
+			max_brightness = Math.max(max_brightness, brightness[i]);
 		}
 		
 		
 		
-		//Run a pass to remove any isolated pixels.
-		for (let i = 1; i < canvas_height - 1; i++)
+		for (let i = 0; i < brightness.length; i++)
 		{
-			for (let j = 1; j < canvas_width - 1; j++)
-			{
-				if (brightness[canvas_width * i + j] !== 0 && brightness[canvas_width * (i - 1) + j] === 0 && brightness[canvas_width * (i - 1) + (j + 1)] === 0 && brightness[canvas_width * i + (j + 1)] === 0 && brightness[canvas_width * (i + 1) + (j + 1)] === 0 && brightness[canvas_width * (i + 1) + j] === 0 && brightness[canvas_width * (i + 1) + (j - 1)] === 0 && brightness[canvas_width * i + (j - 1)] === 0 && brightness[canvas_width * (i - 1) + (j - 1)] === 0)
-				{
-					brightness[canvas_width * i + j] = 0;
-				}
-			}
+			brightness[i] = Math.pow(brightness[i] / max_brightness, .15);
 		}
 		
 		
