@@ -19,7 +19,7 @@
 	
 	
 	
-	const resolution = 1000;
+	const resolution = 1500;
 	const max_depth = 250;
 	const max_pixel_brightness = 50;
 	
@@ -48,6 +48,36 @@
 						slide.appendChild(canvas_bundle);
 						
 						applet.bake_coefficients(1.75, -.3719, 1.8638, .2691);
+						
+						await applet.request_high_res_frame(resolution, max_depth, max_pixel_brightness, 4);
+						
+						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						
+						resolve();
+					});
+				}
+			},
+			
+			
+			
+			"untamed":
+			{
+				reset: (slide, forward, duration) =>
+				{
+					return new Promise(async (resolve, reject) =>
+					{
+						if (slide.contains(canvas_bundle))
+						{
+							resolve();
+							return;
+						}
+						
+						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						
+						slide.appendChild(canvas_bundle);
+						
+						applet.bake_coefficients(1, -2, 3, 2);
+						
 						
 						await applet.request_high_res_frame(resolution, max_depth, max_pixel_brightness, 4);
 						

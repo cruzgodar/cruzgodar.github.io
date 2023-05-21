@@ -96,16 +96,16 @@ body
 
 .large-canvas canvas
 {
-	width: 45vw;
-	height: 45vw;
+	width: 40vw;
+	height: 40vw;
 }
 
 .large-canvas #canvas-bundle
 {
 	position: absolute;
 	
-	left: 25vw;
-	bottom: 0;
+	left: 27.5vw;
+	bottom: 2.5vw;
 }
 
 .slide.full-canvas
@@ -170,13 +170,14 @@ body
 
 	.large-canvas canvas
 	{
-		width: calc(45 * var(--safe-vh) * 152 / 89);
-		height: calc(45 * var(--safe-vh) * 152 / 89);
+		width: calc(40 * var(--safe-vh) * 152 / 89);
+		height: calc(40 * var(--safe-vh) * 152 / 89);
 	}
 
 	.large-canvas #canvas-bundle
 	{
-		left: calc(25 * var(--safe-vh) * 152 / 89);
+		left: calc(27.5 * var(--safe-vh) * 152 / 89);
+		bottom: calc(2.5 * var(--safe-vh) * 152 / 89);
 	}
 	
 	.full-canvas canvas
