@@ -11,6 +11,7 @@
 	
 	document.head.querySelector("#theme-color-meta").setAttribute("content", "#181818");
 	
+	document.body.appendChild(Page.element.querySelector("#background"));
 	document.body.appendChild(Page.element.querySelector("#lapsa-slide-container"));
 	
 	const canvas_bundle = document.body.querySelector("#canvas-bundle");
@@ -78,6 +79,37 @@
 						
 						applet.bake_coefficients(1, -2, 3, 2);
 						
+						
+						await applet.request_high_res_frame(resolution, max_depth, max_pixel_brightness, 4);
+						
+						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						
+						resolve();
+					});
+				}
+			},
+			
+			
+			
+			"grandmas-recipe":
+			{
+				reset: (slide, forward, duration) =>
+				{
+					return new Promise(async (resolve, reject) =>
+					{
+						if (slide.contains(canvas_bundle))
+						{
+							resolve();
+							return;
+						}
+						
+						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						
+						slide.appendChild(canvas_bundle);
+						
+						applet.wilson.draggables.on_resize();
+						
+						applet.bake_coefficients(2, 0, 2, 0);
 						
 						await applet.request_high_res_frame(resolution, max_depth, max_pixel_brightness, 4);
 						

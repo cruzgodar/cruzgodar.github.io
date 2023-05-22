@@ -1475,8 +1475,13 @@ class Wilson
 				{
 					document.body.appendChild(this.fullscreen_components_container);
 					
-					document.body.querySelector("#header").style.zIndex = 90;
-					document.body.querySelector("#header-container").style.zIndex = 90;
+					try
+					{
+						document.body.querySelector("#header").style.zIndex = 90;
+						document.body.querySelector("#header-container").style.zIndex = 90;
+					}
+					
+					catch(ex) {}
 					
 					
 					
@@ -1639,8 +1644,13 @@ class Wilson
 				{
 					this.fullscreen_components_container_location.appendChild(this.fullscreen_components_container);
 					
-					document.body.querySelector("#header").style.zIndex = 110;
-					document.body.querySelector("#header-container").style.zIndex = 105;
+					try
+					{
+						document.body.querySelector("#header").style.zIndex = 110;
+						document.body.querySelector("#header-container").style.zIndex = 105;
+					}
+					
+					catch(ex) {}
 					
 					
 					

@@ -1,3 +1,5 @@
+<div id="background"></div>
+
 <div id="lapsa-slide-container">
 	<div id="title" class="slide medium-canvas">
 		<h1>Grandma's Recipe for Quasi-Fuchsian Groups</h1>
@@ -78,13 +80,45 @@
 	
 	
 	<div class="slide">
-		<p>But which three? Grandma chose $\operatorname{tr} A, \operatorname{tr} B,$ and $\operatorname{tr} AB$: they are unaffected from conjugation and independent of $\det A$ and $\det B$ and one another.</p>
+		<p>But which three? Grandma chose $\operatorname{tr} A, \operatorname{tr} B,$ and $\operatorname{tr} AB$: they are unaffected by conjugation and independent of $\det A$ and $\det B$ and one another.</p>
 		
 		<p class="build">For the limit set to be a non-space-filling curve, we want the boundary circles of $A$ and $B$ and their inverses to be tangent, and it turns out this is equivalent to $\operatorname{tr} ABA^{-1}B^{-1} = -2$.</p>
 		
-		<p class="build">The <strong>Markov identity</strong> for traces states that</p>
+		<p class="build">The <strong>Markov identity</strong> for traces states that $\operatorname{tr} A B A^{-1} B^{-1}$ is equal to</p>
 		
-		<p style="text-align: center;">$\displaystyle \operatorname{tr} A B A^{-1} B^{-1} = (\operatorname{tr} A)^2 + (\operatorname{tr} B)^2) + (\operatorname{tr} AB)^2 - (\operatorname{tr} A)(\operatorname{tr} B)(\operatorname{tr} AB) - 2,$</p>
+		<p data-build="1" style="text-align: center">$\displaystyle (\operatorname{tr} A)^2 + (\operatorname{tr} B)^2) + (\operatorname{tr} AB)^2 - (\operatorname{tr} A)(\operatorname{tr} B)(\operatorname{tr} AB) - 2,$</p>
+		
+		<p class="build">so given $\operatorname{tr} A$ and $\operatorname{tr} B$, $\operatorname{tr} AB$ is determined by a quadratic equation.</p>
+	</div>
+	
+	
+	
+	<div class="slide">
+		<h1>Grandma's Special Parabolic Commutator Groups</h1>
+		
+		<p class="build">1. Freely choose $t_A, t_B\in \mathbb{C}$ (specifying $\operatorname{tr} A$ and $\operatorname{tr} B$, respectively).</p>
+		
+		<p class="build">2. Let $t_{AB}$ be one of the solutions to $x^2 - t_At_Bx + t_A^2 + t_B^2 = 0$.</p>
+		
+		<p class="build">3. Let $\displaystyle z_0 = \frac{(t_{AB} - 2)t_B}{t_Bt_{AB} - 2t_A + 2it_{AB}}$.</p>
+	</div>
+	
+	
+	
+	<div class="slide">
+		<p>4. Define $A$ and $B$ to be</p>
+		
+		<p class="build" style="text-align: center">$\displaystyle A = \left[ \begin{array}{cc} \frac{t_A}{2} & \frac{t_At_{AB} - 2t_B + 4i}{(2t_{AB} + 4)z_0} \\ \frac{(t_At_{AB} - 2t_B + 4i)z_0}{2t_{AB} - 4} & \frac{t_A}{2} \end{array} \right]$</p>
+		
+		<p class="build" style="text-align: center">$\displaystyle B = \left[ \begin{array}{cc} \frac{t_B - 2i}{2} & \frac{t_B}{2} \\ \frac{t_B}{2} & \frac{t_B + 2i}{2} \end{array} \right]$.</p>
+		
+		<p class="build">Matrices baked with Grandma's Recipe have traces $t_A$ and $t_B$, determinant $1$, satisfy the Markov identity, and have some other nice properties: the equal diagonal entries in $A$ ensure $180^\circ$ rotational symmetry in the limit sets, and the factor of $z_0$ is from conjugating by a map that centers them correctly.</p>
+	</div>
+	
+	
+	
+	<div id="grandmas-recipe" class="slide visible-draggables full-canvas">
+		
 	</div>
 </div>
 

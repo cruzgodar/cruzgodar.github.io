@@ -482,14 +482,14 @@ class QuasiFuchsianGroups extends Applet
 		{
 			if (Page.Layout.aspect_ratio >= 1)
 			{
-				this.image_width = this.image_size;
-				this.image_height = Math.floor(this.image_size / Page.Layout.aspect_ratio);
+				this.image_width = Math.floor(this.image_size * Page.Layout.aspect_ratio);
+				this.image_height = this.image_size;
 			}
 			
 			else
 			{
-				this.image_width = Math.floor(this.image_size * Page.Layout.aspect_ratio);
-				this.image_height = this.image_size;
+				this.image_width = this.image_size;
+				this.image_height = Math.floor(this.image_size / Page.Layout.aspect_ratio);
 			}
 		}
 		
@@ -530,14 +530,14 @@ class QuasiFuchsianGroups extends Applet
 		{
 			if (Page.Layout.aspect_ratio >= 1)
 			{
-				this.image_width = this.image_size;
-				this.image_height = Math.floor(this.image_size / Page.Layout.aspect_ratio);
+				this.image_width = Math.floor(this.image_size * Page.Layout.aspect_ratio);
+				this.image_height = this.image_size;
 			}
 			
 			else
 			{
-				this.image_width = Math.floor(this.image_size * Page.Layout.aspect_ratio);
-				this.image_height = this.image_size;
+				this.image_width = this.image_size;
+				this.image_height = Math.floor(this.image_size / Page.Layout.aspect_ratio);
 			}
 		}
 		
@@ -593,14 +593,14 @@ class QuasiFuchsianGroups extends Applet
 			{
 				if (Page.Layout.aspect_ratio >= 1)
 				{
-					this.image_width = this.image_size;
-					this.image_height = Math.floor(this.image_size / Page.Layout.aspect_ratio);
+					this.image_width = Math.floor(this.image_size * Page.Layout.aspect_ratio);
+					this.image_height = this.image_size;
 				}
 				
 				else
 				{
-					this.image_width = Math.floor(this.image_size * Page.Layout.aspect_ratio);
-					this.image_height = this.image_size;
+					this.image_width = this.image_size;
+					this.image_height = Math.floor(this.image_size / Page.Layout.aspect_ratio);
 				}
 			}
 			
@@ -685,14 +685,14 @@ class QuasiFuchsianGroups extends Applet
 		{
 			if (Page.Layout.aspect_ratio >= 1)
 			{
-				this.image_width = this.image_size;
-				this.image_height = Math.floor(this.image_size / Page.Layout.aspect_ratio);
+				this.image_width = Math.floor(this.image_size * Page.Layout.aspect_ratio);
+				this.image_height = this.image_size;
 			}
 			
 			else
 			{
-				this.image_width = Math.floor(this.image_size * Page.Layout.aspect_ratio);
-				this.image_height = this.image_size;
+				this.image_width = this.image_size;
+				this.image_height = Math.floor(this.image_size / Page.Layout.aspect_ratio);
 			}
 		}
 		
