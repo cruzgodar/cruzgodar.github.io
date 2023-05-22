@@ -132,9 +132,21 @@ body
 	bottom: 0;
 }
 
+
+
 .slide:not(.visible-draggables) .wilson-enter-fullscreen-button, .slide:not(.visible-draggables) .wilson-draggable
 {
-	display: none;
+	display: none !important;
+}
+
+.slide.grandma-draggables .wilson-draggable-2
+{
+	display: none !important;
+}
+
+.slide.riley-draggables .wilson-draggable-1, .slide.riley-draggables .wilson-draggable-2
+{
+	display: none !important;
 }
 
 

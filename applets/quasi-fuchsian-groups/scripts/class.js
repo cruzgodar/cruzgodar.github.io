@@ -216,6 +216,8 @@ class QuasiFuchsianGroups extends Applet
 			
 			this.init_draggables();
 			
+			this.change_recipe(0);
+			
 			resolve();
 		});
 	}
@@ -291,26 +293,81 @@ class QuasiFuchsianGroups extends Applet
 	
 	
 	
-	jorgensen_coefficients(x1 = this.wilson.draggables.world_coordinates[0][0], y1 = this.wilson.draggables.world_coordinates[0][1], x2 = this.wilson.draggables.world_coordinates[1][0], y2 = this.wilson.draggables.world_coordinates[1][1])
+	riley_coefficients(x1 = this.wilson.draggables.world_coordinates[0][0], y1 = this.wilson.draggables.world_coordinates[0][1])
 	{
+		this.coefficients[0][0][0] = 1;
+		this.coefficients[0][0][1] = 0;
+		
+		this.coefficients[0][1][0] = 0;
+		this.coefficients[0][1][1] = 0;
+		
+		this.coefficients[0][2][0] = x1;
+		this.coefficients[0][2][1] = y1;
+		
+		this.coefficients[0][3][0] = 1;
+		this.coefficients[0][3][1] = 0;
+		
+		this.coefficients[1][0][0] = 1;
+		this.coefficients[1][0][1] = 0;
+		
+		this.coefficients[1][1][0] = 2;
+		this.coefficients[1][1][1] = 0;
+		
+		this.coefficients[1][2][0] = 0;
+		this.coefficients[1][2][1] = 0;
+		
+		this.coefficients[1][3][0] = 1;
+		this.coefficients[1][3][1] = 0;
+		
+		//This weirdness lets us do 3 - index to reference an inverse.
+		for (let i = 0; i < 2; i++)
+		{
+			const ax = this.coefficients[i][0][0];
+			const ay = this.coefficients[i][0][1];
+			const bx = this.coefficients[i][1][0];
+			const by = this.coefficients[i][1][1];
+			const cx = this.coefficients[i][2][0];
+			const cy = this.coefficients[i][2][1];
+			const dx = this.coefficients[i][3][0];
+			const dy = this.coefficients[i][3][1];
+			
+			this.coefficients[i + 2] = [[dx, dy], [-bx, -by], [-cx, -cy], [ax, ay]];
+		}
+	}
+	
+	
+	
+	grandma_special_coefficients(x1 = this.wilson.draggables.world_coordinates[0][0], y1 = this.wilson.draggables.world_coordinates[0][1], x2 = this.wilson.draggables.world_coordinates[1][0], y2 = this.wilson.draggables.world_coordinates[1][1], x3 = this.wilson.draggables.world_coordinates[2][0], y3 = this.wilson.draggables.world_coordinates[2][1])
+	{
+		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
 		const ta = new Complex(x1, y1);
 		const tb = new Complex(x2, y2);
+		const tab = new Complex(x3, y3);
+		const I = new Complex(0, 1);
+		const TWO = new Complex(2, 0);
 		
-		const b = ta.mul(tb);
+		const tc = ta.mul(ta).add(tb.mul(tb)).add(tab.mul(tab)).sub(ta.mul(tb).mul(tab)).sub(2);
 		
-		const c = ta.mul(ta).add(tb.mul(tb));
+		const Q = TWO.sub(tc).sqrt();
 		
-		const discriminant = b.mul(b).sub(c.mul(4));
+		const mag = tc.add(I.mul(Q).mul(tc.add(2).sqrt())).abs();
 		
-		const tab = discriminant.arg() > 0 ? b.sub(discriminant.sqrt()).div(2) : b.add(discriminant.sqrt()).div(2);
+		const R = tc.add(2).sqrt().mul(mag >= 2 ? 1 : -1);
+		
+		const z0 = tab.sub(2).mul(tb.add(R)).div(tb.mul(tab).sub(ta.mul(2)).add(I.mul(Q).mul(tab)));
 		
 		
-		const c1 = ta.sub(tb.div(tab));
-		const c2 = ta.div(tab.mul(tab));
-		const c3 = tb.div(tab);
-		const c4 = tb.sub(ta.div(tab));
-		const c5 = tb.div(tab.mul(tab));
-		const c6 = ta.div(tab);
+		
+		const c1 = ta.div(2);
+		const c2 = ta.mul(tab).sub(tb.mul(2)).add(I.mul(Q).mul(2)).div(z0.mul(tab.mul(2).add(4)));
+		const c3 = z0.mul(ta.mul(tab).sub(tb.mul(2)).sub(I.mul(2).mul(Q))).div(tab.mul(2).sub(4));
+		
+		const c4 = tb.sub(I.mul(Q)).div(2);
+		const c5 = tb.mul(tab).sub(ta.mul(2)).add(I.mul(Q).mul(tab)).div(z0.mul(tab.mul(2).add(4)));
+		const c6 = tb.mul(tab).sub(ta.mul(2)).sub(I.mul(Q).mul(tab)).mul(z0).div(tab.mul(2).sub(4));
+		const c7 = tb.add(I.mul(Q)).div(2);
+		
+		
 		
 		this.coefficients[0][0][0] = c1.re;
 		this.coefficients[0][0][1] = c1.im;
@@ -318,23 +375,25 @@ class QuasiFuchsianGroups extends Applet
 		this.coefficients[0][1][0] = c2.re;
 		this.coefficients[0][1][1] = c2.im;
 		
-		this.coefficients[0][2][0] = ta.re;
-		this.coefficients[0][2][1] = ta.im;
+		this.coefficients[0][2][0] = c3.re;
+		this.coefficients[0][2][1] = c3.im;
 		
-		this.coefficients[0][3][0] = c3.re;
-		this.coefficients[0][3][1] = c3.im;
+		this.coefficients[0][3][0] = c1.re;
+		this.coefficients[0][3][1] = c1.im;
 		
 		this.coefficients[1][0][0] = c4.re;
 		this.coefficients[1][0][1] = c4.im;
 		
-		this.coefficients[1][1][0] = -c5.re;
-		this.coefficients[1][1][1] = -c5.im;
+		this.coefficients[1][1][0] = c5.re;
+		this.coefficients[1][1][1] = c5.im;
 		
-		this.coefficients[1][2][0] = -tb.re;
-		this.coefficients[1][2][1] = -tb.im;
+		this.coefficients[1][2][0] = c6.re;
+		this.coefficients[1][2][1] = c6.im;
 		
-		this.coefficients[1][3][0] = c6.re;
-		this.coefficients[1][3][1] = c6.im;
+		this.coefficients[1][3][0] = c7.re;
+		this.coefficients[1][3][1] = c7.im;
+		
+		
 		
 		//This weirdness lets us do 3 - index to reference an inverse.
 		for (let i = 0; i < 2; i++)
@@ -355,6 +414,35 @@ class QuasiFuchsianGroups extends Applet
 	
 	
 	bake_coefficients = this.grandma_coefficients;
+	
+	
+	
+	change_recipe(index)
+	{
+		if (index === 0)
+		{
+			this.bake_coefficients = this.grandma_coefficients;
+			
+			this.wilson.draggables.draggables[1].style.display = "block";
+			this.wilson.draggables.draggables[2].style.display = "none";
+		}
+		
+		else if (index === 1)
+		{
+			this.bake_coefficients = this.riley_coefficients;
+			
+			this.wilson.draggables.draggables[1].style.display = "none";
+			this.wilson.draggables.draggables[2].style.display = "none";
+		}
+		
+		else if (index === 2)
+		{
+			this.bake_coefficients = this.grandma_special_coefficients;
+			
+			this.wilson.draggables.draggables[1].style.display = "block";
+			this.wilson.draggables.draggables[2].style.display = "block";
+		}
+	}
 	
 	
 	
@@ -535,6 +623,7 @@ class QuasiFuchsianGroups extends Applet
 	{
 		this.wilson.draggables.add(2, 0);
 		this.wilson.draggables.add(2, 0);
+		this.wilson.draggables.add(2, -2);
 		
 		window.requestAnimationFrame(this.draw_frame.bind(this));
 	}
