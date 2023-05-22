@@ -134,8 +134,6 @@
 	<script>
 		DEBUG = true;
 		
-		(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
-		
 		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")
 		{
 			Site.load(Page.url.replace("index.html", "").replace("src.html", ""));
