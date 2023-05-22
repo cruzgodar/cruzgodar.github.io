@@ -18,7 +18,7 @@
 	
 	setTimeout(() =>
 	{
-		document.body.querySelectorAll(".wilson-draggables-container, .wilson-draggable").forEach(element => element.classList.add("lapsa-interactable"));
+		document.body.querySelectorAll(".wilson-draggable").forEach(element => element.classList.add("lapsa-interactable"));
 	}, 500);
 	
 	
