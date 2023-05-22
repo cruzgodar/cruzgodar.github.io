@@ -259,7 +259,7 @@
 								end_1_y = Math.random() * 2 - 1;
 								end_2_y = Math.random() * 2 - 1;
 								
-								frame = -30;
+								frame = -10;
 							}
 							
 							if (frame >= 0)
@@ -277,7 +277,7 @@
 							frame++;
 							
 							//Extremely gross and hard-coded --- I'll add a solution for this sort of thing eventually.
-							if (lapsa.currentSlide === 18)
+							if (lapsa.currentSlide === 17)
 							{
 								applet.on_drag_draggable();
 								
