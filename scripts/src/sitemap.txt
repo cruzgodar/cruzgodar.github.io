@@ -63,7 +63,7 @@ home Cruz Godar
 			notes/9-systems-and-inverses Section 9: Systems and Inverses
 			notes/10-determinants-and-eigenthings Section 10: Determinants and Eigenthings
 			notes/11-intro-to-systems Section 11: Intro to Systems of DEs
-			notes/12-complex-and-repeated-eigenvalues Section 12: Complex and Repeated Eigenvalues
+			notes/12-complex-and-repeated-eigenvectors Section 12: Complex and Repeated Eigenvectors
 		
 		uo/253 Math 253
 			notes/0-calc-2-review Section 0: Calculus I and II Review

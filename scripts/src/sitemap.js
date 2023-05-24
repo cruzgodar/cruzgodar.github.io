@@ -520,7 +520,7 @@ Site.sitemap =
 			"/teaching/uo/256/notes/9-systems-and-inverses/",
 			"/teaching/uo/256/notes/10-determinants-and-eigenthings/",
 			"/teaching/uo/256/notes/11-intro-to-systems/",
-			"/teaching/uo/256/notes/12-complex-and-repeated-eigenvalues/"
+			"/teaching/uo/256/notes/12-complex-and-repeated-eigenvectors/"
 		]
 	},
 		
@@ -632,9 +632,9 @@ Site.sitemap =
 		"children": []
 	},
 	
-	"/teaching/uo/256/notes/12-complex-and-repeated-eigenvalues/":
+	"/teaching/uo/256/notes/12-complex-and-repeated-eigenvectors/":
 	{
-		"title": "Section 12: Complex and Repeated Eigenvalues",
+		"title": "Section 12: Complex and Repeated Eigenvectors",
 		
 		"parent": "/teaching/uo/256/",
 		

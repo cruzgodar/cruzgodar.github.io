@@ -114,7 +114,7 @@ With individual DEs, we were able to extract two fundamental solutions immediate
 		&= e^{2t}(\cos(t) + i\sin(t)) \left( \left[ \begin{array}{c} 1 \\ 2 \end{array} \right] + i\left[ \begin{array}{c} - 1 \\ 0 \end{array} \right] \right).
 	$$
 	
-	The amount of terms can seem a little off-putting, but we actually want to foil this out --- that way, we can completely separate the real and imaginary parts.
+	The number of terms can seem a little off-putting, but we actually want to foil this out --- that way, we can completely separate the real and imaginary parts.
 	
 	$$
 		\mathbf{p} &= e^{2t}\cos(t)\left[ \begin{array}{c} 1 \\ 2 \end{array} \right] + ie^{2t}\cos(t)\left[ \begin{array}{c} - 1 \\ 0 \end{array} \right] + ie^{2t}\sin(t)\left[ \begin{array}{c} 1 \\ 2 \end{array} \right] + i^2e^{2t}\sin(t)\left[ \begin{array}{c} - 1 \\ 0 \end{array} \right]
@@ -210,25 +210,13 @@ So our metaphor of eigenvalues working like roots of the characteristic equation
 
 ### def generalized eigenvector
 	
-	Let $\mathbf{A}$ be an $n \times n$ matrix. An eigenvector of $\mathbf{A}$ is a vector $\mathbf{v}$ with $(\mathbf{A} - \lambda\mathbf{I})\mathbf{v} = \mathbf{0}$. In comparison, a **generalized eigenvector** of $\mathbf{A}$ is a vector $\mathbf{w}$ with
-	
-	$$
-		(\mathbf{A} - \lambda\mathbf{I})^k\mathbf{w} = \mathbf{0}
-	$$
-	
-	for some positive integer $k$. Once we've found an eigenvector $\mathbf{v}$, we can find its generalized eigenvectors (if there are any) by solving
+	Let $\mathbf{A}$ be an $n \times n$ matrix and let $\mathbf{v}$ be an eigenvector with eigenvalue $\lambda$. A **generalized eigenvector** of $\mathbf{v}$ is a vector $\mathbf{w}$ with
 	
 	$$
 		(\mathbf{A} - \lambda\mathbf{I})\mathbf{w} = \mathbf{v}.
 	$$
 	
-	We can find the generalized eigenvectors of $\mathbf{w}$ by solving
-	
-	$$
-		(\mathbf{A} - \lambda\mathbf{I})\mathbf{u} = \mathbf{w},
-	$$
-	
-	and so on. There are always $n$ linearly independent generalized eigenvectors of an $n \times n$ matrix.
+	We can also find the generalized eigenvectors of $\mathbf{w}$, and so on. There are always $n$ linearly independent generalized eigenvectors of an $n \times n$ matrix, and the number of generalized eigenvectors corresponding to a single eigenvalue $\lambda$ is the number of times it appears as a root in the characteristic polynomial.
 	
 ###
 
@@ -272,19 +260,157 @@ Without a use for them, it doesn't make much sense to find generalized eigenvect
 
 ### thm solving a system with repeated eigenvectors
 	
-	If the matrix $\mathbf{A}$ has fewer than $n$ different eigenvectors, then the remaining fundamental solutions to $\mathbf{x}' = \mathbf{Ax}$ are of the form
+	Suppose the matrix $\mathbf{A}$ has an eigenvector $\mathbf{v}$ that is repeated once --- i.e. the eigenvalue $\lambda$ appears as a root of the characteristic polynomial twice but there is only one eigenvector $\mathbf{v}$ corresponding to it. Then the second fundamental solution to $\mathbf{x}' = \mathbf{Ax}$ with eigenvalue $\lambda$ is
 	
 	$$
-		e^{\lambda t}\mathbf{w},
+		te^{\lambda t} \mathbf{v} + e^{\lambda t}\mathbf{w},
 	$$
 	
-	where $\mathbf{w}$ is a generalized eigenvector of $\mathbf{A}$.
+	where $\mathbf{w}$ is the generalized eigenvector of $\mathbf{v}$.
 	
 ###
 
 
 
-So: whenever we have an $n \times n$ matrix with fewer than $n$ eigenvectors, we go through the list of eigenvectors we do have and solve $(\mathbf{A} - \lambda \mathbf{I})\mathbf{w} = \mathbf{v}$ for each $\mathbf{v}$ and $\lambda$. If necessary, we repeat this with all the vectors $\mathbf{w}$ we find, and so on, until we have $n$ vectors total.
+This theorem tells us how to handle an eigenvector repeated once, but no more than that: if it's repeated three or more times, there is a similar form involving increasing powers of $t$, factorials in denominators, and chains of generalized eigenvalues. This actually isn't all that complicated, but the examples required to see it in action are $4 \times 4$ at minimum, and so we'll be leaving them out of the course.
+
+When an eigenvalue $\lambda$ appears twice in the characteristic polynomial, but row reducing $\mathbf{A} - \lambda \mathbf{I}$ only has one free parameter, then we find an eigenvector $\mathbf{v}$ and row reduce $\mathbf{A} - \lambda \mathbf{I}$ again --- but this time we augment it with $\mathbf{v}$, not $\mathbf{0}$. We'll find a generalized eigenvector $\mathbf{w}$, and then we can plug that into the previous theorem. Let's see this in action:
+
+
+
+### ex a repeated eigenvector
+	
+	The heating in University hall is horribly broken (still). The basement, first floor, and second floor are heated and cooled at varying degrees, and since the floors are adjacent, the temperature on one floor affects the temperature on others. Specifically, if the temperatures are $x_1$, $x_2$, and $x_3$, then their rates of change are given by
+	
+	$$
+		x_1' &= 6x_1 - 2x_2 + 3x_3
+		
+		x_2' &= -7x_1 + 7x_2 - 7x_3
+		
+		x_3' &= -10x_1 + 6x_2 - 7x_3.
+	$$
+	
+	Find the general solution for $\mathbf{x}$.
+	
+	We'll get started by turning the system into a matrix as usual:
+	
+	$$
+		\mathbf{x}' = \left[ \begin{array}{ccc} 6 & -2 & 3 \\ -7 & 7 & -7 \\ -10 & 6 & -7 \end{array} \right]\mathbf{x}.
+	$$
+	
+	Calling that matrix $\mathbf{A}$, let's find its eigenvalues.
+	
+	$$
+		\det \left[ \begin{array}{ccc} 6 - \lambda & -2 & 3 \\ -7 & 7 - \lambda & -7 \\ -10 & 6 & -7 - \lambda \end{array} \right] &= 0
+		
+		(6 - \lambda)((7 - \lambda)(-7 - \lambda) + 42) + 2((-7)(-7 - \lambda) - 70) + 3(-42 + 10(7 - \lambda)) &= 0
+		
+		(6 - \lambda)(-7 + \lambda^2) + 2(-21 + 7\lambda) + 3(28 - 10\lambda) &= 0
+		
+		-42 + 7\lambda + 6\lambda^2 - \lambda^3 - 42 + 14\lambda + 84 - 30\lambda &= 0
+		
+		-\lambda^3 + 6\lambda^2 - 9\lambda &= 0
+		
+		-\lambda(\lambda - 3)^2 &= 0
+		
+		\lambda = 0, \quad \lambda = 3, \quad \lambda &= 3
+	$$
+	
+	In total, we expect one eigenvector with eigenvalue $0$ and two with eigenvalue $3$. Let's see how that pans out! With $\lambda = 0$, we have
+	
+	$$
+		\left[ \begin{array}{ccc|c} 6 & -2 & 3 & 0 \\ -7 & 7 & -7 & 0 \\ -10 & 6 & -7 & 0 \end{array} \right] &
+		
+		\left[ \begin{array}{ccc|c} 6 & -2 & 3 & 0 \\ -1 & 5 & -4 & 0 \\ -10 & 6 & -7 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe \mathbf{r_1}
+		
+		\left[ \begin{array}{ccc|c} -1 & 5 & -4 & 0 \\ 6 & -2 & 3 & 0 \\ -10 & 6 & -7 & 0 \end{array} \right] & \qquad \text{swap } \mathbf{r_1}, \mathbf{r_2}
+		
+		\left[ \begin{array}{ccc|c} -1 & 5 & -4 & 0 \\ 0 & 28 & -21 & 0 \\ 0 & -44 & 33 & 0 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_2} \pe 6 \mathbf{r_1} \\ \mathbf{r_3} \pe -10 \mathbf{r_1} \end{array}
+		
+		\left[ \begin{array}{ccc|c} 1 & -5 & 4 & 0 \\ 0 & 4 & -3 & 0 \\ 0 & 4 & -3 & 0 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_1} \te -1 \\ \mathbf{r_2} \te \frac{1}{7} \\ \mathbf{r_3} \te -\frac{1}{11} \end{array}
+		
+		\left[ \begin{array}{ccc|c} 1 & -5 & 4 & 0 \\ 0 & 4 & -3 & 0 \\ 0 & 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_3} \pe -\mathbf{r_2}
+	$$
+	
+	In the interest of avoiding fractions, let's multiply the rows to get a common multiple rather than dividing them.
+	
+	$$
+		\left[ \begin{array}{ccc|c} 4 & -20 & 16 & 0 \\ 0 & 4 & -3 & 0 \\ 0 & 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_1} \te 4
+		
+		\left[ \begin{array}{ccc|c} 4 & 0 & 1 & 0 \\ 0 & 4 & -3 & 0 \\ 0 & 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_1} \pe 5\mathbf{r_2}
+	$$
+	
+	In total, $4v_1 = -v_3$ and $4v_2 = 3v_3$. Choosing $v_3 = 4$ (again in the interest of minimizing fractions) results in $v_1 = -1$ and $v_2 = 3$, so our first eigenvector is
+	
+	$$
+		\mathbf{v} = \left[ \begin{array}{c} -1 \\ 3 \\ 4 \end{array} \right].
+	$$
+	
+	Only one eigenvector there, but that's what we were expecting: since $\lambda = 0$ only appears once in the characteristic polynomial, it can have at most one eigenvector. Now let's take a look at $\lambda = 3$:
+	
+	$$
+		\left[ \begin{array}{ccc|c} 3 & -2 & 3 & 0 \\ -7 & 4 & -7 & 0 \\ -10 & 6 & -10 & 0 \end{array} \right] &
+		
+		\left[ \begin{array}{ccc|c} 3 & -2 & 3 & 0 \\ -1 & 0 & -1 & 0 \\ -10 & 6 & -10 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe 2\mathbf{r_1}
+		
+		\left[ \begin{array}{ccc|c} -1 & 0 & -1 & 0 \\ 3 & -2 & 3 & 0 \\ -10 & 6 & -10 & 0 \end{array} \right] & \qquad \text{swap } \mathbf{r_1}, \mathbf{r_2}
+		
+		\left[ \begin{array}{ccc|c} -1 & 0 & -1 & 0 \\ 0 & -2 & 0 & 0 \\ 0 & 6 & 0 & 0 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_2} \pe 3\mathbf{r_1} \\ \mathbf{r_3} \pe -10\mathbf{r_1} \end{array}
+		
+		\left[ \begin{array}{ccc|c} 1 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 1 & 0 & 0 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_1} \te -1 \\ \mathbf{r_2} \te -\frac{1}{2} \\ \mathbf{r_3} \te \frac{1}{6} \end{array}
+		
+		\left[ \begin{array}{ccc|c} 1 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_3} \pe -\mathbf{r_2}
+	$$
+	
+	As equations, $v_1 = -v_3$ and $v_2 = 0$. There's only one free parameter here, so if we choose $v_3 = 1$, we get an eigenvector of
+	
+	$$
+		\mathbf{v} = \left[ \begin{array}{c} -1 \\ 0 \\ 1 \end{array} \right].
+	$$
+	
+	But we're supposed to have two eigenvectors corresponding to $\lambda = 3$! That means there should be a generalized eigenvector hiding here: to find it, we take the same matrix we just row reduced, but this time, we augment it with this vector. Thankfully, all the steps are the same, so we just need to keep track of the right side.
+	
+	$$
+		\left[ \begin{array}{ccc|c} 3 & -2 & 3 & -1 \\ -7 & 4 & -7 & 0 \\ -10 & 6 & -10 & 1 \end{array} \right] &
+		
+		\left[ \begin{array}{ccc|c} 3 & -2 & 3 & -1 \\ -1 & 0 & -1 & -2 \\ -10 & 6 & -10 & 1 \end{array} \right] & \qquad \mathbf{r_2} \pe 2\mathbf{r_1}
+		
+		\left[ \begin{array}{ccc|c} -1 & 0 & -1 & -2 \\ 3 & -2 & 3 & -1 \\ -10 & 6 & -10 & 1 \end{array} \right] & \qquad \text{swap } \mathbf{r_1}, \mathbf{r_2}
+		
+		\left[ \begin{array}{ccc|c} -1 & 0 & -1 & -2 \\ 0 & -2 & 0 & -7 \\ 0 & 6 & 0 & 21 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_2} \pe 3\mathbf{r_1} \\ \mathbf{r_3} \pe -10\mathbf{r_1} \end{array}
+		
+		\left[ \begin{array}{ccc|c} 1 & 0 & 1 & 2 \\ 0 & 1 & 0 & \frac{7}{2} \\ 0 & 1 & 0 & \frac{7}{2} \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_1} \te -1 \\ \mathbf{r_2} \te -\frac{1}{2} \\ \mathbf{r_3} \te \frac{1}{6} \end{array}
+		
+		\left[ \begin{array}{ccc|c} 1 & 0 & 1 & 2 \\ 0 & 1 & 0 & \frac{7}{2} \\ 0 & 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_3} \pe -\mathbf{r_2}
+	$$
+	
+	This time, $v_1 = 2 - v_3$ and $v_2 = \frac{7}{2}$. With $v_3 = 1$, we get
+	
+	$$
+		\mathbf{v} = \left[ \begin{array}{c} 1 \\ \frac{7}{2} \\ 1 \end{array} \right].
+	$$
+	
+	Now we're ready to go. The first two fundamental solutions work as normal, but the third is constructed using the previous theorem.
+	
+	$$
+		\mathbf{x} &= c_1e^{0t} \left[ \begin{array}{c} -1 \\ 3 \\ 4 \end{array} \right] + c_2e^{3t} \left[ \begin{array}{c} -1 \\ 0 \\ 1 \end{array} \right] + c_3e^{3t} \left( t\left[ \begin{array}{c} -1 \\ 0 \\ 1 \end{array} \right] + \left[ \begin{array}{c} 1 \\ \frac{7}{2} \\ 1 \end{array} \right] \right)
+		
+		&= c_1 \left[ \begin{array}{c} -1 \\ 3 \\ 4 \end{array} \right] + c_2e^{3t} \left[ \begin{array}{c} -1 \\ 0 \\ 1 \end{array} \right] + c_3e^{3t} \left[ \begin{array}{c} -t + 1 \\ \frac{7}{2} \\ t + 1 \end{array} \right].
+	$$
+	
+###
+
+### exc a repeated eigenvector
+	
+	Solve the system of DEs given by
+	
+	$$
+		x' &= 5x + y
+		
+		y' &= -x + 3y.
+	$$
+	
+###
 
 
 
