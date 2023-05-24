@@ -174,15 +174,117 @@ With individual DEs, we were able to extract two fundamental solutions immediate
 
 ## Repeated Eigenvalues
 
-In individual $n$th-order DEs, repeated roots of the characteristic equation were always a problem: we read off fundamental solutions directly from those roots. When eigenvalues of a matrix are repeated, though, the corresponding eigenvalues don't necessarily repeat. For example,
+In individual $n$th-order DEs, repeated roots of the characteristic equation were always a problem: we read off fundamental solutions directly from those roots. When eigenvalues of a matrix are repeated, though, the corresponding eigenvalues don't necessarily repeat. For example, let
 
 $$
-	A = \left[ \begin{array}{cc} 0 & -1 \\ 1 & -2 \end{array} \right]
+	\mathbf{A} = \left[ \begin{array}{cc} 0 & -1 \\ 1 & -2 \end{array} \right].
 $$
 
+Solving for the eigenvalues gives us $\lambda^2 + 2\lambda + 1 = 0$, so $\lambda = -1$. When we subtract it from the diagonal, we find
+
 $$
-	B = \left[ \begin{array}{cc} 0 & -1 \\ 1 & -2 \end{array} \right]
+	\left[ \begin{array}{cc|c} 1 & -1 & 0 \\ 1 & -1 & 0 \end{array} \right],
 $$
+
+so $v_1 = v_2$. Taking $v_2 = 1$, our single eigenvector is
+
+$$
+	\mathbf{v} = \left[ \begin{array}{c} 1 \\ 1 \end{array} \right].
+$$
+
+On the other hand,
+
+$$
+	B = \left[ \begin{array}{cc} -1 & 0 \\ 0 & -1 \end{array} \right]
+$$
+
+has a repeated eigenvalue of $\lambda = -1$, but when we solve for the eigenvectors, we get a matrix of all zeros, so there are two free parameters. When we can choose more than one entry of $\mathbf{v}$, a good strategy is to choose one of them to be one and the rest to be zero, and repeat for all of the entries. Taking $v_1 = 1$ and $v_2 = 0$, then $v_1 = 0$ and $v_2 = 1$, we get
+
+$$
+	\mathbf{v}_1 = \left[ \begin{array}{c} 1 \\ 0 \end{array} \right], \qquad \mathbf{v}_2 = \left[ \begin{array}{c} 0 \\ 1 \end{array} \right]. 
+$$
+
+So our metaphor of eigenvalues working like roots of the characteristic equation isn't quite one-to-one: repeated eigenvalues aren't always a problem. When there are still $n$ different eigen*vectors*, we don't need to do anything, but when there actually are fewer, we'll need to work to get more solutions. The technical details are similar to reduction of order, but they result in a rather different solution. To get started, we'll need a slight generalization of the notion of an eigenvector. Fittingly enough, these are called
+
+
+
+### def generalized eigenvector
+	
+	Let $\mathbf{A}$ be an $n \times n$ matrix. An eigenvector of $\mathbf{A}$ is a vector $\mathbf{v}$ with $(\mathbf{A} - \lambda\mathbf{I})\mathbf{v} = \mathbf{0}$. In comparison, a **generalized eigenvector** of $\mathbf{A}$ is a vector $\mathbf{w}$ with
+	
+	$$
+		(\mathbf{A} - \lambda\mathbf{I})^k\mathbf{w} = \mathbf{0}
+	$$
+	
+	for some positive integer $k$. Once we've found an eigenvector $\mathbf{v}$, we can find its generalized eigenvectors (if there are any) by solving
+	
+	$$
+		(\mathbf{A} - \lambda\mathbf{I})\mathbf{w} = \mathbf{v}.
+	$$
+	
+	We can find the generalized eigenvectors of $\mathbf{w}$ by solving
+	
+	$$
+		(\mathbf{A} - \lambda\mathbf{I})\mathbf{u} = \mathbf{w},
+	$$
+	
+	and so on. There are always $n$ linearly independent generalized eigenvectors of an $n \times n$ matrix.
+	
+###
+
+
+
+As an opening example, let's return to our previous matrix with a repeated eigenvector:
+
+$$
+	\mathbf{A} = \left[ \begin{array}{cc} 0 & -1 \\ 1 & -2 \end{array} \right].
+$$
+
+We found that the single eigenvector was
+
+$$
+	\mathbf{v} = \left[ \begin{array}{c} 11 \\ 1 \end{array} \right],
+$$
+
+and its eigenvalue was $\lambda = -1$. To find its generalized eigenvectors, we solve
+
+$$
+	(\mathbf{A} - \lambda\mathbf{I})\mathbf{w} = \mathbf{v},
+$$
+
+which means row reducing the matrix
+
+$$
+	\left[ \begin{array}{cc|c} 1 & -1 & 1 \\ 1 & -1 & 1 \end{array} \right].
+$$
+
+The bottom row reduces to all zeros, so we just have $w_1 - w_2 = 1$. Therefore, $w_1 = w_2 + 1$, so if we take $w_2 = 0$, then our generalized eigenvector is
+
+$$
+	\mathbf{w} = \left[ \begin{array}{c} 1 \\ 0 \end{array} \right].
+$$
+
+So even though $(\mathbf{A} - (-1)\mathbf{I})\mathbf{w} \neq \mathbf{0}$, it is the case that $(\mathbf{A} - (-1)\mathbf{I})^2\mathbf{w} = \mathbf{0}$. Continuing to try to generalize $\mathbf{w}$ results in no solutions at all, and so we've exhausted the list.
+
+Without a use for them, it doesn't make much sense to find generalized eigenvectors, but you might already see where we're going with this: they're exactly the tool we need to find missing fundamental solutions to a system of DEs.
+
+
+
+### thm solving a system with repeated eigenvectors
+	
+	If the matrix $\mathbf{A}$ has fewer than $n$ different eigenvectors, then the remaining fundamental solutions to $\mathbf{x}' = \mathbf{Ax}$ are of the form
+	
+	$$
+		e^{\lambda t}\mathbf{w},
+	$$
+	
+	where $\mathbf{w}$ is a generalized eigenvector of $\mathbf{A}$.
+	
+###
+
+
+
+So: whenever we have an $n \times n$ matrix with fewer than $n$ eigenvectors, we go through the list of eigenvectors we do have and solve $(\mathbf{A} - \lambda \mathbf{I})\mathbf{w} = \mathbf{v}$ for each $\mathbf{v}$ and $\lambda$. If necessary, we repeat this with all the vectors $\mathbf{w}$ we find, and so on, until we have $n$ vectors total.
 
 
 
