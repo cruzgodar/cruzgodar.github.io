@@ -16,7 +16,7 @@ class VectorField extends Applet
 	
 	dt = .0075;
 	
-	lifetime = 255;
+	lifetime = 100;
 	
 	last_timestamp = -1;
 	
@@ -212,6 +212,8 @@ class VectorField extends Applet
 			
 			uniform sampler2D u_texture;
 			
+			uniform float max_brightness;
+			
 			vec3 hsv2rgb(vec3 c)
 			{
 				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
@@ -223,7 +225,7 @@ class VectorField extends Applet
 			{
 				vec3 v = texture2D(u_texture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0).xyz;
 				
-				gl_FragColor = vec4(hsv2rgb(vec3(v.y, v.z, v.x)), 1.0);
+				gl_FragColor = vec4(hsv2rgb(vec3(v.y, v.z, v.x / max_brightness)), 1.0);
 			}
 		`;
 		
@@ -257,6 +259,13 @@ class VectorField extends Applet
 			
 			
 			
+			use_draggables: true,
+			
+			draggables_mousemove_callback: this.on_drag_draggable.bind(this),
+			draggables_touchmove_callback: this.on_drag_draggable.bind(this),
+			
+			
+			
 			mousedown_callback: this.on_grab_canvas.bind(this),
 			touchstart_callback: this.on_grab_canvas.bind(this),
 			
@@ -272,10 +281,20 @@ class VectorField extends Applet
 		
 		this.wilson = new Wilson(canvas, options);
 		
+		this.wilson.render.init_uniforms(["max_brightness"]);
+		
+		this.wilson.gl.uniform1f(this.wilson.uniforms["max_brightness"], this.lifetime / 255);
+		
 		this.wilson.render.create_framebuffer_texture_pair(this.wilson.gl.UNSIGNED_BYTE);
 		
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
+		
+		
+		
+		this.wilson.draggables.add(0, 0);
+		
+		this.wilson.draggables.draggables[0].style.display = "none";
 		
 		
 		
@@ -295,7 +314,7 @@ class VectorField extends Applet
 	
 	
 	
-	run(generating_code, resolution = 500, max_particles = 5000, dt = .0075, world_center_x = 0, world_center_y = 0, zoom_level = .6515)
+	run(generating_code, resolution = 500, max_particles = 10000, dt = .0075, lifetime = 100, world_center_x = 0, world_center_y = 0, zoom_level = .6515)
 	{
 		const frag_shader_source_update_base = `
 			precision highp float;
@@ -306,6 +325,8 @@ class VectorField extends Applet
 			uniform sampler2D u_texture;
 			
 			uniform float dt;
+			
+			uniform vec2 draggable_arg;
 			
 			
 			
@@ -425,42 +446,64 @@ class VectorField extends Applet
 		this.wilson_update.render.load_new_shader(frag_shader_source_update_s);
 		this.wilson_update.render.load_new_shader(frag_shader_source_update_s_2);
 		
-		this.wilson_update.render.init_uniforms(["dt"], 0);
-		this.wilson_update.render.init_uniforms(["dt"], 1);
-		this.wilson_update.render.init_uniforms(["dt"], 2);
-		this.wilson_update.render.init_uniforms(["dt"], 3);
-		this.wilson_update.render.init_uniforms(["dt"], 4);
+		this.wilson_update.render.init_uniforms(["dt", "draggable_arg"], 0);
+		this.wilson_update.render.init_uniforms(["dt", "draggable_arg"], 1);
+		this.wilson_update.render.init_uniforms(["dt", "draggable_arg"], 2);
+		this.wilson_update.render.init_uniforms(["dt", "draggable_arg"], 3);
+		this.wilson_update.render.init_uniforms(["dt", "draggable_arg"], 4);
 		
 		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[0]);
 		this.wilson_update.gl.uniform1f(this.wilson_update.uniforms["dt"][0], this.dt);
+		this.wilson_update.gl.uniform2fv(this.wilson_update.uniforms["draggable_arg"][0], this.wilson.draggables.world_coordinates[0]);
 		
 		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[1]);
 		this.wilson_update.gl.uniform1f(this.wilson_update.uniforms["dt"][1], this.dt);
+		this.wilson_update.gl.uniform2fv(this.wilson_update.uniforms["draggable_arg"][1], this.wilson.draggables.world_coordinates[0]);
 		
 		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[2]);
 		this.wilson_update.gl.uniform1f(this.wilson_update.uniforms["dt"][2], this.dt);
+		this.wilson_update.gl.uniform2fv(this.wilson_update.uniforms["draggable_arg"][2], this.wilson.draggables.world_coordinates[0]);
 		
 		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[3]);
 		this.wilson_update.gl.uniform1f(this.wilson_update.uniforms["dt"][3], this.dt);
+		this.wilson_update.gl.uniform2fv(this.wilson_update.uniforms["draggable_arg"][3], this.wilson.draggables.world_coordinates[0]);
 		
 		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[4]);
 		this.wilson_update.gl.uniform1f(this.wilson_update.uniforms["dt"][4], this.dt);
+		this.wilson_update.gl.uniform2fv(this.wilson_update.uniforms["draggable_arg"][4], this.wilson.draggables.world_coordinates[0]);
 		
-		this.generate_new_field(resolution, max_particles, dt, world_center_x, world_center_y, zoom_level);
+		
+		
+		if (generating_code.indexOf("draggable_arg") !== -1)
+		{
+			this.wilson.draggables.draggables[0].style.display = "block";
+		}
+		
+		else
+		{
+			this.wilson.draggables.draggables[0].style.display = "none";
+		}
+		
+		
+		
+		this.generate_new_field(resolution, max_particles, dt, lifetime, world_center_x, world_center_y, zoom_level);
 	}
 	
 	
 	
 	
-	generate_new_field(resolution = this.resolution, max_particles = this.max_particles, dt = this.dt, world_center_x = this.wilson.world_center_x, world_center_y = this.wilson.world_center_y, zoom_level = this.zoom_level)
+	generate_new_field(resolution = this.resolution, max_particles = this.max_particles, dt = this.dt, lifetime = this.lifetime, world_center_x = this.wilson.world_center_x, world_center_y = this.wilson.world_center_y, zoom_level = this.zoom_level)
 	{
 		this.resolution = resolution;
 		this.max_particles = max_particles;
 		this.dt = dt;
+		this.lifetime = lifetime;
 		
 		this.wilson.world_center_x = world_center_x;
 		this.wilson.world_center_y = world_center_y;
 		this.zoom_level = zoom_level;
+		
+		this.wilson.gl.uniform1f(this.wilson.uniforms["max_brightness"], this.lifetime / 255);
 		
 		this.num_particles = 0;
 		
@@ -841,6 +884,8 @@ class VectorField extends Applet
 		this.draw_field();
 		
 		this.wilson_dim.gl.useProgram(this.wilson_dim.render.shader_programs[0]);
+		
+		this.wilson.draggables.recalculate_locations();
 	}
 	
 	
@@ -870,6 +915,8 @@ class VectorField extends Applet
 		
 		this.wilson_dim.gl.useProgram(this.wilson_dim.render.shader_programs[0]);
 		
+		this.wilson.draggables.recalculate_locations();
+		
 		
 		//When we zoom out, we also cull the particles a little.
 		if (zoom_delta > 0)
@@ -884,6 +931,26 @@ class VectorField extends Applet
 				}
 			}
 		}
+	}
+	
+	
+	
+	on_drag_draggable(active_draggable, x, y, event)
+	{
+		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[0]);
+		this.wilson_update.gl.uniform2f(this.wilson_update.uniforms["draggable_arg"][0], x, y);
+		
+		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[1]);
+		this.wilson_update.gl.uniform2f(this.wilson_update.uniforms["draggable_arg"][1], x, y);
+		
+		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[2]);
+		this.wilson_update.gl.uniform2f(this.wilson_update.uniforms["draggable_arg"][2], x, y);
+		
+		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[3]);
+		this.wilson_update.gl.uniform2f(this.wilson_update.uniforms["draggable_arg"][3], x, y);
+		
+		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[4]);
+		this.wilson_update.gl.uniform2f(this.wilson_update.uniforms["draggable_arg"][4], x, y);
 	}
 	
 	
