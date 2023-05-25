@@ -42,7 +42,8 @@
 		"curl": "(-y, x)",
 		"clockwork": "(sin(y), sin(x + PI))",
 		"df": "(1.0, sin(y) / (x*x + 1.0))",
-		"cross": "(sin(y / 2.5), tan(x / 2.5))"
+		"cross": "(sin(y / 2.5), tan(x / 2.5))",
+		"draggables": "(draggable_arg.x * x, x + draggable_arg.y * y)"
 	};
 	
 	const example_selector_dropdown_element = Page.element.querySelector("#example-selector-dropdown");

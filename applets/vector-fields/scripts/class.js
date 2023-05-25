@@ -292,7 +292,7 @@ class VectorField extends Applet
 		
 		
 		
-		this.wilson.draggables.add(0, 0);
+		this.wilson.draggables.add(1, 0);
 		
 		this.wilson.draggables.draggables[0].style.display = "none";
 		
