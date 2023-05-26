@@ -1,10 +1,9 @@
 "use strict";
 
-class CalcudokuGenerator extends Applet
+class MagicCarpet extends Applet
 {
 	grid_size = null;
 	
-	grid = [];
 	cages = [];
 	cages_by_location = [];
 	
@@ -31,7 +30,7 @@ class CalcudokuGenerator extends Applet
 	
 	
 	
-	async run(grid_size, max_cage_size)
+	async run(grid_size)
 	{
 		if (this.canvas.style.opacity == 1)
 		{
@@ -41,8 +40,6 @@ class CalcudokuGenerator extends Applet
 		
 		
 		this.grid_size = grid_size;
-		
-		this.max_cage_size = max_cage_size;
 		
 		
 		
@@ -71,10 +68,10 @@ class CalcudokuGenerator extends Applet
 		
 		
 		
-		try {this.web_worker.terminate();}
+		try {this.web_worker.terminate()}
 		catch(ex) {}
 		
-		this.web_worker = new Worker(`/applets/calcudoku-generator/scripts/worker.${DEBUG ? "" : "min."}js`);
+		this.web_worker = new Worker(`/applets/magic-carpets/scripts/worker.${DEBUG ? "" : "min."}js`);
 		
 		this.workers.push(this.web_worker);
 		
@@ -84,11 +81,14 @@ class CalcudokuGenerator extends Applet
 		
 		this.web_worker.onmessage = (e) =>
 		{
-			this.grid = e.data[0];
-			this.cages = e.data[1];
-			this.cages_by_location = e.data[2];
+			console.log(e.data);
+			return;
+			/*
+			this.cages = e.data[0];
+			this.cages_by_location = e.data[1];
 			
 			this.draw_grid(false);
+			
 			
 			
 			if (this.animate_next_draw)
@@ -97,11 +97,12 @@ class CalcudokuGenerator extends Applet
 				
 				Page.Animate.change_opacity(this.canvas, 1, Site.opacity_animation_time);
 			}
+			*/
 		}
 		
 		const timeout_id_2 = setTimeout(() =>
 		{
-			this.web_worker.postMessage([this.grid_size, this.max_cage_size]);
+			this.web_worker.postMessage([this.grid_size]);
 		}, Site.opacity_animation_time);
 		
 		this.timeout_ids.push(timeout_id_2);
@@ -144,7 +145,7 @@ class CalcudokuGenerator extends Applet
 			this.wilson.ctx.fillRect(0, 200 * i + 4, canvas_size + 9, 2);
 		}
 		
-		
+		/*
 		
 		//Now draw the cages. For each cell of the grid, we draw a line with width 10 if an adjacent cell is part of a different cage.
 		for (let i = 0; i < this.grid_size; i++)
@@ -246,5 +247,6 @@ class CalcudokuGenerator extends Applet
 			
 			this.wilson.ctx.fillText(label, 200 * top_left_cell[1] + 15, 200 * top_left_cell[0] + font_size + 5);
 		}
+		*/
 	}
 }

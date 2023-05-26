@@ -1,0 +1,21 @@
+#canvas-container
+{
+	width: 80%;
+	margin: 0 auto;
+}
+
+#output-canvas
+{
+	width: 100%;
+	opacity: 0;
+}
+
+
+
+@media (min-aspect-ratio: 1/1)
+{
+	#output-canvas
+	{	
+		width: 100%;
+	}
+}

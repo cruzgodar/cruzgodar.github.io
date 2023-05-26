@@ -36,7 +36,7 @@ Site.sitemap =
 		
 		"children":
 		[
-			"/applets/quasi-fuchsian-groups-2/",
+			"/applets/magic-carpets/",
 			"/applets/vector-fields/",
 			"/applets/plane-partitions/",
 			"/applets/quaternionic-julia-sets/",
@@ -76,9 +76,9 @@ Site.sitemap =
 		]
 	},
 		
-	"/applets/quasi-fuchsian-groups-2/":
+	"/applets/magic-carpets/":
 	{
-		"title": "Quasi-Fuchsian Groups",
+		"title": "Magic Carpets",
 		
 		"parent": "/applets/",
 		

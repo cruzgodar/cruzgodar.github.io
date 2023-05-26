@@ -16,7 +16,7 @@ class VectorField extends Applet
 	
 	dt = .0075;
 	
-	lifetime = 100;
+	lifetime = 64;
 	
 	last_timestamp = -1;
 	
@@ -314,7 +314,7 @@ class VectorField extends Applet
 	
 	
 	
-	run(generating_code, resolution = 500, max_particles = 10000, dt = .0075, lifetime = 100, world_center_x = 0, world_center_y = 0, zoom_level = .6515)
+	run(generating_code, resolution = 500, max_particles = 10000, dt = .0075, lifetime = 64, world_center_x = 0, world_center_y = 0, zoom_level = .6515)
 	{
 		const frag_shader_source_update_base = `
 			precision highp float;
