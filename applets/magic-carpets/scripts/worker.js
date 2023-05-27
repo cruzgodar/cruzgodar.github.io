@@ -104,7 +104,7 @@ function generate_magic_carpet()
 		
 		if (!expanded_a_cage || cages.length <= grid_size)
 		{
-			postMessage([cages]);
+			postMessage([cages.sort((a, b) => (b[3]*grid_size + b[2]) - (a[3]*grid_size + a[2]))]);
 			return;
 		}
 	}

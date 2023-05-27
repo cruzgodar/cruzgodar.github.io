@@ -24,6 +24,15 @@
 	
 	
 	
+	const draw_solution_button_element = Page.element.querySelector("#draw-solution-button");
+
+	draw_solution_button_element.addEventListener("click", () =>
+	{
+		applet.draw_solution();
+	});
+	
+	
+	
 	const grid_size_input_element = Page.element.querySelector("#grid-size-input");
 	
 	grid_size_input_element.addEventListener("keydown", e =>
