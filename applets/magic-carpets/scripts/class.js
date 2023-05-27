@@ -95,13 +95,13 @@ class MagicCarpet extends Applet
 		
 		
 		
-		//Draw the light gridlines (width 2).
+		//Draw the light gridlines (width 4).
 		if (!rectangles_only)
 		{
 			for (let i = 0; i <= this.grid_size; i++)
 			{
-				this.wilson.ctx.fillRect(this.cell_size * i + 4, 0, 2, canvas_size + 9);
-				this.wilson.ctx.fillRect(0, this.cell_size * i + 4, canvas_size + 9, 2);
+				this.wilson.ctx.fillRect(this.cell_size * i + 3, 0, 4, canvas_size + 9);
+				this.wilson.ctx.fillRect(0, this.cell_size * i + 3, canvas_size + 9, 4);
 			}
 		}
 		
