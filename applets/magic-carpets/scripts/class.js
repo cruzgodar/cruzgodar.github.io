@@ -54,14 +54,9 @@ class MagicCarpet extends Applet
 		
 		this.web_worker.onmessage = (e) =>
 		{
-			console.log(e.data);
-			return;
-			/*
 			this.cages = e.data[0];
-			this.cages_by_location = e.data[1];
 			
 			this.draw_grid(false);
-			*/
 		}
 		
 		this.web_worker.postMessage([this.grid_size, this.max_cage_size]);
@@ -104,108 +99,29 @@ class MagicCarpet extends Applet
 			this.wilson.ctx.fillRect(0, 200 * i + 4, canvas_size + 9, 2);
 		}
 		
-		/*
+		this.wilson.ctx.fillRect(0, 0, 200 * this.grid_size + 10, 10);
+		this.wilson.ctx.fillRect(0, 200 * this.grid_size, 200 * this.grid_size + 10, 10);
+		this.wilson.ctx.fillRect(0, 0, 10, 200 * this.grid_size + 10);
+		this.wilson.ctx.fillRect(200 * this.grid_size, 0, 10, 200 * this.grid_size + 10);
 		
-		//Now draw the cages. For each cell of the grid, we draw a line with width 10 if an adjacent cell is part of a different cage.
-		for (let i = 0; i < this.grid_size; i++)
-		{
-			for (let j = 0; j < this.grid_size; j++)
-			{
-				if (i === 0 || this.cages_by_location[i - 1][j] !== this.cages_by_location[i][j])
-				{
-					this.wilson.ctx.fillRect(200 * j, 200 * i, 210, 10);
-				}
-				
-				if (i === this.grid_size - 1 || this.cages_by_location[i + 1][j] !== this.cages_by_location[i][j])
-				{
-					this.wilson.ctx.fillRect(200 * j, 200 * (i + 1), 210, 10);
-				}
-				
-				if (j === 0 || this.cages_by_location[i][j - 1] !== this.cages_by_location[i][j])
-				{
-					this.wilson.ctx.fillRect(200 * j, 200 * i, 10, 210);
-				}
-				
-				if (j === this.grid_size - 1 || this.cages_by_location[i][j + 1] !== this.cages_by_location[i][j])
-				{
-					this.wilson.ctx.fillRect(200 * (j + 1), 200 * i, 10, 210);
-				}
-			}
-		}
-		
-		
+		this.wilson.ctx.font = "120px sans-serif";
 		
 		//Finally, draw the numbers.
 		for (let i = 0; i < this.cages.length; i++)
 		{
-			//Find the leftmost cell in the top row of the cage.
-			let top_left_cell = [this.grid_size, this.grid_size];
+			const row = this.cages[i][0] + this.cages[i][4];
+			const col = this.cages[i][1] + this.cages[i][5];
+			const entry = ` ${this.cages[i][2] * this.cages[i][3]} `;
 			
-			for (let j = 0; j < this.cages[i][2].length; j++)
+			if (entry.length === 3)
 			{
-				const row = this.cages[i][2][j][0];
-				const col = this.cages[i][2][j][1];
-				
-				if (row < top_left_cell[0])
-				{
-					top_left_cell = [row, col];
-				}
-				
-				else if (row === top_left_cell[0] && col < top_left_cell[1])
-				{
-					top_left_cell = [row, col];
-				}
-			}
-			
-			
-			
-			let label = "";
-			
-			if (this.cages[i][0] === "+")
-			{
-				label = this.cages[i][1] + "+";
-			}
-			
-			else if (this.cages[i][0] === "x")
-			{
-				label = this.cages[i][1] + "\u00D7";
-			}
-			
-			else if (this.cages[i][0] === "-")
-			{
-				label = this.cages[i][1] + "\u2013";
-			}
-			
-			else if (this.cages[i][0] === ":")
-			{
-				label = this.cages[i][1] + "\uA789";
+				this.wilson.ctx.fillText(entry, 200 * col + 39, 200 * row + 146);
 			}
 			
 			else
 			{
-				label = this.cages[i][1] + "";
+				this.wilson.ctx.fillText(entry, 200 * col, 200 * row + 146);
 			}
-			
-			
-			
-			let font_size = null;
-			
-			if (label.length <= 6)
-			{
-				this.wilson.ctx.font = "50px sans-serif";
-				
-				font_size = 50;
-			}
-			
-			else
-			{
-				this.wilson.ctx.font = (300 / label.length) + "px sans-serif";
-				
-				font_size = 300 / label.length;
-			}
-			
-			this.wilson.ctx.fillText(label, 200 * top_left_cell[1] + 15, 200 * top_left_cell[0] + font_size + 5);
 		}
-		*/
 	}
 }
