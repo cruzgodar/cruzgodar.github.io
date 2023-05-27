@@ -7,6 +7,8 @@ class MagicCarpet extends Applet
 	
 	cages = [];
 	
+	currently_drawing = false;
+	
 	web_worker = null;
 	
 	
@@ -24,16 +26,23 @@ class MagicCarpet extends Applet
 		};
 		
 		this.wilson = new Wilson(canvas, options);
+		
+		this.run();
 	}
 	
 	
 	
-	async run(grid_size, max_cage_size)
+	async run(grid_size = 6, max_cage_size = 12)
 	{
+		if (this.currently_drawing)
+		{
+			return;
+		}
+		
+		this.currently_drawing = true;
+		
 		this.grid_size = grid_size;
 		this.max_cage_size = max_cage_size;
-		
-		
 		
 		const canvas_size = this.grid_size * 200 + 9;
 		
@@ -64,7 +73,7 @@ class MagicCarpet extends Applet
 	
 	
 	
-	draw_grid(print_mode)
+	draw_grid(print_mode = false)
 	{
 		const canvas_size = this.grid_size * 200 + 9;
 		
@@ -79,15 +88,7 @@ class MagicCarpet extends Applet
 		{
 			this.wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
 			
-			if (Site.Settings.url_vars["theme"] === 1)
-			{
-				this.wilson.ctx.fillStyle = "rgb(192, 192, 192)";
-			}
-			
-			else
-			{
-				this.wilson.ctx.fillStyle = "rgb(64, 64, 64)";
-			}
+			this.wilson.ctx.fillStyle = Site.Settings.url_vars["theme"] === 1 ? "rgb(255, 255, 255)" : "rgb(0, 0, 0)";
 		}
 		
 		
@@ -111,6 +112,8 @@ class MagicCarpet extends Applet
 		{
 			this.draw_number(i);
 		}
+		
+		this.currently_drawing = false;
 	}
 	
 	draw_number(i)
@@ -132,38 +135,62 @@ class MagicCarpet extends Applet
 	
 	
 	
-	draw_solution()
+	draw_solution(rectangles_only = false)
 	{
-		const delay = 1000 / this.cages.length;
+		if (this.currently_drawing)
+		{
+			return;
+		}
+		
+		this.view_mode = -1;
+		
+		const canvas_size = this.grid_size * 200 + 9;
+		this.wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
+		
+		if (!rectangles_only)
+		{
+			this.draw_grid();
+		}
+		
+		const delay = 500 / this.cages.length;
 		
 		this.draw_cage(0, delay);
 	}
 	
 	
 	
-	draw_cage(index, delay)
+	draw_cage(index, delay, rectangles_only)
 	{
 		if (index === this.cages.length)
 		{
+			this.wilson.ctx.fillStyle = Site.Settings.url_vars["theme"] === 1 ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
+			
+			this.wilson.ctx.fillRect(0, 0, 200 * this.grid_size + 10, 10);
+			this.wilson.ctx.fillRect(0, 200 * this.grid_size, 200 * this.grid_size + 10, 10);
+			this.wilson.ctx.fillRect(0, 0, 10, 200 * this.grid_size + 10);
+			this.wilson.ctx.fillRect(200 * this.grid_size, 0, 10, 200 * this.grid_size + 10);
+			
+			this.currently_drawing = false;
+			
 			return;
 		}
 		
 		
 		
-		let rgb = this.wilson.utils.hsv_to_rgb(index / this.cages.length * 6/7, 1, .95);
+		let rgb = this.wilson.utils.hsv_to_rgb(index / this.cages.length * 6/7, 1, 1);
 		
-		this.wilson.ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, .1)`;
+		this.wilson.ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, .2)`;
 		
 		const row = this.cages[index][0] * 200;
 		const col = this.cages[index][1] * 200;
 		const height = this.cages[index][2] * 200;
 		const width = this.cages[index][3] * 200;
 		
-		this.wilson.ctx.fillRect(col + 5, row + 5, width, height);
+		this.wilson.ctx.fillRect(col + 10, row + 10, width - 10, height - 10);
 		
 		
 		
-		rgb = this.wilson.utils.hsv_to_rgb(index / this.cages.length * 6/7, 1, .7);
+		rgb = this.wilson.utils.hsv_to_rgb(index / this.cages.length * 6/7, 1, .9);
 		
 		this.wilson.ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`;
 		
@@ -178,20 +205,6 @@ class MagicCarpet extends Applet
 		this.wilson.ctx.fillRect(col + 10 - col_adjust, row + 10 - row_adjust, 10, height - 5 + height_adjust - height_adjust_2);
 		this.wilson.ctx.fillRect(col + width - 5 - col_adjust + width_adjust - width_adjust_2, row + 10 - row_adjust, 10, height - 5 + height_adjust - height_adjust_2);
 		this.wilson.ctx.fillRect(col + 10 - col_adjust + width_adjust, row + height - 5 - row_adjust + height_adjust - height_adjust_2, width - 5 - width_adjust_2, 10);
-		
-		
-		
-		if (Site.Settings.url_vars["theme"] === 1)
-		{
-			this.wilson.ctx.fillStyle = "rgb(192, 192, 192)";
-		}
-		
-		else
-		{
-			this.wilson.ctx.fillStyle = "rgb(64, 64, 64)";
-		}
-		
-		this.draw_number(index);
 		
 		
 		

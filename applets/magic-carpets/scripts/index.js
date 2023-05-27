@@ -33,6 +33,15 @@
 	
 	
 	
+	const draw_rectangles_button_element = Page.element.querySelector("#draw-rectangles-button");
+
+	draw_rectangles_button_element.addEventListener("click", () =>
+	{
+		applet.draw_solution(true);
+	});
+	
+	
+	
 	const grid_size_input_element = Page.element.querySelector("#grid-size-input");
 	
 	grid_size_input_element.addEventListener("keydown", e =>
