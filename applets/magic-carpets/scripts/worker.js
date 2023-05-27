@@ -23,7 +23,7 @@ onmessage = function(e)
 
 let grid_size = null;
 
-//Each element is of the form [top-left row, top-left col, width, height].
+//Each element is of the form [top-left row, top-left col, width, height, label row offset, label col offset].
 let cages = [];
 
 //This is a grid_size * grid_size array that holds the index of the cage that each cell is in.
@@ -82,9 +82,10 @@ function generate_magic_carpet()
 				}
 			}
 			
-			postMessage([cages, cages_by_location]);
+			print_grid();
+			
 			/*
-			num_solutions_found = solve_puzzle(cages);
+			num_solutions_found = solve_puzzle();
 			
 			//If this is no longer a unique solution, no problem! We'll just try a different cage next time. We'll just revert to our last uniquely-solvable grid and try again.
 			if (num_solutions_found !== 1)
@@ -117,6 +118,45 @@ function generate_magic_carpet()
 
 
 
+function print_grid()
+{
+	let string = "";
+	
+	let labels = new Array(grid_size);
+	
+	for (let i = 0; i < grid_size; i++)
+	{
+		labels[i] = new Array(grid_size);
+		
+		for (let j = 0; j < grid_size; j++)
+		{
+			labels[i][j] = 0;
+		}
+	}
+	
+	for (let i = 0; i < cages.length; i++)
+	{
+		const row = cages[i][0] + cages[i][4];
+		const col = cages[i][1] + cages[i][5];
+		
+		labels[row][col] = cages[i][2] * cages[i][3];
+	}
+	
+	for (let i = 0; i < grid_size; i++)
+	{
+		for (let j = 0; j < grid_size; j++)
+		{
+			string += `${labels[i][j] !== 0 ? labels[i][j] : " "} `;
+		}
+		
+		string += "\n";
+	}
+	
+	postMessage(string);
+}
+
+
+
 //Makes a grid_size * grid_size grid with all 1x1 rects.
 function initialize_grid()
 {
@@ -132,7 +172,7 @@ function initialize_grid()
 		
 		for (let j = 0; j < grid_size; j++)
 		{
-			cages[index] = [i, j, 1, 1];
+			cages[index] = [i, j, 1, 1, 0, 0];
 			cages_by_location[i][j] = index;
 			index++;
 		}
@@ -173,6 +213,8 @@ function expand_cage(cage_index)
 	const col = cage[1];
 	const height = cage[2];
 	const width = cage[3];
+	const row_offset = cage[4];
+	const col_offset = cage[5];
 	
 	//Cages only merge up and left.
 	let directions = [];
@@ -210,13 +252,26 @@ function expand_cage(cage_index)
 	
 	
 	
-	const direction = directions[Math.floor(Math.random() * 2)];
+	const direction = directions[Math.floor(Math.random() * directions.length)];
 	
 	const neighbor_index = cages_by_location[row - direction[0]][col - direction[1]];
+	
+	
+	
+	//There are two easy places to put the label: either we leave it where it was in the neighbor, or we leave it where it was in the merged cage.
+	if (Math.random() < .5)
+	{
+		cages[neighbor_index][4] = cages[neighbor_index][2] * direction[0] + row_offset;
+		cages[neighbor_index][5] = cages[neighbor_index][3] * direction[1] + col_offset;
+	}
+	
+	
 	
 	//This is a cute way of avoiding an if statement. If the column is the same but the row moved, then we want only the height to increase, and vice versa.
 	cages[neighbor_index][2] += height * direction[0];
 	cages[neighbor_index][3] += width * direction[1];
+	
+	
 	
 	//Now we need to remove any trace of the cage we were passed.
 	
@@ -240,179 +295,37 @@ function expand_cage(cage_index)
 	
 	return true;
 }
-/*
 
 
-function try_to_add_cage_to_cage(cage_to_destroy, cage_to_grow)
+
+//Returns the number of solutions to the current cage layout.
+function solve_puzzle()
 {
-	if (cages[cage_to_grow][2].length + cages[cage_to_destroy][2].length > max_cage_size)
+	let occupied_cage_locations = new Array(grid_size);
+	
+	for (let i = 0; i < grid_size; i++)
 	{
-		return false;
-	}
-	
-	
-	
-	//There are no problems if the new cage is an addition or multiplication cell, but there could be if it's subtraction or division.
-	
-	//This will be treated either as addition or multiplication.
-	if (cages[cage_to_grow][0] === "")
-	{
-		return true;
-	}
-	
-	
-	
-	if (cages[cage_to_grow][0] === "+")
-	{
-		return true;
-	}
-	
-	
-	
-	else if (cages[cage_to_grow][0] === "x")
-	{
-		return true;
-	}
-	
-	
-	
-	//The new cage sum must be less than or equal to twice the max digit.
-	else if (cages[cage_to_grow][0] === "-" && cages[cage_to_grow][4] + cages[cage_to_destroy][4] <= 2 * Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]))
-	{
-		return true;
-	}
-	
-	
-	
-	//This one is finnicky. Either:
-	//1. cage_to_destroy contains the new max digit, in which case the product of cage_to_grow must divide the quotient of cage_to_destroy.
-	//2. or cage_to_grow contains the new max digit, in which case the product of cage_to_destroy must divide the quotient of cage_to_grow.
-	//Now we don't have easy access to the quotient of cage_to_destroy, so what we'll do in both cases is take the max digit squared over the products of both cages multiplied together. If this division is remainderless, we're golden.
-	else if (cages[cage_to_grow][0] === ":")
-	{
-		const max_digit = Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]);
-		const total_product = cages[cage_to_grow][5] * cages[cage_to_destroy][5];
+		occupied_cage_locations[i] = new Array(grid_size);
 		
-		if ((max_digit * max_digit) % total_product === 0)
+		for (let j = 0; j < grid_size; j++)
 		{
-			return true;
+			occupied_cage_locations[i][j] = 0;
 		}
 	}
 	
-	return false;
+	return solve_puzzle_step(0, occupied_cages);
 }
 
-
-
-function add_cage_to_cage(cage_to_destroy, cage_to_grow)
+//Attempts to put a rectangle in all possible ways in cage_index.
+function solve_puzzle_step(cage_index, occupied_cage_locations)
 {
-	//The other operations aren't too bad, but if a cage tries to merge with a 1x1, we need to create a new operation.
-	if (cages[cage_to_grow][0] === "")
-	{
-		let possible_operations = ["+", "x"];
-		let possible_values = [
-			cages[cage_to_grow][1] + cages[cage_to_destroy][4],
-			cages[cage_to_grow][1] * cages[cage_to_destroy][5]
-		];
-		
-		
-		
-		const new_max_digit = Math.max(cages[cage_to_grow][1], cages[cage_to_destroy][3]);
-		
-		
-		
-		//Subtraction is only valid if the largest number is bigger than or equal to the sum of all the other numbers.
-		if (2 * new_max_digit >= cages[cage_to_grow][1] + cages[cage_to_destroy][4])
-		{
-			possible_operations.push("-");
-			
-			possible_values.push(2 * new_max_digit - (cages[cage_to_grow][1] + cages[cage_to_destroy][4]));
-		}
-		
-		
-		
-		//Division is only valid if every digit divides the max digit.
-		if ((new_max_digit * new_max_digit) % (cages[cage_to_grow][1] * cages[cage_to_destroy][5]) === 0)
-		{
-			possible_operations.push(":");
-			
-			possible_values.push((new_max_digit * new_max_digit) / (cages[cage_to_grow][1] * cages[cage_to_destroy][5]));
-		}
-		
-		
-		//Great. Now pick a random operation and apply it -- random, unless division is possible, in which case it gets a flat 50% chance since it's so rare.
-		
-		if (possible_operations.includes(":") && Math.random() < .5)
-		{
-			let operation_index = possible_operations.indexOf(":");
-			
-			cages[cage_to_grow][0] = possible_operations[operation_index];
-			cages[cage_to_grow][1] = possible_values[operation_index];
-		}
-		
-		else
-		{
-			let operation_index = Math.floor(Math.random() * possible_operations.length);
-			
-			cages[cage_to_grow][0] = possible_operations[operation_index];
-			cages[cage_to_grow][1] = possible_values[operation_index];
-		}
-	}
 	
-	
-	
-	else if (cages[cage_to_grow][0] === "+")
-	{
-		cages[cage_to_grow][1] += cages[cage_to_destroy][4];
-	}
-	
-	
-	
-	else if (cages[cage_to_grow][0] === "x")
-	{
-		cages[cage_to_grow][1] *= cages[cage_to_destroy][5];
-	}
-	
-	
-	
-	else if (cages[cage_to_grow][0] === "-")
-	{
-		cages[cage_to_grow][1] = 2 * Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]) - (cages[cage_to_grow][4] + cages[cage_to_destroy][4]);
-	}
-	
-	
-	
-	else if (cages[cage_to_grow][0] === ":")
-	{
-		const max_digit = Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]);
-		const total_product = cages[cage_to_grow][5] * cages[cage_to_destroy][5];
-		
-		cages[cage_to_grow][1] = (max_digit * max_digit) / total_product;
-	}
-	
-	
-	
-	cages[cage_to_grow][2] = cages[cage_to_grow][2].concat(cages[cage_to_destroy][2]);
-	
-	cages[cage_to_grow][3] = Math.max(cages[cage_to_grow][3], cages[cage_to_destroy][3]);
-	
-	cages[cage_to_grow][4] += cages[cage_to_destroy][4];
-	cages[cage_to_grow][5] *= cages[cage_to_destroy][5];
-	
-	
-	
-	for (let i = 0; i < cages[cage_to_destroy][2].length; i++)
-	{
-		const row = cages[cage_to_destroy][2][i][0];
-		const col = cages[cage_to_destroy][2][i][1];
-		
-		cages_by_location[row][col] = cage_to_grow;
-	}
 }
 
 
 
 //By default, we can't pass arrays to C functions. However, with the help of a library, we can pass 1D arrays, but not higher-dimensional ones. Therefore, we need to find a way to pass all of the cage data as a sequence of 1D arrays. Good news is, this isn't so bad.
+/*
 function wasm_solve_puzzle()
 {
 	//This contains the operations that each cage uses, where 0 corresponds to "", 1 to "+", 2 to "-", and so on.
@@ -459,20 +372,5 @@ function wasm_solve_puzzle()
 	
 	//With everything in place, we can now call the C function and let it do the heavy lifting. We'd be fine with using HEAPU8 for everything, except for the fact that cage_values can have entries that are quite large.
 	return ccallArrays("solve_puzzle", "number", ["number", "array", "array", "array", "array", "array", "array", "array"], [grid_size, cage_operations, cage_values, cage_lengths, cage_max_digits, cage_sums, cage_products, cages_by_location_flat], {heapIn: "HEAPU32"});
-}
-
-
-
-function pair_in_array(element, array)
-{
-	for (let i = 0; i < array.length; i++)
-	{
-		if (array[i][0] === element[0] && array[i][1] === element[1])
-		{
-			return i;
-		}
-	}
-	
-	return -1;
 }
 */
