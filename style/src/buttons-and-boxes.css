@@ -93,6 +93,7 @@
 .checkbox-row p
 {
 	width: auto;
+	text-align: left;
 }
 
 .checkbox-subtext

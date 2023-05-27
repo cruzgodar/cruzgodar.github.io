@@ -6,24 +6,16 @@ onmessage = function(e)
 {
 	grid_size = e.data[0];
 	max_cage_size = e.data[1];
-	
-	//importScripts("/applets/magic-carpets/scripts/solver.js");
+	unique_solution = e.data[2];
 	
 	generate_magic_carpet();
-	/*
-	Module["onRuntimeInitialized"] = function()
-	{
-		importScripts("/scripts/wasm-arrays.min.js");
-		
-		generate_magic_carpet();
-	};
-	*/
 };
 
 
 
 let grid_size = null;
 let max_cage_size = null;
+let unique_solution = null;
 
 //Each element is of the form [top-left row, top-left col, width, height, label row offset, label col offset].
 let cages = [];
@@ -80,24 +72,31 @@ function generate_magic_carpet()
 					}
 				}
 				
-				
-				num_solutions_found = solve_puzzle();
-				
-				//If this is no longer a unique solution, no problem! We'll just try a different cage next time. We'll just revert to our last uniquely-solvable grid and try again.
-				if (num_solutions_found !== 1)
+				if (unique_solution)
 				{
-					cages = JSON.parse(JSON.stringify(cages_backup));
-					cages_by_location = JSON.parse(JSON.stringify(cages_by_location_backup));
+					num_solutions_found = solve_puzzle();
 					
-					num_solutions_found = 1;
+					//If this is no longer a unique solution, no problem! We'll just try a different cage next time. We'll just revert to our last uniquely-solvable grid and try again.
+					if (num_solutions_found !== 1)
+					{
+						cages = JSON.parse(JSON.stringify(cages_backup));
+						cages_by_location = JSON.parse(JSON.stringify(cages_by_location_backup));
+						
+						num_solutions_found = 1;
+					}
+					
+					//Great! We just merged a cage, so we have a harder puzzle, but the solution is still unique. Now we can set a checkpoint here and keep going.
+					else
+					{	
+						expanded_a_cage = true;
+						cages_backup = JSON.parse(JSON.stringify(cages));
+						cages_by_location_backup = JSON.parse(JSON.stringify(cages_by_location));
+					}
 				}
 				
-				//Great! We just merged a cage, so we have a harder puzzle, but the solution is still unique. Now we can set a checkpoint here and keep going.
 				else
-				{	
+				{
 					expanded_a_cage = true;
-					cages_backup = JSON.parse(JSON.stringify(cages));
-					cages_by_location_backup = JSON.parse(JSON.stringify(cages_by_location));
 				}
 			}
 		}

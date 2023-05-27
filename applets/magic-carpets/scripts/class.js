@@ -4,10 +4,13 @@ class MagicCarpet extends Applet
 {
 	grid_size = null;
 	max_cage_size = null;
+	unique_solution = null;
 	
 	cages = [];
 	
 	currently_drawing = false;
+	
+	cell_size = 200;
 	
 	web_worker = null;
 	
@@ -32,19 +35,19 @@ class MagicCarpet extends Applet
 	
 	
 	
-	async run(grid_size = 6, max_cage_size = 12)
+	async run(grid_size = 8, max_cage_size = 16, unique_solution = true)
 	{
 		if (this.currently_drawing)
 		{
 			return;
 		}
 		
-		this.currently_drawing = true;
-		
 		this.grid_size = grid_size;
 		this.max_cage_size = max_cage_size;
 		
-		const canvas_size = this.grid_size * 200 + 9;
+		this.cell_size = Math.min(200, Math.floor(4000 / this.grid_size));
+		
+		const canvas_size = this.grid_size * this.cell_size + 9;
 		
 		this.wilson.change_canvas_size(canvas_size, canvas_size);
 		
@@ -65,72 +68,77 @@ class MagicCarpet extends Applet
 		{
 			this.cages = e.data[0];
 			
-			this.draw_grid(false);
+			this.draw_grid();
 		}
 		
-		this.web_worker.postMessage([this.grid_size, this.max_cage_size]);
+		this.web_worker.postMessage([this.grid_size, this.max_cage_size, unique_solution]);
 	}
 	
 	
 	
-	draw_grid(print_mode = false)
+	draw_grid(rectangles_only = false)
 	{
-		const canvas_size = this.grid_size * 200 + 9;
+		const canvas_size = this.grid_size * this.cell_size + 9;
 		
-		if (print_mode)
+		if (rectangles_only)
 		{
-			this.wilson.ctx.fillStyle = "rgb(255, 255, 255)";
-			this.wilson.ctx.fillRect(0, 0, canvas_size, canvas_size);
-			this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			this.wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
 		}
 		
 		else
 		{
-			this.wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
-			
-			this.wilson.ctx.fillStyle = Site.Settings.url_vars["theme"] === 1 ? "rgb(255, 255, 255)" : "rgb(0, 0, 0)";
+			this.wilson.ctx.fillStyle = "rgb(255, 255, 255)";
+			this.wilson.ctx.fillRect(0, 0, canvas_size, canvas_size);
 		}
+		
+		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		
 		
 		
 		//Draw the light gridlines (width 2).
-		for (let i = 0; i <= this.grid_size; i++)
+		if (!rectangles_only)
 		{
-			this.wilson.ctx.fillRect(200 * i + 4, 0, 2, canvas_size + 9);
-			this.wilson.ctx.fillRect(0, 200 * i + 4, canvas_size + 9, 2);
+			for (let i = 0; i <= this.grid_size; i++)
+			{
+				this.wilson.ctx.fillRect(this.cell_size * i + 4, 0, 2, canvas_size + 9);
+				this.wilson.ctx.fillRect(0, this.cell_size * i + 4, canvas_size + 9, 2);
+			}
 		}
 		
-		this.wilson.ctx.fillRect(0, 0, 200 * this.grid_size + 10, 10);
-		this.wilson.ctx.fillRect(0, 200 * this.grid_size, 200 * this.grid_size + 10, 10);
-		this.wilson.ctx.fillRect(0, 0, 10, 200 * this.grid_size + 10);
-		this.wilson.ctx.fillRect(200 * this.grid_size, 0, 10, 200 * this.grid_size + 10);
 		
-		this.wilson.ctx.font = "120px sans-serif";
 		
-		//Finally, draw the numbers.
-		for (let i = 0; i < this.cages.length; i++)
+		this.wilson.ctx.fillRect(0, 0, this.cell_size * this.grid_size + 10, 10);
+		this.wilson.ctx.fillRect(0, this.cell_size * this.grid_size, this.cell_size * this.grid_size + 10, 10);
+		this.wilson.ctx.fillRect(0, 0, 10, this.cell_size * this.grid_size + 10);
+		this.wilson.ctx.fillRect(this.cell_size * this.grid_size, 0, 10, this.cell_size * this.grid_size + 10);
+		
+		
+		
+		if (!rectangles_only)
 		{
-			this.draw_number(i);
+			this.wilson.ctx.font = `${this.cell_size * .6}px sans-serif`;
+			
+			//Finally, draw the numbers.
+			for (let i = 0; i < this.cages.length; i++)
+			{
+				this.draw_number(i);
+			}
 		}
 		
 		this.currently_drawing = false;
 	}
 	
+	
+	
 	draw_number(i)
 	{
 		const row = this.cages[i][0] + this.cages[i][4];
 		const col = this.cages[i][1] + this.cages[i][5];
-		const entry = ` ${this.cages[i][2] * this.cages[i][3]} `;
+		const entry = `${this.cages[i][2] * this.cages[i][3]}`;
 		
-		if (entry.length === 3)
-		{
-			this.wilson.ctx.fillText(entry, 200 * col + 39, 200 * row + 146);
-		}
+		const measurement = this.wilson.ctx.measureText(entry);
 		
-		else
-		{
-			this.wilson.ctx.fillText(entry, 200 * col, 200 * row + 146);
-		}
+		this.wilson.ctx.fillText(entry, this.cell_size * col + (this.cell_size - measurement.width) / 2 + 5, this.cell_size * (row + 1) - (this.cell_size - measurement.actualBoundingBoxAscent - measurement.actualBoundingBoxDescent) / 2 + 4);
 	}
 	
 	
@@ -142,19 +150,26 @@ class MagicCarpet extends Applet
 			return;
 		}
 		
-		this.view_mode = -1;
+		this.currently_drawing = true;
 		
-		const canvas_size = this.grid_size * 200 + 9;
-		this.wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
+		const canvas_size = this.grid_size * this.cell_size + 9;
 		
-		if (!rectangles_only)
+		if (rectangles_only)
 		{
-			this.draw_grid();
+			this.wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
 		}
+		
+		else
+		{
+			this.wilson.ctx.fillStyle = "rgb(255, 255, 255)";
+			this.wilson.ctx.fillRect(0, 0, canvas_size, canvas_size);
+		}
+		
+		this.draw_grid(rectangles_only);
 		
 		const delay = 500 / this.cages.length;
 		
-		this.draw_cage(0, delay);
+		this.draw_cage(0, delay, rectangles_only);
 	}
 	
 	
@@ -163,13 +178,6 @@ class MagicCarpet extends Applet
 	{
 		if (index === this.cages.length)
 		{
-			this.wilson.ctx.fillStyle = Site.Settings.url_vars["theme"] === 1 ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
-			
-			this.wilson.ctx.fillRect(0, 0, 200 * this.grid_size + 10, 10);
-			this.wilson.ctx.fillRect(0, 200 * this.grid_size, 200 * this.grid_size + 10, 10);
-			this.wilson.ctx.fillRect(0, 0, 10, 200 * this.grid_size + 10);
-			this.wilson.ctx.fillRect(200 * this.grid_size, 0, 10, 200 * this.grid_size + 10);
-			
 			this.currently_drawing = false;
 			
 			return;
@@ -179,12 +187,12 @@ class MagicCarpet extends Applet
 		
 		let rgb = this.wilson.utils.hsv_to_rgb(index / this.cages.length * 6/7, 1, 1);
 		
-		this.wilson.ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, .2)`;
+		this.wilson.ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${rectangles_only ? .5 : .2})`;
 		
-		const row = this.cages[index][0] * 200;
-		const col = this.cages[index][1] * 200;
-		const height = this.cages[index][2] * 200;
-		const width = this.cages[index][3] * 200;
+		const row = this.cages[index][0] * this.cell_size;
+		const col = this.cages[index][1] * this.cell_size;
+		const height = this.cages[index][2] * this.cell_size;
+		const width = this.cages[index][3] * this.cell_size;
 		
 		this.wilson.ctx.fillRect(col + 10, row + 10, width - 10, height - 10);
 		
@@ -208,6 +216,6 @@ class MagicCarpet extends Applet
 		
 		
 		
-		setTimeout(() => this.draw_cage(index + 1, delay), delay);
+		setTimeout(() => this.draw_cage(index + 1, delay, rectangles_only), delay);
 	}
 }

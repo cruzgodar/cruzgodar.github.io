@@ -392,17 +392,15 @@
 			"image_link": "https://drive.google.com/uc?id=1ZOh2bya7QzuvSQqkM55cLxV3v-0MlET3&export=download"
 		},
 		
-		"newtons-method-3":
+		"magic-carpet":
 		{
-			"title": "Newton&#x2019;s Method",
+			"title": "A Magic Carpet",
 			
-			"resolution": "5000x5000",
+			"resolution": "4009x4009",
 			
-			"parameters": "Roots at (&#x00B1;1, 0), (0, &#x00B1;1), (-1.5, 1.5), (1.5, -1.5)",
+			"applet_link": "magic-carpets",
 			
-			"applet_link": "newtons-method",
-			
-			"image_link": "https://drive.google.com/uc?id=19d79RVQzu2aWNdyaP_dkIJJHJpDr8VDX&export=download"
+			"image_link": "https://drive.google.com/uc?id=1bD3P4pzIU7M6Ni_lp9oSjtrwoAJQpJ98&export=download"
 		},
 		
 		"complex-map-1":
@@ -561,7 +559,7 @@
 			"image_link": "https://drive.google.com/uc?id=1kgWTqci85uCCkGQksCrqYqjhYH2416pq&export=download"
 		},
 		
-		"newtons-method-4":
+		"newtons-method-3":
 		{
 			"title": "Newton&#x2019;s Method",
 			

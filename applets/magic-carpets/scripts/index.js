@@ -10,10 +10,11 @@
 	
 	function run()
 	{
-		const grid_size = parseInt(grid_size_input_element.value || 6);
-		const max_cage_size = parseInt(max_cage_size_input_element.value || 12);
+		const grid_size = parseInt(grid_size_input_element.value || 8);
+		const max_cage_size = parseInt(max_cage_size_input_element.value || 16);
+		const unique_solution = unique_solution_checkbox_element.checked;
 		
-		applet.run(grid_size, max_cage_size);
+		applet.run(grid_size, max_cage_size, unique_solution);
 	}
 	
 	
@@ -66,15 +67,15 @@
 	
 	
 	
+	const unique_solution_checkbox_element = Page.element.querySelector("#unique-solution-checkbox");
+	
+	
+	
 	const download_button_element = Page.element.querySelector("#download-button");
 	
 	download_button_element.addEventListener("click", () =>
 	{
-		applet.draw_grid(true);
-		
 		applet.wilson.download_frame("a-magic-carpet.png");
-		
-		applet.draw_grid(false);
 	});
 	
 	
