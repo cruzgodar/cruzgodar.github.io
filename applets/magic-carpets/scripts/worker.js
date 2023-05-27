@@ -5,6 +5,7 @@
 onmessage = function(e)
 {
 	grid_size = e.data[0];
+	max_cage_size = e.data[1];
 	
 	//importScripts("/applets/magic-carpets/scripts/solver.js");
 	
@@ -22,6 +23,7 @@ onmessage = function(e)
 
 
 let grid_size = null;
+let max_cage_size = null;
 
 //Each element is of the form [top-left row, top-left col, width, height, label row offset, label col offset].
 let cages = [];
@@ -63,15 +65,12 @@ function generate_magic_carpet()
 		
 		
 		
-		
 		for (let i = 0; i < cage_order.length; i++)
 		{
 			const cage_index = cage_order[i];
 			
 			if (expand_cage(cage_index))
 			{
-				expanded_a_cage = true;
-				
 				//Shift the rest of the cages in the cage order down so that none is out of bounds.
 				for (let j = 0; j < cage_order.length; j++)
 				{
@@ -80,37 +79,32 @@ function generate_magic_carpet()
 						cage_order[j]--;
 					}
 				}
-			}
-			
-			print_grid();
-			
-			/*
-			num_solutions_found = solve_puzzle();
-			
-			//If this is no longer a unique solution, no problem! We'll just try a different cage next time. We'll just revert to our last uniquely-solvable grid and try again.
-			if (num_solutions_found !== 1)
-			{
-				cages = JSON.parse(JSON.stringify(cages_backup));
-				cages_by_location = JSON.parse(JSON.stringify(cages_by_location_backup));
 				
-				num_solutions_found = 1;
-			}
-			
-			//Great! We just merged a cage, so we have a harder puzzle, but the solution is still unique. Now we can set a checkpoint here and keep going.
-			else
-			{
-				cages_backup = JSON.parse(JSON.stringify(cages));
-				cages_by_location_backup = JSON.parse(JSON.stringify(cages_by_location));
 				
-				postMessage([grid, cages, cages_by_location]);
+				num_solutions_found = solve_puzzle();
+				
+				//If this is no longer a unique solution, no problem! We'll just try a different cage next time. We'll just revert to our last uniquely-solvable grid and try again.
+				if (num_solutions_found !== 1)
+				{
+					cages = JSON.parse(JSON.stringify(cages_backup));
+					cages_by_location = JSON.parse(JSON.stringify(cages_by_location_backup));
+					
+					num_solutions_found = 1;
+				}
+				
+				//Great! We just merged a cage, so we have a harder puzzle, but the solution is still unique. Now we can set a checkpoint here and keep going.
+				else
+				{	
+					expanded_a_cage = true;
+					cages_backup = JSON.parse(JSON.stringify(cages));
+					cages_by_location_backup = JSON.parse(JSON.stringify(cages_by_location));
+				}
 			}
-			
-			*/
 		}
 		
-		//The program almost never ends this way, but if no cell can be expanded in the first place (this is before we've even thought about unique solutions), then there's no point in continuing.
-		if (!expanded_a_cage)
+		if (!expanded_a_cage || cages.length <= grid_size)
 		{
+			postMessage([cages]);
 			return;
 		}
 	}
@@ -226,7 +220,7 @@ function expand_cage(cage_index)
 		
 		//We don't care how tall this one is, but we need it to have the same starting column and width.
 		
-		if (neighbor[1] === col && neighbor[3] === width)
+		if (neighbor[1] === col && neighbor[3] === width && neighbor[2] * neighbor[3] + width * height <= max_cage_size)
 		{
 			directions.push([1, 0]);
 		}
@@ -239,7 +233,7 @@ function expand_cage(cage_index)
 		
 		//We don't care how wide this one is, but we need it to have the same starting row and height.
 		
-		if (neighbor[0] === row && neighbor[2] === height)
+		if (neighbor[0] === row && neighbor[2] === height && neighbor[2] * neighbor[3] + width * height <= max_cage_size)
 		{
 			directions.push([0, 1]);
 		}
@@ -309,17 +303,134 @@ function solve_puzzle()
 		
 		for (let j = 0; j < grid_size; j++)
 		{
-			occupied_cage_locations[i][j] = 0;
+			occupied_cage_locations[i][j] = false;
 		}
 	}
 	
-	return solve_puzzle_step(0, occupied_cages);
+	for (let i = 0; i < cages.length; i++)
+	{
+		const row = cages[i][0] + cages[i][4];
+		const col = cages[i][1] + cages[i][5];
+		
+		occupied_cage_locations[row][col] = true;
+	}
+	
+	return solve_puzzle_step(0, occupied_cage_locations);
 }
 
 //Attempts to put a rectangle in all possible ways in cage_index.
 function solve_puzzle_step(cage_index, occupied_cage_locations)
 {
+	if (cage_index === cages.length)
+	{
+		return 1;
+	}
 	
+	
+	
+	const row = cages[cage_index][0] + cages[cage_index][4];
+	const col = cages[cage_index][1] + cages[cage_index][5];
+	
+	const size = cages[cage_index][2] * cages[cage_index][3];
+	
+	if (size === 1)
+	{
+		//Nothing to do here.
+		return solve_puzzle_step(cage_index + 1, occupied_cage_locations);
+	}
+	
+	let num_solutions = 0;
+	
+	
+	
+	//First loop over sizes.
+	
+	let valid_sides = [];
+	
+	for (let side = 1; side <= Math.sqrt(size); side++)
+	{
+		if (size % side !== 0 || side > grid_size || size / side > grid_size)
+		{
+			continue;
+		}
+		
+		valid_sides.push(side);
+		
+		if (size / side !== side)
+		{
+			valid_sides.push(size / side);
+		}
+	}
+	
+	
+	
+	valid_sides.forEach(side_1 =>
+	{
+		const side_2 = size / side_1;
+		
+		//Now look at positions for the top-left square.
+		
+		const min_row = Math.max(row - side_1 + 1, 0);
+		const max_row = Math.min(row, grid_size - side_1);
+		
+		const min_col = Math.max(col - side_2 + 1, 0);
+		const max_col = Math.min(col, grid_size - side_2);
+		
+		for (let i = min_row; i <= max_row; i++)
+		{
+			for (let j = min_col; j <= max_col; j++)
+			{
+				//Now we need to see which rectangles fit. This is a hard problem, and we're just searching the entire rectangle here.
+				let broken = false;
+				
+				for (let k = 0; k < side_1; k++)
+				{
+					for (let l = 0; l < side_2; l++)
+					{
+						if (occupied_cage_locations[i + k][j + l] && !(i + k === row && j + l === col))
+						{
+							broken = true;
+							break;
+						}
+					}
+					
+					if (broken)
+					{
+						break;
+					}
+				}
+				
+				
+				
+				if (!broken)
+				{
+					let new_occupied_cage_locations = new Array(grid_size);
+					
+					for (let k = 0; k < grid_size; k++)
+					{
+						new_occupied_cage_locations[k] = new Array(grid_size);
+						
+						for (let l = 0; l < grid_size; l++)
+						{
+							new_occupied_cage_locations[k][l] = occupied_cage_locations[k][l];
+						}
+					}
+					
+					for (let k = 0; k < side_1; k++)
+					{
+						for (let l = 0; l < side_2; l++)
+						{
+							new_occupied_cage_locations[i + k][j + l] = true;
+						}
+					}
+					
+					num_solutions += solve_puzzle_step(cage_index + 1, new_occupied_cage_locations);
+				}
+			}
+		}
+	});
+	
+	return num_solutions;
 }
 
 

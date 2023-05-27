@@ -11,8 +11,9 @@
 	function run()
 	{
 		const grid_size = parseInt(grid_size_input_element.value || 6);
+		const max_cage_size = parseInt(max_cage_size_input_element.value || 12);
 		
-		applet.run(grid_size);
+		applet.run(grid_size, max_cage_size);
 	}
 	
 	
@@ -26,6 +27,18 @@
 	const grid_size_input_element = Page.element.querySelector("#grid-size-input");
 	
 	grid_size_input_element.addEventListener("keydown", e =>
+	{
+		if (e.keyCode === 13)
+		{
+			run();
+		}
+	});
+	
+	
+	
+	const max_cage_size_input_element = Page.element.querySelector("#max-cage-size-input");
+	
+	max_cage_size_input_element.addEventListener("keydown", e =>
 	{
 		if (e.keyCode === 13)
 		{

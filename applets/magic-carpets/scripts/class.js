@@ -3,11 +3,9 @@
 class MagicCarpet extends Applet
 {
 	grid_size = null;
+	max_cage_size = null;
 	
 	cages = [];
-	cages_by_location = [];
-	
-	animate_next_draw = false;
 	
 	web_worker = null;
 	
@@ -30,41 +28,18 @@ class MagicCarpet extends Applet
 	
 	
 	
-	async run(grid_size)
+	async run(grid_size, max_cage_size)
 	{
-		if (this.canvas.style.opacity == 1)
-		{
-			await Page.Animate.change_opacity(this.canvas, 0, Site.opacity_animation_time);
-		}
-		
-		
-		
 		this.grid_size = grid_size;
+		this.max_cage_size = max_cage_size;
 		
 		
 		
-		for (let i = 0; i < this.grid_size; i++)
-		{
-			this.cages_by_location.push([]);
-			
-			for (let j = 0; j < this.grid_size; j++)
-			{
-				this.cages_by_location[i].push(0);
-			}
-		}
+		const canvas_size = this.grid_size * 200 + 9;
 		
+		this.wilson.change_canvas_size(canvas_size, canvas_size);
 		
-		
-		const timeout_id = setTimeout(() =>
-		{
-			const canvas_size = this.grid_size * 200 + 9;
-			
-			this.wilson.change_canvas_size(canvas_size, canvas_size);
-			
-			this.wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
-		}, Site.opacity_animation_time);
-		
-		this.timeout_ids.push(timeout_id);
+		this.wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
 		
 		
 		
@@ -77,8 +52,6 @@ class MagicCarpet extends Applet
 		
 		
 		
-		this.animate_next_draw = true;
-		
 		this.web_worker.onmessage = (e) =>
 		{
 			console.log(e.data);
@@ -88,24 +61,10 @@ class MagicCarpet extends Applet
 			this.cages_by_location = e.data[1];
 			
 			this.draw_grid(false);
-			
-			
-			
-			if (this.animate_next_draw)
-			{
-				this.animate_next_draw = false;
-				
-				Page.Animate.change_opacity(this.canvas, 1, Site.opacity_animation_time);
-			}
 			*/
 		}
 		
-		const timeout_id_2 = setTimeout(() =>
-		{
-			this.web_worker.postMessage([this.grid_size]);
-		}, Site.opacity_animation_time);
-		
-		this.timeout_ids.push(timeout_id_2);
+		this.web_worker.postMessage([this.grid_size, this.max_cage_size]);
 	}
 	
 	
