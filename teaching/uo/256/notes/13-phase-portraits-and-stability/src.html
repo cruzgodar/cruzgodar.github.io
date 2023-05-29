@@ -38,6 +38,36 @@ If $\mathbf{A}$ be a $2 \times 2$ matrix with real entries and nonzero eigenvalu
 
 These six possibilities are explored thoroughly in homework 8, but it'd be nice to avoid memorizing all of this, and hopefully to understand the meaning behind it all a bit more. The eigenvectors of the matrix determine the lines along which the field flows to or from the source, and the sign of the real part of the corresponding eigenvalues determine whether that flow is toward the source (negative) or away (positive). Imaginary parts of eigenvalues introduce curl into the system, turning the field into a spiral.
 
+### desmos vector-field
+
+Drag the red point to change the eigenvalues and eigenvectors. The blue curves are sample solutions, and the ones marked in black are the two fundamental solutions --- all together, we call this a **phase portrait** of the system.
+
+
+
+### ex phase portraits
+	
+	Given the following phase portrait for $\mathbf{x}' = \mathbf{Ax}$, what can we determine about the eigenvalues and eigenvectors of $\mathbf{A}$?
+	
+	### desmos vector-field-2
+	
+	Since all of the solutions approach straight lines as $t \to \infty$ or $t \to -\infty$, there is no curl in this system --- the eigenvalues and eigenvectors must be real. The eigenvectors are parallel to the straight line solutions (being on a straight-line solution is what it means to be an eigenvector of $\mathbf{A}$), so the eigenvectors appear to be
+	
+	$$
+		\mathbf{v_1} = \left[ \begin{array}{c} 1 \\ 1 \end{array} \right], \quad \mathbf{v_2} = \left[ \begin{array}{c} -3 \\ 1 \end{array} \right].
+	$$
+	
+	What about the eigenvalues? The fundamental solution corresponding to $\mathbf{v_1}$ flows toward the origin, so its eigenvalue $\lambda_1$ must be negative. On the other hand, the fundamental solution corresponding to $\mathbf{v_2}$ flows away from the origin, so its eigenvalue $\lambda_2$ must be positive.
+	
+###
+
+### exc phase portraits
+	
+	Given the following phase portrait for $\mathbf{x}' = \mathbf{Ax}$, what can we determine about the eigenvalues and eigenvectors of $\mathbf{A}$?
+	
+	### desmos vector-field-3
+	
+###
+
 
 
 ### nav-buttons
