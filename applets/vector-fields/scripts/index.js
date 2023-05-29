@@ -16,7 +16,7 @@
 		const resolution = parseInt(resolution_input_element.value || 500);
 		const max_particles = Math.max(parseInt(max_particles_input_element.value || 10000), 100);
 		const dt = parseFloat(speed_input_element.value || 1) / 150;
-		const lifetime = Math.min(parseInt(lifetime_input_element.value || 64), 255);
+		const lifetime = Math.min(parseInt(lifetime_input_element.value || 100), 255);
 		
 		applet.run(generating_code, resolution, max_particles, dt, lifetime);
 	}
@@ -28,7 +28,7 @@
 		const resolution = parseInt(resolution_input_element.value || 500);
 		const max_particles = Math.max(parseInt(max_particles_input_element.value || 10000), 100);
 		const dt = parseFloat(speed_input_element.value || 1) / 150;
-		const lifetime = Math.min(parseInt(lifetime_input_element.value || 64), 255);
+		const lifetime = Math.min(parseInt(lifetime_input_element.value || 100), 255);
 		
 		applet.generate_new_field(resolution, max_particles, dt, lifetime);
 	}
