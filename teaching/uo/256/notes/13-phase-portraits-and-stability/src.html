@@ -2,15 +2,13 @@
 
 
 
-Our final topic will be **nonlinear systems**, like the Lotka-Volterra model for predator-prey relationships. Some of the methods we'll use to understand and classify them apply to linear systems too, and so we'll start there.
-
-Let's let $\mathbf{A}$ be a $2 \times 2$ matrix and look at the system $\mathbf{x}' = \mathbf{Ax}$. As we touched on in homework 8, the eigenvalues of $\mathbf{A}$ determine the general behavior of the system --- let's summarize the possibilities here. First of all, we'll need a few definitions of vector field concepts 
+Our final topic will be **nonlinear systems**, like the Lotka-Volterra model for predator-prey relationships. Some of the methods we'll use to understand and classify them apply to linear systems too, and so we'll start there. First of all, we'll need a few definitions of vector field objects.
 
 
 
 ### def sources, sinks, and saddles
 	
-	In a vector field, a **critical point** is a point $(x, y)$ for which there is no motion. If the field around a critical point exclusively flows away from it, the point is called a **source**. If the surrounding field exclusively flows toward the point, it's called a **sink**. Otherwise, the point is called a **saddle point**.
+	In a vector field, a **critical point** is a point $(x, y)$ for which there is no motion. If the field around a critical point exclusively flows away from it, the point is called a **source**. If the surrounding field exclusively flows toward the point, it's called a **sink**. If some flows toward the point and some flows away, it's called a saddle point.
 	
 ###
 
@@ -19,6 +17,26 @@ Let's let $\mathbf{A}$ be a $2 \times 2$ matrix and look at the system $\mathbf{
 In the field below, the top-right critical point is a source, the bottom-left is a sink, and the other two are saddle points.
 
 ### canvas vector-field
+
+Let's look at the system $\mathbf{x}' = \mathbf{Ax}$. As we touched on in homework 8, the eigenvalues of $\mathbf{A}$ determine the general behavior of the system --- let's summarize the possibilities here.
+
+If $\mathbf{A}$ be a $2 \times 2$ matrix with real entries and nonzero eigenvalues $\lambda_1$ and $\lambda_2$, then there is a single critical point at the origin, and the system has the following characteristics:
+
+	> 1. If $\lambda_1$ and $\lambda_2$ are real and positive, then the critical point is a source.
+
+	> 2. If $\lambda_1$ and $\lambda_2$ are real and negative, then the critical point is a sink.
+
+	> 3. If $\lambda_1$ and $\lambda_2$ are real and have opposite signs, then the critical point is a saddle point.
+
+	> 4. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is positive, then the critical point is a source about which the field spirals.
+
+	> 5. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is negative, then the critical point is a sink about which the field spirals.
+
+	> 6. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is zero, then the field simply spirals about the critical point.
+
+
+
+These six possibilities are explored thoroughly in homework 8, but it'd be nice to avoid memorizing all of this, and hopefully to understand the meaning behind it all a bit more. The eigenvectors of the matrix determine the lines along which the field flows to or from the source, and the sign of the real part of the corresponding eigenvalues determine whether that flow is toward the source (negative) or away (positive). Imaginary parts of eigenvalues introduce curl into the system, turning the field into a spiral.
 
 
 
