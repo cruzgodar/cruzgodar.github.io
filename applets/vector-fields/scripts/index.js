@@ -18,7 +18,7 @@
 		const dt = parseFloat(speed_input_element.value || 1) / 150;
 		const lifetime = Math.min(parseInt(lifetime_input_element.value || 100), 255);
 		
-		applet.run(generating_code, resolution, max_particles, dt, lifetime);
+		applet.run(generating_code, resolution, max_particles, dt, lifetime, 0, 0, .5);
 	}
 	
 	

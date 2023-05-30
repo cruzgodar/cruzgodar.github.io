@@ -8,7 +8,7 @@ Our final topic will be **nonlinear systems**, like the Lotka-Volterra model for
 
 ### def sources, sinks, and saddles
 	
-	In a vector field, a **critical point** is a point $(x, y)$ for which there is no motion. If the field around a critical point exclusively flows away from it, the point is called a **source**. If the surrounding field exclusively flows toward the point, it's called a **sink**. If some flows toward the point and some flows away, it's called a saddle point.
+	In a vector field, a **critical point** is a point $(x, y)$ for which there is no motion. If the field around a critical point exclusively flows away from it, the point is called a **source**. If the surrounding field exclusively flows toward the point, it's called a **sink**. If some flows toward the point and some flows away, it's called a **saddle point**. Finally, if the field simply spirals around the point and none flows toward or away, it's called a **center**.
 	
 ###
 
@@ -28,7 +28,7 @@ If $\mathbf{A}$ be a $2 \times 2$ matrix with real entries and nonzero eigenvalu
 
 	> 3. If $\lambda_1$ and $\lambda_2$ are real and have opposite signs, then the critical point is a saddle point.
 
-	> 4. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is positive, then the critical point is a source about which the field spirals.
+	> 4. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is positive, then the critical point is a center.
 
 	> 5. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is negative, then the critical point is a sink about which the field spirals.
 
@@ -65,6 +65,78 @@ Drag the red point to change the eigenvalues and eigenvectors. The blue curves a
 	Given the following phase portrait for $\mathbf{x}' = \mathbf{Ax}$, what can we determine about the eigenvalues and eigenvectors of $\mathbf{A}$?
 	
 	### desmos vector-field-3
+	
+###
+
+
+
+## Autonomous Systems
+
+Let's take our first step into nonlinear systems. Since we were barely able to solve any nonlinear individual first-order DEs, we shouldn't expect to be able to solve any nonlinear system. Instead, we'll work with a particular kind of nonlinear system: one that doesn't involve $t$ at all.
+
+
+
+### def autonomous system
+	
+	A system of two DEs is **autonomous** if it is of the form
+	
+	$$
+		x' &= f(x, y)
+		
+		y' &= g(x, y)
+	$$
+	
+	for continuous functions $f$ and $g$.
+	
+###
+
+
+
+For a nonlinear system, we don't have nearly as nice of a classification of critical points. Instead, we'll just classify them as **stable** or **unstable**, depending on whether trajectories stay near the point or don't. Stable solutions are effectively sinks and centers, and unstable ones are all the rest. Analyzing autonomous systems can be quite hard in general, but for particularly nice functions $f$ and $g$, it's possible to solve explicitly --- typically, we'll hope to use a modified form of separation of variables.
+
+
+
+### ex an autonomous system
+	
+	Solve the system
+	
+	$$
+		x' &= y^2
+		
+		y' &= 1 - x^2.
+	$$
+	
+	Find and classify the critical points.
+	
+	Since neither $x'$ or $y'$ depends on $t$, this system is autonomous. The chain rule says that $\frac{dy}{dt} = \frac{dy}{dx}\frac{dx}{dt}$, so solving for $\frac{dy}{dx}$ gives us
+	
+	$$
+		\frac{dy}{dx} &= \frac{dy/dt}{dx/dt}
+		
+		&= \frac{y'}{x'}
+		
+		&= \frac{1 - x^2}{y^2}.
+	$$
+	
+	To solve for $y$, we can separate and integrate.
+	
+	$$
+		y^2\,dy &= (1-x^2)\,dx
+		
+		\int y^2\,dy &= \int (1-x^2)\,dx
+		
+		\frac{y^3}{3} &= x - \frac{x^3}{3} + c
+		
+		x^3 + y^3 - 3x = c.
+	$$
+	
+	Varying $c$, we can see all of the different trajectories a point can follow in the field.
+	
+	### desmos autonomous-system
+	
+	To find the critical points, we just solve $x' = y' = 0$. That means $y^2 = 0$ and $1 - x^2 = 0$, so $y = 0$ and $x = \pm 1$. Classifying them is more complex, and for us, it frequently requires inspecting the vector field. Here, we see that both critical points are unstable, since trajectories near the points don't fall into them.
+	
+	### canvas autonomous-system
 	
 ###
 
