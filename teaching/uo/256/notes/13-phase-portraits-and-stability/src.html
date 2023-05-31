@@ -140,6 +140,90 @@ For a nonlinear system, we don't have nearly as nice of a classification of crit
 	
 ###
 
+### exc an autonomous system
+	
+	Solve the system
+	
+	$$
+		x' &= x + 1
+		
+		y' &= x\sin(y).
+	$$
+	
+	Find and classify the critical points.
+	
+###
+
+
+
+## Locally Linear Systems
+
+Compared to linear systems, where there's a single critical point at the origin and its behavior is well understood --- it's stable exactly when the real part of both eigenvalues are less than or equal to zero --- determining the stability of a critical point in a nonlinear system can be tricky without a vector field. Thankfully, we can use an analogue of linear approximation to almost completely fix the problem.
+
+
+
+### def locally linear system
+	
+	A system of DEs $\mathbf{x}' = \mathbf{F}(\mathbf{x})$ is **locally linear** if there is a matrix $\mathbf{A}$ so that
+	
+	$$
+		\mathbf{x}' = \mathbf{Ax} + \mathbf{G}(\mathbf{x})
+	$$
+	
+	and
+	
+	$$
+		\lim_{||\mathbf{x}|| \to 0} \frac{||\mathbf{G}(\mathbf{x})||}{||x||} = 0,
+	$$
+	
+	where $||\mathbf{x}||$ is the length of $\mathbf{x}$.
+	
+###
+
+
+
+This definition is fine, but we'll barely use it --- for us, the most important facts about locally linear systems will be one result classifying their critical points and another giving an easy way to compute $\mathbf{A}$ and determine if it exists.
+
+
+
+### thm creating a linear approximation
+	
+	Consider the system
+	
+	$$
+		x' &= f(x, y)
+		
+		y' &= g(x, y),
+	$$
+	
+	where $f$ and $g$ have continuous first- and second-order partial derivatives in both $x$ and $y$. If $(x_0, y_0)$ is a critical point, then the system is locally linear near $(x_0, y_0)$, with the approximating matrix $\mathbf{A}$ given by
+	
+	$$
+		\mathbf{J}(x_0, y_0) = \left[ \begin{array}{cc} \frac{\partial f}{\partial x}(x_0, y_0) & \frac{\partial f}{\partial y}(x_0, y_0) \\ \frac{\partial g}{\partial x}(x_0, y_0) & \frac{\partial g}{\partial y}(x_0, y_0) \end{array} \right],
+	$$
+	
+	called the **Jacobian** of $f$ and $g$. Moreover, as long as the eigenvalues of $\mathbf{J}(x_0, y_0)$ are not pure imaginary, the stability of $(x_0, y_0)$ in the original system is the same as the stability of the origin as a critical point in the system
+	
+	$$
+		\mathbf{x}
+	$$
+	
+###
+
+
+
+### thm critical points of locally linear systems
+	
+	Let
+	
+	$$
+		\mathbf{x}' = \mathbf{F}(\mathbf{x}) = \mathbf{Ax} + \mathbf{G}(\mathbf{x})
+	$$
+	
+	be a locally linear system. If the eigenvalues of $\mathbf{A}$ are not pure imaginary, then the stability of 
+	
+###
+
 
 
 ### nav-buttons

@@ -38,9 +38,9 @@
 	const examples =
 	{
 		"none": "",
-		"div": "(x, y)",
-		"curl": "(-y, x)",
-		"clockwork": "(sin(y), sin(x + PI))",
+		"sources-and-sinks": "((.6*x - 1.0) * (.6*x + 1.0), (.6*y + 1.0) * (.6*y - 1.0))",
+		"saddle-points": "(.49*y*y, 1.0 - .49*x*x)",
+		"clockwork": "(sin(1.5*y), -sin(1.5*x))",
 		"df": "(1.0, sin(y) / (x*x + 1.0))",
 		"cross": "(sin(y / 2.5), tan(x / 2.5))",
 		"draggables": "(draggable_arg.x * x - y, x + draggable_arg.y * y)"
