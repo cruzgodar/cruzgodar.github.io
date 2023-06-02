@@ -261,4 +261,18 @@
 	
 	Site.pause_applet_when_offscreen(applet_2);
 	
+	
+	
+	const output_canvas_3 = Page.element.querySelector("#pendulum-canvas");
+	
+	const applet_3 = new VectorField(output_canvas_3);
+	
+	applet_3.load_promise.then(() =>
+	{
+		applet_3.run("(y, -.5*y - sin(x))", 500, 10000, .0035, 100, 0, 0, 2);
+		applet_3.pause();
+	});
+	
+	Site.pause_applet_when_offscreen(applet_3);
+	
 }()

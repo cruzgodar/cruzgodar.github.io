@@ -36,7 +36,7 @@ If $\mathbf{A}$ be a $2 \times 2$ matrix with real entries and nonzero eigenvalu
 
 
 
-These six possibilities are explored thoroughly in homework 8, but it'd be nice to avoid memorizing all of this, and hopefully to understand the meaning behind it all a bit more. The eigenvectors of the matrix determine the lines along which the field flows to or from the source, and the sign of the real part of the corresponding eigenvalues determine whether that flow is toward the source (negative) or away (positive). Imaginary parts of eigenvalues introduce curl into the system, turning the field into a spiral.
+These six possibilities are explored thoroughly in homework 8, but it'd be nice to avoid memorizing all of this, and hopefully to understand the meaning behind it all a bit more. The eigenvectors of the matrix determine the lines along which the field flows to or from the source, and the sign of the real part of the corresponding eigenvalues determines whether that flow is toward the source (negative) or away (positive). Imaginary parts of eigenvalues introduce curl into the system, turning the field into a spiral.
 
 ### desmos vector-field
 
@@ -50,7 +50,7 @@ Drag the red point to change the eigenvalues and eigenvectors. The blue curves a
 	
 	### desmos vector-field-2
 	
-	Since all of the solutions approach straight lines as $t \to \infty$ or $t \to -\infty$, there is no curl in this system --- the eigenvalues and eigenvectors must be real. The eigenvectors are parallel to the straight line solutions (being on a straight-line solution is what it means to be an eigenvector of $\mathbf{A}$), so the eigenvectors appear to be
+	Since all of the solutions approach straight lines as $t \to \infty$ or $t \to -\infty$, there is no curl in this system --- the eigenvalues and eigenvectors must be real. The eigenvectors are parallel to the straight-line solutions (being on a straight-line solution is what it means to be an eigenvector of $\mathbf{A}$), so the eigenvectors appear to be
 	
 	$$
 		\mathbf{v_1} = \left[ \begin{array}{c} 1 \\ 1 \end{array} \right], \quad \mathbf{v_2} = \left[ \begin{array}{c} -3 \\ 1 \end{array} \right].
@@ -199,28 +199,78 @@ This definition is fine, but we'll barely use it --- for us, the most important 
 	where $f$ and $g$ have continuous first- and second-order partial derivatives in both $x$ and $y$. If $(x_0, y_0)$ is a critical point, then the system is locally linear near $(x_0, y_0)$, with the approximating matrix $\mathbf{A}$ given by
 	
 	$$
-		\mathbf{J}(x_0, y_0) = \left[ \begin{array}{cc} \frac{\partial f}{\partial x}(x_0, y_0) & \frac{\partial f}{\partial y}(x_0, y_0) \\ \frac{\partial g}{\partial x}(x_0, y_0) & \frac{\partial g}{\partial y}(x_0, y_0) \end{array} \right],
+		\mathbf{A} = \mathbf{J}(x_0, y_0) = \left[ \begin{array}{cc} \frac{\partial f}{\partial x}(x_0, y_0) & \frac{\partial f}{\partial y}(x_0, y_0) \\ \frac{\partial g}{\partial x}(x_0, y_0) & \frac{\partial g}{\partial y}(x_0, y_0) \end{array} \right],
 	$$
 	
 	called the **Jacobian** of $f$ and $g$. Moreover, as long as the eigenvalues of $\mathbf{J}(x_0, y_0)$ are not pure imaginary, the stability of $(x_0, y_0)$ in the original system is the same as the stability of the origin as a critical point in the system
 	
 	$$
-		\mathbf{x}
+		\mathbf{x}' = \mathbf{J}(x_0, y_0)\mathbf{x}.
 	$$
 	
 ###
 
 
 
-### thm critical points of locally linear systems
+With the Jacobian in hand, we can approximate complex systems and determine the behavior of critical points without plotting a vector field.
+
+
+
+### ex creating a linear approximation
 	
-	Let
+	A damped pendulum swings back and forth with angle $\theta$ from the vertical (so $\theta = 0$ corresponds to the pendulum pointing straight down). If $x = \theta$ and $y = \theta'$, then $x$ and $y$ satisfy a system of first-order DEs:
 	
 	$$
-		\mathbf{x}' = \mathbf{F}(\mathbf{x}) = \mathbf{Ax} + \mathbf{G}(\mathbf{x})
+		x' &= y
+		
+		y' &= -\frac{1}{2}y - \sin(x).
 	$$
 	
-	be a locally linear system. If the eigenvalues of $\mathbf{A}$ are not pure imaginary, then the stability of 
+	There is a critical point at $\left(\pi, 0\right)$. Is it stable or unstable?
+	
+	To get started, let's find the Jacobian in general:
+	
+	$$
+		\mathbf{J} &= \left[ \begin{array}{cc} \frac{\partial f}{\partial x} & \frac{\partial f}{\partial y} \\ \frac{\partial g}{\partial x} & \frac{\partial g}{\partial y} \end{array} \right]
+		
+		&= \left[ \begin{array}{cc} 0 & 1 \\ -\cos(x) & -\frac{1}{2} \end{array} \right].
+	$$
+	
+	Plugging in $x = \pi$ and $y = 0$ gives us
+	
+	$$
+		\mathbf{J}\left(0, \pi\right) &= \left[ \begin{array}{cc} 0 & 1 \\ 1 & -\frac{1}{2} \end{array} \right].
+	$$
+	
+	Now near this critical point, our nonlinear system has the same behavior as the linear system
+	
+	$$
+		\mathbf{x}' = \left[ \begin{array}{cc} 0 & 1 \\ 1 & -\frac{1}{2} \end{array} \right]\mathbf{x}.
+	$$
+	
+	Solving for the eigenvalues gives us
+	
+	$$
+		-\lambda\left(-\frac{1}{2} - \lambda\right) - 1 &= 0
+		
+		\frac{1}{2} \lambda + \lambda^2 - 1 &= 0
+		
+		\lambda &= \frac{-\frac{1}{2} \pm \sqrt{\frac{1}{4} + 4}}{2}
+		
+		\lambda &= -\frac{1}{4} \pm \frac{1}{2}\sqrt{\frac{17}{4}}
+		
+		\lambda &= -\frac{1}{4} \pm \frac{\sqrt{17}}{4}.
+	$$
+	
+	Since $\sqrt{17} > 1$, one of those eigenvalues is positive and the other one is negative. Therefore, the critical point in the linear system is a saddle point. Since that's unstable, the critical point in the nonlinear system must be too.
+	
+	### canvas pendulum
+	
+###
+
+### exc creating a linear approximation
+	
+	Why does the vector field plot make sense? What is the physical state corresponding to each of the critical points, and why are some centers and others saddle points? Why is the graph periodic in the $x$-direction, but not the $y$-direction? Remember: $x = \theta$ and $y = \theta'$.
 	
 ###
 
