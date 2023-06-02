@@ -1,0 +1,31 @@
+### nav-buttons
+
+
+
+In our final section, we'll look at a particular class of nonlinear systems: those modeling competing species. If $x$ is the population of a species (say a type of rabbit), then one of the simplest possible models for $x$ is $x' = ax$: the population grows at a rate proportional to itself. Of course, the environment typically has a carrying capacity, so as $x$ grows larger, the rate of growth $a$ should decrease. Adding this into our model, we have something like $x' = x(a - bx)$.
+
+Now let's suppose another species (say mice) with population $y$ coexists with the rabbits. There isn't a predator-prey relationship between the two, but both species ae competing for the same food. We'd expect each species to have a negative effect on the growth rate of the other, since there's less food available, and so our system of DEs becomes
+
+$$
+	x' &= x(a - bx - cy)
+	
+	y' &= y(d - ey - fx)
+$$
+
+for some constants $a, b, c, d, e,$ and $f$, depending on the particular system.
+
+
+
+### ex competing species
+	
+	
+	
+###
+
+
+
+### nav-buttons
+
+
+
+<script src="/scripts/init.js"></script>

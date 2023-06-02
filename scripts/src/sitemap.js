@@ -521,7 +521,8 @@ Site.sitemap =
 			"/teaching/uo/256/notes/10-determinants-and-eigenthings/",
 			"/teaching/uo/256/notes/11-intro-to-systems/",
 			"/teaching/uo/256/notes/12-complex-and-repeated-eigenvectors/",
-			"/teaching/uo/256/notes/13-phase-portraits-and-stability/"
+			"/teaching/uo/256/notes/13-phase-portraits-and-stability/",
+			"/teaching/uo/256/notes/14-competing-species/"
 		]
 	},
 		
@@ -645,6 +646,15 @@ Site.sitemap =
 	"/teaching/uo/256/notes/13-phase-portraits-and-stability/":
 	{
 		"title": "Section 13: Phase Portraits and Stability",
+		
+		"parent": "/teaching/uo/256/",
+		
+		"children": []
+	},
+	
+	"/teaching/uo/256/notes/14-competing-species/":
+	{
+		"title": "Section 14: Competing Species",
 		
 		"parent": "/teaching/uo/256/",
 		
