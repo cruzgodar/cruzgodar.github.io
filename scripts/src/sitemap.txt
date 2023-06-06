@@ -65,7 +65,6 @@ home Cruz Godar
 			notes/11-intro-to-systems Section 11: Intro to Systems of DEs
 			notes/12-complex-and-repeated-eigenvectors Section 12: Complex and Repeated Eigenvectors
 			notes/13-phase-portraits-and-stability Section 13: Phase Portraits and Stability
-			notes/14-competing-species Section 14: Competing Species
 		
 		uo/253 Math 253
 			notes/0-calc-2-review Section 0: Calculus I and II Review
