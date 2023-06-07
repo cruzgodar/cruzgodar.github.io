@@ -99,7 +99,7 @@ code
 pre code.highlightable
 {
 	position: relative;
-	width: calc(70% - 24px);
+	width: min(calc(70% - 24px), 700px);
 	margin: 0 auto;
 	tab-size: 4;
 	-moz-tab-size: 4;
@@ -146,14 +146,14 @@ img
 .heading-text, .section-text, .body-text, .date-text, .song-lyrics
 {
 	position: relative;
-	width: 70%;
+	width: min(70%, 700px);
 	margin: 0 auto;
 	margin-bottom: 16px;
 }
 
 .body-text.narrow
 {
-	width: 60vw;
+	width: min(60%, 600px);
 }
 
 .heading-text
@@ -320,7 +320,7 @@ mjx-container
 	
 	opacity: 1;
 	
-	width: min(70%, 100% - 64px);
+	width: min(700px, 100% - 64px);
 	padding: 16px;
 	
 	margin-left: 16px;
@@ -418,44 +418,16 @@ mjx-container
 {
 	.heading-text, .section-text, .body-text, .date-text, .line-break
 	{
-		width: 90%;
+		width: min(90%, 700px);
 	}
 	
 	.body-text.narrow
 	{
-		width: 80%;
+		width: min(calc(90% * 6 / 7), 600px);
 	}
 	
 	pre code.highlightable
 	{
-		width: 90%;
-	}
-	
-	.card
-	{
-		width: min(90%, 100% - 64px);
-	}
-}
-
-@media (min-width: 1400px)
-{
-	.body-text, .nav-buttons
-	{
-		width: 50%;
-	}
-	
-	.body-text.narrow
-	{
-		width: 40%;
-	}
-	
-	pre code.highlightable
-	{
-		width: calc(50% - 24px);
-	}
-	
-	.card
-	{
-		width: min(50%, calc(100% - 64px));
+		width: min(calc(700px - 24px), calc(90% - 24px));
 	}
 }
