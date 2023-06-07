@@ -242,10 +242,8 @@
 	applet.load_promise.then(() =>
 	{
 		applet.run("((x - 1.0) * (x + 1.0), (y + 1.0) * (y - 1.0))", 500, 10000, .0035, 100, 0, 0, -.15);
-		applet.pause();
+		applet.pause_when_offscreen();
 	});
-	
-	Site.pause_applet_when_offscreen(applet);
 	
 	
 	
@@ -256,10 +254,8 @@
 	applet_2.load_promise.then(() =>
 	{
 		applet_2.run("(y*y, 1.0 - x*x)", 500, 10000, .0035, 100, 0, 0, 0);
-		applet_2.pause();
+		applet_2.pause_when_offscreen();
 	});
-	
-	Site.pause_applet_when_offscreen(applet_2);
 	
 	
 	
@@ -270,9 +266,6 @@
 	applet_3.load_promise.then(() =>
 	{
 		applet_3.run("(y, -.5*y - sin(x))", 500, 10000, .0035, 100, 0, 0, 2);
-		applet_3.pause();
+		applet_3.pause_when_offscreen();
 	});
-	
-	Site.pause_applet_when_offscreen(applet_3);
-	
 }()

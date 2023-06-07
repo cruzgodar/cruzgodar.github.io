@@ -54,9 +54,6 @@
 	applet.load_promise.then(() =>
 	{
 		applet.run("(.23 * (x + y), .23 * (-2.0 * x + 3.0 * y))", 500, 10000, .0075, 100, 0, 0, 1);
-		applet.pause();
+		applet.pause_when_offscreen();
 	});
-	
-	Site.pause_applet_when_offscreen(applet);
-	
 }()

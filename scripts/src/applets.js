@@ -78,6 +78,33 @@ class Applet
 			console.log(`Destroyed an applet of type ${this.constructor.name}`)
 		}
 	}
+	
+	
+	
+	pause_when_offscreen()
+	{
+		const on_scroll = () =>
+		{
+			const rect = this.canvas.getBoundingClientRect(); 
+			const top = rect.top;
+			const height = rect.height;
+			
+			if (top >= -height && top < window.innerHeight)
+			{
+				this.resume();
+			}
+			
+			else
+			{
+				this.pause();
+			}
+		};
+		
+		window.addEventListener("scroll", on_scroll);
+		this.handlers.push([window, "scroll", on_scroll]);
+		
+		on_scroll();
+	}
 }
 
 
@@ -114,29 +141,4 @@ Site.load_applet = function(id)
 		
 		resolve();
 	});
-};
-
-
-
-Site.pause_applet_when_offscreen = function(applet)
-{
-	function on_scroll()
-	{
-		const rect = applet.canvas.getBoundingClientRect(); 
-		const top = rect.top;
-		const height = rect.height;
-		
-		if (top >= -height && top < window.innerHeight)
-		{
-			applet.resume();
-		}
-		
-		else
-		{
-			applet.pause();
-		}
-	}
-	
-	window.addEventListener("scroll", on_scroll);
-	applet.handlers.push([window, "scroll", on_scroll]);
 };

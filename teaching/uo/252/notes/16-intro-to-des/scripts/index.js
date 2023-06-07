@@ -113,8 +113,6 @@
 	applet.load_promise.then(() =>
 	{
 		applet.run("(1.0, sin(y) / (x*x + 1.0))", 500, 10000, .0075, 100, 0, 0, 1.3219);
-		applet.pause();
+		applet.pause_when_offscreen();
 	});
-	
-	Site.pause_applet_when_offscreen(applet);
 }()
