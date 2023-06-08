@@ -59,15 +59,8 @@ class VectorField extends Applet
 	{
 		super(canvas);
 		
-		this.update_canvas = document.createElement("canvas");
-		this.update_canvas.classList.add("hidden-canvas");
-		this.hidden_canvases.push(this.update_canvas);
-		Page.element.appendChild(this.update_canvas);
-		
-		this.dim_canvas = document.createElement("canvas");
-		this.dim_canvas.classList.add("hidden-canvas");
-		this.hidden_canvases.push(this.dim_canvas);
-		Page.element.appendChild(this.dim_canvas);
+		this.update_canvas = this.create_hidden_canvas();
+		this.dim_canvas = this.create_hidden_canvas();
 		
 		
 		

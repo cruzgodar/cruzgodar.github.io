@@ -21,10 +21,7 @@ class AbelianSandpile extends Applet
 	{
 		super(canvas);
 		
-		const hidden_canvas = document.createElement("canvas");
-		hidden_canvas.classList.add("hidden-canvas");
-		this.hidden_canvases.push(hidden_canvas);
-		Page.element.appendChild(hidden_canvas);
+		const hidden_canvas = this.create_hidden_canvas();
 		
 		const frag_shader_source_init = `
 			precision highp float;
@@ -310,8 +307,6 @@ class AbelianSandpile extends Applet
 		
 		
 		const output_resolution = Math.max(this.resolution, this.canvas.getBoundingClientRect().width);
-		
-		console.log(output_resolution);
 		
 		this.wilson_upscale.gl.bindTexture(this.wilson_upscale.gl.TEXTURE_2D, this.wilson_upscale.render.framebuffers[0].texture);
 		

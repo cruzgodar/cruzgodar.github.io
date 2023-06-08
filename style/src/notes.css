@@ -22,21 +22,21 @@
 
 .desmos-border, .desmos-container, .dcg-container
 {
-	width: calc(min(70vw, 70vh) - 4px) !important;
-	height: calc(min(70vw, 70vh) - 4px) !important;
+	width: min(min(calc(700px - 4px), calc(90vw - 4px)), calc(50vh - 4px)) !important;
+	height: min(min(calc(700px - 4px), calc(90vw - 4px)), calc(50vh - 4px)) !important;
 }
 
 .notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
 {
-	width: calc(min(70vw, 70vh) - 20px) !important;
-	height: calc(min(70vw, 70vh) - 20px) !important;
+	width: min(min(calc(700px - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
+	height: min(min(calc(700px - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
 }
 
 
 
 .notes-image
 {
-	width: min(70vw - 32px, 70vh - 32px);
+	width: min(min(calc(700px - 32px), calc(90vw - 32px)), calc(50vh - 32px)) !important;
 	margin: 0 auto;
 	border-radius: 15px;
 	margin-bottom: 16px;
@@ -46,7 +46,7 @@
 
 .notes-environment
 {
-	width: calc(70vw - 12px);
+	width: min(calc(700px - 12px), calc(90% - 12px)) !important;
 	margin: 0 auto;
 	margin-bottom: 16px;
 	border-width: 0 0 0 4px;
@@ -129,8 +129,6 @@
 	border-radius: 5px;
 	padding: 0px 6px 0px 6px;
 	
-	margin-right: 4px;
-	
 	font-weight: bold;
 	font-style: normal;
 	
@@ -189,58 +187,4 @@
 {
 	background-color: rgb(87.18% 41.03% 57.63%);
 	background-color: lch(60% 50 360);
-}
-
-
-
-@media (max-width: 700px)
-{
-	.notes-environment
-	{
-		width: calc(90vw - 12px);
-	}
-	
-	.desmos-border, .desmos-container, .dcg-container
-	{
-		width: calc(min(90vw, 70vh) - 4px) !important;
-		height: calc(min(90vw, 70vh) - 4px) !important;
-	}
-	
-	.notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
-	{
-		width: calc(min(90vw, 70vh) - 20px) !important;
-		height: calc(min(90vw, 70vh) - 20px) !important;
-	}
-	
-	.notes-image
-	{
-		width: min(90vw, 70vh) !important;
-	}
-}
-
-
-
-@media (min-width: 1400px)
-{
-	.notes-environment
-	{
-		width: calc(50vw - 12px);
-	}
-	
-	.desmos-border, .desmos-container, .dcg-container
-	{
-		width: calc(min(50vw, 70vh) - 4px) !important;
-		height: calc(min(50vw, 70vh) - 4px) !important;
-	}
-	
-	.notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
-	{
-		width: calc(min(50vw, 70vh) - 20px) !important;
-		height: calc(min(50vw, 70vh) - 20px) !important;
-	}
-	
-	.notes-image
-	{
-		width: min(50vw, 70vh) !important;
-	}
 }

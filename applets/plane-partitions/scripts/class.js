@@ -156,25 +156,10 @@ class PlanePartitions extends Applet
 		
 		
 		
-		const hidden_canvas = document.createElement("canvas");
-		hidden_canvas.classList.add("hidden-canvas");
-		this.hidden_canvases.push(hidden_canvas);
-		Page.element.appendChild(hidden_canvas);
-		
-		const hidden_canvas_2 = document.createElement("canvas");
-		hidden_canvas_2.classList.add("hidden-canvas");
-		this.hidden_canvases.push(hidden_canvas_2);
-		Page.element.appendChild(hidden_canvas_2);
-		
-		const hidden_canvas_3 = document.createElement("canvas");
-		hidden_canvas_3.classList.add("hidden-canvas");
-		this.hidden_canvases.push(hidden_canvas_3);
-		Page.element.appendChild(hidden_canvas_3);
-		
-		const hidden_canvas_4 = document.createElement("canvas");
-		hidden_canvas_4.classList.add("hidden-canvas");
-		this.hidden_canvases.push(hidden_canvas_4);
-		Page.element.appendChild(hidden_canvas_4);
+		const hidden_canvas_1 = this.create_hidden_canvas();
+		const hidden_canvas_2 = this.create_hidden_canvas();
+		const hidden_canvas_3 = this.create_hidden_canvas();
+		const hidden_canvas_4 = this.create_hidden_canvas();
 		
 		
 		

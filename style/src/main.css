@@ -99,7 +99,7 @@ code
 pre code.highlightable
 {
 	position: relative;
-	width: min(calc(70% - 24px), 700px);
+	width: min(calc(90% - 24px), 700px);
 	margin: 0 auto;
 	tab-size: 4;
 	-moz-tab-size: 4;
@@ -146,14 +146,9 @@ img
 .heading-text, .section-text, .body-text, .date-text, .song-lyrics
 {
 	position: relative;
-	width: min(70%, 700px);
+	width: min(90%, 700px);
 	margin: 0 auto;
 	margin-bottom: 16px;
-}
-
-.body-text.narrow
-{
-	width: min(60%, 600px);
 }
 
 .heading-text
@@ -409,25 +404,4 @@ mjx-container
 *:focus
 {
 	outline: none;
-}
-
-
-
-/* Compact layout: reduce margins. */
-@media (max-width: 700px)
-{
-	.heading-text, .section-text, .body-text, .date-text, .line-break
-	{
-		width: min(90%, 700px);
-	}
-	
-	.body-text.narrow
-	{
-		width: min(calc(90% * 6 / 7), 600px);
-	}
-	
-	pre code.highlightable
-	{
-		width: min(calc(700px - 24px), calc(90% - 24px));
-	}
 }

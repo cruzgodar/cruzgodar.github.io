@@ -10,7 +10,6 @@ class Applet
 	refresh_ids = [];
 	//Every entry is a length-3 array, e.g. [window, "scroll", listener_function]
 	handlers = [];
-	hidden_canvases = [];
 	
 	animation_paused = false;
 	
@@ -67,11 +66,8 @@ class Applet
 			catch(ex) {}
 		});
 		
-		this.hidden_canvases.forEach(hidden_canvas =>
-		{
-			try {hidden_canvas.remove()}
-			catch(ex) {}
-		});
+		try {this.hidden_canvas_container.remove()}
+		catch(ex) {}
 		
 		if (DEBUG)
 		{
@@ -104,6 +100,27 @@ class Applet
 		this.handlers.push([window, "scroll", on_scroll]);
 		
 		on_scroll();
+	}
+	
+	
+	
+	hidden_canvas_container = null;
+	
+	create_hidden_canvas()
+	{
+		const hidden_canvas = document.createElement("canvas");
+		hidden_canvas.classList.add("hidden-canvas");
+		
+		if (this.hidden_canvas_container === null)
+		{
+			this.hidden_canvas_container = document.createElement("div");
+			this.hidden_canvas_container.style.display = "none";
+			Page.element.appendChild(this.hidden_canvas_container);
+		}
+		
+		this.hidden_canvas_container.appendChild(hidden_canvas);
+		
+		return hidden_canvas;
 	}
 }
 
