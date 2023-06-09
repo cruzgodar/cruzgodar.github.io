@@ -122,6 +122,30 @@ class Applet
 		
 		return hiddenCanvas;
 	}
+	
+	
+	
+	//Turns expressions like 2(3x^2+1) into something equivalent to 2.0 * (3.0 * pow(x, 2.0) + 1.0).
+	static parseNaturalGLSL(glsl)
+	{
+		let new_glsl =  glsl.replaceAll(/\s/g, ""); //Remove spaces
+		
+		while (new_glsl.match(/([^\.0-9])([0-9]+)([^\.0-9])/g))
+		{
+			new_glsl = new_glsl.replaceAll(/([^\.0-9])([0-9]+)([^\.0-9])/g, (match, $1, $2, $3) => `${$1}${$2}.0${$3}`); //Convert ints to floats
+		}
+		
+		new_glsl = new_glsl.replaceAll(/([^0-9])(\.[0-9])/g, (match, $1, $2) => `${$1}0${$2}`) //Lead decimals with zeros
+		.replaceAll(/([0-9]\.)([^0-9])/g, (match, $1, $2) => `${$1}0${$2}`) //End decimals with zeros
+		.replaceAll(/([0-9\)])([a-z\(])/g, (match, $1, $2) => `${$1} * ${$2}`); //Juxtaposition to multiplication
+		
+		while (new_glsl.match(/([xyz])([xyz])/g))
+		{
+			new_glsl = new_glsl.replaceAll(/([xyz])([xyz])/g, (match, $1, $2) => `${$1} * ${$2}`); //Particular juxtaposition to multiplication
+		}
+		
+		return new_glsl.replaceAll(/([a-z0-9\.]+)\^([a-z0-9\.]+)/g, (match, $1, $2) => `pow(${$1}, ${$2})`); //Carats to power
+	}
 }
 
 

@@ -12,7 +12,8 @@
 	
 	function run()
 	{
-		const generatingCode = codeTextareaElement.value;
+		const generatingCode = rawGLSLCheckboxElement.checked ? codeTextareaElement.value : Applet.parseNaturalGLSL(codeTextareaElement.value);
+		
 		const resolution = parseInt(resolutionInputElement.value || 500);
 		const maxParticles = Math.max(parseInt(maxParticlesInputElement.value || 10000), 100);
 		const dt = parseFloat(speedInputElement.value || 1) / 150;
@@ -38,10 +39,10 @@
 	const examples =
 	{
 		"none": "",
-		"sources-and-sinks": "((.6*x - 1.0) * (.6*x + 1.0), (.6*y + 1.0) * (.6*y - 1.0))",
-		"saddle-points": "(.49*y*y, 1.0 - .49*x*x)",
-		"clockwork": "(sin(1.5 * y), -sin(1.5 * x))",
-		"df": "(1.0, sin(y) / (x*x + 1.0))",
+		"sources-and-sinks": "((0.6x - 1)(0.6x + 1), (0.6y + 1)(0.6y - 1))",
+		"saddle-points": "(0.49y^2, 1 - 0.49x^2)",
+		"clockwork": "(sin(1.5y), -sin(1.5x))",
+		"df": "(1, sin(y) / (x^2 + 1))",
 		"cross": "(sin(y / 2.5), tan(x / 2.5))",
 		"draggables": "(draggableArg.x * x - y, x + draggableArg.y * y)"
 	};
@@ -71,6 +72,10 @@
 			run();
 		}
 	});
+	
+	
+	
+	const rawGLSLCheckboxElement = Page.element.querySelector("#raw-glsl-checkbox");
 	
 	
 	

@@ -371,6 +371,11 @@ class VectorField extends Applet
 				return vec4(byte4, byte3, byte2, byte1);
 			}
 			
+			vec2 f(float x, float y)
+			{
+				return vec2${generatingCode};
+			}
+			
 			
 			
 			void main(void)
@@ -382,34 +387,25 @@ class VectorField extends Applet
 					return;
 				}
 				
-				vec2 v = sample.xy;
-				
-				float x = v.x;
-				float y = v.y;
+				vec2 d = f(sample.x, sample.y);
 		`;
 		
 		const fragShaderSourceUpdateX = `
 				${fragShaderSourceUpdateBase}
 				
-				vec2 d = vec2${generatingCode};
-				
-				gl_FragColor = encodeFloat(dt * d.x + x);
+				gl_FragColor = encodeFloat(dt * d.x + sample.x);
 			}
 		`;
 		
 		const fragShaderSourceUpdateY = `
 				${fragShaderSourceUpdateBase}
 				
-				vec2 d = vec2${generatingCode};
-				
-				gl_FragColor = encodeFloat(dt * d.y + y);
+				gl_FragColor = encodeFloat(dt * d.y + sample.y);
 			}
 		`;
 		
 		const fragShaderSourceUpdateH = `
 				${fragShaderSourceUpdateBase}
-				
-				vec2 d = vec2${generatingCode};
 				
 				gl_FragColor = encodeFloat((atan(d.y, d.x) + 3.14159265) / 6.28318531);
 			}
@@ -418,8 +414,6 @@ class VectorField extends Applet
 		const fragShaderSourceUpdateS = `
 				${fragShaderSourceUpdateBase}
 				
-				vec2 d = vec2${generatingCode};
-				
 				gl_FragColor = encodeFloat(1.0 - exp(-1.2 * (d.x * d.x + d.y * d.y)));
 			}
 		`;
@@ -427,11 +421,11 @@ class VectorField extends Applet
 		const fragShaderSourceUpdateS2 = `
 				${fragShaderSourceUpdateBase}
 				
-				vec2 d = vec2${generatingCode};
-				
 				gl_FragColor = encodeFloat(1.0 - exp(-1.2 * .9 * (d.x * d.x + d.y * d.y)));
 			}
 		`;
+		
+		console.log(fragShaderSourceUpdateX);
 		
 		this.wilsonUpdate.render.shaderPrograms = [];
 		
